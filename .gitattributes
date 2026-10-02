@@ -1,0 +1,12 @@
+# 文本文件在所有系统上都以 LF 检出：工作树可以在 Windows 与 Linux 之间直接同步，源码的内容哈希也不因换行而变
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 取证材料（实验脚本、回显、数据文件快照）逐字节保存，不做换行转换：回显里的换行本身就是证据的一部分
+videos/**/research/lab/** -text
+
+# 二进制
+*.png binary
+*.jpg binary
+*.ttf binary

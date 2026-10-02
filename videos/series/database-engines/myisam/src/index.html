@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>一个数据库引擎是如何实现的？——从 MyISAM 说起</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="bg">
+    <div class="bg-base"></div>
+    <div class="bg-blob b1"></div>
+    <div class="bg-blob b2"></div>
+    <div class="bg-blob b3"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-vignette"></div>
+  </div>
+  <div id="scenes"></div>
+  <div id="chapcard"></div>
+  <div id="hud">
+    <div class="hud-chap"><span class="hud-no"></span><span class="hud-bar"></span><span class="hud-title"></span></div>
+    <div class="hud-brand"><b>MyISAM</b><i></i>MySQL 5.5.62</div>
+    <div class="hud-progress"><div class="hud-fill"></div><div class="hud-ticks"></div></div>
+  </div>
+  <div id="scrim"></div>
+  <div id="caption"><span></span></div>
+  <div id="grain"></div>
+</div>
+<script src="vendor/gsap.min.js"></script>
+<script src="js/timing.zh.js"></script>
+<script src="js/script.js"></script>
+<script src="js/data.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/components.js"></script>
+<script src="js/scenes/s00_intro.js"></script>
+<script src="js/scenes/s01_layers.js"></script>
+<script src="js/scenes/s02_files.js"></script>
+<script src="js/scenes/s03_fixed.js"></script>
+<script src="js/scenes/s04_delete.js"></script>
+<script src="js/scenes/s05_dynamic.js"></script>
+<script src="js/scenes/s06_index.js"></script>
+<script src="js/scenes/s07_query.js"></script>
+<script src="js/scenes/s08_lock.js"></script>
+<script src="js/scenes/s09_crash.js"></script>
+<script src="js/scenes/s10_outro.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

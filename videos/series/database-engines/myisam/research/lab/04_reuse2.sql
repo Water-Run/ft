@@ -1,0 +1,10 @@
+USE myisam_demo;
+INSERT INTO users VALUES (10,'judy',27),(11,'mallory',39);
+INSERT INTO notes VALUES (4,'reuse');
+SHOW TABLE STATUS;
+SELECT * FROM users;
+CHECK TABLE users;
+OPTIMIZE TABLE users;
+SELECT * FROM users;
+SHOW TABLE STATUS;
+FLUSH TABLES;

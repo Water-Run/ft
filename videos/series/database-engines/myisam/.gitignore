@@ -1,0 +1,2 @@
+# 十万行的建表数据由 research/lab/gen_05_big.py 生成（逐字节可复现），不入库
+research/lab/05_big.sql

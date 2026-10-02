@@ -1,0 +1,52 @@
+$ lua -v
+bash: lua: command not found
+[exit 127]
+
+$ lua main.lua
+bash: lua: command not found
+[exit 127]
+
+$ gcc --version
+bash: gcc: command not found
+[exit 127]
+
+$ ls /usr/lib64 | grep -c -i lua; ls /usr/lib64/lua 2>&1 | head -2
+2
+5.4
+[exit 0]
+
+$ ./moon/build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ./moon/build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ./list/build/list/list /etc/dnf
+dnf.conf  dnf5-plugins  libdnf5-plugins  libdnf5.conf.d  protected.d  repos.override.d  suggest-reboot.d  usr-drift-protected-paths.d  vars  vendors.d
+[exit 0]
+
+$ ./dyn/build/dyn/dyn mysql
+mysql driver
+[exit 0]
+
+$ ./ltokei/ltokei /etc/dnf | head -8
+Language  Files  Lines  Blank  Comment  Code
+--------  -----  -----  -----  -------  ----
+Total     0      0      0      0        0   
+[exit 0]
+
+$ (./websql/websql > /tmp/w.log 2>&1 &); sleep 2; curl -s -i http://127.0.0.1:9090/ | head -6; echo; head -3 /tmp/w.log; pkill -f websql/websql
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, X-Auth-Token
+Date: Thu, 01 Oct 2026 09:24:32 GMT
+Content-Length: 11569
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Content-Type: text/html; charset=utf-8
+
+[2026-10-01 09:24:30] [WARN ] default token in use; set FIREBIRD_WEB_SQL_TOKEN for real use
+[2026-10-01 09:24:30] [INFO ] Firebird Web SQL Shell 2.0.0
+[2026-10-01 09:24:30] [INFO ] listen: http://127.0.0.1:9090
+bash: line 1: pkill: command not found
+[exit 127]

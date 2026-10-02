@@ -1,0 +1,44 @@
+
+$ ls /usr/lib64/liblua*
+/usr/lib64/liblua-5.4.so
+[exit 0]
+
+$ ls /usr/lib64/liblua* 2>&1; command -v lua gcc
+ls: cannot access '/usr/lib64/liblua*': No such file or directory
+[exit 1]
+
+$ ./moon/build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ldd ./moon/build/moon/moon | grep -i lua
+	liblua-5.4.so => /root/a/moon/build/moon/.luai/native/liblua-5.4.so (0x00007fceb3ad3000)
+[exit 0]
+
+$ ./moon/build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ./list/build/list/list /etc/dnf | cut -c1-60
+dnf.conf  dnf5-plugins  libdnf5-plugins  libdnf5.conf.d  pro
+[exit 0]
+
+$ (./websql/websql > /tmp/w.log 2>&1 &); sleep 2; curl -s -i http://127.0.0.1:9090/ | head -2; head -3 /tmp/w.log
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+[2026-10-01 09:33:18] [WARN ] default token in use; set FIREBIRD_WEB_SQL_TOKEN for real use
+[2026-10-01 09:33:18] [INFO ] Firebird Web SQL Shell 2.0.0
+[2026-10-01 09:33:18] [INFO ] listen: http://127.0.0.1:9090
+[exit 0]
+
+$ cd /root/e/moon && ./moon-srlua 2026-10-01
+./moon-srlua: error while loading shared libraries: liblua-5.4.so: cannot open shared object file: No such file or directory
+[exit 127]
+
+$ cd /root/e/hello && ./hello
+./hello: error while loading shared libraries: liblua-5.4.so: cannot open shared object file: No such file or directory
+[exit 127]
+
+$ cd /root/e/hello && ./build/hello2/hello2
+hello from one script
+[exit 0]

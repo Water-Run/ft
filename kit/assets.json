@@ -1,0 +1,15 @@
+{
+  "about": "不入库的二进制依赖：字体与语音识别模型。node kit/tools/assets.js 核对，--fetch 下载。字体取自 google/fonts 的固定提交，逐个校验 SHA-256。",
+  "fonts": [
+    { "file": "NotoSansSC.ttf", "family": "Noto Sans SC", "css": "Sans SC", "license": "OFL-1.1", "bytes": 17772300, "sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da", "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf" },
+    { "file": "NotoSerifSC.ttf", "family": "Noto Serif SC", "css": "Serif SC", "license": "OFL-1.1", "bytes": 25125512, "sha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9", "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf" },
+    { "file": "Inter.ttf", "family": "Inter", "css": "Inter", "license": "OFL-1.1", "bytes": 876576, "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031", "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf" },
+    { "file": "JetBrainsMono.ttf", "family": "JetBrains Mono", "css": "Mono", "license": "OFL-1.1", "bytes": 187208, "sha256": "48715a42ec242c21e9f02692891e147d022299a52e48d5e413e1a942193ffeda", "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf" },
+    { "file": "VT323.ttf", "family": "VT323", "css": "Pixel", "license": "OFL-1.1", "bytes": 153116, "sha256": "cf4de751ada78ceac033dbe16a687742939995b77bc2a052ae17a4957958594d", "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/vt323/VT323-Regular.ttf" }
+  ],
+  "whisper": {
+    "dir": "whisper/fw-small",
+    "repo": "Systran/faster-whisper-small",
+    "files": ["config.json", "model.bin", "tokenizer.json", "vocabulary.txt"]
+  }
+}

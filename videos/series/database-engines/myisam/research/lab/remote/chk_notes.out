@@ -1,0 +1,21 @@
+
+MyISAM file:         C:\LegacyDev\MySQL55\data\myisam_demo\notes.MYI
+Record format:       Packed
+Character set:       latin1_swedish_ci (8)
+File-version:        1
+Creation time:       2026-10-01  9:13:49
+Status:              changed
+Data records:                    3  Deleted blocks:                 0
+Datafile parts:                  4  Deleted data:                   0
+Datafile pointer (bytes):        6  Keyfile pointer (bytes):        6
+Datafile length:               136  Keyfile length:              2048
+Max datafile length: 281474976710654  Max keyfile length: 288230376151710719
+Recordlength:                  206
+
+table description:
+Key Start Len Index   Type                     Rec/key         Root  Blocksize
+1   1     4   unique  long                           1         1024       1024
+
+Field Start Length Nullpos Nullbit Type
+1     1     4                      no zeros                           
+2     5     201                    varchar                            

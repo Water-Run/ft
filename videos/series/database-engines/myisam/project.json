@@ -1,0 +1,17 @@
+{
+  "slug": "myisam",
+  "languages": ["zh"],
+  "titles": { "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起" },
+  "voices": { "zh": "zh-CN-YunyangNeural" },
+  "rates": { "zh": "-4%" },
+  "asr_prompts": { "zh": "以下是普通话的技术讲解，涉及 MySQL、MyISAM、InnoDB、B 树、VARCHAR、OPTIMIZE TABLE。" },
+  "production": { "mode": "self", "maker": "Claude" },
+  "render": { "fps": 60, "mb": 1 },
+  "audio": { "music": "pad", "music_db": -21, "duck_db": 9, "sfx_db": -8, "voice_norm": "peak", "pad_low": 1, "pad_top": 1, "limit": false, "sfx": false },
+  "check": {
+    "caption_width": { "zh": 28 },
+    "min_font": 16,
+    "levels": { "SMALL": "warn", "CONTRAST": "warn", "OVERLAP": "warn", "STILL": "warn", "EMPTY": "warn", "NONDET": "warn" },
+    "sfx": { "per_seconds": 0, "kinds": 0, "max_gap": 0 }
+  }
+}

@@ -1,0 +1,45 @@
+
+Microsoft Windows [Version 10.0.26220.9568]
+Microsoft (R) C/C++ Optimizing Compiler Version 19.51.36256 for x64
+Lua 5.5.0  Copyright (C) 1994-2025 Lua.org, PUC-Rio
+$ set LUAI_LUA_PREFIX=C:\luai-demo\lua55
+[exit 0]
+$ luai -v
+luai 1.4.0
+[exit 0]
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 3
+libraries: 0
+script[1]: C:/luai-demo/moon/moon/julian.lua
+script[2]: C:/luai-demo/moon/moon/phase.lua
+script[3]: C:/luai-demo/moon/moon/names.lua
+[exit 0]
+$ luai -b main.lua -o build\moon
+ok
+executable: C:/luai-demo/moon/build/moon/moon.exe
+[exit 0]
+$ dir /b build\moon
+.luai
+lua55.dll
+moon.exe
+THIRD_PARTY_NOTICES.md
+[exit 0]
+ Volume in drive C is 系统
+ Volume Serial Number is C0F1-06F3
+
+ Directory of C:\luai-demo\moon\build\moon
+
+2026/10/01  15:51    <DIR>          .
+2026/10/01  15:51    <DIR>          ..
+2026/10/01  15:51    <DIR>          .luai
+2026/01/20  04:27           371,668 lua55.dll
+2026/10/01  15:51           151,552 moon.exe
+2026/10/01  15:51             2,006 THIRD_PARTY_NOTICES.md
+               3 File(s)        525,226 bytes
+               3 Dir(s)  63,371,874,304 bytes free
+$ build\moon\moon.exe 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+### done

@@ -1,0 +1,20 @@
+{
+  "slug": "{{SLUG}}",
+  "languages": {{LANGS_JSON}},
+  "titles": {{TITLES_JSON}},
+  "voices": {{VOICES_JSON}},
+  "rates": {{RATES_JSON}},
+  "asr_prompts": {{PROMPTS_JSON}},
+  "production": {{PRODUCTION_JSON}},
+  "render": { "fps": 60, "mb": 4 },
+  "audio": { "music": "pulse", "music_db": -21, "duck_db": 9, "sfx_db": -8 },
+  "check": {
+    "caption_width": { "zh": 26, "en": 44 },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": { "flat": true, "no_emoji": true }
+  }
+}

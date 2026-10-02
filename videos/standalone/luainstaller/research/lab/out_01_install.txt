@@ -1,0 +1,85 @@
+$ luarocks install luainstaller   (--tree ~/luai-video-lab/rocks)
+Installing https://luarocks.org/luainstaller-1.4.0-1.src.rock
+
+
+luainstaller 1.4.0-1 depends on lua >= 5.1, < 5.6 (5.4-1 provided by VM: success)
+No existing manifest. Attempting to rebuild...
+luainstaller 1.4.0-1 is now installed in /home/waterrun/luai-video-lab/rocks (license: LGPL-3.0-or-later)
+
+
+real	0m3.298s
+user	0m0.161s
+sys	0m0.057s
+--- bin
+总计 8
+drwxr-xr-x. 1 waterrun waterrun  32 10月 1日 15:11 .
+drwxr-xr-x. 1 waterrun waterrun  22 10月 1日 15:11 ..
+-rwxr-xr-x. 1 waterrun waterrun 503 10月 1日 15:11 luai
+-rwxr-xr-x. 1 waterrun waterrun 511 10月 1日 15:11 luainstaller
+--- luai -v
+luai 1.4.0
+--- luainstaller version
+luainstaller 1.4.0  LGPL 3.0 by WaterRun
+--- luai -h
+Usage: luai -h
+       luai -v
+       luai -a <entry.lua> [options]
+       luai -t <entry.lua> [options]
+       luai -b <entry.lua> [options]
+
+Commands:
+  -a <entry.lua>    analyze dependencies
+  -t <entry.lua>    trace dependency resolution
+  -b <entry.lua>    build a bundle
+
+Options:
+  --dir, --onedir       directory bundle mode
+  --file, --onefile     self-extracting single-file mode
+  -o, --out <path>      output path
+  --include <path>      include an extra file
+  --exclude <path>      exclude a dependency
+  --target-os <os>      assert the detected native host OS
+  --lua <path>          Lua interpreter for runtime discovery
+  --lua-prefix <path>   matching native Lua headers/runtime prefix
+  -d, --discovery-mode <mode>
+                        static, manual, or runtime
+  --no-depscan          manual dependencies only
+  --max-deps <n>        dependency count limit
+  --verbose             more detail
+--- luainstaller help
+luainstaller - Package Lua projects into same-environment executables
+
+Usage: luainstaller <command> [arguments] [options]
+
+Commands:
+  help                         Show this help.
+  version                      Show version and license.
+  luainstaller analyze <entry.lua>
+                               Analyze Lua and native module dependencies.
+  luainstaller trace <entry.lua>
+                               Show dependency resolution decisions.
+  luainstaller build <entry.lua>
+                               Build a directory or onefile bundle.
+  luainstaller logs [options]  View operation logs.
+
+Build options:
+  --dir, --onedir              Directory bundle mode (default).
+  --file, --onefile            Self-extracting single-file mode.
+  -o, --out <path>             Output path.
+  --include <path>             Include an extra file; repeatable.
+  --exclude <path>             Exclude a dependency; repeatable.
+  --target-os <os>             Assert the detected native host OS.
+  --lua <path>                 Lua interpreter for runtime discovery.
+  --lua-prefix <path>          Matching native Lua headers/runtime prefix.
+  -d, --discovery-mode <mode>
+                               Dependency discovery mode: static, manual, runtime.
+  --no-depscan                 Manual dependencies only.
+  --max-deps <n>               Dependency count limit (default: 36).
+  --verbose                    Show additional details.
+
+Examples:
+  luainstaller analyze test/student_management_system/main.lua --max-deps 250
+  luainstaller trace test/student_management_system/main.lua --max-deps 250
+  luainstaller build --dir test/student_management_system/main.lua -o build/student-manager
+
+Visit: https://github.com/Water-Run/luainstaller

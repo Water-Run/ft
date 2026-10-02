@@ -1,0 +1,36 @@
+$ lua55 tools\install.lua --prefix luai
+Installed luainstaller 1.4.0 into C:/Users/user/luai-video-lab/luai
+Add to PATH: C:/Users/user/luai-video-lab/luai/bin
+Library: add C:/Users/user/luai-video-lab/luai/?.lua to package.path
+[exit 0]
+bin
+CHANGELOG.adoc
+docs
+INSTALLATION.txt
+LICENSE
+LICENSES
+luainstaller.1
+luainstaller.lua
+README.adoc
+src
+THIRD_PARTY_NOTICES.md
+luai.cmd
+luai.lua
+luainstaller.cmd
+luainstaller.lua
+$ luai -v
+luai 1.4.0
+$ lua55 main.lua 2026-10-01
+2026-10-01  waning gibbous  78% lit
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 3
+libraries: 0
+script[1]: C:/Users/user/luai-video-lab/moon/moon/julian.lua
+script[2]: C:/Users/user/luai-video-lab/moon/moon/phase.lua
+script[3]: C:/Users/user/luai-video-lab/moon/moon/names.lua
+[exit 0]
+$ luai -b main.lua -o build\moon
+error: ToolchainError: No Lua development metadata matches the selected ABI
+[exit 1]

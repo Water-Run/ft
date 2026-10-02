@@ -1,0 +1,21 @@
+--------------
+C:\LegacyDev\MySQL55\bin\mysql.exe  Ver 14.14 Distrib 5.5.62, for Win64 (AMD64)
+
+Connection id:		16
+Current database:	
+Current user:		root@127.0.0.1
+SSL:			Not in use
+Using delimiter:	;
+Server version:		5.5.62 MySQL Community Server (GPL)
+Protocol version:	10
+Connection:		localhost via TCP/IP
+Server characterset:	utf8
+Db     characterset:	utf8
+Client characterset:	utf8
+Conn.  characterset:	utf8
+TCP port:		3306
+Uptime:			6 min 4 sec
+
+Threads: 1  Questions: 388  Slow queries: 0  Opens: 61  Flush tables: 6  Open tables: 0  Queries per second avg: 1.065
+--------------
+

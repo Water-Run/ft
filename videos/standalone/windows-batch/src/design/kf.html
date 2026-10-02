@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>参考关键帧</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* 参考关键帧（静态）：演示视觉系统怎么用。?k=1 片名，?k=2 「文件 → 屏幕」，?k=3 「今天」的数字。
+     这里的坐标是「镜头在 z=1 正对」时的画面；正片里它们放在 world 里，由镜头运动带出。 */
+  .kf { position: absolute; inset: 0; display: none; }
+  .kf.on { display: block; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+
+  <!-- k=1 片名：整屏墨色。左：片名（中文黑体 + 拉丁无衬线）；右：巨大的像素提示符，出血到画外 -->
+  <div class="kf" id="k1" style="background:var(--ink)">
+    <div class="abs n-pixel c-amber" data-bleed style="left:1080px;top:150px;font-size:760px">A&gt;</div>
+    <div class="abs blk" style="left:1668px;top:238px;width:230px;height:420px"></div>
+    <div class="abs t-hero c-paper nowrap" style="left:96px;top:128px;font-size:200px">古代来的</div>
+    <div class="abs c-paper" style="left:88px;top:356px;font:900 270px/1 'Grot','Sans SC';letter-spacing:-.045em">Shell</div>
+    <div class="abs blk" style="left:96px;top:690px;width:520px;height:8px"></div>
+    <div class="abs t-h2 c-paper nowrap" style="left:96px;top:728px">Windows 批处理（.bat）</div>
+  </div>
+
+  <!-- k=2 机制图：左边是文件（纸），右边是屏幕（墨）。琥珀色 = 正被读到的那一行 -->
+  <div class="kf" id="k2">
+    <div class="abs nowrap" style="left:96px;top:56px"><span style="font:900 30px/1 'Grot','Sans SC'">03</span><span style="font:700 30px/1 'Sans SC';margin-left:16px">逐行读盘</span></div>
+    <div class="sheet" style="left:96px;top:150px;width:760px">
+      <div class="name">selfmod.bat</div>
+      <div class="ln" data-n="1">@echo off</div>
+      <div class="ln" data-n="2">echo 1</div>
+      <div class="ln" data-n="3">echo echo 3 &gt;&gt; selfmod.bat</div>
+      <div class="ln" data-n="4">echo 2</div>
+      <div class="ln on" data-n="5">echo 3</div>
+    </div>
+    <div class="abs blk" style="left:856px;top:454px;width:154px;height:54px"></div>
+    <div class="slab now" style="left:1010px;top:150px;width:814px;height:500px">
+      <div class="hd">Windows 11 · cmd.exe</div>
+      <div class="row"><span class="in">D:\batlab&gt;selfmod.bat</span></div>
+      <div class="row">1</div>
+      <div class="row">2</div>
+      <div class="row"><span class="hi">3</span></div>
+    </div>
+    <div class="abs t-h1 nowrap" style="left:96px;top:716px">执行一条，读一条</div>
+    <div class="abs t-note nowrap" style="left:1010px;top:676px">实测：Windows 11（10.0.26220）</div>
+  </div>
+
+  <!-- k=3 「今天」：大数字 + 一条比例条 -->
+  <div class="kf" id="k3">
+    <div class="abs nowrap" style="left:96px;top:56px"><span style="font:900 30px/1 'Grot','Sans SC'">05</span><span style="font:700 30px/1 'Sans SC';margin-left:16px">今天</span></div>
+    <div class="abs n-grot" style="left:80px;top:150px;font-size:400px">3164</div>
+    <div class="abs t-h2 nowrap" style="left:1090px;top:392px">个批处理文件</div>
+    <div class="abs t-note nowrap" style="left:1090px;top:330px">一台 Windows 11 开发机 · .bat 与 .cmd</div>
+    <div class="abs blk" style="left:96px;top:600px;width:995px;height:96px"></div>
+    <div class="abs blk ink" style="left:1091px;top:600px;width:733px;height:96px"></div>
+    <div class="abs t-body nowrap" style="left:96px;top:724px">npm 为命令行工具生成的入口</div>
+    <div class="abs t-body nowrap" style="left:1091px;top:724px">其余</div>
+  </div>
+
+  <!-- k=4 「当年」：像素字的 1981 与 COMMAND.COM 的屏幕 -->
+  <div class="kf" id="k4">
+    <div class="abs nowrap" style="left:96px;top:56px"><span style="font:900 30px/1 'Grot','Sans SC'">01</span><span style="font:700 30px/1 'Sans SC';margin-left:16px">来历</span></div>
+    <div class="abs n-pixel" style="left:76px;top:170px">1981</div>
+    <div class="abs t-h2 nowrap" style="left:96px;top:560px">IBM PC · PC DOS 1.0</div>
+    <div class="abs t-note nowrap" style="left:96px;top:656px">1981 年 8 月</div>
+    <div class="slab old" style="left:900px;top:130px;width:924px;height:700px">
+      <div class="hd">COMMAND.COM 的屏幕（示意）</div>
+      <div class="row"><span class="in">A&gt;DEMO</span></div>
+      <div class="row"></div>
+      <div class="row">A&gt;<span class="hi">REM CHANGE DISK IN B:</span></div>
+      <div class="row"></div>
+      <div class="row">A&gt;<span class="hi">PAUSE</span></div>
+      <div class="row">Strike a key when ready . . . <span class="cur" style="display:inline-block;width:.42em;height:.72em"></span></div>
+    </div>
+  </div>
+
+  <div id="caption"><span></span></div>
+</div>
+<script>
+  const k = new URLSearchParams(location.search).get('k') || '1';
+  document.getElementById('k' + k).classList.add('on');
+  const caps = { 1: '', 2: '追加的这一行，随后也被<em>执行</em>了', 3: '这台 Windows 11 开发机上，有 <em>3164</em> 个批处理文件', 4: '解释器替人一条一条地执行：这就是<em>批处理</em>' };
+  document.querySelector('#caption span').innerHTML = caps[k] || '';
+  Promise.all(['900 40px "Sans SC"', '500 40px "Sans SC"', '700 40px "Sans SC"', '900 40px "Grot"', '400 40px "Pixel"', '500 40px "Mono"', '700 40px "Mono"'].map((f) => document.fonts.load(f, '字A0'))).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

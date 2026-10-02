@@ -1,0 +1,18 @@
+/* 结构性样式：字体、舞台、场景容器、字幕。与视觉风格无关，一般不改。风格写在 style.css。 */
+@font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Serif SC"; src: url("/fonts/NotoSerifSC.ttf"); font-weight: 200 900; }
+@font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+@font-face { font-family: "Grot"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); font-weight: 400; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+body { font-family: "Sans SC", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+#bg, #scenes, #hud { position: absolute; inset: 0; }
+#hud { pointer-events: none; }
+.scene { position: absolute; inset: 0; }
+.abs { position: absolute; }
+svg.ov { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+#caption { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; }
+#caption span { white-space: nowrap; }
+.cur { display: inline-block; width: 0.58em; height: 1.08em; background: currentColor; vertical-align: -0.2em; }

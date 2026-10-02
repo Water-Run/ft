@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>古代来的 Shell：Windows 批处理（.bat）</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200（tools/covers.js 按 2 倍像素出图）。
+     用片名帧的版式与材质：墨色底、纸色的中文黑体与拉丁无衬线、琥珀色的像素提示符。
+     底部约 15% 不放文字（平台在那里叠时长与播放量）。4:3 版重新排布，不是把 16:9 裁一刀。 */
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43  { --W: 1600px; --H: 1200px; }
+  #stage { background: var(--ink); }
+  .cv { position: absolute; inset: 0; display: none; }
+  .cv.on { display: block; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- 16:9 -->
+  <div class="cv" id="c169">
+    <div class="abs t-hero c-paper nowrap" style="left:140px;top:120px;font-size:190px">古代来的</div>
+    <div class="abs c-paper" style="left:128px;top:370px;font:900 290px/1 'Grot','Sans SC';letter-spacing:-.045em">Shell</div>
+    <div class="abs blk" style="left:140px;top:760px;width:560px;height:10px"></div>
+    <div class="abs t-h2 c-paper nowrap" style="left:140px;top:800px">Windows 批处理（.bat）</div>
+    <div class="abs n-pixel c-amber" data-bleed style="left:1100px;top:150px;font-size:760px">A&gt;</div>
+    <div class="abs blk" style="left:1690px;top:240px;width:210px;height:400px"></div>
+  </div>
+  <!-- 4:3：元素上下排 -->
+  <div class="cv" id="c43">
+    <div class="abs t-hero c-paper nowrap" style="left:120px;top:130px;font-size:170px">古代来的</div>
+    <div class="abs c-paper" style="left:110px;top:330px;font:900 260px/1 'Grot','Sans SC';letter-spacing:-.045em">Shell</div>
+    <div class="abs blk" style="left:120px;top:700px;width:480px;height:10px"></div>
+    <div class="abs t-h2 c-paper nowrap" style="left:120px;top:745px">Windows 批处理（.bat）</div>
+    <div class="abs n-pixel c-amber" data-bleed style="left:880px;top:760px;font-size:300px">A&gt;</div>
+    <div class="abs blk" style="left:1130px;top:780px;width:95px;height:190px"></div>
+  </div>
+</div>
+<script>
+  const r = new URLSearchParams(location.search).get('r') === '43' ? '43' : '169';
+  document.documentElement.className = 'r' + r;
+  document.getElementById('c' + r).classList.add('on');
+  Promise.all([
+    document.fonts.load('900 190px "Sans SC"', '古代来的'),
+    document.fonts.load('700 60px "Sans SC"', 'Windows 批处理（.bat）'),
+    document.fonts.load('900 290px "Grot"', 'Shell'),
+    document.fonts.load('400 760px "Pixel"', 'A>'),
+  ]).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

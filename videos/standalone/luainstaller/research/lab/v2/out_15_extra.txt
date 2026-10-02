@@ -1,0 +1,69 @@
+dnf exit 0
+luarocks exit 0
+
+### default output location
+
+$ luai -b main.lua
+ok
+executable: /home/waterrun/moon/build/main/main
+[exit 0]
+
+$ env -i build/main/main 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ rm -rf build
+[exit 0]
+
+### reproducible
+
+$ luai -b main.lua -o build/r1/moon >/dev/null && luai -b main.lua -o build/r2/moon >/dev/null && sha256sum build/r1/moon/moon build/r2/moon/moon
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/r1/moon/moon
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/r2/moon/moon
+[exit 0]
+
+$ mkdir -p /tmp/elsewhere && cp -r main.lua moon /tmp/elsewhere/ && cd /tmp/elsewhere && luai -b main.lua -o build/moon >/dev/null && sha256sum build/moon/moon
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/moon/moon
+[exit 0]
+
+$ luai -b --file main.lua -o build/f1 >/dev/null && luai -b --file main.lua -o build/f2 >/dev/null && sha256sum build/f1 build/f2
+1df435a129b4edeca713ffd1bc7506d7cc62d8e4899db44ec0cc8dfc3ba6787f  build/f1
+1df435a129b4edeca713ffd1bc7506d7cc62d8e4899db44ec0cc8dfc3ba6787f  build/f2
+[exit 0]
+
+$ grep -c /home/waterrun build/r1/moon/.luai/manifest.lua; strings build/r1/moon/moon | grep -c /home/waterrun
+0
+0
+[exit 1]
+
+### single file: rebuild after removing the old one
+
+$ luai -b --file main.lua -o build/f1
+error: InvalidOutputError: Onefile output path already exists: /home/waterrun/moon/build/f1
+[exit 1]
+
+$ rm build/f1 && luai -b --file main.lua -o build/f1
+ok
+executable: /home/waterrun/moon/build/f1
+[exit 0]
+
+### srlua through PATH
+
+$ /home/waterrun/srlua-103/srglue /home/waterrun/srlua-103/srlua hello.lua hello
+[exit 0]
+
+$ chmod +x hello && ./hello
+hello from one script
+[exit 0]
+
+$ cp hello ~/bin/hello && cd /tmp && env PATH=/home/waterrun/bin:/usr/bin hello
+hello: cannot open hello: No such file or directory
+[exit 1]
+
+$ cd /tmp && /home/waterrun/bin/hello
+hello from one script
+[exit 0]
+
+$ luai -b hello.lua -o build/hello2 >/dev/null && ln -sf ~/hello/build/hello2/hello2 ~/bin/hello2 && cd /tmp && env PATH=/home/waterrun/bin:/usr/bin hello2
+hello from one script
+[exit 0]

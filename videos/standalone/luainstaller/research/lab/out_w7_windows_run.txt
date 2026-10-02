@@ -1,0 +1,16 @@
+$ build\moon\moon.exe 2026-10-01   (PATH=System32 only)
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+ Volume in drive C is 绯荤粺
+ Volume Serial Number is C0F1-06F3
+
+ Directory of C:\Users\user\luai-video-lab\moon\build\moon
+
+2026/10/01  15:17    <DIR>          .
+2026/10/01  15:17    <DIR>          ..
+2026/10/01  15:17    <DIR>          .luai
+2026/01/20  04:27           371,668 lua55.dll
+2026/10/01  15:17           151,552 moon.exe
+2026/10/01  15:17             2,006 THIRD_PARTY_NOTICES.md
+               3 File(s)        525,226 bytes
+               3 Dir(s)  63,505,833,984 bytes free

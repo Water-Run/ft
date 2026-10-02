@@ -1,0 +1,95 @@
+/* 本片的视觉系统（已定稿，见 brief/03-visual.md）。Mono / Pixel / Grot 没有中文字形，中文一律回退到 "Sans SC"。
+   场景里只用这里的颜色、字体与部件；要新增部件，写在本文件末尾的「场景自用」一节。
+   两种时代的材质：1981 = 像素点阵字（Pixel）；今天 = 等宽字（Mono）。版式是现代主义的：平涂、直角、强字号对比、不对称。 */
+:root {
+  --paper: #ECE8DF;   /* 底：纸色 */
+  --sheet: #FBFAF5;   /* 「文件」这张纸的颜色，只用于 .sheet */
+  --ink:   #0C0C0C;   /* 墨：终端底色、正文字、色块 */
+  --amber: #FFB000;   /* 唯一的强调色：琥珀 */
+  --dim:   #6B665D;   /* 次要文字（只用在纸色底上） */
+  --term:  #CCCCCC;   /* 终端里的普通文字（只用在墨色底上） */
+  --lit:   #FFFFFF;   /* 终端里被敲入或被回显的命令（只用在墨色底上） */
+}
+#bg { background: var(--paper); }
+body { color: var(--ink); }
+
+/* ── 字幕条：画面底部 112px 的墨色横条，常驻。内容区是 1920×968 ── */
+#caption { background: var(--ink); z-index: 50; }
+#caption span { font: 500 40px/1 "Sans SC"; letter-spacing: .02em; color: var(--paper); }
+#caption em { font-style: normal; color: var(--amber); }
+#hud { z-index: 40; }
+
+/* ── 字号阶梯（只用这几档；数字是字号 px）── */
+.t-hero  { font: 900 176px/1.04 "Sans SC"; letter-spacing: -.01em; }   /* 片名、章节标题 */
+.t-h1    { font: 900 104px/1.1 "Sans SC"; }                             /* 一屏的主陈述 */
+.t-h2    { font: 700 60px/1.25 "Sans SC"; }                             /* 次级陈述 */
+.t-body  { font: 500 38px/1.5 "Sans SC"; }                              /* 说明文字 */
+.t-note  { font: 500 28px/1.4 "Sans SC"; color: var(--dim); }           /* 出处、标注（最小字号 28） */
+.n-grot  { font: 900 300px/.86 "Grot", "Sans SC"; letter-spacing: -.045em; }       /* 「今天」的大数字：2026、3157、4% */
+.n-pixel { font: 400 460px/.74 "Pixel", "Sans SC"; }                               /* 「当年」的大数字：1981、1983 */
+.c-amber { color: var(--amber); }
+.c-dim   { color: var(--dim); }
+.c-paper { color: var(--paper); }
+.nowrap  { white-space: nowrap; }
+
+/* ── 终端：一块直角墨色平面，没有窗口边框、标题栏、圆角、阴影 ── */
+.slab { position: absolute; background: var(--ink); color: var(--term); padding: 44px 52px; overflow: hidden; }
+.slab .hd { font: 500 28px/1 "Sans SC"; color: var(--amber); margin-bottom: 30px; white-space: nowrap; }   /* 左上角的一行说明：这是哪台机器 */
+.slab .row { white-space: pre; height: 1.5em; }                              /* 一行输出；空行也占高度 */
+.slab.now  { font: 500 34px/1.5 "Mono", "Sans SC"; }                                    /* 今天的 cmd.exe */
+.slab.old  { font: 400 60px/1.12 "Pixel", "Sans SC"; color: var(--paper); }             /* 1981 的 COMMAND.COM */
+.slab.old .row { height: 1.12em; }
+.slab .hi  { color: var(--amber); }                                          /* 终端里要强调的字 */
+.slab .in  { color: var(--lit); }                                               /* 人敲进去或被回显的命令（比输出亮一档） */
+
+/* ── 文件：一张纸，上面是带行号的代码 ── */
+.sheet { position: absolute; background: var(--sheet); color: var(--ink); padding: 36px 0 44px; font: 500 34px/1.6 "Mono", "Sans SC"; }
+.sheet .name { font: 700 30px/1 "Mono", "Sans SC"; padding: 0 44px 26px; white-space: nowrap; }      /* 文件名 */
+.sheet .ln { position: relative; white-space: pre; height: 1.6em; padding: 0 44px 0 104px; } /* 一行代码 */
+.sheet .ln::before { content: attr(data-n); position: absolute; left: 44px; width: 36px; text-align: right; color: var(--dim); }
+.sheet .ln.on { background: var(--amber); }                                              /* 「读到这一行」：整行琥珀底 */
+.sheet.old { font: 400 56px/1.2 "Pixel", "Sans SC"; }
+.sheet.old .name { font: 400 48px/1 "Pixel", "Sans SC"; }
+.sheet.old .ln { height: 1.2em; }
+
+/* ── 小部件 ── */
+.tag  { display: inline-block; background: var(--ink); color: var(--paper); font: 600 28px/1 "Mono", "Sans SC"; padding: 10px 16px; white-space: nowrap; }   /* 直角标签 */
+.tag.amber { background: var(--amber); color: var(--ink); }
+.tag.inv   { background: var(--paper); color: var(--ink); }
+.blk  { position: absolute; background: var(--amber); }      /* 琥珀色块：做底、做强调条 */
+.blk.ink { background: var(--ink); }
+.blk.paper { background: var(--paper); }
+.rule { position: absolute; background: var(--ink); height: 6px; }   /* 粗线：时间轴、分隔 */
+.cur  { background: var(--amber); }                          /* 光标块 */
+
+/* ── 场景自用（制作者新增的样式写在这一行之后）── */
+
+/* 行内琥珀底：文件里被替换掉的变量、引文里被强调的短语 */
+.hl { background: var(--amber); color: var(--ink); }
+
+/* 小一号的纸：「读入后的样子」。没有行号 */
+.sheet.mini { font: 500 28px/1.5 "Mono", "Sans SC"; padding: 26px 0; }
+.sheet.mini .ln { height: 1.5em; padding: 0 26px; }
+.sheet.mini .ln::before { content: none; }
+
+/* 时间轴上的年份刻度与短标签 */
+.y-pixel { font: 400 84px/1 "Pixel", "Sans SC"; }
+.y-grot  { font: 900 84px/1 "Grot", "Sans SC"; letter-spacing: -.03em; }
+.y-mono  { font: 700 46px/1 "Mono", "Sans SC"; }
+
+/* 引一行源码原文用的等宽说明 */
+.mono-note { font: 500 30px/1.4 "Mono", "Sans SC"; color: var(--dim); }
+
+/* 插入代码行用的可增长包裹层：高度由补间控制，行被「顶」出来 */
+.wrap { overflow: hidden; }
+
+/* 软盘：平涂的盘身 + 中心的圆孔 + 下方的读写槽（唯一的圆角：50%） */
+.floppy { position: absolute; background: var(--ink); }
+.floppy .hub  { position: absolute; left: 50%; top: 42%; width: 30%; height: 30%; margin: -15% 0 0 -15%; background: var(--sheet); border-radius: 50%; }
+.floppy .slot { position: absolute; left: 22%; bottom: 12%; width: 56%; height: 9%; background: var(--sheet); }
+.floppy.paper { background: var(--paper); }
+.floppy.paper .hub, .floppy.paper .slot { background: var(--ink); }
+
+/* 章节卡（#hud 里）：琥珀底色块 + 章节号 + 章节标题 */
+.cardnum { font: 900 460px/0.86 "Grot", "Sans SC"; letter-spacing: -.045em; color: var(--ink); }
+.cardttl { font: 900 176px/1.04 "Sans SC"; letter-spacing: -.01em; color: var(--ink); }

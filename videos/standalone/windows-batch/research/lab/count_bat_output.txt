@@ -1,0 +1,74 @@
+# 说明：为不暴露本机目录结构，已删去「按顶层目录分布」与各项的示例完整路径，只保留数量与文件名。
+date: 2026-10-01 15:36
+elapsed_s: 302
+total: 3157
+C:\ .bat: 675
+C:\ .cmd: 1648
+D:\ .bat: 187
+D:\ .cmd: 647
+--- C:\Windows by ext
+.bat: 26
+.cmd: 29
+--- inside node_modules (any drive)
+1945
+--- by file name (top 25)
+    230  cordis.cmd
+    152  semver.cmd
+     86  deactivate.bat
+     86  activate.bat
+     80  tsserver.cmd
+     78  tsc.cmd
+     60  parser.cmd
+     56  pydoc.bat
+     50  esbuild.cmd
+     46  vite.cmd
+     42  node-which.cmd
+     39  nanoid.cmd
+     35  build.bat
+     33  acorn.cmd
+     31  json5.cmd
+     29  idle.bat
+     28  rollup.cmd
+     24  jsesc.cmd
+     24  eslint.cmd
+     24  ibmtelemetry.cmd
+     23  he.cmd
+     22  browserslist.cmd
+     22  cssesc.cmd
+     21  pnpx.cmd
+     21  apply_patch.bat
+--- well-known entries
+npm.cmd              15
+npx.cmd              15
+gradlew.bat           8
+mvnw.cmd              3
+vcvarsall.bat         2
+VsDevCmd.bat          1
+activate.bat         86
+code.cmd              1
+pip.cmd               0
+yarn.cmd             12
+pnpm.cmd             17
+tsc.cmd              78
+flutter.bat           0
+catalina.bat          0
+startup.bat           0
+emcc.bat              0
+setenv.bat            0
+build.bat            35
+make.bat              9
+install.bat           6
+run.bat               4
+--- C:\Program Files\nodejs
+corepack
+corepack.cmd
+install_tools.bat
+node.exe
+nodevars.bat
+npm
+npm.cmd
+npm.ps1
+npx
+npx.cmd
+npx.ps1
+done

@@ -1,0 +1,27 @@
+{
+  "slug": "windows-batch",
+  "languages": ["zh"],
+  "titles": { "zh": "古代来的 Shell：Windows 批处理（.bat）" },
+  "voices": { "zh": "zh-CN-YunyangNeural" },
+  "rates": { "zh": "-4%" },
+  "asr_prompts": { "zh": "以下是普通话的讲解，内容是 Windows 批处理、cmd.exe、PowerShell、DOS。" },
+  "production": { "mode": "delegated", "maker": "DeepSeek", "prepared_by": "Claude" },
+  "render": { "fps": 60, "mb": 1 },
+  "audio": { "music": "pulse", "music_db": -21, "duck_db": 9, "sfx_db": -8, "voice_norm": "peak", "pad_low": 1, "pad_top": 1, "limit": false },
+  "check": {
+    "duration": [175, 200],
+    "caption_width": { "zh": 26 },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": ["ECE8DF", "FBFAF5", "0C0C0C", "FFB000", "6B665D", "CCCCCC", "FFFFFF"],
+      "fonts": ["Sans SC", "Grot", "Pixel", "Mono"]
+    },
+    "sfx": { "per_seconds": 3.5, "kinds": 6, "scene_per_seconds": 5, "max_gap": 8 }
+  }
+}

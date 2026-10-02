@@ -1,0 +1,88 @@
+{
+  "slug": "luainstaller",
+  "languages": ["zh", "en"],
+  "titles": {
+    "zh": "luainstaller：把 Lua 脚本交给没有 Lua 的人",
+    "en": "luainstaller: hand your Lua script to someone without Lua"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+5%",
+    "en": "+6%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍 Lua 打包工具 luainstaller。",
+    "en": "A narration about luainstaller, a packaging tool for Lua."
+  },
+  "production": { "mode": "self", "maker": "Claude Opus 5.5" },
+  "render": {
+    "fps": 60,
+    "mb": 8
+  },
+  "audio": {
+    "music": "score",
+    "music_db": -13,
+    "duck_db": 8,
+    "sfx_db": -8,
+    "score": {
+      "weights": {
+        "pad": 1.0,
+        "arpA": 0.62,
+        "arpB": 0.3,
+        "bass": 0.3,
+        "hat": 0.09
+      },
+      "layers": [
+        ["pad", "open", "outro", 1.0],
+        ["pad", "scope", "scope", 0.85],
+        ["arpA", "o5-0.3", "open", 0.8],
+        ["arpA", "before", "before", 0.45],
+        ["arpA", "what", "what", 0.9],
+        ["arpA", "install", "install", 0.8],
+        ["bass", "install", "install", 0.6],
+        ["arpA", "use", "use", 0.75],
+        ["bass", "use", "use", 0.7],
+        ["arpB", "u17-0.5", "use", 0.5],
+        ["bass", "h2-0.9", "how", 0.8],
+        ["arpA", "h4-0.8", "how", 0.7],
+        ["arpA", "h13-0.8", "how", 0.9],
+        ["arpB", "h13-0.8", "how", 0.6],
+        ["arpB", "h17-0.8", "h31-0.8", 1.0],
+        ["bass", "h17-0.8", "h31-0.8", 1.0],
+        ["hat", "h17-0.8", "h31-0.8", 1.0],
+        ["arpA", "h31-0.8", "how", 0.6],
+        ["arpB", "h31-0.8", "how", 0.3],
+        ["bass", "h31-0.8", "how", 0.6],
+        ["arpA", "outro", "f3-0.5", 0.6],
+        ["bass", "outro", "f3+2.0", 0.5],
+        ["arpB", "f3-0.5", "outro", 0.7]
+      ]
+    }
+  },
+  "check": {
+    "duration": [360, 480],
+    "caption_width": {
+      "zh": 36,
+      "en": 56
+    },
+    "max_cue_seconds": 7,
+    "min_font": 14,
+    "levels": {
+      "SMALL": "warn"
+    },
+    "blank_ignore": [
+      [0.88, 0, 1, 0.16]
+    ],
+    "margin_skip": {
+      "o4": "合成的大圆出血",
+      "o5": "标题的月亮出血",
+      "b11": "镜头跟拍长命令",
+      "b12": "镜头跟拍长命令",
+      "h21": "推近到字节",
+      "f3": "片尾的月亮出血"
+    }
+  }
+}

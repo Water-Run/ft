@@ -1,0 +1,192 @@
+{
+  "about": "片单：已成片与计划中的视频。status 取 planned（计划中，缺省）、in-progress（制作中）、delivered（已成片）；languages 缺省为 [\"zh\", \"en\"]。系列可带 sections：该系列每一集固定的栏目（顺序即出场顺序），new.js 据此生成章节骨架，check.js 据此核对；系列的其他连续性约定写在 videos/series/<系列>/README.md。目录由位置决定：系列内为 videos/series/<系列>/<视频>/，独立为 videos/standalone/<视频>/。计划中的标题是工作标题，成片时可调整。改动后运行 node kit/tools/catalog.js 重新生成 docs/catalog.md。",
+  "series": [
+    {
+      "slug": "database-engines",
+      "title": {"zh": "数据库引擎", "en": "Database Engines"},
+      "videos": [
+        {"slug": "myisam", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "languages": ["zh"]},
+        {"slug": "innodb", "title": {"zh": "一个数据库引擎是如何实现的？——现代化：InnoDB"}},
+        {"slug": "sqlite", "title": {"zh": "一个数据库引擎是如何实现的？——小巧紧凑：SQLite"}},
+        {"slug": "postgresql", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}},
+        {"slug": "firebird", "title": {"zh": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"}},
+        {"slug": "redis", "title": {"zh": "一个数据库引擎是如何实现的？——在内存中 KV：Redis"}},
+        {"slug": "keydb", "title": {"zh": "一个数据库引擎是如何实现的？——KeyDB，多线程的 Redis"}},
+        {"slug": "clickhouse", "title": {"zh": "一个数据库引擎是如何实现的？——列式存储：ClickHouse"}},
+        {"slug": "mongodb", "title": {"zh": "一个数据库引擎是如何实现的？——不是 SQL：MongoDB"}}
+      ]
+    },
+    {
+      "slug": "programming-languages",
+      "title": {"zh": "编程语言及实现", "en": "Programming Languages and Their Implementations"},
+      "sections": [{"id": "intro", "zh": "简介", "en": "Overview"}, {"id": "history", "zh": "历史", "en": "History"}, {"id": "quickstart", "zh": "快速上手", "en": "Quick start"}, {"id": "features", "zh": "特性", "en": "Features"}, {"id": "impl", "zh": "实现", "en": "Implementation"}, {"id": "trivia", "zh": "你知道吗", "en": "Did you know?"}],
+      "videos": [
+        {"slug": "php", "title": {"zh": "编程语言及实现——PHP 解释器是如何呈现出一个网站的？"}},
+        {"slug": "lua", "title": {"zh": "编程语言及实现——小巧简练：Lua 解释器的实现"}},
+        {"slug": "c", "title": {"zh": "编程语言及实现——C 生万物：C 语言"}}
+      ]
+    },
+    {
+      "slug": "automotive-systems-engineering",
+      "title": {"zh": "汽车的系统工程", "en": "Automotive Systems Engineering"},
+      "videos": [
+        {"slug": "chassis", "title": {"zh": "用料是用料，调教是调教——汽车底盘的系统工程"}},
+        {"slug": "passive-safety", "title": {"zh": "当碰撞不可避免时：被动安全和白车身"}}
+      ]
+    },
+    {
+      "slug": "storage-media",
+      "title": {"zh": "存储介质", "en": "Storage Media"},
+      "videos": [
+        {"slug": "magnetic", "title": {"zh": "利用磁力，从磁带到磁盘"}},
+        {"slug": "floppy", "title": {"zh": "U 盘之前：软盘时代"}},
+        {"slug": "optical", "title": {"zh": "旋转的光盘"}},
+        {"slug": "flash", "title": {"zh": "手中的量子力学：闪存的一统天地"}}
+      ]
+    },
+    {
+      "slug": "camera-gear",
+      "title": {"zh": "摄影器材", "en": "Camera Gear"},
+      "videos": [
+        {"slug": "full-frame-cmos", "title": {"zh": "全画幅 CMOS 发展史"}},
+        {"slug": "lens-optics", "title": {"zh": "镜头光学"}},
+        {"slug": "shutter", "title": {"zh": "快门结构"}}
+      ]
+    },
+    {
+      "slug": "silicon-history",
+      "title": {"zh": "电子发展史", "en": "Silicon History"},
+      "videos": [
+        {"slug": "intel-core-i", "title": {"zh": "英特尔——酷睿 i 时代"}},
+        {"slug": "intel-after-core-i", "title": {"zh": "英特尔——酷睿 i 时代之后到今天"}},
+        {"slug": "amd-early", "title": {"zh": "恐龙年代的 AMD"}},
+        {"slug": "amd-bulldozer-era", "title": {"zh": "AMD 的农机时代"}},
+        {"slug": "amd-ryzen", "title": {"zh": "Ryzen！AMD 的崛起"}},
+        {"slug": "nvidia-gtx", "title": {"zh": "英伟达 GTX 系列发展史"}},
+        {"slug": "nvidia-rtx", "title": {"zh": "英伟达 RTX 系列发展史"}},
+        {"slug": "nvidia-workstation", "title": {"zh": "英伟达的专业卡发展史"}},
+        {"slug": "intel-discrete-gpu", "title": {"zh": "英特尔独立显卡发展史"}},
+        {"slug": "qualcomm", "title": {"zh": "高通"}},
+        {"slug": "apple", "title": {"zh": "苹果"}}
+      ]
+    },
+    {
+      "slug": "shells",
+      "title": {"zh": "Shell 群观", "en": "A Survey of Shells"},
+      "videos": [
+        {"slug": "early-shells", "title": {"zh": "从最早开始"}},
+        {"slug": "windows-shells", "title": {"zh": "Windows 的 Shell"}},
+        {"slug": "modern-shells", "title": {"zh": "现代 Shell 群观"}}
+      ]
+    },
+    {
+      "slug": "china",
+      "title": {"zh": "我们的中国", "en": "Our China"},
+      "videos": [
+        {"slug": "compulsory-education", "title": {"zh": "中国的义务教育体系"}},
+        {"slug": "railway-network", "title": {"zh": "中国铁路网"}},
+        {"slug": "expressway-network", "title": {"zh": "中国高速网"}},
+        {"slug": "geography", "title": {"zh": "中国地理概览"}},
+        {"slug": "rolling-stock", "title": {"zh": "中国铁路车型概览"}}
+      ]
+    },
+    {
+      "slug": "dcs-world",
+      "title": {"zh": "DCS 动画教学", "en": "DCS Animated Tutorials"},
+      "videos": []
+    },
+    {
+      "slug": "car-platforms",
+      "title": {"zh": "汽车平台", "en": "Car Platforms"},
+      "videos": [
+        {"slug": "vw-pq", "title": {"zh": "大众——PQ 时代"}},
+        {"slug": "vw-mqb", "title": {"zh": "大众——MQB 的一统天下"}},
+        {"slug": "toyota-tnga", "title": {"zh": "丰田——TNGA 是一个平台吗？"}},
+        {"slug": "psa-pf2", "title": {"zh": "PSA——“老法系”经典——PF2 平台"}},
+        {"slug": "vw-mqb-evo", "title": {"zh": "大众——传统的油车平台迈向电气化的初试——MQB Evo"}},
+        {"slug": "vw-meb", "title": {"zh": "大众——MEB。电气化的最初答案"}}
+      ]
+    },
+    {
+      "slug": "powertrains",
+      "title": {"zh": "动力总成", "en": "Powertrains"},
+      "videos": [
+        {"slug": "ea211-dq200", "title": {"zh": "EA211+DQ200 经典动力总成与演化"}},
+        {"slug": "psa-ec5-at8", "title": {"zh": "肉到发麻：10s 前中期的 PSA，EC5 与 AT8"}}
+      ]
+    },
+    {
+      "slug": "aircraft",
+      "title": {"zh": "航空器群观", "en": "A Survey of Aircraft"},
+      "videos": [
+        {"slug": "mig-29", "title": {"zh": "米格 29，第聂伯河雨燕"}}
+      ]
+    },
+    {
+      "slug": "agent-harnesses",
+      "title": {"zh": "Harness", "en": "Agent Harnesses"},
+      "videos": [
+        {"slug": "codex", "title": {"zh": "CodeX"}},
+        {"slug": "openclaude", "title": {"zh": "OpenClaude"}},
+        {"slug": "codewhale", "title": {"zh": "Codewhale"}, "note": "原始清单中出现两次，这里只列一条"},
+        {"slug": "opencode", "title": {"zh": "OpenCode"}},
+        {"slug": "zcode", "title": {"zh": "ZCode"}},
+        {"slug": "minimax-code", "title": {"zh": "MiniMax Code"}},
+        {"slug": "mimo-code", "title": {"zh": "Mimo Code"}},
+        {"slug": "kimi-code", "title": {"zh": "Kimi Code"}},
+        {"slug": "pi", "title": {"zh": "Pi"}},
+        {"slug": "context-compaction", "title": {"zh": "上下文压缩的方式"}}
+      ]
+    },
+    {
+      "slug": "modern-cryptography",
+      "title": {"zh": "现代密码学", "en": "Modern Cryptography"},
+      "videos": []
+    },
+    {
+      "slug": "llm-concepts",
+      "title": {"zh": "LLM 概念科普", "en": "LLM Concepts"},
+      "videos": [
+        {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}},
+        {"slug": "dense-vs-moe", "title": {"zh": "LLM 的 Dense 和 MoE 是什么"}},
+        {"slug": "model-parameters", "title": {"zh": "通过参数认识一个模型"}}
+      ]
+    }
+  ],
+  "standalone": [
+    {"slug": "windows-batch", "title": {"zh": "古代来的 Shell：Windows 批处理（.bat）"}, "status": "delivered", "languages": ["zh"], "note": "场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md"},
+    {"slug": "luainstaller", "title": {"zh": "luainstaller：把 Lua 脚本交给没有 Lua 的人"}, "status": "delivered", "note": "项目介绍片"},
+    {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端"}},
+    {"slug": "lcd-panels", "title": {"zh": "液晶显示器和面板，我们应该关心屏幕的什么和影响"}},
+    {"slug": "how-opus-animates", "title": {"zh": "Opus 5.5 是怎么做动画的"}},
+    {"slug": "hybrid-drivetrains", "title": {"zh": "当油和电混合驱动——汽车混动系统"}},
+    {"slug": "interchanges", "title": {"zh": "向高度寻求减少冲突——立交系统"}},
+    {"slug": "pty", "title": {"zh": "终端模拟器（Pty）是如何工作的"}},
+    {"slug": "svn-git", "title": {"zh": "Svn，Git 和代码管理"}},
+    {"slug": "how-fast-are-computers", "title": {"zh": "力大砖飞——今天的计算机到底快到什么速度？"}},
+    {"slug": "ssh", "title": {"zh": "SSH 是怎么工作的？"}},
+    {"slug": "rdp", "title": {"zh": "RDP：Windows 优雅的远程实现"}},
+    {"slug": "powerpc-macintosh", "title": {"zh": "PowerPC 时代的麦金塔"}},
+    {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw 和 Hermes：原理，使用和实现"}},
+    {"slug": "traffic-law-right-of-way", "title": {"zh": "道交法和路权"}},
+    {"slug": "beamng-soft-body", "title": {"zh": "BeamNG 的软体物理学"}},
+    {"slug": "lightweighting", "title": {"zh": "宁少一马力，不多一公斤"}},
+    {"slug": "compute-per-capita", "title": {"zh": "人均算力发展史"}},
+    {"slug": "lean4", "title": {"zh": "Lean4：什么是形式化检验，以及为什么他可靠"}},
+    {"slug": "firearm-actions", "title": {"zh": "枪械的自动原理"}},
+    {"slug": "airsoft-mechanisms", "title": {"zh": "发射器：手拉，反吹，电手和汽水"}},
+    {"slug": "pistol-shooting", "title": {"zh": "怎么打手枪？"}},
+    {"slug": "how-harness-works", "title": {"zh": "给 LLM 长出手——Harness 是如何工作的？"}},
+    {"slug": "computer-use", "title": {"zh": "ComputerUse 是怎么控制你的电脑的？"}},
+    {"slug": "web-login", "title": {"zh": "Web 登录机制：服务器是怎么用无状态的 HTTP 知道你的登录的？"}},
+    {"slug": "http-status-codes", "title": {"zh": "HTTP 状态码"}},
+    {"slug": "two-factor-auth", "title": {"zh": "什么是 2FA，以及它是怎么工作的"}},
+    {"slug": "crbs", "title": {"zh": "CRBS，以及为什么在刹停时总让你点头"}},
+    {"slug": "smooth-stop", "title": {"zh": "关于让车不点头的停下"}},
+    {"slug": "transmissions", "title": {"zh": "变速器原理"}},
+    {"slug": "power-torque-curve", "title": {"zh": "内燃机的马力-扭矩曲线"}},
+    {"slug": "cvvt", "title": {"zh": "CVVT 可变气门正时技术"}},
+    {"slug": "how-ram-works", "title": {"zh": "内存是怎么工作的，以及它为什么这么快"}},
+    {"slug": "ipv4", "title": {"zh": "IPv4"}}
+  ]
+}

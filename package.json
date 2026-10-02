@@ -1,0 +1,20 @@
+{
+  "name": "llm-video-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "由大语言模型编写的科普与介绍视频：每一部都是一段以时间 t 为唯一输入的 HTML 动画，连同把它变成成片的工具链。",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "doctor": "node kit/tools/doctor.js",
+    "assets": "node kit/tools/assets.js",
+    "catalog": "node kit/tools/catalog.js",
+    "new": "node kit/tools/new.js"
+  },
+  "dependencies": {
+    "gsap": "3.13.0",
+    "puppeteer-core": "25.12.0"
+  }
+}

@@ -1,0 +1,12 @@
+=== hello.bat via: cmd /d /c hello.bat   (PROMPT unset = default $P$G)
+[]
+[D:\batlab>echo hello ]
+[hello]
+=== echo_off.bat
+[hello]
+=== expand6.bat
+[1]
+=== pwsh / powershell versions on this machine
+pwsh: 7.6.6
+windows powershell: 5.1.26100.9568
+=== cleaned: True

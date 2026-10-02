@@ -1,0 +1,236 @@
+=== ver
+
+Microsoft Windows [Version 10.0.26220.9568]
+=== cmd.exe file version
+10.0.26100.8875
+Caption     : Microsoft Windows 11 专业工作站版 Insider Preview
+Version     : 10.0.26220
+BuildNumber : 26220
+=== echo_on.bat  (before, 12 bytes)
+echo hello
+
+--- output of: cmd /d /c echo_on.bat
+
+D:\batlab> echo hello 
+hello
+
+--- file after run (12 bytes)
+echo hello
+
+=== echo_off.bat  (before, 23 bytes)
+@echo off
+echo hello
+
+--- output of: cmd /d /c echo_off.bat
+hello
+
+--- file after run (23 bytes)
+@echo off
+echo hello
+
+=== selfmod.bat  (before, 55 bytes)
+@echo off
+echo 1
+echo echo 3 >> selfmod.bat
+echo 2
+
+--- output of: cmd /d /c selfmod.bat
+1
+2
+3 
+
+--- file after run (64 bytes)
+@echo off
+echo 1
+echo echo 3 >> selfmod.bat
+echo 2
+echo 3 
+
+=== rewrite.bat  (before, 172 bytes)
+@echo off
+echo A
+powershell -NoProfile -Command "(Get-Content rewrite.bat -Raw).Replace('echo C','echo X') | Set-Content -NoNewline -Encoding ascii rewrite.bat"
+echo C
+
+--- output of: cmd /d /c rewrite.bat
+A
+X
+
+--- file after run (172 bytes)
+@echo off
+echo A
+powershell -NoProfile -Command "(Get-Content rewrite.bat -Raw).Replace('echo X','echo X') | Set-Content -NoNewline -Encoding ascii rewrite.bat"
+echo X
+
+=== expand.bat  (before, 59 bytes)
+@echo off
+set n=1
+(
+  set n=2
+  echo %n%
+)
+echo %n%
+
+--- output of: cmd /d /c expand.bat
+1
+2
+
+--- file after run (59 bytes)
+@echo off
+set n=1
+(
+  set n=2
+  echo %n%
+)
+echo %n%
+
+=== expand_if.bat  (before, 82 bytes)
+@echo off
+set n=1
+if exist expand_if.bat (
+  set n=2
+  echo %n%
+)
+echo %n%
+
+--- output of: cmd /d /c expand_if.bat
+1
+2
+
+--- file after run (82 bytes)
+@echo off
+set n=1
+if exist expand_if.bat (
+  set n=2
+  echo %n%
+)
+echo %n%
+
+=== delayed.bat  (before, 82 bytes)
+@echo off
+setlocal enabledelayedexpansion
+set n=1
+(
+  set n=2
+  echo !n!
+)
+
+--- output of: cmd /d /c delayed.bat
+2
+
+--- file after run (82 bytes)
+@echo off
+setlocal enabledelayedexpansion
+set n=1
+(
+  set n=2
+  echo !n!
+)
+
+=== expand_echo_on.bat  (before, 38 bytes)
+set n=1
+(
+  set n=2
+  echo %n%
+)
+
+--- output of: cmd /d /c expand_echo_on.bat
+
+D:\batlab> set n=1 
+
+D:\batlab> (
+set n=2  
+ echo 1 
+) 
+1
+
+--- file after run (38 bytes)
+set n=1
+(
+  set n=2
+  echo %n%
+)
+
+=== set /? (chcp 437, excerpt about delayed expansion)
+occurrence
+of "str1" in the expanded result with "str2".  "str2" can be the empty
+string to effectively delete all occurrences of "str1" from the expanded
+output.  "str1" can begin with an asterisk, in which case it will match
+everything from the beginning of the expanded output to the first
+occurrence of the remaining portion of str1.
+
+May also specify substrings for an expansion.
+
+    %PATH:~10,5%
+
+would expand the PATH environment variable, and then use only the 5
+characters that begin at the 11th (offset 10) character of the expanded
+result.  If the length is not specified, then it defaults to the
+remainder of the variable value.  If either number (offset or length) is
+negative, then the number used is the length of the environment variable
+value added to the offset or length specified.
+
+    %PATH:~-10%
+
+would extract the last 10 characters of the PATH variable.
+
+    %PATH:~0,-2%
+
+would extract all but the last 2 characters of the PATH variable.
+
+Finally, support for delayed environment variable expansion has been
+added.  This support is always disabled by default, but may be
+enabled/disabled via the /V command line switch to CMD.EXE.  See CMD /?
+
+Delayed environment variable expansion is useful for getting around
+the limitations of the current expansion which happens when a line
+of text is read, not when it is executed.  The following example
+demonstrates the problem with immediate variable expansion:
+
+    set VAR=before
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "%VAR%" == "after" @echo If you see this, it worked
+    )
+
+would never display the message, since the %VAR% in BOTH IF statements
+is substituted when the first IF statement is read, since it logically
+includes the body of the IF, which is a compound statement.  So the
+IF inside the compound statement is really comparing "before" with
+"after" which will never be equal.  Similarly, the following example
+will not work as expected:
+
+    set LIST=
+    for %i in (*) do set LIST=%LIST% %i
+    echo %LIST%
+
+in that it will NOT build up a list of files in the current directory,
+but instead will just set the LIST variable to the last file found.
+Again, this is because the %LIST% is expanded just once when the
+FOR statement is read, and at that time the LIST variable is empty.
+So the actual FOR loop we are executing is:
+
+    for %i in (*) do set LIST= %i
+
+which just keeps setting LIST to the last file found.
+
+Delayed environment variable expansion allows you to use a different
+character (the exclamation mark) to expand environment variables at
+execution time.  If delayed variable expansion is enabled, the above
+examples could be written as follows to work as intended:
+
+    set VAR=before
+    if "%VAR%" == "before" (
+        set VAR=after
+        if "!VAR!" == "after" @echo If you see this, it worked
+    )
+
+    set LIST=
+    for %i in (*) do set LIST=!LIST! %i
+    echo %LIST%
+
+If Command Extensions are enabled, then there are several dynamic
+environment variables that can be expanded but which don't show up in
+the list of variables displayed by SET.  These variable values are
+computed dynamical
+=== cleaned: True

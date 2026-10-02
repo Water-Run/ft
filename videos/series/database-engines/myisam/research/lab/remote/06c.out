@@ -1,0 +1,84 @@
+--------------
+SELECT COUNT(*) FROM users_crashed
+--------------
+
++----------+
+| COUNT(*) |
++----------+
+|       10 |
++----------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT * FROM users_crashed WHERE id = 13
+--------------
+
+Empty set (0.00 sec)
+
+--------------
+CHECK TABLE users_crashed
+--------------
+
++---------------------------+-------+----------+-------------------------------------------------------+
+| Table                     | Op    | Msg_type | Msg_text                                              |
++---------------------------+-------+----------+-------------------------------------------------------+
+| myisam_demo.users_crashed | check | warning  | 1 client is using or hasn't closed the table properly |
+| myisam_demo.users_crashed | check | warning  | Size of datafile is: 176       Should be: 160         |
+| myisam_demo.users_crashed | check | error    | Record-count is not ok; is 11   Should be: 10         |
+| myisam_demo.users_crashed | check | warning  | Found 11 key parts. Should be: 10                     |
+| myisam_demo.users_crashed | check | error    | Corrupt                                               |
++---------------------------+-------+----------+-------------------------------------------------------+
+5 rows in set (0.00 sec)
+
+--------------
+REPAIR TABLE users_crashed
+--------------
+
++---------------------------+--------+----------+--------------------------------------+
+| Table                     | Op     | Msg_type | Msg_text                             |
++---------------------------+--------+----------+--------------------------------------+
+| myisam_demo.users_crashed | repair | warning  | Number of rows changed from 10 to 11 |
+| myisam_demo.users_crashed | repair | status   | OK                                   |
++---------------------------+--------+----------+--------------------------------------+
+2 rows in set (0.00 sec)
+
+--------------
+CHECK TABLE users_crashed
+--------------
+
++---------------------------+-------+----------+----------+
+| Table                     | Op    | Msg_type | Msg_text |
++---------------------------+-------+----------+----------+
+| myisam_demo.users_crashed | check | status   | OK       |
++---------------------------+-------+----------+----------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT COUNT(*) FROM users_crashed
+--------------
+
++----------+
+| COUNT(*) |
++----------+
+|       11 |
++----------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT * FROM users_crashed WHERE id = 13
+--------------
+
++----+--------+-----+
+| id | name   | age |
++----+--------+-----+
+| 13 | olivia |  31 |
++----+--------+-----+
+1 row in set (0.00 sec)
+
+--------------
+FLUSH TABLES
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+Bye

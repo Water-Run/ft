@@ -1,0 +1,53 @@
+{
+  "o1": ["新建文本文档.txt"],
+  "o2": ["echo hello", "hello.bat"],
+  "o3": ["D:\\batlab>echo hello"],
+  "o4": ["1981"],
+  "o5": ["1985", "Windows 1.0"],
+  "oT": ["古代来的", "Shell", "Windows 批处理（.bat）"],
+
+  "a1": ["1981", "IBM PC"],
+  "a2": ["PC DOS 1.0"],
+  "a3": ["COMMAND.COM"],
+  "a4": ["DEMO.BAT", "REM CHANGE DISK IN B:", "PAUSE"],
+  "a5": ["A>REM CHANGE DISK IN B:", "示意"],
+  "a6": ["REM", "PAUSE", "注释", "暂停"],
+  "a7": ["1983", "DOS 2.0", "IF", "FOR", "GOTO"],
+
+  "b1": ["cmd.exe"],
+  "b2": ["D:\\batlab>echo hello", "回显"],
+  "b3": ["Display batched command line", "COMMAND.ASM"],
+  "b4": ["替人敲命令"],
+  "b5": ["@echo off"],
+
+  "c1": ["DEMO.BAT"],
+  "c2": ["Make sure batch file still exists"],
+  "c3": ["Insert disk with batch file"],
+  "c4": ["160 KB"],
+  "c5": ["selfmod.bat", "执行一条，读一条"],
+  "c6": ["echo echo 3 >> selfmod.bat", "运行途中追加"],
+  "c7": ["Windows 11", "实测"],
+
+  "d1": ["%n%"],
+  "d2": ["一条语句"],
+  "d3": ["echo 1"],
+  "d4": ["n = 1||n=1"],
+  "d5": ["Windows 2000", "!n!"],
+  "d6": ["默认关闭"],
+
+  "e1": ["1993", "Windows NT", "cmd.exe"],
+  "e2": ["2006", "PowerShell"],
+  "e3": ["2026"],
+  "e4": ["3164"],
+  "e5": ["1824", "npm"],
+  "e6": ["4.45%", "Windows 7", "StatCounter"],
+  "e7": ["6.0.6003", "10.0.26220"],
+  "e8": ["PowerShell 1.0"],
+  "e9": ["NOT being removed", "2017"],
+  "e10": ["Cmd scripts"],
+
+  "f1": ["45"],
+  "f2": ["软盘"],
+  "f3": ["hello.bat"],
+  "fT": ["古代来的"]
+}

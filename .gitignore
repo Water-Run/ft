@@ -1,0 +1,29 @@
+# 依赖（npm ci 得到）
+node_modules/
+
+# 本机的二进制依赖：字体、ffmpeg、语音识别模型。字体与模型用 node kit/tools/assets.js --fetch 取得
+/assets/*
+!/assets/README.md
+
+# 本机配置（Chrome、ffmpeg、Python 的位置，渲染机的地址等）
+/kit/config.local.json
+
+# 各视频的生成物：配音缓存、成片与中间文件、截图、工具的中间数据
+/videos/**/audio/
+/videos/**/out/
+/videos/**/shots/
+/videos/**/build/
+
+# 取证用到的第三方源码与安装包：只在 FACTS.md 里记版本与获取方式
+/videos/**/research/_src/
+
+# 杂项
+__pycache__/
+*.pyc
+*.part
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# remote.js 同步时在仓库根目录留下的临时文件
+/.lvs-*

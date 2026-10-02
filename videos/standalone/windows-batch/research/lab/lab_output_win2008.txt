@@ -1,0 +1,45 @@
+=== ver
+
+Microsoft Windows [版本 6.0.6003]
+=== powershell version
+不能对值为空的表达式调用方法。
+所在位置 行:1 字符: 35
++ $PSVersionTable.PSVersion.ToString( <<<< )
+=== echo_on.bat
+
+C:\batlab> echo hello 
+hello
+=== echo_off.bat
+hello
+=== selfmod.bat
+1
+2
+3 
+=== expand.bat
+1
+2
+=== expand_echo_on.bat
+
+C:\batlab> set n=1 
+
+C:\batlab> (
+set n=2  
+ echo 1 
+) 
+1
+=== delayed.bat
+2
+=== selfmod.bat after run
+@echo off
+echo 1
+echo echo 3 >> selfmod.bat
+echo 2
+echo 3 
+=== cleaned
+1.0.0.0
+PSVersionTable: (not defined)
+OS 名称:          Microsoft? Windows Server? 2008 Enterprise (无 Hyper-V) 
+OS 版本:          6.0.6003 Service Pack 2 Build 6003
+OS 制造商:        Microsoft Corporation
+OS 配置:          独立服务器
+OS 构件类型:      Multiprocessor Free

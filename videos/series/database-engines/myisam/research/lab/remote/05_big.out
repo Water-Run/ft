@@ -1,0 +1,741 @@
+--------------
+CREATE TABLE users_big (
+  id   INT      NOT NULL,
+  name CHAR(10) NOT NULL,
+  age  TINYINT  NOT NULL,
+  PRIMARY KEY (id),
+  KEY idx_name (name)
+) ENGINE=MyISAM
+--------------
+
+Query OK, 0 rows affected (0.09 sec)
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 1 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 2 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 3 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 4 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 5 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 6 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 7 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 8 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 9 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 10 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 11 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 12 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 13 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 14 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 15 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 16 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 17 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 18 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 19 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 20 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 21 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 22 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 23 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 24 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 25 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 26 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 27 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 28 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 29 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 30 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 31 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 32 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 33 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 34 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 35 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 36 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 37 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 38 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 39 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 40 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 41 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 42 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 43 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 44 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 45 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 46 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 47 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 48 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 49 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 50 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 51 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 52 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 53 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 54 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 55 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 56 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 57 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 58 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 59 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 60 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 61 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 62 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 63 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 64 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 65 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 66 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 67 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 68 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 69 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 70 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 71 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 72 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 73 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 74 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 75 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 76 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 77 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 78 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 79 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 80 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 81 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 82 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 83 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 84 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 85 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 86 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 87 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 88 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 89 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 90 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 91 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 92 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 93 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 94 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 95 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 96 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.01 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 97 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 98 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 99 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.02 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+INSERT INTO users_big VALUES …（本条一千行；语句的回显从略，原文即 05_big.sql 的第 100 条 INSERT）
+--------------
+
+Query OK, 1000 rows affected (0.00 sec)
+Records: 1000  Duplicates: 0  Warnings: 0
+
+--------------
+SHOW TABLE STATUS LIKE 'users_big'
+--------------
+
++-----------+--------+---------+------------+--------+----------------+-------------+------------------+--------------+-----------+----------------+---------------------+---------------------+---------------------+-------------------+----------+----------------+---------+
+| Name      | Engine | Version | Row_format | Rows   | Avg_row_length | Data_length | Max_data_length  | Index_length | Data_free | Auto_increment | Create_time         | Update_time         | Check_time          | Collation         | Checksum | Create_options | Comment |
++-----------+--------+---------+------------+--------+----------------+-------------+------------------+--------------+-----------+----------------+---------------------+---------------------+---------------------+-------------------+----------+----------------+---------+
+| users_big | MyISAM |      10 | Fixed      | 100000 |             16 |     1600000 | 4503599627370495 |      2613248 |         0 |           NULL | 2026-10-01 09:13:53 | 2026-10-01 09:13:53 | 2026-10-01 09:13:53 | latin1_swedish_ci |     NULL |                |         |
++-----------+--------+---------+------------+--------+----------------+-------------+------------------+--------------+-----------+----------------+---------------------+---------------------+---------------------+-------------------+----------+----------------+---------+
+1 row in set (0.01 sec)
+
+--------------
+EXPLAIN SELECT * FROM users_big WHERE id = 4242
+--------------
+
++----+-------------+-----------+-------+---------------+---------+---------+-------+------+-------+
+| id | select_type | table     | type  | possible_keys | key     | key_len | ref   | rows | Extra |
++----+-------------+-----------+-------+---------------+---------+---------+-------+------+-------+
+|  1 | SIMPLE      | users_big | const | PRIMARY       | PRIMARY | 4       | const |    1 |       |
++----+-------------+-----------+-------+---------------+---------+---------+-------+------+-------+
+1 row in set (0.00 sec)
+
+--------------
+FLUSH TABLES
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+Bye

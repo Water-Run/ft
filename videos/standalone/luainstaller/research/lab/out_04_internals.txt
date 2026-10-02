@@ -1,0 +1,104 @@
+===== reproducible: same source built twice, different output dirs =====
+845a8dffe1736fa72e9e87a90ef0b3bb40d170b3e9dbff7d92219cd9431a003c  build/r1/moon/moon
+845a8dffe1736fa72e9e87a90ef0b3bb40d170b3e9dbff7d92219cd9431a003c  build/r2/moon/moon
+845a8dffe1736fa72e9e87a90ef0b3bb40d170b3e9dbff7d92219cd9431a003c  build/moon/moon
+6ff11b5b6c2be2d889446c12c7935b4dd622a5bb685a7ef34d787bdf861a9a38  build/r1/moon/.luai/manifest.lua
+6ff11b5b6c2be2d889446c12c7935b4dd622a5bb685a7ef34d787bdf861a9a38  build/r2/moon/.luai/manifest.lua
+fd1e6926a7222e5554fc50f4a15b389eab979fb4dcbe29f4bf1c908bcdc90696  build/r1/moon/.luai/build/launcher.c
+fd1e6926a7222e5554fc50f4a15b389eab979fb4dcbe29f4bf1c908bcdc90696  build/r2/moon/.luai/build/launcher.c
+--- copy project elsewhere and build there
+845a8dffe1736fa72e9e87a90ef0b3bb40d170b3e9dbff7d92219cd9431a003c  build/moon/moon
+6ff11b5b6c2be2d889446c12c7935b4dd622a5bb685a7ef34d787bdf861a9a38  build/moon/.luai/manifest.lua
+0
+0
+--- onefile twice
+5bea525bbf86fd96f77bd3351afd4317958f7161ae2a2aa7f23c93108e302898  build/of1
+5bea525bbf86fd96f77bd3351afd4317958f7161ae2a2aa7f23c93108e302898  build/of2
+5bea525bbf86fd96f77bd3351afd4317958f7161ae2a2aa7f23c93108e302898  build/moon-onefile
+
+===== onefile extraction location =====
+2026-10-01  waning gibbous  78% lit
+418474 execve("build/moon-onefile", ["build/moon-onefile", "2026-10-01"], 0x7ffe01c68b80 /* 39 vars */) = 0
+418474 mkdirat(4, "luainstaller-onefile-1000", 0700) = -1 EEXIST (File exists)
+418474 mkdirat(3, "33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5", 0700) = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "build", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "build", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "build", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "build", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "build", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "licenses", 0700)     = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "licenses", 0700)     = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+418474 mkdirat(5, "licenses", 0700)     = -1 EEXIST (File exists)
+418474 mkdirat(3, ".luai", 0700)        = -1 EEXIST (File exists)
+"/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/.luai/native/glibc-hwcaps/x86-64-v2/liblua-5.4.so"
+"/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/.luai/native/glibc-hwcaps/x86-64-v3/liblua-5.4.so"
+"/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/.luai/native/libc.so.6"
+"/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/.luai/native/liblua-5.4.so"
+"/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/.luai/native/libm.so.6"
+"/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/inner"
+--- cache dir
+/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/inner
+drwxr-xr-x.  4 waterrun waterrun    100 Oct  1 15:21 luai-lab-copy
+-rw-r--r--.  1 waterrun waterrun   5796 Oct  1 15:21 luai-of.strace
+drwx------.  3 waterrun waterrun     60 Oct  1 15:11 luainstaller-onefile-1000
+/tmp/luai-of.strace
+/tmp/luainstaller-onefile-1000
+/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5
+/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/inner
+/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/THIRD_PARTY_NOTICES.md
+/tmp/luainstaller-onefile-1000/33eb1a00444e862d64c1ed4dc98ec172878207c3460ff210ece46f0611b84ea5/.luai
+/tmp/luarocks_local_cache--MriiQ7/https___luarocks.org/luainstaller-1.4.0-1.src.rock.check
+/tmp/luarocks_local_cache--MriiQ7/https___luarocks.org/luainstaller-1.4.0-1.src.rock
+/tmp/luarocks_local_cache--MriiQ7/https___luarocks.org/luainstaller-1.4.0-1.src.rock.unixtime
+/tmp/luarocks_local_cache--MriiQ7/https___luarocks.org/luainstaller-1.4.0-1.src.rock.timestamp
+
+===== dynamic require =====
+$ cat main.lua
+local name = arg[1] or "a"
+local m = require("drivers." .. name)
+print(m)
+$ luai -a main.lua
+error: DynamicRequireError: Dynamic require at /tmp/luai-dyn/main.lua:2: require('drivers.' .. ...)
+Only static require('name') is supported.
+[exit 1]
+$ luai -a main.lua -d runtime -- a
+ok
+entry: main.lua
+scripts: 1
+libraries: 0
+script[1]: /tmp/luai-dyn/drivers/a.lua
+[exit 0]
+$ luai -a main.lua -d manual --include drivers/a.lua
+ok
+entry: main.lua
+scripts: 1
+libraries: 0
+script[1]: /tmp/luai-dyn/drivers/a.lua
+[exit 0]
+
+===== library API =====
+built /home/waterrun/luai-video-lab/moon/build/api/moon/moon
+1.4.0
+
+===== timing: build x5 =====
+1.67 s
+1.68 s
+1.75 s
+===== sizes =====
+build/moon/moon 22520
+build/moon-onefile 486328
+build/moon/.luai/native/liblua-5.4.so 287400
+alt/moon-luastatic 1303688
+alt/moon-srlua 14483
+422050	build/moon
+cc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)
+Linux 7.2.7-200.fc44.x86_64 x86_64
+Fedora release 44 (Forty Four)

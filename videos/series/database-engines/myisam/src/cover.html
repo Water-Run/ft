@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。缩略图下要能读，字比正片大得多；
+     平台会在封面底部叠时长与播放量，底部约 15% 不放文字。 */
+  html, body { width: var(--W); height: var(--H); }
+  #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+
+  /* 右侧（或下方）的真实字节：users.MYD 的 8 行，按字段着色 */
+  .bytes { position: absolute; font-family: var(--mono); font-weight: 500; white-space: pre; }
+  .brow { display: flex; align-items: center; border-radius: 10px; }
+  .brow .off { color: #3f6672; }
+  .brow span.b { display: flex; align-items: center; justify-content: center; border-radius: 7px; }
+  .brow.hot { box-shadow: 0 0 0 3px rgba(242, 145, 17, .95), 0 0 80px rgba(242, 145, 17, .55); background: rgba(242, 145, 17, .10); }
+  .pad { opacity: .38; }
+
+  .kicker2 { position: absolute; display: flex; align-items: center; gap: 18px; font-size: 34px; letter-spacing: .16em; color: var(--pale); white-space: nowrap; }
+  .kicker2 i { width: 13px; height: 13px; background: var(--orange); transform: rotate(45deg); display: block; }
+  .t { position: absolute; font-family: var(--serif); font-weight: 900; color: #f6fafb; letter-spacing: .04em; line-height: 1.16; white-space: nowrap; text-shadow: 0 8px 60px rgba(0, 0, 0, .65), 0 0 90px rgba(0, 117, 143, .55); }
+  .sub { position: absolute; display: flex; align-items: baseline; white-space: nowrap; font-weight: 300; color: var(--pale); letter-spacing: .12em; }
+  .sub b { font-family: var(--mono); font-weight: 700; color: var(--orange); letter-spacing: .01em; margin: 0 .14em; text-shadow: 0 0 70px rgba(242, 145, 17, .45); }
+  .rule { position: absolute; height: 6px; background: var(--orange); }
+  .exts { position: absolute; display: flex; align-items: center; font-family: var(--mono); font-weight: 600; white-space: nowrap; }
+  .exts span { padding: 0 .5em; }
+  .exts span:first-child { padding-left: 0; }
+  .exts i { width: 2px; height: .9em; background: var(--line-2); display: block; }
+
+  /* ── 16:9 ── */
+  .r169 .bytes { left: 1136px; top: 120px; font-size: 47px; transform-origin: 0% 50%; transform: perspective(1900px) rotateY(-27deg) rotateX(5deg) rotateZ(-1.2deg);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 12%, #000 30%, #000 100%); }
+  .r169 .brow { height: 92px; padding: 0 16px; gap: 9px; }
+  .r169 .brow .off { display: none; }
+  .r169 .brow span.b { width: 74px; height: 70px; }
+  .r169 .kicker2 { left: 112px; top: 118px; }
+  .r169 .t { left: 104px; top: 200px; font-size: 146px; }
+  .r169 .rule { left: 112px; top: 574px; width: 190px; }
+  .r169 .sub { left: 108px; top: 612px; font-size: 96px; }
+  .r169 .sub b { font-size: 132px; }
+  .r169 .exts { left: 112px; top: 808px; font-size: 54px; }
+  .r169 .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(2, 13, 18, .82) 0%, rgba(2, 13, 18, .6) 46%, rgba(2, 13, 18, 0) 70%); }
+
+  /* ── 4:3 ── */
+  .r43 .bytes { left: 150px; top: 838px; font-size: 44px; transform-origin: 50% 0%; transform: perspective(1500px) rotateX(44deg);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,.5) 0%, #000 26%, #000 100%); }
+  .r43 .brow { height: 84px; padding: 0 14px; gap: 7px; }
+  .r43 .brow .off { width: 236px; }
+  .r43 .brow span.b { width: 64px; height: 64px; }
+  .r43 .kicker2 { left: 0; right: 0; top: 92px; justify-content: center; font-size: 36px; }
+  .r43 .t { left: 0; right: 0; top: 158px; font-size: 166px; text-align: center; }
+  .r43 .rule { left: 705px; top: 572px; width: 190px; }
+  .r43 .sub { left: 0; right: 0; top: 598px; justify-content: center; font-size: 100px; }
+  .r43 .sub b { font-size: 140px; }
+  .r43 .exts { display: none; }
+  .r43 .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(2, 13, 18, .5) 0%, rgba(2, 13, 18, .2) 55%, rgba(2, 13, 18, 0) 70%); }
+  .r43 .bg-base { background: radial-gradient(1400px 1100px at 30% 14%, #0d4050 0%, #072a36 40%, #041920 72%, #020e13 100%); }
+  .r43 .bg-vignette { background: radial-gradient(1300px 1050px at 50% 46%, transparent 55%, rgba(1, 8, 11, 0.62) 100%); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg">
+    <div class="bg-base"></div>
+    <div class="bg-blob b1"></div>
+    <div class="bg-blob b2"></div>
+    <div class="bg-grid"></div>
+  </div>
+  <div class="bytes" id="bytes"></div>
+  <div class="shade"></div>
+  <div id="bg2" style="position:absolute;inset:0;pointer-events:none"><div class="bg-vignette" style="position:absolute;inset:0"></div></div>
+  <div class="kicker2"><i></i>逐字节拆解 MySQL 5.x 的经典存储引擎</div>
+  <div class="t">一个数据库引擎<br>是如何实现的？</div>
+  <div class="rule"></div>
+  <div class="sub">从<b>MyISAM</b>说起</div>
+  <div class="exts"><span style="color:var(--pale)">.frm</span><i></i><span style="color:var(--mint)">.MYD</span><i></i><span style="color:var(--orange-hi)">.MYI</span></div>
+  <div id="grain"></div>
+</div>
+<script src="js/data.js"></script>
+<script>
+  const r = new URLSearchParams(location.search).get('r') === '43' ? 'r43' : 'r169';
+  document.documentElement.className = r;
+  // 字节取自真实的 users.MYD（8 行 × 16 字节），着色规则与正片一致
+  const hex = REAL.usersMYD[0], host = document.getElementById('bytes');
+  const cls = (c) => (c === 0 ? 'f-flag' : c < 5 ? 'f-id' : c < 15 ? 'f-name' : 'f-age');
+  for (let row = (r === 'r43' ? 3 : 0); row < 8; row++) {
+    const d = document.createElement('div'); d.className = 'brow' + (row === 4 ? ' hot' : '');
+    let s = `<span class="off">${(row * 16).toString(16).padStart(8, '0')}</span>`;
+    for (let c = 0; c < 16; c++) { const b = hex.substr((row * 16 + c) * 2, 2); s += `<span class="b ${cls(c)}${c >= 5 && c < 15 && b === '20' ? ' pad' : ''}">${b}</span>`; }
+    d.innerHTML = s; host.appendChild(d);
+  }
+  Promise.all([document.fonts.load('900 40px "Serif SC"', '一个数据库引擎是如何实现的？'), document.fonts.load('400 40px "Sans SC"', '从说起逐字节拆解的经典存储引擎'), document.fonts.load('700 40px "Mono"', 'MyISAM')]).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

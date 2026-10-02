@@ -1,0 +1,34 @@
+$ lua -v
+bash: lua: command not found
+[exit 127]
+
+$ ls /usr/lib64 | grep -c -i lua; ls /usr/share/lua 2>&1 | head -2
+2
+5.4
+[exit 0]
+
+$ ./websql/websql &
+[2026-10-01 11:16:11] [WARN ] default token in use; set FIREBIRD_WEB_SQL_TOKEN for real use
+[2026-10-01 11:16:11] [INFO ] Firebird Web SQL Shell 2.0.0
+[2026-10-01 11:16:11] [INFO ] listen: http://127.0.0.1:9090
+[2026-10-01 11:16:11] [INFO ] driver: mock
+[2026-10-01 11:16:11] [INFO ] auth: X-Auth-Token
+Pegasus is up on 127.0.0.1:9090
+
+$ curl -si http://127.0.0.1:9090/ | head -1
+HTTP/1.1 200 OK
+[exit 0]
+
+$ curl -si http://127.0.0.1:9090/ | head -8
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type, X-Auth-Token
+Date: Thu, 01 Oct 2026 11:16:13 GMT
+Content-Length: 11569
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+Access-Control-Allow-Origin: *
+Content-Type: text/html; charset=utf-8
+
+[exit 0]
+/lab/21_clean.sh: line 12: pkill: command not found
+[stopped]
+B exit 0

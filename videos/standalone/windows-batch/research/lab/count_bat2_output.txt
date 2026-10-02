@@ -1,0 +1,27 @@
+date: 2026-10-01 15:44
+total: 3164
+node_modules\.bin\*.cmd: 1812
+anywhere under node_modules: 1945
+global npm prefix (AppData\Roaming\npm\*.cmd): 12
+npm-generated entries (.bin + global prefix): 1824
+share: 57.6%
+under node_modules but not .bin (.cmd/.bat shipped by packages): 133
+--- sample of a generated entry (first 12 lines)
+@ECHO off
+GOTO start
+:find_dp0
+SET dp0=%~dp0
+EXIT /b
+:start
+SETLOCAL
+CALL :find_dp0
+
+IF EXIST "%dp0%\node.exe" (
+  SET "_prog=%dp0%\node.exe"
+) ELSE (
+    file: ...\node_modules\.bin\marked.cmd
+--- python venv activate.bat: 86
+--- gradlew.bat: 8
+--- vcvarsall.bat: 2
+--- C:\Windows: 55
+done

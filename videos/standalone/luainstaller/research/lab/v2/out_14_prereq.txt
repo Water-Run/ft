@@ -1,0 +1,65 @@
+
+### stage 1: only the Lua interpreter
+dnf exit 0
+
+$ which cc gcc luarocks
+which: no cc in (/home/waterrun/luainstaller/bin:/usr/local/bin:/usr/bin)
+which: no gcc in (/home/waterrun/luainstaller/bin:/usr/local/bin:/usr/bin)
+which: no luarocks in (/home/waterrun/luainstaller/bin:/usr/local/bin:/usr/bin)
+[exit 3]
+
+$ ls /usr/include/lua.h
+ls: cannot access '/usr/include/lua.h': No such file or directory
+[exit 2]
+
+$ lua tools/install.lua --prefix /home/waterrun/luainstaller
+Installed luainstaller 1.4.0 into /home/waterrun/luainstaller
+Add to PATH: /home/waterrun/luainstaller/bin
+Library: add /home/waterrun/luainstaller/?.lua to package.path
+[exit 0]
+
+$ luai -v
+luai 1.4.0
+[exit 0]
+
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 3
+libraries: 0
+script[1]: /home/waterrun/moon/moon/julian.lua
+script[2]: /home/waterrun/moon/moon/phase.lua
+script[3]: /home/waterrun/moon/moon/names.lua
+[exit 0]
+
+$ luai -b main.lua -o build/moon
+error: ToolchainError: No Lua development metadata matches the selected ABI
+[exit 1]
+
+### stage 2: + a C compiler, still no Lua headers
+dnf exit 0
+
+$ which cc gcc
+/usr/bin/cc
+/usr/bin/gcc
+[exit 0]
+
+$ ls /usr/include/lua.h
+ls: cannot access '/usr/include/lua.h': No such file or directory
+[exit 2]
+
+$ luai -b main.lua -o build/moon
+error: ToolchainError: No Lua development metadata matches the selected ABI
+[exit 1]
+
+### stage 3: + Lua headers and library (lua-devel)
+dnf exit 0
+
+$ luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+$ env -i build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]

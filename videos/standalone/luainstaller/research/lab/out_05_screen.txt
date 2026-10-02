@@ -1,0 +1,213 @@
+======== container A: build machine
+
+### prerequisites (as root)
+dnf exit 0
+Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
+gcc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)
+/usr/bin/luarocks 3.9.2
+
+### install (as root)
+
+$ luarocks install luainstaller
+Installing https://luarocks.org/luainstaller-1.4.0-1.src.rock
+
+luainstaller 1.4.0-1 depends on lua >= 5.1, < 5.6 (5.4-1 provided by VM)
+cp: -r not specified; omitting directory 'LICENSES'
+No existing manifest. Attempting to rebuild...
+luainstaller 1.4.0-1 is now installed in /usr (license: LGPL-3.0-or-later)
+
+[exit 0]
+
+$ luarocks install luastatic
+Installing https://luarocks.org/luastatic-0.0.12-1.src.rock
+
+luastatic 0.0.12-1 depends on lua >= 5.1 (5.4-1 provided by VM)
+luastatic 0.0.12-1 is now installed in /usr (license: CC0)
+
+[exit 0]
+
+### versions
+
+$ luai -v
+luai 1.4.0
+[exit 0]
+
+$ luainstaller version
+luainstaller 1.4.0  LGPL 3.0 by WaterRun
+[exit 0]
+
+### the program
+
+$ lua main.lua 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+### analyze
+
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 3
+libraries: 0
+script[1]: /home/waterrun/moon/moon/julian.lua
+script[2]: /home/waterrun/moon/moon/phase.lua
+script[3]: /home/waterrun/moon/moon/names.lua
+[exit 0]
+
+$ luainstaller analyze main.lua
+Analysis complete
+  Entry: main.lua
+  Lua scripts: 3
+  Native libraries: 0
+[exit 0]
+
+$ luai -t main.lua
+trace
+entry: main.lua
+1: lua resolved moon.phase -> /home/waterrun/moon/moon/phase.lua
+2: lua resolved moon.julian -> /home/waterrun/moon/moon/julian.lua
+3: lua resolved moon.names -> /home/waterrun/moon/moon/names.lua
+compatibility: same OS, same architecture, same ABI, same Lua ABI
+note: does not claim universal cross-platform output
+note: requires same OS, same architecture, same ABI, and same Lua ABI
+note: runtime require discovery only covers build-time executed code paths
+note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+[exit 0]
+
+### build dir
+
+$ time luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+
+real	0m2.150s
+user	0m1.361s
+sys	0m0.783s
+
+$ find build/moon
+moon
+moon/.luai
+moon/.luai/build
+moon/.luai/build/RELINKING.adoc
+moon/.luai/build/generate-onefile-payload.lua
+moon/.luai/build/launcher.c
+moon/.luai/generated-output.txt
+moon/.luai/licenses
+moon/.luai/licenses/GPL-3.0-or-later.txt
+moon/.luai/licenses/LGPL-3.0-or-later.txt
+moon/.luai/licenses/Lua-MIT.txt
+moon/.luai/manifest.lua
+moon/.luai/native
+moon/.luai/native/liblua-5.4.so
+moon/THIRD_PARTY_NOTICES.md
+moon/moon
+
+$ ls -l build/moon
+total 28
+-rw-r--r--. 1 waterrun waterrun  2006 Oct  1 07:48 THIRD_PARTY_NOTICES.md
+-rwxr-xr-x. 1 waterrun waterrun 22472 Oct  1 07:48 moon
+[exit 0]
+
+### run with empty environment
+
+$ env -i build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+### entry only, default output
+
+$ luai -b main.lua
+ok
+executable: /home/waterrun/moon/build/main/main
+[exit 0]
+
+$ env -i build/main/main 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+### onefile
+
+$ time luai -b --file main.lua -o build/moon-onefile
+ok
+executable: /home/waterrun/moon/build/moon-onefile
+
+real	0m3.552s
+user	0m2.353s
+sys	0m1.173s
+
+$ ls -l build
+total 476
+drwx------. 1 waterrun waterrun     62 Oct  1 07:48 moon
+-rwxr-xr-x. 1 waterrun waterrun 486280 Oct  1 07:48 moon-onefile
+[exit 0]
+
+$ env -i build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ sha256sum build/moon/moon build/moon-onefile
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/moon/moon
+1df435a129b4edeca713ffd1bc7506d7cc62d8e4899db44ec0cc8dfc3ba6787f  build/moon-onefile
+[exit 0]
+
+### library API
+
+$ lua /tmp/api.lua
+built /home/waterrun/moon/build/api/moon/moon
+[exit 0]
+
+### standalone install from source tree
+
+$ lua tools/install.lua --prefix /home/waterrun/luainstaller
+Installed luainstaller 1.4.0 into /home/waterrun/luainstaller
+Add to PATH: /home/waterrun/luainstaller/bin
+Library: add /home/waterrun/luainstaller/?.lua to package.path
+[exit 0]
+
+$ /home/waterrun/luainstaller/bin/luai -v
+luai 1.4.0
+[exit 0]
+
+### srlua
+
+$ make LUA_TOPDIR=/usr LUA_LIBDIR=/usr/lib64
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -o srglue srglue.c
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -I/usr/include -o srlua srlua.c -L/usr/lib64 -llua -lm -ldl -Wl,-E
+./srglue srlua test.lua a.out ; chmod +x a.out
+[exit 0]
+
+$ /home/waterrun/srlua-103/srglue /home/waterrun/srlua-103/srlua main.lua moon-srlua
+[exit 0]
+
+$ ./moon-srlua 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ cd /tmp && ~/moon/moon-srlua 2026-10-01
+/home/waterrun/moon/moon-srlua: :2: module 'moon.phase' not found:
+	no field package.preload['moon.phase']
+	no file '/usr/share/lua/5.4/moon/phase.lua'
+	no file '/usr/share/lua/5.4/moon/phase/init.lua'
+[exit]
+
+### luastatic
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua /usr/lib64/liblua.a
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main 
+[exit 0]
+
+$ cd /tmp && ~/moon/main 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit]
+
+$ luastatic main.lua /usr/lib64/liblua.a
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main 
+[exit 0]
+
+$ cd /tmp && ~/moon/main 2026-10-01   (modules not listed)
+[string "main"]:2: module 'moon.phase' not found:
+	no field package.preload['moon.phase']
+	
+	no module 'moon.phase' in luastatic bundle
+	no file '/usr/share/lua/5.4/moon/phase.lua'
+[exit]

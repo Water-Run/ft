@@ -1,0 +1,10 @@
+{
+  "chrome": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "ffmpeg": "C:\\tools\\ffmpeg\\bin\\ffmpeg.exe",
+  "ffprobe": "C:\\tools\\ffmpeg\\bin\\ffprobe.exe",
+  "python": "C:\\Python313\\python.exe",
+  "asr_model": "fw-small",
+  "asr_device": "cpu",
+  "hf_endpoint": "https://huggingface.co",
+  "remote": { "ssh": "render-host", "path": "D:/work/llm-video-studio" }
+}
