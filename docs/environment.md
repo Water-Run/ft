@@ -23,7 +23,7 @@ Windows、Linux、macOS 都可以。配音需要联网（edge-tts 调用在线�
 ## 2. 步骤
 
 ```bash
-git clone <仓库地址> && cd llm-video-studio
+git clone <仓库地址> && cd ft
 npm ci                                  # puppeteer-core 与 gsap，版本由 package-lock.json 锁定
 node kit/tools/assets.js --fetch        # 字体，约 44 MB，逐个校验 SHA-256
 pip install edge-tts numpy              # 必需

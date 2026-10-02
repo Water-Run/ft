@@ -1,6 +1,6 @@
 // 两台机器分工时用：在一台机器上写代码、看帧、扫描，在另一台（渲染机）上配音、混音、渲染。两边各有一份仓库。
 // 配置：本机 kit/config.local.json 里写 "remote": { "ssh": "<ssh 主机别名>", "path": "<渲染机上仓库的路径>" }
-//       渲染机的路径形如 D:/work/llm-video-studio 时按 Windows（cmd）处理，否则按 POSIX shell 处理；也可显式写 "shell": "cmd" | "sh"。
+//       渲染机的路径形如 D:/Coding/ft 时按 Windows（cmd）处理，否则按 POSIX shell 处理；也可显式写 "shell": "cmd" | "sh"。
 // 用法：
 //   node kit/tools/remote.js push                       把工作树同步过去：已跟踪与未被忽略的文件；本机删掉的文件在对面也删
 //   node kit/tools/remote.js run <工具> [参数…]          先同步，再在渲染机上运行 node kit/tools/<工具>.js …，输出回显到本机；

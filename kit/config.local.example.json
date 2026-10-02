@@ -6,5 +6,5 @@
   "asr_model": "fw-small",
   "asr_device": "cpu",
   "hf_endpoint": "https://huggingface.co",
-  "remote": { "ssh": "render-host", "path": "D:/work/llm-video-studio" }
+  "remote": { "ssh": "render-host", "path": "D:/Coding/ft" }
 }

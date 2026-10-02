@@ -1,5 +1,5 @@
 {
-  "name": "llm-video-studio",
+  "name": "ft",
   "version": "1.0.0",
   "private": true,
   "description": "由大语言模型编写的科普与介绍视频：每一部都是一段以时间 t 为唯一输入的 HTML 动画，连同把它变成成片的工具链。",
