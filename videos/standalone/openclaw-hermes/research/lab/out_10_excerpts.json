@@ -1,0 +1,189 @@
+{
+ "note": "源码片段，逐字摘自对应提交；MIT 许可。",
+ "excerpts": [
+  {
+   "id": "oc.feishu.register",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "extensions/feishu/src/monitor.account.ts",
+   "lines": [
+    314,
+    330
+   ],
+   "text": "  eventDispatcher.register({\n    \"im.message.receive_v1\": createFeishuMessageReceiveHandler({\n      cfg,\n      channelRuntime,\n      accountId,\n      runtime,\n      chatHistories,\n      fireAndForget,\n      isAccountActive: context.isAccountActive,\n      trackTask: context.trackTask,\n      handleMessage: handleFeishuMessage,\n      resolveDebounceText: ({ event, botOpenId }) =>\n        parseFeishuMessageEvent(event, botOpenId).content,\n      hasProcessedMessage: hasProcessedFeishuMessage,\n      getBotOpenId: (id) => botOpenIds.get(id),\n      resolveSequentialKey: getFeishuSequentialKey,\n      resolveIngressLifecycle: context.resolveIngressLifecycle,"
+  },
+  {
+   "id": "oc.feishu.wsclient",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "extensions/feishu/src/client.ts",
+   "lines": [
+    504,
+    525
+   ],
+   "text": "export async function createFeishuWSClient(\n  account: ResolvedFeishuAccount,\n  callbacks: FeishuWsClientCallbacks = {},\n): Promise<Lark.WSClient> {\n  const { accountId, appId, appSecret, domain } = account;\n\n  if (!appId || !appSecret) {\n    throw new Error(`Feishu credentials not configured for account \"${accountId}\"`);\n  }\n\n  const agent = await getFeishuProxyAgent();\n  const defaultHttpTimeoutMs = resolveConfiguredHttpTimeoutMs(account);\n  return new Lark.WSClient({\n    appId,\n    appSecret,\n    domain: resolveSdkDomain(domain),\n    httpInstance: createFeishuHttpInstance(defaultHttpTimeoutMs, domain),\n    ...callbacks,\n    loggerLevel: Lark.LoggerLevel.info,\n    wsConfig: FEISHU_WS_CONFIG,\n    ...(agent ? { agent } : {}),\n  });"
+  },
+  {
+   "id": "oc.feishu.dmpolicy",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "extensions/feishu/src/bot.ts",
+   "lines": [
+    529,
+    529
+   ],
+   "text": "  const dmPolicy = feishuCfg?.dmPolicy ?? \"pairing\";"
+  },
+  {
+   "id": "hm.feishu.register",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "plugins/platforms/feishu/adapter.py",
+   "lines": [
+    1429,
+    1446
+   ],
+   "text": "    def _build_event_handler(self) -> Any:\n        if EventDispatcherHandler is None:\n            return None\n        return (\n            EventDispatcherHandler.builder(self._encrypt_key, self._verification_token)\n            .register_p2_im_message_message_read_v1(self._on_message_read_event)\n            .register_p2_im_message_receive_v1(self._on_message_event)\n            .register_p2_im_message_reaction_created_v1(lambda d: self._on_reaction_event(\"im.message.reaction.created_v1\", d))\n            .register_p2_im_message_reaction_deleted_v1(lambda d: self._on_reaction_event(\"im.message.reaction.deleted_v1\", d))\n            .register_p2_card_action_trigger(self._on_card_action_trigger)\n            .register_p2_im_chat_member_bot_added_v1(self._on_bot_added_to_chat)\n            .register_p2_im_chat_member_bot_deleted_v1(self._on_bot_removed_from_chat)\n            .register_p2_im_chat_access_event_bot_p2p_chat_entered_v1(self._on_p2p_chat_entered)\n            .register_p2_im_message_recalled_v1(self._on_message_recalled)\n            .register_p2_customized_event(\"drive.notice.comment_add_v1\", self._on_drive_comment_event)\n            .register_p2_customized_event(\"vc.bot.meeting_invited_v1\", self._on_meeting_invited_event)\n            .build()\n        )"
+  },
+  {
+   "id": "hm.feishu.wsclient",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "plugins/platforms/feishu/adapter.py",
+   "lines": [
+    3882,
+    3890
+   ],
+   "text": "        self._ws_client = FeishuWSClient(\n            app_id=self._app_id,\n            app_secret=self._app_secret,\n            log_level=lark.LogLevel.INFO,\n            event_handler=self._event_handler,\n            domain=domain,\n            # Without the \"channel\" UA tag Feishu won't push group @mention events over WS.\n            extra_ua_tags=[\"channel\"],\n        )"
+  },
+  {
+   "id": "hm.feishu.msg",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "plugins/platforms/feishu/adapter.py",
+   "lines": [
+    2106,
+    2127
+   ],
+   "text": "    async def _handle_message_event_data(self, data: Any) -> None:\n        \"\"\"Shared inbound message handling for websocket and webhook transports.\"\"\"\n        event = getattr(data, \"event\", None)\n        message = getattr(event, \"message\", None)\n        sender = getattr(event, \"sender\", None)\n        if not message or not sender or not getattr(sender, \"sender_id\", None):\n            logger.debug(\"[Feishu] Dropping malformed inbound event: missing message/sender\")\n            return\n        message_id = getattr(message, \"message_id\", None)\n        if not message_id or await self._is_duplicate(message_id):\n            logger.debug(\"[Feishu] Dropping duplicate/missing message_id: %s\", message_id)\n            return\n        reason = self._admit(sender, message)\n        if reason is not None:\n            logger.debug(\"[Feishu] dropping inbound event: %s\", reason)\n            if reason == \"group_policy_rejected\":\n                self._warn_once_empty_allowlist_deny(getattr(message, \"chat_id\", \"\") or \"\")\n            return\n        await self._process_inbound_message(\n            data=data, message=message, sender_id=getattr(sender, \"sender_id\", None),\n            chat_type=getattr(message, \"chat_type\", \"p2p\"), message_id=message_id, is_bot=_is_bot_sender(sender),\n        )"
+  },
+  {
+   "id": "oc.sessionkey.dm",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "src/routing/session-key.ts",
+   "lines": [
+    220,
+    220
+   ],
+   "text": "    const dmScope = params.dmScope ?? \"main\";"
+  },
+  {
+   "id": "oc.sessionkey.group",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "src/routing/session-key.ts",
+   "lines": [
+    261,
+    261
+   ],
+   "text": "  return `agent:${normalizeAgentId(params.agentId)}:${channel}:${peerKind}:${peerId}`;"
+  },
+  {
+   "id": "hm.sessionkey.doc",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "gateway/session.py",
+   "lines": [
+    682,
+    693
+   ],
+   "text": "def build_session_key(\n    source: SessionSource, group_sessions_per_user: bool = True,\n    thread_sessions_per_user: bool = False, profile: Optional[str] = None,\n) -> str:\n    \"\"\"Build a deterministic session key from a message source (single source of truth).\n\n    Layout: ``<ns>:<platform>:<chat_type>[:<slack scope_id>][:<chat_id>][:<thread_id>][:<user>]``.\n    Slack ``scope_id`` precedes chat ids (Discord guild scope is deliberately NOT added, for key\n    compatibility). DMs are isolated per chat_id, falling back to the sender id, then to one\n    session per platform. Groups add the participant id only when ``group_sessions_per_user`` and\n    not in a thread (threads are shared unless ``thread_sessions_per_user``).\n    \"\"\""
+  },
+  {
+   "id": "hm.sessionkey.parts",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "gateway/session.py",
+   "lines": [
+    714,
+    714
+   ],
+   "text": "    parts = [_session_key_namespace(profile), source.platform.value, chat_type_slot]"
+  },
+  {
+   "id": "hm.base.handle",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "gateway/platforms/base.py",
+   "lines": [
+    4038,
+    4040
+   ],
+   "text": "    async def handle_message(self, event: MessageEvent) -> None:\n        \"\"\"Process an incoming message; returns quickly by spawning a background\n        task so new messages (and interrupts) can arrive while an agent runs.\"\"\""
+  },
+  {
+   "id": "oc.embedded.run",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "src/agents/embedded-agent-runner/run-orchestrator.ts",
+   "lines": [
+    111,
+    113
+   ],
+   "text": "export function runEmbeddedAgent(\n  internalParamsInput: RunEmbeddedAgentInternalParams,\n): Promise<EmbeddedAgentRunResult> {"
+  },
+  {
+   "id": "hm.loop.def",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/conversation_loop.py",
+   "lines": [
+    1695,
+    1695
+   ],
+   "text": "def run_conversation("
+  },
+  {
+   "id": "hm.review.doc",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/background_review.py",
+   "lines": [
+    1,
+    6
+   ],
+   "text": "\"\"\"Background memory/skill review — fork the agent to evaluate the turn. After every turn\n``AIAgent.run_conversation`` may spawn a daemon thread that replays the conversation snapshot in a\nforked :class:`AIAgent` and asks \"should any skill/memory be saved or updated?\". Writes go\nstraight to the memory + skill stores; the main conversation and prompt cache are never touched.\nThe fork inherits the parent's live runtime (provider, model, credentials, cached system prompt)\nso it hits the same prefix cache, and runs under a dispatch-side tool whitelist.\"\"\""
+  },
+  {
+   "id": "hm.nudge.memory",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/agent_init.py",
+   "lines": [
+    1332,
+    1332
+   ],
+   "text": "    agent._memory_nudge_interval = 10"
+  },
+  {
+   "id": "hm.nudge.skill",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/agent_init.py",
+   "lines": [
+    1411,
+    1411
+   ],
+   "text": "    agent._skill_nudge_interval = 10"
+  },
+  {
+   "id": "oc.turn.stages",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "src/channels/turn/run-channel-turn.ts",
+   "lines": null,
+   "text": "ingest → classify → preflight → assemble → finalize"
+  }
+ ]
+}

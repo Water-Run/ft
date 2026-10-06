@@ -1,0 +1,98 @@
+{
+ "warelay": {
+  "created": "2025-11-25T12:18:18.979Z",
+  "modified": "2025-12-19T17:33:59.897Z",
+  "versions": 10,
+  "first": {
+   "version": "0.1.0",
+   "time": "2025-11-25T12:18:19.283Z"
+  },
+  "latest": "1.3.0",
+  "description": "WhatsApp relay CLI (send, monitor, webhook, auto-reply) using Twilio",
+  "repository": null
+ },
+ "clawdis": {
+  "created": "2025-12-19T17:22:14.538Z",
+  "modified": "2025-12-27T18:59:37.803Z",
+  "versions": 4,
+  "first": {
+   "version": "2.0.0-beta1",
+   "time": "2025-12-19T17:22:17.394Z"
+  },
+  "latest": "2.0.0-beta4",
+  "description": "WhatsApp gateway CLI (Baileys web) with Pi RPC agent",
+  "repository": null
+ },
+ "clawdbot": {
+  "created": "2026-01-04T20:06:29.957Z",
+  "modified": "2026-01-25T15:21:47.090Z",
+  "versions": 37,
+  "first": {
+   "version": "2026.1.4",
+   "time": "2026-01-04T20:06:30.325Z"
+  },
+  "latest": "2026.1.24-3",
+  "description": "WhatsApp gateway CLI (Baileys web) with Pi RPC agent",
+  "repository": null
+ },
+ "moltbot": {
+  "created": "2026-01-27T11:46:45.578Z",
+  "modified": "2026-01-28T00:38:19.792Z",
+  "versions": 2,
+  "first": {
+   "version": "0.1.0",
+   "time": "2026-01-27T11:46:45.710Z"
+  },
+  "latest": "0.1.0",
+  "description": "moltbot",
+  "repository": null
+ },
+ "openclaw": {
+  "created": "2026-01-29T11:08:11.861Z",
+  "modified": "2026-10-05T17:55:06.690Z",
+  "versions": 266,
+  "first": {
+   "version": "0.0.1",
+   "time": "2026-01-29T11:08:12.101Z"
+  },
+  "latest": "2026.9.8",
+  "description": "Multi-channel AI gateway with extensible messaging integrations",
+  "repository": "git+https://github.com/openclaw/openclaw.git"
+ },
+ "@openclaw/feishu": {
+  "created": "2026-02-04T07:17:01.812Z",
+  "modified": "2026-10-05T17:09:36.103Z",
+  "versions": 151,
+  "first": {
+   "version": "2026.2.2",
+   "time": "2026-02-04T07:17:02.033Z"
+  },
+  "latest": "2026.9.8",
+  "description": "OpenClaw Feishu/Lark channel plugin for chats and workplace tools (community maintained by @m1heng).",
+  "repository": "git+https://github.com/openclaw/openclaw.git"
+ },
+ "@m1heng-clawd/feishu": {
+  "created": "2026-01-25T18:26:52.031Z",
+  "modified": "2026-03-29T15:07:44.356Z",
+  "versions": 21,
+  "first": {
+   "version": "0.1.0",
+   "time": "2026-01-25T18:26:52.269Z"
+  },
+  "latest": "0.1.19",
+  "description": "OpenClaw Feishu/Lark channel plugin",
+  "repository": "git+https://github.com/m1heng/clawdbot-feishu.git"
+ },
+ "@larksuiteoapi/feishu-openclaw-plugin": {
+  "created": "2026-03-03T14:34:49.382Z",
+  "modified": "2026-03-08T07:22:20.798Z",
+  "versions": 14,
+  "first": {
+   "version": "2026.3.3",
+   "time": "2026-03-03T14:34:49.588Z"
+  },
+  "latest": "2026.3.8",
+  "description": "OpenClaw Feishu/Lark channel plugin (official by Feishu team)",
+  "repository": null
+ }
+}

@@ -1,0 +1,11 @@
+02/25/26
+04/29/25
+05/14/25
+08/24/24
+08/26/25
+12/03/25
+An autonomous agent that lives on your server, remembers what it learns, and gets more capable the longer it runs.
+Atropos
+Hermes 3 405B
+Hermes-4.3-Seed-36B
+Psyche Network

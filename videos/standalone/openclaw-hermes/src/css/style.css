@@ -1,0 +1,51 @@
+/* 本片的视觉系统：两个世界。
+   纸白底（--paper）配朱红（--claw）属于 OpenClaw；墨黑底（--ink）配金色（--herm）属于 Hermes；中性的章节用纸白与墨黑分屏，朱红与金色各守自己的含义，全片不破例。
+   朱红只用于大字、色块与墨色字压在红底上；金色只放在墨黑底上。文字与底色的对比度：墨 / 纸 14:1，纸 / 墨 14:1，金 / 墨 11.9:1，朱红 / 墨 4.6:1，墨 / 朱红 4.6:1，暗灰 / 纸 5.4:1，亮灰 / 墨 6.4:1。 */
+@font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
+:root {
+  --paper: #eee9dc;
+  --ink: #111214;
+  --claw: #e5412d;
+  --herm: #ffc61a;
+  --dim: #5e5c55;
+  --dimi: #9a978c;
+  --M: 120px;                 /* 版心边距 */
+}
+body { font-family: "Inter", "Sans SC"; color: var(--ink); }
+#bg { background: var(--paper); }
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
+.world svg.g { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; }
+
+/* 字型：OpenClaw 用 Inter 与无衬线粗体；Hermes 用像素点阵与衬线；中性的部分用无衬线与等宽 */
+.in9 { font-family: "Inter", "Sans SC"; font-weight: 900; letter-spacing: -.04em; line-height: 1; }
+.in8 { font-family: "Inter", "Sans SC"; font-weight: 800; letter-spacing: -.03em; line-height: 1.05; }
+.hd { font-family: "Sans SC", "Inter"; font-weight: 900; letter-spacing: -.02em; line-height: 1.04; }
+.ser { font-family: "Serif SC", "Pixel"; font-weight: 700; line-height: 1.12; }
+.pxl { font-family: "Pixel", "Serif SC"; font-weight: 400; line-height: 1; }
+.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
+.mono7 { font-family: "Mono", "Sans SC"; font-weight: 700; white-space: pre; }
+.body { font-family: "Sans SC", "Inter"; font-weight: 500; font-size: 38px; line-height: 1.4; }
+.note { font-family: "Mono", "Sans SC"; font-weight: 500; font-size: 28px; line-height: 1.35; }
+.abs { position: absolute; }
+.cur { background: currentColor; }
+
+/* 颜色 */
+.c-ink { color: var(--ink); } .c-paper { color: var(--paper); } .c-claw { color: var(--claw); } .c-herm { color: var(--herm); }
+.c-dim { color: var(--dim); } .c-dimi { color: var(--dimi); }
+
+/* 章节卡：整屏色块，随各章的世界换样子 */
+.card { position: absolute; inset: 0; overflow: hidden; }
+.card.neutral { background: var(--ink); color: var(--paper); }
+.card.claw { background: var(--claw); color: var(--ink); }
+.card.herm { background: var(--ink); color: var(--herm); }
+.card .no { position: absolute; left: var(--M); font: 700 64px "Mono"; }
+.card .eb { position: absolute; left: var(--M); font: 500 44px "Mono"; color: var(--dimi); }
+.card .ti { position: absolute; left: 112px; font-family: "Sans SC", "Inter"; font-weight: 900; letter-spacing: -.02em; line-height: 1.04; white-space: nowrap; }
+
+/* 字幕：颜色随当前底色换 */
+#caption { bottom: 52px; height: 60px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+.en #caption span { font-size: 36px; }
+#caption em { font-style: normal; font-weight: 900; border-bottom: 4px solid var(--claw); }
+#caption.on-ink span { color: var(--paper); }
+#caption.on-ink em { border-bottom-color: var(--herm); }

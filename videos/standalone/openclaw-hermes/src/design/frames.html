@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧（设计阶段，不进成片）</title>
+<style>
+  /* 设计阶段的关键帧：?f=A1|A2|A3|B1|B2|B3。静态页面，只用来比较方向，不属于成片。 */
+  @font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+  @font-face { font-family: "Serif SC"; src: url("/fonts/NotoSerifSC.ttf"); font-weight: 200 900; }
+  @font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+  @font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+  @font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
+  :root { --paper: #eee9dc; --ink: #111214; --claw: #e5412d; --herm: #ffc61a; --dim: #5e5c55; --dimi: #9a978c; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+  body { font-family: "Inter", "Sans SC"; -webkit-font-smoothing: antialiased; font-variant-ligatures: none; }
+  #stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); }
+  .a { position: absolute; white-space: nowrap; }
+  .blk { position: absolute; }
+  .inter9 { font-family: "Inter", "Sans SC"; font-weight: 900; letter-spacing: -.04em; line-height: 1; }
+  .pix { font-family: "Pixel", "Serif SC"; font-weight: 400; line-height: 1; letter-spacing: 0; }
+  .sans9 { font-family: "Sans SC", "Inter"; font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  .serif7 { font-family: "Serif SC", "Pixel"; font-weight: 700; line-height: 1.1; }
+  .mono { font-family: "Mono", "Sans SC"; font-weight: 500; }
+  .note { font: 500 28px/1.35 "Mono", "Sans SC"; }
+  svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const Q = new URLSearchParams(location.search), F = (Q.get('f') || 'A1').toUpperCase();
+const S = document.getElementById('stage');
+const C = { paper: '#eee9dc', ink: '#111214', claw: '#e5412d', herm: '#ffc61a', dim: '#5e5c55', dimi: '#9a978c' };
+const el = (cls, css, html) => { const d = document.createElement('div'); d.className = cls; Object.assign(d.style, css); if (html != null) d.innerHTML = html; S.appendChild(d); return d; };
+const svgNS = 'http://www.w3.org/2000/svg';
+const sv = () => { const s = document.createElementNS(svgNS, 'svg'); s.setAttribute('viewBox', '0 0 1920 1080'); S.appendChild(s); return s; };
+const add = (parent, tag, attrs) => { const e = document.createElementNS(svgNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+// 钳形：两片弯刃以同一个铰点开合。hx,hy 铰点；s 比例；open 单片张角（度）；颜色 fill
+function claw(parent, hx, hy, s, open, fill) {
+  const blade = 'M0,0 C 60,-78 168,-70 232,-12 C 168,-26 84,-18 0,0 Z';
+  const g = add(parent, 'g', { transform: `translate(${hx} ${hy}) scale(${s})` });
+  add(g, 'path', { d: blade, fill, transform: `rotate(${-open})` });
+  add(g, 'path', { d: blade, fill, transform: `scale(1 -1) rotate(${-open})` });
+  return g;
+}
+// 像素翼：向右展开的阶梯条，u 为像素单位
+function wing(parent, x, y, u, widths, fill) {
+  widths.forEach((w, i) => add(parent, 'rect', { x: x - w * u, y: y + i * u * 1.5, width: w * u, height: u, fill }));
+}
+
+
+// 钳：圆形的掌 + 两片弯刃。open 为单片张角（度）。
+function claw2(parent, hx, hy, s, open, fill) {
+  const g = add(parent, 'g', { transform: `translate(${hx} ${hy}) scale(${s})` });
+  add(g, 'circle', { cx: 0, cy: 0, r: 64, fill });
+  add(g, 'path', { d: 'M-10,-60 C 70,-122 196,-100 256,-18 C 198,-50 120,-50 66,-20 Z', fill, transform: `rotate(${-open})` });
+  add(g, 'path', { d: 'M-10,60 C 70,122 168,104 216,38 C 170,62 112,58 66,26 Z', fill, transform: `rotate(${open})` });
+  return g;
+}
+// 5×7 像素字：每个像素一个方块。u 为像素边长，gap 为字间距（像素数）
+const BM = {
+  H: ['X...X','X...X','X...X','XXXXX','X...X','X...X','X...X'], E: ['XXXXX','X....','X....','XXXX.','X....','X....','XXXXX'],
+  R: ['XXXX.','X...X','X...X','XXXX.','X.X..','X..X.','X...X'], M: ['X...X','XX.XX','X.X.X','X.X.X','X...X','X...X','X...X'],
+  S: ['.XXXX','X....','X....','.XXX.','....X','....X','XXXX.'], A: ['.XXX.','X...X','X...X','XXXXX','X...X','X...X','X...X'],
+  G: ['.XXXX','X....','X....','X..XX','X...X','X...X','.XXXX'], N: ['X...X','XX..X','X.X.X','X..XX','X...X','X...X','X...X'],
+  T: ['XXXXX','..X..','..X..','..X..','..X..','..X..','..X..'], ' ': ['.....','.....','.....','.....','.....','.....','.....'],
+};
+function pixelText(parent, text, x, y, u, fill, gap = 1) {
+  let cx = x;
+  for (const ch of text) {
+    const rows = BM[ch] || BM[' '];
+    rows.forEach((r, j) => [...r].forEach((c, i) => { if (c === 'X') add(parent, 'rect', { x: cx + i * u, y: y + j * u, width: u, height: u, fill }); }));
+    cx += (5 + gap) * u;
+  }
+  return cx - gap * u;
+}
+const DAY = 86400000, D = (s) => Date.parse(s + 'T00:00:00Z');
+
+const FR = {
+  // ───── A1 标题：纸白底 + 朱红 OpenClaw；墨黑块里是金色像素的 Hermes ─────
+  A1() {
+    S.style.background = C.paper;
+    el('blk', { left: '700px', top: '388px', width: '1220px', height: '692px', background: C.ink });
+    el('a inter9', { left: '100px', top: '70px', fontSize: '236px', color: C.claw }, 'OpenClaw,');
+    const s = sv();
+    pixelText(s, 'HERMES', 760, 452, 32, C.herm);
+    claw2(s, 1470, 214, 1.0, 16, C.claw);
+    wing(s, 1920, 840, 28, [14, 12, 10, 8, 6, 4, 2], C.herm);
+    el('blk', { left: '112px', top: '556px', width: '540px', height: '6px', background: C.ink });
+    el('a sans9', { left: '104px', top: '600px', fontSize: '196px', color: C.ink }, '和实现');
+    el('a', { left: '112px', top: '846px', font: '500 38px/1.4 "Sans SC"', color: C.ink }, '两个开源智能体的来历、实现<br>与飞书接入');
+    el('a note', { left: '112px', top: '960px', color: C.dim }, '截至 2026-10-06');
+  },
+  // ───── A2 信息最密：同一个仓库的五个名字（宽度按天数）─────
+  A2() {
+    S.style.background = C.paper;
+    el('a sans9', { left: '120px', top: '86px', fontSize: '112px', color: C.ink }, '同一个仓库，五个名字');
+    el('a note', { left: '124px', top: '216px', color: C.dim }, 'OpenClaw 仓库 · 2025-11-24 创建 · 条形宽度 = 天数');
+    const px = 22, x0 = 120, y0 = 380, h = 150;
+    const segs = [['warelay', 25, '2025-11-24', 0], ['CLAWDIS', 17, '12-19', 0], ['Clawdbot', 22, '2026-01-05', 0], ['Moltbot', 3, '01-27', 1], ['OpenClaw', 249, '01-30', 0]];
+    let x = x0; const s = sv();
+    segs.forEach(([name, d, date, low], i) => {
+      const w = d * px, live = i === 4;
+      add(s, 'rect', { x, y: y0, width: w, height: h, fill: live ? C.claw : 'none', stroke: C.claw, 'stroke-width': 6 });
+      if (i < 3) el('a inter9', { left: (x + 28) + 'px', top: (y0 + 50) + 'px', fontSize: '58px', color: C.claw, letterSpacing: '-.03em' }, name);
+      if (live) el('a inter9', { left: (x + 24) + 'px', top: (y0 + 50) + 'px', fontSize: '58px', color: C.ink, letterSpacing: '-.03em' }, name);
+      el('a note', { left: (x + 4) + 'px', top: (y0 + h + 14 + low * 44) + 'px', color: C.ink }, date);
+      x += w;
+    });
+    add(s, 'path', { d: 'M1561,380 L1561,330 L1440,330', fill: 'none', stroke: C.claw, 'stroke-width': 4 });
+    el('a inter9', { left: '1030px', top: '292px', fontSize: '56px', color: C.claw, letterSpacing: '-.02em' }, 'Moltbot · 3 天');
+    const q = [['warelay', 'Send, receive, and auto-reply on WhatsApp'], ['CLAWDIS', 'WhatsApp & Telegram Gateway for AI Agents'], ['Clawdbot / OpenClaw', 'Personal AI Assistant']];
+    q.forEach(([n, t], i) => { el('a', { left: '120px', top: (690 + i * 84) + 'px', font: '500 28px/1.3 "Mono","Sans SC"', color: C.claw }, n); el('a mono', { left: '520px', top: (684 + i * 84) + 'px', fontSize: '34px', color: C.ink }, '“' + t + '”'); });
+    el('a note', { left: '120px', top: '956px', color: C.dim }, '出处：各版本 README 标题 · v0.1.1 / v2.0.0-beta1 / v2026.1.5 / v2026.1.29');
+  },
+  // ───── A3 图解：两条泳道，五站 ─────
+  A3() {
+    S.style.background = C.paper;
+    el('blk', { left: '0px', top: '560px', width: '1920px', height: '520px', background: C.ink });
+    const s = sv(); const X = [250, 590, 930, 1270, 1610], names = ['接入', '路由', '循环', '工具', '记忆'];
+    X.forEach((x, i) => el('a sans9', { left: (x - 110) + 'px', top: '78px', fontSize: '76px', color: C.ink, width: '220px', textAlign: 'center' }, names[i]));
+    add(s, 'rect', { x: 120, y: 330, width: 1680, height: 12, fill: C.claw });
+    add(s, 'rect', { x: 120, y: 790, width: 1680, height: 12, fill: C.herm });
+    X.forEach((x, i) => {
+      add(s, 'circle', { cx: x, cy: 336, r: 38, fill: C.paper, stroke: C.claw, 'stroke-width': 12 });
+      add(s, 'rect', { x: x - 34, y: 762, width: 68, height: 68, fill: C.ink, stroke: C.herm, 'stroke-width': 12 });
+    });
+    add(s, 'rect', { x: 930 - 22, y: 336 - 22, width: 44, height: 44, fill: C.claw });
+    add(s, 'rect', { x: 930 - 22, y: 796 - 22, width: 44, height: 44, fill: C.herm });
+    const oc = ['extensions/feishu', 'src/channels/turn', 'embedded-agent-runner', 'feishu/skills', 'workspace/*.md'];
+    const hm = ['platforms/feishu', 'gateway/run_inbound', 'agent/conversation_loop', 'tools/registry', '~/.hermes/memories'];
+    X.forEach((x, i) => {
+      el('a mono', { left: (x - 160) + 'px', top: (i % 2 ? '392px' : '244px'), width: '320px', fontSize: '28px', color: C.ink, textAlign: 'center' }, oc[i]);
+      el('a mono', { left: (x - 160) + 'px', top: (i % 2 ? '700px' : '856px'), width: '320px', fontSize: '28px', color: C.herm, textAlign: 'center' }, hm[i]);
+    });
+    el('a inter9', { left: '120px', top: '448px', fontSize: '64px', color: C.claw }, 'OpenClaw');
+    el('a pix', { left: '1560px', top: '948px', fontSize: '84px', color: C.herm }, 'Hermes');
+  },
+  // ───── A4 信息最密（Hermes 一侧，墨黑底）：先有模型，后有智能体 ─────
+  A4() {
+    S.style.background = C.ink;
+    el('a serif7', { left: '120px', top: '82px', fontSize: '104px', color: C.paper }, '先有模型，后有智能体');
+    el('a note', { left: '124px', top: '214px', color: C.dimi }, 'Nous Research · Hermes · 2023-06 → 2026-10 · 横轴按日期等比例');
+    const t0 = D('2023-06-01'), t1 = D('2026-10-06'), X0 = 120, W = 1680, X = (d) => X0 + (D(d) - t0) / (t1 - t0) * W;
+    const s = sv(); const Y = 560;
+    add(s, 'rect', { x: X0, y: Y - 3, width: W, height: 6, fill: C.herm });
+    const models = [['2023-06-03', 'Nous-Hermes', 'above'], ['2024-03-11', 'Hermes 2 Pro', 'below'], ['2024-08-15', 'Hermes 3', 'above'], ['2025-08-25', 'Hermes 4', 'below']];
+    models.forEach(([d, n, pos]) => {
+      const x = X(d); add(s, 'rect', { x: x - 14, y: Y - 14, width: 28, height: 28, fill: C.herm });
+      el('a mono', { left: (x - 90) + 'px', top: (pos === 'above' ? Y - 94 : Y + 40) + 'px', fontSize: '28px', color: C.paper, width: '180px', textAlign: 'center' }, n);
+    });
+    // 仓库与发布
+    const x25 = X('2025-07-23'); add(s, 'rect', { x: x25 - 3, y: Y - 40, width: 6, height: 80, fill: C.paper });
+    el('a mono', { left: (x25 - 250) + 'px', top: (Y + 92) + 'px', fontSize: '28px', color: C.paper, width: '260px', textAlign: 'right' }, 'hermes-agent 仓库');
+    const xa = X('2026-02-25'); add(s, 'rect', { x: xa - 4, y: Y - 120, width: 8, height: 240, fill: C.herm });
+    el('a pix', { left: (xa - 600) + 'px', top: (Y - 214) + 'px', fontSize: '84px', color: C.herm, width: '590px', textAlign: 'right' }, 'Hermes Agent');
+    el('a mono', { left: (xa - 600) + 'px', top: (Y - 130) + 'px', fontSize: '28px', color: C.paper, width: '590px', textAlign: 'right' }, '2026-02-25');
+    const rel = '2026-03-12 03-17 03-23 03-28 03-30 04-03 04-08 04-13 04-16 04-23 04-30 05-07 05-16 05-28 05-29 05-29 06-05 06-19 07-01 07-07 07-07 07-20 07-30 08-03 08-13 08-16 08-16 08-18 08-19 08-27 08-31 09-07 09-11 09-14 09-21 09-24'.split(' ').map((m, i) => i === 0 ? m : '2026-' + m);
+    rel.forEach((d) => { const x = X(d); add(s, 'rect', { x: x - 2, y: Y + 6, width: 4, height: 54, fill: C.herm }); });
+    el('a mono', { left: '1380px', top: (Y + 80) + 'px', fontSize: '28px', color: C.paper, width: '440px', textAlign: 'right' }, '36 个发布 · 2026-03-12 → 09-24');
+    el('a note', { left: '120px', top: '956px', color: C.dimi }, '出处：Hugging Face 仓库创建时间 · Nous Research 发布页 · GitHub 提交与发布记录');
+  },
+  // ───── A5 章节卡（两种）：OpenClaw 整幅朱红；Hermes 墨黑底、金色像素字 ─────
+  A5() {
+    S.style.background = C.claw;
+    el('a mono', { left: '120px', top: '280px', fontSize: '64px', color: C.ink, fontWeight: 600 }, '02');
+    el('a inter9', { left: '112px', top: '378px', fontSize: '236px', color: C.ink }, 'OpenClaw');
+    const s = sv(); claw2(s, 1520, 700, 1.25, 26, C.ink);
+  },
+  A6() {
+    S.style.background = C.ink;
+    el('a mono', { left: '120px', top: '280px', fontSize: '64px', color: C.herm, fontWeight: 600 }, '03');
+    const s = sv(); pixelText(s, 'HERMES', 120, 392, 30, C.herm); pixelText(s, 'AGENT', 120, 640, 30, C.herm);
+    wing(s, 1920, 300, 30, [12, 10, 8, 6, 4, 2], C.herm);
+  },
+  // ───── B1 标题：整幅色场 ─────
+  B1() {
+    el('blk', { left: '0', top: '0', width: '1180px', height: '1080px', background: C.claw });
+    el('blk', { left: '1180px', top: '0', width: '740px', height: '1080px', background: C.herm });
+    el('blk', { left: '0', top: '740px', width: '1180px', height: '340px', background: C.ink });
+    el('a inter9', { left: '90px', top: '90px', fontSize: '216px', color: C.ink }, 'OpenClaw,');
+    el('a pix', { left: '1216px', top: '110px', fontSize: '300px', color: C.ink }, 'Hermes');
+    el('a sans9', { left: '96px', top: '792px', fontSize: '196px', color: C.paper }, '和实现');
+    const s = sv(); claw(s, 330, 520, 1.2, 20, C.ink); wing(s, 1920, 560, 20, [12, 10, 8, 6, 4], C.ink);
+  },
+  // ───── B2 信息最密：整幅朱红 ─────
+  B2() {
+    S.style.background = C.claw;
+    el('a sans9', { left: '120px', top: '86px', fontSize: '112px', color: C.ink }, '同一个仓库，五个名字');
+    el('a note', { left: '124px', top: '216px', color: C.ink }, 'OpenClaw 仓库 · 2025-11-24 创建 · 条形宽度 = 天数');
+    const px = 22, x0 = 120, y0 = 360, h = 150, segs = [['warelay', 25, '2025-11-24'], ['CLAWDIS', 17, '12-19'], ['Clawdbot', 22, '2026-01-05'], ['Moltbot', 3, '01-27'], ['OpenClaw', 249, '01-30']];
+    let x = x0; const s = sv();
+    segs.forEach(([name, d, date], i) => {
+      const w = d * px, live = i === 4;
+      add(s, 'rect', { x, y: y0, width: w, height: h, fill: live ? C.ink : 'none', stroke: C.ink, 'stroke-width': 6 });
+      if (i < 3) el('a inter9', { left: (x + 28) + 'px', top: (y0 + 44) + 'px', fontSize: '66px', color: C.ink }, name);
+      if (live) el('a inter9', { left: (x + 28) + 'px', top: (y0 + 44) + 'px', fontSize: '66px', color: C.paper }, name);
+      el('a note', { left: (x + 4) + 'px', top: (y0 + h + 14) + 'px', color: C.ink }, date);
+      x += w;
+    });
+    add(s, 'path', { d: 'M1561,360 L1561,300 L1420,300', fill: 'none', stroke: C.ink, 'stroke-width': 4 });
+    el('a inter9', { left: '1010px', top: '262px', fontSize: '56px', color: C.ink }, 'Moltbot · 3 天');
+    const q = [['warelay', 'Send, receive, and auto-reply on WhatsApp'], ['CLAWDIS', 'WhatsApp & Telegram Gateway for AI Agents'], ['Clawdbot / OpenClaw', 'Personal AI Assistant']];
+    q.forEach(([n, t], i) => { el('a note', { left: '120px', top: (640 + i * 96) + 'px', color: C.ink, fontSize: '26px' }, n); el('a mono', { left: '520px', top: (640 + i * 96) + 'px', fontSize: '34px', color: C.ink }, '“' + t + '”'); });
+    el('a note', { left: '120px', top: '936px', color: C.ink }, '出处：各版本 README 标题与首句');
+  },
+  // ───── B3 图解：上红下金 ─────
+  B3() {
+    el('blk', { left: '0', top: '0', width: '1920px', height: '540px', background: C.claw });
+    el('blk', { left: '0', top: '540px', width: '1920px', height: '540px', background: C.herm });
+    const s = sv(); const X = [250, 590, 930, 1270, 1610], names = ['接入', '路由', '循环', '工具', '记忆'];
+    add(s, 'rect', { x: 120, y: 296, width: 1680, height: 12, fill: C.ink });
+    add(s, 'rect', { x: 120, y: 772, width: 1680, height: 12, fill: C.ink });
+    X.forEach((x, i) => {
+      add(s, 'circle', { cx: x, cy: 302, r: 38, fill: C.claw, stroke: C.ink, 'stroke-width': 12 });
+      add(s, 'rect', { x: x - 34, y: 738, width: 68, height: 68, fill: C.herm, stroke: C.ink, 'stroke-width': 12 });
+      el('a sans9', { left: (x - 80) + 'px', top: '476px', fontSize: '84px', color: C.paper, width: '160px', textAlign: 'center' }, names[i]);
+    });
+    add(s, 'rect', { x: 930 - 22, y: 302 - 22, width: 44, height: 44, fill: C.ink });
+    add(s, 'rect', { x: 930 - 22, y: 778 - 22, width: 44, height: 44, fill: C.ink });
+    el('a inter9', { left: '120px', top: '84px', fontSize: '64px', color: C.ink }, 'OpenClaw');
+    el('a pix', { left: '120px', top: '952px', fontSize: '84px', color: C.ink }, 'Hermes');
+  },
+};
+(FR[F] || FR.A1)();
+Promise.all([document.fonts.load('900 40px "Inter"', 'Aa'), document.fonts.load('900 40px "Sans SC"', '字'), document.fonts.load('40px "Pixel"', 'Aa'), document.fonts.load('500 40px "Mono"', 'Aa'), document.fonts.load('700 40px "Serif SC"', '字')]).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

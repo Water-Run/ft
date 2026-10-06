@@ -1,0 +1,164 @@
+# openclaw/openclaw @ 195e1cc6c1fb3b98960b1373006602af006b83b9：extensions/*/package.json，第二列为 channel 表示声明了聊天通道（openclaw.channel）
+# name	kind	channel_id
+a2a	channel	a2a
+acpx		
+admin-http-rpc		
+agentsapi		
+alibaba		
+amazon-bedrock-mantle		
+amazon-bedrock		
+anthropic-vertex		
+anthropic		
+apple-fm		
+arcee		
+azure-speech		
+baseten		
+beam		
+bonjour		
+brave		
+browser		
+buzz	channel	buzz
+byteplus		
+canvas		
+cerebras		
+chutes		
+clawrouter		
+clickclack	channel	clickclack
+cloudflare-ai-gateway		
+cloudflare		
+code-mode-quickjs		
+codex		
+cohere		
+comfy		
+copilot-proxy		
+copilot		
+crabbox		
+cua-computer		
+deepgram		
+deepinfra		
+deepseek		
+diagnostics-otel		
+diagnostics-prometheus		
+diffs-language-pack		
+diffs		
+discord	channel	discord
+document-extract		
+duckduckgo		
+elevenlabs		
+exa		
+facetime		
+fal		
+featherless		
+feishu	channel	feishu
+file-transfer		
+firecrawl		
+fireworks		
+fish-audio-speech		
+geolocation		
+github-copilot		
+github		
+gmi		
+google-meet		
+google		
+googlechat	channel	googlechat
+gradium		
+groq		
+huggingface		
+image-generation-core		
+imap		
+imessage	channel	imessage
+inworld		
+irc	channel	irc
+kie		
+kilocode		
+kimi-coding		
+line	channel	line
+linux-node		
+litellm		
+llama-cpp		
+llm-task		
+lmstudio		
+lobster		
+logbook		
+longcat		
+matrix	channel	matrix
+mattermost	channel	mattermost
+memory-core		
+memory-lancedb		
+memory-wiki		
+meta		
+microsoft-foundry		
+microsoft		
+migrate-claude		
+migrate-hermes		
+minimax		
+mistral		
+moonshot		
+msteams	channel	msteams
+mxc		
+nextcloud-talk	channel	nextcloud-talk
+nostr	channel	nostr
+novita		
+nvidia		
+oc-path		
+ollama		
+onepassword		
+onnx		
+openai		
+opencode-go		
+opencode		
+openrouter		
+openshell		
+parallel		
+perplexity		
+pixverse		
+policy		
+qa-channel	channel	qa-channel
+qa-lab		
+qianfan		
+qwen		
+radius		
+raft	channel	raft
+reef	channel	reef
+runway		
+searxng		
+senseaudio		
+session-share		
+sglang		
+signal	channel	signal
+slack-huddles		
+slack	channel	slack
+sms	channel	sms
+stepfun		
+synology-chat	channel	synology-chat
+synthetic		
+tavily		
+team-reports		
+teams-meetings		
+telegram	channel	telegram
+tencent		
+tlon	channel	tlon
+together		
+tokenjuice		
+tts-local-cli		
+twitch	channel	twitch
+typesafe		
+vault		
+venice		
+vercel-ai-gateway		
+visitor-access		
+vllm		
+voice-call		
+volcengine		
+voyage		
+vydra		
+web-readability		
+whatsapp	channel	whatsapp
+workboard		
+x	channel	x
+xai		
+xiaomi		
+zai		
+zalo	channel	zalo
+zalouser	channel	zalouser
+zoom-meetings		

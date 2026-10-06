@@ -1,0 +1,52 @@
+{
+  "slug": "openclaw-hermes",
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "titles": {
+    "zh": "OpenClaw, Hermes 和实现",
+    "en": "OpenClaw, Hermes, and Their Implementation"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+4%",
+    "en": "+4%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍开源智能体项目 OpenClaw 与 Hermes Agent，涉及飞书、网关、会话、记忆、插件、基金会。",
+    "en": "A narration about the open-source agents OpenClaw and Hermes Agent, covering Feishu, gateways, sessions, memory, plugins and foundations."
+  },
+  "production": {
+    "mode": "self",
+    "maker": "Claude Sonnet 5.5"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    }
+  }
+}

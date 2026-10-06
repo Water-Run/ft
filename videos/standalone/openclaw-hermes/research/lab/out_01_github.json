@@ -1,0 +1,79 @@
+{
+ "retrieved": "2026-10-06（UTC 01–03 时，GitHub REST API 未认证）",
+ "openclaw/openclaw": {
+  "full_name": "openclaw/openclaw",
+  "created_at": "2025-11-24T10:16:47Z",
+  "pushed_at": "2026-10-06T01:21:34Z",
+  "stargazers_count": 391448,
+  "forks_count": 82282,
+  "language": "TypeScript",
+  "default_branch": "main",
+  "description": "The AI that really does things. Any OS. Any Platform. The lobster way. 🦞 ",
+  "topics": [
+   "ai",
+   "assistant",
+   "crustacean",
+   "molty",
+   "openclaw",
+   "own-your-data",
+   "personal"
+  ],
+  "license": "MIT",
+  "commits_total": 105635,
+  "oldest_commit": {
+   "sha": "f6dd362d39",
+   "date": "2025-11-24T10:16:47Z",
+   "message": "Initial commit"
+  },
+  "head_commit": {
+   "sha": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "date": "2026-10-05T18:22:55-07:00",
+   "message": "fix(ci): identify duplicate test owners in preflight"
+  }
+ },
+ "NousResearch/hermes-agent": {
+  "full_name": "NousResearch/hermes-agent",
+  "created_at": "2025-07-22T22:22:28Z",
+  "pushed_at": "2026-10-06T01:20:46Z",
+  "stargazers_count": 251451,
+  "forks_count": 54007,
+  "language": "Python",
+  "default_branch": "main",
+  "description": "The agent that grows with you",
+  "topics": [
+   "ai",
+   "ai-agent",
+   "ai-agents",
+   "anthropic",
+   "chatgpt",
+   "claude",
+   "claude-code",
+   "codex",
+   "hermes",
+   "hermes-agent",
+   "llm",
+   "nous-research",
+   "openai"
+  ],
+  "license": "MIT",
+  "commits_total": 49041,
+  "oldest_commit": {
+   "sha": "21d80ca683",
+   "date": "2025-07-23T01:32:44Z",
+   "message": "initital commit"
+  },
+  "head_commit": {
+   "sha": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "date": "2026-10-05T21:20:46-04:00",
+   "message": "fix(discord): a voice speaker outside the member cache still gets a name"
+  }
+ },
+ "earendil-works/pi": {
+  "full_name": "earendil-works/pi",
+  "created_at": "2025-08-09T14:03:50Z",
+  "stargazers_count": 112735,
+  "license": "MIT",
+  "language": "TypeScript",
+  "description": "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI"
+ }
+}

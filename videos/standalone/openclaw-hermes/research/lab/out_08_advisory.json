@@ -1,0 +1,17 @@
+{
+ "earliest": {
+  "ghsa_id": "GHSA-mc68-q9jw-2h3v",
+  "published_at": "2026-01-31T08:52:50Z",
+  "severity": "high",
+  "summary": "Command Injection in Clawdbot Docker Execution via PATH Environment Variable"
+ },
+ "target": {
+  "ghsa_id": "GHSA-g8p2-7wf7-98mq",
+  "published_at": "2026-01-31T10:04:35Z",
+  "severity": "high",
+  "cvss_score": 8.8,
+  "summary": "1-Click RCE via Authentication Token Exfiltration From gatewayUrl",
+  "patched": "v2026.1.29",
+  "vulnerable": "<=v2026.1.28"
+ }
+}

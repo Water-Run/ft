@@ -1,0 +1,26 @@
+{
+ "huggingface": {
+  "NousResearch/Nous-Hermes-13b": {
+   "createdAt": "2023-06-03T03:21:50.000Z"
+  },
+  "NousResearch/Hermes-2-Pro-Mistral-7B": {
+   "createdAt": "2024-03-11T12:55:27.000Z"
+  },
+  "NousResearch/Hermes-3-Llama-3.1-405B": {
+   "createdAt": "2024-08-13T04:57:53.000Z"
+  },
+  "NousResearch/Hermes-4-405B": {
+   "createdAt": "2025-08-06T02:51:17.000Z"
+  }
+ },
+ "arxiv": {
+  "2408.11857": {
+   "title": "Hermes 3 Technical Report",
+   "published": "2024-08-15T20:17:33Z"
+  },
+  "2508.18255": {
+   "title": "Hermes 4 Technical Report",
+   "published": "2025-08-25T17:45:06Z"
+  }
+ }
+}
