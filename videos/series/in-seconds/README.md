@@ -40,7 +40,7 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 制作中 | [`two-factor-auth`](two-factor-auth/) |
+| 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 已成片 | [`two-factor-auth`](two-factor-auth/) |
 | 2 | 100 秒了解 WSL 1、2、3 为我们带来了什么 | zh + en | 计划中 | `wsl` |
 | 3 | 200 秒速通 Lean 4：什么是形式化检验，以及为什么它可靠 | zh + en | 计划中 | `lean4` |
 | 4 | 100 秒明白 Opus 5.5 是怎么做动画的 | zh + en | 计划中 | `how-opus-animates` |
