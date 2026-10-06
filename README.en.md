@@ -1,6 +1,6 @@
-# ft
+# f(t)
 
-ft is the source repository of explainer videos and project introduction videos made by large language models, together with the toolchain that turns those sources into finished films. The name is the picture itself: a film is a pure function of time, and any frame is f(t). Each video is an HTML animation whose only input is the time t: the narration is synthesized sentence by sentence, on-screen actions are anchored to the word boundaries of the narration, headless browsers render frames in parallel, and ffmpeg encodes and packages the result. Films are 1920×1080 at 60 frames per second; unless stated otherwise, each one is produced in Chinese and in English.
+f(t) is the source repository of explainer videos and project introduction videos made by large language models, together with the toolchain that turns those sources into finished films. The name is the picture itself: a film is a pure function of time, and any frame is f(t). Each video is an HTML animation whose only input is the time t: the narration is synthesized sentence by sentence, on-screen actions are anchored to the word boundaries of the narration, headless browsers render frames in parallel, and ffmpeg encodes and packages the result. Films are 1920×1080 at 60 frames per second; unless stated otherwise, each one is produced in Chinese and in English.
 
 [中文](README.md)
 
