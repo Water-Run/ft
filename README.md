@@ -28,7 +28,7 @@ ft 是由大语言模型制作的科普视频与项目介绍视频的源码仓�
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/standalone/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 |
 | [古代来的 Shell：Windows 批处理（.bat）](videos/standalone/windows-batch/) | 中文 | 3:13 | 委托 |
 
-全部片单（15 个系列、96 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)。
+全部片单（19 个系列、151 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)。
 
 ## 工作方式
 
@@ -72,13 +72,13 @@ node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条�
 | 文档 | 内容 |
 |---|---|
 | [workflow.md](docs/workflow.md) | 制作流程：从立项到交付的每一步、产物与过关条件 |
-| [standards.md](docs/standards.md) | 质量标准：可靠、审美、动态、声音、语体 |
+| [standards.md](docs/standards.md) | 质量标准：事实可靠、原创、审美、动画完成度、声音、语体、片尾名单 |
 | [research.md](docs/research.md) | 取证：事实记在哪里、证据怎么留、什么不入库 |
 | [script-and-voice.md](docs/script-and-voice.md) | 脚本与配音：写法、多语言、读法、回听 |
 | [visual-design.md](docs/visual-design.md) | 视觉设计：视觉系统、关键帧、封面 |
 | [scenes.md](docs/scenes.md) | 场景与动态：空间与镜头、动作、换场、节奏 |
 | [sound.md](docs/sound.md) | 声音：音效、配乐、混音参数、数值自检 |
-| [review.md](docs/review.md) | 审查与交付：闸门的各项检查、成片后的三项审查 |
+| [review.md](docs/review.md) | 审查与交付：自动闸门、三项核心审查、原创与动画完成度、片尾核对 |
 | [series.md](docs/series.md) | 系列：连续性与维持它的做法 |
 | [delegation.md](docs/delegation.md) | 委托制作：分工、任务书、交接与验收 |
 | [engine.md](docs/engine.md) | 引擎速查 |

@@ -24,7 +24,7 @@
 | 3 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 | `sqlite` |
 | 4 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 | `postgresql` |
 | 5 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 | `firebird` |
-| 6 | 一个数据库引擎是如何实现的？——在内存中 KV：Redis | zh + en | 计划中 | `redis` |
+| 6 | 一个数据库引擎是如何实现的？——快如闪电：Redis | zh + en | 计划中 | `redis` |
 | 7 | 一个数据库引擎是如何实现的？——KeyDB，多线程的 Redis | zh + en | 计划中 | `keydb` |
 | 8 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 | `clickhouse` |
 | 9 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 | `mongodb` |

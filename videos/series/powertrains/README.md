@@ -18,6 +18,6 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | EA211+DQ200 经典动力总成与演化 | zh + en | 计划中 | `ea211-dq200` |
-| 2 | 肉到发麻：10s 前中期的 PSA，EC5 与 AT8 | zh + en | 计划中 | `psa-ec5-at8` |
+| 1 | EA211+DQ200 经典动力总成 | zh + en | 计划中 | `ea211-dq200` |
+| 2 | （肉到发麻）10s 前中期的 PSA，EC5 与 AT8 | zh + en | 计划中 | `psa-ec5-at8` |
 <!-- catalog:end -->

@@ -1,4 +1,4 @@
-# LLM 概念科普
+# LLM
 
 每集讲清一个与大语言模型有关的概念：它指什么、为什么需要、怎么工作。
 
@@ -19,6 +19,7 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | CoT：先思考，再回答 | zh + en | 计划中 | `chain-of-thought` |
-| 2 | LLM 的 Dense 和 MoE 是什么 | zh + en | 计划中 | `dense-vs-moe` |
-| 3 | 通过参数认识一个模型 | zh + en | 计划中 | `model-parameters` |
+| 2 | 量化 | zh + en | 计划中 | `quantization` |
+| 3 | 框架 | zh + en | 计划中 | `frameworks` |
+| 4 | 通过参数认识一个模型 | zh + en | 计划中 | `model-parameters` |
 <!-- catalog:end -->

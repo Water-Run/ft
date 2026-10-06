@@ -30,7 +30,7 @@ Finished films, narration caches and intermediate render files are not tracked.
 | [luainstaller: hand your Lua script to someone without Lua](videos/standalone/luainstaller/) | Chinese, English | 7:55, 7:57 | Self-made |
 | [A shell from ancient times: Windows batch files (.bat)](videos/standalone/windows-batch/) | Chinese | 3:13 | Delegated |
 
-The full catalog (15 series, 96 videos including planned ones) is in [docs/catalog.md](docs/catalog.md).
+The full catalog (19 series, 151 videos including planned ones) is in [docs/catalog.md](docs/catalog.md).
 
 ## How it works
 
@@ -74,13 +74,13 @@ node kit/tools/new.js series/<series>/<video>          # an entry already in the
 | Document | Contents |
 |---|---|
 | [workflow.md](docs/workflow.md) | Workflow: every step from start to delivery, with outputs and pass criteria |
-| [standards.md](docs/standards.md) | Quality standards: reliability, aesthetics, motion, sound, register |
+| [standards.md](docs/standards.md) | Quality standards: factual accuracy, originality, aesthetics, animation quality, sound, register, end credits |
 | [research.md](docs/research.md) | Research: where facts are recorded, how evidence is kept, what is not tracked |
 | [script-and-voice.md](docs/script-and-voice.md) | Script and narration: writing, multiple languages, pronunciation, listening back |
 | [visual-design.md](docs/visual-design.md) | Visual design: visual system, keyframes, covers |
 | [scenes.md](docs/scenes.md) | Scenes and motion: space and camera, actions, scene changes, pacing |
 | [sound.md](docs/sound.md) | Sound: effects, music, mix parameters, numeric self-check |
-| [review.md](docs/review.md) | Review and delivery: the checks of the gate, the three reviews after rendering |
+| [review.md](docs/review.md) | Review and delivery: automated checks, three core reviews, originality, animation quality, end credits |
 | [series.md](docs/series.md) | Series: continuity and how it is maintained |
 | [delegation.md](docs/delegation.md) | Delegated production: division of work, the brief, handoff and acceptance |
 | [engine.md](docs/engine.md) | Engine reference |

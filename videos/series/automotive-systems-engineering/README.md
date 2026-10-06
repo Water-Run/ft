@@ -20,4 +20,6 @@
 |---|---|---|---|---|
 | 1 | 用料是用料，调教是调教——汽车底盘的系统工程 | zh + en | 计划中 | `chassis` |
 | 2 | 当碰撞不可避免时：被动安全和白车身 | zh + en | 计划中 | `passive-safety` |
+| 3 | 发动机的补丁：变速箱群观 | zh + en | 计划中 | `transmission-survey` |
+| 4 | 当油和电混合驱动——汽车混动系统 | zh + en | 计划中 | `hybrid-drivetrains` |
 <!-- catalog:end -->

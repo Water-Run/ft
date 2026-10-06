@@ -27,7 +27,7 @@
 
 **归你做：**
 
-1. 各场景的分镜细化与实现：`src/js/scenes/`（现在是空壳或草稿）。
+1. 各场景的分镜细化与实现：`src/js/scenes/`（现在是空壳或草稿），包括列出策划者 WaterRun 与实际参与模型的片尾名单。
 2. 常驻元素：章节卡、角标、进度条（`src/js/config.js` 的 `chrome()`）。
 3. 声音编排：给每个可见动作登记音效；混音；按 `brief/05-motion-sound.md` 出试听片。
 4. 每种语言的两版封面：`src/cover.html`。
@@ -77,7 +77,7 @@
 | 8 | 封面 | 写 `src/cover.html`<br>`node kit/tools/look.js V --url "/cover.html?r=169&lang={{LANG1}}" --size 1920x1080`<br>`node kit/tools/look.js V --url "/cover.html?r=43&lang={{LANG1}}" --size 1600x1200`<br>`node kit/tools/covers.js V` | 两版无 ✗；`out/` 下每种语言有 2 张 JPG、2 张 PNG |
 | 9 | 渲染与封装 | `node kit/tools/render.js V`（不要中断）<br>`node kit/tools/finish.js V` | 日志末行有 `verified frames=`；时长与时间线一致；响度在范围内 |
 | 10 | 试听片（按 `brief/05-motion-sound.md` 的要求） | `node kit/tools/audio.js V --lang <语言> music=<另一种> out=audio_b.wav`<br>`node kit/tools/finish.js V --lang <语言> --audio out/<语言>/audio_b.wav --name <名字>`<br>`node kit/tools/audio.js V`（把正式混音恢复为默认） | 试听片存在 |
-| 11 | 三项审查（`docs/review.md` 第 5 节），有问题就改、重渲、再查 | `node kit/tools/sheets.js V cue`<br>`node kit/tools/sheets.js V every 4` | 审查结论写进 `research/FACTS.md` 的「复核」与 `DELIVERY.md` |
+| 11 | 三项核心审查、原创与动画完成度、片尾名单检查（`docs/review.md` 第 5 节），有问题就改、重渲、再查 | `node kit/tools/sheets.js V cue`<br>`node kit/tools/sheets.js V every 4` | 各项检查完成，无未解决的问题；结论写进 `research/FACTS.md` 的「复核」与 `DELIVERY.md` |
 | 12 | 交付前总检 | `node kit/tools/check.js V --final` | 「全部通过」 |
 
 改过任何场景、样式或脚本之后，已有的渲染结果就过期了，必须重新执行第 9 步及之后的步骤（`check.js --final` 会查这一点）。
@@ -92,11 +92,14 @@
 2. **画面只由时间 t 决定。** 不用 CSS `transition` / `animation`、定时器、`tl.call()`、时间线回调、未固定种子的随机数。原因：渲染是多个浏览器各渲一段并行出帧，任何依赖「播放历史」的状态都会在片段接缝处出错。
 3. **时间点写成 `T(句号, 词)`，不写死秒数。** 旁白改了画面才能自动跟着走。
 4. **只用本片的视觉系统。** 颜色用 `style.css` 里的变量，字体用规定的几种；`brief/03-visual.md` 禁用的做法一处都不要出现。
-5. **不能静。** 任意 3 秒内必须有观众能感知的画面变化；每个场景都有镜头运动。
+5. **动画精美精良。** 任意 3 秒内必须有观众能感知的画面变化；每个场景都有镜头运动。按 `docs/standards.md` 第 3 节打磨构图、缓动、落点与转场，检查运动中的可读性；不能只以通过静止检测为准。
 6. **不能只有配音。** 每个可见动作都有音效。
 7. **不泄露本机信息。** 画面、封面、说明里不出现主机名、用户名、内网地址、演示目录以外的本机路径。
 8. **不谎报。** `DELIVERY.md` 里只写实际运行过的命令和实际得到的输出；没做的写「未做」，没通过的写「未通过」并附上工具输出。听不到声音、看不到画面，这两件事要如实写明，留给人来判断。
 9. **不为过关而改规则。** 不修改 `kit/` 下的工具，不放宽 `project.json` 的 `check` 阈值，不删改 `expect.<语言>.json` 的条目。
+10. **不直接抄袭现成产品。** 参考来源与独立设计选择写进 README，不照搬文案、分镜、构图与动效；边界见 `docs/standards.md` 第 2 节。
+11. **片尾名单完整。** 各语言、各交付视频版本列出策划者 WaterRun 及实际参与模型与分工，包含准备方与受托方；与 `FACTS.md` 的「制作署名」、README、`DELIVERY.md` 一致且可读。不猜测模型版本，不虚构参与者。
+12. **片尾展示开源视频链接。** 各语言、各交付视频版本展示「开源视频」（英文 `Open-source video`）与 `github.com/Water-Run/ft`，网址完整可读、留足阅读时间，与 `FACTS.md`、README、`DELIVERY.md` 一致。
 
 ## 7. 遇到问题时
 
@@ -107,4 +110,4 @@
 
 ## 8. 完成的定义
 
-`node kit/tools/check.js {{PATH}} --final` 输出「全部通过」，并且 `DELIVERY.md`、`research/FACTS.md` 的「复核」一节、本片的 `README.md` 都已写好。然后用几句话汇报：成片位置、时长、闸门结果、需要人来判断的事项（配乐听感、画面观感）。
+`node kit/tools/check.js {{PATH}} --final` 输出「全部通过」，`docs/review.md` 第 5 节的各项检查已完成且无未解决的问题，并且 `DELIVERY.md`、`research/FACTS.md` 的「制作署名」与「复核」两节、本片的 `README.md` 都已写好。未经目视的观感如实记为待复核，不能据此宣称已全部验收。然后用几句话汇报：成片位置、时长、闸门结果、审查与片尾核对结果、需要人来判断的事项（配乐听感、画面观感）。

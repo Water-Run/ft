@@ -18,15 +18,17 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 英特尔——酷睿 i 时代 | zh + en | 计划中 | `intel-core-i` |
-| 2 | 英特尔——酷睿 i 时代之后到今天 | zh + en | 计划中 | `intel-after-core-i` |
-| 3 | 恐龙年代的 AMD | zh + en | 计划中 | `amd-early` |
-| 4 | AMD 的农机时代 | zh + en | 计划中 | `amd-bulldozer-era` |
-| 5 | Ryzen！AMD 的崛起 | zh + en | 计划中 | `amd-ryzen` |
-| 6 | 英伟达 GTX 系列发展史 | zh + en | 计划中 | `nvidia-gtx` |
-| 7 | 英伟达 RTX 系列发展史 | zh + en | 计划中 | `nvidia-rtx` |
-| 8 | 英伟达的专业卡发展史 | zh + en | 计划中 | `nvidia-workstation` |
-| 9 | 英特尔独立显卡发展史 | zh + en | 计划中 | `intel-discrete-gpu` |
-| 10 | 高通 | zh + en | 计划中 | `qualcomm` |
-| 11 | 苹果 | zh + en | 计划中 | `apple` |
+| 1 | 英特尔——酷睿 i 时代之前 | zh + en | 计划中 | `intel-before-core-i` |
+| 2 | 英特尔——酷睿 i 时代 | zh + en | 计划中 | `intel-core-i` |
+| 3 | 英特尔——酷睿 i 时代之后 | zh + en | 计划中 | `intel-after-core-i` |
+| 4 | 恐龙年代的 AMD | zh + en | 计划中 | `amd-early` |
+| 5 | AMD 的农机时代 | zh + en | 计划中 | `amd-bulldozer-era` |
+| 6 | Ryzen！崛起：AMD，Yes！ | zh + en | 计划中 | `amd-ryzen` |
+| 7 | 英伟达 GTX 系列发展史 | zh + en | 计划中 | `nvidia-gtx` |
+| 8 | 英伟达 RTX 系列发展史 | zh + en | 计划中 | `nvidia-rtx` |
+| 9 | 英伟达的专业卡发展史 | zh + en | 计划中 | `nvidia-workstation` |
+| 10 | 英特尔独立显卡发展史 | zh + en | 计划中 | `intel-discrete-gpu` |
+| 11 | 高通：从 600 到 888 | zh + en | 计划中 | `qualcomm` |
+| 12 | 苹果的芯片自研之路 | zh + en | 计划中 | `apple` |
+| 13 | Windows Server 演变史 | zh + en | 计划中 | `windows-server` |
 <!-- catalog:end -->

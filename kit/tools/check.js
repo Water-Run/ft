@@ -107,6 +107,7 @@ const CAPW = { zh: 26, en: 44 }, tm = [], totals = {};
 for (const lang of LANGS) {
   const { L, strip, measured } = layout(lang); totals[lang] = L.total;
   if (!measured) tm.push(`${lang}：还没有实测时长，先运行 node kit/tools/tts.js`);
+  for (const p of L.problems || []) tm.push(`${lang}：${p}`);            // 脚本自己报的时间线问题（例如定长的片子里某一场的旁白超出了定点）
   const range = C.duration && (Array.isArray(C.duration) ? C.duration : C.duration[lang]);
   if (range && (L.total < range[0] || L.total > range[1])) tm.push(`${lang}：总长 ${L.total.toFixed(1)}s（${mmss(L.total)}）不在 ${range[0]}–${range[1]} 秒之间`);
   const cw = C.caption_width == null ? (CAPW[lang] != null ? CAPW[lang] : 44) : (typeof C.caption_width === 'object' ? C.caption_width[lang] : C.caption_width);

@@ -18,14 +18,17 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | CodeX | zh + en | 计划中 | `codex` |
-| 2 | OpenClaude | zh + en | 计划中 | `openclaude` |
+| 1 | CodeX CLI 的实现 | zh + en | 计划中 | `codex` |
+| 2 | OpenCode | zh + en | 计划中 | `opencode` |
 | 3 | Codewhale | zh + en | 计划中 | `codewhale` |
-| 4 | OpenCode | zh + en | 计划中 | `opencode` |
-| 5 | ZCode | zh + en | 计划中 | `zcode` |
-| 6 | MiniMax Code | zh + en | 计划中 | `minimax-code` |
+| 4 | DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |
+| 5 | OpenClaude | zh + en | 计划中 | `openclaude` |
+| 6 | Grok Build | zh + en | 计划中 | `grok-build` |
 | 7 | Mimo Code | zh + en | 计划中 | `mimo-code` |
 | 8 | Kimi Code | zh + en | 计划中 | `kimi-code` |
-| 9 | Pi | zh + en | 计划中 | `pi` |
-| 10 | 上下文压缩的方式 | zh + en | 计划中 | `context-compaction` |
+| 9 | Qwen Code | zh + en | 计划中 | `qwen-code` |
+| 10 | ZCode | zh + en | 计划中 | `zcode` |
+| 11 | MiniMax Code | zh + en | 计划中 | `minimax-code` |
+| 12 | Pi | zh + en | 计划中 | `pi` |
+| 13 | 上下文压缩的方式 | zh + en | 计划中 | `context-compaction` |
 <!-- catalog:end -->

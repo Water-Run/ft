@@ -22,5 +22,11 @@
 | 2 | 中国铁路网 | zh + en | 计划中 | `railway-network` |
 | 3 | 中国高速网 | zh + en | 计划中 | `expressway-network` |
 | 4 | 中国地理概览 | zh + en | 计划中 | `geography` |
-| 5 | 中国铁路车型概览 | zh + en | 计划中 | `rolling-stock` |
+| 5 | 中国铁路车型概览（普铁） | zh + en | 计划中 | `rolling-stock` |
+| 6 | 中国铁路车型概览（动车组） | zh + en | 计划中 | `emu-stock` |
+| 7 | 中国警察制度 | zh + en | 计划中 | `police` |
+| 8 | 中国医院体系 | zh + en | 计划中 | `hospitals` |
+| 9 | 中国大型机场概览 | zh + en | 计划中 | `airports` |
+| 10 | 中国地铁：车型、标准和地铁网 | zh + en | 计划中 | `metro` |
+| 11 | 中国 BRT 快速公交 | zh + en | 计划中 | `brt` |
 <!-- catalog:end -->

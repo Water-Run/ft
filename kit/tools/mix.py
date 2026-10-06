@@ -5,6 +5,7 @@
 #   audio/<语言>/cues/<id>.mp3                                                        逐句旁白
 # project.json 的 audio 段（均可省略）：
 #   music      "pad" 铺底 | "pulse" 铺底加节拍琶音 | "chip" 复古方波 | "score" 按章节编排（见 score 段）| "none" | "<相对视频目录的音频文件>"
+#              | "<相对视频目录的 .py 文件>"：本片（或本系列）自带的配乐脚本，见下
 #   music_db   无旁白时的配乐电平（默认 -21）      duck_db  旁白出现时再压低多少（默认 9）      sfx_db  音效总电平（默认 -8）
 #   voice_norm "rms"（默认：旁白按响度对齐到 -21 dB，再软限幅）| "peak"（按峰值归一到 0.89，早期两部片子的做法）
 #   pad_low / pad_top   铺底里低音区与高音区的增益（默认 0.4 / 1.3；最早的两部片子是 1 / 1，约四分之三的能量在 150 Hz 以下，偏闷）
@@ -12,6 +13,9 @@
 #   sfx        true（默认）| false：不铺音效（画面登记的音效事件照常导出，只是不进混音）
 #   score      { weights: {层: 增益}, layers: [[层, 起, 止, 电平], …] }，层有 pad arpA arpB bass hat；
 #              起止写场景号或句号，可带 .start/.end 与 ±秒，例如 "how"、"h17-0.8"、"outro.end"；后写的覆盖先写的
+# 配乐脚本（music 以 .py 结尾）：模块里定义 compose(ctx)，返回 (2, N) 的数组（任意幅度，这里按峰值归一）。
+#   ctx = { sr, n, total, scenes: [{id, start, end}], cues: [{id, start, end}], audio: 本片的 audio 段, lang }
+#   模块可另给 FADE = (开头淡入秒数, 结尾淡出秒数)，缺省 (2.5, 3.0)。电平、旁白压低与限幅仍由这里统一处理。
 # 命令行 key=value 可临时覆盖上述各项，另有 out=<文件名>（默认 audio.wav）
 # 配乐与音效都是程序合成的，写脚本的人听不到：出片前要有人试听。
 import json, os, subprocess, sys, wave
@@ -202,7 +206,7 @@ def score():
         out += lay
     return out / np.abs(out).max()
 
-kind = AUD["music"]
+kind = AUD["music"]; FADE_IO = None
 if kind == "none":
     music = np.zeros((2, N))
 elif kind == "score":
@@ -224,10 +228,16 @@ elif kind in ("pad", "pulse", "chip"):
         lift = smooth(smooth(lift, int(1.2 * SR)), int(1.2 * SR))
         music = music * 0.7 + tile(chip_loop()) * (0.28 + 0.36 * lift) * (1 - 0.4 * duck)
         music /= np.abs(music).max()
+elif kind.endswith(".py"):
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location("lvs_music", os.path.join(VIDEO, kind)); _mod = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+    music = np.asarray(_mod.compose({"sr": SR, "n": N, "total": total, "scenes": mix.get("scenes", []), "cues": mix["cues"], "audio": AUD, "lang": VLANG}), dtype=np.float64)
+    music /= max(1e-9, np.abs(music).max()); FADE_IO = getattr(_mod, "FADE", None)
 else:
     m = decode(os.path.join(VIDEO, kind), ch=2).astype(np.float64)
     m /= max(1e-9, np.abs(m).max()); music = tile(m)
-fade = np.clip(np.arange(N) / (2.5 * SR), 0, 1) * np.clip((total * SR - np.arange(N)) / ((5.5 if kind == "score" else 3.0) * SR), 0, 1)
+fade_in, fade_out = FADE_IO if FADE_IO else (2.5, 5.5 if kind == "score" else 3.0)
+fade = np.clip(np.arange(N) / (fade_in * SR), 0, 1) * np.clip((total * SR - np.arange(N)) / (fade_out * SR), 0, 1)
 music = music * db(AUD["music_db"] - AUD["duck_db"] * duck) * fade
 
 # ── 音效：全部程序合成。t 为起点（秒）──
