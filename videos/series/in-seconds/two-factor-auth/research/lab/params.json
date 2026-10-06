@@ -1,0 +1,13 @@
+{
+  "about": "本片演示用的参数。密钥由 secret_phrase 的 SHA-1 得到（20 字节，可复现）；t0 由 01_pick_time.py 按其中写明的规则选出。",
+  "secret_phrase": "ft / in-seconds / two-factor-auth / demo secret",
+  "issuer": "Example",
+  "account": "alice@example.com",
+  "algorithm": "SHA1",
+  "digits": 6,
+  "period": 30,
+  "day_utc": "2026-10-06",
+  "search_from_utc": "12:00:00",
+  "windows": 4,
+  "demo_window": 2
+}

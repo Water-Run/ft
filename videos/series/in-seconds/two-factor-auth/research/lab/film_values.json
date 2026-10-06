@@ -1,0 +1,60 @@
+{
+ "key_hex": "617c673a486ab2edc241eba9c951b436368de398",
+ "key_b32": "MF6GOOSINKZO3QSB5OU4SUNUGY3I3Y4Y",
+ "uri": "otpauth://totp/Example:alice@example.com?secret=MF6GOOSINKZO3QSB5OU4SUNUGY3I3Y4Y&issuer=Example",
+ "algorithm": "SHA1",
+ "digits": 6,
+ "period": 30,
+ "t0": 1791289020,
+ "t0_utc": "2026-10-06 12:17:00",
+ "windows": [
+  {
+   "k": 0,
+   "unix": 1791289020,
+   "counter": 59709634,
+   "msg": "00000000038f18c2",
+   "hs": "e86e1ef983c04a1bc52e64b9cacd22a7734c9ba4",
+   "offset": 4,
+   "p": "83c04a1b",
+   "p_int": 2210417179,
+   "snum": 62933531,
+   "code": "933531"
+  },
+  {
+   "k": 1,
+   "unix": 1791289050,
+   "counter": 59709635,
+   "msg": "00000000038f18c3",
+   "hs": "befb0cc0b6b36ad06cf1b420664e21ffd5c80aae",
+   "offset": 14,
+   "p": "21ffd5c8",
+   "p_int": 570414536,
+   "snum": 570414536,
+   "code": "414536"
+  },
+  {
+   "k": 2,
+   "unix": 1791289080,
+   "counter": 59709636,
+   "msg": "00000000038f18c4",
+   "hs": "becd5d7c56ea8dec5869247dd171bc19bd147fa5",
+   "offset": 5,
+   "p": "ea8dec58",
+   "p_int": 3935169624,
+   "snum": 1787685976,
+   "code": "685976"
+  },
+  {
+   "k": 3,
+   "unix": 1791289110,
+   "counter": 59709637,
+   "msg": "00000000038f18c5",
+   "hs": "9c2106dd29cf61c2eb26b43043445c4e3bb41be4",
+   "offset": 4,
+   "p": "29cf61c2",
+   "p_int": 701456834,
+   "snum": 701456834,
+   "code": "456834"
+  }
+ ]
+}

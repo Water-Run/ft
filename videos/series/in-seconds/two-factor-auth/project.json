@@ -1,0 +1,23 @@
+{
+  "slug": "two-factor-auth",
+  "languages": ["zh", "en"],
+  "titles": {"zh": "120 秒关于什么是 2FA，以及它是怎么工作的", "en": "2FA in 120 Seconds: What It Is and How It Works"},
+  "voices": {"zh": "zh-CN-YunyangNeural", "en": "en-US-AndrewNeural"},
+  "rates": {"zh": "+6%", "en": "+8%"},
+  "asr_prompts": {"zh": "以下是普通话的讲解，介绍 2FA 双因素认证、TOTP、HMAC、WebAuthn、二维码、密钥与验证码。", "en": "A narration about 2FA, two-factor authentication, TOTP, HMAC, WebAuthn, QR codes, secret keys and one-time passwords."},
+  "production": {"mode": "self", "maker": "Claude Opus 5.5"},
+  "render": {"fps": 60, "mb": 8},
+  "audio": {"music": "tools/music.py", "music_db": -12, "duck_db": 7, "sfx_db": -9, "score": {"lift_cue": "d6"}},
+  "check": {
+    "duration": [119.9, 120.1],
+    "caption_width": {"zh": 26, "en": 44},
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "style": {"flat": true, "no_radius": true, "no_emoji": true, "palette": ["0C0D0F", "F2EFE8", "FF4A1C", "8A8782", "6B6964"], "fonts": ["Sans SC", "Inter", "Mono"]},
+    "pace": {"en": {"fast": 4.0}},
+    "sfx": {"per_seconds": 2.5, "kinds": 6, "scene_per_seconds": 4, "max_gap": 6}
+  }
+}

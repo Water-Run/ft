@@ -1,0 +1,53 @@
+# 120 秒关于什么是 2FA，以及它是怎么工作的
+
+<!-- 开头用一两句话给出定义：这部片子讲什么、多长、哪些语言。语体严谨克制，不用比喻与第二人称。 -->
+
+制作流程与标准见仓库的 `docs/`；片中每一句陈述的出处见 `research/FACTS.md`。
+
+## 内容
+
+| 场景 | 起点 | 内容 |
+|---|---|---|
+| open | 0:00 | |
+
+## 视觉系统
+
+<!-- 颜色、字体、图形语言、转场；全片保持的约定（同一个图形只有一个含义）。 -->
+<!-- 使用的参考作品、来源、借鉴方法与本片的设计选择；未使用外部参考则写明。不得直接抄袭现成产品。 -->
+
+## 取证
+
+<!-- 事实从哪里来：实验环境、版本、脚本与回显的位置；怎样重做一遍。 -->
+
+## 读法
+
+<!-- 送去合成的文本与字幕不同的地方（script.js 的 SAY 表）及原因。 -->
+
+## 制作署名与片尾
+
+策划：WaterRun。
+
+开源视频：[GitHub · Water-Run/ft](https://github.com/Water-Run/ft)。片尾须展示「开源视频」与完整可读的网址。
+
+<!-- 根据 research/FACTS.md 的「制作署名」记录填写实际参与模型，不猜测版本；未披露模型的服务如实注明。所有语言、各交付视频版本都须包含完整名单。 -->
+
+| 参与模型（含可确认的版本） | 实际分工 |
+|---|---|
+
+<!-- 各语言、各视频版本的片尾时段与核对结果：完整性、字号、对比度、停留时间；名单与成片一致。 -->
+
+## 复现
+
+```bash
+node kit/tools/tts.js    videos/series/in-seconds/two-factor-auth --lang all     # 合成旁白，更新时间线
+node kit/tools/check.js  videos/series/in-seconds/two-factor-auth                # 制作期总闸门
+node kit/tools/audio.js  videos/series/in-seconds/two-factor-auth --lang all     # 混音
+node kit/tools/render.js videos/series/in-seconds/two-factor-auth --lang all     # 渲染
+node kit/tools/finish.js videos/series/in-seconds/two-factor-auth --lang all     # 封装成片
+node kit/tools/covers.js videos/series/in-seconds/two-factor-auth --lang all     # 封面
+node kit/tools/check.js  videos/series/in-seconds/two-factor-auth --final        # 交付前总闸门
+```
+
+## 成片
+
+<!-- 时长、规格、交付物清单；事实、读音与节奏、旁白与画面对应的审查结果；原创与动画完成度的检查范围、缺陷与修正；需要人来判断的事项（配乐听感、音色、画面观感）。自动闸门通过不代替上述检查，未核查的如实写明。 -->

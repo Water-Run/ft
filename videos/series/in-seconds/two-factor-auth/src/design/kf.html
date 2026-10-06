@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧：三个方向</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  /* 关键帧比较页：?d=a|b|c 方向，?f=1|2|3 画面。只用于第 4 步选方向，不进成片。 */
+  html, body, #stage { width: 1920px; height: 1080px; }
+  #stage { position: absolute; overflow: hidden; background: var(--bg); color: var(--fg); font-family: "Inter", "Sans SC"; }
+  .a { --bg: #0c0d0f; --fg: #f2efe8; --ac: #ff4a1c; --dim: #7d7b76; --blk: #f2efe8; --blkfg: #0c0d0f; }
+  .b { --bg: #ffd60a; --fg: #0c0d0f; --ac: #0c0d0f; --dim: #7a6800; --blk: #0c0d0f; --blkfg: #ffd60a; }
+  .c { --bg: #f1eee6; --fg: #14161a; --ac: #1f3bff; --dim: #8a8780; --blk: #14161a; --blkfg: #f1eee6; }
+  .abs { position: absolute; white-space: nowrap; }
+  .mono { font-family: "Mono"; }
+  .serif { font-family: "Serif SC"; }
+  .ac { color: var(--ac); }
+  .dim { color: var(--dim); }
+  svg { position: absolute; left: 0; top: 0; overflow: visible; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 52px; text-align: center; font: 500 40px "Sans SC"; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+  const q = new URLSearchParams(location.search), D = q.get('d') || 'a', Fr = q.get('f') || '1';
+  const st = document.getElementById('stage'); st.className = D;
+  const h = (tag, cls, html, css) => { const e = document.createElement(tag); e.className = cls || ''; if (html != null) e.innerHTML = html; if (css) e.style.cssText = css; st.appendChild(e); return e; };
+  const NS = 'http://www.w3.org/2000/svg';
+  const S = (w = 1920, hh = 1080) => { const e = document.createElementNS(NS, 'svg'); e.setAttribute('width', w); e.setAttribute('height', hh); st.appendChild(e); return e; };
+  const sv = (p, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  const V = (n) => getComputedStyle(st).getPropertyValue(n).trim();
+  const HS = 'be cd 5d 7c 56 ea 8d ec 58 69 24 7d d1 71 bc 19 bd 14 7f a5'.split(' ');
+
+  // ── 画面 1：开场。验证码与 30 秒表盘 ──
+  if (Fr === '1') {
+    if (D === 'a') {
+      h('div', 'abs mono', '933 531', 'left:118px;top:300px;font-weight:800;font-size:300px;letter-spacing:-.04em;line-height:1');
+      h('div', 'abs', '每 30 秒换一次', 'left:128px;top:640px;font:700 60px "Sans SC"');
+      h('div', 'abs mono dim', 'example.com · alice', 'left:128px;top:236px;font-weight:500;font-size:34px');
+      const s = S(), cx = 1500, cy = 470, R = 300;
+      for (let i = 0; i < 30; i++) { const a = (i / 30) * Math.PI * 2 - Math.PI / 2, big = i % 5 === 0, r0 = R - (big ? 54 : 30); sv(s, 'line', { x1: cx + Math.cos(a) * r0, y1: cy + Math.sin(a) * r0, x2: cx + Math.cos(a) * R, y2: cy + Math.sin(a) * R, stroke: i < 11 ? V('--ac') : V('--fg'), 'stroke-width': big ? 8 : 4 }); }
+      const a = (11 / 30) * Math.PI * 2 - Math.PI / 2; sv(s, 'line', { x1: cx - Math.cos(a) * 60, y1: cy - Math.sin(a) * 60, x2: cx + Math.cos(a) * (R + 30), y2: cy + Math.sin(a) * (R + 30), stroke: V('--ac'), 'stroke-width': 6 });
+      sv(s, 'circle', { cx, cy, r: 14, fill: V('--ac') });
+      h('div', 'abs mono', '19', `left:${cx - 150}px;top:${cy + 60}px;width:300px;text-align:center;font-weight:800;font-size:110px;line-height:1`);
+    } else if (D === 'b') {
+      h('div', 'abs', '933531', 'left:96px;top:150px;font:900 430px "Inter";letter-spacing:-.05em;line-height:1');
+      h('div', 'abs', '', 'left:120px;top:640px;width:1680px;height:56px;background:#0c0d0f');
+      h('div', 'abs', '', 'left:736px;top:640px;width:1064px;height:56px;background:#f2efe8');
+      h('div', 'abs', '每 30 秒换一次', 'left:120px;top:740px;font:900 96px "Sans SC"');
+      h('div', 'abs mono', '00:19', 'right:120px;top:748px;font-weight:800;font-size:84px');
+    } else {
+      h('div', 'abs', '', 'left:120px;top:210px;width:1680px;height:3px;background:var(--fg)');
+      h('div', 'abs mono', 'example.com · alice', 'left:120px;top:150px;font-weight:500;font-size:34px');
+      h('div', 'abs mono', '933 531', 'left:112px;top:250px;font-weight:300;font-size:330px;letter-spacing:-.05em;line-height:1');
+      h('div', 'abs serif', '每 30 秒换一次', 'left:124px;top:660px;font-weight:700;font-size:76px');
+      const s = S(); for (let i = 0; i <= 30; i++) { const x = 1260 + i * 18; sv(s, 'line', { x1: x, y1: 700, x2: x, y2: i % 5 === 0 ? 760 : 736, stroke: i <= 11 ? V('--ac') : V('--fg'), 'stroke-width': 3 }); }
+      sv(s, 'path', { d: `M${1260 + 11 * 18 - 10},676 l10,16 l10,-16 z`, fill: V('--ac') });
+    }
+    h('div', 'cap', '这 6 位数字，每 30 秒换一次');
+  }
+
+  // ── 画面 2：动态截取。20 个字节 → 低 4 位 → 4 个字节 → 31 位整数 → 末 6 位 ──
+  if (Fr === '2') {
+    const x0 = 120, cw = 84, y0 = D === 'c' ? 250 : 230;
+    h('div', 'abs' + (D === 'c' ? ' serif' : ''), 'HMAC-SHA-1 的 20 个字节', `left:${x0}px;top:${y0 - 130}px;font:${D === 'b' ? 900 : 700} 56px ${D === 'c' ? '"Serif SC"' : '"Sans SC"'}`);
+    HS.forEach((b, i) => {
+      const sel = i >= 5 && i <= 8, last = i === 19;
+      const bg = sel ? 'var(--ac)' : (D === 'b' ? 'transparent' : 'transparent'), fg = sel ? (D === 'b' ? '#ffd60a' : D === 'a' ? '#0c0d0f' : '#f1eee6') : 'var(--fg)';
+      h('div', 'abs mono', b, `left:${x0 + i * cw}px;top:${y0}px;width:${cw - 6}px;height:104px;line-height:104px;text-align:center;font-weight:${D === 'c' ? 500 : 700};font-size:46px;background:${bg};color:${fg};${!sel ? `border-bottom:${last ? 8 : 3}px solid var(--fg)` : ''}`);
+      h('div', 'abs mono dim', String(i), `left:${x0 + i * cw}px;top:${y0 - 44}px;width:${cw - 6}px;text-align:center;font-weight:500;font-size:26px;${sel ? 'color:var(--fg)' : ''}`);
+    });
+    // 末字节拆开
+    h('div', 'abs mono', 'a<span class="' + (D === 'b' ? '' : 'ac') + '" style="' + (D === 'b' ? 'background:#0c0d0f;color:#ffd60a;padding:0 10px' : '') + '">5</span>', `left:${x0 + 19 * cw - 60}px;top:${y0 + 150}px;font-weight:800;font-size:120px;line-height:1`);
+    h('div', 'abs', '低 4 位 = 5', `left:${x0 + 19 * cw - 330}px;top:${y0 + 196}px;font:700 40px "Sans SC"`);
+    // 4 个字节 → 32 位
+    const bits = '11101010100011011110110001011000', bx = x0, by = y0 + 330, bs = 34;
+    [...bits].forEach((c, i) => { const g = Math.floor(i / 8) * 18; h('div', 'abs', '', `left:${bx + i * (bs + 6) + g}px;top:${by}px;width:${bs}px;height:${bs}px;${c === '1' ? `background:${i === 0 ? 'var(--ac)' : 'var(--fg)'}` : 'border:3px solid var(--fg)'}`); });
+    h('div', 'abs mono', 'ea 8d ec 58', `left:${bx}px;top:${by - 70}px;font-weight:700;font-size:44px`);
+    h('div', 'abs', '去掉最高位', `left:${bx}px;top:${by + 54}px;font:700 36px "Sans SC"`);
+    h('div', 'abs mono', '<span class="dim">1787</span>685976', `left:${bx - 6}px;top:${by + 130}px;font-weight:${D === 'c' ? 300 : 800};font-size:190px;letter-spacing:-.04em;line-height:1`);
+    h('div', 'abs', '留下末 6 位', `left:${bx + 1240}px;top:${by + 236}px;font:700 44px "Sans SC"`);
+    h('div', 'cap', '去掉最高位，读成整数，留下末 6 位');
+  }
+
+  // ── 画面 3：时间轴。1970 → 现在 ──
+  if (Fr === '3') {
+    const x0 = 140, x1 = 1780, y = D === 'b' ? 610 : 600, px = (yr) => x0 + (yr - 1970) / (2026.76 - 1970) * (x1 - x0);
+    const s = S(); sv(s, 'line', { x1: x0, y1: y, x2: x1, y2: y, stroke: V('--fg'), 'stroke-width': D === 'b' ? 10 : 4 });
+    for (let yr = 1970; yr <= 2026; yr++) sv(s, 'line', { x1: px(yr), y1: y, x2: px(yr), y2: y + (yr % 10 === 0 ? 44 : 20), stroke: V('--fg'), 'stroke-width': yr % 10 === 0 ? 4 : 2 });
+    for (let yr = 1970; yr <= 2020; yr += 10) h('div', 'abs mono dim', String(yr), `left:${px(yr) - 50}px;top:${y + 56}px;width:100px;text-align:center;font-weight:500;font-size:28px`);
+    const marks = [[1970, 'Unix 纪元', '秒数从这里数起', 0], [1984.9, '1984', '随时间变化的令牌专利', 1], [1997.1, '1997', 'HMAC', 0], [2005.9, '2005', 'HOTP', 1], [2011.4, '2011', 'TOTP 成为开放标准', 0], [2019.2, '2019', 'WebAuthn', 1]];
+    for (const [yr, a, b, up] of marks) {
+      const x = px(yr), top = up ? y - 300 : y - 190;
+      sv(s, 'line', { x1: x, y1: top + 104, x2: x, y2: y, stroke: V('--fg'), 'stroke-width': 3 });
+      sv(s, 'rect', { x: x - 9, y: y - 9, width: 18, height: 18, fill: V('--fg') });
+      h('div', 'abs mono', a, `left:${x + 14}px;top:${top}px;font-weight:800;font-size:${yr === 1970 ? 44 : 64}px;line-height:1.05${D === 'c' ? ';font-weight:500' : ''}`);
+      h('div', 'abs', b, `left:${x + 16}px;top:${top + 68}px;font:500 30px "Sans SC"`);
+    }
+    sv(s, 'line', { x1: x1, y1: y - 130, x2: x1, y2: y + 150, stroke: D === 'b' ? '#f2efe8' : V('--ac'), 'stroke-width': 8 });
+    h('div', 'abs', '现在', `left:${x1 - 150}px;top:${y + 96}px;font:900 64px "Sans SC";color:${D === 'b' ? 'var(--fg)' : 'var(--ac)'}`);
+    h('div', 'abs mono', '1 791 289 071', `left:${x0 - 6}px;top:150px;font-weight:${D === 'c' ? 300 : 800};font-size:150px;letter-spacing:-.04em;line-height:1`);
+    h('div', 'abs' + (D === 'c' ? ' serif' : ''), '秒', `left:${D === 'c' ? 1290 : 1330}px;top:214px;font:700 72px ${D === 'c' ? '"Serif SC"' : '"Sans SC"'}`);
+    h('div', 'cap', '另一个输入是时间：1970 年元旦至今的秒数');
+  }
+  const sample = st.textContent;
+  Promise.all(['500 40px "Sans SC"', '900 40px "Sans SC"', '700 40px "Serif SC"', '900 40px "Inter"', '800 40px "Mono"', '300 40px "Mono"', '500 40px "Mono"'].map((f) => document.fonts.load(f, sample))).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
