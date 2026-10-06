@@ -178,7 +178,7 @@
       "slug": "in-seconds",
       "title": {"zh": "XX 秒速通"},
       "videos": [
-        {"slug": "two-factor-auth", "title": {"zh": "120 秒关于什么是 2FA，以及它是怎么工作的", "en": "2FA in 120 Seconds: What It Is and How It Works"}, "status": "in-progress"},
+        {"slug": "two-factor-auth", "title": {"zh": "120 秒关于什么是 2FA，以及它是怎么工作的", "en": "2FA in 120 Seconds: What It Is and How It Works"}, "status": "delivered"},
         {"slug": "wsl", "title": {"zh": "100 秒了解 WSL 1、2、3 为我们带来了什么"}},
         {"slug": "lean4", "title": {"zh": "200 秒速通 Lean 4：什么是形式化检验，以及为什么它可靠"}},
         {"slug": "how-opus-animates", "title": {"zh": "100 秒明白 Opus 5.5 是怎么做动画的"}},

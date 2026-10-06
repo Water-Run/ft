@@ -50,8 +50,9 @@ scene('open', ({ root, s, c0 }) => {
   [big, sub, n120, sec, ttl].forEach((e) => { e.dataset.overlapOk = '1'; });      // 片名卡盖在换站的画面上，属有意压盖
   wipe(card, tCard, { dir: 'l', d: 0.4 }); sfx('whoosh', tCard - 0.1, { g: 0.8 });
   slam(big, t2fa, { from: 1.35, d: 0.4 }); sfx('thud', t2fa);
-  slide(n120, t2fa + 0.25, { x: 120, d: 0.45 }); slide(sec, t2fa + 0.33, { x: 120, d: 0.45 }); sfx('pop', t2fa + 0.25, { g: 0.6, p: 0.4 });
-  wipe(ttl, t2fa + 0.5, { dir: 't', d: 0.4 });
+  // 片名的右半随卡片一起到：卡片刷出来时上面已经有字，「2FA」等旁白读到它再落下
+  slide(n120, tCard + 0.2, { x: 120, d: 0.45 }); slide(sec, tCard + 0.28, { x: 120, d: 0.45 }); sfx('pop', tCard + 0.25, { g: 0.6, p: 0.4 });
+  wipe(ttl, tCard + 0.45, { dir: 't', d: 0.4 });
   fromTo(big, t2fa + 0.42, { scale: 1 }, { scale: 1.045, transformOrigin: '0% 60%', duration: tOut - t2fa, ease: 'none', immediateRender: false });   // 片名停留时保持缓慢的推近
   const tSub = Q(T('o3', { zh: '双因素', en: 'two-factor' }));
   wipe(sub, tSub, { dir: 'l', d: 0.45 }); sfx('blip', tSub, { g: 0.7, p: -0.3 });
@@ -98,7 +99,7 @@ scene('open', ({ root, s, c0 }) => {
     { x: XC + 710, w: tr('持有', 'HELD'), ex: tr('手机 · 安全密钥', 'phone · security key'), cue: 'a3', at: { zh: '持有', en: 'held' }, exAt: { zh: '手机', en: 'phone' } },
     { x: XC + 1320, w: tr('自身', 'INHERENT'), ex: tr('指纹', 'fingerprint'), cue: 'a4', at: { zh: '自身', en: 'inherent' }, exAt: { zh: '指纹', en: 'fingerprint' } },
   ];
-  const tThree = Qf(T('a1')) + 0.25;
+  const tThree = Math.min(Qf(T('a1')) + 0.25, Tend('p1') + 0.25);                // 镜头离开上一站时就开始画：到站时站上已经有东西，途中不出现空画面
   const emblem = (x, kind) => {                                                // 三个示意图形，同一种 8px 线
     const g = svg('svg', { class: 'abs', width: 500, height: 250, viewBox: '0 0 500 250' }, world); px(g, x, 478); g.dataset.name = kind;
     const st = { fill: 'none', stroke: C.paper, 'stroke-width': 8 };

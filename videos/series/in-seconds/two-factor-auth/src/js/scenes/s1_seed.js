@@ -10,6 +10,9 @@ scene('seed', ({ root, s, c0 }) => {
   css(name, { font: '900 400px "Inter"', letterSpacing: '-.02em', lineHeight: '1' });
   const letters = [...name.children];
   const tName = Q(T('b1', 'TOTP'));
+  // 换码的那一拍：刚换上的验证码先占住画面左侧（与开场同一个构图），名字落下时让位
+  const hero = makeCode(world, { size: 270, x: 112, y: 190 });
+  fromTo(hero.el, tName - 0.3, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 100% 0% 0%)', duration: 0.25, ease: 'power3.in' }); vanish(hero.el, tName - 0.05);
   appear(name, tName - 0.02);
   letters.forEach((l, i) => { l.style.display = 'inline-block'; slam(l, tName + i * 0.0625, { from: 1.5, d: 0.3 }); });
   sfx('thud', tName + 0.1, { p: -0.3 });
@@ -17,6 +20,7 @@ scene('seed', ({ root, s, c0 }) => {
     ? [['基于时间的', '基于时间', [0]], ['一次性', '一次性', [1, 2]], ['密码', '密码', [3]]]
     : [['Time-based', 'time-based', [0]], ['One-Time', 'one-time', [1, 2]], ['Password', 'password', [3]]];
   const full = txt(world, LANG === 'zh' ? 't-2' : 't-2', parts.map((p) => `<span>${p[0]}</span>`).join(LANG === 'zh' ? '<span> </span>' : ' '), 108, 560);
+  if (LANG !== 'zh') full.style.fontSize = '72px';                              // 英文全称较长，缩一级，不压到右侧的表盘
   if (LANG === 'zh') { const en = txt(world, 't-4 dim', 'Time-based One-Time Password', 112, 704); wipe(en, Q(Tend('b1')) - 0.25, { dir: 'l', d: 0.4 }); }
   appear(full, Q(T('b1', parts[0][1])) - 0.02);
   [...full.children].filter((e) => e.textContent.trim()).forEach((sp, i) => {
@@ -68,7 +72,7 @@ scene('seed', ({ root, s, c0 }) => {
 
   // ── 站 C：另一个输入是时间 ──
   const NOW = (t) => DATA.t0 + t;
-  const tArr = Tend('b4') + 0.1, tZ0 = Qf(T('b6')) - 0.5, dZ = 2.75;
+  const tArr = Tend('b4') + 0.1, tZ0 = Math.max(Qf(T('b6')) - 0.5, Tend('h2') - 0.1), dZ = 2.75;   // 上一句说完再开始推近
   const kOf = (t) => ease.io3(clamp((t - tZ0) / dZ));
   const S0 = 1640 / (DATA.t0 + 45), S1 = 40;
   const view = (t) => { const k = kOf(t), sc = Math.exp(lerp(Math.log(S0), Math.log(S1), k)), xn = lerp(1780, 960, k); return { k, sc, xn, X: (u) => XC + xn + (u - NOW(t)) * sc }; };
@@ -83,7 +87,7 @@ scene('seed', ({ root, s, c0 }) => {
   slam(lTime, tTime, { from: 1.4, d: 0.3 }); sfx('pop', tTime, { p: -0.4 });
   wipe(unix, tArr + 0.35, { dir: 'l', d: 0.5 });
   const tSecs = Q(T('b5', { zh: '秒数', en: 'seconds' }));
-  slam(lSec, tSecs, { from: 1.4, d: 0.3 }); wipe(note, tSecs + 0.2, { dir: 'l', d: 0.35 }); sfx('tick', tSecs, { g: 0.8 });
+  slam(lSec, tSecs, { from: 1.4, d: 0.3 }); wipe(note, Q(T('b5', '1970')), { dir: 'l', d: 0.35 }); sfx('tick', tSecs, { g: 0.8 });
   // 轴线、刻度与刻度上的文字：每帧按当前的缩放重算
   const ax = svg('svg', { class: 'abs', width: 2040, height: 120, viewBox: `${XC - 60} ${AY - 20} 2040 120` }, world); px(ax, XC - 60, AY - 20); ax.dataset.name = 'time-axis';
   svg('line', { x1: XC - 60, y1: AY, x2: XC + 1980, y2: AY, stroke: C.paper, 'stroke-width': 4 }, ax);

@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     与正片同一套颜色与字体，单独排版：墨色一侧是片名，纸色一侧是 30 秒表盘与一个验证码（取自正片第 3 个时间步的真实结果）。
+     TODO: 系列基座的封面版式，文字与纸色一侧的读数换成本集的；做完删掉这一行。
+     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
      4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
   :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
   html, body, #stage { width: var(--W); height: var(--H); }
@@ -45,23 +46,24 @@
 <body>
 <div id="stage">
   <div class="abs paper"></div>
-  <div class="abs big">2FA</div>
-  <div class="abs tag"><b>120</b><i></i></div>
+  <div class="abs big"></div>
+  <div class="abs tag"><b></b><i></i></div>
   <div class="abs ttl"></div>
   <div class="abs kick"></div>
-  <div class="abs code">685 976</div>
+  <div class="abs code"></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
   const TEXT = {
-    zh: { unit: '秒', title: '什么是 2FA，<br>以及它是怎么工作的', kick: 'XX 秒速通' },
-    en: { unit: 's', title: 'What 2FA is,<br>and how it works', kick: 'In XX Seconds' },
+    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
+    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
   }[lang];
+  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
   document.querySelector('.tag i').textContent = TEXT.unit;
   document.querySelector('.ttl').innerHTML = TEXT.title;
   document.querySelector('.kick').textContent = TEXT.kick;
-  // 30 秒表盘：指针停在第 7 秒，走过的刻度是朱红
+  // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
   const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
   const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
   const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';

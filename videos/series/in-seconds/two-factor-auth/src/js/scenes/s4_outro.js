@@ -14,7 +14,7 @@ scene('outro', ({ root, s, c0 }) => {
   const rows = [
     [tr('策划', 'Planning'), 'WaterRun'],
     [tr('取证 · 脚本 · 翻译 · 视觉 · 动画 · 配乐 · 审查', 'Research · script · translation · design · animation · score · review'), 'Claude Opus 5.5'],
-    [tr('旁白合成', 'Narration voice'), tr('Microsoft Edge 在线语音（模型未披露）', 'Microsoft Edge online TTS (model undisclosed)')],
+    [tr('旁白合成', 'Narration voice'), tr('Microsoft Edge 在线语音（模型未披露）', 'Microsoft Edge online TTS (model undisclosed)')],   // lint-ok: 这里的 Microsoft 是服务名，不是字体
     [tr('读音回听', 'Read-back check'), 'Whisper small'],
     [tr('网页检索与摘录', 'Web lookup'), tr('WebSearch · WebFetch（模型未披露）', 'WebSearch · WebFetch (model undisclosed)')],
     [tr('开源视频', 'Open-source video'), 'github.com/Water-Run/ft'],
@@ -29,5 +29,10 @@ scene('outro', ({ root, s, c0 }) => {
     wipe(a, tt + 0.05, { dir: 'l', d: 0.3 }); wipe(b, tt + 0.12, { dir: 'l', d: 0.35 });
     sfx(last ? 'chime' : 'tick', tt, { g: last ? 0.6 : 0.7, p: 0.4 });
   });
+  // 最后五秒：左上角的剩余秒数每秒跳一下
+  for (let sec = TOTAL - 5; sec < TOTAL; sec++) {
+    fromTo(HUD.left, sec, { scale: 1 }, { keyframes: [{ scale: 1.28, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
+    sfx('tick', sec, { g: 0.8, p: -0.6 });
+  }
   cam.track(s.start, { x: 960, y: 484, z: 1 }, [[s.start + 0.1, { z: 1.03 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }]]);
 });

@@ -52,8 +52,7 @@ scene('code', ({ root, s, c0 }) => {
   slam(bigA, tLast + 0.2, { from: 1.4, d: 0.3 }); slam(bigB, tLast + 0.26, { from: 1.4, d: 0.3 });
   const lbits = bitCells(world, W.lastBits, { x: LX - 8 * 44 - 28 + 4, y: 700, s: 40, gap: 4, group: 0, color: C.paper });
   lbits.forEach((b, i) => { if (i >= 4) b.style.marginLeft = '28px'; wipe(b, tLast + 0.45 + i * 0.04, { dir: 't', d: 0.2 }); });
-  const lowB = bitCells(world, W.lastBits.slice(4), { x: LX - 4 * 44 + 4, y: 700, s: 40, gap: 4, color: C.ac });
-  lowB.forEach((b, i) => { appear(b, tLow + i * 0.05); vanish(lbits[4 + i], tLow + i * 0.05); });
+  for (let i = 0; i < 4; i++) classAt(lbits[4 + i], 'hot', Math.max(tLow, tLast + 0.9) + i * 0.05);      // 低 4 位变成朱红
   classAt(bigB, 'ac', tLow); sfx('blip', tLow, { p: 0.6 });
   wipeOut(head, tLast - 0.4, { dir: 'l', d: 0.3 });
   const lowL = txt(world, 't-3', tr(`低 4 位 = <span class="ac">${W.offset}</span>`, `low 4 bits = <span class="ac">${W.offset}</span>`), 0, 688); css(lowL, { left: 'auto', right: (1920 - (LX - 8 * 44 - 28 - 40)) + 'px' });
@@ -68,7 +67,7 @@ scene('code', ({ root, s, c0 }) => {
   // ── 站 C：去掉最高位，读成整数，留下末 6 位 ──
   const BX = XR, BY = 500, BP = 250;
   const tDown = Tend('c3') + 0.1, tTop = Q(T('c4', { zh: '最高位', en: 'top bit' })), tInt = Q(T('c4', { zh: '读成', en: 'read' })), tKeep = Q(T('c4', { zh: '留下', en: 'keep' }));
-  [bigA, bigB, lowL, ...lbits.slice(0, 4), ...lowB].forEach((e) => exit(e, tDown, { y: 0, x: 60, d: 0.25 }));      // 末字节的细节让出位置
+  [bigA, bigB, lowL, ...lbits].forEach((e) => exit(e, tDown, { y: 0, x: 60, d: 0.25 }));      // 末字节的细节让出位置
   const bigs = W.p.map((b, j) => { const e = txt(world, 'num', b, BX + j * BP, BY); e.style.fontSize = '150px'; slam(e, tDown + 0.15 + j * 0.0625, { from: 1.4, d: 0.3 }); return e; });
   sfx('thud', tDown + 0.15, { g: 0.7, p: -0.3 });
   keyed(bigs[0]).at(tTop + 0.15, { html: `<span class="ac">${W.masked[0]}</span>${W.masked[1]}` });

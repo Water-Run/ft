@@ -47,10 +47,10 @@ scene('rank', ({ root, s, c0 }) => {
   sub(2, tr('私钥签名 · 用于安全密钥与通行密钥', 'private-key signatures · security keys and passkeys'), t4b);
   const t5 = Q(T('d5', { zh: '域名', en: 'domain' })), t5b = Q(T('d5', { zh: '拿不到', en: 'nothing' }));
   const s2 = sub(2, tr('签名只对 <span class="mono">example.com</span> 有效', 'the signature works only for <span class="mono">example.com</span>'), t5, 154);
-  // 假网站：斜线框。它拿不到签名
+  // 假网站：斜线框。它拿不到签名。域名用保留的 .test（RFC 6761），不指向任何真实站点
   const fake = h('div', 'abs', world); px(fake, CX[0] + 12, RY[2] + 14, 232, 58);
   hatch(fake, 0, 0, 232, 58, C.paper, 16, 5); blk(fake, 'bg-ink', 8, 8, 216, 42);
-  const ft = txt(fake, 'mono', 'examp1e.com', 8, 9); css(ft, { width: '216px', textAlign: 'center', fontSize: '28px', fontWeight: 700 });
+  const ft = txt(fake, 'mono', 'examp1e.test', 8, 9); css(ft, { width: '216px', textAlign: 'center', fontSize: '28px', fontWeight: 700 });
   slide(fake, t5 + 0.35, { y: -90, d: 0.4, ease: 'power3.out' }); sfx('whoosh', t5 + 0.35, { g: 0.4, p: 0.2 });
   const no = txt(world, 't-n ink bg-ac', tr('拿不到签名', 'no signature'), CX[0] + 12, RY[2] + 82); css(no, { width: '232px', textAlign: 'center', fontSize: '28px', fontWeight: 700, lineHeight: '54px' });
   slam(no, t5b, { from: 1.3, d: 0.3 }); sfx('thud', t5b, { g: 0.8, p: 0.2 });
@@ -66,7 +66,7 @@ scene('rank', ({ root, s, c0 }) => {
   css(say, { font: `900 ${LANG === 'zh' ? 176 : 138}px "Inter", "Sans SC"`, letterSpacing: '-.03em', lineHeight: '1.08' });
   const lead = txt(card, 't-4 ink', tr('连最弱的短信验证码，也拦下了', 'Even SMS codes, the weakest, blocked'), 108, 556);
   const nums = [[100, tr('自动化攻击', 'of automated bots')], [96, tr('批量钓鱼', 'of bulk phishing')], [76, tr('定向攻击', 'of targeted attacks')]];
-  const tNum = Q(Tend('d6') - 0.4);
+  const tNum = Qf(Math.min(Tend('d6') - 0.4, s.end - 2.4));                     // 三个数至少留出两秒可读
   nums.forEach(([v, lab], i) => {
     const x = 100 + i * 520, n = txt(card, 'num ink', '0', x, 624), pc = txt(card, 'num ink', '%', x + (String(v).length) * 96 + 8, 668), l = txt(card, 't-4 ink', lab, x + 6, 790);
     n.style.fontSize = '160px'; pc.style.fontSize = '100px';

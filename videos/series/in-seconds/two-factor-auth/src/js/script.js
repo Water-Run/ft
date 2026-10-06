@@ -23,8 +23,8 @@
       cues: [
         ['o1', { zh: '这 6 位数字，每 30 秒换一次', en: 'These six digits change every 30 seconds.' }, { gap: 0.35 }],
         ['o2', { zh: '手机可以不联网，服务器却知道它此刻是多少', en: 'The phone can be offline, yet the server knows the current digits.' }, { gap: 0.6 }],
-        ['o3', { zh: '它是 *2FA*，双因素认证里常见的一道验证', en: 'It is a common step in *2FA*: two-factor authentication.' }, { gap: 0.9 }],
-        ['p1', { zh: '只验证密码的登录，密码一泄露，账号就失守', en: 'If sign-in checks only a password, one leak loses the account.' }, { gap: 0.55 }],
+        ['o3', { zh: '它属于 *2FA*：双因素认证里常见的一道验证', en: 'It is a common step in *2FA*: two-factor authentication.' }, { gap: 0.9 }],
+        ['p1', { zh: '只验证密码的登录，密码一泄露，账号就失守', en: 'If sign-in checks only a password, one leak loses the account.' }, { gap: { zh: 0.8, en: 0.55 } }],
         ['a1', { zh: '验证的依据共有三类', en: 'Proof of identity comes in three kinds.' }, { gap: 0.3 }],
         ['a2', { zh: '*知道*的，如密码', en: 'Something *known*, like a password.' }, { gap: 0.25 }],
         ['a3', { zh: '*持有*的，如手机、安全密钥', en: 'Something *held*, like a phone or a security key.' }, { gap: 0.25 }],
@@ -34,14 +34,14 @@
     },
     {
       // 第 2 个时间步：名字 → 共享密钥 → 时间轴（1970、1984、2011）→ 计数
-      id: 'seed', at: 30, chap: null, lead: 0.75, tail: 0.3,
+      id: 'seed', at: 30, chap: null, lead: 0.6, tail: 0.3,
       cues: [
-        ['b1', { zh: '这种验证码叫 *TOTP*：基于时间的一次性密码', en: 'Its name is *TOTP*: time-based one-time password.' }, { gap: 0.5 }],
+        ['b1', { zh: '这种验证码叫 *TOTP*：基于时间的一次性密码', en: 'Its name is *TOTP*: time-based one-time password.' }, { gap: { zh: 0.35, en: 0.3 } }],
         ['b3', { zh: '开启时，服务器生成一个*密钥*，放进二维码', en: 'At setup, the server puts a fresh *secret key* into a QR code.' }, { gap: 0.3 }],
-        ['b4', { zh: '手机扫码，存下*同一个*密钥', en: 'The phone scans it and stores the *same* key.' }, { gap: 0.6 }],
-        ['b5', { zh: '另一个输入是*时间*：1970 年元旦至今的秒数', en: 'The other input is *time*: seconds since 1970 began.' }, { gap: 0.35 }],
-        ['h1', { zh: '1984 年，已有专利让令牌上的数字随时间变化', en: 'A 1984 patent already had digits that change with time.' }, { gap: 0.3 }],
-        ['h2', { zh: '2011 年，TOTP 成为开放标准', en: 'In 2011, TOTP became an open standard.' }, { gap: 0.6 }],
+        ['b4', { zh: '手机扫码，存下*同一个*密钥', en: 'The phone scans it and stores the *same* key.' }, { gap: { zh: 0.45, en: 0.4 } }],
+        ['b5', { zh: '另一个输入是*时间*：1970 年元旦至今的秒数', en: 'The other input is *time*: seconds since 1970.' }, { gap: { zh: 0.35, en: 0.25 } }],
+        ['h1', { zh: '1984 年申请的一项专利，已让令牌上的数字随时间变化', en: 'A patent filed in 1984 already had digits that change with time.' }, { gap: { zh: 0.3, en: 0.25 } }],
+        ['h2', { zh: '2011 年，TOTP 作为公开规范发布', en: 'In 2011, TOTP was published as an open specification.' }, { gap: { zh: 0.45, en: 0.35 } }],
         ['b6', { zh: '把秒数除以 30，取整，就是*计数器*', en: 'Divide by 30 and round down: that is the *counter*.' }, { gap: 0.3 }],
         ['b7', { zh: '它每 30 秒加一', en: 'It adds one every 30 seconds.' }, { gap: 0.3 }],
       ],
@@ -51,10 +51,10 @@
       id: 'code', at: 60, chap: null, lead: 0.75, tail: 0.3,
       cues: [
         ['c1', { zh: '密钥和计数器，一起送进 *HMAC*', en: 'Key and counter go into *HMAC* together.' }, { gap: 0.4 }],
-        ['c2', { zh: '得到 20 个字节', en: 'Out come 20 bytes.' }, { gap: 0.6 }],
-        ['c3', { zh: '最后一个字节的低 4 位，指出从哪里取 4 个字节', en: 'The last byte\'s low four bits say where to take four bytes.' }, { gap: 0.7 }],
-        ['c4', { zh: '去掉最高位，读成整数，留下末 6 位', en: 'Drop the top bit, read an integer, keep the last six digits.' }, { gap: 0.6 }],
-        ['c5', { zh: '这就是*验证码*', en: 'That is the verification *code*.' }, { gap: 0.8 }],
+        ['c2', { zh: '得到 20 个字节', en: 'Out come 20 bytes.' }, { gap: 0.8 }],
+        ['c3', { zh: '最后一个字节的低 4 位，指出从哪里取 4 个字节', en: 'The last byte\'s low four bits say where to take four bytes.' }, { gap: 0.9 }],
+        ['c4', { zh: '去掉最高位，读成整数，留下末 6 位', en: 'Drop the top bit, read an integer, keep the last six digits.' }, { gap: 0.8 }],
+        ['c5', { zh: '这就是*验证码*', en: 'That is the verification *code*.' }, { gap: 1.0 }],
         ['c6', { zh: '服务器用同一个密钥、同一个时间，再算一遍', en: 'The server, with the same key and the same time, computes it again.' }, { gap: 0.45 }],
         ['c7', { zh: '结果一致，登录通过', en: 'The results match, and sign-in succeeds.' }, { gap: 0.7 }],
         ['c8', { zh: '手机和服务器无需通信：只靠*同一个密钥*、*同一个时钟*', en: 'Phone and server never had to talk: *same key*, *same clock*.' }, { gap: 0.3 }],
@@ -64,7 +64,7 @@
       // 第 4 个时间步：其他方式的强弱 → 结论
       id: 'rank', at: 90, chap: null, lead: 0.75, tail: 0.3,
       cues: [
-        ['d1', { zh: '验证方式不止这一种，强弱不同', en: 'Other methods exist, and strength varies.' }, { gap: 0.3 }],
+        ['d1', { zh: '验证方式不止这一种，强弱不同', en: 'Other methods vary in strength.' }, { gap: 0.3 }],
         ['d2', { zh: '短信验证码*最弱*：号码可能被转走', en: 'SMS codes are *weakest*: a phone number can be hijacked.' }, { gap: 0.35 }],
         ['d3', { zh: 'TOTP 更强，但假网站仍能当场骗走数字', en: 'TOTP is stronger, but a fake site can still capture the digits.' }, { gap: 0.35 }],
         ['d4', { zh: '2019 年成为标准的 *WebAuthn*，改用私钥签名', en: '*WebAuthn*, standardized in 2019, signs with a private key.' }, { gap: 0.3 }],
@@ -89,7 +89,7 @@
       [/WebAuthn/g, 'Web Authen'],
     ],
     en: [
-      [/WebAuthn/g, 'Web Authen'],    // 缺省读成 web often
+      [/WebAuthn/g, 'Web Awthen'],    // 缺省与写成 Web Authen 都读成 web often
     ],
   };
   const strip = (s) => s.replace(/\*/g, '');

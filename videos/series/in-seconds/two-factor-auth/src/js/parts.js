@@ -93,7 +93,8 @@ function bitCells(parent, bits, o) {
   const out = [];
   [...bits].forEach((c, i) => {
     const e = h('div', 'blk', parent); px(e, o.x + i * (o.s + o.gap) + Math.floor(i / 8) * (o.group || 0), o.y, o.s, o.s);
-    css(e, c === '1' ? { background: o.color } : { border: `${o.bw || 4}px solid ${o.color}` });
+    e.style.setProperty('--c', o.color);                                    // 颜色放在变量里：加上类名 hot 即变成朱红，不必换元素
+    css(e, c === '1' ? { background: 'var(--c)' } : { border: `${o.bw || 4}px solid var(--c)` });
     e.dataset.name = 'bit' + c;
     out.push(e);
   });
