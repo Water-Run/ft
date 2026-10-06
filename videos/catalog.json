@@ -31,6 +31,19 @@
       ]
     },
     {
+      "slug": "programming-paradigms",
+      "title": {"zh": "编程思想", "en": "Programming Paradigms"},
+      "videos": [
+        {"slug": "lua", "title": {"zh": "Lua 的设计哲学"}},
+        {"slug": "python", "title": {"zh": "Python：一切皆对象"}},
+        {"slug": "rust", "title": {"zh": "Rust 的设计哲学"}},
+        {"slug": "zig", "title": {"zh": "Zig 的设计哲学"}},
+        {"slug": "nim", "title": {"zh": "Nim 的设计哲学"}},
+        {"slug": "functional", "title": {"zh": "函数式"}},
+        {"slug": "procedural-to-oop", "title": {"zh": "从过程式到面向对象"}}
+      ]
+    },
+    {
       "slug": "automotive-systems-engineering",
       "title": {"zh": "汽车的系统工程", "en": "Automotive Systems Engineering"},
       "videos": [

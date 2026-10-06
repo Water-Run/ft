@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 153 部：已成片 4 部，制作中 1 部，计划中 148 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 160 部：已成片 4 部，制作中 1 部，计划中 155 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -38,6 +38,20 @@
 | 5 | 编程语言——Rust | zh + en | 计划中 |  | `rust` |  |
 | 6 | 编程语言——Zig | zh + en | 计划中 |  | `zig` |  |
 | 7 | 编程语言——C++ | zh + en | 计划中 |  | `cpp` |  |
+
+### 编程思想
+
+目录 [`videos/series/programming-paradigms/`](../videos/series/programming-paradigms/)；英文名 Programming Paradigms。系列的定位与连续性约定见该目录的 README。
+
+| # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
+|---|---|---|---|---|---|---|
+| 1 | Lua 的设计哲学 | zh + en | 计划中 |  | `lua` |  |
+| 2 | Python：一切皆对象 | zh + en | 计划中 |  | `python` |  |
+| 3 | Rust 的设计哲学 | zh + en | 计划中 |  | `rust` |  |
+| 4 | Zig 的设计哲学 | zh + en | 计划中 |  | `zig` |  |
+| 5 | Nim 的设计哲学 | zh + en | 计划中 |  | `nim` |  |
+| 6 | 函数式 | zh + en | 计划中 |  | `functional` |  |
+| 7 | 从过程式到面向对象 | zh + en | 计划中 |  | `procedural-to-oop` |  |
 
 ### 汽车的系统工程
 

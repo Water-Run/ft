@@ -33,7 +33,7 @@ Finished films, narration caches and intermediate render files are not tracked.
 
 Channels: [Bilibili](https://space.bilibili.com/68328330), [YouTube](https://www.youtube.com/@waterrun1978). The lengths above are the durations of the delivered files; Bilibili rounds up when it displays them: MyISAM 475.883 s shows as 7:56, luainstaller (Chinese) 475.227 s as 7:56, the batch-file film 193.025 s as 3:14, and 2FA 120.000 s as 2:00. MyISAM and the batch-file film are on Bilibili only. The per-film publication record (the title on the platform, the time, the collection, the date it was checked) is in each film's `README.md` or `DELIVERY.md`; see section 11 of [workflow.md](docs/workflow.md) for filling it in after publication.
 
-The full catalog (19 series, 153 videos including planned ones) is in [docs/catalog.md](docs/catalog.md); what is scheduled next is in [docs/todo.md](docs/todo.md).
+The full catalog (20 series, 160 videos including planned ones) is in [docs/catalog.md](docs/catalog.md); what each series covers, how it is presented and how long an episode is, in that series' own README; what is scheduled next is in [docs/todo.md](docs/todo.md).
 
 ## How it works
 
