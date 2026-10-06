@@ -101,6 +101,17 @@ node kit/tools/covers.js  videos/series/in-seconds/two-factor-auth     # 封面
 node kit/tools/check.js   videos/series/in-seconds/two-factor-auth --final
 ```
 
+## 发布
+
+2026-10-06 按频道的公开页面逐条核对：
+
+| 平台 | 平台上的标题 | 平台显示时长 | 发布时刻 | 链接 |
+|---|---|---|---|---|
+| 哔哩哔哩，合集「速通教学」 | 120秒关于什么是2FA, 以及它是如何工作的 | 2:00（120 秒） | 2026-10-06 15:59 | [BV1whpF6aECJ](https://www.bilibili.com/video/BV1whpF6aECJ) |
+| YouTube | 2FA in 120 Seconds: What It Is and How It Works. | 未核 | 2026-10-06 15:55 | [zD2afy1WBX0](https://www.youtube.com/watch?v=zD2afy1WBX0) |
+
+两处标题一为中文一为英文；两处上的是不是分别对应中文版与英文版，仓库里没有记录，未核——两版成片都在本机，按平台逐版核对需要人工观看。本机两版的容器时长（读 mp4 的 `mvhd`）都是 120.000 秒，与「成片」一节记的 120.00 秒、7200 帧一致。片尾「开源视频」指向的 [github.com/Water-Run/ft](https://github.com/Water-Run/ft) 已打开核对：2026-10-06 返回 200，可公开访问，指向本仓库。
+
 ## 成片
 
 两种语言都在 `out/`，由 `node kit/tools/check.js videos/series/in-seconds/two-factor-auth --final` 核对通过，结论为「全部通过」，其中包含两版的交付物清单，以及「渲染之后源文件未再改动」的过期检测。
@@ -142,4 +153,4 @@ node kit/tools/check.js   videos/series/in-seconds/two-factor-auth --final
 - 旁白的发音。Whisper small 对成片回听，「读法」一节的改写确实生效：「two F A」回听为「2FA」、「H mac」为「HMAC」、英文的「Web Authen」为「WebAuthn」，都符合预期。中文版另有几处被听错：「取整」听成「取成」、「令牌」听成「令台」、「假网站」听成「甲网站」、「私钥」听成「私要」、「域名」听成「预名」；英文版 2011 年那句的「TOTP」被听成「TOEP」。回听文本只是识别结果，不足以断定合成有问题，需人工试听确认。Whisper 的分段也有偏移（多处把相邻两句并成一段），那是识别侧的切分，不是配音断了。
 - 画面的留边与密度。闸门提示不计入通过与否：开场 5.5–8.5 秒两版各有 4 处文字贴近左右边缘（留边 < 60px），87.5–90.5 秒各有一处数字贴边，90.0 秒同时可见 74 段文字（建议 ≤16）。要不要收由人判断。
 - 声音的听感。闸门只保证响度与峰值落在目标内，配乐与人声的实际听感没有经过人耳确认。
-- 发布。成片还在制作机上，没有上传；片尾与本页给出的仓库公开页面尚未核对。
+- 发布。已发布，平台、时刻与链接见「发布」一节。仍待人工判断：哔哩哔哩与 YouTube 上的是不是分别对应中文版与英文版，两版成片都在本机，需人工观看核对。

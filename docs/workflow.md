@@ -41,6 +41,7 @@
 | 8 | 成片审查 | `FACTS.md` 的「复核」一节 | `asr.js`、`stats.js`、`sheets.js`、`margin.js` | 三项核心审查、原创与动画完成度、片尾名单均已核对，无未解决的问题 |
 | 9 | 封面 | `out/cover-<语言>-*.jpg` | `look.js --url`、`covers.js` | 每种语言 16:9 与 4:3 各一张 |
 | 10 | 交付与记录 | 本片 `README.md`、片单、（委托时）`DELIVERY.md` | `check.js --final`、`catalog.js` | 自动闸门与成片审查均通过，封面事实已补查，片尾与交付记录一致 |
+| 11 | 发布与回填 | 片中 `README.md` 与 `FACTS.md` 的发布记录、根 README 的发布链接 | — | 两个平台的链接可打开；记录与频道上的实际标题、时长与日期一致 |
 
 改过脚本、场景或样式之后，已有的渲染结果就过期了：从第 6 步重新做起（`check.js --final` 会查这一点）。
 
@@ -169,7 +170,20 @@ node kit/tools/covers.js <视频>
 
 1. `node kit/tools/check.js <视频> --final` 全部通过，并完成 [review.md](review.md) 第 5 节的检查；补查封面事实与最终片尾名单，未完成的检查不能记为通过。
 2. 本片的 `README.md` 写全：内容、视觉系统与参考来源、取证方式、读法、复现命令、成片规格、制作署名与片尾时段、各项审查中改掉了什么、哪些需要人来判断（配乐听感、音色、画面观感）。委托片同步写进 `DELIVERY.md`。
-3. 片单里把状态改为 `delivered`，运行 `node kit/tools/catalog.js`。
+3. 片单里把状态改为 `delivered`，运行 `node kit/tools/catalog.js`；根 `README.md` 与 `README.en.md` 的「已成片」表加一行（视频、语言、时长、制作、发布链接）。
 4. 系列里的一集：把这一集定下的做法写回系列说明；首集完成后整理系列基座（见 [series.md](series.md)）。
 5. 制作中得到的新经验写进 [pitfalls.md](pitfalls.md) 与 [retrospectives.md](retrospectives.md)。
 6. 提交。生成物（`audio/`、`out/`、`shots/`、`build/`）不入库，留在制作机上；提交前把将入库的改动过一遍，确认没有口令、密钥、内网地址等敏感信息（见 [research.md](research.md) 第 5 节）。
+
+## 11 发布与回填
+
+成片发布到哔哩哔哩（[空间](https://space.bilibili.com/68328330)）与 YouTube（[@waterrun1978](https://www.youtube.com/@waterrun1978)），按系列归入对应的合集（如「速通教学」「数据库引擎」），简介里给出开源仓库地址。
+
+发布不是第 10 步的结束。发布之后要把记录补回去，漏了这一步，仓库就会与已经发生的事不一致：
+
+1. 本片 `README.md` 的「需要人来判断的事项」里，把发布一条从待办改成实际记录：平台、日期、时刻、视频链接、平台上的标题与时长（取自频道的公开页面，不凭记忆写），以及片尾「开源视频」指向的仓库地址打开核对的结果。
+2. 本片 `research/FACTS.md` 的「复核」一节同步记一条。
+3. 根 `README.md` 与 `README.en.md` 的「已成片」表补上发布链接。
+4. 各语言是否都上了同一个平台、平台上的标题与简介怎么写，如实记录差异。
+
+漏过一次：2FA 于 2026-10-06 发布到哔哩哔哩与 YouTube，片单已经是「已成片」，但根 README 的「已成片」表没有它，片中 README 与 `FACTS.md` 还写着「成片还在制作机上，没有上传」。交付与发布是两件事，各有各的记录。

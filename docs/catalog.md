@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 151 部：已成片 4 部，制作中 1 部，计划中 146 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 153 部：已成片 4 部，制作中 1 部，计划中 148 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -91,16 +91,14 @@
 | 1 | 英特尔——酷睿 i 时代之前 | zh + en | 计划中 |  | `intel-before-core-i` |  |
 | 2 | 英特尔——酷睿 i 时代 | zh + en | 计划中 |  | `intel-core-i` |  |
 | 3 | 英特尔——酷睿 i 时代之后 | zh + en | 计划中 |  | `intel-after-core-i` |  |
-| 4 | 恐龙年代的 AMD | zh + en | 计划中 |  | `amd-early` |  |
-| 5 | AMD 的农机时代 | zh + en | 计划中 |  | `amd-bulldozer-era` |  |
-| 6 | Ryzen！崛起：AMD，Yes！ | zh + en | 计划中 |  | `amd-ryzen` |  |
-| 7 | 英伟达 GTX 系列发展史 | zh + en | 计划中 |  | `nvidia-gtx` |  |
-| 8 | 英伟达 RTX 系列发展史 | zh + en | 计划中 |  | `nvidia-rtx` |  |
-| 9 | 英伟达的专业卡发展史 | zh + en | 计划中 |  | `nvidia-workstation` |  |
-| 10 | 英特尔独立显卡发展史 | zh + en | 计划中 |  | `intel-discrete-gpu` |  |
-| 11 | 高通：从 600 到 888 | zh + en | 计划中 |  | `qualcomm` |  |
-| 12 | 苹果的芯片自研之路 | zh + en | 计划中 |  | `apple` |  |
-| 13 | Windows Server 演变史 | zh + en | 计划中 |  | `windows-server` |  |
+| 4 | Ryzen！崛起：AMD，Yes！ | zh + en | 计划中 |  | `amd-ryzen` |  |
+| 5 | 英伟达 GTX 系列发展史 | zh + en | 计划中 |  | `nvidia-gtx` |  |
+| 6 | 英伟达 RTX 系列发展史 | zh + en | 计划中 |  | `nvidia-rtx` |  |
+| 7 | 英伟达的专业卡发展史 | zh + en | 计划中 |  | `nvidia-workstation` |  |
+| 8 | 英特尔独立显卡发展史 | zh + en | 计划中 |  | `intel-discrete-gpu` |  |
+| 9 | 高通：从 600 到 888 | zh + en | 计划中 |  | `qualcomm` |  |
+| 10 | 苹果的芯片自研之路 | zh + en | 计划中 |  | `apple` |  |
+| 11 | Windows Server 演变史 | zh + en | 计划中 |  | `windows-server` |  |
 
 ### Shell 群观
 
@@ -202,20 +200,19 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`two-factor-auth`](../videos/series/in-seconds/two-factor-auth/) |  |
-| 2 | 100 秒了解 WSL 1、2、3 为我们带来了什么 | zh + en | 计划中 |  | `wsl` |  |
-| 3 | 200 秒速通 Lean 4：什么是形式化检验，以及为什么它可靠 | zh + en | 计划中 |  | `lean4` |  |
-| 4 | 100 秒明白 Opus 5.5 是怎么做动画的 | zh + en | 计划中 |  | `how-opus-animates` |  |
-| 5 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` |  |
-| 6 | 200 秒关于 LLM 的 Dense 和 MoE 是什么 | zh + en | 计划中 |  | `dense-vs-moe` |  |
-| 7 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 |  | `rear-seatbelt` |  |
-| 8 | 150 秒学会 SSH 是怎么工作的？ | zh + en | 计划中 |  | `ssh` |  |
-| 9 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
-| 10 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
-| 11 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 12 | 100 秒有关 Tmux 是如何工作和实现的 | zh + en | 计划中 |  | `tmux` |  |
-| 13 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
-| 14 | 250 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
+| 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`two-factor-auth`](../videos/series/in-seconds/two-factor-auth/) | 已发布：哔哩哔哩与 YouTube |
+| 2 | 200 秒速通 Lean 4：什么是形式化检验，以及为什么它可靠 | zh + en | 计划中 |  | `lean4` |  |
+| 3 | 100 秒明白 Opus 5.5 是怎么做动画的 | zh + en | 计划中 |  | `how-opus-animates` |  |
+| 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` |  |
+| 5 | 200 秒关于 LLM 的 Dense 和 MoE 是什么 | zh + en | 计划中 |  | `dense-vs-moe` |  |
+| 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 |  | `rear-seatbelt` |  |
+| 7 | 150 秒学会 SSH 是怎么工作的？ | zh + en | 计划中 |  | `ssh` |  |
+| 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
+| 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
+| 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
+| 11 | 100 秒有关 Tmux 是如何工作和实现的 | zh + en | 计划中 |  | `tmux` |  |
+| 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
+| 13 | 250 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
 
 ### LLM
 
@@ -245,17 +242,19 @@
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
 | 1 | PowerPC 时代的麦金塔 | zh + en | 计划中 |  | `powerpc-macintosh` |  |
-| 2 | DOS 时代的 Windows | zh + en | 计划中 |  | `dos-windows` |  |
-| 3 | Win8 平板和英特尔的凌动时代 | zh + en | 计划中 |  | `win8-atom` |  |
-| 4 | 苏维埃的三进制计算机时代 | zh + en | 计划中 |  | `soviet-trinary` |  |
-| 5 | CRT 一统天下的时代 | zh + en | 计划中 |  | `crt-era` |  |
-| 6 | Java 1.8 的时代 | zh + en | 计划中 |  | `java-8` |  |
-| 7 | Python 2 的时代 | zh + en | 计划中 |  | `python-2` |  |
-| 8 | MySQL 5.x 的时代 | zh + en | 计划中 |  | `mysql-5` |  |
-| 9 | 传统 C++ 的混乱时代 | zh + en | 计划中 |  | `legacy-cpp` |  |
-| 10 | PHP 5.x 的时代 | zh + en | 计划中 |  | `php-5` |  |
-| 11 | 功能机时代的 Java | zh + en | 计划中 |  | `feature-phone-java` |  |
-| 12 | 中国车市的三缸机时代 | zh + en | 计划中 |  | `china-three-cylinder` |  |
+| 2 | 恐龙年代的 AMD | zh + en | 计划中 |  | `amd-early` |  |
+| 3 | AMD 的农机时代 | zh + en | 计划中 |  | `amd-bulldozer-era` |  |
+| 4 | DOS 时代的 Windows | zh + en | 计划中 |  | `dos-windows` |  |
+| 5 | Win8 平板和英特尔的凌动时代 | zh + en | 计划中 |  | `win8-atom` |  |
+| 6 | 苏维埃的三进制计算机时代 | zh + en | 计划中 |  | `soviet-trinary` |  |
+| 7 | CRT 一统天下的时代 | zh + en | 计划中 |  | `crt-era` |  |
+| 8 | Java 1.8 的时代 | zh + en | 计划中 |  | `java-8` |  |
+| 9 | Python 2 的时代 | zh + en | 计划中 |  | `python-2` |  |
+| 10 | MySQL 5.x 的时代 | zh + en | 计划中 |  | `mysql-5` |  |
+| 11 | 传统 C++ 的混乱时代 | zh + en | 计划中 |  | `legacy-cpp` |  |
+| 12 | PHP 5.x 的时代 | zh + en | 计划中 |  | `php-5` |  |
+| 13 | 功能机时代的 Java | zh + en | 计划中 |  | `feature-phone-java` |  |
+| 14 | 中国车市的三缸机时代 | zh + en | 计划中 |  | `china-three-cylinder` |  |
 
 ## 独立视频
 
@@ -267,32 +266,35 @@
 | 4 | 道交法中的路权 | zh + en | 计划中 |  | `traffic-law-right-of-way` |  |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么 | zh + en | 计划中 |  | `openclaw-opencode-v2` |  |
 | 6 | 给 LLM 长出手——Harness 是如何工作的？ | zh + en | 计划中 |  | `how-harness-works` |  |
-| 7 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
-| 8 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
-| 9 | Web 登录机制：如何确认你是你 | zh + en | 计划中 |  | `web-login` |  |
-| 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
-| 11 | 垃圾回收的艺术 | zh + en | 计划中 |  | `garbage-collection` |  |
-| 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
-| 13 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
-| 14 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 |  | `interchanges` |  |
-| 15 | 轮胎物理学 | zh + en | 计划中 |  | `tire-physics` |  |
-| 16 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
-| 17 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
-| 18 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
-| 19 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
-| 20 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
-| 21 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
-| 22 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
-| 23 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
-| 24 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
-| 25 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
-| 26 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
-| 27 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片 |
-| 28 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
-| 29 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
-| 30 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
-| 31 | 变速器原理 | zh + en | 计划中 |  | `transmissions` |  |
-| 32 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 |  | `power-torque-curve` |  |
-| 33 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
-| 34 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
-| 35 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
+| 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
+| 8 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
+| 9 | 从 WSL 1 到 WSL 2，再到 WSL 3 | zh + en | 计划中 |  | `wsl` |  |
+| 10 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
+| 11 | Web 登录机制：如何确认你是你 | zh + en | 计划中 |  | `web-login` |  |
+| 12 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
+| 13 | 垃圾回收的艺术 | zh + en | 计划中 |  | `garbage-collection` |  |
+| 14 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
+| 15 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
+| 16 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |
+| 17 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 |  | `interchanges` |  |
+| 18 | 轮胎物理学 | zh + en | 计划中 |  | `tire-physics` |  |
+| 19 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
+| 20 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
+| 21 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
+| 22 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
+| 23 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
+| 24 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
+| 25 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
+| 26 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
+| 27 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
+| 28 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
+| 29 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
+| 30 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片 |
+| 31 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
+| 32 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
+| 33 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
+| 34 | 变速器原理 | zh + en | 计划中 |  | `transmissions` |  |
+| 35 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 |  | `power-torque-curve` |  |
+| 36 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
+| 37 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
+| 38 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |

@@ -24,13 +24,16 @@ Finished films, narration caches and intermediate render files are not tracked.
 
 ## Delivered
 
-| Video | Languages | Length | Production |
-|---|---|---|---|
-| [How a database engine is implemented: starting from MyISAM](videos/series/database-engines/myisam/) | Chinese | 7:55 | Self-made |
-| [luainstaller: hand your Lua script to someone without Lua](videos/standalone/luainstaller/) | Chinese, English | 7:55, 7:57 | Self-made |
-| [A shell from ancient times: Windows batch files (.bat)](videos/standalone/windows-batch/) | Chinese | 3:13 | Delegated |
+| Video | Languages | Length | Production | Published |
+|---|---|---|---|---|
+| [How a database engine is implemented: starting from MyISAM](videos/series/database-engines/myisam/) | Chinese | 7:55 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1u2YA65EMQ) (2026-10-01) |
+| [luainstaller: hand your Lua script to someone without Lua](videos/standalone/luainstaller/) | Chinese, English | 7:55, 7:57 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1x6a16sEZx), [YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) (2026-10-02) |
+| [A shell from ancient times: Windows batch files (.bat)](videos/standalone/windows-batch/) | Chinese | 3:13 | Delegated | [Bilibili](https://www.bilibili.com/video/BV1cEaB6tEjQ) (2026-10-01) |
+| [2FA in 120 seconds: what it is and how it works](videos/series/in-seconds/two-factor-auth/) | Chinese, English | 2:00, 2:00 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1whpF6aECJ), [YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) (2026-10-06) |
 
-The full catalog (19 series, 151 videos including planned ones) is in [docs/catalog.md](docs/catalog.md).
+Channels: [Bilibili](https://space.bilibili.com/68328330), [YouTube](https://www.youtube.com/@waterrun1978). The lengths above are the durations of the delivered files; Bilibili rounds up when it displays them: MyISAM 475.883 s shows as 7:56, luainstaller (Chinese) 475.227 s as 7:56, the batch-file film 193.025 s as 3:14, and 2FA 120.000 s as 2:00. MyISAM and the batch-file film are on Bilibili only. The per-film publication record (the title on the platform, the time, the collection, the date it was checked) is in each film's `README.md` or `DELIVERY.md`; see section 11 of [workflow.md](docs/workflow.md) for filling it in after publication.
+
+The full catalog (19 series, 153 videos including planned ones) is in [docs/catalog.md](docs/catalog.md); what is scheduled next is in [docs/todo.md](docs/todo.md).
 
 ## How it works
 
@@ -89,6 +92,7 @@ node kit/tools/new.js series/<series>/<video>          # an entry already in the
 | [pitfalls.md](docs/pitfalls.md) | Pitfalls encountered |
 | [retrospectives.md](docs/retrospectives.md) | Retrospectives of each film |
 | [catalog.md](docs/catalog.md) | Catalog |
+| [todo.md](docs/todo.md) | To-do: the videos scheduled next, their order, current state and the command to start each |
 | [third-party.md](docs/third-party.md) | Third-party components and licences |
 
 Models working in this repository should also read [AGENTS.md](AGENTS.md).

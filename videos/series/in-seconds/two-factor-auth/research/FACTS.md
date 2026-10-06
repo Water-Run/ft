@@ -153,7 +153,7 @@
 
 片中出现的数（密钥、计数器、HMAC 的 20 个字节、偏移量、31 位整数、四个验证码与二维码矩阵）仍以「取证」一节的三方交叉核对为准，成片没有改动这些数——`out/<lang>/video.json` 的过期检测确认渲染之后再没有改过场景与数据。
 
-公开仓库页面（片尾与 README 给出的地址）尚未核对：成片停在制作机上，未上传，等发布时再补这一条。
+成片于 2026-10-06 发布：哔哩哔哩 `BV1whpF6aECJ`（`https://www.bilibili.com/video/BV1whpF6aECJ`）与 YouTube `zD2afy1WBX0`（`https://www.youtube.com/watch?v=zD2afy1WBX0`），时刻、标题与时长取自两个频道的公开页面。片尾与本页给出的仓库地址 `https://github.com/Water-Run/ft` 已打开核对：2026-10-06 返回 200，可公开访问，指向本仓库。
 
 ## 取证中的旁支
 

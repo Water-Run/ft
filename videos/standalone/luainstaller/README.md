@@ -2,7 +2,7 @@
 
 luainstaller 的介绍视频，中文版与英文版各一部，1080p60，中文 7 分 55 秒、英文 7 分 57 秒。画面是「时间 t 的纯函数」的 HTML 动画，旁白逐句合成，动画时间点由旁白的词边界推出，所以两种语言共用同一套场景代码，时间轴各自排布。
 
-制作流程与标准见 `~/work/llm-video/PLAYBOOK.md`。片中每一句陈述的出处见 `research/FACTS.md`。
+制作流程与标准见仓库的 [`docs/`](../../../docs/)（原为另一台机器上的 `PLAYBOOK.md`，迁入本仓库时改指这里）。片中每一句陈述的出处见 `research/FACTS.md`。
 
 ## 内容
 
@@ -71,6 +71,17 @@ WATERRUN 的 `D:\LLM制视频\luainstaller-video\out\`：
 - `luainstaller-zh.srt`、`luainstaller-en.srt`
 - `cover-zh-16x9.jpg`、`cover-zh-4x3.jpg`、`cover-en-16x9.jpg`、`cover-en-4x3.jpg`（及 2 倍像素的 PNG）
 - `v1/`：第一版成片（4 分 40 秒）
+
+## 发布
+
+2026-10-06 按频道的公开页面逐条核对：
+
+| 平台 | 平台上的标题 | 平台显示时长 | 发布时刻 | 链接 |
+|---|---|---|---|---|
+| 哔哩哔哩，合集「开源项目」 | Luainstaller: 开箱即用的将Lua脚本打包为二进制程序 | 7:56 | 2026-10-02 10:07 | [BV1x6a16sEZx](https://www.bilibili.com/video/BV1x6a16sEZx) |
+| YouTube | Introducing luainstaller: "Pyinstaller" for lua | 未核 | 2026-10-02 09:28 | [ctYfIRZeuYc](https://www.youtube.com/watch?v=ctYfIRZeuYc) |
+
+本机成片的容器时长（读 mp4 的 `mvhd`）是中文 475.227 秒、英文 477.400 秒；哔哩哔哩显示 476 秒，是向上取整。两处上的是不是同一种语言，仓库里没有记录，未核。简介里给出的是项目仓库 [Water-Run/luainstaller](https://github.com/Water-Run/luainstaller)，不是本仓库。
 
 ## 声音
 

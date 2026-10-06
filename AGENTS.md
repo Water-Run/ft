@@ -10,6 +10,7 @@
 | 改工具或引擎 | [docs/tools.md](docs/tools.md)、[docs/engine.md](docs/engine.md)、[docs/pitfalls.md](docs/pitfalls.md) |
 | 判断成片是否合格 | [docs/standards.md](docs/standards.md)、[docs/review.md](docs/review.md) |
 | 开一个系列或加一集 | [docs/series.md](docs/series.md)、`videos/catalog.json` |
+| 看接下来要做哪几部 | [docs/todo.md](docs/todo.md) |
 | 换机器、装环境、同步另一台机器 | [docs/environment.md](docs/environment.md) |
 
 几条边界：
