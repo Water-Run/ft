@@ -19,6 +19,8 @@ const FPS = +opt('fps', 60), SCALE = +arg('scale', 1), CRF = String(opt('crf', 1
 const WORKERS = +opt('workers', Math.max(2, Math.min(9, Math.floor(os.cpus().length / 3))));
 const MB = Math.max(1, +opt('mb', 1)), SHUTTER = +opt('shutter', 0.5), GPU = !!+opt('gpu', 0), THREADS = String(+arg('threads', 4));
 const PW = Math.round(1920 * SCALE), PH = Math.round(1080 * SCALE);
+// 缩小出图（低清预演）时显式给出裁剪区与比例：新版 Chrome 的直接截图不理会小于 1 的设备像素比，出来仍是 1920×1080
+const SHOT = SCALE !== 1 ? { clip: { x: 0, y: 0, width: 1920, height: 1080, scale: SCALE } } : {};
 const IEND = Buffer.from([0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
 const pngOk = (b) => b.length > 64 && b.readUInt32BE(0) === 0x89504e47 && b.readUInt32BE(4) === 0x0d0a1a0a
   && b.readUInt32BE(16) === PW && b.readUInt32BE(20) === PH && b[24] === 8 && (b[25] === 2 || b[25] === 6) && b[28] === 0 && b.subarray(b.length - 8).equals(IEND);
@@ -46,7 +48,7 @@ async function worker(f0, f1, ctx, segPath, prog) {
         let buf = null;
         for (let k = 0; k < 6; k++) {
           await page.evaluate((x) => window.seek(Math.max(0, x)), t);
-          const { data } = await cdp.send('Page.captureScreenshot', { format: 'png', optimizeForSpeed: true });
+          const { data } = await cdp.send('Page.captureScreenshot', { format: 'png', optimizeForSpeed: true, ...SHOT });
           const b = Buffer.from(data || '', 'base64');
           if (pngOk(b)) { buf = b; break; }
           bad++; await new Promise((r) => setTimeout(r, 200 * (k + 1)));

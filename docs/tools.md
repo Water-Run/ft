@@ -138,6 +138,8 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `blank_ignore` | 空画面检查时忽略的区域 `[[x0, y0, x1, y1], …]`，各值是 0–1 的比例。用于常驻角标 | 无 |
 | `margin_skip` | 越界自检时略过的句子 `{ 句号: 原因 }`。用于有意出血的画面 | 无 |
 
+脚本自己也可以报时间线问题：`script.js` 的 `layoutScript()` 返回的对象里若有 `problems`（字符串数组），总闸门把它们计入「时长与节奏」。定长的片子用它报「某一场的旁白超出了定点」，做法见 [XX 秒速通首集的 `script.js`](../videos/series/in-seconds/two-factor-auth/src/js/script.js)。
+
 `style`：
 
 | 字段 | 打开后 |
