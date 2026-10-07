@@ -24,6 +24,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 | 视频 | 语言 | 时长 | 制作 | 发布 |
 |---|---|---|---|---|
+| [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | 未发布；试听项见本片说明 |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](videos/series/database-engines/myisam/) | 中文 | 7:55 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ)（2026-10-01） |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/standalone/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
 | [古代来的 Shell：Windows 批处理（.bat）](videos/standalone/windows-batch/) | 中文 | 3:13 | 委托 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ)（2026-10-01） |

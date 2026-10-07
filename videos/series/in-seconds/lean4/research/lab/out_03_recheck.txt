@@ -1,0 +1,4 @@
+$ lake env leanchecker SumOdd.Proof
+[exit 0] [1 s]
+$ lake env leanchecker --fresh SumOdd.Proof
+[exit 0] [62 s]

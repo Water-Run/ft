@@ -1,0 +1,11 @@
+SumOdd/Wrong.lean:4:0: error: Not a definitional equality: the left-hand side
+  sumOdd 3
+is not definitionally equal to the right-hand side
+  10
+SumOdd/Wrong.lean:4:33: error: Type mismatch
+  rfl
+has type
+  ?m.7 = ?m.7
+but is expected to have type
+  sumOdd 3 = 10
+[exit 1]

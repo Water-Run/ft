@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是正片的母题——
+     4×4 的方点阵（1 + 3 + 5 + 7 = 4²，最外一圈是朱红）与「对所有的 n 成立」的那一行。
+     4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
+  :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { background: var(--ink); color: var(--paper); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .abs { position: absolute; white-space: nowrap; }
+  .paper { background: var(--paper); }
+  .big { font: 900 330px "Inter"; letter-spacing: -.045em; line-height: 1; }
+  .tag { background: var(--ac); color: var(--ink); display: flex; align-items: baseline; padding: 6px 34px 16px; }
+  .tag b { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
+  .tag i { font: 900 96px "Inter", "Sans SC"; font-style: normal; margin-left: 18px; line-height: 1; }
+  .ttl { font: 900 76px "Inter", "Sans SC"; line-height: 1.16; letter-spacing: -.01em; }
+  .en .ttl { font-size: 70px; }
+  .kick { font: 700 40px "Inter", "Sans SC"; color: var(--ink); }
+  .code { font: 800 150px "Mono"; letter-spacing: -.04em; line-height: 1; color: var(--ink); }
+  svg { position: absolute; overflow: visible; }
+  /* 16:9：左墨右纸 */
+  .r169 .paper { left: 1090px; top: 0; width: 830px; height: 1080px; }
+  .r169 .big { left: 84px; top: 74px; }
+  .r169 .tag { left: 100px; top: 452px; }
+  .r169 .ttl { left: 100px; top: 706px; }
+  .r169 .kick { left: 1196px; top: 60px; }
+  .r169 .code { left: 1190px; top: 740px; }
+  /* 4:3：上墨下纸 */
+  .r43 .paper { left: 0; top: 770px; width: 1600px; height: 430px; }
+  .r43 .big { left: 66px; top: 64px; font-size: 360px; }
+  .r43 .tag { left: 1180px; top: 150px; padding: 6px 26px 14px; }
+  .r43 .tag b { font-size: 140px; }
+  .r43 .tag i { font-size: 80px; }
+  .r43 .ttl { left: 84px; top: 510px; font-size: 80px; }
+  .r43.en .ttl { font-size: 74px; }
+  .r43 .kick { left: 1186px; top: 400px; color: var(--paper); }
+  .r43 .code { left: 80px; top: 812px; font-size: 168px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="abs paper"></div>
+  <div class="abs big"></div>
+  <div class="abs tag"><b></b><i></i></div>
+  <div class="abs ttl"></div>
+  <div class="abs kick"></div>
+  <div class="abs code"></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
+  document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
+  const TEXT = {
+    zh: { big: 'Lean 4', n: '200', unit: '秒', title: '什么是形式化证明，<br>以及它为什么可靠', kick: 'XX 秒速通', code: '∀ n' },
+    en: { big: 'Lean 4', n: '200', unit: 's', title: 'What formal proof is,<br>and why it can be trusted', kick: 'In XX Seconds', code: '∀ n' },
+  }[lang];
+  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
+  document.querySelector('.tag i').textContent = TEXT.unit;
+  document.querySelector('.ttl').innerHTML = TEXT.title;
+  document.querySelector('.kick').textContent = TEXT.kick;
+  // 纸色一侧的图形：4×4 的方点阵，最外一圈（7 个）是朱红；「∀ n」旁边一个打勾的色块
+  const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
+  const el = (p, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  const [gx, gy, P] = wide ? [1196, 138, 146] : [1150, 806, 86], C = P * 124 / 140;
+  const s = el(document.getElementById('stage'), 'svg', { width: 10, height: 10 }); s.style.left = gx + 'px'; s.style.top = gy + 'px';
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) el(s, 'rect', { x: c * P, y: r * P, width: C, height: C, fill: Math.max(r, c) === 3 ? AC : INK });
+  const [tx, ty, T] = wide ? [1560, 750, 128] : [470, 830, 136];
+  const k = el(document.getElementById('stage'), 'svg', { width: T, height: T, viewBox: '0 0 60 60' }); k.style.left = tx + 'px'; k.style.top = ty + 'px';
+  el(k, 'rect', { x: 0, y: 0, width: 60, height: 60, fill: AC }); el(k, 'path', { d: 'M14,31 L26,43 L46,19', fill: 'none', stroke: INK, 'stroke-width': 8 });
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

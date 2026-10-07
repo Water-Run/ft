@@ -190,7 +190,7 @@
       "title": {"zh": "XX 秒速通"},
       "videos": [
         {"slug": "two-factor-auth", "title": {"zh": "120 秒关于什么是 2FA，以及它是怎么工作的", "en": "2FA in 120 Seconds: What It Is and How It Works"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
-        {"slug": "lean4", "title": {"zh": "200 秒速通 Lean 4：什么是形式化检验，以及为什么它可靠"}},
+        {"slug": "lean4", "title": {"zh": "200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠", "en": "Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted"}, "status": "delivered", "note": "本地出片，未发布；自动闸门通过，发布前试听项见 README"},
         {"slug": "how-opus-animates", "title": {"zh": "100 秒明白 Opus 5.5 是怎么做动画的"}},
         {"slug": "pistol-shooting", "title": {"zh": "150 秒学会怎么打手枪？"}},
         {"slug": "dense-vs-moe", "title": {"zh": "200 秒关于 LLM 的 Dense 和 MoE 是什么"}},

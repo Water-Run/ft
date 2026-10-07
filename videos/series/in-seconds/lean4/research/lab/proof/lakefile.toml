@@ -1,0 +1,6 @@
+name = "sumodd"
+version = "0.1.0"
+defaultTargets = ["SumOdd"]
+
+[[lean_lib]]
+name = "SumOdd"

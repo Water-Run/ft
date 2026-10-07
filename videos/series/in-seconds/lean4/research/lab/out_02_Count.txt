@@ -1,0 +1,2 @@
+{"byKind":{"axiom":15,"constructor":842,"def":18245,"inductive":616,"opaque":264,"quot":4,"recursor":618,"theorem":45596},"module":"SumOdd.Proof","modules":651,"total":66200}
+[exit 0]

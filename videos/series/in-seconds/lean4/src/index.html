@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="scenes"></div>
+  <div id="hud"></div>
+  <div id="caption"><span></span></div>
+</div>
+<script src="vendor/gsap.min.js"></script>
+<!-- 实测时长：每种语言一份，由 kit/tools/tts.js 生成 -->
+<script src="js/timing.zh.js"></script>
+<script src="js/timing.en.js"></script>
+<script src="js/script.js"></script>
+<!-- 画面数据：由 tools/gen_data.py 从 research/lab/ 生成 -->
+<script src="js/data.js"></script>
+<script src="js/config.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/util.js"></script>
+<script src="js/parts.js"></script>
+<!-- 场景：按出场顺序 -->
+<script src="js/scenes/s0_open.js"></script>
+<script src="js/scenes/s1_formal.js"></script>
+<script src="js/scenes/s2_types.js"></script>
+<script src="js/scenes/s3_kernel.js"></script>
+<script src="js/scenes/s4_trust.js"></script>
+<script src="js/scenes/s5_edge.js"></script>
+<script src="js/scenes/s6_outro.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

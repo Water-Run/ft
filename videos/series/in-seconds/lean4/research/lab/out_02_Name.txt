@@ -1,0 +1,2 @@
+'riemann_hypothesis' does not depend on any axioms
+[exit 0]

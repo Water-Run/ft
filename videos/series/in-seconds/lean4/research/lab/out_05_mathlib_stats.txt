@@ -1,0 +1,3 @@
+https://leanprover-community.github.io/mathlib_stats.html
+fetched 2026-10-07T12:33Z
+Counts Definitions Theorems Contributors 137930 290195 772

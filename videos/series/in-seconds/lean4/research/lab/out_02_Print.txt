@@ -1,0 +1,8 @@
+theorem sumOdd_eq_sq : ∀ (n : Nat), sumOdd n = n ^ 2 :=
+fun n =>
+  Nat.recAux (Eq.refl (sumOdd 0))
+    (fun k ih =>
+      Eq.mpr (id (congrArg (fun _a => _a = (k + 1) ^ 2) (sumOdd.eq_2 k)))
+        (Eq.mpr (id (congrArg (fun _a => _a + (2 * k + 1) = (k + 1) ^ 2) ih)) (sumOdd_eq_sq._proof_1_4 k)))
+    n
+[exit 0]

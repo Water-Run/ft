@@ -1,0 +1,5 @@
+SumOdd/Kernel.lean:7:0: error: (kernel) declaration type mismatch, 'fake' has type
+  9 = 9
+but it is expected to have type
+  sumOdd 3 = 10
+[exit 1]

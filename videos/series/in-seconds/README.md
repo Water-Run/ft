@@ -50,7 +50,7 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 已成片 | [`two-factor-auth`](two-factor-auth/) |
-| 2 | 200 秒速通 Lean 4：什么是形式化检验，以及为什么它可靠 | zh + en | 计划中 | `lean4` |
+| 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠 | zh + en | 已成片 | [`lean4`](lean4/) |
 | 3 | 100 秒明白 Opus 5.5 是怎么做动画的 | zh + en | 计划中 | `how-opus-animates` |
 | 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 | `pistol-shooting` |
 | 5 | 200 秒关于 LLM 的 Dense 和 MoE 是什么 | zh + en | 计划中 | `dense-vs-moe` |

@@ -26,6 +26,7 @@ Finished films, narration caches and intermediate render files are not tracked.
 
 | Video | Languages | Length | Production | Published |
 |---|---|---|---|---|
+| [Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted](videos/series/in-seconds/lean4/) | Chinese, English | 3:20, 3:20 | Self-made; finished with Codex | Not published; listening checks in the film README |
 | [How a database engine is implemented: starting from MyISAM](videos/series/database-engines/myisam/) | Chinese | 7:55 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1u2YA65EMQ) (2026-10-01) |
 | [luainstaller: hand your Lua script to someone without Lua](videos/standalone/luainstaller/) | Chinese, English | 7:55, 7:57 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1x6a16sEZx), [YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) (2026-10-02) |
 | [A shell from ancient times: Windows batch files (.bat)](videos/standalone/windows-batch/) | Chinese | 3:13 | Delegated | [Bilibili](https://www.bilibili.com/video/BV1cEaB6tEjQ) (2026-10-01) |

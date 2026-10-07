@@ -1,0 +1,4 @@
+SumOdd/Wrong2.lean:4:36: error: Tactic `decide` proved that the proposition
+  sumOdd 3 = 10
+is false
+[exit 1]
