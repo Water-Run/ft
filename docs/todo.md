@@ -29,7 +29,6 @@ node kit/tools/doctor.js <视频>                  # 环境自检
 
 | 日期 | 片子 | 目录 | 开工要点 |
 |---|---|---|---|
-| 10-07 | OpenClaw, Hermes 和实现 | [`standalone/openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 制作中。目录已存在，接着 `PROGRESS.md` 做：先补 `parts.js` 与 `index.html`，再写八个场景 |
 | 10-08 | 从 WSL 1 到 WSL 2，再到 WSL 3 | `standalone/wsl` | 不再是定长片，时长按「数分钟」定；WSL 3 的现状须联网核对到原始来源 |
 | 10-08 | OpenClaw 和 OpenCode 的 v2 大改 | `standalone/openclaw-opencode-v2` | 取证可复用上一部已取回的仓库、发布记录与文档，结论仍要重新给出处 |
 | 10-08 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | `standalone/opencart-1-5-admin` | 真实装一套 1.5，布局与配色从它自己的 CSS、模板与语言文件里取 |
