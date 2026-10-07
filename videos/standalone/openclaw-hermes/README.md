@@ -1,53 +1,176 @@
 # OpenClaw, Hermes 和实现
 
-<!-- 开头用一两句话给出定义：这部片子讲什么、多长、哪些语言。语体严谨克制，不用比喻与第二人称。 -->
+介绍网关型智能体这一类程序，以及其中两个开源项目 OpenClaw 与 Hermes Agent 各自实现的科普视频。全片先讲这一类程序的场景与设计（与终端里的编程智能体对照），再分别讲两个项目的来历、用法与实现，然后比较异同，最后以一台 Mac mini 上接入飞书的一条消息为例，把链路从头走到尾。中文版与英文版各一部，1080p60，中文 8:34、英文 9:30。画面是「时间 t 的纯函数」的 HTML 动画，旁白逐句合成，动画时间点由旁白的词边界推出，两种语言共用同一套场景代码，时间轴各自排布。
 
-制作流程与标准见仓库的 `docs/`；片中每一句陈述的出处见 `research/FACTS.md`。
+制作流程与标准见仓库的 [`docs/`](../../../docs/)；片中每一句陈述的出处见 [`research/FACTS.md`](research/FACTS.md)。数据截至 2026-10-06，对应 OpenClaw `195e1cc6c1`、Hermes Agent `4787e4d56f`（均为 2026-10-05 的提交）。
 
 ## 内容
 
-| 场景 | 起点 | 内容 |
-|---|---|---|
-| open | 0:00 | |
+| 场景 | 中文起点 | 英文起点 | 内容 |
+|---|---|---|---|
+| open | 0:00 | 0:00 | 一台不关机的电脑上常驻一个进程，一头连着聊天软件，一头连着模型、文件和终端（示意）；两个项目的标志与星标；标题 |
+| 01 网关型智能体 | 0:20 | 0:21 | 终端里的编程智能体：循环与 harness；它默认的四个前提；网关型智能体把前提逐个换掉——常驻、适配器、会话键、准入、定时；循环没有变 |
+| 02 OpenClaw | 1:17 | 1:21 | 名字的时间轴（warelay → CLAWDIS → Clawdbot → Moltbot → OpenClaw）；CLAWDIS 的一句定位；星标曲线（18 天从不到五千到十六万）；作者宣布加入 OpenAI、项目转入基金会；2.0 把会话迁进 SQLite；用法一行 |
+| OpenClaw 的实现 | 2:02 | 2:15 | 以网关为中心的一张大图：端口与客户端、带类型的 JSON 帧；通道插件（162 个扩展包里的 28 个）；网关内部的会话键、车道与「注入」；可换的智能体运行时；每轮装配的提示词与 Markdown 记忆；执行位置与心跳；两条分析 |
+| 03 Hermes Agent | 3:47 | 4:09 | 模型线（2023 年起）与智能体在同一条时间轴上；公开发布与 v0.2.0；星标曲线（与 OpenClaw 同一坐标）；用法一行 |
+| Hermes Agent 的实现 | 4:27 | 4:58 | 沙漏形的一张大图：入口、窄腰（`AIAgent`）、边缘的能力；三种模型接口；网关一侧的适配器、会话键、准入与「打断」；提示词三层与缓存；有上限、被冻结的记忆与会话库；学习闭环；终端后端与安全边界；两条分析 |
+| 04 异同 | 6:08 | 6:51 | 相同的骨架逐行对齐；六行差别：中心、循环、中途的消息、私聊、记忆、出发点 |
+| 05 Mac mini 与飞书 | 6:57 | 7:43 | 主机与 launchd；为什么长连接由内向外；一条消息沿两条泳道走七步（事件、先收下、去重与准入、会话键、循环、回复、落盘）；离开这台机器的只有两类请求 |
+| outro | 8:11 | 9:05 | 两句归纳；开源说明与仓库地址；名单 |
 
 ## 视觉系统
 
-<!-- 颜色、字体、图形语言、转场；全片保持的约定（同一个图形只有一个含义）。 -->
-<!-- 使用的参考作品、来源、借鉴方法与本片的设计选择；未使用外部参考则写明。不得直接抄袭现成产品。 -->
+墨黑底上的系统图解，共同的母题是像素方块：一条消息是一个方块，两个项目的标志也都由方块拼成。
+
+- 颜色：墨黑 `#0b0e14`、纸白 `#ece7da`；珊瑚红 `#ff4f40`（及 `#ff775f`）只属于 OpenClaw；金色三段 `#ffd700`、`#ffbf00`、`#cd7f32` 只属于 Hermes Agent；两档灰与一档暗线。讲「这一类」与「异同」的两章是中性的，用纸白底、墨色线，珊瑚红与金色在纸白底上只作色块。全片不用这两种颜色表示出错或警告。
+- 标志：像素龙虾的 16×16 点阵逐格取自 OpenClaw 仓库的 `docs/assets/pixel-lobster.svg`（MIT 许可）；Hermes Agent 的像素字是照其 banner 的样子（三段金色加描边回声）用自绘的 5×7 点阵重画的。片中没有使用飞书、Nous Research、Apple 的标志；Mac mini 画成一个圆角方形。
+- 图形各有一个含义，全片不变：方块是消息；圆环是智能体循环；带插口的横条或方框是网关；车道是会话；折角纸是 Markdown 文件；圆柱是 SQLite；时钟是定时。
+- 两张结构图：OpenClaw 是中心带插口与插槽的网关（通道、运行时、记忆都接在它上面）；Hermes Agent 是沙漏——上面一排入口，中间的腰是 `AIAgent`，下面一排边缘的能力。比较一章把两张图缩成两个小图标。
+- 字型：标题用 Inter 与思源黑体的粗体；代码、键名与出处用等宽字体；像素字用于两个项目的标志与计数。
+- 镜头：每个场景是一张比画面大的图，镜头在各部分之间移动；推近看网关内部，拉远看全图。镜头的缓慢漂移由 `parts.js` 的 `camTrack` 保证有足够的位移。
+- 字幕带一块与当前底色相同的衬底，图解的线条从下面经过时不与字相压。
+- 章节卡：OpenClaw 是珊瑚红的名字与张合钳子的像素龙虾；Hermes Agent 是逐列出现的金色像素字；其余是章号、标题与一排逐个点亮的消息方块。
+- 小节幕：整屏色块（珊瑚红、金色或纸白）加一个大字标题，从右刷入、向左收走。用在没有章节卡的场景开头，以及场景内部要把镜头换到图上很远的地方时——在盖住的那一刻切镜头，画面不扫过空白。
+- 参考与原创：视觉从零设计，没有参考现成产品的画面；两张结构图、时间轴、曲线与泳道图均为自绘。第一版（纸白与朱红、墨黑与金色的「两个世界」）连同其结构一起被替换，没有保留。
 
 ## 取证
 
-<!-- 事实从哪里来：实验环境、版本、脚本与回显的位置；怎样重做一遍。 -->
+- 接口数据（GitHub、npm、Hugging Face、arXiv、Nous Research 发布页）由 `research/lab/01_collect.sh` 取回，回显逐字保存在 `research/lab/out_*`；星标曲线由 `04_star_history.py` 从 star-history.com 的图里取采样点（GitHub 的 stargazers 接口需要认证，未用）。
+- 源码与文档在固定提交上读取，由 `02_extract.py` 摘出片段与引文（每条带仓库、固定提交、文件与起始行号）；`tools/gen_data.py` 把它们转成画面用的 `src/js/data.js`（不手改；画面数据去掉了 emoji）。
+- 场景代码在构建时逐条断言被引的文字确在原文里（`parts.js` 的 `has()`），不符时页面日志会报警；`check.js` 通过时页面日志为空。
+- 「这一类」一章是概念图解：每一条替换都给出两个项目各自的出处，画面上的平台、会话与顺序是一般化的画法，标「示意」。
+- 没有运行两个项目的安装程序或服务，事实来自固定提交的源码、官方文档与公开接口。条目、状态与依据见 `research/FACTS.md`。
+- 第三方源码在 `research/_src/`（不入库），按固定提交以稀疏浅克隆取得；本仓库只存取证脚本、回显与摘录，摘录取自 MIT 许可的两个项目，保留了出处与提交号。
 
 ## 读法
 
-<!-- 送去合成的文本与字幕不同的地方（script.js 的 SAY 表）及原因。 -->
+送去合成的文本与字幕不同的地方记在 `src/js/script.js` 的 `SAY` 表：`OpenClaw` → `Open Claw`、`warelay` → `ware relay`、`CLAWDIS` → `Claw dis`、`SQLite` → `S Q Lite`、`MIT` → `M I T`、`AIAgent` → `A I Agent`、`run_conversation` → `run conversation`、`launchd` → `launch D`、中文里的 `JSON` → `jason`、`pi` → `pie`，英文里的 `Nous` → `Noose`、`Feishu` → `Fay shoo`，以及端口号与几个数字的念法。读法改动后用 `asr.js` 回听。
 
-## 制作署名与片尾
+## 目录
 
-策划：WaterRun。
-
-开源视频：[GitHub · Water-Run/ft](https://github.com/Water-Run/ft)。片尾须展示「开源视频」与完整可读的网址。
-
-<!-- 根据 research/FACTS.md 的「制作署名」记录填写实际参与模型，不猜测版本；未披露模型的服务如实注明。所有语言、各交付视频版本都须包含完整名单。 -->
-
-| 参与模型（含可确认的版本） | 实际分工 |
-|---|---|
-
-<!-- 各语言、各视频版本的片尾时段与核对结果：完整性、字号、对比度、停留时间；名单与成片一致。 -->
+```
+project.json             语言、音色、语速、配乐与检查配置
+src/index.html           页面
+src/js/script.js         中英双语旁白脚本与读法表
+src/js/timing.<语言>.js   实测的每句时长与词边界（tts.js 生成）
+src/js/data.js           画面用到的实测数据、原文引文与源码行（gen_data.py 生成，不手改）
+src/js/parts.js          部件：舞台、像素字与像素龙虾、图解部件（方块、圆环、折线、文件、圆柱、时钟、引文）、镜头轨迹
+src/js/config.js         章节卡、场间换场、字幕配色
+src/js/scenes/           九个场景，按出场顺序 s0 … s8
+src/css/style.css        视觉系统
+src/cover.html           封面（?r=169|43&lang=zh|en）
+research/FACTS.md        逐句的事实出处、制作署名、复核
+research/lab/            取证脚本与完整回显
+tools/gen_data.py        research/lab → src/js/data.js
+tools/music.py           本片的配乐（mix.py 调用）
+```
 
 ## 复现
 
+在仓库根目录，依次运行：
+
 ```bash
-node kit/tools/tts.js    videos/standalone/openclaw-hermes --lang all     # 合成旁白，更新时间线
-node kit/tools/check.js  videos/standalone/openclaw-hermes                # 制作期总闸门
-node kit/tools/audio.js  videos/standalone/openclaw-hermes --lang all     # 混音
-node kit/tools/render.js videos/standalone/openclaw-hermes --lang all     # 渲染
-node kit/tools/finish.js videos/standalone/openclaw-hermes --lang all     # 封装成片
-node kit/tools/covers.js videos/standalone/openclaw-hermes --lang all     # 封面
-node kit/tools/check.js  videos/standalone/openclaw-hermes --final        # 交付前总闸门
+python videos/standalone/openclaw-hermes/tools/gen_data.py        # research/lab → src/js/data.js
+node kit/tools/tts.js    videos/standalone/openclaw-hermes        # 合成旁白，写 timing.<语言>.js
+node kit/tools/check.js  videos/standalone/openclaw-hermes        # 总闸门
+node kit/tools/audio.js  videos/standalone/openclaw-hermes        # 混音与数值自检
+node kit/tools/asr.js    videos/standalone/openclaw-hermes        # 回听
+node kit/tools/preview.js videos/standalone/openclaw-hermes       # 低清预演与静止检测（每种语言各跑一次，加 --lang en）
+node kit/tools/render.js videos/standalone/openclaw-hermes        # 渲染（日志末行要有 verified frames=）
+node kit/tools/finish.js videos/standalone/openclaw-hermes        # 响度、封装、字幕
+node kit/tools/covers.js videos/standalone/openclaw-hermes        # 封面
+node kit/tools/check.js  videos/standalone/openclaw-hermes --final
 ```
+
+重新取证：`bash research/lab/01_collect.sh`（只读公开接口，未认证的 GitHub 接口每小时 60 次）、`python research/lab/04_star_history.py`、`SRC=<_src 的位置> python research/lab/02_extract.py research/lab`。重跑会得到更新后的星标与发布数，画面与旁白里的数字随之要重新核对；固定提交变了，`02_extract.py` 的锚点与行号也要重核。
 
 ## 成片
 
-<!-- 时长、规格、交付物清单；事实、读音与节奏、旁白与画面对应的审查结果；原创与动画完成度的检查范围、缺陷与修正；需要人来判断的事项（配乐听感、音色、画面观感）。自动闸门通过不代替上述检查，未核查的如实写明。 -->
+成片在 `out/`。生成物不入库，留在制作机上；按「复现」一节的命令可以重新生成。
+
+| 文件 | 说明 |
+|---|---|
+| `openclaw-hermes-zh-1080p60.mp4` | 中文版，8:34（514.60 秒），204.4 MB |
+| `openclaw-hermes-en-1080p60.mp4` | 英文版，9:30（570.45 秒），233.6 MB |
+| `openclaw-hermes-<语言>-1080p60-no-music.mp4` | 无配乐版 |
+| `openclaw-hermes-<语言>-1080p60-voice-only.mp4` | 仅旁白版 |
+| `openclaw-hermes-<语言>.srt` | 字幕 |
+| `cover-<语言>-16x9.jpg`、`cover-<语言>-4x3.jpg` | 封面；另有 3840×2160 与 3200×2400 的 PNG |
+
+规格：1920×1080，60 帧/秒，H.264 与 AAC；运动模糊每帧取 4 个子帧。响度：中文 −16.4 LUFS、峰值 −1.4 dBFS；英文 −15.6 LUFS、峰值 −1.5 dBFS（目标 −16 ± 1.5 LUFS，峰值不高于 −1 dBFS）。
+
+## 发布
+
+未发布。发布之后按 `docs/workflow.md` 第 11 节回填平台、日期、链接、平台上的标题与时长。片尾「开源视频」的仓库地址 `github.com/Water-Run/ft` 于 2026-10-07 打开核对：可公开访问，本片目录在 `videos/standalone/openclaw-hermes/`。发布之前要先把本片的提交推送到这个仓库，片尾的链接指向的才是成片对应的源码。
+
+## 制作署名与片尾
+
+策划：WaterRun。制作：Claude Sonnet 5.5（取证的大部分与第一版）、Claude Opus 5.5（按重定的结构重写脚本与翻译、补充取证、重新设计视觉并实现全部场景、配乐、封面与审查）。配音：edge-tts 在线语音（`zh-CN-YunyangNeural`、`en-US-AndrewNeural`，模型未披露）。回听：faster-whisper（`small`）。开源视频：`github.com/Water-Run/ft`。
+
+片尾（outro 场景）中文版在 8:11–8:34、英文版在 9:05–9:30：先是两句归纳，随后一句旁白说明取证记录、脚本与源码已开源，画面出现仓库地址；最后 8.5 秒无旁白的名单，四行逐行出现。依据与核对见 `research/FACTS.md` 的「制作署名」。
+
+## 审查
+
+最终一轮在 2026-10-07，对象是两种语言的最终源码与成片。事实一项的细目在 [`research/FACTS.md`](research/FACTS.md) 的「复核」一节。
+
+### 闸门
+
+| 工具 | 结果 |
+|---|---|
+| `check.js` | 全部通过：源码规则（14 个文件）、场景齐全（9 个）、时长与节奏、两种语言的全片扫描（版面、空屏、静止、确定性、镜头下的最小字号）、音效覆盖（各 429 个事件） |
+| `asr.js` | 两种语言逐句回听，内容与脚本一致；差别限于专名的近音写法与数字、连字符的写法 |
+| `stats.js` | 中文 3.81–5.78 字/秒，英文 1.39–3.58 词/秒；没有过快、过长、停顿过短的句子 |
+| `preview.js` | 两种语言都没有 2.5 秒以上的静止段；对预演视频另跑 `blank_check.py`，没有空画面段 |
+| `render.js` | 日志末行：中文 `verified frames=30876`，英文 `verified frames=34227` |
+| `finish.js` | 两种语言：画面帧数、声音时长与时间线一致；没有 3 秒以上的静止段；空画面检查没有「空画面」段。「内容很少」的片段中文 3 处、英文 4 处，每处 1.4–2.0 秒，都是一个场景开头只有一两个元素的时候 |
+| `check.js --final` | 全部通过，含两种语言的「交付物」一项（成片规格、响度、静止段与空画面、成片与 `src/` 内容一致） |
+
+### 三项审查与完成度检查
+
+- **事实**：逐句总览图对照 `FACTS.md` 通看；页面里带数字的文字逐个在 `FACTS.md` 里查找；119 处引文断言在构建时核对；外部事实联网复核八项。
+- **读音与节奏**：`asr.js` 的逐句并排结果通读；`stats.js` 无告警；专名的读法见上文「读法」。
+- **旁白与画面的对应**：`sheets.js cue` 出两种语言每句说完那一刻的画面（各 115 帧），`sheets.js every 4` 出每 4 秒一帧的画面（中文 129 帧、英文 143 帧），全部看过；`scan.js` 的逐句文字清单通读；改动过的句子另用 `look.js` 取句末与句中的原尺寸画面核对。
+- **动态与声音**：看过的是静态画面——上面两套总览图、改动处的句中画面、成片里抽出的帧（场景首帧、小节幕、章节卡、镜头移动途中、片尾）——以及预演的静止检测、空画面检查和 `audio.js` 的数值自检。成片没有连续播放过，声音没有听过；这两项的观感记为待人确认，不记为通过。
+- **原创**：视觉从零设计，没有照着现成产品的画面做。引用的只有两处并已标明：OpenClaw 的像素龙虾点阵（取自其仓库，MIT 许可）；Hermes Agent 像素字的样子（照其 banner 重画，没有使用图片文件）。画面上的英文原句都是带出处的引文。
+- **片尾名单与开源链接**：两种语言的片尾各看过句末与名单停留期间的画面：五行（策划、制作、配音、回听、开源视频）齐全，「制作」一行写明两个模型及分工，与 `FACTS.md` 的「制作署名」和 `project.json` 一致；`github.com/Water-Run/ft` 完整可读，名单在片尾无旁白的 8.5 秒里逐行出现，停留到结束。仓库地址已打开核对，见「发布」。
+
+### 这一轮发现并改掉的问题
+
+| 问题 | 位置 | 处理 |
+|---|---|---|
+| 文字相压：Hermes 3 的摘要引文还没收走，下面一句的金线与文字就画在了同一位置，持续约 1 秒 | 03 章 h4，两种语言 | 引文在金线出现之前收走 |
+| 线条压字：星标曲线从标注上描过 | 02 章 c7 的「02-15」两行；03 章 h7b 的 v0.2.0 第二行 | 前者挪到虚线左侧；后者在曲线到达前收起 |
+| 正在讲的内容被画面边缘截断 | OpenClaw 实现 i4 的第三种帧；Hermes 实现 j9 的出处标注 | i4 重排并重新取景，镜头下移时淡出；j9 的出处改用短写 |
+| 字幕衬底压住画面内容 | OpenClaw 实现 i11 的出处与圆柱；Hermes 实现 j20 的气泡 | 调整镜头 |
+| 标签骑在框线上 | Hermes 实现 j19 的 `skill_view(name)` | 加宽技能索引的框 |
+| 大字被画面边缘截成半个词 | 03 章 h4 的像素字；OpenClaw 实现 i8–i9 的四个通道名；Hermes 实现 j6 的 `AIAgent`、j8 的适配器一排、j16–j20 的学习闭环、j23 的两块大字标签 | 重新取景，或在镜头推近、平移前收起 |
+| 全图上残留的引文竖条；相邻区域露进画面的出处标注 | Hermes 实现 j22；j16–j20 | 收起 |
+| 空画面：首次整片渲染后 `finish.js` 报出五段（场景之间的幕布、镜头穿过空白、分析一屏内容迟到）；英文改句后时间轴平移，预演又报出 0.3 秒 | 各实现场景的开头与中段 | 改用带标题的小节幕并在幕下切镜头；j1 的标签多留 0.4 秒 |
+| 英文译文与中文底本不一致：c7 把「宣布加入」译成 joined | 02 章 c7 | 改写并重新配音 |
+| 英文 13 句按词数过快 | 各章 | 改写并重新配音 |
+| 确定性：负的时间线位置使整条时间线平移；不同版本的动画库在 t=0 给出不同的镜头姿态 | 全片 | 镜头轨迹的起点钳制在场景开始之后；t=0 的姿态显式写定 |
+
+镜头在一张比画面大的图上移动，相邻区域的元素经过画面边缘时会被截断，这是这种画法固有的；上表处理的是被截断的恰好是当前讲的内容，或大字被截成半个词并持续一整句的情况。其余的（例如 05 章逐步右移时上一步留在左缘的小字）保留，`check.js` 把它们列在提示里。
+
+## 需要人来判断的事项
+
+- 配乐与音效的听感：制作过程中只能看数值（`audio.js` 的自检），听不到。配乐是本片自己的 `tools/music.py`，各章的音色与节奏有意拉开（开场与片尾是钢琴式单音，01 章马林巴，OpenClaw 两章方波琶音与闷的方波低音，Hermes 两章拨弦与钟声，04 章马林巴加两种音色轮流，05 章行走低音）；章与章的衔接、各段在旁白下的电平是否合适，需要人来听。不合适时改 `tools/music.py` 或 `project.json` 的 `audio` 段，重跑 `audio.js` 与 `finish.js`，不必重新渲染画面。
+- 音色与语速：中文 `zh-CN-YunyangNeural`（+6%）、英文 `en-US-AndrewNeural`（+8%）；英文里 Feishu、Nous 的读法用的是近似写法（`Fay shoo`、`Noose`），回听时被识别成近音词，是否自然需要人来判断。
+- 画面观感：制作过程中通过逐句总览图与文字扫描检查版面；镜头运动、转场的节奏，以及两张大图在推近与拉远之间的衔接，需要人通看一遍。总览图在 `shots/sheets/`（不入库）。
+
+## 制作中的取舍
+
+- 结构按策划在看过第一版后重定的顺序：先讲这一类，再分讲两个项目，然后比较，飞书只在最后作为一条真实链路出现。第一版以飞书为线索、先讲来历再讲接入，被整体替换。
+- 「网关型智能体」是本片对这一类的称呼：两个项目都把常驻进程叫 Gateway，但都没有把它当作类别的名字。01 章里编程智能体的四个前提是对「在终端里交互使用」这一形态的归纳，不针对某一个产品。
+- 两章实现各用一张大图而不是逐条列表：OpenClaw 画成以网关为中心、四周插着部件，Hermes Agent 画成沙漏，是把两边文档各自的说法（「control plane」「narrow waist」）直接画成结构。
+- 比较一章不下高低的判断，只把前两章已经给出依据的差别逐行并排。OpenClaw 文档里有一段项目自己写的两者对照，没有采用。
+- 05 章把两个网关并排画在同一台 Mac mini 上是为了对照；真实部署通常只装其中一个。链路以私聊为例，示例任务是读一篇飞书文档（两边都有对应的只读工具）。
+- 星标曲线取自 star-history.com 的采样点，与 GitHub 接口当日的读数相差几个到几十个，旁白用「不到五千」「超过十六万」「39.1 万」这样的说法，画面标注采样值与来源。
+- 没有在容器里运行两个项目的官方安装程序做实测。
+
+## 未做或未通过的项目
+
+- 成片没有由制作者连续播放，声音没有试听；观感与听感待人确认（见「需要人来判断的事项」）。
+- star-history.com 的星标采样点没有另一路来源逐点核对，只核对了末点（见 `FACTS.md` 的「未核查」）。
+- 没有运行两个项目的安装程序或服务；片中关于行为的陈述来自固定提交的源码与文档，不是实测。
+- 未发布。

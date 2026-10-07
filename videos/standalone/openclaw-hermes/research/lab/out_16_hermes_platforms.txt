@@ -1,0 +1,22 @@
+# hermes-agent @ 4787e4d56fc8d9265d4c7d3c0fe5accee86b4078：plugins/platforms/<平台>/adapter.py 的平台目录
+a2a
+buzz
+dingtalk
+discord
+email
+feishu
+google_chat
+irc
+line
+matrix
+mattermost
+ntfy
+photon
+raft
+simplex
+slack
+sms
+teams
+telegram
+wecom
+whatsapp

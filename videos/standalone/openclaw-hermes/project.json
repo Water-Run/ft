@@ -13,26 +13,26 @@
     "en": "en-US-AndrewNeural"
   },
   "rates": {
-    "zh": "+4%",
-    "en": "+4%"
+    "zh": "+6%",
+    "en": "+8%"
   },
   "asr_prompts": {
-    "zh": "以下是普通话的讲解，介绍开源智能体项目 OpenClaw 与 Hermes Agent，涉及飞书、网关、会话、记忆、插件、基金会。",
-    "en": "A narration about the open-source agents OpenClaw and Hermes Agent, covering Feishu, gateways, sessions, memory, plugins and foundations."
+    "zh": "以下是普通话的讲解，介绍网关型智能体与开源项目 OpenClaw、Hermes Agent 的实现，涉及 harness、网关、会话键、适配器、提示词缓存、记忆、技能、飞书、Mac mini、launchd、SQLite。",
+    "en": "A narration about gateway agents and the open-source projects OpenClaw and Hermes Agent: harness, gateway, session keys, adapters, prompt cache, memory, skills, Feishu, Mac mini, launchd, SQLite."
   },
   "production": {
     "mode": "self",
-    "maker": "Claude Sonnet 5.5"
+    "maker": "Claude Sonnet 5.5, Claude Opus 5.5"
   },
   "render": {
     "fps": 60,
     "mb": 4
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
+    "music": "tools/music.py",
+    "music_db": -15,
     "duck_db": 9,
-    "sfx_db": -8
+    "sfx_db": -9
   },
   "check": {
     "caption_width": {
@@ -46,7 +46,38 @@
     "camera": true,
     "style": {
       "flat": true,
-      "no_emoji": true
+      "no_emoji": true,
+      "palette": [
+        "ECE7DA",
+        "0B0E14",
+        "FF4F40",
+        "FF775F",
+        "FFD700",
+        "FFBF00",
+        "CD7F32",
+        "5C5A54",
+        "8F939C",
+        "2A2F3A",
+        "3A0A0D",
+        "081016",
+        "F5FBFF"
+      ],
+      "fonts": [
+        "Inter",
+        "Sans SC",
+        "Mono",
+        "Pixel"
+      ]
+    },
+    "duration": {
+      "zh": [
+        470,
+        590
+      ],
+      "en": [
+        500,
+        600
+      ]
     }
   }
 }

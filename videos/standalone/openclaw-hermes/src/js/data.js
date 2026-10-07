@@ -1,6 +1,20 @@
 // 由 tools/gen_data.py 从 research/lab/ 的取证回显生成，不要手改。
 window.DATA = {
+ "distTags": {
+  "beta": "2026.10.1-beta.1",
+  "extended-stable": "2026.8.35",
+  "latest": "2026.9.8"
+ },
  "ex": {
+  "hm.base.connect": {
+   "commit": "4787e4d56f",
+   "lines": [
+    2725,
+    2725
+   ],
+   "path": "gateway/platforms/base.py",
+   "text": "    async def connect(self, *, is_reconnect: bool = False) -> bool:"
+  },
   "hm.base.handle": {
    "commit": "4787e4d56f",
    "lines": [
@@ -9,6 +23,51 @@ window.DATA = {
    ],
    "path": "gateway/platforms/base.py",
    "text": "    async def handle_message(self, event: MessageEvent) -> None:\n        \"\"\"Process an incoming message; returns quickly by spawning a background\n        task so new messages (and interrupts) can arrive while an agent runs.\"\"\""
+  },
+  "hm.base.send": {
+   "commit": "4787e4d56f",
+   "lines": [
+    2735,
+    2735
+   ],
+   "path": "gateway/platforms/base.py",
+   "text": "    async def send(self, chat_id: str, content: str, reply_to: Optional[str] = None,"
+  },
+  "hm.budget.doc": {
+   "commit": "4787e4d56f",
+   "lines": [
+    3,
+    5
+   ],
+   "path": "agent/iteration_budget.py",
+   "text": "Each ``AIAgent`` (parent or subagent) holds its own :class:`IterationBudget`: the parent's\ncap is ``max_iterations`` (default 500), each subagent's ``delegation.max_iterations``\n(default 50), so total iterations across parent + subagents can exceed the parent's cap."
+  },
+  "hm.cache.plan": {
+   "commit": "4787e4d56f",
+   "lines": [
+    3,
+    5
+   ],
+   "path": "agent/prompt_caching.py",
+   "text": "Default layout: 4 cache_control breakpoints — the static system prefix, the end of the\nsystem prompt, and the last 2 non-system messages (without a static prefix: one system\nbreakpoint plus the last 3 messages). All markers share one TTL (5m or 1h)."
+  },
+  "hm.feishu.default": {
+   "commit": "4787e4d56f",
+   "lines": [
+    1394,
+    1394
+   ],
+   "path": "plugins/platforms/feishu/adapter.py",
+   "text": "            connection_mode=_extra_or_env(\"connection_mode\", \"FEISHU_CONNECTION_MODE\", \"websocket\").lower(),"
+  },
+  "hm.feishu.docread": {
+   "commit": "4787e4d56f",
+   "lines": [
+    1,
+    4
+   ],
+   "path": "tools/feishu_doc_tool.py",
+   "text": "\"\"\"Feishu Document Tool -- read document content via Feishu/Lark API.\n\nProvides ``feishu_doc_read`` for reading document content as plain text.\nUses the same lazy-import + BaseRequest pattern as feishu_comment.py."
   },
   "hm.feishu.msg": {
    "commit": "4787e4d56f",
@@ -28,6 +87,15 @@ window.DATA = {
    "path": "plugins/platforms/feishu/adapter.py",
    "text": "    def _build_event_handler(self) -> Any:\n        if EventDispatcherHandler is None:\n            return None\n        return (\n            EventDispatcherHandler.builder(self._encrypt_key, self._verification_token)\n            .register_p2_im_message_message_read_v1(self._on_message_read_event)\n            .register_p2_im_message_receive_v1(self._on_message_event)\n            .register_p2_im_message_reaction_created_v1(lambda d: self._on_reaction_event(\"im.message.reaction.created_v1\", d))\n            .register_p2_im_message_reaction_deleted_v1(lambda d: self._on_reaction_event(\"im.message.reaction.deleted_v1\", d))\n            .register_p2_card_action_trigger(self._on_card_action_trigger)\n            .register_p2_im_chat_member_bot_added_v1(self._on_bot_added_to_chat)\n            .register_p2_im_chat_member_bot_deleted_v1(self._on_bot_removed_from_chat)\n            .register_p2_im_chat_access_event_bot_p2p_chat_entered_v1(self._on_p2p_chat_entered)\n            .register_p2_im_message_recalled_v1(self._on_message_recalled)\n            .register_p2_customized_event(\"drive.notice.comment_add_v1\", self._on_drive_comment_event)\n            .register_p2_customized_event(\"vc.bot.meeting_invited_v1\", self._on_meeting_invited_event)\n            .build()\n        )"
   },
+  "hm.feishu.tools": {
+   "commit": "4787e4d56f",
+   "lines": [
+    44,
+    47
+   ],
+   "path": "toolsets.py",
+   "text": "_FEISHU_TOOLS = [\n    \"feishu_doc_read\", \"feishu_drive_list_comments\", \"feishu_drive_list_comment_replies\",\n    \"feishu_drive_reply_comment\", \"feishu_drive_add_comment\",\n]"
+  },
   "hm.feishu.wsclient": {
    "commit": "4787e4d56f",
    "lines": [
@@ -36,6 +104,33 @@ window.DATA = {
    ],
    "path": "plugins/platforms/feishu/adapter.py",
    "text": "        self._ws_client = FeishuWSClient(\n            app_id=self._app_id,\n            app_secret=self._app_secret,\n            log_level=lark.LogLevel.INFO,\n            event_handler=self._event_handler,\n            domain=domain,\n            # Without the \"channel\" UA tag Feishu won't push group @mention events over WS.\n            extra_ua_tags=[\"channel\"],\n        )"
+  },
+  "hm.feishu.wsimport": {
+   "commit": "4787e4d56f",
+   "lines": [
+    1202,
+    1202
+   ],
+   "path": "plugins/platforms/feishu/adapter.py",
+   "text": "            bound[\"FeishuWSClient\"] = importlib.import_module(\"lark_oapi.ws\").Client"
+  },
+  "hm.launchd.label": {
+   "commit": "4787e4d56f",
+   "lines": [
+    28,
+    28
+   ],
+   "path": "hermes_cli/gateway_launchd.py",
+   "text": "    return f\"ai.hermes.gateway-{suffix}\" if suffix else \"ai.hermes.gateway\""
+  },
+  "hm.launchd.plist": {
+   "commit": "4787e4d56f",
+   "lines": [
+    422,
+    428
+   ],
+   "path": "hermes_cli/gateway_launchd.py",
+   "text": "    <key>RunAtLoad</key>\n    <true/>\n    \n    <key>KeepAlive</key>\n    <dict>\n        <key>SuccessfulExit</key>\n        <false/>"
   },
   "hm.loop.def": {
    "commit": "4787e4d56f",
@@ -46,6 +141,33 @@ window.DATA = {
    "path": "agent/conversation_loop.py",
    "text": "def run_conversation("
   },
+  "hm.mem.frozen": {
+   "commit": "4787e4d56f",
+   "lines": [
+    3,
+    3
+   ],
+   "path": "tools/memory_tool.py",
+   "text": "profile). Both enter the system prompt as a FROZEN snapshot at session start;"
+  },
+  "hm.mem.limits": {
+   "commit": "4787e4d56f",
+   "lines": [
+    56,
+    56
+   ],
+   "path": "tools/memory_tool.py",
+   "text": "        store = MemoryStore(int(mem_cfg.get(\"memory_char_limit\", 2200)), int(mem_cfg.get(\"user_char_limit\", 1375)),"
+  },
+  "hm.nudge.after": {
+   "commit": "4787e4d56f",
+   "lines": [
+    769,
+    770
+   ],
+   "path": "agent/turn_finalizer.py",
+   "text": "    # Background memory/skill review runs AFTER delivery so it never competes with the\n    # user's task. Suppressed by skip_background_review (e.g. cron): the fork costs"
+  },
   "hm.nudge.memory": {
    "commit": "4787e4d56f",
    "lines": [
@@ -55,6 +177,15 @@ window.DATA = {
    "path": "agent/agent_init.py",
    "text": "    agent._memory_nudge_interval = 10"
   },
+  "hm.nudge.memtick": {
+   "commit": "4787e4d56f",
+   "lines": [
+    746,
+    746
+   ],
+   "path": "agent/turn_context.py",
+   "text": "def _tick_memory_nudge(agent: Any) -> bool:"
+  },
   "hm.nudge.skill": {
    "commit": "4787e4d56f",
    "lines": [
@@ -63,6 +194,15 @@ window.DATA = {
    ],
    "path": "agent/agent_init.py",
    "text": "    agent._skill_nudge_interval = 10"
+  },
+  "hm.nudge.skilltick": {
+   "commit": "4787e4d56f",
+   "lines": [
+    754,
+    754
+   ],
+   "path": "agent/turn_finalizer.py",
+   "text": "    # Skill trigger is checked NOW — based on how many tool iterations THIS turn used."
   },
   "hm.review.doc": {
    "commit": "4787e4d56f",
@@ -108,6 +248,24 @@ window.DATA = {
    ],
    "path": "extensions/feishu/src/bot.ts",
    "text": "  const dmPolicy = feishuCfg?.dmPolicy ?? \"pairing\";"
+  },
+  "oc.feishu.doctool": {
+   "commit": "195e1cc6c1",
+   "lines": [
+    855,
+    858
+   ],
+   "path": "extensions/feishu/src/docx.ts",
+   "text": "    name: \"feishu_doc\",\n    label: \"Feishu Doc\",\n    description:\n      \"Feishu document operations. Actions: read, write, append, insert, create, list_blocks, get_block, update_block, delete_block, create_table, write_table_cells, create_table_with_values, insert_table_row, insert_table_column, delete_table_rows, delete_table_columns, merge_table_cells, upload_image, upload_file, color_text\","
+  },
+  "oc.feishu.parse": {
+   "commit": "195e1cc6c1",
+   "lines": [
+    147,
+    151
+   ],
+   "path": "extensions/feishu/src/bot.ts",
+   "text": "export function parseFeishuMessageEvent(\n  event: FeishuMessageEvent,\n  botOpenId?: string,\n  preparedContent?: string,\n): FeishuMessageContext {"
   },
   "oc.feishu.register": {
    "commit": "195e1cc6c1",
@@ -814,6 +972,7 @@ window.DATA = {
   "officialDesc": "OpenClaw Feishu/Lark channel plugin for chats and workplace tools (community maintained by @m1heng).",
   "officialPkg": "@openclaw/feishu"
  },
+ "hm3abs": "Instruct (or \"chat\") tuned models have become the primary way in which most people interact with large language models. As opposed to \"base\" or \"foundation\" models, instruct-tuned models are optimized to respond to imperative statements. We present Hermes 3, a neutrally-aligned generalist instruct and tool use model with strong reasoning and creative abilities. Its largest version, Hermes 3 405B, achieves state of the art performance among open weight models on several public benchmarks.",
  "hmEvents": {
   "launch": "2026-02-25",
   "repo": "2025-07-23"
@@ -843,12 +1002,35 @@ window.DATA = {
    "src": "arXiv 2508.18255"
   }
  ],
+ "hmPlatforms": [
+  "a2a",
+  "buzz",
+  "dingtalk",
+  "discord",
+  "email",
+  "feishu",
+  "google_chat",
+  "irc",
+  "line",
+  "matrix",
+  "mattermost",
+  "ntfy",
+  "photon",
+  "raft",
+  "simplex",
+  "slack",
+  "sms",
+  "teams",
+  "telegram",
+  "wecom",
+  "whatsapp"
+ ],
  "names": [
   {
    "from": "2025-11-24",
    "name": "warelay",
    "readme": "Send, receive, and auto-reply on WhatsApp",
-   "readmeTitle": "📡 warelay — Send, receive, and auto-reply on WhatsApp—Twilio-backed or QR-linked.",
+   "readmeTitle": " warelay — Send, receive, and auto-reply on WhatsApp—Twilio-backed or QR-linked.",
    "rel": "2025-11-25",
    "ver": "v0.1.1"
   },
@@ -856,7 +1038,7 @@ window.DATA = {
    "from": "2025-12-19",
    "name": "CLAWDIS",
    "readme": "WhatsApp & Telegram Gateway for AI Agents",
-   "readmeTitle": "🦞 CLAWDIS — WhatsApp & Telegram Gateway for AI Agents",
+   "readmeTitle": " CLAWDIS — WhatsApp & Telegram Gateway for AI Agents",
    "rel": "2025-12-19",
    "ver": "v2.0.0-beta1"
   },
@@ -864,7 +1046,7 @@ window.DATA = {
    "from": "2026-01-05",
    "name": "Clawdbot",
    "readme": "Personal AI Assistant",
-   "readmeTitle": "🦞 CLAWDBOT — Personal AI Assistant",
+   "readmeTitle": " CLAWDBOT — Personal AI Assistant",
    "rel": "2026-01-05",
    "ver": "v2026.1.5"
   },
@@ -880,7 +1062,7 @@ window.DATA = {
    "from": "2026-01-30",
    "name": "OpenClaw",
    "readme": "Personal AI Assistant",
-   "readmeTitle": "🦞 OpenClaw — Personal AI Assistant",
+   "readmeTitle": " OpenClaw — Personal AI Assistant",
    "rel": "2026-01-30",
    "ver": "v2026.1.29"
   }
@@ -941,6 +1123,11 @@ window.DATA = {
    "path": "AGENTS.md",
    "text": "- **Per-conversation prompt caching is sacred.** Mutating past context, swapping toolsets,\n  reloading memories or rebuilding the system prompt mid-conversation breaks the cached prefix and\n  multiplies the user's cost; the ONE exception is context compression. Slash commands that change"
   },
+  "hm.agents.ladder": {
+   "line": 56,
+   "path": "AGENTS.md",
+   "text": "**Footprint ladder** (take the highest rung that solves it): extend existing code → CLI command +\nskill → service-gated tool (`check_fn` answers reachability/opt-in, never per-session surface:\n`tools/AGENTS.md`) → plugin → MCP server in the catalog → new core tool (fundamental, broadly useful,\nunreachable otherwise)."
+  },
   "hm.agents.waist": {
    "line": 24,
    "path": "AGENTS.md",
@@ -950,6 +1137,16 @@ window.DATA = {
    "line": 12,
    "path": "AGENTS.md",
    "text": "Hermes is a personal AI agent that runs the same agent core across a CLI, a messaging\ngateway (Telegram, Discord, Slack, ~20 platforms), a TUI, and an Electron desktop app. It\nlearns across sessions (memory + skills), delegates to subagents, runs scheduled jobs, and"
+  },
+  "hm.approvals": {
+   "line": 30,
+   "path": "website/docs/user-guide/security.md",
+   "text": "The approval system supports three modes, configured via `approvals.mode` in `~/.hermes/config.yaml`:"
+  },
+  "hm.arch.entry": {
+   "line": 17,
+   "path": "website/docs/developer-guide/architecture.md",
+   "text": "│  CLI (cli.py)    Gateway (gateway/run.py)    ACP (acp_adapter/)     │\n│  Batch Runner    API Server                  Python Library          │"
   },
   "hm.arch.gateway": {
    "line": 153,
@@ -961,10 +1158,35 @@ window.DATA = {
    "path": "website/docs/developer-guide/agent-loop.md",
    "text": "run_conversation()\n  1. Generate task_id if not provided\n  2. Append user message to conversation history\n  3. Build or reuse cached system prompt (prompt_builder.py)\n  4. Check if preflight compression is needed (>50% context)\n  5. Build API messages from conversation history\n     - chat_completions: OpenAI format as-is\n     - codex_responses: convert to Responses API input items\n     - anthropic_messages: convert via anthropic_adapter.py\n  6. Inject ephemeral prompt layers (budget warnings, context pressure)\n  7. Apply prompt caching markers if on Anthropic\n  8. Make interruptible API call (_interruptible_api_call)\n  9. Parse response:\n     - If tool_calls: execute them, append results, loop back to step 5\n     - If text response: persist session, flush memory if needed, return\n```\n"
   },
+  "hm.arch.platforms": {
+   "line": 123,
+   "path": "website/docs/developer-guide/architecture.md",
+   "text": "├── plugins/platforms/        # Bundled platform plugins: telegram, discord, slack,\n│                             #   whatsapp, matrix, mattermost, email, sms, dingtalk,\n│                             #   feishu, wecom, irc, line, teams, google_chat,\n│                             #   buzz, ntfy, photon, raft, simplex"
+  },
+  "hm.arch.registry": {
+   "line": 35,
+   "path": "website/docs/developer-guide/architecture.md",
+   "text": "│  │              │  │ codex_resp.  │  │ 70+ tools    │               │"
+  },
+  "hm.busy": {
+   "line": 448,
+   "path": "website/docs/user-guide/messaging/index.md",
+   "text": "  busy_input_mode: steer   # or queue, or interrupt (default)"
+  },
+  "hm.cron.fresh": {
+   "line": 19,
+   "path": "website/docs/user-guide/features/cron.md",
+   "text": "- run in fresh agent sessions with the normal static tool list"
+  },
   "hm.feishu.behaviour": {
    "line": 24,
    "path": "website/docs/user-guide/messaging/feishu.md",
    "text": "| Direct messages | Hermes responds to every message. |\n| Group chats | Hermes responds only when the bot is @mentioned in the chat. |\n| Shared group chats | By default, session history is isolated per user inside a shared chat. |"
+  },
+  "hm.feishu.bot": {
+   "line": 55,
+   "path": "website/docs/user-guide/messaging/feishu.md",
+   "text": "4. Enable the **Bot** capability for the app."
   },
   "hm.feishu.dedupe": {
    "line": 545,
@@ -981,6 +1203,16 @@ window.DATA = {
    "path": "website/docs/user-guide/messaging/feishu.md",
    "text": "   - `im.message.receive_v1` — required for receiving messages"
   },
+  "hm.feishu.grouppolicy": {
+   "line": 245,
+   "path": "website/docs/user-guide/messaging/feishu.md",
+   "text": "With the default `allowlist` policy and an empty `FEISHU_ALLOWED_USERS`, every human group message is rejected while DMs keep working. The first such drop is logged once at `WARNING` with the keys to set; later drops are `DEBUG`. Under a [multiplexed gateway](../multi-profile-gateways.md), each profile reads only its **own** `.env` — a `FEISHU_GROUP_POLICY=open` in the default profile's `.env` does not apply to a secondary profile's bot. Put `FEISHU_GROUP_POLICY` / `FEISHU_ALLOWED_USERS` in `profiles/<name>/.env`, or use `group_rules` in that profile's `config.yaml`."
+  },
+  "hm.feishu.longconn": {
+   "line": 88,
+   "path": "website/docs/user-guide/messaging/feishu.md",
+   "text": "1. Set the connection mode to **Long Connection (WebSocket)** (recommended) or configure a webhook URL"
+  },
   "hm.feishu.modes": {
    "line": 17,
    "path": "website/docs/user-guide/messaging/feishu.md",
@@ -990,6 +1222,16 @@ window.DATA = {
    "line": 588,
    "path": "website/docs/user-guide/messaging/feishu.md",
    "text": "| `Another local Hermes gateway is already using this Feishu app_id` | Only one Hermes instance can use the same app_id at a time. Stop the other gateway first. |"
+  },
+  "hm.feishu.perms": {
+   "line": 70,
+   "path": "website/docs/user-guide/messaging/feishu.md",
+   "text": "| `im:message` | Receive and read messages |\n| `im:message:send_as_bot` | Send messages as the bot |"
+  },
+  "hm.feishu.post": {
+   "line": 429,
+   "path": "website/docs/user-guide/messaging/feishu.md",
+   "text": "When outbound text contains markdown formatting (headings, bold, lists, code blocks, links, etc.), the adapter automatically sends it as a Feishu **post** message with an embedded `md` tag rather than as plain text. This enables rich rendering in the Feishu client.\n\nIf the Feishu API rejects the post payload (e.g., due to unsupported markdown constructs), the adapter automatically falls back to sending as plain text with markdown stripped. This two-stage fallback ensures messages are always delivered."
   },
   "hm.feishu.serial": {
    "line": 465,
@@ -1001,6 +1243,56 @@ window.DATA = {
    "path": "website/docs/user-guide/messaging/feishu.md",
    "text": "Select **Feishu / Lark** and scan the QR code with your Feishu or Lark mobile app. Hermes will automatically create a bot application with the correct permissions and save the credentials."
   },
+  "hm.gw.deny": {
+   "line": 102,
+   "path": "website/docs/developer-guide/gateway-internals.md",
+   "text": "5. **Default: deny** — unauthorized users are rejected"
+  },
+  "hm.gw.extend": {
+   "line": 146,
+   "path": "website/docs/developer-guide/gateway-internals.md",
+   "text": "Most messaging platforms ship as plugin adapters under `plugins/platforms/<name>/adapter.py`; a few legacy adapters still live directly in `gateway/platforms/`. All extend `BasePlatformAdapter` from `gateway/platforms/base.py`:"
+  },
+  "hm.gw.flow": {
+   "line": 58,
+   "path": "website/docs/developer-guide/gateway-internals.md",
+   "text": "1. **Platform adapter** receives raw event, normalizes it into a `MessageEvent`\n2. **Base adapter** checks active session guard:\n   - If agent is running for this session → queue message, set interrupt event\n   - If `/approve`, `/deny`, `/stop` → bypass guard (dispatched inline)"
+  },
+  "hm.gw.guard": {
+   "line": 88,
+   "path": "website/docs/developer-guide/gateway-internals.md",
+   "text": "1. **Level 1 — Base adapter** (`gateway/platforms/base.py`): Checks `_active_sessions`. If the session is active, queues the message in `_pending_messages` and sets an interrupt event. This catches messages *before* they reach the gateway runner."
+  },
+  "hm.gw.keyfmt": {
+   "line": 75,
+   "path": "website/docs/developer-guide/gateway-internals.md",
+   "text": "agent:{namespace}:{platform}:{chat_type}:{chat_id}"
+  },
+  "hm.launchd.doc": {
+   "line": 149,
+   "path": "website/docs/guides/team-telegram-assistant.md",
+   "text": "This creates a background service: a user-level **systemd** service on Linux by default, a **launchd** service on macOS, or a boot-time Linux system service if you pass `--system`."
+  },
+  "hm.loop.converge": {
+   "line": 51,
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "text": "The mode determines how messages are formatted, how tool calls are structured, how responses are parsed, and how caching/streaming works. All three converge on the same internal message format (OpenAI-style `role`/`content`/`tool_calls` dicts) before and after API calls."
+  },
+  "hm.loop.core": {
+   "line": 9,
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "text": "The core orchestration engine is the `AIAgent` class. `run_agent.py` is now a thin facade: the loop itself lives in `agent/conversation_loop.py`, each turn phase in `agent/turn_*.py` (iteration prep, API call, API error, overflow, truncation, recovery), constructor wiring in `agent/agent_init.py`, and everything from prompt assembly to tool dispatch to provider failover in focused `agent/*.py` modules mixed into `AIAgent`."
+  },
+  "hm.loop.modes": {
+   "line": 47,
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "text": "| `chat_completions` | OpenAI-compatible endpoints (OpenRouter, custom, most providers) | `openai.OpenAI` |\n| `codex_responses` | OpenAI Codex / Responses API | `openai.OpenAI` with Responses format |\n| `anthropic_messages` | Native Anthropic Messages API | `anthropic.Anthropic` via adapter |"
+  },
+  "hm.loop.reuse": {
+   "line": 67,
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "text": "  3. Build or reuse cached system prompt (prompt_builder.py)"
+  },
   "hm.memory.files": {
    "line": 17,
    "path": "website/docs/user-guide/features/memory.md",
@@ -1011,20 +1303,50 @@ window.DATA = {
    "path": "website/docs/user-guide/features/memory.md",
    "text": "**Frozen snapshot pattern:** The system prompt injection is captured once at session start and never changes mid-session. This is intentional — it preserves the LLM's prefix cache for performance. When the agent adds/removes memory entries during a session, the changes are persisted to disk immediately but won't appear in the system prompt until the next session starts. Tool responses always show the live state."
   },
+  "hm.memory.home": {
+   "line": 20,
+   "path": "website/docs/user-guide/features/memory.md",
+   "text": "Both are stored in `~/.hermes/memories/` and are injected into the system prompt as a frozen snapshot at session start. The agent manages its own memory via the `memory` tool — it can add, replace, or remove entries."
+  },
   "hm.migrate.doc": {
    "line": 9,
    "path": "website/docs/guides/migrate-from-openclaw.md",
    "text": "`hermes claw migrate` imports your OpenClaw (or legacy Clawdbot/Moldbot) setup into Hermes. This guide covers exactly what gets migrated, the config key mappings, and what to verify after migration."
+  },
+  "hm.prompt.split": {
+   "line": 11,
+   "path": "website/docs/developer-guide/prompt-assembly.md",
+   "text": "- **cached system prompt state**\n- **ephemeral API-call-time additions**"
+  },
+  "hm.prompt.three": {
+   "line": 31,
+   "path": "website/docs/developer-guide/prompt-assembly.md",
+   "text": "1. **stable** — identity (`SOUL.md` or fallback), tool/model guidance, coding operating brief\n2. **context** — caller-supplied `system_message`, project context files (`.hermes.md` / `AGENTS.md` / `CLAUDE.md` / `.cursorrules`), then the worktree-dependent git workspace snapshot, operator instructions and platform hints\n3. **volatile** — skills index, built-in memory snapshot (`MEMORY.md`), user profile snapshot (`USER.md`), external memory-provider block, timestamp/session/model/provider line, then runtime environment hints (host / home / **current working directory**)"
+  },
+  "hm.prompt.tiers": {
+   "line": 203,
+   "path": "website/docs/developer-guide/architecture.md",
+   "text": "- **`system_prompt.py` + `prompt_builder.py`** — assembles the ordered system-prompt tiers (`stable` → `context` → `volatile`): identity/tool guidance/skills, context files, then memory/profile/timestamp blocks"
   },
   "hm.readme.backends": {
    "line": 29,
    "path": "README.md",
    "text": "<tr><td><b>Runs anywhere, not just your laptop</b></td><td>Seven terminal backends — local, Docker, SSH, Singularity, Modal, Daytona, and Vercel Sandbox. Daytona and Modal offer serverless persistence — your agent's environment hibernates when idle and wakes on demand, costing nearly nothing between sessions. Run it on a $5 VPS or a GPU cluster.</td></tr>"
   },
+  "hm.readme.cmd": {
+   "line": 110,
+   "path": "README.md",
+   "text": "hermes              # Interactive CLI — start a conversation"
+  },
   "hm.readme.def": {
    "line": 19,
    "path": "README.md",
    "text": "**The self-improving AI agent built by [Nous Research](https://nousresearch.com).** It's the only agent with a built-in learning loop — it creates skills from experience, improves them during use, nudges itself to persist knowledge, searches its own past conversations, and builds a deepening model of who you are across sessions. Run it on a $5 VPS, a GPU cluster, or serverless infrastructure that costs nearly nothing when idle. It's not tied to your laptop — talk to it from Telegram while it works on a cloud VM."
+  },
+  "hm.readme.gw": {
+   "line": 115,
+   "path": "README.md",
+   "text": "hermes gateway      # Start the messaging gateway (Telegram, Discord, etc.)"
   },
   "hm.readme.migrate": {
    "line": 117,
@@ -1036,20 +1358,100 @@ window.DATA = {
    "path": "SECURITY.md",
    "text": "**The only security boundary against an adversarial LLM is the\noperating system.** Nothing inside the agent process constitutes"
   },
+  "hm.session.sqlite": {
+   "line": 221,
+   "path": "website/docs/user-guide/features/memory.md",
+   "text": "- All CLI and messaging sessions are stored in SQLite (`~/.hermes/state.db`) with FTS5 full-text search"
+  },
   "hm.session.storage": {
    "line": 223,
    "path": "website/docs/developer-guide/architecture.md",
    "text": "SQLite-based session storage with FTS5 full-text search. Sessions have lineage tracking (parent/child across compressions), per-platform isolation, and atomic writes with contention handling."
   },
+  "hm.sessionkey.ns": {
+   "line": 654,
+   "path": "gateway/session.py",
+   "text": "    \"\"\"``agent:<ns>`` prefix for a session key: default/None profile → ``agent:main``\n    (BYTE-IDENTICAL to every historical key); named profile → ``agent:<name>`` so two"
+  },
+  "hm.skills.def": {
+   "line": 9,
+   "path": "website/docs/user-guide/features/skills.md",
+   "text": "Skills are on-demand knowledge documents the agent can load when needed. They follow a **progressive disclosure** pattern to minimize token usage and are compatible with the [agentskills.io](https://agentskills.io/specification) open standard."
+  },
+  "hm.skills.home": {
+   "line": 11,
+   "path": "website/docs/user-guide/features/skills.md",
+   "text": "All skills live in **`~/.hermes/skills/`** — the primary directory and source of truth. On fresh install, bundled skills are copied from the repo. Hub-installed and agent-created skills also go here. The agent can modify or delete any skill."
+  },
+  "hm.skills.view": {
+   "line": 107,
+   "path": "website/docs/developer-guide/prompt-assembly.md",
+   "text": "your task, load it with skill_view(name) and follow its instructions."
+  },
+  "hm.tools.backend": {
+   "line": 86,
+   "path": "website/docs/user-guide/features/tools.md",
+   "text": "  backend: local    # or: docker, ssh, singularity, modal, daytona, vercel_sandbox"
+  },
+  "hm.tools.default": {
+   "line": 73,
+   "path": "website/docs/user-guide/features/tools.md",
+   "text": "| `local` | Run on your machine (default) | Development, trusted tasks |"
+  },
+  "hm.tools.register": {
+   "line": 21,
+   "path": "website/docs/developer-guide/tools-runtime.md",
+   "text": "Each tool module calls `registry.register(...)` at import time."
+  },
+  "oc.arch.clients": {
+   "line": 12,
+   "path": "docs/concepts/architecture.md",
+   "text": "- Control-plane clients (macOS app, CLI, web UI, automations) connect to the\n  Gateway over **WebSocket** on the configured bind host (default\n  `127.0.0.1:18789`)."
+  },
+  "oc.arch.first": {
+   "line": 79,
+   "path": "docs/concepts/architecture.md",
+   "text": "- First frame **must** be `connect`."
+  },
   "oc.arch.gateway": {
    "line": 10,
    "path": "docs/concepts/architecture.md",
-   "text": "- A single long-lived **Gateway** owns all messaging surfaces (WhatsApp via\n  Baileys, Telegram via grammY, Slack, Discord, Signal, iMessage, WebChat).\n- Control-plane clients (macOS app, CLI, web UI, automations) connect to the\n  Gateway over **WebSocket** on the configured bind host (default"
+   "text": "- A single long-lived **Gateway** owns all messaging surfaces (WhatsApp via\n  Baileys, Telegram via grammY, Slack, Discord, Signal, iMessage, WebChat).\n- Control-plane clients (macOS app, CLI, web UI, automations) connect to the\n  Gateway over **WebSocket** on the configured bind host (default\n  `127.0.0.1:18789`)."
+  },
+  "oc.arch.nodes": {
+   "line": 15,
+   "path": "docs/concepts/architecture.md",
+   "text": "- **Nodes** (macOS/iOS/Android/headless) also connect over **WebSocket**, but\n  declare `role: node` with explicit caps/commands."
+  },
+  "oc.arch.onehost": {
+   "line": 17,
+   "path": "docs/concepts/architecture.md",
+   "text": "- One Gateway per host. It is the only place that opens a WhatsApp session."
+  },
+  "oc.arch.wire": {
+   "line": 81,
+   "path": "docs/concepts/architecture.md",
+   "text": "  - Requests: `{type:\"req\", id, method, params}` → `{type:\"res\", id, ok, payload|error}`\n  - Events: `{type:\"event\", event, payload, seq?, stateVersion?}`"
+  },
+  "oc.channelrouting.dm": {
+   "line": 38,
+   "path": "docs/channels/channel-routing.md",
+   "text": "Direct messages collapse to the agent's **main** session by default:\n\n- `agent:<agentId>:main` (for example: `agent:main:main`)"
   },
   "oc.channels.four": {
    "line": 11,
    "path": "docs/install/development-channels.md",
    "text": "OpenClaw ships four update channels:\n\n- **stable**: npm dist-tag `latest`. Recommended for most users.\n- **extended-stable**: npm dist-tag `extended-stable`. A net-new, trailing\n  supported-month package channel. It is package-only, and installation is\n  foreground-only. It receives read-only update hints when `update.checkOnStart`\n  is enabled, including direct final extended-stable package installs, but never\n  applies automatically.\n- **beta**: the newest version by semantic version order from the npm `beta`"
+  },
+  "oc.dreaming.default": {
+   "line": 14,
+   "path": "docs/concepts/dreaming.md",
+   "text": "Dreaming is enabled by default. Set"
+  },
+  "oc.exec.host": {
+   "line": 32,
+   "path": "docs/start/why-openclaw/the-trust-boundary.md",
+   "text": "[`tools.exec.host`](/tools/exec) resolves to the gateway host, a [sandbox](/gateway/sandboxing), or a paired [node](/nodes). While a sandbox runtime is active, per-call escapes to the host are rejected. An explicit `host=sandbox` with no runtime configured fails instead of silently running on the host. The backends are Docker and Podman, SSH, and [OpenShell](/gateway/openshell). The default Docker and Podman profile has no network, a read-only root, all capabilities dropped, and a non-root user. OpenShell installs as a plugin and registers through the same backend contract as Docker. If you run OpenShell already, OpenClaw uses its sandboxes. It does not need to be wrapped in one."
   },
   "oc.feishu.dm": {
    "line": 17,
@@ -1066,6 +1468,11 @@ window.DATA = {
    "path": "docs/channels/feishu/access-control.md",
    "text": "**Group policy** (`channels.feishu.groupPolicy`, default: `allowlist`):"
   },
+  "oc.feishu.mention": {
+   "line": 44,
+   "path": "docs/channels/feishu/access-control.md",
+   "text": "- Default: @mention required, except when the effective group policy is `\"open\"`; there it defaults to `false` so messages that cannot carry mentions (for example images) still reach the agent."
+  },
   "oc.feishu.overview": {
    "line": 9,
    "path": "docs/channels/feishu.md",
@@ -1081,6 +1488,46 @@ window.DATA = {
    "path": "docs/channels/feishu/setup.md",
    "text": "  This installs the `@openclaw/feishu` plugin if it is missing, then walks through setup:\n\n- **Manual setup**: paste an App ID and App Secret from Feishu Open Platform (`https://open.feishu.cn`) or Lark Developer (`https://open.larksuite.com`).\n- **QR setup**: scan a QR code in the Feishu app to create a bot automatically. This flow locks DMs to your own account (`dmPolicy: \"allowlist\"` with your `open_id`).\n"
   },
+  "oc.feishu.streaming": {
+   "line": 62,
+   "path": "docs/channels/feishu/advanced-configuration.md",
+   "text": "Feishu/Lark supports streaming replies via interactive cards (Card Kit streaming API). When enabled, the bot updates the card in real time as it generates text."
+  },
+  "oc.heartbeat.def": {
+   "line": 15,
+   "path": "docs/gateway/heartbeat.md",
+   "text": "Heartbeat is a system-owned automation that runs **periodic agent turns** in the\nmain session so the model can surface anything that needs attention without\nspamming you."
+  },
+  "oc.heartbeat.default": {
+   "line": 37,
+   "path": "docs/gateway/heartbeat.md",
+   "text": "    Leave heartbeats enabled (default is `30m`, or `1h` when Anthropic OAuth/token auth is configured, including Claude CLI reuse) or set your own cadence."
+  },
+  "oc.launchd.keepalive": {
+   "line": 254,
+   "path": "docs/cli/gateway/service.md",
+   "text": "    - On macOS, `gateway stop` uses `launchctl bootout` by default, which removes the LaunchAgent from the current boot session without persisting a disable — KeepAlive auto-recovery stays active for future crashes and `gateway start` re-enables cleanly without a manual `launchctl enable`. Pass `--disable` to persistently suppress KeepAlive and RunAtLoad so the gateway does not respawn until the next explicit `gateway start`; use this when a manual stop should survive reboots."
+  },
+  "oc.launchd.label": {
+   "line": 131,
+   "path": "docs/gateway/troubleshooting/gateway-service-and-process.md",
+   "text": "- Both `~/Library/LaunchAgents/ai.openclaw.gateway.plist` and"
+  },
+  "oc.launchd.plist": {
+   "line": 52,
+   "path": "docs/cli/daemon.md",
+   "text": "- On macOS, `install` writes LaunchAgent plists with mode `0644`. Secrets stay in the generated owner-only environment file (`0600`), loaded through an owner-only wrapper (`0700`)."
+  },
+  "oc.loop.def": {
+   "line": 9,
+   "path": "docs/concepts/agent-loop.md",
+   "text": "The agent loop is the serialized, per-session run that turns a message into\nactions and a reply: intake, context assembly, model inference, tool\nexecution, streaming, persistence."
+  },
+  "oc.loop.serial": {
+   "line": 48,
+   "path": "docs/concepts/agent-loop.md",
+   "text": "Runs are serialized per session key (session lane) and optionally through a global lane, preventing tool/session races. Messaging channels choose a queue mode (steer/followup/collect/interrupt) that feeds this lane system; see [Command Queue](/concepts/queue)."
+  },
   "oc.lore.molt": {
    "line": 28,
    "path": "docs/start/lore.md",
@@ -1091,20 +1538,110 @@ window.DATA = {
    "path": "docs/start/lore.md",
    "text": "In the beginning, there was **Warelay** — a sensible name for a WhatsApp gateway. It did its job. It was fine.\n\nThen came a space lobster.\n\nFor a while it was **Clawd**, living in a **Clawdbot**. In January 2026, Anthropic sent a polite email asking for a name change (trademark stuff). So the lobster did what lobsters do best:\n\n**It molted.**\n\nShedding its old shell, it emerged as **Molty**, living in **Moltbot**. That name never quite rolled off the tongue either.\n\nOn January 30, 2026, the lobster molted one more time into its final form: **OpenClaw**."
   },
+  "oc.memory.daily": {
+   "line": 46,
+   "path": "docs/concepts/memory.md",
+   "text": "`memory/YYYY-MM-DD.md` files are the working layer: detailed daily notes,\nobservations, session summaries, and raw context that may still be useful\nlater. These are indexed for `memory_search` and `memory_get`, but are not\ninjected into the bootstrap prompt on every turn."
+  },
+  "oc.memory.distill": {
+   "line": 51,
+   "path": "docs/concepts/memory.md",
+   "text": "Over time, useful material from daily notes is distilled into `MEMORY.md` by\nthe default [dreaming](/concepts/dreaming) sweep. The generated workspace"
+  },
+  "oc.memory.long": {
+   "line": 20,
+   "path": "docs/concepts/memory.md",
+   "text": "- **`MEMORY.md`** — long-term memory. Durable non-profile facts and decisions."
+  },
   "oc.memory.md": {
    "line": 9,
    "path": "docs/concepts/memory.md",
    "text": "OpenClaw remembers things by writing plain Markdown files in your agent's\nworkspace (default `~/.openclaw/workspace`). The model only remembers what gets\nsaved to disk; there is no hidden state."
+  },
+  "oc.memory.user": {
+   "line": 17,
+   "path": "docs/concepts/memory.md",
+   "text": "- **`USER.md`** (optional) — stable preferences, communication style,"
+  },
+  "oc.memsearch": {
+   "line": 10,
+   "path": "docs/concepts/memory-search.md",
+   "text": "`memory_search` finds relevant notes from your memory files, even when the\nwording differs from the original text. It chunks memory into small pieces and\nsearches them with embeddings, keywords, or both."
   },
   "oc.messages.pipeline": {
    "line": 10,
    "path": "docs/concepts/messages.md",
    "text": "Inbound messages move through routing, dedupe/debounce, an agent run, and outbound delivery:\n\n```text\nInbound message\n  -> routing/bindings -> session key\n  -> dedupe + debounce\n  -> queue (if a run is already active)\n  -> agent run (streaming + tools)\n  -> outbound replies (channel limits + chunking)"
   },
+  "oc.messages.sessions": {
+   "line": 70,
+   "path": "docs/concepts/messages.md",
+   "text": "- Direct chats collapse into the agent's main session key.\n- Groups/channels get their own session keys."
+  },
+  "oc.migrate.cmd": {
+   "line": 27,
+   "path": "docs/cli/migrate.md",
+   "text": "openclaw migrate hermes"
+  },
   "oc.migrate.hermes": {
    "line": 3,
    "path": "extensions/migrate-hermes/README.md",
    "text": "Import supported Hermes model configuration, workspace memory, skills, and MCP\nservers into OpenClaw. The provider can also import supported credentials with\nyour consent. Unsupported state is reported for manual review."
+  },
+  "oc.mini.faq": {
+   "line": 122,
+   "path": "docs/help/faq-first-run/providers-and-hosting.md",
+   "text": "    No. OpenClaw runs on macOS or Linux (Windows via WSL2). A Mac mini is a popular\n    always-on host choice, but a small VPS, home server, or Raspberry Pi-class box works too."
+  },
+  "oc.msg.dedupe": {
+   "line": 31,
+   "path": "docs/concepts/messages.md",
+   "text": "Channels can redeliver the same message after a reconnect. OpenClaw keeps an in-memory cache keyed by agent scope, channel route (channel + peer + account + thread), and message id, so a redelivered message does not trigger a second agent run. The cache entry expires after 20 minutes or once 5000 entries are tracked, whichever comes first."
+  },
+  "oc.msg.owned": {
+   "line": 68,
+   "path": "docs/concepts/messages.md",
+   "text": "Sessions are owned by the gateway, not by clients."
+  },
+  "oc.onboard": {
+   "line": 56,
+   "path": "README.md",
+   "text": "openclaw onboard --install-daemon"
+  },
+  "oc.plugin.core": {
+   "line": 43,
+   "path": "docs/plugins/sdk-channel-plugins.md",
+   "text": "Core owns the shared message tool, prompt wiring, the outer session-key shape,\ngeneric `:thread:` bookkeeping, and dispatch. For configured agent group"
+  },
+  "oc.plugin.owns": {
+   "line": 21,
+   "path": "docs/plugins/sdk-channel-plugins.md",
+   "text": "Channel plugins do not implement send/edit/react tools; core provides one\nshared `message` tool. Your plugin owns:"
+  },
+  "oc.prompt.build": {
+   "line": 61,
+   "path": "docs/concepts/agent-loop.md",
+   "text": "System prompt is built from OpenClaw's base prompt, skills prompt, bootstrap context, and per-run overrides. Model-specific limits and compaction reserve tokens are enforced. See [System prompt](/concepts/system-prompt) for what the model sees."
+  },
+  "oc.prompt.own": {
+   "line": 9,
+   "path": "docs/concepts/system-prompt.md",
+   "text": "OpenClaw builds its own system prompt for every agent run; there is no runtime default prompt."
+  },
+  "oc.queue.lane": {
+   "line": 21,
+   "path": "docs/concepts/queue.md",
+   "text": "- CLI, embedded, and Codex runs share the same **session-key lane** (`session:<key>`). Each turn waits there before acquiring the session's execution claim, so changing runtimes cannot start a competing turn."
+  },
+  "oc.queue.mode": {
+   "line": 31,
+   "path": "docs/concepts/queue.md",
+   "text": "- `mode: \"steer\"`"
+  },
+  "oc.queue.steer": {
+   "line": 36,
+   "path": "docs/concepts/queue.md",
+   "text": "Same-turn steering is the default. A prompt that arrives mid-run is injected into the active runtime when the run can accept steering, so no second session run is started. If the active run cannot accept steering, OpenClaw waits for the active run to finish before starting the prompt."
   },
   "oc.readme.def": {
    "line": 18,
@@ -1115,6 +1652,11 @@ window.DATA = {
    "line": 110,
    "path": "README.md",
    "text": "OpenClaw is developed in the open by the [OpenClaw Foundation](https://openclaw.org), an independent 501(c)(3). The Foundation employs the core team and signs releases. Donors and infrastructure sponsors support the Foundation; none of them own or direct the project. OpenAI is a donor, not an owner."
+  },
+  "oc.readme.gateway": {
+   "line": 70,
+   "path": "README.md",
+   "text": "- The [Gateway](https://docs.openclaw.ai/gateway) is the local control plane for sessions, tools, events, and channel connections."
   },
   "oc.readme.gov": {
    "line": 110,
@@ -1131,6 +1673,11 @@ window.DATA = {
    "path": "README.md",
    "text": "Tools run on the host for the main session unless you configure sandboxing. Read the [security guide](https://docs.openclaw.ai/gateway/security), [exposure runbook](https://docs.openclaw.ai/gateway/security/exposure-runbook), and [sandboxing guide](https://docs.openclaw.ai/gateway/sandboxing) before connecting other users or exposing the Gateway remotely."
   },
+  "oc.readme.untrusted": {
+   "line": 79,
+   "path": "README.md",
+   "text": "Treat inbound messages as untrusted input. DM-capable channels pair unknown senders by default; approve a pairing request with `openclaw pairing approve <channel> <code>`."
+  },
   "oc.release.2.0": {
    "line": 21,
    "path": "docs/releases/index.md",
@@ -1146,21 +1693,130 @@ window.DATA = {
    "path": "docs/releases/2026.8.1/installation-and-onboarding.md",
    "text": "This release changes how sessions and transcripts are stored by moving them into SQLite. Before downgrading to an older file-backed release, use the current CLI to restore archived legacy transcript artifacts; sessions created after the migration will not appear in older releases."
   },
+  "oc.runtime.alias": {
+   "line": 46,
+   "path": "docs/agent-runtime-architecture.md",
+   "text": "- The built-in runtime id is `openclaw`. The legacy alias `pi` normalizes to `openclaw`. The alias `codex-app-server` normalizes to `codex`."
+  },
+  "oc.runtime.cli": {
+   "line": 36,
+   "path": "docs/concepts/agent-runtimes.md",
+   "text": "- **CLI backends** run a local CLI process while keeping the model ref\n  canonical. For example, `anthropic/claude-opus-5` with a model-scoped\n  `agentRuntime.id: \"claude-cli\"` means \"select the Anthropic model, execute\n  through Claude CLI.\" `claude-cli` is not an embedded harness id and must not\n  be passed to AgentHarness selection."
+  },
+  "oc.runtime.def": {
+   "line": 10,
+   "path": "docs/concepts/agent-runtimes.md",
+   "text": "An **agent runtime** owns one prepared model loop: it receives the prompt,\ndrives model output, handles native tool calls, and returns the finished turn\nto OpenClaw."
+  },
+  "oc.runtime.embedded": {
+   "line": 33,
+   "path": "docs/concepts/agent-runtimes.md",
+   "text": "- **Embedded harnesses** run inside OpenClaw's prepared agent loop: the\n  built-in `openclaw` runtime, plus registered plugin harnesses such as\n  `codex` and `copilot`."
+  },
+  "oc.runtime.harness": {
+   "line": 24,
+   "path": "docs/concepts/agent-runtimes.md",
+   "text": "A **harness** is the implementation that provides an agent runtime (code"
+  },
+  "oc.session.dmmain": {
+   "line": 67,
+   "path": "docs/concepts/session.md",
+   "text": "| `main` (default)           | All DMs share the [main session](/concepts/main-session) |"
+  },
+  "oc.session.dmpeer": {
+   "line": 69,
+   "path": "docs/concepts/session.md",
+   "text": "| `per-channel-peer`         | Isolate by channel + sender (recommended)                |"
+  },
+  "oc.session.dmwarn": {
+   "line": 50,
+   "path": "docs/concepts/session.md",
+   "text": "If multiple people can message your agent, enable DM isolation. Without it, all\nusers share the same conversation context, so Alice's private messages would be\nvisible to Bob."
+  },
   "oc.trust.sandbox": {
    "line": 42,
    "path": "docs/start/why-openclaw/the-trust-boundary.md",
    "text": "**Sandboxing is off by default.** Out of the box, OpenClaw is a personal assistant for one trusted operator, and exec runs on the gateway host without prompts. The enterprise posture requires explicit configuration, verifiable with two commands: [`openclaw sandbox explain`](/gateway/sandbox-vs-tool-policy-vs-elevated) prints the effective execution posture, and [`openclaw security audit`](/gateway/security/audit-checks) flags drift with stable check IDs you can alarm on."
+  },
+  "oc.vision.core": {
+   "line": 74,
+   "path": "VISION.md",
+   "text": "Core stays lean; optional capabilities should usually ship as plugins."
+  },
+  "oc.vision.def": {
+   "line": 3,
+   "path": "VISION.md",
+   "text": "OpenClaw is the AI that actually does things.\nIt runs on your devices, in your channels, with your rules."
+  },
+  "oc.vision.memory": {
+   "line": 102,
+   "path": "VISION.md",
+   "text": "Memory is a special plugin slot where only one memory plugin can be active at a time.\nToday we ship multiple memory options; over time we plan to converge on one recommended default path."
+  },
+  "oc.vision.names": {
+   "line": 13,
+   "path": "VISION.md",
+   "text": "It evolved through several names and shells: Warelay -> Clawdbot -> Moltbot -> OpenClaw."
+  },
+  "oc.vision.tax": {
+   "line": 79,
+   "path": "VISION.md",
+   "text": "The core carries a per-call tax: each core tool, prompt line, and config key reaches every operator on every model request, so additions there face the strictest scrutiny.\nPlugins, skills, channels, and apps carry no such tax, and we want that surface to keep growing."
+  },
+  "oc.vision.ts": {
+   "line": 129,
+   "path": "VISION.md",
+   "text": "OpenClaw is primarily an orchestration system: prompts, tools, protocols, and integrations.\nTypeScript was chosen to keep OpenClaw hackable by default.\nIt is widely known, fast to iterate in, and easy to read, modify, and extend."
+  },
+  "oc.why.plugins": {
+   "line": 69,
+   "path": "docs/start/why-openclaw.md",
+   "text": "Like other OpenClaw features, harnesses ship as plugins against a core that stays deliberately small. Channels, model providers, memory, voice, the Codex harness — all plugins behind documented [capability registration points](/plugins/architecture), with the boundary enforced by CI import guards, not convention. You can remove what you do not want (strip channels, disable memory, run a minimal surface, pin the allowed set with `plugins.allow`), and third parties can add what we did not build through the same [SDK contracts](/plugins/sdk-channel-plugins) — including whole message channels, which is how community plugins cover networks the core never touches. The ordinary plugin loader validates [manifests](/plugins/manifest) before importing plugin runtime code. Trusted bundled helpers can load separately after path validation."
   },
   "oc.why.sum": {
    "line": 29,
    "path": "docs/start/why-openclaw.md",
    "text": "OpenClaw can separate a trusted [Gateway](/gateway) from untrusted, movable execution. Policy is enforced in code, and state is versioned and migrated, so a deployment is replaceable. This page compares configured architectures, not default security certifications: sandboxing is off by default in OpenClaw. The source review was refreshed on August 27, 2026 against [OpenClaw `7b624e9de25`](https://github.com/openclaw/openclaw/tree/7b624e9de25bc66c97166071c8d05f055d82ec54) and [Hermes Agent `6defe7eb6c`](https://github.com/NousResearch/hermes-agent/tree/6defe7eb6c462bb784d1f27f5afe7ca4b627fc70). These are development snapshots; check your installed version and configuration before relying on a capability."
   },
+  "oc.workspace.daily": {
+   "line": 95,
+   "path": "docs/concepts/agent-workspace.md",
+   "text": "    Daily memory log (one file per day). Recommended to read today + yesterday on session start."
+  },
   "oc.workspace.files": {
    "line": 70,
    "path": "docs/concepts/agent-workspace.md",
    "text": "Standard files OpenClaw expects inside the workspace:"
+  },
+  "oc.workspace.memory": {
+   "line": 98,
+   "path": "docs/concepts/agent-workspace.md",
+   "text": "    Curated long-term memory: durable non-profile facts, decisions, and short summaries. Keep detailed logs in `memory/YYYY-MM-DD.md` so memory tools can retrieve them on demand without injecting them into every prompt. Only load `MEMORY.md` in the main, private session (not shared/group contexts). See [Memory](/concepts/memory) for the workflow and automatic memory flush."
+  },
+  "oc.workspace.soul": {
+   "line": 77,
+   "path": "docs/concepts/agent-workspace.md",
+   "text": "    Persona, tone, and boundaries. Loaded every session. Guide: [SOUL.md personality guide](/concepts/soul)."
+  },
+  "oc.workspace.soulfile": {
+   "line": 76,
+   "path": "docs/concepts/agent-workspace.md",
+   "text": "  <Accordion title=\"SOUL.md - persona and tone\">\n    Persona, tone, and boundaries. Loaded every session. Guide: [SOUL.md personality guide](/concepts/soul)."
   }
+ },
+ "readmeLines": {
+  "v0.1.1": [
+   "Send, receive, auto-reply, and inspect WhatsApp messages over **Twilio** or your personal **WhatsApp Web** session. Ships with a one-command webhook setup (Tailscale Funnel + Twilio callback) and a configurable auto-reply engine (plain text or command/Claude driven)."
+  ],
+  "v2.0.0-beta1": [
+   "**CLAWDIS** is a TypeScript/Node gateway that bridges WhatsApp (Web/Baileys) and Telegram (Bot API/grammY) to a local coding agent (**Pi**).",
+   "│          Gateway          │  ws://127.0.0.1:18789 (default: loopback)",
+   "-  **Gateway control plane** — One long-lived gateway owns provider state; clients connect over WebSocket",
+   "-  **Sessions** — Direct chats collapse into `main` by default; groups are isolated"
+  ],
+  "v2026.1.5": [
+   "**Clawdbot** is a *personal AI assistant* you run on your own devices."
+  ]
  },
  "rel": {
   "cutoff": "2026-10-06",
@@ -2678,6 +3334,12 @@ window.DATA = {
   "          msg_type: 'interactive'",
   ""
  ],
+ "sdkNoPublic": "Only need to ensure that the running environment has the ability to access the public network, no need to provide public IP or domain name.",
+ "sdkNotes": [
+  "Similar to Webhook, under the long connection mode, developers need to complete processing within 3 seconds after receiving a message, otherwise, a timeout re-push will be triggered.",
+  "Message pushing is in cluster mode, it does not support broadcasting, that is, if multiple clients are deployed for the same application, only one random client will receive the message.",
+  "Currently, the long connection mode only supports event subscriptions and does not support callback subscriptions"
+ ],
  "sec": {
   "cve": "CVE-2026-25253",
   "cvss": 8.8,
@@ -2697,9 +3359,177 @@ window.DATA = {
   "ocDate": "2026-10-05",
   "retrieved": "2026-10-06"
  },
- "todayTitle": "OpenClaw 🦞 — Your assistant, on your devices, in your chats",
+ "stars": {
+  "NousResearch/hermes-agent": {
+   "points": [
+    [
+     "2025-08-31",
+     0
+    ],
+    [
+     "2025-09-01",
+     1
+    ],
+    [
+     "2026-01-20",
+     1
+    ],
+    [
+     "2026-02-13",
+     4
+    ],
+    [
+     "2026-03-08",
+     2034
+    ],
+    [
+     "2026-04-01",
+     20001
+    ],
+    [
+     "2026-04-24",
+     110980
+    ],
+    [
+     "2026-05-18",
+     152230
+    ],
+    [
+     "2026-06-10",
+     186211
+    ],
+    [
+     "2026-07-04",
+     206219
+    ],
+    [
+     "2026-07-27",
+     218866
+    ],
+    [
+     "2026-08-20",
+     231703
+    ],
+    [
+     "2026-09-12",
+     243889
+    ],
+    [
+     "2026-10-06",
+     251508
+    ],
+    [
+     "2026-10-06",
+     251586
+    ]
+   ],
+   "sha256": "6f8ddea628b74eefc12f28d42b6d8139ee9c2cf096eb44cb9cb86237772a4196"
+  },
+  "note": "star-history.com 的曲线采样点（由 SVG 路径反算，约 15–20 个点，点间是平滑曲线）；末点与 GitHub API 对照",
+  "openclaw/openclaw": {
+   "points": [
+    [
+     "2025-11-24",
+     0
+    ],
+    [
+     "2025-11-25",
+     18
+    ],
+    [
+     "2025-12-14",
+     322
+    ],
+    [
+     "2026-01-01",
+     895
+    ],
+    [
+     "2026-01-20",
+     4918
+    ],
+    [
+     "2026-02-07",
+     161484
+    ],
+    [
+     "2026-02-26",
+     218584
+    ],
+    [
+     "2026-03-16",
+     301885
+    ],
+    [
+     "2026-04-04",
+     334554
+    ],
+    [
+     "2026-04-22",
+     350479
+    ],
+    [
+     "2026-05-11",
+     360745
+    ],
+    [
+     "2026-05-29",
+     367197
+    ],
+    [
+     "2026-06-17",
+     372412
+    ],
+    [
+     "2026-07-05",
+     376092
+    ],
+    [
+     "2026-07-24",
+     379416
+    ],
+    [
+     "2026-08-11",
+     382348
+    ],
+    [
+     "2026-08-30",
+     385741
+    ],
+    [
+     "2026-09-17",
+     388741
+    ],
+    [
+     "2026-10-06",
+     391446
+    ],
+    [
+     "2026-10-06",
+     391511
+    ]
+   ],
+   "sha256": "211308fbb8628ba05809f83a27a9d7354b0f8c35b59a66306c3fee96d1da753a"
+  },
+  "retrieved": "2026-10-07"
+ },
+ "todayTitle": "OpenClaw  — Your assistant, on your devices, in your chats",
  "v020": {
   "contributors": 63,
-  "pulls": 216
+  "date": "March 12, 2026",
+  "pulls": 216,
+  "sentence": "Hermes Agent went from a small internal project to a full-featured AI agent platform"
+ },
+ "xposts": {
+  "foundation_independent": {
+   "date": "2026-07-09",
+   "url": "https://x.com/steipete/status/2075046949896736835",
+   "utc": "2026-07-09T02:38:40Z"
+  },
+  "joins_openai": {
+   "date": "2026-02-15",
+   "url": "https://x.com/steipete/status/2023154018714100102",
+   "utc": "2026-02-15T21:54:41Z"
+  }
  }
 };

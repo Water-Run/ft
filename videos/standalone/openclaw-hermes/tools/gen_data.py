@@ -52,6 +52,15 @@ names = [
 ]
 today_title = title_of('openclaw/openclaw@v2026.8.1')
 
+# 前身时期的 README 原句（按标签）
+rl, cur = {}, None
+for line in T('out_04_readme_lines.txt').split('\n'):
+    m = re.match(r'^######## (\S+)', line)
+    if m: cur = m.group(1); rl[cur] = []; continue
+    if cur and line.strip(): rl[cur].append(line.strip())
+dist_tags = J('out_03_openclaw_dist_tags.json')
+xposts = J('out_13_x_posts.json')
+
 # 扩展包
 ext = []
 for l in T('out_09_extensions.tsv').split('\n'):
@@ -61,7 +70,8 @@ for l in T('out_09_extensions.tsv').split('\n'):
 # Hermes v0.2.0 发布说明里的数字
 notes = T('out_02_hermes_v0.2.0_notes.txt')
 m = re.search(r'(\d+)\*{0,2} merged pull requests\*{0,2} from \*{0,2}(\d+)\*{0,2} contributors', notes, re.S)
-v020 = {'pulls': int(m.group(1)), 'contributors': int(m.group(2))}
+m2 = re.search(r'(Hermes Agent went from a small internal project to a full-featured AI agent platform)', notes)
+v020 = {'pulls': int(m.group(1)), 'contributors': int(m.group(2)), 'sentence': m2.group(1), 'date': re.search(r'Release Date:\*\* ([A-Za-z]+ \d+, \d{4})', notes).group(1)}
 
 # 模型线
 hf = models['huggingface']; ax = models['arxiv']
@@ -88,22 +98,27 @@ sec = {'ghsa': adv['target']['ghsa_id'], 'published': d(adv['target']['published
 sdk = [l for l in T('out_07_feishu_node_sdk.txt').split('\n')]
 sample_start = next(i for i, l in enumerate(sdk) if l.startswith('```typescript'))
 sample = sdk[sample_start + 1:]
+notes_i = next(i for i, l in enumerate(sdk) if l.startswith('> Points to Note'))
+sdk_notes = [l[2:].strip() for l in sdk[notes_i + 1:sample_start] if l.startswith('* ')]
+sdk_nopublic = next(l[2:].strip() for l in sdk if l.startswith('* Only need to ensure'))
 sample = sample[:next(i for i, l in enumerate(sample) if l.startswith('```'))] if any(l.startswith('```') for l in sample) else sample
 
 data = {
     'snap': {'retrieved': '2026-10-06', 'oc': snap['openclaw'][:10], 'hm': snap['hermes-agent'][:10], 'ocDate': d(oc['head_commit']['date']), 'hmDate': d(hm['head_commit']['date'])},
     'repo': {'oc': repo(oc), 'hm': repo(hm), 'pi': {'created': d(pi['created_at']), 'stars': pi['stargazers_count'], 'license': pi['license']}},
     'rel': {'oc': ocr, 'hm': hmr, 'ocTotal': len(ocr), 'ocStable': sum(1 for r in ocr if not r[1]), 'ocPre': sum(1 for r in ocr if r[1]), 'hmTotal': len(hmr), 'cutoff': rel['cutoff'][:10]},
-    'names': names, 'todayTitle': today_title,
+    'names': names, 'todayTitle': today_title, 'readmeLines': rl, 'distTags': dist_tags, 'xposts': xposts,
     'ext': ext, 'extCount': len(ext), 'extChannels': sum(1 for e in ext if e[1]),
     'hmModels': hm_models, 'hmEvents': hm_events, 'v020': v020, 'hmFirstRel': hmr[0][0], 'hmLastRel': hmr[-1][0], 'hmLastTag': hmr[-1][2],
     'npm': {k: {'created': d(v['created']), 'first': v['first']['version'], 'versions': v['versions'], 'latest': v['latest']} for k, v in npm.items()},
-    'fe': fe, 'sec': sec, 'sdk': sample,
+    'fe': fe, 'sec': sec, 'stars': json.loads(T('out_15_star_history.json')), 'hmPlatforms': [l for l in T('out_16_hermes_platforms.txt').split('\n') if l and not l.startswith('#')], 'sdk': sample, 'sdkNotes': sdk_notes, 'sdkNoPublic': sdk_nopublic, 'hm3abs': T('out_05_hermes3_abstract.txt').strip(),
     'ex': {k: {'path': v['path'], 'lines': v['lines'], 'commit': v['commit'][:10], 'text': v['text']} for k, v in ex.items()},
     'q': {k: {'path': v['path'], 'line': v['lines'][0], 'text': v['text']} for k, v in qs.items()},
 }
 out = os.path.join(ROOT, 'src', 'js', 'data.js')
 with open(out, 'w', encoding='utf8', newline='\n') as f:
     f.write('// 由 tools/gen_data.py 从 research/lab/ 的取证回显生成，不要手改。\n')
-    f.write('window.DATA = ' + json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True) + ';\n')
+    # 画面数据里不带 emoji（本片风格规则不许用；README 标题里的 emoji 不上画面）。原文回显仍在 research/lab/out_*
+    emoji = re.compile('[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]')
+    f.write('window.DATA = ' + emoji.sub('', json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True)) + ';\n')
 print('data.js', os.path.getsize(out), 'bytes; ext', len(ext), 'channels', data['extChannels'], 'oc releases', len(ocr), 'hm releases', len(hmr), 'v0.2.0', v020)

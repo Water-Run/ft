@@ -1,51 +1,60 @@
-/* 本片的视觉系统：两个世界。
-   纸白底（--paper）配朱红（--claw）属于 OpenClaw；墨黑底（--ink）配金色（--herm）属于 Hermes；中性的章节用纸白与墨黑分屏，朱红与金色各守自己的含义，全片不破例。
-   朱红只用于大字、色块与墨色字压在红底上；金色只放在墨黑底上。文字与底色的对比度：墨 / 纸 14:1，纸 / 墨 14:1，金 / 墨 11.9:1，朱红 / 墨 4.6:1，墨 / 朱红 4.6:1，暗灰 / 纸 5.4:1，亮灰 / 墨 6.4:1。 */
+/* 本片的视觉系统：墨黑底上的系统图解，共同的母题是像素方块（一条消息 = 一个方块）。
+   珊瑚红（--claw）只属于 OpenClaw，金色三段（--herm / --amber / --bronze）只属于 Hermes Agent；两种颜色都取自各自项目的标志。
+   讲「这一类」与「异同」的中性章节用纸白底、墨色线；两个项目各自的章节与最后的链路用墨黑底。
+   对比度：纸 / 墨 15.6:1，珊瑚红 / 墨 5.9:1，金 / 墨 13.5:1，亮灰 / 墨 6.2:1，墨 / 纸 15.6:1，暗灰 / 纸 5.5:1。
+   纸白底上珊瑚红与金色只作色块（上压墨色字），不作文字。 */
 @font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
 :root {
-  --paper: #eee9dc;
-  --ink: #111214;
-  --claw: #e5412d;
-  --herm: #ffc61a;
-  --dim: #5e5c55;
-  --dimi: #9a978c;
+  --paper: #ece7da;
+  --ink: #0b0e14;
+  --claw: #ff4f40;
+  --claw2: #ff775f;
+  --herm: #ffd700;
+  --amber: #ffbf00;
+  --bronze: #cd7f32;
+  --dim: #5c5a54;
+  --dimi: #8f939c;
+  --line: #2a2f3a;
   --M: 120px;                 /* 版心边距 */
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
+body { font-family: "Inter", "Sans SC"; color: var(--paper); }
+#bg { background: var(--ink); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.world svg.g { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; }
+/* 场景的 SVG 画布盖住整张大图（viewBox 与位置对齐，坐标仍是 world 坐标）：检查工具只把落在画面内的 SVG 算进画面指纹，
+   画布若只有一点大，镜头移开后里面的形状运动就不被看作「有变化」。卡带里的小画布（.gi）与章节卡的画布不需要。 */
+.world svg.g { position: absolute; left: -3000px; top: -2000px; width: 12000px; height: 6000px; overflow: visible; }
+.world svg.gi, .card svg.g { position: absolute; left: 0; top: 0; width: 4px; height: 4px; overflow: visible; }
 
-/* 字型：OpenClaw 用 Inter 与无衬线粗体；Hermes 用像素点阵与衬线；中性的部分用无衬线与等宽 */
+/* 字型：标题用 Inter 与无衬线粗体；代码、键名与出处用等宽；像素字（VT323 与自绘点阵）用于两个项目的标志与计数 */
 .in9 { font-family: "Inter", "Sans SC"; font-weight: 900; letter-spacing: -.04em; line-height: 1; }
 .in8 { font-family: "Inter", "Sans SC"; font-weight: 800; letter-spacing: -.03em; line-height: 1.05; }
-.hd { font-family: "Sans SC", "Inter"; font-weight: 900; letter-spacing: -.02em; line-height: 1.04; }
-.ser { font-family: "Serif SC", "Pixel"; font-weight: 700; line-height: 1.12; }
-.pxl { font-family: "Pixel", "Serif SC"; font-weight: 400; line-height: 1; }
+.hd { font-family: "Sans SC", "Inter"; font-weight: 900; letter-spacing: -.02em; line-height: 1.08; }
+.pxl { font-family: "Pixel", "Sans SC"; font-weight: 400; line-height: 1; }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
 .mono7 { font-family: "Mono", "Sans SC"; font-weight: 700; white-space: pre; }
-.body { font-family: "Sans SC", "Inter"; font-weight: 500; font-size: 38px; line-height: 1.4; }
-.note { font-family: "Mono", "Sans SC"; font-weight: 500; font-size: 28px; line-height: 1.35; }
+.body { font-family: "Sans SC", "Inter"; font-weight: 500; font-size: 36px; line-height: 1.4; }
 .abs { position: absolute; }
-.cur { background: currentColor; }
 
-/* 颜色 */
-.c-ink { color: var(--ink); } .c-paper { color: var(--paper); } .c-claw { color: var(--claw); } .c-herm { color: var(--herm); }
-.c-dim { color: var(--dim); } .c-dimi { color: var(--dimi); }
-
-/* 章节卡：整屏色块，随各章的世界换样子 */
-.card { position: absolute; inset: 0; overflow: hidden; }
-.card.neutral { background: var(--ink); color: var(--paper); }
-.card.claw { background: var(--claw); color: var(--ink); }
-.card.herm { background: var(--ink); color: var(--herm); }
-.card .no { position: absolute; left: var(--M); font: 700 64px "Mono"; }
-.card .eb { position: absolute; left: var(--M); font: 500 44px "Mono"; color: var(--dimi); }
+/* 章节卡：整屏色块 */
+.card { position: absolute; inset: 0; overflow: hidden; background: var(--ink); color: var(--paper); }
+.card .no { position: absolute; left: var(--M); font: 700 60px "Mono"; }
+.card .eb { position: absolute; left: var(--M); font: 500 42px "Mono", "Sans SC"; color: var(--dimi); }
 .card .ti { position: absolute; left: 112px; font-family: "Sans SC", "Inter"; font-weight: 900; letter-spacing: -.02em; line-height: 1.04; white-space: nowrap; }
 
-/* 字幕：颜色随当前底色换 */
+/* 字幕：颜色随当前底色换；强调词的下划线随章节换色 */
 #caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+/* 字幕带一块与当前底色相同的衬底：图解的线条从字幕下面经过时不会与字相压 */
+#caption span { font-size: 40px; font-weight: 500; color: var(--ink); background: var(--paper); padding: 6px 22px; }
+#caption span:empty { display: none; }
 .en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 900; border-bottom: 4px solid var(--claw); }
-#caption.on-ink span { color: var(--paper); }
-#caption.on-ink em { border-bottom-color: var(--herm); }
+#caption em { font-style: normal; font-weight: 900; border-bottom: 4px solid var(--ink); }
+#caption.on-ink span { color: var(--paper); background: var(--ink); }
+#caption.on-ink em { border-bottom-color: var(--paper); }
+#caption.on-ink.k-claw em { border-bottom-color: var(--claw); }
+#caption.on-ink.k-herm em { border-bottom-color: var(--herm); }
+
+/* 引文里被旁白点到的词：色块上压墨色字 */
+.hl { background: var(--claw); color: var(--ink); padding: 0 6px; margin: 0 -6px; }
+.hl-g { background: var(--herm); color: var(--ink); padding: 0 6px; margin: 0 -6px; }
+.hl-p { background: var(--paper); color: var(--ink); padding: 0 6px; margin: 0 -6px; }
+.hl-i { background: var(--ink); color: var(--paper); padding: 0 6px; margin: 0 -6px; }

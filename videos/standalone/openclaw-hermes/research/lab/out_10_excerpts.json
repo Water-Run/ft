@@ -178,6 +178,193 @@
    "text": "    agent._skill_nudge_interval = 10"
   },
   {
+   "id": "hm.feishu.default",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "plugins/platforms/feishu/adapter.py",
+   "lines": [
+    1394,
+    1394
+   ],
+   "text": "            connection_mode=_extra_or_env(\"connection_mode\", \"FEISHU_CONNECTION_MODE\", \"websocket\").lower(),"
+  },
+  {
+   "id": "hm.feishu.tools",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "toolsets.py",
+   "lines": [
+    44,
+    47
+   ],
+   "text": "_FEISHU_TOOLS = [\n    \"feishu_doc_read\", \"feishu_drive_list_comments\", \"feishu_drive_list_comment_replies\",\n    \"feishu_drive_reply_comment\", \"feishu_drive_add_comment\",\n]"
+  },
+  {
+   "id": "hm.feishu.docread",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "tools/feishu_doc_tool.py",
+   "lines": [
+    1,
+    4
+   ],
+   "text": "\"\"\"Feishu Document Tool -- read document content via Feishu/Lark API.\n\nProvides ``feishu_doc_read`` for reading document content as plain text.\nUses the same lazy-import + BaseRequest pattern as feishu_comment.py."
+  },
+  {
+   "id": "oc.feishu.parse",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "extensions/feishu/src/bot.ts",
+   "lines": [
+    147,
+    151
+   ],
+   "text": "export function parseFeishuMessageEvent(\n  event: FeishuMessageEvent,\n  botOpenId?: string,\n  preparedContent?: string,\n): FeishuMessageContext {"
+  },
+  {
+   "id": "oc.feishu.doctool",
+   "repo": "https://github.com/openclaw/openclaw",
+   "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",
+   "path": "extensions/feishu/src/docx.ts",
+   "lines": [
+    855,
+    858
+   ],
+   "text": "    name: \"feishu_doc\",\n    label: \"Feishu Doc\",\n    description:\n      \"Feishu document operations. Actions: read, write, append, insert, create, list_blocks, get_block, update_block, delete_block, create_table, write_table_cells, create_table_with_values, insert_table_row, insert_table_column, delete_table_rows, delete_table_columns, merge_table_cells, upload_image, upload_file, color_text\","
+  },
+  {
+   "id": "hm.feishu.wsimport",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "plugins/platforms/feishu/adapter.py",
+   "lines": [
+    1202,
+    1202
+   ],
+   "text": "            bound[\"FeishuWSClient\"] = importlib.import_module(\"lark_oapi.ws\").Client"
+  },
+  {
+   "id": "hm.nudge.after",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/turn_finalizer.py",
+   "lines": [
+    769,
+    770
+   ],
+   "text": "    # Background memory/skill review runs AFTER delivery so it never competes with the\n    # user's task. Suppressed by skip_background_review (e.g. cron): the fork costs"
+  },
+  {
+   "id": "hm.nudge.memtick",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/turn_context.py",
+   "lines": [
+    746,
+    746
+   ],
+   "text": "def _tick_memory_nudge(agent: Any) -> bool:"
+  },
+  {
+   "id": "hm.nudge.skilltick",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/turn_finalizer.py",
+   "lines": [
+    754,
+    754
+   ],
+   "text": "    # Skill trigger is checked NOW — based on how many tool iterations THIS turn used."
+  },
+  {
+   "id": "hm.base.connect",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "gateway/platforms/base.py",
+   "lines": [
+    2725,
+    2725
+   ],
+   "text": "    async def connect(self, *, is_reconnect: bool = False) -> bool:"
+  },
+  {
+   "id": "hm.base.send",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "gateway/platforms/base.py",
+   "lines": [
+    2735,
+    2735
+   ],
+   "text": "    async def send(self, chat_id: str, content: str, reply_to: Optional[str] = None,"
+  },
+  {
+   "id": "hm.mem.limits",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "tools/memory_tool.py",
+   "lines": [
+    56,
+    56
+   ],
+   "text": "        store = MemoryStore(int(mem_cfg.get(\"memory_char_limit\", 2200)), int(mem_cfg.get(\"user_char_limit\", 1375)),"
+  },
+  {
+   "id": "hm.mem.frozen",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "tools/memory_tool.py",
+   "lines": [
+    3,
+    3
+   ],
+   "text": "profile). Both enter the system prompt as a FROZEN snapshot at session start;"
+  },
+  {
+   "id": "hm.cache.plan",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/prompt_caching.py",
+   "lines": [
+    3,
+    5
+   ],
+   "text": "Default layout: 4 cache_control breakpoints — the static system prefix, the end of the\nsystem prompt, and the last 2 non-system messages (without a static prefix: one system\nbreakpoint plus the last 3 messages). All markers share one TTL (5m or 1h)."
+  },
+  {
+   "id": "hm.launchd.plist",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "hermes_cli/gateway_launchd.py",
+   "lines": [
+    422,
+    428
+   ],
+   "text": "    <key>RunAtLoad</key>\n    <true/>\n    \n    <key>KeepAlive</key>\n    <dict>\n        <key>SuccessfulExit</key>\n        <false/>"
+  },
+  {
+   "id": "hm.launchd.label",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "hermes_cli/gateway_launchd.py",
+   "lines": [
+    28,
+    28
+   ],
+   "text": "    return f\"ai.hermes.gateway-{suffix}\" if suffix else \"ai.hermes.gateway\""
+  },
+  {
+   "id": "hm.budget.doc",
+   "repo": "https://github.com/NousResearch/hermes-agent",
+   "commit": "4787e4d56fc8d9265d4c7d3c0fe5accee86b4078",
+   "path": "agent/iteration_budget.py",
+   "lines": [
+    3,
+    5
+   ],
+   "text": "Each ``AIAgent`` (parent or subagent) holds its own :class:`IterationBudget`: the parent's\ncap is ``max_iterations`` (default 500), each subagent's ``delegation.max_iterations``\n(default 50), so total iterations across parent + subagents can exceed the parent's cap."
+  },
+  {
    "id": "oc.turn.stages",
    "repo": "https://github.com/openclaw/openclaw",
    "commit": "195e1cc6c1fb3b98960b1373006602af006b83b9",

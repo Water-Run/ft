@@ -68,6 +68,13 @@ curl -fsS -m 60 $RETRY https://registry.npmjs.org/openclaw/2026.9.8 | jq '{name,
   done
 } > out_04_readmes.txt
 
+# ── 4b. 前身时期的 README 原句（来历一章逐字引用）──
+{
+  echo "######## v0.1.1";       GHRAW "https://api.github.com/repos/openclaw/openclaw/contents/README.md?ref=v0.1.1"       | grep -E '^Send, receive, auto-reply, and inspect WhatsApp'
+  echo "######## v2.0.0-beta1"; GHRAW "https://api.github.com/repos/openclaw/openclaw/contents/README.md?ref=v2.0.0-beta1" | grep -E 'is a TypeScript/Node gateway|Gateway control plane|Sessions\*\* —|ws://127\.0\.0\.1:18789 \(default'
+  echo "######## v2026.1.5";    GHRAW "https://api.github.com/repos/openclaw/openclaw/contents/README.md?ref=v2026.1.5"    | grep -E '^\*\*Clawdbot\*\* is a'
+} > out_04_readme_lines.txt
+
 # ── 5. Hermes 模型线：Hugging Face 仓库创建时间、arXiv 技术报告、Nous 发布页 ──
 arxiv() { curl -fsS -m 60 $RETRY "https://export.arxiv.org/api/query?id_list=$1" | python3 -c '
 import sys, re, json
@@ -88,6 +95,10 @@ print(json.dumps({"title": re.sub(r"\s+", " ", re.search(r"<title>(.*?)</title>"
   done
   echo '}}'
 } | jq . > out_05_models.json
+curl -fsS -m 60 $RETRY "https://export.arxiv.org/api/query?id_list=2408.11857" | python3 -c '
+import sys, re
+x = sys.stdin.read(); e = re.search(r"<entry>(.*?)</entry>", x, re.S).group(1)
+print(re.sub(r"\s+", " ", re.search(r"<summary>(.*?)</summary>", e, re.S).group(1)).strip())' > out_05_hermes3_abstract.txt
 curl -fsS -m 60 $RETRY "https://huggingface.co/NousResearch/Hermes-2-Pro-Mistral-7B/raw/main/README.md" | grep -i -E "Function Calling and JSON Mode dataset" | cut -c1-300 > out_05_hermes2pro_card.txt
 curl -fsS -m 60 $RETRY -L https://nousresearch.com/releases | grep -o -E "02/25/26|An autonomous agent that lives on your server, remembers what it learns, and gets more capable the longer it runs\.|08/24/24|08/26/25|12/03/25|05/14/25|04/29/25|Hermes-4-Llama-3\.1-405B|Hermes 3 405B|Hermes-4\.3-Seed-36B|Atropos|Psyche Network" | sort -u > out_06_nous_releases.txt
 
