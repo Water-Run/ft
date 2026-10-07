@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>从 WSL 1 到 WSL 2，再到「WSL 3」</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="scenes"></div>
+  <div id="hud"></div>
+  <div id="caption"><span></span></div>
+</div>
+<script src="vendor/gsap.min.js"></script>
+<!-- 实测时长：每种语言一份，由 kit/tools/tts.js 生成 -->
+<script src="js/timing.zh.js"></script>
+<script src="js/timing.en.js"></script>
+<script src="js/script.js"></script>
+<!-- 画面数据：由 tools/gen_data.py 从 research/lab/ 与 research/_src/ 生成 -->
+<script src="js/data.js"></script>
+<script src="js/config.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/util.js"></script>
+<script src="js/parts.js"></script>
+<!-- 场景：按出场顺序 -->
+<script src="js/scenes/s0_open.js"></script>
+<script src="js/scenes/s1_one.js"></script>
+<script src="js/scenes/s2_two.js"></script>
+<script src="js/scenes/s3_num.js"></script>
+<script src="js/scenes/s4_three.js"></script>
+<script src="js/scenes/s5_end.js"></script>
+<script src="js/scenes/s6_outro.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

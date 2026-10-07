@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     与正片同一套颜色与字体，单独排版：三个数字各放在它那个年代的材质上——
+     1 是 Windows 10 的纯色磁贴与极细的字，2 是 Fluent 的亚克力面与半粗的字，3 是 Windows 11 的圆角卡片与粗体，并带着片名里的引号。
+     下面两行是正片结尾的两条实测回显（版本号的第一位是 3，内核的名字结尾是 WSL2）。
+     4:3 是重新排布，不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { background: #f3f3f3; color: #1b1b1b; font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .abs { position: absolute; white-space: nowrap; }
+  .blob { position: absolute; border-radius: 50%; }
+  .blob.a { background: radial-gradient(closest-side, rgba(96, 165, 232, .34), rgba(96, 165, 232, 0)); }
+  .blob.b { background: radial-gradient(closest-side, rgba(150, 196, 240, .40), rgba(150, 196, 240, 0)); }
+  .wsl { font-weight: 800; letter-spacing: -.05em; line-height: .9; }
+  .ttl { font-weight: 700; letter-spacing: -.015em; line-height: 1.2; }
+  .mono { font-family: "Mono", "Sans SC"; font-weight: 700; line-height: 1.5; }
+  .mono b { background: #005fb8; color: #ffffff; font-weight: 700; }
+  .mono i { background: #1b1b1b; color: #ffffff; font-style: normal; }
+  .tile { position: absolute; display: flex; align-items: center; justify-content: center; font-family: "Inter", "Sans SC"; line-height: 1; }
+  .t1 { background: #0078d7; color: #ffffff; font-weight: 100; }
+  .t2 { background: rgba(255, 255, 255, .8); color: #0078d4; font-weight: 600; border: 3px solid rgba(255, 255, 255, .8); border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, .1), 0 30px 70px rgba(0, 0, 0, .2); }
+  .t3 { background: #ffffff; color: #005fb8; font-weight: 800; border: 3px solid rgba(0, 0, 0, .08); border-radius: 44px; box-shadow: 0 6px 16px rgba(0, 0, 0, .06), 0 30px 70px rgba(0, 0, 0, .12); }
+  .t3 q { quotes: none; font-weight: 700; color: #1b1b1b; }
+  /* 16:9：左边是 WSL 与片名，右边三块 */
+  .r169 .wsl { left: 96px; top: 150px; font-size: 300px; }
+  .r169 .ttl { left: 108px; top: 470px; font-size: 62px; }
+  .r169 .mono { left: 108px; top: 668px; font-size: 44px; }
+  .r169 .tile { top: 150px; width: 350px; height: 520px; font-size: 400px; }
+  .r169 .tile { width: 340px; }
+  .r169 .t1 { left: 768px; } .r169 .t2 { left: 1128px; } .r169 .t3 { left: 1488px; width: 360px; }
+  .r169 .t3 { font-size: 250px; } .r169 .t3 q { font-size: 104px; position: relative; top: -70px; }
+  .r169 .b1 { left: -300px; top: -340px; width: 1200px; height: 1200px; } .r169 .b2 { left: 1100px; top: 420px; width: 1100px; height: 1100px; }
+  /* 4:3：上面是 WSL 与片名，中间三块横排 */
+  .r43 .wsl { left: 76px; top: 70px; font-size: 250px; }
+  .r43 .ttl { left: 640px; top: 96px; font-size: 56px; }
+  .r43 .mono { left: 88px; top: 846px; font-size: 44px; }
+  .r43 .tile { top: 340px; width: 460px; height: 460px; font-size: 370px; }
+  .r43 .t1 { left: 84px; } .r43 .t2 { left: 570px; } .r43 .t3 { left: 1056px; }
+  .r43 .t3 { font-size: 290px; } .r43 .t3 q { font-size: 130px; position: relative; top: -70px; }
+  .r43 .b1 { left: -300px; top: -300px; width: 1100px; height: 1100px; } .r43 .b2 { left: 800px; top: 500px; width: 1100px; height: 1100px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob a b1"></div><div class="blob b b2"></div>
+  <div class="abs wsl">WSL</div>
+  <div class="abs ttl"></div>
+  <div class="tile t1">1</div>
+  <div class="tile t2">2</div>
+  <div class="tile t3"></div>
+  <div class="abs mono"></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
+  document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
+  const TEXT = {
+    zh: { title: wide ? '从 WSL 1 到 WSL 2，<br>再到「WSL 3」' : '从 WSL 1 到 WSL 2，<br>再到「WSL 3」', l: '「', r: '」', ver: 'WSL 版本: ' },
+    en: { title: wide ? 'From WSL 1 to WSL 2,<br>then “WSL 3”' : 'From WSL 1 to WSL 2,<br>then “WSL 3”', l: '“', r: '”', ver: 'WSL version: ' },
+  }[lang];
+  document.querySelector('.ttl').innerHTML = TEXT.title;
+  document.querySelector('.t3').innerHTML = `<q>${TEXT.l}</q>3<q>${TEXT.r}</q>`;
+  // 两行实测回显：与正片结尾相同（research/lab/out_10、out_14）
+  document.querySelector('.mono').innerHTML = `${TEXT.ver}<b>3</b>.0.2.0<br>6.18.40.1-microsoft-standard-<i>WSL2</i>`;
+  const sample = document.getElementById('stage').textContent;
+  Promise.all(['100', '600', '700', '800'].map((w) => document.fonts.load(w + ' 40px "Inter"', sample)).concat(['700', '800'].map((w) => document.fonts.load(w + ' 40px "Sans SC"', sample)), [document.fonts.load('700 40px "Mono"', sample)]))
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

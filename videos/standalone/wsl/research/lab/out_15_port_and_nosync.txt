@@ -1,0 +1,53 @@
+# 入库前处理（18_sanitize.py）：2 行里的内网地址已替换。
+# 取证时刻（UTC）：2026-10-06T23:12:09Z
+
+## a 端口映射
+PS> wslc run -d --name ft-web -p 18080:80 ft-alpine:3.24.2 nc -lk -p 80 -e cat /etc/alpine-release
+16bcd539628ef79834d79a3f5ded6ba9c5fa2459edc0dc5a1501cb6c4e8544ae
+[exit=0]
+
+PS> wslc list
+容器 ID          映像                 命令                       已创建       状态             端口                        名称
+16bcd539628e   ft-alpine:3.24.2   "nc -lk -p 80 -e cat…"   2 秒前      Up 2 seconds   127.0.0.1:18080->80/tcp   ft-web
+[exit=0]
+
+PS> 从 Windows 连 localhost:18080，读回容器发来的内容
+收到 7 字节：3.24.2
+
+PS> Get-NetTCPConnection -LocalPort 18080 -State Listen   （Windows 一侧的监听者）
+
+PS> wslc exec ft-web ip -o -4 addr
+1: lo    inet 127.0.0.1/8 scope host lo\       valid_lft forever preferred_lft forever
+5: eth0    inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0\       valid_lft forever preferred_lft forever
+[exit=0]
+
+PS> wslc exec ft-web cat /etc/resolv.conf
+nameserver <内网地址>
+[exit=0]
+
+PS> wslc system session run cat /proc/net/dev
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+  eth0:     620       6    0    0    0     0          0         0      964      12    0    0    0     0       0          0
+loopback0:     400       6    0    0    0     0          0         0      703      10    0    0    0     0       0          0
+docker0:     203       5    0    0    0     0          0         0      846      11    0    1    0     0       0          0
+veth157477a:     273       5    0    0    0     0          0         0     1362      17    0    0    0     0       0          0
+[exit=0]
+
+PS> wslc system session run cat /etc/resolv.conf
+nameserver <内网地址>
+[exit=0]
+
+PS> wslc stop ft-web
+ft-web
+[exit=0]
+
+PS> wslc remove ft-web
+ft-web
+[exit=0]
+
+
+## b 解到 Windows 文件系统，不含 sync（各 3 次，毫秒；每次之前清空目标目录，不计时）
+ft-wsl1  | tar xzf（无 sync）→ /mnt/c      | 8707 8579 10546 | 中位 8707
+ft-wsl2  | tar xzf（无 sync）→ /mnt/c      | 128637 73721 72233 | 中位 73721

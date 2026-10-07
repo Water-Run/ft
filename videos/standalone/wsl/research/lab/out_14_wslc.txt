@@ -1,0 +1,305 @@
+# 入库前处理（18_sanitize.py）：折叠 258 个内核线程；2 行里的用户名或主机名已替换。
+# 取证时刻（UTC）：2026-10-06T23:10:15Z
+# WSL：WSL 版本: 3.0.2.0；内核版本: 6.18.40.1-1
+
+## 0 起点
+PS> wslc version
+wslc 3.0.2.0
+[exit=0]
+
+PS> wslc info
+客户端:
+WSL 版本: 3.0.2.0
+内核版本: 6.18.40.1-1
+Direct3D 版本: 1.611.1-81528511
+DXCore 版本: 10.0.26100.1-240331-1435.ge-release
+Windows 版本: 10.0.26220.9587
+设置文件: %LOCALAPPDATA%\wslc\settings.yaml
+
+服务器:
+会话管理器版本: 3.0.2
+会话: 0
+[exit=0]
+
+PS> wslc images
+REPOSITORY   TAG       IMAGE ID       已创建       大小
+[exit=0]
+
+PS> wslc list --all
+容器 ID     映像        命令        已创建       状态        端口        名称
+[exit=0]
+
+PS> Get-Process wslcsession, vmmem*  （运行第一条容器命令之前）
+vmmemCmZygote    x1
+vmmemWSL         x1
+vmmemwslc-cli-admin-<用户> x1
+wslcsession      x1
+
+## 1 同一份根文件系统，第三种跑法：导入为映像，在容器里执行
+PS> wslc import C:\ftlab\alpine-minirootfs-3.24.2-x86_64.tar.gz ft-alpine:3.24.2
+fa6f90e9222b
+[exit=0]
+
+PS> wslc images
+REPOSITORY   TAG       IMAGE ID       已创建       大小
+ft-alpine    3.24.2    fa6f90e9222b   1 秒前      8.42MB
+[exit=0]
+
+PS> wslc run --rm ft-alpine:3.24.2 uname -r
+6.18.40.1-microsoft-standard-WSL2
+[exit=0]
+
+PS> wslc run --rm ft-alpine:3.24.2 uname -sr
+Linux 6.18.40.1-microsoft-standard-WSL2
+[exit=0]
+
+PS> wslc run --rm ft-alpine:3.24.2 cat /proc/version
+Linux version 6.18.40.1-microsoft-standard-WSL2 (root@71c659030f6c) (gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP PREEMPT_DYNAMIC Fri Jul 31 22:12:15 UTC 2026
+[exit=0]
+
+PS> wslc run --rm ft-alpine:3.24.2 cat /etc/alpine-release
+3.24.2
+[exit=0]
+
+
+## 2 容器里看到的环境
+PS> wslc run -d --name ft-sleep ft-alpine:3.24.2 sleep 3600
+b88507a482444604ee7aeafe1806d64b5f8c93fbfbc2b81a15e152c82a90a1a0
+[exit=0]
+
+PS> wslc list
+容器 ID          映像                 命令             已创建       状态                      端口        名称
+b88507a48244   ft-alpine:3.24.2   "sleep 3600"   1 秒前      Up Less than a second             ft-sleep
+[exit=0]
+
+PS> wslc exec ft-sleep ps -o pid,user,comm
+PID   USER     COMMAND
+    1 root     sleep
+    7 root     ps
+[exit=0]
+
+PS> wslc exec ft-sleep cat /proc/1/cgroup
+0::/
+[exit=0]
+
+PS> wslc exec ft-sleep grep -E "^overlay | / " /proc/mounts
+overlay / overlay rw,relatime,lowerdir=/var/lib/docker/overlay2/l/P7EQ7B6IJZAPLIWJS4PLBC3CLS:/var/lib/docker/overlay2/l/V5APT6G4FIIU6P3EJS7JJMZB2E,upperdir=/var/lib/docker/overlay2/dcf41710f9128e12abdab087d317a108adc5919ce3cd967a3d5b9d4d4940b1d1/diff,workdir=/var/lib/docker/overlay2/dcf41710f9128e12abdab087d317a108adc5919ce3cd967a3d5b9d4d4940b1d1/work 0 0
+[exit=0]
+
+PS> wslc exec ft-sleep cat /proc/cmdline
+initrd=\initrd.img WSLC_ROOT_INIT=1 panic=-1 nr_cpus=24 hv_utils.timesync_implicit=1 printk.devkmsg=on page_reporting.page_reporting_order=5 swiotlb=force hv_pci_swiotlb=67108864 hv_storvsc.storvsc_max_hw_queues=4 console=hvc0 debug
+[exit=0]
+
+PS> wslc exec ft-sleep cat /sys/fs/cgroup/cgroup.controllers
+cpuset cpu io memory hugetlb pids rdma
+[exit=0]
+
+
+## 3 Windows 一侧：谁拥有这台虚拟机
+PS> Get-CimInstance Win32_Process（wslservice / wslcsession / wslc / vmmem*），属主只分「当前用户」与其他
+vmmemCmZygote      属主=A923A5CB-B389-4B72-B605-90E8C662911C 父进程=（已退出或查不到）
+vmmemWSL           属主=73F1042A-4D00-4D6A-8856-2396AE69BB7D 父进程=vmwp.exe
+vmmemwslc-cli-admin-<用户> 属主=1AAF556F-955F-495A-891F-F6B7F97DE33D 父进程=vmwp.exe
+vmwp.exe           属主=73F1042A-4D00-4D6A-8856-2396AE69BB7D 父进程=vmcompute.exe
+vmwp.exe           属主=1AAF556F-955F-495A-891F-F6B7F97DE33D 父进程=vmcompute.exe
+wslcsession.exe    属主=当前用户       父进程=svchost.exe
+wslservice.exe     属主=SYSTEM     父进程=services.exe
+
+PS> wsl -l -v   （WSL 容器的会话是否出现在发行版列表里；只列表头与本实验的行）
+  NAME               STATE           VERSION
+  ft-wsl1            Stopped         1
+  ft-wsl2            Stopped         2
+
+PS> Get-ChildItem %LOCALAPPDATA%\wslc -Recurse  （会话的存储）
+%LOCALAPPDATA%\wslc\sessions                                                     <目录>
+%LOCALAPPDATA%\wslc\sessions\wslc-cli-admin-<用户>                                 <目录>
+%LOCALAPPDATA%\wslc\sessions\wslc-cli-admin-<用户>\storage.vhdx               650117120
+%LOCALAPPDATA%\wslc\sessions\wslc-cli-admin-<用户>\swap.vhdx                   37748736
+
+## 4 会话虚拟机内部
+PS> wslc system session list
+ID        创建者 PID   显示名称
+1         12904     wslc-cli-admin-<用户>
+[exit=0]
+
+PS> wslc system session run --help
+版权所有 (c) Microsoft Corporation。保留所有权利。
+有关此产品的隐私信息，请访问 https://aka.ms/privacy。
+
+在没有 TTY 的活动会话中运行命令。命令及其参数直接转发到会话。如果未指定会话，则将使用 wslc 默认会话。
+
+使用情况: wslc system session run [选项] <command> [<arguments>...]
+
+参数:
+  command    要运行的命令
+  arguments  传递给正在运行的命令的参数
+
+选项:
+  -?  --help     显示选定命令的帮助信息
+
+'wslc' 的全局选项:
+      --session  指定要使用的会话
+[exit=0]
+
+PS> wslc system session run uname -r
+6.18.40.1-microsoft-standard-WSL2
+[exit=0]
+
+PS> wslc system session run cat /proc/version
+Linux version 6.18.40.1-microsoft-standard-WSL2 (root@71c659030f6c) (gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP PREEMPT_DYNAMIC Fri Jul 31 22:12:15 UTC 2026
+[exit=0]
+
+PS> wslc system session run ps -e -o pid,comm
+  PID COMMAND
+    1 init
+  227 GnsEngine
+  229 PortRelay
+  244 containerd
+  245 dockerd
+  764 containerd-shim
+  787 sleep
+  926 ps
+  （其余 258 个内核线程从略）
+[exit=0]
+
+PS> wslc system session run cat /proc/cmdline
+initrd=\initrd.img WSLC_ROOT_INIT=1 panic=-1 nr_cpus=24 hv_utils.timesync_implicit=1 printk.devkmsg=on page_reporting.page_reporting_order=5 swiotlb=force hv_pci_swiotlb=67108864 hv_storvsc.storvsc_max_hw_queues=4 console=hvc0 debug
+[exit=0]
+
+PS> wslc system session run grep -E " / |/mnt|virtiofs|docker" /proc/mounts
+none / overlay rw,relatime,lowerdir=/mnt,upperdir=/mnt-rw/rw/upper,workdir=/mnt-rw/rw/work,uuid=on 0 0
+drvfs /run/wsl/virtiofs-mounts/drvfs virtiofs rw,relatime 0 0
+drvfs /usr/lib/wsl/drivers virtiofs ro,relatime 0 0
+drvfs /usr/lib/wsl/lib/inbox virtiofs ro,relatime 0 0
+drvfs /usr/lib/wsl/lib/packaged virtiofs ro,relatime 0 0
+/dev/sdc /var/lib/docker ext4 rw,relatime,discard 0 0
+overlay /var/lib/docker/overlay2/dcf41710f9128e12abdab087d317a108adc5919ce3cd967a3d5b9d4d4940b1d1/merged overlay rw,relatime,lowerdir=/var/lib/docker/overlay2/l/P7EQ7B6IJZAPLIWJS4PLBC3CLS:/var/lib/docker/overlay2/l/V5APT6G4FIIU6P3EJS7JJMZB2E,upperdir=/var/lib/docker/overlay2/dcf41710f9128e12abdab087d317a108adc5919ce3cd967a3d5b9d4d4940b1d1/diff,workdir=/var/lib/docker/overlay2/dcf41710f9128e12abdab087d317a108adc5919ce3cd967a3d5b9d4d4940b1d1/work 0 0
+nsfs /run/docker/netns/45de5a128087 nsfs rw 0 0
+[exit=0]
+
+PS> wslc system session run dockerd --version
+Docker version 25.0.3, build f417435
+[exit=0]
+
+PS> wslc system session run containerd --version
+containerd github.com/containerd/containerd/v2 2.2.4 193637f7ee8ae5f5aa5248f49e7baa3e6164966e
+[exit=0]
+
+PS> wslc system session run docker version
+Client:
+ Version:           25.0.7
+ API version:       1.44
+ Go version:        go1.26.3
+ Git commit:        4debf411d1e6efbd9ce65e4250718e9c529a6525
+ Built:             Thu May 28 13:45:36 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server:
+ Engine:
+  Version:          25.0.3
+  API version:      1.44 (minimum version 1.24)
+  Go version:       go1.26.3
+  Git commit:       f417435
+  Built:            Sun May 31 04:44:36 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          2.2.4
+  GitCommit:        193637f7ee8ae5f5aa5248f49e7baa3e6164966e
+ runc:
+  Version:          1.3.3
+  GitCommit:        d842d7719497cc3b774fd71620278ac9e17710e0
+ docker-init:
+  Version:          0.19.0
+  GitCommit:
+[exit=0]
+
+
+## 5 卷：把 Windows 目录挂进容器
+PS> wslc run --rm -v C:\ftlab\share:/data ft-alpine:3.24.2 cat /data/hello.txt
+hello from Windows
+[exit=0]
+
+PS> wslc run --rm -v C:\ftlab\share:/data ft-alpine:3.24.2 grep /data /proc/mounts
+drvfs /data virtiofs rw,relatime 0 0
+[exit=0]
+
+PS> wslc system session run grep -E "virtiofs|9p" /proc/mounts
+drvfs /run/wsl/virtiofs-mounts/drvfs virtiofs rw,relatime 0 0
+drvfs /usr/lib/wsl/drivers virtiofs ro,relatime 0 0
+drvfs /usr/lib/wsl/lib/inbox virtiofs ro,relatime 0 0
+drvfs /usr/lib/wsl/lib/packaged virtiofs ro,relatime 0 0
+[exit=0]
+
+
+## 6 网络：端口映射
+PS> wslc run -d --name ft-web -p 18080:80 ft-alpine:3.24.2 httpd -f -p 80 -h /etc
+来自引擎的错误信息: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "httpd": executable file not found in $PATH: unknown
+错误代码： E_INVALIDARG
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+[exit=1]
+
+PS> curl.exe -s -m 8 http://localhost:18080/alpine-release
+
+[exit=7]
+
+PS> wslc exec ft-web ip -o -4 addr
+找不到容器 'ft-web'。
+错误代码： WSLC_E_CONTAINER_NOT_FOUND
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+[exit=1]
+
+PS> wslc exec ft-web cat /etc/resolv.conf
+找不到容器 'ft-web'。
+错误代码： WSLC_E_CONTAINER_NOT_FOUND
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+[exit=1]
+
+PS> wslc network list
+NETWORK ID     名称        DRIVER    SCOPE
+43ffbe3b7659   bridge    bridge    local
+549d8d2516c2   host      host      local
+c10cc60e6117   none      null      local
+[exit=0]
+
+PS> wslc system session run ip -o -4 addr
+未能启动命令 ip。Errno = 2
+错误代码： E_FAIL
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+[exit=1]
+
+PS> netstat -ano | findstr :18080   （Windows 一侧是谁在监听；只留进程名）
+（没有）
+
+## 7 从镜像仓库拉取（视网络而定）
+PS> wslc pull alpine:3.24.2
+来自引擎的错误信息: Get "https://registry-1.docker.io/v2/": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+错误代码： E_FAIL
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+[exit=1]
+
+PS> wslc images
+REPOSITORY   TAG       IMAGE ID       已创建       大小
+ft-alpine    3.24.2    fa6f90e9222b   42 秒前     8.42MB
+[exit=0]
+
+
+## 8 停掉容器（映像与目录的删除在 19_cleanup.ps1）
+PS> wslc stop ft-sleep ft-web
+找不到容器 'ft-web'。
+错误代码： WSLC_E_CONTAINER_NOT_FOUND
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+ft-sleep
+[exit=1]
+
+PS> wslc remove ft-sleep ft-web
+找不到容器 'ft-web'。
+错误代码： WSLC_E_CONTAINER_NOT_FOUND
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+ft-sleep
+[exit=1]
+
+PS> wslc list --all
+容器 ID     映像        命令        已创建       状态        端口        名称
+[exit=0]

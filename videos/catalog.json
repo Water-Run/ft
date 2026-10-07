@@ -253,7 +253,7 @@
     {"slug": "how-harness-works", "title": {"zh": "给 LLM 长出手——Harness 是如何工作的？"}},
     {"slug": "notepad-plus-plus", "title": {"zh": "Notepad++ 是如何工作的"}},
     {"slug": "local-qwen-dgx", "title": {"zh": "本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？"}},
-    {"slug": "wsl", "title": {"zh": "从 WSL 1 到 WSL 2，再到 WSL 3"}},
+    {"slug": "wsl", "title": {"zh": "从 WSL 1 到 WSL 2，再到「WSL 3」", "en": "From WSL 1 to WSL 2, Then “WSL 3”"}, "status": "delivered"},
     {"slug": "firearm-actions", "title": {"zh": "枪械自动原理"}},
     {"slug": "web-login", "title": {"zh": "Web 登录机制：如何确认你是你"}},
     {"slug": "lcd-panels", "title": {"zh": "液晶显示器和面板，我们应该关心屏幕的什么和影响"}},

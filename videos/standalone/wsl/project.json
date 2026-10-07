@@ -1,0 +1,179 @@
+{
+  "slug": "wsl",
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "titles": {
+    "zh": "从 WSL 1 到 WSL 2，再到「WSL 3」",
+    "en": "From WSL 1 to WSL 2, Then “WSL 3”"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+8%",
+    "en": "+9%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍 WSL、WSL 1、WSL 2、WSLc、wslc、wslservice、wslcsession、dockerd、containerd、virtiofs、cgroup、ext4、9P、Alpine Linux、Hyper-V、compose。",
+    "en": "A narration about WSL, WSL 1, WSL 2, WSLc, wslc, wslservice, wslcsession, dockerd, containerd, virtiofs, cgroups, ext4, 9P, Alpine Linux, Hyper-V and compose."
+  },
+  "production": {
+    "mode": "self",
+    "maker": "Claude Opus 5.5"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "score",
+    "music_db": -14,
+    "duck_db": 8,
+    "sfx_db": -8,
+    "score": {
+      "weights": {
+        "pad": 1.0,
+        "arpA": 0.6,
+        "arpB": 0.32,
+        "bass": 0.3,
+        "hat": 0.09
+      },
+      "layers": [
+        [
+          "pad",
+          "open",
+          "outro",
+          1.0
+        ],
+        [
+          "arpB",
+          "o3-0.4",
+          "open",
+          0.8
+        ],
+        [
+          "arpA",
+          "one",
+          "one",
+          0.75
+        ],
+        [
+          "hat",
+          "a8-0.6",
+          "one",
+          0.7
+        ],
+        [
+          "pad",
+          "two",
+          "two",
+          0.85
+        ],
+        [
+          "bass",
+          "two",
+          "two",
+          0.85
+        ],
+        [
+          "arpB",
+          "b5-0.6",
+          "two",
+          0.8
+        ],
+        [
+          "hat",
+          "b10-0.6",
+          "b12.end",
+          1.0
+        ],
+        [
+          "arpA",
+          "v2-0.6",
+          "num",
+          0.6
+        ],
+        [
+          "arpB",
+          "num",
+          "num",
+          0.6
+        ],
+        [
+          "bass",
+          "three",
+          "three",
+          0.7
+        ],
+        [
+          "arpA",
+          "c5-0.6",
+          "c8.end",
+          0.8
+        ],
+        [
+          "hat",
+          "c9-0.6",
+          "c14.end",
+          1.0
+        ],
+        [
+          "arpB",
+          "c9-0.6",
+          "three",
+          0.85
+        ],
+        [
+          "arpA",
+          "c15-0.6",
+          "three",
+          0.7
+        ],
+        [
+          "arpB",
+          "end",
+          "outro",
+          0.8
+        ],
+        [
+          "bass",
+          "e4-0.6",
+          "end",
+          0.6
+        ]
+      ]
+    }
+  },
+  "check": {
+    "duration": [
+      240,
+      360
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "no_emoji": true
+    },
+    "sfx": {
+      "per_seconds": 4,
+      "kinds": 6,
+      "scene_per_seconds": 6,
+      "max_gap": 10
+    },
+    "pace": {
+      "en": {
+        "fast": 4.0
+      }
+    }
+  }
+}

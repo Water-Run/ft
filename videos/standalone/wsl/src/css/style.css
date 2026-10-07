@@ -1,0 +1,141 @@
+/* 本片的视觉系统「三个年代」：全片浅色，每一章取它所讲的那一年微软自己的设计语言。
+   - .era-w10（2016，WSL 1）：Windows 10 的平面风格。白底、黑字、纯色磁贴、直角、无投影；标题用细体大字。
+   - .era-fl （2019，WSL 2）：Fluent Design。浅灰底上叠半透明的亚克力面、柔和投影、2px 圆角；标题用半粗体。
+   - .era-w11（2021–2026，软件包与「WSL 3」）：Windows 11。Mica 底、白色圆角卡片、细描边；标题用粗体。
+   同一批部件（终端、方框、条形、章节卡、底栏）在三个年代里各有一套皮肤，由场景根上的年代类名决定。
+   全片不变的约定：
+   - 终端一律深底浅字，是画面里唯一的深色块，只放真实回显；
+   - 强调色（各年代的蓝）只给「此刻正在讲的那一项」；红只表示「没有 / 失败」，绿只表示「有 / 一致」；
+   - 三个方格 = 三次提问的答案，空心是还没问，实心是已经得到。
+   渐变、圆角与投影只出现在 Fluent 与 Windows 11 两个年代里，是这两套设计语言本身的特征。
+   对比度（56px 以下的字要 4.5:1）：w10 的 #767676 压白 4.5；fl 的 #605e5c 压 #f3f2f1 5.9；w11 的 #5c5c5c 压 #f3f3f3 6.0。
+   各年代的强调蓝压在浅底上不足 4.5:1 时只作色块与大字，小字用加深的一档（--ac-d）。
+   Windows 10 的默认强调色 #0078d7 上压白字只有 4.3:1：只用于章节卡（字都在 56px 以上）；磁贴用同一调色板里深一档的 #0063b1（6.2:1）。 */
+:root { --term-bg: #0c0c0c; --term-fg: #cccccc; --term-dim: #9a9a9a; --bad: #c42b1c; --good: #0f7b0f; }
+.era-w10 { --bg: #ffffff; --ink: #000000; --dim: #767676; --ac: #0063b1; --ac-d: #005a9e; --surf: #e6e6e6; --line: #000000; --r: 0px; --wd: 200; --wh: 300; --wb: 400; --ws: 600; }
+.era-fl  { --bg: #f3f2f1; --ink: #201f1e; --dim: #605e5c; --ac: #0078d4; --ac-d: #106ebe; --surf: #ffffff; --line: #c8c6c4; --r: 4px; --wd: 600; --wh: 600; --wb: 400; --ws: 600; }
+.era-w11 { --bg: #f3f3f3; --ink: #1b1b1b; --dim: #5c5c5c; --ac: #005fb8; --ac-d: #005fb8; --surf: #ffffff; --line: #e0e0e0; --r: 14px; --wd: 700; --wh: 700; --wb: 500; --ws: 600; }
+body { font-family: "Inter", "Sans SC"; color: #1b1b1b; }
+#bg { background: #f3f3f3; }
+.scene { overflow: hidden; background: var(--bg); color: var(--ink); }
+/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是底栏以上的 1920×968。里面的文字默认不换行 */
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
+.mono { font-family: "Mono", "Sans SC"; }
+.ink { color: var(--ink); } .dim { color: var(--dim); } .ac { color: var(--ac-d); } .bad { color: var(--bad); } .good { color: var(--good); } .white { color: #ffffff; }
+.bg-ac { background: var(--ac); } .bg-ink { background: var(--ink); } .bg-surf { background: var(--surf); } .bg-bad { background: var(--bad); } .bg-good { background: var(--good); }
+
+/* 字号阶梯（1080p）。注解不小于 30px */
+.t-0 { font-weight: var(--wd); font-size: 420px; line-height: .86; letter-spacing: -.045em; }
+.t-1 { font-weight: var(--wd); font-size: 190px; line-height: .95; letter-spacing: -.035em; }
+.t-2 { font-weight: var(--wh); font-size: 104px; line-height: 1.04; letter-spacing: -.025em; }
+.t-3 { font-weight: var(--wh); font-size: 64px; line-height: 1.12; letter-spacing: -.015em; }
+.t-4 { font-weight: var(--ws); font-size: 46px; line-height: 1.18; }
+.t-b { font-weight: var(--wb); font-size: 38px; line-height: 1.32; }
+.t-n { font-weight: var(--wb); font-size: 30px; line-height: 1.3; }
+.num { font-family: "Mono"; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+
+/* ── 方框：三个年代三种材质 ── */
+.box { position: absolute; background: var(--surf); border-radius: var(--r); }
+.era-w10 .box { background: var(--surf); }
+.era-w10 .box.ac { background: var(--ac); color: #ffffff; }
+.era-w10 .box.line { background: #ffffff; border: 4px solid #000000; }
+.era-fl .box { background: rgba(255, 255, 255, .78); box-shadow: 0 2px 4px rgba(0, 0, 0, .08), 0 14px 34px rgba(0, 0, 0, .13); border: 2px solid rgba(255, 255, 255, .7); }
+.era-fl .box.ac { background: #106ebe; color: #ffffff; border-color: rgba(255, 255, 255, .28); }
+.era-fl .box.line { background: rgba(255, 255, 255, .4); border: 3px solid #8a8886; box-shadow: none; }
+.era-w11 .box { background: rgba(255, 255, 255, .86); border: 2px solid rgba(0, 0, 0, .07); box-shadow: 0 3px 10px rgba(0, 0, 0, .05), 0 18px 40px rgba(0, 0, 0, .07); }
+.era-w11 .box.ac { background: var(--ac); color: #ffffff; border-color: rgba(0, 0, 0, .1); }
+.era-w11 .box.line { background: rgba(255, 255, 255, .5); border: 3px solid #8f8f8f; box-shadow: none; }
+.box.dash { background: transparent !important; border: 4px dashed var(--dim) !important; box-shadow: none !important; }
+.box .lab { position: absolute; left: 30px; top: 22px; font-weight: var(--ws); font-size: 38px; line-height: 1.15; }
+.box .sub { position: absolute; left: 30px; bottom: 20px; font-weight: var(--wb); font-size: 30px; line-height: 1.2; opacity: .92; }
+.era-w10 .box .lab { top: auto; bottom: 60px; font-weight: 400; }          /* Windows 10 的磁贴：文字贴左下 */
+.era-w10 .box .lab.solo { bottom: 22px; }
+/* 亚克力与 Mica 底下的色团：材质要透出底下的颜色才成立 */
+.blob { position: absolute; border-radius: 50%; }
+.era-fl .blob.a { background: radial-gradient(closest-side, rgba(0, 120, 212, .34), rgba(0, 120, 212, 0)); }
+.era-fl .blob.b { background: radial-gradient(closest-side, rgba(0, 183, 195, .30), rgba(0, 183, 195, 0)); }
+.era-fl .blob.c { background: radial-gradient(closest-side, rgba(136, 100, 184, .26), rgba(136, 100, 184, 0)); }
+.era-w11 .blob.a { background: radial-gradient(closest-side, rgba(96, 165, 232, .30), rgba(96, 165, 232, 0)); }
+.era-w11 .blob.b { background: radial-gradient(closest-side, rgba(150, 196, 240, .34), rgba(150, 196, 240, 0)); }
+.era-w11 .blob.c { background: radial-gradient(closest-side, rgba(206, 216, 244, .5), rgba(206, 216, 244, 0)); }
+
+/* ── 终端：深底浅字；窗框随年代换 ── */
+.term { position: absolute; }
+.term .bar { position: absolute; left: 0; top: 0; right: 0; height: 64px; display: flex; align-items: center; font-size: 30px; }
+.term .bar .tt { margin-left: 26px; white-space: nowrap; }
+.term .bar .wb { position: absolute; right: 0; top: 0; height: 64px; }
+.term .body { position: absolute; left: 0; right: 0; top: 64px; bottom: 0; background: var(--term-bg); color: var(--term-fg); font-family: "Mono", "Sans SC"; padding: 26px 34px; overflow: hidden; }
+.term .ln { white-space: pre; font-size: 40px; line-height: 58px; height: 58px; font-weight: 500; }
+.term .ln.o { color: var(--term-fg); font-size: 36px; }
+.term .ln.s { font-size: 31px; }
+.term .ln.big { font-size: 56px; line-height: 84px; height: 84px; font-weight: 700; color: #ffffff; }
+.term .ln.d { color: var(--term-dim); }
+.term .ln .p { color: var(--term-dim); }
+.term .ln .hi { background: #ffffff; color: #0c0c0c; }
+.term .ln .hb { background: #f9f1a5; color: #0c0c0c; }
+.term .ln .er { color: #ff7b72; }
+.term .ln .ok { color: #7ee787; }
+.era-w10 .term { border: 3px solid var(--ac); background: #ffffff; }
+.era-w10 .term .bar { background: #ffffff; color: #000000; }
+.era-fl .term { border-radius: 6px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, .14), 0 28px 60px rgba(0, 0, 0, .24); background: #e8e6e4; }
+.era-fl .term .bar { background: rgba(232, 230, 228, .96); color: #201f1e; }
+.era-fl .term .bar .tab { height: 52px; margin: 12px 0 0 14px; padding: 0 30px 0 24px; background: var(--term-bg); color: #ffffff; display: flex; align-items: center; border-radius: 4px 4px 0 0; }
+.era-w11 .term { border-radius: 18px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, .08), 0 30px 70px rgba(0, 0, 0, .18); border: 2px solid rgba(0, 0, 0, .12); background: #e9eef4; }
+.era-w11 .term .bar { background: #e9eef4; color: #1b1b1b; }
+.era-w11 .term .bar .tab { height: 50px; margin: 14px 0 0 16px; padding: 0 30px 0 22px; background: var(--term-bg); color: #ffffff; display: flex; align-items: center; border-radius: 12px 12px 0 0; }
+
+/* ── 条形（计时）与小方格（文件） ── */
+.bar-track { position: absolute; height: 44px; background: var(--surf); border-radius: var(--r); }
+.era-w10 .bar-track { background: #e6e6e6; }
+.bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ac); border-radius: var(--r); transform-origin: 0 50%; }
+.cell { position: absolute; background: var(--ink); }
+/* 小标签：系统调用、消息这类在图里移动的东西 */
+.chip { position: absolute; font-family: "Mono"; font-weight: 700; font-size: 34px; line-height: 1; padding: 13px 20px 15px; background: var(--ink); color: #ffffff; border-radius: var(--r); white-space: nowrap; }
+.chip.ac { background: var(--ac-d); }
+.chip.lite { background: #ffffff; color: var(--ink); border: 3px solid var(--ink); }
+.stamp { position: absolute; font-weight: 800; font-size: 46px; line-height: 1; padding: 10px 22px 14px; background: var(--bad); color: #ffffff; border-radius: var(--r); white-space: nowrap; }
+.stamp.good { background: var(--good); }
+
+/* ── 章节卡：整屏，三个年代各一种 ── */
+.chapter { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.chapter .no { position: absolute; font-family: "Inter"; line-height: .8; }
+.chapter .ti { position: absolute; white-space: nowrap; }
+.chapter .yr { position: absolute; font-family: "Mono"; white-space: nowrap; }
+.chapter.era-w10 { background: #0078d7; color: #ffffff; }
+.chapter.era-w10 .no { left: 96px; top: 150px; font-weight: 100; font-size: 620px; letter-spacing: -.05em; }
+.chapter.era-w10 .ti { left: 124px; top: 730px; font-weight: 300; font-size: 124px; letter-spacing: -.02em; }
+.chapter.era-w10 .yr { right: 120px; top: 110px; font-weight: 300; font-size: 60px; }
+.chapter.era-fl { background: #f3f2f1; color: #201f1e; }
+.chapter.era-fl .no { left: 150px; top: 210px; font-weight: 700; font-size: 470px; letter-spacing: -.05em; color: #0078d4; }
+.chapter.era-fl .ti { left: 170px; top: 690px; font-weight: 600; font-size: 132px; letter-spacing: -.025em; }
+.chapter.era-fl .yr { right: 150px; top: 130px; font-weight: 500; font-size: 60px; color: #605e5c; }
+.chapter.era-w11 { background: #eef2f7; color: #1b1b1b; }
+.chapter.era-w11 .no { left: 230px; top: 250px; font-weight: 800; font-size: 400px; letter-spacing: -.055em; color: #005fb8; }
+.chapter.era-w11 .ti { left: 250px; top: 660px; font-weight: 700; font-size: 136px; letter-spacing: -.03em; }
+.chapter.era-w11 .yr { right: 250px; top: 250px; font-weight: 500; font-size: 60px; color: #5c5c5c; }
+.chapter .plate { position: absolute; }
+.chapter.era-fl .plate { background: rgba(255, 255, 255, .62); box-shadow: 0 30px 80px rgba(0, 0, 0, .16); border: 2px solid rgba(255, 255, 255, .8); border-radius: 6px; }
+.chapter.era-w11 .plate { background: rgba(255, 255, 255, .8); box-shadow: 0 30px 80px rgba(0, 0, 0, .1); border: 2px solid rgba(0, 0, 0, .06); border-radius: 36px; }
+
+/* ── 底栏：字幕、三个答案格、此刻讲到的日期。样式随年代换（Windows 10 的任务栏是深色的） ── */
+.strip { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; }
+.strip .fill { position: absolute; inset: 0; }
+.strip.era-w10 .fill { background: #1f1f1f; }
+.strip.era-fl .fill { background: #e1dfdd; border-top: 2px solid rgba(255, 255, 255, .9); }
+.strip.era-w11 .fill { background: #e7ecf2; border-top: 2px solid rgba(255, 255, 255, .95); }
+.strip .slots { position: absolute; left: 60px; top: 34px; display: flex; }
+.strip .slot { width: 44px; height: 44px; margin-right: 14px; border: 4px solid currentColor; display: flex; align-items: center; justify-content: center; font: 700 26px "Mono"; }
+.strip.era-fl .slot { border-radius: 4px; } .strip.era-w11 .slot { border-radius: 12px; }
+.strip .slot.on { background: currentColor; }
+.strip .slot.on span { color: var(--strip-bg); }
+.strip .clock { position: absolute; right: 60px; top: 30px; height: 52px; display: flex; align-items: center; font: 500 34px "Mono"; letter-spacing: -.01em; }
+.strip.era-w10 { color: #ffffff; --strip-bg: #1f1f1f; }
+.strip.era-fl { color: #201f1e; --strip-bg: #e1dfdd; }
+.strip.era-w11 { color: #1b1b1b; --strip-bg: #e7ecf2; }
+
+/* 字幕：压在底栏上，颜色随底栏换 */
+#caption { bottom: 26px; height: 60px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: #1b1b1b; font-family: "Inter", "Sans SC"; }
+.en #caption span { font-size: 35px; }
+#caption em { font-style: normal; font-weight: 800; }
+.cap-dark #caption span { color: #ffffff; }

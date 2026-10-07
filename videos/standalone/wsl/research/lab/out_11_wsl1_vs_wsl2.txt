@@ -1,0 +1,233 @@
+# 入库前处理（18_sanitize.py）：删去 38 行重复的代理提示。
+# 取证时刻（UTC）：2026-10-06T22:32:23Z
+# WSL：WSL 版本: 3.0.2.0；内核版本: 6.18.40.1-1
+
+## 0 准备
+alpine-minirootfs-3.24.2-x86_64.tar.gz  3701382 字节  sha256=c5ca053cfe1d85c5b96dff8b9bc57045f7f184a30ffb6b65776409ca90388677
+WSL-3.0.1.tar.gz  20095141 字节  sha256=dbb0307373599a7ff1c3610be14641fe11a47473e08056d5834b072fa85017ae
+Alpine 校验和与发布清单一致
+
+## 1 导入：同一份压缩包，两个版本
+PS> wsl --import ft-wsl1 C:\ftlab\wsl1 C:\ftlab\alpine-minirootfs-3.24.2-x86_64.tar.gz --version 1
+操作成功完成。
+[exit=0]
+
+PS> wsl --import ft-wsl2 C:\ftlab\wsl2 C:\ftlab\alpine-minirootfs-3.24.2-x86_64.tar.gz --version 2
+操作成功完成。
+[exit=0]
+
+PS> wsl -l -v   （只列本实验的两行）
+  NAME               STATE           VERSION
+  ft-wsl1            Stopped         1
+  ft-wsl2            Stopped         2
+
+## 2 内核
+[ft-wsl1]\$ uname -r
+4.4.0-26100-Microsoft
+[exit=0]
+[ft-wsl2]\$ uname -r
+6.18.40.1-microsoft-standard-WSL2
+[exit=0]
+
+[ft-wsl1]\$ uname -sr
+Linux 4.4.0-26100-Microsoft
+[exit=0]
+[ft-wsl2]\$ uname -sr
+Linux 6.18.40.1-microsoft-standard-WSL2
+[exit=0]
+
+[ft-wsl1]\$ cat /proc/version
+Linux version 4.4.0-26100-Microsoft (Microsoft@Microsoft.com) (gcc version 5.4.0 (GCC) ) #9587-Microsoft Fri Jan 01 08:00:00 PST 2016
+[exit=0]
+[ft-wsl2]\$ cat /proc/version
+Linux version 6.18.40.1-microsoft-standard-WSL2 (root@71c659030f6c) (gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP PREEMPT_DYNAMIC Fri Jul 31 22:12:15 UTC 2026
+[exit=0]
+
+[ft-wsl1]\$ cat /etc/alpine-release
+3.24.2
+[exit=0]
+[ft-wsl2]\$ cat /etc/alpine-release
+3.24.2
+[exit=0]
+
+[ft-wsl1]\$ cat /proc/cmdline
+BOOT_IMAGE=/kernel init=/init
+[exit=0]
+[ft-wsl2]\$ cat /proc/cmdline
+initrd=\initrd.img WSL_ROOT_INIT=1 panic=-1 nr_cpus=24 hv_utils.timesync_implicit=1 printk.devkmsg=on page_reporting.page_reporting_order=5 hv_storvsc.storvsc_max_hw_queues=4 console=hvc0 debug pty.legacy_count=0 WSL_ENABLE_CRASH_DUMP=1
+[exit=0]
+
+[ft-wsl1]\$ ls /sys/module 2>/dev/null | wc -l
+1
+[exit=0]
+[ft-wsl2]\$ ls /sys/module 2>/dev/null | wc -l
+108
+[exit=0]
+
+[ft-wsl1]\$ dmesg 2>&1 | head -3
+dmesg: klogctl: Function not implemented
+[exit=0]
+[ft-wsl2]\$ dmesg 2>&1 | head -3
+[    0.000000] Linux version 6.18.40.1-microsoft-standard-WSL2 (root@71c659030f6c) (gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP PREEMPT_DYNAMIC Fri Jul 31 22:12:15 UTC 2026
+[    0.000000] Command line: initrd=\initrd.img WSL_ROOT_INIT=1 panic=-1 nr_cpus=24 hv_utils.timesync_implicit=1 printk.devkmsg=on page_reporting.page_reporting_order=5 hv_storvsc.storvsc_max_hw_queues=4 console=hvc0 debug pty.legacy_count=0 WSL_ENABLE_CRASH_DUMP=1
+[    0.000000] KERNEL supported cpus:
+[exit=0]
+
+
+## 3 根文件系统与跨系统的文件访问
+[ft-wsl1]\$ grep -E " / | /mnt/c " /proc/mounts
+rootfs / wslfs rw,noatime 0 0
+C:\134 /mnt/c drvfs rw,noatime,uid=0,gid=0,case=off 0 0
+[exit=0]
+[ft-wsl2]\$ grep -E " / | /mnt/c " /proc/mounts
+/dev/sdd / ext4 rw,relatime,discard,errors=remount-ro,data=ordered 0 0
+C:\134 /mnt/c 9p rw,noatime,aname=drvfs;path=C:\;uid=0;gid=0;symlinkroot=/mnt/,cache=0x5,access=client,msize=65536,trans=fd,rfd=5,wfd=5 0 0
+[exit=0]
+
+[ft-wsl1]\$ df -T / /mnt/c 2>&1
+Filesystem           Type       1K-blocks      Used Available Use% Mounted on
+df: /: can't find mount point
+C:\                  drvfs      998884348 881723764 117160584  88% /mnt/c
+[exit=1]
+[ft-wsl2]\$ df -T / /mnt/c 2>&1
+Filesystem           Type       1K-blocks      Used Available Use% Mounted on
+/dev/sdd             ext4       1055762868     10996 1002048400   0% /
+C:\                  9p         998884348 881723768 117160580  88% /mnt/c
+[exit=0]
+
+PS> Windows 一侧：两个发行版各自落在磁盘上的样子
+--- C:\ftlab\wsl1
+rootfs                   <目录>
+temp                     <目录>
+fsserver                    0
+--- C:\ftlab\wsl2
+ext4.vhdx            79691776
+wsl1\rootfs 下：424 个文件，98 个目录（Windows 一侧直接可数）
+PS> Get-ChildItem C:\ftlab\wsl1\rootfs（前 8 项）
+bin
+dev
+etc
+home
+lib
+media
+mnt
+opt
+
+## 4 进程：Linux 进程在 Windows 一侧看不看得见
+[ft-wsl1]\$ ps -o pid,comm | grep -E "PID|sleep"
+PID   COMMAND
+   31 sleep
+[exit=0]
+[ft-wsl2]\$ ps -o pid,comm | grep -E "PID|sleep"
+PID   COMMAND
+   41 sleep
+[exit=0]
+
+PS> Get-Process -Name sleep   （Windows 的进程表里有没有名为 sleep 的进程）
+（没有）
+PS> Get-Process vmmem*, wslhost, wslservice, wslrelay  （与 WSL 有关的 Windows 进程，按名字计数）
+vmmemCmZygote    x1
+vmmemWSL         x1
+wsl              x4
+wslhost          x4
+wslrelay         x1
+wslservice       x1
+
+## 5 系统调用：容器依赖的几项内核能力
+[ft-wsl1]\$ unshare -U id -u 2>&1; echo "rc=$?"
+unshare: unshare(0x10000000): Invalid argument
+rc=0
+[exit=0]
+[ft-wsl2]\$ unshare -U id -u 2>&1; echo "rc=$?"
+65534
+rc=0
+[exit=0]
+
+[ft-wsl1]\$ unshare -p -f --mount-proc sh -c "echo pid=\$\$" 2>&1; echo "rc=$?"
+unshare: vfork: Invalid argument
+rc=0
+[exit=0]
+[ft-wsl2]\$ unshare -p -f --mount-proc sh -c "echo pid=\$\$" 2>&1; echo "rc=$?"
+pid=53
+rc=0
+[exit=0]
+
+[ft-wsl1]\$ unshare -n ip -o link 2>&1 | cut -c1-60; echo "rc=$?"
+47: lo: <LOOPBACK,UP> mtu 1500 ip: ioctl 0x8942 failed: Inva
+\    link/loopback 00:00:00:00:00:00
+rc=0
+[exit=0]
+[ft-wsl2]\$ unshare -n ip -o link 2>&1 | cut -c1-60; echo "rc=$?"
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN qlen 1000\
+rc=0
+[exit=0]
+
+[ft-wsl1]\$ mkdir -p /tmp/cg && mount -t cgroup2 none /tmp/cg 2>&1; echo "rc=$?"; cat /tmp/cg/cgroup.controllers 2>&1; umount /tmp/cg 2>/dev/null
+mount: mounting none on /tmp/cg failed: No such device
+rc=0
+cat: can't open '/tmp/cg/cgroup.controllers': No such file or directory
+[exit=1]
+[ft-wsl2]\$ mkdir -p /tmp/cg && mount -t cgroup2 none /tmp/cg 2>&1; echo "rc=$?"; cat /tmp/cg/cgroup.controllers 2>&1; umount /tmp/cg 2>/dev/null
+rc=0
+cpuset cpu io memory hugetlb pids rdma
+[exit=0]
+
+[ft-wsl1]\$ mkdir -p /tmp/t && mount -t tmpfs none /tmp/t 2>&1; echo "rc=$?"; umount /tmp/t 2>/dev/null
+rc=0
+[exit=0]
+[ft-wsl2]\$ mkdir -p /tmp/t && mount -t tmpfs none /tmp/t 2>&1; echo "rc=$?"; umount /tmp/t 2>/dev/null
+rc=0
+[exit=0]
+
+[ft-wsl1]\$ cat /proc/filesystems | wc -l
+28
+[exit=0]
+[ft-wsl2]\$ cat /proc/filesystems | wc -l
+35
+[exit=0]
+
+
+## 6 文件密集操作：解压 WSL 3.0.1 的源码包（各 3 次，秒）
+[ft-wsl1]\$ cp /mnt/c/ftlab/WSL-3.0.1.tar.gz /root/ && ls -l /root/WSL-3.0.1.tar.gz | awk '{print \$5}'
+20095141
+[exit=0]
+[ft-wsl2]\$ cp /mnt/c/ftlab/WSL-3.0.1.tar.gz /root/ && ls -l /root/WSL-3.0.1.tar.gz | awk '{print \$5}'
+20095141
+[exit=0]
+
+### 6a 解到 Linux 自己的文件系统（/root/x）
+[ft-wsl1]\$ for i in 1 2 3; do rm -rf /root/x; mkdir -p /root/x; sync; a=$(date +%s.%N); tar xzf /root/WSL-3.0.1.tar.gz -C /root/x; sync; b=$(date +%s.%N); echo "$a $b" | awk '{printf "%.2f\n", $2-$1}'; done; find /root/x -type f | wc -l; rm -rf /root/x
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+1489
+[exit=0]
+[ft-wsl2]\$ for i in 1 2 3; do rm -rf /root/x; mkdir -p /root/x; sync; a=$(date +%s.%N); tar xzf /root/WSL-3.0.1.tar.gz -C /root/x; sync; b=$(date +%s.%N); echo "$a $b" | awk '{printf "%.2f\n", $2-$1}'; done; find /root/x -type f | wc -l; rm -rf /root/x
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+1489
+[exit=0]
+
+### 6b 解到 Windows 的文件系统（/mnt/c/ftlab/x_<发行版>）
+[ft-wsl1]\$ for i in 1 2 3; do rm -rf /mnt/c/ftlab/x_ft-wsl1; mkdir -p /mnt/c/ftlab/x_ft-wsl1; sync; a=$(date +%s.%N); tar xzf /root/WSL-3.0.1.tar.gz -C /mnt/c/ftlab/x_ft-wsl1; sync; b=$(date +%s.%N); echo "$a $b" | awk '{printf "%.2f\n", $2-$1}'; done; find /mnt/c/ftlab/x_ft-wsl1 -type f | wc -l; rm -rf /mnt/c/ftlab/x_ft-wsl1
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+1489
+[exit=0]
+[ft-wsl2]\$ for i in 1 2 3; do rm -rf /mnt/c/ftlab/x_ft-wsl2; mkdir -p /mnt/c/ftlab/x_ft-wsl2; sync; a=$(date +%s.%N); tar xzf /root/WSL-3.0.1.tar.gz -C /mnt/c/ftlab/x_ft-wsl2; sync; b=$(date +%s.%N); echo "$a $b" | awk '{printf "%.2f\n", $2-$1}'; done; find /mnt/c/ftlab/x_ft-wsl2 -type f | wc -l; rm -rf /mnt/c/ftlab/x_ft-wsl2
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+awk: cmd. line:1: Unexpected token
+1489
+[exit=0]
+
+## 7 收尾：停掉 sleep，终止两个发行版（注销在 19_cleanup.ps1）
+PS> wsl -t ft-wsl1
+操作成功完成。
+[exit=0]
+
+PS> wsl -t ft-wsl2
+操作成功完成。
+[exit=0]

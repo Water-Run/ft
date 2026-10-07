@@ -1,0 +1,65 @@
+# 取证时刻（UTC）：2026-10-06T22:30:52Z
+# 系统：Microsoft Windows 11 专业工作站版 Insider Preview 10.0.26220
+# 界面语言：zh-CN
+
+PS> wsl --version
+WSL 版本: 3.0.2.0
+内核版本: 6.18.40.1-1
+WSLg 版本: 1.0.79
+MSRDC 版本: 1.2.7391
+Direct3D 版本: 1.611.1-81528511
+DXCore 版本: 10.0.26100.1-240331-1435.ge-release
+Windows 版本: 10.0.26220.9587
+[exit=0]
+
+PS> wsl --status
+默认分发: Ubuntu
+默认版本: 2
+[exit=0]
+
+PS> wsl -l -v
+  NAME               STATE           VERSION
+* Ubuntu             Stopped         2
+  （另有 3 个与本实验无关的发行版从略，VERSION 列依次为：2、2、2）
+[exit=0]
+
+PS> wsl --set-default-version 3
+无法解析版本号。 
+错误代码： Wsl/ERROR_VERSION_PARSE_ERROR
+如果此错误是意外错误，请考虑搜索现有问题或在 https://github.com/microsoft/WSL/issues 提交新问题。
+[exit=-1]
+
+PS> wsl --status
+默认分发: Ubuntu
+默认版本: 2
+[exit=0]
+
+# 默认版本未变：默认版本: 2
+
+PS> wsl --set-default-version 2
+有关与 WSL 2 关键差异的信息，请访问 https://aka.ms/wsl2
+操作成功完成。
+[exit=0]
+
+PS> wslc --version
+wslc 3.0.2.0
+[exit=0]
+
+PS> wslc version
+wslc 3.0.2.0
+[exit=0]
+
+PS> Get-ChildItem 'C:\Program Files\WSL' -File -Filter *.exe
+container.exe           9043312 3.0.2.0
+msal.wsl.proxy.exe      1555504 
+msrdc.exe               3538232 1.2.7391.0
+wsl.exe                 5365064 3.0.2.0
+wslc.exe                9043312 3.0.2.0
+wslcsession.exe         7695728 3.0.2.0
+wslg.exe                5365104 3.0.2.0
+wslhost.exe             5422408 3.0.2.0
+wslrelay.exe            5424456 3.0.2.0
+wslservice.exe          7455048 3.0.2.0
+
+PS> (Get-FileHash wslc.exe).Hash -eq (Get-FileHash container.exe).Hash
+True

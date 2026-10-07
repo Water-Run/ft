@@ -1,0 +1,47 @@
+# 取证时刻（UTC）：2026-10-06T23:20:54Z
+
+PS> wslc list --all
+容器 ID     映像        命令        已创建       状态        端口        名称
+[exit=0]
+
+PS> wslc rmi ft-alpine:3.24.2
+已取消标记: ft-alpine:3.24.2
+已删除: sha256:fa6f90e9222bb414940d5b05d208d98aa257e16a69557fb8dd1c121eaf1be498
+已删除: sha256:e40755db49de69c097ff34ea96089c9c9ebc0227dfbe14b796ac8a8a80d5ecae
+[exit=0]
+
+PS> wslc images
+REPOSITORY   TAG       IMAGE ID       已创建       大小
+[exit=0]
+
+PS> wslc system session list
+ID        创建者 PID   显示名称
+1         12904     wslc-cli-admin-<用户>
+[exit=0]
+
+PS> wslc system session terminate
+[exit=0]
+
+PS> wsl --unregister ft-wsl1
+操作成功完成。
+[exit=0]
+
+PS> wsl --unregister ft-wsl2
+操作成功完成。
+[exit=0]
+
+PS> wsl -l -v   （只列表头与名字以 ft- 开头的行）
+  NAME               STATE           VERSION
+（实验发行版剩余 0 个）
+
+PS> 删除 C:\ftlab 下的实验材料（保留 jobs 目录）
+已删 share
+已删 alpine-minirootfs-3.24.2-x86_64.tar.gz
+已删 bench.sh
+已删 WSL-3.0.1.tar.gz
+PS> Get-ChildItem C:\ftlab
+jobs
+PS> Get-Process vmmem*, wslcsession
+vmmemCmZygote                x1
+vmmemWSL                     x1
+wslcsession                  x1

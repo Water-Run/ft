@@ -1,0 +1,16 @@
+/* 设计阶段的对照方向 B：全片一套中性的平面样式（纸色底、墨色字、一个橙色强调色、直角、无投影），
+   年代只体现在章节卡的年份上。用法：在页面地址后加 ?dir=b（config.js 见到这个参数才载入本文件），正片不使用。
+   比较结论见本片 README 的「视觉系统」一节。 */
+.dir-b .era-w10, .dir-b .era-fl, .dir-b .era-w11 { --bg: #f1efe9; --ink: #16181d; --dim: #5f6168; --ac: #c2410c; --ac-d: #c2410c; --surf: #ffffff; --line: #16181d; --r: 0px; --wd: 900; --wh: 800; --wb: 500; --ws: 700; }
+.dir-b .blob { display: none; }
+.dir-b .box, .dir-b .era-w11 .box, .dir-b .era-fl .box { background: #ffffff; border: 3px solid #16181d; box-shadow: none; border-radius: 0; }
+.dir-b .box.ac, .dir-b .era-w11 .box.ac, .dir-b .era-fl .box.ac, .dir-b .era-w10 .box.ac { background: #c2410c; color: #ffffff; border-color: #c2410c; }
+.dir-b .term, .dir-b .era-w11 .term, .dir-b .era-fl .term, .dir-b .era-w10 .term { border: 3px solid #16181d; border-radius: 0; box-shadow: none; background: #f1efe9; }
+.dir-b .term .bar, .dir-b .term .bar .tab { background: #f1efe9; color: #16181d; border-radius: 0; }
+.dir-b .chapter, .dir-b .chapter.era-w10, .dir-b .chapter.era-fl, .dir-b .chapter.era-w11 { background: #16181d; color: #f1efe9; }
+.dir-b .chapter .no { color: #ea580c !important; font-weight: 900 !important; font-size: 420px !important; left: 120px !important; top: 190px !important; }
+.dir-b .chapter .ti { font-weight: 900 !important; left: 130px !important; top: 640px !important; }
+.dir-b .chapter .plate { display: none; }
+.dir-b .strip .fill { background: #e4e1d8 !important; border: 0 !important; }
+.dir-b .strip { color: #16181d !important; }
+.dir-b.cap-dark #caption span { color: #16181d; }

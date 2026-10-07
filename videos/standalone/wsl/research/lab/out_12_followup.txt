@@ -1,0 +1,95 @@
+# 入库前处理（18_sanitize.py）：删去 7 行重复的代理提示。
+# 取证时刻（UTC）：2026-10-06T22:41:44Z
+
+## a 版本字符串里的数字
+PS> (Get-Item C:\Windows\System32\ntoskrnl.exe).VersionInfo.ProductVersion
+10.0.26100.9587
+PS> (Get-Item C:\Windows\System32\drivers\lxcore.sys).VersionInfo | fl ProductVersion, FileDescription
+ProductVersion  : 10.0.26100.9587
+FileDescription : LX Core
+Length          : 1128592
+PS> Get-Item C:\Windows\System32\drivers\lxss.sys
+ProductVersion  : 10.0.26100.8941
+FileDescription : LXSS
+Length          : 51320
+PS> [Environment]::OSVersion.Version / 注册表里的版本
+CurrentBuild=26220 UBR=9587 BuildLabEx=26100.6.amd64fre.ge_release_flt.260716-1700
+[ft-wsl1]\$ cat /proc/version
+Linux version 4.4.0-26100-Microsoft (Microsoft@Microsoft.com) (gcc version 5.4.0 (GCC) ) #9587-Microsoft Fri Jan 01 08:00:00 PST 2016
+[exit=0]
+
+## b 进程可见性
+[ft-wsl1]\$ ps -o pid,args | grep -E "PID|sleep 7777" | grep -v grep
+PID   COMMAND
+   11 sleep 7777
+[exit=0]
+[ft-wsl2]\$ ps -o pid,args | grep -E "PID|sleep 8888" | grep -v grep
+PID   COMMAND
+   10 sleep 8888
+[exit=0]
+PS> tasklist | findstr /i sleep
+（没有）
+PS> Get-CimInstance Win32_Process | ? Name -match 'sleep|^init'
+init         Pid=36540   命令行=(空)
+init         Pid=23980   命令行=(空)
+init         Pid=8232    命令行=(空)
+PS> [Diagnostics.Process]::GetProcesses() 里名字为空或为 sleep、init 的项
+init         Id=36540
+init         Id=23980
+init         Id=8232
+PS> wsl.exe 之外，与两个 sleep 相关的 Windows 进程（按名字计数）
+vmmemCmZygote    x1
+vmmemWSL         x1
+wsl              x4
+wslhost          x4
+wslrelay         x1
+wslservice       x1
+
+## c 解压计时：WSL 3.0.1 源码包（WSL-3.0.1.tar.gz），各 3 次
+PS> Get-Content C:\ftlab\bench.sh
+#!/bin/sh
+# 用法：bench.sh <压缩包> <目标目录>。解压三次，每次之前清空目标目录；计时含 sync。
+for i in 1 2 3; do
+  rm -rf "$2"; mkdir -p "$2"; sync
+  a=$(date +%s%N)
+  tar xzf "$1" -C "$2"; sync
+  b=$(date +%s%N)
+  echo "run $i: $(( (b - a) / 1000000 )) ms"
+done
+echo "files: $(find "$2" -type f | wc -l)  dirs: $(find "$2" -type d | wc -l)"
+rm -rf "$2"
+
+### c1 解到 Linux 自己的文件系统
+[ft-wsl1]\$ sh /mnt/c/ftlab/bench.sh /root/WSL-3.0.1.tar.gz /root/x
+run 1: 0 ms
+run 2: 0 ms
+run 3: 0 ms
+files: 1489  dirs: 221
+[exit=0]
+[ft-wsl2]\$ sh /mnt/c/ftlab/bench.sh /root/WSL-3.0.1.tar.gz /root/x
+run 1: 0 ms
+run 2: 0 ms
+run 3: 0 ms
+files: 1489  dirs: 221
+[exit=0]
+### c2 解到 Windows 的文件系统（经 /mnt/c）
+[ft-wsl1]\$ sh /mnt/c/ftlab/bench.sh /root/WSL-3.0.1.tar.gz /mnt/c/ftlab/x_ft-wsl1
+run 1: 0 ms
+run 2: 0 ms
+run 3: 0 ms
+files: 1489  dirs: 221
+[exit=0]
+[ft-wsl2]\$ sh /mnt/c/ftlab/bench.sh /root/WSL-3.0.1.tar.gz /mnt/c/ftlab/x_ft-wsl2
+run 1: 0 ms
+run 2: 0 ms
+run 3: 0 ms
+files: 1489  dirs: 221
+[exit=0]
+### c3 对照：Windows 自己解同一个包（tar.exe，NTFS）
+run 1: 849 ms
+run 2: 841 ms
+run 3: 596 ms
+PS> Get-MpComputerStatus | select RealTimeProtectionEnabled
+RealTimeProtectionEnabled=True
+
+# 两个发行版已终止
