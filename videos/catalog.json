@@ -246,7 +246,7 @@
   ],
   "standalone": [
     {"slug": "windows-batch", "title": {"zh": "古代来的 Shell：Windows 批处理（.bat）"}, "status": "delivered", "languages": ["zh"], "note": "场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md"},
-    {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "status": "in-progress"},
+    {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "status": "delivered"},
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端"}},
     {"slug": "traffic-law-right-of-way", "title": {"zh": "道交法中的路权"}},
     {"slug": "openclaw-opencode-v2", "title": {"zh": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么"}},
