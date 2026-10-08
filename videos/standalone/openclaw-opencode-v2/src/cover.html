@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     构图沿用正片的三套皮肤：纸白底上宋体大字写片名（中性）；两块品牌色块——OpenClaw 的深底与吉祥物、OpenCode 的黑底与方块字标志。
+     底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
+  @font-face { font-family: "Instrument Sans"; src: url("/type/instrument-sans-latin.woff2") format("woff2"); font-weight: 400 700; }
+  :root { --paper: #f1eee6; --ink: #17181b; --ink2: #5d5b55; --cl: #0e1015; --clacc: #ff5c5c; --oc: #0a0a0a; --peach: #fab283; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--paper); color: var(--ink); overflow: hidden; }
+  .abs { position: absolute; }
+  .ser { font-family: "Serif SC"; font-weight: 900; line-height: 1.04; letter-spacing: -.01em; }
+  .ser6 { font-family: "Serif SC"; font-weight: 600; line-height: 1.25; color: var(--ink2); }
+  .seq { font-family: "Mono"; font-weight: 500; color: var(--ink2); }
+  .tile { position: absolute; overflow: hidden; }
+  .pill { font-family: "Instrument Sans"; font-weight: 700; border-radius: 9999px; padding: 6px 22px; background: var(--clacc); color: var(--cl); }
+  .tag { font-family: "Mono"; font-weight: 800; padding: 2px 14px; background: var(--peach); color: var(--oc); }
+  svg { position: absolute; left: 0; top: 0; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', r43 = q.get('r') === '43';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  const W = r43 ? 1600 : 1920, H = r43 ? 1200 : 1080;
+  const st = document.getElementById('stage');
+  const el = (cls, x, y, html, css = {}) => { const e = document.createElement('div'); e.className = 'abs ' + cls; e.innerHTML = html; Object.assign(e.style, { left: x + 'px', top: y + 'px', ...css }); st.appendChild(e); return e; };
+  const NS = 'http://www.w3.org/2000/svg';
+  const sv = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  const T = {
+    zh: { a: 'OpenClaw 和 OpenCode 的', b: 'v2 大改', c: '我们从过去一年的', d: 'Agent 工程化学习到了什么' },
+    en: { a: 'OpenClaw and OpenCode', b: r43 ? 'The v2 Overhauls' : 'The v2<br>Overhauls', c: 'What a year of agent', d: 'engineering taught us' },
+  }[lang];
+  // 两块品牌色块的位置
+  const L = r43
+    ? { tx: 100, ty: 110, bs: lang === 'zh' ? 200 : 132, cl: [0, 640, 800, 560], oc: [800, 640, 800, 560], rule: [100, 590, 1500] }
+    : { tx: 110, ty: 130, bs: lang === 'zh' ? 210 : 150, cl: [1180, 0, 740, 540], oc: [1180, 540, 740, 540], rule: [110, 0, 960] };
+  // 片名（中性皮肤）：序号、两行小字、一行大字、一条细线
+  el('seq', L.tx, L.ty - 48, '0001', { fontSize: '28px' });
+  el('ser6', L.tx, L.ty, T.a, { fontSize: (r43 ? 60 : 60) + 'px', color: 'var(--ink)' });
+  el('ser', L.tx - 6, L.ty + 84, T.b, { fontSize: L.bs + 'px', whiteSpace: 'nowrap' });
+  const nb = (T.b.match(/<br>/g) || []).length + 1, yc = L.ty + 84 + L.bs * 1.06 * nb + 26;
+  if (!r43) L.rule[1] = Math.round(yc + 2 * 54 * 1.25 + 60);
+  el('ser6', L.tx, yc, T.c + '<br>' + T.d, { fontSize: (r43 ? 52 : 54) + 'px' });
+  const g = sv('svg', { width: W, height: H }, st);
+  sv('line', { x1: L.rule[0], y1: L.rule[1], x2: L.rule[0] + L.rule[2], y2: L.rule[1], stroke: '#17181b', 'stroke-width': 5 }, g);
+  // OpenClaw：深底 + 官方吉祥物（ui/public/favicon.svg 的路径，MIT 许可）+ 珊瑚红的 2.0
+  const [cx, cy, cw, ch] = L.cl;
+  const t1 = document.createElement('div'); t1.className = 'tile'; Object.assign(t1.style, { left: cx + 'px', top: cy + 'px', width: cw + 'px', height: ch + 'px', background: 'var(--cl)' }); st.appendChild(t1);
+  const g1 = sv('svg', { width: cw, height: ch }, t1);
+  const k = (r43 ? 340 : 360) / 120, ox = cw - (r43 ? 400 : 430), oy = (r43 ? 70 : 60);
+  const defs = sv('defs', {}, g1), lg = sv('linearGradient', { id: 'lob', x1: '0%', y1: '0%', x2: '100%', y2: '100%' }, defs);   // 品牌标志自带的渐变 lint-ok: 品牌标志
+  sv('stop', { offset: '0%', 'stop-color': '#ff6d5a' }, lg); sv('stop', { offset: '100%', 'stop-color': '#c2372b' }, lg);
+  const m = sv('g', { transform: `translate(${ox} ${oy}) scale(${k})` }, g1);
+  for (const d of ['M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z', 'M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z', 'M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z']) sv('path', { d, fill: 'url(#lob)' }, m);
+  for (const d of ['M45 15 Q35 5 30 8', 'M75 15 Q85 5 90 8']) sv('path', { d, stroke: '#ff6d5a', 'stroke-width': 3, 'stroke-linecap': 'round', fill: 'none' }, m);
+  for (const [x, y, r, c] of [[45, 35, 6, '#050810'], [75, 35, 6, '#050810'], [46, 34, 2.5, '#00e5cc'], [76, 34, 2.5, '#00e5cc']]) sv('circle', { cx: x, cy: y, r, fill: c }, m);
+  const n1 = document.createElement('div'); n1.className = 'abs'; Object.assign(n1.style, { left: '72px', top: (r43 ? 60 : 56) + 'px', font: '700 64px "Instrument Sans"', color: '#f4f4f5', letterSpacing: '-.02em' }); n1.textContent = 'OpenClaw'; t1.appendChild(n1);
+  const p1 = document.createElement('div'); p1.className = 'abs pill'; Object.assign(p1.style, { left: '74px', top: (r43 ? 150 : 146) + 'px', fontSize: '44px' }); p1.textContent = '2.0'; t1.appendChild(p1);
+  // OpenCode：黑底 + 方块字标志（packages/tui/src/logo.ts，MIT 许可；open 用弱化色，code 用正文色）+ 桃橙的 v2
+  const [px, py, pw, ph] = L.oc;
+  const t2 = document.createElement('div'); t2.className = 'tile'; Object.assign(t2.style, { left: px + 'px', top: py + 'px', width: pw + 'px', height: ph + 'px', background: 'var(--oc)' }); st.appendChild(t2);
+  const g2 = sv('svg', { width: pw, height: ph }, t2);
+  const LOGO = { left: ['                   ', '█▀▀█ █▀▀█ █▀▀█ █▀▀▄', '█__█ █__█ █^^^ █__█', '▀▀▀▀ █▀▀▀ ▀▀▀▀ ▀~~▀'], right: ['             ▄     ', '█▀▀▀ █▀▀█ █▀▀█ █▀▀█', '█___ █__█ █__█ █^^^', '▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀'] };
+  const cwd = r43 ? 17 : 16, chh = cwd * 2, lx = 72, ly = r43 ? 80 : 70;
+  const mixc = (a, b, t) => { const p = (s) => [1, 3, 5].map((i) => parseInt(s.slice(i, i + 2), 16)); const A = p(a), B = p(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
+  const drawL = (lines, x0, fg) => { const sh = mixc('#0a0a0a', fg, 0.25); lines.forEach((line, row) => [...line].forEach((c, col) => { const X = x0 + col * cwd, Y = ly + row * chh, R = (y, h, f) => sv('rect', { x: X, y, width: cwd + 0.5, height: h, fill: f }, g2); if (c === '█') R(Y, chh + 0.5, fg); else if (c === '▀') R(Y, chh / 2, fg); else if (c === '▄') R(Y + chh / 2, chh / 2 + 0.5, fg); else if (c === '_') R(Y, chh + 0.5, sh); else if (c === '^') { R(Y, chh + 0.5, sh); R(Y, chh / 2, fg); } else if (c === '~') R(Y, chh / 2, sh); })); };
+  drawL(LOGO.left, lx, '#808080'); drawL(LOGO.right, lx + 20 * cwd, '#eeeeee');
+  const v2 = document.createElement('div'); v2.className = 'abs tag'; Object.assign(v2.style, { left: '74px', top: (ly + 4 * chh + 40) + 'px', fontSize: '64px' }); v2.textContent = 'v2'; t2.appendChild(v2);
+  const sample = st.textContent;
+  Promise.all([document.fonts.load('900 40px "Serif SC"', sample), document.fonts.load('600 40px "Serif SC"', sample), document.fonts.load('500 40px "Mono"', sample), document.fonts.load('800 40px "Mono"', 'v2'), document.fonts.load('700 40px "Instrument Sans"', 'OpenClaw 2.0')])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

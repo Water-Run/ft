@@ -1,0 +1,144 @@
+{
+ "opencode_releases": [
+  {
+   "tag": "v1.0.0",
+   "published_at": "2025-10-31T19:28:15Z",
+   "name": "v1.0.0"
+  },
+  {
+   "tag": "v1.2.0",
+   "published_at": "2026-02-14T05:20:24Z",
+   "name": "v1.2.0"
+  },
+  {
+   "tag": "v1.3.0",
+   "published_at": "2026-03-22T23:32:25Z",
+   "name": "v1.3.0"
+  },
+  {
+   "tag": "v1.18.35",
+   "published_at": "2026-10-06T20:18:39Z",
+   "name": "v1.18.35"
+  }
+ ],
+ "opencode_release_lines": {
+  "v1.2.0": [
+   "This release includes a data migration that will execute on first run. It will migrate all flat files in data directory to a single sqlite database. Depending on how much data you have and speed of computer this can take some time."
+  ],
+  "v1.3.0": [
+   "- **Node.js Support** (#18324): opencode can now run on Node.js in addition to Bun, with a dedicated Node.js entry point and build script that bundles the server with database migrations."
+  ]
+ },
+ "opencode_releases_v2_count": 0,
+ "opencode_v2_tags": [
+  "v2.0.24",
+  "v2.0.23",
+  "v2.0.22",
+  "v2.0.21",
+  "v2.0.20",
+  "v2.0.19",
+  "v2.0.18",
+  "v2.0.17",
+  "v2.0.16",
+  "v2.0.15",
+  "v2.0.14",
+  "v2.0.13",
+  "v2.0.12",
+  "v2.0.11",
+  "v2.0.10",
+  "v2.0.9",
+  "v2.0.8",
+  "v2.0.7",
+  "v2.0.6",
+  "v2.0.5",
+  "v2.0.4",
+  "v2.0.3",
+  "v2.0.2",
+  "v2.0.1",
+  "v2.0.0"
+ ],
+ "opencode_tag_commits": {
+  "v2.0.0": {
+   "sha": "63f7ceecbed2d7d9a627518d935dd963b9d4ac9f",
+   "date": "2026-09-11T23:46:37Z",
+   "message": "fix(release): use V2 Docker artifact paths (#48571)"
+  },
+  "v2.0.1": {
+   "sha": "afc3359eda634d9df012df5fe599e6bbfe26a655",
+   "date": "2026-09-12T05:01:45Z",
+   "message": "release: v2.0.1"
+  },
+  "v2.0.24": {
+   "sha": "e7a34f09bfd9134dfade5a8ddb843f7030bc9a69",
+   "date": "2026-10-06T03:04:12Z",
+   "message": "release: v2.0.24"
+  },
+  "v1.18.35": {
+   "sha": "53d1eabb61e21162157817bf677da0a4ad3332e3",
+   "date": "2026-10-06T20:18:24Z",
+   "message": "release: v1.18.35"
+  }
+ },
+ "opencode_branch_2.0": {
+  "sha": "7a6ce05d0939826aa6c8e1c481489a713b2d633f",
+  "date": "2026-04-13T17:47:33Z",
+  "message": "2.0 exploration (#22335)"
+ },
+ "opencode_repo": {
+  "full_name": "anomalyco/opencode",
+  "created_at": "2025-04-30T20:08:00Z",
+  "stargazers_count": 212231,
+  "default_branch": "dev",
+  "pushed_at": "2026-10-08T03:05:38Z",
+  "license": "MIT"
+ },
+ "openclaw_repo": {
+  "full_name": "openclaw/openclaw",
+  "created_at": "2025-11-24T10:16:47Z",
+  "stargazers_count": 391609,
+  "default_branch": "main",
+  "pushed_at": "2026-10-08T03:05:39Z",
+  "license": "MIT"
+ },
+ "openclaw_releases": [
+  {
+   "tag": "v0.1.1",
+   "published_at": "2025-11-25T13:24:35Z",
+   "name": "warelay 0.1.1"
+  },
+  {
+   "tag": "v2.0.0-beta1",
+   "published_at": "2025-12-19T17:25:54Z",
+   "name": "clawdis 2.0.0-beta1"
+  },
+  {
+   "tag": "v2026.7.1",
+   "published_at": "2026-07-13T22:33:14Z",
+   "name": "openclaw 2026.7.1"
+  },
+  {
+   "tag": "v2026.8.1",
+   "published_at": "2026-08-31T03:30:51Z",
+   "name": "OpenClaw 2026.8.1"
+  },
+  {
+   "tag": "v2026.9.8",
+   "published_at": "2026-10-03T03:21:47Z",
+   "name": "openclaw 2026.9.8"
+  }
+ ],
+ "openclaw_readme_lines": {
+  "v0.1.1": [
+   {
+    "line": 1,
+    "text": "# 📡 warelay — Send, receive, and auto-reply on WhatsApp—Twilio-backed or QR-linked."
+   }
+  ],
+  "v2.0.0-beta1": [
+   {
+    "line": 17,
+    "text": "**CLAWDIS** is a TypeScript/Node gateway that bridges WhatsApp (Web/Baileys) and Telegram (Bot API/grammY) to a local coding agent (**Pi**)."
+   }
+  ]
+ }
+}

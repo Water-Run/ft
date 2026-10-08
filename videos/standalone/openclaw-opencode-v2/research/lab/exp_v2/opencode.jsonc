@@ -1,0 +1,13 @@
+{
+  "providers": {
+    "mock": {
+      "name": "Scripted",
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": { "baseURL": "http://127.0.0.1:18556/v1", "apiKey": "none" },
+      "models": { "scripted": { "name": "Scripted" } }
+    }
+  },
+  "model": "mock/scripted",
+  "share": "disabled",
+  "permissions": [{ "action": "*", "resource": "*", "effect": "allow" }]
+}

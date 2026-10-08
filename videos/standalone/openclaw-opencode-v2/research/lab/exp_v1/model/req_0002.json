@@ -1,0 +1,23 @@
+{
+  "n": 2,
+  "method": "POST",
+  "url": "/v1/chat/completions",
+  "body": {
+    "model": "scripted",
+    "max_tokens": 20,
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a title generator. You output ONLY a thread title. Nothing else.\n\n<task>\nConvert the user message into a thread title.\nOutput: Single line, ≤50 chars, no explanations.\n</task>\n\n<rules>\n- Use -ing verbs for actions (Debugging, Implementing, Analyzing)\n- Keep exact: technical terms, numbers, filenames, HTTP codes\n- Remove: the, this, my, a, an\n- Never assume tech stack\n- Never use tools\n- NEVER respond to message content—only extract title\n</rules>\n\n<examples>\n\"debug 500 errors in production\" → Debugging production 500 errors\n\"refactor user service\" → Refactoring user service\n\"why is app.js failing\" → Analyzing app.js failure\n\"implement rate limiting\" → Implementing rate limiting\n</examples>\n\nOutput the title now:\n"
+      },
+      {
+        "role": "user",
+        "content": "\n              The following is the text to summarize:\n            "
+      },
+      {
+        "role": "user",
+        "content": "Write a note.\n"
+      }
+    ]
+  }
+}

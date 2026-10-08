@@ -1,0 +1,9 @@
+== 2026-10-08T04:00:14Z start: opencode run
+== 2026-10-08T04:00:19Z tool is running: 13811 /bin/sh -c sleep 20 && echo written >> note.txt
+== 2026-10-08T04:00:19Z kill -9 opencode pid=13791
+== 2026-10-08T04:00:20Z continue: opencode run --continue
+== 2026-10-08T04:00:41Z run --continue exited (0)
+== 2026-10-08T04:00:42Z orphaned command finished; note.txt now:
+written
+written
+== 2026-10-08T04:00:42Z done

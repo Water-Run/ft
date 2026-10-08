@@ -1,0 +1,6 @@
+    PID    PPID COMMAND
+   9615    9609 /home/user/tools/node /home/user/tools/mock.mjs
+   9627    9609 /home/user/tools/oc2 run --auto Write a note.
+   9637    9627 /home/user/tools/oc2 serve --service
+   9656    9637 /bin/bash -c sleep 20 && echo written >> note.txt
+   9657    9656 sleep 20

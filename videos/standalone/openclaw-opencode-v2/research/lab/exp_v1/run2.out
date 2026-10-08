@@ -1,0 +1,2 @@
+[91m[1m| [0m[90m Bash     [0msleep 20 && echo written >> note.txt
+The note has been written.

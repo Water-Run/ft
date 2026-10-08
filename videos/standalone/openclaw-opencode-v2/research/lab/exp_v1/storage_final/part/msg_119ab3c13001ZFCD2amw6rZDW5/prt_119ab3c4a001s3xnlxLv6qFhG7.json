@@ -1,0 +1,22 @@
+{
+  "id": "prt_119ab3c4a001s3xnlxLv6qFhG7",
+  "sessionID": "ses_ee654c46cffeg62MmZjp5Yoo7s",
+  "messageID": "msg_119ab3c13001ZFCD2amw6rZDW5",
+  "type": "tool",
+  "callID": "call_0001",
+  "tool": "bash",
+  "state": {
+    "status": "running",
+    "input": {
+      "command": "sleep 20 && echo written >> note.txt",
+      "description": "Write a note slowly"
+    },
+    "metadata": {
+      "output": "",
+      "description": "Write a note slowly"
+    },
+    "time": {
+      "start": 1791432014949
+    }
+  }
+}

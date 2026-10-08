@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 162 部：已成片 7 部，制作中 0 部，计划中 155 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 162 部：已成片 8 部，制作中 0 部，计划中 154 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -264,7 +264,7 @@
 | 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 已发布：哔哩哔哩与 YouTube |
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | zh + en | 计划中 |  | `opencart-1-5-admin` |  |
 | 4 | 道交法中的路权 | zh + en | 计划中 |  | `traffic-law-right-of-way` |  |
-| 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么 | zh + en | 计划中 |  | `openclaw-opencode-v2` |  |
+| 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 未发布 |
 | 6 | 给 LLM 长出手——Harness 工程 | zh + en | 计划中 |  | `how-harness-works` |  |
 | 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
 | 8 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |

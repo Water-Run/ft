@@ -1,0 +1,816 @@
+[
+ {
+  "key": "oc1_loop_start",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/prompt.ts",
+  "line": 225,
+  "text": [
+   "    let step = 0",
+   "    while (true) {"
+  ]
+ },
+ {
+  "key": "oc1_stream",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/prompt.ts",
+  "line": 257,
+  "text": [
+   "        streamText({"
+  ]
+ },
+ {
+  "key": "oc1_stop",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/prompt.ts",
+  "line": 308,
+  "text": [
+   "          stopWhen: stepCountIs(1),"
+  ]
+ },
+ {
+  "key": "oc1_continue",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/prompt.ts",
+  "line": 412,
+  "text": [
+   "        if ((await stream.finishReason) === \"tool-calls\") {",
+   "          continue",
+   "        }"
+  ]
+ },
+ {
+  "key": "oc1_busy",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/prompt.ts",
+  "line": 162,
+  "text": [
+   "    if (isBusy(input.sessionID)) {",
+   "      return new Promise((resolve) => {",
+   "        const queue = state().queued.get(input.sessionID) ?? []",
+   "        queue.push({",
+   "          messageID: userMsg.info.id,",
+   "          callback: resolve,",
+   "        })",
+   "        state().queued.set(input.sessionID, queue)",
+   "      })"
+  ]
+ },
+ {
+  "key": "oc1_queue_map",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/prompt.ts",
+  "line": 72,
+  "text": [
+   "      const queued = new Map<"
+  ]
+ },
+ {
+  "key": "oc1_lock",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/storage/storage.ts",
+  "line": 170,
+  "text": [
+   "  export async function write<T>(key: string[], content: T) {",
+   "    const dir = await state().then((x) => x.dir)",
+   "    const target = path.join(dir, ...key) + \".json\"",
+   "    return withErrorHandling(async () => {",
+   "      using _ = await Lock.write(\"storage\")",
+   "      await Bun.write(target, JSON.stringify(content, null, 2))"
+  ]
+ },
+ {
+  "key": "oc1_ctx_completed",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/message-v2.ts",
+  "line": 577,
+  "text": [
+   "            if (part.type === \"tool\") {",
+   "              if (part.state.status === \"completed\") {"
+  ]
+ },
+ {
+  "key": "oc1_ctx_error",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/message-v2.ts",
+  "line": 608,
+  "text": [
+   "              if (part.state.status === \"error\")"
+  ]
+ },
+ {
+  "key": "oc1_ctx_drop",
+  "repo": "anomalyco/opencode",
+  "version": "v1.0.0",
+  "file": "packages/opencode/src/session/message-v2.ts",
+  "line": 630,
+  "text": [
+   "            return []"
+  ]
+ },
+ {
+  "key": "oc118_main_pkg",
+  "repo": "anomalyco/opencode",
+  "version": "v1.18.35",
+  "file": "packages/opencode/package.json",
+  "line": 4,
+  "text": [
+   "  \"name\": \"opencode\","
+  ]
+ },
+ {
+  "key": "oc2_layers",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "AGENTS.md",
+  "line": 2,
+  "text": [
+   "- Keep runtime dependencies directed from Schema to Core and Protocol, then from Core and Protocol to Server. Client runtime code may depend on Schema and Protocol but never Core or Server; `sdk` composes Client, Core, and Server."
+  ]
+ },
+ {
+  "key": "oc2_generate",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "AGENTS.md",
+  "line": 1,
+  "text": [
+   "- After changing the public Protocol or Server `HttpApi`, run `bun run generate` from `packages/client`. Do not edit generated client files directly."
+  ]
+ },
+ {
+  "key": "oc2_service",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/cli/index.mdx",
+  "line": 48,
+  "text": [
+   "By default, OpenCode discovers or starts one shared background server for your user account. Every local OpenCode client",
+   "connects to that server, which owns sessions, configuration, integrations, permissions, and tool execution."
+  ]
+ },
+ {
+  "key": "oc2_inbox",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 7,
+  "text": [
+   "`Session.prompt(...)` publishes one durable `session.inbox.enqueued` fact whose projection inserts one `session_inbox` row before advisory execution begins. An inbox item remains outside model-visible Session History until delivery. The `session.inbox.delivered` projection consumes the row and inserts a visible user or synthetic message atomically; compaction and move control items are consumed without becoming transcript messages."
+  ]
+ },
+ {
+  "key": "oc2_steer",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 18,
+  "text": [
+   "- `steer` is the default. Steers deliver in enqueue order at the next Safe Step Boundary. Delivery stops before a compaction or move control item."
+  ]
+ },
+ {
+  "key": "oc2_reload",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 72,
+  "text": [
+   "Before each Step, the runner reloads Session History, resolves the selected agent and model, prepares instructions, and materializes tools. Most Steps make one Physical Attempt. Generic retry, continuation-state rejection, incomplete-stream continuation, or overflow-triggered compaction may make another attempt without promoting input again."
+  ]
+ },
+ {
+  "key": "oc2_durable_call",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 74,
+  "text": [
+   "Each complete local tool call is durable before side effects begin. Local calls start eagerly and may run concurrently, but terminal outcome publication remains serialized. Every local and hosted call reaches durable success or failure before the Step publishes its single terminal ended or failed event."
+  ]
+ },
+ {
+  "key": "oc2_no_mem_loop",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 80,
+  "text": [
+   "After a local outcome, continuation reloads projected history and begins a new Step. The runner never delegates orchestration to an in-memory tool loop."
+  ]
+ },
+ {
+  "key": "oc2_claim",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 68,
+  "text": [
+   "Execution commits a write-ahead claim when a process-local busy period starts. Success, failure, and user interruption release the claim; shutdown interruption and unclean process death preserve it. On startup, managed Node and fetch runtimes resume claimed top-level Sessions, append a durable continuation instruction, and count recovery attempts. Recovery is bounded per claimed execution but does not guarantee exactly-once provider requests or tool effects."
+  ]
+ },
+ {
+  "key": "oc2_orphan",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 78,
+  "text": [
+   "At drain start, orphan reconciliation fails tool calls still projected as streaming or running from an earlier process before further model work. It preserves the original assistant attribution and never directly replays ambiguous side effects."
+  ]
+ },
+ {
+  "key": "oc2_no_exactly_once",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 116,
+  "text": [
+   "An advisory wake is not itself crash recovery. Crash recovery is driven by a write-ahead execution claim that survives without a releasing terminal. Startup recovery resumes claimed top-level Sessions from durable projected history with bounded attempt accounting. It fails stale running tool projections before continuing, but it cannot prove whether an interrupted external operation already took effect and does not guarantee exactly-once provider or tool behavior."
+  ]
+ },
+ {
+  "key": "oc2_retry",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 84,
+  "text": [
+   "Generic scheduled retry covers rate-limit and provider-internal failures, transport failures that are unsent or have unknown delivery, and provider output classified as an incomplete stream. The initial request plus at most four retries use jittered exponential backoff, increased when the provider supplies a longer retry delay."
+  ]
+ },
+ {
+  "key": "oc2_instr",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/session.md",
+  "line": 92,
+  "text": [
+   "Instruction sync persists content-addressed values and may freeze rendered chronological prose. `session.instructions.updated { delta, text? }` maps each changed source key to a SHA-256 content hash, with the literal `\"removed\"` for observed absence. Canonical JSON bodies live once in the machine-local `instruction_blob` store. The projected `instruction_state` row supplies current and epoch-initial values during normal boundary processing. The runner explicitly combines built-ins, ambient discovery, selected-agent skill guidance, references, MCP guidance, and API-managed instruction entries. There is no instruction registry."
+  ]
+ },
+ {
+  "key": "oc2_bound",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/tools.md",
+  "line": 152,
+  "text": [
+   "After tool execution, the registry bounds the model content sent to the provider: only textual parts are measured, native media remains unchanged under producer-owned limits, and the default cut keeps a head-plus-tail split with the omission marker in the middle. Oversized text is retained in managed storage and replaced with a bounded preview; if complete retention fails, execution fails operationally rather than publishing lossy success. Metadata is validated and measured independently and never becomes an unbounded side channel. Managed paths never appear in `Tool.make` or tool output schemas solely for retention bookkeeping."
+  ]
+ },
+ {
+  "key": "oc2_final_step",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/tools.md",
+  "line": 144,
+  "text": [
+   "Each model request captures the effective registration for every advertised name. Execution uses those captured tools; later registration changes affect later requests. Unknown, hook-removed, and final-Step calls fail individually through the same execution seam; the final Step retains tool definitions with `toolChoice: \"none\"` where the provider supports it so the cached prompt prefix survives."
+  ]
+ },
+ {
+  "key": "oc2_feed_law",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/event-stream-architecture.md",
+  "line": 51,
+  "text": [
+   "> A connection has an independent finite lag budget. Exceeding it terminates only that connection while publication and healthy connections continue in order."
+  ]
+ },
+ {
+  "key": "oc2_feed_cap",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/event-stream-architecture.md",
+  "line": 53,
+  "text": [
+   "Each connection receives a `Queue.dropping` with capacity 4,096 accepted public frames."
+  ]
+ },
+ {
+  "key": "oc2_bench",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/event-stream-architecture.md",
+  "line": 205,
+  "text": [
+   "| Clients | Current median | Shared median | Change |",
+   "| ------: | -------------: | ------------: | -----: |",
+   "|       1 |       9.488 ms |      9.554 ms |  +0.7% |",
+   "|      10 |      96.312 ms |     10.352 ms | -89.3% |",
+   "|      50 |     553.928 ms |     12.389 ms | -97.8% |"
+  ]
+ },
+ {
+  "key": "oc2_bench_env",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "specs/v2/event-stream-architecture.md",
+  "line": 203,
+  "text": [
+   "Results on Apple Silicon with Bun 1.3.14:"
+  ]
+ },
+ {
+  "key": "oc2_compact",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/compaction.mdx",
+  "line": 10,
+  "text": [
+   "When a session approaches the model's context limit, OpenCode summarizes",
+   "everything except the most recent conversation, about 15,000 tokens by default.",
+   "Once the summary is ready, it is placed in front of that recent conversation and"
+  ]
+ },
+ {
+  "key": "oc2_compact_diag",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/compaction.mdx",
+  "line": 16,
+  "text": [
+   "before   [ system prompt ][ older conversation ............ ][ recent 15k ][ pending work ]",
+   "after    [ system prompt ][ summary ][ recent 15k ][ pending work ]"
+  ]
+ },
+ {
+  "key": "oc2_summary",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/compaction.mdx",
+  "line": 142,
+  "text": [
+   "It covers the objective and requirements, decisions, completed and active work,",
+   "blockers and next moves, and relevant files. In the recent conversation kept"
+  ]
+ },
+ {
+  "key": "oc2_warming",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/warming.mdx",
+  "line": 18,
+  "text": [
+   "With this configuration, OpenCode warms a recently active session after four",
+   "minutes without a model request. It continues every four minutes until 30"
+  ]
+ },
+ {
+  "key": "oc2_lsp",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/migrate-v1.mdx",
+  "line": 415,
+  "text": [
+   "V2 accepts and preserves `lsp` configuration, but it does not run language servers, expose LSP tools, or produce LSP",
+   "diagnostics. Replace workflows that depend on those capabilities with the project's lint, typecheck, or compiler commands."
+  ]
+ },
+ {
+  "key": "oc2_plugins",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/migrate-v1.mdx",
+  "line": 38,
+  "text": [
+   "3. Port plugins, because V1 plugin implementations do not run in V2."
+  ]
+ },
+ {
+  "key": "oc2_perm_last",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "services/www/src/docs/content/permissions.mdx",
+  "line": 24,
+  "text": [
+   "The last matching rule wins, so the specific exceptions follow the broad rule."
+  ]
+ },
+ {
+  "key": "oc2_event_table",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "packages/core/src/event/sql.ts",
+  "line": 10,
+  "text": [
+   "export const EventTable = sqliteTable(",
+   "  \"event\",",
+   "  {"
+  ]
+ },
+ {
+  "key": "oc2_persist_opt",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "packages/core/src/bus.ts",
+  "line": 178,
+  "text": [
+   "  /** Retain durable event payloads for historical log reads and replay. */",
+   "  readonly persist?: boolean"
+  ]
+ },
+ {
+  "key": "oc2_restart_text",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "packages/core/src/session/execution/restart.ts",
+  "line": 16,
+  "text": [
+   "  \"The server restarted while you were working. Continue from where you left off without repeating completed work.\""
+  ]
+ },
+ {
+  "key": "oc2_interrupted",
+  "repo": "anomalyco/opencode",
+  "version": "v2.0.24",
+  "file": "packages/core/src/session/runner/llm.ts",
+  "line": 345,
+  "text": [
+   "              message: `Tool execution interrupted: ${tool.name}${childID ? ` (sessionID: ${childID})` : \"\"}`,"
+  ]
+ },
+ {
+  "key": "claw71_store",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.7.1",
+  "file": "docs/concepts/session.md",
+  "line": 116,
+  "text": [
+   "- **Store:** `~/.openclaw/agents/<agentId>/sessions/sessions.json`",
+   "- **Transcripts:** `~/.openclaw/agents/<agentId>/sessions/<sessionId>.jsonl`"
+  ]
+ },
+ {
+  "key": "claw_lc_gap",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 30,
+  "text": [
+   "The reliability gap that forced the redesign:",
+   "",
+   "```text",
+   "Telegram polling update acked",
+   "  -> assistant final text exists",
+   "  -> process restarts before sendMessage succeeds",
+   "  -> final response is lost",
+   "```"
+  ]
+ },
+ {
+  "key": "claw_lc_invariant",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 39,
+  "text": [
+   "Target invariant: once core decides a visible outbound message should exist,",
+   "the send intent must be durable before the platform call is attempted, and the",
+   "platform receipt must be committed after success. That gives at-least-once",
+   "recovery by default. Exactly-once behavior only exists where an adapter proves",
+   "native idempotency or reconciles an unknown-after-send attempt against",
+   "platform state before replay."
+  ]
+ },
+ {
+  "key": "claw_lc_durability",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 89,
+  "text": [
+   "Durability is one of `required`, `best_effort`, or `disabled`",
+   "(`MessageDurabilityPolicy` in `src/channels/message/types.ts`). `required`",
+   "fails closed when the durable intent cannot be written; `best_effort` falls",
+   "through to a direct send when persistence is unavailable; `disabled` keeps the",
+   "pre-refactor direct-send behavior. Legacy compatibility helpers default to",
+   "`disabled` and do not infer `required` just because a channel has a generic"
+  ]
+ },
+ {
+  "key": "claw_lc_window",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 97,
+  "text": [
+   "The boundary that stays dangerous: after the platform call succeeds and before",
+   "the receipt commits. If the process dies there, core cannot know whether the",
+   "platform message exists unless the adapter declares `reconcileUnknownSend`.",
+   "That hook classifies an interrupted send as `sent`, `not_sent`, or"
+  ]
+ },
+ {
+  "key": "claw_lc_reconcile",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 100,
+  "text": [
+   "That hook classifies an interrupted send as `sent`, `not_sent`, or",
+   "`unresolved`; only `not_sent` permits replay. Channels without reconciliation"
+  ]
+ },
+ {
+  "key": "claw_lc_journal",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 63,
+  "text": [
+   "| `durable-receive.ts`   | `createDurableInboundReceiveJournal` — accept/pending/complete/release journal for inbound dedupe                  |"
+  ]
+ },
+ {
+  "key": "claw_lc_watermark",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/message-lifecycle-refactor.md",
+  "line": 123,
+  "text": [
+   "OpenClaw only advances the persisted restart watermark past updates that",
+   "finished dispatch, so failed or still-pending updates replay after a restart."
+  ]
+ },
+ {
+  "key": "claw_recovery_states",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "src/infra/outbound/delivery-queue-recovery.ts",
+  "line": 238,
+  "text": [
+   "function needsUnknownSendReconciliation(entry: QueuedDelivery): boolean {",
+   "  return (",
+   "    entry.recoveryState === \"send_attempt_started\" || entry.recoveryState === \"unknown_after_send\"",
+   "  );",
+   "}"
+  ]
+ },
+ {
+  "key": "claw_store81",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session.md",
+  "line": 201,
+  "text": [
+   "- **Runtime session rows and transcripts:** `~/.openclaw/agents/<agentId>/agent/openclaw-agent.sqlite` by default",
+   "- **Archived transcript files:** `~/.openclaw/agents/<agentId>/sessions/`",
+   "- **Legacy row migration source:** `~/.openclaw/agents/<agentId>/sessions/sessions.json`"
+  ]
+ },
+ {
+  "key": "claw_db_decision",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/refactor/database-first.md",
+  "line": 16,
+  "text": [
+   "Use a two-level SQLite layout:",
+   "",
+   "- Global database: `~/.openclaw/state/openclaw.sqlite`",
+   "- Agent database: one SQLite database per agent for agent-owned workspace,"
+  ]
+ },
+ {
+  "key": "claw_db_runtime",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/refactor/database-first.md",
+  "line": 109,
+  "text": [
+   "- Runtime never writes or reads session or transcript JSONL as active state."
+  ]
+ },
+ {
+  "key": "claw_steer_default",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/queue.md",
+  "line": 28,
+  "text": [
+   "- `mode: \"steer\"`"
+  ]
+ },
+ {
+  "key": "claw_steer_mid",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/queue.md",
+  "line": 33,
+  "text": [
+   "Same-turn steering is the default. A prompt that arrives mid-run is injected into the active runtime when the run can accept steering, so no second session run is started. If the active run cannot accept steering, OpenClaw waits for the active run to finish before starting the prompt."
+  ]
+ },
+ {
+  "key": "claw_steer_synth",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/queue.md",
+  "line": 82,
+  "text": [
+   "`steer` does not abort in-flight tools. Skipped OpenClaw tool calls receive synthetic paired error results so the transcript remains valid. Use `/queue interrupt` when the newest message should abort the current run."
+  ]
+ },
+ {
+  "key": "claw_signal_log",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session-state.md",
+  "line": 15,
+  "text": [
+   "1. A **durable signal log** records selected state changes per session.",
+   "2. **Watchers** hold per-target cursors and receive one coalesced stale-state notice.",
+   "3. **Reconciliation** pulls the exact delta via `session_status` with `changesSince`."
+  ]
+ },
+ {
+  "key": "claw_signal_one",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session-state.md",
+  "line": 70,
+  "text": [
+   "- **One pending notice per watcher/target pair.** The notice text is byte-stable while pending and the system-event queue dedupes on it, so twenty rapid changes to the same target still produce a single line in the watcher's prompt."
+  ]
+ },
+ {
+  "key": "claw_adopt",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session-state.md",
+  "line": 52,
+  "text": [
+   "Watched Claude, Codex, OpenCode, and Pi sessions adopted from a session catalog are checked for direct upstream human activity on a fixed cadence. Pi monitoring starts after the session is in its append-only v3 format. Detected activity enters the same signal log and watcher flow as other direct human turns."
+  ]
+ },
+ {
+  "key": "claw_oc_provenance",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session-state.md",
+  "line": 54,
+  "text": [
+   "OpenCode detection is deliberately conservative. OpenCode's v1 tables do not preserve message provenance, so reporting ambiguous rows would create false alarms; per-message provenance exists only in its v2 schema. OpenCode therefore does not report image-only turns, `@file`-mention-only turns, slash commands routed to a subagent, or turns from ACP clients that annotate content with an audience (mapped by OpenCode to `synthetic` or `ignored`). It also suppresses text matching any of the preceding 50 user messages to catch compaction replay, which means a human deliberately repeating the same text within that window can be missed."
+  ]
+ },
+ {
+  "key": "claw_notice",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session-state.md",
+  "line": 63,
+  "text": [
+   "Session \"agent:main:subagent:child\" changed (other actor). Reconcile before acting: session_status sessionKey \"agent:main:subagent:child\" changesSince 12."
+  ]
+ },
+ {
+  "key": "claw_changes_json",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/concepts/session-state.md",
+  "line": 82,
+  "text": [
+   "  \"stateVersion\": 19,",
+   "  \"stateChanges\": {",
+   "    \"events\": [",
+   "      {",
+   "        \"sequence\": 14,",
+   "        \"kind\": \"human_direct_message\",",
+   "        \"actorType\": \"human\",",
+   "        \"summary\": \"human message via telegram\"",
+   "      },",
+   "      { \"sequence\": 19, \"kind\": \"goal_changed\", \"actorType\": \"human\", \"summary\": \"goal updated\" }"
+  ]
+ },
+ {
+  "key": "claw_secret_proxy",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/gateway/secrets.md",
+  "line": 320,
+  "text": [
+   "The secret egress proxy lets Gateway-hosted agent subprocesses use shared-store `secret` entries without receiving their plaintext. OpenClaw puts the existing authenticated sentinel in the subprocess environment, then a Gateway-owned loopback proxy replaces it in request URLs, headers, and streamed bodies immediately before egress."
+  ]
+ },
+ {
+  "key": "claw_sentinel",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "docs/gateway/secrets.md",
+  "line": 350,
+  "text": [
+   "In the agent environment, `$OPENAI_API_KEY` is an `oc-sent-v2...end` sentinel. The proxy replaces it with the stored value only for `api.openai.com`. A request to an unbound host is refused with `Secret \"OPENAI_API_KEY\" is not allowed for host \"<host>\". Run: openclaw secrets store set OPENAI_API_KEY --allow-host <host>`."
+  ]
+ },
+ {
+  "key": "claw_agents_budget",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "AGENTS.md",
+  "line": 143,
+  "text": [
+   "- Model-context budget: every injected prompt/tool-schema/context item is bounded with a hard cap; no unbounded items. New model-visible text that can cross ~1K tokens is a P0 review flag needing explicit justification. Context builds incrementally; only compaction rewrites history."
+  ]
+ },
+ {
+  "key": "claw_agents_cache",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "AGENTS.md",
+  "line": 142,
+  "text": [
+   "- Prompt cache: deterministic ordering for maps/sets/registries/plugin lists/files/network results before model/tool payloads. Preserve old transcript bytes when possible."
+  ]
+ },
+ {
+  "key": "claw_agents_canonical",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "AGENTS.md",
+  "line": 111,
+  "text": [
+   "- Refactor default: one canonical path — delete the old one. Keep old behavior only when the user explicitly asks or for an explicit public API/config/plugin SDK/data contract, tagged upgrade path, security/migration boundary, dependency contract, or observed prod state; cite it."
+  ]
+ },
+ {
+  "key": "claw_agents_sqlite",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.8.1",
+  "file": "AGENTS.md",
+  "line": 115,
+  "text": [
+   "- Storage default: SQLite only. Do not add JSON/JSONL/TXT/sidecar files for OpenClaw-owned runtime state, caches, queues, registries, indexes, cursors, checkpoints, or plugin scratch data. File storage is only for named product artifacts: import/export, user attachment, log, backup, or external tool contract. Doctrine: `docs/refactor/database-first.md`."
+  ]
+ },
+ {
+  "key": "claw_rel_title",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.9.8",
+  "file": "docs/releases/2026.8.1.md",
+  "line": 2,
+  "text": [
+   "title: \"v2026.8.1 (AKA OpenClaw 2.0)\""
+  ]
+ },
+ {
+  "key": "claw_rel_scale",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.9.8",
+  "file": "docs/releases/2026.8.1.md",
+  "line": 21,
+  "text": [
+   "**Release scale:** 16,977 pull requests, 698 direct commits, and 987 contributors."
+  ]
+ },
+ {
+  "key": "claw_rel_bound",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.9.8",
+  "file": "docs/releases/2026.8.1/security-and-privacy.md",
+  "line": 6,
+  "text": [
+   "Sensitive work now carries more of its authority with it. [Approvals](/tools/exec-approvals) stay attached to the exact request, command, session, and person that received them, removing or pairing a device again retires its old access, and [protected credentials](/gateway/secrets) can reach supported destinations without entering model-visible text. Sandboxes, network requests, browser actions, and plugin installs also recheck the workspace, destination, document, publisher, version, or artifact they depend on, so stale or mismatched authority stops or asks again instead of being reused."
+  ]
+ },
+ {
+  "key": "claw_rel_approvals",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.9.8",
+  "file": "docs/releases/2026.8.1/security-and-privacy.md",
+  "line": 12,
+  "text": [
+   "An [approval request](/tools/exec-approvals) now has one durable record shared by authorized browser and supported mobile surfaces. The first valid answer settles it, reconnecting cannot revive a completed request, abandoned requests are cancelled, and aborting a run clears the approvals it left pending. Operators can also opt in to installed Control UI PWA approval alerts that open the authenticated request, with the subscribed device, person, current role and scopes, preferences, and request visibility checked again before delivery. Resolved or expired requests replace stale actionable alerts, while optional agent and task alerts remain off by default."
+  ]
+ },
+ {
+  "key": "claw_rel_messaging",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.9.8",
+  "file": "docs/releases/2026.8.1/messaging.md",
+  "line": 8,
+  "text": [
+   "Across supported channels, OpenClaw now holds accepted messages through managed restarts, reports whether a connection is usable, recovering, or blocked, and preserves an uncertain send instead of blindly sending it again. Recovery starts once OpenClaw has accepted the message, and each service still controls what it can confirm beyond that point."
+  ]
+ },
+ {
+  "key": "claw_rel_sqlite",
+  "repo": "openclaw/openclaw",
+  "version": "v2026.9.8",
+  "file": "docs/releases/2026.8.1/installation-and-onboarding.md",
+  "line": 9,
+  "text": [
+   "This release changes how sessions and transcripts are stored by moving them into SQLite. Before downgrading to an older file-backed release, use the current CLI to restore archived legacy transcript artifacts; sessions created after the migration will not appear in older releases."
+  ]
+ }
+]

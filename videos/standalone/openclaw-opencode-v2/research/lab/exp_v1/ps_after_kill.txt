@@ -1,0 +1,4 @@
+    PID    PPID COMMAND
+  13779   13773 /home/user/tools/node /home/user/tools/mock.mjs
+  13811    6012 /bin/sh -c sleep 20 && echo written >> note.txt
+  13812   13811 sleep 20

@@ -1,0 +1,107 @@
+{
+  "slug": "openclaw-opencode-v2",
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "titles": {
+    "zh": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么",
+    "en": "The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+4%",
+    "en": "+6%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍 OpenClaw 与 OpenCode 两个开源项目的 v2 大改与 harness 工程：harness、网关、SQLite、JSONL、Telegram、回执、幂等、拉取请求、后台服务、收件箱、步边界、副作用、上下文、token、提示缓存、语言服务器。",
+    "en": "A narration about the v2 overhauls of the open-source projects OpenClaw and OpenCode and harness engineering: harness, gateway, SQLite, JSONL, Telegram, receipts, idempotency, background service, inbox, step boundary, side effects, context, tokens, prompt cache, language servers."
+  },
+  "production": {
+    "mode": "self",
+    "maker": "Claude Opus 5.5"
+  },
+  "render": {
+    "fps": 30,
+    "mb": 4
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -13,
+    "duck_db": 9,
+    "sfx_db": -9
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true,
+      "palette": [
+        "00E5CC",
+        "050810",
+        "0A0A0A",
+        "0E1015",
+        "141414",
+        "161920",
+        "17181B",
+        "191C24",
+        "1E1E1E",
+        "1F2330",
+        "22C55E",
+        "2E3040",
+        "484848",
+        "5C9CF5",
+        "5D5B55",
+        "7FD88F",
+        "808080",
+        "8B8B94",
+        "B5B5B5",
+        "BCBCC0",
+        "C2372B",
+        "C9C4B8",
+        "E06C75",
+        "EEEEEE",
+        "F1EEE6",
+        "F4F4F5",
+        "F59E0B",
+        "FAB283",
+        "FF5C5C",
+        "FF6D5A"
+      ],
+      "fonts": [
+        "Serif SC",
+        "Sans SC",
+        "Mono",
+        "Instrument Sans",
+        "Inter"
+      ]
+    },
+    "duration": {
+      "zh": [
+        540,
+        620
+      ],
+      "en": [
+        540,
+        630
+      ]
+    },
+    "sfx": {
+      "per_seconds": 4,
+      "kinds": 7,
+      "scene_per_seconds": 8,
+      "max_gap": 10
+    }
+  }
+}

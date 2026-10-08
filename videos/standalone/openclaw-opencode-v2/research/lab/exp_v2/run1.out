@@ -1,0 +1,3 @@
+[0m
+> build · scripted
+[91m[1mError: [0mTransport: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch()

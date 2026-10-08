@@ -1,0 +1,90 @@
+/* 本片的视觉系统：三套皮肤，各管各的场景，互不混用。
+   1. 中性（开场、01、04、片尾）：本片自己的设计。纸白底、墨黑字、宋体大字；左侧页边是递增的序号，一句事实就是「一行记录」。
+      图形语言：细横线 = 一个进程的生命期（会断）；带序号的一行 = 一条落了盘的记录（留得下来）；斜切口 = 进程被杀。
+      中性部分只有黑白两色；提到哪个项目，才出现那个项目的颜色（珊瑚红 = OpenClaw，桃橙 = OpenCode），只作小色块。
+   2. OpenClaw（02 章两场）：照它 2.0 的 Control UI（ui/src/styles/base.css，v2026.8.1）的设计变量：
+      底 #0e1015、卡片 #161920 / #191c24、正文 #bcbcc0、强调文字 #f4f4f5、弱化 #8b8b94、强调色 #ff5c5c；圆角 10 / 14px、胶囊 9999px；
+      字体 Instrument Sans（它自带的网页字体，OFL 许可，文件在 src/type/）。吉祥物按其 ui/public/favicon.svg 绘制。
+   3. OpenCode（03 章三场）：照它 v2 的终端主题（packages/tui/src/theme/assets/v2/opencode.json，v2.0.24）：
+      底 #0a0a0a、面板 #141414 / #1e1e1e、边框 #484848、正文 #eeeeee、弱化 #808080、交互色 #fab283；直角细边框，全等宽，按字符网格排。
+      方块字标志按 packages/tui/src/logo.ts 逐格绘制。
+   对比度（字 / 底，按 WCAG 公式算）：墨 / 纸 15.3:1，#5d5b55 / 纸 5.9:1；#f4f4f5 / #0e1015 17.3:1，#bcbcc0 / #0e1015 10.1:1，#8b8b94 / #0e1015 5.6:1，
+   #ff5c5c / #0e1015 6.3:1，#8b8b94 / #161920 5.2:1；#eeeeee / #0a0a0a 17.1:1，#808080 / #0a0a0a 5.0:1，#808080 / #141414 4.7:1，#fab283 / #0a0a0a 11.1:1。
+   #c9c4b8 只画线，不压字。 */
+@font-face { font-family: "Instrument Sans"; src: url("/type/instrument-sans-latin.woff2") format("woff2"); font-weight: 400 700; }
+:root {
+  --paper: #f1eee6;
+  --ink: #17181b;
+  --ink2: #5d5b55;
+  --rule: #c9c4b8;
+  --cl-bg: #0e1015;
+  --cl-card: #161920;
+  --cl-elev: #191c24;
+  --cl-hover: #1f2330;
+  --cl-border: #2e3040;
+  --cl-text: #bcbcc0;
+  --cl-strong: #f4f4f5;
+  --cl-muted: #8b8b94;
+  --cl-accent: #ff5c5c;
+  --cl-ok: #22c55e;
+  --cl-warn: #f59e0b;
+  --oc-bg: #0a0a0a;
+  --oc-700: #141414;
+  --oc-600: #1e1e1e;
+  --oc-border: #484848;
+  --oc-text: #eeeeee;
+  --oc-300: #b5b5b5;
+  --oc-muted: #808080;
+  --oc-peach: #fab283;
+  --oc-blue: #5c9cf5;
+  --oc-red: #e06c75;
+  --oc-green: #7fd88f;
+  --M: 120px;
+}
+body { font-family: "Sans SC"; color: var(--ink); }
+#bg { background: var(--paper); }
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
+/* 场景的 SVG 画布盖住整张大图（viewBox 与位置对齐，坐标仍是 world 坐标），检查工具才把里面形状的运动算作画面变化 */
+.world svg.g { position: absolute; left: -3000px; top: -2000px; width: 14000px; height: 7000px; overflow: visible; }
+.world svg.gt { z-index: 5; pointer-events: none; }
+.card svg.g { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+.abs { position: absolute; }
+
+/* ── 中性 ── */
+.ser { font-family: "Serif SC"; font-weight: 900; letter-spacing: -.01em; line-height: 1.12; color: var(--ink); }
+.ser6 { font-family: "Serif SC"; font-weight: 600; line-height: 1.3; color: var(--ink); }
+.sans { font-family: "Sans SC"; font-weight: 500; color: var(--ink); }
+.seqn { font-family: "Mono"; font-weight: 500; color: var(--ink2); }
+.nmono { font-family: "Mono", "Sans SC"; font-weight: 500; color: var(--ink); white-space: pre; }
+.nlab { font-family: "Sans SC"; font-weight: 500; color: var(--ink2); }
+
+/* ── OpenClaw ── */
+.cl { font-family: "Instrument Sans", "Sans SC"; color: var(--cl-text); }
+.clb { font-family: "Instrument Sans", "Sans SC"; font-weight: 700; color: var(--cl-strong); letter-spacing: -.02em; line-height: 1.06; }
+.clm { font-family: "Mono", "Sans SC"; font-weight: 500; color: var(--cl-text); white-space: pre; }
+.cl-card { background: var(--cl-card); border: 2px solid var(--cl-border); border-radius: 14px; }
+.cl-pill { font-family: "Instrument Sans", "Sans SC"; font-weight: 600; border-radius: 9999px; padding: 6px 20px; white-space: nowrap; }
+
+/* ── OpenCode ── */
+.oc { font-family: "Mono", "Sans SC"; font-weight: 500; color: var(--oc-text); white-space: pre; }
+.ocb { font-family: "Mono", "Sans SC"; font-weight: 800; color: var(--oc-text); white-space: pre; }
+.oc-pane { border: 2px solid var(--oc-border); background: var(--oc-bg); }
+
+/* 章节卡与小节幕：整屏，按所属的皮肤换底色 */
+.card { position: absolute; inset: 0; overflow: hidden; }
+
+/* 字幕：一块与当前底色相同的衬底；字体与强调色随皮肤 */
+#caption { bottom: 50px; height: 62px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; padding: 6px 22px; color: var(--ink); background: var(--paper); font-family: "Sans SC"; }
+#caption span:empty { display: none; }
+.en #caption span { font-size: 36px; }
+#caption em { font-style: normal; font-weight: 900; border-bottom: 4px solid var(--ink); }
+#caption.g-claw span { color: var(--cl-strong); background: var(--cl-bg); font-family: "Instrument Sans", "Sans SC"; }
+#caption.g-claw em { border-bottom-color: var(--cl-accent); }
+#caption.g-code span { color: var(--oc-text); background: var(--oc-bg); font-family: "Mono", "Sans SC"; }
+#caption.g-code em { border-bottom-color: var(--oc-peach); }
+
+/* 文字里被点到的词 */
+.hl-n { background: var(--ink); color: var(--paper); padding: 0 8px; margin: 0 -8px; }
+.hl-c { background: var(--cl-accent); color: var(--cl-bg); padding: 0 8px; margin: 0 -8px; border-radius: 6px; }
+.hl-o { background: var(--oc-peach); color: var(--oc-bg); padding: 0 8px; margin: 0 -8px; }

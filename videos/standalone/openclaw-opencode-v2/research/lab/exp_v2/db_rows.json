@@ -1,0 +1,304 @@
+{
+ "after_kill": {
+  "tables": [
+   "account",
+   "account_state",
+   "control_account",
+   "credential",
+   "event",
+   "event_sequence",
+   "instruction_blob",
+   "instruction_entry",
+   "instruction_state",
+   "kv",
+   "migration",
+   "permission",
+   "project",
+   "project_directory",
+   "session_inbox",
+   "session_message",
+   "session_pending",
+   "session_v2",
+   "workspace",
+   "worktree"
+  ],
+  "event_sequence": [
+   [
+    "ses_ee66cbe34ffeMKv305mM7Ec67Y",
+    11
+   ]
+  ],
+  "event_rows": 0,
+  "session_message": [
+   {
+    "seq": 4,
+    "type": "user",
+    "data": {
+     "time": {
+      "created": 1791430443966
+     },
+     "text": "\"Write a note.\"",
+     "files": []
+    }
+   },
+   {
+    "seq": 5,
+    "type": "assistant",
+    "data": {
+     "time": {
+      "created": 1791430444022,
+      "streamed": 1791430444076
+     },
+     "agent": "build",
+     "model": {
+      "id": "scripted",
+      "providerID": "mock"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_0002",
+       "name": "shell",
+       "executed": false,
+       "state": {
+        "status": "running",
+        "input": {
+         "command": "sleep 20 && echo written >> note.txt",
+         "description": "Write a note slowly"
+        },
+        "metadata": {}
+       },
+       "time": {
+        "created": 1791430444062,
+        "ran": 1791430444073
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "session_v2": [
+   {
+    "id": "ses_ee66cbe34ffeMKv305mM7Ec67Y",
+    "directory": "/home/user/demo",
+    "version": "2.0.24",
+    "time_idle": null,
+    "idle_outcome": null,
+    "time_suspended": 1791430443929,
+    "resume_attempts": 0
+   }
+  ]
+ },
+ "after_recovery": {
+  "tables": [
+   "account",
+   "account_state",
+   "control_account",
+   "credential",
+   "event",
+   "event_sequence",
+   "instruction_blob",
+   "instruction_entry",
+   "instruction_state",
+   "kv",
+   "migration",
+   "permission",
+   "project",
+   "project_directory",
+   "session_inbox",
+   "session_message",
+   "session_pending",
+   "session_v2",
+   "workspace",
+   "worktree"
+  ],
+  "event_sequence": [
+   [
+    "ses_ee66cbe34ffeMKv305mM7Ec67Y",
+    27
+   ]
+  ],
+  "event_rows": 0,
+  "session_message": [
+   {
+    "seq": 4,
+    "type": "user",
+    "data": {
+     "time": {
+      "created": 1791430443966
+     },
+     "text": "\"Write a note.\"",
+     "files": []
+    }
+   },
+   {
+    "seq": 5,
+    "type": "assistant",
+    "data": {
+     "time": {
+      "created": 1791430444022,
+      "streamed": 1791430444076,
+      "completed": 1791430455801
+     },
+     "agent": "build",
+     "model": {
+      "id": "scripted",
+      "providerID": "mock"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_0002",
+       "name": "shell",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "command": "sleep 20 && echo written >> note.txt",
+         "description": "Write a note slowly"
+        },
+        "error": {
+         "type": "aborted",
+         "message": "Tool execution interrupted: shell"
+        }
+       },
+       "time": {
+        "created": 1791430444062,
+        "ran": 1791430444073,
+        "completed": 1791430455682
+       }
+      }
+     ]
+    }
+   },
+   {
+    "seq": 12,
+    "type": "synthetic",
+    "data": {
+     "metadata": {
+      "notice": "restart"
+     },
+     "time": {
+      "created": 1791430455102
+     },
+     "text": "The server restarted while you were working. Continue from where you left off without repeating completed work.",
+     "description": "Continuing after restart"
+    }
+   },
+   {
+    "seq": 15,
+    "type": "assistant",
+    "data": {
+     "time": {
+      "created": 1791430455778,
+      "streamed": 1791430455814,
+      "completed": 1791430475869
+     },
+     "agent": "build",
+     "model": {
+      "id": "scripted",
+      "providerID": "mock"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_0003",
+       "name": "shell",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "command": "sleep 20 && echo written >> note.txt",
+         "description": "Write a note slowly"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "/bin/bash: warning: setlocale: LC_ALL: cannot change locale (zh_CN.UTF-8)\n"
+         }
+        ],
+        "metadata": {
+         "status": "completed",
+         "truncated": false,
+         "exit": 0
+        }
+       },
+       "time": {
+        "created": 1791430455804,
+        "ran": 1791430455811,
+        "completed": 1791430475864
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_calls",
+     "cost": 0,
+     "tokens": {
+      "input": 100,
+      "output": 10,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    }
+   },
+   {
+    "seq": 22,
+    "type": "assistant",
+    "data": {
+     "time": {
+      "created": 1791430475902,
+      "streamed": 1791430475930,
+      "completed": 1791430475932
+     },
+     "agent": "build",
+     "model": {
+      "id": "scripted",
+      "providerID": "mock"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "The note has been written."
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "stop",
+     "cost": 0,
+     "tokens": {
+      "input": 100,
+      "output": 10,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    }
+   },
+   {
+    "seq": 27,
+    "type": "idle",
+    "data": {
+     "time": {
+      "created": 1791430475936
+     },
+     "outcome": "succeeded"
+    }
+   }
+  ],
+  "session_v2": [
+   {
+    "id": "ses_ee66cbe34ffeMKv305mM7Ec67Y",
+    "directory": "/home/user/demo",
+    "version": "2.0.24",
+    "time_idle": 1791430475936,
+    "idle_outcome": "succeeded",
+    "time_suspended": null,
+    "resume_attempts": 0
+   }
+  ]
+ }
+}

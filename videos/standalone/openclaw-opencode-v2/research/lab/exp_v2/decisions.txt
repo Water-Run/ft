@@ -1,0 +1,4 @@
+0001 stream=true tools=0 last=user -> text
+0002 stream=true tools=12 last=user -> tool:shell
+0003 stream=true tools=12 last=user -> tool:shell
+0004 stream=true tools=12 last=tool -> final

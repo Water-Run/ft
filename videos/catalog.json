@@ -237,7 +237,7 @@
     {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端"}},
     {"slug": "traffic-law-right-of-way", "title": {"zh": "道交法中的路权"}},
-    {"slug": "openclaw-opencode-v2", "title": {"zh": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么"}},
+    {"slug": "openclaw-opencode-v2", "title": {"zh": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么", "en": "The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us"}, "status": "delivered", "note": "未发布"},
     {"slug": "how-harness-works", "title": {"zh": "给 LLM 长出手——Harness 工程"}},
     {"slug": "notepad-plus-plus", "title": {"zh": "Notepad++ 是如何工作的"}},
     {"slug": "local-qwen-dgx", "title": {"zh": "本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？"}},
