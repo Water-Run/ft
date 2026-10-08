@@ -17,9 +17,9 @@
 
 | 项 | 约定 |
 |---|---|
-| 标题 | `<设计语言名> Design`，与官方名称一致 |
+| 标题 | 与设计语言的官方名称一致，如 `Carbon Design`、`Ant Design`、`Adwaita`、`Primer`、`Apple HIG` |
 | 结构 | 待首集确定 |
-| 视觉 | **特别约定：本系列不维持统一的系列视觉。** 每一集的视觉系统贴合它所讲的那套设计语言本身——讲 Fluent 就按 Fluent 的规范排版，讲 Material 就按 Material 的规范排版。连续性体现在结构、术语与讲法上，而不是统一的配色与部件 |
+| 视觉 | **特别约定：本系列不维持统一的系列视觉。** 每一集的视觉系统贴合它所讲的那套设计语言本身——讲 Carbon 就按 Carbon 的规范排版，讲 Apple HIG 就按 Apple HIG 的规范排版。连续性体现在结构、术语与讲法上，而不是统一的配色与部件 |
 | 声音 | 待首集确定 |
 
 ## 分集
@@ -27,8 +27,9 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | Fluent Design | zh + en | 计划中 | `fluent` |
-| 2 | Metro Design | zh + en | 计划中 | `metro` |
-| 3 | Material Design | zh + en | 计划中 | `material` |
-| 4 | Spectrum Design | zh + en | 计划中 | `spectrum` |
+| 1 | Carbon Design | zh + en | 计划中 | `carbon` |
+| 2 | Ant Design | zh + en | 计划中 | `ant-design` |
+| 3 | Adwaita | zh + en | 计划中 | `adwaita` |
+| 4 | Primer | zh + en | 计划中 | `primer` |
+| 5 | Apple HIG | zh + en | 计划中 | `apple-hig` |
 <!-- catalog:end -->

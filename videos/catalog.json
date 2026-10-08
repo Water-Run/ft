@@ -6,20 +6,19 @@
       "title": {"zh": "数据库引擎", "en": "Database Engines"},
       "videos": [
         {"slug": "myisam", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "languages": ["zh"], "note": "已发布：哔哩哔哩"},
-        {"slug": "innodb", "title": {"zh": "一个数据库引擎是如何实现的？——现代化：InnoDB"}},
-        {"slug": "sqlite", "title": {"zh": "一个数据库引擎是如何实现的？——小巧紧凑：SQLite"}},
+        {"slug": "innodb", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}},
         {"slug": "postgresql", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}},
         {"slug": "firebird", "title": {"zh": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"}},
-        {"slug": "redis", "title": {"zh": "一个数据库引擎是如何实现的？——快如闪电：Redis"}},
-        {"slug": "keydb", "title": {"zh": "一个数据库引擎是如何实现的？——KeyDB，多线程的 Redis"}},
+        {"slug": "sqlite", "title": {"zh": "一个数据库引擎是如何实现的？——小巧紧凑：SQLite"}},
         {"slug": "clickhouse", "title": {"zh": "一个数据库引擎是如何实现的？——列式存储：ClickHouse"}},
-        {"slug": "mongodb", "title": {"zh": "一个数据库引擎是如何实现的？——不是 SQL：MongoDB"}}
+        {"slug": "mongodb", "title": {"zh": "一个数据库引擎是如何实现的？——不是 SQL：MongoDB"}},
+        {"slug": "redis-keydb", "title": {"zh": "一个数据库引擎是如何实现的？——缓存：Redis和KeyDB"}}
       ]
     },
     {
       "slug": "programming-languages",
       "title": {"zh": "编程语言", "en": "Programming Languages"},
-      "sections": [{"id": "intro", "zh": "简介", "en": "Overview"}, {"id": "history", "zh": "历史", "en": "History"}, {"id": "quickstart", "zh": "快速上手", "en": "Quick start"}, {"id": "features", "zh": "特性", "en": "Features"}, {"id": "impl", "zh": "实现", "en": "Implementation"}, {"id": "trivia", "zh": "你知道吗", "en": "Did you know?"}],
+      "sections": [{"id": "intro", "zh": "简介", "en": "Overview"}, {"id": "history", "zh": "历史", "en": "History"}, {"id": "features", "zh": "特性", "en": "Features"}, {"id": "impl", "zh": "实现", "en": "Implementation"}, {"id": "trivia", "zh": "你知道吗", "en": "Did you know?"}],
       "videos": [
         {"slug": "php", "title": {"zh": "编程语言——PHP 解释器是如何呈现出一个网站的？"}},
         {"slug": "lua", "title": {"zh": "编程语言——小巧简练：Lua 解释器的实现"}},
@@ -34,13 +33,18 @@
       "slug": "programming-paradigms",
       "title": {"zh": "编程思想", "en": "Programming Paradigms"},
       "videos": [
-        {"slug": "lua", "title": {"zh": "Lua 的设计哲学"}},
-        {"slug": "python", "title": {"zh": "Python：一切皆对象"}},
-        {"slug": "rust", "title": {"zh": "Rust 的设计哲学"}},
-        {"slug": "zig", "title": {"zh": "Zig 的设计哲学"}},
-        {"slug": "nim", "title": {"zh": "Nim 的设计哲学"}},
-        {"slug": "functional", "title": {"zh": "函数式"}},
-        {"slug": "procedural-to-oop", "title": {"zh": "从过程式到面向对象"}}
+        {"slug": "lua", "title": {"zh": "Lua 语言的设计哲学：一切皆表"}},
+        {"slug": "python", "title": {"zh": "Python 语言的设计哲学：一切皆对象"}},
+        {"slug": "miniscript", "title": {"zh": "MiniScript 语言的设计哲学：小而可嵌入"}},
+        {"slug": "rust", "title": {"zh": "Rust 语言的设计哲学：不靠垃圾回收的内存安全"}},
+        {"slug": "zig", "title": {"zh": "Zig 语言的设计哲学：没有隐藏的控制流与内存分配"}},
+        {"slug": "nim", "title": {"zh": "Nim 语言的设计哲学：高效、有表达力、优雅"}},
+        {"slug": "csharp", "title": {"zh": "C# 语言的设计哲学：统一的类型系统"}},
+        {"slug": "typescript", "title": {"zh": "TypeScript 语言的设计哲学：结构化类型，编译后擦除"}},
+        {"slug": "ocaml", "title": {"zh": "OCaml 语言的设计哲学：类型推断与模块系统"}},
+        {"slug": "fsharp", "title": {"zh": "F# 语言的设计哲学：函数优先，运行在 .NET 上"}},
+        {"slug": "fish", "title": {"zh": "Fish 语言的设计哲学：交互优先，语法不兼容 POSIX"}},
+        {"slug": "powershell", "title": {"zh": "PowerShell 语言的设计哲学：管道传递对象，而非文本"}}
       ]
     },
     {
@@ -57,20 +61,20 @@
       "slug": "design-languages",
       "title": {"zh": "设计语言与视觉规范", "en": "Design Languages"},
       "videos": [
-        {"slug": "fluent", "title": {"zh": "Fluent Design"}},
-        {"slug": "metro", "title": {"zh": "Metro Design"}},
-        {"slug": "material", "title": {"zh": "Material Design"}},
-        {"slug": "spectrum", "title": {"zh": "Spectrum Design"}}
+        {"slug": "carbon", "title": {"zh": "Carbon Design"}},
+        {"slug": "ant-design", "title": {"zh": "Ant Design"}},
+        {"slug": "adwaita", "title": {"zh": "Adwaita"}},
+        {"slug": "primer", "title": {"zh": "Primer"}},
+        {"slug": "apple-hig", "title": {"zh": "Apple HIG"}}
       ]
     },
     {
       "slug": "storage-media",
       "title": {"zh": "存储介质", "en": "Storage Media"},
       "videos": [
-        {"slug": "magnetic", "title": {"zh": "利用磁力，从磁带到磁盘"}},
-        {"slug": "floppy", "title": {"zh": "U 盘之前：软盘时代"}},
-        {"slug": "optical", "title": {"zh": "旋转的光盘"}},
-        {"slug": "flash", "title": {"zh": "手中的量子力学：闪存的一统天地"}}
+        {"slug": "magnetic", "title": {"zh": "磁带、磁盘和软盘：利用磁力存储的机械年代"}},
+        {"slug": "optical", "title": {"zh": "旋转的光盘年代"}},
+        {"slug": "flash", "title": {"zh": "手里的量子力学：闪存的一统天下"}}
       ]
     },
     {
@@ -97,15 +101,6 @@
         {"slug": "qualcomm", "title": {"zh": "高通：从 600 到 888"}},
         {"slug": "apple", "title": {"zh": "苹果的芯片自研之路"}},
         {"slug": "windows-server", "title": {"zh": "Windows Server 演变史"}}
-      ]
-    },
-    {
-      "slug": "shells",
-      "title": {"zh": "Shell 群观", "en": "A Survey of Shells"},
-      "videos": [
-        {"slug": "early-shells", "title": {"zh": "从最早开始"}},
-        {"slug": "windows-shells", "title": {"zh": "Windows 的 Shell"}},
-        {"slug": "modern-shells", "title": {"zh": "现代 Shell 群观"}}
       ]
     },
     {
@@ -146,8 +141,8 @@
       "slug": "powertrains",
       "title": {"zh": "动力总成", "en": "Powertrains"},
       "videos": [
-        {"slug": "ea211-dq200", "title": {"zh": "EA211+DQ200 经典动力总成"}},
-        {"slug": "psa-ec5-at8", "title": {"zh": "（肉到发麻）10s 前中期的 PSA，EC5 与 AT8"}}
+        {"slug": "ea211-dq200", "title": {"zh": "EA211 DJS+DQ200 经典动力总成"}},
+        {"slug": "psa-ec5-at8", "title": {"zh": "10s 前中期的 PSA，EC5 与 AT8"}}
       ]
     },
     {
@@ -191,27 +186,20 @@
       "videos": [
         {"slug": "two-factor-auth", "title": {"zh": "120 秒关于什么是 2FA，以及它是怎么工作的", "en": "2FA in 120 Seconds: What It Is and How It Works"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
         {"slug": "lean4", "title": {"zh": "200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠", "en": "Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted"}, "status": "delivered", "note": "本地出片，未发布；自动闸门通过，发布前试听项见 README"},
-        {"slug": "how-opus-animates", "title": {"zh": "100 秒明白 Opus 5.5 是怎么做动画的"}},
+        {"slug": "how-opus-animates", "title": {"zh": "150 秒搞明白 Opus 5.5 是怎么做视频的"}},
         {"slug": "pistol-shooting", "title": {"zh": "150 秒学会怎么打手枪？"}},
-        {"slug": "dense-vs-moe", "title": {"zh": "200 秒关于 LLM 的 Dense 和 MoE 是什么"}},
+        {"slug": "dense-vs-moe", "title": {"zh": "96 秒了解 LLM 的 Dense 和 MoE：稠密和专家模型"}},
         {"slug": "rear-seatbelt", "title": {"zh": "150 秒明白不绑后排安全带的致命性"}},
-        {"slug": "ssh", "title": {"zh": "150 秒学会 SSH 是怎么工作的？"}},
+        {"slug": "ssh", "title": {"zh": "256 秒搞懂 SSH"}},
         {"slug": "powershell", "title": {"zh": "150 秒关于 PowerShell 和 pwsh"}},
         {"slug": "pty", "title": {"zh": "150 秒有关终端模拟器（Pty）是什么，以及如何工作"}},
         {"slug": "tire-width", "title": {"zh": "200 秒，关于轮胎胎宽和抓地力"}},
-        {"slug": "tmux", "title": {"zh": "100 秒有关 Tmux 是如何工作和实现的"}},
+        {"slug": "tmux", "title": {"zh": "128 秒关于 Tmux：是什么，怎么用，如何实现的"}},
         {"slug": "gps", "title": {"zh": "150 秒学会 GPS 的工作原理"}},
-        {"slug": "modern-crypto", "title": {"zh": "250 秒有关现代密码学"}}
-      ]
-    },
-    {
-      "slug": "llm-concepts",
-      "title": {"zh": "LLM", "en": "LLM Concepts"},
-      "videos": [
-        {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}},
-        {"slug": "quantization", "title": {"zh": "量化"}},
-        {"slug": "frameworks", "title": {"zh": "框架"}},
-        {"slug": "model-parameters", "title": {"zh": "通过参数认识一个模型"}}
+        {"slug": "modern-crypto", "title": {"zh": "256 秒有关现代密码学"}},
+        {"slug": "quantization", "title": {"zh": "128 秒讲清量化：怎样让模型变小，代价是什么"}},
+        {"slug": "frameworks", "title": {"zh": "96 秒讲清框架：它们替你做了哪些事"}},
+        {"slug": "model-parameters", "title": {"zh": "150 秒通过参数认识一个模型"}}
       ]
     },
     {
@@ -250,12 +238,12 @@
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端"}},
     {"slug": "traffic-law-right-of-way", "title": {"zh": "道交法中的路权"}},
     {"slug": "openclaw-opencode-v2", "title": {"zh": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么"}},
-    {"slug": "how-harness-works", "title": {"zh": "给 LLM 长出手——Harness 是如何工作的？"}},
+    {"slug": "how-harness-works", "title": {"zh": "给 LLM 长出手——Harness 工程"}},
     {"slug": "notepad-plus-plus", "title": {"zh": "Notepad++ 是如何工作的"}},
     {"slug": "local-qwen-dgx", "title": {"zh": "本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？"}},
     {"slug": "wsl", "title": {"zh": "从 WSL 1 到 WSL 2，再到「WSL 3」", "en": "From WSL 1 to WSL 2, Then “WSL 3”"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
     {"slug": "firearm-actions", "title": {"zh": "枪械自动原理"}},
-    {"slug": "web-login", "title": {"zh": "Web 登录机制：如何确认你是你"}},
+    {"slug": "web-login", "title": {"zh": "Web 登录机制：怎么验证你是你"}},
     {"slug": "lcd-panels", "title": {"zh": "液晶显示器和面板，我们应该关心屏幕的什么和影响"}},
     {"slug": "garbage-collection", "title": {"zh": "垃圾回收的艺术"}},
     {"slug": "lightweighting", "title": {"zh": "宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快"}},
@@ -282,6 +270,8 @@
     {"slug": "power-torque-curve", "title": {"zh": "内燃机的马力-扭矩曲线"}},
     {"slug": "cvvt", "title": {"zh": "CVVT 可变气门正时技术"}},
     {"slug": "how-ram-works", "title": {"zh": "内存是怎么工作的，以及它为什么这么快"}},
-    {"slug": "ipv4", "title": {"zh": "IPv4"}}
+    {"slug": "ipv4", "title": {"zh": "IPv4"}},
+    {"slug": "shell-survey", "title": {"zh": "Shell 群观"}},
+    {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}}
   ]
 }

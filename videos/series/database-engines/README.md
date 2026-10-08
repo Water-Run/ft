@@ -29,12 +29,11 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](myisam/) |
-| 2 | 一个数据库引擎是如何实现的？——现代化：InnoDB | zh + en | 计划中 | `innodb` |
-| 3 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 | `sqlite` |
-| 4 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 | `postgresql` |
-| 5 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 | `firebird` |
-| 6 | 一个数据库引擎是如何实现的？——快如闪电：Redis | zh + en | 计划中 | `redis` |
-| 7 | 一个数据库引擎是如何实现的？——KeyDB，多线程的 Redis | zh + en | 计划中 | `keydb` |
-| 8 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 | `clickhouse` |
-| 9 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 | `mongodb` |
+| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh + en | 计划中 | `innodb` |
+| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 | `postgresql` |
+| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 | `firebird` |
+| 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 | `sqlite` |
+| 6 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 | `clickhouse` |
+| 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 | `mongodb` |
+| 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh + en | 计划中 | `redis-keydb` |
 <!-- catalog:end -->

@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 160 部：已成片 7 部，制作中 0 部，计划中 153 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 162 部：已成片 7 部，制作中 0 部，计划中 155 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -16,18 +16,17 @@
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) | 已发布：哔哩哔哩 |
-| 2 | 一个数据库引擎是如何实现的？——现代化：InnoDB | zh + en | 计划中 |  | `innodb` |  |
-| 3 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
-| 4 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 |  | `postgresql` |  |
-| 5 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 |  | `firebird` |  |
-| 6 | 一个数据库引擎是如何实现的？——快如闪电：Redis | zh + en | 计划中 |  | `redis` |  |
-| 7 | 一个数据库引擎是如何实现的？——KeyDB，多线程的 Redis | zh + en | 计划中 |  | `keydb` |  |
-| 8 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
-| 9 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 |  | `mongodb` |  |
+| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh + en | 计划中 |  | `innodb` |  |
+| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 |  | `postgresql` |  |
+| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 |  | `firebird` |  |
+| 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
+| 6 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
+| 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 |  | `mongodb` |  |
+| 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh + en | 计划中 |  | `redis-keydb` |  |
 
 ### 编程语言
 
-目录 [`videos/series/programming-languages/`](../videos/series/programming-languages/)；英文名 Programming Languages。系列的定位与连续性约定见该目录的 README。建议的栏目骨架：简介 → 历史 → 快速上手 → 特性 → 实现 → 你知道吗（不强制）。
+目录 [`videos/series/programming-languages/`](../videos/series/programming-languages/)；英文名 Programming Languages。系列的定位与连续性约定见该目录的 README。建议的栏目骨架：简介 → 历史 → 特性 → 实现 → 你知道吗（不强制）。
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
@@ -45,13 +44,18 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | Lua 的设计哲学 | zh + en | 计划中 |  | `lua` |  |
-| 2 | Python：一切皆对象 | zh + en | 计划中 |  | `python` |  |
-| 3 | Rust 的设计哲学 | zh + en | 计划中 |  | `rust` |  |
-| 4 | Zig 的设计哲学 | zh + en | 计划中 |  | `zig` |  |
-| 5 | Nim 的设计哲学 | zh + en | 计划中 |  | `nim` |  |
-| 6 | 函数式 | zh + en | 计划中 |  | `functional` |  |
-| 7 | 从过程式到面向对象 | zh + en | 计划中 |  | `procedural-to-oop` |  |
+| 1 | Lua 语言的设计哲学：一切皆表 | zh + en | 计划中 |  | `lua` |  |
+| 2 | Python 语言的设计哲学：一切皆对象 | zh + en | 计划中 |  | `python` |  |
+| 3 | MiniScript 语言的设计哲学：小而可嵌入 | zh + en | 计划中 |  | `miniscript` |  |
+| 4 | Rust 语言的设计哲学：不靠垃圾回收的内存安全 | zh + en | 计划中 |  | `rust` |  |
+| 5 | Zig 语言的设计哲学：没有隐藏的控制流与内存分配 | zh + en | 计划中 |  | `zig` |  |
+| 6 | Nim 语言的设计哲学：高效、有表达力、优雅 | zh + en | 计划中 |  | `nim` |  |
+| 7 | C# 语言的设计哲学：统一的类型系统 | zh + en | 计划中 |  | `csharp` |  |
+| 8 | TypeScript 语言的设计哲学：结构化类型，编译后擦除 | zh + en | 计划中 |  | `typescript` |  |
+| 9 | OCaml 语言的设计哲学：类型推断与模块系统 | zh + en | 计划中 |  | `ocaml` |  |
+| 10 | F# 语言的设计哲学：函数优先，运行在 .NET 上 | zh + en | 计划中 |  | `fsharp` |  |
+| 11 | Fish 语言的设计哲学：交互优先，语法不兼容 POSIX | zh + en | 计划中 |  | `fish` |  |
+| 12 | PowerShell 语言的设计哲学：管道传递对象，而非文本 | zh + en | 计划中 |  | `powershell` |  |
 
 ### 汽车的系统工程
 
@@ -70,10 +74,11 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | Fluent Design | zh + en | 计划中 |  | `fluent` |  |
-| 2 | Metro Design | zh + en | 计划中 |  | `metro` |  |
-| 3 | Material Design | zh + en | 计划中 |  | `material` |  |
-| 4 | Spectrum Design | zh + en | 计划中 |  | `spectrum` |  |
+| 1 | Carbon Design | zh + en | 计划中 |  | `carbon` |  |
+| 2 | Ant Design | zh + en | 计划中 |  | `ant-design` |  |
+| 3 | Adwaita | zh + en | 计划中 |  | `adwaita` |  |
+| 4 | Primer | zh + en | 计划中 |  | `primer` |  |
+| 5 | Apple HIG | zh + en | 计划中 |  | `apple-hig` |  |
 
 ### 存储介质
 
@@ -81,10 +86,9 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | 利用磁力，从磁带到磁盘 | zh + en | 计划中 |  | `magnetic` |  |
-| 2 | U 盘之前：软盘时代 | zh + en | 计划中 |  | `floppy` |  |
-| 3 | 旋转的光盘 | zh + en | 计划中 |  | `optical` |  |
-| 4 | 手中的量子力学：闪存的一统天地 | zh + en | 计划中 |  | `flash` |  |
+| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 计划中 |  | `magnetic` |  |
+| 2 | 旋转的光盘年代 | zh + en | 计划中 |  | `optical` |  |
+| 3 | 手里的量子力学：闪存的一统天下 | zh + en | 计划中 |  | `flash` |  |
 
 ### 摄影器材
 
@@ -113,16 +117,6 @@
 | 9 | 高通：从 600 到 888 | zh + en | 计划中 |  | `qualcomm` |  |
 | 10 | 苹果的芯片自研之路 | zh + en | 计划中 |  | `apple` |  |
 | 11 | Windows Server 演变史 | zh + en | 计划中 |  | `windows-server` |  |
-
-### Shell 群观
-
-目录 [`videos/series/shells/`](../videos/series/shells/)；英文名 A Survey of Shells。系列的定位与连续性约定见该目录的 README。
-
-| # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
-|---|---|---|---|---|---|---|
-| 1 | 从最早开始 | zh + en | 计划中 |  | `early-shells` |  |
-| 2 | Windows 的 Shell | zh + en | 计划中 |  | `windows-shells` |  |
-| 3 | 现代 Shell 群观 | zh + en | 计划中 |  | `modern-shells` |  |
 
 ### 我们的中国
 
@@ -167,8 +161,8 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | EA211+DQ200 经典动力总成 | zh + en | 计划中 |  | `ea211-dq200` |  |
-| 2 | （肉到发麻）10s 前中期的 PSA，EC5 与 AT8 | zh + en | 计划中 |  | `psa-ec5-at8` |  |
+| 1 | EA211 DJS+DQ200 经典动力总成 | zh + en | 计划中 |  | `ea211-dq200` |  |
+| 2 | 10s 前中期的 PSA，EC5 与 AT8 | zh + en | 计划中 |  | `psa-ec5-at8` |  |
 
 ### 航空器群观
 
@@ -216,28 +210,20 @@
 |---|---|---|---|---|---|---|
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`two-factor-auth`](../videos/series/in-seconds/two-factor-auth/) | 已发布：哔哩哔哩与 YouTube |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`lean4`](../videos/series/in-seconds/lean4/) | 本地出片，未发布；自动闸门通过，发布前试听项见 README |
-| 3 | 100 秒明白 Opus 5.5 是怎么做动画的 | zh + en | 计划中 |  | `how-opus-animates` |  |
+| 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 |  | `how-opus-animates` |  |
 | 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` |  |
-| 5 | 200 秒关于 LLM 的 Dense 和 MoE 是什么 | zh + en | 计划中 |  | `dense-vs-moe` |  |
+| 5 | 96 秒了解 LLM 的 Dense 和 MoE：稠密和专家模型 | zh + en | 计划中 |  | `dense-vs-moe` |  |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 |  | `rear-seatbelt` |  |
-| 7 | 150 秒学会 SSH 是怎么工作的？ | zh + en | 计划中 |  | `ssh` |  |
+| 7 | 256 秒搞懂 SSH | zh + en | 计划中 |  | `ssh` |  |
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 11 | 100 秒有关 Tmux 是如何工作和实现的 | zh + en | 计划中 |  | `tmux` |  |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 计划中 |  | `tmux` |  |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
-| 13 | 250 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
-
-### LLM
-
-目录 [`videos/series/llm-concepts/`](../videos/series/llm-concepts/)；英文名 LLM Concepts。系列的定位与连续性约定见该目录的 README。
-
-| # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
-|---|---|---|---|---|---|---|
-| 1 | CoT：先思考，再回答 | zh + en | 计划中 |  | `chain-of-thought` |  |
-| 2 | 量化 | zh + en | 计划中 |  | `quantization` |  |
-| 3 | 框架 | zh + en | 计划中 |  | `frameworks` |  |
-| 4 | 通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
+| 13 | 256 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
+| 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
+| 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 |  | `frameworks` |  |
+| 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
 
 ### 游戏物理学
 
@@ -279,12 +265,12 @@
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | zh + en | 计划中 |  | `opencart-1-5-admin` |  |
 | 4 | 道交法中的路权 | zh + en | 计划中 |  | `traffic-law-right-of-way` |  |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么 | zh + en | 计划中 |  | `openclaw-opencode-v2` |  |
-| 6 | 给 LLM 长出手——Harness 是如何工作的？ | zh + en | 计划中 |  | `how-harness-works` |  |
+| 6 | 给 LLM 长出手——Harness 工程 | zh + en | 计划中 |  | `how-harness-works` |  |
 | 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
 | 8 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
 | 9 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
 | 10 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
-| 11 | Web 登录机制：如何确认你是你 | zh + en | 计划中 |  | `web-login` |  |
+| 11 | Web 登录机制：怎么验证你是你 | zh + en | 计划中 |  | `web-login` |  |
 | 12 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
 | 13 | 垃圾回收的艺术 | zh + en | 计划中 |  | `garbage-collection` |  |
 | 14 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
@@ -312,3 +298,5 @@
 | 36 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
 | 37 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
 | 38 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
+| 39 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
+| 40 | CoT：先思考，再回答 | zh + en | 计划中 |  | `chain-of-thought` |  |
