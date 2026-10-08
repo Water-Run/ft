@@ -103,6 +103,6 @@ fs.writeFileSync(CAT, out.join('\n') + '\n');
 if (!errs.length) { fs.writeFileSync(DOC, render(load())); syncSeries(load(), true); }
 console.log(`已建立 videos/${where}（语言：${langs.join(', ')}）并登记到片单。接下来：
   1. 读 docs/workflow.md，按步骤做；本片的事实记在 videos/${where}/research/FACTS.md${series ? `\n     本片属于系列「${series.title.zh}」：先读 videos/series/${series.slug}/README.md 的连续性约定` : ''}
-  2. 写脚本 src/js/script.js → node kit/tools/tts.js videos/${where} --lang all
+  2. 写脚本 src/js/script.js → 文案稿交策划者 WaterRun 人工审查，明确确认后再配音：node kit/tools/tts.js videos/${where} --lang all
   3. 看画面：node kit/tools/look.js videos/${where} o1    总闸门：node kit/tools/check.js videos/${where}${delegated ? `
   委托制作：准备方先做完取证、旁白与视觉系统，再填写 videos/${where}/AGENTS.md 与 brief/（做法见 docs/delegation.md），然后交给受托模型` : ''}`);
