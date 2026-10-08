@@ -249,6 +249,15 @@
 
 **未核查**：star-history.com 的星标采样点没有另一路来源逐点核对（GitHub 的 stargazers 时间线接口需要认证，未用）；只核对了末点与 GitHub API 当日读数的差。
 
+**发布**：成片于 2026-10-07 上到哔哩哔哩与 YouTube。逐条取自两个频道的公开页面，核对日期 2026-10-07。
+
+| 平台 | 平台上的标题 | 平台显示时长 | 发布时刻 | 链接 |
+|---|---|---|---|---|
+| 哔哩哔哩，合集「科普视频, 但不隶属于任何分类」 | OpenClaw, Hermes和实现 | 8:35（515 秒） | 2026-10-07 20:17 | [BV1DkHk6FEie](https://www.bilibili.com/video/BV1DkHk6FEie) |
+| YouTube | OpenClaw, Hermes, and Implementation | 未核 | 2026-10-07 20:16 | [iULu-c3fAcI](https://www.youtube.com/watch?v=iULu-c3fAcI) |
+
+本机成片的容器时长（读 mp4 的 `mvhd`）是中文 514.60 秒、英文 570.45 秒；哔哩哔哩显示 515 秒，是向上取整。两处的标题一为中文、一为英文，各处上的是不是分别对应中文版与英文版，仓库里没有记录，未核——两版成片都在制作机上，按平台逐版核对需要人工观看。片尾「开源视频」指向的 `github.com/Water-Run/ft` 已于 2026-10-07 打开核对：公开可访问。
+
 ## 取证中的旁支发现（未进入成片）
 
 - OpenClaw 的 `docs/start/why-openclaw.md` 含一段项目自己写的 OpenClaw 与 Hermes Agent 的架构对照；成片的比较一章没有采用其结论，各行依据都回到两边的源码与文档。

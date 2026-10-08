@@ -15,7 +15,7 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) |  |
+| 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) | 已发布：哔哩哔哩 |
 | 2 | 一个数据库引擎是如何实现的？——现代化：InnoDB | zh + en | 计划中 |  | `innodb` |  |
 | 3 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
 | 4 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 |  | `postgresql` |  |
@@ -274,15 +274,15 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | 古代来的 Shell：Windows 批处理（.bat） | zh | 已成片 | 委托（DeepSeek） | [`windows-batch`](../videos/standalone/windows-batch/) | 场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md |
-| 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) |  |
+| 1 | 古代来的 Shell：Windows 批处理（.bat） | zh | 已成片 | 委托（DeepSeek） | [`windows-batch`](../videos/standalone/windows-batch/) | 场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md；已发布：哔哩哔哩 |
+| 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 已发布：哔哩哔哩与 YouTube |
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | zh + en | 计划中 |  | `opencart-1-5-admin` |  |
 | 4 | 道交法中的路权 | zh + en | 计划中 |  | `traffic-law-right-of-way` |  |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 时代学习到了什么 | zh + en | 计划中 |  | `openclaw-opencode-v2` |  |
 | 6 | 给 LLM 长出手——Harness 是如何工作的？ | zh + en | 计划中 |  | `how-harness-works` |  |
 | 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
 | 8 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
-| 9 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) |  |
+| 9 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
 | 10 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
 | 11 | Web 登录机制：如何确认你是你 | zh + en | 计划中 |  | `web-login` |  |
 | 12 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
@@ -303,7 +303,7 @@
 | 27 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
 | 28 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
 | 29 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
-| 30 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片 |
+| 30 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube |
 | 31 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
 | 32 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
 | 33 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |

@@ -9,9 +9,11 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 - `<视频目录>` 是含 `project.json` 的那一层，例如 `videos/standalone/luainstaller`。先 `cd` 进视频目录（或它的子目录）时可以省略。
 - `--lang zh`、`--lang en`、`--lang zh,en`、`--lang all` 指定语言。省略时：出产物的工具处理全部语言，看画面的工具只看第一种语言（下表「语言」一栏）。
 - 每个工具开头的注释是它的完整用法。工具各自起临时的本地服务器，用完即关，不需要也不应该另外启动常驻的服务器。
-- 混音、配音、回听等几个工具的核心是 Python 脚本，由同名的 Node 工具调用，不直接运行。
+- 配音、读法试听、回听、混音，以及数值、空画面、越界自检的计算部分是 Python 脚本，由对应的 Node 工具调用，不直接运行，对应关系见第 9 节。
 
 ## 1. 一览
+
+表中省略 `<视频>`。`new.js`、`catalog.js`、`assets.js`、`remote.js` 不针对某一部视频；`doctor.js` 的视频目录可选，其余工具都需要。
 
 | 工具 | 作用 | 语言 | 大致耗时 |
 |---|---|---|---|
@@ -216,3 +218,22 @@ node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库
 | 某一刻画面不对 | `look.js <视频> <时刻>` 看文字描述与截图；在入场时刻前后多取几帧 |
 | 想知道某个词何时被读到 | `timeline.js <视频> <句号>` |
 | 临时目录越来越大 | `doctor.js --clean`（渲染被强行终止时，浏览器的临时档案目录会留下） |
+
+## 9. 内部模块
+
+下列文件不直接运行，由上面的工具引用。
+
+| 文件 | 作用 | 调用方 |
+|---|---|---|
+| `lib.js` | 公共部分：定位仓库与视频目录、读本机配置、语言、时间线、静态服务器、打开页面 | 多数 Node 工具 |
+| `inspect.js` | 「用文字看画面」的公共部分：收集某一刻可见的元素，做版面判断 | `look.js`、`scan.js` |
+| `pngfix.js` | PNG 的解码，以及 RGBA 到 RGB 的改写 | `render.js`、`inspect.js` |
+| `tts.py` | 逐句合成旁白（edge-tts） | `tts.js` |
+| `tts_probe.py` | 读法试验：合成几种写法，用 Whisper 回听 | `tts_probe.js` |
+| `asr.py` | 用 Whisper 回听旁白（faster-whisper） | `asr.js` |
+| `mix.py` | 混音：旁白、配乐、音效 | `audio.js` |
+| `audio_check.py` | 配乐与混音的数值自检 | `audio.js` |
+| `margin_audit.py` | 按像素量每句画面的外接范围 | `margin.js` |
+| `blank_check.py` | 成片里几乎为空的时段 | `finish.js` |
+
+`audio_check.py`、`blank_check.py` 也可以单独运行，用法见各自文件头部。

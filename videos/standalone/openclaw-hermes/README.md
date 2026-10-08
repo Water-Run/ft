@@ -101,7 +101,14 @@ node kit/tools/check.js  videos/standalone/openclaw-hermes --final
 
 ## 发布
 
-未发布。发布之后按 `docs/workflow.md` 第 11 节回填平台、日期、链接、平台上的标题与时长。片尾「开源视频」的仓库地址 `github.com/Water-Run/ft` 于 2026-10-07 打开核对：可公开访问，本片目录在 `videos/standalone/openclaw-hermes/`。发布之前要先把本片的提交推送到这个仓库，片尾的链接指向的才是成片对应的源码。
+2026-10-07 上到哔哩哔哩与 YouTube；下表逐条取自两个频道的公开页面，核对日期 2026-10-07。
+
+| 平台 | 平台上的标题 | 平台显示时长 | 发布时刻 | 链接 |
+|---|---|---|---|---|
+| 哔哩哔哩，合集「科普视频, 但不隶属于任何分类」 | OpenClaw, Hermes和实现 | 8:35（515 秒） | 2026-10-07 20:17 | [BV1DkHk6FEie](https://www.bilibili.com/video/BV1DkHk6FEie) |
+| YouTube | OpenClaw, Hermes, and Implementation | 未核 | 2026-10-07 20:16 | [iULu-c3fAcI](https://www.youtube.com/watch?v=iULu-c3fAcI) |
+
+本机成片的容器时长（读 mp4 的 `mvhd`）是中文 514.60 秒、英文 570.45 秒；哔哩哔哩显示 515 秒，是向上取整。两处的标题一为中文、一为英文，各处上的是不是分别对应中文版与英文版，仓库里没有记录，未核——两版成片都在制作机上，按平台逐版核对需要人工观看。片尾「开源视频」指向的 `github.com/Water-Run/ft` 已于 2026-10-07 打开核对：公开可访问，本片目录在 `videos/standalone/openclaw-hermes/`，对应上面两条链接上的成片。
 
 ## 制作署名与片尾
 
@@ -173,4 +180,4 @@ node kit/tools/check.js  videos/standalone/openclaw-hermes --final
 - 成片没有由制作者连续播放，声音没有试听；观感与听感待人确认（见「需要人来判断的事项」）。
 - star-history.com 的星标采样点没有另一路来源逐点核对，只核对了末点（见 `FACTS.md` 的「未核查」）。
 - 没有运行两个项目的安装程序或服务；片中关于行为的陈述来自固定提交的源码与文档，不是实测。
-- 未发布。
+- 两个平台上分别对应中文版还是英文版未核：哔哩哔哩的标题是中文、YouTube 的标题是英文，仓库里没有记录，需人工观看核对（见「发布」）。

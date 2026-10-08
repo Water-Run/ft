@@ -29,11 +29,12 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/standalone/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
 | [古代来的 Shell：Windows 批处理（.bat）](videos/standalone/windows-batch/) | 中文 | 3:13 | 委托 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ)（2026-10-01） |
 | [120 秒关于什么是 2FA，以及它是怎么工作的](videos/series/in-seconds/two-factor-auth/) | 中文、英文 | 2:00、2:00 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0)（2026-10-06） |
-| [从 WSL 1 到 WSL 2，再到「WSL 3」](videos/standalone/wsl/) | 中文、英文 | 5:33、5:31 | 自制 | 未发布 |
+| [OpenClaw, Hermes 和实现](videos/standalone/openclaw-hermes/) | 中文、英文 | 8:34、9:30 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1DkHk6FEie)、[YouTube](https://www.youtube.com/watch?v=iULu-c3fAcI)（2026-10-07） |
+| [从 WSL 1 到 WSL 2，再到「WSL 3」](videos/standalone/wsl/) | 中文、英文 | 5:33、5:31 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV17VH16mEsJ)、[YouTube](https://www.youtube.com/watch?v=CJdSoeKlXkk)（2026-10-07） |
 
-频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00。MyISAM 与批处理只上了哔哩哔哩。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
+频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00，OpenClaw/Hermes 中文 514.60 秒显示 8:35，WSL 中文 333.083 秒显示 5:34。MyISAM 与批处理只上了哔哩哔哩。两个频道上另有 2025 年的几部项目介绍片（pptx2png、SimpSave、Bat-KV 等），源码不在本仓库，片单里没有。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
 
-全部片单（20 个系列、160 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README，接下来要做哪几部见 [docs/todo.md](docs/todo.md)。
+全部片单（20 个系列、160 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
 
 ## 工作方式
 
@@ -92,7 +93,6 @@ node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条�
 | [pitfalls.md](docs/pitfalls.md) | 踩过的坑 |
 | [retrospectives.md](docs/retrospectives.md) | 各部复盘 |
 | [catalog.md](docs/catalog.md) | 片单 |
-| [todo.md](docs/todo.md) | 待办：接下来要做的片子、顺序、现状与开工命令 |
 | [third-party.md](docs/third-party.md) | 第三方组件与许可 |
 
 在仓库里工作的模型另见 [AGENTS.md](AGENTS.md)。
