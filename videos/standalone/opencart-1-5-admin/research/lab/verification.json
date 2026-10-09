@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-09",
+  "scope": "source survey package; no runtime UI or film verification",
+  "checks": {
+    "json_parse": "passed",
+    "utf8_without_bom": "passed",
+    "relative_document_links": "passed",
+    "case_inventory_byte_identical_rerun": "passed",
+    "upstream_inventory_byte_identical_rerun": "passed",
+    "case_file_hash_readback": "147 matched; 6 missing references rechecked",
+    "privacy_known_identifiers": "passed",
+    "privacy_private_network_and_paths": "passed",
+    "privacy_credential_patterns": "passed",
+    "privacy_url_allowlist": "passed",
+    "manual_review": "reviewed versions, scope, counts, canonical source references and redaction boundaries"
+  },
+  "files_checked_before_this_record": 9,
+  "relative_links_checked": 11,
+  "limitations": [
+    "Static source inspection, not runtime acceptance.",
+    "Pattern scans cannot prove absence of every unknown identifier.",
+    "Private source and downloaded third-party source are not included."
+  ],
+  "files": {
+    "README.md": {
+      "bytes": 4499,
+      "sha256": "4e2d318de298e44074676b74ca150c0b27644196fecedf7e7ffe561345ea4c63"
+    },
+    "research/FACTS.md": {
+      "bytes": 9566,
+      "sha256": "8ef4474b5f5c0f1e9fc317f74c093a4fc7783dad28e1835c85f8a30d040be154"
+    },
+    "research/PAGE-MAP.md": {
+      "bytes": 9347,
+      "sha256": "4e0a806961a0b8bdf5126243d31cb67553858051068a16384b95dd6b1e831cef"
+    },
+    "research/REDACTION.md": {
+      "bytes": 3704,
+      "sha256": "0b9145c63a021ee43a6703b95d2f40d01d9063a0dd7aba4b4e1cb1fb8bdd26a6"
+    },
+    "research/SURVEY.md": {
+      "bytes": 13909,
+      "sha256": "2a25725dc3fa081584af943711dfec49fd5ec052192e9f791c8ae5d7313b289e"
+    },
+    "research/lab/01_case_inventory.py": {
+      "bytes": 12133,
+      "sha256": "12c56013f9616fdccbdcb3b4c4cb418394d3cec4dc2afe49570c3ee7b70c29a7"
+    },
+    "research/lab/02_upstream_inventory.py": {
+      "bytes": 3844,
+      "sha256": "868d3ef198d49a021bf1a0360f8f20f2e639151aac1d9aafc5b5d67cfc8c1c18"
+    },
+    "research/lab/out_01_case_inventory.json": {
+      "bytes": 156566,
+      "sha256": "b0ea70a5aa49333917b4901e9742feb019e278abf96d2d44185e52a063b79d70"
+    },
+    "research/lab/out_02_upstream_inventory.json": {
+      "bytes": 8025,
+      "sha256": "c64ff0d4764b6add16277fb36eb1c9a43a137a98029d705de6e56cbb79106ff4"
+    }
+  }
+}

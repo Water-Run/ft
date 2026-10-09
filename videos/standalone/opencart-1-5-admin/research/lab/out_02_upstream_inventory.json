@@ -1,0 +1,273 @@
+{
+  "source": "official opencart/opencart",
+  "tag": "1.5.6.4",
+  "commit": "31323f8ce70338e88570217f76e1111f7b2bcc8f",
+  "observed_on": "2026-10-09",
+  "method": "downloaded source inspection; no installation or browser rendering",
+  "tag_ref_url": "https://api.github.com/repos/opencart/opencart/git/ref/tags/1.5.6.4",
+  "artifacts": [
+    {
+      "path": "upload/admin/index.php",
+      "url": "https://raw.githubusercontent.com/opencart/opencart/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/admin/index.php",
+      "browser_url": "https://github.com/opencart/opencart/blob/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/admin/index.php",
+      "sha256": "a0771fb779653c78efd042e4bc426a79fe391c9d0a038772779c1f794b947e81",
+      "bytes": 3934,
+      "lines": 166,
+      "anchors": {
+        "version_constant": [
+          3
+        ],
+        "login_preaction": [
+          149
+        ],
+        "permission_preaction": [
+          152
+        ],
+        "route_class": [],
+        "extract_data": [],
+        "template_require": [],
+        "menu": [],
+        "jquery": [],
+        "superfish": [],
+        "filter": [],
+        "table": [],
+        "pagination": []
+      },
+      "declared_version": "1.5.6.4"
+    },
+    {
+      "path": "upload/admin/view/template/common/header.tpl",
+      "url": "https://raw.githubusercontent.com/opencart/opencart/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/admin/view/template/common/header.tpl",
+      "browser_url": "https://github.com/opencart/opencart/blob/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/admin/view/template/common/header.tpl",
+      "sha256": "73fb12e4b65c09fc4e00da2c051d6d9fd3ef2d3ad501e42ffcea281eb0c31d81",
+      "bytes": 14699,
+      "lines": 260,
+      "anchors": {
+        "version_constant": [],
+        "login_preaction": [],
+        "permission_preaction": [],
+        "route_class": [],
+        "extract_data": [],
+        "template_require": [],
+        "menu": [
+          63
+        ],
+        "jquery": [
+          20,
+          21,
+          23,
+          24
+        ],
+        "superfish": [
+          24
+        ],
+        "filter": [],
+        "table": [],
+        "pagination": []
+      },
+      "jquery_scripts": [
+        "view/javascript/jquery/jquery-1.7.1.min.js",
+        "view/javascript/jquery/ui/jquery-ui-1.8.16.custom.min.js",
+        "view/javascript/jquery/tabs.js",
+        "view/javascript/jquery/superfish/js/superfish.js"
+      ],
+      "menu_text_variables": [
+        "text_confirm",
+        "text_dashboard",
+        "text_catalog",
+        "text_category",
+        "text_product",
+        "text_filter",
+        "text_profile",
+        "text_attribute",
+        "text_attribute_group",
+        "text_option",
+        "text_manufacturer",
+        "text_download",
+        "text_review",
+        "text_information",
+        "text_extension",
+        "text_module",
+        "text_shipping",
+        "text_payment",
+        "text_total",
+        "text_feed",
+        "text_openbay_extension",
+        "text_openbay_dashboard",
+        "text_openbay_orders",
+        "text_openbay_items",
+        "text_openbay_ebay",
+        "text_openbay_settings",
+        "text_openbay_links",
+        "text_openbay_order_import",
+        "text_openbay_amazon",
+        "text_openbay_amazonus",
+        "text_sale",
+        "text_order",
+        "text_recurring_profile",
+        "text_return",
+        "text_customer",
+        "text_customer_group",
+        "text_customer_ban_ip",
+        "text_affiliate",
+        "text_coupon",
+        "text_voucher",
+        "text_voucher_theme",
+        "text_paypal_express",
+        "text_paypal_express_search",
+        "text_contact",
+        "text_system",
+        "text_setting",
+        "text_design",
+        "text_layout",
+        "text_banner",
+        "text_users",
+        "text_user",
+        "text_user_group",
+        "text_localisation",
+        "text_language",
+        "text_currency",
+        "text_stock_status",
+        "text_order_status",
+        "text_return_status",
+        "text_return_action",
+        "text_return_reason",
+        "text_country",
+        "text_zone",
+        "text_geo_zone",
+        "text_tax",
+        "text_tax_class",
+        "text_tax_rate",
+        "text_length_class",
+        "text_weight_class",
+        "text_error_log",
+        "text_backup",
+        "text_reports",
+        "text_report_sale_order",
+        "text_report_sale_tax",
+        "text_report_sale_shipping",
+        "text_report_sale_return",
+        "text_report_sale_coupon",
+        "text_report_product_viewed",
+        "text_report_product_purchased",
+        "text_report_customer_online",
+        "text_report_customer_order",
+        "text_report_customer_reward",
+        "text_report_customer_credit",
+        "text_report_affiliate_commission",
+        "text_help",
+        "text_opencart",
+        "text_documentation",
+        "text_support",
+        "text_front",
+        "text_logout"
+      ]
+    },
+    {
+      "path": "upload/admin/view/template/sale/order_list.tpl",
+      "url": "https://raw.githubusercontent.com/opencart/opencart/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/admin/view/template/sale/order_list.tpl",
+      "browser_url": "https://github.com/opencart/opencart/blob/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/admin/view/template/sale/order_list.tpl",
+      "sha256": "9a4191dd7b26314c027ca55f6fbcf5390ccb8e7b4cf1361ad374090715ae441b",
+      "bytes": 9866,
+      "lines": 213,
+      "anchors": {
+        "version_constant": [],
+        "login_preaction": [],
+        "permission_preaction": [],
+        "route_class": [],
+        "extract_data": [],
+        "template_require": [],
+        "menu": [],
+        "jquery": [],
+        "superfish": [],
+        "filter": [
+          61,
+          62,
+          63,
+          65,
+          71,
+          78,
+          79,
+          80,
+          118,
+          120,
+          121,
+          124,
+          126,
+          127,
+          130,
+          132,
+          133,
+          136,
+          138,
+          139,
+          142,
+          144,
+          145,
+          148,
+          150,
+          151,
+          186,
+          190,
+          204
+        ],
+        "table": [
+          21
+        ],
+        "pagination": [
+          110
+        ]
+      }
+    },
+    {
+      "path": "upload/system/engine/action.php",
+      "url": "https://raw.githubusercontent.com/opencart/opencart/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/system/engine/action.php",
+      "browser_url": "https://github.com/opencart/opencart/blob/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/system/engine/action.php",
+      "sha256": "d813d4c6e08288756fe923bc8d739b89be2232dd315768d678d3244aa8af5f0b",
+      "bytes": 1277,
+      "lines": 64,
+      "anchors": {
+        "version_constant": [],
+        "login_preaction": [],
+        "permission_preaction": [],
+        "route_class": [
+          27
+        ],
+        "extract_data": [],
+        "template_require": [],
+        "menu": [],
+        "jquery": [],
+        "superfish": [],
+        "filter": [],
+        "table": [],
+        "pagination": []
+      }
+    },
+    {
+      "path": "upload/system/engine/controller.php",
+      "url": "https://raw.githubusercontent.com/opencart/opencart/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/system/engine/controller.php",
+      "browser_url": "https://github.com/opencart/opencart/blob/31323f8ce70338e88570217f76e1111f7b2bcc8f/upload/system/engine/controller.php",
+      "sha256": "360787ad7486629d51f647ccbfcaeb35410d96b497010c2b164d649b1bed7500",
+      "bytes": 2065,
+      "lines": 95,
+      "anchors": {
+        "version_constant": [],
+        "login_preaction": [],
+        "permission_preaction": [],
+        "route_class": [],
+        "extract_data": [
+          78
+        ],
+        "template_require": [
+          82
+        ],
+        "menu": [],
+        "jquery": [],
+        "superfish": [],
+        "filter": [],
+        "table": [],
+        "pagination": []
+      }
+    }
+  ]
+}
