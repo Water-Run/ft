@@ -1,0 +1,3 @@
+# The preparation report was written on Windows; preserve its raw CRLF bytes.
+# Only CR-at-EOL is exempted, while real trailing whitespace remains checked.
+research/lab/preparation-check.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

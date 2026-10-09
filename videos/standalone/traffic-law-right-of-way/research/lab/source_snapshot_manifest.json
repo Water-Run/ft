@@ -1,0 +1,492 @@
+{
+  "research_date": "2026-10-09",
+  "sources": [
+    {
+      "id": "D01",
+      "url": "https://gaj.pds.gov.cn/contents/18838/749683.html",
+      "captured_at_utc": "2026-10-09T04:28:56.489371+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://gaj.pds.gov.cn/contents/18838/749683.html",
+      "matched_tokens": [
+        "征求意见稿",
+        "2026"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/D01.html",
+      "html_sha256": "3172d553d87b72bd5454ef075ebfd5e81346bf2c224f583e0f690f5b03260fa8",
+      "html_bytes": 10579,
+      "txt_path": "research/_src/official/2026-10-09/D01.txt",
+      "txt_sha256": "b9bdcbafc49046af9f635d4cde13ed3c6966b43b721d51c1093130ede9d17eb6",
+      "txt_bytes": 841
+    },
+    {
+      "id": "D02",
+      "url": "https://gaj.pds.gov.cn/contents/61727/468571.html",
+      "captured_at_utc": "2026-10-09T04:28:56.489729+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://gaj.pds.gov.cn/contents/61727/468571.html",
+      "matched_tokens": [
+        "征求意见稿",
+        "2026"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/D02.html",
+      "html_sha256": "2756d8c00555c7a071374340d1e903b97802a3de92a768ec609fe400f488ec81",
+      "html_bytes": 12709,
+      "txt_path": "research/_src/official/2026-10-09/D02.txt",
+      "txt_sha256": "368026bc0e56feb5c183e69bdf5ec9c6d484696ff7c4ce7dc15a9fba9f2e5bc8",
+      "txt_bytes": 1268
+    },
+    {
+      "id": "G01",
+      "url": "https://gaj.nanjing.gov.cn/jtgl/202603/t20260309_5801932.html",
+      "captured_at_utc": "2026-10-09T04:14:47.677981+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://gaj.nanjing.gov.cn/jtgl/202603/t20260309_5801932.html",
+      "matched_tokens": [
+        "相邻方向两车都直行",
+        "相对方向两车"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G01.html",
+      "html_sha256": "89cef1efc13dbb3f0e8ce1009a8b1a55cb6d7d76bfea6746abe57d051ceb2069",
+      "html_bytes": 15076,
+      "txt_path": "research/_src/official/2026-10-09/G01.txt",
+      "txt_sha256": "719fff35e12b1d68c396a089d5c19e8a36ada37dec4e92249d97b2f2e11591ac",
+      "txt_bytes": 2184
+    },
+    {
+      "id": "G02",
+      "url": "https://www.yancheng.gov.cn/art/2025/11/26/art_34214_4383922.html",
+      "captured_at_utc": "2026-10-09T04:14:48.423349+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.yancheng.gov.cn/art/2025/11/26/art_34214_4383922.html",
+      "matched_tokens": [
+        "红色箭头灯",
+        "红灯时禁止右转"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G02.html",
+      "html_sha256": "05ffa7efb5d4432b39fd0ee70e2c3fa03f902f44d705bfdab0f526fab7a93ed7",
+      "html_bytes": 9800,
+      "txt_path": "research/_src/official/2026-10-09/G02.txt",
+      "txt_sha256": "6a365ede34aae95c5580dbba67ae9bc1ea218062ef6576c10fa1eb73d4ccadfc",
+      "txt_bytes": 1962
+    },
+    {
+      "id": "G03",
+      "url": "https://ycga.yancheng.gov.cn/art/2026/3/9/art_45115_4408535.html",
+      "captured_at_utc": "2026-10-09T04:14:48.993062+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "status": "fetch_failed",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+    },
+    {
+      "id": "G04",
+      "url": "https://jtgl.beijing.gov.cn/jgj/jgxx/94246/95332/545505/index.html",
+      "captured_at_utc": "2026-10-09T04:14:50.204853+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "status": "fetch_failed",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+    },
+    {
+      "id": "G04B",
+      "url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200408_1796928.html",
+      "captured_at_utc": "2026-10-09T04:28:56.488291+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200408_1796928.html",
+      "matched_tokens": [
+        "C05480",
+        "第五十三条"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G04B.html",
+      "html_sha256": "3dce9b252310007efdb361bfe3d41b66e14acf0acc1ccf298d8a593c66a00f31",
+      "html_bytes": 22062,
+      "txt_path": "research/_src/official/2026-10-09/G04B.txt",
+      "txt_sha256": "f67d8a87c70aa52bb8e4a41e275ec40a2219a9a91a54b6fae6bebb9ad317a24d",
+      "txt_bytes": 1774
+    },
+    {
+      "id": "G05",
+      "url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200407_1795552.html",
+      "captured_at_utc": "2026-10-09T04:14:51.893153+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200407_1795552.html",
+      "matched_tokens": [
+        "第五十三条",
+        "不得进入路口"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G05.html",
+      "html_sha256": "a2afa6d53d627de0033655fc32ffb719c5602c25d205ad99e59a269becc175ce",
+      "html_bytes": 21922,
+      "txt_path": "research/_src/official/2026-10-09/G05.txt",
+      "txt_sha256": "e4386855b5a0f3d8d2d700b9d52e4a35d3bbe853861c368f9199ffbabb630778",
+      "txt_bytes": 1701
+    },
+    {
+      "id": "G06",
+      "url": "https://ncjj.nc.gov.cn/ncjtglj/jgdt/202607/d463742d1c6c4a07be707671db3a0e10.shtml",
+      "captured_at_utc": "2026-10-09T04:14:52.102736+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://ncjj.nc.gov.cn/ncjtglj/jgdt/202607/d463742d1c6c4a07be707671db3a0e10.shtml",
+      "matched_tokens": [
+        "第47条",
+        "停车让行"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G06.html",
+      "html_sha256": "08d609abcf281686dfb8c809b877d068784ed0b4bb03e2b6d6f4089a59248498",
+      "html_bytes": 23088,
+      "txt_path": "research/_src/official/2026-10-09/G06.txt",
+      "txt_sha256": "f9e1a9e2bca2f02bd2af911c3176e8fb1d3d6d19f9e7afbd743ec4332fb2b293",
+      "txt_bytes": 2295
+    },
+    {
+      "id": "G07",
+      "url": "https://www.huaihua.gov.cn/sjjd/c100640/202508/5ccf233a85c240b5be064317439da0e9.shtml",
+      "captured_at_utc": "2026-10-09T04:14:52.491910+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.huaihua.gov.cn/sjjd/c100640/202508/5ccf233a85c240b5be064317439da0e9.shtml",
+      "matched_tokens": [
+        "变道",
+        "环形交叉路口"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G07.html",
+      "html_sha256": "bc23899c3619336095e12fcc1c7128726ed4fc94ed3b5e7f2b58b3ba37dbba05",
+      "html_bytes": 40493,
+      "txt_path": "research/_src/official/2026-10-09/G07.txt",
+      "txt_sha256": "d8b2dd11bb838da3d3504ddb80b1124cf692c9dad1ba46f0fd0aaac055302294",
+      "txt_bytes": 4153
+    },
+    {
+      "id": "G08",
+      "url": "https://www.sz.gov.cn/hdjlpt/detail?pid=3329345&via=pc",
+      "captured_at_utc": "2026-10-09T04:14:52.599328+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "status": "fetch_failed",
+      "error": "<urlopen error [SSL: BAD_ECPOINT] bad ecpoint (_ssl.c:1082)>"
+    },
+    {
+      "id": "G09",
+      "url": "https://zfw.changzhou.gov.cn/html/czzf/2025/FLEOQHQF_0702/24551.html",
+      "captured_at_utc": "2026-10-09T04:14:53.791358+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://zfw.changzhou.gov.cn/html/czzf/2025/FLEOQHQF_0702/24551.html",
+      "matched_tokens": [
+        "执行紧急任务",
+        "安全让行"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G09.html",
+      "html_sha256": "1a5a9f835549d3df75dafe9b85d5b45be8186692c7dbe347784dc920fde3b39e",
+      "html_bytes": 7509,
+      "txt_path": "research/_src/official/2026-10-09/G09.txt",
+      "txt_sha256": "223f1cc10d8ff253f1f8842cdf0f4b09241e23ab708a0c9097f0b5906b8931a1",
+      "txt_bytes": 3108
+    },
+    {
+      "id": "G10",
+      "url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200408_1796589.html",
+      "captured_at_utc": "2026-10-09T04:28:56.488924+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200408_1796589.html",
+      "matched_tokens": [
+        "C05519",
+        "第四十一条"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G10.html",
+      "html_sha256": "df65aad5ca95bc64cff30479e7d538acf31a4b66d158abd8bd50d9b85aca6aa9",
+      "html_bytes": 23349,
+      "txt_path": "research/_src/official/2026-10-09/G10.txt",
+      "txt_sha256": "c413de3a9466bb27f958a22c90ebadb5093531a334746eaf64621e220cdab44a",
+      "txt_bytes": 2746
+    },
+    {
+      "id": "G11",
+      "url": "https://www.shanwei.gov.cn/gdsw110/hdhd/ywzsk/jj/content/post_793949.html",
+      "captured_at_utc": "2026-10-09T04:38:22.092643+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.shanwei.gov.cn/gdsw110/hdhd/ywzsk/jj/content/post_793949.html",
+      "matched_tokens": [
+        "路口以外",
+        "交警指挥"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G11.html",
+      "html_sha256": "b654c99028378736d9e45e8dc84f877ddc8ba574d50de6ae1d90a9f134c43ab1",
+      "html_bytes": 37827,
+      "txt_path": "research/_src/official/2026-10-09/G11.txt",
+      "txt_sha256": "1a07b6aa7d16ba263bf7109b9fb82095a450a63538595d0ab5a6b5a15c79c29b",
+      "txt_bytes": 4799
+    },
+    {
+      "id": "G12",
+      "url": "https://www.jcgov.gov.cn/dtxx/zxts/202008/t20200810_959886.shtml",
+      "captured_at_utc": "2026-10-09T04:38:22.093342+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.jcgov.gov.cn/dtxx/zxts/202008/t20200810_959886.shtml",
+      "matched_tokens": [
+        "交警手势",
+        "现场指挥"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G12.html",
+      "html_sha256": "fe851f30cdb66e52edf83c5df2c2590918a4c833e82a9446691e4f59521cfb98",
+      "html_bytes": 42013,
+      "txt_path": "research/_src/official/2026-10-09/G12.txt",
+      "txt_sha256": "03f9b6149a03585eba125d07f3a589828e2f3ec2ab3905becff2cc9313643d46",
+      "txt_bytes": 5920
+    },
+    {
+      "id": "J01",
+      "url": "https://www.court.gov.cn/fabu/xiangqing/74122.html",
+      "captured_at_utc": "2026-10-09T04:14:52.215191+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.court.gov.cn/fabu/xiangqing/74122.html",
+      "matched_tokens": [
+        "裁判要点",
+        "正在通过人行横道"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/J01.html",
+      "html_sha256": "2ba45d201a11379d44099f17fd55d7eb6f0b84f94b0c952b4ab8eabbc3852ff2",
+      "html_bytes": 16617,
+      "txt_path": "research/_src/official/2026-10-09/J01.txt",
+      "txt_sha256": "20196c99ea29d61fd222d63c19bd3094f5ce51d96cd6378f70662ab1e9a2250e",
+      "txt_bytes": 6465
+    },
+    {
+      "id": "J02",
+      "url": "https://www.court.gov.cn/zixun/xiangqing/499051.html",
+      "captured_at_utc": "2026-10-09T04:28:56.690511+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.court.gov.cn/zixun/xiangqing/499051.html",
+      "matched_tokens": [
+        "第三条",
+        "2026年6月30日"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/J02.html",
+      "html_sha256": "c57856e30690d28e7cd142404d58c75e6c9e073fd6de7801deed6fe9c78555f0",
+      "html_bytes": 33534,
+      "txt_path": "research/_src/official/2026-10-09/J02.txt",
+      "txt_sha256": "f44bfd6905ea297ed108dbbbccbbfca22f5711b964979ae498b65f9ff78b39c8",
+      "txt_bytes": 21293
+    },
+    {
+      "id": "L01",
+      "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_79dc72ea621f4a9b8adec327abf5d0e1.html",
+      "captured_at_utc": "2026-10-09T04:14:43.873460+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "status": "fetch_failed",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+    },
+    {
+      "id": "L01V",
+      "url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=90364",
+      "captured_at_utc": "2026-10-09T04:14:43.874019+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=90364",
+      "matched_tokens": [
+        "2021",
+        "现行有效"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/L01V.html",
+      "html_sha256": "3c96b89359a68ed9408ebe2850234a39e6c098cc538bea8d15f9161daf44cc23",
+      "html_bytes": 65648,
+      "txt_path": "research/_src/official/2026-10-09/L01V.txt",
+      "txt_sha256": "8829b167daf1ea58d2c6f3d0e128555b5b6b97d31f83f34f5c89c2ee9f911471",
+      "txt_bytes": 48866
+    },
+    {
+      "id": "L02",
+      "url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=75",
+      "captured_at_utc": "2026-10-09T04:14:43.874423+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=75",
+      "matched_tokens": [
+        "第三十八条",
+        "第四十一条",
+        "第四十四条",
+        "第四十八条",
+        "第四十九条",
+        "第五十一条",
+        "第五十二条",
+        "第五十三条",
+        "第九十一条"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/L02.html",
+      "html_sha256": "562c334d8f712ae603b875dcdb671ac2bf2b0319c3f09e08a7f35d1cb89a3c9b",
+      "html_bytes": 116851,
+      "txt_path": "research/_src/official/2026-10-09/L02.txt",
+      "txt_sha256": "2c84c95fa00a5efe4cf6db4e59c9bfa2501460bb56676430fd5b53dc073ff7e0",
+      "txt_bytes": 44865
+    },
+    {
+      "id": "L02V",
+      "url": "https://xzfg.moj.gov.cn/SearchTitleFront?QueryAll=%E9%81%93%E8%B7%AF%E4%BA%A4%E9%80%9A%E5%AE%89%E5%85%A8%E6%B3%95%E5%AE%9E%E6%96%BD%E6%9D%A1%E4%BE%8BZVING1",
+      "captured_at_utc": "2026-10-09T04:14:43.874790+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://xzfg.moj.gov.cn/SearchTitleFront?QueryAll=%E9%81%93%E8%B7%AF%E4%BA%A4%E9%80%9A%E5%AE%89%E5%85%A8%E6%B3%95%E5%AE%9E%E6%96%BD%E6%9D%A1%E4%BE%8BZVING1",
+      "matched_tokens": [
+        "2017",
+        "现行有效"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/L02V.html",
+      "html_sha256": "9af6aade73769fa8a346b2790f8f196743a5b5c929ca45634416718e36f3d253",
+      "html_bytes": 30629,
+      "txt_path": "research/_src/official/2026-10-09/L02V.txt",
+      "txt_sha256": "d14a41d51096d4c669c5e58ebffb97c375cce96002353cd261b4554dc92a01cb",
+      "txt_bytes": 853
+    },
+    {
+      "id": "L03",
+      "url": "https://jtgl.beijing.gov.cn/jgj/jgxx/flfg/gabgz/123886/index.html",
+      "captured_at_utc": "2026-10-09T04:14:46.489009+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://jtgl.beijing.gov.cn/jgj/jgxx/flfg/gabgz/123886/index.html",
+      "matched_tokens": [
+        "第六十条",
+        "第146号"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/L03.html",
+      "html_sha256": "33c4deca556261e9dba620123b2794ef6dd0fc0e4581eeb6b2583a684e5b926f",
+      "html_bytes": 98787,
+      "txt_path": "research/_src/official/2026-10-09/L03.txt",
+      "txt_sha256": "af6fd9e9d0fb61921d972acef6e639ed48fdcb72d543f5bb202362bbc911bb7f",
+      "txt_bytes": 53948
+    },
+    {
+      "id": "L03V",
+      "url": "https://gat.hunan.gov.cn/gat/jwgk/zfxxgk/xxgkml/fgwj/201710/t20171026_29143719.html",
+      "captured_at_utc": "2026-10-09T04:14:46.982119+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "status": "fetch_failed",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+    },
+    {
+      "id": "S01",
+      "url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=15B1FC09EE1AE92F1A9EC97BA3C9E451",
+      "captured_at_utc": "2026-10-09T04:14:53.991451+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=15B1FC09EE1AE92F1A9EC97BA3C9E451",
+      "matched_tokens": [
+        "GB 5768.2-2022",
+        "第1号修改单"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/S01.html",
+      "html_sha256": "0bb62412188d5d1218383b21d61e935954b9d479d56d2b501ef1b1b11794ff39",
+      "html_bytes": 24138,
+      "txt_path": "research/_src/official/2026-10-09/S01.txt",
+      "txt_sha256": "ebd15e9907edb1e4ae6e44b8ac738c6c6482b98c15beb85b435e1dd847819291",
+      "txt_bytes": 1509
+    },
+    {
+      "id": "S02",
+      "url": "https://std.samr.gov.cn/gb/search/gbDetailed?id=40C4523A3FB81115E06397BE0A0AE2D3",
+      "captured_at_utc": "2026-10-09T04:14:54.199339+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://std.samr.gov.cn/gb/search/gbDetailed?id=40C4523A3FB81115E06397BE0A0AE2D3",
+      "matched_tokens": [
+        "5768.3-2025",
+        "2026-05-01"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/S02.html",
+      "html_sha256": "56ea0284b7538bd220de25a7eaee013ba51b9403056db57810363a42eb74761f",
+      "html_bytes": 71865,
+      "txt_path": "research/_src/official/2026-10-09/S02.txt",
+      "txt_sha256": "40d035c8c102d3193a7fdcfadecba617dee0fe7ef9d3b67bb7ac9f2657d67e0c",
+      "txt_bytes": 3159
+    },
+    {
+      "id": "S03",
+      "url": "https://std.sacinfo.org.cn/gnoc/queryInfo?id=37E78BB21E1B8A2A3F599AA7F7C0DDBD",
+      "captured_at_utc": "2026-10-09T04:14:55.180447+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://std.sacinfo.org.cn/gnoc/queryInfo?id=37E78BB21E1B8A2A3F599AA7F7C0DDBD",
+      "matched_tokens": [
+        "5768.3",
+        "2026-05-01"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/S03.html",
+      "html_sha256": "af0e5bbf00a9831c35544c1c1e456cd2826cb967c6eeba621655b9902583d256",
+      "html_bytes": 59105,
+      "txt_path": "research/_src/official/2026-10-09/S03.txt",
+      "txt_sha256": "27850f0b7f16c36d4efe07d10c2a6650452737f1620f4d72ed3a3f1956df458c",
+      "txt_bytes": 9157
+    },
+    {
+      "id": "S04",
+      "url": "https://std.samr.gov.cn/search/stdPage?q=GB5768.2",
+      "captured_at_utc": "2026-10-09T04:14:55.219902+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://std.samr.gov.cn/search/stdPage?q=GB5768.2",
+      "matched_tokens": [
+        "5768.2"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/S04.html",
+      "html_sha256": "82b50b59ea660cc4b64ec6fdcecbe7c884fd7e687fb3899026f70b7274cca511",
+      "html_bytes": 12356,
+      "txt_path": "research/_src/official/2026-10-09/S04.txt",
+      "txt_sha256": "4dee83ea6f0617f9eb6a63761f31a2c3baad82b6553b64f1f3f72fab35221905",
+      "txt_bytes": 799
+    }
+  ],
+  "note": "HTTP capture and keyword checks are evidence collection, not legal verification."
+}

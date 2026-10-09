@@ -239,7 +239,7 @@
     {"slug": "windows-batch", "title": {"zh": "古代来的 Shell：Windows 批处理（.bat）"}, "status": "delivered", "languages": ["zh"], "note": "场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md；已发布：哔哩哔哩"},
     {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端"}},
-    {"slug": "traffic-law-right-of-way", "title": {"zh": "道交法中的路权"}},
+    {"slug": "traffic-law-right-of-way", "title": {"zh": "道交法中的路权"}, "languages": ["zh"], "status": "in-progress", "mode": "delegated", "maker": "Opus", "note": "2026-10-09 提前开工；仅中文，中国大陆驾驶员普法；取证预研已落盘，Opus 接续中文稿与制作，尚未审稿或成片。"},
     {"slug": "openclaw-opencode-v2", "title": {"zh": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么", "en": "The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us"}, "status": "delivered", "note": "已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md"},
     {"slug": "how-harness-works", "title": {"zh": "给 LLM 长出手——Harness 工程"}},
     {"slug": "notepad-plus-plus", "title": {"zh": "Notepad++ 是如何工作的"}},

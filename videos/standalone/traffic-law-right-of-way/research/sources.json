@@ -1,0 +1,529 @@
+{
+  "scope": "中国大陆全国性道路通行规则；普通机动车驾驶员普法；中文",
+  "research_date": "2026-10-09",
+  "sources": [
+    {
+      "id": "L01",
+      "type": "law",
+      "publisher": "国家市场监督管理总局法律公开库",
+      "title": "中华人民共和国道路交通安全法",
+      "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2023/art_79dc72ea621f4a9b8adec327abf5d0e1.html",
+      "edition_or_date": "2021-04-29 第三次修正",
+      "check_tokens_any": [
+        "第二十二条",
+        "第三十八条",
+        "第四十四条",
+        "第四十七条",
+        "第五十三条",
+        "第七十六条",
+        "第一百一十九条"
+      ],
+      "reviewed_sections": [
+        "修正沿革",
+        "第二十二、二十五、三十五、三十八、四十四、四十五、四十七、五十三、六十二、七十六、一百一十九条"
+      ],
+      "capture_status": "fetch_failed",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "L01V",
+      "type": "law_and_version",
+      "publisher": "商务部全球法规网（来源中国人大网）",
+      "title": "道路交通安全法（2021修正）全文及现行有效信息",
+      "url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=90364",
+      "edition_or_date": "2021-04-29，页面标注现行有效",
+      "check_tokens_any": [
+        "2021",
+        "现行有效"
+      ],
+      "reviewed_sections": [
+        "现行有效状态与2021修正日期",
+        "同 L01 的相关全文条款"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "L02",
+      "type": "regulation",
+      "publisher": "司法部国家行政法规库",
+      "title": "中华人民共和国道路交通安全法实施条例",
+      "url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=75",
+      "edition_or_date": "2017-10-07 修订",
+      "check_tokens_any": [
+        "第三十八条",
+        "第四十一条",
+        "第四十四条",
+        "第四十八条",
+        "第四十九条",
+        "第五十一条",
+        "第五十二条",
+        "第五十三条",
+        "第九十一条"
+      ],
+      "reviewed_sections": [
+        "2017修订沿革",
+        "第三十八至四十四条",
+        "第四十八、四十九条",
+        "第五十一至五十三、五十七条",
+        "第七十、第九十一条"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "L02V",
+      "type": "version",
+      "publisher": "司法部国家行政法规库",
+      "title": "实施条例现行有效检索结果",
+      "url": "https://xzfg.moj.gov.cn/SearchTitleFront?QueryAll=%E9%81%93%E8%B7%AF%E4%BA%A4%E9%80%9A%E5%AE%89%E5%85%A8%E6%B3%95%E5%AE%9E%E6%96%BD%E6%9D%A1%E4%BE%8BZVING1",
+      "edition_or_date": "现行有效；2017-10-07",
+      "check_tokens_any": [
+        "2017",
+        "现行有效"
+      ],
+      "reviewed_sections": [
+        "现行有效检索结果与2017-10-07日期"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "L03",
+      "type": "departmental_rule",
+      "publisher": "北京市公安局公安交通管理局（公安部令原文）",
+      "title": "道路交通事故处理程序规定",
+      "url": "https://jtgl.beijing.gov.cn/jgj/jgxx/flfg/gabgz/123886/index.html",
+      "edition_or_date": "公安部令第146号；2018-05-01施行",
+      "check_tokens_any": [
+        "第六十条",
+        "第146号"
+      ],
+      "reviewed_sections": [
+        "第146号及2018施行日期",
+        "第五十九、六十条；2026最终修改状态未确认"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "L03V",
+      "type": "version",
+      "publisher": "湖南省公安厅",
+      "title": "道路交通事故处理程序规定发布通知",
+      "url": "https://gat.hunan.gov.cn/gat/jwgk/zfxxgk/xxgkml/fgwj/201710/t20171026_29143719.html",
+      "edition_or_date": "2017-07-22发布；2018-05-01施行",
+      "check_tokens_any": [
+        "146",
+        "2018"
+      ],
+      "reviewed_sections": [
+        "发布通知中的第146号、施行日期"
+      ],
+      "capture_status": "fetch_failed",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G01",
+      "type": "official_application",
+      "publisher": "公安部交管局；南京市公安局发布",
+      "title": "近期接连发生路口交通事故 公安部交管局提醒要减速、观察、让行",
+      "url": "https://gaj.nanjing.gov.cn/jtgl/202603/t20260309_5801932.html",
+      "edition_or_date": "2026-03-09",
+      "check_tokens_any": [
+        "相邻方向两车都直行",
+        "相对方向两车"
+      ],
+      "reviewed_sections": [
+        "转弯让直行",
+        "对向右转让左转",
+        "两车直行让右及无控制前提"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G02",
+      "type": "official_application",
+      "publisher": "盐城市公安局办公室；市政府发布",
+      "title": "市区新增10个右转箭头灯",
+      "url": "https://www.yancheng.gov.cn/art/2025/11/26/art_34214_4383922.html",
+      "edition_or_date": "2025-11-26",
+      "check_tokens_any": [
+        "红色箭头灯",
+        "红灯时禁止右转"
+      ],
+      "reviewed_sections": [
+        "圆形红灯右转条件",
+        "禁止右转标志",
+        "右转方向箭头红灯"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G03",
+      "type": "official_application",
+      "publisher": "盐城市公安局",
+      "title": "驾车经过路口要让行，怎么让？",
+      "url": "https://ycga.yancheng.gov.cn/art/2026/3/9/art_45115_4408535.html",
+      "edition_or_date": "2026-03-09",
+      "check_tokens_any": [
+        "停车让行标志",
+        "减速让行标志"
+      ],
+      "reviewed_sections": [
+        "有让行标志的路口",
+        "停车让行与减速让行文字说明",
+        "无控制三类关系；掉头简化未采纳"
+      ],
+      "capture_status": "fetch_failed",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G04",
+      "type": "official_application",
+      "publisher": "北京市公安局公安交通管理局",
+      "title": "阜石路路段实施交替通行",
+      "url": "https://jtgl.beijing.gov.cn/jgj/jgxx/94246/95332/545505/index.html",
+      "edition_or_date": "2017-10-20；官方发布的现场交管实施介绍",
+      "check_tokens_any": [
+        "每车道一辆",
+        "交替通行"
+      ],
+      "reviewed_sections": [
+        "两道并一且排队缓行的实际实施",
+        "条例第五十三条第三款；不采地方处罚与效率数字"
+      ],
+      "capture_status": "fetch_failed",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G05",
+      "type": "official_application",
+      "publisher": "北京市公安局",
+      "title": "C05538：前方受阻违法进入路口的执法依据",
+      "url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200407_1795552.html",
+      "edition_or_date": "2020-04-07",
+      "check_tokens_any": [
+        "第五十三条",
+        "不得进入路口"
+      ],
+      "reviewed_sections": [
+        "C05538违法情形与第五十三条第一款；不采地方罚款"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G06",
+      "type": "official_application",
+      "publisher": "南昌市公安局交通管理局",
+      "title": "多一份礼让，多一份平安",
+      "url": "https://ncjj.nc.gov.cn/ncjtglj/jgdt/202607/d463742d1c6c4a07be707671db3a0e10.shtml",
+      "edition_or_date": "2026-07-14",
+      "check_tokens_any": [
+        "第四十七条",
+        "第47条",
+        "停车让行"
+      ],
+      "reviewed_sections": [
+        "人行横道减速与正在通过时停车",
+        "法第四十七条；不采新闻照片、处罚和身份"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "J01",
+      "type": "judicial_case",
+      "publisher": "最高人民法院",
+      "title": "指导案例90号：机动车让行与正在通过人行横道",
+      "url": "https://www.court.gov.cn/fabu/xiangqing/74122.html",
+      "edition_or_date": "2017-11-15发布；网站2017-11-24",
+      "check_tokens_any": [
+        "裁判要点",
+        "正在通过人行横道"
+      ],
+      "reviewed_sections": [
+        "裁判要点",
+        "裁判理由中正在通过的连续行为；未确认当前指导案例形式效力"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G07",
+      "type": "official_case",
+      "publisher": "怀化市公安局交通管理支队",
+      "title": "2025年道路交通事故预防媒体通气会",
+      "url": "https://www.huaihua.gov.cn/sjjd/c100640/202508/5ccf233a85c240b5be064317439da0e9.shtml",
+      "edition_or_date": "2025-08-22",
+      "check_tokens_any": [
+        "变道",
+        "环形交叉路口"
+      ],
+      "reviewed_sections": [
+        "典型事故案例一：变道影响正常车辆",
+        "典型事故案例二：进入环形路口未让行；不摘当事人和责任作普遍结论"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G08",
+      "type": "official_reply",
+      "publisher": "深圳市公安局",
+      "title": "机动车在人行横道让行与非机动车横过道路答复",
+      "url": "https://www.sz.gov.cn/hdjlpt/detail?pid=3329345&via=pc",
+      "edition_or_date": "2025-12-26答复",
+      "check_tokens_any": [
+        "第四十七条",
+        "下车推行"
+      ],
+      "reviewed_sections": [
+        "深圳公安2025-12-26答复",
+        "法第四十七条与条例第七十条的路段横过机动车道条件"
+      ],
+      "capture_status": "fetch_failed",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G09",
+      "type": "official_application",
+      "publisher": "武进交警；常州市武进区委政法委发布",
+      "title": "警医联动与安全让行紧急车辆",
+      "url": "https://zfw.changzhou.gov.cn/html/czzf/2025/FLEOQHQF_0702/24551.html",
+      "edition_or_date": "2025-07-02",
+      "check_tokens_any": [
+        "执行紧急任务",
+        "安全让行"
+      ],
+      "reviewed_sections": [
+        "执行紧急任务救护车的保障实例",
+        "武进交警主动安全让行提示；不摘救护时间数字"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "S01",
+      "type": "standard_metadata",
+      "publisher": "国家标准全文公开系统",
+      "title": "GB 5768.2-2022 道路交通标志",
+      "url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=15B1FC09EE1AE92F1A9EC97BA3C9E451",
+      "edition_or_date": "2022-10-01实施；附第1号修改单",
+      "check_tokens_any": [
+        "GB 5768.2-2022",
+        "第1号修改单"
+      ],
+      "reviewed_sections": [
+        "标准号、现行状态、实施日期",
+        "第1号修改单存在；未读对应图样"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "S02",
+      "type": "standard_metadata",
+      "publisher": "全国标准信息公共服务平台",
+      "title": "GB 5768.3-2025 道路交通标线",
+      "url": "https://std.samr.gov.cn/gb/search/gbDetailed?id=40C4523A3FB81115E06397BE0A0AE2D3",
+      "edition_or_date": "2025-10-05发布；2026-05-01实施；替代2009版",
+      "check_tokens_any": [
+        "5768.3-2025",
+        "2026-05-01"
+      ],
+      "reviewed_sections": [
+        "标准状态、发布日期、实施日期、替代2009版；未读图样"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "S03",
+      "type": "standard_announcement",
+      "publisher": "国家标准化管理委员会",
+      "title": "2025年第25号国家标准公告",
+      "url": "https://std.sacinfo.org.cn/gnoc/queryInfo?id=37E78BB21E1B8A2A3F599AA7F7C0DDBD",
+      "edition_or_date": "2025-10-05",
+      "check_tokens_any": [
+        "5768.3",
+        "2026-05-01"
+      ],
+      "reviewed_sections": [
+        "2025年第25号公告中GB5768.3-2025行"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "S04",
+      "type": "standard_metadata",
+      "publisher": "全国标准信息公共服务平台",
+      "title": "GB 5768.2及第1号修改单检索",
+      "url": "https://std.samr.gov.cn/search/stdPage?q=GB5768.2",
+      "edition_or_date": "修改单2025-06-30发布；2026-01-01实施",
+      "check_tokens_any": [
+        "5768.2",
+        "第1号修改单"
+      ],
+      "reviewed_sections": [
+        "第1号修改单发布日期和实施日期；未读正文"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G04B",
+      "type": "official_enforcement",
+      "publisher": "北京市公安局",
+      "title": "C05480：违反交替通行规定的执法依据",
+      "url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200408_1796928.html",
+      "edition_or_date": "2020-04-08；只核法律依据，不采用地方罚款",
+      "check_tokens_any": [
+        "C05480",
+        "第五十三条"
+      ],
+      "reviewed_sections": [
+        "C05480违法情形依据；不采地方罚款"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G10",
+      "type": "official_enforcement",
+      "publisher": "北京市公安局",
+      "title": "C05519：违反交通信号灯指示的执法依据",
+      "url": "https://gaj.beijing.gov.cn/wsgs/zqxx/xzcfqd/202004/t20200408_1796589.html",
+      "edition_or_date": "2020-04-08；只核法律依据，不采用地方罚款",
+      "check_tokens_any": [
+        "C05519",
+        "第四十一条"
+      ],
+      "reviewed_sections": [
+        "C05519信号执法依据；条文复引不作独立印证"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "D01",
+      "type": "draft_notice",
+      "publisher": "平顶山市公安局",
+      "title": "关于修改道路交通事故处理程序规定的征求意见公告",
+      "url": "https://gaj.pds.gov.cn/contents/18838/749683.html",
+      "edition_or_date": "2026-05-11；征求意见，非已生效修改",
+      "check_tokens_any": [
+        "征求意见稿",
+        "2026"
+      ],
+      "reviewed_sections": [
+        "2026-05-11征求意见公告；未将附件草案作为生效规则"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "D02",
+      "type": "draft_feedback",
+      "publisher": "平顶山市公安局",
+      "title": "修改道路交通事故处理程序规定征求意见反馈",
+      "url": "https://gaj.pds.gov.cn/contents/61727/468571.html",
+      "edition_or_date": "2026-06-08；反馈不等于公布生效",
+      "check_tokens_any": [
+        "征求意见稿",
+        "2026"
+      ],
+      "reviewed_sections": [
+        "2026-06-08征集反馈；不是公布生效决定"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "J02",
+      "type": "judicial_interpretation",
+      "publisher": "最高人民法院",
+      "title": "道路交通事故损害赔偿司法解释（二）及发布说明",
+      "url": "https://www.court.gov.cn/zixun/xiangqing/499051.html",
+      "edition_or_date": "法释〔2026〕9号；2026-06-30施行",
+      "check_tokens_any": [
+        "第三条",
+        "2026年6月30日"
+      ],
+      "reviewed_sections": [
+        "发布说明关于好意同乘的事故认定与过失层次",
+        "司法解释第三条、第十二条及法释〔2026〕9号"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G11",
+      "type": "official_application",
+      "publisher": "广东交警，汕尾市公安局发布",
+      "title": "闯绿灯也可能违法：堵塞路口实际执法与提示",
+      "url": "https://www.shanwei.gov.cn/gdsw110/hdhd/ywzsk/jj/content/post_793949.html",
+      "edition_or_date": "2022-01-14；只采用堵塞与现场指挥解释，不采用旧记分或地方罚款",
+      "check_tokens_any": [
+        "路口以外",
+        "交警指挥"
+      ],
+      "reviewed_sections": [
+        "绿灯进入堵塞路口的实际执法案例",
+        "堵塞时路口外等候",
+        "服从现场交警指挥；不采旧记分和地方罚款"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "G12",
+      "type": "official_application",
+      "publisher": "晋城交警，晋城市政府发布",
+      "title": "交警现场指挥与信号灯冲突的通行解释",
+      "url": "https://www.jcgov.gov.cn/dtxx/zxts/202008/t20200810_959886.shtml",
+      "edition_or_date": "2020-08-10；只采用第2问，不采用罚款、取证数量或申诉流程",
+      "check_tokens_any": [
+        "交警手势",
+        "现场指挥"
+      ],
+      "reviewed_sections": [
+        "第2问：现场交警指挥与信号灯冲突；其余问答不采"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    }
+  ],
+  "note": "阅读核查与 HTTP 采集状态分别记录；镜像和同一条文转载不算独立证据。"
+}

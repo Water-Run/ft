@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>道交法中的路权</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="scenes"></div>
+  <div id="hud"></div>
+  <div id="caption"><span></span></div>
+</div>
+<script src="vendor/gsap.min.js"></script>
+<!-- 实测时长：每种语言一份，由 kit/tools/tts.js 生成 -->
+<script src="js/timing.zh.js"></script>
+<script src="js/script.js"></script>
+<script src="js/config.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/util.js"></script>
+<!-- 场景：一章一个（或数个）文件，按出场顺序列在这里 -->
+<script src="js/scenes/s0_open.js"></script>
+<script src="js/scenes/s1_demo.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

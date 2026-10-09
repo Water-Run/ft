@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 165 部：已成片 8 部，制作中 0 部，计划中 157 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 8 部，制作中 1 部，计划中 156 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -266,7 +266,7 @@
 | 1 | 古代来的 Shell：Windows 批处理（.bat） | zh | 已成片 | 委托（DeepSeek） | [`windows-batch`](../videos/standalone/windows-batch/) | 场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md；已发布：哔哩哔哩 |
 | 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 已发布：哔哩哔哩与 YouTube |
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | zh + en | 计划中 |  | `opencart-1-5-admin` |  |
-| 4 | 道交法中的路权 | zh + en | 计划中 |  | `traffic-law-right-of-way` |  |
+| 4 | 道交法中的路权 | zh | 制作中 | 委托（Opus） | [`traffic-law-right-of-way`](../videos/standalone/traffic-law-right-of-way/) | 2026-10-09 提前开工；仅中文，中国大陆驾驶员普法；取证预研已落盘，Opus 接续中文稿与制作，尚未审稿或成片。 |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 6 | 给 LLM 长出手——Harness 工程 | zh + en | 计划中 |  | `how-harness-works` |  |
 | 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |

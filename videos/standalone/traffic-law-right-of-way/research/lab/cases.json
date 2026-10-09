@@ -1,0 +1,724 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-10-09",
+  "language": "zh",
+  "type": "self_authored_illustrative_scenarios",
+  "coordinate_convention": "N=上/北，E=右/东，S=下/南，W=左/西；右方相对于车头方向",
+  "legal_authority": "research/FACTS.md",
+  "note": "仅为教学示意；无真实路口、速度、距离或事故责任测量。",
+  "cases": [
+    {
+      "id": "C01",
+      "title_zh": "无控制路口的相邻直行",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R04"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "priority_signs_markings": "none",
+        "queue_or_slow": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "E",
+          "to": "W",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "A进入前停车瞭望，B来自A前进方向右方道路。",
+      "counterexample_zh": "加优先标志后应重新判断，不是屏幕右边车永远先行。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C02",
+      "title_zh": "同一几何增加让行控制",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R03"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "priority_signs_markings": "B进口停车让行，A优先；图样待核",
+        "queue_or_slow": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "E",
+          "to": "W",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "B"
+      ],
+      "proceeds_first": [
+        "A"
+      ],
+      "reason_zh": "优先标志决定本例让行关系。",
+      "counterexample_zh": "不能继续只按C01的右方关系；也不能靠道路画得较宽推定优先。",
+      "compare_with": "C01",
+      "changed_condition": "priority_signs_markings",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C03",
+      "title_zh": "现场交警指挥",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R02"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "明确指令A通行、B停止；不画未经核实的手势",
+        "priority_signs_markings": "none",
+        "queue_or_slow": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "E",
+          "to": "W",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "B"
+      ],
+      "proceeds_first": [
+        "A"
+      ],
+      "reason_zh": "按现场交警指令；图中的文字说明是示意条件。",
+      "counterexample_zh": "不能只因B在右方就推翻现场指挥。",
+      "compare_with": "C01",
+      "changed_condition": "police",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C04",
+      "title_zh": "转弯与对向直行",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R05"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "priority_signs_markings": "none",
+        "queue_or_slow": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "N",
+          "to": "E",
+          "maneuver": "left"
+        }
+      ],
+      "yielding_actors": [
+        "B"
+      ],
+      "proceeds_first": [
+        "A"
+      ],
+      "reason_zh": "无控制路口，B转弯，应让A直行。",
+      "counterexample_zh": "如加入不同放行信号，应重新判断，不能套成直行不看信号。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C05",
+      "title_zh": "对向右转与左转进入同一出口",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R06"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "priority_signs_markings": "none",
+        "queue_or_slow": false,
+        "conflict": "同一E出口，轨迹有冲突"
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "E",
+          "maneuver": "right"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "N",
+          "to": "E",
+          "maneuver": "left"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "同路对向的右转A让左转B。",
+      "counterexample_zh": "不是两辆来自任意方向的转弯车，也不是红灯车辆被赋予通行许可。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C06",
+      "title_zh": "圆形红灯右转遇被放行行人",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R07",
+        "R10",
+        "R11"
+      ],
+      "conditions": {
+        "signals": "A进口圆红灯；东出口过街行人绿灯",
+        "police": "none",
+        "right_turn_prohibited": false,
+        "pedestrian_crossing": true
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "E",
+          "maneuver": "right"
+        },
+        {
+          "id": "P",
+          "kind": "行人",
+          "from": "东出口人行横道南端",
+          "to": "北端",
+          "maneuver": "crossing"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "P"
+      ],
+      "reason_zh": "右转许可有不妨碍被放行行人的条件，A须等候。",
+      "counterexample_zh": "圆红灯右转不等于无需观察和让行。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C07",
+      "title_zh": "改为红色右转箭头",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R07"
+      ],
+      "conditions": {
+        "signals": "A进口右转方向箭头红灯",
+        "police": "none",
+        "pedestrian_crossing": true
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "E",
+          "maneuver": "right"
+        },
+        {
+          "id": "P",
+          "kind": "行人",
+          "from": "东出口人行横道南端",
+          "to": "北端",
+          "maneuver": "crossing"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [],
+      "reason_zh": "A按控制右转方向的红箭头停止；是否还有行人不能消除这个停止要求。",
+      "counterexample_zh": "先只换灯，再演示行人离开：路面清空仍不能闯红右箭头。",
+      "variants": [
+        {
+          "id": "clear_crosswalk",
+          "changed_condition": "pedestrian_crossing",
+          "value": false,
+          "yielding_actors": [
+            "A"
+          ],
+          "proceeds_first": [],
+          "result": "A仍停止，等该方向允许通行。"
+        }
+      ],
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C08",
+      "title_zh": "绿灯但路口堵塞",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R09"
+      ],
+      "conditions": {
+        "signals": "A直行绿灯",
+        "police": "none",
+        "intersection_blocked": true,
+        "exit_space": "无法通过路口，进入将滞留"
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [],
+      "reason_zh": "A在路口外等候，等待位置不能占人行横道。",
+      "counterexample_zh": "绿灯不自动保证出口有空间；不是画成车已进路口再倒退。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C09",
+      "title_zh": "行人正在通过人行横道",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R10"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "pedestrian_crossing": true,
+        "crossing_location": "路段人行横道"
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight"
+        },
+        {
+          "id": "P",
+          "kind": "行人",
+          "from": "人行横道西端",
+          "to": "东端",
+          "maneuver": "crossing"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "P"
+      ],
+      "reason_zh": "行经横道减速，遇行人正在通过停车；因来车被迫暂停仍须结合连续过街行为判断。",
+      "counterexample_zh": "不标未经核实的距离、车道数或罚款。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C10",
+      "title_zh": "普通变道",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R12",
+        "R13"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "lane_reduction": false,
+        "queue_or_slow": false,
+        "lane_change_permitted": true,
+        "target_lane_traffic": "B正常通行"
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "lane_change",
+          "lane": "1",
+          "target_lane": "2",
+          "indicator": true
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight",
+          "lane": "2"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "A变道不得影响目标车道内正常通行的B，打灯不能替代该义务。",
+      "counterexample_zh": "不是所有同向汇入都无条件拉链，也不从图上算事故责任。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C11",
+      "title_zh": "车道减少且排队缓行",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R14"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "lane_reduction": true,
+        "queue_or_slow": true,
+        "lanes_before": 2,
+        "lanes_after": 1
+      },
+      "actors": [
+        {
+          "id": "A1",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "merge",
+          "lane": "L"
+        },
+        {
+          "id": "A2",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "merge",
+          "lane": "L"
+        },
+        {
+          "id": "B1",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "merge",
+          "lane": "R"
+        },
+        {
+          "id": "B2",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "merge",
+          "lane": "R"
+        }
+      ],
+      "yielding_actors": [],
+      "proceeds_first": [],
+      "reason_zh": "每车道一辆依次交替；先展示必要条件。",
+      "counterexample_zh": "法律条文未指定固定由左或右车道开始。本次A1先走只作演示初态。",
+      "teaching_sequence": [
+        "A1",
+        "B1",
+        "A2",
+        "B2"
+      ],
+      "first_lane_is_illustrative": true,
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C12",
+      "title_zh": "执行紧急任务的救护车",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R16"
+      ],
+      "conditions": {
+        "emergency_task": true,
+        "vehicle_type": "救护车",
+        "safe_space_available": true,
+        "maneuver": "确认安全后留出通行空间，不示范闯灯逆行"
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "safe_yield"
+        },
+        {
+          "id": "E",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "emergency_pass"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "E"
+      ],
+      "reason_zh": "其他车辆应安全让行，救护车特殊通行也以确保安全为前提。",
+      "counterexample_zh": "不是车辆外观像救护车便在非紧急任务时永远优先。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C13",
+      "title_zh": "进入环形路口",
+      "tier": "reserve",
+      "illustrative": true,
+      "claim_refs": [
+        "R15"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "priority_signs_markings": "none",
+        "queue_or_slow": false,
+        "roundabout": true
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "E",
+          "to": "环内",
+          "maneuver": "enter_roundabout"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "环内",
+          "to": "N",
+          "maneuver": "circulating"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "准备进入的A让已在环内正常通行的机动车B。",
+      "counterexample_zh": "有信号控制时必须另核放行；不直接套用真实案例的全责。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C14",
+      "title_zh": "障碍路段会车及例外",
+      "tier": "reserve",
+      "illustrative": true,
+      "claim_refs": [
+        "R19"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "center_separation": false,
+        "center_line": false,
+        "obstacle_on": "A侧",
+        "A_entered": false,
+        "B_entered": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "pass_obstacle"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "N",
+          "to": "S",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "默认无障碍方B先；例外条件须单独演示。",
+      "counterexample_zh": "A已入而B未入时不能再机械要求A退出。",
+      "variants": [
+        {
+          "id": "A_already_entered",
+          "changed_condition": "A_entered",
+          "value": true,
+          "yielding_actors": [
+            "B"
+          ],
+          "proceeds_first": [
+            "A"
+          ],
+          "result": "A先行，B尚未驶入。"
+        }
+      ],
+      "evidence_status": "pending_independent_application"
+    },
+    {
+      "id": "C15",
+      "title_zh": "狭坡会车及例外",
+      "tier": "reserve",
+      "illustrative": true,
+      "claim_refs": [
+        "R20"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "center_separation": false,
+        "center_line": false,
+        "narrow_slope": true,
+        "A_uphill_started": false,
+        "B_downhill_midway": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "坡底",
+          "to": "坡顶",
+          "maneuver": "uphill"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "坡顶",
+          "to": "坡底",
+          "maneuver": "downhill"
+        }
+      ],
+      "yielding_actors": [
+        "B"
+      ],
+      "proceeds_first": [
+        "A"
+      ],
+      "reason_zh": "默认上坡A先；若B已行至中途而A未上坡则下坡B先。",
+      "counterexample_zh": "不把所有坡路或已入路段情形都画成上坡绝对优先。",
+      "variants": [
+        {
+          "id": "B_already_midway",
+          "changed_condition": "B_downhill_midway",
+          "value": true,
+          "yielding_actors": [
+            "A"
+          ],
+          "proceeds_first": [
+            "B"
+          ],
+          "result": "B先行，A尚未上坡。"
+        }
+      ],
+      "evidence_status": "pending_independent_application"
+    },
+    {
+      "id": "C16",
+      "title_zh": "允许地点掉头仍不妨碍正常通行",
+      "tier": "reserve",
+      "illustrative": true,
+      "claim_refs": [
+        "R22"
+      ],
+      "conditions": {
+        "signals": "none",
+        "police": "none",
+        "no_u_turn_or_left_turn_prohibition": true,
+        "outside_prohibited_locations": true,
+        "B_normal_traffic": true
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "S",
+          "maneuver": "u_turn"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "N",
+          "to": "S",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "先排除法定禁止地点与标志标线，允许掉头处仍不得妨碍正常通行。",
+      "counterexample_zh": "没有禁止掉头牌不等于桥梁、人行横道等所有地点都可掉头。",
+      "evidence_status": "pending_independent_application"
+    }
+  ]
+}

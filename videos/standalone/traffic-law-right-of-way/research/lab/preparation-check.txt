@@ -1,0 +1,12 @@
+2026-10-09 | Research-stage preparation check | Windows production checkout
+PASS: Chinese-only project metadata.
+PASS: 27 source records; 22 captured pages; 44 raw-file hashes checked.
+PASS: 26 claim anchors, 16 illustrative cases, relative turn geometry and condition comparisons.
+PASS: 29 statutory excerpts tied to source snapshot hashes.
+PASS: generated data.js matches tracked case input byte for byte.
+LIMIT: data integrity only; pending evidence and drawing details remain in FACTS.
+LIMIT: no approved script, TTS, rendered video, legal certification, or audiovisual acceptance is asserted.
+PASS: regenerated data.js unchanged byte for byte on Windows.
+PASS: JavaScript syntax checked for 9 files; no scenes rendered.
+PASS: catalog generator/check and scoped git diff --check.
+Doctor: Node/Python/browser/FFmpeg/fonts available; empty audio expected; other browser profiles preserved.

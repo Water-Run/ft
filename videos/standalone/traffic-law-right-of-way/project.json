@@ -1,0 +1,51 @@
+{
+  "slug": "traffic-law-right-of-way",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "道交法中的路权"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "production": {
+    "mode": "delegated",
+    "maker": "Opus",
+    "prepared_by": "Codex"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26
+    },
+    "max_cue_seconds": 6,
+    "min_font": 28,
+    "margin": 96,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    },
+    "duration": [
+      480,
+      600
+    ]
+  }
+}
