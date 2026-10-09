@@ -24,18 +24,24 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 | 视频 | 语言 | 时长 | 制作 | 发布 |
 |---|---|---|---|---|
-| [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | 未发布；试听项见本片说明 |
+| [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | [哔哩哔哩](https://www.bilibili.com/video/BV1PxHU6KE6G)（2026-10-08） |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](videos/series/database-engines/myisam/) | 中文 | 7:55 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ)（2026-10-01） |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/standalone/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
 | [古代来的 Shell：Windows 批处理（.bat）](videos/standalone/windows-batch/) | 中文 | 3:13 | 委托 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ)（2026-10-01） |
 | [120 秒关于什么是 2FA，以及它是怎么工作的](videos/series/in-seconds/two-factor-auth/) | 中文、英文 | 2:00、2:00 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0)（2026-10-06） |
 | [OpenClaw, Hermes 和实现](videos/standalone/openclaw-hermes/) | 中文、英文 | 8:34、9:30 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1DkHk6FEie)、[YouTube](https://www.youtube.com/watch?v=iULu-c3fAcI)（2026-10-07） |
 | [从 WSL 1 到 WSL 2，再到「WSL 3」](videos/standalone/wsl/) | 中文、英文 | 5:33、5:31 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV17VH16mEsJ)、[YouTube](https://www.youtube.com/watch?v=CJdSoeKlXkk)（2026-10-07） |
-| [OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](videos/standalone/openclaw-opencode-v2/) | 中文、英文 | 9:33、9:47 | 自制 | 未发布；试听项见本片说明 |
+| [OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](videos/standalone/openclaw-opencode-v2/) | 中文、英文 | 9:33、9:47 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1UwHQ6EEVJ)（2026-10-08） |
 
 频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00，OpenClaw/Hermes 中文 514.60 秒显示 8:35，WSL 中文 333.083 秒显示 5:34。MyISAM 与批处理只上了哔哩哔哩。两个频道上另有 2025 年的几部项目介绍片（pptx2png、SimpSave、Bat-KV 等），源码不在本仓库，片单里没有。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
 
-全部片单（20 个系列、160 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
+全部片单（18 个系列、165 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
+
+## 观众反馈
+
+[反馈记录与改进](docs/feedback.md) 收录 2026-10-09 读取的 8 部视频、185 条评论与回复，并区分观众意见、作者自评和策划者评价。本轮首先处理 Lean 4、OpenClaw / OpenCode v2 的叙事偏移，以及 OpenClaw / Hermes 讲解不清的问题，再检查章节卡阅读时间、转场与配乐重复；MyISAM、luainstaller、2FA 保留为正面对照。
+
+[八部评分与成片复盘](docs/reviews/2026-10-09.md) 按策划者给出的 8、8、8、9、4、6、3、4 分逐片记录时间线、抽帧证据与问题诊断，含 [测量数据](docs/reviews/2026-10-09.json)。每次开工填写反馈应用表，结尾以同一问题编号逐项复盘实际成片；流程更新与旧片修复分别记录。
 
 ## 工作方式
 
@@ -93,6 +99,7 @@ node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条�
 | [environment.md](docs/environment.md) | 环境搭建、两台机器分工、空间占用与清理 |
 | [pitfalls.md](docs/pitfalls.md) | 踩过的坑 |
 | [retrospectives.md](docs/retrospectives.md) | 各部复盘 |
+| [feedback.md](docs/feedback.md) | 发布后的评论、策划反馈、叙事与视听改进、待核事项 |
 | [catalog.md](docs/catalog.md) | 片单 |
 | [third-party.md](docs/third-party.md) | 第三方组件与许可 |
 

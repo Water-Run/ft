@@ -26,18 +26,24 @@ Finished films, narration caches and intermediate render files are not tracked.
 
 | Video | Languages | Length | Production | Published |
 |---|---|---|---|---|
-| [Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted](videos/series/in-seconds/lean4/) | Chinese, English | 3:20, 3:20 | Self-made; finished with Codex | Not published; listening checks in the film README |
+| [Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted](videos/series/in-seconds/lean4/) | Chinese, English | 3:20, 3:20 | Self-made; finished with Codex | [Bilibili](https://www.bilibili.com/video/BV1PxHU6KE6G) (2026-10-08) |
 | [How a database engine is implemented: starting from MyISAM](videos/series/database-engines/myisam/) | Chinese | 7:55 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1u2YA65EMQ) (2026-10-01) |
 | [luainstaller: hand your Lua script to someone without Lua](videos/standalone/luainstaller/) | Chinese, English | 7:55, 7:57 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1x6a16sEZx), [YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) (2026-10-02) |
 | [A shell from ancient times: Windows batch files (.bat)](videos/standalone/windows-batch/) | Chinese | 3:13 | Delegated | [Bilibili](https://www.bilibili.com/video/BV1cEaB6tEjQ) (2026-10-01) |
 | [2FA in 120 seconds: what it is and how it works](videos/series/in-seconds/two-factor-auth/) | Chinese, English | 2:00, 2:00 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1whpF6aECJ), [YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) (2026-10-06) |
 | [OpenClaw, Hermes, and Their Implementation](videos/standalone/openclaw-hermes/) | Chinese, English | 8:34, 9:30 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1DkHk6FEie), [YouTube](https://www.youtube.com/watch?v=iULu-c3fAcI) (2026-10-07) |
 | [From WSL 1 to WSL 2, then “WSL 3”](videos/standalone/wsl/) | Chinese, English | 5:33, 5:31 | Self-made | [Bilibili](https://www.bilibili.com/video/BV17VH16mEsJ), [YouTube](https://www.youtube.com/watch?v=CJdSoeKlXkk) (2026-10-07) |
-| [The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us](videos/standalone/openclaw-opencode-v2/) | Chinese, English | 9:33, 9:47 | Self-made | Not published; listening checks in the film README |
+| [The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us](videos/standalone/openclaw-opencode-v2/) | Chinese, English | 9:33, 9:47 | Self-made | [Bilibili](https://www.bilibili.com/video/BV1UwHQ6EEVJ) (2026-10-08) |
 
 Channels: [Bilibili](https://space.bilibili.com/68328330), [YouTube](https://www.youtube.com/@waterrun1978). The lengths above are the durations of the delivered files; Bilibili rounds up when it displays them: MyISAM 475.883 s shows as 7:56, luainstaller (Chinese) 475.227 s as 7:56, the batch-file film 193.025 s as 3:14, and 2FA 120.000 s as 2:00. MyISAM and the batch-file film are on Bilibili only. The channels also carry a few project introduction films from 2025 (pptx2png, SimpSave, Bat-KV and others) whose sources are not in this repository and which are not in the catalog. The per-film publication record (the title on the platform, the time, the collection, the date it was checked) is in each film's `README.md` or `DELIVERY.md`; see section 11 of [workflow.md](docs/workflow.md) for filling it in after publication.
 
-The full catalog (20 series, 160 videos including planned ones) is in [docs/catalog.md](docs/catalog.md); what each series covers, how it is presented and how long an episode is, in that series' own README.
+The full catalog (18 series, 165 videos including planned ones) is in [docs/catalog.md](docs/catalog.md); what each series covers, how it is presented and how long an episode is, in that series' own README.
+
+## Audience feedback
+
+[Feedback and improvements](docs/feedback.md) records 185 comments and replies across eight films, read on 2026-10-09, distinguishing audience feedback, creator replies and planning feedback. The priority is narrative drift in Lean 4 and OpenClaw / OpenCode v2, and unclear explanation in OpenClaw / Hermes, followed by card reading time and repetitive transitions and music. MyISAM, luainstaller and 2FA remain positive references.
+
+[Ratings and film review](docs/reviews/2026-10-09.md) preserves WaterRun's scores of 8, 8, 8, 9, 4, 6, 3 and 4, with timeline analysis, sampled frames and [measurements](docs/reviews/2026-10-09.json). Each production now records how it will address the feedback at the start and reviews the same issue IDs against the delivered film at the end. Updating the process does not mark an existing film as fixed.
 
 ## How it works
 
@@ -95,6 +101,7 @@ node kit/tools/new.js series/<series>/<video>          # an entry already in the
 | [environment.md](docs/environment.md) | Setup, working across two machines, disk usage and cleanup |
 | [pitfalls.md](docs/pitfalls.md) | Pitfalls encountered |
 | [retrospectives.md](docs/retrospectives.md) | Retrospectives of each film |
+| [feedback.md](docs/feedback.md) | Publication feedback, narrative and audiovisual improvements, open checks |
 | [catalog.md](docs/catalog.md) | Catalog |
 | [third-party.md](docs/third-party.md) | Third-party components and licences |
 

@@ -25,5 +25,8 @@ __pycache__/
 Thumbs.db
 desktop.ini
 
+# 成片复盘的原始截帧、源码快照与测量日志；公开结论在 docs/reviews/
+/out/reviews/
+
 # remote.js 同步时在仓库根目录留下的临时文件
 /.lvs-*

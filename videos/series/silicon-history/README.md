@@ -38,4 +38,5 @@
 | 9 | 高通：从 600 到 888 | zh + en | 计划中 | `qualcomm` |
 | 10 | 苹果的芯片自研之路 | zh + en | 计划中 | `apple` |
 | 11 | Windows Server 演变史 | zh + en | 计划中 | `windows-server` |
+| 12 | Linux 内核发展史 | zh + en | 计划中 | `linux-kernel-evolution` |
 <!-- catalog:end -->

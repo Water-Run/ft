@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 162 部：已成片 8 部，制作中 0 部，计划中 154 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 8 部，制作中 0 部，计划中 157 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -117,6 +117,7 @@
 | 9 | 高通：从 600 到 888 | zh + en | 计划中 |  | `qualcomm` |  |
 | 10 | 苹果的芯片自研之路 | zh + en | 计划中 |  | `apple` |  |
 | 11 | Windows Server 演变史 | zh + en | 计划中 |  | `windows-server` |  |
+| 12 | Linux 内核发展史<br>History of the Linux Kernel | zh + en | 计划中 |  | `linux-kernel-evolution` | 电子发展史系列，按 5–15 分钟规划；围绕主要阶段、转折原因与工程取舍展开，区分内核与发行版 |
 
 ### 我们的中国
 
@@ -209,7 +210,7 @@
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`two-factor-auth`](../videos/series/in-seconds/two-factor-auth/) | 已发布：哔哩哔哩与 YouTube |
-| 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`lean4`](../videos/series/in-seconds/lean4/) | 本地出片，未发布；自动闸门通过，发布前试听项见 README |
+| 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`lean4`](../videos/series/in-seconds/lean4/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 |  | `how-opus-animates` |  |
 | 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` |  |
 | 5 | 96 秒了解 LLM 的 Dense 和 MoE：稠密和专家模型 | zh + en | 计划中 |  | `dense-vs-moe` |  |
@@ -224,6 +225,8 @@
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 |  | `frameworks` |  |
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
+| 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分 |
+| 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
 
 ### 游戏物理学
 
@@ -264,7 +267,7 @@
 | 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 已发布：哔哩哔哩与 YouTube |
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | zh + en | 计划中 |  | `opencart-1-5-admin` |  |
 | 4 | 道交法中的路权 | zh + en | 计划中 |  | `traffic-law-right-of-way` |  |
-| 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 未发布 |
+| 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 6 | 给 LLM 长出手——Harness 工程 | zh + en | 计划中 |  | `how-harness-works` |  |
 | 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
 | 8 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |

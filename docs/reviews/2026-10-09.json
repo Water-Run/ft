@@ -1,0 +1,1961 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "language": "zh",
+  "report": "docs/reviews/2026-10-09.md",
+  "artifact_root": "out/reviews/2026-10-09-audience",
+  "score_scale": 10,
+  "excluded": [
+    "dense-moe (not published; user explicitly excluded)"
+  ],
+  "scope": {
+    "total_local_duration_seconds": 2885.418015,
+    "spoken_cues_read": 666,
+    "local_frame_captures": 433,
+    "local_contact_sheets_viewed": 53,
+    "extra_frame_captures": 61,
+    "extra_contact_sheets_viewed": 5,
+    "public_frame_samples": 24,
+    "public_comparison_sheets_viewed": 5,
+    "comments_read": {
+      "roots": 59,
+      "replies": 126,
+      "total": 185,
+      "uploader_posts": 28
+    },
+    "continuous_full_playback": false,
+    "subjective_audio_listening": false,
+    "all_technical_facts_reverified": false,
+    "existing_films_modified": false
+  },
+  "methods": {
+    "frames": "Decoded from delivered MP4. Overview select by frame index every rounded fps*12 frames. Detail at first and middle spoken cue end minus 0.05 s. First chapter card every 0.25 s; targeted extra samples enumerated per film.",
+    "caption_rate": "Same count as kit/tools/stats.js using each script strip(): remove Chinese comma/full stop/colon/semicolon/list comma and whitespace; A-Za-z . @ % ! _ - count 0.4, all other remaining characters count 1; Math.round per cue; divide by measured cue duration; median uses sorted[floor(n/2)].",
+    "audio": "ebur128=peak=true on delivered AAC; 2FA cross-checked with loudnorm input measurements; 2FA and luainstaller also measured using volumedetect; no audio or video file modified.",
+    "chapter_windows": "Conservative source-derived interval from specified text completing entrance animation until that text exits or the card begins occlusion. Excludes entrance/exit; not total visible duration and not an experimentally established reading threshold. First card visually sampled for cross-check."
+  },
+  "chapter_windows": [
+    {
+      "slug": "myisam",
+      "representative": "s1 title row",
+      "settled_relative_start": 1.29,
+      "exit_relative_start": 2.28,
+      "seconds": 0.99,
+      "all_text_seconds": 0.85
+    },
+    {
+      "slug": "windows-batch",
+      "representative": "s1 title",
+      "settled_relative_start": 0.7,
+      "exit_relative_start": 1.05,
+      "seconds": 0.35
+    },
+    {
+      "slug": "luainstaller",
+      "representative": "before title",
+      "settled_relative_start": 1.38,
+      "exit_relative_start": 1.72,
+      "seconds": 0.34
+    },
+    {
+      "slug": "openclaw-hermes",
+      "representative": "kind title",
+      "settled_relative_start": 0.71,
+      "exit_relative_start": 1.85,
+      "seconds": 1.14,
+      "internal_slate_holds": [
+        0.16,
+        0.25,
+        0.28
+      ]
+    },
+    {
+      "slug": "wsl",
+      "representative": "one title",
+      "settled_relative_start": 0.88,
+      "exit_relative_start": 1.8,
+      "seconds": 0.92,
+      "all_text_seconds": 0.85
+    },
+    {
+      "slug": "openclaw-opencode-v2",
+      "representative": "before title",
+      "settled_relative_start": 0.88,
+      "exit_relative_start": 1.75,
+      "seconds": 0.87,
+      "internal_slate_holds": [
+        0.3
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "slug": "myisam",
+      "video": "videos/series/database-engines/myisam/out/myisam-zh-1080p60.mp4",
+      "score": 8,
+      "bytes": 185488782,
+      "sha256": "d0be6bad6807f3b2e55ed65e21aac26d99084e6d89cb1e48101e7bc28de4deeb",
+      "duration": 475.883008,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60.000041042125225,
+      "frames": "28553",
+      "layout_total": 475.8909999999997,
+      "timeline_difference_seconds": -0.007991999999660493,
+      "overview_interval": 11.99999179158057,
+      "overview_frames": 40,
+      "detail_frames": 22,
+      "chapter_frames": 12,
+      "sound_events": {
+        "key": 185,
+        "whoosh": 12,
+        "blip": 1,
+        "pop": 7,
+        "riser": 2,
+        "thud": 13,
+        "chime": 4,
+        "tick": 62,
+        "error": 3
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 110,
+      "speech_seconds": 376.991,
+      "speech_fraction": 0.7921926054565074,
+      "median_caption_units_per_second": 4.385964912280701,
+      "max_caption_units_per_second": 5.305780508237922,
+      "chapters": [
+        {
+          "id": "intro",
+          "start": 0,
+          "end": 33.81,
+          "title": null
+        },
+        {
+          "id": "s1",
+          "start": 33.81,
+          "end": 69.498,
+          "title": [
+            "01",
+            "引擎的位置"
+          ]
+        },
+        {
+          "id": "s2",
+          "start": 69.498,
+          "end": 105.009,
+          "title": [
+            "02",
+            "一张表，三个文件"
+          ]
+        },
+        {
+          "id": "s3",
+          "start": 105.009,
+          "end": 147.677,
+          "title": [
+            "03",
+            "数据文件：定长行"
+          ]
+        },
+        {
+          "id": "s4",
+          "start": 147.677,
+          "end": 186.75099999999995,
+          "title": [
+            "04",
+            "删除与空位"
+          ]
+        },
+        {
+          "id": "s5",
+          "start": 186.75099999999995,
+          "end": 228.39999999999992,
+          "title": [
+            "05",
+            "变长行与碎片"
+          ]
+        },
+        {
+          "id": "s6",
+          "start": 228.39999999999992,
+          "end": 290.9159999999999,
+          "title": [
+            "06",
+            "索引文件与 B 树"
+          ]
+        },
+        {
+          "id": "s7",
+          "start": 290.9159999999999,
+          "end": 343.29299999999984,
+          "title": [
+            "07",
+            "一次查询的全过程"
+          ]
+        },
+        {
+          "id": "s8",
+          "start": 343.29299999999984,
+          "end": 379.45299999999975,
+          "title": [
+            "08",
+            "并发：表锁"
+          ]
+        },
+        {
+          "id": "s9",
+          "start": 379.45299999999975,
+          "end": 429.5779999999997,
+          "title": [
+            "09",
+            "没有日志的代价"
+          ]
+        },
+        {
+          "id": "s10",
+          "start": 429.5779999999997,
+          "end": 475.8909999999997,
+          "title": [
+            "10",
+            "四个问题"
+          ]
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -17,
+        "lra_lu": 4.7,
+        "true_peak_dbtp": -1.4,
+        "music_configuration": "pad"
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": false,
+      "whoosh_events_per_minute_when_enabled": null,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1u2YA65EMQ",
+        "url": "https://www.bilibili.com/video/BV1u2YA65EMQ",
+        "title": "一个数据库引擎是如何实现的?从MyISAM说起",
+        "published_at": "2026-10-01T05:50:03.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "e285eeb6cb4d4bcbd1240ad978d9aa92a118d8917489c6cdcdee069932df63d5",
+        "media_duration_seconds": 475.899,
+        "sample_times_seconds": [
+          108,
+          240,
+          348
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "intro",
+          "cue": "h1",
+          "seconds": 4.328
+        },
+        {
+          "scene": "intro",
+          "cue": "h4",
+          "seconds": 15.517999999999999
+        },
+        {
+          "scene": "s1",
+          "cue": "a1",
+          "seconds": 39.05200000000001
+        },
+        {
+          "scene": "s1",
+          "cue": "a5",
+          "seconds": 53.479000000000006
+        },
+        {
+          "scene": "s2",
+          "cue": "b1",
+          "seconds": 75.44300000000001
+        },
+        {
+          "scene": "s2",
+          "cue": "b5",
+          "seconds": 92.264
+        },
+        {
+          "scene": "s3",
+          "cue": "c1",
+          "seconds": 109.236
+        },
+        {
+          "scene": "s3",
+          "cue": "c7",
+          "seconds": 131.10999999999999
+        },
+        {
+          "scene": "s4",
+          "cue": "d1",
+          "seconds": 153.10199999999998
+        },
+        {
+          "scene": "s4",
+          "cue": "d5",
+          "seconds": 168.54999999999995
+        },
+        {
+          "scene": "s5",
+          "cue": "e1",
+          "seconds": 194.20699999999994
+        },
+        {
+          "scene": "s5",
+          "cue": "e5",
+          "seconds": 207.8209999999999
+        },
+        {
+          "scene": "s6",
+          "cue": "f1",
+          "seconds": 236.3379999999999
+        },
+        {
+          "scene": "s6",
+          "cue": "f8",
+          "seconds": 268.4409999999999
+        },
+        {
+          "scene": "s7",
+          "cue": "g1",
+          "seconds": 296.82199999999983
+        },
+        {
+          "scene": "s7",
+          "cue": "g7",
+          "seconds": 321.99999999999983
+        },
+        {
+          "scene": "s8",
+          "cue": "k1",
+          "seconds": 350.0849999999998
+        },
+        {
+          "scene": "s8",
+          "cue": "k5",
+          "seconds": 362.7109999999998
+        },
+        {
+          "scene": "s9",
+          "cue": "m1",
+          "seconds": 383.5749999999997
+        },
+        {
+          "scene": "s9",
+          "cue": "m6",
+          "seconds": 403.0529999999997
+        },
+        {
+          "scene": "s10",
+          "cue": "n1",
+          "seconds": 435.37999999999965
+        },
+        {
+          "scene": "s10",
+          "cue": "n6",
+          "seconds": 452.00299999999964
+        }
+      ],
+      "chapter_sample_times_seconds": [
+        33.81,
+        34.06,
+        34.31,
+        34.56,
+        34.81,
+        35.06,
+        35.31,
+        35.56,
+        35.81,
+        36.06,
+        36.31,
+        36.56
+      ],
+      "extra_samples": [],
+      "review_source_sha256": {
+        "src/js/script.js": "6fb6219c0b4ac38f6932953b6b9e0fb68a6366c08c44063e181c1d8d7c624baf",
+        "src/js/timing.zh.js": "893ed8226768719560a128b8fba1da113cf743e9ce2f890100dab6ce1c6dca12",
+        "src/js/engine.js": "3517131a7050eb4e01054561159b0cccd0a268da2fb82a3c08daf1e2ce6d786e",
+        "project.json": "5bcbd5659f809c97d8debe523fab63738c7b5bb12e032e2dbfed16a93d7270c1",
+        "build/sfx.zh.json": "3fbbd6921d3a330ab9e302cc828fa3365d23503b19f80f3759cd713f24fa136a"
+      }
+    },
+    {
+      "slug": "windows-batch",
+      "video": "videos/standalone/windows-batch/out/windows-batch-zh-1080p60.mp4",
+      "score": 8,
+      "bytes": 42410715,
+      "sha256": "fd0f91f3a3627c957ab7eb78f194c3ffee135aed81c486587881c368d4f45ea5",
+      "duration": 193.025,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "frames": "11579",
+      "layout_total": 193.02500000000003,
+      "timeline_difference_seconds": -2.842170943040401e-14,
+      "overview_interval": 12,
+      "overview_frames": 17,
+      "detail_frames": 14,
+      "chapter_frames": 12,
+      "sound_events": {
+        "whoosh": 69,
+        "key": 84,
+        "pop": 29,
+        "thud": 39,
+        "blip": 15,
+        "tick": 64,
+        "riser": 1,
+        "beep": 13,
+        "drive": 5,
+        "error": 2,
+        "chime": 4
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 43,
+      "speech_seconds": 159.125,
+      "speech_fraction": 0.8243750809480637,
+      "median_caption_units_per_second": 4.450625869262865,
+      "max_caption_units_per_second": 5.051780752715332,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 20.630999999999997,
+          "title": null
+        },
+        {
+          "id": "s1",
+          "start": 20.630999999999997,
+          "end": 52.82399999999999,
+          "title": [
+            "01",
+            "来历"
+          ]
+        },
+        {
+          "id": "s2",
+          "start": 52.82399999999999,
+          "end": 76.23699999999998,
+          "title": [
+            "02",
+            "回显"
+          ]
+        },
+        {
+          "id": "s3",
+          "start": 76.23699999999998,
+          "end": 107.009,
+          "title": [
+            "03",
+            "逐行读盘"
+          ]
+        },
+        {
+          "id": "s4",
+          "start": 107.009,
+          "end": 133.666,
+          "title": [
+            "04",
+            "读入即替换"
+          ]
+        },
+        {
+          "id": "s5",
+          "start": 133.666,
+          "end": 180.38700000000003,
+          "title": [
+            "05",
+            "今天"
+          ]
+        },
+        {
+          "id": "end",
+          "start": 180.38700000000003,
+          "end": 193.02500000000003,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.5,
+        "lra_lu": 3.3,
+        "true_peak_dbtp": -1.4,
+        "music_configuration": "pulse"
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 21.447998963864784,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1cEaB6tEjQ",
+        "url": "https://www.bilibili.com/video/BV1cEaB6tEjQ",
+        "title": "古代来的Shell--Windows批处理(.bat, .cmd)",
+        "published_at": "2026-10-01T10:10:10.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "d89e70fd58ee40a149dd5e63f4992b624d9c3fbfa699db1830567dbb2f9d4f5a",
+        "media_duration_seconds": 193.045,
+        "sample_times_seconds": [
+          48,
+          96,
+          144
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 3.793
+        },
+        {
+          "scene": "open",
+          "cue": "o3",
+          "seconds": 9.498999999999999
+        },
+        {
+          "scene": "s1",
+          "cue": "a1",
+          "seconds": 25.965999999999994
+        },
+        {
+          "scene": "s1",
+          "cue": "a4",
+          "seconds": 37.928
+        },
+        {
+          "scene": "s2",
+          "cue": "b1",
+          "seconds": 58.770999999999994
+        },
+        {
+          "scene": "s2",
+          "cue": "b3",
+          "seconds": 67.502
+        },
+        {
+          "scene": "s3",
+          "cue": "c1",
+          "seconds": 80.68699999999998
+        },
+        {
+          "scene": "s3",
+          "cue": "c4",
+          "seconds": 93.98
+        },
+        {
+          "scene": "s4",
+          "cue": "d1",
+          "seconds": 113.11300000000001
+        },
+        {
+          "scene": "s4",
+          "cue": "d4",
+          "seconds": 124.51899999999999
+        },
+        {
+          "scene": "s5",
+          "cue": "e1",
+          "seconds": 139.652
+        },
+        {
+          "scene": "s5",
+          "cue": "e6",
+          "seconds": 160.73700000000002
+        },
+        {
+          "scene": "end",
+          "cue": "f1",
+          "seconds": 182.51800000000003
+        },
+        {
+          "scene": "end",
+          "cue": "f2",
+          "seconds": 185.31900000000005
+        }
+      ],
+      "chapter_sample_times_seconds": [
+        20.630999999999997,
+        20.880999999999997,
+        21.130999999999997,
+        21.380999999999997,
+        21.630999999999997,
+        21.880999999999997,
+        22.130999999999997,
+        22.380999999999997,
+        22.630999999999997,
+        22.880999999999997,
+        23.130999999999997,
+        23.380999999999997
+      ],
+      "extra_samples": [],
+      "review_source_sha256": {
+        "src/js/script.js": "bae0cdc27e4614c90159a9b970b3038909fc046f16dddee55faad7ce16ba7099",
+        "src/js/timing.zh.js": "c667cd0244deb89d71af1a6fc95e2621e643da6b0c8480c798836e0997d23444",
+        "src/js/config.js": "835e060a12ed1b3389cea7c82086678300c19a65c2cede1191a97c7182a971b1",
+        "src/js/engine.js": "4b1fed2545f30529169ed1c39533819072ea42ed05f34bf8884a499f5863d9c8",
+        "project.json": "e9339ee1a8dacaee615a010b6895e71e6989e4003720ce69f2418e17f4483ddb",
+        "build/sfx.zh.json": "c313ee5656ee255abe291bebdd4279d58ee32e7a32c9461a73edb263aed88a80"
+      }
+    },
+    {
+      "slug": "luainstaller",
+      "video": "videos/standalone/luainstaller/out/luainstaller-zh-1080p60.mp4",
+      "score": 8,
+      "bytes": 158855117,
+      "sha256": "e5bb95c8881d62021892d33d3bd79d2d762ec9a9bf984356d69ac5a9151d0118",
+      "duration": 475.227,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "frames": "28511",
+      "layout_total": 475.22700000000015,
+      "timeline_difference_seconds": -1.7053025658242404e-13,
+      "overview_interval": 12,
+      "overview_frames": 40,
+      "detail_frames": 16,
+      "chapter_frames": 12,
+      "sound_events": {
+        "thud": 35,
+        "tick": 252,
+        "whoosh": 55,
+        "key": 707,
+        "error": 15,
+        "blip": 58,
+        "pop": 86,
+        "riser": 15,
+        "chime": 18
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 114,
+      "speech_seconds": 375.107,
+      "speech_fraction": 0.7893217346657493,
+      "median_caption_units_per_second": 4.681310767014764,
+      "max_caption_units_per_second": 5.594405594405595,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 20.471,
+          "title": null
+        },
+        {
+          "id": "before",
+          "start": 20.471,
+          "end": 73.579,
+          "title": [
+            "01",
+            "在它之前"
+          ]
+        },
+        {
+          "id": "what",
+          "start": 73.579,
+          "end": 125.75199999999997,
+          "title": [
+            "02",
+            "它做什么"
+          ]
+        },
+        {
+          "id": "install",
+          "start": 125.75199999999997,
+          "end": 163.11899999999994,
+          "title": [
+            "03",
+            "安装"
+          ]
+        },
+        {
+          "id": "use",
+          "start": 163.11899999999994,
+          "end": 282.23699999999997,
+          "title": [
+            "04",
+            "使用"
+          ]
+        },
+        {
+          "id": "scope",
+          "start": 282.23699999999997,
+          "end": 305.45699999999994,
+          "title": [
+            "05",
+            "边界"
+          ]
+        },
+        {
+          "id": "how",
+          "start": 305.45699999999994,
+          "end": 456.8290000000002,
+          "title": [
+            "06",
+            "实现原理"
+          ]
+        },
+        {
+          "id": "outro",
+          "start": 456.8290000000002,
+          "end": 475.22700000000015,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.6,
+        "lra_lu": 3.6,
+        "true_peak_dbtp": -0.9,
+        "music_configuration": "score",
+        "volumedetect_sample_peak_dbfs": -0.9
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 6.94404989615489,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1x6a16sEZx",
+        "url": "https://www.bilibili.com/video/BV1x6a16sEZx",
+        "title": "Luainstaller: 开箱即用的将Lua脚本打包为二进制程序",
+        "published_at": "2026-10-02T02:07:48.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "916181a8aafc77f73ae41f4270f0d361ada79098257bcffe20db4f1da6bb816a",
+        "media_duration_seconds": 475.242,
+        "sample_times_seconds": [
+          108,
+          240,
+          348
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 2.829
+        },
+        {
+          "scene": "open",
+          "cue": "o3",
+          "seconds": 9.293
+        },
+        {
+          "scene": "before",
+          "cue": "b1",
+          "seconds": 25.01
+        },
+        {
+          "scene": "before",
+          "cue": "b9",
+          "seconds": 47.402
+        },
+        {
+          "scene": "what",
+          "cue": "a1",
+          "seconds": 78.511
+        },
+        {
+          "scene": "what",
+          "cue": "a8",
+          "seconds": 101.29299999999998
+        },
+        {
+          "scene": "install",
+          "cue": "i1",
+          "seconds": 129.49399999999994
+        },
+        {
+          "scene": "install",
+          "cue": "i6",
+          "seconds": 148.47699999999995
+        },
+        {
+          "scene": "use",
+          "cue": "u1",
+          "seconds": 170.41999999999993
+        },
+        {
+          "scene": "use",
+          "cue": "u18",
+          "seconds": 225.8559999999999
+        },
+        {
+          "scene": "scope",
+          "cue": "e1",
+          "seconds": 286.00199999999995
+        },
+        {
+          "scene": "scope",
+          "cue": "e5",
+          "seconds": 297.55099999999993
+        },
+        {
+          "scene": "how",
+          "cue": "h1",
+          "seconds": 311.41299999999995
+        },
+        {
+          "scene": "how",
+          "cue": "h18",
+          "seconds": 381.39700000000005
+        },
+        {
+          "scene": "outro",
+          "cue": "f1",
+          "seconds": 461.6990000000002
+        },
+        {
+          "scene": "outro",
+          "cue": "f2",
+          "seconds": 464.26200000000017
+        }
+      ],
+      "chapter_sample_times_seconds": [
+        20.471,
+        20.721,
+        20.971,
+        21.221,
+        21.471,
+        21.721,
+        21.971,
+        22.221,
+        22.471,
+        22.721,
+        22.971,
+        23.221
+      ],
+      "extra_samples": [],
+      "review_source_sha256": {
+        "src/js/script.js": "daf7d97818b3111e6788271b9125cde63a7950807a5630c493a172295af66a07",
+        "src/js/timing.zh.js": "7c8fb652a2357c81ba6413f1e3b576a6d8f832b41c5398c80f0361dab415dada",
+        "src/js/config.js": "ef85a3021d05cb39224ecc075264b191573008aa21d778d8932e03d5a8fe56a6",
+        "src/js/parts.js": "e8fe4f484e8c17da15c3fbf3269a85e88e4abace925a95e4d0197fc7f0cb6c6e",
+        "src/js/engine.js": "036c1b1b80ba85b5f336ec167cf1da570c1b899ef9c14283a7c0521a67be6425",
+        "project.json": "0d2a520e3cc6864ee11cef9210786ae37342e808db3d6638f327d09222a1a348",
+        "build/sfx.zh.json": "07c05e18b3baeed1c00086a610a0de67bcb18aa792d1591f5b7ebde766cb2ca1"
+      }
+    },
+    {
+      "slug": "two-factor-auth",
+      "video": "videos/series/in-seconds/two-factor-auth/out/two-factor-auth-zh-1080p60.mp4",
+      "score": 9,
+      "bytes": 39567195,
+      "sha256": "a5138bdfb73bf2a9e9f35743bb14d151934edfb5f87d8437737046d12fb99aa5",
+      "duration": 120,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "frames": "7200",
+      "layout_total": 120,
+      "timeline_difference_seconds": 0,
+      "overview_interval": 12,
+      "overview_frames": 10,
+      "detail_frames": 8,
+      "chapter_frames": 0,
+      "sound_events": {
+        "tick": 62,
+        "thud": 23,
+        "pop": 32,
+        "whoosh": 20,
+        "chime": 6,
+        "blip": 9,
+        "error": 6,
+        "riser": 3,
+        "key": 20
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 31,
+      "speech_seconds": 89.115,
+      "speech_fraction": 0.742625,
+      "median_caption_units_per_second": 4.845814977973569,
+      "max_caption_units_per_second": 5.3242981606969995,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 30,
+          "title": null
+        },
+        {
+          "id": "seed",
+          "start": 30,
+          "end": 60,
+          "title": null
+        },
+        {
+          "id": "code",
+          "start": 60,
+          "end": 90,
+          "title": null
+        },
+        {
+          "id": "rank",
+          "start": 90,
+          "end": 112.5,
+          "title": null
+        },
+        {
+          "id": "outro",
+          "start": 112.5,
+          "end": 120,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.7,
+        "lra_lu": 4.7,
+        "true_peak_dbtp": -0.6,
+        "music_configuration": "tools/music.py",
+        "loudnorm_input": {
+          "input_i": -16.75,
+          "input_tp": -0.65,
+          "input_lra": 6.4
+        },
+        "volumedetect_sample_peak_dbfs": -0.6
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 10,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1whpF6aECJ",
+        "url": "https://www.bilibili.com/video/BV1whpF6aECJ",
+        "title": "120秒关于什么是2FA, 以及它是如何工作的",
+        "published_at": "2026-10-06T07:59:31.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "e63c7bc9b28d86de0350726abd5795d675737f41230f85545d19d304c878e666",
+        "media_duration_seconds": 120,
+        "sample_times_seconds": [
+          24,
+          72,
+          84
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 2.873
+        },
+        {
+          "scene": "open",
+          "cue": "a1",
+          "seconds": 18.325
+        },
+        {
+          "scene": "seed",
+          "cue": "b1",
+          "seconds": 34.14
+        },
+        {
+          "scene": "seed",
+          "cue": "h1",
+          "seconds": 49.891000000000005
+        },
+        {
+          "scene": "code",
+          "cue": "c1",
+          "seconds": 63.429
+        },
+        {
+          "scene": "code",
+          "cue": "c5",
+          "seconds": 75.99400000000001
+        },
+        {
+          "scene": "rank",
+          "cue": "d1",
+          "seconds": 93.477
+        },
+        {
+          "scene": "rank",
+          "cue": "d4",
+          "seconds": 104.681
+        }
+      ],
+      "chapter_sample_times_seconds": [],
+      "extra_samples": [
+        {
+          "slug": "two-factor-auth",
+          "name": "code-step",
+          "times": [
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72,
+            74,
+            76,
+            78,
+            80,
+            82,
+            84,
+            86,
+            88
+          ]
+        }
+      ],
+      "review_source_sha256": {
+        "src/js/script.js": "d5a89347ef85899e8625645d97ce908a0fc0b8ef01171f6c1575439352374d27",
+        "src/js/timing.zh.js": "74d694fe78c07f9087071c282a161e5d23649386abf0dd1fcca7e0c70174903d",
+        "src/js/config.js": "28dbdadea2ae518df1d0690f3c06c4c3b792045b5a2b4bde5ea95c36cbebdaaf",
+        "src/js/parts.js": "306840dea0ed2aab88e7b267eebb4f2fb6e2fb2d5300d391c9f6c0162f449a13",
+        "src/js/engine.js": "53d213e5d1072cbe4cfc3d661aefa5e0c7d6e0c976afe10b8809f9a01f1ed12c",
+        "project.json": "3dc4983f66144af83f6ed5292be42e505957a67af033d25e4db0b0b5ff5ae79e",
+        "build/sfx.zh.json": "57ebe904f6fedc07c4225575edfd31c653f7340bd66f99a69b6cf04bd53daece",
+        "tools/music.py": "92e93073c2450462b3a94b54dc5cf6272c497c22bd217ffe5953a1ece52d4bda"
+      }
+    },
+    {
+      "slug": "openclaw-hermes",
+      "video": "videos/standalone/openclaw-hermes/out/openclaw-hermes-zh-1080p60.mp4",
+      "score": 4,
+      "bytes": 214296044,
+      "sha256": "118c5f536f3c95394f02af6a2ce9b7f599bab453fd37d504acc0b00a2d74caa0",
+      "duration": 514.6,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "frames": "30876",
+      "layout_total": 514.601,
+      "timeline_difference_seconds": -0.0009999999999763531,
+      "overview_interval": 12,
+      "overview_frames": 43,
+      "detail_frames": 18,
+      "chapter_frames": 12,
+      "sound_events": {
+        "pop": 92,
+        "tick": 177,
+        "blip": 19,
+        "whoosh": 98,
+        "thud": 42,
+        "key": 40,
+        "chime": 1
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 115,
+      "speech_seconds": 427.051,
+      "speech_fraction": 0.8298698017877962,
+      "median_caption_units_per_second": 4.917456972251493,
+      "max_caption_units_per_second": 5.778382053025153,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 20.375,
+          "title": null
+        },
+        {
+          "id": "kind",
+          "start": 20.375,
+          "end": 77.431,
+          "title": [
+            "01",
+            "一类程序|网关型智能体"
+          ]
+        },
+        {
+          "id": "claw",
+          "start": 77.431,
+          "end": 122.118,
+          "title": [
+            "02",
+            "OpenClaw"
+          ]
+        },
+        {
+          "id": "clawi",
+          "start": 122.118,
+          "end": 227.24799999999996,
+          "title": null
+        },
+        {
+          "id": "hermes",
+          "start": 227.24799999999996,
+          "end": 267.8879999999999,
+          "title": [
+            "03",
+            "Hermes Agent"
+          ]
+        },
+        {
+          "id": "hermesi",
+          "start": 267.8879999999999,
+          "end": 368.94999999999993,
+          "title": null
+        },
+        {
+          "id": "both",
+          "start": 368.94999999999993,
+          "end": 417.8659999999999,
+          "title": [
+            "04",
+            "对照|异同"
+          ]
+        },
+        {
+          "id": "mini",
+          "start": 417.8659999999999,
+          "end": 491.291,
+          "title": [
+            "05",
+            "真实链路|Mac mini 与飞书"
+          ]
+        },
+        {
+          "id": "outro",
+          "start": 491.291,
+          "end": 514.601,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.4,
+        "lra_lu": 3.9,
+        "true_peak_dbtp": -1.2,
+        "music_configuration": "tools/music.py"
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 11.426350563544501,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1DkHk6FEie",
+        "url": "https://www.bilibili.com/video/BV1DkHk6FEie",
+        "title": "OpenClaw, Hermes和实现",
+        "published_at": "2026-10-07T12:17:47.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "a1d1407836f79e3b7f52e7c68b87b2c70aa17ea6a845d03714565eaf5bc1fc31",
+        "media_duration_seconds": 514.6,
+        "sample_times_seconds": [
+          120,
+          252,
+          384
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 3.9270000000000005
+        },
+        {
+          "scene": "open",
+          "cue": "o3",
+          "seconds": 12.283
+        },
+        {
+          "scene": "kind",
+          "cue": "k1",
+          "seconds": 25.967
+        },
+        {
+          "scene": "kind",
+          "cue": "k8",
+          "seconds": 53.17600000000001
+        },
+        {
+          "scene": "claw",
+          "cue": "c1",
+          "seconds": 84.179
+        },
+        {
+          "scene": "claw",
+          "cue": "c6",
+          "seconds": 103.502
+        },
+        {
+          "scene": "clawi",
+          "cue": "i1",
+          "seconds": 125.903
+        },
+        {
+          "scene": "clawi",
+          "cue": "i13",
+          "seconds": 178.04399999999993
+        },
+        {
+          "scene": "hermes",
+          "cue": "h1",
+          "seconds": 232.43999999999997
+        },
+        {
+          "scene": "hermes",
+          "cue": "h5",
+          "seconds": 250.55899999999997
+        },
+        {
+          "scene": "hermesi",
+          "cue": "j1",
+          "seconds": 272.4979999999999
+        },
+        {
+          "scene": "hermesi",
+          "cue": "j12",
+          "seconds": 320.5049999999999
+        },
+        {
+          "scene": "both",
+          "cue": "b1",
+          "seconds": 373.5279999999999
+        },
+        {
+          "scene": "both",
+          "cue": "b6",
+          "seconds": 395.1159999999999
+        },
+        {
+          "scene": "mini",
+          "cue": "m1",
+          "seconds": 423.6469999999999
+        },
+        {
+          "scene": "mini",
+          "cue": "m9",
+          "seconds": 457.7029999999999
+        },
+        {
+          "scene": "outro",
+          "cue": "s1",
+          "seconds": 495.736
+        },
+        {
+          "scene": "outro",
+          "cue": "s2",
+          "seconds": 499.967
+        }
+      ],
+      "chapter_sample_times_seconds": [
+        20.375,
+        20.625,
+        20.875,
+        21.125,
+        21.375,
+        21.625,
+        21.875,
+        22.125,
+        22.375,
+        22.625,
+        22.875,
+        23.125
+      ],
+      "extra_samples": [
+        {
+          "slug": "openclaw-hermes",
+          "name": "analysis-slate",
+          "times": [
+            216.449,
+            216.529,
+            216.609,
+            216.689,
+            216.769,
+            216.849,
+            216.929,
+            217.009,
+            217.089,
+            217.169
+          ]
+        },
+        {
+          "slug": "openclaw-hermes",
+          "name": "cache-slate",
+          "times": [
+            308.492,
+            308.592,
+            308.692,
+            308.792,
+            308.892,
+            308.992,
+            309.092,
+            309.192,
+            309.292,
+            309.392,
+            309.492
+          ]
+        }
+      ],
+      "review_source_sha256": {
+        "src/js/script.js": "62b27c6158ce0ce9758a46ec79cd40ce6bf267591ab1a4a6a31c109b4080ab75",
+        "src/js/timing.zh.js": "2ea6c6f12606e7bd04471f9ce22b54e0b6cb3b3c46300705f25cbb1ce6abd9b2",
+        "src/js/config.js": "d2c8cbccea62db70ee98b32a3582e297c0f4056e09867d43d36ef3256da21354",
+        "src/js/parts.js": "de4a2c789a0f36c8677e875fc7aae7efe0e7bf54fd8e76ba60bcc2e9b28f0319",
+        "src/js/engine.js": "53d213e5d1072cbe4cfc3d661aefa5e0c7d6e0c976afe10b8809f9a01f1ed12c",
+        "project.json": "a2c04b5d4b8c91a6bf3cd48def1ccbb533020343fc70668a8d0afe61be24bc85",
+        "build/sfx.zh.json": "7e1fa9b3a623d7f04a636f951a2dbeb4ebacc47075ba6f6560c736a29415ecd5",
+        "tools/music.py": "84ecb20b4bc617c04ee28396242473ba24113d30713ec9cf2ebe95c2ca5b1ad4"
+      }
+    },
+    {
+      "slug": "wsl",
+      "video": "videos/standalone/wsl/out/wsl-zh-1080p60.mp4",
+      "score": 6,
+      "bytes": 111602968,
+      "sha256": "b6beaf61bce4c0ea2883983094ea1ab84d07d655b71f9c123b120c5aad2cca11",
+      "duration": 333.083333,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "frames": "19985",
+      "layout_total": 333.0890000000001,
+      "timeline_difference_seconds": -0.005667000000130429,
+      "overview_interval": 12,
+      "overview_frames": 28,
+      "detail_frames": 12,
+      "chapter_frames": 12,
+      "sound_events": {
+        "thud": 39,
+        "pop": 46,
+        "key": 269,
+        "whoosh": 45,
+        "error": 11,
+        "chime": 14,
+        "blip": 19,
+        "tick": 31,
+        "riser": 2
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 70,
+      "speech_seconds": 270.289,
+      "speech_fraction": 0.8114756075171135,
+      "median_caption_units_per_second": 4.836415362731152,
+      "max_caption_units_per_second": 5.84652862362972,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 42.613,
+          "title": null
+        },
+        {
+          "id": "one",
+          "start": 42.613,
+          "end": 108.011,
+          "title": [
+            "01",
+            "WSL 1：翻译"
+          ]
+        },
+        {
+          "id": "two",
+          "start": 108.011,
+          "end": 165.08700000000002,
+          "title": [
+            "02",
+            "WSL 2：真内核"
+          ]
+        },
+        {
+          "id": "num",
+          "start": 165.08700000000002,
+          "end": 202.042,
+          "title": [
+            "03",
+            "两套版本号"
+          ]
+        },
+        {
+          "id": "three",
+          "start": 202.042,
+          "end": 292.615,
+          "title": [
+            "04",
+            "「WSL 3」：容器"
+          ]
+        },
+        {
+          "id": "end",
+          "start": 292.615,
+          "end": 324.1890000000001,
+          "title": null
+        },
+        {
+          "id": "outro",
+          "start": 324.1890000000001,
+          "end": 333.0890000000001,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.7,
+        "lra_lu": 3.8,
+        "true_peak_dbtp": -1.3,
+        "music_configuration": "score"
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 8.106079567781917,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV17VH16mEsJ",
+        "url": "https://www.bilibili.com/video/BV17VH16mEsJ",
+        "title": "WSL1, 2到\"3\": WSL的第三个大版本来了吗?",
+        "published_at": "2026-10-07T13:16:04.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "8395bfe965970356831fc1a6c29155f3cb7153ef67ef032f3920be0b75db6ec8",
+        "media_duration_seconds": 333.1,
+        "sample_times_seconds": [
+          72,
+          156,
+          240
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 5.083
+        },
+        {
+          "scene": "open",
+          "cue": "o5",
+          "seconds": 21.477999999999998
+        },
+        {
+          "scene": "one",
+          "cue": "a1",
+          "seconds": 48.598
+        },
+        {
+          "scene": "one",
+          "cue": "a9",
+          "seconds": 77.662
+        },
+        {
+          "scene": "two",
+          "cue": "b1",
+          "seconds": 113.845
+        },
+        {
+          "scene": "two",
+          "cue": "b7",
+          "seconds": 138.87099999999998
+        },
+        {
+          "scene": "num",
+          "cue": "v1",
+          "seconds": 171.59400000000002
+        },
+        {
+          "scene": "num",
+          "cue": "v4",
+          "seconds": 185.815
+        },
+        {
+          "scene": "three",
+          "cue": "c1",
+          "seconds": 209.728
+        },
+        {
+          "scene": "three",
+          "cue": "c10",
+          "seconds": 253.24000000000004
+        },
+        {
+          "scene": "end",
+          "cue": "e1",
+          "seconds": 295.637
+        },
+        {
+          "scene": "end",
+          "cue": "e4",
+          "seconds": 310.933
+        }
+      ],
+      "chapter_sample_times_seconds": [
+        42.613,
+        42.863,
+        43.113,
+        43.363,
+        43.613,
+        43.863,
+        44.113,
+        44.363,
+        44.613,
+        44.863,
+        45.113,
+        45.363
+      ],
+      "extra_samples": [],
+      "review_source_sha256": {
+        "src/js/script.js": "8c6245b97e52bb0e048b183ab3518bb4e706e12f63c67247531caa97d35f5057",
+        "src/js/timing.zh.js": "d7709b3ca308ce4a815149700b26f58b32755dc8bed9264a9a69bfffd236b997",
+        "src/js/config.js": "36e93daa4c505046f26de65290a59d465c0239d45e130c305ca06f5b02138bb2",
+        "src/js/parts.js": "51dec1202d6c3d9f9f0c4409c7029286155ec6811cb3f2aae87093e9332013dc",
+        "src/js/engine.js": "53d213e5d1072cbe4cfc3d661aefa5e0c7d6e0c976afe10b8809f9a01f1ed12c",
+        "project.json": "6fdb30e9027c023d2ea8f08d1845e50a04f354849c6556128e0d05ccdc46bf5f",
+        "build/sfx.zh.json": "5f1614d023d9c4c93b0f28ae529915e347869941850c7f5f3fbef794d2fbf5f4"
+      }
+    },
+    {
+      "slug": "lean4",
+      "video": "videos/series/in-seconds/lean4/out/lean4-zh-1080p60.mp4",
+      "score": 3,
+      "bytes": 172417292,
+      "sha256": "34a85c8c5ce1004e62933c278a6dd472d794e756cd9adef20d6efe3e718ff12d",
+      "duration": 200,
+      "width": 1920,
+      "height": 1080,
+      "fps": 60,
+      "frames": "12000",
+      "layout_total": 200,
+      "timeline_difference_seconds": 0,
+      "overview_interval": 12,
+      "overview_frames": 17,
+      "detail_frames": 12,
+      "chapter_frames": 0,
+      "sound_events": {
+        "pop": 45,
+        "thud": 36,
+        "tick": 87,
+        "blip": 17,
+        "riser": 9,
+        "whoosh": 32,
+        "chime": 11,
+        "error": 5,
+        "key": 109
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 42,
+      "speech_seconds": 137.533,
+      "speech_fraction": 0.687665,
+      "median_caption_units_per_second": 5.070993914807302,
+      "max_caption_units_per_second": 5.687520910003346,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 32,
+          "title": null
+        },
+        {
+          "id": "formal",
+          "start": 32,
+          "end": 64,
+          "title": null
+        },
+        {
+          "id": "types",
+          "start": 64,
+          "end": 96,
+          "title": null
+        },
+        {
+          "id": "kernel",
+          "start": 96,
+          "end": 128,
+          "title": null
+        },
+        {
+          "id": "trust",
+          "start": 128,
+          "end": 160,
+          "title": null
+        },
+        {
+          "id": "edge",
+          "start": 160,
+          "end": 192,
+          "title": null
+        },
+        {
+          "id": "outro",
+          "start": 192,
+          "end": 200,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.8,
+        "lra_lu": 9.9,
+        "true_peak_dbtp": -1.2,
+        "music_configuration": "tools/music.py"
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 9.6,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1PxHU6KE6G",
+        "url": "https://www.bilibili.com/video/BV1PxHU6KE6G",
+        "title": "200秒速通Lean4: 什么是形式化证明, 以及它为什么可靠",
+        "published_at": "2026-10-07T23:42:20.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "ba642bb74c26115b957aaee94fa34f9c3ac209b1bf0cecae87b20b27f63037ae",
+        "media_duration_seconds": 200.016,
+        "sample_times_seconds": [
+          48,
+          108,
+          144
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 5.738
+        },
+        {
+          "scene": "open",
+          "cue": "o5",
+          "seconds": 18.96
+        },
+        {
+          "scene": "formal",
+          "cue": "f1",
+          "seconds": 36.644000000000005
+        },
+        {
+          "scene": "formal",
+          "cue": "f4",
+          "seconds": 50.686
+        },
+        {
+          "scene": "types",
+          "cue": "t1",
+          "seconds": 67.288
+        },
+        {
+          "scene": "types",
+          "cue": "t4",
+          "seconds": 77.24100000000001
+        },
+        {
+          "scene": "kernel",
+          "cue": "c1",
+          "seconds": 99.712
+        },
+        {
+          "scene": "kernel",
+          "cue": "c4",
+          "seconds": 112.037
+        },
+        {
+          "scene": "trust",
+          "cue": "r1",
+          "seconds": 131.134
+        },
+        {
+          "scene": "trust",
+          "cue": "r4",
+          "seconds": 142.59099999999998
+        },
+        {
+          "scene": "edge",
+          "cue": "e1",
+          "seconds": 163.619
+        },
+        {
+          "scene": "edge",
+          "cue": "e4",
+          "seconds": 175.655
+        }
+      ],
+      "chapter_sample_times_seconds": [],
+      "extra_samples": [
+        {
+          "slug": "lean4",
+          "name": "types-step",
+          "times": [
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75
+          ]
+        }
+      ],
+      "review_source_sha256": {
+        "src/js/script.js": "d02dba7d317fa2589b14d8845f3ea39b78807b5f012ae3618b711f3304951c9d",
+        "src/js/timing.zh.js": "b4350caeca644c93ddbfcb4744c6e11d9fc2e13d257b5608dcdefde41dfdda4c",
+        "src/js/config.js": "6f4065b040743eeb687fc78f43533295561e4206af004aca8b4c95ab56eab47b",
+        "src/js/parts.js": "d8aed9bdea8fcb3747ab37864b8f9bb128fc040b334149c0c8b150a9b7dae4be",
+        "src/js/engine.js": "53d213e5d1072cbe4cfc3d661aefa5e0c7d6e0c976afe10b8809f9a01f1ed12c",
+        "project.json": "fcb469730b1a8db1f20239e1d50be71ef5c7c264f2e4b2568028ffeab3cf1b2d",
+        "build/sfx.zh.json": "ca284b75d55cb8bc430c3761a5e48df934f806d9cd26f2ebe025ec15fc95a179",
+        "tools/music.py": "9df8d4eed5a956e1e05c34071971c9b3fb7f5105408748338a11176ccfc99f4c"
+      }
+    },
+    {
+      "slug": "openclaw-opencode-v2",
+      "video": "videos/standalone/openclaw-opencode-v2/out/openclaw-opencode-v2-zh-1080p60.mp4",
+      "score": 4,
+      "bytes": 136806056,
+      "sha256": "f70f07fa81a715484d3a9c47d40fa8b02cb8745fd2544bb4fc69d5dc5cbb1b58",
+      "duration": 573.599674,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30.00001702515785,
+      "frames": "17208",
+      "layout_total": 573.6020000000005,
+      "timeline_difference_seconds": -0.0023260000004938775,
+      "overview_interval": 11.999993189940724,
+      "overview_frames": 48,
+      "detail_frames": 16,
+      "chapter_frames": 12,
+      "sound_events": {
+        "tick": 130,
+        "whoosh": 50,
+        "pop": 47,
+        "error": 13,
+        "blip": 17,
+        "thud": 31,
+        "riser": 1,
+        "chime": 8,
+        "key": 60
+      },
+      "audio_measurement_exit": 0,
+      "cue_count": 141,
+      "speech_seconds": 492.902,
+      "speech_fraction": 0.8593135985638652,
+      "median_caption_units_per_second": 4.87359122753579,
+      "max_caption_units_per_second": 5.735354362965998,
+      "chapters": [
+        {
+          "id": "open",
+          "start": 0,
+          "end": 25.242,
+          "title": null
+        },
+        {
+          "id": "before",
+          "start": 25.242,
+          "end": 117.825,
+          "title": [
+            "01",
+            "一年前的 harness"
+          ]
+        },
+        {
+          "id": "claw",
+          "start": 117.825,
+          "end": 210.82600000000002,
+          "title": [
+            "02",
+            "OpenClaw 2.0"
+          ]
+        },
+        {
+          "id": "claw2",
+          "start": 210.82600000000002,
+          "end": 276.64900000000006,
+          "title": null
+        },
+        {
+          "id": "code",
+          "start": 276.64900000000006,
+          "end": 352.1790000000002,
+          "title": [
+            "03",
+            "OpenCode v2"
+          ]
+        },
+        {
+          "id": "crash",
+          "start": 352.1790000000002,
+          "end": 423.14800000000025,
+          "title": null
+        },
+        {
+          "id": "budget",
+          "start": 423.14800000000025,
+          "end": 477.58000000000044,
+          "title": null
+        },
+        {
+          "id": "lessons",
+          "start": 477.58000000000044,
+          "end": 563.3020000000006,
+          "title": [
+            "04",
+            "学到了什么"
+          ]
+        },
+        {
+          "id": "outro",
+          "start": 563.3020000000006,
+          "end": 573.6020000000005,
+          "title": null
+        }
+      ],
+      "audio": {
+        "integrated_lufs": -16.5,
+        "lra_lu": 3.4,
+        "true_peak_dbtp": -1,
+        "music_configuration": "tools/music.py"
+      },
+      "caption_rate_exceeds_6_3": [],
+      "sound_events_note": "Registered events from build/sfx.zh.json; not perceptually counted audible events.",
+      "audio_sfx_enabled": true,
+      "whoosh_events_per_minute_when_enabled": 5.230128495505386,
+      "score_source": "WaterRun; direct conversation rating on 2026-10-09; scale 10; original list order preserved",
+      "public_video": {
+        "bvid": "BV1UwHQ6EEVJ",
+        "url": "https://www.bilibili.com/video/BV1UwHQ6EEVJ",
+        "title": "OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么",
+        "published_at": "2026-10-08T09:46:15.000Z",
+        "quality_code": 16,
+        "quality": "360p",
+        "media_sha256": "104d0e90d17e1b6e7c65236cdcb5de83b311684bc92d52bce8c4f6e45e598799",
+        "media_duration_seconds": 573.599,
+        "sample_times_seconds": [
+          132,
+          288,
+          420
+        ],
+        "sample_visual_result": "Content and captions correspond to the local master at all 3 sampled points; platform watermark/transcoding differences; not a full-frame equivalence test."
+      },
+      "detail_sample_times": [
+        {
+          "scene": "open",
+          "cue": "o1",
+          "seconds": 4.2540000000000004
+        },
+        {
+          "scene": "open",
+          "cue": "o4",
+          "seconds": 13.652000000000001
+        },
+        {
+          "scene": "before",
+          "cue": "a1",
+          "seconds": 30.207
+        },
+        {
+          "scene": "before",
+          "cue": "h3",
+          "seconds": 74.17200000000001
+        },
+        {
+          "scene": "claw",
+          "cue": "c1",
+          "seconds": 123.85400000000001
+        },
+        {
+          "scene": "claw",
+          "cue": "c13",
+          "seconds": 168.64000000000001
+        },
+        {
+          "scene": "claw2",
+          "cue": "c18",
+          "seconds": 216.08900000000003
+        },
+        {
+          "scene": "claw2",
+          "cue": "c23",
+          "seconds": 247.49400000000006
+        },
+        {
+          "scene": "code",
+          "cue": "d1",
+          "seconds": 283.08700000000005
+        },
+        {
+          "scene": "code",
+          "cue": "d7d",
+          "seconds": 319.54200000000014
+        },
+        {
+          "scene": "crash",
+          "cue": "e1",
+          "seconds": 357.5600000000002
+        },
+        {
+          "scene": "crash",
+          "cue": "e9",
+          "seconds": 391.39600000000024
+        },
+        {
+          "scene": "budget",
+          "cue": "f1",
+          "seconds": 426.03100000000023
+        },
+        {
+          "scene": "budget",
+          "cue": "f6",
+          "seconds": 454.4840000000003
+        },
+        {
+          "scene": "lessons",
+          "cue": "l1",
+          "seconds": 483.10100000000045
+        },
+        {
+          "scene": "lessons",
+          "cue": "l12",
+          "seconds": 522.8820000000006
+        }
+      ],
+      "chapter_sample_times_seconds": [
+        25.242,
+        25.492,
+        25.742,
+        25.992,
+        26.242,
+        26.492,
+        26.742,
+        26.992,
+        27.242,
+        27.492,
+        27.742,
+        27.992
+      ],
+      "extra_samples": [
+        {
+          "slug": "openclaw-opencode-v2",
+          "name": "crash-slate",
+          "times": [
+            352.179,
+            352.279,
+            352.379,
+            352.479,
+            352.579,
+            352.679,
+            352.779,
+            352.879,
+            352.979,
+            353.079,
+            353.179,
+            353.279,
+            353.379
+          ]
+        }
+      ],
+      "review_source_sha256": {
+        "src/js/script.js": "ff23a0c2705363ce20c93f72e4bb8802fc8849cbfb01965496e9d31d8a31255e",
+        "src/js/timing.zh.js": "f3276a1877abaebde82881c072fb8c2d899215f1d34e125d644d04c9f2944c2e",
+        "src/js/config.js": "ebbdec60099169ed22ec2af47e34763b225cc00a43a25364f4ab6eed8b6bd5e8",
+        "src/js/parts.js": "2fede09e81b606870f744769aaca405704ec9e7a6ead0defb6a43539695208ba",
+        "src/js/engine.js": "53d213e5d1072cbe4cfc3d661aefa5e0c7d6e0c976afe10b8809f9a01f1ed12c",
+        "project.json": "1b8716d5f6be8cedee7b9be20e553122994e94ff5758d7eddc5afaa40434b2ea",
+        "build/sfx.zh.json": "77ec6cd29a21553a28707432b752e545d1e01971ecc3b942d75bd95f51f1f490",
+        "tools/music.py": "98bf78fae44ac0b84cf5fa81c6a7bd816a34ab2a66e414f8d407abf58c933a36"
+      }
+    }
+  ]
+}
