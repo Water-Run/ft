@@ -39,6 +39,8 @@ Channels: [Bilibili](https://space.bilibili.com/68328330), [YouTube](https://www
 
 The full catalog (18 series, 165 videos including planned ones) is in [docs/catalog.md](docs/catalog.md); what each series covers, how it is presented and how long an episode is, in that series' own README.
 
+[Current production plan](docs/todo.md) records the 16 films scheduled for October 9–15, 2026, the versions being developed, and new topics awaiting dates. Check the plan and actual production state before starting, and update progress at the end.
+
 ## Audience feedback
 
 [Feedback and improvements](docs/feedback.md) records 185 comments and replies across eight films, read on 2026-10-09, distinguishing audience feedback, creator replies and planning feedback. The priority is narrative drift in Lean 4 and OpenClaw / OpenCode v2, and unclear explanation in OpenClaw / Hermes, followed by card reading time and repetitive transitions and music. MyISAM, luainstaller and 2FA remain positive references.
@@ -103,6 +105,7 @@ node kit/tools/new.js series/<series>/<video>          # an entry already in the
 | [retrospectives.md](docs/retrospectives.md) | Retrospectives of each film |
 | [feedback.md](docs/feedback.md) | Publication feedback, narrative and audiovisual improvements, open checks |
 | [catalog.md](docs/catalog.md) | Catalog |
+| [todo.md](docs/todo.md) | Near-term schedule, versions in development, handoff and completion status |
 | [third-party.md](docs/third-party.md) | Third-party components and licences |
 
 Models working in this repository should also read [AGENTS.md](AGENTS.md).

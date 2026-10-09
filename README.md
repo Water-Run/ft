@@ -37,6 +37,8 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 全部片单（18 个系列、165 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
 
+[近期制作计划](docs/todo.md) 记录 2026-10-09–10-15 的 16 部企划、在制版本和待排期的新增选题。开工先核对计划与实际制作状态，收尾后回填进度。
+
 ## 观众反馈
 
 [反馈记录与改进](docs/feedback.md) 收录 2026-10-09 读取的 8 部视频、185 条评论与回复，并区分观众意见、作者自评和策划者评价。本轮首先处理 Lean 4、OpenClaw / OpenCode v2 的叙事偏移，以及 OpenClaw / Hermes 讲解不清的问题，再检查章节卡阅读时间、转场与配乐重复；MyISAM、luainstaller、2FA 保留为正面对照。
@@ -101,6 +103,7 @@ node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条�
 | [retrospectives.md](docs/retrospectives.md) | 各部复盘 |
 | [feedback.md](docs/feedback.md) | 发布后的评论、策划反馈、叙事与视听改进、待核事项 |
 | [catalog.md](docs/catalog.md) | 片单 |
+| [todo.md](docs/todo.md) | 近期排期、在制版本、接续与收尾状态 |
 | [third-party.md](docs/third-party.md) | 第三方组件与许可 |
 
 在仓库里工作的模型另见 [AGENTS.md](AGENTS.md)。

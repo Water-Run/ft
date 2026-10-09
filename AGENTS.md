@@ -6,7 +6,8 @@
 |---|---|
 | 整理制作规范或文档 | [docs/standards.md](docs/standards.md)、[docs/workflow.md](docs/workflow.md)、[docs/review.md](docs/review.md)，再读对应专题 |
 | 制作一部委托片 | 该片目录里的 `AGENTS.md`，再按它给出的阅读顺序往下读 |
-| 自制一部新片 | [docs/workflow.md](docs/workflow.md)、[docs/feedback.md](docs/feedback.md) |
+| 查看近期计划或接续制作 | [docs/todo.md](docs/todo.md)，再核对本片当前源码、时间线、README 与实际输出 |
+| 自制一部新片 | [docs/todo.md](docs/todo.md)、[docs/workflow.md](docs/workflow.md)、[docs/feedback.md](docs/feedback.md) |
 | 整理观众反馈或回填发布记录 | [docs/feedback.md](docs/feedback.md)、[docs/workflow.md](docs/workflow.md) 第 11 节 |
 | 改工具或引擎 | [docs/tools.md](docs/tools.md)、[docs/engine.md](docs/engine.md)、[docs/pitfalls.md](docs/pitfalls.md) |
 | 判断成片是否合格 | [docs/standards.md](docs/standards.md)、[docs/review.md](docs/review.md)、[docs/feedback.md](docs/feedback.md) |
