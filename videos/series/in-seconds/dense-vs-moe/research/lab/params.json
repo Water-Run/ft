@@ -1,0 +1,18 @@
+{
+ "layers": 16,
+ "experts": 64,
+ "topk": 8,
+ "hidden": 2048,
+ "ffn": 1024,
+ "vocab": 50304,
+ "cats": {
+  "embedding": 103022592,
+  "norm": 67584,
+  "experts": 6442450944,
+  "router": 2097152,
+  "attention": 268500992,
+  "lm_head": 103022592
+ },
+ "total": 6919161856,
+ "active": 1282017280
+}

@@ -1,0 +1,48 @@
+{
+ "Qwen/Qwen3.8-27B": {
+  "rev": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+  "params": {
+   "line": 37,
+   "text": "27B"
+  },
+  "layers": {
+   "line": 40,
+   "text": "64"
+  },
+  "layout": {
+   "line": 41,
+   "text": "16 × (3 × (Gated DeltaNet → FFN) → 1 × (Gated Attention → FFN))"
+  },
+  "dense": {
+   "line": 20,
+   "text": "a compact, deployment-friendly dense model"
+  }
+ },
+ "Qwen/Qwen3.8-2.4T-A95B": {
+  "rev": "207bd685a7e3696cfaff12ded7c6a7ea0f88c996",
+  "params": {
+   "line": 46,
+   "text": "2.4T in total and 95B activated"
+  },
+  "layers": {
+   "line": 49,
+   "text": "92"
+  },
+  "layout": {
+   "line": 50,
+   "text": "23 × (3 × (Gated DeltaNet → MoE) → 1 × (Gated Attention → MoE))"
+  },
+  "experts": {
+   "line": 59,
+   "text": "512"
+  },
+  "activated": {
+   "line": 60,
+   "text": "10 Routed + 1 Shared"
+  },
+  "max": {
+   "line": 21,
+   "text": "**Qwen3.8-Max** is the official version based on Qwen3.8-2.4T-A95B with more features, such as vision input & non-thinking support, 1M context length by default, official built-in tools, etc"
+  }
+ }
+}

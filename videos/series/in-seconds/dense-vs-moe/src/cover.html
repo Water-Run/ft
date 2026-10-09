@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     本集的封面随正片取风格派：左边整块红是稠密（全部参数都算），右边白底上是 MoE；黑色粗线分开两边。
+     红的一侧是主题词、秒数（黑块）与片名，白的一侧是取自正片的真实读数：Qwen3.8-Flash-Next 的参数墙（48 层，每层 512 个专家选 10 个）与每个 token 激活的比例。
+     4:3 是重新排布，不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
+  :root { --ink: #0c0d0f; --paper: #f2efe8; --red: #c8231b; --dimp: #6b6964; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; --X: 1000px; }
+  .r43 { --W: 1600px; --H: 1200px; --X: 780px; }
+  #stage { position: relative; background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .abs { position: absolute; white-space: nowrap; }
+  .redp { left: 0; top: 0; width: var(--X); height: var(--H); background: var(--red); }
+  .vline { left: var(--X); top: 0; width: 24px; height: var(--H); background: var(--ink); }
+  .w { font: 900 270px "Inter"; letter-spacing: -.045em; line-height: 1; }
+  .sub { font: 900 96px "Sans SC", "Inter"; line-height: 1.1; }
+  .en .sub { font: 900 64px "Inter"; }
+  .tag { background: var(--ink); color: var(--paper); display: flex; align-items: baseline; padding: 4px 30px 14px; }
+  .tag b { font: 800 160px "Mono"; letter-spacing: -.03em; line-height: 1; }
+  .tag i { font: 900 88px "Inter", "Sans SC"; font-style: normal; margin-left: 16px; line-height: 1; }
+  .learn { font: 900 72px "Sans SC", "Inter"; line-height: 1.12; color: var(--paper); }
+  .pct { font: 800 96px "Mono"; letter-spacing: -.03em; line-height: 1; color: var(--red); }
+  .lab { font: 800 36px "Sans SC", "Inter"; line-height: 1.25; }
+  .note { font: 500 26px "Sans SC", "Inter"; color: var(--dimp); }
+  /* 16:9 */
+  .r169 .wd { left: 70px; top: 56px; color: var(--paper); }
+  .r169 .sd { left: 80px; top: 346px; color: var(--paper); }
+  .r169 .tag { left: 80px; top: 540px; }
+  .r169 .learn { left: 600px; top: 560px; }
+  .r169 .wm { left: 1094px; top: 56px; }
+  .r169 .sm { left: 1104px; top: 346px; }
+  .r169 .pct { left: 1580px; top: 556px; font-size: 84px; }
+  .r169 .lab { left: 1580px; top: 660px; font-size: 32px; }
+  .r169 .note { left: 1104px; top: 862px; }
+  /* 4:3 */
+  .r43 .w { font-size: 210px; }
+  .r43 .wd { left: 64px; top: 70px; color: var(--paper); }
+  .r43 .sd { left: 62px; top: 300px; color: var(--paper); }
+  .r43 .tag { left: 62px; top: 470px; }
+  .r43 .tag b { font-size: 140px; }
+  .r43 .learn { left: 62px; top: 700px; }
+  .r43 .wm { left: 860px; top: 70px; }
+  .r43 .sm { left: 868px; top: 300px; }
+  .r43.en .sm { font-size: 56px; }
+  .r43 .pct { left: 868px; top: 806px; font-size: 84px; }
+  .r43 .lab { left: 1180px; top: 800px; font-size: 32px; }
+  .r43 .note { left: 868px; top: 920px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="abs redp"></div>
+  <div class="abs vline"></div>
+  <div class="abs w wd">Dense</div>
+  <div class="abs sub sd"></div>
+  <div class="abs tag"><b></b><i></i></div>
+  <div class="abs learn"></div>
+  <div class="abs w wm">MoE</div>
+  <div class="abs sub sm"></div>
+  <div class="abs pct"></div>
+  <div class="abs lab"></div>
+  <div class="abs note"></div>
+</div>
+<script src="js/data.js"></script>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
+  document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
+  const FL = DATA.flash, share = (FL.share * 100).toFixed(2) + '%';
+  const TEXT = {
+    zh: { sd: '稠密模型', sm: '混合专家模型', n: '150', unit: '秒', learn: '了解<br>LLM 的', lab: '每个 token<br>激活的参数', note: 'Qwen3.8-Flash-Next · 红格位置为示意' },
+    en: { sd: 'Dense models', sm: wide ? 'Mixture-of-experts<br>models' : 'Mixture-of-<br>experts models', n: '150', unit: 's', learn: 'LLMs<br>in', lab: 'of parameters<br>active per token', note: 'Qwen3.8-Flash-Next · lit positions illustrative' },
+  }[lang];
+  const $ = (s) => document.querySelector(s);
+  $('.sd').innerHTML = TEXT.sd; $('.sm').innerHTML = TEXT.sm; $('.tag b').textContent = TEXT.n; $('.tag i').textContent = TEXT.unit;
+  $('.learn').innerHTML = TEXT.learn; $('.pct').textContent = share; $('.lab').innerHTML = TEXT.lab; $('.note').textContent = TEXT.note;
+  // 参数墙：与正片同一种画法。48 行（层），每行按实际参数比例排开：注意力、混合权重与共享专家 | 路由器（黑线）| 512 个专家，红色每行 10 个
+  // 用 SVG 的矩形画：制作机的无头浏览器里 canvas 偶尔整张画不上（实测连黑框都没有，换成图片也一样），矢量矩形不受影响
+  function drawWall() {
+    const [WX, WY, WW, WH] = wide ? [1104, 540, 420, 290] : [868, 470, 440, 300];
+    const NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
+    sv.setAttribute('width', WW + 24); sv.setAttribute('height', WH + 24); sv.setAttribute('viewBox', `0 0 ${WW + 24} ${WH + 24}`);
+    sv.style.cssText = `position:absolute;left:${WX - 12}px;top:${WY - 12}px`;
+    const rect = (x, y, w, h, fill) => { const r = document.createElementNS(NS, 'rect'); [['x', x], ['y', y], ['width', w], ['height', h], ['fill', fill]].forEach(([k, v]) => r.setAttribute(k, typeof v === 'number' ? v.toFixed(3) : v)); sv.appendChild(r); };
+    rect(0, 0, WW + 24, WH + 24, '#0c0d0f'); rect(12, 12, WW, WH, '#f2efe8');
+    let a = 29 >>> 0; const rnd = () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const rh = WH / FL.layers, LINE = 3;
+    for (let r = 0; r < FL.layers; r++) {
+      const att = ((r % 4 === 3 ? FL.attn[0] : FL.attn[1]) + FL.other + FL.shared) / FL.expert, u = (WW - LINE) / (att + FL.experts), y = 12 + r * rh;
+      rect(12, y, att * u, rh, '#c8231b');
+      const pick = new Set(); while (pick.size < FL.topk) pick.add(Math.floor(rnd() * FL.experts));
+      for (const e of pick) rect(12 + att * u + LINE + e * u, y, Math.max(u, 1.4), rh, '#c8231b');
+      rect(12 + att * u, y, LINE, rh, '#0c0d0f');
+    }
+    for (let r = 1; r < FL.layers; r++) { const th = r % 4 === 0 ? 1.6 : 0.6; rect(12, 12 + r * rh - th / 2, WW, th, '#0c0d0f'); }
+    document.getElementById('stage').appendChild(sv);
+    return Promise.resolve();                         // SVG 同步画上；covers.js 在就绪之后还会再等 0.8 秒才截图
+  }
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('800 40px "Sans SC"', sample), document.fonts.load('500 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+    .then(() => document.fonts.ready).then(drawWall).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

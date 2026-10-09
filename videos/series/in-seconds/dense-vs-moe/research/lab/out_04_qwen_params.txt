@@ -1,0 +1,38 @@
+== Qwen/Qwen3.8-27B @ 1d4bf0f2ff60  shards 18  tensors 1199
+   layers 64  hidden 5120  ffn 17408  (no experts: dense)
+   attention              7,239,780,864
+   embedding              2,542,796,800
+   ffn                   17,112,760,320
+   mtp                      424,699,392
+   other                        660,480
+   vision                   460,730,096
+   total (all tensors)             27,781,427,952
+   language model (no MTP/vision)  26,895,998,464
+== Qwen/Qwen3.8-Flash-Next @ de4b8e4d43b9  shards 131  tensors 1658
+   layers 48  hidden 2560  experts 512  routed/token 10  expert ffn 640  shared expert ffn 640
+   attention              2,703,868,800
+   embedding              1,271,398,400
+   mtp                    2,607,150,848
+   ngram_embedding       51,233,085,475
+   other                    640,624,640
+   routed_experts       120,795,955,200
+   router                    62,914,560
+   shared_expert            236,052,480
+   vision                   448,931,056
+   total (all tensors)            179,999,981,459
+   language model (no MTP/vision) 176,943,899,555
+   active per token = LM - routed + routed*10/512 = 58,507,240,355   (without n-gram embedding 7,274,154,880)
+   active share of LM 0.3307   without n-gram: 0.0579
+== Qwen/Qwen3.8-2.4T-A95B @ 207bd685a7e3  shards 213  tensors 1609
+   layers 92  hidden 8192  experts 512  routed/token 10  expert ffn 2048  shared expert ffn 2048
+   attention             39,895,618,944
+   embedding              4,068,474,880
+   mtp                   26,378,027,520
+   other                      1,515,520
+   routed_experts     2,370,821,947,392
+   router                   385,875,968
+   shared_expert          4,631,265,280
+   total (all tensors)          2,446,182,725,504
+   language model (no MTP/vision) 2,419,804,697,984
+   active per token = LM - routed + routed*10/512 = 95,287,866,752
+   active share of LM 0.0394

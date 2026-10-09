@@ -1,0 +1,22 @@
+== Qwen/Qwen3.8-Flash-Next @ de4b8e4d43b9  README.md
+   L46   params     125B with 6B activated, plus 51B n-gram embedding and 4B MTP
+   L50   layers     48
+   L51   layout     12 × (3 × (Gated DeltaNet → MoE) → 1 × (Qwen Sparse Attention → MoE))
+   L63   experts    512
+   L64   activated  10 Routed + 1 Shared
+   L19   official   **Qwen3.8-Flash** is the official version based on Qwen3.8-Flash-Next
+   表头参数行： # Params Flash-Next 125B / 27B 27B；# Activated params Flash-Next 6B / 27B 27B；# N-gram embedding params Flash-Next 51B / 27B --
+   DeepSWE 1.1                        Flash-Next  58.7   27B  42.2
+   SWE-bench Pro                      Flash-Next  62.5   27B  61.7
+   SWE-bench Multilingual             Flash-Next  81.0   27B  73.8
+   NL2Repo-Bench                      Flash-Next  48.1   27B  42.3
+   CoWorkBench                        Flash-Next  73.9   27B  70.7
+   JobBench                           Flash-Next  55.7   27B  33.4
+   Agents' Last Exam                  Flash-Next  24.3   27B  20.4   (Pass@1)
+   Toolathlon Verified (Pass@1)       Flash-Next  73.5   27B  67.1
+   IFBench                            Flash-Next  81.3   27B  79.5
+   GPQA Diamond                       Flash-Next  91.7   27B  89.2
+   HLE                                Flash-Next  35.9   27B  30.8
+   LiveCodeBench v6                   Flash-Next  91.9   27B  90.3
+   语言任务 12 项，Flash-Next 全部高于 27B
+   多模态表 10 项（按每格第一个分数）：高于 9，持平 1（OSWorld 2.0），低于 0

@@ -1,0 +1,61 @@
+{
+ "Qwen/Qwen3.8-27B": {
+  "repo": "Qwen/Qwen3.8-27B",
+  "rev": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+  "cats": {
+   "other": 660480,
+   "attention": 7239780864,
+   "ffn": 17112760320,
+   "vision": 460730096,
+   "embedding": 2542796800,
+   "mtp": 424699392
+  },
+  "total": 27781427952,
+  "lm": 26895998464,
+  "layers": 64,
+  "experts": null,
+  "topk": null
+ },
+ "Qwen/Qwen3.8-Flash-Next": {
+  "repo": "Qwen/Qwen3.8-Flash-Next",
+  "rev": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+  "cats": {
+   "other": 640624640,
+   "attention": 2703868800,
+   "vision": 448931056,
+   "routed_experts": 120795955200,
+   "router": 62914560,
+   "shared_expert": 236052480,
+   "ngram_embedding": 51233085475,
+   "mtp": 2607150848,
+   "embedding": 1271398400
+  },
+  "total": 179999981459,
+  "lm": 176943899555,
+  "layers": 48,
+  "experts": 512,
+  "topk": 10,
+  "active": 58507240355,
+  "active_no_ngram": 7274154880
+ },
+ "Qwen/Qwen3.8-2.4T-A95B": {
+  "repo": "Qwen/Qwen3.8-2.4T-A95B",
+  "rev": "207bd685a7e3696cfaff12ded7c6a7ea0f88c996",
+  "cats": {
+   "routed_experts": 2370821947392,
+   "other": 1515520,
+   "attention": 39895618944,
+   "router": 385875968,
+   "shared_expert": 4631265280,
+   "embedding": 4068474880,
+   "mtp": 26378027520
+  },
+  "total": 2446182725504,
+  "lm": 2419804697984,
+  "layers": 92,
+  "experts": 512,
+  "topk": 10,
+  "active": 95287866752,
+  "active_no_ngram": 95287866752
+ }
+}

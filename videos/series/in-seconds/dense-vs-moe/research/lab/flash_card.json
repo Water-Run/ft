@@ -1,0 +1,128 @@
+{
+ "repo": "Qwen/Qwen3.8-Flash-Next",
+ "rev": "de4b8e4d43b917e7706784d8bb445c9af86a3540",
+ "params": {
+  "line": 46,
+  "text": "125B with 6B activated, plus 51B n-gram embedding and 4B MTP"
+ },
+ "layers": {
+  "line": 50,
+  "text": "48"
+ },
+ "layout": {
+  "line": 51,
+  "text": "12 × (3 × (Gated DeltaNet → MoE) → 1 × (Qwen Sparse Attention → MoE))"
+ },
+ "experts": {
+  "line": 63,
+  "text": "512"
+ },
+ "activated": {
+  "line": 64,
+  "text": "10 Routed + 1 Shared"
+ },
+ "official": {
+  "line": 19,
+  "text": "**Qwen3.8-Flash** is the official version based on Qwen3.8-Flash-Next"
+ },
+ "head": {
+  "# Params": [
+   "125B",
+   "27B"
+  ],
+  "# Activated params": [
+   "6B",
+   "27B"
+  ],
+  "# N-gram embedding params": [
+   "51B",
+   "--"
+  ]
+ },
+ "scores": [
+  {
+   "bench": "DeepSWE 1.1",
+   "cap": "Agentic coding",
+   "flash": 58.7,
+   "q27": 42.2,
+   "metric": null
+  },
+  {
+   "bench": "SWE-bench Pro",
+   "cap": "Agentic coding",
+   "flash": 62.5,
+   "q27": 61.7,
+   "metric": null
+  },
+  {
+   "bench": "SWE-bench Multilingual",
+   "cap": "Multilingual software engineering",
+   "flash": 81.0,
+   "q27": 73.8,
+   "metric": null
+  },
+  {
+   "bench": "NL2Repo-Bench",
+   "cap": "Repo-level code generation",
+   "flash": 48.1,
+   "q27": 42.3,
+   "metric": null
+  },
+  {
+   "bench": "CoWorkBench",
+   "cap": "Long-horizon office work",
+   "flash": 73.9,
+   "q27": 70.7,
+   "metric": null
+  },
+  {
+   "bench": "JobBench",
+   "cap": "Professional job tasks",
+   "flash": 55.7,
+   "q27": 33.4,
+   "metric": null
+  },
+  {
+   "bench": "Agents' Last Exam",
+   "cap": "Frontier agentic tasks",
+   "flash": 24.3,
+   "q27": 20.4,
+   "metric": "Pass@1"
+  },
+  {
+   "bench": "Toolathlon Verified (Pass@1)",
+   "cap": "Real-world tool use",
+   "flash": 73.5,
+   "q27": 67.1,
+   "metric": null
+  },
+  {
+   "bench": "IFBench",
+   "cap": "Instruction following",
+   "flash": 81.3,
+   "q27": 79.5,
+   "metric": null
+  },
+  {
+   "bench": "GPQA Diamond",
+   "cap": "Scientific reasoning",
+   "flash": 91.7,
+   "q27": 89.2,
+   "metric": null
+  },
+  {
+   "bench": "HLE",
+   "cap": "Multidisciplinary reasoning",
+   "flash": 35.9,
+   "q27": 30.8,
+   "metric": null
+  },
+  {
+   "bench": "LiveCodeBench v6",
+   "cap": "Competitive coding",
+   "flash": 91.9,
+   "q27": 90.3,
+   "metric": null
+  }
+ ]
+}

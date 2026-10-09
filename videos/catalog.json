@@ -189,7 +189,7 @@
         {"slug": "lean4", "title": {"zh": "200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠", "en": "Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted"}, "status": "delivered", "note": "已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md"},
         {"slug": "how-opus-animates", "title": {"zh": "150 秒搞明白 Opus 5.5 是怎么做视频的"}},
         {"slug": "pistol-shooting", "title": {"zh": "150 秒学会怎么打手枪？"}},
-        {"slug": "dense-vs-moe", "title": {"zh": "96 秒了解 LLM 的 Dense 和 MoE：稠密和专家模型"}},
+        {"slug": "dense-vs-moe", "title": {"zh": "150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型", "en": "Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models"}, "status": "delivered", "note": "本地出片，未发布；自动闸门通过，听感与观感待人确认，见 README"},
         {"slug": "rear-seatbelt", "title": {"zh": "150 秒明白不绑后排安全带的致命性"}},
         {"slug": "ssh", "title": {"zh": "256 秒搞懂 SSH"}},
         {"slug": "powershell", "title": {"zh": "150 秒关于 PowerShell 和 pwsh"}},

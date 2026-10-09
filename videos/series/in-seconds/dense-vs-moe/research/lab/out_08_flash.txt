@@ -1,0 +1,16 @@
+attention           2,703,868,800 params       5,407,737,600 bytes
+input_embedding       635,699,200 params       1,271,398,400 bytes
+mtp                 2,607,150,848 params       5,214,301,696 bytes
+ngram_embedding    51,233,085,475 params     102,466,171,160 bytes
+other                 640,624,640 params       1,281,249,280 bytes
+output_layer          635,699,200 params       1,271,398,400 bytes
+routed_experts    120,795,955,200 params     241,591,910,400 bytes
+router                 62,914,560 params         125,829,120 bytes
+shared_expert         236,052,480 params         472,104,960 bytes
+vision                448,931,056 params         897,862,112 bytes
+other = model.language_model.layers.N.attn_hyper_connection.input_mix_weight_down.weight 157,286,400, model.language_model.layers.N.attn_hyper_connection.input_mix_weight_up.weight 157,286,400, model.language_model.layers.N.mlp_hyper_connection.input_mix_weight_down.weight 157,286,400, model.language_model.layers.N.mlp_hyper_connection.input_mix_weight_up.weight 157,286,400, model.language_model.hyper_connection_mixer.input_mix_weight_down.weight 3,276,800, model.language_model.hyper_connection_mixer.input_mix_weight_up.weight 3,276,800
+language model (no n-gram / MTP / vision) 125,710,814,080   bytes 251,421,628,160
+active per token (no input embedding / output layer; routed 10/512) 6,002,756,480   share of LM 0.0478
+all tensors bytes 359,999,963,128
+Qwen3.8-27B LM 26,895,998,464   ratio Flash/27B 4.674   27B/Flash 0.214
+per layer: attention linear 57,958,624 / full 51,446,528; shared expert 4,917,760; router 1,310,720; one routed expert 4,915,200 (x512); other 13,209,600

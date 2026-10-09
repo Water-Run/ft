@@ -1,0 +1,40 @@
+{
+ "per_layer": {
+  "attention": {
+   "linear": 57958624,
+   "full": 51446528
+  },
+  "shared": 4917760,
+  "router": 1310720,
+  "other": 13209600,
+  "expert": 4915200
+ },
+ "lm": 125710814080,
+ "lm_bytes": 251421628160,
+ "active": 6002756480,
+ "cats": {
+  "other": 640624640,
+  "attention": 2703868800,
+  "vision": 448931056,
+  "routed_experts": 120795955200,
+  "router": 62914560,
+  "shared_expert": 236052480,
+  "ngram_embedding": 51233085475,
+  "mtp": 2607150848,
+  "input_embedding": 635699200,
+  "output_layer": 635699200
+ },
+ "bytes": {
+  "other": 1281249280,
+  "attention": 5407737600,
+  "vision": 897862112,
+  "routed_experts": 241591910400,
+  "router": 125829120,
+  "shared_expert": 472104960,
+  "ngram_embedding": 102466171160,
+  "mtp": 5214301696,
+  "input_embedding": 1271398400,
+  "output_layer": 1271398400
+ },
+ "all_bytes": 359999963128
+}

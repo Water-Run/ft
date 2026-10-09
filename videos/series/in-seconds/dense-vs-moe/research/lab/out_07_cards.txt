@@ -1,0 +1,12 @@
+== Qwen/Qwen3.8-27B @ 1d4bf0f2ff60  README.md
+   L37   params     27B
+   L40   layers     64
+   L41   layout     16 × (3 × (Gated DeltaNet → FFN) → 1 × (Gated Attention → FFN))
+   L20   dense      a compact, deployment-friendly dense model
+== Qwen/Qwen3.8-2.4T-A95B @ 207bd685a7e3  README.md
+   L46   params     2.4T in total and 95B activated
+   L49   layers     92
+   L50   layout     23 × (3 × (Gated DeltaNet → MoE) → 1 × (Gated Attention → MoE))
+   L59   experts    512
+   L60   activated  10 Routed + 1 Shared
+   L21   max        **Qwen3.8-Max** is the official version based on Qwen3.8-2.4T-A95B with more features, such as vision input & non-thinking support, 1M context length by default, official built-in tools, etc

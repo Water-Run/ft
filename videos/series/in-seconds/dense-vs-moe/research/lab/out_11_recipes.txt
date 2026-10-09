@@ -1,0 +1,12 @@
+取用日期 2026-10-09
+== https://recipes.vllm.ai/Qwen/Qwen3.8-2.4T-A95B  「Choosing a variant」
+   Variant | Weights | Sized | B300 (268 GB) | MI355X (288 GB) | H200 (141 GB) | GB300 tray (4 GPU)
+   BF16 | 4.45 TiB | 5871 GB | 24 GPUs | 24 GPUs | 48 GPUs | 6 trays
+   FP8 | 2.27 TiB | 2996 GB | 16 GPUs | 16 GPUs | 32 GPUs | 4 trays (TP16)
+   MXFP4 (AMD) | 1.45 TiB | 1917 GB | — | 8 GPUs | 16 GPUs | —
+   NVFP4 W4A4 (NVIDIA) | 1.32 TiB | 1737 GB | 8 GPUs | — | 16 GPUs | 2 trays (TP8)
+   NVFP4-REAP-25 (RedHatAI) | 1.04 TiB | 1373 GB | 8 GPUs | — | 16 GPUs | 2 trays (TP8)
+== https://recipes.vllm.ai/Qwen/Qwen3.8-27B
+   Fits one Blackwell GPU in every precision: NVFP4 in 24.6 GiB, 6.6M KV tokens at 1M context
+== https://recipes.vllm.ai/Qwen/Qwen3.8-Flash-Next
+   a 51B lookup memory adds capacity with little per-token compute and can be asynchronously offloaded to host memory. (note that offload currently only runs on Nvidia devices)

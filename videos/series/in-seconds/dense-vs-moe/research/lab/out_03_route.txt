@@ -1,0 +1,79 @@
+loaded in 7253.7s  parameters 6,919,161,856  bytes 13,838,323,712
+process memory (RSS) before 0.32 GiB  after load 13.76 GiB
+sentence 'The capacity of a neural network to absorb information is limited by its number of parameters.'
+tokens 17 ["The", " capacity", " of", " a", " neural", " network", " to", " absorb", " information", " is", " limited", " by", " its", " number", " of", " parameters", "."]
+forward 17 tokens in 1.73s
+next-token top3 [[" The", 0.1292], [" In", 0.0736], [" This", 0.0506]]
+layer 0:
+   0 'The'             5:0.170 14:0.097 61:0.071 18:0.052  6:0.040 38:0.039 19:0.027 41:0.024   sum 0.520
+   1 ' capacity'       5:0.142 18:0.080 14:0.068 41:0.048  6:0.047 38:0.034  0:0.027 61:0.020   sum 0.466
+   2 ' of'             8:0.083  5:0.066 46:0.065  6:0.060 39:0.029 60:0.027 35:0.026 53:0.025   sum 0.382
+   3 ' a'              6:0.097 55:0.085 18:0.076 38:0.047 13:0.029  0:0.023 32:0.019 26:0.018   sum 0.393
+   4 ' neural'         4:0.085  6:0.064 32:0.059 41:0.057  0:0.043  5:0.029 25:0.024 13:0.022   sum 0.383
+   5 ' network'       44:0.155 50:0.076 41:0.058  6:0.057 51:0.042  0:0.037 42:0.036 34:0.028   sum 0.491
+   6 ' to'            22:0.099  6:0.067 30:0.059  8:0.045 55:0.031 39:0.028 44:0.026 60:0.024   sum 0.381
+   7 ' absorb'         0:0.071 41:0.068 26:0.059  6:0.053 35:0.049 51:0.034 34:0.032 33:0.023   sum 0.389
+   8 ' information'   59:0.071  6:0.063 41:0.050 33:0.049  0:0.047 46:0.033 34:0.032 44:0.024   sum 0.369
+   9 ' is'             6:0.073 24:0.050 22:0.045 16:0.043 60:0.039 10:0.033 39:0.028 30:0.028   sum 0.340
+  10 ' limited'       31:0.067 56:0.063 41:0.060  6:0.047 48:0.038  0:0.033 51:0.029 34:0.019   sum 0.355
+  11 ' by'            50:0.087  6:0.054 61:0.047 59:0.047  0:0.028 48:0.026 45:0.025 62:0.024   sum 0.339
+  12 ' its'           29:0.086 13:0.086  6:0.064  0:0.042 26:0.031 27:0.029  8:0.025 57:0.024   sum 0.386
+  13 ' number'        56:0.136 48:0.069  1:0.069  6:0.056 41:0.046 13:0.030  0:0.027 61:0.021   sum 0.454
+  14 ' of'            46:0.083  8:0.080  6:0.055 55:0.049  0:0.025 60:0.024 53:0.023 25:0.022   sum 0.362
+  15 ' parameters'    55:0.130 41:0.064  6:0.050 18:0.039 13:0.030 26:0.026  0:0.025 25:0.022   sum 0.386
+  16 '.'               6:0.079 36:0.048 10:0.043 19:0.037 53:0.026 63:0.025  0:0.024 15:0.024   sum 0.307
+layer 7:
+   0 'The'            21:0.102 45:0.067  2:0.040 12:0.035 37:0.033 33:0.033 39:0.030 58:0.029   sum 0.369
+   1 ' capacity'       1:0.050 13:0.041 40:0.038 32:0.034 59:0.031 33:0.030 22:0.026  9:0.026   sum 0.276
+   2 ' of'            24:0.089  1:0.060 13:0.042 33:0.041 36:0.035 40:0.032 15:0.032 19:0.027   sum 0.360
+   3 ' a'             24:0.091 34:0.091  1:0.055 61:0.050 13:0.038 63:0.037 33:0.033 25:0.031   sum 0.426
+   4 ' neural'        59:0.082 34:0.058  1:0.049 63:0.042 46:0.042 33:0.034 13:0.031 26:0.031   sum 0.369
+   5 ' network'       59:0.080 26:0.065 34:0.053 46:0.052  1:0.048  5:0.046 13:0.039 17:0.039   sum 0.422
+   6 ' to'            15:0.082 24:0.071  1:0.051 20:0.047 13:0.038 33:0.037 34:0.033 54:0.030   sum 0.389
+   7 ' absorb'        15:0.100 14:0.066 60:0.054  6:0.042 59:0.039  9:0.032 53:0.030 63:0.029   sum 0.394
+   8 ' information'   59:0.088 60:0.073  9:0.066 26:0.045  5:0.039  1:0.038 46:0.038 53:0.035   sum 0.421
+   9 ' is'             1:0.055 41:0.048 48:0.047 23:0.045 56:0.043 34:0.031 15:0.029  9:0.024   sum 0.323
+  10 ' limited'       15:0.081 32:0.061  6:0.052  9:0.040 53:0.037 60:0.034  1:0.032 59:0.031   sum 0.369
+  11 ' by'            15:0.076 19:0.074  1:0.040 38:0.038 50:0.036 52:0.030 10:0.029 24:0.028   sum 0.351
+  12 ' its'           61:0.074 15:0.054 24:0.047 19:0.039  6:0.030 63:0.030 38:0.027 17:0.026   sum 0.327
+  13 ' number'        32:0.068 59:0.047  6:0.046  4:0.039 15:0.036  9:0.035 53:0.035 17:0.032   sum 0.336
+  14 ' of'            61:0.080 24:0.078 15:0.065  6:0.044 17:0.032  4:0.032  1:0.032 32:0.030   sum 0.394
+  15 ' parameters'    59:0.078 26:0.074  5:0.068 46:0.062 16:0.061 17:0.055  4:0.045  0:0.033   sum 0.475
+  16 '.'              23:0.067 56:0.067 48:0.060 41:0.056  1:0.051 39:0.038 13:0.022 33:0.021   sum 0.380
+layer 15:
+   0 'The'            55:0.166 21:0.107 20:0.089 63:0.078  7:0.031 52:0.026 14:0.024 40:0.023   sum 0.543
+   1 ' capacity'      23:0.085 42:0.076 34:0.067 54:0.062 51:0.048 17:0.043 28:0.038  5:0.034   sum 0.454
+   2 ' of'            61:0.078 56:0.062 38:0.059 26:0.053 34:0.052  7:0.045 21:0.043 27:0.032   sum 0.424
+   3 ' a'             20:0.130 55:0.072 21:0.062 26:0.060  7:0.056 34:0.056 38:0.050 27:0.039   sum 0.526
+   4 ' neural'         5:0.146 34:0.133 20:0.071 26:0.055 38:0.053 55:0.052 21:0.046 17:0.044   sum 0.601
+   5 ' network'       34:0.094 54:0.093 17:0.077 28:0.059 30:0.040  2:0.035 24:0.030 13:0.026   sum 0.454
+   6 ' to'             4:0.116 34:0.108 13:0.081 46:0.077 10:0.071 63:0.058 37:0.058 17:0.035   sum 0.605
+   7 ' absorb'        34:0.111 61:0.073  7:0.056 21:0.056 56:0.053 30:0.039 20:0.036 17:0.033   sum 0.458
+   8 ' information'   34:0.104 54:0.079 28:0.059  2:0.051 17:0.037 15:0.034 13:0.032 24:0.031   sum 0.426
+   9 ' is'            34:0.100 62:0.092 15:0.077 13:0.070 10:0.061 46:0.051 48:0.043 17:0.042   sum 0.536
+  10 ' limited'       34:0.080  2:0.076 16:0.052 47:0.052 15:0.038 53:0.033 17:0.032 54:0.031   sum 0.394
+  11 ' by'            34:0.124 61:0.086 56:0.058  7:0.058 21:0.057 17:0.051 30:0.047 38:0.040   sum 0.521
+  12 ' its'           34:0.127 17:0.083 55:0.071 20:0.068 21:0.066  7:0.063 30:0.045 38:0.040   sum 0.564
+  13 ' number'        34:0.105 17:0.080 54:0.060 30:0.057 19:0.043  2:0.032 23:0.028  5:0.025   sum 0.429
+  14 ' of'            34:0.143 17:0.093 20:0.091 55:0.074 21:0.070  7:0.055 30:0.052 38:0.039   sum 0.615
+  15 ' parameters'    17:0.095 34:0.086 47:0.065  2:0.051 30:0.046 15:0.038  3:0.036 62:0.025   sum 0.442
+  16 '.'              52:0.104 34:0.093 58:0.072 60:0.061 30:0.059 17:0.041  3:0.031 38:0.025   sum 0.487
+check: recomputed top-8 == experts the model actually used, all layers: OK
+layer  0: experts used by the whole sentence 45/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer  1: experts used by the whole sentence 47/64; distinct 8-sets 17/17; max overlap between two tokens 5
+layer  2: experts used by the whole sentence 46/64; distinct 8-sets 17/17; max overlap between two tokens 5
+layer  3: experts used by the whole sentence 48/64; distinct 8-sets 17/17; max overlap between two tokens 5
+layer  4: experts used by the whole sentence 44/64; distinct 8-sets 17/17; max overlap between two tokens 6
+layer  5: experts used by the whole sentence 39/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer  6: experts used by the whole sentence 39/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer  7: experts used by the whole sentence 44/64; distinct 8-sets 17/17; max overlap between two tokens 6
+layer  8: experts used by the whole sentence 44/64; distinct 8-sets 17/17; max overlap between two tokens 6
+layer  9: experts used by the whole sentence 49/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer 10: experts used by the whole sentence 51/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer 11: experts used by the whole sentence 46/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer 12: experts used by the whole sentence 42/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer 13: experts used by the whole sentence 45/64; distinct 8-sets 17/17; max overlap between two tokens 7
+layer 14: experts used by the whole sentence 44/64; distinct 8-sets 16/17; max overlap between two tokens 8
+layer 15: experts used by the whole sentence 39/64; distinct 8-sets 16/17; max overlap between two tokens 8
+whole sentence, all layers: 712/1024 expert slots used (0.6953)
+expert slots per token (layer, expert): [128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]

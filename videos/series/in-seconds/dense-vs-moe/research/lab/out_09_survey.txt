@@ -1,0 +1,52 @@
+== CHART（模型卡原话；config 专家数）
+2026-06-13 Kimi K3           total「2.8T」 active「104B」 experts=896  moonshotai/Kimi-K3@f831ab668142
+2026-07-05 LongCat-2.0       total「1.6 trillion」 active「~48 billion」 experts=768  meituan-longcat/LongCat-2.0@834bf5ffe304
+2026-09-21 MiMo-V2.6-Pro     total「1.02T」 active「42B」 experts=384  XiaomiMiMo/MiMo-V2.6-Pro-RL@73875d00b30a
+2026-07-14 Inkling           total「975B」 active「41B」 experts=256  thinkingmachines/Inkling@828496eeae4c
+2026-08-27 Hy4 preview       total「770B」 active「49B」 experts=256  tencent/Hy4-preview@705d81ee5156
+2026-07-29 K-EXAONE 2.0      total「750B」 active「37B」 experts=256  LGAI-EXAONE/K-EXAONE-2.0-750B-A37B@fec0c8dd25fd
+2026-06-03 Nemotron 3 Ultra  total「550B」 active「55B」 experts=512  nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16@77df655d5e9f
+2026-06-02 MiniMax-M3        total「~428B」 active「~23B」 experts=128  MiniMaxAI/MiniMax-M3@f0e1c1e04d40
+2026-08-25 GLM-5.3-Flash     total「320B」 active「18B」 experts=288  zai-org/GLM-5.3-Flash@eb9eb208eb0d
+2026-07-22 Solar Open 2      total「250B」 active「15B」 experts=320  upstage/Solar-Open2-250B@9190fbe63a2a
+2026-07-24 Apertus 1.5 70B   total「70B」 active「（稠密，全部）」 experts=0  swiss-ai/Apertus-v1.5-70B@59e744e313e9  config←swiss-ai/Apertus-v1.5-70B-base
+           arch「the same architecture as the original release, a decoder-only transformer」
+2026-08-07 Granite 4.2 30B   total「30B」 active「（稠密，全部）」 experts=0  ibm-granite/granite-4.2-30b@9e668ce1c538
+           arch「Decoder-only Dense Transformer」
+
+== SCAN（2026-06-01 以后、≥100B 的原创模型；safetensors 总数是 Hugging Face 按张量元素计的，量化打包的仓库会偏离真实参数量，只作排序参考）
+2026-06-13   2779.9B  MoE 896 experts  moonshotai/Kimi-K3
+2026-08-08   2446.2B  MoE 512 experts  Qwen/Qwen3.8-2.4T-A95B
+2026-07-05   1775.6B  MoE 768 experts  meituan-longcat/LongCat-2.0
+2026-08-13   1650.5B  MoE 384 experts  deepseek-ai/DeepSeek-V4-Pro-0813
+2026-06-11   1026.9B  MoE 384 experts  moonshotai/Kimi-K2.7-Code
+2026-09-21   1024.2B  MoE 384 experts  XiaomiMiMo/MiMo-V2.6-Pro-RL
+2026-07-14    952.4B  MoE 256 experts  thinkingmachines/Inkling
+2026-08-27    780.0B  MoE 256 experts  tencent/Hy4-preview
+2026-09-10    763.2B  MoE 384 experts  deepseek-ai/DeepSeek-V4.1-Flash
+2026-06-16    753.3B  MoE 256 experts  zai-org/GLM-5.2
+2026-08-25    753.3B  MoE 256 experts  zai-org/GLM-5.3
+2026-07-29    749.4B  MoE 256 experts  LGAI-EXAONE/K-EXAONE-2.0-750B-A37B
+2026-06-03    560.5B  MoE 512 experts  nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16
+2026-06-02    427.0B  MoE 128 experts  MiniMaxAI/MiniMax-M3
+2026-09-13    403.4B  MoE 512 experts  internlm/Intern-S2-397B
+2026-09-01    379.2B  MoE 192 experts  IFM/K2-Horizon-375B-A23B
+2026-08-25    321.3B  MoE 288 experts  zai-org/GLM-5.3-Flash
+2026-09-28    320.3B  MoE 256 experts  IQuestLab/IQuest-Q1
+2026-07-20    314.8B  MoE 384 experts  Motif-Technologies/Motif-3-Beta
+2026-09-21    310.8B  MoE 256 experts  XiaomiMiMo/MiMo-V2.6-Flash-RL
+2026-07-31    304.2B  MoE 256 experts  deepseek-ai/DeepSeek-V4-Flash-0731
+2026-07-02    298.8B  MoE 192 experts  tencent/Hy3
+2026-08-09    288.4B  MoE 256 experts  dots-studio/dots3-note-prev
+2026-07-27    266.0B  MoE 256 experts  thinkingmachines/Inkling-Small
+2026-07-22    250.3B  MoE 320 experts  upstage/Solar-Open2-250B
+2026-06-15    225.8B  MoE 256 experts  poolside/Laguna-M.1
+2026-08-24    180.0B  MoE 512 experts  Qwen/Qwen3.8-Flash-Next
+2026-08-02    127.5B  MoE 512 experts  inclusionAI/Ling-3.0-flash
+2026-07-13    117.6B  MoE 256 experts  poolside/Laguna-S-2.1
+2026-09-23     71.9B  dense            swiss-ai/Apertus-v1.5-70B-base
+2026-08-07     29.3B  dense            ibm-granite/granite-4.2-30b
+2026-08-05     27.8B  dense            Qwen/Qwen3.8-27B
+2026-08-07      8.8B  dense            ibm-granite/granite-4.2-8b
+
+29 个 ≥100B 的原创模型全部为 MoE；见到的稠密新模型最大为 Apertus 1.5 70B

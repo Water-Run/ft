@@ -1,0 +1,15 @@
+config: layers 16  experts/layer 64  experts/token 8  hidden 2048  expert ffn 1024  vocab 50304  norm_topk_prob False  dtype bfloat16
+tensors 3219
+embedding        103,022,592
+norm                  67,584
+experts        6,442,450,944
+router             2,097,152
+attention        268,500,992
+lm_head          103,022,592
+total          6,919,161,856
+active/token   1,282,017,280   (experts counted 8/64)
+active share 0.1853   total/active 5.397
+one expert (gate+up+down) 3*2048*1024 = 6,291,456; experts per layer 64 -> 402,653,184
+8 experts x ffn 1024 = ffn width 8192; dense ffn of width 8192 = 3*2048*8192 = 50,331,648 = 8 experts
+expert slots in model 1024; used per token 128
+combinations per layer C(64,8) = 4,426,165,368

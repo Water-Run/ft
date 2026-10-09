@@ -1,0 +1,82 @@
+== Qwen/Qwen3.8-27B @ 1d4bf0f2ff60: per layer
+   layer  0 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  1 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  2 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  3 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer  4 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  5 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  6 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  7 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer  8 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer  9 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 10 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 11 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 12 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 13 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 14 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 15 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 16 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 17 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 18 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 19 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 20 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 21 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 22 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 23 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 24 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 25 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 26 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 27 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 28 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 29 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 30 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 31 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 32 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 33 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 34 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 35 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 36 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 37 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 38 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 39 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 40 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 41 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 42 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 43 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 44 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 45 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 46 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 47 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 48 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 49 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 50 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 51 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 52 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 53 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 54 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 55 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 56 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 57 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 58 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 59 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   layer 60 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 61 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 62 linear ffn  267,386,880  attention  115,876,064  norm 10,240
+   layer 63 full   ffn  267,386,880  attention  104,858,112  norm 10,240
+   bytes by dtype (all tensors): BF16 55,562,855,904
+   distinct ffn sizes [267386880]  distinct attention sizes [104858112, 115876064]
+   every layer: ffn > attention: True
+== Qwen/Qwen3.8-2.4T-A95B @ 207bd685a7e3: per layer (first two and last)
+   layer  0 attention 438,387,072  norm 16,384  routed 25,769,803,776  router 4,194,304  shared 50,331,648  shared_gate 8,192
+   layer  3 attention 419,430,912  norm 16,384  routed 25,769,803,776  router 4,194,304  shared 50,331,648  shared_gate 8,192
+   layer 91 attention 419,430,912  norm 16,384  routed 25,769,803,776  router 4,194,304  shared 50,331,648  shared_gate 8,192
+   distinct sizes per layer: {"routed": [25769803776], "shared": [50331648], "shared_gate": [8192], "router": [4194304], "attention": [419430912, 438387072]}
+   one routed expert = 50,331,648 params; shared expert = 50,331,648
+   bytes by dtype (all tensors): BF16 4,892,365,451,008
+== model.language_model.layers.0.mlp.up_proj.weight  shard model-00001-of-00018.safetensors  dtype BF16  shape [17408, 5120]
+   row 0 -0.0035 +0.0024 +0.0009 -0.0148 +0.0070 +0.0074 +0.0053 -0.0019
+   row 1 -0.0055 +0.0089 +0.0085 +0.0066 +0.0137 -0.0050 +0.0130 -0.0019
+   row 2 -0.0291 +0.0013 -0.0002 +0.0015 -0.0066 +0.0024 -0.0009 -0.0032
+   row 3 -0.0016 +0.0016 -0.0015 +0.0040 +0.0052 +0.0007 +0.0084 +0.0034
+   row 4 -0.0050 +0.0104 +0.0083 +0.0092 +0.0005 +0.0062 -0.0049 -0.0010
+   row 5 -0.0037 +0.0037 +0.0217 +0.0032 +0.0135 -0.0111 -0.0052 +0.0082

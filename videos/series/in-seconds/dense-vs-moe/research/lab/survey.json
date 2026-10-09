@@ -1,0 +1,405 @@
+{
+ "chart": [
+  {
+   "repo": "moonshotai/Kimi-K3",
+   "name": "Kimi K3",
+   "created": "2026-06-13",
+   "sha": "f831ab66814297da540d832a5235f8e904f29d06",
+   "total_text": "2.8T",
+   "active_text": "104B",
+   "total": 2800000000000.0,
+   "active": 104000000000.0,
+   "moe": true,
+   "experts": 896,
+   "config_from": "moonshotai/Kimi-K3@f831ab668142",
+   "arch_text": null
+  },
+  {
+   "repo": "meituan-longcat/LongCat-2.0",
+   "name": "LongCat-2.0",
+   "created": "2026-07-05",
+   "sha": "834bf5ffe3047aa9f6cc7a64a9bc068b146b8274",
+   "total_text": "1.6 trillion",
+   "active_text": "~48 billion",
+   "total": 1600000000000.0,
+   "active": 48000000000.0,
+   "moe": true,
+   "experts": 768,
+   "config_from": "meituan-longcat/LongCat-2.0@834bf5ffe304",
+   "arch_text": null
+  },
+  {
+   "repo": "XiaomiMiMo/MiMo-V2.6-Pro-RL",
+   "name": "MiMo-V2.6-Pro",
+   "created": "2026-09-21",
+   "sha": "73875d00b30a89ef8cc353a0b60b0e9f9561952d",
+   "total_text": "1.02T",
+   "active_text": "42B",
+   "total": 1020000000000.0,
+   "active": 42000000000.0,
+   "moe": true,
+   "experts": 384,
+   "config_from": "XiaomiMiMo/MiMo-V2.6-Pro-RL@73875d00b30a",
+   "arch_text": null
+  },
+  {
+   "repo": "thinkingmachines/Inkling",
+   "name": "Inkling",
+   "created": "2026-07-14",
+   "sha": "828496eeae4c243ff1a22f7f28ff83694f2f7bc9",
+   "total_text": "975B",
+   "active_text": "41B",
+   "total": 975000000000.0,
+   "active": 41000000000.0,
+   "moe": true,
+   "experts": 256,
+   "config_from": "thinkingmachines/Inkling@828496eeae4c",
+   "arch_text": null
+  },
+  {
+   "repo": "tencent/Hy4-preview",
+   "name": "Hy4 preview",
+   "created": "2026-08-27",
+   "sha": "705d81ee51566a186d645b74c974d642ef2828fe",
+   "total_text": "770B",
+   "active_text": "49B",
+   "total": 770000000000.0,
+   "active": 49000000000.0,
+   "moe": true,
+   "experts": 256,
+   "config_from": "tencent/Hy4-preview@705d81ee5156",
+   "arch_text": null
+  },
+  {
+   "repo": "LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+   "name": "K-EXAONE 2.0",
+   "created": "2026-07-29",
+   "sha": "fec0c8dd25fdd20ffd09869d5af5277966d5523d",
+   "total_text": "750B",
+   "active_text": "37B",
+   "total": 750000000000.0,
+   "active": 37000000000.0,
+   "moe": true,
+   "experts": 256,
+   "config_from": "LGAI-EXAONE/K-EXAONE-2.0-750B-A37B@fec0c8dd25fd",
+   "arch_text": null
+  },
+  {
+   "repo": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16",
+   "name": "Nemotron 3 Ultra",
+   "created": "2026-06-03",
+   "sha": "77df655d5e9f8362164ed14dd8b48f8bce657498",
+   "total_text": "550B",
+   "active_text": "55B",
+   "total": 550000000000.0,
+   "active": 55000000000.0,
+   "moe": true,
+   "experts": 512,
+   "config_from": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16@77df655d5e9f",
+   "arch_text": null
+  },
+  {
+   "repo": "MiniMaxAI/MiniMax-M3",
+   "name": "MiniMax-M3",
+   "created": "2026-06-02",
+   "sha": "f0e1c1e04d40177e4673a22097036854f536e9c0",
+   "total_text": "~428B",
+   "active_text": "~23B",
+   "total": 428000000000.0,
+   "active": 23000000000.0,
+   "moe": true,
+   "experts": 128,
+   "config_from": "MiniMaxAI/MiniMax-M3@f0e1c1e04d40",
+   "arch_text": null
+  },
+  {
+   "repo": "zai-org/GLM-5.3-Flash",
+   "name": "GLM-5.3-Flash",
+   "created": "2026-08-25",
+   "sha": "eb9eb208eb0d988989d07a6a12d0fdeb5f52574a",
+   "total_text": "320B",
+   "active_text": "18B",
+   "total": 320000000000.0,
+   "active": 18000000000.0,
+   "moe": true,
+   "experts": 288,
+   "config_from": "zai-org/GLM-5.3-Flash@eb9eb208eb0d",
+   "arch_text": null
+  },
+  {
+   "repo": "upstage/Solar-Open2-250B",
+   "name": "Solar Open 2",
+   "created": "2026-07-22",
+   "sha": "9190fbe63a2ad8e17fc766ccceb36de7c66f004b",
+   "total_text": "250B",
+   "active_text": "15B",
+   "total": 250000000000.0,
+   "active": 15000000000.0,
+   "moe": true,
+   "experts": 320,
+   "config_from": "upstage/Solar-Open2-250B@9190fbe63a2a",
+   "arch_text": null
+  },
+  {
+   "repo": "swiss-ai/Apertus-v1.5-70B",
+   "name": "Apertus 1.5 70B",
+   "created": "2026-07-24",
+   "sha": "59e744e313e967811aefabde3732609b64201acc",
+   "total_text": "70B",
+   "active_text": null,
+   "total": 70000000000.0,
+   "active": 70000000000.0,
+   "moe": false,
+   "experts": 0,
+   "config_from": "swiss-ai/Apertus-v1.5-70B-base@0d81b394b97e",
+   "arch_text": "the same architecture as the original release, a decoder-only transformer"
+  },
+  {
+   "repo": "ibm-granite/granite-4.2-30b",
+   "name": "Granite 4.2 30B",
+   "created": "2026-08-07",
+   "sha": "9e668ce1c538387ef24d3644e9b0606647762636",
+   "total_text": "30B",
+   "active_text": null,
+   "total": 30000000000.0,
+   "active": 30000000000.0,
+   "moe": false,
+   "experts": 0,
+   "config_from": "ibm-granite/granite-4.2-30b@9e668ce1c538",
+   "arch_text": "Decoder-only Dense Transformer"
+  }
+ ],
+ "scan": [
+  {
+   "repo": "moonshotai/Kimi-K3",
+   "created": "2026-06-13",
+   "st_total": 2779931837184,
+   "experts": 896,
+   "sha": "f831ab66814297da540d832a5235f8e904f29d06"
+  },
+  {
+   "repo": "Qwen/Qwen3.8-2.4T-A95B",
+   "created": "2026-08-08",
+   "st_total": 2446182725504,
+   "experts": 512,
+   "sha": "207bd685a7e3696cfaff12ded7c6a7ea0f88c996"
+  },
+  {
+   "repo": "meituan-longcat/LongCat-2.0",
+   "created": "2026-07-05",
+   "st_total": 1775560491136,
+   "experts": 768,
+   "sha": "834bf5ffe3047aa9f6cc7a64a9bc068b146b8274"
+  },
+  {
+   "repo": "deepseek-ai/DeepSeek-V4-Pro-0813",
+   "created": "2026-08-13",
+   "st_total": 1650497936906,
+   "experts": 384,
+   "sha": "72e1d3230f6c080a530b0a1d46f8eb4602340597"
+  },
+  {
+   "repo": "moonshotai/Kimi-K2.7-Code",
+   "created": "2026-06-11",
+   "st_total": 1026879376368,
+   "experts": 384,
+   "sha": "74797c9c62378b951a1f6fcf5c4631024e9b8bef"
+  },
+  {
+   "repo": "XiaomiMiMo/MiMo-V2.6-Pro-RL",
+   "created": "2026-09-21",
+   "st_total": 1024216603392,
+   "experts": 384,
+   "sha": "73875d00b30a89ef8cc353a0b60b0e9f9561952d"
+  },
+  {
+   "repo": "thinkingmachines/Inkling",
+   "created": "2026-07-14",
+   "st_total": 952377623626,
+   "experts": 256,
+   "sha": "828496eeae4c243ff1a22f7f28ff83694f2f7bc9"
+  },
+  {
+   "repo": "tencent/Hy4-preview",
+   "created": "2026-08-27",
+   "st_total": 779960992733,
+   "experts": 256,
+   "sha": "705d81ee51566a186d645b74c974d642ef2828fe"
+  },
+  {
+   "repo": "deepseek-ai/DeepSeek-V4.1-Flash",
+   "created": "2026-09-10",
+   "st_total": 763205315794,
+   "experts": 384,
+   "sha": "2cba9e42aa026125f3ed06c6d98c1db82f7ca027"
+  },
+  {
+   "repo": "zai-org/GLM-5.2",
+   "created": "2026-06-16",
+   "st_total": 753329940480,
+   "experts": 256,
+   "sha": "cf457fa734ab149ffef225f80893eb38c6ff5cdc"
+  },
+  {
+   "repo": "zai-org/GLM-5.3",
+   "created": "2026-08-25",
+   "st_total": 753329940480,
+   "experts": 256,
+   "sha": "aca966e4e02791568aa6a4ced368624b3d897f42"
+  },
+  {
+   "repo": "LGAI-EXAONE/K-EXAONE-2.0-750B-A37B",
+   "created": "2026-07-29",
+   "st_total": 749357484800,
+   "experts": 256,
+   "sha": "fec0c8dd25fdd20ffd09869d5af5277966d5523d"
+  },
+  {
+   "repo": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16",
+   "created": "2026-06-03",
+   "st_total": 560524578816,
+   "experts": 512,
+   "sha": "77df655d5e9f8362164ed14dd8b48f8bce657498"
+  },
+  {
+   "repo": "MiniMaxAI/MiniMax-M3",
+   "created": "2026-06-02",
+   "st_total": 427040140160,
+   "experts": 128,
+   "sha": "f0e1c1e04d40177e4673a22097036854f536e9c0"
+  },
+  {
+   "repo": "internlm/Intern-S2-397B",
+   "created": "2026-09-13",
+   "st_total": 403423094768,
+   "experts": 512,
+   "sha": "85c1f58844e68836ec02245183cfa671de20977a"
+  },
+  {
+   "repo": "IFM/K2-Horizon-375B-A23B",
+   "created": "2026-09-01",
+   "st_total": 379167159168,
+   "experts": 192,
+   "sha": "bd1606f5332f4b055e98993e383ba3fbe40198f3"
+  },
+  {
+   "repo": "zai-org/GLM-5.3-Flash",
+   "created": "2026-08-25",
+   "st_total": 321323031390,
+   "experts": 288,
+   "sha": "eb9eb208eb0d988989d07a6a12d0fdeb5f52574a"
+  },
+  {
+   "repo": "IQuestLab/IQuest-Q1",
+   "created": "2026-09-28",
+   "st_total": 320318615552,
+   "experts": 256,
+   "sha": "5c21b0630586ef77d38cff1094b8cf37a417fcd8"
+  },
+  {
+   "repo": "Motif-Technologies/Motif-3-Beta",
+   "created": "2026-07-20",
+   "st_total": 314841775750,
+   "experts": 384,
+   "sha": "ad36ceadd3cadb3629e5d91da4ee85c1650f37ac"
+  },
+  {
+   "repo": "XiaomiMiMo/MiMo-V2.6-Flash-RL",
+   "created": "2026-09-21",
+   "st_total": 310756322688,
+   "experts": 256,
+   "sha": "5711b268169967567844e1e560e8a3966da959b1"
+  },
+  {
+   "repo": "deepseek-ai/DeepSeek-V4-Flash-0731",
+   "created": "2026-07-31",
+   "st_total": 304180418494,
+   "experts": 256,
+   "sha": "7872f01b1d1fe23eabc4c98b48bffcef5a386062"
+  },
+  {
+   "repo": "tencent/Hy3",
+   "created": "2026-07-02",
+   "st_total": 298786155776,
+   "experts": 192,
+   "sha": "a960ebc3da325ba167f069f76c41eb62c9280d22"
+  },
+  {
+   "repo": "dots-studio/dots3-note-prev",
+   "created": "2026-08-09",
+   "st_total": 288443400864,
+   "experts": 256,
+   "sha": "1e1e7b0cd37a3a48a6c8d7fa55d5f9d14377006b"
+  },
+  {
+   "repo": "thinkingmachines/Inkling-Small",
+   "created": "2026-07-27",
+   "st_total": 265956439090,
+   "experts": 256,
+   "sha": "8cc5877b44d343f88b92086aa1fb72897950f06a"
+  },
+  {
+   "repo": "upstage/Solar-Open2-250B",
+   "created": "2026-07-22",
+   "st_total": 250287810304,
+   "experts": 320,
+   "sha": "9190fbe63a2ad8e17fc766ccceb36de7c66f004b"
+  },
+  {
+   "repo": "poolside/Laguna-M.1",
+   "created": "2026-06-15",
+   "st_total": 225795725568,
+   "experts": 256,
+   "sha": "2bf8a4ab6d2e8e1e0d92a41318532a0fee1640d6"
+  },
+  {
+   "repo": "Qwen/Qwen3.8-Flash-Next",
+   "created": "2026-08-24",
+   "st_total": 179999981459,
+   "experts": 512,
+   "sha": "de4b8e4d43b917e7706784d8bb445c9af86a3540"
+  },
+  {
+   "repo": "inclusionAI/Ling-3.0-flash",
+   "created": "2026-08-02",
+   "st_total": 127486405600,
+   "experts": 512,
+   "sha": "ef06d91fe382109ae82647da88ff99b0f11745b0"
+  },
+  {
+   "repo": "poolside/Laguna-S-2.1",
+   "created": "2026-07-13",
+   "st_total": 117561977600,
+   "experts": 256,
+   "sha": "0f573140834b11cfac0c2af97a101a7a69a13e22"
+  },
+  {
+   "repo": "swiss-ai/Apertus-v1.5-70B-base",
+   "created": "2026-09-23",
+   "st_total": 71942010529,
+   "experts": 0,
+   "sha": "0d81b394b97e7302eb8dc9e36df5ef041daeaace"
+  },
+  {
+   "repo": "ibm-granite/granite-4.2-30b",
+   "created": "2026-08-07",
+   "st_total": 29276770304,
+   "experts": 0,
+   "sha": "9e668ce1c538387ef24d3644e9b0606647762636"
+  },
+  {
+   "repo": "Qwen/Qwen3.8-27B",
+   "created": "2026-08-05",
+   "st_total": 27781427952,
+   "experts": 0,
+   "sha": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0"
+  },
+  {
+   "repo": "ibm-granite/granite-4.2-8b",
+   "created": "2026-08-07",
+   "st_total": 8791592960,
+   "experts": 0,
+   "sha": "f8de16cdcdbc6c779ca517604e050d82cc119e44"
+  }
+ ]
+}
