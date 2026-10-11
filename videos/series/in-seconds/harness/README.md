@@ -2,7 +2,7 @@
 
 秒速通中的一条，片单时长 192 秒，语言为中文和英文。2026-10-11 由独立片「给 LLM 长出手——Harness 工程」改名迁入。
 
-本目录目前只有事实记录，在 `research/FACTS.md`。来源在 `research/sources.json`。这次测绘不规定结构、旁白、画面、时长怎么切或先讲哪一家。`research/MAP.md` 只说明这一点。
+事实在 `research/FACTS.md`，来源在 `research/sources.json`。面向主流观众的讲述顺序在 `research/NARRATIVE.md`：模型负责说，外面的程序负责做。该文件不规定秒数、画面或配乐。`research/MAP.md` 只指向这两处。
 
 `src/` 是 `new.js` 套用系列基座时生成的骨架，不是本片的方案。`script.js` 的 `TOTAL` 仍是基座里的值。没有批准稿，没有配音，没有成片。
 

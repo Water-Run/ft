@@ -152,6 +152,39 @@
       "license": "MIT",
       "read": "README、docs/glossary.md 的 loop hierarchy、docs/agent-lifecycle.md 开头、docs/tool-execution-pipeline.md 开头、packages/bundle/base/README.md 的 Summary 与 What you get、packages/bundle/sdk-minimal/README.md。",
       "accessed": "2026-10-11"
+    },
+    {
+      "id": "opencode",
+      "kind": "repository",
+      "title": "anomalyco/opencode",
+      "url": "https://github.com/anomalyco/opencode",
+      "commit": "0d61729b3fa005cec9aa754c075a809663c736a4",
+      "commit_date": "2026-10-11T02:03:06Z",
+      "created_at": "2025-04-30T20:08:00Z",
+      "license": "MIT",
+      "read": "当前 README 的 Agents 一节；2025-04-30 提交 0e8842a 的目录和 README 开头；2025-05-31 的 f3da735 上 go.mod 不存在；2025-06-24 的 2384c7e7 碰到 packages/opencode/package.json。sst/opencode 的 API 指向同一仓库。",
+      "accessed": "2026-10-11"
+    },
+    {
+      "id": "crush",
+      "kind": "repository",
+      "title": "charmbracelet/crush",
+      "url": "https://github.com/charmbracelet/crush",
+      "created_at": "2025-05-21T12:14:57Z",
+      "read": "README 中检索 opencode/fork，未读到「本项目来自 OpenCode 的 Go 分支」。另见 2025-05-15 的提交。",
+      "accessed": "2026-10-11"
+    },
+    {
+      "id": "pi",
+      "kind": "repository",
+      "title": "earendil-works/pi",
+      "url": "https://github.com/earendil-works/pi",
+      "commit": "ea448f454af474f3e2fe9733b331e17b0662f5d6",
+      "commit_date": "2026-10-10T19:29:35Z",
+      "created_at": "2025-08-09T14:03:50Z",
+      "license": "MIT",
+      "read": "README 开头、Packages、Permissions；how-pi-works.md 的 Agent loop；usage.md 关于不逐次询问；security.md 开头；tools/index.ts 的导出。",
+      "accessed": "2026-10-11"
     }
   ]
 }

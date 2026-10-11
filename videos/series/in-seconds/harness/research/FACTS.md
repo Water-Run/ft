@@ -116,6 +116,36 @@ Full Auto 下每条命令网络禁用，并限制在当前工作目录和临时�
 | `sdk-minimal` 默认向模型公布的工具是持久 shell 和 `working_directory`。Linux / macOS 为 bash，Windows 为 pwsh。它排除 `dsh-base`、文件系统工具、工作区说明、技能、子代理和压缩等。danger-full-access 允许 shell 修改进程能访问的路径，文档要求只配合隔离工作区 | `packages/bundle/sdk-minimal/README.md`，Summary 与 Model Experience | 已读。因此「极简档是一个 shell 加一个文件编辑器」与这份 README 冲突 |
 | 没有配置 MCP 服务器时，这个档不增加 MCP 工具。配置了才会把服务器的工具加进去 | 同一 README，Use this package | 已读 |
 
+## OpenCode
+
+材料分两段，不并成「它一直是同一种程序」。
+
+| 陈述 | 依据 | 状态 |
+|---|---|---|
+| GitHub 仓库 `anomalyco/opencode` 的 `created_at` 是 2025-04-30T20:08:00Z。API 报告许可 MIT，默认分支 `dev`，描述是 “The open source coding agent.”。`sst/opencode` 的 API 返回同一个仓库，不是另一个 fork 父仓库 | GitHub API，2026-10-11 | 已核。仓库何时从 `sst` 改名，这次没有读改名事件 |
+| 2025-04-30 的提交 `0e8842a007aefd28aff2d429263e690a05861f57` 的树里有 `go.mod`、`main.go`、`cmd/`。同一提交的 README 写 “OpenCode is a Go-based CLI application”，TUI 用 Bubble Tea，并写模型可以执行命令、搜索文件、修改代码 | 该提交的目录列表与 README 开头 | 已读 |
+| 提交 `f3da73553c45f17e04b1e77cb13eb0fca714d1bd`（2025-05-31，说明是 “sync”，commits API 把它列为最后一次碰到 `go.mod` 的提交）的树上已经没有 `go.mod` | 对该 ref 取 `go.mod` 得到 404 | 已核文件不在。没有读这次 diff，不写「这一行删除了它」 |
+| 2025-06-24 的提交 `2384c7e734eb0316bc3f1f85bd1ca2983547a1e2` 已碰到 `packages/opencode/package.json` | commits API，`path=packages/opencode/package.json`，`until=2025-07-01` | 已核该路径在此之前被提交碰到。没有读文件正文 |
+| 2026-10-11 的 `dev` 提交 `0d61729b3fa005cec9aa754c075a809663c736a4` 的 README 自称 “The open source AI coding agent.”。内置代理：`build` 是默认的、开发用的全权限代理；`plan` 是只读代理，跑 bash 前会请求许可。另有一个叫 `general` 的 subagent，用于复杂搜索和多步任务。可用 Tab 在 build 和 plan 之间切换 | 该提交 README 的 Agents 一节 | 已读该节。没有读工具实现，不列工具文件名 |
+| Charm 的 `charmbracelet/crush` 在 README 读到的部分没有写自己是 OpenCode 的 Go 分支。仓库 `created_at` 是 2025-05-21，但 2025-05-15 已有提交 | Crush README 检索与 commits API | 「Go 那一支变成了 Crush」本次不采用 |
+
+## Pi
+
+固定提交 `ea448f454af474f3e2fe9733b331e17b0662f5d6`，2026-10-10T19:29:35Z，`main`。仓库 `earendil-works/pi`，`created_at` 2025-08-09T14:03:50Z，API 报告许可 MIT。描述是 “AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI”。
+
+| 陈述 | 依据 | 状态 |
+|---|---|---|
+| README 称 Pi 是 “a minimal, extensible agent harness that you can make your own.”。它写自己带默认能力，但不包括 sub-agents 和 plan mode。扩展、技能、提示模板和主题用 TypeScript，并可打成包 | README 开头，该提交 | 已读 |
+| 安装要求 Node.js 22.19 或更新。Windows 安装命令写在 README 里 | 同一 README，Getting started | 已读 |
+| 包表里和循环直接相关的是 `@earendil-works/pi-agent-core`（“Agent runtime with tool calling and state management”）和 `@earendil-works/pi-coding-agent`（交互式 CLI）。另有统一的多提供商 API `pi-ai` | 同一 README，Packages | 已读表。没有读这些包的实现 |
+| `how-pi-works.md`：一次提交的消息进入当前分支；Pi 用系统提示、分支、可用工具和模型设置组请求，经所选提供商送出。回应可以含文本和工具调用。Pi 记录回应、执行每个工具调用、记录结果，这构成一个 turn。若结果或排队消息还需要再问模型，就再开始一个 turn | `packages/coding-agent/docs/how-pi-works.md`，Agent loop，该提交 | 已读该节 |
+| 同一文档：会话是一棵树，当前路径是 active branch，下一步模型请求用这条分支上的历史。压缩会插入一条摘要，替换后续请求里的较旧消息；原条目仍留在树里 | 同一文档，Context 与 Sessions | 已读 |
+| 扩展是载入 Pi 进程的 TypeScript 模块，可以注册工具、命令、提供商和界面。启用的工具使用启动 Pi 的那个操作系统用户的权限 | 同一文档，Extensions 与 Trust and permissions | 已读 |
+| README 的 Permissions 一节：Pi 没有内建的、用来限制文件系统、进程、网络或凭据的许可系统。默认以启动它的用户和进程的权限运行。更强的边界要靠容器或沙箱 | README，Permissions & Containerization | 已读 |
+| `usage.md`：Pi 不会在每次工具调用前询问。文档要求查看命令和改过的文件，对不可信或无人值守的工作使用沙箱 | `packages/coding-agent/docs/usage.md`，该提交 | 已读该段 |
+| `security.md`：把模型生成的命令和代码视为不可信。观看记录、项目信任和复查改动并不构成安全边界。项目信任决定是否加载目录提供的设置和资源，不限制工具调用能碰到什么 | 同一提交的 `security.md` 开头 | 已读开头 |
+| 该提交的 `packages/coding-agent/src/core/tools/` 导出 read、write、edit、bash、powershell、grep、find、ls 等工具定义 | `index.ts` 与目录列表 | 已读导出。因此「Pi 只有 read、write、edit、bash 四个工具」与这次提交不符，不采用 |
+
 ## 不进入定稿的句子
 
 | 句子 | 原因 |
@@ -126,6 +156,8 @@ Full Auto 下每条命令网络禁用，并限制在当前工作目录和临时�
 | 2025-04-16 的 o3 公告正文发布了 Codex CLI | 读过的开头没有这句话。当日的发布证据是仓库提交、当日 README 和 Sam Altman 的帖 |
 | 2021 年的 OpenAI Codex 模型于 2023-03 退役 | 只在未重开的页面摘要里见过。本文件不使用 |
 | 2025-05-22 Claude Code 一般可用，或任何更晚的产品发布日 | 本次没有打开对应公告 |
+| Pi 只有四个工具 | 与 `ea448f45` 的工具导出不符。read、write、edit、bash 之外还有 powershell、grep、find、ls |
+| OpenCode 的 Go 版本后来变成 Charm Crush | Crush 已读部分的 README 没有这句话 |
 | 换 Harness 使同一模型的基准上升某个百分数 | 没有打开原始评测 |
 | 三家 turn 的边界已经用同一次任务量过 | 只有文档对照，没有运行 |
 | 任何耗时、token 数、失败次数、界面截图 | 没有运行记录 |
