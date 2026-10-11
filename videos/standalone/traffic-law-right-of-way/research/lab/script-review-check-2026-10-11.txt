@@ -1,0 +1,35 @@
+2026-10-11: draft 7 preparation and script review consistency checks.
+
+COMMAND: python tools/gen_data.py
+src/js/data.js sha256=1346a9f8d752ca678bdafe5a12d77351fffc84a943cad504219c201cbdce7fbf
+EXIT=0
+
+COMMAND: python tools/check_research.py --require-snapshots
+PASS: Chinese-only project metadata.
+PASS: 39 source records; 32 captured pages; 64 raw-file hashes checked.
+PASS: 38 claim anchors, 18 illustrative cases, relative turn geometry and condition comparisons.
+PASS: 29 statutory excerpts tied to source snapshot hashes.
+PASS: generated data.js matches tracked case input byte for byte.
+LIMIT: data integrity only; pending evidence and drawing details remain in FACTS.
+LIMIT: no approved script, TTS, rendered video, legal certification, or audiovisual acceptance is asserted.
+
+
+EXIT=0
+
+COMMAND: node kit/tools/catalog.js --check
+片单一致
+
+
+EXIT=0
+
+COMMAND: temporary Node audit of script, FACTS and review
+PASS: 192 unique cues; 186 narration cues; 6 body chapters.
+PASS: script text, FACTS and review mappings, source claims, case references and every estimated timestamp agree.
+PASS: max caption width 23/26; max narration estimate 4.39/6 seconds; total estimate 650.10/660 seconds.
+PASS: all 6 silent pauses preserved; YunjianNeural configured; current script SHA-256 e81bb521045da5e819d272d15139fab2f3ba8cfa1da1f589f84a1a034cf8b8fc.
+LIMIT: estimated timing only; no TTS, completed scenes, final video or editorial approval is asserted.
+
+
+EXIT=0
+
+PASS: generated data.js remained byte-for-byte unchanged.
