@@ -73,4 +73,6 @@
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 | `model-parameters` |
 | 17 | 96 秒读懂模型的模型卡 | zh + en | 计划中 | `model-cards` |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
+| 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 制作中 | [`harness`](harness/) |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 计划中 | `web-login` |
 <!-- catalog:end -->
