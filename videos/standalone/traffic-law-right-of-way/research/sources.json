@@ -143,7 +143,8 @@
       "reviewed_sections": [
         "转弯让直行",
         "对向右转让左转",
-        "两车直行让右及无控制前提"
+        "两车直行让右及无控制前提",
+        "“直行车辆也要注意减速观察”（2026-10-09 Opus 复读）"
       ],
       "capture_status": "captured",
       "reviewed_on": "2026-10-09",
@@ -183,7 +184,8 @@
       "reviewed_sections": [
         "有让行标志的路口",
         "停车让行与减速让行文字说明",
-        "无控制三类关系；掉头简化未采纳"
+        "无控制三类关系；掉头简化未采纳",
+        "停车让行标志：八角形、红底白字白边，停车瞭望、确认安全后方可通行；减速让行标志：倒三角形，必须慢行或停车，观察干道，确保干道车辆优先（2026-10-09 Opus 复读）"
       ],
       "capture_status": "fetch_failed",
       "reviewed_on": "2026-10-09",
@@ -480,7 +482,8 @@
       ],
       "reviewed_sections": [
         "发布说明关于好意同乘的事故认定与过失层次",
-        "司法解释第三条、第十二条及法释〔2026〕9号"
+        "司法解释第三条、第十二条及法释〔2026〕9号",
+        "发布说明引言：机动车保有量4.69亿辆、驾驶人5.59亿人、自行车和电动自行车保有量约5.8亿辆（据有关方面统计）"
       ],
       "capture_status": "captured",
       "reviewed_on": "2026-10-09",
@@ -500,7 +503,8 @@
       "reviewed_sections": [
         "绿灯进入堵塞路口的实际执法案例",
         "堵塞时路口外等候",
-        "服从现场交警指挥；不采旧记分和地方罚款"
+        "服从现场交警指挥；不采旧记分和地方罚款",
+        "引用实施条例第五十三条第二款：不得在人行横道、网状线区域内停车等候（2026-10-09 Opus 复读）"
       ],
       "capture_status": "captured",
       "reviewed_on": "2026-10-09",
@@ -519,6 +523,225 @@
       ],
       "reviewed_sections": [
         "第2问：现场交警指挥与信号灯冲突；其余问答不采"
+      ],
+      "capture_status": "captured",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence"
+    },
+    {
+      "id": "J03",
+      "type": "typical_cases",
+      "publisher": "最高人民法院新闻局",
+      "title": "最高人民法院发布交通事故责任纠纷典型案例（2025-10-30）",
+      "url": "https://www.court.gov.cn/zixun/xiangqing/480081.html",
+      "edition_or_date": "2025-10-30 发布",
+      "check_tokens_any": [
+        "危险程度",
+        "更高注意义务"
+      ],
+      "reviewed_sections": [
+        "发布说明",
+        "案例3 电动自行车因过错致机动车一方人身损害：基本案情、裁判结果、典型意义（“机动车具有高速、高风险特性，其驾驶人负有更高注意义务”）"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence",
+      "capture_status": "captured"
+    },
+    {
+      "id": "J04",
+      "type": "court_case",
+      "publisher": "济南高新技术产业开发区人民法院（山东法院网站）",
+      "title": "机动车与行人交通事故责任纠纷案（2014-06-20 发布）",
+      "url": "https://www.sdcourt.gov.cn/jnangxqfy/400112/400095/737284/index.html",
+      "edition_or_date": "2014-06-20 发布；事故 2013-07",
+      "check_tokens_any": [
+        "第七十六条",
+        "70%"
+      ],
+      "reviewed_sections": [
+        "裁判摘要",
+        "事实认定：行人死亡、事故认定同等责任、行人违反信号灯通行",
+        "责任比例：适用道交法第七十六条，参照山东省实施办法第六十六条（同等责任 60%–70%），确定机动车一方 70%"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence; party names not copied into tracked files; Python urllib HTTPS capture failed (TLS EOF); page read via PowerShell Invoke-WebRequest over http, copy kept untracked as research/_src/official/2026-10-09/J04-powershell.html (SHA-256 7158b8240f4b2632e9ccb1cb8d9444f7b250204f5bb64ca925723b9e010749ed)",
+      "capture_status": "fetch_failed"
+    },
+    {
+      "id": "F01",
+      "type": "foreign_statute",
+      "publisher": "California Legislature（经 california.public.law 转载；官方 leginfo 对脚本访问返回 403）",
+      "title": "California Vehicle Code § 22400",
+      "url": "https://california.public.law/codes/vehicle_code_section_22400",
+      "edition_or_date": "Stats. 1979, Ch. 364 修订；转载站标注 2026-10-05 核对官方来源",
+      "check_tokens_any": [
+        "impede"
+      ],
+      "reviewed_sections": [
+        "(a) 不得以妨碍正常合理交通的低速行驶或完全停车，安全操作所必需或依法者除外"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence; mirror of leginfo, official page not directly archived",
+      "capture_status": "captured"
+    },
+    {
+      "id": "F02",
+      "type": "foreign_statute",
+      "publisher": "California Legislature（经 california.public.law 转载；官方 leginfo 对脚本访问返回 403）",
+      "title": "California Vehicle Code § 21800",
+      "url": "https://california.public.law/codes/vehicle_code_section_21800",
+      "edition_or_date": "现行文本（转载站核对日见存档）",
+      "check_tokens_any": [
+        "immediate right"
+      ],
+      "reviewed_sections": [
+        "(a) 让已进入交叉口的车辆",
+        "(b)(1)(c) 同时进入时左侧车辆让紧邻右侧车辆，终止道路除外"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence; mirror of leginfo, official page not directly archived",
+      "capture_status": "captured"
+    },
+    {
+      "id": "F03",
+      "type": "foreign_statute",
+      "publisher": "德国联邦司法部 / juris（gesetze-im-internet.de）",
+      "title": "Straßenverkehrs-Ordnung § 3 Geschwindigkeit",
+      "url": "https://www.gesetze-im-internet.de/stvo_2013/__3.html",
+      "edition_or_date": "StVO 2013 现行文本",
+      "check_tokens_any": [
+        "triftigen Grund"
+      ],
+      "reviewed_sections": [
+        "(2) 无正当理由，机动车不得低速行驶妨碍交通流",
+        "(2a) 对儿童、需帮助者与老人减速并准备制动"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence",
+      "capture_status": "captured"
+    },
+    {
+      "id": "F04",
+      "type": "foreign_statute",
+      "publisher": "德国联邦司法部 / juris（gesetze-im-internet.de）",
+      "title": "Straßenverkehrs-Ordnung § 8 Vorfahrt",
+      "url": "https://www.gesetze-im-internet.de/stvo_2013/__8.html",
+      "edition_or_date": "StVO 2013 现行文本",
+      "check_tokens_any": [
+        "von rechts kommt"
+      ],
+      "reviewed_sections": [
+        "(1) 交叉口与丁字口，右来者优先；标志另有规定等情形除外"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence",
+      "capture_status": "captured"
+    },
+    {
+      "id": "F05",
+      "type": "foreign_statute",
+      "publisher": "德国联邦司法部 / juris（gesetze-im-internet.de）",
+      "title": "Straßenverkehrs-Ordnung § 11 Besondere Verkehrslagen",
+      "url": "https://www.gesetze-im-internet.de/stvo_2013/__11.html",
+      "edition_or_date": "StVO 2013 现行文本",
+      "check_tokens_any": [
+        "verzichten"
+      ],
+      "reviewed_sections": [
+        "(1) 交通停滞时即使有优先或绿灯也不得驶入须在其中等候的路口",
+        "(3) 有优先者在交通状况需要时须放弃；对方须经沟通方可信赖该放弃"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence",
+      "capture_status": "captured"
+    },
+    {
+      "id": "F06",
+      "type": "foreign_statute",
+      "publisher": "德国联邦司法部 / juris（gesetze-im-internet.de）",
+      "title": "Straßenverkehrsgesetz § 7 Haftung des Halters",
+      "url": "https://www.gesetze-im-internet.de/stvg/__7.html",
+      "edition_or_date": "StVG 现行文本",
+      "check_tokens_any": [
+        "Halter"
+      ],
+      "reviewed_sections": [
+        "(1) 机动车运行致人死伤或物损，保有人负赔偿义务",
+        "(2) 不可抗力除外"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence",
+      "capture_status": "captured"
+    },
+    {
+      "id": "G13",
+      "type": "police_document",
+      "publisher": "北京市公安局公安交通管理局（jtgl.beijing.gov.cn 附件）",
+      "title": "当事人过错行为及事故分类表（附录）",
+      "url": "https://jtgl.beijing.gov.cn/jgj/resource/cms/2014/09/uploadfile/2007427214620362.doc",
+      "edition_or_date": "附件文件名示 2007 年；网站 2014 年目录",
+      "check_tokens_any": [
+        "204814"
+      ],
+      "reviewed_sections": [
+        "204812、204813、204814：窄路有障碍、狭窄坡路、狭窄山路未让行（含两项例外）",
+        "204910、204920：违规地点掉头、掉头妨碍正常通行",
+        "206911、206912：有标志标线未让优先方、无控制未让右方",
+        "304310：进环形路口未让环内（北京地方办法条目，仅作对照）"
+      ],
+      "capture_status": "manual_capture",
+      "reviewed_on": "2026-10-09",
+      "reading_method": "binary .doc downloaded via PowerShell Invoke-WebRequest; text extracted from UTF-16 runs; Python collector not used for binary"
+    },
+    {
+      "id": "F07",
+      "type": "foreign_statute",
+      "publisher": "California Legislature（经 california.public.law 转载；官方 leginfo 对脚本访问返回 403）",
+      "title": "California Vehicle Code § 22450",
+      "url": "https://california.public.law/codes/vehicle_code_section_22450",
+      "edition_or_date": "2008-01-01 版本；转载站标注 2026-10-05 核对官方来源",
+      "check_tokens_any": [
+        "limit line"
+      ],
+      "reviewed_sections": [
+        "(a) 遇路口停车标志，须在停止线停车；无停止线则在近侧人行横道前；两者都没有则在交叉道路入口处"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence; mirror of leginfo, official page not directly archived",
+      "capture_status": "captured"
+    },
+    {
+      "id": "F08",
+      "type": "foreign_statute",
+      "publisher": "California Legislature（经 california.public.law 转载；官方 leginfo 对脚本访问返回 403）",
+      "title": "California Vehicle Code § 21802",
+      "url": "https://california.public.law/codes/vehicle_code_section_21802",
+      "edition_or_date": "1988-01-01 版本；转载站标注 2026-10-05 核对官方来源",
+      "check_tokens_any": [
+        "immediate hazard"
+      ],
+      "reviewed_sections": [
+        "(a) 停车后让其他道路已驶近或构成即时危险的车辆",
+        "(c) 四面都设停车标志的路口不适用本条"
+      ],
+      "reviewed_on": "2026-10-09",
+      "reading_method": "official page body read via web tool and/or archived plaintext; search snippets not evidence; mirror of leginfo, official page not directly archived",
+      "capture_status": "captured"
+    },
+    {
+      "id": "G14",
+      "type": "official_media",
+      "publisher": "央视新闻客户端（北京日报客户端转载）",
+      "title": "无信号灯路口谁先行？安全驾驶“让行”规则要记牢",
+      "url": "https://xinwen.bjd.com.cn/content/s692f0632e4b076b0127899bc.html",
+      "edition_or_date": "2025-12-02",
+      "check_tokens_any": [
+        "一看标志"
+      ],
+      "reviewed_sections": [
+        "公安部道路交通安全研究中心张骞：无灯控路口“一看标志，二让右侧，三要转弯让直行，四要右转让左转”",
+        "进入环岛让环岛内车辆先行；狭窄或无中心线路段有障碍让无障碍、下坡让上坡",
+        "交警表述“从支路进入干路的车辆……必须主动让行”（未采用）"
       ],
       "capture_status": "captured",
       "reviewed_on": "2026-10-09",

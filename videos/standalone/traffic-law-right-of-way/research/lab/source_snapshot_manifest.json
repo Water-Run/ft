@@ -42,6 +42,158 @@
       "txt_bytes": 1268
     },
     {
+      "id": "F01",
+      "url": "https://california.public.law/codes/vehicle_code_section_22400",
+      "captured_at_utc": "2026-10-09T08:12:29.748598+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://california.public.law/codes/vehicle_code_section_22400",
+      "matched_tokens": [
+        "impede"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F01.html",
+      "html_sha256": "5e93c8ebab65f225133472ef42829091a93532defeaaa091ffc4e1e6f84ea794",
+      "html_bytes": 20000,
+      "txt_path": "research/_src/official/2026-10-09/F01.txt",
+      "txt_sha256": "fdb024116c5669f932b85305a705f94f0d6ada53b75ddf2edf346f1770addb3e",
+      "txt_bytes": 3207
+    },
+    {
+      "id": "F02",
+      "url": "https://california.public.law/codes/vehicle_code_section_21800",
+      "captured_at_utc": "2026-10-09T08:12:29.749006+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://california.public.law/codes/vehicle_code_section_21800",
+      "matched_tokens": [
+        "immediate right"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F02.html",
+      "html_sha256": "39d0bce0197530403ad7ae482a09fa1f8de5dd331c46724dc00b7ca0b0452784",
+      "html_bytes": 20365,
+      "txt_path": "research/_src/official/2026-10-09/F02.txt",
+      "txt_sha256": "75d6f00c14aca17c02bac184f6196ad9750b4061d6f36c4282405a807c8e6887",
+      "txt_bytes": 4105
+    },
+    {
+      "id": "F03",
+      "url": "https://www.gesetze-im-internet.de/stvo_2013/__3.html",
+      "captured_at_utc": "2026-10-09T08:12:29.930514+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.gesetze-im-internet.de/stvo_2013/__3.html",
+      "matched_tokens": [
+        "triftigen Grund"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F03.html",
+      "html_sha256": "8f6ed56d86b780eda125e38709130303820bcd8bb282676357a5e5d710419b49",
+      "html_bytes": 7558,
+      "txt_path": "research/_src/official/2026-10-09/F03.txt",
+      "txt_sha256": "572eef33742cc0ef21cc1423030501444c9dbfbc5c5f1b6c502fee6bfad1c273",
+      "txt_bytes": 2899
+    },
+    {
+      "id": "F04",
+      "url": "https://www.gesetze-im-internet.de/stvo_2013/__8.html",
+      "captured_at_utc": "2026-10-09T08:12:30.156588+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.gesetze-im-internet.de/stvo_2013/__8.html",
+      "matched_tokens": [
+        "von rechts kommt"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F04.html",
+      "html_sha256": "ad3994013ab951f129c96fa01a13307ad0eb0f530e6c33ec0e9ec24a1d33b1c4",
+      "html_bytes": 4851,
+      "txt_path": "research/_src/official/2026-10-09/F04.txt",
+      "txt_sha256": "1ded6c11d06cb1662e57603301c9ebf81b76f5d44d76bd027291d30e99349179",
+      "txt_bytes": 1395
+    },
+    {
+      "id": "F05",
+      "url": "https://www.gesetze-im-internet.de/stvo_2013/__11.html",
+      "captured_at_utc": "2026-10-09T08:12:31.667169+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.gesetze-im-internet.de/stvo_2013/__11.html",
+      "matched_tokens": [
+        "verzichten"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F05.html",
+      "html_sha256": "4558b5a3881b0215b662a08fbbf6c88b5fc6856b7a37319a63767165074fec57",
+      "html_bytes": 4300,
+      "txt_path": "research/_src/official/2026-10-09/F05.txt",
+      "txt_sha256": "b119bee949c98f925aa630d046788f998af4fe6da3e1f7a91fc54f2fd2b829b0",
+      "txt_bytes": 1057
+    },
+    {
+      "id": "F06",
+      "url": "https://www.gesetze-im-internet.de/stvg/__7.html",
+      "captured_at_utc": "2026-10-09T08:12:31.767654+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.gesetze-im-internet.de/stvg/__7.html",
+      "matched_tokens": [
+        "Halter"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F06.html",
+      "html_sha256": "349a6cf59c4e01a801bda5ba1a4c4940a2eeb6796600067d61cd75b44ebd8d8a",
+      "html_bytes": 4273,
+      "txt_path": "research/_src/official/2026-10-09/F06.txt",
+      "txt_sha256": "79c6f602bb515d13334579fb6087b660dd9240b51180ca5bea6ced9106e22cbf",
+      "txt_bytes": 1051
+    },
+    {
+      "id": "F07",
+      "url": "https://california.public.law/codes/vehicle_code_section_22450",
+      "captured_at_utc": "2026-10-09T08:37:10.726978+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://california.public.law/codes/vehicle_code_section_22450",
+      "matched_tokens": [
+        "limit line"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F07.html",
+      "html_sha256": "51853e52371cd28f2fa9744e51dd61bf6fa7394e47e464ee322ef6975d6d4e84",
+      "html_bytes": 18763,
+      "txt_path": "research/_src/official/2026-10-09/F07.txt",
+      "txt_sha256": "a1dd20e538447926480ccf54a45ee614830891945373c0e4a53f254a5ef189bc",
+      "txt_bytes": 2908
+    },
+    {
+      "id": "F08",
+      "url": "https://california.public.law/codes/vehicle_code_section_21802",
+      "captured_at_utc": "2026-10-09T08:37:10.727601+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://california.public.law/codes/vehicle_code_section_21802",
+      "matched_tokens": [
+        "immediate hazard"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/F08.html",
+      "html_sha256": "4e2545ff167efdaa9745b5d9be010a48e881f06d240373431e228d6bafbc52b4",
+      "html_bytes": 18701,
+      "txt_path": "research/_src/official/2026-10-09/F08.txt",
+      "txt_sha256": "386a620c805889d63518e51dcf9af4a191d7046e33f8d11796cd315d41f06bb7",
+      "txt_bytes": 2865
+    },
+    {
       "id": "G01",
       "url": "https://gaj.nanjing.gov.cn/jtgl/202603/t20260309_5801932.html",
       "captured_at_utc": "2026-10-09T04:14:47.677981+00:00",
@@ -266,6 +418,41 @@
       "txt_bytes": 5920
     },
     {
+      "id": "G13",
+      "url": "https://jtgl.beijing.gov.cn/jgj/resource/cms/2014/09/uploadfile/2007427214620362.doc",
+      "captured_at_utc": "2026-10-09T08:37:12.223429+00:00",
+      "method": "PowerShell Invoke-WebRequest download of binary .doc; text from UTF-16LE runs (manual, not collect_sources.py)",
+      "http_status": 200,
+      "status": "manual_capture",
+      "matched_tokens": [
+        "204814"
+      ],
+      "doc_path": "research/_src/official/2026-10-09/G13.doc",
+      "doc_sha256": "a4433786d889d1bc121aa6e8e800968f4988701409869916a19f309d397a1a70",
+      "doc_bytes": 66048,
+      "txt_path": "research/_src/official/2026-10-09/G13.txt",
+      "txt_sha256": "cd864e7fc1743549ecae2230bd0228f1048f9794185ee1fedc697db0214d7c59"
+    },
+    {
+      "id": "G14",
+      "url": "https://xinwen.bjd.com.cn/content/s692f0632e4b076b0127899bc.html",
+      "captured_at_utc": "2026-10-09T08:46:25.539888+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://xinwen.bjd.com.cn/content/s692f0632e4b076b0127899bc.html",
+      "matched_tokens": [
+        "一看标志"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/G14.html",
+      "html_sha256": "a7453bf7d33c6efb65191fed7b8ce98556dde7f1b5625276fdd655b054d9c77c",
+      "html_bytes": 176661,
+      "txt_path": "research/_src/official/2026-10-09/G14.txt",
+      "txt_sha256": "6b9e47c9b948c16c28aca271b212c879c214f2dbb4c348b84c7ea885c2b775eb",
+      "txt_bytes": 7566
+    },
+    {
       "id": "J01",
       "url": "https://www.court.gov.cn/fabu/xiangqing/74122.html",
       "captured_at_utc": "2026-10-09T04:14:52.215191+00:00",
@@ -304,6 +491,34 @@
       "txt_path": "research/_src/official/2026-10-09/J02.txt",
       "txt_sha256": "f44bfd6905ea297ed108dbbbccbbfca22f5711b964979ae498b65f9ff78b39c8",
       "txt_bytes": 21293
+    },
+    {
+      "id": "J03",
+      "url": "https://www.court.gov.cn/zixun/xiangqing/480081.html",
+      "captured_at_utc": "2026-10-09T08:12:29.747782+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "http_status": 200,
+      "final_url": "https://www.court.gov.cn/zixun/xiangqing/480081.html",
+      "matched_tokens": [
+        "危险程度",
+        "更高注意义务"
+      ],
+      "content_check_passed": true,
+      "status": "captured",
+      "html_path": "research/_src/official/2026-10-09/J03.html",
+      "html_sha256": "f3fbe5808b7e939c566bdadf813d0cb2ab2b1ed83a858bf626861c99cc1ad4a3",
+      "html_bytes": 30552,
+      "txt_path": "research/_src/official/2026-10-09/J03.txt",
+      "txt_sha256": "80fc79f521e5cb251c4809ce326faebe9accdc9f9f37870c29ffeec6c9807a7d",
+      "txt_bytes": 19704
+    },
+    {
+      "id": "J04",
+      "url": "https://www.sdcourt.gov.cn/jnangxqfy/400112/400095/737284/index.html",
+      "captured_at_utc": "2026-10-09T08:12:29.748281+00:00",
+      "method": "stdlib urllib HTTP GET; HTMLParser text extraction",
+      "status": "fetch_failed",
+      "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1081)>"
     },
     {
       "id": "L01",

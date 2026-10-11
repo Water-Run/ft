@@ -1,7 +1,7 @@
 // 由 tools/gen_data.py 生成，不要手改。教学示意，不是实测道路数据。
 (function (root) {
   const data = {
-  "input_sha256": "dad1d4024c871747dc58f0da931357b4d1e97d454284f733b5bd2d01ec58815d",
+  "input_sha256": "88abe362e4a18865e1bf941aca4c412edec2babf7f4157ded17ad513b1e0eb9c",
   "schema_version": 1,
   "research_date": "2026-10-09",
   "language": "zh",
@@ -216,6 +216,47 @@
       "evidence_status": "ready_for_draft"
     },
     {
+      "id": "C17",
+      "title_zh": "圆形绿灯下左转与对向直行",
+      "tier": "core",
+      "illustrative": true,
+      "claim_refs": [
+        "R05",
+        "R11"
+      ],
+      "conditions": {
+        "signals": "南北向圆形绿灯，无方向指示灯（示意相位）",
+        "police": "none",
+        "priority_signs_markings": "none",
+        "queue_or_slow": false
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "W",
+          "maneuver": "left"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "N",
+          "to": "S",
+          "maneuver": "straight"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "两车均被放行；绿灯亮时转弯车辆不得妨碍被放行的直行车辆、行人，A让B。",
+      "counterexample_zh": "B须是被放行的直行车；不把本例推成对向任何车辆都有无条件优先。",
+      "evidence_status": "ready_for_draft"
+    },
+    {
       "id": "C06",
       "title_zh": "圆形红灯右转遇被放行行人",
       "tier": "core",
@@ -226,10 +267,11 @@
         "R11"
       ],
       "conditions": {
-        "signals": "A进口圆红灯；东出口过街行人绿灯",
+        "signals": "A进口（南）圆形红灯；东西向机动车绿灯；南进口人行横道行人绿灯（示意相位，不代表实际路口配时）",
         "police": "none",
         "right_turn_prohibited": false,
-        "pedestrian_crossing": true
+        "pedestrian_crossing": true,
+        "released_vehicle": true
       },
       "actors": [
         {
@@ -242,19 +284,27 @@
         {
           "id": "P",
           "kind": "行人",
-          "from": "东出口人行横道南端",
-          "to": "北端",
+          "from": "南进口人行横道西端",
+          "to": "东端",
           "maneuver": "crossing"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "W",
+          "to": "E",
+          "maneuver": "straight"
         }
       ],
       "yielding_actors": [
         "A"
       ],
       "proceeds_first": [
-        "P"
+        "P",
+        "B"
       ],
-      "reason_zh": "右转许可有不妨碍被放行行人的条件，A须等候。",
-      "counterexample_zh": "圆红灯右转不等于无需观察和让行。",
+      "reason_zh": "圆形红灯右转须不妨碍被放行的车辆、行人；A前方横道有按信号通过的行人，西来直行车B被放行且驶向同一东出口，A停车等候。",
+      "counterexample_zh": "圆红灯右转不等于无需观察和让行。2026-10-09 Opus 改：原设定为东出口行人绿灯，在常规两相位下与A进口红灯难以同时成立，改为A前方横道行人与西来直行车。",
       "evidence_status": "ready_for_draft"
     },
     {
@@ -266,9 +316,10 @@
         "R07"
       ],
       "conditions": {
-        "signals": "A进口右转方向箭头红灯",
+        "signals": "A进口右转方向箭头红灯；其余同C06",
         "police": "none",
-        "pedestrian_crossing": true
+        "pedestrian_crossing": true,
+        "released_vehicle": true
       },
       "actors": [
         {
@@ -281,9 +332,16 @@
         {
           "id": "P",
           "kind": "行人",
-          "from": "东出口人行横道南端",
-          "to": "北端",
+          "from": "南进口人行横道西端",
+          "to": "东端",
           "maneuver": "crossing"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "W",
+          "to": "E",
+          "maneuver": "straight"
         }
       ],
       "yielding_actors": [
@@ -294,14 +352,15 @@
       "counterexample_zh": "先只换灯，再演示行人离开：路面清空仍不能闯红右箭头。",
       "variants": [
         {
-          "id": "clear_crosswalk",
+          "id": "clear_all",
           "changed_condition": "pedestrian_crossing",
           "value": false,
+          "also": "B已驶离",
           "yielding_actors": [
             "A"
           ],
           "proceeds_first": [],
-          "result": "A仍停止，等该方向允许通行。"
+          "result": "行人走完、B驶离后，A仍停止，等右转方向允许通行。"
         }
       ],
       "evidence_status": "ready_for_draft"
@@ -401,8 +460,8 @@
           "from": "S",
           "to": "N",
           "maneuver": "lane_change",
-          "lane": "1",
-          "target_lane": "2",
+          "lane": "右",
+          "target_lane": "左",
           "indicator": true
         },
         {
@@ -411,7 +470,7 @@
           "from": "S",
           "to": "N",
           "maneuver": "straight",
-          "lane": "2"
+          "lane": "左"
         }
       ],
       "yielding_actors": [
@@ -530,7 +589,7 @@
     {
       "id": "C13",
       "title_zh": "进入环形路口",
-      "tier": "reserve",
+      "tier": "core",
       "illustrative": true,
       "claim_refs": [
         "R15"
@@ -571,7 +630,7 @@
     {
       "id": "C14",
       "title_zh": "障碍路段会车及例外",
-      "tier": "reserve",
+      "tier": "special",
       "illustrative": true,
       "claim_refs": [
         "R19"
@@ -623,12 +682,12 @@
           "result": "A先行，B尚未驶入。"
         }
       ],
-      "evidence_status": "pending_independent_application"
+      "evidence_status": "ready_for_draft"
     },
     {
       "id": "C15",
       "title_zh": "狭坡会车及例外",
-      "tier": "reserve",
+      "tier": "special",
       "illustrative": true,
       "claim_refs": [
         "R20"
@@ -680,12 +739,12 @@
           "result": "B先行，A尚未上坡。"
         }
       ],
-      "evidence_status": "pending_independent_application"
+      "evidence_status": "ready_for_draft"
     },
     {
       "id": "C16",
       "title_zh": "允许地点掉头仍不妨碍正常通行",
-      "tier": "reserve",
+      "tier": "special",
       "illustrative": true,
       "claim_refs": [
         "R22"
@@ -721,7 +780,46 @@
       ],
       "reason_zh": "先排除法定禁止地点与标志标线，允许掉头处仍不得妨碍正常通行。",
       "counterexample_zh": "没有禁止掉头牌不等于桥梁、人行横道等所有地点都可掉头。",
-      "evidence_status": "pending_independent_application"
+      "evidence_status": "ready_for_draft"
+    },
+    {
+      "id": "C18",
+      "title_zh": "狭窄山路会车",
+      "tier": "special",
+      "illustrative": true,
+      "claim_refs": [
+        "R21"
+      ],
+      "conditions": {
+        "centerline": "none",
+        "road": "狭窄山路",
+        "mountain_side": "A靠山体，B不靠山体"
+      },
+      "actors": [
+        {
+          "id": "A",
+          "kind": "机动车",
+          "from": "S",
+          "to": "N",
+          "maneuver": "straight_mountain_side"
+        },
+        {
+          "id": "B",
+          "kind": "机动车",
+          "from": "N",
+          "to": "S",
+          "maneuver": "straight_cliff_side"
+        }
+      ],
+      "yielding_actors": [
+        "A"
+      ],
+      "proceeds_first": [
+        "B"
+      ],
+      "reason_zh": "没有中心隔离设施或中心线的狭窄山路，不靠山体的一方先行。",
+      "counterexample_zh": "不能反写成靠山体的一方先行；只画相对位置，不画真实山路地形或坠崖。",
+      "evidence_status": "ready_for_draft"
     }
   ]
 };
