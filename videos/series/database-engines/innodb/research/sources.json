@@ -1,0 +1,980 @@
+[
+  {
+    "id": "D01",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.2.1 Clustered and Secondary Indexes",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+    "sha256": "9d5497d00d1d1a5eed94aa609ad3a07aa1b7ceb9199e5a9fcf5773249a3cb8c6",
+    "local": "_src/manual/D01.html"
+  },
+  {
+    "id": "D02",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-physical-structure.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.2.2 The Physical Structure of an InnoDB Index",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-physical-structure.html",
+    "sha256": "0afc34d640875825c908aa03e9d559dd1274d4e27f65561d504ceb36f4aedc18",
+    "local": "_src/manual/D02.html"
+  },
+  {
+    "id": "D03",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.3 InnoDB Multi-Versioning",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+    "sha256": "808bbeab5fd18bce846da9258634313dc80cc2ea37c21a5e56bacbc285a648a0",
+    "local": "_src/manual/D03.html"
+  },
+  {
+    "id": "D04",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-consistent-read.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.3 Consistent Nonlocking Reads",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-consistent-read.html",
+    "sha256": "45e60f6c796a74df0b66fe773af39b0ad2b0a3d12d8ce991d49c89f1d0a43bdd",
+    "local": "_src/manual/D04.html"
+  },
+  {
+    "id": "D05",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.1 InnoDB Locking",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+    "sha256": "102677ae621761d6289fd3ea300a7e3858189e825b26e8826014295ec3123569",
+    "local": "_src/manual/D05.html"
+  },
+  {
+    "id": "D06",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.5 Redo Log",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+    "sha256": "b7f23ec68401a362d8d16076f16d755b28b8d2e5b961514dbf5703522c862d54",
+    "local": "_src/manual/D06.html"
+  },
+  {
+    "id": "D07",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-recovery.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.18.2 InnoDB Recovery",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-recovery.html",
+    "sha256": "0ede3fef070946686dab3906f515b04128d5e3926efe7f7fc8ad357c3c8fee1d",
+    "local": "_src/manual/D07.html"
+  },
+  {
+    "id": "D08",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-undo-logs.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.6 Undo Logs",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-undo-logs.html",
+    "sha256": "6f8a470cc35b9be9e1bd3f55b7d36de384655add11bba3db44e0a414b7f7ecfc",
+    "local": "_src/manual/D08.html"
+  },
+  {
+    "id": "D09",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.5.1 Buffer Pool",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+    "sha256": "f3c1099c70bfdde2dd15115b29721315a2bd8393cc270f82e19439216ce33632",
+    "local": "_src/manual/D09.html"
+  },
+  {
+    "id": "D10",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-doublewrite-buffer.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.4 Doublewrite Buffer",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-doublewrite-buffer.html",
+    "sha256": "b31d6a241a680eb12706e523ff5720f01dc0b0957ef372414499e02d7e851aa6",
+    "local": "_src/manual/D10.html"
+  },
+  {
+    "id": "D11",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-file-per-table-tablespaces.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.3.2 File-Per-Table Tablespaces",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-file-per-table-tablespaces.html",
+    "sha256": "8e3f631865c955132839a69ab20731f338d8908f20947cb4d4ddcda9eb6fb560",
+    "local": "_src/manual/D11.html"
+  },
+  {
+    "id": "D12",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.2 autocommit, Commit, and Rollback",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+    "sha256": "39ebabe3622cacf0a97aebcc8b02df87726c6f626de5b92a57c94a28c7394372",
+    "local": "_src/manual/D12.html"
+  },
+  {
+    "id": "D13",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-deadlocks.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.5 Deadlocks in InnoDB",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-deadlocks.html",
+    "sha256": "19fe097da515dcd471451f87ab03a42e354697b31ea7abd478feab5882f5aa95",
+    "local": "_src/manual/D13.html"
+  },
+  {
+    "id": "D14",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-releases.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 1.3 MySQL Releases: Innovation and LTS",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-releases.html",
+    "sha256": "888898edb5da543bceca8826e32b0b361f9821f30a21ebd2bdf3e2e93e144122",
+    "local": "_src/manual/D14.html"
+  },
+  {
+    "id": "D15",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/downloads/mysql/9.7.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: Download MySQL Community Server",
+    "final_url": "https://dev.mysql.com/downloads/mysql/9.7.html",
+    "sha256": "05f417571303e6a84b0d7b0892f7b4511872e656331905063999cc1dabf08c1b",
+    "local": "_src/manual/D15.html"
+  },
+  {
+    "id": "D16",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/relnotes/mysql/9.7/en/news-9-7-3.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Release Notes :: Changes in MySQL 9.7.3 (2026-08-18)",
+    "final_url": "https://dev.mysql.com/doc/relnotes/mysql/9.7/en/news-9-7-3.html",
+    "sha256": "04ea5ab2e65163b9c47e8180139960c0886fee7bce44eea6aac4cd13570349bc",
+    "local": "_src/manual/D16.html"
+  },
+  {
+    "id": "D17",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-row-format.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.10 InnoDB Row Formats",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-row-format.html",
+    "sha256": "f47050a510ee574453295413cd6f3a0fd58aafed23f993905cabec539411953f",
+    "local": "_src/manual/D17.html"
+  },
+  {
+    "id": "D18",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.1 Transaction Isolation Levels",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+    "sha256": "94866e027126567676bf89132939edda70f106237defc4238bbf4e2a47157e73",
+    "local": "_src/manual/D18.html"
+  },
+  {
+    "id": "D19",
+    "kind": "official_manual",
+    "url": "https://dev.mysql.com/doc/refman/9.7/en/myisam-storage-engine.html",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "title": "MySQL :: MySQL 9.7 Reference Manual :: 18.2 The MyISAM Storage Engine",
+    "final_url": "https://dev.mysql.com/doc/refman/9.7/en/myisam-storage-engine.html",
+    "sha256": "74b63d492f99eb92cedb8f15d007571c6018373cdc903cc8c5cc856a787661f6",
+    "local": "_src/manual/D19.html"
+  },
+  {
+    "id": "C01",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/page0types.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/page0types.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "9ea6264374bd666b2f78446330d17af7b2298fdd39d8350ee8dbe4eb796eea69",
+    "lines": 298,
+    "symbols": {
+      "PAGE_HEADER": [
+        53,
+        80,
+        105
+      ],
+      "PAGE_N_RECS": [
+        74
+      ],
+      "PAGE_LEVEL": [
+        84
+      ],
+      "PAGE_INDEX_ID": [
+        87
+      ],
+      "PAGE_NEW_INFIMUM": [
+        119
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/page0types.h"
+  },
+  {
+    "id": "C02",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/fil0fil.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/fil0fil.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "a58e8941766e997b16147f64e38ccbab63300139db21d3d3777953ad8c98b2ec",
+    "lines": 2326,
+    "symbols": {
+      "FIL_PAGE_OFFSET": [],
+      "FIL_PAGE_TYPE": [
+        1246,
+        1257,
+        1270,
+        1276,
+        1279,
+        1282,
+        1285,
+        1288,
+        1291,
+        1294,
+        1296,
+        1298,
+        1319,
+        1322,
+        1325,
+        1328,
+        1331,
+        1334,
+        1337,
+        1341,
+        1344,
+        1347,
+        1350,
+        1362,
+        1844,
+        1846,
+        1848,
+        1856,
+        1858,
+        1860,
+        1874,
+        1876,
+        1877
+      ],
+      "FIL_PAGE_DATA": [],
+      "FIL_PAGE_INDEX": [
+        1248,
+        1354
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/fil0fil.h"
+  },
+  {
+    "id": "C03",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/rem0rec.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/rem0rec.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "0cda8561a98ffa0acb281523451ef698a04e112e601500e7efae9e37c9178091",
+    "lines": 685,
+    "symbols": {
+      "REC_N_NEW_EXTRA_BYTES": [],
+      "rec_get_next_offs": [
+        70
+      ],
+      "REC_INFO_DELETED_FLAG": []
+    },
+    "local": "_src/mysql/storage/innobase/include/rem0rec.h"
+  },
+  {
+    "id": "C04",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/read0types.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/read0types.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "e2f9164eb7294d694e3c57e8953f0a80aa586a50546821f077bc90d07102b57e",
+    "lines": 299,
+    "symbols": {
+      "changes_visible": [
+        163
+      ],
+      "m_low_limit_id": [
+        173,
+        208,
+        217,
+        269
+      ],
+      "m_up_limit_id": [
+        167,
+        188,
+        208,
+        249,
+        274
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/read0types.h"
+  },
+  {
+    "id": "C05",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/read/read0read.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/read/read0read.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "faf3218902c11d0c92fe69656f4edde3e96ddda0c7a4817a959e302e097b24c7",
+    "lines": 774,
+    "symbols": {
+      "ReadView::prepare": [
+        446
+      ],
+      "MVCC::view_open": [
+        499,
+        699
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/read/read0read.cc"
+  },
+  {
+    "id": "C06",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/row/row0sel.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/row/row0sel.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "e0068c8c53faf82608df123af8d65791c741a7fa60fd8a758f27646541186dd8",
+    "lines": 6483,
+    "symbols": {
+      "row_search_mvcc": [
+        4279,
+        4297,
+        4431,
+        4980,
+        5017,
+        6155,
+        6198
+      ],
+      "row_sel_build_prev_vers_for_mysql": [
+        3079,
+        3312,
+        5341
+      ],
+      "lock_clust_rec_cons_read_sees": [
+        887,
+        1393,
+        1755,
+        3308,
+        3765,
+        5337
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/row/row0sel.cc"
+  },
+  {
+    "id": "C07",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/row/row0vers.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/row/row0vers.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "299deede6631c80fd274d14c55cf11aa8a051c4227405269d0c7342b7339d5fd",
+    "lines": 1468,
+    "symbols": {
+      "row_vers_build_for_consistent_read": [
+        1249
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/row/row0vers.cc"
+  },
+  {
+    "id": "C08",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/trx/trx0trx.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/trx/trx0trx.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "0748085f186c347450ea1eb48dd1848d9187fab41518be9c058e5e0f9f7ebcad",
+    "lines": 3677,
+    "symbols": {
+      "trx_commit": [
+        1723,
+        1735,
+        1754,
+        1935,
+        1991,
+        2038,
+        2040,
+        2058,
+        2137,
+        2192,
+        2199,
+        2202,
+        2225,
+        2229,
+        2234,
+        2240,
+        2248,
+        2308,
+        2355,
+        2369,
+        2391,
+        2395,
+        2415,
+        2417,
+        2456,
+        2468,
+        2470,
+        2477
+      ],
+      "trx_flush_log_if_needed": [
+        1724,
+        1755,
+        1761,
+        1767,
+        2064,
+        2481,
+        3675
+      ],
+      "trx_assign_read_view": [
+        2291
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/trx/trx0trx.cc"
+  },
+  {
+    "id": "C09",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/lock/lock0lock.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/lock/lock0lock.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "fd84722a6e907846cc03e4a064dfcb04eac97a6b9838bc1d7bb1407b8b668af4",
+    "lines": 6200,
+    "symbols": {
+      "lock_rec_lock": [
+        336,
+        371,
+        417,
+        425,
+        433,
+        441,
+        1617,
+        1695,
+        1749,
+        1864,
+        1883,
+        1890,
+        2335,
+        5295,
+        5350,
+        5406,
+        5457
+      ],
+      "DeadlockChecker": [],
+      "DeadlockNotifier": []
+    },
+    "local": "_src/mysql/storage/innobase/lock/lock0lock.cc"
+  },
+  {
+    "id": "C10",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/log/log0recv.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/log/log0recv.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "ca402f93ff7fd32310c07a76172700ed70d64d8724bf8442cf63e463fe299218",
+    "lines": 4224,
+    "symbols": {
+      "recv_recovery_from_checkpoint_start": [
+        159,
+        710,
+        3766
+      ],
+      "recv_apply_hashed_log_recs": [
+        1173,
+        3505,
+        3723
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/log/log0recv.cc"
+  },
+  {
+    "id": "C11",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/trx/trx0roll.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/trx/trx0roll.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "77d53c707daf961320972c8289997ac6c9309763f5c46a9840a0a977fbd810f6",
+    "lines": 1168,
+    "symbols": {
+      "trx_rollback_or_clean_recovered": [
+        712,
+        838
+      ],
+      "trx_rollback_for_mysql": [
+        159,
+        205,
+        257,
+        269
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/trx/trx0roll.cc"
+  },
+  {
+    "id": "C12",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/handler/ha_innodb.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/handler/ha_innodb.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "5679efda3c7ef7a44ceca9ffab40ecb3f710f75223111b7652010c5ecc40f508",
+    "lines": 24680,
+    "symbols": {
+      "ha_innobase::index_read": [
+        10430,
+        10622
+      ],
+      "ha_innobase::write_row": [
+        3195,
+        9256
+      ],
+      "ha_innobase::update_row": [
+        10010
+      ],
+      "innobase_commit": [
+        316,
+        1355,
+        1520,
+        1548,
+        1742,
+        1744,
+        1767,
+        4867,
+        5382,
+        5387,
+        5888,
+        5955,
+        5978,
+        6013,
+        6018,
+        6058,
+        6063,
+        16379,
+        19155,
+        20385,
+        20396,
+        22711,
+        22713,
+        23786,
+        23787
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/handler/ha_innodb.cc"
+  },
+  {
+    "id": "C13",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/dict/dict0dict.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/dict/dict0dict.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "322545ec289d14688f79acbdb16988f62ad49dce836dda0a29d380e81ec24de3",
+    "lines": 6040,
+    "symbols": {
+      "dict_index_build_internal_clust": [
+        204,
+        2449,
+        2947
+      ],
+      "dict_index_build_internal_non_clust": [
+        211,
+        2451,
+        3150
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/dict/dict0dict.cc"
+  },
+  {
+    "id": "C14",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/data0type.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/data0type.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "2d5d25a85fcd3ef28317f7a9bd710a9abd72daa2c65538389de9c7ee15c0b4e9",
+    "lines": 560,
+    "symbols": {
+      "DATA_TRX_ID_LEN": [
+        185,
+        545
+      ],
+      "DATA_ROLL_PTR_LEN": [
+        191,
+        547
+      ],
+      "DATA_ROW_ID_LEN": [
+        179
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/data0type.h"
+  },
+  {
+    "id": "C15",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/mach0data.ic",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/mach0data.ic",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "377896011f866bcff68a787c4a051cd6f7a1d4c381edbc69d2ecd31d21934778",
+    "lines": 846,
+    "symbols": {
+      "mach_write_to_4": [
+        126,
+        172,
+        184,
+        189,
+        331,
+        332,
+        357,
+        378,
+        402
+      ],
+      "mach_read_from_4": [
+        139,
+        247,
+        252,
+        294,
+        300,
+        342,
+        344,
+        367,
+        388,
+        416,
+        485,
+        491,
+        545,
+        840
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/mach0data.ic"
+  },
+  {
+    "id": "C16",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/btr/btr0cur.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/btr/btr0cur.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "eccf5920f40f229ac66720e86d72b0fe971b4d76582b1d4b8efe55a3fe3628fb",
+    "lines": 5615,
+    "symbols": {
+      "btr_cur_search_to_nth_level": [
+        126,
+        129,
+        619,
+        1717,
+        2395,
+        5069,
+        5105
+      ],
+      "btr_cur_optimistic_insert": [
+        2507,
+        2662,
+        4104
+      ],
+      "btr_cur_pessimistic_insert": [
+        2930,
+        4086,
+        4107,
+        4122
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/btr/btr0cur.cc"
+  },
+  {
+    "id": "C17",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/fil0types.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/fil0types.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "8b1186b13d58a5fd22533c05c7c86c174ab1a0037c70227f955c00d27b26d6c3",
+    "lines": 179,
+    "symbols": {
+      "FIL_PAGE_OFFSET": [
+        46
+      ],
+      "FIL_PAGE_TYPE": [
+        57,
+        76
+      ],
+      "FIL_PAGE_DATA": [
+        111,
+        119
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/fil0types.h"
+  },
+  {
+    "id": "C18",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/rem/rec.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/rem/rec.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "17223beefc24355ff731ea55db8802f6c921e9ebf1f20cfa4d7952ae7cf28836",
+    "lines": 1302,
+    "symbols": {
+      "REC_N_NEW_EXTRA_BYTES": [
+        159,
+        167,
+        267,
+        691,
+        801,
+        1032,
+        1072
+      ],
+      "REC_INFO_DELETED_FLAG": [
+        147,
+        319
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/rem/rec.h"
+  },
+  {
+    "id": "C19",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/rem0rec.ic",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/rem0rec.ic",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "041193e7220048ac26f3a827706c97c9980aa8fc43cf9160cf9fa4abb850e866",
+    "lines": 1037,
+    "symbols": {
+      "rec_get_next_offs": [
+        161
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/rem0rec.ic"
+  },
+  {
+    "id": "C20",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/include/fsp0types.h",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/include/fsp0types.h",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "59f1eadceb4fd9ab9c130b2b5ba73906ac5a7cf8f91fd7caadd659907b22f9ea",
+    "lines": 415,
+    "symbols": {
+      "FSEG_PAGE_DATA": [
+        79
+      ],
+      "FSEG_HEADER_SIZE": [
+        94
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/include/fsp0types.h"
+  },
+  {
+    "id": "C21",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/buf/buf0buf.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/buf/buf0buf.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "e44ced8703f7ecdc3bc2e0e663dc2ca1c7b25f4897adf4b2de81fdbcd4f47f25",
+    "lines": 7130,
+    "symbols": {
+      "buf_page_get_gen": [
+        4449,
+        5446,
+        6010,
+        6246
+      ],
+      "buf_page_get_low": []
+    },
+    "local": "_src/mysql/storage/innobase/buf/buf0buf.cc"
+  },
+  {
+    "id": "C22",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/buf/buf0dblwr.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/buf/buf0dblwr.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "e27c8c4500e46da036dc60794bf9f16d84afcfec2309a118735f9b1bb4ccf635",
+    "lines": 3654,
+    "symbols": {
+      "recover": [
+        56,
+        203,
+        210,
+        223,
+        224,
+        248,
+        267,
+        283,
+        285,
+        293,
+        332,
+        333,
+        334,
+        345,
+        350,
+        351,
+        401,
+        2011,
+        2505,
+        2618,
+        2620,
+        2832,
+        3022,
+        3027,
+        3063,
+        3074,
+        3162,
+        3165,
+        3172,
+        3175,
+        3183,
+        3198,
+        3199,
+        3202,
+        3207,
+        3209,
+        3215,
+        3236,
+        3249,
+        3297,
+        3303,
+        3324,
+        3333,
+        3377,
+        3406,
+        3489,
+        3516
+      ],
+      "write_pages": [
+        561,
+        573,
+        2249
+      ],
+      "dblwr::write": [
+        1117,
+        2481,
+        2614
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/buf/buf0dblwr.cc"
+  },
+  {
+    "id": "C23",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/row/row0mysql.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/row/row0mysql.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "0da08f6e87e5a3c00e61bcfab2ee5fb99bfc383c84e0d436ef1b3d19470e0fc3",
+    "lines": 4812,
+    "symbols": {
+      "row_mysql_store_col_in_innobase_format": [
+        376,
+        623
+      ],
+      "0x80": []
+    },
+    "local": "_src/mysql/storage/innobase/row/row0mysql.cc"
+  },
+  {
+    "id": "C24",
+    "kind": "official_source",
+    "url": "https://raw.githubusercontent.com/mysql/mysql-server/008e09c2834b98143a8c067d4d225c90953050cf/storage/innobase/lock/lock0wait.cc",
+    "tag": "mysql-9.7.2",
+    "commit": "008e09c2834b98143a8c067d4d225c90953050cf",
+    "path": "storage/innobase/lock/lock0wait.cc",
+    "checked": "2026-10-09",
+    "status": "fetched",
+    "sha256": "784a20f7e9a350a5e419ed942f0402662de0d376dbcf875c5ab9b642ae119813",
+    "lines": 1459,
+    "symbols": {
+      "lock_wait_check_and_resolve_deadlock": [],
+      "lock_wait_rollback_deadlock_victim": [
+        692,
+        1146
+      ]
+    },
+    "local": "_src/mysql/storage/innobase/lock/lock0wait.cc"
+  }
+]

@@ -1,0 +1,411 @@
+[
+  {
+    "group": "environment",
+    "session": "A",
+    "sql": "SELECT VERSION(), @@version_comment, @@innodb_page_size, @@transaction_isolation, @@innodb_flush_log_at_trx_commit, @@innodb_file_per_table, @@log_bin, @@innodb_doublewrite, @@innodb_default_row_format",
+    "output": [
+      "9.7.2\tMySQL Community Server - GPL\t16384\tREPEATABLE-READ\t1\t1\t0\tON\tdynamic"
+    ]
+  },
+  {
+    "group": "schema",
+    "session": "A",
+    "sql": "-- Synthetic data shared with the MyISAM episode; no real user records.\nCREATE DATABASE innodb_demo DEFAULT CHARACTER SET latin1;\nUSE innodb_demo;\nCREATE TABLE users (\n  id INT NOT NULL,\n  name CHAR(10) NOT NULL,\n  age TINYINT NOT NULL,\n  PRIMARY KEY (id),\n  KEY idx_name (name)\n) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;\nINSERT INTO users VALUES\n (1,'alice',30),(2,'bob',25),(3,'carol',41),(4,'dave',19),\n (5,'erin',33),(6,'frank',52),(7,'grace',28),(8,'heidi',36);\nCREATE TABLE notes (\n id INT NOT NULL,\n body VARCHAR(200) NOT NULL,\n PRIMARY KEY (id)\n) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;\nINSERT INTO notes VALUES (1,'hello'),(2,'MyISAM stores rows in a .MYD file'),(3,'short');\nCREATE TABLE users_myisam LIKE users;\nALTER TABLE users_myisam ENGINE=MyISAM ROW_FORMAT=FIXED;\nINSERT INTO users_myisam SELECT * FROM users;\nCREATE TABLE users_gap LIKE users;\nINSERT INTO users_gap VALUES (10,'alice',30),(20,'bob',25),(30,'carol',41);\n",
+    "output": []
+  },
+  {
+    "group": "setup",
+    "session": "B",
+    "sql": "USE innodb_demo",
+    "output": []
+  },
+  {
+    "group": "setup",
+    "session": "observer",
+    "sql": "USE innodb_demo",
+    "output": []
+  },
+  {
+    "group": "environment",
+    "session": "A",
+    "sql": "SELECT ENGINE, SUPPORT, TRANSACTIONS, XA, SAVEPOINTS FROM information_schema.ENGINES WHERE ENGINE IN ('InnoDB','MyISAM') ORDER BY ENGINE",
+    "output": [
+      "InnoDB\tDEFAULT\tYES\tYES\tYES",
+      "MyISAM\tYES\tNO\tNO\tNO"
+    ]
+  },
+  {
+    "group": "storage",
+    "session": "A",
+    "sql": "SELECT * FROM users ORDER BY id; SHOW CREATE TABLE users; SHOW CREATE TABLE notes",
+    "output": [
+      "1\talice\t30",
+      "2\tbob\t25",
+      "3\tcarol\t41",
+      "4\tdave\t19",
+      "5\terin\t33",
+      "6\tfrank\t52",
+      "7\tgrace\t28",
+      "8\theidi\t36",
+      "users\tCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` char(10) NOT NULL,\n  `age` tinyint NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `idx_name` (`name`)\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC",
+      "notes\tCREATE TABLE `notes` (\n  `id` int NOT NULL,\n  `body` varchar(200) NOT NULL,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC"
+    ]
+  },
+  {
+    "group": "index_metadata",
+    "session": "A",
+    "sql": "SELECT t.NAME, i.NAME, i.INDEX_ID, i.TYPE, i.N_FIELDS, i.PAGE_NO, i.SPACE FROM information_schema.INNODB_INDEXES i JOIN information_schema.INNODB_TABLES t ON i.TABLE_ID=t.TABLE_ID WHERE t.NAME LIKE 'innodb_demo/%' ORDER BY t.NAME,i.INDEX_ID",
+    "output": [
+      "innodb_demo/notes\tPRIMARY\t160\t3\t4\t4\t3",
+      "innodb_demo/users\tPRIMARY\t158\t3\t5\t4\t2",
+      "innodb_demo/users\tidx_name\t159\t0\t2\t5\t2",
+      "innodb_demo/users_gap\tPRIMARY\t163\t3\t5\t4\t5",
+      "innodb_demo/users_gap\tidx_name\t164\t0\t2\t5\t5"
+    ]
+  },
+  {
+    "group": "tablespaces",
+    "session": "A",
+    "sql": "SELECT NAME, ROW_FORMAT, PAGE_SIZE, FILE_SIZE, ALLOCATED_SIZE FROM information_schema.INNODB_TABLESPACES WHERE NAME LIKE 'innodb_demo/%' ORDER BY NAME",
+    "output": [
+      "innodb_demo/notes\tDynamic\t16384\t114688\t114688",
+      "innodb_demo/users\tDynamic\t16384\t131072\t131072",
+      "innodb_demo/users_gap\tDynamic\t16384\t131072\t131072"
+    ]
+  },
+  {
+    "group": "secondary_lookup",
+    "session": "A",
+    "sql": "EXPLAIN SELECT id,name FROM users FORCE INDEX(idx_name) WHERE name='carol'; EXPLAIN SELECT age FROM users FORCE INDEX(idx_name) WHERE name='carol'; SELECT id,name,age FROM users WHERE name='carol'",
+    "output": [
+      "-> Covering index lookup on users using idx_name (name = 'carol')  (cost=0.35 rows=1)\n",
+      "-> Index lookup on users using idx_name (name = 'carol')  (cost=0.35 rows=1)\n",
+      "3\tcarol\t41"
+    ]
+  },
+  {
+    "group": "rollback",
+    "session": "A",
+    "sql": "START TRANSACTION; UPDATE users SET age=31 WHERE id=1; UPDATE notes SET body='birthday' WHERE id=1; SELECT age FROM users WHERE id=1; SELECT body FROM notes WHERE id=1",
+    "output": [
+      "31",
+      "birthday"
+    ]
+  },
+  {
+    "group": "rollback",
+    "session": "B",
+    "sql": "SELECT age FROM users WHERE id=1; SELECT body FROM notes WHERE id=1",
+    "output": [
+      "30",
+      "hello"
+    ]
+  },
+  {
+    "group": "rollback",
+    "session": "A",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "rollback",
+    "session": "A",
+    "sql": "SELECT age FROM users WHERE id=1; SELECT body FROM notes WHERE id=1",
+    "output": [
+      "30",
+      "hello"
+    ]
+  },
+  {
+    "group": "myisam_control",
+    "session": "A",
+    "sql": "START TRANSACTION; UPDATE users_myisam SET age=31 WHERE id=1; ROLLBACK; SHOW WARNINGS; SELECT age FROM users_myisam WHERE id=1",
+    "output": [
+      "Warning\t1196\tSome non-transactional changed tables couldn't be rolled back",
+      "31"
+    ]
+  },
+  {
+    "group": "myisam_control",
+    "session": "A",
+    "sql": "SELECT age FROM users_myisam WHERE id=1",
+    "output": [
+      "31"
+    ]
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "A",
+    "sql": "SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ; START TRANSACTION",
+    "output": []
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "B",
+    "sql": "UPDATE users SET age=31 WHERE id=1",
+    "output": []
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "A",
+    "sql": "SELECT age FROM users WHERE id=1",
+    "output": [
+      "31"
+    ]
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "B",
+    "sql": "UPDATE users SET age=32 WHERE id=1",
+    "output": []
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "A",
+    "sql": "SELECT age FROM users WHERE id=1",
+    "output": [
+      "31"
+    ]
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "A",
+    "sql": "SELECT age FROM users WHERE id=1 FOR UPDATE",
+    "output": [
+      "32"
+    ]
+  },
+  {
+    "group": "rr_snapshot",
+    "session": "A",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "rc_snapshot",
+    "session": "A",
+    "sql": "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; START TRANSACTION",
+    "output": []
+  },
+  {
+    "group": "rc_snapshot",
+    "session": "A",
+    "sql": "SELECT age FROM users WHERE id=1",
+    "output": [
+      "32"
+    ]
+  },
+  {
+    "group": "rc_snapshot",
+    "session": "B",
+    "sql": "UPDATE users SET age=33 WHERE id=1",
+    "output": []
+  },
+  {
+    "group": "rc_snapshot",
+    "session": "A",
+    "sql": "SELECT age FROM users WHERE id=1",
+    "output": [
+      "33"
+    ]
+  },
+  {
+    "group": "rc_snapshot",
+    "session": "A",
+    "sql": "ROLLBACK; SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ",
+    "output": []
+  },
+  {
+    "group": "record_locks",
+    "session": "A",
+    "sql": "START TRANSACTION; SELECT id,age FROM users WHERE id=1 FOR UPDATE",
+    "output": [
+      "1\t33"
+    ]
+  },
+  {
+    "group": "record_locks",
+    "session": "B",
+    "sql": "SET SESSION innodb_lock_wait_timeout=2; START TRANSACTION; UPDATE users SET age=26 WHERE id=2",
+    "output": []
+  },
+  {
+    "group": "record_locks",
+    "session": "observer",
+    "sql": "SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, LOCK_DATA FROM performance_schema.data_locks WHERE OBJECT_SCHEMA='innodb_demo' ORDER BY OBJECT_NAME,INDEX_NAME,LOCK_DATA,LOCK_MODE",
+    "output": [
+      "users\tNULL\tTABLE\tIX\tGRANTED\tNULL",
+      "users\tNULL\tTABLE\tIX\tGRANTED\tNULL",
+      "users\tPRIMARY\tRECORD\tX,REC_NOT_GAP\tGRANTED\t1",
+      "users\tPRIMARY\tRECORD\tX,REC_NOT_GAP\tGRANTED\t2"
+    ]
+  },
+  {
+    "group": "record_locks",
+    "session": "B",
+    "sql": "UPDATE users SET age=34 WHERE id=1",
+    "output": [
+      "ERROR 1205: Lock wait timeout exceeded; try restarting transaction"
+    ]
+  },
+  {
+    "group": "record_locks",
+    "session": "B",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "record_locks",
+    "session": "A",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "gap_locks",
+    "session": "A",
+    "sql": "START TRANSACTION; SELECT id FROM users_gap WHERE id>10 AND id<30 FOR UPDATE",
+    "output": [
+      "20"
+    ]
+  },
+  {
+    "group": "gap_locks",
+    "session": "observer",
+    "sql": "SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, LOCK_DATA FROM performance_schema.data_locks WHERE OBJECT_SCHEMA='innodb_demo' ORDER BY OBJECT_NAME,INDEX_NAME,LOCK_DATA,LOCK_MODE",
+    "output": [
+      "users_gap\tNULL\tTABLE\tIX\tGRANTED\tNULL",
+      "users_gap\tPRIMARY\tRECORD\tX\tGRANTED\t20",
+      "users_gap\tPRIMARY\tRECORD\tX,GAP\tGRANTED\t30"
+    ]
+  },
+  {
+    "group": "gap_locks",
+    "session": "B",
+    "sql": "SELECT id FROM users_gap ORDER BY id",
+    "output": [
+      "10",
+      "20",
+      "30"
+    ]
+  },
+  {
+    "group": "gap_locks",
+    "session": "B",
+    "sql": "INSERT INTO users_gap VALUES(15,'new',20)",
+    "output": [
+      "ERROR 1205: Lock wait timeout exceeded; try restarting transaction"
+    ]
+  },
+  {
+    "group": "gap_locks",
+    "session": "A",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "gap_locks",
+    "session": "B",
+    "sql": "INSERT INTO users_gap VALUES(15,'new',20); SELECT id FROM users_gap ORDER BY id",
+    "output": [
+      "10",
+      "15",
+      "20",
+      "30"
+    ]
+  },
+  {
+    "group": "deadlock",
+    "session": "A",
+    "sql": "START TRANSACTION; UPDATE users SET age=age+1 WHERE id=1",
+    "output": []
+  },
+  {
+    "group": "deadlock",
+    "session": "B",
+    "sql": "START TRANSACTION; UPDATE users SET age=age+1 WHERE id=2",
+    "output": []
+  },
+  {
+    "group": "deadlock",
+    "session": "A",
+    "sql": "UPDATE users SET age=age+1 WHERE id=2",
+    "output": []
+  },
+  {
+    "group": "deadlock",
+    "session": "B",
+    "sql": "UPDATE users SET age=age+1 WHERE id=1",
+    "output": [
+      "ERROR 1213: Deadlock found when trying to get lock; try restarting transaction"
+    ]
+  },
+  {
+    "group": "deadlock",
+    "session": "A",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "deadlock",
+    "session": "B",
+    "sql": "ROLLBACK",
+    "output": []
+  },
+  {
+    "group": "crash",
+    "session": "A",
+    "sql": "INSERT INTO users VALUES(90,'committed',40)",
+    "output": []
+  },
+  {
+    "group": "crash",
+    "session": "B",
+    "sql": "START TRANSACTION; INSERT INTO users VALUES(91,'pending',41); SELECT id,name FROM users WHERE id>=90 ORDER BY id",
+    "output": [
+      "90\tcommitted",
+      "91\tpending"
+    ]
+  },
+  {
+    "group": "crash",
+    "session": "observer",
+    "sql": "SELECT id,name FROM users WHERE id>=90 ORDER BY id",
+    "output": [
+      "90\tcommitted"
+    ]
+  },
+  {
+    "group": "crash",
+    "session": "controller",
+    "sql": "SIGKILL dedicated MySQL container, then restart the same data directory",
+    "output": []
+  },
+  {
+    "group": "setup",
+    "session": "recovered",
+    "sql": "USE innodb_demo",
+    "output": []
+  },
+  {
+    "group": "crash_recovery",
+    "session": "recovered",
+    "sql": "SELECT id,name FROM users WHERE id>=90 ORDER BY id",
+    "output": [
+      "90\tcommitted"
+    ]
+  },
+  {
+    "group": "crash_recovery",
+    "session": "recovered",
+    "sql": "CHECK TABLE users",
+    "output": [
+      "innodb_demo.users\tcheck\tstatus\tOK"
+    ]
+  },
+  {
+    "group": "restore_baseline",
+    "session": "recovered",
+    "sql": "DELETE FROM users WHERE id>=90; UPDATE users SET age=30 WHERE id=1",
+    "output": []
+  }
+]

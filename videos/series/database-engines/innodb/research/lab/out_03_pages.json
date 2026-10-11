@@ -1,0 +1,255 @@
+{
+  "version": "9.7.2",
+  "file": "users.ibd",
+  "sha256": "fc21d2e3461b6b02b29437591982084bc58601ca78b4a0a9682fcabab0237acd",
+  "file_bytes": 131072,
+  "page_bytes": 16384,
+  "pages": [
+    {
+      "page_no": 0,
+      "file_offset": 0,
+      "stored_page_no": 0,
+      "type": 8,
+      "space_id": 2
+    },
+    {
+      "page_no": 1,
+      "file_offset": 16384,
+      "stored_page_no": 1,
+      "type": 5,
+      "space_id": 2
+    },
+    {
+      "page_no": 2,
+      "file_offset": 32768,
+      "stored_page_no": 2,
+      "type": 3,
+      "space_id": 2
+    },
+    {
+      "page_no": 3,
+      "file_offset": 49152,
+      "stored_page_no": 3,
+      "type": 17853,
+      "space_id": 2
+    },
+    {
+      "page_no": 4,
+      "file_offset": 65536,
+      "stored_page_no": 4,
+      "type": 17855,
+      "space_id": 2
+    },
+    {
+      "page_no": 5,
+      "file_offset": 81920,
+      "stored_page_no": 5,
+      "type": 17855,
+      "space_id": 2
+    },
+    {
+      "page_no": 6,
+      "file_offset": 98304,
+      "stored_page_no": 0,
+      "type": 0,
+      "space_id": 0
+    },
+    {
+      "page_no": 7,
+      "file_offset": 114688,
+      "stored_page_no": 0,
+      "type": 0,
+      "space_id": 0
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "index_id": 158,
+      "root_page": 4,
+      "space_id": 2,
+      "level": 0,
+      "n_recs": 8,
+      "records": [
+        {
+          "page_offset": 125,
+          "file_offset": 65661,
+          "deleted": false,
+          "record_header_hex": "00 00 10 00 21",
+          "id": 1,
+          "trx_id": 2575,
+          "roll_ptr_hex": "02 00 00 01 21 05 45",
+          "name": "alice",
+          "age": 30,
+          "payload_hex": "80 00 00 01 00 00 00 00 0a 0f 02 00 00 01 21 05 45 61 6c 69 63 65 20 20 20 20 20 9e"
+        },
+        {
+          "page_offset": 158,
+          "file_offset": 65694,
+          "deleted": false,
+          "record_header_hex": "00 00 18 00 21",
+          "id": 2,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 1d",
+          "name": "bob",
+          "age": 25,
+          "payload_hex": "80 00 00 02 00 00 00 00 08 17 81 00 00 01 0a 01 1d 62 6f 62 20 20 20 20 20 20 20 99"
+        },
+        {
+          "page_offset": 191,
+          "file_offset": 65727,
+          "deleted": false,
+          "record_header_hex": "00 00 20 00 21",
+          "id": 3,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 2a",
+          "name": "carol",
+          "age": 41,
+          "payload_hex": "80 00 00 03 00 00 00 00 08 17 81 00 00 01 0a 01 2a 63 61 72 6f 6c 20 20 20 20 20 a9"
+        },
+        {
+          "page_offset": 224,
+          "file_offset": 65760,
+          "deleted": false,
+          "record_header_hex": "04 00 28 00 21",
+          "id": 4,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 37",
+          "name": "dave",
+          "age": 19,
+          "payload_hex": "80 00 00 04 00 00 00 00 08 17 81 00 00 01 0a 01 37 64 61 76 65 20 20 20 20 20 20 93"
+        },
+        {
+          "page_offset": 257,
+          "file_offset": 65793,
+          "deleted": false,
+          "record_header_hex": "00 00 30 00 21",
+          "id": 5,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 44",
+          "name": "erin",
+          "age": 33,
+          "payload_hex": "80 00 00 05 00 00 00 00 08 17 81 00 00 01 0a 01 44 65 72 69 6e 20 20 20 20 20 20 a1"
+        },
+        {
+          "page_offset": 290,
+          "file_offset": 65826,
+          "deleted": false,
+          "record_header_hex": "00 00 38 00 21",
+          "id": 6,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 51",
+          "name": "frank",
+          "age": 52,
+          "payload_hex": "80 00 00 06 00 00 00 00 08 17 81 00 00 01 0a 01 51 66 72 61 6e 6b 20 20 20 20 20 b4"
+        },
+        {
+          "page_offset": 323,
+          "file_offset": 65859,
+          "deleted": false,
+          "record_header_hex": "00 00 40 00 21",
+          "id": 7,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 5e",
+          "name": "grace",
+          "age": 28,
+          "payload_hex": "80 00 00 07 00 00 00 00 08 17 81 00 00 01 0a 01 5e 67 72 61 63 65 20 20 20 20 20 9c"
+        },
+        {
+          "page_offset": 356,
+          "file_offset": 65892,
+          "deleted": false,
+          "record_header_hex": "00 00 48 ff 0c",
+          "id": 8,
+          "trx_id": 2071,
+          "roll_ptr_hex": "81 00 00 01 0a 01 6b",
+          "name": "heidi",
+          "age": 36,
+          "payload_hex": "80 00 00 08 00 00 00 00 08 17 81 00 00 01 0a 01 6b 68 65 69 64 69 20 20 20 20 20 a4"
+        }
+      ]
+    },
+    {
+      "name": "idx_name",
+      "index_id": 159,
+      "root_page": 5,
+      "space_id": 2,
+      "level": 0,
+      "n_recs": 8,
+      "records": [
+        {
+          "page_offset": 125,
+          "file_offset": 82045,
+          "deleted": false,
+          "record_header_hex": "00 00 10 00 13",
+          "name": "alice",
+          "id": 1,
+          "payload_hex": "61 6c 69 63 65 20 20 20 20 20 80 00 00 01"
+        },
+        {
+          "page_offset": 144,
+          "file_offset": 82064,
+          "deleted": false,
+          "record_header_hex": "00 00 18 00 13",
+          "name": "bob",
+          "id": 2,
+          "payload_hex": "62 6f 62 20 20 20 20 20 20 20 80 00 00 02"
+        },
+        {
+          "page_offset": 163,
+          "file_offset": 82083,
+          "deleted": false,
+          "record_header_hex": "00 00 20 00 13",
+          "name": "carol",
+          "id": 3,
+          "payload_hex": "63 61 72 6f 6c 20 20 20 20 20 80 00 00 03"
+        },
+        {
+          "page_offset": 182,
+          "file_offset": 82102,
+          "deleted": false,
+          "record_header_hex": "04 00 28 00 13",
+          "name": "dave",
+          "id": 4,
+          "payload_hex": "64 61 76 65 20 20 20 20 20 20 80 00 00 04"
+        },
+        {
+          "page_offset": 201,
+          "file_offset": 82121,
+          "deleted": false,
+          "record_header_hex": "00 00 30 00 13",
+          "name": "erin",
+          "id": 5,
+          "payload_hex": "65 72 69 6e 20 20 20 20 20 20 80 00 00 05"
+        },
+        {
+          "page_offset": 220,
+          "file_offset": 82140,
+          "deleted": false,
+          "record_header_hex": "00 00 38 00 13",
+          "name": "frank",
+          "id": 6,
+          "payload_hex": "66 72 61 6e 6b 20 20 20 20 20 80 00 00 06"
+        },
+        {
+          "page_offset": 239,
+          "file_offset": 82159,
+          "deleted": false,
+          "record_header_hex": "00 00 40 00 13",
+          "name": "grace",
+          "id": 7,
+          "payload_hex": "67 72 61 63 65 20 20 20 20 20 80 00 00 07"
+        },
+        {
+          "page_offset": 258,
+          "file_offset": 82178,
+          "deleted": false,
+          "record_header_hex": "00 00 48 ff 6e",
+          "name": "heidi",
+          "id": 8,
+          "payload_hex": "68 65 69 64 69 20 20 20 20 20 80 00 00 08"
+        }
+      ]
+    }
+  ]
+}

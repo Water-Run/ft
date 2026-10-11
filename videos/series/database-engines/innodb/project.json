@@ -1,0 +1,70 @@
+{
+  "slug": "innodb",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "-2%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "production": {
+    "mode": "self",
+    "maker": "Claude Opus 5.5"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -11,
+    "duck_db": 9,
+    "sfx_db": -9
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26
+    },
+    "max_cue_seconds": 6,
+    "min_font": 28,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true,
+      "palette": [
+        "EEF1F0",
+        "FAFBFA",
+        "CDC6BE",
+        "1E3742",
+        "5A6B72",
+        "00758F",
+        "F29111",
+        "E4EFEE",
+        "BDDCD7",
+        "84BDB5",
+        "3F7D86",
+        "22505C",
+        "FFFFFF"
+      ],
+      "fonts": [
+        "Open Sans",
+        "Sans SC",
+        "Mono"
+      ]
+    },
+    "duration": [
+      840,
+      960
+    ]
+  }
+}

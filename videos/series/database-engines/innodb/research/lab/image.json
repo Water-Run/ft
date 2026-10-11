@@ -1,0 +1,14 @@
+{
+  "image": "docker.io/library/mysql@sha256:091c9c7c4b6a6b4d2329d54b7f40d323741785ca990469df9a1d706be0db43e7",
+  "id": "073491946f86c298c2b044c6faa71346849873f54c330a2a55e8befad1f83cb0",
+  "repo_digests": [
+    "docker.io/library/mysql@sha256:091c9c7c4b6a6b4d2329d54b7f40d323741785ca990469df9a1d706be0db43e7",
+    "docker.io/library/mysql@sha256:e2bde46db6563855d7177adb5f0b57b9dc663f5a20927a90f4259d3312068497"
+  ],
+  "mysql_version": "9.7.2",
+  "os_arch": "Linux x86_64",
+  "network": "none; Unix socket only",
+  "binlog": false,
+  "durability": "innodb_flush_log_at_trx_commit=1; innodb_doublewrite=ON",
+  "date": "2026-10-09"
+}

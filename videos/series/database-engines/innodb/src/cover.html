@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；kit/tools/covers.js 按 2 倍像素出图。
+     与正片同一套视觉系统（见 css/style.css 与 README「视觉系统」）：MySQL 9.7 手册 InnoDB 架构图的浅灰底、圆角面板与青色页块，
+     MySQL 标志的蓝 #00758F 与橙 #F29111，拉丁字用 Open Sans。母题是一块缓冲池面板：青色深浅的页块里，
+     标志蓝的那一页是此刻在用的，标志橙的那一页上了锁；面板下方是一份日志文件。缩到 360 像素宽仍读得清「InnoDB」；底部约 15% 不放文字。 */
+  @font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wdth-wght.ttf"); font-weight: 300 800; font-stretch: 75% 100%; }
+  :root { --bg: #eef1f0; --panel: #fafbfa; --line: #cdc6be; --ink: #1e3742; --dim: #5a6b72; --blue: #00758f; --or: #f29111; --white: #ffffff;
+    --t0: #e4efee; --t1: #bddcd7; --t2: #84bdb5; --t3: #3f7d86; --t4: #22505c; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--bg); color: var(--ink); font-family: "Open Sans", "Sans SC"; overflow: hidden; }
+  .abs { position: absolute; }
+  .kicker { font: 700 42px "Sans SC", "Open Sans"; color: var(--dim); white-space: nowrap; }
+  .ep { font: 800 40px/1 "Sans SC", "Open Sans"; color: var(--white); background: var(--blue); padding: 10px 20px; border-radius: 12px; white-space: nowrap; }
+  .title { font: 800 280px/1 "Open Sans"; letter-spacing: -.03em; white-space: nowrap; color: var(--ink); }
+  .sub { font: 900 104px/1.1 "Sans SC", "Open Sans"; color: var(--blue); white-space: nowrap; }
+  .panel { background: var(--panel); border: 4px solid var(--line); border-radius: 28px; }
+  .ptl { font: 700 40px "Open Sans", "Sans SC"; color: var(--ink); white-space: nowrap; }
+  .tile { border-radius: 12px; background: var(--t1); }
+  .tile.t0 { background: var(--t0); } .tile.t2 { background: var(--t2); } .tile.t3 { background: var(--t3); } .tile.t4 { background: var(--t4); }
+  .tile.blue { background: var(--blue); } .tile.or { background: var(--or); }
+  .lock { width: 44px; height: 40px; border-radius: 10px; background: var(--ink); }
+  .lock::before { content: ""; position: absolute; left: 10px; top: -18px; width: 14px; height: 20px; border: 6px solid var(--ink); border-bottom: none; border-radius: 12px 12px 0 0; }
+  .file { background: var(--white); border: 4px solid var(--ink); border-radius: 14px; }
+  .file::after { content: ""; position: absolute; right: -4px; top: -4px; width: 40px; height: 40px; background: var(--bg); border-left: 4px solid var(--ink); border-bottom: 4px solid var(--ink); border-radius: 0 0 0 14px; }
+  .file i { position: absolute; left: 20px; height: 12px; border-radius: 6px; background: var(--t2); }
+  .file b { position: absolute; left: 16px; bottom: 16px; font: 800 30px/1 "Open Sans"; color: var(--white); background: var(--t4); border-radius: 7px; padding: 5px 10px; }
+  .r169 .kicker { left: 112px; top: 104px; } .r169 .ep { left: 112px; top: 178px; }
+  .r169 .title { left: 92px; top: 270px; } .r169 .sub { left: 108px; top: 570px; }
+  .r43 .kicker { left: 100px; top: 96px; } .r43 .ep { left: 100px; top: 168px; }
+  .r43 .title { left: 82px; top: 256px; } .r43 .sub { left: 96px; top: 552px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="abs kicker"></div>
+  <div class="abs ep"></div>
+  <div class="abs title">InnoDB</div>
+  <div class="abs sub"></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', r43 = q.get('r') === '43';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  const TEXT = { zh: { kicker: '一个数据库引擎是如何实现的？', ep: '第 2 集', sub: '事务性与现代化', pool: 'Buffer Pool' } }[lang];
+  document.querySelector('.kicker').textContent = TEXT.kicker;
+  document.querySelector('.ep').textContent = TEXT.ep;
+  document.querySelector('.sub').textContent = TEXT.sub;
+  const st = document.getElementById('stage');
+  const add = (cls, x, y, w, h, html) => { const e = document.createElement('div'); e.className = 'abs ' + cls; Object.assign(e.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' }); if (html) e.innerHTML = html; st.appendChild(e); return e; };
+  // 页块的深浅按固定的表排，不用随机数：0 空、1 普通、2 索引、3 正在用、B 标志蓝（此刻在用）、O 标志橙（上了锁）
+  const grid = (x0, y0, rows, size, gap) => rows.forEach((r, i) => [...r].forEach((c, j) => {
+    const cls = { '0': 't0', '1': '', '2': 't2', '3': 't3', '4': 't4', B: 'blue', O: 'or' }[c];
+    add('tile ' + cls, x0 + j * (size + gap), y0 + i * (size + gap), size, size);
+    if (c === 'O') add('lock', x0 + j * (size + gap) + size - 30, y0 + i * (size + gap) - 22, 44, 40);
+  }));
+  if (!r43) {
+    add('panel', 1240, 96, 584, 554); add('ptl', 1284, 128, 400, 50).textContent = TEXT.pool;
+    grid(1284, 214, ['21130', '32B21', '13202', '2O131'], 80, 24);
+    add('file', 1284, 690, 150, 190, '<i style="top:56px;width:84px"></i><i style="top:86px;width:100px"></i><i style="top:116px;width:70px"></i><b>LOG</b>');
+  } else {
+    add('panel', 820, 720, 450, 390); add('ptl', 860, 750, 400, 50).textContent = TEXT.pool;
+    grid(860, 830, ['21B3', '3O21', '1230'], 70, 22);
+    add('file', 1340, 820, 150, 190, '<i style="top:56px;width:84px"></i><i style="top:86px;width:100px"></i><i style="top:116px;width:70px"></i><b>LOG</b>');
+  }
+  const sample = st.textContent;
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('800 40px "Open Sans"', 'InnoDB Buffer Pool LOG'), document.fonts.load('700 40px "Sans SC"', sample)])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

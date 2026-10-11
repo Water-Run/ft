@@ -1,0 +1,256 @@
+[environment / A]
+SELECT VERSION(), @@version_comment, @@innodb_page_size, @@transaction_isolation, @@innodb_flush_log_at_trx_commit, @@innodb_file_per_table, @@log_bin, @@innodb_doublewrite, @@innodb_default_row_format
+9.7.2	MySQL Community Server - GPL	16384	REPEATABLE-READ	1	1	0	ON	dynamic
+
+[schema / A]
+-- Synthetic data shared with the MyISAM episode; no real user records.
+CREATE DATABASE innodb_demo DEFAULT CHARACTER SET latin1;
+USE innodb_demo;
+CREATE TABLE users (
+  id INT NOT NULL,
+  name CHAR(10) NOT NULL,
+  age TINYINT NOT NULL,
+  PRIMARY KEY (id),
+  KEY idx_name (name)
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
+INSERT INTO users VALUES
+ (1,'alice',30),(2,'bob',25),(3,'carol',41),(4,'dave',19),
+ (5,'erin',33),(6,'frank',52),(7,'grace',28),(8,'heidi',36);
+CREATE TABLE notes (
+ id INT NOT NULL,
+ body VARCHAR(200) NOT NULL,
+ PRIMARY KEY (id)
+) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
+INSERT INTO notes VALUES (1,'hello'),(2,'MyISAM stores rows in a .MYD file'),(3,'short');
+CREATE TABLE users_myisam LIKE users;
+ALTER TABLE users_myisam ENGINE=MyISAM ROW_FORMAT=FIXED;
+INSERT INTO users_myisam SELECT * FROM users;
+CREATE TABLE users_gap LIKE users;
+INSERT INTO users_gap VALUES (10,'alice',30),(20,'bob',25),(30,'carol',41);
+
+
+[setup / B]
+USE innodb_demo
+
+[setup / observer]
+USE innodb_demo
+
+[environment / A]
+SELECT ENGINE, SUPPORT, TRANSACTIONS, XA, SAVEPOINTS FROM information_schema.ENGINES WHERE ENGINE IN ('InnoDB','MyISAM') ORDER BY ENGINE
+InnoDB	DEFAULT	YES	YES	YES
+MyISAM	YES	NO	NO	NO
+
+[storage / A]
+SELECT * FROM users ORDER BY id; SHOW CREATE TABLE users; SHOW CREATE TABLE notes
+1	alice	30
+2	bob	25
+3	carol	41
+4	dave	19
+5	erin	33
+6	frank	52
+7	grace	28
+8	heidi	36
+users	CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` char(10) NOT NULL,
+  `age` tinyint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC
+notes	CREATE TABLE `notes` (
+  `id` int NOT NULL,
+  `body` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC
+
+[index_metadata / A]
+SELECT t.NAME, i.NAME, i.INDEX_ID, i.TYPE, i.N_FIELDS, i.PAGE_NO, i.SPACE FROM information_schema.INNODB_INDEXES i JOIN information_schema.INNODB_TABLES t ON i.TABLE_ID=t.TABLE_ID WHERE t.NAME LIKE 'innodb_demo/%' ORDER BY t.NAME,i.INDEX_ID
+innodb_demo/notes	PRIMARY	160	3	4	4	3
+innodb_demo/users	PRIMARY	158	3	5	4	2
+innodb_demo/users	idx_name	159	0	2	5	2
+innodb_demo/users_gap	PRIMARY	163	3	5	4	5
+innodb_demo/users_gap	idx_name	164	0	2	5	5
+
+[tablespaces / A]
+SELECT NAME, ROW_FORMAT, PAGE_SIZE, FILE_SIZE, ALLOCATED_SIZE FROM information_schema.INNODB_TABLESPACES WHERE NAME LIKE 'innodb_demo/%' ORDER BY NAME
+innodb_demo/notes	Dynamic	16384	114688	114688
+innodb_demo/users	Dynamic	16384	131072	131072
+innodb_demo/users_gap	Dynamic	16384	131072	131072
+
+[secondary_lookup / A]
+EXPLAIN SELECT id,name FROM users FORCE INDEX(idx_name) WHERE name='carol'; EXPLAIN SELECT age FROM users FORCE INDEX(idx_name) WHERE name='carol'; SELECT id,name,age FROM users WHERE name='carol'
+-> Covering index lookup on users using idx_name (name = 'carol')  (cost=0.35 rows=1)
+
+-> Index lookup on users using idx_name (name = 'carol')  (cost=0.35 rows=1)
+
+3	carol	41
+
+[rollback / A]
+START TRANSACTION; UPDATE users SET age=31 WHERE id=1; UPDATE notes SET body='birthday' WHERE id=1; SELECT age FROM users WHERE id=1; SELECT body FROM notes WHERE id=1
+31
+birthday
+
+[rollback / B]
+SELECT age FROM users WHERE id=1; SELECT body FROM notes WHERE id=1
+30
+hello
+
+[rollback / A]
+ROLLBACK
+
+[rollback / A]
+SELECT age FROM users WHERE id=1; SELECT body FROM notes WHERE id=1
+30
+hello
+
+[myisam_control / A]
+START TRANSACTION; UPDATE users_myisam SET age=31 WHERE id=1; ROLLBACK; SHOW WARNINGS; SELECT age FROM users_myisam WHERE id=1
+Warning	1196	Some non-transactional changed tables couldn't be rolled back
+31
+
+[myisam_control / A]
+SELECT age FROM users_myisam WHERE id=1
+31
+
+[rr_snapshot / A]
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ; START TRANSACTION
+
+[rr_snapshot / B]
+UPDATE users SET age=31 WHERE id=1
+
+[rr_snapshot / A]
+SELECT age FROM users WHERE id=1
+31
+
+[rr_snapshot / B]
+UPDATE users SET age=32 WHERE id=1
+
+[rr_snapshot / A]
+SELECT age FROM users WHERE id=1
+31
+
+[rr_snapshot / A]
+SELECT age FROM users WHERE id=1 FOR UPDATE
+32
+
+[rr_snapshot / A]
+ROLLBACK
+
+[rc_snapshot / A]
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; START TRANSACTION
+
+[rc_snapshot / A]
+SELECT age FROM users WHERE id=1
+32
+
+[rc_snapshot / B]
+UPDATE users SET age=33 WHERE id=1
+
+[rc_snapshot / A]
+SELECT age FROM users WHERE id=1
+33
+
+[rc_snapshot / A]
+ROLLBACK; SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ
+
+[record_locks / A]
+START TRANSACTION; SELECT id,age FROM users WHERE id=1 FOR UPDATE
+1	33
+
+[record_locks / B]
+SET SESSION innodb_lock_wait_timeout=2; START TRANSACTION; UPDATE users SET age=26 WHERE id=2
+
+[record_locks / observer]
+SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, LOCK_DATA FROM performance_schema.data_locks WHERE OBJECT_SCHEMA='innodb_demo' ORDER BY OBJECT_NAME,INDEX_NAME,LOCK_DATA,LOCK_MODE
+users	NULL	TABLE	IX	GRANTED	NULL
+users	NULL	TABLE	IX	GRANTED	NULL
+users	PRIMARY	RECORD	X,REC_NOT_GAP	GRANTED	1
+users	PRIMARY	RECORD	X,REC_NOT_GAP	GRANTED	2
+
+[record_locks / B]
+UPDATE users SET age=34 WHERE id=1
+ERROR 1205: Lock wait timeout exceeded; try restarting transaction
+
+[record_locks / B]
+ROLLBACK
+
+[record_locks / A]
+ROLLBACK
+
+[gap_locks / A]
+START TRANSACTION; SELECT id FROM users_gap WHERE id>10 AND id<30 FOR UPDATE
+20
+
+[gap_locks / observer]
+SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, LOCK_DATA FROM performance_schema.data_locks WHERE OBJECT_SCHEMA='innodb_demo' ORDER BY OBJECT_NAME,INDEX_NAME,LOCK_DATA,LOCK_MODE
+users_gap	NULL	TABLE	IX	GRANTED	NULL
+users_gap	PRIMARY	RECORD	X	GRANTED	20
+users_gap	PRIMARY	RECORD	X,GAP	GRANTED	30
+
+[gap_locks / B]
+SELECT id FROM users_gap ORDER BY id
+10
+20
+30
+
+[gap_locks / B]
+INSERT INTO users_gap VALUES(15,'new',20)
+ERROR 1205: Lock wait timeout exceeded; try restarting transaction
+
+[gap_locks / A]
+ROLLBACK
+
+[gap_locks / B]
+INSERT INTO users_gap VALUES(15,'new',20); SELECT id FROM users_gap ORDER BY id
+10
+15
+20
+30
+
+[deadlock / A]
+START TRANSACTION; UPDATE users SET age=age+1 WHERE id=1
+
+[deadlock / B]
+START TRANSACTION; UPDATE users SET age=age+1 WHERE id=2
+
+[deadlock / A]
+UPDATE users SET age=age+1 WHERE id=2
+
+[deadlock / B]
+UPDATE users SET age=age+1 WHERE id=1
+ERROR 1213: Deadlock found when trying to get lock; try restarting transaction
+
+[deadlock / A]
+ROLLBACK
+
+[deadlock / B]
+ROLLBACK
+
+[crash / A]
+INSERT INTO users VALUES(90,'committed',40)
+
+[crash / B]
+START TRANSACTION; INSERT INTO users VALUES(91,'pending',41); SELECT id,name FROM users WHERE id>=90 ORDER BY id
+90	committed
+91	pending
+
+[crash / observer]
+SELECT id,name FROM users WHERE id>=90 ORDER BY id
+90	committed
+
+[crash / controller]
+SIGKILL dedicated MySQL container, then restart the same data directory
+
+[setup / recovered]
+USE innodb_demo
+
+[crash_recovery / recovered]
+SELECT id,name FROM users WHERE id>=90 ORDER BY id
+90	committed
+
+[crash_recovery / recovered]
+CHECK TABLE users
+innodb_demo.users	check	status	OK
+
+[restore_baseline / recovered]
+DELETE FROM users WHERE id>=90; UPDATE users SET age=30 WHERE id=1
