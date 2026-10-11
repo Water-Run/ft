@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 165 部：已成片 9 部，制作中 1 部，计划中 155 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 9 部，制作中 3 部，计划中 153 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -16,7 +16,7 @@
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) | 已发布：哔哩哔哩 |
-| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh + en | 计划中 |  | `innodb` |  |
+| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 制作中 | 自制（Claude Opus 5.5） | [`innodb`](../videos/series/database-engines/innodb/) |  |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 |  | `postgresql` |  |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 |  | `firebird` |  |
 | 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
@@ -227,6 +227,8 @@
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
 | 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
+| 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制 | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。基础科普。事实测绘见本目录 research/。 |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 计划中 |  | `web-login` | 2026-10-11 由独立片改名迁入，时长 200 秒。尚未建目录。 |
 
 ### 游戏物理学
 
@@ -268,38 +270,36 @@
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端 | zh + en | 计划中 |  | `opencart-1-5-admin` |  |
 | 4 | 道交法中的路权 | zh | 制作中 | 委托（Opus） | [`traffic-law-right-of-way`](../videos/standalone/traffic-law-right-of-way/) | 2026-10-09 提前开工；仅中文，中国大陆驾驶员普法；取证预研已落盘，Opus 接续中文稿与制作，尚未审稿或成片。 |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
-| 6 | 给 LLM 长出手——Harness 工程 | zh + en | 计划中 |  | `how-harness-works` |  |
-| 7 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
-| 8 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
-| 9 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
-| 10 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
-| 11 | Web 登录机制：怎么验证你是你 | zh + en | 计划中 |  | `web-login` |  |
-| 12 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
-| 13 | 垃圾回收的艺术 | zh + en | 计划中 |  | `garbage-collection` |  |
-| 14 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
-| 15 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
-| 16 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |
-| 17 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 |  | `interchanges` |  |
-| 18 | 轮胎物理学 | zh + en | 计划中 |  | `tire-physics` |  |
-| 19 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
-| 20 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
-| 21 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
-| 22 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
-| 23 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
-| 24 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
-| 25 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
-| 26 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
-| 27 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
-| 28 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
-| 29 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
-| 30 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube |
-| 31 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
-| 32 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
-| 33 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
-| 34 | 变速器原理 | zh + en | 计划中 |  | `transmissions` |  |
-| 35 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 |  | `power-torque-curve` |  |
-| 36 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
-| 37 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
-| 38 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
-| 39 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
-| 40 | CoT：先思考，再回答 | zh + en | 计划中 |  | `chain-of-thought` |  |
+| 6 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
+| 7 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
+| 8 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
+| 9 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
+| 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
+| 11 | 垃圾回收的艺术 | zh + en | 计划中 |  | `garbage-collection` |  |
+| 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
+| 13 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
+| 14 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |
+| 15 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 |  | `interchanges` |  |
+| 16 | 轮胎物理学 | zh + en | 计划中 |  | `tire-physics` |  |
+| 17 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
+| 18 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
+| 19 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
+| 20 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
+| 21 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
+| 22 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
+| 23 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
+| 24 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
+| 25 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
+| 26 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
+| 27 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
+| 28 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube |
+| 29 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
+| 30 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
+| 31 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
+| 32 | 变速器原理 | zh + en | 计划中 |  | `transmissions` |  |
+| 33 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 |  | `power-torque-curve` |  |
+| 34 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
+| 35 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
+| 36 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
+| 37 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
+| 38 | CoT：先思考，再回答 | zh + en | 计划中 |  | `chain-of-thought` |  |
