@@ -87,6 +87,7 @@
 | OIDC 的 Authorization Code Flow 在请求里加 `openid` scope；ID Token 是 JWT，包含认证事件相关的 claims；client 要验证 ID Token | `oidc-core` §3.1 | 已读 |
 | OAuth 2.0 本身不能提供 end-user 认证信息；OIDC 通过扩展 OAuth 的授权流程来做认证 | `oidc-core` §1 | 已读 |
 | JWT 是 claims 的紧凑、URL-safe 表示；作为 JWS payload 时可以签名/MAC，作为 JWE plaintext 时可以加密；JWT 不默认加密 | `rfc7519` Abstract、§3 | 已读 |
+| 常见的签名 JWT（JWS Compact）是三段：header.payload.signature，用点分隔；三段都用 base64url 编码，payload 可读，不是加密 | `rfc7519` §3 | 已读（2026-10-19 补结构说明） |
 | JWT 的 `iss`、`sub`、`aud`、`exp`、`nbf`、`iat`、`jti` 都是可选 claim，但应用要定义哪些必须校验；不校验 `aud`/`iss`/`exp` 会出问题 | `rfc7519` §4.1、§7.2、§11.1 | 已读 |
 | JWT 的内容只有被密码学保护并绑定到信任决策所需的上下文时，才能用于信任决策 | `rfc7519` §11.1 | 已读 |
 | Federation：IdP 完成认证，把 assertion 交给 RP；RP 不直接验证 subscriber 的 authenticator；用户不必在每个 RP 各持一套 authenticator，这种流程有时称 single sign-on；SAML assertion 与 OIDC ID Token 都是常见 assertion 格式 | `nist-800-63c` §1 | 已读（2026-10-19 用 Web Fetch 读取） |
@@ -154,11 +155,13 @@
 
 2026-10-19 第 2 轮：按 F01–F12 与 P0–P13 自我对抗后重写为 7 场“三问”结构；补 HTTP 无状态、账号声明、JWT/token、SSO/SAML、攻击与缓解的一一对应。中文稿 `62c86207…`、英文草稿 `b6ef4d18…`，估算 200.0 秒；已归档。
 
-2026-10-19 第 3 轮：修中英不一致（unique salt / authenticator apps、“不是一张脸”、钓鱼“实时转发”），补 MFA 定义（“至少两个不同因子”），c10 用 WebAuthn passkey 说明公私钥/域名绑定，c11 补三类因子，删 SAY 表残留。中文稿 `review/script.zh.298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c.md`，内容哈希 `298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c`，估算 200.0 秒；英文草稿 `review/script.en.6d0809a652e4d4e3ee1710d8aad692600862fed4c322e4fd0aeea1ccac188db9.md`，哈希 `6d0809a652e4d4e3ee1710d8aad692600862fed4c322e4fd0aeea1ccac188db9`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
+2026-10-19 第 3 轮：修中英不一致（unique salt / authenticator apps、“不是一张脸”、钓鱼“实时转发”），补 MFA 定义（“至少两个不同因子”），c10 用 WebAuthn passkey 说明公私钥/域名绑定，c11 补三类因子，删 SAY 表残留。中文稿 `298d8d99…`、英文草稿 `6d0809a6…`，估算 200.0 秒；已归档。
+
+2026-10-19 第 4 轮：用户指出主线应更集中在“各种常用登录机制的原理”、JWT 不能突然出现、文案要更像科普视频。改为“怎么验证”主线：口令验证知道、短信码验证拥有、passkey 验证私钥、cookie 验证会话连续、JWT 验证签名和声明、联合登录验证第三方断言；JWT 先由会话表在多台服务器间共享的问题引出，再讲三段结构/编码≠加密/验签/撤销。去掉“三件事”“认票不认人”等口号。中文稿 `review/script.zh.49658ee9ea1555c14281a94d54b5cace1f404936eca62497c3df5270e114a1c0.md`，内容哈希 `49658ee9ea1555c14281a94d54b5cace1f404936eca62497c3df5270e114a1c0`，估算 200.0 秒；英文草稿 `review/script.en.5359b29d9519ab518796c16b63f31ba3a7ee185595857a67e109ec7d5652059e.md`，哈希 `5359b29d9519ab518796c16b63f31ba3a7ee185595857a67e109ec7d5652059e`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
 
 ## 制作署名
 
-策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿、按 F01–F12 自我对抗后重写为 7 场“三问”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿，按 F01–F12 自我对抗后重写为 7 场“怎么验证”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 

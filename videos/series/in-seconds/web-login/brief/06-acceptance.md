@@ -9,11 +9,12 @@
 ## 2. 必须查的事实
 
 - 账号是声明；口令是证明；口令不存明文，只存唯一盐 + 慢哈希；不是加密。
-- session ID 是 bearer 凭证；cookie 的 Secure/HttpOnly/SameSite；登录后换 ID、注销失效。
+- 服务器用同样的盐再算一次，结果一致才放行；口令只证明“知道”，不证明下一次请求。
+- session ID 是 bearer 凭证；cookie 的 HttpOnly/SameSite；登录后换 ID、注销失效。
+- 短信码验证“拥有手机”，但能被实时转发；passkey 验证“持有私钥”，服务器存公钥，随机挑战，签名绑定域名。
+- JWT（签名 JWS）是三段：header.payload.signature，用点分隔；三段 base64url 编码，payload 可读，不是加密；服务器验签，再查过期/受众；撤销麻烦，要短命。
 - XSS/CSRF/session fixation 的区别；XSS 只读非 HttpOnly cookie；HttpOnly 不防 CSRF。
-- 三类因子；MFA 至少两个不同因子；OTP 不防钓鱼；passkey/WebAuthn 的公私钥、随机挑战、网站域名绑定。
-- JWT 是 token 的一种：有签名，不默认加密；签名证明完整性，不隐藏内容；cookie 与 token 都认票不认人；要短命/绑定用途/可撤销。
-- OAuth 2.0 是授权不是认证；OIDC 加身份层；code 短命/单次/绑定回调；PKCE；SAML/SSO 用 NIST 800-63C 的 federation 定义。
+- OAuth 2.0 是授权不是认证；OIDC 加身份层；code 短命/单次/绑定回调；PKCE；企业 SSO 作为 federation 例子。
 - 所有数字/协议名与 `research/FACTS.md` 逐字一致；不确定的不写。
 
 ## 3. 三项核心审查
