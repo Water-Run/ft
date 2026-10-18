@@ -4,8 +4,8 @@
 
 ## 1. 全文与确认状态
 
-- 中文稿：`review/script.zh.9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba.md`，内容 SHA-256 `9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba`。
-- 英文草稿：`review/script.en.f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b.md`，内容 SHA-256 `f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b`。
+- 中文稿：`review/script.zh.f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d.md`，内容 SHA-256 `f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d`。
+- 英文草稿：`review/script.en.2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349.md`，内容 SHA-256 `2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349`。
 - `review/approval.json` 当前是 `pending`；WaterRun 明确确认前，不合成、不铺场景。确认后由准备方运行 `tts.js`，把 `timing.zh.js`/`timing.en.js` 与音频缓存补齐，再交给 Opus 5.5。
 - 逐句意见与待确认问题在 `review/NOTES.md`；术语表也在那里。
 
@@ -17,7 +17,7 @@
 
 ## 3. 时间结构
 
-估算总长 200.0 秒（中文与英文相同）。场景：open 0:00 / cookie 0:14 / jwt 0:52 / password 1:22 / factors 1:47 / delegated 2:12 / attacks 2:36 / close 2:56 / outro 3:12，片尾 7.5 秒无旁白。
+估算总长 200.0 秒（中文与英文相同）。场景：open 0:00 / session 0:21 / jwt 0:59 / authn 1:35 / oauth 2:05 / attacks 2:34 / close 2:55 / outro 3:12，片尾 7.5 秒无旁白。
 
 实际配音后，`timing.*.js` 会改变每句的起止时刻；场景里的 `T()` 会自动跟着走。任何写死秒数的画面都会在改稿后错位。
 

@@ -4,9 +4,9 @@
 
 ## 交审说明
 
-稿本：`review/script.zh.9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba.md`（内容 SHA-256 `9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba`）。
+稿本：`review/script.zh.f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d.md`（内容 SHA-256 `f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d`）。
 
-英文草稿：`review/script.en.f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b.md`（内容 SHA-256 `f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b`）。
+英文草稿：`review/script.en.2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349.md`（内容 SHA-256 `2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349`）。
 
 预估总时长：200.0 秒（估算，未配音）。各段：open 14.1 / cookie 38.0 / jwt 29.7 / password 25.7 / factors 25.2 / delegated 24.2 / attacks 19.9 / close 15.2 / 片尾 8.0。
 
@@ -49,7 +49,7 @@
 | 第 2 轮 / `62c86207…` | 全文 | 三问结构 | 用户指出主线偏机制清单、JWT 突兀 | 归档 |
 | 第 3 轮 / `298d8d99…` | 全文 | 精度修订 | 补三类因子、MFA、术语一致性 | 归档 |
 | 第 4 轮 / `49658ee9…` | 全文 | “怎么验证”主线 | 用户指出应从 cookie 开始、按缺点递进、不要 Google、要验证码 | 归档 |
-| 第 5 轮 / `9f0e7cf8…` | 全文 | cookie → 缺点 → JWT → 缺点 → 第一次验证 → 验证码 → 委托验证 | 当前待审 | 待审 |
+| 第 5 轮 / `f766f271…` | 全文 | cookie → 缺点 → JWT → 缺点 → 第一次验证 → 验证码 → 委托验证 | 当前待审 | 待审 |
 
 状态：待修改 / 已修改待复核 / 已确认 / 经讨论保留。
 

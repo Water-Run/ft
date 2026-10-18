@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "version": "2026-10-18",
+  "version": "2026-10-19",
   "items": [
     {
       "id": "F01",
       "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
       "applicability": "applies",
       "reason": "",
-      "plan": "标题是“怎么验证你是你”，不是“登录方式大全”；从 cookie 开始，用缺点引出 JWT，再回到第一次验证；每种方式都回答“验证什么、缺点是什么”",
+      "plan": "标题是“怎么验证你是你”，不是“登录方式大全”；先分清认证/会话/授权/令牌四层；Session 是状态、Cookie 是运输、JWT 是 token 格式",
       "script_evidence": "research/NARRATIVE.md 的「一个核心问题」「逐场问题与答案」；script.js 的 open 与 close。",
       "result": "pending",
       "verification": "",
@@ -18,7 +18,7 @@
       "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
       "applicability": "applies",
       "reason": "",
-      "plan": "每次验证走完“证据 → 规则 → 缺点 → 下一种”：cookie 查表、JWT 验签、口令比对哈希、短信码查码、passkey 验签名、验证码判人、委托验证验断言",
+      "plan": "每层走“解决什么 → 怎么工作 → 缺点”：Session 查表、JWT 验签、口令/短信/passkey/验证码认证、OAuth/OIDC 委托",
       "script_evidence": "research/NARRATIVE.md 的逐场表；script.js 的 credentials/session 两场。",
       "result": "pending",
       "verification": "",
@@ -29,7 +29,7 @@
       "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
       "applicability": "applies",
       "reason": "",
-      "plan": "第一次出现 cookie/JWT/口令/短信码/passkey/验证码/委托验证时给中文解释；不把 Google 当独立方式；区分 cookie 连续、JWT 签名、验证码判人",
+      "plan": "区分 Session/Session ID/Cookie/JWT/Access Token/Refresh Token；认证≠会话≠授权；不把 Google 当独立方式",
       "script_evidence": "research/FACTS.md 的「边界与常见误说」；script.js 首次出现 authentication/authorization/OAuth/OIDC/JWT/SAML 的句子。",
       "result": "pending",
       "verification": "",
@@ -40,7 +40,7 @@
       "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
       "applicability": "applies",
       "reason": "",
-      "plan": "用 8 场结构，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计",
+      "plan": "用 7 个内容场景 + 片尾，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计",
       "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
       "result": "pending",
       "verification": "",
@@ -132,6 +132,28 @@
       "script_evidence": "script.js 的 SAY 表与 tts_probe 清单；专名 OAuth、OIDC、JWT、WebAuthn、passkey、SAML、SSO、SameSite、HttpOnly、CSRF、TLS。",
       "result": "pending",
       "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "技术主题，不需要年代史；用 HTTP 无状态作背景，交代四层定位与观看路线。",
+      "plan": "开场从 cookie → Session ID → Session 的具体现象进入；说明 HTTP 无状态与认证/会话/授权/令牌四层；给出 Session → JWT → 认证方式 → OAuth/OIDC 的路线。",
+      "script_evidence": "src/js/script.js 的 open（o1–o4）与 session 开头；README/NARRATIVE 的路线表。",
+      "result": "pending",
+      "verification": "待成片后核对首次观看能否复述对象、背景与路线。",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "片尾名单与开源地址只做画面，不配旁白。",
+      "plan": "片尾用空字幕 + pause + credits:true 保留阅读时间；旁白不设 tts；制作署名只在 README/FACTS/DELIVERY。",
+      "script_evidence": "src/js/script.js 的 outro：z1 为 pause，无字幕、无 tts；brief/04-storyboard.md 的 outro。",
+      "result": "pending",
+      "verification": "待成片后核对片尾无人声、名单/网址可读，且正文无制作指令。",
       "clips": []
     }
   ],

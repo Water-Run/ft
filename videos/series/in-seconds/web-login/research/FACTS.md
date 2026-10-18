@@ -78,6 +78,7 @@
 |---|---|---|
 | OAuth 2.0 是授权框架：第三方应用在资源所有者授权下，获得对 HTTP 服务的有限访问；它不直接定义“如何认证用户” | `rfc6749` Abstract、§1 | 已读 |
 | OAuth 定义四个角色：resource owner、resource server、client、authorization server；access token 代表具体的 scope、寿命和访问属性 | `rfc6749` §1.1、§1.4 | 已读 |
+| Refresh Token 是 authorization server 发给 client 的凭证，用于在 access token 失效后获取新的 access token；它是长期凭证，必须保密 | `rfc6749` §1.5、§10.4 | 已读 |
 | Authorization Code Flow：client 把用户送到 authorization endpoint；用户认证/同意后，authorization server 把 code 重定向回 client；client 再用 code 到 token endpoint 换 access token | `rfc6749` §4.1 | 已读 |
 | Authorization code 应短期有效（建议最多 10 分钟）、只能使用一次、绑定 client identifier 和 redirect URI；重复使用要拒绝并尽可能撤销已发 token | `rfc6749` §4.1.2 | 已读 |
 | `state` 是 client 用来维持请求与回调之间状态的 opaque 值，用来防 CSRF | `rfc6749` §4.1.1、§10.12 | 已读 |
@@ -160,7 +161,9 @@
 
 2026-10-19 第 4 轮：用户指出主线应更集中在“各种常用登录机制的原理”、JWT 不能突然出现、文案要更像科普视频。改为“怎么验证”主线；JWT 先由会话表在多台服务器间共享的问题引出。中文稿 `49658ee9…`、英文草稿 `5359b29d…`，已归档。
 
-2026-10-19 第 5 轮：用户指出不能只说 cookie/JWT 两种，应从 cookie 开始、讲缺点再引出下一种；Google 不是独立方式；要提验证码。改为 8 场递进：cookie（会话表/偷编号/CSRF）→ JWT（签名、三段、撤销/被偷）→ 第一次验证（口令、短信码、passkey）→ 验证码（判人，不判身份）→ 委托验证（第三方断言）→ 攻击与收束。补 W3C CAPTCHA 来源。中文稿 `review/script.zh.9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba.md`，内容哈希 `9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba`，估算 200.0 秒；英文草稿 `review/script.en.f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b.md`，哈希 `f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
+2026-10-19 第 5 轮：用户指出不能只说 cookie/JWT 两种，应从 cookie 开始、讲缺点再引出下一种；Google 不是独立方式；要提验证码。改为 8 场递进：cookie（会话表/偷编号/CSRF）→ JWT（签名、三段、撤销/被偷）→ 第一次验证（口令、短信码、passkey）→ 验证码（判人，不判身份）→ 委托验证（第三方断言）→ 攻击与收束。补 W3C CAPTCHA 来源。中文稿 `review/script.zh.f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d.md`，内容哈希 `f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d`，估算 200.0 秒；英文草稿 `review/script.en.2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349.md`，哈希 `2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
+
+2026-10-19 第 6 轮：用户指出不能把 cookie/JWT 与口令并列，Session 没有成为一等概念。按四层重写：认证/会话/授权/令牌；Session 是服务器会话状态，Session ID 是标识，Cookie 只是运输；JWT 是 token 格式，不是 Session；再讲口令/短信码/passkey/验证码、OAuth/OIDC 与各层攻击面。中文稿 `f766f271…`、英文草稿 `2eeacf2b…`，200.0 秒；仍 pending，未配音。
 
 ## 制作署名
 
