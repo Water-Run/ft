@@ -1,0 +1,27 @@
+/* CoT「思考轨」设计 token — 沿用系列计时盘，不新增颜色。
+   方向稿，尚未接入 src/css/style.css。 */
+
+:root {
+  /* 系列颜色（由基座 style.css 提供，这里只做语义别名） */
+  --cot-ink: var(--ink);
+  --cot-paper: var(--paper);
+  --cot-accent: var(--ac);
+  --cot-dim: var(--dim);
+  --cot-dimp: var(--dimp);
+
+  /* 思考轨 */
+  --cot-rail-width: 2px;
+  --cot-rail-gap: 56px;
+  --cot-step-size: 28px;
+  --cot-step-gap: 12px;
+  --cot-branch-angle: 30deg;
+  --cot-tally-height: 22px;
+
+  /* 节拍：系列 120 BPM，一秒两拍 */
+  --cot-beat: 0.5s;
+  --cot-step-frames: 5; /* 12fps 步进 */
+
+  /* 右上角仪表 */
+  --cot-hud-width: 300px;
+  --cot-hud-height: 72px;
+}

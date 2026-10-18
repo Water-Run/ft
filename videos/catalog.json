@@ -204,7 +204,8 @@
         {"slug": "model-cards", "title": {"zh": "96 秒读懂模型的模型卡", "en": "Read a Model Card in 96 Seconds"}, "status": "planned", "note": "沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分"},
         {"slug": "virtual-machine-types", "title": {"zh": "192 秒了解虚拟机：第一类、第二类与进程虚拟机", "en": "Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines"}, "status": "planned", "note": "暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单"},
         {"slug": "harness", "title": {"zh": "192 秒了解 LLM 的手：Harness 是什么，怎么工作的？", "en": "The LLM's Hands in 192 Seconds: What a Harness Is and How It Works"}, "note": "2026-10-11 由独立片 how-harness-works 改名迁入。基础科普。事实测绘见本目录 research/。", "status": "in-progress"},
-        {"slug": "web-login", "title": {"zh": "200 秒了解 Web 登录机制：怎么验证你是你", "en": "Web Login in 200 Seconds: How a Site Checks That You Are You"}, "status": "in-progress", "note": "2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，RFC/W3C/NIST/OWASP 取证与包豪斯视觉方向已落盘，尚未写稿或配音。"}
+        {"slug": "web-login", "title": {"zh": "200 秒了解 Web 登录机制：怎么验证你是你", "en": "Web Login in 200 Seconds: How a Site Checks That You Are You"}, "status": "in-progress", "note": "2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，RFC/W3C/NIST/OWASP 取证与包豪斯视觉方向已落盘，尚未写稿或配音。"},
+        {"slug": "chain-of-thought", "title": {"zh": "192 秒认识 CoT：先思考，再回答", "en": "Chain of Thought in 192 Seconds: Think First, Then Answer"}, "status": "in-progress", "note": "2026-10-18 由独立片迁入秒速通；192 秒；事实测绘与系列视觉扩展已落盘，尚未写稿或配音。"}
       ]
     },
     {
@@ -274,7 +275,6 @@
     {"slug": "cvvt", "title": {"zh": "CVVT 可变气门正时技术"}},
     {"slug": "how-ram-works", "title": {"zh": "内存是怎么工作的，以及它为什么这么快"}},
     {"slug": "ipv4", "title": {"zh": "IPv4"}},
-    {"slug": "shell-survey", "title": {"zh": "Shell 群观"}},
-    {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}}
+    {"slug": "shell-survey", "title": {"zh": "Shell 群观"}}
   ]
 }
