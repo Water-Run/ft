@@ -8,7 +8,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "标题已含“是什么、怎么用、如何实现”；事实测绘补历史，但历史只占一小段，不抢主线",
-      "script_evidence": "research/NARRATIVE.md 的「一个核心问题」「逐章问题与答案」；写稿时对应 script.js 的 open 与 close。",
+      "script_evidence": "第 2 轮：o2 在约 4.9 秒说完 4 到 9，o5 说明离开的是连上来的终端，m1–m3 说明留下的是 server，i8 再收一次，e3 回答进程和屏幕在 server。历史不进稿，见 review/NOTES.md。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -18,8 +18,8 @@
       "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
       "applicability": "applies",
       "reason": "",
-      "plan": "用同一个 detach/attach 实验贯穿：先看到 counter 继续走，再拆 server/pty，再回到命令",
-      "script_evidence": "research/NARRATIVE.md 的逐章表；script.js 的 model/impl 两章逐步句。",
+      "plan": "用同一个计数贯穿：先看到终端离开后 4 到 9，再说明留下的是 server 和伪终端，然后才给 window、pane、session 起名，最后讲键和字节。口播不反复说实验",
+      "script_evidence": "第 2 轮：o1–o3 看见数还在走，m1–m6 解释 server 和伪终端，m7–m13 才起名，u1–u6 是键，i1–i6 是键和字节，i7 是另一块 pane 的 PANE-A，i8 回到没有 client。口播不说「实验」。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -30,7 +30,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "首次出现 session/window/pane/pty 时各给一句定义；区分 tmux 3.4 实验与 3.8 文档；不把 psmux 当 tmux",
-      "script_evidence": "research/FACTS.md 的「边界与常见误说」；script.js 首次出现 session/window/pane/pty 的句子。",
+      "script_evidence": "第 2 轮首次定义：m1 server，m2 client，m4 伪终端，m7 window，m9 pane，m13 session。3.4 只在 m8。口播不说 psmux、3.8、VT100、套接字。u3 把 d 说成 client 离开，不提前用「分离」。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -41,7 +41,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "本片没有章节卡；片名/结论卡按 2–3 秒完整阅读设计，不用“刷一下”代替阅读",
-      "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
+      "script_evidence": "第 2 轮：oT 停 2.2 秒，eT 停 1.6 秒。没有章节卡。成片阅读时间仍待画面。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -118,7 +118,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "英文术语 pty、VT100、client/server、socket 首次出现时给中文解释；tmux 源码引文只作辅助，画面给中文释义。",
-      "script_evidence": "research/FACTS.md 的英文引文；script.js 首次出现 pty、VT100、socket 时给中文解释。",
+      "script_evidence": "第 2 轮不口播 pty、VT100、socket。伪终端、server、client、window、pane、session 都在首次句里用中文说明。PANE-A 是回显，不是术语。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -129,7 +129,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "专名 tmux、pty、libevent、OpenBSD、VT100 列试听清单；断句按语义，不按字幕切。",
-      "script_evidence": "script.js 的 SAY 表与 tts_probe 清单；专名 tmux、pty、libevent、OpenBSD、VT100。",
+      "script_evidence": "第 2 轮 SAY 已写，尚未 tts_probe。口播会碰到 tmux、Ctrl-b、PANE-A、kill-server、3.4。u4 读「百分号」，u5 读「引号」。",
       "result": "pending",
       "verification": "",
       "clips": []

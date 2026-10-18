@@ -6,15 +6,15 @@
 
 ## 当前状态与接续
 
-阶段：事实测绘与视觉方向已落盘。文案：未写、未确认。交付：未完成。发布：未发布。归档：未归档。
+阶段：中文文案第 2 轮已导出，等待 WaterRun 逐句审查。未确认。交付：未完成。发布：未发布。归档：未归档。
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：tmux 3.4（WSL2 Ubuntu 24.04）实验；3.8 文档/源码核对；`research/FACTS.md`、`sources.json`、`NARRATIVE.md`；卡带未来主义设计方向与 token |
-| 下一步及依赖 | 写中文稿 → 交 WaterRun 逐句审查并明确确认 → 翻译/校对英文 → 配音 → 视觉关键帧 → 场景 |
-| 当前稿本 / 校对结论 | `src/js/script.js` 仍是模板骨架；没有文案确认 |
+| 最近完成的步骤与版本 | 2026-10-19：中文文案第 2 轮写入 `src/js/script.js` 并导出。按一条因果重排；历史仍不口播 |
+| 下一步及依赖 | 2026-10-19 已要求把第 2 轮提交，交给后续模型开工。文案仍未确认：按本片 `AGENTS.md`，指定校对者明确确认前不配音，场景也不当成品。入口是 `src/js/script.js` 与第 2 轮导出稿；`src/js/scenes` 仍是系列骨架 |
+| 当前稿本 / 校对结论 | 中文 `review/script.zh.030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1.md`，未确认。英文是对照草稿 |
 | 输出在哪台制作机 | 制作机 A（Windows + WSL2）；没有成片 |
-| 未完成、未检查与阻塞 | 文案、时间线、关键帧、场景、声音、渲染、审查、封面均未做；英文标题待中文稿定稿时确认 |
+| 未完成、未检查与阻塞 | 文案未确认；时间线、关键帧、场景、声音、渲染、审查、封面均未做；英文标题待中文稿定稿时确认 |
 
 ## 文案与校对
 
@@ -37,15 +37,15 @@ node kit/tools/script-review.js videos/series/in-seconds/tmux check
 
 看完应能回答的一个核心问题：关掉终端之后程序为什么还在跑；tmux 到底替谁记住了什么。
 
-逐章怎样推进问题、最后回答什么：现象（detach 后还在跑）→ 它是什么（session/window/pane 与 pty）→ 怎么用（前缀键与几个命令）→ 原理（server/client、forkpty、VT100 解析、重绘）→ 历史（nscr、2007、OpenBSD、3.8）→ 边界（kill-server/重启）。结尾回到“它保活的是进程与 pty，不是重启后的机器状态”。
+逐章怎样推进问题、最后回答什么（第 2 轮口播）：现象（终端离开后数从 4 到 9，程序还在跑）→ 留下的是 server，离开的是 client，伪终端留在 server 上 → 看见具体的页和块之后，才叫 window、pane、session → 前缀键与 c / d / % / " / attach → 键和字节怎么走，另一块 pane 回显 PANE-A，没有 client 时数仍从 4 到 9 → 边界（kill-server；还在只算离开，不算重启）。历史这一轮不口播。结尾回答：进程和屏幕在 server，不在 client。
 
 本片决定不讲的材料及理由：tmux 配置/插件生态、copy mode 全部键位、Windows psmux、性能对比、systemd 托管。理由见 `research/NARRATIVE.md`：128 秒里这些会挤掉定义与逐步解释。
 
 | 问题编号 | 适用性 / 不适用的原因 | 本片计划与正面对照 | 怎样验证 |
 |---|---|---|---|
 | F01 标题与主问题 | 适用 | 标题已含“是什么、怎么用、如何实现”；事实测绘补历史，但历史只占一小段，不抢主线 | 审稿时标出开头问题、各章答案与结尾回答的时刻 |
-| F02 解释步骤与理解负担 | 适用 | 用同一个 detach/attach 实验贯穿：先看到 counter 继续走，再拆 server/pty，再回到命令 | 正常播放检查观众能否从“关掉终端”跟到“server/pty 仍在”；记录每步时间 |
-| F03 名称、比较与边界 | 适用 | 首次出现 session/window/pane/pty 时各给一句定义；区分 tmux 3.4 实验与 3.8 文档；不把 psmux 当 tmux | 审稿时核对首次定义、版本标注和画面文字 |
+| F02 解释步骤与理解负担 | 适用 | 同一个计数贯穿：先看到终端离开后 4 到 9，再说明留下的是 server 和伪终端，然后才起名，最后讲键和字节。口播不反复说实验。对照 MyISAM | 审稿时从 o1 跟到 e3，看每句是不是上一句的原因或下一步；记录预估时间 |
+| F03 名称、比较与边界 | 适用 | server、client、伪终端、window、pane、session 都在首次句里用中文定义；3.4 只标画面；不说 psmux，也不把 3.8 的结构说成这次读到的 | 审稿时核对首次定义和版本标注 |
 | F04 有效阅读时间 | 适用 | 本片没有章节卡；片名/结论卡按 2–3 秒完整阅读设计，不用“刷一下”代替阅读 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
 | F05 动画解释机制 | 适用 | 换场只用拔插电缆、换台雪花、挡板合拢三类，各自绑定不同语义；不做全片同一种擦除 | 与近期两部并排看开头/换章/解释段 |
 | F06 声音选择与配合 | 适用 | 继电器、按键、磁带、CRT 底噪各有语义；不用默认 whoosh；配乐写清节奏与加层 | 主混音/无配乐版试听，记录片段与结果 |
@@ -53,21 +53,23 @@ node kit/tools/script-review.js videos/series/in-seconds/tmux check
 | F08 最终文件与记录 | 适用 | 目标 128 秒 ±0.1；60fps、立体声、响度按仓库默认；出片后记录实际编码参数与哈希 | `check.js`、`ffprobe`、实际音轨测量与 README 对照 |
 | F09 证据与反馈来源 | 适用 | 3.4/3.8 差异、psmux、socket 权限等容易引战；每条回到 FACTS 的来源与版本，未核的写“待核” | 审稿与成片复核时逐条对照 `FACTS.md` 的“边界与常见误说” |
 | F10 单集独立可懂 | 适用 | 本集不依赖前集；不写“上一期/第几集”。tmux 的概念在 open/model 两章自足。 | 不看任何前集也能理解；审稿逐句检查前集引用。 |
-| F11 外文材料的中文解释 | 适用 | 英文术语 pty、VT100、client/server、socket 首次出现时给中文解释；tmux 源码引文只作辅助，画面给中文释义。 | 审稿时能找到每个外文术语的中文解释；不要求观众读英文 man page。 |
-| F12 读音、断句与口播 | 适用 | 专名 tmux、pty、libevent、OpenBSD、VT100 列试听清单；断句按语义，不按字幕切。 | tts_probe/asr 回听；人耳确认读错/断句；记录时间点。 |
+| F11 外文材料的中文解释 | 适用 | 这一轮不口播 pty、VT100、socket。要说的 server、client、window、pane、session 都在同一句里给中文。PANE-A 是回显。 | 审稿时确认没有没解释的外文词；不要求观众读 man page。 |
+| F12 读音、断句与口播 | 适用 | 这一轮会读到 tmux、Ctrl-b、PANE-A、kill-server、3.4；% 和引号另写读法。断句按语义。还没有试听。 | 确认后用 tts_probe/asr 回听；人耳确认读错和断句。 |
 
 ## 内容
 
 大纲见 `research/NARRATIVE.md`。以下只是章节骨架，不是旁白；起点要等实测时间线。
 
-| 场景 | 起点 | 内容 |
+| 场景 | 起点（字数估算，未配音） | 内容 |
 |---|---|---|
-| open | 0:00 | 现象：detach 后 counter 还在走；片名卡 |
-| model | 待定 | session / window / pane / pty 的树；一个 session、两个 window、三个 pane |
-| use | 待定 | 前缀 `C-b`、`c`/`%`/`"`/`d`/`[`、`tmux attach`；命令与键是同一套命令 |
-| impl | 待定 | client 只收键/画屏；server 持有 pty，解析 VT100/ANSI，再按 client 重绘 |
-| history | 待定 | 2007 `nscr`、0.1、2009 OpenBSD、2026 3.8 |
-| edge | 待定 | kill-server、server 死、重启不恢复；片尾名单 |
+| open | 0:00 | 终端离开后数从 4 到 9；片名卡；离开的只是连上来的终端 |
+| model | 0:14.4 | server、client、伪终端；3.4 的两个 window；然后才是 pane 和 session |
+| use | 0:57.6 | 前缀 Ctrl-b、c / d / % / "、tmux attach |
+| impl | 1:17.1 | 键先到 tmux，字节读成字，为这个 client 重画；另一块 pane 回显 PANE-A；没有 client 时数仍从 4 到 9 |
+| edge | 1:45.9 | kill-server；还在只算离开；进程和屏幕在 server |
+| outro | 2:00.5 | 片尾名单，无旁白 |
+
+第 2 轮口播仍没有历史场，也没有套接字、命令表、VT100 和 3.8 的 `fdforkpty`。这些句子写在 `review/NOTES.md`，要加回来就得从现稿删掉同等时长。
 
 ## 视觉系统
 
@@ -86,7 +88,7 @@ node kit/tools/script-review.js videos/series/in-seconds/tmux check
 
 ## 读法
 
-尚无旁白。写稿与合成后，在此登记送去合成的文本与字幕不同的地方（`script.js` 的 SAY 表）及原因。
+第 2 轮 SAY 已写进 `script.js`，还没有试听。`u4` 的字幕是 `%`，送去合成的是「百分号」。`u5` 的字幕是 `"`，送去合成的是「引号」。这一轮会读到的专名是 tmux、Ctrl-b、PANE-A、kill-server、3.4。试听前不作数。
 
 ## 制作署名与片尾
 
@@ -99,6 +101,7 @@ node kit/tools/script-review.js videos/series/in-seconds/tmux check
 | 参与模型（含可确认的版本） | 实际分工 |
 |---|---|
 | DeepSeek V4.1 Flash 1017 | 事实测绘、Web Fetch 来源核对、tmux 3.4 实验、3.8 文档/源码核对、叙事测绘、卡带未来主义设计方向 |
+| Grok 4.7 | 2026-10-18 中文旁白第 1 轮与英文对照草稿；2026-10-19 按可懂性重写第 2 轮中文旁白和英文对照草稿 |
 
 网页来源通过 Web Fetch 读取原文；PDF 与 403 页面用下载/存档文本核对。
 

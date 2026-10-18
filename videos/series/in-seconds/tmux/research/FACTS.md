@@ -100,11 +100,13 @@
 
 ## 文案审查
 
-尚未写稿，未交审。写稿后按 `docs/script-review.md` 逐轮记录交审日期、稿本哈希、意见与明确确认；没有确认不配音。
+2026-10-18 导出第 1 轮。中文稿本 `review/script.zh.56484a77a82ea997aba4c6137c9258ebac5eae9956f3327c6499ccf2d2805dfa.md`，内容 SHA-256 `56484a77a82ea997aba4c6137c9258ebac5eae9956f3327c6499ccf2d2805dfa`。
+
+2026-10-19 导出第 2 轮。中文稿本 `review/script.zh.030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1.md`，内容 SHA-256 `030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1`。尚未确认，不配音。第 2 轮只改口播顺序和省略，不改上表事实。取舍、简化和句号对照见 `review/NOTES.md`。
 
 ## 制作署名
 
-策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取 3.8 文档与源码，在 WSL 里运行 tmux 3.4 实验，并写下本目录的事实记录；没有写旁白。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取 3.8 文档与源码，在 WSL 里运行 tmux 3.4 实验，并写下本目录的事实记录；没有写旁白。同日 Grok 4.7 根据这份事实记录写了中文旁白第 1 轮和英文对照草稿。2026-10-19，Grok 4.7 重写了中文旁白第 2 轮和英文对照草稿，还没有配音。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 
