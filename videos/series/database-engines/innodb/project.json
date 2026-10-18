@@ -66,5 +66,8 @@
       840,
       960
     ]
+  },
+  "feedback": {
+    "required": true
   }
 }

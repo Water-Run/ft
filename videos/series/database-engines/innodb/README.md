@@ -1,5 +1,9 @@
 # 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB
 
+**2026-10-18 新反馈已测绘落盘。** WaterRun 指出配音、阅读保持、过度回指前集、动画直观性、叙事负担、外文中文参照、读音与断句七类问题。详见 [本轮复盘](../../../../docs/reviews/2026-10-18.md)及 P14–P20；10 句“上一期”、十张约 1 秒章卡和英文材料已定位，并从正式 MP4 复跑三段 ASR 筛查。本轮没有修改 R8 旁白、场景或成片，缺陷仍待修订后复测。
+
+本轮实际署名：策划与反馈 WaterRun；GPT-6 Astra 完成测绘、记录与反馈约束；Whisper small（faster-whisper 本地执行）完成三段语音识别。R8 的原有参与名单保留，修订版片尾按最终实际贡献补全。
+
 数据库引擎系列第 2 集，一部 15 分 49 秒的科普片，仅中文。与第一集同一定位：讲一个存储引擎怎样实现。主线分三段：由上一集 MyISAM 的三条局限（没有事务、一把表锁、没有日志）引出事务性；讲清事务性是什么、难在哪里（事务与 ACID、锁与多版本、隔离级别、日志与预写，并在这里引出 OLTP）；再看 InnoDB 怎样把它做出来——沿上一集的四个问题「数据怎么放、怎么找、怎么并发、出错怎么办」逐章展开，每章对照 MyISAM 的做法；最后回到三条局限与代价。演示环境为 MySQL 9.7.2，只在第 01 章交代一次；InnoDB 自 2010 年 7 月的 MySQL 5.5.5 起成为默认存储引擎。
 
 成片长度按策划者的要求约 15 分钟（`check.duration` 840–960 秒），高于系列一般的 10 分钟，例外已写入系列说明。本集只讲 InnoDB，不涉及其他数据库。片中每一句陈述的出处见 `research/FACTS.md`，章节与边界见 `research/MAP.md`，系列约定见 [`../README.md`](../README.md)，制作流程与标准见仓库的 `docs/`。
@@ -213,3 +217,47 @@ M 为第一集脚本的 cue 编号（`myisam/src/js/script.js`）或其 FACTS �
 
 - 第 02 章开头（1:17–1:20），notes 表连同两张表的表头和记录在本场一淡入就已经在画面上，没有按设计在读到「两张表」时出现（users 表的边框照常淡入）。原因在 `src/js/scenes/s02_tx.js` 第 16 行：说明写成了行尾注释，同一行后面的 `showPanel(PN, tNt)` 和四个 `fin(…)` 被一并注释掉。这处改动之后，预演里 1:17 那段静止从 2.9 秒变成 3.7 秒；当时没有先确认改动是否生效，就误判为浅色面板在预演里测不出变化，第 22 行注释括号里写的也是这个错误的理由（实测见 `docs/pitfalls.md`「浅色元素」一条）。随后加上的「读到表名时那一行标成标志蓝」是生效的，预演因此通过。
 - 发现时成片已经投稿。为使源码与线上成片一致，源码没有改，`check.js --final` 仍判本地成片未过期。要修：把第 16 行的说明移到上一行、删掉第 22 行括号里的理由，再从 `audio.js` 起按顺序重做（音效事件不变）。
+
+
+## 2026-10-18 开工反馈应用
+
+本轮范围是测绘、材料整理与后续改稿准备。当前规则 F01–F12；机器记录见 [review/feedback.json](review/feedback.json)，不能以本表代替文案人工确认。
+
+| 编号 | 本片具体计划 | 验证定位与办法 |
+|---|---|---|
+| F01 | 直接回答 InnoDB 怎样保存、读取、修改和恢复数据，压缩不服务当前机制的史料。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F02 | 围绕同一条记录走完整个状态变化，再命名概念，避免字幕、论文和图表同时增加负担。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F03 | 机制比较说明版本与条件，不把前集实验数值或术语默认当本片已解释过。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F04 | 将十张约 1 秒的大字章卡重新预算为能读清的区间，并测内容卡实际稳定保持。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F05 | 把版本、锁、日志、页面和恢复的因果做成对象变化，不用文献与标签入场代替机制。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F06 | 针对用户配音评价先做专名、解释句、长句与列举的试听方案，确认具体选择后整片应用。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F07 | 原实验和公开素材再次检查路径与身份信息；复盘数据只保留影片内容与相对证据位置。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F08 | 修复编码后真峰值的检查口径，以正式 MP4 实测和哈希复验，不沿用 WAV 报告。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F09 | P14–P20 保留用户来源；客观时间和抽帧单列，ASR 候选不写成人耳确认。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F10 | 逐条审查 10 句上一期引用，删除无必要的编号回指，直接提出本章问题并补齐必要背景。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F11 | 英文摘要、日志引文与论文题名按当前论点选短材料并配中文释义，长资料移出主画面。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+| F12 | 按 y3、a14b、a17b 的实际音轨逐句复听，并检查语义断句；修后重跑时长与音画流程。 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘；按实际成片核对 |
+
+## 2026-10-18 结尾反馈复盘
+
+R8 原片问题已定位，未修订；保留待修改 / 待人耳复核。以下同编号状态是本轮测绘的结论，不是修订后成片已通过。
+
+| 编号 | 本轮证据与检查方式 | 结果 / 遗留 |
+|---|---|---|
+| F01 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F02 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F03 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F04 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F05 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F06 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F07 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F08 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F09 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F10 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F11 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+| F12 | docs/reviews/2026-10-18.md 第 1 节、measurements.json、asr.json；本片 FACTS 发布后反馈测绘 | R8 原片问题已定位，未修订；保留待修改 / 待人耳复核 |
+
+## 2026-10-19 新增反馈应用与结尾待办
+
+- **F13**：修订时先解释 InnoDB 与用户数据库操作的关系和本集路线；年代与版本用已有事实引入，避免依赖前集记忆。 验证：README 本轮复盘、research/FACTS；后续改稿交审与实际开场需再核对。 当前结果为 pending，须在后续成片按同编号回填实际时段、哈希和结果。
+- **F14**：沿用片尾无旁白要求，制作署名与片尾时长保留在场景任务说明；改片后检查最终片尾音轨。 验证：README 片尾记录与后续改片脚本；本轮没有重渲或试听新片尾。 当前结果为 pending，须在后续成片按同编号回填实际时段、哈希和结果。
