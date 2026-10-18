@@ -110,10 +110,12 @@
 
 2026-10-19 第 5 轮：Claude Opus 5.5 改写，依据 WaterRun 在会话中的自主完成授权（见 `review/NOTES.md`「第 5 轮」），中文稿本 `review/script.zh.<最新哈希>.md`。新增口播陈述的依据：server 是后台进程且 pane 是其子进程（「它是什么」实验第 3、4 节）；client 只显示与转交按键、两者经 /tmp 下 socket 通信（DESCRIPTION）；按键先查键表（server-client.c:1690-1700）；输出写进 pane 的 screen 再为每个 client 重画（window.c、screen-redraw.c）；2009 导入 OpenBSD base（`tmux-import-2009`）；kill-server 结束 server 与所有 session（实验第 10 节）。
 
+2026-10-19 第 5 轮 b：按 WaterRun 意见改写使用与原理两段（见 `review/NOTES.md`「第 5 轮 b」），中文稿本 `review/script.zh.03a119d1958c0bf7c2bf3d1a3602b22a0e97c285088f941fb575777d9a3b87e3.md`。新增陈述的依据：快捷键为前缀 C-b 加命令键（DEFAULT KEY BINDINGS）；`"` 上下切 pane；按键送到 server 后查 key table，未命中经 `window_pane_key()` 写入 pane 的 pty（server-client.c:1690-1700）；pane 输出经 `input_parse_pane()` 写进该 pane 的 screen grid，而不是原样转发（window.c:1633-1680、input.c）；server 为每个 client 按其终端能力重画（screen-redraw.c、tty.c）；「接回来画面原样」是由 screen 留在 server 推出的说明，实验第 9 节做过重新接入，但没有逐像素比对画面。
+
 ## 制作署名
 
 策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取 3.8 文档与源码，在 WSL 里运行 tmux 3.4 实验，并写下本目录的事实记录；没有写旁白。同日 Grok 4.7 根据这份事实记录写了中文旁白第 1 轮和英文对照草稿。2026-10-19，Grok 4.7 重写了中文旁白第 2 轮和英文对照草稿；同日再重写第 3 轮中文旁白和英文对照草稿；同日按「不报没有作用的版本号，结尾要回答开头」重写第 4 轮中文旁白和英文对照草稿，还没有配音。2026-10-19，Claude Opus 5.5 按 WaterRun「全部自主完成、可主动修改文案」的授权重写第 5 轮中英旁白（事实不出本表），并完成场景动画、MiniMax 语音合成配音（speech-2.8-hd）、混音、渲染与成片审查。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 
-2026-10-19，Claude Opus 5.5 对第 5 轮成片（zh SHA-256 a4b9d0e1…5151，en 96576080…4ab9）逐句、逐画面复核：用 `sheets.js cue` 与 `look.js` 截图对照本文件。画面上的年份（2007-07-09 首次提交、2007-11-20 0.1、2009-07-07 导入）、PID 506、PPID 506、/dev/pts/2–4、40×24 / 39×24、socket 路径与 mode 660、默认键 c / % / " / d、kill-server 后的回显都与上表一致。不是实验回显的示意：开头之后计数继续到 10 以上、o5 小屏里的 vim / make / ssh。没有发现需要更正的陈述。未联网重读来源（取证日为 2026-10-18）。读音只做了 ASR，人耳待 WaterRun。
+2026-10-19，Claude Opus 5.5 对第 5 轮成片（zh SHA-256 f2b11e11…3017，en ef607324…f9ee4）逐句、逐画面复核：用 `sheets.js cue` 与 `look.js` 截图对照本文件。画面上的年份（2007-07-09 首次提交、2007-11-20 0.1、2009-07-07 导入）、PID 506、PPID 506、/dev/pts/2–4、40×24 / 39×24、socket 路径与 mode 660、默认键 c / % / " / d、kill-server 后的回显都与上表一致。不是实验回显的示意：开头之后计数继续到 10 以上、o5 小屏里的 vim / make / ssh。没有发现需要更正的陈述。未联网重读来源（取证日为 2026-10-18）。读音只做了 ASR，人耳待 WaterRun。

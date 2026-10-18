@@ -144,3 +144,14 @@ e1 用 server 回答开头的「程序还在」。e2 把「还在」限制在终
 据此 Claude Opus 5.5 重写第 5 轮：钩子保留实验第 8 节的 4 → 9；用 server / client / 伪终端回答「程序住在哪」（FACTS「它是什么」「实现」）；三层 session / window / pane；默认键 c、%、引号、d 与 attach；键表与重画各一句（FACTS「实现」server-client.c、screen-redraw.c）；结尾回答开头并说明 kill-server。第 4 轮里「这个还在，只算终端离开」等拗口句删除。approval.json 依据本节记为 approved：**这是授权，不是逐句阅读确认**，WaterRun 回来后的意见另记。稿本见 `review/script.zh.<哈希>.md` 最新一份。
 
 第 5 轮补记：英文标题原为空，补为「Tmux in 128 Seconds: What It Is, How to Use It, How It Works」（与中文标题同义），英文内容哈希因此由 9166f830… 变为 8b8dcf69…；旁白与字幕未变，确认依据同上。
+
+## 第 5 轮 b（2026-10-19 约 03:00）
+
+WaterRun 看过第 5 轮后指出：「tmux视频里还有很多小问题……自主完成, 不要再问我。自主核对, 修改, 修复。文案还能进一步优化, 尤其是介绍使用那边有点迷, 原理也过的太快了。」
+
+修改：
+- 使用：每条都写成「Ctrl-b 再按某键」（u1 先说明两步：按 Ctrl-b、松开、再按一个键；u2 c 新窗口；u3 % 左右分；新增 u4 双引号上下分；u5 d 即 detach，终端离开、程序留下；u6 attach 一切原样）。
+- 原理：拆成按键与输出两条路径。i1 键由 client 送到 server；i2 查键表，Ctrl-b 之后 c 是新开窗口；i3 查不到的键写进 pane 的伪终端；新增 i4–i6 输出先记进 pane 自己的屏幕、再为每个 client 重画；新增 i7 所以接回来时画面原样恢复（FACTS「实现」server-client.c、window.c、input.c、screen-redraw.c、tmux.h 的 screen / base）。
+- 为腾出时间：p2 与 p3 合并、p4 缩短；m7 与 m8 合并，m9 并入 m10；删去 e2；eT 由 2.2 秒改为 1.4 秒。
+- 为卡定长 128 秒再压字：o5、p2、u1、u5、e1 缩短，i1 与 i2 重写为「送到 server 查键表 / Ctrl-b 之后的 c 查到新开窗口」，eT 1.0 秒；语速 zh 1.03、en 1.13。
+- 读法（不改含义）：tts_probe 回听，中文 SAY 的 tmux 由「T mux」（听成 Timx）改为「tee mux」（听成 Tmux）；kill-server 不再拆成「kill server」（听成 Qserver），按原拼写送读。

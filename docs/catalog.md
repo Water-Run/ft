@@ -219,7 +219,7 @@
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 第 5 轮（Claude Opus 5.5，按授权）中英成片已出：各 128.00 s、1080p60，MiniMax 配音；check.js 通过，--final 只差配乐与读音的人耳确认，待 WaterRun 观看试听后交付。 |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 第 5 轮 b（Claude Opus 5.5，按 WaterRun 意见优化使用与原理）中英成片：各 128.00 s、1080p60，MiniMax 配音；check.js 通过，--final 只差配乐与读音的人耳确认。 |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |

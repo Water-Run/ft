@@ -8,6 +8,7 @@
 // 本系列（XX 秒速通）的时间线是定长的：片名里的秒数就是成片的时长，各语言相同。
 // - 场景的 at 是它开始的时刻（秒）。上一场的旁白说完之后，余下的时间留白到这一刻；说不完就是超出，记入 L.problems，总闸门不通过。
 // - TOTAL 是全片的时长，最后一场补齐到这一刻。
+// 2026-10-19 第 5 轮 b：WaterRun 指出使用一段迷、原理过快，改为「Ctrl-b 再按某键」逐条讲，原理拆成按键与输出两条路径；沿革、三层与结尾压缩。
 // 2026-10-19 第 5 轮（Claude Opus 5.5，按 WaterRun 授权自主改写）：计数 4→9 的钩子，server/client/伪终端回答「程序住在哪」，再讲三层、按键、键表与重画，最后回答开头与 kill-server。
 // 先说终端离开、计数还在，再用两次读数。定义之后才停片名。历史只留能接回这一页的原因。
 // 不报 nscr、3.8、好读的代码，也不口播 3.4。结尾用 server 回答「还在」，最后一句是程序怎么停。片尾 120.5–128 不配旁白。
@@ -27,7 +28,7 @@
         ['o2', { zh: '过一会儿重新连上，它已经数到 9', en: 'Reconnect a moment later, and it is already at 9.' }, { gap: 0.16 }],
         ['o3', { zh: '程序一直在跑，走掉的只是终端', en: 'The program kept running. Only the terminal left.' }, { gap: 0.16 }],
         ['o4', { zh: '替它守着的，是终端复用器 *tmux*', en: 'What kept it alive is a terminal multiplexer: *tmux*.' }, { gap: 0.16 }],
-        ['o5', { zh: '一块屏幕开好几个终端，人走了，它们还在', en: 'Many terminals on one screen, still there after you leave.' }, { gap: 0.12 }],
+        ['o5', { zh: '一块屏幕开几个终端，人走了也还在', en: 'Many terminals on one screen, still there after you go.' }, { gap: 0.12 }],
         ['oT', null, { pause: 2.2, gap: 0 }],
       ],
     },
@@ -36,9 +37,8 @@
       id: 'past', at: null, chap: null, lead: 0.16, tail: 0.2,
       cues: [
         ['p1', { zh: '*tmux* 诞生于 2007 年', en: '*tmux* was born in 2007.' }, { gap: 0.14 }],
-        ['p2', { zh: '作者原本是另一个工具 *screen* 的重度用户', en: 'Its author was a heavy user of another tool, *screen*.' }, { gap: 0.14 }],
-        ['p3', { zh: '但他说得明白：*tmux* 不是要复制 *screen*', en: 'But he was clear: *tmux* was not meant to copy *screen*.' }, { gap: 0.14 }],
-        ['p4', { zh: '他要一个窗口接到多个终端，其他窗口各自独立', en: 'He wanted one window on several terminals, the rest independent.' }, { gap: 0.14 }],
+        ['p2', { zh: '作者原本用 *screen*，但不打算复制它', en: 'Its author used *screen*, but did not set out to copy it.' }, { gap: 0.14 }],
+        ['p4', { zh: '他要的是：一个窗口，能同时接到多个终端', en: 'He wanted one window shown on several terminals at once.' }, { gap: 0.14 }],
         ['p6', { zh: '2009 年，*tmux* 被收进 OpenBSD 的基本系统', en: 'In 2009, *tmux* was imported into the OpenBSD base system.' }, { gap: 0.16 }],
       ],
     },
@@ -51,10 +51,8 @@
         ['m3', { zh: '计数程序，是 *server* 的子进程', en: 'The counter is a child process of the server.' }, { gap: 0.12 }],
         ['m4', { zh: '它用的终端，是 *server* 造出来的伪终端', en: 'Its terminal is a pseudo terminal the server created.' }, { gap: 0.16 }],
         ['m5', { zh: '眼前的终端窗口只是 *client*，管显示和按键', en: 'The terminal in front of you is just a *client*: picture and keys.' }, { gap: 0.14 }],
-        ['m7', { zh: '*client* 和 *server* 是两个进程，靠本地连接通信', en: 'Client and server are two processes talking over a local socket.' }, { gap: 0.14 }],
-        ['m8', { zh: '终端关掉，断开的只是这条连接', en: 'Close the terminal, and only that connection breaks.' }, { gap: 0.2 }],
-        ['m9', { zh: '*server* 管的东西，分三层', en: 'What the server manages has three layers.' }, { gap: 0.12 }],
-        ['m10', { zh: '最外层是 *session*，一组终端的集合', en: 'The outermost is a *session*, a group of terminals.' }, { gap: 0.12 }],
+        ['m7', { zh: '两者靠本地连接通信，关掉终端，只断了这条连接', en: 'They talk over a local socket; closing the terminal only cuts that link.' }, { gap: 0.2 }],
+        ['m10', { zh: '*server* 里分三层：最外层是 *session*，一组终端', en: 'Inside the server are three layers. Outermost: a *session*, a group of terminals.' }, { gap: 0.12 }],
         ['m11', { zh: '*session* 里有 *window*，每个占满一屏', en: 'A session holds *windows*, each filling the screen.' }, { gap: 0.12 }],
         ['m12', { zh: '*window* 再切成 *pane*，每块都是独立的伪终端', en: 'Windows split into *panes*, each its own pseudo terminal.' }, { gap: 0.14 }],
       ],
@@ -63,31 +61,35 @@
       // 默认键：前缀、c、%、引号、d、attach。
       id: 'use', at: null, chap: null, lead: 0.14, tail: 0.08,
       cues: [
-        ['u1', { zh: '操作时，先按前缀键 *Ctrl-b*，再按命令键', en: 'To use it, press the prefix *Ctrl-b*, then a command key.' }, { gap: 0.14 }],
-        ['u2', { zh: '按 c，新建一个 *window*', en: 'c creates a new window.' }, { gap: 0.12 }],
-        ['u3', { zh: '按 % 左右切开 *pane*，按引号上下切开', en: '% splits panes left-right; a double quote, top-bottom.' }, { gap: 0.12, tts: { zh: '按百分号左右切开 pane，按引号上下切开。', en: 'Percent splits panes left-right; a double quote, top-bottom.' } }],
-        ['u5', { zh: '按 d，当前 *client* 断开，也就是 detach', en: 'd disconnects the current client. That is detach.' }, { gap: 0.14 }],
-        ['u6', { zh: '回来时输入 *tmux* attach，画面原样接上', en: 'Come back with *tmux* attach, and the screen reconnects as it was.' }, { gap: 0.14 }],
+        ['u1', { zh: '快捷键分两步：先按 *Ctrl-b*，再按一个键', en: 'Shortcuts take two steps: *Ctrl-b*, then one key.' }, { gap: 0.16 }],
+        ['u2', { zh: '*Ctrl-b* 再按 c，新开一个 *window*', en: '*Ctrl-b*, then c: a new window.' }, { gap: 0.14 }],
+        ['u3', { zh: '*Ctrl-b* 再按 %，当前 *pane* 左右一分为二', en: '*Ctrl-b*, then %: the pane splits left and right.' }, { gap: 0.14, tts: { zh: 'control b 再按百分号，当前 pane 左右一分为二。', en: 'Control b, then percent: the pane splits left and right.' } }],
+        ['u4', { zh: '*Ctrl-b* 再按双引号，上下一分为二', en: '*Ctrl-b*, then a double quote: top and bottom.' }, { gap: 0.14 }],
+        ['u5', { zh: '*Ctrl-b* 再按 d，就是 detach：终端走，程序留', en: '*Ctrl-b*, then d: detach. The terminal goes, the program stays.' }, { gap: 0.16 }],
+        ['u6', { zh: '想回来，输入 *tmux* attach，一切原样', en: 'To come back, type *tmux* attach. Everything is as it was.' }, { gap: 0.16 }],
       ],
     },
     {
       // 键表与重画：按键先进键表，输出先进 server 的屏幕再画给 client。
       id: 'impl', at: null, chap: null, lead: 0.12, tail: 0.08,
       cues: [
-        ['i1', { zh: '每个按键，*tmux* 都先查自己的键表', en: 'Every key is first checked against tmux\'s key table.' }, { gap: 0.12 }],
-        ['i2', { zh: '命中就自己执行，没命中才送进 *pane*', en: 'A match runs a tmux command; anything else goes to the pane.' }, { gap: 0.14 }],
-        ['i3', { zh: '输出先写进 *server* 的屏幕，再画给每个 *client*', en: 'Output goes into a screen in the server, then is drawn for each client.' }, { gap: 0.16 }],
+        ['i1', { zh: '每个键先送到 *server*，查它的键表', en: 'Each key goes to the server, which checks its key table.' }, { gap: 0.12 }],
+        ['i2', { zh: '*Ctrl-b* 之后的 c，查到的就是新开窗口', en: 'After Ctrl-b, c is found there as new window.' }, { gap: 0.14 }],
+        ['i3', { zh: '查不到的键，原样写进当前 *pane* 的伪终端', en: 'Keys not in the table go straight into the pane’s pseudo terminal.' }, { gap: 0.18 }],
+        ['i4', { zh: '程序的输出，也不直接送到你的屏幕', en: 'Program output does not go straight to your screen either.' }, { gap: 0.12 }],
+        ['i5', { zh: '*server* 先把它记进这块 *pane* 自己的屏幕', en: 'The server first records it in that pane’s own screen,' }, { gap: 0.1 }],
+        ['i6', { zh: '再按每个 *client* 的终端，重新画一遍', en: 'then redrawn for each client’s terminal.' }, { gap: 0.14 }],
+        ['i7', { zh: '所以接回来时，画面能原样恢复', en: 'That is why a reattached screen comes back exactly as it was.' }, { gap: 0.16 }],
       ],
     },
     {
       // 回答开头；停法。
       id: 'edge', at: null, chap: null, lead: 0.14, tail: 0.08,
       cues: [
-        ['e1', { zh: '所以开头的答案是：程序住在 *server* 里', en: 'So the answer: the program lives in the server.' }, { gap: 0.16 }],
-        ['e2', { zh: '终端可以走，*server* 不走，程序就不停', en: 'Terminals may leave; while the server stays, the program runs.' }, { gap: 0.18 }],
+        ['e1', { zh: '开头的答案：程序住在 *server* 里', en: 'The answer: the program lives in the server.' }, { gap: 0.16 }],
         ['e3', { zh: '要彻底结束，就用 kill-server', en: 'To end it all, use kill-server.' }, { gap: 0.12 }],
         ['e4', { zh: '*server* 一停，所有会话和程序一起结束', en: 'Once the server stops, every session and program ends with it.' }, { gap: 0.14 }],
-        ['eT', null, { pause: 2.2, gap: 0 }],
+        ['eT', null, { pause: 1.0, gap: 0 }],
       ],
     },
     {
@@ -102,7 +104,6 @@
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
   const SAY = {
     zh: [
-      [/kill-server/g, 'kill server'],
       [/Ctrl-b/g, 'control b'],
       [/OpenBSD/g, 'Open B S D'],
       [/PANE-A/g, 'pane A'],
@@ -111,7 +112,7 @@
       [/\/dev\/pts\/3/g, 'dev pts 三'],
       [/3\.8/g, '三点八'],
       [/3\.4/g, '三点四'],
-      [/tmux/g, 'T mux'],
+      [/tmux/g, 'tee mux'],         // tts_probe：tee mux 回听为 Tmux，T mux 为 Timx
     ],
     en: [
       [/nscr/g, 'n s c r'],

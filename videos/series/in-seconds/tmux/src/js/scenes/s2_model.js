@@ -11,8 +11,8 @@ scene('model', ({ root, s, c0 }) => {
   const tM4 = T('m4'), tPty = T('m4', { zh: '伪终端', en: 'pseudo' });
   const tM5 = T('m5'), tCli = T('m5', 'client'), tKeys = T('m5', { zh: '显示和按键', en: 'picture' });
   const tM7 = T('m7'), tSock = T('m7', { zh: '本地连接', en: 'local socket' });
-  const tM8 = T('m8'), tBreak = T('m8', { zh: '断开', en: 'breaks' });
-  const tM9 = T('m9'), tM10 = T('m10'), tSes = T('m10', 'session');
+  const tBreak = T('m7', { zh: '关掉终端', en: 'closing' }) + 0.1;
+  const tM10 = T('m10'), tThree = T('m10', { zh: '三层', en: 'three layers' }), tSes = T('m10', 'session'), tM9 = tThree - 0.15;
   const tM11 = T('m11'), tWin = T('m11', 'window'), tFull = T('m11', { zh: '占满一屏', en: 'filling' });
   const tM12 = T('m12'), tPane = T('m12', 'pane'), tOwn = T('m12', { zh: '独立的伪终端', en: 'own pseudo' });
 
@@ -20,8 +20,7 @@ scene('model', ({ root, s, c0 }) => {
   const cl = crt(world, 90, 230, 480, 360, { bezel: 'cream', screws: 12, name: 'client terminal' });
   const kb = panel(world, 'cream', 130, 610, 400, 74, { name: 'keyboard' });
   for (let r = 0; r < 2; r++) for (let i = 0; i < 10; i++) blk(kb, '#B9B096', 16 + r * 18 + i * 36, 14 + r * 26, 28, 16);
-  const cnt = (t) => (t < tBreak + 0.6 ? 9 : 9 + Math.floor((t - tBreak - 0.6) / 1.1) + 1);
-  const linesAt = (n, max) => { const o = []; for (let k = Math.max(1, n - max + 1); k <= n; k++) o.push('count ' + k); return o.join('<br>'); };
+  const cnt = COUNT, linesAt = countLines;
   const clL = term(cl, '', 24, 20, { vt: true, size: 60 });
   appear(cl.el, s.start); appear(kb, s.start);
   const q = txt(world, 'vt amber', '?', 300, 60); q.style.fontSize = '170px'; q.dataset.name = 'question mark';
@@ -70,7 +69,7 @@ scene('model', ({ root, s, c0 }) => {
   appear(pane.el, tPty - 0.2); pane.on(tPty + 0.3); sfx('blip', tPty + 0.32, { g: 0.55, p: 0.3 });
   let lastN = -1;
   F((t) => { const n = cnt(t); if (n === lastN) return; lastN = n; clL.innerHTML = linesAt(n, 5); paL.innerHTML = linesAt(n, 3); });
-  for (let k = 10; k <= 14; k++) { const tk = tBreak + 0.6 + (k - 10) * 1.1; if (tk < tM9 + 0.5) sfx('tick', tk, { g: 0.4, p: 0.4 }); }
+  countTicks(s.start + 0.3, tM10 - 0.3, { g: 0.32, p: 0.4 });
   // client 与 socket
   const cab = cableRig(ov, { x: 566, y: 520 }, { x: RX - 24, y: RY + 720 }, { sag: 70, pull: { x: -230, y: 30 } });
   const warn = led(world, RX - 30, RY + 556, 26, 'off');
@@ -96,11 +95,11 @@ scene('model', ({ root, s, c0 }) => {
   gauge(s.start + 0.05, 1, 1, 1);
   const SB = 2300;
   const hdr = tag(world, 'SERVER  PID 506', SB + 80, 150, { size: 30, dark: true });
-  swipe(hdr, tM9 - 0.3, 'l', 0.33);
+  swipe(hdr, tM10 - 0.05, 'l', 0.33);
   const slots = [[SB + 80, 300, 440, 270, 'SESSION'], [SB + 600, 260, 380, 340, 'WINDOW'], [SB + 1040, 220, 720, 440, 'PANE']].map(([x, y, w, hh, lb], i) => {
     const g = h('div', 'abs', world); px(g, x, y, w, hh); css(g, { border: '4px dashed ' + C.steel }); g.dataset.name = 'slot ' + lb;
     const l = txt(world, 'lab steel', lb, x, y - 44); l.style.fontSize = '30px';
-    const tt = tM9 + 0.15 + i * 0.16;
+    const tt = tThree + i * 0.16;
     appear(g, tt); appear(l, tt); sfx('tick', tt, { g: 0.55 - i * 0.08, p: -0.3 + i * 0.3 });
     return { g, l, x, y, w, h: hh };
   });
@@ -146,12 +145,12 @@ scene('model', ({ root, s, c0 }) => {
     [Math.max(tM4 - 0.3, tM3 + 0.8), { x: 1500, y: 420, z: 1.38 }, 0.9, { sfx: false }],
     [Math.max(tM5 - 0.3, tM4 + 0.8), { x: 520, y: 440, z: 1.3 }, 1.0, { sfx: false }],
     [Math.max(tM7 - 0.2, tM5 + 1.1), { x: 960, y: 484, z: 1 }, 0.8, { sfx: false }],
-    [null, { z: 1.03 }, Math.max(0.5, tM9 - tM7 - 1.4), { ease: 'none', sfx: false }],
-    [tM9 - 0.4, { x: SB + 920, y: 470, z: 1 }, 1.1, { sfx: false }],
-    [Math.max(tM10 - 0.2, tM9 + 0.9), { x: SB + 400, y: 450, z: 1.3 }, 0.9, { sfx: false }],
-    [Math.max(tWin - 0.5, tM10 + 0.8), { x: SB + 860, y: 450, z: 1.2 }, 0.9, { sfx: false }],
-    [Math.max(tM12 - 0.3, tM11 + 0.8), { x: SB + 1260, y: 470, z: 1.15 }, 0.9, { sfx: false }],
-    [null, { z: 1.18 }, Math.max(0.5, s.end - tM12 - 1.0), { ease: 'none', sfx: false }],
+    [null, { z: 1.04 }, Math.max(0.5, tM10 - tM7 - 1.4), { ease: 'none', sfx: false }],
+    [tM10 - 0.35, { x: SB + 920, y: 470, z: 1 }, 1.0, { sfx: false }],
+    [Math.max(tSes - 0.35, tM10 + 0.8), { x: SB + 520, y: 460, z: 1.25 }, 0.9, { sfx: false }],
+    [Math.max(tWin - 0.5, tSes + 0.8), { x: SB + 900, y: 460, z: 1.08 }, 0.9, { sfx: false }],
+    [Math.max(tM12 - 0.3, tM11 + 0.8), { x: SB + 1080, y: 460, z: 1.1 }, 0.9, { sfx: false }],
+    [null, { z: 1.13 }, Math.max(0.5, s.end - tM12 - 1.0), { ease: 'none', sfx: false }],
   ]);
-  sfx('drive', tM9 - 0.35, { g: 0.5 });
+  sfx('drive', tM10 - 0.3, { g: 0.5 });
 });

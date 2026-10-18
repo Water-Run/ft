@@ -5,9 +5,9 @@ scene('past', ({ root, s, c0 }) => {
   const cam = makeCamera(world, 1920, VH);
   const ZH = LANG === 'zh';
   const tP1 = T('p1'), tY7 = T('p1', '2007');
-  const tP2 = T('p2'), tScr = T('p2', 'screen'), tHeavy = T('p2', { zh: '重度用户', en: 'heavy user' });
-  const tP3 = T('p3'), tCopy = T('p3', { zh: '复制', en: 'copy' });
-  const tP4 = T('p4'), tSev = T('p4', { zh: '多个终端', en: 'several terminals' }), tRest = T('p4', { zh: '其他窗口', en: 'the rest' });
+  const tP2 = T('p2'), tScr = T('p2', 'screen'), tHeavy = tScr;
+  const tP3 = T('p2', { zh: '不打算', en: 'did not' }) - 0.15, tCopy = T('p2', { zh: '复制', en: 'copy' });
+  const tP4 = T('p4'), tSev = T('p4', { zh: '多个终端', en: 'several terminals' }), tRest = Math.min(tSev + 0.9, Tend('p4') - 0.5);
   const tP6 = T('p6'), tY9 = T('p6', '2009'), tBase = T('p6', 'OpenBSD');
 
   // ── 纸带：两排链孔、两排数据孔；打孔头跟着镜头走，右边还没打的孔被纸盖住 ──
@@ -45,7 +45,7 @@ scene('past', ({ root, s, c0 }) => {
   term(scr, 'screen', 30, 30, { vt: true, size: 120, color: C.amber });
   term(scr, '<span style="color:#9A7A3E">C-a</span>', 30, 170, { size: 32 });
   sslide(scr.el, tP2 - 0.2, { x: -60 });
-  const who = tag(world, tr('作者：screen 的重度用户', 'AUTHOR: HEAVY SCREEN USER'), X2 - 520, 140, { zh: ZH });
+  const who = tag(world, tr('作者原本用 screen', 'THE AUTHOR USED SCREEN'), X2 - 520, 140, { zh: ZH });
   swipe(who, tHeavy - 0.1, 'l'); sfx('pop', tHeavy - 0.1, { g: 0.6, p: -0.3 });
   const vu = h('div', 'abs', world); px(vu, X2 - 520, 540, 420, 52); css(vu, { background: C.black }); vu.dataset.name = 'usage meter';
   const segs = []; for (let i = 0; i < 12; i++) { const g = blk(vu, i < 10 ? C.amber : '#5A3F1E', 10 + i * 34, 10, 26, 32); segs.push(g); }

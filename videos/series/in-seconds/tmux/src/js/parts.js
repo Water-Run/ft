@@ -246,3 +246,23 @@ function rack(parent, x, y, w, hh, o = {}) {
 
 // 场景的 SVG 画布：坐标与 world 对齐
 function svgLayer(parent, w = 1920, hh = 968, x = 0, y = 0) { const s = svg('svg', { class: 'abs', width: w, height: hh, viewBox: [x, y, w, hh].join(' ') }, parent); px(s, x, y); s.style.overflow = 'visible'; return s; }
+
+// ── 全片同一个计数时钟 ──
+// 开场：1→4 时终端断开，server 里继续 5→9，插回去读到 9（实验第 8 节的 4→9）。之后每 2 秒加一，只是示意「程序一直在跑」，
+// 不是实验读数；kill-server 时停住。开场与结尾在构建时登记各自的时刻，各场景只读 COUNT(t)。
+const CNTX = { a: 0, dis: 1, re: 2, stop: Infinity, P: 2 };
+function COUNT(t0) {
+  const t = Math.min(t0, CNTX.stop);
+  if (t < CNTX.a) return 0;
+  const b = CNTX.dis - 0.25;
+  if (t < b) return 1 + Math.min(3, Math.floor(((t - CNTX.a) / (b - CNTX.a)) * 3.999));
+  const c = CNTX.dis + 0.35, d = CNTX.re - 0.15;
+  if (t < c) return 4;
+  if (t < CNTX.re + 0.5) return Math.min(9, 5 + Math.floor(((t - c) / Math.max(0.4, d - c)) * 4.999));
+  return 9 + Math.floor((t - CNTX.re - 0.5) / CNTX.P);
+}
+// 计数第 n 次变成 n 的时刻（n ≥ 10）
+const countAt = (n) => CNTX.re + 0.5 + (n - 9) * CNTX.P;
+// 在 [t0, t1) 里每次计数加一时登记一声轻响
+function countTicks(t0, t1, o = {}) { for (let n = 10; n < 400; n++) { const t = countAt(n); if (t >= t1 || t >= CNTX.stop) break; if (t >= t0) sfx('tick', t, { g: o.g != null ? o.g : 0.3, p: o.p != null ? o.p : 0.5 }); } }
+const countLines = (n, max) => { const out = []; for (let k = Math.max(1, n - max + 1); k <= n; k++) out.push('count ' + k); return out.join('<br>'); };

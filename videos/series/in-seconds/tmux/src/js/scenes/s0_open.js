@@ -15,18 +15,12 @@ scene('open', ({ root, s, c0 }) => {
   const tRe = Math.max(tDis + 1.6, t9 - 0.5);
   const tO3 = T('o3'), tO3b = T('o3', { zh: '终端', en: 'Only' });
   const tO4 = T('o4'), tName = T('o4', 'tmux'), tKind = T('o4', { zh: '终端复用器', en: 'terminal multiplexer' });
-  const tO5 = T('o5'), tLeave = Math.min(T('o5', { zh: '人走了', en: 'after you leave' }), Tend('o5') - 1.2);
+  const tO5 = T('o5'), tLeave = Math.min(T('o5', { zh: '人走了', en: 'after you go' }), Tend('o5') - 1.0);
   const tTitle = T('oT') - 0.12;
 
   // ── 计数器：1→4（o1 里），断开后机架那块继续 5→9，插回去时读到 9 ──
-  const cnt = (t) => {
-    if (t < tA) return 0;
-    const a = tA, b = tDis - 0.25;
-    if (t < b) return 1 + Math.min(3, Math.floor(((t - a) / (b - a)) * 3.999));
-    const c = tDis + 0.35, d = tRe - 0.15;
-    if (t < c) return 4;
-    return Math.min(9, 5 + Math.floor(((t - c) / Math.max(0.4, d - c)) * 4.999));
-  };
+  Object.assign(CNTX, { a: tA, dis: tDis, re: tRe });
+  const cnt = COUNT;
   const ticks = []; for (let k = 2; k <= 9; k++) { let lo = tA, hi = tRe + 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (cnt(m) >= k) hi = m; else lo = m; } ticks.push([k, hi]); }
 
   // ── 左：终端（client）──
@@ -42,12 +36,18 @@ scene('open', ({ root, s, c0 }) => {
   const pwr = led(world, RX + 30, RY + 22, 28, 'g');
   txt(world, 'silk', 'POWER', RX + 72, RY + 24);
   const disp = panel(world, 'black', RX + 28, RY + 84, 598, 270, { name: 'display window' });
-  const idle = txt(disp, 'vt gdim', '- - - -', 190, 86); idle.style.fontSize = '96px';
+  // 显示窗：起名之前是机架自己的计数读数（与下面那块屏同步），起名时换成 TMUX
+  const idle = h('div', 'abs', disp); px(idle, 0, 0, 592, 260); idle.dataset.name = 'rack readout';
+  const idleK = txt(idle, 'lab gdim', 'RUN', 34, 26); idleK.style.fontSize = '30px';
+  const idleLed = led(idle, 120, 30, 24, 'g');
+  const idleN = txt(idle, 'vt green', '0000', 34, 60); idleN.style.fontSize = '190px';
+  F((t) => { const v = String(COUNT(t)).padStart(4, '0'); if (idleN.textContent !== v) idleN.textContent = v; idleLed.style.visibility = Math.floor(q12(t) * 2) % 2 ? 'hidden' : 'visible'; });
   const rc = crt(world, RX + 28, RY + 376, 598, 230, { bare: true, pad: 0, name: 'rack CRT' });
   const rcLines = term(rc, '', 24, 14, { vt: true, size: 52 });
   const smalls = [0, 1, 2, 3].map((i) => {
     const c = crt(world, RX + 28 + i * 152, RY + 628, 142, 112, { bare: true, pad: 0, lit: false, name: 'small CRT' });
-    term(c, ['count 9', '$ vim', '$ make', '$ ssh'][i], 10, 8, { size: 24 });
+    const l0 = term(c, ['count 9', '$ vim', '$ make', '$ ssh'][i], 10, 8, { size: 24 });
+    if (i === 0) F((t) => { const v = 'count ' + COUNT(t); if (l0.textContent !== v) l0.textContent = v; });
     term(c, '<span class="dim">' + ['', '~', '[ok]', '...'][i] + '</span>', 10, 40, { size: 24 });
     return c;
   });
@@ -94,12 +94,13 @@ scene('open', ({ root, s, c0 }) => {
   hide(tg2, tO4, { d: 0.17, ease: SE(0.17) });
 
   // o5：同一块屏开好几个终端（四格同一帧亮），人走了它们还在
-  const tLit = tO5 + 0.15;
+  const tLit = tO5 + 0.6;
   smalls.forEach((c) => c.on(tLit)); sfx('beep', tLit + 0.02, { g: 0.6, p: 0.5 });
   const quad = h('div', 'abs', cl.inner); px(quad, 0, 0, cl.W, cl.H); css(quad, { background: C.black });
   const qw = (cl.W - 10) / 2, qh = (cl.H - 10) / 2;
   blk(quad, C.charcoal || '#2B2D2A', qw, 0, 10, cl.H); blk(quad, '#2B2D2A', 0, qh, cl.W, 10);
-  ['count 9', '$ vim', '$ make', '$ ssh'].forEach((l, i) => { const e = txt(quad, 'mono green', l, (i % 2) * (qw + 10) + 18, Math.floor(i / 2) * (qh + 10) + 14); e.style.fontSize = '30px'; });
+  ['count 9', '$ vim', '$ make', '$ ssh'].forEach((l, i) => { const e = txt(quad, 'mono green', l, (i % 2) * (qw + 10) + 18, Math.floor(i / 2) * (qh + 10) + 14); e.style.fontSize = '30px'; if (!i) F((t) => { const v = 'count ' + COUNT(t); if (e.textContent !== v) e.textContent = v; }); });
+  countTicks(tRe + 0.6, tTitle, { g: 0.28 });
   appear(quad, tLit); vanish(prompt, tLit); vanish(clLines, tLit);
   gauge(tLit, 1, 1, 4);
   cab.move(tLeave, 1, 0.34); sfx('thud', tLeave, { g: 0.7, p: -0.1 }); ledBlink(warn, tLeave + 0.04, 'r', 1);

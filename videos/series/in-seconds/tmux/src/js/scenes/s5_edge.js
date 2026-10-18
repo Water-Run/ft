@@ -5,7 +5,7 @@ scene('edge', ({ root, s, c0 }) => {
   const cam = makeCamera(world, 1920, VH);
   const ZH = LANG === 'zh';
   const tE1 = T('e1'), tAns = T('e1', 'server');
-  const tE2 = T('e2'), tStay = T('e2', { zh: 'server 不走', en: 'while' });
+  const tOpen = T('e1', { zh: '开头', en: 'answer' });
   const tE3 = T('e3'), tE4 = T('e4'), tEnd = T('e4', { zh: '一起结束', en: 'ends' });
 
   // ── 机架 ──
@@ -22,7 +22,9 @@ scene('edge', ({ root, s, c0 }) => {
   const sesTag = tag(world, 'SESSION  demo', RX + 34, RY + 620, { size: 26 });
   appear(sesTag, s.start);
   const tKill = tE4 - 0.05;
-  const cnt = (t) => 9 + Math.floor((Math.min(t, tKill) - s.start) / 1.2);
+  CNTX.stop = tKill;
+  const cnt = COUNT;
+  countTicks(s.start + 0.2, tKill, { g: 0.3, p: 0.4 });
   let lastN = -1;
   F((t) => {
     const n = cnt(t); if (n === lastN) return; lastN = n;
@@ -47,12 +49,11 @@ scene('edge', ({ root, s, c0 }) => {
   css(ans, { background: C.paper, color: C.ink, fontSize: ZH ? '80px' : '50px', padding: ZH ? '22px 34px' : '30px 30px', borderBottom: '8px solid #B0A88F', lineHeight: '1.1' });
   ans.dataset.name = 'answer plate';
   slam(ans, tAns - 0.1, { from: 1.3, d: 0.33, ease: SE(0.33) }); sfx('thud', tAns - 0.1, { g: 0.9, p: 0.4 }); sfx('chime', tAns + 0.25, { g: 0.5, p: 0.4 });
-  // e2：终端拔了又插，绿灯一直亮
-  const pulls = [[0, tE2 + 0.1], [1, tE2 + 0.55]], backs = [[0, Math.max(tStay, tE2 + 1.2)], [1, Math.max(tStay + 0.45, tE2 + 1.65)]];
-  pulls.forEach(([i, t]) => { cabs[i].move(t, 1, 0.3); tm[i].off(t + 0.1); sfx('thud', t, { g: 0.6, p: -0.4 }); });
-  backs.forEach(([i, t]) => { cabs[i].move(t, 0, 0.3); tm[i].on(t + 0.28); sfx('thud', t + 0.2, { g: 0.5, p: -0.4 }); sfx('blip', t + 0.3, { g: 0.4, p: -0.4 }); });
-  const stays = tag(world, tr('终端走了又来，灯一直绿', 'TERMINALS COME AND GO; THE LIGHT STAYS GREEN'), RX + 100, RY + 260, { zh: ZH, size: 26, dark: true });
-  swipe(stays, tStay, 'l', 0.33); hide(stays, tE3, { d: 0.17, ease: SE(0.17) });
+  // e1 前半：开头那个计数，就是机架里这块 pane 上的程序
+  const cBox = blk(world, 'transparent', RX + 26, RY + 422, 256, 186); css(cBox, { border: '5px solid ' + C.green }); cBox.dataset.name = 'counter frame';
+  F((t) => { cBox.style.display = t >= tOpen + 0.1 && t < tE3 - 0.1 ? '' : 'none'; });
+  const cTag = tag(world, tr('开头那个计数', 'THE OPENING COUNTER'), RX + 300, RY + 620, { zh: ZH, size: 28, dark: true });
+  swipe(cTag, tOpen + 0.15, 'r', 0.33); sfx('pop', tOpen + 0.15, { g: 0.6, p: 0.4 }); hide(cTag, tE3 - 0.1, { d: 0.17, ease: SE(0.17) });
   // e3：tmux kill-server
   const sh = h('div', 'abs', tm[0].inner); px(sh, 0, 0, tm[0].W, tm[0].H); css(sh, { background: C.black });
   const l1 = txt(sh, 'mono green', '', 20, 16); l1.style.fontSize = '34px';
@@ -76,9 +77,9 @@ scene('edge', ({ root, s, c0 }) => {
 
   // ── 镜头 ──
   cam.track(s.start, { x: 960, y: 484, z: 1 }, [
-    [s.start + 0.1, { x: 1400, y: 420, z: 1.25 }, 0.9, { sfx: false }],
-    [Math.max(tE2 - 0.3, s.start + 1.2), { x: 960, y: 484, z: 1 }, 0.7, { sfx: false }],
-    [Math.max(tE3 - 0.3, tE2 + 0.8), { x: 640, y: 380, z: 1.22 }, 0.9, { sfx: false }],
+    [s.start + 0.1, { x: 1400, y: 540, z: 1.25 }, 0.9, { sfx: false }],
+    [null, { x: 1390, z: 1.27 }, Math.max(0.4, tE3 - s.start - 1.5), { ease: 'none', sfx: false }],
+    [tE3 - 0.3, { x: 640, y: 495, z: 1.2 }, 0.9, { sfx: false }],
     [Math.max(tE4 - 0.4, tE3 + 1.0), { x: 960, y: 484, z: 1 }, 0.7, { sfx: false }],
     [null, { z: 1.03 }, Math.max(0.5, s.end - tE4 - 1.0), { ease: 'none', sfx: false }],
   ]);

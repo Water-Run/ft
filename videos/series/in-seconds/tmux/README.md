@@ -6,13 +6,13 @@
 
 ## 当前状态与接续
 
-阶段：第 5 轮文案按 WaterRun 授权定稿，中英配音、场景、混音、渲染、封装与封面已完成（详见「成片」）。WaterRun 尚未逐句读稿、未看成片。发布：未发布。归档：未归档。
+阶段：第 5 轮 b 文案按 WaterRun 授权定稿，中英配音、场景、混音、渲染、封装与封面已完成（详见「成片」）。WaterRun 看过第 5 轮并要求优化使用与原理两段；第 5 轮 b 尚待其观看。发布：未发布。归档：未归档。
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-19：Claude Opus 5.5 重写第 5 轮中英旁白；MiniMax speech-2.8-hd 配音；卡带未来主义 7 个场景；混音、渲染、封装、封面 |
+| 最近完成的步骤与版本 | 2026-10-19：第 5 轮成片后按 WaterRun 意见出第 5 轮 b：使用一段改为逐条「Ctrl-b 再按」，原理拆成按键与输出两条路径（约 21 秒，原 10.5 秒）；修画面小问题（字幕条侵入、主体被切、静止段、开头占位读数、计数统一）；tmux 读法改 tee mux；重新配音、混音、渲染、封装 |
 | 下一步及依赖 | WaterRun 观看成片、试听中英两版与配乐；意见回到 `review/NOTES.md` 后按 workflow 从对应步骤重做；然后发布、归档 |
-| 当前稿本 / 校对结论 | 中文 `review/script.zh.151f837162ca93b340c859aa39ce0515af6ffe6a131782a211261b3e6ac78993.md`，英文 `review/script.en.8b8dcf6932358bba56bc090eab04c8f3e7c1a671917ecf28e5570a9f93fc9608.md`；approval 依据是会话授权，不是逐句阅读确认（`review/NOTES.md`「第 5 轮」） |
+| 当前稿本 / 校对结论 | 中文 `review/script.zh.03a119d1958c0bf7c2bf3d1a3602b22a0e97c285088f941fb575777d9a3b87e3.md`，英文 `review/script.en.ce875f7996b19a5d257da7ed44119e8e7f7c337325dbc0245546c19f13ac1332.md`；approval 依据是会话授权，不是逐句阅读确认（`review/NOTES.md`「第 5 轮」「第 5 轮 b」） |
 | 输出在哪台制作机 | 制作机 A（Windows）；`out/` 不入库 |
 | 未完成、未检查与阻塞 | 人耳试听、连续观看、配乐听感待 WaterRun；英文标题沿用画面英文「TMUX IN 128 SECONDS」，project.json 的英文标题尚空 |
 
@@ -60,16 +60,16 @@ node kit/tools/script-review.js videos/series/in-seconds/tmux check
 
 ## 内容
 
-大纲见 `research/NARRATIVE.md`；第 5 轮口播在 `src/js/script.js`。起点为中文实测（英文在括号里）。
+大纲见 `research/NARRATIVE.md`；口播在 `src/js/script.js`（第 5 轮 b）。起点为中文实测（英文在括号里）。
 
 | 场景 | 起点 | 内容 |
 |---|---|---|
 | open | 0:00 | 计数 1→4，拔线；机架里继续数到 9；只有终端走了；终端复用器 tmux；片名停顿 |
-| past | 0:19.9（0:19.9） | 2007；作者原是 screen 重度用户；不是复制 screen；同一窗口接多个终端、其余窗口独立；2009 进 OpenBSD 基本系统 |
-| model | 0:37.8（0:38.3） | 计数住在哪：server 后台进程（PID 506）、计数是其子进程、伪终端；client 只管显示与按键、经本地 socket 通信；断开只断连接；session / window / pane 三层 |
-| use | 1:13.2（1:14.7） | Ctrl-b 前缀；c、%、引号、d、tmux attach |
-| impl | 1:31.3（1:32.5） | 键表命中执行、未命中送进 pane；输出写进 server 的屏幕，再画给每个 client |
-| edge | 1:41.9（1:43.9） | 程序住在 server 里；终端来去 server 不走；kill-server 后全部结束 |
+| past | 0:18.3（0:18.9） | 2007；作者原本用 screen、不打算复制它；一个窗口同时接到多个终端；2009 进 OpenBSD 基本系统 |
+| model | 0:32.3（0:32.4） | 计数住在哪：server 后台进程（PID 506）、计数是其子进程、伪终端；client 只管显示与按键、经本地连接通信，关掉终端只断连接；server 里的 session / window / pane 三层 |
+| use | 1:03.3（1:03.7） | 快捷键两步：先 Ctrl-b、再一个键；逐条「Ctrl-b 再按」c / % / 双引号 / d（detach），tmux attach 一切原样；画面累积「已学会」键表 |
+| impl | 1:27.8（1:26.7） | 按键路径：键送到 server 查键表，Ctrl-b 之后的 c 命中新开窗口，查不到的键写进 pane 的伪终端；输出路径：不直接上屏，先记进 pane 自己的屏幕，再按每个 client 重画；所以接回来画面原样 |
+| edge | 1:48.7（1:48.5） | 开头的答案：程序住在 server 里；kill-server 后全部结束 |
 | outro | 2:00.5 | 片尾名单，无旁白 |
 
 ## 视觉系统
@@ -129,13 +129,13 @@ node kit/tools/check.js  videos/series/in-seconds/tmux --final        # 交付�
 
 | 项 | 记录 |
 |---|---|
-| 交付物（制作机 A 的 `out/`，不入库） | `tmux-zh-1080p60.mp4`（SHA-256 `a4b9d0e1cf7c311c55de7c45c4c7f869bcc1c37207c6629c99a8107b816f5151`）、`tmux-en-1080p60.mp4`（`96576080aa65730a88de01bea13295cc21ed1ceabec49d5e7a3fae7e5d304ab9`）；各语言另有 no-music、voice-only 与 `.srt`；封面 `cover-<语言>-16x9 / 4x3`（JPG 与 2 倍 PNG） |
+| 交付物（制作机 A 的 `out/`，不入库） | `tmux-zh-1080p60.mp4`（SHA-256 `f2b11e1178902a9778f031dc6e5289e459ebc5824302455715dd2b9998ee3017`）、`tmux-en-1080p60.mp4`（`ef6073249408fe35c0bae1f3511694d4c39bd908f51cd1497f9c752fc3f39ee4`）；各语言另有 no-music、voice-only 与 `.srt`；封面 `cover-<语言>-16x9 / 4x3`（JPG 与 2 倍 PNG） |
 | 规格（finish.js 实测） | 两语言均 7680 帧 = 128.00 s，1920×1080，60 fps，H.264 + AAC；zh 约 -16 LUFS，en -15.7 LUFS，TP ≤ -1.5 dBFS；渲染日志 verified frames=7680 |
-| 自动闸门 | `check.js` 全部通过；`check.js --final` 只剩 F06、F12 两项人耳确认未完成（见下） |
+| 自动闸门 | 第 5 轮 b：`check.js` 全部通过；`check.js --final` 只剩 F06、F12 两项人耳确认未完成（见下） |
 | 事实 | 逐句与画面对照 FACTS；第 5 轮新增陈述的依据记在 FACTS「文案审查」第 5 轮一条 |
-| 读音与节奏 | `stats.js`：zh 中位 4.46 字/秒、en 2.94 词/秒，无过快、无过长；多数句间停顿 < 0.2 s（定长 128 秒所致）。`asr.js` zh 无漏读，「终端→中端」「tmux→TMAX」等为识别同音，需人耳确认 |
+| 读音与节奏 | 无过快、无过长句；多数句间停顿 < 0.2 s（定长 128 秒所致）。`asr.js` zh 无漏读，Ctrl B / detach / attach / kill-server 识别正确，「终端→中端」为同音；tmux 改读 tee mux（tts_probe 对比）。人耳待 WaterRun |
 | 旁白与画面 | `sheets.js cue`（zh 33 张）逐张核对：每句所述对象在画面主体 |
-| 动画 | 卡带未来主义：12fps 步进 UI、CRT 开关机与换台雪花、拔插电缆、磁带仓/旋钮/挡板对应 session/window/pane；已知：推近时次要文字被画面边缘切掉（look 提示可接受），impl 屏幕格 DENSE 提示，en 1:25 起 3.5 s 画面基本不动（detach 后保持） |
+| 动画 | 卡带未来主义：12fps 步进 UI、CRT 开关机与换台雪花、拔插电缆、磁带仓/旋钮/挡板对应 session/window/pane；第 5 轮 b 修正：字幕条侵入、主体被切、detach 保持段静止、开头占位读数、u1 特写与右上仪表重叠；剩余 use 段 DENSE 提示（键帽单字与图例） |
 | 计数示意 | 开头 4→9 来自实验第 8 节；之后机架里计数继续到 10、11…，以及 o5 小屏的 vim / make / ssh，都是「还在跑」的示意，不是实验回显 |
 | 需要人来判断 | MiniMax 两种音色与读音、配乐 pulse 与音效听感、连续观看观感——待 WaterRun |
 
@@ -143,14 +143,14 @@ node kit/tools/check.js  videos/series/in-seconds/tmux --final        # 交付�
 
 <!-- 交付前必填。逐行引用开工表中的同一组编号（F01–F12 及后续新增项），不可只写“全部通过”。注明最终 MP4 的语言、版本或哈希；各项列出实际时间窗口和证据。没有播放/试听的范围保留待复核。委托片在 DELIVERY.md 同步结论。 -->
 
-本次核查的最终文件、语言与版本 / SHA-256：zh `out/tmux-zh-1080p60.mp4` `a4b9d0e1…5151`；en `out/tmux-en-1080p60.mp4` `96576080…4ab9`（第 5 轮，2026-10-19）。逐项证据与时段写在 `review/feedback.json`。
+本次核查的最终文件、语言与版本 / SHA-256：zh `out/tmux-zh-1080p60.mp4` `f2b11e11…3017`；en `out/tmux-en-1080p60.mp4` `ef607324…f9ee4`（第 5 轮 b，2026-10-19）。逐项证据与时段写在 `review/feedback.json`。
 
 | 问题编号 | 开工计划 → 实际做法 | 成片时间区间、检查方法与证据 | 结果 / 未解决项与下一步 |
 |---|---|---|---|
 | F01 | 4→9 钩子 → 第 5 轮保留，并用 e1 直接回答 | 0:00–0:20、1:42–1:45；sheets cue | 已验证 |
-| F02 | 先定义再术语 → model 一场按 server→子进程→伪终端→client→连接→三层推进 | 0:37.8–1:13.2（en 0:38.3–1:14.7）；sheets cue | 已验证 |
+| F02 | 先定义再术语 → model 按 server→子进程→伪终端→client→连接→三层推进；5b 使用逐条讲、原理分两条路径 | 0:32.3–1:48.7（en 0:32.4–1:48.5）；sheets cue | 已验证 |
 | F03 | 不口播版本号 → 3.4 只在角标；首次术语同句中文 | 0:19.9–1:13；sheets cue | 已验证 |
-| F04 | 卡片 2–3 秒 → 片名卡 2.2 s、答案牌约 12 s、片尾 7.5 s | 1:41.9–2:08；look、finish 静止检查 | 已验证；en 1:25 起 3.5 s 保持段待人看 |
+| F04 | 卡片 2–3 秒 → 片名卡 2.2 s、答案牌约 8 s、片尾 7.5 s、「已学会」键表累积 | 1:48.7–2:08；look、finish 静止检查（无 ≥3 s 静止） | 已验证 |
 | F05 | 三类换场 → 纸带 / 挡板 / CRT 关开，各配不同音效 | 0:17–0:42 等换场；look | 已验证（静帧与时间线），连续观感待人看 |
 | F06 | 机械音效、不用 whoosh → 9 种音效，无 whoosh；配乐 pulse | audio.js 数值：峰值 0.875、无削波 | 待复核：制作者无法试听，待 WaterRun 人耳 |
 | F07 | 脱敏 → 只用 /tmp/tmux-1001/ftlab、PID、/dev/pts 等通用值 | 0:37.8–1:13；look | 已验证 |
@@ -158,7 +158,7 @@ node kit/tools/check.js  videos/series/in-seconds/tmux --final        # 交付�
 | F09 | 回到 FACTS → 年份、采访大意、kill-server 回显均有依据 | 0:19.9–0:37.8、1:50–1:57 | 已验证 |
 | F10 | 不依赖前集 | 全片 | 已验证 |
 | F11 | 外文配中文 | 0:37.8–1:41.9 | 已验证 |
-| F12 | 试听读音 → asr 无漏读，同音待人耳 | 0:00–2:00.5；asr.js | 待复核：人耳确认 MiniMax 读音 |
+| F12 | 试听读音 → tts_probe 选 tee mux、kill-server 原样送读；asr 无漏读 | 0:00–2:00.5；asr.js、tts_probe | 待复核：人耳确认 MiniMax 读音 |
 | F13 | 年代与路线 | 0:00–0:37.8 | 已验证 |
 | F14 | 片尾不配旁白 | 2:00.5–2:08；look 126.0 s | 已验证 |
 
