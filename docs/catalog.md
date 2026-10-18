@@ -86,7 +86,7 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 制作中 | 自制（DeepSeek Flash） | [`magnetic`](../videos/series/storage-media/magnetic/) | 2026-10-18 建目录；事实测绘与 NASA 朋克视觉方向已落盘，尚未写稿或配音。 |
+| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`magnetic`](../videos/series/storage-media/magnetic/) | 2026-10-18 建目录；事实测绘与 NASA 朋克视觉方向已落盘，尚未写稿或配音。 |
 | 2 | 旋转的光盘年代 | zh + en | 计划中 |  | `optical` |  |
 | 3 | 手里的量子力学：闪存的一统天下 | zh + en | 计划中 |  | `flash` |  |
 
@@ -219,7 +219,7 @@
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek Flash） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-18 建目录；tmux 3.4 实验、3.8 文档/源码取证与卡带未来主义视觉方向已落盘，尚未写稿或配音。 |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-18 建目录；tmux 3.4 实验、3.8 文档/源码取证与卡带未来主义视觉方向已落盘，尚未写稿或配音。 |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
@@ -228,7 +228,7 @@
 | 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制 | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。基础科普。事实测绘见本目录 research/。 |
-| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 自制（DeepSeek Flash） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，RFC/W3C/NIST/OWASP 取证与包豪斯视觉方向已落盘，尚未写稿或配音。 |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，RFC/W3C/NIST/OWASP 取证与包豪斯视觉方向已落盘，尚未写稿或配音。 |
 
 ### 游戏物理学
 
@@ -275,7 +275,7 @@
 | 8 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
 | 9 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
 | 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
-| 11 | 垃圾回收的艺术 | zh + en | 制作中 | 自制（DeepSeek Flash） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录；Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向已落盘，尚未写稿或配音。 |
+| 11 | 垃圾回收的艺术 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录；Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向已落盘，尚未写稿或配音。 |
 | 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
 | 13 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
 | 14 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |

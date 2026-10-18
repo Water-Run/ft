@@ -146,7 +146,7 @@
 
 ## 制作署名
 
-策划：WaterRun。2026-10-18 这次会话中的 DeepSeek Flash 运行 CPython 3.14.3 与 Go 1.27.0 实验、读取论文与运行时文档，并写下本目录的事实记录；没有写旁白。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取论文与运行时文档，运行 CPython 3.14.3 与 Go 1.27.0 实验，并写下本目录的事实记录；没有写旁白。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 

@@ -1,5 +1,6 @@
 {
   "accessed": "2026-10-18",
+  "retrieval": "Web Fetch 读取原文；PDF 与 403 页面用下载/存档文本核对",
   "note": "来源编号与 research/FACTS.md 的「依据」列对应。论文以 DOI/出版社元数据与可读全文为准；运行实验记录在 research/lab/。",
   "sources": {
     "mccarthy-1960": {

@@ -99,7 +99,9 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 | 参与模型（含可确认的版本） | 实际分工 |
 |---|---|
-| DeepSeek Flash（运行环境未披露更细版本） | 事实测绘、RFC/W3C/NIST/OWASP 核对、叙事测绘、包豪斯设计方向 |
+| DeepSeek V4.1 Flash 1017 | 事实测绘、Web Fetch 来源核对、RFC/W3C/NIST/OWASP 核对、叙事测绘、包豪斯设计方向 |
+
+网页来源通过 Web Fetch 读取原文；PDF 与 403 页面用下载/存档文本核对。
 
 片尾时段与各语言版本的核对结果：未做（没有成片）。
 

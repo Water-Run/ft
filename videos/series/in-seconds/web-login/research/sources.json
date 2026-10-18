@@ -1,5 +1,6 @@
 {
   "accessed": "2026-10-18",
+  "retrieval": "Web Fetch 读取原文；PDF 与 403 页面用下载/存档文本核对",
   "note": "来源编号与 research/FACTS.md 的「依据」列对应。标准以 RFC/W3C/NIST 的正式文本为准；OWASP 作为工程实践的第二路印证。",
   "sources": {
     "rfc6265": {
