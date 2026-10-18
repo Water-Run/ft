@@ -212,7 +212,7 @@
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`two-factor-auth`](../videos/series/in-seconds/two-factor-auth/) | 已发布：哔哩哔哩与 YouTube |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`lean4`](../videos/series/in-seconds/lean4/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 |  | `how-opus-animates` |  |
-| 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` |  |
+| 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` | 说明手枪射击。视觉用新野兽派，画面生动、有冲击力。150 秒，目录未建。 |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | 自制 | [`dense-vs-moe`](../videos/series/in-seconds/dense-vs-moe/) | 已发布：哔哩哔哩与 YouTube（2026-10-09） |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 |  | `rear-seatbelt` |  |
 | 7 | 256 秒搞懂 SSH | zh + en | 计划中 |  | `ssh` |  |
@@ -225,9 +225,9 @@
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 |  | `frameworks` |  |
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
-| 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分 |
+| 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分。视觉用液态玻璃。讲法简单、快速，介绍怎么看模型卡。目录未建。 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
-| 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制 | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。基础科普。事实测绘见本目录 research/。 |
+| 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制（Grok 4.7） | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。2026-10-19 中文稿已落盘，待后续模型优化；尚未人工确认。入口见本片 README。 |
 | 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 委托（Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，准备方 DeepSeek V4.1 Flash 1017 已完成取证、中文初稿、审稿包、包豪斯视觉系统与关键帧；等待 WaterRun 确认后配音并交 Opus 5.5。 |
 | 21 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`chain-of-thought`](../videos/series/in-seconds/chain-of-thought/) | 2026-10-18 由独立片迁入秒速通；192 秒；事实测绘与系列视觉扩展已落盘，尚未写稿或配音。 |
 
