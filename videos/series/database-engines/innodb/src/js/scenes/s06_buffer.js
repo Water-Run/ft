@@ -13,7 +13,7 @@ scene('s06', ({ root, s, c0 }) => {
   fin(q1, at('b1') - 0.35); pop(q2, at('b1') - 0.25, { from: 0.85, origin: '0 50%' }); sfx('thud', at('b1') - 0.25, { g: 0.5 });
   const PD = panel(world, 96, 720, 1728, 180, '磁盘', { name: 'disk' });
   const dk = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => tile(world, 300 + i * 124, 776, 104, 90, i % 4 === 1 ? 't2' : 't1'));
-  showPanel(PD, at('b2') - 0.2); dk.forEach((e, i) => pop(e, at('b2') + i * 0.03));
+  showPanel(PD, at('b1', '怎么') - 0.1); dk.forEach((e, i) => pop(e, at('b2') + i * 0.03));   // 磁盘先在读到「怎么找」时摆出来，页块仍在下一句出现
   const PP = panel(world, 96, 300, 1728, 380, '内存', { name: 'buffer-pool' });
   showPanel(PP, at('b2', '内存') - 0.1);
   const bpT = txt(world, 't-3 blue', '缓冲池', 300, 318); fin(bpT, at('b3', '缓冲池'));

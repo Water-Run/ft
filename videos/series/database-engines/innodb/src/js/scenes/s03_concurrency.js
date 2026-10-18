@@ -50,6 +50,9 @@ scene('s03', ({ root, s, c0 }) => {
   const trs = [0, 1, 2, 3, 4, 5].map((i) => row(world, XC + 140, 230 + i * 74, 812, String(i + 1) + sp(3) + ['alice', 'bob', 'carol', 'dave', 'erin', 'frank'][i]));
   const tG = at('l4', '粒度');
   showPanel(PT, at('l4') - 0.3); trs.forEach((e, i) => fin(e, at('l4') + i * 0.05, { y: 8 }));
+  // 术语第一次出现：读到「粒度」时给出一句释义
+  const gk = tag(world, XC + 140, 772, '锁的粒度：锁住多大一块', 'blue'); css(gk, { font: '700 38px/1 "Sans SC", "Open Sans"', padding: '12px 22px', borderRadius: '12px' });
+  pop(gk, tG - 0.1, { from: 0.85, origin: '0 50%' }); sfx('tick', tG - 0.1, { g: 0.4 });
   const gT = gring(g, XC + 120, 212, 852, 470, { name: 'table-ring' }), gR = gring(g, XC + 124, 216 + 74 * 2, 844, 66, { name: 'row-ring' });
   const g1 = tag(world, XC + 140, 690, '锁整张表', 'or'), g2 = tag(world, XC + 420, 690, '只锁一行', 'or');
   drawIn(gT, at('l4b', '整张表') - 0.1, 0.45); pop(g1, at('l4b', '整张表')); drawIn(gR, at('l4b', '一行') - 0.1, 0.35); pop(g2, at('l4b', '一行')); sfx('pop', at('l4b', '一行'), { g: 0.5 });

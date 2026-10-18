@@ -31,7 +31,7 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](myisam/) |
-| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 制作中 | [`innodb`](innodb/) |
+| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](innodb/) |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 计划中 | `postgresql` |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 | `firebird` |
 | 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 | `sqlite` |

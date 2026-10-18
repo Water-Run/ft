@@ -6,7 +6,7 @@
       "title": {"zh": "数据库引擎", "en": "Database Engines"},
       "videos": [
         {"slug": "myisam", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "languages": ["zh"], "note": "已发布：哔哩哔哩"},
-        {"slug": "innodb", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "languages": ["zh"], "status": "in-progress"},
+        {"slug": "innodb", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "languages": ["zh"], "status": "delivered", "note": "已发布：哔哩哔哩（2026-10-18）；发布后发现的画面问题见 README"},
         {"slug": "postgresql", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}},
         {"slug": "firebird", "title": {"zh": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"}},
         {"slug": "sqlite", "title": {"zh": "一个数据库引擎是如何实现的？——小巧紧凑：SQLite"}},
@@ -189,7 +189,7 @@
         {"slug": "lean4", "title": {"zh": "200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠", "en": "Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted"}, "status": "delivered", "note": "已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md"},
         {"slug": "how-opus-animates", "title": {"zh": "150 秒搞明白 Opus 5.5 是怎么做视频的"}},
         {"slug": "pistol-shooting", "title": {"zh": "150 秒学会怎么打手枪？"}},
-        {"slug": "dense-vs-moe", "title": {"zh": "150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型", "en": "Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models"}, "status": "delivered", "note": "本地出片，未发布；自动闸门通过，听感与观感待人确认，见 README"},
+        {"slug": "dense-vs-moe", "title": {"zh": "150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型", "en": "Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube（2026-10-09）"},
         {"slug": "rear-seatbelt", "title": {"zh": "150 秒明白不绑后排安全带的致命性"}},
         {"slug": "ssh", "title": {"zh": "256 秒搞懂 SSH"}},
         {"slug": "powershell", "title": {"zh": "150 秒关于 PowerShell 和 pwsh"}},

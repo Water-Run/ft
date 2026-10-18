@@ -10,7 +10,7 @@
 4. `research/FACTS.md`、`research/sources.json`、`research/SOURCE_MAP.md`。
 5. `research/lab/README.md`、`out_01_probe.json`、`out_03_pages.json`、`tools/gen_data.py`。
 
-现状：第一版（R7，纸色加钴蓝）已整片作废，不要回到 R7 的稿本或版面。第二版的中文稿 R8 于 2026-10-10 经 WaterRun 确认，配音后只调了节奏（语速 −2%、章末留白），记录见 FACTS「R8 交审」「R8 确认」「R8 制作期的修订」。配音、12 个场景、配乐（`tools/music.py`）、封面与成片的状态与审查结论见 README「成片」与 FACTS「复核」。
+现状：第一版（R7，纸色加钴蓝）已整片作废，不要回到 R7 的稿本或版面。第二版的中文稿 R8 于 2026-10-10 经 WaterRun 确认，配音后只调了节奏（语速 −2%、章末留白），记录见 FACTS「R8 交审」「R8 确认」「R8 制作期的修订」。配音、12 个场景、配乐（`tools/music.py`）、封面与成片的状态与审查结论见 README「成片」与 FACTS「成片复核」。2026-10-18 出片（15:49），同日由策划者投稿哔哩哔哩（[BV1vanV6nEYq](https://www.bilibili.com/video/BV1vanV6nEYq)），记录见 README「发布与反馈」。投稿之后发现第 02 章开头一处画面与设计不符（`s02_tx.js` 第 16 行），为与线上成片一致，源码没有改，见 README「成片」末尾。待人确认的听感、读音与观感见 README「需要人来判断的事项」；要改任何一处，按下文顺序重做并重新渲染。
 
 视觉系统取自 MySQL 9.7 手册的 InnoDB 架构图与 MySQL 标志色，定义在 `src/css/style.css` 的开头注释与 README「视觉系统」；Open Sans 随片放在 `src/type/`。场景的共用部件在 `src/js/parts.js`。镜头一律用 `camTrack`：只在站与站之间移动，停留时极慢单向推近（最多 4%），换站时缩放回到起点；不加往复平移或推拉（策划者明确反对镜头晃动）。静止检查靠内容节拍满足：镜头到站时就给成块内容，长句里按关键词分步出现。
 

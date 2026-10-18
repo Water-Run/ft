@@ -20,9 +20,10 @@ scene('s09', ({ root, s, c0 }) => {
   [PMy.el, PMy.tt, myF.e, myB, my].forEach((e) => out(e, at('g2') + 0.3));
   const PB = panel(world, 96, 300, 900, 300, '缓冲池（内存）', { name: 'buffer-pool' });
   const pg = row(world, 140, 400, 812, '第 4 页：1' + sp(2) + 'alice' + sp(2) + '30');
-  showPanel(PB, at('g2') - 0.3); fin(pg, at('g2', '缓冲池'));
+  showPanel(PB, at('g2') - 0.3); fin(pg, at('g2', '改') - 0.1);
   const tMod = at('g2', '页') + 0.4;
-  keyed(pg).at(tMod, { html: '第 4 页：1' + sp(2) + 'alice' + sp(2) + hv('31') }); sfx('pop', tMod, { g: 0.5 });
+  // 正要改的那一页先压暗（同第 02 章的画法，类名交给 keyed 管），读到「页」之后写进 31
+  keyed(pg).at(at('g2', '缓冲'), { cls: 'row dk' }).at(tMod, { html: '第 4 页：1' + sp(2) + 'alice' + sp(2) + hv('31'), cls: 'row' }); sfx('pop', tMod, { g: 0.5 });
   const dirty = gapBox(world, 140, 480, 812, 40); const dT = tag(world, 140, 540, '脏页：改过，还没写回磁盘', 'or');
   fromTo(dirty, at('g3', '还没写回') - 0.1, { autoAlpha: 0, scaleX: 0 }, { autoAlpha: 1, scaleX: 1, transformOrigin: '0 50%', duration: 0.5 }); pop(dT, at('g3', '脏页'));
   const PF = panel(world, 96, 660, 900, 230, '磁盘 · users.ibd', { name: 'data-file' });

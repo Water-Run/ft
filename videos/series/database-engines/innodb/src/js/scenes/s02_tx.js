@@ -13,12 +13,15 @@ scene('s02', ({ root, s, c0 }) => {
   const hU = txt(world, 'mono t-s dim', 'id' + sp(3) + 'name' + sp(5) + 'age', 162, 208), hN = txt(world, 'mono t-s dim', 'id' + sp(3) + 'body', 1070, 208);
   const rU = row(world, 140, 296, 730, '1' + sp(4) + 'alice' + sp(5) + '30'), rN = row(world, 1048, 296, 730, '1' + sp(4) + 'hello');
   const tA = at('t1') - 0.35;
-  const tNt = at('t1', 'notes') - 0.1; showPanel(PU, tA); showPanel(PN, tNt); fin(hU, tA); fin(hN, tNt + 0.25); fin(rU, tA + 0.1); fin(rN, tNt + 0.45);
+  const tNt = at('t1', '两') - 0.1; showPanel(PU, tA);   // notes 表在读到「两张表」时出现，不等到 notes 这个词（中间约 3 秒没有成块的变化） showPanel(PN, tNt); fin(hU, tA); fin(hN, tNt + 0.25); fin(rU, tA + 0.1); fin(rN, tNt + 0.45);
   sfx('tick', tA, { g: 0.4, p: -0.4 }); sfx('tick', tNt, { g: 0.4, p: 0.4 });
   const t31 = at('t2', '31'), tBd = at('t2b', 'birthday'), tHalf = at('t3b', '漏了'), tTx = at('t4', '整体'), tCm = at('t5', '提交'), tRb = at('t5b', '撤销');
   keyed(rU).at(t31, { html: '1' + sp(4) + 'alice' + sp(5) + hv('31') }).at(tRb, { html: '1' + sp(4) + 'alice' + sp(5) + '30' });
   keyed(rN).at(tBd, { html: '1' + sp(4) + hv('birthday') }).at(tHalf, { html: '1' + sp(4) + 'hello' }).at(tCm, { html: '1' + sp(4) + hv('birthday') }).at(tRb, { html: '1' + sp(4) + 'hello' });
   keyed(rU).at(tCm, { html: '1' + sp(4) + 'alice' + sp(5) + hv('31') });
+  // 读到表名时，那张表的这一行用标志蓝标出（此刻讲到的东西），下一句开始时撤掉（浅色面板入场在低清预演里几乎测不出变化）
+  keyed(rU).at(at('t1', 'users'), { cls: 'row on' }).at(at('t1', 'notes'), { cls: 'row' });
+  keyed(rN).at(at('t1', 'notes'), { cls: 'row on' }).at(at('t2'), { cls: 'row' });
   keyed(rU).at(at('t2') + 0.1, { cls: 'row dk' }).at(t31, { cls: 'row' }); keyed(rN).at(at('t2b') + 0.1, { cls: 'row dk' }).at(tBd, { cls: 'row' });   // 正要改的那一行先压暗（类名交给 keyed 管）
   sfx('pop', t31, { g: 0.55, p: -0.4 }); sfx('pop', tBd, { g: 0.55, p: 0.4 });
   // 两处修改各是一条 UPDATE

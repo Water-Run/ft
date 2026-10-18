@@ -192,6 +192,13 @@
 
 **未做**：人耳试听（旁白、配乐与音效的听感）；人眼连续播放通看。
 
+### 发布后复核：2026-10-18
+
+- 哔哩哔哩公开稿件：[BV1gPpt69EsM](https://www.bilibili.com/video/BV1gPpt69EsM)；标题「150秒了解大模型中的Dense和MoE」；发布于 2026-10-09 15:47:29（UTC+8）；平台时长 2:31（151 秒）；合集「速通教学」。取自该稿件的公开视频页；简介里的开源地址 `https://github.com/Water-Run/ft` 与片尾一致。
+- YouTube：[orNp9XxWvnc](https://www.youtube.com/watch?v=orNp9XxWvnc)；标题「Understanding LLM's Dense and MoE in 150 seconds」；观看页显示日期「Oct 9, 2026」，频道列表显示时长 2:31。观看页要求登录验证，发布时刻、简介与播放列表未核。
+- 评论：哔哩哔哩 1 条，是 UP 主的置顶说明，补充 h1「MoE 的想法更早」是指比 Transformer 早得多（`docs/feedback.md` C14）。片中这一句没有说比什么早；h1 的依据是上文 Shazeer 2017 §1.3 引 Jacobs et al., 1991，Transformer 的年份不在本表的依据里，本轮没有为评论补证。说明里「以一定的性能为代价」是作者的概括，本轮没有据此改写事实表。YouTube 评论未核。
+- 两个平台上的版本没有与本地成片逐帧比对。
+
 ## 取证中得到、未进成片的事实
 
 - Mixtral 2024 §5：按学科看不出明显的专家分工；OLMoE 2024 §5.3 则观察到部分专家有明显的领域偏好。两者都说明分工是训练中形成的，不由人指定。

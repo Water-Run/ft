@@ -98,9 +98,16 @@ node kit/tools/covers.js videos/series/in-seconds/dense-vs-moe                  
 node kit/tools/check.js  videos/series/in-seconds/dense-vs-moe --final            # 交付前总闸门
 ```
 
-## 发布
+## 发布与反馈（2026-10-18 核对）
 
-未发布。
+| 平台 | 实际标题 | 发布时间（UTC+8） | 平台时长 | 合集 | 链接 |
+|---|---|---|---|---|---|
+| 哔哩哔哩 | 150秒了解大模型中的Dense和MoE | 2026-10-09 15:47:29 | 2:31（151 秒） | 速通教学 | [BV1gPpt69EsM](https://www.bilibili.com/video/BV1gPpt69EsM) |
+| YouTube | Understanding LLM's Dense and MoE in 150 seconds | 2026-10-09（时刻未核） | 2:31 | 未核 | [orNp9XxWvnc](https://www.youtube.com/watch?v=orNp9XxWvnc) |
+
+两个链接由策划者 2026-10-18 告知后回填。哔哩哔哩一行取自该稿件的公开视频页，简介写明「视频开源于https://github.com/Water-Run/ft」。YouTube 一行的标题取自公开的 oEmbed 接口，时长取自频道的公开视频列表，日期是观看页上显示的「Oct 9, 2026」；观看页要求登录验证，发布时刻、简介与播放列表都没有读到。两个平台各上的是哪个语言版本没有逐帧核对，按标题看分别是中文版与英文版。平台的整数秒数与本地成片时长（150.00 秒）分开记录。
+
+评论：哔哩哔哩 1 条，是 UP 主 2026-10-09 的置顶说明，解释 1:01–1:05 一句（h1「MoE 的想法更早，1991 年就有论文」）的本意是「MoE的想法比Transformer要早的多」，见 [feedback.md](../../../../docs/feedback.md) C14。YouTube 的评论未核。
 
 ## 成片
 
@@ -145,4 +152,4 @@ node kit/tools/check.js  videos/series/in-seconds/dense-vs-moe --final          
 - 配乐与音效的听感：布吉伍吉配乐由程序合成，制作者无法试听；数值自检正常。不合适时改 `project.json` 的 `audio` 段或 `tools/music.py`，重跑 `audio.js` 与 `finish.js` 即可，不必重新渲染画面。
 - 画面观感：制作者看过逐句、每 1.5 秒（第三、四部分）与每 2.5 秒（第一、二部分）的总览图、变形过渡的中间帧和成片抽帧，没有连续播放通看。闸门提示不计入通过与否：81.5 秒（英文 82.5 秒）模型清单同时可见约 30 段文字。
 - 清单的时效：第三部分的模型清单截至 2026-10-09；发布前若有新的大模型发布，可重跑 `research/lab/09_survey.py` 核对旁白「大多是 MoE」仍成立。
-- 发布：未发布。
+- 发布：2026-10-09 已发布到哔哩哔哩与 YouTube，见「发布与反馈」。投稿前上面各项是否逐项确认过，没有记录。

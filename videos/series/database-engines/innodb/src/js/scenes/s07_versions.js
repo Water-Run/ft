@@ -73,7 +73,7 @@ scene('s07', ({ root, s, c0 }) => {
   fin(b2, at('e15', '32') - 0.2); fin(a2, at('e15', '还是 31')); sfx('blip', at('e15', '还是 31'), { g: 0.5 });
   const same = tag(world, XC + 140, 716, '同一个读视图', 'blue'); css(same, { top: '712px', fontSize: '28px' }); pop(same, at('e15', '还是 31') + 0.3);
   fin(a3, at('e16b', '32') - 0.3); const lk3 = lockBadge(world, XC + 600, 790); pop(lk3, at('e16b', '32')); sfx('pop', at('e16b', '32'), { g: 0.5 });
-  const fu = txt(world, 't-n', '← 加锁读：读最新的值，并且不让别人改', XC + 730, 790); css(fu, { zIndex: 6 }); fin(fu, at('e16', '最新'));
+  const fu = txt(world, 't-n', '← 加锁读：读最新的值，不让别人改', XC + 730, 790); css(fu, { zIndex: 6 }); fin(fu, at('e16', '最新'));
   const PC = panel(world, XC + 1320, 230, 504, 660, '读已提交', { name: 'rc' });
   const rc1 = txt(world, 't-n wrap', '每次读都建立新的读视图', XC + 1360, 310); css(rc1, { width: '430px' });
   const rr = [ev(XC + 1360, 430, 'SELECT → 32', 'on'), ev(XC + 1360, 520, '另一会话改成 33 · 提交', ''), ev(XC + 1360, 610, 'SELECT → 33', 'on')];

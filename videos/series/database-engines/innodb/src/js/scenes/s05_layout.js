@@ -12,11 +12,21 @@ scene('s05', ({ root, s, c0 }) => {
   // ── 站 A：文件与页 ──
   const q1 = txt(world, 't-n dim', '上一期的第一个问题', 104, 130), q2 = txt(world, 't-2', '数据怎么放', 100, 170);
   fin(q1, at('a1') - 0.35); pop(q2, at('a1') - 0.25, { from: 0.85, origin: '0 50%' }); sfx('thud', at('a1') - 0.25, { g: 0.5 });
-  const PM = panel(world, 96, 300, 560, 300, 'MyISAM', { name: 'myisam-files' });
-  const mD = fileIcon(world, 150, 380, 120, 160, { inpanel: true }), mI = fileIcon(world, 320, 380, 120, 160, { inpanel: true, lines: [0.5, 0.6] });
-  const mDl = txt(world, 'mono t-s dim', '.MYD', 150, 548), mIl = txt(world, 'mono t-s dim', '.MYI', 320, 548);
-  const tM = at('a2', '两个文件');
-  showPanel(PM, at('a1', '数据怎么放') + 0.2); pop(mD.e, at('a2') + 0.3); pop(mI.e, at('a2', '数据')); fin(mDl, tM); fin(mIl, tM + 0.1);
+  // 上一期的两个文件：数据文件里是一行行记录，索引文件里是一棵 B 树（与开场的画法一致）；讲到哪样，哪样成块出现
+  const PM = panel(world, 96, 300, 560, 600, 'MyISAM', { name: 'myisam-files' });
+  const mD = fileIcon(world, 150, 380, 150, 190, { inpanel: true }), mI = fileIcon(world, 400, 380, 150, 190, { inpanel: true, lines: [0.5, 0.6] });
+  const mDl = txt(world, 'mono t-s dim', '.MYD', 150, 584), mIl = txt(world, 'mono t-s dim', '.MYI', 400, 584);
+  const mRows = [0, 1, 2].map((k) => { const e = row(world, 150, 652 + k * 56, 150, '', 'dk'); css(e, { height: '42px' }); return e; });
+  const mRoot = tile(world, 400, 652, 150, 44, 't3'), mKids = [0, 1].map((k) => tile(world, 400 + k * 80, 742, 70, 44, 't3'));
+  const mEdges = [0, 1].map((k) => gline(g, `M475 696 L${435 + k * 80} 742`, 'dim', { w: 3 }));
+  const mDt = txt(world, 't-s', '数据', 150, 830), mIt = txt(world, 't-s', '索引', 400, 830);
+  const mSplit = gline(g, 'M350 384 L350 866', 'line', { w: 3, dashed: '10 10' });
+  const tM = at('a2', '两个文件'), tMd = at('a2', '数据'), tMi = at('a2', '索引');
+  showPanel(PM, at('a1', '数据怎么放') + 0.2); pop(mD.e, at('a2') + 0.2); pop(mI.e, at('a2') + 0.35);
+  mRows.forEach((e, k) => pop(e, tMd + k * 0.08, { from: 0.8 })); fin(mDt, tMd + 0.2); sfx('tick', tMd, { g: 0.4, p: -0.5 });
+  pop(mRoot, tMi - 0.05, { from: 0.8 }); mKids.forEach((e, k) => pop(e, tMi + 0.1 + k * 0.08, { from: 0.8 })); mEdges.forEach((l, k) => drawIn(l, tMi + 0.05 + k * 0.05, 0.25));
+  fin(mIt, tMi + 0.2); sfx('tick', tMi, { g: 0.4, p: -0.3 });
+  drawIn(mSplit, at('a2', '分成') - 0.1, 0.4); fin(mDl, tM); fin(mIl, tM + 0.1);
   const PI = panel(world, 700, 300, 1124, 600, 'InnoDB · users.ibd', { cls: 'hot', name: 'ibd-file' });
   const iF = fileIcon(world, 760, 380, 150, 190, { inpanel: true, lines: [0.7, 0.8, 0.6, 0.7] });
   const iFl = txt(world, 't-n wrap', '数据和索引，都在这一个文件里', 940, 420); css(iFl, { width: '820px' });
@@ -126,7 +136,9 @@ scene('s05', ({ root, s, c0 }) => {
   const tCh = at('a14', '下一条');
   showPanel(chainP, at('a14') + 0.3); sfx('tick', tCh, { g: 0.35 }); cr.forEach(([e, t_], i) => { pop(e, tCh + i * 0.06); fin(t_, tCh + 0.1 + i * 0.06); });
   cr.slice(0, 7).forEach((_, i) => { const l = gline(g, `M${XD + 252 + i * 130} 735 L${XD + 266 + i * 130} 735`, 'blue', { w: 4, arrow: true }); arrowIn(l, at('a14b', '链') - 0.3 + i * 0.06, 0.2); });
-  const chT = txt(world, 't-n', '按主键排好，一条指向下一条', XD + 140, 810); fin(chT, at('a14b', '链'));
+  // 读到「按主键」时整条顺序成块出现（只有箭头描出时，低清预演里看不出变化）；读到「链」时各条之间的箭头描出
+  const chB = row(world, XD + 140, 800, 1010, '按主键排好：' + R.map((r) => r.id).join(' → '), 'on'); css(chB, { fontFamily: '"Sans SC", "Mono"' });
+  pop(chB, at('a14b', '主键') - 0.1, { from: 0.9, origin: '0 50%' }); sfx('tick', at('a14b', '主键') - 0.1, { g: 0.35, p: -0.2 });
   // 事务号与回滚指针
   const PH = panel(world, XD + 1240, 600, 584, 300, null, { name: 'hidden-fields' });
   const h1 = txt(world, 't-n wrap', '事务号：每个修改数据的事务都有编号；这里记着最后修改它的那个', XD + 1270, 620); css(h1, { width: '530px' });

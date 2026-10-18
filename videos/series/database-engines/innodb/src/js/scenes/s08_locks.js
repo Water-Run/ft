@@ -13,11 +13,12 @@ scene('s08', ({ root, s, c0 }) => {
   const PM = panel(world, 96, 140, 820, 740, '上一期 · MyISAM', { name: 'table-lock' });
   const mr = [0, 1, 2, 3, 4, 5].map((i) => row(world, 140, 240 + i * 74, 732, '', 't1'));
   const mRing = gring(g, 124, 224, 764, 460, { name: 'table-ring' }); const mLk = lockBadge(world, 860, 210); const mT = tag(world, 140, 720, '锁整张表', 'or');
-  showPanel(PM, at('f1') - 0.4); mr.forEach((e, i) => fin(e, at('f1') - 0.35 + i * 0.03, { y: 6 }));
+  // 章名只有一个「锁」字，章节标题收起时画面几乎是空的：面板、六行与两个会话在本场淡入之前就位，随本场一起出现
+  showPanel(PM, c0 - 0.75); mr.forEach((e, i) => fin(e, c0 - 0.7 + i * 0.03, { y: 6 }));
   // 两个会话想同时改同一行
   const wA = sess(560, 150, '会话 A', 'blue'), wB = sess(740, 150, '会话 B');
   const waA = gline(g, 'M624 206 L600 306', 'ink', { w: 4, arrow: true }), waB = gline(g, 'M806 206 L664 306', 'ink', { w: 4, arrow: true });
-  pop(wA, at('f1', '别人')); pop(wB, at('f1', '同时改')); arrowIn(waA, at('f1', '同时改') + 0.1, 0.3); arrowIn(waB, at('f1', '同一行'), 0.3); classAt(mr[1], 'on', at('f1', '同一行'), at('f1b') - 0.1);
+  pop(wA, c0 - 0.5); pop(wB, c0 - 0.4); beat(wB, at('f1', '别人'), 1.1); arrowIn(waA, at('f1', '同时改') + 0.1, 0.3); arrowIn(waB, at('f1', '同一行'), 0.3); classAt(mr[1], 'on', at('f1', '同一行'), at('f1b') - 0.1);
   sfx('pop', at('f1', '别人'), { g: 0.4, p: 0.2 }); sfx('pop', at('f1', '同时改'), { g: 0.4, p: 0.4 });
   [wA, wB, waA, waB].forEach((e) => out(e, at('f1b') - 0.1));
   drawIn(mRing, at('f1b', '整张表') - 0.2, 0.5); pop(mLk, at('f1b', '整张表')); pop(mT, at('f1b', '整张表') + 0.2); sfx('pop', at('f1b', '整张表'), { g: 0.5 });
