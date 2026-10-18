@@ -1,0 +1,8440 @@
+{
+  "schema": 1,
+  "date": "2026-10-18",
+  "case": "CASE-A",
+  "method": "read-only-static-allowlist",
+  "runtime_verified": false,
+  "export_policy": "no-private-paths-source-hashes-source-text-sql-config-records-or-network-identifiers",
+  "counts": {
+    "tracked_application_paths": 50676,
+    "controller_php_paths": 2785,
+    "declared_controller_files": 532,
+    "deep_samples": 15
+  },
+  "core": [
+    {
+      "id": "S01",
+      "public_framework_path": "admin/index.php",
+      "exists": true,
+      "lines": 450,
+      "evidence": {
+        "registry": {
+          "count": 1,
+          "lines": [
+            266
+          ]
+        },
+        "loader": {
+          "count": 1,
+          "lines": [
+            269
+          ]
+        },
+        "dispatch": {
+          "count": 1,
+          "lines": [
+            444
+          ]
+        },
+        "preaction_login": {
+          "count": 1,
+          "lines": [
+            431
+          ]
+        },
+        "registry_write": {
+          "count": 22,
+          "lines": [
+            270,
+            274,
+            278,
+            283,
+            323,
+            363,
+            368,
+            371,
+            373,
+            376,
+            377,
+            379
+          ]
+        },
+        "preaction_permission": {
+          "count": 1,
+          "lines": [
+            434
+          ]
+        },
+        "route": {
+          "count": 2,
+          "lines": [
+            437,
+            438
+          ]
+        },
+        "select": {
+          "count": 9,
+          "lines": [
+            26,
+            29,
+            32,
+            89,
+            109,
+            110,
+            286,
+            313,
+            396
+          ]
+        }
+      }
+    },
+    {
+      "id": "S02",
+      "public_framework_path": "system/engine/action.php",
+      "exists": true,
+      "lines": 126,
+      "evidence": {
+        "route_class": {
+          "count": 1,
+          "lines": [
+            64
+          ]
+        }
+      }
+    },
+    {
+      "id": "S03",
+      "public_framework_path": "system/engine/front.php",
+      "exists": true,
+      "lines": 137,
+      "evidence": {
+        "dynamic_call": {
+          "count": 2,
+          "lines": [
+            102,
+            110
+          ]
+        },
+        "preaction_loop": {
+          "count": 8,
+          "lines": [
+            20,
+            37,
+            39,
+            40,
+            41,
+            55,
+            56,
+            58
+          ]
+        }
+      }
+    },
+    {
+      "id": "S04",
+      "public_framework_path": "system/engine/controller.php",
+      "exists": true,
+      "lines": 170,
+      "evidence": {
+        "dynamic_call": {
+          "count": 1,
+          "lines": [
+            112
+          ]
+        },
+        "registry_write": {
+          "count": 1,
+          "lines": [
+            60
+          ]
+        },
+        "extract": {
+          "count": 1,
+          "lines": [
+            148
+          ]
+        },
+        "render_require": {
+          "count": 1,
+          "lines": [
+            154
+          ]
+        },
+        "ajax": {
+          "count": 3,
+          "lines": [
+            127,
+            130,
+            139
+          ]
+        }
+      }
+    },
+    {
+      "id": "S05",
+      "public_framework_path": "system/engine/loader.php",
+      "exists": true,
+      "lines": 161,
+      "evidence": {
+        "route_class": {
+          "count": 2,
+          "lines": [
+            72,
+            102
+          ]
+        },
+        "dynamic_call": {
+          "count": 2,
+          "lines": [
+            82,
+            113
+          ]
+        },
+        "registry_write": {
+          "count": 3,
+          "lines": [
+            45,
+            82,
+            113
+          ]
+        }
+      }
+    },
+    {
+      "id": "S06",
+      "public_framework_path": "system/library/user.php",
+      "exists": true,
+      "lines": 287,
+      "evidence": {
+        "session": {
+          "count": 5,
+          "lines": [
+            84,
+            85,
+            159,
+            166,
+            201
+          ]
+        },
+        "select": {
+          "count": 4,
+          "lines": [
+            89,
+            108,
+            153,
+            171
+          ]
+        },
+        "update": {
+          "count": 1,
+          "lines": [
+            104
+          ]
+        },
+        "escape": {
+          "count": 2,
+          "lines": [
+            104,
+            153
+          ]
+        }
+      }
+    },
+    {
+      "id": "S07",
+      "public_framework_path": "system/library/session.php",
+      "exists": true,
+      "lines": 73,
+      "evidence": {
+        "session": {
+          "count": 1,
+          "lines": [
+            57
+          ]
+        }
+      }
+    },
+    {
+      "id": "S08",
+      "public_framework_path": "admin/controller/common/home.php",
+      "exists": true,
+      "lines": 438,
+      "evidence": {
+        "permission": {
+          "count": 1,
+          "lines": [
+            425
+          ]
+        },
+        "login_state": {
+          "count": 1,
+          "lines": [
+            313
+          ]
+        },
+        "session": {
+          "count": 6,
+          "lines": [
+            68,
+            75,
+            359,
+            362,
+            374,
+            377
+          ]
+        },
+        "route": {
+          "count": 6,
+          "lines": [
+            319,
+            321,
+            324,
+            395,
+            397,
+            400
+          ]
+        },
+        "token_check": {
+          "count": 2,
+          "lines": [
+            362,
+            377
+          ]
+        },
+        "models": {
+          "count": 5,
+          "lines": [
+            79,
+            87,
+            90,
+            93,
+            119
+          ]
+        },
+        "template": {
+          "count": 1,
+          "lines": [
+            97
+          ]
+        },
+        "select": {
+          "count": 8,
+          "lines": [
+            172,
+            183,
+            205,
+            216,
+            240,
+            251,
+            268,
+            279
+          ]
+        },
+        "order_by": {
+          "count": 2,
+          "lines": [
+            172,
+            183
+          ]
+        },
+        "escape": {
+          "count": 4,
+          "lines": [
+            205,
+            216,
+            240,
+            251
+          ]
+        },
+        "inline_script": {
+          "count": 1,
+          "lines": [
+            130
+          ]
+        },
+        "date_filter": {
+          "count": 3,
+          "lines": [
+            198,
+            199,
+            202
+          ]
+        }
+      }
+    }
+  ],
+  "domains": {
+    "inventory": {
+      "controllers": 35,
+      "methods": 314,
+      "model_references": 340,
+      "missing_model_references": 12,
+      "template_references": 75,
+      "missing_template_references": 12,
+      "signals": {
+        "permission": 18,
+        "session": 34,
+        "models": 35,
+        "template": 31,
+        "select": 12,
+        "order_by": 4,
+        "jquery": 11,
+        "table": 12,
+        "pagination": 17,
+        "inline_script": 17,
+        "date_filter": 13,
+        "login_state": 4,
+        "ajax": 8,
+        "form": 8,
+        "download": 12,
+        "update": 11,
+        "filters": 11,
+        "export": 1
+      }
+    },
+    "orders": {
+      "controllers": 94,
+      "methods": 1571,
+      "model_references": 1475,
+      "missing_model_references": 4,
+      "template_references": 355,
+      "missing_template_references": 43,
+      "signals": {
+        "session": 89,
+        "models": 91,
+        "template": 90,
+        "select": 45,
+        "order_by": 29,
+        "table": 49,
+        "pagination": 72,
+        "filters": 70,
+        "clickhouse": 8,
+        "export": 14,
+        "download": 35,
+        "inline_script": 31,
+        "date_filter": 51,
+        "permission": 62,
+        "limit": 2,
+        "transaction": 1,
+        "help": 4,
+        "session_release": 8,
+        "insert": 1,
+        "escape": 1,
+        "registry_write": 2,
+        "jquery": 10,
+        "update": 1
+      }
+    },
+    "purchasing": {
+      "controllers": 70,
+      "methods": 2697,
+      "model_references": 3622,
+      "missing_model_references": 1583,
+      "template_references": 643,
+      "missing_template_references": 3,
+      "signals": {
+        "session": 54,
+        "models": 68,
+        "template": 67,
+        "pagination": 3,
+        "filters": 3,
+        "permission": 6,
+        "insert": 4,
+        "inline_script": 6,
+        "table": 3,
+        "update": 5,
+        "transaction": 4,
+        "select": 8,
+        "download": 5,
+        "delete": 1,
+        "order_by": 1,
+        "export": 3,
+        "limit": 1,
+        "jquery": 1,
+        "session_release": 1
+      }
+    },
+    "finance": {
+      "controllers": 30,
+      "methods": 260,
+      "model_references": 208,
+      "missing_model_references": 8,
+      "template_references": 46,
+      "missing_template_references": 7,
+      "signals": {
+        "session": 28,
+        "models": 30,
+        "template": 30,
+        "select": 2,
+        "order_by": 1,
+        "table": 12,
+        "pagination": 17,
+        "filters": 20,
+        "clickhouse": 2,
+        "export": 5,
+        "download": 4,
+        "inline_script": 10,
+        "date_filter": 16,
+        "help": 1,
+        "session_release": 1,
+        "permission": 3,
+        "insert": 2,
+        "update": 4,
+        "form": 1
+      }
+    },
+    "weighing": {
+      "controllers": 4,
+      "methods": 71,
+      "model_references": 34,
+      "missing_model_references": 0,
+      "template_references": 8,
+      "missing_template_references": 1,
+      "signals": {
+        "models": 4,
+        "template": 4,
+        "inline_script": 3,
+        "jquery": 1,
+        "session": 2,
+        "pagination": 2,
+        "filters": 2,
+        "clickhouse": 1,
+        "export": 1,
+        "download": 1,
+        "help": 1,
+        "session_release": 1,
+        "date_filter": 2,
+        "permission": 1,
+        "select": 1,
+        "insert": 1,
+        "update": 1,
+        "table": 1
+      }
+    },
+    "workforce": {
+      "controllers": 1,
+      "methods": 33,
+      "model_references": 9,
+      "missing_model_references": 0,
+      "template_references": 1,
+      "missing_template_references": 0,
+      "signals": {
+        "session": 1,
+        "models": 1,
+        "template": 1,
+        "clickhouse": 1,
+        "postgres": 1
+      }
+    },
+    "identity": {
+      "controllers": 25,
+      "methods": 169,
+      "model_references": 134,
+      "missing_model_references": 0,
+      "template_references": 40,
+      "missing_template_references": 1,
+      "signals": {
+        "permission": 19,
+        "session": 24,
+        "models": 22,
+        "template": 23,
+        "login_state": 5,
+        "route": 3,
+        "token_check": 4,
+        "clickhouse": 1,
+        "download": 3,
+        "inline_script": 4,
+        "select": 1,
+        "order_by": 1,
+        "escape": 1,
+        "date_filter": 3,
+        "table": 1,
+        "pagination": 14,
+        "filters": 2
+      }
+    },
+    "other": {
+      "controllers": 273,
+      "methods": 1794,
+      "model_references": 1573,
+      "missing_model_references": 3,
+      "template_references": 423,
+      "missing_template_references": 58,
+      "signals": {
+        "session": 190,
+        "models": 261,
+        "template": 260,
+        "update": 22,
+        "form": 9,
+        "pagination": 85,
+        "filters": 73,
+        "date_filter": 23,
+        "jquery": 4,
+        "inline_script": 83,
+        "insert": 12,
+        "table": 52,
+        "select": 16,
+        "escape": 2,
+        "permission": 98,
+        "order_by": 7,
+        "clickhouse": 2,
+        "download": 9,
+        "export": 11,
+        "dynamic_call": 5,
+        "limit": 1
+      }
+    }
+  },
+  "menu": [
+    {
+      "exists": true,
+      "literal_routes": 293,
+      "exact_controller_files_found": 130,
+      "lines": 2138,
+      "evidence": {
+        "permission": {
+          "count": 9,
+          "lines": [
+            1085,
+            1088,
+            1091,
+            1367,
+            1370,
+            1373,
+            1764,
+            1767,
+            1770
+          ]
+        },
+        "jquery": {
+          "count": 35,
+          "lines": [
+            56,
+            59,
+            60,
+            68,
+            69,
+            78,
+            79,
+            80,
+            81,
+            82,
+            88,
+            89
+          ]
+        },
+        "clickhouse": {
+          "count": 32,
+          "lines": [
+            904,
+            905,
+            1085,
+            1086,
+            1088,
+            1089,
+            1091,
+            1092,
+            1367,
+            1368,
+            1370,
+            1371
+          ]
+        },
+        "export": {
+          "count": 6,
+          "lines": [
+            921,
+            1111,
+            1399,
+            1744,
+            1895,
+            1921
+          ]
+        },
+        "download": {
+          "count": 1,
+          "lines": [
+            2117
+          ]
+        },
+        "inline_script": {
+          "count": 32,
+          "lines": [
+            20,
+            23,
+            24,
+            25,
+            27,
+            29,
+            31,
+            32,
+            33,
+            35,
+            36,
+            38
+          ]
+        }
+      }
+    },
+    {
+      "exists": true,
+      "literal_routes": 277,
+      "exact_controller_files_found": 126,
+      "lines": 1819,
+      "evidence": {
+        "permission": {
+          "count": 9,
+          "lines": [
+            849,
+            852,
+            855,
+            1119,
+            1122,
+            1125,
+            1503,
+            1506,
+            1509
+          ]
+        },
+        "jquery": {
+          "count": 28,
+          "lines": [
+            513,
+            516,
+            517,
+            525,
+            526,
+            535,
+            536,
+            537,
+            538,
+            539,
+            545,
+            546
+          ]
+        },
+        "clickhouse": {
+          "count": 23,
+          "lines": [
+            661,
+            849,
+            850,
+            852,
+            853,
+            855,
+            856,
+            1119,
+            1120,
+            1122,
+            1123,
+            1125
+          ]
+        },
+        "export": {
+          "count": 6,
+          "lines": [
+            685,
+            876,
+            1149,
+            1483,
+            1629,
+            1654
+          ]
+        },
+        "inline_script": {
+          "count": 30,
+          "lines": [
+            440,
+            476,
+            479,
+            480,
+            481,
+            483,
+            485,
+            487,
+            488,
+            489,
+            491,
+            493
+          ]
+        }
+      }
+    }
+  ],
+  "samples": [
+    {
+      "id": "B01",
+      "domain": "finance",
+      "controller": {
+        "exists": true,
+        "lines": 2023,
+        "evidence": {
+          "session": {
+            "count": 3,
+            "lines": [
+              51,
+              70,
+              75
+            ]
+          },
+          "models": {
+            "count": 8,
+            "lines": [
+              12,
+              48,
+              107,
+              143,
+              207,
+              258,
+              395,
+              721
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              80
+            ]
+          },
+          "select": {
+            "count": 1,
+            "lines": [
+              1767
+            ]
+          },
+          "pagination": {
+            "count": 3,
+            "lines": [
+              150,
+              190,
+              1942
+            ]
+          },
+          "filters": {
+            "count": 13,
+            "lines": [
+              52,
+              993,
+              1727,
+              1742,
+              1758,
+              1759,
+              1918,
+              1919,
+              1921,
+              1922,
+              1924,
+              1925
+            ]
+          },
+          "clickhouse": {
+            "count": 98,
+            "lines": [
+              3,
+              9,
+              12,
+              13,
+              48,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58
+            ]
+          },
+          "export": {
+            "count": 2,
+            "lines": [
+              719,
+              773
+            ]
+          },
+          "download": {
+            "count": 8,
+            "lines": [
+              725,
+              735,
+              736,
+              739,
+              740,
+              741,
+              742,
+              765
+            ]
+          },
+          "help": {
+            "count": 3,
+            "lines": [
+              253,
+              390,
+              1011
+            ]
+          },
+          "session_release": {
+            "count": 1,
+            "lines": [
+              747
+            ]
+          },
+          "date_filter": {
+            "count": 3,
+            "lines": [
+              1128,
+              1758,
+              1919
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 455,
+          "evidence": {
+            "select": {
+              "count": 19,
+              "lines": [
+                14,
+                58,
+                73,
+                85,
+                123,
+                202,
+                270,
+                278,
+                286,
+                320,
+                326,
+                377
+              ]
+            },
+            "limit": {
+              "count": 11,
+              "lines": [
+                58,
+                73,
+                85,
+                270,
+                278,
+                286,
+                326,
+                377,
+                381,
+                382,
+                422
+              ]
+            },
+            "order_by": {
+              "count": 5,
+              "lines": [
+                85,
+                377,
+                382,
+                383,
+                452
+              ]
+            },
+            "filters": {
+              "count": 13,
+              "lines": [
+                14,
+                15,
+                34,
+                36,
+                38,
+                200,
+                210,
+                211,
+                213,
+                232,
+                316,
+                322
+              ]
+            },
+            "clickhouse": {
+              "count": 15,
+              "lines": [
+                3,
+                5,
+                120,
+                123,
+                127,
+                130,
+                169,
+                182,
+                225,
+                326,
+                334,
+                360
+              ]
+            },
+            "export": {
+              "count": 1,
+              "lines": [
+                361
+              ]
+            },
+            "date_filter": {
+              "count": 2,
+              "lines": [
+                14,
+                211
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 7650,
+          "evidence": {
+            "select": {
+              "count": 38,
+              "lines": [
+                104,
+                272,
+                819,
+                889,
+                1691,
+                1697,
+                1701,
+                1709,
+                1712,
+                1796,
+                1842,
+                1854
+              ]
+            },
+            "ajax": {
+              "count": 7,
+              "lines": [
+                959,
+                963,
+                1002,
+                1005,
+                1042,
+                1045,
+                5258
+              ]
+            },
+            "jquery": {
+              "count": 202,
+              "lines": [
+                746,
+                747,
+                831,
+                1138,
+                1139,
+                1140,
+                1143,
+                1145,
+                1147,
+                1178,
+                1253,
+                1255
+              ]
+            },
+            "table": {
+              "count": 2,
+              "lines": [
+                181,
+                5484
+              ]
+            },
+            "pagination": {
+              "count": 10,
+              "lines": [
+                201,
+                208,
+                3315,
+                3331,
+                3388,
+                4222,
+                4229,
+                4283,
+                5815,
+                6616
+              ]
+            },
+            "filters": {
+              "count": 46,
+              "lines": [
+                87,
+                242,
+                271,
+                455,
+                611,
+                646,
+                647,
+                650,
+                652,
+                718,
+                1209,
+                1269
+              ]
+            },
+            "clickhouse": {
+              "count": 40,
+              "lines": [
+                25,
+                29,
+                406,
+                409,
+                421,
+                425,
+                434,
+                435,
+                438,
+                508,
+                604,
+                605
+              ]
+            },
+            "export": {
+              "count": 9,
+              "lines": [
+                108,
+                608,
+                634,
+                1079,
+                5597,
+                5960,
+                6245,
+                6246,
+                6247
+              ]
+            },
+            "download": {
+              "count": 16,
+              "lines": [
+                109,
+                507,
+                600,
+                1134,
+                1154,
+                1155,
+                1158,
+                1159,
+                5561,
+                5563,
+                5598,
+                5599
+              ]
+            },
+            "help": {
+              "count": 89,
+              "lines": [
+                516,
+                518,
+                520,
+                521,
+                523,
+                524,
+                526,
+                530,
+                532,
+                536,
+                540,
+                544
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                3,
+                4,
+                598
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                1272,
+                1423,
+                2699,
+                4683
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "domain": "other",
+      "controller": {
+        "exists": true,
+        "lines": 163,
+        "evidence": {
+          "session": {
+            "count": 2,
+            "lines": [
+              21,
+              25
+            ]
+          },
+          "models": {
+            "count": 2,
+            "lines": [
+              61,
+              124
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              29
+            ]
+          },
+          "clickhouse": {
+            "count": 12,
+            "lines": [
+              3,
+              5,
+              13,
+              19,
+              22,
+              26,
+              27,
+              29,
+              61,
+              64,
+              124,
+              127
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 93,
+          "evidence": {
+            "select": {
+              "count": 1,
+              "lines": [
+                63
+              ]
+            },
+            "clickhouse": {
+              "count": 8,
+              "lines": [
+                3,
+                5,
+                12,
+                14,
+                17,
+                25,
+                31,
+                63
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 1016,
+          "evidence": {
+            "select": {
+              "count": 7,
+              "lines": [
+                391,
+                404,
+                603,
+                610,
+                615,
+                698,
+                715
+              ]
+            },
+            "ajax": {
+              "count": 4,
+              "lines": [
+                750,
+                754,
+                915,
+                920
+              ]
+            },
+            "clickhouse": {
+              "count": 1,
+              "lines": [
+                1002
+              ]
+            },
+            "inline_script": {
+              "count": 1,
+              "lines": [
+                632
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B03",
+      "domain": "purchasing",
+      "controller": {
+        "exists": true,
+        "lines": 840,
+        "evidence": {
+          "permission": {
+            "count": 1,
+            "lines": [
+              693
+            ]
+          },
+          "session": {
+            "count": 12,
+            "lines": [
+              224,
+              225,
+              226,
+              231,
+              232,
+              233,
+              245,
+              317,
+              318,
+              475,
+              684,
+              685
+            ]
+          },
+          "models": {
+            "count": 29,
+            "lines": [
+              6,
+              28,
+              45,
+              61,
+              75,
+              76,
+              77,
+              81,
+              269,
+              270,
+              287,
+              309
+            ]
+          },
+          "template": {
+            "count": 11,
+            "lines": [
+              33,
+              49,
+              248,
+              277,
+              288,
+              298,
+              343,
+              369,
+              393,
+              562,
+              667
+            ]
+          },
+          "insert": {
+            "count": 1,
+            "lines": [
+              468
+            ]
+          },
+          "update": {
+            "count": 3,
+            "lines": [
+              339,
+              389,
+              473
+            ]
+          },
+          "table": {
+            "count": 2,
+            "lines": [
+              481,
+              552
+            ]
+          },
+          "pagination": {
+            "count": 7,
+            "lines": [
+              240,
+              241,
+              242,
+              243,
+              244,
+              245,
+              247
+            ]
+          },
+          "inline_script": {
+            "count": 11,
+            "lines": [
+              66,
+              429,
+              432,
+              457,
+              460,
+              504,
+              526,
+              531,
+              585,
+              756,
+              758
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 483,
+          "evidence": {
+            "select": {
+              "count": 35,
+              "lines": [
+                7,
+                12,
+                32,
+                39,
+                47,
+                53,
+                68,
+                82,
+                129,
+                157,
+                184,
+                223
+              ]
+            },
+            "insert": {
+              "count": 7,
+              "lines": [
+                26,
+                27,
+                78,
+                327,
+                349,
+                355,
+                356
+              ]
+            },
+            "update": {
+              "count": 14,
+              "lines": [
+                64,
+                99,
+                255,
+                269,
+                274,
+                325,
+                331,
+                359,
+                360,
+                361,
+                362,
+                423
+              ]
+            },
+            "delete": {
+              "count": 2,
+              "lines": [
+                38,
+                41
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 22,
+          "evidence": {
+            "select": {
+              "count": 2,
+              "lines": [
+                6,
+                10
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                14
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                17
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 1176,
+          "evidence": {
+            "select": {
+              "count": 68,
+              "lines": [
+                5,
+                6,
+                12,
+                24,
+                25,
+                31,
+                36,
+                41,
+                46,
+                56,
+                68,
+                79
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                1166
+              ]
+            },
+            "update": {
+              "count": 4,
+              "lines": [
+                91,
+                925,
+                1163,
+                1171
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                315,
+                910,
+                915
+              ]
+            },
+            "order_by": {
+              "count": 6,
+              "lines": [
+                284,
+                287,
+                291,
+                295,
+                910,
+                915
+              ]
+            },
+            "escape": {
+              "count": 32,
+              "lines": [
+                198,
+                205,
+                259,
+                264,
+                267,
+                270,
+                419,
+                431,
+                438,
+                445,
+                477,
+                480
+              ]
+            },
+            "filters": {
+              "count": 163,
+              "lines": [
+                95,
+                96,
+                100,
+                101,
+                103,
+                104,
+                130,
+                135,
+                136,
+                140,
+                142,
+                146
+              ]
+            },
+            "date_filter": {
+              "count": 40,
+              "lines": [
+                103,
+                104,
+                135,
+                140,
+                146,
+                215,
+                216,
+                217,
+                347,
+                352,
+                357,
+                453
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 138,
+          "evidence": {
+            "select": {
+              "count": 6,
+              "lines": [
+                58,
+                65,
+                103,
+                117,
+                127,
+                133
+              ]
+            },
+            "insert": {
+              "count": 5,
+              "lines": [
+                4,
+                14,
+                19,
+                36,
+                43
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                26,
+                29
+              ]
+            },
+            "delete": {
+              "count": 5,
+              "lines": [
+                32,
+                40,
+                50,
+                51,
+                52
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                93
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                73,
+                75,
+                103
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                19,
+                26,
+                29,
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": false
+        },
+        {
+          "exists": true,
+          "lines": 22,
+          "evidence": {
+            "select": {
+              "count": 2,
+              "lines": [
+                7,
+                13
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                17
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 51,
+          "evidence": {
+            "table": {
+              "count": 1,
+              "lines": [
+                36
+              ]
+            },
+            "inline_script": {
+              "count": 9,
+              "lines": [
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                19,
+                20,
+                21
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 357,
+          "evidence": {
+            "session": {
+              "count": 2,
+              "lines": [
+                208,
+                293
+              ]
+            },
+            "select": {
+              "count": 10,
+              "lines": [
+                51,
+                60,
+                62,
+                71,
+                90,
+                93,
+                201,
+                306,
+                343,
+                348
+              ]
+            },
+            "ajax": {
+              "count": 4,
+              "lines": [
+                206,
+                231,
+                249,
+                273
+              ]
+            },
+            "jquery": {
+              "count": 36,
+              "lines": [
+                179,
+                181,
+                187,
+                188,
+                189,
+                190,
+                191,
+                197,
+                198,
+                199,
+                200,
+                201
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                16
+              ]
+            },
+            "pagination": {
+              "count": 1,
+              "lines": [
+                174
+              ]
+            },
+            "inline_script": {
+              "count": 4,
+              "lines": [
+                177,
+                178,
+                186,
+                194
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 529,
+          "evidence": {
+            "session": {
+              "count": 2,
+              "lines": [
+                324,
+                348
+              ]
+            },
+            "ajax": {
+              "count": 4,
+              "lines": [
+                119,
+                186,
+                302,
+                368
+              ]
+            },
+            "jquery": {
+              "count": 26,
+              "lines": [
+                167,
+                168,
+                169,
+                220,
+                228,
+                233,
+                348,
+                352,
+                361,
+                363,
+                367,
+                381
+              ]
+            },
+            "form": {
+              "count": 1,
+              "lines": [
+                39
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                40
+              ]
+            },
+            "inline_script": {
+              "count": 4,
+              "lines": [
+                79,
+                80,
+                81,
+                84
+              ]
+            }
+          }
+        },
+        {
+          "exists": false
+        },
+        {
+          "exists": true,
+          "lines": 109,
+          "evidence": {
+            "ajax": {
+              "count": 2,
+              "lines": [
+                45,
+                84
+              ]
+            },
+            "jquery": {
+              "count": 13,
+              "lines": [
+                43,
+                44,
+                58,
+                61,
+                64,
+                65,
+                80,
+                81,
+                82,
+                97,
+                100,
+                103
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                16
+              ]
+            },
+            "inline_script": {
+              "count": 4,
+              "lines": [
+                34,
+                35,
+                36,
+                39
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 495,
+          "evidence": {
+            "session": {
+              "count": 2,
+              "lines": [
+                466,
+                480
+              ]
+            },
+            "select": {
+              "count": 3,
+              "lines": [
+                250,
+                272,
+                288
+              ]
+            },
+            "ajax": {
+              "count": 4,
+              "lines": [
+                251,
+                343,
+                442,
+                478
+              ]
+            },
+            "jquery": {
+              "count": 37,
+              "lines": [
+                234,
+                238,
+                240,
+                249,
+                250,
+                324,
+                325,
+                326,
+                328,
+                339,
+                340,
+                341
+              ]
+            },
+            "table": {
+              "count": 7,
+              "lines": [
+                15,
+                35,
+                136,
+                179,
+                195,
+                216,
+                257
+              ]
+            },
+            "filters": {
+              "count": 10,
+              "lines": [
+                249,
+                250,
+                255,
+                269,
+                272,
+                273,
+                278,
+                283,
+                326,
+                328
+              ]
+            },
+            "inline_script": {
+              "count": 2,
+              "lines": [
+                2,
+                233
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 80,
+          "evidence": {
+            "ajax": {
+              "count": 1,
+              "lines": [
+                62
+              ]
+            },
+            "jquery": {
+              "count": 6,
+              "lines": [
+                31,
+                47,
+                48,
+                49,
+                69,
+                71
+              ]
+            },
+            "form": {
+              "count": 2,
+              "lines": [
+                27,
+                36
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                26
+              ]
+            },
+            "inline_script": {
+              "count": 1,
+              "lines": [
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 184,
+          "evidence": {
+            "select": {
+              "count": 7,
+              "lines": [
+                49,
+                58,
+                64,
+                73,
+                77,
+                94,
+                165
+              ]
+            },
+            "jquery": {
+              "count": 13,
+              "lines": [
+                153,
+                155,
+                161,
+                162,
+                163,
+                164,
+                165,
+                167,
+                168,
+                170,
+                171,
+                177
+              ]
+            },
+            "form": {
+              "count": 1,
+              "lines": [
+                40
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                40
+              ]
+            },
+            "inline_script": {
+              "count": 5,
+              "lines": [
+                3,
+                4,
+                151,
+                152,
+                160
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "domain": "workforce",
+      "controller": {
+        "exists": true,
+        "lines": 733,
+        "evidence": {
+          "session": {
+            "count": 12,
+            "lines": [
+              23,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              37,
+              42
+            ]
+          },
+          "models": {
+            "count": 9,
+            "lines": [
+              20,
+              58,
+              81,
+              164,
+              203,
+              212,
+              222,
+              247,
+              255
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              47
+            ]
+          },
+          "clickhouse": {
+            "count": 3,
+            "lines": [
+              64,
+              84,
+              256
+            ]
+          },
+          "postgres": {
+            "count": 12,
+            "lines": [
+              28,
+              174,
+              177,
+              188,
+              189,
+              228,
+              245,
+              248,
+              250,
+              655,
+              656,
+              720
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 1723,
+          "evidence": {
+            "select": {
+              "count": 19,
+              "lines": [
+                471,
+                475,
+                589,
+                593,
+                705,
+                709,
+                721,
+                725,
+                1278,
+                1283,
+                1288,
+                1294
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                668
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                671
+              ]
+            },
+            "delete": {
+              "count": 3,
+              "lines": [
+                576,
+                612,
+                694
+              ]
+            },
+            "limit": {
+              "count": 2,
+              "lines": [
+                1679,
+                1697
+              ]
+            },
+            "order_by": {
+              "count": 5,
+              "lines": [
+                592,
+                708,
+                724,
+                1679,
+                1697
+              ]
+            },
+            "escape": {
+              "count": 2,
+              "lines": [
+                1676,
+                1717
+              ]
+            },
+            "clickhouse": {
+              "count": 30,
+              "lines": [
+                12,
+                13,
+                129,
+                130,
+                753,
+                771,
+                1067,
+                1073,
+                1075,
+                1077,
+                1114,
+                1272
+              ]
+            },
+            "postgres": {
+              "count": 33,
+              "lines": [
+                8,
+                9,
+                455,
+                456,
+                457,
+                459,
+                461,
+                463,
+                468,
+                475,
+                483,
+                484
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 3521,
+          "evidence": {
+            "select": {
+              "count": 4,
+              "lines": [
+                287,
+                288,
+                1343,
+                2207
+              ]
+            },
+            "update": {
+              "count": 4,
+              "lines": [
+                317,
+                327,
+                331,
+                339
+              ]
+            },
+            "ajax": {
+              "count": 1,
+              "lines": [
+                1216
+              ]
+            },
+            "jquery": {
+              "count": 128,
+              "lines": [
+                937,
+                957,
+                958,
+                1072,
+                1079,
+                1098,
+                1170,
+                1255,
+                1280,
+                1281,
+                1282,
+                1283
+              ]
+            },
+            "table": {
+              "count": 2,
+              "lines": [
+                721,
+                812
+              ]
+            },
+            "clickhouse": {
+              "count": 15,
+              "lines": [
+                414,
+                437,
+                542,
+                566,
+                575,
+                687,
+                873,
+                1232,
+                1480,
+                1487,
+                1773,
+                2083
+              ]
+            },
+            "postgres": {
+              "count": 16,
+              "lines": [
+                422,
+                536,
+                545,
+                570,
+                591,
+                592,
+                665,
+                765,
+                945,
+                1879,
+                1880,
+                1881
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                532,
+                846,
+                1207
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B05",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 1453,
+        "evidence": {
+          "session": {
+            "count": 6,
+            "lines": [
+              300,
+              386,
+              394,
+              395,
+              396,
+              430
+            ]
+          },
+          "models": {
+            "count": 10,
+            "lines": [
+              36,
+              37,
+              38,
+              39,
+              204,
+              264,
+              265,
+              486,
+              747,
+              748
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              471
+            ]
+          },
+          "select": {
+            "count": 3,
+            "lines": [
+              562,
+              671,
+              935
+            ]
+          },
+          "order_by": {
+            "count": 2,
+            "lines": [
+              581,
+              700
+            ]
+          },
+          "table": {
+            "count": 1,
+            "lines": [
+              1074
+            ]
+          },
+          "pagination": {
+            "count": 10,
+            "lines": [
+              426,
+              1396,
+              1404,
+              1411,
+              1415,
+              1422,
+              1432,
+              1440,
+              1444,
+              1448
+            ]
+          },
+          "filters": {
+            "count": 47,
+            "lines": [
+              82,
+              84,
+              86,
+              87,
+              88,
+              93,
+              94,
+              95,
+              96,
+              97,
+              108,
+              140
+            ]
+          },
+          "clickhouse": {
+            "count": 43,
+            "lines": [
+              3,
+              4,
+              9,
+              34,
+              36,
+              46,
+              157,
+              191,
+              193,
+              198,
+              204,
+              206
+            ]
+          },
+          "export": {
+            "count": 6,
+            "lines": [
+              483,
+              557,
+              618,
+              626,
+              1070,
+              1272
+            ]
+          },
+          "download": {
+            "count": 1,
+            "lines": [
+              1287
+            ]
+          },
+          "inline_script": {
+            "count": 2,
+            "lines": [
+              852,
+              1143
+            ]
+          },
+          "date_filter": {
+            "count": 10,
+            "lines": [
+              88,
+              142,
+              172,
+              176,
+              406,
+              445,
+              713,
+              715,
+              720,
+              727
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 652,
+          "evidence": {
+            "select": {
+              "count": 23,
+              "lines": [
+                95,
+                99,
+                120,
+                122,
+                125,
+                150,
+                152,
+                155,
+                188,
+                190,
+                213,
+                217
+              ]
+            },
+            "limit": {
+              "count": 2,
+              "lines": [
+                368,
+                378
+              ]
+            },
+            "order_by": {
+              "count": 6,
+              "lines": [
+                215,
+                353,
+                358,
+                364,
+                414,
+                436
+              ]
+            },
+            "escape": {
+              "count": 2,
+              "lines": [
+                490,
+                512
+              ]
+            },
+            "filters": {
+              "count": 26,
+              "lines": [
+                238,
+                239,
+                253,
+                254,
+                258,
+                259,
+                263,
+                264,
+                268,
+                269,
+                274,
+                275
+              ]
+            },
+            "clickhouse": {
+              "count": 59,
+              "lines": [
+                3,
+                4,
+                9,
+                14,
+                16,
+                48,
+                50,
+                51,
+                55,
+                57,
+                78,
+                83
+              ]
+            },
+            "date_filter": {
+              "count": 3,
+              "lines": [
+                274,
+                275,
+                610
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 875,
+          "evidence": {
+            "select": {
+              "count": 39,
+              "lines": [
+                5,
+                17,
+                34,
+                60,
+                86,
+                128,
+                151,
+                266,
+                304,
+                378,
+                381,
+                385
+              ]
+            },
+            "update": {
+              "count": 2,
+              "lines": [
+                29,
+                765
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                238,
+                750,
+                755
+              ]
+            },
+            "order_by": {
+              "count": 6,
+              "lines": [
+                206,
+                209,
+                213,
+                218,
+                750,
+                755
+              ]
+            },
+            "escape": {
+              "count": 28,
+              "lines": [
+                108,
+                141,
+                184,
+                188,
+                191,
+                299,
+                326,
+                349,
+                363,
+                366,
+                369,
+                467
+              ]
+            },
+            "filters": {
+              "count": 126,
+              "lines": [
+                48,
+                49,
+                53,
+                54,
+                56,
+                57,
+                78,
+                88,
+                89,
+                103,
+                104,
+                107
+              ]
+            },
+            "date_filter": {
+              "count": 30,
+              "lines": [
+                56,
+                57,
+                74,
+                118,
+                119,
+                120,
+                253,
+                358,
+                359,
+                360,
+                365,
+                366
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 138,
+          "evidence": {
+            "select": {
+              "count": 6,
+              "lines": [
+                58,
+                65,
+                103,
+                117,
+                127,
+                133
+              ]
+            },
+            "insert": {
+              "count": 5,
+              "lines": [
+                4,
+                14,
+                19,
+                36,
+                43
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                26,
+                29
+              ]
+            },
+            "delete": {
+              "count": 5,
+              "lines": [
+                32,
+                40,
+                50,
+                51,
+                52
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                93
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                73,
+                75,
+                103
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                19,
+                26,
+                29,
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 157,
+          "evidence": {
+            "select": {
+              "count": 17,
+              "lines": [
+                41,
+                47,
+                55,
+                64,
+                77,
+                90,
+                98,
+                100,
+                108,
+                114,
+                120,
+                126
+              ]
+            },
+            "insert": {
+              "count": 3,
+              "lines": [
+                4,
+                9,
+                23
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                18
+              ]
+            },
+            "delete": {
+              "count": 7,
+              "lines": [
+                20,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                77,
+                98,
+                100
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                18,
+                23,
+                114,
+                120
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 1306,
+          "evidence": {
+            "session": {
+              "count": 4,
+              "lines": [
+                85,
+                101,
+                299,
+                340
+              ]
+            },
+            "select": {
+              "count": 91,
+              "lines": [
+                5,
+                11,
+                44,
+                49,
+                54,
+                56,
+                62,
+                67,
+                73,
+                78,
+                96,
+                112
+              ]
+            },
+            "insert": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                175,
+                179,
+                186,
+                190,
+                196,
+                200,
+                210,
+                216,
+                222,
+                228
+              ]
+            },
+            "update": {
+              "count": 10,
+              "lines": [
+                171,
+                276,
+                311,
+                315,
+                342,
+                344,
+                346,
+                352,
+                354,
+                1128
+              ]
+            },
+            "delete": {
+              "count": 18,
+              "lines": [
+                356,
+                486,
+                487,
+                488,
+                489,
+                490,
+                491,
+                492,
+                493,
+                494,
+                495,
+                496
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                591,
+                678,
+                1252
+              ]
+            },
+            "order_by": {
+              "count": 11,
+              "lines": [
+                571,
+                573,
+                658,
+                660,
+                689,
+                743,
+                768,
+                773,
+                821,
+                827,
+                1240
+              ]
+            },
+            "escape": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                171,
+                175,
+                196,
+                210,
+                216,
+                222,
+                248,
+                312,
+                341,
+                345
+              ]
+            },
+            "filters": {
+              "count": 66,
+              "lines": [
+                520,
+                521,
+                524,
+                526,
+                530,
+                531,
+                534,
+                536,
+                539,
+                540,
+                545,
+                549
+              ]
+            },
+            "download": {
+              "count": 12,
+              "lines": [
+                226,
+                227,
+                228,
+                390,
+                495,
+                832,
+                833,
+                835,
+                838,
+                841,
+                1096,
+                1097
+              ]
+            },
+            "date_filter": {
+              "count": 2,
+              "lines": [
+                210,
+                216
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 3105,
+          "evidence": {
+            "session": {
+              "count": 6,
+              "lines": [
+                1524,
+                2273,
+                2375,
+                2393,
+                2398,
+                2471
+              ]
+            },
+            "select": {
+              "count": 110,
+              "lines": [
+                292,
+                300,
+                301,
+                306,
+                310,
+                314,
+                331,
+                335,
+                340,
+                354,
+                358,
+                366
+              ]
+            },
+            "ajax": {
+              "count": 2,
+              "lines": [
+                2319,
+                2322
+              ]
+            },
+            "form": {
+              "count": 2,
+              "lines": [
+                1524,
+                2234
+              ]
+            },
+            "pagination": {
+              "count": 28,
+              "lines": [
+                848,
+                849,
+                857,
+                864,
+                871,
+                926,
+                932,
+                933,
+                951,
+                956,
+                962,
+                1351
+              ]
+            },
+            "filters": {
+              "count": 71,
+              "lines": [
+                1520,
+                1534,
+                1535,
+                1549,
+                1550,
+                1646,
+                1647,
+                1650,
+                1651,
+                1653,
+                1668,
+                1669
+              ]
+            },
+            "clickhouse": {
+              "count": 29,
+              "lines": [
+                1394,
+                1502,
+                1507,
+                1524,
+                1906,
+                2273,
+                2318,
+                2346,
+                2349,
+                2355,
+                2356,
+                2375
+              ]
+            },
+            "export": {
+              "count": 27,
+              "lines": [
+                216,
+                550,
+                556,
+                1240,
+                1252,
+                1256,
+                1262,
+                1272,
+                1277,
+                1284,
+                1290,
+                1363
+              ]
+            },
+            "inline_script": {
+              "count": 2,
+              "lines": [
+                2268,
+                3057
+              ]
+            },
+            "date_filter": {
+              "count": 5,
+              "lines": [
+                1549,
+                1550,
+                1828,
+                1829,
+                2953
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B06",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 2853,
+        "evidence": {
+          "permission": {
+            "count": 1,
+            "lines": [
+              47
+            ]
+          },
+          "session": {
+            "count": 4,
+            "lines": [
+              46,
+              48,
+              63,
+              68
+            ]
+          },
+          "models": {
+            "count": 15,
+            "lines": [
+              43,
+              99,
+              137,
+              160,
+              172,
+              203,
+              232,
+              258,
+              275,
+              343,
+              723,
+              786
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              73
+            ]
+          },
+          "select": {
+            "count": 4,
+            "lines": [
+              216,
+              288,
+              1514,
+              1527
+            ]
+          },
+          "limit": {
+            "count": 3,
+            "lines": [
+              216,
+              288,
+              1514
+            ]
+          },
+          "transaction": {
+            "count": 3,
+            "lines": [
+              688,
+              694,
+              706
+            ]
+          },
+          "pagination": {
+            "count": 3,
+            "lines": [
+              730,
+              770,
+              2772
+            ]
+          },
+          "filters": {
+            "count": 26,
+            "lines": [
+              49,
+              1541,
+              1542,
+              1687,
+              1778,
+              1780,
+              1783,
+              1788,
+              1789,
+              1791,
+              1792,
+              1794
+            ]
+          },
+          "clickhouse": {
+            "count": 140,
+            "lines": [
+              3,
+              9,
+              43,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55
+            ]
+          },
+          "export": {
+            "count": 18,
+            "lines": [
+              12,
+              161,
+              167,
+              210,
+              216,
+              282,
+              288,
+              1412,
+              1442,
+              1467,
+              1474,
+              1479
+            ]
+          },
+          "download": {
+            "count": 14,
+            "lines": [
+              192,
+              193,
+              211,
+              283,
+              1417,
+              1432,
+              1433,
+              1436,
+              1437,
+              1438,
+              1439,
+              1461
+            ]
+          },
+          "help": {
+            "count": 3,
+            "lines": [
+              948,
+              1084,
+              1820
+            ]
+          },
+          "session_release": {
+            "count": 8,
+            "lines": [
+              140,
+              190,
+              206,
+              236,
+              260,
+              278,
+              346,
+              1443
+            ]
+          },
+          "date_filter": {
+            "count": 7,
+            "lines": [
+              1542,
+              1778,
+              1789,
+              1795,
+              1938,
+              2575,
+              2749
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 1548,
+          "evidence": {
+            "select": {
+              "count": 53,
+              "lines": [
+                49,
+                74,
+                79,
+                220,
+                294,
+                303,
+                343,
+                370,
+                454,
+                701,
+                760,
+                761
+              ]
+            },
+            "limit": {
+              "count": 10,
+              "lines": [
+                371,
+                703,
+                728,
+                1019,
+                1032,
+                1156,
+                1240,
+                1345,
+                1375,
+                1380
+              ]
+            },
+            "order_by": {
+              "count": 20,
+              "lines": [
+                304,
+                371,
+                719,
+                819,
+                882,
+                932,
+                963,
+                993,
+                1019,
+                1031,
+                1156,
+                1157
+              ]
+            },
+            "escape": {
+              "count": 1,
+              "lines": [
+                1226
+              ]
+            },
+            "transaction": {
+              "count": 1,
+              "lines": [
+                1468
+              ]
+            },
+            "filters": {
+              "count": 42,
+              "lines": [
+                32,
+                36,
+                40,
+                44,
+                53,
+                58,
+                63,
+                68,
+                73,
+                83,
+                93,
+                164
+              ]
+            },
+            "clickhouse": {
+              "count": 78,
+              "lines": [
+                8,
+                11,
+                29,
+                210,
+                218,
+                221,
+                237,
+                249,
+                256,
+                278,
+                294,
+                318
+              ]
+            },
+            "export": {
+              "count": 8,
+              "lines": [
+                383,
+                1161,
+                1166,
+                1186,
+                1329,
+                1358,
+                1375,
+                1468
+              ]
+            },
+            "download": {
+              "count": 2,
+              "lines": [
+                1325,
+                1329
+              ]
+            },
+            "date_filter": {
+              "count": 5,
+              "lines": [
+                44,
+                543,
+                645,
+                646,
+                803
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 8376,
+          "evidence": {
+            "select": {
+              "count": 39,
+              "lines": [
+                107,
+                317,
+                1304,
+                1374,
+                2176,
+                2182,
+                2186,
+                2195,
+                2198,
+                2282,
+                2328,
+                2340
+              ]
+            },
+            "ajax": {
+              "count": 9,
+              "lines": [
+                779,
+                782,
+                1444,
+                1448,
+                1487,
+                1490,
+                1527,
+                1530,
+                5923
+              ]
+            },
+            "jquery": {
+              "count": 205,
+              "lines": [
+                1231,
+                1232,
+                1316,
+                1623,
+                1624,
+                1625,
+                1628,
+                1630,
+                1632,
+                1663,
+                1738,
+                1740
+              ]
+            },
+            "table": {
+              "count": 2,
+              "lines": [
+                184,
+                6149
+              ]
+            },
+            "pagination": {
+              "count": 10,
+              "lines": [
+                246,
+                253,
+                3955,
+                3971,
+                4028,
+                4887,
+                4894,
+                4948,
+                6526,
+                7328
+              ]
+            },
+            "filters": {
+              "count": 47,
+              "lines": [
+                90,
+                287,
+                316,
+                500,
+                1098,
+                1131,
+                1132,
+                1135,
+                1137,
+                1203,
+                1694,
+                1754
+              ]
+            },
+            "clickhouse": {
+              "count": 57,
+              "lines": [
+                28,
+                32,
+                451,
+                454,
+                466,
+                470,
+                479,
+                480,
+                483,
+                556,
+                683,
+                1091
+              ]
+            },
+            "export": {
+              "count": 12,
+              "lines": [
+                111,
+                699,
+                819,
+                833,
+                1095,
+                1119,
+                1564,
+                6262,
+                6671,
+                6956,
+                6957,
+                6958
+              ]
+            },
+            "download": {
+              "count": 43,
+              "lines": [
+                112,
+                555,
+                648,
+                687,
+                750,
+                755,
+                768,
+                769,
+                770,
+                771,
+                774,
+                775
+              ]
+            },
+            "help": {
+              "count": 89,
+              "lines": [
+                564,
+                566,
+                568,
+                569,
+                571,
+                572,
+                574,
+                578,
+                580,
+                584,
+                588,
+                592
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                3,
+                4,
+                646
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                1757,
+                1907,
+                3329,
+                5348
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B07",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 2414,
+        "evidence": {
+          "permission": {
+            "count": 5,
+            "lines": [
+              1814,
+              1852,
+              1864,
+              2141,
+              2281
+            ]
+          },
+          "session": {
+            "count": 29,
+            "lines": [
+              12,
+              99,
+              120,
+              693,
+              699,
+              705,
+              706,
+              707,
+              1244,
+              1342,
+              1350,
+              1351
+            ]
+          },
+          "models": {
+            "count": 32,
+            "lines": [
+              21,
+              22,
+              23,
+              81,
+              92,
+              131,
+              744,
+              905,
+              1240,
+              1444,
+              1461,
+              1476
+            ]
+          },
+          "template": {
+            "count": 4,
+            "lines": [
+              1450,
+              1753,
+              1783,
+              2056
+            ]
+          },
+          "select": {
+            "count": 11,
+            "lines": [
+              158,
+              192,
+              357,
+              993,
+              1020,
+              1085,
+              1279,
+              2171,
+              2174,
+              2383,
+              2406
+            ]
+          },
+          "order_by": {
+            "count": 2,
+            "lines": [
+              2171,
+              2174
+            ]
+          },
+          "table": {
+            "count": 3,
+            "lines": [
+              765,
+              813,
+              967
+            ]
+          },
+          "pagination": {
+            "count": 7,
+            "lines": [
+              1420,
+              1421,
+              1422,
+              1423,
+              1424,
+              1425,
+              1427
+            ]
+          },
+          "filters": {
+            "count": 136,
+            "lines": [
+              104,
+              105,
+              106,
+              107,
+              108,
+              475,
+              476,
+              478,
+              481,
+              482,
+              484,
+              487
+            ]
+          },
+          "download": {
+            "count": 4,
+            "lines": [
+              1500,
+              1733,
+              1735,
+              1738
+            ]
+          },
+          "inline_script": {
+            "count": 7,
+            "lines": [
+              137,
+              650,
+              656,
+              659,
+              663,
+              684,
+              934
+            ]
+          },
+          "session_release": {
+            "count": 1,
+            "lines": [
+              133
+            ]
+          },
+          "date_filter": {
+            "count": 26,
+            "lines": [
+              545,
+              546,
+              548,
+              549,
+              570,
+              571,
+              605,
+              606,
+              632,
+              633,
+              640,
+              642
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 1176,
+          "evidence": {
+            "select": {
+              "count": 68,
+              "lines": [
+                5,
+                6,
+                12,
+                24,
+                25,
+                31,
+                36,
+                41,
+                46,
+                56,
+                68,
+                79
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                1166
+              ]
+            },
+            "update": {
+              "count": 4,
+              "lines": [
+                91,
+                925,
+                1163,
+                1171
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                315,
+                910,
+                915
+              ]
+            },
+            "order_by": {
+              "count": 6,
+              "lines": [
+                284,
+                287,
+                291,
+                295,
+                910,
+                915
+              ]
+            },
+            "escape": {
+              "count": 32,
+              "lines": [
+                198,
+                205,
+                259,
+                264,
+                267,
+                270,
+                419,
+                431,
+                438,
+                445,
+                477,
+                480
+              ]
+            },
+            "filters": {
+              "count": 163,
+              "lines": [
+                95,
+                96,
+                100,
+                101,
+                103,
+                104,
+                130,
+                135,
+                136,
+                140,
+                142,
+                146
+              ]
+            },
+            "date_filter": {
+              "count": 40,
+              "lines": [
+                103,
+                104,
+                135,
+                140,
+                146,
+                215,
+                216,
+                217,
+                347,
+                352,
+                357,
+                453
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 138,
+          "evidence": {
+            "select": {
+              "count": 6,
+              "lines": [
+                58,
+                65,
+                103,
+                117,
+                127,
+                133
+              ]
+            },
+            "insert": {
+              "count": 5,
+              "lines": [
+                4,
+                14,
+                19,
+                36,
+                43
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                26,
+                29
+              ]
+            },
+            "delete": {
+              "count": 5,
+              "lines": [
+                32,
+                40,
+                50,
+                51,
+                52
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                93
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                73,
+                75,
+                103
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                19,
+                26,
+                29,
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 157,
+          "evidence": {
+            "select": {
+              "count": 17,
+              "lines": [
+                41,
+                47,
+                55,
+                64,
+                77,
+                90,
+                98,
+                100,
+                108,
+                114,
+                120,
+                126
+              ]
+            },
+            "insert": {
+              "count": 3,
+              "lines": [
+                4,
+                9,
+                23
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                18
+              ]
+            },
+            "delete": {
+              "count": 7,
+              "lines": [
+                20,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                77,
+                98,
+                100
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                18,
+                23,
+                114,
+                120
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 607,
+          "evidence": {
+            "session": {
+              "count": 1,
+              "lines": [
+                353
+              ]
+            },
+            "select": {
+              "count": 63,
+              "lines": [
+                5,
+                6,
+                21,
+                28,
+                36,
+                44,
+                49,
+                68,
+                81,
+                105,
+                113,
+                119
+              ]
+            },
+            "insert": {
+              "count": 8,
+              "lines": [
+                84,
+                86,
+                102,
+                248,
+                357,
+                362,
+                377,
+                384
+              ]
+            },
+            "update": {
+              "count": 15,
+              "lines": [
+                15,
+                16,
+                65,
+                66,
+                71,
+                72,
+                128,
+                130,
+                133,
+                226,
+                228,
+                350
+              ]
+            },
+            "delete": {
+              "count": 7,
+              "lines": [
+                250,
+                374,
+                380,
+                394,
+                395,
+                396,
+                409
+              ]
+            },
+            "limit": {
+              "count": 2,
+              "lines": [
+                472,
+                590
+              ]
+            },
+            "order_by": {
+              "count": 7,
+              "lines": [
+                432,
+                474,
+                475,
+                497,
+                511,
+                591,
+                592
+              ]
+            },
+            "escape": {
+              "count": 3,
+              "lines": [
+                362,
+                371,
+                377
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 1306,
+          "evidence": {
+            "session": {
+              "count": 4,
+              "lines": [
+                85,
+                101,
+                299,
+                340
+              ]
+            },
+            "select": {
+              "count": 91,
+              "lines": [
+                5,
+                11,
+                44,
+                49,
+                54,
+                56,
+                62,
+                67,
+                73,
+                78,
+                96,
+                112
+              ]
+            },
+            "insert": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                175,
+                179,
+                186,
+                190,
+                196,
+                200,
+                210,
+                216,
+                222,
+                228
+              ]
+            },
+            "update": {
+              "count": 10,
+              "lines": [
+                171,
+                276,
+                311,
+                315,
+                342,
+                344,
+                346,
+                352,
+                354,
+                1128
+              ]
+            },
+            "delete": {
+              "count": 18,
+              "lines": [
+                356,
+                486,
+                487,
+                488,
+                489,
+                490,
+                491,
+                492,
+                493,
+                494,
+                495,
+                496
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                591,
+                678,
+                1252
+              ]
+            },
+            "order_by": {
+              "count": 11,
+              "lines": [
+                571,
+                573,
+                658,
+                660,
+                689,
+                743,
+                768,
+                773,
+                821,
+                827,
+                1240
+              ]
+            },
+            "escape": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                171,
+                175,
+                196,
+                210,
+                216,
+                222,
+                248,
+                312,
+                341,
+                345
+              ]
+            },
+            "filters": {
+              "count": 66,
+              "lines": [
+                520,
+                521,
+                524,
+                526,
+                530,
+                531,
+                534,
+                536,
+                539,
+                540,
+                545,
+                549
+              ]
+            },
+            "download": {
+              "count": 12,
+              "lines": [
+                226,
+                227,
+                228,
+                390,
+                495,
+                832,
+                833,
+                835,
+                838,
+                841,
+                1096,
+                1097
+              ]
+            },
+            "date_filter": {
+              "count": 2,
+              "lines": [
+                210,
+                216
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 99,
+          "evidence": {
+            "select": {
+              "count": 5,
+              "lines": [
+                34,
+                41,
+                70,
+                84,
+                94
+              ]
+            },
+            "insert": {
+              "count": 3,
+              "lines": [
+                6,
+                8,
+                21
+              ]
+            },
+            "delete": {
+              "count": 2,
+              "lines": [
+                18,
+                28
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                60
+              ]
+            },
+            "order_by": {
+              "count": 2,
+              "lines": [
+                43,
+                70
+              ]
+            },
+            "escape": {
+              "count": 3,
+              "lines": [
+                6,
+                8,
+                21
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 56,
+          "evidence": {
+            "select": {
+              "count": 3,
+              "lines": [
+                17,
+                23,
+                51
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                4
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                8
+              ]
+            },
+            "delete": {
+              "count": 2,
+              "lines": [
+                12,
+                13
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                42
+              ]
+            },
+            "order_by": {
+              "count": 1,
+              "lines": [
+                25
+              ]
+            },
+            "escape": {
+              "count": 2,
+              "lines": [
+                4,
+                8
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 85,
+          "evidence": {
+            "select": {
+              "count": 4,
+              "lines": [
+                22,
+                29,
+                68,
+                80
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                4
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                10
+              ]
+            },
+            "delete": {
+              "count": 1,
+              "lines": [
+                16
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                58
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                38,
+                40,
+                68
+              ]
+            },
+            "escape": {
+              "count": 2,
+              "lines": [
+                4,
+                10
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 168,
+          "evidence": {
+            "select": {
+              "count": 10,
+              "lines": [
+                34,
+                35,
+                74,
+                84,
+                95,
+                115,
+                130,
+                147,
+                157,
+                163
+              ]
+            },
+            "insert": {
+              "count": 7,
+              "lines": [
+                4,
+                13,
+                18,
+                23,
+                48,
+                55,
+                62
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                39,
+                42
+              ]
+            },
+            "delete": {
+              "count": 7,
+              "lines": [
+                45,
+                51,
+                59,
+                69,
+                70,
+                71,
+                72
+              ]
+            },
+            "order_by": {
+              "count": 2,
+              "lines": [
+                95,
+                115
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                9,
+                13,
+                23,
+                42,
+                48,
+                62
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 91,
+          "evidence": {
+            "select": {
+              "count": 5,
+              "lines": [
+                22,
+                28,
+                69,
+                80,
+                86
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                4
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                10
+              ]
+            },
+            "delete": {
+              "count": 1,
+              "lines": [
+                16
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                57
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                37,
+                39,
+                69
+              ]
+            },
+            "escape": {
+              "count": 2,
+              "lines": [
+                4,
+                10
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 464,
+          "evidence": {
+            "session": {
+              "count": 1,
+              "lines": [
+                268
+              ]
+            },
+            "select": {
+              "count": 25,
+              "lines": [
+                48,
+                51,
+                56,
+                90,
+                91,
+                96,
+                99,
+                114,
+                117,
+                121,
+                127,
+                135
+              ]
+            },
+            "ajax": {
+              "count": 1,
+              "lines": [
+                266
+              ]
+            },
+            "jquery": {
+              "count": 34,
+              "lines": [
+                24,
+                258,
+                259,
+                260,
+                261,
+                262,
+                263,
+                264,
+                271,
+                275,
+                277,
+                298
+              ]
+            },
+            "form": {
+              "count": 1,
+              "lines": [
+                20
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                21
+              ]
+            },
+            "pagination": {
+              "count": 1,
+              "lines": [
+                252
+              ]
+            },
+            "filters": {
+              "count": 39,
+              "lines": [
+                53,
+                99,
+                102,
+                103,
+                105,
+                136,
+                139,
+                142,
+                298,
+                300,
+                301,
+                304
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                255,
+                455,
+                456
+              ]
+            },
+            "date_filter": {
+              "count": 8,
+              "lines": [
+                142,
+                367,
+                371,
+                372,
+                376,
+                383,
+                417,
+                422
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 634,
+          "evidence": {
+            "select": {
+              "count": 11,
+              "lines": [
+                169,
+                173,
+                178,
+                182,
+                229,
+                237,
+                285,
+                293,
+                342,
+                351,
+                564
+              ]
+            },
+            "ajax": {
+              "count": 7,
+              "lines": [
+                374,
+                398,
+                433,
+                495,
+                516,
+                539,
+                560
+              ]
+            },
+            "jquery": {
+              "count": 64,
+              "lines": [
+                229,
+                285,
+                378,
+                380,
+                381,
+                384,
+                390,
+                402,
+                403,
+                406,
+                412,
+                413
+              ]
+            },
+            "form": {
+              "count": 2,
+              "lines": [
+                197,
+                253
+              ]
+            },
+            "table": {
+              "count": 9,
+              "lines": [
+                13,
+                96,
+                140,
+                159,
+                198,
+                254,
+                310,
+                339,
+                581
+              ]
+            },
+            "download": {
+              "count": 6,
+              "lines": [
+                139,
+                143,
+                149,
+                151,
+                152,
+                153
+              ]
+            },
+            "inline_script": {
+              "count": 5,
+              "lines": [
+                371,
+                491,
+                537,
+                627,
+                630
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 12,
+          "evidence": {}
+        },
+        {
+          "exists": true,
+          "lines": 96,
+          "evidence": {
+            "table": {
+              "count": 5,
+              "lines": [
+                14,
+                24,
+                43,
+                57,
+                85
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B08",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 2343,
+        "evidence": {
+          "session": {
+            "count": 7,
+            "lines": [
+              82,
+              1966,
+              2052,
+              2060,
+              2061,
+              2062,
+              2093
+            ]
+          },
+          "models": {
+            "count": 18,
+            "lines": [
+              95,
+              96,
+              97,
+              265,
+              294,
+              384,
+              444,
+              819,
+              906,
+              1109,
+              1110,
+              1111
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              2115
+            ]
+          },
+          "select": {
+            "count": 13,
+            "lines": [
+              248,
+              562,
+              569,
+              642,
+              644,
+              646,
+              928,
+              1042,
+              1067,
+              1147,
+              1190,
+              1332
+            ]
+          },
+          "limit": {
+            "count": 1,
+            "lines": [
+              248
+            ]
+          },
+          "order_by": {
+            "count": 5,
+            "lines": [
+              591,
+              650,
+              950,
+              1064,
+              1089
+            ]
+          },
+          "escape": {
+            "count": 1,
+            "lines": [
+              248
+            ]
+          },
+          "table": {
+            "count": 2,
+            "lines": [
+              1576,
+              1793
+            ]
+          },
+          "pagination": {
+            "count": 10,
+            "lines": [
+              2089,
+              2285,
+              2293,
+              2300,
+              2304,
+              2311,
+              2321,
+              2329,
+              2333,
+              2337
+            ]
+          },
+          "filters": {
+            "count": 38,
+            "lines": [
+              157,
+              159,
+              163,
+              164,
+              165,
+              166,
+              221,
+              222,
+              1435,
+              1436,
+              1438,
+              1570
+            ]
+          },
+          "clickhouse": {
+            "count": 137,
+            "lines": [
+              3,
+              6,
+              42,
+              44,
+              45,
+              46,
+              47,
+              54,
+              61,
+              66,
+              95,
+              104
+            ]
+          },
+          "export": {
+            "count": 8,
+            "lines": [
+              211,
+              326,
+              348,
+              414,
+              548,
+              917,
+              918,
+              991
+            ]
+          },
+          "download": {
+            "count": 37,
+            "lines": [
+              54,
+              61,
+              66,
+              377,
+              378,
+              382,
+              394,
+              395,
+              411,
+              425,
+              430,
+              442
+            ]
+          },
+          "inline_script": {
+            "count": 2,
+            "lines": [
+              1441,
+              1679
+            ]
+          },
+          "date_filter": {
+            "count": 11,
+            "lines": [
+              166,
+              1436,
+              1438,
+              1570,
+              1674,
+              1785,
+              1835,
+              1873,
+              1877,
+              2071,
+              2102
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 2492,
+          "evidence": {
+            "select": {
+              "count": 58,
+              "lines": [
+                330,
+                340,
+                382,
+                386,
+                392,
+                428,
+                432,
+                468,
+                472,
+                508,
+                526,
+                568
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                1206
+              ]
+            },
+            "limit": {
+              "count": 7,
+              "lines": [
+                1372,
+                1699,
+                1719,
+                1814,
+                1926,
+                1936,
+                2440
+              ]
+            },
+            "order_by": {
+              "count": 4,
+              "lines": [
+                332,
+                522,
+                1914,
+                1922
+              ]
+            },
+            "escape": {
+              "count": 55,
+              "lines": [
+                574,
+                662,
+                664,
+                688,
+                690,
+                774,
+                800,
+                1208,
+                1248,
+                1280,
+                1300,
+                1344
+              ]
+            },
+            "filters": {
+              "count": 44,
+              "lines": [
+                1342,
+                1344,
+                1354,
+                1356,
+                1362,
+                1364,
+                1414,
+                1416,
+                1430,
+                1432,
+                1455,
+                1457
+              ]
+            },
+            "clickhouse": {
+              "count": 79,
+              "lines": [
+                5,
+                13,
+                17,
+                35,
+                41,
+                169,
+                171,
+                195,
+                197,
+                221,
+                223,
+                247
+              ]
+            },
+            "date_filter": {
+              "count": 8,
+              "lines": [
+                1362,
+                1364,
+                1507,
+                1509,
+                2202,
+                2214,
+                2326,
+                2328
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 138,
+          "evidence": {
+            "select": {
+              "count": 6,
+              "lines": [
+                58,
+                65,
+                103,
+                117,
+                127,
+                133
+              ]
+            },
+            "insert": {
+              "count": 5,
+              "lines": [
+                4,
+                14,
+                19,
+                36,
+                43
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                26,
+                29
+              ]
+            },
+            "delete": {
+              "count": 5,
+              "lines": [
+                32,
+                40,
+                50,
+                51,
+                52
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                93
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                73,
+                75,
+                103
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                19,
+                26,
+                29,
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 157,
+          "evidence": {
+            "select": {
+              "count": 17,
+              "lines": [
+                41,
+                47,
+                55,
+                64,
+                77,
+                90,
+                98,
+                100,
+                108,
+                114,
+                120,
+                126
+              ]
+            },
+            "insert": {
+              "count": 3,
+              "lines": [
+                4,
+                9,
+                23
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                18
+              ]
+            },
+            "delete": {
+              "count": 7,
+              "lines": [
+                20,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                77,
+                98,
+                100
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                18,
+                23,
+                114,
+                120
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 607,
+          "evidence": {
+            "session": {
+              "count": 1,
+              "lines": [
+                353
+              ]
+            },
+            "select": {
+              "count": 63,
+              "lines": [
+                5,
+                6,
+                21,
+                28,
+                36,
+                44,
+                49,
+                68,
+                81,
+                105,
+                113,
+                119
+              ]
+            },
+            "insert": {
+              "count": 8,
+              "lines": [
+                84,
+                86,
+                102,
+                248,
+                357,
+                362,
+                377,
+                384
+              ]
+            },
+            "update": {
+              "count": 15,
+              "lines": [
+                15,
+                16,
+                65,
+                66,
+                71,
+                72,
+                128,
+                130,
+                133,
+                226,
+                228,
+                350
+              ]
+            },
+            "delete": {
+              "count": 7,
+              "lines": [
+                250,
+                374,
+                380,
+                394,
+                395,
+                396,
+                409
+              ]
+            },
+            "limit": {
+              "count": 2,
+              "lines": [
+                472,
+                590
+              ]
+            },
+            "order_by": {
+              "count": 7,
+              "lines": [
+                432,
+                474,
+                475,
+                497,
+                511,
+                591,
+                592
+              ]
+            },
+            "escape": {
+              "count": 3,
+              "lines": [
+                362,
+                371,
+                377
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 1306,
+          "evidence": {
+            "session": {
+              "count": 4,
+              "lines": [
+                85,
+                101,
+                299,
+                340
+              ]
+            },
+            "select": {
+              "count": 91,
+              "lines": [
+                5,
+                11,
+                44,
+                49,
+                54,
+                56,
+                62,
+                67,
+                73,
+                78,
+                96,
+                112
+              ]
+            },
+            "insert": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                175,
+                179,
+                186,
+                190,
+                196,
+                200,
+                210,
+                216,
+                222,
+                228
+              ]
+            },
+            "update": {
+              "count": 10,
+              "lines": [
+                171,
+                276,
+                311,
+                315,
+                342,
+                344,
+                346,
+                352,
+                354,
+                1128
+              ]
+            },
+            "delete": {
+              "count": 18,
+              "lines": [
+                356,
+                486,
+                487,
+                488,
+                489,
+                490,
+                491,
+                492,
+                493,
+                494,
+                495,
+                496
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                591,
+                678,
+                1252
+              ]
+            },
+            "order_by": {
+              "count": 11,
+              "lines": [
+                571,
+                573,
+                658,
+                660,
+                689,
+                743,
+                768,
+                773,
+                821,
+                827,
+                1240
+              ]
+            },
+            "escape": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                171,
+                175,
+                196,
+                210,
+                216,
+                222,
+                248,
+                312,
+                341,
+                345
+              ]
+            },
+            "filters": {
+              "count": 66,
+              "lines": [
+                520,
+                521,
+                524,
+                526,
+                530,
+                531,
+                534,
+                536,
+                539,
+                540,
+                545,
+                549
+              ]
+            },
+            "download": {
+              "count": 12,
+              "lines": [
+                226,
+                227,
+                228,
+                390,
+                495,
+                832,
+                833,
+                835,
+                838,
+                841,
+                1096,
+                1097
+              ]
+            },
+            "date_filter": {
+              "count": 2,
+              "lines": [
+                210,
+                216
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 4870,
+          "evidence": {
+            "session": {
+              "count": 10,
+              "lines": [
+                2020,
+                2770,
+                2771,
+                2772,
+                2931,
+                2945,
+                2950,
+                2959,
+                2964,
+                3717
+              ]
+            },
+            "select": {
+              "count": 149,
+              "lines": [
+                340,
+                349,
+                353,
+                357,
+                376,
+                380,
+                381,
+                386,
+                401,
+                406,
+                414,
+                418
+              ]
+            },
+            "ajax": {
+              "count": 6,
+              "lines": [
+                2868,
+                2871,
+                3265,
+                3268,
+                3580,
+                3583
+              ]
+            },
+            "form": {
+              "count": 2,
+              "lines": [
+                2020,
+                2568
+              ]
+            },
+            "pagination": {
+              "count": 24,
+              "lines": [
+                900,
+                908,
+                915,
+                922,
+                988,
+                994,
+                995,
+                1013,
+                1019,
+                2536,
+                2537,
+                2538
+              ]
+            },
+            "filters": {
+              "count": 33,
+              "lines": [
+                1994,
+                2031,
+                2032,
+                2047,
+                2048,
+                2145,
+                2146,
+                2150,
+                2199,
+                2200,
+                2202,
+                2203
+              ]
+            },
+            "clickhouse": {
+              "count": 45,
+              "lines": [
+                1094,
+                2007,
+                2008,
+                2009,
+                2011,
+                2013,
+                2020,
+                2021,
+                2408,
+                2586,
+                2719,
+                2770
+              ]
+            },
+            "export": {
+              "count": 83,
+              "lines": [
+                612,
+                617,
+                621,
+                1095,
+                1110,
+                1114,
+                1122,
+                1130,
+                1139,
+                1273,
+                1285,
+                1291
+              ]
+            },
+            "download": {
+              "count": 104,
+              "lines": [
+                1469,
+                1474,
+                1482,
+                1493,
+                1498,
+                1506,
+                1512,
+                1521,
+                1529,
+                1535,
+                1541,
+                1547
+              ]
+            },
+            "inline_script": {
+              "count": 2,
+              "lines": [
+                2765,
+                4828
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                2047,
+                2048,
+                2323,
+                2324
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B09",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 2040,
+        "evidence": {
+          "registry_write": {
+            "count": 1,
+            "lines": [
+              20
+            ]
+          },
+          "session": {
+            "count": 3,
+            "lines": [
+              70,
+              91,
+              96
+            ]
+          },
+          "models": {
+            "count": 1,
+            "lines": [
+              17
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              101
+            ]
+          },
+          "select": {
+            "count": 1,
+            "lines": [
+              1784
+            ]
+          },
+          "pagination": {
+            "count": 3,
+            "lines": [
+              171,
+              211,
+              1959
+            ]
+          },
+          "filters": {
+            "count": 13,
+            "lines": [
+              71,
+              1010,
+              1744,
+              1759,
+              1775,
+              1776,
+              1935,
+              1936,
+              1938,
+              1939,
+              1941,
+              1942
+            ]
+          },
+          "clickhouse": {
+            "count": 92,
+            "lines": [
+              3,
+              9,
+              10,
+              11,
+              12,
+              13,
+              18,
+              20,
+              26,
+              32,
+              71,
+              72
+            ]
+          },
+          "export": {
+            "count": 2,
+            "lines": [
+              737,
+              790
+            ]
+          },
+          "download": {
+            "count": 8,
+            "lines": [
+              743,
+              753,
+              754,
+              757,
+              758,
+              759,
+              760,
+              782
+            ]
+          },
+          "help": {
+            "count": 3,
+            "lines": [
+              274,
+              411,
+              1028
+            ]
+          },
+          "session_release": {
+            "count": 1,
+            "lines": [
+              765
+            ]
+          },
+          "date_filter": {
+            "count": 3,
+            "lines": [
+              1145,
+              1775,
+              1936
+            ]
+          }
+        }
+      },
+      "models": [],
+      "templates": []
+    },
+    {
+      "id": "B10",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 1836,
+        "evidence": {
+          "permission": {
+            "count": 1,
+            "lines": [
+              152
+            ]
+          },
+          "session": {
+            "count": 7,
+            "lines": [
+              151,
+              153,
+              155,
+              156,
+              157,
+              165,
+              170
+            ]
+          },
+          "models": {
+            "count": 6,
+            "lines": [
+              39,
+              272,
+              301,
+              499,
+              543,
+              698
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              175
+            ]
+          },
+          "select": {
+            "count": 7,
+            "lines": [
+              802,
+              804,
+              806,
+              813,
+              966,
+              1071,
+              1314
+            ]
+          },
+          "order_by": {
+            "count": 4,
+            "lines": [
+              810,
+              831,
+              984,
+              1089
+            ]
+          },
+          "table": {
+            "count": 1,
+            "lines": [
+              1448
+            ]
+          },
+          "pagination": {
+            "count": 12,
+            "lines": [
+              309,
+              459,
+              474,
+              1778,
+              1786,
+              1793,
+              1797,
+              1804,
+              1814,
+              1822,
+              1826,
+              1830
+            ]
+          },
+          "filters": {
+            "count": 35,
+            "lines": [
+              99,
+              101,
+              103,
+              104,
+              105,
+              106,
+              108,
+              109,
+              119,
+              120,
+              122,
+              123
+            ]
+          },
+          "clickhouse": {
+            "count": 76,
+            "lines": [
+              3,
+              4,
+              9,
+              16,
+              17,
+              37,
+              39,
+              53,
+              54,
+              55,
+              56,
+              57
+            ]
+          },
+          "export": {
+            "count": 10,
+            "lines": [
+              515,
+              614,
+              648,
+              673,
+              697,
+              961,
+              1021,
+              1029,
+              1444,
+              1652
+            ]
+          },
+          "download": {
+            "count": 45,
+            "lines": [
+              16,
+              17,
+              487,
+              488,
+              494,
+              495,
+              512,
+              515,
+              520,
+              526,
+              527,
+              532
+            ]
+          },
+          "inline_script": {
+            "count": 2,
+            "lines": [
+              1243,
+              1517
+            ]
+          },
+          "date_filter": {
+            "count": 9,
+            "lines": [
+              109,
+              206,
+              236,
+              240,
+              347,
+              1102,
+              1104,
+              1109,
+              1116
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 1050,
+          "evidence": {
+            "select": {
+              "count": 25,
+              "lines": [
+                101,
+                175,
+                200,
+                221,
+                247,
+                295,
+                323,
+                325,
+                357,
+                359,
+                394,
+                416
+              ]
+            },
+            "limit": {
+              "count": 2,
+              "lines": [
+                837,
+                850
+              ]
+            },
+            "order_by": {
+              "count": 8,
+              "lines": [
+                531,
+                580,
+                599,
+                819,
+                827,
+                833,
+                880,
+                902
+              ]
+            },
+            "filters": {
+              "count": 22,
+              "lines": [
+                697,
+                698,
+                717,
+                718,
+                730,
+                731,
+                735,
+                736,
+                740,
+                741,
+                746,
+                747
+              ]
+            },
+            "clickhouse": {
+              "count": 98,
+              "lines": [
+                3,
+                4,
+                9,
+                14,
+                16,
+                44,
+                49,
+                82,
+                86,
+                87,
+                91,
+                96
+              ]
+            },
+            "date_filter": {
+              "count": 3,
+              "lines": [
+                746,
+                747,
+                950
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 1928,
+          "evidence": {
+            "session": {
+              "count": 6,
+              "lines": [
+                459,
+                853,
+                854,
+                855,
+                856,
+                857
+              ]
+            },
+            "select": {
+              "count": 106,
+              "lines": [
+                115,
+                153,
+                154,
+                155,
+                156,
+                157,
+                158,
+                159,
+                160,
+                161,
+                162,
+                163
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                1287
+              ]
+            },
+            "ajax": {
+              "count": 8,
+              "lines": [
+                995,
+                997,
+                1307,
+                1310,
+                1506,
+                1509,
+                1545,
+                1548
+              ]
+            },
+            "form": {
+              "count": 1,
+              "lines": [
+                459
+              ]
+            },
+            "pagination": {
+              "count": 20,
+              "lines": [
+                220,
+                221,
+                222,
+                223,
+                224,
+                231,
+                232,
+                233,
+                234,
+                235,
+                427,
+                428
+              ]
+            },
+            "filters": {
+              "count": 39,
+              "lines": [
+                466,
+                474,
+                536,
+                539,
+                576,
+                578,
+                579,
+                604,
+                606,
+                607,
+                617,
+                619
+              ]
+            },
+            "clickhouse": {
+              "count": 25,
+              "lines": [
+                6,
+                11,
+                14,
+                15,
+                436,
+                445,
+                459,
+                724,
+                854,
+                855,
+                856,
+                857
+              ]
+            },
+            "export": {
+              "count": 99,
+              "lines": [
+                151,
+                152,
+                247,
+                261,
+                262,
+                263,
+                264,
+                269,
+                287,
+                288,
+                289,
+                290
+              ]
+            },
+            "download": {
+              "count": 105,
+              "lines": [
+                301,
+                302,
+                303,
+                304,
+                305,
+                306,
+                307,
+                308,
+                309,
+                310,
+                311,
+                312
+              ]
+            },
+            "inline_script": {
+              "count": 1,
+              "lines": [
+                845
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                474,
+                669,
+                670,
+                1261
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B11",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 2046,
+        "evidence": {
+          "registry_write": {
+            "count": 1,
+            "lines": [
+              20
+            ]
+          },
+          "permission": {
+            "count": 2,
+            "lines": [
+              67,
+              69
+            ]
+          },
+          "session": {
+            "count": 5,
+            "lines": [
+              68,
+              70,
+              76,
+              97,
+              102
+            ]
+          },
+          "models": {
+            "count": 1,
+            "lines": [
+              17
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              107
+            ]
+          },
+          "select": {
+            "count": 1,
+            "lines": [
+              1790
+            ]
+          },
+          "pagination": {
+            "count": 3,
+            "lines": [
+              177,
+              217,
+              1965
+            ]
+          },
+          "filters": {
+            "count": 13,
+            "lines": [
+              77,
+              1016,
+              1750,
+              1765,
+              1781,
+              1782,
+              1941,
+              1942,
+              1944,
+              1945,
+              1947,
+              1948
+            ]
+          },
+          "clickhouse": {
+            "count": 97,
+            "lines": [
+              3,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              18,
+              20,
+              26,
+              32,
+              67
+            ]
+          },
+          "export": {
+            "count": 2,
+            "lines": [
+              743,
+              796
+            ]
+          },
+          "download": {
+            "count": 8,
+            "lines": [
+              749,
+              759,
+              760,
+              763,
+              764,
+              765,
+              766,
+              788
+            ]
+          },
+          "help": {
+            "count": 3,
+            "lines": [
+              280,
+              417,
+              1034
+            ]
+          },
+          "session_release": {
+            "count": 1,
+            "lines": [
+              771
+            ]
+          },
+          "date_filter": {
+            "count": 3,
+            "lines": [
+              1151,
+              1781,
+              1942
+            ]
+          }
+        }
+      },
+      "models": [],
+      "templates": []
+    },
+    {
+      "id": "B12",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 1546,
+        "evidence": {
+          "session": {
+            "count": 5,
+            "lines": [
+              960,
+              964,
+              965,
+              966,
+              995
+            ]
+          },
+          "models": {
+            "count": 12,
+            "lines": [
+              86,
+              87,
+              88,
+              209,
+              302,
+              348,
+              667,
+              714,
+              715,
+              929,
+              930,
+              1260
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              1007
+            ]
+          },
+          "select": {
+            "count": 18,
+            "lines": [
+              464,
+              473,
+              501,
+              539,
+              541,
+              543,
+              763,
+              802,
+              1110,
+              1119,
+              1142,
+              1148
+            ]
+          },
+          "order_by": {
+            "count": 3,
+            "lines": [
+              491,
+              547,
+              766
+            ]
+          },
+          "pagination": {
+            "count": 10,
+            "lines": [
+              991,
+              1397,
+              1405,
+              1412,
+              1413,
+              1420,
+              1430,
+              1438,
+              1442,
+              1443
+            ]
+          },
+          "filters": {
+            "count": 29,
+            "lines": [
+              96,
+              97,
+              115,
+              117,
+              118,
+              119,
+              121,
+              122,
+              847,
+              848,
+              852,
+              853
+            ]
+          },
+          "clickhouse": {
+            "count": 162,
+            "lines": [
+              3,
+              4,
+              6,
+              14,
+              15,
+              16,
+              17,
+              24,
+              31,
+              36,
+              44,
+              52
+            ]
+          },
+          "export": {
+            "count": 4,
+            "lines": [
+              257,
+              330,
+              449,
+              836
+            ]
+          },
+          "download": {
+            "count": 43,
+            "lines": [
+              24,
+              31,
+              36,
+              44,
+              140,
+              141,
+              142,
+              294,
+              295,
+              299,
+              308,
+              312
+            ]
+          },
+          "date_filter": {
+            "count": 9,
+            "lines": [
+              97,
+              122,
+              848,
+              854,
+              868,
+              869,
+              878,
+              881,
+              974
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 836,
+          "evidence": {
+            "select": {
+              "count": 54,
+              "lines": [
+                124,
+                125,
+                132,
+                148,
+                160,
+                175,
+                176,
+                191,
+                192,
+                207,
+                208,
+                225
+              ]
+            },
+            "limit": {
+              "count": 7,
+              "lines": [
+                339,
+                365,
+                391,
+                489,
+                505,
+                597,
+                773
+              ]
+            },
+            "order_by": {
+              "count": 7,
+              "lines": [
+                124,
+                151,
+                153,
+                155,
+                587,
+                589,
+                591
+              ]
+            },
+            "escape": {
+              "count": 32,
+              "lines": [
+                226,
+                246,
+                313,
+                339,
+                365,
+                391,
+                413,
+                488,
+                504,
+                564,
+                572,
+                647
+              ]
+            },
+            "filters": {
+              "count": 22,
+              "lines": [
+                650,
+                651,
+                654,
+                655,
+                658,
+                659,
+                670,
+                671,
+                678,
+                679,
+                706,
+                707
+              ]
+            },
+            "clickhouse": {
+              "count": 86,
+              "lines": [
+                3,
+                4,
+                7,
+                9,
+                22,
+                25,
+                89,
+                90,
+                97,
+                98,
+                105,
+                106
+              ]
+            },
+            "download": {
+              "count": 1,
+              "lines": [
+                38
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                678,
+                679,
+                751,
+                752
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 138,
+          "evidence": {
+            "select": {
+              "count": 6,
+              "lines": [
+                58,
+                65,
+                103,
+                117,
+                127,
+                133
+              ]
+            },
+            "insert": {
+              "count": 5,
+              "lines": [
+                4,
+                14,
+                19,
+                36,
+                43
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                26,
+                29
+              ]
+            },
+            "delete": {
+              "count": 5,
+              "lines": [
+                32,
+                40,
+                50,
+                51,
+                52
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                93
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                73,
+                75,
+                103
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                19,
+                26,
+                29,
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 1306,
+          "evidence": {
+            "session": {
+              "count": 4,
+              "lines": [
+                85,
+                101,
+                299,
+                340
+              ]
+            },
+            "select": {
+              "count": 91,
+              "lines": [
+                5,
+                11,
+                44,
+                49,
+                54,
+                56,
+                62,
+                67,
+                73,
+                78,
+                96,
+                112
+              ]
+            },
+            "insert": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                175,
+                179,
+                186,
+                190,
+                196,
+                200,
+                210,
+                216,
+                222,
+                228
+              ]
+            },
+            "update": {
+              "count": 10,
+              "lines": [
+                171,
+                276,
+                311,
+                315,
+                342,
+                344,
+                346,
+                352,
+                354,
+                1128
+              ]
+            },
+            "delete": {
+              "count": 18,
+              "lines": [
+                356,
+                486,
+                487,
+                488,
+                489,
+                490,
+                491,
+                492,
+                493,
+                494,
+                495,
+                496
+              ]
+            },
+            "limit": {
+              "count": 3,
+              "lines": [
+                591,
+                678,
+                1252
+              ]
+            },
+            "order_by": {
+              "count": 11,
+              "lines": [
+                571,
+                573,
+                658,
+                660,
+                689,
+                743,
+                768,
+                773,
+                821,
+                827,
+                1240
+              ]
+            },
+            "escape": {
+              "count": 34,
+              "lines": [
+                37,
+                166,
+                171,
+                175,
+                196,
+                210,
+                216,
+                222,
+                248,
+                312,
+                341,
+                345
+              ]
+            },
+            "filters": {
+              "count": 66,
+              "lines": [
+                520,
+                521,
+                524,
+                526,
+                530,
+                531,
+                534,
+                536,
+                539,
+                540,
+                545,
+                549
+              ]
+            },
+            "download": {
+              "count": 12,
+              "lines": [
+                226,
+                227,
+                228,
+                390,
+                495,
+                832,
+                833,
+                835,
+                838,
+                841,
+                1096,
+                1097
+              ]
+            },
+            "date_filter": {
+              "count": 2,
+              "lines": [
+                210,
+                216
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 4560,
+          "evidence": {
+            "session": {
+              "count": 11,
+              "lines": [
+                2002,
+                2724,
+                2725,
+                2726,
+                2727,
+                2887,
+                2901,
+                2906,
+                2915,
+                2920,
+                3549
+              ]
+            },
+            "select": {
+              "count": 112,
+              "lines": [
+                327,
+                336,
+                341,
+                346,
+                350,
+                368,
+                372,
+                377,
+                392,
+                396,
+                404,
+                408
+              ]
+            },
+            "ajax": {
+              "count": 8,
+              "lines": [
+                2824,
+                2827,
+                3052,
+                3055,
+                3427,
+                3430,
+                4425,
+                4428
+              ]
+            },
+            "form": {
+              "count": 2,
+              "lines": [
+                2002,
+                2483
+              ]
+            },
+            "pagination": {
+              "count": 24,
+              "lines": [
+                1334,
+                1342,
+                1349,
+                1356,
+                1422,
+                1428,
+                1429,
+                1447,
+                1453,
+                2451,
+                2452,
+                2453
+              ]
+            },
+            "filters": {
+              "count": 37,
+              "lines": [
+                1976,
+                2013,
+                2014,
+                2029,
+                2030,
+                2127,
+                2128,
+                2132,
+                2155,
+                2156,
+                2158,
+                2159
+              ]
+            },
+            "clickhouse": {
+              "count": 45,
+              "lines": [
+                1989,
+                1990,
+                1991,
+                1993,
+                1995,
+                2002,
+                2003,
+                2311,
+                2506,
+                2639,
+                2686,
+                2694
+              ]
+            },
+            "export": {
+              "count": 76,
+              "lines": [
+                610,
+                615,
+                619,
+                624,
+                632,
+                640,
+                651,
+                656,
+                664,
+                670,
+                679,
+                685
+              ]
+            },
+            "download": {
+              "count": 102,
+              "lines": [
+                624,
+                632,
+                640,
+                651,
+                656,
+                664,
+                670,
+                679,
+                685,
+                691,
+                697,
+                703
+              ]
+            },
+            "inline_script": {
+              "count": 2,
+              "lines": [
+                2719,
+                4518
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                2029,
+                2030,
+                2248,
+                2249
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B13",
+      "domain": "orders",
+      "controller": {
+        "exists": true,
+        "lines": 2020,
+        "evidence": {
+          "session": {
+            "count": 3,
+            "lines": [
+              51,
+              70,
+              75
+            ]
+          },
+          "models": {
+            "count": 8,
+            "lines": [
+              12,
+              48,
+              107,
+              143,
+              207,
+              258,
+              395,
+              718
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              80
+            ]
+          },
+          "select": {
+            "count": 1,
+            "lines": [
+              1764
+            ]
+          },
+          "pagination": {
+            "count": 3,
+            "lines": [
+              150,
+              190,
+              1939
+            ]
+          },
+          "filters": {
+            "count": 13,
+            "lines": [
+              52,
+              990,
+              1724,
+              1739,
+              1755,
+              1756,
+              1915,
+              1916,
+              1918,
+              1919,
+              1921,
+              1922
+            ]
+          },
+          "clickhouse": {
+            "count": 97,
+            "lines": [
+              3,
+              9,
+              12,
+              13,
+              48,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58
+            ]
+          },
+          "export": {
+            "count": 2,
+            "lines": [
+              716,
+              770
+            ]
+          },
+          "download": {
+            "count": 8,
+            "lines": [
+              722,
+              732,
+              733,
+              736,
+              737,
+              738,
+              739,
+              762
+            ]
+          },
+          "help": {
+            "count": 3,
+            "lines": [
+              253,
+              390,
+              1008
+            ]
+          },
+          "session_release": {
+            "count": 1,
+            "lines": [
+              744
+            ]
+          },
+          "date_filter": {
+            "count": 3,
+            "lines": [
+              1125,
+              1755,
+              1916
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 455,
+          "evidence": {
+            "select": {
+              "count": 19,
+              "lines": [
+                14,
+                58,
+                73,
+                85,
+                123,
+                202,
+                270,
+                278,
+                286,
+                320,
+                326,
+                377
+              ]
+            },
+            "limit": {
+              "count": 11,
+              "lines": [
+                58,
+                73,
+                85,
+                270,
+                278,
+                286,
+                326,
+                377,
+                381,
+                382,
+                422
+              ]
+            },
+            "order_by": {
+              "count": 5,
+              "lines": [
+                85,
+                377,
+                382,
+                383,
+                452
+              ]
+            },
+            "filters": {
+              "count": 13,
+              "lines": [
+                14,
+                15,
+                34,
+                36,
+                38,
+                200,
+                210,
+                211,
+                213,
+                232,
+                316,
+                322
+              ]
+            },
+            "clickhouse": {
+              "count": 15,
+              "lines": [
+                3,
+                5,
+                120,
+                123,
+                127,
+                130,
+                169,
+                182,
+                225,
+                326,
+                334,
+                360
+              ]
+            },
+            "export": {
+              "count": 1,
+              "lines": [
+                361
+              ]
+            },
+            "date_filter": {
+              "count": 2,
+              "lines": [
+                14,
+                211
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 7650,
+          "evidence": {
+            "select": {
+              "count": 38,
+              "lines": [
+                104,
+                272,
+                819,
+                889,
+                1691,
+                1697,
+                1701,
+                1709,
+                1712,
+                1796,
+                1842,
+                1854
+              ]
+            },
+            "ajax": {
+              "count": 7,
+              "lines": [
+                959,
+                963,
+                1002,
+                1005,
+                1042,
+                1045,
+                5258
+              ]
+            },
+            "jquery": {
+              "count": 202,
+              "lines": [
+                746,
+                747,
+                831,
+                1138,
+                1139,
+                1140,
+                1143,
+                1145,
+                1147,
+                1178,
+                1253,
+                1255
+              ]
+            },
+            "table": {
+              "count": 2,
+              "lines": [
+                181,
+                5484
+              ]
+            },
+            "pagination": {
+              "count": 10,
+              "lines": [
+                201,
+                208,
+                3315,
+                3331,
+                3388,
+                4222,
+                4229,
+                4283,
+                5815,
+                6616
+              ]
+            },
+            "filters": {
+              "count": 46,
+              "lines": [
+                87,
+                242,
+                271,
+                455,
+                611,
+                646,
+                647,
+                650,
+                652,
+                718,
+                1209,
+                1269
+              ]
+            },
+            "clickhouse": {
+              "count": 40,
+              "lines": [
+                25,
+                29,
+                406,
+                409,
+                421,
+                425,
+                434,
+                435,
+                438,
+                508,
+                604,
+                605
+              ]
+            },
+            "export": {
+              "count": 9,
+              "lines": [
+                108,
+                608,
+                634,
+                1079,
+                5597,
+                5960,
+                6245,
+                6246,
+                6247
+              ]
+            },
+            "download": {
+              "count": 16,
+              "lines": [
+                109,
+                507,
+                600,
+                1134,
+                1154,
+                1155,
+                1158,
+                1159,
+                5561,
+                5563,
+                5598,
+                5599
+              ]
+            },
+            "help": {
+              "count": 89,
+              "lines": [
+                516,
+                518,
+                520,
+                521,
+                523,
+                524,
+                526,
+                530,
+                532,
+                536,
+                540,
+                544
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                3,
+                4,
+                598
+              ]
+            },
+            "date_filter": {
+              "count": 4,
+              "lines": [
+                1272,
+                1423,
+                2699,
+                4683
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B14",
+      "domain": "weighing",
+      "controller": {
+        "exists": true,
+        "lines": 1725,
+        "evidence": {
+          "session": {
+            "count": 3,
+            "lines": [
+              36,
+              46,
+              51
+            ]
+          },
+          "models": {
+            "count": 7,
+            "lines": [
+              33,
+              82,
+              117,
+              177,
+              259,
+              386,
+              692
+            ]
+          },
+          "template": {
+            "count": 1,
+            "lines": [
+              56
+            ]
+          },
+          "pagination": {
+            "count": 4,
+            "lines": [
+              124,
+              156,
+              163,
+              1667
+            ]
+          },
+          "filters": {
+            "count": 6,
+            "lines": [
+              37,
+              789,
+              790,
+              805,
+              806,
+              813
+            ]
+          },
+          "clickhouse": {
+            "count": 70,
+            "lines": [
+              3,
+              9,
+              33,
+              37,
+              38,
+              39,
+              51,
+              56,
+              66,
+              70,
+              74,
+              82
+            ]
+          },
+          "export": {
+            "count": 2,
+            "lines": [
+              691,
+              743
+            ]
+          },
+          "download": {
+            "count": 8,
+            "lines": [
+              696,
+              706,
+              707,
+              710,
+              711,
+              712,
+              713,
+              735
+            ]
+          },
+          "help": {
+            "count": 3,
+            "lines": [
+              255,
+              382,
+              1030
+            ]
+          },
+          "session_release": {
+            "count": 1,
+            "lines": [
+              717
+            ]
+          },
+          "date_filter": {
+            "count": 18,
+            "lines": [
+              789,
+              790,
+              796,
+              807,
+              811,
+              813,
+              814,
+              818,
+              989,
+              999,
+              1000,
+              1004
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 826,
+          "evidence": {
+            "select": {
+              "count": 17,
+              "lines": [
+                56,
+                61,
+                101,
+                214,
+                343,
+                431,
+                471,
+                495,
+                516,
+                555,
+                650,
+                667
+              ]
+            },
+            "limit": {
+              "count": 5,
+              "lines": [
+                431,
+                454,
+                555,
+                650,
+                674
+              ]
+            },
+            "order_by": {
+              "count": 7,
+              "lines": [
+                431,
+                439,
+                650,
+                733,
+                740,
+                794,
+                801
+              ]
+            },
+            "clickhouse": {
+              "count": 36,
+              "lines": [
+                3,
+                4,
+                9,
+                12,
+                29,
+                193,
+                197,
+                198,
+                201,
+                205,
+                214,
+                216
+              ]
+            },
+            "date_filter": {
+              "count": 11,
+              "lines": [
+                83,
+                91,
+                268,
+                380,
+                381,
+                384,
+                385,
+                686,
+                687,
+                689,
+                690
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 6962,
+          "evidence": {
+            "select": {
+              "count": 36,
+              "lines": [
+                88,
+                258,
+                733,
+                1578,
+                1584,
+                1588,
+                1596,
+                1599,
+                1683,
+                1729,
+                1741,
+                2048
+              ]
+            },
+            "ajax": {
+              "count": 7,
+              "lines": [
+                871,
+                875,
+                914,
+                917,
+                954,
+                957,
+                4686
+              ]
+            },
+            "jquery": {
+              "count": 208,
+              "lines": [
+                660,
+                661,
+                745,
+                1050,
+                1051,
+                1052,
+                1055,
+                1057,
+                1059,
+                1090,
+                1165,
+                1167
+              ]
+            },
+            "table": {
+              "count": 2,
+              "lines": [
+                158,
+                4911
+              ]
+            },
+            "pagination": {
+              "count": 10,
+              "lines": [
+                187,
+                194,
+                3193,
+                3209,
+                3266,
+                3677,
+                3684,
+                3738,
+                5213,
+                5972
+              ]
+            },
+            "filters": {
+              "count": 13,
+              "lines": [
+                71,
+                228,
+                257,
+                437,
+                594,
+                616,
+                617,
+                620,
+                622,
+                635,
+                1121,
+                4284
+              ]
+            },
+            "clickhouse": {
+              "count": 40,
+              "lines": [
+                25,
+                29,
+                392,
+                395,
+                407,
+                411,
+                416,
+                417,
+                420,
+                491,
+                587,
+                588
+              ]
+            },
+            "export": {
+              "count": 9,
+              "lines": [
+                92,
+                591,
+                604,
+                991,
+                5024,
+                5374,
+                5659,
+                5660,
+                5661
+              ]
+            },
+            "download": {
+              "count": 16,
+              "lines": [
+                93,
+                490,
+                583,
+                1046,
+                1066,
+                1067,
+                1070,
+                1071,
+                4988,
+                4990,
+                5025,
+                5026
+              ]
+            },
+            "help": {
+              "count": 89,
+              "lines": [
+                499,
+                501,
+                503,
+                504,
+                506,
+                507,
+                509,
+                513,
+                515,
+                519,
+                523,
+                527
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                3,
+                4,
+                581
+              ]
+            },
+            "date_filter": {
+              "count": 7,
+              "lines": [
+                1183,
+                1184,
+                1320,
+                2581,
+                2582,
+                4111,
+                5057
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "B15",
+      "domain": "weighing",
+      "controller": {
+        "exists": true,
+        "lines": 3019,
+        "evidence": {
+          "permission": {
+            "count": 1,
+            "lines": [
+              2986
+            ]
+          },
+          "session": {
+            "count": 10,
+            "lines": [
+              2641,
+              2660,
+              2668,
+              2669,
+              2671,
+              2795,
+              2797,
+              2852,
+              2976,
+              2978
+            ]
+          },
+          "models": {
+            "count": 16,
+            "lines": [
+              59,
+              152,
+              162,
+              1139,
+              1241,
+              1368,
+              1564,
+              1857,
+              2787,
+              2788,
+              2790,
+              2815
+            ]
+          },
+          "template": {
+            "count": 5,
+            "lines": [
+              2644,
+              2743,
+              2824,
+              2886,
+              2959
+            ]
+          },
+          "select": {
+            "count": 5,
+            "lines": [
+              31,
+              39,
+              1758,
+              1762,
+              2730
+            ]
+          },
+          "insert": {
+            "count": 1,
+            "lines": [
+              2844
+            ]
+          },
+          "update": {
+            "count": 2,
+            "lines": [
+              2735,
+              2850
+            ]
+          },
+          "table": {
+            "count": 7,
+            "lines": [
+              2038,
+              2317,
+              2378,
+              2516,
+              2573,
+              2855,
+              2879
+            ]
+          },
+          "pagination": {
+            "count": 7,
+            "lines": [
+              2636,
+              2637,
+              2638,
+              2639,
+              2640,
+              2641,
+              2643
+            ]
+          },
+          "filters": {
+            "count": 17,
+            "lines": [
+              1869,
+              1870,
+              1871,
+              1874,
+              1875,
+              1876,
+              1879,
+              1880,
+              1883,
+              1884,
+              1885,
+              1888
+            ]
+          },
+          "inline_script": {
+            "count": 8,
+            "lines": [
+              1928,
+              1935,
+              1937,
+              1983,
+              1991,
+              2010,
+              2306,
+              2840
+            ]
+          },
+          "date_filter": {
+            "count": 8,
+            "lines": [
+              1871,
+              1883,
+              1884,
+              1885,
+              1888,
+              1889,
+              1939,
+              1953
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "exists": true,
+          "lines": 777,
+          "evidence": {
+            "select": {
+              "count": 56,
+              "lines": [
+                26,
+                72,
+                80,
+                94,
+                96,
+                99,
+                108,
+                124,
+                133,
+                150,
+                196,
+                198
+              ]
+            },
+            "insert": {
+              "count": 2,
+              "lines": [
+                12,
+                54
+              ]
+            },
+            "update": {
+              "count": 5,
+              "lines": [
+                22,
+                155,
+                159,
+                330,
+                331
+              ]
+            },
+            "delete": {
+              "count": 1,
+              "lines": [
+                88
+              ]
+            },
+            "escape": {
+              "count": 2,
+              "lines": [
+                9,
+                19
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 138,
+          "evidence": {
+            "select": {
+              "count": 6,
+              "lines": [
+                58,
+                65,
+                103,
+                117,
+                127,
+                133
+              ]
+            },
+            "insert": {
+              "count": 5,
+              "lines": [
+                4,
+                14,
+                19,
+                36,
+                43
+              ]
+            },
+            "update": {
+              "count": 3,
+              "lines": [
+                9,
+                26,
+                29
+              ]
+            },
+            "delete": {
+              "count": 5,
+              "lines": [
+                32,
+                40,
+                50,
+                51,
+                52
+              ]
+            },
+            "limit": {
+              "count": 1,
+              "lines": [
+                93
+              ]
+            },
+            "order_by": {
+              "count": 3,
+              "lines": [
+                73,
+                75,
+                103
+              ]
+            },
+            "escape": {
+              "count": 6,
+              "lines": [
+                4,
+                9,
+                19,
+                26,
+                29,
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 483,
+          "evidence": {
+            "select": {
+              "count": 35,
+              "lines": [
+                7,
+                12,
+                32,
+                39,
+                47,
+                53,
+                68,
+                82,
+                129,
+                157,
+                184,
+                223
+              ]
+            },
+            "insert": {
+              "count": 7,
+              "lines": [
+                26,
+                27,
+                78,
+                327,
+                349,
+                355,
+                356
+              ]
+            },
+            "update": {
+              "count": 14,
+              "lines": [
+                64,
+                99,
+                255,
+                269,
+                274,
+                325,
+                331,
+                359,
+                360,
+                361,
+                362,
+                423
+              ]
+            },
+            "delete": {
+              "count": 2,
+              "lines": [
+                38,
+                41
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 22,
+          "evidence": {
+            "select": {
+              "count": 2,
+              "lines": [
+                6,
+                10
+              ]
+            },
+            "insert": {
+              "count": 1,
+              "lines": [
+                14
+              ]
+            },
+            "update": {
+              "count": 1,
+              "lines": [
+                17
+              ]
+            }
+          }
+        }
+      ],
+      "templates": [
+        {
+          "exists": true,
+          "lines": 481,
+          "evidence": {
+            "select": {
+              "count": 17,
+              "lines": [
+                49,
+                59,
+                62,
+                68,
+                69,
+                75,
+                76,
+                82,
+                83,
+                89,
+                104,
+                115
+              ]
+            },
+            "ajax": {
+              "count": 4,
+              "lines": [
+                239,
+                258,
+                294,
+                434
+              ]
+            },
+            "jquery": {
+              "count": 36,
+              "lines": [
+                46,
+                205,
+                217,
+                219,
+                220,
+                222,
+                224,
+                237,
+                251,
+                257,
+                270,
+                277
+              ]
+            },
+            "form": {
+              "count": 1,
+              "lines": [
+                201
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                25
+              ]
+            },
+            "pagination": {
+              "count": 2,
+              "lines": [
+                195,
+                196
+              ]
+            },
+            "filters": {
+              "count": 2,
+              "lines": [
+                354,
+                358
+              ]
+            },
+            "inline_script": {
+              "count": 3,
+              "lines": [
+                204,
+                472,
+                473
+              ]
+            },
+            "date_filter": {
+              "count": 1,
+              "lines": [
+                358
+              ]
+            }
+          }
+        },
+        {
+          "exists": false
+        },
+        {
+          "exists": true,
+          "lines": 495,
+          "evidence": {
+            "session": {
+              "count": 2,
+              "lines": [
+                466,
+                480
+              ]
+            },
+            "select": {
+              "count": 3,
+              "lines": [
+                250,
+                272,
+                288
+              ]
+            },
+            "ajax": {
+              "count": 4,
+              "lines": [
+                251,
+                343,
+                442,
+                478
+              ]
+            },
+            "jquery": {
+              "count": 37,
+              "lines": [
+                234,
+                238,
+                240,
+                249,
+                250,
+                324,
+                325,
+                326,
+                328,
+                339,
+                340,
+                341
+              ]
+            },
+            "table": {
+              "count": 7,
+              "lines": [
+                15,
+                35,
+                136,
+                179,
+                195,
+                216,
+                257
+              ]
+            },
+            "filters": {
+              "count": 10,
+              "lines": [
+                249,
+                250,
+                255,
+                269,
+                272,
+                273,
+                278,
+                283,
+                326,
+                328
+              ]
+            },
+            "inline_script": {
+              "count": 2,
+              "lines": [
+                2,
+                233
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 80,
+          "evidence": {
+            "ajax": {
+              "count": 1,
+              "lines": [
+                62
+              ]
+            },
+            "jquery": {
+              "count": 6,
+              "lines": [
+                31,
+                47,
+                48,
+                49,
+                69,
+                71
+              ]
+            },
+            "form": {
+              "count": 2,
+              "lines": [
+                27,
+                36
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                26
+              ]
+            },
+            "inline_script": {
+              "count": 1,
+              "lines": [
+                43
+              ]
+            }
+          }
+        },
+        {
+          "exists": true,
+          "lines": 184,
+          "evidence": {
+            "select": {
+              "count": 7,
+              "lines": [
+                49,
+                58,
+                64,
+                73,
+                77,
+                94,
+                165
+              ]
+            },
+            "jquery": {
+              "count": 13,
+              "lines": [
+                153,
+                155,
+                161,
+                162,
+                163,
+                164,
+                165,
+                167,
+                168,
+                170,
+                171,
+                177
+              ]
+            },
+            "form": {
+              "count": 1,
+              "lines": [
+                40
+              ]
+            },
+            "table": {
+              "count": 1,
+              "lines": [
+                40
+              ]
+            },
+            "inline_script": {
+              "count": 5,
+              "lines": [
+                3,
+                4,
+                151,
+                152,
+                160
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

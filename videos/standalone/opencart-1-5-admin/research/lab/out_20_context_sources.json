@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "checked_on": "2026-10-19",
+  "method": "public-fixed-source-read; no modern-runtime-test",
+  "old_version": "1.5.6.4",
+  "old_commit_date_utc": "2014-04-24T17:50:37Z",
+  "modern_version": "4.1.0.4",
+  "files": [
+    {
+      "id": "old-install",
+      "url": "https://github.com/opencart/opencart/blob/31323f8ce70338e88570217f76e1111f7b2bcc8f/install.txt",
+      "sha256": "6cd595a5cc9c8bd8f5a19ddc188f0c16e7e0d62e8b3f9b711a0a7e23ef984061"
+    },
+    {
+      "id": "new-composer",
+      "url": "https://github.com/opencart/opencart/blob/3b0597ec91cae3de040a63fee3834a6d910372ea/composer.json",
+      "sha256": "fd5a788cee7f5625a1497f363f45c56da83f90c11c2219a86adca831627115d5"
+    },
+    {
+      "id": "new-mysqli",
+      "url": "https://github.com/opencart/opencart/blob/3b0597ec91cae3de040a63fee3834a6d910372ea/upload/system/library/db/mysqli.php",
+      "sha256": "d237e26915d757478fa72d0755eade87be7727e0d8da22cefbd5753870337f42"
+    },
+    {
+      "id": "new-twig",
+      "url": "https://github.com/opencart/opencart/blob/3b0597ec91cae3de040a63fee3834a6d910372ea/upload/system/library/template/twig.php",
+      "sha256": "92a6ac0af6ff88053ecafe0acd86e249bddaab664080a549c0a502179f537a69"
+    },
+    {
+      "id": "new-loader",
+      "url": "https://github.com/opencart/opencart/blob/3b0597ec91cae3de040a63fee3834a6d910372ea/upload/system/engine/loader.php",
+      "sha256": "415b4271f543cbada32d22c8716db3259346f6dc8aa8a023cea7f4f5d228a87a"
+    },
+    {
+      "id": "new-user",
+      "url": "https://github.com/opencart/opencart/blob/3b0597ec91cae3de040a63fee3834a6d910372ea/upload/system/library/cart/user.php",
+      "sha256": "accdd21091beb620b7058f713e371dbda14a81d776d53324a5c3e01b2302eef3"
+    }
+  ],
+  "facts": [
+    "C19-01",
+    "C19-02",
+    "C19-03",
+    "C19-04",
+    "C19-05",
+    "C19-06"
+  ]
+}

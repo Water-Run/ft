@@ -1,0 +1,361 @@
+{
+  "schema": 1,
+  "kind": "独立合成示意，不是原实验记录",
+  "facts": "FACTS S19-07、S19-09；46 / 20 规模沿用 R1 g2–g8；明细和金额为重新构造",
+  "orders": [
+    {
+      "order_id": 1,
+      "customer": "演示顾客 01",
+      "status": "待处理",
+      "total": 100
+    },
+    {
+      "order_id": 2,
+      "customer": "演示顾客 02",
+      "status": "待处理",
+      "total": 105
+    },
+    {
+      "order_id": 3,
+      "customer": "演示顾客 03",
+      "status": "待处理",
+      "total": 110
+    },
+    {
+      "order_id": 4,
+      "customer": "演示顾客 04",
+      "status": "待处理",
+      "total": 115
+    },
+    {
+      "order_id": 5,
+      "customer": "演示顾客 05",
+      "status": "待处理",
+      "total": 120
+    },
+    {
+      "order_id": 6,
+      "customer": "演示顾客 06",
+      "status": "待处理",
+      "total": 125
+    },
+    {
+      "order_id": 7,
+      "customer": "演示顾客 07",
+      "status": "待处理",
+      "total": 100
+    },
+    {
+      "order_id": 8,
+      "customer": "演示顾客 08",
+      "status": "待处理",
+      "total": 135
+    },
+    {
+      "order_id": 9,
+      "customer": "演示顾客 09",
+      "status": "待处理",
+      "total": 140
+    },
+    {
+      "order_id": 10,
+      "customer": "演示顾客 10",
+      "status": "待处理",
+      "total": 145
+    },
+    {
+      "order_id": 11,
+      "customer": "演示顾客 11",
+      "status": "待处理",
+      "total": 150
+    },
+    {
+      "order_id": 12,
+      "customer": "演示顾客 12",
+      "status": "待处理",
+      "total": 155
+    },
+    {
+      "order_id": 13,
+      "customer": "演示顾客 01",
+      "status": "待处理",
+      "total": 160
+    },
+    {
+      "order_id": 14,
+      "customer": "演示顾客 02",
+      "status": "待处理",
+      "total": 165
+    },
+    {
+      "order_id": 15,
+      "customer": "演示顾客 03",
+      "status": "待处理",
+      "total": 170
+    },
+    {
+      "order_id": 16,
+      "customer": "演示顾客 04",
+      "status": "待处理",
+      "total": 175
+    },
+    {
+      "order_id": 17,
+      "customer": "演示顾客 05",
+      "status": "待处理",
+      "total": 180
+    },
+    {
+      "order_id": 18,
+      "customer": "演示顾客 06",
+      "status": "待处理",
+      "total": 185
+    },
+    {
+      "order_id": 19,
+      "customer": "演示顾客 07",
+      "status": "待处理",
+      "total": 190
+    },
+    {
+      "order_id": 20,
+      "customer": "演示顾客 08",
+      "status": "待处理",
+      "total": 195
+    },
+    {
+      "order_id": 21,
+      "customer": "演示顾客 09",
+      "status": "待处理",
+      "total": 200
+    },
+    {
+      "order_id": 22,
+      "customer": "演示顾客 10",
+      "status": "待处理",
+      "total": 205
+    },
+    {
+      "order_id": 23,
+      "customer": "演示顾客 11",
+      "status": "待处理",
+      "total": 210
+    },
+    {
+      "order_id": 24,
+      "customer": "演示顾客 12",
+      "status": "待处理",
+      "total": 215
+    },
+    {
+      "order_id": 25,
+      "customer": "演示顾客 01",
+      "status": "待处理",
+      "total": 220
+    },
+    {
+      "order_id": 26,
+      "customer": "演示顾客 02",
+      "status": "待处理",
+      "total": 225
+    },
+    {
+      "order_id": 27,
+      "customer": "演示顾客 03",
+      "status": "待处理",
+      "total": 230
+    },
+    {
+      "order_id": 28,
+      "customer": "演示顾客 04",
+      "status": "待处理",
+      "total": 235
+    },
+    {
+      "order_id": 29,
+      "customer": "演示顾客 05",
+      "status": "待处理",
+      "total": 240
+    },
+    {
+      "order_id": 30,
+      "customer": "演示顾客 06",
+      "status": "待处理",
+      "total": 245
+    },
+    {
+      "order_id": 31,
+      "customer": "演示顾客 07",
+      "status": "待处理",
+      "total": 250
+    },
+    {
+      "order_id": 32,
+      "customer": "演示顾客 08",
+      "status": "待处理",
+      "total": 255
+    },
+    {
+      "order_id": 33,
+      "customer": "演示顾客 09",
+      "status": "待处理",
+      "total": 260
+    },
+    {
+      "order_id": 34,
+      "customer": "演示顾客 10",
+      "status": "待处理",
+      "total": 265
+    },
+    {
+      "order_id": 35,
+      "customer": "演示顾客 11",
+      "status": "待处理",
+      "total": 270
+    },
+    {
+      "order_id": 36,
+      "customer": "演示顾客 12",
+      "status": "待处理",
+      "total": 275
+    },
+    {
+      "order_id": 37,
+      "customer": "演示顾客 01",
+      "status": "待处理",
+      "total": 280
+    },
+    {
+      "order_id": 38,
+      "customer": "演示顾客 02",
+      "status": "待处理",
+      "total": 285
+    },
+    {
+      "order_id": 39,
+      "customer": "演示顾客 03",
+      "status": "待处理",
+      "total": 290
+    },
+    {
+      "order_id": 40,
+      "customer": "演示顾客 04",
+      "status": "待处理",
+      "total": 295
+    },
+    {
+      "order_id": 41,
+      "customer": "演示顾客 05",
+      "status": "待处理",
+      "total": 300
+    },
+    {
+      "order_id": 42,
+      "customer": "演示顾客 06",
+      "status": "待处理",
+      "total": 305
+    },
+    {
+      "order_id": 43,
+      "customer": "演示顾客 07",
+      "status": "待处理",
+      "total": 310
+    },
+    {
+      "order_id": 44,
+      "customer": "演示顾客 08",
+      "status": "待处理",
+      "total": 315
+    },
+    {
+      "order_id": 45,
+      "customer": "演示顾客 09",
+      "status": "待处理",
+      "total": 320
+    },
+    {
+      "order_id": 46,
+      "customer": "演示顾客 10",
+      "status": "待处理",
+      "total": 325
+    }
+  ],
+  "products": [
+    {
+      "order_product_id": 1,
+      "order_id": 7,
+      "name": "演示商品 A",
+      "quantity": 2,
+      "price": 30
+    },
+    {
+      "order_product_id": 2,
+      "order_id": 7,
+      "name": "演示商品 B",
+      "quantity": 1,
+      "price": 40
+    }
+  ],
+  "histories": [
+    {
+      "order_history_id": 1,
+      "order_id": 7,
+      "status": "待处理",
+      "sequence": 1
+    },
+    {
+      "order_history_id": 2,
+      "order_id": 7,
+      "status": "已发货",
+      "sequence": 2
+    }
+  ],
+  "page_size": 20,
+  "page_count": 3,
+  "page_2_order_ids": [
+    26,
+    25,
+    24,
+    23,
+    22,
+    21,
+    20,
+    19,
+    18,
+    17,
+    16,
+    15,
+    14,
+    13,
+    12,
+    11,
+    10,
+    9,
+    8,
+    7
+  ],
+  "permission_example": {
+    "user": "演示店员",
+    "group": "演示店员组",
+    "access": [
+      "sale/order",
+      "sale/customer"
+    ],
+    "modify": [
+      "sale/order"
+    ]
+  },
+  "read_only_branch": {
+    "kind": "按 S19-05 构造的拒绝分支示意",
+    "access": [
+      "sale/order"
+    ],
+    "modify": []
+  },
+  "auth": {
+    "password": "DEMO_PASSWORD",
+    "session_id": "SESSION_PLACEHOLDER",
+    "token": "TOKEN_PLACEHOLDER",
+    "digest": "HASH_PLACEHOLDER"
+  }
+}

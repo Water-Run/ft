@@ -1,0 +1,765 @@
+{
+  "schema": 1,
+  "version": "R3",
+  "scope": "中文待审分镜；未实现正式场景",
+  "steps": [
+    {
+      "id": "B01",
+      "scene": "open",
+      "paragraphs": [
+        "o1",
+        "o2"
+      ],
+      "focus": "从现在回到过去",
+      "action": "现代后台示意先显示商品 / 订单 / 发货；时间退至 2010 年代，落到文件、主机和数据库",
+      "result": "说明为何回看旧系统",
+      "expect": [
+        "今天",
+        "2010 年代",
+        "自行部署"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B02",
+      "scene": "open",
+      "paragraphs": [
+        "o3"
+      ],
+      "focus": "OpenCart 是什么",
+      "action": "一套软件分出顾客商店和商家后台；中文解释 PHP 程序与开源",
+      "result": "先建立对象认识",
+      "expect": [
+        "OpenCart",
+        "网店程序",
+        "商店",
+        "管理后台"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B40",
+      "scene": "open",
+      "paragraphs": [
+        "o4"
+      ],
+      "focus": "当时的位置",
+      "action": "用中文卡片连接安装分发、主题与扩展；只标同期有据的例子，不画市场份额排名",
+      "result": "定位为可自行部署的开源商城及其生态",
+      "expect": [
+        "开源商城",
+        "安装分发",
+        "主题与扩展"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B41",
+      "scene": "open",
+      "paragraphs": [
+        "o5"
+      ],
+      "focus": "确定年代",
+      "action": "时间轴落在 2014 年 4 月 / 1.5.6.4；对照端标 4.1.0.4，不快闪四段版本号",
+      "result": "明确旧版与新版对照范围",
+      "expect": [
+        "2014 年 4 月",
+        "1.5.6.4",
+        "4.1.0.4"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B42",
+      "scene": "open",
+      "paragraphs": [
+        "o6",
+        "o7"
+      ],
+      "focus": "观看路线",
+      "action": "按旁白顺序亮起认出人→找到数据→完成操作；匿名案例置于最后",
+      "result": "观众知道本片怎样展开",
+      "expect": [
+        "身份与权限",
+        "订单与页面",
+        "状态修改",
+        "匿名案例"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B43",
+      "scene": "open",
+      "paragraphs": [
+        "o8"
+      ],
+      "focus": "进入一次点击",
+      "action": "镜头落回 A 方向旧后台订单页，请求从点击位置出发",
+      "result": "背景接入具体操作",
+      "expect": [
+        "订单列表",
+        "请求"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B03",
+      "scene": "request",
+      "paragraphs": [
+        "a1",
+        "a2"
+      ],
+      "focus": "浏览器与服务器",
+      "action": "分出浏览器、Apache / PHP、MySQL 三个区域，口播一个才展开一个",
+      "result": "数据库位于服务器一侧",
+      "expect": [
+        "浏览器",
+        "服务器",
+        "数据库"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B44",
+      "scene": "request",
+      "paragraphs": [
+        "a2a"
+      ],
+      "focus": "运行环境对照",
+      "action": "固定左右旧演示 PHP 5.3 / 新版要求 PHP ≥8.1；只对照运行要求，不制作性能排名",
+      "result": "旧源码环境与新版需求有年代差异",
+      "expect": [
+        "PHP 5.3",
+        "PHP ≥8.1"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B04",
+      "scene": "request",
+      "paragraphs": [
+        "a4",
+        "a5"
+      ],
+      "focus": "路由",
+      "action": "从地址突出 sale/order；连到公开控制器路径与 index 方法",
+      "result": "路由选择处理代码",
+      "expect": [
+        "sale/order",
+        "控制器"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B05",
+      "scene": "request",
+      "paragraphs": [
+        "a6"
+      ],
+      "focus": "分工",
+      "action": "控制器分别连模型和模板，连接上写“取数据”“生成页面”",
+      "result": "三个职责不同",
+      "expect": [
+        "控制器",
+        "模型",
+        "模板"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B06",
+      "scene": "request",
+      "paragraphs": [
+        "a8",
+        "a7"
+      ],
+      "focus": "初始化",
+      "action": "从连接和设置依次展开共用服务；只高亮当前使用的设置",
+      "result": "每个请求重新准备",
+      "expect": [
+        "连接",
+        "设置",
+        "语言"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B07",
+      "scene": "request",
+      "paragraphs": [
+        "a9"
+      ],
+      "focus": "预动作",
+      "action": "请求停在登录和权限两个检查处；暂不进入订单查询",
+      "result": "检查决定是否继续",
+      "expect": [
+        "登录检查",
+        "权限检查"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B08",
+      "scene": "login",
+      "paragraphs": [
+        "b1",
+        "b2"
+      ],
+      "focus": "登录提交",
+      "action": "表单只显示占位；送到用户查询区域，逐行中文解释 SQL 条件",
+      "result": "输入进入核对",
+      "expect": [
+        "登录",
+        "用户表"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B09",
+      "scene": "login",
+      "paragraphs": [
+        "b3",
+        "b3a"
+      ],
+      "focus": "口令比较",
+      "action": "输入口令和盐到摘要；与存储摘要比较；另展示不匹配分支",
+      "result": "符合条件才成功",
+      "expect": [
+        "盐",
+        "摘要",
+        "启用状态"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B10",
+      "scene": "login",
+      "paragraphs": [
+        "b3b"
+      ],
+      "focus": "保存身份",
+      "action": "成功后仅把演示用户编号写入服务器会话框",
+      "result": "会话保存用户编号",
+      "expect": [
+        "用户编号",
+        "会话"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B11",
+      "scene": "session",
+      "paragraphs": [
+        "s1",
+        "s2"
+      ],
+      "focus": "恢复会话",
+      "action": "会话编号随请求从浏览器来到服务器；找到文件、读取用户编号",
+      "result": "编号与内容分处两端",
+      "expect": [
+        "会话编号",
+        "会话内容"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B12",
+      "scene": "session",
+      "paragraphs": [
+        "s3"
+      ],
+      "focus": "失效或退出",
+      "action": "保持两侧位置，清除服务器身份后再来一个请求",
+      "result": "重新登录",
+      "expect": [
+        "会话销毁",
+        "重新登录"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B13",
+      "scene": "session",
+      "paragraphs": [
+        "s4",
+        "s5"
+      ],
+      "focus": "令牌比较",
+      "action": "URL 和会话的占位 token 并排，匹配继续；去掉 URL token 后停止",
+      "result": "Cookie 不是唯一检查",
+      "expect": [
+        "Cookie",
+        "令牌",
+        "比较"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B14",
+      "scene": "session",
+      "paragraphs": [
+        "s6"
+      ],
+      "focus": "令牌留痕",
+      "action": "小型浏览器历史和日志图标旁放中文说明，绝不放真实令牌",
+      "result": "转入权限判断",
+      "expect": [
+        "网址",
+        "历史",
+        "日志"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B15",
+      "scene": "permissions",
+      "paragraphs": [
+        "p1",
+        "p2"
+      ],
+      "focus": "权限配置",
+      "action": "用户连用户组；勾选访问和修改两列后存入组记录",
+      "result": "组保存权限清单",
+      "expect": [
+        "用户组",
+        "访问 access",
+        "修改 modify"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B16",
+      "scene": "permissions",
+      "paragraphs": [
+        "p3",
+        "p4"
+      ],
+      "focus": "访问拒绝",
+      "action": "同一店员打开订单通过；请求用户管理停在 access 检查处",
+      "result": "地址也必须检查",
+      "expect": [
+        "访问检查",
+        "没有权限"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B17",
+      "scene": "permissions",
+      "paragraphs": [
+        "p5"
+      ],
+      "focus": "修改拒绝",
+      "action": "固定同一订单，将组设为只读的分支示意；写请求停在 modify",
+      "result": "查看不自动授予写入",
+      "expect": [
+        "修改检查",
+        "写入被拒",
+        "示意"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B18",
+      "scene": "permissions",
+      "paragraphs": [
+        "p6",
+        "p7"
+      ],
+      "focus": "配置与执行接上",
+      "action": "新增功能出现在候选清单，再显示授权和写入检查的位置",
+      "result": "身份、会话、权限合起来",
+      "expect": [
+        "登录",
+        "会话",
+        "权限"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B19",
+      "scene": "database",
+      "paragraphs": [
+        "q1",
+        "q2"
+      ],
+      "focus": "两类账号与配置",
+      "action": "入口的连接账号放在 DB 连接线上；用户表留在后台身份线上",
+      "result": "角色不要混为一谈",
+      "expect": [
+        "数据库连接账号",
+        "后台用户"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B20",
+      "scene": "database",
+      "paragraphs": [
+        "q3",
+        "q4"
+      ],
+      "focus": "三张业务表",
+      "action": "七号订单固定不动，依次展开两条商品项和历史；同色 order_id 连接",
+      "result": "一张订单对应多条明细",
+      "expect": [
+        "订单",
+        "商品项",
+        "状态历史",
+        "订单编号"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B21",
+      "scene": "database",
+      "paragraphs": [
+        "q5"
+      ],
+      "focus": "关联边界",
+      "action": "连线上标按编号关联；约束说明单独停留",
+      "result": "图线不是外键承诺",
+      "expect": [
+        "按订单编号关联",
+        "无外键约束"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B22",
+      "scene": "database",
+      "paragraphs": [
+        "q6",
+        "q7"
+      ],
+      "focus": "数据访问层",
+      "action": "请求按模型→DB 包装→驱动→MySQL 前进，结果反向回来",
+      "result": "业务查询与通信分工",
+      "expect": [
+        "模型",
+        "驱动",
+        "MySQL"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B23",
+      "scene": "query",
+      "paragraphs": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "focus": "取第二页",
+      "action": "条件进入 SQL 四个分区；46 条示意记录按排序排好，跳过20取20",
+      "result": "解释 LIMIT 两个数字",
+      "expect": [
+        "LIMIT 20,20",
+        "跳过 20",
+        "取 20"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B24",
+      "scene": "query",
+      "paragraphs": [
+        "c5"
+      ],
+      "focus": "分页总数",
+      "action": "当前页之外单独 COUNT，46 / 20 得到3页；页码对应范围",
+      "result": "当前页与总数分开取得",
+      "expect": [
+        "总数 46",
+        "每页 20",
+        "共 3 页"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B25",
+      "scene": "query",
+      "paragraphs": [
+        "c7",
+        "c8"
+      ],
+      "focus": "输入与返回",
+      "action": "文本转义 / 数值转整数在语句构造处标出；返回记录进入 PHP 数据框",
+      "result": "不作全局安全保证",
+      "expect": [
+        "条件",
+        "记录列表"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B45",
+      "scene": "query",
+      "paragraphs": [
+        "c8a"
+      ],
+      "focus": "数据库接口对照",
+      "action": "模型和数据库的位置不变，中间驱动从 mysql 标注切到 MySQLi；新旧版本角标常驻",
+      "result": "接口变化，通信职责可比较",
+      "expect": [
+        "mysql",
+        "MySQLi",
+        "数据库驱动"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B26",
+      "scene": "query",
+      "paragraphs": [
+        "c9",
+        "c9a",
+        "c10"
+      ],
+      "focus": "缓存",
+      "action": "状态名称清单走缓存；订单记录仍走查询；修改名称时清空缓存格",
+      "result": "缓存范围明确",
+      "expect": [
+        "状态名称缓存",
+        "订单查询"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B27",
+      "scene": "page",
+      "paragraphs": [
+        "e1",
+        "e2"
+      ],
+      "focus": "模板",
+      "action": "记录对应一行 HTML；页头、列表和页尾在同一空间拼好",
+      "result": "数据成为页面结构",
+      "expect": [
+        "模板",
+        "HTML",
+        "页头",
+        "页尾"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B46",
+      "scene": "page",
+      "paragraphs": [
+        "e2a"
+      ],
+      "focus": "模板对照",
+      "action": "同样的演示记录分别进入 PHP 模板与 Twig；只展示两行带中文解释的片段",
+      "result": "模板写法变化，页面组织职责相连",
+      "expect": [
+        "PHP 模板",
+        "Twig",
+        "页面"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B28",
+      "scene": "page",
+      "paragraphs": [
+        "e3",
+        "e4"
+      ],
+      "focus": "测量回看",
+      "action": "只有机制讲完后才出现 49 / 16 / 36,751；每个数字贴中文口径",
+      "result": "限定为该次旧实验请求",
+      "expect": [
+        "49 个文件",
+        "16 条数据库语句",
+        "36,751 字节"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B29",
+      "scene": "page",
+      "paragraphs": [
+        "e5",
+        "e6"
+      ],
+      "focus": "浏览器资源",
+      "action": "从正文引用发出资源请求；放大5像素宽页头切片并重复",
+      "result": "解释样式来自哪里",
+      "expect": [
+        "样式",
+        "脚本",
+        "图片"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B30",
+      "scene": "page",
+      "paragraphs": [
+        "e7",
+        "e8"
+      ],
+      "focus": "局部交互与查询收束",
+      "action": "输入顾客筛选，JSON 建议项返回；收束完整查询路径",
+      "result": "查询返回后才开始改状态",
+      "expect": [
+        "JSON",
+        "顾客建议",
+        "查询完成"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B31",
+      "scene": "write",
+      "paragraphs": [
+        "d1",
+        "d2"
+      ],
+      "focus": "状态提交",
+      "action": "打开七号订单点已发货；AJAX 请求沿身份与权限检查前进",
+      "result": "后台仍检查写权限",
+      "expect": [
+        "已发货",
+        "AJAX",
+        "修改权限"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B32",
+      "scene": "write",
+      "paragraphs": [
+        "d3"
+      ],
+      "focus": "两次主写入",
+      "action": "复用 q3 表位置，先变主表状态，再插入历史行",
+      "result": "两次写入各有用途",
+      "expect": [
+        "UPDATE",
+        "当前状态",
+        "INSERT",
+        "历史记录"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B33",
+      "scene": "write",
+      "paragraphs": [
+        "d5",
+        "d6",
+        "d7"
+      ],
+      "focus": "回滚对照",
+      "action": "同一变化按开始→修改→回滚，MyISAM 保留、InnoDB 撤回；逐步显示",
+      "result": "存储引擎决定事务支持",
+      "expect": [
+        "MyISAM",
+        "InnoDB",
+        "回滚"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B34",
+      "scene": "write",
+      "paragraphs": [
+        "d8"
+      ],
+      "focus": "中途失败",
+      "action": "两写之间截断为推断示意，先前改动留下；不伪装为故障实录",
+      "result": "无事务整体撤销保证",
+      "expect": [
+        "中途失败",
+        "已发生的写入保留",
+        "示意"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B35",
+      "scene": "write",
+      "paragraphs": [
+        "d9"
+      ],
+      "focus": "局部 HTML",
+      "action": "返回历史 HTML 替换历史区；旁边保留自动补全 JSON 对照",
+      "result": "响应格式取决于接口",
+      "expect": [
+        "HTML 片段",
+        "JSON 数据"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B36",
+      "scene": "case",
+      "paragraphs": [
+        "f1",
+        "f3"
+      ],
+      "focus": "匿名案例",
+      "action": "保持匿名角标，官方结构褪为背景，逐项点出仓储业务职责",
+      "result": "明确后续改造范围",
+      "expect": [
+        "匿名案例",
+        "后续改造"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B37",
+      "scene": "case",
+      "paragraphs": [
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "focus": "扩展路径",
+      "action": "通用查询条件进入控制器，连接器取得结果，再列表或导出；只用合成输入",
+      "result": "连接器可变，职责可追踪",
+      "expect": [
+        "条件",
+        "控制器",
+        "连接器",
+        "结果"
+      ],
+      "stable_seconds": 5
+    },
+    {
+      "id": "B38",
+      "scene": "case",
+      "paragraphs": [
+        "f8"
+      ],
+      "focus": "证据边界",
+      "action": "固定静态观察结论，取消任何生产状态仪表或真域名",
+      "result": "不作线上验收结论",
+      "expect": [
+        "静态观察",
+        "合成示意"
+      ],
+      "stable_seconds": 3
+    },
+    {
+      "id": "B39",
+      "scene": "close",
+      "paragraphs": [
+        "g1",
+        "g2"
+      ],
+      "focus": "收束",
+      "action": "回到最初订单，沿已经解释过的路径走一遍，停在返回页面",
+      "result": "回答全片主问题",
+      "expect": [
+        "入口",
+        "检查",
+        "数据",
+        "页面"
+      ],
+      "stable_seconds": 5
+    }
+  ]
+}

@@ -58,5 +58,7 @@
       "bytes": 8025,
       "sha256": "c64ff0d4764b6add16277fb36eb1c9a43a137a98029d705de6e56cbb79106ff4"
     }
-  }
+  },
+  "historical_record": true,
+  "superseded_by": "2026-10-19 public redaction and release checks; old hashes do not describe current files"
 }

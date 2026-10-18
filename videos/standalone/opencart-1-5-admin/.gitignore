@@ -1,0 +1,6 @@
+# 旧官方演示环境的执行脚本与原始抓取尚未完成公开审核，保留本机，不随资料包发布。
+# 本轮可公开的 CASE-A 只读测绘程序与白名单输出是 18_* / out_18_*。
+research/lab/1[0-7]_*
+research/lab/env/
+research/lab/run_all.sh
+research/lab/out_1[0-7]*

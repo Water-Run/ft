@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧：两个方向</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  /* 关键帧比较页：?d=a|b 方向，?f=1|2|3 画面。只用于第 4 步选方向，定稿前删除，不进成片。
+     颜色全部取自 OpenCart 1.5.6.4 后台的样式表与切图（见 README「视觉系统」）。 */
+  @font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
+  html, body, #stage { width: 1920px; height: 1080px; }
+  #stage { position: absolute; overflow: hidden; font-family: "Inter", "Sans SC"; }
+  .abs { position: absolute; white-space: nowrap; }
+  .mono { font-family: "Mono"; }
+  .px { font-family: "Pixel"; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 46px; height: 64px; display: flex; align-items: center; justify-content: center; font: 500 40px "Sans SC"; }
+
+  /* ── 方向 A：后台本身就是舞台 ── */
+  .a { background: #fff; color: #1d1d1d; }
+  .a .hdr { left: 0; top: 0; width: 1920px; height: 96px;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,0) 0 3px, rgba(255,255,255,.07) 3px 4px), linear-gradient(180deg, #0D4C76, #0F6193); }
+  .a .hdr b { position: absolute; left: 60px; top: 26px; font: 800 38px "Inter"; color: #fff; letter-spacing: -.01em; }
+  .a .hdr i { position: absolute; left: 292px; top: 32px; font: 400 30px "Inter"; color: #cfe0ee; font-style: normal; letter-spacing: .02em; }
+  .a .hdr em { position: absolute; right: 60px; top: 32px; font: 500 30px "Sans SC"; color: #fff; font-style: normal; }
+  .a .menu { left: 0; top: 96px; width: 1920px; height: 60px; background: linear-gradient(180deg, #414141, #212121); display: flex; padding-left: 40px; }
+  .a .menu span { font: 500 28px "Sans SC"; color: #fff; padding: 0 30px; line-height: 60px; border-left: 2px solid #535353; }
+  .a .menu span:first-child { border-left: 0; }
+  .a .menu span.on { background: linear-gradient(180deg, #421A06 0%, #973C10 45%, #B15529 85%, #853B17 100%); border-left-color: transparent; }
+  .a .menu span.on + span { border-left-color: transparent; }
+  .a .shade { left: 0; top: 156px; width: 1920px; height: 22px; background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,0)); }
+  .a .box { border: 2px solid #DBDBDB; border-radius: 14px 14px 0 0; background: #fff; }
+  .a .box > .hd { height: 72px; border-radius: 12px 12px 0 0; background: linear-gradient(180deg, #F6F6F6, #EDEDED); border-bottom: 2px solid #DBDBDB; padding: 0 28px; font: 700 34px "Inter", "Sans SC"; color: #003A88; line-height: 72px; }
+  .a .box > .bd { padding: 26px 30px; }
+  .a .big { font: 900 150px "Inter"; color: #003A88; letter-spacing: -.035em; line-height: 1; }
+  .a .lbl { font: 700 44px "Sans SC"; color: #1d1d1d; }
+  .a .note { font: 400 28px "Sans SC"; color: #666; }
+  .a .pill { display: inline-block; padding: 8px 26px; border-radius: 26px; background: #003A88; color: #fff; font: 700 30px "Inter"; }
+  .a .hi { background: #FFFFCB; }
+  .a .rust { color: #B15529; }
+  .a .sql { font: 500 34px/1.5 "Mono"; color: #1d1d1d; white-space: pre; }
+  .a .sql .k { color: #003A88; font-weight: 700; }
+  .a .tag { font: 600 24px "Inter", "Sans SC"; color: #666; letter-spacing: .02em; }
+  .a .cap span { color: #1d1d1d; background: rgba(255,255,255,.92); padding: 4px 18px; }
+
+  /* ── 方向 B：Y2K 金属 ── */
+  .b { background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,0) 0 3px, rgba(255,255,255,.045) 3px 4px),
+      linear-gradient(180deg, #07243A 0%, #0D4C76 62%, #0F6193 100%); color: #fff; }
+  .b .chrome { border-radius: 16px; border: 2px solid #5B6B78;
+    background: linear-gradient(180deg, #FBFCFD 0%, #DCE3E9 46%, #B9C4CE 50%, #D4DCE3 78%, #EEF2F5 100%);
+    box-shadow: inset 0 2px 0 #fff, 0 10px 0 rgba(0,0,0,.18); color: #0B2A42; }
+  .b .gloss { display: inline-block; padding: 10px 34px; border-radius: 40px; color: #fff; font: 800 32px "Inter";
+    background: linear-gradient(180deg, #3D6FB8 0%, #0B4AA0 48%, #003A88 52%, #1A5BB4 100%); border: 2px solid #002B66; box-shadow: inset 0 2px 0 rgba(255,255,255,.55); }
+  .b .gloss.rust { background: linear-gradient(180deg, #D07A4A 0%, #B15529 48%, #973C10 52%, #B8603A 100%); border-color: #5E2508; }
+  .b .head { font: 900 120px "Sans SC"; letter-spacing: -.02em; line-height: 1.05;
+    background: linear-gradient(180deg, #FFFFFF 0%, #E8EEF3 48%, #A9BACA 52%, #F4F7FA 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .b .amber { color: #FFB04A; }
+  .b .data { font: 400 92px "Pixel"; color: #FFB04A; line-height: 1; }
+  .b .dataS { font: 400 60px "Pixel"; color: #FFB04A; line-height: 1.1; }
+  .b .lbl { font: 700 40px "Sans SC"; color: #fff; }
+  .b .note { font: 400 28px "Sans SC"; color: #A9C3D8; }
+  .b .sql { font: 500 33px/1.55 "Mono"; color: #0B2A42; white-space: pre; }
+  .b .sql .k { color: #003A88; font-weight: 800; }
+  .b .glint { width: 64px; height: 64px; }
+  .b .cap span { color: #fff; }
+
+  /* ── 方向 C：混合。材料各有一个含义：白纸＝浏览器里看到的；钢蓝细纹＝服务器内部；金属板＝服务器上的文件；琥珀像素字＝原始字节；亮面胶囊＝在路上的请求；锈橙＝当前这一步 ── */
+  .c { background: #fff; color: #1d1d1d; }
+  .c .srv { background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,0) 0 3px, rgba(255,255,255,.05) 3px 4px),
+      linear-gradient(180deg, #0A3657 0%, #0D4C76 55%, #0F6193 100%); }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+  const q = new URLSearchParams(location.search), D = q.get('d') || 'a', Fr = q.get('f') || '1';
+  const st = document.getElementById('stage'); st.className = D;
+  const h = (tag, cls, html, css, parent) => { const e = document.createElement(tag); e.className = cls || ''; if (html != null) e.innerHTML = html; if (css) e.style.cssText = css; (parent || st).appendChild(e); return e; };
+  const NS = 'http://www.w3.org/2000/svg';
+  const S = () => { const e = document.createElementNS(NS, 'svg'); e.setAttribute('width', 1920); e.setAttribute('height', 1080); e.style.cssText = 'position:absolute;left:0;top:0;overflow:visible'; st.appendChild(e); return e; };
+  const sv = (p, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  const CH = ['主机', '入口', '登录', '会话', '令牌', '权限', '取数据', '写数据', '出页面', '案例'];
+  const SQL = `<span class="k">SELECT</span> * <span class="k">FROM</span> oc_user
+<span class="k">WHERE</span> username = 'admin'
+  <span class="k">AND</span> (password = SHA1(CONCAT(salt,
+        SHA1(CONCAT(salt, SHA1('DEMO_PASSWORD')))))
+    <span class="k">OR</span> password = 'HASH_PLACEHOLDER…')
+  <span class="k">AND</span> status = '1'`;
+  const SESS = ['currency|s:3:"USD";', 'user_id|s:1:"1";', 'token|s:32:"0000000000000000', '0000000000000000";'];
+  const glint = (x, y, s = 64, fill = '#fff') => { const g = S(); sv(g, 'path', { d: `M${x},${y - s / 2} C${x + 4},${y - 6} ${x + 6},${y - 4} ${x + s / 2},${y} C${x + 6},${y + 4} ${x + 4},${y + 6} ${x},${y + s / 2} C${x - 4},${y + 6} ${x - 6},${y + 4} ${x - s / 2},${y} C${x - 6},${y - 4} ${x - 4},${y - 6} ${x},${y - s / 2} Z`, fill }); };
+
+  if (D === 'a' || D === 'c') {
+    const hd = h('div', 'abs hdr', '<b>OpenCart</b><i>1.5 · 一次点击</i><em>2010 年代初的网店后台</em>');
+    const on = D === 'c' ? { '1': -1, '2': 2 }[Fr] : { '1': -1, '2': 2, '3': 1 }[Fr];
+    h('div', 'abs menu ' ,  CH.map((c, i) => `<span class="${i === on ? 'on' : ''}">${c}</span>`).join(''));
+    h('div', 'abs shade');
+  }
+
+  if (D === 'a' && Fr === '1') {
+    // 开场：真实截图放大，右侧三个数字
+    const shot = h('div', 'abs', '', 'left:-40px;top:230px;width:1180px;height:738px;overflow:hidden;border:2px solid #DBDBDB');
+    h('img', '', null, 'position:absolute;left:-40px;top:-125px;width:1600px', shot).src = 'img/04_order_list.png';
+    h('div', 'abs hi', '', 'left:-40px;top:519px;width:1180px;height:36px;mix-blend-mode:multiply');
+    h('div', 'abs tag', 'OpenCart 1.5.6.4 实际页面 · 演示数据', 'left:60px;top:194px');
+    const col = 1230;
+    [['49', '个文件，载入执行'], ['16', '条 SQL 语句'], ['36,751', '字节的 HTML']].forEach(([n, t], i) => {
+      h('div', 'abs big', n, `left:${col}px;top:${232 + i * 236}px;${i === 2 ? 'font-size:130px' : ''}`);
+      h('div', 'abs lbl', t, `left:${col + 6}px;top:${386 + i * 236}px;font-size:38px`);
+    });
+    h('div', 'abs', '', `left:${col - 40}px;top:238px;width:6px;height:690px;background:#B15529`);
+    h('div', 'cap', '<span>就在这一下，服务器读入了 49 个文件</span>');
+  }
+  if (D === 'a' && Fr === '2') {
+    const b1 = h('div', 'abs box', '<div class="hd">登录时发给 MySQL 的语句</div>', 'left:60px;top:214px;width:1100px;height:520px');
+    h('div', 'sql', SQL, 'padding:26px 30px', b1);
+    h('div', 'abs hi', '', 'left:150px;top:422px;width:560px;height:52px;opacity:.9;mix-blend-mode:multiply');
+    h('div', 'abs tag', '按源码重建 · SQL 与认证字段为示意占位', 'left:60px;top:750px');
+    const b2 = h('div', 'abs box', '<div class="hd">会话文件 · 81 字节</div>', 'left:1210px;top:214px;width:650px;height:520px');
+    h('div', 'mono', SESS.map((l) => `<div style="font:500 33px/1.6 Mono">${l}</div>`).join(''), 'padding:28px 30px', b2);
+    h('div', 'abs note', '/var/lib/php5/sess_DEMO…', 'left:1214px;top:750px;font-family:Mono;font-size:28px');
+    h('div', 'abs', '<span class="pill">POST</span>&nbsp;&nbsp;<span class="pill" style="background:#B15529">302 → token</span>', 'left:60px;top:812px');
+    h('div', 'cap', '<span>计算交给 MySQL：三次 SHA1，中间两次接上盐</span>');
+  }
+  if (D === 'a' && Fr === '3') {
+    h('div', 'abs', 'index.php?<span class="rust">route=</span>sale/order', 'left:60px;top:220px;font:800 92px "Inter";color:#003A88;letter-spacing:-.02em');
+    const files = [['控制器', 'controller/sale/order.php', 'ControllerSaleOrder'], ['模型', 'model/sale/order.php', 'getOrders() · 拼 SQL'], ['模板', 'view/template/sale/order_list.tpl', 'HTML + &lt;?php echo ?&gt;']];
+    files.forEach(([t, f, d], i) => {
+      const x = 60 + i * 610;
+      const b = h('div', 'abs box', `<div class="hd">${t}</div>`, `left:${x}px;top:470px;width:570px;height:330px`);
+      h('div', 'mono', f, 'font:500 28px Mono;color:#1d1d1d;white-space:normal;word-break:break-all;margin-bottom:22px', b.appendChild(h('div', 'bd', '', '', b)));
+      h('div', '', d, 'font:500 32px "Sans SC","Inter";color:#B15529', b.lastChild);
+    });
+    const s = S();
+    [[340, 462], [950, 462], [1560, 462]].forEach(([x, y], i) => { sv(s, 'path', { d: `M${200 + i * 240},350 C${200 + i * 240},420 ${x},380 ${x},${y - 6}`, stroke: '#B15529', 'stroke-width': 5, fill: 'none' }); sv(s, 'path', { d: `M${x - 12},${y - 22} L${x},${y - 2} L${x + 12},${y - 22}`, stroke: '#B15529', 'stroke-width': 5, fill: 'none' }); });
+    h('div', 'abs tag', '按源码重建 · 示意', 'left:60px;top:830px');
+    h('div', 'cap', '<span>取数据交给模型，出页面交给模板，各是一个文件</span>');
+  }
+
+  if (D === 'b' && Fr === '1') {
+    const shot = h('div', 'abs chrome', '', 'left:70px;top:150px;width:1060px;height:700px;padding:18px;border-radius:22px');
+    const inner = h('div', '', '', 'position:relative;width:100%;height:100%;overflow:hidden;border-radius:8px;border:2px solid #5B6B78', shot);
+    h('img', '', null, 'position:absolute;left:-40px;top:-150px;width:1500px', inner).src = 'img/04_order_list.png';
+    h('div', 'abs note', 'OpenCart 1.5.6.4 实际页面 · 演示数据', 'left:84px;top:868px');
+    const col = 1220;
+    [['49', '个文件'], ['16', '条 SQL'], ['36751', '字节 HTML']].forEach(([n, t], i) => {
+      h('div', 'abs data', n, `left:${col}px;top:${170 + i * 230}px;font-size:${i === 2 ? 150 : 170}px`);
+      h('div', 'abs lbl', t, `left:${col + 8}px;top:${318 + i * 230}px`);
+    });
+    glint(1205, 190, 70);
+    h('div', 'cap', '<span>就在这一下，服务器读入了 49 个文件</span>');
+  }
+  if (D === 'b' && Fr === '2') {
+    h('div', 'abs head', '口令，拼进了语句', 'left:70px;top:120px;font-size:96px');
+    const p = h('div', 'abs chrome', '', 'left:70px;top:270px;width:1120px;height:440px;padding:28px 34px');
+    h('div', 'sql', SQL, '', p);
+    const p2 = h('div', 'abs', '', 'left:1250px;top:270px;width:610px;height:440px;border:3px solid #FFB04A;border-radius:16px;padding:26px 28px;background:rgba(7,36,58,.6)');
+    h('div', 'dataS', 'SESS_IN0CJ3…', 'font-size:44px;color:#A9C3D8;margin-bottom:14px', p2);
+    SESS.forEach((l) => h('div', 'dataS', l, 'font-size:46px', p2));
+    h('div', 'abs', '<span class="gloss">81 字节</span>', 'left:1250px;top:740px');
+    h('div', 'abs', '<span class="gloss rust">POST</span>&nbsp;&nbsp;<span class="gloss">302 → token</span>', 'left:70px;top:740px');
+    glint(1180, 286, 56);
+    h('div', 'cap', '<span>计算交给 MySQL：三次 SHA1，中间两次接上盐</span>');
+  }
+  if (D === 'b' && Fr === '3') {
+    h('div', 'abs', '<span class="gloss" style="font-size:52px;padding:16px 50px">index.php?route=sale/order</span>', 'left:70px;top:150px');
+    const files = [['控制器', 'controller/sale/order.php'], ['模型', 'model/sale/order.php'], ['模板', 'template/sale/order_list.tpl']];
+    files.forEach(([t, f], i) => {
+      const x = 70 + i * 610;
+      const b = h('div', 'abs chrome', '', `left:${x}px;top:470px;width:560px;height:300px;padding:30px 32px`);
+      h('div', '', t, 'font:900 64px "Sans SC";color:#0B2A42;margin-bottom:24px', b);
+      h('div', '', f, 'font:500 27px Mono;color:#0B2A42;white-space:normal;word-break:break-all', b);
+    });
+    const s = S();
+    [350, 960, 1570].forEach((x, i) => { sv(s, 'path', { d: `M${300 + i * 260},250 C${300 + i * 260},380 ${x},360 ${x},458`, stroke: '#FFB04A', 'stroke-width': 6, fill: 'none', 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }); });
+    h('div', 'abs note', '按源码重建 · 示意', 'left:70px;top:800px');
+    glint(1840, 470, 60);
+    h('div', 'cap', '<span>取数据交给模型，出页面交给模板，各是一个文件</span>');
+  }
+
+  if (D === 'c') {
+    st.classList.add('a');   // 复用方向 A 的页头、菜单与内容框样式
+    const srv = h('div', 'abs srv', '', 'left:980px;top:156px;width:940px;height:924px');
+    h('div', 'abs', '浏览器', 'left:60px;top:186px;font:700 30px "Sans SC";color:#666');
+    h('div', 'abs', '服务器', 'left:1020px;top:186px;font:700 30px "Sans SC";color:#A9C3D8');
+    const plate = (x, y, w, hh, html) => { const e = h('div', 'abs', html, `left:${x}px;top:${y}px;width:${w}px;height:${hh}px;border-radius:16px;border:2px solid #5B6B78;background:linear-gradient(180deg,#FBFCFD 0%,#DCE3E9 46%,#B9C4CE 50%,#D4DCE3 78%,#EEF2F5 100%);box-shadow:inset 0 2px 0 #fff,0 8px 0 rgba(0,0,0,.2);color:#0B2A42;padding:22px 26px`); return e; };
+    const pill = (x, y, txt, rust) => h('div', 'abs', txt, `left:${x}px;top:${y}px;padding:10px 32px;border-radius:40px;color:#fff;font:800 32px Inter;border:2px solid ${rust ? '#5E2508' : '#002B66'};background:linear-gradient(180deg,${rust ? '#D07A4A 0%,#B15529 48%,#973C10 52%,#B8603A 100%' : '#3D6FB8 0%,#0B4AA0 48%,#003A88 52%,#1A5BB4 100%'});box-shadow:inset 0 2px 0 rgba(255,255,255,.5)`);
+    if (Fr === '1') {
+      const shot = h('div', 'abs', '', 'left:60px;top:240px;width:860px;height:560px;overflow:hidden;border:2px solid #DBDBDB');
+      h('img', '', null, 'position:absolute;left:-40px;top:-125px;width:1500px', shot).src = 'img/04_order_list.png';
+      h('div', 'abs tag', 'OpenCart 1.5.6.4 实际页面 · 演示数据', 'left:60px;top:812px');
+      pill(640, 862, 'GET route=sale/order', false);
+      const s2 = S(); sv(s2, 'path', { d: 'M940,890 L1010,890', stroke: '#B15529', 'stroke-width': 6, fill: 'none' }); sv(s2, 'path', { d: 'M998,876 L1014,890 L998,904', stroke: '#B15529', 'stroke-width': 6, fill: 'none' });
+      [['49', '个文件'], ['16', '条 SQL'], ['36751', '字节 HTML']].forEach(([n, t], i) => {
+        h('div', 'abs', n, `left:1030px;top:${246 + i * 220}px;font:400 ${i === 2 ? 150 : 170}px Pixel;color:#FFB04A;line-height:1`);
+        h('div', 'abs', t, `left:1040px;top:${388 + i * 220}px;font:700 38px "Sans SC";color:#fff`);
+      });
+      glint(1020, 262, 60);
+    } else {
+      const b1 = h('div', 'abs box', '<div class="hd">登录</div>', 'left:60px;top:240px;width:860px;height:420px');
+      h('div', '', '<div style="font:500 30px Sans SC;color:#666;margin-bottom:12px">Username</div><div style="font:500 40px Mono;border:2px solid #aaa;padding:8px 14px;margin-bottom:22px">admin</div><div style="font:500 30px Sans SC;color:#666;margin-bottom:12px">Password</div><div style="font:500 40px Mono;border:2px solid #aaa;padding:8px 14px">••••••••</div>', 'padding:22px 30px', b1);
+      pill(60, 700, 'POST', true); pill(220, 700, 'username · password', false);
+      const p = plate(1010, 236, 880, 420, '');
+      h('div', '', `<div style="font:700 26px Sans SC;color:#3B5568;margin-bottom:10px">发给 MySQL 的语句</div><div style="font:500 26px/1.5 Mono;white-space:pre">SELECT * FROM oc_user
+WHERE username = 'admin' AND
+ (password = SHA1(CONCAT(salt,
+   SHA1(CONCAT(salt, SHA1(<span style="background:#FFFFCB">'DEMO_PASSWORD'</span>)))))
+  OR password = 'HASH_PLACEHOLDER…')
+ AND status = '1'</div>`, '', p);
+      h('div', 'abs', 'sess_DEMO…  81 B', 'left:1010px;top:690px;font:400 46px Pixel;color:#A9C3D8');
+      h('div', 'abs', 'user_id|s:1:"1";<br>token|s:32:"00000000…";', 'left:1010px;top:740px;font:400 54px/1.15 Pixel;color:#FFB04A');
+      glint(1885, 250, 52);
+      h('div', 'abs tag', '口令与会话字段为示意占位', 'left:60px;top:790px');
+    }
+    h('div', 'cap', Fr === '1' ? '<span>就在这一下，服务器读入了 49 个文件</span>' : '<span>服务器把它们拼进一条 SQL，到用户表里找人</span>');
+  }
+  document.fonts.ready.then(() => { const imgs = [...document.images]; Promise.all(imgs.map((i) => i.complete ? 1 : new Promise((r) => (i.onload = i.onerror = r)))).then(() => { document.body.dataset.ready = '1'; }); });
+</script>
+</body>
+</html>

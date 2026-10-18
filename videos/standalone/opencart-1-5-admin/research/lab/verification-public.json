@@ -1,0 +1,333 @@
+{
+  "schema": 1,
+  "checked_on": "2026-10-19",
+  "scope": "current-git-visible-film-files; not full Git history or final audiovisual acceptance",
+  "status": "passed",
+  "known_private_markers_supplied": true,
+  "files_checked": 63,
+  "local_links_checked": 94,
+  "limitations": [
+    "Git history was not rewritten.",
+    "Pattern checks cannot identify every unknown identity or image content.",
+    "The one official demo screenshot was reviewed separately; no private UI capture is included.",
+    "No new audio or film has been generated."
+  ],
+  "problems": [],
+  "files": [
+    {
+      "file": ".gitignore",
+      "basis": "raw bytes",
+      "sha256": "5fe28c65e80e1c1cf677fc0caf046e2ebf23347619da73d7ffc0e2f7321b6c79"
+    },
+    {
+      "file": "AGENTS.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "0c495ee9d685886b8153b0a667be15f4796a6cbe7c5af9b0409588248a98d44c"
+    },
+    {
+      "file": "HANDOFF.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "c5ccd6d526699ea8c82677a039971c5a2e7af65a4ca814f8cd891bf4c158ff1d"
+    },
+    {
+      "file": "README.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "bf22d79a0f468865f05b1bc61b11b2d6904390a2c6bed542040f0687bce52f1a"
+    },
+    {
+      "file": "brief/01-mission.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "4af842d4093cf61974c995d4545c71b2b8c825c01aa0e8826a9c46233a526025"
+    },
+    {
+      "file": "brief/02-script.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "becdc90e6389526c00ba6b9bce3d37dc234d2c1d2a97c5a6e76c287fa9fde6b0"
+    },
+    {
+      "file": "brief/03-visual.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "13521906cf32e608531e2629dd5d58cc69416de3a625880f5fee1040cad6bbf3"
+    },
+    {
+      "file": "brief/04-storyboard.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "12ec35ba610ec785a0c0625a9e4f8705b2dfc203f4e74272fd9102354ee32b63"
+    },
+    {
+      "file": "brief/05-motion-sound.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "ef1559f4a12f92c5db62577d0713f46014037c62c8acf6174a4672f82e16cc3e"
+    },
+    {
+      "file": "brief/06-acceptance.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "362d75dd1c65fcedcccf8fb0807abd7eb1e0f3bd4db72a8c727366d6efd9060a"
+    },
+    {
+      "file": "brief/storyboard.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "b0434bd8f4697299e1d85b5cfab7062f526abaaf1a78933b0912b8e90c9dd94b"
+    },
+    {
+      "file": "expect.zh.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "4001e1a9fd5ebc8a6e5faa3aa8b07ef606035e17948747304ada27a251d1409b"
+    },
+    {
+      "file": "project.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "b24ff2ed0306825421326a7f7771fdef8b5dadeb2e62d1c7d6415330a2415617"
+    },
+    {
+      "file": "research/DEEP-MAP.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "23a065165c0e92393840e4eff0334a8c3a349c13831badee747e3aefbf41e807"
+    },
+    {
+      "file": "research/FACTS.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "a3b204d9c0e8039fec36832273c89e8adf7b1a1ef04486041fc739acbf5e78c0"
+    },
+    {
+      "file": "research/PAGE-MAP.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "48e620c0c716d81be52f2d831252fdb2cab17f02d51bfed654bca5394facf499"
+    },
+    {
+      "file": "research/PRESTUDY-FACTS.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "e631b93c8ac1d5940baf7fd8f041bf96ee31392a3e7c74e747f60a91050a7bee"
+    },
+    {
+      "file": "research/REDACTION.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "f90f5c181732ba305d161eb42ba2166b29cacf9d7501d9b30acf68d4446ea134"
+    },
+    {
+      "file": "research/SCRIPT-R2.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "15719022caede2c2ed13d4c6711c7e579331930942fc81658abffdc7177d5832"
+    },
+    {
+      "file": "research/SCRIPT-R3.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "764e8b008463809eb95131b3dc35f5aa89788042a785f8b3f7e3839c29758dd5"
+    },
+    {
+      "file": "research/SCRIPT-REVIEW.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "38a20bdf98fbe042c15201abb11cb1e5f426d2dd277892b423eb3e633fb5bcb4"
+    },
+    {
+      "file": "research/STYLE-DECISION.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "0163d7d297fb1a75f1cd8024499369c6cabc0eeb487bce768217e39d5b8a3ea6"
+    },
+    {
+      "file": "research/SUBSYSTEMS.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "63bb6aa16c13ae03ddbfff94703efa3cf23264172b8de1de3d97be799e77fcb1"
+    },
+    {
+      "file": "research/SURVEY.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "f04c824a45d6ae8695e40fcc052009238732a1c5c424c8d8a3df37bdfc8baea3"
+    },
+    {
+      "file": "research/lab/01_case_inventory.py",
+      "basis": "UTF-8 with LF",
+      "sha256": "0fa08b80bc96d84bd1f5f91d758a0e2f66d1b76a4a8f0508fc46104d9c7565fa"
+    },
+    {
+      "file": "research/lab/02_upstream_inventory.py",
+      "basis": "UTF-8 with LF",
+      "sha256": "868d3ef198d49a021bf1a0360f8f20f2e639151aac1d9aafc5b5d67cfc8c1c18"
+    },
+    {
+      "file": "research/lab/18_case_deep_audit.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "8dd1350e36cc4262b873c9ec6c203018d9571b528dfbbf0dcaba23b604a2111d"
+    },
+    {
+      "file": "research/lab/18_case_deep_audit.test.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "3c0c3c3c8c468671c2d0075d9a4e08090fd11e07fe6ee1e860e0feb2bf48afca"
+    },
+    {
+      "file": "research/lab/out_01_case_inventory.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "e55792803a0a3e709a53bdff2b33b8bf3b0cf48c24bb7e82ce4e8de458c995f9"
+    },
+    {
+      "file": "research/lab/out_02_upstream_inventory.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "c64ff0d4764b6add16277fb36eb1c9a43a137a98029d705de6e56cbb79106ff4"
+    },
+    {
+      "file": "research/lab/out_18_case_deep_audit.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "bddac18250c03d9f3803e369b9902a7c2008557e1ba09544f671dc5c6ba444ff"
+    },
+    {
+      "file": "research/lab/out_20_context_sources.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "a23e9238bd29118d988224a7024ff13e83f903cb680fa4a8646a052af9976ba6"
+    },
+    {
+      "file": "research/lab/verification.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "f3dc678da062a1f6086fa711e095e4d7bf74114cc3535e27190fb641ca0ceddb"
+    },
+    {
+      "file": "research/versions/script-before-r2.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "feb9a1f2fee7000b0b3cee75e609618e2760313a37ae7841f3026ad4354aa0f1"
+    },
+    {
+      "file": "research/versions/script-r2.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "aae57993ba2b5946ec3d697b9e6319a8c8ff873267739964e8aa3e9e0d21d36e"
+    },
+    {
+      "file": "review/NOTES.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "33ccfa5211dafa68a79e7d8e3c03762bd09e8e927717b93f62f144a4f2bcfd8d"
+    },
+    {
+      "file": "review/approval.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "ece8bf78bf7e6b334a4297c8cfb83f73c9fafbf7ea7e782789a7ebcf7ef62cd5"
+    },
+    {
+      "file": "review/feedback.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "05ac5bafae4dad92236b99dbb4c16b5c7d72617c60977da21f0a8a0b950f9fcf"
+    },
+    {
+      "file": "review/script.zh.92e871ec80dd70ba1a6dc9f5a76596a0a50113dfe63bf7ba32e396a8e5712243.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "861b05fa0aa4f028d892d6f99492a194abc951c14ca8b44a5012dc90fe4ceb72"
+    },
+    {
+      "file": "review/script.zh.a2cefe20f2d0f054fde126b8db6b52b26a30664fb12e8bbb050dd730fafb2dc3.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "0ed43f14f195e26d6812fb2d3e4ed3fbcf4e255375f36c46b0603546edb09766"
+    },
+    {
+      "file": "review/script.zh.d234b19d10ebfa2155348f081a590ca2bdb84274b9cd49ea69613fb7051177a9.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "f43c757f704c1f01e1fb5f854e42868be27dda345ec86d0d9ddc58414ad21c7b"
+    },
+    {
+      "file": "review/script.zh.ec78f09911469b1a6b90acfe1afce62822e54dd79055c37972f1290e2e0e3d03.md",
+      "basis": "UTF-8 with LF",
+      "sha256": "081aeadc0807a2505a4762ecf9ad9c345db971ae1d659b3debcf63f871dfb917"
+    },
+    {
+      "file": "src/cover.html",
+      "basis": "UTF-8 with LF",
+      "sha256": "bd3853ad23b7eafc1dc2293a97bbd21b2a58b54f8f787e00f60df596490dd859"
+    },
+    {
+      "file": "src/css/base.css",
+      "basis": "UTF-8 with LF",
+      "sha256": "eb34df36643774c00af8c03470b4a93a49b3339bd8a4c0baa2675398bbeabf88"
+    },
+    {
+      "file": "src/css/style.css",
+      "basis": "UTF-8 with LF",
+      "sha256": "6b5fb62384dcd058096af1a7d088d09412c5d65be3eddc27c79508da990cea47"
+    },
+    {
+      "file": "src/data/demo.json",
+      "basis": "UTF-8 with LF",
+      "sha256": "1e561a3504f5d9d278851785c9f51e01295a7286eba9cfb84281f2ccc1f1e54b"
+    },
+    {
+      "file": "src/design/img/04_order_list.png",
+      "basis": "raw bytes",
+      "sha256": "094cd2d94f74bc10bb8226c94bf3fd08be0b6b6b247093a5a853704f29fd61a7"
+    },
+    {
+      "file": "src/design/kf.html",
+      "basis": "UTF-8 with LF",
+      "sha256": "5515f6b392481ac699d5d0d9ce9c75233ef880709ade11bb437e2655f8157bb6"
+    },
+    {
+      "file": "src/index.html",
+      "basis": "UTF-8 with LF",
+      "sha256": "dc3243316956b0dd4882cd6db37dbc149a76c350acec0935eb83fe22a3e8ed59"
+    },
+    {
+      "file": "src/js/boot.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "8d269d285e52fd097b6a875563ab8ca3ce217b1750aaf5c379c2b48321b41db8"
+    },
+    {
+      "file": "src/js/config.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "4c97da8a893811db4d47a5a4bb93569f9f0ef4fe78ba433ecdb57004ae97e020"
+    },
+    {
+      "file": "src/js/engine.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "53d213e5d1072cbe4cfc3d661aefa5e0c7d6e0c976afe10b8809f9a01f1ed12c"
+    },
+    {
+      "file": "src/js/scenes/s0_open.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "b16061bc3421f60a4e66ca780a4c50e81254132227907ac364d65cd253415c6a"
+    },
+    {
+      "file": "src/js/scenes/s1_demo.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "2ca9346c6c5f5d2f48f733a1f0240879837a85f628ecbbca675de3633e962fc7"
+    },
+    {
+      "file": "src/js/script.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "315906ffd46c0d9acce58c0df203e66cb4afeea4c832f9584570b5d8a670bf82"
+    },
+    {
+      "file": "src/js/timing.en.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "4dfedfb78dbb4fd468bda170f0db2b8ace94b410cea73835aaad12c02f0c160e"
+    },
+    {
+      "file": "src/js/timing.zh.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "65fec86d2811c662d9c2d5e18145831fc0a128ed94ec0b3c1338208ad5638bc7"
+    },
+    {
+      "file": "src/js/util.js",
+      "basis": "UTF-8 with LF",
+      "sha256": "a36440ad3e2481602b5f113d48867e2137ca6eb5cf7e13f89d10572488f6cc78"
+    },
+    {
+      "file": "tools/build_demo_data.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "7d5c98c92a666101a61d998309434895d08d611a7bae07e157ad20d05294f97e"
+    },
+    {
+      "file": "tools/check_handoff.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "608acb9580f811661aa44bdc7d0a306e0309d06b2c4731c33d34bff2e43404f0"
+    },
+    {
+      "file": "tools/check_public_package.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "691346654e3c350829b89f76624e59383f10bd82bb3c369f1f49f96e1a87874f"
+    },
+    {
+      "file": "tools/export_script.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "2607966c3ec37e676bcea03538489c362c647fa3ae2aec0c3dd09613a2aee05e"
+    },
+    {
+      "file": "tools/export_storyboard.cjs",
+      "basis": "UTF-8 with LF",
+      "sha256": "f7f6f883008c8377603b5a1d7d8d127af5341802795e457c5c08e31b07373229"
+    }
+  ]
+}
