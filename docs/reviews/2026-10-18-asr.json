@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-18",
+  "model": "faster-whisper small, local CPU int8",
+  "method": "ASR screening; not human listening",
+  "mp4_sha256": "69b9cb64f2a4779703a501de60c7ffd32a618f11d53bc622593c18fc99f533b8",
+  "samples": [
+    {
+      "cue": "y3",
+      "start": 47.834,
+      "end": 51.792,
+      "caption": "2005 年 10 月，Oracle 宣布收购 Innobase",
+      "tts": "2005 年 10 月，Oracle 宣布收购 Inno base。",
+      "recognized": "2005年10月,Borocco宣布收购EnoBase",
+      "wav_sha256": "cb50f85425a7a90bfdc452e19482baf2369ba08534a815e387bf7c42b1bde5fc",
+      "wav": "out/reviews/2026-10-18/innodb-voice-y3.wav"
+    },
+    {
+      "cue": "a14b",
+      "start": 455.741,
+      "end": 459.113,
+      "caption": "页里的记录就这样按主键连成一条链",
+      "tts": "页里的记录就这样按主键连成一条链。",
+      "recognized": "夜里的记录就这样按主键连成一条列",
+      "wav_sha256": "1de93a84db68fe27d0b0e3711e4a31fac7930bd27fe15f6865e9f19d9ffafc8a",
+      "wav": "out/reviews/2026-10-18/innodb-voice-a14b.wav"
+    },
+    {
+      "cue": "a17b",
+      "start": 468.768,
+      "end": 472.573,
+      "caption": "第一个隐藏字段，记着最后修改这一行的事务号",
+      "tts": "第一个隐藏字段，记着最后修改这一航的事务号。",
+      "recognized": "第一个隐藏自断 记着最后修改这一行的15号",
+      "wav_sha256": "d91109e9048f6a8c9ae652d99f4003ac2d95b2c559b0fe44f74c9fd96afa6438",
+      "wav": "out/reviews/2026-10-18/innodb-voice-a17b.wav"
+    }
+  ]
+}

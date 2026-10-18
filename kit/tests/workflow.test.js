@@ -7,6 +7,7 @@ const { spawnSync, execFileSync } = require('node:child_process');
 const ROOT = path.resolve(__dirname, '../..');
 const review = require('../tools/script-review');
 const { verify } = require('../tools/clean');
+const feedback = require('../tools/feedback');
 
 function fixture(t) {
   const temporary = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'ft-workflow-'));
@@ -16,6 +17,7 @@ function fixture(t) {
   fs.writeFileSync(path.join(root, 'kit/studio.json'), JSON.stringify({ planner: 'Example Planner', reviewer: 'Fixture Reviewer', repository: 'https://github.com/example/films' }));
   fs.mkdirSync(path.join(root, 'videos'));
   fs.mkdirSync(path.join(root, 'docs'));
+  fs.copyFileSync(path.join(ROOT, 'docs/feedback-rules.json'), path.join(root, 'docs/feedback-rules.json'));
   fs.writeFileSync(path.join(root, 'videos/catalog.json'), JSON.stringify({ about: 'Test fixture', series: [], standalone: [] }));
   fs.copyFileSync(path.join(ROOT, '.gitignore'), path.join(root, '.gitignore'));
   execFileSync('git', ['init', '--quiet'], { cwd: root });
@@ -201,4 +203,77 @@ test('归档清单不能指向上级路径', async t => {
   const f = fixture(t); fs.mkdirSync(f.archive);
   write(f.archive, 'manifest.json', JSON.stringify({ schema: 1, files: [{ path: 'video/../../escape', bytes: 1, sha256: '0'.repeat(64) }] }));
   await assert.rejects(verify(f.archive), /越界|非法/);
+});
+
+test('新片自动带入全部反馈；文案已确认仍不能跳过反馈应用', t => {
+  const f = fixture(t), state = JSON.parse(fs.readFileSync(path.join(f.video, 'review/feedback.json')));
+  assert.equal(f.project.feedback.required, true);
+  const deletedConfig = feedback.prepared(f.video, { ...f.project, feedback: undefined });
+  assert.equal(deletedConfig.ok, false);
+  assert.match(deletedConfig.problems.join(' '), /feedback.required/);
+  assert.deepEqual(state.items.map(item => item.id), feedback.registry().rules.map(rule => rule.id));
+  assert.ok(fs.readFileSync(path.join(f.video, 'README.md'), 'utf8').includes('F14'));
+  approve(f, 'zh');
+  const result = f.run('tts', f.video, '--lang', 'zh');
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /反馈应用未完成/);
+  assert.ok(!fs.existsSync(path.join(f.video, 'audio')));
+});
+function preparedFeedback(f) {
+  const file = path.join(f.video, 'review/feedback.json'), state = JSON.parse(fs.readFileSync(file));
+  for (const item of state.items) { item.applicability = 'not_applicable'; item.reason = '隔离测试的虚构输入，不代表影片审核'; }
+  state.items[0] = { ...state.items[0], applicability: 'applies', plan: '按测试场景问题检查完整输入输出', script_evidence: '脚本 o1 与测试分镜定位' };
+  fs.writeFileSync(file, JSON.stringify(state));
+  return { state, file };
+}
+test('新增反馈同时影响在制片与下一部新片，规则改写保留旧记录并重新应用', t => {
+  const f = fixture(t); preparedFeedback(f);
+  assert.equal(f.run('feedback', f.video, 'check').status, 0);
+  const rulesFile = path.join(f.root, 'docs/feedback-rules.json'), data = JSON.parse(fs.readFileSync(rulesFile));
+  data.version = 'test-next'; data.rules[0].plan += '；新增的解释要求';
+  data.rules.push({ id: 'F99', title: '测试新增规则', plan: '测试计划定位', verify: '测试实际成片证据', reference: '隔离测试' });
+  fs.writeFileSync(rulesFile, JSON.stringify(data));
+  assert.notEqual(f.run('feedback', f.video, 'check').status, 0);
+  assert.equal(f.run('feedback', f.video, 'sync').status, 0);
+  const state = JSON.parse(fs.readFileSync(path.join(f.video, 'review/feedback.json')));
+  assert.ok(state.history.some(record => record.item.id === 'F01'));
+  assert.equal(state.items.find(item => item.id === 'F01').applicability, 'pending');
+  assert.ok(state.items.some(item => item.id === 'F99'));
+  assert.equal(f.run('new', 'standalone/next', '--title', '下一部测试片').status, 0);
+  const next = JSON.parse(fs.readFileSync(path.join(f.root, 'videos/standalone/next/review/feedback.json')));
+  assert.ok(next.items.some(item => item.id === 'F99'));
+  assert.ok(fs.readFileSync(path.join(f.root, 'videos/standalone/next/README.md'), 'utf8').includes('F99'));
+});
+test('交付反馈必须指向正式主成片、有效时段和相同内容哈希', async t => {
+  const f = fixture(t), { state, file } = preparedFeedback(f);
+  const project = { ...f.project, languages: ['zh'] };
+  assert.equal((await feedback.final(f.video, project)).ok, false);
+  const content = 'synthetic test bytes, not a real film';
+  write(f.video, 'out/example-zh-1080p60.mp4', content);
+  write(f.video, 'out/zh/video.json', JSON.stringify({ total: 10, fps: 60 }));
+  const crypto = require('node:crypto'), sum = crypto.createHash('sha256').update(content).digest('hex');
+  const item = state.items[0]; item.result = 'verified'; item.verification = '仅用于测试文件身份和区间，不表示观感通过';
+  item.clips = [{ lang: 'zh', file: 'out/example-zh-1080p60.mp4', start: 1, end: 2, sha256: sum }];
+  fs.writeFileSync(file, JSON.stringify(state));
+  assert.equal((await feedback.final(f.video, project)).ok, true);
+  item.clips[0].end = 20; fs.writeFileSync(file, JSON.stringify(state));
+  assert.equal((await feedback.final(f.video, project)).ok, false);
+  item.clips[0].end = 2; fs.writeFileSync(file, JSON.stringify(state));
+  write(f.video, 'out/example-zh-1080p60.mp4', 'changed test bytes');
+  assert.equal((await feedback.final(f.video, project)).ok, false);
+});
+
+
+test('片尾署名只允许静默时间线，不允许字幕或 tts 混入旁白', t => {
+  const f = fixture(t), file = path.join(f.video, 'src/js/script.js');
+  const original = fs.readFileSync(file, 'utf8');
+  const silent = original.replace("['oT', null, { pause: 2.0 }]", "['oT', null, { pause: 2.0, credits: true }]");
+  fs.writeFileSync(file, silent);
+  const snapshot = review.snapshot(f.video, f.project, 'zh');
+  assert.equal(snapshot.estimate.cues.oT.silent, true);
+  assert.equal(snapshot.estimate.cues.oT.tts, null);
+  fs.writeFileSync(file, silent.replace("['oT', null,", "['oT', { zh: '片尾制作说明', en: 'Credits instruction' },"));
+  assert.throws(() => review.snapshot(f.video, f.project, 'zh'), /片尾署名须为无旁白/);
+  fs.writeFileSync(file, silent.replace('pause: 2.0, credits: true', "pause: 2.0, credits: true, tts: 'Do not narrate'"));
+  assert.throws(() => review.snapshot(f.video, f.project, 'zh'), /片尾署名须为无旁白/);
 });

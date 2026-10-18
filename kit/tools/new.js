@@ -16,6 +16,7 @@ const fs = require('fs'), path = require('path');
 const { parseArgs } = require('node:util');
 const { load, validate, render, syncSeries, CAT, DOC } = require('./catalog');
 const REPO = path.resolve(__dirname, '..', '..'), KIT = path.join(REPO, 'kit');
+const feedback = require('./feedback'), feedbackRules = feedback.registry();
 let parsed;
 try { parsed = parseArgs({ allowPositionals: true, options: Object.fromEntries(['title', 'title-en', 'langs', 'series-title', 'maker', 'delegate'].map(key => [key, { type: 'string' }]).concat([['scratch', { type: 'boolean' }], ['help', { type: 'boolean' }]])) }); }
 catch (error) { console.error(error.message); process.exit(2); }
@@ -75,6 +76,10 @@ const vars = {
   SLUG: slug, TITLE: entry.title.zh, TITLE_HTML: entry.title.zh.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'), PATH: relative,
   PLANNER: studio.planner, REVIEWER: studio.reviewer, REPOSITORY: studio.repository, REPOSITORY_DISPLAY: studio.repository.replace(/^https:\/\//, ''),
   REVIEW_JSON: JSON.stringify({ required: true, reviewer: studio.reviewer }),
+  FEEDBACK_VERSION: feedbackRules.version,
+  FEEDBACK_STATE_JSON: JSON.stringify(feedback.initial(feedbackRules), null, 2),
+  FEEDBACK_START_ROWS: feedbackRules.rules.map(rule => `| ${rule.id} ${rule.title} | | ${rule.plan} | ${rule.verify} |`).join('\n'),
+  FEEDBACK_END_ROWS: feedbackRules.rules.map(rule => `| ${rule.id} | | | |`).join('\n'),
   LANGS_JSON: JSON.stringify(langs).replace(/,/g, ', '),
   TITLES_JSON: obj((l) => entry.title[l] || (l === 'zh' ? entry.title.zh : '')),
   VOICES_JSON: obj((l) => VOICES[l] || ''), RATES_JSON: obj(() => '+0%'), PROMPTS_JSON: obj((l) => PROMPTS[l] || ''),
@@ -114,6 +119,7 @@ fs.writeFileSync(scriptFile, script);
 if (baseDir && fs.existsSync(path.join(baseDir, 'src'))) { copy(path.join(baseDir, 'src'), path.join(dir, 'src')); console.log(`已套用系列基座 videos/series/${series.slug}/_base/src/`); }
 const projectFile = path.join(dir, 'project.json'), project = JSON.parse(fs.readFileSync(projectFile, 'utf8'));
 project.production = production; project.review = { required: true, reviewer: studio.reviewer };
+project.feedback = { required: true };
 fs.writeFileSync(projectFile, JSON.stringify(project, null, 2) + '\n');
 if (delegated) { copy(path.join(KIT, 'delegation'), dir); for (const l of langs) fs.writeFileSync(path.join(dir, `expect.${l}.json`), '{\n}\n'); }
 if (!langs.includes('en')) console.log('提示：模板的脚本与场景是按中英双语写的；只做一种语言时，把 script.js 里的 { zh, en } 改成字符串即可。');

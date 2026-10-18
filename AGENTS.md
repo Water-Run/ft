@@ -24,7 +24,9 @@
 - 仓库正常情况下只保留一个 `main` 分支；可能同时有多个制作者（Agent）各开一部片子，改动以自己的视频目录为单位提交到 `main`。做法见 [docs/workflow.md](docs/workflow.md)。
 - 不直接抄袭现成产品；动画须精美精良；事实须严格核查；每部片子的片尾须包括实际参与的模型、「策划：WaterRun」与标明「开源视频」的 GitHub 仓库链接。细则见 [docs/standards.md](docs/standards.md)，验收见 [docs/review.md](docs/review.md)。
 - 事实只来自该片的 `research/FACTS.md`。
+- 片尾署名、模型 credit、策划与开源链接只在画面展示，不配旁白；制作指令不混进文案正文。历史或陌生主题先交代是什么、时代背景、为什么值得看与本片路线，再展开机制。见 `docs/feedback.md` 的 F13、F14。
 - 每次新片开工或改片，先读 [docs/feedback.md](docs/feedback.md) 及其中最近的相关复盘，在本片 README 写「开工反馈应用」：逐项对应问题编号、适用性、计划与验证办法。结尾必须用同一组编号写「结尾反馈复盘」，给出实际成片的时间点、证据、结果与遗留问题；只改流程或源码不能记为成片问题已解决。自制、委托都执行，格式见反馈文档第 7 节。
+- 反馈通过 [docs/feedback-rules.json](docs/feedback-rules.json) 持续进入模板与工具。开工或接续先运行 `feedback.js <视频> sync`，逐项填写 `review/feedback.json`；规则变化后复查对应项，配音前检查计划，交付前检查实际成片证据。Lean 4 为典型叙事负面案例，MyISAM 为正面对照；详见 [docs/feedback-loop.md](docs/feedback-loop.md)。
 - 文案稿须经策划者 WaterRun 人工审查并明确确认后，才能配音并往下做（自 2026-10-08 起新开工的片子执行）。做法见 [docs/workflow.md](docs/workflow.md) 第 2 步。
 - 新片以 `script.js` 为唯一文案源稿，`review/` 保留逐句校对稿、意见和真实确认；不得自行补造确认或关闭版本闸门。独立 fork 用 `kit/studio.json` 配置实际策划、校对者和源码仓库；原仓库的 WaterRun 约定继续适用，历史作品署名不追改。
 - 清理默认只预览；执行时先归档并逐文件校验。不得用批量 Git 清理命令删除忽略文件，那里可能保存唯一的成片、配音和复盘证据。工具、模板与流程改动运行 `npm test`、`npm run check:repo`，涉及浏览器另作相应验证。

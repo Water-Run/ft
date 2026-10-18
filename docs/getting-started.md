@@ -63,6 +63,7 @@ node kit/tools/new.js standalone/first-video --title "这部片子的问题" --t
 1. 本片 README：受众、主问题、时长上限、章节推进与开工反馈应用。
 2. `research/FACTS.md`：取证、来源、适用范围、核查状态。
 3. `src/js/script.js`：中文逐句文案；`review/NOTES.md`：术语解释与待讨论的取舍。
+   按 `review/feedback.json` 逐项写具体计划与文案 / 分镜定位；规则更新时先运行 `feedback.js <视频> sync`。Lean 4 负面案例与 MyISAM 正面对照从这一步进入实际写稿。
 4. `node kit/tools/script-review.js videos/standalone/first-video export`：生成可阅读的全文。
 5. 把稿本交给指定校对者，按句号收集意见、修改并重新导出。得到明确确认后，按 [script-review.md](script-review.md) 记录；中文确认后翻译，逐句校对译文。
 

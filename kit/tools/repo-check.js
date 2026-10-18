@@ -10,6 +10,11 @@ for (const file of tracked) {
   if (/^(node_modules\/|\.venv\/|kit\/config\.local\.json$|assets\/(?!README\.md$))/.test(file) || /^videos\/.*\/(audio|out|shots|build|research\/_src)\//.test(file) || /(^|\/)\.ft-work\.lock$/.test(file)) errors.push('生成物或本机配置已跟踪：' + file);
 }
 const json = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+const feedbackRules = require('./feedback').registry(root);
+const ledger = fs.readFileSync(path.join(root, 'docs/feedback.md'), 'utf8');
+const ledgerIds = new Set([...ledger.matchAll(/^\| (F\d+) \|/gm)].map(match => match[1]));
+const ruleIds = new Set(feedbackRules.rules.map(rule => rule.id));
+for (const id of new Set([...ledgerIds, ...ruleIds])) if (!ledgerIds.has(id) || !ruleIds.has(id)) errors.push('反馈总账与结构化规则编号不一致：' + id);
 const pkg = json('package.json'), lock = json('package-lock.json').packages[''];
 if (JSON.stringify(pkg.dependencies) !== JSON.stringify(lock.dependencies) || pkg.engines.node !== lock.engines.node) errors.push('package.json 与 package-lock.json 的依赖或 Node 版本不一致');
 for (const file of listed.filter(file => /^kit\/(tools|tests)\/.*\.js$/.test(file))) {

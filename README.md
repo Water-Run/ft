@@ -11,6 +11,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 | 首次 clone，跑通模板 | [快速入门](docs/getting-started.md) |
 | 用自己的身份和仓库制作 | [公开制作配置](kit/studio.json)、[独立使用说明](docs/getting-started.md#3-用于独立制作或-fork) |
 | 写文案、交给用户校对 | [文案与校对](docs/script-review.md) |
+| 让反馈持续进入之后的制作 | [反馈应用流程](docs/feedback-loop.md)、[当前规则](docs/feedback-rules.json) |
 | 制作结束，保存和清理 | [归档、清理与恢复](docs/lifecycle.md) |
 | 了解结构或参与维护 | [仓库结构](docs/repository.md)、[贡献指南](CONTRIBUTING.md)、[文档总览](docs/README.md) |
 

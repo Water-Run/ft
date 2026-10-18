@@ -17,6 +17,7 @@ f(t) 将一部视频的事实依据、文案、人工校对、动画源码和交
 ## 专题
 
 - 内容：[取证](research.md)、[脚本与配音](script-and-voice.md)、[系列](series.md)、[委托制作](delegation.md)。
+- 反馈应用：[持续进入下一部的检查流程](feedback-loop.md)、[当前结构化规则](feedback-rules.json)、[InnoDB 与 Lean 4 复盘](reviews/2026-10-18.md)。
 - 视听：[视觉设计](visual-design.md)、[场景](scenes.md)、[声音](sound.md)。
 - 维护：[仓库结构](repository.md)、[环境](environment.md)、[收尾清理](lifecycle.md)、[第三方许可](third-party.md)。
 - 本仓库的作品记录：[片单](catalog.md)、[制作 TODO 与完成情况](todo.md)、[历史排期](plans/2026-10-09--15.md)、[反馈](feedback.md)、[制作复盘](retrospectives.md)。独立使用者自行制定选题与排期。

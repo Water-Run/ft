@@ -3,6 +3,7 @@
 本片：`{{PATH}}`。当前阶段与接续步骤以 README 为准。
 
 1. 读仓库 `AGENTS.md`、`docs/workflow.md`、`docs/standards.md`、`docs/feedback.md`，填写 README 的开工反馈应用。
+   先运行 `node kit/tools/feedback.js {{PATH}} sync`，按当前规则填写 `review/feedback.json`，对照 Lean 4 负面案例与 MyISAM 正面对照；以后规则更新也要重新核对变化项。
 2. 核对 `project.json`、README、`research/FACTS.md` 与当前输出。事实只能来自 FACTS.md。
 3. `src/js/script.js` 是唯一文案源稿。用 `script-review.js` 导出逐句校对稿，意见留在 `review/NOTES.md`。
 4. 指定校对者 {{REVIEWER}} 明确确认前不配音、不铺开场景；不能自行填写虚构的通过记录。确认过期时按 `docs/script-review.md` 处理。

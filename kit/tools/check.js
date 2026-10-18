@@ -16,6 +16,13 @@ const exists = (f) => fs.existsSync(path.join(VIDEO, f));
 const review = require('./script-review').status(VIDEO, P, LANGS);
 if (!review.ok) { console.error('✗ 文案校对：\n  ' + review.problems.join('\n  ')); process.exit(1); }
 add('文案校对', true, review.legacy ? review.details : ['人工记录与当前内容一致；确认真实性按 docs/script-review.md 核对。']);
+const feedback = require('./feedback').prepared(VIDEO, P);
+if (!feedback.ok) { console.error('✗ 反馈应用：\n  ' + feedback.problems.join('\n  ')); process.exit(1); }
+if (flag('final') && !feedback.legacy) {
+  const result = spawnSync(process.execPath, [path.join(__dirname, 'feedback.js'), VIDEO, 'check', '--stage', 'final', '--lang', LANGS.join(',')], { encoding: 'utf8' });
+  if (result.status !== 0) { console.error('✗ 结尾反馈复核：\n' + (result.stdout || '') + (result.stderr || '')); process.exit(1); }
+}
+add('反馈应用', true, feedback.legacy ? ['旧项目尚未接入版本检查，接续制作时先运行 feedback.js sync。'] : ['当前规则已逐项应用；最终检查同时核对主成片版本与时间证据。']);
 
 // ── 交接检查（--handoff）：准备方交给受托模型之前 ──
 if (flag('handoff')) {

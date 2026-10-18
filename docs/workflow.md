@@ -66,6 +66,7 @@
 
    系列里的一集先读该系列的说明 `videos/series/<系列>/README.md`：系列内要保持连续性，见 [series.md](series.md)。
 4. 在新建的 README 填写「开工反馈应用」，逐项带入 [feedback.md](feedback.md) 第 7 节的问题编号：适用性（不适用须说明）、本片计划、正面对照与验证办法。不能只写“已阅读反馈”。已有片子改工时也先补本轮记录，不覆盖旧复盘。委托片由准备方写入 `brief/01-mission.md`，受托方开工时复查并留档。
+   运行 `node kit/tools/feedback.js <视频> sync`，按当前结构化规则填写 `review/feedback.json`；先用 `check` 验证计划，再进入已确认文案的配音。新规则同样作用于在制项目，详见 [feedback-loop.md](feedback-loop.md)。
 5. `node kit/tools/doctor.js <视频>` 检查环境；缺什么按 [environment.md](environment.md) 补。
 
 ## 1 取证
@@ -193,6 +194,7 @@ node kit/tools/covers.js <视频>
 ## 10 交付与记录
 
 1. `node kit/tools/check.js <视频> --final` 全部通过，并完成 [review.md](review.md) 第 5 节的检查；补查封面事实与最终片尾名单，未完成的检查不能记为通过。
+   启用反馈检查的项目还须逐项给出正式主成片的语言、起止秒数、SHA-256 和真实复核结论；未试听或尚未修改的项保留未完成，文件可先交讨论，不能称完整验收已通过。
 2. 本片的 `README.md` 写全：内容、视觉系统与参考来源、取证方式、读法、复现命令、成片规格、制作署名与片尾时段、各项审查中改掉了什么、哪些需要人来判断（配乐听感、音色、画面观感）。保留「开工反馈应用」并完成同编号的「结尾反馈复盘」，不能用一句“全部通过”替代。委托片同步结论到 `DELIVERY.md`。
 3. 片单里把状态改为 `delivered`，运行 `node kit/tools/catalog.js`；根 `README.md` 的「已成片」表加一行（视频、语言、时长、制作、发布链接）。同步 [todo.md](todo.md) 中对应版本的交付与接续状态，完成本轮复盘后再勾选；延期写明新日期与原因。
 4. 系列里的一集：把这一集定下的做法写回系列说明；首集完成后整理系列基座（见 [series.md](series.md)）。

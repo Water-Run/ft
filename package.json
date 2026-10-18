@@ -13,6 +13,7 @@
     "catalog": "node kit/tools/catalog.js",
     "new": "node kit/tools/new.js",
     "review": "node kit/tools/script-review.js",
+    "feedback": "node kit/tools/feedback.js",
     "clean": "node kit/tools/clean.js",
     "test": "node --test kit/tests/workflow.test.js",
     "check:repo": "node kit/tools/repo-check.js",

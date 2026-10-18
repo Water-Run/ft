@@ -20,6 +20,7 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 | `new.js <位置>` | 新建并登记片单；`--scratch` 在 `out/sandbox/` 练习且不改片单；公开默认值取 studio 配置 | — | 瞬间 |
 | `doctor.js [视频]` | 完整环境自检；`--visual` 只查 Node、浏览器与字体；只诊断不清理 | — | 几秒 |
 | `script-review.js export / check` | 导出逐句校对稿 / 核对内容与人工确认记录，见 [文案校对](script-review.md) | 导出主语言，检查全部；可用 `--lang` | 瞬间 |
+| `feedback.js sync / check` | 从当前规则带入本片；配音前查应用计划，`check --stage final` 核对实际主成片哈希与时间证据 | 全部；最终检查可用 `--lang` | 计划检查瞬间，成片按文件量 |
 | `clean.js <视频>` | 默认预览；`--archive <新目录> --apply` 归档校验后清理；`--verify <归档>` 核对备份 | 全部 | 取决于文件量 |
 | `repo-check.js` | 语法、依赖锁、本地文档链接、入库边界与片单检查 | — | 几秒 |
 | `smoke.js` | 新建隔离练习、导出稿本、打开中英模板截图；不配音 | 中文、英文 | 约十几秒 |
@@ -118,6 +119,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `asr_prompts` | 给语音识别的提示：一句话说明内容并带上术语的正确拼写，回听时识别得更准 |
 | `production` | `mode` 为 `self` 或 `delegated`；`maker` 制作者；委托时 `prepared_by` 准备方；`planner` 为实际策划，`repository` 为本片公开源码仓库，新建时从 `kit/studio.json` 拷入 |
 | `review` | 新片为 `{ "required": true, "reviewer": "WaterRun" }`（fork 配置实际校对者）；内容哈希、日期、依据在本片 `review/approval.json` |
+| `feedback` | 新片为 `{ "required": true }`；规则在 `docs/feedback-rules.json`，逐项计划与实际成片复核在本片 `review/feedback.json`；旧片接续用 `feedback.js sync` 启用 |
 | `render` | `fps`（60）、`mb` 运动模糊的子帧数（1 为不开）、`shutter` 快门开角（0.5）、`crf`（15）、`gpu`（WebGL 场景设 1） |
 | `audio` | 见 [sound.md](sound.md) 第 4 节 |
 | `check` | 见下 |

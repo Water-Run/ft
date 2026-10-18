@@ -27,6 +27,7 @@ function snapshot(video, project, lang) {
     cues: scene.cues.map(([id, text, options = {}]) => {
       if (ids.has(id)) throw new Error('句号重复：' + id);
       ids.add(id);
+      if (options.credits && (options.pause == null || text != null || options.tts)) throw new Error('片尾署名须为无旁白 cue：' + id);
       if (options.pause == null && (typeof text !== 'string' || !text.trim())) throw new Error(lang + ' 缺少字幕：' + id);
       return { id, text: text ?? null, silent: options.pause != null };
     }),
@@ -59,6 +60,7 @@ function assertApproved(video, project, languages) {
   const result = status(video, project, languages);
   if (!result.ok) throw new Error('文案校对未通过：\n  ' + result.problems.join('\n  ') + '\n先导出交审稿：node kit/tools/script-review.js <视频> export。规则见 docs/script-review.md。');
   if (result.legacy) console.log('提示：' + result.details[0]);
+  require('./feedback').assertPrepared(video, project);
 }
 function exportReview(video, project, languages) {
   const dir = path.join(video, 'review');
@@ -80,6 +82,7 @@ function exportReview(video, project, languages) {
       '- 目标观众、主问题、逐章答案及舍弃材料：[本片 README](../README.md)。',
       '- 事实、条件与推断：[FACTS.md](../research/FACTS.md)，按句号定位。',
       '- 意见与逐项处理：[校对记录](NOTES.md)。', '', '直接反馈句号、问题与建议即可；制作者修改 script.js 后重新导出。', ''];
+    if (project.feedback) lines.push('反馈应用：[逐项记录](feedback.json)。交审时同时核对 Lean 4 负面案例、单集独立理解、中文释义与口播负担。', '');
     for (const scene of current.content.scenes) {
       const timing = current.estimate.scenes.find(item => item.id === scene.id);
       lines.push('## ' + cell(scene.id) + ' · ' + cell(scene.chapter?.join(' ') || '无章节卡'), '',

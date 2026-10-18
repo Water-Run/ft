@@ -57,6 +57,7 @@ ft/
 | 文案 | 本片 `src/js/script.js` | 按内容哈希保存的校对稿、配音输入、字幕 |
 | 事实 | 本片 `research/FACTS.md` 与对应证据 | 片中陈述、画面数据与说明 |
 | 已确认的版本 | 人的明确确认，记录在 NOTES | `approval.json` 的一致性检查 |
+| 持续制作反馈 | `docs/feedback.md` 的来源记录与 `feedback-rules.json` 的当前规则 | 新片 / 委托模板、每片 `review/feedback.json`、配音前和交付前检查 |
 | 实测时间 | 实际旁白及 `timing.*.js` | 场景时间线、音效与混音安排 |
 | 归档清单 | 对实际文件计算 | `manifest.json`，供恢复校验 |
 

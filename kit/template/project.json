@@ -7,6 +7,7 @@
   "asr_prompts": {{PROMPTS_JSON}},
   "production": {{PRODUCTION_JSON}},
   "review": {{REVIEW_JSON}},
+  "feedback": { "required": true },
   "render": { "fps": 60, "mb": 4 },
   "audio": { "music": "pulse", "music_db": -21, "duck_db": 9, "sfx_db": -8 },
   "check": {
