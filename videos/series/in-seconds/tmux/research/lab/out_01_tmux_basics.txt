@@ -1,0 +1,68 @@
+## 1. version and kernel
+tmux 3.4
+Linux 6.18.54.1-microsoft-standard-WSL2 x86_64
+
+## 2. start a detached session (no client attached)
+session=demo windows=1 attached=0 created=1792337246
+
+## 3. server pid, socket path, client count
+server_pid=506 socket=/tmp/tmux-1001/ftlab session=demo
+socket stat: socket mode=660 owner_uid=1001
+server exe: /usr/bin/tmux
+server fd 0: /dev/null
+
+## 4. pane process and its controlling terminal
+target=demo:0.0 pane_pid=507 tty=/dev/pts/2 dead=0 cmd=bash
+    PID    PPID TT       STAT COMMAND         COMMAND
+    507     506 pts/2    Ss+  bash            bash --norc
+pane stdin -> /dev/pts/2
+pane stdout -> /dev/pts/2
+
+## 5. add a window and split it into two panes
+window=0 name=bash panes=1 active=0
+window=1 name=edit panes=2 active=1
+pane=0 pid=522 tty=/dev/pts/3 width=40 height=24 active=0
+pane=1 pid=525 tty=/dev/pts/4 width=39 height=24 active=1
+
+## 6. type into a pane and capture its screen
+bash-5.2$ echo PANE-A; tty
+PANE-A
+/dev/pts/3
+bash-5.2$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 7. default prefix and selected prefix bindings
+prefix C-b
+
+## 8. detach a real attached client; session and its process survive
+client=/dev/pts/5 session=demo pid=539
+counter_before_detach=4 counter_after_detach=9
+clients_now=0
+session=demo windows=2 attached=0
+
+## 9. reattach a new client, then detach again
+client=/dev/pts/4 session=demo pid=566
+
+## 10. kill the server: sessions and pane processes end
+no server running on /tmp/tmux-1001/ftlab
+server_alive_after_kill=no
+pane_alive_after_kill=no

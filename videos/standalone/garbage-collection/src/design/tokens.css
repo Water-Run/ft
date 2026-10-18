@@ -1,0 +1,33 @@
+/* 瑞士风格设计 token — 方向稿，尚未接入 style.css。
+   实现时把变量并入 src/css/style.css，并同步 project.json 的 check.style.palette/fonts。 */
+
+:root {
+  /* 黑、米白、灰、一个强调红 */
+  --sw-black: #111111;
+  --sw-paper: #F4F1EA;
+  --sw-red: #DA291C;
+  --sw-gray: #8A8A8A;
+  --sw-light: #D9D5CC;
+  --sw-white: #FFFFFF;
+
+  /* 字体角色 */
+  --sw-font-display: "Inter", "Sans SC";
+  --sw-font-body: "Sans SC", "Inter";
+  --sw-font-mono: "Mono", "Inter";
+
+  /* 12 栏网格 */
+  --sw-grid: 12;
+  --sw-margin: 120px;
+  --sw-gutter: 24px;
+  --sw-rule: 1px;
+  --sw-rule-bold: 2px;
+
+  /* 字号阶梯（1080p） */
+  --sw-size-display: 320px;
+  --sw-size-title: 180px;
+  --sw-size-statement: 120px;
+  --sw-size-sub: 60px;
+  --sw-size-body: 38px;
+  --sw-size-caption: 28px;
+  --sw-size-micro: 22px;
+}

@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "version": "2026-10-18",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "标题已含“是什么、怎么用、如何实现”；事实测绘补历史，但历史只占一小段，不抢主线",
+      "script_evidence": "research/NARRATIVE.md 的「一个核心问题」「逐章问题与答案」；写稿时对应 script.js 的 open 与 close。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "用同一个 detach/attach 实验贯穿：先看到 counter 继续走，再拆 server/pty，再回到命令",
+      "script_evidence": "research/NARRATIVE.md 的逐章表；script.js 的 model/impl 两章逐步句。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "首次出现 session/window/pane/pty 时各给一句定义；区分 tmux 3.4 实验与 3.8 文档；不把 psmux 当 tmux",
+      "script_evidence": "research/FACTS.md 的「边界与常见误说」；script.js 首次出现 session/window/pane/pty 的句子。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片没有章节卡；片名/结论卡按 2–3 秒完整阅读设计，不用“刷一下”代替阅读",
+      "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "换场只用拔插电缆、换台雪花、挡板合拢三类，各自绑定不同语义；不做全片同一种擦除",
+      "script_evidence": "src/design/STYLE.md 第 6 节；src/js/scenes 的转场。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "继电器、按键、磁带、CRT 底噪各有语义；不用默认 whoosh；配乐写清节奏与加层",
+      "script_evidence": "src/design/STYLE.md 第 7 节；src/js/config.js 的 sfx/audio 配置。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "实验回显已去掉用户名/主机名；画面只用 `/tmp/ft-tmux-lab` 与通用路径",
+      "script_evidence": "research/FACTS.md「取证环境」；research/lab/out_01_tmux_basics.txt；画面只用 /tmp/ft-tmux-lab。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "目标 128 秒 ±0.1；60fps、立体声、响度按仓库默认；出片后记录实际编码参数与哈希",
+      "script_evidence": "README「复现」与 project.json；check.js/ffprobe 记录。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "3.4/3.8 差异、psmux、socket 权限等容易引战；每条回到 FACTS 的来源与版本，未核的写“待核”",
+      "script_evidence": "research/FACTS.md 的来源与状态列；README 的 F09 行。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本集不依赖前集；不写“上一期/第几集”。tmux 的概念在 open/model 两章自足。",
+      "script_evidence": "research/NARRATIVE.md 的「决定不讲」；script.js 不写“上一期”或系列编号。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "英文术语 pty、VT100、client/server、socket 首次出现时给中文解释；tmux 源码引文只作辅助，画面给中文释义。",
+      "script_evidence": "research/FACTS.md 的英文引文；script.js 首次出现 pty、VT100、socket 时给中文解释。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "专名 tmux、pty、libevent、OpenBSD、VT100 列试听清单；断句按语义，不按字幕切。",
+      "script_evidence": "script.js 的 SAY 表与 tts_probe 清单；专名 tmux、pty、libevent、OpenBSD、VT100。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}

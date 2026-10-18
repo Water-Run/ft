@@ -1,0 +1,76 @@
+{
+  "slug": "web-login",
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "titles": {
+    "zh": "200 秒了解 Web 登录机制：怎么验证你是你",
+    "en": "Web Login in 200 Seconds: How a Site Checks That You Are You"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+6%",
+    "en": "+8%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。",
+    "en": "A narration."
+  },
+  "production": {
+    "mode": "self",
+    "maker": "DeepSeek Flash",
+    "planner": "WaterRun",
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 8
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -12,
+    "duck_db": 7,
+    "sfx_db": -9
+  },
+  "check": {
+    "duration": [
+      199.9,
+      200.1
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "pace": {
+      "en": {
+        "fast": 4
+      }
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    },
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    }
+  },
+  "feedback": {
+    "required": true
+  }
+}

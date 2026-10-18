@@ -1,0 +1,49 @@
+/* 卡带未来主义设计 token — 方向稿，尚未接入 style.css。
+   实现时把变量并入 src/css/style.css，并同步 project.json 的 check.style.palette/fonts。 */
+
+@font-face {
+  font-family: "VT323";
+  src: url("/fonts/VT323.ttf");
+  font-display: block;
+}
+
+:root {
+  /* 黑底与荧光 */
+  --cf-black: #0B0D0A;
+  --cf-green: #74FF9A;
+  --cf-amber: #FFB23E;
+  --cf-ink: #151713;
+
+  /* 机身 */
+  --cf-cream: #D8CFB4;
+  --cf-charcoal: #2B2D2A;
+  --cf-olive: #4A4F3A;
+  --cf-rust: #A8432F;
+  --cf-steel: #8C8F86;
+  --cf-paper: #E8E1CC;
+
+  /* 只给警示灯 */
+  --cf-red: #D63A2C;
+
+  /* 字体角色 */
+  --cf-font-display: "VT323", "Mono";
+  --cf-font-label: "Mono", "Inter";
+  --cf-font-body: "Sans SC", "Inter";
+  --cf-font-terminal: "Mono", "VT323";
+
+  /* 机架版式 */
+  --cf-page-margin: 120px;
+  --cf-grid: 12;
+  --cf-gap: 16px;
+  --cf-seam: 12px;
+  --cf-label-gap: 10px;
+
+  /* CRT 质感（只作用于 CRT 矩形内部） */
+  --cf-scanline-step: 3px;
+  --cf-scanline-alpha: 0.10;
+  --cf-phosphor-edge: 1px;
+
+  /* 12 fps 步进：60fps 下每 5 帧一次 */
+  --cf-step: 83.333ms;
+  --cf-step-frames: 5;
+}

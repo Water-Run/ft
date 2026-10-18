@@ -1,0 +1,13 @@
+gc 1 @0.001s 0%: 0+0+0.51 ms clock, 0+0/0/0+12 ms cpu, 3->4->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 2 @0.002s 0%: 0+0+0 ms clock, 0+0/0/0+0 ms cpu, 3->4->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 3 @0.003s 0%: 0+0+0 ms clock, 0+0/0/0+0 ms cpu, 3->3->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 4 @0.004s 0%: 0+0+0 ms clock, 0+0/0/0+0 ms cpu, 3->4->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 5 @0.004s 0%: 0+0+0 ms clock, 0+0/0/0+0 ms cpu, 3->3->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 6 @0.005s 0%: 0+0+0 ms clock, 0+0/0/0+0 ms cpu, 3->4->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 7 @0.005s 0%: 0+0+0 ms clock, 0+0/0/0+0 ms cpu, 3->3->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P
+gc 8 @0.005s 2%: 0+0.51+0 ms clock, 0+0/2.5/0.51+0 ms cpu, 2->2->0 MB, 4 MB goal, 0 MB stacks, 0 MB globals, 24 P (forced)
+go=go1.27.0
+allocated_nodes=200000 kept_nodes=1000
+before: HeapAlloc=438944 HeapObjects=250 NumGC=0
+after:  HeapAlloc=633552 HeapObjects=1324 NumGC=8
+gc_cycles_during_run=8

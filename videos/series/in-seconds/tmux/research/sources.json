@@ -1,0 +1,88 @@
+{
+  "accessed": "2026-10-18",
+  "note": "来源编号与 research/FACTS.md 的「依据」列对应。网页以读取日为准；源码固定到提交。",
+  "sources": {
+    "tmux-readme": {
+      "title": "tmux README",
+      "publisher": "tmux project",
+      "url": "https://raw.githubusercontent.com/tmux/tmux/master/README",
+      "type": "primary-doc",
+      "accessed": "2026-10-18",
+      "notes": "项目自述：terminal multiplexer、可分离/重连、支持的系统、依赖、构建、ISC 许可。master 在读取日指向 3.8 之后；具体版本以 CHANGES 与 release 为准。"
+    },
+    "tmux-man": {
+      "title": "tmux(1) manual page",
+      "publisher": "OpenBSD manual pages",
+      "url": "https://man.openbsd.org/tmux.1",
+      "type": "primary-doc",
+      "accessed": "2026-10-18",
+      "notes": "DESCRIPTION、DEFAULT KEY BINDINGS、COMMANDS、WINDOWS AND PANES、-L/-S socket 等。页面未给文档版本；与 3.8 源码同期。"
+    },
+    "tmux-changes": {
+      "title": "tmux CHANGES",
+      "publisher": "tmux project",
+      "url": "https://raw.githubusercontent.com/tmux/tmux/master/CHANGES",
+      "type": "primary-doc",
+      "accessed": "2026-10-18",
+      "notes": "2007 年 11 月 20 日条目写「tmux 0.1 released」；还记录了 3.7→3.8 的 floating panes、themes 等变化。"
+    },
+    "tmux-interview-2009": {
+      "title": "Interview with Nicholas Marriott on tmux",
+      "publisher": "OpenBSD Journal (undeadly.org)",
+      "url": "https://undeadly.org/cgi?action=article;sid=20090712190402",
+      "published": "2009-07-12",
+      "type": "interview",
+      "accessed": "2026-10-18",
+      "notes": "作者自述：原型叫 nscr；2007 年末发布第一版；因为 screen 的文档、配置、命令行和代码有包袱；目标是可读、可扩展，并能在多个终端间共享一个窗口；不是要复制 screen。"
+    },
+    "tmux-import-2009": {
+      "title": "OpenBSD imports tmux",
+      "publisher": "OpenBSD Journal (undeadly.org)",
+      "url": "https://undeadly.org/cgi?action=article&sid=20090707041154",
+      "published": "2009-07-07",
+      "type": "news",
+      "accessed": "2026-10-18",
+      "notes": "2009-07-07 导入 OpenBSD base；引用了当时项目站点的介绍：清晰的 client-server 模型、窗口可在多个 session 间链接、Ctrl-B 前缀。"
+    },
+    "tmux-release-3.8": {
+      "title": "tmux 3.8 release",
+      "publisher": "GitHub API / tmux project",
+      "url": "https://api.github.com/repos/tmux/tmux/releases/latest",
+      "published": "2026-09-09T12:55:58Z",
+      "type": "release-metadata",
+      "accessed": "2026-10-18",
+      "notes": "tag_name=3.8；published_at=2026-09-09T12:55:58Z；资产 tmux-3.8.tar.gz，sha256 e79c699c7e949dccd0a4a125e17b8d1261e311b16979dbc8eb34542f3966d82e。"
+    },
+    "tmux-source-3.8": {
+      "title": "tmux source at tag 3.8",
+      "publisher": "tmux project",
+      "url": "https://github.com/tmux/tmux/tree/3.8",
+      "commit": "7f2a35ad3321f9ba57a1062ca73b1f3ff26aca53",
+      "commit_date": "2026-10-08T08:13:43+01:00",
+      "type": "source",
+      "accessed": "2026-10-18",
+      "notes": "本地 clone 后以 git show 3.8:<file> 读取；行号按该提交。文件：server.c, client.c, tmux.h, spawn.c, window.c, input.c, server-client.c, screen-redraw.c, tty.c, screen.c, proc.c。",
+      "files": {
+        "server.c": "socket creation / accept / server_start / server_loop",
+        "client.c": "client_connect / client_main；AF_UNIX 连接失败时启动 server",
+        "tmux.h": "struct client / session / window / window_pane / screen",
+        "spawn.c": "fdforkpty 创建 pane 的 pty 与子进程",
+        "window.c": "window_pane_read_callback；bufferevent 读取 pane 输出",
+        "input.c": "VT100/ANSI 状态机；input_parse_pane",
+        "server-client.c": "按键分派到 window_pane_key",
+        "screen-redraw.c": "为 client 构建 scene/span 并重绘",
+        "tty.c": "tty_write 遍历 clients 写终端",
+        "screen.c": "虚拟屏幕 screen_init",
+        "proc.c": "proc_fork_and_daemon"
+      }
+    },
+    "tmux-lab-3.4": {
+      "title": "tmux 3.4 实验：session、pane、pty、detach、socket",
+      "publisher": "本片实验",
+      "url": "research/lab/01_tmux_basics.sh",
+      "type": "experiment",
+      "accessed": "2026-10-18",
+      "notes": "Ubuntu 24.04.4 LTS on WSL2，kernel 6.18.54.1-microsoft-standard-WSL2，tmux 3.4。脚本与完整回显在 research/lab/01_tmux_basics.sh 与 out_01_tmux_basics.txt。实验用 -L ftlab、-f /dev/null 隔离配置；未使用 Windows 上的 psmux。"
+    }
+  }
+}

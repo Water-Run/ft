@@ -1,0 +1,36 @@
+/* 包豪斯设计 token — 方向稿，尚未接入 style.css。
+   实现时把变量并入 src/css/style.css，并同步 project.json 的 check.style.palette/fonts。 */
+
+:root {
+  /* 三原色 + 黑 + 米白 */
+  --bh-red: #E2412C;
+  --bh-yellow: #F2C230;
+  --bh-blue: #2F57B0;
+  --bh-black: #111111;
+  --bh-paper: #F1ECE1;
+  --bh-white: #FFFFFF;
+
+  /* 字体角色 */
+  --bh-font-display: "Inter", "Sans SC";
+  --bh-font-body: "Sans SC", "Inter";
+  --bh-font-label: "Inter", "Sans SC";
+
+  /* 12 栏网格与形状 */
+  --bh-grid: 12;
+  --bh-margin: 120px;
+  --bh-gutter: 24px;
+  --bh-shape-gap: 18px;
+  --bh-stroke: 6px;
+
+  /* 字号阶梯（1080p） */
+  --bh-size-display: 320px;
+  --bh-size-title: 200px;
+  --bh-size-statement: 120px;
+  --bh-size-label: 56px;
+  --bh-size-body: 38px;
+  --bh-size-caption: 28px;
+
+  /* 12 fps 形状步进 */
+  --bh-step: 83.333ms;
+  --bh-step-frames: 5;
+}

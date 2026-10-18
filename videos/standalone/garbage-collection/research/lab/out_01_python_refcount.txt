@@ -1,0 +1,32 @@
+python 3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]
+gc enabled at start: True
+baseline gc.collect() -> 21
+
+## 1. a reference count goes up and down
+sys.getrefcount(a) after a = Node('A'): 2
+sys.getrefcount(a) after b = a: 3
+sys.getrefcount(a) after del b: 2
+note: getrefcount() itself adds one temporary reference
+
+## 2. last reference dropped: object is finalized immediately
+weakref before del a: True
+  __del__ A
+weakref after del a: None
+
+## 3. two objects pointing at each other
+refcount X with cycle: 3
+refcount Y with cycle: 3
+weakref after dropping the outside names: <__main__.Node object at 0x0000026A2B6A0A50>
+  __del__ X
+  __del__ Y
+gc.collect() -> 2
+weakref after gc.collect(): None
+gc.garbage: []
+
+## 4. counters after the run
+gc.get_count(): (0, 0, 0)
+note: gc.collect() also visits unrelated cycle-tracked objects
+gc.get_stats():
+  generation 0 {'collections': 0, 'collected': 0, 'uncollectable': 0}
+  generation 1 {'collections': 0, 'collected': 0, 'uncollectable': 0}
+  generation 2 {'collections': 2, 'collected': 23, 'uncollectable': 0}

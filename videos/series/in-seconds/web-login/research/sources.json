@@ -1,0 +1,126 @@
+{
+  "accessed": "2026-10-18",
+  "note": "来源编号与 research/FACTS.md 的「依据」列对应。标准以 RFC/W3C/NIST 的正式文本为准；OWASP 作为工程实践的第二路印证。",
+  "sources": {
+    "rfc6265": {
+      "title": "RFC 6265: HTTP State Management Mechanism",
+      "author": "A. Barth",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc6265.html",
+      "published": "April 2011",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "Cookie/Set-Cookie 的语法与语义；§3.1 会话标识示例；§4.1.2 Secure/HttpOnly；§8.2 ambient authority 与 CSRF；§8.4 session identifier 与 session fixation；§8.3/8.5/8.6 弱机密性/完整性。"
+    },
+    "netscape-cookie-spec": {
+      "title": "Persistent Client State: HTTP Cookies (preliminary specification)",
+      "publisher": "Netscape Communications Corp.; archived by the Wayback Machine",
+      "url": "https://web.archive.org/web/20020803110822/http://wp.netscape.com/newsref/std/cookie_spec.html",
+      "type": "historical-spec",
+      "accessed": "2026-10-18",
+      "notes": "最早的 cookie 规格之一：Set-Cookie 的 NAME=VALUE、expires、path、domain、secure；Cookie 请求头；删除 cookie 的方法；页面版权行为 1999。"
+    },
+    "kristol-cookie-history": {
+      "title": "Re: cookies history",
+      "author": "Dave Kristol",
+      "publisher": "W3C ietf-http-wg mailing list archive",
+      "url": "https://lists.w3.org/Archives/Public/ietf-http-wg/2002OctDec/0008.html",
+      "published": "2002-10-24",
+      "type": "mailing-list",
+      "accessed": "2026-10-18",
+      "notes": "Kristol 回复：Lou Montulli 于 1994 年某个时候在 Netscape 发明 cookies，用来支持电子商务应用。Kristol 是 cookie 规范作者之一；这是历史陈述，不是 1994 年的原始文档。"
+    },
+    "owasp-auth": {
+      "title": "Authentication Cheat Sheet",
+      "publisher": "OWASP Cheat Sheet Series",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+      "type": "engineering-guide",
+      "accessed": "2026-10-18",
+      "notes": "Authentication/Identity Proofing/Session Management 的定义；密码长度（有 MFA 至少 8，无 MFA 至少 15；最大至少 64）；不要组成规则；blocklist；TLS；常量时间比较；重新认证；MFA；OAuth/OIDC/SAML/FIDO 的边界。"
+    },
+    "owasp-password-storage": {
+      "title": "Password Storage Cheat Sheet",
+      "publisher": "OWASP Cheat Sheet Series",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "type": "engineering-guide",
+      "accessed": "2026-10-18",
+      "notes": "密码必须用慢哈希；Argon2id 最低配置（19 MiB, t=2, p=1）；scrypt；bcrypt 10+ 且 72 字节上限；PBKDF2 600,000 次（FIPS）；salt 唯一；pepper 单独保存；work factor 可升级；不要明文/可逆加密。"
+    },
+    "owasp-session": {
+      "title": "Session Management Cheat Sheet",
+      "publisher": "OWASP Cheat Sheet Series",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "type": "engineering-guide",
+      "accessed": "2026-10-18",
+      "notes": "session ID 是 bearer credential；至少 64 bits 熵、CSPRNG；不要放 PII；cookie 的 Secure/HttpOnly/SameSite；session fixation；登录/权限变化后轮换；空闲/绝对超时；注销；日志与监控。"
+    },
+    "rfc7617": {
+      "title": "RFC 7617: The 'Basic' HTTP Authentication Scheme",
+      "author": "J. Reschke",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc7617.html",
+      "published": "September 2015",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "Basic 认证把 user-id:password 用 Base64 编码；不是加密；没有 TLS 就是明文；不应在敏感场景单独使用；密码应存成不可逆的慢哈希。"
+    },
+    "rfc6749": {
+      "title": "RFC 6749: The OAuth 2.0 Authorization Framework",
+      "author": "D. Hardt (ed.)",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc6749.html",
+      "published": "October 2012",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "四个角色（resource owner、resource server、client、authorization server）；authorization code flow；access token/refresh token；§4.1.2 code 短期、单次使用；§10.12 state 防 CSRF。"
+    },
+    "rfc7636": {
+      "title": "RFC 7636: Proof Key for Code Exchange by OAuth Public Clients",
+      "author": "N. Sakimura, J. Bradley, N. Agarwal",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc7636.html",
+      "published": "September 2015",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "PKCE：code_verifier 43–128 字符、高熵；code_challenge = S256(code_verifier)；授权请求带 challenge，token 请求带 verifier；防授权码拦截；plain 仅为兼容。"
+    },
+    "oidc-core": {
+      "title": "OpenID Connect Core 1.0 incorporating errata set 2",
+      "author": "N. Sakimura, J. Bradley, M. Jones, B. de Medeiros, C. Mortimore",
+      "publisher": "OpenID Foundation",
+      "url": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "published": "2014 (final); errata set 2 dated 2023-12-15",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "OIDC 是 OAuth 2.0 上的身份层；ID Token 是 JWT；Authorization Code Flow；scope=openid；state/nonce；ID Token 的验证。"
+    },
+    "rfc7519": {
+      "title": "RFC 7519: JSON Web Token (JWT)",
+      "author": "M. Jones, J. Bradley, N. Sakimura",
+      "publisher": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc7519.html",
+      "published": "May 2015",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "JWT 是 claims 的紧凑表示；作为 JWS payload 时可签名/MAC，作为 JWE plaintext 时可加密；不默认加密；iss/sub/aud/exp/nbf/iat/jti；验证签名与声明；隐私考虑。"
+    },
+    "webauthn-2": {
+      "title": "Web Authentication: An API for accessing Public Key Credentials - Level 2",
+      "publisher": "W3C",
+      "url": "https://www.w3.org/TR/webauthn-2/",
+      "published": "W3C Recommendation, 2021-04-08",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "abstract：创建/使用 public key credentials，scoped to a Relying Party，绑定到 authenticator，用户同意，attestation；§1.2 registration/authentication 用例；§1.3 示例；§5.1 create/get；§7 RP operations。"
+    },
+    "nist-800-63b-4": {
+      "title": "NIST SP 800-63B-4: Digital Identity Guidelines — Authentication and Lifecycle Management",
+      "publisher": "NIST",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "published": "2025-08-26 (page date)",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "AAL1/2/3；单因素/多因素；AAL2 要求两种不同因素并提供 phishing-resistant 选项；AAL3 要求 public-key、non-exportable、phishing-resistant；OTP 不是 phishing-resistant；biometric 本身不算 authenticator；AAL1 30 天、AAL2 24 小时/1 小时空闲的建议；重认证。"
+    }
+  }
+}

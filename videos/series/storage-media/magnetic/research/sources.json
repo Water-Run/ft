@@ -1,0 +1,168 @@
+{
+  "accessed": "2026-10-18",
+  "note": "来源编号与 research/FACTS.md 的「依据」列对应。容量、密度、年份尽量用博物馆/厂商/标准原文；二手转载只作辅助。",
+  "sources": {
+    "chm-ramac-1956": {
+      "title": "1956: First commercial hard disk drive shipped",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/first-commercial-hard-disk-drive-shipped/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "IBM 350 RAMAC：1956 年 6 月交付 Zellerbach Paper；50 张 24 英寸盘、1200 rpm、5 million 6-bit characters、2000 bits/sq in、约 3.75 MB、磁头飞行高度 800 microinches、平均访问 <1 秒、5×6 英尺、超过 1 吨、月租 $750。"
+    },
+    "asme-ramac": {
+      "title": "IBM 350 RAMAC Disk File",
+      "publisher": "ASME Engineering Landmarks",
+      "url": "https://www.asme.org/about-asme/engineering-history/landmarks/90-ibm-350-ramac-disk-file",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "1956-09-04 引入；50 张盘、每面 100 条同心磁道、共 20,000 条磁道、5 million characters；随机访问；气压空气轴承；伺服控制访问臂带两个读写头。"
+    },
+    "chm-winchester-1973": {
+      "title": "1973: \"Winchester\" pioneers key HDD technology",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/winchester-pioneers-key-hdd-technology/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "IBM 3340 于 1973 年 11 月开始出货；30-30 得名；35/70 MB 数据模块；300 tpi；25 ms 访问；磁头负载 <20 g；飞行高度 18 microinches；1975 年 3350 为 317 MB 固定头盘组件。"
+    },
+    "chm-floppy-1971": {
+      "title": "1971: Floppy disk loads mainframe computer data",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/floppy-disk-loads-mainframe-computer-data/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "IBM 23FD \"Minnow\" 1971 年出货；8 英寸、只读、80 KB（约 3,000 张穿孔卡）；1976 年 500 KB DSSD；1977 年 1.2 MB；1976 年 Shugart 5.25 英寸。"
+    },
+    "chm-minifloppy-1976": {
+      "title": "1976: Minicomputers stimulate floppy disk sales",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/minicomputers-stimulate-floppy-disk-sales/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "Shugart SA 400 5.25 英寸 Minifloppy：110 KB，OEM $390 + 十张盘 $45；1982 年 Microfloppy Industry Committee 以 Sony 设计为基础定 3.5 英寸规格；最高 1.44 MB；1994 年 Iomega Zip 100 MB；1990 年软驱年产量约 1.2 亿台。"
+    },
+    "sony-media-history": {
+      "title": "記録メディアの歴史（Recording Media History）",
+      "publisher": "Sony",
+      "url": "https://www.sony.jp/products/Consumer/media/history/",
+      "type": "manufacturer-history",
+      "accessed": "2026-10-18",
+      "notes": "1980 年：世界初 3.5 型マイクロフロッピーディスク発売。还列出 1987 DAT、1988 5.25 英寸 MO、1989 DDS 等。"
+    },
+    "chm-seagate-st506-1980": {
+      "title": "1980: Seagate 5.25-inch HDD becomes PC standard",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/seagate-5-25-inch-hdd-becomes-pc-standard/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "Seagate ST-506：1980 年，5.25 英寸、5 MB；ST506 接口/外形成为标准；1981 年 ST412 10 MB 进入 IBM XT；1983 年 Rodime R0351/352 是首个 3.5 英寸 HDD；1987 Conner CP340。"
+    },
+    "chm-tape-1951": {
+      "title": "1951: Tape unit developed for data storage",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/tape-unit-developed-for-data-storage/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "Univac Uniservo 1：1951 年，0.5 英寸磷青铜带、128 bits/inch、7,200 characters/s；IBM 726：1952 年发布，8 英寸盘、2 million digits、月租 $850；真空柱缓冲、100–200 inches/s。"
+    },
+    "chm-lto-1997": {
+      "title": "1997: Tape storage thrives in archival applications",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/tape-storage-thrives-in-archival-applications/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "HP、IBM、Seagate 1997 年宣布 LTO 联盟；LTO 用于长期归档、低成本和低功耗；2010 年 LTFS；2015 年 LTO-6，路线图到十代；2014/2015 年 154 TB/220 TB 原型（不是产品）。"
+    },
+    "lto-9": {
+      "title": "LTO-9 Technology",
+      "publisher": "LTO Program",
+      "url": "https://www.lto.org/lto-9/",
+      "type": "manufacturer-standard",
+      "accessed": "2026-10-18",
+      "notes": "LTO-9：18 TB 原生容量，45 TB（2.5:1 压缩）；400 MB/s 原生、1,000 MB/s 压缩；与 LTO-8 向后读写兼容；WORM、硬件加密、LTFS。"
+    },
+    "lto-10": {
+      "title": "LTO-10 Technology",
+      "publisher": "LTO Program",
+      "url": "https://www.lto.org/lto-10/",
+      "type": "manufacturer-standard",
+      "accessed": "2026-10-18",
+      "notes": "LTO-10：30 TB 与 40 TB 原生，75/100 TB（2.5:1）；400 MB/s 原生、1,200 MB/s 压缩；15,104 条数据磁道（比 LTO-9 的 8,960 多 68.5%）；锶掺杂 BaFe；不向后兼容；30 TB 用 12 Gb/in²，而 18 TB HDD 用 1022 Gb/in²，约 1/85 密度。"
+    },
+    "chm-pmr-2005": {
+      "title": "2005: Perpendicular Magnetic Recording arrives",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/perpendicular-magnetic-recording-arrives/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "PMR 位垂直排列；位尺寸与矫顽力成反比，矫顽力受写入头磁场限制；PMR 介质+头把写场约翻倍；2005–2006 Toshiba/Seagate/HGST 商业化；Toshiba MK4007GAL 133 Gb/in²；2007 HGST 1 TB、325 Gb/in²。"
+    },
+    "chm-mr-head-1990": {
+      "title": "1990: Magnetoresistive read-head HDD introduced",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/magnetoresistive-read-head-hdd-introduced/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "1856 Lord Kelvin 发现 AMR；MR 读头的回读信号可比同尺寸感应头大；1984 IBM 3480 磁带用 MR 读+感应写；1990 IBM 9345 \"Sawmill\" 107 Mbit/in²；1997 GMR 1 Gbit/in²；2004 TMR 84 Gbit/in²；2014 1 Tbit/in²。"
+    },
+    "chm-helium-2013": {
+      "title": "2013: Helium Drives Cloud Storage",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/helium-drives-cloud-storage/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "2013 年 HGST Ultrastar He6：3.5 英寸、7200 rpm、6 TB、7 张盘；氦密度约为空气 1/7，降低功耗/发热、改善寻道；1970 年代已有尝试；2020 年 3 月高容量数据中心盘都用氦。"
+    },
+    "chm-poulsen-1898": {
+      "title": "1898: Poulsen records voice on magnetic wire",
+      "publisher": "Computer History Museum, The Storage Engine",
+      "url": "https://www.computerhistory.org/storageengine/poulsen-records-voice-on-magnetic-wire/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "Oberlin Smith 1878 实验钢丝/浸铁粉线，1888 公开发表；Poulsen 1898 在哥本哈根用电磁铁沿钢琴丝录音；1899 申请专利；Telegraphone；5 英寸钢盘存 2 分钟，钢丝可存 30 分钟；1900 巴黎世博会录 Franz Josef。"
+    },
+    "philips-cassette-museum": {
+      "title": "Providing the soundtrack to people's lives",
+      "publisher": "Philips Museum / Philips Company Archives",
+      "url": "https://www.philips.nl/en/a-w/philips-museum/stories/soundtrack-to-peoples-lives.html",
+      "type": "manufacturer-history",
+      "accessed": "2026-10-18",
+      "notes": "1963 年 Philips 在柏林 IFA 展出 EL 3300 与 EL1903；Lou Ottens 团队；免费许可换技术规范；1965 Musicassette；90/120 分钟；紧凑 cassette 作为家庭录音系统超过 35 年。"
+    },
+    "philips-cassette-press-1963": {
+      "title": "50 Jahre Compact Cassette（Philips 新闻资料）",
+      "publisher": "Philips",
+      "url": "https://www.philips.com/consumerfiles/newscenter/main/shared/assets/de/Downloadablefile/press/consumerelectronics/Presseinformation_Philips_Geschichte_der_Compact_Cassette.pdf",
+      "type": "manufacturer-history",
+      "accessed": "2026-10-18",
+      "notes": "PDF 提取文本：1963-08-28 在柏林第 23 届 Internationale Funkausstellung 发布 Compact Cassette；与录音机一起上市；后来立体声、90/120 分钟、Chromdioxid 等。"
+    },
+    "ecma-147": {
+      "title": "ECMA-147: Data interchange on 90 mm flexible disk cartridges using MFM recording at 31 831 ftprad on 80 tracks on each side - ISO type 303",
+      "publisher": "Ecma International",
+      "url": "https://ecma-international.org/publications-and-standards/standards/ecma-147/",
+      "published": "1st edition, December 1990",
+      "type": "standard",
+      "accessed": "2026-10-18",
+      "notes": "90 mm 软盘、MFM、每面 80 磁道、31,831 ftprad、ISO type 303；机械/物理/磁特性与磁道格式。"
+    },
+    "seagate-mozaic-4-2026": {
+      "title": "Seagate Delivers Next-Generation Mozaic 4+ Hard Drives with 44 TB Capacity",
+      "publisher": "Seagate（TechPowerUp 转载新闻稿）",
+      "url": "https://www.techpowerup.com/347011/seagate-delivers-next-generation-mozaic-4-hard-drives-with-44-tb-capacity",
+      "published": "2026-03-04",
+      "type": "press-release",
+      "accessed": "2026-10-18",
+      "notes": "Mozaic 4+ 是 HAMR 平台，容量最高 44 TB，已向两家大型超大规模云厂商量产出货；路线图从当前每盘 4+ TB 向 10 TB/盘、单盘最高 100 TB。"
+    },
+    "chm-timeline": {
+      "title": "The Storage Engine: Timeline",
+      "publisher": "Computer History Museum",
+      "url": "https://www.computerhistory.org/storageengine/timeline/",
+      "type": "museum",
+      "accessed": "2026-10-18",
+      "notes": "用于时间线交叉核对：1831 Faraday 电磁感应、1898 Poulsen、1935 AEG Magnetophon、1951 Univac 磁带、1956 RAMAC、1971 软盘、1973 Winchester、1976 5.25/3.5、1980 Seagate、1990 MR、1997 LTO、2005 PMR、2013 氦气、2014 1 Tbit/in²。"
+    }
+  }
+}

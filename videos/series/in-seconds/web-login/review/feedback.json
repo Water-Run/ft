@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "version": "2026-10-18",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "标题是“怎么验证你是你”，不是“登录方式大全”；用一条链把口令、会话、MFA、联合登录串起来",
+      "script_evidence": "research/NARRATIVE.md 的「一个核心问题」「逐章问题与答案」；script.js 的 open 与 close。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "用同一次登录走完：输入口令 → 服务器查哈希 → 发 session cookie → 下一次请求带 cookie；每一步交代输入、变化、理由、结果",
+      "script_evidence": "research/NARRATIVE.md 的逐章表；script.js 的 password/session 两章。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "第一次出现 authentication/authorization/session/identity proofing、OAuth/OIDC、JWT/JWS 时各给一句定义；区分 2FA 与 MFA、口令与 passkey",
+      "script_evidence": "research/FACTS.md 的「边界与常见误说」；script.js 首次出现 authentication/authorization/OAuth/OIDC/JWT 的句子。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "用 01–06 的段落编号，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计",
+      "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "形状拼合、单向压模、盖章、黑框拒绝四种动作各有语义；不做全片同一种擦除",
+      "script_evidence": "src/design/STYLE.md 第 6 节；src/js/scenes 的形状动作。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "木块、印章、卡扣、纸张各有语义；不用默认 whoosh；配乐写清节奏、动机与加层",
+      "script_evidence": "src/design/STYLE.md 第 7 节；src/js/config.js 的 sfx/audio 配置。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面只用假域名、假 SID、假用户名；不出现真实站点、真实 cookie、真实账号",
+      "script_evidence": "research/FACTS.md「取证环境」；画面只用假域名、假 SID、假用户名。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "目标 200 秒 ±0.1；60fps、立体声、响度按仓库默认；出片后记录实际编码参数与哈希",
+      "script_evidence": "README「复现」与 project.json；check.js/ffprobe 记录。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "“OAuth=登录”“JWT 加密”“HTTPS 让 cookie 安全”“MFA=短信”“指纹是认证器”等容易引战；每条回到 FACTS 的来源与版本",
+      "script_evidence": "research/FACTS.md 的来源与状态列；README 的 F09 行。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本集独立；不要求记得 2FA/Lean 等前集。",
+      "script_evidence": "research/NARRATIVE.md 的「决定不讲」；script.js 不要求记得前集。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "authentication/authorization/session/identity proofing、OAuth/OIDC/JWT/JWS/WebAuthn 首次出现给中文解释；RFC 引文不要求观众读英文。",
+      "script_evidence": "research/FACTS.md 的英文标准引文；script.js 首次出现 OAuth/OIDC/JWT/WebAuthn 时给中文解释。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "Argon2id、bcrypt、OAuth、OIDC、JWT、WebAuthn、SameSite、HttpOnly、CSRF、TOTP、AAL 列试听清单。",
+      "script_evidence": "script.js 的 SAY 表与 tts_probe 清单；专名 Argon2id、bcrypt、OAuth、OIDC、JWT、WebAuthn、SameSite、HttpOnly、CSRF、TOTP、AAL。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}

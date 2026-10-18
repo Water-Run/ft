@@ -1,0 +1,126 @@
+{
+  "accessed": "2026-10-18",
+  "note": "来源编号与 research/FACTS.md 的「依据」列对应。论文以 DOI/出版社元数据与可读全文为准；运行实验记录在 research/lab/。",
+  "sources": {
+    "mccarthy-1960": {
+      "title": "Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I",
+      "author": "John McCarthy",
+      "publisher": "Communications of the ACM 3(4), April 1960; PDF from Stanford",
+      "url": "https://www-formal.stanford.edu/jmc/recursive.pdf",
+      "type": "paper",
+      "accessed": "2026-10-18",
+      "notes": "PDF 34 页，提取文本 54,050 字符。第 1 节说明 LISP 为 IBM 704 开发；c. Free-Storage List 一节描述约 15,000 个寄存器、free-storage list、耗尽时启动 reclamation cycle、用符号位标记可达寄存器、把未标记的放回 free list；脚注 7 写「We already called this process 'garbage collection'...」。"
+    },
+    "collins-1960": {
+      "title": "A method for overlapping and erasure of lists",
+      "author": "George E. Collins",
+      "publisher": "Communications of the ACM 3(12), December 1960, pp. 655-657",
+      "url": "https://doi.org/10.1145/367487.367501",
+      "type": "paper-metadata",
+      "accessed": "2026-10-18",
+      "notes": "Crossref 摘要：LISP 中 McCarthy 的擦除方案优雅但低效；本文给出一种高效擦除方法，用 interspersed reference counts 描述重叠范围。未读全文，只读摘要。"
+    },
+    "cheney-1970": {
+      "title": "A nonrecursive list compacting algorithm",
+      "author": "C. J. Cheney",
+      "publisher": "Communications of the ACM 13(11), November 1970, pp. 677-678",
+      "url": "https://doi.org/10.1145/362790.362798",
+      "type": "paper-metadata",
+      "accessed": "2026-10-18",
+      "notes": "Crossref 摘要：给出适用于紧凑和 LISP 式列表结构的非递归压实/垃圾收集方案；利用正在构建的部分结构记录已复制的列表，避免递归。未读全文。"
+    },
+    "dijkstra-1978": {
+      "title": "On-the-fly garbage collection: an exercise in cooperation",
+      "author": "Edsger W. Dijkstra, Leslie Lamport, A. J. Martin, C. S. Scholten, E. F. M. Steffens",
+      "publisher": "Communications of the ACM 21(11), November 1978, pp. 966-975",
+      "url": "https://doi.org/10.1145/359642.359655",
+      "type": "paper-metadata",
+      "accessed": "2026-10-18",
+      "notes": "Crossref 摘要：让额外处理器与执行计算的处理器并发完成垃圾检测/收集；排除与同步约束尽量弱。未读全文；三色不变式的解释用 Go 2015 博客（它明确把算法归给 Dijkstra 1978）。"
+    },
+    "lieberman-1983": {
+      "title": "A Real-Time Garbage Collector Based on the Lifetimes of Objects",
+      "author": "Henry Lieberman, Carl Hewitt",
+      "publisher": "Communications of the ACM 26(6), 1983; MIT AI Lab page",
+      "url": "https://web.media.mit.edu/~lieber/Lieberary/GC/Realtime/Realtime.html",
+      "type": "paper-fulltext",
+      "accessed": "2026-10-18",
+      "notes": "全文 HTML。摘要：短寿命对象占存储使用的大部分，应按寿命优化；分代/区域，近期区域收集更频繁；弱指针；引用计数不能回收环；Baker 的 fromspace/tospace、转发指针、scavenging 也在文中。"
+    },
+    "go-gc-guide": {
+      "title": "A Guide to the Go Garbage Collector",
+      "publisher": "The Go Programming Language",
+      "url": "https://go.dev/doc/gc-guide",
+      "type": "official-doc",
+      "accessed": "2026-10-18",
+      "notes": "文档自述描述 Go 1.19 的 GC。内容：tracing、roots、object graph、mark-sweep、Go 非移动、GC cycle、GOGC 公式、1.19 的内存上限、finalizer/weak pointer 等。"
+    },
+    "go15gc": {
+      "title": "Go GC: Prioritizing low latency and simplicity",
+      "author": "Richard Hudson",
+      "publisher": "The Go Blog",
+      "url": "https://go.dev/blog/go15gc",
+      "published": "2015-08-31",
+      "type": "official-blog",
+      "accessed": "2026-10-18",
+      "notes": "Go 1.5 的并发三色 mark-sweep；明确说算法源自 Dijkstra 1978；白/灰/黑、根变灰、黑化并扫描、白对象变灰、黑不能指白的 invariant、write barrier；Go 1.5 最后短暂 stop-the-world 检查根；目标 <10ms。"
+    },
+    "v8-trash-talk": {
+      "title": "Trash talk: the Orinoco garbage collector",
+      "publisher": "V8",
+      "url": "https://v8.dev/blog/trash-talk",
+      "published": "2019-01-03",
+      "type": "official-blog",
+      "accessed": "2026-10-18",
+      "notes": "major GC 的 marking/sweeping/compacting；free-list；分代；nursery/intermediate/old；scavenger 的 semi-space、from/to、forwarding pointer；old-to-new remembered set 与 write barrier；parallel/incremental/concurrent 的定义与 Orinoco 状态。"
+    },
+    "python-gc-docs": {
+      "title": "gc — Garbage Collector interface",
+      "publisher": "Python 3.15 documentation",
+      "url": "https://docs.python.org/3/library/gc.html",
+      "type": "official-doc",
+      "accessed": "2026-10-18",
+      "notes": "页面最后更新 2026-10-18。说明 collector 补充 reference counting；可禁用自动收集；三代；阈值；gc.collect 返回收集数；garbage 列表；Python 3.14/3.15 的代际变化也写在页内。"
+    },
+    "python-lab": {
+      "title": "CPython 3.14.3 引用计数、环与 cycle collector 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/01_python_refcount.py",
+      "type": "experiment",
+      "accessed": "2026-10-18",
+      "notes": "Windows x64，CPython 3.14.3。脚本与完整回显：01_python_refcount.py / out_01_python_refcount.txt。输出含 sys.getrefcount 2→3→2、del 后 __del__ 立即执行、环 X/Y 各 refcount=3、gc.collect() 返回 2、weakref 被清空、gc.garbage 为空。"
+    },
+    "go-lab": {
+      "title": "Go 1.27.0 tracing GC 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/02_go_trace.go",
+      "type": "experiment",
+      "accessed": "2026-10-18",
+      "notes": "Windows amd64，go1.27.0。脚本与完整回显：02_go_trace.go / out_02_go_trace.txt。build(200000) 保留每 200 个节点中的一个（1000 个），并强制每个节点逃逸；GODEBUG=gctrace=1 运行；含 before/after MemStats 与 8 次 GC 的一行一次 trace。"
+    },
+    "swift-arc": {
+      "title": "The Swift Programming Language: Automatic Reference Counting",
+      "publisher": "Swift.org / swiftlang/swift-book",
+      "url": "https://raw.githubusercontent.com/swiftlang/swift-book/main/TSPL.docc/LanguageGuide/AutomaticReferenceCounting.md",
+      "type": "official-doc",
+      "accessed": "2026-10-18",
+      "notes": "ARC 只作用于 class 实例；强引用计数；最后一个强引用移除后立即释放；强引用环会泄漏；weak/unowned 用于破环；weak 在实例释放后自动变 nil。"
+    },
+    "rust-ownership": {
+      "title": "The Rust Programming Language: Understanding Ownership",
+      "publisher": "rust-lang/book",
+      "url": "https://raw.githubusercontent.com/rust-lang/book/main/src/ch04-00-understanding-ownership.md",
+      "type": "official-doc",
+      "accessed": "2026-10-18",
+      "notes": "开篇：ownership 使 Rust 在没有 garbage collector 的情况下做内存安全保证；本章讲所有权、借用、切片与内存布局。只读开头。"
+    },
+    "java-g1-guide": {
+      "title": "Garbage-First (G1) Garbage Collector",
+      "publisher": "Oracle Java SE 21 GC Tuning Guide",
+      "url": "https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html",
+      "type": "official-doc",
+      "accessed": "2026-10-18",
+      "notes": "G1 是分代、增量、并行、mostly concurrent、stop-the-world、evacuating；区域化堆；young/old；SATB marking；remembered set；暂停时间目标；明确说 G1 不是 real-time collector。"
+    }
+  }
+}

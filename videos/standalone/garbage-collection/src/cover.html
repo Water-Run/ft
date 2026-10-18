@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
+  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
+  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
+  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="kicker"></div>
+  <div class="title"></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
+  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
+  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
+  document.querySelector('.kicker').textContent = TEXT.kicker;
+  document.querySelector('.title').innerHTML = TEXT.title;
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
