@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 165 部：已成片 10 部，制作中 7 部，计划中 148 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 10 部，制作中 8 部，计划中 147 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -212,7 +212,7 @@
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`two-factor-auth`](../videos/series/in-seconds/two-factor-auth/) | 已发布：哔哩哔哩与 YouTube |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`lean4`](../videos/series/in-seconds/lean4/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 |  | `how-opus-animates` |  |
-| 4 | 150 秒学会怎么打手枪？ | zh + en | 计划中 |  | `pistol-shooting` | 说明手枪射击。视觉用新野兽派，画面生动、有冲击力。150 秒，目录未建。 |
+| 4 | 150 秒学会怎么打手枪？<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | 自制 | [`pistol-shooting`](../videos/series/in-seconds/pistol-shooting/) | 说明手枪射击。视觉参考《赛博朋克：边缘行者》：没有单独流派名，是 Studio TRIGGER、导演今石洋之的高饱和表现主义。节奏和冲击要非常强，看到爽的同时学习，并强调三维效果。只借画法，不照搬角色或夜之城。旁白保持客观。2026-10-19 已建目录，脚本仍是 60 秒基座，成片目标 150 秒。 |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | 自制 | [`dense-vs-moe`](../videos/series/in-seconds/dense-vs-moe/) | 已发布：哔哩哔哩与 YouTube（2026-10-09） |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 |  | `rear-seatbelt` |  |
 | 7 | 256 秒搞懂 SSH | zh + en | 计划中 |  | `ssh` |  |

@@ -188,7 +188,7 @@
         {"slug": "two-factor-auth", "title": {"zh": "120 秒关于什么是 2FA，以及它是怎么工作的", "en": "2FA in 120 Seconds: What It Is and How It Works"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
         {"slug": "lean4", "title": {"zh": "200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠", "en": "Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted"}, "status": "delivered", "note": "已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md"},
         {"slug": "how-opus-animates", "title": {"zh": "150 秒搞明白 Opus 5.5 是怎么做视频的"}},
-        {"slug": "pistol-shooting", "title": {"zh": "150 秒学会怎么打手枪？"}, "status": "planned", "note": "说明手枪射击。视觉用新野兽派，画面生动、有冲击力。150 秒，目录未建。"},
+        {"slug": "pistol-shooting", "title": {"zh": "150 秒学会怎么打手枪？", "en": "How to Shoot a Pistol in 150 Seconds"}, "status": "in-progress", "note": "说明手枪射击。视觉参考《赛博朋克：边缘行者》：没有单独流派名，是 Studio TRIGGER、导演今石洋之的高饱和表现主义。节奏和冲击要非常强，看到爽的同时学习，并强调三维效果。只借画法，不照搬角色或夜之城。旁白保持客观。2026-10-19 已建目录，脚本仍是 60 秒基座，成片目标 150 秒。"},
         {"slug": "dense-vs-moe", "title": {"zh": "150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型", "en": "Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube（2026-10-09）"},
         {"slug": "rear-seatbelt", "title": {"zh": "150 秒明白不绑后排安全带的致命性"}},
         {"slug": "ssh", "title": {"zh": "256 秒搞懂 SSH"}},
