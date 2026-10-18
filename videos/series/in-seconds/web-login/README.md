@@ -10,9 +10,9 @@
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按 F01–F12 自我对抗后重写为 7 场“三问”结构，补 JWT/token、SSO/SAML、HTTP 无状态、账号声明与攻击对应；中文稿 `62c86207…`，英文草稿 `b6ef4d18…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
+| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按 F01–F12 自我对抗后重写为 7 场“三问”结构，补 JWT/token、SSO/SAML、HTTP 无状态、账号声明与攻击对应；中文稿 `298d8d99…`，英文草稿 `6d0809a6…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
 | 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
-| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `62c86207…`；`review/approval.json` 为 pending；没有人工确认 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `298d8d99…`；`review/approval.json` 为 pending；没有人工确认 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
 | 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
@@ -27,7 +27,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
 
-本轮中文稿：[`review/script.zh.62c86207…md`](review/script.zh.62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3.md)，内容哈希 `62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3`；英文草稿：[`review/script.en.b6ef4d18…md`](review/script.en.b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315.md)。`review/approval.json` 仍是 pending，不能据此配音。上一轮 `53db476c…` 稿保留在 `review/`，作为对照。
+本轮中文稿：[`review/script.zh.298d8d99…md`](review/script.zh.298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c.md)，内容哈希 `298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c`；英文草稿：[`review/script.en.6d0809a6…md`](review/script.en.6d0809a652e4d4e3ee1710d8aad692600862fed4c322e4fd0aeea1ccac188db9.md)。`review/approval.json` 仍是 pending，不能据此配音。上一轮 `62c86207…` 与初稿 `53db476c…` 保留在 `review/`，作为对照。
 
 ## 开工反馈应用
 
@@ -47,7 +47,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 |---|---|---|---|
 | F01 标题与主问题 | 适用 | 标题是“怎么验证你是你”，不是“登录方式大全”；用三个问题把账号声明、凭证、cookie/JWT、联合登录串起来 | 审稿时标出开头问题、各场答案与结尾回答的时刻 |
 | F02 解释步骤与理解负担 | 适用 | 用同一次登录走完：账号声明 → 口令/哈希 → cookie/JWT → 下一次请求；每一步交代输入、变化、理由、结果 | 正常播放检查能否从“口令正确”跟到“下一次请求为什么认得我”；记录每步时间 |
-| F03 名称、比较与边界 | 适用 | 第一次出现 authentication/authorization/session、OAuth/OIDC、JWT、SAML/SSO 时各给一句中文定义；区分 2FA 与 MFA、口令与 passkey、cookie 与 token | 审稿时核对首次定义、版本标注和画面文字 |
+| F03 名称、比较与边界 | 适用 | 第一次出现 authentication/authorization/session、OAuth/OIDC、JWT、SAML/SSO 时各给一句中文定义；区分 MFA 与 passkey、口令与 passkey、cookie 与 token | 审稿时核对首次定义、版本标注和画面文字 |
 | F04 有效阅读时间 | 适用 | 用三问骨架与 7 场结构，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
 | F05 动画解释机制 | 适用 | 形状拼合、单向压模、盖章、黑框拒绝四种动作各有语义；不做全片同一种擦除 | 与近期两部并排看开头/换章/解释段 |
 | F06 声音选择与配合 | 适用 | 木块、印章、卡扣、纸张各有语义；不用默认 whoosh；配乐写清节奏、动机与加层 | 主混音/无配乐版试听，记录片段与结果 |
@@ -65,9 +65,9 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 | 场景 | 起点 | 内容 |
 |---|---|---|
 | open | 0:00 | 四种登录形态 → 三个问题 → 一张 SID；片名卡 |
-| credentials | 0:19 | 账号声明、口令/TLS/盐/慢哈希、一次性码、passkey/WebAuthn |
+| credentials | 0:19 | 账号声明、口令/TLS/盐/慢哈希、一次性码、passkey/WebAuthn、三类因子 |
 | session | 1:06 | HTTP 无状态、cookie/session ID、会话表、JWT/token、bearer、轮换 |
-| federation | 1:47 | Google 登录、OAuth 授权≠认证、OIDC、code/PKCE、SAML/SSO |
+| federation | 1:48 | Google 登录、OAuth 授权≠认证、OIDC、code/PKCE、SAML/SSO |
 | attacks | 2:20 | 钓鱼、撞库、XSS/HttpOnly、CSRF/SameSite、fixation、JWT 泄露 |
 | close | 2:52 | 三个问题收束；每一环都有假设；片尾名单 |
 
@@ -88,7 +88,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 ## 读法
 
-`script.js` 的 `SAY` 表已列 session ID、passkey、SAML、SSO、OAuth 2.0、OIDC、JWT、PKCE、TLS、WebAuthn、HttpOnly、SameSite、CSRF、XSS、OTP 的读法。尚未配音，未做 `tts_probe`/`asr` 回听；确认后在此登记实际读法与修正。
+`script.js` 的 `SAY` 表已列 session ID、passkey、SAML、SSO、OAuth 2.0、OIDC、JWT、PKCE、TLS、WebAuthn、HttpOnly、SameSite、CSRF、XSS、一次性码的读法。尚未配音，未做 `tts_probe`/`asr` 回听；确认后在此登记实际读法与修正。
 
 ## 制作署名与片尾
 

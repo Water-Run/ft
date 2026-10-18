@@ -11,10 +11,10 @@
 | 场景 | 起点 | 时长 | 讲什么 | 主题落点 |
 |---|---|---|---|---|
 | `open` | 0:00 | 19.0s | 每日登录的多种形态；三个问题；一张 SID | 钩子 + 片名 |
-| `credentials` | 0:19 | 47.0s | 账号声明、口令/TLS/盐/慢哈希、一次性码、passkey/WebAuthn | 证明“你知道/你拥有/你本身” |
-| `session` | 1:06 | 41.7s | HTTP 无状态、cookie/session ID、会话表、JWT/token、bearer、轮换 | 记住你 = 一张可被偷的通行证 |
-| `federation` | 1:47 | 32.9s | Google 登录、OAuth 授权≠认证、OIDC、code/PKCE、SAML/SSO | 联合登录只是转移信任 |
-| `attacks` | 2:20 | 32.0s | 钓鱼、撞库、XSS/HttpOnly、CSRF/SameSite、fixation、JWT 泄露 | 每一环都可能被冒用 |
+| `credentials` | 0:19 | 47.7s | 账号声明、口令/TLS/盐/慢哈希、一次性码、passkey/WebAuthn、三类因子 | 证明“你知道/你拥有/你本身” |
+| `session` | 1:06 | 41.3s | HTTP 无状态、cookie/session ID、会话表、JWT/token、bearer、轮换 | 记住你 = 一张可被偷的通行证 |
+| `federation` | 1:48 | 32.7s | Google 登录、OAuth 授权≠认证、OIDC、code/PKCE、SAML/SSO | 联合登录只是转移信任 |
+| `attacks` | 2:20 | 31.9s | 钓鱼、撞库、XSS/HttpOnly、CSRF/SameSite、fixation、JWT 泄露 | 每一环都可能被冒用 |
 | `close` | 2:52 | 19.4s | 三个问题收束；每一环都有假设 | 验证你是你 = 让每一环难被冒用 |
 | `outro` | 3:12 | 8.0s | 片尾名单与开源地址 | 不配旁白，7.5s 阅读 |
 
@@ -32,7 +32,7 @@
 |---|---|---|---|
 | F01 标题与主问题 | 适用 | 标题是“怎么验证你是你”，不是登录方式大全；用一条链串起口令、会话、MFA、联合登录 | 开头/各章/结尾是否回答同一问题 |
 | F02 解释步骤与负担 | 适用 | 用同一次登录走完：账号声明 → 口令/哈希 → cookie/JWT → 下一次请求 → 攻击；先解释再给数字 | 逐步跟完，记录每步时间 |
-| F03 名称、比较与边界 | 适用 | 首次出现 authentication/authorization/session/OAuth/OIDC/JWT/SSO 时给中文定义；区分 2FA/MFA、口令/passkey | 核对首次定义与画面文字 |
+| F03 名称、比较与边界 | 适用 | 首次出现 authentication/authorization/session/OAuth/OIDC/JWT/SSO 时给中文定义；区分 MFA 与 passkey、口令与 passkey | 核对首次定义与画面文字 |
 | F04 有效阅读时间 | 适用 | 用 01–07 段落编号，不做章节卡；片名/结论卡按 3–5 秒稳定阅读 | 记录文字到位至遮挡的区间 |
 | F05 动画解释机制 | 适用 | 形状拼合、单向压模、盖章、黑框拒绝四种动作各有语义 | 连续观看机制段，确认因果可见 |
 | F06 声音选择与配合 | 适用 | 木块、印章、卡扣、纸张各有用处；不用默认 whoosh；120 BPM | 主混音/无配乐/仅旁白试听 |

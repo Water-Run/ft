@@ -29,7 +29,7 @@
       "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
       "applicability": "applies",
       "reason": "",
-      "plan": "第一次出现 authentication/authorization/session、OAuth/OIDC、JWT、SAML/SSO 时各给一句中文定义；区分 2FA 与 MFA、口令与 passkey、cookie 与 token",
+      "plan": "第一次出现 authentication/authorization/session、OAuth/OIDC、JWT、SAML/SSO 时各给一句中文定义；区分 MFA 与 passkey、口令与 passkey、cookie 与 token",
       "script_evidence": "research/FACTS.md 的「边界与常见误说」；script.js 首次出现 authentication/authorization/OAuth/OIDC/JWT/SAML 的句子。",
       "result": "pending",
       "verification": "",

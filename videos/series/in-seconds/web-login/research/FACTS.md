@@ -152,7 +152,9 @@
 
 2026-10-19 第 1 轮：中文稿 `53db476c…`、英文草稿 `c2c90739…`，已归档；没有确认。
 
-2026-10-19 第 2 轮：按 F01–F12 与 P0–P13 自我对抗后重写为 7 场“三问”结构；补 HTTP 无状态、账号声明、JWT/token、SSO/SAML、攻击与缓解的一一对应。中文稿 `review/script.zh.62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3.md`，内容哈希 `62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3`，估算 200.0 秒；英文草稿 `review/script.en.b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315.md`，哈希 `b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
+2026-10-19 第 2 轮：按 F01–F12 与 P0–P13 自我对抗后重写为 7 场“三问”结构；补 HTTP 无状态、账号声明、JWT/token、SSO/SAML、攻击与缓解的一一对应。中文稿 `62c86207…`、英文草稿 `b6ef4d18…`，估算 200.0 秒；已归档。
+
+2026-10-19 第 3 轮：修中英不一致（unique salt / authenticator apps、“不是一张脸”、钓鱼“实时转发”），补 MFA 定义（“至少两个不同因子”），c10 用 WebAuthn passkey 说明公私钥/域名绑定，c11 补三类因子，删 SAY 表残留。中文稿 `review/script.zh.298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c.md`，内容哈希 `298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c`，估算 200.0 秒；英文草稿 `review/script.en.6d0809a652e4d4e3ee1710d8aad692600862fed4c322e4fd0aeea1ccac188db9.md`，哈希 `6d0809a652e4d4e3ee1710d8aad692600862fed4c322e4fd0aeea1ccac188db9`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
 
 ## 制作署名
 

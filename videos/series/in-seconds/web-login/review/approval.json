@@ -3,14 +3,14 @@
   "languages": {
     "zh": {
       "status": "pending",
-      "content_sha256": "62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3",
+      "content_sha256": "298d8d996b953c4d9d68c5c16cc3899745f4fc0ec5ce7852855281c519cd217c",
       "reviewer": "WaterRun",
       "confirmed_at": "",
       "evidence": ""
     },
     "en": {
       "status": "pending",
-      "content_sha256": "b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315",
+      "content_sha256": "6d0809a652e4d4e3ee1710d8aad692600862fed4c322e4fd0aeea1ccac188db9",
       "reviewer": "WaterRun",
       "confirmed_at": "",
       "evidence": ""
