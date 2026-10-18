@@ -4,8 +4,8 @@
 
 ## 1. 全文与确认状态
 
-- 中文稿：`review/script.zh.8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654.md`，内容 SHA-256 `8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654`。
-- 英文草稿：`review/script.en.2fc12bb76637e40d81138efc51021af8cbdbd19e1467a66009f3cb9a019a706d.md`，内容 SHA-256 `2fc12bb76637e40d81138efc51021af8cbdbd19e1467a66009f3cb9a019a706d`。
+- 中文稿：`review/script.zh.9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba.md`，内容 SHA-256 `9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba`。
+- 英文草稿：`review/script.en.f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b.md`，内容 SHA-256 `f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b`。
 - `review/approval.json` 当前是 `pending`；WaterRun 明确确认前，不合成、不铺场景。确认后由准备方运行 `tts.js`，把 `timing.zh.js`/`timing.en.js` 与音频缓存补齐，再交给 Opus 5.5。
 - 逐句意见与待确认问题在 `review/NOTES.md`；术语表也在那里。
 

@@ -20,7 +20,7 @@
       cues: [
         ['o1', { zh: '登录成功后，网站怎么验证下一次请求还是你？', en: 'After login, how does the site verify the next request?' }, { gap: 0.5 }],
         ['o2', { zh: '先看最常见的一种：cookie 会话。', en: 'Start with a cookie session.' }, { gap: 0.5 }],
-        ['o3', { zh: '先看 cookie：它验证的是这次会话还在。', en: 'Start with cookie: it verifies the session is still alive.' }, { gap: 0.4 }],
+        ['o3', { zh: '先看 cookie。', en: 'Start with cookie.' }, { gap: 0.4 }],
       ],
     },
     {
@@ -31,9 +31,9 @@
         ['c3', { zh: '服务器查会话表：编号存在、没过期，就认这次会话。', en: 'The server checks its table: the ID exists and has not expired.' }, { gap: 0.5 }],
         ['c4', { zh: '所以它验证的是会话连续，不是重新验证你这个人。', en: 'So it verifies continuity, not the person again.' }, { gap: 0.5 }],
         ['c5', { zh: '第一个缺点：这张表要存在服务器上。', en: 'First weakness: the table lives on the server.' }, { gap: 0.5 }],
-        ['c6', { zh: '服务器一多，就要共享这张表；表丢了，登录状态也没了。', en: 'Many servers share it; lose it and sessions are gone.' }, { gap: 0.5 }],
+        ['c6', { zh: '服务器一多要共享表；表丢了，登录也没了。', en: 'Many servers share it; lose it and sessions are gone.' }, { gap: 0.5 }],
         ['c7', { zh: '第二个缺点：编号被偷，别人就能冒充你。', en: 'Second: a stolen ID lets someone impersonate you.' }, { gap: 0.5 }],
-        ['c8', { zh: '第三个缺点：浏览器会自动带 cookie，跨站请求也能利用它。', en: 'Third: browsers attach cookies, so cross-site requests can use them.' }, { gap: 0.4 }],
+        ['c8', { zh: '第三个缺点：浏览器自动带 cookie，跨站请求也能用。', en: 'Third: browsers attach cookies, so cross-site requests can use them.' }, { gap: 0.4 }],
       ],
     },
     {
@@ -43,7 +43,7 @@
         ['j2', { zh: 'JWT 就是这种令牌：头部、载荷、签名。', en: 'A JWT is such a token: header, payload, signature.' }, { gap: 0.5 }],
         ['j3', { zh: '前两段只是编码，不是加密；谁拿到都能读。', en: 'The first two parts are encoded, not encrypted.' }, { gap: 0.5 }],
         ['j4', { zh: '服务器验签，再查过期和受众，才相信载荷。', en: 'Verify signature, expiry and audience before trusting it.' }, { gap: 0.5 }],
-        ['j5', { zh: '它解决了查表，但带来新问题：撤销麻烦。', en: 'It removes the table, but adds revocation.' }, { gap: 0.5 }],
+        ['j5', { zh: '它不查表，但撤销麻烦。', en: 'It removes the table, but adds revocation.' }, { gap: 0.5 }],
         ['j6', { zh: '令牌发出去，到期前通常一直有效；被偷也一样。', en: 'A token stays valid until expiry, and a stolen one works too.' }, { gap: 0.5 }],
         ['j7', { zh: '所以要短命，必要时维护撤销名单。', en: 'Keep it short-lived, with a revocation list.' }, { gap: 0.4 }],
       ],

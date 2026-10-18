@@ -1,7 +1,7 @@
 {
-  "o1": "LOGIN",
+  "o1": "TITLE",
   "o2": "METHODS",
-  "o3": "COOKIE?",
+  "o3": "COOKIE",
   "c1": "SESSION ID",
   "c2": "COOKIE",
   "c3": "SESSION TABLE",

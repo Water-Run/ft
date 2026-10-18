@@ -10,9 +10,9 @@
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按“验证方式递进”重写为 8 场——cookie → 缺点 → JWT → 缺点 → 第一次验证（口令/短信码/passkey）→ 验证码 → 委托验证 → 攻击与收束；不把 Google 当独立方式。中文稿 `8c6817f2…`，英文草稿 `2fc12bb7…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
+| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按“验证方式递进”重写为 8 场——cookie → 缺点 → JWT → 缺点 → 第一次验证（口令/短信码/passkey）→ 验证码 → 委托验证 → 攻击与收束；不把 Google 当独立方式。中文稿 `9f0e7cf8…`，英文草稿 `f23a210c…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
 | 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
-| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `8c6817f2…`；`review/approval.json` 为 pending；没有人工确认 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `9f0e7cf8…`；`review/approval.json` 为 pending；没有人工确认 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
 | 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
@@ -27,7 +27,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
 
-本轮中文稿：[`review/script.zh.8c6817f2…md`](review/script.zh.8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654.md)，内容哈希 `8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654`；英文草稿：[`review/script.en.2fc12bb7…md`](review/script.en.2fc12bb76637e40d81138efc51021af8cbdbd19e1467a66009f3cb9a019a706d.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
+本轮中文稿：[`review/script.zh.9f0e7cf8…md`](review/script.zh.9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba.md)，内容哈希 `9f0e7cf8715b442b9a452253325a2c2c72363f5ab3593bb4c11124f9d479f6ba`；英文草稿：[`review/script.en.f23a210c…md`](review/script.en.f23a210c4cf3b139f0c743fa9523fe9e8f8defad6f139a6e4a0da9cd1d51484b.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
 
 ## 开工反馈应用
 
