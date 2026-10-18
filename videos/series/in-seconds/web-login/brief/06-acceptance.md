@@ -14,7 +14,8 @@
 - 短信码验证“拥有手机”，但能被实时转发；passkey 验证“持有私钥”，服务器存公钥，随机挑战，签名绑定域名。
 - JWT（签名 JWS）是三段：header.payload.signature，用点分隔；三段 base64url 编码，payload 可读，不是加密；服务器验签，再查过期/受众；撤销麻烦，要短命。
 - XSS/CSRF/session fixation 的区别；XSS 只读非 HttpOnly cookie；HttpOnly 不防 CSRF。
-- OAuth 2.0 是授权不是认证；OIDC 加身份层；code 短命/单次/绑定回调；PKCE；企业 SSO 作为 federation 例子。
+- 验证码只验证“是人，不是脚本”，不证明身份，也不替代认证；传统 CAPTCHA 有有效性和可访问性局限。
+- 委托验证：第三方身份提供方验证后交断言；本站验签名/受众；OIDC 的 ID Token、SAML 的 assertion 是断言格式；信任会转移。
 - 所有数字/协议名与 `research/FACTS.md` 逐字一致；不确定的不写。
 
 ## 3. 三项核心审查

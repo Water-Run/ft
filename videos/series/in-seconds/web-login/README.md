@@ -1,6 +1,6 @@
 # 200 秒了解 Web 登录机制：怎么验证你是你
 
-一部 200 秒的 Web 登录科普：以“服务器怎么验证你是你”为主线，逐一看口令、短信码/passkey、会话 cookie、JWT、OAuth/OIDC/SSO 各自验证什么证据、能证明什么、不能证明什么，最后看攻击者怎样伪造证据。中文与英文两版。
+一部 200 秒的 Web 登录科普：从 cookie 会话开始，讲它验证什么、有什么缺点，再由缺点引出 JWT；JWT 的撤销问题再引回“第一次到底怎么验证”，接上口令、短信码、passkey、验证码和委托验证。每种方式都问：服务器拿什么证据、按什么规则验证、代价是什么。中文与英文两版。
 
 制作流程与标准见仓库的 `docs/`；片中每一句陈述的出处见 `research/FACTS.md`。
 
@@ -10,9 +10,9 @@
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按“怎么验证”重写为 7 场——口令、短信码/passkey、会话 cookie、JWT、联合登录、攻击面；JWT 先由会话表的共享问题引出，再讲三段结构、签名与撤销代价。中文稿 `49658ee9…`，英文草稿 `5359b29d…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
+| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按“验证方式递进”重写为 8 场——cookie → 缺点 → JWT → 缺点 → 第一次验证（口令/短信码/passkey）→ 验证码 → 委托验证 → 攻击与收束；不把 Google 当独立方式。中文稿 `8c6817f2…`，英文草稿 `2fc12bb7…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
 | 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
-| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `49658ee9…`；`review/approval.json` 为 pending；没有人工确认 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `8c6817f2…`；`review/approval.json` 为 pending；没有人工确认 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
 | 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
@@ -27,7 +27,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
 
-本轮中文稿：[`review/script.zh.49658ee9…md`](review/script.zh.49658ee9ea1555c14281a94d54b5cace1f404936eca62497c3df5270e114a1c0.md)，内容哈希 `49658ee9ea1555c14281a94d54b5cace1f404936eca62497c3df5270e114a1c0`；英文草稿：[`review/script.en.5359b29d…md`](review/script.en.5359b29d9519ab518796c16b63f31ba3a7ee185595857a67e109ec7d5652059e.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
+本轮中文稿：[`review/script.zh.8c6817f2…md`](review/script.zh.8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654.md)，内容哈希 `8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654`；英文草稿：[`review/script.en.2fc12bb7…md`](review/script.en.2fc12bb76637e40d81138efc51021af8cbdbd19e1467a66009f3cb9a019a706d.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
 
 ## 开工反馈应用
 
@@ -39,24 +39,24 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 看完应能回答的一个核心问题：网站怎么确认屏幕对面是“你”，而不是拿着你的口令、cookie、验证码或 token 的别人。
 
-逐章怎样推进问题、最后回答什么：先问“服务器凭什么确认是你” → 口令验证“知道” → 短信码验证“拥有”、passkey 验证“持有私钥” → cookie 验证“会话连续”，JWT 验证“签名和声明” → 联合登录验证“第三方断言” → 攻击者伪造证据 → 收束（验证=证据对照规则，没有万能机制）。
+逐章怎样推进问题、最后回答什么：cookie 验证“会话连续” → 缺点是服务器要存/共享会话表、cookie 可被偷/CSRF → JWT 用签名和声明代替查表 → 缺点是撤销麻烦、token 可被偷 → 那第一次怎么验证？口令验证“知道” → 短信码验证“拥有”、passkey 验证“私钥” → 验证码只验证“你是人” → 委托验证验证“第三方断言” → 攻击者伪造证据 → 收束（没有万能机制，按证据/规则/代价选）。
 
 本片决定不讲的材料及理由：所有 OAuth grant type、SAML 断言细节、JWT/JWKS 细节、账号恢复/风控/设备指纹、具体厂商实现差异。SAML 不单独展开，企业 SSO 只作为“让第三方替你证明”的一句例子；200 秒里这些细节会挤掉“服务器到底在验证什么”的主线。
 
 | 问题编号 | 适用性 / 不适用的原因 | 本片计划与正面对照 | 怎样验证 |
 |---|---|---|---|
-| F01 标题与主问题 | 适用 | 标题是“怎么验证你是你”，不是“登录方式大全”；每个机制都回答“服务器拿什么证据、按什么规则验证” | 审稿时标出开头问题、各场“验证什么”和结尾回答的时刻 |
-| F02 解释步骤与理解负担 | 适用 | 每次验证都走完“证据 → 规则 → 结果”：口令比对哈希、短信码查码、passkey 验签名、cookie 查表、JWT 验签名/声明 | 正常播放检查每个机制能否说出“服务器在验证什么”；记录每步时间 |
-| F03 名称、比较与边界 | 适用 | JWT 先由会话表的共享问题引出，再讲三段结构；区分 OAuth 授权与 OIDC 身份、cookie 连续与 JWT 无状态、口令/OTP/passkey 各自证明什么 | 审稿时核对首次定义、过渡句和画面文字 |
-| F04 有效阅读时间 | 适用 | 用 7 场结构，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
+| F01 标题与主问题 | 适用 | 从 cookie 开始，用它的缺点引出 JWT，再用 JWT 的撤销问题引回“第一次怎么验证”；每种方式都回答“验证什么证据、能证明什么” | 审稿时标出 cookie→JWT→口令的过渡句与结尾回答 |
+| F02 解释步骤与理解负担 | 适用 | 每次验证走完“证据 → 规则 → 缺点 → 下一种”：cookie 查表、JWT 验签、口令比对哈希、短信码查码、passkey 验签名、验证码判人、委托验证验断言 | 正常播放检查每个机制能否说出“验证什么、缺点是什么”；记录每步时间 |
+| F03 名称、比较与边界 | 适用 | 不把 Google 当独立方式；第三方登录抽象为“委托验证”；JWT 先由会话表共享问题引出；区分 cookie 连续、JWT 无状态、验证码判人、passkey 私钥 | 审稿时核对首次定义、过渡句和画面文字 |
+| F04 有效阅读时间 | 适用 | 用 8 场结构，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
 | F05 动画解释机制 | 适用 | 形状拼合、单向压模、盖章、黑框拒绝四种动作各有语义；不做全片同一种擦除 | 与近期两部并排看开头/换章/解释段 |
 | F06 声音选择与配合 | 适用 | 木块、印章、卡扣、纸张各有语义；不用默认 whoosh；配乐写清节奏、动机与加层 | 主混音/无配乐版试听，记录片段与结果 |
 | F07 隐私与脱敏 | 适用 | 画面只用假域名、假 SID、假用户名；不出现真实站点、真实 cookie、真实账号 | 检查最终 MP4、字幕、封面与 FACTS 回显 |
 | F08 最终文件与记录 | 适用 | 目标 200 秒 ±0.1；60fps、立体声、响度按仓库默认；出片后记录实际编码参数与哈希 | `check.js`、`ffprobe`、实际音轨测量与 README 对照 |
 | F09 证据与反馈来源 | 适用 | “OAuth=登录”“JWT 加密”“HTTPS 让 cookie 安全”“MFA=短信”“指纹是认证器”等容易引战；每条回到 FACTS 的来源与版本 | 审稿与成片复核时逐条对照 `FACTS.md` 的“边界与常见误说” |
 | F10 单集独立可懂 | 适用 | 本集独立；不要求记得 2FA/Lean 等前集。 | 不看前集也能理解；审稿逐句检查前集引用。 |
-| F11 外文材料的中文解释 | 适用 | authentication/authorization/session、OAuth/OIDC/JWT/passkey/SSO 首次出现给中文解释；RFC 引文不要求观众读英文。 | 审稿时能找到每个外文术语的中文解释；不要求观众读 RFC 原文。 |
-| F12 读音、断句与口播 | 适用 | OAuth、OIDC、JWT、passkey、SSO、SameSite、HttpOnly、CSRF、TLS 列试听清单。 | tts_probe/asr 回听；人耳确认读错/断句；记录时间点。 |
+| F11 外文材料的中文解释 | 适用 | authentication/authorization/session、OIDC/SAML/JWT/passkey 首次出现给中文解释；RFC 引文不要求观众读英文。 | 审稿时能找到每个外文术语的中文解释；不要求观众读 RFC 原文。 |
+| F12 读音、断句与口播 | 适用 | OIDC、SAML、JWT、passkey、SameSite、HttpOnly、CSRF、TLS 列试听清单。 | tts_probe/asr 回听；人耳确认读错/断句；记录时间点。 |
 
 ## 内容
 
@@ -64,13 +64,14 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 | 场景 | 起点 | 内容 |
 |---|---|---|
-| open | 0:00 | 输入账号口令 → 服务器凭什么确认 → 四种证据；片名卡 |
-| password | 0:18 | 账号+口令、TLS、盐/慢哈希、比对；只验证“知道” |
-| factors | 0:48 | 短信码验证“拥有”；passkey 验证“持有私钥” |
-| session | 1:10 | 会话表验证连续性；JWT 用签名和声明代替查表 |
-| federation | 2:06 | Google/SSO、code、OIDC ID Token、PKCE；验证第三方断言 |
-| attacks | 2:33 | 伪造证据：钓鱼、撞库、XSS、CSRF、固定、JWT 被偷 |
-| close | 2:57 | 验证=证据对照规则；没有万能机制；片尾名单 |
+| open | 0:00 | cookie/JWT/口令/短信码/passkey/验证码都是方式；先看 cookie |
+| cookie | 0:14 | 会话表验证连续；缺点：共享表、偷编号、CSRF |
+| jwt | 0:52 | 签名令牌代替查表；三段/编码≠加密/验签；缺点：撤销、被偷 |
+| password | 1:22 | 回到第一次验证：口令比对哈希；只证明“知道” |
+| factors | 1:47 | 短信码验证“拥有”；passkey 验证“私钥”；各自缺点 |
+| delegated | 2:12 | 另一个身份提供方验证，交回断言；本站验签名/受众 |
+| attacks | 2:36 | 验证码判人；cookie/JWT 被偷；钓鱼/转发；配置错误 |
+| close | 2:56 | 没有万能机制；按证据/规则/代价选；片尾名单 |
 
 ## 视觉系统
 

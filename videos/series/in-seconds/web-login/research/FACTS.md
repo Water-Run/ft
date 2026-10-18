@@ -91,6 +91,7 @@
 | JWT 的 `iss`、`sub`、`aud`、`exp`、`nbf`、`iat`、`jti` 都是可选 claim，但应用要定义哪些必须校验；不校验 `aud`/`iss`/`exp` 会出问题 | `rfc7519` §4.1、§7.2、§11.1 | 已读 |
 | JWT 的内容只有被密码学保护并绑定到信任决策所需的上下文时，才能用于信任决策 | `rfc7519` §11.1 | 已读 |
 | Federation：IdP 完成认证，把 assertion 交给 RP；RP 不直接验证 subscriber 的 authenticator；用户不必在每个 RP 各持一套 authenticator，这种流程有时称 single sign-on；SAML assertion 与 OIDC ID Token 都是常见 assertion 格式 | `nist-800-63c` §1 | 已读（2026-10-19 用 Web Fetch 读取） |
+| CAPTCHA 是一类 challenge-response，用来区分人类与机器人；即使登录已经认证，站点仍可能想确认交互者是人；它不证明身份；传统 CAPTCHA 的有效性和可访问性都有局限 | `w3c-captcha` §1.1、§1.3 | 已读（2026-10-19 用 Web Fetch 读取） |
 
 ## 攻击面与边界
 
@@ -157,7 +158,9 @@
 
 2026-10-19 第 3 轮：修中英不一致（unique salt / authenticator apps、“不是一张脸”、钓鱼“实时转发”），补 MFA 定义（“至少两个不同因子”），c10 用 WebAuthn passkey 说明公私钥/域名绑定，c11 补三类因子，删 SAY 表残留。中文稿 `298d8d99…`、英文草稿 `6d0809a6…`，估算 200.0 秒；已归档。
 
-2026-10-19 第 4 轮：用户指出主线应更集中在“各种常用登录机制的原理”、JWT 不能突然出现、文案要更像科普视频。改为“怎么验证”主线：口令验证知道、短信码验证拥有、passkey 验证私钥、cookie 验证会话连续、JWT 验证签名和声明、联合登录验证第三方断言；JWT 先由会话表在多台服务器间共享的问题引出，再讲三段结构/编码≠加密/验签/撤销。去掉“三件事”“认票不认人”等口号。中文稿 `review/script.zh.49658ee9ea1555c14281a94d54b5cace1f404936eca62497c3df5270e114a1c0.md`，内容哈希 `49658ee9ea1555c14281a94d54b5cace1f404936eca62497c3df5270e114a1c0`，估算 200.0 秒；英文草稿 `review/script.en.5359b29d9519ab518796c16b63f31ba3a7ee185595857a67e109ec7d5652059e.md`，哈希 `5359b29d9519ab518796c16b63f31ba3a7ee185595857a67e109ec7d5652059e`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
+2026-10-19 第 4 轮：用户指出主线应更集中在“各种常用登录机制的原理”、JWT 不能突然出现、文案要更像科普视频。改为“怎么验证”主线；JWT 先由会话表在多台服务器间共享的问题引出。中文稿 `49658ee9…`、英文草稿 `5359b29d…`，已归档。
+
+2026-10-19 第 5 轮：用户指出不能只说 cookie/JWT 两种，应从 cookie 开始、讲缺点再引出下一种；Google 不是独立方式；要提验证码。改为 8 场递进：cookie（会话表/偷编号/CSRF）→ JWT（签名、三段、撤销/被偷）→ 第一次验证（口令、短信码、passkey）→ 验证码（判人，不判身份）→ 委托验证（第三方断言）→ 攻击与收束。补 W3C CAPTCHA 来源。中文稿 `review/script.zh.8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654.md`，内容哈希 `8c6817f2f70ebb33c315edb93abc430c280d37a0390fd071ffaa1aaa6373d654`，估算 200.0 秒；英文草稿 `review/script.en.2fc12bb76637e40d81138efc51021af8cbdbd19e1467a66009f3cb9a019a706d.md`，哈希 `2fc12bb76637e40d81138efc51021af8cbdbd19e1467a66009f3cb9a019a706d`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
 
 ## 制作署名
 

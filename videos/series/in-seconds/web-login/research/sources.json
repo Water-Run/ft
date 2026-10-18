@@ -131,6 +131,15 @@
       "type": "standard",
       "accessed": "2026-10-19",
       "notes": "Federation 是 IdP 完成认证、把 assertion 交给 RP，RP 不直接验证 subscriber 的 authenticator；用户不必在每个 RP 各持一套 authenticator，这种流程有时称 single sign-on；SAML assertion 与 OIDC ID Token 都是常见 assertion 格式。"
+    },
+    "w3c-captcha": {
+      "title": "Inaccessibility of CAPTCHA: Alternatives to Visual Turing Tests on the Web",
+      "publisher": "W3C Accessible Platform Architectures Working Group",
+      "url": "https://www.w3.org/TR/turingtest/",
+      "published": "2021-12-16 (Group Draft Note)",
+      "type": "note",
+      "accessed": "2026-10-19",
+      "notes": "CAPTCHA 是一类 challenge-response，用来区分人类与机器人；即使登录已经认证，站点仍可能想确认交互者是人；它不证明身份；传统 CAPTCHA 的有效性和可访问性都有局限。"
     }
   }
 }

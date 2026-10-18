@@ -1,66 +1,72 @@
 # 04 分镜要求
 
-逐句时间以 `timing.<语言>.js` 为准；下面用句号定位。每个场景至少一次连续镜头运动；形状动作按 12fps 步进。构图可调整，但图形语义与 `expect.*.json` 的文字不能破。全片反复问的是：**服务器在验证什么证据、用什么规则验证**。
+逐句时间以 `timing.<语言>.js` 为准；下面用句号定位。每个场景至少一次连续镜头运动；形状动作按 12fps 步进。构图可调整，但图形语义与 `expect.*.json` 的文字不能破。全片是一条“验证方式递进”：**cookie 验证会话连续 → 它的缺点 → JWT 验证令牌可信 → 它的缺点 → 第一次验证（口令/短信码/passkey）→ 验证码判人 → 委托验证断言 → 攻击与收束**。
 
-## open（0:00–0:18）
+## open（0:00–0:14）
 
-- o1：米白底，一个抽象登录框（两条黑线）；红圆=口令、黄小方=短信码、蓝方=Google、黄三角=指纹，从四处落入画面。
-- o2：黑框（服务器）把四块证据挡在外面，只留一条检查缝；大字 `VERIFY?`。
-- o3：四块证据排开，标签 `EVIDENCE`；镜头轻推。
-- o4：黑框上出现三个词 `WHO / PROOF / MEMORY`，再收成一个问号；片名卡在这时出现：`200` 极大，标题“了解 Web 登录 / 怎么验证你是你”。
+- o1：米白底，一个抽象登录框；黑字问句“下一次请求怎么还是你？”
+- o2：六块小形状排开：cookie 票根、JWT 长条、红圆（口令）、黄方（短信码）、钥匙（passkey）、验证码方块；每块一个词，标签 `METHODS`。
+- o3：镜头推向 cookie 票根；标签 `COOKIE?`；片名卡出现：`200` 极大，标题“了解 Web 登录 / 怎么验证你是你”。
 
-## password（0:18–0:48）
+## cookie（0:14–0:52）
 
-- p1：账号是一张黄票，口令是红圆；两者一起进入黑框。标签 `ACCOUNT + PASSWORD`。
-- p2：红圆外套蓝色 TLS 通道；标签 `TLS`。
-- p3：服务器一侧只有盐（黄小块）和蓝方（哈希），没有红圆；标签 `SALT + HASH`。
-- p4：红圆再次进入压模，出来蓝方；两个蓝方在黑框里对齐。标签 `COMPARE`。
-- p5：对齐处亮一下，标签 `KNOW`。
-- p6：红圆单独留在框外；标签仍是 `KNOW`，但加一条“只此一次”的细线。
-- p7：下一次请求从浏览器发出，红圆不在请求里；标签 `NEXT REQUEST`。
+- c1：服务器生成蓝色票根，写随机编号；标签 `SESSION ID`。
+- c2：票根装进 cookie 信封，回到浏览器；标签 `COOKIE`。
+- c3：每次请求票根自动返回；服务器一侧会话表网格，票根落格；标签 `SESSION TABLE`。
+- c4：票根与表对上，亮一下；标签 `CONTINUITY`。旁白强调“不是重新验证人”。
+- c5：会话表压在服务器上，越来越重；标签 `SERVER TABLE`。
+- c6：多台服务器拉扯同一张表，线乱；标签 `SHARED TABLE`。
+- c7：一只黑色斜块偷走票根；标签 `STOLEN ID`。
+- c8：浏览器自动把 cookie 附到跨站请求上；`SameSite` 黑栏出现；标签 `AUTO COOKIE`。
 
-## factors（0:48–1:10）
+## jwt（0:52–1:22）
 
-- k1：黄小方（短信码）从手机形状飞进黑框；标签 `SMS / POSSESSION`。
-- k3：蓝方里长出一把带缺口的钥匙；标签 `PASSKEY / PRIVATE KEY`。
-- k4：服务器一侧只放公钥；一个随机挑战形状飞向钥匙。标签 `PUBLIC KEY / CHALLENGE`。
-- k5：钥匙转动、签名落在挑战上；假框（错位）伸过来却对不上；标签 `SIGNATURE / DOMAIN`。
+- j1：把“已验证”写进蓝色长条，绕开会话表；标签 `SIGNED TOKEN`。
+- j2：长条分三段：头部、载荷、签名；标签 `JWT / HEADER / PAYLOAD / SIGNATURE`。
+- j3：长条被“打开”，内容可读；眼睛图标；标签 `ENCODED / NOT ENCRYPTED`。
+- j4：签名缺口与服务器校验对齐，旁边 expiry/audience 两个刻度；标签 `SIGNATURE / EXPIRY / AUDIENCE`。
+- j5：长条被剪短，旁边一个“撤销名单”黑框；标签 `REVOCATION`。
+- j6：黑块偷走长条，仍能用到失效；标签 `STOLEN TOKEN`。
+- j7：长条被剪得更短；标签 `SHORT-LIVED`。
 
-## session（1:10–2:06）
+## password（1:22–1:47）
 
-- s1：黑框把“已验证”盖在一张票上；标签 `REMEMBER`。
-- s2：浏览器和服务器之间没有记忆线；服务器生成蓝色票根。标签 `SESSION ID`。
-- s3：票根装进 cookie 信封，回到浏览器；标签 `COOKIE`。
-- s4：服务器一侧出现会话表网格；票根落格，标签 `SESSION TABLE`。
-- s6：旧票根被剪断，注销时变灰；标签 `ROTATE`。
-- j1：会话表变成很多台服务器之间的共享表，线越拉越乱；标签 `TABLE PROBLEM`。
-- j2：另一条路：把“已验证”写进蓝色长条 token，服务器不建表；标签 `SIGNED TOKEN`。
-- j3：长条分成三段：头部、载荷、签名；标签 `JWT / HEADER / PAYLOAD / SIGNATURE`。
-- j4：长条被“打开”，内容可读；一只眼睛，标签 `ENCODED / NOT ENCRYPTED`。
-- j5：签名缺口对上，旁边出现 expiry/audience 两个小刻度；标签 `SIGNATURE / EXPIRY / AUDIENCE`。
-- j6：长条被剪短（短命），旁边一个“撤销名单”的黑框；标签 `REVOCATION`。
+- p1：cookie/JWT 票根退到背景，红圆（口令）进入前景；标签 `FIRST VERIFICATION?`。
+- p2：红圆进入压模，黄盐 + 蓝哈希；标签 `SALT + HASH`。
+- p3：两个蓝哈希对齐；标签 `KNOW`。
+- p4：红圆只对齐一次，账号/身份的形状仍空着；标签 `KNOWLEDGE ≠ OWNERSHIP`。
+- p5：鱼钩（钓鱼）与一叠泄露口令纸片靠近；标签 `PHISHING / STUFFING`。
+- p6：红圆退回“第一道”位置；标签 `FIRST CHECK`。
 
-## federation（2:06–2:33）
+## factors（1:47–2:12）
 
-- f1：本站黑框外出现第三方黑框（Google/企业 SSO），两者之间一条信任线；标签 `SSO`。
-- f2：用户走到第三方，拿回一张 code 票；标签 `CODE`。
-- f3：第三方给出“授权”钥匙；OIDC 再加一层身份，返回 `ID Token` 蓝条；标签 `OAUTH / OIDC / ID TOKEN`。
-- f4：本站用放大镜检查蓝条的签名和 audience；标签 `VERIFY ID TOKEN`。
-- f5：code 票短命、单次、绑定回调；PKCE 的 verifier 形状再对一次；标签 `CODE + PKCE`。
+- f1：黄方（短信码）从手机飞入；标签 `SMS / POSSESSION`。
+- f2：一条斜线把黄方实时复制走；标签 `RELAY`。
+- f3：蓝方里长出带缺口的钥匙；标签 `PASSKEY / PRIVATE KEY`。
+- f4：服务器只放公钥，随机挑战飞向钥匙；标签 `PUBLIC KEY / CHALLENGE`。
+- f5：钥匙签名，签名绑定域名，假框对不上；标签 `SIGNATURE / DOMAIN`。
+- f6：设备被拿走，恢复路径是一个断开的黑框；标签 `DEVICE / RECOVERY`。
 
-## attacks（2:33–2:57）
+## delegated（2:12–2:36）
 
-- a1：攻击者黑块把“别人的证据”推进检查缝；标签 `FORGED EVIDENCE`。
-- a2：鱼钩拉走红圆/黄方；一叠泄露口令纸片倒进登录框；标签 `PHISHING / STUFFING`。
-- a3：页面脚本黑块伸手读蓝色票根；`HttpOnly` 黑盾挡住；标签 `XSS / HTTPONLY`。
-- a4：画外斜块推着浏览器带 cookie 发请求；`SameSite` 黑栏挡住；标签 `CSRF / SAMESITE`。
-- a5：旧票根被预先塞入；token 蓝条被抽走；标签 `FIXATION / JWT THEFT`。
+- d1：本站黑框外出现另一个身份提供方黑框；标签 `IDENTITY PROVIDER`。
+- d2：它验证完，递来一张 assertion 票；标签 `ASSERTION`。
+- d3：本站用放大镜检查签名和 audience；标签 `VERIFY ASSERTION`。
+- d4：票面写 `OIDC / SAML`；标签 `OIDC / SAML`。
+- d5：信任线从第三方延伸到本站，中间有缺口；标签 `TRANSFERRED TRUST`。
 
-## close（2:57–3:12）
+## attacks（2:36–2:56）
 
-- e1：黑框把“证据”和“规则”两栏对上；标签 `EVIDENCE + RULE`。
-- e2：红圆（知道）、黄方（拥有）、钥匙（私钥）依次亮；标签 `KNOW / HAVE / KEY`。
-- e3：票根（连续）与蓝条（签名）并排，画面收成一句“没有万能机制”；标签 `CONTINUITY / SIGNATURE / NO UNIVERSAL`。
+- a1：验证码方块挡住脚本形状；标签 `CAPTCHA / HUMAN`。旁白“只判人，不判身份”。
+- a2：黑块偷 cookie/JWT 长条；标签 `COOKIE / JWT THEFT`。
+- a3：鱼钩、转发斜线、丢失设备三块并排；标签 `PHISHING / RELAY / DEVICE`。
+- a4：本站配置黑框里的 audience/签名刻度没对上；标签 `CONFIG ERROR`。
+
+## close（2:56–3:12）
+
+- e1：六块方法形状排开，没有一块能单独盖住全部；标签 `NO UNIVERSAL`。
+- e2：cookie 票根、JWT 长条、口令红圆、短信黄方依次亮；标签 `METHOD MAP`。
+- e3：证据、规则、代价三栏并排；标签 `EVIDENCE / RULE / COST`。
 
 ## outro（3:12–3:20）
 
