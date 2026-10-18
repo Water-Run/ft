@@ -8,7 +8,7 @@
 
 一部 200 秒、1920×1080、60 帧/秒的视频，中文与英文两版，带旁白、内嵌字幕、配乐与音效；每种语言两版封面（16:9 与 4:3）。
 
-主题：Web 登录怎样确认“你是你”。讲法：一条链——口令与慢哈希 → 会话 cookie → 三类攻击 → 多因素/WebAuthn → OAuth/OIDC → 每一环都有假设。视觉：包豪斯（红黄蓝几何 + 黑/米白、平涂、形状承担语义）。
+主题：Web 登录怎样确认“你是你”。讲法：三个问题——你是谁（账号声明）、你怎么证明（口令/一次性码/passkey）、之后怎么记住（cookie/JWT）——再讲联合登录（OAuth/OIDC/SSO）与攻击面。视觉：包豪斯（红黄蓝几何 + 黑/米白、平涂、形状承担语义）。
 
 受众：每天上网、登录过网站，知道口令/短信码/指纹/第三方登录这些词，但没有系统学过 cookie、session、OAuth、JWT、WebAuthn 的区别。
 
@@ -24,7 +24,7 @@
 | 视觉系统（包豪斯） | `src/css/style.css`、`src/design/STYLE.md`、`src/design/tokens.css` |
 | 四张参考关键帧 | `src/design/kf.html`（`?f=1` 标题、`?f=2` 哈希、`?f=3` 会话票、`?f=4` 因子/WebAuthn） |
 | 逐句对应表 | `expect.zh.json`、`expect.en.json` |
-| 场景空壳 | `src/js/scenes/shells.js`（8 个 `scene(...)` 入口） |
+| 场景空壳 | `src/js/scenes/shells.js`（7 个 `scene(...)` 入口） |
 
 **归你做：**
 
@@ -56,7 +56,7 @@
 | 1 | 读关键帧与示范部件 | `node kit/tools/look.js videos/series/in-seconds/web-login --url "/design/kf.html?f=1" --size 1920x1080` 等四张 | 看懂 `look.js` 的文字输出；不要重做视觉系统 |
 | 2 | 写 `brief/storyboard-detail.md` | — | 每句一行：画面、动作、镜头、音效；先写再写代码 |
 | 3 | 实现 `config.js` 的右上角仪表 | `look.js` 查几个时刻 | 仪表可见，不与字幕/剩余秒数冲突 |
-| 4 | 逐个实现 8 个场景 | 每场 `look.js --scene <id>`、`scan.js --from/--to` | 该场无错误 |
+| 4 | 逐个实现 7 个场景 | 每场 `look.js --scene <id>`、`scan.js --from/--to` | 该场无错误 |
 | 5 | 全片自检 | `node kit/tools/check.js videos/series/in-seconds/web-login` | 全部通过 |
 | 6 | 混音与读音核对 | `audio.js`、`asr.js` | 混音成功；读音核对记录写进 README |
 | 7 | 低清预演 | `preview.js` | 无超限静止段 |

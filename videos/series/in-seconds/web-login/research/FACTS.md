@@ -1,6 +1,6 @@
 # 事实
 
-取证日期：2026-10-18。对象是 Web 登录怎样确认“你是你”：口令、会话、多因素、联合登录与 WebAuthn 的基本机制，以及各自能防什么、不能防什么。本文件只登记陈述和依据，不规定片子的结构、时长分配、画面或措辞。
+取证日期：2026-10-18；2026-10-19 补 NIST 800-63C 的 federation/SSO 一条。对象是 Web 登录怎样确认“你是你”：口令、一次性码、passkey/WebAuthn、cookie 会话、JWT/token、OAuth/OIDC/SAML SSO 的基本机制，以及各自能防什么、不能防什么。本文件只登记陈述和依据，不规定片子的结构、时长分配、画面或措辞。
 
 标准以 RFC/W3C/NIST 的正式文本为准，OWASP 作为工程实践的第二路印证。来源编号见 `sources.json`。
 
@@ -89,6 +89,7 @@
 | JWT 是 claims 的紧凑、URL-safe 表示；作为 JWS payload 时可以签名/MAC，作为 JWE plaintext 时可以加密；JWT 不默认加密 | `rfc7519` Abstract、§3 | 已读 |
 | JWT 的 `iss`、`sub`、`aud`、`exp`、`nbf`、`iat`、`jti` 都是可选 claim，但应用要定义哪些必须校验；不校验 `aud`/`iss`/`exp` 会出问题 | `rfc7519` §4.1、§7.2、§11.1 | 已读 |
 | JWT 的内容只有被密码学保护并绑定到信任决策所需的上下文时，才能用于信任决策 | `rfc7519` §11.1 | 已读 |
+| Federation：IdP 完成认证，把 assertion 交给 RP；RP 不直接验证 subscriber 的 authenticator；用户不必在每个 RP 各持一套 authenticator，这种流程有时称 single sign-on；SAML assertion 与 OIDC ID Token 都是常见 assertion 格式 | `nist-800-63c` §1 | 已读（2026-10-19 用 Web Fetch 读取） |
 
 ## 攻击面与边界
 
@@ -149,11 +150,13 @@
 
 ## 文案审查
 
-2026-10-19 第 1 轮：中文稿导出为 `review/script.zh.53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4.md`，内容哈希 `53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4`，估算 200.0 秒；英文草稿导出为 `review/script.en.c2c907397d06359c32112638d6e2e9bad10c7c80bb86b2ba42565f53d7dc2e36.md`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
+2026-10-19 第 1 轮：中文稿 `53db476c…`、英文草稿 `c2c90739…`，已归档；没有确认。
+
+2026-10-19 第 2 轮：按 F01–F12 与 P0–P13 自我对抗后重写为 7 场“三问”结构；补 HTTP 无状态、账号声明、JWT/token、SSO/SAML、攻击与缓解的一一对应。中文稿 `review/script.zh.62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3.md`，内容哈希 `62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3`，估算 200.0 秒；英文草稿 `review/script.en.b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315.md`，哈希 `b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
 
 ## 制作署名
 
-策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿、审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿、按 F01–F12 自我对抗后重写为 7 场“三问”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 

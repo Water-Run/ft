@@ -1,5 +1,4 @@
-/* 包豪斯设计 token — 方向稿，尚未接入 style.css。
-   实现时把变量并入 src/css/style.css，并同步 project.json 的 check.style.palette/fonts。 */
+/* 包豪斯设计 token — 已并入 src/css/style.css；project.json 的 check.style.palette/fonts 同步。 */
 
 :root {
   /* 三原色 + 黑 + 米白 */

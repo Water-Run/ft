@@ -1,6 +1,6 @@
 # 200 秒了解 Web 登录机制：怎么验证你是你
 
-一部 200 秒的 Web 登录科普：口令与慢哈希、cookie 与会话、CSRF/会话劫持/钓鱼、多因素与 WebAuthn，以及 OAuth/OIDC 的联合登录怎样把“你是谁”交给别人验证。中文与英文两版。
+一部 200 秒的 Web 登录科普：用“你是谁、你怎么证明、之后怎么记住”三个问题，串起口令与慢哈希、一次性码与 passkey、cookie 与 JWT 会话、OAuth/OIDC/SAML 联合登录，以及 XSS/CSRF/钓鱼/会话固定等攻击面。中文与英文两版。
 
 制作流程与标准见仓库的 `docs/`；片中每一句陈述的出处见 `research/FACTS.md`。
 
@@ -10,9 +10,9 @@
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；中文初稿/英文草稿，估算 200.0 秒；审稿包与术语表；`expect.zh/en.json`；委托任务书 `brief/01–06` 与 `AGENTS.md`；8 个场景空壳；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
+| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：按 F01–F12 自我对抗后重写为 7 场“三问”结构，补 JWT/token、SSO/SAML、HTTP 无状态、账号声明与攻击对应；中文稿 `62c86207…`，英文草稿 `b6ef4d18…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
 | 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
-| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `53db476c…`；`review/approval.json` 为 pending；没有人工确认 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `62c86207…`；`review/approval.json` 为 pending；没有人工确认 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
 | 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
@@ -27,7 +27,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
 
-本轮中文稿：[`review/script.zh.53db476c…md`](review/script.zh.53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4.md)，内容哈希 `53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4`；英文草稿：[`review/script.en.c2c90739…md`](review/script.en.c2c907397d06359c32112638d6e2e9bad10c7c80bb86b2ba42565f53d7dc2e36.md)。`review/approval.json` 仍是 pending，不能据此配音。
+本轮中文稿：[`review/script.zh.62c86207…md`](review/script.zh.62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3.md)，内容哈希 `62c86207ab49cad8a3ed63a88dc7bf32b5bd6565b31613caa170663e79adf9a3`；英文草稿：[`review/script.en.b6ef4d18…md`](review/script.en.b6ef4d186a135a73646bd330500f06e351f174296bcd3a06498d8f2e5c66e315.md)。`review/approval.json` 仍是 pending，不能据此配音。上一轮 `53db476c…` 稿保留在 `review/`，作为对照。
 
 ## 开工反馈应用
 
@@ -37,26 +37,26 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 目标观众已有的知识：每天上网、登录过各种网站；知道口令、短信验证码、指纹/人脸、第三方登录这些词；没有系统学过 cookie、session、OAuth、JWT、WebAuthn 的区别。
 
-看完应能回答的一个核心问题：网站怎么确认屏幕对面是“你”，而不是拿着你的口令、cookie 或验证码的别人。
+看完应能回答的一个核心问题：网站怎么确认屏幕对面是“你”，而不是拿着你的口令、cookie、验证码或 token 的别人。
 
-逐章怎样推进问题、最后回答什么：登录那一刻（口令/TLS/慢哈希）→ 之后为什么不用再填（session cookie）→ 这串东西为什么危险（XSS/CSRF/session fixation）→ 只靠口令不够（因子、OTP、WebAuthn）→ 用 Google/微信登录（OAuth/OIDC/PKCE/JWT）→ 收束（一条链，每一环都有假设）。
+逐章怎样推进问题、最后回答什么：先列口令/验证码/指纹/Google 登录，收成三个问题（你是谁/怎么证明/怎么记住）→ 账号声明与口令/哈希/一次性码/passkey → cookie 与 JWT 两种“记住” → Google 登录/OAuth/OIDC/SAML SSO → 钓鱼/撞库/XSS/CSRF/fixation/token 泄露 → 收束（声明、证明、记住，每一环都有假设）。
 
-本片决定不讲的材料及理由：所有 OAuth grant type、SAML/SSO、JWT/JWKS 细节、账号恢复/风控/设备指纹、具体厂商实现差异。理由见 `research/NARRATIVE.md`：200 秒里这些会挤掉“登录到底发生什么”的主线。
+本片决定不讲的材料及理由：所有 OAuth grant type、SAML 断言细节、JWT/JWKS 细节、账号恢复/风控/设备指纹、具体厂商实现差异。SAML/SSO 只保留一句“一次登录，多个系统”；200 秒里这些细节会挤掉“登录到底发生什么”的主线。
 
 | 问题编号 | 适用性 / 不适用的原因 | 本片计划与正面对照 | 怎样验证 |
 |---|---|---|---|
-| F01 标题与主问题 | 适用 | 标题是“怎么验证你是你”，不是“登录方式大全”；用一条链把口令、会话、MFA、联合登录串起来 | 审稿时标出开头问题、各章答案与结尾回答的时刻 |
-| F02 解释步骤与理解负担 | 适用 | 用同一次登录走完：输入口令 → 服务器查哈希 → 发 session cookie → 下一次请求带 cookie；每一步交代输入、变化、理由、结果 | 正常播放检查能否从“口令正确”跟到“下一次请求为什么认得我”；记录每步时间 |
-| F03 名称、比较与边界 | 适用 | 第一次出现 authentication/authorization/session/identity proofing、OAuth/OIDC、JWT/JWS 时各给一句定义；区分 2FA 与 MFA、口令与 passkey | 审稿时核对首次定义、版本标注和画面文字 |
-| F04 有效阅读时间 | 适用 | 用 01–06 的段落编号，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
+| F01 标题与主问题 | 适用 | 标题是“怎么验证你是你”，不是“登录方式大全”；用三个问题把账号声明、凭证、cookie/JWT、联合登录串起来 | 审稿时标出开头问题、各场答案与结尾回答的时刻 |
+| F02 解释步骤与理解负担 | 适用 | 用同一次登录走完：账号声明 → 口令/哈希 → cookie/JWT → 下一次请求；每一步交代输入、变化、理由、结果 | 正常播放检查能否从“口令正确”跟到“下一次请求为什么认得我”；记录每步时间 |
+| F03 名称、比较与边界 | 适用 | 第一次出现 authentication/authorization/session、OAuth/OIDC、JWT、SAML/SSO 时各给一句中文定义；区分 2FA 与 MFA、口令与 passkey、cookie 与 token | 审稿时核对首次定义、版本标注和画面文字 |
+| F04 有效阅读时间 | 适用 | 用三问骨架与 7 场结构，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
 | F05 动画解释机制 | 适用 | 形状拼合、单向压模、盖章、黑框拒绝四种动作各有语义；不做全片同一种擦除 | 与近期两部并排看开头/换章/解释段 |
 | F06 声音选择与配合 | 适用 | 木块、印章、卡扣、纸张各有语义；不用默认 whoosh；配乐写清节奏、动机与加层 | 主混音/无配乐版试听，记录片段与结果 |
 | F07 隐私与脱敏 | 适用 | 画面只用假域名、假 SID、假用户名；不出现真实站点、真实 cookie、真实账号 | 检查最终 MP4、字幕、封面与 FACTS 回显 |
 | F08 最终文件与记录 | 适用 | 目标 200 秒 ±0.1；60fps、立体声、响度按仓库默认；出片后记录实际编码参数与哈希 | `check.js`、`ffprobe`、实际音轨测量与 README 对照 |
 | F09 证据与反馈来源 | 适用 | “OAuth=登录”“JWT 加密”“HTTPS 让 cookie 安全”“MFA=短信”“指纹是认证器”等容易引战；每条回到 FACTS 的来源与版本 | 审稿与成片复核时逐条对照 `FACTS.md` 的“边界与常见误说” |
 | F10 单集独立可懂 | 适用 | 本集独立；不要求记得 2FA/Lean 等前集。 | 不看前集也能理解；审稿逐句检查前集引用。 |
-| F11 外文材料的中文解释 | 适用 | authentication/authorization/session/identity proofing、OAuth/OIDC/JWT/JWS/WebAuthn 首次出现给中文解释；RFC 引文不要求观众读英文。 | 审稿时能找到每个外文术语的中文解释；不要求观众读 RFC 原文。 |
-| F12 读音、断句与口播 | 适用 | Argon2id、bcrypt、OAuth、OIDC、JWT、WebAuthn、SameSite、HttpOnly、CSRF、TOTP、AAL 列试听清单。 | tts_probe/asr 回听；人耳确认读错/断句；记录时间点。 |
+| F11 外文材料的中文解释 | 适用 | authentication/authorization/session、OAuth/OIDC/JWT/WebAuthn/SAML/SSO 首次出现给中文解释；RFC 引文不要求观众读英文。 | 审稿时能找到每个外文术语的中文解释；不要求观众读 RFC 原文。 |
+| F12 读音、断句与口播 | 适用 | OAuth、OIDC、JWT、WebAuthn、passkey、SAML、SSO、SameSite、HttpOnly、CSRF、TLS 列试听清单。 | tts_probe/asr 回听；人耳确认读错/断句；记录时间点。 |
 
 ## 内容
 
@@ -64,17 +64,16 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 | 场景 | 起点 | 内容 |
 |---|---|---|
-| open | 0:00 | 一串 SID 的钩子；片名卡 |
-| password | 0:18 | 登录表单、TLS、salt + 慢哈希；不是加密 |
-| session | 0:49 | `Set-Cookie`、session ID、服务端会话；为什么之后不用再填 |
-| attacks | 1:25 | XSS 读 cookie、CSRF 借浏览器、session fixation；HttpOnly/SameSite/换 ID |
-| factors | 1:53 | 知道/拥有/本身；AAL2；OTP 不防钓鱼；WebAuthn 的 origin 绑定 |
-| federated | 2:25 | OAuth 四角色、authorization code + PKCE、OIDC ID Token、JWT 签名≠加密 |
-| close | 2:57 | 一条链；片尾名单 |
+| open | 0:00 | 四种登录形态 → 三个问题 → 一张 SID；片名卡 |
+| credentials | 0:19 | 账号声明、口令/TLS/盐/慢哈希、一次性码、passkey/WebAuthn |
+| session | 1:06 | HTTP 无状态、cookie/session ID、会话表、JWT/token、bearer、轮换 |
+| federation | 1:47 | Google 登录、OAuth 授权≠认证、OIDC、code/PKCE、SAML/SSO |
+| attacks | 2:20 | 钓鱼、撞库、XSS/HttpOnly、CSRF/SameSite、fixation、JWT 泄露 |
+| close | 2:52 | 三个问题收束；每一环都有假设；片尾名单 |
 
 ## 视觉系统
 
-包豪斯：红/黄/蓝三块纯色 + 黑/米白，圆=你知道的、方=你拥有的、三角=你本身，黑框=验证者，票=session，单向压模=哈希，带缺口的钥匙=WebAuthn。三四个大形状撑起一屏，字很少，形状可以转角度；字也当形状（竖排/沿弧线短标签）。完整规范、色彩/字体/图形语义、封面与禁止项见 [`src/design/STYLE.md`](src/design/STYLE.md)，token 见 [`src/design/tokens.css`](src/design/tokens.css)。
+包豪斯：红/黄/蓝三块纯色 + 黑/米白，圆=你知道的、方=你拥有的、三角=你本身，黑框=验证者，票=session，带签名缺口的长条=JWT，两个黑框互交=联合登录，单向压模=哈希，带缺口的钥匙=WebAuthn。三四个大形状撑起一屏，字很少，形状可以转角度；字也当形状（竖排/沿弧线短标签）。完整规范、色彩/字体/图形语义、封面与禁止项见 [`src/design/STYLE.md`](src/design/STYLE.md)，token 见 [`src/design/tokens.css`](src/design/tokens.css)。
 
 视觉系统已落到 [`src/css/style.css`](src/css/style.css)；四张参考关键帧在 [`src/design/kf.html`](src/design/kf.html)（`?f=1` 标题、`?f=2` 哈希、`?f=3` 会话票、`?f=4` 因子/WebAuthn）。参考来源：策划者提供的「包豪斯」风格卡；本片把形状转译为认证因子与验证动作。没有使用名叫 Bauhaus 的字体，也没有复刻红黄蓝三角圆方的通用海报；具体选择见 STYLE.md 第 1、5、8 节。
 
@@ -82,14 +81,14 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 ## 取证
 
-- 标准：RFC 6265（cookie）、RFC 6749（OAuth 2.0）、RFC 7636（PKCE）、RFC 7519（JWT）、RFC 7617（Basic）、OIDC Core 1.0、W3C WebAuthn Level 2、NIST SP 800-63B-4。
+- 标准：RFC 6265（cookie）、RFC 6749（OAuth 2.0）、RFC 7636（PKCE）、RFC 7519（JWT）、RFC 7617（Basic）、OIDC Core 1.0、W3C WebAuthn Level 2、NIST SP 800-63B-4、NIST SP 800-63C（federation/SSO）。
 - 工程实践：OWASP Authentication / Password Storage / Session Management 三份 cheat sheet；读取日 2026-10-18。
 - 历史：Netscape cookie 规格存档；Dave Kristol 2002 年关于 Lou Montulli 1994 年在 Netscape 发明 cookie 的邮件。
 - 没有做真实站点实验；本片不展示任何真实账号、cookie 或站点配置。重做时按 `research/sources.json` 的链接逐条打开，注意页面日期与版本。
 
 ## 读法
 
-尚无旁白。写稿与合成后，在此登记送去合成的文本与字幕不同的地方（`script.js` 的 SAY 表）及原因。
+`script.js` 的 `SAY` 表已列 session ID、passkey、SAML、SSO、OAuth 2.0、OIDC、JWT、PKCE、TLS、WebAuthn、HttpOnly、SameSite、CSRF、XSS、OTP 的读法。尚未配音，未做 `tts_probe`/`asr` 回听；确认后在此登记实际读法与修正。
 
 ## 制作署名与片尾
 

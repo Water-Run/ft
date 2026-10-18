@@ -42,6 +42,9 @@
   #f3 .ticket .id { position: absolute; left: 690px; top: 120px; width: 170px; color: var(--paper); z-index: 2; font: 700 24px "Mono"; white-space: normal; text-align: center; }
   #f3 .cookie { left: 1100px; top: 260px; width: 640px; font: 600 34px/1.5 "Mono"; white-space: normal; }
   #f3 .cookie b { color: var(--bh-red); font-weight: 700; }
+  #f3 .jwt { position: absolute; left: 1100px; top: 520px; width: 560px; height: 96px; background: var(--bh-blue); }
+  #f3 .jwt .sig { position: absolute; right: -18px; top: 24px; width: 48px; height: 48px; background: var(--bh-yellow); }
+  #f3 .jwtlabel { position: absolute; left: 1100px; top: 636px; font: 700 24px "Mono"; color: var(--ink); }
   #f3 .chain { left: 150px; top: 650px; width: 1200px; height: 4px; background: var(--ink); }
   #f3 .chain::after { content: ""; position: absolute; right: -2px; top: -12px; border-left: 24px solid var(--ink); border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
   #f3 .end { left: 1300px; top: 615px; width: 180px; height: 80px; background: var(--bh-yellow); }
@@ -99,6 +102,8 @@
       <div class="stub"></div>
     </div>
     <div class="cookie"><b>Secure</b> 只走加密通道<br><b>HttpOnly</b> 脚本读不到<br><b>SameSite</b> 限制跨站携带</div>
+    <div class="blk jwt"><div class="sig"></div></div>
+    <div class="jwtlabel">JWT / SIGNED, NOT SECRET</div>
     <div class="blk chain"></div>
     <div class="blk end"></div>
     <div class="foot">票根 = session ID；谁拿着它，谁就被当成你</div>

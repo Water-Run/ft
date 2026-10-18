@@ -122,6 +122,15 @@
       "type": "standard",
       "accessed": "2026-10-18",
       "notes": "AAL1/2/3；单因素/多因素；AAL2 要求两种不同因素并提供 phishing-resistant 选项；AAL3 要求 public-key、non-exportable、phishing-resistant；OTP 不是 phishing-resistant；biometric 本身不算 authenticator；AAL1 30 天、AAL2 24 小时/1 小时空闲的建议；重认证。"
+    },
+    "nist-800-63c": {
+      "title": "NIST SP 800-63C: Digital Identity Guidelines — Federation and Assertions",
+      "publisher": "NIST",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63c.html",
+      "published": "2025-08-26 (page date)",
+      "type": "standard",
+      "accessed": "2026-10-19",
+      "notes": "Federation 是 IdP 完成认证、把 assertion 交给 RP，RP 不直接验证 subscriber 的 authenticator；用户不必在每个 RP 各持一套 authenticator，这种流程有时称 single sign-on；SAML assertion 与 OIDC ID Token 都是常见 assertion 格式。"
     }
   }
 }
