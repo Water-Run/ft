@@ -71,7 +71,7 @@
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 | `powershell` |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 | `pty` |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 | `tire-width` |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | [`tmux`](tmux/) |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 | `gps` |
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 | `modern-crypto` |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 | `quantization` |

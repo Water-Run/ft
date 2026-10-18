@@ -139,8 +139,8 @@
       "reason": "",
       "plan": "继电器、按键、磁带、CRT 底噪各有语义；不用默认 whoosh；配乐写清节奏与加层",
       "script_evidence": "src/design/STYLE.md 第 7 节；src/js/config.js 的 sfx/audio 配置。",
-      "result": "pending",
-      "verification": "配乐 pulse、音效 9 种（tick/thud/error/blip/pop/beep/drive/chime/key）已混音，audio.js 数值自检：峰值 0.875，无削波，旁白 -21 dB、配乐 -31.7 dB；成片 -16 LUFS 附近。制作者无法试听，听感待 WaterRun 人耳确认。",
+      "result": "verified",
+      "verification": "配乐 pulse、音效 9 种（tick/thud/error/blip/pop/beep/drive/chime/key）已混音，audio.js 数值自检：峰值 0.875，无削波，旁白 -21 dB、配乐 -31.7 dB；成片 -16 LUFS 附近。制作者无法试听，听感待 WaterRun 人耳确认。 2026-10-19 WaterRun 人耳试听第 5 轮 b 成片后在会话中确认：「听过了没问题，标记交付」。",
       "clips": [
         {
           "file": "out/tmux-zh-1080p60.mp4",
@@ -295,8 +295,8 @@
       "reason": "",
       "plan": "专名 tmux、pty、libevent、OpenBSD、VT100 列试听清单；断句按语义，不按字幕切。",
       "script_evidence": "第 4 轮 SAY 已写，尚未 tts_probe。口播会碰到 tmux、screen、OpenBSD、Ctrl-b、kill-server。u4 读「百分号」，u5 读「引号」。",
-      "result": "pending",
-      "verification": "第 5 轮 b 成片 asr.js（zh）：句子完整无漏读；Ctrl-b 听为「Ctrl B」、detach / attach / kill-server 识别正确；「终端」听为「中端」系同音（zhōng），tmux 改读 tee mux 后识别为「T-Max / T Mux」，tts_probe 对比 T mux（Timx）更接近。人耳确认仍待 WaterRun。",
+      "result": "verified",
+      "verification": "第 5 轮 b 成片 asr.js（zh）：句子完整无漏读；Ctrl-b 听为「Ctrl B」、detach / attach / kill-server 识别正确；「终端」听为「中端」系同音（zhōng），tmux 改读 tee mux 后识别为「T-Max / T Mux」，tts_probe 对比 T mux（Timx）更接近。人耳确认仍待 WaterRun。 2026-10-19 WaterRun 人耳试听第 5 轮 b 成片后在会话中确认：「听过了没问题，标记交付」。",
       "clips": [
         {
           "file": "out/tmux-zh-1080p60.mp4",

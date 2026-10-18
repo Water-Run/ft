@@ -6,15 +6,15 @@
 
 ## 当前状态与接续
 
-阶段：第 5 轮 b 文案按 WaterRun 授权定稿，中英配音、场景、混音、渲染、封装与封面已完成（详见「成片」）。WaterRun 看过第 5 轮并要求优化使用与原理两段；第 5 轮 b 尚待其观看。发布：未发布。归档：未归档。
+阶段：已交付（2026-10-19）。第 5 轮 b 中英成片经 WaterRun 观看试听确认（详见「成片」）。WaterRun 看过第 5 轮并要求优化使用与原理两段；第 5 轮 b 经其观看试听确认交付。发布：未发布。归档：未归档。
 
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-19：第 5 轮成片后按 WaterRun 意见出第 5 轮 b：使用一段改为逐条「Ctrl-b 再按」，原理拆成按键与输出两条路径（约 21 秒，原 10.5 秒）；修画面小问题（字幕条侵入、主体被切、静止段、开头占位读数、计数统一）；tmux 读法改 tee mux；重新配音、混音、渲染、封装 |
-| 下一步及依赖 | WaterRun 观看成片、试听中英两版与配乐；意见回到 `review/NOTES.md` 后按 workflow 从对应步骤重做；然后发布、归档 |
+| 下一步及依赖 | 发布到哔哩哔哩与 YouTube 后回填；按 lifecycle 归档、校验、清理 |
 | 当前稿本 / 校对结论 | 中文 `review/script.zh.03a119d1958c0bf7c2bf3d1a3602b22a0e97c285088f941fb575777d9a3b87e3.md`，英文 `review/script.en.ce875f7996b19a5d257da7ed44119e8e7f7c337325dbc0245546c19f13ac1332.md`；approval 依据是会话授权，不是逐句阅读确认（`review/NOTES.md`「第 5 轮」「第 5 轮 b」） |
 | 输出在哪台制作机 | 制作机 A（Windows）；`out/` 不入库 |
-| 未完成、未检查与阻塞 | 人耳试听、连续观看、配乐听感待 WaterRun；英文标题沿用画面英文「TMUX IN 128 SECONDS」，project.json 的英文标题尚空 |
+| 未完成、未检查与阻塞 | 已交付；待发布、归档与清理 |
 
 ## 文案与校对
 
@@ -89,7 +89,7 @@ node kit/tools/script-review.js videos/series/in-seconds/tmux check
 
 ## 读法
 
-配音改用 MiniMax（`project.json` 的 `tts` 段）。字幕写正式拼写；`u3` 的 `%` 送去合成的是「百分号」。SAY 表里 tmux、Ctrl-b、kill-server、OpenBSD 的拆读是为 edge 调的，MiniMax 仍按 SAY 送读；人耳试听待 WaterRun。
+配音改用 MiniMax（`project.json` 的 `tts` 段）。字幕写正式拼写；`u3` 的 `%` 送去合成的是「百分号」。SAY 表里 tmux、Ctrl-b、kill-server、OpenBSD 的拆读是为 edge 调的，MiniMax 仍按 SAY 送读；tmux 改为 tee mux、kill-server 原样送读。WaterRun 已试听确认。
 
 ## 制作署名与片尾
 
@@ -131,13 +131,13 @@ node kit/tools/check.js  videos/series/in-seconds/tmux --final        # 交付�
 |---|---|
 | 交付物（制作机 A 的 `out/`，不入库） | `tmux-zh-1080p60.mp4`（SHA-256 `f2b11e1178902a9778f031dc6e5289e459ebc5824302455715dd2b9998ee3017`）、`tmux-en-1080p60.mp4`（`ef6073249408fe35c0bae1f3511694d4c39bd908f51cd1497f9c752fc3f39ee4`）；各语言另有 no-music、voice-only 与 `.srt`；封面 `cover-<语言>-16x9 / 4x3`（JPG 与 2 倍 PNG） |
 | 规格（finish.js 实测） | 两语言均 7680 帧 = 128.00 s，1920×1080，60 fps，H.264 + AAC；zh 约 -16 LUFS，en -15.7 LUFS，TP ≤ -1.5 dBFS；渲染日志 verified frames=7680 |
-| 自动闸门 | 第 5 轮 b：`check.js` 全部通过；`check.js --final` 只剩 F06、F12 两项人耳确认未完成（见下） |
+| 自动闸门 | 第 5 轮 b：`check.js` 全部通过；`check.js --final` 全部通过（F06、F12 经 WaterRun 试听确认） |
 | 事实 | 逐句与画面对照 FACTS；第 5 轮新增陈述的依据记在 FACTS「文案审查」第 5 轮一条 |
-| 读音与节奏 | 无过快、无过长句；多数句间停顿 < 0.2 s（定长 128 秒所致）。`asr.js` zh 无漏读，Ctrl B / detach / attach / kill-server 识别正确，「终端→中端」为同音；tmux 改读 tee mux（tts_probe 对比）。人耳待 WaterRun |
+| 读音与节奏 | 无过快、无过长句；多数句间停顿 < 0.2 s（定长 128 秒所致）。`asr.js` zh 无漏读，Ctrl B / detach / attach / kill-server 识别正确，「终端→中端」为同音；tmux 改读 tee mux（tts_probe 对比）。WaterRun 已试听确认 |
 | 旁白与画面 | `sheets.js cue`（zh 33 张）逐张核对：每句所述对象在画面主体 |
 | 动画 | 卡带未来主义：12fps 步进 UI、CRT 开关机与换台雪花、拔插电缆、磁带仓/旋钮/挡板对应 session/window/pane；第 5 轮 b 修正：字幕条侵入、主体被切、detach 保持段静止、开头占位读数、u1 特写与右上仪表重叠；剩余 use 段 DENSE 提示（键帽单字与图例） |
 | 计数示意 | 开头 4→9 来自实验第 8 节；之后机架里计数继续到 10、11…，以及 o5 小屏的 vim / make / ssh，都是「还在跑」的示意，不是实验回显 |
-| 需要人来判断 | MiniMax 两种音色与读音、配乐 pulse 与音效听感、连续观看观感——待 WaterRun |
+| 需要人来判断 | WaterRun 已观看试听第 5 轮 b 并确认交付（2026-10-19） |
 
 ## 结尾反馈复盘
 
@@ -152,13 +152,13 @@ node kit/tools/check.js  videos/series/in-seconds/tmux --final        # 交付�
 | F03 | 不口播版本号 → 3.4 只在角标；首次术语同句中文 | 0:19.9–1:13；sheets cue | 已验证 |
 | F04 | 卡片 2–3 秒 → 片名卡 2.2 s、答案牌约 8 s、片尾 7.5 s、「已学会」键表累积 | 1:48.7–2:08；look、finish 静止检查（无 ≥3 s 静止） | 已验证 |
 | F05 | 三类换场 → 纸带 / 挡板 / CRT 关开，各配不同音效 | 0:17–0:42 等换场；look | 已验证（静帧与时间线），连续观感待人看 |
-| F06 | 机械音效、不用 whoosh → 9 种音效，无 whoosh；配乐 pulse | audio.js 数值：峰值 0.875、无削波 | 待复核：制作者无法试听，待 WaterRun 人耳 |
+| F06 | 机械音效、不用 whoosh → 9 种音效，无 whoosh；配乐 pulse | audio.js 数值：峰值 0.875、无削波 | 已验证：WaterRun 试听确认（「听过了没问题，标记交付」） |
 | F07 | 脱敏 → 只用 /tmp/tmux-1001/ftlab、PID、/dev/pts 等通用值 | 0:37.8–1:13；look | 已验证 |
 | F08 | 128 s、60fps → 实测 128.00 s / 7680 帧 / 1080p60 | finish.js、render 日志 | 已验证 |
 | F09 | 回到 FACTS → 年份、采访大意、kill-server 回显均有依据 | 0:19.9–0:37.8、1:50–1:57 | 已验证 |
 | F10 | 不依赖前集 | 全片 | 已验证 |
 | F11 | 外文配中文 | 0:37.8–1:41.9 | 已验证 |
-| F12 | 试听读音 → tts_probe 选 tee mux、kill-server 原样送读；asr 无漏读 | 0:00–2:00.5；asr.js、tts_probe | 待复核：人耳确认 MiniMax 读音 |
+| F12 | 试听读音 → tts_probe 选 tee mux、kill-server 原样送读；asr 无漏读 | 0:00–2:00.5；asr.js、tts_probe | 已验证：WaterRun 试听确认 |
 | F13 | 年代与路线 | 0:00–0:37.8 | 已验证 |
 | F14 | 片尾不配旁白 | 2:00.5–2:08；look 126.0 s | 已验证 |
 

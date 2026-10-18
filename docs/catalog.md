@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 165 部：已成片 10 部，制作中 9 部，计划中 146 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 11 部，制作中 8 部，计划中 146 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -219,7 +219,7 @@
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 第 5 轮 b（Claude Opus 5.5，按 WaterRun 意见优化使用与原理）中英成片：各 128.00 s、1080p60，MiniMax 配音；check.js 通过，--final 只差配乐与读音的人耳确认。 |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 交付第 5 轮 b（Claude Opus 5.5）：中英各 128.00 s、1080p60，MiniMax 配音；check.js --final 通过，WaterRun 观看试听确认。未发布。 |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
