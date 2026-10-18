@@ -1,6 +1,7 @@
 {
   "checked": "2026-10-11",
-  "note": "只列入打开过正文或经 GitHub API 读到文件的材料。检索摘要不在这里充当依据。",
+  "rechecked": "2026-10-18",
+  "note": "只列入打开过正文或经 GitHub API 读到文件的材料。检索摘要不在这里充当依据。2026-10-18 重开了 Claude Code 三页文档、函数调用公告、Bolin 文、ReAct v3 HTML，以及 DeepSeek README 与 sdk-minimal、Pi README 与 usage.md、OpenCode README 的 Agents 一节。glossary、how-pi-works 和 2025-04-16 的 Codex README 没有重开，仍以 2026-10-11 对各自固定提交的摘录为准。",
   "sources": [
     {
       "id": "react-2022",

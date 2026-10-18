@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "version": "2026-10-18",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "开头 o1 提出够不着，o3 给出 harness 这个名字，loop 走完循环，close 的 e1 回答换模型并不换程序。五家只各留一个差别。",
+      "script_evidence": "script.js 的 o1、o3、a3–a7、e1；README「开工反馈应用」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "a3 到 a7 按送出、返回、执行、送回、停止分句。a2 标明不是实测。历史放在循环之后。",
+      "script_evidence": "script.js 的 a2–a7；review/NOTES.md 术语表「循环」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "o3、o4 第一次说明 harness 不是专名。p1 声明五家各用一份固定文档或提交。c2 带 2025-04-16 与 2026。p6 写明 2026-10-18。e3 限定三份材料。",
+      "script_evidence": "script.js 的 o3、o4、p1、p6、c2、e3；FACTS.md「2026-10-18 复核」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片没有章节卡。片尾三行名单放在 184.5–192 秒的无旁白段。内容卡若出现，文字到位后至少停留 3 秒。",
+      "script_evidence": "script.js 场景 outro 的 z1，pause 7；README 视觉系统",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "循环用同一行对象从请求变成结果。换场只用光标整行重绘。场景文件仍是基座，确认文案后再画，现在不能记为已验证。",
+      "script_evidence": "README「视觉系统」；src/js/config.js 的注释；script.js 的 a2",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "沿用 120 拍和秒针。动机改成短促的终端确认音，关键步才出声。结论抬在 e1。音色仍是既定的 Yunyang 与 Andrew，尚未合成。",
+      "script_evidence": "project.json 的 voices、rates 与 audio.score.lift_cue e1；README「读法」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "不运行产品，不入库回显。示意若出现文件名，只用 notes.txt 这类假名，并在画面上写「示意」。",
+      "script_evidence": "script.js 的 a2；FACTS.md「不进入定稿的句子」；research/lab/README.md",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "交付时用最终 MP4 核对 1920×1080、60 帧、192 秒、响度和峰值。现在没有成片，不记哈希。",
+      "script_evidence": "README「当前状态」；project.json 的 check.duration",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "句子只指向 FACTS.md。归纳句在校对记录里单独标出。10 月 11 日和 10 月 18 日不一致的许可模式，两条都留。",
+      "script_evidence": "FACTS.md「2026-10-18 复核」与「不进入定稿的句子」；review/NOTES.md 的简化表",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "不提上一集，也不把其他长片当作前提。五家里每家第一次出现就说它承担的那一个差别。",
+      "script_evidence": "script.js 的 o1–e4、p2、c1、n1、i1、d1；README 不讲的材料",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "harness、ReAct、一轮、shell、build、plan 都在中文句里解释。不把论文段落投到画面上。",
+      "script_evidence": "script.js 的 o3、o4、h3、h4、e3；review/NOTES.md 术语表",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "专名读法写在 script.js 的 SAY 表和 README「读法」。配音前试听，再用回听核对。中文字幕不加句号。",
+      "script_evidence": "script.js 的 SAY；project.json 的 asr_prompts；README「读法」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}

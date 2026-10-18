@@ -1,7 +1,7 @@
-// 「XX 秒速通」系列的引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角留给本集的仪表）、换场。
-// TODO: 系列基座。右上角的仪表（window.HUD.right）与换场方式按本集的题目来做，做完删掉这一行；做法对照首集 two-factor-auth 的 config.js。
-document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
-window.PALETTE = { ink: '#0c0d0f', paper: '#f2efe8', ac: '#ff4a1c', dim: '#8a8782', dimp: '#6b6964' };
+// 「192 秒速通 · Harness」：终端底色、节拍网格、常驻元素。右上角仪表与换场在场景里做。
+// 仪表预定为循环步数，只在示意循环里增加，画面标明「示意」。换场预定为光标整行重绘，不用全屏刷色。
+document.documentElement.classList.add(LANG);
+window.PALETTE = { ink: '#0e1110', paper: '#e4e0d4', panel: '#161a18', ac: '#d8a15a', dim: '#8b9088', dimp: '#6e736c' };
 const C = window.PALETTE;
 const VH = 968;                                           // 字幕带以上的画幅高度；镜头以这块区域为画幅：makeCamera(world, 1920, VH)
 // 节拍网格：配乐 120 拍/分，一秒两拍。画面上的重音吸附到八分音符（0.25 秒）上，与配乐同拍

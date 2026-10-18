@@ -162,10 +162,42 @@ Full Auto 下每条命令网络禁用，并限制在当前工作目录和临时�
 | 三家 turn 的边界已经用同一次任务量过 | 只有文档对照，没有运行 |
 | 任何耗时、token 数、失败次数、界面截图 | 没有运行记录 |
 
+## 2026-10-18 复核
+
+这一天为写中文稿重开了下面这些材料。没有运行 Codex、Claude Code、OpenCode、Pi 或 DeepSeek Harness。提交号没有更换。网页没有版本号的，以这一天读到的正文为准；和 2026-10-11 的摘录不一致时，两条都留，不取新的覆盖旧的。
+
+| 陈述 | 依据 | 状态 |
+|---|---|---|
+| 没有工具时，Claude 只能以文本回答。提供工具并管理模型所见上下文的周围一层，称作 agentic harness。页中 “Claude chooses” 指模型在推理 | *How Claude Code works*，The agentic loop 与 Tools。读取日 2026-10-18 | 已读。10 月 11 日的摘录没有这句对 harness 的直接定义；这句以 10 月 18 日的页为准 |
+| 同一页把循环写成 gather context、take action、verify results，并写这些阶段会混在一起。上下文变满时先清旧的工具输出，再摘要对话 | 同一页 | 已读。与 10 月 11 日摘录一致 |
+| Agent SDK 页仍把循环写成五步：收到提示、系统提示、工具定义和历史；模型给出文本、工具调用或两者；SDK 执行并收集结果；重复到一次回应不再包含工具调用；再交出结果。一次工具往返称为一个 turn | *How the agent loop works*，The loop at a glance 与 Turns and messages。读取日 2026-10-18 | 已读。与 10 月 11 日摘录一致 |
+| 被拒绝时，模型收到拒绝消息作为工具结果。只读工具可以并行，Edit、Write、Bash 顺序执行 | 同一页，Tool permissions 与 Parallel tool execution | 已读 |
+| 许可规则仍由 Claude Code 执行，不由模型执行。提示和 `CLAUDE.md` 不改变 Claude Code 允许什么。规则按 deny、ask、allow 取第一条匹配。更窄的 allow 不能从 deny 里挖出例外 | *Configure permissions*，Manage permissions。读取日 2026-10-18 | 已读。与 10 月 11 日摘录一致 |
+| 同一天的文档另有权限模式。`auto` 在 shell 和网络请求等动作之前用分类器审查，而不是逐次询问。*How Claude Code works* 写：交互终端和 VS Code 在 v2.1.283 或更新版本上，Auto 是内建的起始模式 | *Configure permissions* 的 Permission modes；*How Claude Code works* 的 Control what Claude can do | 已读。10 月 11 日的记录没有这套模式。不能把「程序决定准不准」写成「总是询问使用者」 |
+| 2023-06-13 的函数调用公告仍写：模型为 `gpt-4-0613` 和 `gpt-3.5-turbo-0613` 输出符合函数签名的 JSON。该节没有写谁把结果送回。工具输出中的不可信数据可以指示模型做未预期的事；发信、发帖、购买这类动作应有用户确认 | OpenAI，*Function calling and other API updates*，日期行 June 13, 2023 | 已重读该节。页上另有 July 20, 2023 的模型延期说明，不把它当成函数调用的发布日 |
+| Bolin 文日期仍是 January 23, 2026。开头把 Codex 里编排用户、模型和工具的逻辑称作 agent 或 harness。从一次用户输入到助手把话交还，称为对话的一个 turn。沙箱说明只约束 Codex 提供的 shell，不约束 MCP 工具 | *Unrolling the Codex agent loop* | 已重读这些段。文中指向更早提交的行号没有在新提交上重核 |
+| ReAct v3 HTML（2023-03-10）仍写：语言空间里的 thought 不改变外部环境，因此没有观察反馈，只把信息写回上下文。推理为主的轨迹由 thought、action、observation 交替组成 | arXiv HTML 2210.03629v3，ReAct 一节 | 已重读该节。文中的成功率数字仍不引用 |
+| DeepSeek README 在 `d743267` 仍自称 open-source agent harness，架构 everything-is-a-plugin，开发者预览，许可 MIT。`sdk-minimal` 默认向模型公布的工具仍是持久 shell 和 `working_directory`，排除文件系统工具 | 上述提交的 README 与 `packages/bundle/sdk-minimal/README.md` | 已重读这些段。`docs/glossary.md` 的 turn / step / round 本次没有重开，沿用 2026-10-11 对同一提交的摘录 |
+| Pi 在 `ea448f45` 的 README 仍写 minimal, extensible agent harness，并写没有内建的文件系统、进程、网络或凭据许可系统，默认以启动它的用户和进程的权限运行。`usage.md` 仍写不会在每次工具调用前询问 | 同一提交的 README Permissions 与 `packages/coding-agent/docs/usage.md` | 已重读这两处。`how-pi-works.md` 的 turn 定义本次没有重开 |
+| OpenCode 在 `0d61729` 的 README 仍写：`build` 是默认的全权限代理；`plan` 默认拒绝文件编辑，跑 bash 前请求许可；可用 Tab 切换 | 同一提交 README 的 Agents 一节 | 已重读该节 |
+
+本片归纳，不是某一家的原句：三份仍在使用的循环描述都包含「模型发出调用，程序执行，结果进入下一次请求，直到不再调用」。做之前问不问，写在 Claude、Codex、OpenCode 的规则或模式里，不写在这个共同循环里。Pi 的两份文档写明它不逐次询问。三家 turn 的差异仍只来自文档对照，没有并排实验。DeepSeek 的那一条沿用 2026-10-11 的 glossary 摘录。
+
+## 文案审查
+
+中文稿在 `src/js/script.js`。2026-10-18 写稿，2026-10-19 导出交审，指定校对者 WaterRun，尚未确认。稿本是 `review/script.zh.e30c6fea6b84a047c0a1bf7eab2f828a77385f48ed4b89a859779100d818a8bb.md`。说明、术语和取舍在 `review/NOTES.md`。英文是对照草稿，不在本轮确认范围。
+
 ## 制作署名
 
-策划：WaterRun。2026-10-11 这次会话中的 Grok 4.7 写下本目录的事实记录，并按同一天的要求删去其中的讲法规定。没有写旁白。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。
+
+| 参与模型 | 分工 | 依据 |
+|---|---|---|
+| Grok 4.7 | 2026-10-11：事实记录，并按当天要求删去讲法规定。没有写旁白 | 本文件原「制作署名」与本片 README |
+| Grok 4.7 | 2026-10-18：复核上表所列材料，补记 Claude Code 的许可模式，写中文稿和英文对照草稿，定终端视觉方案。2026-10-19：复测时间线并导出中文校对稿。没有配音，没有写正片场景 | 本轮会话。片尾名单与此表一致 |
+
+仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 
-没有成片。
+没有成片。2026-10-18 的重读见上一节。

@@ -2,4 +2,4 @@
 
 2026-10-11 修订：本阶段只登记事实，不规定片子怎么做。
 
-没有分镜、时长分配、画面方案或旁白。陈述和依据在 `FACTS.md`，来源在 `sources.json`。面向主流观众的讲述顺序在 `NARRATIVE.md`。
+陈述和依据在 `FACTS.md`，来源在 `sources.json`。面向主流观众的讲述顺序在 `NARRATIVE.md`。2026-10-18 的中文稿、时长和终端视觉方案在本片 README 与 `review/NOTES.md`。画面场景仍未按稿重写。

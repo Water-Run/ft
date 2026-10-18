@@ -35,7 +35,7 @@ function seeded(seed = 1) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79
 // ── SVG 叠加层与箭头 ──
 // 每个叠加层自带一套箭头标记（id 带序号）：场景隐藏时其 <defs> 也随之失效，不能跨场景共用
 let OV_SEQ = 0;
-const COL = window.PALETTE || { ink: '#111111', accent: '#ff5a1f', dim: '#8a8a8a' };   // 箭头可用的颜色名，项目在 config.js 里设 window.PALETTE
+const COL = window.PALETTE || { ink: '#0e1110', accent: '#d8a15a', dim: '#8b9088' };   // 箭头可用的颜色名，项目在 config.js 里设 window.PALETTE
 function overlay(parent) {
   const s = svg('svg', { class: 'ov', viewBox: '0 0 1920 1080' }, parent);
   s._seq = ++OV_SEQ;

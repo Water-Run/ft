@@ -1,17 +1,16 @@
-// 片尾：主题词、一句话的概括、制作名单与开源仓库地址。TODO: 名单按本集 research/FACTS.md 的「制作署名」填写，不猜版本；做完删掉这一行。
+// 片尾：主题词、一句话的概括、制作名单与开源仓库地址。名单与 research/FACTS.md 的「制作署名」一致。旁白尚未合成，不列语音模型。
 scene('outro', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
   blk(world, 'bg-ink', -200, -200, 2320, 1400);
   const t0 = s.start + 0.35;
-  const big = txt(world, '', tr('主题', 'Topic'), 92, 96); css(big, { font: '900 300px "Inter", "Sans SC"', letterSpacing: '-.04em', lineHeight: '1' });
-  const line = txt(world, 't-3 ac', tr('一句话的概括', 'One line to keep'), 108, 452);
+  const big = txt(world, '', tr('执行', 'RUN'), 92, 96); css(big, { font: '900 300px "Inter", "Sans SC"', letterSpacing: '-.04em', lineHeight: '1' });
+  const line = txt(world, 't-3 ac', tr('模型提出，程序执行', 'The model asks. The program runs.'), 108, 452);
   slam(big, t0, { from: 1.2, d: 0.4 }); sfx('thud', t0, { g: 0.8, p: -0.3 });
   wipe(line, t0 + 0.25, { dir: 'l', d: 0.4 });
   const rows = [
     [tr('策划', 'Planning'), 'WaterRun'],
-    [tr('取证 · 脚本 · 翻译 · 视觉 · 动画 · 配乐 · 审查', 'Research · script · translation · design · animation · score · review'), tr('（实际参与的模型）', '(the model that did the work)')],
-    [tr('旁白合成', 'Narration voice'), tr('（语音服务；未披露模型时注明）', '(voice service; say so if the model is undisclosed)')],
+    [tr('取证 · 文案 · 视觉方案', 'Research · script · visual plan'), 'Grok 4.7'],
     [tr('开源视频', 'Open-source video'), 'github.com/Water-Run/ft'],
   ];
   rows.forEach(([k, v], i) => {
