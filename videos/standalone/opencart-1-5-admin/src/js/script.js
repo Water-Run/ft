@@ -66,7 +66,7 @@
   {
     "id": "request",
     "title": "一次请求怎样找到代码",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -119,7 +119,7 @@
   {
     "id": "login",
     "title": "登录怎样核对身份",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -152,7 +152,7 @@
   {
     "id": "session",
     "title": "会话怎样接上下一次请求",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -190,7 +190,7 @@
   {
     "id": "permissions",
     "title": "权限怎样分配和执行",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -233,7 +233,7 @@
   {
     "id": "database",
     "title": "数据库怎样组织这些数据",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -276,7 +276,7 @@
   {
     "id": "query",
     "title": "列表怎样查出来",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -334,7 +334,7 @@
   {
     "id": "page",
     "title": "数据怎样变成页面",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -387,7 +387,7 @@
   {
     "id": "write",
     "title": "改状态会写下什么",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [
@@ -435,7 +435,7 @@
   {
     "id": "case",
     "title": "业务怎样沿着它扩展",
-    "lead": 3.8,
+    "lead": 4.2,
     "tail": 1,
     "paragraphs": [
       [

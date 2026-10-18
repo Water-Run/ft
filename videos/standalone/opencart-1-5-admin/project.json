@@ -1,8 +1,7 @@
 {
   "slug": "opencart-1-5-admin",
   "languages": [
-    "zh",
-    "en"
+    "zh"
   ],
   "titles": {
     "zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端",
@@ -15,6 +14,16 @@
   "rates": {
     "zh": "+0%",
     "en": "+0%"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Reliable_Executive"
+    },
+    "speed": {
+      "zh": 0.97
+    }
   },
   "asr_prompts": {
     "zh": "以下是普通话的讲解。",

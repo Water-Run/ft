@@ -1,34 +1,212 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* OpenCart 1.5 时代后台皮肤（方向 A「后台即舞台」，WaterRun 2026-10-18 确认）+ 图解层。
+   颜色取自 OpenCart 1.5.6.4 后台样式表与切图（参照 design/img/04_order_list.png）；字号按视频阅读条件放大。
+   用法与类名见 js/SCENE-GUIDE.md；部件函数见 js/parts.js。结构性样式在 base.css。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  /* 1.5 后台本体 */
+  --oc-hdr-a: #0D4C76;  --oc-hdr-b: #0F6193;          /* 钢蓝页头渐变 */
+  --oc-menu-a: #414141; --oc-menu-b: #212121;          /* 深灰菜单 */
+  --oc-on-a: #421A06; --oc-on-b: #973C10; --oc-on-c: #B15529; --oc-on-d: #853B17;   /* 当前菜单锈橙 */
+  --oc-line: #DBDBDB;     /* 内容框边线 */
+  --oc-cell: #DDDDDD;     /* 表格线 */
+  --oc-head-a: #F6F6F6; --oc-head-b: #EDEDED;          /* 内容框标题条 */
+  --oc-th: #EFEFEF;       /* 表头 */
+  --oc-filter: #E7EFEF;   /* 筛选行（浅青灰） */
+  --oc-alt: #F8F8F8;      /* 隔行 */
+  --oc-title: #003A88;    /* 标题蓝 / 按钮蓝 */
+  --oc-link: #000088;
+  --oc-text: #1d1d1d;
+  --oc-dim: #666666;
+  --oc-hi: #FFFFCB;       /* 后台自身的浅黄：本句正在解释的对象 */
+  /* 1.5 的提示框 .success / .warning / .attention */
+  --ok-bg: #EAF7D9;   --ok-bd: #BBDF8D;   --ok-tx: #3A6A12;
+  --warn-bg: #FFD1D1; --warn-bd: #F8ACAC; --warn-tx: #9A1C1C;
+  --att-bg: #FFF5CC;  --att-bd: #F2DD8C;  --att-tx: #6B5200;
+  /* 图解层 */
+  --req: #C4561C;         /* 锈橙：去程请求 / 当前步骤 */
+  --res: #0F6193;         /* 钢蓝：返回结果 */
+  --srv-a: #0A3657; --srv-b: #0F6193;                  /* 服务器区 */
+  --db-a: #2F4A3A; --db-b: #3E6450;                    /* 数据库区（深绿灰，与钢蓝区分） */
+  --paper: #ffffff;
+  --page: #F2F2F2;        /* 舞台外的浅灰底 */
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
+body { font-family: "Inter", "Sans SC"; color: var(--oc-text); }
 #bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
-.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
-
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+.scene { background: var(--paper); }
+/* world：镜头拍摄的大画布。设得很宽，右侧站点的文字不会塌成一字一行 */
+.world { position: absolute; left: 0; top: 0; width: 16000px; height: 3000px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* ── 字号阶梯（1080p）：标题 64–80，章名 48–60，标签 34–42，数据 30–36，出处 22–26 ── */
+.t-hero { font: 800 80px/1.08 "Inter", "Sans SC"; letter-spacing: -.01em; color: var(--oc-title); }
+.t-h1 { font: 800 64px/1.12 "Inter", "Sans SC"; color: var(--oc-title); }
+.t-h2 { font: 700 52px/1.15 "Inter", "Sans SC"; color: var(--oc-text); }
+.t-lbl { font: 700 40px/1.25 "Inter", "Sans SC"; color: var(--oc-text); }
+.t-lbl-s { font: 600 34px/1.3 "Inter", "Sans SC"; color: var(--oc-text); }
+.t-data { font: 500 32px/1.3 "Inter", "Sans SC"; color: var(--oc-text); }
+.t-note { font: 400 28px/1.35 "Sans SC", "Inter"; color: var(--oc-dim); }
+.t-src { font: 500 24px/1.3 "Inter", "Sans SC"; color: var(--oc-dim); letter-spacing: .02em; }
+.c-req { color: var(--req); } .c-res { color: var(--res); } .c-title { color: var(--oc-title); } .c-dim { color: var(--oc-dim); }
+.hi { background: var(--oc-hi) !important; }
+.wrap { white-space: normal; }
 
-/* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+/* ── 1.5 后台外框：页头 + 菜单 + 阴影 + 面包屑 ── */
+.oc-frame { position: absolute; background: #fff; overflow: hidden; }
+.oc-hdr { position: absolute; left: 0; top: 0; right: 0; height: 96px;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,0) 0 6px, rgba(255,255,255,.05) 6px 8px), linear-gradient(180deg, var(--oc-hdr-a), var(--oc-hdr-b)); }
+.oc-hdr .logo { position: absolute; left: 56px; top: 22px; font: 800 44px/1 "Inter"; color: #fff; letter-spacing: -.01em; }
+.oc-hdr .sep { position: absolute; top: 28px; width: 2px; height: 38px; background: rgba(255,255,255,.6); }
+.oc-hdr .adm { position: absolute; top: 30px; font: 500 32px/1 "Inter", "Sans SC"; color: #E2EEF7; letter-spacing: .04em; }
+.oc-hdr .who { position: absolute; right: 56px; top: 30px; font: 500 30px/1 "Sans SC", "Inter"; color: #fff; }
+.oc-menu { position: absolute; left: 0; right: 0; top: 96px; height: 64px; background: linear-gradient(180deg, var(--oc-menu-a), var(--oc-menu-b)); padding-left: 36px; display: flex; }
+.oc-menu span { font: 500 30px/64px "Sans SC", "Inter"; color: #fff; padding: 0 32px; border-left: 2px solid #535353; }
+.oc-menu span:first-child { border-left: 0; }
+.oc-menu span.on { background: linear-gradient(180deg, var(--oc-on-a) 0%, var(--oc-on-b) 45%, var(--oc-on-c) 85%, var(--oc-on-d) 100%); border-left-color: transparent; }
+.oc-menu span.on + span { border-left-color: transparent; }
+.oc-shade { position: absolute; left: 0; right: 0; top: 160px; height: 20px; background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,0)); }
+.oc-crumb { position: absolute; font: 400 28px/1 "Sans SC", "Inter"; color: var(--oc-dim); }
+.oc-crumb u { color: var(--oc-link); text-decoration: underline; text-underline-offset: 4px; }
+
+/* ── 内容框 .box：圆角顶 + 渐变标题条（图标 + 蓝色标题 + 右侧按钮） ── */
+.oc-box { position: absolute; border: 2px solid var(--oc-line); border-radius: 14px 14px 0 0; background: #fff; }
+.oc-box > .hd { position: relative; height: 76px; border-radius: 12px 12px 0 0; background: linear-gradient(180deg, var(--oc-head-a), var(--oc-head-b)); border-bottom: 2px solid var(--oc-line);
+  padding: 0 24px 0 84px; font: 700 38px/76px "Inter", "Sans SC"; color: var(--oc-title); }
+.oc-box > .hd .ico { position: absolute; left: 22px; top: 14px; width: 46px; height: 48px; }
+.oc-box > .hd .btns { position: absolute; right: 18px; top: 12px; display: flex; gap: 12px; }
+.oc-box > .bd { position: absolute; left: 0; right: 0; top: 78px; bottom: 0; padding: 24px 26px; }
+
+/* ── 按钮 a.button：圆角、上亮下暗的渐变 ── */
+.oc-btn { display: inline-block; padding: 0 26px; height: 52px; border-radius: 12px; font: 600 28px/52px "Inter", "Sans SC"; color: #fff;
+  background: linear-gradient(180deg, #2A5FA6 0%, #003A88 55%, #00306F 100%); border: 1px solid #002A63; box-shadow: inset 0 1px 0 rgba(255,255,255,.35); }
+.oc-btn.rust { background: linear-gradient(180deg, #C9703F 0%, #B15529 55%, #973C10 100%); border-color: #6E2C0C; }
+.oc-btn.gray { background: linear-gradient(180deg, #FDFDFD 0%, #E4E4E4 100%); color: #333; border-color: #B8B8B8; }
+.oc-btn.down { background: linear-gradient(180deg, #00306F 0%, #003A88 60%, #1F539A 100%); box-shadow: inset 0 2px 3px rgba(0,0,0,.35); }
+
+/* ── 列表 table.list ── */
+.oc-table { position: absolute; border-collapse: collapse; border-top: 2px solid var(--oc-cell); border-left: 2px solid var(--oc-cell); background: #fff; }
+.oc-table .tr { position: relative; display: flex; border-bottom: 2px solid var(--oc-cell); background: #fff; }
+.oc-table .tr.alt { background: var(--oc-alt); }
+.oc-table .td { flex: none; border-right: 2px solid var(--oc-cell); padding: 0 16px; font: 400 30px/1 "Inter", "Sans SC"; color: var(--oc-text); display: flex; align-items: center; overflow: hidden; }
+.oc-table .td.r { justify-content: flex-end; }
+.oc-table .td.c { justify-content: center; }
+.oc-table .tr.th { background: var(--oc-th); }
+.oc-table .tr.th .td { font-weight: 700; color: #222; }
+.oc-table .tr.ft { background: var(--oc-filter); }
+.oc-table .td u { color: var(--oc-link); text-decoration: underline; text-underline-offset: 4px; }
+.oc-table .tr.hi { background: var(--oc-hi); }
+.oc-table .tr.cur { background: var(--oc-hi); box-shadow: inset 6px 0 0 var(--req); }
+.oc-input { display: inline-block; height: 40px; border: 2px solid #A9A9A9; background: #fff; border-radius: 2px; }
+.oc-check { display: inline-block; width: 26px; height: 26px; border: 2px solid #8A8A8A; border-radius: 4px; background: linear-gradient(180deg, #fff, #E9E9E9); }
+
+/* ── 提示框 .success / .warning / .attention ── */
+.oc-note { position: absolute; padding: 18px 24px 18px 70px; border: 2px solid; border-radius: 6px; font: 500 32px/1.35 "Sans SC", "Inter"; white-space: normal; }
+.oc-note .ic { position: absolute; left: 20px; top: 18px; width: 34px; height: 34px; border-radius: 50%; font: 800 26px/34px "Inter"; text-align: center; color: #fff; }
+.oc-note.success { background: var(--ok-bg); border-color: var(--ok-bd); color: var(--ok-tx); } .oc-note.success .ic { background: #5D9B2A; }
+.oc-note.warning { background: var(--warn-bg); border-color: var(--warn-bd); color: var(--warn-tx); } .oc-note.warning .ic { background: #C23B3B; }
+.oc-note.attention { background: var(--att-bg); border-color: var(--att-bd); color: var(--att-tx); } .oc-note.attention .ic { background: #D2A214; }
+
+/* ── 标签页 .htabs ── */
+.oc-tabs { position: absolute; display: flex; gap: 6px; border-bottom: 2px solid var(--oc-line); }
+.oc-tabs span { padding: 0 26px; height: 56px; font: 600 28px/54px "Sans SC", "Inter"; color: #555; background: linear-gradient(180deg, #F7F7F7, #E2E2E2); border: 2px solid var(--oc-line); border-bottom: 0; border-radius: 8px 8px 0 0; }
+.oc-tabs span.on { background: #fff; color: var(--oc-title); margin-bottom: -2px; height: 58px; }
+
+/* ── 读取中图标（loading.gif 风格：8 条辐条步进旋转） ── */
+.oc-spin { position: absolute; }
+.oc-spin i { position: absolute; left: 50%; top: 0; width: 14%; height: 30%; margin-left: -7%; border-radius: 40%; background: #3A6E9E; transform-origin: 50% 166%; }
+
+/* ── 截图框（真实页面）── */
+.oc-shot { position: absolute; overflow: hidden; border: 2px solid var(--oc-line); background: #fff; }
+.oc-shot img { position: absolute; left: 0; top: 0; }
+
+/* ── 角标：示意 / 实际页面 / 匿名案例 ── */
+.stamp { position: absolute; padding: 6px 16px; border-radius: 4px; font: 600 24px/1.2 "Sans SC", "Inter"; letter-spacing: .04em; }
+.stamp.demo { color: #6B5200; background: var(--att-bg); border: 2px solid var(--att-bd); }
+.stamp.real { color: #fff; background: var(--oc-title); border: 2px solid #002A63; }
+.stamp.case { color: #fff; background: #5A3A22; border: 2px solid #3B2414; }
+.case-strip { position: absolute; height: 52px; padding: 0 28px; display: flex; align-items: center; gap: 18px; font: 700 28px/1 "Sans SC", "Inter"; color: #fff;
+  background: repeating-linear-gradient(135deg, #5A3A22 0 18px, #4E321D 18px 36px); border-bottom: 3px solid var(--req); }
+
+/* ── 图解：三个区域 ── */
+.zone { position: absolute; border-radius: 12px; }
+.zone > .zl { position: absolute; left: 24px; top: 16px; font: 700 38px/1.1 "Sans SC", "Inter"; }
+.zone > .zs { position: absolute; left: 24px; top: 62px; font: 500 26px/1.2 "Inter", "Sans SC"; }
+.zone.browser { background: #fff; border: 3px solid #8E9AA6; }
+.zone.browser > .bar { position: absolute; left: 0; right: 0; top: 0; height: 58px; border-radius: 9px 9px 0 0; background: linear-gradient(180deg, #F4F6F8, #D7DDE3); border-bottom: 2px solid #A7B1BB; }
+.zone.browser > .addr { position: absolute; left: 18px; right: 18px; top: 70px; height: 50px; border: 2px solid #9AA4AE; background: #fff; font: 500 26px/46px "Mono"; color: #333; padding: 0 14px; overflow: hidden; }
+.zone.browser > .zl { top: 10px; font-size: 30px; color: #2C3E50; }
+.zone.browser > .zs { display: none; }
+.zone.server { background: repeating-linear-gradient(180deg, rgba(255,255,255,0) 0 3px, rgba(255,255,255,.05) 3px 4px), linear-gradient(180deg, var(--srv-a), var(--srv-b)); border: 3px solid #072A44; }
+.zone.server > .zl { color: #fff; } .zone.server > .zs { color: #BFD6E8; }
+.zone.db { background: linear-gradient(180deg, var(--db-a), var(--db-b)); border: 3px solid #1E3127; }
+.zone.db > .zl { color: #fff; } .zone.db > .zs { color: #C9DCCF; }
+.zone.db::before { content: ""; position: absolute; left: -3px; right: -3px; top: -16px; height: 30px; border-radius: 50%; background: #4E7A62; border: 3px solid #1E3127; }
+.zone.ghost { background: transparent !important; border: 3px dashed #9AA4AE; }
+.zone.ghost > .zl { color: #8E9AA6 !important; }
+
+/* 区域里的小方块（文件、模块）*/
+.chip { position: absolute; padding: 10px 20px; border-radius: 8px; font: 600 32px/1.2 "Inter", "Sans SC"; background: #fff; color: var(--oc-text); border: 2px solid #9FB3C4; }
+.chip.on { background: var(--oc-hi); border-color: var(--req); box-shadow: inset 0 0 0 2px var(--req); }
+.chip.dark { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.35); }
+
+/* ── 请求令牌：去程锈橙、返回钢蓝 ── */
+.token { position: absolute; height: 54px; padding: 0 22px 0 46px; border-radius: 27px; font: 700 28px/54px "Mono", "Sans SC"; color: #fff; white-space: nowrap; }
+.token::before { content: ""; position: absolute; left: 16px; top: 17px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.85); }
+.token.req { background: linear-gradient(180deg, #D86A2E, var(--req) 60%, #A8460F); border: 2px solid #7A300A; }
+.token.res { background: linear-gradient(180deg, #2C7DB3, var(--res) 60%, #0B4C76); border: 2px solid #073A5C; }
+.token .tl { position: absolute; left: 0; top: 62px; font: 600 26px/1.2 "Sans SC", "Inter"; color: var(--oc-text); background: rgba(255,255,255,.92); padding: 2px 8px; }
+
+/* ── 代码块：逐行高亮 + 中文注释 ── */
+.code { position: absolute; border: 2px solid var(--oc-line); border-radius: 10px 10px 0 0; background: #FCFCFA; }
+.code > .ct { height: 52px; padding: 0 20px; font: 600 26px/52px "Mono", "Sans SC"; color: #555; background: linear-gradient(180deg, #F6F6F6, #EAEAEA); border-bottom: 2px solid var(--oc-line); border-radius: 8px 8px 0 0; }
+.code > .cb { padding: 14px 0; }
+.code .ln { position: relative; padding: 0 24px 0 78px; font: 500 32px/52px "Mono", "Sans SC"; white-space: pre; color: var(--oc-text); }
+.code .ln::before { content: attr(data-n); position: absolute; left: 0; width: 56px; text-align: right; color: #A0A0A0; font-size: 24px; }
+.code .ln.on { background: var(--oc-hi); box-shadow: inset 6px 0 0 var(--req); }
+.code .ln.dim { color: #B5B5B5; }
+.code .k { color: var(--oc-title); font-weight: 700; } .code .s { color: #8A3A00; } .code .v { color: #6A1B9A; } .code .cm { color: #8A8A8A; }
+.code-note { position: absolute; padding: 6px 16px; font: 600 30px/1.3 "Sans SC", "Inter"; color: var(--oc-text); background: #fff; border-left: 6px solid var(--req); }
+
+/* ── 说明标签（带引线）── */
+.callout { position: absolute; padding: 10px 20px; font: 600 34px/1.25 "Sans SC", "Inter"; color: var(--oc-text); background: #fff; border: 2px solid var(--oc-text); border-radius: 6px; }
+.callout.req { border-color: var(--req); color: #7A300A; }
+.callout.res { border-color: var(--res); color: #073A5C; }
+.callout.hiy { background: var(--oc-hi); }
+
+/* ── 会话文件 ── */
+.sess { position: absolute; border: 2px solid #7C8B97; border-radius: 4px 22px 4px 4px; background: #FBFBF7; }
+.sess > .sh { height: 50px; padding: 0 18px; font: 600 26px/50px "Mono", "Sans SC"; color: #fff; background: #4A5A66; border-radius: 2px 20px 0 0; }
+.sess > .sb { padding: 14px 18px; font: 500 30px/1.6 "Mono", "Sans SC"; white-space: pre; color: var(--oc-text); }
+.sess .lab { font-family: "Sans SC"; font-size: 26px; color: var(--oc-dim); }
+
+/* ── 鼠标指针（经典箭头） ── */
+.cursor { position: absolute; width: 40px; height: 60px; }
+
+/* ── 章节卡：一页刷新出来的 1.5 后台页，内容框标题向下展开 ── */
+.chap { position: absolute; inset: 0; background: #fff; overflow: hidden; }
+.chap .oc-crumb { left: 96px; top: 210px; }
+.chap .oc-box { left: 96px; top: 262px; width: 1728px; height: 560px; }
+.chap .no { position: absolute; left: 48px; top: 70px; font: 800 64px/1 "Inter"; color: var(--req); letter-spacing: .02em; }
+.chap .ti { position: absolute; left: 48px; top: 166px; font: 800 80px/1.15 "Sans SC", "Inter"; color: var(--oc-text); }
+.chap .rule { position: absolute; left: 48px; top: 300px; width: 220px; height: 8px; background: var(--req); }
+.chap .meta { position: absolute; left: 48px; top: 340px; font: 500 30px/1.3 "Sans SC", "Inter"; color: var(--oc-dim); }
+
+/* ── 片尾 ── */
+.credits .k { font: 600 34px/1.2 "Sans SC", "Inter"; color: var(--oc-dim); }
+.credits .v { font: 700 48px/1.2 "Sans SC", "Inter"; color: var(--oc-text); }
+.credits .m { font: 700 40px/1.25 "Inter", "Sans SC"; color: var(--oc-title); }
+.credits .r { font: 500 30px/1.35 "Sans SC", "Inter"; color: #444; }
+.credits .url { font: 700 52px/1.1 "Mono"; color: var(--oc-title); }
+
+/* ── 字幕：底部独立区（y≥968），白色衬底挡住经过的线条 ── */
+#caption { bottom: 40px; height: 64px; z-index: 50; }
+#caption span { font: 500 40px/1.3 "Sans SC"; color: var(--oc-text); background: rgba(255,255,255,.94); padding: 4px 22px; border-radius: 4px; }
 .en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption em { font-style: normal; font-weight: 800; color: var(--req); }
+
+/* ── 开场用：现代后台示意（平涂、无渐变，只作对照，必须带「现代后台示意」角标）── */
+.mod-card { position: absolute; background: #F7F8FA; border: 2px solid #DDE1E6; border-radius: 20px; }
+.mod-pill { position: absolute; padding: 0 34px; height: 76px; border-radius: 38px; background: #EEF1F5; border: 2px solid #D3D9E0; font: 600 34px/72px "Sans SC", "Inter"; color: #2B3440; }
+.mod-pill b { display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: #6B7785; margin-right: 16px; vertical-align: 2px; }
+/* 时间轴 */
+.band { position: absolute; background: rgba(196, 86, 28, .12); border: 2px solid rgba(196, 86, 28, .55); border-radius: 6px; }
+.ghost { position: absolute; border: 3px dashed #B8C0C8; border-radius: 14px 14px 0 0; font: 800 120px/1 "Inter"; color: #E3E7EB; display: flex; align-items: center; justify-content: center; }
+.year { font: 800 150px/1 "Inter"; color: var(--oc-title); letter-spacing: -.03em; }
