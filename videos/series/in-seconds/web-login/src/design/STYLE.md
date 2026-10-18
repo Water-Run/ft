@@ -2,7 +2,7 @@
 
 本片把“验证你是你”画成一组几何形状的拼接：圆、方、三角，切成一半、四分之一，像积木一样拼。风格是**今天常说的包豪斯**：红黄蓝三块纯色、黑与米白、平涂、边缘干脆、几个大形状撑起整张、字很少、字本身也当成形状。
 
-这份文件是设计方向，不是最终 `style.css`。实现时按本文件写 `src/css/style.css`，并把 `project.json` 的 `check.style.palette/fonts` 改成这里的值。
+视觉系统已落到 `src/css/style.css`；四张参考关键帧在 `src/design/kf.html`（`?f=1` 标题、`?f=2` 哈希、`?f=3` 会话票、`?f=4` 因子/WebAuthn）。`project.json` 的 `check.style.palette/fonts` 已按本文件设置。场景实现仍归受托模型。
 
 ## 1. 一句话与设计命题
 

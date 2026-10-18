@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Web 登录 · 包豪斯关键帧</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  html, body { margin: 0; background: #111; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+  .frame { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; display: none; overflow: hidden; }
+  .frame.on { display: block; }
+  .tag { position: absolute; left: 64px; top: 40px; font: 700 26px "Mono"; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .foot { position: absolute; left: 64px; top: 900px; font: 500 26px "Inter", "Sans SC"; color: var(--ink); }
+  .band { top: 968px; }
+  .hud-l, .hud-r { display: none; }
+
+  /* 1 标题 */
+  #f1 .circle { left: 120px; top: 180px; width: 520px; height: 520px; background: var(--bh-red); }
+  #f1 .square { left: 500px; top: 520px; width: 300px; height: 300px; background: var(--bh-blue); }
+  #f1 .tri { left: 760px; top: 160px; border-left-width: 190px; border-right-width: 190px; border-bottom-width: 330px; color: var(--bh-yellow); }
+  #f1 .title { left: 1020px; top: 250px; width: 760px; font: 800 116px/1.02 "Inter", "Sans SC"; letter-spacing: -.04em; color: var(--ink); white-space: normal; }
+  #f1 .sub { left: 1024px; top: 610px; font: 700 54px "Inter", "Sans SC"; color: var(--ink); }
+  #f1 .small { left: 1024px; top: 700px; font: 500 28px "Mono"; color: var(--dim); }
+
+  /* 2 哈希压模 */
+  #f2 .q { left: 100px; top: 170px; width: 500px; font: 700 64px/1.1 "Inter", "Sans SC"; white-space: normal; }
+  #f2 .secret { left: 160px; top: 470px; width: 210px; height: 210px; background: var(--bh-red); }
+  #f2 .press { left: 470px; top: 440px; width: 300px; height: 280px; border: 10px solid var(--ink); }
+  #f2 .arrow { left: 390px; top: 545px; width: 70px; }
+  #f2 .out { left: 830px; top: 470px; width: 210px; height: 210px; background: var(--bh-blue); }
+  #f2 .salt { left: 1060px; top: 470px; width: 34px; height: 210px; background: var(--bh-yellow); }
+  #f2 .label1 { left: 470px; top: 740px; font: 700 26px "Mono"; text-transform: uppercase; }
+  #f2 .label2 { left: 830px; top: 740px; font: 700 26px "Mono"; text-transform: uppercase; }
+  #f2 .note { left: 100px; top: 800px; width: 900px; font: 500 34px/1.35 "Inter", "Sans SC"; white-space: normal; }
+
+  /* 3 会话票 */
+  #f3 .ticket { left: 130px; top: 260px; width: 900px; height: 330px; border: 6px solid var(--ink); background: var(--paper); }
+  #f3 .ticket .stub { position: absolute; right: 0; top: 0; width: 240px; height: 100%; background: var(--bh-blue); z-index: 1; }
+  #f3 .ticket .stamp { position: absolute; left: 60px; top: 60px; border: 6px solid var(--bh-red); color: var(--ink); z-index: 2; font: 700 32px "Mono"; padding: 12px 18px; }
+  #f3 .ticket .name { position: absolute; left: 60px; top: 150px; z-index: 2; font: 800 76px "Inter", "Sans SC"; }
+  #f3 .ticket .id { position: absolute; left: 690px; top: 120px; width: 170px; color: var(--paper); z-index: 2; font: 700 24px "Mono"; white-space: normal; text-align: center; }
+  #f3 .cookie { left: 1100px; top: 260px; width: 640px; font: 600 34px/1.5 "Mono"; white-space: normal; }
+  #f3 .cookie b { color: var(--bh-red); font-weight: 700; }
+  #f3 .chain { left: 150px; top: 650px; width: 1200px; height: 4px; background: var(--ink); }
+  #f3 .chain::after { content: ""; position: absolute; right: -2px; top: -12px; border-left: 24px solid var(--ink); border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
+  #f3 .end { left: 1300px; top: 615px; width: 180px; height: 80px; background: var(--bh-yellow); }
+
+    #f1 .title, #f1 .sub, #f1 .small,
+  #f2 .q, #f2 .label1, #f2 .label2, #f2 .note,
+  #f3 .cookie, #f4 .labels { position: absolute; }
+/* 4 因子与 WebAuthn */
+  #f4 .c { left: 120px; top: 180px; width: 220px; height: 220px; background: var(--bh-red); }
+  #f4 .s { left: 360px; top: 300px; width: 200px; height: 200px; background: var(--bh-blue); }
+  #f4 .t { left: 580px; top: 160px; border-left-width: 130px; border-right-width: 130px; border-bottom-width: 230px; color: var(--bh-yellow); }
+  #f4 .frame { left: 900px; top: 160px; width: 420px; height: 420px; border: 12px solid var(--ink); }
+  #f4 .key { left: 1010px; top: 270px; width: 220px; height: 80px; background: var(--ink); }
+  #f4 .key::after { content: ""; position: absolute; left: -60px; top: -20px; width: 100px; height: 120px; border: 12px solid var(--ink); border-radius: 50%; }
+  #f4 .fake { left: 1380px; top: 300px; width: 360px; height: 300px; border: 4px dashed var(--dim); }
+  #f4 .labels { left: 120px; top: 620px; width: 1700px; font: 600 28px/1.5 "Mono"; white-space: normal; }
+  #f4 .labels b { color: var(--bh-red); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="frame on" id="f1">
+    <div class="tag">01 / title</div>
+    <div class="blk circle bh-circle"></div>
+    <div class="blk square"></div>
+    <div class="blk tri bh-triangle"></div>
+    <div class="title">200 秒<br>了解 Web 登录</div>
+    <div class="sub">怎么验证你是你</div>
+    <div class="small">WEB LOGIN / AUTHN / SESSION</div>
+    <div class="foot">包豪斯关键帧 · 红=秘密 蓝=会话 黄=用户 黑=验证者</div>
+    <div class="band"></div>
+  </div>
+
+  <div class="frame" id="f2">
+    <div class="tag">02 / password</div>
+    <div class="q">口令不会<br>被存下来。</div>
+    <div class="blk secret bh-circle"></div>
+    <div class="blk press"></div>
+    <div class="blk arrow bh-arrow"></div>
+    <div class="blk out"></div>
+    <div class="blk salt"></div>
+    <div class="label1">SLOW HASH</div>
+    <div class="label2">SALT + HASH</div>
+    <div class="note">服务器保存 salt 与慢哈希；登录时用同样参数再算一次。</div>
+    <div class="foot">红=口令 黑框=哈希 蓝=结果 黄=salt</div>
+    <div class="band"></div>
+  </div>
+
+  <div class="frame" id="f3">
+    <div class="tag">03 / session</div>
+    <div class="blk ticket">
+      <div class="stamp">SIGNED IN</div>
+      <div class="name">YOU</div>
+      <div class="id">SESSION<br>ID</div>
+      <div class="stub"></div>
+    </div>
+    <div class="cookie"><b>Secure</b> 只走加密通道<br><b>HttpOnly</b> 脚本读不到<br><b>SameSite</b> 限制跨站携带</div>
+    <div class="blk chain"></div>
+    <div class="blk end"></div>
+    <div class="foot">票根 = session ID；谁拿着它，谁就被当成你</div>
+    <div class="band"></div>
+  </div>
+
+  <div class="frame" id="f4">
+    <div class="tag">04 / factors</div>
+    <div class="blk c bh-circle"></div>
+    <div class="blk s"></div>
+    <div class="blk t bh-triangle"></div>
+    <div class="blk frame"></div>
+    <div class="blk key"></div>
+    <div class="blk fake"></div>
+    <div class="labels">圆 = 你知道的 · 方 = 你拥有的 · 三角 = 你本身<br><b>WebAuthn</b>：认证器签名 challenge；凭据绑定 origin，假站点拿不到签名。</div>
+    <div class="foot">黑框 = 验证者；虚线框 = 钓鱼站</div>
+    <div class="band"></div>
+  </div>
+</div>
+<script>
+  const f = new URLSearchParams(location.search).get('f') || '1';
+  document.querySelectorAll('.frame').forEach((el) => el.classList.toggle('on', el.id === 'f' + f));
+  document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

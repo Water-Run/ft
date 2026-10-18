@@ -228,7 +228,7 @@
 | 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制 | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。基础科普。事实测绘见本目录 research/。 |
-| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，RFC/W3C/NIST/OWASP 取证与包豪斯视觉方向已落盘，尚未写稿或配音。 |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 委托（Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，准备方 DeepSeek V4.1 Flash 1017 已完成取证、中文初稿、审稿包、包豪斯视觉系统与关键帧；等待 WaterRun 确认后配音并交 Opus 5.5。 |
 | 21 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`chain-of-thought`](../videos/series/in-seconds/chain-of-thought/) | 2026-10-18 由独立片迁入秒速通；192 秒；事实测绘与系列视觉扩展已落盘，尚未写稿或配音。 |
 
 ### 游戏物理学

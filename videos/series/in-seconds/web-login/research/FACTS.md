@@ -149,11 +149,11 @@
 
 ## 文案审查
 
-尚未写稿，未交审。写稿后按 `docs/script-review.md` 逐轮记录交审日期、稿本哈希、意见与明确确认；没有确认不配音。
+2026-10-19 第 1 轮：中文稿导出为 `review/script.zh.53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4.md`，内容哈希 `53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4`，估算 200.0 秒；英文草稿导出为 `review/script.en.c2c907397d06359c32112638d6e2e9bad10c7c80bb86b2ba42565f53d7dc2e36.md`。等待 WaterRun 按句号反馈；`review/approval.json` 仍是 pending，没有明确确认，不配音、不铺开场景。
 
 ## 制作署名
 
-策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；没有写旁白。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿、审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 

@@ -6,15 +6,15 @@
 
 ## 当前状态与接续
 
-阶段：事实测绘与视觉方向已落盘。文案：未写、未确认。交付：未完成。发布：未发布。归档：未归档。
+阶段：准备到可交接前；中文稿待 WaterRun 确认，确认后合成配音并交接 Opus 5.5。文案：未确认。交付：未完成。发布：未发布。归档：未归档。
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：RFC 6265/6749/7519/7617/7636、OIDC Core、W3C WebAuthn、NIST 800-63B-4、OWASP 三份 cheat sheet 核对；`research/FACTS.md`、`sources.json`、`NARRATIVE.md`；包豪斯设计方向与 token |
-| 下一步及依赖 | 写中文稿 → 交 WaterRun 逐句审查并明确确认 → 翻译/校对英文 → 配音 → 视觉关键帧 → 场景 |
-| 当前稿本 / 校对结论 | `src/js/script.js` 仍是模板骨架；没有文案确认 |
+| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；中文初稿/英文草稿，估算 200.0 秒；审稿包与术语表；`expect.zh/en.json`；委托任务书 `brief/01–06` 与 `AGENTS.md`；8 个场景空壳；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
+| 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `53db476c…`；`review/approval.json` 为 pending；没有人工确认 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
-| 未完成、未检查与阻塞 | 文案、时间线、关键帧、场景、声音、渲染、审查、封面均未做 |
+| 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
 ## 文案与校对
 
@@ -26,6 +26,8 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 ```
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
+
+本轮中文稿：[`review/script.zh.53db476c…md`](review/script.zh.53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4.md)，内容哈希 `53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4`；英文草稿：[`review/script.en.c2c90739…md`](review/script.en.c2c907397d06359c32112638d6e2e9bad10c7c80bb86b2ba42565f53d7dc2e36.md)。`review/approval.json` 仍是 pending，不能据此配音。
 
 ## 开工反馈应用
 
@@ -63,18 +65,18 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 | 场景 | 起点 | 内容 |
 |---|---|---|
 | open | 0:00 | 一串 SID 的钩子；片名卡 |
-| password | 待定 | 登录表单、TLS、salt + 慢哈希；不是加密 |
-| session | 待定 | `Set-Cookie`、session ID、服务端会话；为什么之后不用再填 |
-| attacks | 待定 | XSS 读 cookie、CSRF 借浏览器、session fixation；HttpOnly/SameSite/换 ID |
-| factors | 待定 | 知道/拥有/本身；AAL2；OTP 不防钓鱼；WebAuthn 的 origin 绑定 |
-| federated | 待定 | OAuth 四角色、authorization code + PKCE、OIDC ID Token、JWT 签名≠加密 |
-| close | 待定 | 一条链；片尾名单 |
+| password | 0:18 | 登录表单、TLS、salt + 慢哈希；不是加密 |
+| session | 0:49 | `Set-Cookie`、session ID、服务端会话；为什么之后不用再填 |
+| attacks | 1:25 | XSS 读 cookie、CSRF 借浏览器、session fixation；HttpOnly/SameSite/换 ID |
+| factors | 1:53 | 知道/拥有/本身；AAL2；OTP 不防钓鱼；WebAuthn 的 origin 绑定 |
+| federated | 2:25 | OAuth 四角色、authorization code + PKCE、OIDC ID Token、JWT 签名≠加密 |
+| close | 2:57 | 一条链；片尾名单 |
 
 ## 视觉系统
 
 包豪斯：红/黄/蓝三块纯色 + 黑/米白，圆=你知道的、方=你拥有的、三角=你本身，黑框=验证者，票=session，单向压模=哈希，带缺口的钥匙=WebAuthn。三四个大形状撑起一屏，字很少，形状可以转角度；字也当形状（竖排/沿弧线短标签）。完整规范、色彩/字体/图形语义、封面与禁止项见 [`src/design/STYLE.md`](src/design/STYLE.md)，token 见 [`src/design/tokens.css`](src/design/tokens.css)。
 
-参考来源：策划者提供的「包豪斯」风格卡；本片把形状转译为认证因子与验证动作。没有使用名叫 Bauhaus 的字体，也没有复刻红黄蓝三角圆方的通用海报；具体选择见 STYLE.md 第 1、5、8 节。
+视觉系统已落到 [`src/css/style.css`](src/css/style.css)；四张参考关键帧在 [`src/design/kf.html`](src/design/kf.html)（`?f=1` 标题、`?f=2` 哈希、`?f=3` 会话票、`?f=4` 因子/WebAuthn）。参考来源：策划者提供的「包豪斯」风格卡；本片把形状转译为认证因子与验证动作。没有使用名叫 Bauhaus 的字体，也没有复刻红黄蓝三角圆方的通用海报；具体选择见 STYLE.md 第 1、5、8 节。
 
 这是「XX 秒速通」的视觉例外：保留系列的定长时间线、语速、字幕带/秒尺、剩余秒数、右上角仪表的位置与做法，只换视觉系统；理由写在系列说明的视觉例外里。
 
@@ -99,7 +101,10 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 | 参与模型（含可确认的版本） | 实际分工 |
 |---|---|
-| DeepSeek V4.1 Flash 1017 | 事实测绘、Web Fetch 来源核对、RFC/W3C/NIST/OWASP 核对、叙事测绘、包豪斯设计方向 |
+| DeepSeek V4.1 Flash 1017 | 准备方：事实测绘、Web Fetch 来源核对、RFC/W3C/NIST/OWASP 核对、叙事测绘、中文初稿/英文草稿、审稿包、包豪斯视觉系统与关键帧、逐句对应表、任务书 |
+| Opus 5.5 | 受托方：场景实现、常驻元素、声音编排、封面、渲染、三项审查与交付（尚未开工） |
+
+Opus 5.5 当前没有开工；`review/approval.json` 仍为 pending，旁白也未合成。
 
 网页来源通过 Web Fetch 读取原文；PDF 与 403 页面用下载/存档文本核对。
 

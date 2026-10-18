@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "languages": {
+    "zh": {
+      "status": "pending",
+      "content_sha256": "53db476cea9e31747e954d4ffa98db5f7084b40bdfa0eb187d6e2f52bf9c37a4",
+      "reviewer": "WaterRun",
+      "confirmed_at": "",
+      "evidence": ""
+    },
+    "en": {
+      "status": "pending",
+      "content_sha256": "c2c907397d06359c32112638d6e2e9bad10c7c80bb86b2ba42565f53d7dc2e36",
+      "reviewer": "WaterRun",
+      "confirmed_at": "",
+      "evidence": ""
+    }
+  }
+}

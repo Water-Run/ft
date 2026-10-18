@@ -6,10 +6,9 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 系列基座的封面版式，文字与纸色一侧的读数换成本集的；做完删掉这一行。
      与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
      4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
-  :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
+  :root { --ink: #111111; --paper: #F1ECE1; --ac: #E2412C; --bh-yellow: #F2C230; --bh-blue: #2F57B0; }
   html, body, #stage { width: var(--W); height: var(--H); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
@@ -64,7 +63,7 @@
   document.querySelector('.ttl').innerHTML = TEXT.title;
   document.querySelector('.kick').textContent = TEXT.kick;
   // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
-  const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
+  const NS = 'http://www.w3.org/2000/svg', INK = '#111111', AC = '#E2412C';
   const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
   const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';
   const line = (x1, y1, x2, y2, c, w) => { const e = document.createElementNS(NS, 'line'); for (const [k, v] of Object.entries({ x1, y1, x2, y2, stroke: c, 'stroke-width': w })) e.setAttribute(k, v); s.appendChild(e); };
