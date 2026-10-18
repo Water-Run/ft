@@ -18,14 +18,14 @@
     {
       id: 'open', at: 0, chap: null, lead: 0.5, tail: 0.3,
       cues: [
-        ['o1', { zh: '登录成功后，浏览器里多了一个 cookie。', en: 'After login, the browser holds one more cookie.' }, { gap: 0.45 }],
-        ['o2', { zh: '下次请求，服务器看到它，就认出是你。', en: 'On the next request, the server sees it and knows you.' }, { gap: 0.5 }],
-        ['o3', { zh: '但 cookie 只是运输；记住你的是服务器上的 Session。', en: 'But the cookie is only transport; the Session on the server remembers you.' }, { gap: 0.5 }],
-        ['o4', { zh: '这 200 秒，从 Session 讲到 JWT、认证和授权。', en: 'In 200 seconds: Session, JWT, authentication and authorization.' }, { gap: 0.4 }],
+        ['o1', { zh: '你打开一个网站，输入账号和密码。', en: 'You open a site and type an account and password.' }, { gap: 0.4 }],
+        ['o2', { zh: '登录成功后，浏览器里多了一个 cookie。', en: 'After login, the browser holds one more cookie.' }, { gap: 0.45 }],
+        ['o3', { zh: '可 cookie 只是运输；记住你的是服务器上的 Session。', en: 'But the cookie is only transport; the Session on the server remembers you.' }, { gap: 0.5 }],
+        ['o4', { zh: 'Web 的登录机制是什么样的？服务器是怎么知道，你，是你？', en: 'How does Web login work? How does the server know that you are you?' }, { gap: 0.4 }],
       ],
     },
     {
-      id: 'session', at: 21, chap: null, lead: 0.5, tail: 0.3,
+      id: 'session', at: 22.3, chap: null, lead: 0.5, tail: 0.3,
       cues: [
         ['s1', { zh: '登录成功后，服务器创建一条会话，记录用户、权限和过期时间。', en: 'After login, the server creates a session: user, permissions, expiry.' }, { gap: 0.5 }],
         ['s2', { zh: '它给浏览器一个 Session ID。', en: 'It gives the browser a Session ID.' }, { gap: 0.5 }],

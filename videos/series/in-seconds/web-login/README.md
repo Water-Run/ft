@@ -10,9 +10,9 @@
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：从根上按“四层”重写为 7 个内容场景——Session（会话状态/Session ID/Cookie 运输/缺点）→ JWT（token 格式/三段/验签/Access/Refresh/撤销）→ 认证方式（口令/短信码/passkey/验证码）→ OAuth/OIDC 授权与委托 → 各层攻击面 → 收束。中文稿 `f766f271…`，英文草稿 `2eeacf2b…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
+| 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：从根上按“四层”重写为 7 个内容场景——Session（会话状态/Session ID/Cookie 运输/缺点）→ JWT（token 格式/三段/验签/Access/Refresh/撤销）→ 认证方式（口令/短信码/passkey/验证码）→ OAuth/OIDC 授权与委托 → 各层攻击面 → 收束。中文稿 `4c5c728f…`，英文草稿 `7e5b8ad4…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
 | 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
-| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `f766f271…`；`review/approval.json` 为 pending；没有人工确认 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `4c5c728f…`；`review/approval.json` 为 pending；没有人工确认 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
 | 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
@@ -27,7 +27,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
 
-本轮中文稿：[`review/script.zh.f766f271…md`](review/script.zh.f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d.md)，内容哈希 `f766f271ff03161a92a9753c1bc7a601a6db2f2df3e7c2b26412e5a50b53cb8d`；英文草稿：[`review/script.en.2eeacf2b…md`](review/script.en.2eeacf2b0ecca05d98d4b78836a157fee2889b0555c644a4c7db3ddc59b76349.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
+本轮中文稿：[`review/script.zh.4c5c728f…md`](review/script.zh.4c5c728fc499f9af399442da7c68cc1ecdf1d7517f5265268f8ec5f59551e848.md)，内容哈希 `4c5c728fc499f9af399442da7c68cc1ecdf1d7517f5265268f8ec5f59551e848`；英文草稿：[`review/script.en.7e5b8ad4…md`](review/script.en.7e5b8ad428a4b29b5b1bf6fa7e01d7e18565aa172037cece1e9c281b2ab514ad.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
 
 ## 开工反馈应用
 
