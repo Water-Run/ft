@@ -116,6 +116,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `languages` | 语言列表，第一种是主语言 |
 | `titles` | 各语言的标题，写进成片的元数据 |
 | `voices`、`rates` | 各语言的音色与语速 |
+| `tts` | 可选。配音引擎：`{ "engine": "minimax" 或 { "zh": "minimax", "en": "edge" }, "model": "speech-2.8-hd", "voice": { "zh": "<MiniMax 音色 id>" }, "speed": { "zh": 1.0 } }`。没有这一块，或该语言引擎为 `edge`，照旧按 `voices`、`rates` 走 edge-tts。MiniMax 密钥取环境变量 `MINIMAX_API_KEY` 或 `kit/local/minimax-tts.md`（不入库），接口区域可在 `kit/config.local.json` 写 `minimax_base`；本机没有密钥时整种语言退回 edge-tts。缓存键含引擎、模型、音色、语速与文本 |
 | `asr_prompts` | 给语音识别的提示：一句话说明内容并带上术语的正确拼写，回听时识别得更准 |
 | `production` | `mode` 为 `self` 或 `delegated`；`maker` 制作者；委托时 `prepared_by` 准备方；`planner` 为实际策划，`repository` 为本片公开源码仓库，新建时从 `kit/studio.json` 拷入 |
 | `review` | 新片为 `{ "required": true, "reviewer": "WaterRun" }`（fork 配置实际校对者）；内容哈希、日期、依据在本片 `review/approval.json` |
@@ -242,7 +243,8 @@ node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库
 | `lib.js` | 公共部分：定位仓库与视频目录、读本机配置、语言、时间线、静态服务器、打开页面 | 多数 Node 工具 |
 | `inspect.js` | 「用文字看画面」的公共部分：收集某一刻可见的元素，做版面判断 | `look.js`、`scan.js` |
 | `pngfix.js` | PNG 的解码，以及 RGBA 到 RGB 的改写 | `render.js`、`inspect.js` |
-| `tts.py` | 逐句合成旁白（edge-tts） | `tts.js` |
+| `tts.py` | 逐句合成旁白（edge-tts 或 MiniMax） | `tts.js` |
+| `minimax_tts.py` | MiniMax T2A v2 合成一句，逐字时间戳转成 `words` | `tts.py`、`tts_probe.py` |
 | `tts_probe.py` | 读法试验：合成几种写法，用 Whisper 回听 | `tts_probe.js` |
 | `asr.py` | 用 Whisper 回听旁白（faster-whisper） | `asr.js` |
 | `mix.py` | 混音：旁白、配乐、音效 | `audio.js` |

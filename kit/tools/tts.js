@@ -1,8 +1,8 @@
-// 配音：由 src/js/script.js 导出待合成的句子 → edge-tts 逐句合成 → 写 src/js/timing.<语言>.js → 打印时间线。
+// 配音：由 src/js/script.js 导出待合成的句子 → edge-tts 或 MiniMax 逐句合成 → 写 src/js/timing.<语言>.js → 打印时间线。
 // 用法：node kit/tools/tts.js <视频> [--lang zh]            省略 --lang 时处理全部语言
 // 有缓存：只重新合成文本、音色或语速变了的句子。需要联网（edge-tts 调用的是在线语音服务）。
-// 音色与语速取 project.json 的 voices / rates；字幕一行的宽度上限取 check.caption_width（按「字宽」算：汉字 1，其余 0.5）。
-const { needVideo, PROJECT, LANGS, KIT, PY, layout, run, pyEnv, dirs, mkdirp, writeTiming, mmss, path, fs } = require('./lib');
+// 音色与语速取 project.json 的 voices / rates（edge-tts）；有 tts 块时按它选引擎、模型、音色、语速（见 lib.js 的 ttsSpec 与 docs/tools.md）；字幕一行的宽度上限取 check.caption_width（按「字宽」算：汉字 1，其余 0.5）。
+const { needVideo, PROJECT, LANGS, KIT, PY, layout, run, pyEnv, dirs, mkdirp, writeTiming, mmss, ttsSpec, path, fs } = require('./lib');
 needVideo();
 require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
@@ -22,8 +22,10 @@ for (const lang of LANGS(true)) {
   if (problems.length) { console.error(`${lang}：\n  ` + problems.join('\n  ')); process.exit(1); }
   const d = dirs(lang);
   fs.writeFileSync(path.join(mkdirp(d.build), `cues.${lang}.json`), JSON.stringify(cues, null, 1));
-  console.log(`${lang}：待合成 ${cues.length} 句（音色 ${P.voices[lang]}，语速 ${P.rates[lang]}）`);
-  run(PY(), [path.join(KIT, 'tools', 'tts.py')], { env: pyEnv(lang, { LVS_VOICE: P.voices[lang], LVS_RATE: P.rates[lang] }) });
+  const spec = ttsSpec(lang, P);
+  if (spec.fallback) console.warn(`${lang}：${spec.fallback}`);
+  console.log(`${lang}：待合成 ${cues.length} 句（` + (spec.engine === 'minimax' ? `MiniMax ${spec.model}，音色 ${spec.voice}，语速 ${spec.speed}` : `edge-tts，音色 ${spec.voice}，语速 ${spec.rate}`) + '）');
+  run(PY(), [path.join(KIT, 'tools', 'tts.py')], { env: pyEnv(lang, spec.env) });
   writeTiming(lang, JSON.parse(fs.readFileSync(path.join(d.audio, 'dur.json'), 'utf8')));
   const { L } = layout(lang);
   console.log(`总长 ${L.total.toFixed(1)} s = ${mmss(L.total)}`);

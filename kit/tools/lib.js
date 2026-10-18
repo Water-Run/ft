@@ -65,6 +65,21 @@ const PROJECT = lazy(() => {
   const per = (multi, single, dflt = {}) => Object.fromEntries(languages.map((l) => [l, (p[multi] && p[multi][l]) != null ? p[multi][l] : (p[single] != null ? p[single] : dflt[l])]));
   return { ...p, languages, titles: per('titles', 'title'), voices: per('voices', 'voice', DEFAULTS.voices), rates: per('rates', 'rate', DEFAULTS.rates), asr_prompts: per('asr_prompts', 'asr_prompt', DEFAULTS.asr_prompts), audio: p.audio || {}, render: p.render || {}, check: p.check || {}, production: { mode: 'self', ...(p.production || {}) } };
 });
+// 配音引擎：project.json 可写 "tts": { "engine": "minimax" | { "zh": "minimax", "en": "edge" }, "model": "speech-2.8-hd", "voice": { "zh": "<voice_id>" }, "speed": { "zh": 1.0 } }。
+// model / voice / speed 也可写成单值。没有 tts 块，或该语言的引擎是 edge 时，照旧用 voices / rates 走 edge-tts。
+// MiniMax 需要密钥（环境变量 MINIMAX_API_KEY 或 kit/local/minimax-tts.md，不入库）；本机没有密钥时退回 edge-tts 并提示，整种语言不混用两种音色。
+const minimaxKeyAvailable = () => !!process.env.MINIMAX_API_KEY || (() => { try { return /##\s*密钥[\s\S]*?```[^\n]*\n\S/.test(fs.readFileSync(path.join(KIT, 'local', 'minimax-tts.md'), 'utf8')); } catch (e) { return false; } })();
+function ttsSpec(lang, P = PROJECT()) {
+  const t = P.tts || {}, at = (v) => (v != null && typeof v === 'object' ? v[lang] : v);
+  const edge = { engine: 'edge', voice: P.voices[lang], rate: P.rates[lang], env: { LVS_ENGINE: 'edge', LVS_VOICE: P.voices[lang], LVS_RATE: P.rates[lang] } };
+  const engine = at(t.engine) || 'edge';
+  if (engine === 'edge') return edge;
+  if (engine !== 'minimax') throw new Error(`project.json tts.engine 不认识：${engine}`);
+  const voice = at(t.voice), model = at(t.model) || 'speech-2.8-hd', speed = at(t.speed) != null ? at(t.speed) : 1;
+  if (!voice) throw new Error(`project.json tts.voice 缺少 ${lang} 的 MiniMax 音色`);
+  if (!minimaxKeyAvailable()) return { ...edge, fallback: '本机没有 MiniMax 密钥，退回 edge-tts' };
+  return { engine, voice, model, speed, env: { LVS_ENGINE: 'minimax', LVS_VOICE: voice, LVS_MODEL: model, LVS_SPEED: String(speed), LVS_MINIMAX_BASE: process.env.MINIMAX_BASE || LOCAL.minimax_base || '' } };
+}
 // 要处理的语言。--lang zh | en | zh,en | all 指定；省略时：出产物的工具（配音、混音、渲染、封装、封面、回听、统计）传 true，处理全部语言；
 // 看画面的工具（look、sheets、scan、preview、margin……）不传，只看第一种语言
 const LANGS = (defaultAll = false) => {
@@ -217,5 +232,5 @@ async function tile(files, outPattern, { cols = 3, rows = 3, w = 640, h = 360 } 
   return out;
 }
 
-module.exports = { REPO, KIT, ASSETS, WIN, LOCAL, get VIDEO() { return VIDEO; }, needVideo, ARGS, arg, flag, positional, without, rel, PROJECT, LANGS, dirs, mkdirp, loadTiming, writeTiming, layout, parseTimes,
+module.exports = { REPO, KIT, ASSETS, WIN, LOCAL, ttsSpec, get VIDEO() { return VIDEO; }, needVideo, ARGS, arg, flag, positional, without, rel, PROJECT, LANGS, dirs, mkdirp, loadTiming, writeTiming, layout, parseTimes,
   CHROME, FFMPEG, FFPROBE, PY, chromePath, ffmpegPath, ffprobePath, pythonPath, startServer, openPage, run, pyEnv, mmss, tile, sourceState, loadedSources, path, fs };

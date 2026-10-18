@@ -1,11 +1,17 @@
 # 读法试验：把若干写法各合成一句，再用 Whisper 回听。由 kit/tools/tts_probe.js 调用。
-# 环境变量：LVS_REPO、LVS_VIDEO、LVS_LANG、LVS_VOICE、LVS_RATE；句子从标准输入读（JSON 数组）。
-import asyncio, sys, json, os, edge_tts
+# 环境变量：LVS_REPO、LVS_VIDEO、LVS_LANG、LVS_VOICE、LVS_RATE（LVS_ENGINE=minimax 时另读 LVS_MODEL、LVS_SPEED）；句子从标准输入读（JSON 数组）。
+import asyncio, sys, json, os
+ENGINE = os.environ.get("LVS_ENGINE") or "edge"
+if ENGINE == "minimax": import minimax_tts
+else: import edge_tts
 REPO = os.environ["LVS_REPO"]; VIDEO = os.environ["LVS_VIDEO"]; VLANG = os.environ["LVS_LANG"]
-voice = os.environ["LVS_VOICE"]; rate = os.environ["LVS_RATE"]
+voice = os.environ["LVS_VOICE"]; rate = os.environ.get("LVS_RATE", "+0%")
 sents = json.loads(sys.stdin.buffer.read().decode("utf-8"))
 out = os.path.join(VIDEO, "audio", "probe"); os.makedirs(out, exist_ok=True)
 async def synth(i, text):
+    if ENGINE == "minimax":
+        d, words = await asyncio.to_thread(minimax_tts.synth, text, VLANG, os.environ.get("LVS_MODEL", ""), voice, os.environ.get("LVS_SPEED") or "1", os.path.join(out, "p%02d.mp3" % i))
+        return [w[2] for w in words]
     c = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
     data = bytearray(); words = []
     async for ch in c.stream():

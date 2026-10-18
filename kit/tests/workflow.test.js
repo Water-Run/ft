@@ -277,3 +277,20 @@ test('片尾署名只允许静默时间线，不允许字幕或 tts 混入旁白
   fs.writeFileSync(file, silent.replace('pause: 2.0, credits: true', "pause: 2.0, credits: true, tts: 'Do not narrate'"));
   assert.throws(() => review.snapshot(f.video, f.project, 'zh'), /片尾署名须为无旁白/);
 });
+test('配音引擎按 project.json 的 tts 块逐语言选择；没有 tts 块时保持 edge-tts', t => {
+  const { ttsSpec } = require('../tools/lib');
+  const saved = process.env.MINIMAX_API_KEY;
+  process.env.MINIMAX_API_KEY = 'test-placeholder';
+  t.after(() => { if (saved == null) delete process.env.MINIMAX_API_KEY; else process.env.MINIMAX_API_KEY = saved; });
+  const base = { voices: { zh: 'zh-CN-YunyangNeural', en: 'en-US-AndrewNeural' }, rates: { zh: '+0%', en: '+6%' } };
+  assert.deepEqual(ttsSpec('en', base).env, { LVS_ENGINE: 'edge', LVS_VOICE: 'en-US-AndrewNeural', LVS_RATE: '+6%' });
+  const P = { ...base, tts: { engine: { zh: 'minimax', en: 'edge' }, model: 'speech-2.8-hd', voice: { zh: 'v-zh' }, speed: { zh: 0.97 } } };
+  const zh = ttsSpec('zh', P);
+  assert.equal(zh.engine, 'minimax');
+  assert.equal(zh.env.LVS_VOICE, 'v-zh');
+  assert.equal(zh.env.LVS_SPEED, '0.97');
+  assert.equal(zh.env.LVS_MODEL, 'speech-2.8-hd');
+  assert.equal(ttsSpec('en', P).engine, 'edge');
+  assert.throws(() => ttsSpec('zh', { ...base, tts: { engine: 'minimax' } }), /tts\.voice/);
+  assert.throws(() => ttsSpec('zh', { ...base, tts: { engine: 'other' } }), /tts\.engine/);
+});
