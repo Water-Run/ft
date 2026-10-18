@@ -8,6 +8,7 @@
 const { needVideo, LANGS, layout, parseTimes, without, startServer, openPage, arg, flag, dirs, mkdirp, rel, tile, path, fs } = require('./lib');
 (async () => {
   needVideo();
+  require('./project-files').acquireLock(needVideo());
   const rest = without(['name', 'cols', 'rows', 'workers', 'lang'], ['frames']);
   const mode = rest[0] || 'cue', cols = +arg('cols', 3), rows = +arg('rows', 3), W = Math.max(1, +arg('workers', 4));
   for (const lang of LANGS()) {

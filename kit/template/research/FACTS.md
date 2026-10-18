@@ -18,16 +18,16 @@
 
 ## 文案审查
 
-<!-- 文案稿经策划者 WaterRun 人工审查并明确确认后才配音（见 docs/workflow.md 第 2 步）。逐轮记录：交审日期、稿本（提交号或 script.js 的哈希）、审查意见与修改、确认日期。确认之后的实质改动另起一轮。 -->
+<!-- 文案稿经指定校对者 {{REVIEWER}} 人工审查并明确确认后才配音（见 docs/script-review.md）。逐轮记录交审日期、内容 SHA-256、校对记录的链接与结论；逐句意见在 review/NOTES.md 留存，避免维护两份全文。确认之后的实质改动另起一轮。 -->
 
 | 轮次 | 交审日期 | 稿本 | 审查意见与修改 | 结论与日期 |
 |---|---|---|---|---|
 
 ## 制作署名
 
-策划：WaterRun（依据：仓库制作规范）。
+策划：{{PLANNER}}（依据：project.json 的 production.planner，交付前核对实际参与）。
 
-开源视频：[GitHub · Water-Run/ft](https://github.com/Water-Run/ft)（依据：仓库制作规范；交付前核对公开仓库页面并记录日期与结果）。
+开源视频：[本片源码]({{REPOSITORY}})（依据：project.json 的 production.repository；交付前核对公开仓库页面并记录日期与结果）。
 
 <!-- 按实际制作记录填写，涵盖准备、制作、审查等环节；名称与可确认的版本不得推测。服务未披露模型时写明服务、用途与「模型未披露」。片尾、README 与委托片 DELIVERY.md 使用同一名单。 -->
 

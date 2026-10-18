@@ -4,6 +4,7 @@
 // 整屏的底色块、出血的大图形会被当成「贴边」：这类句子写进 project.json 的 check.margin_skip（{ 句号: 原因 }）。需要 Python 的 numpy 与 pillow。
 const { needVideo, LANGS, VIDEO, KIT, PY, arg, run, pyEnv, path } = require('./lib');
 needVideo();
+require('./project-files').acquireLock(needVideo());
 let bad = 0;
 for (const lang of LANGS()) {
   run(process.execPath, [path.join(__dirname, 'sheets.js'), VIDEO, 'cue', '--lang', lang, '--name', 'margin', '--frames'], { stdio: ['ignore', 'ignore', 'inherit'] });

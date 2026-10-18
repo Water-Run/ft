@@ -11,7 +11,12 @@
     "doctor": "node kit/tools/doctor.js",
     "assets": "node kit/tools/assets.js",
     "catalog": "node kit/tools/catalog.js",
-    "new": "node kit/tools/new.js"
+    "new": "node kit/tools/new.js",
+    "review": "node kit/tools/script-review.js",
+    "clean": "node kit/tools/clean.js",
+    "test": "node --test kit/tests/workflow.test.js",
+    "check:repo": "node kit/tools/repo-check.js",
+    "smoke": "node kit/tools/smoke.js"
   },
   "dependencies": {
     "gsap": "3.13.0",

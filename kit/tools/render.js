@@ -14,6 +14,8 @@ const { spawn, spawnSync } = require('child_process');
 const { needVideo, PROJECT, LANGS, FFMPEG, FFPROBE, arg, dirs, mkdirp, rel, startServer, openPage, sourceState, path, fs } = require('./lib');
 const pngfix = require('./pngfix');
 needVideo();
+require('./project-files').acquireLock(needVideo());
+require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
 const R = PROJECT().render, opt = (k, d) => arg(k, R[k] != null ? R[k] : d);
 const FPS = +opt('fps', 60), SCALE = +arg('scale', 1), CRF = String(opt('crf', 15));
 const WORKERS = +opt('workers', Math.max(2, Math.min(9, Math.floor(os.cpus().length / 3))));

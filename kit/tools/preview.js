@@ -5,6 +5,8 @@
 const { spawnSync } = require('child_process');
 const { needVideo, PROJECT, LANGS, VIDEO, FFMPEG, arg, run, dirs, mkdirp, rel, mmss, path, fs } = require('./lib');
 needVideo();
+require('./project-files').acquireLock(needVideo());
+require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS());
 const lang = LANGS()[0], d = dirs(lang), limit = +((PROJECT().check.still_seconds) || 3);
 const extra = []; for (const k of ['from', 'to']) if (arg(k, null) != null) extra.push('--' + k, arg(k));
 const v = path.join(mkdirp(d.out), 'preview_video.mp4');

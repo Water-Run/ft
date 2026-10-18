@@ -8,6 +8,14 @@ node_modules/
 # 本机配置（Chrome、ffmpeg、Python 的位置，渲染机的地址等）
 /kit/config.local.json
 
+# 制作锁与独立练习目录；不承载正式制作记录
+.ft-work.lock
+/out/sandbox/
+.venv/
+.env
+.env.*
+!.env.example
+
 # 各视频的生成物：配音缓存、成片与中间文件、截图、工具的中间数据
 /videos/**/audio/
 /videos/**/out/

@@ -2,6 +2,8 @@
 
 本文说明在一台新机器上要装什么、怎样确认可用、两台机器怎样分工，以及生成物占多少空间、怎样清理。
 
+首次使用的分阶段步骤见 [getting-started.md](getting-started.md)，归档与清理的完整流程见 [lifecycle.md](lifecycle.md)。只有一台机器也能完成全部制作，远端配置是可选项。
+
 ## 1. 需要什么
 
 | 项 | 要求 | 用途 | 实测可用的版本 |
@@ -20,16 +22,19 @@ Windows、Linux、macOS 都可以。配音需要联网（edge-tts 调用在线�
 
 只写场景、看帧、跑扫描，需要的是 Node、Chrome 与字体；配音、混音、渲染、封装才需要 Python 与 ffmpeg。
 
+只验证源码工具时运行 `npm test`、`npm run check:repo`；检查看帧环境用 `node kit/tools/doctor.js --visual`。这两层不需要在线语音服务。
+
 ## 2. 步骤
 
 ```bash
-git clone <仓库地址> && cd ft
+git clone <仓库地址>
+cd ft
 npm ci                                  # puppeteer-core 与 gsap，版本由 package-lock.json 锁定
 node kit/tools/assets.js --fetch        # 字体，约 44 MB，逐个校验 SHA-256
-pip install edge-tts numpy              # 必需
-pip install faster-whisper pillow       # 可选
 node kit/tools/doctor.js                # 逐项检查，指出缺什么
 ```
+
+Python 包使用 `.venv/` 安装 `kit/requirements.txt`；可选审查包使用 `kit/requirements-review.txt`，各系统命令见 [快速入门](getting-started.md#5-安装完整出片环境)。工具优先采用 `PYTHON` / 本机配置指定的程序，其次查本仓库 `.venv/`，最后查系统 Python。
 
 - ffmpeg：放进系统 `PATH`，或把可执行文件放在 `assets/ffmpeg/bin/` 下，或在本机配置里写明位置。
 - 语音识别模型：不放置时 `asr.js` 首次运行由 faster-whisper 自行下载；也可 `node kit/tools/assets.js --fetch --whisper` 取到 `assets/whisper/fw-small/`（约 480 MB）。模型站点连不上时，在本机配置里把 `hf_endpoint` 换成可用的镜像。
@@ -87,7 +92,7 @@ printf '#!/bin/sh\ngit read-tree "$1"\n' > .git/hooks/push-to-checkout
 
 ## 4. 空间占用与清理
 
-仓库本身很小（源码与取证材料约 7 MB）。占空间的是不入库的东西：
+空间应以当前文件实测；下表是既有制作中的量级参考，不代表每次 clone 或每部影片的固定大小：
 
 | 位置 | 内容 | 大小 | 能否删 |
 |---|---|---|---|
@@ -95,19 +100,19 @@ printf '#!/bin/sh\ngit read-tree "$1"\n' > .git/hooks/push-to-checkout
 | `assets/fonts/` | 字体 | 约 44 MB | 能，`assets.js --fetch` 重新下载 |
 | `assets/whisper/` | 语音识别模型 | 约 480 MB | 能 |
 | `assets/ffmpeg/` | ffmpeg | 视构建而定，约 500 MB | 能 |
-| `<视频>/audio/` | 旁白音频缓存 | 每种语言几 MB | 能，但重新合成需要联网，结果可能与原来略有不同 |
-| `<视频>/out/<语言>/video.mp4` | 无声画面 | 8 分钟约 150 MB | 能，重新渲染需要几分钟到几十分钟 |
-| `<视频>/out/<语言>/*.wav` | 各条混音与分轨 | 8 分钟每条约 90 MB，一次混音五条 | 能，`audio.js` 一两分钟重建，结果逐样本相同 |
+| `<视频>/audio/` | 旁白音频缓存 | 每种语言几 MB | 先归档；重合成需要联网且可能改变时间线 |
+| `<视频>/out/<语言>/video.mp4` | 无声画面 | 8 分钟约 150 MB | 先归档；重新渲染需要几分钟到几十分钟 |
+| `<视频>/out/<语言>/*.wav` | 各条混音与分轨 | 8 分钟每条约 90 MB，一次混音五条 | 先归档；相同输入可由 `audio.js` 重建 |
 | `<视频>/out/*.mp4` | 成片 | 8 分钟每个约 150 MB，每种语言三个 | 交付物，另行保存后才能删 |
-| `<视频>/shots/`、`<视频>/build/` | 截图与中间数据 | 几 MB | 能 |
+| `<视频>/shots/`、`<视频>/build/` | 截图、检查报告与中间数据 | 随采样范围变化 | 先归档复盘证据，报告是重跑交付检查的输入 |
 
-一部 8 分钟的双语片子，渲染与封装期间约占 2–3 GB；交付后删掉混音的 WAV，留下无声画面与成片，约 1.3 GB。
+一部 8 分钟的双语片子，渲染与封装期间曾占约 2–3 GB。用 `node kit/tools/clean.js <视频>` 查看当前实际占用；执行删除需另指定仓库外的新归档目录并校验，见 [lifecycle.md](lifecycle.md)。
 
 **会悄悄变大的地方：**
 
-- **浏览器的临时档案目录。** 每个无头浏览器实例用一个临时目录（系统临时目录下，名字以 `lvs-chrome-` 开头），关闭时删除。渲染被强行终止时会留下，每个几十 MB。`node kit/tools/doctor.js` 会报告残留数量，`--clean` 删除。清理前确认没有正在进行的渲染。
+- **浏览器的临时档案目录。** 每个无头浏览器实例用一个 `lvs-chrome-*` 临时目录，正常关闭时删除。`doctor.js` 只报告数量，其中可能包含正在使用的目录。异常退出后按 [lifecycle.md](lifecycle.md) 核对 PID、子进程与目录归属，仅处理已确认不再使用的目录；不批量清理。
 - **不经本工具启动的无头 Chrome。** 直接用命令行 `chrome --headless --screenshot` 出图时，每次会在用户缓存目录下留一份几十 MB 的档案（Linux 上是 `~/.cache/google-chrome-headless/`）。曾经因此累积到 17 GB。出图一律用 `look.js` 与 `sheets.js`。
-- **中止的渲染留下的分段。** `out/<语言>/video.mp4.segs/`，重新渲染时会被覆盖；不再渲染时手动删除。
+- **中止的渲染留下的分段。** `out/<语言>/video.mp4.segs/`，重新渲染时会被覆盖；收尾时随 `out/` 统一归档和清理。
 - **WSL 的虚拟磁盘。** 在 WSL 里删除文件之后，宿主机上的虚拟磁盘文件不会自动变小，要在关闭该发行版之后压缩。
 
-清理生成物之前，先确认成片已经另行保存。
+清理须保留成片、配音和审查证据的可校验副本；单片清理工具不会删除字体、依赖、实验环境或系统缓存。

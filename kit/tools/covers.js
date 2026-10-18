@@ -6,9 +6,11 @@
 // cover.html 的约定：?r=169 / ?r=43 切换版式，?lang= 切换语言；就绪后置 document.body.dataset.ready = '1'
 // 产物：out/cover-<语言>-16x9.jpg、out/cover-<语言>-4x3.jpg 及对应的 2 倍 PNG。
 const { spawnSync } = require('child_process');
-const { needVideo, LANGS, FFMPEG, VIDEO, startServer, openPage, mkdirp, path } = require('./lib');
+const { needVideo, PROJECT, LANGS, FFMPEG, VIDEO, startServer, openPage, mkdirp, path } = require('./lib');
 (async () => {
   needVideo();
+  require('./project-files').acquireLock(needVideo());
+  require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
   const out = mkdirp(path.join(VIDEO, 'out'));
   const { server, base } = await startServer();
   for (const lang of LANGS(true)) for (const [r, w, h, name] of [['169', 1920, 1080, `cover-${lang}-16x9`], ['43', 1600, 1200, `cover-${lang}-4x3`]]) {

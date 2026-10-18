@@ -34,6 +34,8 @@ node kit/tools/new.js standalone/<视频> --title "…" --delegate "<受托模�
 
 ## 3. 准备方要做的
 
+交接材料包含 `review/` 的已确认稿本、逐句意见和确认依据。`brief/02-script.md` 链接这些稿本，避免另存一份过期的全文。新模板的 `--handoff` 先检查确认是否仍与当前内容一致，规则见 [script-review.md](script-review.md)。
+
 按 [workflow.md](workflow.md) 做完第 0–4 步，然后：
 
 准备方先读 [feedback.md](feedback.md) 与最近相关复盘，在 `brief/01-mission.md` 按 F01–F09 及后续新增编号写适用性、具体计划、正面对照和验法，同时给出核心问题、逐章答案与舍弃材料。受托方开工时复查，将应用记录留在本片 README；不能用“已阅读”替代。结尾使用同一组编号复盘，不为这一记录另加审批环节。
@@ -101,7 +103,7 @@ node kit/tools/new.js standalone/<视频> --title "…" --delegate "<受托模�
 
 ## 7. 目录里留下什么
 
-委托制作的片子比自制的多出三样，都入库、都保留：
+新模板的自制片也有任务入口与 `review/`。委托片另有专用入口、任务书和交付说明，以下记录都入库、都保留：
 
 | 文件 | 作用 |
 |---|---|

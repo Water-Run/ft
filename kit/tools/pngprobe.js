@@ -5,6 +5,7 @@
 const { needVideo, LANGS, positional, flag, dirs, mkdirp, startServer, openPage, path, fs } = require('./lib');
 (async () => {
   needVideo();
+  require('./project-files').acquireLock(needVideo());
   const [a, b, step = 0.1] = positional(['lang']).map(Number), fast = !flag('slow'), lang = LANGS()[0];
   if (!(b > a)) { console.error('用法：node kit/tools/pngprobe.js <视频> <起点秒> <终点秒> [步长]'); process.exit(2); }
   const { server, base } = await startServer();

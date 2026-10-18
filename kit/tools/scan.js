@@ -98,4 +98,4 @@ async function scan(lang) {
   if (flag('json')) fs.writeFileSync(path.join(mkdirp(dirs(lang).build), `scan.${lang}.json`), JSON.stringify({ lang, from, to, total: L.total, errors, warns }, null, 1));
   return errors.length;
 }
-(async () => { needVideo(); let n = 0; for (const lang of LANGS()) n += await scan(lang); process.exit(n ? 1 : 0); })();
+(async () => { require('./project-files').acquireLock(needVideo()); let n = 0; for (const lang of LANGS()) n += await scan(lang); process.exit(n ? 1 : 0); })();

@@ -1,12 +1,13 @@
 // 环境自检：逐项检查这台机器能不能做片子，并指出缺什么、怎么补。
 // 用法：node kit/tools/doctor.js                   检查仓库级的依赖
 //       node kit/tools/doctor.js <视频>             另查这部视频：用到的字体、各语言的配音缓存与成片中间文件
-//       node kit/tools/doctor.js --clean           删掉残留的浏览器临时档案目录（渲染被强行终止时会留下，名字以 lvs-chrome- 开头，每个几十 MB）
+//       node kit/tools/doctor.js --visual          只检查写场景与看帧的依赖（无需 Python、ffmpeg）
 // 每一项的安装办法见 docs/environment.md。
 const os = require('os');
 const { spawnSync } = require('child_process');
 const { REPO, KIT, ASSETS, WIN, LOCAL, VIDEO, PROJECT, chromePath, ffmpegPath, ffprobePath, pythonPath, loadTiming, dirs, flag, path, fs } = require('./lib');
 const rows = [];
+if (flag('clean')) { console.error('doctor 只做诊断，不删除全局浏览器目录。生成物清理用 clean.js；异常退出的处理见 docs/lifecycle.md。'); process.exit(2); }
 const add = (level, name, detail) => rows.push({ level, name, detail });   // level: ok / warn / fail
 const run = (cmd, args) => { const r = spawnSync(cmd, args, { encoding: 'utf8' }); return r.status === 0 ? (r.stdout || r.stderr || '').trim() : null; };
 (async () => {
@@ -30,6 +31,7 @@ const run = (cmd, args) => { const r = spawnSync(cmd, args, { encoding: 'utf8' }
     } catch (e) { add('fail', 'Chrome', `${chrome} 启动失败：${String(e.message).split('\n')[0]}`); }
   }
   // ffmpeg
+  if (!flag('visual')) {
   const ff = ffmpegPath(), fp = ffprobePath();
   if (!ff) add('fail', 'ffmpeg', '找不到。放进 PATH 或 assets/ffmpeg/bin/，或在 kit/config.local.json 里写 "ffmpeg"');
   else { const ver = (run(ff, ['-hide_banner', '-version']) || '').split('\n')[0]; const x264 = /libx264/.test(run(ff, ['-hide_banner', '-encoders']) || ''); add(x264 ? 'ok' : 'fail', 'ffmpeg', `${ver.replace(/ Copyright.*/, '')}${x264 ? '' : '（没有 libx264 编码器）'}  ${ff}`); }
@@ -43,14 +45,14 @@ const run = (cmd, args) => { const r = spawnSync(cmd, args, { encoding: 'utf8' }
     for (const [m, use, lv, pip] of mods) { const ver = run(py, ['-c', `import ${m}, importlib.metadata as md\ntry:\n    print(md.version(${JSON.stringify(pip)}))\nexcept Exception:\n    print('已安装')`]); add(ver ? 'ok' : lv, `  ${m}`, ver ? `${ver.trim()}（${use}）` : `未安装：pip install ${pip}（${use}）`); }
   }
   // 字体与模型
+  }
   const st = require('./assets').status();
   add(st.ok ? 'ok' : 'fail', '字体（assets/fonts）', st.ok ? '齐全，校验和一致' : st.problems.join('；') + '。运行 node kit/tools/assets.js --fetch');
   add(st.whisperReady ? 'ok' : 'warn', '语音识别模型', st.whisperReady ? 'assets/whisper/fw-small' : '未放置：asr.js 首次运行时由 faster-whisper 自行下载，或 node kit/tools/assets.js --fetch --whisper');
   // 磁盘与临时目录
   try { const s = fs.statfsSync(REPO), free = s.bavail * s.bsize / 2 ** 30; add(free > 10 ? 'ok' : 'warn', '磁盘剩余', `${free.toFixed(1)} GB（一部 8 分钟的片子，渲染与封装约占 1.5–3 GB）`); } catch (e) {}
   const tmp = os.tmpdir(), left = fs.readdirSync(tmp).filter((n) => n.startsWith('lvs-chrome-'));
-  if (left.length && flag('clean')) { let n = 0; for (const d of left) try { fs.rmSync(path.join(tmp, d), { recursive: true, force: true }); n++; } catch (e) {} add('ok', '浏览器临时档案', `已删除 ${n} 个`); }
-  else add(left.length ? 'warn' : 'ok', '浏览器临时档案', left.length ? `${tmp} 里有 ${left.length} 个残留（lvs-chrome-*）。确认没有正在进行的渲染后运行 node kit/tools/doctor.js --clean` : '无残留');
+  add(left.length ? 'warn' : 'ok', '浏览器临时档案', left.length ? `${left.length} 个 lvs-chrome-* 目录（可能正在使用）。按 docs/lifecycle.md 核对归属后处理。` : '无残留');
   if (Object.keys(LOCAL).length) add('ok', '本机配置', 'kit/config.local.json：' + Object.keys(LOCAL).join(', '));
   // 这部视频
   if (VIDEO) {

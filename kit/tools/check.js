@@ -5,13 +5,17 @@
 //       --lang en 只查一种语言（缺省查 project.json 里的全部语言）
 // 各项的含义、阈值与处理办法见 docs/review.md；阈值与风格规则在 project.json 的 check 段，写法见 docs/tools.md。
 const { spawnSync } = require('child_process');
-const { needVideo, PROJECT, VIDEO, ARGS, arg, flag, layout, loadedSources, sourceState, startServer, openPage, dirs, mmss, path, fs } = require('./lib');
+const { needVideo, PROJECT, VIDEO, ARGS, arg, flag, LANGS: selectLanguages, layout, loadedSources, sourceState, startServer, openPage, dirs, mmss, path, fs } = require('./lib');
 needVideo();
-const P = PROJECT(), C = P.check, LANGS = arg('lang', null) ? arg('lang').split(',') : P.languages;
+require('./project-files').acquireLock(needVideo());
+const P = PROJECT(), C = P.check, LANGS = selectLanguages(true);
 const rows = [];
 const add = (name, ok, detail) => rows.push({ name, ok, detail: [].concat(detail || []) });
 const read = (f) => fs.readFileSync(path.join(VIDEO, f), 'utf8');
 const exists = (f) => fs.existsSync(path.join(VIDEO, f));
+const review = require('./script-review').status(VIDEO, P, LANGS);
+if (!review.ok) { console.error('✗ 文案校对：\n  ' + review.problems.join('\n  ')); process.exit(1); }
+add('文案校对', true, review.legacy ? review.details : ['人工记录与当前内容一致；确认真实性按 docs/script-review.md 核对。']);
 
 // ── 交接检查（--handoff）：准备方交给受托模型之前 ──
 if (flag('handoff')) {

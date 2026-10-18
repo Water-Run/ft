@@ -11,6 +11,7 @@ const { needVideo, PROJECT, LANGS, layout, parseTimes, without, startServer, ope
 const { COLLECT, problems, refine, describe, configure } = require('./inspect');
 (async () => {
   needVideo(); configure(PROJECT().check);
+  require('./project-files').acquireLock(needVideo());
   const lang = LANGS()[0], { L } = layout(lang);
   const url = arg('url', null), [w, h] = arg('size', '1920x1080').split('x').map(Number), scale = +arg('scale', 1);
   const times = parseTimes(L, without(['url', 'size', 'scale', 'lang'], ['brief', 'no-shot']));

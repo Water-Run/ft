@@ -6,6 +6,8 @@
 const { needVideo, LANGS, KIT, PY, ARGS, layout, run, pyEnv, startServer, openPage, flag, dirs, mkdirp, path, fs } = require('./lib');
 (async () => {
   needVideo();
+  require('./project-files').acquireLock(needVideo());
+  require('./script-review').assertApproved(needVideo(), require('./lib').PROJECT(), LANGS(true));
   const kv = ARGS.filter((a) => /^[a-z_]+=/.test(a));
   for (const lang of LANGS(true)) {
     const { L, measured } = layout(lang);

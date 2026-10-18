@@ -13,12 +13,16 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 
 ## 1. 一览
 
-表中省略 `<视频>`。`new.js`、`catalog.js`、`assets.js`、`remote.js` 不针对某一部视频；`doctor.js` 的视频目录可选，其余工具都需要。
+表中省略 `<视频>`。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
 
 | 工具 | 作用 | 语言 | 大致耗时 |
 |---|---|---|---|
-| `new.js <位置>` | 新建一部视频并登记片单 | — | 瞬间 |
-| `doctor.js [视频]` | 环境自检；`--clean` 清理残留的浏览器临时目录 | — | 几秒 |
+| `new.js <位置>` | 新建并登记片单；`--scratch` 在 `out/sandbox/` 练习且不改片单；公开默认值取 studio 配置 | — | 瞬间 |
+| `doctor.js [视频]` | 完整环境自检；`--visual` 只查 Node、浏览器与字体；只诊断不清理 | — | 几秒 |
+| `script-review.js export / check` | 导出逐句校对稿 / 核对内容与人工确认记录，见 [文案校对](script-review.md) | 导出主语言，检查全部；可用 `--lang` | 瞬间 |
+| `clean.js <视频>` | 默认预览；`--archive <新目录> --apply` 归档校验后清理；`--verify <归档>` 核对备份 | 全部 | 取决于文件量 |
+| `repo-check.js` | 语法、依赖锁、本地文档链接、入库边界与片单检查 | — | 几秒 |
+| `smoke.js` | 新建隔离练习、导出稿本、打开中英模板截图；不配音 | 中文、英文 | 约十几秒 |
 | `assets.js` | 核对字体与语音识别模型；`--fetch` 下载 | — | 视网络 |
 | `catalog.js` | 核对片单并生成 `docs/catalog.md` 与各系列说明的分集表；`--check` 只核对 | — | 瞬间 |
 | `tts.js` | 合成旁白，写 `timing.<语言>.js`，打印时间线 | 全部 | 有缓存时几秒 |
@@ -88,7 +92,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 
 ## 4. `project.json`
 
-每部视频一份。除 `slug` 与 `languages` 外都可省略。
+每部视频一份。旧片兼容字段省略；新模板写入制作身份和 `review` 文案确认要求，不得为绕过校对而删除这些配置。
 
 ```json
 {
@@ -112,7 +116,8 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `titles` | 各语言的标题，写进成片的元数据 |
 | `voices`、`rates` | 各语言的音色与语速 |
 | `asr_prompts` | 给语音识别的提示：一句话说明内容并带上术语的正确拼写，回听时识别得更准 |
-| `production` | 制作方式：`mode` 为 `self` 或 `delegated`；`maker` 制作者；委托时 `prepared_by` 准备方 |
+| `production` | `mode` 为 `self` 或 `delegated`；`maker` 制作者；委托时 `prepared_by` 准备方；`planner` 为实际策划，`repository` 为本片公开源码仓库，新建时从 `kit/studio.json` 拷入 |
+| `review` | 新片为 `{ "required": true, "reviewer": "WaterRun" }`（fork 配置实际校对者）；内容哈希、日期、依据在本片 `review/approval.json` |
 | `render` | `fps`（60）、`mb` 运动模糊的子帧数（1 为不开）、`shutter` 快门开角（0.5）、`crf`（15）、`gpu`（WebGL 场景设 1） |
 | `audio` | 见 [sound.md](sound.md) 第 4 节 |
 | `check` | 见下 |
@@ -160,6 +165,8 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 <视频>/
   project.json            配置
   README.md               本片的说明：内容、视觉系统、取证、读法、复现、成片
+  AGENTS.md               本片任务入口与接续规则
+  review/                 按哈希留存的逐句稿本、NOTES.md、approval.json（入库）
   src/
     index.html            页面：按顺序加载下面的脚本
     cover.html            封面
@@ -174,7 +181,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
   research/               FACTS.md、lab/；_src/ 不入库
   tools/                  本片专用的脚本，例如 gen_data.py（可选）
   expect.<语言>.json       逐句对应表（可选）
-  AGENTS.md、brief/、DELIVERY.md    委托制作时才有
+  brief/、DELIVERY.md       委托制作时另有；其 AGENTS.md 使用委托模板
   audio/<语言>/            旁白音频缓存            ┐
   out/<语言>/              无声画面与各条混音      │ 生成物，
   out/                    成片、字幕、封面         │ 不入库
@@ -194,6 +201,8 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `remote` | 渲染机：`{ "ssh": "<ssh 主机别名>", "path": "<渲染机上仓库的路径>" }` |
 
 ffmpeg 也可以放在 `assets/ffmpeg/bin/` 下。
+
+Python 还会查仓库的 `.venv/`。`kit/studio.json` 是公开制作默认值，不能放可执行路径、主机或凭据；它与本机配置各自独立。
 
 ## 7. 两台机器分工：`remote.js`
 
@@ -217,7 +226,9 @@ node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库
 | 页面没能就绪 | 工具会打印页面日志：脚本报错、资源 404、`T()` 找不到句号 |
 | 某一刻画面不对 | `look.js <视频> <时刻>` 看文字描述与截图；在入场时刻前后多取几帧 |
 | 想知道某个词何时被读到 | `timeline.js <视频> <句号>` |
-| 临时目录越来越大 | `doctor.js --clean`（渲染被强行终止时，浏览器的临时档案目录会留下） |
+| 生成物与临时目录越来越大 | `clean.js <视频>` 预览；浏览器临时目录用 `doctor.js` 诊断，按 [lifecycle.md](lifecycle.md) 核对归属 |
+| 工具提示文案校对失败 | `script-review.js <视频> check`，核对稿本、确认者、日期、依据和当前内容 |
+| 工具提示制作锁 | 等待同片任务结束；异常退出按 [lifecycle.md](lifecycle.md) 核对 PID 与子进程，不盲删锁 |
 
 ## 9. 内部模块
 
@@ -225,6 +236,7 @@ node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库
 
 | 文件 | 作用 | 调用方 |
 |---|---|---|
+| `project-files.js` | 路径边界、逐文件哈希与单片制作锁 | 制作、校对与清理工具 |
 | `lib.js` | 公共部分：定位仓库与视频目录、读本机配置、语言、时间线、静态服务器、打开页面 | 多数 Node 工具 |
 | `inspect.js` | 「用文字看画面」的公共部分：收集某一刻可见的元素，做版面判断 | `look.js`、`scan.js` |
 | `pngfix.js` | PNG 的解码，以及 RGBA 到 RGB 的改写 | `render.js`、`inspect.js` |

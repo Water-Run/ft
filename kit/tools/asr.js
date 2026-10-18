@@ -4,6 +4,7 @@
 // 模型：assets/whisper/fw-small（没有时由 faster-whisper 自行下载 small）；kit/config.local.json 可写 "asr_model"、"asr_device"、"hf_endpoint"。
 const { needVideo, PROJECT, LANGS, LOCAL, KIT, PY, layout, run, pyEnv, dirs, rel, path, fs } = require('./lib');
 needVideo();
+require('./project-files').acquireLock(needVideo());
 for (const lang of LANGS(true)) {
   const d = dirs(lang), wav = path.join(d.out, 'audio_voice.wav');
   if (!fs.existsSync(wav)) { console.error(`没有 ${rel(wav)}：先运行 node kit/tools/audio.js`); process.exit(1); }

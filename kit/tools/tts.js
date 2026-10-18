@@ -4,6 +4,8 @@
 // 音色与语速取 project.json 的 voices / rates；字幕一行的宽度上限取 check.caption_width（按「字宽」算：汉字 1，其余 0.5）。
 const { needVideo, PROJECT, LANGS, KIT, PY, layout, run, pyEnv, dirs, mkdirp, writeTiming, mmss, path, fs } = require('./lib');
 needVideo();
+require('./project-files').acquireLock(needVideo());
+require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
 const P = PROJECT(), CAPW = { zh: 26, en: 44 };
 const limit = (lang) => { const c = P.check.caption_width; return c == null ? (CAPW[lang] != null ? CAPW[lang] : 44) : (typeof c === 'object' ? c[lang] : c); };
 for (const lang of LANGS(true)) {

@@ -92,6 +92,8 @@
 
 ## 7. 片尾名单与开源链接
 
+以下 WaterRun 与 Water-Run/ft 是原仓库的制作约定。独立使用者按 [getting-started.md](getting-started.md) 配置实际策划与公开源码仓库，新片以 `project.json` 中拷入的公开信息为起点核对；保留真实分工与可复查来源，不能虚列原作者参与。已有作品的历史署名不改写。
+
 - 每部片子、每种语言及各交付视频版本都要有可读的片尾名单，列出「策划：WaterRun」与所有实际参与制作的模型。英文版使用 `Planning: WaterRun`，人名与模型名保持原样。
 - 片尾同时展示「开源视频」与本视频源码所在的 GitHub 仓库链接。本仓库地址为 [Water-Run/ft](https://github.com/Water-Run/ft)，画面可写 `开源视频：github.com/Water-Run/ft`；英文标签用 `Open-source video`，地址保持一致。网址须完整、清晰，留足阅读时间。
 - 模型按实际分工列明，如取证、脚本、翻译、视觉设计、场景实现、审查，以及实际使用的图像或语音生成模型。委托片同时列准备方与受托方；同一模型可合并列出职责。

@@ -4,6 +4,8 @@
 const { needVideo, PROJECT, LANGS, LOCAL, KIT, PY, positional, pyEnv, path } = require('./lib');
 const { spawnSync } = require('child_process');
 needVideo();
+require('./project-files').acquireLock(needVideo());
+require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS());
 const lang = LANGS()[0], sents = positional(['lang']);
 if (!sents.length) { console.error('用法见文件头注释：至少给一句要试的文本'); process.exit(2); }
 const env = { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUTF8: '1', ...pyEnv(lang, { LVS_VOICE: PROJECT().voices[lang], LVS_RATE: PROJECT().rates[lang], LVS_ASR_MODEL: LOCAL.asr_model || '', LVS_ASR_DEVICE: LOCAL.asr_device || '' }) };

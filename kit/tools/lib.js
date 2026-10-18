@@ -32,7 +32,7 @@ const chromePath = lazy(() => process.env.CHROME || LOCAL.chrome || which(WIN
   : ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', 'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser']));
 const ffPath = (name) => lazy(() => process.env[name.toUpperCase()] || LOCAL[name] || which([path.join(ASSETS, 'ffmpeg', 'bin', exe(name)), name]));
 const ffmpegPath = ffPath('ffmpeg'), ffprobePath = ffPath('ffprobe');
-const pythonPath = lazy(() => process.env.PYTHON || LOCAL.python || which(WIN ? ['python', 'py'] : ['python3', 'python']));
+const pythonPath = lazy(() => process.env.PYTHON || LOCAL.python || which([path.join(REPO, '.venv', WIN ? 'Scripts/python.exe' : 'bin/python'), ...(WIN ? ['python', 'py'] : ['python3', 'python'])]));
 const need = (what, get, hint) => { const v = get(); if (!v) { console.error(`找不到 ${what}。${hint} 详见 docs/environment.md；node kit/tools/doctor.js 可检查整个环境。`); process.exit(2); } return v; };
 const CHROME = () => need('Chrome', chromePath, '装好 Chrome，或在 kit/config.local.json 里写 "chrome": "<路径>"。');
 const FFMPEG = () => need('ffmpeg', ffmpegPath, '把 ffmpeg 放进 PATH 或 assets/ffmpeg/bin/，或在 kit/config.local.json 里写 "ffmpeg"。');
@@ -167,7 +167,10 @@ async function openPage(base, { url, lang = LANGS()[0], width = 1920, height = 1
   page.on('response', (r) => { if (r.status() >= 400) logs.push('http ' + r.status() + ': ' + r.url()); });
   await page.goto(base + (url || '/index.html?lang=' + lang), { waitUntil: 'load', timeout: 180000 });
   if (ready) {
-    const ok = await Promise.race([page.evaluate(() => window.READY).then(() => true, (e) => { logs.push('boot failed: ' + e.message); return false; }), new Promise((r) => setTimeout(() => r(null), 90000))]);
+    let timer, ok;
+    try {
+      ok = await Promise.race([page.evaluate(() => window.READY).then(() => true, (e) => { logs.push('boot failed: ' + e.message); return false; }), new Promise((r) => { timer = setTimeout(() => r(null), 90000); })]);
+    } finally { clearTimeout(timer); }
     if (ok !== true) { console.error('页面未能就绪（boot 失败或超时）。页面日志：\n  ' + (logs.join('\n  ') || '（无）')); await browser.close(); process.exit(2); }
   }
   return { browser, page, logs };

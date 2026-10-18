@@ -4,6 +4,31 @@
 
 制作流程与标准见仓库的 `docs/`；片中每一句陈述的出处见 `research/FACTS.md`。
 
+## 当前状态与接续
+
+阶段：立项。文案：未确认。交付：未完成。发布：未发布。归档：未归档。
+
+<!-- 每次结束工作更新本节。待审、交付、发布与归档分别记录；不能仅凭旧 MP4 或片单 delivered 判断当前版本。 -->
+
+| 项 | 当前记录 |
+|---|---|
+| 最近完成的步骤与版本 | |
+| 下一步及依赖 | |
+| 当前稿本 / 校对结论 | 见 review/NOTES.md 与 review/approval.json |
+| 输出在哪台制作机 | 使用不含私人主机信息的制作机代号 |
+| 未完成、未检查与阻塞 | |
+
+## 文案与校对
+
+唯一文案源稿：`src/js/script.js`。指定校对者：{{REVIEWER}}。
+
+```bash
+node kit/tools/script-review.js {{PATH}} export
+node kit/tools/script-review.js {{PATH}} check
+```
+
+导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
+
 ## 开工反馈应用
 
 <!-- 开工必填，改片另起本轮记录。先读 docs/feedback.md 与最近相关复盘；按总账带入全部问题编号，新增编号也须补入。不适用写具体原因，不能只写“已阅读反馈”。 -->
@@ -51,9 +76,9 @@
 
 ## 制作署名与片尾
 
-策划：WaterRun。
+策划：{{PLANNER}}。
 
-开源视频：[GitHub · Water-Run/ft](https://github.com/Water-Run/ft)。片尾须展示「开源视频」与完整可读的网址。
+开源视频：[本片源码]({{REPOSITORY}})。片尾须展示「开源视频」与完整可读的网址。
 
 <!-- 根据 research/FACTS.md 的「制作署名」记录填写实际参与模型，不猜测版本；未披露模型的服务如实注明。所有语言、各交付视频版本都须包含完整名单。 -->
 
@@ -65,6 +90,7 @@
 ## 复现
 
 ```bash
+node kit/tools/script-review.js {{PATH}} check  # 核对当前稿本的人工确认
 node kit/tools/tts.js    {{PATH}} --lang all     # 合成旁白，更新时间线
 node kit/tools/check.js  {{PATH}}                # 制作期总闸门
 node kit/tools/audio.js  {{PATH}} --lang all     # 混音
@@ -97,3 +123,21 @@ node kit/tools/check.js  {{PATH}} --final        # 交付前总闸门
 | F09 | | | |
 
 <!-- 结果使用“已验证 / 已修改待复核 / 待修改 / 待事实核查 / 不适用（原因）”。补记新发现与反馈总账的关联；修改后另存复测，不覆盖历史评分。 -->
+
+## 发布、归档与清理
+
+<!-- 交付后按 docs/lifecycle.md 执行。发布不是归档的前提；记录实际状态。归档路径含个人信息时仅在本机保存，公开表只写不含身份信息的备份代号。 -->
+
+| 项 | 记录 |
+|---|---|
+| 平台链接、标题、发布时间与时长 | 未发布 |
+| 最终文件、语言、规格、SHA-256 | |
+| 实际 Node、Chrome、ffmpeg、Python 与包版本 | |
+| 归档代号、manifest.json 哈希、校验日期 | 未归档 |
+| 备份介质与恢复抽验结果 | 未检查 |
+| 清理范围、时间、取证实验资源撤除 | 未清理 |
+| 需保留的复盘证据与后续修订 | |
+
+```bash
+node kit/tools/clean.js {{PATH}}   # 只预览，不删除
+```

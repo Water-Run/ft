@@ -2,7 +2,17 @@
 
 f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓库，连同把这些源码变成成片的工具链。名字来自画面本身：整部片子是时间 t 的纯函数，任意一帧都是 f(t)。每一部视频是一段以时间 t 为唯一输入的 HTML 动画：旁白逐句合成，画面上的动作挂在旁白的词边界上；无头浏览器并行出帧，由 ffmpeg 编码与封装。成片为 1920×1080、60 帧/秒；除另有说明外，每部出中文与英文两个版本。
 
-[English](README.en.md)
+## 从这里开始
+
+这套仓库也可用于独立制作：从事实取证、文案与用户校对，到多语言动画、交付、归档和清理，逐步保留可复查的记录。
+
+| 目的 | 入口 |
+|---|---|
+| 首次 clone，跑通模板 | [快速入门](docs/getting-started.md) |
+| 用自己的身份和仓库制作 | [公开制作配置](kit/studio.json)、[独立使用说明](docs/getting-started.md#3-用于独立制作或-fork) |
+| 写文案、交给用户校对 | [文案与校对](docs/script-review.md) |
+| 制作结束，保存和清理 | [归档、清理与恢复](docs/lifecycle.md) |
+| 了解结构或参与维护 | [仓库结构](docs/repository.md)、[贡献指南](CONTRIBUTING.md)、[文档总览](docs/README.md) |
 
 ## 仓库的构成
 
@@ -15,8 +25,11 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 | `kit/tools/` | 工具：配音、看帧、扫描、总闸门、混音、渲染、封装、封面、环境自检 |
 | `kit/template/` | 新视频的骨架，默认中英双语 |
 | `kit/delegation/` | 委托制作时的任务书骨架 |
+| `kit/tests/`、`.github/` | 隔离回归测试、跨平台 CI 与贡献模板 |
+| `kit/studio.json` | 新片的公开策划、校对者与源码仓库默认值 |
 | `docs/` | 制作流程、质量标准与各项专题文档 |
 | `assets/` | 字体、语音识别模型等二进制依赖，不入库，由工具下载 |
+| `out/sandbox/` | 入门练习与模板截图，不入库、不登记片单 |
 
 成片、配音缓存与渲染的中间文件不入库。
 
@@ -58,23 +71,15 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 ## 快速开始
 
-需要 Node.js 22.12 或更新、Chrome、带 libx264 的 ffmpeg、Python 3（`edge-tts`、`numpy`）。详见 [docs/environment.md](docs/environment.md)。
+先安装 Git、Node.js 22.12 或更新；看帧再安装 Chrome 并下载字体。以下命令不调用在线配音，也不修改现有影片：
 
 ```bash
-npm ci                                   # 依赖
-node kit/tools/assets.js --fetch         # 字体
-node kit/tools/doctor.js                 # 环境自检
-
-V=videos/standalone/luainstaller
-node kit/tools/timeline.js $V            # 时间线
-node kit/tools/look.js     $V a6         # 句 a6 说完那一刻的画面：文字描述与截图
-node kit/tools/check.js    $V            # 制作期总闸门
-
-node kit/tools/tts.js    $V              # 合成旁白（需要联网）
-node kit/tools/audio.js  $V              # 混音
-node kit/tools/render.js $V              # 渲染
-node kit/tools/finish.js $V              # 封装成片
-node kit/tools/covers.js $V              # 封面
+npm ci
+npm test
+npm run check:repo
+npm run assets -- --fetch
+npm run doctor -- --visual
+npm run smoke
 ```
 
 新建一部视频：
@@ -84,10 +89,19 @@ node kit/tools/new.js standalone/<视频> --title "中文标题" --title-en "Eng
 node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条目
 ```
 
+填写本片 README、事实依据与 `src/js/script.js` 后，用 `node kit/tools/script-review.js <视频目录> export` 导出可逐句校对的全文。指定校对者明确确认后再配音；新模板的制作命令会核对确认是否对应当前内容。完整安装、翻译校对与制作顺序见 [快速入门](docs/getting-started.md) 和 [制作流程](docs/workflow.md)。
+
+交付后用 `node kit/tools/clean.js <视频目录>` 预览生成物占用；执行清理须提供仓库外的新归档目录，复制并校验通过后才删除。规则见 [收尾清理](docs/lifecycle.md)。
+
 ## 文档
 
 | 文档 | 内容 |
 |---|---|
+| [docs/README.md](docs/README.md) | 按角色与任务选择阅读路径 |
+| [getting-started.md](docs/getting-started.md) | 从 clone、独立配置到第一部视频 |
+| [repository.md](docs/repository.md) | 目录职责、单一来源与维护约定 |
+| [script-review.md](docs/script-review.md) | 导出全文、用户逐句校对、确认与变更处理 |
+| [lifecycle.md](docs/lifecycle.md) | 交付后归档、校验、清理、恢复与接续 |
 | [workflow.md](docs/workflow.md) | 制作流程：从立项到交付的每一步、产物与过关条件 |
 | [standards.md](docs/standards.md) | 质量标准：事实可靠、原创、审美、动画完成度、声音、语体、片尾名单 |
 | [research.md](docs/research.md) | 取证：事实记在哪里、证据怎么留、什么不入库 |

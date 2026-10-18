@@ -8,6 +8,8 @@
 const { spawnSync } = require('child_process');
 const { needVideo, PROJECT, LANGS, KIT, FFMPEG, FFPROBE, PY, pythonPath, VIDEO, arg, flag, layout, dirs, mkdirp, rel, pyEnv, mmss, path, fs } = require('./lib');
 needVideo();
+require('./project-files').acquireLock(needVideo());
+require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
 const P = PROJECT(), slug = P.slug, OUT = mkdirp(path.join(VIDEO, 'out'));
 const ff = (args, o = {}) => spawnSync(FFMPEG(), args, { encoding: 'utf8', maxBuffer: 1 << 28, ...o });
 // 响度：固定增益 + 限幅（单遍 loudnorm 会抽动，不用）。增益按主混音的实测响度算到约 -16 LUFS，三个版本用同一个增益，旁白电平因此一致
