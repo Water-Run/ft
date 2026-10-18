@@ -52,7 +52,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 全部片单（18 个系列、165 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
 
-[近期制作计划](docs/todo.md) 记录 2026-10-09–10-15 的 16 部企划、在制版本和待排期的新增选题。开工先核对计划与实际制作状态，收尾后回填进度。
+[制作 TODO 与完成情况](docs/todo.md) 按当前阶段列出待审稿、预研、未开工、已成片与未关闭事项；原 2026-10-09–10-15 的 16 部安排保存在[历史计划](docs/plans/2026-10-09--15.md)。开工先核对当前源码与实际输出，收尾后回填进度。
 
 ## 观众反馈
 
@@ -119,7 +119,7 @@ node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条�
 | [retrospectives.md](docs/retrospectives.md) | 各部复盘 |
 | [feedback.md](docs/feedback.md) | 发布后的评论、策划反馈、叙事与视听改进、待核事项 |
 | [catalog.md](docs/catalog.md) | 片单 |
-| [todo.md](docs/todo.md) | 近期排期、在制版本、接续与收尾状态 |
+| [todo.md](docs/todo.md) | 当前待办、完成情况、遗留修订与历史排期入口 |
 | [third-party.md](docs/third-party.md) | 第三方组件与许可 |
 
 在仓库里工作的模型另见 [AGENTS.md](AGENTS.md)。
