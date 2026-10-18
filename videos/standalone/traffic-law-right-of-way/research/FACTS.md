@@ -409,3 +409,11 @@ WaterRun 在制作会话中追加要求：体现中国与欧美在“有路权�
 [F07]: https://california.public.law/codes/vehicle_code_section_22450
 [F08]: https://california.public.law/codes/vehicle_code_section_21802
 [G14]: https://xinwen.bjd.com.cn/content/s692f0632e4b076b0127899bc.html
+
+## 2026-10-18：网页端文案讨论材料与署名
+
+按 WaterRun 要求，将第 7 稿的完整交审材料、事实台账和来源登记合为 research/GEMINI-PROMPT.md，供其与网页端 Gemini 4 Argon 详细讨论优化文案。源稿未改，仍待 WaterRun 明确确认；本轮没有重新执行所有法律来源核查，材料中的日期与未核范围原样保留。
+
+本轮实际贡献：GPT-6 Astra（Prompt 组织、源稿哈希核对、反馈约束与署名规则整合）。此前 Codex、Claude Opus 5.5、Kimi 的贡献保留。Gemini 4 Argon 目前是策划者指定的拟参与对象，没有收到其讨论产出，不能列为已经参与制作；实际参与后按网页显示名称、可确认版本和实际修改范围补记。未调用语音或图像生成模型。
+
+后续逐轮保存原稿与修改对应、事实变化、待核项、实际贡献和人工确认；最终片尾仍包括策划 WaterRun、全部实际参与模型及“开源视频：github.com/Water-Run/ft”。本轮 Prompt 打包不等于新稿获批准或影片完成。

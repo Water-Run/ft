@@ -47,5 +47,12 @@
       480,
       660
     ]
+  },
+  "feedback": {
+    "required": true
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
   }
 }

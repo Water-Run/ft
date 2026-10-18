@@ -2,6 +2,10 @@
 
 **2026-10-11：中文稿第 7 稿已整理为六章，估算 10:50.1，交 WaterRun 审查，见 [完整审稿正文](research/script-review.md#3-正文)。已选定 YunjianNeural；中文稿确认后再配音、写成片场景，当前尚无成片。** 原排期 10 月 11 日，按 WaterRun 2026-10-09 要求提前至 10 月 9 日启动；其余选题不替换。周计划见 [TODO](../../../docs/todo.md)。
 
+**2026-10-18：供 WaterRun 与网页端 Gemini 4 Argon 详细讨论的[完整 Prompt](research/GEMINI-PROMPT.md)已打包。内容含当前全文、事实台账、来源登记、讨论步骤、InnoDB 与 Lean 4 的新反馈，以及署名回填规则。当前稿件仍未批准；Gemini 尚属拟参与，收到实际讨论产出后才登记贡献。**
+
+本轮打包、源稿一致性核对与反馈整合由 GPT-6 Astra 完成；未调用网页端 Gemini 或语音生成。策划 WaterRun 与既有 Codex、Claude Opus 5.5、Kimi 的贡献按 FACTS 保留。
+
 面向中国大陆普通机动车驾驶员。核心问题：**出现通行冲突时，依据现场控制和交通关系，怎样判断该让谁、何时停止或通行？** 仅中文，无英文配音、字幕或交付版。独立片初始预算 8–10 分钟、上限 600 秒，供写稿取舍，不靠填充达到下限。2026-10-09 WaterRun 要求内容完整（含环岛、会车、掉头等），上限调为 660 秒（`project.json` 的 `check.duration`），第 7 稿估算 10:50.1（650.10 秒），实际时长以配音实测为准；超限后按已确认意见压缩重复说明。
 
 ## 接续入口与材料
@@ -97,3 +101,47 @@ node kit/tools/catalog.js --check
 ## 制作署名
 
 策划：WaterRun。已参与：Codex（取证、立项、交接准备；本会话未提供可核实的具体模型版本）；Claude Opus 5.5（2026-10-09 接手：补充取证、中文文案）；Kimi（2026-10-11：第 5 稿中文润色、第 6 稿碎句合并整理与送审前修订核查）；Codex（2026-10-11 接续：第 7 稿中文重整、事实与条件复核、文档同步和检查；本会话未提供可核实的具体模型版本）。后续设计、配音、场景、声音与审查待文案确认后按实际分工登记。片尾按实际参与更新，并显示「开源视频」及 [GitHub 仓库](https://github.com/Water-Run/ft)。语音生成等模型在实际使用后登记。当前无成片、片尾时间或发布链接。
+
+
+## 2026-10-18 开工反馈应用
+
+本轮范围是测绘、材料整理与后续改稿准备。当前规则 F01–F12；机器记录见 [review/feedback.json](review/feedback.json)，不能以本表代替文案人工确认。
+
+| 编号 | 本片具体计划 | 验证定位与办法 |
+|---|---|---|
+| F01 | 以遇到通行冲突时怎样作出判断为主问题，六章各给一个明确答案，先诊断再改写。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F02 | 用同一 A/B 车辆和冲突点讲条件、判断、理由和行动，合并碎句并避免堆法条。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F03 | 保留法条前提、地域、年代、责任与赔偿等边界；未经核对不采纳模型新增事实。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F04 | 标志、图解与结论分开安排阅读任务，字幕与图解不同时承载不同长句。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F05 | 画面实际显示方向、冲突点和条件变化，不能只贴规则标签或快速刷屏。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F06 | 沿用已选 Yunjian 音色，文案确认后试听代表句与留白，不额外堆气流声。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F07 | 只用教学示意和独立合成对象，不加入真实车牌、当事人或私人会话；Prompt 仅含公开制作资料。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F08 | 配音后重新测时并按 660 秒上限组织，正式文件生成后按实际规格和哈希复核。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F09 | Gemini 的建议与新增事实分开；新依据先回 FACTS，无法读取的来源保留待核。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F10 | 独立片从现场条件讲起，不要求观众记住其他视频或之前讨论的内容。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F11 | 加州和德国的必要原词附中文释义并核查适用条件，不把一地口径概括为欧美。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+| F12 | 先保留连贯正文再拆字幕，逐句检查多音字、列举、否定和例外条件的口播停顿。 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS；按实际成片核对 |
+
+## 2026-10-18 结尾反馈复盘
+
+尚无成片；Prompt 已打包，文案仍待讨论与人工确认。以下同编号状态是本轮测绘的结论，不是修订后成片已通过。
+
+| 编号 | 本轮证据与检查方式 | 结果 / 遗留 |
+|---|---|---|
+| F01 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F02 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F03 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F04 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F05 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F06 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F07 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F08 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F09 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F10 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F11 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+| F12 | research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS | 尚无成片；Prompt 已打包，文案仍待讨论与人工确认 |
+
+## 2026-10-19 新增反馈应用与结尾待办
+
+- **F13**：让 Gemini 从驾驶员熟悉的道路冲突情境引入，解释路权讨论的范围和路线；保留本片既定法域与条件，不扩成无关历史。 验证：research/gemini-instructions.md 的讨论约束与 GEMINI-PROMPT；后续修订稿开头逐句复核。 当前结果为 pending，须在后续成片按同编号回填实际时段、哈希和结果。
+- **F14**：网页讨论稿只把口播当正文，片尾模型与策划署名单列制作说明；制作时用静默cue并检查最终音轨。 验证：research/gemini-instructions.md；后续脚本、任务书和最终片尾音轨。 当前结果为 pending，须在后续成片按同编号回填实际时段、哈希和结果。
