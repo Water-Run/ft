@@ -9,7 +9,7 @@
 scene('login', ({ root, s, c0 }) => {
   const C = (id, word, sh = 0) => T('r2_' + id, word, sh);
   const E = (id, sh = 0) => Tend('r2_' + id, sh);
-  const mv = (id) => E(id, -0.4);                 // 站间移动：上一站最后一句结束前 0.4 秒起步，0.9 秒到站
+  const mv = (id) => E(id, 0.03);                 // 站间移动：上一站最后一句说完才起步（末句画面完整可读），0.9 秒到站；各段关键帧显式、互不重叠
   const SX = (i) => 2100 * i;
   const PH = (t) => `<span class="lg-ph">‹${t}›</span>`;
 
@@ -25,7 +25,7 @@ scene('login', ({ root, s, c0 }) => {
 #sc-login .lg-op { position: absolute; font: 800 46px/62px "Inter", "Sans SC"; color: #1d1d1d; }
 #sc-login .chip.ok { background: #EAF7D9; border-color: #5D9B2A; color: #3A6A12; box-shadow: inset 0 0 0 2px #5D9B2A; }
 #sc-login .chip.bad { background: #FFE3E3; border-color: #C23B3B; color: #9A1C1C; box-shadow: inset 0 0 0 2px #C23B3B; }
-#sc-login .chip.gh { background: #fff; border: 2px dashed #A9B4BE; color: #8E9AA6; }
+#sc-login .chip.gh { background: #fff; border: 2px dashed #A9B4BE; color: #6E7781; }
 #sc-login .lg-en { font-family: "Inter"; font-weight: 600; }
 #sc-login .lg-q { position: absolute; font: 800 88px/1 "Inter", "Sans SC"; color: #C4561C; }
 #sc-login .lg-sep { position: absolute; height: 0; border-top: 3px dashed #C9CED3; }
@@ -41,6 +41,8 @@ scene('login', ({ root, s, c0 }) => {
   const R = (e) => box(e, w);
   const keys = [];
   const drift = (from, to_, z = 1.02) => { const d = to_ - from - 0.05; if (d > 0.3) keys.push([from, { z }, d, { ease: 'none', sfx: false }]); };
+  // 关键帧按顺序排成互不重叠的段：某段的起点若早于上一段的终点，就推迟到上一段结束后；慢漂移段相应缩短，太短就略去
+  const seqKeys = (ks) => { const out = []; let end = -Infinity; for (const [t, v, d, o = {}] of ks) { let tt = t, dd = d; if (tt < end + 0.02) { const sh = end + 0.02 - tt; tt += sh; if (o.ease === 'none') dd -= sh; } if (dd < 0.25) continue; out.push([tt, v, dd, o]); end = tt + dd; } return out; };
 
   // ═════ 站 0 · B08 未登录：先转到登录页；表单送到服务器（b1）═════
   {
@@ -148,7 +150,8 @@ scene('login', ({ root, s, c0 }) => {
     const lbl = h('div', 'abs t-lbl-s c-dim', w, '这次新建的账号'); px(lbl, X + 96, 270);
     const cPw = chip(w, '口令 ' + PH('••••'), 0, 0);
     const plus = op('+', 0);
-    const cSalt = chip(w, '随机字符 ' + PH('9 个'), 0, 0);
+    const cSalt = chip(w, '盐 <span class="lg-en">salt</span> ' + PH('9 个随机字符'), 0, 0);
+    { const ww = cSalt.offsetWidth + 2; cSalt.innerHTML = '随机字符 ' + PH('9 个'); css(cSalt, { boxSizing: 'border-box', width: ww + 'px', textAlign: 'center', whiteSpace: 'nowrap' }); }   // 按改称「盐」后的宽度固定
     const calc = calcBox('<span class="lg-en">SHA1</span> × 3', '中间两次接上随机字符'); calc._dy = -18;
     const cDig = chip(w, '摘要 ' + PH('40 个字符'), 0, 0);
     const gapA = h('div', 'abs', w), gapB = h('div', 'abs', w); px(gapA, 0, 0, 60, 10); px(gapB, 0, 0, 60, 10);
@@ -219,20 +222,21 @@ scene('login', ({ root, s, c0 }) => {
     row([cIn, plus, cSalt, gapA, calc, gapB, cNew], X + 96, 330, 22);
     const rn = R(cNew);
     const cOld = chip(w, '保存的 ' + PH('摘要甲'), rn.x, 446);
-    const eq = h('div', 'abs t-lbl c-req', w, '＝ 相同'); px(eq, rn.r + 26, 410);
+    const eq = h('div', 'abs t-lbl', w, '＝ 相同'); css(eq, { color: '#7A300A' }); px(eq, rn.r + 26, 410);
     const ov = ovl(w, X, 160, 1920, 760);
     const ra = R(gapA), rb = R(gapB);
     const arA = svgLine(ov, `M${ra.x - 8},362 L${ra.r + 8},362`, 'req', { w: 5 });
     const arB = svgLine(ov, `M${rb.x - 8},362 L${rb.r + 8},362`, 'req', { w: 5 });
     const brk = svgLine(ov, `M${rn.r + 8},362 L${rn.r + 16},362 L${rn.r + 16},476 L${rn.r + 8},476`, 'ink', { w: 3, arrow: false });
 
-    const ck = ['账号', '口令摘要', '启用状态'].map((t) => chip(w, t, 0, 0, 'gh'));
+    // 按打勾后的最终宽度固定芯片宽度，换字时不互相挤压
+    const ck = ['账号', '口令摘要', '启用状态'].map((t) => { const e = chip(w, t + ' √', 0, 0, 'gh'); const ww = e.offsetWidth + 2; e.innerHTML = t; css(e, { boxSizing: 'border-box', width: ww + 'px', textAlign: 'center', whiteSpace: 'nowrap' }); return e; });
     const ckL = h('div', 'abs t-lbl-s', w, '三项都符合：'); px(ckL, X + 96, 566);
     const ckEnd = row(ck, X + 330, 560, 18);
     const pass = ocNotice(w, ckEnd + 40, 556, 520, 'success', '通过：登录成功');
     const sep = h('div', 'lg-sep', w); px(sep, X + 96, 668, 1728);
 
-    const fL = h('div', 'abs t-lbl-s c-req', w, '口令输错时：'); px(fL, X + 96, 704);
+    const fL = h('div', 'abs t-lbl-s', w, '口令输错时：'); css(fL, { color: '#7A300A' }); px(fL, X + 96, 704);
     const fNew = chip(w, '新算出 ' + PH('摘要乙'), 0, 0, 'bad');
     const ne = op('≠');
     const fOld = chip(w, '保存的 ' + PH('摘要甲'), 0, 0);
@@ -255,7 +259,7 @@ scene('login', ({ root, s, c0 }) => {
 
     fadeIn(ckL, C('b3a_3', null, -0.3), { d: 0.3 });
     ck.forEach((c, i) => fadeIn(c, C('b3a_3', null, -0.25 + i * 0.1), { d: 0.25 }));
-    [['账号', 0, '账号 ✓'], ['口令', 1, '口令摘要 ✓'], ['启用状态', 2, '启用状态 ✓']].forEach(([wd, i, txt]) => {
+    [['账号', 0, '账号 √'], ['口令', 1, '口令摘要 √'], ['启用状态', 2, '启用状态 √']].forEach(([wd, i, txt]) => {
       const t = C('b3a_3', wd);
       keyed(ck[i]).at(t, { html: txt, cls: 'chip ok' }); sfx('tick', t, { g: 0.6 });
     });
@@ -269,8 +273,8 @@ scene('login', ({ root, s, c0 }) => {
     slideDown(warn, C('b3a_4', '提示错误', -0.4), { d: 0.4 });
 
     keys.push([mv('b3_3'), { x: X + 960, y: 540, z: 1 }, 0.9, { g: 0.35 }]);
-    keys.push([C('b3a_1', '输入的口令', -0.5), { x: X + 960, y: 420, z: 1.14 }, 1.0, { sfx: false }]);
-    drift(C('b3a_1', '输入的口令', 0.55), C('b3a_3', null, -0.5), 1.155);
+    keys.push([C('b3a_1', '输入的口令', -0.5), { x: X + 950, y: 440, z: 1.08 }, 1.0, { sfx: false }]);   // 整行计算 + 比较都在画内
+    drift(C('b3a_1', '输入的口令', 0.55), C('b3a_3', null, -0.5), 1.09);
     keys.push([C('b3a_3', null, -0.45), { x: X + 960, y: 540, z: 1 }, 0.7, { sfx: false }]);   // 拉回后静止：两条分支一起可读
   }
 
@@ -319,5 +323,5 @@ scene('login', ({ root, s, c0 }) => {
     drift(C('b3b_3', null, 0.45), s.end - 0.1);
   }
 
-  cam.track(s.start, { x: 960, y: 540, z: 1 }, keys);
+  cam.track(s.start, { x: 960, y: 540, z: 1 }, seqKeys(keys));
 });

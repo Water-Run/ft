@@ -31,7 +31,7 @@
   },
   "production": {
     "mode": "delegated",
-    "maker": "Opus",
+    "maker": "Claude Opus 5.5",
     "prepared_by": "GPT-6 Astra",
     "handoff_stage": "script-review",
     "planner": "WaterRun",

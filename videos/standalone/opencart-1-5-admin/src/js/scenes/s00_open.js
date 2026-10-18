@@ -4,7 +4,7 @@
 scene('open', ({ root, s, c0 }) => {
   const C = (id, word, sh = 0) => T('r2_' + id, word, sh);      // 某句（某词）开始
   const E = (id, sh = 0) => Tend('r2_' + id, sh);                 // 某句结束
-  const mv = (id) => E(id, -0.4);                                 // 站间移动：上一站最后一句结束前 0.4 秒起步，0.9 秒后到站
+  const mv = (id) => E(id, 0.02);                                 // 站间移动：上一站最后一句说完才起步（末句文字须在说完时完整可见），0.9 秒后到站
   const SX = (i) => 2100 * i;                                     // 第 i 站的左边界（站心 = SX(i) + 960）
 
   const w = h('div', 'world', root);
@@ -34,10 +34,10 @@ scene('open', ({ root, s, c0 }) => {
   // ═════ 站 2 · B01 十多年前：上传、数据库、安装（o2）═════
   {
     const X = SX(1);
-    const head = h('div', 'abs t-h1', w, '十多年前：自己部署一家网店'); px(head, X + 96, 176);
+    const head = h('div', 'abs t-h1', w, '十多年前：自行部署一家网店'); px(head, X + 96, 176);
     stamp(w, X + 1730, 196, 'demo', '示意');
     const yr = h('div', 'abs year', w, '2026'); px(yr, X + 96, 284);
-    const yrLbl = h('div', 'abs t-lbl c-dim', w, '2010 年代'); px(yrLbl, X + 520, 360);
+    const yrLbl = h('div', 'abs t-lbl c-dim', w, '从今天拨回 2010 年代'); px(yrLbl, X + 520, 360);
     const t0 = C('o2_1', '拨回'), dY = 1.2;
     let lastY = null;
     F((t) => { const v = Math.round(lerp(2026, 2013, ease.io3(clamp((t - t0) / dY)))); if (v !== lastY) { yr.textContent = String(v); lastY = v; } });
@@ -108,25 +108,28 @@ scene('open', ({ root, s, c0 }) => {
     const node = h('div', 'abs oc-btn rust', w, 'OpenCart 1.5'); px(node, X + 760, 370); css(node, { font: '700 40px/72px "Inter"', height: '76px', padding: '0 40px' });
     const CW = 500, GAP = 44, X0 = X + 166;
     const cards = [
-      ['安装分发', 'setting', '安装工具提供它的程序包', '例：Softaculous 2014-04-25 更新到 1.5.6.4'],
-      ['主题', 'report', '开发者为它制作主题', '例：官方市场主题条目，创建于 2014-01-04'],
-      ['订单扩展', 'order', '开发者为它制作订单扩展', '例：Admin Order Edit，创建于 2014-03-22'],
+      ['安装分发', 'setting', '安装工具提供它的程序包', ['例：Softaculous 2014-04-25 更新到 1.5.6.4']],
+      ['主题与扩展', 'report', '开发者为它制作主题和订单扩展', ['主题：官方市场条目，创建于 2014-01-04', '订单扩展：Admin Order Edit，2014-03-22']],
+      ['继续改造', 'code', '商家可以在现成的商城上继续改造', ['源码公开，可按需修改']],
     ].map(([title, icon, body, src], i) => {
-      const b = ocBox(w, X0 + i * (CW + GAP), 520, CW, 262, title, { icon });
+      const b = ocBox(w, X0 + i * (CW + GAP), 520, CW, 330, title, { icon });
       const p = h('div', 'abs t-data wrap', b.bd, body); css(p, { left: '26px', top: '20px', width: CW - 60 + 'px' });
-      const q = h('div', 'abs t-src wrap', b.bd, src); css(q, { left: '26px', top: '84px', width: CW - 60 + 'px' });
-      return b;
+      const qs = src.map((t, j) => { const q = h('div', 'abs t-src wrap', b.bd, t); css(q, { left: '26px', top: 112 + j * 70 + 'px', width: CW - 60 + 'px' }); return q; });
+      return { ...b, p, qs };
     });
     const ov = ovl(w, X, 440, 1920, 90);
     const lines = cards.map((_, i) => svgLine(ov, `M${X + 960},${448} L${X + 960},${480} L${X0 + i * (CW + GAP) + CW / 2},${480} L${X0 + i * (CW + GAP) + CW / 2},${516}`, 'dim', { w: 4 }));
-    const note = ocNotice(w, X0, 810, 3 * CW + 2 * GAP, 'attention', '商家可以在现成的商城上继续改造');
 
     appear(head, mv('o3_4'));
     wipe(sub, C('o4_2', '开源商城', -0.5), { dir: 'l', d: 0.5 });
     slam(node, C('o4_2', '开源商城'), { from: 1.25, d: 0.4 }); sfx('thud', C('o4_2', '开源商城'), { g: 0.5 });
-    const tc = [C('o4_3', '安装工具'), C('o4_4', '主题'), C('o4_4', '订单扩展')];
+    const tc = [C('o4_3', '安装工具'), C('o4_4', '主题'), C('o4_5', '继续改造', -0.6)];
     cards.forEach((b, i) => { drawLine(lines[i], tc[i] - 0.25, 0.35); slideDown(b.el, tc[i], { d: 0.4 }); sfx('pop', tc[i], { g: 0.55 }); });
-    slideDown(note, C('o4_5', '继续改造', -0.6), { d: 0.4 }); sfx('tick', C('o4_5', '继续改造', -0.6), { g: 0.6 });
+    // 第二张卡：说到「主题」先出主题条目，说到「订单扩展」再出扩展条目
+    fadeIn(cards[1].qs[1], C('o4_4', '订单扩展'), { d: 0.3 }); sfx('tick', C('o4_4', '订单扩展'), { g: 0.5 });
+    hl(cards[0].el, C('o4_3', '安装工具'), C('o4_4', '主题'));
+    hl(cards[1].el, C('o4_4', '主题'), C('o4_5', '继续改造', -0.6));
+    hl(cards[2].el, C('o4_5', '继续改造', -0.6), E('o4_5', 0.6));
   }
 
   // ═════ 站 5 · B41 时间轴：2014 年 4 月 / 1.5.6.4；对照 4.1.0.4（o5）═════
@@ -139,7 +142,7 @@ scene('open', ({ root, s, c0 }) => {
     const dash = svgLine(ov, `M${X + 1500},560 L${X + 1700},560`, 'dim', { w: 5, arrow: false, dash: '14 12' });
     const ticks = [2011, 2012, 2013, 2014].map((yr) => svgLine(ov, `M${yx(yr)},546 L${yx(yr)},574`, 'ink', { w: 4, arrow: false }));
     const yl = [2011, 2012, 2013, 2014].map((yr) => { const e = h('div', 'abs t-data', w, String(yr)); px(e, yx(yr) - 40, 590); return e; });
-    const band = h('div', 'band', w, '<span class="abs t-lbl-s c-req" style="left:18px;top:14px">1.5 系列 · 2011–2014</span>'); px(band, yx(2011), 440, yx(2014.33) - yx(2011), 96);
+    const band = h('div', 'band', w, '<span class="abs t-lbl-s" style="left:18px;top:14px;color:#8A3510">1.5 系列 · 2011–2014</span>'); px(band, yx(2011), 440, yx(2014.33) - yx(2011), 96);
     const mk = svgLine(ov, `M${yx(2014.33)},560 L${yx(2014.33)},400`, 'req', { w: 5, arrow: false });
     const pill = h('div', 'abs oc-btn rust', w, '2014 年 4 月'); px(pill, yx(2014.33) - 210, 322); css(pill, { font: '700 36px/64px "Inter", "Sans SC"', height: '68px' });
     const today = h('div', 'abs oc-btn', w, '对照：4.1.0.4'); px(today, X + 1500, 640); css(today, { font: '700 36px/64px "Inter", "Sans SC"', height: '68px' });
@@ -183,7 +186,7 @@ scene('open', ({ root, s, c0 }) => {
     appear(head, mv('o5_4'));
     ghosts.forEach((g, i) => wipe(g, mv('o5_4') + 0.4 + i * 0.12, { dir: 't', d: 0.4 }));
     const tb = [C('o6_2', '认出人', -0.5), C('o6_3', '订单', -0.3), C('o6_4', '改一次状态', -0.3), C('o7_1', '匿名', -0.3)];
-    boxes.forEach((b, i) => { slideDown(b.el, tb[i], { d: 0.4 }); sfx('pop', tb[i], { g: 0.55 }); if (i > 0) drawLine(arrows[i - 1], tb[i] - 0.3, 0.3); });
+    boxes.forEach((b, i) => { slideDown(b.el, tb[i], { d: 0.4 }); vanish(ghosts[i], tb[i] + 0.4); sfx('pop', tb[i], { g: 0.55 }); if (i > 0) drawLine(arrows[i - 1], tb[i] - 0.3, 0.3); });
     slideDown(note, C('o7_3', '合成数据', -0.8), { d: 0.4 }); sfx('tick', C('o7_3', '合成数据', -0.8), { g: 0.6 });
   }
 
@@ -198,12 +201,12 @@ scene('open', ({ root, s, c0 }) => {
     const tip = ocNotice(dash.bd, 0, 0, 1000, 'attention', '订单在「销售」菜单里：点击后打开订单列表');
     css(tip, { left: '26px', top: '26px' });
     const sh = shot(w, X + 96, 200, 1728, 680, 'design/img/04_order_list.png', { sx: 60, sy: 258, scale: 1 });
-    const real = stamp(w, X + 1260, 216, 'real');
+    const real = stamp(w, X + 1060, 216, 'real');
     const lbl = h('div', 'abs callout hiy', w, '订单列表'); px(lbl, X + 300, 212);
     const crumb2 = h('div', 'abs oc-crumb', w, '<u>首页</u> :: <u>订单</u>'); px(crumb2, X + 48, 196); css(crumb2, { background: '#fff', paddingRight: '20px' });
 
-    const srv = zone(w, 'server', X + 1980, 300, 480, 440, '服务器', 'Apache + PHP · MySQL');
-    const srvNote = h('div', 'abs t-note', w, '第 01 章展开'); px(srvNote, X + 2004, 760);
+    const srv = zone(w, 'server', X + 1930, 300, 360, 440, '服务器', 'Apache + PHP · MySQL');
+    const srvNote = h('div', 'abs t-note', w, '第 01 章展开'); px(srvNote, X + 1950, 760);
     const cur = cursor(w, X + 1100, 720);
     const out = token(w, 'route=sale/order', 'req', 0, 0, '请求：打开订单列表');
     const back = token(w, '记录 → HTML', 'res', 0, 0, '返回：页面');
@@ -221,12 +224,13 @@ scene('open', ({ root, s, c0 }) => {
     fr.setActive(3, tClick);
     spinner(w, X + 1850, 110, tClick + 0.1, tLoad, { size: 40 });
     appear(out, tOut); vanish(out, tOut + 1.3);
-    travel(out, [[tOut, 1.2, [[tabX - 60, tabB + 8], [X + 1500, tabB + 8], [X + 2000, 420]]]]);
+    travel(out, [[tOut, 1.2, [[tabX - 60, tabB + 8], [X + 1500, tabB + 8], [X + 1960, 420]]]]);
     sfx('blip', tOut, { g: 0.6 });
     appear(back, tBack); vanish(back, tLoad + 0.05);
-    travel(back, [[tBack, 1.1, [[X + 2000, 560], [X + 1500, 560], [X + 1000, 560]]]]);
+    travel(back, [[tBack, 1.1, [[X + 1960, 560], [X + 1500, 560], [X + 1000, 560]]]]);
     sfx('blip', tBack, { g: 0.5, p: -0.3 });
     reloadFlash(w, X, 160, 1920, 920, tLoad - 0.1, { d: 0.5 });
+    vanish(fr.el.querySelector('.oc-crumb'), tLoad); vanish(dash.el, tLoad);
     appear(sh, tLoad); appear(real, tLoad); appear(crumb2, tLoad); appear(lbl, tLoad + 0.5); sfx('chime', tLoad + 0.1, { g: 0.45 });
     wipe(srv.el, tOut + 0.2, { dir: 'l', d: 0.5 }); fadeIn(srvNote, tOut + 0.5);
 
@@ -246,15 +250,16 @@ scene('open', ({ root, s, c0 }) => {
     const [t, k] = st[i];
     keys.push([t, { x: SX(k) + 960, y: 540, z: 1 }, 0.9, { g: 0.4 }]);
     if (k === 3) {                                    // 站 4：推近三张卡片，再拉回看提示
-      const tin = C('o4_3', '安装工具', -0.4), tout = C('o4_5', '继续改造', -1.0);
-      keys.push([tin, { y: 620, z: 1.15 }, 1.0, { sfx: false }]);
-      drift(tin + 1.05, tout, 1.17);
-      keys.push([tout, { y: 540, z: 1 }, 0.7, { sfx: false }]);
+      const tin = C('o4_3', '安装工具', -0.4), tout = C('o4_5', '继续改造', -0.2);
+      drift(t + 0.95, tin);
+      keys.push([tin, { x: SX(k) + 960, y: 600, z: 1.06 }, 1.0, { sfx: false }]);
+      drift(tin + 1.05, tout, 1.08);
+      keys.push([tout, { y: 560, z: 1 }, 0.7, { sfx: false }]);
       drift(tout + 0.75, st[i + 1][0]);
     } else if (k === 6) {                             // 站 7：拉远露出服务器，页面回来时推回，最后推近点击处
       const tPull = P.tOut - 0.3, tRet = P.tLoad - 0.2, tPush = C('o8_3', '点击', -0.5);
       drift(t + 0.95, tPull);
-      keys.push([tPull, { x: X6 + 1260, z: 0.78 }, 0.8, { sfx: false }]);
+      keys.push([tPull, { x: X6 + 1250, z: 0.92 }, 0.8, { sfx: false }]);
       keys.push([tRet, { x: X6 + 960, z: 1 }, 0.7, { sfx: false }]);
       keys.push([tPush, { x: tabX + 260, y: 430, z: 1.3 }, 1.0, { sfx: false }]);
       drift(tPush + 1.05, s.end - 0.1, 1.33);

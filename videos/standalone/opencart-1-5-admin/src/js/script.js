@@ -286,12 +286,12 @@
       ],
       [
         "c2",
-        "演示后台每页显示二十条。第二页的 LIMIT 20,20，表示先跳过二十条，再取二十条。数据库按这个范围返回记录。",
+        "演示后台每页显示二十条。第二页用的是 LIMIT 20,20。它表示先跳过二十条，再取二十条。数据库按这个范围返回记录。",
         "R1 read g2–g7"
       ],
       [
         "c3",
-        "模型把条件组成 SQL：从订单表取数据，按条件筛选，再排序，最后限制取出的范围。",
+        "模型组成 SQL：从订单表取数据，按条件筛选，再排序，最后限制取出的范围。",
         "R1 read g4–g7"
       ],
       [
@@ -510,7 +510,7 @@
       { gap: /[。！？；]$/.test(cap) ? 0.45 : 0.16, paragraph: id, fact_refs: facts },
     ])),
   }));
-  RAW.push({ id: 'end', chap: null, lead: 0, tail: 0, cues: [['r2_credits', null, { pause: 12, gap: 0, credits: true }]] });
+  RAW.push({ id: 'end', chap: null, lead: 0, tail: 0, cues: [['r2_credits', null, { pause: 14, gap: 0, credits: true }]] });
 
   const SAY = {
     zh: [

@@ -5,30 +5,64 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。kit/tools/covers.js 按 2 倍像素出图。
+     A「后台即舞台」：钢蓝页头、深灰菜单（当前项锈橙）、白色内容框与灰色标题条，框里是本片的问题；一行订单记录用后台自身的浅黄强调。
+     重建示意，不是截图。4:3 重新排布，不是裁切；底部约 15% 不放文字。 */
+  :root { --hdr-a: #0D4C76; --hdr-b: #0F6193; --menu-a: #414141; --menu-b: #212121; --on-a: #973C10; --on-b: #B15529;
+          --line: #DBDBDB; --head-a: #F6F6F6; --head-b: #EDEDED; --title: #003A88; --text: #1d1d1d; --dim: #666; --hi: #FFFFCB; --req: #C4561C; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { background: #F2F2F2; overflow: hidden; position: relative; font-family: "Sans SC", "Inter"; }
+  .abs { position: absolute; }
+  .hdr { left: 0; top: 0; right: 0; height: 120px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0) 0 6px, rgba(255,255,255,.05) 6px 8px), linear-gradient(180deg, var(--hdr-a), var(--hdr-b)); }
+  .logo { left: 64px; top: 30px; font: 800 58px/1 "Inter"; color: #fff; }
+  .adm { top: 40px; font: 500 40px/1 "Inter"; color: #E2EEF7; letter-spacing: .05em; }
+  .menu { left: 0; right: 0; top: 120px; height: 72px; background: linear-gradient(180deg, var(--menu-a), var(--menu-b)); display: flex; align-items: center; padding-left: 40px; gap: 6px; }
+  .menu span { font: 600 32px/72px "Sans SC", "Inter"; color: #eee; padding: 0 28px; }
+  .menu span.on { background: linear-gradient(180deg, var(--on-b), var(--on-a)); color: #fff; }
+  .box { background: #fff; border: 2px solid var(--line); }
+  .bh { left: 0; right: 0; top: 0; height: 84px; background: linear-gradient(180deg, var(--head-a), var(--head-b)); border-bottom: 2px solid var(--line); }
+  .bh b { position: absolute; left: 36px; top: 18px; font: 800 44px/48px "Sans SC"; color: var(--title); }
+  .q { font: 900 104px/1.12 "Sans SC"; color: var(--text); letter-spacing: -.01em; white-space: nowrap; }
+  .q em { font-style: normal; color: var(--req); }
+  .sub { font: 700 54px/1.2 "Inter", "Sans SC"; color: var(--title); white-space: nowrap; }
+  .row { background: var(--hi); border-left: 10px solid var(--req); font: 600 38px/76px "Mono"; color: var(--text); padding: 0 28px; white-space: nowrap; }
+  .row i { font-style: normal; color: var(--dim); margin: 0 14px; }
+  .stamp { font: 600 26px/1 "Sans SC"; color: var(--dim); border: 2px solid #bbb; padding: 8px 14px; background: #fff; }
+  /* 16:9 */
+  .r169 .adm { left: 356px; }
+  .r169 .box { left: 70px; top: 230px; width: 1780px; height: 640px; }
+  .r169 .q { left: 120px; top: 350px; }
+  .r169 .sub { left: 124px; top: 530px; }
+  .r169 .row { left: 124px; top: 660px; }
+  .r169 .stamp { left: 1640px; top: 250px; }
+  /* 4:3 */
+  .r43 .adm { left: 356px; }
+  .r43 .menu span:nth-child(n+5) { display: none; }
+  .r43 .box { left: 60px; top: 230px; width: 1480px; height: 760px; }
+  .r43 .q { left: 110px; top: 350px; font-size: 96px; white-space: normal; width: 1380px; }
+  .r43 .sub { left: 114px; top: 600px; font-size: 52px; }
+  .r43 .row { left: 114px; top: 720px; font-size: 34px; }
+  .r43 .stamp { left: 1350px; top: 250px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
+  <div class="abs hdr"><div class="abs logo">OpenCart</div><div class="abs adm">| ADMINISTRATION</div></div>
+  <div class="abs menu"><span>控制台</span><span>目录</span><span>扩展</span><span class="on">销售</span><span>系统</span><span>报表</span></div>
+  <div class="abs box"><div class="abs bh"><b>订单</b></div></div>
+  <div class="abs stamp">示意</div>
+  <div class="abs q">10 年代的<em>网店后台</em><br class="br">是什么样的？</div>
+  <div class="abs sub">OpenCart 1.5 · 2014 · PHP + MySQL</div>
+  <div class="abs row">#7<i>|</i>演示顾客 07<i>|</i>待处理 → 已发货</div>
 </div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  const q = new URLSearchParams(location.search), wide = q.get('r') !== '43';
+  document.documentElement.className = wide ? 'r169' : 'r43';
+  if (wide) document.querySelector('.q').innerHTML = '10 年代的<em>网店后台</em>是什么样的？';
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('800 40px "Inter"', sample), document.fonts.load('600 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

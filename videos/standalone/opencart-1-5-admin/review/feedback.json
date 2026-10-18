@@ -9,9 +9,31 @@
       "reason": "",
       "plan": "用订单查询和状态修改串起九章；数字在机制讲通后出现，Lean 4 作主旨失焦的负例。",
       "script_evidence": "SCRIPT-R3 o1–o5、e3–e4、g1–g2；分镜 B01–B02、B28、B39。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "开场 o8（97.7–110.8 s）以「点开订单列表」立起同一条请求；九章沿这条请求推进：入口（112.3 s）→ 登录 → 会话 → 权限 → 数据库 → 查询（LIMIT 20,20 在 567.9 s）→ 页面 → 写入（七号订单 786.9 s 起）→ 案例。规模数字（49 个文件、16 条语句）出现在 page 章机制讲完之后。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 97.7,
+          "end": 110.8,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 553.9,
+          "end": 600,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 786.9,
+          "end": 824.2,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F02",
@@ -20,9 +42,38 @@
       "reason": "",
       "plan": "登录、会话、权限、数据库独立展开；同一七号订单连接表结构和两次写入。",
       "script_evidence": "SUBSYSTEMS 的逐项验收问题；分镜 B08–B22、B31–B35。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "登录（224.4–291.4 s）、会话（291.4–372.1 s）、权限（372.1–459.3 s）、数据库（459.3–549.7 s）各为独立整章并有章节卡；同一七号演示订单贯穿数据库表关系（459 s 起）和两次写入（809.5–824.2 s）。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 224.4,
+          "end": 291.4,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 291.4,
+          "end": 372.1,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 372.1,
+          "end": 459.3,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 459.3,
+          "end": 549.7,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F03",
@@ -31,9 +82,24 @@
       "reason": "",
       "plan": "官方 1.5.6.4、匿名 CASE-A、原实验测量和新合成示意分别标注；数据库连线不暗示外键。",
       "script_evidence": "FACTS S19-07、S19-12、A18；R3 q5、f1–f8；分镜 B21、B36–B38。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "画面标签区分「示意」「示意 · 合成输入」「匿名案例 · 源码结构示意 / 数据与编号均为独立合成」与官方 1.5.6.4；数据库连线画面与旁白明说「这些安装表没有声明外键约束」；案例结论附「不代表线上每条业务都已经验收」（959.7 s）。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 515.8,
+          "end": 524,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 881.1,
+          "end": 963.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F04",
@@ -42,9 +108,31 @@
       "reason": "",
       "plan": "章卡稳定≥2.5秒；结论≥3秒；多步对照≥5秒，入退场及镜头移动不计阅读。",
       "script_evidence": "brief/03-visual、06-acceptance；storyboard.json 的 stable_seconds；最终逐段实测。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "九张章节卡各 4.2 s 前导、文字稳定 ≥2.5 s；关键结论牌（如 818 s 的「回答 / 保留」双标签、959 s 警示）停留 ≥3 s；finish.js 静止检查在修复 912 s 空舞台后复测；片尾名单 14 s 全部到位。镜头在阅读段只做 ≤1.015 的漂移。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 112.3,
+          "end": 116.5,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 809.5,
+          "end": 824.2,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 995.9,
+          "end": 1009.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F05",
@@ -53,9 +141,31 @@
       "reason": "",
       "plan": "请求、用户、订单编号跨步骤保持可追踪；拒绝时停止请求，写入时原位更新记录。",
       "script_evidence": "brief/04-storyboard、05-motion-sound；代表片段和最终连续播放核对。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "请求令牌「route=sale/order」从入口跟到控制器；拒绝分支（未登录转登录页、无权限页、无 modify 时写入被挡）先停下再给结果；写入时 oc_order 当前行原位从 1 变 3，历史表追加一行（809.5–819.2 s）。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 112.3,
+          "end": 224.4,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 372.1,
+          "end": 459.3,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 798.5,
+          "end": 824.2,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F06",
@@ -66,7 +176,15 @@
       "script_evidence": "brief/05-motion-sound 三组代表段；保留试听文件、相邻句与最终混音的人耳结果。",
       "result": "pending",
       "verification": "",
-      "clips": []
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0,
+          "end": 1009.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F07",
@@ -75,9 +193,17 @@
       "reason": "",
       "plan": "只公开匿名结构统计；旧材料也移除自定义业务路径和原始源码哈希；演示数据独立生成。",
       "script_evidence": "REDACTION、DEEP-MAP；18_case_deep_audit.test.cjs；tools/build_demo_data.cjs；入库和成片分别复查。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "成片只出现匿名结构与独立合成数据（DEMO-00x、演示顾客 07、演示仓 A/B），案例段顶部常驻「数据与编号均为独立合成」；没有私有路径、主机名、源码哈希或真实记录。逐站截图与字幕已人工浏览。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 881.1,
+          "end": 963.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F08",
@@ -86,9 +212,17 @@
       "reason": "",
       "plan": "各语言正式主 MP4 测规格与最终编码音轨；用实际文件哈希及时段绑定结尾反馈。",
       "script_evidence": "brief/06-acceptance；最终 out 清单、ffprobe、响度和 feedback.json clips。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "正式主片 out/opencart-1-5-admin-zh-1080p60.mp4：1920×1080、60 fps、H.264 + AAC，1009.93 s（16:50），在 14–18 分钟预算内；最终音轨响度 -15.7 LUFS、真峰值 -1.4 dBFS（finish.js，目标 -16±1.5 / ≤-1）；SHA-256 892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0,
+          "end": 1009.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F09",
@@ -97,9 +231,17 @@
       "reason": "",
       "plan": "新源码复核 S19、旧实验 R1、静态测绘 A18 和用户意见分开记；未知事实不补猜。",
       "script_evidence": "FACTS、review/NOTES；原用户反馈及源码链接可定位；发布后回填意见和复测。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "FACTS 区分 S19 新源码复核、R1 旧实验、A18 匿名静态测绘与用户意见；成片里测量值（49 文件 / 16 语句 / 36000 多字节 / 19 个静态请求）均标为同一条演示请求的测量，旁白明说「不是所有页面的固定开销」。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 705,
+          "end": 723.7,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F10",
@@ -108,9 +250,17 @@
       "reason": "",
       "plan": "MyISAM 和事务在本片解释；删掉依赖上一部的问题编号和回忆，不要求看过系列。",
       "script_evidence": "SCRIPT-R3 d5–d8；brief/01-mission；目标观众按首次观看复述。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "MyISAM 与事务在本片内解释（824.6–881.1 s）：先说事务是什么，再对照 InnoDB 副本的回滚；没有引用前集或问题编号。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 824.6,
+          "end": 881.1,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F11",
@@ -119,9 +269,31 @@
       "reason": "",
       "plan": "SQL、access / modify、JSON、源码字段均附中文作用说明；英文译文与中文对应。",
       "script_evidence": "SUBSYSTEMS、brief/03-visual；expect.zh.json；英文译稿另行导出和交审。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "SQL 首次出现即配「SQL 是向数据库提出查询或修改要求的语句」；route 解释为「路由，用来选择这次要执行的代码」（171.7 s），access / modify 由旁白分别解释为「能访问 / 能修改哪些功能」（378.6–386.1 s）；JSON 配「用文本表示这些数据」；表字段 order_id 等列头下附中文（订单编号 / 当前状态）。英文已取消。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 247,
+          "end": 251.5,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 378.6,
+          "end": 386.1,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        },
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 762.4,
+          "end": 769.5,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F12",
@@ -132,7 +304,15 @@
       "script_evidence": "src/js/script.js SAY；brief/05-motion-sound；ASR 只作疑点，最终按实际人耳确认。",
       "result": "pending",
       "verification": "",
-      "clips": []
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0,
+          "end": 1009.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F13",
@@ -141,9 +321,17 @@
       "reason": "",
       "plan": "开场先从现代网店进入 2014 年，解释 OpenCart 的定义、自建商城定位与生态，再给三步路线；以固定 4.1.0.4 作环境、驱动和模板对照。",
       "script_evidence": "research/SCRIPT-R3.md o1–o8、a2a、c8a、e2a、g2；FACTS C19；分镜 B01、B02、B40–B46。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "开场 0–112.3 s：现代网店（Shopify / 自部署）→ 十多年前 → OpenCart 定义（27.2 s）、自建商城定位与生态 → 选定 1.5.6.4（53.1 s）→ 三步路线；4.1 对照出现在环境（PHP 8.1）、驱动（MySQLi）与模板（Twig）三处。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0,
+          "end": 112.3,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     },
     {
       "id": "F14",
@@ -152,9 +340,17 @@
       "reason": "",
       "plan": "片尾为12秒空字幕静默cue，credits:true且无tts；署名指令只留任务书，连贯正文不含它们。",
       "script_evidence": "src/js/script.js r2_credits；brief/06-acceptance；SCRIPT-R3 正文与最终片尾音轨逐项核对。",
-      "result": "pending",
-      "verification": "",
-      "clips": []
+      "result": "verified",
+      "verification": "片尾 995.94–1009.94 s 为 14 s 静默 cue（credits:true、无旁白），名单只在画面：Codex（GPT-6）、Claude Opus 5.5、GPT-6 Astra、MiniMax speech-2.8-hd、策划 WaterRun、开源视频 https://github.com/Water-Run/ft；连贯正文不含署名指令。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 995.9,
+          "end": 1009.9,
+          "sha256": "892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c"
+        }
+      ]
     }
   ],
   "history": [],

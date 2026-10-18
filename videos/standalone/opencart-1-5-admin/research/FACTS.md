@@ -305,7 +305,10 @@ k2–k6 复述前文，依据同各章。k5 的「20 行」为 L13 `order_list` 
 | Claude Opus 5.5 | 2026-10-11 起：实验环境、取证、脚本（中文稿） | 本次制作会话 |
 | GPT-6 Astra | 2026-10-18–19：CASE-A 只读深入测绘、脱敏验证、A 方案记录、子系统与时代背景复核、R2 / R3 文案、Opus 交接、跨片反馈落实 | WaterRun 明确的模型 credit；A18、S19、C19、SCRIPT-R3.md、DEEP-MAP.md |
 
-后续的翻译、视觉设计、场景、声音与审查完成后再补；语音为 Microsoft Edge 在线语音（zh-CN-YunyangNeural 等，按实际使用记录）。
+| Claude Opus 5.5 | 2026-10-19：按 WaterRun 授权自主完成中文成片——1.5 后台视觉基础与部件、全部正式场景（多个子代理并行，均为 Claude Opus 5.5）、配音接入、混音、渲染、封装、封面与成片审查 | 本次制作会话；HANDOFF「2026-10-19 制作中断点」 |
+| MiniMax speech-2.8-hd | 中文旁白语音合成（音色 Chinese (Mandarin)_Reliable_Executive，speed 0.97） | project.json 的 tts 段；audio/zh/cache.json |
+
+英文版已取消（WaterRun 2026-10-19：只需要中文）。旧记录里的 Edge 语音只用于 R1 时期的试听，成片旁白全部为 MiniMax。
 
 开源视频：[GitHub · Water-Run/ft](https://github.com/Water-Run/ft)（依据：仓库制作规范；交付前核对公开仓库页面并记录日期与结果）。
 

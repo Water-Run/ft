@@ -20,7 +20,7 @@
 //   ocBox(parent, x, y, w, h, title, { icon, buttons: [[文字, 'blue'|'rust'|'gray'], …] }) → { el, hd, bd, btns: [el] }
 //        icon: 'order' | 'user' | 'setting' | 'db' | 'code' | 'report' | 'case'
 //   ocTable(parent, x, y, cols, rows, { rowH, headH, filter, alt }) → { el, head, filt, rows: [el], cell(r, c), mark(r, t0, t1, cls), addRow(cells, t), height }
-//        cols = [{ label, w, align: 'l'|'r'|'c' }]；rows = [[单元格 html, …]]。mark 默认类名 'hi'（浅黄）；'cur' = 浅黄 + 锈橙左边
+//        cols = [{ label, w, align: 'l'|'r'|'c' }]；rows = [[单元格 html, …]]。mark 默认类名 'hi'（浅黄）；'mk' = 浅黄 + 锈橙左边（不要用 'cur'：base.css 的 .cur 是打字光标）
 //   ocButton(parent, text, x, y, kind = 'blue'|'rust'|'gray') → el
 //   ocNotice(parent, x, y, w, type = 'success'|'warning'|'attention', html) → el（未入场；用 slideDown / fadeIn）
 //   ocTabs(parent, x, y, labels, active = 0) → { el, tabs: [span], select(i, t) }
@@ -205,7 +205,7 @@ function ocTable(parent, x, y, cols, rows, o = {}) {
 }
 
 function ocNotice(parent, x, y, w, type, html) {
-  const ic = { success: '✓', warning: '!', attention: 'i' }[type] || 'i';
+  const ic = { success: '√', warning: '!', attention: 'i' }[type] || 'i';
   const e = h('div', 'oc-note ' + type, parent, `<span class="ic">${ic}</span>${html}`); px(e, x, y, w); return e;
 }
 

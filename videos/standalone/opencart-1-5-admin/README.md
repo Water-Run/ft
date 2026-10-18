@@ -1,6 +1,6 @@
 # OpenCart 1.5 后台
 
-**当前（2026-10-19 02:10）：WaterRun 授权自主完成后进入制作，随后因额度改为收尾；中文配音（MiniMax，16:48）与共用视觉基础完成，场景部分完成，无成片。接续见 [HANDOFF](HANDOFF.md)「2026-10-19 制作中断点」。** 此前状态：中文 R3 待 WaterRun 明确确认。 A“后台即舞台”已确认；本轮完成匿名深入测绘、子系统复核、中文重写、时代引入、新版对照和 Opus 制作任务书。尚无本片配音或成片。
+**当前（2026-10-19 06:10）：中文成片已出（16:50，1080p60，[DELIVERY](DELIVERY.md)），check.js --final 只差 F06 配乐 / 音效与 F12 读音两项人耳确认，待 WaterRun 试听后登记交付。** 制作：Claude Opus 5.5，按 WaterRun 01:37 的自主完成授权（review/NOTES.md），英文取消。A“后台即舞台”已确认；九章正式动画、MiniMax 配音、封面均已完成。
 
 - [阅读中文 R3 全文与时间预算](research/SCRIPT-R3.md)
 - [各子系统的详细覆盖与验收问题](research/SUBSYSTEMS.md)
@@ -75,26 +75,28 @@ node videos/standalone/opencart-1-5-admin/tools/check_handoff.cjs
 
 ## 本轮结尾反馈复盘
 
-本轮完成的是研究、文案与制作约束。下列项目全部尚缺新成片证据，不能以改了脚本或规则判为修复。
+证据对应正式主片 out/opencart-1-5-admin-zh-1080p60.mp4（SHA-256 `892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c`，1009.93 s）；时段与原文见 review/feedback.json。
 
-| 编号 | 本轮已留的材料 | 成片结果 / 遗留 |
+| 编号 | 成片时段 | 结果 / 遗留 |
 |---|---|---|
-| F01 | SCRIPT-R3 o1–o5、e3–e4、g1–g2；分镜 B01–B02、B28、B39。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F02 | SUBSYSTEMS 的逐项验收问题；分镜 B08–B22、B31–B35。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F03 | FACTS S19-07、S19-12、A18；R3 q5、f1–f8；分镜 B21、B36–B38。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F04 | brief/03-visual、06-acceptance；storyboard.json 的 stable_seconds；最终逐段实测。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F05 | brief/04-storyboard、05-motion-sound；代表片段和最终连续播放核对。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F06 | brief/05-motion-sound 三组代表段；保留试听文件、相邻句与最终混音的人耳结果。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F07 | REDACTION、DEEP-MAP；18_case_deep_audit.test.cjs；tools/build_demo_data.cjs；入库和成片分别复查。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F08 | brief/06-acceptance；最终 out 清单、ffprobe、响度和 feedback.json clips。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F09 | FACTS、review/NOTES；原用户反馈及源码链接可定位；发布后回填意见和复测。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F10 | SCRIPT-R3 d5–d8；brief/01-mission；目标观众按首次观看复述。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F11 | SUBSYSTEMS、brief/03-visual；expect.zh.json；英文译稿另行导出和交审。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
-| F12 | src/js/script.js SAY；brief/05-motion-sound；ASR 只作疑点，最终按实际人耳确认。 | pending；由 Opus 制作后回填实际 MP4 时间、哈希和检查结果 |
+| F01 | 97.7–110.8 s、553.9–600 s、786.9–824.2 s | verified：开场 o8（97.7–110.8 s）以「点开订单列表」立起同一条请求；九章沿这条请求推进：入口（112.3 s）→ 登录 → 会话 → 权限 → 数据库 → 查询（LIMIT 20,20 在 567.9 s）→ 页面 → 写入（七号订单 786.9 s 起）→ 案例。规模数字（49 个文件、16 条语句）出现在 page 章机制讲完之后。 |
+| F02 | 224.4–291.4 s、291.4–372.1 s、372.1–459.3 s、459.3–549.7 s | verified：登录（224.4–291.4 s）、会话（291.4–372.1 s）、权限（372.1–459.3 s）、数据库（459.3–549.7 s）各为独立整章并有章节卡；同一七号演示订单贯穿数据库表关系（459 s 起）和两次写入（809.5–824.2 s）。 |
+| F03 | 515.8–524 s、881.1–963.9 s | verified：画面标签区分「示意」「示意 · 合成输入」「匿名案例 · 源码结构示意 / 数据与编号均为独立合成」与官方 1.5.6.4；数据库连线画面与旁白明说「这些安装表没有声明外键约束」；案例结论附「不代表线上每条业务都已经验收」（959.7 s）。 |
+| F04 | 112.3–116.5 s、809.5–824.2 s、995.9–1009.9 s | verified：九张章节卡各 4.2 s 前导、文字稳定 ≥2.5 s；关键结论牌（如 818 s 的「回答 / 保留」双标签、959 s 警示）停留 ≥3 s；finish.js 静止检查在修复 912 s 空舞台后复测；片尾名单 14 s 全部到位。镜头在阅读段只做 ≤1.015 的漂移。 |
+| F05 | 112.3–224.4 s、372.1–459.3 s、798.5–824.2 s | verified：请求令牌「route=sale/order」从入口跟到控制器；拒绝分支（未登录转登录页、无权限页、无 modify 时写入被挡）先停下再给结果；写入时 oc_order 当前行原位从 1 变 3，历史表追加一行（809.5–819.2 s）。 |
+| F06 | 0–1009.9 s | **pending**：需 WaterRun 试听确认（配乐与音效）；ASR 与字幕对齐只作机器疑点检查 |
+| F07 | 881.1–963.9 s | verified：成片只出现匿名结构与独立合成数据（DEMO-00x、演示顾客 07、演示仓 A/B），案例段顶部常驻「数据与编号均为独立合成」；没有私有路径、主机名、源码哈希或真实记录。逐站截图与字幕已人工浏览。 |
+| F08 | 0–1009.9 s | verified：正式主片 out/opencart-1-5-admin-zh-1080p60.mp4：1920×1080、60 fps、H.264 + AAC，1009.93 s（16:50），在 14–18 分钟预算内；最终音轨响度 -15.7 LUFS、真峰值 -1.4 dBFS（finish.js，目标 -16±1.5 / ≤-1）；SHA-256 892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c。 |
+| F09 | 705–723.7 s | verified：FACTS 区分 S19 新源码复核、R1 旧实验、A18 匿名静态测绘与用户意见；成片里测量值（49 文件 / 16 语句 / 36000 多字节 / 19 个静态请求）均标为同一条演示请求的测量，旁白明说「不是所有页面的固定开销」。 |
+| F10 | 824.6–881.1 s | verified：MyISAM 与事务在本片内解释（824.6–881.1 s）：先说事务是什么，再对照 InnoDB 副本的回滚；没有引用前集或问题编号。 |
+| F11 | 247–251.5 s、378.6–386.1 s、762.4–769.5 s | verified：SQL 首次出现即配「SQL 是向数据库提出查询或修改要求的语句」；route 解释为「路由，用来选择这次要执行的代码」（171.7 s），access / modify 由旁白分别解释为「能访问 / 能修改哪些功能」（378.6–386.1 s）；JSON 配「用文本表示这些数据」；表字段 order_id 等列头下附中文（订单编号 / 当前状态）。英文已取消。 |
+| F12 | 0–1009.9 s | **pending**：需 WaterRun 试听确认（术语读法、逗号衔接与断句）；ASR 与字幕对齐只作机器疑点检查 |
+| F13 | 0–112.3 s | verified：开场 0–112.3 s：现代网店（Shopify / 自部署）→ 十多年前 → OpenCart 定义（27.2 s）、自建商城定位与生态 → 选定 1.5.6.4（53.1 s）→ 三步路线；4.1 对照出现在环境（PHP 8.1）、驱动（MySQLi）与模板（Twig）三处。 |
+| F14 | 995.9–1009.9 s | verified：片尾 995.94–1009.94 s 为 14 s 静默 cue（credits:true、无旁白），名单只在画面：Codex（GPT-6）、Claude Opus 5.5、GPT-6 Astra、MiniMax speech-2.8-hd、策划 WaterRun、开源视频 https://github.com/Water-Run/ft；连贯正文不含署名指令。 |
 
 ## 制作署名
 
-策划：WaterRun。历史预研由 Codex（当时记录基于 GPT-6）完成；官方实验、R1 及关键帧探索由 Claude Opus 5.5 完成；本轮匿名测绘、S19 核对、R3、分镜与交接准备由 **GPT-6 Astra** 完成。后续 Opus 的实际型号与贡献在接手后登记。
+策划：WaterRun。历史预研由 Codex（当时记录基于 GPT-6）完成；官方实验、R1 及关键帧探索由 Claude Opus 5.5 完成；本轮匿名测绘、S19 核对、R3、分镜与交接准备由 **GPT-6 Astra** 完成。2026-10-19 正式场景动画与成片制作由 **Claude Opus 5.5** 完成；中文旁白为 MiniMax speech-2.8-hd 合成。
 
 开源视频：[github.com/Water-Run/ft](https://github.com/Water-Run/ft)。片尾、FACTS、README 与 DELIVERY 按最终实际参与统一；不把交通法拟用的 Gemini 算作本片参与者。
 

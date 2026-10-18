@@ -45,7 +45,8 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是当前稿。R2 审查中收�
 - [x] 交通法网页 Gemini 讨论 Prompt 落盘；真实参与后才补 Gemini credit。
 - [x] InnoDB 七项新反馈与 Lean 4 典型负例测绘、抽帧与三段本地 ASR 候选落盘；没有把 ASR 当人耳确认。
 - [x] 本轮模型 credit 统一为 GPT-6 Astra；历史真实参与和 Whisper small 的实际识别贡献分别保留。
-- [ ] OpenCart R3 明确确认、英文翻译、配音、正式场景、成片验收。
+- [x] OpenCart 中文配音、正式场景与成片（2026-10-19，Claude Opus 5.5，按授权自主完成；英文取消）。
+- [ ] OpenCart 成片 WaterRun 试听确认 F06 / F12 后登记交付。
 - [ ] 交通法讨论回收与改稿确认；InnoDB / Lean 4 原片问题的实际修订和复测。
 
 ### 仓库建设
@@ -126,3 +127,4 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是当前稿。R2 审查中收�
 11. 2026-10-19 夜（Claude Opus 5.5，WaterRun 授权自主完成）：配音工具接入 MiniMax。Tmux 第 5 轮中英成片已出（各 128.00 s、1080p60），check.js 通过，--final 只差 F06 配乐与 F12 读音的人耳确认，待 WaterRun 观看试听后登记交付。OpenCart 改为仅中文，完成 MiniMax 配音（16:48）与 1.5 后台视觉基础、部分场景后因额度暂停，接续见其 HANDOFF。
 12. 2026-10-19 约 03:00–03:40：WaterRun 看过 Tmux 第 5 轮，要求自主优化。第 5 轮 b 把使用改为逐条「Ctrl-b 再按」，原理拆成按键与输出两条路径（约 21 秒），修正字幕条侵入、主体被切、静止段等画面问题，重新配音、渲染、封装；--final 仍只差 F06、F12 人耳确认。
 13. 2026-10-19：WaterRun 试听 Tmux 第 5 轮 b 后确认「听过了没问题，标记交付」；check.js --final 全部通过，片单改为已交付，未发布。
+14. 2026-10-19 晨（Claude Opus 5.5）：OpenCart 完成全部场景与中文成片（16:50，1080p60，MiniMax 配音）；check.js --final 只差 F06 / F12 人耳确认，见其 DELIVERY。

@@ -11,7 +11,7 @@ scene('database', ({ root, s, c0 }) => {
 
   h('style', '', document.head, `
 #sc-database .db-hd { display: flex; flex-direction: column; justify-content: center; line-height: 1.15; }
-#sc-database .db-hd .f { font: 600 26px/1.15 "Mono", "Sans SC"; color: #222; }
+#sc-database .db-hd .f { font: 600 24px/1.15 "Mono", "Sans SC"; color: #222; }
 #sc-database .db-hd .z { font: 500 24px/1.2 "Sans SC", "Inter"; color: #666; }
 #sc-database .db-oid { display: inline-block; min-width: 56px; padding: 2px 12px; border-radius: 6px; font: 700 30px/1.2 "Mono"; text-align: center; border: 2px solid transparent; }
 #sc-database .db-oid.on { background: #DDF0E3; border-color: ${GRN}; color: #1B5A35; }
@@ -26,7 +26,7 @@ scene('database', ({ root, s, c0 }) => {
 #sc-database .db-card.me { border-left-color: #D2A214; }
 #sc-database .db-card .t { font: 700 34px/1.25 "Sans SC", "Inter"; color: #1d1d1d; }
 #sc-database .db-card .b { margin-top: 8px; font: 500 28px/1.35 "Sans SC", "Inter"; color: #444; }
-#sc-database .db-ghost td, #sc-database .tr.db-ghost .td { color: #8E9AA6; font-style: italic; }
+#sc-database .db-ghost td, #sc-database .tr.db-ghost .td { color: #66707A; font-style: italic; }
 #sc-database .tr.db-ghost { background: repeating-linear-gradient(135deg, #fff 0 10px, #F4F6F8 10px 20px); }
 #sc-database .db-tag { position: absolute; font: 500 26px/1.3 "Sans SC", "Inter"; color: #C9DCCF; }
 #sc-database .db-next { position: absolute; border: 3px dashed var(--req); border-radius: 8px; padding: 8px 18px; font: 600 30px/1.25 "Sans SC", "Inter"; color: #7A300A; background: #fff; }
@@ -60,7 +60,7 @@ scene('database', ({ root, s, c0 }) => {
     const ov = ovl(w, 0, 160, 1920, 760);
     const conn = svgLine(ov, 'M736,300 L1036,300', 'res', { w: 6, arrow: false });
     const connL = h('div', 'abs t-note', w, '数据库连接'); px(connL, 790, 250);
-    const cardA = h('div', 'db-card', w, '<div class="t">连接账号</div><div class="b">程序访问数据库时用；写在 config.php</div>'); px(cardA, 760, 330, 256);
+    const cardA = h('div', 'db-card', w, '<div class="t">数据库连接账号</div><div class="b">程序访问数据库时用；写在 config.php</div>'); px(cardA, 748, 330, 284);
     const lnA = svgLine(ov, 'M888,304 L888,326', 'res', { w: 3, arrow: false });
     const cardB = h('div', 'db-card me', w, '<div class="t">后台用户账号 · 演示店员</div><div class="b">一行 oc_user 记录，用来识别操作后台的人</div>'); px(cardB, 96, 712, 620);
     const lnB = svgLine(ov, 'M720,780 L1000,780 L1000,706 L1062,706', 'ink', { w: 4 });
@@ -108,17 +108,17 @@ scene('database', ({ root, s, c0 }) => {
     const pkN = h('div', 'abs t-src', ord.bd, '主键：order_id'); css(pkN, { left: '26px', top: '290px' });
 
     const pL = h('div', 'abs t-lbl-s', w, '<span class="mono">oc_order_product</span> 商品明细表'); px(pL, X + 900, 200);
-    const pt = ocTable(w, X + 900, 252, [{ label: hd2('order_id', '订单编号'), w: 200, align: 'c' }, { label: hd2('order_product_id', '商品项编号'), w: 250, align: 'r' },
-      { label: hd2('name', '商品'), w: 210 }, { label: hd2('quantity', '数量'), w: 150, align: 'r' }, { label: hd2('price', '单价'), w: 114, align: 'r' }],
+    const pt = ocTable(w, X + 900, 252, [{ label: hd2('order_id', '订单编号'), w: 180, align: 'c' }, { label: hd2('order_product_id', '商品项编号'), w: 280, align: 'r' },
+      { label: hd2('name', '商品'), w: 200 }, { label: hd2('quantity', '数量'), w: 150, align: 'r' }, { label: hd2('price', '单价'), w: 114, align: 'r' }],
     [[oid(7), '1', '演示商品 A', '2', '30.00'], [oid(7), '2', '演示商品 B', '1', '40.00']], { rowH: 54, headH: 84 });
-    const hL = h('div', 'abs t-lbl-s', w, '<span class="mono">oc_order_history</span> 历史表'); px(hL, X + 900, 484);
-    const ht = ocTable(w, X + 900, 536, [{ label: hd2('order_id', '订单编号'), w: 200, align: 'c' }, { label: hd2('order_history_id', '历史编号'), w: 270, align: 'r' },
+    const hL = h('div', 'abs t-lbl-s', w, '<span class="mono">oc_order_history</span> 状态历史表'); px(hL, X + 900, 484);
+    const ht = ocTable(w, X + 900, 536, [{ label: hd2('order_id', '订单编号'), w: 180, align: 'c' }, { label: hd2('order_history_id', '历史编号'), w: 290, align: 'r' },
       { label: hd2('order_status_id', '状态'), w: 300 }],
     [[oid(7), '1', '待处理']], { rowH: 54, headH: 84 });
     const ghostRow = h('div', 'tr db-ghost', ht.el); ghostRow.style.height = '54px';
-    [['…', 200, 'c'], ['…', 270, 'r'], ['以后改状态时追加', 300, '']].forEach(([v, wd, a]) => { const td = h('div', 'td' + (a ? ' ' + a : ''), ghostRow, v); td.style.width = wd + 'px'; css(td, { fontSize: '26px' }); });
+    [['…', 180, 'c'], ['…', 290, 'r'], ['以后改状态时追加', 300, '']].forEach(([v, wd, a]) => { const td = h('div', 'td' + (a ? ' ' + a : ''), ghostRow, v); td.style.width = wd + 'px'; css(td, { fontSize: '26px' }); });
     const bP = h('div', 'db-badge', w, '1 张订单 → 2 条商品项'); px(bP, X + 1500, 470);
-    const bH = h('div', 'db-badge', w, '可以有多条历史记录'); px(bH, X + 1400, 740);
+    const bH = h('div', 'db-badge', w, '可以有多条状态历史'); px(bH, X + 1400, 740);
 
     // 关联线：从主表的 order_id 出发，沿一条竖线分到各行的 order_id
     const yMain = 250 + 78 + 6 + 30, xMain = X + 96 + 540 - 26 - 70;
@@ -178,7 +178,7 @@ scene('database', ({ root, s, c0 }) => {
     ];
     const bx = L5.map(([t, ic, f, role], i) => {
       const b = ocBox(w, X + 96 + i * STEP, 260, BW, 330, t, { icon: ic });
-      const fe = h('div', 'abs mono wrap', b.bd, f); css(fe, { left: '18px', top: '12px', width: BW - 40 + 'px', fontSize: '22px', lineHeight: '30px', color: '#003A88', wordBreak: 'break-all' });
+      const fe = h('div', 'abs mono wrap', b.bd, f.replace(/\//g, '/<wbr>')); css(fe, { left: '18px', top: '12px', width: BW - 40 + 'px', fontSize: '22px', lineHeight: '30px', color: '#003A88', whiteSpace: 'normal' });
       const re = h('div', 'abs t-data wrap', b.bd, role); css(re, { left: '18px', top: '84px', width: BW - 40 + 'px', fontSize: '30px' });
       return b;
     });
@@ -255,6 +255,8 @@ scene('database', ({ root, s, c0 }) => {
   drift(d2 + 1.05, d3, 1.24, { x: X3 + 1300, y: 540 });
   keys.push([d3, { x: X3 + 960, y: 540, z: 1 }, 0.8, { sfx: false }]);
   drift(d3 + 0.85, s.end - 0.1, 1.02);
+  keys.sort((a, b) => a[0] - b[0]);
+  for (let i = 1; i < keys.length; i++) { const p = keys[i - 1]; if (p[0] + p[2] > keys[i][0] - 0.02) p[2] = Math.max(0.12, keys[i][0] - p[0] - 0.02); }
   cam.track(s.start, { x: 960, y: 540, z: 1 }, keys);
   void S1;
 });

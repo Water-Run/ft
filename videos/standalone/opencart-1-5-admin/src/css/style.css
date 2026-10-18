@@ -93,7 +93,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--oc-text); }
 .oc-table .tr.ft { background: var(--oc-filter); }
 .oc-table .td u { color: var(--oc-link); text-decoration: underline; text-underline-offset: 4px; }
 .oc-table .tr.hi { background: var(--oc-hi); }
-.oc-table .tr.cur { background: var(--oc-hi); box-shadow: inset 6px 0 0 var(--req); }
+.oc-table .tr.mk { background: var(--oc-hi); box-shadow: inset 6px 0 0 var(--req); }
 .oc-input { display: inline-block; height: 40px; border: 2px solid #A9A9A9; background: #fff; border-radius: 2px; }
 .oc-check { display: inline-block; width: 26px; height: 26px; border: 2px solid #8A8A8A; border-radius: 4px; background: linear-gradient(180deg, #fff, #E9E9E9); }
 
@@ -162,7 +162,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--oc-text); }
 .code .ln::before { content: attr(data-n); position: absolute; left: 0; width: 56px; text-align: right; color: #A0A0A0; font-size: 24px; }
 .code .ln.on { background: var(--oc-hi); box-shadow: inset 6px 0 0 var(--req); }
 .code .ln.dim { color: #B5B5B5; }
-.code .k { color: var(--oc-title); font-weight: 700; } .code .s { color: #8A3A00; } .code .v { color: #6A1B9A; } .code .cm { color: #8A8A8A; }
+.code .k { color: var(--oc-title); font-weight: 700; } .code .s { color: #8A3A00; } .code .v { color: #6A1B9A; } .code .cm { color: #6B6B6B; }
 .code-note { position: absolute; padding: 6px 16px; font: 600 30px/1.3 "Sans SC", "Inter"; color: var(--oc-text); background: #fff; border-left: 6px solid var(--req); }
 
 /* ── 说明标签（带引线）── */
@@ -208,5 +208,8 @@ body { font-family: "Inter", "Sans SC"; color: var(--oc-text); }
 .mod-pill b { display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: #6B7785; margin-right: 16px; vertical-align: 2px; }
 /* 时间轴 */
 .band { position: absolute; background: rgba(196, 86, 28, .12); border: 2px solid rgba(196, 86, 28, .55); border-radius: 6px; }
-.ghost { position: absolute; border: 3px dashed #B8C0C8; border-radius: 14px 14px 0 0; font: 800 120px/1 "Inter"; color: #E3E7EB; display: flex; align-items: center; justify-content: center; }
+.ghost { position: absolute; border: 3px dashed #B8C0C8; border-radius: 14px 14px 0 0; font: 800 120px/1 "Inter"; color: #858F99; display: flex; align-items: center; justify-content: center; }
 .year { font: 800 150px/1 "Inter"; color: var(--oc-title); letter-spacing: -.03em; }
+
+/* 等宽字体的连字会把 .= -> => 画成符号；代码与路径一律关掉连字 */
+.code, .code *, .chip, .token, [class*="mono"], code { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }

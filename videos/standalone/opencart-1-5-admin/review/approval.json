@@ -3,7 +3,7 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "92e871ec80dd70ba1a6dc9f5a76596a0a50113dfe63bf7ba32e396a8e5712243",
+      "content_sha256": "8855f68461d6d44edc58efc2d5a959a44728c0e7564f2a9553092dab9db8d6e6",
       "reviewer": "WaterRun",
       "confirmed_at": "2026-10-19T01:37:00+08:00",
       "evidence": "review/NOTES.md「2026-10-19 授权自主定稿」：WaterRun 在会话中授权 Claude Opus 5.5 自主完成至中文成片并可主动修改文案；非逐句阅读确认"

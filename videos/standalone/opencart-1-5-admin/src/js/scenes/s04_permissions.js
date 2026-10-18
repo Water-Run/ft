@@ -38,7 +38,7 @@ scene('permissions', ({ root, s, c0 }) => {
     const rows = [], cks = [];
     routes.forEach(([r, zh], i) => {
       const row = h('div', 'pm-row' + (i % 2 ? '' : ' odd'), el, `${r}<span class="zh">${zh}</span>`);
-      const ck = h('span', 'pm-ck', row, '✓'); rows.push(row); cks.push(ck);
+      const ck = h('span', 'pm-ck', row, '√'); rows.push(row); cks.push(ck);
     });
     return { el, rows, cks };
   };
@@ -97,8 +97,8 @@ scene('permissions', ({ root, s, c0 }) => {
     const tReq = C('p2_3', '新请求', -0.1);
     hl(rF, C('p2_3', '查到', 0.2), E('p2_3', 0.3));
     drawLine(lnRead, tReq + 0.1, 0.3);
-    appear(tok, tReq); vanish(tok, E('p2_3', -0.1));
-    travel(tok, [[tReq, 1.0, [[250, 400], [250, 640]]]]);
+    appear(tok, tReq); vanish(tok, tReq + 1.15);
+    travel(tok, [[tReq, 1.0, [[250, 400], [250, 596]]]]);
     sfx('blip', tReq, { g: 0.5 });
     keyed(rN).at(C('p2_3', '读出来', -0.4), { html: '<span class="c-res" style="font-weight:600">读出：access / modify 两份清单</span>' });
     sfx('pop', C('p2_3', '读出来', -0.4), { g: 0.45 });
@@ -140,17 +140,17 @@ scene('permissions', ({ root, s, c0 }) => {
     void ptb;
     const deny = ocBox(w, X + 1440, 570, 384, 320, '没有权限', { icon: 'setting' });
     const dEn = h('div', 'abs t-src', deny.bd, 'Permission Denied!'); css(dEn, { left: '26px', top: '8px' });
-    const dBox = h('div', 'pm-deny', deny.bd); px(dBox, 26, 52, 296); dBox.innerHTML = '<span class="mono" style="font-size:26px">user/user</span><br>不在本组的访问清单里';
+    const dBox = h('div', 'pm-deny', deny.bd); px(dBox, 26, 52, 296); dBox.innerHTML = '<span class="mono" style="font-size:26px">user/user</span><br>不在本组的<br>访问清单里';
 
-    const resOk = h('div', 'pm-res pm-ok', w, '✓ 在访问清单里：通过'); px(resOk, X + 840, 580);
-    const resNo = h('div', 'pm-res pm-no', w, '✗ <span class="mono">user/user</span> 不在访问清单 → 停在这里'); px(resNo, X + 830, 568);
+    const resOk = h('div', 'pm-res pm-ok', w, '√ 在访问清单里：通过'); px(resOk, X + 840, 580);
+    const resNo = h('div', 'pm-res pm-no', w, '× 不在访问清单 → 停在这里'); px(resNo, X + 830, 572);
     css(resOk, { background: '#fff', padding: '0 8px' }); css(resNo, { background: '#fff', padding: '0 8px', fontSize: '28px' });
 
     const tPass = token(w, 'route=sale/order', 'req', 0, 0, '请求：打开订单');
     const tUser = token(w, 'route=user/user', 'req', 0, 0, '请求：打开用户管理');
     const tUser2 = token(w, 'route=user/user', 'req', 0, 0, '手工输入的地址');
     const ov = ovl(w, X, 160, 1920, 760);
-    const look = svgLine(ov, `M${X + 1180},560 L${X + 1180},618`, 'dim', { w: 3, dash: '8 8', arrow: false });
+    const look = svgLine(ov, `M${X + 1300},562 L${X + 1300},618`, 'dim', { w: 3, dash: '8 8', arrow: false });
     const srvCall = callout(w, X + 830, 166, '判断在服务器上做', { kind: 'hiy' });
     const menuNote = ocNotice(w, X + 96, 600, 660, 'attention', '菜单显示与否，不是允许的依据；<br>决定在服务器的访问检查');
 
@@ -212,7 +212,7 @@ scene('permissions', ({ root, s, c0 }) => {
   {
     const X = X3;
     const cA = chip(w, '能看订单 · <span class="mono" style="font-size:30px">access</span>', X + 96, 172);
-    const neq = h('div', 'abs t-lbl c-req', w, '≠'); px(neq, X + 480, 172);
+    const neq = h('div', 'abs t-lbl', w, '≠'); css(neq, { color: '#9A3E10' }); px(neq, X + 480, 172);
     const cM = chip(w, '能改订单 · <span class="mono" style="font-size:30px">modify</span>', X + 540, 172);
     const stp = stamp(w, X + 1360, 184, 'demo', '示意 · 按源码分支构造的只读组');
 
@@ -233,10 +233,10 @@ scene('permissions', ({ root, s, c0 }) => {
 
     const g1 = h('div', 'pm-gate', w); px(g1, X + 920, 590, 420, 120);
     h('div', 'abs t-lbl-s', g1, '访问检查').style.cssText += 'left:20px;top:10px';
-    const g1r = h('div', 'pm-res pm-ok', g1, '✓ 通过'); css(g1r, { left: '20px', top: '62px' });
+    const g1r = h('div', 'pm-res pm-ok', g1, '√ 通过'); css(g1r, { left: '20px', top: '62px' });
     const g2 = h('div', 'pm-gate', w); px(g2, X + 1380, 590, 444, 120);
     h('div', 'abs t-lbl-s', g2, '修改检查 <span class="mono" style="font-size:30px">modify</span>').style.cssText += 'left:20px;top:10px';
-    const g2r = h('div', 'pm-res pm-no', g2, '✗ 写入被拒，停在这里'); css(g2r, { left: '20px', top: '62px' });
+    const g2r = h('div', 'pm-res pm-no', g2, '× 写入被拒，停在这里'); css(g2r, { left: '20px', top: '62px' });
     const b1 = h('div', 'pm-bar', w); px(b1, X + 1240, 730, 8, 110); b1.dataset.name = '访问检查点';
     const b2 = h('div', 'pm-bar', w); px(b2, X + 1700, 730, 8, 110); b2.dataset.name = '修改检查点';
     const tk = token(w, 'sale/order/history', 'req', 0, 0, '提交：改为已发货');
@@ -272,7 +272,7 @@ scene('permissions', ({ root, s, c0 }) => {
     stamp(w, X + 1560, 184, 'demo', '示意 · 新控制器');
     const dir = codeBlock(w, X + 96, 260, 600, ['catalog/product.php', 'sale/customer.php', 'sale/order.php', 'user/user.php', 'user/user_permission.php', 'demo/new_feature.php'], { lang: 'text', title: 'admin/controller/ · 控制器目录' });
     vanish(dir.lines[5], 0);
-    css(dir.lines[5], { color: '#C4561C', fontWeight: '700' });
+    css(dir.lines[5], { color: '#9A3E10', fontWeight: '700' });
     const ov = ovl(w, X, 160, 1920, 760);
     const arr = svgLine(ov, `M${X + 704},420 L${X + 790},420`, 'ink', { w: 4 });
     const arrL = h('div', 'abs t-note', w, '列出'); px(arrL, X + 712, 360);
@@ -286,8 +286,8 @@ scene('permissions', ({ root, s, c0 }) => {
       const row = h('div', 'pm-row' + (i % 2 ? '' : ' odd'), list, `${r}<span class="zh" style="right:auto;left:420px">${zh}</span>`);
       css(row, { height: '46px', lineHeight: '46px', paddingLeft: '20px' });
       row.querySelector('.zh').style.lineHeight = '46px';
-      const ca = h('span', 'pm-ck', row, '✓'); css(ca, { left: '660px', top: '8px' });
-      const cm = h('span', 'pm-ck', row, '✓'); css(cm, { left: '840px', top: '8px' });
+      const ca = h('span', 'pm-ck', row, '√'); css(ca, { left: '660px', top: '8px' });
+      const cm = h('span', 'pm-ck', row, '√'); css(cm, { left: '840px', top: '8px' });
       return { row, ca, cm };
     });
     // 已有功能：沿用前面演示店员组的勾选（订单可访问可修改，顾客只访问）
@@ -329,7 +329,7 @@ scene('permissions', ({ root, s, c0 }) => {
       const n = h('div', 'abs t-note', b.bd, note); css(n, { left: '26px', top: '100px' });
       return b;
     });
-    const oks = R.map((_, i) => { const e = h('div', 'pm-res pm-ok', w, '✓'); px(e, X + 96 + i * (BW + BG) + BW / 2 - 12, 610); return e; });
+    const oks = R.map((_, i) => { const e = h('div', 'pm-res pm-ok', w, '√ 通过'); px(e, X + 96 + i * (BW + BG) + BW / 2 - 50, 606); return e; });
     const lane = ovl(w, X, 600, 1920, 200);
     const laneL = svgLine(lane, `M${X + 96},700 L${X + 1700},700`, 'dim', { w: 3, dash: '10 10' });
     const tk = token(w, 'route=sale/order', 'req', 0, 0, '订单请求');
@@ -340,7 +340,7 @@ scene('permissions', ({ root, s, c0 }) => {
     appear(head, tA);
     ghosts.forEach((g, i) => wipe(g, tA + 0.3 + i * 0.12, { dir: 't', d: 0.35 }));
     const tb = [C('p7_1', '登录'), C('p7_2', '会话'), C('p7_2', '权限')];
-    boxes.forEach((b, i) => { slideDown(b.el, tb[i], { d: 0.4 }); sfx('pop', tb[i], { g: 0.55 }); });
+    boxes.forEach((b, i) => { slideDown(b.el, tb[i], { d: 0.4 }); vanish(ghosts[i], tb[i] + 0.4); sfx('pop', tb[i], { g: 0.55 }); });
     drawLine(laneL, C('p7_3', '订单请求', -0.4), 0.5);
     const tt = C('p7_3', '订单请求');
     appear(tk, tt);
@@ -368,13 +368,13 @@ scene('permissions', ({ root, s, c0 }) => {
   drift(t2in + 1.05, t2out, 1.24);
   keys.push([t2out, { x: X2 + 960, y: 540, z: 1 }, 0.7, { sfx: false }]);
   drift(t2out + 0.75, t2addr, 1.02);
-  keys.push([t2addr, { x: X2 + 820, y: 470, z: 1.25 }, 1.0, { sfx: false }]);
-  drift(t2addr + 1.05, t2back, 1.27);
+  keys.push([t2addr, { x: X2 + 760, y: 540, z: 1.06 }, 1.0, { sfx: false }]);
+  drift(t2addr + 1.05, t2back, 1.07);
   keys.push([t2back, { x: X2 + 960, y: 540, z: 1 }, 0.7, { sfx: false }]);
   drift(t2back + 0.75, S3.tA, 1.02);
   // 站 3：到站 → 推近两道检查 → 拉回读结论
   keys.push([S3.tA, { x: X3 + 960, y: 540, z: 1 }, 1.0, { g: 0.35 }]);
-  const t3in = S3.tP - 0.3, t3out = C('p5_3', '挡下', 0.9);
+  const t3in = S3.tP - 0.3, t3out = Math.min(C('p5_3', '挡下', 0.9), S4.tA - 0.8);
   drift(S3.tA + 1.05, t3in, 1.03);
   keys.push([t3in, { x: X3 + 1290, y: 600, z: 1.25 }, 1.0, { sfx: false }]);
   drift(t3in + 1.05, t3out, 1.26);
@@ -386,13 +386,16 @@ scene('permissions', ({ root, s, c0 }) => {
   drift(S4.tA + 1.05, t4in, 1.03);
   keys.push([t4in, { x: X4 + 1230, y: 560, z: 1.2 }, 1.0, { sfx: false }]);
   drift(t4in + 1.05, t4code, 1.22);
-  keys.push([t4code, { x: X4 + 900, y: 600, z: 1.1 }, 0.9, { sfx: false }]);
+  keys.push([t4code, { x: X4 + 960, y: 600, z: 1.1 }, 0.9, { sfx: false }]);
   drift(t4code + 0.95, S5.tA, 1.12);
   // 站 5：到站，全景收束
   keys.push([S5.tA, { x: X5 + 960, y: 540, z: 1 }, 1.0, { g: 0.35 }]);
   drift(S5.tA + 1.05, S5.tt - 0.3, 1.02);
   keys.push([S5.tt - 0.3, { x: X5 + 1000, y: 560, z: 1.0 }, 1.6, { sfx: false }]);
   drift(S5.tt + 1.4, s.end - 0.1, 1.02, { x: X5 + 1000, y: 560 });
+  // 关键帧互不重叠（重叠的补间倒着 seek 会停在旧位置）：前一段若压到下一段，就缩短前一段
+  keys.sort((a, b) => a[0] - b[0]);
+  for (let i = 1; i < keys.length; i++) { const p = keys[i - 1]; if (p[0] + p[2] > keys[i][0] - 0.02) p[2] = Math.max(0.12, keys[i][0] - p[0] - 0.02); }
   cam.track(s.start, { x: 960, y: 540, z: 1 }, keys);
   void S1;
 });
