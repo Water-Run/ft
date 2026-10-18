@@ -219,7 +219,7 @@
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-18 建目录；tmux 3.4 实验、3.8 文档/源码取证与卡带未来主义视觉方向已落盘，尚未写稿或配音。 |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 第 5 轮（Claude Opus 5.5，按授权）中英成片已出：各 128.00 s、1080p60，MiniMax 配音；check.js 通过，--final 只差配乐与读音的人耳确认，待 WaterRun 观看试听后交付。 |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
@@ -268,7 +268,7 @@
 |---|---|---|---|---|---|---|
 | 1 | 古代来的 Shell：Windows 批处理（.bat） | zh | 已成片 | 委托（DeepSeek） | [`windows-batch`](../videos/standalone/windows-batch/) | 场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md；已发布：哔哩哔哩 |
 | 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 已发布：哔哩哔哩与 YouTube |
-| 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端<br>What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End | zh + en | 制作中 | 委托（Opus） | [`opencart-1-5-admin`](../videos/standalone/opencart-1-5-admin/) | A 风格已确认；R3 含时代引入、九章子系统与新版对照，待 WaterRun 阅读确认；已备 Opus 文案阶段交接包，未配音或制作正式场景。 |
+| 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端<br>What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End | zh | 制作中 | 委托（Opus） | [`opencart-1-5-admin`](../videos/standalone/opencart-1-5-admin/) | 2026-10-19 WaterRun 授权自主完成后改为仅中文；中文 MiniMax 配音（16:48）与 1.5 后台视觉基础完成，场景部分完成；因额度暂停，接续见 HANDOFF。无成片。 |
 | 4 | 道交法中的路权 | zh | 制作中 | 委托（Opus） | [`traffic-law-right-of-way`](../videos/standalone/traffic-law-right-of-way/) | 仅中文；第 7 稿与网页端 Gemini 4 Argon 讨论 Prompt 已落盘，待讨论及人工确认；保留 Yunjian 和 660 秒上限，尚无配音或成片。 |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 6 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |

@@ -8,9 +8,9 @@
 // 本系列（XX 秒速通）的时间线是定长的：片名里的秒数就是成片的时长，各语言相同。
 // - 场景的 at 是它开始的时刻（秒）。上一场的旁白说完之后，余下的时间留白到这一刻；说不完就是超出，记入 L.problems，总闸门不通过。
 // - TOTAL 是全片的时长，最后一场补齐到这一刻。
-// 2026-10-19 文案第 2 轮。中文是审稿底本；英文是对照草稿，共用场景定点。
-// 同一条计数贯穿：终端离开后数从 4 到 9，再给留下的进程起名，再讲键和字节。没有章节卡。
-// 历史、套接字、命令表、VT100 这一轮不口播。片尾 120.5–128 不配旁白。事实只转到 FACTS.md 已有的陈述。
+// 2026-10-19 第 5 轮（Claude Opus 5.5，按 WaterRun 授权自主改写）：计数 4→9 的钩子，server/client/伪终端回答「程序住在哪」，再讲三层、按键、键表与重画，最后回答开头与 kill-server。
+// 先说终端离开、计数还在，再用两次读数。定义之后才停片名。历史只留能接回这一页的原因。
+// 不报 nscr、3.8、好读的代码，也不口播 3.4。结尾用 server 回答「还在」，最后一句是程序怎么停。片尾 120.5–128 不配旁白。
 (function (root) {
   const isBrowser = typeof window !== 'undefined';
   const LANG = (isBrowser ? new URLSearchParams(location.search).get('lang') : process.env.VLANG) || 'zh';
@@ -20,74 +20,78 @@
   const TOTAL = 128;
   const RAW = [
     {
-      // 6 秒内交出「终端离开，数从 4 到 9」。oT 是片名卡，不配旁白。o5 先回答留下了什么。
-      id: 'open', at: 0, chap: null, lead: 0.16, tail: 0.22,
+      // 钩子：计数 4 → 断开 → 9。定义 tmux，片名停顿在定义之后。
+      id: 'open', at: 0, chap: null, lead: 0.12, tail: 0.12,
       cues: [
-        ['o1', { zh: '终端里，一个程序在计数', en: 'A terminal runs a count.' }, { gap: 0.16 }],
-        ['o2', { zh: '终端离开后，数从 4 到 9', en: 'It leaves, and 4 becomes 9.' }, { gap: 0.2 }],
-        ['o3', { zh: '程序还在跑', en: 'The program keeps running.' }, { gap: 0.26 }],
-        ['o4', { zh: '这是 *tmux*', en: 'This is *tmux*.' }, { gap: 0.2 }],
+        ['o1', { zh: '终端里有个程序在计数，数到 4，终端断开了', en: 'A program counts in a terminal. At 4, the terminal drops.' }, { gap: 0.16 }],
+        ['o2', { zh: '过一会儿重新连上，它已经数到 9', en: 'Reconnect a moment later, and it is already at 9.' }, { gap: 0.16 }],
+        ['o3', { zh: '程序一直在跑，走掉的只是终端', en: 'The program kept running. Only the terminal left.' }, { gap: 0.16 }],
+        ['o4', { zh: '替它守着的，是终端复用器 *tmux*', en: 'What kept it alive is a terminal multiplexer: *tmux*.' }, { gap: 0.16 }],
+        ['o5', { zh: '一块屏幕开好几个终端，人走了，它们还在', en: 'Many terminals on one screen, still there after you leave.' }, { gap: 0.12 }],
         ['oT', null, { pause: 2.2, gap: 0 }],
-        ['o5', { zh: '离开的，只是连上来的终端', en: 'Only the attached terminal left.' }, { gap: 0.28 }],
       ],
     },
     {
-      // 先命名留下的进程，再给屏幕上的东西起名。3.4 只标记这一次读到的画面。
-      id: 'model', at: 14.4, chap: null, lead: 0.32, tail: 0.16,
+      // 来历：2007、screen 用户、不是复制、共享 window、2009 OpenBSD base。
+      id: 'past', at: null, chap: null, lead: 0.16, tail: 0.2,
       cues: [
-        ['m1', { zh: '留住程序的进程，叫 *server*', en: 'The process that keeps it is the *server*.' }, { gap: 0.26 }],
-        ['m2', { zh: '用来看和按键的一端，叫 *client*', en: 'The watching and typing end is the *client*.' }, { gap: 0.26 }],
-        ['m3', { zh: 'client 离开以后，server 还在', en: 'After the client leaves, the server stays.' }, { gap: 0.3 }],
-        ['m4', { zh: '程序读写的地方，叫伪终端', en: 'That place is a pseudo terminal.' }, { gap: 0.24 }],
-        ['m5', { zh: '伪终端留在 server 上', en: 'The pseudo terminal stays on the server.' }, { gap: 0.26 }],
-        ['m6', { zh: '计数的进程，是 server 启动的', en: 'The server started the counting process.' }, { gap: 0.28 }],
-        ['m7', { zh: '占满屏幕的一页，叫 *window*', en: 'A full-screen page is a *window*.' }, { gap: 0.22 }],
-        ['m8', { zh: 'tmux 3.4 有两个 window', en: 'tmux 3.4 has two windows.' }, { gap: 0.22 }],
-        ['m9', { zh: '切开的一块，叫 *pane*', en: 'One cut of a window is a *pane*.' }, { gap: 0.2 }],
-        ['m10', { zh: '第二个 window，分成两块 pane', en: 'The second window splits into two panes.' }, { gap: 0.24 }],
-        ['m11', { zh: '计数的程序，在其中一块', en: 'The counting program is in one of them.' }, { gap: 0.22 }],
-        ['m12', { zh: '每块 pane，都有一块伪终端', en: 'Each pane has its own pseudo terminal.' }, { gap: 0.24 }],
-        ['m13', { zh: '它们放在一起，叫 *session*', en: 'Kept together, they are a *session*.' }, { gap: 0.28 }],
+        ['p1', { zh: '*tmux* 诞生于 2007 年', en: '*tmux* was born in 2007.' }, { gap: 0.14 }],
+        ['p2', { zh: '作者原本是另一个工具 *screen* 的重度用户', en: 'Its author was a heavy user of another tool, *screen*.' }, { gap: 0.14 }],
+        ['p3', { zh: '但他说得明白：*tmux* 不是要复制 *screen*', en: 'But he was clear: *tmux* was not meant to copy *screen*.' }, { gap: 0.14 }],
+        ['p4', { zh: '他要一个窗口接到多个终端，其他窗口各自独立', en: 'He wanted one window on several terminals, the rest independent.' }, { gap: 0.14 }],
+        ['p6', { zh: '2009 年，*tmux* 被收进 OpenBSD 的基本系统', en: 'In 2009, *tmux* was imported into the OpenBSD base system.' }, { gap: 0.16 }],
       ],
     },
     {
-      // 对象都有名字之后才讲键。分离不提前使用，d 直接说成 client 离开。
-      id: 'use', at: 57.6, chap: null, lead: 0.28, tail: 0.14,
+      // server / client / 伪终端，再讲 session、window、pane 三层。
+      id: 'model', at: null, chap: null, lead: 0.16, tail: 0.1,
       cues: [
-        ['u1', { zh: '先按 *Ctrl-b*，再按下一个键', en: 'Press *Ctrl-b*, then the next key.' }, { gap: 0.22 }],
-        ['u2', { zh: 'c 新开一个 window', en: 'c opens a new window.' }, { gap: 0.16 }],
-        ['u3', { zh: 'd 让当前 client 离开', en: 'd makes the current client leave.' }, { gap: 0.2 }],
-        ['u4', { zh: '% 左右切开 pane', en: '% splits a pane side by side.' }, { gap: 0.16, tts: { zh: '百分号左右切开 pane。', en: 'Percent splits a pane side by side.' } }],
-        ['u5', { zh: '" 上下切开 pane', en: '" splits a pane top from bottom.' }, { gap: 0.16, tts: { zh: '引号上下切开 pane。', en: 'A quote splits a pane top from bottom.' } }],
-        ['u6', { zh: 'tmux attach 接回这个 session', en: 'tmux attach brings this session back.' }, { gap: 0.26 }],
+        ['m1', { zh: '回到那个计数：它到底住在哪儿？', en: 'Back to the counter: where does it actually live?' }, { gap: 0.18 }],
+        ['m2', { zh: '启动 *tmux*，会先拉起一个后台进程 *server*', en: 'Starting *tmux* first launches a background process, the *server*.' }, { gap: 0.14 }],
+        ['m3', { zh: '计数程序，是 *server* 的子进程', en: 'The counter is a child process of the server.' }, { gap: 0.12 }],
+        ['m4', { zh: '它用的终端，是 *server* 造出来的伪终端', en: 'Its terminal is a pseudo terminal the server created.' }, { gap: 0.16 }],
+        ['m5', { zh: '眼前的终端窗口只是 *client*，管显示和按键', en: 'The terminal in front of you is just a *client*: picture and keys.' }, { gap: 0.14 }],
+        ['m7', { zh: '*client* 和 *server* 是两个进程，靠本地连接通信', en: 'Client and server are two processes talking over a local socket.' }, { gap: 0.14 }],
+        ['m8', { zh: '终端关掉，断开的只是这条连接', en: 'Close the terminal, and only that connection breaks.' }, { gap: 0.2 }],
+        ['m9', { zh: '*server* 管的东西，分三层', en: 'What the server manages has three layers.' }, { gap: 0.12 }],
+        ['m10', { zh: '最外层是 *session*，一组终端的集合', en: 'The outermost is a *session*, a group of terminals.' }, { gap: 0.12 }],
+        ['m11', { zh: '*session* 里有 *window*，每个占满一屏', en: 'A session holds *windows*, each filling the screen.' }, { gap: 0.12 }],
+        ['m12', { zh: '*window* 再切成 *pane*，每块都是独立的伪终端', en: 'Windows split into *panes*, each its own pseudo terminal.' }, { gap: 0.14 }],
       ],
     },
     {
-      // 同一条键和同一串字节。PANE-A 是另一块 pane，不和「没有 client」接成一件事。
-      id: 'impl', at: 77.1, chap: null, lead: 0.28, tail: 0.14,
+      // 默认键：前缀、c、%、引号、d、attach。
+      id: 'use', at: null, chap: null, lead: 0.14, tail: 0.08,
       cues: [
-        ['i1', { zh: '按键先到 tmux，认得的由它处理', en: 'Keys hit tmux first. Known ones, it handles.' }, { gap: 0.24 }],
-        ['i2', { zh: '其余的键，送给 pane 里的程序', en: 'Other keys go to the program in the pane.' }, { gap: 0.24 }],
-        ['i3', { zh: '程序写回的字节，到达 server', en: 'Bytes the program writes reach the server.' }, { gap: 0.22 }],
-        ['i4', { zh: 'server 把这些字节读成字', en: 'The server reads those bytes into characters.' }, { gap: 0.22 }],
-        ['i5', { zh: '原字节不交给 client', en: 'Raw bytes are not given to the client.' }, { gap: 0.24 }],
-        ['i6', { zh: '再按这个 client 的终端重画一屏', en: 'It redraws one frame for this client.' }, { gap: 0.24 }],
-        ['i7', { zh: '向另一块 pane 送入命令，回显 *PANE-A*', en: 'A command to the other pane reads back *PANE-A*.' }, { gap: 0.26 }],
-        ['i8', { zh: '没有 client 时，数仍从 4 到 9', en: 'With no client, 4 still becomes 9.' }, { gap: 0.28 }],
+        ['u1', { zh: '操作时，先按前缀键 *Ctrl-b*，再按命令键', en: 'To use it, press the prefix *Ctrl-b*, then a command key.' }, { gap: 0.14 }],
+        ['u2', { zh: '按 c，新建一个 *window*', en: 'c creates a new window.' }, { gap: 0.12 }],
+        ['u3', { zh: '按 % 左右切开 *pane*，按引号上下切开', en: '% splits panes left-right; a double quote, top-bottom.' }, { gap: 0.12, tts: { zh: '按百分号左右切开 pane，按引号上下切开。', en: 'Percent splits panes left-right; a double quote, top-bottom.' } }],
+        ['u5', { zh: '按 d，当前 *client* 断开，也就是 detach', en: 'd disconnects the current client. That is detach.' }, { gap: 0.14 }],
+        ['u6', { zh: '回来时输入 *tmux* attach，画面原样接上', en: 'Come back with *tmux* attach, and the screen reconnects as it was.' }, { gap: 0.14 }],
       ],
     },
     {
-      // 历史不进这一轮。边界接在 4→9 之后。
-      id: 'edge', at: 105.9, chap: null, lead: 0.24, tail: 0.12,
+      // 键表与重画：按键先进键表，输出先进 server 的屏幕再画给 client。
+      id: 'impl', at: null, chap: null, lead: 0.12, tail: 0.08,
       cues: [
-        ['e1', { zh: 'kill-server 后，server 与 pane 都停', en: 'After kill-server, server and pane both stop.' }, { gap: 0.24 }],
-        ['e2', { zh: '还在，只算离开，不算重启', en: 'Still there means leaving, not a reboot.' }, { gap: 0.22 }],
-        ['e3', { zh: '进程和屏幕在 server，不在 client', en: 'Process and screen stay on the server, not the client.' }, { gap: 0.18 }],
-        ['eT', null, { pause: 1.6, gap: 0 }],
+        ['i1', { zh: '每个按键，*tmux* 都先查自己的键表', en: 'Every key is first checked against tmux\'s key table.' }, { gap: 0.12 }],
+        ['i2', { zh: '命中就自己执行，没命中才送进 *pane*', en: 'A match runs a tmux command; anything else goes to the pane.' }, { gap: 0.14 }],
+        ['i3', { zh: '输出先写进 *server* 的屏幕，再画给每个 *client*', en: 'Output goes into a screen in the server, then is drawn for each client.' }, { gap: 0.16 }],
       ],
     },
     {
-      // 片尾名单：策划、参与模型与分工、开源视频的仓库地址。7.5 秒，不配旁白。
+      // 回答开头；停法。
+      id: 'edge', at: null, chap: null, lead: 0.14, tail: 0.08,
+      cues: [
+        ['e1', { zh: '所以开头的答案是：程序住在 *server* 里', en: 'So the answer: the program lives in the server.' }, { gap: 0.16 }],
+        ['e2', { zh: '终端可以走，*server* 不走，程序就不停', en: 'Terminals may leave; while the server stays, the program runs.' }, { gap: 0.18 }],
+        ['e3', { zh: '要彻底结束，就用 kill-server', en: 'To end it all, use kill-server.' }, { gap: 0.12 }],
+        ['e4', { zh: '*server* 一停，所有会话和程序一起结束', en: 'Once the server stops, every session and program ends with it.' }, { gap: 0.14 }],
+        ['eT', null, { pause: 2.2, gap: 0 }],
+      ],
+    },
+    {
+      // 片尾名单：策划、参与模型与分工、开源视频的仓库地址。不配旁白。
       id: 'outro', at: 120.5, chap: null, lead: 0.5, tail: 0,
       cues: [
         ['z1', null, { pause: 7, gap: 0 }],

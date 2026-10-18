@@ -6,74 +6,83 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 系列基座的封面版式，文字与纸色一侧的读数换成本集的；做完删掉这一行。
-     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
-     4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
-  :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
+     卡带未来主义（src/design/STYLE.md 第 9 节）：米色机架 + 一台 CRT 里的 TMUX；128 秒用 VFD 读数；红灯只在角落一颗。
+     4:3 重新排布（上机架下 CRT），不是裁切。底部约 15% 不放文字。 */
+  @font-face { font-family: "VT323"; src: url("/fonts/VT323.ttf"); font-display: block; }
+  :root { --black: #0B0D0A; --green: #74FF9A; --amber: #FFB23E; --cream: #D8CFB4; --char: #2B2D2A; --olive: #4A4F3A; --ink: #151713; --steel: #8C8F86; --red: #D63A2C; --paper: #E8E1CC; }
   html, body, #stage { width: var(--W); height: var(--H); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { background: var(--ink); color: var(--paper); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .abs { position: absolute; white-space: nowrap; }
-  .paper { background: var(--paper); }
-  .big { font: 900 440px "Inter"; letter-spacing: -.04em; line-height: 1; }
-  .tag { background: var(--ac); color: var(--ink); display: flex; align-items: baseline; padding: 6px 34px 16px; }
-  .tag b { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
-  .tag i { font: 900 96px "Inter", "Sans SC"; font-style: normal; margin-left: 18px; line-height: 1; }
-  .ttl { font: 900 76px "Inter", "Sans SC"; line-height: 1.16; letter-spacing: -.01em; }
-  .en .ttl { font-size: 80px; }
-  .kick { font: 700 40px "Inter", "Sans SC"; color: var(--ink); }
-  .code { font: 800 150px "Mono"; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
-  svg { position: absolute; overflow: visible; }
-  /* 16:9：左墨右纸 */
-  .r169 .paper { left: 1090px; top: 0; width: 830px; height: 1080px; }
-  .r169 .big { left: 84px; top: 52px; }
-  .r169 .tag { left: 100px; top: 492px; }
-  .r169 .ttl { left: 100px; top: 722px; }
-  .r169 .kick { left: 1150px; top: 64px; }
-  .r169 .code { left: 1212px; top: 716px; }
-  /* 4:3：上墨下纸 */
-  .r43 .paper { left: 0; top: 770px; width: 1600px; height: 430px; }
-  .r43 .big { left: 66px; top: 60px; font-size: 470px; }
-  .r43 .tag { left: 1090px; top: 120px; }
-  .r43 .tag b { font-size: 150px; }
-  .r43 .tag i { font-size: 84px; }
-  .r43 .ttl { left: 84px; top: 548px; font-size: 80px; }
-  .r43 .kick { left: 1090px; top: 388px; color: var(--paper); }
-  .r43 .code { left: 80px; top: 824px; font-size: 168px; }
+  #stage { background: var(--char); overflow: hidden; position: relative; }
+  .abs { position: absolute; }
+  .rack { background: var(--cream); border: 4px solid var(--ink); border-right-width: 10px; border-bottom-width: 10px; }
+  .crt { background: var(--black); border: 14px solid var(--olive); outline: 4px solid var(--ink); overflow: hidden; }
+  .crt::after { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3'%3E%3Crect width='3' height='1' fill='%2374FF9A' fill-opacity='0.1'/%3E%3C/svg%3E"); }
+  .logo { font-family: "VT323"; color: var(--green); line-height: .8; white-space: nowrap; }
+  .prompt { font: 500 40px "Mono"; color: var(--green); opacity: .72; white-space: nowrap; }
+  .vfd { background: var(--black); border: 4px solid var(--ink); display: flex; align-items: baseline; padding: 0 30px; }
+  .vfd b { font-family: "VT323"; font-weight: 400; color: var(--green); line-height: 1; }
+  .vfd i { font: 700 64px "Sans SC", "Inter"; font-style: normal; color: var(--green); margin-left: 14px; opacity: .8; }
+  .en .vfd i { font-family: "Mono"; }
+  .ttl { font: 900 72px "Sans SC", "Inter"; color: var(--ink); line-height: 1.18; white-space: nowrap; }
+  .en .ttl { font-family: "Inter"; font-size: 70px; }
+  .plate { background: var(--paper); border: 3px solid var(--ink); font: 700 30px "Mono"; color: var(--ink); letter-spacing: .08em; padding: 6px 18px; white-space: nowrap; }
+  .screw { width: 18px; height: 18px; border-radius: 50%; background: var(--steel); border: 2px solid var(--ink); }
+  .lamp { width: 46px; height: 46px; border-radius: 50%; background: var(--red); border: 5px solid var(--ink); }
+  .cable { background: var(--ink); height: 26px; }
+  /* 16:9：左 CRT，右机架面板 */
+  .r169 .crt { left: 70px; top: 90px; width: 960px; height: 640px; }
+  .r169 .logo { left: 198px; top: 200px; font-size: 440px; }
+  .r169 .prompt { left: 140px; top: 600px; }
+  .r169 .rack { left: 1080px; top: 70px; width: 780px; height: 700px; }
+  .r169 .vfd { left: 1140px; top: 140px; }
+  .r169 .vfd b { font-size: 260px; }
+  .r169 .ttl { left: 1140px; top: 470px; }
+  .r169 .plate { left: 1140px; top: 400px; }
+  .r169 .lamp { left: 1760px; top: 110px; }
+  .r169 .cable { left: 1030px; top: 640px; width: 52px; }
+  /* 4:3：上机架，下 CRT */
+  .r43 .rack { left: 60px; top: 50px; width: 1480px; height: 430px; }
+  .r43 .vfd { left: 110px; top: 110px; }
+  .r43 .vfd b { font-size: 230px; }
+  .r43 .plate { left: 720px; top: 110px; }
+  .r43 .ttl { left: 720px; top: 190px; font-size: 64px; }
+  .en.r43 .ttl { font-size: 58px; }
+  .r43 .lamp { left: 1450px; top: 400px; }
+  .r43 .crt { left: 160px; top: 520px; width: 1280px; height: 470px; }
+  .r43 .logo { left: 496px; top: 600px; font-size: 380px; }
+  .r43 .prompt { left: 220px; top: 930px; display: none; }
+  .r43 .cable { left: 780px; top: 480px; width: 26px; height: 44px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="abs paper"></div>
-  <div class="abs big"></div>
-  <div class="abs tag"><b></b><i></i></div>
+  <div class="abs cable"></div>
+  <div class="abs crt"></div>
+  <div class="abs logo">TMUX</div>
+  <div class="abs prompt">$ tmux attach</div>
+  <div class="abs rack"></div>
+  <div class="abs vfd"><b>128</b><i></i></div>
+  <div class="abs plate"></div>
   <div class="abs ttl"></div>
-  <div class="abs kick"></div>
-  <div class="abs code"></div>
+  <div class="abs lamp"></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
   const TEXT = {
-    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
-    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
+    zh: { unit: '秒', plate: 'IN SECONDS · 秒速通', title: '是什么，<br>怎么用，<br>如何实现的' },
+    en: { unit: 'SEC', plate: 'IN SECONDS', title: 'What it is,<br>how to use it,<br>how it works' },
   }[lang];
-  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
-  document.querySelector('.tag i').textContent = TEXT.unit;
+  document.querySelector('.vfd i').textContent = TEXT.unit;
+  document.querySelector('.plate').textContent = TEXT.plate;
   document.querySelector('.ttl').innerHTML = TEXT.title;
-  document.querySelector('.kick').textContent = TEXT.kick;
-  // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
-  const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
-  const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
-  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';
-  const line = (x1, y1, x2, y2, c, w) => { const e = document.createElementNS(NS, 'line'); for (const [k, v] of Object.entries({ x1, y1, x2, y2, stroke: c, 'stroke-width': w })) e.setAttribute(k, v); s.appendChild(e); };
-  for (let i = 0; i < 30; i++) { const a = i * Math.PI / 15, big = i % 5 === 0, r0 = r * (big ? 0.8 : 0.89); line(r0 * Math.sin(a), -r0 * Math.cos(a), r * Math.sin(a), -r * Math.cos(a), i >= 1 && i <= sec ? AC : INK, big ? r * 0.04 : r * 0.022); }
-  const a = sec * Math.PI / 15; line(-0.2 * r * Math.sin(a), 0.2 * r * Math.cos(a), 1.08 * r * Math.sin(a), -1.08 * r * Math.cos(a), AC, r * 0.034);
-  const hub = document.createElementNS(NS, 'rect'); for (const [k, v] of Object.entries({ x: -r * 0.05, y: -r * 0.05, width: r * 0.1, height: r * 0.1, fill: AC })) hub.setAttribute(k, v); s.appendChild(hub);
-  document.getElementById('stage').appendChild(s);
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+  const st = document.getElementById('stage'), rack = document.querySelector('.rack').getBoundingClientRect();
+  for (const [x, y] of [[14, 14], [rack.width - 40, 14], [14, rack.height - 40], [rack.width - 40, rack.height - 40]]) {
+    const s = document.createElement('div'); s.className = 'abs screw'; s.style.left = (rack.left + x) + 'px'; s.style.top = (rack.top + y) + 'px'; st.appendChild(s);
+  }
+  const sample = st.textContent;
+  Promise.all([document.fonts.load('400 40px "VT323"', 'TMUX128'), document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Mono"', sample), document.fonts.load('500 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

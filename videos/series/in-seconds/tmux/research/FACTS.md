@@ -102,12 +102,18 @@
 
 2026-10-18 导出第 1 轮。中文稿本 `review/script.zh.56484a77a82ea997aba4c6137c9258ebac5eae9956f3327c6499ccf2d2805dfa.md`，内容 SHA-256 `56484a77a82ea997aba4c6137c9258ebac5eae9956f3327c6499ccf2d2805dfa`。
 
-2026-10-19 导出第 2 轮。中文稿本 `review/script.zh.030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1.md`，内容 SHA-256 `030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1`。尚未确认，不配音。第 2 轮只改口播顺序和省略，不改上表事实。取舍、简化和句号对照见 `review/NOTES.md`。
+2026-10-19 导出第 2 轮。中文稿本 `review/script.zh.030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1.md`，内容 SHA-256 `030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1`。已被第 3 轮替换，不配音。
+
+2026-10-19 导出第 3 轮。中文稿本 `review/script.zh.bf35113377af4133f8960ab9f0ba46c2937ab492956d52efb7a594fd2a4e01e7.md`，内容 SHA-256 `bf35113377af4133f8960ab9f0ba46c2937ab492956d52efb7a594fd2a4e01e7`。已被第 4 轮替换，不配音。
+
+2026-10-19 导出第 4 轮。中文稿本 `review/script.zh.21fd54417b15bddfc7dae1b9551fac1174a5e61782e68ff44bda51d0eeec697a.md`，内容 SHA-256 `21fd54417b15bddfc7dae1b9551fac1174a5e61782e68ff44bda51d0eeec697a`。已被第 5 轮替换。第 4 轮只改口播取舍，不改上表事实。取舍、简化和句号对照见 `review/NOTES.md`。
+
+2026-10-19 第 5 轮：Claude Opus 5.5 改写，依据 WaterRun 在会话中的自主完成授权（见 `review/NOTES.md`「第 5 轮」），中文稿本 `review/script.zh.<最新哈希>.md`。新增口播陈述的依据：server 是后台进程且 pane 是其子进程（「它是什么」实验第 3、4 节）；client 只显示与转交按键、两者经 /tmp 下 socket 通信（DESCRIPTION）；按键先查键表（server-client.c:1690-1700）；输出写进 pane 的 screen 再为每个 client 重画（window.c、screen-redraw.c）；2009 导入 OpenBSD base（`tmux-import-2009`）；kill-server 结束 server 与所有 session（实验第 10 节）。
 
 ## 制作署名
 
-策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取 3.8 文档与源码，在 WSL 里运行 tmux 3.4 实验，并写下本目录的事实记录；没有写旁白。同日 Grok 4.7 根据这份事实记录写了中文旁白第 1 轮和英文对照草稿。2026-10-19，Grok 4.7 重写了中文旁白第 2 轮和英文对照草稿，还没有配音。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。2026-10-18 这次会话中的 DeepSeek V4.1 Flash 1017 使用 Web Fetch 读取 3.8 文档与源码，在 WSL 里运行 tmux 3.4 实验，并写下本目录的事实记录；没有写旁白。同日 Grok 4.7 根据这份事实记录写了中文旁白第 1 轮和英文对照草稿。2026-10-19，Grok 4.7 重写了中文旁白第 2 轮和英文对照草稿；同日再重写第 3 轮中文旁白和英文对照草稿；同日按「不报没有作用的版本号，结尾要回答开头」重写第 4 轮中文旁白和英文对照草稿，还没有配音。2026-10-19，Claude Opus 5.5 按 WaterRun「全部自主完成、可主动修改文案」的授权重写第 5 轮中英旁白（事实不出本表），并完成场景动画、MiniMax 语音合成配音（speech-2.8-hd）、混音、渲染与成片审查。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 
-没有成片。等脚本与画面完成后，按 `docs/review.md` 第 5 节逐句、逐画面复核；本文件现在只完成取证阶段的交叉核查。
+2026-10-19，Claude Opus 5.5 对第 5 轮成片（zh SHA-256 a4b9d0e1…5151，en 96576080…4ab9）逐句、逐画面复核：用 `sheets.js cue` 与 `look.js` 截图对照本文件。画面上的年份（2007-07-09 首次提交、2007-11-20 0.1、2009-07-07 导入）、PID 506、PPID 506、/dev/pts/2–4、40×24 / 39×24、socket 路径与 mode 660、默认键 c / % / " / d、kill-server 后的回显都与上表一致。不是实验回显的示意：开头之后计数继续到 10 以上、o5 小屏里的 vim / make / ssh。没有发现需要更正的陈述。未联网重读来源（取证日为 2026-10-18）。读音只做了 ASR，人耳待 WaterRun。

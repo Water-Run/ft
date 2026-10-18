@@ -1,64 +1,98 @@
-/* 本片的视觉系统「计时盘」：墨色与纸色两种底，一种强调色（朱红）。平涂，不用阴影、渐变、圆角。
-   - 墨色底 = 手机一侧；纸色底 = 服务器一侧。两侧并排时就是一张左右对开的画面。
-   - 朱红只给「此刻」：表盘的指针、已经走过的刻度、时间轴上的现在、被选中的字节与最终的验证码。
-   - 圆只表示时间（30 秒表盘）；方块表示数据（字节、比特、二维码的模块）；斜线表示不可信的一方（泄露的副本、假网站）。
-   - 字：数字与数据用 Mono，拉丁文字用 Inter，中文用 Sans SC。
-   对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色（5.8:1）。 */
+/* 本片的视觉系统「卡带未来主义」：1970 年代多路终端控制室。规范见 src/design/STYLE.md，token 见 src/design/tokens.css。
+   - 机架 = server，磁带仓 = session，频道旋钮 = window，CRT = pane，插头/电缆 = client，按键块 = 命令/前缀，纸带 = 历史。
+   - 黑底只给 CRT 与机架内部；米色/炭灰/军绿是实体面板。荧光绿/琥珀只压黑底。红色只给警示灯。
+   - 平涂：不用阴影、渐变、模糊。塑料厚度用 2–4px 硬边（border）表示。扫描线只在 CRT 内部（SVG 图案）。 */
+@font-face { font-family: "VT323"; src: url("/fonts/VT323.ttf"); font-display: block; }
 :root {
-  --ink: #0c0d0f;
-  --paper: #f2efe8;
-  --ac: #ff4a1c;
-  --dim: #8a8782;             /* 墨色底上的次要文字（5.6:1） */
-  --dimp: #6b6964;            /* 纸色底上的次要文字（4.9:1） */
+  --cf-black: #0B0D0A;
+  --cf-green: #74FF9A;
+  --cf-amber: #FFB23E;
+  --cf-ink: #151713;
+  --cf-cream: #D8CFB4;
+  --cf-charcoal: #2B2D2A;
+  --cf-olive: #4A4F3A;
+  --cf-rust: #A8432F;
+  --cf-steel: #8C8F86;
+  --cf-paper: #E8E1CC;
+  --cf-red: #D63A2C;
+  --cf-wall: #1E201D;          /* 控制室的墙：比炭灰更暗一级，面板浮在上面 */
+  --cf-greendim: #3E8A55;      /* 绿字的暗一级（回显、未激活） */
+  --cf-creamdk: #A79F86;       /* 米色塑料的暗边 */
+  --cf-olivedk: #33372A;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--paper); }
-#bg { background: var(--ink); }
-.scene { overflow: hidden; }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
+body { font-family: "Sans SC", "Inter"; color: var(--cf-cream); }
+#bg { background: var(--cf-wall); }
+.scene { overflow: hidden; background: var(--cf-wall); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
+
+/* 字体角色 */
+.vt { font-family: "VT323", "Mono"; font-weight: 400; line-height: 1; }
 .mono { font-family: "Mono", "Sans SC"; }
-.ink { color: var(--ink); }
-.paper { color: var(--paper); }
-.ac { color: var(--ac); }
-.dim { color: var(--dim); }
-.dimp { color: var(--dimp); }
-.blk { position: absolute; }
-.bg-ink { background: var(--ink); }
-.bg-paper { background: var(--paper); }
-.bg-ac { background: var(--ac); }
+.lab { font-family: "Mono", "Sans SC"; font-weight: 700; letter-spacing: .08em; }
+.zh-b { font-family: "Sans SC", "Inter"; font-weight: 700; }
+.green { color: var(--cf-green); }
+.gdim { color: var(--cf-greendim); }
+.amber { color: var(--cf-amber); }
+.cream { color: var(--cf-cream); }
+.ink { color: var(--cf-ink); }
+.steel { color: var(--cf-steel); }
+.paper { color: var(--cf-paper); }
 
-/* 字号阶梯（1080p）：对比要强。注解不小于 28px */
-.t-0 { font-weight: 900; font-size: 400px; line-height: 1; letter-spacing: -.045em; }
-.t-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.02em; }
-.t-3 { font-weight: 700; font-size: 60px; line-height: 1.1; }
-.t-4 { font-weight: 700; font-size: 44px; line-height: 1.15; }
-.t-b { font-weight: 500; font-size: 38px; line-height: 1.3; }
-.t-n { font-weight: 500; font-size: 30px; line-height: 1.3; }
-.num { font-family: "Mono"; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+/* 面板：平涂 + 硬边厚度 */
+.pnl { position: absolute; border-style: solid; border-width: 3px 3px 6px 3px; }
+.pnl.cream { background: var(--cf-cream); border-color: #EAE3CC #B9B096 #8E8670 #C9C0A4; }
+.pnl.olive { background: var(--cf-olive); border-color: #5C6248 #3C412F #262A1D #434833; }
+.pnl.char { background: var(--cf-charcoal); border-color: #3A3C38 #232522 #141513 #2E302C; }
+.pnl.black { background: var(--cf-black); border-color: #23251F #10120F #050605 #181A16; }
+.pnl.paperp { background: var(--cf-paper); border-color: #F4EFDE #CFC7AE #B0A88F #D9D1B8; }
+.well { position: absolute; background: var(--cf-black); }                 /* 机架内部 / 接缝 */
+.screw { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--cf-steel); }
+.screw::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #555850; transform: rotate(-35deg); }
 
-/* 验证码：六个等宽的数字格，换码时逐位滚动 */
-.code { position: absolute; display: flex; font-family: "Mono"; font-weight: 800; line-height: 1; }
-.code .cd { position: relative; width: .6em; height: 1em; overflow: hidden; }
-.code .cd span { position: absolute; left: 0; top: 0; width: .6em; text-align: center; }
+/* 压字标签：标签纸底、墨字 */
+.tag { position: absolute; background: var(--cf-paper); color: var(--cf-ink); font: 700 26px "Mono", "Sans SC"; letter-spacing: .08em; padding: 4px 12px 3px; line-height: 1.2; }
+.tag.zh { letter-spacing: .02em; font-family: "Sans SC", "Mono"; }
+.silk { position: absolute; color: var(--cf-cream); font: 700 26px "Mono", "Sans SC"; letter-spacing: .08em; line-height: 1.2; }
 
-/* 字节格 */
-.byte { position: absolute; font-family: "Mono"; font-weight: 700; text-align: center; }
-.byte.sel { background: var(--ac); color: var(--ink); }
-.idx { position: absolute; font-family: "Mono"; font-weight: 500; text-align: center; color: var(--dim); }
-.idx.on { color: var(--paper); font-weight: 800; }
-.hot { --c: var(--ac) !important; }
+/* CRT：黑底屏，内容在 .inner 里；扫描线是盖在上面的 SVG 图案 */
+.crt { position: absolute; }
+.crt .scr { position: absolute; background: var(--cf-black); overflow: hidden; }
+.crt .inner { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.crt .term { position: absolute; font: 500 40px "Mono"; color: var(--cf-green); line-height: 1.25; white-space: pre; }
+.crt .term .dim { color: var(--cf-greendim); }
+.crt .beam { position: absolute; left: 0; height: 4px; width: 100%; background: #E9FFF0; }
+.crt svg.sl, .crt svg.nz { position: absolute; left: 0; top: 0; }
 
-/* 常驻层：字幕带、秒尺、剩余秒数、角上的验证码与表盘 */
-.band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
+/* 指示灯 */
+.led { position: absolute; border-radius: 50%; background: #2A2E26; border: 3px solid var(--cf-steel); }
+.led.on-g { background: var(--cf-green); }
+.led.on-a { background: var(--cf-amber); }
+.led.on-r { background: var(--cf-red); }
+
+/* 键帽：方形，侧面有厚度 */
+.key { position: absolute; background: var(--cf-cream); border-style: solid; border-width: 3px 4px 16px 4px; border-color: #EEE8D4 #B3AA90 #8A836C #C4BB9F; color: var(--cf-ink); display: flex; align-items: center; justify-content: center; font: 700 64px "Mono", "Sans SC"; }
+.key.dark { background: var(--cf-charcoal); border-color: #44463F #1D1F1B #0F100E #2A2C28; color: var(--cf-cream); }
+.key.ghost { background: transparent; border: 4px dashed var(--cf-steel); color: var(--cf-steel); }
+
+/* 纸带 */
+.tape { position: absolute; background: var(--cf-paper); }
+
+/* 常驻层：VFD 剩余秒数、磁带计数器、机架铭牌字幕带 */
+.band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--cf-ink); }
 .band svg { position: absolute; left: 0; top: 0; }
-.hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
-.hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
-.hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 40px; width: 300px; height: 72px; }
+.hud-l { position: absolute; left: 64px; top: 36px; height: 72px; display: flex; align-items: center; gap: 10px; background: var(--cf-black); border: 3px solid #3A3C38; padding: 0 14px 0 12px; }
+.hud-l .n { font: 400 64px "VT323", "Mono"; color: var(--cf-green); line-height: 1; letter-spacing: .04em; }
+.hud-l .u { font: 700 26px "Sans SC", "Inter"; color: var(--cf-greendim); }
+.en .hud-l .u { font-family: "Mono"; }
+.hud-r { position: absolute; left: 1560px; top: 36px; width: 300px; height: 72px; background: var(--cf-black); border: 3px solid #3A3C38; display: flex; }
+.hud-r .dr { flex: 1 1 0; min-width: 0; position: relative; border-left: 2px solid #2B2D2A; }
+.hud-r .dr:first-child { border-left: none; }
+.hud-r .dr:last-child { flex: 1.25 1 0; }
+.hud-r .dr .k { position: absolute; left: 7px; top: 20px; font: 700 24px "Mono"; letter-spacing: .08em; color: var(--cf-steel); }
+.hud-r .dr .v { position: absolute; right: 7px; top: 13px; font: 400 50px "VT323", "Mono"; color: var(--cf-amber); line-height: 1; }
 
-/* 字幕：压在字幕带上 */
-#caption { bottom: 30px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--ac); }
+/* 字幕：机架底部黑色铭牌上的米白字 */
+#caption { bottom: 26px; height: 60px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--cf-paper); font-family: "Sans SC", "Inter"; }
+.en #caption span { font-size: 36px; font-family: "Inter", "Sans SC"; }
+#caption em { font-style: normal; font-weight: 800; color: var(--cf-amber); }

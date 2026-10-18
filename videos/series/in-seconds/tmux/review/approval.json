@@ -2,18 +2,18 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "030814ce845c71a9ca10af55ccc23469b038b230f313519371e15d9c14c47be1",
+      "status": "approved",
+      "content_sha256": "151f837162ca93b340c859aa39ce0515af6ffe6a131782a211261b3e6ac78993",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-19T01:37:00+08:00",
+      "evidence": "review/NOTES.md「第 5 轮：授权自主定稿」：WaterRun 在会话中授权 Claude Opus 5.5 自主改稿并完成成片；非逐句阅读确认"
     },
     "en": {
-      "status": "pending",
-      "content_sha256": "4b1266b310dcb09a1bf9804573d767f5bb2a98b0d77064d7881e0f4869e84ed4",
+      "status": "approved",
+      "content_sha256": "8b8dcf6932358bba56bc090eab04c8f3e7c1a671917ecf28e5570a9f93fc9608",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-19T01:37:00+08:00",
+      "evidence": "review/NOTES.md「第 5 轮：授权自主定稿」：同上，英文按第 5 轮中文逐句翻译"
     }
   }
 }

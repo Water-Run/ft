@@ -6,7 +6,7 @@
   ],
   "titles": {
     "zh": "128 秒关于 Tmux：是什么，怎么用，如何实现的",
-    "en": ""
+    "en": "Tmux in 128 Seconds: What It Is, How to Use It, How It Works"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural",
@@ -15,6 +15,21 @@
   "rates": {
     "zh": "+6%",
     "en": "+8%"
+  },
+  "tts": {
+    "engine": {
+      "zh": "minimax",
+      "en": "minimax"
+    },
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Reliable_Executive",
+      "en": "English_Trustworthy_Man"
+    },
+    "speed": {
+      "zh": 1.0,
+      "en": 1.1
+    }
   },
   "asr_prompts": {
     "zh": "以下是普通话的讲解。",
