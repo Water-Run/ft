@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "version": "2026-10-18",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "150 秒只回答一次射击里发生了什么。开头给现象，中间走完同一次击发，结尾收回标题。",
+      "script_evidence": "README「开工反馈应用」；src/js/script.js 仍是 60 秒基座",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "同一次示意射击按现象、变化和原因分句。术语放在现象之后。现在还没有这组分句。",
+      "script_evidence": "README 核心问题与 F02 计划",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "部件第一次出现就说明它是什么，并写明讲解范围。型号和数字只在 FACTS 有出处之后出现。",
+      "script_evidence": "README F03；research/FACTS.md 写明尚未取证",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片没有章节卡。必要文字到位后至少停留 3 秒。片尾约 7.5 秒，无旁白。",
+      "script_evidence": "README F04；系列说明的片尾约定",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "节奏和冲击要非常强，和边缘行者一样，并强调三维的体积、透视和景深。看到爽的同时能看清一次射击。不照搬角色和夜之城。现在仍是计时盘基座，三维还没做。",
+      "script_evidence": "README「视觉系统」；videos/series/in-seconds/README.md 的已定方向",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "节奏跟画面的冲击走。先保留 120 拍和秒针，重音只给击发，解释时留白。MiniMax M Plan 的语音合成可用时用它配音，密钥不入库。",
+      "script_evidence": "project.json 的 audio 与 rates；README「读法」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "不拍真实人或真实场地。示意只用假靶并标注示意。密钥只放本机忽略文件。",
+      "script_evidence": "README F07；.gitignore 的 /kit/local/",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "交付时核对 1920×1080、60 帧、150 秒、响度和峰值。check.duration 已是 149.9 到 150.1，脚本仍是 60 秒。",
+      "script_evidence": "project.json 的 check.duration；README 当前状态",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "射击句子只指向以后的 FACTS。风格说明是制作决定，不是枪械事实。",
+      "script_evidence": "research/FACTS.md 的尚未取证说明",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "不提上一集。观众不需要看过其他秒速通。",
+      "script_evidence": "README F10 与核心问题",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "若引用外文手册，画面同时给中文释义。现在没有引文。",
+      "script_evidence": "README F11",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "配音前列专名和数字读法。可用时用 MiniMax M Plan 试听，再决定音色。",
+      "script_evidence": "README「读法」；project.json 的 voices 仍是系列占位",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}
