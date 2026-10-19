@@ -2,18 +2,18 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830",
+      "status": "approved",
+      "content_sha256": "ab2fce95bb5a05a160d5a2c7962415f8b7ce0a2e5ccf2580f9ebbbc2e7976270",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-19T22:19:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：第 10 稿经 WaterRun 确认（「可以，开工吧，自助完成。」）；第 11 稿是依同节「自主迭代的授权」由 Claude Opus 5.5 自行定稿的三处改动，非逐句阅读确认"
     },
     "en": {
-      "status": "pending",
-      "content_sha256": "7e5b8ad428a4b29b5b1bf6fa7e01d7e18565aa172037cece1e9c281b2ab514ad",
+      "status": "approved",
+      "content_sha256": "53b0e275eafd5fa92fbc72432f1381281acd02654fb7149582f0a495e1518b5b",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-19T22:19:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：WaterRun 授权放行后由制作者自行迭代、自助完成；英文由 Claude Opus 5.5 以中文第 11 稿为底本重译并自行校对，非逐句阅读确认"
     }
   }
 }

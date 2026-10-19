@@ -169,10 +169,40 @@
 
 2026-10-19 第 8 轮（Claude Opus 5.5）：WaterRun 指示按第 7 轮的推荐定 5 项取舍。加回 p2b（口令摘要故意算得慢，依据 owasp-password-storage），验证码两句合一，j1 措辞。中文 `review/script.zh.c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830.md`，内容哈希 `c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830`，估算 200.0 秒；pending，未配音。
 
+2026-10-19 第 9、10 轮（Claude Opus 5.5）：全片统一叫「密码」；按 WaterRun「名词还是稍微出现一下」点名哈希（p2）、钓鱼（p4）、Access Token / Refresh Token（新增 j7b，依据 `rfc6749` §1.4、§1.5）。第 10 稿 `e01d3642…` 于 22:16 经 WaterRun 确认（「可以，开工吧，自助完成。」）。
+
+2026-10-19 第 11 稿（Claude Opus 5.5，依 WaterRun 授权自主迭代）：s1 前加「先说会话。」，j2「由服务器签名」，s10「同样带着编号」；内容哈希 `ab2fce95…`。英文以第 11 稿为底本重译，句号一一对应；配音时为避免歧义又改两句（p4 加 that、p1 改主动句），内容哈希见 `review/approval.json`。本轮没有新增事实陈述；新增的画面数据见上文「画面数据」。
+
+## 画面数据
+
+画面上的协议文本、令牌和数字只取下面这些来源；域名一律用 RFC 2606 保留的 `.example`（`shop.example` 为本片的网站，`id.example` 为「另一个平台」，`sh0p.example` 为假网站），用户名 `alice`、密码 `correct-horse-7` 都是演示用的假值。
+
+| 画面元素 | 取值 | 依据 | 状态 |
+|---|---|---|---|
+| Session ID 与 Cookie 行 | `Set-Cookie: SID=31d4d96e407aad42`、`Cookie: SID=31d4d96e407aad42` | `rfc6265` §3.1 的示例原文（2026-10-19 用 Web Fetch 逐字核对） | 已读 |
+| 授权码回调 | `code=SplxlOBeZQQYbYS6WxSbIA&state=xyz` | `rfc6749` §4.1.2 示例原文（同日核对） | 已读 |
+| 换来的令牌 | `"access_token":"2YotnFZFEjr1zCsicMWpAA"`、`"refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA"`、`"expires_in":3600` | `rfc6749` §4.1.4 示例原文（同日核对） | 已读 |
+| JWT 三段 | 头部 `{"alg":"HS256","typ":"JWT"}`、内容 `{"sub":"alice","exp":1792413000}`，签名为 HMAC-SHA256；三段与改一个字后的结果见 `research/lab/lab.json` 的 `jwt` | `research/lab/01_lab.js` 用 Node 自带 crypto 实算；三段结构依据 `rfc7519` §3 | 实测 |
+| 改一个字，签名对不上 | 把 `exp` 的第一位 1 改成 2（过期时间推后三十多年），用原签名验证得 `false` | 同上，`tampered.verifies_with_old_signature` | 实测 |
+| ID Token 的内容 | `{"iss":"https://id.example","sub":"24400320","aud":"shop.example","exp":…,"iat":…}`，RS256 签名，密钥临时生成、用完即丢 | 同上 `id_token`；claim 的含义依据 `rfc7519` §4.1、`oidc-core` §2 | 实测 |
+| 两种哈希算一次的耗时 | SHA-256 约 1.06 微秒一次；scrypt（N=2^17、r=8、p=1，OWASP 给的参数）约 0.19 秒一次；同一台机器每秒能试的次数相差约十八万倍 | `research/lab/01_lab.js`，Node 24.21.0，Intel Core i7-14650HX，2026-10-19 实测；参数依据 `owasp-password-storage` scrypt 一节 | 实测；随机器而变，画面只用作量级对比 |
+| passkey 签名的数据 | 客户端数据 `{"type":"webauthn.get","challenge":"…","origin":"https://shop.example"}`，P-256 私钥签名，公钥验证为 `true`；挑战值每次运行随机生成 | 同上 `passkey`；签名对象（认证器数据 + 客户端数据的哈希）依据 `webauthn-2` §7.2 | 实测 |
+| 短信码 | `482913` | 演示用的假值 | — |
+
 ## 制作署名
 
-策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿，按 F01–F12 自我对抗后重写为 7 场“怎么验证”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。2026-10-19 第 7 轮中文稿由 Claude Opus 5.5 改写（文案阶段，未涉及场景）。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿，按 F01–F12 自我对抗后重写为 7 场“怎么验证”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。
+
+制作方：Claude Opus 5.5（2026-10-19）。第 7–11 轮中文稿改写、英文重译；`research/lab/01_lab.js` 实验（JWT 签名与改字验签、两种哈希的耗时、passkey 签名数据），用 Web Fetch 逐字核对 RFC 6265、RFC 6749 示例原值与 OWASP 的 scrypt 参数；场景动画、常驻仪表与换场、配乐脚本 `tools/music.py` 与音效编排、封面、配音选型与读音回听、渲染与审查。逐句对应表 `expect.*.json` 与分镜细化按第 11 稿由 Claude Opus 5.5 重写（原表对应第 6 轮句号）。
+
+旁白合成：MiniMax speech-2.8-hd（中文音色「精英青年」male-qn-jingying，语速 1.05；英文音色 English_Aussie_Bloke，语速 1.08）。读音回听：Whisper small（faster-whisper，本机 `assets/whisper/fw-small`）。网页检索与摘录：Web Fetch（模型未披露）。片尾名单与此一致，开源视频链接 `github.com/Water-Run/ft`。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 
-没有成片。等脚本与画面完成后，按 `docs/review.md` 第 5 节逐句、逐画面复核；本文件现在只完成取证阶段的交叉核查。
+2026-10-19，Claude Opus 5.5 对中英主成片（zh SHA-256 `fcf9c25a…d339`，en `b556bcd6…2101`）逐句、逐画面复核：用 `look.js` 截每句说完那一刻的画面（中英各 46 帧，`shots/sheets/*-cue_*.jpg`），并从最终 MP4 每 8 秒抽一帧对照，与本文件逐条比对。
+
+- 协议文本：`SID=31d4d96e407aad42`、`code=SplxlOBeZQQYbYS6WxSbIA&state=xyz`、`2YotnFZFEjr1zCsicMWpAA`、`tGzv3JOkF0XG5Qx2TlKWIA` 与 RFC 原文一致（当日 Web Fetch 逐字核对）。
+- 实算数据：JWT 三段、改一位数字后的应得签名、ID Token 的 iss / sub / aud、挑战值、两种哈希每秒的次数（1 026 716 与 5）都取自 `research/lab/lab.json`，画面不手写。
+- 推断与简化：j1「很多台服务器都得查同一张表」、a7「信任集中」按 NOTES 记为推断；「故意慢的哈希」画面只作量级对比，环境写在「画面数据」一行。
+- 没有发现需要更正的陈述。没有联网重读准备方 2026-10-18 读过的全部来源；只重读了 RFC 6265、RFC 6749、OWASP Password Storage 三处。
+- 读音只做了 ASR 筛查（见 README「读法」），人耳待 WaterRun。

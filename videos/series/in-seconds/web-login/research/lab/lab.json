@@ -1,0 +1,96 @@
+{
+ "generated": "2026-10-19",
+ "env": {
+  "node": "v24.21.0",
+  "cpu": "Intel(R) Core(TM) i7-14650HX"
+ },
+ "rfc_examples": {
+  "rfc6265_set_cookie": "Set-Cookie: SID=31d4d96e407aad42",
+  "rfc6265_cookie": "Cookie: SID=31d4d96e407aad42",
+  "rfc6749_code": "SplxlOBeZQQYbYS6WxSbIA",
+  "rfc6749_state": "xyz",
+  "rfc6749_access_token": "2YotnFZFEjr1zCsicMWpAA",
+  "rfc6749_refresh_token": "tGzv3JOkF0XG5Qx2TlKWIA",
+  "rfc6749_expires_in": 3600
+ },
+ "jwt": {
+  "header": {
+   "alg": "HS256",
+   "typ": "JWT"
+  },
+  "payload": {
+   "sub": "alice",
+   "exp": 1792413000
+  },
+  "header_b64": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+  "payload_b64": "eyJzdWIiOiJhbGljZSIsImV4cCI6MTc5MjQxMzAwMH0",
+  "signature": "KXEv7rsuSVFLI85RCjKkf2cpiNpK77GNCG0OV3Kabuo",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGljZSIsImV4cCI6MTc5MjQxMzAwMH0.KXEv7rsuSVFLI85RCjKkf2cpiNpK77GNCG0OV3Kabuo",
+  "tampered": {
+   "payload": {
+    "sub": "alice",
+    "exp": 2792413000
+   },
+   "payload_b64": "eyJzdWIiOiJhbGljZSIsImV4cCI6Mjc5MjQxMzAwMH0",
+   "expected_signature": "VxqLbyjF8twSLTEkqPLzI0FT6c3RBZYYXaNwM-Rm1iQ",
+   "verifies_with_old_signature": false
+  },
+  "verifies": true,
+  "exp_iso": "2026-10-19T12:30:00.000Z"
+ },
+ "id_token": {
+  "header": {
+   "alg": "RS256",
+   "typ": "JWT"
+  },
+  "payload": {
+   "iss": "https://id.example",
+   "sub": "24400320",
+   "aud": "shop.example",
+   "exp": 1792413300,
+   "iat": 1792412700
+  },
+  "header_b64": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9",
+  "payload_b64": "eyJpc3MiOiJodHRwczovL2lkLmV4YW1wbGUiLCJzdWIiOiIyNDQwMDMyMCIsImF1ZCI6InNob3AuZXhhbXBsZSIsImV4cCI6MTc5MjQxMzMwMCwiaWF0IjoxNzkyNDEyNzAwfQ",
+  "signature": "LfgX2JDDitvhulXmqabEr5zhg_jLJJTmpnNXaE4NhMRcPrRj7_gWumBXtVRxCxcbml4uW0zZfUpbngPqmfD84mOpIyh7Uka4-OoKo5idYiJWwGIIbpwjS7upc400pRZsQIW1IIbqPyf8PYWa1LMewpOlEDGMknrMM-k8HVAJXtCTy5Z-u6I4uPF_wtxtCBAwaoceZIbvClbPGTWhSb9o42a1Hh-Ikq7fdTEH5fcWM79CNSFUjYHdS7585Lhm_ud_PFkAo3-V1qmwlxVkjXBhfXq7HHeFQtGOrfPP69hrROkoQzrzPDg4_OZKEcbwsjmSW8I1zSaLcJ4MDVhYsDr2Qw",
+  "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2lkLmV4YW1wbGUiLCJzdWIiOiIyNDQwMDMyMCIsImF1ZCI6InNob3AuZXhhbXBsZSIsImV4cCI6MTc5MjQxMzMwMCwiaWF0IjoxNzkyNDEyNzAwfQ.LfgX2JDDitvhulXmqabEr5zhg_jLJJTmpnNXaE4NhMRcPrRj7_gWumBXtVRxCxcbml4uW0zZfUpbngPqmfD84mOpIyh7Uka4-OoKo5idYiJWwGIIbpwjS7upc400pRZsQIW1IIbqPyf8PYWa1LMewpOlEDGMknrMM-k8HVAJXtCTy5Z-u6I4uPF_wtxtCBAwaoceZIbvClbPGTWhSb9o42a1Hh-Ikq7fdTEH5fcWM79CNSFUjYHdS7585Lhm_ud_PFkAo3-V1qmwlxVkjXBhfXq7HHeFQtGOrfPP69hrROkoQzrzPDg4_OZKEcbwsjmSW8I1zSaLcJ4MDVhYsDr2Qw"
+ },
+ "password": {
+  "password": "correct-horse-7",
+  "sha256_hex": "3dc8bc276833c21890daf7f3dcf4f14088d6e0b055be21579b6d2b569ef11ef2",
+  "scrypt": {
+   "params": {
+    "N": 131072,
+    "r": 8,
+    "p": 1
+   },
+   "salt_hex": "b6c1f0e29a4d7c35",
+   "hash_hex": "076cfdb2fee51b0be498464fe15d09581e95eb51fabe1ff3e73eb367921278b0"
+  },
+  "seconds_per_hash": {
+   "sha256": 0.0000010570545000000001,
+   "scrypt": 0.193481475
+  },
+  "guesses_per_second": {
+   "sha256": 946025,
+   "scrypt": 5.17
+  },
+  "wrong_guess_scrypt_hex": "6c4b0a512910c532fa27e6e7fc3a5e5f21cfa4a4d1ca11fb14d0b87661836071"
+ },
+ "passkey": {
+  "rp_id": "shop.example",
+  "challenge": "kJ1-cK3dP0DU4qsedGvv5b-jD72RA04EnU5pF82J_yQ",
+  "client_data": {
+   "type": "webauthn.get",
+   "challenge": "kJ1-cK3dP0DU4qsedGvv5b-jD72RA04EnU5pF82J_yQ",
+   "origin": "https://shop.example"
+  },
+  "rp_id_hash_hex": "0f59463c606c5b0e5d3da81f36e3f7c175ac230c60e75c2144ce3b752247607c",
+  "signature_b64u": "MEYCIQC0y6a4390zrZIkR9w7LX5E12FnWzqyY94-O1KtWF23rQIhAOFZwNSqpcU5G2GULdpWXxYIr2InJopuIW1cWBsxiTcn",
+  "public_key_x": "nCdFkej7D1g0TFDT2jZmRAaxSQZZBAbUEN1VsucVX1s",
+  "public_key_y": "0GlDSGnmFo1URawX_ziOL3Adw6XHh8dimTubRzyJCgI",
+  "verifies": true,
+  "phishing_origin": "https://sh0p.example",
+  "phishing_rp_id_hash_hex": "2c2e5f1770e36af5af045665bea4153ddce6a06268e048684f286a836c135e90"
+ }
+}

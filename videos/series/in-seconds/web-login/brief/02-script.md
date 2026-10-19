@@ -1,26 +1,21 @@
 # 02 旁白与时间线
 
-旁白源稿在 `src/js/script.js`；每句起止时刻用 `node kit/tools/timeline.js videos/series/in-seconds/web-login [句号…]` 查。当前是**待确认稿**，不是已定稿。
+旁白源稿在 `src/js/script.js`；每句起止时刻用 `node kit/tools/timeline.js videos/series/in-seconds/web-login [句号…]` 查。
 
 ## 1. 全文与确认状态
 
-- 中文稿：`review/script.zh.4c5c728fc499f9af399442da7c68cc1ecdf1d7517f5265268f8ec5f59551e848.md`，内容 SHA-256 `4c5c728fc499f9af399442da7c68cc1ecdf1d7517f5265268f8ec5f59551e848`。
-- 英文草稿：`review/script.en.7e5b8ad428a4b29b5b1bf6fa7e01d7e18565aa172037cece1e9c281b2ab514ad.md`，内容 SHA-256 `7e5b8ad428a4b29b5b1bf6fa7e01d7e18565aa172037cece1e9c281b2ab514ad`。
-- `review/approval.json` 当前是 `pending`；WaterRun 明确确认前，不合成、不铺场景。确认后由准备方运行 `tts.js`，把 `timing.zh.js`/`timing.en.js` 与音频缓存补齐，再交给 Opus 5.5。
-- 逐句意见与待确认问题在 `review/NOTES.md`；术语表也在那里。
+- 中文第 10 稿 `e01d3642…` 于 2026-10-19 22:16 经 WaterRun 确认；第 11 稿 `ab2fce95…` 是依 WaterRun「放行后自行迭代、自助完成」的授权由 Claude Opus 5.5 自行定稿的三处改动。英文以第 11 稿为底本重译，同属授权自主定稿。记录在 `review/NOTES.md`「明确确认」，当前哈希在 `review/approval.json`。
+- 配音已合成：MiniMax speech-2.8-hd，中文「精英青年」语速 1.05，英文 English_Aussie_Bloke 语速 1.08。实测时长在 `src/js/timing.<语言>.js`。
 
 ## 2. 能不能改
 
-- **不改**：各句文字、`SAY` 表、句号、场景顺序、标题承诺。
-- **可以调**：句间 `gap`、场景 `lead`/`tail`，用来给镜头/动作留时间。调完运行 `tts.js`（有缓存）确认总长仍在 `check.duration` 内。
-- 认为某句有事实错误或读音错误：不要自行改写；停下报告，说明依据。
+- 含义、范围、增删句、标题：按 `docs/script-review.md` 处理，并在 NOTES 记录依据。
+- 读法、停顿、场景定点：可以调；调完运行 `tts.js`（有缓存）、`timeline.js`，确认两种语言都正好 200.00 秒。MiniMax 每次合成的时长略有出入，重新合成过的句子要重排定点。
 
 ## 3. 时间结构
 
-估算总长 200.0 秒（中文与英文相同）。场景：open 0:00 / session 0:21 / jwt 0:59 / authn 1:35 / oauth 2:05 / attacks 2:34 / close 2:55 / outro 3:12，片尾 7.5 秒无旁白。
-
-实际配音后，`timing.*.js` 会改变每句的起止时刻；场景里的 `T()` 会自动跟着走。任何写死秒数的画面都会在改稿后错位。
+场景定点（两种语言共用）：open 0 / session 27.25 / jwt 65.25 / authn 102 / oauth 149.5 / close 181.75 / outro 192，片尾 7.5 秒无旁白。定点按两种语言各场实测长度取较长者排出，富余的时间主要留给收束一场的结论句（F04）。
 
 ## 4. 每句对应的画面要求
 
-`expect.zh.json` 与 `expect.en.json` 列出每句说完时画面上必须完整出现的文字；不要删改条目。Opus 5.5 在实现场景时把标签/形状/读数放在对应时刻，`scan.js` 会逐句核对。
+`expect.zh.json` 与 `expect.en.json` 按第 11 稿重写，列出每句说完时画面上必须完整出现的文字；`scan.js` 逐句核对。

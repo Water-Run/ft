@@ -6,73 +6,72 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
-     4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
-  :root { --ink: #111111; --paper: #F1ECE1; --ac: #E2412C; --bh-yellow: #F2C230; --bh-blue: #2F57B0; }
+     与正片同一套颜色、字体与图形语言（包豪斯）：红圆 = 你知道的，蓝方 = 你拥有的，黄三角 = 你本身，黑框 = 服务器。
+     16:9 左边是三块形状和一只黑框，右边是标题；4:3 上形状、下标题，重新排布，不是裁切。
+     右下角压一行正片里的真实协议文本（RFC 6265 的示例 Cookie）。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
+  :root { --ink: #111111; --paper: #F1ECE1; --red: #E2412C; --yel: #F2C230; --blue: #2F57B0; --dim: #6E6A61; }
   html, body, #stage { width: var(--W); height: var(--H); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { background: var(--ink); color: var(--paper); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
   .abs { position: absolute; white-space: nowrap; }
-  .paper { background: var(--paper); }
-  .big { font: 900 440px "Inter"; letter-spacing: -.04em; line-height: 1; }
-  .tag { background: var(--ac); color: var(--ink); display: flex; align-items: baseline; padding: 6px 34px 16px; }
-  .tag b { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
-  .tag i { font: 900 96px "Inter", "Sans SC"; font-style: normal; margin-left: 18px; line-height: 1; }
-  .ttl { font: 900 76px "Inter", "Sans SC"; line-height: 1.16; letter-spacing: -.01em; }
-  .en .ttl { font-size: 80px; }
-  .kick { font: 700 40px "Inter", "Sans SC"; color: var(--ink); }
-  .code { font: 800 150px "Mono"; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
-  svg { position: absolute; overflow: visible; }
-  /* 16:9：左墨右纸 */
-  .r169 .paper { left: 1090px; top: 0; width: 830px; height: 1080px; }
-  .r169 .big { left: 84px; top: 52px; }
-  .r169 .tag { left: 100px; top: 492px; }
-  .r169 .ttl { left: 100px; top: 722px; }
-  .r169 .kick { left: 1150px; top: 64px; }
-  .r169 .code { left: 1212px; top: 716px; }
-  /* 4:3：上墨下纸 */
-  .r43 .paper { left: 0; top: 770px; width: 1600px; height: 430px; }
-  .r43 .big { left: 66px; top: 60px; font-size: 470px; }
-  .r43 .tag { left: 1090px; top: 120px; }
-  .r43 .tag b { font-size: 150px; }
-  .r43 .tag i { font-size: 84px; }
-  .r43 .ttl { left: 84px; top: 548px; font-size: 80px; }
-  .r43 .kick { left: 1090px; top: 388px; color: var(--paper); }
-  .r43 .code { left: 80px; top: 824px; font-size: 168px; }
+  svg.abs { overflow: visible; }
+  .n { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
+  .n i { font: 900 84px "Sans SC", "Inter"; font-style: normal; margin-left: 14px; letter-spacing: 0; }
+  .en .n i { font-family: "Inter"; }
+  .big { font: 900 196px "Inter", "Sans SC"; letter-spacing: -.045em; line-height: .95; }
+  .en .big { font-size: 160px; }
+  .sub { font: 900 88px "Sans SC", "Inter"; letter-spacing: -.01em; line-height: 1.1; }
+  .en .sub { font: 900 62px "Inter"; line-height: 1.12; }
+  .kick { font: 700 34px "Sans SC", "Inter"; color: var(--dim); }
+  .code { font: 700 30px "Mono"; color: var(--paper); background: var(--blue); padding: 10px 18px; }
+  /* 16:9 */
+  .r169 .n { left: 1040px; top: 96px; }
+  .r169 .big { left: 1032px; top: 300px; }
+  .r169 .sub { left: 1040px; top: 540px; }
+  .r169 .kick { left: 1044px; top: 54px; }
+  .r169 .code { left: 1040px; top: 790px; }
+  .en.r169 .sub { top: 510px; }
+  /* 4:3 */
+  .r43 .n { left: 800px; top: 96px; font-size: 150px; }
+  .r43 .kick { left: 806px; top: 52px; }
+  .r43 .code { left: 800px; top: 300px; }
+  .r43 .big { left: 70px; top: 630px; font-size: 200px; }
+  .en.r43 .big { font-size: 176px; }
+  .r43 .sub { left: 76px; top: 866px; font-size: 92px; }
+  .en.r43 .sub { font-size: 60px; top: 846px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="abs paper"></div>
-  <div class="abs big"></div>
-  <div class="abs tag"><b></b><i></i></div>
-  <div class="abs ttl"></div>
+  <svg class="abs" id="shapes" width="10" height="10"></svg>
   <div class="abs kick"></div>
-  <div class="abs code"></div>
+  <div class="abs n"><span></span><i></i></div>
+  <div class="abs big"></div>
+  <div class="abs sub"></div>
+  <div class="abs code">Cookie: SID=31d4d96e407aad42</div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
   const TEXT = {
-    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
-    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
+    zh: { n: '200', unit: '秒', big: 'Web 登录', sub: wide ? '怎么验证<br>你是你' : '怎么验证你是你', kick: 'XX 秒速通' },
+    en: { n: '200', unit: 's', big: 'Web Login', sub: 'How a site checks<br>that you are you', kick: 'In XX Seconds' },
   }[lang];
-  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
-  document.querySelector('.tag i').textContent = TEXT.unit;
-  document.querySelector('.ttl').innerHTML = TEXT.title;
+  document.querySelector('.n span').textContent = TEXT.n; document.querySelector('.n i').textContent = TEXT.unit;
+  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.sub').innerHTML = TEXT.sub;
   document.querySelector('.kick').textContent = TEXT.kick;
-  // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
-  const NS = 'http://www.w3.org/2000/svg', INK = '#111111', AC = '#E2412C';
-  const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
-  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';
-  const line = (x1, y1, x2, y2, c, w) => { const e = document.createElementNS(NS, 'line'); for (const [k, v] of Object.entries({ x1, y1, x2, y2, stroke: c, 'stroke-width': w })) e.setAttribute(k, v); s.appendChild(e); };
-  for (let i = 0; i < 30; i++) { const a = i * Math.PI / 15, big = i % 5 === 0, r0 = r * (big ? 0.8 : 0.89); line(r0 * Math.sin(a), -r0 * Math.cos(a), r * Math.sin(a), -r * Math.cos(a), i >= 1 && i <= sec ? AC : INK, big ? r * 0.04 : r * 0.022); }
-  const a = sec * Math.PI / 15; line(-0.2 * r * Math.sin(a), 0.2 * r * Math.cos(a), 1.08 * r * Math.sin(a), -1.08 * r * Math.cos(a), AC, r * 0.034);
-  const hub = document.createElementNS(NS, 'rect'); for (const [k, v] of Object.entries({ x: -r * 0.05, y: -r * 0.05, width: r * 0.1, height: r * 0.1, fill: AC })) hub.setAttribute(k, v); s.appendChild(hub);
-  document.getElementById('stage').appendChild(s);
+  // 形状：红圆（知道）、蓝方（拥有）、黄三角（本身）拼在一起；一只黑框（服务器）只框住它们的一角：服务器看到的只是你出示的那一部分
+  const NS = 'http://www.w3.org/2000/svg', s = document.getElementById('shapes');
+  const add = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); s.appendChild(e); return e; };
+  const [ox, oy, k] = wide ? [70, 110, 1] : [70, 40, 0.68];
+  const P = (x, y) => `${ox + x * k},${oy + y * k}`;
+  add('circle', { cx: ox + 330 * k, cy: oy + 330 * k, r: 300 * k, fill: '#E2412C' });
+  add('rect', { x: ox + 470 * k, y: oy + 420 * k, width: 360 * k, height: 360 * k, fill: '#2F57B0' });
+  add('polygon', { points: [P(600, 40), P(900, 560), P(300, 560)].join(' '), fill: '#F2C230' });
+  add('rect', { x: ox + 520 * k, y: oy + 150 * k, width: 400 * k, height: 400 * k, fill: 'none', stroke: '#111111', 'stroke-width': 28 * k });
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample), document.fonts.load('700 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

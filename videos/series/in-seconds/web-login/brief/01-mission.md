@@ -6,6 +6,8 @@
 
 一句话：登录验证先分四层——认证、会话、授权、令牌；Session 是服务器会话状态，Session ID 是标识，Cookie 只是运输；JWT 是 token 格式，不是 Session；再讲认证方式与 OAuth/OIDC 委托。
 
+**2026-10-19 更新：第 7 轮起改为「三件事」（认证、会话、授权），删去单独的攻击一场；定稿为第 11 稿，场景为 open / session / jwt / authn / oauth / close / outro，定点见 `brief/02-script.md`。下表是第 6 轮时的原结构，保留作历史记录。**
+
 结构（200 秒，估算；实测以 `timing.<语言>.js` 为准）：
 
 | 场景 | 起点 | 时长 | 讲什么 | 主题落点 |

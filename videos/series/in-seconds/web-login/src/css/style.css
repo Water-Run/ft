@@ -20,7 +20,7 @@
 
 body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 #bg { background: var(--paper); }
-.scene { overflow: hidden; }
+.scene { overflow: hidden; background: var(--paper); }      /* 每个场景自带米白底：换场时新场景从形状里长出来，盖住旧场景 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; }
 .ink { color: var(--ink); }
