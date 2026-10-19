@@ -1,8 +1,8 @@
 # 接续入口：道交法中的路权
 
-2026-10-18 的接续方式：WaterRun 先将 `research/GEMINI-PROMPT.md` 用于网页端 Gemini 4 Argon 的详细文案讨论。保留第 7 稿为底本，讨论产出回来后逐项核查、映射到 cue 和 FACTS，再交 WaterRun 明确确认。模型尚未实际参与时只列“拟参与”；已经选定的中文、音色与时长上限继续沿用。
+2026-10-19 的接续方式：网页端 Gemini 第 1 轮讨论已回收，逐项核查后形成第 8 稿（[交审稿](review/script.zh.60538fcaf2ff7e72bc588a89b89155f4994faabf4ad857c35712c2e13bdaaf21.md)，逐项处理见 [校对记录](review/NOTES.md)）。下一步由 WaterRun 审阅第 8 稿并明确确认；确认前不配音、不写正式场景。已经选定的中文、音色与时长上限继续沿用。
 
-**状态：2026-10-11 Codex 接续整理中文稿第 7 稿，正文六章，估算 10:50.1（[完整交审材料](research/script-review.md)）。配音已选定 YunjianNeural，中文稿尚未获 WaterRun 明确确认；确认后再配音、写成片场景。当前无成片。**
+**状态：2026-10-19 第 8 稿，正文六章，估算 10:52.2（652.2 秒），内容 SHA-256 `60538fcaf2ff7e72bc588a89b89155f4994faabf4ad857c35712c2e13bdaaf21`。配音已选定 YunjianNeural，中文稿尚未获 WaterRun 明确确认；确认后再配音、写成片场景。当前无成片。**
 
 WaterRun 指定：把原 10 月 11 日的本片提前到 **10 月 9 日**；**只做中文**；面向中国大陆普通机动车驾驶员普及道路通行知识；Codex 建项目、测绘事实并准备资料，供 Opus 接入开工。独立片，初始预算 8–10 分钟、上限 600 秒，是准备方的叙事预算，不是用户指定的定长秒数。2026-10-09 已按 WaterRun 的完整内容要求调为 660 秒上限；环岛、会车和掉头已进入正文。删减重复说明优先于加速讲解。
 
@@ -29,7 +29,7 @@ WaterRun 指定：把原 10 月 11 日的本片提前到 **10 月 9 日**；**�
 
 - `research/lab/`：来源记录、法条摘录和带条件的教学示意，不是实测事故数据。
 - `src/js/data.js`：由 `tools/gen_data.py` 生成的案例输入；坐标、尺寸由后续设计确定，不能包装为实测。
-- `src/js/script.js`：待 WaterRun 审查的第 7 稿中文文案；`src/js/scenes/`、`src/js/config.js`：带 `SCAFFOLD_ONLY` 标记的模板，**不是已完成动效或声音方案**。
+- `src/js/script.js`：待 WaterRun 审查的第 8 稿中文文案；`src/js/scenes/`、`src/js/config.js`：带 `SCAFFOLD_ONLY` 标记的模板，**不是已完成动效或声音方案**。
 - `expect.zh.json` 与 `timing.zh.js`：占位；不得声称已有配音时长或 ASR 验收。
 - 当前不运行完整 `check.js --handoff` 并声称制作交接通过：该闸门所需定稿、音频与设计尚未生产。预研检查见 `research/lab/preparation-check.txt`。
 

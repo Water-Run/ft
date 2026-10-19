@@ -10,7 +10,7 @@
 | 2026-10-18 本机工作树盘点 | 10 | 3 | 152 | 165 |
 | 原 10.9–10.15 的 16 部企划 | 2 | 3 | 11 | 16 |
 
-本表保留 10 月 18 日的盘点基线；其他制作会话随后已开工，实时在制数量以[片单](catalog.md)为准。本轮重点核对：**交通法已备好 Gemini 讨论 Prompt；OpenCart R3 待 WaterRun 阅读确认；Harness 的接续状态沿用其制作记录。** 文案、任务书或占位时间线都不等于成片。
+本表保留 10 月 18 日的盘点基线；其他制作会话随后已开工，实时在制数量以[片单](catalog.md)为准。本轮重点核对：**交通法第 8 稿与两轮 Gemini 4 Argon 反馈已落盘，6 项待议等 WaterRun 大改；OpenCart R3 待 WaterRun 阅读确认；Harness 的接续状态沿用其制作记录。** 文案、任务书或占位时间线都不等于成片。
 
 OpenCart 本轮收束匿名测绘、中文 R3、A 方向和 Opus 交接材料，随本片目录提交；当前没有配音、正式动画或成片。InnoDB 和 Lean 4 本轮只测绘反馈，没有修复原片。
 
@@ -25,7 +25,7 @@ OpenCart 本轮收束匿名测绘、中文 R3、A 方向和 Opus 交接材料，
 
 | 项目 | 已具备的材料 | 当前停点 | 下一步与完成条件 |
 |---|---|---|---|
-| [道交法中的路权](../videos/standalone/traffic-law-right-of-way/README.md) | 第 7 稿源稿与交审哈希一致；[网页 Gemini 完整 Prompt](../videos/standalone/traffic-law-right-of-way/research/GEMINI-PROMPT.md)含全文、FACTS、来源、讨论步骤和 F01–F14 约束 | 等 WaterRun 与网页端 Gemini 4 Argon 讨论；Gemini 尚未实际参与；稿件未批准 | 回收逐轮修改和真实模型 credit，先核事实再改唯一源稿；保留仅中文、Yunjian 与 660 秒上限；人工确认后制作 |
+| [道交法中的路权](../videos/standalone/traffic-law-right-of-way/README.md) | 第 8 稿源稿与内容哈希 `60538fca…` 一致；[第 2 轮反馈](../videos/standalone/traffic-law-right-of-way/review/GEMINI-ROUND2-2026-10-19.md)与[校对记录](../videos/standalone/traffic-law-right-of-way/review/NOTES.md)保留两轮意见；Gemini 4 Argon 已实际参与 | 第 2 轮 6 项问题待 WaterRun 大改时决定；第 8 稿未经人工确认 | 等 WaterRun 介入大改；保留仅中文、Yunjian 与 660 秒上限；确认后再配音、写场景 |
 | [OpenCart 1.5 后台](../videos/standalone/opencart-1-5-admin/README.md) | A 风格已确认；CASE-A 15 组深入静态测绘、严格匿名输出；[R3 全文](../videos/standalone/opencart-1-5-admin/research/SCRIPT-R3.md)含时代引入、九章子系统与新版对照；77 段 / 256 条旁白，估算 17:28.3；46 组分镜；Opus 任务书 | WaterRun 先阅读，再讨论确认；当前 hash 92e871ec…12243 为 pending；没有配音 / 正式场景；英文待译 | 按 R3 继续人工校对；确认后 Opus 从试听与代表动画开始。中文文件、分镜与对应表一致；先通过文案阶段交接检查，再进入实际制作 |
 | [192 秒 Harness](../videos/series/in-seconds/harness/README.md) | 已有 FACTS、来源、叙事主线，以及 2026-10-19 导出的中文校对稿。估算两条时间线都是 192.0 秒 | 中文尚未人工确认。正片场景仍是系列基座，只改了片尾名单和终端配色。无配音、无成片 | 后续模型优化 `src/js/script.js` 里的中文稿，改完重新导出。确认前不配音、不按稿重写场景 |
 
@@ -42,12 +42,12 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是当前稿。R2 审查中收�
 ### 本轮研究与反馈
 
 - [x] OpenCart 风格 A 确认记录、匿名深入测绘、子系统稿件、时代引入、新版对照、分镜与 Opus 任务书。
-- [x] 交通法网页 Gemini 讨论 Prompt 落盘；真实参与后才补 Gemini credit。
+- [x] 交通法网页 Gemini 4 Argon 第 1 轮讨论已回收，形成第 8 稿；第 2 轮复审已落盘，6 项建议待 WaterRun 大改，未改稿。
 - [x] InnoDB 七项新反馈与 Lean 4 典型负例测绘、抽帧与三段本地 ASR 候选落盘；没有把 ASR 当人耳确认。
 - [x] 本轮模型 credit 统一为 GPT-6 Astra；历史真实参与和 Whisper small 的实际识别贡献分别保留。
 - [x] OpenCart 中文配音、正式场景与成片（2026-10-19，Claude Opus 5.5，按授权自主完成；英文取消）。
 - [ ] OpenCart 成片 WaterRun 试听确认 F06 / F12 后登记交付。
-- [ ] 交通法讨论回收与改稿确认；InnoDB / Lean 4 原片问题的实际修订和复测。
+- [ ] 交通法第 8 稿 WaterRun 大改与确认；InnoDB / Lean 4 原片问题的实际修订和复测。
 
 ### 仓库建设
 
@@ -128,3 +128,4 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是当前稿。R2 审查中收�
 12. 2026-10-19 约 03:00–03:40：WaterRun 看过 Tmux 第 5 轮，要求自主优化。第 5 轮 b 把使用改为逐条「Ctrl-b 再按」，原理拆成按键与输出两条路径（约 21 秒），修正字幕条侵入、主体被切、静止段等画面问题，重新配音、渲染、封装；--final 仍只差 F06、F12 人耳确认。
 13. 2026-10-19：WaterRun 试听 Tmux 第 5 轮 b 后确认「听过了没问题，标记交付」；check.js --final 全部通过，片单改为已交付，未发布。
 14. 2026-10-19 晨（Claude Opus 5.5）：OpenCart 完成全部场景与中文成片（16:50，1080p60，MiniMax 配音）；check.js --final 只差 F06 / F12 人耳确认，见其 DELIVERY。
+15. 2026-10-19：道交法回收 Gemini 4 Argon 两轮反馈。第 1 轮 8 项经核查后形成第 8 稿（190 条 cue、652.2 s、内容哈希 `60538fca…`）；第 2 轮复审确认 8 项状态并提出 6 项 cue 级问题与画面分工建议，本轮只落盘、未改稿，等 WaterRun 大改。山东条号移至现行第六十五条（2025-07-31 修正）已在 FACTS 核实；Gemini 4 Argon 按实际参与登记。

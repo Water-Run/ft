@@ -8,7 +8,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "以遇到通行冲突时怎样作出判断为主问题，六章各给一个明确答案，先诊断再改写。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -19,7 +19,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "用同一 A/B 车辆和冲突点讲条件、判断、理由和行动，合并碎句并避免堆法条。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -30,7 +30,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "保留法条前提、地域、年代、责任与赔偿等边界；未经核对不采纳模型新增事实。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -41,7 +41,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "标志、图解与结论分开安排阅读任务，字幕与图解不同时承载不同长句。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -52,7 +52,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "画面实际显示方向、冲突点和条件变化，不能只贴规则标签或快速刷屏。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -63,7 +63,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "沿用已选 Yunjian 音色，文案确认后试听代表句与留白，不额外堆气流声。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -74,7 +74,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "只用教学示意和独立合成对象，不加入真实车牌、当事人或私人会话；Prompt 仅含公开制作资料。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -85,7 +85,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "配音后重新测时并按 660 秒上限组织，正式文件生成后按实际规格和哈希复核。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -96,7 +96,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "Gemini 的建议与新增事实分开；新依据先回 FACTS，无法读取的来源保留待核。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -107,7 +107,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "独立片从现场条件讲起，不要求观众记住其他视频或之前讨论的内容。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -118,7 +118,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "加州和德国的必要原词附中文释义并核查适用条件，不把一地口径概括为欧美。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -129,7 +129,7 @@
       "applicability": "applies",
       "reason": "",
       "plan": "先保留连贯正文再拆字幕，逐句检查多音字、列举、否定和例外条件的口播停顿。",
-      "script_evidence": "research/GEMINI-PROMPT.md、script-review.md 第 7 稿和 FACTS",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
       "result": "pending",
       "verification": "",
       "clips": []
