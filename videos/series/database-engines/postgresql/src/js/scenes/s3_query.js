@@ -73,7 +73,7 @@ scene('query', ({ root, s, c0 }) => {
   const pgHeap = blk(world, rx + 420, 340, 300, 130, 'wash', '堆里的行'); const pgHeapT = txt(pgHeap, 'lbl', 'alice │ 30', 30, 38);
   const pgA = gline(g, `M${rx + 340},405 L${rx + 412},405`, 'pg', { w: 5, arrow: true });
   const pgNote = txt(world, 't-4', '索引只存位置，再去堆里取一次', rx, 500);
-  showHeading(cHead, T('q9') - 0.2);
+  showHeading(cHead, Tend('q8a') + 0.9);
   fin(inT, T('q9') + 0.2); fin(pgT, T('q9') + 0.5); sfx('tick', T('q10') + 0.1); sfx('tick', T('q12') + 0.1); sfx('pop', T('q13')); fin(inLeaf, T('q10') + 0.1, { y: 0 }); fin(inNote, T('q11') + 0.1);
    fin(pgLeaf, T('q12') + 0.1, { y: 0 }); drawIn(pgA, T('q12') + 0.8, 0.4); fin(pgHeap, T('q12') + 1.1, { x: -20, y: 0 }); fin(pgNote, T('q12') + 1.4);
   // 二级索引
