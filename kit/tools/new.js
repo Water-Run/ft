@@ -64,9 +64,13 @@ if (series?.sections) {
   }
 }
 const baseDir = series ? path.join(REPO, 'videos', 'series', series.slug, '_base') : null;
+// 基座只带系列的共用骨架：src/（样式与场景）、project.json（系列阈值与占位符）、tools/（配乐）、README.md 说明。
+// 校对、确认与事实记录（review/、research/、audio/、out/、*.srt 等）属于上一集的历史，不许进基座。
+const BASE_ALLOWED = ['src', 'tools', 'README.md', 'project.json'];
 if (baseDir && fs.existsSync(baseDir)) {
   require('./project-files').noLinks(baseDir);
-  if (fs.readdirSync(baseDir).some(name => !['src', 'README.md'].includes(name))) { console.error('系列基座只放 src/ 与说明 README.md，不能复用上一集的配置、校对或事实记录'); process.exit(2); }
+  const stray = fs.readdirSync(baseDir).filter(name => !BASE_ALLOWED.includes(name));
+  if (stray.length) { console.error(`系列基座只放 ${BASE_ALLOWED.join('、')}，不能复用上一集的配置、校对或事实记录；多出：${stray.join('、')}`); process.exit(2); }
 }
 
 // ── 骨架 ──
@@ -87,13 +91,17 @@ const vars = {
   MAKER: production.maker || '受托模型', LANGS: langs.join('、'), LANG1: langs[0],
   TIMING_TAGS: langs.map((l) => `<script src="js/timing.${l}.js"></script>`).join('\n'),
 };
+const copyOne = (src, dst) => {
+  if (fs.statSync(src).isSymbolicLink()) throw new Error('模板或基座不能包含符号链接：' + path.basename(src));
+  if (/\.(js|css|html|md|json|txt|yml|yaml)$/.test(src)) fs.writeFileSync(dst, fs.readFileSync(src, 'utf8').replace(/\{\{([A-Z0-9_]+)\}\}/g, (x, k) => (vars[k] != null ? vars[k] : x)));
+  else fs.copyFileSync(src, dst);
+};
 const copy = (src, dst) => {
   for (const n of fs.readdirSync(src, { withFileTypes: true })) {
     const a = path.join(src, n.name), b = path.join(dst, n.name);
     if (n.isSymbolicLink()) throw new Error('模板或基座不能包含符号链接：' + n.name);
     if (n.isDirectory()) { fs.mkdirSync(b, { recursive: true }); copy(a, b); }
-    else if (/\.(js|css|html|md|json|txt|yml|yaml)$/.test(n.name)) fs.writeFileSync(b, fs.readFileSync(a, 'utf8').replace(/\{\{([A-Z0-9_]+)\}\}/g, (x, k) => (vars[k] != null ? vars[k] : x)));
-    else fs.copyFileSync(a, b);
+    else copyOne(a, b);
   }
 };
 fs.mkdirSync(dir, { recursive: true });
@@ -116,8 +124,20 @@ if (series && series.sections && series.sections.length) {
   fs.writeFileSync(html, fs.readFileSync(html, 'utf8').replace('<script src="js/scenes/s1_demo.js"></script>', tags));
 } else script = script.replace(/    \/\/ <\/?chapters>\n/g, '');
 fs.writeFileSync(scriptFile, script);
-if (baseDir && fs.existsSync(path.join(baseDir, 'src'))) { copy(path.join(baseDir, 'src'), path.join(dir, 'src')); console.log(`已套用系列基座 videos/series/${series.slug}/_base/src/`); }
+if (baseDir && fs.existsSync(baseDir)) {
+  // 先铺 src/，再铺 project.json（带占位符，走同一套替换）与 tools/；顺序上要让基座的 project.json
+  // 覆盖模板的，这样系列的语速、阈值与配乐脚本才会随基座带过来，随后再补 production / review / feedback。
+  for (const name of ['src', 'project.json', 'tools']) {
+    const from = path.join(baseDir, name);
+    if (!fs.existsSync(from)) continue;
+    const to = path.join(dir, name);
+    if (fs.statSync(from).isDirectory()) { fs.mkdirSync(to, { recursive: true }); copy(from, to); }
+    else copyOne(from, to);
+    console.log(`已套用系列基座 videos/series/${series.slug}/_base/${name}${fs.statSync(from).isDirectory() ? '/' : ''}`);
+  }
+}
 const projectFile = path.join(dir, 'project.json'), project = JSON.parse(fs.readFileSync(projectFile, 'utf8'));
+project.slug = slug; project.languages = langs;
 project.production = production; project.review = { required: true, reviewer: studio.reviewer };
 project.feedback = { required: true };
 fs.writeFileSync(projectFile, JSON.stringify(project, null, 2) + '\n');

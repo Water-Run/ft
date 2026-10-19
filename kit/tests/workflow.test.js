@@ -97,6 +97,29 @@ test('系列栏目可含引号，基座保留二进制字节，不能复制旧�
   assert.notEqual(f.run('new', 'series/example-series/second', '--title', '第二集').status, 0);
   assert.ok(!fs.existsSync(path.join(f.root, 'videos/series/example-series/second')));
 });
+test('系列基座带 project.json 与 tools/ 时一并继承，占位符替换后仍拦住历史记录', t => {
+  const f = fixture(t), catalogFile = path.join(f.root, 'videos/catalog.json');
+  const catalog = JSON.parse(fs.readFileSync(catalogFile));
+  catalog.series.push({ slug: 'base-series', title: { zh: '基座系列' }, videos: [] });
+  fs.writeFileSync(catalogFile, JSON.stringify(catalog));
+  const base = path.join(f.root, 'videos/series/base-series/_base');
+  write(base, 'src/css/style.css', '/* 基座样式 */');
+  write(base, 'project.json', JSON.stringify({ slug: '{{SLUG}}', check: { still_seconds: 1.25 }, audio: { music: 'tools/music.py' } }, null, 2));
+  write(base, 'tools/music.py', '# 基座配乐\n');
+  write(base, 'README.md', '基座说明');
+  const result = f.run('new', 'series/base-series/one', '--title', '一集');
+  assert.equal(result.status, 0, result.stderr);
+  const video = path.join(f.root, 'videos/series/base-series/one');
+  const project = JSON.parse(fs.readFileSync(path.join(video, 'project.json'), 'utf8'));
+  assert.equal(project.slug, 'one', '占位符应被本片 slug 替换');
+  assert.equal(project.check.still_seconds, 1.25, '基座的检查阈值应保留，不被通用模板覆盖');
+  assert.equal(project.audio.music, 'tools/music.py');
+  assert.ok(fs.existsSync(path.join(video, 'tools/music.py')), '基座的配乐脚本应一并继承');
+  assert.equal(fs.readFileSync(path.join(video, 'src/css/style.css'), 'utf8'), '/* 基座样式 */');
+  write(base, 'research/FACTS.md', '上一集的事实记录');
+  assert.notEqual(f.run('new', 'series/base-series/two', '--title', '二集').status, 0);
+  assert.ok(!fs.existsSync(path.join(f.root, 'videos/series/base-series/two')));
+});
 test('未确认文案阻止配音和下游写入，先于浏览器、Python 与网络调用', t => {
   const f = fixture(t);
   for (const tool of ['tts', 'tts_probe', 'audio', 'render', 'preview', 'finish', 'covers', 'check']) {
