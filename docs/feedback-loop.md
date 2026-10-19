@@ -4,7 +4,7 @@
 
 ## 1. 单一规则入口
 
-[feedback.md](feedback.md) 保留 P / C 来源、F 编号、历史评分和实际测绘；[feedback-rules.json](feedback-rules.json) 保存当前 F01–F14 的要求、验证方式和对照案例。新增共性反馈时同步修改两处并更新版本，编号持续保留，不把旧问题删除后当作已解决。
+[feedback.md](feedback.md) 保留 P / C 来源、F 编号、历史评分和实际测绘；[feedback-rules.json](feedback-rules.json) 保存当前 F01–F17 的要求、验证方式和对照案例。新增共性反馈时同步修改两处并更新版本，编号持续保留，不把旧问题删除后当作已解决。
 
 `new.js` 从规则文件生成 README 的开工 / 结尾表和 `review/feedback.json`，自制与委托共用同一入口。以后增加 F15 等规则，无需逐个模板补一行。`repo-check.js` 检查总账与规则编号一致；回归测试覆盖新增规则进入下一部以及已有片补录。
 
