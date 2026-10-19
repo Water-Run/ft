@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-10-19",
+  "source_page": "https://wiki.postgresql.org/wiki/File:PostgreSQL_logo.3colors.svg",
+  "svg_url": "https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg",
+  "svg_sha256": "51f93e19516081fc7d6fe6ab9bbab07abe5f7819e28016eefacea6dea691bc54",
+  "svg_colors": [
+    "#000000",
+    "#336791",
+    "#ffffff"
+  ],
+  "palette": {
+    "blue": "#336791",
+    "paper": "#f4f5f6",
+    "graphite": "#20282e",
+    "white": "#ffffff",
+    "alert": "#a94819"
+  },
+  "contrast": [
+    {
+      "text": "graphite",
+      "background": "paper",
+      "ratio": 13.699,
+      "normal_text_pass": true
+    },
+    {
+      "text": "blue",
+      "background": "paper",
+      "ratio": 5.513,
+      "normal_text_pass": true
+    },
+    {
+      "text": "white",
+      "background": "blue",
+      "ratio": 6.018,
+      "normal_text_pass": true
+    },
+    {
+      "text": "alert",
+      "background": "paper",
+      "ratio": 5.303,
+      "normal_text_pass": true
+    }
+  ],
+  "status": "方案数值校验；未制作关键帧或确认观感"
+}

@@ -1,0 +1,41 @@
+2026-10-19 01:29:56.936 CST [16024] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit
+2026-10-19 01:29:56.940 CST [16024] LOG:  listening on IPv4 address "127.0.0.1", port 58067
+2026-10-19 01:29:56.940 CST [16024] LOG:  listening on IPv6 address "::1", port 58067
+2026-10-19 01:29:56.979 CST [48152] LOG:  database system was shut down at 2026-10-19 01:29:54 CST
+2026-10-19 01:29:56.984 CST [16024] LOG:  database system is ready to accept connections
+2026-10-19 01:29:57.237 CST [21400] LOG:  checkpoint starting: immediate force wait
+2026-10-19 01:29:57.289 CST [21400] LOG:  checkpoint complete: wrote 379 buffers (9.3%), wrote 3 SLRU buffers; 1 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.019 s, total=0.053 s; sync files=63, longest=0.002 s, average=0.001 s; distance=4966 kB, estimate=4966 kB; lsn=0/1CCAA80, redo lsn=0/1CCAA28
+2026-10-19 01:29:57.720 CST [44568] ERROR:  canceling statement due to lock timeout
+2026-10-19 01:29:57.720 CST [44568] CONTEXT:  while updating tuple (0,1) in relation "users"
+2026-10-19 01:29:57.720 CST [44568] STATEMENT:  UPDATE users SET age=age+10 WHERE id=1
+2026-10-19 01:29:57.731 CST [52004] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2026-10-19 01:29:57.731 CST [52004] DETAIL:  Key (id)=(1) already exists.
+2026-10-19 01:29:57.731 CST [52004] STATEMENT:  INSERT INTO users VALUES (1,'duplicate',20)
+2026-10-19 01:29:57.833 CST [44568] ERROR:  conflicting key value violates exclusion constraint "bookings_device_slot_excl"
+2026-10-19 01:29:57.833 CST [44568] DETAIL:  Key (device, slot)=(1, ["2026-01-01 09:30:00","2026-01-01 10:30:00")) conflicts with existing key (device, slot)=(1, ["2026-01-01 09:00:00","2026-01-01 10:00:00")).
+2026-10-19 01:29:57.833 CST [44568] STATEMENT:  INSERT INTO bookings VALUES (2,1,1,tsrange('2026-01-01 09:30','2026-01-01 10:30','[)'))
+2026-10-19 01:29:57.836 CST [52004] ERROR:  insert or update on table "bookings" violates foreign key constraint "bookings_user_id_fkey"
+2026-10-19 01:29:57.836 CST [52004] DETAIL:  Key (user_id)=(999) is not present in table "users".
+2026-10-19 01:29:57.836 CST [52004] STATEMENT:  INSERT INTO bookings VALUES (4,999,2,tsrange('2026-01-01 10:00','2026-01-01 11:00','[)'))
+2026-10-19 01:29:57.837 CST [21400] LOG:  checkpoint starting: immediate force wait
+2026-10-19 01:29:57.895 CST [21400] LOG:  checkpoint complete: wrote 325 buffers (7.9%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=0.026 s, sync=0.028 s, total=0.059 s; sync files=86, longest=0.002 s, average=0.001 s; distance=3709 kB, estimate=4840 kB; lsn=0/206A170, redo lsn=0/206A118
+2026-10-19 01:29:57.916 CST [16024] LOG:  received immediate shutdown request
+2026-10-19 01:29:57.933 CST [16024] LOG:  database system is shut down
+2026-10-19 01:29:58.154 CST [49192] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit
+2026-10-19 01:29:58.158 CST [49192] LOG:  listening on IPv4 address "127.0.0.1", port 58067
+2026-10-19 01:29:58.159 CST [49192] LOG:  listening on IPv6 address "::1", port 58067
+2026-10-19 01:29:58.214 CST [46188] LOG:  database system was interrupted; last known up at 2026-10-19 01:29:57 CST
+2026-10-19 01:29:58.367 CST [46188] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-10-19 01:29:58.369 CST [46188] LOG:  redo starts at 0/206A118
+2026-10-19 01:29:58.370 CST [46188] LOG:  invalid record length at 0/206A480: expected at least 24, got 0
+2026-10-19 01:29:58.370 CST [46188] LOG:  redo done at 0/206A458 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-10-19 01:29:58.375 CST [37596] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-10-19 01:29:58.382 CST [37596] LOG:  checkpoint complete: wrote 1 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.002 s, total=0.011 s; sync files=3, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/206A480, redo lsn=0/206A480
+2026-10-19 01:29:58.390 CST [49192] LOG:  database system is ready to accept connections
+2026-10-19 01:29:58.582 CST [49192] LOG:  received fast shutdown request
+2026-10-19 01:29:58.583 CST [49192] LOG:  aborting any active transactions
+2026-10-19 01:29:58.587 CST [49192] LOG:  background worker "logical replication launcher" (PID 51380) exited with exit code 1
+2026-10-19 01:29:58.587 CST [37596] LOG:  shutting down
+2026-10-19 01:29:58.588 CST [37596] LOG:  checkpoint starting: shutdown immediate
+2026-10-19 01:29:58.595 CST [37596] LOG:  checkpoint complete: wrote 9 buffers (0.2%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.002 s, total=0.008 s; sync files=6, longest=0.001 s, average=0.001 s; distance=55 kB, estimate=55 kB; lsn=0/20783C8, redo lsn=0/20783C8
+2026-10-19 01:29:58.608 CST [49192] LOG:  database system is shut down

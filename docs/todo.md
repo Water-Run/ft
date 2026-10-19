@@ -1,48 +1,84 @@
 # 制作 TODO 与完成情况
 
-成片盘点日期：**2026-10-18（UTC+8）**；本轮研究与交审状态更新到 **2026-10-19**。本页按当前阶段记录下一步；全部选题见 [片单](catalog.md)，原 10 月 9–15 日的排期、来源与变更缘由完整保存在 [历史计划](plans/2026-10-09--15.md)。原日期已过，未完成项目的新日期待重排，不自动顺延或替用户指定期限。
+目录与成片数量盘点：**2026-10-19 09:30（UTC+8）**；第 4 节遗留项沿用 2026-10-18 的核查，未重新逐项复测。本页按当前阶段记录下一步；全部选题见 [片单](catalog.md)，原 10 月 9–15 日的排期、来源与变更缘由完整保存在 [历史计划](plans/2026-10-09--15.md)。原日期已过，未完成项目的新日期待重排，不自动顺延或替用户指定期限。
 
 ## 1. 盘点基线与当前接续
 
 | 范围 | 已成片 | 制作中 | 计划中 | 合计 |
 |---|---:|---:|---:|---:|
-| 已提交片单（本轮盘点基线 a741370） | 10 | 2 | 153 | 165 |
+| 已提交片单（2026-10-18 基线 a741370） | 10 | 2 | 153 | 165 |
 | 2026-10-18 本机工作树盘点 | 10 | 3 | 152 | 165 |
+| **2026-10-19 09:30 全量盘点** | **11** | **9** | **145** | **165** |
 | 原 10.9–10.15 的 16 部企划 | 2 | 3 | 11 | 16 |
 
-本表保留 10 月 18 日的盘点基线；其他制作会话随后已开工，实时在制数量以[片单](catalog.md)为准。本轮重点核对：**交通法第 8 稿与两轮 Gemini 4 Argon 反馈已落盘，6 项待议等 WaterRun 大改；OpenCart R3 待 WaterRun 阅读确认；Harness 的接续状态沿用其制作记录。** 文案、任务书或占位时间线都不等于成片。
+2026-10-19 的增量为：Tmux 交付（已成片 10→11）；PostgreSQL、手枪射击、CoT 等目录开工或迁入，在制从 3 部增至 9 部；OpenCart 已出中文成片，但仍待试听确认，不计入交付。计划中的 145 部只有片单条目，没有目录。文案、任务书或占位时间线都不等于成片。
 
-OpenCart 本轮收束匿名测绘、中文 R3、A 方向和 Opus 交接材料，随本片目录提交；当前没有配音、正式动画或成片。InnoDB 和 Lean 4 本轮只测绘反馈，没有修复原片。
+### 已具备目录的 20 部
+
+目录 20 个：独立片 8、系列分集 12。以下按当前源码、确认记录、主 MP4 与各片 README 核对；发布状态沿用各片已存档的记录。
+
+**已成片 11 部（19 个语言版本；10 部已发布，Tmux 已交付未发布）**
+
+| 项目 | 语言 · 主片实测 | 发布 | 未关闭事项 |
+|---|---|---|---|
+| [Tmux](../videos/series/in-seconds/tmux/) | 中/英 · 2:08 / 2:08 | 未发布 | 待发布、归档、清理 |
+| [Lean 4](../videos/series/in-seconds/lean4/) | 中/英 · 3:20 / 3:20 | 哔哩哔哩 2026-10-08 | 叙事负例，待重写 |
+| [MyISAM](../videos/series/database-engines/myisam/) | 中 · 7:55.9 | 哔哩哔哩 2026-10-01 | 缺现行渲染源码清单 |
+| [luainstaller](../videos/standalone/luainstaller/) | 中/英 · 7:55.2 / 7:57.4 | 哔哩哔哩、YouTube 2026-10-02 | — |
+| [Windows 批处理](../videos/standalone/windows-batch/) | 中 · 3:13.0 | 哔哩哔哩 2026-10-01 | 缺本片 README |
+| [2FA](../videos/series/in-seconds/two-factor-auth/) | 中/英 · 2:00 / 2:00 | 哔哩哔哩、YouTube 2026-10-06 | — |
+| [OpenClaw / Hermes](../videos/standalone/openclaw-hermes/) | 中/英 · 8:34.6 / 9:30.4 | 哔哩哔哩、YouTube 2026-10-07 | 叙事修订待做 |
+| [WSL](../videos/standalone/wsl/) | 中/英 · 5:33.1 / 5:31.4 | 哔哩哔哩、YouTube 2026-10-07 | 版本口径待核 |
+| [OpenClaw / OpenCode v2](../videos/standalone/openclaw-opencode-v2/) | 中/英 · 9:33.6 / 9:47.7 | 哔哩哔哩 2026-10-08 | 30 fps 与命名不符；叙事修订 |
+| [Dense / MoE](../videos/series/in-seconds/dense-vs-moe/) | 中/英 · 2:30 / 2:30 | 哔哩哔哩、YouTube 2026-10-09 | 比较对象与人耳记录待补 |
+| [InnoDB](../videos/series/database-engines/innodb/) | 中 · 15:49.5 | 哔哩哔哩 2026-10-18 | 第 02 章表格、AAC 峰值、试听 |
+
+**制作中 9 部**
+
+| 项目 | 阶段 | 当前证据 | 停点与下一步 |
+|---|---|---|---|
+| [OpenCart 1.5 后台](../videos/standalone/opencart-1-5-admin/) | 成片已出，待试听 | 中文 16:50（1009.93 s，1080p60，主片 SHA-256 8921…）；`--final` 仅缺 F06 与 F12；09:15 修正 4:26、10:42 两处镜头留边；截至 09:30 主片仍是 06:08 版，源清单不一致 | WaterRun 试听 F06 / F12；重渲后核对主片与源码清单，再登记交付 |
+| [PostgreSQL](../videos/series/database-engines/postgresql/) | 中文第 6 稿待审 | 157 条旁白 + 2 静默，671.3 s（11:11），内容 SHA-256 fb57…；无配音 | WaterRun 全文确认 → 英译 → 配音；Credit 6.1Sol |
+| [道交法中的路权](../videos/standalone/traffic-law-right-of-way/) | 第 8 稿待大改 | 652.2 s（10:52.2），190 条 cue（旁白 184）；Gemini 4 Argon 第 1 轮形成第 8 稿，第 2 轮反馈已回收（6 项待议）；无配音 | WaterRun 介入大改 → 确认 → 制作；仅中文、Yunjian、660 s 上限 |
+| [Harness](../videos/series/in-seconds/harness/) | 中文稿待优化确认 | 192.0 s，内容 SHA-256 e30c…；无配音；场景仍是系列基座 | 优化中文稿 → WaterRun 确认 → 配音；确认前不按稿重写场景 |
+| [Web 登录](../videos/series/in-seconds/web-login/) | 准备到可交接，待确认 | 中英稿均 200.0 s；四张包豪斯关键帧、委托任务书、场景空壳；approval pending | 确认 → 中英配音与读音核对 → `--handoff` → Opus 5.5 |
+| [磁带、磁盘和软盘](../videos/series/storage-media/magnetic/) | 预研完成 | FACTS、来源、叙事与 NASA 朋克视觉方向；`script.js` 仍是骨架 | 写中文稿 → 审 → 翻译 → 制作 |
+| [CoT](../videos/series/in-seconds/chain-of-thought/) | 预研完成 | FACTS、来源、叙事与「计时盘 × 思考轨」方向；`script.js` 仍是骨架 | 写中文稿 → 审 → 翻译 → 制作 |
+| [垃圾回收的艺术](../videos/standalone/garbage-collection/) | 预研完成 | CPython / Go 实验、论文核对、瑞士风格方向；`script.js` 仍是骨架 | 写中文稿 → 审 → 翻译 → 制作 |
+| [手枪射击](../videos/series/in-seconds/pistol-shooting/) | 立项 | 系列 60 s 基座；目标 150 s；题材事实未核查 | 先取证、写稿；确认前不配音、不按稿重画场景 |
+
+其余 145 部只有片单条目，没有目录：系列内 116、独立 29；分布见[片单](catalog.md)。
 
 ### 完成与勾选的口径
 
 - “已成片”沿用片单的交付登记；“已发布”依据本片保存的发布记录。二者均不表示所有质量问题、试听、归档和反馈事项已经关闭。
 - 勾选只表示那一条明确的动作完成。文案确认、生成文件、实际验收、发布、归档、清理分别记录。
-- 本轮读取了当前源码、项目配置、实测时间文件、配音缓存、主 MP4 规格和已有渲染清单；没有重新渲染或连续观看试听。发布状态沿用各片已存档的核查，未重新采集平台页面和评论。
-- 本机有 **10 部、17 个语言版本的主成片**。其中 16 份现存渲染清单与对应语言的源码一致；MyISAM 没有该清单，不能补记为通过。OpenClaw / OpenCode v2 的两个主成片实际为 **30 fps**，其余为 60 fps，分辨率均为 1920×1080；规格与命名的遗留项见第 4 节。
+- 本次盘点读取了当前源码、项目配置、主 MP4 规格和渲染清单；没有重新渲染或连续观看试听。配音缓存与实测时间文件沿用各片记录。发布状态沿用各片已存档的核查，未重新采集平台页面和评论。
+- 本机有 **11 部、19 个语言版本的主成片**。其中 18 份现存渲染清单与对应语言的源码一致；MyISAM 没有该清单，不能补记为通过。OpenCart 的清单在 09:30 时因 09:15 的两处镜头修改与当前源码不一致，主片待重渲。OpenClaw / OpenCode v2 的两个主成片实际为 **30 fps**，其余为 60 fps，分辨率均为 1920×1080；规格与命名的遗留项见第 4 节。
 
 ## 2. 优先接续的三部
 
 | 项目 | 已具备的材料 | 当前停点 | 下一步与完成条件 |
 |---|---|---|---|
-| [道交法中的路权](../videos/standalone/traffic-law-right-of-way/README.md) | 第 8 稿源稿与内容哈希 `60538fca…` 一致；[第 2 轮反馈](../videos/standalone/traffic-law-right-of-way/review/GEMINI-ROUND2-2026-10-19.md)与[校对记录](../videos/standalone/traffic-law-right-of-way/review/NOTES.md)保留两轮意见；Gemini 4 Argon 已实际参与 | 第 2 轮 6 项问题待 WaterRun 大改时决定；第 8 稿未经人工确认 | 等 WaterRun 介入大改；保留仅中文、Yunjian 与 660 秒上限；确认后再配音、写场景 |
-| [OpenCart 1.5 后台](../videos/standalone/opencart-1-5-admin/README.md) | A 风格已确认；CASE-A 15 组深入静态测绘、严格匿名输出；[R3 全文](../videos/standalone/opencart-1-5-admin/research/SCRIPT-R3.md)含时代引入、九章子系统与新版对照；77 段 / 256 条旁白，估算 17:28.3；46 组分镜；Opus 任务书 | WaterRun 先阅读，再讨论确认；当前 hash 92e871ec…12243 为 pending；没有配音 / 正式场景；英文待译 | 按 R3 继续人工校对；确认后 Opus 从试听与代表动画开始。中文文件、分镜与对应表一致；先通过文案阶段交接检查，再进入实际制作 |
+| [道交法中的路权](../videos/standalone/traffic-law-right-of-way/README.md) | 第 8 稿源稿与内容哈希 `60538fca…` 一致；[第 2 轮反馈](../videos/standalone/traffic-law-right-of-way/review/GEMINI-ROUND2-2026-10-19.md)、[校对记录](../videos/standalone/traffic-law-right-of-way/review/NOTES.md)保留两轮意见；Gemini 4 Argon 已实际参与 | 第 2 轮 6 项问题待 WaterRun 大改时决定；第 8 稿未经人工确认 | 等 WaterRun 介入大改；确认后再配音、写场景。保留仅中文、Yunjian 与 660 秒上限 |
+| [OpenCart 1.5 后台](../videos/standalone/opencart-1-5-admin/README.md) | 中文成片 16:50（1009.93 s，1080p60，MiniMax 配音）、九章正式动画、封面与 [DELIVERY](../videos/standalone/opencart-1-5-admin/DELIVERY.md)；R3 与分镜保留为历史材料 | WaterRun 试听 F06 配乐 / 音效与 F12 读音；09:15 修两处镜头留边后主片待重渲 | 试听确认 → 重渲并核对源清单与主片哈希 → 登记交付；英文按授权取消 |
 | [192 秒 Harness](../videos/series/in-seconds/harness/README.md) | 已有 FACTS、来源、叙事主线，以及 2026-10-19 导出的中文校对稿。估算两条时间线都是 192.0 秒 | 中文尚未人工确认。正片场景仍是系列基座，只改了片尾名单和终端配色。无配音、无成片 | 后续模型优化 `src/js/script.js` 里的中文稿，改完重新导出。确认前不配音、不按稿重写场景 |
 
-OpenCart 的 R1 / R2 均保留为历史稿，R3 是当前稿。R2 审查中收到“补时代背景、定义、地位、大纲、新版对照；片尾不配音”的意见，已落实到 R3 和全局 F13 / F14；收到修改意见不等于已批准。
+OpenCart 的 R1 / R2 均保留为历史稿，R3 是文案阶段的当前稿。R2 审查中收到“补时代背景、定义、地位、大纲、新版对照；片尾不配音”的意见，已落实到 R3 和全局 F13 / F14。2026-10-19 01:37 WaterRun 授权自主定稿，approval 据此为 approved（不是逐句阅读确认）；中文成片已出，待 F06 / F12 试听。
 
 ## 3. 已完成的明确事项
 
 ### 影片交付与发布
 
+- [x] **Tmux 128 秒版**：中英主成片各 128.00 秒、1080p60；WaterRun 观看试听确认，`check.js --final` 通过。交付登记为 2026-10-19，未发布，见[本片记录](../videos/series/in-seconds/tmux/README.md)。
 - [x] **Dense/MoE 150 秒版**：中英主成片各 150.00 秒、9,000 帧；本机文件与渲染源码清单一致。发布记录为 2026-10-09 哔哩哔哩与 YouTube，见[本片发布与成片记录](../videos/series/in-seconds/dense-vs-moe/README.md)。原 96 秒企划与 128 秒旧版留在历史，不再当作当前目标。
 - [x] **InnoDB R8**：仅中文，主成片实测 949.47 秒、56,968 帧；本机文件与渲染源码清单一致。发布记录为 2026-10-18 哔哩哔哩，见[本片记录](../videos/series/database-engines/innodb/README.md)。发布后的画面与声音待办仍保留在下一节。
-- 其余 8 部已成片：MyISAM、Windows 批处理、luainstaller、2FA、Lean 4、OpenClaw / Hermes、WSL、OpenClaw / OpenCode v2。完整作品和发布索引见[根 README](../README.md#已成片)；本轮核对文件存在与规格，不重新宣称观感验收。
+- 其余 8 部已成片：MyISAM、Windows 批处理、luainstaller、2FA、Lean 4、OpenClaw / Hermes、WSL、OpenClaw / OpenCode v2。完整作品和发布索引见[根 README](../README.md#已成片)；本次盘点核对文件存在与规格，不重新宣称观感验收。
 
 ### 本轮研究与反馈
 
 - [x] OpenCart 风格 A 确认记录、匿名深入测绘、子系统稿件、时代引入、新版对照、分镜与 Opus 任务书。
-- [x] 交通法网页 Gemini 4 Argon 第 1 轮讨论已回收，形成第 8 稿；第 2 轮复审已落盘，6 项建议待 WaterRun 大改，未改稿。
+- [x] 2026-10-19 交通法网页 Gemini 4 Argon 第 1 轮讨论已回收；8 个问题逐项核查，形成第 8 稿（内容哈希 `6053…`，652.2 s）。第 2 轮复审已回收，6 项建议落盘待大改，未改稿。
 - [x] InnoDB 七项新反馈与 Lean 4 典型负例测绘、抽帧与三段本地 ASR 候选落盘；没有把 ASR 当人耳确认。
 - [x] 本轮模型 credit 统一为 GPT-6 Astra；历史真实参与和 Whisper small 的实际识别贡献分别保留。
 - [x] OpenCart 中文配音、正式场景与成片（2026-10-19，Claude Opus 5.5，按授权自主完成；英文取消）。
@@ -128,4 +164,6 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是当前稿。R2 审查中收�
 12. 2026-10-19 约 03:00–03:40：WaterRun 看过 Tmux 第 5 轮，要求自主优化。第 5 轮 b 把使用改为逐条「Ctrl-b 再按」，原理拆成按键与输出两条路径（约 21 秒），修正字幕条侵入、主体被切、静止段等画面问题，重新配音、渲染、封装；--final 仍只差 F06、F12 人耳确认。
 13. 2026-10-19：WaterRun 试听 Tmux 第 5 轮 b 后确认「听过了没问题，标记交付」；check.js --final 全部通过，片单改为已交付，未发布。
 14. 2026-10-19 晨（Claude Opus 5.5）：OpenCart 完成全部场景与中文成片（16:50，1080p60，MiniMax 配音）；check.js --final 只差 F06 / F12 人耳确认，见其 DELIVERY。
-15. 2026-10-19：道交法回收 Gemini 4 Argon 两轮反馈。第 1 轮 8 项经核查后形成第 8 稿（190 条 cue、652.2 s、内容哈希 `60538fca…`）；第 2 轮复审确认 8 项状态并提出 6 项 cue 级问题与画面分工建议，本轮只落盘、未改稿，等 WaterRun 大改。山东条号移至现行第六十五条（2025-07-31 修正）已在 FACTS 核实；Gemini 4 Argon 按实际参与登记。
+15. 2026-10-19 09:30：全量盘点 165 部片单与 20 个目录：已成片 11 部 / 19 个语言版本（10 部已发布），制作中 9 部，计划中 145 部无目录。核对 19 份现存渲染清单：18 份与当前源码一致，OpenCart 因 09:15 的两处镜头修改在盘点时不一致，MyISAM 无清单；按各片 README 与主片实测更正 OpenCart、PostgreSQL、Tmux 等阶段。
+16. 2026-10-19：道交法回收网页端 Gemini 4 Argon 第 1 轮反馈，核实山东条号由第六十六条移至第六十五条（2025-07-31 修正），并更正其“8 月 25 日修正”日期错误；按反馈修订为第 8 稿（190 条 cue、652.2 s、内容哈希 `60538fca…`），Gemini 4 Argon 按实际参与登记，仍待 WaterRun 确认。
+17. 2026-10-19：道交法回收 Gemini 4 Argon 第 2 轮复审：确认上一轮 8 项状态，提出 6 项 cue 级问题（第 76 条分层、第 1 章提前概念、c9 方向灯、m7 过渡、u6/u9 前提、x13 非机动车、d7 Halter 用词）。本轮只落盘、不改稿；第 8 稿哈希与 pending 状态不变，等 WaterRun 大改。

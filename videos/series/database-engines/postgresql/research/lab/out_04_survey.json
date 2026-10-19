@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "checked_at": "2026-10-19",
+  "attribution": "Stack Exchange Inc. / Stack Overflow Developer Survey，按年署名。2026 数据 ODbL 1.0。",
+  "warning": "多选自报开发使用，非全球市场份额；不同年份样本不能当同一批用户迁移。",
+  "years": [
+    {
+      "year": 2022,
+      "source": "https://survey.stackoverflow.co/2022/",
+      "scope": "All Respondents / used / multiple choice",
+      "table_id": "databasespfb1",
+      "source_sha256": "b8459eb00a079392b3d08b821dbf2d8baa30fab20c75509ab11983aaa860e110",
+      "data": [
+        {
+          "name": "MySQL",
+          "percent": 46.85,
+          "respondents": 28520
+        },
+        {
+          "name": "PostgreSQL",
+          "percent": 43.59,
+          "respondents": 26538
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "source": "https://survey.stackoverflow.co/2023/",
+      "scope": "All Respondents / used / multiple choice",
+      "table_id": "databasedmk1u",
+      "source_sha256": "11b6968aa6d397ac0a95a6f84393fad617c9b37e62aa476f7be07963310db777",
+      "data": [
+        {
+          "name": "PostgreSQL",
+          "percent": 45.55,
+          "respondents": 34909
+        },
+        {
+          "name": "MySQL",
+          "percent": 41.09,
+          "respondents": 31489
+        }
+      ]
+    },
+    {
+      "year": 2026,
+      "source": "https://survey.stackoverflow.co/2026/technology/data/databases",
+      "scope": "All Respondents / used / multiple choice",
+      "question_n": 12061,
+      "source_sha256": "36804dd7a6bda9c2718b6a845998154c12421aced5d43345975dbe7fdae09b1e",
+      "data": [
+        {
+          "name": "PostgreSQL",
+          "percent": 57.9,
+          "respondents": 6984
+        },
+        {
+          "name": "MySQL",
+          "percent": 35.1,
+          "respondents": 4235
+        }
+      ],
+      "licence": {
+        "name": "ODbL 1.0",
+        "url": "https://opendatacommons.org/licenses/odbl/1-0/",
+        "holder": "Stack Exchange Inc."
+      }
+    }
+  ]
+}

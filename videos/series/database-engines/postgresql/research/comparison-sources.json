@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "checked_at": "2026-10-19T02:10:13.679539+08:00",
+  "scope": "第3稿比较与选型的一手资料，技术能力与采用案例分开",
+  "sources": [
+    {
+      "id": "survey2026",
+      "url": "https://survey.stackoverflow.co/2026/technology/data/databases",
+      "status": "fetched",
+      "sha256": "36804dd7a6bda9c2718b6a845998154c12421aced5d43345975dbe7fdae09b1e"
+    },
+    {
+      "id": "partial",
+      "url": "https://www.postgresql.org/docs/18/indexes-partial.html",
+      "status": "fetched",
+      "sha256": "e518d604bf448c36234edba98199fc1b86a4817fb1d5f88d3e86b2793708aef2"
+    },
+    {
+      "id": "jsonb",
+      "url": "https://www.postgresql.org/docs/18/datatype-json.html",
+      "status": "fetched",
+      "sha256": "c1530fe46ab675740c16a17c60889fcd4af27f5c739f89f33828a9ae2be52a23"
+    },
+    {
+      "id": "index-only",
+      "url": "https://www.postgresql.org/docs/18/indexes-index-only-scans.html",
+      "status": "fetched",
+      "sha256": "e4cc16da78bf6a65fc29e03bfabc6c5fe8ab6c513a5a79d148cc717523e85c4a"
+    },
+    {
+      "id": "pg-about",
+      "url": "https://www.postgresql.org/about/",
+      "status": "fetched",
+      "sha256": "af6d21d964744095305ac343c773e4ff95a7bb14098ae3d591b3d2cb23d94617"
+    },
+    {
+      "id": "pg-license",
+      "url": "https://www.postgresql.org/about/licence/",
+      "status": "fetched",
+      "sha256": "f2837dd142502f804006e456cb65a52fb9d5be7ddf9df4f09e47147505cf8ec6"
+    },
+    {
+      "id": "mysql-indexes",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "status": "unavailable",
+      "error": "HTTPError",
+      "alternate_verification": "原页已通过网页工具读取；抓取失败不记作已缓存"
+    },
+    {
+      "id": "mysql-isolation",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "status": "unavailable",
+      "error": "HTTPError",
+      "alternate_verification": "原页已通过网页工具读取；抓取失败不记作已缓存"
+    },
+    {
+      "id": "mysql-json",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/json.html",
+      "status": "unavailable",
+      "error": "HTTPError",
+      "alternate_verification": "原页已通过网页工具读取；抓取失败不记作已缓存"
+    },
+    {
+      "id": "mysql-spatial",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/spatial-types.html",
+      "status": "unavailable",
+      "error": "HTTPError",
+      "alternate_verification": "原页已通过网页工具读取；抓取失败不记作已缓存"
+    },
+    {
+      "id": "django",
+      "url": "https://docs.djangoproject.com/en/5.2/intro/tutorial02/",
+      "status": "fetched",
+      "sha256": "ba97bec1568322c4ebd0388d63c501c8906fdbd00edd8ede2a552b56520d777d"
+    },
+    {
+      "id": "supabase",
+      "url": "https://supabase.com/docs/guides/database/overview",
+      "status": "fetched",
+      "sha256": "928a3a795b8e0d6526643f1a5ddd5953b459967145569e2837ff923cfe0558c5"
+    },
+    {
+      "id": "pgvector",
+      "url": "https://github.com/pgvector/pgvector",
+      "status": "fetched",
+      "sha256": "b141209fd08a4dbbbfb40ef6a70452d4dd32757300e1eab867ee2ef71b99c8ae"
+    }
+  ]
+}

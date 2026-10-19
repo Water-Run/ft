@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "scope": "研究一致性与文案格式；不代替人工审稿、音色试听或成片验收",
+  "script_sha256": "4b29415af1fa328e3c72ea1c115310230c57ce46c35f6fa4e0feed4af8e59b1e",
+  "total_estimated_seconds": 671.3078723404253,
+  "spoken": 157,
+  "cues": 159,
+  "max_caption_width": 25,
+  "max_estimated_cue_seconds": 5.99468085106383,
+  "review_status": {
+    "zh": "pending"
+  },
+  "checks": [
+    {
+      "name": "实际 PostgreSQL 18.4 实验完成，15 项行为断言为真",
+      "passed": true
+    },
+    {
+      "name": "物理解码对应同一轮原始回显",
+      "passed": true
+    },
+    {
+      "name": "系列接续据实际稿本、同一业务数据与原始文件核对",
+      "passed": true
+    },
+    {
+      "name": "恢复日志包含实际重做及最终正常停机",
+      "passed": true
+    },
+    {
+      "name": "调查同口径且 2026 人数可复算",
+      "passed": true
+    },
+    {
+      "name": "生成数据追溯到实际研究结果",
+      "passed": true
+    },
+    {
+      "name": "部分索引与 JSONB/GIN 的独立实例验证",
+      "passed": true
+    },
+    {
+      "name": "候选文字配色符合 4.5:1",
+      "passed": true
+    },
+    {
+      "name": "每句均有已核事实，句号唯一，字幕与时长预算符合",
+      "passed": true
+    },
+    {
+      "name": "保留人工确认闸门与指定署名",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

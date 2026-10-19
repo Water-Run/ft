@@ -1,0 +1,256 @@
+{
+  "schema": 1,
+  "checked_at": "2026-10-19",
+  "scope": "跨集接续的实际脚本、同一业务数据与原始文件；不作跨版本性能比较",
+  "captures": [
+    {
+      "movie": "myisam",
+      "file": "src/js/script.js",
+      "sha256": "6fb6219c0b4ac38f6932953b6b9e0fb68a6366c08c44063e181c1d8d7c624baf",
+      "cues": [
+        {
+          "id": "b5",
+          "text": "*.MYD* 文件存放数据，也就是每一行的内容"
+        },
+        {
+          "id": "b6",
+          "text": "*.MYI* 文件存放索引"
+        },
+        {
+          "id": "f13",
+          "text": "主键和普通索引的结构完全相同"
+        },
+        {
+          "id": "f14",
+          "text": "存的都是行的位置，而不是行本身"
+        },
+        {
+          "id": "n3",
+          "text": "数据怎么放：一个数据文件，一行接一行"
+        },
+        {
+          "id": "n4",
+          "text": "怎么找：B 树索引，加上行的位置"
+        },
+        {
+          "id": "n5",
+          "text": "怎么并发：一把表锁"
+        },
+        {
+          "id": "n6",
+          "text": "出错怎么办：检查，然后修复"
+        }
+      ]
+    },
+    {
+      "movie": "innodb",
+      "file": "src/js/script.js",
+      "sha256": "6cd761eed79088de523bf0ac614c3da9cc012e9ac51f5571727d0159351573f9",
+      "cues": [
+        {
+          "id": "k2",
+          "text": "没有事务：InnoDB 用 undo 实现回滚，用读视图实现隔离"
+        },
+        {
+          "id": "k4",
+          "text": "没有日志：InnoDB 用 redo 补上没写完的修改"
+        },
+        {
+          "id": "k4b",
+          "text": "用 undo 撤销没提交的"
+        },
+        {
+          "id": "k9",
+          "text": "下一集换一个引擎，看同一组问题，有怎样不同的实现"
+        }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "movie": "myisam",
+      "sha256": "d20d7b8e8c7ffd25d4fb9bcc2fb7014fdbb1b82dc3776b1e5c7e6c5dc67dad88",
+      "users": [
+        {
+          "id": 1,
+          "name": "alice",
+          "age": 30
+        },
+        {
+          "id": 2,
+          "name": "bob",
+          "age": 25
+        },
+        {
+          "id": 3,
+          "name": "carol",
+          "age": 41
+        },
+        {
+          "id": 4,
+          "name": "dave",
+          "age": 19
+        },
+        {
+          "id": 5,
+          "name": "erin",
+          "age": 33
+        },
+        {
+          "id": 6,
+          "name": "frank",
+          "age": 52
+        },
+        {
+          "id": 7,
+          "name": "grace",
+          "age": 28
+        },
+        {
+          "id": 8,
+          "name": "heidi",
+          "age": 36
+        }
+      ]
+    },
+    {
+      "movie": "innodb",
+      "sha256": "b577dcb1a11a80d2561bf5a0b30d07c375b92dd42493c7a262f95cdd862de008",
+      "users": [
+        {
+          "id": 1,
+          "name": "alice",
+          "age": 30
+        },
+        {
+          "id": 2,
+          "name": "bob",
+          "age": 25
+        },
+        {
+          "id": 3,
+          "name": "carol",
+          "age": 41
+        },
+        {
+          "id": 4,
+          "name": "dave",
+          "age": 19
+        },
+        {
+          "id": 5,
+          "name": "erin",
+          "age": 33
+        },
+        {
+          "id": 6,
+          "name": "frank",
+          "age": 52
+        },
+        {
+          "id": 7,
+          "name": "grace",
+          "age": 28
+        },
+        {
+          "id": 8,
+          "name": "heidi",
+          "age": 36
+        }
+      ]
+    },
+    {
+      "movie": "postgresql",
+      "sha256": "05bf194329c7fcc3f44a153d1352da5984042063f70fb5f674889aad2e7d9726",
+      "users": [
+        {
+          "id": 1,
+          "name": "alice",
+          "age": 30
+        },
+        {
+          "id": 2,
+          "name": "bob",
+          "age": 25
+        },
+        {
+          "id": 3,
+          "name": "carol",
+          "age": 41
+        },
+        {
+          "id": 4,
+          "name": "dave",
+          "age": 19
+        },
+        {
+          "id": 5,
+          "name": "erin",
+          "age": 33
+        },
+        {
+          "id": 6,
+          "name": "frank",
+          "age": 52
+        },
+        {
+          "id": 7,
+          "name": "grace",
+          "age": 28
+        },
+        {
+          "id": 8,
+          "name": "heidi",
+          "age": 36
+        }
+      ]
+    }
+  ],
+  "myisam_source": {
+    "tag": "mysql-5.5.62",
+    "path": "include/myisam.h",
+    "url": "https://github.com/mysql/mysql-server/blob/mysql-5.5.62/include/myisam.h",
+    "sha256": "ea7fd944fdf59319efb72ae5b6c652f9c9641dc7136a1aabac70c58916537a46",
+    "lines": [
+      {
+        "line": 57,
+        "text": "#define MI_NAME_IEXT\t\".MYI\""
+      },
+      {
+        "line": 58,
+        "text": "#define MI_NAME_DEXT\t\".MYD\""
+      }
+    ]
+  },
+  "myisam_snapshots": [
+    {
+      "file": "users.MYD",
+      "bytes": 128,
+      "sha256": "fd4d790d4b9073eaaff3cc65b7df5eada8f25d48d1dcddcc3cb3c4c1f5299f4b"
+    },
+    {
+      "file": "users.MYI",
+      "bytes": 3072,
+      "sha256": "1e565ad043fcb80c343ab42374b33b1d9f8fa8ba071357647e3a83164c1bf71a"
+    }
+  ],
+  "sequence": [
+    {
+      "slug": "myisam",
+      "title": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
+    },
+    {
+      "slug": "innodb",
+      "title": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
+    },
+    {
+      "slug": "postgresql",
+      "title": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"
+    },
+    {
+      "slug": "firebird",
+      "title": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"
+    }
+  ],
+  "next_episode": "Firebird：制作计划，不预先陈述技术特性"
+}

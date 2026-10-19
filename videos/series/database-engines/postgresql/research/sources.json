@@ -1,0 +1,826 @@
+{
+  "schema": 1,
+  "checked_at": "2026-10-19",
+  "tag": "REL_18_4",
+  "commit": "f5cc81719e6da4cbdb1f797c48b693e91018153a",
+  "code": [
+    {
+      "kind": "code",
+      "path": "src/include/storage/bufpage.h",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/include/storage/bufpage.h",
+      "sha256": "d750f101a40a4b161fb91884c9fd66aec22484d14711776764cb5c65fa98ac9e",
+      "lines": 511,
+      "symbols": {
+        "PageHeaderData": [
+          33,
+          72,
+          159,
+          172,
+          174,
+          218,
+          227,
+          237,
+          256,
+          261,
+          280,
+          290
+        ],
+        "SizeOfPageHeaderData": [
+          218,
+          227,
+          256,
+          261,
+          333,
+          377,
+          380
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/include/storage/itemid.h",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/include/storage/itemid.h",
+      "sha256": "05730143bad8e627be4df37d024cffd299c88e2af68c81860d4e2944f8102037",
+      "lines": 184,
+      "symbols": {
+        "ItemIdData": [
+          25,
+          30,
+          32,
+          45
+        ],
+        "LP_REDIRECT": [
+          40,
+          107,
+          154
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/include/access/htup_details.h",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/include/access/htup_details.h",
+      "sha256": "175dad20a31eea61d724bf2954457dc09d4635e552ba63b2ac1cf1c9508c0626",
+      "lines": 923,
+      "symbols": {
+        "HeapTupleHeaderData": [
+          31,
+          66,
+          153,
+          185,
+          312,
+          323,
+          329,
+          336,
+          342,
+          348,
+          355,
+          361
+        ],
+        "HEAP_HOT_UPDATED": [
+          295,
+          542,
+          550,
+          556
+        ],
+        "HEAP_ONLY_TUPLE": [
+          296,
+          306,
+          562,
+          568,
+          574
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/heap/heapam.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/heap/heapam.c",
+      "sha256": "bb59b527ec160ef4304e45538533b1caaff31ca33766e81a24759e9256a56622",
+      "lines": 9335,
+      "symbols": {
+        "heap_update": [
+          23,
+          60,
+          2722,
+          3231,
+          3242,
+          3339,
+          3498,
+          4134,
+          4177,
+          4220,
+          4478,
+          4486
+        ],
+        "use_hot_update": [
+          3272,
+          4018,
+          4066,
+          4177,
+          4195
+        ],
+        "HeapTupleHeaderSetXmax": [
+          2293,
+          3064,
+          3781,
+          3859,
+          4091,
+          5183,
+          5958
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/heap/heapam_visibility.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/heap/heapam_visibility.c",
+      "sha256": "d36989d5724e58d4499281643f74b004057ce5c1df409f39bd2c3653ce481c3f",
+      "lines": 1797,
+      "symbols": {
+        "HeapTupleSatisfiesMVCC": [
+          40,
+          938,
+          951,
+          960,
+          1466,
+          1582,
+          1781
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/heap/vacuumlazy.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/heap/vacuumlazy.c",
+      "sha256": "db3f3ddd5f888ca88eee0984826c7964241e09a4423b23bf96a6d24feba65899",
+      "lines": 3847,
+      "symbols": {
+        "heap_vacuum_rel": [
+          604,
+          615
+        ],
+        "lazy_scan_heap": [
+          424,
+          606,
+          665,
+          764,
+          836,
+          839,
+          1164,
+          1200,
+          1551,
+          1775,
+          1799,
+          1925
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/transam/xact.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/transam/xact.c",
+      "sha256": "75b012c0b047d1dc905a30975c244beec366e45eac0dbf109fd21bcd611a8e39",
+      "lines": 6446,
+      "symbols": {
+        "RecordTransactionCommit": [
+          1307,
+          1312,
+          1315,
+          1790,
+          2365,
+          2387
+        ],
+        "XLogFlush": [
+          1502,
+          6236,
+          6245,
+          6251,
+          6258,
+          6263,
+          6348,
+          6356
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/transam/xlogrecovery.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/transam/xlogrecovery.c",
+      "sha256": "a2b7c43e2a8be7874a6a119f52835e5ebbcec8d00f5f860e035c6fa93924b111",
+      "lines": 5105,
+      "symbols": {
+        "PerformWalRecovery": [
+          9,
+          513,
+          1671,
+          1925
+        ],
+        "redo starts": [
+          1759
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/tcop/postgres.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/tcop/postgres.c",
+      "sha256": "9fb62275b1badf94d01ab351337b60410cd9b3ab1fe63fa9f23d6d2185a21061",
+      "lines": 5234,
+      "symbols": {
+        "exec_simple_query": [
+          1007,
+          1012,
+          4767,
+          4770
+        ],
+        "pg_parse_query": [
+          604,
+          1065,
+          1465
+        ],
+        "pg_plan_queries": [
+          971,
+          1193
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/executor/nodeIndexscan.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/executor/nodeIndexscan.c",
+      "sha256": "7bd7ad26dc403544b67a5b151cb28157f135e87733e78204c8b279f2ceb8f4dc",
+      "lines": 1824,
+      "symbols": {
+        "IndexNext": [
+          18,
+          19,
+          58,
+          59,
+          73,
+          80,
+          162,
+          164,
+          169,
+          533,
+          537
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/heap/README.HOT",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/heap/README.HOT",
+      "sha256": "99602a5cf2e6fd3033d7376a7911e7c9cd4a91cd49e57a5774a1cdedb774e430",
+      "lines": 520,
+      "symbols": {
+        "HOT": [
+          1,
+          3,
+          6,
+          34,
+          46,
+          48,
+          56,
+          57,
+          62,
+          73,
+          78,
+          85
+        ],
+        "index": [
+          6,
+          19,
+          20,
+          21,
+          23,
+          24,
+          26,
+          27,
+          28,
+          30,
+          37,
+          38
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/nbtree/README",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/nbtree/README",
+      "sha256": "8539eb526f328c5b66c6f96db94c51402d546b69a2dc369e6330784eb279fb5a",
+      "lines": 1083,
+      "symbols": {
+        "Lehman": [
+          6,
+          7,
+          14,
+          31,
+          44,
+          52,
+          55,
+          57,
+          63,
+          112,
+          139,
+          141
+        ],
+        "heap": [
+          33,
+          42,
+          43,
+          90,
+          91,
+          175,
+          176,
+          179,
+          421,
+          449,
+          459,
+          463
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "doc/src/sgml/history.sgml",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/doc/src/sgml/history.sgml",
+      "sha256": "a9f475e6dd0cf45dae89aacab6b72158152684d6f1760b17f178a40ffa9d5878",
+      "lines": 228,
+      "symbols": {
+        "1986": [
+          39
+        ],
+        "1994": [
+          101
+        ],
+        "1996": [
+          195
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "doc/src/sgml/storage.sgml",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/doc/src/sgml/storage.sgml",
+      "sha256": "8f610988d1febb5c6ae6e046ecd53648944cc9c45878ecb95b26e3f3e945ebc8",
+      "lines": 1153,
+      "symbols": {
+        "pd_lower": [
+          798,
+          852,
+          899
+        ],
+        "pd_upper": [
+          799,
+          858
+        ],
+        "HOT": [
+          1078,
+          1094,
+          1143,
+          1145,
+          1149
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "doc/src/sgml/mvcc.sgml",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/doc/src/sgml/mvcc.sgml",
+      "sha256": "4b7bf77ee0af4b86052330ff2421d567df3604b75fe7d4f522bec84fdea87340",
+      "lines": 1947,
+      "symbols": {
+        "Read Committed": [
+          273,
+          306,
+          318,
+          360,
+          374,
+          418,
+          438,
+          463,
+          472,
+          476,
+          509,
+          701
+        ],
+        "Repeatable Read": [
+          279,
+          481,
+          493,
+          563,
+          577,
+          582,
+          595,
+          625,
+          663,
+          702,
+          728,
+          1627
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "doc/src/sgml/wal.sgml",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/doc/src/sgml/wal.sgml",
+      "sha256": "a1fa580e3e5f00299434176edd48b50c7b12e822780ac8dcc3b319da4602fb4e",
+      "lines": 943,
+      "symbols": {
+        "Write-Ahead": [
+          4,
+          9,
+          280,
+          292
+        ],
+        "synchronous_commit": [
+          419,
+          425
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "contrib/hstore/hstore.control",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/contrib/hstore/hstore.control",
+      "sha256": "1df9f2b3059cd77e38920dd35235161b3ad336fc71198c66120d120262ad086d",
+      "lines": 6,
+      "symbols": {
+        "default_version": [
+          3
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/utils/adt/geo_ops.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/utils/adt/geo_ops.c",
+      "sha256": "114cd1490987e207af387e9e6a69ede8018d9f1ca3a59a6c3443c82a0c265962",
+      "lines": 5562,
+      "symbols": {
+        "point_distance": [
+          1993
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/gist/gistproc.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/gist/gistproc.c",
+      "sha256": "1c8a0de6d16b0bfe433c5fd7f9865f53a8f1c23bfde9c1a85c5e95273ffab09c",
+      "lines": 1761,
+      "symbols": {
+        "gist_point_distance": [
+          1455
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/executor/execIndexing.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/executor/execIndexing.c",
+      "sha256": "24c80553ab4b28d7d2a288dd9196c8db9459c7f308853cd8c8c939485e15f199",
+      "lines": 1182,
+      "symbols": {
+        "check_exclusion_or_unique_constraint": [
+          122,
+          130,
+          495,
+          647,
+          705,
+          960,
+          970
+        ],
+        "CEOUC_WAIT": [
+          125,
+          128,
+          135,
+          476,
+          491,
+          650,
+          682,
+          710,
+          884,
+          973
+        ],
+        "XactLockTableWait": [
+          896
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "contrib/btree_gist/btree_gist.control",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/contrib/btree_gist/btree_gist.control",
+      "sha256": "6225c28596c04fb200885b82347a0d135733ee3ea9ee6642637705041ef1106c",
+      "lines": 6,
+      "symbols": {
+        "default_version": [
+          3
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/include/pg_config.h.in",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/include/pg_config.h.in",
+      "sha256": "40ec66c722dee3ae0388495ed536d32ce0cf5f228e7e164d528a3248dc8d6a22",
+      "lines": 823,
+      "symbols": {
+        "PG_VERSION": [
+          621,
+          624,
+          627
+        ],
+        "BLCKSZ": [
+          27,
+          30,
+          31,
+          638,
+          639,
+          780,
+          781,
+          782,
+          783,
+          785
+        ]
+      }
+    },
+    {
+      "kind": "code",
+      "path": "src/backend/access/heap/hio.c",
+      "url": "https://github.com/postgres/postgres/blob/f5cc81719e6da4cbdb1f797c48b693e91018153a/src/backend/access/heap/hio.c",
+      "sha256": "895bf67d068c5a38df1041a95fff3ce63c9f058c94e05cce221e8cd8eabd14db",
+      "lines": 886,
+      "symbols": {
+        "RelationGetBufferForTuple": [
+          437,
+          457,
+          502
+        ],
+        "GetPageWithFreeSpace": [
+          584,
+          759
+        ],
+        "RecordAndGetPageWithFreeSpace": [
+          759
+        ]
+      }
+    }
+  ],
+  "web": [
+    {
+      "kind": "web",
+      "id": "history",
+      "url": "https://www.postgresql.org/docs/18/history.html",
+      "sha256": "e326e16dafa3b4121e7228e012fc3df7727b55f6964da9a40120aa02421e20c0",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "hellerstein",
+      "url": "https://arxiv.org/html/1901.01973v1",
+      "sha256": "eb3c2c086fd758faeae1c881f12ca5af0938d25c6a191cfdaf66693875faa2ae",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "codd",
+      "url": "https://research.ibm.com/publications/a-relational-model-of-data-for-large-shared-data-banks",
+      "sha256": "6f90784c0ffef302ae204b4785e139c55dd4d8973d67e90f4130127a6b33ce1a",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "ibm-history",
+      "url": "https://www.ibm.com/history/relational-database",
+      "sha256": "b1ad28492944dae7087148545b4aa53f8acb647d9f0625bb1f73f0202521c38c",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "stonebraker",
+      "url": "https://www2.eecs.berkeley.edu/Faculty/Homepages/stonebraker.html",
+      "sha256": "d4bdb58c3ac7d3a19c89fa95b2dd6a55cdf5ab84ad2396cdc668ac336f9050e8",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "wong",
+      "url": "https://www2.eecs.berkeley.edu/Faculty/Homepages/wong.html",
+      "sha256": "ad657d0585986e2291d8db028866c0e0a5f7e790dabf059eb93a117320c9ce25",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "release60",
+      "url": "https://www.postgresql.org/docs/9.0/release-6-0.html",
+      "sha256": "c60e92cecb399ba81d25485d51e6a271f1d3f4e485ffefb6ab78d8a272cb1378",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "release65",
+      "url": "https://www.postgresql.org/docs/7.1/release-6-5.html",
+      "sha256": "93c0f7b504bdf30275c215e223a9550054d554b864f18659bc41fef3d7fbeb1d",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "release71",
+      "url": "https://www.postgresql.org/docs/7.1/release.html",
+      "sha256": "edf12a0e77328d942cc78d0bf19f94f6d3ce87db85793d9a43f3fdd9593245a0",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "survey2022",
+      "url": "https://survey.stackoverflow.co/2022/",
+      "sha256": "b8459eb00a079392b3d08b821dbf2d8baa30fab20c75509ab11983aaa860e110",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "survey2023",
+      "url": "https://survey.stackoverflow.co/2023/",
+      "sha256": "11b6968aa6d397ac0a95a6f84393fad617c9b37e62aa476f7be07963310db777",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "survey2026",
+      "url": "https://survey.stackoverflow.co/2026/technology/data/databases",
+      "sha256": "36804dd7a6bda9c2718b6a845998154c12421aced5d43345975dbe7fdae09b1e",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "survey-method2026",
+      "url": "https://survey.stackoverflow.co/2026/methodology",
+      "sha256": "4f0a1b7d5988493b4706060a602baa51eecc85bec175b14ec584f14d2630a77a",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "page",
+      "url": "https://www.postgresql.org/docs/18/storage-page-layout.html",
+      "sha256": "b88438a068aaa043620c7cca118911129400440eb78c9557b2a0d8e7a2d54603",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "files",
+      "url": "https://www.postgresql.org/docs/18/storage-file-layout.html",
+      "sha256": "1a74c9492a4bde82e1108ebbeed9d6fa5dea08dc4a010e960ec1a969b7653c57",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "hot",
+      "url": "https://www.postgresql.org/docs/18/storage-hot.html",
+      "sha256": "f5ac7a806ba5ed34062ffbf3a9363098569596d90a9bc1f32bf6aaa9e7580b44",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "isolation",
+      "url": "https://www.postgresql.org/docs/18/transaction-iso.html",
+      "sha256": "0b5013fde5e842c82664f2d9fe599f1c8ef7756e8c3ecc254b589e3be9e0d356",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "vacuum",
+      "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
+      "sha256": "508d6381a67d60148b6410ab3a3a1aed6933f1be0dab03ebbccb4ff26aac8669",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "wal",
+      "url": "https://www.postgresql.org/docs/18/wal-intro.html",
+      "sha256": "47d2414642da3adcfce472c0c97b26bef82d50ab46bb975aeb848aad5108d754",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "sync",
+      "url": "https://www.postgresql.org/docs/18/runtime-config-wal.html",
+      "sha256": "19e51befe1cae93545c7eb039d2649447d549aa8d544751cea4c742cfbd21ce2",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "indexes",
+      "url": "https://www.postgresql.org/docs/18/indexes-types.html",
+      "sha256": "109cedfc535eeed9d27fb791f02bb3bf9c851fc0cd92ba36cf7691fb9050a9d7",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "index-only",
+      "url": "https://www.postgresql.org/docs/18/indexes-index-only-scans.html",
+      "sha256": "e4cc16da78bf6a65fc29e03bfabc6c5fe8ab6c513a5a79d148cc717523e85c4a",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "extensibility",
+      "url": "https://www.postgresql.org/docs/18/extend.html",
+      "sha256": "a2346607b6ddd73cbddd79669d4e0f20b98c9f0e0da396184623a3712ae98127",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "gist",
+      "url": "https://www.postgresql.org/docs/18/gist.html",
+      "sha256": "db5de1620ff8bb191d24d19444231509223b29d4a44bd1d297545862d66cf3e9",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "ranges",
+      "url": "https://www.postgresql.org/docs/18/rangetypes.html",
+      "sha256": "d04d33980e14be4e03b7f3c87d5666520fc416d5bbb167bb2edac7abccc5b450",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "btree-gist",
+      "url": "https://www.postgresql.org/docs/18/btree-gist.html",
+      "sha256": "bcf87ff5360beb507788bcc81a1f5b9ca1e1ad54c40e3f67f6cb5189d5f708ce",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "constraints",
+      "url": "https://www.postgresql.org/docs/18/ddl-constraints.html",
+      "sha256": "dbad83503774b48b2a33f70bbc9e3b21cbea40949680e1c4f6d29c206048c1aa",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "transactions",
+      "url": "https://www.postgresql.org/docs/18/tutorial-transactions.html",
+      "sha256": "da145d69374cb03c9875ff09c5ab4a535fc01b2f85a080f963feb933cb14c088",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "tableam",
+      "url": "https://www.postgresql.org/docs/18/tableam.html",
+      "sha256": "9ab8e940d94fe36f277ce9c7ddd3825b22459c94bbda94a4ac06467c6661f9a9",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "hstore",
+      "url": "https://www.postgresql.org/docs/18/hstore.html",
+      "sha256": "87e51bfd6b8e3c60c814f9be9195ef9cdf7e2c699614cdc3451115d3485b2323",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "json",
+      "url": "https://www.postgresql.org/docs/18/datatype-json.html",
+      "sha256": "c1530fe46ab675740c16a17c60889fcd4af27f5c739f89f33828a9ae2be52a23",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "postgis",
+      "url": "https://postgis.net/documentation/getting_started/",
+      "sha256": "5428dfc1cb1338d3237ed26cadd2d3c08ac12dfe7635113f7a258be3737bfa0d",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "innodb-versions",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "status": "unavailable",
+      "error": "HTTPError"
+    },
+    {
+      "kind": "web",
+      "id": "innodb-indexes",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "status": "unavailable",
+      "error": "HTTPError"
+    },
+    {
+      "kind": "web",
+      "id": "pg-logo",
+      "url": "https://wiki.postgresql.org/wiki/Logo",
+      "sha256": "0ce8439cb37e6614efa4fcd658ac50aba296d3045b2f122049f4d0101335de36",
+      "status": "fetched"
+    },
+    {
+      "kind": "web",
+      "id": "pg-license",
+      "url": "https://www.postgresql.org/about/licence/",
+      "sha256": "f2837dd142502f804006e456cb65a52fb9d5be7ddf9df4f09e47147505cf8ec6",
+      "status": "fetched"
+    }
+  ]
+}

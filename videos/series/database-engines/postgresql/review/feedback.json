@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "version": "2026-10-19",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "保留存储、查询、修改、并发、回收和恢复主线；增加独立的 InnoDB 对照与选型章，用已解释机制归纳优势与成本，不把整个片子改为排名或品牌清单。",
+      "script_evidence": "script.js 各章、compare b2–b26；README 主线与预算",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "主线跟踪同一用户记录；比较章用部分索引的未完成任务子集、JSONB 键值查询、预约不重叠规则，说明组合能力。每次只展开一个具体例子，不并排长文献。",
+      "script_evidence": "q10–q18、u11–u19、m6a–m9、b7–b16；out_08_compare.json；STYLE 比较章",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "比较固定 Pg 18.4 heap 与 MySQL 9.7 InnoDB，分清存储引擎和整套数据库；明确 RC/RR 默认差异。57.9% 为该题受访者使用比例；默认选择限定为可优先评估的候选。",
+      "script_evidence": "FACTS T30–T38；o4–o5a、m6a–m6c、b6、b17–b26",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "比较章按物理路径、并发/维护、可组合能力、采用案例分段显示；一屏只保留当前比较轴。章题 3.2 秒候选预算，片尾静默 14 秒，实际成片仍须量完整可读区间。",
+      "script_evidence": "STYLE 比较章画面；script.js compare、zCredit；最终 MP4 另验",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "索引图明确 Pg 堆位置与 InnoDB 主键引用；宽主键只在相关路径上展开；部分索引直接筛出子集，JSONB 用键值命中，不以品牌卡片代替关系。",
+      "script_evidence": "q12a–q12d、b2–b12；src/js/data.js compare；STYLE",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "维持成熟、克制的工业纪录片口播，比较段稳定、不使用比赛式重音；确认后试听新专名和统计数字。不同动作配短声，信息密集处留白。",
+      "script_evidence": "STYLE 配音；PRODUCTION；o5/o5a、b9–b22 的候选读法",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "新任务表只含合成数据；独立实例仅本机回环，日志与 initdb 输出落盘前脱敏，不采集现有服务或账号。网页只保存公开文本、URL 与哈希。",
+      "script_evidence": "lab/08_compare.py clean()、out_08_compare.json；comparison-sources.json",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "8–12 分钟上限不变；当前只记估算，确认后实测再排时间。不把索引计划、局部查询耗时和研究检查写成跨库性能胜负或成片验收。",
+      "script_evidence": "project.json check.duration；NOTES 当前估算；FACTS T30–T38",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "技术能力、框架/托管采用案例、调查使用率与工程选型推论分别记录；保留 MySQL 的 JSON/空间能力和 InnoDB 主键路径长处，不把功能组合直接说成反超的统计原因。",
+      "script_evidence": "FACTS S03/S04、T30–T38；b2–b5、b17、b19–b26",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "系列关系仍贯穿布局、主键路径、版本和恢复；加强二级索引与隔离级别对照，再独立归纳；最后接 Firebird，不依赖前集编号。",
+      "script_evidence": "README 承接表；q10–q15、u11–u13、m6a–m6c、w2–w4、compare、z8–z9",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "部分索引、JSONB/GIN、范围与排他约束在具体用途上解释；pgvector 对应向量相似度检索，PostGIS 对应空间操作。Django 只说教程建议，不能误说默认 Pg。",
+      "script_evidence": "b7–b22；FACTS T32–T36；STYLE 画面中文释义",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "新增 57.9% / 35.1% 的中文读法与 GIN、pgvector 候选读法；统计、产品名和长比较句待确认后逐段试听，ASR 只筛查。",
+      "script_evidence": "script.js SAY；STYLE 代表句；NOTES 术语",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "老牌研究来路与现代扩展能力相接；开场给调查年份和比例，结尾前用真实框架/托管案例解释采用路径，主线仍是引擎实现。",
+      "script_evidence": "h6–h18、o4–o5a、compare；FACTS T36–T38",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "本片涉及对应内容，按当前规则执行。",
+      "plan": "名单和制作指令只在独立说明里，zCredit 为空字幕、14 秒 pause、credits:true、无 tts；署名保持 6.1Sol。",
+      "script_evidence": "script.js zCredit；review/PRODUCTION.md",
+      "result": "pending",
+      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "clips": []
+    }
+  ],
+  "history": []
+}
