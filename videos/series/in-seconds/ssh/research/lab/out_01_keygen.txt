@@ -1,0 +1,41 @@
+环境：Microsoft Windows NT 10.0.26340.0；2026-10-19 14:36:36 +08:00
+ssh 版本：OpenSSH_for_Windows_9.5p2, LibreSSL 3.8.2
+
+本实验只记录结构与长度。公钥 base64 段、私钥文件、口令都不落盘、不回显。
+
+───── ed25519 ─────
+命令：ssh-keygen -t ed25519 -N [口令已隐去] -C ft-lab@example.invalid -f <临时目录>/ed25519
+公钥文件行数            : 1
+公钥整行字符数          : 103
+三段                    : 类型=ssh-ed25519 / base64 段=68 字符 / 注释=ft-lab@example.invalid
+base64 段解码后字节数   : 51
+解码后前 8 字节(hex)    : 00 00 00 0b 73 73 68 2d
+第 1 个长度前缀串     : 长度前缀=11（hex 00 00 00 0b，大端） 内容长度=11 内容=ssh-ed25519
+第 2 个长度前缀串     : 长度前缀=32（hex 00 00 00 20，大端） 内容长度=32 内容=（二进制 32 字节，前 8 字节 hex 6c b9 8e 46 8f 2a 4a 22）
+长度前缀串个数          : 2
+字节账                  : 长度前缀 8 + 内容 43 = 51 字节
+同一批字节按小端读长度  : 184549376 ← 错的；SSH 用网络字节序（大端）
+指纹（ssh-keygen -lf）  :
+  256 SHA256:LgvUc5AjaTYjl5XOvyqmgFGCEglzP7HILrldz4K/D7Q ft-lab@example.invalid (ED25519)
+私钥首行                : -----BEGIN OPENSSH PRIVATE KEY-----
+
+───── rsa4096 ─────
+命令：ssh-keygen -t rsa -b 4096 -N [口令已隐去] -C ft-lab@example.invalid -f <临时目录>/rsa4096
+公钥文件行数            : 1
+公钥整行字符数          : 747
+三段                    : 类型=ssh-rsa / base64 段=716 字符 / 注释=ft-lab@example.invalid
+base64 段解码后字节数   : 535
+解码后前 8 字节(hex)    : 00 00 00 07 73 73 68 2d
+第 1 个长度前缀串     : 长度前缀=7（hex 00 00 00 07，大端） 内容长度=7 内容=ssh-rsa
+第 2 个长度前缀串     : 长度前缀=3（hex 00 00 00 03，大端） 内容长度=3 内容=（二进制 3 字节，前 8 字节 hex 01 00 01 00 00 02 01 00）
+第 3 个长度前缀串     : 长度前缀=513（hex 00 00 02 01，大端） 内容长度=513 内容=（二进制 513 字节，前 8 字节 hex 00 d0 d2 e9 b7 6c 88 ca）
+长度前缀串个数          : 3
+字节账                  : 长度前缀 12 + 内容 523 = 535 字节
+同一批字节按小端读长度  : 117440512 ← 错的；SSH 用网络字节序（大端）
+指纹（ssh-keygen -lf）  :
+  4096 SHA256:gUpUFxFeRk7UY/LirfAm8WCtbTnvM0ECG9tyL7cDSSs ft-lab@example.invalid (RSA)
+私钥首行                : -----BEGIN OPENSSH PRIVATE KEY-----
+
+───── 清理 ─────
+删除临时目录（实验密钥不留在磁盘上）
+已删除。

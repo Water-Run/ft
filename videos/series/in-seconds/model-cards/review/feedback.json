@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "version": "2026-10-19.4",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "主问题定在 open 提出、read 逐栏推进、close 回答：标题承诺「读懂模型的模型卡」，全片就是逐栏读一张真卡。不用参数量或历史材料凑信息量（对照 Lean 4 的材料堆叠）。",
+      "script_evidence": "第 1 轮中文稿：o1–o4 提出问题并给出模型卡这个名字；read 场 26.25–64.75 逐栏推进；c1–c3 在 76.60–88.00 回答「先读哪三栏」。取舍见 research/MAP.md。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "全片只用同一个例子走完全程：o1–o2 先给两个填空结果，r7 回头读它们的分数，不引入第二个模型或第二个例子。难点先排时间——r7 之后留 1.9 秒纯画面停顿。",
+      "script_evidence": "第 1 轮中文稿：open 的 o1–o2 与 read 的 r7、r8 是同一组填空与同两个分数，构成前后呼应的一条线索；rT 为 1.9 秒无旁白停顿。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "GLUE 首次出现即带中文释义「语言理解测试」（依据 GLUE 官网对全称的定义，见 FACTS.md）。GPT2/BERT/Hugging Face 是专名不翻译。不与第 16 集比较，也不引入其他模型的分数作对照：只报本卡的 79.6，不说「好」。",
+      "script_evidence": "第 1 轮中文稿 r9「GLUE 语言理解测试，微调后平均 79.6」；r4 的 GPT2 是卡里原话。FACTS.md 已核 GLUE 全称与 79.6 的来源，并记录没有取到同表其他模型数值作对照。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "c01f0f5ca1049512a199d1ec3f60245af23078ae93835223b4175d595091aa03",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片最容易违反的一条，96 秒很紧。先排信息再排动作，留三处纯画面停顿给阅读：oT 2.6 秒（片名卡）、rT 1.9 秒（0.0975 与 0.2198 两个分数与各自的填空原文，四样一起停住，镜头完全不动）、cT 1.2 秒（三栏清单）。段内不留「上一句还没读完就换栏」的余量。",
+      "script_evidence": "第 1 轮中文稿的三处停顿已写进 script.js（pause，无 tts、无字幕），时序见 review/NOTES.md「预估总时长与各段时长」；rT 的画面静止要求写入 research/STYLE.md 第 7 节。成片时长区间待最终 MP4 实测。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "逐栏推进靠镜头在同一张卡上纵向下移 + 右上角仪表逐栏点亮（同一状态，不另设动画），不用整屏刷换。四个栏目各有专属玻璃形态：薄片（YAML）、厚块（用途与限制）、裂纹（局限与偏见）、磨砂（评测）。",
+      "script_evidence": "research/STYLE.md 第 4、5、7 节；第 1 轮中文稿的四个栏目顺序（r1/r2–r4/r5–r8/r9）与镜头的纵向推进一一对应。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "ee41c345f574a392da44514d878439edec32a8b9efab0bfb7565fe743914fc67",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "120 拍/分与每秒一声秒针沿用系列；三处阅读停顿期间不叠音效。配乐要有存在感：先给一层贯穿的低频铺底，再随逐栏推进加层，c3 处抬起（project.json 的 audio.score.lift_cue 已由 a2 改为 c3）。",
+      "script_evidence": "project.json 的 audio.score.lift_cue = c3；script.js 的三处停顿为无旁白 cue，配乐安排由受托方在声音编排阶段落实并记录。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "讲解对象是公开页面与公开仓库，画面上只有公开模型卡的原文、公开论文标题与年份；不出现本机路径、主机名或账号。",
+      "script_evidence": "research/FACTS.md 记录的全部来源均为公开 URL；画面文字全部取自这些来源的原文，见 FACTS.md 各表的定位列。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "目标 96.00 秒 ±0.1（project.json 的 check.duration 已由 [59.9, 60.1] 改为 [95.9, 96.1]）；script.js 的 TOTAL = 96，两语 layoutScript 的 total 均为 96.00 且 L.problems 为空；60fps。出片后以最终编码文件核对帧率、时长、响度、真峰值与文件名。",
+      "script_evidence": "第 1 轮：script.js TOTAL=96；zh 与 en 的 layoutScript 实测 total 均为 96.00、problems 为空。最终 MP4 的 ffprobe 实测与 SHA-256 待交付前回填。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "每个数字、每段英文、每个年份都指向 FACTS.md 中逐字读过的一手来源。「模型卡是否已成事实标准」这类趋势判断无可复查依据，因此一句不说，逐条记在 FACTS.md「不能说的话」。",
+      "script_evidence": "research/FACTS.md 的取证环境表列出五个来源及取用方式；「不能说的话」一节记录八项查过但不进旁白的判断与理由。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "全片不提第 16 集、不提系列编号、不说「上一期」。BERT 与模型卡的概念在本片内自足：模型卡由 w1 给定义，填空玩法由 r6 引入。",
+      "script_evidence": "第 1 轮中文稿全文检索无「上一期」「第 16 集」等回指；FACTS.md 记录了舍弃 Model variations 一栏的理由即与第 16 集分工。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "论文标题与模型卡栏目标题（Intended uses & limitations、Limitations and bias、Evaluation results）在画面上带中文释义；GLUE 在旁白里直接说「语言理解测试」；免责声明按原样显示并由旁白转述。英文明示译文性质。",
+      "script_evidence": "第 1 轮中文稿 r9 已给 GLUE 中文释义；FACTS.md 记录了论文摘要与卡内各句的中文转述来源，并注明是译文而非原话。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "script.js 的 SAY 表已列 Hugging Face、BERT、GPT2、GLUE、0.097、0.220、79.6 的读法，尚未试听；合成前先用 tts_probe.js 逐个试，断句按语义不按字幕切。",
+      "script_evidence": "script.js 的 SAY 表（zh）；read/NOTES.md「定稿后的调整」记录尚未试听，须按 F17 先确认音色与语速再合成全片。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "模型卡对多数观众是陌生对象：o1–o4 先给现象再给名字，w1–w2 交代「随模型发布的简短文档」、2018 年出处与「要求写清评测和使用场合」，read 给出本片路线。不引行业地位与趋势判断。",
+      "script_evidence": "第 1 轮中文稿：o1–o2 先出现两道填空的答案，o4 才给名字；w1–w2 给定义与 2018 年（FACTS.md 已核 v1 提交于 2018-10-05）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "z1 是 88.00–96.00 的静默 cue：pause 7.5、credits:true、无 tts、无字幕。署名、模型分工与仓库地址只上画面，不进旁白正文。",
+      "script_evidence": "script.js 的 outro：id outro、at 88、cues 仅 z1 = ['z1', null, { pause: 7.5, gap: 0, credits: true }]，无 tts、无字幕。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "旁白与画面不出现「示意」「代写说明」「为简洁起见省略」这类文字。免责声明按它在卡里的原样显示，并在画面上照实标明这张卡由 Hugging Face 团队代写（一行署名，非自我说明）。四个玻璃形态不加标签说明。",
+      "script_evidence": "第 1 轮中文稿全文无此类自我说明；e1–e2 陈述的是卡里免责声明的事实，research/STYLE.md 第 8 节把「不加任何说明性小字」列为禁用项。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F16",
+      "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "模型卡本身是一张文档：YAML 头、Markdown 标题、表格、代码块都出现在画面上，版式照真实卡重建。液态玻璃是介质（卡压在玻璃底板上），不得盖住内容——卡正面始终深色实心高对比。任意一帧都能看出在讲一张模型卡。",
+      "script_evidence": "research/STYLE.md 第 1、4 节：玻璃四层构造、四个栏目形态与真实卡的栏目一一对应；第 7 节要求全片镜头始终能看到这张卡的边缘。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F17",
+      "rule_sha256": "c14cc3f8d440c8486e71c6f276fd025d49c3dbe56553331607e13864139fb5e8",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "96 秒节奏快，更不能念成平铺流水：script.js 已用 *词* 标出每句该重音的位置（o4、r2、r5、r7 的两个分数、e1、e2）。配音前先试听候选音色与语速，经策划者确认再合成全片。",
+      "script_evidence": "script.js 的 *词* 标记；read/NOTES.md「定稿后的调整」记录合成前须先试听并经策划者确认；本片尚未配音，听感待复核。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}

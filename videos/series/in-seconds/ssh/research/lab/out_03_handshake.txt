@@ -1,0 +1,558 @@
+环境：Microsoft Windows NT 10.0.26340.0；2026-10-19 14:44:12 +08:00
+客户端：OpenSSH_for_Windows_9.5p2, LibreSSL 3.8.2
+服务端：OpenSSH_for_Windows_9.5p2, LibreSSL 3.8.2
+临时目录：C:\Users\user\AppData\Local\Temp\ftlab-sshd-f59c0a1f
+
+───── 一次性 sshd 的配置（路径与用户名已脱敏）─────
+Port 2222
+ListenAddress 127.0.0.1
+HostKey C:\Users\user\AppData\Local\Temp\ftlab-sshd-f59c0a1f\hostkey
+AuthorizedKeysFile C:\Users\user\AppData\Local\Temp\ftlab-sshd-f59c0a1f\authorized_keys
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+StrictModes no
+PidFile C:\Users\user\AppData\Local\Temp\ftlab-sshd-f59c0a1f\sshd.pid
+LogLevel DEBUG3
+
+───── 启动 sshd ─────
+sshd 进程是否在运行：True
+
+───── ssh -vvv 的真实回显（127.0.0.1:2222）─────
+debug3: process_channel_timeouts: setting 0 timeouts
+debug3: channel_clear_timeouts: clearing
+debug3: recv_idexch_state: entering fd = 3
+debug3: ssh_msg_recv entering
+debug3: recv_idexch_state: done
+debug2: fd 5 setting O_NONBLOCK
+debug3: process_channel_timeouts: setting 0 timeouts
+debug3: channel_clear_timeouts: clearing
+debug3: recv_idexch_state: entering fd = 3
+debug3: ssh_msg_recv entering
+debug3: recv_idexch_state: done
+debug2: fd 5 setting O_NONBLOCK
+debug3: recv_autxctx_state: entering fd = 3
+debug3: ssh_msg_recv entering
+debug3: recv_autxctx_state: done
+debug2: parse_server_config_depth: config reprocess config len 379
+OpenSSH_for_Windows_9.5p2, LibreSSL 3.8.2
+debug1: Reading configuration data C:\\Users\\user/.ssh/config
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_config error:2
+debug2: resolve_canonicalize: hostname 127.0.0.1 is address
+debug3: ssh_connect_direct: entering
+debug1: Connecting to 127.0.0.1 [127.0.0.1] port 2222.
+debug1: Connection established.
+debug1: identity file C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\id_ed25519 type 3
+debug3: Failed to open file:C:/Users/user/AppData/Local/Temp/ftlab-sshd-f59c0a1f/id_ed25519-cert error:2
+debug3: Failed to open file:C:/Users/user/AppData/Local/Temp/ftlab-sshd-f59c0a1f/id_ed25519-cert.pub error:2
+debug3: failed to open file:C:/Users/user/AppData/Local/Temp/ftlab-sshd-f59c0a1f/id_ed25519-cert error:2
+debug1: identity file C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\id_ed25519-cert type -1
+debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5
+debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5
+debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000
+debug2: fd 3 setting O_NONBLOCK
+debug1: Authenticating to 127.0.0.1:2222 as 'ftlab'
+debug3: put_host_port: [127.0.0.1]:2222
+debug3: Failed to open file:C:/Users/user/AppData/Local/Temp/ftlab-sshd-f59c0a1f/known_hosts error:2
+debug1: load_hostkeys: fopen C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\known_hosts: No such file or directory
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_known_hosts error:2
+debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts: No such file or directory
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_known_hosts2 error:2
+debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts2: No such file or directory
+debug3: order_hostkeyalgs: no algorithms matched; accept original
+debug3: send packet: type 20
+debug1: SSH2_MSG_KEXINIT sent
+debug3: receive packet: type 20
+debug1: SSH2_MSG_KEXINIT received
+debug2: local client KEXINIT proposal
+debug2: KEX algorithms: curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,ext-info-c,kex-strict-c-v00@openssh.com
+debug2: host key algorithms: ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256
+debug2: ciphers ctos: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: ciphers stoc: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: MACs ctos: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512
+debug2: MACs stoc: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512
+debug2: compression ctos: none,zlib@openssh.com,zlib
+debug2: compression stoc: none,zlib@openssh.com,zlib
+debug2: languages ctos: 
+debug2: languages stoc: 
+debug2: first_kex_follows 0 
+debug2: reserved 0 
+debug2: peer server KEXINIT proposal
+debug2: KEX algorithms: curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,kex-strict-s-v00@openssh.com
+debug2: host key algorithms: ssh-ed25519
+debug2: ciphers ctos: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: ciphers stoc: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com
+debug2: MACs ctos: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512
+debug2: MACs stoc: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512
+debug2: compression ctos: none,zlib@openssh.com
+debug2: compression stoc: none,zlib@openssh.com
+debug2: languages ctos: 
+debug2: languages stoc: 
+debug2: first_kex_follows 0 
+debug2: reserved 0 
+debug3: kex_choose_conf: will use strict KEX ordering
+debug1: kex: algorithm: curve25519-sha256
+debug1: kex: host key algorithm: ssh-ed25519
+debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
+debug3: send packet: type 30
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug3: receive packet: type 31
+debug1: SSH2_MSG_KEX_ECDH_REPLY received
+debug1: Server host key: ssh-ed25519 SHA256:g6PoA9wiW3y53PxinYaTpcdUILkmw5VNG3RK/qJBbs8
+debug3: put_host_port: [127.0.0.1]:2222
+debug3: put_host_port: [127.0.0.1]:2222
+debug3: Failed to open file:C:/Users/user/AppData/Local/Temp/ftlab-sshd-f59c0a1f/known_hosts error:2
+debug1: load_hostkeys: fopen C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\known_hosts: No such file or directory
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_known_hosts error:2
+debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts: No such file or directory
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_known_hosts2 error:2
+debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts2: No such file or directory
+debug1: checking without port identifier
+debug3: Failed to open file:C:/Users/user/AppData/Local/Temp/ftlab-sshd-f59c0a1f/known_hosts error:2
+debug1: load_hostkeys: fopen C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\known_hosts: No such file or directory
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_known_hosts error:2
+debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts: No such file or directory
+debug3: Failed to open file:C:/ProgramData/ssh/ssh_known_hosts2 error:2
+debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts2: No such file or directory
+Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+debug3: send packet: type 21
+debug1: ssh_packet_send2_wrapped: resetting send seqnr 3
+debug2: ssh_set_newkeys: mode 1
+debug1: rekey out after 134217728 blocks
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug3: receive packet: type 21
+debug1: ssh_packet_read_poll2: resetting read seqnr 3
+debug1: SSH2_MSG_NEWKEYS received
+debug2: ssh_set_newkeys: mode 0
+debug1: rekey in after 134217728 blocks
+debug3: ssh_get_authentication_socket_path: path '\\\\.\\pipe\\openssh-ssh-agent'
+debug3: unable to connect to pipe \\\\.\\pipe\\openssh-ssh-agent, error: 2
+debug1: get_agent_identities: ssh_get_authentication_socket: No such file or directory
+debug1: Will attempt key: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\id_ed25519 ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A explicit
+debug2: pubkey_prepare: done
+debug3: send packet: type 5
+debug3: receive packet: type 7
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_input_ext_info: server-sig-algs=<ssh-ed25519,sk-ssh-ed25519@openssh.com,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com,webauthn-sk-ecdsa-sha2-nistp256@openssh.com,ssh-dss,ssh-rsa,rsa-sha2-256,rsa-sha2-512>
+debug1: kex_ext_info_check_ver: publickey-hostbound@openssh.com=<0>
+debug1: kex_ext_info_check_ver: ping@openssh.com=<0>
+debug3: receive packet: type 6
+debug2: service_accept: ssh-userauth
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug3: send packet: type 50
+debug3: receive packet: type 51
+debug1: Authentications that can continue: publickey
+debug3: start over, passed a different list publickey
+debug3: preferred publickey,keyboard-interactive,password
+debug3: authmethod_lookup publickey
+debug3: remaining preferred: keyboard-interactive,password
+debug3: authmethod_is_enabled publickey
+debug1: Next authentication method: publickey
+debug1: Offering public key: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\id_ed25519 ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A explicit
+debug3: send packet: type 50
+debug2: we sent a publickey packet, wait for reply
+debug3: receive packet: type 60
+debug1: Server accepts key: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\id_ed25519 ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A explicit
+debug3: sign_and_send_pubkey: using publickey-hostbound-v00@openssh.com with ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A
+debug3: sign_and_send_pubkey: signing using ssh-ed25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A
+debug3: send packet: type 50
+debug3: receive packet: type 52
+Authenticated to 127.0.0.1 ([127.0.0.1]:2222) using "publickey".
+debug2: fd 4 setting O_NONBLOCK
+debug2: fd 5 setting O_NONBLOCK
+debug2: fd 6 setting O_NONBLOCK
+debug1: channel 0: new session [client-session] (inactive timeout: 0)
+debug3: ssh_session2_open: channel_new: 0
+debug2: channel 0: send open
+debug3: send packet: type 90
+debug1: Requesting no-more-sessions@openssh.com
+debug3: send packet: type 80
+debug1: Entering interactive session.
+debug1: pledge: network
+debug3: client_repledge: enter
+debug3: receive packet: type 80
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
+debug3: receive packet: type 91
+debug2: channel_input_open_confirmation: channel 0: callback start
+debug2: fd 3 setting TCP_NODELAY
+debug2: client_session2_setup: id 0
+debug1: Sending command: exit
+debug2: channel 0: request exec confirm 1
+debug3: send packet: type 98
+debug3: client_repledge: enter
+debug1: pledge: fork
+debug2: channel_input_open_confirmation: channel 0: callback done
+debug2: channel 0: open confirm rwindow 0 rmax 32768
+debug2: channel 0: rcvd adjust 2097152
+debug3: receive packet: type 99
+debug2: channel_input_status_confirm: type 99 id 0
+debug2: exec request accepted on channel 0
+debug2: channel 0: read failed rfd 4 maxlen 32768: Broken pipe
+debug2: channel 0: read failed
+debug2: chan_shutdown_read: channel 0: (i0 o0 sock -1 wfd 4 efd 6 [write])
+debug2: channel 0: input open -> drain
+debug2: channel 0: ibuf empty
+debug2: channel 0: send eof
+debug3: send packet: type 96
+debug2: channel 0: input drain -> closed
+debug3: receive packet: type 96
+debug2: channel 0: rcvd eof
+debug2: channel 0: output open -> drain
+debug2: channel 0: obuf empty
+debug2: chan_shutdown_write: channel 0: (i3 o1 sock -1 wfd 5 efd 6 [write])
+debug2: channel 0: output drain -> closed
+debug3: receive packet: type 98
+debug1: client_input_channel_req: channel 0 rtype exit-status reply 0
+debug3: receive packet: type 97
+debug2: channel 0: rcvd close
+debug3: channel 0: will not send data after close
+debug2: channel 0: almost dead
+debug2: channel 0: gc: notify user
+debug2: channel 0: gc: user detached
+debug2: channel 0: send close
+debug3: send packet: type 97
+debug2: channel 0: is dead
+debug2: channel 0: garbage collecting
+debug1: channel 0: free: client-session, nchannels 1
+debug3: channel 0: status: The following connections are open:
+  #0 client-session (t4 [session] r0 i3/0 o3/0 e[write]/0 fd -1/-1/6 sock -1 cc -1 io 0x00/0x00)
+
+debug3: send packet: type 1
+Transferred: sent 2192, received 1888 bytes, in 0.5 seconds
+Bytes per second: sent 4605.0, received 3966.4
+debug1: Exit status 0
+
+ssh 客户端退出码：0
+
+───── 客户端写下的 known_hosts（字段结构保留，公钥体换成占位）─────
+[127.0.0.1]:2222 ssh-ed25519 <68 字符的 base64 公钥体（一次性主机公钥，已删除，此处用占位符）>   ← 共 3 段：主机名/地址、密钥类型、公钥体（无注释）
+known_hosts 行数：1
+
+───── 服务端日志（DEBUG3，脱敏后）─────
+debug2: fd 4 setting O_NONBLOCK
+debug1: Bind to port 2222 on 127.0.0.1.
+Server listening on 127.0.0.1 port 2222.
+debug3: pselect: installing signal handler for 3, previous 00007FF6337F88F0
+debug3: pselect: installing signal handler for 6, previous 00007FF6337F87D0
+debug3: pselect: installing signal handler for 7, previous 00007FF6337F88E0
+debug3: pselect: installing signal handler for 8, previous 00007FF6337F88E0
+debug3: pselect_notify_setup: initializing
+debug2: fd 7 setting O_NONBLOCK
+debug2: fd 5 setting O_NONBLOCK
+debug3: pselect_notify_setup: pid 64080 saved 64080 pipe0 7 pipe1 5
+debug3: fd 6 is not O_NONBLOCK
+debug3: spawning "C:\\WINDOWS\\System32\\OpenSSH\\sshd.exe" -f C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\sshd_config -E C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\sshd.log -R as subprocess
+debug3: send_rexec_state: entering fd = 10 config len 379
+debug3: ssh_msg_send: type 0
+debug3: send_rexec_state: done
+debug1: inetd sockets after dupping: 4, 4
+debug3: process_channel_timeouts: setting 0 timeouts
+debug3: channel_clear_timeouts: clearing
+Connection from 127.0.0.1 port 60492 on 127.0.0.1 port 2222
+debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5
+debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5
+debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000
+debug2: fd 4 setting O_NONBLOCK
+debug3: spawning "C:\\WINDOWS\\System32\\OpenSSH\\sshd.exe" -f C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\sshd_config -E C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\sshd.log -y as user
+debug2: Network child is on pid 49016
+debug3: send_rexec_state: entering fd = 7 config len 379
+debug3: ssh_msg_send: type 0
+debug3: send_rexec_state: done
+debug3: ssh_msg_send: type 0
+debug3: ssh_msg_send: type 0
+debug3: preauth child monitor started
+debug1: list_hostkey_types: ssh-ed25519 [preauth]
+debug3: send packet: type 20 [preauth]
+debug1: SSH2_MSG_KEXINIT sent [preauth]
+debug3: receive packet: type 20 [preauth]
+debug1: SSH2_MSG_KEXINIT received [preauth]
+debug2: local server KEXINIT proposal [preauth]
+debug2: KEX algorithms: curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,kex-strict-s-v00@openssh.com [preauth]
+debug2: host key algorithms: ssh-ed25519 [preauth]
+debug2: ciphers ctos: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com [preauth]
+debug2: ciphers stoc: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com [preauth]
+debug2: MACs ctos: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512 [preauth]
+debug2: MACs stoc: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512 [preauth]
+debug2: compression ctos: none,zlib@openssh.com [preauth]
+debug2: compression stoc: none,zlib@openssh.com [preauth]
+debug2: languages ctos:  [preauth]
+debug2: languages stoc:  [preauth]
+debug2: first_kex_follows 0  [preauth]
+debug2: reserved 0  [preauth]
+debug2: peer client KEXINIT proposal [preauth]
+debug2: KEX algorithms: curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256,ext-info-c,kex-strict-c-v00@openssh.com [preauth]
+debug2: host key algorithms: ssh-ed25519-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,sk-ecdsa-sha2-nistp256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256-cert-v01@openssh.com,ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256 [preauth]
+debug2: ciphers ctos: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com [preauth]
+debug2: ciphers stoc: chacha20-poly1305@openssh.com,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com [preauth]
+debug2: MACs ctos: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512 [preauth]
+debug2: MACs stoc: umac-64-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64@openssh.com,umac-128@openssh.com,hmac-sha2-256,hmac-sha2-512 [preauth]
+debug2: compression ctos: none,zlib@openssh.com,zlib [preauth]
+debug2: compression stoc: none,zlib@openssh.com,zlib [preauth]
+debug2: languages ctos:  [preauth]
+debug2: languages stoc:  [preauth]
+debug2: first_kex_follows 0  [preauth]
+debug2: reserved 0  [preauth]
+debug3: kex_choose_conf: will use strict KEX ordering [preauth]
+debug1: kex: algorithm: curve25519-sha256 [preauth]
+debug1: kex: host key algorithm: ssh-ed25519 [preauth]
+debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none [preauth]
+debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none [preauth]
+debug1: expecting SSH2_MSG_KEX_ECDH_INIT [preauth]
+debug3: receive packet: type 30 [preauth]
+debug1: SSH2_MSG_KEX_ECDH_INIT received [preauth]
+debug3: mm_sshkey_sign: entering [preauth]
+debug3: mm_request_send: entering, type 6 [preauth]
+debug3: mm_sshkey_sign: waiting for MONITOR_ANS_SIGN [preauth]
+debug3: mm_request_receive_expect: entering, type 7 [preauth]
+debug3: mm_request_receive: entering [preauth]
+debug3: mm_request_receive: entering
+debug3: monitor_read: checking request 6
+debug3: mm_answer_sign: entering
+debug3: mm_answer_sign: ssh-ed25519 KEX signature len=83
+debug3: mm_request_send: entering, type 7
+debug2: monitor_read: 6 used once, disabling now
+debug3: send packet: type 31 [preauth]
+debug3: send packet: type 21 [preauth]
+debug1: ssh_packet_send2_wrapped: resetting send seqnr 3 [preauth]
+debug2: ssh_set_newkeys: mode 1 [preauth]
+debug1: rekey out after 134217728 blocks [preauth]
+debug1: SSH2_MSG_NEWKEYS sent [preauth]
+debug1: Sending SSH2_MSG_EXT_INFO [preauth]
+debug3: send packet: type 7 [preauth]
+debug1: expecting SSH2_MSG_NEWKEYS [preauth]
+debug3: receive packet: type 21 [preauth]
+debug1: ssh_packet_read_poll2: resetting read seqnr 3 [preauth]
+debug1: SSH2_MSG_NEWKEYS received [preauth]
+debug2: ssh_set_newkeys: mode 0 [preauth]
+debug1: rekey in after 134217728 blocks [preauth]
+debug1: KEX done [preauth]
+debug3: receive packet: type 5 [preauth]
+debug3: send packet: type 6 [preauth]
+debug3: receive packet: type 50 [preauth]
+debug1: userauth-request for user ftlab service ssh-connection method none [preauth]
+debug1: attempt 0 failures 0 [preauth]
+debug3: mm_getpwnamallow: entering [preauth]
+debug3: mm_request_send: entering, type 8 [preauth]
+debug3: mm_getpwnamallow: waiting for MONITOR_ANS_PWNAM [preauth]
+debug3: mm_request_receive_expect: entering, type 9 [preauth]
+debug3: mm_request_receive: entering [preauth]
+debug3: mm_request_receive: entering
+debug3: monitor_read: checking request 8
+debug3: mm_answer_pwnamallow: entering
+debug2: parse_server_config_depth: config reprocess config len 379
+debug3: mm_answer_pwnamallow: sending MONITOR_ANS_PWNAM: 1
+debug3: mm_request_send: entering, type 9
+debug2: monitor_read: 8 used once, disabling now
+debug3: process_channel_timeouts: setting 0 timeouts [preauth]
+debug3: channel_clear_timeouts: clearing [preauth]
+debug2: input_userauth_request: setting up authctxt for ftlab [preauth]
+debug3: mm_inform_authserv: entering [preauth]
+debug3: mm_request_send: entering, type 4 [preauth]
+debug2: input_userauth_request: try method none [preauth]
+debug3: userauth_finish: failure partial=0 next methods="publickey" [preauth]
+debug3: mm_request_receive: entering
+debug3: monitor_read: checking request 4
+debug3: mm_answer_authserv: service=ssh-connection, style=
+debug2: monitor_read: 4 used once, disabling now
+debug3: send packet: type 51 [preauth]
+debug3: receive packet: type 50 [preauth]
+debug1: userauth-request for user ftlab service ssh-connection method publickey [preauth]
+debug1: attempt 1 failures 0 [preauth]
+debug2: input_userauth_request: try method publickey [preauth]
+debug2: userauth_pubkey: valid user ftlab querying public key ssh-ed25519 <68 字符的 base64（一次性公钥体，已删除，用占位符）> [preauth]
+debug1: userauth_pubkey: publickey test pkalg ssh-ed25519 pkblob ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A [preauth]
+debug3: mm_key_allowed: entering [preauth]
+debug3: mm_request_send: entering, type 22 [preauth]
+debug3: mm_key_allowed: waiting for MONITOR_ANS_KEYALLOWED [preauth]
+debug3: mm_request_receive_expect: entering, type 23 [preauth]
+debug3: mm_request_receive: entering [preauth]
+debug3: mm_request_receive: entering
+debug3: monitor_read: checking request 22
+debug3: mm_answer_keyallowed: entering
+debug1: trying public key file C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys
+debug1: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1: matching key found: ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A
+debug1: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug3: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+Accepted key ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A found at C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1
+debug2: auth_check_authkeys_file: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys: processed 1/1 lines
+debug3: mm_answer_keyallowed: publickey authentication test: ED25519 key is allowed
+debug3: mm_request_send: entering, type 23
+debug3: send packet: type 60 [preauth]
+debug2: userauth_pubkey: authenticated 0 pkalg ssh-ed25519 [preauth]
+debug3: user_specific_delay: user specific delay 0.000ms [preauth]
+debug3: ensure_minimum_time_since: elapsed 21.000ms, delaying 7.280ms (requested 7.070ms) [preauth]
+Postponed publickey for ftlab from 127.0.0.1 port 60492 ssh2 [preauth]
+debug3: receive packet: type 50 [preauth]
+debug1: userauth-request for user ftlab service ssh-connection method publickey-hostbound-v00@openssh.com [preauth]
+debug1: attempt 2 failures 0 [preauth]
+debug2: input_userauth_request: try method publickey-hostbound-v00@openssh.com [preauth]
+debug2: userauth_pubkey: valid user ftlab attempting public key ssh-ed25519 <68 字符的 base64（一次性公钥体，已删除，用占位符）> [preauth]
+debug3: userauth_pubkey: publickey-hostbound-v00@openssh.com have ssh-ed25519 signature for ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A [preauth]
+debug3: mm_key_allowed: entering [preauth]
+debug3: mm_request_send: entering, type 22 [preauth]
+debug3: mm_key_allowed: waiting for MONITOR_ANS_KEYALLOWED [preauth]
+debug3: mm_request_receive_expect: entering, type 23 [preauth]
+debug3: mm_request_receive: entering [preauth]
+debug3: mm_request_receive: entering
+debug3: monitor_read: checking request 22
+debug3: mm_answer_keyallowed: entering
+debug1: trying public key file C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys
+debug1: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1: matching key found: ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A
+debug1: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug3: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+Accepted key ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A found at C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys:1
+debug2: auth_check_authkeys_file: C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\authorized_keys: processed 1/1 lines
+debug3: mm_answer_keyallowed: publickey authentication: ED25519 key is allowed
+debug3: mm_request_send: entering, type 23
+debug3: mm_sshkey_verify: entering [preauth]
+debug3: mm_request_send: entering, type 24 [preauth]
+debug3: mm_sshkey_verify: waiting for MONITOR_ANS_KEYVERIFY [preauth]
+debug3: mm_request_receive_expect: entering, type 25 [preauth]
+debug3: mm_request_receive: entering [preauth]
+debug3: mm_request_receive: entering
+debug3: monitor_read: checking request 24
+debug3: mm_answer_keyverify: publickey ED25519 signature using ssh-ed25519 verified
+debug1: auth_activate_options: setting new authentication options
+debug3: mm_request_send: entering, type 25
+Accepted publickey for ftlab from 127.0.0.1 port 60492 ssh2: ED25519 SHA256:g7t9Da4ePorZRvpyT2TJr71WfcO0UWfB7qT65IxCa6A
+debug1: monitor_child_preauth: user ftlab authenticated by privileged process
+debug3: mm_get_keystate: Waiting for new keys
+debug3: mm_request_receive_expect: entering, type 26
+debug3: mm_request_receive: entering
+debug3: mm_get_keystate: GOT new keys
+debug1: auth_activate_options: setting new authentication options [preauth]
+debug2: userauth_pubkey: authenticated 1 pkalg ssh-ed25519 [preauth]
+debug3: user_specific_delay: user specific delay 0.000ms [preauth]
+debug3: ensure_minimum_time_since: elapsed 4.000ms, delaying 3.070ms (requested 7.070ms) [preauth]
+debug3: send packet: type 52 [preauth]
+debug3: mm_request_send: entering, type 26 [preauth]
+debug3: mm_send_keystate: Finished sending state [preauth]
+debug1: monitor_read_log: child log fd closed
+debug3: get_user_token - i am running as ftlab, returning process token
+debug1: Not running as SYSTEM: skipping loading user profile
+debug3: spawning "C:\\WINDOWS\\System32\\OpenSSH\\sshd.exe" -f C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\sshd_config -E C:\\Users\\user\\AppData\\Local\\Temp\\ftlab-sshd-f59c0a1f\\sshd.log -z as user
+User child is on pid 64496
+debug3: send_rexec_state: entering fd = 6 config len 379
+debug3: ssh_msg_send: type 0
+debug3: send_rexec_state: done
+debug3: ssh_msg_send: type 0
+debug3: ssh_msg_send: type 0
+debug3: ssh_msg_send: type 0
+debug3: ssh_msg_send: type 0
+debug3: ssh_msg_send: type 0
+debug3: monitor_recv_keystate: entering 
+debug3: ssh_msg_recv entering
+debug3: monitor_recv_keystate: done
+debug3: monitor_apply_keystate: packet_set_state
+debug2: ssh_set_newkeys: mode 0
+debug1: rekey in after 134217728 blocks
+debug2: ssh_set_newkeys: mode 1
+debug1: rekey out after 134217728 blocks
+debug1: ssh_packet_set_postauth: called
+debug3: ssh_packet_set_state: done
+debug3: monitor_recv_authopt: entering 
+debug3: ssh_msg_recv entering
+debug3: monitor_recv_authopt: done
+debug3: notify_hostkeys: key 0: ssh-ed25519 SHA256:g6PoA9wiW3y53PxinYaTpcdUILkmw5VNG3RK/qJBbs8
+debug3: notify_hostkeys: sent 1 hostkeys
+debug3: send packet: type 80
+debug1: active: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug1: Entering interactive session for SSH2.
+debug1: server_init_dispatch
+debug3: pselect: installing signal handler for 3, previous 00007FF6337EF8B0
+debug3: pselect_notify_setup: initializing
+debug2: fd 10 setting O_NONBLOCK
+debug2: fd 8 setting O_NONBLOCK
+debug3: pselect_notify_setup: pid 64496 saved 64496 pipe0 10 pipe1 8
+debug3: receive packet: type 90
+debug1: server_input_channel_open: ctype session rchan 0 win 2097152 max 32768
+debug1: input_session_request
+debug1: channel 0: new session [server-session] (inactive timeout: 0)
+debug2: session_new: allocate (allocated 0 max 10)
+debug3: session_unused: session id 0 unused
+debug1: session_new: session 0
+debug1: session_open: channel 0
+debug1: session_open: session 0: link with channel 0
+debug1: server_input_channel_open: confirm session
+debug3: send packet: type 91
+debug3: receive packet: type 80
+debug1: server_input_global_request: rtype no-more-sessions@openssh.com want_reply 0
+debug3: receive packet: type 98
+debug1: server_input_channel_req: channel 0 request exec reply 1
+debug1: session_by_channel: session 0 channel 0
+debug1: session_input_channel_req: session 0 req exec
+debug2: channel_set_xtype: labeled channel 0 as session:command (inactive timeout 0)
+Starting session: command for ftlab from 127.0.0.1 port 60492 id 0
+debug2: fd 9 setting O_NONBLOCK
+debug2: fd 11 setting O_NONBLOCK
+debug2: fd 12 setting O_NONBLOCK
+debug2: fd 13 setting O_NONBLOCK
+debug2: fd 14 setting O_NONBLOCK
+debug2: fd 15 setting O_NONBLOCK
+debug3: shell: "c:\\\\windows\\\\system32\\\\cmd.exe"
+debug3: shell_option: /c
+debug3: exec_command: exit
+debug3: arg escape option: TRUE
+debug3: spawn_argv[0]: "c:\\\\windows\\\\system32\\\\cmd.exe" /c "exit"
+debug3: spawning "c:\\\\windows\\\\system32\\\\cmd.exe" /c "exit" as subprocess
+debug2: fd 5 setting TCP_NODELAY
+debug3: fd 12 is O_NONBLOCK
+debug3: fd 11 is O_NONBLOCK
+debug3: fd 14 is O_NONBLOCK
+debug3: send packet: type 99
+debug3: receive packet: type 96
+debug2: channel 0: rcvd eof
+debug2: channel 0: output open -> drain
+debug2: channel 0: obuf empty
+debug2: chan_shutdown_write: channel 0: (i0 o1 sock -1 wfd 11 efd 14 [read])
+debug2: channel 0: output drain -> closed
+debug2: channel 0: read failed rfd 12 maxlen 32768: Broken pipe
+debug2: channel 0: read failed
+debug2: chan_shutdown_read: channel 0: (i0 o3 sock -1 wfd 12 efd 14 [read])
+debug2: channel 0: input open -> drain
+debug2: channel 0: read 0 from efd 14
+debug2: channel 0: closing read-efd 14
+debug2: channel 0: ibuf empty
+debug2: channel 0: send eof
+debug3: send packet: type 96
+debug2: channel 0: input drain -> closed
+debug2: pselect_notify_done: reading
+debug1: Received SIGCHLD.
+debug1: session_by_pid: pid 4976
+debug2: channel 0: request exit-status confirm 0
+debug3: send packet: type 98
+debug1: session_exit_message: session 0 channel 0 pid 4976 exit 0
+debug1: session_exit_message: release channel 0
+debug2: channel 0: send close
+debug3: send packet: type 97
+debug3: channel 0: will not send data after close
+debug3: receive packet: type 97
+debug2: channel 0: rcvd close
+debug3: channel 0: will not send data after close
+debug2: channel 0: is dead
+debug2: channel 0: gc: notify user
+debug1: session_by_channel: session 0 channel 0
+debug1: session_close_by_channel: channel 0 child 0
+Close session: user ftlab from 127.0.0.1 port 60492 id 0
+debug3: session_unused: session id 0 unused
+debug2: channel 0: gc: user detached
+debug2: channel 0: is dead
+debug2: channel 0: garbage collecting
+debug1: channel 0: free: server-session, nchannels 1
+debug3: channel 0: status: The following connections are open:
+  #0 server-session (t4 [session:command] r0 i3/0 o3/0 e[closed]/0 fd -1/-1/-1 sock -1 cc -1 io 0x00/0x00)
+
+debug3: receive packet: type 1
+Received disconnect from 127.0.0.1 port 60492:11: disconnected by user
+Disconnected from 127.0.0.1 port 60492
+debug1: do_cleanup
+debug3: mm_request_receive: entering
+debug1: do_cleanup
+debug2: pselect_notify_done: reading
+
+
+───── 收尾 ─────
+sshd 已停止。删除临时目录：C:\Users\user\AppData\Local\Temp\ftlab-sshd-f59c0a1f
+一次性主机密钥与用户密钥已删除。

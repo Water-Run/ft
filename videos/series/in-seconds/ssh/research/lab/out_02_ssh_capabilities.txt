@@ -1,0 +1,162 @@
+环境：Microsoft Windows NT 10.0.26340.0；2026-10-19 14:36:58 +08:00
+
+───── ssh -V ─────
+OpenSSH_for_Windows_9.5p2, LibreSSL 3.8.2
+
+
+───── ssh -Q kex ─────
+条目数：12
+   1. diffie-hellman-group1-sha1
+   2. diffie-hellman-group14-sha1
+   3. diffie-hellman-group14-sha256
+   4. diffie-hellman-group16-sha512
+   5. diffie-hellman-group18-sha512
+   6. diffie-hellman-group-exchange-sha1
+   7. diffie-hellman-group-exchange-sha256
+   8. ecdh-sha2-nistp256
+   9. ecdh-sha2-nistp384
+  10. ecdh-sha2-nistp521
+  11. curve25519-sha256
+  12. curve25519-sha256@libssh.org
+
+───── ssh -Q cipher ─────
+条目数：10
+   1. 3des-cbc
+   2. aes128-cbc
+   3. aes192-cbc
+   4. aes256-cbc
+   5. aes128-ctr
+   6. aes192-ctr
+   7. aes256-ctr
+   8. aes128-gcm@openssh.com
+   9. aes256-gcm@openssh.com
+  10. chacha20-poly1305@openssh.com
+
+───── ssh -Q cipher-auth ─────
+条目数：3
+   1. aes128-gcm@openssh.com
+   2. aes256-gcm@openssh.com
+   3. chacha20-poly1305@openssh.com
+
+───── ssh -Q mac ─────
+条目数：16
+   1. hmac-sha1
+   2. hmac-sha1-96
+   3. hmac-sha2-256
+   4. hmac-sha2-512
+   5. hmac-md5
+   6. hmac-md5-96
+   7. umac-64@openssh.com
+   8. umac-128@openssh.com
+   9. hmac-sha1-etm@openssh.com
+  10. hmac-sha1-96-etm@openssh.com
+  11. hmac-sha2-256-etm@openssh.com
+  12. hmac-sha2-512-etm@openssh.com
+  13. hmac-md5-etm@openssh.com
+  14. hmac-md5-96-etm@openssh.com
+  15. umac-64-etm@openssh.com
+  16. umac-128-etm@openssh.com
+
+───── ssh -Q key ─────
+条目数：16
+   1. ssh-ed25519
+   2. ssh-ed25519-cert-v01@openssh.com
+   3. sk-ssh-ed25519@openssh.com
+   4. sk-ssh-ed25519-cert-v01@openssh.com
+   5. ecdsa-sha2-nistp256
+   6. ecdsa-sha2-nistp256-cert-v01@openssh.com
+   7. ecdsa-sha2-nistp384
+   8. ecdsa-sha2-nistp384-cert-v01@openssh.com
+   9. ecdsa-sha2-nistp521
+  10. ecdsa-sha2-nistp521-cert-v01@openssh.com
+  11. sk-ecdsa-sha2-nistp256@openssh.com
+  12. sk-ecdsa-sha2-nistp256-cert-v01@openssh.com
+  13. ssh-dss
+  14. ssh-dss-cert-v01@openssh.com
+  15. ssh-rsa
+  16. ssh-rsa-cert-v01@openssh.com
+
+───── ssh -Q key-sig ─────
+条目数：21
+   1. ssh-ed25519
+   2. ssh-ed25519-cert-v01@openssh.com
+   3. sk-ssh-ed25519@openssh.com
+   4. sk-ssh-ed25519-cert-v01@openssh.com
+   5. ecdsa-sha2-nistp256
+   6. ecdsa-sha2-nistp256-cert-v01@openssh.com
+   7. ecdsa-sha2-nistp384
+   8. ecdsa-sha2-nistp384-cert-v01@openssh.com
+   9. ecdsa-sha2-nistp521
+  10. ecdsa-sha2-nistp521-cert-v01@openssh.com
+  11. sk-ecdsa-sha2-nistp256@openssh.com
+  12. sk-ecdsa-sha2-nistp256-cert-v01@openssh.com
+  13. webauthn-sk-ecdsa-sha2-nistp256@openssh.com
+  14. ssh-dss
+  15. ssh-dss-cert-v01@openssh.com
+  16. ssh-rsa
+  17. ssh-rsa-cert-v01@openssh.com
+  18. rsa-sha2-256
+  19. rsa-sha2-256-cert-v01@openssh.com
+  20. rsa-sha2-512
+  21. rsa-sha2-512-cert-v01@openssh.com
+
+───── ssh -Q key-cert ─────
+条目数：8
+   1. ssh-ed25519-cert-v01@openssh.com
+   2. sk-ssh-ed25519-cert-v01@openssh.com
+   3. ecdsa-sha2-nistp256-cert-v01@openssh.com
+   4. ecdsa-sha2-nistp384-cert-v01@openssh.com
+   5. ecdsa-sha2-nistp521-cert-v01@openssh.com
+   6. sk-ecdsa-sha2-nistp256-cert-v01@openssh.com
+   7. ssh-dss-cert-v01@openssh.com
+   8. ssh-rsa-cert-v01@openssh.com
+
+───── ssh -Q key-plain ─────
+条目数：8
+   1. ssh-ed25519
+   2. sk-ssh-ed25519@openssh.com
+   3. ecdsa-sha2-nistp256
+   4. ecdsa-sha2-nistp384
+   5. ecdsa-sha2-nistp521
+   6. sk-ecdsa-sha2-nistp256@openssh.com
+   7. ssh-dss
+   8. ssh-rsa
+
+───── ssh -Q compression ─────
+条目数：3
+   1. none
+   2. zlib@openssh.com
+   3. zlib
+
+───── ssh -Q protocol-version ─────
+条目数：1
+   1. 2
+
+───── ssh -Q sig ─────
+条目数：11
+   1. ssh-ed25519
+   2. sk-ssh-ed25519@openssh.com
+   3. ecdsa-sha2-nistp256
+   4. ecdsa-sha2-nistp384
+   5. ecdsa-sha2-nistp521
+   6. sk-ecdsa-sha2-nistp256@openssh.com
+   7. webauthn-sk-ecdsa-sha2-nistp256@openssh.com
+   8. ssh-dss
+   9. ssh-rsa
+  10. rsa-sha2-256
+  11. rsa-sha2-512
+
+───── ssh -Q help ─────
+条目数：11
+   1. cipher
+   2. cipher-auth
+   3. compression
+   4. kex
+   5. key
+   6. key-cert
+   7. key-plain
+   8. key-sig
+   9. mac
+  10. protocol-version
+  11. sig
+

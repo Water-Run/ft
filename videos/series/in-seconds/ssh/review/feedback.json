@@ -1,0 +1,194 @@
+{
+  "schema": 1,
+  "version": "2026-10-19.4",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "主问题是「按下回车、SSH 还没登录成功的那一秒里，到底发生了什么」。全片走一次连接的时间顺序：open（现象）→ what（它是什么）→ kex（算法清单协商）→ dh（密钥交换）→ hostkey（主机密钥与 known_hosts）→ derive（密钥派生与加密）→ userauth（用户认证）→ edge（边界）→ close（一句结论）。close 用「协商算法，换出密钥，验明服务器，证明自己」把开头那一秒收回来。标题「搞懂 SSH」兑现为「搞懂一次连接」，不做功能清单。对照：MyISAM 用同一组机制串起全片；Lean 4 的概念跳跃与标题落空是反面。",
+      "script_evidence": "src/js/script.js 的 9 个正片场景 + outro；主问题写在 review/NOTES.md 的「这一轮要回答的问题」与「核心问题与逐章答案」；逐章答案在 README.md 的「开工反馈应用」开头三段",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "只走一次连接，不引入第二个例子。概念先给现象再给名字：迪菲-赫尔曼先讲「两边各自把对方的数乘上自己的秘密」这一层（d5）再给名字（d2）；known_hosts 先讲「本地存的那份公钥」（h5）再给文件名（h6）；主机密钥先讲「服务器用主机私钥给这个哈希签名」（h3）再讲验签与对照（h4、h5）。每一步说清「这一步防住了什么」。一次只要求观众跟住一步，不同时给论文、图表和字幕。",
+      "script_evidence": "src/js/script.js 的 d1–d9、h1–h9、a1–a8；review/NOTES.md 的「句与依据」列出每句的口语化与简化处",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "算法第一次出现就带版本条件：k5「这一条连接用的软件是 OpenSSH 9.5p2」，画面另有版本角标；k6–k8 说的是这一次协商出的结果，不是协议规定。比较对象写明：与明文比（w1、w5）、与本地存的那份比（h5）、与别处拿到的公钥比（a4–a7）。不出现无比较对象的「更安全」。「支持清单」与「默认顺序」严格分开，见 research/FACTS.md 的「查过但决定不写进旁白」。",
+      "script_evidence": "src/js/script.js 的 k5–k8、w1、w5、h5、a4–a7；research/FACTS.md 的「本机这一次协商的结果」与「查过但决定不写进旁白」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "c01f0f5ca1049512a199d1ec3f60245af23078ae93835223b4175d595091aa03",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "先排信息再排动作：关键状态（协商结果、骑缝章、六个紧固钉、known_hosts 那一行、认证成功那行回显）完整出现后，按「1.5 秒 + 画面必要文字字数 ÷ 5 字/秒」留足稳定时间再退场。关键信息不在一句旁白的最后半秒才出现；镜头推近时要读的部分必须在画内。本片没有章节卡，每章靠构图与动作分段，入场与退场单独计时。",
+      "script_evidence": "review/NOTES.md 的「画面落点」逐句写明这一句结束时画面上已经发生的事；src/js/script.js 的各场景定点与 gap（0.22 秒）",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "构成主义的图形承担解释任务，不是装饰：斜切平面 = 连线两端的对峙与换场动作；楔形 = 此刻正在推进的那一步；紧固钉 = 协议里被逐个钉进去的确定步骤（r3–r5 的 A–F 六个）；骑缝章 = 主机私钥签在交换哈希上的那一笔（h3）；剪贴块 = 真实终端回显。不用整屏刷换推进。",
+      "script_evidence": "research/STYLE.md 的「本片专属的部件语汇」；src/css/style.css 的 .wedge / .rivet / .stamp / .clip / .ends 类；review/NOTES.md 的「画面落点」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "ee41c345f574a392da44514d878439edec32a8b9efab0bfb7565fe743914fc67",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "配乐是本片自写的 20 年代管弦（tools/music.py，程序合成，不采样外部音源）：弦乐 ostinato 推着走、铜管落在主机密钥签名生效与结论抬起、打击乐给骨架、低音半音下行 D–C–C♯–B 带一个减七和弦，织体随叙事逐层加厚、结论处推到最满。按 P27：先有一层持续、有低频分量的铺底，再加动机与节奏，不用稀疏钢琴或和弦代替。每秒一声的秒针保留在打击层里当节奏骨架（待策划者确认，见 review/NOTES.md 取舍 2）。音效：换场用 thud（斜切平面像一枚钉子敲下去）而不是 whoosh；关键动作才配音效，留白不填。",
+      "script_evidence": "tools/music.py 的 LAYER 与 CH 表（intro→walk→drive→race→seal→forge→peak→edge→lift）；src/js/config.js 的换场音效 sfx('thud', ...)；project.json 的 audio.score.lift_cue = c1",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "三组实验全部脱敏：用户目录替换为 C:\\Users\\user，本机用户名替换为 ftlab，一次性公钥的 base64 本体只保留长度用占位符。实验口令从环境变量取，不写进任何文件，脚本结束时整个临时目录删除。只用 127.0.0.1 回环地址，不连外部主机。画面里不出现主机名、用户名与本机路径。",
+      "script_evidence": "research/lab/03_handshake.ps1 的 Mask 函数；research/lab/out_03_handshake.txt 与 out_01_keygen.txt 的实际脱敏结果；research/FACTS.md「取证环境」末的脱敏说明",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "定长时间线已定死：script.js 的 TOTAL = 256，project.json 的 check.duration = [255.9, 256.1]。本轮核对过两种语言的 L.problems 均为空、总长都恰好 256.00 秒。交付时用最终编码文件核对帧率、时长、响度、峰值、文件名与版本，并记录 SHA-256。",
+      "script_evidence": "src/js/script.js 的 TOTAL 与各场景 at；project.json 的 check.duration；node kit/tools/stats.js videos/series/in-seconds/ssh 的实测输出",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "一手事实全部可复查：协议层引 RFC 4253 / RFC 4252 的原文节号，现实现状引 OpenSSH 的 ssh_config(5)、PROTOCOL 与 9.8 发布说明，实测项引 research/lab/ 的脚本与完整回显。一手事实、策划意见、观众原话、模型推断在 research/FACTS.md 分栏；「查过但决定不写进旁白」单列一节，说明每条为什么不写。",
+      "script_evidence": "research/FACTS.md 的「逐章」各表与「查过但决定不写进旁白」；review/NOTES.md 的「句与依据」标出推断与简化处",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "不出现「上一期」「第几个问题」这类导航；各章直接说本章的问题（m1 式的一问一答写成「本片讲最底下那层」「接着客户端请求认证服务」）。不依赖本系列任何前集。",
+      "script_evidence": "src/js/script.js 全部 9 个正片场景的旁白；review/NOTES.md 的「核心问题与逐章答案」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "观众要读的外文都在第一次出现处给中文说法或画面释义：Diffie-Hellman→迪菲-赫尔曼（d2，中文读法在 SAY 表、画面另给释义）、known_hosts（h6）、ssh-userauth（a2）、curve25519-sha256（k6）、chacha20-poly1305（k8）、OpenBSD（w7，画面给「一种 BSD 操作系统」）、RFC 4253（w3，画面给「2006 年 1 月，Standards Track」）。长材料（RFC 原文、PROTOCOL 文件）留在 research/ 里，不进主画面。",
+      "script_evidence": "review/NOTES.md 的「术语—解释句清单」逐条对应句号；src/js/script.js 的 SAY 表",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "SAY 表已列出每个专名的读法（SSH→S S H、Diffie-Hellman→迪菲-赫尔曼、known_hosts→known hosts、OpenSSH→Open SSH、ssh-ed25519、curve25519-sha256、chacha20-poly1305、ssh-userauth、RFC 4253→R F C 四二五三），h2 一句的读法是「哈希值」而不是字母 H。字幕断句与口播分开设计；按 F17 先试听代表段（o1–o4、d3–d6、a5–a7、c1–c3）再合成全片。",
+      "script_evidence": "src/js/script.js 的 SAY 表与 d2 / h2 / h6 的逐句 tts 字段；review/NOTES.md 的「定稿后的调整」读法表",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "「它是什么」章交代：它是协议不是程序（w1）、1995 年 Tatu Ylonen 的第一版（w2）、2006 年定为 RFC 4253（w3）、分传输层与认证层且传输层只认服务器（w4–w6）、今天用的 ssh 来自 OpenBSD 项目（w7）。年代与归属都有一手来源（RFC 4253 的 §15.2、OpenSSH 的 history.html）。路线在 open 章的片名卡之后给出。不拿今日数据倒推过去，也不把未核的国籍与单位写进去。",
+      "script_evidence": "src/js/script.js 的 what 场 w1–w7；research/FACTS.md 的「它是什么」表与「查过但决定不写进旁白」里关于 Ylonen 国籍的一条",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "片尾是 248.00–256.00 的静默 cue：pause: 7.5、credits: true、无 tts、无字幕。署名与模型分工放在 research/FACTS.md 的「制作署名」与本片 README 的「制作署名与片尾」，不进旁白正文。未发生的分工不写：旁白合成与读音回听尚未做，Opus 5.5 尚未开工。",
+      "script_evidence": "src/js/script.js 的 outro 场与 z1 cue；research/FACTS.md 的「制作署名」表；README.md 的「制作署名与片尾」",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面与旁白只放观众需要的内容。不写说明制作取舍、脱敏、默认处理的标注：不出现「只列常量名，不列值」「示意 · 按源码分支构造」这类小字，也不解释「为什么脱敏」。不展示的东西直接不展示（例如 known_hosts 的公钥体用占位，不加「此处已脱敏」之类的说明）。数据来源用一行简短署名（RFC 节号、research/lab/ 的脚本名）。口径限定只在会造成误解时用一句自然的话说（如 d8 用「窃听者」而不是「中间人」）。",
+      "script_evidence": "src/js/script.js 的全部旁白（逐句检查无制作口吻）；research/lab/out_03_handshake.txt 的 known_hosts 行只留占位与字段结构",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F16",
+      "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "视觉语言是俄国构成主义（策划者指定），但画面内容全部取自 SSH 本身，不能变成与题目无关的纯装饰：真实终端回显（SSH2_MSG_KEXINIT sent、debug1: kex: algorithm: curve25519-sha256、Server host key: ssh-ed25519 SHA256:…、Authenticated to 127.0.0.1 … using \"publickey\"）、真实 known_hosts 那一行、真实 ed25519 公钥的 51 字节结构（两个长度前缀串：11 字节 ssh-ed25519 + 32 字节公钥，长度字段是大端）、协议里的具体名词（KEXINIT、SSH_MSG_NEWKEYS、ssh-userauth、known_hosts、chacha20-poly1305）。构成主义的图形承担解释任务：斜切平面 = 连线两端的对峙，楔形 = 此刻推进的那一步，紧固钉 = 六次哈希派生，骑缝章 = 主机私钥签在交换哈希上的那一笔，剪贴块 = 真实回显。随机截一帧应当能认出在讲 SSH。对照：PostgreSQL 一集（取讲解对象自己的视觉材料）为正面对照。",
+      "script_evidence": "research/STYLE.md 的「本片专属的部件语汇」与「这套视觉与讲解对象的关系」；review/NOTES.md 的「画面落点」逐句对应真实回显；research/lab/out_01_keygen.txt 与 out_03_handshake.txt",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F17",
+      "rule_sha256": "c14cc3f8d440c8486e71c6f276fd025d49c3dbe56553331607e13864139fb5e8",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "合成前先试听候选音色与语速，确认语气不塌：句子有起伏、该强调处有重音、长句不被念成一串平读，技术讲解要有往前推的感觉。稿子写成短促陈述、句号落在动作上，靠 0.22 秒的句间停顿保持呼吸。c2「协商算法，换出密钥，验明服务器，证明自己」是四件事并排，最容易念成一串平读，已列入 review/NOTES.md 的取舍 7 请策划者定拆不拆。音色按 SSH 这个对象（网络协议、终端、命令行）选，不用年代感音色。",
+      "script_evidence": "src/js/script.js 的 gap 0.22 与 c1–c3；review/NOTES.md 的「定稿后的调整」里 F17 语气一段与取舍 7",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}
