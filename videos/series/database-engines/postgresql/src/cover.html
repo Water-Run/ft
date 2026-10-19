@@ -5,30 +5,50 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。kit/tools/covers.js 按 2 倍像素出图。
+     与正片同一套视觉：postgresql.org 特性区的蓝底 #336791、白描大象、Open Sans。底部约 15% 不放文字。 */
+  @font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wdth-wght.ttf"); font-weight: 300 800; font-stretch: 75% 100%; }
+  :root { --pg: #336791; --pg-lt: #699eca; --wash: #e0ecef; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--pg); color: #fff; overflow: hidden; }
+  .kicker { position: absolute; font: 600 52px/1.2 "Sans SC", "Open Sans"; color: var(--wash); white-space: nowrap; }
+  .title { position: absolute; font: 700 230px/1 "Open Sans"; letter-spacing: -.02em; white-space: nowrap; }
+  .sub { position: absolute; font: 700 104px/1.1 "Sans SC"; white-space: nowrap; }
+  .rule { position: absolute; height: 10px; background: var(--pg-lt); }
+  .tag { position: absolute; font: 600 44px/1 "Open Sans", "Sans SC"; color: var(--pg); background: #fff; padding: 14px 24px; white-space: nowrap; }
+  img { position: absolute; }
+  .r169 .kicker { left: 110px; top: 120px; }
+  .r169 .title { left: 100px; top: 210px; }
+  .r169 .rule { left: 110px; top: 470px; width: 540px; }
+  .r169 .sub { left: 110px; top: 520px; }
+  .r169 .tag { left: 110px; top: 690px; }
+  .r169 img { right: 90px; top: 400px; width: 440px; height: 454px; }
+  .r43 .kicker { left: 100px; top: 110px; }
+  .r43 .title { left: 90px; top: 560px; font-size: 220px; }
+  .r43 .rule { left: 100px; top: 810px; width: 480px; }
+  .r43 .sub { left: 100px; top: 850px; font-size: 100px; }
+  .r43 .tag { left: 640px; top: 878px; }
+  .r43 img { left: 100px; top: 200px; width: 330px; height: 340px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
+  <img src="img/slonik-white.svg" alt="">
+  <div class="kicker">一个数据库引擎是如何实现的？</div>
+  <div class="title">PostgreSQL</div>
+  <div class="rule"></div>
+  <div class="sub">开源巅峰</div>
+  <div class="tag">堆 · MVCC · WAL</div>
 </div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  const q = new URLSearchParams(location.search);
+  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' zh';
+  const img = document.querySelector('img');
+  const loaded = img.complete ? Promise.resolve() : new Promise((r) => { img.onload = r; img.onerror = r; });
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  Promise.all([loaded, document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('700 40px "Open Sans"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

@@ -49,6 +49,12 @@
 | H06 | 1996 年选择 PostgreSQL 这个名称；6.0 于 **1997-01-29** 发布。Postgres 仍是官方认可的项目名称。 | [官方历史 §2.3](https://www.postgresql.org/docs/18/history.html#HISTORY-POSTGRESQL)与 [6.0 原发行记录](https://www.postgresql.org/docs/9.0/release-6-0.html)；Hellerstein §3.1 社区接续。已核。名称选择与首个该名称版本的发布日期不能合并。 |
 | H07 | 今天的 WAL 与版本实现经历了社区演进，不能把 1980 年代原型存储研究直接当成现代实现。 | Hellerstein §2.3 对原型无覆盖存储/恢复研究的回顾，与本机 18.4、`xact.c`、`xlogrecovery.c` 的 WAL 路径。已核。原型“无传统 WAL”不用于描述现代 PostgreSQL。 |
 | H08 | 6.5 引入 MVCC；7.1 引入 WAL。这是相关发行版本的记录，不等同于概念的首次发明。 | [6.5 发行记录](https://www.postgresql.org/docs/7.1/release-6-5.html)、[7.1 发行记录入口](https://www.postgresql.org/docs/7.1/release.html)；只作研究索引，精确年代与独立同期公告未做第二路核对，**本轮正文及画面不使用**。 |
+| H13 | 关系模型提出后需要实际系统来证明可行；1973 年 IBM 开始以工业强度实现 System R，SQL 由同一研究方向的 Chamberlin 与 Boyce 设计。关系模型让表之间按值关联，用户不必关心数据怎样、在哪里存放。 | [IBM 关系数据库历史](https://www.ibm.com/history/relational-database)（缓存 `_src/sources/ibm-history.txt`）：“had to be tested to address skepticism”“A group of programmers in 1973 undertook an industrial-strength implementation: the System R project”“Concurrently, Chamberlin and Boyce developed SQL”，以及 Chamberlin 对“values”“not be concerned about the details of where or how the data was stored”的说明。2026-10-19 已核。不写 System R 是“第一个”关系数据库；IBM 同页另说 Oracle 1977 年推出首个商用关系数据库。 |
+| H14 | Ingres 与 IBM System R 同获 1988 年 ACM 软件系统奖（Ingres：Held、Stonebraker、Wong）。1980 年 Wong、Stonebraker、Rowe 创办 Relational Technology, Inc.（后改名 INGRES Corporation）将其商业化。 | [Eugene Wong 伯克利页面](https://www2.eecs.berkeley.edu/Faculty/Homepages/wong.html)（缓存 `wong.txt`）：“ACM Software System Award in 1988 for his work on INGRES”“co-founded … Relational Technology, Inc. … later renamed the INGRES Corporation”；[ACM 软件系统奖获奖名单](https://en.wikipedia.org/wiki/ACM_Software_System_Award)（缓存 `wiki-ssa.html`）列 1988 INGRES 与 System R 两项；Hellerstein 回顾“as RTI had commercialized Ingres”。ACM 官网页面脚本与网页工具均返回 403，未读到原页；Stonebraker 伯克利页写作 1992 年，与 Wong 页及获奖名单冲突，采用 1988。 |
+| H15 | Stonebraker 把 Postgres 的模型称为“对象关系”：在关系查询之上支持用户定义的类型、函数等扩展；Hellerstein 认为今天几乎所有商业关系数据库都已是“对象关系”系统。 | [Hellerstein 回顾](https://arxiv.org/html/1901.01973v1)（缓存 `hellerstein.txt`）：“Stonebraker branded the Postgres model as ‘Object-Relational’”“Today, essentially all commercial relational database systems are ‘Object-Relational’ database systems”；[Pg 官方 About](https://www.postgresql.org/about/) 自称 object-relational database system。这是亲历者的评价，片中表述为“基本都吸收了这套思路”，不写成精确统计。 |
+| H16 | PostgreSQL 官方说明：截至 2025 年 9 月发布的 18 版，至少符合 SQL:2023 Core 177 项必选特性中的 170 项；目前没有关系数据库完全符合该标准。官方另称核心平台已有近 40 年的活跃开发。 | [Pg 官方 About](https://www.postgresql.org/about/)（缓存 `compare-pg-about.txt`）原文：“conforms to at least 170 of the 177 mandatory features for SQL:2023 Core conformance”“no relational database meets full conformance with this standard”“nearly 40 years of active development”。2026-10-19 已核。不据此排名各数据库的标准符合度。 |
+| H17 | “正统的关系数据库”是本片对 PostgreSQL 的评价，依据为：谱系直接来自伯克利 Ingres 与 POSTGRES（H02、H03），创始人因数据库系统的基础贡献获 2014 年图灵奖（H04），以及对 SQL 标准的高符合度（H16）。 | 由 H02–H04、H14–H16 归纳的策划评价，与 S01“开源王者”称号同类；不是第三方排名或认证。 |
+| H18 | MySQL 第一个版本出现于 1995 年 5 月（内部版本），由 Widenius 与 Axmark 于 1994 年开始开发；PostgreSQL 的源头 POSTGRES 始于 1986 年（H03），早约九年。片中「老前辈」「复兴」是本片的评价：依据为源头年代（本条）与 2018–2026 调查比例从 32.9% 升到 57.9%（S05）。 | [Wikipedia MySQL 条目](https://en.wikipedia.org/wiki/MySQL)（缓存 `_src/sources/wiki-mysql.html`）：“Original development of MySQL by Widenius and Axmark began in 1994. The first version of MySQL appeared on 23 May 1995.”；Oracle MySQL 官方博客《MySQL Retrospective – The Early Years》据检索摘要也写 1995 年 5 月首版，但页面返回 403，未读到原文；MySQL 9.7 手册历史页没有给出年份。2026-10-19 核。只比较源头年代，不写 PostgreSQL 这个名字早于 MySQL（PostgreSQL 定名于 1996 年，H06）。 |
 
 “数据库之父”没有全领域唯一、统一授予的称号。正文用“Codd 提出关系模型”“Stonebraker 与同事实现 Ingres、领导 POSTGRES”解释贡献；不根据头衔推导具体机制的发明权。
 
@@ -175,3 +181,15 @@ H08 的发行细年、原型 time-travel/无传统 WAL 细节、全部索引分�
 **第 5 稿（2026-10-19）**：WaterRun 要求开场以趋势折线体现 PostgreSQL 取代 MySQL 居首，并说明 MyISAM / InnoDB 属于 MySQL；另要求自审迭代。新增 S05（2018–2026 九年数据，`lab/10_survey_trend.py`）与 C05。内容哈希 `12f070d5d41260f22c2a99d6e4a22f04ea26439cbbd53f9d48a5963ab42688d5`，146 条旁白、估算 664.8 秒，仍 pending。见 [review/NOTES.md](../review/NOTES.md)。
 
 **第 6 稿（2026-10-19）**：WaterRun 要求删去口径句 o7，并降低 AI 味、认知负载与跳跃。按 MyISAM 口播逐句口语化重写，未新增事实；内容哈希 `fb5767f7c781786a561ce030ed11c70ec392d261a54998223d0c61b0b5ee74ae`，157 条旁白、估算 671.3 秒，仍 pending。见 [review/NOTES.md](../review/NOTES.md)。
+
+**第 7 稿（2026-10-19）**：WaterRun 改写 o8、b1、z6，要求 3–5 轮自审迭代。b1 改问「为什么越来越多的人选择」，b20 回答为「这些，就是很多人选择它的理由」，不把能力说成比例上升的原因（S04、T25）。未新增事实；内容哈希 `acd25fbddda81ea09164a226fce3943acf8d8d578f7cc32c4ddd7509f1ee3e91`，159 条旁白、估算 674.9 秒，仍 pending。见 [review/NOTES.md](../review/NOTES.md)。
+
+**第 8 稿（2026-10-19）**：WaterRun 要求删 o11、扩写历史（Ingres 地位、「正统关系数据库」）并让文字对应动画。新增 H13–H17；内容哈希 `dc55b3734068711b200999fe30bc166fd7f18c58a3d7901b2316303f0073baf6`，160 条旁白、估算 698.4 秒，仍 pending。见 [review/NOTES.md](../review/NOTES.md)。
+
+**第 9 稿（2026-10-19）**：WaterRun 要求 b1 点出 PostgreSQL 才是老牌、如今复兴，并再优化一版。新增 H18（MySQL 首版 1995 年）；内容哈希 `325e4a1741a57f22d04cd34fd64540b2662fe62f802442597f662b1a3633976c`，估算 703.4 秒，仍 pending。见 [review/NOTES.md](../review/NOTES.md)。
+
+**第 10 稿（2026-10-19）**：WaterRun 认为仍有 AI 味，逐句改措辞，未改事实；内容哈希 `72635f365673c3dbdcef896d8aa733aad250bf7918657660359023feb4db7da3`，估算 703.8 秒，仍 pending。见 [review/NOTES.md](../review/NOTES.md)。
+
+**第 11 稿（2026-10-19）**：按新核心反馈 F04 / F15 自查，h15c 改写，未改事实；内容哈希 `7caad9971c6526e36f183a4c9ea8e6466f4aaadd37be02b20efd0f2ea80a05a7`，估算 703.6 秒，仍 pending。
+
+**第 12 稿（2026-10-19）**：只在关键结果后加长停顿，未改文字与事实；内容哈希 `7caad9971c6526e36f183a4c9ea8e6466f4aaadd37be02b20efd0f2ea80a05a7`，估算 707.9 秒，仍 pending。

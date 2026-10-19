@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "fb5767f7c781786a561ce030ed11c70ec392d261a54998223d0c61b0b5ee74ae",
+      "status": "approved",
+      "content_sha256": "7caad9971c6526e36f183a4c9ea8e6466f4aaadd37be02b20efd0f2ea80a05a7",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-19T11:27:00+08:00",
+      "evidence": "review/NOTES.md「确认记录」：WaterRun 2026-10-19 在会话中选择「确认第 11 稿」（内容 SHA-256 7caad997…），并指示开始制作视频、只做中文。"
     }
   }
 }

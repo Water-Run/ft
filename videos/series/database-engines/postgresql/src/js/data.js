@@ -17,6 +17,10 @@ const data = {
     "compare": {
       "file": "research/lab/out_08_compare.json",
       "sha256": "96c0400ff2f780f4f04524b33fe14c42158616399914313637e0cbf031b98639"
+    },
+    "trend": {
+      "file": "research/lab/out_10_trend.json",
+      "sha256": "8f82f5def453d254f4a4da111f64426d0b8da28a543269051b65422247935e2c"
     }
   },
   "physical": {
@@ -1723,6 +1727,96 @@ const data = {
       }
     ],
     "success": true
+  },
+  "trend": {
+    "schema": 1,
+    "checked_at": "2026-10-19",
+    "attribution": "Stack Exchange Inc. / Stack Overflow Developer Survey，按年署名。",
+    "warning": "各年为不同样本的多选自报使用比例；2024 起题目改为“过去一年做过大量开发工作”的数据库。不是市场份额，也不是同一批用户的迁移。",
+    "crossover": 2023,
+    "years": [
+      {
+        "year": 2018,
+        "source": "https://survey.stackoverflow.co/2018/",
+        "scope": "All Respondents",
+        "source_sha256": "3f19bc46ca6b7fe4152219ffd7103893cc56251e7974817abdb5506473f8ede0",
+        "MySQL": 58.7,
+        "PostgreSQL": 32.9,
+        "leader": "MySQL"
+      },
+      {
+        "year": 2019,
+        "source": "https://survey.stackoverflow.co/2019/",
+        "scope": "All Respondents",
+        "source_sha256": "f915265c8acb119704a3784b03f3da9ee5b7287123fca1ec6b4739166de5fc4a",
+        "MySQL": 54.0,
+        "PostgreSQL": 34.3,
+        "leader": "MySQL"
+      },
+      {
+        "year": 2020,
+        "source": "https://survey.stackoverflow.co/2020/",
+        "scope": "All Respondents",
+        "source_sha256": "68e7c8e11e3e6c74dfa34fdb0e1db89860cac3078df58e180ee76ac737040a8a",
+        "MySQL": 55.6,
+        "PostgreSQL": 36.1,
+        "leader": "MySQL"
+      },
+      {
+        "year": 2021,
+        "source": "https://survey.stackoverflow.co/2021/",
+        "scope": "All Respondents",
+        "source_sha256": "8f35f7f7bba0d87d91e37b143e4a0319f35291bc457fab14fab82cbb52fe7e0b",
+        "MySQL": 50.18,
+        "PostgreSQL": 40.42,
+        "leader": "MySQL"
+      },
+      {
+        "year": 2022,
+        "source": "https://survey.stackoverflow.co/2022/",
+        "scope": "All Respondents",
+        "source_sha256": "b8459eb00a079392b3d08b821dbf2d8baa30fab20c75509ab11983aaa860e110",
+        "MySQL": 46.85,
+        "PostgreSQL": 43.59,
+        "leader": "MySQL"
+      },
+      {
+        "year": 2023,
+        "source": "https://survey.stackoverflow.co/2023/",
+        "scope": "All Respondents",
+        "source_sha256": "11b6968aa6d397ac0a95a6f84393fad617c9b37e62aa476f7be07963310db777",
+        "MySQL": 41.09,
+        "PostgreSQL": 45.55,
+        "leader": "PostgreSQL"
+      },
+      {
+        "year": 2024,
+        "source": "https://survey.stackoverflow.co/2024/technology",
+        "scope": "All Respondents",
+        "source_sha256": "ffca0061300a8188743c27d4e47f401f83e1a16ef449a68adbdc57d58a978a93",
+        "MySQL": 40.3,
+        "PostgreSQL": 48.7,
+        "leader": "PostgreSQL"
+      },
+      {
+        "year": 2025,
+        "source": "https://survey.stackoverflow.co/2025/technology",
+        "scope": "All Respondents",
+        "source_sha256": "721a084a2139830bbdef949add7415104d59d85fb021e01c52b5ce63155dd577",
+        "MySQL": 40.5,
+        "PostgreSQL": 55.6,
+        "leader": "PostgreSQL"
+      },
+      {
+        "year": 2026,
+        "source": "https://survey.stackoverflow.co/2026/technology/data/databases",
+        "scope": "All Respondents",
+        "source_sha256": "36804dd7a6bda9c2718b6a845998154c12421aced5d43345975dbe7fdae09b1e",
+        "MySQL": 35.1,
+        "PostgreSQL": 57.9,
+        "leader": "PostgreSQL"
+      }
+    ]
   }
 };
 if(typeof module!=="undefined" && module.exports) module.exports=data;

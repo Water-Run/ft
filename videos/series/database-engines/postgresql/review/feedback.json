@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-19",
+  "version": "2026-10-19.4",
   "items": [
     {
       "id": "F01",
@@ -37,13 +37,13 @@
     },
     {
       "id": "F04",
-      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "rule_sha256": "c01f0f5ca1049512a199d1ec3f60245af23078ae93835223b4175d595091aa03",
       "applicability": "applies",
-      "reason": "本片涉及对应内容，按当前规则执行。",
-      "plan": "比较章按物理路径、并发/维护、可组合能力、采用案例分段显示；一屏只保留当前比较轴。章题 3.2 秒候选预算，片尾静默 14 秒，实际成片仍须量完整可读区间。",
-      "script_evidence": "STYLE 比较章画面；script.js compare、zCredit；最终 MP4 另验",
+      "reason": "本片有大量页结构、版本与快照的关键状态画面，最容易「刷一下」。",
+      "plan": "STYLE「全片统一的画面语言」：每个关键状态完整出现后稳定「1.5 秒 + 字数 ÷ 5 字/秒」；关键信息不压在旁白最后半秒；镜头推近不把要读的部分留在画外。分镜阶段写出各关键状态的预计稳定时长。",
+      "script_evidence": "research/STYLE.md「第 8 稿：逐句画面对应」；对照 OpenCart 07:12 负例",
       "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "verification": "尚无成片；成片后逐个实测关键状态的完整可读区间，并连续正常速度观看。",
       "clips": []
     },
     {
@@ -59,13 +59,13 @@
     },
     {
       "id": "F06",
-      "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+      "rule_sha256": "ee41c345f574a392da44514d878439edec32a8b9efab0bfb7565fe743914fc67",
       "applicability": "applies",
-      "reason": "本片涉及对应内容，按当前规则执行。",
-      "plan": "维持成熟、克制的工业纪录片口播，比较段稳定、不使用比赛式重音；确认后试听新专名和统计数字。不同动作配短声，信息密集处留白。",
-      "script_evidence": "STYLE 配音；PRODUCTION；o5/o5a、b9–b22 的候选读法",
+      "reason": "本片有自写配乐与音效，须有存在感且不同质。",
+      "plan": "tools/music.py：D 小调 72 拍，持续的低音铺底与厚弦乐垫贯穿全片（P27，以 MyISAM 的铺底分量为参照），机制章节加低沉的心跳脉冲与轻金属声，章首低频落点，崩溃停一拍，片尾动机落回 D；music_db −11、duck 7。音效只给关键动作，章节卡不配气流声。",
+      "script_evidence": "tools/music.py；project.json audio；README「声音」",
       "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+      "verification": "待 WaterRun 主混音、无配乐版连续试听。",
       "clips": []
     },
     {
@@ -155,7 +155,69 @@
       "result": "pending",
       "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
       "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "数据图、工程剖面和历史年代轴都容易被加上口径、示意之类的说明小字。",
+      "plan": "画面不加「示意」「非市场份额」等说明小字；开场折线只留一行来源署名；旁白已删去口径句 o7；不展示的内容直接不展示。",
+      "script_evidence": "research/STYLE.md 参考来源与 o1–o6a 行；script.js 开场",
+      "result": "pending",
+      "verification": "尚无成片；成片后逐屏列出所有说明性小字并判断去留。",
+      "clips": []
+    },
+    {
+      "id": "F16",
+      "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
+      "applicability": "applies",
+      "reason": "WaterRun 要求严格遵循 PostgreSQL 规范、随便一帧都能看出是 PostgreSQL。",
+      "plan": "直接取 postgresql.org 样式表的颜色与 Open Sans、文档的标题装饰线、表格、提示框与 psql 会话；左上角常驻大象标志与章名，章节卡用特性区蓝底与白描大象。见 README「视觉系统」。",
+      "script_evidence": "src/css/style.css 开头注释；src/js/config.js；README「视觉系统」",
+      "result": "pending",
+      "verification": "待成片任取帧检查。",
+      "clips": []
+    },
+    {
+      "id": "F17",
+      "rule_sha256": "c14cc3f8d440c8486e71c6f276fd025d49c3dbe56553331607e13864139fb5e8",
+      "applicability": "applies",
+      "reason": "WaterRun 两次否掉女声音色，要求严肃男声。",
+      "plan": "配音前用同一段代表句（隔离级别与快照）试听候选，留在 out/voice-preview/。WaterRun 依次否掉 News_Anchor（太老气）、female-yujie（太妩媚），要求严肃男声；改用 Chinese (Mandarin)_Male_Announcer、语速 1.1，与前两片音色不同。成片后由 WaterRun 连续试听开头、MVCC 难点段与章间。",
+      "script_evidence": "project.json tts；out/voice-preview/；README「声音」",
+      "result": "pending",
+      "verification": "待 WaterRun 试听确认音色与语气。",
+      "clips": []
     }
   ],
-  "history": []
+  "history": [
+    {
+      "version": "2026-10-19",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+        "applicability": "applies",
+        "reason": "本片涉及对应内容，按当前规则执行。",
+        "plan": "比较章按物理路径、并发/维护、可组合能力、采用案例分段显示；一屏只保留当前比较轴。章题 3.2 秒候选预算，片尾静默 14 秒，实际成片仍须量完整可读区间。",
+        "script_evidence": "STYLE 比较章画面；script.js compare、zCredit；最终 MP4 另验",
+        "result": "pending",
+        "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19.2",
+      "item": {
+        "id": "F06",
+        "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+        "applicability": "applies",
+        "reason": "本片涉及对应内容，按当前规则执行。",
+        "plan": "维持成熟、克制的工业纪录片口播，比较段稳定、不使用比赛式重音；确认后试听新专名和统计数字。不同动作配短声，信息密集处留白。",
+        "script_evidence": "STYLE 配音；PRODUCTION；o5/o5a、b9–b22 的候选读法",
+        "result": "pending",
+        "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
+        "clips": []
+      }
+    }
+  ]
 }

@@ -84,8 +84,8 @@ check('每句均有已核事实，句号唯一，字幕与时长预算符合',()
     assert.ok(width<=26,`${id}: width ${width}`); assert.ok(L.cues[id].d<=6,id);
     assert.ok(o.gap>=0.2,id);
   }
-  assert.deepEqual(project.check.duration,[480,720]);
-  assert.ok(L.total>=480 && L.total<=720);
+  assert.deepEqual(project.check.duration,[480,840]); // 8–12 分钟为参照，宁可多留白（WaterRun 2026-10-19，P26）
+  assert.ok(L.total>=480 && L.total<=840);
 });
 check('保留人工确认闸门与指定署名',()=>{
   assert.equal(project.review.required,true); assert.equal(project.review.reviewer,'WaterRun');

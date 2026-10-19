@@ -1,27 +1,23 @@
 {
   "slug": "postgresql",
   "languages": [
-    "zh",
-    "en"
+    "zh"
   ],
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"
   },
   "voices": {
-    "zh": "zh-CN-YunyangNeural",
-    "en": "en-US-AndrewNeural"
+    "zh": "zh-CN-YunyangNeural"
   },
   "rates": {
-    "zh": "+0%",
-    "en": "+0%"
+    "zh": "+0%"
   },
   "asr_prompts": {
-    "zh": "以下是普通话的讲解。",
-    "en": "A narration."
+    "zh": "以下是普通话的讲解。"
   },
   "production": {
     "mode": "self",
-    "maker": "6.1Sol",
+    "maker": "6.1Sol、Claude Opus 5.5",
     "planner": "WaterRun",
     "repository": "https://github.com/Water-Run/ft"
   },
@@ -37,21 +33,21 @@
     "mb": 4
   },
   "audio": {
-    "music": "none",
-    "music_db": -21,
-    "duck_db": 9,
-    "sfx_db": -8
+    "music": "tools/music.py",
+    "music_db": -11,
+    "duck_db": 7,
+    "sfx_db": -10
   },
   "check": {
     "duration": [
       480,
-      720
+      840
     ],
     "caption_width": {
       "zh": 26,
       "en": 44
     },
-    "max_cue_seconds": 6,
+    "max_cue_seconds": 7.5,
     "min_font": 22,
     "margin": 60,
     "still_seconds": 3,
@@ -59,6 +55,16 @@
     "style": {
       "flat": true,
       "no_emoji": true
+    }
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Male_Announcer"
+    },
+    "speed": {
+      "zh": 1.1
     }
   }
 }

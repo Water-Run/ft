@@ -6,7 +6,7 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 
 def main():
-    paths = {'physical':'research/lab/out_03_decode.json','survey':'research/lab/out_04_survey.json','style':'research/lab/out_05_style.json','compare':'research/lab/out_08_compare.json'}
+    paths = {'physical':'research/lab/out_03_decode.json','survey':'research/lab/out_04_survey.json','style':'research/lab/out_05_style.json','compare':'research/lab/out_08_compare.json','trend':'research/lab/out_10_trend.json'}
     data = {'provenance':{}}
     for key,relative in paths.items():
         content = (ROOT / relative).read_bytes()

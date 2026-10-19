@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "scope": "研究一致性与文案格式；不代替人工审稿、音色试听或成片验收",
-  "script_sha256": "4b29415af1fa328e3c72ea1c115310230c57ce46c35f6fa4e0feed4af8e59b1e",
-  "total_estimated_seconds": 671.3078723404253,
+  "script_sha256": "8bbca45797da10a134122cf1ba971ae0c939d005d603923ad80bd384657f25de",
+  "total_estimated_seconds": 707.8844680851058,
   "spoken": 157,
   "cues": 159,
-  "max_caption_width": 25,
+  "max_caption_width": 26,
   "max_estimated_cue_seconds": 5.99468085106383,
   "review_status": {
     "zh": "pending"
