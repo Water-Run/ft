@@ -44,7 +44,7 @@
 |---|---|---|---|
 | [256 秒 SSH](../videos/series/in-seconds/ssh/) | 中文第 1 稿待审 | 2026-10-19 建目录（委托 Opus 5.5）。一手来源已核实：RFC 4253 全文、OpenSSH 9.8 发布说明；本机实测 `ssh -Q` 算法清单与 `ssh-keygen` 密钥结构（ed25519 公钥整行 103 字符 / 51 字节，内含 `len=11 "ssh-ed25519"` 与 32 字节密钥；4096 位 RSA 公钥 747 字符） | WaterRun 审第 1 稿（NOTES 列 8 条取舍）→ 确认 → 按 F17 试听音色与语速 → 配音 → 任务书 → 交 Opus |
 | [96 秒速通模型卡](../videos/series/in-seconds/model-cards/) | 中文第 1 稿待审 | 2026-10-19 建目录（委托 Opus 5.5）；同日 WaterRun 定片名为《96 秒速通模型卡》（原《96 秒读懂模型的模型卡》），旁白未改，交审稿按新标题重新导出（`17dfcf09…`）。一手来源已核实：arXiv 1810.03993（FAT* '19，DOI 10.1145/3287560.3287596）与 Hugging Face `google-bert/bert-base-uncased` 真实模型卡（含代写声明、YAML 头、GLUE 表与可复现的偏见示例） | WaterRun 审第 1 稿（NOTES 列 5 项取舍）→ 确认 → 英译 → 配音（先按 F17 试听）→ 任务书 → 交 Opus；96 秒极短，取舍要狠，与第 16 集「通过参数认识一个模型」严格分工 |
-| [PostgreSQL](../videos/series/database-engines/postgresql/) | 中文成片待试听 | 第 11 稿经 WaterRun 确认（2026-10-19 11:27，内容 SHA-256 `7caad997…`；第 12 稿只加长停顿），只做中文；MiniMax speech-2.8-hd 严肃男声配音、自写配乐、全部场景与中文主成片已出，制作会话仍在修画面、重渲 | WaterRun 观看试听（F06 配乐、F12 读音、F17 语气）→ 按意见修改或登记交付；Credit 6.1Sol、Claude Opus 5.5 |
+| [PostgreSQL](../videos/series/database-engines/postgresql/) | 已交付，已发布（哔哩哔哩 BV1xAnn6WEzv） | 第 11 稿经 WaterRun 确认（2026-10-19 11:27，内容 SHA-256 `7caad997…`；第 12 稿只加长停顿），只做中文；MiniMax speech-2.8-hd 严肃男声配音、自写配乐、全部场景与中文主成片已出：11:28、1080p60、−15.7 LUFS / −1.4 dBTP、SHA-256 `fb201f9c…`；无静止、无空画面，WaterRun 试听确认「都没问题，登记交付」，`--final` 全部通过 | WaterRun 观看试听（F06 配乐、F12 读音、F17 语气）→ 按意见修改或登记交付；Credit 6.1Sol、Claude Opus 5.5 |
 | [道交法中的路权](../videos/standalone/traffic-law-right-of-way/) | 第 8 稿待大改 | 652.2 s（10:52.2），190 条 cue（旁白 184）；Gemini 4 Argon 第 1 轮形成第 8 稿，第 2 轮反馈已回收（6 项待议）；无配音 | WaterRun 介入大改 → 确认 → 制作；仅中文、Yunjian、660 s 上限 |
 | [Harness](../videos/series/in-seconds/harness/) | 中文稿待优化确认 | 192.0 s，内容 SHA-256 e30c…；无配音；场景仍是系列基座 | 优化中文稿 → WaterRun 确认 → 配音；确认前不按稿重写场景 |
 | [Web 登录](../videos/series/in-seconds/web-login/) | 中文第 8 稿待审 | 中文 c2a6…，估算 200.0 s；Claude Opus 5.5 逐句重写（同一次登录贯穿、三件事、删攻击一场）；英文未重译；包豪斯关键帧、委托任务书、场景空壳；approval pending | WaterRun 审第 8 稿 → 确认 → 英译 → 按定稿重写交接材料 → 配音 → `--handoff` → Opus 5.5 |
@@ -190,3 +190,6 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是文案阶段的当前稿。R2
 24. 2026-10-19：本页 PostgreSQL 一行仍是第 6 稿的旧状态。该片正在制作中，approval 已于 11:27 记录、配音已合成、中文主片已于 13:43 渲染；这些由制作该片的会话回填，本轮不干涉。
 25. 2026-10-19：WaterRun 定第 17 集片名为《96 秒速通模型卡》（原《96 秒读懂模型的模型卡》），英文随之改为 *Model Cards in 96 Seconds*。旁白、字幕与场景定点未改；标题计入内容哈希，中文交审稿重新导出为 `17dfcf09…`，approval 仍为 pending。片单、本片 README、任务入口与校对记录同步。
 26. 2026-10-19：整理提交时按各片已提交的记录更正第 1 节两行。PostgreSQL 由第 6 稿的旧状态（见第 24 条）改为「中文成片待试听」：第 11 稿已确认，中文主成片已出，制作会话仍在修画面、重渲。SSH 的中文第 1 稿已写定待审，下一步改为 WaterRun 审稿。
+27. 2026-10-19 晚（Claude Opus 5.5）：PostgreSQL 中文最终成片 11:28（`fb201f9c…`）。配音按 WaterRun 意见三换：News_Anchor（太老气）→ female-yujie（太妩媚）→ 严肃男声 Male_Announcer（1.1）；配乐按 P27 加强为持续铺底 + 机械脉冲。同时落盘 P24–P28（不能「刷一下」、不写制作者口吻、时长上限只作参照、配乐太弱、视觉取自讲解对象）与 F15、F16。待 WaterRun 观看试听后登记交付。
+28. 2026-10-19：WaterRun 观看试听 PostgreSQL 最终成片后确认「都没问题，登记交付」；F06 / F12 / F17 记为 verified，`check.js --final` 全部通过，片单改为 delivered，根 README「已成片」加一行；未发布。
+29. 2026-10-19：PostgreSQL 发布于哔哩哔哩 BV1xAnn6WEzv（16:32:17，平台时长 689 秒，合集「数据库引擎」）；本片 README、FACTS 复核、根 README、片单回填。

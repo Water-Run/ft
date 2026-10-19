@@ -38,6 +38,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 | 视频 | 语言 | 时长 | 制作 | 发布 |
 |---|---|---|---|---|
+| [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](videos/series/database-engines/postgresql/) | 中文 | 11:28 | 自制，6.1Sol、Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1xAnn6WEzv)（2026-10-19） |
 | [128 秒关于 Tmux：是什么，怎么用，如何实现的](videos/series/in-seconds/tmux/) | 中文、英文 | 2:08、2:08 | 自制，Claude Opus 5.5 第 5 轮 b | [哔哩哔哩](https://www.bilibili.com/video/BV1oSn56oEUQ)、[YouTube](https://www.youtube.com/watch?v=qCklpfGDWXk)（2026-10-19） |
 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](videos/standalone/opencart-1-5-admin/) | 中文 | 16:50 | 委托，Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1RNnJ6AELR)（2026-10-19） |
 | [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | [哔哩哔哩](https://www.bilibili.com/video/BV1PxHU6KE6G)（2026-10-08） |
@@ -51,7 +52,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 | [150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](videos/series/in-seconds/dense-vs-moe/) | 中文、英文 | 2:30、2:30 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1gPpt69EsM)、[YouTube](https://www.youtube.com/watch?v=orNp9XxWvnc)（2026-10-09） |
 | [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](videos/series/database-engines/innodb/) | 中文 | 15:49 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1vanV6nEYq)（2026-10-18） |
 
-频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00，OpenClaw/Hermes 中文 514.60 秒显示 8:35，WSL 中文 333.083 秒显示 5:34，InnoDB 949.467 秒显示 15:50。Dense/MoE 两种语言都是 150.000 秒，哔哩哔哩与 YouTube 却都显示 2:31，原因未核。MyISAM 与批处理只上了哔哩哔哩，InnoDB 目前也只上了哔哩哔哩。两个频道上另有 2025 年的几部项目介绍片（pptx2png、SimpSave、Bat-KV 等），源码不在本仓库，片单里没有。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
+频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00，OpenClaw/Hermes 中文 514.60 秒显示 8:35，WSL 中文 333.083 秒显示 5:34，InnoDB 949.467 秒显示 15:50，PostgreSQL 688.08 秒显示 11:29。Dense/MoE 两种语言都是 150.000 秒，哔哩哔哩与 YouTube 却都显示 2:31，原因未核。MyISAM 与批处理只上了哔哩哔哩，InnoDB 目前也只上了哔哩哔哩。两个频道上另有 2025 年的几部项目介绍片（pptx2png、SimpSave、Bat-KV 等），源码不在本仓库，片单里没有。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
 
 全部片单（18 个系列、165 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
 

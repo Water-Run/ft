@@ -9,9 +9,31 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "保留存储、查询、修改、并发、回收和恢复主线；增加独立的 InnoDB 对照与选型章，用已解释机制归纳优势与成本，不把整个片子改为排名或品牌清单。",
       "script_evidence": "script.js 各章、compare b2–b26；README 主线与预算",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "开头 0:00–0:44 用调查折线提出「PostgreSQL 为什么走到最前面」，各章沿同一条 alice 记录回答存、找、改、并发、回收、恢复；第 08 章 9:04–10:37 回到开头的问题，第 09 章 10:43–11:13 用四个问题收束。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0.6,
+          "end": 43.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 544.4,
+          "end": 637.3,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 643.0,
+          "end": 672.7,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F02",
@@ -20,9 +42,24 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "主线跟踪同一用户记录；比较章用部分索引的未完成任务子集、JSONB 键值查询、预约不重叠规则，说明组合能力。每次只展开一个具体例子，不并排长文献。",
       "script_evidence": "q10–q18、u11–u19、m6a–m9、b7–b16；out_08_compare.json；STYLE 比较章",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "第 05 章 6:15–7:14：三条连接各一条时间线，未提交读到 30、读已提交的新快照读到 31、可重复读沿用旧快照读到 30，每一步都有输入、变化与结果；第 04 章 5:08–6:09 的新旧版本与 HOT 同样逐步展开。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 374.8,
+          "end": 433.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 308.0,
+          "end": 369.1,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F03",
@@ -31,9 +68,24 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "比较固定 Pg 18.4 heap 与 MySQL 9.7 InnoDB，分清存储引擎和整套数据库；明确 RC/RR 默认差异。57.9% 为该题受访者使用比例；默认选择限定为可优先评估的候选。",
       "script_evidence": "FACTS T30–T38；o4–o5a、m6a–m6c、b6、b17–b26",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "0:51 首次说明 PostgreSQL 是整套系统、InnoDB 是 MySQL 的存储引擎；2:53 一次交代 PostgreSQL 18.4；7:01 起说明两边默认隔离级别不同、比较要先对齐；调查口径在开场图下以来源署名给出。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 51.4,
+          "end": 59.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 173.2,
+          "end": 176.4,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F04",
@@ -42,9 +94,24 @@
       "reason": "本片有大量页结构、版本与快照的关键状态画面，最容易「刷一下」。",
       "plan": "STYLE「全片统一的画面语言」：每个关键状态完整出现后稳定「1.5 秒 + 字数 ÷ 5 字/秒」；关键信息不压在旁白最后半秒；镜头推近不把要读的部分留在画外。分镜阶段写出各关键状态的预计稳定时长。",
       "script_evidence": "research/STYLE.md「第 8 稿：逐句画面对应」；对照 OpenCart 07:12 负例",
-      "result": "pending",
-      "verification": "尚无成片；成片后逐个实测关键状态的完整可读区间，并连续正常速度观看。",
-      "clips": []
+      "result": "verified",
+      "verification": "章节卡完整停留约 2.9 秒（盖上 0.45 秒后到收起前）；每站最后一句说完后镜头再停 0.9 秒，句后停顿 2 秒；关键结果后加长停顿。最终成片 finish 检查：画面基本不动 ≥3 秒的段落无、空画面无；逐句总览图检查过每句说完时的画面。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 48.0,
+          "end": 52.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 271.8,
+          "end": 275.5,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F05",
@@ -53,9 +120,24 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "索引图明确 Pg 堆位置与 InnoDB 主键引用；宽主键只在相关路径上展开；部分索引直接筛出子集，JSONB 用键值命中，不以品牌卡片代替关系。",
       "script_evidence": "q12a–q12d、b2–b12；src/js/data.js compare；STYLE",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "页结构、行版本、指针、快照截面、日志带都是同一对象的生长、连接、分流和挪动：5:08 新版本写到第 9 项并由旧版本指过去，7:40 VACUUM 后其余行版本向页尾挪一格、第 1 项成为重定向。全片不用擦除式的刷入。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 308.0,
+          "end": 369.1,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 439.5,
+          "end": 479.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F06",
@@ -64,9 +146,24 @@
       "reason": "本片有自写配乐与音效，须有存在感且不同质。",
       "plan": "tools/music.py：D 小调 72 拍，持续的低音铺底与厚弦乐垫贯穿全片（P27，以 MyISAM 的铺底分量为参照），机制章节加低沉的心跳脉冲与轻金属声，章首低频落点，崩溃停一拍，片尾动机落回 D；music_db −11、duck 7。音效只给关键动作，章节卡不配气流声。",
       "script_evidence": "tools/music.py；project.json audio；README「声音」",
-      "result": "pending",
-      "verification": "待 WaterRun 主混音、无配乐版连续试听。",
-      "clips": []
+      "result": "verified",
+      "verification": "WaterRun 2026-10-19 观看试听最终主成片后确认「都没问题，登记交付」：配乐（持续铺底 + 机械脉冲）通过。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0.6,
+          "end": 43.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 374.8,
+          "end": 433.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F07",
@@ -75,9 +172,17 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "新任务表只含合成数据；独立实例仅本机回环，日志与 initdb 输出落盘前脱敏，不采集现有服务或账号。网页只保存公开文本、URL 与哈希。",
       "script_evidence": "lab/08_compare.py clean()、out_08_compare.json；comparison-sources.json",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "画面只有合成的 users / notes / jobs / 预约数据与 psql 会话，没有本机路径、主机名或账号；按逐句总览图与成片检查。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 173.2,
+          "end": 302.6,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F08",
@@ -86,9 +191,17 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "8–12 分钟上限不变；当前只记估算，确认后实测再排时间。不把索引计划、局部查询耗时和研究检查写成跨库性能胜负或成片验收。",
       "script_evidence": "project.json check.duration；NOTES 当前估算；FACTS T30–T38",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "最终主成片实测：1920×1080、60 fps、688.08 秒；ffmpeg ebur128 实测成片音轨 I −15.7 LUFS、真峰值约 −1.4 dBFS；SHA-256 见 clips。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0.0,
+          "end": 688.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F09",
@@ -97,9 +210,17 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "技术能力、框架/托管采用案例、调查使用率与工程选型推论分别记录；保留 MySQL 的 JSON/空间能力和 InnoDB 主键路径长处，不把功能组合直接说成反超的统计原因。",
       "script_evidence": "FACTS S03/S04、T30–T38；b2–b5、b17、b19–b26",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "比较章把调查比例、技术机制、采用案例与选型推论分开：「这些就是很多人选择它的理由」不说成比例上升的原因；保留 InnoDB 主键直达整行的长处与 MySQL 的 JSON / 空间能力；结尾说明代价与迁移前实测。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 544.4,
+          "end": 637.3,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F10",
@@ -108,9 +229,31 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "系列关系仍贯穿布局、主键路径、版本和恢复；加强二级索引与隔离级别对照，再独立归纳；最后接 Firebird，不依赖前集编号。",
       "script_evidence": "README 承接表；q10–q15、u11–u13、m6a–m6c、w2–w4、compare、z8–z9",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "开场 0:35 说明前两集的 MyISAM、InnoDB 都是 MySQL 的存储引擎；之后只在必要处对照（主键路径、undo、redo），每处在本片补齐条件；结尾接下一集 Firebird。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 35.0,
+          "end": 43.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 536.0,
+          "end": 539.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 667.0,
+          "end": 672.7,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F11",
@@ -119,9 +262,24 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "部分索引、JSONB/GIN、范围与排他约束在具体用途上解释；pgvector 对应向量相似度检索，PostGIS 对应空间操作。Django 只说教程建议，不能误说默认 Pg。",
       "script_evidence": "b7–b22；FACTS T32–T36；STYLE 画面中文释义",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "外文名词均在出现处给中文作用：堆、项目指针、行头、快照、MVCC、HOT、VACUUM、预写日志 WAL、部分索引、JSONB / GIN；没有整段英文文献。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 173.2,
+          "end": 238.9,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 374.8,
+          "end": 425.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F12",
@@ -130,9 +288,24 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "新增 57.9% / 35.1% 的中文读法与 GIN、pgvector 候选读法；统计、产品名和长比较句待确认后逐段试听，ASR 只筛查。",
       "script_evidence": "script.js SAY；STYLE 代表句；NOTES 术语",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "WaterRun 2026-10-19 观看试听最终主成片后确认「都没问题，登记交付」：读音（含 2:39「SQL:2023」、9:47「JSONB」）通过。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0.6,
+          "end": 43.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 374.8,
+          "end": 433.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F13",
@@ -141,9 +314,17 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "老牌研究来路与现代扩展能力相接；开场给调查年份和比例，结尾前用真实框架/托管案例解释采用路径，主线仍是引擎实现。",
       "script_evidence": "h6–h18、o4–o5a、compare；FACTS T36–T38",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "第 01 章 0:51–2:47 先交代 PostgreSQL 是什么、来历（关系模型、System R、Ingres、POSTGRES、对象关系、改名、图灵奖、SQL 标准），再进入机制。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 51.4,
+          "end": 167.3,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F14",
@@ -152,9 +333,17 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "名单和制作指令只在独立说明里，zCredit 为空字幕、14 秒 pause、credits:true、无 tts；署名保持 6.1Sol。",
       "script_evidence": "script.js zCredit；review/PRODUCTION.md",
-      "result": "pending",
-      "verification": "第3稿研究与文案准备完成；尚无最终 MP4 或实际配音，待成片逐项验证。",
-      "clips": []
+      "result": "verified",
+      "verification": "片尾 11:14 起 14 秒静默 cue，只在画面列策划、事实测绘、文案、画面配乐与制作、配音和开源视频链接，旁白不读名单。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 674.0,
+          "end": 688.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F15",
@@ -163,9 +352,24 @@
       "reason": "数据图、工程剖面和历史年代轴都容易被加上口径、示意之类的说明小字。",
       "plan": "画面不加「示意」「非市场份额」等说明小字；开场折线只留一行来源署名；旁白已删去口径句 o7；不展示的内容直接不展示。",
       "script_evidence": "research/STYLE.md 参考来源与 o1–o6a 行；script.js 开场",
-      "result": "pending",
-      "verification": "尚无成片；成片后逐屏列出所有说明性小字并判断去留。",
-      "clips": []
+      "result": "verified",
+      "verification": "逐屏检查：画面没有「示意」「只列…」之类的说明小字；开场图只有一行来源署名；页结构的刻度与数字取自实测。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0.6,
+          "end": 43.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 173.2,
+          "end": 238.9,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F16",
@@ -174,9 +378,31 @@
       "reason": "WaterRun 要求严格遵循 PostgreSQL 规范、随便一帧都能看出是 PostgreSQL。",
       "plan": "直接取 postgresql.org 样式表的颜色与 Open Sans、文档的标题装饰线、表格、提示框与 psql 会话；左上角常驻大象标志与章名，章节卡用特性区蓝底与白描大象。见 README「视觉系统」。",
       "script_evidence": "src/css/style.css 开头注释；src/js/config.js；README「视觉系统」",
-      "result": "pending",
-      "verification": "待成片任取帧检查。",
-      "clips": []
+      "result": "verified",
+      "verification": "任取帧：左上角常驻大象标志与 PostgreSQL 字标及章名；标题、表格、提示框、psql 均取自 postgresql.org 的样式；章节卡为官网特性区蓝底与白描大象。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 10.0,
+          "end": 20.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 400.0,
+          "end": 410.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 600.0,
+          "end": 610.0,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     },
     {
       "id": "F17",
@@ -185,9 +411,24 @@
       "reason": "WaterRun 两次否掉女声音色，要求严肃男声。",
       "plan": "配音前用同一段代表句（隔离级别与快照）试听候选，留在 out/voice-preview/。WaterRun 依次否掉 News_Anchor（太老气）、female-yujie（太妩媚），要求严肃男声；改用 Chinese (Mandarin)_Male_Announcer、语速 1.1，与前两片音色不同。成片后由 WaterRun 连续试听开头、MVCC 难点段与章间。",
       "script_evidence": "project.json tts；out/voice-preview/；README「声音」",
-      "result": "pending",
-      "verification": "待 WaterRun 试听确认音色与语气。",
-      "clips": []
+      "result": "verified",
+      "verification": "WaterRun 2026-10-19 观看试听最终主成片后确认「都没问题，登记交付」：严肃男声 Male_Announcer（1.1）语气通过。",
+      "clips": [
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0.6,
+          "end": 43.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        },
+        {
+          "file": "out/postgresql-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 374.8,
+          "end": 433.8,
+          "sha256": "fb201f9c623969b5bd07551aaa601f0ce793130a9c7cc8ce26581a3174bd5449"
+        }
+      ]
     }
   ],
   "history": [

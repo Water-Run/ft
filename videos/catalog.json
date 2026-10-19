@@ -7,7 +7,7 @@
       "videos": [
         {"slug": "myisam", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "languages": ["zh"], "note": "已发布：哔哩哔哩"},
         {"slug": "innodb", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "languages": ["zh"], "status": "delivered", "note": "已发布：哔哩哔哩（2026-10-18）；发布后发现的画面问题见 README"},
-        {"slug": "postgresql", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}, "languages": ["zh"], "status": "in-progress", "note": "2026-10-19 中文第 6 稿：在第 5 稿趋势开场基础上，按 MyISAM 口播逐句口语化重写，降低术语密度与跳跃；157 条旁白、2 条静默，估算 11:11（671.3 秒）；待 WaterRun 确认，未配音；Credit：6.1Sol。"},
+        {"slug": "postgresql", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}, "languages": ["zh"], "status": "delivered", "maker": "6.1Sol、Claude Opus 5.5", "note": "2026-10-19 交付：中文 11:28（688.08 秒，1080p60），MiniMax 严肃男声配音、自写严肃工业风配乐，WaterRun 观看试听确认；check.js --final 全部通过；2026-10-19 16:32 发布于哔哩哔哩 BV1xAnn6WEzv。"},
         {"slug": "firebird", "title": {"zh": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"}},
         {"slug": "sqlite", "title": {"zh": "一个数据库引擎是如何实现的？——小巧紧凑：SQLite"}},
         {"slug": "clickhouse", "title": {"zh": "一个数据库引擎是如何实现的？——列式存储：ClickHouse"}},
