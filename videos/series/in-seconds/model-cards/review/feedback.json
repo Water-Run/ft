@@ -7,7 +7,7 @@
       "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
       "applicability": "applies",
       "reason": "",
-      "plan": "主问题定在 open 提出、read 逐栏推进、close 回答：标题承诺「读懂模型的模型卡」，全片就是逐栏读一张真卡。不用参数量或历史材料凑信息量（对照 Lean 4 的材料堆叠）。",
+      "plan": "主问题定在 open 提出、read 逐栏推进、close 回答：标题承诺「速通模型卡」，全片就是逐栏读一张真卡。不用参数量或历史材料凑信息量（对照 Lean 4 的材料堆叠）。",
       "script_evidence": "第 1 轮中文稿：o1–o4 提出问题并给出模型卡这个名字；read 场 26.25–64.75 逐栏推进；c1–c3 在 76.60–88.00 回答「先读哪三栏」。取舍见 research/MAP.md。",
       "result": "pending",
       "verification": "",

@@ -225,7 +225,7 @@
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 |  | `frameworks` |  |
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
-| 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 制作中 | 委托（Opus 5.5） | [`model-cards`](../videos/series/in-seconds/model-cards/) | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分。视觉用液态玻璃。讲法简单、快速，介绍怎么看模型卡。2026-10-19 建目录（委托 Opus 5.5），准备方做事实测绘与中文文案，到可交 Opus 开工为止；待 WaterRun 确认文案。 |
+| 17 | 96 秒速通模型卡<br>Model Cards in 96 Seconds | zh + en | 制作中 | 委托（Opus 5.5） | [`model-cards`](../videos/series/in-seconds/model-cards/) | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分。视觉用液态玻璃。讲法简单、快速，介绍怎么看模型卡。2026-10-19 建目录（委托 Opus 5.5），准备方做事实测绘与中文文案，到可交 Opus 开工为止；同日 WaterRun 定片名为《96 秒速通模型卡》（原《96 秒读懂模型的模型卡》）；待 WaterRun 确认文案。 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制（Grok 4.7） | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。2026-10-19 中文稿已落盘，待后续模型优化；尚未人工确认。入口见本片 README。 |
 | 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 委托（Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，准备方 DeepSeek V4.1 Flash 1017 已完成取证、审稿包、包豪斯视觉系统与关键帧；2026-10-19 中文第 8 稿（Claude Opus 5.5 逐句重写，5 项取舍已定，估算 200.0 秒）待 WaterRun 确认，英文待重译；确认后配音并交 Opus 5.5。 |

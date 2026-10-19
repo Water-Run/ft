@@ -91,7 +91,7 @@
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 | `quantization` |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 | `frameworks` |
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 | `model-parameters` |
-| 17 | 96 秒读懂模型的模型卡 | zh + en | 制作中 | [`model-cards`](model-cards/) |
+| 17 | 96 秒速通模型卡 | zh + en | 制作中 | [`model-cards`](model-cards/) |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 制作中 | [`harness`](harness/) |
 | 20 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 制作中 | [`web-login`](web-login/) |
