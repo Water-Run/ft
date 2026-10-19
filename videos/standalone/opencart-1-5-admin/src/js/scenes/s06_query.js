@@ -120,7 +120,7 @@ scene('query', ({ root, s, c0 }) => {
     click(cur, tP); vanish(cur, tP + 0.7);
     classAt(pg2, 'hi', tP, E('c1_3', 0.2)); fadeIn(pgN, tP + 0.2, { d: 0.3 });
     appear(tok, tIn); sfx('blip', tIn, { g: 0.5 });
-    travel(tok, [[tIn, 0.9, [[p2.x - 40, 600], [p2.x - 40, 640], [140, 640]]]]);
+    travel(tok, [[tIn, 0.9, [[p2.x - 40, 600], [p2.x - 40, 700], [520, 700]]]]);   // 停在区域标题右侧，不压「服务器 · PHP」
     vanish(tok, tCtl + 0.1);
     // c1_2 控制器读取
     wipe(srv.el, tIn + 0.4, { dir: 't', d: 0.45 });
@@ -140,8 +140,8 @@ scene('query', ({ root, s, c0 }) => {
 
     const tPush = tCtl - 0.4;
     keys.push([c0 + 0.1, { z: 1.02 }, Math.max(0.5, tPush - c0 - 0.15), { ease: 'none', sfx: false }]);
-    keys.push([tPush, { x: 960, y: 610, z: 1.1 }, 0.9, { sfx: false }]);
-    drift(tPush + 0.95, mv1, 1.115);
+    keys.push([tPush, { x: 960, y: 610, z: 1.03 }, 0.9, { sfx: false }]);
+    drift(tPush + 0.95, mv1, 1.04);
   }
 
   // ═════ 站 1 · B23 跳过 20、取 20；语句四个分区（c2_2、c2_3、c3）═════

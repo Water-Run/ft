@@ -75,7 +75,7 @@ node videos/standalone/opencart-1-5-admin/tools/check_handoff.cjs
 
 ## 本轮结尾反馈复盘
 
-证据对应正式主片 out/opencart-1-5-admin-zh-1080p60.mp4（SHA-256 `892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c`，1009.93 s）；时段与原文见 review/feedback.json。
+证据对应正式主片 out/opencart-1-5-admin-zh-1080p60.mp4（SHA-256 `14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda`，1009.93 s）；时段与原文见 review/feedback.json。
 
 | 编号 | 成片时段 | 结果 / 遗留 |
 |---|---|---|
@@ -86,7 +86,7 @@ node videos/standalone/opencart-1-5-admin/tools/check_handoff.cjs
 | F05 | 112.3–224.4 s、372.1–459.3 s、798.5–824.2 s | verified：请求令牌「route=sale/order」从入口跟到控制器；拒绝分支（未登录转登录页、无权限页、无 modify 时写入被挡）先停下再给结果；写入时 oc_order 当前行原位从 1 变 3，历史表追加一行（809.5–819.2 s）。 |
 | F06 | 0–1009.9 s | **pending**：需 WaterRun 试听确认（配乐与音效）；ASR 与字幕对齐只作机器疑点检查 |
 | F07 | 881.1–963.9 s | verified：成片只出现匿名结构与独立合成数据（DEMO-00x、演示顾客 07、演示仓 A/B），案例段顶部常驻「数据与编号均为独立合成」；没有私有路径、主机名、源码哈希或真实记录。逐站截图与字幕已人工浏览。 |
-| F08 | 0–1009.9 s | verified：正式主片 out/opencart-1-5-admin-zh-1080p60.mp4：1920×1080、60 fps、H.264 + AAC，1009.93 s（16:50），在 14–18 分钟预算内；最终音轨响度 -15.7 LUFS、真峰值 -1.4 dBFS（finish.js，目标 -16±1.5 / ≤-1）；SHA-256 892134793721b6c7a31e9db0bcbc95608d8ad75c82ce67bdf20ed683bf7a1b7c。 |
+| F08 | 0–1009.9 s | verified：正式主片 out/opencart-1-5-admin-zh-1080p60.mp4：1920×1080、60 fps、H.264 + AAC，1009.93 s（16:50），在 14–18 分钟预算内；最终音轨响度 -15.7 LUFS、真峰值 -1.4 dBFS（finish.js，目标 -16±1.5 / ≤-1）；SHA-256 14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda。 |
 | F09 | 705–723.7 s | verified：FACTS 区分 S19 新源码复核、R1 旧实验、A18 匿名静态测绘与用户意见；成片里测量值（49 文件 / 16 语句 / 36000 多字节 / 19 个静态请求）均标为同一条演示请求的测量，旁白明说「不是所有页面的固定开销」。 |
 | F10 | 824.6–881.1 s | verified：MyISAM 与事务在本片内解释（824.6–881.1 s）：先说事务是什么，再对照 InnoDB 副本的回滚；没有引用前集或问题编号。 |
 | F11 | 247–251.5 s、378.6–386.1 s、762.4–769.5 s | verified：SQL 首次出现即配「SQL 是向数据库提出查询或修改要求的语句」；route 解释为「路由，用来选择这次要执行的代码」（171.7 s），access / modify 由旁白分别解释为「能访问 / 能修改哪些功能」（378.6–386.1 s）；JSON 配「用文本表示这些数据」；表字段 order_id 等列头下附中文（订单编号 / 当前状态）。英文已取消。 |

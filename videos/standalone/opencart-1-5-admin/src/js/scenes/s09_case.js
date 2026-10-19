@@ -195,7 +195,7 @@ scene('case', ({ root, s, c0 }) => {
       ['2', '旧的页面组织方式，可以和后来增加的功能<b>共存</b>'],
     ].map(([n, t], i) => { const e = h('div', 'cs-line', bx.bd); px(e, 40, 40 + i * 110, 1380); e.innerHTML = `<span class="n">${n}</span>${t}`; return e; });
     const warn = ocNotice(bx.bd, 40, 290, 1380, 'attention', '不代表线上每条业务都已经验收');
-    const src = h('div', 'abs t-src', bx.bd, '依据：本片 FACTS A18 的匿名静态测绘；未运行业务、未连生产服务'); css(src, { left: '40px', top: '420px' });
+    const src = h('div', 'abs t-src', bx.bd, '依据：本片 FACTS A18 的匿名静态测绘；未运行业务、未连生产服务'); css(src, { left: '40px', top: '372px' });
 
     const tA = mv('f6_4');
     slideDown(bx.el, tA + 0.5, { d: 0.4 }); sfx('pop', tA + 0.55, { g: 0.5 });
