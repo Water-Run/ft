@@ -6,13 +6,15 @@
 
 ## 当前状态与接续
 
-阶段：准备到可交接前；中文稿待 WaterRun 确认，确认后合成配音并交接 Opus 5.5。文案：未确认。交付：未完成。发布：未发布。归档：未归档。
+阶段：文案第 7 轮待审；中文稿待 WaterRun 确认，确认后重译英文、合成配音、按定稿重写交接材料，再交接 Opus 5.5。文案：未确认。交付：未完成。发布：未发布。归档：未归档。
 
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-18：事实测绘；包豪斯 `style.css` 与四张关键帧；委托任务书与场景空壳。2026-10-19：从根上按“四层”重写为 7 个内容场景——Session（会话状态/Session ID/Cookie 运输/缺点）→ JWT（token 格式/三段/验签/Access/Refresh/撤销）→ 认证方式（口令/短信码/passkey/验证码）→ OAuth/OIDC 授权与委托 → 各层攻击面 → 收束。中文稿 `4c5c728f…`，英文草稿 `7e5b8ad4…`，估算 200.0 秒；`production.mode=delegated`，maker=Opus 5.5，prepared_by=DeepSeek V4.1 Flash 1017 |
-| 下一步及依赖 | WaterRun 按句号审阅中文稿 → 明确确认 → 运行 `tts.js` 合成中英旁白并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
-| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `4c5c728f…`；`review/approval.json` 为 pending；没有人工确认 |
+| 2026-10-19 第 8 轮 | 按 WaterRun「按照你的建议来重写文案」定 5 项取舍：三件事、先会话、守 200 秒只加回口令「故意算得慢」、跨站请求伪造一句、片名卡 2.5 秒；中文 `c2a62ed5…`，估算 200.0 秒 |
+| 2026-10-19 第 7 轮 | Claude Opus 5.5 逐句重写中文：同一次登录贯穿，开场分认证/会话/授权三件事，每个机制一条主因果，删去攻击面一场；中文 `7c7c9cba…`，估算 200.0 秒。待决问题与删减清单见 `review/NOTES.md` |
+| 下一步及依赖 | WaterRun 按句号审阅第 8 稿 → 明确确认 → 重译英文并交审 → 按定稿重写 `expect.*.json`、`brief/02-script.md`、`brief/04-storyboard.md` → `tts.js` 合成并核对读音 → `check.js --handoff` → Opus 5.5 开工 |
+| 当前稿本 / 校对结论 | `src/js/script.js`；中文内容 SHA-256 `c2a62ed5…`；`review/approval.json` 为 pending；没有人工确认。英文仍是第 6 轮草稿，估算超时约 23 秒 |
 | 输出在哪台制作机 | 制作机 A（Windows）；没有成片 |
 | 未完成、未检查与阻塞 | 人工确认、中英配音、读音核对、`--handoff` 检查、Opus 5.5 的场景/声音/封面/渲染均未做 |
 
@@ -27,13 +29,13 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 导出的 `review/script.<语言>.<哈希>.md` 供逐句阅读，意见写在 `review/NOTES.md`。先取得明确确认，再按真实记录填写 `review/approval.json`；主语言通过后翻译并校对其他语言。具体边界见仓库 `docs/script-review.md`。
 
-本轮中文稿：[`review/script.zh.4c5c728f…md`](review/script.zh.4c5c728fc499f9af399442da7c68cc1ecdf1d7517f5265268f8ec5f59551e848.md)，内容哈希 `4c5c728fc499f9af399442da7c68cc1ecdf1d7517f5265268f8ec5f59551e848`；英文草稿：[`review/script.en.7e5b8ad4…md`](review/script.en.7e5b8ad428a4b29b5b1bf6fa7e01d7e18565aa172037cece1e9c281b2ab514ad.md)。`review/approval.json` 仍是 pending，不能据此配音。更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
+本轮中文稿：[`review/script.zh.c2a62ed5…md`](review/script.zh.c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830.md)，内容哈希 `c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830`。第 7 轮 `7c7c9cba…` 保留作对照。英文未随本轮重译。`review/approval.json` 仍是 pending，不能据此配音。第 6 轮 `4c5c728f…` 及更早的 `298d8d99…`、`62c86207…`、`53db476c…` 保留在 `review/`，作为对照。
 
 ## 开工反馈应用
 
 <!-- 开工必填，改片另起本轮记录。先读 docs/feedback.md 与最近相关复盘；按总账带入全部问题编号，新增编号也须补入。不适用写具体原因，不能只写“已阅读反馈”。 -->
 
-反馈版本：2026-10-18（F01–F12）。本片逐项记录在 `review/feedback.json`；相关复盘：`docs/feedback.md`（2026-10-18 读取）的 P0–P13、C1–C14 与 F01–F12；重点看 P2/P3（卡片与转场同质化）、P6（镜头别晃）、P9（术语第一次出现要解释）和 F01–F03。
+反馈版本：2026-10-19.2（F01–F15；F04 升为核心规则，新增 F15）。本片逐项记录在 `review/feedback.json`；相关复盘：`docs/feedback.md`（2026-10-18 读取）的 P0–P13、C1–C14 与 F01–F12；重点看 P2/P3（卡片与转场同质化）、P6（镜头别晃）、P9（术语第一次出现要解释）和 F01–F03。
 
 目标观众已有的知识：每天上网、登录过各种网站；知道口令、短信验证码、指纹/人脸、第三方登录这些词；没有系统学过 cookie、session、OAuth、JWT、passkey 的区别。
 
@@ -45,10 +47,10 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 | 问题编号 | 适用性 / 不适用的原因 | 本片计划与正面对照 | 怎样验证 |
 |---|---|---|---|
-| F01 标题与主问题 | 适用 | 先分清认证/会话/授权/令牌四层；Session 是状态，Cookie 是运输，JWT 是 token 格式 | 开头四层骨架、各层问题与结尾是否对应 |
-| F02 解释步骤与理解负担 | 适用 | 每层走“它解决什么 → 怎么工作 → 缺点”：Session 查表、JWT 验签、认证方式、OAuth/OIDC 委托 | 正常播放检查每层能否说出“解决什么、代价是什么”；记录每步时间 |
+| F01 标题与主问题 | 适用 | 同一次登录贯穿；开场分认证/会话/授权三件事；Cookie 只运送，JWT 是票的格式；结尾 e2 回答“服务器认的是你出示的证据” | 开头三件事、各场问题与结尾是否对应 |
+| F02 解释步骤与理解负担 | 适用 | 每个机制一条主因果：做法 → 为什么能认出你 → 代价 → 引出下一种；删去只列名词的攻击一场 | 正常播放检查每场能否说出“怎么认出你、代价是什么”；记录每步时间 |
 | F03 名称、比较与边界 | 适用 | 区分 Session/Session ID/Cookie/JWT/Access Token/Refresh Token；认证≠会话≠授权；不把 Google 当独立方式 | 审稿时核对首次定义、过渡句和画面文字 |
-| F04 有效阅读时间 | 适用 | 用 7 个内容场景 + 片尾，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计 | 成片用 `sheets.js cue` 与逐帧检查卡片停留 |
+| F04 有效阅读时间（核心） | 适用 | 6 个内容场景 + 片尾；片名卡 oT 2.5 秒并与 o3b 同屏；关键状态完整出现后按 1.5 秒 + 字数 ÷ 5 留足再换 | 实际 MP4 逐屏记录“全部到位”到“开始退场”的区间；需要暂停才看得完即不通过 |
 | F05 动画解释机制 | 适用 | 形状拼合、单向压模、盖章、黑框拒绝四种动作各有语义；不做全片同一种擦除 | 与近期两部并排看开头/换章/解释段 |
 | F06 声音选择与配合 | 适用 | 木块、印章、卡扣、纸张各有语义；不用默认 whoosh；配乐写清节奏、动机与加层 | 主混音/无配乐版试听，记录片段与结果 |
 | F07 隐私与脱敏 | 适用 | 画面只用假域名、假 SID、假用户名；不出现真实站点、真实 cookie、真实账号 | 检查最终 MP4、字幕、封面与 FACTS 回显 |
@@ -59,6 +61,7 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 | F12 读音、断句与口播 | 适用 | OIDC、SAML、JWT、passkey、SameSite、HttpOnly、CSRF、TLS 列试听清单。 | tts_probe/asr 回听；人耳确认读错/断句；记录时间点。 |
 | F13 背景、年代与观看路线 | 适用 | 技术主题，不需要年代史；用 HTTP 无状态作背景，交代四层定位与 Session→JWT→认证→OAuth 的路线 | 首次观看能否复述对象、背景与路线 |
 | F14 片尾署名与旁白分开 | 适用 | 片尾用空字幕 + pause + credits:true；名单与开源地址只做画面，不配旁白；制作说明留在 README/FACTS | 成片片尾无人声、名单与网址可读 |
+| F15 制作者口吻的自我说明 | 适用 | 画面不写“示意”“假数据”“已脱敏”之类说明；假域名、假编号直接用 | 逐屏列出说明性小字，正常人做视频不会写的删去 |
 
 ## 内容
 
@@ -66,13 +69,12 @@ node kit/tools/script-review.js videos/series/in-seconds/web-login check
 
 | 场景 | 起点 | 内容 |
 |---|---|---|
-| open | 0:00 | cookie → Session ID → Session；四层骨架 + 片名 |
-| session | 0:21 | 服务器会话、Session ID、Cookie 运输、查表；缺点：表/偷/CSRF |
-| jwt | 0:59 | token 格式≠Session；三段/编码≠加密/验签；Access/Refresh；撤销 |
-| authn | 1:35 | 口令知道、短信拥有、passkey 私钥、验证码判人；认证≠会话 |
-| oauth | 2:05 | OAuth 授权、OIDC ID Token、Access/Refresh、验签/受众 |
-| attacks | 2:34 | 会话/JWT/认证/授权各层攻击面 |
-| close | 2:55 | 四层：不同问题，不同代价；片尾名单 |
+| open | 0:00 | 登录后它再也没问过密码 → 问句 → 片名 → 认证、会话、授权三件事 |
+| session | 0:26 | HTTP 不记事 → 服务器记会话、发 Session ID → Cookie 带回 → 查表；代价：编号被拿、跨站请求伪造 |
+| jwt | 1:07 | 多台服务器共用表 → 签名票 JWT → 内容可读、改字验签失败 → 不查表；代价：难收回 → 短有效期 |
+| authn | 1:37 | 口令（只存算不回去的摘要）→ 会被骗 → 短信码也会被转 → passkey 公私钥、只给注册网站签名；验证码只分辨人和程序 |
+| oauth | 2:25 | 平台替你认 → 一次性码换票 → OAuth 是授权、Access Token → OIDC 与 ID Token；代价：信任集中 |
+| close | 3:02 | 第一次看证据，之后认编号或票；服务器认的是你出示的证据；片尾名单 |
 
 ## 视觉系统
 

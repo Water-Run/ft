@@ -165,9 +165,13 @@
 
 2026-10-19 第 6 轮：用户指出不能把 cookie/JWT 与口令并列，Session 没有成为一等概念。按四层重写：认证/会话/授权/令牌；Session 是服务器会话状态，Session ID 是标识，Cookie 只是运输；JWT 是 token 格式，不是 Session；再讲口令/短信码/passkey/验证码、OAuth/OIDC 与各层攻击面。中文稿 `4c5c728f…`、英文草稿 `7e5b8ad4…`，200.0 秒；仍 pending，未配音。
 
+2026-10-19 第 7 轮（Claude Opus 5.5）：第 6 轮分类已改对，但写成电报体，攻击一场只列名词，接近 Lean 4 的负面模式。逐句重写：同一次登录贯穿；开场分认证、会话、授权三件事（令牌是载体，不再列为一层）；每个机制只讲一条主因果，代价引出下一种；删去单独罗列攻击面的一场；结尾 e2 回答标题。完整讲法估算 332 秒，压回 200 秒时删去的内容列在 NOTES。中文稿 `review/script.zh.7c7c9cba33320998debed77694285ccd887658d27559d46aff0ca0a25615b04e.md`，内容哈希 `7c7c9cba33320998debed77694285ccd887658d27559d46aff0ca0a25615b04e`，估算 200.0 秒；英文未重译。仍 pending，未配音。本轮没有新增事实条目；逐句依据与推断、简化见 NOTES「逐句依据」。
+
+2026-10-19 第 8 轮（Claude Opus 5.5）：WaterRun 指示按第 7 轮的推荐定 5 项取舍。加回 p2b（口令摘要故意算得慢，依据 owasp-password-storage），验证码两句合一，j1 措辞。中文 `review/script.zh.c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830.md`，内容哈希 `c2a62ed5fe18364916932f0246a00423552ea2e91d4d8c117e75692293ff3830`，估算 200.0 秒；pending，未配音。
+
 ## 制作署名
 
-策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿，按 F01–F12 自我对抗后重写为 7 场“怎么验证”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。仓库：https://github.com/Water-Run/ft 。
+策划：WaterRun。准备方：DeepSeek V4.1 Flash 1017。2026-10-18 使用 Web Fetch 读取 RFC/W3C/NIST/OWASP 文本并写下本目录的事实记录；2026-10-19 写中文初稿与英文草稿，按 F01–F12 自我对抗后重写为 7 场“怎么验证”结构，补 JWT/token、SSO/SAML，并写审稿包、包豪斯视觉系统与关键帧、逐句对应表与任务书，未配音。受托方：Opus 5.5，负责场景、常驻元素、声音、封面、渲染与审查；截至本条记录尚未开工。2026-10-19 第 7 轮中文稿由 Claude Opus 5.5 改写（文案阶段，未涉及场景）。仓库：https://github.com/Water-Run/ft 。
 
 ## 复核
 

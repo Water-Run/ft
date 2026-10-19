@@ -3,10 +3,10 @@
 // - 字幕里 *词* 表示强调；tts 缺省时由字幕按 SAY 表换成读法（字幕写正式拼写，读法只放在 SAY 表或 tts 字段）
 // - gap：该句结束到下一句开始的停顿（秒，缺省 0.3）；pause：无旁白的纯画面停顿
 // 语言：浏览器取 ?lang=，Node 取环境变量 VLANG；缺省为 zh。浏览器与 Node 共用本文件（工具读它排时间线）。
-// 翻译以中文为底本。本轮先交审中文；英文字幕是同步草稿，中文确认后再逐句修订并单独导出。
+// 翻译以中文为底本。本轮只交审中文；英文是上一轮遗留的草稿，句号已对齐但超时，中文确认后重译并单独导出。
 //
 // 本集时长 200 秒，与标题相同。场景 at 是开始时刻；说不完记入 L.problems。
-// 没有章节卡；片名落在 o3/o4 之间。公式与协议名只在解释需要时出现。
+// 没有章节卡；片名卡落在 oT（o3b 问句之后）。协议名只在解释需要时出现。
 (function (root) {
   const isBrowser = typeof window !== 'undefined';
   const LANG = (isBrowser ? new URLSearchParams(location.search).get('lang') : process.env.VLANG) || 'zh';
@@ -18,73 +18,77 @@
     {
       id: 'open', at: 0, chap: null, lead: 0.5, tail: 0.3,
       cues: [
-        ['o1', { zh: '你打开一个网站，输入账号和密码。', en: 'You open a site and type an account and password.' }, { gap: 0.4 }],
-        ['o2', { zh: '登录成功后，浏览器里多了一个 cookie。', en: 'After login, the browser holds one more cookie.' }, { gap: 0.45 }],
-        ['o3', { zh: '可 cookie 只是运输；记住你的是服务器上的 Session。', en: 'But the cookie is only transport; the Session on the server remembers you.' }, { gap: 0.5 }],
-        ['o4', { zh: 'Web 的登录机制是什么样的？服务器是怎么知道，你，是你？', en: 'How does Web login work? How does the server know that you are you?' }, { gap: 0.4 }],
+        ['o1', { zh: '你输入账号和密码，登录一个网站。', en: 'You type your account and password and log in.' }, { gap: 0.3 }],
+        ['o2', { zh: '之后看订单、改地址，它再也没问过密码。', en: 'After that, orders, addresses: it never asks again.' }, { gap: 0.45 }],
+        ['o3', { zh: 'Web 的登录机制是什么样的？', en: 'How does Web login work?' }, { gap: 0.25 }],
+        ['o3b', { zh: '服务器是怎么知道，你，是你？', en: 'How does the server know that you are you?' }, { gap: 0.2 }],
+        ['oT', null, { pause: 2.5 }],
+        ['o4', { zh: '这其实是三件事：第一次认出你，叫认证；', en: 'It is three jobs. Recognizing you the first time: authentication.' }, { gap: 0.2 }],
+        ['o5', { zh: '之后每个请求都认得你，叫会话；', en: 'Knowing you on every later request: the session.' }, { gap: 0.2 }],
+        ['o6', { zh: '你能做什么，叫授权。', en: 'What you may do: authorization.' }, { gap: 0.4 }],
       ],
     },
     {
-      id: 'session', at: 22.3, chap: null, lead: 0.5, tail: 0.3,
+      id: 'session', at: 26.25, chap: null, lead: 0.5, tail: 0.3,
       cues: [
-        ['s1', { zh: '登录成功后，服务器创建一条会话，记录用户、权限和过期时间。', en: 'After login, the server creates a session: user, permissions, expiry.' }, { gap: 0.5 }],
-        ['s2', { zh: '它给浏览器一个 Session ID。', en: 'It gives the browser a Session ID.' }, { gap: 0.5 }],
-        ['s3', { zh: 'Session ID 放进 Cookie，之后每次请求自动带上。', en: 'The browser puts it in a Cookie, sent automatically.' }, { gap: 0.5 }],
-        ['s4', { zh: '服务器用 Session ID 查会话；Cookie 只是运输。', en: 'The server looks up the session; Cookie is transport, Session is state.' }, { gap: 0.5 }],
-        ['s5', { zh: '缺点是服务器要保存、共享这张会话表。', en: 'The weakness: the server must store and share that session table.' }, { gap: 0.5 }],
-        ['s6', { zh: 'Session ID 被偷，别人就能冒充你。', en: 'A stolen Session ID impersonates you.' }, { gap: 0.5 }],
-        ['s7', { zh: '浏览器自动带 Cookie，跨站请求也能利用它。', en: 'Browsers attach Cookies, so cross-site requests can use them.' }, { gap: 0.4 }],
+        ['s1', { zh: '网页用的 HTTP，本身不记得上一个请求。', en: 'HTTP itself does not remember the previous request.' }, { gap: 0.3 }],
+        ['s2', { zh: '所以登录成功时，服务器自己记一条会话：', en: 'So at login the server writes down a session:' }, { gap: 0.2 }],
+        ['s3', { zh: '你是谁、能做什么、何时过期。', en: 'who you are, what you may do, when it expires.' }, { gap: 0.3 }],
+        ['s4', { zh: '再给它一个随机编号，叫 Session ID，', en: 'It gives that record a random number, the Session ID,' }, { gap: 0.2 }],
+        ['s5', { zh: '装进 Cookie 交给浏览器。', en: 'and hands it to the browser in a Cookie.' }, { gap: 0.3 }],
+        ['s6', { zh: '之后每次请求，浏览器都自动带上它，', en: 'Every later request carries it back automatically;' }, { gap: 0.2 }],
+        ['s7', { zh: '服务器拿编号查表，就认出了你。', en: 'the server looks the number up and knows you.' }, { gap: 0.45 }],
+        ['s8', { zh: 'Cookie 只负责运送，记住你的是服务器上的会话。', en: 'The Cookie only carries it. The session on the server is what remembers you.' }, { gap: 0.6 }],
+        ['s9', { zh: '代价是：谁拿到这个编号，服务器就把谁当成你。', en: 'The cost: whoever holds that number is you, to the server.' }, { gap: 0.3 }],
+        ['s10', { zh: '别的网页替你发请求，浏览器也带上：这叫跨站请求伪造。', en: 'Requests other pages send for you carry it too: cross-site request forgery.' }, { gap: 0.5 }],
       ],
     },
     {
-      id: 'jwt', at: 59.3, chap: null, lead: 0.5, tail: 0.3,
+      id: 'jwt', at: 67, chap: null, lead: 0.5, tail: 0.3,
       cues: [
-        ['j1', { zh: '为了不存会话表，可以把身份和权限签进一个 token。', en: 'To avoid the session table, sign identity and permissions into a token.' }, { gap: 0.5 }],
-        ['j2', { zh: 'JWT 是一种 token 格式，不是 Session。', en: 'JWT is a token format, not a Session.' }, { gap: 0.5 }],
-        ['j3', { zh: '它分三段：头部、载荷、签名。', en: 'It has three parts: header, payload, signature.' }, { gap: 0.5 }],
-        ['j4', { zh: '前两段只是编码，不是加密，谁拿到都能读。', en: 'The first two parts are encoded, not encrypted; anyone can read them.' }, { gap: 0.5 }],
-        ['j5', { zh: '服务器验签，再查过期和受众。', en: 'The server verifies the signature, expiry and audience.' }, { gap: 0.5 }],
-        ['j6', { zh: 'Access Token 访问资源；Refresh Token 续期。', en: 'An Access Token calls resources; a Refresh Token gets a new Access Token.' }, { gap: 0.5 }],
-        ['j7', { zh: '缺点是撤销麻烦、token 被偷；所以要短命。', en: 'Weaknesses: revocation is hard and tokens get stolen; keep them short-lived.' }, { gap: 0.4 }],
+        ['j1', { zh: '网站一大，很多台服务器都得查同一张表。', en: 'On a big site, many servers must reach one session table.' }, { gap: 0.3 }],
+        ['j2', { zh: '另一种做法不查表：把你是谁写进一张票，签上名。', en: 'Another way skips it: write who you are on a ticket and sign it.' }, { gap: 0.3 }],
+        ['j3', { zh: '常用的格式叫 JWT：头部、内容、签名三段。', en: 'A common format is JWT: header, payload, signature.' }, { gap: 0.3 }],
+        ['j4', { zh: '内容只是编码，谁都能读；但改一个字，签名就对不上。', en: 'The payload is only encoded, readable by anyone; change one character and the signature fails.' }, { gap: 0.3 }],
+        ['j5', { zh: '服务器验过签名和有效期，不用查表就认出你。', en: 'Checking signature and expiry, a server knows you without a lookup.' }, { gap: 0.45 }],
+        ['j6', { zh: '代价是票发出去，就很难提前收回；', en: 'The cost: once issued, it is hard to take back early;' }, { gap: 0.2 }],
+        ['j7', { zh: '所以有效期设得很短，过期再用另一张长期票换。', en: 'so it is kept short-lived, renewed with a separate long-lived ticket.' }, { gap: 0.5 }],
       ],
     },
     {
-      id: 'authn', at: 95.3, chap: null, lead: 0.5, tail: 0.3,
+      id: 'authn', at: 97.25, chap: null, lead: 0.5, tail: 0.3,
       cues: [
-        ['p1', { zh: '会话和 token 只记住之前的认证；第一次怎么认证？', en: 'Session and token only remember an earlier check. How was it done?' }, { gap: 0.5 }],
-        ['p2', { zh: '口令：服务器加盐、慢哈希，再比对；证明你知道。', en: 'Password: salt, slow hash, compare; it proves knowledge.' }, { gap: 0.5 }],
-        ['p3', { zh: '短信码：证明你拥有手机，但能被转发。', en: 'SMS code: proves you have the phone, but can be relayed.' }, { gap: 0.5 }],
-        ['p4', { zh: 'passkey：证明你持有私钥；公钥、挑战、域名绑定。', en: 'Passkey: proves you hold the private key, bound to the domain.' }, { gap: 0.5 }],
-        ['p5', { zh: '验证码只证明你是人，不是脚本，不证明身份。', en: 'CAPTCHA only proves you are human, not your identity.' }, { gap: 0.5 }],
-        ['p6', { zh: '所以认证解决“你是谁”，会话解决“怎么记住”。', en: 'Authentication answers who; session answers how to remember.' }, { gap: 0.4 }],
+        ['p1', { zh: '那第一次，是怎么认出你的？', en: 'So how are you recognized the first time?' }, { gap: 0.45 }],
+        ['p2', { zh: '口令：服务器不存口令，只存一个算不回去的摘要。', en: 'A password: the server keeps only a digest that cannot be reversed.' }, { gap: 0.2 }],
+        ['p2b', { zh: '而且故意算得很慢，表被偷了，也难逐个猜出来。', en: 'It is deliberately slow, so a stolen table is hard to guess back one by one.' }, { gap: 0.3 }],
+        ['p3', { zh: '你输入的口令照样算一遍，一致就通过。', en: 'What you type is hashed the same way; a match lets you in.' }, { gap: 0.3 }],
+        ['p4', { zh: '它证明你知道一个秘密，但会被假网站骗走。', en: 'It proves you know a secret, but a fake site can steal it.' }, { gap: 0.3 }],
+        ['p5', { zh: '短信码证明你有这个号码，但同样能被假网站转走。', en: 'An SMS code proves you have the phone, but a fake site can relay it too.' }, { gap: 0.45 }],
+        ['p6', { zh: 'passkey 不同：设备生成一对钥匙，服务器只存公钥。', en: 'A passkey differs: your device makes a key pair; the server keeps the public key.' }, { gap: 0.2 }],
+        ['p7', { zh: '登录时你按下指纹，设备用私钥给服务器的随机数签名；', en: 'At login the server sends a challenge; you confirm, and the device signs it;' }, { gap: 0.2 }],
+        ['p7b', { zh: '服务器用公钥一验，就知道是你。', en: 'the server checks it with the public key.' }, { gap: 0.3 }],
+        ['p8', { zh: '这把钥匙只给注册它的网站签名，假网站拿不到能用的。', en: 'The key signs only for the site it was made for; a fake site gets nothing usable.' }, { gap: 0.45 }],
+        ['p9', { zh: '选图片、拖滑块的验证码，只分辨人和程序，不证明身份。', en: 'Picture puzzles and sliders only tell a person from a program, not who you are.' }, { gap: 0.5 }],
       ],
     },
     {
-      id: 'oauth', at: 125.3, chap: null, lead: 0.5, tail: 0.3,
+      id: 'oauth', at: 146.75, chap: null, lead: 0.5, tail: 0.3,
       cues: [
-        ['a1', { zh: 'OAuth 2.0 是授权：给第三方有限访问权。', en: 'OAuth 2.0 is authorization: limited access, not user authentication.' }, { gap: 0.5 }],
-        ['a2', { zh: 'OIDC 加身份层，返回 ID Token。', en: 'OIDC adds an identity layer and returns an ID Token.' }, { gap: 0.5 }],
-        ['a3', { zh: 'Access Token 访问资源；Refresh Token 续期。', en: 'Access Token calls resources; Refresh Token renews.' }, { gap: 0.5 }],
-        ['a4', { zh: 'ID Token 证明身份；资源服务器验签名和受众。', en: 'ID Token proves identity; the resource server verifies signature and audience.' }, { gap: 0.5 }],
-        ['a5', { zh: '缺点是信任转移：第三方不可靠，本站也跟着不可靠。', en: 'The weakness is transferred trust: a bad provider weakens the site.' }, { gap: 0.4 }],
+        ['a1', { zh: '“用另一个平台的账号登录”，检查你的是那个平台。', en: 'With “sign in with another platform”, the platform checks you.' }, { gap: 0.3 }],
+        ['a2', { zh: '你在平台登录、点同意，平台把你送回来，附上一次性码，', en: 'You log in there and agree; it sends you back with a one-time code,' }, { gap: 0.2 }],
+        ['a3', { zh: '网站再拿它去换票。', en: 'which the site trades for tickets.' }, { gap: 0.2 }],
+        ['a3b', { zh: '这套流程叫 OAuth 2.0。', en: 'That flow is OAuth 2.0.' }, { gap: 0.3 }],
+        ['a4', { zh: '它本是授权：换来的 Access Token 只说能做什么。', en: 'It is authorization: its Access Token says what may be done.' }, { gap: 0.3 }],
+        ['a5', { zh: '要说明你是谁，靠上面加的一层 OIDC：', en: 'Saying who you are takes OIDC, a layer on top:' }, { gap: 0.2 }],
+        ['a6', { zh: '再给一张签了名的 ID Token，写明你是谁、发给谁。', en: 'a signed ID Token naming who you are and which site it is for.' }, { gap: 0.3 }],
+        ['a7', { zh: '代价是信任集中：平台账号失守，这些网站一起失守。', en: 'The cost: trust concentrates. Lose that account, and those sites fall too.' }, { gap: 0.6 }],
       ],
     },
     {
-      id: 'attacks', at: 154, chap: null, lead: 0.5, tail: 0.3,
+      id: 'close', at: 182, chap: null, lead: 0.5, tail: 0.15,
       cues: [
-        ['x1', { zh: '这些层各有攻击面。', en: 'Each layer has its own attack surface.' }, { gap: 0.4 }],
-        ['x2', { zh: '会话：Session ID 被偷、CSRF、固定。', en: 'Session: stolen IDs, CSRF, fixation.' }, { gap: 0.5 }],
-        ['x3', { zh: 'JWT：token 被偷、撤销不及时、载荷可读。', en: 'JWT: stolen tokens, slow revocation, readable payloads.' }, { gap: 0.5 }],
-        ['x4', { zh: '认证：钓鱼、撞库、短信转发、passkey 设备丢失。', en: 'AuthN: phishing, stuffing, SMS relay, lost passkey devices.' }, { gap: 0.5 }],
-        ['x5', { zh: '授权：回调、受众、签名配置错，断言就不可信。', en: 'AuthZ: bad redirect, audience or signature checks break trust.' }, { gap: 0.4 }],
-      ],
-    },
-    {
-      id: 'close', at: 175.1, chap: null, lead: 0.5, tail: 0.15,
-      cues: [
-        ['e1', { zh: '所以认证、会话、授权、令牌，是四层，不是四个竞品。', en: 'AuthN, session, AuthZ and tokens are layers, not competitors.' }, { gap: 0.4 }],
-        ['e2', { zh: '它们解决不同问题，也各有代价。', en: 'They solve different problems, each with a cost.' }, { gap: 0.4 }],
-        ['e3', { zh: '先问要验证什么，再选机制。', en: 'Ask what must be verified, then choose the mechanism.' }, { gap: 0.1 }],
+        ['e1', { zh: '第一次看你拿出的证据，之后认你带回的编号或票。', en: 'First the proof you show; after that, the number or ticket you bring back.' }, { gap: 0.45 }],
+        ['e2', { zh: '服务器认的从来不是你本人，而是你出示的证据。', en: 'The server never recognizes you, only the proof you present.' }, { gap: 0.1 }],
       ],
     },
     {
@@ -98,30 +102,21 @@
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
   const SAY = {
     zh: [
-      [/session ID/g, 'session I D'],
-      [/passkey/g, 'pass key'],
-      [/SSO/g, 'S S O'],
-      [/SameSite/g, 'same site'],
-      [/HttpOnly/g, 'http only'],
-      [/OAuth 2\.0/g, 'O auth two point zero'],
-      [/OIDC/g, 'O I D C'],
-      [/PKCE/g, 'P K C E'],
-      [/JWT/g, 'J W T'],
+      [/Session ID/g, 'session I D'],
+      [/Access Token/g, 'access token'],
       [/ID Token/g, 'I D token'],
-      [/TLS/g, 'T L S'],
-      [/\bXSS\b/g, 'X S S'],
-      [/\bCSRF\b/g, 'C S R F'],
-      [/cookie/g, 'cookie'],
+      [/OAuth 2\.0/g, 'O auth 二点零'],
+      [/passkey/g, 'pass key'],
+      [/OIDC/g, 'O I D C'],
+      [/JWT/g, 'J W T'],
+      [/HTTP/g, 'H T T P'],
+      [/Cookie/g, 'cookie'],
     ],
     en: [
       [/passkey/g, 'pass key'],
-      [/SSO/g, 'S S O'],
-      [/\bXSS\b/g, 'X S S'],
-      [/\bCSRF\b/g, 'C S R F'],
       [/\bOIDC\b/g, 'O I D C'],
       [/\bJWT\b/g, 'J W T'],
-      [/\bPKCE\b/g, 'P K C E'],
-      [/\bTLS\b/g, 'T L S'],
+      [/OAuth 2\.0/g, 'O auth two point oh'],
     ],
   };
   const strip = (s) => s.replace(/\*/g, '');

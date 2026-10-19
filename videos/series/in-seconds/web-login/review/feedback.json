@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "version": "2026-10-19",
+  "version": "2026-10-19.2",
   "items": [
     {
       "id": "F01",
       "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
       "applicability": "applies",
       "reason": "",
-      "plan": "标题是“怎么验证你是你”，不是“登录方式大全”；先分清认证/会话/授权/令牌四层；Session 是状态、Cookie 是运输、JWT 是 token 格式",
-      "script_evidence": "research/NARRATIVE.md 的「一个核心问题」「逐场问题与答案」；script.js 的 open 与 close。",
+      "plan": "标题是“怎么验证你是你”，不是“登录方式大全”。第 7 稿用同一次登录贯穿：开头“它再也没问过密码” → 会话怎么认出你 → 第一次怎么认出你 → 第三方替你认；结尾 e2 直接回答：服务器认的是你出示的证据。开场先分三件事（认证、会话、授权），Cookie 只运送、JWT 是票的格式，不再把“令牌”列成与认证并列的一层。",
+      "script_evidence": "src/js/script.js 第 7 稿 o2–o6、s8、j3、e1–e2；review/NOTES.md 第 7 轮说明。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -18,8 +18,8 @@
       "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
       "applicability": "applies",
       "reason": "",
-      "plan": "每层走“解决什么 → 怎么工作 → 缺点”：Session 查表、JWT 验签、口令/短信/passkey/验证码认证、OAuth/OIDC 委托",
-      "script_evidence": "research/NARRATIVE.md 的逐场表；script.js 的 credentials/session 两场。",
+      "plan": "每个机制只留一条主因果：做法 → 为什么能认出你 → 代价 → 代价引出下一种。会话：HTTP 不记事 → 记会话、发编号 → 查表；代价：编号被拿、跨站请求。JWT：共用表的负担 → 签名票 → 验签不查表；代价：难收回 → 短有效期。口令 → 短信码 → passkey 按“会被假网站骗走”递进。删去单独罗列攻击面的一场，术语不堆在一句里。",
+      "script_evidence": "script.js 的 session、jwt、authn 三场；NOTES 第 7 轮逐句依据表。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -29,19 +29,19 @@
       "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
       "applicability": "applies",
       "reason": "",
-      "plan": "区分 Session/Session ID/Cookie/JWT/Access Token/Refresh Token；认证≠会话≠授权；不把 Google 当独立方式",
-      "script_evidence": "research/FACTS.md 的「边界与常见误说」；script.js 首次出现 authentication/authorization/OAuth/OIDC/JWT/SAML 的句子。",
+      "plan": "首次出现即区分：会话（服务器上的记录）/ Session ID（编号）/ Cookie（运送）；JWT 是票的格式；Access Token 只说能做什么，ID Token 说你是谁；“验证码”专指选图拖滑块，短信的叫“短信码”；第三方登录是平台替你认，不是另一种因子。",
+      "script_evidence": "script.js s4–s8、j3、a4–a6、p5、p9；FACTS「边界与常见误说」。",
       "result": "pending",
       "verification": "",
       "clips": []
     },
     {
       "id": "F04",
-      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "rule_sha256": "c01f0f5ca1049512a199d1ec3f60245af23078ae93835223b4175d595091aa03",
       "applicability": "applies",
       "reason": "",
-      "plan": "用 7 个内容场景 + 片尾，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计",
-      "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
+      "plan": "秒速通时长是硬约束，先砍内容再排时间：第 7 稿删去单独罗列攻击面的一场，每个机制只留一条主因果，结论句后 gap≥0.45 s。片名卡 oT 2.5 s，且片名应与 o3b 问句同时完整出现（合计约 5 s）；每屏关键状态（会话表命中、签名对不上、假网站拿不到签名、ID Token 三项）完整出现后按 1.5 s + 字数 ÷ 5 留足，再进入下一句画面；推近时不把要读的部分留在画外。",
+      "script_evidence": "src/js/script.js 第 7 稿 oT pause 2.5、各场 slack 0.2–0.5 s；交 Opus 的 brief/04-storyboard 需按新句号重写并逐屏写稳定时长。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -139,8 +139,8 @@
       "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
       "applicability": "applies",
       "reason": "技术主题，不需要年代史；用 HTTP 无状态作背景，交代四层定位与观看路线。",
-      "plan": "开场从 cookie → Session ID → Session 的具体现象进入；说明 HTTP 无状态与认证/会话/授权/令牌四层；给出 Session → JWT → 认证方式 → OAuth/OIDC 的路线。",
-      "script_evidence": "src/js/script.js 的 open（o1–o4）与 session 开头；README/NARRATIVE 的路线表。",
+      "plan": "技术主题，不需要年代史；开场从“登录后它再也没问过密码”这个日常现象进入，用 HTTP 不记事交代背景，o4–o6 给出三件事的路线：先会话、再第一次认证、再第三方登录。",
+      "script_evidence": "script.js open 与 s1。",
       "result": "pending",
       "verification": "待成片后核对首次观看能否复述对象、背景与路线。",
       "clips": []
@@ -155,7 +155,33 @@
       "result": "pending",
       "verification": "待成片后核对片尾无人声、名单/网址可读，且正文无制作指令。",
       "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面只放观众需要的形状和短标签，不写「示意」「假数据」「仅演示」「已脱敏」之类说明；假域名、假编号直接用，不加注解。来源只在片尾或一行署名。",
+      "script_evidence": "第 7 稿旁白没有制作者口吻的句子；brief/03-visual 与 04-storyboard 交接前逐屏列出说明性小字并删去。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
     }
   ],
-  "history": []
+  "history": [
+    {
+      "version": "2026-10-19",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "用 7 个内容场景 + 片尾，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计",
+        "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    }
+  ]
 }
