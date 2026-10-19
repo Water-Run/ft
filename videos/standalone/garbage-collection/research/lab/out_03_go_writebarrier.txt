@@ -1,0 +1,47 @@
+# go build -trimpath -gcflags=-S -o <null device> 03_go_writebarrier.go
+# go version go1.27.0 windows/amd64
+# listing of main.link only (the function containing the store a.next = b); the rest of the listing is omitted
+
+main.link STEXT size=68 align=0x0 args=0x10 locals=0x8 funcid=0x0
+	0x0000 00000 (03_go_writebarrier.go:18)	TEXT	main.link(SB), ABIInternal, $8-16
+	0x0000 00000 (03_go_writebarrier.go:18)	CMPQ	SP, 16(R14)
+	0x0004 00004 (03_go_writebarrier.go:18)	PCDATA	$0, $-2
+	0x0004 00004 (03_go_writebarrier.go:18)	JLS	41
+	0x0006 00006 (03_go_writebarrier.go:18)	PCDATA	$0, $-1
+	0x0006 00006 (03_go_writebarrier.go:18)	PUSHQ	BP
+	0x0007 00007 (03_go_writebarrier.go:18)	MOVQ	SP, BP
+	0x000a 00010 (03_go_writebarrier.go:18)	FUNCDATA	$0, gclocals·TswRR9Pia9Wsluv5u1sUnA==(SB)
+	0x000a 00010 (03_go_writebarrier.go:18)	FUNCDATA	$1, gclocals·J26BEvPExEQhJvjp9E8Whg==(SB)
+	0x000a 00010 (03_go_writebarrier.go:18)	FUNCDATA	$5, main.link.arginfo1(SB)
+	0x000a 00010 (03_go_writebarrier.go:18)	FUNCDATA	$6, main.link.argliveinfo(SB)
+	0x000a 00010 (03_go_writebarrier.go:18)	PCDATA	$3, $1
+	0x000a 00010 (03_go_writebarrier.go:18)	TESTB	AL, (AX)
+	0x000c 00012 (03_go_writebarrier.go:18)	CMPL	runtime.writeBarrier(SB), $0
+	0x0013 00019 (03_go_writebarrier.go:18)	PCDATA	$0, $-2
+	0x0013 00019 (03_go_writebarrier.go:18)	JEQ	36
+	0x0015 00021 (03_go_writebarrier.go:18)	MOVQ	(AX), CX
+	0x0018 00024 (03_go_writebarrier.go:18)	CALL	runtime.gcWriteBarrier2(SB)
+	0x001d 00029 (03_go_writebarrier.go:18)	MOVQ	BX, (R11)
+	0x0020 00032 (03_go_writebarrier.go:18)	MOVQ	CX, 8(R11)
+	0x0024 00036 (03_go_writebarrier.go:18)	MOVQ	BX, (AX)
+	0x0027 00039 (03_go_writebarrier.go:18)	PCDATA	$0, $-1
+	0x0027 00039 (03_go_writebarrier.go:18)	POPQ	BP
+	0x0028 00040 (03_go_writebarrier.go:18)	RET
+	0x0029 00041 (03_go_writebarrier.go:18)	NOP
+	0x0029 00041 (03_go_writebarrier.go:18)	PCDATA	$1, $-1
+	0x0029 00041 (03_go_writebarrier.go:18)	PCDATA	$0, $-2
+	0x0029 00041 (03_go_writebarrier.go:18)	MOVQ	AX, 8(SP)
+	0x002e 00046 (03_go_writebarrier.go:18)	MOVQ	BX, 16(SP)
+	0x0033 00051 (03_go_writebarrier.go:18)	CALL	runtime.morestack_noctxt(SB)
+	0x0038 00056 (03_go_writebarrier.go:18)	PCDATA	$0, $-1
+	0x0038 00056 (03_go_writebarrier.go:18)	MOVQ	8(SP), AX
+	0x003d 00061 (03_go_writebarrier.go:18)	MOVQ	16(SP), BX
+	0x0042 00066 (03_go_writebarrier.go:18)	JMP	0
+	0x0000 49 3b 66 10 76 23 55 48 89 e5 84 00 83 3d 00 00  I;f.v#UH.....=..
+	0x0010 00 00 00 74 0f 48 8b 08 e8 00 00 00 00 49 89 1b  ...t.H.......I..
+	0x0020 49 89 4b 08 48 89 18 5d c3 48 89 44 24 08 48 89  I.K.H..].H.D$.H.
+	0x0030 5c 24 10 e8 00 00 00 00 48 8b 44 24 08 48 8b 5c  \$......H.D$.H.\
+	0x0040 24 10 eb bc                                      $...
+	rel 14+4 t=R_PCREL runtime.writeBarrier+-1
+	rel 25+4 t=R_CALL runtime.gcWriteBarrier2+0
+	rel 52+4 t=R_CALL runtime.morestack_noctxt+0

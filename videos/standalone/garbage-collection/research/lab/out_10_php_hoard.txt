@@ -1,0 +1,8 @@
+PHP 8.5.10
+hoard: kept 100,000 objects; memory_get_usage 16.1 MB; 31 ms
+hoard: kept 200,000 objects; memory_get_usage 29.8 MB; 73 ms
+hoard: kept 300,000 objects; memory_get_usage 46.5 MB; 126 ms
+hoard: kept 400,000 objects; memory_get_usage 57.2 MB; 163 ms
+PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 4096 bytes) in …/10_php_gc.php on line 34
+Stack trace:
+#0 {main}

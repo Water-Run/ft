@@ -1,0 +1,47 @@
+PHP 8.5.10
+a = new Node('A'):
+object(Node)#1 (2) refcount(2){
+  ["next"]=>
+  NULL
+  ["name"]=>
+  string(1) "A" interned
+}
+b = a:
+object(Node)#1 (2) refcount(3){
+  ["next"]=>
+  NULL
+  ["name"]=>
+  string(1) "A" interned
+}
+list = [a]:
+object(Node)#1 (2) refcount(4){
+  ["next"]=>
+  NULL
+  ["name"]=>
+  string(1) "A" interned
+}
+unset(b):
+object(Node)#1 (2) refcount(3){
+  ["next"]=>
+  NULL
+  ["name"]=>
+  string(1) "A" interned
+}
+list = []:
+object(Node)#1 (2) refcount(2){
+  ["next"]=>
+  NULL
+  ["name"]=>
+  string(1) "A" interned
+}
+unset(a):
+  __destruct A
+(after unset a)
+
+cycle: x.next = y, y.next = x, then unset(x, y):
+(after unset x, y: no destructor ran)
+gc_status before: runs=0 collected=0 roots=2
+  __destruct X
+  __destruct Y
+gc_collect_cycles() = 2
+gc_status after:  runs=2 collected=2 roots=0

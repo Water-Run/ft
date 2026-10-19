@@ -1,0 +1,8 @@
+mm = arc
+inner scope ends (b goes out of scope)
+  =destroy B
+scopeDemo ends (a, c go out of scope): A A
+  =destroy A
+scope demo done: destroyed = 2
+after x = nil, y = nil: destroyed = 2
+after GC_fullCollect(): destroyed = 2

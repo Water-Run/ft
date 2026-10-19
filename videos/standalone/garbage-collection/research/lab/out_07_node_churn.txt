@@ -1,0 +1,12 @@
+# node --trace-gc 07_node_heap_limit.js churn （Node v24.21.0；trace 共 12143 行 Scavenge、0 行 Mark-Compact；此处保留程序汇总行与前 5 行、最后 3 行 trace）
+churn: 318,210,000 objects created in 1000 ms; heapUsed 4.1 MB -> 4.3 MB; last=318209999
+...
+[55748:000001B383C93000]       16 ms: Scavenge 4.9 (6.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.17 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+[55748:000001B383C93000]       16 ms: Scavenge 4.9 (7.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.10 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+[55748:000001B383C93000]       16 ms: Scavenge 5.0 (7.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.04 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+[55748:000001B383C93000]       17 ms: Scavenge 5.0 (7.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.03 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+[55748:000001B383C93000]       17 ms: Scavenge 5.0 (7.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.03 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+...
+[55748:000001B383C93000]     1015 ms: Scavenge 5.0 (7.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.02 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+[55748:000001B383C93000]     1015 ms: Scavenge 5.0 (7.0) -> 4.0 (7.0) MB, pooled: 0 MB, 0.05 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 
+[55748:000001B383C93000]     1032 ms: Scavenge 5.2 (7.0) -> 4.3 (7.0) MB, pooled: 0 MB, 0.14 / 0.00 ms  (average mu = 1.000, current mu = 1.000) allocation failure; 

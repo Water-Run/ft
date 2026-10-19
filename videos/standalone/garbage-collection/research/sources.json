@@ -1,16 +1,17 @@
 {
   "accessed": "2026-10-18",
-  "retrieval": "Web Fetch 读取原文；PDF 与 403 页面用下载/存档文本核对",
+  "updated": "2026-10-19",
+  "retrieval": "Web Fetch 读取原文；PDF 下载后用 pypdf 提取文本核对；docs.python.org 与部分 raw.githubusercontent.com 页面在 2026-10-19 的环境里不可达时，改读 CPython 仓库 3.14 分支的 rst 源文件；Go 运行时源码直接读本机 go1.27.0 的 GOROOT；Lua 手册与源码网页版经 Web Fetch 读取，5.5.0 源码 tarball 用 curl 下载到 research/_src/ 逐行核对；第 3 稿：.NET、PHP、Zig、cppreference 的网页用 curl 下载到 research/_src/docs/ 核对，Nim 读安装目录自带文档，Oracle 排障指南用 curl 下载",
   "note": "来源编号与 research/FACTS.md 的「依据」列对应。论文以 DOI/出版社元数据与可读全文为准；运行实验记录在 research/lab/。",
   "sources": {
     "mccarthy-1960": {
       "title": "Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I",
       "author": "John McCarthy",
-      "publisher": "Communications of the ACM 3(4), April 1960; PDF from Stanford",
+      "publisher": "Communications of the ACM 3(4), April 1960; 作者后来用 LaTeX 重排的 PDF（Stanford）",
       "url": "https://www-formal.stanford.edu/jmc/recursive.pdf",
       "type": "paper",
-      "accessed": "2026-10-18",
-      "notes": "PDF 34 页，提取文本 54,050 字符。第 1 节说明 LISP 为 IBM 704 开发；c. Free-Storage List 一节描述约 15,000 个寄存器、free-storage list、耗尽时启动 reclamation cycle、用符号位标记可达寄存器、把未标记的放回 free list；脚注 7 写「We already called this process 'garbage collection'...」。"
+      "accessed": "2026-10-18; 2026-10-19 用 pypdf 重新提取全文核对",
+      "notes": "PDF 34 页，提取文本 54,432 字符。首页星号注：Putting this paper in LaTeX partly supported by ARPA… Copied with minor notational changes from CACM, April 1960. If you want the exact typography, look there. 回顾性脚注标有“1995:”（脚注 3、4、5）；脚注 4 说论文写于 early 1959。c. Free-Storage List 一节：约 15,000 个寄存器、FREE 寄存器、空闲表耗尽时启动 reclamation cycle、从 base registers 沿 car–cdr 链把可达寄存器的符号改负、扫过整片区域把未变的放回空闲表、过程 requires several seconds。脚注 7 挂在 a reclamation cycle starts 上，原文 We already called this process \"garbage collection\", but I guess I chickened out of using it in the paper—or else the Research Laboratory of Electronics grammar ladies wouldn't let me."
     },
     "collins-1960": {
       "title": "A method for overlapping and erasure of lists",
@@ -34,10 +35,20 @@
       "title": "On-the-fly garbage collection: an exercise in cooperation",
       "author": "Edsger W. Dijkstra, Leslie Lamport, A. J. Martin, C. S. Scholten, E. F. M. Steffens",
       "publisher": "Communications of the ACM 21(11), November 1978, pp. 966-975",
-      "url": "https://doi.org/10.1145/359642.359655",
-      "type": "paper-metadata",
-      "accessed": "2026-10-18",
-      "notes": "Crossref 摘要：让额外处理器与执行计算的处理器并发完成垃圾检测/收集；排除与同步约束尽量弱。未读全文；三色不变式的解释用 Go 2015 博客（它明确把算法归给 Dijkstra 1978）。"
+      "url": "https://lamport.azurewebsites.net/pubs/garbage.pdf",
+      "doi": "https://doi.org/10.1145/359642.359655",
+      "type": "paper-fulltext",
+      "accessed": "2026-10-18 只读摘要；2026-10-19 从 Lamport 个人站下载 CACM 原版扫描 PDF（10 页，提取文本 60,325 字符）读全文",
+      "notes": "题头 Communications of the ACM, November 1978, Volume 21, Number 11；Received July 1977; revised February 1978。第 1 节定义 the mutator（计算处理器）与 the collector（收集处理器）。第 4 节：Gray is darker than white and lighter than black；P1: no edge points from a black node to a white one；shading = 白变灰、灰黑不变；M1：mutator 改边并 shade 新目标；C1.x：收集器 shade 灰节点的左右后继再把它变黑；appending phase 把未标记节点接回空闲表。附录列出 P1–P3a 等不变式。"
+    },
+    "ewd520": {
+      "title": "EWD520: On-the-fly garbage collection: an exercise in cooperation（手稿转录）",
+      "author": "Edsger W. Dijkstra, Leslie Lamport, A. J. Martin, C. S. Scholten, E. F. M. Steffens",
+      "publisher": "E. W. Dijkstra Archive, University of Texas；转录 Corrado Cantelmi，2012-03-15 修订",
+      "url": "https://www.cs.utexas.edu/users/EWD/transcriptions/EWD05xx/EWD520.html",
+      "type": "manuscript-transcription",
+      "accessed": "2026-10-19",
+      "notes": "手稿日期 1975 年 10 月 20 日。已含白/灰/黑、P1（during marking there will be no edge pointing from a black node to a white one）、A1（when introducing an edge, the mutator shades its target node）、对灰节点 shade the successors of node nr. i and make node nr. i black。原始扫描 PDF（EWD520.PDF）为 TIFF 图像，未能提取文本。"
     },
     "lieberman-1983": {
       "title": "A Real-Time Garbage Collector Based on the Lifetimes of Objects",
@@ -46,7 +57,7 @@
       "url": "https://web.media.mit.edu/~lieber/Lieberary/GC/Realtime/Realtime.html",
       "type": "paper-fulltext",
       "accessed": "2026-10-18",
-      "notes": "全文 HTML。摘要：短寿命对象占存储使用的大部分，应按寿命优化；分代/区域，近期区域收集更频繁；弱指针；引用计数不能回收环；Baker 的 fromspace/tospace、转发指针、scavenging 也在文中。"
+      "notes": "全文 HTML。摘要：短寿命对象占存储使用的大部分，应按寿命优化；分代/区域，近期区域收集更频繁；弱指针；引用计数不能回收环；Baker 的 fromspace/tospace、转发指针、scavenging 也在文中；第 4 节 entry table。"
     },
     "go-gc-guide": {
       "title": "A Guide to the Go Garbage Collector",
@@ -66,6 +77,14 @@
       "accessed": "2026-10-18",
       "notes": "Go 1.5 的并发三色 mark-sweep；明确说算法源自 Dijkstra 1978；白/灰/黑、根变灰、黑化并扫描、白对象变灰、黑不能指白的 invariant、write barrier；Go 1.5 最后短暂 stop-the-world 检查根；目标 <10ms。"
     },
+    "go-runtime-src": {
+      "title": "Go 运行时源码：src/runtime/mbarrier.go、mgc.go、extern.go",
+      "publisher": "The Go Authors；本机 go1.27.0 的 GOROOT",
+      "url": "https://github.com/golang/go/blob/go1.27.0/src/runtime/mbarrier.go",
+      "type": "source",
+      "accessed": "2026-10-19（本机 GOROOT，go version go1.27.0 windows/amd64）",
+      "notes": "mbarrier.go 文件头：编译器为可能在堆对象里的指针字段写入生成写屏障调用；第 24–60 行：混合屏障 = Yuasa 删除屏障 + Dijkstra 插入屏障，伪码 shade(*slot); if current stack is grey: shade(ptr); *slot = ptr，两次 shade 与条件合起来防止 mutator 藏起对象，证明见提案 17503。mgc.go：var writeBarrier struct { enabled bool … } 的注释“compiler emits a check of this before calling write barrier”。extern.go：GODEBUG=gctrace=1 的行格式与各字段含义，三段 clock 时间为 STW sweep termination、concurrent mark and scan、STW mark termination；(forced) 表示 runtime.GC() 触发。"
+    },
     "v8-trash-talk": {
       "title": "Trash talk: the Orinoco garbage collector",
       "publisher": "V8",
@@ -73,31 +92,31 @@
       "published": "2019-01-03",
       "type": "official-blog",
       "accessed": "2026-10-18",
-      "notes": "major GC 的 marking/sweeping/compacting；free-list；分代；nursery/intermediate/old；scavenger 的 semi-space、from/to、forwarding pointer；old-to-new remembered set 与 write barrier；parallel/incremental/concurrent 的定义与 Orinoco 状态。"
+      "notes": "major GC 的 marking/sweeping/compacting；free-list；分代；nursery/intermediate/old；scavenger 的 semi-space、from/to、forwarding pointer；old-to-new remembered set 与 write barrier；parallel/incremental/concurrent 的定义与 Orinoco 状态；并行 scavenger 使主线程时间降低约 20%–50%。"
     },
     "python-gc-docs": {
       "title": "gc — Garbage Collector interface",
       "publisher": "Python 3.15 documentation",
       "url": "https://docs.python.org/3/library/gc.html",
       "type": "official-doc",
-      "accessed": "2026-10-18",
+      "accessed": "2026-10-18（2026-10-19 该域名在本环境不可达，改读 python-gc-rst-314）",
       "notes": "页面最后更新 2026-10-18。说明 collector 补充 reference counting；可禁用自动收集；三代；阈值；gc.collect 返回收集数；garbage 列表；Python 3.14/3.15 的代际变化也写在页内。"
     },
-    "python-lab": {
-      "title": "CPython 3.14.3 引用计数、环与 cycle collector 实验",
-      "publisher": "本片实验",
-      "url": "research/lab/01_python_refcount.py",
-      "type": "experiment",
-      "accessed": "2026-10-18",
-      "notes": "Windows x64，CPython 3.14.3。脚本与完整回显：01_python_refcount.py / out_01_python_refcount.txt。输出含 sys.getrefcount 2→3→2、del 后 __del__ 立即执行、环 X/Y 各 refcount=3、gc.collect() 返回 2、weakref 被清空、gc.garbage 为空。"
+    "python-gc-rst-314": {
+      "title": "Doc/library/gc.rst（CPython 仓库 3.14 分支；main 分支同段一致）",
+      "publisher": "python/cpython",
+      "url": "https://raw.githubusercontent.com/python/cpython/3.14/Doc/library/gc.rst",
+      "type": "official-doc-source",
+      "accessed": "2026-10-19",
+      "notes": "引言：Since the collector supplements the reference counting already used in Python, you can disable the collector if you are sure your program does not create reference cycles。set_threshold：三代、新对象在 generation 0、活过收集进入更老的代、按分配减释放计数触发；versionchanged 3.14: threshold2 is ignored；3.14.5: threshold2 is restored to match Python 3.13 behavior。get_objects：3.14 Generation 1 is removed；3.14.5 Generation 1 is reintroduced to maintain GC behavior from 3.13。collect：3.14 generation=1 performs an increment of collection；3.14.5 performs collection of the middle generation；返回 collected 与 uncollectable 之和。"
     },
-    "go-lab": {
-      "title": "Go 1.27.0 tracing GC 实验",
-      "publisher": "本片实验",
-      "url": "research/lab/02_go_trace.go",
-      "type": "experiment",
+    "java-g1-guide": {
+      "title": "Garbage-First (G1) Garbage Collector",
+      "publisher": "Oracle Java SE 21 GC Tuning Guide",
+      "url": "https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html",
+      "type": "official-doc",
       "accessed": "2026-10-18",
-      "notes": "Windows amd64，go1.27.0。脚本与完整回显：02_go_trace.go / out_02_go_trace.txt。build(200000) 保留每 200 个节点中的一个（1000 个），并强制每个节点逃逸；GODEBUG=gctrace=1 运行；含 before/after MemStats 与 8 次 GC 的一行一次 trace。"
+      "notes": "G1 是分代、增量、并行、mostly concurrent、stop-the-world、evacuating；区域化堆；young/old；SATB marking；remembered set；暂停时间目标；明确说 G1 不是 real-time collector。"
     },
     "swift-arc": {
       "title": "The Swift Programming Language: Automatic Reference Counting",
@@ -115,13 +134,287 @@
       "accessed": "2026-10-18",
       "notes": "开篇：ownership 使 Rust 在没有 garbage collector 的情况下做内存安全保证；本章讲所有权、借用、切片与内存布局。只读开头。"
     },
-    "java-g1-guide": {
-      "title": "Garbage-First (G1) Garbage Collector",
-      "publisher": "Oracle Java SE 21 GC Tuning Guide",
-      "url": "https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html",
+    "rust-ownership-4-1": {
+      "title": "The Rust Programming Language: What Is Ownership?",
+      "publisher": "rust-lang/book",
+      "url": "https://raw.githubusercontent.com/rust-lang/book/main/src/ch04-01-what-is-ownership.md",
       "type": "official-doc",
+      "accessed": "2026-10-19",
+      "notes": "Memory is managed through a system of ownership with a set of rules that the compiler checks；None of the features of ownership will slow down your program while it's running；三条规则：Each value in Rust has an owner / There can only be one owner at a time / When the owner goes out of scope, the value will be dropped；Memory and Allocation：有 GC 的语言由 GC 跟踪并清理不再使用的内存，Rust 在拥有者离开作用域时自动归还，Rust calls drop automatically at the closing curly bracket。"
+    },
+    "python-lab": {
+      "title": "CPython 3.14.3 引用计数、环与 cycle collector 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/01_python_refcount.py",
+      "type": "experiment",
       "accessed": "2026-10-18",
-      "notes": "G1 是分代、增量、并行、mostly concurrent、stop-the-world、evacuating；区域化堆；young/old；SATB marking；remembered set；暂停时间目标；明确说 G1 不是 real-time collector。"
+      "notes": "Windows x64，CPython 3.14.3。脚本与完整回显：01_python_refcount.py / out_01_python_refcount.txt。输出含 sys.getrefcount 2→3→2、del 后 __del__ 立即执行、环 X/Y 各 refcount=3、gc.collect() 返回 2、weakref 被清空、gc.garbage 为空。"
+    },
+    "python-raw-lab": {
+      "title": "CPython 3.14.3 直接读取 ob_refcnt 与 gc.DEBUG_STATS 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/05_python_refcount_raw.py",
+      "type": "experiment",
+      "accessed": "2026-10-19",
+      "notes": "用 ctypes 从对象地址读前 8 字节：单个名字时为 1，b = a 后 2，放进列表后 3，del b 后 2，清空列表后 1，del a 立即 __del__。环 X/Y 有名字时各 2，删名字后各 1。gc.get_threshold() 为 (2000, 10, 0)；DEBUG_STATS 打印 collecting generation 2 / objects in each generation: 4701 3877 0 / 45 unreachable。"
+    },
+    "go-lab": {
+      "title": "Go 1.27.0 tracing GC 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/02_go_trace.go",
+      "type": "experiment",
+      "accessed": "2026-10-18",
+      "notes": "Windows amd64，go1.27.0。脚本与完整回显：02_go_trace.go / out_02_go_trace.txt。build(200000) 保留每 200 个节点中的一个（1000 个），并强制每个节点逃逸；GODEBUG=gctrace=1 运行；含 before/after MemStats 与 8 次 GC 的一行一次 trace。"
+    },
+    "go-wb-lab": {
+      "title": "Go 1.27.0 写屏障汇编实验",
+      "publisher": "本片实验",
+      "url": "research/lab/03_go_writebarrier.go",
+      "type": "experiment",
+      "accessed": "2026-10-19",
+      "notes": "go build -trimpath -gcflags=-S 取 main.link 的清单（out_03_go_writebarrier.txt）。a.next = b 编译为：CMPL runtime.writeBarrier(SB), $0；JEQ 跳过；MOVQ (AX), CX 取旧指针；CALL runtime.gcWriteBarrier2(SB)；MOVQ BX, (R11) 与 MOVQ CX, 8(R11) 把新旧指针写进屏障缓冲；MOVQ BX, (AX) 才是真正的写入。-trimpath 使清单只含相对文件名。"
+    },
+    "v8-lab": {
+      "title": "Node v24.21.0 / V8 13.6 的 --trace-gc 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/04_v8_trace_gc.js",
+      "type": "experiment",
+      "accessed": "2026-10-19",
+      "notes": "分配 3,000,000 个小对象、每 4 个留 1 个（750,000）；清空后再分配 1,000,000 个即弃对象。trace 23 行：21 次 Scavenge、2 次 Mark-Compact；Mark-Compact 行含“+ 0.3 ms in 25/26 steps since start of marking”“finalize incremental marking via stack guard; GC in old space requested”。程序汇总在 out_04_v8_trace_gc.summary.txt：phase1 kept=750000 heapUsedMB=115.6；整段 147 ms。"
+    },
+    "rust-lab": {
+      "title": "rustc 1.98.1 的 Drop 时机与 MIR drop 插入实验",
+      "publisher": "本片实验",
+      "url": "research/lab/06_rust_drop.rs",
+      "type": "experiment",
+      "accessed": "2026-10-19",
+      "notes": "程序输出：inner scope ends → drop B；after move → main ends → drop A。--emit=mir 的 fn main 里：_1 = Node A、_2 = Node B、drop(_2)（内层作用域末尾）、_11 = move _1、drop(_11)（main 末尾）；unwind 路径另有 drop。可执行文件与 .mir 产物留在仓库外。"
+    },
+    "lua-manual-55": {
+      "title": "Lua 5.5 Reference Manual",
+      "author": "Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes",
+      "publisher": "Lua.org, PUC-Rio",
+      "url": "https://www.lua.org/manual/5.5/manual.html",
+      "type": "doc",
+      "accessed": "2026-10-19；本机 lua-5.5.0 tarball 的 doc/manual.html 同文核对 §2.5.1",
+      "notes": "§2.5：Lua performs automatic memory management；The garbage collector (GC) in Lua can work in two modes: incremental and generational。§2.5.1：each GC cycle performs a mark-and-sweep collection in small steps interleaved with the program's execution；A unit of work corresponds roughly to traversing one slot or sweeping one object。§2.5.2：frequent minor collections, which traverses only objects recently created。§6.2 collectgarbage：\"step\" 零值为 a basic step，增量模式下对应 current step size，结束一个周期时返回 true；\"incremental\" / \"generational\" 切换并返回之前的模式；\"param\" 的 pause / stepmul / stepsize / minormul / minormajor / majorminor。"
+    },
+    "lua-manual-51": {
+      "title": "Lua 5.1 Reference Manual",
+      "author": "Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes",
+      "publisher": "Lua.org, PUC-Rio",
+      "url": "https://www.lua.org/manual/5.1/manual.html",
+      "type": "doc",
+      "accessed": "2026-10-19",
+      "notes": "§2.10：Lua implements an incremental mark-and-sweep collector. It uses two numbers to control its garbage-collection cycles: the garbage-collector pause and the garbage-collector step multiplier。"
+    },
+    "lua-versions": {
+      "title": "Lua: version history",
+      "publisher": "Lua.org",
+      "url": "https://www.lua.org/versions.html",
+      "type": "web",
+      "accessed": "2026-10-19",
+      "notes": "Lua 5.1 2006-02-21：incremental garbage collection；Lua 5.4 2020-06-29：a new generational mode for garbage collection；Lua 5.5 2025-12-22：major garbage collections done incrementally。"
+    },
+    "lua-readme-55": {
+      "title": "Lua 5.5 readme：Changes since Lua 5.4",
+      "publisher": "Lua.org",
+      "url": "https://www.lua.org/manual/5.5/readme.html",
+      "type": "web",
+      "accessed": "2026-10-19",
+      "notes": "Main changes 列表含 major garbage collections done incrementally、more compact arrays；没有写默认模式。"
+    },
+    "lua-src-55": {
+      "title": "Lua 5.5.0 源码：lgc.h、lgc.c、lvm.c、lvm.h、lstate.c、lua.c",
+      "publisher": "Lua.org, PUC-Rio（MIT）",
+      "url": "https://www.lua.org/ftp/lua-5.5.0.tar.gz",
+      "type": "source",
+      "accessed": "2026-10-19（先读 lua.org/source/5.5/ 网页版，再下载 tarball 解压到 research/_src/lua-5.5.0 逐行核对；不入库）",
+      "notes": "lgc.h 18–23：三色注释与 main invariant（a black object can never point to a white one）；79–81：WHITE0BIT / WHITE1BIT / BLACKBIT。lgc.c 34：GCSWEEPMAX 20；234–246：luaC_barrier_（moves collector forward）；265–270：luaC_barrierback_（moves collector backward … gray again）；1596–1612：singlestep 注释（marking 一步遍历一个对象，sweeping 一步 GCSWEEPMAX 个）；1703–1728：incstep（step size 换成 units of work）；1736–1760：luaC_step。lvm.h 105：luaV_finishfastset 展开为 luaC_barrierback；lvm.c 348、1925：表赋值用 luaC_barrierback；1297：OP_SETUPVAL 用 luaC_barrier。lstate.c 361：g->gckind = KGC_INC；lua.c 723–724：lua_gc(L, LUA_GCRESTART); lua_gc(L, LUA_GCGEN)。"
+    },
+    "node-heap-lab": {
+      "title": "Node 24 分配速度与堆上限实验",
+      "publisher": "本片实验",
+      "url": "research/lab/07_node_heap_limit.js",
+      "type": "experiment",
+      "accessed": "2026-10-19",
+      "notes": "churn：node --trace-gc，一秒钟创建 318,210,000 个用完即弃的对象，heapUsed 4.1 → 4.3 MB，12,143 行 Scavenge（out_07_node_churn.txt 保留汇总行与首尾 trace 行）。hoard：node --max-old-space-size=64，全部保留，1,000,000 个时 64.1 MB / 60 ms，139 ms 时 FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory，退出码 134（out_07_node_hoard.txt 保留到该行，原生栈删去）。"
+    },
+    "lua-lab": {
+      "title": "Lua 5.5.0 增量步数实验",
+      "publisher": "本片实验",
+      "url": "research/lab/08_lua_gc_steps.lua",
+      "type": "experiment",
+      "accessed": "2026-10-19（Lua 5.5.0，lua.org 官方 Windows x64 二进制）",
+      "notes": "切到增量模式后 collect、stop；200,000 张活表 + 200,000 张置空的表，28,457 KB；collectgarbage(\"step\", 0) 到第 419 步返回 true；第 300 步仍 28,458 KB，第 350 步 14,239 KB；活表完好。collectgarbage(\"incremental\") 返回 generational（lua.c 启动时切到分代）。out_08_lua_gc_steps.txt。"
+    },
+    "dotnet-gc-fundamentals": {
+      "title": "Fundamentals of garbage collection (.NET)",
+      "publisher": "Microsoft Learn（ms.date 2025-10-22）",
+      "url": "https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals",
+      "type": "doc",
+      "accessed": "2026-10-19（Web Fetch；网页另用 curl 下载到 research/_src/docs/ 核对）",
+      "notes": "Memory allocation：分配是把堆指针加一个值，almost as fast as allocating memory from the stack。Generations：0/1/2 三代，新对象在第 0 代，幸存者升代；大对象堆（85,000 字节起，有时叫第 3 代）随第 2 代收。Survival and promotions。What happens during a garbage collection：marking / relocating / compacting 三阶段；Ordinarily, the large object heap (LOH) isn't compacted；Before a garbage collection starts, all managed threads are suspended。"
+    },
+    "dotnet-gc-config": {
+      "title": "Garbage collector config settings (.NET)",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/runtime-config/garbage-collector",
+      "type": "doc",
+      "accessed": "2026-10-19（Web Fetch；网页另用 curl 下载到 research/_src/docs/ 核对）",
+      "notes": "Workstation vs. server（DOTNET_gcServer）；Background GC 默认开启（DOTNET_gcConcurrent / System.GC.Concurrent）；Heap hard limit：DOTNET_GCHeapHardLimit（环境变量十六进制）/ System.GC.HeapHardLimit，GC 堆与簿记的最大提交字节数，只对 64 位。"
+    },
+    "dotnet-background-gc": {
+      "title": "Background garbage collection (.NET)",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/background-gc",
+      "type": "doc",
+      "accessed": "2026-10-19（Web Fetch；网页另用 curl 下载到 research/_src/docs/ 核对）",
+      "notes": "后台 GC 只针对第 2 代，在专用线程上进行；期间第 0/1 代回收叫前台 GC，前台 GC 时所有托管线程暂停；后台 GC 默认开启。"
+    },
+    "dotnet-wks-svr": {
+      "title": "Workstation and server garbage collection (.NET)",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/workstation-server-gc",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载到 research/_src/docs/ 核对）",
+      "notes": "工作站 GC 是独立应用的默认，可并发或非并发；服务器 GC：The collection occurs on multiple dedicated threads；A heap and a dedicated thread to perform garbage collection are provided for each logical CPU, and the heaps are collected at the same time。"
+    },
+    "dotnet-getgeneration": {
+      "title": "GC.GetGeneration Method (.NET API)",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/dotnet/api/system.gc.getgeneration",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载到 research/_src/docs/ 核对）",
+      "notes": "GetGeneration(Object)：Returns the current generation number of the specified object；示例用 GC.Collect(0) 后再查代号。"
+    },
+    "dotnet-botr-gc": {
+      "title": "Garbage Collection Design (Book of the Runtime)",
+      "publisher": "dotnet/runtime 仓库",
+      "url": "https://github.com/dotnet/runtime/blob/main/docs/design/coreclr/botr/garbage-collection.md",
+      "type": "source",
+      "accessed": "2026-10-19（Web Fetch；网页另用 curl 下载到 research/_src/docs/ 核对）",
+      "notes": "Mark phase：The GC uses cards for the older generation marking. Cards are set by JIT helpers during assignment operations。Plan / relocate / compact / sweep 各阶段一句；allocation budget 超出触发该代回收；后台 GC 期间用户线程可能触发前台 GC。"
+    },
+    "php-refcounting": {
+      "title": "PHP 手册：Reference Counting Basics",
+      "publisher": "PHP Group",
+      "url": "https://www.php.net/manual/en/features.gc.refcounting-basics.php",
+      "type": "doc",
+      "accessed": "2026-10-19（Web Fetch；网页另用 curl 下载到 research/_src/docs/ 核对）",
+      "notes": "zval 的 refcount 与 is_ref；赋值加一、unset 或离开作用域减一；Variable containers get destroyed when the refcount reaches zero；自引用数组 unset 后 refcount 从 2 到 1，无外部符号可清理，形成泄漏。"
+    },
+    "php-cycles": {
+      "title": "PHP 手册：Collecting Cycles",
+      "publisher": "PHP Group",
+      "url": "https://www.php.net/manual/en/features.gc.collecting-cycles.php",
+      "type": "doc",
+      "accessed": "2026-10-19（Web Fetch；网页另用 curl 下载到 research/_src/docs/ 核对）",
+      "notes": "5.3 起实现 Concurrent Cycle Collection in Reference Counted Systems（Bacon & Rajan）的同步算法；root buffer 固定 10,000 个可能的根（GC_THRESHOLD_DEFAULT），满了运行；紫 / 灰 / 白 / 黑四步；gc_collect_cycles() 强制收集并返回收集的环数。"
+    },
+    "php-debug-zval-dump": {
+      "title": "PHP 手册：debug_zval_dump",
+      "publisher": "PHP Group",
+      "url": "https://www.php.net/manual/en/function.debug-zval-dump.php",
+      "type": "doc",
+      "accessed": "2026-10-19（curl --ssl-no-revoke 下载核对）",
+      "notes": "Understanding the refcount：按值传参使 refcount 在调用期间加一，it will show a refcount one higher than in the calling scope。"
+    },
+    "php-ini-core": {
+      "title": "PHP 手册：核心 php.ini 指令（memory_limit）",
+      "publisher": "PHP Group",
+      "url": "https://www.php.net/manual/en/ini.core.php",
+      "type": "doc",
+      "accessed": "2026-10-19（curl --ssl-no-revoke 下载核对）",
+      "notes": "memory_limit 默认 \"128M\"：This sets the maximum amount of memory in bytes that a script is allowed to allocate；8.5.0 新增 max_memory_limit。"
+    },
+    "php-gc-collect-cycles": {
+      "title": "PHP 手册：gc_collect_cycles",
+      "publisher": "PHP Group",
+      "url": "https://www.php.net/manual/en/function.gc-collect-cycles.php",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载到 research/_src/docs/ 核对）",
+      "notes": "Forces collection of any existing garbage cycles；Returns number of collected cycles；8.5.0：返回值不再包含被间接收走的字符串与资源。"
+    },
+    "php-gc-status": {
+      "title": "PHP 手册：gc_status",
+      "publisher": "PHP Group",
+      "url": "https://www.php.net/manual/en/function.gc-status.php",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载到 research/_src/docs/ 核对）",
+      "notes": "返回 runs、collected、threshold、roots、running、protected、full、buffer_size、application_time、collector_time、destructor_time、free_time。"
+    },
+    "nim-mm": {
+      "title": "Nim 文档：Nim's Memory Management（mm.md）",
+      "publisher": "Nim 项目",
+      "url": "https://nim-lang.org/docs/mm.html",
+      "type": "doc",
+      "accessed": "2026-10-19（本机 Nim 2.2.12 的 doc/mm.md）",
+      "notes": "ORC is the default memory management strategy；基于引用计数，环由 trial deletion 的环收集处理；--expandArc:functionName；--mm:arc 同机制但 leaves out the cycle collector；其他模式 refc / markAndSweep / boehm / go / none（Allocated memory is simply never freed）。网页版被环境拦截，读的是 Nim 2.2.12 安装目录自带的 doc/mm.md。"
+    },
+    "nim-destructors": {
+      "title": "Nim 文档：Destructors and Move Semantics（destructors.md）",
+      "publisher": "Nim 项目",
+      "url": "https://nim-lang.org/docs/destructors.html",
+      "type": "doc",
+      "accessed": "2026-10-19（本机 Nim 2.2.12 的 doc/destructors.md）",
+      "notes": "--mm:arc|orc 下 ref 通过同一套运行时钩子即引用计数实现；cyclic structures cannot be freed immediately (--mm:orc ships with a cycle collector)；cursor pragma 可声明式打破环。"
+    },
+    "java-oom": {
+      "title": "Troubleshooting Memory Leaks（JDK 21 Troubleshooting Guide）",
+      "publisher": "Oracle",
+      "url": "https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载核对；GC 调优指南正文需脚本渲染，未读到）",
+      "notes": "Detail Message: Java heap space：The detail message Java heap space indicates that an object could not be allocated in the Java heap. This error does not necessarily imply a memory leak；可能只是 -Xms / -Xmx 配置不够。"
+    },
+    "zig-overview": {
+      "title": "Zig 官网：In-depth Overview",
+      "publisher": "Zig Software Foundation",
+      "url": "https://ziglang.org/learn/overview/",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载到 research/_src/docs/ 核对）",
+      "notes": "There is no hidden control flow, no hidden memory allocations, no preprocessor, and no macros；小节 Manual memory management。"
+    },
+    "c-free": {
+      "title": "cppreference：free（C 标准库）",
+      "publisher": "cppreference.com",
+      "url": "https://en.cppreference.com/w/c/memory/free",
+      "type": "doc",
+      "accessed": "2026-10-19（curl 下载到 research/_src/docs/ 核对）",
+      "notes": "void free(void *ptr)：Deallocates the space previously allocated by malloc(), calloc(), aligned_alloc(), (since C11) or realloc()。"
+    },
+    "dotnet-lab": {
+      "title": ".NET 10（C#）分配速度、堆硬上限、升代与 JIT 写屏障实验",
+      "publisher": "本片实验",
+      "url": "research/lab/09_dotnet_gc.cs",
+      "type": "experiment",
+      "accessed": "2026-10-19（.NET SDK 10.0.401 / 运行时 10.0.12，dotnet run -c Release 单文件程序）",
+      "notes": "churn：一秒 67,000,000 个对象，GetTotalMemory 0.1 → 10.8 MB，第 0 代回收 136 次（out_09_dotnet_churn.txt）。hoard：DOTNET_GCHeapHardLimit=0x4000000，第 1,048,577 个对象时 OutOfMemoryException，679 ms，第 2 代回收 5 次。gen：GetGeneration 0 → 1 → 2 → 2。wb：Release 下 Lab.Link 的汇编 lea rcx,[rcx+0x08]; call CORINFO_HELP_ASSIGN_REF; ret，共 11 字节。"
+    },
+    "php-lab": {
+      "title": "PHP 8.5 引用计数、环收集与 memory_limit 实验",
+      "publisher": "本片实验",
+      "url": "research/lab/10_php_gc.php",
+      "type": "experiment",
+      "accessed": "2026-10-19（PHP 8.5.10 cli）",
+      "notes": "count：debug_zval_dump 的 refcount 2 → 3 → 4 → 3 → 2，unset 时立即 __destruct；环 unset 后无析构，gc_status roots=2，gc_collect_cycles() 返回 2 并析构 X、Y（out_10_php_count.txt）。hoard：-d memory_limit=64M，400,000 个对象 57.2 MB 后 Allowed memory size of 67108864 bytes exhausted（out_10_php_hoard.txt，路径已替换）。"
+    },
+    "nim-lab": {
+      "title": "Nim 2.2 ARC / ORC 析构插入与环泄漏实验",
+      "publisher": "本片实验",
+      "url": "research/lab/l11_nim_arc.nim",
+      "type": "experiment",
+      "accessed": "2026-10-19（Nim 2.2.12，gcc 16.2.0）",
+      "notes": "--expandArc:scopeDemo：try/finally 里的 =destroy(b)、=copy(c, a)、=destroy(c)、=destroy(a)（out_11_nim_expandarc.txt）。--mm:arc：环置空后 GC_fullCollect 也不析构，destroyed 停在 2（out_11_nim_arc.txt）；--mm:orc：=destroy Y、=destroy X，destroyed = 4（out_11_nim_orc.txt）。"
+    },
+    "java-lab": {
+      "title": "OpenJDK 27（G1）分配速度、-Xmx 上限与并发标记周期实验",
+      "publisher": "本片实验",
+      "url": "research/lab/12_java_gc.java",
+      "type": "experiment",
+      "accessed": "2026-10-19（OpenJDK 27+35，java -Xlog:gc 单文件源码启动）",
+      "notes": "churn：一秒 287,530,000 个对象，年轻代回收 16 次（out_12_java_churn.txt）。hoard：-Xmx64m，2,000,000 个对象 60.4 MB 后 Pause Full 63M->63M(64M) 与 java.lang.OutOfMemoryError: Java heap space（out_12_java_hoard.txt）。mark：Pause Young (Concurrent Start) → Concurrent Mark Cycle → Pause Remark 1.474ms → Pause Cleanup 0.030ms → Concurrent Mark Cycle 22.553ms（out_12_java_mark.txt）。PrintFlagsFinal：UseG1GC、MaxGCPauseMillis=200、InitiatingHeapOccupancyPercent=45。"
     }
   }
 }

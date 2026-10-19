@@ -1,0 +1,55 @@
+[0.015s][info][gc] Using G1
+[0.146s][info][gc] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 4M->1M(8M) 2.024ms
+[0.226s][info][gc] GC(1) Pause Young (Normal) (G1 Evacuation Pause) 3M->2M(8M) 2.330ms
+[0.264s][info][gc] GC(2) Pause Young (Normal) (G1 Evacuation Pause) 4M->2M(20M) 1.206ms
+[0.378s][info][gc] GC(3) Pause Young (Normal) (G1 Evacuation Pause) 10M->4M(20M) 3.328ms
+[0.442s][info][gc] GC(4) Pause Young (Normal) (G1 Evacuation Pause) 12M->6M(20M) 5.039ms
+java 27; collectors = [G1 Young Generation, G1 Concurrent GC, G1 Old Generation]
+[0.546s][info][gc] GC(5) Pause Young (Normal) (G1 Evacuation Pause) 13M->8M(20M) 2.747ms
+[0.556s][info][gc] GC(6) Pause Young (Concurrent Start) (G1 Humongous Allocation) 16M->14M(24M) 5.747ms
+[0.556s][info][gc] GC(7) Concurrent Mark Cycle
+[0.563s][info][gc] GC(8) Pause Young (Normal) (G1 Evacuation Pause) 22M->20M(27M) 4.758ms
+[0.566s][info][gc] GC(9) Pause Young (Normal) (G1 Evacuation Pause) 22M->23M(27M) 2.213ms
+[0.568s][info][gc] GC(7) Pause Remark 24M->24M(27M) 1.266ms
+hoard: kept [0.571s][info][gc] GC(10) Pause Young (Normal) (G1 Evacuation Pause) 24M->23M(42M) 1.899ms
+[0.572s][info][gc] GC(7) Pause Cleanup 23M->23M(42M) 0.029ms
+[0.572s][info][gc] GC(7) Concurrent Mark Cycle 16.214ms
+500,000 objects; used heap 24.3 MB; 24 ms
+[0.591s][info][gc] GC(11) Pause Young (Prepare Mixed) (G1 Evacuation Pause) 34M->32M(43M) 6.461ms
+[0.598s][info][gc] GC(12) Pause Young (Mixed) (G1 Evacuation Pause) 40M->36M(46M) 5.128ms
+[0.601s][info][gc] GC(13) Pause Young (Concurrent Start) (G1 Evacuation Pause) 38M->39M(46M) 2.473ms
+[0.601s][info][gc] GC(14) Concurrent Mark Cycle
+hoard: kept 1,000,000 objects; used heap 39.1 MB; 59 ms
+[0.606s][info][gc] GC(15) Pause Young (Normal) (G1 Evacuation Pause) 42M->42M(47M) 2.594ms
+[0.609s][info][gc] GC(16) Pause Young (Normal) (G1 Evacuation Pause) 44M->44M(48M) 2.686ms
+[0.617s][info][gc] GC(17) Pause Young (Normal) (G1 Evacuation Pause) 53M->53M(60M) 4.960ms
+[0.621s][info][gc] GC(18) Pause Young (Normal) (G1 Evacuation Pause) 56M->57M(61M) 2.725ms
+[0.623s][info][gc] GC(14) Pause Remark 58M->58M(61M) 1.384ms
+hoard: kept 1,500,000 objects; used heap 58.6 MB; 79 ms
+[0.627s][info][gc] GC(19) Pause Young (Normal) (G1 Evacuation Pause) (Evacuation Failure: Allocation) 60M->56M(64M) 2.968ms
+[0.631s][info][gc] GC(20) Pause Young (Normal) (G1 Evacuation Pause) 59M->58M(64M) 2.581ms
+[0.635s][info][gc] GC(21) Pause Young (Normal) (G1 Humongous Allocation) (Evacuation Failure: Allocation) 61M->62M(64M) 3.413ms
+[0.674s][info][gc] GC(22) Pause Full (G1 Compaction Pause) 62M->52M(64M) 39.058ms
+[0.723s][info][gc] GC(23) Pause Full (G1 Compaction Pause) 52M->52M(64M) 49.562ms
+[0.724s][info][gc] GC(14) Concurrent Mark Cycle 122.028ms
+[0.729s][info][gc] GC(24) Pause Young (Normal) (G1 Evacuation Pause) 63M->63M(64M) 3.386ms
+[0.769s][info][gc] GC(25) Pause Full (G1 Compaction Pause) 63M->56M(64M) 39.880ms
+[0.773s][info][gc] GC(26) Pause Young (Concurrent Start) (G1 Evacuation Pause) 59M->59M(64M) 2.858ms
+[0.773s][info][gc] GC(27) Concurrent Mark Cycle
+hoard: kept 2,000,000 objects; used heap 60.4 MB; 231 ms
+[0.780s][info][gc] GC(28) Pause Young (Normal) (G1 Evacuation Pause) (Evacuation Failure: Allocation) 62M->63M(64M) 4.729ms
+[0.826s][info][gc] GC(29) Pause Full (G1 Compaction Pause) 63M->62M(64M) 45.995ms
+[0.826s][info][gc] GC(27) Concurrent Mark Cycle 53.113ms
+[0.828s][info][gc] GC(30) Pause Young (Normal) (G1 Evacuation Pause) (Evacuation Failure: Allocation) 63M->63M(64M) 1.439ms
+[0.870s][info][gc] GC(31) Pause Full (G1 Compaction Pause) 63M->63M(64M) 42.753ms
+[0.924s][info][gc] GC(32) Pause Full (G1 Compaction Pause) 63M->63M(64M) 54.016ms
+[0.925s][info][gc] GC(33) Pause Young (Concurrent Start) (G1 Evacuation Pause) 63M->63M(64M) 0.392ms
+[0.925s][info][gc] GC(35) Concurrent Mark Cycle
+[0.931s][info][gc] GC(34) Pause Full (G1 Compaction Pause) 63M->3M(64M) 5.551ms
+[0.931s][info][gc] GC(35) Concurrent Mark Cycle 5.635ms
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at Main.main(12_java_gc.java:36)
+	at java.base/java.lang.invoke.LambdaForm$DMH/0x0000000002080400.invokeStatic(LambdaForm$DMH)
+	at java.base/java.lang.invoke.LambdaForm$MH/0x0000000002215400.invoke(LambdaForm$MH)
+	at java.base/java.lang.invoke.Invokers$Holder.invokeExact_MT(Invokers$Holder)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invokeImpl(DirectMethodHandleAccessor.java:155)

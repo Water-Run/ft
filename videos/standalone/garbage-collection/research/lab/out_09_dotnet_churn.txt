@@ -1,0 +1,2 @@
+.NET 10.0.12; ServerGC=False; LatencyMode=Interactive
+churn: 67,000,000 objects created in 1001 ms; heap 0.1 MB -> 10.8 MB; gen0 GCs 136, gen1 0, gen2 0

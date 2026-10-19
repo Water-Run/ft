@@ -1,0 +1,13 @@
+Lua 5.5
+mode before switch:	generational
+before: 28457 KB (200000 live + 200000 unreachable tables)
+  after step  50:    28458 KB
+  after step 100:    28458 KB
+  after step 150:    28458 KB
+  after step 200:    28458 KB
+  after step 250:    28458 KB
+  after step 300:    28458 KB
+  after step 350:    14239 KB
+  after step 400:    14239 KB
+cycle finished after 419 basic steps: 14239 KB
+live[1][1] =	1	 #live =	200000

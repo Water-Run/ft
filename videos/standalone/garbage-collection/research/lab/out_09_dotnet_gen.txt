@@ -1,0 +1,6 @@
+.NET 10.0.12; ServerGC=False; LatencyMode=Interactive
+gen: new object -> generation 0
+gen: after a gen0 collection -> generation 1
+gen: after a gen1 collection -> generation 2
+gen: after a gen2 collection -> generation 2
+gen: GC.MaxGeneration = 2

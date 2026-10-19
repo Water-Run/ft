@@ -1,0 +1,27 @@
+# rustc 1.98.1 (48a229cea 2026-09-01)
+# program output:
+inner scope ends, b = B
+drop B
+after move, c = A
+main ends
+drop A
+
+# MIR excerpt (rustc --emit=mir): the fn main() lines that move ownership or call drop
+1:fn main() -> () {
+3:    let _1: Node;
+9:    let _10: &[core::fmt::rt::Argument<'_>; 1];
+10:    let _12: ();
+15:    let _19: &[core::fmt::rt::Argument<'_>; 1];
+16:    let _20: ();
+23:        let _2: Node;
+24:        let _11: Node;
+38:            let _14: (&&str,);
+41:                let _16: [core::fmt::rt::Argument<'_>; 1];
+52:        _1 = Node { name: const "A" };
+53:        _2 = Node { name: const "B" };
+72:        drop(_2) -> [return: bb4, unwind: bb15];
+77:        _11 = move _1;
+104:        drop(_11) -> [return: bb10, unwind: bb15];
+113:        drop(_11) -> [return: bb15, unwind terminate(cleanup)];
+117:        drop(_2) -> [return: bb15, unwind terminate(cleanup)];
+125:        drop(_1) -> [return: bb13, unwind terminate(cleanup)];

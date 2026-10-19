@@ -1,0 +1,26 @@
+gc: collecting generation 2...
+gc: objects in each generation: 4701 3877 0
+gc: objects in permanent generation: 0
+gc: done, 45 unreachable, 0 uncollectable, 0.0006s elapsed
+python 3.14.3 | free-threaded build: False
+object header: sys.getsizeof(object()) = 16 bytes; ob_refcnt is the first 8 bytes
+
+## 1. ob_refcnt read from memory (inline) vs sys.getrefcount() (+1 for its argument)
+a = Node('A')      raw = 1  getrefcount = 2
+b = a              raw = 2  getrefcount = 3
+holder = [a]       raw = 3  getrefcount = 4
+del b              raw = 2  getrefcount = 3
+holder.clear()     raw = 1  getrefcount = 2
+del a  ->   __del__ A
+(finalized at this point)
+
+## 2. a cycle: both counts stay at 1 after the outside names are gone
+with names:    raw X = 2  raw Y = 2
+after del x,y: raw X = 1  raw Y = 1 (each held only by the other)
+
+## 3. the cycle collector, with its own statistics turned on
+gc.get_threshold() = (2000, 10, 0)
+  __del__ X
+  __del__ Y
+gc.collect() returned 45 (unreachable objects found in this run; X and Y are among them,
+  the rest are cycles left over from interpreter start-up because no collection ran before this one)

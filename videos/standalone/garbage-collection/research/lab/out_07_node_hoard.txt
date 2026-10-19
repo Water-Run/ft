@@ -1,0 +1,9 @@
+# node --max-old-space-size=64 07_node_heap_limit.js hoard 2>&1 （Node v24.21.0；退出码 134；原生栈回溯已删去）
+hoard: kept 500,000 objects; heapUsed 32.8 MB; 32 ms
+hoard: kept 1,000,000 objects; heapUsed 64.1 MB; 60 ms
+
+<--- Last few GCs --->
+
+[53860:00000204B6B89000]      128 ms: Mark-Compact (reduce) 63.0 (64.5) -> 62.3 (64.5) MB, pooled: 0 MB, 7.43 / 0.00 ms  (+ 0.0 ms in 3 steps since start of marking, biggest step 0.0 ms, walltime since start of marking 8 ms) (average mu = 0.384, current
+[53860:00000204B6B89000]      139 ms: Mark-Compact (reduce) 62.9 (65.0) -> 62.8 (65.2) MB, pooled: 0 MB, 7.68 / 0.00 ms  (+ 0.0 ms in 3 steps since start of marking, biggest step 0.0 ms, walltime since start of marking 8 ms) (average mu = 0.351, current m
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory

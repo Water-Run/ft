@@ -1,0 +1,20 @@
+--expandArc: scopeDemo
+
+var
+  a
+  c
+try:
+  a = Node(name: "A")
+  block :tmp:
+    var b
+    try:
+      b = Node(name: "B")
+      echo ["inner scope ends (b goes out of scope)"]
+    finally:
+      `=destroy`(b)
+  `=copy`(c, a)
+  echo ["scopeDemo ends (a, c go out of scope): ", a.name, " ", c.name]
+finally:
+  `=destroy`(c)
+  `=destroy`(a)
+-- end of expandArc ------------------------

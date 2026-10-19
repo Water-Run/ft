@@ -1,0 +1,22 @@
+[0.025s][info][gc] Using G1
+[0.254s][info][gc] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 8M->2M(16M) 2.729ms
+[0.356s][info][gc] GC(1) Pause Young (Normal) (G1 Evacuation Pause) 10M->4M(24M) 3.709ms
+[0.413s][info][gc] GC(2) Pause Young (Normal) (G1 Evacuation Pause) 12M->6M(24M) 5.776ms
+java 27; collectors = [G1 Young Generation, G1 Concurrent GC, G1 Old Generation]
+[0.503s][info][gc] GC(3) Pause Young (Normal) (G1 Evacuation Pause) 14M->3M(96M) 3.777ms
+[0.519s][info][gc] GC(4) Pause Young (Normal) (G1 Evacuation Pause) 51M->3M(96M) 2.102ms
+[0.528s][info][gc] GC(5) Pause Young (Normal) (G1 Evacuation Pause) 51M->3M(96M) 1.981ms
+[0.535s][info][gc] GC(6) Pause Young (Normal) (G1 Evacuation Pause) 51M->3M(96M) 1.349ms
+[0.543s][info][gc] GC(7) Pause Young (Normal) (G1 Evacuation Pause) 51M->3M(288M) 1.816ms
+[0.576s][info][gc] GC(8) Pause Young (Normal) (G1 Evacuation Pause) 163M->3M(288M) 1.097ms
+[0.593s][info][gc] GC(9) Pause Young (Normal) (G1 Evacuation Pause) 163M->3M(288M) 0.976ms
+[0.612s][info][gc] GC(10) Pause Young (Normal) (G1 Evacuation Pause) 163M->3M(288M) 0.980ms
+[0.637s][info][gc] GC(11) Pause Young (Normal) (G1 Evacuation Pause) 163M->3M(864M) 1.900ms
+[0.744s][info][gc] GC(12) Pause Young (Normal) (G1 Evacuation Pause) 507M->3M(864M) 1.600ms
+[0.798s][info][gc] GC(13) Pause Young (Normal) (G1 Evacuation Pause) 507M->3M(864M) 1.094ms
+[0.859s][info][gc] GC(14) Pause Young (Normal) (G1 Evacuation Pause) 507M->3M(864M) 1.031ms
+[0.913s][info][gc] GC(15) Pause Young (Normal) (G1 Evacuation Pause) 507M->3M(864M) 1.238ms
+[0.980s][info][gc] GC(16) Pause Young (Normal) (G1 Evacuation Pause) 507M->3M(2592M) 3.677ms
+[1.298s][info][gc] GC(17) Pause Young (Normal) (G1 Evacuation Pause) 1547M->3M(2592M) 1.239ms
+[1.480s][info][gc] GC(18) Pause Young (Normal) (G1 Evacuation Pause) 1547M->3M(2592M) 1.001ms
+churn: 287,530,000 objects created in 1000 ms; young GCs 16; used heap 143.5 MB

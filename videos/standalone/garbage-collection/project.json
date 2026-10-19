@@ -6,7 +6,7 @@
   ],
   "titles": {
     "zh": "垃圾回收的艺术",
-    "en": ""
+    "en": "The Art of Garbage Collection"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural",
@@ -53,9 +53,23 @@
     "style": {
       "flat": true,
       "no_emoji": true
-    }
+    },
+    "duration": [
+      240,
+      420
+    ]
   },
   "feedback": {
     "required": true
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Mature_Woman"
+    },
+    "speed": {
+      "zh": 1.0
+    }
   }
 }

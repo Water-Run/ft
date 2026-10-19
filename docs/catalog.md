@@ -276,7 +276,7 @@
 | 8 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
 | 9 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
 | 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
-| 11 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 补 Go 写屏障汇编、V8 trace、CPython 原始计数、Rust drop 四项实验，Dijkstra 1978 与 McCarthy 全文复核，中文第 1 稿收到 WaterRun 三条意见后重写为第 2 稿（无艺术单独章、章名为机制名、开场加长、Lua 讲三色），补 Node 堆上限与 Lua 增量步数实验，待审查 |
+| 11 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 按 WaterRun 同日四轮意见改到中文第 7 稿（五章、6:57、俏皮口吻、MiniMax 傲娇御姐），语言阵容 Python/Lua/C#/PHP/Nim/Java 与 Rust/Zig/C，12 项实验，三轮对抗审稿，待 WaterRun 审查 |
 | 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
 | 13 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
 | 14 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |

@@ -1,0 +1,22 @@
+.NET 10.0.12; ServerGC=False; LatencyMode=Interactive
+; Assembly listing for method Lab:Link(Node,Node) (FullOpts)
+; Emitting BLENDED_CODE for generic X64 + VEX on Windows
+; FullOpts code
+; optimized code
+; rsp based frame
+; partially interruptible
+; No PGO data
+
+G_M000_IG01:                ;; offset=0x0000
+ 
+G_M000_IG02:                ;; offset=0x0000
+       lea      rcx, bword ptr [rcx+0x08]
+       call     CORINFO_HELP_ASSIGN_REF
+       nop      
+ 
+G_M000_IG03:                ;; offset=0x000A
+       ret      
+ 
+; Total bytes of code 11
+
+wb: linked 1 -> 2
