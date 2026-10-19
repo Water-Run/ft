@@ -6,15 +6,15 @@
 
 ## 当前状态与接续
 
-阶段：已交付（2026-10-19）。第 5 轮 b 中英成片经 WaterRun 观看试听确认（详见「成片」）。WaterRun 看过第 5 轮并要求优化使用与原理两段；第 5 轮 b 经其观看试听确认交付。发布：未发布。归档：未归档。
+阶段：已交付并已发布（2026-10-19）。第 5 轮 b 中英成片经 WaterRun 观看试听确认（详见「成片」）。WaterRun 看过第 5 轮并要求优化使用与原理两段；第 5 轮 b 经其观看试听确认交付。同日发布到哔哩哔哩与 YouTube（见「发布、归档与清理」）。归档：未归档。
 
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-19：第 5 轮成片后按 WaterRun 意见出第 5 轮 b：使用一段改为逐条「Ctrl-b 再按」，原理拆成按键与输出两条路径（约 21 秒，原 10.5 秒）；修画面小问题（字幕条侵入、主体被切、静止段、开头占位读数、计数统一）；tmux 读法改 tee mux；重新配音、混音、渲染、封装 |
-| 下一步及依赖 | 发布到哔哩哔哩与 YouTube 后回填；按 lifecycle 归档、校验、清理 |
+| 下一步及依赖 | 已发布；按 lifecycle 归档、校验、清理 |
 | 当前稿本 / 校对结论 | 中文 `review/script.zh.03a119d1958c0bf7c2bf3d1a3602b22a0e97c285088f941fb575777d9a3b87e3.md`，英文 `review/script.en.ce875f7996b19a5d257da7ed44119e8e7f7c337325dbc0245546c19f13ac1332.md`；approval 依据是会话授权，不是逐句阅读确认（`review/NOTES.md`「第 5 轮」「第 5 轮 b」） |
 | 输出在哪台制作机 | 制作机 A（Windows）；`out/` 不入库 |
-| 未完成、未检查与阻塞 | 已交付；待发布、归档与清理 |
+| 未完成、未检查与阻塞 | 已交付、已发布；待归档与清理。配音语气问题按「已发布不返工」留档，不改本片 |
 
 ## 文案与校对
 
@@ -170,13 +170,13 @@ node kit/tools/check.js  videos/series/in-seconds/tmux --final        # 交付�
 
 | 项 | 记录 |
 |---|---|
-| 平台链接、标题、发布时间与时长 | 未发布 |
+| 平台链接、标题、发布时间与时长 | 哔哩哔哩：[BV1oSn56oEUQ](https://www.bilibili.com/video/BV1oSn56oEUQ)，《128 秒关于 Tmux：是什么，怎么用，如何实现的》，2026-10-19 03:40:52（UTC+8），平台时长 128 秒，在合集「速通教学」第 3 集。YouTube：[qCklpfGDWXk](https://www.youtube.com/watch?v=qCklpfGDWXk)，*Tmux in 128 Seconds: What It Is, How to Use It, How It Works*，频道 Water Run（@waterrun1978）。两个平台均已于 2026-10-19 核对可访问 |
 | 最终文件、语言、规格、SHA-256 | 见「成片」 |
 | 实际 Node、Chrome、ffmpeg、Python 与包版本 | |
 | 归档代号、manifest.json 哈希、校验日期 | 未归档 |
 | 备份介质与恢复抽验结果 | 未检查 |
 | 清理范围、时间、取证实验资源撤除 | 未清理 |
-| 需保留的复盘证据与后续修订 | |
+| 需保留的复盘证据与后续修订 | 配音语气「懒洋洋」的反馈见 `docs/feedback.md` 的 P29 / F17。按「已发布不返工」，本片原样保留在线，不重配音、不重渲；该问题只用于以后的新片 |
 
 ```bash
 node kit/tools/clean.js videos/series/in-seconds/tmux   # 只预览，不删除

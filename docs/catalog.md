@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 165 部：已成片 11 部，制作中 9 部，计划中 145 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 12 部，制作中 10 部，计划中 143 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -17,7 +17,7 @@
 |---|---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) | 已发布：哔哩哔哩 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | 自制（Claude Opus 5.5） | [`innodb`](../videos/series/database-engines/innodb/) | 已发布：哔哩哔哩（2026-10-18）；发布后发现的画面问题见 README |
-| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh + en | 制作中 | 自制（6.1Sol） | [`postgresql`](../videos/series/database-engines/postgresql/) | 2026-10-19 中文第 6 稿：在第 5 稿趋势开场基础上，按 MyISAM 口播逐句口语化重写，降低术语密度与跳跃；157 条旁白、2 条静默，估算 11:11（671.3 秒）；待 WaterRun 确认，未配音；Credit：6.1Sol。 |
+| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 制作中 | 自制（6.1Sol、Claude Opus 5.5） | [`postgresql`](../videos/series/database-engines/postgresql/) | 2026-10-19 中文第 6 稿：在第 5 稿趋势开场基础上，按 MyISAM 口播逐句口语化重写，降低术语密度与跳跃；157 条旁白、2 条静默，估算 11:11（671.3 秒）；待 WaterRun 确认，未配音；Credit：6.1Sol。 |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 |  | `firebird` |  |
 | 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
 | 6 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
@@ -215,20 +215,20 @@
 | 4 | 150 秒学会怎么打手枪？<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | 自制 | [`pistol-shooting`](../videos/series/in-seconds/pistol-shooting/) | 说明手枪射击。视觉参考《赛博朋克：边缘行者》：没有单独流派名，是 Studio TRIGGER、导演今石洋之的高饱和表现主义。节奏和冲击要非常强，看到爽的同时学习，并强调三维效果。只借画法，不照搬角色或夜之城。旁白保持客观。2026-10-19 已建目录，脚本仍是 60 秒基座，成片目标 150 秒。 |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | 自制 | [`dense-vs-moe`](../videos/series/in-seconds/dense-vs-moe/) | 已发布：哔哩哔哩与 YouTube（2026-10-09） |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 |  | `rear-seatbelt` |  |
-| 7 | 256 秒搞懂 SSH | zh + en | 计划中 |  | `ssh` |  |
+| 7 | 256 秒搞懂 SSH | zh + en | 制作中 | 委托（Opus 5.5） | [`ssh`](../videos/series/in-seconds/ssh/) | 以一次连接贯穿取证与解释。2026-10-19 建目录（委托 Opus 5.5），准备方做事实测绘与中文文案，到可交 Opus 开工为止；待 WaterRun 确认文案。 |
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 |  | `powershell` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 |  | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 |  | `tire-width` |  |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 交付第 5 轮 b（Claude Opus 5.5）：中英各 128.00 s、1080p60，MiniMax 配音；check.js --final 通过，WaterRun 观看试听确认。未发布。 |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | 自制（DeepSeek V4.1 Flash 1017） | [`tmux`](../videos/series/in-seconds/tmux/) | 2026-10-19 交付第 5 轮 b（Claude Opus 5.5）：中英各 128.00 s、1080p60，MiniMax 配音；check.js --final 通过，WaterRun 观看试听确认。已发布：哔哩哔哩 BV1oSn56oEUQ（03:40:52，合集「速通教学」第 3 集）与 YouTube qCklpfGDWXk。配音语气「懒洋洋」按 P29 留档不返工。 |
 | 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 |  | `gps` |  |
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 |  | `modern-crypto` |  |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 |  | `quantization` |  |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 |  | `frameworks` |  |
 | 16 | 150 秒通过参数认识一个模型 | zh + en | 计划中 |  | `model-parameters` |  |
-| 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 计划中 |  | `model-cards` | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分。视觉用液态玻璃。讲法简单、快速，介绍怎么看模型卡。目录未建。 |
+| 17 | 96 秒读懂模型的模型卡<br>Read a Model Card in 96 Seconds | zh + en | 制作中 | 委托（Opus 5.5） | [`model-cards`](../videos/series/in-seconds/model-cards/) | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分。视觉用液态玻璃。讲法简单、快速，介绍怎么看模型卡。2026-10-19 建目录（委托 Opus 5.5），准备方做事实测绘与中文文案，到可交 Opus 开工为止；待 WaterRun 确认文案。 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制（Grok 4.7） | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。2026-10-19 中文稿已落盘，待后续模型优化；尚未人工确认。入口见本片 README。 |
-| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 委托（Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，准备方 DeepSeek V4.1 Flash 1017 已完成取证、中文初稿、审稿包、包豪斯视觉系统与关键帧；等待 WaterRun 确认后配音并交 Opus 5.5。 |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 委托（Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 2026-10-11 由独立片改名迁入，时长 200 秒；2026-10-18 建目录，准备方 DeepSeek V4.1 Flash 1017 已完成取证、审稿包、包豪斯视觉系统与关键帧；2026-10-19 中文第 8 稿（Claude Opus 5.5 逐句重写，5 项取舍已定，估算 200.0 秒）待 WaterRun 确认，英文待重译；确认后配音并交 Opus 5.5。 |
 | 21 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`chain-of-thought`](../videos/series/in-seconds/chain-of-thought/) | 2026-10-18 由独立片迁入秒速通；192 秒；事实测绘与系列视觉扩展已落盘，尚未写稿或配音。 |
 
 ### 游戏物理学
@@ -268,7 +268,7 @@
 |---|---|---|---|---|---|---|
 | 1 | 古代来的 Shell：Windows 批处理（.bat） | zh | 已成片 | 委托（DeepSeek） | [`windows-batch`](../videos/standalone/windows-batch/) | 场景由 DeepSeek 按任务书制作，见该目录的 brief/ 与 DELIVERY.md；已发布：哔哩哔哩 |
 | 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | 自制（Claude Sonnet 5.5, Claude Opus 5.5） | [`openclaw-hermes`](../videos/standalone/openclaw-hermes/) | 已发布：哔哩哔哩与 YouTube |
-| 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端<br>What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End | zh | 制作中 | 委托（Claude Opus 5.5） | [`opencart-1-5-admin`](../videos/standalone/opencart-1-5-admin/) | 2026-10-19 Claude Opus 5.5 按授权完成中文成片（16:50，1080p60，MiniMax 配音）；check.js --final 只差 F06 配乐与 F12 读音的人耳确认，待 WaterRun 试听后登记交付。 |
+| 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端<br>What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End | zh | 已成片 | 委托（Claude Opus 5.5） | [`opencart-1-5-admin`](../videos/standalone/opencart-1-5-admin/) | 2026-10-19 交付（Claude Opus 5.5，中文 16:50，1080p60，MiniMax 配音）；已发布：哔哩哔哩（2026-10-19）。发布后发现的 F04 / F15 画面问题与 P29 配音语气问题按「已发布不返工」留档，见 README |
 | 4 | 道交法中的路权 | zh | 制作中 | 委托（Opus） | [`traffic-law-right-of-way`](../videos/standalone/traffic-law-right-of-way/) | 仅中文；2026-10-19 第 1 轮 Gemini 4 Argon 反馈后形成第 8 稿（190 条 cue，估算 652.2 秒），第 2 轮反馈已回收（6 项待议），未改稿，待 WaterRun 大改；保留 Yunjian 和 660 秒上限，尚无配音或成片。 |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
 | 6 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
@@ -276,7 +276,7 @@
 | 8 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
 | 9 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
 | 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
-| 11 | 垃圾回收的艺术 | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录；Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向已落盘，尚未写稿或配音。 |
+| 11 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 补 Go 写屏障汇编、V8 trace、CPython 原始计数、Rust drop 四项实验，Dijkstra 1978 与 McCarthy 全文复核，中文第 1 稿收到 WaterRun 三条意见后重写为第 2 稿（无艺术单独章、章名为机制名、开场加长、Lua 讲三色），补 Node 堆上限与 Lua 增量步数实验，待审查 |
 | 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
 | 13 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
 | 14 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |
