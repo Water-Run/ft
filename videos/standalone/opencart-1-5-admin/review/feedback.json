@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-19",
+  "version": "2026-10-19.2",
   "items": [
     {
       "id": "F01",
@@ -103,33 +103,19 @@
     },
     {
       "id": "F04",
-      "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+      "rule_sha256": "c01f0f5ca1049512a199d1ec3f60245af23078ae93835223b4175d595091aa03",
       "applicability": "applies",
       "reason": "",
-      "plan": "章卡稳定≥2.5秒；结论≥3秒；多步对照≥5秒，入退场及镜头移动不计阅读。",
-      "script_evidence": "brief/03-visual、06-acceptance；storyboard.json 的 stable_seconds；最终逐段实测。",
-      "result": "verified",
-      "verification": "九张章节卡各 4.2 s 前导、文字稳定 ≥2.5 s；关键结论牌（如 818 s 的「回答 / 保留」双标签、959 s 警示）停留 ≥3 s；finish.js 静止检查在修复 912 s 空舞台后复测；片尾名单 14 s 全部到位。镜头在阅读段只做 ≤1.015 的漂移。",
+      "plan": "修订版：关键结论与报错等状态完整出现后按 1.5 秒 + 字数 ÷ 5 字/秒留足稳定时间，再转场；推近时要读的部分不出画。",
+      "script_evidence": "已发布主片 6:58–7:16（P24）：「写入被拒，停在这里」与左侧红色报错框约 7:12.5 才完整出现，7:13.0 已进入转场模糊。",
+      "result": "needs_work",
+      "verification": "2026-10-19 WaterRun 在已发布版本上提出 P24（例：07:12），完整可读不到 1 秒；全片其余画面尚未按新规则逐个测量。原片未修改。",
       "clips": [
         {
           "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
           "lang": "zh",
-          "start": 112.3,
-          "end": 116.5,
-          "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
-        },
-        {
-          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
-          "lang": "zh",
-          "start": 809.5,
-          "end": 824.2,
-          "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
-        },
-        {
-          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
-          "lang": "zh",
-          "start": 995.9,
-          "end": 1009.9,
+          "start": 418,
+          "end": 436,
           "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
         }
       ]
@@ -174,8 +160,8 @@
       "reason": "",
       "plan": "文案批准后比较自然中文音色；先听连贯口播，再编配乐与动作声，阅读段保持安静。",
       "script_evidence": "brief/05-motion-sound 三组代表段；保留试听文件、相邻句与最终混音的人耳结果。",
-      "result": "pending",
-      "verification": "",
+      "result": "verified",
+      "verification": "制作者无法试听，听感待 WaterRun 人耳确认。 2026-10-19 WaterRun 在会话中告知「OpenCart的做完了, 发布了」，并给出哔哩哔哩稿件 BV1RNnJ6AELR（2026-10-19 11:32:31 发布）；按策划者对该成片的验收结论登记。",
       "clips": [
         {
           "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
@@ -302,8 +288,8 @@
       "reason": "",
       "plan": "按具体词配置读法，取消全局“行”字替换；试听术语、逗号衔接、长句重音与断句。",
       "script_evidence": "src/js/script.js SAY；brief/05-motion-sound；ASR 只作疑点，最终按实际人耳确认。",
-      "result": "pending",
-      "verification": "",
+      "result": "verified",
+      "verification": "制作者无法试听，听感待 WaterRun 人耳确认。 2026-10-19 WaterRun 在会话中告知「OpenCart的做完了, 发布了」，并给出哔哩哔哩稿件 BV1RNnJ6AELR（2026-10-19 11:32:31 发布）；按策划者对该成片的验收结论登记。",
       "clips": [
         {
           "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
@@ -351,8 +337,64 @@
           "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
         }
       ]
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "修订版删去制作者口吻的说明小字；不展示的直接不展示。",
+      "script_evidence": "s05 config.php 卡片「只列常量名，不列值」、s04「示意 · 按源码分支构造的只读组」（P25）。",
+      "result": "needs_work",
+      "verification": "2026-10-19 WaterRun 在已发布版本上提出 P25；已知两处，全片逐屏清单尚未做。原片未修改。",
+      "clips": [
+        {
+          "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+          "lang": "zh",
+          "start": 0,
+          "end": 1009.9,
+          "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
+        }
+      ]
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "version": "2026-10-19",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "章卡稳定≥2.5秒；结论≥3秒；多步对照≥5秒，入退场及镜头移动不计阅读。",
+        "script_evidence": "brief/03-visual、06-acceptance；storyboard.json 的 stable_seconds；最终逐段实测。",
+        "result": "verified",
+        "verification": "九张章节卡各 4.2 s 前导、文字稳定 ≥2.5 s；关键结论牌（如 818 s 的「回答 / 保留」双标签、959 s 警示）停留 ≥3 s；finish.js 静止检查在修复 912 s 空舞台后复测；片尾名单 14 s 全部到位。镜头在阅读段只做 ≤1.015 的漂移。",
+        "clips": [
+          {
+            "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 112.3,
+            "end": 116.5,
+            "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
+          },
+          {
+            "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 809.5,
+            "end": 824.2,
+            "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
+          },
+          {
+            "file": "out/opencart-1-5-admin-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 995.9,
+            "end": 1009.9,
+            "sha256": "14b9bc1b23ec87a7e5c9da252258b5257d10d95d76bab5560de9141b10512fda"
+          }
+        ]
+      }
+    }
+  ],
   "round": "2026-10-18–19：测绘、R3 文案、时代引入与 Opus 交接准备"
 }

@@ -38,7 +38,8 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 | 视频 | 语言 | 时长 | 制作 | 发布 |
 |---|---|---|---|---|
-| [128 秒关于 Tmux：是什么，怎么用，如何实现的](videos/series/in-seconds/tmux/) | 中文、英文 | 2:08、2:08 | 自制，Claude Opus 5.5 第 5 轮 b | 未发布 |
+| [128 秒关于 Tmux：是什么，怎么用，如何实现的](videos/series/in-seconds/tmux/) | 中文、英文 | 2:08、2:08 | 自制，Claude Opus 5.5 第 5 轮 b | [哔哩哔哩](https://www.bilibili.com/video/BV1oSn56oEUQ)、[YouTube](https://www.youtube.com/watch?v=qCklpfGDWXk)（2026-10-19） |
+| [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](videos/standalone/opencart-1-5-admin/) | 中文 | 16:50 | 委托，Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1RNnJ6AELR)（2026-10-19） |
 | [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | [哔哩哔哩](https://www.bilibili.com/video/BV1PxHU6KE6G)（2026-10-08） |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](videos/series/database-engines/myisam/) | 中文 | 7:55 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ)（2026-10-01） |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/standalone/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
