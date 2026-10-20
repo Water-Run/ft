@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 187 部：已成片 14 部，制作中 22 部，计划中 151 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 184 部：已成片 14 部，制作中 22 部，计划中 148 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -256,6 +256,7 @@
 | 22 | 96 秒讲清 HTTP 状态码：五类响应与最常用的那些<br>HTTP Status Codes in 96 Seconds: Five Classes and the Ones You Meet Most | zh + en | 制作中 | 自制 | [`http-status-codes`](../videos/series/in-seconds/http-status-codes/) | 2026-10-20 由独立片《HTTP 状态码》移入速通系列。96 秒：先分清五类状态码的分界，再按实际遇到频率讲最常用的那几组。独立片原题保留在历史计划里。 |
 | 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh + en | 制作中 | 自制 | [`ea211-family`](../videos/series/in-seconds/ea211-family/) | 2026-10-20 由独立片《EA211 的全家桶》移入速通系列。与「动力总成」系列的《EA211 DJS+DQ200 经典动力总成》分工：那一集讲一套具体总成，本集讲发动机家族本身的构成与版本演变。 |
 | 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh + en | 制作中 | 自制 | [`scion`](../videos/series/in-seconds/scion/) | 2026-10-20 策划者新增。Scion 是 Anthropic 内部自用的源码控制系统，未公开发布；一手来源为 anthropic.com 工程博客《Redesigning source control》。本集讲它替代 Git 的动因与做法，不臆测未公开的实现细节。 |
+| 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
 
 ### 游戏物理学
 
@@ -296,9 +297,6 @@
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
 | 1 | luainstaller：把 Lua 脚本交给没有 Lua 的人<br>luainstaller: Handing Lua Scripts to People Without Lua | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/series/open-source-projects/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube。2026-10-20 由独立成篇移入本系列。 |
-| 2 | pptx2png：把幻灯片变成图 | zh + en | 计划中 |  | `pptx2png` |  |
-| 3 | SimpSave：让保存这件事简单一点 | zh + en | 计划中 |  | `simpsave` |  |
-| 4 | Bat-KV：批处理里的键值存储 | zh + en | 计划中 |  | `bat-kv` |  |
 
 ### Windows 是怎么工作的
 
@@ -342,7 +340,6 @@
 | 25 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
 | 26 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
 | 27 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
-| 28 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
-| 29 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
-| 30 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
-| 31 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh + en | 计划中 |  | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
+| 28 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
+| 29 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
+| 30 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh + en | 计划中 |  | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |

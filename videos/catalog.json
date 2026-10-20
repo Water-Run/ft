@@ -230,7 +230,8 @@
         {"slug": "context-compaction", "title": {"zh": "120 秒速通 Harness 是如何压缩上下文的", "en": "How a Harness Compresses Context in 120 Seconds"}, "note": "2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒）"},
         {"slug": "http-status-codes", "title": {"zh": "96 秒讲清 HTTP 状态码：五类响应与最常用的那些", "en": "HTTP Status Codes in 96 Seconds: Five Classes and the Ones You Meet Most"}, "note": "2026-10-20 由独立片《HTTP 状态码》移入速通系列。96 秒：先分清五类状态码的分界，再按实际遇到频率讲最常用的那几组。独立片原题保留在历史计划里。", "status": "in-progress"},
         {"slug": "ea211-family", "title": {"zh": "150 秒认识 EA211 的全家桶：大众的横置四缸家族", "en": "The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family"}, "note": "2026-10-20 由独立片《EA211 的全家桶》移入速通系列。与「动力总成」系列的《EA211 DJS+DQ200 经典动力总成》分工：那一集讲一套具体总成，本集讲发动机家族本身的构成与版本演变。", "status": "in-progress"},
-        {"slug": "scion", "title": {"zh": "150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git", "en": "Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git"}, "note": "2026-10-20 策划者新增。Scion 是 Anthropic 内部自用的源码控制系统，未公开发布；一手来源为 anthropic.com 工程博客《Redesigning source control》。本集讲它替代 Git 的动因与做法，不臆测未公开的实现细节。", "status": "in-progress"}
+        {"slug": "scion", "title": {"zh": "150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git", "en": "Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git"}, "note": "2026-10-20 策划者新增。Scion 是 Anthropic 内部自用的源码控制系统，未公开发布；一手来源为 anthropic.com 工程博客《Redesigning source control》。本集讲它替代 Git 的动因与做法，不臆测未公开的实现细节。", "status": "in-progress"},
+        {"slug": "how-ram-works", "title": {"zh": "128 秒了解内存是怎么工作的，以及它为什么这么快"}, "note": "2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。"}
       ]
     },
     {
@@ -267,10 +268,7 @@
       "slug": "open-source-projects",
       "title": {"zh": "开源项目", "en": "Open Source Projects"},
       "videos": [
-        {"slug": "luainstaller", "title": {"zh": "luainstaller：把 Lua 脚本交给没有 Lua 的人", "en": "luainstaller: Handing Lua Scripts to People Without Lua"}, "status": "delivered", "note": "项目介绍片；已发布：哔哩哔哩与 YouTube。2026-10-20 由独立成篇移入本系列。"},
-        {"slug": "pptx2png", "title": {"zh": "pptx2png：把幻灯片变成图"}},
-        {"slug": "simpsave", "title": {"zh": "SimpSave：让保存这件事简单一点"}},
-        {"slug": "bat-kv", "title": {"zh": "Bat-KV：批处理里的键值存储"}}
+        {"slug": "luainstaller", "title": {"zh": "luainstaller：把 Lua 脚本交给没有 Lua 的人", "en": "luainstaller: Handing Lua Scripts to People Without Lua"}, "status": "delivered", "note": "项目介绍片；已发布：哔哩哔哩与 YouTube。2026-10-20 由独立成篇移入本系列。"}
       ]
     },
     {
@@ -312,7 +310,6 @@
     {"slug": "claude-ban", "title": {"zh": "Claude 是如何检测和封禁你的账号的"}},
     {"slug": "crbs", "title": {"zh": "CRBS，以及为什么在刹停时总让你点头"}},
     {"slug": "smooth-stop", "title": {"zh": "关于让车不点头的停下"}},
-    {"slug": "how-ram-works", "title": {"zh": "内存是怎么工作的，以及它为什么这么快"}},
     {"slug": "ipv4", "title": {"zh": "IPv4"}},
     {"slug": "shell-survey", "title": {"zh": "Shell 群观"}},
     {"slug": "termux-proot", "title": {"zh": "代价很小的安卓 Linux 虚拟机：Termux 和 Proot", "en": "A Cheap Android Linux VM: Termux and Proot"}, "note": "2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。"}

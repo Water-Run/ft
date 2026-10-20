@@ -7,6 +7,7 @@ f(t) 将一部视频的事实依据、文案、人工校对、动画源码和交
 | 当前要做什么 | 阅读顺序 | 第一个可核对的结果 |
 |---|---|---|
 | 首次 clone，试用工具 | [快速入门](getting-started.md) → [环境](environment.md) | 隔离练习中的时间线、校对稿与截图 |
+| 查看开发安排 | [开发计划](development-plan.md) → [片单](catalog.md) | 2026 年 10 月 20–31 日的 19 部片与开发日期 |
 | 用自己的身份制作 | [快速入门](getting-started.md)的“独立使用” → [仓库结构](repository.md) | 策划、校对者、源码仓库均为实际参与方 |
 | 制作或修改一部视频 | [反馈](feedback.md) → [流程](workflow.md) → [标准](standards.md) | 开工反馈应用、事实表、可交审的文案 |
 | 作为用户校对文案 | [文案校对](script-review.md) | 按句号反馈、修改回应、明确确认的稿本 |
@@ -20,6 +21,6 @@ f(t) 将一部视频的事实依据、文案、人工校对、动画源码和交
 - 反馈应用：[持续进入下一部的检查流程](feedback-loop.md)、[当前结构化规则](feedback-rules.json)、[InnoDB 与 Lean 4 复盘](reviews/2026-10-18.md)。
 - 视听：[视觉设计](visual-design.md)、[场景](scenes.md)、[声音](sound.md)。
 - 维护：[仓库结构](repository.md)、[环境](environment.md)、[收尾清理](lifecycle.md)、[第三方许可](third-party.md)。
-- 本仓库的作品记录：[片单](catalog.md)、[制作 TODO 与完成情况](todo.md)、[历史排期](plans/2026-10-09--15.md)、[反馈](feedback.md)、[制作复盘](retrospectives.md)。独立使用者自行制定选题与排期。
+- 本仓库的作品记录：[开发计划](development-plan.md)、[片单](catalog.md)、[制作 TODO 与完成情况](todo.md)、[历史排期](plans/2026-10-09--15.md)、[反馈](feedback.md)、[制作复盘](retrospectives.md)。独立使用者自行制定选题与排期。
 
 规则以对应专题为准。README 和命令帮助负责导航；模板负责落实每部片子必填的记录。修改规则时同步相关模板、工具和测试，避免出现互相冲突的说明。

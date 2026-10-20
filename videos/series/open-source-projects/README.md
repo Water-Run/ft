@@ -11,9 +11,9 @@
 | 怎么讲 | 一次真实任务贯穿：先把项目是什么交代清楚，再走完一遍真实使用，然后拆它内部的实现；不写成功能清单或更新日志 |
 | 每集多长 | 3–8 分钟，按项目的实际体量定 |
 
-**收录的项目**（片单顺序）：luainstaller → pptx2png → SimpSave → Bat-KV。
+**收录的项目**（片单顺序）：luainstaller。
 
-luainstaller 已成片并发布（哔哩哔哩与 YouTube，2026-10-01/02），2026-10-20 由独立成篇移入本系列。pptx2png、SimpSave、Bat-KV 是 2025 年已在两个频道发布过的项目介绍片，但**源码不在本仓库**，片单里此前也没有记录；这里先把它们登记为计划中的条目占位，标题是工作标题，源码入库并核对之后再开工。
+luainstaller 已成片并发布（哔哩哔哩与 YouTube，2026-10-01/02），2026-10-20 由独立成篇移入本系列。
 
 ## 连续性
 
@@ -33,7 +33,4 @@ luainstaller 已成片并发布（哔哩哔哩与 YouTube，2026-10-01/02），2
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | [`luainstaller`](luainstaller/) |
-| 2 | pptx2png：把幻灯片变成图 | zh + en | 计划中 | `pptx2png` |
-| 3 | SimpSave：让保存这件事简单一点 | zh + en | 计划中 | `simpsave` |
-| 4 | Bat-KV：批处理里的键值存储 | zh + en | 计划中 | `bat-kv` |
 <!-- catalog:end -->

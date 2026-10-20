@@ -103,4 +103,5 @@
 | 22 | 96 秒讲清 HTTP 状态码：五类响应与最常用的那些 | zh + en | 制作中 | [`http-status-codes`](http-status-codes/) |
 | 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh + en | 制作中 | [`ea211-family`](ea211-family/) |
 | 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh + en | 制作中 | [`scion`](scion/) |
+| 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` |
 <!-- catalog:end -->
