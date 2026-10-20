@@ -1,0 +1,34 @@
+/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
+   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+:root {
+  --paper: #f1efe9;
+  --ink: #16181d;
+  --accent: #d9480f;
+  --dim: #8c8f96;
+  --M: 120px;                 /* 版心边距 */
+}
+body { font-family: "Inter", "Sans SC"; color: var(--ink); }
+#bg { background: var(--paper); }
+/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
+   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
+.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
+
+/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
+.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
+.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
+.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
+.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
+.accent { color: var(--accent); }
+
+/* 章节卡：整屏色块 */
+.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
+.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
+.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+
+/* 字幕 */
+#caption { bottom: 52px; height: 60px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+.en #caption span { font-size: 36px; }
+#caption em { font-style: normal; font-weight: 800; color: var(--accent); }

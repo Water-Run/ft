@@ -1,0 +1,31 @@
+=== 1. 仓库标识 ===
+origin            : https://github.com/openai/codex.git
+检出日期         : 2026-10-20
+本机 git 版本    : git version 2.55.0.windows.3
+
+=== 2. 本次检出的固定点 ===
+HEAD commit      : 8196bcdc189ad2c189d631b321fa54b8e09b9bb0
+提交时间         : 2026-10-20T03:11:07Z
+提交标题         : Check daemon feature overrides and prompt for mismatch recovery (#55442)
+所在分支         : main
+默认分支         : origin/main
+该提交可达的提交数: 12402
+工作区是否干净   : clean
+
+=== 3. 许可证文件位置 ===
+LICENSE 路径     : LICENSE
+LICENSE 首 3 行  :
+                                     Apache License
+                               Version 2.0, January 2004
+                            http://www.apache.org/licenses/
+LICENSE SHA-256  : AA5E89EDCBBD01FC3FB188A527D8BDC0DA5812305CAB220C84348C14EA427288
+NOTICE 路径      : NOTICE
+子目录内 LICENSE : codex-rs/skills/src/assets/samples/imagegen/LICENSE.txt, codex-rs/skills/src/assets/samples/openai-docs/LICENSE.txt, codex-rs/skills/src/assets/samples/skill-creator/license.txt, codex-rs/skills/src/assets/samples/skill-installer/LICENSE.txt, codex-rs/vendor/bubblewrap/LICENSE
+
+=== 4. 历史起点 ===
+最早的 5 个提交：
+    59a180ddec4adaf9760972cdb1eb89f06a81be8b|2025-04-16T12:56:08-04:00|Initial commit
+    ae7b518c53cfb29cea518e5506a61dcec80edcee|2025-04-16T13:00:18-04:00|Initial commit
+    1c26c272c895ee9109b21e1a8ce9f0203b2f1ffa|2025-04-16T13:15:46-04:00|Add link to cookbook (#2)
+    8794df3c087ede85fc2baf46922483cd8977662a|2025-04-16T10:21:48-07:00|move all tests under tests/ (#3)
+    1b40e19baf0b10ae6c38438db2c32796b5f921bc|2025-04-16T10:32:45-07:00|w (#8)
