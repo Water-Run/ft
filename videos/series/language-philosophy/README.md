@@ -30,7 +30,7 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | Lua 语言的设计哲学：一切皆表 | zh + en | 计划中 | `lua` |
+| 1 | Lua 语言的设计哲学：一切皆表 | zh + en | 制作中 | [`lua`](lua/) |
 | 2 | Python 语言的设计哲学：一切皆对象 | zh + en | 计划中 | `python` |
 | 3 | MiniScript 语言的设计哲学：小而可嵌入 | zh + en | 计划中 | `miniscript` |
 | 4 | Rust 语言的设计哲学：不靠垃圾回收的内存安全 | zh + en | 计划中 | `rust` |
