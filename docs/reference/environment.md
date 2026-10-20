@@ -17,7 +17,7 @@
 | Python 包 `pillow` | 可选 | 越界自检（`margin.js`） | 10、12 |
 | 字体 | 清单见 `kit/assets.json` | 画面 | 由 `assets.js` 下载并校验 |
 | 语音识别模型 | 可选 | 回听旁白 | faster-whisper small |
-| 显卡 | 可选，要能被 Chrome 用作硬件加速 | 出帧提速；有它时新片按 4K 交付，见 [tools.md](tools.md) 第 1 节「用显卡出帧与 4K 交付」 | Windows 上经 ANGLE（D3D11）调用 |
+| 显卡 | 可选，要能被 Chrome 用作硬件加速 | 出帧提速；策划者要求 4K 的片子靠它才出得动（缺省仍是 1080p），见 [tools.md](tools.md) 第 1 节「用显卡出帧与 4K 交付」 | Windows 上经 ANGLE（D3D11）调用 |
 
 Windows、Linux、macOS 都可以。配音需要联网（edge-tts 调用在线语音服务）；其余步骤离线可做。
 
