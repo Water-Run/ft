@@ -1,0 +1,42 @@
+# 取证时刻（UTC）：2026-10-20T04:18:07Z
+# 工具：7.6.7 / curl.exe
+
+==============================================================================
+URL: https://global.nissannews.com/en/releases/060822-01-e
+bytes=112750  SHA256(content)=51aa8a36da89ab73d0a11ba45c58a1a897aedfd64ca676c4c747bc92420e4860
+正文行数：199
+2026
+Auto China 2026 (Beijing)
+2025
+2024
+Auto China 2024 (Beijing)
+October 14, 2026
+October 14, 2026
+All-New Nissan Rogue Hybrid named to 2026 Wards 10 Best Engines & Propulsion Systems
+October 8, 2026
+September 23, 2026
+September 28, 2026
+September 24, 2026
+September 10, 2026
+2026
+Auto China 2026 (Beijing)
+2025
+2024
+Auto China 2024 (Beijing)
+Auto China 2026 (Beijing)
+Tokyo Auto Salon 2026
+October 18, 2026
+August 26, 2026
+August 22, 2006
+TOKYO (Aug. 22, 2006)--Nissan Motor Co., Ltd., has newly developed two new-generation six-cylinder V-type engines for front-engine, rear-wheel-drive vehicles featuring powerful performance and improved environmental friendliness.
+The engines achieve a 10% improvement in fuel efficiency compared to vehicles equipped with the existing VQ engine and top-in-class Super Ultra-Low Emission Vehicle level emissions. SU-LEVs have 75% or less nitrogen oxide (NOx) and hydrocarbon (HC) emissions than those stipulated by Japan's 2005 exhaust emission standards.
+Nissan began VQ engine production in 1994 and has produced a cumulative total of 5.5 million units as of last fiscal year, ended March 31, 2006.
+Adoption of continuously variable valve timing control (CVTC) for intake side and electromagnetic valve timing control (e-VTC) for exhaust side
+匹配行数：27
+
+==============================================================================
+URL: https://www.ford.com/powertrains/ecoboost/
+bytes=393  SHA256(content)=1eff5a716181ad5e047e140121b3170b018994a88cdb8e0f7266e5447c5bca45
+正文行数：5
+You don't have permission to access "http://www.ford.com/powertrains/ecoboost/" on this server.
+匹配行数：1

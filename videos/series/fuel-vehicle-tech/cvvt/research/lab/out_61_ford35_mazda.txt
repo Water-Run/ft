@@ -1,0 +1,19 @@
+# 取证时刻（UTC）：2026-10-20T04:24:53Z
+# 工具：7.6.7 / curl.exe
+
+==============================================================================
+URL: https://web.archive.org/web/20180726000000/https://media.ford.com/content/fordmedia/fna/us/en/news/2018/07/26/2019-f-150-limited-gains-high-output-ecoboost-v6.html
+bytes=141162  SHA256(content)=cd1c508ee8935d3a878a4eb80c29eac949428ca071cdbb2bee5727107a2b3e35
+正文行数：118
+2019 F-150 Limited Gains High-Output EcoBoost V6 Making It the Most Powerful, Advanced and Luxurious F-150 Ever | Ford Media Center
+2019 F-150 Limited Gains High-Output EcoBoost V6 Making It the Most Powerful, Advanced and Luxurious F-150 Ever
+2019 F-150 Limited Gains High-Output EcoBoost V6 Making It the Most Powerful, Advanced and Luxurious F-150 Ever
+Powerful: Thanks to the addition of a high-output 3.5-liter EcoBoost ® V6 engine, the 2019 Ford F-150 Limited is the most powerful light-duty pickup in America
+Signature design elements include raised Limited lettering on the hood, polished aluminum 22-inch wheels, unique satin-finish grille and tailgate applique, and satin-finish window trim and door handles. Standard power-deployable running boards, remote start, tailgate release and a twin-panel moonroof helps make the new F-150 Limited a premium choice.
+匹配行数：5
+
+==============================================================================
+URL: https://web.archive.org/web/20170401000000/https://newsroom.mazda.com/en/publicity/release/2017/201703/170330a.html
+bytes=4707  SHA256(content)=d6e7b9fd074ddef587fc85516c6d7192678c6629d049245fbae09d5c60b57662
+正文行数：18
+匹配行数：0
