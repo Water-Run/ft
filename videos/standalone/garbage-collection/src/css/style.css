@@ -1,34 +1,107 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统：瑞士国际主义（Swiss Style / International Typographic Style）。
+   规则见 research/STYLE.md。结构性样式在 base.css。
+   色彩只用下面 6 个调色板值；不用 rgb()/hsl()、不用渐变与阴影、不用圆角。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  /* 色彩：黑、米白、灰、一个强调红 */
+  --sw-black: #111111;   /* 字、活对象、粗线 */
+  --sw-paper: #F4F1EA;   /* 底色，米白不是纯白 */
+  --sw-red: #DA291C;     /* 唯一强调色：收集器做出决定的那一刻 */
+  --sw-gray: #8A8A8A;    /* 已扫描、中性信息 */
+  --sw-light: #D9D5CC;   /* 网格线、分隔 */
+  --sw-white: #FFFFFF;   /* 反白块、死对象内部 */
+
+  /* 字体角色 */
+  --sw-font-display: "Inter", "Sans SC";
+  --sw-font-body: "Sans SC", "Inter";
+  --sw-font-mono: "Mono", "Inter";
+
+  /* 12 栏网格 */
+  --sw-margin: 120px;
+  --sw-gutter: 24px;
+
+  /* 字号阶梯（1080p） */
+  --sw-size-display: 320px;
+  --sw-size-title: 180px;
+  --sw-size-statement: 120px;
+  --sw-size-sub: 60px;
+  --sw-size-body: 38px;
+  --sw-size-caption: 28px;
+  --sw-size-micro: 22px;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
+
+body { font-family: var(--sw-font-body); color: var(--sw-black); background: var(--sw-paper); }
+#bg { background: var(--sw-paper); }
+
+/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。文字默认不自动换行：
    放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
-.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+/* ── 字号阶梯：对比要强。标题极大、正文很小；一屏只允许一个「最大字」，最大字至少是最小字的四倍 ── */
+.sw-display { font-family: var(--sw-font-display); font-weight: 900; font-size: var(--sw-size-display); line-height: 1; letter-spacing: -.03em; }
+.sw-title   { font-family: var(--sw-font-display); font-weight: 900; font-size: var(--sw-size-title); line-height: 1.02; letter-spacing: -.02em; }
+.sw-stmt    { font-family: var(--sw-font-display); font-weight: 700; font-size: var(--sw-size-statement); line-height: 1.06; letter-spacing: -.02em; }
+.sw-sub     { font-family: var(--sw-font-body); font-weight: 500; font-size: var(--sw-size-sub); line-height: 1.25; }
+.sw-body    { font-family: var(--sw-font-body); font-weight: 500; font-size: var(--sw-size-body); line-height: 1.4; }
+.sw-cap     { font-family: var(--sw-font-body); font-weight: 500; font-size: var(--sw-size-caption); line-height: 1.35; color: var(--sw-gray); }
+.sw-micro   { font-family: var(--sw-font-mono); font-weight: 500; font-size: var(--sw-size-micro); line-height: 1.3; color: var(--sw-gray); }
+.sw-mono    { font-family: var(--sw-font-mono); font-weight: 500; }
+.sw-red     { color: var(--sw-red); }
+.sw-gray    { color: var(--sw-gray); }
+.sw-paper-t { color: var(--sw-paper); }
+.sw-white-t { color: var(--sw-white); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* ── 版面：12 栏网格，左右边距 120px，栏间距 24px。文字一律左对齐、右边不齐 ── */
+.sw-grid { position: absolute; left: var(--sw-margin); top: 0; width: 1680px; display: flex; gap: var(--sw-gutter); }
+.sw-col  { flex: 1; }
+.sw-col-2 { flex: 2; }
+.sw-col-3 { flex: 3; }
+.sw-col-4 { flex: 4; }
+.sw-col-5 { flex: 5; }
+.sw-col-6 { flex: 6; }
+.sw-col-7 { flex: 7; }
+.sw-col-8 { flex: 8; }
+.sw-col-9 { flex: 9; }
 
-/* 字幕 */
+/* 细线 1px 分隔；粗线 2px 只给主分隔。不用卡片，用留白组织 */
+.sw-rule      { position: absolute; height: 1px; background: var(--sw-light); }
+.sw-rule-bold { position: absolute; height: 2px; background: var(--sw-black); }
+.sw-rule-black{ position: absolute; height: 2px; background: var(--sw-black); }
+.sw-vrule     { position: absolute; width: 1px; background: var(--sw-light); }
+
+/* 细网格：堆的地址空间。只在需要定位时出现，不当背景装饰。
+   本片禁用渐变，网格线用 SVG 的 <line> 画，颜色取 var(--sw-light)。 */
+
+/* ── 图形语言：一个图形在全片只有一个含义 ── */
+
+/* 方格＝一个对象 / 一块内存。黑=活，白底黑框=死/未标记，灰=已扫描但未定 */
+.sw-cell      { position: absolute; width: 64px; height: 64px; background: var(--sw-black); }
+.sw-cell-dead { position: absolute; width: 64px; height: 64px; background: var(--sw-white); border: 2px solid var(--sw-black); }
+.sw-cell-scan { position: absolute; width: 64px; height: 64px; background: var(--sw-gray); }
+.sw-cell-red  { position: absolute; width: 64px; height: 64px; background: var(--sw-red); }
+
+/* 指针 / 引用：黑色 2px 线 + 小而尖的箭头 */
+.sw-ptr  { position: absolute; height: 2px; background: var(--sw-black); transform-origin: 0 50%; }
+.sw-ptr-head { position: absolute; width: 0; height: 0; border-left: 12px solid var(--sw-black); border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+
+/* 红色竖线 / 红块＝收集器的动作（标记、清扫、搬动）。一屏最多一处 */
+.sw-sweep  { position: absolute; width: 4px; background: var(--sw-red); }
+.sw-sweep-h { position: absolute; height: 4px; background: var(--sw-red); }
+
+/* 分代色带：01 年轻 / 02 中年 / 03 老。用灰阶区分，不用彩色 */
+.sw-gen-0 { position: absolute; height: 72px; background: var(--sw-light); }
+.sw-gen-1 { position: absolute; height: 72px; background: var(--sw-gray); }
+.sw-gen-2 { position: absolute; height: 72px; background: var(--sw-black); }
+
+/* 编号与年份：小字，放在标题下方或图注 */
+.sw-idx  { font-family: var(--sw-font-mono); font-weight: 500; font-size: var(--sw-size-caption); color: var(--sw-gray); }
+.sw-year { font-family: var(--sw-font-display); font-weight: 700; font-size: var(--sw-size-title); line-height: 1; letter-spacing: -.02em; }
+
+/* 章节卡：整屏墨色，字为米白；编号用红（压在墨色上对比度约 4:1，只用于 56px 以上的大字） */
+.chapter { position: absolute; inset: 0; background: var(--sw-black); color: var(--sw-paper); padding: 300px var(--sw-margin) 0; }
+.chapter .no { font-family: var(--sw-font-mono); font-weight: 500; font-size: 64px; color: var(--sw-red); }
+.chapter .ti { font-family: var(--sw-font-display); font-weight: 900; font-size: var(--sw-size-title); line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+
+/* 字幕：墨色字压米白底；强调用红 */
 #caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption span { font-family: var(--sw-font-body); font-size: 40px; font-weight: 500; color: var(--sw-black); }
+#caption em { font-style: normal; font-weight: 800; color: var(--sw-red); }

@@ -1,8 +1,7 @@
 {
   "slug": "garbage-collection",
   "languages": [
-    "zh",
-    "en"
+    "zh"
   ],
   "titles": {
     "zh": "垃圾回收的艺术",
@@ -21,8 +20,8 @@
     "en": "A narration."
   },
   "production": {
-    "mode": "self",
-    "maker": "DeepSeek V4.1 Flash 1017",
+    "mode": "delegated",
+    "maker": "Opus 5.5",
     "planner": "WaterRun",
     "repository": "https://github.com/Water-Run/ft"
   },
@@ -52,7 +51,21 @@
     "camera": true,
     "style": {
       "flat": true,
-      "no_emoji": true
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": [
+        "111111",
+        "F4F1EA",
+        "DA291C",
+        "8A8A8A",
+        "D9D5CC",
+        "FFFFFF"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Inter",
+        "Mono"
+      ]
     },
     "duration": [
       400,

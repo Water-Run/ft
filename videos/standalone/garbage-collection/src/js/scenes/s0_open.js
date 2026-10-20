@@ -1,22 +1,17 @@
-// 开场。TODO: 模板示例场景，整个文件换成本片的内容。
+// 第 00 章 · 开场。场景骨架：受托模型按 brief/04-storyboard.md 实现本场。
 // 一个场景 = scene(场景号, ({ root, s, c0 }) => { … })：root 是本场的容器，s 是时间线上的这一场（start / end / lead），
 // c0 是内容可以开始出现的时刻（有章节卡时在章节卡之后）。所有时刻都由 T(句号, 词) 推出，不写死秒数。
+// 视觉系统：src/css/style.css 与 research/STYLE.md。逐句对应表：expect.zh.json。
 scene('open', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
-
-  // 第一帧就要有东西：一条横线先画出来，标题随第一句旁白落下
-  const rule = h('div', 'rule', world); px(rule, 120, 270, 900);
-  const title = h('div', 'abs d-1', world, tr('标题', 'Title')); px(title, 112, 300);
-  const sub = h('div', 'abs t-body', world, tr('一句话说清这部片子讲什么', 'One line on what this film is about')); px(sub, 120, 530);
-
-  fromTo(rule, s.start + 0.05, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power3.inOut' }); sfx('whoosh', s.start + 0.05, { g: 0.5 });
-  slam(title, T('o1'), { from: 1.2 }); sfx('thud', T('o1') + 0.12);
-  const tw = T('o2', { zh: '词', en: 'word' });                 // 「词」这个字被读到的时刻
-  slide(sub, tw, { x: -60 }); sfx('pop', tw);
-
-  // 镜头始终在动：站内用极慢的推近保持画面不死。镜头写成一条轨迹：起点，然后是各关键帧 [时刻, 去向, 时长, 选项]
-  cam.track(s.start, { x: 960, y: 540, z: 1 }, [
-    [s.start + 0.1, { z: 1.05 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }],
-  ]);
+  // 本场要让观众明白：格子纸：内存是一张纸，程序每造一个对象就占掉一格。先让观众看见「占格」这件事，再抛出「它怎么知道自己没用了」。
+  // 逐句对应（expect.zh.json）：
+  //   o1 格子纸
+  //   o2 六千七百万
+  //   o3 64 MB
+  //   o5 11 MB
+  //   o6 136 次
+  //   o7 垃圾回收
+  //   o10 妥协与权衡
 });

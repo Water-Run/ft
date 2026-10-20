@@ -270,7 +270,7 @@
     {"slug": "wsl", "title": {"zh": "从 WSL 1 到 WSL 2，再到「WSL 3」", "en": "From WSL 1 to WSL 2, Then “WSL 3”"}, "status": "delivered", "note": "已发布：哔哩哔哩与 YouTube"},
     {"slug": "firearm-actions", "title": {"zh": "枪械自动原理"}},
     {"slug": "lcd-panels", "title": {"zh": "液晶显示器和面板，我们应该关心屏幕的什么和影响"}},
-    {"slug": "garbage-collection", "title": {"zh": "垃圾回收的艺术", "en": "The Art of Garbage Collection"}, "status": "in-progress", "note": "2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 按 WaterRun 同日四轮意见改到中文第 7 稿（五章、6:57、俏皮口吻、MiniMax 傲娇御姐），语言阵容 Python/Lua/C#/PHP/Nim/Java 与 Rust/Zig/C，12 项实验，三轮对抗审稿，待 WaterRun 审查"},
+    {"slug": "garbage-collection", "title": {"zh": "垃圾回收的艺术", "en": "The Art of Garbage Collection"}, "status": "in-progress", "languages": ["zh"], "mode": "delegated", "maker": "Opus 5.5", "note": "2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 第 7 稿（五章、俏皮口吻）；2026-10-20 策划者交来第 8 稿（文案由 Gemini 4 Argon 撰写）并于 10:43 明确确认，确认后只做不改含义的字幕断句（61 句超宽 → 142 句，逐字校验一致），内容 SHA-256 11b3303b…；音色定为 Chinese (Mandarin)_Sweet_Lady（甜美女声），本片没有强制时间限制，check.duration 放宽为 400–640 s。改为委托制作：受托方 Opus 5.5 负责配音、关键帧与分镜、场景实现、声音、渲染与交付；准备方只交稿本、事实、视觉系统、逐句对应表与任务书"},
     {"slug": "lightweighting", "title": {"zh": "宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快"}},
     {"slug": "sql-survey", "title": {"zh": "SQL 数据库群观"}},
     {"slug": "china-gasoline-prices", "title": {"zh": "中国汽油价格变迁史"}},
