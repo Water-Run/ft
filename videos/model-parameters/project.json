@@ -1,7 +1,7 @@
 {
   "slug": "model-parameters",
   "stage": "research",
-  "next": "取证：配置字段、参数量口径、上下文长度、token 换算",
+  "next": "重跑 research/lab 的 02–04（01 已完成），把结果整理进 FACTS",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -9,7 +9,8 @@
         "name": "MiniMax M3.1 Flash",
         "roles": [
           "重规划",
-          "讲解测绘"
+          "讲解测绘",
+          "取证实验"
         ]
       }
     ],

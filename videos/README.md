@@ -41,7 +41,7 @@
 | [OpenCode 是怎么实现的？](opencode/) | [Harness 群观](../series/agent-harnesses.md) | 文案 | 写中文稿，导出交审 | 最新 |
 | [150 秒学会怎么打手枪？](pistol-shooting/) | [XX 秒速通](../series/in-seconds.md) | 取证 | 取证，然后写稿 | 最新 |
 | [256 秒搞懂 SSH](ssh/) | [XX 秒速通](../series/in-seconds.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 最新 |
-| [96 秒速通模型的各个参数](model-parameters/) | [XX 秒速通](../series/in-seconds.md) | 取证 | 取证：配置字段、参数量口径、上下文长度、token 换算 | 最新 |
+| [96 秒速通模型的各个参数](model-parameters/) | [XX 秒速通](../series/in-seconds.md) | 取证 | 重跑 research/lab 的 02–04（01 已完成），把结果整理进 FACTS | 最新 |
 | [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](harness/) | [XX 秒速通](../series/in-seconds.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 最新 |
 | [192 秒认识 CoT：先思考，再回答](chain-of-thought/) | [XX 秒速通](../series/in-seconds.md) | 文案 | 写中文稿，导出交审 | 最新 |
 | [96 秒讲清 HTTP 状态码：五类响应与最常用的那些](http-status-codes/) | [XX 秒速通](../series/in-seconds.md) | 文案 | 写中文稿，导出交审 | 最新 |
