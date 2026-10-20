@@ -42,16 +42,17 @@ scene('trace', ({ root, s, c0 }) => {
   const tGar = qb(T('b2b', '垃圾') - 0.1), tSw = qb(T('b2a', '照收') - 0.1), SWD = 1.3;
   const markT = (n) => (n.d < 0 ? Infinity : tW0 + (n.d - 1) * STEP);
   const sweepAt = (x) => tSw + SWD * clamp((x - 300) / 1560);
-  const tEnd1 = qb(T('b3', '这里') - 0.3);
+  // 「这里藏着第一次优雅的妥协」时图还在，镜头往后拉看全貌；说到「以后用不用」前图才收走
+  const tPull = qb(T('b3', '这里') - 0.3), tEnd1 = Math.max(tPull + 1.2, qb(T('b3', '以后') - 0.75));
   // 方块
   nodes.forEach((n) => {
     n.c = cell(nsv, n.x, n.y, NS);
     const t0 = tPop + ((n.i * 7 + n.j * 3) % 23) / 23 * 1.6;
     const tm = markT(n), ts = sweepAt(n.x);
     F((t) => {
-      if (t < t0 || t > tEnd1 + 0.6) return n.c.set({ k: 0 });
-      const k0 = Math.min(1, (t - t0) / 0.12);
-      if (t >= tm) return n.c.set({ fill: t < tm + 0.14 ? C.gold : C.ink, k: t < tm + 0.14 ? 1.15 : 1 });
+      if (t < t0 || t > tEnd1 + 0.4) return n.c.set({ k: 0 });
+      const k0 = Math.min(1, (t - t0) / 0.12), out = t > tEnd1 + 0.1 ? 1 - (t - tEnd1 - 0.1) / 0.3 : 1;   // 收走：活的一起缩没
+      if (t >= tm) return n.c.set({ fill: t < tm + 0.14 ? C.gold : C.ink, k: (t < tm + 0.14 ? 1.15 : 1) * out });
       if (t < tGar) return n.c.set({ fill: C.white, k: k0 });
       if (t < ts) return n.c.set({ st: C.white, sw: 4, k: 1 });
       const u = (t - ts) / 0.22; n.c.set(u < 1 ? { fill: C.gold, k: 1 - u } : { k: 0 });
@@ -66,7 +67,7 @@ scene('trace', ({ root, s, c0 }) => {
     const ta = u.root ? tW0 - STEP : markT(u), tb = markT(v);
     const dead = !(v.d >= 0 && (u.root || u.d >= 0)), ts = sweepAt(Math.min(u.x, v.x));
     F((t) => {
-      if (t < t0 || t > tEnd1 + 0.6 || (dead && t > ts + 0.1)) return p.set({ f: 0 });
+      if (t < t0 || t > tEnd1 + 0.15 || (dead && t > ts + 0.1)) return p.set({ f: 0 });
       const trav = t >= ta && t < tb + 0.2 && isFinite(tb);
       const f = trav && t < tb ? Math.min(1, (t - ta) / Math.max(0.05, tb - ta)) : 1;
       p.set({ f: trav ? 1 : Math.min(1, (t - t0) / 0.3), col: trav ? C.gold : dead && t > tGar ? C.pale : C.white, w: trav ? 5 : 3, op: dead && t > tGar ? 0.7 : 1 });
@@ -150,7 +151,8 @@ scene('trace', ({ root, s, c0 }) => {
     const t = tSg + k * STEP;
     keyed(c.sg).at(t, { html: '−' }).at(tSw2 + 0.12 * c.k + 0.1, { html: '+' });
     pulse(c.sg, t, 1.5); sfx('tick', t, { g: 0.45 });
-    F((tt) => ss(c.b, 'background', tt >= t && tt < tSw2 + 0.12 * c.k + 0.1 ? C.gray : C.white));
+    // 拨成负 = 标记过：与 02 章的图一样涂黑（黑 = 从根摸得到），清扫经过时拨回正、恢复白
+    F((tt) => { const mk = tt >= t && tt < tSw2 + 0.12 * c.k + 0.1; ss(c.b, 'background', mk ? C.ink : C.white); ss(c.sg, 'color', mk ? C.white : C.ink); });
   });
   const sgL = tag(world, '符号位', LX, UY + 108, 36); slam(sgL, tSg - 0.2, { from: 1.3, d: 0.3 });
   const sweep2 = h('div', 'abs', world); css(sweep2, { background: C.gold, width: '18px', height: '420px', top: UY - 30 + 'px' });
@@ -230,7 +232,7 @@ scene('trace', ({ root, s, c0 }) => {
   const keep = tag(world, '活表一张没少', MX + 150, MY + MH / 2 + 110, 40); slam(keep, qb(T('b9b', '活表') - 0.05), { from: 1.25, d: 0.35 });
 
   // ── 镜头 ──
-  const tG = tEnd1 - 0.2;
+  const tG = tPull - 0.2;
   cam.track(s.start, { x: 1000, y: 520, z: 0.8 }, [
     [s.start + 0.5, { z: 0.88 }, c0 - s.start - 0.5, { ease: 'power2.out', sfx: false }],
     [null, { z: 0.9 }, tW0 - (c0 + 0.15) - 0.05, { ease: 'none', sfx: false }],
@@ -238,6 +240,7 @@ scene('trace', ({ root, s, c0 }) => {
     [tSw - 1.1, { x: isl[0].x + 70, y: isl[0].y - 40, z: 1.45 }, 0.9, { ease: 'power3.inOut', g: 0.3 }],
     [tSw - 0.05, { x: 1010, y: 520, z: 0.92 }, 0.8, { ease: 'power3.inOut', sfx: false }],
     [null, { z: 0.94 }, tG - (tSw + 0.9) - 0.05, { ease: 'none', sfx: false }],
+    [tPull, { y: 560, z: 0.8 }, tEnd1 - tPull + 0.2, { ease: 'power2.inOut', sfx: false }],
     [tOut3 - 0.2, { x: T2 + 960, y: 520, z: 1.0 }, 1.2, { ease: 'power3.inOut', g: 0.5 }],
     [null, { x: T2 + 990, z: 1.02 }, t7 - 0.2 - (tOut3 + 1.15), { ease: 'none', sfx: false }],
     [t7 - 0.2, { x: T3 + 760, y: 520, z: 1.0 }, 1.1, { ease: 'power3.inOut', g: 0.5 }],

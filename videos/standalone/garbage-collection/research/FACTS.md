@@ -284,4 +284,52 @@
 
 ## 复核
 
-没有成片。等脚本确认、画面完成后，按 `docs/review.md` 第 5 节逐句、逐画面复核；本文件现在只完成取证阶段的交叉核查。2026-10-19 的复核更正：原记录把 McCarthy 的“garbage collection”写成“论文脚注 7”，未说明它来自后来的重排版，已在 T04、H08、Z09 更正；Dijkstra 1978 由只读摘要改为已读全文（C01–C05）。同日第 2 稿新增：V01–V03（开场实验）、L01–L07（Lua 源码与手册）、G07（可达性是“活着”的代理）、H12–H14、X13–X14、Z13–Z16；Lua 的 `lgc.h` 注释逐字核对过本机解压的 5.5.0 源码。第 3 稿新增：D01–D09（.NET）、P01–P05（PHP）、M01–M04（Nim）、J01–J04（Java）、K01–K03（C、Zig、Rust）、L08、V04、X15–X18、Z17–Z20；.NET、PHP、Zig、cppreference 的网页与 Nim 自带文档都下载到 `research/_src/docs/`（不入库）逐句核对。
+### 取证阶段（准备方）
+
+取证阶段只做了交叉核查。2026-10-19 的复核更正：原记录把 McCarthy 的“garbage collection”写成“论文脚注 7”，未说明它来自后来的重排版，已在 T04、H08、Z09 更正；Dijkstra 1978 由只读摘要改为已读全文（C01–C05）。同日第 2 稿新增：V01–V03（开场实验）、L01–L07（Lua 源码与手册）、G07（可达性是“活着”的代理）、H12–H14、X13–X14、Z13–Z16；Lua 的 `lgc.h` 注释逐字核对过本机解压的 5.5.0 源码。第 3 稿新增：D01–D09（.NET）、P01–P05（PHP）、M01–M04（Nim）、J01–J04（Java）、K01–K03（C、Zig、Rust）、L08、V04、X15–X18、Z17–Z20；.NET、PHP、Zig、cppreference 的网页与 Nim 自带文档都下载到 `research/_src/docs/`（不入库）逐句核对。
+
+### 2026-10-20 成片复核（受托方 Opus 5.5）
+
+范围：画面上出现的每一个数字、版本、代码、终端回显、论文题名与引文，逐条对照本文件与 `research/lab/out_*` 原文（字面比对：取场景源码 `src/js/scenes/s0–s6` 里写死的字符串，再看 `look.js`、`sheets.js` 在对应时刻的截图；画面是时间的纯函数，截图与成片出自同一份源码）。旁白文字沿用已确认的第 8 稿，未改动。
+
+| 画面内容（场景） | 依据 | 结论 |
+|---|---|---|
+| `67,000,000`、「一秒钟，六千七百万个」、「实测：.NET 10.0.12 · 1001 ms」（开场） | D06、`out_09_dotnet_churn` | 一致 |
+| `64 MB`、`DOTNET_GCHeapHardLimit=0x4000000`、`keep.Add(new Node(n++));`（开场） | D05、D07、`lab/09_dotnet_gc.cs` 源码 | 一致；代码行取自实验源码原样 |
+| 五道金线与计数 `gen2 GCs 0` → `5`、`1,048,577`、`System.OutOfMemoryException`、`(after 1,048,577 objects, 679 ms; gen2 GCs 5)`（开场） | D07、`out_09_dotnet_hoard` | 一致；回显截取原行的连续片段。原文只有总数 5，计数随五道金线逐次加一，各次的时刻是示意 |
+| 报错墙四行：`hoard: System.OutOfMemoryException`；`PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted` / `(tried to allocate 4096 bytes)`；`Exception in thread "main" java.lang.OutOfMemoryError: Java heap space`；`FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory`；运行时版本 .NET 10.0.12、PHP 8.5.10、OpenJDK 27、Node 24.21.0 | V04、P05、J03、V02、E03/E07/E09/E10/E12 | 一致；PHP 行去掉行尾的本机相对路径与行号 |
+| `Lab.Last = new Node(n++);`、循环两行源码（开场） | `lab/09_dotnet_gc.cs` | 一致 |
+| `11 MB`、`heap 0.1 MB -> 10.8 MB; gen0 GCs 136, gen1 0, gen2 0`、`136 次`、0–1001 ms 轨道上 136 根刻度（开场） | D06 | 一致；「11 MB」是旁白的取整，原文 10.8 MB 同屏 |
+| `ob_refcnt`、「前 8 字节」、`sys.getsizeof(object()) = 16 bytes`、`a = Node('A') raw = 1` … `del a -> __del__ A`、计数 1→2→3→2→1→0（01） | R02、R04、`out_05` | 一致 |
+| X、Y 计数 1→2→1，`with names: raw X = 2 raw Y = 2`、`after del x,y: raw X = 1 raw Y = 1`（01） | R05、`out_05` | 一致（截去原行尾的括注） |
+| `cycle: x.next = y, y.next = x, then unset(x, y):`、`(after unset x, y: no destructor ran)`、`gc_status before: runs=0 collected=0 roots=2`、`__destruct X/Y`、`gc_collect_cycles() = 2`（01） | P04、`out_10_php_count` | 一致 |
+| `baseline gc.collect() -> 21`、`__del__ X/Y`、`gc.collect() -> 2`（01） | R08、`out_01` | 一致；按 R08 先亮基线，不用 `out_05` 的 45 |
+| 「1960」「麦卡锡 · LISP」「McCarthy, CACM 3(4), April 1960」、free-storage list、FREE、base registers、符号位拨成负（02） | T01、T02、H01 | 一致；12 个单元是示意数量（论文为约 15,000 个），画面不标数量 |
+| `… requires several seconds to execute …`（译：需要好几秒才能执行）（02） | T03 | 一致 |
+| `Lua 5.5.0`、`before: 28457 KB (200000 live + 200000 unreachable tables)`、`cycle finished after 419 basic steps: 14239 KB`、`#live = 200000`、「28 MB」「14 MB」（02） | L06、`out_08` | 一致；20×20 格是示意的比例，不代表数量 |
+| 「1983」「利伯曼 · 休伊特」、*A Real-Time Garbage Collector Based on the Lifetimes of Objects*、Henry Lieberman, Carl Hewitt、Communications of the ACM 26(6), 1983（03） | N01、H07、`sources.json` | 一致 |
+| `gen: new object -> generation 0` 等四行、「0 代」「1 代」「2 代」（03） | D01、D08、`out_09_dotnet_gen` | 一致 |
+| `gen0 GCs 136, gen1 0, gen2 0`（03） | D06 | 一致（原行片段） |
+| 卡表、写入时打勾、只查打勾处（03） | D09、N03 | 一致；卡的数目是示意 |
+| 「1978」「迪杰斯特拉等」、*On-the-fly garbage collection: an exercise in cooperation*、五位作者、Communications of the ACM 21(11), November 1978、the mutator / the collector（04） | C01、G05、`sources.json` | 一致 |
+| 白「还没碰」、灰「碰过，下线还没碰」、黑「自己和下线全碰完」（04） | C02 | 一致 |
+| 家规与 `no edge points from a black node to a white one`（译）、「Dijkstra 等, CACM 1978 · 不变式 P1」（04） | C03 | 一致 |
+| 写屏障：黑→白写入时把白涂灰（04） | C04、C07 | 一致；旁白与画面都归到迪杰斯特拉的规矩，不说所有收集器都如此（C16） |
+| `lgc.h` 第 17–23 行原文（含行号），`a black object can` / `never point to a white one` 标出，（译）（04） | L03 | 一致；未截第 50–58 行 |
+| `lgc.c` 的 `luaC_barrierback_` 注释两行（04） | L04 | 一致 |
+| 「四十万张表」「419 步」「300 步」「28 MB」「14 MB」，曲线：300 步时 28,458 KB、350 步时 14,239 KB，`after step 300: 28458 KB`、`after step 350: 14239 KB`（04） | L06、L09、`out_08` | 一致；300–350 步之间画成直线下降，原数据只有这两个采样点 |
+| 增量：收集器一步、程序一段（04） | L02、L05、C11 | 一致 |
+| G1：停顿按日志的毫秒比例画；周期自身停顿 Concurrent Start、Remark、Cleanup，期间年轻代停顿 GC(8)、GC(9)、GC(10)；日志四行原文（04） | J04、Z22、`out_12_java_mark` | 一致；时间轴按 0.526–0.554 s 线性映射 |
+| `static void Link(Node a, Node b) { a.Next = b; }`、`lea rcx, bword ptr [rcx+0x08]`、`call CORINFO_HELP_ASSIGN_REF`、`nop`、`ret`、「4 条指令 · 11 字节」（04） | D09、`lab/09_dotnet_gc.cs` | 一致；源码在实验文件里写作 `public static void Link(Node a, Node b) { a.Next = b; }`，画面省去 `public` 修饰，函数体与签名原样 |
+| 「写入 a.Next」「卡表打勾」在屏障里（04） | D09、X20 | 一致（D09 注明「由清单推断」） |
+| 「真实的旋钮：Go 的 GOGC · Lua 的 pause」（05） | U01、L08 | 一致 |
+| Nim 2.2.12 的七个 `--mm` 模式、默认 ORC、ARC 只留引用计数；`--mm:arc … destroyed = 2`、`--mm:orc =destroy Y/X … destroyed = 4`（05） | M01、M04、`out_11_nim_arc/orc` | 一致；ORC 两行把原文的缩进对齐到同一列 |
+| 「Rust」「rustc 1.98.1」「所有权」、`_11 = move _1;`、`drop(_2) -> [return: bb4, unwind: bb15];`、`drop(_11) -> [return: bb10, unwind: bb15];`（05） | U05、U06、`out_06_rust_drop` | 一致（去掉行首的 MIR 行号） |
+| `` `=destroy`(b) `` `` `=copy`(c, a) `` `` `=destroy`(c) `` `` `=destroy`(a) ``（05） | M03、`out_11_nim_expandarc` | 一致 |
+| `free(ptr);`、「C · cppreference：free 释放此前由 malloc 等分配的空间」、*Manual memory management*、`There is no hidden control flow, no hidden memory allocations …`、ziglang.org（05） | K01、K02 | 一致 |
+| 三张账单的条目（05） | R01、T03、D09、X21、U05、K01 | 与旁白 g9–g10 一致，不含数值 |
+| 麦卡锡 1960 论文题名、`a reclamation cycle starts`、`Copied with minor notational changes from CACM, April 1960.`、脚注 7 全文、（译）（收束） | T04、H08、Z02、Z09 | 一致；画面只说「后来重排的版本」，不写 1995 年，也不说 1960 年原刊就有这条脚注 |
+| 时间线 1960 标记—清扫、1978 三色、1983 分代、今天；「一停好几秒」「一秒 136 次 · .NET 10.0.12 · 那一秒」（收束） | T03、H01、H05、H07、D06 | 一致 |
+| 片尾名单与 `github.com/Water-Run/ft` | 本文件「制作署名」 | 一致 |
+
+未出现本机路径、主机名或用户名（回显已在 `research/lab/` 脱敏；PHP 那行的相对路径也去掉了）。没有使用「待核实」条目。未核查：无。

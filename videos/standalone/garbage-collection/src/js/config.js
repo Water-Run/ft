@@ -56,7 +56,7 @@ window.ENGINE = {
         const eNo = h('div', 'no', card, no), eTi = h('div', 'ti', card, ti), eEn = h('div', 'en', card, en);
         slam(eNo, hit + 0.06, { from: 1.25, d: 0.42 });
         wipe(eTi, hit + 0.1, { dir: 'b', d: 0.36 });
-        appear(eEn, hit + 0.3); typeText(eEn, en, hit + 0.3, 22, { cursor: false, sfxGain: 0.25 });
+        appear(eEn, hit + 0.25); typeText(eEn, en, hit + 0.25, 40, { cursor: false, sfxGain: 0.25 });
         const bar = h('div', 'abs', card); px(bar, 126, 810, 0, 6); bar.style.background = C.gold;
         tl.fromTo(bar, { width: 0 }, { width: 520, duration: tOut - (hit + 0.5), ease: 'none', immediateRender: true }, hit + 0.5);
         for (const e of [eNo, eTi, eEn, bar]) wipeOut(e, tOut, { dir: 't', d: 0.2 });

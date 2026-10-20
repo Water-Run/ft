@@ -67,7 +67,7 @@ scene('tri', ({ root, s, c0 }) => {
   const tFast = qb(T('e11b', '高速') + 0.1), FQ = BEAT / 4;
   const steps2 = order.map((id, k) => ({ id, pick: tFast + 0.2 + k * FQ, shade: tFast + 0.2 + k * FQ + 0.03, black: tFast + 0.2 + k * FQ + 0.1 }));
   const bars2 = [[1, 8, 0], [3, 10, 2], [4, 9, 3]];           // 快放时程序写下的三条指针：[黑, 还是白的活对象, 在第几步之后]
-  const tEnd2 = qb(T('e7', '可惊险') - 0.3), tMont1 = Tend('e11b') + 0.3;
+  const tEnd2 = qb(T('e7', '可惊险') - 0.3), tMont1 = Tend('e11b') + 1.1;
   const colorAt = (id, t, steps, t0) => {                      // 某一时刻某个节点的颜色（从 t0 开始的一遍）
     if (t < t0) return null;
     let col = 'W';
@@ -209,7 +209,7 @@ scene('tri', ({ root, s, c0 }) => {
   exit(hand, tE11, { y: -30, d: 0.3 }); exit(hand2, tRule, { y: 30, d: 0.3 });
   const live = wtag(world, '活对象', nW.x - 70, nW.y + 92, 32); slide(live, tBW + 0.4, { y: 20, d: 0.3 }); exit(live, tKill, { y: 30, d: 0.2 });
   const kill = tx(world, 'ser', '冤杀', nW.x - 110, nW.y - 70, { size: 130, color: C.gold });
-  slam(kill, tKill + 0.1, { from: 1.4, d: 0.4 }); exit(kill, tRew + 0.2, { y: -40, d: 0.3 });
+  slam(kill, tKill + 0.1, { from: 1.4, d: 0.4 }); exit(kill, tRew + 0.45, { y: -40, d: 0.3 });
   shatter(world, nW.x - NS3 / 2, nW.y - NS3 / 2, NS3, NS3, C.gold, tKill, { n: 3, gap: 6, spread: 120, seed: 31 });
   sfx('error', tKill, { g: 0.75 }); sfx('thud', tKill + 0.1, { g: 0.8 });
   // 倒带
@@ -239,11 +239,15 @@ scene('tri', ({ root, s, c0 }) => {
   for (const e of [...ruleL, ruleQ, djk, gate, shd, spy, spyT, spyB, spyE]) exit(e, tE11 - 0.1, { y: -40, d: 0.3 });
 
   // ════ e11：三种颜色，一条家规（回到 S2 的图快放）════
-  const w11 = wonder(ui, '三种颜色，一条家规', 110, 110, tE11, Tend('e11') + 0.08, { size: 104, h: 130, plate: true });
+  const w11 = wonder(ui, '三种颜色，一条家规', 110, 110, tE11, Tend('e11') + 0.65, { size: 104, h: 130, plate: true });
   const sw3 = ['W', 'G', 'B'].map((c, k) => { const e = h('div', 'abs', ui); px(e, 160 + k * 170, 330, 140, 140); css(e, { background: COLOR[c], outline: c === 'B' ? `3px solid ${C.white}` : 'none' }); slam(e, tE11 + 0.3 + k * BEAT / 2, { from: 1.5, d: 0.3 }); sfx('pop', tE11 + 0.3 + k * BEAT / 2, { g: 0.45 }); return e; });
   const ruleMini = tx(ui, 'sub', '黑不指白', 700, 360, { size: 72, ...plate }); wipe(ruleMini, qb(T('e11', '一条家规') - 0.1), { dir: 'l', d: 0.4 });
   const noPre = tx(ui, 'note', '无需预判程序要干什么', 160, 520, { size: 44, color: C.white, ...plate }); wipe(noPre, qb(T('e11', '无需') - 0.1), { dir: 'l', d: 0.4 });
-  for (const e of [...sw3, ruleMini, noPre]) exit(e, Tend('e11') + 0.08, { y: -40, d: 0.3 });
+  // 收集器的游标：白 → 灰 → 黑，一拍一格，直到这一屏退场
+  const cur11 = h('div', 'abs', ui); px(cur11, 160, 330, 140, 140); css(cur11, { outline: `6px solid ${C.gold}`, outlineOffset: '8px' });
+  const tCur = qb(T('e11', '一条家规') + 0.2), tCurEnd = Tend('e11') + 0.65;
+  F((t) => { const on = t >= tCur && t < tCurEnd; vis(cur11, on); if (on) ss(cur11, 'left', 160 + 170 * (Math.floor((t - tCur) / BEAT) % 3) + 'px'); });
+  for (const e of [...sw3, ruleMini, noPre]) exit(e, Tend('e11') + 0.65, { y: -40, d: 0.3 });
   const none = tx(ui, 'ser', '活物一个不漏', 110, 830, { size: 80, ...plate }); wipe(none, qb(T('e11b', '一个不漏') - 0.2), { dir: 'l', d: 0.4 }); exit(none, tMont1 + 0.1, { y: 60, d: 0.3 });
 
   // ════ S4：Lua 源码里的铁律；改表时退回灰 ════
@@ -309,7 +313,7 @@ scene('tri', ({ root, s, c0 }) => {
   FR(tS0, tS1, (t) => { const st = stepAt(t), pts = []; for (let k = 0; k <= Math.floor(st); k += 1) pts.push(kx(k).toFixed(1) + ',' + ky(kb(k)).toFixed(1)); pts.push(kx(st).toFixed(1) + ',' + ky(kb(st)).toFixed(1)); sa(curve, 'points', pts.join(' ')); sa(curve, 'visibility', st > 0 ? 'visible' : 'hidden'); });
   const m300 = h('div', 'abs', world); px(m300, kx(300) - 2, CY0 - 10, 4, CHh + 10); m300.style.background = C.pale;
   const l300 = tx(world, 'big', '300 步', kx(300) - 80, CY0 + CHh + 20, { size: 44 }), l419 = tx(world, 'big', '419 步', kx(419) - 150, CY0 + CHh + 20, { size: 44, color: C.gold });
-  const l28 = tx(world, 'big', '28 MB', CX0 + 20, ky(28458) - 70, { size: 56 }), l14 = tx(world, 'big', '14 MB', CX0 + CW - 180, ky(14239) - 70, { size: 56, color: C.gold });
+  const l28 = tx(world, 'big', '28 MB', CX0 + 20, ky(28458) - 70, { size: 56 }), l14 = tx(world, 'big', '14 MB', kx(350) + 34, ky(14239) - 82, { size: 56, color: C.gold });
   const stepN = tx(world, 'big', '0', CX0 + 40, CY0 + 170, { size: 110 }), stepL = tx(world, 'sub', '步', CX0 + 270, CY0 + 200, { size: 56 });
   const t419 = qb(Math.min(T('e13b', '四百一十九步'), Tend('e13') - 0.5)), t300 = qb(Math.min(T('e14', '三百步'), Tend('e13b') - 0.2)), t2814 = qb(Math.min(T('e14b', '二十八兆'), Tend('e14') - 0.6));
   for (const e of [axis, axisY]) wipe(e, tE13 + 0.2, { dir: e === axis ? 'l' : 'b', d: 0.4 });
@@ -359,7 +363,7 @@ scene('tri', ({ root, s, c0 }) => {
   const conc = tag(world, '并发', X6 + 760, 610, 56), concE = tx(world, 'lat', 'concurrent', X6 + 950, 628, { size: 40, color: C.pale });
   const tConc = qb(Math.min(T('e18b', '并发'), Tend('e18') - 0.5));
   slam(conc, tConc, { from: 1.3, d: 0.35 }); appear(concE, tConc + 0.2); sfx('thud', tConc, { g: 0.8 });
-  const glog = slab(ui, 120, 772, [
+  const glog = slab(ui, 120, 800, [
     '[0.529s][info][gc] GC(6) Pause Young (<span class="g">Concurrent Start</span>) (G1 Humongous Allocation) 15M-&gt;14M(24M) 4.899ms',
     '[0.529s][info][gc] GC(7) Concurrent Mark Cycle',
     '[0.543s][info][gc] GC(7) Pause <span class="g">Remark</span> 22M-&gt;22M(28M) 1.474ms',
@@ -397,7 +401,7 @@ scene('tri', ({ root, s, c0 }) => {
   const tE20 = qb(T('e20', '程序员') - 0.2);
   F((t) => insEls.forEach(([ln], k) => { const cur = t >= tI[k] && (k === 3 || t < tI[k + 1]); ss(ln, 'color', t >= tE20 + k * 0.08 || cur ? C.gold : C.pale); }));
   sfx('chime', tE20 + 0.3, { g: 0.55 });
-  const w20 = wonder(ui, '程序员一行屏障都没写', 110, 790, tE20 + 0.1, null, { size: 84, h: 110, plate: true });
+  const w20 = wonder(ui, '程序员一行屏障都没写', 110, 830, tE20 + 0.1, null, { size: 72, h: 92, plate: true });
   exit(four, tE20 - 0.1, { y: 40, d: 0.25 }); exit(brk, tE20 - 0.1, { y: 40, d: 0.25 }); exit(fourL, tE20 - 0.1, { y: 40, d: 0.25 });
   exit(csrcL, tE20, { y: -30, d: 0.3 });
 

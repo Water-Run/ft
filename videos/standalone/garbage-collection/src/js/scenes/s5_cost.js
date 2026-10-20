@@ -48,7 +48,10 @@ scene('cost', ({ root, s, c0 }) => {
   const mEls = MODES.map((m, k) => { const e = tx(world, 'mono', m, X2 + 140, 300 + k * 70, { size: 40, color: C.pale }); appear(e, tG3 + 0.6 + k * 0.06); return e; });
   sfx('tick', tG3 + 0.6, { g: 0.4 });
   const sel = h('div', 'abs', world); css(sel, { border: `5px solid ${C.gold}`, width: '420px', height: '66px' });
-  F((t) => { const k = t < tArc ? 0 : 1; vis(sel, t >= tOrc && t < tG5); ss(sel, 'left', X2 + 120 + 'px'); ss(sel, 'top', (300 + k * 70 - 10) + 'px'); mEls.forEach((e, i) => ss(e, 'color', t >= tOrc && i === k ? C.white : C.pale)); });
+  // 「让你自己挑」：选框先沿列表一格一格往下翻（八分音符一格），说到「默认」时落回 orc
+  const tScan = qb(tG3 + 1.2), NSCAN = Math.max(0, Math.floor((tOrc - tScan) / (BEAT / 2)));
+  F((t) => { const scan = t >= tScan && t < tOrc, k = scan ? Math.floor((t - tScan) / (BEAT / 2)) % MODES.length : t < tArc ? 0 : 1; vis(sel, (scan || t >= tOrc) && t < tG5); ss(sel, 'left', X2 + 120 + 'px'); ss(sel, 'top', (300 + k * 70 - 10) + 'px'); mEls.forEach((e, i) => ss(e, 'color', (scan || t >= tOrc) && i === k ? C.white : C.pale)); });
+  for (let i = 0; i < NSCAN; i++) sfx('tick', tScan + i * BEAT / 2, { g: 0.16, p: -0.3 + 0.1 * (i % 7) });
   sfx('tick', tOrc, { g: 0.6 }); sfx('tick', tArc, { g: 0.6 });
   const dflt = tag(world, '默认：引用计数 + 拆环器', X2 + 600, 296, 34); slide(dflt, tOrc + 0.1, { x: -30, d: 0.3 });
   const arcT = tag(world, 'ARC：只留引用计数', X2 + 600, 366, 34); slide(arcT, tArc + 0.1, { x: -30, d: 0.3 });

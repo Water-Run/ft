@@ -143,6 +143,8 @@ scene('count', ({ root, s, c0 }) => {
   sfx('pop', tDel, { g: 0.45 });
   // 卡在 1：两个 1 随拍子一明一暗
   const tStuck = qb(T('a7b', '卡在一') - 0.1);
+  // 两根指针都牵上之后，X、Y 互相拉扯：一拍拽一下，你一下我一下，名字删光了也不停，直到「卡在 1」
+  for (let t = qb(tP2 + 0.6); t < tStuck - 0.2; t += BEAT) { pulse(eX.b, t, 1.1, 0.26); pulse(eX.n, t, 1.1, 0.26); pulse(eY.b, t + BEAT / 2, 1.1, 0.26); pulse(eY.n, t + BEAT / 2, 1.1, 0.26); }
   for (let k = 0; k < 6; k++) { const t = tStuck + k * BEAT; pulse(eX.n, t, 1.15, 0.2); pulse(eY.n, t + BEAT / 2, 1.15, 0.2); }
   const raw = slab(ui, 120, 640, ['with names:    raw X = 2  raw Y = 2', 'after del x,y: raw X = <span class="k">1</span>  raw Y = <span class="k">1</span>'], { size: 26 });
   const rawL = tx(ui, 'src', 'CPython 3.14.3', 124, 604);
