@@ -113,6 +113,9 @@
 - **改完之后结果反而变差，先确认改动真的生效了。** InnoDB 第二集第 02 章想让 notes 表在读到「两张表」时就出现，改的时候把说明写成了行尾注释：`const tNt = …; showPanel(PU, tA);   // 说明…… showPanel(PN, tNt); fin(…); …`，同一行后面的五个入场调用被一并注释掉，notes 表与两张表的表头、记录变成本场一淡入就在。预演里那段静止从 2.9 秒变成 3.7 秒；当时没有回头看画面，就在预演视频上量差值，得出「浅色面板测不出来」的错误结论，写进了源码注释与本页（上文「浅色元素」一条是后来重测的数）。直到成片投稿之后、提交前复查改动才发现。改了出现时刻却没有预期的效果时，先用 `look.js` 看那一刻、在 `git diff` 里逐行读改动，再找原因；说明写在单独一行，不跟在代码后面。
 - **画面风格先取证讲解对象，再动手。** InnoDB 第一版的纸色底、墨色字、单一强调色，与同期另一个系列的 150 秒片子是同一套路子，被要求完全重做（`feedback.md` P7）。开工时先取讲解对象自己的视觉材料（标志、官网样式表、官方文档插图），测出配色与字体并写进本片的设计说明；再与近期各片并排比较，确认不是换色复用。
 - **术语逐个过一遍再交审。** 第一版的稿子出现了 SDI、脏读、幻读等词却没有解释（`feedback.md` P9）。交审前列出稿中每个术语第一次出现的句号和解释它的那一句，没有解释句的要么补、要么删。
+- **片单是共享文件，`new.js` 会整份重写它。** `new.js` 在开始时读入 `videos/catalog.json`，结束时把整份文件写回。同一仓库里同时有别的制作者开工（另一个会话在登记自己的新集、或改了状态）时，你这次 `new.js` 结束的瞬间会把对方的改动一起覆盖掉。做法：改片单前先 `git status` 看有没有别人的未提交改动；批量新建时一条一条跑，每条之后重新核对片单里自己的条目与别人的条目都还在；提交时用路径限定的 `git commit -F <提交信息文件> -- <pathspec>`，只带自己改的条目；推送前重新 fetch 比对，别只看 `git branch -vv` 的快照。
+- **Windows 上整篇 CRLF 的系列说明，会让片单检查一直判为不一致。** `catalog.js` 重写分集表时用的是 LF；`syncSeries` 比较的是整份文件，于是文件里若通篇是 CRLF，就永远比不相等，`catalog.js --check` 报「与 videos/catalog.json 不一致：videos/series/<系列>/README.md」，而表格内容其实一字不差。仓库规定全仓 LF（`.gitattributes` 的 `* text=auto eol=lf`），把这类文件规范化成 LF 即可。实测 2026-10-20：`videos/series/agent-harnesses/README.md` 是全仓唯一一篇通篇 CRLF 的系列说明。
+- **一部片子从双语改成只做一种语言，三处要一起改。** `new.js` 按片单里的 `languages` 生成 `src/js/timing.<语言>.js`，并把每个语言写成 `src/index.html` 里的 `<script src="js/timing.<语言>.js">`。只把 `project.json` 的 `languages` 收窄成一种语言，删掉另一个语言的 `timing.*.js`，`index.html` 里那行 `<script>` 还在，浏览器每次都报一次 404（`look.js` 的「页面日志」里看得到）。改语言范围时三处一起改：`project.json` 的 `languages`、`videos/catalog.json` 里本片的 `languages`、以及 `src/index.html` 的时间线 `<script>` 行。`catalog.js --check` 会核对片单与 `project.json` 的语言是否一致，少改一处就被它挡下。实测 2026-10-20：Firebird 一集只做中文。
 
 ## 取证
 
