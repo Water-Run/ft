@@ -178,19 +178,21 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
 
     // ── 6 交付前 ──
     if (flag('final')) {
-      const fx = [], slug = P.slug, fps = +(P.render.fps || 60);
-      const wantFiles = [`out/${slug}-${lang}-1080p60.mp4`, `out/${slug}-${lang}-1080p60-voice-only.mp4`, `out/${slug}-${lang}.srt`, `out/cover-${lang}-16x9.jpg`, `out/cover-${lang}-4x3.jpg`, `out/cover-${lang}-16x9-3840x2160.png`, `out/cover-${lang}-4x3-3200x2400.png`];
+      // 交付分辨率：render.scale 为 1 是 1920×1080，为 2 是 3840×2160；文件名随之为 1080p60、2160p60
+      const fx = [], slug = P.slug, fps = +(P.render.fps || 60), sc = +(P.render.scale || 1), W = Math.round(1920 * sc), H = Math.round(1080 * sc), tag = `${H}p${fps}`;
+      const wantFiles = [`out/${slug}-${lang}-${tag}.mp4`, `out/${slug}-${lang}-${tag}-voice-only.mp4`, `out/${slug}-${lang}.srt`, `out/cover-${lang}-16x9.jpg`, `out/cover-${lang}-4x3.jpg`, `out/cover-${lang}-16x9-3840x2160.png`, `out/cover-${lang}-4x3-3200x2400.png`];
       for (const f of wantFiles) if (!exists(f)) fx.push('缺少 ' + f);
       let fin = null; try { fin = JSON.parse(read(`build/finish.${lang}.json`)); } catch (e) { fx.push(`缺少 build/finish.${lang}.json：先运行 node kit/tools/finish.js`); }
       if (fin) {
         if (Math.abs(fin.duration - L.total) > 0.6) fx.push(`成片时长 ${fin.duration.toFixed(1)}s 与时间线 ${L.total.toFixed(1)}s 不一致：脚本或配音改过之后没有重新渲染`);
-        if (!/width=1920/.test(fin.probe) || !/height=1080/.test(fin.probe) || !new RegExp(`r_frame_rate=${fps}/1`).test(fin.probe)) fx.push(`成片规格不是 1920×1080 ${fps} 帧/秒`);
+        if (!new RegExp(`^width=${W}\r?$`, 'm').test(fin.probe) || !new RegExp(`^height=${H}\r?$`, 'm').test(fin.probe) || !new RegExp(`r_frame_rate=${fps}/1`).test(fin.probe)) fx.push(`成片规格不是 ${W}×${H} ${fps} 帧/秒`);
         if (!(fin.loudness.I >= -17.5 && fin.loudness.I <= -14.5)) fx.push(`响度 ${fin.loudness.I} LUFS 不在 -16±1.5`);
         if (!(fin.loudness.TP <= -1)) fx.push(`峰值 ${fin.loudness.TP} dBFS 高于 -1`);
         if (((C.levels || {}).STILL || 'error') === 'error') for (const z of fin.freezes) fx.push(`成片 ${z.start.toFixed(1)}s 起有 ${z.d.toFixed(1)} 秒画面不动`);
         if (fin.blank) for (const z of fin.blank.blank) fx.push(`成片 ${z[0]}–${z[1]}s 是空画面`);
       }
       let rec = null; try { rec = JSON.parse(read(`out/${lang}/video.json`)); } catch (e) { fx.push(`缺少 out/${lang}/video.json：成片不是由 render.js 整片渲染得到的`); }
+      if (rec && (rec.scale || 1) !== sc) fx.push(`out/${lang}/video.json 记的是 ${rec.scale || 1} 倍渲染，project.json 的 render.scale 是 ${sc}：按交付分辨率重新渲染`);
       if (rec) { const now = sourceState(); const changed = [...new Set([...Object.keys(now), ...Object.keys(rec.sources)])].filter((f) => now[f] !== rec.sources[f] && !(/^js\/timing\.\w+\.js$/.test(f) && f !== `js/timing.${lang}.js`)); if (changed.length) fx.push('这些源文件在渲染之后改过，成片已过期，要重新渲染：' + changed.map((f) => 'src/' + f).join(' ')); }
       if (!exists('README.md')) fx.push('缺少本片的 README.md');
       else if (P.layout >= 2) {

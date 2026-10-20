@@ -176,6 +176,8 @@ I:         -22.3 LUFS LRA:         5.7 LU Peak:       -0.9 dBFS
 | `out/<slug>-<语言>-1080p60-voice-only.mp4` | 仅旁白 |
 | `out/<slug>-<语言>-1080p60-no-music.mp4` | 旁白 + 音效（配乐为 `none` 时没有这一版） |
 
+文件名里的 `1080p60` 取自画面的实测高度与帧率；按 4K 交付（`render.scale` 为 2）时是 `2160p60`。
+
 需要比较两种配乐时另出试听片：
 
 ```bash

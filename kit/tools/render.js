@@ -1,9 +1,10 @@
 // 并行出帧：N 个无头 Chrome 各渲染一段时间线，逐帧截图经管道送入 ffmpeg，最后无损拼接成 out/<语言>/video.mp4（无声）。
 // 用法：node kit/tools/render.js <视频> [--lang zh] [--fps 60] [--scale 1] [--workers N] [--from 0] [--to 总长] [--out 文件] [--crf 15]
 //       --mb 4        运动模糊：每帧渲染 N 个子帧再平均（耗时 ×N）；--shutter 0.5 快门开角占一帧的比例
-//       --gpu 1       启用硬件加速（WebGL 场景需要；先用 glprobe.js 探测）
+//       --gpu 1       启用硬件加速（WebGL 场景需要；普通场景在有显卡的机器上也能提速，先用 glprobe.js 探测、再与 CPU 出图比一小段）
+//       --scale 2     出 3840×2160（4K）；交付分辨率写在 project.json 的 render.scale，check.js --final 按它核对
 //       --threads 4   每个编码进程的线程数（不限时每个进程按 CPU 核数开线程，1080p 下各占约 1.6 GB，九路就是 14 GB）
-// 省略 --lang 时依次渲染全部语言。缺省值取 project.json 的 render 段（fps、mb、shutter、crf、workers、gpu），命令行优先。workers 缺省为 CPU 线程数的三分之一（2–9），且不超过可用内存 ÷ 3 GB。
+// 省略 --lang 时依次渲染全部语言。缺省值取 project.json 的 render 段（fps、mb、shutter、crf、workers、gpu、scale），命令行优先。workers 缺省为 CPU 线程数的三分之一（2–9），且不超过可用内存 ÷ 3 GB。
 // 完整性：每张截图入管道前先验 PNG 的头、尺寸与结尾；每一段编码完数一遍帧数，不符就单独重渲那一段；
 //         拼接后再数一遍总帧数。任何一步对不上都以非零退出码结束，不会交出一部悄悄少了帧的片子。日志末行应有 verified frames=<总帧数>。
 // 像素格式：截图通常是 RGB，但个别帧会因为合成层边缘的几个透明像素变成 RGBA。图像流的格式中途一变，ffmpeg 就重建滤镜图：
@@ -17,12 +18,12 @@ needVideo();
 require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
 const R = PROJECT().render, opt = (k, d) => arg(k, R[k] != null ? R[k] : d);
-const FPS = +opt('fps', 60), SCALE = +arg('scale', 1), CRF = String(opt('crf', 15));
+const FPS = +opt('fps', 60), SCALE = +opt('scale', 1), CRF = String(opt('crf', 15));
 // 缺省并发：CPU 线程数的三分之一（2–9），再按可用内存收紧——每路一个 Chrome 与一个编码器，长片约占 3 GB；默认并发曾把 40 GB 的机器用尽
 const WORKERS = +opt('workers', Math.max(2, Math.min(9, Math.floor(os.cpus().length / 3), Math.floor(os.freemem() / 3e9))));
 const MB = Math.max(1, +opt('mb', 1)), SHUTTER = +opt('shutter', 0.5), GPU = !!+opt('gpu', 0), THREADS = String(+arg('threads', 4));
 const PW = Math.round(1920 * SCALE), PH = Math.round(1080 * SCALE);
-// 缩小出图（低清预演）时显式给出裁剪区与比例：新版 Chrome 的直接截图不理会小于 1 的设备像素比，出来仍是 1920×1080
+// 缩放出图（低清预演、4K）时显式给出裁剪区与比例：新版 Chrome 的直接截图不理会小于 1 的设备像素比，出来仍是 1920×1080
 const SHOT = SCALE !== 1 ? { clip: { x: 0, y: 0, width: 1920, height: 1080, scale: SCALE } } : {};
 const IEND = Buffer.from([0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
 const pngOk = (b) => b.length > 64 && b.readUInt32BE(0) === 0x89504e47 && b.readUInt32BE(4) === 0x0d0a1a0a
@@ -113,8 +114,8 @@ async function render(lang) {
   console.log(`done ${N} frames in ${((Date.now() - t0) / 1000).toFixed(0)}s -> ${rel(OUT)} (exit ${r.status}) total=${total.toFixed(2)}s  verified frames=${outFrames}`);
   if (r.status !== 0 || outFrames !== N) { console.error(`渲染失败：成片有 ${outFrames} 帧，应为 ${N} 帧；各段留在 ${rel(segDir)}`); server.close(); process.exit(1); }
   fs.rmSync(segDir, { recursive: true, force: true });
-  // 整片、原尺寸、默认位置的渲染：记下这一版画面对应的源码状态，交付前据此判断成片是否过期
-  if (F0 === 0 && Math.abs(to - total) < 1e-6 && SCALE === 1 && arg('out', null) == null) fs.writeFileSync(path.join(dirs(lang).out, 'video.json'), JSON.stringify({ lang, frames: N, fps: FPS, mb: MB, total, rendered: new Date().toISOString(), sources: sourceState() }, null, 1));
+  // 整片、不缩小、默认位置的渲染：记下这一版画面的规格与对应的源码状态，交付前据此判断成片是否过期、分辨率是否符合 render.scale
+  if (F0 === 0 && Math.abs(to - total) < 1e-6 && SCALE >= 1 && arg('out', null) == null) fs.writeFileSync(path.join(dirs(lang).out, 'video.json'), JSON.stringify({ lang, frames: N, fps: FPS, mb: MB, scale: SCALE, width: PW, height: PH, gpu: GPU, total, rendered: new Date().toISOString(), sources: sourceState() }, null, 1));
   server.close();
 }
 (async () => {

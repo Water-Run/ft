@@ -173,7 +173,21 @@ async function openPage(base, { url, lang = LANGS()[0], width = 1920, height = 1
   if (gpu) args.push('--enable-gpu', '--ignore-gpu-blocklist', '--enable-webgl', ...(WIN ? ['--use-angle=d3d11'] : []));
   const browser = await puppeteer.launch({ executablePath: CHROME(), headless: true, protocolTimeout: 600000, userDataDir: profile, args });
   const close = browser.close.bind(browser);
-  browser.close = async () => { try { await close(); } finally { for (let i = 0; i < 5; i++) { try { fs.rmSync(profile, { recursive: true, force: true }); break; } catch (e) { await new Promise((r) => setTimeout(r, 200)); } } PROFILES.delete(profile); } };
+  // 开了 gpu 时 close() 偶尔一直不返回（帧早已写完，渲染停在收尾；在 Windows 上实测见过）：15 秒还没关上，就结束这个浏览器的整棵进程树
+  browser.close = async () => {
+    let timer = null;
+    const pc = close(); pc.catch(() => {});
+    try { await Promise.race([pc, new Promise((r) => { timer = setTimeout(r, 15000); })]); } finally {
+      clearTimeout(timer);
+      const proc = browser.process();
+      if (proc && proc.exitCode == null && proc.signalCode == null) {
+        console.log(`  浏览器 15 秒内没有关上，结束进程 ${proc.pid}`);
+        if (WIN) spawnSync('taskkill', ['/pid', String(proc.pid), '/T', '/F'], { stdio: 'ignore' }); else try { proc.kill('SIGKILL'); } catch (e) {}
+      }
+      for (let i = 0; i < 5; i++) { try { fs.rmSync(profile, { recursive: true, force: true }); break; } catch (e) { await new Promise((r) => setTimeout(r, 200)); } }
+      PROFILES.delete(profile);
+    }
+  };
   const page = await browser.newPage();
   const logs = [];
   await page.setViewport({ width, height, deviceScaleFactor: scale });

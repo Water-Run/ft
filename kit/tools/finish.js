@@ -4,7 +4,7 @@
 //       node kit/tools/finish.js <视频> --audio out/zh/audio_b.wav --name 试听-复古配乐
 //         只把另一条混音封装成 out/<slug>-<语言>-<name>.mp4（试听片），不动正片
 //       --no-blank   不做空画面检查（它要解码整部片子，约十几秒）
-// 成片命名：out/<slug>-<语言>-1080p60.mp4，另有 -voice-only、-no-music；字幕 out/<slug>-<语言>.srt。检查结果写 build/finish.<语言>.json（check.js --final 读它）。
+// 成片命名：out/<slug>-<语言>-<高>p<帧率>.mp4（按画面实测，如 1080p60、4K 为 2160p60），另有 -voice-only、-no-music；字幕 out/<slug>-<语言>.srt。检查结果写 build/finish.<语言>.json（check.js --final 读它）。
 const { spawnSync } = require('child_process');
 const { needVideo, PROJECT, LANGS, KIT, FFMPEG, FFPROBE, PY, pythonPath, VIDEO, arg, flag, layout, dirs, mkdirp, rel, pyEnv, mmss, path, fs } = require('./lib');
 needVideo();
@@ -26,6 +26,9 @@ for (const lang of LANGS(true)) {
   console.log(`■ ${lang}`);
   // 画面与声音的长度必须一致：渲染丢帧时画面会变短，-shortest 会把声音也截掉，成片看上去「正常」却少了一段
   const fps = +(P.render.fps || 60);
+  // 文件名里的规格取画面的实测高度与帧率，不按配置推断
+  const vs = spawnSync(FFPROBE(), ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=height,r_frame_rate', '-of', 'default=nw=1', video], { encoding: 'utf8' }).stdout;
+  const vr = (vs.match(/r_frame_rate=(\d+)\/(\d+)/) || [0, fps, 1]), tag = `${(vs.match(/height=(\d+)/) || [0, 1080])[1]}p${Math.round(vr[1] / vr[2])}`;
   const frames = parseInt(spawnSync(FFPROBE(), ['-v', 'error', '-count_packets', '-select_streams', 'v:0', '-show_entries', 'stream=nb_read_packets', '-of', 'csv=p=0', video], { encoding: 'utf8' }).stdout, 10) || 0;
   const adur = +spawnSync(FFPROBE(), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', audio], { encoding: 'utf8' }).stdout || 0;
   console.log(`  画面 ${frames} 帧 = ${(frames / fps).toFixed(2)}s，声音 ${adur.toFixed(2)}s，时间线 ${L.total.toFixed(2)}s`);
@@ -47,7 +50,7 @@ for (const lang of LANGS(true)) {
     const fin = o(src.replace('.wav', '_final.wav'));
     ff(['-y', '-loglevel', 'error', '-i', suffix ? o(src) : audio, '-af', af, fin], { stdio: 'inherit' });
     if (!suffix) m1 = measure(fin);
-    mux(video, fin, path.join(OUT, `${slug}-${lang}-1080p60${suffix}.mp4`), meta);
+    mux(video, fin, path.join(OUT, `${slug}-${lang}-${tag}${suffix}.mp4`), meta);
     fs.rmSync(fin, { force: true });
   }
   console.log(`  响度：增益 ${gain.toFixed(1)} dB → I=${m1.I} LUFS  TP=${m1.TP} dBFS（目标 -16±1.5 / ≤ -1）`);
@@ -55,7 +58,7 @@ for (const lang of LANGS(true)) {
   const cues = L.order.map((id) => L.cues[id]).filter((c) => c.cap);
   fs.writeFileSync(path.join(OUT, `${slug}-${lang}.srt`), cues.map((c, i) => `${i + 1}\n${srtTime(c.start)} --> ${srtTime(Math.min(c.end + 0.25, cues[i + 1] ? cues[i + 1].start - 0.05 : c.end + 0.5))}\n${strip(c.cap)}\n`).join('\n'));
   // 规格与静止段（不看底部字幕条）
-  const main = path.join(OUT, `${slug}-${lang}-1080p60.mp4`);
+  const main = path.join(OUT, `${slug}-${lang}-${tag}.mp4`);
   const probe = spawnSync(FFPROBE(), ['-v', 'error', '-show_entries', 'format=duration:stream=codec_name,width,height,r_frame_rate', '-of', 'default=nw=1', main], { encoding: 'utf8' }).stdout;
   const dur = +(probe.match(/duration=([\d.]+)/) || [0, 0])[1];
   console.log('  ' + [...new Set(probe.trim().split(/\r?\n/))].join('  '));
@@ -69,7 +72,7 @@ for (const lang of LANGS(true)) {
     const lines = (r.stdout || '').trim().split(/\r?\n/);
     try { blank = JSON.parse(lines[lines.length - 1]); console.log('  ' + lines.slice(0, -1).join('\n  ')); } catch (e) { console.log('  空画面检查没有跑成：' + ((r.stderr || '').trim().split(/\r?\n/).pop() || '未知原因')); }
   }
-  fs.writeFileSync(path.join(mkdirp(d.build), `finish.${lang}.json`), JSON.stringify({ lang, duration: dur, expected: L.total, frames, loudness: m1, gain: +gain.toFixed(1), freezes: b.map((x, i) => ({ start: a[i], d: x })), blank, probe, versions: versions.map((v) => `${slug}-${lang}-1080p60${v[1]}.mp4`) }, null, 1));
+  fs.writeFileSync(path.join(mkdirp(d.build), `finish.${lang}.json`), JSON.stringify({ lang, duration: dur, expected: L.total, frames, tag, loudness: m1, gain: +gain.toFixed(1), freezes: b.map((x, i) => ({ start: a[i], d: x })), blank, probe, versions: versions.map((v) => `${slug}-${lang}-${tag}${v[1]}.mp4`) }, null, 1));
 }
 console.log('交付物（out/）：');
 for (const n of fs.readdirSync(OUT).sort()) if (/\.(mp4|srt|jpg|png)$/.test(n)) console.log(`  ${n.padEnd(52)} ${(fs.statSync(path.join(OUT, n)).size / 1048576).toFixed(1).padStart(7)} MB`);
