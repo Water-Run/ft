@@ -15,7 +15,7 @@ for (const file of tracked) {
 }
 
 // 2. 根目录只放约定的入口；仓库、系列、视频三级之外不另起目录
-const ROOT_ALLOWED = new Set(['.editorconfig', '.gitattributes', '.github', '.gitignore', 'AGENTS.md', 'CONTRIBUTING.md', 'LICENSE', 'README.md', 'SECURITY.md', 'assets', 'docs', 'kit', 'package-lock.json', 'package.json', 'series', 'videos']);
+const ROOT_ALLOWED = new Set(['.editorconfig', '.gitattributes', '.github', '.gitignore', 'AGENTS.md', 'CONTRIBUTING.md', 'LICENSE', 'README.md', 'SECURITY.md', 'assets', 'docs', 'kit', 'package-lock.json', 'package.json', 'videos']);
 for (const top of new Set(listed.map((file) => file.split('/')[0]))) if (!ROOT_ALLOWED.has(top)) errors.push('根目录多出了 ' + top + '：新东西放进仓库、系列或视频三级之一（docs/README.md）');
 if (read('AGENTS.md').split('\n').length > 80) errors.push('AGENTS.md 超过 80 行：入口只写角色、边界与去哪里读，细则放进 docs/');
 if (/bilibili\.com\/video|youtube\.com\/watch|youtu\.be\//.test(read('README.md'))) errors.push('根 README 里有某一部片子的发布链接：发布记录只放在该片 project.json 的 release，片单索引会生成');
@@ -42,8 +42,8 @@ for (const file of listed.filter((file) => /^kit\/(tools|tests)\/.*\.js$/.test(f
 const map = read('docs/README.md'), mapped = new Set([...map.matchAll(/\]\(([^)#\s]+)/g)].map((m) => path.posix.normalize('docs/' + m[1])));
 for (const file of listed.filter((file) => /^docs\/.*\.md$/.test(file) && !file.startsWith('docs/log/') && file !== 'docs/README.md')) if (!mapped.has(file)) errors.push(file + ' 没有登记在 docs/README.md 的「全部文档」里');
 
-// 6. 本地文件链接：根目录、docs/、series/、kit/ 下的说明，以及各片 README
-const docs = listed.filter((file) => /^[^/]+\.md$/.test(file) || /^(docs|series)\/.*\.md$/.test(file) || /^kit\/.*\.md$/.test(file) || /^videos\/[^/]+(\/README)?\.md$/.test(file) || /^videos\/[^/]+\/README\.md$/.test(file));
+// 6. 本地文件链接：根目录、docs/、kit/ 下的说明，片单索引、系列说明与各片 README
+const docs = listed.filter((file) => /^[^/]+\.md$/.test(file) || /^docs\/.*\.md$/.test(file) || /^kit\/.*\.md$/.test(file) || /^videos\/[^/]+(\/README)?\.md$/.test(file) || /^videos\/[^/]+\/[^/]+\/README\.md$/.test(file));
 for (const file of docs) {
   const content = read(file).replace(/```[\s\S]*?```/g, '').replace(/`[^`\n]*`/g, '');
   for (const match of content.matchAll(/\[[^\]]*\]\((?:<([^>]+)>|([^\s)]+))(?:\s+"[^"]*")?\)/g)) {
@@ -56,9 +56,12 @@ for (const file of docs) {
 
 // 7. 新版目录（project.json 的 layout 为 2）的视频只放约定的文件
 const VIDEO_ALLOWED = /^(README\.md|project\.json|research|review|src|tools|expect\.[a-z]+\.json|\.gitignore|\.gitattributes)$/;
-for (const dir of fs.readdirSync(path.join(root, 'videos'), { withFileTypes: true }).filter((d) => d.isDirectory())) {
-  let p; try { p = json(`videos/${dir.name}/project.json`); } catch (error) { continue; }
-  if (p.layout >= 2) for (const top of new Set(listed.filter((f) => f.startsWith(`videos/${dir.name}/`)).map((f) => f.split('/')[2]))) if (!VIDEO_ALLOWED.test(top)) errors.push(`videos/${dir.name}/${top}：新版目录不放这类文件（交接写进 README，任务书与交付说明已并入 README）`);
+for (const group of fs.readdirSync(path.join(root, 'videos'), { withFileTypes: true }).filter((d) => d.isDirectory())) {
+  for (const dir of fs.readdirSync(path.join(root, 'videos', group.name), { withFileTypes: true }).filter((d) => d.isDirectory())) {
+    const base = `videos/${group.name}/${dir.name}`;
+    let p; try { p = json(`${base}/project.json`); } catch (error) { continue; }
+    if (p.layout >= 2) for (const top of new Set(listed.filter((f) => f.startsWith(base + '/')).map((f) => f.split('/')[3]))) if (!VIDEO_ALLOWED.test(top)) errors.push(`${base}/${top}：新版目录不放这类文件（交接写进 README，任务书与交付说明已并入 README）`);
+  }
 }
 
 // 8. 片单、索引、系列说明与各片署名

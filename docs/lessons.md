@@ -31,7 +31,7 @@
 - **为什么**：材料可靠不等于该放进来；版本清单、历史与实现参数挤掉主线时，观众不知道在看什么。
 - **怎样查**：在成片上标出提出问题、各章推进、结尾回答的时刻；每一段说得出它为什么留在这里。
 - **也用于**：文案、验收
-- **案例**：正面 [myisam](../videos/myisam/)、[postgresql](../videos/postgresql/)；反面 [lean4](../videos/lean4/)、[openclaw-opencode-v2](../videos/openclaw-opencode-v2/)、[openclaw-hermes](../videos/openclaw-hermes/)、[web-login](../videos/web-login/)
+- **案例**：正面 [myisam](../videos/database-engines/myisam/)、[postgresql](../videos/database-engines/postgresql/)；反面 [lean4](../videos/in-seconds/lean4/)、[openclaw-opencode-v2](../videos/standalone/openclaw-opencode-v2/)、[openclaw-hermes](../videos/standalone/openclaw-hermes/)、[web-login](../videos/in-seconds/web-login/)
 - **来源**：P0、P5、P21、P33、C10、C13（见 [反馈记录](log/feedback.md)）
 
 ### 取证
@@ -43,7 +43,7 @@
 - **为什么**：曾有成片的终端画面露出个人目录。
 - **怎样查**：逐屏核对最终 MP4、字幕、封面与说明文字里的路径、用户名与地址。
 - **也用于**：实现、验收
-- **案例**：正面 [luainstaller](../videos/luainstaller/)
+- **案例**：正面 [luainstaller](../videos/open-source-projects/luainstaller/)
 
 #### F09 反馈与证据分清来源
 
@@ -62,7 +62,7 @@
 - **为什么**：「有例子」不等于讲清楚；名词堆叠、概念跳跃时，观众跟不上。
 - **怎样查**：正常速度从输入跟到输出，每一步的原因都在画面或旁白里；列出全片新名词与它们的解释句。
 - **也用于**：验收
-- **案例**：正面 [myisam](../videos/myisam/)、[two-factor-auth](../videos/two-factor-auth/)；反面 [lean4](../videos/lean4/)、[innodb](../videos/innodb/)、[web-login](../videos/web-login/)
+- **案例**：正面 [myisam](../videos/database-engines/myisam/)、[two-factor-auth](../videos/in-seconds/two-factor-auth/)；反面 [lean4](../videos/in-seconds/lean4/)、[innodb](../videos/database-engines/innodb/)、[web-login](../videos/in-seconds/web-login/)
 - **来源**：P9、P17、P18、P34、C10、C11（见 [反馈记录](log/feedback.md)）
 
 #### F03 名称、比较与边界在第一次出现时交代
@@ -71,7 +71,7 @@
 
 - **为什么**：口径交代晚了，观众先形成错误印象，后面的纠正很难追回来。
 - **怎样查**：逐个核对名称与比较第一次出现时的旁白、画面和结论；译文保留限制条件。
-- **案例**：反面 [wsl](../videos/wsl/)、[dense-vs-moe](../videos/dense-vs-moe/)
+- **案例**：反面 [wsl](../videos/standalone/wsl/)、[dense-vs-moe](../videos/in-seconds/dense-vs-moe/)
 - **来源**：P4、C5、C6、C7、C8、C14（见 [反馈记录](log/feedback.md)）
 
 #### F10 单集独立可懂
@@ -80,7 +80,7 @@
 
 - **为什么**：系列连续性被做成了对前集的反复回指。
 - **怎样查**：逐句检查对其他集的引用，各自说得出必要性；没看过前集的人能跟完。
-- **案例**：反面 [innodb](../videos/innodb/)
+- **案例**：反面 [innodb](../videos/database-engines/innodb/)
 - **来源**：P16（见 [反馈记录](log/feedback.md)）
 
 #### F11 外文材料给中文释义
@@ -90,7 +90,7 @@
 - **为什么**：把翻译的负担交给观众，增加了理解成本。
 - **怎样查**：中文成片中每段外文材料旁都有可读的中文对应，且留够阅读时间。
 - **也用于**：实现
-- **案例**：反面 [innodb](../videos/innodb/)
+- **案例**：反面 [innodb](../videos/database-engines/innodb/)
 - **来源**：P19（见 [反馈记录](log/feedback.md)）
 
 #### F13 陌生或历史对象先交代来龙去脉
@@ -99,7 +99,7 @@
 
 - **为什么**：一上来就讲系统内部，多数观众不知道对象是什么、为什么要看。
 - **怎样查**：第一次观看的人能复述对象、年代和本片要走的路线。
-- **案例**：反面 [opencart-1-5-admin](../videos/opencart-1-5-admin/)
+- **案例**：反面 [opencart-1-5-admin](../videos/standalone/opencart-1-5-admin/)
 - **来源**：P22（见 [反馈记录](log/feedback.md)）
 
 #### F14 片尾名单不配旁白，制作指令不进文案
@@ -109,7 +109,7 @@
 - **为什么**：片尾被配过音，制作说明被混进过文案。
 - **怎样查**：导出的校对稿里没有制作指令；成片片尾没有人声，名单完整可读。（工具：script-review.js 检查片尾 cue 无旁白）
 - **也用于**：实现
-- **案例**：反面 [opencart-1-5-admin](../videos/opencart-1-5-admin/)
+- **案例**：反面 [opencart-1-5-admin](../videos/standalone/opencart-1-5-admin/)
 - **来源**：P12、P23（见 [反馈记录](log/feedback.md)）
 
 #### F15 不写制作者口吻的自我说明
@@ -119,7 +119,7 @@
 - **为什么**：这类话一看就是模型写的，正常人做视频不会提默认的事。
 - **怎样查**：逐屏列出说明性的小字与旁白，问一句「正常人做视频会不会写这句」，不会就删。
 - **也用于**：实现
-- **案例**：反面 [opencart-1-5-admin](../videos/opencart-1-5-admin/)、[innodb](../videos/innodb/)
+- **案例**：反面 [opencart-1-5-admin](../videos/standalone/opencart-1-5-admin/)、[innodb](../videos/database-engines/innodb/)
 - **来源**：P8、P25（见 [反馈记录](log/feedback.md)）
 
 ### 配音
@@ -130,7 +130,7 @@
 
 - **为什么**：成片里出现过读错与断句错，ASR 没有全部筛出来。
 - **怎样查**：逐句听实际音轨；ASR 只用来筛候选，读错与断句的判断以人耳为准，听不到的如实写明。（工具：asr.js 筛查候选）
-- **案例**：反面 [innodb](../videos/innodb/)
+- **案例**：反面 [innodb](../videos/database-engines/innodb/)
 - **来源**：P14、P20（见 [反馈记录](log/feedback.md)）
 
 #### F17 配音有精神，先试听再合成
@@ -139,7 +139,7 @@
 
 - **为什么**：读得对不等于读得好，「懒洋洋」的语气与不合适的音色都被直接否定过。
 - **怎样查**：成片后连续试听开头、难点段与章间；响度、语速数值和 ASR 都不检查语气。
-- **案例**：正面 [postgresql](../videos/postgresql/)；反面 [tmux](../videos/tmux/)、[opencart-1-5-admin](../videos/opencart-1-5-admin/)、[web-login](../videos/web-login/)
+- **案例**：正面 [postgresql](../videos/database-engines/postgresql/)；反面 [tmux](../videos/in-seconds/tmux/)、[opencart-1-5-admin](../videos/standalone/opencart-1-5-admin/)、[web-login](../videos/in-seconds/web-login/)
 - **来源**：P13、P29、P38（见 [反馈记录](log/feedback.md)）
 
 ### 设计
@@ -150,7 +150,7 @@
 
 - **为什么**：通用的「科技感」版式换个主题也能用，等于没有设计。
 - **怎样查**：从成片任取几帧，不看字幕判断能否认出对象；列出每种颜色、字体、部件取自哪份官方材料。
-- **案例**：正面 [postgresql](../videos/postgresql/)、[luainstaller](../videos/luainstaller/)；反面 [myisam](../videos/myisam/)、[innodb](../videos/innodb/)
+- **案例**：正面 [postgresql](../videos/database-engines/postgresql/)、[luainstaller](../videos/open-source-projects/luainstaller/)；反面 [myisam](../videos/database-engines/myisam/)、[innodb](../videos/database-engines/innodb/)
 - **来源**：P7、P28、P30（见 [反馈记录](log/feedback.md)）
 
 #### F18 每章一个主画面
@@ -160,7 +160,7 @@
 - **为什么**：视觉对了、叙事对了，动画仍可能简陋到没有冲击力。
 - **怎样查**：连续观看每章，说出它的主画面和主画面的动作；只有逐行出现、高亮、淡入的章记为未通过。
 - **也用于**：实现、验收
-- **案例**：反面 [postgresql](../videos/postgresql/)
+- **案例**：反面 [postgresql](../videos/database-engines/postgresql/)
 - **来源**：P31（见 [反馈记录](log/feedback.md)）
 
 #### F20 图形承载内容，形式服从功能
@@ -170,7 +170,7 @@
 - **为什么**：旁白在讲因果的地方，画面在做形状的表演。
 - **怎样查**：逐屏列出图形与对应的旁白，指不出的改；核对同一形状、同一颜色有没有中途换义。
 - **也用于**：实现
-- **案例**：反面 [web-login](../videos/web-login/)
+- **案例**：反面 [web-login](../videos/in-seconds/web-login/)
 - **来源**：P39（见 [反馈记录](log/feedback.md)）
 
 #### F21 每部片子自成一体，不被无关的片子带偏
@@ -180,7 +180,7 @@
 - **为什么**：同一套纸色底、平涂版式和 120 拍秒针配乐反复出现，片子之间难以区分；任务书照搬系列风格，与策划者的要求冲突过。
 - **怎样查**：与近期两部片子并排看关键帧、并排听开头：说得出这一部的视觉和声音取自哪里、和它们有什么不同。（工具：check.js 提示样式表或配乐脚本与起点模板、其他片子完全相同）
 - **也用于**：声音
-- **案例**：正面 [postgresql](../videos/postgresql/)
+- **案例**：正面 [postgresql](../videos/database-engines/postgresql/)
 - **来源**：P3、P7、C2（见 [反馈记录](log/feedback.md)）
 
 ### 实现
@@ -192,7 +192,7 @@
 - **为什么**：全仓库最普遍的问题：信息还没看完、还没看懂，画面就过去了。
 - **怎样查**：用 readable.js 量每个关键状态从全部到位到开始遮挡或退场的区间；再以正常速度连续观看全片，需要暂停才看得完、没看懂就换场的画面都算未通过。逐帧量达标不能代替连续观看。（工具：readable.js 测量完整可读区间）
 - **也用于**：验收
-- **案例**：反面 [opencart-1-5-admin](../videos/opencart-1-5-admin/)、[innodb](../videos/innodb/)、[web-login](../videos/web-login/)、[openclaw-hermes](../videos/openclaw-hermes/)
+- **案例**：反面 [opencart-1-5-admin](../videos/standalone/opencart-1-5-admin/)、[innodb](../videos/database-engines/innodb/)、[web-login](../videos/in-seconds/web-login/)、[openclaw-hermes](../videos/standalone/openclaw-hermes/)
 - **来源**：P2、P15、P24、P26、P36、P37（见 [反馈记录](log/feedback.md)）
 
 #### F05 运动解释关系
@@ -202,7 +202,7 @@
 - **为什么**：反复的擦入刷出和晃动的镜头制造了动静，却没有解释任何东西，还分散注意力。
 - **怎样查**：连续观看代表机制段，能看见前因后果；与近期两部片子的开头、换章、解释段并排比较，不只是换了颜色或方向。
 - **也用于**：验收
-- **案例**：正面 [two-factor-auth](../videos/two-factor-auth/)；反面 [innodb](../videos/innodb/)
+- **案例**：正面 [two-factor-auth](../videos/in-seconds/two-factor-auth/)；反面 [innodb](../videos/database-engines/innodb/)
 - **来源**：P3、P6、P17（见 [反馈记录](log/feedback.md)）
 
 #### F19 中间帧也是画面
@@ -212,7 +212,7 @@
 - **为什么**：成片里出现过溢出、压盖、渐变途中字与底同色、元素突然消失。
 - **怎样查**：每个动作前后逐 0.1 秒取帧，专看中间状态；scan.js 只报连续多帧的重叠与对比度，过闸不算通过。（工具：scan.js 部分覆盖（OVERLAP、CONTRAST））
 - **也用于**：验收
-- **案例**：反面 [postgresql](../videos/postgresql/)、[web-login](../videos/web-login/)
+- **案例**：反面 [postgresql](../videos/database-engines/postgresql/)、[web-login](../videos/in-seconds/web-login/)
 - **来源**：P32、P35、P36（见 [反馈记录](log/feedback.md)）
 
 ### 声音
@@ -224,7 +224,7 @@
 - **为什么**：配乐太弱、各片配乐与「刷」声同质化，都被直接指出过。
 - **怎样查**：主混音、无配乐版、仅旁白版连续试听开头、密集段与章间，与近期作品比较；事件数量和响度数值不能代替听感，听不到的如实写明。
 - **也用于**：验收
-- **案例**：正面 [myisam](../videos/myisam/)；反面 [innodb](../videos/innodb/)、[opencart-1-5-admin](../videos/opencart-1-5-admin/)
+- **案例**：正面 [myisam](../videos/database-engines/myisam/)；反面 [innodb](../videos/database-engines/innodb/)、[opencart-1-5-admin](../videos/standalone/opencart-1-5-admin/)
 - **来源**：P3、P27、C2（见 [反馈记录](log/feedback.md)）
 
 ### 验收
@@ -236,5 +236,5 @@
 - **为什么**：曾有成片名为 60 帧实为 30 帧，曾有交付记录的峰值与最终文件不符。
 - **怎样查**：用 ffprobe 与响度测量读取最终 MP4，与 README 的交付记录逐项对照。（工具：finish.js 与 check.js --final 测量最终文件）
 - **也用于**：发布与反馈
-- **案例**：反面 [openclaw-opencode-v2](../videos/openclaw-opencode-v2/)、[innodb](../videos/innodb/)
+- **案例**：反面 [openclaw-opencode-v2](../videos/standalone/openclaw-opencode-v2/)、[innodb](../videos/database-engines/innodb/)
 <!-- lessons:end -->

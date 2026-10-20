@@ -23,7 +23,7 @@ function fixture(t) {
   const run = (tool, ...args) => spawnSync(process.execPath, [path.join(root, 'kit/tools', tool + '.js'), ...args], { cwd: root, encoding: 'utf8', env: { ...process.env, FT_PROJECT_LOCK: '', PYTHON: 'nonexistent-test-python' }, timeout: 20000 });
   const created = run('new', 'example', '--title', '示例 <&> "稿本"', '--title-en', 'Example');
   assert.equal(created.status, 0, created.stderr);
-  const video = path.join(root, 'videos/example');
+  const video = path.join(root, 'videos/standalone/example');
   const project = JSON.parse(fs.readFileSync(path.join(video, 'project.json'), 'utf8'));
   t.after(() => {
     // 只清理由本测试创建并验证过的临时目录。
@@ -50,7 +50,7 @@ function approve(f, lang = 'zh') {
 }
 const lessonsIn = (root) => require(path.join(root, 'kit/tools/lessons.js'));
 
-test('新建视频在扁平目录里，署名取自 studio 配置并作为唯一来源；重建不覆盖', t => {
+test('新建视频按分组放在 videos/<系列或 standalone>/ 下，署名取自 studio 配置并作为唯一来源；重建不覆盖', t => {
   const f = fixture(t);
   assert.equal(f.project.layout, 2);
   assert.equal(f.project.stage, 'brief');
@@ -76,7 +76,7 @@ test('练习目录不改片单；旧的位置写法、错误 slug、选项和语
   assert.equal(fs.readFileSync(path.join(f.root, 'videos/catalog.json'), 'utf8'), catalog);
   assert.ok(fs.existsSync(path.join(f.root, 'out/sandbox/practice/project.json')));
   for (const args of [['../escape', '--title', 'X'], ['standalone/bad', '--title', 'X'], ['Bad_Slug', '--title', 'X'], ['bad', '--langs', 'zh,zh', '--title', 'X'], ['bad', '--typo'], ['bad', '--langs', 'fr', '--title', 'X']]) assert.notEqual(f.run('new', ...args).status, 0, args.join(' '));
-  assert.ok(!fs.existsSync(path.join(f.root, 'videos/bad')));
+  assert.ok(!fs.existsSync(path.join(f.root, 'videos/standalone/bad')));
 });
 test('片单：slug 全仓库唯一，目录名与 project.json 一致，署名不能写客户端名', t => {
   const f = fixture(t), cat = f.catalog();
@@ -93,15 +93,18 @@ test('片单：slug 全仓库唯一，目录名与 project.json 一致，署名�
   fs.writeFileSync(file, JSON.stringify({ ...project, slug: 'other' }));
   assert.match(f.run('catalog', '--check').stderr, /与目录名不一致/);
   fs.writeFileSync(file, JSON.stringify(project));
-  fs.mkdirSync(path.join(f.root, 'videos/stray'));
+  fs.mkdirSync(path.join(f.root, 'videos/standalone/stray'));
   assert.match(f.run('catalog', '--check').stderr, /不在片单里/);
+  fs.rmdirSync(path.join(f.root, 'videos/standalone/stray'));
+  fs.mkdirSync(path.join(f.root, 'videos/unknown-group'));
+  assert.match(f.run('catalog', '--check').stderr, /既不是片单里的系列/);
 });
 test('语言按「条目 ＞ 系列 ＞ 中英双语」继承；与系列相同的条目语言被拒绝', t => {
   const f = fixture(t), cat = f.catalog();
   cat.series.push({ slug: 'zh-only', title: { zh: '只做中文的系列' }, languages: ['zh'] });
   f.saveCatalog(cat);
   assert.equal(f.run('new', 'episode', '--series', 'zh-only', '--title', '一集').status, 0);
-  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(f.root, 'videos/episode/project.json'))).languages, ['zh']);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(f.root, 'videos/zh-only/episode/project.json'))).languages, ['zh']);
   assert.equal(f.catalog().videos.find(v => v.slug === 'episode').languages, undefined, '与系列相同就不写在条目上');
   assert.equal(f.run('new', 'bilingual', '--series', 'zh-only', '--title', '双语的一集', '--langs', 'zh,en').status, 0);
   assert.deepEqual(f.catalog().videos.find(v => v.slug === 'bilingual').languages, ['zh', 'en']);
@@ -126,16 +129,16 @@ test('系列栏目可含引号，起点保留二进制字节，不能带入某�
   write(starter, 'README.md', '起点说明，不得覆盖本片 README');
   const result = f.run('new', 'first', '--series', 'example-series', '--title', '第一集');
   assert.equal(result.status, 0, result.stderr);
-  const video = path.join(f.root, 'videos/first');
+  const video = path.join(f.root, 'videos/example-series/first');
   assert.deepEqual(fs.readFileSync(path.join(video, 'src/images/sample.bin')), binary);
   assert.ok(fs.readFileSync(path.join(video, 'README.md'), 'utf8').startsWith('# 第一集'));
-  assert.ok(fs.readFileSync(path.join(video, 'README.md'), 'utf8').includes('series/example-series.md'));
+  assert.ok(fs.readFileSync(path.join(video, 'README.md'), 'utf8').includes('](../README.md)'), '本片 README 链到系列说明');
   assert.equal(f.catalog().videos.find(v => v.slug === 'first').series, 'example-series');
-  assert.ok(fs.readFileSync(path.join(f.root, 'series/example-series.md'), 'utf8').includes('../videos/first/'));
+  assert.ok(fs.readFileSync(path.join(f.root, 'videos/example-series/README.md'), 'utf8').includes('](first/)'), '系列说明的分集表链到本集');
   assert.equal(f.run('timeline', video, '--lang', 'en').status, 0);
   write(starter, 'review/approval.json', '{}');
   assert.notEqual(f.run('new', 'second', '--series', 'example-series', '--title', '第二集').status, 0);
-  assert.ok(!fs.existsSync(path.join(f.root, 'videos/second')));
+  assert.ok(!fs.existsSync(path.join(f.root, 'videos/example-series/second')));
 });
 test('起点带 project.json 与 tools/ 时一并继承，本片的身份字段随后覆盖', t => {
   const f = fixture(t), cat = f.catalog();
@@ -147,7 +150,7 @@ test('起点带 project.json 与 tools/ 时一并继承，本片的身份字段�
   write(starter, 'tools/music.py', '# 起点配乐\n');
   const result = f.run('new', 'one', '--series', 'base-series', '--title', '一集');
   assert.equal(result.status, 0, result.stderr);
-  const video = path.join(f.root, 'videos/one');
+  const video = path.join(f.root, 'videos/base-series/one');
   const project = JSON.parse(fs.readFileSync(path.join(video, 'project.json'), 'utf8'));
   assert.equal(project.slug, 'one');
   assert.equal(project.check.still_seconds, 1.25, '起点的检查阈值应保留');
@@ -157,7 +160,7 @@ test('起点带 project.json 与 tools/ 时一并继承，本片的身份字段�
   assert.ok(fs.existsSync(path.join(video, 'tools/music.py')));
   write(starter, 'research/FACTS.md', '某一集的事实记录');
   assert.notEqual(f.run('new', 'two', '--series', 'base-series', '--title', '二集').status, 0);
-  assert.ok(!fs.existsSync(path.join(f.root, 'videos/two')));
+  assert.ok(!fs.existsSync(path.join(f.root, 'videos/base-series/two')));
 });
 test('未确认文案阻止配音和下游写入，先于浏览器、Python 与网络调用', t => {
   const f = fixture(t);
@@ -230,7 +233,7 @@ test('仓库内归档、已有归档、已跟踪生成物及根目录清理均�
   fs.mkdirSync(f.archive);
   assert.notEqual(f.run('clean', f.video, '--archive', f.archive, '--apply').status, 0);
   assert.notEqual(f.run('clean', f.root, '--archive', f.archive, '--apply').status, 0);
-  execFileSync('git', ['add', '-f', 'videos/example/out/film.mp4'], { cwd: f.root });
+  execFileSync('git', ['add', '-f', 'videos/standalone/example/out/film.mp4'], { cwd: f.root });
   assert.notEqual(f.run('clean', f.video).status, 0);
   assert.ok(fs.existsSync(path.join(f.video, 'out/film.mp4')));
 });
@@ -299,7 +302,7 @@ test('规则的要求改变（rev）或新增时，在制片待复核、下一�
   assert.equal(rec.items[data.rules[0].id].result, 'pending');
   assert.ok(rec.items.F99);
   assert.equal(f.run('new', 'next', '--title', '下一部测试片').status, 0);
-  assert.ok(JSON.parse(fs.readFileSync(path.join(f.root, 'videos/next/review/lessons.json'))).items.F99);
+  assert.ok(JSON.parse(fs.readFileSync(path.join(f.root, 'videos/standalone/next/review/lessons.json'))).items.F99);
 });
 test('交付前的结论：pass 要证据，n/a 要理由，open 要说明并在交付时列出', t => {
   const f = fixture(t), lessons = lessonsIn(f.root), data = lessons.registry(f.root);

@@ -77,6 +77,8 @@ function describe(r, data, { brief = false } = {}) {
 function pickStage(data, value) { if (!value) return null; if (data.stages[value]) return value; const hit = Object.keys(data.stages).find((k) => data.stages[k] === value); if (!hit) throw new Error('没有这个阶段：' + value + '（可用：' + Object.entries(data.stages).map(([k, v]) => k + '/' + v).join(' ') + '）'); return hit; }
 const BEGIN = '<!-- lessons:begin 由 node kit/tools/lessons.js render 从 docs/lessons.json 生成，不要手改 -->', END = '<!-- lessons:end -->';
 const cell = (x) => String(x ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+// 案例片子的目录（videos/<系列或 standalone>/<片>）按片单换算
+function dirOf(slug) { try { const cat = require('./catalog'), v = cat.load().videos.find((x) => x.slug === slug); return v ? cat.dirOf(v) : 'videos/' + slug; } catch (e) { return 'videos/' + slug; } }
 function table(data) {
   const L = [`当前版本 ${data.version}，共 ${data.rules.length} 条。`, ''];
   for (const [stage, name] of Object.entries(data.stages)) {
@@ -84,7 +86,7 @@ function table(data) {
     if (!rs.length) continue;
     L.push(`### ${name}`, '');
     for (const r of rs) {
-      const c = r.cases || {}, links = (xs) => xs.map((s) => `[${s}](../videos/${s}/)`).join('、');
+      const c = r.cases || {}, links = (xs) => xs.map((s) => `[${s}](../${dirOf(s)}/)`).join('、');
       L.push(`#### ${r.id} ${r.title}`, '', r.rule, '');
       if (r.why) L.push(`- **为什么**：${r.why}`);
       L.push(`- **怎样查**：${r.check}${r.auto ? `（工具：${r.auto}）` : ''}`);

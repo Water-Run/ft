@@ -109,7 +109,7 @@ add(`场景齐全（${first.SCRIPT.length} 个场景）`, !st.length, st);
     const list = [[path.join(REPO, 'kit', 'template', rel), 'kit/template/' + rel]];
     const starters = path.join(REPO, 'kit', 'starters');
     if (fs.existsSync(starters)) for (const n of fs.readdirSync(starters)) list.push([path.join(starters, n, rel), `kit/starters/${n}/${rel}`]);
-    for (const n of fs.readdirSync(path.join(REPO, 'videos'))) if (path.join(REPO, 'videos', n) !== path.resolve(VIDEO)) list.push([path.join(REPO, 'videos', n, rel), `videos/${n}/${rel}`]);
+    for (const g of fs.readdirSync(path.join(REPO, 'videos'))) { const gd = path.join(REPO, 'videos', g); if (!fs.statSync(gd).isDirectory()) continue; for (const n of fs.readdirSync(gd)) if (path.join(gd, n) !== path.resolve(VIDEO)) list.push([path.join(gd, n, rel), `videos/${g}/${n}/${rel}`]); }
     return list;
   };
   const same = [];

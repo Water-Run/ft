@@ -61,7 +61,7 @@ flowchart LR
 停止该片的配音、截图、扫描、混音与渲染任务，在生成物所在的机器上运行：
 
 ```sh
-node kit/tools/clean.js videos/first-video
+node kit/tools/clean.js videos/standalone/first-video
 ```
 
 默认列出 `audio/`、`out/`、`shots/`、`build/` 的文件数和大小，不写归档、不删除文件。工具只接受一个明确的视频目录；拒绝根目录、越界路径、链接、junction、特殊文件，以及这些目录里任何 Git 已跟踪文件。
@@ -73,14 +73,14 @@ node kit/tools/clean.js videos/first-video
 PowerShell 示例：
 
 ```powershell
-node kit/tools/clean.js videos/first-video --archive E:/VideoArchive/first-video-v1 --apply
+node kit/tools/clean.js videos/standalone/first-video --archive E:/VideoArchive/first-video-v1 --apply
 node kit/tools/clean.js --verify E:/VideoArchive/first-video-v1
 ```
 
 bash / zsh 示例：
 
 ```sh
-node kit/tools/clean.js videos/first-video --archive /mnt/archive/first-video-v1 --apply
+node kit/tools/clean.js videos/standalone/first-video --archive /mnt/archive/first-video-v1 --apply
 node kit/tools/clean.js --verify /mnt/archive/first-video-v1
 ```
 

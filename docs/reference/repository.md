@@ -1,6 +1,6 @@
 # 仓库结构
 
-目录按三个层级划分：仓库级（所有片子共用的规则与工具）、系列级、视频级。每一类信息只放在一个地方，见 [文档地图](../README.md) 的「信息归属」。
+目录按三个层级划分：仓库级（所有片子共用的规则与工具）、系列级、视频级。`videos/` 下第一层是系列（以及放独立片子的 `standalone`），第二层是片子；slug 全仓库唯一，片子属于哪个系列以片单的 `series` 字段为准，目录与它一致。每一类信息只放在一个地方，见 [文档地图](../README.md) 的「信息归属」。
 
 ## 1. 目录
 
@@ -25,11 +25,14 @@ ft/
     config.local.example.json 本机可执行程序位置的样例
     requirements*.txt        Python 依赖范围
     assets.json              字体等的下载来源与校验和
-  series/<系列>.md           系列说明
   videos/
     catalog.json             片单：全部系列与视频的唯一登记
     README.md                片单索引（生成）
-    <片>/                    一部片子
+    <系列>/
+      README.md              系列说明
+      <片>/                  系列里的一集
+    standalone/
+      <片>/                  独立的片子
   assets/                    本机字体与二进制依赖，不入库
   out/                       本机的练习目录与临时产物，不入库
 ```
@@ -39,7 +42,7 @@ ft/
 ## 2. 一部片子的目录
 
 ```text
-videos/<片>/
+videos/<系列或 standalone>/<片>/
   README.md        状态、简报、交接、设计、交付、评价与复盘、复现
   project.json     配置与记录：语言、配音、检查阈值；阶段 stage / next；署名 credits；交付 delivery；发布 release；评价 reception
   research/
@@ -66,7 +69,7 @@ videos/<片>/
 
 | 文件 | 由谁生成 | 源头 |
 |---|---|---|
-| `videos/README.md`、`series/*.md` 的分集表 | `catalog.js` | `videos/catalog.json` 与各片 `project.json` |
+| `videos/README.md`、各系列说明（`videos/<系列>/README.md`）的分集表 | `catalog.js` | `videos/catalog.json` 与各片 `project.json` |
 | `docs/lessons.md` 的规则表 | `lessons.js render` | `docs/lessons.json` |
 | `review/script.*.md` | `script-review.js export` | `src/js/script.js` |
 | `src/js/timing.*.js` | `tts.js` | 旁白与实际合成结果 |

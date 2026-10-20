@@ -9,12 +9,12 @@
 | 项 | 值 |
 |---|---|
 | 对象 | 《200 秒了解 Web 登录机制：怎么验证你是你》中文主成片 |
-| 文件 | `videos/web-login/out/web-login-zh-1080p60.mp4` |
+| 文件 | `videos/in-seconds/web-login/out/web-login-zh-1080p60.mp4` |
 | 规格 | 200.00 s，1920×1080，60 fps，H.264 + AAC 48 kHz |
 | SHA-256 | `fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339` |
 | 英文版 SHA-256 | `b556bcd6b668247c972c6443699b6d62a1f93d379be9f41b8455fc44240a2101` |
-| 取帧 | `assets/ffmpeg/bin/ffmpeg.exe` 按时刻抽帧（`-ss <t> -frames:v 1`），整片总览按每 4 秒一帧拼图；本片的取帧脚本与六帧证据在 `videos/web-login/research/lab/61_take_p39_frames.ps1` 与同目录的 `p39_f0*.png` |
-| 旁白时刻 | `node kit/tools/timeline.js videos/web-login <句号>` 取各句实际起止与词边界 |
+| 取帧 | `assets/ffmpeg/bin/ffmpeg.exe` 按时刻抽帧（`-ss <t> -frames:v 1`），整片总览按每 4 秒一帧拼图；本片的取帧脚本与六帧证据在 `videos/in-seconds/web-login/research/lab/61_take_p39_frames.ps1` 与同目录的 `p39_f0*.png` |
+| 旁白时刻 | `node kit/tools/timeline.js videos/in-seconds/web-login <句号>` 取各句实际起止与词边界 |
 | 源码定位 | `src/js/scenes/*.js` 与 `src/js/parts.js` 的行号（与成片同一版源码） |
 | 视觉规范 | 本片 `src/design/STYLE.md` 第 5 节「图形语言」与第 2 节「色彩」声明的形状与颜色语义 |
 
@@ -28,7 +28,7 @@
 |---|---|
 | 旁白 | a7，**174.98 → 179.76**：「代价是信任集中：平台账号失守，这些网站一起失守。」 |
 | 画面 | 179.9–181.6 秒之间，`id.example` 的斜纹块压下来，旁边 5 个 180×180 的方框逐个**旋转 25°、下沉 70 px、透明度降到 0.35**，排成一列斜倒的空框；框里没有字、没有图形。 |
-| 实测帧 | t=180.8（`videos/web-login/research/lab/p39_f05_180.8_trust.png`） |
+| 实测帧 | t=180.8（`videos/in-seconds/web-login/research/lab/p39_f05_180.8_trust.png`） |
 | 源码 | `src/js/scenes/s4_oauth.js:90` 建五个空框：`frame(world, CX + 740 + k * 210, 420, 180, 180, { bw: 12 })`；`:104` 倾倒：`to(sv.el, tFall + k * 0.12, { rotation: 25, y: 70, autoAlpha: 0.35, … })` |
 | 问题 | **框是空的**。观众看到的是一排倾倒的空积木，只能靠「五个」这个数量和「倒了」这个姿态去猜它们是网站。图形没有说明「这些网站」是什么、「一起失守」怎么发生——形式（积木倒下）代替了功能（一个平台的失守如何波及所有用它登录的站点）。 |
 | 对照 | 同一场景里「id.example 斜纹块盖住平台框」这一步是有效的（黑斜纹＝被攻破，与本片别处的斜纹＝假网站同义）；失守之后的部分才退化。 |
@@ -39,7 +39,7 @@
 |---|---|
 | 旁白 | p4，**117.29 → 121.43**：「它证明你知道一个秘密，但会被假网站骗走：这叫钓鱼。」 |
 | 画面 | 红圆（=密码，本片的「你知道的东西」）按脚本飞进假网站框；**「知道」两个字留在原处**，于是 118.8–121.4 秒之间它紧挨着黄色的三角（=「你本身」）。 |
-| 实测帧 | t=120.5（`videos/web-login/research/lab/p39_f02_120.5_phishing-label.png`） |
+| 实测帧 | t=120.5（`videos/in-seconds/web-login/research/lab/p39_f02_120.5_phishing-label.png`） |
 | 源码 | 标签 `s3_authn.js:102`：`const knowL = word(world, tr('知道', 'Know'), CX + 390, 570, 48, …)`；红圆的飞行 `s3_authn.js:106–107`：`fromTo(know, tFake, { x: 0, y: 0 }, { x: 450, … })` 后 `fromTo(know, tFake + 0.5, { x: 450 }, { x: 1150, … })`；黄三角在 `s3_authn.js:95`：`shape(world, 'tri', CX + 120, 380, 240, C.yel, { name: 'you' })` |
 | 问题 | 本片在 `STYLE.md` 第 5 节声明过：圆=你知道的东西、方=你拥有的东西、三角=你本身。观众在第一分钟刚建立这套对应，这里「知道」却挂在了三角旁边，等于当场换掉了自己刚教会的规矩。图形（黄三角）没有承载内容，它成了标签的邻居。 |
 
@@ -49,7 +49,7 @@
 |---|---|
 | 旁白 | p6，**125.68 → 129.94**：「passkey 不同：设备生成一对钥匙，服务器只存公钥。」 |
 | 画面 | 「你的设备」的蓝方里，一块红色的阶梯状色块，配一行小字「私钥」。图形本身看不出是钥匙；它的互补形（黑色锁块＝公钥）要到 p7（**130.14 → 134.80**）才出现。 |
-| 实测帧 | t=129.0（`videos/web-login/research/lab/p39_f03_129.0_passkey.png`） |
+| 实测帧 | t=129.0（`videos/in-seconds/web-login/research/lab/p39_f03_129.0_passkey.png`） |
 | 源码 | `s3_authn.js:129` 的齿高序列 `TEETH = [0.3, 0.9, 0.5, 1, 0.2]`；`:134` `keyShape(world, DX + 200, 470, 260, 110, TEETH, C.red)`；`:135` 文字标签「私钥」；`src/js/parts.js:93–99` 的 `keyShape` 按齿高拼出一条阶梯轮廓 |
 | 问题 | `STYLE.md` 第 5 节写的是「带缺口的钥匙：私钥在方内，公钥在方外；缺口与随机挑战对上」。实际画出来的是一串高度随意的方块阶梯，观众必须靠旁边的「私钥」两个字才知道它是什么——**图形没有完成它该做的事**，只是在旁边贴了标签。 |
 

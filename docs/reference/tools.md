@@ -6,14 +6,14 @@
 node kit/tools/<工具>.js <视频目录> [参数…]
 ```
 
-- `<视频目录>` 是含 `project.json` 的那一层，例如 `videos/luainstaller`。先 `cd` 进视频目录（或它的子目录）时可以省略。
+- `<视频目录>` 是含 `project.json` 的那一层，例如 `videos/open-source-projects/luainstaller`。先 `cd` 进视频目录（或它的子目录）时可以省略。
 - `--lang zh`、`--lang en`、`--lang zh,en`、`--lang all` 指定语言。省略时：出产物的工具处理全部语言，看画面的工具只看第一种语言（下表「语言」一栏）。
 - 每个工具开头的注释是它的完整用法。工具各自起临时的本地服务器，用完即关，不需要也不应该另外启动常驻的服务器。
 - 配音、读法试听、回听、混音，以及数值、空画面、越界自检的计算部分是 Python 脚本，由对应的 Node 工具调用，不直接运行，对应关系见第 9 节。
 
 ## 1. 一览
 
-表中省略 `<视频>`（视频目录形如 `videos/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
+表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
 
 | 工具 | 作用 | 语言 | 大致耗时 |
 |---|---|---|---|
@@ -157,7 +157,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `blank_ignore` | 空画面检查时忽略的区域 `[[x0, y0, x1, y1], …]`，各值是 0–1 的比例。用于常驻角标 | 无 |
 | `margin_skip` | 越界自检时略过的句子 `{ 句号: 原因 }`。用于有意出血的画面 | 无 |
 
-脚本自己也可以报时间线问题：`script.js` 的 `layoutScript()` 返回的对象里若有 `problems`（字符串数组），总闸门把它们计入「时长与节奏」。定长的片子用它报「某一场的旁白超出了定点」，做法见 [XX 秒速通首集的 `script.js`](../../videos/two-factor-auth/src/js/script.js)。
+脚本自己也可以报时间线问题：`script.js` 的 `layoutScript()` 返回的对象里若有 `problems`（字符串数组），总闸门把它们计入「时长与节奏」。定长的片子用它报「某一场的旁白超出了定点」，做法见 [XX 秒速通首集的 `script.js`](../../videos/in-seconds/two-factor-auth/src/js/script.js)。
 
 `style`：
 

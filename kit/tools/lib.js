@@ -51,7 +51,7 @@ const flag = (k) => ARGS.includes('--' + k);
 const positional = (valued = []) => { const out = []; for (let i = 0; i < ARGS.length; i++) { if (ARGS[i].startsWith('--')) { if (valued.includes(ARGS[i].slice(2))) i++; continue; } out.push(ARGS[i]); } return out; };
 // 去掉指定的选项后剩下的参数（valued：带值的键；flags：开关），供 parseTimes 这类自己再解析的函数用
 const without = (valued = [], flags = []) => { const out = []; for (let i = 0; i < ARGS.length; i++) { const k = ARGS[i].startsWith('--') ? ARGS[i].slice(2) : null; if (k && valued.includes(k)) { i++; continue; } if (k && flags.includes(k)) continue; out.push(ARGS[i]); } return out; };
-const needVideo = () => { if (!VIDEO) { console.error('没有指定视频目录。用法：node kit/tools/<工具>.js <视频目录> […]，或先 cd 进视频目录。视频目录是含 project.json 的那一层，例如 videos/luainstaller'); process.exit(2); } return VIDEO; };
+const needVideo = () => { if (!VIDEO) { console.error('没有指定视频目录。用法：node kit/tools/<工具>.js <视频目录> […]，或先 cd 进视频目录。视频目录是含 project.json 的那一层，例如 videos/open-source-projects/luainstaller'); process.exit(2); } return VIDEO; };
 const rel = (p) => path.relative(VIDEO || REPO, p).replace(/\\/g, '/');
 
 // ── 项目与语言 ──

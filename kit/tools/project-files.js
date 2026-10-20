@@ -25,7 +25,7 @@ function videoRoot(repo, input) {
   const root = fs.realpathSync(repo), video = path.resolve(input);
   noLinks(video);
   const rel = path.relative(root, video).replaceAll('\\', '/');
-  if (!/^(videos|out\/sandbox)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(rel)) {
+  if (!/^(videos\/[a-z0-9]+(?:-[a-z0-9]+)*|out\/sandbox)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(rel)) {
     throw new Error('只接受 videos/ 下的单个视频，或 out/sandbox/ 下的新建练习目录');
   }
   if (!fs.statSync(path.join(video, 'project.json')).isFile()) throw new Error('缺少 project.json');

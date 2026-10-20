@@ -46,7 +46,7 @@ GSAP 由页面在运行时加载，文件来自 `node_modules`，仓库里不含
 | luainstaller 1.4.0 源码 | LGPL-3.0-or-later | luainstaller |
 | srlua、luastatic | 各自的许可 | luainstaller |
 
-入库的取证材料里有两份来自 StatCounter Global Stats 的统计数据（`videos/windows-batch/research/statcounter/`），该数据以 CC BY-SA 3.0 发布，出处见该片的 `FACTS.md`。
+入库的取证材料里有两份来自 StatCounter Global Stats 的统计数据（`videos/standalone/windows-batch/research/statcounter/`），该数据以 CC BY-SA 3.0 发布，出处见该片的 `FACTS.md`。
 
 ## 商标
 

@@ -7,8 +7,8 @@
 | 层级 | 位置 | 放什么 |
 |---|---|---|
 | **仓库级** | 根目录、`docs/`、`kit/` | 对所有片子都成立的东西：宗旨、角色、流程、标准、经验规则、工具与引擎 |
-| **系列级** | `series/<系列>.md`、`kit/starters/` | 一个系列的定位与少数共同约定；系列的起点代码 |
-| **视频级** | `videos/<片>/` | 一部片子的一切：简报、事实、文案、审稿、源码、交付、发布、评价与复盘 |
+| **系列级** | `videos/<系列>/README.md`、`kit/starters/` | 一个系列的定位与少数共同约定；系列的起点代码 |
+| **视频级** | `videos/<系列>/<片>/`、`videos/standalone/<片>/` | 一部片子的一切：简报、事实、文案、审稿、源码、交付、发布、评价与复盘 |
 
 下一级不重复上一级的规则，只写自己特有的；上一级不写某一部片子的细节，需要举例时链接过去。
 
@@ -21,7 +21,7 @@
 | 只做前期（准备方） | [角色与权限](roles.md) 第 3 节 → [取证](guides/research.md) → [文案与配音](guides/script.md) → [文案校对](guides/script-review.md) |
 | 判断成片是否合格 | [质量标准](standards.md) → [经验规则](lessons.md) → [验收](guides/acceptance.md) |
 | 发布、收集反馈、归档清理 | [发布与收尾](guides/release.md) |
-| 开一个系列或加一集 | [系列](guides/series.md) → `series/<系列>.md` |
+| 开一个系列或加一集 | [系列](guides/series.md) → `videos/<系列>/README.md` |
 | 查看开发安排 | [开发计划](development-plan.md) → [片单](../videos/README.md) |
 | 改工具、引擎或模板 | [仓库结构](reference/repository.md) → [工具](reference/tools.md) → [引擎](reference/engine.md) → [踩过的坑](reference/pitfalls.md) |
 | 装环境、换机器 | [环境](reference/environment.md) |
@@ -85,9 +85,9 @@
 
 | 信息 | 唯一来源 | 派生（由工具生成，不手改） |
 |---|---|---|
-| 选题、系列归属、标题、语言、片单状态 | `videos/catalog.json` | `videos/README.md`、`series/*.md` 的分集表 |
+| 选题、系列归属、标题、语言、片单状态 | `videos/catalog.json` | `videos/README.md`、各系列说明的分集表 |
 | 当前开发日期与同日顺序 | `docs/development-plan.md` | — |
-| 系列的定位与共同约定 | `series/<系列>.md` | — |
+| 系列的定位与共同约定 | `videos/<系列>/README.md` | — |
 | 一部片子的阶段、署名、发布记录、评分 | 该片 `project.json` 的 `stage`、`credits`、`release`、`reception` | 片尾名单、`videos/README.md` |
 | 一部片子的简报、设计决定、交付说明、复盘 | 该片 `README.md` | — |
 | 事实 | 该片 `research/FACTS.md` 与证据 | 画面数据（`tools/gen_data.py` → `src/js/data.js`） |

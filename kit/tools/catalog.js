@@ -1,11 +1,14 @@
-// 片单：核对 videos/catalog.json、各片 project.json 与 videos/ 下的实际目录，生成片单索引 videos/README.md 与 series/<系列>.md 的分集表。
+// 片单：核对 videos/catalog.json、各片 project.json 与 videos/ 下的实际目录，生成片单索引 videos/README.md 与各系列说明 videos/<系列>/README.md 的分集表。
 // 用法：node kit/tools/catalog.js            核对并重新生成
 //       node kit/tools/catalog.js --check    只核对；生成物与源头不一致时以非零码退出（提交前用，repo-check 会调用）
 // 片单的写法见 videos/catalog.json 开头的 about。新建视频用 new.js，它会登记片单；手改片单后运行本工具。
-// 每个视频的目录是 videos/<slug>/，slug 全仓库唯一；系列归属记在条目的 series 字段，不由目录位置决定。
+// 目录分两层：系列里的一集在 videos/<系列>/<slug>/，独立视频在 videos/standalone/<slug>/。slug 全仓库唯一；归属以条目的 series 字段为准，目录与它一致。
 const fs = require('fs'), path = require('path');
 const REPO = path.resolve(__dirname, '..', '..');
-const CAT = path.join(REPO, 'videos', 'catalog.json'), INDEX = path.join(REPO, 'videos', 'README.md'), SERIES = path.join(REPO, 'series');
+const CAT = path.join(REPO, 'videos', 'catalog.json'), INDEX = path.join(REPO, 'videos', 'README.md');
+const STANDALONE = 'standalone';
+const groupOf = (v) => v.series || STANDALONE;                                 // 第一层目录：系列 slug，或 standalone
+const dirOf = (v) => `videos/${groupOf(v)}/${v.slug}`;
 const STATUS = { planned: '计划中', 'in-progress': '制作中', delivered: '已成片' };
 const STAGES = { brief: '立项', research: '取证', script: '文案', review: '审稿', voice: '配音', design: '设计', build: '实现', sound: '声音', render: '成片', accept: '验收', delivered: '已交付', released: '已发布' };
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -22,7 +25,7 @@ function entries(cat) {
   const count = {};
   return cat.videos.map((v) => {
     const series = v.series ? cat.series.find((s) => s.slug === v.series) || null : null;
-    const dir = `videos/${v.slug}`, project = readJSON(path.join(REPO, dir, 'project.json'));
+    const dir = dirOf(v), project = readJSON(path.join(REPO, dir, 'project.json'));
     return { v, series, no: v.series ? (count[v.series] = (count[v.series] || 0) + 1) : null, dir, status: v.status || 'planned', languages: v.languages || (series && series.languages) || DEFAULT_LANGS, project };
   });
 }
@@ -51,6 +54,7 @@ function validate(cat) {
   const seenS = new Set();
   for (const s of cat.series) {
     if (!SLUG.test(s.slug || '')) errs.push(`系列 slug 不合规（小写字母、数字、连字符）：${s.slug}`);
+    if (s.slug === STANDALONE) errs.push('系列 slug 不能叫 standalone（它是独立视频的目录）');
     if (seenS.has(s.slug)) errs.push(`系列 slug 重复：${s.slug}`); seenS.add(s.slug);
     if (!s.title || !s.title.zh) errs.push(`系列 ${s.slug} 缺少中文标题`);
     if (s.languages && !langsOk(s.languages)) errs.push(`系列 ${s.slug} 的 languages 只能是 zh、en 的不重复组合`);
@@ -79,22 +83,30 @@ function validate(cat) {
     if (p.stage != null && !STAGES[p.stage]) errs.push(`${e.dir}/project.json 的 stage 只能是 ${Object.keys(STAGES).join(' / ')}`);
     errs.push(...creditProblems(p, e.dir + '/project.json'));
   }
-  // 反过来：videos/ 下每个目录都要是片单里的视频
-  for (const n of fs.readdirSync(path.join(REPO, 'videos'), { withFileTypes: true })) {
-    if (!n.isDirectory()) continue;
-    if (!seen.has(n.name)) errs.push(`videos/${n.name} 不在片单里（videos/ 下只放视频目录）`);
+  // 反过来：videos/ 下第一层只有系列与 standalone，第二层只有片单里属于它的视频
+  const groups = new Set([STANDALONE, ...cat.series.map((x) => x.slug)]);
+  for (const g of fs.readdirSync(path.join(REPO, 'videos'), { withFileTypes: true })) {
+    if (!g.isDirectory()) continue;
+    if (!groups.has(g.name)) { errs.push(`videos/${g.name} 既不是片单里的系列，也不是 standalone`); continue; }
+    for (const n of fs.readdirSync(path.join(REPO, 'videos', g.name), { withFileTypes: true })) {
+      if (!n.isDirectory()) continue;
+      const v = cat.videos.find((x) => x.slug === n.name);
+      if (!v) errs.push(`videos/${g.name}/${n.name} 不在片单里`);
+      else if (groupOf(v) !== g.name) errs.push(`videos/${g.name}/${n.name} 放错了位置：片单里它属于 ${groupOf(v)}`);
+    }
   }
   return errs;
 }
 // ── 生成：片单索引 videos/README.md ──
 const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+const inIndex = (e) => `${groupOf(e.v)}/${e.v.slug}/`;   // 从 videos/README.md 到本片目录
 const cellText = (x) => String(x ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
 function link(e, from) { return e.status === 'planned' ? '`' + e.v.slug + '`' : `[\`${e.v.slug}\`](${from}${e.v.slug}/)`; }
 function render(cat) {
   const all = entries(cat), n = (st) => all.filter((e) => e.status === st).length, current = lessonsVersion();
-  const seriesName = (e) => (e.series ? `[${e.series.title.zh}](../series/${e.series.slug}.md)` : '—');
+  const seriesName = (e) => (e.series ? `[${e.series.title.zh}](${e.series.slug}/README.md)` : '—');
   const L = ['# 片单', '', '<!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->', '',
-    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。每部片子的目录是 \`videos/<片>/\`；系列说明在 [\`series/\`](../series/)。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。`, ''];
+    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。`, ''];
   // 已成片：按交付日期倒序
   const done = all.filter((e) => e.status === 'delivered').sort((a, b) => String(b.project?.delivery?.date || '').localeCompare(String(a.project?.delivery?.date || '')));
   L.push('## 已成片', '', '时长是成片的容器时长；评分是策划者给的分数（满分 10），记录在各片 `project.json` 的 `reception`。', '',
@@ -104,49 +116,48 @@ function render(cat) {
     const durs = e.languages.map((l) => l + (dur[l] ? ' ' + mmss(dur[l]) : '')).join('、');
     const rel = (p.release || []).map((r) => `[${r.platform}${e.languages.length > 1 && r.lang ? ' ' + r.lang : ''}](${r.url})`).join('、') || '未登记';
     const score = (p.reception || []).filter((r) => r.score != null).map((r) => `${r.score}（${r.date}）`).join('、') || '—';
-    L.push(`| [${cellText(e.v.title.zh)}](${e.v.slug}/) | ${seriesName(e)} | ${durs} | ${d.date || '—'} | ${rel} | ${score} | ${cellText(makers(p).join('、')) || '未记录'} |`);
+    L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${durs} | ${d.date || '—'} | ${rel} | ${score} | ${cellText(makers(p).join('、')) || '未记录'} |`);
   }
   L.push('', '## 制作中', '', `阶段与下一步取自各片 \`project.json\` 的 \`stage\`、\`next\`；「规则」一栏是本片复核记录对应的经验规则版本（当前 ${current || '—'}），落后时运行 \`node kit/tools/lessons.js <片> sync\`。`, '',
     '| 片 | 系列 | 阶段 | 下一步 | 规则 |', '|---|---|---|---|---|');
   for (const e of all.filter((x) => x.status === 'in-progress')) {
     const p = e.project || {}, rec = readJSON(path.join(REPO, e.dir, 'review', 'lessons.json'));
     const ver = !rec ? '未接入' : rec.version === current ? '最新' : '待同步';
-    L.push(`| [${cellText(e.v.title.zh)}](${e.v.slug}/) | ${seriesName(e)} | ${STAGES[p.stage] || '未记录'} | ${cellText(p.next || '')} | ${ver} |`);
+    L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${STAGES[p.stage] || '未记录'} | ${cellText(p.next || '')} | ${ver} |`);
   }
   L.push('', '## 全部选题', '', '按系列列出，系列内的顺序即集数。', '');
   const head = '| # | 标题 | 语言 | 状态 | 目录 | 备注 |\n|---|---|---|---|---|---|';
-  const row = (e, i) => `| ${i} | ${cellText(e.v.title.zh)}${e.v.title.en ? '<br>' + cellText(e.v.title.en) : ''} | ${e.languages.join(' + ')} | ${STATUS[e.status]} | ${link(e, '')} | ${cellText(e.v.note || '')} |`;
+  const row = (e, i) => `| ${i} | ${cellText(e.v.title.zh)}${e.v.title.en ? '<br>' + cellText(e.v.title.en) : ''} | ${e.languages.join(' + ')} | ${STATUS[e.status]} | ${link(e, groupOf(e.v) + '/')} | ${cellText(e.v.note || '')} |`;
   for (const s of cat.series) {
     const eps = all.filter((e) => e.series === s);
-    L.push(`### ${s.title.zh}`, '', `[系列说明](../series/${s.slug}.md)${s.title.en ? '；英文名 ' + s.title.en : ''}。缺省语言：${(s.languages || DEFAULT_LANGS).join(' + ')}。`, '');
+    L.push(`### ${s.title.zh}`, '', `[系列说明](${s.slug}/README.md)${s.title.en ? '；英文名 ' + s.title.en : ''}。缺省语言：${(s.languages || DEFAULT_LANGS).join(' + ')}。`, '');
     L.push(...(eps.length ? [head, ...eps.map((e) => row(e, e.no))] : ['分集待定。']), '');
   }
   const solo = all.filter((e) => !e.series);
   L.push('### 独立视频', '', head, ...solo.map((e, i) => row(e, i + 1)), '');
   return L.join('\n');
 }
-// ── 生成：series/<系列>.md 的分集表。手写部分原样保留，只重写两个标记之间；文件不存在时生成骨架 ──
+// ── 生成：videos/<系列>/README.md 的分集表。手写部分原样保留，只重写两个标记之间；文件不存在时生成骨架 ──
 const BEGIN = '<!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->', END = '<!-- catalog:end -->';
 function seriesTable(cat, s) {
   const eps = entries(cat).filter((e) => e.series === s);
   if (!eps.length) return '分集待定。';
-  return ['| # | 标题 | 语言 | 状态 | 目录 |', '|---|---|---|---|---|', ...eps.map((e) => `| ${e.no} | ${cellText(e.v.title.zh)} | ${e.languages.join(' + ')} | ${STATUS[e.status]} | ${link(e, '../videos/')} |`)].join('\n');
+  return ['| # | 标题 | 语言 | 状态 | 目录 |', '|---|---|---|---|---|', ...eps.map((e) => `| ${e.no} | ${cellText(e.v.title.zh)} | ${e.languages.join(' + ')} | ${STATUS[e.status]} | ${link(e, '')} |`)].join('\n');
 }
 function seriesDoc(cat, s, cur) {
   const block = `${BEGIN}\n${seriesTable(cat, s)}\n${END}`;
   if (cur && cur.includes(BEGIN) && cur.includes(END)) return cur.slice(0, cur.indexOf(BEGIN)) + block + cur.slice(cur.indexOf(END) + END.length);
   if (cur) return cur.replace(/\s*$/, '') + `\n\n## 分集\n\n${block}\n`;
-  return `# ${s.title.zh}\n\n<!-- 一两句话：这个系列讲什么、给谁看。写法见 docs/guides/series.md。 -->\n\n## 定位\n\n| | |\n|---|---|\n| 讲什么 | |\n| 面向谁 | |\n| 怎么讲 | |\n| 每集多长 | |\n\n## 共同约定\n\n<!-- 只写各集真正共享的：标题格式、时长规则、结构骨架、常驻元素的位置。视觉与配乐默认每集按自己的对象重新设计，不写在这里。 -->\n\n| 项 | 约定 |\n|---|---|\n| 标题 | 待首集确定 |\n\n## 分集\n\n${block}\n`;
+  return `# ${s.title.zh}\n\n<!-- 一两句话：这个系列讲什么、给谁看。写法见仓库的 docs/guides/series.md。 -->\n\n## 定位\n\n| | |\n|---|---|\n| 讲什么 | |\n| 面向谁 | |\n| 怎么讲 | |\n| 每集多长 | |\n\n## 共同约定\n\n<!-- 只写各集真正共享的：标题格式、时长规则、结构骨架、常驻元素的位置。视觉与配乐默认每集按自己的对象重新设计，不写在这里。 -->\n\n| 项 | 约定 |\n|---|---|\n| 标题 | 待首集确定 |\n\n## 分集\n\n${block}\n`;
 }
 function syncSeries(cat, write) {
   const stale = [];
   for (const s of cat.series) {
-    const f = path.join(SERIES, s.slug + '.md'), cur = fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : null, next = seriesDoc(cat, s, cur);
+    const f = path.join(REPO, 'videos', s.slug, 'README.md'), cur = fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : null, next = seriesDoc(cat, s, cur);
     if (cur === next) continue;
-    stale.push(`series/${s.slug}.md`);
-    if (write) { fs.mkdirSync(SERIES, { recursive: true }); fs.writeFileSync(f, next); }
+    stale.push(`videos/${s.slug}/README.md`);
+    if (write) { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, next); }
   }
-  if (fs.existsSync(SERIES)) for (const n of fs.readdirSync(SERIES)) if (n.endsWith('.md') && n !== 'README.md' && !cat.series.some((s) => s.slug + '.md' === n)) stale.push(`series/${n}（片单里没有这个系列）`);
   return stale;
 }
 // 写回片单：保持「每个视频一行」，便于并行编辑时少冲突
@@ -162,7 +173,7 @@ function save(cat) {
 function regenerate(cat = load()) { fs.writeFileSync(INDEX, render(cat)); return syncSeries(cat, true); }
 // 视频所在的系列；独立视频返回 null
 function seriesOf(cat, videoDir) { if (!Array.isArray(cat.videos)) return null; const slug = path.basename(path.resolve(videoDir)), v = cat.videos.find((x) => x.slug === slug); return v && v.series ? cat.series.find((s) => s.slug === v.series) || null : null; }
-module.exports = { DEFAULT_LANGS, load, save, entries, validate, render, regenerate, syncSeries, seriesOf, creditProblems, makers, CAT, INDEX, STATUS, STAGES, SLUG };
+module.exports = { DEFAULT_LANGS, STANDALONE, groupOf, dirOf, load, save, entries, validate, render, regenerate, syncSeries, seriesOf, creditProblems, makers, CAT, INDEX, STATUS, STAGES, SLUG };
 if (require.main === module) {
   const cat = load(), errs = validate(cat), check = process.argv.includes('--check');
   if (errs.length) { console.error('片单有问题：\n  ' + errs.join('\n  ')); process.exit(1); }

@@ -3,7 +3,7 @@
 //       node kit/tools/new.js <slug> --series <系列>      系列里的一集
 //   片单（videos/catalog.json）里已有这一条时，标题与语言取自片单；没有时用下面的参数登记：
 //       --title "中文标题"  [--title-en "English title"]  [--langs zh,en]  [--series-title "系列的中文名"]（系列不存在时）
-// 目录一律是 videos/<slug>/，slug 全仓库唯一，用小写字母、数字、连字符。
+// 目录是 videos/<系列>/<slug>/，独立视频是 videos/standalone/<slug>/；slug 全仓库唯一，用小写字母、数字、连字符。
 // 语言：片单条目的 languages ＞ 系列的 languages ＞ 中文与英文。--langs zh 只做中文（与系列缺省不同时记在条目上）。
 // 系列里的一集另外做两件事（见 docs/guides/series.md）：
 //   系列带有建议栏目（sections）时，按栏目生成章节草稿；系列指定了起点（starter）时，把 kit/starters/<起点>/ 盖在模板之上。
@@ -24,12 +24,11 @@ const usage = 'node kit/tools/new.js <slug> [--series <系列>] [--title 标题 
 if (opt('help')) { console.log(usage + '\n  策划、校对者与仓库取 kit/studio.json；--scratch 写入 out/sandbox/<slug>，不改片单。'); process.exit(0); }
 if (parsed.positionals.length !== 1) { console.error('须提供且只提供一个 slug。用法：' + usage); process.exit(2); }
 const slug = parsed.positionals[0].replace(/\\/g, '/').replace(/^videos\//, '').replace(/\/$/, '');
-if (/^(standalone|series)\//.test(slug)) { console.error('目录已拍平：写 slug 本身，系列用 --series。用法：' + usage); process.exit(2); }
+if (/^(standalone|series)\//.test(slug)) { console.error('只写 slug，系列用 --series（目录由片单决定：videos/<系列>/<slug>/ 或 videos/standalone/<slug>/）。用法：' + usage); process.exit(2); }
 if (!catalog.SLUG.test(slug)) { console.error('slug 只能用小写字母、数字、连字符：' + slug); process.exit(2); }
-const seriesSlug = opt('series') || null, relative = scratch ? 'out/sandbox/' + slug : 'videos/' + slug, dir = path.join(REPO, relative);
+const seriesSlug = opt('series') || null;
 if (scratch && seriesSlug) { console.error('--scratch 不用于系列分集'); process.exit(2); }
-require('./project-files').noLinks(dir);
-if (fs.existsSync(dir) && fs.readdirSync(dir).length) { console.error(`目录已存在且不为空：${relative}`); process.exit(1); }
+if (seriesSlug === catalog.STANDALONE) { console.error('独立视频不写 --series'); process.exit(2); }
 const studio = JSON.parse(fs.readFileSync(path.join(KIT, 'studio.json'), 'utf8'));
 if (![studio.planner, studio.reviewer].every((value) => typeof value === 'string' && value.trim()) || !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/?$/.test(studio.repository || '')) { console.error('kit/studio.json 须填写 planner、reviewer 与公开的 GitHub repository 地址'); process.exit(2); }
 
@@ -52,6 +51,10 @@ if (opt('langs')) { entry.languages = opt('langs').split(','); if (entry.languag
 const langs = entry.languages || seriesLangs;
 if (!langs.length || new Set(langs).size !== langs.length || langs.some((lang) => !['zh', 'en'].includes(lang))) { console.error('当前模板支持 zh、en，语言不能重复；扩展其他语言需先适配模板。'); process.exit(2); }
 entry.status = 'in-progress';
+// 目录：videos/<系列或 standalone>/<slug>/；练习目录在 out/sandbox/<slug>/
+const relative = scratch ? 'out/sandbox/' + slug : catalog.dirOf(entry), dir = path.join(REPO, relative);
+require('./project-files').noLinks(dir);
+if (fs.existsSync(dir) && fs.readdirSync(dir).length) { console.error(`目录已存在且不为空：${relative}`); process.exit(1); }
 const starterDir = series && series.starter ? path.join(KIT, 'starters', series.starter) : null;
 // 起点只带可复用的骨架：src/、project.json（阈值与占位符）、tools/、README.md 说明。校对、确认与事实记录属于某一集的历史，不许进起点。
 const STARTER_ALLOWED = ['src', 'tools', 'README.md', 'project.json'];
@@ -70,7 +73,7 @@ const vars = {
   SLUG: slug, TITLE: entry.title.zh, TITLE_HTML: entry.title.zh.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'), PATH: relative,
   PLANNER: studio.planner, REVIEWER: studio.reviewer, REPOSITORY: studio.repository, REPOSITORY_DISPLAY: studio.repository.replace(/^https:\/\//, '').replace(/\/$/, ''),
   LESSONS_VERSION: rules.version, LESSONS_STATE_JSON: JSON.stringify(lessons.initial(rules), null, 2),
-  SERIES_LINE: series ? `系列：[${series.title.zh}](../../series/${series.slug}.md)。只遵守系列说明里写明的共同约定，其余按本片的对象设计。` : '独立视频。',
+  SERIES_LINE: series ? `系列：[${series.title.zh}](../README.md)。只遵守系列说明里写明的共同约定，其余按本片的对象设计。` : '独立视频。',
   LANGS_JSON: JSON.stringify(langs).replace(/,/g, ', '),
   TITLES_JSON: obj((l) => entry.title[l] || (l === 'zh' ? entry.title.zh : '')),
   VOICES_JSON: obj((l) => VOICES[l] || ''), RATES_JSON: obj(() => '+0%'), PROMPTS_JSON: obj((l) => PROMPTS[l] || ''),
@@ -137,7 +140,7 @@ if (!scratch) {
   catalog.regenerate(catalog.load());
 }
 console.log(`已建立 ${relative}（语言：${langs.join(', ')}）${scratch ? '，练习目录不登记片单' : '并登记到片单'}。接下来：
-  1. 读 docs/roles.md 与 docs/process.md；在本片 README 写「简报」${series ? `\n     本片属于系列「${series.title.zh}」：读 series/${series.slug}.md 的共同约定` : ''}
+  1. 读 docs/roles.md 与 docs/process.md；在本片 README 写「简报」${series ? `\n     本片属于系列「${series.title.zh}」：读 videos/${series.slug}/README.md 的共同约定` : ''}
   2. 取证写 research/FACTS.md；写 src/js/script.js，导出校对稿：node kit/tools/script-review.js ${relative} export
      交 ${studio.reviewer} 人工审查，依据真实确认填写 review/approval.json；确认后才能配音
   3. 每个阶段开工前：node kit/tools/lessons.js show --stage <阶段>`);
