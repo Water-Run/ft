@@ -1,0 +1,43 @@
+exit 0
+dnf exit 0
+luarocks exit 0
+
+$ ~/srlua-103/srglue ~/srlua-103/srlua main.lua moon-srlua && chmod +x moon-srlua && cp moon-srlua ~/bin/
+[exit 0]
+
+$ cd /tmp && env PATH=/home/waterrun/bin:/usr/bin moon-srlua 2026-10-01
+moon-srlua: cannot open moon-srlua: No such file or directory
+[exit 1]
+
+$ cd /tmp && /home/waterrun/bin/moon-srlua 2026-10-01 2>&1 | head -1
+/home/waterrun/bin/moon-srlua: :2: module 'moon.phase' not found:
+[exit 0]
+
+### search order
+
+$ printf "local m = require(\"moon.tides\")\n" > probe.lua && luai -a probe.lua; rm -f probe.lua
+error: ModuleNotFoundError: Cannot resolve module 'moon.tides' required in /home/waterrun/moon/probe.lua
+Searched: /home/waterrun/moon, /home/waterrun/moon/src, /home/waterrun/moon/lib, /home/waterrun/moon/lua_modules, /usr/share/lua/5.4, /usr/lib64/lua/5.4, ., /home/waterrun/.luarocks/share/lua/5.4, /home/waterrun/.luarocks/lib64/lua/5.4
+[exit 0]
+
+### onefile process identity
+
+$ luai -b --file main.lua -o build/pid >/dev/null && luai -b main.lua -o build/piddir >/dev/null; ls build
+pid
+piddir
+[exit 0]
+
+$ build/pid & echo "pid started by the shell: $!"; wait
+pid started by the shell: 2792
+pid inside the program: 2792
+[exit 0]
+
+$ build/pid & echo "pid started by the shell: $!"; wait
+pid started by the shell: 2794
+pid inside the program: 2794
+[exit 0]
+
+$ build/piddir/piddir & echo "pid started by the shell: $!"; wait
+pid started by the shell: 2796
+pid inside the program: 2796
+[exit 0]

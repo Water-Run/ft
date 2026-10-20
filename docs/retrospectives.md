@@ -24,7 +24,7 @@
 
 ## 2. luainstaller：把 Lua 脚本交给没有 Lua 的人
 
-2026-10-01 至 10-02，自制，中文 7 分 55 秒、英文 7 分 57 秒。[目录](../videos/standalone/luainstaller/)
+2026-10-01 至 10-02，自制，中文 7 分 55 秒、英文 7 分 57 秒。[目录](../videos/series/open-source-projects/luainstaller/)
 
 第一版 4 分 40 秒，体量不够；第二版按「完整的介绍片」重做。
 

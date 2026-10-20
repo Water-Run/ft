@@ -1,0 +1,2 @@
+# 取证时从构建机取回的构建产物（可执行文件、共享库）：不入库。按 research/lab/v2 的脚本重做实验可再次得到，见 research/FACTS.md
+research/lab/v2/art/

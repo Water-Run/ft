@@ -1,0 +1,27 @@
+dnf exit 0
+luarocks exit 0
+
+$ luajit -v
+LuaJIT 2.1.1767980792 -- Copyright (C) 2005-2026 Mike Pall. https://luajit.org/
+[exit 0]
+
+$ lua bin/luai.lua -v
+luai 1.4.0
+[exit 0]
+
+$ luajit bin/luai.lua -v
+luai 1.4.0
+[exit 0]
+
+$ luajit bin/luai.lua -a ~/moon/main.lua
+error: UnsupportedLuaVersionError: luainstaller requires an official Lua 5.1 through 5.5 interpreter
+[exit 1]
+
+$ luajit bin/luai.lua -b ~/moon/main.lua -o /tmp/jit
+error: UnsupportedLuaVersionError: luainstaller requires an official Lua 5.1 through 5.5 interpreter
+[exit 1]
+
+$ luai -b main.lua -o build/jit --lua /usr/bin/luajit -d runtime
+error: ToolchainError: Runtime discovery interpreter must be official Lua and match the active Lua ABI
+[exit 1]
+exit 0

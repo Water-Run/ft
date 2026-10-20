@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 179 部：已成片 14 部，制作中 22 部，计划中 143 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 187 部：已成片 14 部，制作中 22 部，计划中 151 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -289,6 +289,28 @@
 | 14 | 功能机时代的 Java | zh + en | 计划中 |  | `feature-phone-java` |  |
 | 15 | 中国车市的三缸机时代 | zh + en | 计划中 |  | `china-three-cylinder` |  |
 
+### 开源项目
+
+目录 [`videos/series/open-source-projects/`](../videos/series/open-source-projects/)；英文名 Open Source Projects。系列的定位与连续性约定见该目录的 README。
+
+| # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
+|---|---|---|---|---|---|---|
+| 1 | luainstaller：把 Lua 脚本交给没有 Lua 的人<br>luainstaller: Handing Lua Scripts to People Without Lua | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/series/open-source-projects/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube。2026-10-20 由独立成篇移入本系列。 |
+| 2 | pptx2png：把幻灯片变成图 | zh + en | 计划中 |  | `pptx2png` |  |
+| 3 | SimpSave：让保存这件事简单一点 | zh + en | 计划中 |  | `simpsave` |  |
+| 4 | Bat-KV：批处理里的键值存储 | zh + en | 计划中 |  | `bat-kv` |  |
+
+### Windows 是怎么工作的
+
+目录 [`videos/series/windows-internals/`](../videos/series/windows-internals/)；英文名 How Windows Works。系列的定位与连续性约定见该目录的 README。
+
+| # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
+|---|---|---|---|---|---|---|
+| 1 | 权限机制：令牌、完整性级别与访问控制 | zh + en | 计划中 |  | `permissions` |  |
+| 2 | 锁屏：锁屏、工作站与会话 | zh + en | 计划中 |  | `lock-screen` |  |
+| 3 | 登录：Winlogon、LSA 与凭据提供程序 | zh + en | 计划中 |  | `logon` |  |
+| 4 | BitLocker：全盘加密与密钥保管 | zh + en | 计划中 |  | `bitlocker` |  |
+
 ## 独立视频
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
@@ -318,9 +340,9 @@
 | 23 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
 | 24 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
 | 25 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
-| 26 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube |
-| 27 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
-| 28 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
-| 29 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
-| 30 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
-| 31 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
+| 26 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
+| 27 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
+| 28 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
+| 29 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
+| 30 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
+| 31 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh + en | 计划中 |  | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |

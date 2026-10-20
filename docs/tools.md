@@ -6,7 +6,7 @@
 node kit/tools/<工具>.js <视频目录> [参数…]
 ```
 
-- `<视频目录>` 是含 `project.json` 的那一层，例如 `videos/standalone/luainstaller`。先 `cd` 进视频目录（或它的子目录）时可以省略。
+- `<视频目录>` 是含 `project.json` 的那一层，例如 `videos/series/open-source-projects/luainstaller`。先 `cd` 进视频目录（或它的子目录）时可以省略。
 - `--lang zh`、`--lang en`、`--lang zh,en`、`--lang all` 指定语言。省略时：出产物的工具处理全部语言，看画面的工具只看第一种语言（下表「语言」一栏）。
 - 每个工具开头的注释是它的完整用法。工具各自起临时的本地服务器，用完即关，不需要也不应该另外启动常驻的服务器。
 - 配音、读法试听、回听、混音，以及数值、空画面、越界自检的计算部分是 Python 脚本，由对应的 Node 工具调用，不直接运行，对应关系见第 9 节。

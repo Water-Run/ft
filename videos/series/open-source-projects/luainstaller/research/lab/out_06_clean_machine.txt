@@ -1,0 +1,24 @@
+======== container B: clean machine, no Lua
+$ lua -v
+bash: lua: command not found
+[exit 127]
+
+$ lua main.lua
+bash: lua: command not found
+[exit 127]
+
+$ gcc --version
+bash: line 1: gcc: command not found
+
+$ ./build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ./build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ./build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+drwx------. 1 root root 128 Oct  1 07:48 luainstaller-onefile-0

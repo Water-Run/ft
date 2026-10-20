@@ -1,0 +1,89 @@
+/* luainstaller 介绍片的视觉系统
+   两种颜色：Lua 标志的藏蓝 #000080 与纸白；强调靠反白块与字重，不引入第三种颜色。
+   图形只用圆与直线：圆是文件 / 模块 / 可执行文件，虚线圆是 require 关系。
+   版式：左对齐、12 栏、边距 120；字号对比强；不用卡片、投影、渐变、发光。 */
+@font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+:root {
+  --navy: #000080;
+  --paper: #f3f2ed;
+  --M: 120px;
+}
+body { font-family: "Inter", "Sans SC", sans-serif; font-optical-sizing: auto; color: var(--navy); }
+#bg { background: var(--paper); }
+
+/* 场景自带底色；.on-navy / .on-paper 决定其中文字与线条的颜色 */
+.scene { overflow: hidden; }
+.on-paper { background: var(--paper); color: var(--navy); --fg: #000080; --bg: #f3f2ed; --dim: rgba(0, 0, 128, .46); --faint: rgba(0, 0, 128, .16); }
+.on-navy { background: var(--navy); color: var(--paper); --fg: #f3f2ed; --bg: #000080; --dim: rgba(243, 242, 237, .58); --faint: rgba(243, 242, 237, .2); }
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.hud { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+
+/* 字 */
+.d-hero { font-weight: 800; font-size: 236px; line-height: .94; letter-spacing: -.045em; }
+.d-1 { font-weight: 800; font-size: 150px; line-height: 1; letter-spacing: -.04em; }
+.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.035em; }
+.d-3 { font-weight: 700; font-size: 60px; line-height: 1.14; letter-spacing: -.025em; }
+.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; letter-spacing: -.005em; }
+.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+.zh .d-hero, .zh .d-1, .zh .d-2, .zh .d-3 { letter-spacing: -.02em; }
+.zh .d-hero { font-weight: 900; } .zh .d-1 { font-weight: 900; } .zh .d-2 { font-weight: 900; } .zh .d-3 { font-weight: 800; }
+.mono { font-family: "Mono", "Sans SC", monospace; font-weight: 500; letter-spacing: 0; white-space: pre; }
+.dim { color: var(--dim); }
+.nw { white-space: nowrap; }
+
+/* 遮罩揭示：文字从一条看不见的基线后升起 */
+.mask { display: block; overflow: hidden; white-space: nowrap; padding: .08em .06em .14em 0; margin: -.08em 0 -.14em 0; }
+.mask > .in { display: block; will-change: transform; }
+.mask.inl, .mask.inl > .in { display: inline-block; vertical-align: top; }
+
+/* 反白块：本片唯一的强调方式 */
+.bright { color: var(--fg); }
+/* .hlb 是「将来会反白」的文字：预先留好同样的内边距，反白的一刻字不会跳 */
+.hlb { padding: .04em .18em .08em; margin: 0 -.02em; }
+/* .hlf：整行反白用。左右外边距抵掉内边距，文字位置不变，和上下行保持对齐 */
+.hlf { padding: .04em .18em .08em; margin: 0 -.18em; }
+.hlf.inv { margin: 0 -.18em; }
+.inv { background: var(--fg); color: var(--bg) !important; padding: .04em .18em .08em; margin: 0 -.02em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+/* 终端：没有窗框，只有字 */
+.term { position: absolute; font-family: "Mono", "Sans SC", monospace; font-weight: 500; white-space: pre; }
+.term .ln { display: block; }
+.term .ps { color: var(--dim); }
+.term .o { font-weight: 400; }
+.term .o.d { color: var(--dim); }
+.cur { width: .56em; height: 1.1em; vertical-align: -.2em; }
+
+svg.gfx { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.rule { position: absolute; background: var(--fg); height: 3px; transform-origin: 0 50%; }
+
+/* 字幕 */
+#caption { bottom: 52px; height: 60px; z-index: 50; }
+#caption span { font-family: "Inter", "Sans SC", sans-serif; font-size: 38px; font-weight: 500; letter-spacing: .01em; }
+.en #caption span { font-size: 36px; letter-spacing: -.005em; }
+#caption em { font-style: normal; font-weight: 800; }
+#caption.on-navy-cap span { color: var(--paper); }
+#caption.on-paper-cap span { color: var(--navy); }
+
+/* 源码 */
+.code b { font-weight: 800; }
+.code .cl { white-space: pre; }
+.term .o.sm { font-size: .62em; line-height: 1.6; }
+.world .abs:not(.mono), .hud .abs:not(.mono) { white-space: nowrap; }
+.term .o.sm2 { font-size: .74em; line-height: 1.5; }
+.term b { font-weight: 800; }
+.bcell { padding: .04em 0 .08em; }
+.term .o.sm3 { font-size: .82em; line-height: 1.5; }
+.term .o.b { font-weight: 700; }
+.term .o.sm4 { font-size: .9em; line-height: 1.5; }
+.gut { display: inline-block; width: 2.2em; color: var(--dim); font-weight: 400; }
+/* 字符 → 字节 的网格：每格里叠着字符与它的十六进制 */
+.bc span.ca, .bc span.cb { position: absolute; left: 0; top: 0; line-height: 52px; white-space: pre; }
+.bc span.ca { font-size: 38px; font-weight: 600; text-align: center; }
+.bc span.cb { opacity: 0; }
+/* 打字机打出的命令里要反白的一段：类加在整行上（行内的 span 会被重建） */
+.hot [data-k] { background: var(--fg); color: var(--bg) !important; }
+/* package.searchers 的槽位：一个圆 + 右边的名字 */
+.sl { position: absolute; left: 0; top: 0; width: 64px; height: 64px; border: 3px solid var(--fg); border-radius: 50%; box-sizing: border-box; font: 600 25px/58px "Mono"; text-align: center; background: var(--bg); }
+.sl.on { background: var(--fg); color: var(--bg); }
+.sn { position: absolute; left: 88px; top: 2px; font-weight: 700; font-size: 28px; line-height: 32px; white-space: nowrap; }
+.sn .mono { font-size: 21px; font-weight: 400; line-height: 28px; }

@@ -1,0 +1,57 @@
+
+### stage 1: lua + luarocks only
+dnf exit 0
+
+$ luarocks install luainstaller
+Installing https://luarocks.org/luainstaller-1.4.0-1.src.rock
+
+luainstaller 1.4.0-1 depends on lua >= 5.1, < 5.6 (5.4-1 provided by VM)
+cp: -r not specified; omitting directory 'LICENSES'
+No existing manifest. Attempting to rebuild...
+luainstaller 1.4.0-1 is now installed in /usr (license: LGPL-3.0-or-later)
+
+[exit 0]
+
+$ which cc gcc
+/usr/bin/cc
+/usr/bin/gcc
+[exit 0]
+
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 3
+libraries: 0
+script[1]: /home/waterrun/moon/moon/julian.lua
+script[2]: /home/waterrun/moon/moon/phase.lua
+script[3]: /home/waterrun/moon/moon/names.lua
+[exit 0]
+
+$ luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+### stage 2: + gcc (no Lua headers)
+dnf exit 0
+
+$ ls /usr/include/lua.h
+/usr/include/lua.h
+[exit 0]
+
+$ luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+### stage 3: + lua-devel
+dnf exit 0
+
+$ luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+$ env -i build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]

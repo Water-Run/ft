@@ -4,7 +4,7 @@
 
 首次 clone 从 [getting-started.md](getting-started.md) 开始，目录职责见 [repository.md](repository.md)。本仓库的策划与文案确认者为 WaterRun；独立 fork 应在 `kit/studio.json` 配置实际负责人和源码仓库，后文的署名与发布渠道按实际项目适用，既有历史记录不追改。
 
-所有命令都在仓库根目录下执行，形如 `node kit/tools/<工具>.js <视频目录> [参数…]`；`<视频目录>` 是含 `project.json` 的那一层，例如 `videos/standalone/luainstaller`。先 `cd` 进视频目录时可以省略它。
+所有命令都在仓库根目录下执行，形如 `node kit/tools/<工具>.js <视频目录> [参数…]`；`<视频目录>` 是含 `project.json` 的那一层，例如 `videos/series/open-source-projects/luainstaller`。先 `cd` 进视频目录时可以省略它。
 
 ## 两种制作方式
 

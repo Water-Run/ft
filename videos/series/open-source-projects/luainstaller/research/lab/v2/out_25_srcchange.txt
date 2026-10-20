@@ -1,0 +1,40 @@
+/home/waterrun/luai-video-lab/out/sc.done
+dnf exit 0
+luarocks exit 0
+
+$ luai -b main.lua -o build/moon && sha256sum build/moon/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/moon/moon
+[exit 0]
+
+$ sha256sum moon/names.lua
+b5b8c6bc29f65dc7fee21b488e4ddbb49952c0fe388032142223c7f85867675b  moon/names.lua
+[exit 0]
+
+$ LUAI_CC=/opt/edit/gcc luai -b main.lua -o build/moon
+error: SourceChangedError: Source changed during build: /home/waterrun/moon/moon/names.lua
+[exit 1]
+
+$ sha256sum moon/names.lua; tail -1 moon/names.lua
+e6f74866fe164b0fdcbaa6427c9af52f09d6a82690ff12f20509714bd9b37b4e  moon/names.lua
+-- edited during the build
+[exit 0]
+
+$ sha256sum build/moon/moon; ls -a build
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/moon/moon
+.
+..
+moon
+[exit 0]
+
+$ env -i build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ luai -b main.lua -o build/moon && sha256sum build/moon/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+d4395f7938cd653333a9f4af23fdd5efac82f80793577df25823170bdd9e93cb  build/moon/moon
+[exit 0]
+exit 0

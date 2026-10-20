@@ -44,7 +44,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](videos/standalone/opencart-1-5-admin/) | 中文 | 16:50 | 委托，Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1RNnJ6AELR)（2026-10-19） |
 | [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | [哔哩哔哩](https://www.bilibili.com/video/BV1PxHU6KE6G)（2026-10-08） |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](videos/series/database-engines/myisam/) | 中文 | 7:55 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ)（2026-10-01） |
-| [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/standalone/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
+| [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/series/open-source-projects/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
 | [古代来的 Shell：Windows 批处理（.bat）](videos/standalone/windows-batch/) | 中文 | 3:13 | 委托 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ)（2026-10-01） |
 | [120 秒关于什么是 2FA，以及它是怎么工作的](videos/series/in-seconds/two-factor-auth/) | 中文、英文 | 2:00、2:00 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0)（2026-10-06） |
 | [OpenClaw, Hermes 和实现](videos/standalone/openclaw-hermes/) | 中文、英文 | 8:34、9:30 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1DkHk6FEie)、[YouTube](https://www.youtube.com/watch?v=iULu-c3fAcI)（2026-10-07） |

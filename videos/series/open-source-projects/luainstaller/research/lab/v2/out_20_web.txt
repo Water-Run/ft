@@ -1,0 +1,43 @@
+dnf exit 0
+luarocks luainstaller exit 0
+luarocks lua-cjson exit 0
+luarocks pegasus exit 0
+
+$ luai -a test/firebird_web_sql/server.lua | head -4
+ok
+entry: test/firebird_web_sql/server.lua
+scripts: 17
+libraries: 2
+[exit 0]
+
+$ time luai -b test/firebird_web_sql/server.lua -o ~/websql
+ok
+executable: /home/waterrun/websql/websql
+
+real	0m5.469s
+user	0m4.028s
+sys	0m1.413s
+[exit 0]
+
+$ time luai -b test/firebird_web_sql/server.lua -o ~/websql2
+ok
+executable: /home/waterrun/websql2/websql2
+
+real	0m5.590s
+user	0m4.061s
+sys	0m1.478s
+[exit 0]
+
+$ sha256sum ~/websql/websql ~/websql2/websql; ls -l ~/websql/websql; du -sh ~/websql; find ~/websql/.luai/native | sort
+38d15b2d50ad9c28ebdf3ee9ac5307c04e41a515ae011bc457546bfb63ed7981  /home/waterrun/websql/websql
+sha256sum: /home/waterrun/websql2/websql: No such file or directory
+-rwxr-xr-x. 1 waterrun waterrun 161736 Oct  1 11:16 /home/waterrun/websql/websql
+1.6M	/home/waterrun/websql
+/home/waterrun/websql/.luai/native
+/home/waterrun/websql/.luai/native/cjson.so
+/home/waterrun/websql/.luai/native/core.so
+/home/waterrun/websql/.luai/native/liblua-5.4.so
+/home/waterrun/websql/.luai/native/socket
+/home/waterrun/websql/.luai/native/socket/core.so
+[exit 0]
+A exit 0

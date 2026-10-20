@@ -1,0 +1,948 @@
+
+### setup (root)
+dnf exit 0
+Lua 5.4.8  Copyright (C) 1994-2025 Lua.org, PUC-Rio
+gcc (GCC) 16.2.1 20260819 (Red Hat 16.2.1-2)
+/usr/bin/luarocks 3.9.2
+
+$ luarocks install luainstaller
+luainstaller 1.4.0-1 depends on lua >= 5.1, < 5.6 (5.4-1 provided by VM)
+cp: -r not specified; omitting directory 'LICENSES'
+No existing manifest. Attempting to rebuild...
+luainstaller 1.4.0-1 is now installed in /usr (license: LGPL-3.0-or-later)
+[exit 0]
+
+$ luarocks install luastatic
+Installing https://luarocks.org/luastatic-0.0.12-1.src.rock
+luastatic 0.0.12-1 depends on lua >= 5.1 (5.4-1 provided by VM)
+luastatic 0.0.12-1 is now installed in /usr (license: CC0)
+[exit 0]
+
+$ luarocks install luafilesystem
+luafilesystem 1.9.0-1 depends on lua >= 5.1 (5.4-1 provided by VM)
+gcc -O2 -fPIC -I/usr/include -c src/lfs.c -o src/lfs.o
+gcc  -shared -o lfs.so src/lfs.o
+luafilesystem 1.9.0-1 is now installed in /usr (license: MIT/X11)
+[exit 0]
+
+$ luarocks install lua-cjson
+gcc -O2 -fPIC -I/usr/include -c strbuf.c -o strbuf.o
+gcc -O2 -fPIC -I/usr/include -c fpconv.c -o fpconv.o
+gcc  -shared -o cjson.so lua_cjson.o strbuf.o fpconv.o
+lua-cjson 2.1.0.10-1 is now installed in /usr (license: MIT)
+[exit 0]
+
+$ luarocks install pegasus
+gcc -O2 -fPIC -I/usr/include -c lzlib.c -o lzlib.o -I/usr/include
+gcc  -shared -o zlib.so lzlib.o -L/usr/lib64 -Wl,-rpath,/usr/lib64 -lz
+lzlib 0.4.1.53-4 is now installed in /usr (license: MIT/X11)
+pegasus 1.1.0-0 is now installed in /usr (license: MIT <http://opensource.org/licenses/MIT>)
+[exit 0]
+/opt/lua51/include:
+lauxlib.h
+lua.h
+luaconf.h
+lualib.h
+
+/opt/lua51/lib:
+liblua-5.1.so
+
+### versions and help
+
+$ luai -v
+luai 1.4.0
+[exit 0]
+
+$ luainstaller version
+luainstaller 1.4.0  LGPL 3.0 by WaterRun
+[exit 0]
+
+$ luai -h
+Usage: luai -h
+       luai -v
+       luai -a <entry.lua> [options]
+       luai -t <entry.lua> [options]
+       luai -b <entry.lua> [options]
+
+Commands:
+  -a <entry.lua>    analyze dependencies
+  -t <entry.lua>    trace dependency resolution
+  -b <entry.lua>    build a bundle
+
+Options:
+  --dir, --onedir       directory bundle mode
+  --file, --onefile     self-extracting single-file mode
+  -o, --out <path>      output path
+  --include <path>      include an extra file
+  --exclude <path>      exclude a dependency
+  --target-os <os>      assert the detected native host OS
+  --lua <path>          Lua interpreter for runtime discovery
+  --lua-prefix <path>   matching native Lua headers/runtime prefix
+  -d, --discovery-mode <mode>
+                        static, manual, or runtime
+  --no-depscan          manual dependencies only
+  --max-deps <n>        dependency count limit
+  --verbose             more detail
+[exit 0]
+
+$ luainstaller help
+luainstaller - Package Lua projects into same-environment executables
+
+Usage: luainstaller <command> [arguments] [options]
+
+Commands:
+  help                         Show this help.
+  version                      Show version and license.
+  luainstaller analyze <entry.lua>
+                               Analyze Lua and native module dependencies.
+  luainstaller trace <entry.lua>
+                               Show dependency resolution decisions.
+  luainstaller build <entry.lua>
+                               Build a directory or onefile bundle.
+  luainstaller logs [options]  View operation logs.
+
+Build options:
+  --dir, --onedir              Directory bundle mode (default).
+  --file, --onefile            Self-extracting single-file mode.
+  -o, --out <path>             Output path.
+  --include <path>             Include an extra file; repeatable.
+  --exclude <path>             Exclude a dependency; repeatable.
+  --target-os <os>             Assert the detected native host OS.
+  --lua <path>                 Lua interpreter for runtime discovery.
+  --lua-prefix <path>          Matching native Lua headers/runtime prefix.
+  -d, --discovery-mode <mode>
+                               Dependency discovery mode: static, manual, runtime.
+  --no-depscan                 Manual dependencies only.
+  --max-deps <n>               Dependency count limit (default: 36).
+  --verbose                    Show additional details.
+
+Examples:
+  luainstaller analyze test/student_management_system/main.lua --max-deps 250
+  luainstaller trace test/student_management_system/main.lua --max-deps 250
+  luainstaller build --dir test/student_management_system/main.lua -o build/student-manager
+
+Visit: https://github.com/Water-Run/luainstaller
+[exit 0]
+
+### the program
+
+$ lua main.lua 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+### analyze and trace
+
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 3
+libraries: 0
+script[1]: /home/waterrun/moon/moon/julian.lua
+script[2]: /home/waterrun/moon/moon/phase.lua
+script[3]: /home/waterrun/moon/moon/names.lua
+[exit 0]
+
+$ luainstaller analyze main.lua
+Analysis complete
+  Entry: main.lua
+  Lua scripts: 3
+  Native libraries: 0
+[exit 0]
+
+$ luai -t main.lua
+trace
+entry: main.lua
+1: lua resolved moon.phase -> /home/waterrun/moon/moon/phase.lua
+2: lua resolved moon.julian -> /home/waterrun/moon/moon/julian.lua
+3: lua resolved moon.names -> /home/waterrun/moon/moon/names.lua
+compatibility: same OS, same architecture, same ABI, same Lua ABI
+note: does not claim universal cross-platform output
+note: requires same OS, same architecture, same ABI, and same Lua ABI
+note: runtime require discovery only covers build-time executed code paths
+note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+[exit 0]
+
+$ luainstaller trace main.lua
+Dependency trace
+  Entry: main.lua
+  1. lua  resolved  moon.phase -> /home/waterrun/moon/moon/phase.lua
+  2. lua  resolved  moon.julian -> /home/waterrun/moon/moon/julian.lua
+  3. lua  resolved  moon.names -> /home/waterrun/moon/moon/names.lua
+
+Compatibility
+  same OS, same architecture, same ABI, same Lua ABI
+  note: does not claim universal cross-platform output
+  note: requires same OS, same architecture, same ABI, and same Lua ABI
+  note: runtime require discovery only covers build-time executed code paths
+  note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+[exit 0]
+
+$ luai -t main.lua --verbose
+trace
+entry: main.lua
+1: lua resolved moon.phase -> /home/waterrun/moon/moon/phase.lua
+2: lua resolved moon.julian -> /home/waterrun/moon/moon/julian.lua
+3: lua resolved moon.names -> /home/waterrun/moon/moon/names.lua
+compatibility: same OS, same architecture, same ABI, same Lua ABI
+note: does not claim universal cross-platform output
+note: requires same OS, same architecture, same ABI, and same Lua ABI
+note: runtime require discovery only covers build-time executed code paths
+note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+[exit 0]
+
+### build a directory bundle (compiler commands are recorded by a pass-through wrapper)
+
+$ time LUAI_CC=/opt/ccwrap/gcc luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+
+real	0m1.788s
+user	0m1.196s
+sys	0m0.591s
+[exit 0]
+
+$ cat /tmp/cc.log
+gcc --version
+gcc -std=c99 -Wall -Wextra -shared -fPIC -I/usr/include /tmp/luainstaller-toolchain-1790846613-47296000-table0x5624a8b46ff0-1/native-probe.c -o /tmp/luainstaller-toolchain-1790846613-47296000-table0x5624a8b46ff0-1/luai_native_probe.so
+gcc -std=c99 -Wall -Wextra -I/usr/include /tmp/luainstaller-toolchain-1790846613-47296000-table0x5624a8b46ff0-1/probe.c -o /tmp/luainstaller-toolchain-1790846613-47296000-table0x5624a8b46ff0-1/probe /usr/lib64/liblua-5.4.so -lm -ldl
+gcc -std=c99 -Wall -Wextra -I/usr/include /home/waterrun/moon/build/.luai-staging-e1fe95f92bfa230c36edaac9-7fd9d48ded1e6b6c81fd3adad75c516248363c5b7a6071f25e91ef9ba6788eca/.luai/build/launcher.c -o /home/waterrun/moon/build/.luai-staging-e1fe95f92bfa230c36edaac9-7fd9d48ded1e6b6c81fd3adad75c516248363c5b7a6071f25e91ef9ba6788eca/moon -Wl,-rpath,$ORIGIN/.luai/native /usr/lib64/liblua-5.4.so -lm -ldl
+gcc -std=c99 -Wall -Wextra -I/usr/include /home/waterrun/moon/build/.luai-staging-e1fe95f92bfa230c36edaac9-7fd9d48ded1e6b6c81fd3adad75c516248363c5b7a6071f25e91ef9ba6788eca/.luai/build/lua-abi-probe.c -o /home/waterrun/moon/build/.luai-staging-e1fe95f92bfa230c36edaac9-7fd9d48ded1e6b6c81fd3adad75c516248363c5b7a6071f25e91ef9ba6788eca/.luai/build/lua-abi-probe -Wl,-rpath,$ORIGIN/.luai/native /usr/lib64/liblua-5.4.so -lm -ldl
+[exit 0]
+
+$ cd build && find moon | sort
+moon
+moon/.luai
+moon/.luai/build
+moon/.luai/build/RELINKING.adoc
+moon/.luai/build/generate-onefile-payload.lua
+moon/.luai/build/launcher.c
+moon/.luai/generated-output.txt
+moon/.luai/licenses
+moon/.luai/licenses/GPL-3.0-or-later.txt
+moon/.luai/licenses/LGPL-3.0-or-later.txt
+moon/.luai/licenses/Lua-MIT.txt
+moon/.luai/manifest.lua
+moon/.luai/native
+moon/.luai/native/liblua-5.4.so
+moon/THIRD_PARTY_NOTICES.md
+moon/moon
+[exit 0]
+
+$ ls -l build/moon
+total 28
+-rw-r--r--. 1 waterrun waterrun  2006 Oct  1 09:23 THIRD_PARTY_NOTICES.md
+-rwxr-xr-x. 1 waterrun waterrun 22472 Oct  1 09:23 moon
+[exit 0]
+
+$ ls -l build/moon/.luai/native
+total 284
+-rwxr-xr-x. 1 waterrun waterrun 287400 Oct  1 09:23 liblua-5.4.so
+[exit 0]
+
+$ ldd build/moon/moon
+	linux-vdso.so.1 (0x00007f17ce050000)
+	liblua-5.4.so => /home/waterrun/moon/build/moon/.luai/native/liblua-5.4.so (0x00007f17ce003000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f17cdee9000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f17cdcf0000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f17ce052000)
+[exit 0]
+
+$ file build/moon/moon
+build/moon/moon: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=7093e02b2c91b4aa6fcd82a1ee8f5abe7e51cf94, for GNU/Linux 3.2.0, not stripped
+[exit 0]
+
+### run it
+
+$ env -u LUA_PATH -u LUA_CPATH build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ env -i build/moon/moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ env -i build/moon/moon; echo "exit code $?"
+2026-10-01  waning gibbous  78% lit
+exit code 0
+[exit 0]
+
+$ env -i build/moon/moon not-a-date; echo "exit code $?"
+luainstaller: moon/julian.lua:6: expected YYYY-MM-DD
+stack traceback:
+	[C]: in function 'error'
+	luainstaller-bootstrap:210: in function <luainstaller-bootstrap:184>
+	(...tail calls...)
+exit code 1
+[exit 0]
+
+$ lua main.lua not-a-date; echo "exit code $?"
+lua: ./moon/julian.lua:6: expected YYYY-MM-DD
+stack traceback:
+	[C]: in function 'assert'
+	./moon/julian.lua:6: in function 'moon.julian.day'
+	./moon/phase.lua:9: in function 'moon.phase.of'
+	main.lua:6: in main chunk
+	[C]: in ?
+exit code 1
+[exit 0]
+
+### start through PATH and through a symlink
+
+$ ln -sf ~/moon/build/moon/moon ~/bin/moon && cd /tmp && env -i PATH=/home/waterrun/bin moon 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+### single file
+
+$ time luai -b --file main.lua -o build/moon-onefile
+ok
+executable: /home/waterrun/moon/build/moon-onefile
+
+real	0m2.993s
+user	0m2.080s
+sys	0m0.900s
+[exit 0]
+
+$ ls -l build
+total 476
+drwx------. 1 waterrun waterrun     62 Oct  1 09:23 moon
+-rwxr-xr-x. 1 waterrun waterrun 486280 Oct  1 09:23 moon-onefile
+[exit 0]
+
+$ ls /tmp | grep luainstaller-onefile; echo "(before first run)"
+(before first run)
+[exit 0]
+
+$ time env -i build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+
+real	0m0.003s
+user	0m0.001s
+sys	0m0.002s
+[exit 0]
+
+$ time env -i build/moon-onefile 2026-10-01
+2026-10-01  waning gibbous  78% lit
+
+real	0m0.002s
+user	0m0.001s
+sys	0m0.002s
+[exit 0]
+
+$ find /tmp/luainstaller-onefile-$(id -u) -maxdepth 2 | sort
+/tmp/luainstaller-onefile-1000
+/tmp/luainstaller-onefile-1000/e69cfd50e8e75b1b7bf646a7d97d0ebcecea0b09c3d04c9bc601b7969335d755
+/tmp/luainstaller-onefile-1000/e69cfd50e8e75b1b7bf646a7d97d0ebcecea0b09c3d04c9bc601b7969335d755/.luai
+/tmp/luainstaller-onefile-1000/e69cfd50e8e75b1b7bf646a7d97d0ebcecea0b09c3d04c9bc601b7969335d755/THIRD_PARTY_NOTICES.md
+/tmp/luainstaller-onefile-1000/e69cfd50e8e75b1b7bf646a7d97d0ebcecea0b09c3d04c9bc601b7969335d755/inner
+[exit 0]
+
+$ ldd build/moon-onefile
+	linux-vdso.so.1 (0x00007f5d70a17000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f5d70813000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f5d70a19000)
+[exit 0]
+
+$ luai -b --file main.lua -o build/moon-onefile
+error: InvalidOutputError: Onefile output path already exists: /home/waterrun/moon/build/moon-onefile
+[exit 1]
+
+### rebuild in place
+
+$ luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+$ echo "my notes" > build/moon/NOTES.txt && luai -b main.lua -o build/moon
+error: InvalidOutputError: Generated output contains an unexpected top-level entry
+[exit 1]
+
+$ rm build/moon/NOTES.txt && luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+$ echo "edited" >> build/moon/THIRD_PARTY_NOTICES.md && luai -b main.lua -o build/moon
+error: InvalidOutputError: Generated output no longer matches its ownership marker
+[exit 1]
+
+$ rm -rf build/moon && luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+$ mkdir -p build/mine && echo data > build/mine/file.txt && luai -b main.lua -o build/mine
+error: InvalidOutputError: Generated output marker is missing or unreadable
+[exit 1]
+
+$ head -4 build/moon/.luai/generated-output.txt
+luainstaller-generated-output-v2
+output_dir=/home/waterrun/moon/build/moon
+dir	.luai
+dir	.luai/build
+[exit 0]
+
+### a failed build leaves the previous bundle untouched
+
+$ sha256sum build/moon/moon
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/moon/moon
+[exit 0]
+
+$ cp moon/names.lua /tmp/names.bak && echo "this is not lua (" >> moon/names.lua && luai -b main.lua -o build/moon
+error: LuaSyntaxError: Invalid Lua syntax in /home/waterrun/moon/moon/names.lua: /home/waterrun/moon/moon/names.lua:14: <eof> expected near 'this'
+[exit 1]
+
+$ sha256sum build/moon/moon && env -i build/moon/moon 2026-10-01
+2eda4a9aa949ff47b13b19e3595fe82cd660430fef0fed55d6daffc687e6dcbe  build/moon/moon
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ cp /tmp/names.bak moon/names.lua && luai -b main.lua -o build/moon
+ok
+executable: /home/waterrun/moon/build/moon/moon
+[exit 0]
+
+### limits and errors
+
+$ luai -b main.lua -o build/x --max-deps 2
+error: DependencyLimitExceededError: Dependency count (3) exceeds limit (2)
+[exit 1]
+
+$ luai -b main.lua -o build/x --target-os windows
+error: UnsupportedPlatformError: luainstaller only builds for the native host OS and architecture
+[exit 1]
+
+$ luai -b main.lua -o build/x --lua-prefix /opt/lua51
+error: ToolchainError: Lua prefix does not contain development files for the selected Lua ABI
+[exit 1]
+
+$ luai -b nothere.lua
+error: ScriptNotFoundError: Lua script not found: nothere.lua
+[exit 1]
+
+$ luai build main.lua
+error: unknown luai command: build
+try: luai -h
+[exit 1]
+
+$ luainstaller -b main.lua
+error: unknown luainstaller command: -b
+hint: run `luainstaller help`
+[exit 1]
+
+$ cd ~/missing && luai -a main.lua
+error: ModuleNotFoundError: Cannot resolve module 'not.installed' required in /home/waterrun/missing/main.lua
+Searched: /home/waterrun/missing, /home/waterrun/missing/src, /home/waterrun/missing/lib, /home/waterrun/missing/lua_modules, /usr/share/lua/5.4, /usr/lib64/lua/5.4, ., /home/waterrun/.luarocks/share/lua/5.4, /home/waterrun/.luarocks/lib64/lua/5.4
+[exit 1]
+
+### discovery modes
+
+$ cat main.lua
+local name = arg[1] or "sqlite"
+local driver = require("drivers." .. name)
+print(driver.name)
+[exit 0]
+
+$ lua main.lua mysql
+mysql driver
+[exit 0]
+
+$ luai -a main.lua
+error: DynamicRequireError: Dynamic require at /home/waterrun/dyn/main.lua:2: require('drivers.' .. ...)
+Only static require('name') is supported.
+[exit 1]
+
+$ luai -a main.lua -d runtime -- mysql
+ok
+entry: main.lua
+scripts: 1
+libraries: 0
+script[1]: /home/waterrun/dyn/drivers/mysql.lua
+[exit 0]
+
+$ luai -a main.lua -d runtime
+ok
+entry: main.lua
+scripts: 1
+libraries: 0
+script[1]: /home/waterrun/dyn/drivers/sqlite.lua
+[exit 0]
+
+$ luai -a main.lua -d manual --include drivers/sqlite.lua --include drivers/mysql.lua
+ok
+entry: main.lua
+scripts: 2
+libraries: 0
+script[1]: /home/waterrun/dyn/drivers/sqlite.lua
+script[2]: /home/waterrun/dyn/drivers/mysql.lua
+[exit 0]
+
+$ luai -b main.lua -d manual --include drivers/sqlite.lua --include drivers/mysql.lua -o build/dyn
+ok
+executable: /home/waterrun/dyn/build/dyn/dyn
+[exit 0]
+
+$ cd /tmp && env -i ~/dyn/build/dyn/dyn mysql && env -i ~/dyn/build/dyn/dyn sqlite
+mysql driver
+sqlite driver
+[exit 0]
+
+$ cat main.lua
+local ok, lfs = pcall(require, "lfs")
+print(ok and "lfs loaded" or "lfs missing")
+[exit 0]
+
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 0
+libraries: 1
+library[1]: /usr/lib64/lua/5.4/lfs.so
+[exit 0]
+
+$ luai -t main.lua
+trace
+entry: main.lua
+1: native resolved lfs -> /usr/lib64/lua/5.4/lfs.so
+compatibility: same OS, same architecture, same ABI, same Lua ABI
+note: does not claim universal cross-platform output
+note: requires same OS, same architecture, same ABI, and same Lua ABI
+note: runtime require discovery only covers build-time executed code paths
+note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+warning: native Lua C modules may require external shared libraries that are not automatically closed over
+[exit 0]
+
+### native C module
+
+$ lua main.lua /usr/share/lua
+5.1  5.4
+[exit 0]
+
+$ luai -a main.lua
+ok
+entry: main.lua
+scripts: 0
+libraries: 1
+library[1]: /usr/lib64/lua/5.4/lfs.so
+[exit 0]
+
+$ luai -t main.lua
+trace
+entry: main.lua
+1: native resolved lfs -> /usr/lib64/lua/5.4/lfs.so
+compatibility: same OS, same architecture, same ABI, same Lua ABI
+note: does not claim universal cross-platform output
+note: requires same OS, same architecture, same ABI, and same Lua ABI
+note: runtime require discovery only covers build-time executed code paths
+note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+warning: native Lua C modules may require external shared libraries that are not automatically closed over
+[exit 0]
+
+$ luai -b main.lua -o build/list
+ok
+executable: /home/waterrun/list/build/list/list
+[exit 0]
+
+$ cd build/list && find .luai/native | sort
+.luai/native
+.luai/native/lfs.so
+.luai/native/liblua-5.4.so
+[exit 0]
+
+$ env -i build/list/list /usr/share/lua
+5.1  5.4
+[exit 0]
+
+$ ldd build/list/.luai/native/lfs.so
+	linux-vdso.so.1 (0x00007f2373db6000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f2373bac000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f2373db8000)
+[exit 0]
+
+### library API
+
+$ lua /tmp/api.lua
+VERSION	1.4.0
+analyze.ok	true	scripts	3	libraries	0
+compatibility	same OS, same architecture, same ABI, same Lua ABI
+host	linux	x86_64	lua	Lua 5.4
+bundle.ok	true	/home/waterrun/moon/build/api/moon/moon
+bad.ok	false	InvalidOptionsError	unknown option: colour
+dyn.ok	false	DynamicRequireError
+logs	2	analyze	error
+[exit 0]
+
+### logs
+
+$ luainstaller logs --limit 6
+Showing 6 log(s)
+  [2026-10-01T09:24:16Z] error   api:analyze Dynamic require at /home/waterrun/dyn/main.lua:2: require('drivers.' .. ...)
+Only static require('name') is supported.
+  [2026-10-01T09:24:16Z] error   api:bundle unknown option: colour
+  [2026-10-01T09:24:07Z] error   api:bundle Lua prefix does not contain development files for the selected Lua ABI
+  [2026-10-01T09:24:07Z] error   api:analyze Dynamic require at /home/waterrun/dyn/main.lua:2: require('drivers.' .. ...)
+Only static require('name') is supported.
+  [2026-10-01T09:24:07Z] error   api:bundle Lua script not found: nothere.lua
+  [2026-10-01T09:24:07Z] error   api:analyze Cannot resolve module 'not.installed' required in /home/waterrun/missing/main.lua
+Searched: /home/waterrun/missing, /home/waterrun/missing/src, /home/waterrun/missing/lib, /home/waterrun/missing/lua_modules, /usr/share/lua/5.4, /usr/lib64/lua/5.4, ., /home/waterrun/.luarocks/share/lua/5.4, /home/waterrun/.luarocks/lib64/lua/5.4
+[exit 0]
+
+$ luainstaller logs --level error --limit 3
+Showing 3 log(s)
+  [2026-10-01T09:24:16Z] error   api:analyze Dynamic require at /home/waterrun/dyn/main.lua:2: require('drivers.' .. ...)
+Only static require('name') is supported.
+  [2026-10-01T09:24:16Z] error   api:bundle unknown option: colour
+  [2026-10-01T09:24:07Z] error   api:bundle Lua prefix does not contain development files for the selected Lua ABI
+[exit 0]
+
+$ ls ~/.luainstaller | head
+logs.lua
+logs.lua.bak
+[exit 0]
+
+### standalone install
+
+$ cd ~/luainstaller-src && lua tools/install.lua --prefix /home/waterrun/luainstaller && /home/waterrun/luainstaller/bin/luai -v && ls /home/waterrun/luainstaller /home/waterrun/luainstaller/bin
+Installed luainstaller 1.4.0 into /home/waterrun/luainstaller
+Add to PATH: /home/waterrun/luainstaller/bin
+Library: add /home/waterrun/luainstaller/?.lua to package.path
+luai 1.4.0
+/home/waterrun/luainstaller:
+CHANGELOG.adoc
+INSTALLATION.txt
+LICENSE
+LICENSES
+README.adoc
+THIRD_PARTY_NOTICES.md
+bin
+docs
+luainstaller.1
+luainstaller.lua
+src
+
+/home/waterrun/luainstaller/bin:
+luai
+luai.lua
+luainstaller
+luainstaller.lua
+[exit 0]
+
+$ cd ~/luainstaller-src && lua bin/luai.lua -v
+luai 1.4.0
+[exit 0]
+
+### srlua
+
+$ make LUA_TOPDIR=/usr LUA_LIBDIR=/usr/lib64 2>&1 | grep -E "^(gcc|cc) "
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -o srglue srglue.c
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -I/usr/include -o srlua srlua.c -L/usr/lib64 -llua -lm -ldl -Wl,-E
+[exit 0]
+
+$ /home/waterrun/srlua-103/srglue /home/waterrun/srlua-103/srlua main.lua moon-srlua
+[exit 0]
+
+$ chmod +x moon-srlua && ./moon-srlua 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ cd /tmp && ~/moon/moon-srlua 2026-10-01 2>&1 | head -3
+/home/waterrun/moon/moon-srlua: :2: module 'moon.phase' not found:
+	no field package.preload['moon.phase']
+	no file '/usr/share/lua/5.4/moon/phase.lua'
+[exit 0]
+
+$ cp moon-srlua ~/bin/ && cd ~/moon && env PATH=/home/waterrun/bin:/usr/bin moon-srlua 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ls -l moon-srlua
+-rwxr-xr-x. 1 waterrun waterrun 14443 Oct  1 09:24 moon-srlua
+[exit 0]
+
+$ ldd moon-srlua
+	linux-vdso.so.1 (0x00007fa3bd6d8000)
+	liblua-5.4.so => /lib64/liblua-5.4.so (0x00007fa3bd688000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007fa3bd571000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007fa3bd378000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007fa3bd6da000)
+[exit 0]
+
+### luastatic
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua /usr/lib64/liblua.a
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main 
+[exit 0]
+
+$ cd /tmp && ~/moon/main 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ls -l main main.luastatic.c
+-rwxr-xr-x. 1 waterrun waterrun 1303640 Oct  1 09:24 main
+-rw-r--r--. 1 waterrun waterrun   21735 Oct  1 09:24 main.luastatic.c
+[exit 0]
+
+$ luastatic main.lua /usr/lib64/liblua.a
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main 
+[exit 0]
+
+$ cd /tmp && ~/moon/main 2026-10-01 2>&1 | head -4
+[string "main"]:2: module 'moon.phase' not found:
+	no field package.preload['moon.phase']
+	
+	no module 'moon.phase' in luastatic bundle
+[exit 0]
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua
+cc -Os main.luastatic.c   -rdynamic -lm  -o main 
+/usr/bin/ld.bfd: /tmp/ccDNk9Ie.o: in function `lstop':
+main.luastatic.c:(.text+0x30): undefined reference to `lua_sethook'
+/usr/bin/ld.bfd: /tmp/ccDNk9Ie.o: in function `msghandler':
+main.luastatic.c:(.text+0x52): undefined reference to `lua_tolstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x69): undefined reference to `luaL_callmeta'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x7a): undefined reference to `lua_type'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x84): undefined reference to `lua_typename'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x96): undefined reference to `lua_pushfstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xa5): undefined reference to `lua_type'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xbf): undefined reference to `lua_getglobal'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xd1): undefined reference to `lua_getfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xe3): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xf0): undefined reference to `lua_settop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xfb): undefined reference to `lua_pushstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x10d): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x11a): undefined reference to `lua_settop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x127): undefined reference to `lua_pushinteger'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x13e): undefined reference to `lua_callk'
+/usr/bin/ld.bfd: /tmp/ccDNk9Ie.o: in function `laction':
+main.luastatic.c:(.text+0x21): undefined reference to `lua_sethook'
+/usr/bin/ld.bfd: /tmp/ccDNk9Ie.o: in function `lstop':
+main.luastatic.c:(.text+0x40): undefined reference to `luaL_error'
+/usr/bin/ld.bfd: /tmp/ccDNk9Ie.o: in function `main':
+main.luastatic.c:(.text.startup+0x10): undefined reference to `luaL_newstate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x1b): undefined reference to `luaL_openlibs'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x2d): undefined reference to `lua_createtable'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x3f): undefined reference to `lua_pushstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x4f): undefined reference to `lua_rawseti'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x61): undefined reference to `lua_setglobal'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x7b): undefined reference to `luaL_loadbufferx'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x8e): undefined reference to `lua_tolstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xa7): undefined reference to `lua_createtable'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xb9): undefined reference to `lua_pushlstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xcb): undefined reference to `lua_setfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xdd): undefined reference to `lua_pushlstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xef): undefined reference to `lua_setfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x101): undefined reference to `lua_pushlstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x113): undefined reference to `lua_setfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x125): undefined reference to `lua_pushlstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x137): undefined reference to `lua_setfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x13f): undefined reference to `lua_gettop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x152): undefined reference to `lua_pushcclosure'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x162): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x193): undefined reference to `lua_pcallk'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x1b1): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x1be): undefined reference to `lua_settop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x1d1): undefined reference to `lua_tolstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x1f9): undefined reference to `lua_close'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x203): undefined reference to `lua_close'
+collect2: error: ld returned 1 exit status
+[exit 1]
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua 2>&1 | head -3
+cc -Os main.luastatic.c   -rdynamic -lm  -o main 
+/usr/bin/ld.bfd: /tmp/ccXk7MVb.o: in function `lstop':
+main.luastatic.c:(.text+0x30): undefined reference to `lua_sethook'
+[exit 0]
+
+### larger samples from the repository
+
+$ lua test/ltokei/main.lua src
+Language  Files  Lines  Blank  Comment  Code 
+--------  -----  -----  -----  -------  -----
+C         1      251    21     3        227  
+Lua       23     15877  1215   793      13869
+Total     24     16128  1236   796      14096
+[exit 0]
+
+$ luai -a test/ltokei/main.lua
+ok
+entry: test/ltokei/main.lua
+scripts: 3
+libraries: 1
+script[1]: /home/waterrun/luainstaller-src/test/ltokei/src/ltokei/languages.lua
+script[2]: /home/waterrun/luainstaller-src/test/ltokei/src/ltokei/scanner.lua
+script[3]: /home/waterrun/luainstaller-src/test/ltokei/src/ltokei/formatter.lua
+library[1]: /usr/lib64/lua/5.4/lfs.so
+[exit 0]
+
+$ luai -b test/ltokei/main.lua -o /home/waterrun/ltokei
+ok
+executable: /home/waterrun/ltokei/ltokei
+[exit 0]
+
+$ cd /tmp && env -i ~/ltokei/ltokei ~/luainstaller-src/src
+Language  Files  Lines  Blank  Comment  Code 
+--------  -----  -----  -----  -------  -----
+C         1      251    21     3        227  
+Lua       23     15877  1215   793      13869
+Total     24     16128  1236   796      14096
+[exit 0]
+
+$ cd ~/ltokei && find .luai/native | sort
+.luai/native
+.luai/native/lfs.so
+.luai/native/liblua-5.4.so
+[exit 0]
+
+$ lua test/firebird_web_sql/smoke_test.lua
+firebird_web_sql smoke test passed
+[exit 0]
+
+$ luai -a test/firebird_web_sql/server.lua
+ok
+entry: test/firebird_web_sql/server.lua
+scripts: 17
+libraries: 2
+script[1]: /usr/share/lua/5.4/socket.lua
+script[2]: /usr/share/lua/5.4/mimetypes/generated.lua
+script[3]: /usr/share/lua/5.4/mimetypes/extensions.lua
+script[4]: /usr/share/lua/5.4/mimetypes/filenames.lua
+script[5]: /usr/share/lua/5.4/mimetypes.lua
+script[6]: /usr/share/lua/5.4/pegasus/response.lua
+script[7]: /usr/share/lua/5.4/pegasus/request.lua
+script[8]: /usr/share/lua/5.4/pegasus/plugins/files.lua
+script[9]: /usr/share/lua/5.4/pegasus/log.lua
+script[10]: /usr/share/lua/5.4/pegasus/handler.lua
+script[11]: /home/waterrun/luainstaller-src/test/firebird_web_sql/logging.lua
+script[12]: /usr/share/lua/5.4/pegasus/init.lua
+script[13]: /home/waterrun/luainstaller-src/test/firebird_web_sql/config.lua
+script[14]: /home/waterrun/luainstaller-src/test/firebird_web_sql/db.lua
+script[15]: /home/waterrun/luainstaller-src/test/firebird_web_sql/history.lua
+script[16]: /home/waterrun/luainstaller-src/test/firebird_web_sql/security.lua
+script[17]: /home/waterrun/luainstaller-src/test/firebird_web_sql/web.lua
+library[1]: /usr/lib64/lua/5.4/socket/core.so
+library[2]: /usr/lib64/lua/5.4/cjson.so
+[exit 0]
+
+$ luai -a test/firebird_web_sql/server.lua --max-deps 250
+ok
+entry: test/firebird_web_sql/server.lua
+scripts: 17
+libraries: 2
+script[1]: /usr/share/lua/5.4/socket.lua
+script[2]: /usr/share/lua/5.4/mimetypes/generated.lua
+script[3]: /usr/share/lua/5.4/mimetypes/extensions.lua
+script[4]: /usr/share/lua/5.4/mimetypes/filenames.lua
+script[5]: /usr/share/lua/5.4/mimetypes.lua
+script[6]: /usr/share/lua/5.4/pegasus/response.lua
+script[7]: /usr/share/lua/5.4/pegasus/request.lua
+script[8]: /usr/share/lua/5.4/pegasus/plugins/files.lua
+script[9]: /usr/share/lua/5.4/pegasus/log.lua
+script[10]: /usr/share/lua/5.4/pegasus/handler.lua
+script[11]: /home/waterrun/luainstaller-src/test/firebird_web_sql/logging.lua
+script[12]: /usr/share/lua/5.4/pegasus/init.lua
+script[13]: /home/waterrun/luainstaller-src/test/firebird_web_sql/config.lua
+script[14]: /home/waterrun/luainstaller-src/test/firebird_web_sql/db.lua
+script[15]: /home/waterrun/luainstaller-src/test/firebird_web_sql/history.lua
+script[16]: /home/waterrun/luainstaller-src/test/firebird_web_sql/security.lua
+script[17]: /home/waterrun/luainstaller-src/test/firebird_web_sql/web.lua
+library[1]: /usr/lib64/lua/5.4/socket/core.so
+library[2]: /usr/lib64/lua/5.4/cjson.so
+[exit 0]
+
+$ luai -t test/firebird_web_sql/server.lua --max-deps 250 | head -60
+trace
+entry: test/firebird_web_sql/server.lua
+1: lua resolved pegasus -> /usr/share/lua/5.4/pegasus/init.lua
+2: lua resolved socket -> /usr/share/lua/5.4/socket.lua
+3: builtin builtin string
+4: builtin builtin math
+5: native resolved socket.core -> /usr/lib64/lua/5.4/socket/core.so
+6: lua resolved pegasus.handler -> /usr/share/lua/5.4/pegasus/handler.lua
+7: lua resolved pegasus.request -> /usr/share/lua/5.4/pegasus/request.lua
+8: lua resolved pegasus.response -> /usr/share/lua/5.4/pegasus/response.lua
+9: lua resolved mimetypes -> /usr/share/lua/5.4/mimetypes.lua
+10: lua resolved mimetypes.extensions -> /usr/share/lua/5.4/mimetypes/extensions.lua
+11: lua resolved mimetypes.generated -> /usr/share/lua/5.4/mimetypes/generated.lua
+12: lua resolved mimetypes.filenames -> /usr/share/lua/5.4/mimetypes/filenames.lua
+13: lua resolved pegasus.response -> /usr/share/lua/5.4/pegasus/response.lua
+14: lua resolved pegasus.plugins.files -> /usr/share/lua/5.4/pegasus/plugins/files.lua
+15: lua resolved mimetypes -> /usr/share/lua/5.4/mimetypes.lua
+16: lua resolved pegasus.log -> /usr/share/lua/5.4/pegasus/log.lua
+17: lua resolved logging -> /home/waterrun/luainstaller-src/test/firebird_web_sql/logging.lua
+18: lua resolved pegasus.log -> /usr/share/lua/5.4/pegasus/log.lua
+19: native resolved cjson -> /usr/lib64/lua/5.4/cjson.so
+20: lua resolved config -> /home/waterrun/luainstaller-src/test/firebird_web_sql/config.lua
+21: lua resolved db -> /home/waterrun/luainstaller-src/test/firebird_web_sql/db.lua
+22: missing optional-missing luasql.firebird
+23: lua resolved history -> /home/waterrun/luainstaller-src/test/firebird_web_sql/history.lua
+24: lua resolved security -> /home/waterrun/luainstaller-src/test/firebird_web_sql/security.lua
+25: missing optional-missing openssl
+26: lua resolved web -> /home/waterrun/luainstaller-src/test/firebird_web_sql/web.lua
+compatibility: same OS, same architecture, same ABI, same Lua ABI
+note: does not claim universal cross-platform output
+note: requires same OS, same architecture, same ABI, and same Lua ABI
+note: runtime require discovery only covers build-time executed code paths
+note: POSIX bundles select shared or static Lua through compile-and-run capability probes
+warning: native Lua C modules may require external shared libraries that are not automatically closed over
+[exit 0]
+
+$ time luai -b test/firebird_web_sql/server.lua -o /home/waterrun/websql --max-deps 250
+ok
+executable: /home/waterrun/websql/websql
+
+real	0m5.208s
+user	0m3.939s
+sys	0m1.230s
+[exit 0]
+
+$ cd ~/websql && find . -maxdepth 3 | sort | head -40; du -sh .
+.
+./.luai
+./.luai/build
+./.luai/build/RELINKING.adoc
+./.luai/build/generate-onefile-payload.lua
+./.luai/build/launcher.c
+./.luai/generated-output.txt
+./.luai/licenses
+./.luai/licenses/GPL-3.0-or-later.txt
+./.luai/licenses/LGPL-3.0-or-later.txt
+./.luai/licenses/Lua-MIT.txt
+./.luai/manifest.lua
+./.luai/native
+./.luai/native/cjson.so
+./.luai/native/core.so
+./.luai/native/liblua-5.4.so
+./.luai/native/socket
+./THIRD_PARTY_NOTICES.md
+./websql
+1.6M	.
+[exit 0]
+
+$ cd /tmp && (env -i FIREBIRD_WEB_SQL_PORT=9090 ~/websql/websql > /tmp/websql.log 2>&1 &) ; sleep 2; curl -s -i http://127.0.0.1:9090/ | head -8; echo; curl -s -H "X-Auth-Token: changeme_PLEASE" http://127.0.0.1:9090/api/tables | head -c 400; echo; cat /tmp/websql.log | head -5; pkill -f websql/websql
+HTTP/1.1 200 OK
+Date: Thu, 01 Oct 2026 09:24:30 GMT
+Access-Control-Allow-Origin: *
+Content-Length: 11569
+Access-Control-Allow-Headers: Content-Type, X-Auth-Token
+Content-Type: text/html; charset=utf-8
+Access-Control-Allow-Methods: GET, POST, OPTIONS
+
+
+{"tables":[{"rows":3,"type":"TABLE","name":"DEPARTMENT","columns":2},{"rows":4,"type":"TABLE","name":"EMPLOYEE","columns":4}],"ok":true}
+[2026-10-01 09:24:28] [WARN ] default token in use; set FIREBIRD_WEB_SQL_TOKEN for real use
+[2026-10-01 09:24:28] [INFO ] Firebird Web SQL Shell 2.0.0
+[2026-10-01 09:24:28] [INFO ] listen: http://127.0.0.1:9090
+[2026-10-01 09:24:28] [INFO ] driver: mock
+[2026-10-01 09:24:28] [INFO ] auth: X-Auth-Token
+[exit 0]
+
+### artifacts
+-rw-r--r--. 1 waterrun waterrun 1278853 Oct  1 09:24 /tmp/artifacts.tgz
+total 1296
+drwxr-xr-x. 1 root root     104 Oct  1 09:24 .
+drwxr-xr-x. 1 root root     166 Oct  1 09:21 ..
+-rw-r--r--. 1 root root 1278853 Oct  1 09:24 artifacts.tgz
+-rw-r--r--. 1 root root    1306 Oct  1 09:24 cc.log
+-rw-r--r--. 1 root root    1161 Oct  1 09:22 out_10_prereq.txt
+-rw-r--r--. 1 root root   35458 Oct  1 09:24 out_11_usage.txt

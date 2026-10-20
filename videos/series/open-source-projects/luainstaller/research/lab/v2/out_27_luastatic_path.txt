@@ -1,0 +1,19 @@
+/home/waterrun/luai-video-lab/out/lsp.done
+dnf exit 0
+luarocks exit 0
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua /usr/lib64/liblua.a >/dev/null 2>&1; ls -l main
+-rwxr-xr-x. 1 waterrun waterrun 1303640 Oct  1 13:49 main
+[exit 0]
+
+$ cp main ~/bin/moon-static && cd /tmp && env PATH=/home/waterrun/bin:/usr/bin moon-static 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ ldd main
+	linux-vdso.so.1 (0x00007f1259df4000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f1259cd2000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f1259ad9000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f1259df6000)
+[exit 0]
+exit 0

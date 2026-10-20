@@ -1,0 +1,321 @@
+===== srlua =====
+This is srlua, a self-running Lua interpreter. It is meant to be combined
+with a Lua program into a single, stand-alone program that will execute
+the given Lua program when it is run. The Lua program can be in source or
+in precompiled form, as output by luac.
+
+The command-line arguments will be available to the Lua program in a table
+named "arg" and also as '...'.
+
+All standard Lua libraries will be available to the Lua program. To use a
+different set of libraries, copy linit.c from the Lua source, edit it to
+suit your needs, and then add it to srlua.c.
+
+For each Lua program that you want to turn into a stand-alone program, do
+	srglue srlua prog.lua a.out ; chmod +x a.out
+Of course, you can use any name instead of a.out.
+
+To build srlua and srglue and run a simple test, just do make.
+If Lua is not installed in /usr/local, tell make:
+	make LUA_TOPDIR=/var/tmp/lhf/lua-5.5.0/install
+
+
+$ make
+make[1]: Entering directory '/home/waterrun/luai-video-lab/srlua-103'
+make build MYLFLAGS=-Wl,-E
+make[2]: Entering directory '/home/waterrun/luai-video-lab/srlua-103'
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -o srglue srglue.c
+In file included from srglue.c:13:
+srglue.c: In function ‘main’:
+srglue.h:9:17: warning: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (9 chars into 8 available) [-Wunterminated-string-initialization]
+    9 | #define GLUESIG "%%srglue"
+      |                 ^~~~~~~~~~
+srglue.c:71:11: note: in expansion of macro ‘GLUESIG’
+   71 |   Glue t={GLUESIG,0,0};
+      |           ^~~~~~~
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -I/usr/local/include -o srlua srlua.c -L/usr/local/lib -llua -lm -ldl -Wl,-E
+make[2]: Leaving directory '/home/waterrun/luai-video-lab/srlua-103'
+make[1]: Leaving directory '/home/waterrun/luai-video-lab/srlua-103'
+./srglue srlua test.lua a.out ; chmod +x a.out
+./a.out *
+This is	Lua 5.4	running a script inside	./a.out
+These are the arguments from varargs
+HISTORY	Makefile	README	a.out	srglue	srglue.c	srglue.h	srlua	srlua.c	test.lua
+These are the arguments from arg
+0	./a.out
+1	HISTORY
+2	Makefile
+3	README
+4	a.out
+5	srglue
+6	srglue.c
+7	srglue.h
+8	srlua
+9	srlua.c
+10	test.lua
+These are the libraries
+table,coroutine,_G,math,string,os,arg,debug,utf8,package,io,
+This is	Lua 5.4	running a script inside	./a.out
+
+real	0m0.094s
+user	0m0.066s
+sys	0m0.025s
+[exit 0]
+
+$ make LUA_TOPDIR=/usr LUA_LIBDIR=/usr/lib64
+make[1]: Entering directory '/home/waterrun/luai-video-lab/srlua-103'
+make build MYLFLAGS=-Wl,-E
+make[2]: Entering directory '/home/waterrun/luai-video-lab/srlua-103'
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -o srglue srglue.c
+In file included from srglue.c:13:
+srglue.c: In function ‘main’:
+srglue.h:9:17: warning: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (9 chars into 8 available) [-Wunterminated-string-initialization]
+    9 | #define GLUESIG "%%srglue"
+      |                 ^~~~~~~~~~
+srglue.c:71:11: note: in expansion of macro ‘GLUESIG’
+   71 |   Glue t={GLUESIG,0,0};
+      |           ^~~~~~~
+gcc -std=c99 -Wall -Wextra -Wfatal-errors -O2 -I/usr/include -o srlua srlua.c -L/usr/lib64 -llua -lm -ldl -Wl,-E
+make[2]: Leaving directory '/home/waterrun/luai-video-lab/srlua-103'
+make[1]: Leaving directory '/home/waterrun/luai-video-lab/srlua-103'
+./srglue srlua test.lua a.out ; chmod +x a.out
+./a.out *
+This is	Lua 5.4	running a script inside	./a.out
+These are the arguments from varargs
+HISTORY	Makefile	README	a.out	srglue	srglue.c	srglue.h	srlua	srlua.c	test.lua
+These are the arguments from arg
+0	./a.out
+1	HISTORY
+2	Makefile
+3	README
+4	a.out
+5	srglue
+6	srglue.c
+7	srglue.h
+8	srlua
+9	srlua.c
+10	test.lua
+These are the libraries
+table,os,_G,arg,io,string,math,utf8,coroutine,debug,package,
+This is	Lua 5.4	running a script inside	./a.out
+
+real	0m0.091s
+user	0m0.070s
+sys	0m0.020s
+[exit 0]
+total 76
+drwxr-xr-x. 1 waterrun waterrun   136 Oct  1 15:12 .
+drwxr-xr-x. 1 waterrun waterrun    68 Oct  1 15:12 ..
+-rw-r--r--. 1 waterrun waterrun   447 Sep 11 21:05 HISTORY
+-rw-r--r--. 1 waterrun waterrun   683 Sep 10 09:14 Makefile
+-rw-r--r--. 1 waterrun waterrun  1402 May 11 19:23 README
+-rwxr-xr-x. 1 waterrun waterrun 14641 Oct  1 15:12 a.out
+-rwxr-xr-x. 1 waterrun waterrun 13312 Oct  1 15:12 srglue
+-rw-r--r--. 1 waterrun waterrun  1776 Sep 10 08:49 srglue.c
+-rw-r--r--. 1 waterrun waterrun   336 Aug 14  2019 srglue.h
+-rwxr-xr-x. 1 waterrun waterrun 14200 Oct  1 15:12 srlua
+-rw-r--r--. 1 waterrun waterrun  3267 Sep 11 21:03 srlua.c
+-rw-r--r--. 1 waterrun waterrun   417 Jul 26  2018 test.lua
+
+$ ../srlua-103/srglue ../srlua-103/srlua main.lua alt/moon-srlua
+
+real	0m0.001s
+user	0m0.001s
+sys	0m0.000s
+[exit 0]
+total 16
+drwxr-xr-x. 1 waterrun waterrun    20 Oct  1 15:12 .
+drwxr-xr-x. 1 waterrun waterrun    40 Oct  1 15:12 ..
+-rwxr-xr-x. 1 waterrun waterrun 14483 Oct  1 15:12 moon-srlua
+
+$ alt/moon-srlua 2026-10-01   (cwd = project dir, modules on disk)
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+
+$ cd /tmp && .../alt/moon-srlua 2026-10-01   (elsewhere)
+/home/waterrun/luai-video-lab/moon/alt/moon-srlua: :2: module 'moon.phase' not found:
+	no field package.preload['moon.phase']
+	no file '/usr/share/lua/5.4/moon/phase.lua'
+	no file '/usr/share/lua/5.4/moon/phase/init.lua'
+	no file '/usr/lib64/lua/5.4/moon/phase.lua'
+	no file '/usr/lib64/lua/5.4/moon/phase/init.lua'
+	no file './moon/phase.lua'
+	no file './moon/phase/init.lua'
+	no file '/usr/lib64/lua/5.4/moon/phase.so'
+	no file '/usr/lib64/lua/5.4/loadall.so'
+	no file './moon/phase.so'
+	no file '/usr/lib64/lua/5.4/moon.so'
+	no file '/usr/lib64/lua/5.4/loadall.so'
+	no file './moon.so'
+stack traceback:
+	[C]: in function 'require'
+	:2: in main chunk
+	[C]: in ?
+[exit 1]
+
+$ ldd alt/moon-srlua
+	linux-vdso.so.1 (0x00007f16286f2000)
+	liblua-5.4.so => /lib64/liblua-5.4.so (0x00007f1628685000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f162856e000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f1628375000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f16286f4000)
+
+real	0m0.003s
+user	0m0.003s
+sys	0m0.000s
+[exit 0]
+
+===== luastatic =====
+/usr/bin/luastatic
+file /usr/bin/luastatic is not owned by any package
+luastatic 0.0.12
+usage: luastatic main.lua[1] require.lua[2] liblua.a[3] library.a[4] -I/include/lua[5] [6]
+  [1]: The entry point to the Lua program
+  [2]: One or more required Lua source files
+  [3]: The path to the Lua interpreter static library
+  [4]: One or more static libraries for a required Lua binary module
+  [5]: The path to the directory containing lua.h
+  [6]: Additional arguments are passed to the C compiler
+
+$ luastatic main.lua
+cc -Os main.luastatic.c   -rdynamic -lm  -o main 
+/usr/bin/ld.bfd: /tmp/ccmk5PG2.o: in function `lstop':
+main.luastatic.c:(.text+0x30): undefined reference to `lua_sethook'
+/usr/bin/ld.bfd: /tmp/ccmk5PG2.o: in function `msghandler':
+main.luastatic.c:(.text+0x52): undefined reference to `lua_tolstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x69): undefined reference to `luaL_callmeta'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x7a): undefined reference to `lua_type'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x84): undefined reference to `lua_typename'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x96): undefined reference to `lua_pushfstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xa5): undefined reference to `lua_type'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xbf): undefined reference to `lua_getglobal'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xd1): undefined reference to `lua_getfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xe3): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xf0): undefined reference to `lua_settop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0xfb): undefined reference to `lua_pushstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x10d): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x11a): undefined reference to `lua_settop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x127): undefined reference to `lua_pushinteger'
+/usr/bin/ld.bfd: main.luastatic.c:(.text+0x13e): undefined reference to `lua_callk'
+/usr/bin/ld.bfd: /tmp/ccmk5PG2.o: in function `laction':
+main.luastatic.c:(.text+0x21): undefined reference to `lua_sethook'
+/usr/bin/ld.bfd: /tmp/ccmk5PG2.o: in function `lstop':
+main.luastatic.c:(.text+0x40): undefined reference to `luaL_error'
+/usr/bin/ld.bfd: /tmp/ccmk5PG2.o: in function `main':
+main.luastatic.c:(.text.startup+0x10): undefined reference to `luaL_newstate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x1b): undefined reference to `luaL_openlibs'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x2d): undefined reference to `lua_createtable'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x3f): undefined reference to `lua_pushstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x4f): undefined reference to `lua_rawseti'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x61): undefined reference to `lua_setglobal'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x7b): undefined reference to `luaL_loadbufferx'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x8e): undefined reference to `lua_tolstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xa7): undefined reference to `lua_createtable'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xb9): undefined reference to `lua_pushlstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xcb): undefined reference to `lua_setfield'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xd3): undefined reference to `lua_gettop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xe6): undefined reference to `lua_pushcclosure'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0xf6): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x127): undefined reference to `lua_pcallk'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x145): undefined reference to `lua_rotate'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x152): undefined reference to `lua_settop'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x165): undefined reference to `lua_tolstring'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x18d): undefined reference to `lua_close'
+/usr/bin/ld.bfd: main.luastatic.c:(.text.startup+0x197): undefined reference to `lua_close'
+collect2: error: ld returned 1 exit status
+
+real	0m0.059s
+user	0m0.039s
+sys	0m0.020s
+[exit 1]
+
+$ luastatic main.lua /usr/lib64/liblua.a
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main 
+
+real	0m0.085s
+user	0m0.047s
+sys	0m0.030s
+[exit 0]
+
+$ ./main 2026-10-01
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+[string "main"]:2: module 'moon.phase' not found:
+	no field package.preload['moon.phase']
+	
+	no module 'moon.phase' in luastatic bundle
+	no file '/usr/share/lua/5.4/moon/phase.lua'
+	no file '/usr/share/lua/5.4/moon/phase/init.lua'
+	no file '/usr/lib64/lua/5.4/moon/phase.lua'
+	no file '/usr/lib64/lua/5.4/moon/phase/init.lua'
+	no file './moon/phase.lua'
+	no file './moon/phase/init.lua'
+	no file '/usr/lib64/lua/5.4/moon/phase.so'
+	no file '/usr/lib64/lua/5.4/loadall.so'
+	no file './moon/phase.so'
+	no file '/usr/lib64/lua/5.4/moon.so'
+	no file '/usr/lib64/lua/5.4/loadall.so'
+	no file './moon.so'
+stack traceback:
+	[C]: in function 'require'
+	[string "main"]:2: in local 'func'
+	[string "main"]:41: in main chunk
+[exit elsewhere 1]
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua /usr/lib64/liblua.a
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main 
+
+real	0m0.076s
+user	0m0.048s
+sys	0m0.027s
+[exit 0]
+
+$ ./main 2026-10-01 (elsewhere)
+2026-10-01  waning gibbous  78% lit
+[exit 0]
+-rwxr-xr-x. 1 waterrun waterrun 1303688 Oct  1 15:12 main
+-rw-r--r--. 1 waterrun waterrun   21735 Oct  1 15:12 main.luastatic.c
+
+$ ldd main
+	linux-vdso.so.1 (0x00007fa3156af000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007fa315570000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007fa315377000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007fa3156b1000)
+
+real	0m0.003s
+user	0m0.002s
+sys	0m0.002s
+[exit 0]
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua -llua
+cc -Os main.luastatic.c   -rdynamic -lm  -o main -llua
+
+real	0m0.059s
+user	0m0.039s
+sys	0m0.020s
+[exit 0]
+
+$ luastatic main.lua moon/phase.lua moon/julian.lua moon/names.lua /usr/lib64/liblua.a -I/usr/include -o alt/moon-luastatic
+cc -Os main.luastatic.c  /usr/lib64/liblua.a -rdynamic -lm -ldl -o main -I/usr/include -o alt/moon-luastatic
+
+real	0m0.079s
+user	0m0.048s
+sys	0m0.031s
+[exit 0]
+.:
+total 48
+drwxr-xr-x. 1 waterrun waterrun    80 Oct  1 15:12 .
+drwxr-xr-x. 1 waterrun waterrun    68 Oct  1 15:12 ..
+drwxr-xr-x. 1 waterrun waterrun    48 Oct  1 15:12 alt
+drwx------. 1 waterrun waterrun    42 Oct  1 15:11 build
+-rwxr-xr-x. 1 waterrun waterrun 18280 Oct  1 15:12 main
+-rw-r--r--. 1 waterrun waterrun   259 Oct  1 15:10 main.lua
+-rw-r--r--. 1 waterrun waterrun 21735 Oct  1 15:12 main.luastatic.c
+drwxr-xr-x. 1 waterrun waterrun    56 Oct  1 15:10 moon
+
+alt:
+total 1292
+drwxr-xr-x. 1 waterrun waterrun      48 Oct  1 15:12 .
+drwxr-xr-x. 1 waterrun waterrun      80 Oct  1 15:12 ..
+-rwxr-xr-x. 1 waterrun waterrun 1303688 Oct  1 15:12 moon-luastatic
+-rwxr-xr-x. 1 waterrun waterrun   14483 Oct  1 15:12 moon-srlua

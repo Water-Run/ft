@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang=zh / en。tools/covers.sh 按 2 倍像素出图。
+     与正片的标题画面是同一个构图：藏蓝底，一轮纸白的月亮，字标压在月亮上的部分反成藏蓝。只有这两种颜色。
+     字标的字高约为画面高度的 1/5；底部 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
+  @font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+  :root { --navy: #000080; --paper: #f3f2ed; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; --M: 120px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 100px; }
+  #stage { background: var(--navy); color: var(--paper); font-family: "Inter", "Sans SC", sans-serif; overflow: hidden; }
+  svg { position: absolute; left: 0; top: 0; }
+  .word { position: absolute; left: calc(var(--M) - 10px); font: 800 var(--fs)/1 "Inter"; letter-spacing: -.045em; white-space: nowrap; }
+  .word.in { color: var(--navy); }
+  .rule { position: absolute; left: var(--M); height: 4px; background: var(--paper); }
+  .rule.in { background: var(--navy); }
+  .sub { position: absolute; left: var(--M); font-weight: 900; letter-spacing: -.02em; white-space: nowrap; line-height: 1; }
+  .en .sub { font-weight: 700; letter-spacing: -.035em; }
+  .cmd { position: absolute; left: var(--M); font: 500 var(--cs)/1 "Mono"; white-space: pre; }
+  .cmd i { font-style: normal; opacity: .55; }
+  /* 16:9 */
+  .r169 { --fs: 276px; --cs: 58px; }
+  .r169 .word { top: 300px; }
+  .r169 .rule { top: 614px; width: 1680px; }
+  .r169 .sub { top: 654px; font-size: 108px; }
+  .r169.en .sub { font-size: 112px; }
+  .r169 .cmd { top: 822px; }
+  /* 4:3 */
+  .r43 { --fs: 240px; --cs: 54px; }
+  .r43 .word { top: 418px; }
+  .r43 .rule { top: 696px; width: 1400px; }
+  .r43 .sub { top: 734px; font-size: 94px; }
+  .r43.en .sub { font-size: 100px; }
+  .r43 .cmd { top: 888px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="g"></svg>
+  <div class="word out">luainstaller</div>
+  <div class="word in">luainstaller</div>
+  <div class="rule"></div>
+  <div class="rule in"></div>
+  <div class="sub"></div>
+  <div class="cmd"><i>$ </i>luai -b main.lua</div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), r43 = q.get('r') === '43', lang = q.get('lang') || 'zh';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  const SUB = { zh: '把 Lua 脚本，变成可执行文件', en: 'Lua scripts, as executables.' }[lang];
+  document.querySelector('.sub').textContent = SUB;
+  // 月亮、虚线轨道、卫星
+  const W = r43 ? 1600 : 1920, H = r43 ? 1200 : 1080, g = document.getElementById('g');
+  g.setAttribute('width', W); g.setAttribute('height', H); g.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const NS = 'http://www.w3.org/2000/svg', el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); g.appendChild(e); return e; };
+  const cx = r43 ? 1230 : 1486, cy = r43 ? 356 : 338, R = r43 ? 304 : 302, ro = R + (r43 ? 112 : 120), a = r43 ? 3.52 : 3.46;
+  el('circle', { cx, cy, r: ro, fill: 'none', stroke: 'rgba(243,242,237,.6)', 'stroke-width': 3, 'stroke-dasharray': '3 15', 'stroke-linecap': 'round' });
+  el('circle', { cx, cy, r: R, fill: '#f3f2ed' });
+  el('circle', { cx: cx + ro * Math.cos(a), cy: cy + ro * Math.sin(a), r: 24, fill: '#f3f2ed' });
+  // 字标在月亮里的部分取藏蓝：同一行字叠两层，上层按月亮的圆裁剪
+  const inner = document.querySelector('.word.in');
+  const place = () => { for (const e of [inner, document.querySelector('.rule.in')]) e.style.clipPath = `circle(${R}px at ${cx - e.offsetLeft}px ${cy - e.offsetTop}px)`; };   // 细线穿过月亮的那一段也反成藏蓝
+  Promise.all([document.fonts.load('900 40px "Sans SC"', SUB), document.fonts.load('800 40px "Inter"', 'luainstaller' + SUB), document.fonts.load('700 40px "Inter"', SUB), document.fonts.load('500 40px "Mono"', 'luai -b main.lua$')]).then(() => document.fonts.ready).then(() => { place(); document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
