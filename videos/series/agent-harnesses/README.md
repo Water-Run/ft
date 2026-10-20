@@ -65,7 +65,8 @@
 | zcode | 待定位 | — | — | — | 未核实 |
 | minimax-code | 待定位 | — | — | — | 未核实 |
 | pi | 待定位 | — | — | — | 未核实 |
-| context-compaction | 不是项目，是横向题 | — | — | 跨集比较各家的上下文压缩做法，素材取自前面各集的检出 | 待排期 |
+
+原计划的「上下文压缩的方式」不是某一家的项目，是跨集横向题，已于 2026-10-20 移到「XX 秒速通」系列，改题《120 秒速通 Harness 是如何压缩上下文的》（`../in-seconds/`）。本系列每集讲到自己的上下文管理时，仍按上面的术语与读法约定写。
 
 片单外的一个候选：**OpenHarness**（`HKUDS/OpenHarness`，MIT，Python，2026-04 公开，约 1.1 万行）。它公开的动机就是让人读懂 Harness 怎么搭——按本系列的做法是很好的题材。要不要加进来由你定；`openclaude` 那一集指的对象也建议一并确认。
 
@@ -86,5 +87,4 @@
 | 10 | ZCode | zh + en | 计划中 | `zcode` |
 | 11 | MiniMax Code | zh + en | 计划中 | `minimax-code` |
 | 12 | Pi | zh + en | 计划中 | `pi` |
-| 13 | 上下文压缩的方式 | zh + en | 计划中 | `context-compaction` |
 <!-- catalog:end -->

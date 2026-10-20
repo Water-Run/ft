@@ -55,7 +55,7 @@ f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓
 
 频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00，OpenClaw/Hermes 中文 514.60 秒显示 8:35，WSL 中文 333.083 秒显示 5:34，InnoDB 949.467 秒显示 15:50，PostgreSQL 688.08 秒显示 11:29。Dense/MoE 两种语言都是 150.000 秒，哔哩哔哩与 YouTube 却都显示 2:31，原因未核。Web 登录两种语言都是 200.000 秒，哔哩哔哩记 200 秒，YouTube 频道页显示 3:21，原因同样未核。MyISAM 与批处理只上了哔哩哔哩，InnoDB 目前也只上了哔哩哔哩。两个频道上另有 2025 年的几部项目介绍片（pptx2png、SimpSave、Bat-KV 等），源码不在本仓库，片单里没有。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
 
-全部片单（18 个系列、164 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
+全部片单（19 个系列、177 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
 
 [制作 TODO 与完成情况](docs/todo.md) 按当前阶段列出待审稿、预研、未开工、已成片与未关闭事项；原 2026-10-09–10-15 的 16 部安排保存在[历史计划](docs/plans/2026-10-09--15.md)。开工先核对当前源码与实际输出，收尾后回填进度。
 

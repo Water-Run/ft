@@ -11,6 +11,10 @@
 | 怎么讲 | 深入、通俗易懂，不遗漏任何主要节点和它们的意义；指标口径全系列统一，每一项给出处并注明日期；统一视觉风格与节奏 |
 | 每集多长 | 5–15 分钟 |
 
+**收录的范围**（片单顺序）：英特尔的三个时代、AMD 与 Ryzen、英伟达的三条显卡线、英特尔独显、高通、苹果自研芯片、Windows Server、Linux 内核，以及 Python、Lua、C、Java、C#、JavaScript 与 TypeScript 六门语言的发展史。
+
+**与「编程语言哲学」系列的分界**：`../language-philosophy/` 讲一门语言的设计哲学——一条统一思想、为什么长成这样、在什么地方取舍；本系列讲同一门语言在时间线上的演进与版本转折。两边可以各有同一门语言，不要互相照搬。
+
 ## 连续性
 
 同一系列的各集保持一致的做法记在这里：首集制作时定下来，后续各集遵守；要改就先改这里。各项的含义见 [docs/series.md](../../../docs/series.md)。标为「建议」的是起点，不是限制：每集按题目增删、合并、调整比重。
@@ -39,4 +43,10 @@
 | 10 | 苹果的芯片自研之路 | zh + en | 计划中 | `apple` |
 | 11 | Windows Server 演变史 | zh + en | 计划中 | `windows-server` |
 | 12 | Linux 内核发展史 | zh + en | 计划中 | `linux-kernel-evolution` |
+| 13 | Python 语言的发展史 | zh + en | 计划中 | `python-history` |
+| 14 | Lua 语言的发展史 | zh + en | 计划中 | `lua-history` |
+| 15 | C 语言的发展史 | zh + en | 计划中 | `c-language-history` |
+| 16 | Java 语言的发展史 | zh + en | 计划中 | `java-history` |
+| 17 | C# 语言的发展史 | zh + en | 计划中 | `csharp-history` |
+| 18 | JavaScript 与 TypeScript 的发展史 | zh + en | 计划中 | `javascript-typescript-history` |
 <!-- catalog:end -->

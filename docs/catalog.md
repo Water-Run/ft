@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 164 部：已成片 14 部，制作中 8 部，计划中 142 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 177 部：已成片 14 部，制作中 8 部，计划中 155 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -38,9 +38,9 @@
 | 6 | 编程语言——Zig | zh + en | 计划中 |  | `zig` |  |
 | 7 | 编程语言——C++ | zh + en | 计划中 |  | `cpp` |  |
 
-### 编程思想
+### 编程语言哲学
 
-目录 [`videos/series/programming-paradigms/`](../videos/series/programming-paradigms/)；英文名 Programming Paradigms。系列的定位与连续性约定见该目录的 README。
+目录 [`videos/series/language-philosophy/`](../videos/series/language-philosophy/)；英文名 Programming Language Philosophy。系列的定位与连续性约定见该目录的 README。
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
@@ -65,8 +65,22 @@
 |---|---|---|---|---|---|---|
 | 1 | 用料是用料，调教是调教——汽车底盘的系统工程 | zh + en | 计划中 |  | `chassis` |  |
 | 2 | 当碰撞不可避免时：被动安全和白车身 | zh + en | 计划中 |  | `passive-safety` |  |
-| 3 | 发动机的补丁：变速箱群观 | zh + en | 计划中 |  | `transmission-survey` |  |
-| 4 | 当油和电混合驱动——汽车混动系统 | zh + en | 计划中 |  | `hybrid-drivetrains` |  |
+| 3 | 当油和电混合驱动——汽车混动系统 | zh + en | 计划中 |  | `hybrid-drivetrains` |  |
+
+### 燃油车技术
+
+目录 [`videos/series/fuel-vehicle-tech/`](../videos/series/fuel-vehicle-tech/)；英文名 Fuel Vehicle Technology。系列的定位与连续性约定见该目录的 README。
+
+| # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
+|---|---|---|---|---|---|---|
+| 1 | 四冲程循环：一次燃烧如何变成往复运动 | zh + en | 计划中 |  | `four-stroke-cycle` |  |
+| 2 | 燃油喷射与点火系统 | zh + en | 计划中 |  | `fuel-injection-ignition` |  |
+| 3 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
+| 4 | 涡轮增压：进气压力如何提高 | zh + en | 计划中 |  | `turbocharging` |  |
+| 5 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 |  | `power-torque-curve` |  |
+| 6 | 变速器原理 | zh + en | 计划中 |  | `transmissions` |  |
+| 7 | 发动机的补丁：变速箱群观 | zh + en | 计划中 |  | `transmission-survey` |  |
+| 8 | 差速器与传动轴 | zh + en | 计划中 |  | `differential-driveshaft` |  |
 
 ### 设计语言与视觉规范
 
@@ -74,11 +88,15 @@
 
 | # | 标题 | 语言 | 状态 | 制作 | 目录 | 备注 |
 |---|---|---|---|---|---|---|
-| 1 | Carbon Design | zh + en | 计划中 |  | `carbon` |  |
-| 2 | Ant Design | zh + en | 计划中 |  | `ant-design` |  |
-| 3 | Adwaita | zh + en | 计划中 |  | `adwaita` |  |
-| 4 | Primer | zh + en | 计划中 |  | `primer` |  |
-| 5 | Apple HIG | zh + en | 计划中 |  | `apple-hig` |  |
+| 1 | Metro | zh + en | 计划中 |  | `metro` | Microsoft · Windows Phone 7 的设计语言 |
+| 2 | Spectrum | zh + en | 计划中 |  | `spectrum` | Adobe · Spectrum 1 的设计语言 |
+| 3 | Carbon Design | zh + en | 计划中 |  | `carbon` | IBM · Carbon Design System |
+| 4 | Material 3 | zh + en | 计划中 |  | `material-3` | Google · Material Design |
+| 5 | Fluent 2 | zh + en | 计划中 |  | `fluent-2` | Microsoft · Fluent 2 Web |
+| 6 | Ant Design | zh + en | 计划中 |  | `ant-design` | Ant Group · 企业级中后台设计体系 |
+| 7 | Adwaita | zh + en | 计划中 |  | `adwaita` | GNOME · Human Interface |
+| 8 | Primer | zh + en | 计划中 |  | `primer` | GitHub · Product UI |
+| 9 | Apple HIG | zh + en | 计划中 |  | `apple-hig` | Apple · Human Interface Guidelines |
 
 ### 存储介质
 
@@ -118,6 +136,12 @@
 | 10 | 苹果的芯片自研之路 | zh + en | 计划中 |  | `apple` |  |
 | 11 | Windows Server 演变史 | zh + en | 计划中 |  | `windows-server` |  |
 | 12 | Linux 内核发展史<br>History of the Linux Kernel | zh + en | 计划中 |  | `linux-kernel-evolution` | 电子发展史系列，按 5–15 分钟规划；围绕主要阶段、转折原因与工程取舍展开，区分内核与发行版 |
+| 13 | Python 语言的发展史 | zh + en | 计划中 |  | `python-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
+| 14 | Lua 语言的发展史 | zh + en | 计划中 |  | `lua-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
+| 15 | C 语言的发展史 | zh + en | 计划中 |  | `c-language-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
+| 16 | Java 语言的发展史 | zh + en | 计划中 |  | `java-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
+| 17 | C# 语言的发展史 | zh + en | 计划中 |  | `csharp-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
+| 18 | JavaScript 与 TypeScript 的发展史 | zh + en | 计划中 |  | `javascript-typescript-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
 
 ### 我们的中国
 
@@ -191,7 +215,6 @@
 | 10 | ZCode | zh + en | 计划中 |  | `zcode` |  |
 | 11 | MiniMax Code | zh + en | 计划中 |  | `minimax-code` |  |
 | 12 | Pi | zh + en | 计划中 |  | `pi` |  |
-| 13 | 上下文压缩的方式 | zh + en | 计划中 |  | `context-compaction` |  |
 
 ### 底盘代号与车型发展史
 
@@ -229,6 +252,7 @@
 | 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制（Grok 4.7） | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。2026-10-19 中文稿已落盘，待后续模型优化；尚未人工确认。入口见本片 README。 |
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | 委托（Claude Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 准备方 DeepSeek V4.1 Flash 1017（取证、包豪斯视觉系统）；中文第 10 稿经 WaterRun 确认，第 11 稿与英文为授权自主定稿。2026-10-20 交付（Claude Opus 5.5）：中英各 200.00 s、1080p60，MiniMax 配音、自写包豪斯机械配乐；check.js --final 全部通过，WaterRun 回复「可以, 标记发布吧」。已发布：哔哩哔哩 BV1Z7JZ6yEQb（2026-10-20 08:53:37，合集「速通教学」第 4 集）与 YouTube Bkt7b_xbMYg。2026-10-20 WaterRun 评 5 分：后半段跑题、阅读负担、动画溢出压盖、留白不够、英文音色停用（P33–P38），留档不返工。 |
 | 20 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`chain-of-thought`](../videos/series/in-seconds/chain-of-thought/) | 2026-10-18 由独立片迁入秒速通；192 秒；事实测绘与系列视觉扩展已落盘，尚未写稿或配音。 |
+| 21 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh + en | 计划中 |  | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
 
 ### 游戏物理学
 
@@ -270,35 +294,31 @@
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端<br>What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End | zh | 已成片 | 委托（Claude Opus 5.5） | [`opencart-1-5-admin`](../videos/standalone/opencart-1-5-admin/) | 2026-10-19 交付（Claude Opus 5.5，中文 16:50，1080p60，MiniMax 配音）；已发布：哔哩哔哩（2026-10-19）。发布后发现的 F04 / F15 画面问题与 P29 配音语气问题按「已发布不返工」留档，见 README |
 | 4 | 道交法中的路权 | zh | 制作中 | 委托（Opus） | [`traffic-law-right-of-way`](../videos/standalone/traffic-law-right-of-way/) | 仅中文；2026-10-19 第 1 轮 Gemini 4 Argon 反馈后形成第 8 稿（190 条 cue，估算 652.2 秒），第 2 轮反馈已回收（6 项待议），未改稿，待 WaterRun 大改；保留 Yunjian 和 660 秒上限，尚无配音或成片。 |
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`openclaw-opencode-v2`](../videos/standalone/openclaw-opencode-v2/) | 已发布：哔哩哔哩（2026-10-08）；叙事反馈见 docs/feedback.md |
-| 6 | Notepad++ 是如何工作的 | zh + en | 计划中 |  | `notepad-plus-plus` |  |
-| 7 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
-| 8 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
-| 9 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
-| 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
-| 11 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 按 WaterRun 同日四轮意见改到中文第 7 稿（五章、6:57、俏皮口吻、MiniMax 傲娇御姐），语言阵容 Python/Lua/C#/PHP/Nim/Java 与 Rust/Zig/C，12 项实验，三轮对抗审稿，待 WaterRun 审查 |
-| 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
-| 13 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
-| 14 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |
-| 15 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 |  | `interchanges` |  |
-| 16 | 轮胎物理学 | zh + en | 计划中 |  | `tire-physics` |  |
-| 17 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
-| 18 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
-| 19 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
-| 20 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
-| 21 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
-| 22 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
-| 23 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
-| 24 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
-| 25 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
-| 26 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
-| 27 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
-| 28 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube |
-| 29 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
-| 30 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
-| 31 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
-| 32 | 变速器原理 | zh + en | 计划中 |  | `transmissions` |  |
-| 33 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 |  | `power-torque-curve` |  |
-| 34 | CVVT 可变气门正时技术 | zh + en | 计划中 |  | `cvvt` |  |
-| 35 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
-| 36 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
-| 37 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
+| 6 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh + en | 计划中 |  | `local-qwen-dgx` |  |
+| 7 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`wsl`](../videos/standalone/wsl/) | 已发布：哔哩哔哩与 YouTube |
+| 8 | 枪械自动原理 | zh + en | 计划中 |  | `firearm-actions` |  |
+| 9 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 |  | `lcd-panels` |  |
+| 10 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`garbage-collection`](../videos/standalone/garbage-collection/) | 2026-10-18 建目录：Python/Go 实验、论文与运行时文档取证、瑞士风格视觉方向；2026-10-19 按 WaterRun 同日四轮意见改到中文第 7 稿（五章、6:57、俏皮口吻、MiniMax 傲娇御姐），语言阵容 Python/Lua/C#/PHP/Nim/Java 与 Rust/Zig/C，12 项实验，三轮对抗审稿，待 WaterRun 审查 |
+| 11 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快 | zh + en | 计划中 |  | `lightweighting` |  |
+| 12 | SQL 数据库群观 | zh + en | 计划中 |  | `sql-survey` |  |
+| 13 | 中国汽油价格变迁史 | zh + en | 计划中 |  | `china-gasoline-prices` |  |
+| 14 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 |  | `interchanges` |  |
+| 15 | 轮胎物理学 | zh + en | 计划中 |  | `tire-physics` |  |
+| 16 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
+| 17 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
+| 18 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
+| 19 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
+| 20 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
+| 21 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
+| 22 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
+| 23 | 冯诺依曼架构 | zh + en | 计划中 |  | `von-neumann` |  |
+| 24 | EA211 的全家桶 | zh + en | 计划中 |  | `ea211-family` |  |
+| 25 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh + en | 计划中 |  | `car-manufacturing` |  |
+| 26 | Claude 是如何检测和封禁你的账号的 | zh + en | 计划中 |  | `claude-ban` |  |
+| 27 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | 自制（Claude Opus 5.5） | [`luainstaller`](../videos/standalone/luainstaller/) | 项目介绍片；已发布：哔哩哔哩与 YouTube |
+| 28 | HTTP 状态码 | zh + en | 计划中 |  | `http-status-codes` |  |
+| 29 | CRBS，以及为什么在刹停时总让你点头 | zh + en | 计划中 |  | `crbs` |  |
+| 30 | 关于让车不点头的停下 | zh + en | 计划中 |  | `smooth-stop` |  |
+| 31 | 内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 |  | `how-ram-works` |  |
+| 32 | IPv4 | zh + en | 计划中 |  | `ipv4` |  |
+| 33 | Shell 群观 | zh + en | 计划中 |  | `shell-survey` |  |
