@@ -1,0 +1,26 @@
+取证时刻（UTC+8）：2026-10-20T12:10:09+08:00
+PS> & lua55.exe strings.lua
+a == b            : true
+rawequal(a, b)    : true
+a == "hello"       : true
+
+t["k"]            : v
+t[("k")]          : v
+t["k" .. ""]      : v
+
+N = 100000，collectgarbage("count") 单位 KB
+  只有 nil 的表            :     -3.3 KB
+  全部是同一串 "key"       :   1152.4 KB
+  全部是互不相同的短字符串 :   5383.9 KB
+  互不相同的长字符串(约90B):  13981.6 KB
+  同样的表项数，内容相同的字符串几乎不额外占内存：
+  互不相同的短字符串比同一串多占 4231.5 KB
+
+短字符串长度 3：rawequal = true
+长字符串长度 100：rawequal = true
+长字符串内容相等：== = true
+
+("abc"):upper()   : ABC
+string.upper("abc"): ABC
+("abc") == "abc"  : true
+[exit=0]
