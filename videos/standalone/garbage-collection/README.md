@@ -10,7 +10,7 @@
 
 | 项 | 当前记录 |
 |---|---|
-| 最近完成的步骤与版本 | 2026-10-20 受托方：配音 140 句（MiniMax `speech-2.8-hd`，Sweet_Lady）并回听、修两处读法；三个视觉方向的关键帧，策划者选「内存条」；`brief/storyboard-detail.md`；七个场景、常驻元素与换章；自写配乐 `tools/music.py` 与 431 个音效事件；封面 4 张；`check.js` 全部通过，`scan.js` 全片错误 0，`preview.js` 没有超过 3 s 的静止段；逐句总览图（`sheets.js cue`）复看后又修了 4 处排版（见「结尾反馈复盘」F19）；事实复核写进 `research/FACTS.md`「复核」 |
+| 最近完成的步骤与版本 | 2026-10-20 受托方：配音 140 句（MiniMax `speech-2.8-hd`，Sweet_Lady）并回听、修两处读法；三个视觉方向的关键帧，策划者选「内存条」；`brief/storyboard-detail.md`；七个场景、常驻元素与换章；自写配乐 `tools/music.py` 与 431 个音效事件；封面 4 张；逐句总览图（`sheets.js cue`）复看后修了 4 处排版（F19）；逐 0.1 s 量了 69 处关键文字的可读区间，按「1.5 s + 字数 ÷ 5」加长了章卡与 6 处句后停顿（F04，内容哈希不变，全片 9:45）；带入开工后新加入的 F20 并改了一处颜色语义；`check.js` 全部通过、`preview.js` 没有超过 3 s 的静止段；事实复核写进 `research/FACTS.md`「复核」 |
 | 下一步及依赖 | 重新渲染（建议 `node kit/tools/render.js videos/standalone/garbage-collection --lang zh --workers 4`，并行的浏览器少一些，占用内存少、耗时长）→ `finish.js` → 试听片 → 用成片哈希补 `review/feedback.json` 与本 README 的复盘 → `check.js --final` → 提交 |
 | 当前稿本 / 校对结论 | `review/script.zh.11b3303b….md`（142 句 + 2 静默）；`approval.json` 为 **approved**（2026-10-20T10:43+08:00）；旁白文字未改，内容哈希仍是 `11b3303b…` |
 | 输出在哪台制作机 | 制作机 A（Windows）：配音缓存 `audio/zh/`、混音 `out/zh/audio*.wav`、封面 `out/cover-zh-*`、预演 `out/zh/preview.mp4`、总览图 `shots/sheets/`（均不入库）；中止的渲染留下 `out/zh/video.mp4.segs/` 的 8 个分段，下次渲染开始时会由 `render.js` 自己清掉 |
@@ -65,17 +65,17 @@ node kit/tools/stats.js videos/standalone/garbage-collection --lang zh
 
 ## 内容
 
-大纲见 `research/NARRATIVE.md`。起点为配音后的实测时间线（总长 572.92 s = 9:32.9）。
+大纲见 `research/NARRATIVE.md`。起点为配音后的实测时间线（总长 585.17 s = 9:45.2）。
 
 | 场景 | 章 | 起点 | 内容 | 画面上的真实数据 |
 |---|---|---|---|---|
 | open | — | 0:00 | 格子纸即堆；一秒六千七百万个；撞上 64 MB，收五次也收不回；四种报错；放手则 10 MB、136 次；什么是垃圾回收；两问；五个名字 | `out_09` 的 churn / hoard；`out_10`、`out_12`、`out_07` 的报错行 |
 | count | 01 引用计数 | 1:09.7 | 对象开头的 8 字节；1→2→3→2→1→0；PHP 的 refcount；环卡在 1；两边各报收 2 | `out_05` 的原始计数；`out_01` 的返回值 2；`out_10` 的 refcount 与 `gc_collect_cycles() = 2` |
-| trace | 02 标记—清扫 | 2:20.3 | 根、追踪；环够不着照收；1960 年的符号位；标记只认活的；Lua 一轮 28→14 MB | `out_08` 的 before / after |
-| gen | 03 分代 | 3:39.2 | 1983 年的观察；新区勤收老区少收；.NET 0→1→2；一秒 136 次都在第 0 代；卡表 | `out_09` 的 gen 与 churn |
-| tri | 04 三色与写屏障 | 4:47.7 | 迪杰斯特拉 1978；白灰黑；丢对象的两个条件；家规；写屏障；Lua 源码的规矩与后退屏障；419 步；.NET 四条指令；G1 的并发周期 | `lgc.h` 第 18–23 行；`out_08` 的步数；`out_09` 的汇编；`out_12` 的 Concurrent Start / Remark / Cleanup |
-| cost | 05 谁来买单 | 7:26.1 | 吞吐与 CPU；Nim 的 --mm；Rust 的所有权与 MIR；Nim 的 expandArc；C 与 Zig；账单 | `out_11` 的 ARC / ORC 与 expandArc；`out_06` 的 MIR |
-| close | —（收束） | 8:35.3 | 它只知道还找不找得到；麦卡锡的脚注（原文与译文）；回到 136 次；片尾 14 s | 脚注原文（`mccarthy-1960`） |
+| trace | 02 标记—清扫 | 2:21.5 | 根、追踪；环够不着照收；1960 年的符号位；标记只认活的；Lua 一轮 28→14 MB | `out_08` 的 before / after |
+| gen | 03 分代 | 3:41.6 | 1983 年的观察；新区勤收老区少收；.NET 0→1→2；一秒 136 次都在第 0 代；卡表 | `out_09` 的 gen 与 churn |
+| tri | 04 三色与写屏障 | 4:51.3 | 迪杰斯特拉 1978；白灰黑；丢对象的两个条件；家规；写屏障；Lua 源码的规矩与后退屏障；419 步；.NET 四条指令；G1 的并发周期 | `lgc.h` 第 18–23 行；`out_08` 的步数；`out_09` 的汇编；`out_12` 的 Concurrent Start / Remark / Cleanup |
+| cost | 05 谁来买单 | 7:33.5 | 吞吐与 CPU；Nim 的 --mm；Rust 的所有权与 MIR；Nim 的 expandArc；C 与 Zig；账单 | `out_11` 的 ARC / ORC 与 expandArc；`out_06` 的 MIR |
+| close | —（收束） | 8:44.3 | 它只知道还找不找得到；麦卡锡的脚注（原文与译文）；回到 136 次；片尾 14 s | 脚注原文（`mccarthy-1960`） |
 
 ## 视觉系统
 

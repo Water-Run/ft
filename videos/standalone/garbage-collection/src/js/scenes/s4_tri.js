@@ -148,6 +148,8 @@ scene('tri', ({ root, s, c0 }) => {
   const tBW2 = qb(T('e9', '改') - 0.1), tGate = qb(T('e9b', '强行') - 0.15), tGlet2 = tGate + 0.9, tPickW = qb(T('e10', '这段') + 0.2);
   const tWB = qb(Tend('e10') - 0.6), tE11 = qb(T('e11', '三种') - 0.25);
   const REW = 0.9;
+  // 「一旦违规」：黑刚指上白，到写屏障拦下之前，那个白对象和这根违规的指针一拍一跳——危险还在
+  const tVio = qb(T('e9', '违规') - 0.1), throb = (t) => (t >= tVio && t < tGate ? Math.max(0, 1 - (((t - tVio) / BEAT) % 1) / 0.35) : 0);
   // 节点颜色：两遍（冤杀一遍；倒带后，写屏障那一遍）
   F((t) => {
     if (t < tS3 || t >= tE11) { cB.set({ k: 0 }); cG.set({ k: 0 }); cW.set({ k: 0 }); return; }
@@ -162,7 +164,7 @@ scene('tri', ({ root, s, c0 }) => {
       if (t >= tRew) cG.set({ fill: C.gray, k: 1 });
     } else {
       const g = t >= tGate ? (t < tGate + 0.25 ? C.gold : t >= tPickW + 0.35 ? C.ink : C.gray) : C.white;
-      cW.set({ fill: t >= tPickW && t < tPickW + 0.35 ? C.gold : g, k: 1 });
+      cW.set({ fill: t >= tPickW && t < tPickW + 0.35 ? C.gold : g, k: 1 + 0.14 * throb(t) });
       cG.set({ fill: t >= tGlet2 + 0.4 ? C.ink : C.gray, k: 1 });
     }
   });
@@ -184,10 +186,11 @@ scene('tri', ({ root, s, c0 }) => {
     if (!pass2 && t >= tBW && t < tRew) fb = Math.min(1, (t - tBW) / 0.35);
     if (!pass2 && t >= tRew) fb = 1 - clamp((t - tRew) / REW);
     if (pass2 && t >= tBW2) { fb = Math.min(1, (t - tBW2) / 0.35); if (t >= tGate - 0.05 && t < tGate + 0.35) col = C.gold; }
-    pBW.set({ f: on ? fb : 0, col, w: 7 });
+    pBW.set({ f: on ? fb : 0, col, w: 7 + 6 * throb(t) });
   });
   appear(rootB3, tS3); exit(rootB3, tE11, { y: 40, d: 0.3 });
   sfx('pop', tS3 + BEAT, { g: 0.4 }); sfx('pop', tS3 + 2 * BEAT, { g: 0.4, p: 0.4 });
+  sfx('error', tVio, { g: 0.25 });
   const tCol = qb(T('e7', '收集器') - 0.1), tPrg = tMut;
   const ringG = cell(nsv, nG.x, nG.y, NS3 + 44), ringB = cell(nsv, nB.x, nB.y, NS3 + 44);
   F((t) => {
@@ -248,7 +251,7 @@ scene('tri', ({ root, s, c0 }) => {
   const tCur = qb(T('e11', '一条家规') + 0.2), tCurEnd = Tend('e11') + 0.65;
   F((t) => { const on = t >= tCur && t < tCurEnd; vis(cur11, on); if (on) ss(cur11, 'left', 160 + 170 * (Math.floor((t - tCur) / BEAT) % 3) + 'px'); });
   for (const e of [...sw3, ruleMini, noPre]) exit(e, Tend('e11') + 0.65, { y: -40, d: 0.3 });
-  const none = tx(ui, 'ser', '活物一个不漏', 110, 830, { size: 80, ...plate }); wipe(none, qb(T('e11b', '一个不漏') - 0.2), { dir: 'l', d: 0.4 }); exit(none, tMont1 + 0.1, { y: 60, d: 0.3 });
+  const none = tx(ui, 'ser', '活物一个不漏', 110, 830, { size: 80, ...plate }); wipe(none, qb(T('e11b', '活物') - 0.2), { dir: 'l', d: 0.4 }); exit(none, tMont1 + 0.1, { y: 60, d: 0.3 });
 
   // ════ S4：Lua 源码里的铁律；改表时退回灰 ════
   const X4 = 7200, tE12 = qb(T('e12', '翻开') - 0.3), tLaw = qb(Math.min(T('e12b', '黑的'), Tend('e12') - 0.5));
