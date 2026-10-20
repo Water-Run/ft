@@ -13,12 +13,13 @@ node_modules/
 
 # 制作锁与独立练习目录；不承载正式制作记录
 .ft-work.lock
-/out/sandbox/
-/out/voice-preview/
 .venv/
 .env
 .env.*
 !.env.example
+
+# 仓库根的 out/：本机临时产物、盘点脚本与工具输出，不入库
+/out/
 
 # 各视频的生成物：配音缓存、成片与中间文件、截图、工具的中间数据
 /videos/**/audio/
