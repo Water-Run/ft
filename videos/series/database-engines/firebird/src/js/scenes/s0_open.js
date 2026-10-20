@@ -12,7 +12,7 @@ scene('open', ({ root, s, c0 }) => {
 
   fromTo(rule, s.start + 0.05, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power3.inOut' }); sfx('whoosh', s.start + 0.05, { g: 0.5 });
   slam(title, T('o1'), { from: 1.2 }); sfx('thud', T('o1') + 0.12);
-  const tw = T('o2', { zh: '词', en: 'word' });                 // 「词」这个字被读到的时刻
+  const tw = T('o2', { zh: '数据', en: 'word' });                 // 「数据」这个字被读到的时刻
   slide(sub, tw, { x: -60 }); sfx('pop', tw);
 
   // 镜头始终在动：站内用极慢的推近保持画面不死。镜头写成一条轨迹：起点，然后是各关键帧 [时刻, 去向, 时长, 选项]
