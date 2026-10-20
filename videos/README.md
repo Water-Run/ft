@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 184 部：已成片 14，制作中 22，计划中 148。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 186 部：已成片 14，制作中 22，计划中 150。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 ## 已成片
 
@@ -357,6 +357,15 @@
 | 2 | 锁屏：锁屏、工作站与会话 | zh + en | 计划中 | `lock-screen` |  |
 | 3 | 登录：Winlogon、LSA 与凭据提供程序 | zh + en | 计划中 | `logon` |  |
 | 4 | BitLocker：全盘加密与密钥保管 | zh + en | 计划中 | `bitlocker` |  |
+
+### 文学作品动画化
+
+[系列说明](literary-animation/README.md)；英文名 Literature, Animated。缺省语言：zh + en。
+
+| # | 标题 | 语言 | 状态 | 目录 | 备注 |
+|---|---|---|---|---|---|
+| 1 | 蛋<br>The Egg | zh + en | 计划中 | `the-egg` | 2026-10-20 策划者新增（原话「新增系列: 文学作品动画化. 包括蛋, 项脊轩志」）。「蛋」暂按安迪·威尔（Andy Weir）2009 年的短篇小说 The Egg 登记，待策划者确认是哪一部。原作在版权期内，开工前先查清授权与可引用的范围；已有知名的同题动画，不得照搬其画面与讲法。 |
+| 2 | 项脊轩志<br>Record of the Xiangji Studio | zh + en | 计划中 | `xiang-ji-xuan-zhi` | 2026-10-20 策划者新增。明代归有光的散文（含后来补写的两段），原文已在公有领域；英文版的译文来源待定。 |
 
 ### 独立视频
 

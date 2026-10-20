@@ -21,7 +21,8 @@
     {"slug": "game-physics", "title": {"zh": "游戏物理学", "en": "Game Physics"}},
     {"slug": "eras", "title": {"zh": "时代", "en": "Eras"}},
     {"slug": "open-source-projects", "title": {"zh": "开源项目", "en": "Open Source Projects"}},
-    {"slug": "windows-internals", "title": {"zh": "Windows 是怎么工作的", "en": "How Windows Works"}}
+    {"slug": "windows-internals", "title": {"zh": "Windows 是怎么工作的", "en": "How Windows Works"}},
+    {"slug": "literary-animation", "title": {"zh": "文学作品动画化", "en": "Literature, Animated"}}
   ],
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered"},
@@ -178,6 +179,8 @@
     {"slug": "lock-screen", "series": "windows-internals", "title": {"zh": "锁屏：锁屏、工作站与会话"}},
     {"slug": "logon", "series": "windows-internals", "title": {"zh": "登录：Winlogon、LSA 与凭据提供程序"}},
     {"slug": "bitlocker", "series": "windows-internals", "title": {"zh": "BitLocker：全盘加密与密钥保管"}},
+    {"slug": "the-egg", "series": "literary-animation", "title": {"zh": "蛋", "en": "The Egg"}, "note": "2026-10-20 策划者新增（原话「新增系列: 文学作品动画化. 包括蛋, 项脊轩志」）。「蛋」暂按安迪·威尔（Andy Weir）2009 年的短篇小说 The Egg 登记，待策划者确认是哪一部。原作在版权期内，开工前先查清授权与可引用的范围；已有知名的同题动画，不得照搬其画面与讲法。"},
+    {"slug": "xiang-ji-xuan-zhi", "series": "literary-animation", "title": {"zh": "项脊轩志", "en": "Record of the Xiangji Studio"}, "note": "2026-10-20 策划者新增。明代归有光的散文（含后来补写的两段），原文已在公有领域；英文版的译文来源待定。"},
     {"slug": "windows-batch", "title": {"zh": "古代来的 Shell：Windows 批处理（.bat）"}, "status": "delivered", "languages": ["zh"]},
     {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "status": "delivered"},
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端", "en": "What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End"}, "status": "delivered", "languages": ["zh"]},
