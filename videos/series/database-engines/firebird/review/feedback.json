@@ -1,0 +1,259 @@
+{
+  "schema": 1,
+  "version": "2026-10-20.1",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "402d8f81cdb8aa66c480d3ec466708642275d748689552ecf844b6755ca7e167",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "全片只回答一个问题：Firebird 的引擎为什么能既是服务端又是嵌入式。开场 o1–o6 直接抛出反直觉的现象（服务端可以整个关掉），不铺历史；历史压到第 01 章三句（h1–h6）。主骨架是 engine/modes 两章：先讲「引擎是库、服务端是壳」，再用「停掉服务端，只有嵌入式还活着」这个实测把形态差异变成可验证的事实。store/update/concur/durable 四章是这套形态带来的机制后果，outro 用系列的四个老问题收束，next 引出 SQLite。每一段都服务于「形态差异」这一条线：页与页类型、就地改还是留副本、谁看得见哪一份，都是「引擎在库文件里」的直接后果。不开选型比较章，不列功能清单。",
+      "script_evidence": "src/js/script.js 场景顺序 open → history → engine → modes → store → update → concur → durable → outro → next；engine 12 句（e1–e12）、modes 9 句（m1–m9）为主干；outro z1–z6 逐条回答「怎么放/怎么找/怎么改/怎么并发/出错怎么办」；next n1–n4 收在引擎与外壳的关系上。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "a5858f5fe190df36291bd8ae13a29852bd75324e60bcb41978a8aa438b7828fc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "每一步都给「输入 → 变化 → 结果」，不留跳步：engine 章用三个文件的体积递进（e6 服务端 1.16 MB → e7 客户端库 2.07 MB → e8 引擎插件 8.93 MB → e9 服务端比客户端库还小）把「谁是壳」说成一个可以称量的结论；modes 章按 m2 远程 → m3 环回 → m4 嵌入式 → m6 停掉服务端 → m7 前两条断 → m8 只有第三条通，一步步走完；update 章只做一次 UPDATE，前后各拍一次文件快照（u4 一个副本 → u6 两个副本）；concur 章按五个时刻走完（c3 写者改 → c4 读者看到 30 → c5 再读还是 30 → c6 提交后才变 31）。难点（提供程序的分流、版本链）各留两句以上专门解释，不塞进长句。",
+      "script_evidence": "src/js/script.js 的 e6–e9、m2–m8、u4–u6、c3–c6 四组递进；stats.js 显示中文各章语速 3.83–4.52 字/秒，最快句 4.86，无过短停顿、无超过 6 秒的句子。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "「提供程序」这个词第一次出现（e11）当场给一句解释，不假设观众懂；三种连接方式在 m2–m4 一次给全，后面不再换说法。页类型有十种，旁白只点四类（数据页、索引页、事务清单页、管空间的书页），其余六种只出现在画面上并标出编号与名称，避免口头堆十个数。版本与口径统一在第 01 章一次交代：版本 5.0.4（h4）、页大小 8192 字节（d2）、磁盘结构版本 13.1。不与前两集做性能比较，只在形态上对照（引擎在库文件里 vs 引擎在服务端进程里），且不作优劣判断。与 SQLite 的比较只说形态差异，不说快慢。",
+      "script_evidence": "src/js/script.js 的 e11（提供程序当场解释）、m2–m4（三种连接一次给全）、d3–d6（只点四类页）、h4/d2（版本与页大小一次交代）、n2–n3（与 SQLite 只比形态）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "c013fecb9b807e6d31c433f725362819424edc03722bccce2cea56c366f6193e",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "核心项，本片按 F04 逐条执行。分镜阶段为每个关键状态写预计稳定时长：关键状态完整出现后按「1.5 秒 + 必要文字字数 ÷ 5 字/秒」计时；三个体积数字（1.16 / 2.07 / 8.93 MB）必须同时在画面上并留够读完时间，不靠旁白念过就算；页类型分布图、页上两个 alice 副本、两会话读数这三屏是本片的三个关键状态，各自带独立预算。章卡完整稳定阅读不少于 3 秒，片尾静默 13 秒单独预算。关键信息不在一句旁白的最后半秒才出现，镜头推近时要看的内容必须在画内。",
+      "script_evidence": "src/js/script.js 的 e6–e9（三个数字必须同屏）、d7–d9（240 页与页数分布）、u4–u7（副本 1 → 2 与偏移）、c4–c6（两会话读数）；credits 为 13 秒 pause 且无 tts。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "适用。运动只用来表达关系，不用来凑动态：外壳（灰框）与引擎（黑框 + 火焰）分开，火焰从方框里升起表示「引擎在库里、外壳在外面」；火苗分成三股表示提供程序按顺序试；库文件按页切分并按类型上色表示页的分布；数据页上同一个 alice 的两份副本在画面上分处两地并各自标注；两会话的读数是两块并排的读数板，值变化时只换数字。整屏刷换只留给章节卡一处，解释段不换面板。",
+      "script_evidence": "src/js/script.js 的 e3–e9（外壳与引擎的关系）、e11–e12（提供程序分流）、u4–u7（两份副本）、c4–c6（两块读数板）；src/css/style.css 的 .shell / .engine / .flame-mark / .dbfile / .pgbox 部件；src/js/config.js 的章节卡换场是唯一的整屏刷换。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "ee41c345f574a392da44514d878439edec32a8b9efab0bfb7565fe743914fc67",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "按 P27 的要求，配乐要有存在感：tools/music.py 自写 124 拍/分的电子乐，四踩底鼓贯穿全片，十六分音符的酸性贝斯与方波琶音逐章加层，母题是火焰三层对应的三音动机。全片持续有低音与铺底（pad 与 sub 不在任何一章缺席），不是稀疏的钢琴。音效用得少而分明：外壳出现与消失用一次落点，页类型分布落定用一次 chime，两个副本出现用一次 tick，提交与读数变化用一次轻击；不铺 whoosh。混音参数 music_db −11、duck_db 7。数值自检后仍需人耳确认。",
+      "script_evidence": "tools/music.py（LAYERS 表逐章给出 pad/kick/sub/acid/hat/arp/pluck 的进出；研究侧 research/lab/10_music_smoke.py 的自检输出：峰值 0.648，十一段场景 RMS 从 0.025 到 0.107，无整章无声）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面与回显里只有合成数据 users/notes 与 alice 等固定名字，不出现本机路径、用户名或主机名。实验用的库文件放在 Firebird 安装目录下的相对路径 lab/，回显里的绝对路径一律不入库、不入画面；入库的只有页号、页数、字节数、二进制体积这些与身份无关的量。实验室口令是本机临时生成的一次性值，不写进任何入库文件。",
+      "script_evidence": "research/FACTS.md 00 节的取证环境只记版本、校验和与日期；research/lab/ 的脚本里库文件用相对路径或变量传入；src/js/script.js 旁白里只有 users/notes/alice 与页号、字节数。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "交付前用 ffprobe 实测最终 MP4 的时长、帧率、分辨率，用 ffmpeg 量最终音轨的响度与真峰值，并记 SHA-256；文件名里的规格与实测一致。源码改动后重新渲染再封装，check.js --final 会核对成片与源码的先后。本片时长区间写进 project.json 的 check.duration（240–420 秒），实际成片落在区间内才记为通过。",
+      "script_evidence": "project.json 的 check.duration 为 [240, 420]；本轮脚本估算 375.9 秒，在区间内。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "适用。每一句陈述在 research/FACTS.md 里都有编号与出处，分为实验、源码、官方文档三路：实测值（页大小 8192、240 页、87 个数据页、1 → 2 个副本、1,900,254 字节偏移、三个二进制的体积）、官方文档的结论（提供程序链、行版本与回收）、源码常量（页类型编号）三类分开标注。历史只取公开可查的三件事（2000 年公开源码、2002 年 3 月 11 日发布 1.0、今天 5.0.4），来源互相印证。行版本头的字段布局没有逐字段核实，因此不进旁白也不进画面。策划者意见、观众评论与模型推断都不作为片中事实的依据；本片尚无发布后的反馈可引。",
+      "script_evidence": "research/FACTS.md 的 T/H/E/D/U/M/W/V/S 编号（每条含陈述与出处两列）；src/js/script.js 每条 cue 的 facts 字段指向这些编号；research/FACTS.md 第 10 节列出查到但不讲的材料。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "适用。本集独立可懂，不靠观众记住前集。开场 o5 只说「两个开源巨头之外，一个更小众的选择」，不解释那两个巨头是谁；其余章节直接提出本章的问题（数据怎么放、一次修改、怎么并发、出错怎么办），不出现「上一期第几个问题」这类导航。收尾的四个问题按本系列统一提法列出（放/找/改/并发/出错），但不逐条对照前两集的答案。唯一的跨集内容是收尾引出 SQLite——那是本系列自己的下一集顺序，不是对前集的回顾。",
+      "script_evidence": "src/js/script.js 的 o5（只作位置交代）、d1–d9/u1–u8/c1–c10/w1–w6（每章自带问题）、z1–z6（只列本系列统一提法，不点前集）、n1–n4（引出下一集）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "外文只保留无法用中文替代的专名与协议名，并在第一次出现处给中文作用：inet 后面接「开头」（m2）、xnet 后面接「开头」（m3）、TCP 后面接「走 T C P」（m2）、fdb 后面接「扩展名」（d1）、提供程序第一次出现当场解释（e11）。长英文材料（README.providers.html、发布说明、源码）一律不进画面，只用其中得出的结论与数字。",
+      "script_evidence": "src/js/script.js 的 e11、m2、m3、d1、u5（UPDATE 与中文并置）、w4/w5（Cache Writer 与 Garbage Collector 后面各接一句中文作用）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "开工前先试听候选音色与语速（F17），再定全片配置。读法集中在 script.js 的 SAY 表：Firebird、InterBase、C++、firebird.exe、inet、xnet、TCP、fdb、UPDATE 逐条给出写法；年份、版本号、字节数与偏移在对应 cue 的 tts 字段里直接写成中文读法（如「二零零二年三月十一日」「八千一百九十二字节」「一百九十万零二百五十四字节」），不让 TTS 猜。字幕断句不机械决定口播：需要停顿的地方在 tts 里显式断。混音后用 asr.js 逐句回听，ASR 只筛查候选，最终由人耳确认。",
+      "script_evidence": "src/js/script.js 的 SAY 表（11 条）与 h2/h2a/h3a/h4/h6/d2/u5/u7/c10 的 tts 字段；src/js/script.js 的字幕每句不超过 26 字宽、最长句不超过 6 秒（stats.js 实测）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "Firebird 对多数观众是陌生对象。开场 5 秒用反直觉的现象引起注意（o1–o3：服务端可以整个关掉），第 01 章交代它是什么、从哪来、今天是什么版本（h1–h6：InterBase 的公开源码、2002 年的 1.0、今天的 5.0.4、C++ 重写），并说明本片路线（engine–modes 两章讲形态，随后四章讲机制，outro 收束）。年代与地位只取可查的三件事，不展开编年史，也不做「小众所以更好」这类评价。",
+      "script_evidence": "src/js/script.js 的 o1–o6（钩子）、h1–h6（来历与版本）、e1–e3（是什么）、z1–z8（本片路线收束）；research/FACTS.md 的 H01–H08。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "片尾只上画面，不配旁白：src/js/script.js 的 credits 场景是一条 13 秒的静默 cue（pause 13、credits true、无 tts、字幕为 null），名单与开源链接放在制作说明与 FACTS.md 的「制作署名」一节。正文里不出现「策划」「模型」「开源视频」等制作指令；交审导出稿里这条 cue 明确标为无旁白。",
+      "script_evidence": "src/js/script.js 的 id: 'credits' 场景；research/FACTS.md 第 09 节「制作署名」记录策划、模型分工与开源仓库地址。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面上不写「示意」「只列常量名不列值」这类说明取舍的小字。页类型分布、页偏移、三个二进制的体积这些数字都直接来自实测（FACTS 的 D06、U04、E04），不需要免责说明；来源只用一行署名。行版本头没有逐字段核实这件事不进画面，也不写「已按源码构造」之类的说明——那一节只写在 FACTS 的「不确定的字节口径」里，给制作内部看。",
+      "script_evidence": "src/js/script.js 全文无「示意」「只列」「按源码构造」等自我说明；research/FACTS.md 把未核实项单列在「不确定的字节口径（不进脚本）」一行。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F16",
+      "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "视觉严格取自 Firebird 自己的材料：主色是官网标志火鸟的火焰红 #EE2B24，强调色是同标志的金 #FAAC19，中间调是橙 #F68A21（三个值都取自标志位图的不透明像素统计，research/lab/09_logo_colors.py）；正文墨色 #17222b 取自官网样式表；拉丁字体用官网同款 Heebo（OFL，随片放在 src/type/）。母题就是标志里的火焰：平涂三块画成的火苗表示引擎，灰色方框表示服务端外壳。部件用 Firebird 自己的语汇：isql 的 SQL> 提示符、MON$ 监控表、.fdb 的页结构、页类型的编号与名称。左上角常驻火鸟标志与字标。project.json 的 check.style.palette 把这套颜色锁死，源码里不出现别的颜色。",
+      "script_evidence": "src/css/style.css 开头注明每项取自哪份官方材料；src/css/style.css 的 .flame-mark / .shell / .engine / .isql / .pgbox / .dbfile；src/cover.html 用同一套颜色与火苗；project.json 的 check.style.palette 列出 9 个色值。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F17",
+      "rule_sha256": "c0253b321ccfdfe79e4674011918ab26a39472d413bf87610fccb0fb50ff6f92",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "开工配音前先试听候选音色与语速，确认语气不塌：句子有起伏、该强调处有重音、长句不被念平。候选在 MiniMax speech-2.8-hd 里选，须避开已停用的音色（English_Aussie_Bloke，本片不涉及英文），并优先避开 WaterRun 评过「懒洋洋」的 Reliable_Executive。project.json 先暂记 Chinese (Mandarin)_Male_Announcer、语速 1.08，**该组合未经试听，只是占位**，交审与试听后改。试听段选三组：e6–e9（三个数字的读法与重音）、m2–m4（外文专名）、c3–c6（长句不被念平）。",
+      "script_evidence": "project.json 的 tts 段（voice 与 speed 为占位，README 已注明待试听确认）；src/js/script.js 的 e6–e9 / m2–m4 / c3–c6 三组代表句；script-and-voice.md 第 9 节的音色记录。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F18",
+      "rule_sha256": "7fb50f4c0a8833196e7f4e3f7b363b19ea074b15443f19517648e0231dc44bae",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本条为 2026-10-20 新增，PostgreSQL 一集正是因为「动画过于简陋」被记为 P31，本片按它开工。每章定一个以 Firebird 自己的对象为主角的主画面：第 02 章是「外壳里升起一团火焰」的体积对照；第 03 章是「三条路分叉后只有一条还亮着」；第 04 章是「240 格页阵按类型上色」；第 05 章是「数据页上两份 alice 并排」；第 06 章是「两块并排读数板」；第 07 章是「服务端进程里的两个专职角色」。这些画面要靠图形本身讲事情（体积、分布、版本、可见性），不是文字面板加标签；不靠镜头晃动凑动态（P6）。分镜阶段逐章写清主画面的尺度、层次与动作。",
+      "script_evidence": "src/js/script.js 的 e1–e12、m1–m9、d1–d9、u1–u8、c1–c10、w1–w6；research/STYLE.md 的「每章的主画面」一节。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F19",
+      "rule_sha256": "443675d55083c7b04f90ac51977b9bcbd63b0096c5db57e6cd57293b1f0765ee",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本条为 2026-10-20 新增（PostgreSQL 结尾表格褪色时字与底同色、Web 登录文字溢出与压盖）。本片的版面上有三处高风险：三个二进制体积数字并排（宽度按实测字符数排版，不靠猜）、页类型分布图上的页号标注（放在色块外，不压在色块上）、字节偏移 1,900,254 的十六进制视图（用等宽字逐字节排版，按实测长度算宽度）。反色高亮只改底色，不同时渐变字色；后到的元素不盖住正在讲的内容；元素的退场交代去向（外壳消失时画出它被收走）。每个动作前后逐 0.1 秒取帧复查。",
+      "script_evidence": "src/css/style.css 的 .dt tr.hl 只改 background 不改 color；.dbfile .pg 的页号标注样式；research/STYLE.md 的「版面上三处高风险」一节。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": [
+    {
+      "version": "2026-10-20.1",
+      "item": {
+        "id": "F05",
+        "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830b273b8fec4a07d95a24f12c0095c596e2483",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "运动只用来表达关系，不用来凑动态：外壳（灰框）与引擎（黑框 + 火焰）分开，火焰从方框里升起表示「引擎在库里、外壳在外面」；火焰分成三股表示提供程序按顺序试；库文件按页切分并按类型上色表示页的分布；数据页上同一个 alice 的两份副本在画面上分处两地并各自标注；两会话的读数是两块并排的读数板，值变化时只换数字。不用擦除式刷入，不用整屏换面板。",
+        "script_evidence": "src/js/script.js 的 e3–e9（外壳与引擎的关系）、e11–e12（提供程序分流）、u4–u7（两份副本）、c4–c6（两块读数板）；src/css/style.css 的 .shell / .engine / .flame-mark / .dbfile / .pgbox 部件。",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-20.1",
+      "item": {
+        "id": "F09",
+        "rule_sha256": "b2ea9b013fa2403582468ed0e9f27e97d68c63654086ac6846b73bf007acefb2",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "每一句陈述在 research/FACTS.md 里都有编号与出处，分为实验、源码、官方文档三路。数值只写实测值（页大小 8192、240 页、87 个数据页、1 → 2 个副本、1,900,254 字节偏移、三个二进制的体积），不写推算值。历史只取公开可查的三件事（2000 年公开源码、2002 年 3 月 11 日发布 1.0、今天 5.0.4），来源互相印证。行版本头的字段布局没有逐字段核实，因此不进旁白也不进画面。评论与推测不进本片。",
+        "script_evidence": "research/FACTS.md 的 T/H/E/D/U/M/W/V/S 编号；src/js/script.js 每条 cue 的 facts 字段指向这些编号；research/FACTS.md 第 10 节列出查到但不讲的材料。",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-20.1",
+      "item": {
+        "id": "F10",
+        "rule_sha256": "a2e1ba91c5ad8762543a30105086da1f7ac9f98dbe4c293eae198a170276f807",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "本集独立可懂，不靠观众记住前集。开场 o5 只说「两个开源巨头之外，一个更小众的选择」，不解释那两个巨头是谁；其余章节直接提出本章的问题（数据怎么放、一次修改、怎么并发、出错怎么办），不出现「上一期第几个问题」这类导航。收尾的四个问题按本系列统一提法列出（放/找/改/并发/出错），但不逐条对照前两集的答案；前集的对照依据留在本片 README 的「与系列各集的承接」一节与 FACTS，不进入旁白。",
+        "script_evidence": "src/js/script.js 的 o5（只作位置交代）、d1–d9/u1–u8/c1–c10/w1–w6（每章自带问题）、z1–z6（只列本系列统一提法，不点前集）。",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+/* Firebird 一集的视觉系统。全部取自 Firebird 自己的材料：
+     - 标志是「火鸟」：火焰由金黄渐变到橙再到红。本片把火焰拆成红/橙/金三块平涂，
+       形状自绘，不复制标志位图；标志本身作为识别物出现在左上角常驻位与片尾。
+       实测像素色与官网取色的完整清单见 research/FACTS.md 的 V01–V04 与 README「视觉系统」。
+     - 官网 firebirdsql.org：正文墨色、链接与悬停色、拉丁字体 Heebo。
+     - 官网标语：The true open-source relational database。
+   语义：
+     - 火焰 = 引擎（引擎在库文件里，在进程里，热的、有能量的）。
+     - 灰色方框 = 服务端外壳（壳是可选的、灰的、没有火的）。
+     - 红 = 此刻正在讲的那一样东西；金 = 强调与读数；纸白与墨 = 底与字。
+   平涂：不用渐变、阴影、模糊、圆角（总闸门 check.style.flat 强制）。 */
+@font-face { font-family: "Heebo"; src: url("/type/Heebo-wght.ttf"); font-weight: 100 900; }
+
+:root {
+  --fire: #EE2B24;        /* 火焰红：主色 */
+  --flame: #F68A21;       /* 火焰橙：火焰的中间调 */
+  --gold: #FAAC19;        /* 火焰金：强调色 */
+  --ink: #17222b;         /* 墨：正文与深色底 */
+  --paper: #f7f7f5;       /* 纸白：底色 */
+  --white: #ffffff;
+  --sand: #d9d4cb;        /* 沙灰：分隔线与次级块 */
+  --grey: #8a8378;        /* 灰：注解文字 */
+  --M: 120px;
+}
+
+body { font-family: "Heebo", "Sans SC"; color: var(--ink); }
+#bg { background: var(--paper); }
+.scene { background: var(--paper); overflow: hidden; }
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
+
+/* 字号阶梯 */
+.t-0 { font: 800 150px/1.02 "Heebo", "Sans SC"; letter-spacing: -.02em; }
+.t-1 { font: 700 96px/1.08 "Heebo", "Sans SC"; }
+.t-2 { font: 600 64px/1.16 "Heebo", "Sans SC"; }
+.t-3 { font: 500 46px/1.24 "Heebo", "Sans SC"; }
+.t-4 { font: 400 38px/1.34 "Heebo", "Sans SC"; }
+.t-n { font: 400 32px/1.35 "Heebo", "Sans SC"; }
+.t-s { font: 400 28px/1.32 "Heebo", "Sans SC"; color: var(--grey); }
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: "Mono", "Sans SC"; }
+.fire { color: var(--fire); } .gold { color: var(--gold); } .flame { color: var(--flame); }
+.ink { color: var(--ink); } .mute { color: var(--grey); } .sand { color: var(--sand); }
+.b8 { font-weight: 800; } .b6 { font-weight: 600; } .b5 { font-weight: 500; }
+
+/* 标题：字重压住，上面一条短红线（火焰红），像火焰的尖端 */
+.hd { position: absolute; display: flex; align-items: center; white-space: nowrap; font: 700 54px/1.2 "Heebo", "Sans SC"; }
+.hd .ln { height: 5px; background: var(--fire); margin-right: 26px; width: 74px; }
+.hd.sm { font-size: 40px; } .hd.sm .ln { width: 54px; height: 4px; margin-right: 20px; }
+
+/* 火焰标记：三块平涂的火苗，自绘。高度、位置用内联样式给。
+   金在上、橙居中、红在下，与标志一致。 */
+.flame-mark { position: absolute; width: 0; height: 0; }
+.flame-mark i { position: absolute; left: 0; display: block; transform: skewX(-12deg); }
+.flame-mark .f3 { background: var(--fire); }
+.flame-mark .f2 { background: var(--flame); }
+.flame-mark .f1 { background: var(--gold); }
+
+/* 外壳：灰色方框，服务端的图形。无火，只有框 */
+.shell { position: absolute; background: transparent; border: 5px solid var(--sand); }
+.shell .lbl { position: absolute; font: 500 30px/1.2 "Mono"; color: var(--grey); }
+
+/* 引擎：黑底方块，火焰在中间 */
+.engine { position: absolute; background: var(--ink); }
+.engine .lbl { position: absolute; font: 500 30px/1.2 "Mono"; color: var(--white); }
+
+/* 库文件：一条按比例的带，按页切分 */
+.dbfile { position: absolute; background: var(--sand); }
+.dbfile .pg { position: absolute; top: 0; bottom: 0; border-right: 3px solid var(--paper); }
+.dbfile .pg.on { background: var(--fire); }
+.dbfile .pg.idx { background: var(--gold); }
+
+/* 页：8192 字节画成一页，按类型上色 */
+.pgbox { position: absolute; border: 4px solid var(--ink); }
+.pgbox .hd { position: absolute; top: 0; left: 0; right: 0; height: 44px; font: 500 26px/44px "Mono"; color: var(--white); background: var(--ink); padding-left: 14px; }
+.pgbox.t5 { border-color: var(--fire); } .pgbox.t5 .hd { background: var(--fire); }
+.pgbox.t7 { border-color: var(--gold); } .pgbox.t7 .hd { background: var(--gold); color: var(--ink); }
+.pgbox.t3 { border-color: var(--ink); } .pgbox.t3 .hd { background: var(--ink); }
+.pgbox.t1 { border-color: var(--grey); } .pgbox.t1 .hd { background: var(--grey); }
+
+/* 字节视图：等宽字，十六进制 */
+.bytes { position: absolute; font: 400 30px/1.36 "Mono"; color: var(--ink); white-space: pre; }
+.bytes .hit { background: var(--gold); color: var(--ink); }
+.bytes .off { color: var(--grey); }
+
+/* isql 会话：提示符 SQL> 用火焰红，命令比回显大一级 */
+.isql { position: absolute; background: var(--white); border: 4px solid var(--ink); padding: 22px 30px; font: 400 34px/1.44 "Mono"; color: var(--ink); white-space: pre; }
+.isql .pr { color: var(--fire); font-weight: 700; }
+.isql .o { color: var(--ink); }
+.isql .c { color: var(--grey); }
+.isql .e { color: var(--fire); font-weight: 700; }
+
+/* 结论块：反白 */
+.concl { position: absolute; background: var(--ink); color: var(--paper); padding: 26px 34px; }
+.concl .k { color: var(--gold); }
+
+/* 数据表 */
+.dt { position: absolute; border-collapse: collapse; font: 400 34px/1.3 "Heebo", "Sans SC"; color: var(--ink); background: var(--white); }
+.dt th { background: var(--ink); color: var(--paper); font-weight: 600; text-align: left; padding: 12px 26px; }
+.dt td { padding: 11px 26px; border-bottom: 3px solid var(--sand); white-space: nowrap; }
+.dt td.n { font-variant-numeric: tabular-nums; text-align: right; }
+.dt tr.hl td { background: var(--gold); color: var(--ink); }
+
+/* 章节卡：墨色满屏，编号与标题；一条火焰红的短线在左上 */
+.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
+.chapter .no { font: 500 64px "Mono"; color: var(--gold); }
+.chapter .ti { font-weight: 800; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+.chapter .mk { position: absolute; left: var(--M); top: 200px; }
+.chapter .tag { position: absolute; left: var(--M); bottom: 180px; font: 400 30px/1.3 "Heebo"; color: var(--sand); }
+
+/* 常驻左上角：火鸟标志 + 字标 + 章名 */
+.hud-brand { position: absolute; left: var(--M); top: 64px; display: flex; align-items: center; }
+.hud-brand .word { font: 800 38px/1 "Heebo"; letter-spacing: -.01em; color: var(--ink); margin-left: 18px; }
+.hud-brand .chap { font: 400 28px/1 "Heebo"; color: var(--grey); margin-left: 20px; padding-left: 20px; border-left: 3px solid var(--sand); }
+.hud-on-dark .hud-brand .word { color: var(--paper); }
+.hud-on-dark .hud-brand .chap { color: var(--sand); }
+
+/* 字幕 */
+#caption { bottom: 52px; height: 60px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--ink); font-family: "Heebo", "Sans SC"; }
+#caption em { font-style: normal; font-weight: 800; color: var(--fire); }
+.on-dark #caption span { color: var(--paper); }
+.on-dark #caption em { color: var(--gold); }
+
+/* 模板占位场景用的通用类：模板的 s0_open.js / s1_demo.js 还在用它们。
+   本片的正式场景写好后这两个场景整个替换，本块随之删掉。 */
+.rule { position: absolute; height: 4px; background: var(--fire); transform-origin: 0 50%; }
+.d-1 { font-weight: 800; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
+.d-2 { font-weight: 700; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
+.t-body { font-weight: 400; font-size: 42px; line-height: 1.4; }
+.t-note { font-weight: 400; font-size: 30px; line-height: 1.35; color: var(--grey); }
+.accent { color: var(--fire); }

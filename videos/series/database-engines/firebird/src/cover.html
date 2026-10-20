@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     配色与正片同一套：火焰红 #EE2B24、橙 #F68A21、金 #FAAC19，墨 #17222b，纸白 #f7f7f5。
+     封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字。 */
+  :root { --fire: #EE2B24; --flame: #F68A21; --gold: #FAAC19; --ink: #17222b; --paper: #f7f7f5; --sand: #d9d4cb; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 200px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 176px; }
+  #stage { background: var(--paper); color: var(--ink); font-family: "Heebo", "Sans SC"; overflow: hidden; }
+  .kicker { position: absolute; left: var(--M); top: 11%; font: 500 44px "Mono"; color: var(--fire); }
+  .title { position: absolute; left: var(--M); top: 21%; right: var(--M); font-weight: 800; font-size: var(--fs); line-height: 1.04; letter-spacing: -.02em; }
+  .title .sub { font-weight: 600; font-size: .42em; letter-spacing: 0; color: var(--ink); margin-top: .18em; }
+  .series { position: absolute; left: var(--M); top: 4.5%; font: 500 30px "Mono"; color: var(--ink); opacity: .55; }
+  /* 火鸟：三块平涂的火苗，自绘 */
+  .mark { position: absolute; right: 7%; top: 50%; width: 300px; height: 420px; transform: translateY(-50%); }
+  .mark i { position: absolute; left: 50%; display: block; transform: translateX(-50%) skewX(-12deg); }
+  .mark .f3 { bottom: 0; width: 190px; height: 190px; background: var(--fire); }
+  .mark .f2 { bottom: 130px; width: 140px; height: 150px; background: var(--flame); }
+  .mark .f1 { bottom: 250px; width: 82px; height: 120px; background: var(--gold); }
+  .bar { position: absolute; left: var(--M); bottom: 20%; width: 190px; height: 8px; background: var(--fire); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="series"></div>
+  <div class="kicker"></div>
+  <div class="title"></div>
+  <div class="mark"><i class="f1"></i><i class="f2"></i><i class="f3"></i></div>
+  <div class="bar"></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
+  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
+  const TEXT = {
+    zh: {
+      series: '数据库引擎 · 第四集',
+      kicker: '一个数据库引擎是如何实现的？',
+      title: 'Firebird<span class="sub">小众的第三选择</span>',
+    },
+    en: {
+      series: 'Database Engines · Episode 4',
+      kicker: 'How a database engine is implemented',
+      title: 'Firebird<span class="sub">The third choice, off the beaten path</span>',
+    },
+  }[lang];
+  document.querySelector('.series').textContent = TEXT.series;
+  document.querySelector('.kicker').textContent = TEXT.kicker;
+  document.querySelector('.title').innerHTML = TEXT.title;
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('800 40px "Sans SC"', sample), document.fonts.load('800 40px "Heebo"', sample), document.fonts.load('500 40px "Mono"', sample)])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

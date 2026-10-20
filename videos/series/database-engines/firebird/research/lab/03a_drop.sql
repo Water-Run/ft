@@ -1,0 +1,4 @@
+SET TERM ^ ;
+DROP DATABASE ^
+;
+QUIT;

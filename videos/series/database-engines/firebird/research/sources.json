@@ -1,0 +1,166 @@
+{
+  "schema": 1,
+  "checked_at": "2026-10-20",
+  "subject": "Firebird 5.0.4.1812",
+  "tag": "v5.0.4",
+  "commit": "a1b022aae75d506f4d7a2492925d77fb5963488f",
+  "code": [
+    {
+      "kind": "code",
+      "path": "src/jrd/ods.h",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/ods.h",
+      "local": "research/_src/fb504-src/src/jrd/ods.h",
+      "lines": 41106,
+      "symbols": {
+        "pag_header..pag_scns": [187, 196],
+        "struct pag": [227, 237]
+      },
+      "used_for": "页头 16 字节的字段与偏移；10 种页类型的编号与含义"
+    }
+  ],
+  "packages": [
+    {
+      "kind": "package",
+      "name": "Firebird 5.0.4.1812 windows-x64",
+      "url": "https://github.com/FirebirdSQL/firebird/releases/download/v5.0.4/Firebird-5.0.4.1812-0-windows-x64.zip",
+      "bytes": 25206603,
+      "sha256": "01e844fce4d5f53272a76205dbc3a1ba4b782ab8e8eadcd808cdbccd9ce13b72",
+      "local": "research/_src/fb504-win64.zip",
+      "note": "第三方安装包不入库；解压后的文件与文档留在 research/_src/fb504/"
+    },
+    {
+      "kind": "package",
+      "name": "fdb (Python Firebird driver)",
+      "version": "2.0.4",
+      "install": "python -m pip install fdb",
+      "note": "仅用于本机实验脚本连接 Firebird，不进入成片"
+    }
+  ],
+  "docs": [
+    {
+      "kind": "doc",
+      "path": "doc/README.providers.html",
+      "from": "Firebird 5.0.4.1812 windows-x64 安装包",
+      "local": "research/_src/fb504/doc/README.providers.html",
+      "used_for": "YValve 与 Remote / Engine13 / Loopback 三个提供程序；嵌入式不需要单独的嵌入式库"
+    },
+    {
+      "kind": "doc",
+      "path": "doc/README.garbage_collector.txt",
+      "from": "Firebird 5.0.4.1812 windows-x64 安装包",
+      "local": "research/_src/fb504/doc/README.garbage_collector.txt",
+      "used_for": "行版本与回收：引擎知道各行版本，最老快照事务允许即可回收；GCPolicy 三种取值"
+    },
+    {
+      "kind": "doc",
+      "path": "doc/README.security_database.txt",
+      "from": "Firebird 5.0.4.1812 windows-x64 安装包",
+      "local": "research/_src/fb504/doc/README.security_database.txt",
+      "used_for": "安全库初始化必须用嵌入式连接；嵌入式连接不需要口令"
+    },
+    {
+      "kind": "doc",
+      "path": "doc/Firebird-5.0.4-ReleaseNotes.pdf",
+      "from": "Firebird 5.0.4.1812 windows-x64 安装包",
+      "local": "research/_src/fb504/doc/Firebird-5.0.4-ReleaseNotes.pdf",
+      "used_for": "文档版本 0504-01（2026-04-03）；5.0 移除 wnet:// 协议；5.0 的新特性清单（本片不用）"
+    },
+    {
+      "kind": "doc",
+      "path": "firebird.conf",
+      "from": "Firebird 5.0.4.1812 windows-x64 安装包",
+      "local": "research/_src/fb504/firebird.conf",
+      "used_for": "Providers 缺省顺序 Remote,Engine13,Loopback；ReadConsistency 缺省为 1，READ COMMITTED 下默认语句级读一致性",
+      "lines": [682, 800, 808]
+    },
+    {
+      "kind": "doc",
+      "path": "Firebird 5.0 Language Reference (refdocs/fblangref50)",
+      "url": "https://firebirdsql.org/file/documentation/html/en/refdocs/fblangref50/firebird-50-language-reference.html",
+      "used_for": "READ COMMITTED READ CONSISTENCY 下引擎沿后继版本链找当前快照可见的那一份"
+    }
+  ],
+  "web": [
+    {
+      "kind": "web",
+      "url": "https://firebirdsql.org/",
+      "used_for": "官网标语 The true open-source relational database；logo 路径 /img/site/firebird.png"
+    },
+    {
+      "kind": "web",
+      "url": "https://firebirdsql.org/template/css/style.css",
+      "used_for": "正文色 #17222B、链接与悬停色 #2e6474、拉丁字体 Heebo"
+    },
+    {
+      "kind": "web",
+      "url": "https://firebirdsql.org/img/site/firebird.png",
+      "local": "out/lab/fb-logo.png",
+      "used_for": "火鸟标志的实际配色：金 #FAAC19、橙 #F68A21、红 #EE2B24"
+    },
+    {
+      "kind": "web",
+      "url": "https://api.github.com/repos/FirebirdSQL/firebird/releases?per_page=8",
+      "used_for": "v5.0.4 发布于 2026-04-17；安装包体积与下载地址"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/release_notes/Firebird-3.0.6-ReleaseNotes.pdf",
+      "used_for": "3.0 起把 Classic / Superclassic、Superserver 与 embedded 的核心引擎合并进同一个二进制（Remodelled Architecture）"
+    },
+    {
+      "kind": "web",
+      "url": "https://firebirdfaq.org/",
+      "used_for": "Firebird 的起点：InterBase 6.0 公开源码；1.0 发布于 2002-03-11"
+    }
+  ],
+  "lab": [
+    {
+      "kind": "lab",
+      "path": "research/lab/01_probe.sql",
+      "out": "research/lab/out_01_probe.txt",
+      "used_for": "页大小 8192、ODS 13.1、页数 224、强制写 1、清扫间隔 20000、缓冲页 2048；三个 attachment"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/02b_init_user.sql",
+      "out": "research/lab/out_02_init_user.txt",
+      "used_for": "嵌入式连接建立 SYSDBA（SEC$PLUGIN=Srp）"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/03_schema.sql",
+      "out": "research/lab/out_03_schema.txt",
+      "used_for": "系列标准示例表与 8 行数据；建表后 240 页；三个用户索引"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/04_mvcc.py",
+      "out": "research/lab/out_04_mvcc.txt",
+      "used_for": "两会话并发：写者未提交时读者读到 30，提交后读到 31"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/05_pages.py",
+      "out": "research/lab/out_05_pages.json",
+      "used_for": "按第 0 字节统计 240 页的类型分布"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/06_modes.py",
+      "out": "research/lab/out_06_modes.json",
+      "used_for": "远程 / 环回 / 嵌入式三种连接；停掉服务端后只有嵌入式仍可打开库文件；各二进制体积"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/08_clean_versions.py",
+      "out": "research/lab/out_08_clean_versions.json",
+      "used_for": "干净库上一次 UPDATE 后数据页上的行副本由 1 份变 2 份"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/09_logo_colors.py",
+      "out": "research/lab/out_09_logo_colors.txt",
+      "used_for": "官网标志的实际像素配色"
+    }
+  ]
+}
