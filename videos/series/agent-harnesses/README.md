@@ -53,8 +53,8 @@
 
 | 集 | 仓库 | 语言 / 运行时 | 许可 | 沿革线索 | 核对状态 |
 |---|---|---|---|---|---|
-| codex | `openai/codex`（主体在 `codex-rs/`） | Rust | 待核 | 2021 年那个 Codex 模型与这个 CLI 无关（模型 2023-03 退役，官方 FAQ 明说）；官方把 CLI、SDK、应用服务器、安全 CLI 列为开源，IDE 扩展与 Codex 云不开源 | 仓库与官方开源清单已见；许可待核 |
-| opencode | `sst/opencode` → 现 `anomalyco/opencode` | TypeScript / Bun | MIT | 最早是 Go 实现；分家后 Go 那支成了 Charm 的 Crush，OpenCode 这个名字留给 SST/Anomaly 用 TypeScript 重写 | 旁述一致；待用 git 历史核对分家时点 |
+| codex | `openai/codex`（主体在 `codex-rs/`） | Rust | **已核：Apache-2.0**（文件 `LICENSE`，SHA-256 `AA5E89ED…`） | 2021 年那个 Codex 模型与这个 CLI 无关（模型 2023-03 退役，官方 FAQ 明说）；官方把 CLI、SDK、应用服务器、安全 CLI 列为开源，IDE 扩展与 Codex 云不开源 | **2026-10-20 已核**：检出 `8196bcdc189ad2c189d631b321fa54b8e09b9bb0`（main，12402 commits）；「官方 FAQ 原文」未找到，退役改用 OpenAI 的 API 弃用页核实；IDE / cloud 两份文档未逐段读 |
+| opencode | `sst/opencode` → 现 `anomalyco/opencode` | TypeScript / Bun | **已核：MIT**（文件 `LICENSE`，SHA-256 `B5C625D1…`） | 最早是 Go 实现；**「Go 那支成了 Charm 的 Crush」一说仓库记录不支持**：自有记录是 Go 实现于 2025-05-30 的一次提交里整个换成 TypeScript | **2026-10-20 已核**：检出 `16c338372a67121819248db970c9f287ccb450a9`（dev，20612 commits）；`sst/opencode` 仍解析到同一仓库（同一 repo id `975734319`），不是分叉；仓库从 `sst` 转到 `anomalyco` 的确切日期仍待核 |
 | codewhale | `Hmbown/CodeWhale` | Rust | MIT | 原名 `deepseek-tui`（`gc801/DeepSeek-TUI`），改名后仍兼容读 `~/.deepseek/` 配置；仓库自带 `docs/REBRAND.md` | README 自述已见 |
 | deepseek-harness | `deepseek-ai/deepseek-harness` | Node.js | MIT | 2026-08-13 以 v0.1 Developer Preview 公开，标语「一切皆插件」，插件内核是 Cordis；仓库为 `apps/` + `packages/` 单仓。作者声明后续会有破坏性变更 | 多方一致（含引用官方 README）；版本号待从仓库核对 |
 | openclaude | 待定位 | — | — | 检索本条时反复出现的是港大 HKUDS 的 **OpenHarness**（另见文末），两者关系需要确认 | 未核实 |
