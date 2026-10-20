@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "P32、P35、P36 记录了 PostgreSQL 与 Web 登录成片上的文字溢出、压盖与元素突然消失。",
       "plan": "按实际字宽排版，文字不超出色块或框线，色块不越过别的框；后到的元素不盖住正在讲的内容；反色高亮不同时渐变底色与字色；元素退场交代去向。每个动作前后逐 0.1 秒取帧专看中间帧。",
       "script_evidence": "README「内容」表各章的画面约定；F04 的取帧办法与本项合并执行，scan.js 过闸不代替逐帧检查。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片的图形就是代码与时间线：每段代码摘录要指到具体标准条款与草案编号，编译器、标准文本与版本年份的示意块要能说出它是什么；标准委员会的流程图只画流程本身，不加装饰形状（对照 P39：图形与内容脱钩）。",
+      "script_evidence": "research/FACTS.md 的 ch1–ch9 各章（标准条款与草案编号）与 README「视觉系统」。",
       "result": "pending",
       "verification": "",
       "clips": []

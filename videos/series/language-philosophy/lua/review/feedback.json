@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "P32、P35、P36 记录了 PostgreSQL 与 Web 登录成片上的文字溢出、压盖与元素突然消失。",
       "plan": "按实际字宽排版，文字不超出色块或框线；后到的元素不盖住正在讲的内容；反色高亮不同时渐变底色与字色；元素退场交代去向。每个动作前后逐 0.1 秒取帧专看中间帧。",
       "script_evidence": "README「内容」表各章的画面约定；F04 的取帧办法与本项合并执行，scan.js 过闸不代替逐帧检查。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片讲的就是“一切皆表”，图形因此必须始终是表：双区表、元表查找、闭包与 upvalue 的示意要与 research/lab/ 里 12–17 号脚本的实测回显逐项对得上；凡是画不出可核对结构的机制，宁可只放代码与输出，也不摆抽象几何（反面对照 P39 的阶梯块私钥：只靠标签才读懂）。",
+      "script_evidence": "research/FACTS.md 的 ch1–ch6 各章与 research/lab/ 的 12–17 号脚本回显。",
       "result": "pending",
       "verification": "",
       "clips": []

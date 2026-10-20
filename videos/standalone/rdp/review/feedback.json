@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "",
       "plan": "按实际字宽排版；色块不越过别的框线；后到的元素不盖住正在讲的内容；反色高亮不同时渐变底色与字色；元素退场交代去向。分层图与时间轴先定安全区。",
       "script_evidence": "README「开工反馈应用」F19 行与「视觉系统」一节；FACTS.md 02-3–02-6 的分层次序决定画面嵌套关系。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "协议分层的图形要对应真实报文序列：TPKT、X.224、MCS/GCC 各层画的是规范里的实际结构与字段，报文之间的先后要画对；不用抽象的“层叠方块”代替协议本身（对照 P39）。",
+      "script_evidence": "research/FACTS.md 的 01–05 各章（协议章节定位）与 README「内容」章节表。",
       "result": "pending",
       "verification": "",
       "clips": []

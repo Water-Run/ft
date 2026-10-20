@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "源码路径、行号、配置片段都很长，容易溢出或压盖。",
       "plan": "按实际字宽排版：文字不超出所在色块或框，色块不越过别的框线；路径与行号放不下的截短或换行；后到的元素不盖住正在讲的内容；反色高亮不同时渐变底色与字色；元素退场交代去向。",
       "script_evidence": "README.md「开工反馈应用」F19 行；FACTS.md 各条给出的「路径:行号」是画面上要显示的辅助信息，须按此排版规则处理。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "同上：权限求值、插件宿主与 LSP 的图形要对应源码里的实际分支与调用点；不用“模块方块图”当装饰，模块之间的关系必须是源码里真实存在的关系（对照 P39 的空框倾倒）。",
+      "script_evidence": "research/FACTS.md 的七章逐条出处（路径:行号 + commit）与 README「内容」章节表。",
       "result": "pending",
       "verification": "",
       "clips": []

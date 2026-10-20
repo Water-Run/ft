@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "",
       "plan": "码卡按实际字宽排版，码号与说明不越框；后到的码卡不盖住正在讲的那张；反色高亮不同时渐变底色与字色；退场交代去向（滑出后码号进入右上角的累计条）。",
       "script_evidence": "README「开工反馈应用」F19 行与「内容」表；research/lab/out_11_status_codes.txt 里每张码卡的实际文字长度。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "96 秒里的图形必须与“首位数字定类别”这一条说法一致：五类的分组、分界与具体码的画面一一对应，不能出现与旁白无关的装饰；每个码的示意要指得到一次真实响应（实验回显在 research/lab/）。",
+      "script_evidence": "research/FACTS.md 的五张分节表与 research/lab/ 的状态码实测回显。",
       "result": "pending",
       "verification": "",
       "clips": []

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "色块、色阶条、数值表与字距标注容易越界、压字或在渐变中途与底色同色。",
       "plan": "按实际字宽排版，文字不超出所在色块；色阶条与数值卡互不压盖；反色高亮不同时渐变底色与字色；元素退场交代去向；逐 0.1 秒取帧专看中间帧，不以 scan.js 过闸代替。",
       "script_evidence": "README「开工反馈应用」F19 行与「视觉系统」表的色值与部件规格；FACTS.md K08、K09（画面上的具体数值即排版基准）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本片讲一套设计语言，画面全部由它的官方令牌与部件构成：色值、字阶、网格、组件变体都取自官方文件并注明出处（F16）；自造的示意块一律标明是示意；不要为了“像包豪斯”再补几何装饰，那正是 P39 记的形式压过功能。",
+      "script_evidence": "research/FACTS.md 的 ch2–ch5 各章（官方令牌与部件出处）与 README「视觉系统」。",
       "result": "pending",
       "verification": "",
       "clips": []

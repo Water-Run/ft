@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "",
       "plan": "按实际字宽排版：changeset 结构图里的文件名、缓存层级标签、数字与单位不越出所属框；朱红反色高亮不同时渐变底色与字色；后到的元素不盖住正在讲的数字；元素退场交代去向（请求上溯后画出它去了哪一层）。",
       "script_evidence": "FACTS.md「2 三个关键做法」c6–c8（三层与标签）与「3 官方给出的收益」d1–d2（数字）；README「开工反馈应用」F19 行与「视觉系统」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "changeset、服务端提交与合并、三层缓存、稀疏检出四件事各要有自己的图形，并与 Anthropic 原文描述的做法一致；Scion 未公开，不得画成可下载的产品界面或具体界面截图（那会是不实），示意必须标明是示意（反面对照 P39）。",
+      "script_evidence": "research/FACTS.md 的六张分节表（Anthropic 官方工程博客）与 README「决定不讲的材料」一节。",
       "result": "pending",
       "verification": "",
       "clips": []

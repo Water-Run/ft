@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
@@ -207,6 +207,17 @@
       "reason": "",
       "plan": "按实际字宽排版：公式、密度数字与单位、车型年份不越出所属框；反色高亮不同时渐变底色与字色；后到的元素不盖住正在讲的数字；元素退场交代去向（电池块落下后画它把车尾压低）。",
       "script_evidence": "FACTS.md「1 物理链条」b1–b9（公式版式）、「3 代价」d4（成本数字表）、「4 新问题」e3（72 磅等数字）；README「开工反馈应用」F19 行与「视觉系统」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "物理链条的图形（爬坡功率、加速、滚动阻力、制动距离、材料密度）要用实测或权威公式算出的数字，不是示意比例；材料对比块标明来源与取值；不用“轻量化=更省油”的箭头图代替物理关系（对照 P39：姿态不能替代因果）。",
+      "script_evidence": "research/FACTS.md 的物理链条各章与 research/lab/ 的官方数据回显。",
       "result": "pending",
       "verification": "",
       "clips": []
