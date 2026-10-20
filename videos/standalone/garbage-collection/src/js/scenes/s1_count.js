@@ -46,6 +46,12 @@ scene('count', ({ root, s, c0 }) => {
   const t3 = qb(T('a3', { zh: '刚出生', en: 'born' }) - 0.25);
   const tWide0 = qb(T('a4b', { zh: '全局', en: 'global' })) - 0.4;
   for (const e of [lSrc, tAl]) exit(e, tWide0, { y: -30, d: 0.25 });
+  // 「随时读写」：一个金色的读写头在前 8 个字节上来回走，八分音符一格
+  const rwHead = h('div', 'abs', world); px(rwHead, 384, 452, 69, 172); css(rwHead, { outline: `6px solid ${C.gold}`, outlineOffset: '-6px' });
+  const rwBar = h('div', 'abs', world); px(rwBar, 384, 446, 69, 10); rwBar.style.background = C.gold;   // 框下一条金，跟着走
+  const tRW = qb(t8 + 0.7), tRWend = t3 - 0.15;
+  F((t) => { const on = t >= tRW && t < tRWend; vis(rwHead, on); vis(rwBar, on); if (on) { const k = Math.floor((t - tRW) / (BEAT / 2)), p = k % 14, i = p < 8 ? p : 14 - p; ss(rwHead, 'left', (384 + i * 69) + 'px'); ss(rwBar, 'left', (384 + i * 69) + 'px'); } });
+  for (let t = tRW; t < tRWend - 0.1; t += BEAT) sfx('tick', t, { g: 0.12, p: -0.4 });
   for (const e of [l8, l8e, b8]) exit(e, t3 - 0.1, { y: -30, d: 0.3 });
 
   // ── 1→2→3→2→1→0：名字一个个指上来，又一个个撤走 ──
@@ -110,9 +116,9 @@ scene('count', ({ root, s, c0 }) => {
   });
   steps.forEach((st, k) => { sfx('tick', st.t + 0.1, { g: 0.28, p: (OB[st.to].x - 2450) / 600 }); pulse(obEls[st.to].n, st.t + 0.12, 1.25, 0.18); });
   const h6 = tx(ui, 'sub', tr('每改一次指针，记一笔账', 'every pointer change: one more entry'), 120, 820, { size: 52, ...plate });
-  wipe(h6, qb(T('a6', { zh: '指针', en: 'pointer' }) + 0.2), { dir: 'l', d: 0.4 });
+  wipe(h6, qb(T('a6', { zh: '代价', en: 'price' })), { dir: 'l', d: 0.4 });
   obEls.forEach((o, k) => { exit(o.b, tE6 + k * 0.03, { y: 60, d: 0.3 }); exit(o.n, tE6 + k * 0.03, { y: 60, d: 0.3 }); });
-  exit(h6, tE6, { y: 60, d: 0.3 });
+  exit(h6, qb(T('a6b', { zh: '循环引用', en: 'reference cycle' })), { y: 60, d: 0.3 });   // 在底部，与上方的「循环引用」不重叠
 
   // ── 循环引用：X 牵着 Y，Y 牵着 X ──
   const hLoop = tx(ui, 'ser', tr('循环引用', 'Reference<br>cycles'), 116, 136, { size: tr(110, 88), lh: 1.05, ...plate });
@@ -144,8 +150,14 @@ scene('count', ({ root, s, c0 }) => {
   // 卡在 1：两个 1 随拍子一明一暗
   const tStuck = qb(T('a7b', { zh: '卡在一', en: 'stuck at 1' }) - 0.1);
   // 两根指针都牵上之后，X、Y 互相拉扯：一拍拽一下，你一下我一下，名字删光了也不停，直到「卡在 1」
-  for (let t = qb(tP2 + 0.6); t < tStuck - 0.2; t += BEAT) { pulse(eX.b, t, 1.1, 0.26); pulse(eX.n, t, 1.1, 0.26); pulse(eY.b, t + BEAT / 2, 1.1, 0.26); pulse(eY.n, t + BEAT / 2, 1.1, 0.26); }
-  for (let k = 0; k < 6; k++) { const t = tStuck + k * BEAT; pulse(eX.n, t, 1.15, 0.2); pulse(eY.n, t + BEAT / 2, 1.15, 0.2); }
+  const tTugEnd = qb(T('a8b', { zh: '拆环', en: 'break cycles' }) - 0.1) - 0.3;
+  // 与计数改变时的那一下（tP2 + 0.3、tDel + 0.25 等）相隔不足 0.35 s 的拍子跳过：同一个 scale 上两个补间重叠，倒着 seek 时结果会不同
+  const busyX = [tP2 + 0.3, tDel + 0.25], busyY = [tP1 + 0.3, tDel + 0.25], clear = (t, ts) => ts.every((u) => Math.abs(t - u) >= 0.35);
+  for (let t = qb(tP2 + 0.6); t < tTugEnd; t += BEAT) {
+    if (clear(t, busyX)) { pulse(eX.b, t, 1.1, 0.26); pulse(eX.n, t, 1.1, 0.26); }
+    if (clear(t + BEAT / 2, busyY)) { pulse(eY.b, t + BEAT / 2, 1.1, 0.26); pulse(eY.n, t + BEAT / 2, 1.1, 0.26); }
+  }
+  // 「卡在 1」：拉扯的脉冲（上面）一直跳到拆环器出手
   const raw = slab(ui, 120, 640, ['with names:    raw X = 2  raw Y = 2', 'after del x,y: raw X = <span class="k">1</span>  raw Y = <span class="k">1</span>'], { size: 26 });
   const rawL = tx(ui, 'src', 'CPython 3.14.3', 124, 604);
   wipe(raw.el, qb(T('a7b', { zh: '拉扯', en: 'pull' })), { dir: 'l', d: 0.35 }); appear(rawL, qb(T('a7b', { zh: '拉扯', en: 'pull' }))); sfx('blip', qb(T('a7b', { zh: '拉扯', en: 'pull' })), { g: 0.5 });
@@ -163,6 +175,10 @@ scene('count', ({ root, s, c0 }) => {
   const tFix = qb(T('a8b', { zh: '拆环', en: 'break cycles' }) - 0.1);
   const cyc = tag(world, tr('拆环器', 'cycle breaker'), 3690, 330, 44);
   slam(cyc, tFix, { from: 1.3, d: 0.35 }); sfx('thud', tFix, { g: 0.6 });
+  // 点名：说到 Python、PHP 时，各自的输出标签跳一下
+  const tPy = qb(T('a8b', 'Python') - 0.05), tPhp = qb(T('a8b', 'PHP') - 0.05);
+  pulse(rawL, tPy, 1.3, 0.3); pulse(phpL, tPhp, 1.3, 0.3);
+  const tExact = qb(T('a9b', { zh: '正是', en: 'Exactly' }) - 0.05); sfx('tick', tPy, { g: 0.4, p: -0.4 }); sfx('tick', tPhp, { g: 0.4, p: 0.4 });
   exit(hLoop, tFix, { x: -120, d: 0.3 });
   for (const e of [raw.el, rawL]) exit(e, tScan - 0.15, { y: 60, d: 0.25 });
   exit(php.el, tScan - 0.15, { y: 60, d: 0.25 }); exit(phpL, tScan - 0.15, { y: 60, d: 0.25 });
@@ -185,6 +201,7 @@ scene('count', ({ root, s, c0 }) => {
   const t2 = qb(Tend('a9') - 0.35);
   const two = tx(world, 'big', '2<span class="ser" style="font-size:80px;letter-spacing:0">' + tr(' 个', ' objects') + '</span>', 3700, 420, { size: 160, color: C.gold });
   slam(two, t2, { from: 1.35, d: 0.42 }); sfx('chime', t2, { g: 0.6 });
+  if (tExact > t2 + 0.5) { pulse(two, tExact, 1.12, 0.3); sfx('tick', tExact, { g: 0.4 }); }   // 「正是 X 和 Y」：数字再跳一下
   sfx('thud', tGone, { g: 0.8 });
   const tIs2 = qb(T('a9b', { zh: '正是', en: 'Exactly' }));
   [py2, ph2].forEach((sl) => [1, 2].forEach((k) => classAt(sl.ln[k].querySelector('span'), 'hl', tIs2)));

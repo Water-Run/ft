@@ -17,7 +17,7 @@ scene('tri', ({ root, s, c0 }) => {
   const fullT = [];
   for (let j = 0; j < 8; j++) for (let i = 0; i < 20; i++) fullT.push(cell(nsv, 200 + i * 60, 240 + j * 60, 48));
   F((t) => fullT.forEach((c, k) => { const tin = c0 - 0.3 + ((k * 37) % 160) / 160 * 1.0; if (t < tin || t > t78 + 0.6) return c.set({ k: 0 }); c.set({ fill: C.ink, k: Math.min(1, (t - tin) / 0.1) }); }));
-  const full = tx(ui, 'ser', tr('老区也满了', 'The old area is full too'), 120, 760, { size: tr(96, 80), ...plate }); wipe(full, tE2, { dir: 'l', d: 0.4 }); exit(full, t78 - 0.1, { y: 60, d: 0.3 });
+  const full = tx(ui, 'ser', tr('老区也满了', 'The old area is full too'), 120, 760, { size: tr(96, 80), ...plate }); wipe(full, tE2, { dir: 'l', d: 0.4 }); exit(full, t78 + 0.9, { y: 60, d: 0.3 });
   sfx('pop', c0 - 0.3, { g: 0.5 }); sfx('thud', tE2 + 0.3, { g: 0.5 });
   const y78 = tx(ui, 'big', '1978', 110, 120, { size: 190, ...plate });
   slam(y78, t78, { from: 1.2, d: 0.45 }); sfx('thud', t78, { g: 0.9 });
@@ -33,6 +33,7 @@ scene('tri', ({ root, s, c0 }) => {
   };
   const L1 = lane(560, tr('程序', 'program'), 'the mutator', C.white), L2 = lane(700, tr('收集器', 'collector'), 'the collector', C.gold);
   [...L1, ...L2].forEach((e, k) => wipe(e, tSame - 0.6 + (k % 3) * 0.08 + (k > 2 ? 0.2 : 0), { dir: 'l', d: 0.4 }));
+  sfx('whoosh', tSame - 0.6, { g: 0.35 }); sfx('thud', qb(T('e2c', { zh: '别停', en: "don't stop" }) - 0.1), { g: 0.45 });
   // 两条跑道上的「工作」：一块块往前走，互不等待
   const blk = [];
   for (let k = 0; k < 2; k++) for (let m = 0; m < 9; m++) { const b = h('div', 'abs', ui); px(b, 0, (k ? 700 : 560) + 12, k ? 90 : 130, 40); b.style.background = k ? C.gold : C.white; blk.push({ b, k, m }); }
@@ -216,7 +217,7 @@ scene('tri', ({ root, s, c0 }) => {
   shatter(world, nW.x - NS3 / 2, nW.y - NS3 / 2, NS3, NS3, C.gold, tKill, { n: 3, gap: 6, spread: 120, seed: 31 });
   sfx('error', tKill, { g: 0.75 }); sfx('thud', tKill + 0.1, { g: 0.8 });
   // 倒带
-  const rew = tx(ui, 'sub', tr('倒带', 'rewind'), 120, 130, { size: 60, color: C.pale, ...plate }); appear(rew, tRew); vanish(rew, tRew + REW);
+  const rew = tx(ui, 'sub', tr('倒带', 'rewind'), 120, 880, { size: 60, color: C.pale, ...plate }); appear(rew, tRew); vanish(rew, tRew + REW + 1.1);   // 放在底部，留够读的时间
   sfx('riser', tRew - 0.2, { g: 0.4 });
   // 家规
   const ruleL = tr(['标记期间，', '黑的绝不许', '直接指向白的'], ['While marking,', 'black must never', 'point at white']).map((l, k) => tx(ui, 'ser', l, 110, 176 + k * 102, { size: tr(88, 72), ...plate }));
@@ -239,7 +240,8 @@ scene('tri', ({ root, s, c0 }) => {
   slide(spy, tPickW - 0.1, { y: -20, d: 0.3 }); appear(spyT, tPickW - 0.1); appear(spyB, tPickW - 0.1);
   tl.fromTo(spyB, { x: 0, scaleX: 1 }, { x: 160, scaleX: 0, duration: 0.35, ease: 'power3.in', immediateRender: false }, tWB);
   appear(spyE, tWB + 0.2); sfx('thud', tWB + 0.2, { g: 0.9 }); sfx('chime', tWB + 0.3, { g: 0.55 });
-  for (const e of [...ruleL, ruleQ, djk, gate, shd, spy, spyT, spyB, spyE]) exit(e, tE11 - 0.1, { y: -40, d: 0.3 });
+  // 金闸的显隐只由上面的帧函数管（同时再挂一个退场补间，两边抢 opacity，正着播和倒着跳结果不同）
+  for (const e of [...ruleL, ruleQ, djk, shd, spy, spyT, spyB, spyE]) exit(e, tE11 - 0.1, { y: -40, d: 0.3 });
 
   // ════ e11：三种颜色，一条家规（回到 S2 的图快放）════
   const w11 = wonder(ui, tr('三种颜色，一条家规', 'Three colors, one rule'), 110, 110, tE11, Tend('e11') + 0.65, { size: tr(104, 96), h: 130, plate: true });
@@ -270,7 +272,7 @@ scene('tri', ({ root, s, c0 }) => {
   const law = tx(ui, 'ser', tr('黑的永远不许指向白的', 'Black may never point to white'), 110, 110, { size: tr(100, 84), ...plate });
   wipe(law, tLaw, { dir: 'l', d: 0.5 }); sfx('thud', tLaw, { g: 0.8 });
   const lawT = tx(ui, 'note', tr('（译）……标记期间，垃圾收集器的主要不变式是：黑对象永远不能指向白对象', ''), 124, 640, { size: 30, color: C.white, ...plate });
-  slide(lawT, qb(T('e12b', { zh: '白的', en: 'white' }) + 0.3), { y: 30, d: 0.35 });
+  slide(lawT, tE12 + 1.0, { y: 30, d: 0.35 });
   const tBack = qb(T('e12a', { zh: '退一步', en: 'steps back' }) - 0.2), tStuff = qb(T('e12a', { zh: '塞入', en: 'new data' }) - 0.1), tGray = qb(T('e12ab', { zh: '退回灰', en: 'back to gray' }) - 0.15), tE13 = qb(T('e13', { zh: '回到', en: 'Back' }) - 0.3);
   for (const e of [src.el, srcL, lawT]) exit(e, tBack - 0.2, { y: 60, d: 0.3 });
   exit(law, tBack - 0.2, { y: -40, d: 0.3 });
@@ -371,7 +373,7 @@ scene('tri', ({ root, s, c0 }) => {
     '[0.529s][info][gc] GC(7) Concurrent Mark Cycle',
     '[0.543s][info][gc] GC(7) Pause <span class="g">Remark</span> 22M-&gt;22M(28M) 1.474ms',
     '[0.551s][info][gc] GC(7) Pause <span class="g">Cleanup</span> 25M-&gt;25M(45M) 0.030ms'], { size: 23, pad: '12px 22px 14px' });
-  wipe(glog.el, tLane + 0.3, { dir: 'l', d: 0.35 }); sfx('blip', tLane + 0.3, { g: 0.4 });
+  wipe(glog.el, tE18 + 0.5, { dir: 'l', d: 0.35 }); sfx('blip', tE18 + 0.5, { g: 0.4 });
   const tE16 = qb(T('e16', { zh: '再看回', en: 'Back' }) - 0.35);
   for (const e of [glog.el]) exit(e, tE16, { y: 50, d: 0.3 });
 
@@ -387,7 +389,7 @@ scene('tri', ({ root, s, c0 }) => {
     const ln = tx(world, 'mono', `<span style="color:${C.white};font-weight:700">${op.padEnd(6, ' ').replace(/ /g, '&nbsp;')}</span>${arg}`, X7 + 140, y, { size: 56 });
     const lb = tx(world, 'sub', zh, X7 + 1360, y + 6, { size: 48, color: k === 1 ? C.gold : C.pale });
     slide(ln, tE16 + 1.0 + k * BEAT / 2, { x: -60, d: 0.3 }); sfx('tick', tE16 + 1.0 + k * BEAT / 2, { g: 0.5 });
-    wipe(lb, tI[k], { dir: 'l', d: 0.3 });
+    wipe(lb, tI[k], { dir: 'l', d: 0.3 }); sfx('tick', tI[k], { g: 0.35, p: -0.3 + k * 0.2 });
     return [ln, lb];
   });
   const brk = h('div', 'abs', world); px(brk, X7 + 100, 300, 10, 500); brk.style.background = C.white;
@@ -404,6 +406,9 @@ scene('tri', ({ root, s, c0 }) => {
   const tE20 = qb(T('e20', { zh: '程序员', en: 'programmer' }) - 0.2);
   F((t) => insEls.forEach(([ln], k) => { const cur = t >= tI[k] && (k === 3 || t < tI[k + 1]); ss(ln, 'color', t >= tE20 + k * 0.08 || cur ? C.gold : C.pale); }));
   sfx('chime', tE20 + 0.3, { g: 0.55 });
+  // 「白得了一个收集器」：屏障那一格的金框亮一下
+  const tGot = qb(T('e20b', { zh: '收集器', en: 'collector' }) - 0.1);
+  pulse(wrap, tGot, 1.04, 0.35); sfx('pop', tGot, { g: 0.45 });
   const w20 = wonder(ui, tr('程序员一行屏障都没写', 'Not one line of barrier code'), 110, 830, tE20 + 0.1, null, { size: 72, h: 92, plate: true });
   exit(four, tE20 - 0.1, { y: 40, d: 0.25 }); exit(brk, tE20 - 0.1, { y: 40, d: 0.25 }); exit(fourL, tE20 - 0.1, { y: 40, d: 0.25 });
   exit(csrcL, tE20, { y: -30, d: 0.3 });
@@ -412,7 +417,7 @@ scene('tri', ({ root, s, c0 }) => {
   const V2 = { x: X2 + 900, y: 470, z: 0.95 }, V3 = { x: X3 + 1060, y: 520, z: 0.95 };
   cam.track(s.start, { x: 800, y: 480, z: 0.9 }, [
     [s.start + 0.5, { z: 1.0 }, c0 - s.start - 0.5, { ease: 'power2.out', sfx: false }],
-    [null, { x: 840, z: 1.03 }, tE3 - 0.3 - (c0 + 0.15) - 0.05, { ease: 'none', sfx: false }],
+    [null, { x: 940, z: 1.04 }, tE3 - 0.3 - (c0 + 0.15) - 0.05, { ease: 'none', sfx: false }],
     [tE3 - 0.3, V2, 1.0, { ease: 'power3.inOut', g: 0.4 }],
     [null, { z: 0.97 }, tE4b + 0.9 - (tE3 + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [tE4b + 0.9, { x: X2 + 760 }, 1.4, { ease: 'power2.inOut', sfx: false }],
@@ -423,13 +428,13 @@ scene('tri', ({ root, s, c0 }) => {
     [null, { z: 0.97 }, tBW + 0.6 - (tEnd2 + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [tBW + 0.6, { x: X3 + 1300, y: 560, z: 1.1 }, 1.4, { ease: 'power2.inOut', sfx: false }],
     [tRew - 0.2, V3, 0.9, { ease: 'power3.inOut', sfx: false }],
-    [null, { z: 0.97 }, qb(T('e9', { zh: '程序', en: 'program' })) - 0.2 - (tRew + 0.85) - 0.05, { ease: 'none', sfx: false }],
+    [null, { x: V3.x + 70, z: 0.97 }, qb(T('e9', { zh: '程序', en: 'program' })) - 0.2 - (tRew + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [qb(T('e9', { zh: '程序', en: 'program' })) - 0.2, { x: X3 + 1000, y: 440, z: 0.95 }, 1.2, { ease: 'power2.inOut', sfx: false }],
-    [null, { z: 0.97 }, Tend('e11') - 0.45 - (qb(T('e9', { zh: '程序', en: 'program' })) + 1.15) - 0.05, { ease: 'none', sfx: false }],
+    [null, { x: X3 + 1060, z: 0.97 }, Tend('e11') - 0.45 - (qb(T('e9', { zh: '程序', en: 'program' })) + 1.15) - 0.05, { ease: 'none', sfx: false }],
     [Tend('e11') - 0.45, V2, 0.8, { ease: 'power3.inOut', g: 0.45 }],
     [null, { z: 0.97 }, tE12 - 0.4 - (Tend('e11') + 0.5) - 0.05, { ease: 'none', sfx: false }],
     [tE12 - 0.4, { x: X4 + 960, y: 520, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.45 }],
-    [null, { z: 1.02 }, tE13 - 0.3 - (tE12 + 0.75) - 0.05, { ease: 'none', sfx: false }],
+    [null, { x: X4 + 1040, z: 1.03 }, tE13 - 0.3 - (tE12 + 0.75) - 0.05, { ease: 'none', sfx: false }],
     [tE13 - 0.3, { x: X5 + 960, y: 540, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.45 }],
     [null, { z: 1.02 }, tE18 - 0.3 - (tE13 + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [tE18 - 0.3, { x: X6 + 960, y: 520, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.45 }],

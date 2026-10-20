@@ -194,7 +194,7 @@ scene('trace', ({ root, s, c0 }) => {
   slide(lbM, tMark3 - 0.1, { y: 20, d: 0.3 }); slide(lbS, tSw3 - 0.1, { y: -20, d: 0.3 });
   sfx('tick', tMark3, { g: 0.4 }); sfx('whoosh', tSw3, { g: 0.4 });
   const every = tx(world, 'note', tr('清扫要把每个对象都过一遍', 'the sweep visits every object'), rx0, ry + 200, { size: 34, color: C.white });
-  appear(every, tSw3 + 0.6);
+  appear(every, tMark3 + 0.3);
   const t8 = qb(T('b8', { zh: 'Lua', en: 'Lua' }) - 0.4);
 
   // ── Lua：二十万张活表 + 二十万张废表；一轮下来 28 MB 砍到 14 MB ──
@@ -241,6 +241,7 @@ scene('trace', ({ root, s, c0 }) => {
     [tSw - 0.05, { x: 1010, y: 520, z: 0.92 }, 0.8, { ease: 'power3.inOut', sfx: false }],
     [null, { z: 0.94 }, tG - (tSw + 0.9) - 0.05, { ease: 'none', sfx: false }],
     [tPull, { y: 560, z: 0.8 }, tEnd1 - tPull + 0.2, { ease: 'power2.inOut', sfx: false }],
+    [null, { x: 1090, z: 0.82 }, tOut3 - 0.2 - (tEnd1 + 0.2) - 0.05, { ease: 'none', sfx: false }],   // 「以后用不用」停留时缓慢平移
     [tOut3 - 0.2, { x: T2 + 960, y: 520, z: 1.0 }, 1.2, { ease: 'power3.inOut', g: 0.5 }],
     [null, { x: T2 + 990, z: 1.02 }, t7 - 0.2 - (tOut3 + 1.15), { ease: 'none', sfx: false }],
     [t7 - 0.2, { x: T3 + 760, y: 520, z: 1.0 }, 1.1, { ease: 'power3.inOut', g: 0.5 }],

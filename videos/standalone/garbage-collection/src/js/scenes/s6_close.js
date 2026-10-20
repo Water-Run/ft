@@ -87,6 +87,7 @@ scene('close', ({ root, s, c0 }) => {
   const TX = 6400, TY = 520, TL = 1500, yrX = (y) => TX + (y - 1960) / (2026 - 1960) * TL;
   const axis = h('div', 'abs', world); px(axis, TX, TY, TL, 8); axis.style.background = C.white;
   wipe(axis, tH7 + 0.2, { dir: 'l', d: 1.2, ease: 'power2.inOut' }); sfx('whoosh', tH7 + 0.2, { g: 0.4 });
+  const markEls = [];   // 刻度与年份跟时间线一起退场（不然镜头移走时会再闪一下）
   const MARK = [[1960, tr('标记—清扫', 'mark-and-sweep'), 0], [1978, tr('三色', 'tri-color'), 1], [1983, tr('分代', 'generations'), 0], [2026, '', 1]];
   MARK.forEach(([y, l, up], k) => {
     const x = yrX(y), tm = tH7 + 0.3 + (x - TX) / TL * 1.2;
@@ -94,6 +95,7 @@ scene('close', ({ root, s, c0 }) => {
     const yl = tx(world, 'big', y === 2026 ? tr('今天', 'today') : String(y), x - 30, up ? TY - 120 : TY + 56, { size: 48, color: k === 3 ? C.gold : C.white });
     const ll = l ? tx(world, 'note', l, x - 28, up ? TY - 170 : TY + 112, { size: 32, color: C.pale }) : null;
     slam(tk, tm, { from: 2, d: 0.3 }); appear(yl, tm + 0.05); if (ll) appear(ll, tm + 0.1); sfx('tick', tm, { g: 0.45 });
+    markEls.push(tk, yl); if (ll) markEls.push(ll);
   });
   const six = tx(ui, 'ser', tr('六十多年', 'Over sixty years'), 110, 130, { size: tr(140, 112), ...plate }); slam(six, tH7, { from: 1.2, d: 0.45 }); sfx('thud', tH7, { g: 0.9 });
   const old = tx(world, 'sub', tr('一停好几秒', 'pauses of seconds'), yrX(1960) - 20, TY + 170, { size: 56 });
@@ -101,7 +103,7 @@ scene('close', ({ root, s, c0 }) => {
   const nowS = tx(world, 'src', tr('.NET 10.0.12 · 那一秒', '.NET 10.0.12 · that second'), yrX(2026) - tr(296, 496), TY + 250);
   wipe(old, qb(T('h7', { zh: '好几秒', en: 'several seconds' }) - 0.2), { dir: 'l', d: 0.35 }); wipe(now, tLast, { dir: 'r', d: 0.35 }); appear(nowS, tLast + 0.2);
   sfx('pop', qb(T('h7', { zh: '好几秒', en: 'several seconds' }) - 0.2), { g: 0.5 }); sfx('pop', tLast, { g: 0.5 });
-  const tlEls = [axis, six, old, now, nowS];
+  const tlEls = [axis, six, old, now, nowS, ...markEls];
   // ── 平衡：一根横梁在两端之间摆动，最后停平 ──
   const BX = 9600, BY = 560, BW = 1300;
   const fulcrum = board(world, BX - 70, BY, 140, 120);

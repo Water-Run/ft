@@ -117,7 +117,9 @@ scene('open', ({ root, s, c0 }) => {
   const eLab = tx(ui, 'note', tr('内存', 'memory'), 124, 250, { size: 40, ...plate });
   const eGz = tx(ui, 'ser', tr('格子纸', 'graph paper'), 110, 300, { size: tr(200, 150), ...plate });
   wipe(eLab, qb(T('o1', { zh: '内存', en: 'memory' })), { dir: 'l', d: 0.35 });
-  slam(eGz, qb(T('o1', { zh: '格子纸', en: 'graph paper' })), { from: 1.18, d: 0.5 }); sfx('thud', qb(T('o1', { zh: '格子纸', en: 'graph paper' })), { g: 0.8 });
+  // 英文的「graph paper」在句末，前三秒只有一个小词：英文版在说到 memory 时就砸下片名（字先到）
+  const tGz = qb(T('o1', { zh: '格子纸', en: 'memory' }) + tr(0, 0.35));
+  slam(eGz, tGz, { from: 1.18, d: 0.5 }); sfx('thud', tGz, { g: 0.8 });
   const eObj = wtag(world, tr('对象', 'object'), (BASE % COLS) * P - 6, ((BASE / COLS) | 0) * P - 64, 34);
   slide(eObj, tA0 + 0.1, { y: 26, d: 0.4 });
   for (const e of [eLab, eGz]) exit(e, tB0 - 0.1, { x: -160, d: 0.35 });
@@ -152,7 +154,7 @@ scene('open', ({ root, s, c0 }) => {
   const eOOM = slab(ui, 1100, 410, ['<span class="k">System.OutOfMemoryException</span>', '(after 1,048,577 objects, 679 ms; gen2 GCs 5)'], { size: 26 });
   slam(eNo, tO, { from: 1.2, d: 0.45 }); appear(eNoL, tO + 0.15);
   wipe(eOOM.el, tO + 0.2, { dir: 'l', d: 0.3 }); sfx('thud', tO + 0.02, { g: 0.7 });
-  for (const e of [eNo, eNoL]) exit(e, qb(T('o4', { zh: '换成', en: 'Try' }) - 0.1), { y: -40, d: 0.3 });
+  for (const e of [eNo, eNoL]) exit(e, qb(T('o4', { zh: 'PHP', en: 'PHP' })) - 0.1, { y: -40, d: 0.3 });   // 留到下一块报错石板出现前
 
   // ── 报错墙：四个运行时撞上同一堵墙 ──
   const wall = [
@@ -196,7 +198,7 @@ scene('open', ({ root, s, c0 }) => {
   wipe(eLog.el, qb(T('o5b', { zh: '同样', en: 'same' })), { dir: 'l', d: 0.4 }); sfx('blip', qb(T('o5b', { zh: '同样', en: 'same' })), { g: 0.5 });
   const t6 = qb(T('o6', { zh: '一秒', en: 'one second' }) - 0.3);
   for (const e of [bracket, e11, e64b]) exit(e, t6, { x: 80, d: 0.3 });
-  exit(eLog.el, t6, { y: 80, d: 0.3 });
+  exit(eLog.el, qb(T('o6b', { zh: '代码', en: 'code' }) - 0.2) - 0.35, { y: 80, d: 0.3 });   // 同一位置随后换成循环源码
 
   // ── 一秒 136 次 ──
   const TIMES = tr(' 次', ' times');
@@ -217,7 +219,7 @@ scene('open', ({ root, s, c0 }) => {
   wipe(eLoop.el, qb(T('o6b', { zh: '代码', en: 'code' }) - 0.2), { dir: 't', d: 0.35 }); sfx('blip', qb(T('o6b', { zh: '代码', en: 'code' }) - 0.2), { g: 0.5 });
   const t7 = qb(T('o7', { zh: '这位', en: 'This' }) - 0.25);
   for (const e of [e136, trk, tk0, tk1, tsv2]) exit(e, t7, { y: -60, d: 0.3 });
-  exit(eLoop.el, t7, { y: 80, d: 0.3 });
+  exit(eLoop.el, qb(T('o7', { zh: '垃圾回收', en: 'garbage collection' })) - 0.3, { y: 80, d: 0.3 });
 
   // ── 垃圾回收：把没人要的找出来，腾回去 ──
   const eGC = tx(ui, 'ser', tr('垃圾回收', 'Garbage<br>collection'), 110, 330, { size: tr(220, 150), lh: 1.08, ...plate });
@@ -242,7 +244,7 @@ scene('open', ({ root, s, c0 }) => {
   slide(tag1, tFind, { y: 24, d: 0.35 }); slide(tag2, tBack, { y: 24, d: 0.35 });
   const t8 = qb(T('o8', { zh: '难', en: 'hard' }) - 0.2);
   for (const e of [eGC, eGCe]) exit(e, t8, { x: -120, d: 0.32 });
-  for (const e of [tag1, tag2]) exit(e, t8, { y: -40, d: 0.3 });
+  for (const e of [tag1, tag2]) exit(e, t8 + 0.3, { y: -40, d: 0.3 });
 
   // ── 只管要，从不交代 ──
   const eAsk = tx(ui, 'sub', tr('只管要', 'only asking'), 140, 286, { ...plate });
@@ -281,9 +283,9 @@ scene('open', ({ root, s, c0 }) => {
     rEls.push(sk.box, sk.lab, wd);
   });
   const eTrade = tx(ui, 'sub', tr('不是蛮力：妥协与权衡', 'not brute force: compromise and trade-offs'), 140, 660, { size: 60, ...plate });
-  wipe(eTrade, qb(T('o10b', { zh: '妥协', en: 'brute force' }) - 0.2), { dir: 'l', d: 0.5 });
+  wipe(eTrade, qb(T('o10b', { zh: '蛮力', en: 'brute force' }) - 0.2), { dir: 'l', d: 0.5 });
   rEls.forEach((e, k) => exit(e, tP - 0.35 + (k / 3 | 0) * 0.04, { y: -80, d: 0.3 }));
-  exit(eTrade, tP - 0.3, { y: 60, d: 0.3 });
+  exit(eTrade, tP, { y: 60, d: 0.3 });   // 片名下的英文行 tP + 0.3 才出现，同一高度
 
   // ── 片名 ──
   const eT1 = tx(ui, 'ser', tr('垃圾回收<br>的艺术', 'The Art of<br>Garbage Collection'), 110, tr(170, 260), { size: tr(200, 104), lh: tr(1.18, 1.1) });

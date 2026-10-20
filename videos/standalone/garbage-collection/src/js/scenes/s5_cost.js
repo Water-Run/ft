@@ -159,7 +159,7 @@ scene('cost', ({ root, s, c0 }) => {
     [tG3 - 0.3, { x: X2 + 960 }, 1.0, { ease: 'power3.inOut', g: 0.4 }],
     [null, { z: 1.04 }, tG5 - 0.3 - (tG3 + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [tG5 - 0.3, { x: X3 + 960, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.4 }],
-    [null, { z: 1.03 }, tG7 - 0.3 - (tG5 + 0.85) - 0.05, { ease: 'none', sfx: false }],
+    [null, { x: X3 + 1030, z: 1.04 }, tG7 - 0.3 - (tG5 + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [tG7 - 0.3, { x: X4 + 960, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.4 }],
     [null, { z: 1.03 }, tG8 - 0.4 - (tG7 + 0.85) - 0.05, { ease: 'none', sfx: false }],
     [tG8 - 0.4, { x: X5 + 960, y: 540, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.45 }],
