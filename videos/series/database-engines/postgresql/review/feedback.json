@@ -10,7 +10,7 @@
       "plan": "保留存储、查询、修改、并发、回收和恢复主线；增加独立的 InnoDB 对照与选型章，用已解释机制归纳优势与成本，不把整个片子改为排名或品牌清单。",
       "script_evidence": "script.js 各章、compare b2–b26；README 主线与预算",
       "result": "verified",
-      "verification": "开头 0:00–0:44 用调查折线提出「PostgreSQL 为什么走到最前面」，各章沿同一条 alice 记录回答存、找、改、并发、回收、恢复；第 08 章 9:04–10:37 回到开头的问题，第 09 章 10:43–11:13 用四个问题收束。",
+      "verification": "开头 0:00–0:44 用调查折线提出「PostgreSQL 为什么走到最前面」，各章沿同一条 alice 记录回答存、找、改、并发、回收、恢复；第 08 章 9:04–10:37 回到开头的问题，第 09 章 10:43–11:13 用四个问题收束。 2026-10-20 发布后 WaterRun 给本片 8 分，评价「叙事整体也不错」（docs/feedback.md P30）。",
       "clips": [
         {
           "file": "out/postgresql-zh-1080p60.mp4",
@@ -120,8 +120,8 @@
       "reason": "本片涉及对应内容，按当前规则执行。",
       "plan": "索引图明确 Pg 堆位置与 InnoDB 主键引用；宽主键只在相关路径上展开；部分索引直接筛出子集，JSONB 用键值命中，不以品牌卡片代替关系。",
       "script_evidence": "q12a–q12d、b2–b12；src/js/data.js compare；STYLE",
-      "result": "verified",
-      "verification": "页结构、行版本、指针、快照截面、日志带都是同一对象的生长、连接、分流和挪动：5:08 新版本写到第 9 项并由旧版本指过去，7:40 VACUUM 后其余行版本向页尾挪一格、第 1 项成为重定向。全片不用擦除式的刷入。",
+      "result": "needs_work",
+      "verification": "页结构、行版本、指针、快照截面、日志带都是同一对象的生长、连接、分流和挪动：5:08 新版本写到第 9 项并由旧版本指过去，7:40 VACUUM 后其余行版本向页尾挪一格、第 1 项成为重定向。全片不用擦除式的刷入。 2026-10-20 发布后 WaterRun 给本片 8 分，指出问题主要在「动画过于简陋，缺乏视觉冲击力」（P31，新规则 F18）和「一些奇奇怪怪的问题」（P32，新规则 F19）：第 09 章 10:47.6–11:05 四行表格先以普通样式淡入，0.5 秒后突然跳成深蓝底白字，再褪回白底黑字，底色与字色交叉时字看不清（第一行约 10:48.8–10:49.2）。按「已发布不返工」留档，原片未修改。",
       "clips": [
         {
           "file": "out/postgresql-zh-1080p60.mp4",
@@ -379,7 +379,7 @@
       "plan": "直接取 postgresql.org 样式表的颜色与 Open Sans、文档的标题装饰线、表格、提示框与 psql 会话；左上角常驻大象标志与章名，章节卡用特性区蓝底与白描大象。见 README「视觉系统」。",
       "script_evidence": "src/css/style.css 开头注释；src/js/config.js；README「视觉系统」",
       "result": "verified",
-      "verification": "任取帧：左上角常驻大象标志与 PostgreSQL 字标及章名；标题、表格、提示框、psql 均取自 postgresql.org 的样式；章节卡为官网特性区蓝底与白描大象。",
+      "verification": "任取帧：左上角常驻大象标志与 PostgreSQL 字标及章名；标题、表格、提示框、psql 均取自 postgresql.org 的样式；章节卡为官网特性区蓝底与白描大象。 2026-10-20 发布后 WaterRun 评价「设计风格还是很契合 Pg 的」（P30），本片继续作为 F16 的正面对照。",
       "clips": [
         {
           "file": "out/postgresql-zh-1080p60.mp4",
