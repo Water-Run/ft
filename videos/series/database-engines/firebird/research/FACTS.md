@@ -37,6 +37,16 @@
 | H07 | Firebird 1.5 之后代码被大规模重写，如今用 C++ 写成 | Wikipedia 的 Firebird 词条：「the code has been largely rewritten since Firebird 1.5」；与 FirebirdFAQ 的时间线互相印证 |
 | H08 | 下一集的主角 SQLite 自述为「a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine」；本系列路线把 SQLite 定为「极小」的一端：不再是服务进程 | `https://www.sqlite.org/` 首页首段；本系列说明 `videos/series/database-engines/README.md` 的「系列路线」表 |
 
+## 02 与系列各集的承接（承上启下）
+
+这一组事实支撑片中的三处承接。**承接靠点名与一条形态轴，不靠回顾前集**（F10：不要求观众记住前集编号或内容）。
+
+| 编号 | 陈述 | 出处 |
+|---|---|---|
+| C01 | MySQL 与 PostgreSQL 都是客户端/服务器式的：引擎跑在服务端进程里，客户端连的是这个服务 | **PostgreSQL** 一侧取官方手册原文：PostgreSQL 18 文档 §18.3「Starting the Database Server」——「Before anyone can access the database, you must start the database server.」（<https://www.postgresql.org/docs/18/server-start.html>，已读）。**MySQL** 一侧取本系列前两集的实测：MyISAM 一集在 Windows 服务 `LegacyMySQL55`（MySQL 5.5.62）上建库（`myisam/research/FACTS.md` 的取证环境）；InnoDB 一集在容器里以 `mysqld` 为 PID 1 运行，并用 SIGKILL 模拟崩溃后由服务恢复（`innodb/research/FACTS.md` 的 I14）。MySQL 官方手册「What is MySQL?」一页在本机取用时站点故障（Oracle 侧事故 0.37aac117），**未读到原文，故不作逐字引用**；本条只据上面两处已核实的实测与 PostgreSQL 手册原文 |
+| C02 | SQLite 连服务端形态都不保留：它是链接进程序的库 | `https://www.sqlite.org/` 首页首段（已读，见 H08） |
+| C03 | 本系列的路线：MySQL（MyISAM、InnoDB）→ PostgreSQL → Firebird 是「服务型开源关系数据库」一段，收束在 Firebird；下一段「极小」是 SQLite | 本系列说明 `videos/series/database-engines/README.md` 的「系列路线」表（策划者 2026-10-19 定） |
+
 ## 02 引擎是库，服务端是壳（本片的骨架事实）
 
 | 编号 | 陈述 | 出处 |
@@ -116,9 +126,12 @@
 - 策划：WaterRun
 - 事实测绘与实验：MiniMax M3.1 Flash（会话标识 `minimax-M3.1-Flash-Preview`）
 - 文案：MiniMax M3.1 Flash
-- 视觉设计与配乐方向：MiniMax M3.1 Flash
-- 配音：尚未合成（音色待定，见 README）
+- 任务书与交接材料：MiniMax M3.1 Flash
+- 视觉系统、配乐、场景、封面、渲染与交付：Claude Opus 5.5（受托方）
+- 配音：尚未合成（音色待定，见 README 与 `brief/05-motion-sound.md`）
 - 开源视频：github.com/Water-Run/ft（[源码仓库](https://github.com/Water-Run/ft)）
+
+本片是**委托制作**（`project.json` 的 `production.mode: "delegated"`）。准备方负责第 0–4 步（立项、取证、旁白、任务书）与交接材料；受托方负责视觉系统、配乐、场景、封面、声音、渲染与交付。视觉与声音的**具体方案由受托方设计**，准备方只给材料与硬约束（见 `research/STYLE.md` 与 `brief/`）。
 
 实际用到的第三方软件与版本：
 

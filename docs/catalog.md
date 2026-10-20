@@ -18,7 +18,7 @@
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) | 已发布：哔哩哔哩 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | 自制（Claude Opus 5.5） | [`innodb`](../videos/series/database-engines/innodb/) | 已发布：哔哩哔哩（2026-10-18）；发布后发现的画面问题见 README |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | 自制（6.1Sol、Claude Opus 5.5） | [`postgresql`](../videos/series/database-engines/postgresql/) | 2026-10-19 交付：中文 11:28（688.08 秒，1080p60），MiniMax 严肃男声配音、自写严肃工业风配乐，WaterRun 观看试听确认；check.js --final 全部通过；2026-10-19 16:32 发布于哔哩哔哩 BV1xAnn6WEzv。2026-10-20 WaterRun 评 8 分：设计契合、叙事不错；动画简陋、结尾表格高亮时字看不清（P30–P32），留档不返工。 |
-| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 制作中 | 自制（MiniMax M3.1 Flash） | [`firebird`](../videos/series/database-engines/firebird/) | 2026-10-20 建目录。前期事实与文案：本机装 Firebird 5.0.4.1812 做了九组实验（三种连接方式与停掉服务端的实测、一次 UPDATE 的字节级副本计数、两会话 MVCC、页类型分布、标志配色统计），FACTS 与 STYLE 已落盘；中文第 1 稿 77 句、估算 6:16，片长按策划者要求设为 4–7 分钟；视觉取 Firebird 官网火鸟标志的火焰三色与 Heebo 字体，配乐为自写 124 拍/分电子乐。待 WaterRun 审稿。 |
+| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 制作中 | 委托（Claude Opus 5.5） | [`firebird`](../videos/series/database-engines/firebird/) | 2026-10-20 建目录。**委托制作**：准备方做第 0–4 步（取证、旁白、任务书），受托方 Claude Opus 5.5 做视觉系统、配乐、场景、封面、渲染与交付。前期事实与文案：本机装 Firebird 5.0.4.1812 做了九组实验（三种连接方式与停掉服务端的实测、一次 UPDATE 的字节级副本计数、两会话 MVCC、页类型分布、标志配色统计），FACTS 与 STYLE 已落盘；中文第 1 稿 78 句、估算 6:21，片长按策划者要求设为 4–7 分钟；视觉材料取 Firebird 官网火鸟标志的火焰三色与 Heebo 字体（具体方案由受托方设计）；配乐要求为电子乐、有节奏感。待 WaterRun 审稿。 |
 | 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh + en | 计划中 |  | `sqlite` |  |
 | 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
 | 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 |  | `mongodb` |  |

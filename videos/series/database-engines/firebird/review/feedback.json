@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "version": "2026-10-20.1",
+  "version": "2026-10-20.2",
   "items": [
     {
       "id": "F01",
       "rule_sha256": "402d8f81cdb8aa66c480d3ec466708642275d748689552ecf844b6755ca7e167",
       "applicability": "applies",
       "reason": "",
-      "plan": "全片只回答一个问题：Firebird 的引擎为什么能既是服务端又是嵌入式。开场 o1–o6 直接抛出反直觉的现象（服务端可以整个关掉），不铺历史；历史压到第 01 章三句（h1–h6）。主骨架是 engine/modes 两章：先讲「引擎是库、服务端是壳」，再用「停掉服务端，只有嵌入式还活着」这个实测把形态差异变成可验证的事实。store/update/concur/durable 四章是这套形态带来的机制后果，outro 用系列的四个老问题收束，next 引出 SQLite。每一段都服务于「形态差异」这一条线：页与页类型、就地改还是留副本、谁看得见哪一份，都是「引擎在库文件里」的直接后果。不开选型比较章，不列功能清单。",
-      "script_evidence": "src/js/script.js 场景顺序 open → history → engine → modes → store → update → concur → durable → outro → next；engine 12 句（e1–e12）、modes 9 句（m1–m9）为主干；outro z1–z6 逐条回答「怎么放/怎么找/怎么改/怎么并发/出错怎么办」；next n1–n4 收在引擎与外壳的关系上。",
+      "plan": "全片只回答一个问题：Firebird 的引擎为什么能既是服务端又是嵌入式。开场 o1–o6 直接抛出反直觉的现象（服务端可以整个关掉），不铺历史；历史压到第 01 章三句（h1–h6）。主骨架是 engine/modes 两章：先讲「引擎是库、服务端是壳」，再用「停掉服务端，只有嵌入式还活着」这个实测把形态差异变成可验证的事实。store/update/concur/durable 四章是这套形态带来的机制后果，outro 用系列的四个老问题收束并说出与 MySQL、PostgreSQL 的对照，next 引出 SQLite。每一段都服务于「形态差异」这一条线。不开选型比较章，不列功能清单，不逐集回顾前两集。",
+      "script_evidence": "src/js/script.js 场景顺序 open → history → engine → modes → store → update → concur → durable → outro → next；engine 12 句（e1–e12）、modes 9 句（m1–m9）为主干；outro z1–z8 逐条回答「怎么放/怎么找/怎么改/怎么并发/出错怎么办」，z7 给出与 MySQL、PostgreSQL 的对照；next n1–n4 把三个形态排成一条轴。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -106,8 +106,8 @@
       "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
       "applicability": "applies",
       "reason": "",
-      "plan": "适用。本集独立可懂，不靠观众记住前集。开场 o5 只说「两个开源巨头之外，一个更小众的选择」，不解释那两个巨头是谁；其余章节直接提出本章的问题（数据怎么放、一次修改、怎么并发、出错怎么办），不出现「上一期第几个问题」这类导航。收尾的四个问题按本系列统一提法列出（放/找/改/并发/出错），但不逐条对照前两集的答案。唯一的跨集内容是收尾引出 SQLite——那是本系列自己的下一集顺序，不是对前集的回顾。",
-      "script_evidence": "src/js/script.js 的 o5（只作位置交代）、d1–d9/u1–u8/c1–c10/w1–w6（每章自带问题）、z1–z6（只列本系列统一提法，不点前集）、n1–n4（引出下一集）。",
+      "plan": "本集独立可懂，不靠观众记住前集。开场 o5–o5a 只点名 MySQL 与 PostgreSQL（自足的事实陈述，没看过前集的人也懂）；其余章节直接提出本章的问题（数据怎么放、一次修改、怎么并发、出错怎么办），不出现「上一期第几个问题」这类导航。收尾的四个问题按本系列统一提法列出（放/找/改/并发/出错）；唯一与前集有关的两句是 z7（它们的引擎住在服务端进程里）与 z3–z4 的形态轴（服务型 → 库型 → 嵌入型），都只依赖本片已给出的事实与系列自己的路线（FACTS 的 C01、C03）。前集的对照依据留在本片 FACTS 与 README，不逐集回顾前两集讲了什么。",
+      "script_evidence": "src/js/script.js 的 o5–o5a（点名）、d1–d9/u1–u8/c1–c10/w1–w6（每章自带问题）、z1–z8（系列统一提法 + 与 MySQL/PostgreSQL 的一句对照）、n1–n4（形态轴与 SQLite）；research/FACTS.md 的 C01–C03。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -172,8 +172,8 @@
       "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
       "applicability": "applies",
       "reason": "",
-      "plan": "视觉严格取自 Firebird 自己的材料：主色是官网标志火鸟的火焰红 #EE2B24，强调色是同标志的金 #FAAC19，中间调是橙 #F68A21（三个值都取自标志位图的不透明像素统计，research/lab/09_logo_colors.py）；正文墨色 #17222b 取自官网样式表；拉丁字体用官网同款 Heebo（OFL，随片放在 src/type/）。母题就是标志里的火焰：平涂三块画成的火苗表示引擎，灰色方框表示服务端外壳。部件用 Firebird 自己的语汇：isql 的 SQL> 提示符、MON$ 监控表、.fdb 的页结构、页类型的编号与名称。左上角常驻火鸟标志与字标。project.json 的 check.style.palette 把这套颜色锁死，源码里不出现别的颜色。",
-      "script_evidence": "src/css/style.css 开头注明每项取自哪份官方材料；src/css/style.css 的 .flame-mark / .shell / .engine / .isql / .pgbox / .dbfile；src/cover.html 用同一套颜色与火苗；project.json 的 check.style.palette 列出 9 个色值。",
+      "plan": "适用，**本片的硬要求**。视觉严格取自 Firebird 自己的材料：官网火鸟标志的实测三色（金 #FAAC19 / 橙 #F68A21 / 红 #EE2B24，由标志位图的像素统计得出）、官网正文墨色 #17222b 与同款拉丁字体 Heebo（OFL，随片放在 src/type/）；再加上 Firebird 自己的语汇（isql 的 SQL>、MON$ 监控表字段、.fdb 的页结构、页类型的官方编号与名称）。这些材料与出处写进 research/STYLE.md，色板锁在 project.json 的 check.style.palette（闸门按字面比对），字体要求写进 brief/03-visual.md。**怎么用这些材料、怎么设计版面与图形语言，归受托方**——准备方不预置方案（docs/delegation.md 的「准备方不替受托方做审美方案」）。postgresql 一集是 F16 的正面对照。",
+      "script_evidence": "research/STYLE.md 第 1 节（材料与实测值的出处表）；research/lab/out_09_logo_colors.txt（标志配色统计）；project.json 的 check.style.palette；brief/03-visual.md 第 1 节；src/type/Heebo-wght.ttf 与 src/type/OFL-Heebo.txt。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -194,8 +194,8 @@
       "rule_sha256": "7fb50f4c0a8833196e7f4e3f7b363b19ea074b15443f19517648e0231dc44bae",
       "applicability": "applies",
       "reason": "",
-      "plan": "本条为 2026-10-20 新增，PostgreSQL 一集正是因为「动画过于简陋」被记为 P31，本片按它开工。每章定一个以 Firebird 自己的对象为主角的主画面：第 02 章是「外壳里升起一团火焰」的体积对照；第 03 章是「三条路分叉后只有一条还亮着」；第 04 章是「240 格页阵按类型上色」；第 05 章是「数据页上两份 alice 并排」；第 06 章是「两块并排读数板」；第 07 章是「服务端进程里的两个专职角色」。这些画面要靠图形本身讲事情（体积、分布、版本、可见性），不是文字面板加标签；不靠镜头晃动凑动态（P6）。分镜阶段逐章写清主画面的尺度、层次与动作。",
-      "script_evidence": "src/js/script.js 的 e1–e12、m1–m9、d1–d9、u1–u8、c1–c10、w1–w6；research/STYLE.md 的「每章的主画面」一节。",
+      "plan": "适用。PostgreSQL 一集因为「动画过于简陋、缺乏视觉冲击力」被记为 P31，本片按它开工。要求：每章定一个以 Firebird 自己的对象为主角、观众看完能说出名字的主画面；表格逐行出现、文字高亮、淡入这类最小动作只能作辅助；不靠镜头晃动或特效堆叠充数。**具体用哪个对象、怎么动、什么节奏由受托方决定**；准备方在 brief/04-storyboard.md 里逐段给出「这一段要让观众明白什么」与「必须出现的真实数值」，在 src/js/scenes/ 的骨架文件里也各写了一句目标，由受托方实现。",
+      "script_evidence": "src/js/scenes/ 下十一个骨架文件里各自写明的这一段目标；brief/04-storyboard.md 的逐场景表与「每章一个主画面」的要求；src/js/script.js 的 u4–u7、c3–c6、d7–d9、w3–w6 这些有明确「看得见」落点的段落。",
       "result": "pending",
       "verification": "",
       "clips": []
@@ -207,6 +207,17 @@
       "reason": "",
       "plan": "本条为 2026-10-20 新增（PostgreSQL 结尾表格褪色时字与底同色、Web 登录文字溢出与压盖）。本片的版面上有三处高风险：三个二进制体积数字并排（宽度按实测字符数排版，不靠猜）、页类型分布图上的页号标注（放在色块外，不压在色块上）、字节偏移 1,900,254 的十六进制视图（用等宽字逐字节排版，按实测长度算宽度）。反色高亮只改底色，不同时渐变字色；后到的元素不盖住正在讲的内容；元素的退场交代去向（外壳消失时画出它被收走）。每个动作前后逐 0.1 秒取帧复查。",
       "script_evidence": "src/css/style.css 的 .dt tr.hl 只改 background 不改 color；.dbfile .pg 的页号标注样式；research/STYLE.md 的「版面上三处高风险」一节。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F20",
+      "rule_sha256": "123619022a98a8812ca26b68e6c04452179a7844d94a22bf4aca6267306cfa89",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "适用（2026-10-20.2 新增）。本片有大量「同一个对象的多个状态」要画（同一行数据的新旧两份副本、两个会话的读数、页与页类型、服务端与引擎），最容易出「空框充数」和「形状换含义」。做法：每个图形必须能指出它对应哪一句旁白里的哪个对象——页、页类型、事务清单、版本链、两个读数板、服务端外壳、引擎库、三个二进制，各有且只有一个含义，全片不换用；形状语义与颜色语义的对应表由受托方在 `brief/storyboard-detail.md` 里写下来并全片遵守。不用几何姿态（倾倒、旋转、堆叠、漂移）代替因果说明：副本为什么多一份、读数为什么从 30 变 31，都要靠「页上真的多了一份」「提交之后读数才变」这类在场的事实表达，不靠图形摆姿势。图形在旁白讲到它时已经在场，讲完才退场。",
+      "script_evidence": "src/js/script.js 的 u4–u7（页上多出一份副本）、c3–c6（两个会话的读数）、d3–d9（页与页类型）、e1–e9（外壳、引擎与三个二进制）、w3–w6（服务端里的两个角色）；src/js/scenes/ 下十一个骨架文件里各自写明这一段要让观众明白什么。",
       "result": "pending",
       "verification": "",
       "clips": []

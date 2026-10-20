@@ -16,8 +16,8 @@
     "zh": "以下是普通话的讲解。"
   },
   "production": {
-    "mode": "self",
-    "maker": "MiniMax M3.1 Flash",
+    "mode": "delegated",
+    "maker": "Claude Opus 5.5",
     "planner": "WaterRun",
     "repository": "https://github.com/Water-Run/ft"
   },
@@ -36,10 +36,7 @@
     "music": "tools/music.py",
     "music_db": -11,
     "duck_db": 7,
-    "sfx_db": -10,
-    "score": {
-      "lift_cue": "z8"
-    }
+    "sfx_db": -10
   },
   "check": {
     "duration": [
@@ -57,6 +54,7 @@
     "camera": true,
     "style": {
       "flat": true,
+      "no_radius": true,
       "no_emoji": true,
       "palette": [
         "#EE2B24",
@@ -69,6 +67,12 @@
         "#8a8378",
         "#000000"
       ]
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
     }
   },
   "tts": {
