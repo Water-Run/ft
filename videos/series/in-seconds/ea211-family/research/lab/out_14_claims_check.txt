@@ -1,0 +1,39 @@
+=== 声明核对：2026-10-20 12:38:04 ===
+=== 读入回显：D:\Coding\ft\videos\series\in-seconds\ea211-family\research\lab\out_12_sources.txt（252197 字节） ===
+=== 条目数：35（与 research/FACTS.md 的逐章条目号一一对应） ===
+PASS | 01-1 EA211 是汽油家族，含三缸与四缸
+PASS | 01-2 家族随第七代高尔夫投产
+PASS | 01-3 最早在 up! 以三缸 MPI 投产
+PASS | 01-4 与横置平台 MQB 同期登场
+PASS | 01-5 沿用 82 mm 缸心距、铝机体与重量
+PASS | 02-1 1.2/1.4 TSI 属 EA211
+PASS | 02-2 1.0 三缸属 EA211
+PASS | 02-3 官方命名 EA 211 TSI evo / evo2
+PASS | 02-4 巴西产四款 EA211
+PASS | 02-5 墨西哥西拉奥厂供北美
+PASS | 02-6 集团首个 MQB 车型是奥迪 A3
+PASS | 03-1 排气歧管集成进缸盖
+PASS | 03-2 进气凸轮轴 50 度曲轴角
+PASS | 03-3 ACT 关闭 2、3 缸
+PASS | 03-4 ACTplus 与 VTG、米勒循环并用
+PASS | 03-5 米勒循环与 λ=1
+PASS | 03-6 喷射压力 200 bar 到 350 bar
+PASS | 03-7 压缩比 10.5:1
+PASS | 03-8 铝机体、等离子喷涂层与 88 kg
+PASS | 03-9 后倾 12 度统一安装点
+PASS | 04-1 48V 轻混成为标配
+PASS | 04-2 48V 皮带式启动发电机
+PASS | 04-3 额外 14 kW / 56 Nm、省约半升
+PASS | 04-4 1.5 TSI evo2 可完全关闭滑行
+PASS | 04-5 插混用 1.5 TSI evo2
+PASS | 04-6 天然气 TGI 也是家族成员
+PASS | 05-1 柴油属 EA288
+PASS | 05-2 2.0 属 EA888
+PASS | 05-3 EA888 也有横置版本
+PASS | 05-4 MQB 横置、MLB 纵置
+PASS | 05-5 平台统一安装位置与接口
+PASS | 05-6 不同品牌同线生产
+PASS | 05-7 MQB 累计 3200 万辆
+PASS | 05-8 墨西哥与巴西两厂 2025 年产量
+PASS | 05-9 开姆尼茨是 EA211 的车型负责人
+=== 合计：35 条，通过 35 条，失败 0 条 ===
