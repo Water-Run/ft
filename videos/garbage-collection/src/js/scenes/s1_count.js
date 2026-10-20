@@ -11,15 +11,15 @@ scene('count', ({ root, s, c0 }) => {
   const keyNum = (el) => keyed(el);
 
   // ── 实时记账：一个对象，三处在用它 ──
-  const hd1 = tag(ui, '引用计数', 124, 140, 34);
-  const hd2 = tx(ui, 'ser', '实时记账', 116, 198, { size: 130, ...plate });
-  slide(hd1, c0 - 0.3, { x: -40, d: 0.3 }); wipe(hd2, qb(T('a1', '实时')), { dir: 'l', d: 0.45 }); sfx('thud', qb(T('a1', '实时')), { g: 0.7 });
+  const hd1 = tag(ui, tr('引用计数', 'reference counting'), 124, 140, 34);
+  const hd2 = tx(ui, 'ser', tr('实时记账', 'Real-time bookkeeping'), 116, 198, { size: tr(130, 84), ...plate });
+  slide(hd1, c0 - 0.3, { x: -40, d: 0.3 }); wipe(hd2, qb(T('a1', { zh: '实时', en: 'real time' })), { dir: 'l', d: 0.45 }); sfx('thud', qb(T('a1', { zh: '实时', en: 'real time' })), { g: 0.7 });
   const tA = h('div', 'abs', world); px(tA, 380, 470, 140, 140); tA.style.background = C.white;
   const tAn = tx(world, 'big', '', 380, 488, { size: 96, color: C.ink }); css(tAn, { width: '140px', textAlign: 'center' });
   const tAl = tx(world, 'big', 'A', 316, 500, { size: 60 });
   slam(tA, c0 - 0.3, { from: 0.5, d: 0.4 }); appear(tAl, c0 - 0.1); sfx('pop', c0 - 0.3, { g: 0.6 });
   const srcs = [[930, 330], [1010, 520], [930, 710]].map(([x, y]) => cell(sv, x, y, 44));
-  const tN = [qb(T('a1b', '数数')), qb(T('a1b', '多少')), qb(T('a1b', '地方'))];
+  const tN = [qb(T('a1b', { zh: '数数', en: 'counting' })), qb(T('a1b', { zh: '多少', en: 'how many' })), qb(T('a1b', { zh: '地方', en: 'places' }))];
   const tRet = qb(Tend('a1b') + 0.05);
   const sp = srcs.map((c, k) => { const p = ptr(sv, c.cx - 26, c.cy, 528, 500 + k * 40, { w: 5, head: 20 }); grow(p, tN[k], tRet, { d: 0.25 }); return p; });
   srcs.forEach((c, k) => grow(c, tN[k] - 0.12, tRet + 0.1, { d: 0.18 }));
@@ -34,24 +34,24 @@ scene('count', ({ root, s, c0 }) => {
   wipe(strip, tU, { dir: 'l', d: 0.7, ease: 'power3.inOut' }); vanish(tA, tU + 0.05); sfx('whoosh', tU, { g: 0.35 });
   const cnt = h('div', 'abs', world); px(cnt, 384, 474, 552, 132); cnt.style.background = C.ink;
   const cntN = tx(world, 'big', '', 384, 476, { size: 118, color: C.white }); css(cntN, { width: '552px', textAlign: 'center' });
-  const t8 = qb(Math.min(T('a2b', '八字节') - 0.15, Tend('a2') - 0.5));
+  const t8 = qb(Math.min(T('a2b', { zh: '八字节', en: '8 bytes' }) - 0.15, Tend('a2') - 0.5));
   wipe(cnt, t8, { dir: 'l', d: 0.4 }); sfx('thud', t8, { g: 0.6 });
   const b8 = h('div', 'abs', world); px(b8, 384, 440, 552, 6); b8.style.background = C.white;
-  const l8 = tx(world, 'sub', '前 8 字节', 384, 360, { size: 52 }), l8e = tx(world, 'mono', 'ob_refcnt', 640, 376, { size: 30, color: C.pale });
+  const l8 = tx(world, 'sub', tr('前 8 字节', 'first 8 bytes'), 384, 360, { size: 52 }), l8e = tx(world, 'mono', 'ob_refcnt', tr(640, 770), 376, { size: 30, color: C.pale });
   const b16 = h('div', 'abs', world); px(b16, 380, 634, 1120, 6); b16.style.background = C.pale;
   const l16 = tx(world, 'mono', 'sys.getsizeof(object()) = 16 bytes', 380, 650, { size: 28, color: C.pale });
   const lSrc = tx(world, 'src', 'CPython 3.14.3', 1300, 410);
   wipe(b8, t8, { dir: 'l', d: 0.4 }); slide(l8, t8 + 0.05, { y: 20, d: 0.35 }); appear(l8e, t8 + 0.3);
   wipe(b16, tU + 0.5, { dir: 'l', d: 0.5 }); appear(l16, tU + 0.7); appear(lSrc, tU + 0.7);
-  const t3 = qb(T('a3', '刚出生') - 0.25);
-  const tWide0 = qb(T('a4b', '全局')) - 0.4;
+  const t3 = qb(T('a3', { zh: '刚出生', en: 'born' }) - 0.25);
+  const tWide0 = qb(T('a4b', { zh: '全局', en: 'global' })) - 0.4;
   for (const e of [lSrc, tAl]) exit(e, tWide0, { y: -30, d: 0.25 });
   for (const e of [l8, l8e, b8]) exit(e, t3 - 0.1, { y: -30, d: 0.3 });
 
   // ── 1→2→3→2→1→0：名字一个个指上来，又一个个撤走 ──
   const names = [['a', 420], ['b', 600], ['holder', 780]];
-  const tk = [qb(T('a3', '刚出生')), qb(T('a3', '赋给')), qb(T('a3b', '塞进')), qb(T('a3b', '删掉')), qb(T('a3b', '清空')), qb(T('a4', '抹去'))];
-  const tZero = qb(T('a4', '归零')), tFree = qb(T('a4b', '释放') - 0.1);
+  const tk = [qb(T('a3', { zh: '刚出生', en: 'born' })), qb(T('a3', { zh: '赋给', en: 'assign' })), qb(T('a3b', { zh: '塞进', en: 'into a list' })), qb(T('a3b', { zh: '删掉', en: 'delete' })), qb(T('a3b', { zh: '清空', en: 'clear' })), qb(T('a4', { zh: '抹去', en: 'Erase' }))];
+  const tZero = qb(T('a4', { zh: '归零', en: 'zero' })), tFree = qb(T('a4b', { zh: '释放', en: 'freed' }) - 0.1);
   const outT = [tk[5], tk[3], tk[4]];
   const nameEls = names.map(([n, x], k) => {
     const e = wtag(world, n, x, 270, 34); slide(e, tk[k] - 0.1, { y: -24, d: 0.3 }); exit(e, outT[k], { y: -30, d: 0.25 });
@@ -68,17 +68,17 @@ scene('count', ({ root, s, c0 }) => {
     'del a  -&gt;   <span class="k">__del__ A</span>'], { size: 26, pad: '18px 28px 20px' });
   wipe(code.el, t3, { dir: 't', d: 0.3 });
   code.ln.forEach((l, k) => { appear(l, k === 5 ? tFree : tk[k]); if (k < 5) classAt(l, 'k', tk[k], k < 4 ? tk[k + 1] : tk[5]); });
-  const zTag = tag(world, '归零', 960, 500, 44);
+  const zTag = tag(world, tr('归零', 'zero'), 960, 500, 44);
   slam(zTag, tZero + 0.05, { from: 1.3, d: 0.35 });
   // 当场释放：16 个字节一起碎掉
   for (const e of [strip, cnt, cntN, b16, l16]) vanish(e, tFree);
   shatter(world, 380, 470, 1120, 140, C.gold, tFree, { n: 8, gap: 6, spread: 70, fall: 90, seed: 9 });
   sfx('thud', tFree, { g: 0.8 }); sfx('pop', tFree + 0.12, { g: 0.5 });
-  const tW = qb(T('a5', '对象') - 0.15), tC6 = qb(T('a6', '代价') - 0.4);
+  const tW = qb(T('a5', { zh: '对象', en: 'object' }) - 0.15), tC6 = qb(T('a6', { zh: '代价', en: 'price' }) - 0.4);
   exit(zTag, tW - 0.2, { y: -40, d: 0.3 });
   exit(code.el, tW - 0.2, { y: 80, d: 0.32 });
   // 不劳烦任何人：其余的格子一动不动；对象自己知道什么时候该走
-  wonder(ui, '对象自己知道<br>什么时候该走', 120, 300, tW, tC6 - 0.1, { plate: true, size: 110, h: 250 });
+  wonder(ui, tr('对象自己知道<br>什么时候该走', 'The object knows<br>when to leave'), 120, 300, tW, tC6 - 0.1, { plate: true, size: tr(110, 96), h: tr(250, 230) });
 
   // ── 代价：每次指针变动都得改账本 ──
   const OB = [[2150, 330], [2450, 330], [2750, 330], [2150, 630], [2450, 630], [2750, 630]].map(([x, y]) => ({ x, y }));
@@ -90,7 +90,7 @@ scene('count', ({ root, s, c0 }) => {
   });
   const SR = [330, 480, 630, 780].map((y) => cell(sv, 1880, y - 80, 50));
   const tLoop = qb(Tend('a6') - 0.55);
-  const rr = seeded(23), steps = [], tS6 = qn(T('a6', '指针')), tE6 = tLoop - 0.6;
+  const rr = seeded(23), steps = [], tS6 = qn(T('a6', { zh: '指针', en: 'pointer' })), tE6 = tLoop - 0.6;
   let tgt = [0, 1, 4, 3];
   const tgtAt = [tgt.slice()];
   for (let t = tS6; t < tE6 - 0.1; t += BEAT / 2) { const k = steps.length % 4; let v; do { v = (rr() * 6) | 0; } while (v === tgt[k]); steps.push({ t, k, from: tgt[k], to: v }); tgt = tgt.slice(); tgt[k] = v; tgtAt.push(tgt); }
@@ -109,17 +109,17 @@ scene('count', ({ root, s, c0 }) => {
     OB.forEach((o, i) => { const v = on ? String(cur.filter((x) => x === i).length) : ''; if (obEls[i].n._v !== v) { obEls[i].n._v = v; obEls[i].n.textContent = v; } });
   });
   steps.forEach((st, k) => { sfx('tick', st.t + 0.1, { g: 0.28, p: (OB[st.to].x - 2450) / 600 }); pulse(obEls[st.to].n, st.t + 0.12, 1.25, 0.18); });
-  const h6 = tx(ui, 'sub', '每改一次指针，记一笔账', 120, 820, { size: 52, ...plate });
-  wipe(h6, qb(T('a6', '指针') + 0.2), { dir: 'l', d: 0.4 });
+  const h6 = tx(ui, 'sub', tr('每改一次指针，记一笔账', 'every pointer change: one more entry'), 120, 820, { size: 52, ...plate });
+  wipe(h6, qb(T('a6', { zh: '指针', en: 'pointer' }) + 0.2), { dir: 'l', d: 0.4 });
   obEls.forEach((o, k) => { exit(o.b, tE6 + k * 0.03, { y: 60, d: 0.3 }); exit(o.n, tE6 + k * 0.03, { y: 60, d: 0.3 }); });
   exit(h6, tE6, { y: 60, d: 0.3 });
 
   // ── 循环引用：X 牵着 Y，Y 牵着 X ──
-  const hLoop = tx(ui, 'ser', '循环引用', 116, 136, { size: 110, ...plate });
+  const hLoop = tx(ui, 'ser', tr('循环引用', 'Reference<br>cycles'), 116, 136, { size: tr(110, 88), lh: 1.05, ...plate });
   slam(hLoop, tLoop, { from: 1.2, d: 0.45 }); sfx('thud', tLoop, { g: 0.8 });
   const X = { x: 2900, y: 420 }, Y = { x: 3400, y: 420 }, S = 200;
-  const tXY = qb(T('a6b', '循环引用') - 0.1), tP1 = qb(T('a7', '牵着')), tP2 = qb(T('a7', '牵着') + 0.95), tDel = qb(T('a7', '删光') - 0.1);
-  const tScan = qb(T('a9', '唤醒')), tHit = qb(T('a9', '出手')), tGone = qb(T('a9b', '清理') - 0.1);
+  const tXY = qb(T('a6b', { zh: '循环引用', en: 'reference cycle' }) - 0.1), tP1 = qb(T('a7', { zh: '牵着', en: 'holds' })), tP2 = qb(T('a7', { zh: '牵着', en: 'holds' }) + 0.95), tDel = qb(T('a7', { zh: '删光', en: 'deleted' }) - 0.1);
+  const tScan = qb(T('a9', { zh: '唤醒', en: 'Wake' })), tHit = qb(T('a9', { zh: '出手', en: 'strike' })), tGone = qb(T('a9b', { zh: '清理', en: 'clear' }) - 0.1);
   const mk = (o, name, nx) => {
     const b = h('div', 'abs', world); px(b, o.x, o.y, S, S); b.style.background = C.white;
     const n = tx(world, 'big', '', o.x, o.y + 46, { size: 110, color: C.ink }); css(n, { width: S + 'px', textAlign: 'center' });
@@ -142,26 +142,26 @@ scene('count', ({ root, s, c0 }) => {
   pulse(eX.n, tP2 + 0.3); pulse(eY.n, tP1 + 0.3); pulse(eX.n, tDel + 0.25); pulse(eY.n, tDel + 0.25);
   sfx('pop', tDel, { g: 0.45 });
   // 卡在 1：两个 1 随拍子一明一暗
-  const tStuck = qb(T('a7b', '卡在一') - 0.1);
+  const tStuck = qb(T('a7b', { zh: '卡在一', en: 'stuck at 1' }) - 0.1);
   // 两根指针都牵上之后，X、Y 互相拉扯：一拍拽一下，你一下我一下，名字删光了也不停，直到「卡在 1」
   for (let t = qb(tP2 + 0.6); t < tStuck - 0.2; t += BEAT) { pulse(eX.b, t, 1.1, 0.26); pulse(eX.n, t, 1.1, 0.26); pulse(eY.b, t + BEAT / 2, 1.1, 0.26); pulse(eY.n, t + BEAT / 2, 1.1, 0.26); }
   for (let k = 0; k < 6; k++) { const t = tStuck + k * BEAT; pulse(eX.n, t, 1.15, 0.2); pulse(eY.n, t + BEAT / 2, 1.15, 0.2); }
   const raw = slab(ui, 120, 640, ['with names:    raw X = 2  raw Y = 2', 'after del x,y: raw X = <span class="k">1</span>  raw Y = <span class="k">1</span>'], { size: 26 });
   const rawL = tx(ui, 'src', 'CPython 3.14.3', 124, 604);
-  wipe(raw.el, qb(T('a7b', '拉扯')), { dir: 'l', d: 0.35 }); appear(rawL, qb(T('a7b', '拉扯'))); sfx('blip', qb(T('a7b', '拉扯')), { g: 0.5 });
+  wipe(raw.el, qb(T('a7b', { zh: '拉扯', en: 'pull' })), { dir: 'l', d: 0.35 }); appear(rawL, qb(T('a7b', { zh: '拉扯', en: 'pull' }))); sfx('blip', qb(T('a7b', { zh: '拉扯', en: 'pull' })), { g: 0.5 });
   appear(raw.ln[1], tStuck - 0.2);
   const php = slab(ui, 1000, 640, ['cycle: x.next = y, y.next = x, then unset(x, y):', '(after unset x, y: no destructor ran)'], { size: 24 });
   const phpL = tx(ui, 'src', 'PHP 8.5.10', 1004, 604);
-  const tA8 = qb(T('a8', '谁'));
+  const tA8 = qb(T('a8', { zh: '谁', en: 'Neither' }));
   wipe(php.el, tA8, { dir: 'r', d: 0.35 }); appear(phpL, tA8); sfx('blip', tA8, { g: 0.5 });
   // 孤岛
-  const tIs = qb(T('a8', '孤岛') - 0.15);
+  const tIs = qb(T('a8', { zh: '孤岛', en: 'island' }) - 0.15);
   const isl = h('div', 'abs', world); px(isl, 2850, 190, 800, 560); css(isl, { border: `4px dashed ${C.pale}` });
-  const islL = tx(world, 'ser', '孤岛', 3660, 200, { size: 64, color: C.pale });
+  const islL = tx(world, 'ser', tr('孤岛', 'island'), 3660, 200, { size: 64, color: C.pale });
   wipe(isl, tIs, { dir: 'l', d: 0.5 }); slide(islL, tIs + 0.2, { x: 30, d: 0.35 }); sfx('thud', tIs, { g: 0.55 });
   // 拆环器：从 PHP 与 CPython 的输出里，各收走 2 个
-  const tFix = qb(T('a8b', '拆环') - 0.1);
-  const cyc = tag(world, '拆环器', 3690, 330, 44);
+  const tFix = qb(T('a8b', { zh: '拆环', en: 'break cycles' }) - 0.1);
+  const cyc = tag(world, tr('拆环器', 'cycle breaker'), 3690, 330, 44);
   slam(cyc, tFix, { from: 1.3, d: 0.35 }); sfx('thud', tFix, { g: 0.6 });
   exit(hLoop, tFix, { x: -120, d: 0.3 });
   for (const e of [raw.el, rawL]) exit(e, tScan - 0.15, { y: 60, d: 0.25 });
@@ -183,15 +183,15 @@ scene('count', ({ root, s, c0 }) => {
   });
   sfx('whoosh', tScan, { g: 0.4 }); sfx('thud', tHit, { g: 0.7 });
   const t2 = qb(Tend('a9') - 0.35);
-  const two = tx(world, 'big', '2<span class="ser" style="font-size:80px;letter-spacing:0"> 个</span>', 3700, 420, { size: 160, color: C.gold });
+  const two = tx(world, 'big', '2<span class="ser" style="font-size:80px;letter-spacing:0">' + tr(' 个', ' objects') + '</span>', 3700, 420, { size: 160, color: C.gold });
   slam(two, t2, { from: 1.35, d: 0.42 }); sfx('chime', t2, { g: 0.6 });
   sfx('thud', tGone, { g: 0.8 });
-  const tIs2 = qb(T('a9b', '正是'));
+  const tIs2 = qb(T('a9b', { zh: '正是', en: 'Exactly' }));
   [py2, ph2].forEach((sl) => [1, 2].forEach((k) => classAt(sl.ln[k].querySelector('span'), 'hl', tIs2)));
   exit(isl, tGone + 0.3, { y: 0, d: 0.4 });
 
   // ── 镜头 ──
-  const tZoom = qb(T('a2b', '八字节')) - 0.4, tWide = qb(T('a4b', '全局')) - 0.3, tIsl = qb(T('a8', '孤岛')) - 0.3;
+  const tZoom = qb(T('a2b', { zh: '八字节', en: '8 bytes' })) - 0.4, tWide = qb(T('a4b', { zh: '全局', en: 'global' })) - 0.3, tIsl = qb(T('a8', { zh: '孤岛', en: 'island' })) - 0.3;
   cam.track(s.start, { x: 860, y: 540, z: 0.9 }, [
     [s.start + 0.5, { z: 1.0 }, c0 - s.start - 0.5, { ease: 'power2.out', sfx: false }],
     [null, { z: 1.03 }, tU - 0.3 - (c0 + 0.15) - 0.05, { ease: 'none', sfx: false }],

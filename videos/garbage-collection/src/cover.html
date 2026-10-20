@@ -18,6 +18,8 @@
   .r169 .kicker { left: 112px; top: 690px; font-size: 40px; }
   .r43 .title { left: 92px; top: 170px; font-size: 230px; }
   .r43 .kicker { left: 100px; top: 700px; font-size: 40px; }
+  .en .title { font-size: 150px; line-height: 1.04; }   /* 英文片名三行，左边 900 px 内放得下 */
+  .en .kicker { font-size: 34px; line-height: 1.35; }
   svg { position: absolute; left: 0; top: 0; }
 </style>
 </head>
@@ -30,6 +32,10 @@
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', r43 = q.get('r') === '43';
   document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  if (lang === 'en') {
+    document.querySelector('.title').innerHTML = 'The Art of<br>Garbage<br>Collection';
+    document.querySelector('.kicker').innerHTML = 'Reference counting · Mark and sweep<br>Generations · Tri-color & write barriers';
+  }
   const W = r43 ? 1600 : 1920, H = r43 ? 1200 : 1080;
   // 一片方格：芯片黑 = 活，丝印白 = 还没证明活着，灰 = 碰过，金 = 收集器此刻碰到的那一列
   const NS = 'http://www.w3.org/2000/svg', sv = document.getElementById('heap');

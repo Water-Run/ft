@@ -6,13 +6,13 @@
 
 ## 当前状态与接续
 
-阶段：**受托方制作中，差渲染**。中文第 8 稿已由 WaterRun 确认（2026-10-20 10:43）。受托方 Claude Opus 5.5 已完成配音、关键帧与视觉系统（策划者选定「内存条」）、分镜、七个场景与常驻元素、配乐与音效、封面，制作期闸门全部通过。**全片渲染未完成**：2026-10-20 第一次渲染在 15,365 / 34,375 帧时因本机内存不足被 Claude Code 终止，没有留下成片；按要求不自行重启，等策划者指示。
+阶段：**中英双语制作中；英文稿待策划者确认**。中文第 8 稿已由 WaterRun 确认（2026-10-20 10:43）。受托方 Claude Opus 5.5 已完成中文配音、视觉系统「内存条」、七个场景、配乐与音效、封面。2026-10-20 第二次全片渲染开始后，策划者提醒本片是双语的（本 README 开头写着「中文与英文两版」，任务书却只写了中文）。受托方停掉渲染（因为改片尾署名与做英文版都要改场景源码，渲染必然过期），开始做英文版：英文译稿已导出待审，画面文字与时间锚点已全部给出英文，英文音色试听已出。**中英两版都还没有成片**。
 
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-20 受托方：配音 140 句（MiniMax `speech-2.8-hd`，Sweet_Lady）并回听、修两处读法；三个视觉方向的关键帧，策划者选「内存条」；`brief/storyboard-detail.md`；七个场景、常驻元素与换章；自写配乐 `tools/music.py` 与 431 个音效事件；封面 4 张；逐句总览图（`sheets.js cue`）复看后修了 4 处排版（F19）；逐 0.1 s 量了 69 处关键文字的可读区间，按「1.5 s + 字数 ÷ 5」加长了章卡与 6 处句后停顿（F04，内容哈希不变，全片 9:45）；带入开工后新加入的 F20 并改了一处颜色语义；`check.js` 全部通过、`preview.js` 没有超过 3 s 的静止段；事实复核写进 `research/FACTS.md`「复核」 |
-| 下一步及依赖 | 重新渲染（建议 `node kit/tools/render.js videos/garbage-collection --lang zh --workers 4`，并行的浏览器少一些，占用内存少、耗时长）→ `finish.js` → 试听片 → 用成片哈希补 `review/feedback.json` 与本 README 的复盘 → `check.js --final` → 提交 |
-| 当前稿本 / 校对结论 | `review/script.zh.11b3303b….md`（142 句 + 2 静默）；`approval.json` 为 **approved**（2026-10-20T10:43+08:00）；旁白文字未改，内容哈希仍是 `11b3303b…` |
+| 下一步及依赖 | 等 WaterRun 校对并确认英文稿 `review/script.en.70f94a94….md`、选定英文音色（试听 `audio/probe/en_*.mp3`）→ 英文配音（`tts.js --lang en`），按实测时长定英文语速，使片长不超过 640 s → 英文版逐场景复查（`scan.js`、`sheets.js cue`、`preview.js`）→ 中英两版各自渲染（`render.js --lang zh|en --workers 4`）→ `finish.js` → 试听片 → 成片证据与复盘 → `check.js --final` → 提交 |
+| 当前稿本 / 校对结论 | 中文：`review/script.zh.11b3303b….md`，**approved**（2026-10-20T10:43+08:00），旁白文字未改。英文：`review/script.en.70f94a94….md`，**pending**，交审说明见 `review/NOTES.md`「英文译稿」 |
 | 输出在哪台制作机 | 制作机 A（Windows）：配音缓存 `audio/zh/`、混音 `out/zh/audio*.wav`、封面 `out/cover-zh-*`、预演 `out/zh/preview.mp4`、总览图 `shots/sheets/`（均不入库）；中止的渲染留下 `out/zh/video.mp4.segs/` 的 8 个分段，下次渲染开始时会由 `render.js` 自己清掉 |
 | 未完成、未检查与阻塞 | 成片 MP4、试听片、`check.js --final`；配乐、音效与配音的听感（制作者听不到声音）；以正常速度连续观看（制作者只看过截图与总览图）。`check.js --final` 预计会因 F05、F06、F12、F17、F19、F20 六项待人复核而不通过——这六项需要人看、人听，制作者不能代填 |
 
@@ -130,7 +130,7 @@ node kit/tools/stats.js videos/garbage-collection --lang zh
 | Claude Fable 5.1 | 复核 McCarthy 脚注出处与 Dijkstra 1978 全文；读 Go、Lua、.NET、PHP、Nim、Java、Zig 的文档与源码；补做实验 03–12；事实编号；中文第 1–7 稿、交审材料、反馈应用 F01–F17；组织三轮对抗审稿（事实审计、目标观众、运行时工程师各由独立的 Claude Fable 5.1 子任务担任）；MiniMax 音色试听（2026-10-19） |
 | Gemini 4 Argon（网页端） | **中文第 8 稿文案**（2026-10-20）：整稿重写，比第 7 稿更长、比喻更密；收束 h5、h6 加引号，明确是 McCarthy 脚注的原文引用；03 章 d9 改成与 04 章 e10 呼应的悬念 |
 | MiniMax M3.1 Flash（运行时标识 `minimax-M3.1-Flash-Preview`） | **准备方辅助**（2026-10-20）：第 8 稿落盘与逐句核对；按「不改含义的字幕断句」把 61 句超宽句拆成 142 句（逐字校验一致，续句停顿 0.05 s）；读法与 SAY 表；导出校对稿；核对时长与语速；选「可爱的女声」并合成 6 个候选的试听（定 Sweet_Lady）；视觉系统 `src/css/style.css`；逐句对应表 `expect.zh.json`；任务书 `AGENTS.md` 与 `brief/01–06`。**关键帧、分镜构图、场景实现、配音、渲染与交付由受托方 Claude Opus 5.5 做** |
-| Claude Opus 5.5 | **受托方**（2026-10-20）：执行配音并回听、修正两处读法；三个方向的关键帧，按策划者选定重做视觉系统「内存条」；分镜细化、七个场景与常驻元素、换章动画；自写配乐 `tools/music.py` 与音效编排；封面；渲染封装、成片后的三项审查与交付说明 `DELIVERY.md` |
+| Claude Opus 5.5 | **受托方**（2026-10-20）：执行配音并回听、修正两处读法；三个方向的关键帧，按策划者选定重做视觉系统「内存条」；分镜细化、七个场景与常驻元素、换章动画；自写配乐 `tools/music.py` 与音效编排；英文译稿与英文版画面文字；封面；渲染封装、成片后的三项审查与交付说明 `DELIVERY.md` |
 | MiniMax speech-2.8-hd | 音色试听：6 个中文女声候选各 4 段、最贴「可爱」的 4 个各 6 段（`audio/probe/`，不入库）；定音色 `Chinese (Mandarin)_Sweet_Lady`（甜美女声）；**全片配音**（140 句，受托方执行） |
 
 尚未使用图像生成模型；后续参与者据实追加。网页来源通过 Web Fetch 或 curl 读取原文；PDF 用 pypdf 提取文本核对。

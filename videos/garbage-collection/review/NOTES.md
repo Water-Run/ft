@@ -83,6 +83,20 @@
 - 确认后本片改为**委托制作**：受托模型 Claude Opus 5.5 负责配音、关键帧与分镜、场景实现、声音编排、封面、渲染封装、三项审查与 `DELIVERY.md`。
 - 准备方的角色是**辅助**：MiniMax M3.1 Flash 负责第 8 稿落盘与逐句核对、字幕断句、读法与 SAY 表、导出校对稿、时长与语速核对、选音色并合成试听、视觉系统落地、逐句对应表、任务书。**关键帧与场景实现不做**——关键帧是审美判断，准备方预置版面等于替受托模型把构图定死。
 
+## 英文译稿（2026-10-20，交审中，未确认）
+
+策划者 2026-10-20 提醒「这部片子是双语的」（README 开头早有「中文与英文两版」），受托方据此做英文版。
+
+- 稿本：`review/script.en.70f94a94….md`，140 句，句号与中文第 8 稿一一对应。译者：受托方 Claude Opus 5.5。中文稿未动，内容哈希仍是 `11b3303b…`。
+- 译法：逐句对应，保留每句的事实、数字、版本与限定条件，facts 编号沿用中文。语气按中文稿的俏皮：「眨眼就铺满」→ filling the sheet in a blink，「冤杀」→ wrongly killed，「家规」→ house rule，「没有白吃的午餐」→ no free lunch。
+- 术语首次出现的英文说法：reference counting、tracing、mark-and-sweep、generational collection、card table、tri-color marking、write barrier、incremental、concurrent、ARC、ownership。
+- **麦卡锡脚注 h5–h6b 用原文**（FACTS T04 逐字），不回译中文旁白的意译。英文版里旁白与画面上的脚注是同一段文字。
+- 数字：画面上的数字不变，口播写成英文（sixty-seven million、136 times）。读法放在 SAY 表的 `en` 一栏：C# → C sharp，.NET → dot net，`a.Next = b` → a dot Next equals b，ARC / CPU 逐字母，`64 MB` → 64 megabytes，gen 0 → generation 0。中文的 `tts` 覆盖只给中文。
+- 画面：所有画面文字都用 `tr('中文', 'English')` 给出英文；时间锚点写成 `T(句号, { zh, en })`，英文锚点都已核对，确实出现在该句英文里。英文章节卡是「英文章名 + 取自本章旁白的一行小字」，因为英文章名放不进中文那一行。英文版去掉了画面上的「（译）」行，因为引文本身就是英文。
+- 时长：按 2.7 词/秒估算为 693 s，超过 `check.duration` 的 640 s 上限。配音后按实测时长调英文语速 `tts.speed.en`，不放宽上限。
+- 音色：四个候选（Sweet_Girl、Serene_Woman、English_Graceful_Lady，以及中文版用的 Chinese (Mandarin)_Sweet_Lady 说英文），各读开场钩子、家规、脚注三句，试听在 `audio/probe/en_*.mp3`（不入库）。语音识别转写四个都正确；lovely_girl 太慢、Attractive_Girl 把 Dijkstra 念糊，已淘汰。
+- **待决**：WaterRun 按句号校对英文稿并明确确认；选定英文音色。确认前不合成英文旁白。
+
 ## 交审说明（中文第 7 稿，2026-10-19）
 
 稿本：`review/script.zh.2c69cb703f3bb41817cd21b8866206b33c8e6b8dcfba29cc5bacdaa7d9ef7408.md`。内容 SHA-256：`2c69cb703f3bb41817cd21b8866206b33c8e6b8dcfba29cc5bacdaa7d9ef7408`。`approval.json` 的 pending 记录指向当前哈希。

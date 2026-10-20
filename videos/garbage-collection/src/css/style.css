@@ -72,6 +72,8 @@ body { font-family: "Sans SC", "Inter"; color: var(--white); background: var(--f
 .card .no { position: absolute; left: 114px; top: 150px; font-family: "Inter"; font-weight: 900; font-size: 300px; line-height: 1; letter-spacing: -0.05em; color: var(--gold); }
 .card .ti { position: absolute; left: 120px; top: 520px; font-family: "Serif SC"; font-weight: 900; font-size: 170px; line-height: 1.1; color: var(--white); }
 .card .en { position: absolute; left: 126px; top: 740px; font-family: "Inter"; font-weight: 600; font-size: 40px; color: var(--pale); }
+html.en .card .ti { top: 560px; font-size: 124px; letter-spacing: -0.01em; }   /* 英文章名比中文长：缩到一行放得下 */
+html.en .card .en { font-size: 44px; }
 
 /* 角标与进度 */
 .hud-t { position: absolute; left: 60px; top: 36px; font-family: "Serif SC"; font-weight: 900; font-size: 26px; color: var(--white); }

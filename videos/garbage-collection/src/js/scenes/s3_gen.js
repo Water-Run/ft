@@ -14,15 +14,15 @@ scene('gen', ({ root, s, c0 }) => {
   const B = [{ y0: 0, y1: 120 }, { y0: 160, y1: 340 }, { y0: 380, y1: 740 }];
 
   // ── 时刻 ──
-  const tSlow = qb(T('d1', '全盘') - 0.2), t83 = qb(Math.min(T('d1b', '一九八三'), Tend('d1') - 0.5));
-  const tPap = qb(T('d1b', '利伯曼') - 0.2), tShort = qb(T('d1c', '短命') - 0.4);
-  const tSplit = qb(T('d2', '分房') - 0.2), tGen = qb(T('d2', '分代') - 0.1), tNew = qb(T('d2', '新区') - 0.1);
-  const tFast = qb(T('d2b', '勤打扫') - 0.6), tW3 = qb(T('d3', '一条') - 0.2);
-  const tD4 = qb(T('d4', 'dot net') - 0.3), tBorn = qb(T('d4', '刚出生') - 0.1), tUp1 = qb(T('d4b', '升') - 0.1), tUp2 = qb(T('d4b', '进') - 0.1);
-  const tD5 = qb(T('d5', '开头') - 0.2), t136 = qb(T('d5', '一百三十六次') - 0.3), tZero = qb(T('d5b', '一次都没动') - 0.4);
-  const tD6 = qb(T('d6', '可万一') - 0.3), tQ = qb(T('d6b', '不能杀') - 0.3);
-  const tD8 = qb(T('d8', 'dot net') - 0.2), tCard = qb(T('d8', '卡表') - 0.1), tWrite = qb(T('d8', '改过') - 0.1), tTick = qb(T('d8b', '打个勾') - 0.1), tOnly = qb(T('d8b', '只查') - 0.1);
-  const tD9 = qb(T('d9', '暗哨') - 0.2);
+  const tSlow = qb(T('d1', { zh: '全盘', en: 'everything' }) - 0.2), t83 = qb(Math.min(T('d1b', { zh: '一九八三', en: '1983' }), Tend('d1') - 0.5));
+  const tPap = qb(T('d1b', { zh: '利伯曼', en: 'Lieberman' }) - 0.2), tShort = qb(T('d1c', { zh: '短命', en: 'die young' }) - 0.4);
+  const tSplit = qb(T('d2', { zh: '分房', en: 'by age' }) - 0.2), tGen = qb(T('d2', { zh: '分代', en: 'generational' }) - 0.1), tNew = qb(T('d2', { zh: '新区', en: 'new area' }) - 0.1);
+  const tFast = qb(T('d2b', { zh: '勤打扫', en: 'often' }) - 0.6), tW3 = qb(T('d3', { zh: '一条', en: 'A statistical' }) - 0.2);
+  const tD4 = qb(T('d4', 'dot net') - 0.3), tBorn = qb(T('d4', { zh: '刚出生', en: 'newborns' }) - 0.1), tUp1 = qb(T('d4b', { zh: '升', en: 'move up' }) - 0.1), tUp2 = qb(T('d4b', { zh: '进', en: 'another' }) - 0.1);
+  const tD5 = qb(T('d5', { zh: '开头', en: 'first second' }) - 0.2), t136 = qb(T('d5', { zh: '一百三十六次', en: '136 times' }) - 0.3), tZero = qb(T('d5b', { zh: '一次都没动', en: 'touched once' }) - 0.4);
+  const tD6 = qb(T('d6', { zh: '可万一', en: 'what if' }) - 0.3), tQ = qb(T('d6b', { zh: '不能杀', en: 'must live' }) - 0.3);
+  const tD8 = qb(T('d8', 'dot net') - 0.2), tCard = qb(T('d8', { zh: '卡表', en: 'card table' }) - 0.1), tWrite = qb(T('d8', { zh: '改过', en: 'changes' }) - 0.1), tTick = qb(T('d8b', { zh: '打个勾', en: 'tick' }) - 0.1), tOnly = qb(T('d8b', { zh: '只查', en: 'checks only' }) - 0.1);
+  const tD9 = qb(T('d9', { zh: '暗哨', en: 'sentinel' }) - 0.2);
 
   // ── 堆：先是一整块，再裂成三层 ──
   const fsv = board(world, -40, -40, COLS * P + 80, 900);
@@ -67,29 +67,29 @@ scene('gen', ({ root, s, c0 }) => {
   // 三层的轮廓与名字
   const outl = B.map((b, k) => { const e = h('div', 'abs', world); px(e, -16, b.y0 - 12, COLS * P + 32, b.y1 - b.y0 + 24); css(e, { border: `3px solid ${k === 0 ? C.white : C.pale}` }); wipe(e, tSplit + 0.5 + k * 0.1, { dir: 'l', d: 0.5 }); return e; });
   sfx('thud', tSplit + 0.2, { g: 0.6 }); sfx('thud', tSplit + 0.45, { g: 0.5 });
-  const gl = ['0 代', '1 代', '2 代'].map((n, k) => { const e = tx(world, 'big', n, -200, B[k].y0 + (k ? 40 : 20), { size: 64, color: k ? C.pale : C.white }); return e; });
-  gl.forEach((e, k) => slide(e, qb(Math.min(T('d4', '三代'), Tend('d4') - 0.6)) + k * BEAT / 2, { x: -40, d: 0.3 }));
+  const gl = tr(['0 代', '1 代', '2 代'], ['gen 0', 'gen 1', 'gen 2']).map((n, k) => { const e = tx(world, 'big', n, -200, B[k].y0 + (k ? 40 : 20), { size: 64, color: k ? C.pale : C.white }); return e; });
+  gl.forEach((e, k) => slide(e, qb(Math.min(T('d4', { zh: '三代', en: 'three generations' }), Tend('d4') - 0.6)) + k * BEAT / 2, { x: -40, d: 0.3 }));
   gl.forEach((e) => exit(e, tD8 - 0.35, { x: -60, d: 0.3 }));
-  gl.forEach((e, k) => sfx('pop', qb(Math.min(T('d4', '三代'), Tend('d4') - 0.6)) + k * BEAT / 2, { g: 0.45 }));
-  const newL = tag(world, '新区', COLS * P + 30, 20, 40);
+  gl.forEach((e, k) => sfx('pop', qb(Math.min(T('d4', { zh: '三代', en: 'three generations' }), Tend('d4') - 0.6)) + k * BEAT / 2, { g: 0.45 }));
+  const newL = tag(world, tr('新区', 'new'), COLS * P + 30, 20, 40);
   slam(newL, tNew, { from: 1.3, d: 0.35 }); sfx('thud', tNew, { g: 0.55 });
 
   // ── ui：1983、论文、短命鬼、分代 ──
   const e83 = tx(ui, 'big', '1983', 110, 130, { size: 170, ...plate });
   slam(e83, t83, { from: 1.2, d: 0.45 }); sfx('thud', t83, { g: 0.9 });
-  const names = tx(ui, 'sub', '利伯曼 · 休伊特', 124, 330, { size: 56, ...plate });
+  const names = tx(ui, 'sub', tr('利伯曼 · 休伊特', 'Lieberman · Hewitt'), 124, 330, { size: 56, ...plate });
   wipe(names, tPap, { dir: 'l', d: 0.4 });
   const pap = paper(ui, 1000, 150, 780, '<div class="pt" style="font-size:40px;line-height:1.25">A Real-Time Garbage Collector Based on the Lifetimes of Objects</div><div class="pq" style="font-size:28px;margin-top:22px">Henry Lieberman, Carl Hewitt</div><div class="pm" style="font-size:24px;margin-top:10px">Communications of the ACM 26(6), 1983</div>');
   slide(pap, tPap + 0.1, { x: 120, d: 0.45 }); sfx('pop', tPap + 0.1, { g: 0.5 });
   for (const e of [e83, names]) exit(e, tShort - 0.1, { x: -100, d: 0.3 });
   exit(pap, tShort - 0.1, { x: 140, d: 0.3 });
-  const eShort = tx(ui, 'ser', '短命鬼', 110, 160, { size: 150, ...plate });
-  slam(eShort, qb(T('d1c', '短命') - 0.1), { from: 1.25, d: 0.42 }); sfx('thud', qb(T('d1c', '短命') - 0.1), { g: 0.7 });
+  const eShort = tx(ui, 'ser', tr('短命鬼', 'Die young'), 110, 160, { size: tr(150, 120), ...plate });
+  slam(eShort, qb(T('d1c', { zh: '短命', en: 'die young' }) - 0.1), { from: 1.25, d: 0.42 }); sfx('thud', qb(T('d1c', { zh: '短命', en: 'die young' }) - 0.1), { g: 0.7 });
   exit(eShort, tSplit - 0.1, { y: -60, d: 0.3 });
-  const eGen = tx(ui, 'ser', '分代', 110, 740, { size: 150, ...plate }), eGenE = tx(ui, 'lat', 'generational', 430, 830, { size: 40, color: C.pale, ...plate });
+  const eGen = tx(ui, 'ser', tr('分代', 'Generations'), 110, tr(740, 770), { size: tr(150, 120), ...plate }), eGenE = tx(ui, 'lat', tr('generational', ''), 430, 830, { size: 40, color: C.pale, ...plate });
   slam(eGen, tGen, { from: 1.25, d: 0.42 }); wipe(eGenE, tGen + 0.3, { dir: 'l', d: 0.35 }); sfx('thud', tGen, { g: 0.85 });
   for (const e of [eGen, eGenE]) exit(e, tW3 - 0.2, { y: 60, d: 0.3 });
-  const w3 = wonder(ui, '一条统计学洞察，<br>长成了堆的形状', 120, 110, tW3, tD4 - 0.1, { size: 92, h: 220 });
+  const w3 = wonder(ui, tr('一条统计学洞察，<br>长成了堆的形状', 'A statistical insight<br>became the shape of the heap'), 120, 110, tW3, tD4 - 0.1, { size: tr(92, 76), h: tr(220, 190) });
 
   // ── 0 → 1 → 2：一个对象熬过回收，往下掉一层 ──
   const O = { x: 2 * P + 30 };
@@ -110,23 +110,23 @@ scene('gen', ({ root, s, c0 }) => {
     ss(sw, 'left', (-20 + 1600 * clamp((t - t0) / 0.5)).toFixed(1) + 'px'); ss(sw, 'top', bb.y0 - 6 + 'px'); ss(sw, 'height', bb.y1 - bb.y0 + 12 + 'px');
   });
   const genS = slab(ui, 980, 620, ['gen: new object -&gt; generation 0', 'gen: after a gen0 collection -&gt; generation 1', 'gen: after a gen1 collection -&gt; generation 2', 'gen: after a gen2 collection -&gt; generation 2'], { size: 24 });
-  const genL = tx(ui, 'src', '实测：.NET 10.0.12 · GC.GetGeneration', 984, 584);
+  const genL = tx(ui, 'src', tr('实测：.NET 10.0.12 · GC.GetGeneration', 'measured: .NET 10.0.12 · GC.GetGeneration'), 984, 584);
   wipe(genS.el, tBorn, { dir: 'l', d: 0.3 }); appear(genL, tBorn);
   [tBorn, tUp1 + 0.4, tUp2 + 0.4, tUp2 + 1.45].forEach((t, k) => { appear(genS.ln[k], t); classAt(genS.ln[k], 'k', t); sfx('blip', t, { g: 0.4 }); });
-  const old = tx(world, 'ser', '养老', O.x + 60, oY[2] - 46, { size: 64, color: C.pale, ...plate });
-  slide(old, qb(T('d4b', '养老') - 0.1), { x: 30, d: 0.3 });
+  const old = tx(world, 'ser', tr('养老', 'retired'), O.x + 60, oY[2] - 46, { size: 64, color: C.pale, ...plate });
+  slide(old, qb(T('d4b', { zh: '养老', en: 'retire' }) - 0.1), { x: 30, d: 0.3 });
   for (const e of [genS.el, genL]) exit(e, tD5 - 0.1, { y: 60, d: 0.3 });
   exit(old, tD5 - 0.1, { y: 30, d: 0.3 });
 
   // ── 一秒里：0 代 136 次，1、2 代 0 次 ──
-  const c136 = tx(ui, 'big', '0<span class="ser" style="font-size:64px;letter-spacing:0"> 次</span>', 1430, 130, { size: 120, ...plate });
-  const c1 = tx(ui, 'big', '0<span class="ser" style="font-size:48px;letter-spacing:0"> 次</span>', 1560, 380, { size: 90, ...plate });
-  const c2 = tx(ui, 'big', '0<span class="ser" style="font-size:48px;letter-spacing:0"> 次</span>', 1560, 620, { size: 90, ...plate });
-  wipe(c136, tD5, { dir: 'l', d: 0.3 }); stepCount(c136, tD5 + 0.2, t136 + 0.4, 0, 136, (v) => Math.round(v) + '<span class="ser" style="font-size:64px;letter-spacing:0"> 次</span>');
+  const c136 = tx(ui, 'big', '0<span class="ser" style="font-size:64px;letter-spacing:0">' + tr(' 次', ' times') + '</span>', tr(1430, 1390), 130, { size: 120, ...plate });
+  const c1 = tx(ui, 'big', '0<span class="ser" style="font-size:48px;letter-spacing:0">' + tr(' 次', ' times') + '</span>', 1560, 380, { size: 90, ...plate });
+  const c2 = tx(ui, 'big', '0<span class="ser" style="font-size:48px;letter-spacing:0">' + tr(' 次', ' times') + '</span>', 1560, 620, { size: 90, ...plate });
+  wipe(c136, tD5, { dir: 'l', d: 0.3 }); stepCount(c136, tD5 + 0.2, t136 + 0.4, 0, 136, (v) => Math.round(v) + '<span class="ser" style="font-size:64px;letter-spacing:0">' + tr(' 次', ' times') + '</span>');
   slam(c1, tZero, { from: 1.3, d: 0.35 }); slam(c2, tZero + BEAT / 2, { from: 1.3, d: 0.35 }); sfx('thud', tZero, { g: 0.6 }); sfx('thud', tZero + BEAT / 2, { g: 0.6 });
   sfx('thud', t136 + 0.4, { g: 0.8 });
   const raw = slab(ui, 120, 800, ['gen0 GCs <span class="k">136</span>, gen1 <span class="k">0</span>, gen2 <span class="k">0</span>'], { size: 28, pad: '14px 26px 16px' });
-  const rawL = tx(ui, 'src', '实测：.NET 10.0.12 · 那一秒', 124, 764);
+  const rawL = tx(ui, 'src', tr('实测：.NET 10.0.12 · 那一秒', 'measured: .NET 10.0.12 · that second'), 124, 764);
   wipe(raw.el, t136, { dir: 'l', d: 0.3 }); appear(rawL, t136);
   for (const e of [c136, c1, c2, raw.el, rawL]) exit(e, tD6 - 0.1, { y: -40, d: 0.3 });
 
@@ -137,11 +137,11 @@ scene('gen', ({ root, s, c0 }) => {
   const psv = board(world, 0, -60, 1700, 900);
   const pon = ptr(psv, OLD.x, OLD.y - 34, NEW.x, NEW.y + 36, { w: 6, head: 22 });
   slam(oc, tD6, { from: 1.4, d: 0.35 }); slam(nc, tD6 + 0.3, { from: 1.4, d: 0.35 });
-  const tPtr = qb(T('d6', '牵着') - 0.1);
+  const tPtr = qb(T('d6', { zh: '牵着', en: 'holds' }) - 0.1);
   grow(pon, tPtr, Infinity, { d: 0.35, st: (t) => ({ col: t >= tWrite && t < tWrite + 0.5 ? C.gold : C.white }) });
   sfx('pop', tD6, { g: 0.5 }); sfx('tick', tPtr + 0.3, { g: 0.5 });
-  const lOld = tx(ui, 'ser', '老对象牵着新对象', 110, 860, { size: 76, ...plate });
-  wipe(lOld, qb(T('d6', '老对象') - 0.1), { dir: 'l', d: 0.45 });
+  const lOld = tx(ui, 'ser', tr('老对象牵着新对象', 'An old object holds a new one'), 110, 860, { size: 76, ...plate });
+  wipe(lOld, qb(T('d6', { zh: '老对象', en: 'old object' }) - 0.1), { dir: 'l', d: 0.45 });
   const q = tx(world, 'big', '?', NEW.x + 44, NEW.y - 40, { size: 90, color: C.gold });
   slam(q, tQ, { from: 1.5, d: 0.35 }); sfx('error', tQ, { g: 0.35 });
   F((t) => ss(nc, 'background', t >= tOnly + 0.4 ? C.ink : C.white));
@@ -151,7 +151,7 @@ scene('gen', ({ root, s, c0 }) => {
   const NCARD = 13, CY0 = 780;
   const cards = [];
   for (let k = 0; k < NCARD; k++) { const e = h('div', 'abs', world); px(e, k * 120 + 4, CY0, 112, 56); css(e, { border: `3px solid ${C.white}` }); wipe(e, tCard + k * 0.03, { dir: 't', d: 0.25 }); cards.push(e); }
-  const cardL = tag(world, '卡表', NCARD * 120 + 30, CY0 - 2, 44); slam(cardL, tCard, { from: 1.3, d: 0.35 }); sfx('thud', tCard, { g: 0.6 });
+  const cardL = tag(world, tr('卡表', 'card table'), NCARD * 120 + 30, CY0 - 2, 44); slam(cardL, tCard, { from: 1.3, d: 0.35 }); sfx('thud', tCard, { g: 0.6 });
   const ck = 9;                                   // 老对象落在第 9 张卡管的那两列里
   const tickSv = board(world, ck * 120, CY0, 120, 56);
   const tick = svg('polyline', { points: `${ck * 120 + 34},${CY0 + 28} ${ck * 120 + 54},${CY0 + 46} ${ck * 120 + 88},${CY0 + 10}`, fill: 'none', stroke: C.gold, 'stroke-width': 8, 'stroke-linecap': 'square' }, tickSv);
@@ -159,14 +159,14 @@ scene('gen', ({ root, s, c0 }) => {
   // 回收只查打勾处：那两列在老区里亮一下，新对象因此被认出是活的
   const look = h('div', 'abs', world); px(look, ck * 120 - 4, 368, 128, 384); css(look, { border: `6px solid ${C.gold}` });
   wipe(look, tOnly, { dir: 't', d: 0.35 }); sfx('whoosh', tOnly, { g: 0.35 });
-  const lCard = tx(ui, 'sub', '写入时打勾，回收只查打勾处', 110, 860, { size: 56, ...plate });
+  const lCard = tx(ui, 'sub', tr('写入时打勾，回收只查打勾处', 'tick on write; collect only where ticked'), 110, 860, { size: 56, ...plate });
   wipe(lCard, tTick, { dir: 'l', d: 0.45 });
   // 暗哨：名字先遮住
   const spy = h('div', 'abs', world); px(spy, ck * 120 + 140, CY0 - 10, 360, 76); spy.style.background = C.gold;
   const spyB = h('div', 'abs', world); px(spyB, ck * 120 + 160, CY0 + 8, 320, 40); spyB.style.background = C.ink;
   slide(spy, tD9, { x: -40, d: 0.35 }); slide(spyB, tD9 + 0.15, { x: -40, d: 0.3 }); sfx('pop', tD9, { g: 0.55 }); sfx('riser', s.end - 1.4, { g: 0.3 });
   exit(lCard, tD9 - 0.1, { y: 60, d: 0.3 });
-  const lSpy = tx(ui, 'ser', '这个暗哨，有名字', 110, 860, { size: 76, ...plate });
+  const lSpy = tx(ui, 'ser', tr('这个暗哨，有名字', 'This sentinel has a name'), 110, 860, { size: 76, ...plate });
   wipe(lSpy, tD9 + 0.2, { dir: 'l', d: 0.45 });
 
   // ── 镜头 ──

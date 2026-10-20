@@ -11,11 +11,12 @@ const qn = (t, div = 2) => Math.ceil(t / (BEAT / div) - 1e-6) * (BEAT / div);  /
 
 // 章名只在画面上（脚本的 chap 字段保持确认稿原样）
 const CHAPTERS = {
-  count: ['01', '引用计数', 'Reference counting'],
-  trace: ['02', '标记—清扫', 'Mark and sweep'],
-  gen: ['03', '分代', 'Generational collection'],
-  tri: ['04', '三色与写屏障', 'Tri-color marking, write barriers'],
-  cost: ['05', '谁来买单', 'Who pays'],
+  // 中文：章号、章名、英文名；英文：章号、章名、取自本章旁白的一行小字
+  count: tr(['01', '引用计数', 'Reference counting'], ['01', 'Reference counting', 'keeping the books in real time']),
+  trace: tr(['02', '标记—清扫', 'Mark and sweep'], ['02', 'Mark and sweep', 'follow the roots']),
+  gen: tr(['03', '分代', 'Generational collection'], ['03', 'Generational collection', 'most objects die young']),
+  tri: tr(['04', '三色与写屏障', 'Tri-color marking, write barriers'], ['04', 'Tri-color marking', 'and the write barrier']),
+  cost: tr(['05', '谁来买单', 'Who pays'], ['05', 'Who pays', 'no free lunch']),
 };
 // 换章：上一章被「回收」。32×18 块格子按本章机制的顺序长满画面（前沿是金色，收集器经过的地方），
 // 章名读完后再按另一种顺序收走，露出新的一章。cover 的落点 = 配乐的强拍（tools/music.py 用同一条公式）。
@@ -88,7 +89,7 @@ window.ENGINE = {
     });
 
     // 角标：片名与当前章（画在格子之上）
-    h('div', 'hud-t', hud, '垃圾回收的艺术');
+    h('div', 'hud-t', hud, tr('垃圾回收的艺术', 'The Art of Garbage Collection'));
     const chap = h('div', 'hud-c', hud, '');
     let lastC = null;
     F((t) => {
