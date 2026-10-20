@@ -78,7 +78,7 @@ scene('tri', ({ root, s, c0 }) => {
     }
     return col;
   };
-  const tPw = qb(T('e4', { zh: '白', en: 'White' }) + 0.1), tPg = qb(T('e4', { zh: '灰', en: 'Gray' }) + 0.1), tPk = qb(T('e4', { zh: '碰过', en: 'touched, but' }) + 0.2);
+  const tPw = qb(T('e4', { zh: '白', en: 'White' }) + 0.1), tPg = qb(T('e4', { zh: '灰', en: 'Gray' }) + 0.1), tPk = qb(T('e4', { zh: '碰过', en: 'touched, its' }) + 0.2);
   const bump = (t, t0) => (t >= t0 && t < t0 + 0.32 ? 1 + 0.35 * Math.sin(Math.PI * (t - t0) / 0.32) : 1);
   F((t) => {
     for (const id in N2) {
@@ -318,7 +318,7 @@ scene('tri', ({ root, s, c0 }) => {
   const l300 = tx(world, 'big', tr('300 步', '300'), kx(300) - tr(80, 40), CY0 + CHh + 20, { size: 44 }), l419 = tx(world, 'big', tr('419 步', '419 steps'), kx(419) - tr(150, 210), CY0 + CHh + 20, { size: 44, color: C.gold });
   const l28 = tx(world, 'big', '28 MB', CX0 + 20, ky(28458) - 70, { size: 56 }), l14 = tx(world, 'big', '14 MB', kx(350) + 34, ky(14239) - 82, { size: 56, color: C.gold });
   const stepN = tx(world, 'big', '0', CX0 + 40, CY0 + 170, { size: 110 }), stepL = tx(world, 'sub', tr('步', 'steps'), CX0 + 270, CY0 + 200, { size: 56 });
-  const t419 = qb(Math.min(T('e13b', { zh: '四百一十九步', en: '419 steps' }), Tend('e13') - 0.5)), t300 = qb(Math.min(T('e14', { zh: '三百步', en: '300 steps' }), Tend('e13b') - 0.2)), t2814 = qb(Math.min(T('e14b', { zh: '二十八兆', en: '28 MB' }), Tend('e14') - 0.6));
+  const t419 = qb(Math.min(T('e13b', { zh: '四百一十九步', en: '419' }), Tend('e13') - 0.5)), t300 = qb(Math.min(T('e14', { zh: '三百步', en: '300 steps' }), Tend('e13b') - 0.2)), t2814 = qb(Math.min(T('e14b', { zh: '二十八兆', en: '28 MB' }), Tend('e14') - 0.6));
   for (const e of [axis, axisY]) wipe(e, tE13 + 0.2, { dir: e === axis ? 'l' : 'b', d: 0.4 });
   slam(l419, t419, { from: 1.3, d: 0.35 }); appear(m300, t300); slide(l300, t300, { y: 20, d: 0.3 }); slam(l28, t2814, { from: 1.25, d: 0.3 }); slam(l14, t2814 + BEAT / 2, { from: 1.25, d: 0.3 });
   appear(stepN, tS0); appear(stepL, tS0);

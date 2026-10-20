@@ -9,11 +9,11 @@
       "evidence": "review/NOTES.md「明确确认」：策划者 WaterRun 2026-10-20 在会话中回复「接受。CSharp是为了配音。就这样落盘吧，我叫Opus开工」——第 8 稿按原样落盘，o10 去掉机制清单、h5/h6 的引号、音色 Sweet_Lady（甜美女声）、引号只在 TTS 侧去掉等取舍一并接受；CSharp 是为配音保留的写法，字幕不改。确认后按 docs/script-review.md 第 3 节「不改含义的字幕断句」把 61 句超宽句拆成 142 句（逐字校验与第 8 稿一致，仅改断句，续句停顿 0.05 s），内容哈希随之更新为 11b3303b…，沿用同一确认依据"
     },
     "en": {
-      "status": "pending",
-      "content_sha256": "70f94a947e06ff3be1af279ad19fc067a975a18b09189a84aec2df1943b6ea96",
+      "status": "approved",
+      "content_sha256": "dd6d564e5386ac8fd16904d2f7aae47dd3752f9011eeefdb220102dac7beab0c",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-20T15:52:00+08:00",
+      "evidence": "review/NOTES.md「英文译稿」之「确认（授权受托方自主决定）」：受托方请策划者校对英文稿并选英文音色后，策划者 WaterRun 2026-10-20 在会话中回复「你自主决策」。据此由受托方 Claude Opus 5.5 定稿：采用本版英文稿（在交审稿 70f94a94… 的基础上为时长精简两轮共 15 句，含义不变，见 NOTES），音色 Sweet_Girl、语速 1.15。策划者没有逐句审读英文稿，这一点如实记录"
     }
   }
 }

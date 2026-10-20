@@ -97,6 +97,16 @@
 - 音色：四个候选（Sweet_Girl、Serene_Woman、English_Graceful_Lady，以及中文版用的 Chinese (Mandarin)_Sweet_Lady 说英文），各读开场钩子、家规、脚注三句，试听在 `audio/probe/en_*.mp3`（不入库）。语音识别转写四个都正确；lovely_girl 太慢、Attractive_Girl 把 Dijkstra 念糊，已淘汰。
 - **待决**：WaterRun 按句号校对英文稿并明确确认；选定英文音色。确认前不合成英文旁白。
 
+### 确认（授权受托方自主决定）
+
+- 2026-10-20 15:5x，受托方请策划者校对英文稿、选英文音色。策划者 WaterRun 在会话中回复：「你自主决策」。
+- **这不是逐句审读**：策划者把英文稿的定稿与音色选择交给了受托方，没有逐句读英文稿。如实记在这里，供以后判断英文版的文字是否需要复核。
+- 受托方的决定：
+  - **英文稿第一次定稿为 `review/script.en.476e0183….md`**（配音后又精简一轮，最终见下）。与交审稿 `70f94a94…` 相比，只为时长精简了 6 句，含义不变，锚点词保留：b3b、d4b、d6b、e12a、e16、g6，每句由 16–18 词减到 14 词左右。原因是 `max_cue_seconds` 为 6 s，按所选音色的语速，17–18 词的句子会超过 6 s。
+  - **音色 `Sweet_Girl`，语速 1.15**。理由：最贴合中文版选音色时「可爱的女声」的要求，母语英文，转写全对。`English_Graceful_Lady` 太慢，放不进 640 s 的上限。中文版的 `Sweet_Lady` 说英文语速最快，也和中文版同一个声音，但英文观众会听出口音。`Serene_Woman` 偏沉静。按试听样本的实测语速，1.15 倍时全片约 616 s，最长一句约 5.6 s。
+- `approval.json` 的 en 一栏据此填为 approved，evidence 写明是授权决定、不是逐句审读。
+- **第二轮精简（配音实测后）**：按 Sweet_Girl 1.15 倍配完后，全片 646.3 s，超过 640 s 的上限；另有 9 句超过 6 s（g6 8.4 s、d4b 7.5 s、e7 7.5 s 等）。原因是这个音色在句号、冒号、分号处停得久。把这 9 句改短，并去掉句中的长停顿：b4、d2、d4b、e4、e7、e13b、e14b、g6；e16 / e16b 重新分配，「in machine code」挪到 e16b，改成「compiles to four machine instructions」。含义不变，锚点词随之核对：d4b 改用 reach，e4 改用「touched, its」，e13b 改用 419。定稿为 `review/script.en.dd6d564e….md`，approval 的哈希随之更新，仍是同一次授权决定。
+
 ## 交审说明（中文第 7 稿，2026-10-19）
 
 稿本：`review/script.zh.2c69cb703f3bb41817cd21b8866206b33c8e6b8dcfba29cc5bacdaa7d9ef7408.md`。内容 SHA-256：`2c69cb703f3bb41817cd21b8866206b33c8e6b8dcfba29cc5bacdaa7d9ef7408`。`approval.json` 的 pending 记录指向当前哈希。

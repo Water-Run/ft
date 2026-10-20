@@ -139,10 +139,12 @@
     "engine": "minimax",
     "model": "speech-2.8-hd",
     "voice": {
-      "zh": "Chinese (Mandarin)_Sweet_Lady"
+      "zh": "Chinese (Mandarin)_Sweet_Lady",
+      "en": "Sweet_Girl"
     },
     "speed": {
-      "zh": 1
+      "zh": 1,
+      "en": 1.15
     }
   }
 }

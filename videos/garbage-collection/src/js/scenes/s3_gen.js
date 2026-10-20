@@ -18,7 +18,7 @@ scene('gen', ({ root, s, c0 }) => {
   const tPap = qb(T('d1b', { zh: '利伯曼', en: 'Lieberman' }) - 0.2), tShort = qb(T('d1c', { zh: '短命', en: 'die young' }) - 0.4);
   const tSplit = qb(T('d2', { zh: '分房', en: 'by age' }) - 0.2), tGen = qb(T('d2', { zh: '分代', en: 'generational' }) - 0.1), tNew = qb(T('d2', { zh: '新区', en: 'new area' }) - 0.1);
   const tFast = qb(T('d2b', { zh: '勤打扫', en: 'often' }) - 0.6), tW3 = qb(T('d3', { zh: '一条', en: 'A statistical' }) - 0.2);
-  const tD4 = qb(T('d4', 'dot net') - 0.3), tBorn = qb(T('d4', { zh: '刚出生', en: 'newborns' }) - 0.1), tUp1 = qb(T('d4b', { zh: '升', en: 'move up' }) - 0.1), tUp2 = qb(T('d4b', { zh: '进', en: 'another' }) - 0.1);
+  const tD4 = qb(T('d4', 'dot net') - 0.3), tBorn = qb(T('d4', { zh: '刚出生', en: 'newborns' }) - 0.1), tUp1 = qb(T('d4b', { zh: '升', en: 'reach' }) - 0.1), tUp2 = qb(T('d4b', { zh: '进', en: 'another' }) - 0.1);
   const tD5 = qb(T('d5', { zh: '开头', en: 'first second' }) - 0.2), t136 = qb(T('d5', { zh: '一百三十六次', en: '136 times' }) - 0.3), tZero = qb(T('d5b', { zh: '一次都没动', en: 'touched once' }) - 0.4);
   const tD6 = qb(T('d6', { zh: '可万一', en: 'what if' }) - 0.3), tQ = qb(T('d6b', { zh: '不能杀', en: 'must live' }) - 0.3);
   const tD8 = qb(T('d8', 'dot net') - 0.2), tCard = qb(T('d8', { zh: '卡表', en: 'card table' }) - 0.1), tWrite = qb(T('d8', { zh: '改过', en: 'changes' }) - 0.1), tTick = qb(T('d8b', { zh: '打个勾', en: 'tick' }) - 0.1), tOnly = qb(T('d8b', { zh: '只查', en: 'checks only' }) - 0.1);
