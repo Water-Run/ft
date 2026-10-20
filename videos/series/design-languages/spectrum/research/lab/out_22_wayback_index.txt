@@ -1,0 +1,31 @@
+# 取证时刻（UTC）：2026-10-20T04:03:31Z
+
+==============================================================================
+TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/grid/&timestamp=2019
+HTTP 200  bytes=87  SHA256(content)=f24f9116270941c6a75339ee313a83485c104ae12056837641095848fe4c21b8
+------------------------------------------------------------------------------
+{"url": "spectrum.adobe.com/page/grid/", "archived_snapshots": {}, "timestamp": "2019"}
+
+==============================================================================
+TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/color/&timestamp=2019
+HTTP 200  bytes=257  SHA256(content)=342f3a90c6ef60f0563316f666bbfab384758ac62bfb305ee43d6886a445d513
+------------------------------------------------------------------------------
+{"url": "spectrum.adobe.com/page/color/", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20200507132731/https://spectrum.adobe.com/page/color/", "timestamp": "20200507132731"}}, "timestamp": "2019"}
+
+==============================================================================
+TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/typography/&timestamp=2019
+HTTP 200  bytes=267  SHA256(content)=ced3e3273d8ebf38fb34fdf741698873e084c698038828e4b6acca9414f1ec32
+------------------------------------------------------------------------------
+{"url": "spectrum.adobe.com/page/typography/", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20200508070552/https://spectrum.adobe.com/page/typography/", "timestamp": "20200508070552"}}, "timestamp": "2019"}
+
+==============================================================================
+TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/icons/&timestamp=2019
+HTTP 200  bytes=257  SHA256(content)=5db625ad59f95180c16d1f754908cba8b1e1d554514f98a34b9f7a6a557114a9
+------------------------------------------------------------------------------
+{"url": "spectrum.adobe.com/page/icons/", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20191217130203/https://spectrum.adobe.com/page/icons/", "timestamp": "20191217130203"}}, "timestamp": "2019"}
+
+==============================================================================
+TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/design/&timestamp=2019
+HTTP 200  bytes=89  SHA256(content)=4d994087e6813cf29d494d713dde0596c87da0e21b08bd2d9e60468b9162b89f
+------------------------------------------------------------------------------
+{"url": "spectrum.adobe.com/page/design/", "archived_snapshots": {}, "timestamp": "2019"}

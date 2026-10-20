@@ -1,0 +1,7 @@
+# 取证时刻（UTC）：2026-10-20T04:11:48Z
+
+==============================================================================
+TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/whats-new/&timestamp=20181101
+HTTP 200  bytes=269  SHA256(content)=dc524c5ffc3c482c3e224e2c7ab95ab4070e8219d740dc15ac8cff53f7180bd8
+------------------------------------------------------------------------------
+{"url": "spectrum.adobe.com/page/whats-new/", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20200508044448/https://spectrum.adobe.com/page/whats-new/", "timestamp": "20200508044448"}}, "timestamp": "20181101"}

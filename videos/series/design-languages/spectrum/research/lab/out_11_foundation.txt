@@ -1,0 +1,59 @@
+# 取证时刻（UTC）：2026-10-20T03:57:18Z
+# 工具：7.6.7 / Invoke-WebRequest
+
+==============================================================================
+URL: https://spectrum.adobe.com/getting-started/introduction
+HTTP: 200  bytes=6723  content-type=text/html; charset=utf-8
+SHA256(content): ba69ead9f2a3c732269252d1b032919812745fcee7f53eacc70ebb1355c71afb
+------------------------------------------------------------------------------
+Spectrum is Adobe’s design system
+Spectrum is Adobe’s design system
+A shared foundation for creating experiences across every product and platform. It brings design and engineering together around a common language, while remaining flexible enough to support the distinct needs of Adobe’s products and the people who use them.
+As Adobe evolves, Spectrum evolves with it.
+Spectrum 2 is the latest expression of that evolution: more approachable, expressive, and adaptable for the next generation of Adobe experiences. It introduces new foundations across color, typography, layout, icons, states, and components. Along with deeper guidance to help teams move from intent to implementation with confidence.
+This evolution began on the web and continues across native mobile and desktop platforms. It is part of a broader move toward one connected system that can adapt across products, platforms, contexts, and audiences.
+Spectrum belongs to all of us. It is continuously shaped by our customers, our products, and the people across Adobe who contribute to it every day. Thank you to everyone helping Spectrum grow and helping define what comes next
+Example of how a Spectrum action button has changed over design language updates
+
+==============================================================================
+URL: https://spectrum.adobe.com/foundations/getting-started/principles
+HTTP: 200  bytes=2409  content-type=text/html; charset=utf-8
+SHA256(content): 73fc2c44a2e1c0b62649648e8644e5c2eb8a9aa066a378b63d531eed2a516097
+------------------------------------------------------------------------------
+Principles
+Principles
+
+==============================================================================
+URL: https://spectrum.adobe.com/getting-started/whats-new
+HTTP: 200  bytes=6249  content-type=text/html; charset=utf-8
+SHA256(content): afa90065b25e439b87ca18e985a38d061a9327164dcae44456512e8906bcbc07
+------------------------------------------------------------------------------
+Great design systems evolve alongside the people who use them
+style
+center, container
+container
+12
+spacing
+m
+Release 1.0
+September 30, 2026
+A new home for Spectrum
+Spectrum Hub is the central home for Spectrum bringing together the foundations, guidance, resources, tools, and offerings that help teams create with Spectrum.
+This first release establishes a new experience for exploring Spectrum across platforms. It brings together foundational guidance, design and component resources, live implementations, and support in one connected place, creating a foundation for Spectrum to grow beyond documentation.
+As the Hub evolves, it will become the place to understand what Spectrum is, what it offers, how to use it, and where it’s going.
+Available now
+Foundations and content guidance
+Updated guidance for the principles and building blocks of Spectrum
+Component design and implementation guidance
+Design guidance with component availability and React Spectrum and Spectrum Web Components resources for building with Spectrum
+Live component playgrounds
+Explore and interact with components in real implementations
+Support
+Contact us to provide feedback, report bugs, or send general inquiries
+What's next
+Spectrum Hub will continue to expand as the central experience for Spectrum. Future releases will bring mobile documentation, unified experience guidance, patterns and principles, new ways to explore Spectrum, and resources that support emerging ways of designing and building.
+Over time, the Hub will connect Spectrum’s offerings across platforms and make it easier to discover not only what exists today, but what’s possible with Spectrum.
+
+==============================================================================
+URL: https://spectrum.adobe.com/foundations/behavior/motion
+ERROR: The SSL connection could not be established, see inner exception.

@@ -1,0 +1,45 @@
+# 取证时刻（UTC）：2026-10-20T04:04:37Z
+# 工具：7.6.7 / curl.exe
+
+==============================================================================
+URL: https://web.archive.org/web/20220522141317/https://spectrum.adobe.com/page/spacing/
+bytes=63894  SHA256(content)=37f37e9063972785029cb74ec2c8319ac844461e90b1584000048cc36d0f3b38
+正文行数：159
+Platform scale
+Layout Spacing
+Responsive grid
+Spacing
+Spacing values help to create consistent interfaces by clearly defining relationships between components.
+Spacing values
+Spacing values #
+Spacing values are static and don’t change based on platform scale . Different spacing values can be used for different sizes and scales as needed.
+spacing-50
+2 px
+spacing-75
+4 px
+spacing-100
+8 px
+spacing-200
+12 px
+spacing-300
+16 px
+spacing-400
+24 px
+spacing-500
+32 px
+spacing-600
+40 px
+spacing-700
+48 px
+spacing-800
+64 px
+spacing-900
+80 px
+spacing-1000
+96 px
+Use spacing between components #
+Spacing should be used to define the space between components.
+Keep in mind that spacing values don’t apply to the padding within a component. For example, the padding between the top of a button and a label doesn’t use a spacing value.
+Use spacing with responsive grids #
+Spacing is useful for individual elements that don’t need to adapt responsively to various viewport sizes. Responsive grids should still be used to design overall layouts.
+匹配行数：37

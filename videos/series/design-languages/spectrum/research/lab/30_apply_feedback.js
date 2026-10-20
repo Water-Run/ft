@@ -1,0 +1,117 @@
+// 把本片的开工反馈应用计划合并进 review/feedback.json：只改 applicability / reason / plan / script_evidence，
+// 保留工具写入的 rule_sha256、result、verification、clips 原样。重复运行结果一致。
+// 用法：node 30_apply_feedback.js <视频目录>
+const fs = require('node:fs');
+const path = require('node:path');
+
+const video = path.resolve(process.argv[2]);
+const P = {
+  F01: {
+    reason: '片名是对象名而不是问题名，章节必须持续回答「Spectrum 是什么、凭什么让不同产品看起来像一家做的」，否则会出现「讲了六个构件却没回答片名」的老问题。',
+    plan: '全片只问一个问题：Adobe 用哪些可复查的规则让不同产品看起来一致。章节按「现象→对象与年代→色板→字体→间距与网格→组件、图标、动效→收束」推进，每章只回答这个问题的一个侧面，不铺设计史、不做跨体系比较。正面对照 MyISAM 一集「同一对象走完一条链路」的讲法，不照搬其视觉与配乐。',
+    script_evidence: 'FACTS.md 逐章：open(O01,O02)、ch1(C101–C108)、ch2(K01–K10)、ch3(T01–T08)、ch4(G01–G05)、ch5(P01–P06)、close(Z01,Z02)；README「内容」表七行与「开工反馈应用」F01 行。文案未开工，cue 号待 WaterRun 审稿确认后回填。'
+  },
+  F02: {
+    reason: '设计体系术语密集（令牌、层级、重叠、字型样式），观众又无工程背景，最容易变成名词堆。',
+    plan: '先现象后名词：全片新名词控制在八个以内（设计体系、色板、语义色、字型样式、布局间距、组件变体、描边图标、对比度）。颜色与字号一律给具体值（blue-900 #3B63FB、gray-25 #FFFFFF、基准 14 px、间距 1–96 px），不出现只有名字没有值的令牌；每章先说「规定了什么」再说「为什么这样规定」。',
+    script_evidence: 'FACTS.md ch2 K08、K09（具体色值）、ch3 T05（字号表）、ch4 G01、G04（间距表）；README「内容」ch2–ch5 行与「开工反馈应用」F02 行。'
+  },
+  F03: {
+    reason: 'Spectrum 1、Spectrum 2、Spectrum Hub、Adobe XD 四个名字极易混淆，且默认背景色等口径在两代之间不同。',
+    plan: '第一次提到即交代：是什么、哪一年、与谁的关系。ch1 用一张时间线一次交代四个名字与四个年份（2013 落地、2023-12-12 公布 Spectrum 2、2024 初铺开网页、2026-09-30 文档站 Hub 1.0），并说明 Spectrum 1 当年以 XD 插件交付；「深色模式」与「暗色配色」的差别在 ch5 首次出现时说清；默认背景由 gray-100 变为 gray-25 属两代差异，画面标注「Spectrum 1」与「Spectrum 2」。',
+    script_evidence: 'FACTS.md ch1 C101、C102、C104、C105、C107 与 ch2 K04、K10；README「内容」ch1、ch5 行，「视觉系统」表格与「开工反馈应用」F03 行。'
+  },
+  F04: {
+    reason: '本片最易刷屏的画面就是数值表（字号阶梯、间距令牌、灰度分级），是 F04 的高风险场景。',
+    plan: '每次只放三到五个值，逐组出现并停住；按「1.5 秒 + 必要文字字数 ÷ 5 字/秒」留稳定阅读区间，数值之间再留一步机制的理解时间，其间不引入新东西；色板与字号表用常驻卡片而不是推入；退场交代去向。定长三到五分钟，靠删内容腾时间，不压留白。',
+    script_evidence: 'FACTS.md ch2 K09、ch3 T05、ch4 G04 的三张数值表；README「内容」ch2–ch4 行与「开工反馈应用」F04 行。'
+  },
+  F05: {
+    reason: '颜色与字号的差别必须「看出来」，整屏擦除式转场会让观众只记住换了页。',
+    plan: '关键变化做成可见对照：灰度分级用同一背景上的色阶条演示、几何级数间距用两条长度不同的间隔对照、1.5 px 描边图标与基本形叠加演示、按钮状态用同一按钮的四个状态并排。擦除只用于换章，不用于解释。',
+    script_evidence: 'FACTS.md ch2 K02–K04、ch4 G01/G04、ch5 P01–P03；README「开工反馈应用」F05 行与「内容」ch2、ch4、ch5 行。'
+  },
+  F06: {
+    reason: '设计体系题材偏静，配乐容易退化成稀疏钢琴，正是 P27/P3 指出的问题。',
+    plan: '配乐按本片气质选稳定、克制的持续铺底，低频在场，节奏与「令牌—规则—应用」段落对齐；机械音只用在两处关键动作（颜色或字号切换、组件状态切换），不用默认 whoosh；留白处不加音效。参照 MyISAM 一集的配乐存在度量级，但不复制其配乐。',
+    script_evidence: 'FACTS.md ch5 P04（动效分类）与 close Z01；README「开工反馈应用」F06 行与「视觉系统」表的动效约定。'
+  },
+  F07: {
+    reason: '取证全部来自公网，需保证画面与记录不夹带本机信息。',
+    plan: '画面只出现官方公开材料（官方页面、官方令牌文件的色值、官方组件数据里的变体名），不出现本机路径、主机名、账号与内网地址；`research/lab/` 回显同样不含本机绝对路径。',
+    script_evidence: 'FACTS.md「环境与版本」表（各脚本回显头部记录 UTC 时刻与 SHA-256，无本机路径）；README「取证」「开工反馈应用」F07 行。'
+  },
+  F08: {
+    reason: '尚未渲染，先立口径，避免交付时用混音 WAV 或旧报告冒充最终文件。',
+    plan: '以最终编码的 MP4 核对帧率、时长、响度、真峰值、文件名与哈希，并把实测值写回 README 与 FACTS「复核」；未测项写「未测」。',
+    script_evidence: 'README「成片」「发布、归档与清理」表格与「开工反馈应用」F08 行；FACTS.md「复核」一节待成片后填写。'
+  },
+  F09: {
+    reason: '本片结论大量依赖官方文档与官方仓库，必须与媒体转述、作者自评严格分开。',
+    plan: '片中结论只来自 FACTS.md；官方现行文档与 Spectrum 1 站点存档分列并标明快照日期；媒体与聚合站只用于定位，未写入结论；两项「待核实」（Adobe Clean 的设计者与设计年份、Adobe XD 首发日期）不进定稿，片中不提这两点。',
+    script_evidence: 'FACTS.md C106、T08（两项待核实）、ch2 K08/K09（官方仓库原始文件与哈希）；README「取证」与「开工反馈应用」F09 行。'
+  },
+  F10: {
+    reason: '本系列按官方设计语言名称分集，本集须能独立看懂，不依赖同系列其他集。',
+    plan: '不出现「上一期」「上一个问题」这类回指；对象介绍、时间线与术语自足；不假设观众读过 Adobe 内部资料。',
+    script_evidence: 'README「开工反馈应用」F10 行与「内容」ch1（自带时间线）；FACTS.md ch1 C101–C107。'
+  },
+  F11: {
+    reason: '一手材料全是英文官方文档，英文术语若不给中文释义会直接抬高理解门槛。',
+    plan: '英文术语第一次出现给中文释义并注明为意译（Spectrum＝设计体系、token＝令牌、type style＝字型样式、WCAG＝网页内容无障碍指南）；官方长文只引用必要短句，原文不作主画面；片中不出现整段英文引文。',
+    script_evidence: 'FACTS.md ch3 T03/T04、ch5 P03、ch2 K06（WCAG 口径）；README「开工反馈应用」F11 行与「内容」ch2、ch3 行。'
+  },
+  F12: {
+    reason: '专有名词密集（Adobe Clean、Spectrum、WCAG、Leonardo、Verge），读法与断句容易出错。',
+    plan: '配音前列专名读法与多音字清单（Adobe Clean、WCAG、Leonardo、Spectrum 2）；长句按语义断句，字幕切分不决定口播停顿；代表段试听交策划者确认后再合成全片；ASR 只作筛查。',
+    script_evidence: 'FACTS.md ch3 T01、T04，ch2 K06（Leonardo 色板工具）；README「开工反馈应用」F12 行与「文案与校对」一节。'
+  },
+  F13: {
+    reason: '观众未必知道设计体系是什么，也未必知道 Adobe 为何要做它；年代与路线必须先交代。',
+    plan: 'ch1 交代对象、2013 起点、与 Creative Cloud 的关系、Spectrum 1 与 2 的分界、2024 与 2026 两个节点、本片路线；年代只用官方可查年份（FACTS C101、C102、C104、C107），不引用无出处的年份。',
+    script_evidence: 'FACTS.md ch1 全节与 close Z01/Z02；README「开工反馈应用」F13 行、「内容」ch1、close 行。'
+  },
+  F14: {
+    reason: '片尾有模型名单与仓库链接，若混入旁白会破坏内容（F14）。',
+    plan: '署名与 credit 全部放进制作说明；片尾用静默 cue 保留时长、字幕为空、TTS 不发声；导出正文检查无制作指令；成片核对名单与链接完整可读。',
+    script_evidence: 'FACTS.md「制作署名」表与 README「制作署名与片尾」表（同名单）；README「开工反馈应用」F14 行。'
+  },
+  F15: {
+    reason: '数值多、来源多，最容易写出「仅列出令牌名」「按官方取值整理」这类制作者口吻的小字。',
+    plan: '画面只放观众需要的内容；来源只写一行「来源：Adobe Spectrum 官方文档」；不写说明制作取舍或默认处理的标注；只有确实非写实比例的图才标「示意」。',
+    script_evidence: 'FACTS.md K08、K09（数值来源已固定，可在画面用一行来源署名代替自我说明）；README「开工反馈应用」F15 行与「视觉系统」末段。'
+  },
+  F16: {
+    reason: '本片讲的正是一套视觉语言，视觉若不是它，片子就失去说服力。',
+    plan: '全部视觉元素取自官方材料：色值取官方令牌文件（blue-900 #3B63FB 等）、字体取 Adobe Clean Spectrum VF 及其回退链、部件形状取官方 Button 变体与状态序列、图标取 1.5 px 描边与基本形、左上角常驻官方 Spectrum 标志。正面对照 PostgreSQL 一集（官网样式表 + 文档部件 + 常驻标志）。',
+    script_evidence: 'README「视觉系统」表逐项列出官方出处；FACTS.md K08、K09、T04、P01、P03 与 out_44_assets.txt 的标志资源记录。'
+  },
+  F17: {
+    reason: '题材偏说明，最容易念成平读，正是 P29「懒洋洋」的高风险场景。',
+    plan: '配音前试听候选音色与语速，确认句子有起伏、该强调处有重音、长句不被念平；语气是「讲清一件事」而非念说明书；不选已停用音色；代表段试听交策划者确认后合成全片。',
+    script_evidence: 'README「开工反馈应用」F17 行与「文案与校对」一节；FACTS.md 逐章条目即为口播要点的来源清单。'
+  },
+  F18: {
+    reason: '设计体系题材容易做成「逐条念规范」，每章必须有可记住的主画面。',
+    plan: '每章定一个主画面并写明尺度、层次与动作：三个 Adobe 产品界面同框（讲同源）、灰度与语义色分层色板墙、Adobe Clean 字重阶梯与 1.5 px 描边对齐、线性间距与几何级数并排、按钮变体矩阵与状态流转、Spectrum 1 与 2 的图标配色对照。逐行出现与高亮只能作辅助。',
+    script_evidence: 'README「开工反馈应用」F18 行与「内容」表七行（每章一个主画面）；FACTS.md K09、T05、G04、P01 三组可作主画面的具体数据。'
+  },
+  F19: {
+    reason: '色块、色阶条、数值表与字距标注容易越界、压字或在渐变中途与底色同色。',
+    plan: '按实际字宽排版，文字不超出所在色块；色阶条与数值卡互不压盖；反色高亮不同时渐变底色与字色；元素退场交代去向；逐 0.1 秒取帧专看中间帧，不以 scan.js 过闸代替。',
+    script_evidence: 'README「开工反馈应用」F19 行与「视觉系统」表的色值与部件规格；FACTS.md K08、K09（画面上的具体数值即排版基准）。'
+  }
+};
+
+const file = path.join(video, 'review', 'feedback.json');
+const state = JSON.parse(fs.readFileSync(file, 'utf8'));
+for (const item of state.items) {
+  const p = P[item.id];
+  if (!p) throw new Error('没有为 ' + item.id + ' 写计划');
+  item.applicability = 'applies';
+  item.reason = p.reason;
+  item.plan = p.plan;
+  item.script_evidence = p.script_evidence;
+}
+fs.writeFileSync(file, JSON.stringify(state, null, 2) + '\n');
+console.log('已写入 ' + file + '（' + state.items.length + ' 项）');

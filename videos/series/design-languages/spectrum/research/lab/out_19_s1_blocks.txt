@@ -1,0 +1,82 @@
+# 取证时刻（UTC）：2026-10-20T04:02:28Z
+
+==============================================================================
+URL: https://raw.githubusercontent.com/adobe/spectrum-css/main/tokens/dist/json/tokens.json
+FILTER: "(blue|gray)-(25|900|1000)": \{   CONTEXT_LINES: 14
+HTTP 200  bytes=297023  lines=12836  SHA256(content)=bebed35c6fb4aaa8f0172650932e23494b20814baf4e468060360a617cef33f7
+  954: "blue-1000": {
+  955:   "prop": "--spectrum-blue-1000",
+  956:   "light": {
+  957:   "value": "rgb(39, 77, 234)"
+  958:   },
+  959:   "dark": {
+  960:   "value": "rgb(105, 149, 254)"
+  961:   }
+  962:   },
+  963:   "blue-1100": {
+  964:   "prop": "--spectrum-blue-1100",
+  965:   "light": {
+  966:   "value": "rgb(29, 62, 207)"
+  967:   },
+  968:   "dark": {
+ 1080: "blue-900": {
+ 1081:   "prop": "--spectrum-blue-900",
+ 1082:   "light": {
+ 1083:   "value": "rgb(59, 99, 251)"
+ 1084:   },
+ 1085:   "dark": {
+ 1086:   "value": "rgb(86, 129, 255)"
+ 1087:   }
+ 1088:   },
+ 1089:   "blue-background-color-default": {
+ 1090:   "prop": "--spectrum-blue-background-color-default",
+ 1091:   "ref": "var(--spectrum-blue-800)",
+ 1092:   "light": {
+ 1093:   "value": "rgb(59, 99, 251)"
+ 1094:   },
+ 5617: "gray-1000": {
+ 5618:   "prop": "--spectrum-gray-1000",
+ 5619:   "dark": {
+ 5620:   "value": "rgb(255, 255, 255)"
+ 5621:   },
+ 5622:   "light": {
+ 5623:   "value": "rgb(0, 0, 0)"
+ 5624:   }
+ 5625:   },
+ 5626:   "gray-200": {
+ 5627:   "prop": "--spectrum-gray-200",
+ 5628:   "light": {
+ 5629:   "value": "rgb(225, 225, 225)"
+ 5630:   },
+ 5631:   "dark": {
+ 5635: "gray-25": {
+ 5636:   "prop": "--spectrum-gray-25",
+ 5637:   "dark": {
+ 5638:   "value": "rgb(17, 17, 17)"
+ 5639:   },
+ 5640:   "light": {
+ 5641:   "value": "rgb(255, 255, 255)"
+ 5642:   }
+ 5643:   },
+ 5644:   "gray-300": {
+ 5645:   "prop": "--spectrum-gray-300",
+ 5646:   "light": {
+ 5647:   "value": "rgb(218, 218, 218)"
+ 5648:   },
+ 5649:   "dark": {
+ 5716: "gray-900": {
+ 5717:   "prop": "--spectrum-gray-900",
+ 5718:   "light": {
+ 5719:   "value": "rgb(19, 19, 19)"
+ 5720:   },
+ 5721:   "dark": {
+ 5722:   "value": "rgb(242, 242, 242)"
+ 5723:   }
+ 5724:   },
+ 5725:   "gray-background-color-default": {
+ 5726:   "prop": "--spectrum-gray-background-color-default",
+ 5727:   "ref": "var(--spectrum-gray-500)",
+ 5728:   "light": {
+ 5729:   "value": "rgb(80, 80, 80)"
+ 5730:   },
+命中行数：5

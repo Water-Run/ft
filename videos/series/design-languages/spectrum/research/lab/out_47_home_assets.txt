@@ -1,0 +1,9 @@
+# 取证时刻（UTC）：2026-10-20T04:33:10Z
+
+==============================================================================
+URL: https://spectrum.adobe.com/
+FILTER: (light-bg|dark-bg|media_1c0a4e1d|f7f7f7)
+bytes=12422  SHA256(content)=457c65948029220f5747ff03da3c3827ee464c8af3dac6d982e4d846802766e5
+   26: <meta name="light-bg" content="/media/beta/f7f7f7.svg">
+   27: <meta name="dark-bg" content="/media/beta/media_1c0a4e1dfd78aa42403b402b32002d53a8bb904eb.png">
+命中行数：2

@@ -1,0 +1,20 @@
+# 取证时刻（UTC）：2026-10-20T04:10:02Z
+# 工具：7.6.7 / curl.exe
+
+==============================================================================
+URL: https://blog.adobe.com/en/publish/2018/10/01/adobe-xd
+bytes=508  SHA256(content)=018def31a47d52943ae8924fbb3d352ac3f49e93ea00a15ab30d337ff0b3dcec
+正文行数：1
+匹配行数：0
+
+==============================================================================
+URL: https://blog.adobe.com/en/publish/2018/10/01/introducing-adobe-xd
+bytes=508  SHA256(content)=19992a81d260a5b63021c92407e2b9bf66b40069962b716ea81a76fd8317aa3d
+正文行数：1
+匹配行数：0
+
+==============================================================================
+URL: https://blog.adobe.com/en/publish/2018/10/01/whats-new-in-adobe-xd-cc-october-2018
+bytes=508  SHA256(content)=2dba3808ad44a780ceb1a0df3362ee39845cbd3451864a69b8fbe91ba731caeb
+正文行数：1
+匹配行数：0

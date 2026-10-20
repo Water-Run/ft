@@ -1,0 +1,1008 @@
+# 取证时刻（UTC）：2026-10-20T04:02:41Z
+
+==============================================================================
+TARGET: api:https://api.github.com/repos/adobe/spectrum-css/tags?per_page=100
+HTTP 200
+[
+  {
+    "name": "v2.14.0-alpha.9",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.9",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.9",
+    "commit": {
+      "sha": "4cb21a82f1c382718936780962bff3114aed80d2",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/4cb21a82f1c382718936780962bff3114aed80d2"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjk="
+  },
+  {
+    "name": "v2.14.0-alpha.8",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.8",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.8",
+    "commit": {
+      "sha": "2f258937f564f950b4418e80cd61a725cb2cce7c",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/2f258937f564f950b4418e80cd61a725cb2cce7c"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjg="
+  },
+  {
+    "name": "v2.14.0-alpha.7",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.7",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.7",
+    "commit": {
+      "sha": "63166183cca917763e758311406827af92342fc6",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/63166183cca917763e758311406827af92342fc6"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjc="
+  },
+  {
+    "name": "v2.14.0-alpha.6",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.6",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.6",
+    "commit": {
+      "sha": "0026e9135185673576c63b10aee755d3c770154b",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/0026e9135185673576c63b10aee755d3c770154b"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjY="
+  },
+  {
+    "name": "v2.14.0-alpha.5",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.5",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.5",
+    "commit": {
+      "sha": "3881d309c0cd7dcfa13fcc36d7191bb7f4d05966",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/3881d309c0cd7dcfa13fcc36d7191bb7f4d05966"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjU="
+  },
+  {
+    "name": "v2.14.0-alpha.4",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.4",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.4",
+    "commit": {
+      "sha": "30efcaaeab29d025a1a50a8766861e91fab04474",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/30efcaaeab29d025a1a50a8766861e91fab04474"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjQ="
+  },
+  {
+    "name": "v2.14.0-alpha.3",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.3",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.3",
+    "commit": {
+      "sha": "0e97ac3e089130a254fc642cdc673df1ebd042e2",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/0e97ac3e089130a254fc642cdc673df1ebd042e2"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjM="
+  },
+  {
+    "name": "v2.14.0-alpha.2",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.2",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.2",
+    "commit": {
+      "sha": "b12e1ba39b82eba306147501ff9c7ab2ee75239d",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/b12e1ba39b82eba306147501ff9c7ab2ee75239d"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjI="
+  },
+  {
+    "name": "v2.14.0-alpha.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.1",
+    "commit": {
+      "sha": "839c569fd24a43a4a697b6ed0ef7b8e02e8166b2",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/839c569fd24a43a4a697b6ed0ef7b8e02e8166b2"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjE="
+  },
+  {
+    "name": "v2.14.0-alpha.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.14.0-alpha.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.14.0-alpha.0",
+    "commit": {
+      "sha": "2c4586b111826df5411400719aa3d4af78a17942",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/2c4586b111826df5411400719aa3d4af78a17942"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xNC4wLWFscGhhLjA="
+  },
+  {
+    "name": "v2.13.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.13.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.13.0",
+    "commit": {
+      "sha": "2e3a674c4e302219f36774745d94f3fccb22c692",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/2e3a674c4e302219f36774745d94f3fccb22c692"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xMy4w"
+  },
+  {
+    "name": "v2.12.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.12.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.12.0",
+    "commit": {
+      "sha": "67f9c5fbaa84e2a6ecd9ad50b4d93a8532710c1d",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/67f9c5fbaa84e2a6ecd9ad50b4d93a8532710c1d"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xMi4w"
+  },
+  {
+    "name": "v2.11.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.11.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.11.0",
+    "commit": {
+      "sha": "dab8c2ba3e4f216606d5c53c864460d6ec0c1c1d",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/dab8c2ba3e4f216606d5c53c864460d6ec0c1c1d"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xMS4w"
+  },
+  {
+    "name": "v2.10.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.10.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.10.0",
+    "commit": {
+      "sha": "cbf232d83e9285d44dc1a25c6e2b2f3b2cb54e01",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/cbf232d83e9285d44dc1a25c6e2b2f3b2cb54e01"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xMC4w"
+  },
+  {
+    "name": "v2.9.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.9.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.9.1",
+    "commit": {
+      "sha": "6394d9a2b4e5a1d0d6678dc321e29e3c29f29d4f",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/6394d9a2b4e5a1d0d6678dc321e29e3c29f29d4f"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi45LjE="
+  },
+  {
+    "name": "v2.9.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.9.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.9.0",
+    "commit": {
+      "sha": "27b7364fed48c1bf265d64111d447324c454f490",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/27b7364fed48c1bf265d64111d447324c454f490"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi45LjA="
+  },
+  {
+    "name": "v2.8.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.8.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.8.0",
+    "commit": {
+      "sha": "58875bce34f94342f0a9e7f4e6b9987c4094f706",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/58875bce34f94342f0a9e7f4e6b9987c4094f706"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi44LjA="
+  },
+  {
+    "name": "v2.7.4",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.7.4",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.7.4",
+    "commit": {
+      "sha": "4c5d252960b1efa15b1ad3f61f0597f632334603",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/4c5d252960b1efa15b1ad3f61f0597f632334603"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi43LjQ="
+  },
+  {
+    "name": "v2.7.3",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.7.3",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.7.3",
+    "commit": {
+      "sha": "13ede3537827dcb2dd672c6bf31a5bb60f27dcab",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/13ede3537827dcb2dd672c6bf31a5bb60f27dcab"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi43LjM="
+  },
+  {
+    "name": "v2.7.2",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.7.2",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.7.2",
+    "commit": {
+      "sha": "f9f7ec35dbde703376e8bc14d90d2ecfd05ec504",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/f9f7ec35dbde703376e8bc14d90d2ecfd05ec504"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi43LjI="
+  },
+  {
+    "name": "v2.7.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.7.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.7.1",
+    "commit": {
+      "sha": "ab392fb9c117533cd42e2652cbb1f5230a19c84c",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/ab392fb9c117533cd42e2652cbb1f5230a19c84c"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi43LjE="
+  },
+  {
+    "name": "v2.7.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.7.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.7.0",
+    "commit": {
+      "sha": "97aff3342e5f8e0363fe9a7813dae64b9db023a1",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/97aff3342e5f8e0363fe9a7813dae64b9db023a1"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi43LjA="
+  },
+  {
+    "name": "v2.6.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.6.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.6.0",
+    "commit": {
+      "sha": "8ae6aae60070189f9f51cfbdc68d5e520cf90341",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/8ae6aae60070189f9f51cfbdc68d5e520cf90341"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi42LjA="
+  },
+  {
+    "name": "v2.6.0-asset.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.6.0-asset.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.6.0-asset.0",
+    "commit": {
+      "sha": "61633865281a5ed97acc95ce7e0884b7fa516d47",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/61633865281a5ed97acc95ce7e0884b7fa516d47"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi42LjAtYXNzZXQuMA=="
+  },
+  {
+    "name": "v2.5.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.5.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.5.1",
+    "commit": {
+      "sha": "97f50af60bd6cd451101e9d3454fce61943df7b6",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/97f50af60bd6cd451101e9d3454fce61943df7b6"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi41LjE="
+  },
+  {
+    "name": "v2.5.1-beta.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.5.1-beta.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.5.1-beta.0",
+    "commit": {
+      "sha": "695126f7883815b53df3195e4bb17ea6865a3612",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/695126f7883815b53df3195e4bb17ea6865a3612"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi41LjEtYmV0YS4w"
+  },
+  {
+    "name": "v2.5.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.5.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.5.0",
+    "commit": {
+      "sha": "af00cd9f6b477ed904cddc5656bcafb1580224fd",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/af00cd9f6b477ed904cddc5656bcafb1580224fd"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi41LjA="
+  },
+  {
+    "name": "v2.4.2",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.4.2",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.4.2",
+    "commit": {
+      "sha": "0987cd7c683814b325de47afb72fd8115e9dadbd",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/0987cd7c683814b325de47afb72fd8115e9dadbd"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi40LjI="
+  },
+  {
+    "name": "v2.4.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.4.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.4.1",
+    "commit": {
+      "sha": "6c661b02227fb8b8b2610e48557d0f3cbc25f9df",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/6c661b02227fb8b8b2610e48557d0f3cbc25f9df"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi40LjE="
+  },
+  {
+    "name": "v2.4.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.4.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.4.0",
+    "commit": {
+      "sha": "566be2c46411a5bc01500b8e7ec0c1f46c1e4d88",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/566be2c46411a5bc01500b8e7ec0c1f46c1e4d88"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi40LjA="
+  },
+  {
+    "name": "v2.3.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.3.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.3.1",
+    "commit": {
+      "sha": "eca25a5c4f498b4904175e12d65f0b3245e04e3a",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/eca25a5c4f498b4904175e12d65f0b3245e04e3a"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4zLjE="
+  },
+  {
+    "name": "v2.3.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.3.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.3.0",
+    "commit": {
+      "sha": "5ca3b62938f92b5e78f4b07895ff48787bdcf783",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/5ca3b62938f92b5e78f4b07895ff48787bdcf783"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4zLjA="
+  },
+  {
+    "name": "v2.3.0-beta.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.3.0-beta.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.3.0-beta.0",
+    "commit": {
+      "sha": "141b69b1cb4be1600d8e0867015b48ed3107c5aa",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/141b69b1cb4be1600d8e0867015b48ed3107c5aa"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4zLjAtYmV0YS4w"
+  },
+  {
+    "name": "v2.2.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.2.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.2.1",
+    "commit": {
+      "sha": "6cbd26611c065af19e111366bedafc688081e303",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/6cbd26611c065af19e111366bedafc688081e303"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4yLjE="
+  },
+  {
+    "name": "v2.2.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.2.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.2.0",
+    "commit": {
+      "sha": "1ca632c3545c9c602d7959b44a80360a7ee2de96",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/1ca632c3545c9c602d7959b44a80360a7ee2de96"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4yLjA="
+  },
+  {
+    "name": "v2.1.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.1.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.1.1",
+    "commit": {
+      "sha": "d1c09992bfcb9e5e40479667b0b650414490646d",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/d1c09992bfcb9e5e40479667b0b650414490646d"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xLjE="
+  },
+  {
+    "name": "v2.1.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.1.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.1.0",
+    "commit": {
+      "sha": "dc927cb0facf72fae0698d1df0f7265060f6c506",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/dc927cb0facf72fae0698d1df0f7265060f6c506"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xLjA="
+  },
+  {
+    "name": "v2.1.0-beta.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.1.0-beta.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.1.0-beta.0",
+    "commit": {
+      "sha": "a812db2cd4e1c314a5c44ddb1ad4574d2cd00d48",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/a812db2cd4e1c314a5c44ddb1ad4574d2cd00d48"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4xLjAtYmV0YS4w"
+  },
+  {
+    "name": "v2.0.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0",
+    "commit": {
+      "sha": "71257e53a3b35d86f37f73b6dad34766d3adec82",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/71257e53a3b35d86f37f73b6dad34766d3adec82"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjA="
+  },
+  {
+    "name": "v2.0.0-typography.0",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-typography.0",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-typography.0",
+    "commit": {
+      "sha": "886759c1a9935c13fd90641750ac7704144890ae",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/886759c1a9935c13fd90641750ac7704144890ae"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtdHlwb2dyYXBoeS4w"
+  },
+  {
+    "name": "v2.0.0-rc.12",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.12",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.12",
+    "commit": {
+      "sha": "38e71204cc1f59a1787ef00e4fdb62d015669a37",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/38e71204cc1f59a1787ef00e4fdb62d015669a37"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuMTI="
+  },
+  {
+    "name": "v2.0.0-rc.11",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.11",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.11",
+    "commit": {
+      "sha": "5803240085b71f80c6b2033110f02722a50cbd1b",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/5803240085b71f80c6b2033110f02722a50cbd1b"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuMTE="
+  },
+  {
+    "name": "v2.0.0-rc.10",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.10",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.10",
+    "commit": {
+      "sha": "defff38b643baa5d5172d3cf18a04d9753c8820a",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/defff38b643baa5d5172d3cf18a04d9753c8820a"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuMTA="
+  },
+  {
+    "name": "v2.0.0-rc.9",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.9",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.9",
+    "commit": {
+      "sha": "fafe35f60008f5931f14d93ae48684e58142a1fe",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/fafe35f60008f5931f14d93ae48684e58142a1fe"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuOQ=="
+  },
+  {
+    "name": "v2.0.0-rc.8",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.8",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.8",
+    "commit": {
+      "sha": "90489ab7af6fbc97461a881dc85ad475f60e664e",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/90489ab7af6fbc97461a881dc85ad475f60e664e"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuOA=="
+  },
+  {
+    "name": "v2.0.0-rc.7",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.7",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.7",
+    "commit": {
+      "sha": "bf570c45c580472c622cb37d10d3a5d527b8b7f8",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/bf570c45c580472c622cb37d10d3a5d527b8b7f8"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuNw=="
+  },
+  {
+    "name": "v2.0.0-rc.6",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.6",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.6",
+    "commit": {
+      "sha": "60423015b599f3e78f82f4a8c4f98f433ffdae6d",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/60423015b599f3e78f82f4a8c4f98f433ffdae6d"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuNg=="
+  },
+  {
+    "name": "v2.0.0-rc.5",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.5",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.5",
+    "commit": {
+      "sha": "e335794c6b77fcd9d9a69255317c5896c54dbdf1",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/e335794c6b77fcd9d9a69255317c5896c54dbdf1"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuNQ=="
+  },
+  {
+    "name": "v2.0.0-rc.4",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.4",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.4",
+    "commit": {
+      "sha": "11a7fe66692c1aad3cf0ce43940d5af7ca1b45c7",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/11a7fe66692c1aad3cf0ce43940d5af7ca1b45c7"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuNA=="
+  },
+  {
+    "name": "v2.0.0-rc.3",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.3",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.3",
+    "commit": {
+      "sha": "94417d822865469655492fd717c0fee0487172f3",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/94417d822865469655492fd717c0fee0487172f3"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuMw=="
+  },
+  {
+    "name": "v2.0.0-rc.2",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.2",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.2",
+    "commit": {
+      "sha": "dae229ea92afed718b17bf69efc1fbd687012bb0",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/dae229ea92afed718b17bf69efc1fbd687012bb0"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuMg=="
+  },
+  {
+    "name": "v2.0.0-rc.1",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-rc.1",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-rc.1",
+    "commit": {
+      "sha": "b14f28edea9dfee5ff5067a450014d203bba626b",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/b14f28edea9dfee5ff5067a450014d203bba626b"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtcmMuMQ=="
+  },
+  {
+    "name": "v2.0.0-beta.91",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.91",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.91",
+    "commit": {
+      "sha": "4b6d8bd86d4aa68197d1ecb9b1dc32dbdf85ffae",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/4b6d8bd86d4aa68197d1ecb9b1dc32dbdf85ffae"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS45MQ=="
+  },
+  {
+    "name": "v2.0.0-beta.90",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.90",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.90",
+    "commit": {
+      "sha": "1604a2381c96c65baec29a33bda5b8409d3ea24e",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/1604a2381c96c65baec29a33bda5b8409d3ea24e"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS45MA=="
+  },
+  {
+    "name": "v2.0.0-beta.89",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.89",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.89",
+    "commit": {
+      "sha": "5526a2214157aa16e573b58f6cfdd09e2d6c003d",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/5526a2214157aa16e573b58f6cfdd09e2d6c003d"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44OQ=="
+  },
+  {
+    "name": "v2.0.0-beta.88",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.88",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.88",
+    "commit": {
+      "sha": "23f0e3bbd6619b4c89f8ddbcc7524b4b9aae8ef1",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/23f0e3bbd6619b4c89f8ddbcc7524b4b9aae8ef1"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44OA=="
+  },
+  {
+    "name": "v2.0.0-beta.87",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.87",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.87",
+    "commit": {
+      "sha": "8bab2bf14a4866f058e2b745a84e2cd2b2c7a653",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/8bab2bf14a4866f058e2b745a84e2cd2b2c7a653"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44Nw=="
+  },
+  {
+    "name": "v2.0.0-beta.86",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.86",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.86",
+    "commit": {
+      "sha": "a579930b60284fcb82cd6262afae121914ff275e",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/a579930b60284fcb82cd6262afae121914ff275e"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44Ng=="
+  },
+  {
+    "name": "v2.0.0-beta.85",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.85",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.85",
+    "commit": {
+      "sha": "72bd5a69fce2b675cc51e7eb8af46ecd3379938a",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/72bd5a69fce2b675cc51e7eb8af46ecd3379938a"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44NQ=="
+  },
+  {
+    "name": "v2.0.0-beta.84",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.84",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.84",
+    "commit": {
+      "sha": "a7d95682b3548f48a65b824808b4e38b9346fbd7",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/a7d95682b3548f48a65b824808b4e38b9346fbd7"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44NA=="
+  },
+  {
+    "name": "v2.0.0-beta.83",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.83",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.83",
+    "commit": {
+      "sha": "0e85093465c60f1cae1c2d24446ec5bf10d4ba22",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/0e85093465c60f1cae1c2d24446ec5bf10d4ba22"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44Mw=="
+  },
+  {
+    "name": "v2.0.0-beta.82",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.82",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.82",
+    "commit": {
+      "sha": "8fc2eb4cd9d6c5442ddf32dd2cf2a812bd925d8f",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/8fc2eb4cd9d6c5442ddf32dd2cf2a812bd925d8f"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44Mg=="
+  },
+  {
+    "name": "v2.0.0-beta.81",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.81",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.81",
+    "commit": {
+      "sha": "772b8d68a4a42021cc25db9e4315f28dd98dfbd0",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/772b8d68a4a42021cc25db9e4315f28dd98dfbd0"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44MQ=="
+  },
+  {
+    "name": "v2.0.0-beta.80",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.80",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.80",
+    "commit": {
+      "sha": "72e083c0de668010230ebb9a914b29d6c304f034",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/72e083c0de668010230ebb9a914b29d6c304f034"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS44MA=="
+  },
+  {
+    "name": "v2.0.0-beta.79",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.79",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.79",
+    "commit": {
+      "sha": "90a05bd6272dd466afcdf9d1f584095adcd7d219",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/90a05bd6272dd466afcdf9d1f584095adcd7d219"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43OQ=="
+  },
+  {
+    "name": "v2.0.0-beta.78",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.78",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.78",
+    "commit": {
+      "sha": "a86f129e5e02062a334dbf859f6dedee0535c4d3",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/a86f129e5e02062a334dbf859f6dedee0535c4d3"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43OA=="
+  },
+  {
+    "name": "v2.0.0-beta.77",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.77",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.77",
+    "commit": {
+      "sha": "fd5546a590cc8656be8c2a3e8754e223a0d1db7a",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/fd5546a590cc8656be8c2a3e8754e223a0d1db7a"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43Nw=="
+  },
+  {
+    "name": "v2.0.0-beta.76",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.76",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.76",
+    "commit": {
+      "sha": "b3a6f1537ad0ae06b61371e1108ed8f249c0b2d9",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/b3a6f1537ad0ae06b61371e1108ed8f249c0b2d9"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43Ng=="
+  },
+  {
+    "name": "v2.0.0-beta.75",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.75",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.75",
+    "commit": {
+      "sha": "804d05d75c7c4af95f09ccc71da4c3eb005ac534",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/804d05d75c7c4af95f09ccc71da4c3eb005ac534"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43NQ=="
+  },
+  {
+    "name": "v2.0.0-beta.74",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.74",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.74",
+    "commit": {
+      "sha": "3dada904da7e713e8039e8d49f0376dde6e2b38a",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/3dada904da7e713e8039e8d49f0376dde6e2b38a"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43NA=="
+  },
+  {
+    "name": "v2.0.0-beta.73",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.73",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.73",
+    "commit": {
+      "sha": "dd2d38bc0bccb8513ee5a18ed4ea98aa0ae793d9",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/dd2d38bc0bccb8513ee5a18ed4ea98aa0ae793d9"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43Mw=="
+  },
+  {
+    "name": "v2.0.0-beta.72",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.72",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.72",
+    "commit": {
+      "sha": "e51a665b6dc25aea3dc8f7243d6d6d618622ca45",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/e51a665b6dc25aea3dc8f7243d6d6d618622ca45"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43Mg=="
+  },
+  {
+    "name": "v2.0.0-beta.71",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.71",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.71",
+    "commit": {
+      "sha": "ef592c870de4c139e15b145ed0c7a3ca49904065",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/ef592c870de4c139e15b145ed0c7a3ca49904065"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43MQ=="
+  },
+  {
+    "name": "v2.0.0-beta.70",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.70",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.70",
+    "commit": {
+      "sha": "4a0ecebd9bfac10426d0346a7374291f72d22975",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/4a0ecebd9bfac10426d0346a7374291f72d22975"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS43MA=="
+  },
+  {
+    "name": "v2.0.0-beta.69",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.69",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.69",
+    "commit": {
+      "sha": "1a686045f3e5b832c6a2433f82f509b254e23b18",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/1a686045f3e5b832c6a2433f82f509b254e23b18"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42OQ=="
+  },
+  {
+    "name": "v2.0.0-beta.68",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.68",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.68",
+    "commit": {
+      "sha": "2756d6b5e670dd0fda69a02b01f0cb10d227b583",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/2756d6b5e670dd0fda69a02b01f0cb10d227b583"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42OA=="
+  },
+  {
+    "name": "v2.0.0-beta.67",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.67",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.67",
+    "commit": {
+      "sha": "eccfed5d906bae79bb3570b91bcfdd8aaf93dd68",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/eccfed5d906bae79bb3570b91bcfdd8aaf93dd68"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42Nw=="
+  },
+  {
+    "name": "v2.0.0-beta.66",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.66",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.66",
+    "commit": {
+      "sha": "0e41fa152986646cd40c5df8262ee4e205e2e8e0",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/0e41fa152986646cd40c5df8262ee4e205e2e8e0"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42Ng=="
+  },
+  {
+    "name": "v2.0.0-beta.65",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.65",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.65",
+    "commit": {
+      "sha": "d71cb571484ef32e6730ce1f8ea0321225a3e167",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/d71cb571484ef32e6730ce1f8ea0321225a3e167"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42NQ=="
+  },
+  {
+    "name": "v2.0.0-beta.64",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.64",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.64",
+    "commit": {
+      "sha": "599f1dfb90f90088222539f3e9434e461a6b8978",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/599f1dfb90f90088222539f3e9434e461a6b8978"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42NA=="
+  },
+  {
+    "name": "v2.0.0-beta.63",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.63",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.63",
+    "commit": {
+      "sha": "9865f4eb8a26deb1471a6de55610b31a9b241662",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/9865f4eb8a26deb1471a6de55610b31a9b241662"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42Mw=="
+  },
+  {
+    "name": "v2.0.0-beta.62",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.62",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.62",
+    "commit": {
+      "sha": "a965a980143506907f099a42a6779b762f031fd4",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/a965a980143506907f099a42a6779b762f031fd4"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42Mg=="
+  },
+  {
+    "name": "v2.0.0-beta.61",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.61",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.61",
+    "commit": {
+      "sha": "1be48fa5f1d0cf5a0c2a40e48be9009265c03c98",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/1be48fa5f1d0cf5a0c2a40e48be9009265c03c98"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42MQ=="
+  },
+  {
+    "name": "v2.0.0-beta.60",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.60",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.60",
+    "commit": {
+      "sha": "de802cedbe3877e86d5bc807b23358ac2a0b3ce9",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/de802cedbe3877e86d5bc807b23358ac2a0b3ce9"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS42MA=="
+  },
+  {
+    "name": "v2.0.0-beta.59",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.59",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.59",
+    "commit": {
+      "sha": "f8d3d193e92f42627140e70ceaeadc17378e951a",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/f8d3d193e92f42627140e70ceaeadc17378e951a"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41OQ=="
+  },
+  {
+    "name": "v2.0.0-beta.58",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.58",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.58",
+    "commit": {
+      "sha": "3bff4004b96c8c8b6e799ed90ecc2e6d6cc78cac",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/3bff4004b96c8c8b6e799ed90ecc2e6d6cc78cac"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41OA=="
+  },
+  {
+    "name": "v2.0.0-beta.57",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.57",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.57",
+    "commit": {
+      "sha": "c85159463c5f64fd0641227db3772101a281b21c",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/c85159463c5f64fd0641227db3772101a281b21c"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41Nw=="
+  },
+  {
+    "name": "v2.0.0-beta.56",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.56",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.56",
+    "commit": {
+      "sha": "a08543c7c3cba12f9d7118cc2eeff30c6ccd5a46",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/a08543c7c3cba12f9d7118cc2eeff30c6ccd5a46"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41Ng=="
+  },
+  {
+    "name": "v2.0.0-beta.55",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.55",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.55",
+    "commit": {
+      "sha": "aa765cee9296342229e4161a4ccee6117c405243",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/aa765cee9296342229e4161a4ccee6117c405243"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41NQ=="
+  },
+  {
+    "name": "v2.0.0-beta.54",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.54",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.54",
+    "commit": {
+      "sha": "2c0319690aef766cee91a7bb99ebb87d780c03fb",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/2c0319690aef766cee91a7bb99ebb87d780c03fb"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41NA=="
+  },
+  {
+    "name": "v2.0.0-beta.53",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.53",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.53",
+    "commit": {
+      "sha": "50117d0da07af61724247b44b6cc78e378856384",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/50117d0da07af61724247b44b6cc78e378856384"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41Mw=="
+  },
+  {
+    "name": "v2.0.0-beta.52",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.52",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.52",
+    "commit": {
+      "sha": "6ba8d34eede12c041c7d2094034cc3653b6ae354",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/6ba8d34eede12c041c7d2094034cc3653b6ae354"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41Mg=="
+  },
+  {
+    "name": "v2.0.0-beta.51",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.51",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.51",
+    "commit": {
+      "sha": "ed4f7ad233a992cde760822d777d6713b5d39dba",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/ed4f7ad233a992cde760822d777d6713b5d39dba"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41MQ=="
+  },
+  {
+    "name": "v2.0.0-beta.50",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.50",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.50",
+    "commit": {
+      "sha": "263d2e6555f666725f1891957b95165ef6aadcf3",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/263d2e6555f666725f1891957b95165ef6aadcf3"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS41MA=="
+  },
+  {
+    "name": "v2.0.0-beta.49",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.49",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.49",
+    "commit": {
+      "sha": "6b3968ea8affd5297d01deb807461450ad2f76d0",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/6b3968ea8affd5297d01deb807461450ad2f76d0"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS40OQ=="
+  },
+  {
+    "name": "v2.0.0-beta.48",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.48",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.48",
+    "commit": {
+      "sha": "86638161946c6d47db2ab3d5dc6b7c23aec43f94",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/86638161946c6d47db2ab3d5dc6b7c23aec43f94"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS40OA=="
+  },
+  {
+    "name": "v2.0.0-beta.47",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.47",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.47",
+    "commit": {
+      "sha": "0902943f5976e31586872ba7a151cdb11339043e",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/0902943f5976e31586872ba7a151cdb11339043e"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS40Nw=="
+  },
+  {
+    "name": "v2.0.0-beta.46",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.46",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.46",
+    "commit": {
+      "sha": "19fb5359d8183013be6e227f2b30a242ef89a000",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/19fb5359d8183013be6e227f2b30a242ef89a000"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS40Ng=="
+  },
+  {
+    "name": "v2.0.0-beta.45",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.45",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.45",
+    "commit": {
+      "sha": "edd9ab07a19c44393c512ba79a5dc653161a2ee3",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/edd9ab07a19c44393c512ba79a5dc653161a2ee3"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS40NQ=="
+  },
+  {
+    "name": "v2.0.0-beta.44",
+    "zipball_url": "https://api.github.com/repos/adobe/spectrum-css/zipball/refs/tags/v2.0.0-beta.44",
+    "tarball_url": "https://api.github.com/repos/adobe/spectrum-css/tarball/refs/tags/v2.0.0-beta.44",
+    "commit": {
+      "sha": "ac4fc09c8fe5529a6f68c7abb62adb1bf2a3e066",
+      "url": "https://api.github.com/repos/adobe/spectrum-css/commits/ac4fc09c8fe5529a6f68c7abb62adb1bf2a3e066"
+    },
+    "node_id": "MDM6UmVmMTU2MjY1NzU4OnJlZnMvdGFncy92Mi4wLjAtYmV0YS40NA=="
+  }
+]
+
