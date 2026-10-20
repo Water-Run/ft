@@ -1,0 +1,31 @@
+=== 1. 仓库标识 ===
+origin            : https://github.com/anomalyco/opencode.git
+检出日期         : 2026-10-20
+本机 git 版本    : git version 2.55.0.windows.3
+旧地址仍指向本仓库: sst/opencode -> https://github.com/anomalyco/opencode.git
+
+=== 2. 本次检出的固定点 ===
+HEAD commit      : 16c338372a67121819248db970c9f287ccb450a9
+提交时间         : 2026-10-19T22:25:29-05:00
+提交标题         : refactor(ai): avoid copying unchanged request data during sanitization (#57173)
+所在分支         : dev
+默认分支         : origin/dev
+该提交可达的提交数: 20612
+工作区是否干净   : clean
+
+=== 3. 许可证文件位置 ===
+LICENSE 路径     : LICENSE
+LICENSE 首 3 行  :
+    MIT License
+    
+    Copyright (c) 2025 opencode
+LICENSE SHA-256  : B5C625D157735F04E1B2B7CECCEE849130B554BDB23CD58DB55A38A257EFBBDD
+
+=== 4. 历史起点 ===
+最早的 6 个提交：
+        4b0ea68d7af9a6031a7ffda7ad66e0cb83315750|2025-03-21T18:20:28+01:00|initial
+        7844cacb257b14087bcb12764466ee0eeeb1921b|2025-03-23T15:00:12+01:00|add help
+        796bbf4d66c0fc70e750c7f582019cb9a7298e59|2025-03-23T15:17:51+01:00|small size fix and colors added
+        8daa6e774a6e02698c90392e7b2008542f789594|2025-03-23T19:19:08+01:00|add initial stuff
+        e7258e38aeb46281fda474b8b7fcc3eee35edd9f|2025-03-23T22:25:31+01:00|initial agent setup
+        005b8ac16776512b2d4b1f22bd989da162ca1bad|2025-03-24T11:47:39+01:00|initial working agent
