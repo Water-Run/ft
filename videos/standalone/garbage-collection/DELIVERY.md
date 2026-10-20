@@ -15,7 +15,7 @@
 | 封面 | `out/cover-zh-16x9.jpg`、`out/cover-zh-4x3.jpg`、`out/cover-zh-16x9-3840x2160.png`、`out/cover-zh-4x3-3200x2400.png` | 已出（源码 `src/cover.html`） |
 | 低清预演 | `out/zh/preview.mp4`（15 帧/秒、1/4 尺寸，带音轨） | 已出 |
 | 总览图 | `shots/sheets/zh-cue_*.jpg`（每句说完那一刻）、`zh-every_*.jpg`（每 4 秒） | 已出 |
-| 混音 | `out/zh/audio.wav`、`audio_nomusic.wav`、`audio_voice.wav`、`stem_music.wav`、`stem_sfx.wav` | 旧时间线上混过；时间线随后改过（第 7 节第 5 项），渲染命令里的 `audio.js` 会重混 |
+| 混音 | `out/zh/audio.wav`、`audio_nomusic.wav`、`audio_voice.wav`、`stem_music.wav`、`stem_sfx.wav` | 已按最终时间线（9:45.2）重混；`out/zh/preview.mp4` 带的就是这版混音，画面与声音同步，可以先用它试听 |
 | 源码 | 场景 `src/js/scenes/`、部件 `src/js/parts.js`、常驻元素 `src/js/config.js`、样式 `src/css/style.css`、配乐 `tools/music.py`、关键帧 `src/design/`、分镜 `brief/storyboard-detail.md` | 已写 |
 | 文档 | 本文件、README、`research/FACTS.md`「复核」、`review/feedback.json` | 已写；成片相关的项待渲染后补 |
 
@@ -29,6 +29,7 @@
 | `feedback.js sync` / `feedback.js check` | 带入反馈 2026-10-20.2（开工后新加入 F20，已补计划）；「反馈记录检查通过」 |
 | `check.js` | **全部通过**：源码规则 11 个文件、场景齐全 7 个、时长 zh 9:45（585.2 s，400–640 s 内）、全片扫描错误 0、音效覆盖 441 个事件 10 种。提示 1 条（不计入通过与否）：t=520.0 s 同时可见 23 段文字——05 章三张账单同屏 |
 | `preview.js --lang zh` | **没有超过 3 秒的静止段**；2.5–3 秒的 4 段：2:50.1（「以后用不用」）、5:00.5（1978 论文页）、5:11.0（三色图开场）、8:03.8（Rust 所有权） |
+| `audio.js --lang zh` | 最终时间线上重混：峰值 0.658，没有削波采样；旁白 −21.0 dB，整体 −21.5 dB；`I: −18.4 LUFS  LRA: 4.6 LU  Peak: −3.5 dBFS` |
 | `asr.js --lang zh` | 跑完，`out/zh/asr.txt`；读法结论见第 3.2 节 |
 | `stats.js --lang zh` | 中位 4.21 字/秒；最快 h5b 6.30 字/秒；没有超过 6 s 的句子 |
 | `covers.js --lang zh` | `out/cover-zh-16x9.jpg`、`out/cover-zh-16x9-3840x2160.png`、`out/cover-zh-4x3.jpg`、`out/cover-zh-4x3-3200x2400.png` |
