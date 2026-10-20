@@ -22,7 +22,7 @@
 | 判断成片是否合格 | [质量标准](standards.md) → [经验规则](lessons.md) → [验收](guides/acceptance.md) |
 | 发布、收集反馈、归档清理 | [发布与收尾](guides/release.md) |
 | 开一个系列或加一集 | [系列](guides/series.md) → `videos/<系列>/README.md` |
-| 查看开发安排 | [开发计划](development-plan.md) → [片单](../videos/README.md) |
+| 查看开发安排 | [当前开发计划](log/plans/2026-10-20--31.md) → [片单](../videos/README.md)（各片的阶段与下一步） |
 | 改工具、引擎或模板 | [仓库结构](reference/repository.md) → [工具](reference/tools.md) → [引擎](reference/engine.md) → [踩过的坑](reference/pitfalls.md) |
 | 装环境、换机器 | [环境](reference/environment.md) |
 
@@ -43,7 +43,6 @@
 
 | 文档 | 内容 |
 |---|---|
-| [development-plan.md](development-plan.md) | 2026 年 10 月 20–31 日开发安排，共 19 部片 |
 
 **专题**（怎样做好一个阶段）
 
@@ -76,7 +75,7 @@
 |---|---|
 | [log/feedback.md](log/feedback.md) | 策划者评价与观众评论的原始记录（P、C 编号） |
 | [log/reviews/](log/reviews/) | 成片测绘与评分复盘 |
-| [log/plans/](log/plans/) | 过去的排期 |
+| [log/plans/](log/plans/) | 开发计划，按日期命名；最新一份是当前的安排 |
 | [log/history.md](log/history.md) | 仓库自身的大事：迁入、重构 |
 
 ## 4. 信息归属
@@ -86,7 +85,7 @@
 | 信息 | 唯一来源 | 派生（由工具生成，不手改） |
 |---|---|---|
 | 选题、系列归属、标题、语言、片单状态 | `videos/catalog.json` | `videos/README.md`、各系列说明的分集表 |
-| 当前开发日期与同日顺序 | `docs/development-plan.md` | — |
+| 开发日期与同日顺序 | `docs/log/plans/` 里最新的一份计划 | — |
 | 系列的定位与共同约定 | `videos/<系列>/README.md` | — |
 | 一部片子的阶段、署名、发布记录、评分 | 该片 `project.json` 的 `stage`、`credits`、`release`、`reception` | 片尾名单、`videos/README.md` |
 | 一部片子的简报、设计决定、交付说明、复盘 | 该片 `README.md` | — |
