@@ -1,6 +1,8 @@
 # 事实出处
 
-取证日期：2026-10-19。本片讲的是「决定用不用一个模型之前，先读它那份说明里的哪几栏」，讲法是沿一张真实的模型卡从上往下读。本文件登记每一项陈述与出处；结构、时长分配与旁白措辞见 `MAP.md`，视觉方向见 `STYLE.md`。
+取证日期：2026-10-19（第 1 稿，BERT）；2026-10-20（第 2 稿，DeepSeek V4.1 Flash）。本片讲的是「决定用不用一个模型之前，模型卡上该先找什么」，讲法是沿一张真实的模型卡从上往下读。
+
+**第 2 稿起换例子**：2026-10-20 WaterRun 认为 BERT 的例子太旧，要求按最新的模型举例，指定 DeepSeek V4.1 Flash。第 2 稿的陈述只来自下文「第 2 稿起的例子」一节与「模型卡这一说法的出处」；「一张真实的模型卡：google-bert/bert-base-uncased」一节只对应第 1 稿，保留作历史记录，不再进入旁白。本文件登记每一项陈述与出处；结构、时长分配与旁白措辞见 `MAP.md`，视觉方向见 `STYLE.md`。
 
 本片没有实验回显：讲解对象是一份公开的模型卡与一篇公开的论文，两者的原文都逐字读过并记录了取用位置。画面上出现的每一个数字、每一段英文原文与年份都来自下表所列来源，没有另编的数字。
 
@@ -13,6 +15,10 @@
 | `hub-doc` | Hugging Face Hub 官方文档 Model Cards，<https://huggingface.co/docs/hub/model-cards.md>（取其 Markdown 版本，原页为 Svelte 渲染） | 读取「What are Model Cards?」与「Model card metadata」两节 | 2026-10-19 |
 | `hub-template` | `huggingface_hub` 仓库的官方模型卡模板，<https://github.com/huggingface/huggingface_hub/blob/main/src/huggingface_hub/templates/modelcard_template.md> | 逐字读取模板的全部栏目标题 | 2026-10-19 |
 | `glue-site` | GLUE Benchmark 官网 <https://gluebenchmark.com/> | 读取页面 meta description 中 GLUE 的全称与定义 | 2026-10-19 |
+| `ds-card` | Hugging Face Hub 上 `deepseek-ai/DeepSeek-V4.1-Flash` 的模型卡原文，<https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/raw/main/README.md>；读取时仓库 `main` 为 `314113f8`（2026-10-16 提交） | 取 `raw/main` 原文，逐字读取 YAML 头与全部章节 | 2026-10-20 |
+| `ds-api` | 同一仓库的 Hub API，<https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash> 与其 `commits/main` | 读取 `createdAt`、`pipeline_tag`、标签、文件列表与提交记录 | 2026-10-20 |
+| `ds-report` | 卡里链接的技术报告 `DeepSeek_V41_Tech_Report.pdf`（同仓库，51 页），<https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf> | 下载后用 pdftotext 抽文字，读摘要与第 6 节「Conclusion, Limitations, and Future Directions」（第 37 页） | 2026-10-20 |
+| `ds-card-1017` | 同系列小更新 `deepseek-ai/DeepSeek-V4.1-Flash-1017` 的模型卡原文（2026-10-17 建仓），<https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017/raw/main/README.md> | 逐字读取，只作对照，第 2 稿不用 | 2026-10-20 |
 
 `huggingface_hub` 仓库内的 `modelcard_template.py` 路径 2026-10-19 返回 404（模板已改为 `.md`），改用官方文档中给出的 `.md` 路径，位置见 `hub-doc` 的「What are Model Cards?」一节。
 
@@ -34,7 +40,39 @@
 | 模型卡由两部分构成：YAML 里的元数据，与正文里的文字描述；两者信息有重叠 | `hub-doc`「Model Cards on the Hub have two key parts, with overlapping information: Metadata / Text descriptions」 | 已读原文，旁白 r1 的「机器读的元数据」对应这一层 |
 | Hub 官方模型卡模板的一级栏目依次为 Model Details、Uses、Bias, Risks, and Limitations、How to Get Started with the Model、Training Details、Evaluation、Model Examination、Environmental Impact、Technical Specifications、Citation、Glossary、More Information、Model Card Authors、Model Card Contact | `hub-template` 全文的 `##` 标题 | 已读原文。模板与 BERT 那张真卡的实际栏目标题不同；本片讲的是后者，模板只作交叉印证：两者都把「用途」「局限与偏见」「评测结果」当作独立栏目 |
 
-## 一张真实的模型卡：google-bert/bert-base-uncased
+## 第 2 稿起的例子：deepseek-ai/DeepSeek-V4.1-Flash
+
+以下全部取自 `ds-card` 的 `raw/main` 原文，另注来源的除外。旁白只用其中标了句号的几项。
+
+| 陈述 | 依据（原文定位） | 状态 |
+|---|---|---|
+| Hub 记录的建仓时间为 2026-09-10，最近一次提交为 2026-10-16 | `ds-api` 的 `createdAt: 2026-09-10T02:17:58Z`、`lastModified: 2026-10-16T09:27:28Z`；`commits/main` 最早一条为 2026-09-10「initial commit」 | 已读。旁白不念日期；画面可写「2026-09」 |
+| 卡头 YAML 元数据为 `license: mit`、`library_name: transformers`、`pipeline_tag: image-text-to-text` | `ds-card` 文件开头的 `---` 块 | 已读原文。旁白 r2「最上面几行写给机器看：许可证 MIT」据此；画面显示整个 YAML 块 |
+| Hub 文档说 YAML 元数据用于让模型被检索、更易使用，例子包括在模型列表里筛选、显示模型的许可证 | `hub-doc`「Model card metadata」：「supports discovery and easier use of your model. For example: Allowing users to filter models … Displaying the model's license.」（2026-10-20 复读） | 已读原文。r2 的「写给机器看」是这一层的口语说法 |
+| 卡里写明仓库与权重都以 MIT 许可证发布 | `ds-card`「## License」：「This repository and the model weights are licensed under the MIT License.」 | 已读原文，r2 |
+| 模型原生处理图像与文字，输出文字 | `ds-card`「## Introduction」：「The model natively processes images and text, and generates text autoregressively.」 | 已读原文。第 2 稿不进旁白，画面上随 YAML 的 `image-text-to-text` 出现 |
+| 卡里「Introduction」用大段篇幅讲结构：552B 骨干参数、预填充每 token 激活 8B、解码 16B、最长 100 万 token 上下文、CED 结构、CSA2、FP4 KV 缓存等 | `ds-card`「## Introduction」各段 | 已读原文。**不进旁白**：参数量属第 16 集《150 秒通过参数认识一个模型》，结构细节也不是决定用不用的条件；画面上镜头经过这一段，r3 只说「往下翻到成绩表」 |
+| 指令模型的全部评测结果都用最高推理强度 `reasoning_effort=100`，采样 `temperature=1.0, top_p=0.95` | `ds-card`「### Instruct Model」首段：「All instruct results below use the maximum effort setting (`reasoning_effort=100`). Evaluations use `temperature=1.0, top_p=0.95`.」 | 已读原文，旁白 r4 |
+| 推理强度是 1 到 100 的整数，可连续调节，用推理成本换准确率 | `ds-card`「Post-training」段：「continuously controllable reasoning effort setting (integer 1–100) that trades inference cost for accuracy」 | 已读原文。旁白 r5「调低能省钱，分数也可能更低」是这句的推论式转述：用「可能」，因为卡里没有给低档位的分数 |
+| 编程智能体类测试（Terminal-Bench 2.1/3.0/4.0、DeepSWE v1.1、NL2Repo-Bench、ProgramBench）用 DeepSeek 自家 Harness 的 Minimal 模式与 100 万 token 上下文评测；为符合官方设置，DeepSWE v1.1 改用 mini-SWE | `ds-card`「### Instruct Model」第二段 | 已读原文。旁白不展开，r6–r7 只用下面那张跑法表 |
+| 「Performance across agent scaffolds」一表：同一个模型在 DeepSWE v1.1（Resolved）上换 8 种跑法的分数为 Claude Code 69.8、Codex 65.6、OpenCode 65.5、Pi 66.2、mini-SWE 74.2、DSH Minimal 72.6、DSH Standard 70.5、DSH PTC 67.6 | `ds-card`「#### Performance across agent scaffolds」表格第一行 | 已读原文。旁白 o1「分数从 65.5 到 74.2」取这一行的最低与最高；r6「换了八种跑法」按表头 8 列计（其中 DSH 三列是同一个自家 Harness 的三种模式，所以说「跑法」不说「程序」）；r7 取 Claude Code 与 mini-SWE 两格 |
+| 同表 Terminal-Bench 2.1 一行：Claude Code 88.0、Codex 84.1、OpenCode 85.0、Pi 86.1、mini-SWE 90.3、DSH Minimal 90.6、DSH Standard 85.8、DSH PTC 85.8 | 同表第二行 | 已读原文。旁白不用，画面上同表显示 |
+| 跑法表的条件：DeepSWE v1.1 每题采样 N=8、Terminal-Bench 2.1 N=3，Linux 容器，`temperature=1.0`、`top_p=0.95`，100 万 token 上限，每个智能体最多 500 步；Terminal-Bench 2.1 断网评测 | 同节表上方一段 | 已读原文。画面上跟表一起出现，旁白不念 |
+| DeepSWE v1.1 是卡里所说的编程智能体测试之一 | `ds-card`「For code agent benchmarks (Terminal-Bench 2.1/3.0/4.0, DeepSWE v1.1, …)」 | 已读原文。o1、r6 说成「编程测试」是简化，没有展开它考的是什么 |
+| 「Comparison with frontier models」表里 DS-V4.1-Flash 的 DeepSWE v1.1 为 74.2（加粗），同行 Opus-5.0 为 74.0 | `ds-card`「#### Comparison with frontier models」 | 已读原文。旁白不用；74.2 与跑法表 mini-SWE 一格相同，与卡里「DeepSWE v1.1 用 mini-SWE」一致。对照表里其他模型用什么跑法，卡里没写 |
+| 卡上没有写用途、局限、偏见或风险的栏目 | `ds-card` 全部 `##` 标题为 Introduction、Evaluation Results、Prompt Encoding、Minimal Inference、Reproducing DeepSWE Benchmark Results、License、Citation、Contact；全文检索 limitation、bias、intended、safety、risk、misuse、ethic 均无结果 | 已读原文，旁白 e1。只说「卡上没有专门一栏」，不说「开发方没写局限」：局限写在技术报告里，见下两行 |
+| 卡里在标题下链接技术报告 | `ds-card` 第 40 行「Technical Report」链接指向同仓库的 `DeepSeek_V41_Tech_Report.pdf` | 已读原文，旁白 e2 |
+| 技术报告第 6 节（第 37 页）标题为「Conclusion, Limitations, and Future Directions」；其中写明：跑分差距虽小，这种持平不意味着模型在复杂、高难度的推理与边缘情况上达到了领先闭源系统的前沿能力 | `ds-report` 第 37 页：「Although benchmark scores show a narrow margin, this parity does not imply that the model matches the frontier capabilities of leading closed-source systems on complex, high-difficulty reasoning and edge cases.」 | 已读原文，旁白 e3–e4 为此句的中文转述，「顶尖闭源模型」对应 leading closed-source systems |
+| 同节还写：新结构带来尚未完全刻画的稳健性边界；有限的测试集覆盖不了所有极端输入与部署条件，CSA2 的选择误差与 SWA Bounded Replay 的近似重建可能在未测试的边界情况下导致能力下降 | `ds-report` 第 37 页第二段 | 已读原文。第 2 稿不进旁白（要先解释 CSA2 等结构），画面可截这一段 |
+| 卡里的推荐采样参数：`temperature` 1.0，`top_p` 0.95 或 1.0，`context_window` 1M tokens，`max_tokens` ≥ 256K | `ds-card`「## Minimal Inference」表格 | 已读原文。第 2 稿不进旁白 |
+
+### 对照与卡上过时的地方（不进旁白）
+
+- `ds-card` 写「This release does not include a Jinja-format chat template」，但 `ds-api` 的文件列表里已有 `chat_template.jinja`，提交记录为 2026-10-01「Adding chat template (#68)」。卡上这句没有随仓库更新。
+- `ds-card-1017` 自称「minor update」，卡上只有一张对比表。表中 DS-V4.1-Flash 一列的 NL2Repo-Bench 为 65.4，而 `ds-card` 同项为 64.0；两张卡对 Terminal-Bench 用哪种 Harness 的说法也不同（`ds-card` 为 DeepSeek Harness 的 Minimal 模式，`ds-card-1017` 脚注为 Claude Code）。原因卡里没有说明，本片不作解释。
+- `ds-card` 与 `ds-card-1017` 都没有用途、局限一栏。
+
+## 一张真实的模型卡：google-bert/bert-base-uncased（第 1 稿，第 2 稿起不再采用）
 
 以下是本片的主角。全部取自 `bert-card` 的 `raw/main` 原文。
 
@@ -84,6 +122,12 @@
 | 「GLUE 平均 79.6 说明这个模型表现好」 | 79.6 是这张卡在 2018 年那张表里的一个具体数字，本次没有取到同一张表的其他模型数值作对照，也没有核对测试集划分与评测脚本，说「好」没有依据。本片只报数字，不作评价 |
 | 论文的两位作者姓名之外的完整作者名单 | 已读原文，但 96 秒放不下 9 个姓名，且对「怎么看模型卡」没有帮助。本片只在画面角标给论文标题与年份 |
 | Hugging Face 官方模板的全部 14 个一级栏目 | `hub-template` 逐字读到了，但本片讲的是 BERT 那张真卡的实际栏目；把模板栏目全列出来会变成两份不同的清单，占掉 40 秒的重头段落 |
+| 「DeepSeek 挑了最高的分数放进对比表」 | 对比表的 74.2 确实等于跑法表里最高的 mini-SWE 一格，但卡里写明 DeepSWE v1.1 用 mini-SWE 是「to align with official setup requirements」。说成挑分数是没有依据的动机判断 |
+| 「DeepSeek V4.1 Flash 比 Opus-5.0 强」或「追平顶尖闭源模型」 | 对比表各项互有高低，且开发方自己在技术报告第 6 节写明持平的跑分不代表在高难度推理上追平。本片只转述这句 |
+| 「这张卡没写局限」 | 卡上确实没有局限一栏，但技术报告第 6 节写了。旁白只说「卡上没有专门一栏」与「写在技术报告里」 |
+| 「推理强度调低，分数一定下降 / 下降多少」 | 卡里只说这一设置「trades inference cost for accuracy」，没有给低档位的分数。旁白用「可能更低」 |
+| 552B、8B / 16B 激活参数、MoE、100 万 token 等结构数字 | 已读原文，但参数量属第 16 集；结构也不是本片要回答的「先找什么」。画面上可经过，旁白不念 |
+| 「八种不同的程序」 | 跑法表 8 列里 DSH Minimal / Standard / PTC 是同一个自家 Harness 的三种模式，所以旁白说「八种跑法」 |
 
 ## 制作署名
 
@@ -96,7 +140,7 @@
 | 参与模型（含可确认的版本） | 实际分工 | 记录依据 |
 |---|---|---|
 | MiniMax M3.1 Flash（本次会话确认的模型标识 `minimax-M3.1-Flash-Preview`） | 一手来源核实与事实测绘；96 秒定长中文文案；交审材料（NOTES.md、MAP.md）；液态玻璃视觉方向（STYLE.md） | 本次制作记录：2026-10-19 会话中逐字读取 arXiv:1810.03993 摘要页、BERT 模型卡 `raw/main` 原文、Hugging Face Hub 官方文档与 `huggingface_hub` 官方模板，并写出 `src/js/script.js` |
-| Opus 5.5 | 受托方。**尚未开工**：场景实现、声音编排、封面、渲染、封装与成片后的三项审查 | `project.json` 的 `production.maker: Opus 5.5`。本轮只做第 0–2 步，未开工的部分据实记为尚未开工；开工后按真实记录追加实际使用的工具与版本 |
+| Opus 5.5 | 2026-10-20 第 2 稿：DeepSeek V4.1 Flash 模型卡、Hub 提交记录与技术报告的取证，中文文案重写。受托方，**尚未开工**：场景实现、声音编排、封面、渲染、封装与成片后的三项审查 | `project.json` 的 `production.maker: Opus 5.5`。本轮只做第 0–2 步，未开工的部分据实记为尚未开工；开工后按真实记录追加实际使用的工具与版本 |
 | 旁白合成 | **尚未合成，未使用任何语音服务**。文案确认后按 F17 先试听候选音色与语速、由策划者确认，再据实登记实际使用的服务与模型 | 本轮未运行 `tts.js`，`audio/` 为空 |
 | 读音回听 | **未做** | 本轮未运行 `asr.js` |
 | 网页检索与摘录 | 本次取证通过本地网络抓取工具直接读取公开页面原文（arXiv 摘要页、Hugging Face Hub 文档的 Markdown 版本、`huggingface_hub` 仓库的官方模型卡模板、BERT 模型卡的 `raw/main` 原文）。**该工具未披露底层模型，模型未披露** | 2026-10-19 会话记录；所读页面与取用位置见本文件「取证环境与来源」 |
@@ -112,6 +156,8 @@
 | 轮次 | 交审日期 | 稿本 | 审查意见与修改 | 结论与日期 |
 |---|---|---|---|---|
 | 第 1 轮 | 2026-10-19 | 中文 `review/script.zh.35f01ec70b81811726827717c2c4b2fe9fa87cd6e5006b13f2f6e1bab3243b1c.md`，内容 SHA-256 `35f01ec70b81811726827717c2c4b2fe9fa87cd6e5006b13f2f6e1bab3243b1c` | 待 WaterRun 逐句核对。逐句依据见本文件各表；取舍见 `review/NOTES.md` | 尚未确认；`review/approval.json` 保持 pending |
+| 第 1 轮（改名重导） | 2026-10-19 | 中文 `review/script.zh.17dfcf09139467d81d0875fa42d0101e52ea6260109434ae369aaaf3c491874c.md` | WaterRun 定片名为《96 秒速通模型卡》，旁白未改 | 未确认 |
+| 第 2 轮 | 2026-10-20 | 中文 `review/script.zh.69820b4a79068764a860c9a45138d13aaff4859a3d2e2ec59e6f4dee80aa0c77.md`，内容 SHA-256 `69820b4a79068764a860c9a45138d13aaff4859a3d2e2ec59e6f4dee80aa0c77` | WaterRun：BERT 太旧，按最新的举例，考虑 DeepSeek V4.1 Flash。全稿重写：例子换成 `ds-card`，结论由「先读三栏」改为「先找许可证、分数的测法、局限写在哪」。见 `review/NOTES.md` | 待 WaterRun 审查；`approval.json` 保持 pending |
 
 英文稿本本轮未导出：`src/js/script.js` 里的英文是直译草稿，中文确认后按中文重译，再导出英文稿本核对。
 

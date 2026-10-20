@@ -9,11 +9,12 @@
 // - 场景的 at 是它开始的时刻（秒）。上一场的旁白说完之后，余下的时间留白到这一刻；说不完就是超出，记入 L.problems，总闸门不通过。
 // - TOTAL 是全片的时长，最后一场补齐到这一刻。
 //
-// 2026-10-19 第 1 轮，待 WaterRun 审查：中文定稿；英文是直译草稿，中文确认后按中文重译。
-// 主问题：决定用不用一个模型之前，应该先读它那份说明里的哪几栏。
-// 讲法：沿一张真实的模型卡（google-bert/bert-base-uncased）从上往下走边读边说，不用抽象定义开场。
-// 开头两个填空与两个分数全部取自这张卡的 Limitations and bias 一节，见 research/FACTS.md。
-// F04：r7 之后的 rT 与 c1 之后的 cT 是无旁白的纯画面停顿，给那两个分数与结论留足阅读时间，不是拖时间。
+// 2026-10-20 第 2 轮，待 WaterRun 审查：WaterRun 认为 BERT 太旧，例子换成 deepseek-ai/DeepSeek-V4.1-Flash 的模型卡。
+// 中文为交审稿；英文是直译草稿，中文确认后按中文重译。
+// 主问题：决定用不用一个模型之前，模型卡上该先找什么。
+// 讲法：开头给同一个模型换跑法后的分数差，再沿这张卡从上往下读到成绩表、跑法表与它链接的技术报告。
+// 全部数字与原文见 research/FACTS.md 的「第 2 稿起的例子」。
+// F04：r7 之后的 rT 与 c2 之后的 cT 是无旁白的纯画面停顿，给跑法表上的两个分数与结论留足阅读时间。
 // F14：z1 是静默片尾，credits: true，不设 tts、不写字幕。
 (function (root) {
   const isBrowser = typeof window !== 'undefined';
@@ -24,59 +25,58 @@
   const TOTAL = 96;
   const RAW = [
     {
-      // 现象：两道填空，两个答案。先看见结果，再知道这些答案写在哪里。
+      // 现象：同一个模型、同一套测试，换一种跑法，分数就变。先看见结果，再知道这些写在哪里。
       id: 'open', at: 0, chap: null, lead: 0.12, tail: 0.12,
       cues: [
-        ['o1', { zh: '填空「那个男人干的工作是」，模型答木匠', en: '"The man worked as a [MASK]." Answer: *carpenter*.' }, { gap: 0.16 }],
-        ['o2', { zh: '换成「那个女人」，同一个模型答护士', en: 'Same sentence, "woman": the model answers *nurse*.' }, { gap: 0.16 }],
-        ['o3', { zh: '两个答案，都写在它自己的说明里', en: 'Both answers are in its own description.' }, { gap: 0.16 }],
-        ['o4', { zh: '这份说明叫*模型卡*', en: 'That description is a *model card*.' }, { gap: 0.12 }],
-        ['oT', null, { pause: 2.6, gap: 0 }],   // 片名卡停在模型卡的定义之后
+        ['o1', { zh: '同一个模型、同一套编程测试，分数从 65.5 到 74.2', en: 'Same model, same coding benchmark: scores from 65.5 to 74.2.' }, { gap: 0.16 }],
+        ['o2', { zh: '模型没换，换的只是外面那层跑它的程序', en: 'The model did not change. Only the program around it did.' }, { gap: 0.16 }],
+        ['o3', { zh: '这件事，它自己的说明里就写着', en: 'Its own documentation says so.' }, { gap: 0.16 }],
+        ['o4', { zh: '这份说明叫*模型卡*', en: 'That document is the *model card*.' }, { gap: 0.12 }],
+        ['oT', null, { pause: 2.6, gap: 0 }],   // 片名卡停在模型卡的名字之后
       ],
     },
     {
-      // 它是什么：随模型发布的简短文档；2018 年论文提出，要求写清评测与使用场合。
-      id: 'what', at: 15.75, chap: null, lead: 0.16, tail: 0.14,
+      // 它是什么：随模型发布的简短文档；2018 年论文提出，主张写清评测方法与使用场合。
+      id: 'what', at: 17.3, chap: null, lead: 0.16, tail: 0.14,
       cues: [
         ['w1', { zh: '模型卡是跟着模型一起发布的一份简短文档', en: 'A model card is a short document published with a model.' }, { gap: 0.16 }],
-        ['w2', { zh: '2018 年一篇论文提出这个做法，要求写清评测和使用场合', en: 'A 2018 paper proposed it: write down the evaluation and the intended use.' }, { gap: 0.16 }],
+        ['w2', { zh: '2018 年一篇论文提出，主张写清评测方法和使用场合', en: 'A 2018 paper proposed it: report evaluation and intended use.' }, { gap: 0.16 }],
       ],
     },
     {
-      // 重头：从上往下读三栏。机器读的头 → 用途与限制 → 局限与偏见 → 评测结果。
-      // 卡里的 Model description、Model variations、Training data、Training procedure 在本片不逐栏讲，
-      // 旁白 c3 明说「其余可以先跳过」，画面上镜头快速经过，不加任何说明性小字。
-      id: 'read', at: 26.25, chap: null, lead: 0.16, tail: 0.12,
+      // 重头：沿 DeepSeek V4.1 Flash 的卡往下读。元数据 → 成绩表的测试条件 → 跑法表。
+      // 卡里的结构介绍（参数量、注意力、KV 缓存）不进旁白：与参数一集分工，也不是决定用不用的条件。
+      id: 'read', at: 27.2, chap: null, lead: 0.16, tail: 0.12,
       cues: [
-        ['r1', { zh: '从上往下读：最上面是机器读的元数据', en: 'From the top: machine-readable metadata first.' }, { gap: 0.16 }],
-        ['r2', { zh: '接着这一栏，回答*它能做什么*', en: 'The next section answers *what it is meant for*.' }, { gap: 0.16 }],
-        ['r3', { zh: '卡里写明：这个模型主要拿整句做判断', en: 'The card says: this model is mainly for decisions on whole sentences.' }, { gap: 0.16 }],
-        ['r4', { zh: '要做文本生成，应该看 *GPT2* 这类模型', en: 'For text generation, look at a model like *GPT2*.' }, { gap: 0.16 }],
-        ['r5', { zh: '再往下一栏，叫*局限与偏见*', en: 'The next section is *Limitations and bias*.' }, { gap: 0.16 }],
-        ['r6', { zh: '卡里直接给了两个可以复现的例子', en: 'The card gives two reproducible examples.' }, { gap: 0.16 }],
-        ['r7', { zh: '男人那道，首选木匠 0.097；女人那道，首选护士 0.220', en: 'Man: carpenter 0.097. Woman: nurse 0.220.' }, { gap: 0.2 }],
-        ['rT', null, { pause: 1.9, gap: 0 }],   // F04：两个分数与它们并排出现之后，静止读完再走
-        ['r8', { zh: '卡里写明：这个偏见会传染给所有微调版', en: 'The card says: this bias carries over to every fine-tuned version.' }, { gap: 0.2 }],
-        ['r9', { zh: '最后一栏是评测结果：GLUE 语言理解测试，微调后平均 79.6', en: 'Last section: evaluation. GLUE, a language test suite, averages 79.6.' }, { gap: 0.16 }],
+        ['r1', { zh: '拿 *DeepSeek V4.1 Flash* 的卡来读', en: 'Take the card for *DeepSeek V4.1 Flash*.' }, { gap: 0.16 }],
+        ['r2', { zh: '最上面几行写给机器看：许可证 *MIT*', en: 'The top lines are for machines: license *MIT*.' }, { gap: 0.16 }],
+        ['r3', { zh: '往下翻到成绩表，先找测试条件', en: 'Scroll down to the scores. Find the test conditions first.' }, { gap: 0.16 }],
+        ['r4', { zh: '表上方写着：全部开到最高推理强度 *100*', en: 'Above the table: everything ran at maximum reasoning effort, *100*.' }, { gap: 0.16 }],
+        ['r5', { zh: '调低能省钱，分数也可能更低', en: 'Lower settings cost less, and may score lower.' }, { gap: 0.2 }],
+        ['r6', { zh: '再往下一张表：同一套编程测试，换了八种跑法', en: 'Another table: the same coding benchmark, run eight ways.' }, { gap: 0.16 }],
+        ['r7', { zh: '*Claude Code* 跑出 69.8，mini-SWE 跑出 74.2', en: '*Claude Code* gets 69.8; mini-SWE gets 74.2.' }, { gap: 0.2 }],
+        ['rT', null, { pause: 1.9, gap: 0 }],   // F04：跑法表与两个分数完整出现之后，静止读完再走
+        ['r8', { zh: '你平时用哪一种，就该看哪一格', en: 'Read the cell for the setup you actually use.' }, { gap: 0.16 }],
       ],
     },
     {
-      // 边界：这张卡不是发模型的团队写的。写卡的人是谁，本身就是判断材料。
-      id: 'edge', at: 64.75, chap: null, lead: 0.16, tail: 0.12,
+      // 边界：卡上没有局限一栏；局限写在它链接的技术报告里，开发方自己说了跑分接近不等于能力追平。
+      id: 'edge', at: 61.6, chap: null, lead: 0.16, tail: 0.12,
       cues: [
-        ['e1', { zh: '开头还有一句免责声明：发 *BERT* 的团队没写这张卡', en: 'A disclaimer at the top: the *BERT* team did not write it.' }, { gap: 0.16 }],
-        ['e2', { zh: '由 *Hugging Face* 团队代写', en: 'The *Hugging Face* team wrote it.' }, { gap: 0.16 }],
-        ['e3', { zh: '所以读模型卡，先看是谁写的', en: 'So first check who wrote the card.' }, { gap: 0.16 }],
+        ['e1', { zh: '这张卡上，没有专门写局限的一栏', en: 'This card has no section on limitations.' }, { gap: 0.16 }],
+        ['e2', { zh: '局限写在它链接的技术报告里', en: 'They are in the linked technical report.' }, { gap: 0.16 }],
+        ['e3', { zh: '开发方自己写着：跑分差得不多', en: 'The developers write: close scores' }, { gap: 0.16 }],
+        ['e4', { zh: '不等于在最难的推理上，追平了顶尖闭源模型', en: 'do not mean parity with top closed models on the hardest reasoning.' }, { gap: 0.16 }],
       ],
     },
     {
-      // 结论：回答开头。停 1.2 秒是结论留白，不是转场。
-      id: 'close', at: 76.6, chap: null, lead: 0.14, tail: 0.12,
+      // 结论：回答开头。停 1.5 秒是结论留白，不是转场。
+      id: 'close', at: 76.0, chap: null, lead: 0.14, tail: 0.12,
       cues: [
-        ['c1', { zh: '决定用不用一个模型，先读三栏', en: 'To use a model, read three sections.' }, { gap: 0.16 }],
-        ['c2', { zh: '用途与限制、局限与偏见、评测结果', en: 'Intended uses and limitations, bias, evaluation.' }, { gap: 0.16 }],
-        ['cT', null, { pause: 1.2, gap: 0 }],
-        ['c3', { zh: '三栏读完，就知道能做什么、不能做什么', en: 'Those three tell you what it can and cannot do.' }, { gap: 0.1 }],
+        ['c1', { zh: '决定用不用一个模型，卡上先找三样', en: 'Before using a model, find three things.' }, { gap: 0.16 }],
+        ['c2', { zh: '许可证、分数的测法、局限写在哪', en: 'License, test conditions, and where the limitations are.' }, { gap: 0.16 }],
+        ['cT', null, { pause: 1.5, gap: 0 }],
+        ['c3', { zh: '三样找齐，那些分数才读得懂', en: 'Then the scores make sense.' }, { gap: 0.1 }],
       ],
     },
     {
@@ -91,13 +91,14 @@
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
   const SAY = {
     zh: [
-      [/Hugging Face/g, 'hugging face'],
-      [/BERT/g, 'B E R T'],
-      [/GPT2/g, 'G P T two'],
-      [/GLUE/g, 'glue'],
-      [/0\.097/g, '零点零九七'],
-      [/0\.220/g, '零点二二零'],
-      [/79\.6/g, '七十九点六'],
+      [/DeepSeek V4\.1 Flash/g, 'DeepSeek V四点一 Flash'],
+      [/Claude Code/g, 'Claude Code'],
+      [/mini-SWE/g, 'mini S W E'],
+      [/MIT/g, 'M I T'],
+      [/65\.5/g, '六十五点五'],
+      [/74\.2/g, '七十四点二'],
+      [/69\.8/g, '六十九点八'],
+      [/100/g, '一百'],
     ],
     en: [],
   };
