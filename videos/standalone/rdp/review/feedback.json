@@ -1,0 +1,216 @@
+{
+  "schema": 1,
+  "version": "2026-10-20.1",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "402d8f81cdb8aa66c480d3ec466708642275d748689552ecf844b6755ca7e167",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "全片只回答一个问题：RDP 凭什么能把一台远程 Windows 的桌面送到你屏幕上还能操作。开场提出；01 讲它要解决什么，02 讲优雅在哪（复用 ITU-T T.120 的 X.224 + MCS + GCC 骨架），03 沿一次连接走完十个阶段，04 讲能力与代价，05 收在边界。每章的答案都回扣同一问题。",
+      "script_evidence": "FACTS.md「逐章 → 01 它解决什么问题」01-1/01-3/01-4 与「05 边界」05-10；README「内容」表的 open / why / layers / session / capability / boundary 六场。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "a5858f5fe190df36291bd8ae13a29852bd75324e60bcb41978a8aa438b7828fc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "新名词预算：一组 7 个（TPKT、X.224、MCS、静态虚拟通道、动态虚拟通道、CredSSP、NLA）；PDU、位图缓存、RemoteFX 只出现一次并当场用一句话解释。主线只有一条：一次连接从头走到尾。分层用套娃讲，不背字段名。",
+      "script_evidence": "FACTS.md 02-3（TPKT）、02-4（X.224）、02-5（MCS）、04-1（静态虚拟通道）、04-5（动态通道）、04-15（CredSSP / NLA）各行；README「内容」表 layers 与 session 两场。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "第一次提到 RDP 就说清它是什么、与 SSH 的差别在「图形 vs 命令」；说「省带宽」时立刻给机制（能力集少发东西、批量压缩 64 KB 历史缓冲、位图 RLE），不给没有实测的数字；版本号只在讲版本字段时出现一次，并说明 5.0–8.1 宣告同一个值。比较对象共享同一任务：把远端的桌面交给我操作。",
+      "script_evidence": "FACTS.md 01-3、02-8、03-4、04-6/04-7/04-8、05-8/05-9/05-11；README「内容」表 why 与 boundary 两场。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "c013fecb9b807e6d31c433f725362819424edc03722bccce2cea56c366f6193e",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "先排信息再排动作：结论、对比、分层图完整出现后，按「1.5 秒 + 画面必要文字字数 ÷ 5 字/秒」留足稳定时间；一步机制完成（阶段推进、通道接入、编码选择）之后另留看懂这一步的时间，其间不引入新东西；元素退场交代去向。分层图与三协议对比表各留 4 秒以上。",
+      "script_evidence": "README「开工反馈应用」F04 行与「内容」表 layers / boundary 两场；FACTS.md 02-3–02-6 给出必须讲清的分层次序。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "分层用嵌套框逐层加框；一次连接用同一条时间轴上十个阶段依次点亮；虚拟通道用从主干分叉的支线；压缩用「同一段画面只传一次变化」的动作；不用整屏刷换。",
+      "script_evidence": "README「视觉系统」的图形约定段与「内容」表 layers / session / capability 三场；FACTS.md 03-1（十个阶段）、04-1/04-2（通道分块）。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "ee41c345f574a392da44514d878439edec32a8b9efab0bfb7565fe743914fc67",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "配乐有一层贯穿的低频铺底（以 MyISAM 一集为参照），再叠握手、通道接入、压缩三处各自的动机；换场不用气流声；阅读与解释段保留安静。",
+      "script_evidence": "README「开工反馈应用」F06 行与「视觉系统」转场段；FACTS.md 03-1 的阶段划分作为配乐分段依据。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "不出现真实主机名、账号、内网地址或演示路径；协议字段只用规范里的抽象例子（Cookie: mstshash=IDENTIFIER、32 字节随机数）；未做抓包，画面不出现真实会话内容。",
+      "script_evidence": "FACTS.md 03-8（32 字节随机数）与「取证范围与限制」一节；README「取证」一节明写没有抓包实验。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "以最终编码的 MP4 实测帧率、时长、响度与真峰值并记 SHA-256；渲染参数写进 project.json；check.duration 已按 360 秒上限设为 359.9–360.1。",
+      "script_evidence": "README「当前状态与接续」与「复现」一节；project.json 的 check.duration 已改为 359.9–360.1。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "片中每条事实对应 FACTS 的一行；规范小节号写进画面的一行来源署名；FACTS「尚待核实」的五条不进画面；观众评论里的技术异议回到 FACTS 核查，不凭评论改结论。",
+      "script_evidence": "FACTS.md「逐章」各表的「原始出处与定位」列与「尚待核实」表；README「取证」一节列出全部一手来源与读取方式。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "独立片，全文不提系列编号与「上一期」；需要对比时只对比 VNC 与 SSH 本身。",
+      "script_evidence": "README「内容」表 boundary 场只列 RDP / VNC / SSH；FACTS.md「05 边界」各行。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "规范里的英文名第一次出现都给中文说法：TPKT（传输包）、X.224（连接模式传输）、MCS（多点通信服务）、GCC（通用会议控制）、CredSSP（凭据安全支持提供程序）、Demand Active PDU（服务器能力通告）。",
+      "script_evidence": "FACTS.md 02-3/02-4/02-5/03-5/04-15 各行；README「开工反馈应用」F11 行。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "专名试听清单：TPKT、T.120 / T.125、MCS、CredSSP、RemoteFX、3389 端口号；数字按语义停顿，字幕断句不决定口播停顿。",
+      "script_evidence": "README「读法」一节的预置问题清单；FACTS.md 02-3/02-5/04-9/04-15 中的专名。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "开头从「远程桌面」这个熟悉情境进入，说明它要解决什么、为什么协议要分层，再给五章路线。年代只说到它站在 1980 年代的会议协议骨架上（T.120 体系有出处，RFC 1006 的日期是 1987-05）；ICA 与 Terminal Server 的沿革没有一手来源，整段不讲。",
+      "script_evidence": "FACTS.md「尚待核实」第二行（ICA 沿革）、02-3（RFC 1006 的 1987-05）、01-3（T.120 体系）；README「内容」表 open 场与「本片决定不讲的材料及理由」段。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "署名、模型 credit、策划与开源链接放在独立制作说明；片尾用空字幕、pause 与 credits:true 保留约 7.5 秒，不设 tts。",
+      "script_evidence": "README「制作署名与片尾」一节与「内容」表 outro 行；FACTS.md「制作署名」一节。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面与旁白只放观众需要的内容；不写「本片只列规范小节号」「抓包未做」这类自我说明；来源用一行简短署名；口径限定只在会造成误解时用一句自然的话放进正文。",
+      "script_evidence": "README「开工反馈应用」F15 行；FACTS.md「取证范围与限制」一节——这些说明只留在 FACTS，不进画面。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F16",
+      "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "视觉语汇取自 Microsoft Learn 上 Open Specifications 文档的版式与结构图画法，以及 Windows 远程桌面客户端的窗口与图标；颜色与字体在第 4 步从 microsoft.com 与 learn.microsoft.com 样式表取样后写进 src/design/STYLE.md 并记出处；画面上常驻身份标识（协议栈最外层框 + 文档式小节标签）。",
+      "script_evidence": "README「视觉系统」一节；FACTS.md「取证范围与限制」记录了这些材料的出处与读取方式。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F17",
+      "rule_sha256": "c0253b321ccfdfe79e4674011918ab26a39472d413bf87610fccb0fb50ff6f92",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "语气要一层层揭开：每章开头一句设问，答案随后落地，不做念稿；音色按对象年代与定位选择，已停用的音色不再选用；开工配音前先试听代表段再合成全片。",
+      "script_evidence": "README「开工反馈应用」F17 行与「读法」一节；本轮未进入配音阶段，音色未选。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F18",
+      "rule_sha256": "7fb50f4c0a8833196e7f4e3f7b363b19ea074b15443f19517648e0231dc44bae",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "每章一个主画面：01 远端桌面真的在你屏幕上；02 可拆开的套娃分层图；03 走完十个阶段的连接时间轴；04 同一根连接上分叉的多条虚拟通道；05 RDP/VNC/SSH 并排分工图。动作解释机制，不靠镜头晃动或特效堆叠。",
+      "script_evidence": "README「开工反馈应用」F18 行与「视觉系统」图形约定；FACTS.md 03-1、04-1、05-8/05-9/05-10 给出各主画面的事实依据。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F19",
+      "rule_sha256": "443675d55083c7b04f90ac51977b9bcbd63b0096c5db57e6cd57293b1f0765ee",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "按实际字宽排版；色块不越过别的框线；后到的元素不盖住正在讲的内容；反色高亮不同时渐变底色与字色；元素退场交代去向。分层图与时间轴先定安全区。",
+      "script_evidence": "README「开工反馈应用」F19 行与「视觉系统」一节；FACTS.md 02-3–02-6 的分层次序决定画面嵌套关系。",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}
