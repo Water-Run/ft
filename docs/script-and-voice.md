@@ -143,3 +143,17 @@ node kit/tools/asr.js <视频>
 ## 8. 音色与响度
 
 不同音色的峰值与均值之比差别很大（Yunyang 与 Andrew 相差约 7 dB）。混音按响度对齐旁白，不按峰值归一；成片增益按实测响度计算。两种语言的成片因此响度一致。
+
+## 9. 音色记录
+
+选音色前先看这张表。标「停用」的不再选用（F17）；其余评价针对当时那一片的气质或整体配音语气，再用时照样按 F17 先试听代表段。
+
+| 音色（MiniMax speech-2.8-hd） | 用在 | WaterRun 的评价 | 以后 |
+|---|---|---|---|
+| `English_Aussie_Bloke` | Web 登录英文（语速 1.08） | 「英文配音很一般，之后不要用这个音色了」（2026-10-20，P38） | **停用** |
+| `Chinese (Mandarin)_Reliable_Executive` | Tmux 中文、OpenCart 中文 | 配音太「懒洋洋」（2026-10-19，P29） | 评价针对整体语气，未停用音色；再用须先试听 |
+| `English_Trustworthy_Man` | Tmux 英文 | 同上（P29） | 同上 |
+| `News_Anchor` | PostgreSQL 试听 | 「太老气」 | 未用；针对 PostgreSQL 的气质 |
+| `female-yujie` | PostgreSQL 试听 | 「太妩媚」 | 未用；针对 PostgreSQL 的气质 |
+| `Chinese (Mandarin)_Male_Announcer` | PostgreSQL 中文（语速 1.1） | 试听成片后「都没问题」（2026-10-19） | 可用 |
+| `male-qn-jingying`（精英青年） | Web 登录中文（语速 1.05） | 没有单独评价 | 可用，先试听 |
