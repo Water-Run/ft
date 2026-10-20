@@ -10,9 +10,9 @@ const { needVideo, PROJECT, LANGS, KIT, FFMPEG, FFPROBE, PY, pythonPath, VIDEO, 
 needVideo();
 require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
-const P = PROJECT(), slug = P.slug, OUT = mkdirp(path.join(VIDEO, 'out'));
+const P = PROJECT(), slug = P.slug, OUT = mkdirp(path.join(VIDEO, 'out')), LUFS = +((P.audio || {}).lufs || -16);
 const ff = (args, o = {}) => spawnSync(FFMPEG(), args, { encoding: 'utf8', maxBuffer: 1 << 28, ...o });
-// 响度：固定增益 + 限幅（单遍 loudnorm 会抽动，不用）。增益按主混音的实测响度算到约 -16 LUFS，三个版本用同一个增益，旁白电平因此一致
+// 响度：固定增益 + 限幅（单遍 loudnorm 会抽动，不用）。增益按主混音的实测响度算到目标（project.json 的 audio.lufs，缺省 -16 LUFS），三个版本用同一个增益，旁白电平因此一致
 const measure = (f) => { const t = ff(['-hide_banner', '-nostats', '-i', f, '-af', 'ebur128=peak=true', '-f', 'null', '-']).stderr; const i = [...t.matchAll(/I:\s+(-?[\d.]+) LUFS/g)].pop(), p = [...t.matchAll(/Peak:\s+(-?[\d.]+) dBFS/g)].pop(); return { I: i ? +i[1] : NaN, TP: p ? +p[1] : NaN }; };
 const mux = (video, audio, out, meta) => ff(['-y', '-loglevel', 'error', '-i', video, '-i', audio, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-shortest', ...meta, '-movflags', '+faststart', out], { stdio: 'inherit' });
 const srtTime = (t) => { const ms = Math.round(t * 1000); const p = (n, w = 2) => String(n).padStart(w, '0'); return `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)},${p(ms % 1000, 3)}`; };
@@ -33,7 +33,7 @@ for (const lang of LANGS(true)) {
   const adur = +spawnSync(FFPROBE(), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', audio], { encoding: 'utf8' }).stdout || 0;
   console.log(`  画面 ${frames} 帧 = ${(frames / fps).toFixed(2)}s，声音 ${adur.toFixed(2)}s，时间线 ${L.total.toFixed(2)}s`);
   if (Math.abs(frames / fps - adur) > 0.25 || Math.abs(adur - L.total) > 0.6) { console.error(`  ✗ 画面、声音与时间线的长度不一致：脚本或配音改过之后要重新 audio.js 与 render.js；渲染日志末行要有 verified frames。这一版不封装`); failed = true; continue; }
-  const m0 = measure(audio), gain = Math.max(-6, Math.min(20, -16 - m0.I + 0.4));
+  const m0 = measure(audio), gain = Math.max(-6, Math.min(20, LUFS - m0.I + 0.4));
   const af = `volume=${gain.toFixed(1)}dB,alimiter=limit=0.84:level=disabled:attack=5:release=80`;
   const alt = arg('name', null);
   if (alt) {                                   // 试听片：同一画面配另一条混音
@@ -53,7 +53,7 @@ for (const lang of LANGS(true)) {
     mux(video, fin, path.join(OUT, `${slug}-${lang}-${tag}${suffix}.mp4`), meta);
     fs.rmSync(fin, { force: true });
   }
-  console.log(`  响度：增益 ${gain.toFixed(1)} dB → I=${m1.I} LUFS  TP=${m1.TP} dBFS（目标 -16±1.5 / ≤ -1）`);
+  console.log(`  响度：增益 ${gain.toFixed(1)} dB → I=${m1.I} LUFS  TP=${m1.TP} dBFS（目标 ${LUFS}±1.5 / ≤ -1）`);
   // 外挂字幕：与画面内字幕同文同步
   const cues = L.order.map((id) => L.cues[id]).filter((c) => c.cap);
   fs.writeFileSync(path.join(OUT, `${slug}-${lang}.srt`), cues.map((c, i) => `${i + 1}\n${srtTime(c.start)} --> ${srtTime(Math.min(c.end + 0.25, cues[i + 1] ? cues[i + 1].start - 0.05 : c.end + 0.5))}\n${strip(c.cap)}\n`).join('\n'));

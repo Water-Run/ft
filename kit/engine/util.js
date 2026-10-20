@@ -60,10 +60,12 @@ function arrowIn(p, t, d = 0.8) {
 
 // ── 入场 / 退场的几种基本动作（平面风格用；不要全片只用 show() 的「淡入 + 上移」）──
 // 擦除式揭示：元素从一侧「刷」出来。dir 为起刷的一侧：'l' 左、'r' 右、't' 上、'b' 下
+// 刷完停在略大于元素盒子的裁剪区：衬线字的下伸部（g、p、y）伸出行高，停在 inset(0%) 会被切掉一截；
+// 这种裁切只在正式渲染（render.js）里出现，look.js 的截图看不出来
 function wipe(e, t, o = {}) {
   const from = { l: 'inset(0% 100% 0% 0%)', r: 'inset(0% 0% 0% 100%)', t: 'inset(0% 0% 100% 0%)', b: 'inset(100% 0% 0% 0%)' }[o.dir || 'l'];
   tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: true }, t);
-  tl.fromTo(e, { clipPath: from }, { clipPath: 'inset(0% 0% 0% 0%)', duration: o.d || 0.6, ease: o.ease || 'power3.inOut', immediateRender: true }, t);
+  tl.fromTo(e, { clipPath: from }, { clipPath: 'inset(-30% -2% -30% -2%)', duration: o.d || 0.6, ease: o.ease || 'power3.inOut', immediateRender: true }, t);
   return e;
 }
 // 擦除式退场：朝 dir 一侧收走

@@ -186,7 +186,8 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
       if (fin) {
         if (Math.abs(fin.duration - L.total) > 0.6) fx.push(`成片时长 ${fin.duration.toFixed(1)}s 与时间线 ${L.total.toFixed(1)}s 不一致：脚本或配音改过之后没有重新渲染`);
         if (!new RegExp(`^width=${W}\r?$`, 'm').test(fin.probe) || !new RegExp(`^height=${H}\r?$`, 'm').test(fin.probe) || !new RegExp(`r_frame_rate=${fps}/1`).test(fin.probe)) fx.push(`成片规格不是 ${W}×${H} ${fps} 帧/秒`);
-        if (!(fin.loudness.I >= -17.5 && fin.loudness.I <= -14.5)) fx.push(`响度 ${fin.loudness.I} LUFS 不在 -16±1.5`);
+        const lufs = +((P.audio || {}).lufs || -16);   // 响度目标按片设（project.json 的 audio.lufs），缺省 -16
+        if (!(fin.loudness.I >= lufs - 1.5 && fin.loudness.I <= lufs + 1.5)) fx.push(`响度 ${fin.loudness.I} LUFS 不在 ${lufs}±1.5`);
         if (!(fin.loudness.TP <= -1)) fx.push(`峰值 ${fin.loudness.TP} dBFS 高于 -1`);
         if (((C.levels || {}).STILL || 'error') === 'error') for (const z of fin.freezes) fx.push(`成片 ${z.start.toFixed(1)}s 起有 ${z.d.toFixed(1)} 秒画面不动`);
         if (fin.blank) for (const z of fin.blank.blank) fx.push(`成片 ${z[0]}–${z[1]}s 是空画面`);
