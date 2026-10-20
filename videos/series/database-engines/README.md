@@ -46,8 +46,8 @@ WaterRun 2026-10-19 定下后续各集的顺序与各自承担的角色。分集
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](innodb/) |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](postgresql/) |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 | `firebird` |
-| 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 | `sqlite` |
-| 6 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 | `clickhouse` |
+| 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh + en | 计划中 | `sqlite` |
+| 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh + en | 计划中 | `clickhouse` |
 | 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 | `mongodb` |
 | 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh + en | 计划中 | `redis-keydb` |
 <!-- catalog:end -->

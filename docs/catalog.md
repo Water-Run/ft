@@ -19,8 +19,8 @@
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | 自制（Claude Opus 5.5） | [`innodb`](../videos/series/database-engines/innodb/) | 已发布：哔哩哔哩（2026-10-18）；发布后发现的画面问题见 README |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | 自制（6.1Sol、Claude Opus 5.5） | [`postgresql`](../videos/series/database-engines/postgresql/) | 2026-10-19 交付：中文 11:28（688.08 秒，1080p60），MiniMax 严肃男声配音、自写严肃工业风配乐，WaterRun 观看试听确认；check.js --final 全部通过；2026-10-19 16:32 发布于哔哩哔哩 BV1xAnn6WEzv。2026-10-20 WaterRun 评 8 分：设计契合、叙事不错；动画简陋、结尾表格高亮时字看不清（P30–P32），留档不返工。 |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 |  | `firebird` |  |
-| 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
-| 6 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
+| 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh + en | 计划中 |  | `sqlite` |  |
+| 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
 | 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh + en | 计划中 |  | `mongodb` |  |
 | 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh + en | 计划中 |  | `redis-keydb` |  |
 
@@ -307,7 +307,7 @@
 | 16 | Svn，Git 和代码管理 | zh + en | 计划中 |  | `svn-git` |  |
 | 17 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 |  | `how-fast-are-computers` |  |
 | 18 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 |  | `ai-support` |  |
-| 19 | RDP：Windows 优雅的远程实现 | zh + en | 计划中 |  | `rdp` |  |
+| 19 | RDP：Windows 远程的优雅实现 | zh + en | 计划中 |  | `rdp` |  |
 | 20 | 人均算力发展史 | zh + en | 计划中 |  | `compute-per-capita` |  |
 | 21 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 |  | `airsoft-mechanisms` |  |
 | 22 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 |  | `computer-use` |  |
