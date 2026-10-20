@@ -1,0 +1,37 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+====================================================================================================
+04  token 与字的关系 —— 2026-10-20，分词器与配置取自 openbmb/MiniCPM5-2B
+====================================================================================================
+    config.json 的 vocab_size        130,560   （模型词表：能表示多少种 token）
+    len(tokenizer)                    130,560          （分词器全部 token，含特殊 token）
+    tokenizer.vocab_size              130,072      （基础词表，不含特殊 token）
+    特殊 token 个数                   510
+    config.vocab_size == len(tokenizer)  True
+    config.vocab_size == 基础词表        False
+
+    样本              字符数  token 数    每 token 字符数   分词结果（前 12 个）
+    ------------------------------------------------------------------------------------------------
+    中文短句             16        9           1.78   拿到 | 一个 | 模型 | ，先 | 看 | 它 | 有多少 | 参数 | 。
+    中文长句             39       23           1.70   参 | 数量 | 是 | 模型 | 里 | 所有 | 可 | 训练 | 的 | 数字 | 的 | 个数
+    英文短句             41        8           5.12   How |  many |  parameters |  does |  this |  model |  have | ?
+    英文长句             76       18           4.22   The |  number |  of |  parameters |  tells |  you |  how |  large |  a |  model |  is | ,
+    代码               43       11           3.91   def |  forward | (self | , |  x | ): |  return |  self | .linear | (x | )
+    数字与符号            22       15           1.47   202 | 6 | - | 10 | - | 20 | ␣ | 3 | . | 14 | ␣ | 50
+    英文长单词            12        2           6.00   token | ization
+    英文常用词            11        2           5.50   hello |  world
+
+    同一个词被切成几个 token：
+      tokenization     → 2 个 token：token | ization
+      unbelievable     → 3 个 token：un | bel | ievable
+      hello            → 1 个 token：hello
+      模型参数             → 2 个 token：模型 | 参数
+      上下文长度            → 2 个 token：上下文 | 长度
+      参数量              → 2 个 token：参 | 数量
+
+    同一句话换一种写法，token 数就变了：
+      3.14                 3 个 token
+      3.14159              4 个 token
+      三点一四                 3 个 token
+      2026年10月20日          7 个 token
+      October 20, 2026     7 个 token
+

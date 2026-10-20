@@ -1,0 +1,52 @@
+====================================================================================================
+05  Hub 公布的参数量（API 的 safetensors 段）—— 2026-10-20
+====================================================================================================
+
+--- AxiomicLabs/GPT-X3-150M   （量级对照：最小，1.5 亿（名字里的 150M））
+    仓库 commit (sha)         46407499ecaf5f0e81f2798aa302c5641f36d4b1
+    仓库创建时间               2026-09-23T02:51:52.000Z
+    最后更新                   2026-10-10T22:09:04.000Z
+    库 / 任务                  transformers / text-generation
+    点赞 / 下载                74 / 1911
+    gated（是否需要登录）       False
+    Hub 公布：按 dtype         {'F32': 149400930}
+    Hub 公布：总参数量         149,400,930  = 149.40 M
+    API 的 config.architectures ['GPTX3ForCausalLM']
+    模型卡 cardData 字段        ['datasets', 'language', 'library_name', 'license', 'pipeline_tag', 'tags']
+
+--- openbmb/MiniCPM5-2B   （主例子：稠密、配置干净、单分片）
+    仓库 commit (sha)         f97400052a43d642bbc6e9975e2397e3ae6a6b52
+    仓库创建时间               2026-09-06T11:12:19.000Z
+    最后更新                   2026-09-29T06:12:33.000Z
+    库 / 任务                  transformers / text-generation
+    点赞 / 下载                1803 / 1328986
+    gated（是否需要登录）       False
+    Hub 公布：按 dtype         {'BF16': 2516756480}
+    Hub 公布：总参数量         2,516,756,480  = 2.517 B
+    API 的 config.architectures ['LlamaForCausalLM']
+    模型卡 cardData 字段        ['datasets', 'language', 'library_name', 'license', 'pipeline_tag', 'tags']
+
+--- LiquidAI/LFM2.5-24B-A2B   （混合专家：64 个专家，每个 token 走 4 个）
+    仓库 commit (sha)         1769516ac588c4c558089c94f27d96b0dc67b183
+    仓库创建时间               2026-10-12T05:35:46.000Z
+    最后更新                   2026-10-13T16:59:33.000Z
+    库 / 任务                  transformers / text-generation
+    点赞 / 下载                505 / 15410
+    gated（是否需要登录）       False
+    Hub 公布：按 dtype         {'F32': 2432, 'BF16': 23971585280}
+    Hub 公布：总参数量         23,971,585,280  = 23.972 B
+    API 的 config.architectures ['Lfm2MoeForCausalLM']
+    模型卡 cardData 字段        ['base_model', 'language', 'library_name', 'license', 'license_link', 'license_name', 'pipeline_tag', 'tags']
+
+--- Qwen/Qwen3.8-2.4T-A95B   （量级对照：最大，2.4 万亿）
+    仓库 commit (sha)         207bd685a7e3696cfaff12ded7c6a7ea0f88c996
+    仓库创建时间               2026-08-08T01:50:52.000Z
+    最后更新                   2026-08-12T10:24:04.000Z
+    库 / 任务                  transformers / text-generation
+    点赞 / 下载                1322 / 25844
+    gated（是否需要登录）       False
+    Hub 公布：按 dtype         {'BF16': 2446182725504}
+    Hub 公布：总参数量         2,446,182,725,504  = 2446.183 B
+    API 的 config.architectures ['Qwen3_5MoeForCausalLM']
+    模型卡 cardData 字段        ['library_name', 'license', 'license_link', 'license_name', 'pipeline_tag']
+

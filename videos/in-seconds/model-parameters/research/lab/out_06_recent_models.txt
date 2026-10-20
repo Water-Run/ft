@@ -1,0 +1,54 @@
+====================================================================================================================
+06  筛选 2026-08-01 之后发布的模型 —— 2026-10-20
+====================================================================================================================
+
+【甲】候选核对（2026 年 9–10 月公开发布的模型）
+    deepseek-ai/DeepSeek-V4.1-Flash              创建 2026-09-10T02:17:58  更新 2026-10-16 赞 4663 载  1431582 763.205 B  层None 隐None 头None 上限None 词表None
+    zai-org/GLM-5.3-FlashX                       取不到：HTTP 401 for https://huggingface.co/api/models/zai-org/GLM-5
+    zai-org/GLM-5.2                              创建 2026-06-16T07:39:20  更新 2026-09-01 赞 5179 载   390974 753.330 B  层78 隐6144 头64 上限1048576 词表154880
+    stepfun-ai/Step-5                            取不到：HTTP 401 for https://huggingface.co/api/models/stepfun-ai/St
+    stepfun-ai/Step-5-Pro                        取不到：HTTP 401 for https://huggingface.co/api/models/stepfun-ai/St
+    XiaomiMiMo/MiMo-V2.6-Flash                   取不到：HTTP 401 for https://huggingface.co/api/models/XiaomiMiMo/Mi
+    XiaomiMiMo/MiMo-V2.6                         取不到：HTTP 401 for https://huggingface.co/api/models/XiaomiMiMo/Mi
+    ChinaTelecom/Xing4.0-29B-A4B                 取不到：HTTP 401 for https://huggingface.co/api/models/ChinaTelecom/
+    ZDTaichu/ZDTaichu5.0-9B                      取不到：HTTP 401 for https://huggingface.co/api/models/ZDTaichu/ZDTa
+    zai-org/ZDTaichu5.0-9B                       取不到：HTTP 401 for https://huggingface.co/api/models/zai-org/ZDTai
+    xai-org/grok-4.7                             取不到：HTTP 401 for https://huggingface.co/api/models/xai-org/grok-
+    moonshotai/Kimi-K3                           创建 2026-06-13T06:42:57  更新 2026-09-02 赞11777 载   998301 2779.932 B  层None 隐None 头None 上限None 词表None
+    moonshotai/Kimi-K3-Instruct                  取不到：HTTP 401 for https://huggingface.co/api/models/moonshotai/Ki
+    Qwen/Qwen3.5-9B                              创建 2026-02-27T12:58:26  更新 2026-03-02 赞 2207 载  7266088   9.653 B  层None 隐None 头None 上限None 词表None
+    Qwen/Qwen3.5-4B                              创建 2026-02-27T14:45:03  更新 2026-03-02 赞 1094 载  7832237   4.660 B  层None 隐None 头None 上限None 词表None
+    tencent/Hunyuan-M2.7                         取不到：HTTP 401 for https://huggingface.co/api/models/tencent/Hunyu
+    MiniMaxAI/MiniMax-M3                         创建 2026-06-02T07:49:31  更新 2026-07-23 赞 1585 载   200238 427.040 B  层None 隐None 头None 上限None 词表None
+    inclusionAI/Ling-2.0                         取不到：HTTP 401 for https://huggingface.co/api/models/inclusionAI/L
+
+【乙】热度扫描：按点赞 / 趋势 / 下载取，再筛创建时间
+    取到的仓库数                  250
+    其中创建于 2026-08-01 之后的     97
+    仓库                                           创建                       赞         下载         参数  关键字段
+    deepseek-ai/DeepSeek-V4.1-Flash              创建 2026-09-10T02:17:58  更新 2026-10-16 赞 4663 载  1431582 763.205 B  层None 隐None 头None 上限None 词表None
+    prism-ml/Ternary-Bonsai-2-27B-gguf           创建 2026-09-16T23:40:56  更新 2026-09-25 赞 2763 载  2999667         —    [无 safetensors]
+    TokenRhythm/NeoHorse-1-4B                    创建 2026-09-05T08:21:53  更新 2026-09-10 赞 2551 载     6666   4.206 B  层32 隐2560 头16 上限262144 词表248320
+    zai-org/GLM-5.3                              创建 2026-08-25T06:42:50  更新 2026-10-14 赞 2267 载  1873260 753.330 B  层78 隐6144 头64 上限1048576 词表154880
+    jialinyyzz/humanizer                         创建 2026-09-11T05:00:16  更新 2026-10-15 赞 2009 载   115341  11.960 B  层None 隐None 头None 上限None 词表None
+    XingChen-AGI/Xing4.0-29B-A4B                 创建 2026-09-16T06:44:40  更新 2026-10-13 赞 1850 载    37548  31.215 B  层40 隐3584 头32 上限262144 词表131072
+    openbmb/MiniCPM5-2B                          创建 2026-09-06T11:12:19  更新 2026-09-29 赞 1803 载  1328986   2.517 B  层42 隐2048 头16 上限131072 词表130560
+    deepseek-ai/DeepSeek-V4.1-Flash-1017         创建 2026-10-17T02:40:38  更新 2026-10-17 赞 1801 载    27737 763.205 B  层None 隐None 头None 上限None 词表None
+    JonathanColetti/Qwen3.8-27B-Uncensored-GGUF  创建 2026-08-14T03:43:36  更新 2026-08-29 赞 1645 载  2575500         —    [无 safetensors]
+    OBLITERATUS/Qwen3.8-27B-OBLITERATED          创建 2026-08-19T14:53:08  更新 2026-08-24 赞 1496 载   550946  27.781 B  层None 隐None 头None 上限None 词表None
+    XHToken/Spark-X2.5-4B                        创建 2026-08-24T06:34:34  更新 2026-09-15 赞 1428 载    37452   4.112 B  层36 隐2560 头16 上限1048576 词表131072
+    Qwen/Qwen3.8-2.4T-A95B                       创建 2026-08-08T01:50:52  更新 2026-08-12 赞 1322 载    25844 2446.183 B  层92 隐8192 头64 上限262144 词表248320 专家512/每token10
+    Aleph-Alpha/Kolibri-1                        创建 2026-10-02T05:54:02  更新 2026-10-20 赞  959 载    20525  78.103 B  层50 隐2560 头48 上限262144 词表128000 专家384/每token6
+    HemmingwayAI/Hemmingway-1                    创建 2026-09-20T12:10:31  更新 2026-10-01 赞  882 载    11967  26.896 B  层64 隐5120 头24 上限262144 词表248320
+    XiaomiMiMo/MiMo-V2.6-Pro-RL                  创建 2026-09-21T15:39:33  更新 2026-10-09 赞  750 载   103649 1024.217 B  层70 隐6144 头128 上限1048576 词表152576
+    BreezeBlue/Breeze-TTS-2                      创建 2026-08-25T16:39:34  更新 2026-09-09 赞  749 载    14605   3.466 B  层28 隐2048 头16 上限2048 词表2051
+    ornith-ai/Ornith-1.5-35B-A3B                 创建 2026-08-18T06:24:38  更新 2026-08-23 赞  740 载   257122  35.952 B  层None 隐2048 头None 上限None 词表None
+    dealignai/DeepSeek-V4.1-Flash-UNCENSORED-FP8 创建 2026-09-10T21:02:04  更新 2026-09-11 赞  726 载    52502 763.205 B  层None 隐None 头None 上限None 词表None
+    0bserverx/Qwen3.8-27B-Heretic-Abliterated-Uncensored-GGUF 创建 2026-08-14T18:48:26  更新 2026-09-20 赞  719 载  1070113         —  
+    dealignai/GLM-5.3-CYBERSECURITY-FP8          创建 2026-08-30T10:46:54  更新 2026-09-08 赞  710 载   103568 753.330 B  层78 隐6144 头64 上限1048576 词表154880
+    ConwayResearch/Underdog-Saluki-27B-1.0       创建 2026-10-08T01:47:26  更新 2026-10-15 赞  575 载   449274         —    [无 safetensors]
+    XiaomiMiMo/MiMo-V2.6-Flash-RL                创建 2026-09-21T15:39:51  更新 2026-10-09 赞  566 载   106849 310.756 B  层48 隐4096 头64 上限1048576 词表152576
+    ornith-ai/Ornith-1.5-9B-GGUF                 创建 2026-08-19T00:02:44  更新 2026-08-24 赞  565 载  4991826         —    [无 safetensors]
+    orcarouter/OrcaSAQ-2-Cyber-27B-Uncensored-GGUF 创建 2026-09-26T03:37:50  更新 2026-10-12 赞  540 载    28009         —    [无 safetensors]
+    ornith-ai/Ornith-1.5-35B-A3B-GGUF            创建 2026-08-18T06:38:41  更新 2026-08-24 赞  527 载  3840023         —    [无 safetensors]
+

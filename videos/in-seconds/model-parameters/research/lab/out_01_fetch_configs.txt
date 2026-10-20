@@ -2,82 +2,68 @@
 01  模型仓库配置文件（config.json）—— 2026-10-20 取自 huggingface.co 公开仓库
 ====================================================================================================
 
---- google-bert/bert-base-uncased  （BERT-base（编码器，百万级））
-    字段总数 19
-    hidden_size                = 768
-    num_hidden_layers          = 12
-    num_attention_heads        = 12
-    intermediate_size          = 3072
-    max_position_embeddings    = 512
-    vocab_size                 = 30522
-    architectures              = ['BertForMaskedLM']
-    全部字段名：architectures, attention_probs_dropout_prob, gradient_checkpointing, hidden_act, hidden_dropout_prob, hidden_size, initializer_range, intermediate_size, layer_norm_eps, max_position_embeddings, model_type, num_attention_heads, num_hidden_layers, pad_token_id, position_embedding_type, transformers_version, type_vocab_size, use_cache, vocab_size
-
---- HuggingFaceTB/SmolLM2-135M  （SmolLM2-135M（生成式，最小一档））
-    字段总数 25
+--- AxiomicLabs/GPT-X3-150M  （量级对照：最小，1.5 亿（名字里的 150M））
+    字段总数 26
     hidden_size                = 576
-    num_hidden_layers          = 30
+    num_hidden_layers          = 24
     num_attention_heads        = 9
     num_key_value_heads        = 3
-    intermediate_size          = 1536
+    intermediate_size          = 1584
     max_position_embeddings    = 8192
-    vocab_size                 = 49152
-    rope_theta                 = 100000
-    architectures              = ['LlamaForCausalLM']
-    全部字段名：architectures, attention_bias, attention_dropout, bos_token_id, eos_token_id, hidden_act, hidden_size, initializer_range, intermediate_size, is_llama_config, max_position_embeddings, model_type, num_attention_heads, num_hidden_layers, num_key_value_heads, pretraining_tp, rms_norm_eps, rope_interleaved, rope_scaling, rope_theta, tie_word_embeddings, torch_dtype, transformers_version, use_cache, vocab_size
+    vocab_size                 = 65536
+    head_dim                   = 64
+    tie_word_embeddings        = True
+    architectures              = ['GPTX3ForCausalLM']
+    model_type                 = gptx3
+    全部字段名：architectures, auto_map, bos_token_id, conv_size, dtype, eos_token_id, gdn_head_dim, gdn_layers_per_gqa, gdn_norm_eps, head_dim, hidden_size, intermediate_size, max_position_embeddings, model_type, num_attention_heads, num_hidden_layers, num_key_value_heads, pad_token_id, rms_norm_eps, rope_theta, rotary_dim, tie_word_embeddings, transformers_version, use_cache, use_fla, vocab_size
 
---- unsloth/Llama-3.2-1B  （Llama-3.2-1B（本片主例子））
-    字段总数 27
+--- openbmb/MiniCPM5-2B  （主例子：稠密、配置干净、单分片）
+    字段总数 23
     hidden_size                = 2048
-    num_hidden_layers          = 16
-    num_attention_heads        = 32
-    num_key_value_heads        = 8
-    intermediate_size          = 8192
+    num_hidden_layers          = 42
+    num_attention_heads        = 16
+    num_key_value_heads        = 2
+    intermediate_size          = 6144
     max_position_embeddings    = 131072
-    vocab_size                 = 128256
-    rope_theta                 = 500000.0
+    vocab_size                 = 130560
+    head_dim                   = 128
+    tie_word_embeddings        = False
     architectures              = ['LlamaForCausalLM']
-    全部字段名：architectures, attention_bias, attention_dropout, bos_token_id, eos_token_id, head_dim, hidden_act, hidden_size, initializer_range, intermediate_size, max_position_embeddings, mlp_bias, model_type, num_attention_heads, num_hidden_layers, num_key_value_heads, pad_token_id, pretraining_tp, rms_norm_eps, rope_scaling, rope_theta, tie_word_embeddings, torch_dtype, transformers_version, unsloth_fixed, use_cache, vocab_size
+    model_type                 = llama
+    全部字段名：_name_or_path, architectures, bos_token_id, eos_token_id, head_dim, hidden_act, hidden_size, initializer_range, intermediate_size, max_position_embeddings, model_type, num_attention_heads, num_hidden_layers, num_key_value_heads, pad_token_id, rms_norm_eps, rope_scaling, rope_theta, tie_word_embeddings, torch_dtype, transformers_version, use_cache, vocab_size
 
---- unsloth/Llama-3.1-8B  （Llama-3.1-8B（十亿级））
-    字段总数 28
-    hidden_size                = 4096
-    num_hidden_layers          = 32
+--- LiquidAI/LFM2.5-24B-A2B  （混合专家：64 个专家，每个 token 走 4 个）
+    字段总数 29
+    hidden_size                = 2048
+    num_hidden_layers          = 40
     num_attention_heads        = 32
     num_key_value_heads        = 8
-    intermediate_size          = 14336
+    intermediate_size          = 11776
     max_position_embeddings    = 131072
-    vocab_size                 = 128256
-    rope_theta                 = 500000.0
-    architectures              = ['LlamaForCausalLM']
-    全部字段名：_name_or_path, architectures, attention_bias, attention_dropout, bos_token_id, eos_token_id, head_dim, hidden_act, hidden_size, initializer_range, intermediate_size, max_position_embeddings, mlp_bias, model_type, num_attention_heads, num_hidden_layers, num_key_value_heads, pad_token_id, pretraining_tp, rms_norm_eps, rope_scaling, rope_theta, tie_word_embeddings, torch_dtype, transformers_version, unsloth_fixed, use_cache, vocab_size
+    vocab_size                 = 128000
+    num_experts                = 64
+    num_experts_per_tok        = 4
+    moe_intermediate_size      = 1536
+    num_dense_layers           = 2
+    tie_word_embeddings        = True
+    architectures              = ['Lfm2MoeForCausalLM']
+    model_type                 = lfm2_moe
+    全部字段名：architectures, bos_token_id, conv_L_cache, conv_bias, dtype, eos_token_id, hidden_size, initializer_range, intermediate_size, layer_types, max_position_embeddings, model_type, moe_intermediate_size, norm_eps, norm_topk_prob, num_attention_heads, num_dense_layers, num_experts, num_experts_per_tok, num_hidden_layers, num_key_value_heads, pad_token_id, rope_parameters, routed_scaling_factor, tie_word_embeddings, transformers_version, use_cache, use_expert_bias, vocab_size
 
---- mistralai/Mixtral-8x7B-v0.1  （Mixtral-8x7B（MoE））
-    字段总数 25
-    hidden_size                = 4096
-    num_hidden_layers          = 32
-    num_attention_heads        = 32
-    num_key_value_heads        = 8
-    intermediate_size          = 14336
-    max_position_embeddings    = 32768
-    vocab_size                 = 32000
-    num_local_experts          = 8
-    num_experts_per_tok        = 2
-    rope_theta                 = 1000000.0
-    architectures              = ['MixtralForCausalLM']
-    全部字段名：architectures, attention_dropout, bos_token_id, eos_token_id, hidden_act, hidden_size, initializer_range, intermediate_size, max_position_embeddings, model_type, num_attention_heads, num_experts_per_tok, num_hidden_layers, num_key_value_heads, num_local_experts, output_router_logits, rms_norm_eps, rope_theta, router_aux_loss_coef, sliding_window, tie_word_embeddings, torch_dtype, transformers_version, use_cache, vocab_size
-
---- Qwen/Qwen3-235B-A22B  （Qwen3-235B-A22B（MoE，千亿级））
-    字段总数 34
-    hidden_size                = 4096
-    num_hidden_layers          = 94
+--- Qwen/Qwen3.8-2.4T-A95B  （量级对照：最大，2.4 万亿）
+    字段总数 41
+    hidden_size                = 8192
+    num_hidden_layers          = 92
     num_attention_heads        = 64
     num_key_value_heads        = 4
-    intermediate_size          = 12288
-    max_position_embeddings    = 40960
-    vocab_size                 = 151936
-    num_experts_per_tok        = 8
-    rope_theta                 = 1000000.0
-    architectures              = ['Qwen3MoeForCausalLM']
-    全部字段名：architectures, attention_bias, attention_dropout, bos_token_id, decoder_sparse_step, eos_token_id, head_dim, hidden_act, hidden_size, initializer_range, intermediate_size, max_position_embeddings, max_window_layers, mlp_only_layers, model_type, moe_intermediate_size, norm_topk_prob, num_attention_heads, num_experts, num_experts_per_tok, num_hidden_layers, num_key_value_heads, output_router_logits, rms_norm_eps, rope_scaling, rope_theta, router_aux_loss_coef, sliding_window, tie_word_embeddings, torch_dtype, transformers_version, use_cache, use_sliding_window, vocab_size
+    max_position_embeddings    = 262144
+    vocab_size                 = 248320
+    num_experts                = 512
+    num_experts_per_tok        = 10
+    moe_intermediate_size      = 2048
+    head_dim                   = 256
+    tie_word_embeddings        = False
+    architectures              = ['Qwen3_5MoeForCausalLM']
+    model_type                 = qwen3_5_moe_text
+    全部字段名：architectures, attention_bias, attention_dropout, attn_output_gate, bos_token_id, dtype, eos_token_id, full_attention_interval, head_dim, hidden_act, hidden_size, initializer_range, layer_types, linear_conv_kernel_dim, linear_key_head_dim, linear_num_key_heads, linear_num_value_heads, linear_value_head_dim, mamba_ssm_dtype, max_position_embeddings, model_type, moe_intermediate_size, mtp_num_hidden_layers, mtp_use_dedicated_embeddings, num_attention_heads, num_experts, num_experts_per_tok, num_hidden_layers, num_key_value_heads, output_gate_type, output_router_logits, pad_token_id, partial_rotary_factor, rms_norm_eps, rope_parameters, router_aux_loss_coef, shared_expert_intermediate_size, tie_word_embeddings, transformers_version, use_cache, vocab_size
 

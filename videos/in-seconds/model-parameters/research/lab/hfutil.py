@@ -17,21 +17,28 @@ import requests
 
 HF = "https://huggingface.co"
 UA = {"User-Agent": "ft-research/model-parameters"}
-TIMEOUT = 60
-RETRIES = 4
+TIMEOUT = 30
+RETRIES = 6
 
 
 def get(url, headers=None, stream=False):
-    """带重试的 GET。"""
+    """带重试的 GET。CDN 偶发 SSL 断连，退避后重试。
+
+    4xx 不重试：匿名访问 gated 仓库会返回 401，重试没有意义。
+    """
     last = None
     for i in range(RETRIES):
         try:
             r = requests.get(url, headers={**UA, **(headers or {})}, timeout=TIMEOUT, stream=stream)
+            if 400 <= r.status_code < 500:
+                raise RuntimeError(f"HTTP {r.status_code} for {url}")
             r.raise_for_status()
             return r
+        except RuntimeError:
+            raise
         except Exception as e:  # noqa: BLE001
             last = e
-            time.sleep(1.5 * (i + 1))
+            time.sleep(min(2 * (i + 1), 12) + (i * 0.7))
     raise RuntimeError(f"GET failed: {url} -> {last}")
 
 
