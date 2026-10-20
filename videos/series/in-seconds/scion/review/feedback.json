@@ -1,0 +1,216 @@
+{
+  "schema": 1,
+  "version": "2026-10-20.1",
+  "items": [
+    {
+      "id": "F01",
+      "rule_sha256": "402d8f81cdb8aa66c480d3ec466708642275d748689552ecf844b6755ca7e167",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "全片只回答标题承诺的一个问题：Anthropic 为什么放弃 Git 重写源码控制，以及新做法解决了什么。六章为 现象→它是什么→三个关键做法→收益→边界→结论，每章只推进这一步；Antique 评审细节、合并队列、团队故事等回答别的问题的段落已在 README「本片决定不讲的材料」中留档，不进正文。结论句回到「git 的长处在离线与完整克隆，在智能体规模上变成负担」。正面对照 Web 登录集（F01 被点名后半段跑题）。",
+      "script_evidence": "FACTS.md 逐章六节「0 现象」「1 它是什么」「2 三个关键做法」「3 官方给出的收益」「4 边界」「5 结论与片尾」；README「开工反馈应用」的「逐章怎样推进问题、最后回答什么」表与「内容」表的 open/what/how/win/bound/outro 六场",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F02",
+      "rule_sha256": "a5858f5fe190df36291bd8ae13a29852bd75324e60bcb41978a8aa438b7828fc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "150 秒内只引入 6 个新名词（changeset、派生数据、merge base、packfile、稀疏或虚拟化检出、ref），其余用观众已有知识带过；每个名词首次出现用一句话讲清它是什么、为什么需要。贯穿同一例子：CI 任务要拿「某提交与它的 merge base 之间的 diff」，从 git 的必须先检出整个仓库走到 Scion 的直接问服务器。屏幕上的数字全部按 FACTS 表内输入复算，不出现无出处的量。",
+      "script_evidence": "FACTS.md「1 它是什么」b4–b9 与「2 三个关键做法」c1–c10；README「开工反馈应用」F02 行的 6 个新名词清单与「内容」表 what 场 0:24–0:55、how 场 0:55–1:50",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F03",
+      "rule_sha256": "9681cfe22224f84b284054fb371d77250920114ac6326859fc18b17dec0438a6",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "首次出现 Scion 即交代它是什么（Anthropic 自建的版本控制系统）、与谁比（git）、用在什么环境（Anthropic 内部 monorepo）、什么版本口径（2026-10-13 发布、10-15 更新的官方博客）。changeset 对比 commit、派生数据对比 packfile 两处比较放在各自首现句并给出比较轴。所有 Anthropic 内部数字标为官方自述，不说成行业公认。",
+      "script_evidence": "FACTS.md「1 它是什么」b1–b7、「3 官方给出的收益」d1–d2，以及「概要」与「待核实」两节；README「开工反馈应用」F03 行与「内容」表 open 场 0:06–0:16",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F04",
+      "rule_sha256": "c013fecb9b807e6d31c433f725362819424edc03722bccce2cea56c366f6193e",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "每个画面先排信息再排动作：合并量曲线、changeset 结构图、三层缓存图、三个收益数字、边界卡完整出现后，按「1.5 秒 + 画面必要文字字数 ÷ 5 字/秒」留足稳定时间再退场。三个收益数字分三拍落，不同时出现。150 秒定长靠删内容腾时间，不压留白。",
+      "script_evidence": "FACTS.md「2 三个关键做法」c6–c8（分层缓存与命中率）、「3 官方给出的收益」d1–d2（三个收益数字）、「5 结论与片尾」f2（片尾 7.5 秒无人声）；README「内容」表六场时间轴与「开工反馈应用」F04 行",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F05",
+      "rule_sha256": "7e11e28dbd2ff2f0a1f19c06830db273b8fec4a07d95a24f12c0095c596e2483",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "每个关键动作都说明它表现什么关系：请求推向服务端＝客户端永远在线；changeset 落进横槽＝服务端一提交就全局可用；请求逐级上溯＝按需取；稀疏检出只展开被请求的目录＝只付读过的钱。不用整屏刷换当转场。",
+      "script_evidence": "FACTS.md「1 它是什么」b2、b6 与「2 三个关键做法」c6、c7、c9、c10；README「内容」表 what/how 场与「视觉系统」的图形约定",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F06",
+      "rule_sha256": "ee41c345f574a392da44514d878439edec32a8b9efab0bfb7565fe743914fc67",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "沿用系列基座的 120 拍/分、一秒一声秒针与直刷换场，但配乐须有一层贯穿的低频铺底（对照 F06 里 MyISAM 的正面评价、InnoDB 与 OpenCart 的反面）。音效只给关键动作：changeset 落日志、缓存命中、请求上溯三层、收益数字落定；不做默认 whoosh。",
+      "script_evidence": "FACTS.md「5 结论与片尾」f2（片尾 7.5 秒，无人声）；README「开工反馈应用」F06 行与「视觉系统」「制作署名与片尾」两节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F07",
+      "rule_sha256": "e739c34257a6cf813a5bd2480711b73b8d33b3b23053af95c66bfc2288cac734",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面只出现官方博客公开的名称与数字（scion-daemon、scion-cache、scion-server、Antique、Spanner）；不出现内部主机名、仓库名、团队成员姓名或图表里的内部标识；目录树、tree 与 blob 的示意用通用名字。",
+      "script_evidence": "FACTS.md「2 三个关键做法」c6、c7、c11（scion-daemon / cache / server、Antique、Spanner 的官方原名）；README「开工反馈应用」F07 行",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F08",
+      "rule_sha256": "bce8f28acc4bcfd2c7fefa0e8f29e475fb6095ec23f4281096b0c9e515db0e55",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "交付前用最终编码文件核对帧率 60、时长 150.00 秒、响度、真峰值、文件名与版本；本片是定长片，时长须精确等于标题里的 150 秒，因此先决条件是把 project.json 的 check.duration 从模板值 [59.9, 60.1] 改为 [149.9, 150.1]。",
+      "script_evidence": "FACTS.md「环境与版本」表最后一行（时长与 check.duration 待改）；README「当前状态与接续」的下一步列与「成片」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F09",
+      "rule_sha256": "b2ea9b013fa2403582468ed0f8fd6e97d68c63654086ac6846b73bf007acefb2",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "严格分四类来源：Anthropic 官方博客（一手，内部数字无第二路独立印证）、Git 官方文档（印证 git 一侧机制）、GitHub 搜索 API（印证没有公开仓库）、本片归纳。媒体与聚合站只用于定位原文，不作片中依据；片中凡引用 Anthropic 内部数字，一律说明是官方自述。",
+      "script_evidence": "FACTS.md「概要」「环境与版本」与各表「独立印证」列（如现象 a1、收益 d1、边界 e3），以及「待核实」第 2 行；README「取证」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F10",
+      "rule_sha256": "a2e1ba91c5ad8762543a30105086ad1f7ac9f98dbe4c293eae198a170276f807",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "本集是系列第 24 集，标题不依赖任何前集；开头直接从 git 在什么地方先撑不住起，不提上一集；引用 Git 机制（commit 存什么、push 干什么）在本片内补足背景。",
+      "script_evidence": "FACTS.md「0 现象」a5、a6、a7；README「开工反馈应用」F10 行与「内容」表 open 场 0:00–0:24",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F11",
+      "rule_sha256": "529abaafa171dd444d6174e4102f4cda323d83b7057a78658dad45af74775b4f",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "观众要读的外文一律给中文释义并注明译法：changeset（变更集）、write-ahead log（预写式日志）、derived data（派生数据）、skip list（跳表）、packfile（打包文件）、compare-and-swap（比较并交换）、sparse 与 virtualized checkout（稀疏与虚拟化检出）、Antique。Mononoke 与 Bonsai 若提及，只给一句中文音译加解释，不展开英文文献。",
+      "script_evidence": "FACTS.md「1 它是什么」b4、b8、b9 与「2 三个关键做法」c1、c7、c9；README「开工反馈应用」F11 行与「读法」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F12",
+      "rule_sha256": "58203e61490f97ef4d3b565e985d15aa3ff5f27bc29f7a6823df64837a0c15cc",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "专名读法先试听：Scion、Antique、Spanner、Mononoke、Mythos Preview、Claude Tag；Scion 与 Antique 保留英文原名不译。数字与百分比按语义停顿（「小 200 倍」「25% 的 CPU 容量」不连读）；字幕切分不决定口播停顿。",
+      "script_evidence": "FACTS.md「3 官方给出的收益」d1–d4（d4 含 Mythos Preview）与「2 三个关键做法」c11（Antique）；README「开工反馈应用」F12 行与「读法」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F13",
+      "rule_sha256": "12393e05e9d22c5ae8e215632cf53640831f4f5e4298337fb2d99fdc89ff543c",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "开头 6 秒内交代版本控制是干什么的、git 是今天多数项目的默认选择，随后给本片路线，不铺垫历史。年代信息只给必须的：合并量是 2026 年 5 月到 9 月的数字，官方博客发布于 2026-10-13。git 诞生史与 SVN 时代不讲。",
+      "script_evidence": "FACTS.md「0 现象」a1、a3、a5 与「环境与版本」表（发布与更新日期）；README「开工反馈应用」F13 行与「内容」表 open 场 0:00–0:16",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F14",
+      "rule_sha256": "3090bbf25d96988b675e3d7a32a2f43ce82bc7366b4b5cf7734d4d5f768e9560",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "片尾约 7.5 秒，用空字幕加 credits:true 与 pause 保留时间，不设 tts；正文不出现「策划」「模型」「开源视频」等制作说明。名单按 FACTS 的「制作署名」一节，与 README「制作署名与片尾」一致。",
+      "script_evidence": "FACTS.md「5 结论与片尾」f2 与「制作署名」一节；README「制作署名与片尾」节（片尾时段 2:22.5–2:30.00）",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F15",
+      "rule_sha256": "bbcf562e4bb5f0ccad5cfabf069e365ffc4f2118cb3acb9d510fe6fcf1fd9781",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "画面与旁白只放观众要的内容：不写「数字来自官方博客」「未公开部分未列出」「示意」这类制作者口吻的自我说明；数据来源用一行简短署名。口径限定只在会造成误解时用一句自然的话放进正文（如「这是 Anthropic 自己环境的数字」）。",
+      "script_evidence": "FACTS.md「4 边界」e1–e4 与「待核实」一节；README「开工反馈应用」F15 行与「视觉系统」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F16",
+      "rule_sha256": "5e622f5da54325330143a5b91e9aa1aaccda9d089f7b294d1210b998b5cb91b7",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "视觉语汇取自讲解对象自己的材料：官方博客的墨色主题与衬线排版，以及博客里的四张原图（每日合并量曲线、changeset 结构图、三层检出架构图、每周合并量）；图形上落回系列基座的计时盘（墨 #0c0d0f、纸 #f2efe8、朱红 #ff4a1c）。本集尚无系列级视觉例外，上述方向属提案，待关键帧后交策划者确认。",
+      "script_evidence": "FACTS.md「0 现象」a1（合并量图注）、「1 它是什么」b4、b5（changeset 结构图）与「2 三个关键做法」c6（架构图）；README「视觉系统」节与「开工反馈应用」F16 行",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F17",
+      "rule_sha256": "c0253b321ccfdfe79e4674011918ab26a39472d413bf87610fccb0fb50ff6f92",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "语速沿用系列约定（中文 +6%、英文 +8%）。本集是技术解说，语气要有往前推的感觉：句子有起伏，关键因果处（git 的长处变成负担、服务端提交、三个收益数字）给重音，长句不念成一串平读。音色沿用 project.json 的 zh-CN-YunyangNeural 与 en-US-AndrewNeural；docs/script-and-voice.md「音色记录」里已停用的音色不选用。",
+      "script_evidence": "FACTS.md「概要」与「3 官方给出的收益」d1–d4（需要语气推进的内容）；README「开工反馈应用」F17 行与「读法」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F18",
+      "rule_sha256": "7fb50f4c0a8833196e7f4e3f7b363b19ea074b15443f19517648e0231dc44bae",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "每章定一个以讲解对象为主角的主画面：第 0 章合并量曲线从 2,500 涨到 3 万；第 1 章 changeset 结构图（父提交、变化文件列表、blob 指针）；第 2 章三层缓存请求上溯图与稀疏检出按需展开；第 3 章三个收益数字落定；第 4 章「没有公开仓库」的边界卡。不以逐行淡入或表格高亮充当主画面，也不靠镜头晃动。",
+      "script_evidence": "FACTS.md「0 现象」a1、「1 它是什么」b4–b5、「2 三个关键做法」c6–c9、「3 官方给出的收益」d1–d2、「4 边界」e3；README「内容」表各场与「视觉系统」的图形约定",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    },
+    {
+      "id": "F19",
+      "rule_sha256": "443675d55083c7b04f90ac51977b9bcbd63b0096c5db57e6cd57293b1f0765ee",
+      "applicability": "applies",
+      "reason": "",
+      "plan": "按实际字宽排版：changeset 结构图里的文件名、缓存层级标签、数字与单位不越出所属框；朱红反色高亮不同时渐变底色与字色；后到的元素不盖住正在讲的数字；元素退场交代去向（请求上溯后画出它去了哪一层）。",
+      "script_evidence": "FACTS.md「2 三个关键做法」c6–c8（三层与标签）与「3 官方给出的收益」d1–d2（数字）；README「开工反馈应用」F19 行与「视觉系统」节",
+      "result": "pending",
+      "verification": "",
+      "clips": []
+    }
+  ],
+  "history": []
+}
