@@ -14,7 +14,7 @@
 | 下一步及依赖 | 重新渲染（建议 `node kit/tools/render.js videos/standalone/garbage-collection --lang zh --workers 4`，并行的浏览器少一些，占用内存少、耗时长）→ `finish.js` → 试听片 → 用成片哈希补 `review/feedback.json` 与本 README 的复盘 → `check.js --final` → 提交 |
 | 当前稿本 / 校对结论 | `review/script.zh.11b3303b….md`（142 句 + 2 静默）；`approval.json` 为 **approved**（2026-10-20T10:43+08:00）；旁白文字未改，内容哈希仍是 `11b3303b…` |
 | 输出在哪台制作机 | 制作机 A（Windows）：配音缓存 `audio/zh/`、混音 `out/zh/audio*.wav`、封面 `out/cover-zh-*`、预演 `out/zh/preview.mp4`、总览图 `shots/sheets/`（均不入库）；中止的渲染留下 `out/zh/video.mp4.segs/` 的 8 个分段，下次渲染开始时会由 `render.js` 自己清掉 |
-| 未完成、未检查与阻塞 | 成片 MP4、试听片、`check.js --final`；配乐、音效与配音的听感（制作者听不到声音）；以正常速度连续观看（制作者只看过截图与总览图）。`check.js --final` 预计会因 F05、F06、F12、F17、F19 五项待人复核而不通过——这五项需要人看、人听，制作者不能代填 |
+| 未完成、未检查与阻塞 | 成片 MP4、试听片、`check.js --final`；配乐、音效与配音的听感（制作者听不到声音）；以正常速度连续观看（制作者只看过截图与总览图）。`check.js --final` 预计会因 F05、F06、F12、F17、F19、F20 六项待人复核而不通过——这六项需要人看、人听，制作者不能代填 |
 
 ## 文案与校对
 
