@@ -25,7 +25,7 @@
 （表格：文件、规格或大小、说明。成片的时长、分辨率、帧率、响度照 finish.js 的输出填）
 
 ## 闸门结果
-（贴 `node kit/tools/check.js videos/series/in-seconds/model-cards --final` 的完整输出）
+（贴 `node kit/tools/check.js videos/series/in-seconds/model-parameters --final` 的完整输出）
 
 ## 三项审查
 ### 事实
@@ -77,6 +77,8 @@
 | F15 | | | |
 | F16 | | | |
 | F17 | | | |
+| F18 | | | |
+| F19 | | | |
 
 （结果使用已验证、已修改待复核、待修改、待事实核查或不适用及原因。只改规则、源码或只做抽样时不报整片已通过。新增共性问题列出，交准备方回填 docs/feedback.md。）
 

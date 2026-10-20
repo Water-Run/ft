@@ -1,12 +1,12 @@
 {
-  "slug": "model-cards",
+  "slug": "model-parameters",
   "languages": [
     "zh",
     "en"
   ],
   "titles": {
-    "zh": "96 秒速通模型卡",
-    "en": "Model Cards in 96 Seconds"
+    "zh": "96 秒速通模型的各个参数",
+    "en": "Model Parameters in 96 Seconds"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural",
@@ -36,7 +36,7 @@
     "duck_db": 7,
     "sfx_db": -9,
     "score": {
-      "lift_cue": "c3"
+      "lift_cue": "a2"
     }
   },
   "check": {
