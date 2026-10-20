@@ -54,7 +54,7 @@
 | [Harness](../videos/series/in-seconds/harness/) | 中文稿待优化确认 | 192.0 s，内容 SHA-256 `e30c…`；无配音；场景仍是系列基座。**本轮无新进展** | 优化中文稿 → WaterRun 确认 → 配音；确认前不按稿重写场景 |
 | [磁带、磁盘和软盘](../videos/series/storage-media/magnetic/) | 预研完成 | FACTS、来源、叙事与 NASA 朋克视觉方向；`script.js` 仍是骨架，**没有 approval 记录**。**本轮无新进展** | 写中文稿 → 审 → 翻译 → 制作 |
 | [CoT](../videos/series/in-seconds/chain-of-thought/) | 预研完成 | FACTS、来源、叙事与「计时盘 × 思考轨」方向；`script.js` 仍是骨架，**没有 approval 记录**。**本轮无新进展** | 写中文稿 → 审 → 翻译 → 制作 |
-| [垃圾回收的艺术](../videos/standalone/garbage-collection/) | 中文第 7 稿待审 | 同日按 WaterRun 四轮意见改到第 7 稿：无“艺术”单独章、章名为机制名、语言阵容按熟悉度（Python、Lua、C#、PHP、Nim、Java；Rust、Zig、C）、压到 4–7 分钟（五章）、俏皮妩媚口吻、震撼冲击感；71 句旁白 + 2 静默，估算 417.2 s（6:57），内容 SHA-256 `2c69…`；12 项实验；三轮对抗审稿；MiniMax 傲娇御姐音色试听在 audio/probe；无配音；`approval.json` 为 pending。**本轮无新进展** | WaterRun 全文确认（NOTES 列 10 项取舍）+ 试听定音色 → 英译 → 配音 → 关键帧（STYLE 第 13 节冲击点）→ 场景；上限 240–420 s；Credit Claude Fable 5.1 |
+| [垃圾回收的艺术](../videos/standalone/garbage-collection/) | 中文第 8 稿待审 | 2026-10-20 策划者交来第 8 稿（Gemini 4 Argon 撰写），整稿替换第 7 稿旁白并落盘、导出校对稿（`ef6363d1…`），事实编号映射沿用第 7 稿；音色按「可爱的女声」定为 `Chinese (Mandarin)_Sweet_Lady`（甜美女声），6 个候选各 4 段、最贴「可爱」的 4 个各 6 段试听在 `audio/probe/`；**策划者答复本片没有强制时间限制，可以慢一点**，`check.duration` 放宽为 400–640 s（第 8 稿估算 9:05，按选定音色投影 9.4 分） | WaterRun 复核第 8 稿（NOTES 列 6 项取舍：o10 去掉机制清单、o2 的 CSharp 写法、h5/h6 的引号、音色试听确认等）→ 按意见改稿重新导出 → 试听定音色与语速 → 英译 → 配音 → 关键帧（STYLE 第 13 节冲击点）→ 场景 |
 | [手枪射击](../videos/series/in-seconds/pistol-shooting/) | 立项 | 系列 60 s 基座；目标 150 s；题材事实未核查；**没有 approval 记录**。**本轮无新进展** | 先取证、写稿；确认前不配音、不按稿重画场景 |
 
 其余 155 部只有片单条目，没有目录。分布：电子发展史 18、时代 14、编程语言哲学 12、Harness 12、我们的中国 11、XX 秒速通 11、设计语言与视觉规范 9、燃油车技术 8、数据库引擎 5、编程语言 7、汽车平台 6、汽车的系统工程 3、摄影器材 3、游戏物理学 3、底盘代号与车型发展史 3、存储介质 2、动力总成 2、航空器群观 1、独立 25。逐条标题与备注见[片单](catalog.md)。

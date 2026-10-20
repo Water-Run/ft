@@ -55,8 +55,8 @@
       "no_emoji": true
     },
     "duration": [
-      240,
-      420
+      400,
+      640
     ]
   },
   "feedback": {
@@ -66,10 +66,10 @@
     "engine": "minimax",
     "model": "speech-2.8-hd",
     "voice": {
-      "zh": "Chinese (Mandarin)_Mature_Woman"
+      "zh": "Chinese (Mandarin)_Sweet_Lady"
     },
     "speed": {
-      "zh": 1.0
+      "zh": 1
     }
   }
 }
