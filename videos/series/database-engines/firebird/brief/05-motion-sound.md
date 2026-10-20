@@ -63,8 +63,8 @@ node kit/tools/audio.js  videos/series/database-engines/firebird --lang zh   # �
 
 ## 6. 配音
 
-- 音色**待定**：`project.json` 的 `tts` 段是占位。按 F17，先试听候选音色与语速，确认语气不塌——句子有起伏、该强调处有重音、长句不被念平——再定。
-- 试听要覆盖三组：`e6`–`e9`（三个数字的读法与重音）、`m2`–`m4`（外文专名与协议名）、`c3`–`c6`（长句不被念平）。
-- 避开 `docs/script-and-voice.md` 第 9 节里标「停用」的音色。
-- 读法与断句见 `brief/02-script.md`。
+- 旁白已由准备方按**经策划者确认的音色**合成，时间线在 `src/js/timing.zh.js`。音色不归你选。
+- **发现某句读着别扭、专名读错时**：改 `src/js/script.js` 的 `SAY` 表或该句的 `tts`，然后 `node kit/tools/tts.js videos/series/database-engines/firebird --lang zh` —— 合成是按（音色、语速、文本）缓存的，**只重合成改过的那一句**。改完在 `DELIVERY.md` 的「取舍」一节记下。
+- **不要改旁白的字。** 读法与断句归你，字不归你；确实读不通的句子写进交付说明，由准备方回策划者。
+- 读法与断句的规则见 `brief/02-script.md`。
 - 混音之后用 `asr.js` 逐句回听；ASR 只作筛查，最终由人耳确认，如实写明。

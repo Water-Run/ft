@@ -2,7 +2,9 @@
 
 数据库引擎系列第四集。面向写过 SQL、未读过引擎源码的观众，拆解 Firebird 5.0.4 的内部：**为什么同一个引擎既能当服务端，又能整个装进你自己的程序**。本集只做中文，片长 **4–7 分钟**（`check.duration` 设为 240–420 秒），按策划者 2026-10-20 的要求做电子乐配乐、节奏鲜明。
 
-**制作方式：委托。** 准备方（MiniMax M3.1 Flash）做第 0–4 步与交接材料；受托方（Claude Opus 5.5）做视觉系统、配乐、场景、封面、渲染与交付。准备方**不预置版面、类名、构图与曲子**——那会替受托模型把设计定死。
+**制作方式：委托。** 准备方（MiniMax M3.1 Flash）做第 0–4 步与交接材料（取证、旁白稿、任务书、素材与约束）；受托方（Claude Opus 5.5）做视觉系统、关键帧、分镜、配乐、场景、封面、渲染与交付。
+
+**受托方是主力**：准备方交付的是**事实与约束**，不是待执行的图纸。准备方不预置版面、类名、构图与曲子——那会替受托模型把设计定死；受托方可以覆盖准备方写的任何方案性内容，只在两条线上不让步：**事实**（与 `research/FACTS.md` 一致）与**闸门阈值**（`project.json` 的 `check` 段）。准备方做的那部分活（跑实验、写字幕稿、填反馈表）是为了**节约受托方的 Token**，受托方直接读结果，不必重做。规则见仓库 `docs/delegation.md`。
 
 制作流程与标准见仓库的 `docs/`；片中每一句陈述的出处见 [research/FACTS.md](research/FACTS.md)。
 
@@ -13,7 +15,7 @@
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-20 建目录；本机安装 Firebird 5.0.4.1812 并完成九组实验（`research/lab/`）；写 `research/FACTS.md`、`research/sources.json`、`research/STYLE.md`（材料与约束）；写中文第 1 稿（`src/js/script.js`，78 句，估算 381.9 秒）；写 `AGENTS.md` 与 `brief/01…06` 任务书；给十一个场景各写一个骨架；填 `review/feedback.json`（F01–F20） |
-| 下一步及依赖 | ① WaterRun 审中文第 1 稿（`review/NOTES.md` 列了 6 个待决问题）；② 确认后准备方补 `expect.zh.json` 并跑 `check.js --handoff`；③ 交 Claude Opus 5.5 开工：试听音色 → 配音 → 视觉系统与关键帧 → 分镜细化 → 场景 → 配乐与音效 → 渲染 → 三项审查 → `DELIVERY.md` |
+| 下一步及依赖 | ① WaterRun 审中文第 1 稿（`review/NOTES.md` 列了 6 个待决问题）；② 确认后准备方试听音色（按 F17 交策划者确认）、合成旁白、补 `expect.zh.json`，跑 `check.js --handoff`；③ 交 Claude Opus 5.5 开工：视觉系统与关键帧 → 分镜细化 → 场景 → 配乐与音效 → 渲染 → 三项审查 → `DELIVERY.md` |
 | 当前稿本 / 校对结论 | 见 [review/NOTES.md](review/NOTES.md) 与 `review/approval.json`；approval 为 pending |
 | 输出在哪台制作机 | 本机（不含私人主机信息的代号 FT-WS01） |
 | 未完成、未检查与阻塞 | 配音音色未试听；视觉系统、关键帧、配乐、场景、封面均未做（归受托方）；成片未出，任何观感结论都没有 |

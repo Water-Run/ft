@@ -2,9 +2,19 @@
 
 本片：`videos/series/database-engines/firebird`。数据库引擎系列第四集。
 
-> **状态：文案第 1 稿已落盘，待策划者 WaterRun 确认。** 准备方已完成取证、旁白第 1 稿、章节结构与任务书。**开工条件**：策划者确认中文稿 → 准备方补 `expect.zh.json` 并跑 `node kit/tools/check.js videos/series/database-engines/firebird --handoff` → 你开工。
+> **状态：文案第 1 稿已落盘，待策划者 WaterRun 确认。** 准备方已完成取证、旁白第 1 稿、章节结构与任务书。**开工条件**：策划者确认中文稿 → 准备方合成旁白（音色经策划者确认）、补 `expect.zh.json` 并跑 `node kit/tools/check.js videos/series/database-engines/firebird --handoff` → 你开工。
 >
 > **旁白文字、章节顺序、标题承诺都不得改动。** 需要调整时长只能改停顿与读法。
+
+## 0. 你是主力
+
+**这一片由你负责，视觉与声音的方案由你定。**
+
+- **准备方（MiniMax M3.1 Flash）不是审稿人，是帮手。** 它的产出是**事实与约束**，不是成品：取证、跑实验、写字幕稿、填反馈表、整理任务书。这些活外包给它，是为了**节约你的 Token**——所以**不要重做**：实验结果直接读 `research/lab/out_*.txt` 与 `out_*.json`，不要自己再装一遍 Firebird 跑一遍。
+- **你可以覆盖它的任何方案性内容。** `research/STYLE.md` 里的建议、`src/js/scenes/` 骨架文件里写的提示、`brief/04-storyboard.md` 里的举例，以及之后准备方补的 `expect.zh.json`——这些都**不是必须照做的**。凡是你有更好判断的地方，**直接改掉**，在 `DELIVERY.md` 的「取舍」一节写明你改了什么、为什么。
+- **相信自己的能力。** 视觉系统、关键帧、分镜、配乐、封面怎么设计，不需要向准备方的写法靠拢；本片没有「已定稿的视觉方案」这回事。准备方给的是材料出处、硬约束与闸门阈值，**设计是你的**。
+- **两条不能动的线**：一是**事实**（数字、版本、页号、偏移必须与 `research/FACTS.md` 一致），二是**闸门阈值**（`project.json` 的 `check` 段：总长、最小字号、静止上限、调色板、音效覆盖率）。这两条之外，视觉与声音的一切由你负责。
+- 想推翻准备方写的东西时，不必先问；改完在交付说明里交代一句即可。
 
 ## 1. 要做出什么
 
@@ -46,11 +56,13 @@
 | 一键重跑实验的脚本 | `research/lab/run_lab.ps1`（用 pwsh 7 跑；口令现场生成，不入库） |
 | 中文第 1 稿（唯一源稿） | `src/js/script.js` |
 | 交审导出稿与校对记录 | `review/script.zh.<哈希>.md`、`review/NOTES.md`（含 6 个待策划者拍板的问题） |
-| 开工反馈应用 F01–F19 | `review/feedback.json` |
+| 开工反馈应用 F01–F20 | `review/feedback.json` |
 | 视觉材料与硬约束（官方实测色值、字体文件、页面上的真实数值、禁用的做法） | `research/STYLE.md`、`brief/03-visual.md` |
 | 场景骨架：十一个场景各一个文件，场景号、章节与顺序已定 | `src/js/scenes/s0_open.js` … `s10_credits.js`、`src/index.html` |
 | 调色板与字体（锁在 `project.json` 的 `check` 段，闸门按字面比对） | `project.json`、`src/css/style.css` |
-| 逐句对应表 | **文案确认后由准备方补上** `expect.zh.json`（现在稿未确认，句号可能变） |
+| 关键帧工作区说明（**不是**样张） | `src/design/README.md` |
+| 旁白合成与时间线（音色经策划者确认） | `audio/`、`src/js/timing.zh.js` |
+| 逐句对应表 | `expect.zh.json`（准备方在文案确认后补；你可以按自己的画面需要改，改了记在交付说明里） |
 
 **归你做：**
 
@@ -59,7 +71,7 @@
 3. **一段示范场景** `src/design/scene-demo.js`：十来秒，用到镜头、两三种入场动作、打字机、音效登记。它是你自己照着写的范例。
 4. **分镜细化** `brief/storyboard-detail.md`：每句一行——画面上有什么、从哪来、怎么动、镜头在哪、什么音效。
 5. **场景实现** `src/js/scenes/`：把十一个骨架写实。镜头用 `makeCamera`，元素入场用 `slam` / `slide` / `appear` / `typeText`，关键动作登记 `sfx`。
-6. **配音** `node kit/tools/tts.js videos/series/database-engines/firebird --lang zh`。音色待定，按 F17 先试听候选再定；读法在 `script.js` 的 `SAY` 表。
+6. **读法微调**：旁白已由准备方按确认过的音色合成。发现某句读着别扭、专名读错时，改 `src/js/script.js` 的 `SAY` 表或该句的 `tts`，重跑 `tts.js` 只重合成那一句。**不要改旁白的字。**
 7. **配乐** `tools/music.py`：电子乐、有节奏感、贯穿全片的铺底，写法见 `docs/sound.md` 第 3.1 节。`project.json` 的 `audio.music` 已经指向这个文件。
 8. **音效编排、混音、试听片**。
 9. **封面** `src/cover.html`（准备方没有预留，请新建）：16:9 与 4:3 各一版，另出 2 倍像素的 PNG。
@@ -101,23 +113,21 @@
 |---|---|---|---|
 | 0 | 复查环境与时间线 | `node kit/tools/doctor.js V`<br>`node kit/tools/timeline.js V` | 环境可用；打印出总长与每句起止 |
 | 1 | 读完范例与素材 | `node kit/tools/look.js V o1` | 看懂 `look.js` 每一列的含义 |
-| 2 | 试听音色并定下 | `node kit/tools/tts_probe.js V --lang zh "<写法一>" "<写法二>"` | 三组代表段（`e6`–`e9`、`m2`–`m4`、`c3`–`c6`）听下来语气不塌；把音色与语速写进 `project.json` 的 `tts` |
-| 3 | 配音 | `node kit/tools/tts.js V --lang zh`<br>`node kit/tools/asr.js V --lang zh` | 全部句子合成；ASR 标出的存疑读音逐句听过后改（ASR 只作筛查，不代替人耳） |
-| 4 | 建视觉系统 | 写 `src/css/style.css`<br>`node kit/tools/look.js V --url "/src/design/keyframes.html?k=1" --size 1920x1080` | 字号阶梯、版式、部件、图形语言定下来；三到四张关键帧读得清；对照 `docs/standards.md` 自评后选定一个方向，在 `README.md` 写明选了什么、为什么 |
-| 5 | 写一段示范场景 | `node kit/tools/look.js V --scene demo`<br>`node kit/tools/scan.js V --from <起> --to <止>` | 运动中的可读性过关；错误为 0 |
-| 6 | 写分镜细化 | — | `brief/storyboard-detail.md` 每句一行：画面上有什么、从哪来、怎么动、镜头在哪、什么音效 |
-| 7 | 逐个实现场景 | 每写完一个场景：<br>`node kit/tools/look.js V --scene <场景号>`<br>`node kit/tools/scan.js V --from <起> --to <止>` | 该场景范围内错误为 0 |
-| 8 | 写配乐并混音 | 写 `tools/music.py`<br>`node kit/tools/audio.js V --lang zh` | 混音成功；数值自检（各章配乐电平、低/中/高占比、章节卡处与旁白之下的电平）无削波、压低生效；**听感需人确认，如实写明** |
-| 9 | 全片自检 | `node kit/tools/check.js V` | 「全部通过」 |
-| 10 | 读音核对 | `node kit/tools/asr.js V --lang zh` | 逐句「听到」与「合成」一致（同音字不算错） |
-| 11 | 低清预演，查像素级静止 | `node kit/tools/preview.js V --lang zh` | 没有超过限值的静止段 |
-| 12 | 封面 | 写 `src/cover.html`<br>`node kit/tools/look.js V --url "/cover.html?r=169&lang=zh" --size 1920x1080`<br>`node kit/tools/look.js V --url "/cover.html?r=43&lang=zh" --size 1600x1200`<br>`node kit/tools/covers.js V --lang zh` | 两版无 ✗；`out/` 下每种语言有 2 张 JPG、2 张 PNG |
-| 13 | 渲染与封装 | `node kit/tools/render.js V --lang zh`（不要中断）<br>`node kit/tools/finish.js V --lang zh` | 日志末行有 `verified frames=`；时长与时间线一致；响度在范围内 |
-| 14 | 试听片 | `node kit/tools/audio.js V --lang zh music=<另一种> out=audio_b.wav`<br>`node kit/tools/finish.js V --lang zh --audio out/zh/audio_b.wav --name <名字>`<br>`node kit/tools/audio.js V --lang zh`（把正式混音恢复为默认） | 试听片存在 |
-| 15 | 三项核心审查、原创与动画完成度、片尾名单及同编号反馈复盘（`docs/review.md` 第 5 节） | `node kit/tools/sheets.js V cue`<br>`node kit/tools/sheets.js V every 4` | 各项检查完成，无未解决的问题；反馈表附成片时间、证据、结果与遗留项；结论写进 `README.md`、`DELIVERY.md`，事实复核写入 `research/FACTS.md` |
-| 16 | 交付前总检 | `node kit/tools/check.js V --final` | 「全部通过」 |
+| 2 | 建视觉系统 | 写 `src/css/style.css`<br>`node kit/tools/look.js V --url "/src/design/keyframes.html?k=1" --size 1920x1080` | 字号阶梯、版式、部件、图形语言定下来；三到四张关键帧读得清；对照 `docs/standards.md` 自评后选定一个方向，在 `README.md` 写明选了什么、为什么 |
+| 3 | 写一段示范场景 | `node kit/tools/look.js V --scene demo`<br>`node kit/tools/scan.js V --from <起> --to <止>` | 运动中的可读性过关；错误为 0 |
+| 4 | 写分镜细化 | — | `brief/storyboard-detail.md` 每句一行：画面上有什么、从哪来、怎么动、镜头在哪、什么音效 |
+| 5 | 逐个实现场景 | 每写完一个场景：<br>`node kit/tools/look.js V --scene <场景号>`<br>`node kit/tools/scan.js V --from <起> --to <止>` | 该场景范围内错误为 0 |
+| 6 | 写配乐并混音 | 写 `tools/music.py`<br>`node kit/tools/audio.js V --lang zh` | 混音成功；数值自检（各章配乐电平、低/中/高占比、章节卡处与旁白之下的电平）无削波、压低生效；**听感需人确认，如实写明** |
+| 7 | 全片自检 | `node kit/tools/check.js V` | 「全部通过」 |
+| 8 | 读音核对 | `node kit/tools/asr.js V --lang zh` | 逐句「听到」与「合成」一致（同音字不算错）；发现读错只改 SAY 表或该句 `tts`，重跑 `tts.js` 只重合成那一句 |
+| 9 | 低清预演，查像素级静止 | `node kit/tools/preview.js V --lang zh` | 没有超过限值的静止段 |
+| 10 | 封面 | 写 `src/cover.html`<br>`node kit/tools/look.js V --url "/cover.html?r=169&lang=zh" --size 1920x1080`<br>`node kit/tools/look.js V --url "/cover.html?r=43&lang=zh" --size 1600x1200`<br>`node kit/tools/covers.js V --lang zh` | 两版无 ✗；`out/` 下每种语言有 2 张 JPG、2 张 PNG |
+| 11 | 渲染与封装 | `node kit/tools/render.js V --lang zh`（不要中断）<br>`node kit/tools/finish.js V --lang zh` | 日志末行有 `verified frames=`；时长与时间线一致；响度在范围内 |
+| 12 | 试听片 | `node kit/tools/audio.js V --lang zh music=<另一种> out=audio_b.wav`<br>`node kit/tools/finish.js V --lang zh --audio out/zh/audio_b.wav --name <名字>`<br>`node kit/tools/audio.js V --lang zh`（把正式混音恢复为默认） | 试听片存在 |
+| 13 | 三项核心审查、原创与动画完成度、片尾名单及同编号反馈复盘（`docs/review.md` 第 5 节） | `node kit/tools/sheets.js V cue`<br>`node kit/tools/sheets.js V every 4` | 各项检查完成，无未解决的问题；反馈表附成片时间、证据、结果与遗留项；结论写进 `README.md`、`DELIVERY.md`，事实复核写入 `research/FACTS.md` |
+| 14 | 交付前总检 | `node kit/tools/check.js V --final` | 「全部通过」 |
 
-改过任何场景、样式或脚本之后，已有的渲染结果就过期了，必须重新执行第 13 步及之后的步骤（`check.js --final` 会查这一点）。
+改过任何场景、样式或脚本之后，已有的渲染结果就过期了，必须重新执行第 11 步及之后的步骤（`check.js --final` 会查这一点）。
 
 ## 6. 铁律
 
