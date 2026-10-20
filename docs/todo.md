@@ -65,15 +65,15 @@
 | [手枪射击](../videos/series/in-seconds/pistol-shooting/) | 立项 | 系列 60 s 基座；目标 150 s；题材事实未核查；**没有 approval 记录**。**本轮无新进展** | 先取证、写稿；确认前不配音、不按稿重画场景 |
 | [Codex CLI](../videos/series/agent-harnesses/codex/) | 立项与取证（第 0–1 步） | 目录、`README.md`、`research/FACTS.md` 与脚本骨架齐全；README 记「文案：未写」 | 先写中文稿 → WaterRun 审 → 配音与制作 |
 | [OpenCode](../videos/series/agent-harnesses/opencode/) | 立项与取证（第 0–1 步） | 同上；README 记「文案：未写」 | 同上 |
-| [Spectrum](../videos/series/design-languages/spectrum/) | 立项 | 目录、README、FACTS 与脚本骨架齐全；README 记「文案：未确认」 | 写稿 → 审 → 制作 |
+| [Spectrum](../videos/series/design-languages/spectrum/) | 立项与取证完成，待写文案 | 一手来源为 spectrum.adobe.com 现行文档站、Adobe 官方博客与 spectrum-css 官方令牌文件；Spectrum 1 已撤下，按 Internet Archive 快照取证并标注快照日期；`research/lab/` 有 40 余份取色与令牌抓取回显 | 写稿 → 审 → 制作 |
 | [英特尔早期](../videos/series/eras/intel-core-era/) | 立项与取证完成，待写文案 | README 记「立项与取证（第 0–1 步完成），待写文案」 | 写中文稿 → 审 → 制作 |
 | [PowerPC 时代的麦金塔](../videos/series/eras/powerpc-macintosh/) | 立项与取证完成，待写文案 | 同上 | 同上 |
-| [可变气门正时 CVVT](../videos/series/fuel-vehicle-tech/cvvt/) | 立项 | 目录、README、FACTS 与脚本骨架齐全 | 写稿 → 审 → 制作 |
-| [EA211 家族](../videos/series/in-seconds/ea211-family/) | 立项 | 目录、README、FACTS 与脚本骨架齐全 | 写稿 → 审 → 制作 |
-| [HTTP 状态码](../videos/series/in-seconds/http-status-codes/) | 立项与取证（workflow 第 0–1 步） | README 记「文案：未开始（须先经 WaterRun 人工审稿）」 | 写稿 → 审 → 制作 |
-| [Scion](../videos/series/in-seconds/scion/) | 立项与取证完成，文案未开写 | README 记「立项与取证完成（第 0–1 步），文案未开写」 | 写中文稿 → 审 → 制作 |
-| [Lua 语言的设计哲学](../videos/series/language-philosophy/lua/) | 立项 | 目录、README、FACTS 与脚本骨架齐全 | 写稿 → 审 → 制作 |
-| [C 语言的发展史](../videos/series/silicon-history/c-language-history/) | 立项 | 目录、README、FACTS 与脚本骨架齐全 | 写稿 → 审 → 制作 |
+| [可变气门正时 CVVT](../videos/series/fuel-vehicle-tech/cvvt/) | 立项与取证完成，待写文案 | 一手来源为 Toyota、Honda、Nissan、Ford 官方技术页与新闻稿；8 处数字只有一路官方出处，已标「第二路待补」 | 写稿 → 审 → 制作 |
+| [EA211 家族](../videos/series/in-seconds/ea211-family/) | 立项与取证完成，待写文案 | 速通系列 150 秒；`research/lab/` 存大众／奥迪官方资料抓取与证据回显 | 写稿 → 审 → 制作 |
+| [HTTP 状态码](../videos/series/in-seconds/http-status-codes/) | 立项与取证（workflow 第 0–1 步） | README 记「文案：未开始（须先经 WaterRun 人工审稿）」；本机起了源站与网关两个临时端口，实测 18 个状态码，回显在 `research/lab/` | 写稿 → 审 → 制作 |
+| [Scion](../videos/series/in-seconds/scion/) | 立项与取证完成，文案未开写 | README 记「立项与取证完成（第 0–1 步），文案未开写」；一手来源为 Anthropic 官方工程博客，Scion 未公开发布，片中不得出现可下载／可部署的暗示 | 写中文稿 → 审 → 制作 |
+| [Lua 语言的设计哲学](../videos/series/language-philosophy/lua/) | 立项与取证完成，待写文案 | 用官方 tarball 与 SHA-256 校验后构建 5.4.9 与 5.3.6，三版同码实测差异；tagged NaN 在手册与源码中均无记载，已标待核实并排除出定稿 | 写稿 → 审 → 制作 |
+| [C 语言的发展史](../videos/series/silicon-history/c-language-history/) | 立项与取证完成，待写文案 | 一手来源为 WG14 项目页、ISO 目录、C 标准草案 N1570／N3096／N3220／N3886 与官方 C89／C99 Rationale；ANSI X3.159-1989 正文未取到，片中不引条文 | 写稿 → 审 → 制作 |
 | [轻量化](../videos/standalone/lightweighting/) | 立项与取证完成，文案未开写 | README 记「立项与取证完成（第 0–1 步），文案未开写」 | 写中文稿 → 审 → 制作 |
 | [RDP](../videos/standalone/rdp/) | 立项与取证（workflow 第 0–1 步） | README 记「文案：未开始（须先经 WaterRun 人工审稿）」 | 写稿 → 审 → 制作 |
 
@@ -100,7 +100,7 @@
 
 OpenCart 的 R1 / R2 均保留为历史稿，R3 是文案阶段的当前稿。R2 审查中收到「补时代背景、定义、地位、大纲、新版对照；片尾不配音」的意见，已落实到 R3 和全局 F13 / F14。2026-10-19 01:37 WaterRun 授权自主定稿，approval 据此为 approved（不是逐句阅读确认）；中文成片当日交付并发布，F06 / F12 按 WaterRun「做完了, 发布了」登记，F04 / F15 与配音语气按发布后反馈留档。
 
-本页剩余的未完成动作只有三类：**在制 22 部**（停在等你确认文案：SSH、道交法、Harness、垃圾回收；Firebird 停在等你审第 1 稿；预研完成待写稿：磁带、CoT、英特尔早期、PowerPC 时代的麦金塔、Scion、轻量化；立项待取证或待写稿：手枪射击、模型各个参数、Codex、OpenCode、Spectrum、CVVT、EA211 家族、HTTP 状态码、Lua 语言哲学、C 语言发展史、RDP）、**第 4 节两条只动文档与备份的真待办**、以及**计划中 143 部的排期**。已发布片的画面、声音与叙事问题一律不进这三类。
+本页剩余的未完成动作只有三类：**在制 22 部**（停在等你确认文案：SSH、道交法、Harness、垃圾回收；Firebird 停在等你审第 1 稿；预研完成待写稿：磁带、CoT、英特尔早期、PowerPC 时代的麦金塔、Scion、轻量化、Spectrum、CVVT、EA211 家族、HTTP 状态码、Lua 语言哲学、C 语言发展史、RDP、CodeX CLI、OpenCode；立项待取证：手枪射击、模型各个参数）、**第 4 节两条只动文档与备份的真待办**、以及**计划中 143 部的排期**。已发布片的画面、声音与叙事问题一律不进这三类。
 
 ## 3. 已完成的明确事项
 
@@ -238,3 +238,4 @@ OpenCart 的 R1 / R2 均保留为历史稿，R3 是文案阶段的当前稿。R2
 37. 2026-10-20 09:55（策划者指示片单调整，MiniMax M3.1 Flash 执行）：**「编程思想」系列改名「编程语言哲学」**，slug 由 `programming-paradigms` 改为 `language-philosophy`，目录同步改名（该系列 12 部均无目录，改名不影响已开工的片子）。**「设计语言与视觉规范」扩到 9 部**，按策划者给的清单顺序：Metro、Spectrum、Carbon Design、Material 3、Fluent 2、Ant Design、Adwaita、Primer、Apple HIG，每部的出处（Microsoft · Windows Phone 7、Adobe · Spectrum 1、IBM · Carbon Design System、Google · Material Design、Microsoft · Fluent 2 Web、Ant Group · Enterprise、GNOME · Human Interface、GitHub · Product UI、Apple · Human Interface Guidelines）写进片单备注。**「电子发展史」新增 6 部**：Python、Lua、C、Java、C#、JavaScript 与 TypeScript 的发展史。
 38. 2026-10-20 09:55：**「上下文压缩的方式」从 Harness 系列移到「XX 秒速通」**，改题《120 秒速通 Harness 是如何压缩上下文的》（第 21 集）。**速通系列的时长可选值表加入 120 秒**——原表为 96/100/128/150/192/200/256，且写着「首集 2FA 的 120 秒不在上述可选值之列，此后各集只取可选值」，策划者这次定 120 秒，故改为 120 秒自此是正式可选值。**移除**独立片《Notepad++ 是如何工作的》。**新建「燃油车技术」系列**（slug `fuel-vehicle-tech`，8 部）：四冲程循环、燃油喷射与点火系统、CVVT、涡轮增压、内燃机的马力-扭矩曲线、变速器原理、变速箱群观、差速器与传动轴；其中后三部的马力-扭矩曲线、变速器原理、CVVT 从独立片移入，变速箱群观从「汽车的系统工程」移入，另新加四冲程循环、燃油喷射与点火、涡轮增压、差速器与传动轴四部。片单总数 164→177。
 39. 2026-10-20 11:30（MiniMax M3.1 Flash，策划者指示）：**Firebird 一集开工**（数据库引擎系列第 4 集）。本机装官方 Firebird 5.0.4.1812 做了九组实验：三种连接方式（`inet://` 远程 / `xnet://` 环回 / 本地路径嵌入式）、**停掉服务端进程后只有嵌入式仍能打开同一个库文件**、一次 UPDATE 让数据页上同一行的物理副本由 1 变 2（干净库对照，字节级）、两会话 MVCC（写者未提交时读者仍读到旧值 30，提交后才变 31）、240 页的页类型分布、官网火鸟标志的像素配色。`research/FACTS.md` 按 T/H/E/D/U/M/W/V/S 编号写全出处，`research/sources.json` 与 `research/STYLE.md` 同批落盘。中文第 1 稿 77 句、估算 6:16；**片长按策划者要求设为 4–7 分钟**（`check.duration` 240–420 秒），语言只做中文（与本系列前三集一致）。视觉严格取 Firebird 自己的材料：官网火鸟标志的火焰三色（金 #FAAC19 / 橙 #F68A21 / 红 #EE2B24）、官网正文墨色 #17222b 与 Heebo 字体（OFL，随片放在 `src/type/`），母题就是标志里的火焰。**配乐为自写 124 拍/分电子乐**（`tools/music.py`：四踩贯穿、十六分酸性贝斯与方波琶音、火焰三音母题、逐章加层），按 P27 有持续的低音与铺底。`review/feedback.json` 已填 F01–F19；`review/approval.json` 为 pending，**未配音、未画场景**。同一次盘点发现目录实际有 36 个而非本页此前记的 22 个，第 1 节已按「有目录即在制」重排（已成片 14 / 制作中 22 / 计划中 143），并补登 13 部此前漏记的片子。
+40. 2026-10-20 11:10–12:40（策划者指示，MiniMax M3.1 Flash 执行）：**片单按策划者清单重构**——「Harness」系列改名「**Harness 群观**」（英文 A Survey of Harnesses），每集时长由 10–20 分钟改为 **5–10 分钟**，CodeX CLI 与 OpenCode 两集改题为《CodeX CLI 是怎么实现的？》《OpenCode 是怎么实现的？》；「燃油车技术」系列改名「**老旧燃油车**」（Old-School Fuel Vehicles），CVVT 一集改题为《CVVT 可变气门正时技术是什么？》；**《HTTP 状态码》与《EA211 的全家桶》由独立成篇移入「XX 秒速通」**，改题《96 秒讲清 HTTP 状态码：五类响应与最常用的那些》与《150 秒认识 EA211 的全家桶：大众的横置四缸家族》；**新增两集**——《150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git》（速通系列第 24 集）与《英特尔的酷睿年代》（时代系列第 6 集）。片单总数 177→179。**13 部片子建目录并完成前期调研**（workflow 第 0–1 步）：`research/FACTS.md` 逐章记事实与出处（含一手来源链接、章节定位、独立印证与待核实项）、`README.md` 写目标观众/核心问题/逐章推进/不讲的材料与 F01–F19 开工反馈应用、`review/feedback.json` 逐项填 applicability/plan/script_evidence，`feedback.js check --stage prepared` 13 部全部通过。取证含本机实验：HTTP 状态码起源站与网关两个临时端口实测 18 个状态码；Lua 用官方 tarball 加 SHA-256 校验后构建 5.4.9 与 5.3.6 做三版对照；CodeX CLI 与 OpenCode 各取一次真实检出并记录 commit SHA 与许可。第三方源码与 PDF 放在 `research/_src/`（不入库）。**顺带修掉两个坑**：`videos/series/agent-harnesses/README.md` 通篇 CRLF 导致 `catalog.js --check` 在 Windows 上永远判为不一致（已按 `.gitattributes` 规范化为 LF）；`new.js` 整份重写 `videos/catalog.json` 的行为记入 `docs/pitfalls.md`。**未写文案、未配音、未画场景**——文案须先经策划者人工审查并明确确认。
