@@ -3,7 +3,7 @@
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 生成，不要手改。 -->
 
 本仓库收录的视频分两类：属于某个系列的，目录在 `videos/series/<系列>/<视频>/`；独立成篇的，目录在 `videos/standalone/<视频>/`。
-目前共 165 部：已成片 13 部，制作中 9 部，计划中 143 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
+目前共 165 部：已成片 14 部，制作中 8 部，计划中 143 部。计划中的条目只有标题，标题是工作标题；除另有说明外，每部都出中文与英文两个版本。
 
 「制作」一栏是制作方式：自制指从取证到成片由同一个制作者完成；委托指准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾（见 [delegation.md](delegation.md)）。计划中的条目未定时留空。
 
@@ -17,7 +17,7 @@
 |---|---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | 自制（Claude） | [`myisam`](../videos/series/database-engines/myisam/) | 已发布：哔哩哔哩 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | 自制（Claude Opus 5.5） | [`innodb`](../videos/series/database-engines/innodb/) | 已发布：哔哩哔哩（2026-10-18）；发布后发现的画面问题见 README |
-| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | 自制（6.1Sol、Claude Opus 5.5） | [`postgresql`](../videos/series/database-engines/postgresql/) | 2026-10-19 交付：中文 11:28（688.08 秒，1080p60），MiniMax 严肃男声配音、自写严肃工业风配乐，WaterRun 观看试听确认；check.js --final 全部通过；2026-10-19 16:32 发布于哔哩哔哩 BV1xAnn6WEzv。 |
+| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | 自制（6.1Sol、Claude Opus 5.5） | [`postgresql`](../videos/series/database-engines/postgresql/) | 2026-10-19 交付：中文 11:28（688.08 秒，1080p60），MiniMax 严肃男声配音、自写严肃工业风配乐，WaterRun 观看试听确认；check.js --final 全部通过；2026-10-19 16:32 发布于哔哩哔哩 BV1xAnn6WEzv。2026-10-20 WaterRun 评 8 分：设计契合、叙事不错；动画简陋、结尾表格高亮时字看不清（P30–P32），留档不返工。 |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh + en | 计划中 |  | `firebird` |  |
 | 5 | 一个数据库引擎是如何实现的？——小巧紧凑：SQLite | zh + en | 计划中 |  | `sqlite` |  |
 | 6 | 一个数据库引擎是如何实现的？——列式存储：ClickHouse | zh + en | 计划中 |  | `clickhouse` |  |
@@ -228,7 +228,7 @@
 | 17 | 96 秒速通模型卡<br>Model Cards in 96 Seconds | zh + en | 制作中 | 委托（Opus 5.5） | [`model-cards`](../videos/series/in-seconds/model-cards/) | 沿一张模型卡读用途、使用条件、评测口径与限制；与参数解读一集区分。视觉用液态玻璃。讲法简单、快速，介绍怎么看模型卡。2026-10-19 建目录（委托 Opus 5.5），准备方做事实测绘与中文文案，到可交 Opus 开工为止；同日 WaterRun 定片名为《96 秒速通模型卡》（原《96 秒读懂模型的模型卡》）；待 WaterRun 确认文案。 |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 |  | `virtual-machine-types` | 暂定 192 秒；先分清分类依据和适用场景，再选实例，不堆产品名单 |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | 自制（Grok 4.7） | [`harness`](../videos/series/in-seconds/harness/) | 2026-10-11 由独立片 how-harness-works 改名迁入。2026-10-19 中文稿已落盘，待后续模型优化；尚未人工确认。入口见本片 README。 |
-| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 制作中 | 委托（Claude Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 准备方 DeepSeek V4.1 Flash 1017（取证、包豪斯视觉系统）；2026-10-19 中文第 10 稿经 WaterRun 确认，第 11 稿与英文为授权自主定稿；同日 Claude Opus 5.5 完成 MiniMax 配音、全部场景、自写配乐与中英成片（各 200.00 秒、1080p60），check.js 除人耳试听项外通过；待 WaterRun 观看试听（F06、F12、F17）后登记交付。 |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | 委托（Claude Opus 5.5） | [`web-login`](../videos/series/in-seconds/web-login/) | 准备方 DeepSeek V4.1 Flash 1017（取证、包豪斯视觉系统）；中文第 10 稿经 WaterRun 确认，第 11 稿与英文为授权自主定稿。2026-10-20 交付（Claude Opus 5.5）：中英各 200.00 s、1080p60，MiniMax 配音、自写包豪斯机械配乐；check.js --final 全部通过，WaterRun 回复「可以, 标记发布吧」。已发布：哔哩哔哩 BV1Z7JZ6yEQb（2026-10-20 08:53:37，合集「速通教学」第 4 集）与 YouTube Bkt7b_xbMYg。2026-10-20 WaterRun 评 5 分：后半段跑题、阅读负担、动画溢出压盖、留白不够、英文音色停用（P33–P38），留档不返工。 |
 | 21 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | 自制（DeepSeek V4.1 Flash 1017） | [`chain-of-thought`](../videos/series/in-seconds/chain-of-thought/) | 2026-10-18 由独立片迁入秒速通；192 秒；事实测绘与系列视觉扩展已落盘，尚未写稿或配音。 |
 
 ### 游戏物理学

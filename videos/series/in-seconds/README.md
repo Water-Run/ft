@@ -94,6 +94,6 @@
 | 17 | 96 秒速通模型卡 | zh + en | 制作中 | [`model-cards`](model-cards/) |
 | 18 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
 | 19 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 制作中 | [`harness`](harness/) |
-| 20 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 制作中 | [`web-login`](web-login/) |
+| 20 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
 | 21 | 192 秒认识 CoT：先思考，再回答 | zh + en | 制作中 | [`chain-of-thought`](chain-of-thought/) |
 <!-- catalog:end -->
