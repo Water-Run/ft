@@ -1,0 +1,205 @@
+{
+  "schema": 2,
+  "version": "2026-10-20.3",
+  "items": {
+    "F01": {
+      "rev": 1,
+      "result": "pending",
+      "note": "以遇到通行冲突时怎样作出判断为主问题，六章各给一个明确答案，先诊断再改写。",
+      "evidence": ""
+    },
+    "F02": {
+      "rev": 1,
+      "result": "pending",
+      "note": "用同一 A/B 车辆和冲突点讲条件、判断、理由和行动，合并碎句并避免堆法条。",
+      "evidence": ""
+    },
+    "F03": {
+      "rev": 1,
+      "result": "pending",
+      "note": "保留法条前提、地域、年代、责任与赔偿等边界；未经核对不采纳模型新增事实。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F04": {
+      "rev": 1,
+      "result": "pending",
+      "note": "标志、图解与结论分开安排阅读任务，字幕与图解不同时承载不同长句。",
+      "evidence": ""
+    },
+    "F05": {
+      "rev": 1,
+      "result": "pending",
+      "note": "画面实际显示方向、冲突点和条件变化，不能只贴规则标签或快速刷屏。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F06": {
+      "rev": 1,
+      "result": "pending",
+      "note": "沿用已选 Yunjian 音色，文案确认后试听代表句与留白，不额外堆气流声。",
+      "evidence": ""
+    },
+    "F07": {
+      "rev": 1,
+      "result": "pending",
+      "note": "只用教学示意和独立合成对象，不加入真实车牌、当事人或私人会话；Prompt 仅含公开制作资料。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F08": {
+      "rev": 1,
+      "result": "pending",
+      "note": "配音后重新测时并按 660 秒上限组织，正式文件生成后按实际规格和哈希复核。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F09": {
+      "rev": 1,
+      "result": "pending",
+      "note": "Gemini 的建议与新增事实分开；新依据先回 FACTS，无法读取的来源保留待核。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F10": {
+      "rev": 1,
+      "result": "pending",
+      "note": "独立片从现场条件讲起，不要求观众记住其他视频或之前讨论的内容。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F11": {
+      "rev": 1,
+      "result": "pending",
+      "note": "加州和德国的必要原词附中文释义并核查适用条件，不把一地口径概括为欧美。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F12": {
+      "rev": 1,
+      "result": "pending",
+      "note": "先保留连贯正文再拆字幕，逐句检查多音字、列举、否定和例外条件的口播停顿。",
+      "evidence": "",
+      "script_evidence": "review/NOTES.md 第 8 稿和 FACTS"
+    },
+    "F13": {
+      "rev": 1,
+      "result": "pending",
+      "note": "让 Gemini 从驾驶员熟悉的道路冲突情境引入，解释路权讨论的范围和路线；保留本片既定法域与条件，不扩成无关历史。",
+      "evidence": "",
+      "script_evidence": "research/gemini-instructions.md 的讨论约束与 GEMINI-PROMPT；后续修订稿开头逐句复核。"
+    },
+    "F14": {
+      "rev": 1,
+      "result": "pending",
+      "note": "网页讨论稿只把口播当正文，片尾模型与策划署名单列制作说明；制作时用静默cue并检查最终音轨。",
+      "evidence": "",
+      "script_evidence": "research/gemini-instructions.md；后续脚本、任务书和最终片尾音轨。"
+    },
+    "F15": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F16": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F17": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F18": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F19": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F20": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F21": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    }
+  },
+  "history": [
+    {
+      "version": "2026-10-19",
+      "id": "F01",
+      "item": {
+        "id": "F01",
+        "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "以遇到通行冲突时怎样作出判断为主问题，六章各给一个明确答案，先诊断再改写。",
+        "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19",
+      "id": "F02",
+      "item": {
+        "id": "F02",
+        "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "用同一 A/B 车辆和冲突点讲条件、判断、理由和行动，合并碎句并避免堆法条。",
+        "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19",
+      "id": "F04",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "标志、图解与结论分开安排阅读任务，字幕与图解不同时承载不同长句。",
+        "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19",
+      "id": "F06",
+      "item": {
+        "id": "F06",
+        "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "沿用已选 Yunjian 音色，文案确认后试听代表句与留白，不额外堆气流声。",
+        "script_evidence": "review/NOTES.md 第 8 稿和 FACTS",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    }
+  ],
+  "migrated": "2026-10-20 由 review/feedback.json（规则 2026-10-19）转换；结论原样保留，规则文字改写为通用表述，要求未变"
+}

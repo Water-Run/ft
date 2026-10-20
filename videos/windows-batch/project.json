@@ -1,0 +1,125 @@
+{
+  "slug": "windows-batch",
+  "stage": "released",
+  "delivery": {
+    "date": "2026-10-01",
+    "duration": {
+      "zh": 193.025
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1cEaB6tEjQ",
+      "date": "2026-10-01"
+    }
+  ],
+  "reception": [
+    {
+      "date": "2026-10-09",
+      "score": 8,
+      "by": "WaterRun",
+      "ref": "docs/log/reviews/2026-10-09.md"
+    }
+  ],
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude（型号未记录）",
+        "roles": [
+          "取证",
+          "文案",
+          "视觉系统",
+          "任务书"
+        ]
+      },
+      {
+        "name": "DeepSeek（型号未记录）",
+        "roles": [
+          "场景",
+          "声音编排",
+          "封面",
+          "渲染与审查"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "Microsoft Edge 在线语音（模型未披露）",
+        "roles": [
+          "旁白合成"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "古代来的 Shell：Windows 批处理（.bat）"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "-4%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，内容是 Windows 批处理、cmd.exe、PowerShell、DOS。"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 1
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8,
+    "voice_norm": "peak",
+    "pad_low": 1,
+    "pad_top": 1,
+    "limit": false
+  },
+  "check": {
+    "duration": [
+      175,
+      200
+    ],
+    "caption_width": {
+      "zh": 26
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": [
+        "ECE8DF",
+        "FBFAF5",
+        "0C0C0C",
+        "FFB000",
+        "6B665D",
+        "CCCCCC",
+        "FFFFFF"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Grot",
+        "Pixel",
+        "Mono"
+      ]
+    },
+    "sfx": {
+      "per_seconds": 3.5,
+      "kinds": 6,
+      "scene_per_seconds": 5,
+      "max_gap": 8
+    }
+  }
+}

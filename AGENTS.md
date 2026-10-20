@@ -1,36 +1,37 @@
 # 在这个仓库里工作
 
-规则都写在 `docs/` 里。按这次要做的事去读对应的文档，按里面的做法做。
+这里用大语言模型制作讲清楚一件事的视频。规则在 `docs/`，工具在 `kit/`，每部片子在 `videos/<片>/`。先读 [docs/README.md](docs/README.md) 的「按任务阅读」，只读手上这件事需要的文档。
 
-| 要做的事 | 先读 |
-|---|---|
-| 首次使用、独立 fork、理解结构 | [docs/README.md](docs/README.md)、[docs/getting-started.md](docs/getting-started.md)、[docs/repository.md](docs/repository.md) |
-| 准备文案、交用户校对、修改定稿 | [docs/script-review.md](docs/script-review.md)、[docs/workflow.md](docs/workflow.md) 第 2 步 |
-| 收尾归档、清理、恢复 | [docs/lifecycle.md](docs/lifecycle.md)，核对本片交付记录与实际文件 |
-| 整理制作规范或文档 | [docs/standards.md](docs/standards.md)、[docs/workflow.md](docs/workflow.md)、[docs/review.md](docs/review.md)，再读对应专题 |
-| 制作一部委托片 | 该片目录里的 `AGENTS.md`，再按它给出的阅读顺序往下读 |
-| 查看近期计划或接续制作 | [docs/todo.md](docs/todo.md)，再核对本片当前源码、时间线、README 与实际输出 |
-| 自制一部新片 | [docs/todo.md](docs/todo.md)、[docs/workflow.md](docs/workflow.md)、[docs/feedback.md](docs/feedback.md) |
-| 整理观众反馈或回填发布记录 | [docs/feedback.md](docs/feedback.md)、[docs/workflow.md](docs/workflow.md) 第 11 节 |
-| 改工具或引擎 | [docs/tools.md](docs/tools.md)、[docs/engine.md](docs/engine.md)、[docs/pitfalls.md](docs/pitfalls.md) |
-| 判断成片是否合格 | [docs/standards.md](docs/standards.md)、[docs/review.md](docs/review.md)、[docs/feedback.md](docs/feedback.md) |
-| 开一个系列或加一集 | [docs/series.md](docs/series.md)、`videos/catalog.json` |
-| 换机器、装环境、同步另一台机器 | [docs/environment.md](docs/environment.md) |
+## 先弄清自己的角色
 
-几条边界：
+| 角色 | 做什么 | 不做什么 |
+|---|---|---|
+| **准备方** | 取证、实验、整理讲解对象的原始材料、写文案稿并随校对修改 | 不定视觉方案、配乐、分镜，不写场景；不填验收结论；不改共享文件 |
+| **制作方** | 从设计到交付的一切；对成片质量负责 | 不推翻事实与已确认的文案，不放宽闸门 |
+| **维护者** | 改 `kit/`、`docs/`、`series/`、片单 | 不顺手改在制片子的内容 |
 
-- 仓库文档统一中文，不维护英文文档译本；影片的多语言文案按本片配置制作与校对。
-- 画面是时间的纯函数。质量、语体，以及不要出现的做法，以 [docs/standards.md](docs/standards.md) 为准。
-- 仓库正常情况下只保留一个 `main` 分支；可能同时有多个制作者（Agent）各开一部片子，改动以自己的视频目录为单位提交到 `main`。做法见 [docs/workflow.md](docs/workflow.md)。
-- 不直接抄袭现成产品；动画须精美精良；事实须严格核查；每部片子的片尾须包括实际参与的模型、「策划：WaterRun」与标明「开源视频」的 GitHub 仓库链接。细则见 [docs/standards.md](docs/standards.md)，验收见 [docs/review.md](docs/review.md)。
-- 事实只来自该片的 `research/FACTS.md`。
-- 片尾署名、模型 credit、策划与开源链接只在画面展示，不配旁白；制作指令不混进文案正文。历史或陌生主题先交代是什么、时代背景、为什么值得看与本片路线，再展开机制。见 `docs/feedback.md` 的 F13、F14。
-- 两条核心画面要求：关键信息不能「刷一下」就过去，完整出现后要留够阅读时间（F04）；画面和旁白不写「只列常量名，不列值」这类制作者口吻的自我说明（F15）。见 `docs/feedback.md` 的 P24、P25。配乐要有存在感（P27）；视觉取自讲解对象，随便一帧都能认出（F16，PostgreSQL 一集为正面对照）。
-- 每次新片开工或改片，先读 [docs/feedback.md](docs/feedback.md) 及其中最近的相关复盘，在本片 README 写「开工反馈应用」：逐项对应问题编号、适用性、计划与验证办法。结尾必须用同一组编号写「结尾反馈复盘」，给出实际成片的时间点、证据、结果与遗留问题；只改流程或源码不能记为成片问题已解决。自制、委托都执行，格式见反馈文档第 7 节。
-- 反馈通过 [docs/feedback-rules.json](docs/feedback-rules.json) 持续进入模板与工具。开工或接续先运行 `feedback.js <视频> sync`，逐项填写 `review/feedback.json`；规则变化后复查对应项，配音前检查计划，交付前检查实际成片证据。Lean 4 为典型叙事负面案例，MyISAM 为正面对照；详见 [docs/feedback-loop.md](docs/feedback-loop.md)。
-- 文案稿须经策划者 WaterRun 人工审查并明确确认后，才能配音并往下做（自 2026-10-08 起新开工的片子执行）。做法见 [docs/workflow.md](docs/workflow.md) 第 2 步。
-- 新片以 `script.js` 为唯一文案源稿，`review/` 保留逐句校对稿、意见和真实确认；不得自行补造确认或关闭版本闸门。独立 fork 用 `kit/studio.json` 配置实际策划、校对者和源码仓库；原仓库的 WaterRun 约定继续适用，历史作品署名不追改。
-- 清理默认只预览；执行时先归档并逐文件校验。不得用批量 Git 清理命令删除忽略文件，那里可能保存唯一的成片、配音和复盘证据。工具、模板与流程改动运行 `npm test`、`npm run check:repo`，涉及浏览器另作相应验证。
-- 生成物（`audio/`、`out/`、`shots/`、`build/`）、`assets/` 里的字体和程序、`kit/config.local.json`、取证用的第三方源码（`research/_src/`）不入库。清单见 `.gitignore`。
-- 两台机器各有一份仓库。源码用 `node kit/tools/remote.js` 同步；成片、配音和二进制依赖留在产生它们的那台机器上。
-- 本仓库以 GPL-3.0-or-later 发布，是公开仓库：入库即公开。口令、密钥、内网地址与可识别身份的信息不写进任何文件；取证回显与数据文件入库前先脱敏，做法见 [docs/research.md](docs/research.md)。
+策划者没有指明时，按所做的事对号入座，写进本片 README 的「状态」。细则见 [docs/roles.md](docs/roles.md)。
+
+## 冲突时谁说了算
+
+事实（FACTS.md）＞ 策划者的明确要求（会话原话优先于任何任务书与文档缺省）＞ 已确认的文案 ＞ 仓库标准（底线）＞ 制作方的判断 ＞ 准备方的建议。采用策划者原话时记进本片 README 的「简报」。
+
+## 不能越过的线
+
+- **事实只来自本片 `research/FACTS.md`。** 不凭记忆补充。
+- **文案经校对者明确确认后才配音。** 不补造确认、验收或「看过」「听过」。
+- **画面是时间的纯函数。** 不用 CSS 动画、定时器、时间线回调、未固定种子的随机数。
+- **不为通过检查放宽阈值、改工具或删检查项。**
+- **署名写真实的模型名**（如 `Claude Opus 5.5`），不写 `Codex`、`Claude Code` 这类客户端名；片尾名单只上画面，不配旁白。
+- **不泄露。** 仓库公开，口令、密钥、内网地址、个人路径不进任何文件。
+- **生成物不入库**（`audio/`、`out/`、`shots/`、`build/`、`research/_src/`）。清理默认只预览，不用批量 Git 清理命令。
+
+## 保持上下文干净
+
+- 只读当前阶段需要的文档；`lessons.js show --stage <阶段>` 给出这一阶段的经验规则。
+- 不为找灵感去翻别的片子的源码。别的片子不是模板；值得复用的做法应当已经在 `kit/` 或 `docs/` 里。
+- `docs/log/` 是只追加的历史，做事时不必读。
+
+## 提交
+
+一个会话只写自己负责的视频目录；提交用路径限定的形式 `git commit -m "…" -- videos/<片>/`，不用 `git add -A`、`git commit -a`。共享文件只在策划交代了维护任务时改，单独提交，并运行 `npm test`、`npm run check:repo`。

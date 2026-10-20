@@ -1,0 +1,312 @@
+{
+  "schema": 2,
+  "version": "2026-10-20.3",
+  "items": {
+    "F01": {
+      "rev": 1,
+      "result": "pending",
+      "note": "标题是“怎么验证你是你”，不是“登录方式大全”。第 7 稿用同一次登录贯穿：开头“它再也没问过密码” → 会话怎么认出你 → 第一次怎么认出你 → 第三方替你认；结尾 e2 直接回答：服务器认的是你出示的证据。开场先分三件事（认证、会话、授权），Cookie 只运送、JWT 是票的格式，不再把“令牌”列成与认证并列的一层。",
+      "evidence": ""
+    },
+    "F02": {
+      "rev": 1,
+      "result": "pending",
+      "note": "每个机制只留一条主因果：做法 → 为什么能认出你 → 代价 → 代价引出下一种。会话：HTTP 不记事 → 记会话、发编号 → 查表；代价：编号被拿、跨站请求。JWT：共用表的负担 → 签名票 → 验签不查表；代价：难收回 → 短有效期。口令 → 短信码 → passkey 按“会被假网站骗走”递进。删去单独罗列攻击面的一场，术语不堆在一句里。",
+      "evidence": ""
+    },
+    "F03": {
+      "rev": 1,
+      "result": "pass",
+      "note": "首次出现即区分：会话（服务器上的记录）/ Session ID（编号）/ Cookie（运送）；JWT 是票的格式；短的票叫 Access Token、长的叫 Refresh Token（j7b），OAuth 一场再说明 Access Token 只说能做什么、ID Token 说你是谁；密码一词全片统一（不混用「口令」）；「验证码」专指选图拖滑块，短信的叫「短信码」；第三方登录是平台替你认，不是另一种因子。",
+      "evidence": "s4–s8：会话记录（服务器上）/ Session ID（蓝色票根上的编号）/ Cookie（Set-Cookie 与 Cookie 行）分开画，s8 两行结论「Cookie：只负责运送」「会话：记住你」；j3「JWT」是三段的格式；j7b、a4、a6 分别说明 Access / Refresh / ID Token；全片只叫「密码」。逐句截图核对首次出现。；zh 49.92–54.01s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 52.31–56.07s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "script.js o1–o2、p2–p4、s4–s8、j3、j7b、a4–a6、p5、p9；FACTS「边界与常见误说」。"
+    },
+    "F04": {
+      "rev": 1,
+      "result": "pending",
+      "note": "秒速通时长是硬约束，先砍内容再排时间：第 7 稿删去单独罗列攻击面的一场，每个机制只留一条主因果，结论句后 gap≥0.45 s。片名卡 oT 2.5 s，且片名应与 o3b 问句同时完整出现（合计约 5 s）；每屏关键状态（会话表命中、签名对不上、假网站拿不到签名、ID Token 三项）完整出现后按 1.5 s + 字数 ÷ 5 留足，再进入下一句画面；推近时不把要读的部分留在画外。",
+      "evidence": ""
+    },
+    "F05": {
+      "rev": 1,
+      "result": "open",
+      "note": "动作各有含义：单向压模（下压、反向被黑缝挡住）、盖章（票根、对不上、是你）、拒绝（钥匙转 90°；方框改为转 25° 下沉变暗）、拼合（锁块落到印子上）。换场按下一件证据的形状长出新场景（蓝方、横带、红圆、中线推开、落下黑框），片尾直刷，没有全片同一种擦除；与 Dense/MoE 的黑线竖条刷屏、Tmux 的卡带面板不同。按逐句截图与入场中间时刻检查；连续播放观感随 WaterRun 2026-10-20 的回复「可以, 标记发布吧」一并通过，没有单独评论。 2026-10-20 发布后 WaterRun 给本片 5 分（docs/feedback.md P33–P38）：「动画效果比较怪，bug 多」（P35）：0:39.8–0:44 票根编号溢出、压在记录框黑边上；0:42.4 起 Set-Cookie 条伸出浏览器框；0:44–0:47 请求卡叠在会话记录上字压字。此前「连续观感随放行回复一并通过」不再成立。按「已发布不返工」留档，原片未修改。",
+      "evidence": "",
+      "script_evidence": "src/design/STYLE.md 第 6 节；src/js/scenes 的形状动作。"
+    },
+    "F06": {
+      "rev": 1,
+      "result": "pass",
+      "note": "自写 tools/music.py：包豪斯式的机械音乐（施莱默《三人芭蕾》那一路的方正音型），120 拍/分，一小节按 3+3+2 分重音。贯穿全片的簧管铺底与低音脉冲给出持续的低频（P27），马林巴音型、木琴三音动机、木块逐场加层，收束一场转半拍、结论句 e2 抬起，片尾只留铺底与秒针。音效按含义选：形状落位 tick、压模 thud、盖章 pop、拒绝 error、验过 chime；换场用形状长大加一声木块实音，不用气流声，慢移与阅读保持留白。",
+      "evidence": "制作者的数值检查：audio.js 各场配乐比旁白低约 12–13 dB，会话场低/中/高 −4.4 / −2.0 / −21 dB；削波 0；音效 6 种，换场用木块实音、不用气流声。2026-10-20 约 08:54（UTC+8）WaterRun 在会话中回复交付报告（报告请其看片试听 F06 配乐、F12 读音、F17 语气，写明「没问题我就登记交付」）：「可以, 标记发布吧」，并已自行把两版发布到哔哩哔哩与 YouTube。未逐项给出意见，配乐与音效按该回复记为通过。；zh 0–200s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 0–200s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "tools/music.py；src/js/config.js 的 after()；各场景的 sfx 登记。"
+    },
+    "F07": {
+      "rev": 1,
+      "result": "pass",
+      "note": "画面只用假域名、假 SID、假用户名；不出现真实站点、真实 cookie、真实账号",
+      "evidence": "成片、封面与 FACTS 只出现 .example 保留域名、RFC 示例值、演示用户 alice 与假密码；演示用户名不用任何真实身份相关的字样。核对中英逐句截图、封面与 research/lab/lab.json（只含 Node 版本与 CPU 型号）。；zh 42.14–46.83s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 41.68–47.59s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "research/FACTS.md「取证环境」；画面只用假域名、假 SID、假用户名。"
+    },
+    "F08": {
+      "rev": 1,
+      "result": "pass",
+      "note": "目标 200 秒 ±0.1；60fps、立体声、响度按仓库默认；出片后记录实际编码参数与哈希",
+      "evidence": "以最终主成片实测：时长、分辨率、帧率与响度、真峰值见 DELIVERY「闸门与实测」；文件名与实测一致（1080p60）。；zh 0–200s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 0–200s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "README「复现」与 project.json；check.js/ffprobe 记录。"
+    },
+    "F09": {
+      "rev": 1,
+      "result": "pass",
+      "note": "“OAuth=登录”“JWT 加密”“HTTPS 让 cookie 安全”“MFA=短信”“指纹是认证器”等容易引战；每条回到 FACTS 的来源与版本",
+      "evidence": "画面数据逐条对照 FACTS「画面数据」：RFC 示例值 2026-10-19 用 Web Fetch 逐字核对；JWT、哈希耗时、passkey 签名为实验实算并写明环境；旁白依据见 review/NOTES.md 逐句依据。没有引用评论或模型回答作为事实。；zh 112.89–117.29s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 113.35–118.16s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "research/FACTS.md 的来源与状态列；README 的 F09 行。"
+    },
+    "F10": {
+      "rev": 1,
+      "result": "pass",
+      "note": "本集独立；不要求记得 2FA/Lean 等前集。",
+      "evidence": "全文没有提及前集，也不要求观众记得其他片子；按文案与逐句截图核对。；zh 0–200s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 0–200s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "research/NARRATIVE.md 的「决定不讲」；script.js 不要求记得前集。"
+    },
+    "F11": {
+      "rev": 1,
+      "result": "pass",
+      "note": "authentication/authorization/session、OIDC/SAML/JWT/passkey 首次出现给中文解释；RFC 引文不要求观众读英文。",
+      "evidence": "英文名词先用中文讲清再点名：会话 / Session、Session ID、Cookie、JWT、哈希、钓鱼、passkey 通行密钥、OAuth 2.0、OIDC、Access / ID Token；画面在中文旁注英文（认证 Authentication 等）。按中文逐句截图核对。；zh 15.79–24.02s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 16.75–26.28s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "research/FACTS.md 的英文标准引文；script.js 首次出现 OAuth/OIDC/JWT/WebAuthn/SAML 时给中文解释。"
+    },
+    "F12": {
+      "rev": 1,
+      "result": "pass",
+      "note": "OIDC、SAML、JWT、passkey、SameSite、HttpOnly、CSRF、TLS 列试听清单。",
+      "evidence": "已做 MiniMax 读法试验（OAuth 2.0、一对钥匙）与 asr.js 整段、存疑句单句转写，改了 p6 读法、英文 p4 与 p1 措辞后重配。2026-10-20 约 08:54（UTC+8）WaterRun 回复同一份交付报告：「可以, 标记发布吧」，并已发布两版。中文 OAuth 2.0、Access Token 等存疑读音没有单独评论，读音与断句按该回复记为通过；ASR 只作筛查。；zh 0–192s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 0–192s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "script.js 的 SAY 表与 tts_probe 清单；专名 OAuth、OIDC、JWT、WebAuthn、passkey、SAML、SSO、SameSite、HttpOnly、CSRF、TLS。"
+    },
+    "F13": {
+      "rev": 1,
+      "result": "pass",
+      "note": "技术主题，不需要年代史；开场从“登录后它再也没问过密码”这个日常现象进入，用 HTTP 不记事交代背景，o4–o6 给出三件事的路线：先会话、再第一次认证、再第三方登录。",
+      "evidence": "开头 27 秒：从「登录后它再也没问过密码」进入，HTTP 不记事作背景，三件事给出路线；技术主题，不讲年代史。按逐句截图核对。；zh 0–27.25s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 0–27.25s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "script.js open 与 s1。"
+    },
+    "F14": {
+      "rev": 1,
+      "result": "pass",
+      "note": "片尾用空字幕 + pause + credits:true 保留阅读时间；旁白不设 tts；制作署名只在 README/FACTS/DELIVERY。",
+      "evidence": "片尾 z1 为静默 cue，192–200 秒只有画面名单与开源链接；成片旁白轨在片尾无人声（仅旁白版核对）。；zh 192–200s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 192–200s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "src/js/script.js 的 outro：z1 为 pause，无字幕、无 tts；brief/04-storyboard.md 的 outro。"
+    },
+    "F15": {
+      "rev": 1,
+      "result": "pass",
+      "note": "画面只放观众需要的形状和短标签，不写「示意」「假数据」「仅演示」「已脱敏」之类说明；假域名、假编号直接用，不加注解。来源只在片尾或一行署名。",
+      "evidence": "逐屏核对中英截图：没有「示意」「假数据」「已脱敏」之类说明制作取舍的小字；画面上的说明都是内容本身（如「有效期」「检查你的是它」）。；zh 0–200s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 0–200s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "第 7 稿旁白没有制作者口吻的句子；brief/03-visual 与 04-storyboard 交接前逐屏列出说明性小字并删去。"
+    },
+    "F16": {
+      "rev": 1,
+      "result": "pass",
+      "note": "Web 登录没有官方的视觉，讲解对象本身是 HTTP 与浏览器：画面直接用协议原文做身份标识——RFC 6265 示例的 Set-Cookie / Cookie 行（SID=31d4d96e407aad42）、实算的 JWT 三段串、RFC 6749 示例的授权码与令牌、WebAuthn 客户端数据里的 origin；域名用保留的 shop.example / id.example。包豪斯几何承担概念的含义；右上角常驻「服务器看到」的证据仪表，全片跟着旁白换。",
+      "evidence": "任取帧都有 Web 登录自己的东西：登录页与网址、HTTP 请求行、Set-Cookie / Cookie 行、三段 JWT 串、哈希、挑战值、授权码回跳地址与令牌 JSON、ID Token 的 iss / sub / aud；右上角常驻「服务器看到」证据仪表。来源见 FACTS「画面数据」。；zh 42.14–84.32s（out/web-login-zh-1080p60.mp4，SHA-256 fcf9c25a6b73…）；en 41.68–83.09s（out/web-login-en-1080p60.mp4，SHA-256 b556bcd6b668…）",
+      "script_evidence": "research/FACTS.md「画面数据」；research/lab/lab.json；src/js/config.js 的 PROOF。"
+    },
+    "F17": {
+      "rev": 1,
+      "result": "pending",
+      "note": "MiniMax speech-2.8-hd。按策划者要求，音色契合包豪斯：清楚、利落、有往前推的节奏，不拖腔、不懒洋洋（Tmux、OpenCart 为反面）。候选三种各合成同一组代表段（开场 o1–o3b、JWT j3–j4、结论 e2）放在 audio/probe/，比较起伏、重音与长句是否平读后定一个；语速按 200 秒定长调。WaterRun 授权文案放行后由制作者自主迭代，试听文件同时交给他。",
+      "evidence": ""
+    },
+    "F18": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F19": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F20": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F21": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    }
+  },
+  "history": [
+    {
+      "version": "2026-10-19",
+      "id": "F04",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "用 7 个内容场景 + 片尾，不做“刷一下”的章节卡；片名/结论卡按 3–5 秒完整阅读设计",
+        "script_evidence": "src/design/STYLE.md 第 4、11 节；script.js 的片名/结论卡 cue。",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19.2",
+      "id": "F06",
+      "item": {
+        "id": "F06",
+        "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "木块、印章、卡扣、纸张各有语义；不用默认 whoosh；配乐写清节奏、动机与加层",
+        "script_evidence": "src/design/STYLE.md 第 7 节；src/js/config.js 的 sfx/audio 配置。",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19.4",
+      "id": "F01",
+      "item": {
+        "id": "F01",
+        "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "标题是“怎么验证你是你”，不是“登录方式大全”。第 7 稿用同一次登录贯穿：开头“它再也没问过密码” → 会话怎么认出你 → 第一次怎么认出你 → 第三方替你认；结尾 e2 直接回答：服务器认的是你出示的证据。开场先分三件事（认证、会话、授权），Cookie 只运送、JWT 是票的格式，不再把“令牌”列成与认证并列的一层。",
+        "script_evidence": "src/js/script.js 第 10 稿 o2–o6、s8、j3、e1–e2；review/NOTES.md 第 9、10 轮说明。",
+        "result": "needs_work",
+        "verification": "成片中开头 o2「它再也没问过密码」、o3–o3b 提出主问题并与片名卡同屏约 5 秒；三件事在 o4–o6 给出路线；各场按会话 → JWT → 第一次认证 → 第三方登录推进；e2 用整句回答标题并停留到片尾名单前。按中英逐句截图（shots/sheets/*-cue_*.jpg）核对。Lean 4 的负面模式（插入历史、规模数字代替解释）没有出现。 2026-10-20 发布后 WaterRun 给本片 5 分（docs/feedback.md P33–P38）：「后半段感觉有点跑题」（P33）。没有指明段落；1:42 起为第一次认证，2:29.5 起为第三方登录。按「已发布不返工」留档，原片未修改。",
+        "clips": [
+          {
+            "file": "out/web-login-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 6.97,
+            "end": 15.29,
+            "sha256": "fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339"
+          },
+          {
+            "file": "out/web-login-en-1080p60.mp4",
+            "lang": "en",
+            "start": 8.68,
+            "end": 16.25,
+            "sha256": "b556bcd6b668247c972c6443699b6d62a1f93d379be9f41b8455fc44240a2101"
+          },
+          {
+            "file": "out/web-login-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 102,
+            "end": 181.75,
+            "sha256": "fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339"
+          }
+        ]
+      }
+    },
+    {
+      "version": "2026-10-19.4",
+      "id": "F02",
+      "item": {
+        "id": "F02",
+        "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "每个机制只留一条主因果：做法 → 为什么能认出你 → 代价 → 代价引出下一种。会话：HTTP 不记事 → 记会话、发编号 → 查表；代价：编号被拿、跨站请求。JWT：共用表的负担 → 签名票 → 验签不查表；代价：难收回 → 短有效期。口令 → 短信码 → passkey 按“会被假网站骗走”递进。删去单独罗列攻击面的一场，术语不堆在一句里。",
+        "script_evidence": "script.js 的 session、jwt、authn 三场；NOTES 第 7 轮逐句依据表。",
+        "result": "needs_work",
+        "verification": "每个机制的核心一步在画面上走完：会话查表（查找条逐行下移停在本行、alice 亮起）、JWT 改一位数字后用原签名验证不通过（实算值）、密码照样压一遍得同一个哈希并对齐、passkey 在随机数上签名后锁块与印子拼合、一次性码换回两条令牌。按逐句截图与 look.js 中间时刻核对；2FA 的正面做法（同一组数据贯穿）对应 alice、SID 31d4d96e…、同一张 JWT 从头用到尾。 2026-10-20 发布后 WaterRun 给本片 5 分（docs/feedback.md P33–P38）：「阅读负担整体还是略大的一点」（P34）：200 秒引入十余个名词，交付时会话场 0:44–0:47 同屏 17 段文字的提示未处理。按「已发布不返工」留档，原片未修改。",
+        "clips": [
+          {
+            "file": "out/web-login-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 74.19,
+            "end": 85.32,
+            "sha256": "fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339"
+          },
+          {
+            "file": "out/web-login-en-1080p60.mp4",
+            "lang": "en",
+            "start": 73.42,
+            "end": 84.09,
+            "sha256": "b556bcd6b668247c972c6443699b6d62a1f93d379be9f41b8455fc44240a2101"
+          }
+        ]
+      }
+    },
+    {
+      "version": "2026-10-19.4",
+      "id": "F04",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "c01f0f5ca1049512a199d1ec3f60245af23078ae93835223b4175d595091aa03",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "秒速通时长是硬约束，先砍内容再排时间：第 7 稿删去单独罗列攻击面的一场，每个机制只留一条主因果，结论句后 gap≥0.45 s。片名卡 oT 2.5 s，且片名应与 o3b 问句同时完整出现（合计约 5 s）；每屏关键状态（会话表命中、签名对不上、假网站拿不到签名、ID Token 三项）完整出现后按 1.5 s + 字数 ÷ 5 留足，再进入下一句画面；推近时不把要读的部分留在画外。",
+        "script_evidence": "src/js/script.js 第 7 稿 oT pause 2.5、各场 slack 0.2–0.5 s；交 Opus 的 brief/04-storyboard 需按新句号重写并逐屏写稳定时长。",
+        "result": "needs_work",
+        "verification": "用逐 0.1 秒取帧的脚本量每段文字「完整可见、不透明度 ≥0.9、整块在画内」的连续区间，对照 1.5 秒 + 字数 ÷ 5。中英两版剩下的不足项只有飞行中的请求卡、问号、计数中的数字与改了一位数字的 JSON（原处续读），其余关键文字全部达标；结论句 e2 中文约 5.9 秒、英文约 5.9 秒。镜头离站前不撤结论（j4「对不上」、p8「拿不到能用的签名」等推迟了镜头）。 2026-10-20 发布后 WaterRun 给本片 5 分（docs/feedback.md P33–P38）：「还是有一些『刷过去』的问题，留白不够大，用户还没理解突然就下一个了，当然比之前的好一些」（P37）；例：0:30.1 第一张请求卡到达后问号只显示 0.45 秒，卡片 0.6 秒后直接消失（P36）。逐帧量文字达标不等于看得懂。按「已发布不返工」留档，原片未修改。",
+        "clips": [
+          {
+            "file": "out/web-login-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 186.07,
+            "end": 192,
+            "sha256": "fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339"
+          },
+          {
+            "file": "out/web-login-en-1080p60.mp4",
+            "lang": "en",
+            "start": 186.22,
+            "end": 192,
+            "sha256": "b556bcd6b668247c972c6443699b6d62a1f93d379be9f41b8455fc44240a2101"
+          },
+          {
+            "file": "out/web-login-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 30.1,
+            "end": 31.9,
+            "sha256": "fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339"
+          }
+        ]
+      }
+    },
+    {
+      "version": "2026-10-19.4",
+      "id": "F17",
+      "item": {
+        "id": "F17",
+        "rule_sha256": "c14cc3f8d440c8486e71c6f276fd025d49c3dbe56553331607e13864139fb5e8",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "MiniMax speech-2.8-hd。按策划者要求，音色契合包豪斯：清楚、利落、有往前推的节奏，不拖腔、不懒洋洋（Tmux、OpenCart 为反面）。候选三种各合成同一组代表段（开场 o1–o3b、JWT j3–j4、结论 e2）放在 audio/probe/，比较起伏、重音与长句是否平读后定一个；语速按 200 秒定长调。WaterRun 授权文案放行后由制作者自主迭代，试听文件同时交给他。",
+        "script_evidence": "project.json 的 tts 段；audio/probe/（不入库）；README「读法」。",
+        "result": "needs_work",
+        "verification": "配音前按 F17 做了候选试听文件（audio/probe/，代表段 o1–o3b、j3–j4、e2），用语速、音高起伏与响度起伏比较后选定中文「精英青年」（1.05）、英文 Aussie Bloke（1.08），避开 Tmux 用过的平读音色。2026-10-20 约 08:54（UTC+8）WaterRun 回复同一份交付报告：「可以, 标记发布吧」，并已发布两版；两种语言的配音语气按该回复记为通过。 2026-10-20 发布后 WaterRun 给本片 5 分（docs/feedback.md P33–P38）：「英文配音很一般，之后不要用这个音色了」（P38）：English_Aussie_Bloke 停用，见 docs/script-and-voice.md 第 9 节。中文「精英青年」没有单独评价。按「已发布不返工」留档，原片未修改。",
+        "clips": [
+          {
+            "file": "out/web-login-zh-1080p60.mp4",
+            "lang": "zh",
+            "start": 0,
+            "end": 192,
+            "sha256": "fcf9c25a6b730807e787e370e3fe9d6604bc7cc5514df0cccb7b2d52a8d7d339"
+          },
+          {
+            "file": "out/web-login-en-1080p60.mp4",
+            "lang": "en",
+            "start": 0,
+            "end": 192,
+            "sha256": "b556bcd6b668247c972c6443699b6d62a1f93d379be9f41b8455fc44240a2101"
+          }
+        ]
+      }
+    }
+  ],
+  "migrated": "2026-10-20 由 review/feedback.json（规则 2026-10-19.4）转换；结论原样保留，规则文字改写为通用表述，要求未变"
+}

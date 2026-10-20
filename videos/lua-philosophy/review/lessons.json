@@ -1,0 +1,154 @@
+{
+  "schema": 2,
+  "version": "2026-10-20.3",
+  "items": {
+    "F01": {
+      "rev": 1,
+      "result": "pending",
+      "note": "核心问题定为「Lua 为什么把全部数据结构压成一种，它因此得到什么、失去什么」。ch1 回答为什么是表，ch2 回答行为怎样也变成数据，ch3 回答函数为什么能像表一样被存进表，ch4 回答值的内部代价，ch5 回答边界在哪，ch6 回答这些取舍在 5.x 里怎么变。片尾回到「一切皆表」这一句给出取舍的净账。",
+      "evidence": "",
+      "script_evidence": "FACTS.md「L05 表是唯一的数据结构机制」「L12 元表」「L20–L21 设计论文的表述」「L41–L42 代价与 tag method 的历史」「L37 # 的边界」；README「内容」表各章的「本章答案」栏。"
+    },
+    "F02": {
+      "rev": 1,
+      "result": "pending",
+      "note": "全片只引入 5 个新名词：表、元表、元方法、闭包、upvalue；整数与浮点子类型、light userdata、interning 只作补充且不展开术语。同一张「学生名单表」从 ch1 贯穿到 ch5，每一步都交代输入、变化、原因与结果。实验回显逐行切成小节，不整屏刷出。",
+      "evidence": "",
+      "script_evidence": "README「目标观众已有的知识」栏列出的名词清单与「内容」表各章的「本章答案」栏；FACTS.md「L06–L10 数组与字典合一」「L14–L16 元方法的触发与 raw 查找」。"
+    },
+    "F03": {
+      "rev": 1,
+      "result": "pending",
+      "note": "第一次提到版本就带发布年月（5.3 是 2015-01-12，5.4 是 2020-06-29，5.5 是 2025-12-22，当前发行版 5.5.1 是 2026-08-03）；比较固定为「同一段代码在三个解释器上各跑一遍」，三个解释器的版本与构建方式在 ch6 一次交代清楚。",
+      "evidence": "",
+      "script_evidence": "FACTS.md「L44–L47 三个版本的发布日与最后发行版」「L48–L50 三版实测差异」；research/lab/out_15_numbers.txt 三段并列回显。"
+    },
+    "F04": {
+      "rev": 1,
+      "result": "pending",
+      "note": "每个关键状态（表同时当数组与字典、__index 未命中后落到元表、# 的两个合法边界、字符串 intern 后的内存差）按「1.5 秒 + 画面必要文字字数 ÷ 5 字/秒」留足稳定区间；结论屏与解释屏分开，解释屏不与结论屏同屏替换。",
+      "evidence": "",
+      "script_evidence": "README「内容」表每章的「停留与关键状态」栏；research/lab/out_12_table_unified.txt、out_13_length_border.txt、out_14_metatables.txt、out_17_strings.txt 的分节即画面上要呈现的小节。"
+    },
+    "F05": {
+      "rev": 1,
+      "result": "pending",
+      "note": "统一画法：一次 `t[k]` 先在表的数组区与哈希区各找一次，未命中再查元表的 `__index`，命中函数就画出一次函数调用并把返回值送回。`__newindex` 用同一条链的写入分支。整屏刷换只允许出现在章节之间。",
+      "evidence": "",
+      "script_evidence": "FACTS.md「L14 __index 的表形式与函数形式」「L15 __newindex 只在键不存在时触发」「L16 元方法 raw 查找」；research/lab/out_14_metatables.txt 的对应回显。"
+    },
+    "F06": {
+      "rev": 1,
+      "result": "pending",
+      "note": "配乐按 Lua 的气质选：轻、连续、留白多但不断层；先铺一层贯穿的低频与持续音色，再叠与「查表→回落→命中」对应的动机。关键动作才配音效，解释与停顿处不配。",
+      "evidence": "",
+      "script_evidence": "README「视觉系统」的声音约定；F17 的语气要求同时执行；开工前把代表段试听交策划者确认。"
+    },
+    "F07": {
+      "rev": 1,
+      "result": "pending",
+      "note": "画面只出现 Lua 自己的输出与中性演示路径 C:\\ftlab；构建日志里的用户名在脚本内替换为 C:\\Users\\user 后再入库；不出现主机名、真实业务数据或内网地址。",
+      "evidence": "",
+      "script_evidence": "FACTS.md「环境与版本」的脱敏说明；research/lab/11_build_older.ps1 的 Sanitize 函数与 out_11_build_older.txt 的核对结果。"
+    },
+    "F08": {
+      "rev": 1,
+      "result": "pending",
+      "note": "交付前用最终编码的 MP4 核对帧率、时长、响度、真峰值与文件名并记录 SHA-256；混音 WAV 与旧报告不作数。",
+      "evidence": "",
+      "script_evidence": "README「发布、归档与清理」表中的「最终文件、语言、规格、SHA-256」行；project.json 的 render 与 audio 参数作为计划值。"
+    },
+    "F09": {
+      "rev": 1,
+      "result": "pending",
+      "note": "事实表固定六列；「原始出处与定位」给条款号与行号，「独立印证」给另一类来源；官方设计论文标为设计者亲历记述；本机实测标为受控环境下的结果。事实异议一律回到 FACTS。",
+      "evidence": "",
+      "script_evidence": "FACTS.md 六列表格结构与「环境与版本」节；「L35 tagged NaN」如实记为待核实并说明不进定稿，即为该规则的具体应用。"
+    },
+    "F10": {
+      "rev": 1,
+      "result": "pending",
+      "note": "全片不出现「上一期」「前面那集」；与「电子发展史」系列的分工只在制作说明里写一句，不进入旁白；本片自带 1993 年起 PUC-Rio 的背景。",
+      "evidence": "",
+      "script_evidence": "FACTS.md 开头的系列分工说明段与「L01–L04」；README「内容」表不设任何回指前集的段落。"
+    },
+    "F11": {
+      "rev": 1,
+      "result": "pending",
+      "note": "英文原文一律附中文释义并注明是译文还是意译；手册条文只取最必要的一句；论文引文的中文释义放在主画面上，原文作为资料出处一行署名。",
+      "evidence": "",
+      "script_evidence": "FACTS.md 各条「原始出处与定位」栏保留英文原句；「L05」「L12」「L37」给出了原句与中文译法；README「内容」表说明外文材料的处理方式。"
+    },
+    "F12": {
+      "rev": 1,
+      "result": "pending",
+      "note": "开工前列专名与数字的试听清单逐个确认读法与停顿；数值与版本号按语义断句；成片后逐段人耳回听，ASR 只作候选筛查。",
+      "evidence": "",
+      "script_evidence": "README「读法」栏；FACTS.md 中出现的专名清单（从 L02、L20、L23、L34 归纳）；F17 的语气要求同时执行。"
+    },
+    "F13": {
+      "rev": 1,
+      "result": "pending",
+      "note": "开头先交代：Lua 是 1993 年起在里约热内卢天主教大学（PUC-Rio）由 Roberto Ierusalimschy 领导做的嵌入式脚本语言，用来嵌进别的程序里；再说明为什么值得看——它只有一种数据结构，却能让配置、记录、类、闭包都写出来；随后给出本片路线。",
+      "evidence": "",
+      "script_evidence": "FACTS.md「L02 动态类型与设计者」「L03 库与独立解释器」「L05 唯一的数据结构」「L26 Lua 3.1 引入闭包」「L46 Lua 5.5 发布日」；README「内容」表 open 行。"
+    },
+    "F14": {
+      "rev": 1,
+      "result": "pending",
+      "note": "片尾用空字幕、pause 与 credits:true 保留时段，署名只在画面展示；正文与旁白不出现制作指令；TTS 排除片尾 cue；成片后核对片尾时段无人声。",
+      "evidence": "",
+      "script_evidence": "FACTS.md「制作署名」节与 README「制作署名与片尾」节。"
+    },
+    "F15": {
+      "rev": 1,
+      "result": "pending",
+      "note": "画面上只放 Lua 自己的输出与必要的一句结论，不写「本实验」「据源码分支构造」「实测」等标注；解释与限定写进旁白的自然语句或事实表，不出现在画面小字。",
+      "evidence": "",
+      "script_evidence": "README「内容」表的内容栏；research/lab/out_*.txt 的内容本身即画面素材，其中不含任何制作者说明。"
+    },
+    "F16": {
+      "rev": 1,
+      "result": "pending",
+      "note": "视觉直接取自 lua.org：官方页面的深蓝与米白配色、Lua 标志、官方手册的 § 编号体例与等宽代码块、版本沿革页的年表；画面上有常驻身份标识（Lua 标志与版本号），任取一帧能认出在讲 Lua。",
+      "evidence": "",
+      "script_evidence": "README「视觉系统」列出每个视觉元素取自 lua.org 的哪份材料；FACTS.md「环境与版本」表登记了实际读过的官方页面。"
+    },
+    "F17": {
+      "rev": 1,
+      "result": "pending",
+      "note": "开工配音前试听候选音色与语速，确认句子有起伏、该强调处有重音、长句不被念平；讲解要有往前推的感觉，不做成念稿。英文旁白不使用已停用的音色。",
+      "evidence": "",
+      "script_evidence": "README「读法」栏；F06 的试听办法合并执行；成片后连续试听开头、难点段与章间。"
+    },
+    "F18": {
+      "rev": 1,
+      "result": "pending",
+      "note": "每章定一个以讲解对象为主角的主画面：ch1 用「数组区 + 哈希区」的双区表；ch2 用元表挂到值上并被调用的一步；ch3 用装着 upvalue 的闭包盒子；ch5 用标出两个合法边界的尺子。逐行淡入与高亮只作辅助。",
+      "evidence": "",
+      "script_evidence": "README「内容」表各章的「主画面」栏；FACTS.md「L07 记录与数组同表」「L12 元表定义行为」「L23 upvalue 语义」「L37 # 的边界」分别提供这四处的依据。"
+    },
+    "F19": {
+      "rev": 1,
+      "result": "pending",
+      "note": "按实际字宽排版，文字不超出色块或框线；后到的元素不盖住正在讲的内容；反色高亮不同时渐变底色与字色；元素退场交代去向。每个动作前后逐 0.1 秒取帧专看中间帧。",
+      "evidence": "",
+      "script_evidence": "README「内容」表各章的画面约定；F04 的取帧办法与本项合并执行，scan.js 过闸不代替逐帧检查。"
+    },
+    "F20": {
+      "rev": 1,
+      "result": "pending",
+      "note": "本片讲的就是“一切皆表”，图形因此必须始终是表：双区表、元表查找、闭包与 upvalue 的示意要与 research/lab/ 里 12–17 号脚本的实测回显逐项对得上；凡是画不出可核对结构的机制，宁可只放代码与输出，也不摆抽象几何（反面对照 P39 的阶梯块私钥：只靠标签才读懂）。",
+      "evidence": "",
+      "script_evidence": "research/FACTS.md 的 ch1–ch6 各章与 research/lab/ 的 12–17 号脚本回显。"
+    },
+    "F21": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    }
+  },
+  "history": [],
+  "migrated": "2026-10-20 由 review/feedback.json（规则 2026-10-20.2）转换；结论原样保留，规则文字改写为通用表述，要求未变"
+}

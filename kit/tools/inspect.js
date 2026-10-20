@@ -48,7 +48,7 @@ function COLLECT() {
       const eb = el.getBoundingClientRect(), sx = el.offsetWidth ? eb.width / el.offsetWidth : 1, sy = el.offsetHeight ? eb.height / el.offsetHeight : 1;
       const len = (v, ref, k) => (v.endsWith('%') ? parseFloat(v) / 100 * ref : parseFloat(v) * k);
       let cp = null, m;
-      if ((m = cs.clipPath.match(/^inset\(([^)]+)\)/))) { const p = m[1].split(/\s+round\s+/)[0].trim().split(/\s+/); const t = p[0], r = p[1] || t, bt = p[2] || t, l = p[3] || r; const T = len(t, eb.height, sy), R = len(r, eb.width, sx), B = len(bt, eb.height, sy), L = len(l, eb.width, sx); cp = { x: eb.left + L, y: eb.top + T, w: eb.width - L - R, h: eb.height - T - B }; }
+      if ((m = cs.clipPath.match(/^inset\(([^)]+)\)/))) { const p = m[1].split(/\s+round\s+/)[0].trim().split(/\s+/); const t = p[0], r = p[1] || t, bt = p[2] || t, l = p[3] || r; const T = len(t, eb.height, sy), R = len(r, eb.width, sx), B = len(bt, eb.height, sy), L = len(l, eb.width, sx); cp = Math.max(T, R, B, L) < 0.5 ? null : { x: eb.left + L, y: eb.top + T, w: eb.width - L - R, h: eb.height - T - B }; }   // 擦除结束后留下的 inset(0) 只裁到盒子本身：大字的字形框比行高略高，按它判「被裁」是误报
       else if ((m = cs.clipPath.match(/^circle\(([\d.]+)(px|%)? at ([\d.-]+)(px|%) ([\d.-]+)(px|%)\)/))) { const R = m[2] === '%' ? parseFloat(m[1]) / 100 * Math.hypot(eb.width, eb.height) / Math.SQRT2 : parseFloat(m[1]) * sx, X = len(m[3] + m[4], eb.width, sx), Y = len(m[5] + m[6], eb.height, sy); cp = { x: eb.left + X - R, y: eb.top + Y - R, w: 2 * R, h: 2 * R }; }
       if (cp) { clip = cp.w > 0.5 && cp.h > 0.5 ? isect(clip, cp) : null; if (!clip) return; }
     }

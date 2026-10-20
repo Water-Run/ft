@@ -3,7 +3,7 @@
 //       --mb 4        运动模糊：每帧渲染 N 个子帧再平均（耗时 ×N）；--shutter 0.5 快门开角占一帧的比例
 //       --gpu 1       启用硬件加速（WebGL 场景需要；先用 glprobe.js 探测）
 //       --threads 4   每个编码进程的线程数（不限时每个进程按 CPU 核数开线程，1080p 下各占约 1.6 GB，九路就是 14 GB）
-// 省略 --lang 时依次渲染全部语言。缺省值取 project.json 的 render 段（fps、mb、shutter、crf、workers、gpu），命令行优先。workers 缺省为 CPU 线程数的三分之一（2–9）。
+// 省略 --lang 时依次渲染全部语言。缺省值取 project.json 的 render 段（fps、mb、shutter、crf、workers、gpu），命令行优先。workers 缺省为 CPU 线程数的三分之一（2–9），且不超过可用内存 ÷ 3 GB。
 // 完整性：每张截图入管道前先验 PNG 的头、尺寸与结尾；每一段编码完数一遍帧数，不符就单独重渲那一段；
 //         拼接后再数一遍总帧数。任何一步对不上都以非零退出码结束，不会交出一部悄悄少了帧的片子。日志末行应有 verified frames=<总帧数>。
 // 像素格式：截图通常是 RGB，但个别帧会因为合成层边缘的几个透明像素变成 RGBA。图像流的格式中途一变，ffmpeg 就重建滤镜图：
@@ -18,7 +18,8 @@ require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
 const R = PROJECT().render, opt = (k, d) => arg(k, R[k] != null ? R[k] : d);
 const FPS = +opt('fps', 60), SCALE = +arg('scale', 1), CRF = String(opt('crf', 15));
-const WORKERS = +opt('workers', Math.max(2, Math.min(9, Math.floor(os.cpus().length / 3))));
+// 缺省并发：CPU 线程数的三分之一（2–9），再按可用内存收紧——每路一个 Chrome 与一个编码器，长片约占 3 GB；默认并发曾把 40 GB 的机器用尽
+const WORKERS = +opt('workers', Math.max(2, Math.min(9, Math.floor(os.cpus().length / 3), Math.floor(os.freemem() / 3e9))));
 const MB = Math.max(1, +opt('mb', 1)), SHUTTER = +opt('shutter', 0.5), GPU = !!+opt('gpu', 0), THREADS = String(+arg('threads', 4));
 const PW = Math.round(1920 * SCALE), PH = Math.round(1080 * SCALE);
 // 缩小出图（低清预演）时显式给出裁剪区与比例：新版 Chrome 的直接截图不理会小于 1 的设备像素比，出来仍是 1920×1080

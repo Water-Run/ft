@@ -4,7 +4,7 @@
 //   语言：--lang zh | en | zh,en | all。省略时，出产物的工具处理 project.json 里的全部语言，看画面的工具只看第一种。
 // 目录约定：
 //   <仓库>/kit/            引擎、模板、工具（本目录的上一级）
-//   <仓库>/assets/         本机的二进制依赖（字体、ffmpeg、语音识别模型），不入库；见 docs/environment.md
+//   <仓库>/assets/         本机的二进制依赖（字体、ffmpeg、语音识别模型），不入库；见 docs/reference/environment.md
 //   <仓库>/node_modules/   npm install 得到（puppeteer-core、gsap）
 //   <视频>/project.json src/ research/         入库
 //   <视频>/audio/ out/ shots/ build/            生成物，不入库
@@ -33,7 +33,7 @@ const chromePath = lazy(() => process.env.CHROME || LOCAL.chrome || which(WIN
 const ffPath = (name) => lazy(() => process.env[name.toUpperCase()] || LOCAL[name] || which([path.join(ASSETS, 'ffmpeg', 'bin', exe(name)), name]));
 const ffmpegPath = ffPath('ffmpeg'), ffprobePath = ffPath('ffprobe');
 const pythonPath = lazy(() => process.env.PYTHON || LOCAL.python || which([path.join(REPO, '.venv', WIN ? 'Scripts/python.exe' : 'bin/python'), ...(WIN ? ['python', 'py'] : ['python3', 'python'])]));
-const need = (what, get, hint) => { const v = get(); if (!v) { console.error(`找不到 ${what}。${hint} 详见 docs/environment.md；node kit/tools/doctor.js 可检查整个环境。`); process.exit(2); } return v; };
+const need = (what, get, hint) => { const v = get(); if (!v) { console.error(`找不到 ${what}。${hint} 详见 docs/reference/environment.md；node kit/tools/doctor.js 可检查整个环境。`); process.exit(2); } return v; };
 const CHROME = () => need('Chrome', chromePath, '装好 Chrome，或在 kit/config.local.json 里写 "chrome": "<路径>"。');
 const FFMPEG = () => need('ffmpeg', ffmpegPath, '把 ffmpeg 放进 PATH 或 assets/ffmpeg/bin/，或在 kit/config.local.json 里写 "ffmpeg"。');
 const FFPROBE = () => need('ffprobe', ffprobePath, '它随 ffmpeg 一起发布。');
@@ -51,12 +51,12 @@ const flag = (k) => ARGS.includes('--' + k);
 const positional = (valued = []) => { const out = []; for (let i = 0; i < ARGS.length; i++) { if (ARGS[i].startsWith('--')) { if (valued.includes(ARGS[i].slice(2))) i++; continue; } out.push(ARGS[i]); } return out; };
 // 去掉指定的选项后剩下的参数（valued：带值的键；flags：开关），供 parseTimes 这类自己再解析的函数用
 const without = (valued = [], flags = []) => { const out = []; for (let i = 0; i < ARGS.length; i++) { const k = ARGS[i].startsWith('--') ? ARGS[i].slice(2) : null; if (k && valued.includes(k)) { i++; continue; } if (k && flags.includes(k)) continue; out.push(ARGS[i]); } return out; };
-const needVideo = () => { if (!VIDEO) { console.error('没有指定视频目录。用法：node kit/tools/<工具>.js <视频目录> […]，或先 cd 进视频目录。视频目录是含 project.json 的那一层，例如 videos/series/open-source-projects/luainstaller'); process.exit(2); } return VIDEO; };
+const needVideo = () => { if (!VIDEO) { console.error('没有指定视频目录。用法：node kit/tools/<工具>.js <视频目录> […]，或先 cd 进视频目录。视频目录是含 project.json 的那一层，例如 videos/luainstaller'); process.exit(2); } return VIDEO; };
 const rel = (p) => path.relative(VIDEO || REPO, p).replace(/\\/g, '/');
 
 // ── 项目与语言 ──
-// project.json：{ slug, languages: ["zh","en"], titles: {zh,en}, voices: {zh,en}, rates: {zh,en}, asr_prompts: {zh,en}, production: {mode, maker, prepared_by}, audio: {…}, render: {…}, check: {…} }
-// 各字段的含义见 docs/tools.md。production.mode：self（自制，缺省）| delegated（委托：准备方备好任务书，受托模型完成场景与收尾，见 docs/delegation.md）
+// project.json：{ slug, languages: ["zh","en"], titles: {zh,en}, voices: {zh,en}, rates: {zh,en}, asr_prompts: {zh,en}, audio: {…}, render: {…}, check: {…} }
+// 各字段的含义见 docs/reference/tools.md。新片另有 layout: 2、stage、next、credits；旧片的 production 只作历史记录
 // 单语言的旧写法（title / voice / rate / asr_prompt）也认。
 const DEFAULTS = { voices: { zh: 'zh-CN-YunyangNeural', en: 'en-US-AndrewNeural' }, rates: { zh: '+0%', en: '+0%' }, asr_prompts: { zh: '以下是普通话的讲解。', en: 'A narration.' } };
 const PROJECT = lazy(() => {
@@ -147,7 +147,8 @@ async function startServer(port = 0) {
     const u = decodeURIComponent(req.url.split('?')[0]);
     if (u === '/favicon.ico') { res.writeHead(204); res.end(); return; }
     let p;
-    if (u.startsWith('/fonts/')) p = path.join(ASSETS, 'fonts', u.slice(7));
+    if (u === '/project.json') p = path.join(VIDEO, 'project.json');      // 片尾名单等本片资料（新引擎在 boot() 里读取）
+    else if (u.startsWith('/fonts/')) p = path.join(ASSETS, 'fonts', u.slice(7));
     else if (u.startsWith('/vendor/') && VENDOR[u.slice(8)] && !fs.existsSync(path.join(VIDEO, 'src', u))) p = path.join(REPO, 'node_modules', ...VENDOR[u.slice(8)]);
     else p = path.join(VIDEO, 'src', u);
     if (!path.resolve(p).startsWith(REPO)) { res.writeHead(403); res.end(); return; }
@@ -196,7 +197,10 @@ async function openPage(base, { url, lang = LANGS()[0], width = 1920, height = 1
 function sourceState() {
   const crypto = require('crypto'), out = {}, root = path.join(needVideo(), 'src');
   const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true }).sort((x, y) => (x.name < y.name ? -1 : 1))) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (e.isFile()) out[path.relative(root, p).replace(/\\/g, '/')] = crypto.createHash('sha1').update(fs.readFileSync(p)).digest('hex'); } };
-  walk(root); return out;
+  walk(root);
+  // 新版目录的片尾名单从 project.json 读取：署名与标题变了，成片同样过期
+  const P = PROJECT(); if (P.layout >= 2) out['../project.json#credits'] = crypto.createHash('sha1').update(JSON.stringify([P.credits, P.titles])).digest('hex');
+  return out;
 }
 // index.html 加载的本片脚本与样式（不含引擎、脚本、时长与第三方库）：check.js 的源码规则只看这些
 const ENGINE_FILES = /^(js\/(engine|util|boot|script|timing(\.\w+)?)\.js|css\/base\.css|vendor\/.*)$/;

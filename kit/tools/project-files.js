@@ -25,7 +25,7 @@ function videoRoot(repo, input) {
   const root = fs.realpathSync(repo), video = path.resolve(input);
   noLinks(video);
   const rel = path.relative(root, video).replaceAll('\\', '/');
-  if (!/^(videos\/standalone\/[a-z0-9]+(?:-[a-z0-9]+)*|videos\/series\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*|out\/sandbox\/[a-z0-9]+(?:-[a-z0-9]+)*)$/.test(rel)) {
+  if (!/^(videos|out\/sandbox)\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(rel)) {
     throw new Error('只接受 videos/ 下的单个视频，或 out/sandbox/ 下的新建练习目录');
   }
   if (!fs.statSync(path.join(video, 'project.json')).isFile()) throw new Error('缺少 project.json');
@@ -69,7 +69,7 @@ function acquireLock(video) {
     noLinks(file);
     const previous = JSON.parse(fs.readFileSync(file, 'utf8'));
     if (previous.token === process.env.FT_PROJECT_LOCK && previous.video === video) return;
-    throw new Error('本片有制作锁（PID ' + previous.pid + '）。等待原任务结束；异常退出的处理见 docs/lifecycle.md。');
+    throw new Error('本片有制作锁（PID ' + previous.pid + '）。等待原任务结束；异常退出的处理见 docs/guides/release.md。');
   }
   const token = crypto.randomUUID();
   fs.writeFileSync(file, JSON.stringify({ pid: process.pid, token, video }), { flag: 'wx' });

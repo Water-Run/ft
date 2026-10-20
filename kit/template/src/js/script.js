@@ -2,7 +2,7 @@
 // - 多语言时字幕写成 { zh: '…', en: '…' }；只有一种语言时直接写字符串。tts、gap、章节标题同理
 // - 字幕里 *词* 表示强调；tts 缺省时由字幕按 SAY 表换成读法（字幕写正式拼写，读法只放在 SAY 表或 tts 字段）
 // - gap：该句结束到下一句开始的停顿（秒，缺省 0.3）；pause：无旁白的纯画面停顿（标题、转场）
-// - 片尾署名只上画面：['credits', null, { pause: 12, credits: true }]；不写入旁白正文，不设置 tts。
+// - 片尾署名只上画面：['credits', null, { pause: 8, credits: true }]；不写入旁白正文，不设置 tts。名单由 scenes/s9_credits.js 从 project.json 读取。
 // - 每章一个 scene：chap [编号, 标题]（null 表示没有章节卡）、lead 章节卡时长、tail 章末留白
 // 语言：浏览器取 ?lang=，Node 取环境变量 VLANG；缺省为 zh。浏览器与 Node 共用本文件（工具读它排时间线）。
 // 翻译以中文为底本：先定中文，再译其他语言；各语言的句号一一对应，时间轴各自排布。
@@ -30,6 +30,12 @@
       ],
     },
     // </chapters>
+    {
+      id: 'credits', chap: null, lead: 0.4, tail: 0.6,
+      cues: [
+        ['credits', null, { pause: 8, credits: true }],   // 片尾名单：只上画面，不配旁白；名单取自 project.json 的 credits
+      ],
+    },
   ];
 
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。

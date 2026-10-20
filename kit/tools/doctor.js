@@ -2,12 +2,12 @@
 // 用法：node kit/tools/doctor.js                   检查仓库级的依赖
 //       node kit/tools/doctor.js <视频>             另查这部视频：用到的字体、各语言的配音缓存与成片中间文件
 //       node kit/tools/doctor.js --visual          只检查写场景与看帧的依赖（无需 Python、ffmpeg）
-// 每一项的安装办法见 docs/environment.md。
+// 每一项的安装办法见 docs/reference/environment.md。
 const os = require('os');
 const { spawnSync } = require('child_process');
 const { REPO, KIT, ASSETS, WIN, LOCAL, VIDEO, PROJECT, chromePath, ffmpegPath, ffprobePath, pythonPath, loadTiming, dirs, flag, path, fs } = require('./lib');
 const rows = [];
-if (flag('clean')) { console.error('doctor 只做诊断，不删除全局浏览器目录。生成物清理用 clean.js；异常退出的处理见 docs/lifecycle.md。'); process.exit(2); }
+if (flag('clean')) { console.error('doctor 只做诊断，不删除全局浏览器目录。生成物清理用 clean.js；异常退出的处理见 docs/guides/release.md。'); process.exit(2); }
 const add = (level, name, detail) => rows.push({ level, name, detail });   // level: ok / warn / fail
 const run = (cmd, args) => { const r = spawnSync(cmd, args, { encoding: 'utf8' }); return r.status === 0 ? (r.stdout || r.stderr || '').trim() : null; };
 (async () => {
@@ -52,7 +52,7 @@ const run = (cmd, args) => { const r = spawnSync(cmd, args, { encoding: 'utf8' }
   // 磁盘与临时目录
   try { const s = fs.statfsSync(REPO), free = s.bavail * s.bsize / 2 ** 30; add(free > 10 ? 'ok' : 'warn', '磁盘剩余', `${free.toFixed(1)} GB（一部 8 分钟的片子，渲染与封装约占 1.5–3 GB）`); } catch (e) {}
   const tmp = os.tmpdir(), left = fs.readdirSync(tmp).filter((n) => n.startsWith('lvs-chrome-'));
-  add(left.length ? 'warn' : 'ok', '浏览器临时档案', left.length ? `${left.length} 个 lvs-chrome-* 目录（可能正在使用）。按 docs/lifecycle.md 核对归属后处理。` : '无残留');
+  add(left.length ? 'warn' : 'ok', '浏览器临时档案', left.length ? `${left.length} 个 lvs-chrome-* 目录（可能正在使用）。按 docs/guides/release.md 核对归属后处理。` : '无残留');
   if (Object.keys(LOCAL).length) add('ok', '本机配置', 'kit/config.local.json：' + Object.keys(LOCAL).join(', '));
   // 这部视频
   if (VIDEO) {
@@ -72,6 +72,6 @@ const run = (cmd, args) => { const r = spawnSync(cmd, args, { encoding: 'utf8' }
   const mark = { ok: '✓', warn: '!', fail: '✗' };
   for (const r of rows) console.log(`${mark[r.level]} ${r.name.padEnd(22)} ${r.detail}`);
   const bad = rows.filter((r) => r.level === 'fail').length;
-  console.log(bad ? `\n有 ${bad} 项不满足。安装办法见 docs/environment.md` : '\n环境可用。' + (rows.some((r) => r.level === 'warn') ? '带 ! 的项不影响出片，但会缺少对应的检查。' : ''));
+  console.log(bad ? `\n有 ${bad} 项不满足。安装办法见 docs/reference/environment.md` : '\n环境可用。' + (rows.some((r) => r.level === 'warn') ? '带 ! 的项不影响出片，但会缺少对应的检查。' : ''));
   process.exit(bad ? 1 : 0);
 })();

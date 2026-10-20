@@ -1,0 +1,77 @@
+# XX 秒速通
+
+每集在标题写明的秒数内讲清一个主题：一个概念、一项机制或一个工具。秒数是上限也是卖点：信息密度高、没有铺垫，开门见山。面向想快速搞懂的观众。
+
+## 定位
+
+| | |
+|---|---|
+| 讲什么 | 在极短的时间内快速了解一个知识：一个概念、一项机制或一个工具 |
+| 面向谁 | 想快速搞懂的观众 |
+| 怎么讲 | 富有节奏感，配乐完整，引人注目；无观看负担的同时把知识学到；开门见山，不铺垫 |
+| 每集多长 | 96、100、120、128、150、192、200、256 秒之一；标题里写明的秒数即成片时长，各语言相同 |
+| 语言 | 中文与英文（缺省） |
+
+## 共同约定
+
+各集真正共享的约定记在这里，一项一行。视觉与配乐每集取自本集的讲解对象（经验规则 F16、F21）；系列的识别性来自定长、结构与常驻元素的做法，不来自同一套配色与曲子。某一集的设计决定写在那一集的 README。要改约定先改这里。写法见 [系列](../docs/guides/series.md)。
+
+| 项 | 约定 |
+|---|---|
+| 标题 | `<秒数> 秒…`；英文 `<主题> in <秒数> Seconds: …`。秒数取自「定位」的可选值 |
+| 时长 | 成片时长恰为标题里的秒数。`script.js` 里每个场景带 `at`（开始的时刻），`TOTAL` 为全片时长；旁白超出定点时记入 `L.problems`，总闸门不通过。`check.duration` 设为 `[秒数 − 0.1, 秒数 + 0.1]`。定长的片子靠删内容腾时间，不压留白（F04） |
+| 结构 | 现象或问题（开头 6 秒内）→ 片名卡 → 它是什么 → 它怎么工作（重头：把真实数据一步步算出来或拆开来）→ 边界或比较 → 一句结论 → 片尾名单（约 7.5 秒，不配旁白）。没有章节卡；题目自身有周期时按它分段，否则每段 30 秒左右。每一场都直接回答片名的问题（F01） |
+| 新名词 | 动笔前定本集引入几个新名词；定长片尤其容易堆名词（F02） |
+| 讲法 | 一句一件事，每句落在画面上的一个动作；数字、字节、回显来自实验（`research/lab/` → `tools/gen_data.py` → `src/js/data.js`）；历史节点只写读到原始来源的，并在画面上给出年份 |
+| 语速 | 中文 `+6%`，英文 `+8%`；英文「过快」阈值为每秒 4 词（`check.pace`） |
+| 常驻元素 | 底部字幕带上沿一把按全片秒数刻度的秒尺，走过的部分变色；左上角剩余秒数，最后 5 秒逐秒跳动；右上角是本集的「仪表」：一个与题目有关、全片都在走的读数。位置与做法全系列一致，样式随本集的视觉系统 |
+| 节拍 | 画面上的重音吸附到 0.25 秒的网格（`config.js` 的 `Q()`），配乐的拍子与之对齐；曲子本身为本集写 |
+| 混音与音效 | `music_db −12`、`duck_db 7`、`sfx_db −9`；音效覆盖 `per_seconds 2.5`、`kinds 6`、`scene_per_seconds 4`、`max_gap 6`（起点的 `project.json` 已写好） |
+| 封面 | 秒数在封面上醒目；版式按本集的视觉系统设计 |
+
+## 起点
+
+`kit/starters/in-seconds/`：`new.js <片> --series in-seconds` 新建分集时盖在通用模板之上，得到一份能直接通过扫描的 60 秒骨架。
+
+| 文件 | 内容 |
+|---|---|
+| `project.json` | 本系列的语速、渲染、混音与检查阈值（`check.duration` 随 `TOTAL` 一起改） |
+| `src/js/script.js` | 定长时间线（`at`、`TOTAL`、`L.problems`）与三场骨架 |
+| `src/js/config.js` | 常驻元素（字幕带与秒尺、剩余秒数、右上角的仪表容器 `HUD.right`）、节拍网格 `Q()`、缺省的直刷换场 |
+| `src/js/parts.js` | 与题目无关的部件：斜线块、字节格、比特格、日历换算 |
+| `src/css/style.css`、`src/cover.html`、`tools/music.py` | 首集「计时盘」的配色、封面与 120 拍秒针配乐，**只是能跑的占位**：正式制作时按本集的对象重做；`check.js` 会提示与起点完全相同的文件（F21） |
+| `src/js/scenes/` | 开场（含片名卡）、演示、片尾名单三个示例场景 |
+
+首集里与题目有关的部件（逐位滚动的验证码、30 秒表盘、指针扫屏换场）留在 [two-factor-auth](../videos/two-factor-auth/) 自己的源码里。
+
+## 分集
+
+<!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
+| # | 标题 | 语言 | 状态 | 目录 |
+|---|---|---|---|---|
+| 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 已成片 | [`two-factor-auth`](../videos/two-factor-auth/) |
+| 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠 | zh + en | 已成片 | [`lean4`](../videos/lean4/) |
+| 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 | `how-opus-animates` |
+| 4 | 150 秒学会怎么打手枪？ | zh + en | 制作中 | [`pistol-shooting`](../videos/pistol-shooting/) |
+| 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](../videos/dense-vs-moe/) |
+| 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 | `rear-seatbelt` |
+| 7 | 256 秒搞懂 SSH | zh + en | 制作中 | [`ssh`](../videos/ssh/) |
+| 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 | `powershell-pwsh` |
+| 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 | `pty` |
+| 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 | `tire-width` |
+| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](../videos/tmux/) |
+| 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 | `gps` |
+| 13 | 256 秒有关现代密码学 | zh + en | 计划中 | `modern-crypto` |
+| 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 | `quantization` |
+| 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 | `frameworks` |
+| 16 | 96 秒速通模型的各个参数 | zh + en | 制作中 | [`model-parameters`](../videos/model-parameters/) |
+| 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
+| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 制作中 | [`harness`](../videos/harness/) |
+| 19 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](../videos/web-login/) |
+| 20 | 192 秒认识 CoT：先思考，再回答 | zh + en | 制作中 | [`chain-of-thought`](../videos/chain-of-thought/) |
+| 21 | 120 秒速通 Harness 是如何压缩上下文的 | zh + en | 计划中 | `context-compaction` |
+| 22 | 96 秒讲清 HTTP 状态码：五类响应与最常用的那些 | zh + en | 制作中 | [`http-status-codes`](../videos/http-status-codes/) |
+| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh + en | 制作中 | [`ea211-family`](../videos/ea211-family/) |
+| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh + en | 制作中 | [`scion`](../videos/scion/) |
+| 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` |
+<!-- catalog:end -->

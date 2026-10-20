@@ -1,13 +1,15 @@
 {
   "slug": "{{SLUG}}",
+  "layout": 2,
   "languages": {{LANGS_JSON}},
   "titles": {{TITLES_JSON}},
+  "stage": "brief",
+  "next": "",
+  "credits": { "planner": "{{PLANNER}}", "models": [], "services": [], "repository": "{{REPOSITORY}}" },
   "voices": {{VOICES_JSON}},
   "rates": {{RATES_JSON}},
   "asr_prompts": {{PROMPTS_JSON}},
-  "production": {{PRODUCTION_JSON}},
-  "review": {{REVIEW_JSON}},
-  "feedback": { "required": true },
+  "review": { "required": true, "reviewer": "{{REVIEWER}}" },
   "render": { "fps": 60, "mb": 4 },
   "audio": { "music": "pulse", "music_db": -21, "duck_db": 9, "sfx_db": -8 },
   "check": {

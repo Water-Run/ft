@@ -1,82 +1,39 @@
 # f(t)
 
-f(t) 是由大语言模型制作的科普视频与项目介绍视频的源码仓库，连同把这些源码变成成片的工具链。名字来自画面本身：整部片子是时间 t 的纯函数，任意一帧都是 f(t)。每一部视频是一段以时间 t 为唯一输入的 HTML 动画：旁白逐句合成，画面上的动作挂在旁白的词边界上；无头浏览器并行出帧，由 ffmpeg 编码与封装。成片为 1920×1080、60 帧/秒；除另有说明外，每部出中文与英文两个版本。
+f(t) 是一个用大语言模型制作科普与项目介绍视频的开源仓库：每部视频的事实依据、文案、审稿记录、动画源码，连同把它们变成成片的工具链，全部在这里。名字来自画面本身——整部片子是时间 t 的纯函数，任意一帧都是 f(t)。
 
-## 从这里开始
+成片为 1920×1080、60 帧/秒，发布在 [哔哩哔哩](https://space.bilibili.com/68328330) 与 [YouTube](https://www.youtube.com/@waterrun1978)。全部作品、制作状态、发布记录与评分见 **[片单](videos/README.md)**。
 
-这套仓库也可用于独立制作：从事实取证、文案与用户校对，到多语言动画、交付、归档和清理，逐步保留可复查的记录。
+## 自由软件，自由视频
 
-| 目的 | 入口 |
-|---|---|
-| 首次 clone，跑通模板 | [快速入门](docs/getting-started.md) |
-| 用自己的身份和仓库制作 | [公开制作配置](kit/studio.json)、[独立使用说明](docs/getting-started.md#3-用于独立制作或-fork) |
-| 写文案、交给用户校对 | [文案与校对](docs/script-review.md) |
-| 让反馈持续进入之后的制作 | [反馈应用流程](docs/feedback-loop.md)、[当前规则](docs/feedback-rules.json) |
-| 制作结束，保存和清理 | [归档、清理与恢复](docs/lifecycle.md) |
-| 了解结构或参与维护 | [仓库结构](docs/repository.md)、[贡献指南](CONTRIBUTING.md)、[文档总览](docs/README.md) |
+本仓库以 GPL-3.0-or-later 发布。每一部成片都是它源码的目标形式，它的完整对应源码就是 `videos/<片>/` 与 `kit/`：任何人都可以观看、研究、修改、重新渲染并再发布，修改后的版本同样公开源码。
 
-## 仓库的构成
+知识是共同的财富。工具、方法、踩过的坑、失败的成片与它们的复盘，都在这里公开；一部片子里摸索出的做法，回到公共的工具与规则里，成为下一部的起点。详见 [宗旨与原则](docs/principles.md)。
 
-| 路径 | 内容 |
-|---|---|
-| `videos/standalone/<视频>/` | 独立成篇的视频：旁白脚本、场景源码、取证材料、配置 |
-| `videos/series/<系列>/<视频>/` | 属于某个系列的视频；每个系列另有一份系列说明 |
-| `videos/catalog.json` | 片单：已成片与计划中的全部视频 |
-| `kit/engine/` | 时间线引擎：补间、帧函数、镜头、字幕、音效登记 |
-| `kit/tools/` | 工具：配音、看帧、扫描、总闸门、混音、渲染、封装、封面、环境自检 |
-| `kit/template/` | 新视频的骨架，默认中英双语 |
-| `kit/delegation/` | 委托制作时的任务书骨架 |
-| `kit/tests/`、`.github/` | 隔离回归测试、跨平台 CI 与贡献模板 |
-| `kit/studio.json` | 新片的公开策划、校对者与源码仓库默认值 |
-| `docs/` | 制作流程、质量标准与各项专题文档 |
-| `assets/` | 字体、语音识别模型等二进制依赖，不入库，由工具下载 |
-| `out/sandbox/` | 入门练习与模板截图，不入库、不登记片单 |
+## 怎样做出来的
 
-成片、配音缓存与渲染的中间文件不入库。
+- **画面是时间的纯函数。** 每部视频是一段以 t 为唯一输入的 HTML 动画。不用 CSS 动画、定时器与回调，任意一帧都能独立渲染，多个无头浏览器并行出帧，再由 ffmpeg 编码封装。
+- **旁白决定时间。** 旁白逐句合成，取回每个词被读到的时刻；动画挂在「某句里某个词」上，文案一改，画面自动重排。同一套场景代码可以配多种语言。
+- **事实有出处。** 画面与旁白里的每一项事实都记在该片的 `research/FACTS.md`；画面上的字节、数字、终端回显由脚本从实验数据生成。
+- **人审定内容。** 文案经策划者逐句审定、明确确认后才配音；成片由人看过才交付。
+- **检查用文字完成。** 工具把任意一帧写成「此刻可见的元素、位置、字号、颜色、文字」，看不到画面的模型也能检查重叠、对比度、越界、空屏、静止与确定性。
+- **声音由程序合成。** 配乐与音效不用外部素材，混音是确定性的。
+- **分工按能力。** 人选题、审定、评价；准备方模型做取证与文案稿；主力模型做设计与成片。谁做了什么，片尾按真实的模型名写明。
 
-## 已成片
+## 仓库的结构
 
-| 视频 | 语言 | 时长 | 制作 | 发布 |
-|---|---|---|---|---|
-| [200 秒了解 Web 登录机制：怎么验证你是你](videos/series/in-seconds/web-login/) | 中文、英文 | 3:20、3:20 | 委托，DeepSeek V4.1 Flash 1017、Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1Z7JZ6yEQb)、[YouTube](https://www.youtube.com/watch?v=Bkt7b_xbMYg)（2026-10-20） |
-| [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](videos/series/database-engines/postgresql/) | 中文 | 11:28 | 自制，6.1Sol、Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1xAnn6WEzv)（2026-10-19） |
-| [128 秒关于 Tmux：是什么，怎么用，如何实现的](videos/series/in-seconds/tmux/) | 中文、英文 | 2:08、2:08 | 自制，Claude Opus 5.5 第 5 轮 b | [哔哩哔哩](https://www.bilibili.com/video/BV1oSn56oEUQ)、[YouTube](https://www.youtube.com/watch?v=qCklpfGDWXk)（2026-10-19） |
-| [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](videos/standalone/opencart-1-5-admin/) | 中文 | 16:50 | 委托，Claude Opus 5.5 | [哔哩哔哩](https://www.bilibili.com/video/BV1RNnJ6AELR)（2026-10-19） |
-| [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](videos/series/in-seconds/lean4/) | 中文、英文 | 3:20、3:20 | 自制，Codex 收尾 | [哔哩哔哩](https://www.bilibili.com/video/BV1PxHU6KE6G)（2026-10-08） |
-| [一个数据库引擎是如何实现的？——从 MyISAM 说起](videos/series/database-engines/myisam/) | 中文 | 7:55 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ)（2026-10-01） |
-| [luainstaller：把 Lua 脚本交给没有 Lua 的人](videos/series/open-source-projects/luainstaller/) | 中文、英文 | 7:55、7:57 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc)（2026-10-02） |
-| [古代来的 Shell：Windows 批处理（.bat）](videos/standalone/windows-batch/) | 中文 | 3:13 | 委托 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ)（2026-10-01） |
-| [120 秒关于什么是 2FA，以及它是怎么工作的](videos/series/in-seconds/two-factor-auth/) | 中文、英文 | 2:00、2:00 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0)（2026-10-06） |
-| [OpenClaw, Hermes 和实现](videos/standalone/openclaw-hermes/) | 中文、英文 | 8:34、9:30 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1DkHk6FEie)、[YouTube](https://www.youtube.com/watch?v=iULu-c3fAcI)（2026-10-07） |
-| [从 WSL 1 到 WSL 2，再到「WSL 3」](videos/standalone/wsl/) | 中文、英文 | 5:33、5:31 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV17VH16mEsJ)、[YouTube](https://www.youtube.com/watch?v=CJdSoeKlXkk)（2026-10-07） |
-| [OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](videos/standalone/openclaw-opencode-v2/) | 中文、英文 | 9:33、9:47 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1UwHQ6EEVJ)（2026-10-08） |
-| [150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](videos/series/in-seconds/dense-vs-moe/) | 中文、英文 | 2:30、2:30 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1gPpt69EsM)、[YouTube](https://www.youtube.com/watch?v=orNp9XxWvnc)（2026-10-09） |
-| [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](videos/series/database-engines/innodb/) | 中文 | 15:49 | 自制 | [哔哩哔哩](https://www.bilibili.com/video/BV1vanV6nEYq)（2026-10-18） |
+| 路径 | 层级 | 内容 |
+|---|---|---|
+| `docs/` | 仓库 | 宗旨、角色、制作周期、质量标准、经验规则、专题与参考，入口是 [文档地图](docs/README.md) |
+| `kit/` | 仓库 | 引擎、工具、新片模板、系列起点、回归测试 |
+| `series/` | 系列 | 每个系列一份说明：定位与共同约定 |
+| `videos/` | 视频 | 每部片子一个目录 `videos/<片>/`；片单 `videos/catalog.json` |
 
-频道：[哔哩哔哩](https://space.bilibili.com/68328330)、[YouTube](https://www.youtube.com/@waterrun1978)。表里的时长是成片的容器时长，哔哩哔哩显示的时长向上取整：MyISAM 475.883 秒显示 7:56，luainstaller 中文 475.227 秒显示 7:56，批处理 193.025 秒显示 3:14，2FA 120.000 秒显示 2:00，OpenClaw/Hermes 中文 514.60 秒显示 8:35，WSL 中文 333.083 秒显示 5:34，InnoDB 949.467 秒显示 15:50，PostgreSQL 688.08 秒显示 11:29。Dense/MoE 两种语言都是 150.000 秒，哔哩哔哩与 YouTube 却都显示 2:31，原因未核。Web 登录两种语言都是 200.000 秒，哔哩哔哩记 200 秒，YouTube 频道页显示 3:21，原因同样未核。MyISAM 与批处理只上了哔哩哔哩，InnoDB 目前也只上了哔哩哔哩。两个频道上另有 2025 年的几部项目介绍片（pptx2png、SimpSave、Bat-KV 等），源码不在本仓库，片单里没有。逐条的发布记录（平台上的标题、时刻、合集、核对日期）在各片的 `README.md` 与 `DELIVERY.md` 里。一部片子发布之后要回填这些记录，做法见 [workflow.md](docs/workflow.md) 第 11 节。
-
-全部片单（19 个系列、177 部，含计划中的）见 [docs/catalog.md](docs/catalog.md)；每个系列讲什么、怎么讲、多长见该系列目录下的 README。
-
-[制作 TODO 与完成情况](docs/todo.md) 按当前阶段列出待审稿、预研、未开工、已成片与未关闭事项；原 2026-10-09–10-15 的 16 部安排保存在[历史计划](docs/plans/2026-10-09--15.md)。开工先核对当前源码与实际输出，收尾后回填进度。
-
-## 观众反馈
-
-[反馈记录与改进](docs/feedback.md) 收录 2026-10-09 读取的 8 部视频、185 条评论与回复，并区分观众意见、作者自评和策划者评价。本轮首先处理 Lean 4、OpenClaw / OpenCode v2 的叙事偏移，以及 OpenClaw / Hermes 讲解不清的问题，再检查章节卡阅读时间、转场与配乐重复；MyISAM、luainstaller、2FA 保留为正面对照。
-
-[八部评分与成片复盘](docs/reviews/2026-10-09.md) 按策划者给出的 8、8、8、9、4、6、3、4 分逐片记录时间线、抽帧证据与问题诊断，含 [测量数据](docs/reviews/2026-10-09.json)。每次开工填写反馈应用表，结尾以同一问题编号逐项复盘实际成片；流程更新与旧片修复分别记录。
-
-## 工作方式
-
-- **画面是时间的纯函数。** 不用 CSS 动画、定时器与回调；同一个时刻无论顺着播到还是直接跳到，画面都相同。因此任意一帧可以独立渲染，多个浏览器各渲一段再拼接。
-- **旁白决定时间。** 每句旁白逐句合成，取回时长与每个词被读到的时刻；动画的时间点写成「某句里某个词被读到时」，脚本一改，画面自动重排。同一套场景代码因此可以配多种语言。
-- **事实有出处。** 画面与旁白里的每一项事实记在该片的 `research/FACTS.md`；画面上的字节、数字、终端回显由脚本从实验数据生成。
-- **检查用文字完成。** 工具把任意一帧写成「此刻可见的元素、位置、字号、颜色、文字」，据此检查重叠、对比度、越界、空屏、静止与确定性，看不到画面的模型也能照此工作。
-- **声音由程序合成。** 配乐与音效不使用外部素材；混音是确定性的。
-- **两种制作方式。** 自制：从取证到成片由同一个制作者完成。委托：准备方备好取证、旁白、视觉系统与任务书，由另一个模型完成场景与收尾。
+模型在这里工作，先读 [AGENTS.md](AGENTS.md)。
 
 ## 快速开始
 
-先安装 Git、Node.js 22.12 或更新；看帧再安装 Chrome 并下载字体。以下命令不调用在线配音，也不修改现有影片：
+需要 Git 与 Node.js 22.12 或更新；看画面另需 Chrome 与字体。下面的命令不调用在线配音，也不改动任何影片：
 
 ```bash
 npm ci
@@ -90,49 +47,14 @@ npm run smoke
 新建一部视频：
 
 ```bash
-node kit/tools/new.js standalone/<视频> --title "中文标题" --title-en "English title"
-node kit/tools/new.js series/<系列>/<视频>          # 片单里已有的条目
+node kit/tools/new.js <片> --title "中文标题" --title-en "English title"
+node kit/tools/new.js <片> --series <系列>          # 系列里的一集；片单里已有的条目取片单的标题
 ```
 
-填写本片 README、事实依据与 `src/js/script.js` 后，用 `node kit/tools/script-review.js <视频目录> export` 导出可逐句校对的全文。指定校对者明确确认后再配音；新模板的制作命令会核对确认是否对应当前内容。完整安装、翻译校对与制作顺序见 [快速入门](docs/getting-started.md) 和 [制作流程](docs/workflow.md)。
-
-交付后用 `node kit/tools/clean.js <视频目录>` 预览生成物占用；执行清理须提供仓库外的新归档目录，复制并校验通过后才删除。规则见 [收尾清理](docs/lifecycle.md)。
-
-## 文档
-
-| 文档 | 内容 |
-|---|---|
-| [docs/README.md](docs/README.md) | 按角色与任务选择阅读路径 |
-| [getting-started.md](docs/getting-started.md) | 从 clone、独立配置到第一部视频 |
-| [repository.md](docs/repository.md) | 目录职责、单一来源与维护约定 |
-| [script-review.md](docs/script-review.md) | 导出全文、用户逐句校对、确认与变更处理 |
-| [lifecycle.md](docs/lifecycle.md) | 交付后归档、校验、清理、恢复与接续 |
-| [workflow.md](docs/workflow.md) | 制作流程：从立项到交付的每一步、产物与过关条件 |
-| [standards.md](docs/standards.md) | 质量标准：事实可靠、原创、审美、动画完成度、声音、语体、片尾名单 |
-| [research.md](docs/research.md) | 取证：事实记在哪里、证据怎么留、什么不入库 |
-| [script-and-voice.md](docs/script-and-voice.md) | 脚本与配音：写法、多语言、读法、回听 |
-| [visual-design.md](docs/visual-design.md) | 视觉设计：视觉系统、关键帧、封面 |
-| [scenes.md](docs/scenes.md) | 场景与动态：空间与镜头、动作、换场、节奏 |
-| [sound.md](docs/sound.md) | 声音：音效、配乐、混音参数、数值自检 |
-| [review.md](docs/review.md) | 审查与交付：自动闸门、三项核心审查、原创与动画完成度、片尾核对 |
-| [series.md](docs/series.md) | 系列：连续性与维持它的做法 |
-| [delegation.md](docs/delegation.md) | 委托制作：分工、任务书、交接与验收 |
-| [engine.md](docs/engine.md) | 引擎速查 |
-| [tools.md](docs/tools.md) | 工具速查与 `project.json` 的全部字段 |
-| [environment.md](docs/environment.md) | 环境搭建、两台机器分工、空间占用与清理 |
-| [pitfalls.md](docs/pitfalls.md) | 踩过的坑 |
-| [retrospectives.md](docs/retrospectives.md) | 各部复盘 |
-| [feedback.md](docs/feedback.md) | 发布后的评论、策划反馈、叙事与视听改进、待核事项 |
-| [catalog.md](docs/catalog.md) | 片单 |
-| [todo.md](docs/todo.md) | 当前待办、完成情况、遗留修订与历史排期入口 |
-| [third-party.md](docs/third-party.md) | 第三方组件与许可 |
-
-在仓库里工作的模型另见 [AGENTS.md](AGENTS.md)。
+之后的步骤见 [快速入门](docs/getting-started.md) 与 [制作周期](docs/process.md)。独立 fork 时，在 `kit/studio.json` 填写自己的策划、校对者与源码仓库。
 
 ## 许可
 
-版权所有 © 2026 WaterRun。
+版权所有 © 2026 WaterRun。以 GNU 通用公共许可证第 3 版或（由使用者选择的）任何更新的版本发布，全文见 [LICENSE](LICENSE)。本仓库不提供任何担保。
 
-本仓库以 GNU 通用公共许可证第 3 版或（由使用者选择的）任何更新的版本发布，全文见 [LICENSE](LICENSE)。本仓库不提供任何担保。
-
-第三方组件（GSAP、字体、ffmpeg、在线语音服务等）不随仓库分发，各自适用自己的许可，见 [docs/third-party.md](docs/third-party.md)。
+第三方组件（GSAP、字体、ffmpeg、在线语音服务等）不随仓库分发，各自适用自己的许可，见 [第三方组件与许可](docs/reference/third-party.md)。参与方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。

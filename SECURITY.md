@@ -6,4 +6,4 @@
 
 涉及可利用漏洞或敏感数据时，若仓库的 Security 页面提供私密报告入口，使用该入口；否则先发布不含利用细节和敏感材料的联系请求，由维护者给出私下沟通方式。不要假定公开 Issue 或 PR 是私密渠道。
 
-维护范围是当前 `main` 的共享工具和模板。历史影片的生成物与第三方组件另按实际版本核查，不能以工具修复推定旧成片已修复。文件边界与清理约定见 [lifecycle.md](docs/lifecycle.md)，取证脱敏见 [research.md](docs/research.md)。
+维护范围是当前 `main` 的共享工具和模板。历史影片的生成物与第三方组件另按实际版本核查，不能以工具修复推定旧成片已修复。文件边界与清理约定见 [release.md](docs/guides/release.md)，取证脱敏见 [research.md](docs/guides/research.md)。

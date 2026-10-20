@@ -32,3 +32,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 #caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
 .en #caption span { font-size: 36px; }
 #caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+
+/* 片尾名单 */
+.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
+.credit-row { break-inside: avoid; margin-bottom: 30px; }

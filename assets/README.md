@@ -8,4 +8,4 @@
 | `whisper/fw-small/` | 语音识别模型（faster-whisper small），回听旁白时使用，可选 | `node kit/tools/assets.js --fetch --whisper`；不放置时由 faster-whisper 在首次使用时自行下载 |
 | `ffmpeg/bin/` | ffmpeg 与 ffprobe，可选 | 系统 `PATH` 里已有 ffmpeg 时不需要；否则把可执行文件放在这里，或在 `kit/config.local.json` 里指明位置 |
 
-各项的版本要求与安装办法见 [docs/environment.md](../docs/environment.md)，许可信息见 [docs/third-party.md](../docs/third-party.md)。
+各项的版本要求与安装办法见 [docs/reference/environment.md](../docs/reference/environment.md)，许可信息见 [docs/reference/third-party.md](../docs/reference/third-party.md)。

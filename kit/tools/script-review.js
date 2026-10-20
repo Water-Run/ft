@@ -58,9 +58,8 @@ function status(video, project, languages = project.languages) {
 }
 function assertApproved(video, project, languages) {
   const result = status(video, project, languages);
-  if (!result.ok) throw new Error('文案校对未通过：\n  ' + result.problems.join('\n  ') + '\n先导出交审稿：node kit/tools/script-review.js <视频> export。规则见 docs/script-review.md。');
+  if (!result.ok) throw new Error('文案校对未通过：\n  ' + result.problems.join('\n  ') + '\n先导出交审稿：node kit/tools/script-review.js <视频> export。规则见 docs/guides/script-review.md。');
   if (result.legacy) console.log('提示：' + result.details[0]);
-  require('./feedback').assertPrepared(video, project);
 }
 function exportReview(video, project, languages) {
   const dir = path.join(video, 'review');
@@ -72,7 +71,7 @@ function exportReview(video, project, languages) {
   if (approvals.schema !== 1 || !approvals.languages || Array.isArray(approvals.languages) || typeof approvals.languages !== 'object') throw new Error('approval.json 结构错误');
   const notes = path.join(dir, 'NOTES.md');
   noLinks(notes);
-  if (!fs.existsSync(notes)) fs.writeFileSync(notes, '# 文案校对记录\n\n## 意见与处理\n\n| 稿本 / 句号 | 意见 | 修改与理由 | 状态 |\n|---|---|---|---|\n\n## 明确确认\n\n尚未确认。按仓库 docs/script-review.md 记录真实确认的语言、稿本、日期与依据。\n', { flag: 'wx' });
+  if (!fs.existsSync(notes)) fs.writeFileSync(notes, '# 文案校对记录\n\n## 意见与处理\n\n| 稿本 / 句号 | 意见 | 修改与理由 | 状态 |\n|---|---|---|---|\n\n## 明确确认\n\n尚未确认。按仓库 docs/guides/script-review.md 记录真实确认的语言、稿本、日期与依据。\n', { flag: 'wx' });
   for (const lang of languages) {
     const current = snapshot(video, project, lang);
     const name = 'script.' + lang + '.' + current.hash + '.md';
@@ -82,7 +81,7 @@ function exportReview(video, project, languages) {
       '- 目标观众、主问题、逐章答案及舍弃材料：[本片 README](../README.md)。',
       '- 事实、条件与推断：[FACTS.md](../research/FACTS.md)，按句号定位。',
       '- 意见与逐项处理：[校对记录](NOTES.md)。', '', '直接反馈句号、问题与建议即可；制作者修改 script.js 后重新导出。', ''];
-    if (project.feedback) lines.push('反馈应用：[逐项记录](feedback.json)。交审时同时核对 Lean 4 负面案例、单集独立理解、中文释义与口播负担。', '');
+    lines.push('写稿与交审前读一遍本阶段的经验规则：`node kit/tools/lessons.js show --stage script`。', '');
     for (const scene of current.content.scenes) {
       const timing = current.estimate.scenes.find(item => item.id === scene.id);
       lines.push('## ' + cell(scene.id) + ' · ' + cell(scene.chapter?.join(' ') || '无章节卡'), '',
@@ -107,7 +106,7 @@ if (require.main === module) {
     const { needVideo, PROJECT, LANGS, positional } = require('./lib');
     const video = needVideo(), project = PROJECT(), command = positional(['lang'])[0];
     const langs = LANGS(command === 'check');
-    if (command === 'export') { require('./project-files').acquireLock(video); exportReview(video, project, langs); }
+    if (command === 'export') { require('./project-files').acquireLock(video); exportReview(video, project, langs); console.log('交审前核对文案阶段的经验规则：node kit/tools/lessons.js show --stage script'); }
     else if (command === 'check') { const result = status(video, project, langs); console.log([...result.details, ...result.problems].join('\n')); process.exitCode = result.ok ? 0 : 1; }
     else throw new Error('用法：node kit/tools/script-review.js <视频> export|check [--lang zh|en|all]');
   } catch (error) { console.error(error.message); process.exitCode = 1; }

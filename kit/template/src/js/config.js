@@ -1,5 +1,5 @@
 // 本片的引擎配置：要预载的字体、箭头可用的颜色、常驻元素（章节卡）、换场方式。
-// TODO: 这里是能跑起来的最小实现。正式制作时按本片的视觉系统重做章节卡与换场（docs/visual-design.md、docs/scenes.md），做完删掉这一行。
+// TODO: 这里是能跑起来的最小实现。正式制作时按本片的视觉系统重做章节卡与换场（docs/guides/visual.md、docs/guides/scenes.md），做完删掉这一行。
 document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
 window.PALETTE = { ink: '#16181d', accent: '#d9480f', dim: '#8c8f96' };
 window.ENGINE = {

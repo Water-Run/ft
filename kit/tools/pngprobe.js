@@ -1,5 +1,5 @@
 // 诊断：逐时刻截图，只看 PNG 的头（位深、颜色类型）与块列表，找出「截图格式在哪些时刻发生变化」。
-// 背景：截图的像素格式中途变化会让 ffmpeg 重建滤镜图，成片悄悄少一段（见 render.js 头部与 docs/pitfalls.md）。
+// 背景：截图的像素格式中途变化会让 ffmpeg 重建滤镜图，成片悄悄少一段（见 render.js 头部与 docs/reference/pitfalls.md）。
 // 用法：node kit/tools/pngprobe.js <视频> <起点秒> <终点秒> [步长=0.1] [--lang en] [--slow]      --slow：不用 optimizeForSpeed
 // 颜色类型不是 2（RGB）的前三帧会存到 shots/pngprobe/。
 const { needVideo, LANGS, positional, flag, dirs, mkdirp, startServer, openPage, path, fs } = require('./lib');

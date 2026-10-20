@@ -1,105 +1,91 @@
 // 新建一部视频：从 kit/template 生成骨架，拷入引擎的一份快照，登记到片单。
-// 用法：node kit/tools/new.js standalone/<视频>                 独立视频
-//       node kit/tools/new.js series/<系列>/<视频>              系列里的一集
+// 用法：node kit/tools/new.js <slug>                     独立视频
+//       node kit/tools/new.js <slug> --series <系列>      系列里的一集
 //   片单（videos/catalog.json）里已有这一条时，标题与语言取自片单；没有时用下面的参数登记：
 //       --title "中文标题"  [--title-en "English title"]  [--langs zh,en]  [--series-title "系列的中文名"]（系列不存在时）
-//   制作方式（见 docs/workflow.md、docs/delegation.md）：
-//       缺省是自制：从取证到成片由同一个制作者完成。--maker "<制作者>" 记下是谁
-//       --delegate "<受托模型>"：委托制作。另外生成任务入口 AGENTS.md 与任务书 brief/ 的骨架，由准备方填写后交给受托模型
-// 语言缺省为中文与英文两种（--langs zh 表示只做中文）。slug 用小写字母、数字、连字符。
-// 系列里的一集另外做两件事（见 docs/series.md）：
-//   片单里该系列带有建议栏目（sections）时，按栏目生成章节草稿（脚本里每栏一章、每章一个场景文件），之后可随题目增删调整；
-//   系列目录下有系列基座 _base/ 时，把它盖在模板之上（系列共用的样式、部件、章节卡、封面版式）。
+// 目录一律是 videos/<slug>/，slug 全仓库唯一，用小写字母、数字、连字符。
+// 语言：片单条目的 languages ＞ 系列的 languages ＞ 中文与英文。--langs zh 只做中文（与系列缺省不同时记在条目上）。
+// 系列里的一集另外做两件事（见 docs/guides/series.md）：
+//   系列带有建议栏目（sections）时，按栏目生成章节草稿；系列指定了起点（starter）时，把 kit/starters/<起点>/ 盖在模板之上。
+//   起点里的样式与配乐只是能跑的占位，正式制作时按本片的对象重新设计（经验规则 F21）；check.js 会提示原样未改的文件。
 // 引擎文件（engine.js、util.js、boot.js、base.css）是拷进视频目录的快照：之后工具包怎么改，都不影响已经做完的片子。
-// --scratch：生成到 out/sandbox/<视频>，不改片单，供首次练习与模板验证。
+// 策划、校对者与源码仓库取 kit/studio.json；参与的模型在制作中如实补进 project.json 的 credits（docs/roles.md 第 5 节）。
+// --scratch：生成到 out/sandbox/<slug>，不改片单，供首次练习与模板验证。
 const fs = require('fs'), path = require('path');
 const { parseArgs } = require('node:util');
-const { load, validate, render, syncSeries, CAT, DOC } = require('./catalog');
+const catalog = require('./catalog');
+const lessons = require('./lessons');
 const REPO = path.resolve(__dirname, '..', '..'), KIT = path.join(REPO, 'kit');
-const feedback = require('./feedback'), feedbackRules = feedback.registry();
 let parsed;
-try { parsed = parseArgs({ allowPositionals: true, options: Object.fromEntries(['title', 'title-en', 'langs', 'series-title', 'maker', 'delegate'].map(key => [key, { type: 'string' }]).concat([['scratch', { type: 'boolean' }], ['help', { type: 'boolean' }]])) }); }
+try { parsed = parseArgs({ allowPositionals: true, options: Object.fromEntries(['title', 'title-en', 'langs', 'series', 'series-title'].map((key) => [key, { type: 'string' }]).concat([['scratch', { type: 'boolean' }], ['help', { type: 'boolean' }]])) }); }
 catch (error) { console.error(error.message); process.exit(2); }
 const opt = (key, fallback) => parsed.values[key] ?? fallback, scratch = !!opt('scratch');
-if (opt('help')) { console.log('node kit/tools/new.js standalone/<slug> | series/<series>/<slug>\n  --title 标题 --title-en "English title" --langs zh,en --maker 模型 --delegate 模型 --series-title 系列名\n  --scratch：写入 out/sandbox/<slug>，不改片单。策划、校对者与仓库取 kit/studio.json。'); process.exit(0); }
-const where = (parsed.positionals[0] || '').replace(/\\/g, '/').replace(/^videos\//, '').replace(/\/$/, '');
-const slugPattern = '[a-z0-9]+(?:-[a-z0-9]+)*';
-const m = where.match(new RegExp(`^(?:standalone/(${slugPattern})|series/(${slugPattern})/(${slugPattern}))$`));
-if (parsed.positionals.length !== 1) { console.error('须提供且只提供一个视频位置'); process.exit(2); }
-if (!m) { console.error('用法：node kit/tools/new.js standalone/<视频>   或   node kit/tools/new.js series/<系列>/<视频>   [--title … --title-en … --langs zh,en]'); process.exit(2); }
-const seriesSlug = m[2] || null, slug = m[1] || m[3], relative = scratch ? 'out/sandbox/' + slug : 'videos/' + where, dir = path.join(REPO, relative);
-if (scratch && seriesSlug) { console.error('--scratch 只用于 standalone/<slug>'); process.exit(2); }
+const usage = 'node kit/tools/new.js <slug> [--series <系列>] [--title 标题 --title-en "English title" --langs zh,en --series-title 系列名] [--scratch]';
+if (opt('help')) { console.log(usage + '\n  策划、校对者与仓库取 kit/studio.json；--scratch 写入 out/sandbox/<slug>，不改片单。'); process.exit(0); }
+if (parsed.positionals.length !== 1) { console.error('须提供且只提供一个 slug。用法：' + usage); process.exit(2); }
+const slug = parsed.positionals[0].replace(/\\/g, '/').replace(/^videos\//, '').replace(/\/$/, '');
+if (/^(standalone|series)\//.test(slug)) { console.error('目录已拍平：写 slug 本身，系列用 --series。用法：' + usage); process.exit(2); }
+if (!catalog.SLUG.test(slug)) { console.error('slug 只能用小写字母、数字、连字符：' + slug); process.exit(2); }
+const seriesSlug = opt('series') || null, relative = scratch ? 'out/sandbox/' + slug : 'videos/' + slug, dir = path.join(REPO, relative);
+if (scratch && seriesSlug) { console.error('--scratch 不用于系列分集'); process.exit(2); }
 require('./project-files').noLinks(dir);
 if (fs.existsSync(dir) && fs.readdirSync(dir).length) { console.error(`目录已存在且不为空：${relative}`); process.exit(1); }
 const studio = JSON.parse(fs.readFileSync(path.join(KIT, 'studio.json'), 'utf8'));
-if (![studio.planner, studio.reviewer].every(value => typeof value === 'string' && value.trim()) || !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/?$/.test(studio.repository || '')) { console.error('kit/studio.json 须填写 planner、reviewer 与公开的 GitHub repository 地址'); process.exit(2); }
+if (![studio.planner, studio.reviewer].every((value) => typeof value === 'string' && value.trim()) || !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/?$/.test(studio.repository || '')) { console.error('kit/studio.json 须填写 planner、reviewer 与公开的 GitHub repository 地址'); process.exit(2); }
 
 // ── 片单 ──
-const cat = scratch ? { about: '', series: [], standalone: [] } : load();
-if (!scratch) { const errors = validate(cat); if (errors.length) { console.error('现有片单有错误，未新建：\n' + errors.join('\n')); process.exit(1); } }
+const cat = scratch ? { about: '', series: [], videos: [] } : catalog.load();
+if (!scratch) { const errors = catalog.validate(cat); if (errors.length) { console.error('现有片单有错误，未新建：\n' + errors.join('\n')); process.exit(1); } }
+let entry = cat.videos.find((v) => v.slug === slug);
+if (entry && entry.series && seriesSlug && entry.series !== seriesSlug) { console.error(`片单里 ${slug} 属于系列 ${entry.series}，不是 ${seriesSlug}`); process.exit(1); }
+const wantSeries = seriesSlug || (entry && entry.series) || null;
 let series = null;
-if (seriesSlug) {
-  series = cat.series.find((s) => s.slug === seriesSlug);
-  if (!series) { const st = opt('series-title'); if (!st) { console.error(`片单里没有系列 ${seriesSlug}。新系列要给出中文名：--series-title "…"`); process.exit(1); } series = { slug: seriesSlug, title: { zh: st }, videos: [] }; cat.series.push(series); }
+if (wantSeries) {
+  series = cat.series.find((s) => s.slug === wantSeries);
+  if (!series) { const st = opt('series-title'); if (!st) { console.error(`片单里没有系列 ${wantSeries}。新系列要给出中文名：--series-title "…"`); process.exit(1); } series = { slug: wantSeries, title: { zh: st } }; cat.series.push(series); }
 }
-const list = series ? series.videos : cat.standalone;
-let entry = list.find((v) => v.slug === slug);
-if (!entry) { const t = opt('title'); if (!t) { console.error(`片单里没有 ${where}。新条目要给出标题：--title "…"`); process.exit(1); } entry = { slug, title: { zh: t } }; list.push(entry); }
+if (!entry) { const t = opt('title'); if (!t) { console.error(`片单里没有 ${slug}。新条目要给出标题：--title "…"`); process.exit(1); } entry = { slug, ...(series ? { series: series.slug } : {}), title: { zh: t } }; cat.videos.push(entry); }
 if (opt('title')) entry.title.zh = opt('title');
 if (opt('title-en')) entry.title.en = opt('title-en');
-if (opt('langs')) entry.languages = opt('langs').split(',');
-const langs = entry.languages || ['zh', 'en'];
-if (!langs.length || new Set(langs).size !== langs.length || langs.some(lang => !['zh', 'en'].includes(lang))) { console.error('当前模板支持 zh、en，语言不能重复；扩展其他语言需先适配模板。'); process.exit(2); }
+const seriesLangs = (series && series.languages) || catalog.DEFAULT_LANGS;
+if (opt('langs')) { entry.languages = opt('langs').split(','); if (entry.languages.join() === seriesLangs.join()) delete entry.languages; }   // 与系列缺省相同就不写，由系列继承
+const langs = entry.languages || seriesLangs;
+if (!langs.length || new Set(langs).size !== langs.length || langs.some((lang) => !['zh', 'en'].includes(lang))) { console.error('当前模板支持 zh、en，语言不能重复；扩展其他语言需先适配模板。'); process.exit(2); }
 entry.status = 'in-progress';
-const delegated = opt('delegate') != null || entry.mode === 'delegated';
-const production = delegated ? { mode: 'delegated', maker: opt('delegate') || entry.maker || '', prepared_by: opt('maker') || '' } : { mode: 'self', maker: opt('maker') || entry.maker || '' };
-Object.assign(production, { planner: studio.planner, repository: studio.repository });
-for (const k of Object.keys(production)) if (!production[k]) delete production[k];
-if (delegated) { entry.mode = 'delegated'; if (production.maker) entry.maker = production.maker; }
-if (series?.sections) {
-  const seen = new Set(['open']);
-  for (const section of series.sections) {
-    if (!/^[a-z][a-z0-9_-]*$/.test(section.id) || seen.has(section.id) || typeof section.zh !== 'string' || !section.zh.trim()) { console.error('系列栏目须有唯一且安全的 id 和中文标题，不能使用 open'); process.exit(2); }
-    seen.add(section.id);
-  }
-}
-const baseDir = series ? path.join(REPO, 'videos', 'series', series.slug, '_base') : null;
-// 基座只带系列的共用骨架：src/（样式与场景）、project.json（系列阈值与占位符）、tools/（配乐）、README.md 说明。
-// 校对、确认与事实记录（review/、research/、audio/、out/、*.srt 等）属于上一集的历史，不许进基座。
-const BASE_ALLOWED = ['src', 'tools', 'README.md', 'project.json'];
-if (baseDir && fs.existsSync(baseDir)) {
-  require('./project-files').noLinks(baseDir);
-  const stray = fs.readdirSync(baseDir).filter(name => !BASE_ALLOWED.includes(name));
-  if (stray.length) { console.error(`系列基座只放 ${BASE_ALLOWED.join('、')}，不能复用上一集的配置、校对或事实记录；多出：${stray.join('、')}`); process.exit(2); }
+const starterDir = series && series.starter ? path.join(KIT, 'starters', series.starter) : null;
+// 起点只带可复用的骨架：src/、project.json（阈值与占位符）、tools/、README.md 说明。校对、确认与事实记录属于某一集的历史，不许进起点。
+const STARTER_ALLOWED = ['src', 'tools', 'README.md', 'project.json'];
+if (starterDir) {
+  if (!fs.existsSync(starterDir)) { console.error(`系列 ${series.slug} 的起点 kit/starters/${series.starter}/ 不存在`); process.exit(1); }
+  require('./project-files').noLinks(starterDir);
+  const stray = fs.readdirSync(starterDir).filter((name) => !STARTER_ALLOWED.includes(name));
+  if (stray.length) { console.error(`起点只放 ${STARTER_ALLOWED.join('、')}，不能带某一集的配置、校对或事实记录；多出：${stray.join('、')}`); process.exit(2); }
 }
 
 // ── 骨架 ──
 const VOICES = { zh: 'zh-CN-YunyangNeural', en: 'en-US-AndrewNeural' }, PROMPTS = { zh: '以下是普通话的讲解。', en: 'A narration.' };
 const obj = (f) => '{ ' + langs.map((l) => `${JSON.stringify(l)}: ${JSON.stringify(f(l))}`).join(', ') + ' }';
+const rules = lessons.registry();
 const vars = {
   SLUG: slug, TITLE: entry.title.zh, TITLE_HTML: entry.title.zh.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'), PATH: relative,
-  PLANNER: studio.planner, REVIEWER: studio.reviewer, REPOSITORY: studio.repository, REPOSITORY_DISPLAY: studio.repository.replace(/^https:\/\//, ''),
-  REVIEW_JSON: JSON.stringify({ required: true, reviewer: studio.reviewer }),
-  FEEDBACK_VERSION: feedbackRules.version,
-  FEEDBACK_STATE_JSON: JSON.stringify(feedback.initial(feedbackRules), null, 2),
-  FEEDBACK_START_ROWS: feedbackRules.rules.map(rule => `| ${rule.id} ${rule.title} | | ${rule.plan} | ${rule.verify} |`).join('\n'),
-  FEEDBACK_END_ROWS: feedbackRules.rules.map(rule => `| ${rule.id} | | | |`).join('\n'),
+  PLANNER: studio.planner, REVIEWER: studio.reviewer, REPOSITORY: studio.repository, REPOSITORY_DISPLAY: studio.repository.replace(/^https:\/\//, '').replace(/\/$/, ''),
+  LESSONS_VERSION: rules.version, LESSONS_STATE_JSON: JSON.stringify(lessons.initial(rules), null, 2),
+  SERIES_LINE: series ? `系列：[${series.title.zh}](../../series/${series.slug}.md)。只遵守系列说明里写明的共同约定，其余按本片的对象设计。` : '独立视频。',
   LANGS_JSON: JSON.stringify(langs).replace(/,/g, ', '),
   TITLES_JSON: obj((l) => entry.title[l] || (l === 'zh' ? entry.title.zh : '')),
   VOICES_JSON: obj((l) => VOICES[l] || ''), RATES_JSON: obj(() => '+0%'), PROMPTS_JSON: obj((l) => PROMPTS[l] || ''),
-  PRODUCTION_JSON: '{ ' + Object.keys(production).map((k) => `${JSON.stringify(k)}: ${JSON.stringify(production[k])}`).join(', ') + ' }',
-  MAKER: production.maker || '受托模型', LANGS: langs.join('、'), LANG1: langs[0],
+  LANGS: langs.join('、'), LANG1: langs[0],
   TIMING_TAGS: langs.map((l) => `<script src="js/timing.${l}.js"></script>`).join('\n'),
 };
 const copyOne = (src, dst) => {
-  if (fs.statSync(src).isSymbolicLink()) throw new Error('模板或基座不能包含符号链接：' + path.basename(src));
+  if (fs.lstatSync(src).isSymbolicLink()) throw new Error('模板或起点不能包含符号链接：' + path.basename(src));
   if (/\.(js|css|html|md|json|txt|yml|yaml)$/.test(src)) fs.writeFileSync(dst, fs.readFileSync(src, 'utf8').replace(/\{\{([A-Z0-9_]+)\}\}/g, (x, k) => (vars[k] != null ? vars[k] : x)));
   else fs.copyFileSync(src, dst);
 };
 const copy = (src, dst) => {
   for (const n of fs.readdirSync(src, { withFileTypes: true })) {
     const a = path.join(src, n.name), b = path.join(dst, n.name);
-    if (n.isSymbolicLink()) throw new Error('模板或基座不能包含符号链接：' + n.name);
+    if (n.isSymbolicLink()) throw new Error('模板或起点不能包含符号链接：' + n.name);
     if (n.isDirectory()) { fs.mkdirSync(b, { recursive: true }); copy(a, b); }
     else copyOne(a, b);
   }
@@ -118,53 +104,40 @@ if (series && series.sections && series.sections.length) {
   script = script.replace(/    \/\/ <chapters>\n[\s\S]*?    \/\/ <\/chapters>\n/, chapters);
   fs.rmSync(path.join(dir, 'src', 'js', 'scenes', 's1_demo.js'));
   const tags = series.sections.map((sec, i) => { const f = `s${i + 1}_${sec.id}.js`;
-    fs.writeFileSync(path.join(dir, 'src', 'js', 'scenes', f), `// 第 ${two(i + 1)} 章：${sec.zh}。TODO: 按系列的建议栏目生成的章节草稿，换成本片的内容；不需要这一栏就连同脚本里的这一章一起删掉。\nscene('${sec.id}', ({ root, s, c0 }) => {\n  const world = h('div', 'world', root);\n  const cam = makeCamera(world);\n  const head = h('div', 'abs d-2', world, tr(${q(sec.zh)}, ${q(sec.en || sec.zh)})); px(head, 120, 160);\n  wipe(head, c0 + 0.1, { dir: 'l' }); sfx('whoosh', c0 + 0.1, { g: 0.5 });\n  cam.track(s.start, { x: 960, y: 540, z: 1 }, [[c0 + 0.1, { z: 1.04 }, s.end - c0 - 0.2, { ease: 'none', sfx: false }]]);\n});\n`);
+    fs.writeFileSync(path.join(dir, 'src', 'js', 'scenes', f), `// 第 ${two(i + 1)} 章：${sec.zh}。TODO: 按系列的建议栏目生成的章节草稿，换成本片的内容；不需要这一栏就连同脚本里的这一章一起删掉。\nscene('${sec.id}', ({ root, s, c0 }) => {\n  const world = h('div', 'world', root);\n  const cam = makeCamera(world);\n  const head = h('div', 'abs d-2', world, tr(${q(sec.zh)}, ${q(sec.en || sec.zh)})); px(head, 120, 160);\n  wipe(head, c0 + 0.1, { dir: 'l' });\n  cam.track(s.start, { x: 960, y: 540, z: 1 }, [[c0 + 0.1, { z: 1.04 }, s.end - c0 - 0.2, { ease: 'none', sfx: false }]]);\n});\n`);
     return `<script src="js/scenes/${f}"></script>`; }).join('\n');
   const html = path.join(dir, 'src', 'index.html');
   fs.writeFileSync(html, fs.readFileSync(html, 'utf8').replace('<script src="js/scenes/s1_demo.js"></script>', tags));
 } else script = script.replace(/    \/\/ <\/?chapters>\n/g, '');
 fs.writeFileSync(scriptFile, script);
-if (baseDir && fs.existsSync(baseDir)) {
-  // 先铺 src/，再铺 project.json（带占位符，走同一套替换）与 tools/；顺序上要让基座的 project.json
-  // 覆盖模板的，这样系列的语速、阈值与配乐脚本才会随基座带过来，随后再补 production / review / feedback。
+if (starterDir) {
+  // 先铺 src/，再铺 project.json（带占位符，走同一套替换）与 tools/：起点的 project.json 覆盖模板的，系列的语速、阈值与配乐脚本随之带来，随后再补本片的身份字段。
   for (const name of ['src', 'project.json', 'tools']) {
-    const from = path.join(baseDir, name);
+    const from = path.join(starterDir, name);
     if (!fs.existsSync(from)) continue;
     const to = path.join(dir, name);
     if (fs.statSync(from).isDirectory()) { fs.mkdirSync(to, { recursive: true }); copy(from, to); }
     else copyOne(from, to);
-    console.log(`已套用系列基座 videos/series/${series.slug}/_base/${name}${fs.statSync(from).isDirectory() ? '/' : ''}`);
   }
+  console.log(`已套用系列起点 kit/starters/${series.starter}/（样式与配乐是占位，按本片的对象重做）`);
 }
 const projectFile = path.join(dir, 'project.json'), project = JSON.parse(fs.readFileSync(projectFile, 'utf8'));
-project.slug = slug; project.languages = langs;
-project.production = production; project.review = { required: true, reviewer: studio.reviewer };
-project.feedback = { required: true };
+delete project.production; delete project.feedback;
+Object.assign(project, { slug, languages: langs, layout: 2, stage: 'brief', next: '写简报（受众、核心问题、时长），开始取证' });
+project.credits = { planner: studio.planner, models: [], services: [], repository: studio.repository };
+project.review = { required: true, reviewer: studio.reviewer };
 fs.writeFileSync(projectFile, JSON.stringify(project, null, 2) + '\n');
-if (delegated) { copy(path.join(KIT, 'delegation'), dir); for (const l of langs) fs.writeFileSync(path.join(dir, `expect.${l}.json`), '{\n}\n'); }
 if (!langs.includes('en')) console.log('提示：模板的脚本与场景是按中英双语写的；只做一种语言时，把 script.js 里的 { zh, en } 改成字符串即可。');
 
 // ── 落盘片单 ──
 if (!scratch) {
-const errs = validate(cat);
-if (errs.length) { console.error('片单核对未通过（骨架保留，片单未改）：\n  ' + errs.join('\n  ')); process.exit(1); }
-// 保持「每个视频一行」的写法
-const compact = (v) => (Array.isArray(v) ? '[' + v.map(compact).join(', ') + ']' : v && typeof v === 'object' ? '{' + Object.keys(v).map((k) => JSON.stringify(k) + ': ' + compact(v[k])).join(', ') + '}' : JSON.stringify(v));
-const line = (v, pad, last) => pad + compact(v) + (last ? '' : ',');
-const out = ['{', '  "about": ' + JSON.stringify(cat.about) + ',', '  "series": ['];
-cat.series.forEach((s, i) => {
-  out.push('    {');
-  for (const k of Object.keys(s)) if (k !== 'videos') out.push(`      ${JSON.stringify(k)}: ${compact(s[k])},`);
-  if (s.videos.length) { out.push('      "videos": ['); s.videos.forEach((v, j) => out.push(line(v, '        ', j === s.videos.length - 1))); out.push('      ]'); } else out.push('      "videos": []');
-  out.push('    }' + (i < cat.series.length - 1 ? ',' : ''));
-});
-out.push('  ],', '  "standalone": ['); cat.standalone.forEach((v, j) => out.push(line(v, '    ', j === cat.standalone.length - 1))); out.push('  ]', '}');
-fs.writeFileSync(CAT, out.join('\n') + '\n');
-if (!errs.length) { fs.writeFileSync(DOC, render(load())); syncSeries(load(), true); }
+  const errs = catalog.validate(cat);
+  if (errs.length) { console.error('片单核对未通过（骨架保留，片单未改）：\n  ' + errs.join('\n  ')); process.exit(1); }
+  catalog.save(cat);
+  catalog.regenerate(catalog.load());
 }
 console.log(`已建立 ${relative}（语言：${langs.join(', ')}）${scratch ? '，练习目录不登记片单' : '并登记到片单'}。接下来：
-  1. 读 docs/workflow.md，填写本片 README 的开工反馈应用、research/FACTS.md 与 review/NOTES.md${series ? `\n     本片属于系列「${series.title.zh}」：先读 videos/series/${series.slug}/README.md 的连续性约定` : ''}
-  2. 写 src/js/script.js，导出校对稿：node kit/tools/script-review.js ${relative} export
-     交 ${studio.reviewer} 人工审查，依据真实确认填写 review/approval.json；通过 check 后再运行 tts.js
-  3. 看画面：node kit/tools/look.js ${relative} o1    总闸门：node kit/tools/check.js ${relative}${delegated ? `
-  委托制作：准备方先做完取证、旁白与视觉系统，再填写 ${relative}/AGENTS.md 与 brief/（做法见 docs/delegation.md），然后交给受托模型` : ''}`);
+  1. 读 docs/roles.md 与 docs/process.md；在本片 README 写「简报」${series ? `\n     本片属于系列「${series.title.zh}」：读 series/${series.slug}.md 的共同约定` : ''}
+  2. 取证写 research/FACTS.md；写 src/js/script.js，导出校对稿：node kit/tools/script-review.js ${relative} export
+     交 ${studio.reviewer} 人工审查，依据真实确认填写 review/approval.json；确认后才能配音
+  3. 每个阶段开工前：node kit/tools/lessons.js show --stage <阶段>`);

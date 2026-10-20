@@ -1,0 +1,144 @@
+{
+  "slug": "openclaw-hermes",
+  "stage": "released",
+  "delivery": {
+    "date": "2026-10-07",
+    "duration": {
+      "zh": 514.6,
+      "en": 570.447
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1DkHk6FEie",
+      "date": "2026-10-07"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/watch?v=iULu-c3fAcI",
+      "date": "2026-10-07"
+    }
+  ],
+  "reception": [
+    {
+      "date": "2026-10-09",
+      "score": 4,
+      "by": "WaterRun",
+      "ref": "docs/log/reviews/2026-10-09.md"
+    }
+  ],
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Sonnet 5.5",
+        "roles": [
+          "取证",
+          "第一版文案与场景"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "改版文案",
+          "视觉",
+          "场景",
+          "配乐",
+          "审查"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "Microsoft Edge 在线语音（模型未披露）",
+        "roles": [
+          "旁白合成"
+        ]
+      },
+      {
+        "name": "Whisper small",
+        "roles": [
+          "读音回听"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "titles": {
+    "zh": "OpenClaw, Hermes 和实现",
+    "en": "OpenClaw, Hermes, and Their Implementation"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+6%",
+    "en": "+8%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍网关型智能体与开源项目 OpenClaw、Hermes Agent 的实现，涉及 harness、网关、会话键、适配器、提示词缓存、记忆、技能、飞书、Mac mini、launchd、SQLite。",
+    "en": "A narration about gateway agents and the open-source projects OpenClaw and Hermes Agent: harness, gateway, session keys, adapters, prompt cache, memory, skills, Feishu, Mac mini, launchd, SQLite."
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -15,
+    "duck_db": 9,
+    "sfx_db": -9
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true,
+      "palette": [
+        "ECE7DA",
+        "0B0E14",
+        "FF4F40",
+        "FF775F",
+        "FFD700",
+        "FFBF00",
+        "CD7F32",
+        "5C5A54",
+        "8F939C",
+        "2A2F3A",
+        "3A0A0D",
+        "081016",
+        "F5FBFF"
+      ],
+      "fonts": [
+        "Inter",
+        "Sans SC",
+        "Mono",
+        "Pixel"
+      ]
+    },
+    "duration": {
+      "zh": [
+        470,
+        590
+      ],
+      "en": [
+        500,
+        600
+      ]
+    }
+  }
+}

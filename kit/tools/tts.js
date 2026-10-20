@@ -1,7 +1,7 @@
 // 配音：由 src/js/script.js 导出待合成的句子 → edge-tts 或 MiniMax 逐句合成 → 写 src/js/timing.<语言>.js → 打印时间线。
 // 用法：node kit/tools/tts.js <视频> [--lang zh]            省略 --lang 时处理全部语言
 // 有缓存：只重新合成文本、音色或语速变了的句子。需要联网（edge-tts 调用的是在线语音服务）。
-// 音色与语速取 project.json 的 voices / rates（edge-tts）；有 tts 块时按它选引擎、模型、音色、语速（见 lib.js 的 ttsSpec 与 docs/tools.md）；字幕一行的宽度上限取 check.caption_width（按「字宽」算：汉字 1，其余 0.5）。
+// 音色与语速取 project.json 的 voices / rates（edge-tts）；有 tts 块时按它选引擎、模型、音色、语速（见 lib.js 的 ttsSpec 与 docs/reference/tools.md）；字幕一行的宽度上限取 check.caption_width（按「字宽」算：汉字 1，其余 0.5）。
 const { needVideo, PROJECT, LANGS, KIT, PY, layout, run, pyEnv, dirs, mkdirp, writeTiming, mmss, ttsSpec, path, fs } = require('./lib');
 needVideo();
 require('./project-files').acquireLock(needVideo());

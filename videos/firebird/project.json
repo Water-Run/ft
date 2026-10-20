@@ -1,0 +1,97 @@
+{
+  "slug": "firebird",
+  "stage": "review",
+  "next": "等 WaterRun 审中文第 1 稿；确认后交制作方",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "MiniMax M3.1 Flash",
+        "roles": [
+          "事实测绘",
+          "实验",
+          "文案",
+          "交接材料"
+        ]
+      }
+    ],
+    "services": [],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -11,
+    "duck_db": 7,
+    "sfx_db": -10
+  },
+  "check": {
+    "duration": [
+      240,
+      420
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": [
+        "#EE2B24",
+        "#F68A21",
+        "#FAAC19",
+        "#17222b",
+        "#f7f7f5",
+        "#ffffff",
+        "#d9d4cb",
+        "#8a8378",
+        "#000000"
+      ]
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    }
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Male_Announcer"
+    },
+    "speed": {
+      "zh": 1.08
+    }
+  }
+}

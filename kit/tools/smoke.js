@@ -10,7 +10,7 @@ const run = (tool, args) => {
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status || 1);
 };
-run('new', ['standalone/' + slug, '--scratch', '--title', '环境验证', '--title-en', 'Environment check']);
+run('new', [slug, '--scratch', '--title', '环境验证', '--title-en', 'Environment check']);
 run('timeline', [video]);
 run('script-review', [video, 'export', '--lang', 'all']);
 run('look', [video, 'o1', '--lang', 'zh']);

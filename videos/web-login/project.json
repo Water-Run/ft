@@ -1,0 +1,174 @@
+{
+  "slug": "web-login",
+  "stage": "released",
+  "delivery": {
+    "date": "2026-10-20",
+    "duration": {
+      "zh": 200,
+      "en": 200
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1Z7JZ6yEQb",
+      "date": "2026-10-20"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/watch?v=Bkt7b_xbMYg",
+      "date": "2026-10-20"
+    }
+  ],
+  "reception": [
+    {
+      "date": "2026-10-20",
+      "score": 5,
+      "by": "WaterRun",
+      "ref": "P33"
+    }
+  ],
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "DeepSeek V4.1 Flash 1017",
+        "roles": [
+          "事实测绘",
+          "叙事测绘",
+          "第 1–6 稿文案"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "第 7–11 稿文案",
+          "英文",
+          "实验",
+          "视觉",
+          "场景",
+          "配乐",
+          "成片与审查"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "旁白合成"
+        ]
+      },
+      {
+        "name": "Whisper small",
+        "roles": [
+          "读音回听"
+        ]
+      },
+      {
+        "name": "Web Fetch（模型未披露）",
+        "roles": [
+          "网页检索"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "languages": [
+    "zh",
+    "en"
+  ],
+  "titles": {
+    "zh": "200 秒了解 Web 登录机制：怎么验证你是你",
+    "en": "Web Login in 200 Seconds: How a Site Checks That You Are You"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural",
+    "en": "en-US-AndrewNeural"
+  },
+  "rates": {
+    "zh": "+6%",
+    "en": "+8%"
+  },
+  "tts": {
+    "engine": {
+      "zh": "minimax",
+      "en": "minimax"
+    },
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "male-qn-jingying",
+      "en": "English_Aussie_Bloke"
+    },
+    "speed": {
+      "zh": 1.05,
+      "en": 1.08
+    }
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。",
+    "en": "A narration."
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 8
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -10.5,
+    "duck_db": 7,
+    "sfx_db": -9,
+    "score": {
+      "lift_cue": "e2"
+    }
+  },
+  "check": {
+    "duration": [
+      199.9,
+      200.1
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "pace": {
+      "en": {
+        "fast": 4
+      }
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    },
+    "style": {
+      "flat": true,
+      "no_emoji": true,
+      "palette": [
+        "111111",
+        "F1ECE1",
+        "E2412C",
+        "F2C230",
+        "2F57B0",
+        "FFFFFF",
+        "6E6A61",
+        "8A857A"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Inter",
+        "Mono"
+      ]
+    }
+  }
+}

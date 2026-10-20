@@ -1,0 +1,205 @@
+{
+  "schema": 2,
+  "version": "2026-10-20.3",
+  "items": {
+    "F01": {
+      "rev": 1,
+      "result": "pending",
+      "note": "先让观众知道形式化证明是什么、机器具体检查什么、可靠性的边界在哪里，章节围绕标题推进。",
+      "evidence": ""
+    },
+    "F02": {
+      "rev": 1,
+      "result": "pending",
+      "note": "保留同一个具体例子，展示一步拒绝、修正与接受的理由，再解释类型与证明值；历史和规模移后。",
+      "evidence": ""
+    },
+    "F03": {
+      "rev": 1,
+      "result": "pending",
+      "note": "区分人工论证、形式化陈述、检查和可信前提，不用模型记忆补数学进展。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F04": {
+      "rev": 1,
+      "result": "pending",
+      "note": "把关键转换的解释与阅读时间单独预算，不以固定段长留下的空档代替困难处的理解时间。",
+      "evidence": ""
+    },
+    "F05": {
+      "rev": 1,
+      "result": "pending",
+      "note": "让符号和图形对应到正在检查的对象，每个步骤有可见输入和结果，不能只闪出错误或标签。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F06": {
+      "rev": 1,
+      "result": "pending",
+      "note": "重写文案后再安排自然口播与声音，避免用更快配音塞入材料。",
+      "evidence": ""
+    },
+    "F07": {
+      "rev": 1,
+      "result": "pending",
+      "note": "仅使用公开研究和教学例子，不把用户截图中的账号信息或观看数据扩成反馈数据库。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F08": {
+      "rev": 1,
+      "result": "pending",
+      "note": "修订版以实际最终 MP4 核对规格与时间；原 200 秒版本与新版分别留档。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F09": {
+      "rev": 1,
+      "result": "pending",
+      "note": "保留原 3 分和本轮用户转述的来源，不伪造新评分；外部数学进展另回 FACTS 核查。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F10": {
+      "rev": 1,
+      "result": "pending",
+      "note": "定义和推导在本片补齐，不默认观众了解前集、Lean 语法或之前讨论。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F11": {
+      "rev": 1,
+      "result": "pending",
+      "note": "外文术语和文献只保留当前推导需要的部分，附中文对应，移走不承担解释任务的材料。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F12": {
+      "rev": 1,
+      "result": "pending",
+      "note": "口播先写自然正文再做字幕切分，专名、符号读法和概念连接逐句试听。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记"
+    },
+    "F13": {
+      "rev": 1,
+      "result": "pending",
+      "note": "作为负例复盘陌生概念缺少进入路径的问题；重做时从具体待核证明引出 Lean 是什么和观看路线，历史不挤占推理。",
+      "evidence": "",
+      "script_evidence": "docs/reviews/2026-10-18.md；后续中文重写稿与首次观看复述测试。"
+    },
+    "F14": {
+      "rev": 1,
+      "result": "pending",
+      "note": "重做时把模型与策划署名放入静默片尾，连贯文案排除制作指令，并听实际最终音轨。",
+      "evidence": "",
+      "script_evidence": "README 现有片尾记录和后续制作任务；未生成新音轨，不标成片已通过。"
+    },
+    "F15": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F16": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F17": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F18": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F19": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F20": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F21": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    }
+  },
+  "history": [
+    {
+      "version": "2026-10-19",
+      "id": "F01",
+      "item": {
+        "id": "F01",
+        "rule_sha256": "61c8808a9f08042108e063049be0e57f28c92e4faf307dc467345156daf1747d",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "先让观众知道形式化证明是什么、机器具体检查什么、可靠性的边界在哪里，章节围绕标题推进。",
+        "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19",
+      "id": "F02",
+      "item": {
+        "id": "F02",
+        "rule_sha256": "cd996bb3493ab2b9da442c6e9086f5eeed479f91d804609deedf2ec2804e1fe3",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "保留同一个具体例子，展示一步拒绝、修正与接受的理由，再解释类型与证明值；历史和规模移后。",
+        "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19",
+      "id": "F04",
+      "item": {
+        "id": "F04",
+        "rule_sha256": "81d44b77e3d2c837e4603fd41b7b417ceb8dedfe95a224870c178795e48b16be",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "把关键转换的解释与阅读时间单独预算，不以固定段长留下的空档代替困难处的理解时间。",
+        "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    },
+    {
+      "version": "2026-10-19",
+      "id": "F06",
+      "item": {
+        "id": "F06",
+        "rule_sha256": "72f339629c9e7e4683d2173d365494962e8b92d0a16c392ec94ea077b1fe0775",
+        "applicability": "applies",
+        "reason": "",
+        "plan": "重写文案后再安排自然口播与声音，避免用更快配音塞入材料。",
+        "script_evidence": "docs/reviews/2026-10-18.md 第 2 节、2026-10-09.md 第 3.7 节；本片 FACTS 典型负面案例登记",
+        "result": "pending",
+        "verification": "",
+        "clips": []
+      }
+    }
+  ],
+  "migrated": "2026-10-20 由 review/feedback.json（规则 2026-10-19）转换；结论原样保留，规则文字改写为通用表述，要求未变"
+}

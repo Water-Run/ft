@@ -3,7 +3,7 @@
 // 产物：out/<语言>/preview_video.mp4；整片预演且已有 out/<语言>/audio.wav 时，另出带音轨的 out/<语言>/preview.mp4 供试看。
 // scan.js 的 STILL 看的是元素有没有变；这里看像素有没有变，两者都要过。检测时不看底部字幕条。
 const { spawnSync } = require('child_process');
-const { needVideo, PROJECT, LANGS, VIDEO, FFMPEG, arg, run, dirs, mkdirp, rel, mmss, path, fs } = require('./lib');
+const { needVideo, PROJECT, LANGS, VIDEO, FFMPEG, arg, run, dirs, mkdirp, rel, mmss, layout, path, fs } = require('./lib');
 needVideo();
 require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS());
@@ -15,8 +15,11 @@ const r = spawnSync(FFMPEG(), ['-hide_banner', '-nostats', '-i', v, '-vf', `crop
 const txt = (r.stderr || '') + (r.stdout || '');
 const a = [...txt.matchAll(/freeze_start: ([\d.]+)/g)].map((m) => +m[1]), b = [...txt.matchAll(/freeze_duration: ([\d.]+)/g)].map((m) => +m[1]);
 const off = +arg('from', 0);
+// 静止段落在哪个场景、哪一句：报告带上它们，便于回到源码（时间线由当前的 timing 文件算出）
+const { L } = layout(lang);
+const where = (t) => { const sc = L.scenes.find((x) => t >= x.start && t < x.end); let cue = null; for (const id of L.order) { if (L.cues[id].start <= t + 1e-6) cue = id; else break; } return `${sc ? sc.id : '?'} / ${cue || '—'}`; };
 console.log(`\n画面基本不动 ≥${Math.max(1, limit - 0.5)} 秒的段落（不含字幕条）：${b.length ? '' : '无'}`);
-for (let i = 0; i < b.length; i++) console.log(`  ${b[i] >= limit ? '✗' : '!'} ${(a[i] + off).toFixed(1)}s（${mmss(a[i] + off)}）起，持续 ${b[i].toFixed(1)}s`);
+for (let i = 0; i < b.length; i++) console.log(`  ${b[i] >= limit ? '✗' : '!'} ${(a[i] + off).toFixed(1)}s（${mmss(a[i] + off)}，${where(a[i] + off)}）起，持续 ${b[i].toFixed(1)}s`);
 const bad = b.filter((x) => x >= limit).length;
 fs.writeFileSync(path.join(mkdirp(d.build), `preview.${lang}.json`), JSON.stringify({ from: off, to: arg('to', null), freezes: b.map((x, i) => ({ start: +(a[i] + off).toFixed(2), d: x })) }));
 const au = path.join(d.out, 'audio.wav');

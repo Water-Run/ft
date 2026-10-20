@@ -2,7 +2,7 @@
 // 用法：node kit/tools/scan.js <视频> [--lang en|all]
 //       node kit/tools/scan.js <视频> --from 20 --to 55      只扫一段（写某个场景时用）
 //       --json     另存 build/scan.<语言>.json（check.js 用）
-// 退出码：有 ✗ 即为 1。各项的含义与处理办法见 docs/review.md。
+// 退出码：有 ✗ 即为 1。各项的含义与处理办法见 docs/guides/acceptance.md。
 // 可在 project.json 的 check 段调整：
 //   still_seconds（默认 3）  empty_seconds（默认 1）  dense（同屏文字项上限，默认 16）
 //   levels: { "STILL": "warn", "DENSE": "off", … }   把某一项改成 error / warn / off

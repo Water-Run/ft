@@ -1,9 +1,9 @@
 // 总闸门：一条命令跑完全部自动检查，逐项给出 通过 / 不通过。任何一项不通过都不能交付。
 // 用法：node kit/tools/check.js <视频>            制作期：源码规则、场景齐全、时长节奏、全片扫描（scan.js）、音效覆盖
 //       node kit/tools/check.js <视频> --final    交付前：再加成片、响度、静止段、空画面、封面、是否过期
-//       node kit/tools/check.js <视频> --handoff  委托制作：准备方交给受托模型之前，查任务书与素材是否齐备（见 docs/delegation.md）
+//       node kit/tools/check.js <视频> --handoff  准备方交给制作方之前：事实、确认有效的文案、简报与交接说明是否齐备（docs/process.md 第 4 节）
 //       --lang en 只查一种语言（缺省查 project.json 里的全部语言）
-// 各项的含义、阈值与处理办法见 docs/review.md；阈值与风格规则在 project.json 的 check 段，写法见 docs/tools.md。
+// 各项的含义、阈值与处理办法见 docs/guides/acceptance.md；阈值与风格规则在 project.json 的 check 段，写法见 docs/reference/tools.md。
 const { spawnSync } = require('child_process');
 const { needVideo, PROJECT, VIDEO, ARGS, arg, flag, LANGS: selectLanguages, layout, loadedSources, sourceState, startServer, openPage, dirs, mmss, path, fs } = require('./lib');
 needVideo();
@@ -13,53 +13,41 @@ const rows = [];
 const add = (name, ok, detail) => rows.push({ name, ok, detail: [].concat(detail || []) });
 const read = (f) => fs.readFileSync(path.join(VIDEO, f), 'utf8');
 const exists = (f) => fs.existsSync(path.join(VIDEO, f));
-const review = require('./script-review').status(VIDEO, P, LANGS);
-if (!review.ok) { console.error('✗ 文案校对：\n  ' + review.problems.join('\n  ')); process.exit(1); }
-add('文案校对', true, review.legacy ? review.details : ['人工记录与当前内容一致；确认真实性按 docs/script-review.md 核对。']);
-const feedback = require('./feedback').prepared(VIDEO, P);
-if (!feedback.ok) { console.error('✗ 反馈应用：\n  ' + feedback.problems.join('\n  ')); process.exit(1); }
-if (flag('final') && !feedback.legacy) {
-  const result = spawnSync(process.execPath, [path.join(__dirname, 'feedback.js'), VIDEO, 'check', '--stage', 'final', '--lang', LANGS.join(',')], { encoding: 'utf8' });
-  if (result.status !== 0) { console.error('✗ 结尾反馈复核：\n' + (result.stdout || '') + (result.stderr || '')); process.exit(1); }
-}
-add('反馈应用', true, feedback.legacy ? ['旧项目尚未接入版本检查，接续制作时先运行 feedback.js sync。'] : ['当前规则已逐项应用；最终检查同时核对主成片版本与时间证据。']);
 
-// ── 交接检查（--handoff）：准备方交给受托模型之前 ──
+// ── 交接检查（--handoff）：准备方交给制作方之前 ──
 if (flag('handoff')) {
-  const blank = (f) => { const t = read(f); return [/待填/.test(t) ? '还有「待填」' : '', /<!--\s*准备方/.test(t) ? '还有给准备方看的注释（<!-- 准备方… -->）' : '', /\{\{[A-Z0-9_]+\}\}/.test(t) ? '还有没替换的占位符 {{…}}' : ''].filter(Boolean); };
-  add('制作方式', P.production.mode === 'delegated', P.production.mode === 'delegated' ? [] : ['project.json 的 production.mode 不是 delegated：这部片子不是委托制作']);
-  const br = [];
-  for (const f of ['AGENTS.md', 'brief/01-mission.md', 'brief/02-script.md', 'brief/03-visual.md', 'brief/04-storyboard.md', 'brief/05-motion-sound.md', 'brief/06-acceptance.md']) { if (!exists(f)) br.push('缺少 ' + f); else for (const w of blank(f)) br.push(`${f} ${w}`); }
-  add('任务入口与任务书', !br.length, br);
+  const readme = exists('README.md') ? read('README.md') : '';
+  const section = (name) => { const lines = readme.split(/\r?\n/), i = lines.findIndex((l) => l.trim() === '## ' + name); if (i < 0) return null; const j = lines.findIndex((l, k) => k > i && /^## /.test(l)); return lines.slice(i + 1, j < 0 ? undefined : j).join('\n').replace(/<!--[\s\S]*?-->/g, '').trim(); };
   const mat = [];
   if (!exists('research/FACTS.md') || read('research/FACTS.md').length < 800) mat.push('research/FACTS.md 不存在或内容过少：取证要在交接之前做完');
-  if (/TODO/.test(read('src/css/style.css'))) mat.push('src/css/style.css 里还有 TODO：视觉系统由准备方定好');
-  const design = exists('src/design') ? fs.readdirSync(path.join(VIDEO, 'src', 'design')).filter((n) => !n.startsWith('.')) : [];
-  if (!design.length) mat.push('src/design/ 里没有参考关键帧或示范场景');
   if (!C.duration) mat.push('project.json 的 check.duration 未设：给出总长的允许范围');
-  add('取证、视觉系统与范例', !mat.length, mat);
-  const vo = [];
-  for (const lang of LANGS) {
-    const { L, measured } = layout(lang), ids = L.order.filter((id) => !L.cues[id].silent);
-    if (!measured) { vo.push(`${lang}：旁白还没有合成（node kit/tools/tts.js）`); continue; }
-    const cached = ids.filter((id) => exists(`audio/${lang}/cues/${id}.mp3`)).length;
-    if (cached < ids.length) rows.push({ name: `（${lang}：这台机器上的旁白音频 ${cached}/${ids.length} 句。受托模型在没有音频缓存的机器上开工时，需要联网重新合成）`, ok: true, detail: [] });
-    const ef = (C.expect || 'expect.<lang>.json').replace('<lang>', lang);
-    if (!exists(ef)) { vo.push(`缺少逐句对应表 ${ef}`); continue; }
-    const ex = JSON.parse(read(ef)), keys = Object.keys(ex), bad = keys.filter((k) => !L.cues[k]);
-    if (!keys.length) vo.push(`${ef} 是空的：写明每句说完时画面上必须有的文字`);
-    if (bad.length) vo.push(`${ef} 里有脚本中不存在的句号：${bad.join(' ')}`);
-    if (keys.length) rows.push({ name: `（${lang}：逐句对应表覆盖 ${keys.filter((k) => L.cues[k]).length}/${L.order.length} 句，含无旁白的停顿）`, ok: true, detail: [] });
-  }
-  add('旁白与逐句对应表', !vo.length, vo);
-  const sc = layout(LANGS[0]).SCRIPT.filter((x) => !loadedSources().some((f) => /\.js$/.test(f) && new RegExp(`scene\\(\\s*['"\`]${x.id}['"\`]`).test(read('src/' + f)))).map((x) => x.id);
-  add('场景文件', !sc.length, sc.length ? ['这些场景还没有对应的场景文件（空壳即可，受托模型来实现）：' + sc.join(' ')] : []);
+  add('取证与约束', !mat.length, mat);
+  const br = [];
+  if (P.layout >= 2) {
+    const brief = section('简报');
+    if (!brief || /核心问题：\s*$/m.test(brief)) br.push('README 的「简报」没有写完：至少写明核心问题、逐章答案、时长与语言');
+    if (!section('交接')) br.push('README 的「交接」是空的：写明做完了什么、在哪里、还有什么没解决');
+  } else if (!exists('brief/01-mission.md') && !section('简报')) br.push('缺少简报：旧片在 brief/01-mission.md，新片写在 README 的「简报」');
+  add('简报与交接说明', !br.length, br);
+  const sr = require('./script-review'), first = sr.status(VIDEO, P, [P.languages[0]]);
+  add(`文案确认（${P.languages[0]}）`, first.ok, first.problems);
+  if (P.languages.length > 1) { const rest = sr.status(VIDEO, P, P.languages.slice(1)); if (!rest.ok) rows.push({ name: '（其他语言尚未确认：可由制作方接着翻译、交审）', ok: true, detail: rest.problems }); }
   console.log('');
   for (const x of rows) { console.log(`${x.ok ? '✓ 通过  ' : '✗ 不通过'}  ${x.name}`); for (const d of x.detail) console.log('      ' + d); }
   const bad = rows.filter((x) => !x.ok).length;
-  console.log(`\n${bad ? `结论：有 ${bad} 项不通过，补齐后再交接` : '结论：可以交接。受托模型的入口是本片目录的 AGENTS.md'}`);
+  console.log(`\n${bad ? `结论：有 ${bad} 项不通过，补齐后再交接` : '结论：可以交接。制作方从本片 README 的「简报」「交接」读起'}`);
   process.exit(bad ? 1 : 0);
 }
+
+const review = require('./script-review').status(VIDEO, P, LANGS);
+if (!review.ok) { console.error('✗ 文案校对：\n  ' + review.problems.join('\n  ')); process.exit(1); }
+add('文案校对', true, review.legacy ? review.details : ['人工记录与当前内容一致；确认真实性按 docs/guides/script-review.md 核对。']);
+// 经验规则：制作期只提示记录是否跟上当前规则；交付前每条都要有结论（docs/lessons.md）
+const lessonState = require('./lessons').status(VIDEO, P, { final: flag('final') });
+if (flag('final')) {
+  if (!lessonState.ok) { console.error('✗ 经验规则复核（review/lessons.json）：\n  ' + lessonState.problems.join('\n  ') + '\n逐条写结论，再运行 node kit/tools/lessons.js <视频> check --final'); process.exit(1); }
+  add('经验规则复核', true, lessonState.legacy ? ['旧项目没有复核记录。'] : lessonState.open.length ? ['以下记为 open，交付时写进 README「交付」：', ...lessonState.open] : ['每条规则都有结论；结论是否属实，按实际看、听的范围判断。']);
+} else if (!lessonState.ok) rows.push({ name: '（经验规则复核记录的提示，交付前须处理）', ok: true, detail: lessonState.problems });
 
 // ── 1 源码规则 ──
 // 通用规则保证「画面只由 t 决定」，对所有视频恒开；风格规则由 check.style 按本片的视觉系统开关。
@@ -112,6 +100,26 @@ add(`场景齐全（${first.SCRIPT.length} 个场景）`, !st.length, st);
     if (hints.length) rows.push({ name: `（系列「${series.title.zh}」的栏目提示，不计入通过与否）`, ok: true, detail: hints });
   }
 }
+// 每部片子自成一体（经验规则 F21）：样式表与配乐脚本和模板、系列起点或另一部片子完全相同，说明还没有为本片设计。
+// 新版目录的片子在交付前不通过；其余只提示。
+{
+  const REPO = path.resolve(__dirname, '..', '..'), crypto = require('crypto');
+  const sum = (f) => { try { return crypto.createHash('sha1').update(fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n')).digest('hex'); } catch (e) { return null; } };
+  const others = (rel) => {
+    const list = [[path.join(REPO, 'kit', 'template', rel), 'kit/template/' + rel]];
+    const starters = path.join(REPO, 'kit', 'starters');
+    if (fs.existsSync(starters)) for (const n of fs.readdirSync(starters)) list.push([path.join(starters, n, rel), `kit/starters/${n}/${rel}`]);
+    for (const n of fs.readdirSync(path.join(REPO, 'videos'))) if (path.join(REPO, 'videos', n) !== path.resolve(VIDEO)) list.push([path.join(REPO, 'videos', n, rel), `videos/${n}/${rel}`]);
+    return list;
+  };
+  const same = [];
+  for (const rel of ['src/css/style.css', 'tools/music.py']) {
+    const mine = sum(path.join(VIDEO, rel)); if (!mine) continue;
+    const hit = others(rel).find(([f]) => sum(f) === mine);
+    if (hit) same.push(`${rel} 与 ${hit[1]} 完全相同：按本片的对象重新设计（F21）`);
+  }
+  if (same.length) { if (flag('final') && P.layout >= 2) add('自成一体（F21）', false, same); else rows.push({ name: '（与模板、系列起点或其他片子雷同的提示，F21）', ok: true, detail: same }); }
+}
 
 // ── 3 时长与节奏 ──
 const CAPW = { zh: 26, en: 44 }, tm = [], totals = {};
@@ -142,7 +150,21 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
     const { server, base } = await startServer();
     const { browser, page } = await openPage(base, { lang });
     const ev = await page.evaluate(() => (window.SFX || []).slice().sort((a, b) => a.t - b.t));
+    // 片尾名单与 project.json 的 credits 一致（新版目录；docs/roles.md 第 5 节）：在片尾 cue 里取几帧，名单里的每个名字都要出现
+    let creditGaps = null;
+    if (flag('final') && P.layout >= 2 && P.credits) {
+      const ids = layout(lang).SCRIPT.flatMap((sc) => sc.cues).filter((c) => c[2] && c[2].credits).map((c) => c[0]);
+      if (!ids.length) creditGaps = ['脚本里没有片尾名单的静默 cue（{ pause, credits: true }）'];
+      else {
+        const { COLLECT } = require('./inspect'), seen = new Set();
+        for (const id of ids) { const c = L.cues[id]; for (const k of [0.3, 0.55, 0.8, 0.97]) { await page.evaluate((x) => window.seek(x), c.start + c.d * k); for (const it of await page.evaluate(COLLECT)) if (it.k === 'text' && it.op >= 0.5) seen.add(it.text.replace(/\s+/g, '')); } }
+        const text = [...seen].join('|'), Cr = P.credits;
+        const want = [Cr.planner, ...(Cr.models || []).map((m) => m.name), ...(Cr.services || []).map((m) => m.name), String(Cr.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')].filter(Boolean);
+        creditGaps = want.filter((w) => !text.includes(w.replace(/\s+/g, ''))).map((w) => `片尾画面上找不到「${w}」`);
+      }
+    }
     await browser.close(); server.close();
+    if (creditGaps) add(`片尾名单（${lang}）`, !creditGaps.length, creditGaps);
     const KNOWN = ['tick', 'key', 'blip', 'pop', 'whoosh', 'thud', 'chime', 'error', 'riser', 'beep', 'drive'];
     const sx = [], main = ev.filter((e) => e.n !== 'key');
     const unknown = [...new Set(ev.map((e) => e.n).filter((n) => !KNOWN.includes(n)))];
@@ -170,10 +192,14 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
       }
       let rec = null; try { rec = JSON.parse(read(`out/${lang}/video.json`)); } catch (e) { fx.push(`缺少 out/${lang}/video.json：成片不是由 render.js 整片渲染得到的`); }
       if (rec) { const now = sourceState(); const changed = [...new Set([...Object.keys(now), ...Object.keys(rec.sources)])].filter((f) => now[f] !== rec.sources[f] && !(/^js\/timing\.\w+\.js$/.test(f) && f !== `js/timing.${lang}.js`)); if (changed.length) fx.push('这些源文件在渲染之后改过，成片已过期，要重新渲染：' + changed.map((f) => 'src/' + f).join(' ')); }
-      if (!exists('README.md')) fx.push('缺少本片的 README.md（内容、结构、取证方式、复现命令）');
-      if (P.production.mode === 'delegated') {
-        if (!exists('DELIVERY.md')) fx.push('委托制作的片子要有交付说明 DELIVERY.md（写法见 docs/delegation.md）');
-        else if (read('DELIVERY.md').length < 600) fx.push('DELIVERY.md 内容过少：按 docs/delegation.md 的清单写全');
+      if (!exists('README.md')) fx.push('缺少本片的 README.md');
+      else if (P.layout >= 2) {
+        const rd = read('README.md').split(/\r?\n/), i = rd.findIndex((l) => l.trim() === '## 交付'), j = rd.findIndex((l, k) => k > i && /^## /.test(l));
+        if (i < 0 || !rd.slice(i + 1, j < 0 ? undefined : j).join('\n').replace(/<!--[\s\S]*?-->/g, '').trim()) fx.push('README 的「交付」是空的：写成片规格、闸门结论、open 的规则、实际看过听过的范围（docs/guides/acceptance.md 第 6 节）');
+      } else if ((P.production || {}).mode === 'delegated') {
+        // 旧版委托片的交付说明
+        if (!exists('DELIVERY.md')) fx.push('委托制作的旧片要有交付说明 DELIVERY.md');
+        else if (read('DELIVERY.md').length < 600) fx.push('DELIVERY.md 内容过少');
       }
       add(`交付物（${lang}）`, !fx.length, fx);
     }
