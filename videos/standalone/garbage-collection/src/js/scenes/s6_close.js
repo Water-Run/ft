@@ -132,7 +132,7 @@ scene('close', ({ root, s, c0 }) => {
     ['Gemini 4 Argon', '网页端 · 中文第 8 稿文案'],
     ['MiniMax M3.1 Flash', '准备方辅助：落盘 · 断句 · 读法 · 音色试听 · 任务书'],
     ['MiniMax speech-2.8-hd', '配音'],
-    ['Opus 5.5', '视觉系统 · 分镜与动画 · 配乐与音效 · 封面 · 渲染与审查'],
+    ['Claude Opus 5.5', '视觉系统 · 分镜与动画 · 配乐与音效 · 封面 · 渲染与审查'],
   ];
   const crEls = [];
   CR.forEach(([a, b], k) => {

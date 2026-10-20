@@ -21,7 +21,7 @@
   },
   "production": {
     "mode": "delegated",
-    "maker": "Opus 5.5",
+    "maker": "Claude Opus 5.5",
     "planner": "WaterRun",
     "repository": "https://github.com/Water-Run/ft"
   },

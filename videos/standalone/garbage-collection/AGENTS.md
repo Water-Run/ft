@@ -119,7 +119,7 @@
 8. **不谎报。** `DELIVERY.md` 里只写实际运行过的命令和实际得到的输出；没做的写「未做」，没通过的写「未通过」并附上工具输出。听不到声音、看不到画面，这两件事如实写明，留给人判断。
 9. **不为过关而改规则。** 不修改 `kit/` 下的工具，不放宽 `project.json` 的 `check` 段，不删改 `expect.zh.json` 的条目。
 10. **不直接抄袭现成产品。** 参考来源与独立设计选择写进 README，不照搬文案、分镜、构图与动效。
-11. **片尾名单完整。** 列出策划者 WaterRun 与**全部实际参与模型**及分工：DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon（网页端）、MiniMax M3.1 Flash（准备方辅助）、MiniMax speech-2.8-hd（配音）、Opus 5.5（你）。名单以 `research/FACTS.md` 的「制作署名」为准，不猜版本、不虚构参与者。
+11. **片尾名单完整。** 列出策划者 WaterRun 与**全部实际参与模型**及分工：DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon（网页端）、MiniMax M3.1 Flash（准备方辅助）、MiniMax speech-2.8-hd（配音）、Claude Opus 5.5（你）。名单以 `research/FACTS.md` 的「制作署名」为准，不猜版本、不虚构参与者。
 12. **片尾展示开源链接。** 展示「开源视频」与完整可读的 `github.com/Water-Run/ft`，与 `FACTS.md`、README、`DELIVERY.md` 一致。
 13. **开工和结尾都复盘反馈。** 结尾用开工表里的同一组编号写成片时间、证据、结果与遗留项；只改源码、文档或通过自动闸门不能记为成片已验证。新增共性问题列在你的交付记录里，由准备方回填总账。
 

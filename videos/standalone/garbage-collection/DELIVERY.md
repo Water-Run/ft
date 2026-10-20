@@ -1,6 +1,6 @@
 # 交付说明：《垃圾回收的艺术》（中文）
 
-受托方：Opus 5.5（2026-10-20）。入口：本片 `AGENTS.md`。准备方：MiniMax M3.1 Flash；策划：WaterRun。
+受托方：Claude Opus 5.5（2026-10-20）。入口：本片 `AGENTS.md`。准备方：MiniMax M3.1 Flash；策划：WaterRun。
 
 > **与任务书不同的一处大改动**：策划者在委托会话里要求「画面惊艳、有节奏感，伴随节奏感很强的配乐；不要和 XX 秒速通那些瑞士风格和配乐同质化，独特的、特别的」。任务书 `brief/03-visual.md`、`research/STYLE.md` 规定的瑞士国际主义（米白、墨、红）正是「XX 秒速通」的那一套，因此整套作废：受托方做了三个方向的关键帧，策划者看过截图后指定绿色的「内存条」（「我喜欢绿色的这个」）。`project.json` 的 `check.style.palette` 与 `fonts` 因此换成新系统的名单（严格程度未变），见第 7 节第 1、2 项。
 
@@ -117,7 +117,7 @@
 | h7c | 最优雅的平衡 | 9:27.4–9:30.3 | 2.9 s | 2.7 s | 够 |
 | 片尾 策划 | 策划：WaterRun | 9:30.6–9:45.0 | 14.4 s | 2.1 s | 够 |
 | 片尾 链接 | github.com/Water-Run/ft | 9:33.3–9:45.0 | 11.7 s | 2.1 s | 够 |
-| 片尾 Opus | Opus 5.5 | 9:32.3–9:45.0 | 12.7 s | 1.9 s | 够 |
+| 片尾 Opus | Claude Opus 5.5 | 9:32.3–9:45.0 | 12.7 s | 1.9 s | 够 |
 | e11 副 | 无需预判程序要干什么 | 6:14.2–6:17.7 | 3.5 s | 3.5 s | 够 |
 | e11b | 活物一个不漏 | 6:18.7–6:21.8 | 3.1 s | 2.7 s | 够 |
 | h5 译1 | 我们早就把这个过程叫作“垃圾回收”了，不过我大概是怂了，没在论文里用 | 9:04.3–9:17.4 | 13.1 s | 7.5 s | 够 |
@@ -157,7 +157,7 @@
 
 ## 5. 制作署名与片尾核对
 
-- 片尾（`gCredit`，14 s，无旁白）：「策划：WaterRun」在首行；六个参与模型及分工——DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon（网页端）、MiniMax M3.1 Flash、MiniMax speech-2.8-hd、Opus 5.5——与 `research/FACTS.md`「制作署名」、README 一致，没有遗漏或虚构；「开源视频」标签与完整的 `github.com/Water-Run/ft`（44 px 等宽字）。`look.js` 列出的每一行都完整在画内；阅读区间见第 3.3 节附表。
+- 片尾（`gCredit`，14 s，无旁白）：「策划：WaterRun」在首行；六个参与模型及分工——DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon（网页端）、MiniMax M3.1 Flash、MiniMax speech-2.8-hd、Claude Opus 5.5——与 `research/FACTS.md`「制作署名」、README 一致，没有遗漏或虚构；「开源视频」标签与完整的 `github.com/Water-Run/ft`（44 px 等宽字）。`look.js` 列出的每一行都完整在画内；阅读区间见第 3.3 节附表。
 - 旁白轨在片尾区间为 −91 dB（数字静音），主混音在此只有配乐（平均 −33.7 dB）。
 - 仓库链接：`gh repo view Water-Run/ft` 返回 `"visibility":"PUBLIC"`，指向本片源码所在仓库。
 - 以上按页面截图与混音核对；成片的片尾待渲染后复看。
