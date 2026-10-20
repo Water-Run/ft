@@ -205,4 +205,6 @@
 - 实算数据：JWT 三段、改一位数字后的应得签名、ID Token 的 iss / sub / aud、挑战值、两种哈希每秒的次数（1 026 716 与 5）都取自 `research/lab/lab.json`，画面不手写。
 - 推断与简化：j1「很多台服务器都得查同一张表」、a7「信任集中」按 NOTES 记为推断；「故意慢的哈希」画面只作量级对比，环境写在「画面数据」一行。
 - 没有发现需要更正的陈述。没有联网重读准备方 2026-10-18 读过的全部来源；只重读了 RFC 6265、RFC 6749、OWASP Password Storage 三处。
-- 读音只做了 ASR 筛查（见 README「读法」），人耳待 WaterRun。
+- 读音只做了 ASR 筛查（见 README「读法」）；2026-10-20 WaterRun 回复「可以, 标记发布吧」后按通过登记，没有逐项评论。
+
+**发布复核（2026-10-20）**：哔哩哔哩 [BV1Z7JZ6yEQb](https://www.bilibili.com/video/BV1Z7JZ6yEQb)（08:53:37，+08:00，平台时长 200 秒，合集「速通教学」）与 YouTube [Bkt7b_xbMYg](https://www.youtube.com/watch?v=Bkt7b_xbMYg)；两边的平台标题与片单的中、英片名逐字一致。哔哩哔哩简介里的开源地址与片尾的 github.com/Water-Run/ft 相同，该地址打开为本仓库。YouTube 的精确发布时刻与简介未核。
