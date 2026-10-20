@@ -34,10 +34,13 @@
     "mb": 4
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
-    "duck_db": 9,
-    "sfx_db": -8
+    "music": "tools/music.py",
+    "music_db": -9,
+    "duck_db": 7,
+    "sfx_db": -9,
+    "score": {
+      "bpm": 108
+    }
   },
   "check": {
     "caption_width": {
@@ -54,14 +57,17 @@
       "no_radius": true,
       "no_emoji": true,
       "palette": [
-        "111111",
-        "F4F1EA",
-        "DA291C",
-        "8A8A8A",
-        "D9D5CC",
-        "FFFFFF"
+        "0B5B3E",
+        "06402B",
+        "137050",
+        "F4F1E4",
+        "8DAA99",
+        "0B1410",
+        "F5C242",
+        "A9CDB9"
       ],
       "fonts": [
+        "Serif SC",
         "Sans SC",
         "Inter",
         "Mono"
@@ -70,7 +76,13 @@
     "duration": [
       400,
       640
-    ]
+    ],
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    }
   },
   "feedback": {
     "required": true

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧：三个方向</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  /* 三个方向的关键帧。k=1–3 方向 A「钴蓝之堆」；k=4–6 方向 B「夜场」；k=7–9 方向 C「内存条」。
+     每个方向三张：片名、信息最密的一屏（开场撞墙）、图解（三色与家规）。
+     选定：C「内存条」（2026-10-20 策划者看过三组截图后指定）。正片的视觉系统见 src/css/style.css；
+     本页保留三个方向的原样，作为选定前的记录（A、B 的颜色不在本片色板里，本页不被 index.html 加载）。 */
+  body { background: var(--bg); }
+  #f { position: absolute; inset: 0; overflow: hidden; background: var(--bg); color: var(--fg); }
+  .abs { position: absolute; }
+  .ser { font-family: "Serif SC"; font-weight: 900; }
+  .inter { font-family: "Inter"; }
+  .mono { font-family: "Mono"; }
+  .sans { font-family: "Sans SC"; }
+  .tile { position: absolute; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 46px; height: 64px; display: flex; align-items: center; justify-content: center; }
+  .cap span { font-family: "Sans SC"; font-weight: 500; font-size: 40px; padding: 4px 22px; background: var(--capbg); color: var(--capfg); }
+  .cap em { font-style: normal; color: var(--accent2); font-weight: 700; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="f"></div></div>
+<script>
+const K = +(new URLSearchParams(location.search).get('k') || 1);
+const D = K <= 3 ? 'A' : K <= 6 ? 'B' : 'C';
+const P = {
+  A: { bg: '#2A3DF5', fg: '#FFFFFF', deep: '#101C9E', line: '#4456FF', white: '#FFFFFF', gray: '#A4A9D6', black: '#0A0B1F', accent: '#D6FF2E', accent2: '#D6FF2E', capbg: '#101C9E', capfg: '#FFFFFF', pale: '#C9CEFF', slab: '#0A0B1F' },
+  B: { bg: '#0C0C10', fg: '#F2F2F2', deep: '#1A1A22', line: '#22222C', white: '#F2F2F2', gray: '#7C7C88', black: '#33333E', accent: '#FF3B8D', accent2: '#FF3B8D', capbg: '#0C0C10', capfg: '#F2F2F2', pale: '#9A9AA8', slab: '#1A1A22' },
+  C: { bg: '#0B5B3E', fg: '#F4F1E4', deep: '#06402B', line: '#137050', white: '#F4F1E4', gray: '#7FA894', black: '#0B1410', accent: '#F2B53A', accent2: '#F2B53A', capbg: '#06402B', capfg: '#F4F1E4', pale: '#A9CDB9', slab: '#0B1410' },
+}[D];
+for (const k in P) document.documentElement.style.setProperty('--' + (k === 'accent' ? 'accent' : k), P[k]);
+const f = document.getElementById('f');
+const h = (tag, cls, html, st) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; if (st) Object.assign(e.style, st); f.appendChild(e); return e; };
+function seeded(seed = 1) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const cap = (s) => h('div', 'cap', `<span>${s}</span>`);
+const tile = (x, y, s, col, o = {}) => h('div', 'tile', '', { left: x + 'px', top: y + 'px', width: s + 'px', height: s + 'px', background: o.hollow ? 'transparent' : col, border: o.hollow ? `3px solid ${col}` : 'none' });
+
+const frame = (K - 1) % 3;
+document.fonts.ready.then(() => {
+  if (frame === 0) title();
+  if (frame === 1) wall();
+  if (frame === 2) tri();
+  document.body.dataset.ready = '1';
+});
+
+// 片名：一大片堆，左上大字
+function title() {
+  const r = seeded(7), S = 60, G = D === 'A' ? 10 : 8;
+  for (let gy = 0; gy < 18; gy++) for (let gx = 0; gx < 32; gx++) {
+    const x = gx * S + G / 2, y = gy * S + G / 2, v = r();
+    const inTitle = gx < 20 && gy > 2 && gy < 13;
+    if (inTitle && v < 0.92) continue;
+    if (v < 0.42) continue;
+    const col = v < 0.62 ? P.white : v < 0.78 ? P.black : v < 0.94 ? P.gray : P.accent;
+    tile(x, y, S - G, col, { hollow: v > 0.58 && v < 0.62 });
+  }
+  h('div', 'abs ser', '垃圾回收<br>的艺术', { left: '118px', top: '210px', fontSize: '176px', lineHeight: '1.08', color: P.fg });
+  h('div', 'abs inter', 'THE ART OF GARBAGE COLLECTION'.toLowerCase().replace(/^./, (c) => c.toUpperCase()), { left: '124px', top: '640px', fontSize: '40px', fontWeight: 600, color: P.pale });
+  h('div', 'abs mono', '1960 · 1978 · 1983', { left: '124px', top: '700px', fontSize: '28px', color: P.pale });
+}
+
+// 开场撞墙：64 MB 的堆被填满，OutOfMemoryException
+function wall() {
+  const r = seeded(3), S = 30, G = 4, X0 = 120, Y0 = 170, C = 30, R = 24;
+  h('div', 'abs', '', { left: X0 - 10 + 'px', top: Y0 - 10 + 'px', width: C * S + 16 + 'px', height: R * S + 16 + 'px', border: `4px solid ${P.fg}` });
+  for (let gy = 0; gy < R; gy++) for (let gx = 0; gx < C; gx++) tile(X0 + gx * S, Y0 + gy * S, S - G, r() < 0.04 ? P.accent : P.white);
+  h('div', 'abs mono', '64 MB', { left: X0 + 'px', top: '92px', fontSize: '56px', fontWeight: 700, color: P.fg });
+  h('div', 'abs mono', 'DOTNET_GCHeapHardLimit=0x4000000', { left: X0 + 240 + 'px', top: '112px', fontSize: '28px', color: P.pale });
+  const sx = 1100;
+  h('div', 'abs inter', '1,048,577', { left: sx + 'px', top: '160px', fontSize: '128px', fontWeight: 900, letterSpacing: '-0.03em', color: P.fg });
+  h('div', 'abs sans', '个对象之后', { left: sx + 6 + 'px', top: '312px', fontSize: '38px', fontWeight: 500, color: P.pale });
+  const slab = h('div', 'abs mono', 'System.OutOfMemoryException', { left: sx + 'px', top: '400px', padding: '18px 24px', fontSize: '40px', fontWeight: 700, background: P.slab, color: P.accent2 });
+  h('div', 'abs mono', '679 ms<br>gen2 GCs 5', { left: sx + 'px', top: '510px', fontSize: '40px', lineHeight: 1.4, color: P.fg });
+  h('div', 'abs mono', 'Allowed memory size of 67108864 bytes exhausted', { left: sx + 'px', top: '650px', fontSize: '24px', color: P.pale });
+  h('div', 'abs mono', 'java.lang.OutOfMemoryError: Java heap space', { left: sx + 'px', top: '690px', fontSize: '24px', color: P.pale });
+  h('div', 'abs mono', '实测：.NET 10.0.12', { left: sx + 'px', top: '880px', fontSize: '24px', color: P.pale });
+  cap('只给 *64 MB* 空间，占着不撒手？'.replace(/\*([^*]+)\*/g, '<em>$1</em>'));
+}
+
+// 三色与家规
+function tri() {
+  const nodes = [[260, 300, 'B'], [520, 220, 'B'], [520, 460, 'G'], [800, 160, 'B'], [800, 360, 'G'], [800, 600, 'W'], [1060, 300, 'W'], [1060, 520, 'W'], [1320, 420, 'W']];
+  const edges = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [4, 6], [4, 7], [7, 8]];
+  const sv = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  sv.setAttribute('width', 1920); sv.setAttribute('height', 1080); sv.style.position = 'absolute';
+  f.appendChild(sv);
+  for (const [a, b] of edges) { const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); const A = nodes[a], B = nodes[b]; l.setAttribute('x1', A[0] + 40); l.setAttribute('y1', A[1] + 40); l.setAttribute('x2', B[0] + 40); l.setAttribute('y2', B[1] + 40); l.setAttribute('stroke', P.fg); l.setAttribute('stroke-width', 4); sv.appendChild(l); }
+  // 违规的那条：黑 → 白
+  const l2 = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l2.setAttribute('x1', 840); l2.setAttribute('y1', 200); l2.setAttribute('x2', 1100); l2.setAttribute('y2', 340); l2.setAttribute('stroke', P.accent); l2.setAttribute('stroke-width', 8); sv.appendChild(l2);
+  for (const [x, y, c] of nodes) tile(x, y, 80, c === 'B' ? P.black : c === 'G' ? P.gray : P.white);
+  tile(1052, 292, 96, P.accent, { hollow: true });
+  h('div', 'abs mono', 'P1', { left: '1500px', top: '150px', fontSize: '40px', color: P.accent });
+  h('div', 'abs ser', '黑的绝不许<br>直接指向白的', { left: '1500px', top: '210px', fontSize: '84px', lineHeight: 1.15, color: P.fg });
+  h('div', 'abs inter', 'no edge points from a black node to a white one', { left: '1500px', top: '440px', width: '340px', whiteSpace: 'normal', fontSize: '28px', lineHeight: 1.35, color: P.pale });
+  h('div', 'abs mono', 'Dijkstra 等 · CACM 1978', { left: '1500px', top: '560px', fontSize: '24px', color: P.pale });
+  cap('标记期间，*黑的绝不许直接指向白的*'.replace(/\*([^*]+)\*/g, '<em>$1</em>'));
+}
+</script>
+</body>
+</html>

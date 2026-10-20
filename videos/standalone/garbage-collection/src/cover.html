@@ -5,30 +5,55 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；kit/tools/covers.js 按 2 倍像素出图。
+     与正片同一套「内存条」视觉：阻焊绿底、丝印白的大字、一片方格（对象）与一道金线（收集器）。底部约 15% 不放字。 */
+  :root { --field: #0B5B3E; --deep: #06402B; --line: #137050; --white: #F4F1E4; --gray: #8DAA99; --ink: #0B1410; --gold: #F5C242; --pale: #A9CDB9; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { background: var(--field); color: var(--white); overflow: hidden; }
+  .title { position: absolute; font-family: "Serif SC"; font-weight: 900; line-height: 1.08; white-space: nowrap; }
+  .kicker { position: absolute; font-family: "Sans SC"; font-weight: 700; color: var(--pale); white-space: nowrap; }
+  .r169 .title { left: 104px; top: 150px; font-size: 220px; }
+  .r169 .kicker { left: 112px; top: 690px; font-size: 40px; }
+  .r43 .title { left: 92px; top: 170px; font-size: 230px; }
+  .r43 .kicker { left: 100px; top: 700px; font-size: 40px; }
+  svg { position: absolute; left: 0; top: 0; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
+  <svg id="heap"></svg>
+  <div class="title">垃圾回收<br>的艺术</div>
+  <div class="kicker">引用计数 · 标记—清扫 · 分代 · 三色与写屏障</div>
 </div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', r43 = q.get('r') === '43';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  const W = r43 ? 1600 : 1920, H = r43 ? 1200 : 1080;
+  // 一片方格：芯片黑 = 活，丝印白 = 还没证明活着，灰 = 碰过，金 = 收集器此刻碰到的那一列
+  const NS = 'http://www.w3.org/2000/svg', sv = document.getElementById('heap');
+  sv.setAttribute('width', W); sv.setAttribute('height', H); sv.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  let a = 20261020 >>> 0;
+  const rnd = () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const P = 60, cols = Math.ceil(W / P), rows = Math.floor((H * 0.85) / P);
+  const x0 = r43 ? 1140 : 1140, y0 = r43 ? 940 : 0, sweepC = r43 ? 21 : 25;
+  const rect = (x, y, w, h, fill, stroke) => { const e = document.createElementNS(NS, 'rect'); e.setAttribute('x', x); e.setAttribute('y', y); e.setAttribute('width', w); e.setAttribute('height', h); e.setAttribute('fill', stroke ? 'none' : fill); if (stroke) { e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', 4); } sv.appendChild(e); };
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const x = i * P, y = j * P;
+    const inZone = r43 ? (x >= x0 - 60 || y >= y0 - 120) : (x >= x0 - 120);
+    const v = rnd();
+    if (!inZone) { if (v < 0.12) rect(x + 5, y + 5, 50, 50, '#137050'); continue; }
+    const fade = r43 ? Math.min(1, Math.max((x - (x0 - 60)) / 300, (y - (y0 - 120)) / 200)) : Math.min(1, (x - (x0 - 120)) / 420);
+    if (v > 0.25 + 0.55 * fade) continue;
+    if (i === sweepC) { rect(x + 5, y + 5, 50, 50, '#F5C242'); continue; }
+    const c = rnd();
+    if (i > sweepC) { if (c < 0.6) rect(x + 5, y + 5, 50, 50, '#F4F1E4'); else rect(x + 7, y + 7, 46, 46, null, '#F4F1E4'); }
+    else rect(x + 5, y + 5, 50, 50, c < 0.62 ? '#0B1410' : c < 0.8 ? '#8DAA99' : '#F4F1E4');
+  }
+  rect(sweepC * P + 24, 0, 12, rows * P, '#F5C242');
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Serif SC"', sample), document.fonts.load('700 40px "Sans SC"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
