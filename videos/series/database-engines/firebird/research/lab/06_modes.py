@@ -17,7 +17,9 @@ import sys
 
 import fdb
 
-USER, PASSWORD = "SYSDBA", "ftlab2026fb"
+USER = "SYSDBA"
+# 实验口令由 run_lab.ps1 现场生成，放在环境变量 FTLAB_PASSWORD 里；入库的脚本不写真值
+PASSWORD = os.environ.get("FTLAB_PASSWORD", "")
 
 
 def probe(label, dsn, root, out, hold_remote=None):

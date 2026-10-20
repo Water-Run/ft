@@ -19,7 +19,7 @@
 | T02 | 安装包 `Firebird-5.0.4.1812-0-windows-x64.zip`，25,206,603 字节，SHA-256 `01e844fce4d5f53272a76205dbc3a1ba4b782ab8e8eadcd808cdbccd9ce13b72` | GitHub Release `v5.0.4`；本机下载后 `Get-FileHash` |
 | T03 | 平台 Windows x64（本机）；源码基线 FirebirdSQL/firebird 标签 `v5.0.4`（tag 对象 `a1b022aae75d506f4d7a2492925d77fb5963488f`） | GitHub API `git/refs/tags/v5.0.4` |
 | T04 | 服务端 `firebird.exe -p 3051` 独立进程；`firebird.conf` 未改，全部为出厂缺省 | `research/_src/fb504/firebird.conf` |
-| T05 | 安全库：出厂 `SECURITY5.FDB` 无预置用户，按 `doc/README.security_database.txt` 的步骤用嵌入式连接建 `SYSDBA` | `lab/02b_init_user.sql` 回显：`SEC$USER_NAME=SYSDBA`、`SEC$PLUGIN=Srp` |
+| T05 | 安全库：装包自带的是出厂空库（无预置用户），按 `doc/README.security_database.txt` 的步骤用嵌入式连接建 `SYSDBA`；实验口令现场生成，不入库 | `lab/02_init_user.sql` 与 `lab/out_02_init_user.txt` 的回显：`SEC$USER_NAME=SYSDBA`、`SEC$PLUGIN=Srp` |
 | T06 | 取证日期 2026-10-20 | — |
 
 第三方安装包与源码取回后放在 `research/_src/`（不入库）；本文件记录版本、获取地址与校验和。

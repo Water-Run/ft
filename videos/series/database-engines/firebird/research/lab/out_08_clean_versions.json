@@ -1,0 +1,28 @@
+{
+  "before_hits": 1,
+  "after_hits": 2,
+  "before_offsets": [
+    1900534
+  ],
+  "new_hits": [
+    {
+      "page": 231,
+      "offset": 1900254
+    }
+  ],
+  "new_hit_detail": [
+    {
+      "offset": 1900254,
+      "page": 231,
+      "page_type": 5,
+      "hex_before": "00000b000000e700000008002000010df800000001000000",
+      "hex_row": "616c696365dd20021f0002000000000000000000020801d0021e0000000000000000020000000000",
+      "ascii": "aliceÝ \u0002\u001f.\u0002.........\u0002\b\u0001Ð\u0002\u001e........\u0002....."
+    }
+  ],
+  "before_bytes": 1966080,
+  "after_bytes": 1966080,
+  "pages": 240,
+  "seconds_until_new_copy_in_fdb": 0.01,
+  "wal_sidecar_exists": false
+}

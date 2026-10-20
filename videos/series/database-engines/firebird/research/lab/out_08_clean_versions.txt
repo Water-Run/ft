@@ -1,0 +1,7 @@
+data-page 'alice' copies: before=1 after=2
+new copy offsets: [1900254]
+  page 231 off 1900254
+    hex : 00000b000000e700000008002000010df800000001000000 | 616c696365dd20021f0002000000000000000000020801d0021e0000000000000000020000000000
+    ascii: aliceÝ ..........Ð.............
+seconds until new copy in .fdb : 0.01
+wrote out_08_clean_versions.json

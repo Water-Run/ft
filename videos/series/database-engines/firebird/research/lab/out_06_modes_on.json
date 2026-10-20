@@ -1,0 +1,201 @@
+{
+  "modes": [
+    {
+      "label": "remote inet://",
+      "dsn": "inet://127.0.0.1:3051/lab/demo.fdb",
+      "rows": [
+        [
+          1,
+          "alice     ",
+          31
+        ]
+      ],
+      "attachments": [
+        [
+          11,
+          "SYSDBA                                                         ",
+          "TCPv4"
+        ],
+        [
+          12,
+          "Cache Writer                                                   ",
+          null
+        ],
+        [
+          13,
+          "Garbage Collector                                              ",
+          null
+        ]
+      ],
+      "attachment_count": 3,
+      "database": [
+        "D:\\CODING\\FT\\VIDEOS\\SERIES\\DATABASE-ENGINES\\FIREBIRD\\RESEARCH\\_SRC\\FB504\\LAB\\DEMO.FDB",
+        8192,
+        13,
+        1
+      ],
+      "ok": true
+    },
+    {
+      "label": "loopback xnet://",
+      "dsn": "xnet://D:\\Coding\\ft\\videos\\series\\database-engines\\firebird\\research\\_src\\fb504\\lab\\demo.fdb",
+      "rows": [
+        [
+          1,
+          "alice     ",
+          31
+        ]
+      ],
+      "attachments": [
+        [
+          14,
+          "SYSDBA                                                         ",
+          "XNET"
+        ],
+        [
+          15,
+          "Cache Writer                                                   ",
+          null
+        ],
+        [
+          16,
+          "Garbage Collector                                              ",
+          null
+        ]
+      ],
+      "attachment_count": 3,
+      "database": [
+        "D:\\CODING\\FT\\VIDEOS\\SERIES\\DATABASE-ENGINES\\FIREBIRD\\RESEARCH\\_SRC\\FB504\\LAB\\DEMO.FDB",
+        8192,
+        13,
+        1
+      ],
+      "ok": true
+    },
+    {
+      "label": "embedded local path (server idle)",
+      "dsn": "D:\\Coding\\ft\\videos\\series\\database-engines\\firebird\\research\\_src\\fb504\\lab\\demo.fdb",
+      "rows": [
+        [
+          1,
+          "alice     ",
+          31
+        ]
+      ],
+      "attachments": [
+        [
+          17,
+          "SYSDBA                                                         ",
+          null
+        ],
+        [
+          18,
+          "Cache Writer                                                   ",
+          null
+        ],
+        [
+          19,
+          "Garbage Collector                                              ",
+          null
+        ]
+      ],
+      "attachment_count": 3,
+      "database": [
+        "D:\\CODING\\FT\\VIDEOS\\SERIES\\DATABASE-ENGINES\\FIREBIRD\\RESEARCH\\_SRC\\FB504\\LAB\\DEMO.FDB",
+        8192,
+        13,
+        1
+      ],
+      "ok": true
+    },
+    {
+      "label": "embedded local path (server has client)",
+      "dsn": "D:\\Coding\\ft\\videos\\series\\database-engines\\firebird\\research\\_src\\fb504\\lab\\demo.fdb",
+      "rows": [
+        [
+          1,
+          "alice     ",
+          31
+        ]
+      ],
+      "attachments": [
+        [
+          20,
+          "SYSDBA                                                         ",
+          "TCPv4"
+        ],
+        [
+          21,
+          "Cache Writer                                                   ",
+          null
+        ],
+        [
+          22,
+          "Garbage Collector                                              ",
+          null
+        ],
+        [
+          23,
+          "SYSDBA                                                         ",
+          "XNET"
+        ]
+      ],
+      "attachment_count": 4,
+      "database": [
+        "D:\\CODING\\FT\\VIDEOS\\SERIES\\DATABASE-ENGINES\\FIREBIRD\\RESEARCH\\_SRC\\FB504\\LAB\\DEMO.FDB",
+        8192,
+        13,
+        1
+      ],
+      "ok": true
+    },
+    {
+      "label": "loopback xnet:// (server has client)",
+      "dsn": "xnet://D:\\Coding\\ft\\videos\\series\\database-engines\\firebird\\research\\_src\\fb504\\lab\\demo.fdb",
+      "rows": [
+        [
+          1,
+          "alice     ",
+          31
+        ]
+      ],
+      "attachments": [
+        [
+          20,
+          "SYSDBA                                                         ",
+          "TCPv4"
+        ],
+        [
+          21,
+          "Cache Writer                                                   ",
+          null
+        ],
+        [
+          22,
+          "Garbage Collector                                              ",
+          null
+        ],
+        [
+          24,
+          "SYSDBA                                                         ",
+          "XNET"
+        ]
+      ],
+      "attachment_count": 4,
+      "database": [
+        "D:\\CODING\\FT\\VIDEOS\\SERIES\\DATABASE-ENGINES\\FIREBIRD\\RESEARCH\\_SRC\\FB504\\LAB\\DEMO.FDB",
+        8192,
+        13,
+        1
+      ],
+      "ok": true
+    }
+  ],
+  "binary_sizes": {
+    "firebird.exe": 1160192,
+    "fbclient.dll": 2073088,
+    "plugins\\engine13.dll": 8932352,
+    "plugins\\srp.dll": 519168
+  },
+  "firebird_root": "Firebird 5.0.4.1812 (Windows x64 zip)"
+}

@@ -1,7 +1,7 @@
 -- Firebird 5.0.4.1812 (Windows x64) 运行参数实测
 -- 连接串走 inet://（Remote 提供程序），库文件由服务器进程持有
+-- 口令由 isql 的 -password 传入（run_lab.ps1 现场生成），这里不写明文
 CREATE DATABASE 'inet://127.0.0.1:3051/lab/demo.fdb'
-  USER 'SYSDBA' PASSWORD 'ftlab2026fb'
   DEFAULT CHARACTER SET UTF8;
 
 SELECT MON$DATABASE_NAME AS DB_NAME,

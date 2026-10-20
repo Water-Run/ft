@@ -1,0 +1,12 @@
+== 服务端已停止 ==
+[remote inet:// (server off)] ok=False DatabaseError: ('Error while connecting to database:\n- SQLCODE: -902\n- Unable to complete network request to host "127.0.0.1".\n- Failed to establish a connection.', -902, 335544721)
+[loopback xnet:// (server off)] ok=False DatabaseError: ('Error while connecting to database:\n- SQLCODE: -902\n- Unable to complete network request to host "xnet://Global\\FIREBIRD".', -902, 335544721)
+[embedded local path (server off)] ok=True 
+
+binary sizes:
+  firebird.exe                 1160192
+  fbclient.dll                 2073088
+  plugins\engine13.dll         8932352
+  plugins\srp.dll              519168
+
+wrote out_06_modes.json

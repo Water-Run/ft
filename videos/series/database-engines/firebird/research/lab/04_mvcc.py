@@ -17,7 +17,9 @@ import time
 
 import fdb
 
-USER, PASSWORD = "SYSDBA", "ftlab2026fb"
+USER = "SYSDBA"
+# 实验口令由 run_lab.ps1 现场生成，放在环境变量 FTLAB_PASSWORD 里；入库的脚本不写真值
+PASSWORD = os.environ.get("FTLAB_PASSWORD", "")
 
 
 def read_one(cur, ident=1):
@@ -97,8 +99,9 @@ def main():
         con_b.close()
         con_a.close()
 
-    # 抓一份数据页快照，后面做字节级解析
-    snap = os.path.join(out_dir, "after_update.fdb")
+    # 抓一份数据页快照，后面做字节级解析。快照放在库文件旁边（不入库），
+    # 文字与 JSON 证据写在 out_dir（入库）。
+    snap = os.path.join(os.path.dirname(os.path.abspath(local_file)), "after_update.fdb")
     shutil.copyfile(local_file, snap)
     result["snapshot"] = snap
     result["snapshot_bytes"] = os.path.getsize(snap)

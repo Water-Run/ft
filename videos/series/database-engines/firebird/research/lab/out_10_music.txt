@@ -1,0 +1,27 @@
+shape       : (2, 18043200)
+total sec   : 375.9
+peak        : 0.6477
+rms         : 0.08870
+stems       :
+   pad      0.039735
+   kick     0.061170
+   sub      0.027592
+   acid     0.038699
+   hat      0.001971
+   rim      0.003170
+   arp      0.014490
+   pluck    0.013072
+   fx       0.010191
+per-scene rms:
+   open      0.02476
+   history   0.05864
+   engine    0.09548
+   modes     0.09218
+   store     0.08997
+   update    0.09765
+   concur    0.10696
+   durable   0.09626
+   outro     0.10122
+   next      0.07049
+   credits   0.07084
+wrote D:\Coding\ft\videos\series\database-engines\firebird\research\lab\out_10_music.json

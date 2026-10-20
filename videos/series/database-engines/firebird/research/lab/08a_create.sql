@@ -1,6 +1,6 @@
 -- 干净实验用的库：新建空库、建表、插系列标准的 8 行
+-- 口令由 isql 的 -password 传入（run_lab.ps1 现场生成），这里不写明文
 CREATE DATABASE 'inet://127.0.0.1:3051/lab/clean2.fdb'
-  USER 'SYSDBA' PASSWORD 'ftlab2026fb'
   DEFAULT CHARACTER SET UTF8;
 CREATE TABLE users (
   id   INT      NOT NULL,

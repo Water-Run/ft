@@ -1,0 +1,13 @@
+[remote inet://] ok=True 
+[loopback xnet://] ok=True 
+[embedded local path (server idle)] ok=True 
+[embedded local path (server has client)] ok=True 
+[loopback xnet:// (server has client)] ok=True 
+
+binary sizes:
+  firebird.exe                 1160192
+  fbclient.dll                 2073088
+  plugins\engine13.dll         8932352
+  plugins\srp.dll              519168
+
+wrote out_06_modes.json

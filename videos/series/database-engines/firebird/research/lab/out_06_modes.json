@@ -1,0 +1,59 @@
+{
+  "modes": [
+    {
+      "label": "remote inet:// (server off)",
+      "dsn": "inet://127.0.0.1:3051/lab/demo.fdb",
+      "ok": false,
+      "error": "DatabaseError: ('Error while connecting to database:\\n- SQLCODE: -902\\n- Unable to complete network request to host \"127.0.0.1\".\\n- Failed to establish a connection.', -902, 335544721)"
+    },
+    {
+      "label": "loopback xnet:// (server off)",
+      "dsn": "xnet://D:\\Coding\\ft\\videos\\series\\database-engines\\firebird\\research\\_src\\fb504\\lab\\demo.fdb",
+      "ok": false,
+      "error": "DatabaseError: ('Error while connecting to database:\\n- SQLCODE: -902\\n- Unable to complete network request to host \"xnet://Global\\\\FIREBIRD\".', -902, 335544721)"
+    },
+    {
+      "label": "embedded local path (server off)",
+      "dsn": "D:\\Coding\\ft\\videos\\series\\database-engines\\firebird\\research\\_src\\fb504\\lab\\demo.fdb",
+      "rows": [
+        [
+          1,
+          "alice     ",
+          31
+        ]
+      ],
+      "attachments": [
+        [
+          25,
+          "SYSDBA                                                         ",
+          null
+        ],
+        [
+          26,
+          "Cache Writer                                                   ",
+          null
+        ],
+        [
+          27,
+          "Garbage Collector                                              ",
+          null
+        ]
+      ],
+      "attachment_count": 3,
+      "database": [
+        "D:\\CODING\\FT\\VIDEOS\\SERIES\\DATABASE-ENGINES\\FIREBIRD\\RESEARCH\\_SRC\\FB504\\LAB\\DEMO.FDB",
+        8192,
+        13,
+        1
+      ],
+      "ok": true
+    }
+  ],
+  "binary_sizes": {
+    "firebird.exe": 1160192,
+    "fbclient.dll": 2073088,
+    "plugins\\engine13.dll": 8932352,
+    "plugins\\srp.dll": 519168
+  },
+  "firebird_root": "Firebird 5.0.4.1812 (Windows x64 zip)"
+}

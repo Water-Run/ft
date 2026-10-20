@@ -139,9 +139,9 @@ node kit/tools/script-review.js videos/series/database-engines/firebird check
 
 - **环境**：本机安装官方 zip `Firebird-5.0.4.1812-0-windows-x64.zip`（SHA-256 `01e844fce4d5f53272a76205dbc3a1ba4b782ab8e8eadcd808cdbccd9ce13b72`），放在 `research/_src/`（不入库）。服务端 `firebird.exe -p 3051` 独立进程，`firebird.conf` 全部为出厂缺省。
 - **源码基线**：FirebirdSQL/firebird 标签 `v5.0.4`（`src/jrd/ods.h` 的页结构与页类型常量）。
-- **实验脚本**（`research/lab/`）：`01_probe.sql` 运行参数、`03_schema.sql` 系列标准示例表、`04_mvcc.py` 两会话并发、`05_pages.py` 按字节统计页类型、`06_modes.py` 三种连接与停掉服务端的实测、`08_clean_versions.py` 一次 UPDATE 的副本计数、`09_logo_colors.py` 标志配色统计、`10_music_smoke.py` 配乐自检。
-- **重做一遍**：解压官方 zip → 按 `doc/README.security_database.txt` 用嵌入式连接建 `SYSDBA` → `firebird.exe -p 3051` 起服务端 → 依次运行 `lab/` 下的脚本。回显与结构化结果在 `lab/out_*.txt` 与 `lab/out_*.json`。
-- **未入画面**：本机绝对路径、用户名、主机名与实验口令一律不出现在入库文件与画面里。
+- **实验脚本**（`research/lab/`，逐项说明见该目录的 `README.md`）：`01_probe.sql` 运行参数、`03_schema.sql` 系列标准示例表、`04_mvcc.py` 两会话并发、`05_pages.py` 按字节统计页类型、`06_modes.py` 三种连接与停掉服务端的实测、`08_clean_versions.py` 一次 UPDATE 的副本计数、`09_logo_colors.py` 标志配色统计、`10_music_smoke.py` 配乐自检、`11_style_lint.py` 样式 lint。
+- **重做一遍**：`pwsh -NoProfile -ExecutionPolicy Bypass -File videos/series/database-engines/firebird/research/lab/run_lab.ps1`（用 pwsh 7，不用 Windows PowerShell 5.1）。脚本从安装包解压出安装目录、生成实验口令、初始化安全库、依次跑完所有实验，把证据写回 `research/lab/`，结束时停掉服务端。口令与体积大的 `.fdb` 快照都不入库。
+- **未入画面**：本机绝对路径、用户名、主机名与实验口令一律不出现在入库文件与画面里；入库的 `.sql` 只留 `__FTLAB_PASSWORD__` 占位符，由脚本替换后写到 `out/lab/` 再执行。
 
 ## 读法
 
