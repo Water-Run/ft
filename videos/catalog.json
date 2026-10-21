@@ -153,7 +153,7 @@
     {"slug": "web-login", "series": "in-seconds", "title": {"zh": "200 秒了解 Web 登录机制：怎么验证你是你", "en": "Web Login in 200 Seconds: How a Site Checks That You Are You"}, "status": "delivered"},
     {"slug": "chain-of-thought", "series": "in-seconds", "title": {"zh": "192 秒认识 CoT：先思考，再回答", "en": "Chain of Thought in 192 Seconds: Think First, Then Answer"}, "status": "in-progress"},
     {"slug": "context-compaction", "series": "in-seconds", "title": {"zh": "120 秒速通 Harness 是如何压缩上下文的", "en": "How a Harness Compresses Context in 120 Seconds"}, "note": "2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒）"},
-    {"slug": "http-status-codes", "series": "in-seconds", "title": {"zh": "96 秒讲清 HTTP 状态码：五类响应与最常用的那些", "en": "HTTP Status Codes in 96 Seconds: Five Classes and the Ones You Meet Most"}, "status": "in-progress"},
+    {"slug": "http-status-codes", "series": "in-seconds", "title": {"zh": "96 秒了解 HTTP 状态码", "en": "HTTP Status Codes in 96 Seconds"}, "status": "in-progress"},
     {"slug": "ea211-family", "series": "in-seconds", "title": {"zh": "150 秒认识 EA211 的全家桶：大众的横置四缸家族", "en": "The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family"}, "status": "in-progress"},
     {"slug": "scion", "series": "in-seconds", "title": {"zh": "150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git", "en": "Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git"}, "status": "in-progress"},
     {"slug": "how-ram-works", "series": "in-seconds", "title": {"zh": "128 秒了解内存是怎么工作的，以及它为什么这么快"}, "note": "2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。"},
