@@ -32,7 +32,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿；确认后交制作方 | 待同步 |
+| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审 2026-10-21 中文第 5 稿（约 7:36；开场承接已看过前三期的观众，引出 Firebird）；确认后交制作方 | 最新 |
 | [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
