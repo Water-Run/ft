@@ -26,5 +26,5 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh + en | 制作中 | [`php2shell`](php2shell/) |
+| 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](php2shell/) |
 <!-- catalog:end -->

@@ -2,15 +2,14 @@
   "slug": "php2shell",
   "layout": 2,
   "languages": [
-    "zh",
-    "en"
+    "zh"
   ],
   "titles": {
     "zh": "隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响",
     "en": "A Fatal RCE Hidden for 14 Years: What PHP2Shell Is and What It Means"
   },
-  "stage": "accept",
-  "next": "等 WaterRun 看中文成片（三条 open：配乐听感、配音精神、4chan 读音）；同意后登记交付，再做英文版",
+  "stage": "delivered",
+  "next": "发布后回填 release；会变化的事实发布前按 FACTS「复核」重查",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -88,6 +87,12 @@
     },
     "speed": {
       "zh": 1.2
+    }
+  },
+  "delivery": {
+    "date": "2026-10-22",
+    "duration": {
+      "zh": 299.7
     }
   }
 }
