@@ -6,35 +6,35 @@
    "rev": 1,
    "result": "pass",
    "note": "标题只承诺「了解 HTTP 状态码」，六段都在回答「这个三位数在说什么、谁发的、该谁负责」。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。zh：0.5–9.8 s 提出问题（请求出去，回来三位数；推近状态行，把码框成「状态码」）；12.5–28.8 是什么（第一行、首位、五类）；28.8–42.0 从哪来；42.0–62.6 一次请求的过检（每个码在说什么）；62.6–78.6 谁发的；78.6–92.7 回答谁负责。方法：逐句总览图（sheets.js at …，两种语言）与成片转场抽帧。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。zh：0.5–9.8 s 提出问题（请求出去，回来三位数；推近状态行，把码框成「状态码」）；12.5–28.8 是什么（第一行、首位、五类）；28.8–42.0 从哪来；42.0–62.6 一次请求的过检（每个码在说什么）；62.6–78.6 谁发的；78.6–92.7 回答谁负责。方法：逐句总览图（sheets.js at …，两种语言）与成片转场抽帧。",
    "script_evidence": "FACTS.md「逐章 → 01 五类的分界」「05 历史沿革」到「04 责任归属」；README「内容」表的六段与「96 秒预算」表。片名 2026-10-21 由策划者改为《96 秒了解 HTTP 状态码》，原副题已去掉；同日在策划者要求下加入沿革一段。"
   },
   "F02": {
    "rev": 1,
    "result": "pass",
    "note": "一个例子贯穿：404 从开场一路走到类别架（首位 4）、版本磁带（同一个 404）、链路（经网关仍是 404）。新名词：状态码、五类、首位、源站、限流层、网关/代理、缓存（条件请求）。过检段每一步都有输入（请求包）→ 闸 → 结果（码牌 + 回显）。开工计划里的「同屏不超过 4 个码」被策划者的 F22 要求（码整组在场）取代：类别架上 17 个码同屏，但只亮正在讲的一格。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。zh 42.0–62.6（六次请求逐次停在拒绝它的闸）；12.5–28.8（类别架整组在场、逐格点名）。方法：总览图逐句核对。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。zh 42.0–62.6（六次请求逐次停在拒绝它的闸）；12.5–28.8（类别架整组在场、逐格点名）。方法：总览图逐句核对。",
    "script_evidence": "FACTS.md 01-1–01-5（五类定义与未知码的处理）、02 各行（常用码，16 个）、03 各行（产生者）；README「内容」表与「96 秒预算」表。"
   },
   "F03": {
    "rev": 1,
    "result": "pass",
    "note": "401 与 403 当场分开：同一个 /private，不带凭据回 401 并带 WWW-Authenticate，带有效令牌仍回 403（屏上是这两条真实命令与回显）；502 与 504 当场分开：连不上上游（线缆断开）与等满 1 秒（计时条）。301/302 不在定稿文案里。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。zh 45.6–52.5（401 → 403，屏上命令带 Authorization: Bearer good-token）；74.4–78.3（502 断线、504 计时）。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。zh 45.6–52.5（401 → 403，屏上命令带 Authorization: Bearer good-token）；74.4–78.3（502 断线、504 计时）。",
    "script_evidence": "FACTS.md 01-1、02-1（200）、02-4（204）、02-5/02-7（301/302）、02-11/02-12（401/403，2026-10-21 已补实测：同一资源带有效凭据但权限不够回 403，凭据不对回 401 带 WWW-Authenticate，权限够回 200）、02-14（405）、02-15（429）、02-17/02-18（502/503）；README「内容」表第 2–4 段。"
   },
   "F04": {
    "rev": 1,
    "result": "open",
-   "note": "readable.js 两种语言复测：剩下的不足项是（1）沿线缆移动的请求包标签（GET /…、← 码），它们在运动中，内容同时显示在屏上的回显里；（2）c6 那条很长的灰色命令行（If-None-Match，2.5 s，按字数需 3.3 s；关键的头字段同时在请求包的标签上）；（3）带 X-Gateway 戳的 404 码牌在移动（1.8 s / 1.9 s）；（4）推入换场时下一场露出的标签（0.1 s，换场中间帧）。其余关键状态都已到下限。回显屏改成两条并存的终端日志、版本磁带改成一次框住三站之后，主要的回显都有 2.5 s 以上。没有以正常速度连续观看成片的条件（制作方逐帧看图，不看连续播放），交策划者连续观看确认。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。readable.js（zh、en）2026-10-21 复测记录见 README「成片」。",
+   "note": "readable.js 两种语言复测（改完回显日志、版本磁带、304 的应答时刻与过检线的镜头之后）：不足下限的只剩（1）沿线缆移动的请求包标签（GET /…、← 码），它们在运动中，内容同时显示在屏上的回显里；（2）推入换场时下一场露出的标签（0.1 s，换场的中间帧）；（3）带 X-Gateway 戳、正在移动的 404 码牌（已在网关处多停 0.2 s）。其余关键状态都到了「1.5 秒 + 字数 ÷ 5」。按规则还要以正常速度连续观看：制作方逐帧看图，不看连续播放，交策划者连续观看确认。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。readable.js（zh、en）2026-10-21 复测记录见 README「成片」。",
    "script_evidence": "README「开工反馈应用」F04 行与「内容」表的码卡段落；FACTS.md 03 各行记录了每次请求实际返回的头字段，可据此核对同屏文字量。"
   },
   "F05": {
    "rev": 1,
    "result": "pass",
    "note": "每个关键动作都在展示因果：请求包沿线缆走到拒绝它的闸，闸灯变红、码牌反白、回显追加；从源站内部拉远露出整条链路（匹配剪辑）；码从发出它的机器里冒出来沿线缆回到客户端；502 是线缆断开、504 是计时条走满。镜头只在站间移动或极慢推近，没有往复平移。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。zh 42.0–62.6、62.6–78.6；62.60/62.67 两帧在切点前后完全相同（抽帧比对）。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。zh 42.0–62.6、62.6–78.6；62.60/62.67 两帧在切点前后完全相同（抽帧比对）。",
    "script_evidence": "README「视觉系统」与「内容」表；FACTS.md 03-2–03-5（源站 / 框架与中间件 / 网关 / 缓存四种来源）。"
   },
   "F06": {
@@ -48,14 +48,14 @@
    "rev": 1,
    "result": "pass",
    "note": "画面上只有本片实验的回显：127.0.0.1 的临时端口、demo 值（demo-v1、demo-gateway、good-token）；没有主机名、用户名、本机路径或真实站点。封面与字幕同样没有。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。方法：所有回显由 tools/gen_data.py 从 research/lab/out_11_status_codes.txt 生成（不手写）；scan.js 全片逐帧文字列表与封面 look.js 输出逐项核对。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。方法：所有回显由 tools/gen_data.py 从 research/lab/out_11_status_codes.txt 生成（不手写）；scan.js 全片逐帧文字列表与封面 look.js 输出逐项核对。",
    "script_evidence": "research/lab/out_11_status_codes.txt 的完整回显；FACTS.md「环境与版本」一行注明实验只监听 127.0.0.1 的临时端口。"
   },
   "F08": {
    "rev": 1,
    "result": "pass",
    "note": "最终编码文件上实测。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。ffprobe：h264 1920×1080、60/1 fps、AAC、时长 96.000000 s；ffmpeg ebur128（peak=true）在成片上：zh I=−15.6 LUFS、真峰值 −1.5 dBFS；en I=−15.6 LUFS、−1.5 dBFS；render.js 末行 verified frames=5760（两种语言）。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。ffprobe：h264 1920×1080、60/1 fps、AAC、时长 96.000000 s；ffmpeg ebur128（peak=true）在成片上：zh I=−15.6 LUFS、真峰值 −1.5 dBFS；en I=−15.6 LUFS、−1.5 dBFS；render.js 末行 verified frames=5760（两种语言）。",
    "script_evidence": "README「当前状态与接续」与「复现」一节；project.json 的 check.duration 已改为 95.9–96.1。"
   },
   "F09": {
@@ -76,13 +76,13 @@
    "rev": 1,
    "result": "pass",
    "note": "回显里的英文原因短语都有中文对应：开场 Not Found → 没找到、Internal Server Error → 服务器崩了；类别架五格的中文名；过检线五道闸的中文名（语法、凭据、权限、资源、缓存）；字幕同时给出中文说法。头字段名（WWW-Authenticate、Retry-After、ETag、X-Gateway）是回显的原样，讲到的那一个由旁白与标签说明（X-Gateway → 码不改；ETag → 缓存的副本）。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。zh 4.1–8.4、12.5–28.8、42.0–62.6。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。zh 4.1–8.4、12.5–28.8、42.0–62.6。",
    "script_evidence": "FACTS.md 逐章各行的「陈述」列（中文化）与「原始出处与定位」列（英文小节号）并列；README「内容」表。"
   },
   "F12": {
    "rev": 1,
    "result": "open",
-   "note": "读法清单逐项试过并逐句回听：状态码逐位念（四零四……；four-oh-four、five hundred、four twenty-nine），4xx 念「四字头」/ four-ex-ex，「行」→「航」，「重试」「重传」的「重」→「虫」。asr.js 整段回听与逐句回听：英文逐词对上；中文只剩同音字（守卫/首位、原站/源站等）。待人耳确认的一处：「传内容」「省重传」两次都被听成「转」，多半是识别把 ch 与 zh 混了（「只传文件」识别正确），但「传」另有 zhuàn 的读音，需要人听一遍。",
+   "note": "读法清单逐项试过并逐句回听：状态码逐位念（四零四……；four-oh-four、five hundred、four twenty-nine），4xx 念「四字头」/ four-ex-ex，「行」→「航」，「重试」「重传」的「重」→「虫」，「传内容」「重传」的「传」→「船」（一次整段回听为「转」，改成单音字后逐句回听与成片整段回听都是「传」）。asr.js 与逐句回听：英文逐词对上；中文只剩同音字（守卫/首位、原站/源站等），没有漏词。按规则读音与断句以人耳为准：制作方听不到，全片旁白交策划者听一遍。",
    "evidence": "out/zh/asr.txt、out/en/asr.txt（2026-10-21）；review/NOTES.md「配音与读法」。",
    "script_evidence": "README「读法」一节的预置问题清单；本轮未进入配音阶段，读法未试听。"
   },
@@ -97,7 +97,7 @@
    "rev": 1,
    "result": "pass",
    "note": "片尾 z1 是无旁白的静默 cue（pause + credits），名单只在画面上：策划、四个模型与服务及分工、开源视频地址。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16）。zh/en 92.67–96.00，名单在片尾开始后 0.5 s 内全部到位；check.js --final 的片尾名单核对。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。zh/en 92.67–96.00，名单在片尾开始后 0.5 s 内全部到位；check.js --final 的片尾名单核对。",
    "script_evidence": "README「内容」表片尾段与「制作署名与片尾」一节；系列 README「连续性」表的「片尾」行。"
   },
   "F15": {
@@ -111,7 +111,7 @@
    "rev": 1,
    "result": "pass",
    "note": "画面的材料取自对象本身：真实的 curl 回显（状态行、头字段、命令）、状态行的格式、:status 伪头字段；常驻身份标识是右上角的「应答表」（最近一个状态码与类别灯）。不看字幕任取一帧，屏上都是 HTTP 响应。卡带未来主义只决定外壳（米色机身、琥珀荧光屏、像素字），不替代对象自己的材料。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16） 任取帧：0–96 s 每一段的主画面都有墨色屏上的真实回显或码牌。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769） 任取帧：0–96 s 每一段的主画面都有墨色屏上的真实回显或码牌。",
    "script_evidence": "系列 README「连续性」表的「视觉」与「常驻元素」两行；FACTS.md 03 各行记录了回显里真实出现的状态行与头字段。"
   },
   "F17": {
@@ -125,21 +125,21 @@
    "rev": 1,
    "result": "pass",
    "note": "每段一个说得出名字的主画面：开场的终端与回来的码、类别架、版本磁带、源站过检线、整条链路、责任图；见 README「视觉系统」的表。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16） 各段时段见 F01。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769） 各段时段见 F01。",
    "script_evidence": "README「开工反馈应用」F18 行与「内容」表的六段预算；FACTS.md 03 的四类来源。"
   },
   "F19": {
    "rev": 1,
    "result": "pass",
    "note": "逐段在动作前后抽中间帧：推入换场（12.30/12.45/12.60、28.60/28.75/28.90、41.80/41.95/42.10、92.55/92.70/92.85）、匹配剪辑（62.60/62.67/62.90、78.60/78.66）、片名卡扫入（9.95/10.15）。改过的缺陷：开场大号 404 被线缆穿过、片名卡下层文字参与画面、英文「← status code」伸出屏外、×2 标记不退场、网关铭牌两次登记换色导致画面依赖播放历史。反色高亮只换类名，不渐变颜色。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16） 抽帧（shots/final/，不入库）；scan.js 两种语言无 OVERLAP/CONTRAST/NONDET。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769） 抽帧（shots/final/，不入库）；scan.js 两种语言无 OVERLAP/CONTRAST/NONDET。",
    "script_evidence": "README「开工反馈应用」F19 行与「内容」表；research/lab/out_11_status_codes.txt 里每张码卡的实际文字长度。"
   },
   "F20": {
    "rev": 1,
    "result": "pass",
    "note": "每个图形都对得上一句旁白里的对象：机器 = 发出码的那一方；屏 = 那一次的回显；码牌 = 码；线缆 = 请求与响应走的路；指示灯 = 这一道检查过没过。没有装饰性的图形（条纹只作线缆与换场的中缝）。颜色语义全片不变：朱红只给 4xx/5xx 与出事的机器。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16） 逐段核对。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769） 逐段核对。",
    "script_evidence": "research/FACTS.md 的五张分节表与 research/lab/ 的状态码实测回显。"
   },
   "F21": {
@@ -152,7 +152,7 @@
    "rev": 1,
    "result": "pass",
    "note": "成组的对象整组在场、只推进正在讲的：类别架上 17 个码一次落位，逐格点名；过检线上六个码一开始就挂在闸下，每次只亮一个；责任图把八个错误码排成一排再分组。画面没有被逐句切成碎片。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff）与 -en-（1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16） zh 12.5–28.8、42.0–62.6、78.6–92.7。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769） zh 12.5–28.8、42.0–62.6、78.6–92.7。",
    "script_evidence": "AGENTS.md「3. 视觉与旁白不必逐句绑定」一节；README「视觉系统」一节；docs/log/feedback.md 的 P49。"
   }
  },

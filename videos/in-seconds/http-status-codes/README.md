@@ -271,10 +271,10 @@ pwsh -File videos/in-seconds/http-status-codes/research/lab/11_status_codes.ps1
 
 | 文件 | 规格（在最终文件上实测） | SHA-256 |
 |---|---|---|
-| `http-status-codes-zh-1080p60.mp4` | h264 1920×1080、60 帧/秒、AAC；96.000 s；−15.6 LUFS，真峰值 −1.5 dBFS | `2defb622bb02d301f636a48729114905ff7cd4fef9b344c7fa8f195d60b9c4ff` |
-| `http-status-codes-en-1080p60.mp4` | 同上；96.000 s；−15.6 LUFS，真峰值 −1.5 dBFS | `1bec1554628c840def0a76ce57c7d94c7a812d77a746d4128e56247edecefe16` |
+| `http-status-codes-zh-1080p60.mp4` | h264 1920×1080、60 帧/秒、AAC；96.000 s；−15.6 LUFS，真峰值 −1.5 dBFS | `9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5` |
+| `http-status-codes-en-1080p60.mp4` | 同上；96.000 s；−15.6 LUFS，真峰值 −1.5 dBFS | `85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769` |
 
-另有每种语言的仅旁白版（`-voice-only`）、无配乐版（`-no-music`）、外挂字幕 `.srt`，以及 `cover-<语言>-16x9.jpg`、`cover-<语言>-4x3.jpg` 与各自的 2 倍 PNG。渲染：GPU 出帧、4 路、运动模糊 8 个子帧，两种语言各 `verified frames=5760`。
+另有每种语言的仅旁白版（`-voice-only`）、无配乐版（`-no-music`）、外挂字幕 `.srt`，以及 `cover-<语言>-16x9.jpg`、`cover-<语言>-4x3.jpg` 与各自的 2 倍 PNG。渲染：GPU 出帧、4 路、运动模糊 8 个子帧，两种语言各 `verified frames=5760`（2026-10-21 第二次渲染：「传」改读法、304 的应答时刻提前之后）。
 
 **自动闸门**：`check.js --final` 的结论见下面「复现」一节运行的结果（本节写入时已全部通过的项目：文案校对、源码规则、场景齐全、自成一体、时长与节奏、两种语言的全片扫描与音效覆盖、经验规则复核、交付物与片尾名单）。
 
@@ -288,8 +288,8 @@ pwsh -File videos/in-seconds/http-status-codes/research/lab/11_status_codes.ps1
 
 1. **配音音色**（F17）：中文 `Chinese (Mandarin)_News_Anchor`、英文 `English_ConfidentWoman`，语速 1.2 / 1.25。试听片与候选在 `audio/probe/`（`audition-*.mp3`）。不合适时改 `project.json` 的 `tts.voice` 或 `tts.speed`，重跑 `tts.js`，再按「复现」从混音起重做；场景时刻随 `T()` 自动跟着走，但语速变了要按 `review/NOTES.md` 的办法重算各段定点。
 2. **配乐与音效的听感**（F06）：8 位芯片音色是否「契合 90 年代计算机风格」、音量是否合适。调整只改 `tools/music.py` 或 `project.json` 的 `audio` 段，重跑 `audio.js` 与 `finish.js`，不必重渲。
-3. **一处读音**（F12）：「找到就回 200 传内容」「省重传」里的「传」，回听两次都被识别成「转」，需要人听是否念成了 zhuàn。
-4. **连续观看**（F04）：仍在下限以下的只有运动中的请求包标签、304 那条很长的灰色命令行（2.5 秒，按字数应 3.3 秒）与换场中间帧；明细见 `review/lessons.json` 的 F04。
+3. **读音与断句**（F12）：Whisper 回听已对上（「传」改成单音字「船」合成之后逐句回听为 chuán，见 `review/NOTES.md`）；按规则仍以人耳为准，全片旁白听一遍。
+4. **连续观看**（F04）：可读时长的下限都已达到，只剩运动中的请求包与码牌标签、换场的中间帧；节奏与「看懂一步」要正常速度连续看一遍。
 5. **视觉方向**：「卡带、未来」落成了米色机身 + 琥珀荧光屏 + 像素字的「应答机」（见「视觉系统」），没有另做几个方向供挑选。
 
 ## 结尾反馈复盘
@@ -301,7 +301,7 @@ pwsh -File videos/in-seconds/http-status-codes/research/lab/11_status_codes.ps1
 | F01 | 四步推进 → 六段（是什么、从哪来、过检、谁发的、谁负责）都回答同一个问题 | 已验证 |
 | F02 | 一个例子走完：404 贯穿开场、类别架、版本磁带与链路 | 已验证 |
 | F03 | 401/403、502/504 当场用真实回显分开 | 已验证 |
-| F04 | 回显屏改成两条并存的终端日志、版本磁带改为一次框住三站；残余项见交付 | 待复核（连续观看） |
+| F04 | 回显屏改成两条并存的终端日志、版本磁带一次框住三站、304 提前到「仍有效」；可读时长的下限都已达到 | 待复核（连续观看） |
 | F05 | 请求包 → 闸 → 码牌 + 回显；从源站内部拉远露出链路 | 已验证 |
 | F06 | 为本片新写的 8 位芯片配乐；音效按动作分类 | 待复核（人来听） |
 | F07 | 只有 127.0.0.1 临时端口与 demo 值 | 已验证 |
@@ -309,7 +309,7 @@ pwsh -File videos/in-seconds/http-status-codes/research/lab/11_status_codes.ps1
 | F09 | 历史段缺的三条事实先读 RFC 原文补进 FACTS | 已验证 |
 | F10 | 不回指其它集 | 已验证 |
 | F11 | 原因短语、闸名、类别名都有中文 | 已验证 |
-| F12 | 逐位念码、四字头、行→航、重→虫；一处「传」待听 | 待复核（人来听） |
+| F12 | 逐位念码、四字头、行→航、重→虫、传→船；Whisper 回听对上 | 待复核（人来听） |
 | F13 | 不适用：对象是日常见到的三位数；历史段给出年份与 RFC | 不适用 |
 | F14 | 片尾静默 3.33 秒，名单只在画面上 | 已验证 |
 | F15 | 没有制作者口吻的说明 | 已验证 |

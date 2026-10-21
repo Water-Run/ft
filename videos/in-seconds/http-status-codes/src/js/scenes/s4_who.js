@@ -105,7 +105,7 @@ scene('who', ({ root, s }) => {
   const tGw = tC1 + 0.55, tC2 = Q(Math.max(tGw + 0.9, T('u3', { zh: '码', en: 'codes' })));
   appear(c404, tC1);
   fromTo(c404, tC1, { x: OX - 150 }, { x: CHAIN.gw[0] + CHAIN.gw[1] - 150, duration: tGw - tC1, ease: 'power2.out', immediateRender: false });
-  fromTo(c404, tGw + 0.45, { x: CHAIN.gw[0] + CHAIN.gw[1] - 150 }, { x: CHAIN.cli[0] + CHAIN.cli[1] - 150, duration: tC2 - tGw - 0.45, ease: 'power2.inOut', immediateRender: false });
+  fromTo(c404, tGw + 0.65, { x: CHAIN.gw[0] + CHAIN.gw[1] - 150 }, { x: CHAIN.cli[0] + CHAIN.cli[1] - 150, duration: tC2 - tGw - 0.65, ease: 'power2.inOut', immediateRender: false });
   set(c404, tC2 + 0.15, { autoAlpha: 0 });
   // 盖章：标记头贴到码牌上，跟着它走
   const stamp = h('div', 'abs bg-amber ink mono', c404, 'X-Gateway'); css(stamp, { left: '0px', top: '-44px', fontSize: '26px', fontWeight: 700, padding: '2px 8px' });

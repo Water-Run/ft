@@ -51,7 +51,7 @@ scene('common', ({ root, s }) => {
     { req: 'GET /private', tag: 'Authorization', echo: '403b', stop: 2, key: (e) => e.body[0], t: T('c3', '403'), retry: T('c3', { zh: '重试', en: 'retrying' }) },
     { req: 'GET /missing', echo: '404', stop: 3, key: (e) => e.body[0], t: T('c4', '404') },
     { req: 'GET /ok', echo: '200', stop: 5, key: (e) => hdr(e, 'ETag'), t: T('c5', '200') },
-    { req: 'GET /ok', tag: 'If-None-Match: "demo-v1"', echo: '304', stop: 4, key: (e) => hdr(e, 'ETag'), t: T('c6', '304') },
+    { req: 'GET /ok', tag: 'If-None-Match: "demo-v1"', echo: '304', stop: 4, key: (e) => hdr(e, 'ETag'), t: T('c6', { zh: '有效', en: 'valid' }) },   // 闸在「仍有效」时就答 304：这条回显的命令很长，要多留读的时间
   ];
   const tEnd = s.end - 0.7;                                  // 收尾：屏收走、灯复位，镜头框住源站，接下一场
   const ledEv = O.gates.map(() => []);
@@ -136,7 +136,7 @@ scene('common', ({ root, s }) => {
   const fz = 1.2, fx = OX + ORIGIN.W / 2, fy = OY + ORIGIN.H / 2;
   cam.track(s.start, { x: 960, y: 520, z: 1 }, [
     [s.start + 0.2, { y: 500, z: 1.0 }, Math.max(0.3, CASES[0].tHit - s.start - 0.4), { ease: 'none', sfx: false }],
-    [CASES[0].tHit - 0.1, { y: 470, z: 1.02 }, Math.max(0.5, CASES[3].tHit - CASES[0].tHit - 0.2), { ease: 'none', sfx: false }],
+    [CASES[0].tHit - 0.1, { y: 486, z: 1.015 }, Math.max(0.5, CASES[3].tHit - CASES[0].tHit - 0.2), { ease: 'none', sfx: false }],
     [CASES[3].tHit - 0.1, { y: 500, z: 1.0 }, Math.max(0.5, CASES[5].tHit - CASES[3].tHit - 0.2), { ease: 'none', sfx: false }],
     [tEnd, { x: fx, y: fy, z: fz }, 0.6, { g: 0.35 }],
   ]);

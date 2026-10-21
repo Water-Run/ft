@@ -77,7 +77,7 @@ scene('what', ({ root, s }) => {
   fromTo(c471, tDrop, { y: 0 }, { y: ROW4 - (SY2 + 32), duration: 0.45, ease: 'back.out(1.6)', immediateRender: false });
   sfx('pop', tDrop + 0.1, { g: 0.7, p: 0.3 });
   meter(tDrop, '471');
-  const t400 = Math.min(Q(T('w4', '400') - 0.05), Q(Tend('w4') - 1.2));
+  const t400 = Math.min(Q(T('w4', '400') - 0.05), Q(Tend('w4') - 1.35));
   lightChip(c471, t400); lightChip(b4.chips[0], t400);
   const eq = txt(world, 't-4 ink', tr('当 400', 'as 400'), b4.x + 24 + 146, ROW4 + 14);
   wipe(eq, t400, { dir: 'l', d: 0.3 });
