@@ -1,0 +1,16 @@
+Firebird 5.0.4
+SET EXPLAIN ON;
+SELECT age FROM users WHERE name = 'alice';
+QUIT;
+
+
+Select Expression
+    -> Filter
+        -> Table "USERS" Access By ID
+            -> Bitmap
+                -> Index "IDX_USERS_NAME" Range Scan (full match)
+
+    AGE 
+======= 
+     30 
+

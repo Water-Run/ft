@@ -1,7 +1,7 @@
 {
   "slug": "firebird",
   "stage": "review",
-  "next": "等 WaterRun 审中文第 1 稿；确认后交制作方",
+  "next": "等 WaterRun 审 2026-10-21 中文第 5 稿（约 7:36；开场承接已看过前三期的观众，引出 Firebird）；确认后交制作方",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -12,6 +12,14 @@
           "实验",
           "文案",
           "交接材料"
+        ]
+      },
+      {
+        "name": "未记录",
+        "roles": [
+          "事实纠错与补证",
+          "查询路径实验",
+          "中文第 2–5 稿"
         ]
       }
     ],
@@ -49,8 +57,8 @@
   },
   "check": {
     "duration": [
-      240,
-      420
+      420,
+      475
     ],
     "caption_width": {
       "zh": 26,

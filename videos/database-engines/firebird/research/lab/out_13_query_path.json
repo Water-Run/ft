@@ -1,0 +1,12 @@
+{
+  "version": "5.0.4",
+  "page_size": 8192,
+  "query": "SELECT age FROM users WHERE name = 'alice'",
+  "rows": [
+    [
+      30
+    ]
+  ],
+  "explain": "Select Expression\n    -> Filter\n        -> Table \"USERS\" Access By ID\n            -> Bitmap\n                -> Index \"IDX_USERS_NAME\" Range Scan (full match)\n\n    AGE \n======= \n     30",
+  "connection": "embedded; local file; no server started"
+}

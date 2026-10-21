@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "checked_at": "2026-10-20",
+  "checked_at": "2026-10-21",
   "subject": "Firebird 5.0.4.1812",
   "tag": "v5.0.4",
   "commit": "a1b022aae75d506f4d7a2492925d77fb5963488f",
@@ -10,12 +10,123 @@
       "path": "src/jrd/ods.h",
       "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/ods.h",
       "local": "research/_src/fb504-src/src/jrd/ods.h",
-      "lines": 41106,
       "symbols": {
-        "pag_header..pag_scns": [187, 196],
-        "struct pag": [227, 237]
+        "pag_header..pag_scns": [
+          187,
+          196
+        ],
+        "struct pag": [
+          227,
+          237
+        ]
       },
-      "used_for": "页头 16 字节的字段与偏移；10 种页类型的编号与含义"
+      "used_for": "页头 16 字节的字段与偏移；10 种页类型的编号与含义",
+      "bytes": 41106
+    },
+    {
+      "kind": "code",
+      "path": "README.md",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/README.md",
+      "local": "research/_src/fb504-src/README.md",
+      "bytes": 1862,
+      "sha256": "033344fd6c84c36c787c2d2a2b76a99d9690a38335f7e3d0c04bd9ddf72bdd2b",
+      "symbols": [
+        "项目定义、平台与起源"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/dpm.epp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/dpm.epp",
+      "local": "research/_src/fb504-src/src/jrd/dpm.epp",
+      "bytes": 114157,
+      "sha256": "c4a4bb0c48f6ad9e0b47284a19358d84f9ee6f1fd5a7a7e286c109b9880c7e83",
+      "symbols": [
+        "DPM_get",
+        "get_header",
+        "DPM_update"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/vio.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/vio.cpp",
+      "local": "research/_src/fb504-src/src/jrd/vio.cpp",
+      "bytes": 207155,
+      "sha256": "3111ae570c7071aecc6d44d46eb1ebeae694ff8321ee58a60270fb6847e6df94",
+      "symbols": [
+        "VIO_get",
+        "VIO_modify",
+        "prepare_update",
+        "replace_record"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/tra.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/tra.cpp",
+      "local": "research/_src/fb504-src/src/jrd/tra.cpp",
+      "bytes": 120204,
+      "sha256": "f32facf62fa73a4c71a0545b98e615ccfc01e66148888ff1b39852788d4e5359",
+      "symbols": [
+        "TRA_commit",
+        "TRA_set_state",
+        "TRA_cleanup"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/cch.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/cch.cpp",
+      "local": "research/_src/fb504-src/src/jrd/cch.cpp",
+      "bytes": 145240,
+      "sha256": "7e0a1699066fd4bfa99594ed087eb2db4be454ec99f333ea7d42d3403d493e97",
+      "symbols": [
+        "CCH_precedence",
+        "CCH_tra_precedence"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/btr.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/btr.cpp",
+      "local": "research/_src/fb504-src/src/jrd/btr.cpp",
+      "bytes": 205118,
+      "sha256": "345d71ea6bb500192875090e76303ef3494ffc09411654367d8fdeb8254b24f2",
+      "symbols": [
+        "BTR_evaluate"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/recsrc/BitmapTableScan.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/recsrc/BitmapTableScan.cpp",
+      "local": "research/_src/fb504-src/src/jrd/recsrc/BitmapTableScan.cpp",
+      "bytes": 3974,
+      "sha256": "e7b2bcc68847ef21ef3499621d524d345ae8f3931ea9d0b2c318c29b0b85bcbb",
+      "symbols": [
+        "BitmapTableScan::open",
+        "BitmapTableScan::internalGetRecord"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/recsrc/FullTableScan.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/recsrc/FullTableScan.cpp",
+      "local": "research/_src/fb504-src/src/jrd/recsrc/FullTableScan.cpp",
+      "bytes": 5614,
+      "sha256": "8d09a88fe1d52e66eff62578d06449e6db910b58c4e5304bb1a4f55cbee98221",
+      "symbols": [
+        "FullTableScan::internalGetRecord"
+      ],
+      "checked_at": "2026-10-21"
     }
   ],
   "packages": [
@@ -71,7 +182,11 @@
       "from": "Firebird 5.0.4.1812 windows-x64 安装包",
       "local": "research/_src/fb504/firebird.conf",
       "used_for": "Providers 缺省顺序 Remote,Engine13,Loopback；ReadConsistency 缺省为 1，READ COMMITTED 下默认语句级读一致性",
-      "lines": [682, 800, 808]
+      "lines": [
+        682,
+        800,
+        808
+      ]
     },
     {
       "kind": "doc",
@@ -111,6 +226,84 @@
       "kind": "web",
       "url": "https://firebirdfaq.org/",
       "used_for": "Firebird 的起点：InterBase 6.0 公开源码；1.0 发布于 2002-03-11"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/en/historical-reference/",
+      "used_for": "InterBase 八十年代起源、2000 年开源和 Firebird 项目建立",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/papers_presentations/html/fr/paper-fbent-history-fr.html",
+      "used_for": "历史事件：1985 InterBase、2000 分支、2002 1.0、1.5 改写 C++；不使用页面的旧当前版本判断",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/html/en/firebirddocs/firebirdinternals/firebird-internals.html",
+      "used_for": "页、指针页、记录槽、索引的概念互证；正文基于 ODS 11.1，5.0 字节布局以同版本 ods.h 为准",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/papers_presentations/Multi_version_concurrency_control.pdf",
+      "used_for": "第 4–5 页，行版本和 careful writes；以同版本源码互证，不据旧文档猜 5.0 默认设置",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/html/en/firebirddocs/gfix/firebird-gfix.html",
+      "used_for": "Synchronous or Asynchronous Writes：强制写语义",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.postgresql.org/docs/18/wal-intro.html",
+      "used_for": "前集 PostgreSQL 18 的 WAL 与重做，只作一次必要对照",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.postgresql.org/docs/18/tutorial-arch.html",
+      "used_for": "PostgreSQL 的服务端与客户端角色",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://sqlite.org/serverless.html",
+      "used_for": "SQLite 的嵌入式与无中间服务端形态",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "used_for": "C06：主键聚簇索引的行数据，以及二级索引携带主键的范围；不推性能胜负",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "used_for": "C07：undo 信息用于重建旧行内容",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+      "used_for": "C08：redo 在启动时用于重做未写完的数据文件修改",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.postgresql.org/docs/18/indexes-index-only-scans.html",
+      "used_for": "C06：普通 heap 与索引分别存放；存在 index-only scan，不说所有查询都必须回表",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
+      "used_for": "C07：更新后旧行版本保留，可能仍被读者需要",
+      "checked_at": "2026-10-21"
     }
   ],
   "lab": [
@@ -161,6 +354,42 @@
       "path": "research/lab/09_logo_colors.py",
       "out": "research/lab/out_09_logo_colors.txt",
       "used_for": "官网标志的实际像素配色"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/13_query_path.py",
+      "out": "research/lab/out_13_query_path.txt",
+      "structured": "research/lab/out_13_query_path.json",
+      "used_for": "独立嵌入式库上实测姓名索引 → 位图 → 按记录号取行，返回 30；无计划提示",
+      "checked_at": "2026-10-21"
+    }
+  ],
+  "note": "2026-10-21 第 5 稿仅重写开场的观众定位与系列承接。读到 PostgreSQL 已确认稿 z6–z6a 的 Firebird 预告；原技术证据与实验沿用，未新增网页核查或视频测量。",
+  "local_references": [
+    {
+      "kind": "brief",
+      "path": "README.md#简报",
+      "used_for": "C09：小众的第三选择是策划定位，不是市场排名",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "metadata",
+      "path": "../myisam/project.json",
+      "pointer": "delivery.duration.zh",
+      "seconds": 475.883,
+      "corroboration": "../myisam/README.md 首段 7 分 55.9 秒",
+      "used_for": "C10：本片须短于前片，未重新测量前片视频",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "approved_script",
+      "path": "../postgresql/review/script.zh.7caad9971c6526e36f183a4c9ea8e6466f4aaadd37be02b20efd0f2ea80a05a7.md",
+      "cues": [
+        "z6",
+        "z6a"
+      ],
+      "used_for": "C11：前集 Firebird 预告与系列连续性",
+      "checked_at": "2026-10-21"
     }
   ]
 }
