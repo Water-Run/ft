@@ -107,3 +107,16 @@
    - `x3` 「…mean upstream failed.」→「…mean it got stuck upstream.」
    - `x4` 「…and who acts.」不变
 3. **读法表**：状态码的数字不展开——TTS 念「404」自然读作「四零四」，在字幕层改写成汉字只会让估算时长偏长。只展开 `HTTP`（`H T T P`）与年份（1990 → 一九九零、2022 → 二零二二）。中文念法（「四零四」与「四百零四」哪个顺）与「4xx / 5xx」念作「四开头 / 五开头」，由配音试听后定。
+
+## 配音与读法（制作方 Claude Opus 5.5，2026-10-21）
+
+字幕文字与句号一字未改（`script-review.js check` 两种语言的哈希仍与 `approval.json` 一致）。只改了读法、语速与各段定点：
+
+1. **音色**（策划者要求「中文配音用严肃女声」）：MiniMax speech-2.8-hd。中文 `Chinese (Mandarin)_News_Anchor`（MiniMax 的描述：专业、播音腔的中年女性新闻主播），英文 `English_ConfidentWoman`。代表段试听另有两个中文候选（`female-chengshu-jingpin`、`Chinese (Mandarin)_Wise_Women`）与几个英文候选，音频在本片 `audio/probe/`（不入库）。**音色待策划者试听确认**：制作方听不到声音，选择依据是 MiniMax 的音色描述与语速是否装得进 96 秒；换音色只需改 `project.json` 的 `tts.voice`，重跑 `tts.js`，场景时刻随 `T()` 自动跟着走。
+2. **语速**：中文 1.2、英文 1.25。两个音色在 1.0 时太慢（中文约每秒 4.1 字、英文约每秒 2.2 词），96 秒装不下；调后中文各段平均每秒 4.4–4.9 字，英文每秒 2.6–3.1 词，都在仓库已成片的常见区间内。
+3. **读法**（`script.js` 的 `SAY` 表，试听与逐句回听后定）：
+   - 状态码逐位念：中文「四零四」「五零零」「四二九」……（MiniMax 缺省把「404」念成「四百零四」）；英文按开发者的习惯 four-oh-four、five hundred、four twenty-nine。
+   - 「4xx」念「四字头」（中文）、four-ex-ex（英文；写成 four-x-x 时回听为「zix」）。
+   - 「这一行」「第一行」的「行」换成同音的「航」（回听为「这一型」，即念成了 xíng）；「重试」「重传」的「重」换成「虫」（避免念成 zhòng）。
+   - 「HTTP/3」念「H T T P 三」、英文 H T T P three；「1.1」念「一点一」、one point one。
+4. **各段定点**：原来的 `at` 是按字数估算排的，实测时长出来后有几段超出。按两种语言的实测，各段取两者中较长的自然长度，余下的 2.5 秒分给 what 以外的段尾（history、common 各 0.5–0.6 秒，close 0.7 秒），片尾 3.33 秒。总长仍为 96.00 秒，两种语言都没有超期。句间 gap 0.2 秒、lead/tail 0.5/0.3 不变。

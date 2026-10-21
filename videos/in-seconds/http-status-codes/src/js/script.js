@@ -29,7 +29,7 @@
       ],
     },
     {
-      id: 'what', at: 13.779, chap: null, lead: 0.5, tail: 0.3,
+      id: 'what', at: 12.528, chap: null, lead: 0.5, tail: 0.3,
       cues: [
         ['w1', { zh: '它在响应第一行，靠首位分五类：', en: 'It sits on the response’s first line; the digit sets the class:' }, { gap: 0.2 }],
         ['w2', { zh: '1xx 处理中，2xx 成功，3xx 重定向，', en: '1xx working, 2xx success, 3xx redirect,' }, { gap: 0.2 }],
@@ -38,7 +38,7 @@
       ],
     },
     {
-      id: 'history', at: 28.822, chap: null, lead: 0.5, tail: 0.3,
+      id: 'history', at: 28.767, chap: null, lead: 0.5, tail: 0.3,
       cues: [
         ['h1', { zh: '1990 年 HTTP 只传文件，还没有状态码。', en: 'In 1990, HTTP only sent files, no status codes.' }, { gap: 0.2 }],
         ['h2', { zh: '后来包成报文，才加上这一行报结果。', en: 'Messages came later, and this line was added.' }, { gap: 0.2 }],
@@ -46,7 +46,7 @@
       ],
     },
     {
-      id: 'common', at: 43.364, chap: null, lead: 0.5, tail: 0.3,
+      id: 'common', at: 41.95, chap: null, lead: 0.5, tail: 0.3,
       cues: [
         ['c1', { zh: '请求到真正存资源的源站，按步过检：', en: 'At the origin holding the resource, checks run:' }, { gap: 0.2 }],
         ['c2', { zh: '语法错回 400；缺凭据回 401；', en: 'Bad syntax gets 400; no credentials, 401;' }, { gap: 0.2 }],
@@ -57,7 +57,7 @@
       ],
     },
     {
-      id: 'who', at: 63.638, chap: null, lead: 0.5, tail: 0.3,
+      id: 'who', at: 62.641, chap: null, lead: 0.5, tail: 0.3,
       cues: [
         ['u1', { zh: '若请求合法但源站崩了，源站回 500。', en: 'If the origin itself crashes, it returns 500.' }, { gap: 0.2 }],
         ['u2', { zh: '若刷太密，前面的限流层会回 429 拦下。', en: 'Too fast, and rate limiters return 429.' }, { gap: 0.2 }],
@@ -66,7 +66,7 @@
       ],
     },
     {
-      id: 'close', at: 78.965, chap: null, lead: 0.5, tail: 0.3,
+      id: 'close', at: 78.633, chap: null, lead: 0.5, tail: 0.3,
       cues: [
         ['x1', { zh: '遇到报错，先看第一位数字：', en: 'On error, check the first digit:' }, { gap: 0.2 }],
         ['x2', { zh: '4xx 改请求，5xx 等恢复；', en: '4xx, fix your request; 5xx, wait;' }, { gap: 0.2 }],
@@ -76,7 +76,7 @@
     },
     {
       // 片尾名单：策划、参与模型与分工、开源视频的仓库地址。约 7.5 秒，不配旁白
-      id: 'outro', at: 92.526, chap: null, lead: 0.5, tail: 0,
+      id: 'outro', at: 92.666, chap: null, lead: 0.5, tail: 0,
       cues: [
         ['z1', null, { pause: 2.5 }],
       ],
@@ -84,19 +84,34 @@
   ];
 
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
-  // 数字不展开：TTS 念「404」自然读作「四零四」，在字幕层改写成汉字只会让估算的时长偏长。
-  // 状态码的中文念法（「四零四」与「四百零四」哪个顺）与「4xx / 5xx」念作「四开头 / 五开头」，
-  // 由配音试听后定，改这里或改 tts 字段，不改字幕。
+  // 状态码逐位念（试听定）：MiniMax 把「404」念成「四百零四」，开发者口头说的是「四零四」；英文按习惯 four-oh-four、five hundred。
+  // 「4xx」念「四字头」、英文 four-ex-ex（写成 four-x-x 时被念成「zix」）。年份与版本号写成读得出来的样子。
+  // 多音字换成同音的单音字（回听定）：表示「一行字」的「行」→「航」（MiniMax 念成 xíng，回听为「这一型」）；「重试」「重传」的「重」→「虫」。
+  const CODES = {
+    zh: { 200: '二零零', 304: '三零四', 400: '四零零', 401: '四零一', 403: '四零三', 404: '四零四', 429: '四二九', 471: '四七一', 500: '五零零', 502: '五零二', 504: '五零四' },
+    en: { 200: 'two hundred', 304: 'three-oh-four', 400: 'four hundred', 401: 'four-oh-one', 403: 'four-oh-three', 404: 'four-oh-four', 429: 'four twenty-nine', 471: 'four seventy-one', 500: 'five hundred', 502: 'five-oh-two', 504: 'five-oh-four' },
+  };
+  const XX = { zh: ['一', '二', '三', '四', '五'].map((d) => d + '字头'), en: ['one', 'two', 'three', 'four', 'five'].map((d) => d + '-ex-ex') };
   const SAY = {
     zh: [
+      [/HTTP\/3/g, 'H T T P 三'],
       [/HTTP/g, 'H T T P'],
       [/1990/g, '一九九零'],
       [/2022/g, '二零二二'],
+      [/1\.1/g, '一点一'],
+      [/(?<![执进串银])行/g, '航'],
+      [/重(试|传)/g, '虫$1'],
     ],
     en: [
+      [/HTTP\/3/g, 'H T T P three'],
       [/HTTP/g, 'H T T P'],
+      [/1\.1/g, 'one point one'],
     ],
   };
+  for (const lg of ['zh', 'en']) {
+    SAY[lg].push([/([1-5])xx/g, (m, d) => XX[lg][d - 1]]);
+    SAY[lg].push([/\b(\d{3})\b/g, (m) => CODES[lg][m] || m]);
+  }
   const strip = (s) => s.replace(/\*/g, '');
   const ttsNorm = (s) => { for (const [re, to] of SAY[LANG] || []) s = s.replace(re, to); return s; };
   const SCRIPT = RAW.map((sc) => ({

@@ -1,64 +1,103 @@
-/* 本片的视觉系统「计时盘」：墨色与纸色两种底，一种强调色（朱红）。平涂，不用阴影、渐变、圆角。
-   - 墨色底 = 手机一侧；纸色底 = 服务器一侧。两侧并排时就是一张左右对开的画面。
-   - 朱红只给「此刻」：表盘的指针、已经走过的刻度、时间轴上的现在、被选中的字节与最终的验证码。
-   - 圆只表示时间（30 秒表盘）；方块表示数据（字节、比特、二维码的模块）；斜线表示不可信的一方（泄露的副本、假网站）。
-   - 字：数字与数据用 Mono，拉丁文字用 Inter，中文用 Sans SC。
-   对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色（5.8:1）。 */
+/* 本片的视觉系统「应答机」：卡带未来主义的机器面板（策划者 2026-10-21 定的方向：卡带、未来）。
+   平涂，不用阴影、渐变、圆角；圆只用于指示灯。
+   - 米色面板（--case）= 机器的外壳：客户端、限流层、网关、源站都是一块米色的机器。
+   - 墨色屏（--ink）= 机器吐出来的东西：响应的原文显示在屏上，琥珀色的等宽字取自本片实验的 curl 回显。
+   - 琥珀（--amber，主色）= 响应的数据：状态行、头字段、状态码本身。
+   - 朱红（--red，强调色）= 出错的两类：4xx 与 5xx 的码、请求停下来的那一处。全片只这一个含义。
+   - 三色线缆（琥珀 / 墨 / 朱红三道平行线）= 机器之间的连接，请求与响应沿它走。
+   - 字：状态码的大号数字用像素字（VT323，卡带年代终端的点阵字）；回显与头字段用 Mono；中文说明用 Sans SC，拉丁文字用 Inter。
+   对比度：琥珀压在墨色上 10.6:1；朱红压在墨色上 5.1:1；墨色压在朱红上 5.1:1；--dima 压在墨色上 5.6:1；--mute 压在米色上 5.1:1；
+   朱红压在米色上只有 2.7:1，所以朱红在米色面板上只作色块，不作字色。 */
+@font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
 :root {
-  --ink: #0c0d0f;
-  --paper: #f2efe8;
-  --ac: #ff4a1c;
-  --dim: #8a8782;             /* 墨色底上的次要文字（5.6:1） */
-  --dimp: #6b6964;            /* 纸色底上的次要文字（4.9:1） */
+  --ink: #14120e;
+  --case: #e4dac4;
+  --case2: #cbbfa3;            /* 米色面板上凹下去的一块：机器的铭牌槽、插槽 */
+  --amber: #ffb52e;
+  --red: #ef4b28;
+  --dima: #a8874f;             /* 墨色屏上的次要文字（5.6:1） */
+  --mute: #5f584b;             /* 米色面板上的次要文字（5.1:1） */
 }
-body { font-family: "Inter", "Sans SC"; color: var(--paper); }
-#bg { background: var(--ink); }
-.scene { overflow: hidden; }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
+body { font-family: "Inter", "Sans SC"; color: var(--ink); }
+#bg { background: var(--case); }
+.scene { overflow: hidden; background: var(--case); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; }
+.px { font-family: "Pixel", "Mono"; font-weight: 400; line-height: .82; letter-spacing: 0; }
 .ink { color: var(--ink); }
-.paper { color: var(--paper); }
-.ac { color: var(--ac); }
-.dim { color: var(--dim); }
-.dimp { color: var(--dimp); }
+.amber { color: var(--amber); }
+.red { color: var(--red); }
+.dima { color: var(--dima); }
+.mute { color: var(--mute); }
+.case { color: var(--case); }
 .blk { position: absolute; }
 .bg-ink { background: var(--ink); }
-.bg-paper { background: var(--paper); }
-.bg-ac { background: var(--ac); }
+.bg-case { background: var(--case); }
+.bg-case2 { background: var(--case2); }
+.bg-amber { background: var(--amber); }
+.bg-red { background: var(--red); }
 
-/* 字号阶梯（1080p）：对比要强。注解不小于 28px */
-.t-0 { font-weight: 900; font-size: 400px; line-height: 1; letter-spacing: -.045em; }
-.t-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.02em; }
-.t-3 { font-weight: 700; font-size: 60px; line-height: 1.1; }
+/* 字号阶梯（1080p）。注解不小于 28px */
+.t-1 { font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -.02em; }
+.t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.01em; }
+.t-3 { font-weight: 800; font-size: 60px; line-height: 1.1; }
 .t-4 { font-weight: 700; font-size: 44px; line-height: 1.15; }
 .t-b { font-weight: 500; font-size: 38px; line-height: 1.3; }
 .t-n { font-weight: 500; font-size: 30px; line-height: 1.3; }
-.num { font-family: "Mono"; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
 
-/* 验证码：六个等宽的数字格，换码时逐位滚动 */
-.code { position: absolute; display: flex; font-family: "Mono"; font-weight: 800; line-height: 1; }
-.code .cd { position: relative; width: .6em; height: 1em; overflow: hidden; }
-.code .cd span { position: absolute; left: 0; top: 0; width: .6em; text-align: center; }
+/* 屏：墨色的矩形，里面是等宽的琥珀字。行 .ln；行内的一段 .k（字段名）.v（值）；当前在讲的一行 .hot 反成琥珀底墨字 */
+.scr { position: absolute; background: var(--ink); color: var(--amber); font-family: "Mono", "Sans SC"; }
+.scr .ln { position: absolute; white-space: pre; font-weight: 600; }
+.scr .ln.dim { color: var(--dima); font-weight: 500; }
+.ln.hot { background: var(--amber); color: var(--ink); margin-left: -12px; padding: 0 12px; }
+.ln.err { color: var(--red); }
 
-/* 字节格 */
-.byte { position: absolute; font-family: "Mono"; font-weight: 700; text-align: center; }
-.byte.sel { background: var(--ac); color: var(--ink); }
-.idx { position: absolute; font-family: "Mono"; font-weight: 500; text-align: center; color: var(--dim); }
-.idx.on { color: var(--paper); font-weight: 800; }
-.hot { --c: var(--ac) !important; }
+/* 机器：米色的方块，顶上一条墨色的铭牌条写它的名字 */
+.mach { position: absolute; background: var(--case2); }
+.mach .plate { position: absolute; left: 0; top: 0; right: 0; background: var(--ink); color: var(--case); font-weight: 700; display: flex; align-items: center; padding-left: 22px; }
+.mach .sub { position: absolute; color: var(--mute); font-weight: 500; }
 
-/* 常驻层：字幕带、秒尺、剩余秒数、角上的验证码与表盘 */
+/* 码牌：一个状态码。墨底，像素数字；错误两类用朱红字 */
+.chip { position: absolute; background: var(--ink); display: flex; align-items: center; justify-content: center; font-family: "Pixel", "Mono"; color: var(--amber); line-height: 1; }
+.chip.e { color: var(--red); }
+.chip.lit { background: var(--amber); color: var(--ink); }
+.chip.elit { background: var(--red); color: var(--ink); }
+
+/* 指示灯 */
+.led { position: absolute; border-radius: 50%; background: var(--case2); }
+.led.on { background: var(--amber); }
+.led.eon { background: var(--red); }
+
+/* 常驻层：字幕带、秒尺、剩余秒数（左上）、本集的仪表（右上：最近一个状态码与它的类别灯） */
 .band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
 .band svg { position: absolute; left: 0; top: 0; }
-.hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
-.hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
+.hud-l { position: absolute; left: 60px; top: 34px; display: flex; align-items: baseline; color: var(--ink); }
+.hud-l .n { font: 400 64px "Pixel"; line-height: .8; }
 .hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 40px; width: 300px; height: 72px; }
+.hud-r { position: absolute; left: 1560px; top: 30px; width: 300px; height: 76px; }
+.meter { position: absolute; left: 0; top: 0; width: 300px; height: 76px; background: var(--ink); }
+.meter .code { position: absolute; left: 16px; top: 6px; font: 400 76px "Pixel"; line-height: 1; color: var(--amber); }
+.meter .code.e { color: var(--red); }
+.meter .cls { position: absolute; left: 150px; top: 14px; display: flex; gap: 10px; }
+.meter .cls i { display: block; width: 18px; height: 18px; border-radius: 50%; background: var(--dima); opacity: .35; }
+.meter .cls i.on { background: var(--amber); opacity: 1; }
+.meter .cls i.eon { background: var(--red); opacity: 1; }
+.meter .cn { position: absolute; left: 150px; top: 40px; display: flex; gap: 10px; font: 600 26px "Mono"; color: var(--dima); }
+.meter .cn b { display: block; width: 18px; text-align: center; font-weight: 600; }
 
 /* 字幕：压在字幕带上 */
 #caption { bottom: 30px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--case); font-family: "Inter", "Sans SC"; }
 .en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--ac); }
+#caption em { font-style: normal; font-weight: 800; color: var(--amber); }
+
+/* 状态行里的码：o3 推近时框成琥珀底墨字 */
+.ln .sc.hotc { background: var(--amber); color: var(--ink); padding: 0 8px; margin: 0 -8px; }
+/* 出事的那台机器：铭牌变成朱红底墨字 */
+.mach .plate.bg-red, .blk.bg-red { background: var(--red); color: var(--ink); }
+.bg-red .case { color: var(--ink); }
+/* 被点到的一行小字：琥珀底墨字 */
+.lit-t { background: var(--amber); color: var(--ink) !important; margin-left: -8px; padding: 0 8px; }
+/* 只看首位：码牌的后两位暗下去 */
+.chip.fd .d2 { opacity: .25; }
+.chip.fd.nofd .d2 { opacity: 1; }

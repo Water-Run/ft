@@ -6,74 +6,85 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 系列基座的封面版式，文字与纸色一侧的读数换成本集的；做完删掉这一行。
-     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
-     4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
-  :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
+     与正片同一套「应答机」视觉：米色面板、墨色屏、琥珀色的点阵大字，取正片片名卡的构图重新排版。
+     4:3 是重新排布，不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。点阵数字画成 SVG 方块（封面里的 canvas 截出来会是空的）。 */
+  @font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
+  :root { --ink: #14120e; --case: #e4dac4; --case2: #cbbfa3; --amber: #ffb52e; --red: #ef4b28; --dima: #a8874f; --mute: #5f584b; }
   html, body, #stage { width: var(--W); height: var(--H); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { background: var(--ink); color: var(--paper); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  #stage { background: var(--case); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
   .abs { position: absolute; white-space: nowrap; }
-  .paper { background: var(--paper); }
-  .big { font: 900 440px "Inter"; letter-spacing: -.04em; line-height: 1; }
-  .tag { background: var(--ac); color: var(--ink); display: flex; align-items: baseline; padding: 6px 34px 16px; }
-  .tag b { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
-  .tag i { font: 900 96px "Inter", "Sans SC"; font-style: normal; margin-left: 18px; line-height: 1; }
-  .ttl { font: 900 76px "Inter", "Sans SC"; line-height: 1.16; letter-spacing: -.01em; }
-  .en .ttl { font-size: 80px; }
-  .kick { font: 700 40px "Inter", "Sans SC"; color: var(--ink); }
-  .code { font: 800 150px "Mono"; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
+  .scr { background: var(--ink); }
+  .st { font: 600 44px "Mono"; color: var(--amber); }
+  .st b { background: var(--amber); color: var(--ink); font-weight: 600; padding: 0 8px; margin: 0 -8px; }
+  .sec { font: 900 104px "Sans SC", "Inter"; color: var(--amber); line-height: 1; }
+  .k1 { font: 700 58px "Sans SC", "Inter"; color: var(--mute); }
+  .t1 { font: 900 210px/1 "Inter"; letter-spacing: -.02em; }
+  .t2 { font: 900 216px/1 "Sans SC"; }
+  .en .t2 { font: 900 150px/1 "Inter"; letter-spacing: -.01em; }
+  .cab i { position: absolute; left: 0; right: 0; height: 10px; }
+  .chips { display: flex; gap: 16px; }
+  .chips b { display: flex; align-items: center; justify-content: center; width: 132px; height: 92px; background: var(--ink); color: var(--amber); font: 400 86px/1 "Pixel"; }
+  .chips b.e { color: var(--red); }
   svg { position: absolute; overflow: visible; }
-  /* 16:9：左墨右纸 */
-  .r169 .paper { left: 1090px; top: 0; width: 830px; height: 1080px; }
-  .r169 .big { left: 84px; top: 52px; }
-  .r169 .tag { left: 100px; top: 492px; }
-  .r169 .ttl { left: 100px; top: 722px; }
-  .r169 .kick { left: 1150px; top: 64px; }
-  .r169 .code { left: 1212px; top: 716px; }
-  /* 4:3：上墨下纸 */
-  .r43 .paper { left: 0; top: 770px; width: 1600px; height: 430px; }
-  .r43 .big { left: 66px; top: 60px; font-size: 470px; }
-  .r43 .tag { left: 1090px; top: 120px; }
-  .r43 .tag b { font-size: 150px; }
-  .r43 .tag i { font-size: 84px; }
-  .r43 .ttl { left: 84px; top: 548px; font-size: 80px; }
-  .r43 .kick { left: 1090px; top: 388px; color: var(--paper); }
-  .r43 .code { left: 80px; top: 824px; font-size: 168px; }
+  /* 16:9 */
+  .r169 .scr { left: 90px; top: 90px; width: 860px; height: 730px; }
+  .r169 .st { left: 150px; top: 726px; }
+  .r169 .k1 { left: 1010px; top: 92px; }
+  .r169 .t1 { left: 1000px; top: 176px; }
+  .r169 .t2 { left: 996px; top: 404px; }
+  .r169.en .t2 { top: 400px; }
+  .r169 .cab { left: 1010px; top: 668px; width: 760px; height: 34px; }
+  .r169 .chips { left: 1010px; top: 728px; }
+  .r169.en .cab { top: 728px; }
+  .r169.en .chips { top: 790px; }
+  /* 4:3 */
+  .r43 .scr { left: 70px; top: 70px; width: 900px; height: 600px; }
+  .r43 .st { left: 126px; top: 590px; font-size: 40px; }
+  .r43 .k1 { left: 1010px; top: 80px; }
+  .r43 .t1 { left: 1004px; top: 160px; font-size: 168px; }
+  .r43 .t2 { left: 64px; top: 690px; font-size: 200px; }
+  .r43.en .t2 { font-size: 150px; top: 720px; }
+  .r43 .cab { left: 1010px; top: 400px; width: 520px; height: 34px; }
+  .r43 .chips { left: 70px; top: 930px; }
+  .r43 .chips b { width: 150px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="abs paper"></div>
-  <div class="abs big"></div>
-  <div class="abs tag"><b></b><i></i></div>
-  <div class="abs ttl"></div>
-  <div class="abs kick"></div>
-  <div class="abs code"></div>
+  <div class="abs scr"></div>
+  <div class="abs st">HTTP/1.1 <b>404</b> Not Found</div>
+  <div class="abs k1"></div>
+  <div class="abs t1">HTTP</div>
+  <div class="abs t2"></div>
+  <div class="abs cab"><i style="top:0;background:var(--amber)"></i><i style="top:12px;background:var(--ink)"></i><i style="top:24px;background:var(--red)"></i></div>
+  <div class="abs chips"><b>1xx</b><b>2xx</b><b>3xx</b><b class="e">4xx</b><b class="e">5xx</b></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
-  const TEXT = {
-    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
-    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
-  }[lang];
-  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
-  document.querySelector('.tag i').textContent = TEXT.unit;
-  document.querySelector('.ttl').innerHTML = TEXT.title;
-  document.querySelector('.kick').textContent = TEXT.kick;
-  // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
-  const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
-  const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
-  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';
-  const line = (x1, y1, x2, y2, c, w) => { const e = document.createElementNS(NS, 'line'); for (const [k, v] of Object.entries({ x1, y1, x2, y2, stroke: c, 'stroke-width': w })) e.setAttribute(k, v); s.appendChild(e); };
-  for (let i = 0; i < 30; i++) { const a = i * Math.PI / 15, big = i % 5 === 0, r0 = r * (big ? 0.8 : 0.89); line(r0 * Math.sin(a), -r0 * Math.cos(a), r * Math.sin(a), -r * Math.cos(a), i >= 1 && i <= sec ? AC : INK, big ? r * 0.04 : r * 0.022); }
-  const a = sec * Math.PI / 15; line(-0.2 * r * Math.sin(a), 0.2 * r * Math.cos(a), 1.08 * r * Math.sin(a), -1.08 * r * Math.cos(a), AC, r * 0.034);
-  const hub = document.createElementNS(NS, 'rect'); for (const [k, v] of Object.entries({ x: -r * 0.05, y: -r * 0.05, width: r * 0.1, height: r * 0.1, fill: AC })) hub.setAttribute(k, v); s.appendChild(hub);
+  const TEXT = { zh: { k1: '了解', t2: '状态码', sec: '秒' }, en: { k1: 'in 96 seconds', t2: 'Status<br>Codes', sec: 's' } }[lang];
+  document.querySelector('.k1').textContent = TEXT.k1;
+  document.querySelector('.t2').innerHTML = TEXT.t2;
+  if (!wide && lang === 'en') document.querySelector('.t2').innerHTML = 'Status Codes';
+  // 点阵的「96」：5×7 方点，和正片片名卡同一套字形
+  const DOT = { 9: ['01110', '10001', '10001', '01111', '00001', '00010', '01100'], 6: ['00110', '01000', '10000', '11110', '10001', '10001', '01110'] };
+  const NS = 'http://www.w3.org/2000/svg', AMBER = '#ffb52e';
+  const [x0, y0, cell] = wide ? [150, 180, 56] : [126, 120, 50];
+  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = x0 + 'px'; s.style.top = y0 + 'px';
+  ['9', '6'].forEach((ch, i) => DOT[ch].forEach((row, r) => [...row].forEach((b, c) => {
+    if (b !== '1') return;
+    const e = document.createElementNS(NS, 'rect');
+    for (const [k, v] of Object.entries({ x: i * 6 * cell + c * cell, y: r * cell, width: cell - 8, height: cell - 8, fill: AMBER })) e.setAttribute(k, v);
+    s.appendChild(e);
+  })));
   document.getElementById('stage').appendChild(s);
+  const sec = document.createElement('div'); sec.className = 'abs sec'; sec.textContent = TEXT.sec;
+  sec.style.left = (x0 + 11 * cell + 34) + 'px'; sec.style.top = (y0 + 7 * cell - 104) + 'px';
+  document.getElementById('stage').appendChild(sec);
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('600 40px "Mono"', sample), document.fonts.load('400 40px "Pixel"', '1xx')])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
