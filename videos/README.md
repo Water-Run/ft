@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 15，制作中 21，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 202 部：已成片 16，制作中 20，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 ## 已成片
 
@@ -10,6 +10,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | zh 1:36、en 1:36 | 2026-10-21 | 未登记 | — | Claude Opus 5.5、Gemini 4 Argon、MiniMax M3.1 Flash |
 | [垃圾回收的艺术](standalone/garbage-collection/) | — | zh 11:10、en 11:48 | 2026-10-21 | [哔哩哔哩](https://www.bilibili.com/video/BV1Exni69Ew4)、[YouTube](https://www.youtube.com/watch?v=-7zriGm5_Xk) | — | DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon、MiniMax M3.1 Flash、Claude Opus 5.5 |
 | [200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/) | [XX 秒速通](in-seconds/README.md) | zh 3:20、en 3:20 | 2026-10-20 | [哔哩哔哩](https://www.bilibili.com/video/BV1Z7JZ6yEQb)、[YouTube](https://www.youtube.com/watch?v=Bkt7b_xbMYg) | 5（2026-10-20） | DeepSeek V4.1 Flash 1017、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh 11:28 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1xAnn6WEzv) | 8（2026-10-20） | 6.1Sol、Claude Opus 5.5 |
@@ -45,7 +46,6 @@
 | [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 最新 |
 | [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 |
 | [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | 验收 | 策划者看片与试听：中文严肃女声的音色、8 位配乐、全片读音、连续观看的节奏；同意后登记交付 | 最新 |
 | [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git](in-seconds/scion/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
@@ -302,7 +302,7 @@
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
 | 20 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | [`chain-of-thought`](in-seconds/chain-of-thought/) |  |
 | 21 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh + en | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
-| 22 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 制作中 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
+| 22 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 已成片 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
 | 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh + en | 制作中 | [`ea211-family`](in-seconds/ea211-family/) |  |
 | 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh + en | 制作中 | [`scion`](in-seconds/scion/) |  |
 | 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
