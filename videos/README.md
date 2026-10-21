@@ -10,7 +10,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
-| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | zh 1:36、en 1:36 | 2026-10-21 | 未登记 | — | Claude Opus 5.5、Gemini 4 Argon、MiniMax M3.1 Flash |
+| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | zh 1:36、en 1:36 | 2026-10-21 | [哔哩哔哩 zh](https://www.bilibili.com/video/BV1Hrnq6aEjH)、[YouTube en](https://www.youtube.com/watch?v=f_sNl3i9Bsg) | — | Claude Opus 5.5、Gemini 4 Argon、MiniMax M3.1 Flash |
 | [垃圾回收的艺术](standalone/garbage-collection/) | — | zh 11:10、en 11:48 | 2026-10-21 | [哔哩哔哩](https://www.bilibili.com/video/BV1Exni69Ew4)、[YouTube](https://www.youtube.com/watch?v=-7zriGm5_Xk) | — | DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon、MiniMax M3.1 Flash、Claude Opus 5.5 |
 | [200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/) | [XX 秒速通](in-seconds/README.md) | zh 3:20、en 3:20 | 2026-10-20 | [哔哩哔哩](https://www.bilibili.com/video/BV1Z7JZ6yEQb)、[YouTube](https://www.youtube.com/watch?v=Bkt7b_xbMYg) | 5（2026-10-20） | DeepSeek V4.1 Flash 1017、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh 11:28 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1xAnn6WEzv) | 8（2026-10-20） | 6.1Sol、Claude Opus 5.5 |
@@ -33,7 +33,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审 2026-10-21 中文第 5 稿（约 7:36；开场承接已看过前三期的观众，引出 Firebird）；确认后交制作方 | 最新 |
+| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审 2026-10-21 中文第 8 稿（约 7:37；补深页槽、记录头、位图、差量回溯和 TIP，背景采用率数据已落盘）；确认后交制作方 | 最新 |
 | [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
