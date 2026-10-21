@@ -33,13 +33,27 @@ for (const lang of LANGS(true)) {
   const adur = +spawnSync(FFPROBE(), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', audio], { encoding: 'utf8' }).stdout || 0;
   console.log(`  画面 ${frames} 帧 = ${(frames / fps).toFixed(2)}s，声音 ${adur.toFixed(2)}s，时间线 ${L.total.toFixed(2)}s`);
   if (Math.abs(frames / fps - adur) > 0.25 || Math.abs(adur - L.total) > 0.6) { console.error(`  ✗ 画面、声音与时间线的长度不一致：脚本或配音改过之后要重新 audio.js 与 render.js；渲染日志末行要有 verified frames。这一版不封装`); failed = true; continue; }
-  const m0 = measure(audio), gain = Math.max(-6, Math.min(20, LUFS - m0.I + 0.4));
-  const af = `volume=${gain.toFixed(1)}dB,alimiter=limit=0.84:level=disabled:attack=5:release=80`;
+  const m0 = measure(audio);
+  const gain = Math.max(-6, Math.min(20, LUFS - m0.I + 0.4));
+  let lim = 0.84;
+  const afOf = (g) => `volume=${g.toFixed(1)}dB,alimiter=limit=${lim.toFixed(3)}:level=disabled:attack=5:release=80`;
+  // 限幅器按采样点限幅（0.84 ≈ -1.5 dBFS），采样之间的峰（真峰值）还会冒出来零点几 dB；增益大时可能超过 -1 dBFS。
+  // 做完量一次真峰值，超了就按超出的量压低限幅上限再做一遍（最多三次）；降增益没有用——峰都被压在限幅上限
+  const levelled = (src, dst) => {
+    let m = null;
+    for (let k = 0; k < 3; k++) {
+      ff(['-y', '-loglevel', 'error', '-i', src, '-af', afOf(gain), dst], { stdio: 'inherit' });
+      m = measure(dst);
+      if (!(m.TP > -1)) break;
+      const cut = m.TP + 1.2; console.log(`  真峰值 ${m.TP} dBFS 高于 -1：限幅上限再压 ${cut.toFixed(1)} dB 重做`); lim *= Math.pow(10, -cut / 20);
+    }
+    return m;
+  };
   const alt = arg('name', null);
   if (alt) {                                   // 试听片：同一画面配另一条混音
-    ff(['-y', '-loglevel', 'error', '-i', audio, '-af', af, o('audio_alt_final.wav')], { stdio: 'inherit' });
+    const m = levelled(audio, o('audio_alt_final.wav'));
     const name = `${slug}-${lang}-${alt}.mp4`; mux(video, o('audio_alt_final.wav'), path.join(OUT, name), meta);
-    const m = measure(o('audio_alt_final.wav')); fs.rmSync(o('audio_alt_final.wav'), { force: true });
+    fs.rmSync(o('audio_alt_final.wav'), { force: true });
     console.log(`  试听片 out/${name}   响度 I=${m.I} LUFS  TP=${m.TP} dBFS`);
     continue;
   }
@@ -48,8 +62,8 @@ for (const lang of LANGS(true)) {
   let m1 = null;
   for (const [src, suffix] of versions) {
     const fin = o(src.replace('.wav', '_final.wav'));
-    ff(['-y', '-loglevel', 'error', '-i', suffix ? o(src) : audio, '-af', af, fin], { stdio: 'inherit' });
-    if (!suffix) m1 = measure(fin);
+    if (!suffix) m1 = levelled(audio, fin);    // 主混音先做：增益在这里定下来
+    else ff(['-y', '-loglevel', 'error', '-i', o(src), '-af', afOf(gain), fin], { stdio: 'inherit' });
     mux(video, fin, path.join(OUT, `${slug}-${lang}-${tag}${suffix}.mp4`), meta);
     fs.rmSync(fin, { force: true });
   }
