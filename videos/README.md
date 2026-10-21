@@ -45,7 +45,7 @@
 | [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 最新 |
 | [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 |
 | [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | 验收 | 策划者看片与试听：中文严肃女声的音色、8 位配乐、「传」的读音、连续观看的节奏；同意后登记交付 | 最新 |
+| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | 验收 | 策划者看片与试听：中文严肃女声的音色、8 位配乐、全片读音、连续观看的节奏；同意后登记交付 | 最新 |
 | [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git](in-seconds/scion/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
