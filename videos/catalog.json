@@ -23,7 +23,8 @@
     {"slug": "open-source-projects", "title": {"zh": "开源项目", "en": "Open Source Projects"}},
     {"slug": "windows-internals", "title": {"zh": "Windows 是怎么工作的", "en": "How Windows Works"}},
     {"slug": "literary-animation", "title": {"zh": "文学作品动画化", "en": "Literature, Animated"}},
-    {"slug": "lua-source", "title": {"zh": "Lua 源码解析", "en": "Lua Source Code, Explained"}}
+    {"slug": "lua-source", "title": {"zh": "Lua 源码解析", "en": "Lua Source Code, Explained"}},
+    {"slug": "hot-topics", "title": {"zh": "热点"}}
   ],
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered"},
@@ -227,6 +228,7 @@
     {"slug": "shell-survey", "title": {"zh": "Shell 群观"}},
     {"slug": "termux-proot", "title": {"zh": "代价很小的安卓 Linux 虚拟机：Termux 和 Proot", "en": "A Cheap Android Linux VM: Termux and Proot"}, "note": "2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。"},
     {"slug": "c-data-structures", "title": {"zh": "一个视频讲明白全部 C 数据结构", "en": "Every C Data Structure in One Video"}, "note": "2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针"},
-    {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"}
+    {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"},
+    {"slug": "php2shell", "series": "hot-topics", "title": {"zh": "隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响"}, "status": "delivered", "languages": ["zh"]}
   ]
 }
