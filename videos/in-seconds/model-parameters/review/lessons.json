@@ -1,18 +1,18 @@
 {
   "schema": 2,
-  "version": "2026-10-20.3",
+  "version": "2026-10-21.1",
   "items": {
     "F01": {
       "rev": 1,
       "result": "pending",
-      "note": "标题即主问题：看完能说出几类参数各是什么、单位与量级。每一场都直接回答「怎么读参数」；open 抛出的「答不上来」在结论处兑现为「先看单位，再看量级，最后看口径」。不为凑时长另开话题。",
+      "note": "192秒稿围绕同一模型各数字数什么：参数总量、片段种类、序列长度、结构与每token激活数；结尾回答开头的不同大小。",
       "evidence": "",
       "script_evidence": "README「开工反馈应用」F01 行与「内容」表；research/MAP.md「逐段推进」"
     },
     "F02": {
       "rev": 1,
       "result": "pending",
-      "note": "每一类参数用同一套讲法（是什么 → 单位 → 量级 → 怎么读），一次只引入一个新名词，全片不超过 5 个；定义先于术语、历史与数字。",
+      "note": "同一LFM2.5版本贯穿，真实4字2token与2字2token，加上重复十次的1种/10个，先建立种类与个数，再讲上下文、结构和激活。四轮自我反驳见NOTES，不当作真实观众已看懂。",
       "evidence": "",
       "script_evidence": "research/MAP.md「讲法」；README「开工反馈应用」F02 行"
     },
@@ -142,6 +142,12 @@
       "evidence": ""
     },
     "F21": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F22": {
       "rev": 1,
       "result": "pending",
       "note": "",

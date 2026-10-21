@@ -1,7 +1,7 @@
 {
   "slug": "model-parameters",
-  "stage": "research",
-  "next": "重跑 research/lab 的 02–04（01 已完成），把结果整理进 FACTS",
+  "stage": "review",
+  "next": "WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -11,6 +11,13 @@
           "重规划",
           "讲解测绘",
           "取证实验"
+        ]
+      },
+      {
+        "name": "未记录",
+        "roles": [
+          "中文稿优化",
+          "文案事实复核"
         ]
       }
     ],
@@ -22,8 +29,8 @@
     "en"
   ],
   "titles": {
-    "zh": "96 秒速通模型的各个参数",
-    "en": "Model Parameters in 96 Seconds"
+    "zh": "192 秒速通模型的各个参数",
+    "en": "Model Parameters in 192 Seconds"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural",
@@ -52,8 +59,8 @@
   },
   "check": {
     "duration": [
-      95.9,
-      96.1
+      191.9,
+      192.1
     ],
     "caption_width": {
       "zh": 26,

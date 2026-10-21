@@ -1,0 +1,16 @@
+repo=LiquidAI/LFM2.5-24B-A2B
+revision=1769516ac588c4c558089c94f27d96b0dc67b183
+tokenizer_sha256=695be7802a0e4b8a81048f0ff5ebb7fc811a0ba5a6be63dbb24deb5a81096f41
+config.vocab_size=128000
+config.hidden_size=2048
+config.num_hidden_layers=40
+config.num_attention_heads=32
+config.max_position_embeddings=131072
+layer_types=["conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv", "conv", "conv", "full_attention", "conv"]
+tokenizer_vocab_size=125017
+{"text": "模型参数", "characters": 4, "tokens": 2, "ids": [65722, 64384], "pieces": ["模型", "参数"]}
+{"text": "参数量", "characters": 3, "tokens": 2, "ids": [8729, 50677], "pieces": ["参", "数量"]}
+{"text": "上下文长度", "characters": 5, "tokens": 2, "ids": [90023, 92582], "pieces": ["上下文", "长度"]}
+{"text": "模型", "characters": 2, "tokens": 1, "ids": [65722], "pieces": ["模型"]}
+{"text": "你好", "characters": 2, "tokens": 2, "ids": [11253, 5899], "pieces": ["你", "好"]}
+{"text": "拿到一个模型，先看它有多少参数。", "characters": 16, "tokens": 12, "ids": [41357, 4560, 9631, 65722, 697, 7091, 10490, 14959, 2206, 50619, 64384, 646], "pieces": ["拿", "到", "一个", "模型", "，", "先", "看", "它", "有", "多少", "参数", "。"]}

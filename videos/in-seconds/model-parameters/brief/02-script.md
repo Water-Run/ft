@@ -2,18 +2,18 @@
 
 <!-- 准备方填写。脚本的通用写法在 docs/guides/script.md。 -->
 
-旁白已定稿、已合成、读音已核对。全文在 `src/js/script.js`；每句的起止时刻与词边界用 `node kit/tools/timeline.js videos/in-seconds/model-parameters [句号…]` 查。
+中文稿待 WaterRun 审查，尚未配音、未核对实际读音。唯一源稿在 `src/js/script.js`；当前时间线为按展开后的数字读法估算，不能当成配音实测。
 
 ## 1. 全文
 
-<!-- 准备方待填：链接 review/ 下各语言已确认的稿本与内容 SHA-256、NOTES.md 的确认记录；不复制另一份可能过期的全文。交接前运行 script-review.js check。 -->
+本轮中文稿：[192 秒自我对抗编辑稿 be81a63e](../review/script.zh.be81a63e0398a52952b62b654b7bff14099551ad1b90a991bbe0dfb0ebd33681.md)。39 句旁白，184.5 秒进入静默片尾，总长 192 秒；当前只有估算。四轮反驳与修改见 [校对记录](../review/NOTES.md)。状态仍为待审；英文未译。
 
 ## 2. 能不能改
 
-- **不改**：各句的文字、读法（`SAY` 表与 `tts` 字段）、句号。
-- **可以调**：句间停顿 `gap`、章节的 `lead` 与 `tail`，用来给镜头和动作留时间。调完运行 `node kit/tools/tts.js videos/in-seconds/model-parameters`（有缓存，几秒），总长必须仍在 `project.json` 的 `check.duration` 范围内。
-- 认为某句有事实错误或读音错误时，不要自行改写：停下来报告，说明依据。
+- 校对期间可以按策划者意见修改文字；实质改动重新导出全文交审，不替人确认。
+- 句间停顿、章节 `lead` / `tail` 与读法按实际试听调整；本轮只做估算，实际配音须等文案明确确认。
+- 数字与定义只能依据 `research/FACTS.md`；有异议先补证据再改源稿。
 
 ## 3. 每句对应的画面要求
 
-`expect.<语言>.json` 列出了每句说完的那一刻画面上必须完整出现的文字。它是「旁白与画面对应」的硬约束，`scan.js` 逐句核对。不要删改其中的条目。
+`expect.zh.json` 与 `expect.en.json` **仍对应旧稿**；本轮重排章节并合并句子后已过期。中文确认后按新句号重写中文约束，英译定稿后再写英文约束。不能用旧表验收新稿，也不能把本轮文案估算记为画面检查通过。
