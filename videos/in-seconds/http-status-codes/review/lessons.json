@@ -25,9 +25,9 @@
   },
   "F04": {
    "rev": 1,
-   "result": "open",
-   "note": "readable.js 两种语言复测（改完回显日志、版本磁带、304 的应答时刻与过检线的镜头之后）：不足下限的只剩（1）沿线缆移动的请求包标签（GET /…、← 码），它们在运动中，内容同时显示在屏上的回显里；（2）推入换场时下一场露出的标签（0.1 s，换场的中间帧）；（3）带 X-Gateway 戳、正在移动的 404 码牌（已在网关处多停 0.2 s）。其余关键状态都到了「1.5 秒 + 字数 ÷ 5」。按规则还要以正常速度连续观看：制作方逐帧看图，不看连续播放，交策划者连续观看确认。",
-   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。readable.js（zh、en）2026-10-21 复测记录见 README「成片」。",
+   "result": "pass",
+   "note": "readable.js 两种语言复测（改完回显日志、版本磁带、304 的应答时刻与过检线的镜头之后）：不足下限的只剩（1）沿线缆移动的请求包标签（GET /…、← 码），它们在运动中，内容同时显示在屏上的回显里；（2）推入换场时下一场露出的标签（0.1 s，换场的中间帧）；（3）带 X-Gateway 戳、正在移动的 404 码牌（已在网关处多停 0.2 s）。其余关键状态都到了「1.5 秒 + 字数 ÷ 5」。按规则还要以正常速度连续观看：制作方逐帧看图，不看连续播放，交策划者连续观看确认。 ——策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」，按策划者的看片与试听结论通过（制作方本人仍未听过声音）。",
+   "evidence": "最终 MP4：out/http-status-codes-zh-1080p60.mp4（SHA-256 9939b8fe20b08129e902e6695eeccbb4af86d7aceeee1bd5ab95ffcc6e0187c5）与 -en-（85166d8db2308c3c0ddff022da097c687f21f31e51ac89cd6bad8d77bc81f769）。readable.js（zh、en）2026-10-21 复测记录见 README「成片」。；策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」。",
    "script_evidence": "README「开工反馈应用」F04 行与「内容」表的码卡段落；FACTS.md 03 各行记录了每次请求实际返回的头字段，可据此核对同屏文字量。"
   },
   "F05": {
@@ -39,9 +39,9 @@
   },
   "F06": {
    "rev": 1,
-   "result": "open",
-   "note": "配乐为本片新写（8 位芯片音色：方波、4 位三角波、LFSR 噪声；120 拍/分，A 小调，按段落编排，片名卡与 x4 各一记）。音效按动作分类（blip 发出、error 错误码回来、beep 成功码、drive 整组落位、tick 点名、pop 贴标签、chime 揭晓、thud 大字落位、whoosh 推入换场）。数值自检：各段低/中频能量约 −2 / −3 至 −5 dB，无削波，旁白时配乐压低生效。制作方听不到声音，听感、音量与同质化比较交策划者试听主混音、无配乐版、仅旁白版。",
-   "evidence": "audio.js 自检输出（README「声音」）；成片三个版本在 out/。",
+   "result": "pass",
+   "note": "配乐为本片新写（8 位芯片音色：方波、4 位三角波、LFSR 噪声；120 拍/分，A 小调，按段落编排，片名卡与 x4 各一记）。音效按动作分类（blip 发出、error 错误码回来、beep 成功码、drive 整组落位、tick 点名、pop 贴标签、chime 揭晓、thud 大字落位、whoosh 推入换场）。数值自检：各段低/中频能量约 −2 / −3 至 −5 dB，无削波，旁白时配乐压低生效。制作方听不到声音，听感、音量与同质化比较交策划者试听主混音、无配乐版、仅旁白版。 ——策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」，按策划者的看片与试听结论通过（制作方本人仍未听过声音）。",
+   "evidence": "audio.js 自检输出（README「声音」）；成片三个版本在 out/。；策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」。",
    "script_evidence": "系列 README「连续性」表的「声音」与「换场」两行；README「视觉系统」一节。"
   },
   "F07": {
@@ -81,9 +81,9 @@
   },
   "F12": {
    "rev": 1,
-   "result": "open",
-   "note": "读法清单逐项试过并逐句回听：状态码逐位念（四零四……；four-oh-four、five hundred、four twenty-nine），4xx 念「四字头」/ four-ex-ex，「行」→「航」，「重试」「重传」的「重」→「虫」，「传内容」「重传」的「传」→「船」（一次整段回听为「转」，改成单音字后逐句回听与成片整段回听都是「传」）。asr.js 与逐句回听：英文逐词对上；中文只剩同音字（守卫/首位、原站/源站等），没有漏词。按规则读音与断句以人耳为准：制作方听不到，全片旁白交策划者听一遍。",
-   "evidence": "out/zh/asr.txt、out/en/asr.txt（2026-10-21）；review/NOTES.md「配音与读法」。",
+   "result": "pass",
+   "note": "读法清单逐项试过并逐句回听：状态码逐位念（四零四……；four-oh-four、five hundred、four twenty-nine），4xx 念「四字头」/ four-ex-ex，「行」→「航」，「重试」「重传」的「重」→「虫」，「传内容」「重传」的「传」→「船」（一次整段回听为「转」，改成单音字后逐句回听与成片整段回听都是「传」）。asr.js 与逐句回听：英文逐词对上；中文只剩同音字（守卫/首位、原站/源站等），没有漏词。按规则读音与断句以人耳为准：制作方听不到，全片旁白交策划者听一遍。 ——策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」，按策划者的看片与试听结论通过（制作方本人仍未听过声音）。",
+   "evidence": "out/zh/asr.txt、out/en/asr.txt（2026-10-21）；review/NOTES.md「配音与读法」。；策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」。",
    "script_evidence": "README「读法」一节的预置问题清单；本轮未进入配音阶段，读法未试听。"
   },
   "F13": {
@@ -116,9 +116,9 @@
   },
   "F17": {
    "rev": 1,
-   "result": "open",
-   "note": "代表段试听：中文三个候选（News_Anchor、female-chengshu-jingpin、Wise_Women），英文 MiniMax 可用的女声里选 English_ConfidentWoman（Edge 在线语音被拒，403）。选择依据是 MiniMax 的音色描述（「专业、播音腔的新闻主播」最贴「严肃女声」）与能否装进 96 秒；制作方听不到，试听片在 audio/probe/，按规则交策划者确认。",
-   "evidence": "audio/probe/audition-*.mp3（不入库）；review/NOTES.md「配音与读法」。",
+   "result": "pass",
+   "note": "代表段试听：中文三个候选（News_Anchor、female-chengshu-jingpin、Wise_Women），英文 MiniMax 可用的女声里选 English_ConfidentWoman（Edge 在线语音被拒，403）。选择依据是 MiniMax 的音色描述（「专业、播音腔的新闻主播」最贴「严肃女声」）与能否装进 96 秒；制作方听不到，试听片在 audio/probe/，按规则交策划者确认。 ——策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」，按策划者的看片与试听结论通过（制作方本人仍未听过声音）。",
+   "evidence": "audio/probe/audition-*.mp3（不入库）；review/NOTES.md「配音与读法」。；策划者 WaterRun 2026-10-21 看过中英成片后回复「没问题了, 你去收尾, 我来投稿」。",
    "script_evidence": "系列 README「连续性」表的「语速」与「讲法」两行；README「读法」一节。"
   },
   "F18": {

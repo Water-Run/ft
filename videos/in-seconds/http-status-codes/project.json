@@ -1,7 +1,7 @@
 {
   "slug": "http-status-codes",
-  "stage": "accept",
-  "next": "策划者看片与试听：中文严肃女声的音色、8 位配乐、全片读音、连续观看的节奏；同意后登记交付",
+  "stage": "delivered",
+  "next": "策划者投稿（哔哩哔哩、YouTube）；发布后回填 release，收集评价",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -171,5 +171,12 @@
   "review": {
     "required": true,
     "reviewer": "WaterRun"
+  },
+  "delivery": {
+    "date": "2026-10-21",
+    "duration": {
+      "zh": 96.0,
+      "en": 96.0
+    }
   }
 }
