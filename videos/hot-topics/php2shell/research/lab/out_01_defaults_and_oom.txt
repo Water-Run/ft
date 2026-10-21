@@ -1,0 +1,16 @@
+===== php:8.5.11-cli =====
+PHP 8.5.11 (cli) (built: Oct 21 2026 00:25:28) (NTS)
+session.upload_progress.enabled    '1'
+session.upload_progress.name       'PHP_SESSION_UPLOAD_PROGRESS'
+memory_limit                       '128M'
+post_max_size                      '8M'
+max_file_uploads                   '20'
+fatal_error_backtraces             '1'
+--- OOM: memory_limit=16M, str_repeat 64 MiB, then echo after ---
+[shutdown function ran]
+Fatal error: Allowed memory size of 16777216 bytes exhausted (tried to allocate 67108896 bytes) in Command line code on line 1
+Stack trace:
+#0 Command line code(1): str_repeat('A', 67108864)
+#1 {main}
+exit code: 255
+
