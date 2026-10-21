@@ -184,7 +184,8 @@
 
 | 轮次 | 交审日期 | 稿本 | 审查意见与修改 | 结论与日期 |
 |---|---|---|---|---|
-| 1 | 2026-10-21 | `review/script.zh.a1b449a45ec2e7c9de502b3d60f08982b1c90cd0be0a074d660041773edeea20.md` | 尚未收到意见 | pending |
+| 1 | 2026-10-21 | `review/script.zh.a1b449a45ec2e7c9de502b3d60f08982b1c90cd0be0a074d660041773edeea20.md` | 尚未收到 WaterRun 的逐句意见 | pending |
+| 讨论（非审稿） | 2026-10-21 | Gemini 4 Argon 第 1 轮讨论稿 | 见 `review/GEMINI-ROUND1-DRAFT-2026-10-21.md`：**未落进 `src/js/script.js`**（实算 99.35 秒，超 3.35 秒；组织方式待改）。策划者看过后仍不满意，要求继续迭代，第 2 轮提示词见 `review/GEMINI-ROUND2-PROMPT-2026-10-21.md` | 不构成审稿结论 |
 
 ## 制作署名
 
@@ -198,6 +199,7 @@
 |---|---|---|
 | MiniMax M3.1 Flash（会话运行时标识 minimax-M3.1-Flash） | 取证、实验、事实表与开工反馈应用 | 本次会话的运行时标识；2026-10-20 与 2026-10-21 两轮 |
 | MiniMax M3.1 Flash（会话运行时标识 minimax-M3.1-Flash） | 片单重构、目录搭建与反馈记录校验 | 同上会话的交接说明；2026-10-20 |
+| Gemini 4 Argon | 第 1 轮文案讨论 | 2026-10-21，网页端；WaterRun 指定的讨论角色。实际贡献为逐句审校意见、中文改写示范与英文初稿（185 词）。其回复原文存档在 `review/GEMINI-ROUND1-REPLY-2026-10-21.md`，改写稿与本轮取舍见 `review/GEMINI-ROUND1-DRAFT-2026-10-21.md`。**这些是模型的意见，不是策划者的确认**；策划者看过后仍不满意，明确要求继续迭代，第 2 轮提示词见 `review/GEMINI-ROUND2-PROMPT-2026-10-21.md` |
 
 配音、渲染与成片审查尚未开工，暂无参与模型可记。
 
