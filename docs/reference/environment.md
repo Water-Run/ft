@@ -12,7 +12,7 @@
 | Chrome 或 Chromium | 近期版本 | 无头出帧 | 152、154 |
 | ffmpeg 与 ffprobe | 带 libx264 编码器 | 编码、封装、响度与静止检测 | 2026 年 9 月的主线构建 |
 | Python 3 | 3.10 或更新 | 配音、混音、回听 | 3.12、3.14 |
-| Python 包 `edge-tts`、`numpy` | 必需 | 配音、混音 | edge-tts 7.2、numpy 1.26 与 2.4 |
+| Python 包 `edge-tts`、`numpy` | 必需 | 配音、混音 | edge-tts 7.3（7.2.8 已被在线服务拒绝，见 [踩过的坑](pitfalls.md)）、numpy 1.26 与 2.4 |
 | Python 包 `faster-whisper` | 可选 | 回听旁白（`asr.js`、`tts_probe.js`） | 1.2 |
 | Python 包 `pillow` | 可选 | 越界自检（`margin.js`） | 10、12 |
 | 字体 | 清单见 `kit/assets.json` | 画面 | 由 `assets.js` 下载并校验 |

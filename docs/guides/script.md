@@ -146,14 +146,33 @@ node kit/tools/asr.js <视频>
 
 ## 9. 音色记录
 
-选音色前先看这张表。标「停用」的不再选用（F17）；其余评价针对当时那一片的气质或整体配音语气，再用时照样按 F17 先试听代表段。
+### 9.1 试听库
 
-| 音色（MiniMax speech-2.8-hd） | 用在 | WaterRun 的评价 | 以后 |
-|---|---|---|---|
-| `English_Aussie_Bloke` | Web 登录英文（语速 1.08） | 「英文配音很一般，之后不要用这个音色了」（2026-10-20，P38） | **停用** |
-| `Chinese (Mandarin)_Reliable_Executive` | Tmux 中文、OpenCart 中文 | 配音太「懒洋洋」（2026-10-19，P29） | 评价针对整体语气，未停用音色；再用须先试听 |
-| `English_Trustworthy_Man` | Tmux 英文 | 同上（P29） | 同上 |
-| `News_Anchor` | PostgreSQL 试听 | 「太老气」 | 未用；针对 PostgreSQL 的气质 |
-| `female-yujie` | PostgreSQL 试听 | 「太妩媚」 | 未用；针对 PostgreSQL 的气质 |
-| `Chinese (Mandarin)_Male_Announcer` | PostgreSQL 中文（语速 1.1） | 试听成片后「都没问题」（2026-10-19） | 可用 |
-| `male-qn-jingying`（精英青年） | Web 登录中文（语速 1.05） | 没有单独评价 | 可用，先试听 |
+选音色之前先真的听一遍：
+
+```bash
+node kit/tools/voices.js                       # edge-tts 与 MiniMax 的全部中英文音色
+node kit/tools/voices.js --engine minimax --lang zh --only Mandarin   # 只看一部分
+node kit/tools/voices.js --zip                 # 另打成 out/voices-<日期>.zip，带评价表，交给策划者离线试听
+```
+
+它用同一段范例文本（写在 `kit/tools/voices.py` 开头），把本机能用的每个音色各合成一遍，放进仓库根的 `out/voices/`（不入库），并生成试听页 `out/voices/index.html`：每个音色一行，可以逐个播放或整组连续播放，列出时长、语速和下表里已有的评价。范例文本覆盖配音最容易出问题的几样：解释句与长句、年份、英文缩写与版本号（HTTP/3、QUIC）、数字（404、500）、问句与结论句。语速一律用引擎缺省值（edge +0%、MiniMax 1.0），只比较音色本身；片子里实际用的语速记在各片的 `project.json`。
+
+音色由服务方提供，列表会变：以试听页上实际列出的为准，合成失败的标「不可用」。MiniMax 的音色列表接口只列出少数英文音色，`voices.py` 另带一份实测可用的英文音色 id。
+
+### 9.2 评价
+
+选音色前先看这张表。标「停用」的不再选用（F17）；其余评价针对当时那一片的气质或整体配音语气，再用时照样按 F17 先试听代表段。策划者听过试听库之后的评价也记在这里，原话照录、注明日期。
+
+| 音色 | 引擎 | 用在 | WaterRun 的评价 | 以后 |
+|---|---|---|---|---|
+| `English_Aussie_Bloke` | MiniMax | Web 登录英文（语速 1.08） | 「英文配音很一般，之后不要用这个音色了」（2026-10-20，P38） | **停用** |
+| `Chinese (Mandarin)_Reliable_Executive` | MiniMax | Tmux 中文、OpenCart 中文 | 配音太「懒洋洋」（2026-10-19，P29） | 评价针对整体语气，未停用音色；再用须先试听 |
+| `English_Trustworthy_Man` | MiniMax | Tmux 英文 | 同上（P29） | 同上 |
+| `Chinese (Mandarin)_News_Anchor` | MiniMax | PostgreSQL 试听（语速 0.95）；HTTP 状态码中文（语速 1.2） | PostgreSQL：「这个配音太老气了，换一个」（2026-10-19）。HTTP 状态码：整片看片后「没问题了」（2026-10-21），没有单独评价音色 | 两次的语速与片子的气质都不同，评价也不同；再用须先试听 |
+| `female-yujie` | MiniMax | PostgreSQL 试听 | 「太妩媚」 | 未用；针对 PostgreSQL 的气质 |
+| `Chinese (Mandarin)_Male_Announcer` | MiniMax | PostgreSQL 中文（语速 1.1） | 试听成片后「都没问题」（2026-10-19） | 可用 |
+| `male-qn-jingying`（精英青年） | MiniMax | Web 登录中文（语速 1.05） | 没有单独评价 | 可用，先试听 |
+| `English_ConfidentWoman` | MiniMax | HTTP 状态码英文（语速 1.25） | 整片看片后「没问题了」（2026-10-21），没有单独评价音色 | 可用，先试听 |
+| `zh-CN-YunyangNeural` | edge-tts | 缺省中文音色，早期片子 | 没有单独评价 | 先在试听库里听 |
+| `en-US-AndrewNeural` | edge-tts | 缺省英文音色，早期片子 | 没有单独评价 | 先在试听库里听 |

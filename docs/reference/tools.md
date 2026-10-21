@@ -13,7 +13,7 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 
 ## 1. 一览
 
-表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
+表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js`、`voices.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
 
 | 工具 | 作用 | 语言 | 大致耗时 |
 |---|---|---|---|
@@ -30,6 +30,7 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 | `catalog.js` | 核对片单并生成 `videos/README.md` 与各系列说明的分集表；`--check` 只核对 | — | 瞬间 |
 | `tts.js` | 合成旁白，写 `timing.<语言>.js`，打印时间线 | 全部 | 有缓存时几秒 |
 | `tts_probe.js "写法一" "写法二"` | 读法试验：各合成一句并回听 | 第一种 | 约半分钟 |
+| `voices.js [--engine edge,minimax] [--lang zh,en] [--only 字样] [--zip]` | 音色试听库：同一段范例文本用每个可用音色各合成一遍，生成 `out/voices/index.html` 试听页（见 [文案与配音](../guides/script.md) 第 9 节） | — | 有缓存时几秒；全部重合成约十分钟 |
 | `timeline.js [句号…]` | 打印时间线；带句号时列出词边界 | 第一种 | 瞬间 |
 | `stats.js` | 语速与停顿统计 | 全部 | 瞬间 |
 | `look.js <时刻…>` | 用文字看画面，并存截图 | 第一种 | 每次约 5 秒 |
@@ -254,6 +255,7 @@ node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库
 | `inspect.js` | 「用文字看画面」的公共部分：收集某一刻可见的元素，做版面判断 | `look.js`、`scan.js` |
 | `pngfix.js` | PNG 的解码，以及 RGBA 到 RGB 的改写 | `render.js`、`inspect.js` |
 | `tts.py` | 逐句合成旁白（edge-tts 或 MiniMax） | `tts.js` |
+| `voices.py` | 列出 edge-tts 与 MiniMax 的音色，合成范例文本，写试听页 | `voices.js` |
 | `minimax_tts.py` | MiniMax T2A v2 合成一句，逐字时间戳转成 `words` | `tts.py`、`tts_probe.py` |
 | `tts_probe.py` | 读法试验：合成几种写法，用 Whisper 回听 | `tts_probe.js` |
 | `asr.py` | 用 Whisper 回听旁白（faster-whisper） | `asr.js` |
