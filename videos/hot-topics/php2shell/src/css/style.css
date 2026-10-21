@@ -1,38 +1,108 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统：「深夜的告警屏」。
+   身份色取自 PHP 官方标志的紫 #777BB3 与 php.net 主题的深蓝 #404F82（research/MATERIALS.md）；
+   危险只用一种红，「部分有效」只用一种琥珀色，「已修复」只用一种绿。颜色的语义全片不换用。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --night: #07080f;        /* 底色：深夜 */
+  --panel: #10132a;        /* 面板 */
+  --line: #262b52;         /* 细线、网格 */
+  --php: #777bb3;          /* PHP 官方标志紫：凡是「PHP」本身 */
+  --php-deep: #404f82;     /* php.net 深蓝 */
+  --php-pale: #c4c9df;     /* php.net 浅色 */
+  --text: #e2e4ef;         /* 正文 */
+  --dim: #8a90b4;          /* 注解 */
+  --red: #ff3b3b;          /* 危险、攻击、下线 */
+  --amber: #ffb020;        /* 部分有效、临时办法、说法不一 */
+  --green: #3ddc84;        /* 已修复 */
+  --M: 120px;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+body { font-family: "Inter", "Sans SC"; color: var(--text); }
+#bg { background: var(--night); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+/* 字号阶梯 */
+.d-0 { font-weight: 900; font-size: 220px; line-height: .95; letter-spacing: -.035em; }
+.d-1 { font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -.03em; }
+.d-2 { font-weight: 800; font-size: 88px; line-height: 1.06; letter-spacing: -.02em; }
+.d-3 { font-weight: 800; font-size: 60px; line-height: 1.12; }
+.t-body { font-weight: 500; font-size: 40px; line-height: 1.4; }
+.t-note { font-weight: 500; font-size: 30px; line-height: 1.35; color: var(--dim); }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+.red { color: var(--red); } .amber { color: var(--amber); } .green { color: var(--green); } .php { color: var(--php); } .pale { color: var(--php-pale); } .dimc { color: var(--dim); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 常驻层：左上身份标识，右上截止时间 */
+.hud-id { position: absolute; left: 72px; top: 40px; display: flex; align-items: center; gap: 18px; font: 700 26px "Mono"; color: var(--text); }
+.hud-id .sq { width: 18px; height: 18px; background: var(--red); }
+.hud-id .cve { color: var(--dim); font-weight: 500; }
+.hud-cut { position: absolute; right: 72px; top: 40px; font: 500 24px "Mono", "Sans SC"; color: var(--dim); text-align: right; }
+.hud-cut b { color: var(--amber); font-weight: 700; }
+
+/* 章节卡：告警横幅 */
+.chapter { position: absolute; inset: 0; background: var(--night); overflow: hidden; }
+.chapter .band { position: absolute; left: 0; right: 0; top: 330px; height: 420px; background: var(--red); }
+.chapter .stripe { position: absolute; left: -60px; width: 2040px; height: 34px; background: #000; overflow: hidden; }
+.chapter .stripe i { position: absolute; top: 0; width: 26px; height: 34px; background: var(--amber); transform: skewX(-45deg); }
+.okbox { display: inline-block; width: 30px; height: 30px; background: var(--green); margin-right: 18px; vertical-align: -2px; }
+.chapter .no { position: absolute; left: var(--M); top: 380px; font: 700 64px "Mono"; color: #000; }
+.chapter .ti { position: absolute; left: var(--M); top: 470px; font-weight: 900; font-size: 140px; line-height: 1.05; color: #000; letter-spacing: -.02em; }
+
+/* 面板与卡片 */
+.card { position: absolute; background: var(--panel); border: 2px solid var(--line); padding: 28px 34px; white-space: normal; }
+.card .k { font: 500 26px "Mono"; color: var(--dim); }
+.card .v { font-weight: 800; font-size: 46px; line-height: 1.2; margin-top: 8px; }
+.stamp { position: absolute; font: 800 44px "Mono"; color: var(--red); border: 5px solid var(--red); padding: 4px 18px; letter-spacing: .06em; }
+.stamp.amber { color: var(--amber); border-color: var(--amber); }
+.stamp.green { color: var(--green); border-color: var(--green); }
+.tag { display: inline-block; font: 700 30px "Mono"; padding: 6px 16px; border: 3px solid currentColor; }
+
+/* 浏览器窗口与帖子 */
+.win { position: absolute; background: #fff; color: #000; border: 2px solid #3a3f66; white-space: normal; }
+.win .bar { height: 54px; background: #dfe1ea; display: flex; align-items: center; padding: 0 22px; gap: 12px; font: 500 24px "Mono"; color: #333; }
+.win .dot { width: 14px; height: 14px; border-radius: 50%; background: #b9bccb; }
+.win .body { padding: 34px 40px; font-family: "Times New Roman", serif; }
+.post { position: absolute; background: var(--panel); border-left: 8px solid var(--php); padding: 30px 40px; white-space: normal; }
+.post .who { font-weight: 800; font-size: 34px; }
+.post .ja { font-size: 40px; line-height: 1.5; margin-top: 14px; }
+.post .zh { font-size: 32px; line-height: 1.45; margin-top: 16px; color: var(--php-pale); }
+
+/* 机制图：进程、访问、内存块 */
+.lane { position: absolute; height: 4px; background: var(--line); }
+.req { position: absolute; width: 230px; height: 96px; background: var(--php-deep); color: var(--text); font: 700 32px "Mono"; display: flex; align-items: center; justify-content: center; }
+.req.bad { background: var(--red); color: #000; }
+.mem { position: absolute; width: 300px; height: 210px; border: 4px solid var(--php); background: rgba(119, 123, 179, .16); display: flex; align-items: center; justify-content: center; font: 700 34px "Sans SC"; }
+.mem.freed { border-style: dashed; background: transparent; color: var(--dim); }
+.mem.evil { border-color: var(--red); background: rgba(255, 59, 59, .2); color: var(--red); }
+.keycard { position: absolute; width: 200px; height: 124px; background: var(--php-pale); color: #10132a; font: 800 30px "Sans SC"; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+.diff { position: absolute; font: 500 38px/1.6 "Mono"; background: #0c0f22; border: 2px solid var(--line); padding: 26px 36px; }
+.diff .add { color: var(--green); }
+.diff .ctx { color: var(--php-pale); }
+
+/* 时间线 */
+.rail { position: absolute; height: 6px; background: var(--line); transform-origin: 0 50%; }
+.fuse { position: absolute; height: 6px; background: var(--red); transform-origin: 0 50%; }
+.node { position: absolute; width: 26px; height: 26px; background: var(--night); border: 5px solid var(--php); border-radius: 50%; }
+.node.red { border-color: var(--red); background: var(--red); }
+.ev { position: absolute; white-space: normal; width: 520px; }
+.ev .when { font: 700 32px "Mono"; color: var(--amber); }
+.ev .what { font-weight: 800; font-size: 44px; line-height: 1.25; margin-top: 8px; }
+.ev .note { font-size: 30px; color: var(--dim); margin-top: 8px; line-height: 1.35; }
+
+/* 网格与条形 */
+.cell { position: absolute; width: 56px; height: 56px; background: var(--line); }
+.cell.on { background: var(--php); }
+.vbar { position: absolute; height: 74px; transform-origin: 0 50%; }
+.meter { position: absolute; height: 40px; background: var(--line); }
+.meter i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--red); transform-origin: 0 50%; }
+
+/* 版本表 */
+.vrow { position: absolute; display: flex; align-items: center; gap: 36px; font: 700 52px "Mono"; }
+.vrow .st { font: 700 34px "Sans SC"; }
 
 /* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+#caption { bottom: 46px; height: 64px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--text); background: rgba(7, 8, 15, .82); padding: 4px 22px; }
 .en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption em { font-style: normal; font-weight: 800; color: var(--red); }
 
 /* 片尾名单 */
-.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
-.credit-row { break-inside: avoid; margin-bottom: 30px; }
+.credits { white-space: normal; width: 1560px; columns: 2; column-gap: 120px; }
+.credit-row { break-inside: avoid; margin-bottom: 34px; }

@@ -4,135 +4,135 @@
   "items": {
     "F01": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "标题「隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响」→ 开场 o1–o8 提出「是什么、为什么让各地网站连夜下线」→ 01 是什么与严重性 → 02 原理 → 03 时间线 → 04 影响 → 05 怎么办与截止时间；逐章对照 script.js 与 README 简报核对，每章都回答片名的两个问题之一"
     },
     "F02": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "一个比喻走完机制（02：访问=住客、内存=房间、旧记录=房卡；b2–b10 每步有输入、变化、结果），修复对应同一比喻（b13–b15）；新名词 4 个（PHP、RCE、工作进程、补丁），首次出现即解释，见 review/NOTES.md 术语表"
     },
     "F03": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "「近七成」第一次出现即带口径「能识别后台语言的网站里」（a2，画面另标 W3Techs 2026-10-21）；严重程度写明「PHP 官方」「满分 10」（a10）；发现者自述均标「Wiz 说」「发现者说」（a12、b17、c5）；各方冲突说法并列（d11–d13）"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "readable.js 全片 zh 0 项不足（2026-10-22，多轮调整后）；章节卡按标题字数加长（how lead 3.6 s、what 3.1 s、now 2.8 s）。限制：制作方没有以正常速度连续观看成片，只看了 look.js 抽帧"
     },
     "F05": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "运动表达关系：房卡移到房门（b10）、红色引线从爆料烧到修复发布（03）、占比条按版本分段展开（e3c）；look.js 抽帧核对 b10、c13、e3d"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方听不到声音。配乐为本片自写的 D 弗里吉亚调式、128 拍/分（tools/music.py），音效 90 个、7 种，各有含义（盖章 thud、出错 error、发布 chime）；audio.js 数值：旁白 −21 dB，配乐在旁白之下 −44.6 至 −54.3 dB，无削波。听感是否「紧张」未经人耳确认，待 WaterRun 看片",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面素材全部来自公开网页与新闻，没有本机终端回显上画面；对视频目录的入库文件 grep 本机用户名与用户目录写法，无结果（2026-10-22）"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "README「交付」的时长、响度、文件名取自 finish.js 输出与 check.js --final 对最终文件的测量（重渲后填写）"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "research/FACTS.md 区分官方、发现者自述、媒体与制作方观察；策划者在会话中的说法（如「高市早苗的网站已经被黑」「Go 今天也爆出重大漏洞」）单列并写明核查结论，未经证实部分不进片"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "系列首集，不引用其他各集"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "首相帖子日文原文旁给中文释义（open 站二）；荷兰站点名旁有中文说明（公民数字身份登录、政务门户、议会官网、国家网络安全中心）；OFFLINE、PAUSED、CRITICAL 等英文标签与中文字幕和卡片正文同时出现；look.js 抽帧核对 o3、o6a"
     },
     "F12": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "asr.js 回听 zh 全部 72 句：多数差异为同音错字（补丁→补钉、置空→智空），版本号、年份、PHP、RCE 读法正确。d8「4chan」被听成「私券」，可能读成了「四 chan」，是否可接受待人工试听",
       "evidence": ""
     },
     "F13": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "a1 先交代 PHP 是什么、a2 有多少网站在用、a3 熟悉的建站系统，再进漏洞；开场先给事件现象（各地下线）再给名字"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾为无旁白静默 cue（credits, pause 8, credits: true）；script-review 导出稿无制作指令；asr.js 片尾无人声"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏列出说明性小字：只有数据来源行（W3Techs 2026-10-21、PHP 官方安全公告、php-src · main/SAPI.c）；无「示意」「本实验」类说明"
     },
     "F16": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "身份色取自 PHP 官方标志 #777BB3 与 php.net 主题 #404F82（research/MATERIALS.md）；左上常驻「PHP2Shell + CVE 编号」身份标识；修复画面用 php-src 原文一行"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "赶工未做试听页：音色由 WaterRun 在选择题中选定（MiniMax News_Anchor，语速 1.2，HTTP 状态码一片用过且看片后「没问题了」）；制作方听不到，配音精神面貌待 WaterRun 看片确认",
       "evidence": ""
     },
     "F18": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每章主画面：开场「网站墙」盖章、01 一百格方阵与 9.2 严重程度条、02「工作进程走廊」房卡开门、03 引线时间轴、04 头条墙、05 版本表与占比条；look.js 截图逐章看过一帧以上"
     },
     "F19": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 全片无 NONDET、STILL、EMPTY、OVERLAP；preview.js 像素检查无超过 3 秒的静止段（2026-10-22）；章节卡停留期间斜纹与标题缓慢移动，场景内容在卡下已开始。限制：中间帧只抽看了 o6a、b10、d6 三处"
     },
     "F20": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏列出图形与旁白：方阵=a2 的近七成；房间/房卡/访问=b2–b10；引线=c8–c13 的倒计时；版本表三色=e2–e3b；颜色语义全片固定（红=危险、琥珀=部分/冲突、绿=已修复），README「设计」有记录"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "底色、配色、章节卡（红色告警横幅）、配乐（自写 D 弗里吉亚 128 拍）均为本片新建；与速通系列纸色版式与秒尺、垃圾回收一片的绿色方向不同（依据片单与记录对比，未并排逐帧比较）"
     },
     "F22": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "04 头条墙成组摆出、05 版本表三行成组，旁白推进时只入场或高亮当前项；画面无与内容无关的装饰"
     }
   },
   "history": []

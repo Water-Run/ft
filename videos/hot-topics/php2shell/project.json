@@ -9,8 +9,8 @@
     "zh": "隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响",
     "en": "A Fatal RCE Hidden for 14 Years: What PHP2Shell Is and What It Means"
   },
-  "stage": "review",
-  "next": "等 WaterRun 审中文第 1 稿（约 5 分钟，赶工）；确认后试听音色、配音，同时做设计",
+  "stage": "accept",
+  "next": "等 WaterRun 看中文成片（三条 open：配乐听感、配音精神、4chan 读音）；同意后登记交付，再做英文版",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -18,11 +18,21 @@
         "name": "Claude Opus 5.5",
         "roles": [
           "取证",
-          "文案"
+          "文案",
+          "视觉设计",
+          "场景实现",
+          "配乐"
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "voices": {
@@ -43,13 +53,14 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4
+    "mb": 2,
+    "gpu": 1
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
-    "duck_db": 9,
-    "sfx_db": -8
+    "music": "tools/music.py",
+    "music_db": -13,
+    "duck_db": 8,
+    "sfx_db": -9
   },
   "check": {
     "caption_width": {
@@ -64,6 +75,19 @@
     "style": {
       "flat": true,
       "no_emoji": true
+    }
+  },
+  "tts": {
+    "engine": {
+      "zh": "minimax",
+      "en": "edge"
+    },
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_News_Anchor"
+    },
+    "speed": {
+      "zh": 1.2
     }
   }
 }

@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "f5f386da93d793836dcd0dd47848b979c1f32c50505c69dac710cca6a2185d55",
+      "status": "approved",
+      "content_sha256": "d89cfdeb7727d7e5e09347d3505c42fa0e9a28e09ebc77e4e36fb79973c0ea2c",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-22T00:40:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-10-22 中文第 1 稿；同节「确认后的断句修改（不改含义）」e2 拆句"
     }
   }
 }

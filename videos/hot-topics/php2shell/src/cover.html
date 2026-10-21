@@ -6,29 +6,36 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+     与片中同一套视觉：深夜底色、PHP 官方紫、告警红横幅。底部约 15% 不放文字。 */
+  :root { --night: #07080f; --php: #777bb3; --red: #ff3b3b; --amber: #ffb020; --text: #e2e4ef; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; --M: 110px; --fs: 236px; --band: 330px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 90px; --fs: 210px; --band: 340px; }
+  #stage { background: var(--night); color: var(--text); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .kicker { position: absolute; left: var(--M); top: 9%; font: 800 64px "Sans SC"; color: var(--amber); }
+  .band { position: absolute; left: 0; right: 0; top: 23%; height: var(--band); background: var(--red); }
+  .title { position: absolute; left: var(--M); top: 23%; height: var(--band); display: flex; align-items: center; font-weight: 900; font-size: var(--fs); letter-spacing: -.035em; color: #000; }
+  .sub { position: absolute; left: var(--M); top: calc(23% + var(--band) + 50px); font: 900 92px "Sans SC"; }
+  .sub b { color: var(--php); }
+  .tag { position: absolute; left: var(--M); top: calc(23% + var(--band) + 190px); font: 700 40px "Mono"; color: var(--red); border: 4px solid var(--red); padding: 6px 18px; }
 </style>
 </head>
 <body>
 <div id="stage">
   <div class="kicker"></div>
-  <div class="title"></div>
+  <div class="band"></div>
+  <div class="title">PHP2Shell</div>
+  <div class="sub"></div>
+  <div class="tag">CVSS 9.2 · CRITICAL</div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
   document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
+  const TEXT = { zh: { kicker: '隐藏 14 年的致命 RCE', sub: '<b>PHP</b> 漏洞是什么，影响多大' }, en: { kicker: 'A fatal RCE hidden for 14 years', sub: 'What it is, what it means' } }[lang];
   document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  document.querySelector('.sub').innerHTML = TEXT.sub;
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
