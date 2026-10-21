@@ -42,7 +42,7 @@
 | [OpenCode 是怎么实现的？](agent-harnesses/opencode/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 待同步 |
-| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 待同步 |
+| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 最新 |
 | [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 |
 | [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | 配音 | 交接制作方 Claude Opus 5.5 开工：中文配音用严肃女声、配乐用 8 位电子乐（90 年代计算机风格），再做关键帧与分镜、场景、封面、渲染、验收 | 最新 |
