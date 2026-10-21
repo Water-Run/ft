@@ -28,31 +28,31 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-20.3），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-21.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿；确认后交制作方 | 最新 |
-| [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [磁带、磁盘和软盘：利用磁力存储的机械年代](storage-media/magnetic/) | [存储介质](storage-media/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [C 语言的发展史](silicon-history/c-language-history/) | [电子发展史](silicon-history/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [CodeX CLI 是怎么实现的？](agent-harnesses/codex/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [OpenCode 是怎么实现的？](agent-harnesses/opencode/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 最新 |
-| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 最新 |
-| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 取证 | 重跑 research/lab 的 02–04（01 已完成），把结果整理进 FACTS | 最新 |
-| [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 最新 |
-| [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [96 秒讲清 HTTP 状态码：五类响应与最常用的那些](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git](in-seconds/scion/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [英特尔的酷睿年代](eras/intel-core-era/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
-| [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 最新 |
-| [宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快](standalone/lightweighting/) | — | 文案 | 写中文稿，导出交审 | 最新 |
-| [RDP：Windows 远程的优雅实现](standalone/rdp/) | — | 文案 | 写中文稿，导出交审 | 最新 |
+| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿；确认后交制作方 | 待同步 |
+| [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [磁带、磁盘和软盘：利用磁力存储的机械年代](storage-media/magnetic/) | [存储介质](storage-media/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [C 语言的发展史](silicon-history/c-language-history/) | [电子发展史](silicon-history/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [CodeX CLI 是怎么实现的？](agent-harnesses/codex/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [OpenCode 是怎么实现的？](agent-harnesses/opencode/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 |
+| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 待同步 |
+| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 待同步 |
+| [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 |
+| [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 逐句审中文第 1 稿；确认后英译、配音（音色先试听），再交制作方开工 | 最新 |
+| [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git](in-seconds/scion/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [英特尔的酷睿年代](eras/intel-core-era/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 |
+| [宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快](standalone/lightweighting/) | — | 文案 | 写中文稿，导出交审 | 待同步 |
+| [RDP：Windows 远程的优雅实现](standalone/rdp/) | — | 文案 | 写中文稿，导出交审 | 待同步 |
 
 ## 全部选题
 
@@ -302,7 +302,7 @@
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
 | 20 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | [`chain-of-thought`](in-seconds/chain-of-thought/) |  |
 | 21 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh + en | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
-| 22 | 96 秒讲清 HTTP 状态码：五类响应与最常用的那些<br>HTTP Status Codes in 96 Seconds: Five Classes and the Ones You Meet Most | zh + en | 制作中 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
+| 22 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 制作中 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
 | 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh + en | 制作中 | [`ea211-family`](in-seconds/ea211-family/) |  |
 | 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh + en | 制作中 | [`scion`](in-seconds/scion/) |  |
 | 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
