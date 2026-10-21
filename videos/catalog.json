@@ -22,7 +22,8 @@
     {"slug": "eras", "title": {"zh": "时代", "en": "Eras"}},
     {"slug": "open-source-projects", "title": {"zh": "开源项目", "en": "Open Source Projects"}},
     {"slug": "windows-internals", "title": {"zh": "Windows 是怎么工作的", "en": "How Windows Works"}},
-    {"slug": "literary-animation", "title": {"zh": "文学作品动画化", "en": "Literature, Animated"}}
+    {"slug": "literary-animation", "title": {"zh": "文学作品动画化", "en": "Literature, Animated"}},
+    {"slug": "lua-source", "title": {"zh": "Lua 源码解析", "en": "Lua Source Code, Explained"}}
   ],
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered"},
@@ -181,6 +182,20 @@
     {"slug": "bitlocker", "series": "windows-internals", "title": {"zh": "BitLocker：全盘加密与密钥保管"}},
     {"slug": "the-egg", "series": "literary-animation", "title": {"zh": "蛋", "en": "The Egg"}, "note": "2026-10-20 策划者新增（原话「新增系列: 文学作品动画化. 包括蛋, 项脊轩志」）。「蛋」暂按安迪·威尔（Andy Weir）2009 年的短篇小说 The Egg 登记，待策划者确认是哪一部。原作在版权期内，开工前先查清授权与可引用的范围；已有知名的同题动画，不得照搬其画面与讲法。"},
     {"slug": "xiang-ji-xuan-zhi", "series": "literary-animation", "title": {"zh": "项脊轩志", "en": "Record of the Xiangji Studio"}, "note": "2026-10-20 策划者新增。明代归有光的散文（含后来补写的两段），原文已在公有领域；英文版的译文来源待定。"},
+    {"slug": "lua-overview", "series": "lua-source", "title": {"zh": "全景：一行 Lua 从读入到跑完", "en": "The Big Picture: One Line of Lua, From Source to Result"}, "note": "2026-10-20 策划者新增系列（原话「新增系列视频: Lua源码解析, 你来进行合适的分集」），分集由受托方 Claude Opus 5.5 拟定。本集：源码按层怎么分工，一段脚本经过读入、编译、执行三站。初步对应 lua.c、lauxlib、lparser、lvm；文件与函数名开工取证时按所选版本核对"},
+    {"slug": "lua-values", "series": "lua-source", "title": {"zh": "值：一个 TValue 装下所有类型", "en": "Values: One TValue for Every Type"}, "note": "动态类型的值在 C 里怎么表示：类型标签与值的联合体。初步对应 lobject.h"},
+    {"slug": "lua-strings", "series": "lua-source", "title": {"zh": "字符串：相同的短字符串只存一份", "en": "Strings: Why Equal Short Strings Are Stored Once"}, "note": "短字符串驻留、长字符串、哈希。初步对应 lstring.c"},
+    {"slug": "lua-tables", "series": "lua-source", "title": {"zh": "表：数组部分、哈希部分与扩容", "en": "Tables: The Array Part, the Hash Part, and Rehashing"}, "note": "Lua 唯一的数据结构怎么实现：两部分的划分、冲突处理、何时重新分配。初步对应 ltable.c"},
+    {"slug": "lua-compiler", "series": "lua-source", "title": {"zh": "编译：边读边生成字节码的一遍编译器", "en": "Compiling: A One-Pass Compiler That Emits Bytecode as It Reads"}, "note": "词法、语法分析与代码生成不建完整语法树，一遍完成。初步对应 llex.c、lparser.c、lcode.c"},
+    {"slug": "lua-bytecode", "series": "lua-source", "title": {"zh": "字节码：基于寄存器的指令", "en": "Bytecode: A Register-Based Instruction Set"}, "note": "指令的编码格式、寄存器式与栈式的区别、luac 列出与保存字节码。初步对应 lopcodes.h、ldump.c、lundump.c"},
+    {"slug": "lua-vm", "series": "lua-source", "title": {"zh": "虚拟机：一条条指令怎么执行", "en": "The VM: How Instructions Get Executed"}, "note": "解释器主循环的取指、分派与执行。初步对应 lvm.c"},
+    {"slug": "lua-calls", "series": "lua-source", "title": {"zh": "调用：栈、调用信息与尾调用", "en": "Calls: The Stack, CallInfo, and Tail Calls"}, "note": "函数调用时栈与调用信息怎么变化，尾调用为什么不长栈。初步对应 ldo.c"},
+    {"slug": "lua-closures", "series": "lua-source", "title": {"zh": "闭包：上值怎么从栈上搬走", "en": "Closures: How Upvalues Leave the Stack"}, "note": "开放上值与关闭上值，多个闭包共享同一个变量。初步对应 lfunc.c"},
+    {"slug": "lua-metatables", "series": "lua-source", "title": {"zh": "元表：一次 __index 查找走过的路", "en": "Metatables: The Path of an __index Lookup"}, "note": "元方法的查找与缓存，运算符重载怎么落到元方法。初步对应 ltm.c、lvm.c"},
+    {"slug": "lua-gc", "series": "lua-source", "title": {"zh": "垃圾回收：增量模式与分代模式", "en": "Garbage Collection: Incremental and Generational Modes"}, "note": "逐段读回收器的源码。与独立片《垃圾回收的艺术》分工：那部横跨多种运行时讲机制，本集只读 Lua 的实现。初步对应 lgc.c"},
+    {"slug": "lua-coroutines", "series": "lua-source", "title": {"zh": "协程：resume 与 yield 之间发生了什么", "en": "Coroutines: What Happens Between resume and yield"}, "note": "每个协程一条独立的栈，切换时保存与恢复什么。初步对应 ldo.c、lcorolib.c"},
+    {"slug": "lua-errors", "series": "lua-source", "title": {"zh": "错误：pcall、error 与长跳转", "en": "Errors: pcall, error, and the Long Jump"}, "note": "错误怎么从深处跳回保护调用的位置。初步对应 ldo.c"},
+    {"slug": "lua-c-api", "series": "lua-source", "title": {"zh": "C API：Lua 与 C 隔着一个栈对话", "en": "The C API: Talking to C Across a Stack"}, "note": "C 与 Lua 交换数据的虚拟栈、标准库怎么注册进来。初步对应 lapi.c、lauxlib.c、linit.c"},
     {"slug": "windows-batch", "title": {"zh": "古代来的 Shell：Windows 批处理（.bat）"}, "status": "delivered", "languages": ["zh"]},
     {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "status": "delivered"},
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端", "en": "What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End"}, "status": "delivered", "languages": ["zh"]},
@@ -210,6 +225,8 @@
     {"slug": "smooth-stop", "title": {"zh": "关于让车不点头的停下"}},
     {"slug": "ipv4", "title": {"zh": "IPv4"}},
     {"slug": "shell-survey", "title": {"zh": "Shell 群观"}},
-    {"slug": "termux-proot", "title": {"zh": "代价很小的安卓 Linux 虚拟机：Termux 和 Proot", "en": "A Cheap Android Linux VM: Termux and Proot"}, "note": "2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。"}
+    {"slug": "termux-proot", "title": {"zh": "代价很小的安卓 Linux 虚拟机：Termux 和 Proot", "en": "A Cheap Android Linux VM: Termux and Proot"}, "note": "2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。"},
+    {"slug": "c-data-structures", "title": {"zh": "一个视频讲明白全部 C 数据结构", "en": "Every C Data Structure in One Video"}, "note": "2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针"},
+    {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"}
   ]
 }

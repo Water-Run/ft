@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 186 部：已成片 14，制作中 22，计划中 150。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 202 部：已成片 14，制作中 22，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 ## 已成片
 
@@ -50,7 +50,7 @@
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
 | [英特尔的酷睿年代](eras/intel-core-era/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 最新 |
-| [垃圾回收的艺术](standalone/garbage-collection/) | — | 审稿 | 英文文案交 WaterRun 确认；之后英文配音、场景补英文、中英两版渲染与总检 | 最新 |
+| [垃圾回收的艺术](standalone/garbage-collection/) | — | 验收 | 中英成片 1080p60 已出、check.js --final 全部通过；等 WaterRun 观看成片、试听后同意交付 | 最新 |
 | [宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快](standalone/lightweighting/) | — | 文案 | 写中文稿，导出交审 | 最新 |
 | [RDP：Windows 远程的优雅实现](standalone/rdp/) | — | 文案 | 写中文稿，导出交审 | 最新 |
 
@@ -367,6 +367,27 @@
 | 1 | 蛋<br>The Egg | zh + en | 计划中 | `the-egg` | 2026-10-20 策划者新增（原话「新增系列: 文学作品动画化. 包括蛋, 项脊轩志」）。「蛋」暂按安迪·威尔（Andy Weir）2009 年的短篇小说 The Egg 登记，待策划者确认是哪一部。原作在版权期内，开工前先查清授权与可引用的范围；已有知名的同题动画，不得照搬其画面与讲法。 |
 | 2 | 项脊轩志<br>Record of the Xiangji Studio | zh + en | 计划中 | `xiang-ji-xuan-zhi` | 2026-10-20 策划者新增。明代归有光的散文（含后来补写的两段），原文已在公有领域；英文版的译文来源待定。 |
 
+### Lua 源码解析
+
+[系列说明](lua-source/README.md)；英文名 Lua Source Code, Explained。缺省语言：zh + en。
+
+| # | 标题 | 语言 | 状态 | 目录 | 备注 |
+|---|---|---|---|---|---|
+| 1 | 全景：一行 Lua 从读入到跑完<br>The Big Picture: One Line of Lua, From Source to Result | zh + en | 计划中 | `lua-overview` | 2026-10-20 策划者新增系列（原话「新增系列视频: Lua源码解析, 你来进行合适的分集」），分集由受托方 Claude Opus 5.5 拟定。本集：源码按层怎么分工，一段脚本经过读入、编译、执行三站。初步对应 lua.c、lauxlib、lparser、lvm；文件与函数名开工取证时按所选版本核对 |
+| 2 | 值：一个 TValue 装下所有类型<br>Values: One TValue for Every Type | zh + en | 计划中 | `lua-values` | 动态类型的值在 C 里怎么表示：类型标签与值的联合体。初步对应 lobject.h |
+| 3 | 字符串：相同的短字符串只存一份<br>Strings: Why Equal Short Strings Are Stored Once | zh + en | 计划中 | `lua-strings` | 短字符串驻留、长字符串、哈希。初步对应 lstring.c |
+| 4 | 表：数组部分、哈希部分与扩容<br>Tables: The Array Part, the Hash Part, and Rehashing | zh + en | 计划中 | `lua-tables` | Lua 唯一的数据结构怎么实现：两部分的划分、冲突处理、何时重新分配。初步对应 ltable.c |
+| 5 | 编译：边读边生成字节码的一遍编译器<br>Compiling: A One-Pass Compiler That Emits Bytecode as It Reads | zh + en | 计划中 | `lua-compiler` | 词法、语法分析与代码生成不建完整语法树，一遍完成。初步对应 llex.c、lparser.c、lcode.c |
+| 6 | 字节码：基于寄存器的指令<br>Bytecode: A Register-Based Instruction Set | zh + en | 计划中 | `lua-bytecode` | 指令的编码格式、寄存器式与栈式的区别、luac 列出与保存字节码。初步对应 lopcodes.h、ldump.c、lundump.c |
+| 7 | 虚拟机：一条条指令怎么执行<br>The VM: How Instructions Get Executed | zh + en | 计划中 | `lua-vm` | 解释器主循环的取指、分派与执行。初步对应 lvm.c |
+| 8 | 调用：栈、调用信息与尾调用<br>Calls: The Stack, CallInfo, and Tail Calls | zh + en | 计划中 | `lua-calls` | 函数调用时栈与调用信息怎么变化，尾调用为什么不长栈。初步对应 ldo.c |
+| 9 | 闭包：上值怎么从栈上搬走<br>Closures: How Upvalues Leave the Stack | zh + en | 计划中 | `lua-closures` | 开放上值与关闭上值，多个闭包共享同一个变量。初步对应 lfunc.c |
+| 10 | 元表：一次 __index 查找走过的路<br>Metatables: The Path of an __index Lookup | zh + en | 计划中 | `lua-metatables` | 元方法的查找与缓存，运算符重载怎么落到元方法。初步对应 ltm.c、lvm.c |
+| 11 | 垃圾回收：增量模式与分代模式<br>Garbage Collection: Incremental and Generational Modes | zh + en | 计划中 | `lua-gc` | 逐段读回收器的源码。与独立片《垃圾回收的艺术》分工：那部横跨多种运行时讲机制，本集只读 Lua 的实现。初步对应 lgc.c |
+| 12 | 协程：resume 与 yield 之间发生了什么<br>Coroutines: What Happens Between resume and yield | zh + en | 计划中 | `lua-coroutines` | 每个协程一条独立的栈，切换时保存与恢复什么。初步对应 ldo.c、lcorolib.c |
+| 13 | 错误：pcall、error 与长跳转<br>Errors: pcall, error, and the Long Jump | zh + en | 计划中 | `lua-errors` | 错误怎么从深处跳回保护调用的位置。初步对应 ldo.c |
+| 14 | C API：Lua 与 C 隔着一个栈对话<br>The C API: Talking to C Across a Stack | zh + en | 计划中 | `lua-c-api` | C 与 Lua 交换数据的虚拟栈、标准库怎么注册进来。初步对应 lapi.c、lauxlib.c、linit.c |
+
 ### 独立视频
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
@@ -401,3 +422,5 @@
 | 28 | IPv4 | zh + en | 计划中 | `ipv4` |  |
 | 29 | Shell 群观 | zh + en | 计划中 | `shell-survey` |  |
 | 30 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh + en | 计划中 | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
+| 31 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh + en | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
+| 32 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh + en | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
