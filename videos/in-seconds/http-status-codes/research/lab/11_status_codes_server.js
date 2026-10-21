@@ -31,7 +31,22 @@ function originHandler(req, res) {
   if (p === '/moved') return send(301, { Location: '/ok' }, 'moved permanently\n');
   if (p === '/found') return send(302, { Location: '/ok' }, 'found\n');
   if (p === '/bad') return send(400, {}, 'bad request\n');
-  if (p === '/private') return send(401, { 'WWW-Authenticate': 'Basic realm="demo"' }, 'unauthorized\n');
+  // 同一个资源，带凭据时给出不同的码：凭据不足是 403，凭据不对仍是 401。
+  // 401 必须带 WWW-Authenticate 挑战；403 不带（RFC 9110 §15.5.2 / §15.5.4）。
+  if (p === '/private') {
+    const auth = req.headers['authorization'];
+    if (!auth) {
+      return send(401, { 'WWW-Authenticate': 'Basic realm="demo"' }, 'unauthorized\n');
+    }
+    if (auth !== 'Bearer good-token') {
+      return send(401, { 'WWW-Authenticate': 'Basic realm="demo"' }, 'unauthorized\n');
+    }
+    // 凭据有效但权限不够：服务器认得出你是谁，只是不让你看这一份。
+    if (req.headers['x-demo-role'] !== 'admin') {
+      return send(403, {}, 'forbidden\n');
+    }
+    return send(200, {}, 'secret\n');
+  }
   if (p === '/forbidden') return send(403, {}, 'forbidden\n');
   if (p === '/missing') return send(404, {}, 'not found\n');
   if (p === '/post-only') {
@@ -41,6 +56,9 @@ function originHandler(req, res) {
   if (p === '/limited') return send(429, { 'Retry-After': '3' }, 'too many requests\n');
   if (p === '/boom') return send(500, {}, 'internal server error\n');
   if (p === '/maintenance') return send(503, { 'Retry-After': '30' }, 'service unavailable\n');
+  // 未在 IANA 注册表登记的码：471 在注册表里是 Unassigned（452–499 区间）。
+  // RFC 9110 §15 要求客户端按该类的 x00 看待——即把 471 当成 400。
+  if (p === '/unassigned') return send(471, {}, 'unassigned code\n');
   return send(404, {}, 'not found\n');
 }
 
@@ -57,7 +75,9 @@ const gateway = http.createServer((req, res) => {
   }
   let answered = false;
   const up = http.request(target, { method: req.method, headers: req.headers }, response => {
-    res.writeHead(response.statusCode, response.headers);
+    // 网关自己加一个标记头：看到它就知道响应确实经过了网关；
+    // 而状态码仍是上游给的那个，网关没有替换。
+    res.writeHead(response.statusCode, Object.assign({ 'X-Gateway': 'demo-gateway' }, response.headers));
     response.pipe(res);
   });
   up.setTimeout(UPSTREAM_TIMEOUT_MS, () => {

@@ -9,7 +9,9 @@
         "name": "MiniMax M3.1 Flash",
         "roles": [
           "取证",
-          "事实表"
+          "实验",
+          "事实表",
+          "开工反馈应用"
         ]
       }
     ],
@@ -21,8 +23,8 @@
     "en"
   ],
   "titles": {
-    "zh": "96 秒讲清 HTTP 状态码：五类响应与最常用的那些",
-    "en": "HTTP Status Codes in 96 Seconds: Five Classes and the Ones You Meet Most"
+    "zh": "96 秒了解 HTTP 状态码",
+    "en": "HTTP Status Codes in 96 Seconds"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural",

@@ -10,12 +10,12 @@ Microsoft Windows NT 10.0.26340.0
 本实验只监听 127.0.0.1 的临时端口；端口号由内核分配，每次运行都会变。
 
 == 200 成功：内容就在响应里
-$ curl -i http://127.0.0.1:60920/ok
+$ curl -i http://127.0.0.1:53440/ok
 HTTP/1.1 200 OK
 Content-Type: text/plain; charset=utf-8
 ETag: "demo-v1"
 Cache-Control: max-age=60
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -23,11 +23,11 @@ Transfer-Encoding: chunked
 ok
 
 == 201 成功：新建了资源，Location 指向它
-$ curl -i -X POST http://127.0.0.1:60920/created
+$ curl -i -X POST http://127.0.0.1:53440/created
 HTTP/1.1 201 Created
 Content-Type: text/plain; charset=utf-8
 Location: /ok
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -35,19 +35,19 @@ Transfer-Encoding: chunked
 created
 
 == 204 成功：动作生效，但没有内容要回
-$ curl -i http://127.0.0.1:60920/nocontent
+$ curl -i http://127.0.0.1:53440/nocontent
 HTTP/1.1 204 No Content
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
 
 == 301 重定向：这个地址永久换了地方
-$ curl -i http://127.0.0.1:60920/moved
+$ curl -i http://127.0.0.1:53440/moved
 HTTP/1.1 301 Moved Permanently
 Content-Type: text/plain; charset=utf-8
 Location: /ok
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -55,11 +55,11 @@ Transfer-Encoding: chunked
 moved permanently
 
 == 302 重定向：这次临时换地方
-$ curl -i http://127.0.0.1:60920/found
+$ curl -i http://127.0.0.1:53440/found
 HTTP/1.1 302 Found
 Content-Type: text/plain; charset=utf-8
 Location: /ok
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -67,20 +67,20 @@ Transfer-Encoding: chunked
 found
 
 == 304 重定向：内容没变，缓存里的副本仍然有效
-$ curl -i -H 'If-None-Match: "demo-v1"' http://127.0.0.1:60920/ok
+$ curl -i -H 'If-None-Match: "demo-v1"' http://127.0.0.1:53440/ok
 HTTP/1.1 304 Not Modified
 ETag: "demo-v1"
 Cache-Control: max-age=60
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
 
 == 400 客户端错误：请求本身不合法
-$ curl -i http://127.0.0.1:60920/bad
+$ curl -i http://127.0.0.1:53440/bad
 HTTP/1.1 400 Bad Request
 Content-Type: text/plain; charset=utf-8
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -88,11 +88,11 @@ Transfer-Encoding: chunked
 bad request
 
 == 401 客户端错误：缺少凭据，服务器给出挑战
-$ curl -i http://127.0.0.1:60920/private
+$ curl -i http://127.0.0.1:53440/private
 HTTP/1.1 401 Unauthorized
 Content-Type: text/plain; charset=utf-8
 WWW-Authenticate: Basic realm="demo"
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -100,21 +100,43 @@ Transfer-Encoding: chunked
 unauthorized
 
 == 403 客户端错误：认得出你，但不给你看
-$ curl -i http://127.0.0.1:60920/forbidden
+$ curl -i http://127.0.0.1:53440/forbidden
 HTTP/1.1 403 Forbidden
 Content-Type: text/plain; charset=utf-8
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
 
 forbidden
 
+== 401 与 403 的分界：同一个资源，凭据不对是 401，凭据有效但权限不够是 403
+$ curl -i -H 'Authorization: Bearer good-token' http://127.0.0.1:53440/private
+HTTP/1.1 403 Forbidden
+Content-Type: text/plain; charset=utf-8
+Date: Wed, 21 Oct 2026 01:31:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+forbidden
+
+== 401 与 403 的分界：凭据有效、权限也够，这次是 200
+$ curl -i -H 'Authorization: Bearer good-token' -H 'X-Demo-Role: admin' http://127.0.0.1:53440/private
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Date: Wed, 21 Oct 2026 01:31:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+secret
+
 == 404 客户端错误：源站没有这个资源
-$ curl -i http://127.0.0.1:60920/missing
+$ curl -i http://127.0.0.1:53440/missing
 HTTP/1.1 404 Not Found
 Content-Type: text/plain; charset=utf-8
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -122,11 +144,11 @@ Transfer-Encoding: chunked
 not found
 
 == 405 客户端错误：方法不支持，Allow 列出支持的方法
-$ curl -i -X POST http://127.0.0.1:60920/post-only
+$ curl -i -X POST http://127.0.0.1:53440/post-only
 HTTP/1.1 405 Method Not Allowed
 Content-Type: text/plain; charset=utf-8
 Allow: GET, HEAD
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -134,11 +156,11 @@ Transfer-Encoding: chunked
 method not allowed
 
 == 429 客户端错误：请求太多，告诉你等多久
-$ curl -i http://127.0.0.1:60920/limited
+$ curl -i http://127.0.0.1:53440/limited
 HTTP/1.1 429 Too Many Requests
 Content-Type: text/plain; charset=utf-8
 Retry-After: 3
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -146,10 +168,10 @@ Transfer-Encoding: chunked
 too many requests
 
 == 500 服务器错误：服务器自己出了问题
-$ curl -i http://127.0.0.1:60920/boom
+$ curl -i http://127.0.0.1:53440/boom
 HTTP/1.1 500 Internal Server Error
 Content-Type: text/plain; charset=utf-8
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -157,22 +179,33 @@ Transfer-Encoding: chunked
 internal server error
 
 == 503 服务器错误：临时不可用，Retry-After 给出恢复时间
-$ curl -i http://127.0.0.1:60920/maintenance
+$ curl -i http://127.0.0.1:53440/maintenance
 HTTP/1.1 503 Service Unavailable
 Content-Type: text/plain; charset=utf-8
 Retry-After: 30
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
 
 service unavailable
 
+== 未登记的码：服务器回了 471，首位数字仍是 4，按同类 x00 看待就是当成 400
+$ curl -i http://127.0.0.1:53440/unassigned
+HTTP/1.1 471 unknown
+Content-Type: text/plain; charset=utf-8
+Date: Wed, 21 Oct 2026 01:31:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+unassigned code
+
 == 502 服务器错误（网关产生）：网关连不上上游
-$ curl -i http://127.0.0.1:60921/dead
+$ curl -i http://127.0.0.1:53441/dead
 HTTP/1.1 502 Bad Gateway
 Content-Type: text/plain; charset=utf-8
-Date: Tue, 20 Oct 2026 03:37:08 GMT
+Date: Wed, 21 Oct 2026 01:31:49 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -180,10 +213,10 @@ Transfer-Encoding: chunked
 bad gateway
 
 == 504 服务器错误（网关产生）：网关等上游等太久
-$ curl -i http://127.0.0.1:60921/slow
+$ curl -i http://127.0.0.1:53441/slow
 HTTP/1.1 504 Gateway Timeout
 Content-Type: text/plain; charset=utf-8
-Date: Tue, 20 Oct 2026 03:37:09 GMT
+Date: Wed, 21 Oct 2026 01:31:50 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
@@ -191,10 +224,11 @@ Transfer-Encoding: chunked
 gateway timeout
 
 == 同一个 404，经过网关时仍然是源站产生的那个码
-$ curl -i http://127.0.0.1:60921/missing
+$ curl -i http://127.0.0.1:53441/missing
 HTTP/1.1 404 Not Found
+X-Gateway: demo-gateway
 content-type: text/plain; charset=utf-8
-date: Tue, 20 Oct 2026 03:37:09 GMT
+date: Wed, 21 Oct 2026 01:31:50 GMT
 connection: keep-alive
 keep-alive: timeout=5
 transfer-encoding: chunked
@@ -202,13 +236,13 @@ transfer-encoding: chunked
 not found
 
 == 1xx 中间响应：Expect: 100-continue 之后还有一个最终响应
-$ curl -i -X POST -H 'Expect: 100-continue' -d 'x=1' http://127.0.0.1:60920/created
+$ curl -i -X POST -H 'Expect: 100-continue' -d 'x=1' http://127.0.0.1:53440/created
 HTTP/1.1 100 Continue
 
 HTTP/1.1 201 Created
 Content-Type: text/plain; charset=utf-8
 Location: /ok
-Date: Tue, 20 Oct 2026 03:37:09 GMT
+Date: Wed, 21 Oct 2026 01:31:50 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 Transfer-Encoding: chunked
