@@ -1,7 +1,7 @@
 {
   "slug": "http-status-codes",
-  "stage": "script",
-  "next": "写中文稿，导出交审",
+  "stage": "review",
+  "next": "WaterRun 逐句审中文第 1 稿；确认后英译、配音（音色先试听），再交制作方开工",
   "credits": {
     "planner": "WaterRun",
     "models": [
