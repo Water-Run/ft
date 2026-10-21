@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 14，制作中 22，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 202 部：已成片 15，制作中 21，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 ## 已成片
 
@@ -10,6 +10,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [垃圾回收的艺术](standalone/garbage-collection/) | — | zh 11:10、en 11:48 | 2026-10-21 | [哔哩哔哩](https://www.bilibili.com/video/BV1Exni69Ew4)、[YouTube](https://www.youtube.com/watch?v=-7zriGm5_Xk) | — | DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon、MiniMax M3.1 Flash、Claude Opus 5.5 |
 | [200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/) | [XX 秒速通](in-seconds/README.md) | zh 3:20、en 3:20 | 2026-10-20 | [哔哩哔哩](https://www.bilibili.com/video/BV1Z7JZ6yEQb)、[YouTube](https://www.youtube.com/watch?v=Bkt7b_xbMYg) | 5（2026-10-20） | DeepSeek V4.1 Flash 1017、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh 11:28 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1xAnn6WEzv) | 8（2026-10-20） | 6.1Sol、Claude Opus 5.5 |
 | [128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/) | [XX 秒速通](in-seconds/README.md) | zh 2:08、en 2:08 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1oSn56oEUQ)、[YouTube](https://www.youtube.com/watch?v=qCklpfGDWXk) | — | DeepSeek V4.1 Flash 1017、Grok 4.7、Claude Opus 5.5 |
@@ -50,7 +51,6 @@
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
 | [英特尔的酷睿年代](eras/intel-core-era/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 最新 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 最新 |
-| [垃圾回收的艺术](standalone/garbage-collection/) | — | 验收 | 中英成片 1080p60 已出、check.js --final 全部通过；等 WaterRun 观看成片、试听后同意交付 | 最新 |
 | [宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快](standalone/lightweighting/) | — | 文案 | 写中文稿，导出交审 | 最新 |
 | [RDP：Windows 远程的优雅实现](standalone/rdp/) | — | 文案 | 写中文稿，导出交审 | 最新 |
 
@@ -401,7 +401,7 @@
 | 7 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | [`wsl`](standalone/wsl/) |  |
 | 8 | 枪械自动原理 | zh + en | 计划中 | `firearm-actions` |  |
 | 9 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 | `lcd-panels` |  |
-| 10 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 制作中 | [`garbage-collection`](standalone/garbage-collection/) |  |
+| 10 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 已成片 | [`garbage-collection`](standalone/garbage-collection/) |  |
 | 11 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快<br>One Less Horsepower, One Kilo Less: What Lightweighting Buys You | zh + en | 制作中 | [`lightweighting`](standalone/lightweighting/) |  |
 | 12 | SQL 数据库群观 | zh + en | 计划中 | `sql-survey` |  |
 | 13 | 中国汽油价格变迁史 | zh + en | 计划中 | `china-gasoline-prices` |  |

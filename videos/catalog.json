@@ -205,7 +205,7 @@
     {"slug": "wsl", "title": {"zh": "从 WSL 1 到 WSL 2，再到「WSL 3」", "en": "From WSL 1 to WSL 2, Then “WSL 3”"}, "status": "delivered"},
     {"slug": "firearm-actions", "title": {"zh": "枪械自动原理"}},
     {"slug": "lcd-panels", "title": {"zh": "液晶显示器和面板，我们应该关心屏幕的什么和影响"}},
-    {"slug": "garbage-collection", "title": {"zh": "垃圾回收的艺术", "en": "The Art of Garbage Collection"}, "status": "in-progress"},
+    {"slug": "garbage-collection", "title": {"zh": "垃圾回收的艺术", "en": "The Art of Garbage Collection"}, "status": "delivered"},
     {"slug": "lightweighting", "title": {"zh": "宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快", "en": "One Less Horsepower, One Kilo Less: What Lightweighting Buys You"}, "status": "in-progress"},
     {"slug": "sql-survey", "title": {"zh": "SQL 数据库群观"}},
     {"slug": "china-gasoline-prices", "title": {"zh": "中国汽油价格变迁史"}},

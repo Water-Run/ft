@@ -1,7 +1,7 @@
 {
   "slug": "garbage-collection",
-  "stage": "accept",
-  "next": "中英成片 1080p60 已出、check.js --final 全部通过；等 WaterRun 观看成片、试听后同意交付",
+  "stage": "released",
+  "next": "已于 2026-10-21 发布哔哩哔哩与 YouTube；收集评价与评论，回填 reception 与复盘；两个平台的标题与语言待核",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -148,5 +148,25 @@
       "zh": 1,
       "en": 1.15
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-10-21",
+    "duration": {
+      "zh": 669.59,
+      "en": 707.53
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1Exni69Ew4",
+      "date": "2026-10-21"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/watch?v=-7zriGm5_Xk",
+      "date": "2026-10-21"
+    }
+  ],
+  "reception": []
 }
