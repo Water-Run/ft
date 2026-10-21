@@ -1,7 +1,7 @@
 {
   "slug": "http-status-codes",
-  "stage": "delivered",
-  "next": "策划者投稿（哔哩哔哩、YouTube）；发布后回填 release，收集评价",
+  "stage": "released",
+  "next": "收集评价与评论，提炼规则；归档 out/ 与 audio/ 后清理生成物",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -178,5 +178,21 @@
       "zh": 96.0,
       "en": 96.0
     }
-  }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1Hrnq6aEjH",
+      "date": "2026-10-21",
+      "title": "96 秒了解 HTTP 状态码",
+      "lang": "zh"
+    },
+    {
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/watch?v=f_sNl3i9Bsg",
+      "date": "2026-10-20",
+      "title": "HTTP Status Codes in 96 Seconds",
+      "lang": "en"
+    }
+  ]
 }

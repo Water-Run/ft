@@ -50,17 +50,17 @@
 
 ## 当前状态与接续
 
-阶段：已交付（2026-10-21，策划者看片同意）。配音：已合成，策划者看片后同意。交付：已登记（`project.json` 的 `delivery`、片单 `delivered`）。发布：策划者投稿中，未回填。归档：未归档（成片留在 `out/` 供投稿）。
+阶段：已发布（哔哩哔哩中文版、YouTube 英文版，2026-10-21 回填）。交付：已登记（2026-10-21，策划者看片同意）。归档：未归档。
 
 <!-- 每次结束工作更新本节。待审、交付、发布与归档分别记录；不能仅凭旧 MP4 或片单 delivered 判断当前版本。 -->
 
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-21 制作方 Claude Opus 5.5：配音（MiniMax，中文严肃女声）、读法、各段定点按实测重算；「应答机」视觉系统、七个场景、8 位配乐与音效、封面；中英两版渲染、封装，`check.js --final` 通过。成片规格与哈希见「交付」 |
-| 下一步及依赖 | 策划者投稿到哔哩哔哩与 YouTube；发布后按 `docs/guides/release.md` 第 2 节回填 `release`，收集评价；之后归档、清理 |
+| 下一步及依赖 | 收集策划者的评价与评论区反馈（`docs/guides/release.md` 第 3 节）；归档 `out/`、`audio/` 后清理生成物 |
 | 当前稿本 / 校对结论 | 中文 `review/script.zh.a44aa61f8c4c3653ca1aba9d4f5f4277ef280d6b9cc2ecf81b360a7463b9daf0.md`、英文 `review/script.en.b077cc94b4c22364d501d9c736763bcf0d256109704091bf1730d115a77bc652.md`；字幕文字未改，`approval.json` 的确认仍有效 |
 | 输出在哪台制作机 | 制作机 A（Windows，Node 24.21.0，显卡出帧）；成片、配音缓存与中间文件在本集 `out/`、`audio/`（不入库） |
-| 未完成、未检查与阻塞 | 未发布、未归档；未做浏览器层面的实验（片中不讲浏览器） |
+| 未完成、未检查与阻塞 | 未归档；未做浏览器层面的实验（片中不讲浏览器） |
 
 ## 文案与校对
 
@@ -328,8 +328,8 @@ pwsh -File videos/in-seconds/http-status-codes/research/lab/11_status_codes.ps1
 
 | 项 | 记录 |
 |---|---|
-| 平台链接、标题、发布时间与时长 | 未发布 |
-| 最终文件、语言、规格、SHA-256 | |
+| 平台链接、标题、发布时间与时长 | 哔哩哔哩：[BV1Hrnq6aEjH](https://www.bilibili.com/video/BV1Hrnq6aEjH)，「96 秒了解 HTTP 状态码」，中文版，2026-10-21 14:21（北京时间），96 秒（取自公开接口）。YouTube：[f_sNl3i9Bsg](https://www.youtube.com/watch?v=f_sNl3i9Bsg)，「HTTP Status Codes in 96 Seconds」，英文版，页面显示发布日期 Oct 20, 2026（平台显示的日期，与哔哩哔哩差一天）。2026-10-21 读取公开页面回填 |
+| 最终文件、语言、规格、SHA-256 | 见「交付」：中文 `9939b8fe…87c5`、英文 `85166d8d…f769`，1080p60，96.000 秒 |
 | 实际 Node、Chrome、ffmpeg、Python 与包版本 | 取证机：Node 24.21.0、curl 8.22.0、PowerShell 7.6.7（成片机的版本待补） |
 | 归档代号、manifest.json 哈希、校验日期 | 未归档 |
 | 备份介质与恢复抽验结果 | 未检查 |
