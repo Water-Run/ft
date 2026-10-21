@@ -2,11 +2,18 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "a1b449a45ec2e7c9de502b3d60f08982b1c90cd0be0a074d660041773edeea20",
+      "status": "approved",
+      "content_sha256": "a44aa61f8c4c3653ca1aba9d4f5f4277ef280d6b9cc2ecf81b360a7463b9daf0",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-21T11:08:00+08:00",
+      "evidence": "策划者 WaterRun 2026-10-21 11:08 在会话里回复「以这个作为最终版本吧, 落盘确认, 我准备让Opus开工了.」——指的是 Gemini 4 Argon 第 3 轮给出的中英文定稿（原文存档在 review/GEMINI-ROUND1-REPLY-2026-10-21.md 一线，第 3 轮稿的全文见 review/GEMINI-ROUND1-DRAFT-2026-10-21.md 与 review/GEMINI-ROUND2-PROMPT-2026-10-21.md）。确认内容为该中文稿，句号 o1–x4 共 24 句正文加 2 处无旁白停顿；随后策划者补充「最好不要再改文案了」，落盘时中文文字一字未改，只调了节奏参数与各段定点（片尾缩到 3 秒、句间 gap 统一 0.2 秒、lead/tail 取 0.5/0.3），中英文时间线各为 96.00 秒。见 review/NOTES.md「明确确认」一节。"
+    },
+    "en": {
+      "status": "approved",
+      "content_sha256": "b077cc94b4c22364d501d9c736763bcf0d256109704091bf1730d115a77bc652",
+      "reviewer": "WaterRun",
+      "confirmed_at": "2026-10-21T11:08:00+08:00",
+      "evidence": "策划者 WaterRun 2026-10-21 11:08 在会话里回复「以这个作为最终版本吧, 落盘确认, 我准备让Opus开工了.」——指的是 Gemini 4 Argon 第 3 轮给出的中英文定稿。英文稿与中文稿句号一一对应（同样 24 句正文加 2 处停顿），同轮确认。为让英文排进 96 秒，只调整了英文措辞的松紧（不改含义、不改句号），见 review/NOTES.md「定稿后的调整」。"
     }
   }
 }

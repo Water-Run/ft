@@ -1,7 +1,7 @@
 {
   "slug": "http-status-codes",
-  "stage": "review",
-  "next": "WaterRun 逐句审中文第 1 稿；确认后英译、配音（音色先试听），再交制作方开工",
+  "stage": "voice",
+  "next": "交接制作方 Claude Opus 5.5 开工：中文配音用严肃女声、配乐用 8 位电子乐（90 年代计算机风格），再做关键帧与分镜、场景、封面、渲染、验收",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -17,7 +17,7 @@
       {
         "name": "Gemini 4 Argon",
         "roles": [
-          "第 1 轮文案讨论"
+          "文案"
         ]
       }
     ],
