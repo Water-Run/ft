@@ -7,24 +7,6 @@
   "code": [
     {
       "kind": "code",
-      "path": "src/jrd/ods.h",
-      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/ods.h",
-      "local": "research/_src/fb504-src/src/jrd/ods.h",
-      "symbols": {
-        "pag_header..pag_scns": [
-          187,
-          196
-        ],
-        "struct pag": [
-          227,
-          237
-        ]
-      },
-      "used_for": "页头 16 字节的字段与偏移；10 种页类型的编号与含义",
-      "bytes": 41106
-    },
-    {
-      "kind": "code",
       "path": "README.md",
       "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/README.md",
       "local": "research/_src/fb504-src/README.md",
@@ -125,6 +107,88 @@
       "sha256": "8d09a88fe1d52e66eff62578d06449e6db910b58c4e5304bb1a4f55cbee98221",
       "symbols": [
         "FullTableScan::internalGetRecord"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/ods.h",
+      "local": "research/_src/fb504-src/src/jrd/ods.h",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/ods.h",
+      "bytes": 41106,
+      "sha256": "97f77281b8acad453b43705af897181b13cca73f6bdf676a3d961e154eb693a0",
+      "symbols": [
+        "data_page",
+        "pointer_page",
+        "rhd",
+        "tx_inv_page"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/RecordNumber.h",
+      "local": "research/_src/fb504-src/src/jrd/RecordNumber.h",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/RecordNumber.h",
+      "bytes": 8761,
+      "sha256": "0cb45547290d4f89bbb5947483987a6acd24f98770e8ac042e8dbd16b219a5dc",
+      "symbols": [
+        "decompose",
+        "compose"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/sqz.h",
+      "local": "research/_src/fb504-src/src/jrd/sqz.h",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/sqz.h",
+      "bytes": 2447,
+      "sha256": "bc932d7a192de5cec139a7de5427b70694c60b5694d2291cfef44fc46b02f4fd",
+      "symbols": [
+        "Compressor",
+        "Difference"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/sqz.cpp",
+      "local": "research/_src/fb504-src/src/jrd/sqz.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/sqz.cpp",
+      "bytes": 14770,
+      "sha256": "1f91f1d4d56eb63c261c3e9e0f5a43378eb24c5c52a979e639d39048083080b2",
+      "symbols": [
+        "Compressor::unpack",
+        "Difference::apply",
+        "Difference::make"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/pag.cpp",
+      "local": "research/_src/fb504-src/src/jrd/pag.cpp",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/pag.cpp",
+      "bytes": 73435,
+      "sha256": "56cf023a98141a355d9de7abec5dd2ea7836cd3bfb98aa89db151a448421a6b4",
+      "symbols": [
+        "dataPagesPerPP",
+        "maxRecsPerDP"
+      ],
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "code",
+      "path": "src/jrd/tra.h",
+      "local": "research/_src/fb504-src/src/jrd/tra.h",
+      "url": "https://github.com/FirebirdSQL/firebird/blob/v5.0.4/src/jrd/tra.h",
+      "bytes": 17022,
+      "sha256": "e788754812ca8150cd64b9f73948bc04291443113635a68d4605fc5f2c1ef0d6",
+      "symbols": [
+        "TRANS_OFFSET",
+        "TRANS_SHIFT",
+        "tra_committed"
       ],
       "checked_at": "2026-10-21"
     }
@@ -229,12 +293,6 @@
     },
     {
       "kind": "web",
-      "url": "https://www.firebirdsql.org/en/historical-reference/",
-      "used_for": "InterBase 八十年代起源、2000 年开源和 Firebird 项目建立",
-      "checked_at": "2026-10-21"
-    },
-    {
-      "kind": "web",
       "url": "https://www.firebirdsql.org/file/documentation/papers_presentations/html/fr/paper-fbent-history-fr.html",
       "used_for": "历史事件：1985 InterBase、2000 分支、2002 1.0、1.5 改写 C++；不使用页面的旧当前版本判断",
       "checked_at": "2026-10-21"
@@ -304,6 +362,48 @@
       "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
       "used_for": "C07：更新后旧行版本保留，可能仍被读者需要",
       "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/en/historical-reference/",
+      "used_for": "H11/H12：Borland 时期、原有社区、独立 Firebird 项目与首版前清理测试",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://firebirdsql.org/file/documentation/papers_presentations/html/fr/paper-fbent-history-fr.html",
+      "used_for": "H11/H12：商业源流、既有社区、1.0 与后续代码演进；旧当年当前版本不用于现在",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/release_notes/Firebird-1.0-ReleaseNotes.pdf",
+      "used_for": "H11/H12：第 1–2 页，独立团队、InterBase 源码、代码清理/修错/测试",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://www.firebirdsql.org/file/documentation/release_notes/html/en/3_0/rlsnotes30.html",
+      "used_for": "H05/H12：§3 Remodelled Architecture，核心合入同一二进制",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://survey.stackoverflow.co/2024/technology/",
+      "used_for": "S04：同年 All Respondents 数据库使用率与样本数，三项由官方 HTML 图值提取",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://survey.stackoverflow.co/2025/technology/",
+      "used_for": "选年口径核查：Firebird 只在 write-ins；不用舍入后的 0% 与预设选项混比",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "web",
+      "url": "https://survey.stackoverflow.co/2026/technology/data/databases",
+      "used_for": "选年口径核查：未单列 Firebird，不按缺项补零",
+      "checked_at": "2026-10-21"
     }
   ],
   "lab": [
@@ -362,9 +462,25 @@
       "structured": "research/lab/out_13_query_path.json",
       "used_for": "独立嵌入式库上实测姓名索引 → 位图 → 按记录号取行，返回 30；无计划提示",
       "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/15_record_layout.py",
+      "out": "research/lab/out_15_record_layout.txt",
+      "structured": "research/lab/out_15_record_layout.json",
+      "used_for": "只读原 08 快照；按槽/头字段解码，RLE 与差量还原完全一致，TIP 提交状态值核对",
+      "checked_at": "2026-10-21"
+    },
+    {
+      "kind": "lab",
+      "path": "research/lab/16_usage_context.py",
+      "out": "research/lab/out_16_usage_context.txt",
+      "structured": "research/lab/out_16_usage_context.json",
+      "used_for": "2024 同年同分组的三种数据库使用率；保留原页 SHA-256 与口径",
+      "checked_at": "2026-10-21"
     }
   ],
-  "note": "2026-10-21 第 5 稿仅重写开场的观众定位与系列承接。读到 PostgreSQL 已确认稿 z6–z6a 的 Firebird 预告；原技术证据与实验沿用，未新增网页核查或视频测量。",
+  "note": "2026-10-21 第 8 稿新增原 08 快照的结构解码与 2024 同口径使用率提取；未重跑在线更新或崩溃测试。来源版本固定 v5.0.4；旁白与背景数据分别标注范围。",
   "local_references": [
     {
       "kind": "brief",

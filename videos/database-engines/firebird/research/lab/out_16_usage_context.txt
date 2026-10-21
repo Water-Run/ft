@@ -1,0 +1,4 @@
+2024 Stack Overflow 开发者调查｜数据库使用率｜全部答题者｜多选｜n=52,418
+PostgreSQL: 48.7%
+MySQL: 40.3%
+Firebird: 1.1%

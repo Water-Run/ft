@@ -1,0 +1,31 @@
+{
+  "year": 2024,
+  "source": "Stack Overflow Developer Survey",
+  "url": "https://survey.stackoverflow.co/2024/technology/",
+  "population": "All Respondents",
+  "question_respondents": 52418,
+  "measure": "Extensive development work over the past year; multiple selections allowed",
+  "rows": [
+    {
+      "database": "PostgreSQL",
+      "percent": 48.7
+    },
+    {
+      "database": "MySQL",
+      "percent": 40.3
+    },
+    {
+      "database": "Firebird",
+      "percent": 1.1
+    }
+  ],
+  "html_sha256": "ffca0061300a8188743c27d4e47f401f83e1a16ef449a68adbdc57d58a978a93",
+  "caption": "2024 Stack Overflow \u5f00\u53d1\u8005\u8c03\u67e5\uff5c\u6570\u636e\u5e93\u4f7f\u7528\u7387\uff5c\u5168\u90e8\u7b54\u9898\u8005\uff5c\u591a\u9009\uff5cn=52,418",
+  "licence": {
+    "name": "ODbL 1.0",
+    "holder": "Stack Exchange Inc.",
+    "url": "https://opendatacommons.org/licenses/odbl/1-0/"
+  },
+  "not_global_market_share": true,
+  "selection_reason": "2025 lists Firebird only among write-ins; 2026 does not list Firebird separately; no missing value is treated as zero"
+}

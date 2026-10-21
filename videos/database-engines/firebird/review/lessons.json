@@ -5,30 +5,30 @@
     "F01": {
       "rev": 1,
       "result": "pending",
-      "note": "引子直接接续前三期与前集 Firebird 预告；一套引擎两种用法仍回到存、查、改、落盘。实现主体沿用第 4 稿。",
+      "note": "按最新要求补深引擎实现；页槽到记录头、逻辑记录号到物理页、差量到版本链、TIP 到提交形成一条数据路径。部署形态仅作入口。",
       "evidence": "",
-      "script_evidence": "o1–o14；store/query/update/durable。"
+      "script_evidence": "store/query/update/durable；FACTS D11/Q05/Q06/U06/U07/W07。"
     },
     "F02": {
       "rev": 1,
       "result": "pending",
-      "note": "观众已经看过前三期，不在引子重教建表和 SQL；只定义新的 Firebird，继续 Alice 的同一个例子。",
+      "note": "同一 Alice 例子绑定真实槽、事务号与回溯位置；术语说明具体作用，避免泛化目录/线索总结。背景百分比不新增旁白。",
       "evidence": "",
-      "script_evidence": "o1–o7；o14。"
+      "script_evidence": "d4–d10；q6–q10；u3a/u5–u10；w8–w9a。"
     },
     "F03": {
       "rev": 1,
       "result": "pending",
-      "note": "第三选择指 MySQL/Pg 之后的系列定位，不指市场第三。运行形态只比职责，不由此推性能或功能相同。",
+      "note": "背景三者均为 2024 同题同分组使用率，保留年份、样本与多选；不是全球市占率。页字段只按本例短记录范围使用。",
       "evidence": "",
-      "script_evidence": "FACTS C09；o7–o10；FACTS C01/C02/E09。"
+      "script_evidence": "S04；MATERIALS；D11/U07。"
     },
     "F04": {
       "rev": 1,
       "result": "pending",
-      "note": "当前估算 456.2 秒，开场 59.8 秒；MyISAM 交付记录 475.883 秒。预算不变，实际成片仍须后续实测。",
+      "note": "全片估算约 456.7 秒，与前稿相近；底层解释替代泛化内容，时长阈值和估算语速不动。实际片长待制作实测。",
       "evidence": "",
-      "script_evidence": "project.json；FACTS C10；当前稿本。"
+      "script_evidence": "stats；project.json check.duration。"
     },
     "F05": {
       "rev": 1,
@@ -61,37 +61,37 @@
     "F09": {
       "rev": 1,
       "result": "pending",
-      "note": "新增三项前集实现对比均先入 FACTS，官方原文与前集实验、本片源码交叉核对。原查询实验沿用，未做新的崩溃实测。",
+      "note": "原 08 快照新增槽头解码、RLE/差量还原和 TIP 状态核查；背景同口径数据由脚本提取，画面数据由 gen_data 生成。",
       "evidence": "",
-      "script_evidence": "FACTS C06–C08、文案第 3 稿事实复核；sources.json。"
+      "script_evidence": "lab/15/16；tools/gen_data.py；FACTS。"
     },
     "F10": {
       "rev": 1,
       "result": "pending",
-      "note": "按策划明确要求面向已看过前三期的观众；可以直接承接对象与共同问题，避免逐集重讲或依赖记忆参数。第 4 稿泛入门的观众假设撤回。",
+      "note": "已看过前三期，开头直接从 MySQL 到 Pg；对照主键路径与版本存储，不复讲数据库基础。",
       "evidence": "",
-      "script_evidence": "README 最新原话；FACTS C11；o1–o7。"
+      "script_evidence": "o1；d11–d12；q11–q12；u11–u12。"
     },
     "F11": {
       "rev": 1,
       "result": "pending",
-      "note": "undo 当句解释为撤销信息，其余尽量用中文作用表达；实际 SQL、计划如进入画面仍需中文释义。",
+      "note": "术语用偏移、长度、页序号、槽号、差量、两位状态解释作用；代码符号在取证定位，旁白不念函数清单。",
       "evidence": "",
-      "script_evidence": "u5–u6；q1–q15。"
+      "script_evidence": "当前源稿；FACTS 源码位置。"
     },
     "F12": {
       "rev": 1,
       "result": "pending",
-      "note": "o1/o5/o8 用逗号和 0.25 秒连接，SAY 补 MyISAM；问题读法在 o13。其他正文读法沿用。尚未配音试听。",
+      "note": "新增页号、槽号、事务号与二进制状态均有中文 tts 读法；只做脚本检查，确认后仍需实际试听。",
       "evidence": "",
-      "script_evidence": "src/js/script.js；o1/o5/o8/o13。"
+      "script_evidence": "d1/d5；u3a/u5/u6；w9。"
     },
     "F13": {
       "rev": 1,
       "result": "pending",
-      "note": "陌生的是 Firebird，不是数据库；在已经讲过的 MySQL/Pg 之后引入新对象和运行形态，再讲其来历。",
+      "note": "历史扩为约 57 秒，说明原有商业数据库怎样成为社区项目，以及维护和架构演进；历史末尾的这套核心直接成为架构章的主语。",
       "evidence": "",
-      "script_evidence": "o5–o11；history。"
+      "script_evidence": "h1–h12 → e1–e2。"
     },
     "F14": {
       "rev": 1,
@@ -103,9 +103,9 @@
     "F15": {
       "rev": 1,
       "result": "pending",
-      "note": "正文只保留观众关心的原因和作用，不报告取证过程；用这一库、这次查询等自然范围限定。",
+      "note": "减少泛化问句与总结口吻，直接写字段、动作和原因；本例限定用于区别实测布局和一般机制。",
       "evidence": "",
-      "script_evidence": "d5/q5/w15；无制作指令旁白。"
+      "script_evidence": "src/js/script.js；无验收或取证过程旁白。"
     },
     "F16": {
       "rev": 1,

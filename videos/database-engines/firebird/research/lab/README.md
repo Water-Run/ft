@@ -22,6 +22,12 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File videos/series/database-engines/fir
 
 ## 脚本与产出
 
+第 8 稿补证（2026-10-21）：
+
+- `15_record_layout.py`：只读原实验 08 的 `out/lab/clean_before.fdb` 与 `clean_after.fdb`，按 v5.0.4 结构解码页槽、短记录头、差量与 TIP；输出 `out_15_record_layout.json/txt`。缺少快照时先按原 08 实验重建；此脚本不启动数据库。
+- `16_usage_context.py`：从官方 2024 技术页提取三种数据库同分组使用率，保存原 HTML 到忽略目录，输出 `out_16_usage_context.json/txt`；不将缺项或手填项当成 0% 市占率。
+- `tools/gen_data.py`：读 13/15/16 的结构化回显生成 `src/js/data.js`；不包含画面设计。
+
 2026-10-21 新增独立补证：`python videos/database-engines/firebird/research/lab/13_query_path.py`。复用既有 5.0.4 安装包，在新建嵌入式库上创建原示例数据，不启动服务端、不覆盖原实验库。输出 `out_13_query_path.txt/json`：按姓名查询年龄实际选用姓名索引、位图与按记录号取行，返回 30。临时 SQL 和数据库留在被忽略的 `out/lab/`。
 
 旧实验 04/08 的口径纠正见 FACTS 的 M02/M04/U04/U05：04 的回显不能证明所有客户端缺省隔离级别；08 的字节匹配不区分主版本与历史版本，不证明“旧版留原地”。这些旧脚本保留为过程记录，不将其原注释当成新稿依据。

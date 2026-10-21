@@ -38,6 +38,8 @@
 | H09 | Firebird 是独立的开源关系数据库管理系统，跨 Windows、Linux 等平台，能处理 SQL，支持存储过程与触发器；不是 MySQL 的可插拔存储引擎 | 已核实，2026-10-21：`v5.0.4/README.md`；[5.0 语言参考](https://firebirdsql.org/file/documentation/html/en/refdocs/fblangref50/firebird-50-language-reference.html) 的 DSQL/PSQL 章节；本片 SQL 实测 `out_03_schema.txt`、`out_13_query_path.txt` |
 | H10 | InterBase 的公司于 1984 年建立；Firebird 的技术来历可追到八十年代，而 Firebird 这个项目始于 2000 年 | 已核实，2026-10-21：官方历史「How Jim Starkey remembers it」「Further recollections from Ann Harrison」；同站 [History of Firebird 法文版](https://firebirdsql.org/file/documentation/papers_presentations/html/fr/paper-fbent-history-fr.html) 的 1985 年 InterBase 介绍互证。文案只说「八十年代的 InterBase」，不声称 Firebird 项目当时已存在 |
 | H08 | 下一集的主角 SQLite 自述为「a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine」；本系列路线把 SQLite 定为「极小」的一端：不再是服务进程 | `https://www.sqlite.org/` 首页首段；本系列说明 `videos/database-engines/README.md` 的「系列路线」表 |
+| H11 | InterBase 是八十年代已经存在的商业关系数据库，后来经收购归 Borland 所有；2000 年公开代码后，原有开发者、用户与支持者形成 Firebird 社区并独立维护这一开源分支 | **2026-10-21 第 6 稿已核**：[官方历史](https://www.firebirdsql.org/en/historical-reference/)「InterBase at Borland」「InterBase becomes Open Source」「Firebird records」；[官方历史概述](https://firebirdsql.org/file/documentation/papers_presentations/html/fr/paper-fbent-history-fr.html) 开头与「La livraison initiale」；[1.0 发布说明](https://www.firebirdsql.org/file/documentation/release_notes/Firebird-1.0-ReleaseNotes.pdf) 第 1–2 页独立团队和 InterBase 源码说明互证。正文不列收购链与具体收购年份，不把 Firebird 项目成立年份说成八十年代 |
+| H12 | Firebird 1.0 发布前经历了代码清理、修错与测试；2002 年发布首个正式版，后续继续改写代码、重整架构。3.0 将多种运行形态的核心合并，5.0.4 延续可由服务端或应用加载引擎的结构 | **2026-10-21 第 6 稿已核**：[1.0 发布说明](https://www.firebirdsql.org/file/documentation/release_notes/Firebird-1.0-ReleaseNotes.pdf) 第 2 页「extensive cleanup, bug-fixing and beta testing」；官方历史的 1.0 RC1 记录与历史概述的 1.0/1.5 段互证；[3.0 发布说明 §3 Remodelled Architecture](https://www.firebirdsql.org/file/documentation/release_notes/html/en/3_0/rlsnotes30.html) 与本片 5.0.4 安装包 `README.providers.html`、E09 实验互证。正文只叙演变，不声称 3.0 才首次支持嵌入式，也不把重写说成单次彻底换掉全部代码 |
 
 ## 02 与系列各集的承接（承上启下）
 
@@ -85,6 +87,7 @@
 | D08 | 名字索引 `idx_users_name` 的 B 树页在第 230 号页，那一页里也有 `alice` 这个键 | `lab/05_pages.py` 的解析：`alice` 命中一次于第 230 页（页类型 7，index B-tree） |
 | D09 | 库里实际有 3 个用户自定义索引：`pk_users`、`idx_users_name`、`pk_notes` | `out_03_schema.txt` 的 `RDB$INDICES` 查询 |
 | D10 | 单文件数据库内包含表、索引、系统表等；页有不同分工。数据页有记录槽目录，每槽记录页内偏移和长度；指针页列出表的数据页号 | 已核实，2026-10-21：`v5.0.4/src/jrd/ods.h:318–340`（`data_page`）、`:634–652`（`pointer_page`）；同版本 `dpm.epp` 的 `DPM_get`/`get_header`；[内部结构文档](https://www.firebirdsql.org/file/documentation/html/en/firebirddocs/firebirdinternals/firebird-internals.html) §2、§7、§8 交叉核对。该文档基于 ODS 11.1，**只用于概念互证**；5.0 的字节布局以 `ods.h` 为准。只称本片实验库为单文件，不声称所有配置都只能单文件 |
+| D11 | 原实验 08 的完整短记录快照：225 号指针页的第 0 项指向数据页 231；数据页序号为 0，关系号 128；0 号槽指向 Alice，更新前页内偏移 8160、长度 32。每槽是两个 16 位值，合计 4 字节，保存偏移和长度。记录头含事务号、回溯页号/槽号与标志，再接记录内容 | **2026-10-21 第 8 稿新增字节解码**：`lab/15_record_layout.py` 与 `out_15_record_layout.json/txt`；对原 `out/lab/clean_before.fdb`、`clean_after.fdb` 只读解析并记录 SHA-256；`v5.0.4/src/jrd/ods.h` 的 `data_page`、`pointer_page`、`rhd`、`rhde`，`dpm.epp` 的 `get_header` 交叉核对。只解本例完整、短事务号记录，不把 13 字节短头当所有记录的固定长度。页首槽目录与页尾分配记录的方式据 `DPM_store`/`DPM_update`，不说行在页内永不移动 |
 
 ## 03a 一次查询（2026-10-21 补证）
 
@@ -96,6 +99,8 @@
 | Q02 | 本次计划先由姓名索引生成候选记录号的位图，再逐个调用 `VIO_get` 读取记录；位图可理解为标出哪些记录要取的清单，并非最终行值 | **已核实**：Q01 的实际计划；`BitmapTableScan.cpp` 的 `open`、`internalGetRecord`；`btr.cpp` 的索引扫描。只讲本次选中的路径，不把所有索引访问都说成位图扫描（另有索引导航） |
 | Q03 | 索引的叶节点携带键与内部记录号；按记录号经表的指针页、数据页和槽定位记录；读取仍要按可见性规则选版本、检查谓词，才能返回年龄 | **已核实**：`v5.0.4/src/jrd/ods.h` 的 B 树页、指针页与数据页；`dpm.epp` 的 `DPM_get`、`get_header`；`vio.cpp` 的 `VIO_get`；Q01 的 `Access By ID` 与 `Filter`。官方内部结构文档 §7–10 作概念互证；本片不解码索引节点的逐字节格式 |
 | Q04 | 全表扫描与索引访问是引擎的不同执行路径，优化器选择计划；索引页与数据页分别存放，名字索引不直接包含本例要返回的年龄 | **已核实**：`v5.0.4/src/jrd/recsrc/FullTableScan.cpp`、`BitmapTableScan.cpp`；Q01 实测；D07–D09 的原有页定位。文案不声称优化器永远选索引，也不以八行数据证明性能优势 |
+| Q05 | 普通位图索引访问中，候选逻辑记录号按 `RecordNumber::decompose` 分成数据页序号、指针页序号与槽位置；`DPM_get` 从指针页数组取得物理数据页，再按页内槽的偏移读取记录头。可缓存映射，所以不是每次都强制读一次指针页磁盘 | **2026-10-21 已核**：`v5.0.4/src/jrd/RecordNumber.h` 的 `decompose`、`compose`；`dpm.epp:1449–1541` 的 `DPM_get`、`:3273` 的 `get_header`；`BitmapTableScan.cpp` 的 `EVL_bitmap` 与 `VIO_get`；D11 的实际指针页/槽解码及 Q01 计划互证。记录号不是用户 id 列，也不是直接用全文件字节偏移充当索引值；本轮未完整解码压缩索引节点中的每个字段 |
+| Q06 | 数据页映射命中时，DPM_get 可省掉本次指针页遍历；页面命中缓冲缓存时可直接访问内存中的页。更新先标记缓存页为脏，页面刷新按依赖关系进行，不能将每个逻辑定位都等同一次物理磁盘读取 | **2026-10-21 同版本源码核对**：`dpm.epp::DPM_get` 的 `relPages->getDPNumber`/`setDPNumber` 分支；`cch.cpp::CCH_fetch`、`CCH_fetch_lock`、`CCH_MARK` 与刷页路径；原实验参数 M05 及页更新/提交证据交叉核对。只讲缓存命中路径，不报未经性能实测的命中率或 I/O 次数 |
 
 ## 04 更新与行版本
 
@@ -106,6 +111,8 @@
 | U03 | 本机实验库的清扫间隔 `MON$SWEEP_INTERVAL = 20000`（事务） | `out_01_probe.txt` |
 | U04 | 原实验中数据页里的 `alice` 字节匹配从 1 处变为 2 处，新增匹配在第 231 页、文件偏移 1,900,254；这只证明字节多了一处，**不能据此判定哪个槽是当前版本、哪个是旧版本，也不能证明旧版留在原地址** | 2026-10-21 收窄旧结论：`lab/08_clean_versions.py` 只搜索字节；`out_08_clean_versions.json`。文案不再把新出现的位置标成「新版本」，也不把字节搜索说成完整的行版本解码 |
 | U05 | 跨事务修改时需保留可供其他事务读取的旧版：引擎先保存旧版本，再替换主记录，主记录以回溯指针连接历史；旧版可以用差量编码，不一定是完整副本。不能概括为「不就地改、新版搬走、旧版不动」 | 已核实，2026-10-21：`v5.0.4/src/jrd/vio.cpp:6053–6173` 的 `prepare_update`、`:6570–6601` 的 `replace_record`；`dpm.epp:2386` 的 `DPM_update`；[MVCC 论文](https://www.firebirdsql.org/file/documentation/papers_presentations/Multi_version_concurrency_control.pdf) 第 4–5 页交叉核对。文案只讲保留历史与回溯，不承诺物理地址不变；同事务的重复修改有原地更新分支，不说每次 UPDATE 都新增长链 |
+| U06 | 原实验 08 更新后：231 页 0 号槽仍为主记录入口，但其偏移由 8160 改为 7880；新头事务号为 11，回溯指向同页 8 号槽，旧版本保留事务号 2。不是仅数 alice 出现次数，而是按槽与记录头字段解码 | **2026-10-21 已核**：`out_15_record_layout.json` 的 original/current/historical_delta；`ods.h` 的记录头与 `rhd_chain`，`dpm.epp::DPM_update`、`vio.cpp::prepare_update`/`replace_record` 交叉核对。旧版在本次更新中另存于 8 号槽，不能据此概括所有更新都在同一页；逻辑记录入口与页内字节地址分开说明 |
+| U07 | 本例当前记录头有 `rhd_delta=32`，说明前一版本按差量保存；8 号槽的 `rhd_chain` 表明它是历史版本。按 `sqz.cpp` 的 RLE 解码和 `Difference::apply` 将历史差量应用于当前记录，得到的完整记录内容与更新前逐字节相同；解压内容只有偏移 48 的字节由 30 变成 31 | **2026-10-21 已实算**：`lab/15_record_layout.py`、`out_15_record_layout.json/txt`；`v5.0.4/src/jrd/sqz.cpp:517` 的 `Difference::apply`、`Compressor::unpack`，`vio.cpp::prepare_update` 比较差量与原记录大小后决定是否保存差量，`ods.h:833` 注释“prior version is differences only”。此处验证记录内容还原，不声称每个 SQL 字段与压缩字节都已完成通用解码，也不说历史必然差量保存 |
 
 ## 05 并发
 
@@ -127,8 +134,9 @@
 | W04 | Firebird 的常规事务恢复不是 PostgreSQL 式的 WAL 重放；依靠行版本、事务状态以及有依赖顺序的页面写入（careful writes）。这里不讨论复制日志、追踪日志等其他日志用途 | 已核实，2026-10-21：[MVCC 论文](https://www.firebirdsql.org/file/documentation/papers_presentations/Multi_version_concurrency_control.pdf) 第 5 页「no recovery log」「careful write」；同版本 `cch.cpp:1813–1844` 的 `CCH_precedence`、`dpm.epp` 的页面依赖调用与 `tra.cpp` 的提交实现交叉核对。旧稿 w2/z6「先写日志再落盘」没有依据，已撤回 |
 | W05 | `TRA_commit` 对写事务先 `transaction_flush`，随后 `TRA_set_state(...tra_committed)` 更新事务清单页；强制写开启时要求物理写盘。指向某页的页须在所指页之后写出，这是一类页面依赖，不是所有页共用一个简单顺序 | 已核实，2026-10-21：`v5.0.4/src/jrd/tra.cpp:432–542`、`:1488–1580`，`cch.cpp` 的 `CCH_precedence`，`dpm.epp` 的依赖设置；[gfix 手册](https://www.firebirdsql.org/file/documentation/html/en/firebirddocs/gfix/firebird-gfix.html)「Synchronous or Asynchronous Writes」；W01 的本机强制写值为 1。本轮**未做断电/崩溃恢复实验**，不把源码核对称作崩溃实测，不保证坏盘或底层违背刷盘承诺时仍无数据损失 |
 | W06 | 崩溃后启动时，独占库锁下的 `TRA_cleanup` 把残留 active 状态普通事务标为 dead；这些事务的版本不作为已提交数据返回。两阶段提交的 limbo 状态另行处理，不在本片范围 | 已核实，2026-10-21：`v5.0.4/src/jrd/tra.cpp:301–375` 的 `TRA_cleanup`、`vio.cpp` 的 dead-version 处理；MVCC 论文第 5 页 failed transaction/back versions 说明互证。限源码与文档核对，未声称崩溃实测 |
+| W07 | TIP 每个事务用 2 位表示状态：0 active、1 limbo、2 dead、3 committed。原实验 08 的 TIP 在 222 页；更新事务号 11 在提交后对应值为 3（二进制 11） | **2026-10-21 新增字节核对**：`15_record_layout.py` 与结构化输出 transaction_inventory；`ods.h::tx_inv_page` 的状态数组偏移 20；`tra.h:444–465` 的 `TRANS_OFFSET`/`TRANS_SHIFT` 和状态常量；`tra.cpp::TRA_commit` 先 `transaction_flush` 再 `TRA_set_state`。只核对提交后页中的位值，不将提交前快照中未来事务号的零位解释为该事务当时已处于活跃状态 |
 
-**不确定的字节口径（不进脚本）**：本片没有解码行版本头的字段布局，只用「同一物理行在页上出现几份」这一可数事实；行内各字节的字段含义未逐字段核实，故不在旁白或画面上标注具体偏移的含义。
+**字节口径**：早期实验 08 只数原始字节出现次数；第 8 稿新增实验 15 已核对本例短记录头、页槽、回溯差量和 TIP 状态。只使用 D11/U06/U07/W07 已列出的字段与范围；不把它扩成任意记录格式或任意索引节点的通用解码。
 
 ## 07 演示用数据
 
@@ -137,6 +145,7 @@
 | S01 | 本片沿用系列前几集的同一张示例表与同一批数据：`users(id, name, age)` 8 行 alice/bob/carol/dave/erin/frank/grace/heidi，`notes(id, body)` 3 行 | MyISAM 一集 `research/lab/01_create.sql`；本片 `lab/03_schema.sql` 与 `lab/08a_create.sql` |
 | S02 | Firebird 没有 TINYINT，`age` 用 SMALLINT | 建表语句与 `out_03_schema.txt` 回显（建表成功） |
 | S03 | MyISAM 一集 `notes` 第 2 行原文是「MyISAM stores rows in a .MYD file」；本片改成「Firebird keeps row versions in the data page」，因为本片讲的正是这件事 | `lab/03_schema.sql`；`myisam/research/lab/01_create.sql` |
+| S04 | o6 背景使用同一年度同一分组的采用规模对照：2024 Stack Overflow 数据库题全部答题者 n=52,418，PostgreSQL 48.7%、MySQL 40.3%、Firebird 1.1%；允许多选。这是过去一年大量开发使用比例，不是全球安装量或收入市占率 | **2026-10-21 已读原文并提取**：[官方 2024 技术页](https://survey.stackoverflow.co/2024/technology/) Databases/All Respondents 的 SVG 值与题目/样本数；`lab/16_usage_context.py`、`out_16_usage_context.json/txt` 保存解析方法与 HTML SHA-256；MySQL/Pg 数字与前集 PostgreSQL S05 的独立提取结果一致。2025 页面 Firebird 只列在 write-ins，2026 未单列，故不把缺项和舍入 0% 当作其份额。背景必须保留年份、使用率、多选和样本数，不混用 2026 的 57.9%/35.1% |
 
 ## 08 视觉与声音的取材
 
@@ -176,7 +185,7 @@
 留待日后再查或另立选题，不写进本片：
 
 - `GCPolicy` 的三种取值在本机 SuperServer 下的实际差别（只从文档读到定义，没有逐项实测）。
-- 行版本头的逐字段字节解码（本轮补查了更新与回溯实现，但没有新增行头解码实验）。
+- 任意记录格式、碎片/长事务号头与压缩索引节点的通用解码（第 8 稿已补本例短头、RLE 与历史差量，不能外推到尚未解码的其他格式）。
 - 5.0 的并行执行（`ParallelWorkers` / `MaxParallelWorkers`）与「更紧凑的记录压缩」（Denser compression of records）——发布说明第 3 节列出，但本片时长与主线不展开。
 - `xnet://` 环回与嵌入式的性能差异（本片只讲「能不能连上」，不讲快慢）。
 - Firebird 5.0 移除了 `wnet://` 协议（发布说明第 13 节），本片只提到本地连接用 `xnet://`。
@@ -216,3 +225,24 @@
 - C11 对照前集已确认稿的 z6–z6a，开场直接接续已有 Firebird 预告。观众定位取自策划本轮纠正，不再使用第 4 稿的泛认知问句与数据库基础介绍。
 - 开场对前三期“不同实现、独立服务”的概括由 C01、C03、C06–C08 支撑；Firebird 与两种运行方式仍用 H09、C02、E01–E09，没有新增技术结论。
 - 实现主体未改；本轮没有重跑实验、配音或成片验收。
+
+## 文案第 6 稿事实复核（2026-10-21）
+
+- H11/H12 补足商业 InterBase、Borland、既有社区与首版前维护工作的来龙去脉；均读到官方原文，来源和范围在条目中记录。旧 1.5 概述只作历史来源，不用它的当年“当前版本”判断今天版本。
+- 3.0 核心合并由旧 engine 章移入历史尾部，与 5.0.4 同一结构直接相连；没有新增未核实的中间版本或演进因果。
+- 衔接改写沿用各句既有事实：代码库 → 由不同进程加载 → 数据文件 → users 表；历史保留之后仍要确保新修改落盘。没有用部署形态推导具体存储算法。
+- 未新增实验、配音、连续观看或成片验收结论。
+
+## 文案第 7 稿事实复核（2026-10-21）
+
+- 开场移除 SQLite 点名后，仅据 E02/E09 描述 Firebird 嵌入应用与直接读写文件；未改动架构结论。
+- 结尾“小巧，同时又强大”采用策划者本轮原话，作为下一集的设计提问；H08 的 SQLite 自述含 small 与 full-featured，不将问题扩成跨引擎性能、体积或能力排名。
+- 此轮仅修改首尾文字；未新增外部事实、实验、配音或验收。
+
+## 文案第 8 稿事实复核（2026-10-21）
+
+- S04：背景采用 2024 同年同分组使用率，逐项从官方 HTML 的 All Respondents 图提取；非全球市场份额。三项与来源 SHA、样本数一起落盘；o6 旁白保持原句。
+- D11/Q05/Q06：页头、四字节槽、指针页、逻辑记录号分解、缓存命中路径均对同版本源码；实际页/槽数据来自原 08 快照的新解析。
+- U06/U07：按记录头读出主槽与历史槽，执行 RLE 与差量还原；还原结果与原记录内容逐字节相同。撤回早期“没有行头解析”的现行范围限制，只保留对其他未解格式的限制。
+- W07：两位事务状态与提交后的值由 TIP 字节和 tra.h 常量互证；提交先刷页再设状态仍据 TRA_commit。未新增崩溃实验。
+- 全片保持原时长范围，版本与旁白仍待人工确认；没有配音或成片验收结论。
