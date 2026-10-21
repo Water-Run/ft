@@ -83,7 +83,7 @@
 - 确认后本片改为**委托制作**：受托模型 Claude Opus 5.5 负责配音、关键帧与分镜、场景实现、声音编排、封面、渲染封装、三项审查与 `DELIVERY.md`。
 - 准备方的角色是**辅助**：MiniMax M3.1 Flash 负责第 8 稿落盘与逐句核对、字幕断句、读法与 SAY 表、导出校对稿、时长与语速核对、选音色并合成试听、视觉系统落地、逐句对应表、任务书。**关键帧与场景实现不做**——关键帧是审美判断，准备方预置版面等于替受托模型把构图定死。
 
-## 英文译稿（2026-10-20，交审中，未确认）
+## 英文译稿（2026-10-20；交审后策划者授权受托方定稿，见下文「确认」）
 
 策划者 2026-10-20 提醒「这部片子是双语的」（README 开头早有「中文与英文两版」），受托方据此做英文版。
 
@@ -95,7 +95,7 @@
 - 画面：所有画面文字都用 `tr('中文', 'English')` 给出英文；时间锚点写成 `T(句号, { zh, en })`，英文锚点都已核对，确实出现在该句英文里。英文章节卡是「英文章名 + 取自本章旁白的一行小字」，因为英文章名放不进中文那一行。英文版去掉了画面上的「（译）」行，因为引文本身就是英文。
 - 时长：按 2.7 词/秒估算为 693 s，超过 `check.duration` 的 640 s 上限。配音后按实测时长调英文语速 `tts.speed.en`，不放宽上限。
 - 音色：四个候选（Sweet_Girl、Serene_Woman、English_Graceful_Lady，以及中文版用的 Chinese (Mandarin)_Sweet_Lady 说英文），各读开场钩子、家规、脚注三句，试听在 `audio/probe/en_*.mp3`（不入库）。语音识别转写四个都正确；lovely_girl 太慢、Attractive_Girl 把 Dijkstra 念糊，已淘汰。
-- **待决**：WaterRun 按句号校对英文稿并明确确认；选定英文音色。确认前不合成英文旁白。
+- **待决**（交审时）：WaterRun 按句号校对英文稿并明确确认；选定英文音色。确认前不合成英文旁白。结果见下文「确认」：策划者授权受托方自主决定。
 
 ### 确认（授权受托方自主决定）
 
@@ -106,6 +106,65 @@
   - **音色 `Sweet_Girl`，语速 1.15**。理由：最贴合中文版选音色时「可爱的女声」的要求，母语英文，转写全对。`English_Graceful_Lady` 太慢，放不进 640 s 的上限。中文版的 `Sweet_Lady` 说英文语速最快，也和中文版同一个声音，但英文观众会听出口音。`Serene_Woman` 偏沉静。按试听样本的实测语速，1.15 倍时全片约 616 s，最长一句约 5.6 s。
 - `approval.json` 的 en 一栏据此填为 approved，evidence 写明是授权决定、不是逐句审读。
 - **第二轮精简（配音实测后）**：按 Sweet_Girl 1.15 倍配完后，全片 646.3 s，超过 640 s 的上限；另有 9 句超过 6 s（g6 8.4 s、d4b 7.5 s、e7 7.5 s 等）。原因是这个音色在句号、冒号、分号处停得久。把这 9 句改短，并去掉句中的长停顿：b4、d2、d4b、e4、e7、e13b、e14b、g6；e16 / e16b 重新分配，「in machine code」挪到 e16b，改成「compiles to four machine instructions」。含义不变，锚点词随之核对：d4b 改用 reach，e4 改用「touched, its」，e13b 改用 419。定稿为 `review/script.en.dd6d564e….md`，approval 的哈希随之更新，仍是同一次授权决定。
+
+## 看过成片之后的增补（2026-10-20，已确认）
+
+> **确认**：2026-10-20 约 20:47（UTC+8），受托方把下表交策划者，问「这版增补旁白可以按此配音吗？（英文译文按之前「你自主决策」由我定稿）」；策划者 WaterRun 选择「确认，时长上限改 720 秒」。据此中文增补定稿、`check.duration` 上限 640 → 720 s；英文仍是授权受托方定稿，策划者没有逐句审读英文。
+
+策划者看了第一版成片的开头后，在会话中提出（原话）：
+
+- 「另外, 片中最后一句加上"这就是垃圾回收的艺术"扣题」
+- 「另外标记清除和三色分代有些太快了, 稍微讲明白一些. 另外, 引用的孤岛识别也多讲两句」
+- 「考虑用户的认知负担」
+
+受托方据此起草下面的增补。写法：每处只多讲一步，用画面上已经有的那组对象接着演，不引入新名词（「试减」加了引号当场解释）；句号之外的旧句不动，b7b 改写为三句。最后一句是策划者原话，照录。
+
+| 位置 | 句号 | 中文 | 英文 | 依据 |
+|---|---|---|---|---|
+| 01 拆环之前（a8b 后） | a8c | 拆环器怎么认出孤岛？拿 PHP 来说，它先“试减”： | How does it spot an island? PHP, for one, does a trial subtraction: | P03 |
+| | a8d | 把它们彼此之间给的计数，先统统扣掉 | it takes away every count the suspects give each other. | P03 |
+| | a8e | 扣完还大于零，说明外面还有人在用，原样恢复； | Still above zero? Someone outside uses it, so the count goes back. | P03 |
+| | a8f | 扣到零，说明只剩自己人互相拉扯：这就是孤岛 | Down to zero? Only its own circle holds it: that's an island. | P03 |
+| 02 标记—清扫（b7 后，改写 b7b） | b7b | 就两步。标记：从根出发，摸到一个就做个记号； | Two steps. Mark: start at the roots, and tag everything you reach; | T05 T02 |
+| | b7c | 清扫：从堆的一头扫到另一头，死的活的都过一遍， | sweep: walk the heap end to end, the dead and the living alike; | T05 X19 |
+| | b7d | 没记号的收回，有记号的擦掉记号，留给下一轮 | untagged goes back to the free list, tagged gets its tag wiped for next round. | T02 T09 |
+| 03 分代（d2b 后） | d2c | 为什么快？新区里的对象，大多已经死了； | Why quick? Most objects in the new area are already dead; | N01 N05 |
+| | d2d | 把活下来的那几个挪到下一代，整片新区就能腾空重来 | move the few survivors up a generation, and the whole new area is empty again. | N02 D01 |
+| 04 三色（e4b 后） | e4c | 开始时，根直接牵着的先涂灰，其余全是白 | At the start, whatever the roots hold is gray; everything else is white. | C07 |
+| 04 三色（e5b 后） | e5c | 灰色就像一张待办清单：查完一个，划掉一个； | Gray is a to-do list: check one, cross it off; | C02 |
+| | e5d | 所以收集器可以做一段、停一段，回头接着从灰的往下查 | so the collector can work a bit, stop, and later pick up again from the gray. | C02 L02 L05 |
+| 收束（h7c 后） | h8 | 这就是，垃圾回收的艺术 | This is the art of garbage collection. | 策划者原话（题目本身，不是事实陈述） |
+
+事实边界：拆环的「试减」只说 PHP（P03 是 PHP 手册对 Bacon–Rajan 同步算法的描述）；CPython 收集器的实现本次没有读（Z05、X18），旁白不说 Python 也这样做。「死的活的都过一遍」是 X19 的口径。
+
+时长：增补约 +55 s（中文）与 +60 s（英文），加上「刷过去」各处补的停顿，中文约 655 s、英文约 700 s，超过 `check.duration` 的 640 s 上限。这条上限是开工时受托方按「本片没有强制时长」（策划者 2026-10-20 答复）留的余量；随这次增补提请把上限改为 720 s，策划者已一并确认（见上）。
+
+英文：按此前「你自主决策」的授权由受托方定稿；策划者要逐句看也可以。
+
+### 字幕 C#、配音 CSharp
+
+策划者：「另外字幕的CSharp是C#, 配音还是CSharp避免读错」。o2 的字幕改为「C#」，`tts` 字段保留「CSharp」。
+
+### 开场重写（2026-10-20，已确认）
+
+策划者看片后说：「另外开场那个占着不撒手是比较迷的用户看起来, 理解跟不上, 什么强行收之类的, 引子也要优化优化」「确保低认知负载」「跟得上, 旁边放小字, 用户看画面, 肯定跟不上的」。受托方第一版重写仍按两个实验讲（列表、五次回收），策划者：「你重写的开场还是不够浅显易懂, 观众刚来还没进状态呢」。第二版只用「格子纸」一个比喻，交策划者，选择「确认这版」（约 21:47）：
+
+| 句号 | 中文 | 英文 |
+|---|---|---|
+| o2 | 造得有多快？C# 一秒钟能造六千七百万个，（配音 CSharp） | How fast does it go? In one second, C# can make sixty-seven million, |
+| o3 | 可格子纸只有这么大，比如 64 MB； | But the sheet is only so big: say, 64 MB. |
+| o3b | 要是只占不还，转眼就写满：内存耗尽 | Never give squares back, and it fills in a blink: out of memory. |
+| o4 | 换成 PHP、Java，也一样撞墙， | Try PHP or Java, and you hit the same wall; |
+| o5a | 好在大多数对象，用一下就没用了： | Luckily, most objects are only needed for a moment: |
+| o5 | 把它们擦掉重用，同样六千七百万个，只占 11 MB | erase and reuse them, and the same sixty-seven million fit in 11 MB. |
+| o6 | 这一秒里，有人在幕后擦了 136 次， | In that second, someone behind the scenes erased 136 times, |
+| o6b | 而写代码的人一个字都没多写 | and the programmer didn't write a single extra line. |
+
+事实依据不变：64 MB 上限与内存耗尽（D07、D05）、只要还被引用就不会被收（G04）、一秒六千七百万个只占约 11 MB 与 136 次第 0 代回收（D06）、大多数对象短命（N01）。删掉了「强行收五次」（D07 的五次第 2 代回收）——事实没错，但要先懂「回收」才看得懂，放在开场太早；成片的报错原文里仍保留 `gen2 GCs 5`。o5 沿用句号 o5（逐句对应表要求它说完时画面上有「11 MB」），新加的前一句记为 o5a。画面上每一步出一个大字（64 MB、只占不还、内存耗尽、用一下就没用了、擦掉重用、11 MB、136 次），不靠角落的小字。
+
+### 预演确认（2026-10-20 约 23:05）
+
+4K 正式渲染开始后，受托方请策划者先看这一版的低清预演（`out/zh/preview.mp4`、`out/en/preview.mp4`，1/4 尺寸、15 帧/秒、带混音；比最后两处句后停顿的微调早，内容相同）。策划者回复：「预览没问题 安心开工」。这是对预演内容的认可，不是对 4K 成片的观看确认；成片交付仍要策划者看过之后同意。
 
 ## 交审说明（中文第 7 稿，2026-10-19）
 

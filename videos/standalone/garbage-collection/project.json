@@ -1,7 +1,7 @@
 {
   "slug": "garbage-collection",
-  "stage": "review",
-  "next": "英文文案交 WaterRun 确认；之后英文配音、场景补英文、中英两版渲染与总检",
+  "stage": "accept",
+  "next": "中英成片 1080p60 已出、check.js --final 全部通过；等 WaterRun 观看成片、试听后同意交付",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -82,13 +82,15 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4
+    "mb": 4,
+    "gpu": 1
   },
   "audio": {
     "music": "tools/music.py",
-    "music_db": -9,
-    "duck_db": 7,
+    "music_db": -6,
+    "duck_db": 6,
     "sfx_db": -9,
+    "lufs": -14,
     "score": {
       "bpm": 108
     }
@@ -126,7 +128,7 @@
     },
     "duration": [
       400,
-      640
+      720
     ],
     "sfx": {
       "per_seconds": 2.5,

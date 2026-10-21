@@ -54,6 +54,15 @@ scene('cost', ({ root, s, c0 }) => {
   for (let i = 0; i < NSCAN; i++) sfx('tick', tScan + i * BEAT / 2, { g: 0.16, p: -0.3 + 0.1 * (i % 7) });
   sfx('tick', tOrc, { g: 0.6 }); sfx('tick', tArc, { g: 0.6 });
   const dflt = tag(world, tr('默认：引用计数 + 拆环器', 'default: ref counting + cycle collector'), X2 + 600, 296, 34); slide(dflt, tOrc + 0.1, { x: -30, d: 0.3 });
+  // 默认模式的一个小演示：一对互指的方块出现，「拆环器」那个词落下时被金框扫走（ARC 那一句再让环回来、永远留着）
+  const tMiniIn = qb(tOrc + 0.5), tMiniCol = qb(Math.max(tMiniIn + 0.9, T('g3b', { zh: '拆环器', en: 'cycle collector' }) - 0.1));
+  const MX = X2 + 640, MY = 470, mini = [0, 1].map((k) => { const b = h('div', 'abs', world); px(b, MX + k * 200, MY, 70, 70); b.style.background = C.white; slam(b, tMiniIn + k * 0.1, { from: 0.4, d: 0.3 }); return b; });
+  const mp1 = ptr(sv, MX + 76, MY + 22, MX + 194, MY + 22, { w: 4, head: 16 }), mp2 = ptr(sv, MX + 194, MY + 48, MX + 76, MY + 48, { w: 4, head: 16 });
+  grow(mp1, tMiniIn + 0.25, tMiniCol + 0.3, { d: 0.25, st: (t) => ({ col: t >= tMiniCol ? C.gold : C.white }) }); grow(mp2, tMiniIn + 0.4, tMiniCol + 0.3, { d: 0.25, st: (t) => ({ col: t >= tMiniCol ? C.gold : C.white }) });
+  const mBox = h('div', 'abs', world); px(mBox, MX - 20, MY - 20, 310, 110); css(mBox, { border: `5px solid ${C.gold}` });
+  wipe(mBox, tMiniCol, { dir: 'l', d: 0.35 }); exit(mBox, tMiniCol + 0.6, { y: 0, d: 0.25 });
+  mini.forEach((b, k) => { vanish(b, tMiniCol + 0.45); shatter(world, MX + k * 200, MY, 70, 70, C.gold, tMiniCol + 0.45, { n: 2, gap: 4, spread: 60, seed: 11 + k }); });
+  sfx('pop', tMiniIn, { g: 0.45 }); sfx('whoosh', tMiniCol, { g: 0.4 }); sfx('thud', tMiniCol + 0.45, { g: 0.55 });
   const arcT = tag(world, tr('ARC：只留引用计数', 'ARC: reference counting only'), X2 + 600, 366, 34); slide(arcT, tArc + 0.1, { x: -30, d: 0.3 });
   const arcBig = tx(world, 'big', 'ARC', X2 + 1180, 440, { size: 150, color: C.gold }); slam(arcBig, qb(Math.min(T('g4', 'A R C'), Tend('g3b') + 0.3)), { from: 1.3, d: 0.4 });
   sfx('thud', qb(Math.min(T('g4', 'A R C'), Tend('g3b') + 0.3)), { g: 0.8 });

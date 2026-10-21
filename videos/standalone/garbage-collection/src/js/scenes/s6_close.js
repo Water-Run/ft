@@ -81,7 +81,11 @@ scene('close', ({ root, s, c0 }) => {
   const tr1 = tx(ui, 'note', tr('（译）我们早就把这个过程叫作“垃圾回收”了，不过我大概是怂了，没在论文里用——', ''), 110, 800, { size: 34, color: C.white, ...plate });
   const tr2 = tx(ui, 'note', tr('要不就是电子学研究实验室那几位管语法的女士不让我用。', ''), 110, 856, { size: 34, color: C.white, ...plate });
   appear(tr1, Tend('h5') - 0.6); appear(tr2, Tend('h6') - 0.6);
-  for (const e of [pg, reissue, reL, fnRule, fnEl, tr1, tr2]) exit(e, tH7 - 0.1, { y: -80, d: 0.35 });
+  // 引文念完后的停留：一道金框落在脚注上——「垃圾回收」这个名字写下来的地方
+  const tFrame = qb(Tend('h6b') + 1.4);
+  const fnBox = h('div', 'abs', world); px(fnBox, PX + 34, PY + 410, PW - 68, 176); css(fnBox, { border: `6px solid ${C.gold}` });
+  wipe(fnBox, tFrame, { dir: 'l', d: 0.6 }); sfx('whoosh', tFrame, { g: 0.35 }); sfx('chime', tFrame + 0.6, { g: 0.5 });
+  for (const e of [pg, reissue, reL, fnRule, fnEl, tr1, tr2, fnBox]) exit(e, tH7 - 0.1, { y: -80, d: 0.35 });
 
   // ── 六十多年：一条时间线 ──
   const TX = 6400, TY = 520, TL = 1500, yrX = (y) => TX + (y - 1960) / (2026 - 1960) * TL;
@@ -124,7 +128,23 @@ scene('close', ({ root, s, c0 }) => {
   wipe(bal, tEven, { dir: 'l', d: 0.5 }); sfx('chime', tEven + 0.1, { g: 0.7 }); sfx('thud', tBal, { g: 0.5 });
   for (let k = 0; k < 4; k++) sfx('tick', tBal + k * 0.75, { g: 0.3 - k * 0.05, p: k % 2 ? 0.4 : -0.4 });
   for (const e of tlEls) exit(e, Tend('h7b') + 0.05, { y: -60, d: 0.3 });
-  for (const e of [bgOut, fulcrum, bal]) exit(e, tCr - 0.3, { y: 60, d: 0.35 });
+  // 扣题（策划者要求的最后一句）：横梁停平之后，片名在上方落下，下面一道金线划开
+  const tH8 = qb(T('h8', { zh: '垃圾回收', en: 'the art' }) - 0.15);
+  const ttl = tx(ui, 'ser', tr('垃圾回收的艺术', 'The Art of<br>Garbage Collection'), 110, tr(150, 110), { size: tr(150, 110), lh: 1.08, ...plate });
+  const ttlBar = h('div', 'abs', ui); px(ttlBar, 120, tr(340, 380), 560, 10); ttlBar.style.background = C.gold;
+  slam(ttl, tH8, { from: 1.15, d: 0.5 }); wipe(ttlBar, tH8 + 0.35, { dir: 'l', d: 0.6 });
+  sfx('thud', tH8, { g: 0.9 }); sfx('chime', tH8 + 0.4, { g: 0.6 });
+  // 与开场片名那一屏呼应：四种颜色的格子从片名右侧一格格长出来（又是一块堆）
+  const rk = seeded(61), heapSq = [];
+  for (let j = 0; j < 5; j++) for (let i = 0; i < 9; i++) {
+    if (rk() > 0.62) continue;
+    const v = rk(), e = h('div', 'abs', ui); px(e, tr(1320, 1300) + i * 56, 140 + j * 56, 44, 44);
+    e.style.background = v < 0.45 ? C.white : v < 0.7 ? C.ink : v < 0.85 ? C.gray : C.gold;
+    heapSq.push({ e, t0: tH8 + 0.6 + (i + j * 0.6) * 0.16 });
+  }
+  F((t) => heapSq.forEach(({ e, t0 }) => { const on = t >= t0 && t < tCr - 0.3; vis(e, on); if (on) ss(e, 'transform', `scale(${Math.min(1, (t - t0) / 0.12).toFixed(3)})`); }));
+  for (let k = 0; k < 6; k++) sfx('pop', tH8 + 0.6 + k * 0.32, { g: 0.3 - k * 0.03, p: 0.2 + k * 0.08 });
+  for (const e of [bgOut, fulcrum, bal, ttl, ttlBar]) exit(e, tCr - 0.3, { y: 60, d: 0.35 });
 
   // ── 片尾名单（不配旁白）──
   const CR = [

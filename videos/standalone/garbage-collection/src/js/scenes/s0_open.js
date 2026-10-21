@@ -16,11 +16,12 @@ scene('open', ({ root, s, c0 }) => {
   // ── 时刻 ──
   const tA0 = qn(T('o1b', { zh: '每造', en: 'every' }));                   // 第一个对象
   const tB0 = qb(T('o2', { zh: '一秒钟', en: 'one second' }) - 0.2), tB1 = qb(Tend('o2b') - 0.25, 4);
-  const tH0 = qb(T('o3', { zh: '占着', en: 'never let go' }), 4);                  // 占着不撒手：整块板变黑（都还被引用）
-  const tS0 = qn(T('o3b', { zh: '强行', en: 'forced' }));                    // 五次第 2 代回收
+  // 开场只用一个比喻（策划者：观众刚进来，要浅显、低认知负载）：只占不还 → 写满；大多数用一下就没用 → 擦掉重用
+  const tH0 = qb(T('o3b', { zh: '只占不还', en: 'Never give' }), 4);          // 只占不还：整块板变黑（都还被占着）
   const tO = qb(T('o3b', { zh: '耗尽', en: 'out of memory' }) - 0.05);              // 内存耗尽
-  const tR = qb(T('o5', { zh: '松开', en: 'let go' }));                      // 放手：一道金线扫空整块板
-  const tC0 = qb(T('o5b', { zh: '同样', en: 'same' }) - 0.1);              // 换个活法：只用最上面六行
+  const t5a = qb(T('o5a') - 0.1), tUse = qb(T('o5a', { zh: '没用了', en: 'moment' }) - 0.2);   // 大多数用一下就没用了：黑块一片片变空心
+  const tR = qb(T('o5', { zh: '擦掉', en: 'erase' }));                       // 擦掉：一道金线扫空整块板
+  const tC0 = qb(T('o5', { zh: '同样', en: 'same' }) - 0.1);               // 擦掉重用：只用最上面六行
   const tP = qb(T('o10b', { zh: '艺术', en: 'trade-offs' }) - 0.15);             // 片名
   const wt0 = qb(T('o4', { zh: '换成', en: 'Try' }) + 0.05);
 
@@ -45,7 +46,6 @@ scene('open', ({ root, s, c0 }) => {
     return !(sx < 1240 && sy < 810);
   };
   FR(0, s.end + 0.5, (t) => {
-    const lastSweep = tS0 + 4 * BEAT;
     for (let slot = 0; slot < N; slot++) {
       const c = FL.cells[slot], i = slot % COLS, j = (slot / COLS) | 0;
       let st = null;
@@ -53,18 +53,18 @@ scene('open', ({ root, s, c0 }) => {
         if (t < tb[slot]) { c.set({ k: 0 }); continue; }
         const u = (t - tb[slot]) / 0.16;
         const k = u < 1 ? 1.14 * Math.sin(Math.min(1, u * 1.25) * Math.PI / 2) - 0.14 * Math.max(0, u * 1.25 - 0.8) : 1;
-        let fill = t >= th[slot] ? C.ink : C.white;
-        // 五道金线扫过：碰到的方块亮一下金色，扫过之后还是黑的（都还被引用，收不走）
-        if (t >= tS0 && t < lastSweep + 0.6) {
-          const m = Math.floor((t - tS0) / BEAT), x = sweepX(t, tS0 + m * BEAT, 0.42);
-          if (m <= 4 && Math.abs(c.cx - x) < 70) fill = C.gold;
-        }
-        // 放手前的一瞬：撞墙之后板子发灰
-        st = { fill, k: clamp(k, 0, 1.14), op: t > tO && t < tR ? 0.55 : 1 };
+        const fill = t >= th[slot] ? C.ink : C.white;
+        // 「用一下就没用了」：大多数方块从左到右一片片变成空心（没人要了），少数还是黑的
+        if (t >= tUse && hash(slot, 3) < 0.88 && t >= tUse + 1.2 * (c.cx / 3840)) { c.set({ st: C.white, sw: 6, k: 1 }); continue; }
+        // 撞墙之后板子发灰，直到「好在」那一句
+        st = { fill, k: clamp(k, 0, 1.14), op: t > tO && t < t5a ? 0.55 : 1 };
       } else if (t < tP) {
         // 金线扫过之后整块板清空；随后只有最上面六行在生灭
         const gone = tR + 0.8 * (c.cx + 80) / 4000;
-        if (t < gone + 0.14 && tb[slot] < tR) { st = { fill: t > gone - 0.05 ? C.gold : C.ink, k: t < gone ? 1 : 1 - (t - gone) / 0.14 }; }
+        if (t < gone + 0.14 && tb[slot] < tR) {
+          const hollow = hash(slot, 3) < 0.88;                   // 没用了的：擦掉之前一直是空心
+          st = t > gone - 0.05 ? { fill: C.gold, k: t < gone ? 1 : 1 - (t - gone) / 0.14 } : hollow ? { st: C.white, sw: 6, k: 1 } : { fill: C.ink, k: 1 };
+        }
         else if (j < 6 && t >= tC0) {
           const m = Math.floor((t - tC0) / CH);
           for (const mm of [m - 1, m]) {
@@ -92,12 +92,10 @@ scene('open', ({ root, s, c0 }) => {
   const bar = h('div', 'abs', world); css(bar, { background: C.gold, width: '40px', height: ROWS * P + 'px', top: '0px', left: '0px' });
   FR(0, s.end + 0.5, (t) => {
     let x = null, w = 40;
-    for (let m = 0; m <= 4; m++) { const t0 = tS0 + m * BEAT; if (t >= t0 && t < t0 + 0.42) x = sweepX(t, t0, 0.42); }
     if (t >= tR && t < tR + 0.8) { x = sweepX(t, tR, 0.8); w = 80; }
     if (t >= tC0 && t < tP) { const m = Math.floor((t - tC0) / CH); x = (t - tC0 - m * CH) / CH * 3840; w = 24; }
     vis(bar, x != null); if (x != null) { ss(bar, 'left', (x - w / 2).toFixed(1) + 'px'); ss(bar, 'width', w + 'px'); ss(bar, 'height', (t >= tC0 && t < tP ? 6 * P : ROWS * P) + 'px'); }
   });
-  for (let m = 0; m < 5; m++) sfx('whoosh', tS0 + m * BEAT, { g: 0.32, p: -0.3 });
   sfx('whoosh', tR, { g: 0.7 }); sfx('chime', tR + 0.75, { g: 0.6 });
   // 分配指针：第一批对象时，下一个空格下面有一道丝印白的短线
   const caret = h('div', 'abs', world); css(caret, { background: C.white, width: '50px', height: '8px' });
@@ -116,9 +114,9 @@ scene('open', ({ root, s, c0 }) => {
   // ── ui：格子纸 ──
   const eLab = tx(ui, 'note', tr('内存', 'memory'), 124, 250, { size: 40, ...plate });
   const eGz = tx(ui, 'ser', tr('格子纸', 'graph paper'), 110, 300, { size: tr(200, 150), ...plate });
-  wipe(eLab, qb(T('o1', { zh: '内存', en: 'memory' })), { dir: 'l', d: 0.35 });
-  // 英文的「graph paper」在句末，前三秒只有一个小词：英文版在说到 memory 时就砸下片名（字先到）
-  const tGz = qb(T('o1', { zh: '格子纸', en: 'memory' }) + tr(0, 0.35));
+  // 「内存 = 格子纸」在第一拍就给出（字先到）：只有格线的前一秒多，成片的空画面检查判为空（格线细，缩小后看不见）
+  wipe(eLab, 0.05, { dir: 'l', d: 0.35 });
+  const tGz = 0.1;
   slam(eGz, tGz, { from: 1.18, d: 0.5 }); sfx('thud', tGz, { g: 0.8 });
   const eObj = wtag(world, tr('对象', 'object'), (BASE % COLS) * P - 6, ((BASE / COLS) | 0) * P - 64, 34);
   slide(eObj, tA0 + 0.1, { y: 26, d: 0.4 });
@@ -133,7 +131,7 @@ scene('open', ({ root, s, c0 }) => {
   appear(eCnt, tB0); stepCount(eCnt, tB0, qb(T('o2', { zh: '万', en: 'million' }) + 0.2), 0, 67000000);
   appear(eSrc, tB0 + 0.3);
   sfx('thud', qb(T('o2', { zh: '万', en: 'million' }) + 0.2), { g: 0.7 });
-  for (const e of [eHow, eCnt, eSrc]) exit(e, qb(T('o3', { zh: '只给', en: 'just' }) - 0.15), { y: 60, d: 0.35 });
+  for (const e of [eHow, eCnt, eSrc]) exit(e, qb(T('o3') - 0.15), { y: 60, d: 0.35 });
 
   // ── 64 MB：板的边框与上限 ──
   const frame = h('div', 'abs', world); px(frame, -24, -24, COLS * P + 48, ROWS * P + 48); css(frame, { border: `12px solid ${C.white}` });
@@ -141,16 +139,14 @@ scene('open', ({ root, s, c0 }) => {
   const e64 = tx(ui, 'big', '64 MB', 1540, 130, { size: 96 });
   const eLim = tx(ui, 'mono', 'DOTNET_GC<br>HeapHardLimit<br>=0x4000000', 1546, 250, { size: 24, color: C.pale, lh: 1.35 });
   slide(e64, qb(T('o3', { zh: '六十四兆', en: '64 MB' })) + 0.1, { x: 60, d: 0.45 }); appear(eLim, qb(T('o3', { zh: '六十四兆', en: '64 MB' })) + 0.4);
-  const eKeep = slab(ui, 160, 640, ['<span class="k">keep.Add(new Node(n++));</span>'], { size: 40 });
-  wipe(eKeep.el, tH0 - 0.1, { dir: 'l', d: 0.35 }); sfx('blip', tH0, { g: 0.5 });
-  const eGen2 = tx(ui, 'mono', 'gen2 GCs 0', 1546, 420, { size: 34 });
-  appear(eGen2, tS0 - 0.1);
-  F((t) => { const m = t < tS0 ? 0 : Math.min(5, Math.floor((t - tS0) / BEAT) + 1); const v = 'gen2 GCs ' + m; if (eGen2._v !== v) { eGen2._v = v; eGen2.textContent = v; } });
-  for (const e of [e64, eLim, eGen2, eKeep.el]) exit(e, tO - 0.2, { x: 80, d: 0.3 });
+  // 「只占不还」：画面主体上一个大字（策划者：别靠角落的小字，观众看的是画面）
+  const eHoard = tx(ui, 'ser', tr('只占<br>不还', 'Never<br>give back'), 1540, 420, { size: tr(110, 64), lh: 1.08, color: C.gold });
+  slam(eHoard, tH0 - 0.05, { from: 1.25, d: 0.42 }); sfx('thud', tH0, { g: 0.7 });
+  for (const e of [e64, eLim, eHoard]) exit(e, tO - 0.2, { x: 80, d: 0.3 });
 
   // ── 撞墙：1,048,577 ──
   const eNo = tx(ui, 'big', '1,048,577', 1100, 170, { size: 150 });
-  const eNoL = tx(ui, 'body', tr('个对象之后', 'objects later'), 1108, 330, { color: C.pale });
+  const eNoL = tx(ui, 'sub', tr('放不下了：内存耗尽', 'No room: out of memory'), 1108, 330, { size: 48, color: C.white });
   const eOOM = slab(ui, 1100, 410, ['<span class="k">System.OutOfMemoryException</span>', '(after 1,048,577 objects, 679 ms; gen2 GCs 5)'], { size: 26 });
   slam(eNo, tO, { from: 1.2, d: 0.45 }); appear(eNoL, tO + 0.15);
   wipe(eOOM.el, tO + 0.2, { dir: 'l', d: 0.3 }); sfx('thud', tO + 0.02, { g: 0.7 });
@@ -178,27 +174,27 @@ scene('open', ({ root, s, c0 }) => {
   const tFam = qb(T('o4b', { zh: '眼熟', en: 'familiar' }) - 0.6);
   wallEls.filter((e, k) => k % 2).forEach((e, k) => {
     const t = tFam + k * BEAT / 2, b = box(e), mark = h('div', 'abs', ui); px(mark, 96, b.y, 12, b.h); mark.style.background = C.white;
-    classAt(e.querySelector('.mm'), 'hw', t); wipe(mark, t, { dir: 't', d: 0.2 }); exit(mark, qb(T('o5', { zh: '换个', en: 'differently' }) - 0.25), { y: 120, d: 0.32 }); sfx('tick', t, { g: 0.45 });
+    classAt(e.querySelector('.mm'), 'hw', t); wipe(mark, t, { dir: 't', d: 0.2 }); exit(mark, t5a - 0.15, { y: 120, d: 0.32 }); sfx('tick', t, { g: 0.45 });
   });
-  wallEls.forEach((e, k) => exit(e, qb(T('o5', { zh: '换个', en: 'differently' }) - 0.25) + (k >> 1) * 0.06, { y: 120, d: 0.32 }));
+  wallEls.forEach((e, k) => exit(e, t5a - 0.15 + (k >> 1) * 0.06, { y: 120, d: 0.32 }));
   to(world, wt[0], { opacity: 0.22, duration: 0.4, ease: 'power2.out' });
-  to(world, qb(T('o5', { zh: '换个', en: 'differently' }) - 0.1), { opacity: 1, duration: 0.5, ease: 'power2.inOut' });
+  to(world, t5a, { opacity: 1, duration: 0.5, ease: 'power2.inOut' });
 
-  // ── 换个活法：只有最上面六行在用 ──
-  const eChurn = slab(ui, 160, 560, ['<span class="hd">keep.Add(new Node(n++));</span>', '<span class="k">Lab.Last = new Node(n++);</span>'], { size: 34 });
-  wipe(eChurn.el, qb(T('o5', { zh: '换个', en: 'differently' })), { dir: 'l', d: 0.4 }); sfx('blip', qb(T('o5', { zh: '换个', en: 'differently' })), { g: 0.5 });
-  exit(eChurn.el, tC0 - 0.05, { x: -80, d: 0.3 });
+  // ── 好在大多数用一下就没用了 → 擦掉重用：只有最上面六行在用 ──
+  const eUse = tx(ui, 'ser', tr('用一下<br>就没用了', 'Needed<br>only briefly'), 1540, 420, { size: tr(76, 60), lh: 1.1, color: C.white });
+  const tUseL = qb(T('o5a', { zh: '大多数', en: 'most' }) - 0.1);           // 字在句子开头就上，空心的波在「没用了」时才走
+  slam(eUse, tUseL, { from: 1.2, d: 0.4 }); sfx('pop', tUseL, { g: 0.55 }); sfx('whoosh', tUse + 0.1, { g: 0.35 });
+  exit(eUse, tR - 0.15, { x: 80, d: 0.3 });
+  const eErase = tx(ui, 'ser', tr('擦掉<br>重用', 'Erase<br>&amp; reuse'), 1540, 420, { size: tr(110, 80), lh: 1.08, color: C.gold });
+  slam(eErase, tR + 0.05, { from: 1.25, d: 0.42 }); sfx('thud', tR + 0.05, { g: 0.6 });
   const bracket = h('div', 'abs', ui); px(bracket, 1518, 120, 12, 131); css(bracket, { background: C.white });
   const e11 = tx(ui, 'big', '11 MB', 1550, 128, { size: 88 });
   const e64b = tx(ui, 'big', '64 MB', 1550, 840, { size: 52, color: C.pale });
-  const eLog = slab(ui, 160, 760, ['churn: 67,000,000 objects created in 1001 ms;', 'heap 0.1 MB -&gt; <span class="k">10.8 MB</span>; gen0 GCs <span class="k">136</span>, gen1 0, gen2 0'], { size: 28 });
-  const t11 = qb(Math.min(T('o5b', { zh: '十一兆', en: '11 MB' }) - 0.1, Tend('o5') - 0.4));
+  const t11 = qb(T('o5', { zh: '十一兆', en: '11 MB' }) - 0.1);
   wipe(bracket, t11 - 0.2, { dir: 't', d: 0.4 }); appear(e64b, t11);
   slam(e11, t11, { from: 1.3, d: 0.42 }); sfx('thud', t11, { g: 0.8 });
-  wipe(eLog.el, qb(T('o5b', { zh: '同样', en: 'same' })), { dir: 'l', d: 0.4 }); sfx('blip', qb(T('o5b', { zh: '同样', en: 'same' })), { g: 0.5 });
-  const t6 = qb(T('o6', { zh: '一秒', en: 'one second' }) - 0.3);
-  for (const e of [bracket, e11, e64b]) exit(e, t6, { x: 80, d: 0.3 });
-  exit(eLog.el, qb(T('o6b', { zh: '代码', en: 'code' }) - 0.2) - 0.35, { y: 80, d: 0.3 });   // 同一位置随后换成循环源码
+  const t6 = qb(T('o6', { zh: '一秒', en: 'second' }) - 0.3);
+  for (const e of [bracket, e11, e64b, eErase]) exit(e, t6, { x: 80, d: 0.3 });
 
   // ── 一秒 136 次 ──
   const TIMES = tr(' 次', ' times');
@@ -208,7 +204,7 @@ scene('open', ({ root, s, c0 }) => {
   const tsv2 = board(ui, 880, 180, 920, 80);
   const ticks = [];
   for (let k = 0; k < 136; k++) ticks.push(svg('rect', { x: 900 + 880 * (k + 0.5) / 136 - 1.5, y: 190, width: 3, height: 52, fill: C.gold, visibility: 'hidden' }, tsv2));
-  const t136a = qb(T('o6', { zh: '清扫', en: 'swept' }) - 0.4), t136b = qb(T('o6', { zh: '一百三十六次', en: '136 times' }) + 0.35);
+  const t136a = qb(T('o6', { zh: '擦了', en: 'erased' }) - 0.4), t136b = qb(T('o6', { zh: '一百三十六次', en: '136 times' }) + 0.35);
   FR(t136a - 1, s.end, (t) => { const n = t < t136a ? 0 : Math.min(136, Math.floor(136 * clamp((Math.floor((t - t136a) / (BEAT / 4)) * (BEAT / 4)) / (t136b - t136a)))); ticks.forEach((r, k) => sa(r, 'visibility', k < n ? 'visible' : 'hidden')); });
   wipe(e136, t6 + 0.3, { dir: 'b', d: 0.4 }); stepCount(e136, t136a, t136b, 0, 136, (v) => Math.round(v) + '<span class="ser" style="font-size:96px;letter-spacing:0">' + TIMES + '</span>');
   for (const e of [trk, tk0, tk1]) wipe(e, t6 + 0.4, { dir: 'l', d: 0.5 });
@@ -216,7 +212,7 @@ scene('open', ({ root, s, c0 }) => {
   for (let k = 0; k < 8; k++) sfx('tick', t136a + (t136b - t136a) * k / 8, { g: 0.35, p: -0.5 + k * 0.12 });
   sfx('thud', t136b, { g: 0.8 });
   const eLoop = slab(ui, 120, 760, ['while (sw.ElapsedMilliseconds &lt; 1000)', '    for (int i = 0; i &lt; 10000; i++) <span class="k">Lab.Last = new Node(n++);</span>'], { size: 28 });
-  wipe(eLoop.el, qb(T('o6b', { zh: '代码', en: 'code' }) - 0.2), { dir: 't', d: 0.35 }); sfx('blip', qb(T('o6b', { zh: '代码', en: 'code' }) - 0.2), { g: 0.5 });
+  wipe(eLoop.el, qb(T('o6b', { zh: '代码', en: 'write' }) - 0.2), { dir: 't', d: 0.35 }); sfx('blip', qb(T('o6b', { zh: '代码', en: 'write' }) - 0.2), { g: 0.5 });
   const t7 = qb(T('o7', { zh: '这位', en: 'This' }) - 0.25);
   for (const e of [e136, trk, tk0, tk1, tsv2]) exit(e, t7, { y: -60, d: 0.3 });
   exit(eLoop.el, qb(T('o7', { zh: '垃圾回收', en: 'garbage collection' })) - 0.3, { y: 80, d: 0.3 });
@@ -283,7 +279,7 @@ scene('open', ({ root, s, c0 }) => {
     rEls.push(sk.box, sk.lab, wd);
   });
   const eTrade = tx(ui, 'sub', tr('不是蛮力：妥协与权衡', 'not brute force: compromise and trade-offs'), 140, 660, { size: 60, ...plate });
-  wipe(eTrade, qb(T('o10b', { zh: '蛮力', en: 'brute force' }) - 0.2), { dir: 'l', d: 0.5 });
+  wipe(eTrade, qb(T('o10b', { zh: '这不是', en: "this isn't" }) - 0.1), { dir: 'l', d: 0.5 });
   rEls.forEach((e, k) => exit(e, tP - 0.35 + (k / 3 | 0) * 0.04, { y: -80, d: 0.3 }));
   exit(eTrade, tP, { y: 60, d: 0.3 });   // 片名下的英文行 tP + 0.3 才出现，同一高度
 
@@ -302,9 +298,9 @@ scene('open', ({ root, s, c0 }) => {
     [tB0, VF, 3.0, { ease: 'power2.inOut', sfx: false }],
     [null, { z: 0.375 }, tO - 0.45 - (tB0 + 3.15), { ease: 'none', sfx: false }],
     [tO - 0.45, VO, 0.8, { ease: 'power3.inOut', sfx: false }],
-    [null, { x: VO.x + 260, z: 0.27 }, qb(T('o5', { zh: '换个', en: 'differently' }) - 0.1) - (tO + 0.5) - 0.05, { ease: 'none', sfx: false }],
-    [qb(T('o5', { zh: '换个', en: 'differently' }) - 0.1), VF, 0.9, { ease: 'power3.inOut', sfx: false }],
-    [null, { z: 0.375 }, t6 - (qb(T('o5', { zh: '换个', en: 'differently' }) - 0.1) + 1.05) - 0.05, { ease: 'none', sfx: false }],
+    [null, { x: VO.x + 260, z: 0.27 }, t5a - (tO + 0.5) - 0.05, { ease: 'none', sfx: false }],
+    [t5a, VF, 0.9, { ease: 'power3.inOut', sfx: false }],
+    [null, { z: 0.375 }, t6 - (t5a + 1.05) - 0.05, { ease: 'none', sfx: false }],
     [t6, { x: 1500, y: 200, z: 1.0 }, 1.0, { ease: 'power3.inOut', g: 0.4 }],
     [null, { x: 1560, z: 1.03 }, tCl0 - (t6 + 1.15) - 0.05, { ease: 'none', sfx: false }],
     [tCl0, { x: CX - 354, y: CY - 20, z: 1.35 }, 1.0, { ease: 'power3.inOut', g: 0.35 }],

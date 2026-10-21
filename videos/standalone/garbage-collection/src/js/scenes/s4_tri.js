@@ -63,8 +63,14 @@ scene('tri', ({ root, s, c0 }) => {
   const order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const kids = { 1: [3, 4], 2: [5], 3: [], 4: [6, 7], 5: [8], 6: [9], 7: [10], 8: [], 9: [], 10: [] };
   const tRun = qb(T('e6', { zh: '等到', en: 'When' }) - 0.1), tGarb = qb(T('e6', { zh: '就是垃圾', en: 'is garbage' }) - 0.2);
-  const steps1 = [{ id: 1, pick: tPick1, shade: tShade1, black: tBlack1 }];
-  order.slice(1).forEach((id, k) => { const t0 = tRun + k * BEAT / 2; steps1.push({ id, pick: t0, shade: t0 + 0.08, black: t0 + 0.2 }); });
+  // e4c「开始时」：先回到全白，再把根直接牵着的 1、2 涂灰
+  const tThree = qb(T('e3b', { zh: '三种', en: 'three states' }) - 0.1);
+  const tE4c = qb(T('e4c') - 0.1), tInitG = qb(T('e4c', { zh: '涂灰', en: 'gray' }) - 0.1), tRest = qb(T('e4c', { zh: '其余', en: 'everything else' }) - 0.1);
+  // e5c–e5d「待办清单」：再慢慢走两步——查完 2（涂灰 5）划掉；停一段；回头接着查 3
+  const tList = qb(T('e5c', { zh: '待办', en: 'to-do' }) - 0.1), tChk = qb(T('e5c', { zh: '查完', en: 'check one' }) - 0.1);
+  const tStop = qb(T('e5d', { zh: '停一段', en: 'stop' }) - 0.1), tBack4 = qb(T('e5d', { zh: '回头', en: 'pick up' }) - 0.1), tRes = qb(T('e5d', { zh: '往下查', en: 'from the gray' }) - 0.1);
+  const steps1 = [{ id: 1, pick: tPick1, shade: tShade1, black: tBlack1 }, { id: 2, pick: tChk, shade: tChk + 0.35, black: tChk + 0.75 }, { id: 3, pick: tRes, shade: tRes + 0.3, black: tRes + 0.6 }];
+  order.slice(3).forEach((id, k) => { const t0 = tRun + k * BEAT / 2; steps1.push({ id, pick: t0, shade: t0 + 0.08, black: t0 + 0.2 }); });
   const tFast = qb(T('e11b', { zh: '高速', en: 'full speed' }) + 0.1), FQ = BEAT / 4;
   const steps2 = order.map((id, k) => ({ id, pick: tFast + 0.2 + k * FQ, shade: tFast + 0.2 + k * FQ + 0.03, black: tFast + 0.2 + k * FQ + 0.1 }));
   const bars2 = [[1, 8, 0], [3, 10, 2], [4, 9, 3]];           // 快放时程序写下的三条指针：[黑, 还是白的活对象, 在第几步之后]
@@ -84,9 +90,12 @@ scene('tri', ({ root, s, c0 }) => {
   F((t) => {
     for (const id in N2) {
       const n = nd[id]; let col = null, ring = false;
-      const tin = tE3 + (n.x - X2) / 1520 * 0.6;
+      const tin = tE3 + (n.x - X2 - 560) / 960 * 2.2;               // 从左到右一列列长出来（约两秒）：「想在狂奔中理清头绪」时图在搭
       if (t >= tin && t < tEnd2) {
-        col = t < tE4g ? 'W' : colorAt(+id, t, steps1, tE4g);
+        col = t < tE4g || (t >= tE4c && t < tInitG) ? 'W' : colorAt(+id, t, steps1, tE4g);
+        // 「染上三种状态」：三种颜色从左到右在图上涌过一遍，再回到全白
+        const ph = (t - tThree) / 0.22 - (n.x - X2 - 560) / 240;
+        if (t >= tThree && t < tE4g && ph >= 0 && ph < 3) col = ['G', 'B', 'W'][Math.floor(ph)];
         if (t >= tGarb && col === 'W') { n.c.set({ st: C.white, sw: 5, k: 1 }); continue; }
         ring = steps1.some((st) => st.id === +id && t >= st.pick && t < st.black);
       } else if (t >= tFast && t < tMont1) {
@@ -95,7 +104,7 @@ scene('tri', ({ root, s, c0 }) => {
         ring = steps2.some((st) => st.id === +id && t >= st.pick && t < st.black);
         if (t >= steps2[9].black + 0.15 && col === 'W') { n.c.set({ st: C.white, sw: 5, k: 1 }); continue; }
       } else { n.c.set({ k: 0 }); continue; }
-      const kb = t < tEnd2 ? (col === 'W' ? bump(t, tPw) : 1) * (col === 'G' ? bump(t, tPg) : 1) * ([3, 4, 5].includes(+id) ? bump(t, tPk) : 1) : 1;
+      const kb = t < tEnd2 ? (col === 'W' ? bump(t, tPw) * bump(t, tRest) : 1) * (col === 'G' ? bump(t, tPg) * bump(t, tInitG) : 1) * ([3, 4, 5].includes(+id) ? bump(t, tPk) : 1) : 1;
       n.c.set({ fill: ring ? C.gold : COLOR[col], k: (ring ? 1.12 : Math.min(1, (t - tin) / 0.15)) * kb });
     }
   });
@@ -103,8 +112,10 @@ scene('tri', ({ root, s, c0 }) => {
   F((t) => e2p.forEach(({ a, b, p }) => {
     const on1 = t >= tE3 + 0.3 && t < tEnd2, on2 = t >= tFast && t < tMont1;
     if (!on1 && !on2) return p.set({ f: 0 });
-    const steps = on1 ? steps1 : steps2, hot = steps.some((st) => st.id === a && t >= st.pick && t < st.black + 0.05) || (a === 'R' && t >= (on1 ? tE4g - 0.2 : tFast) && t < (on1 ? tE4g + 0.2 : tFast + 0.2));
-    p.set({ f: on1 ? Math.min(1, (t - tE3 - 0.3) / 0.4) : 1, col: hot ? C.gold : C.white, w: hot ? 6 : 4 });
+    const steps = on1 ? steps1 : steps2, hot = steps.some((st) => st.id === a && t >= st.pick && t < st.black + 0.05) || (a === 'R' && t >= (on1 ? tE4g - 0.2 : tFast) && t < (on1 ? tE4g + 0.2 : tFast + 0.2)) || (a === 'R' && on1 && t >= tInitG - 0.25 && t < tInitG + 0.45);
+    const ta = a === 'R' ? tE3 : tE3 + (nd[a].x - X2 - 560) / 960 * 2.2 + 0.2;   // 指针跟着源头那一列长出来
+    if (on1 && t < ta) return p.set({ f: 0 });
+    p.set({ f: on1 ? Math.min(1, (t - ta) / 0.35) : 1, col: hot ? C.gold : C.white, w: hot ? 6 : 4 });
   }));
   // 快放时程序写下的指针（黑 → 白）与写屏障的拦截
   const barPtrs = bars2.map(([b, w, after]) => {
@@ -114,8 +125,8 @@ scene('tri', ({ root, s, c0 }) => {
     sfx('tick', tw, { g: 0.5 });
     return p;
   });
-  appear(rootB, tE3); appear(rootL, tE3); exit(rootB, tEnd2, { y: 40, d: 0.3 }); exit(rootL, tEnd2, { y: 40, d: 0.3 });
-  F((t) => { const on = (t >= tE3 && t < tEnd2) || (t >= tFast && t < tMont1); ss(rootB, 'visibility', on ? 'visible' : 'hidden'); ss(rootL, 'visibility', on ? 'visible' : 'hidden'); });
+  // 「根」的竖条与字：显隐只由帧函数管（同时用补间管透明度、帧函数管可见性时，倒着跳与顺着播结果不同）
+  F((t) => { const on = (t >= tE3 && t < tEnd2) || (t >= tFast && t < tMont1); vis(rootB, on); vis(rootL, on); });
   steps1.forEach((st, k) => { sfx(k ? 'tick' : 'pop', st.pick, { g: k ? 0.35 : 0.6 }); });
   sfx('blip', tShade1, { g: 0.5 }); sfx('thud', tBlack1, { g: 0.55 });
   steps2.forEach((st) => sfx('tick', st.pick, { g: 0.22 }));
@@ -134,6 +145,37 @@ scene('tri', ({ root, s, c0 }) => {
     return [sq, nm, ds];
   }).flat();
   sfx('tick', qb(T('e4b', { zh: '绝对安全', en: 'Completely safe' }) - 0.1), { g: 0.4 });
+  sfx('pop', tE4c, { g: 0.35 }); sfx('blip', tInitG, { g: 0.5 }); sfx('tick', tRest, { g: 0.35 });
+  // 待办清单：灰的就是还没查完的。由 steps1 推出——变灰时记上，变黑时划掉；和图上的颜色同一个来源
+  const todo = [{ id: 1, tin: tInitG }, { id: 2, tin: tInitG }];
+  steps1.forEach((st) => kids[st.id].forEach((c) => { if (!todo.some((e) => e.id === c)) todo.push({ id: c, tin: st.shade }); }));
+  todo.forEach((e) => { e.done = steps1.find((st) => st.id === e.id).black; });
+  const TLX = 120, TLY = 430, TRH = 38;
+  const todoH = tag(ui, tr('灰 = 待办', 'gray = to-do'), TLX, TLY - 62, 32);
+  slide(todoH, tList, { x: -30, d: 0.3 }); sfx('pop', tList, { g: 0.5 });
+  const rows = todo.map((e, k) => {
+    const y = TLY + k * TRH;
+    const sq = h('div', 'abs', ui); px(sq, TLX, y + 6, 30, 30);
+    const lab = tx(ui, 'mono', String(e.id), TLX + 48, y, { size: 32, color: C.white });
+    const strike = h('div', 'abs', ui); px(strike, TLX - 6, y + 20, 0, 4); strike.style.background = C.gold;
+    return { e, sq, lab, strike };
+  });
+  F((t) => rows.forEach(({ e, sq, lab, strike }) => {
+    const on = t >= Math.max(tList, e.tin) && t < tEnd2;
+    vis(sq, on); vis(lab, on); vis(strike, on && t >= e.done);
+    if (!on) return;
+    const done = t >= e.done, hot = steps1.some((st) => st.id === e.id && t >= st.pick && t < st.black);
+    ss(sq, 'background', hot ? C.gold : done ? C.ink : C.gray); ss(sq, 'outline', done ? `2px solid ${C.pale}` : 'none');
+    ss(lab, 'color', done ? C.pale : C.white);
+    ss(strike, 'width', (Math.min(1, (t - e.done) / 0.15) * 96).toFixed(0) + 'px');
+  }));
+  todo.forEach((e) => { if (e.tin > tList) sfx('blip', e.tin, { g: 0.25 }); });
+  // 停一段：收集器暂停；回头：从清单上第一个还灰着的接着查
+  const pauseT = tag(ui, tr('‖ 暂停', '‖ paused'), TLX + 130, TLY + 30, 32);   // 在清单右边，不碰「根」的竖条
+  F((t) => { const on = t >= tStop && t < tRes; vis(pauseT, on); });
+  sfx('beep', tStop, { g: 0.3 }); sfx('pop', tRes, { g: 0.45 });
+  const r3 = rows.find((r) => r.e.id === 3); pulse(r3.lab, tBack4, 1.5, 0.35); pulse(r3.sq, tBack4, 1.5, 0.35); sfx('tick', tBack4, { g: 0.45 });   // 回头：清单上下一个灰的
+  exit(todoH, tEnd2, { y: -40, d: 0.3 });
   const garb = tx(ui, 'ser', tr('剩下的白：垃圾', 'White left over: garbage'), tr(1180, 960), 120, { size: tr(72, 64), ...plate }); wipe(garb, tGarb, { dir: 'l', d: 0.4 }); sfx('thud', tGarb, { g: 0.6 });
   for (const e of [tri, triE, ...lgEls, garb]) exit(e, tEnd2, { y: -40, d: 0.3 });
 
@@ -267,6 +309,10 @@ scene('tri', ({ root, s, c0 }) => {
     '<span class="hd">23</span>  ** <span class="lw">never point to a white one</span>. <span class="hd">Moreover, any gray object must be in a</span>'], { size: 25 });
   const srcL = tx(ui, 'src', 'Lua 5.5.0 · lgc.h', 124, 262);
   wipe(src.el, tE12 + 0.2, { dir: 't', d: 0.5 }); appear(srcL, tE12 + 0.2); sfx('blip', tE12 + 0.2, { g: 0.5 });
+  // 「翻开源码」：一条读行带从第 17 行逐行往下读，铁律落下时正好读到第 22–23 行
+  const tRead = qb(tE12 + 0.75), stepR = Math.max(BEAT / 2, (tLaw - tRead) / src.ln.length);
+  F((t) => { const k = t >= tRead && t < tLaw ? Math.min(src.ln.length - 1, Math.floor((t - tRead) / stepR)) : -1; src.ln.forEach((e, i) => { ss(e, 'background', i === k ? C.line : 'transparent'); ss(e, 'color', i === k ? C.white : ''); }); });
+  src.ln.forEach((e, i) => sfx('tick', tRead + i * stepR, { g: 0.25, p: -0.4 + i * 0.1 }));
   const lws = src.el.querySelectorAll('.lw'); classAt(lws[0], 'hl', qb(T('e12b', { zh: '黑的', en: 'black' }) - 0.1)); classAt(lws[1], 'hl', qb(T('e12b', { zh: '白的', en: 'white' }) - 0.1));
   sfx('tick', qb(T('e12b', { zh: '黑的', en: 'black' }) - 0.1), { g: 0.45 }); sfx('tick', qb(T('e12b', { zh: '白的', en: 'white' }) - 0.1), { g: 0.45 });
   const law = tx(ui, 'ser', tr('黑的永远不许指向白的', 'Black may never point to white'), 110, 110, { size: tr(100, 84), ...plate });
@@ -276,6 +322,19 @@ scene('tri', ({ root, s, c0 }) => {
   const tBack = qb(T('e12a', { zh: '退一步', en: 'steps back' }) - 0.2), tStuff = qb(T('e12a', { zh: '塞入', en: 'new data' }) - 0.1), tGray = qb(T('e12ab', { zh: '退回灰', en: 'back to gray' }) - 0.15), tE13 = qb(T('e13', { zh: '回到', en: 'Back' }) - 0.3);
   for (const e of [src.el, srcL, lawT]) exit(e, tBack - 0.2, { y: 60, d: 0.3 });
   exit(law, tBack - 0.2, { y: -40, d: 0.3 });
+  // 铁律本身用全片的图形说一遍：黑的、白的，黑指向白的那根指针被金叉拦下
+  // 黑白两块随铁律大字出现；叉：中文在句末（句后停顿长），英文在 never（句后只停 0.5 s，句末才打叉就一闪而过）
+  const tLB = qb(tLaw + 0.1), tLW = tLB + BEAT / 2, tLX = qb(tr(Tend('e12b') + 0.15, T('e12b', { zh: '不许', en: 'never' }) - 0.1));
+  const QB = { x: X4 + 1520, y: 430 }, QW = { x: X4 + 1780, y: 430 };
+  const lawB = cell(nsv, QB.x, QB.y, 110), lawW = cell(nsv, QW.x, QW.y, 110);
+  const lawP = ptr(esv, QB.x + 55, QB.y, QW.x, QW.y, { w: 6, head: 20, gap2: 62 });
+  const popIn = (t0, t) => Math.min(1, Math.max(0, (t - t0) / 0.2));
+  F((t) => { const on = t < tBack - 0.2; lawB.set(on ? { fill: C.ink, k: popIn(tLB, t) } : { k: 0 }); lawW.set(on ? { fill: C.white, k: popIn(tLW, t) } : { k: 0 }); });
+  grow(lawP, tLW + BEAT / 2, tBack - 0.2, { d: 0.35 });
+  const lawX = h('div', 'abs', world); px(lawX, (QB.x + QW.x) / 2 - 50, QB.y - 50, 100, 100);
+  for (const r of [45, -45]) { const b = h('div', 'abs', lawX); px(b, -10, 41, 120, 18); css(b, { background: C.gold, transform: `rotate(${r}deg)` }); }
+  slam(lawX, tLX, { from: 1.6, d: 0.3 }); sfx('error', tLX, { g: 0.5 }); exit(lawX, tBack - 0.2, { y: 40, d: 0.3 });
+  sfx('pop', tLB, { g: 0.45 }); sfx('pop', tLW, { g: 0.45, p: 0.3 });
   // 一张黑的表，塞进一个指向白对象的新条目：屏障不去涂白的，而是把表自己退回灰
   const TB = { x: X4 + 760, y: 470 }, TW = { x: X4 + 1360, y: 470 };
   const tab = h('div', 'abs', world); px(tab, TB.x - 160, TB.y - 160, 320, 320); tab.style.background = C.ink; tab.style.outline = `4px solid ${C.white}`;
@@ -382,6 +441,10 @@ scene('tri', ({ root, s, c0 }) => {
   const csrc = slab(ui, 120, 150, ['<span class="hd">static void</span> Link(Node a, Node b) { <span class="k">a.Next = b</span>; }'], { size: 40, pad: '18px 30px 20px' });
   const csrcL = tx(ui, 'src', 'C# · .NET 10.0.12 · Lab.Link', 124, 112);
   wipe(csrc.el, tE16 + 0.3, { dir: 'l', d: 0.4 }); appear(csrcL, tE16 + 0.3); sfx('blip', tE16 + 0.3, { g: 0.5 });
+  // 念到「a.Next = b」这一行时把它标出来：下面四条指令都是它编译出来的
+  // 英文这一句念得慢，「a.Next」之后到「four」还有三秒：英文版把高亮放在竖线长完与「4」砸下的正中
+  const tNx = qb(tr(Math.max(tE16 + 1.0 + 2 * BEAT, T('e16', { zh: 'next', en: 'Next' }) - 0.1), (tE16 + 3.2 + T('e16b', { zh: '四条', en: 'four' }) - 0.1) / 2));
+  classAt(csrc.el.querySelector('.k'), 'hl', tNx); sfx('tick', tNx, { g: 0.5, p: 0.4 });
   const INS = [['lea', 'rcx, bword ptr [rcx+0x08]', tr('算地址', 'address')], ['call', 'CORINFO_HELP_ASSIGN_REF', tr('调写屏障', 'call barrier')], ['nop', '', tr('空一拍对齐', 'align')], ['ret', '', tr('返回', 'return')]];
   const tI = [qb(T('e17', { zh: '算地址', en: 'compute' }) - 0.1), qb(T('e17', { zh: '调写屏障', en: 'call' }) - 0.1), qb(T('e17', { zh: '空一拍', en: 'no-op' }) - 0.1), qb(T('e17', { zh: '返回', en: 'return' }) - 0.1)];
   const insEls = INS.map(([op, arg, zh], k) => {

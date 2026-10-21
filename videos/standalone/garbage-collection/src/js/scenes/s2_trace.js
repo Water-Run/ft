@@ -172,30 +172,72 @@ scene('trace', ({ root, s, c0 }) => {
   wipe(pap, tFrz, { dir: 't', d: 0.5 }); sfx('drive', tFrz, { g: 0.4 }); sfx('beep', tFrz + 0.6, { g: 0.35 });
   const secs = tx(world, 'ser', tr('好几秒', 'several<br>seconds'), LX + 900, tr(470, 420), { size: tr(130, 104), lh: 1.05, color: C.gold });
   slam(secs, qb(T('b6', { zh: '好几秒', en: 'several seconds' }) - 0.1), { from: 1.25, d: 0.4 }); sfx('thud', qb(T('b6', { zh: '好几秒', en: 'several seconds' }) - 0.1), { g: 0.7 });
-  const t7 = qb(T('b7', { zh: '今天', en: 'Today' }) - 0.35);
+  const t7 = qb(T('b7', { zh: '今天', en: 'Today' }) - 0.35), t8 = qb(T('b8', { zh: 'Lua', en: 'Lua' }) - 0.4);
   // ── 标记—清扫：两个动作 ──
   const T3 = 5200;
   const mN = tx(world, 'ser', tr('标记—清扫', 'Mark-and-sweep'), T3, tr(160, 200), { size: tr(170, 120) });
   const mE = tx(world, 'lat', tr('mark-and-sweep', ''), T3 + 8, 380, { size: 44, color: C.pale });
   slam(mN, qb(T('b7', { zh: '标记', en: 'mark' }) - 0.1), { from: 1.2, d: 0.45 }); wipe(mE, qb(T('b7', { zh: '标记', en: 'mark' }) + 0.3), { dir: 'l', d: 0.4 }); sfx('thud', qb(T('b7', { zh: '标记', en: 'mark' }) - 0.1), { g: 0.9 });
-  const rowN = 14, rx0 = T3 + 10, ry = 560, mm = [1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0];
-  const tMark3 = qb(T('b7b', { zh: '标记', en: 'marking' }) - 0.1), tSw3 = qb(T('b7b', { zh: '清扫', en: 'sweep' }) - 0.1);
-  const row = mm.map((v, k) => cell(nsv, rx0 + k * 84 + 30, ry + 30, 64));
-  const lbM = tag(world, tr('标记', 'mark'), rx0, ry - 90, 34), lbS = tag(world, tr('清扫', 'sweep'), rx0 + 300, ry + 110, 34);
-  F((t) => row.forEach((c, k) => {
-    const tin = t7 + 0.2 + k * 0.05, tm = tMark3 + k * BEAT / 4, ts = tSw3 + k * 0.1;
-    if (t < tin) return c.set({ k: 0 });
-    if (mm[k] && t >= tm) return c.set({ fill: t < tm + 0.12 ? C.gold : C.ink, k: 1 });
-    if (!mm[k] && t >= ts) { const u = (t - ts) / 0.2; return c.set(u < 1 ? { fill: C.gold, k: 1 - u } : { k: 0 }); }
-    c.set({ fill: C.white, k: Math.min(1, (t - tin) / 0.12) });
+  // 一排 14 个对象，三句话三个动作（策划者看片说这里「太快」，按句子拆开演）：
+  //   b7b 标记：从根出发，沿引用一个接一个做记号（变黑）；b7c 清扫：金线从头扫到尾，死的活的都闪一下；
+  //   b7d 没记号的落进下面的空闲表（变空心），有记号的擦掉记号（变回白），留给下一轮
+  {   // 自成一块：本段的名字不和本场其他段冲突
+  const rx0 = T3 + 170, ry = 640, PITCH = 84, mm = [1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0];
+  const cx = (k) => rx0 + k * PITCH + 30, cy = ry + 30;
+  const row = mm.map((v, k) => cell(nsv, cx(k), cy, 64));
+  const chain = mm.map((v, k) => (v ? k : -1)).filter((k) => k >= 0);          // 从根出发能走到的：一条引用链
+  const tRoot7 = qb(T('b7b', { zh: '根', en: 'roots' }) - 0.1), tMk0 = tRoot7 + BEAT, MSTEP = BEAT / 2;
+  const tMk = {}; chain.forEach((k, i) => { tMk[k] = tMk0 + i * MSTEP; });
+  const tSwA = qb(T('b7c', { zh: '一头', en: 'walk' }) - 0.1), tSwB = qb(Tend('b7c') - 0.2), SWD = (tSwB - tSwA) / mm.length;
+  const tVis = (k) => tSwA + (k + 0.5) * SWD;
+  const tFreeL = qb(T('b7d', { zh: '收回', en: 'goes back' }) - 0.1), tWipe = qb(T('b7d', { zh: '擦掉', en: 'wiped' }) - 0.1), tOut7 = t8 - 0.1;
+  // 根，与沿链画出的引用（弧线在方块上方跨过没被引用的那几个）
+  const rootT = tag(world, tr('根', 'root'), T3 + 20, ry + 8, 40);
+  slam(rootT, tRoot7, { from: 1.3, d: 0.3 }); sfx('thud', tRoot7, { g: 0.5 }); exit(rootT, tOut7, { y: 40, d: 0.3 });
+  const arcs = chain.map((k, i) => {
+    const x1 = i ? cx(chain[i - 1]) : T3 + 90, x2 = cx(k), y = ry - 4, hgt = 26 + 12 * (x2 - x1) / PITCH;
+    const p = svg('path', { d: `M${x1},${y} Q${(x1 + x2) / 2},${y - hgt * 2} ${x2},${y}`, fill: 'none', stroke: C.white, 'stroke-width': 4 }, esv);
+    const hd = svg('polygon', { points: `${x2},${y} ${x2 - 14},${y - 16} ${x2 + 4},${y - 20}`, fill: C.white }, esv);
+    const len = p.getTotalLength(); sa(p, 'stroke-dasharray', `${len} ${len}`);
+    return { p, hd, len, t0: tMk[k] - MSTEP * 0.9 };
+  });
+  F((t) => arcs.forEach((a) => {
+    const f = t >= tOut7 ? 0 : clamp((t - a.t0) / (MSTEP * 0.8));
+    sa(a.p, 'visibility', f > 0.01 ? 'visible' : 'hidden'); sa(a.p, 'stroke-dashoffset', (a.len * (1 - f)).toFixed(1));
+    sa(a.hd, 'visibility', f > 0.95 ? 'visible' : 'hidden');
+    const col = t >= tWipe ? C.pale : C.white; sa(a.p, 'stroke', col); sa(a.hd, 'fill', col);
   }));
-  const sweep3 = h('div', 'abs', world); css(sweep3, { background: C.gold, width: '12px', height: '120px', top: ry - 30 + 'px' });
-  FR(tSw3 - 0.1, tSw3 + 1.6, (t) => { vis(sweep3, t >= tSw3 && t < tSw3 + 1.4); ss(sweep3, 'left', (rx0 + (t - tSw3) / 0.1 * 84 - 6).toFixed(1) + 'px'); });
-  slide(lbM, tMark3 - 0.1, { y: 20, d: 0.3 }); slide(lbS, tSw3 - 0.1, { y: -20, d: 0.3 });
-  sfx('tick', tMark3, { g: 0.4 }); sfx('whoosh', tSw3, { g: 0.4 });
-  const every = tx(world, 'note', tr('清扫要把每个对象都过一遍', 'the sweep visits every object'), rx0, ry + 200, { size: 34, color: C.white });
-  appear(every, tMark3 + 0.3);
-  const t8 = qb(T('b8', { zh: 'Lua', en: 'Lua' }) - 0.4);
+  // 空闲表：清扫收回的格子落到这一行，变成空心
+  const freeL = tag(world, tr('空闲表', 'free list'), T3 + 20, ry + 168, 30);
+  appear(freeL, tFreeL - 0.2); exit(freeL, tOut7, { y: 40, d: 0.3 });
+  F((t) => row.forEach((c, k) => {
+    const tin = t7 + 0.2 + k * 0.05;
+    if (t < tin || t >= tOut7 + 0.3) return c.set({ k: 0 });
+    const flash = t >= tVis(k) && t < tVis(k) + 0.16;                       // 清扫经过：死的活的都闪一下
+    if (mm[k]) {
+      const marked = t >= tMk[k] && t < tWipe + k * 0.03;
+      return c.set({ fill: flash || (t >= tMk[k] && t < tMk[k] + 0.12) || (t >= tWipe + k * 0.03 && t < tWipe + k * 0.03 + 0.12) ? C.gold : marked ? C.ink : C.white, k: Math.min(1, (t - tin) / 0.12) });
+    }
+    const u = ease.io3(clamp((t - tFreeL - k * 0.03) / 0.4));
+    if (u > 0) return u < 1 ? c.set({ fill: C.white, k: 1, y: cy + 160 * u }) : c.set({ st: C.pale, sw: 4, k: 1, y: cy + 160 });
+    c.set({ fill: flash ? C.gold : C.white, k: Math.min(1, (t - tin) / 0.12) });
+  }));
+  const sweep3 = h('div', 'abs', world); css(sweep3, { background: C.gold, width: '12px', height: '110px', top: ry - 20 + 'px' });
+  FR(tSwA - 0.1, tSwB + 0.2, (t) => { vis(sweep3, t >= tSwA && t < tSwB); ss(sweep3, 'left', (rx0 - 10 + (t - tSwA) / SWD * PITCH).toFixed(1) + 'px'); });
+  // 两个步骤名：说到哪一步，哪一步亮
+  const lbM = tag(world, tr('① 标记', '1 Mark'), T3 + 20, 470, 36), lbS = tag(world, tr('② 清扫', '2 Sweep'), T3 + tr(220, 240), 470, 36);
+  const tS1 = qb(T('b7b', { zh: '标记', en: 'Mark' }) - 0.1), tS2 = qb(T('b7c', { zh: '清扫', en: 'sweep' }) - 0.1);
+  slide(lbM, tS1, { y: 20, d: 0.3 }); slide(lbS, tS2, { y: 20, d: 0.3 }); sfx('tick', tS1, { g: 0.45 }); sfx('tick', tS2, { g: 0.45 });
+  F((t) => { ss(lbM, 'background', t >= tS2 ? C.pale : ''); });   // 讲到清扫时，① 退成淡色（不碰透明度：显隐归补间管）
+  for (const e of [lbM, lbS]) exit(e, tOut7, { y: -30, d: 0.3 });
+  chain.forEach((k) => sfx('tick', tMk[k], { g: 0.3, p: -0.6 + k * 0.09 }));
+  sfx('whoosh', tSwA, { g: 0.45 }); sfx('pop', tFreeL, { g: 0.5 }); sfx('chime', tWipe, { g: 0.4 });
+  // 两句说明放在步骤名那一行的右边，前后接替
+  const every = tx(world, 'note', tr('清扫要把每个对象都过一遍', 'the sweep visits every object'), T3 + tr(430, 490), 478, { size: 32, color: C.white });
+  appear(every, qb(T('b7c', { zh: '死的', en: 'dead' }) - 0.1)); exit(every, tWipe - 0.1, { y: -20, d: 0.25 });
+  const nextR = tx(world, 'note', tr('记号擦掉，留给下一轮', 'tags wiped for the next round'), T3 + tr(430, 490), 478, { size: 32, color: C.white });
+  slide(nextR, tWipe + 0.2, { y: 20, d: 0.3 }); exit(nextR, tOut7, { y: 40, d: 0.3 });
+  }
 
   // ── Lua：二十万张活表 + 二十万张废表；一轮下来 28 MB 砍到 14 MB ──
   const T4 = 7000, GX = T4, GY = 120, GN = 20, GP = 30;
@@ -241,7 +283,7 @@ scene('trace', ({ root, s, c0 }) => {
     [tSw - 0.05, { x: 1010, y: 520, z: 0.92 }, 0.8, { ease: 'power3.inOut', sfx: false }],
     [null, { z: 0.94 }, tG - (tSw + 0.9) - 0.05, { ease: 'none', sfx: false }],
     [tPull, { y: 560, z: 0.8 }, tEnd1 - tPull + 0.2, { ease: 'power2.inOut', sfx: false }],
-    [null, { x: 1090, z: 0.82 }, tOut3 - 0.2 - (tEnd1 + 0.2) - 0.05, { ease: 'none', sfx: false }],   // 「以后用不用」停留时缓慢平移
+    [null, { x: 1090, z: 0.82 }, tOut3 - 0.2 - (tEnd1 + 0.2) - 0.2, { ease: 'none', sfx: false }],   // 「以后用不用」停留时缓慢平移（离下一段留 0.2 s：贴得太近时倒着跳与顺着播的结果差一个像素）
     [tOut3 - 0.2, { x: T2 + 960, y: 520, z: 1.0 }, 1.2, { ease: 'power3.inOut', g: 0.5 }],
     [null, { x: T2 + 990, z: 1.02 }, t7 - 0.2 - (tOut3 + 1.15), { ease: 'none', sfx: false }],
     [t7 - 0.2, { x: T3 + 760, y: 520, z: 1.0 }, 1.1, { ease: 'power3.inOut', g: 0.5 }],

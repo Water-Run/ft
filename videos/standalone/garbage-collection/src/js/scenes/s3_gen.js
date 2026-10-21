@@ -33,12 +33,31 @@ scene('gen', ({ root, s, c0 }) => {
   }
   const split = (t) => ease.io3(clamp((t - tSplit) / 0.7));
   const CH = BEAT / 2;                                          // 新区：每八分音符扫一次
-  const sweep0 = (t) => (t >= tFast ? (t - tFast) / CH : -1);
+  // 「为什么快」慢放一次新区回收：大多数已经死了（闪金缩没），活下来的几个落进 1 代的空位，整片新区腾空，再重新开始生灭
+  const tFrz = qb(T('d2c') - 0.1), tWhy = qb(T('d2c', { zh: '大多', en: 'Most' }) - 0.1), tMove = qb(T('d2d', { zh: '挪到', en: 'move' }) - 0.1);
+  const tEmpty = qb(T('d2d', { zh: '腾空', en: 'empty' }) - 0.1), tAgain = qb(T('d2d', { zh: '重来', en: 'again' }) + 0.1);
+  const empty1 = (i) => { const o = tiles[2 * COLS + i]; return o && !o.old && o.h2 < 0.82; };   // 1 代第一行的空位
+  const survivor = (o) => o.j === 1 && o.i % 3 === 1 && empty1(o.i);
+  const sweep0 = (t) => (t >= tFast && (t < tFrz || t >= tAgain) ? (t - tFast) / CH : -1);
   F((t) => {
     const sp = split(t);
     tiles.forEach((o, k) => {
       if (t < o.born) return o.c.set({ k: 0 });
       const y = o.j * P + 30 + rowOff(o.j) * sp;
+      if (o.b === 0 && t >= tFrz && t < tAgain) {                 // 慢放的这一次：从「为什么快」起定格成满满一片
+        if (survivor(o)) {
+          const u = clamp((t - tMove - (o.i % 7) * 0.04) / 0.5), y2 = 2 * P + 30 + 40;
+          const lift = t >= tMove - 0.3 && t < tMove;                 // 挪之前闪一下金：就是这几个
+          return o.c.set({ fill: lift ? C.gold : C.white, k: 1, y: lerp(y, y2, u < 0.72 ? (u / 0.72) ** 2 : 1 - 0.06 * Math.sin(Math.PI * (u - 0.72) / 0.28)) });
+        }
+        const live = ((k * 7) % 10) < 6, d = clamp((t - tWhy - o.i * 0.07) / 0.5);   // 从左到右一列列死去，约两秒
+        if (!live) return o.c.set({ k: 0, y });
+        return o.c.set(d < 1 ? { fill: d > 0 ? C.gold : C.white, k: 1 - d * d, y } : { k: 0, y });
+      }
+      if (o.b === 1 && o.j === 2 && t >= tMove && survivor(tiles[k - COLS])) return o.c.set({ k: 0, y });   // 落进来的那几个占住空位
+      if (survivor(o) && t >= tAgain) {                           // 已经挪到 1 代：留在那里，过一会儿变黑（成了老对象）
+        return o.c.set({ fill: t >= tAgain + 1.2 ? C.ink : C.white, k: 1, y: 2 * P + 30 + 40 });
+      }
       if (o.b === 0 && t >= tShort) {                            // 新区：生生灭灭
         const per = t >= tFast ? CH : BEAT, m = Math.floor((t - tShort) / per), ph = (t - tShort) / per - m;
         const alive = ((k * 7 + m * 13) % 10) < 6, birth = ((k * 3 + m * 5) % 7) / 10;
@@ -73,6 +92,10 @@ scene('gen', ({ root, s, c0 }) => {
   gl.forEach((e, k) => sfx('pop', qb(Math.min(T('d4', { zh: '三代', en: 'three generations' }), Tend('d4') - 0.6)) + k * BEAT / 2, { g: 0.45 }));
   const newL = tag(world, tr('新区', 'new'), COLS * P + 30, 20, 40);
   slam(newL, tNew, { from: 1.3, d: 0.35 }); sfx('thud', tNew, { g: 0.55 });
+  // 慢放的那一次：死的一片闪金缩没，活的落进 1 代，新区的框亮一下表示腾空
+  pulse(newL, tWhy, 1.25, 0.3); sfx('whoosh', tWhy, { g: 0.4 }); sfx('pop', tWhy + 0.2, { g: 0.4 });
+  sfx('thud', tMove + 0.4, { g: 0.6 }); sfx('chime', tEmpty, { g: 0.45 });
+  F((t) => ss(outl[0], 'borderColor', t >= tEmpty && t < tEmpty + 0.6 ? C.gold : C.white));
 
   // ── ui：1983、论文、短命鬼、分代 ──
   const e83 = tx(ui, 'big', '1983', 110, 130, { size: 170, ...plate });
@@ -88,7 +111,7 @@ scene('gen', ({ root, s, c0 }) => {
   exit(eShort, tSplit - 0.1, { y: -60, d: 0.3 });
   const eGen = tx(ui, 'ser', tr('分代', 'Generations'), 110, tr(740, 770), { size: tr(150, 120), ...plate }), eGenE = tx(ui, 'lat', tr('generational', ''), 430, 830, { size: 40, color: C.pale, ...plate });
   slam(eGen, tGen, { from: 1.25, d: 0.42 }); wipe(eGenE, tGen + 0.3, { dir: 'l', d: 0.35 }); sfx('thud', tGen, { g: 0.85 });
-  for (const e of [eGen, eGenE]) exit(e, tW3 - 0.2, { y: 60, d: 0.3 });
+  for (const e of [eGen, eGenE]) exit(e, tWhy - 0.3, { y: 60, d: 0.3 });   // 慢放新区回收之前让开，不压在堆上
   const w3 = wonder(ui, tr('一条统计学洞察，<br>长成了堆的形状', 'A statistical insight<br>became the shape of the heap'), 120, 110, tW3, tD4 - 0.1, { size: tr(92, 76), h: tr(220, 190) });
 
   // ── 0 → 1 → 2：一个对象熬过回收，往下掉一层 ──
@@ -114,7 +137,7 @@ scene('gen', ({ root, s, c0 }) => {
   wipe(genS.el, tBorn, { dir: 'l', d: 0.3 }); appear(genL, tBorn);
   [tBorn, tUp1 + 0.4, tUp2 + 0.4, tUp2 + 1.45].forEach((t, k) => { appear(genS.ln[k], t); classAt(genS.ln[k], 'k', t); sfx('blip', t, { g: 0.4 }); });
   const old = tx(world, 'ser', tr('养老', 'retired'), O.x + 60, oY[2] - 46, { size: 64, color: C.pale, ...plate });
-  slide(old, qb(T('d4b', { zh: '养老', en: 'retire' }) - 0.1), { x: 30, d: 0.3 });
+  slide(old, qb(T('d4b', { zh: '养老', en: 'retire' }) - 0.1), { x: 30, d: 0.3 }); sfx('pop', qb(T('d4b', { zh: '养老', en: 'retire' }) - 0.1), { g: 0.45 });
   for (const e of [genS.el, genL]) exit(e, tD5 - 0.1, { y: 60, d: 0.3 });
   exit(old, tD5 - 0.1, { y: 30, d: 0.3 });
 
@@ -124,7 +147,7 @@ scene('gen', ({ root, s, c0 }) => {
   const c2 = tx(ui, 'big', '0<span class="ser" style="font-size:48px;letter-spacing:0">' + tr(' 次', ' times') + '</span>', 1560, 620, { size: 90, ...plate });
   wipe(c136, tD5, { dir: 'l', d: 0.3 }); stepCount(c136, tD5 + 0.2, t136 + 0.4, 0, 136, (v) => Math.round(v) + '<span class="ser" style="font-size:64px;letter-spacing:0">' + tr(' 次', ' times') + '</span>');
   slam(c1, tZero, { from: 1.3, d: 0.35 }); slam(c2, tZero + BEAT / 2, { from: 1.3, d: 0.35 }); sfx('thud', tZero, { g: 0.6 }); sfx('thud', tZero + BEAT / 2, { g: 0.6 });
-  sfx('thud', t136 + 0.4, { g: 0.8 });
+  sfx('thud', t136 + 0.4, { g: 0.8 }); sfx('whoosh', tD5 + 0.2, { g: 0.35 });   // 计数开始跑
   const raw = slab(ui, 120, 800, ['gen0 GCs <span class="k">136</span>, gen1 <span class="k">0</span>, gen2 <span class="k">0</span>'], { size: 28, pad: '14px 26px 16px' });
   const rawL = tx(ui, 'src', tr('实测：.NET 10.0.12 · 那一秒', 'measured: .NET 10.0.12 · that second'), 124, 764);
   wipe(raw.el, t136, { dir: 'l', d: 0.3 }); appear(rawL, t136);

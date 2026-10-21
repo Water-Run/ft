@@ -3,17 +3,17 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "11b3303bab0410f6719547afc4a5146f06aec287b05687a9c4a2dc7831afcac8",
+      "content_sha256": "c2d6002329fc83b6b3d5c6e763c81043642414c3c35035addafdf8bf32c1a84f",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-10-20T10:43:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：策划者 WaterRun 2026-10-20 在会话中回复「接受。CSharp是为了配音。就这样落盘吧，我叫Opus开工」——第 8 稿按原样落盘，o10 去掉机制清单、h5/h6 的引号、音色 Sweet_Lady（甜美女声）、引号只在 TTS 侧去掉等取舍一并接受；CSharp 是为配音保留的写法，字幕不改。确认后按 docs/script-review.md 第 3 节「不改含义的字幕断句」把 61 句超宽句拆成 142 句（逐字校验与第 8 稿一致，仅改断句，续句停顿 0.05 s），内容哈希随之更新为 11b3303b…，沿用同一确认依据"
+      "confirmed_at": "2026-10-20T21:47:00+08:00",
+      "evidence": "review/NOTES.md「看过成片之后的增补」：(1) 增补 a8c–a8f、b7b–b7d、d2c–d2d、e4c、e5c–e5d、h8，策划者 WaterRun 选择「确认，时长上限改 720 秒」（2026-10-20 约 20:47）；(2) 策划者要求「字幕的CSharp是C#, 配音还是CSharp避免读错」，o2 字幕改 C#、tts 保留 CSharp；(3) 策划者指出开场「占着不撒手」「强行收」看不懂、要「浅显易懂，观众刚来还没进状态」「确保低认知负载」，受托方重写 o2–o6b（只用格子纸一个比喻），逐句列表交策划者，策划者选择「确认这版」（2026-10-20 约 21:47）。其余句子与此前确认的第 8 稿（11b3303b…）相同。"
     },
     "en": {
       "status": "approved",
-      "content_sha256": "dd6d564e5386ac8fd16904d2f7aae47dd3752f9011eeefdb220102dac7beab0c",
+      "content_sha256": "50f2f6a750585f3ad3b34a105e06f0029643352f603a2a0fd338f583a89aa0aa",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-10-20T15:52:00+08:00",
-      "evidence": "review/NOTES.md「英文译稿」之「确认（授权受托方自主决定）」：受托方请策划者校对英文稿并选英文音色后，策划者 WaterRun 2026-10-20 在会话中回复「你自主决策」。据此由受托方 Claude Opus 5.5 定稿：采用本版英文稿（在交审稿 70f94a94… 的基础上为时长精简两轮共 15 句，含义不变，见 NOTES），音色 Sweet_Girl、语速 1.15。策划者没有逐句审读英文稿，这一点如实记录"
+      "confirmed_at": "2026-10-20T21:47:00+08:00",
+      "evidence": "review/NOTES.md「英文译稿」之「确认（授权受托方自主决定）」与「看过成片之后的增补」：策划者 WaterRun 2026-10-20 回复「你自主决策」，英文稿由受托方 Claude Opus 5.5 定稿；增补句与重写的开场按中文确认稿逐句翻译，策划者确认中文时没有逐句审读英文，这一点如实记录。"
     }
   }
 }

@@ -96,7 +96,8 @@ scene('count', ({ root, s, c0 }) => {
   });
   const SR = [330, 480, 630, 780].map((y) => cell(sv, 1880, y - 80, 50));
   const tLoop = qb(Tend('a6') - 0.55);
-  const rr = seeded(23), steps = [], tS6 = qn(T('a6', { zh: '指针', en: 'pointer' })), tE6 = tLoop - 0.6;
+  // 记账一直演到 X、Y 出场前半秒：之前在 a6 说完前就退场，留下一秒多只有一行小字的空屏（策划者看片指出「刷过去」）
+  const rr = seeded(23), steps = [], tS6 = qn(T('a6', { zh: '指针', en: 'pointer' })), tE6 = qb(T('a6b', { zh: '循环引用', en: 'reference cycle' }) - 0.1) - 0.5;
   let tgt = [0, 1, 4, 3];
   const tgtAt = [tgt.slice()];
   for (let t = tS6; t < tE6 - 0.1; t += BEAT / 2) { const k = steps.length % 4; let v; do { v = (rr() * 6) | 0; } while (v === tgt[k]); steps.push({ t, k, from: tgt[k], to: v }); tgt = tgt.slice(); tgt[k] = v; tgtAt.push(tgt); }
@@ -140,11 +141,13 @@ scene('count', ({ root, s, c0 }) => {
   };
   const eX = mk(X, 'X', 'x'), eY = mk(Y, 'Y', 'y');
   const pXY = ptr(sv, X.x + S + 6, X.y + 64, Y.x - 6, Y.y + 64, { w: 6, head: 24 }), pYX = ptr(sv, Y.x - 6, Y.y + 136, X.x + S + 6, X.y + 136, { w: 6, head: 24 });
-  const loopCol = (t) => ({ col: t >= tHit ? C.gold : C.white });
-  grow(pXY, tP1, tGone, { d: 0.35, st: loopCol }); grow(pYX, tP2, tGone, { d: 0.35, st: loopCol });
+  // 试减：拆环器把可疑对象之间互相给的计数逐个扣掉（扣的那一刻指针闪金，扣完变淡），出手时整环变金
+  const tA8c = T('a8c'), tSub = qb(T('a8d', { zh: '计数', en: 'count' }) - 0.1), tSubs = [tSub, tSub + BEAT, tSub + 2 * BEAT];
+  const subCol = (ts) => (t) => t >= tHit ? { col: C.gold } : t >= ts + 0.3 ? { col: C.pale, op: 0.35 } : t >= ts ? { col: C.gold } : { col: C.white };
+  grow(pXY, tP1, tGone, { d: 0.35, st: subCol(tSubs[1]) }); grow(pYX, tP2, tGone, { d: 0.35, st: subCol(tSubs[0]) });
   sfx('pop', tXY, { g: 0.6 }); sfx('tick', tP1 + 0.3, { g: 0.5, p: 0.2 }); sfx('tick', tP2 + 0.3, { g: 0.5, p: -0.2 });
-  keyed(eX.n).at(tXY + 0.1, { html: '1' }).at(tP2 + 0.3, { html: '2' }).at(tDel + 0.25, { html: '1' });
-  keyed(eY.n).at(tXY + 0.1, { html: '1' }).at(tP1 + 0.3, { html: '2' }).at(tDel + 0.25, { html: '1' });
+  keyed(eX.n).at(tXY + 0.1, { html: '1' }).at(tP2 + 0.3, { html: '2' }).at(tDel + 0.25, { html: '1' }).at(tSubs[0] + 0.15, { html: '0' });
+  keyed(eY.n).at(tXY + 0.1, { html: '1' }).at(tP1 + 0.3, { html: '2' }).at(tDel + 0.25, { html: '1' }).at(tSubs[1] + 0.15, { html: '0' });
   pulse(eX.n, tP2 + 0.3); pulse(eY.n, tP1 + 0.3); pulse(eX.n, tDel + 0.25); pulse(eY.n, tDel + 0.25);
   sfx('pop', tDel, { g: 0.45 });
   // 卡在 1：两个 1 随拍子一明一暗
@@ -180,8 +183,37 @@ scene('count', ({ root, s, c0 }) => {
   pulse(rawL, tPy, 1.3, 0.3); pulse(phpL, tPhp, 1.3, 0.3);
   const tExact = qb(T('a9b', { zh: '正是', en: 'Exactly' }) - 0.05); sfx('tick', tPy, { g: 0.4, p: -0.4 }); sfx('tick', tPhp, { g: 0.4, p: 0.4 });
   exit(hLoop, tFix, { x: -120, d: 0.3 });
-  for (const e of [raw.el, rawL]) exit(e, tScan - 0.15, { y: 60, d: 0.25 });
-  exit(php.el, tScan - 0.15, { y: 60, d: 0.25 }); exit(phpL, tScan - 0.15, { y: 60, d: 0.25 });
+  for (const e of [raw.el, rawL, php.el, phpL]) exit(e, tA8c - 0.1, { y: 60, d: 0.25 });   // 让出下方，给试减
+
+  // ── 拆环器怎么认出孤岛：以 PHP 的「试减」为例 ──
+  // 另放一个 Z：Y 指着它，外面还有名字 z 指着它，计数 2。试减扣掉 Y 给的那一下后还剩 1，原样恢复；X、Y 扣到 0，就是孤岛
+  const Z = { x: 3820, y: 610 }, SZ = 160, tZin = qb(tA8c + 0.3), tZout = tScan - 0.15;
+  const zb = h('div', 'abs', world); px(zb, Z.x, Z.y, SZ, SZ); zb.style.background = C.white;
+  const zn = tx(world, 'big', '', Z.x, Z.y + 34, { size: 90, color: C.ink }); css(zn, { width: SZ + 'px', textAlign: 'center' });
+  const zl = tx(world, 'big', 'Z', Z.x + 60, Z.y + SZ + 12, { size: 44 });
+  const zt = wtag(world, 'z', Z.x + 62, 450, 34), pz = ptr(sv, Z.x + 80, 506, Z.x + 80, Z.y - 6, { w: 5, head: 20 });
+  const pYZ = ptr(sv, Y.x + S + 6, Y.y + 170, Z.x - 6, Z.y + 70, { w: 6, head: 24 });
+  slam(zb, tZin, { from: 0.4, d: 0.4 }); appear(zn, tZin); appear(zl, tZin + 0.1); slide(zt, tZin + 0.15, { y: -20, d: 0.3 });
+  grow(pz, tZin + 0.2, tZout, { d: 0.25, st: (t) => ({ col: t >= qb(T('a8e', { zh: '大于零', en: 'above zero' }) - 0.1) && t < qb(T('a8e', { zh: '恢复', en: 'goes back' }) - 0.1) ? C.gold : C.white, w: t >= qb(T('a8e', { zh: '大于零', en: 'above zero' }) - 0.1) && t < qb(T('a8e', { zh: '恢复', en: 'goes back' }) - 0.1) ? 8 : 5 }) }); grow(pYZ, tZin + 0.3, tZout, { d: 0.35, st: (t) => t >= tSubs[2] + 0.3 && t < qb(T('a8e', { zh: '恢复', en: 'goes back' })) - 0.1 ? { col: C.pale, op: 0.35 } : t >= tSubs[2] && t < tSubs[2] + 0.3 ? { col: C.gold } : { col: C.white } });
+  sfx('pop', tZin, { g: 0.5 });
+  const tRes = qb(T('a8e', { zh: '恢复', en: 'goes back' }) - 0.1), tAbove = qb(T('a8e', { zh: '大于零', en: 'above zero' }) - 0.1);
+  keyed(zn).at(tZin, { html: '2' }).at(tSubs[2] + 0.15, { html: '1' }).at(tRes, { html: '2' });
+  for (const e of [zb, zn, zl, zt]) exit(e, tZout, { y: 40, d: 0.3 });
+  // 试减：标签，三下扣减
+  const tTry = qb(T('a8c', { zh: '试减', en: 'trial' }) - 0.1);
+  const tryT = tag(world, tr('试减', 'trial subtraction'), 2870, 790, 44);
+  slam(tryT, tTry, { from: 1.3, d: 0.35 }); sfx('thud', tTry, { g: 0.55 }); exit(tryT, tZout, { y: 40, d: 0.3 });
+  [eX.n, eY.n, zn].forEach((n, k) => { pulse(n, tSubs[k] + 0.15, 1.3, 0.25); sfx('tick', tSubs[k], { g: 0.5, p: -0.4 + k * 0.4 }); });
+  // 大于零：外面有人在用 → 恢复
+  pulse(zt, tAbove, 1.3, 0.3); sfx('tick', tAbove, { g: 0.45, p: 0.5 });
+  const resT = wtag(world, tr('外面有人用：恢复', 'used outside: restore'), Z.x - 40, Z.y + SZ + 70, 30);
+  slide(resT, tRes, { y: 20, d: 0.3 }); pulse(zn, tRes + 0.05, 1.3, 0.25); sfx('chime', tRes, { g: 0.45 }); exit(resT, tZout, { y: 40, d: 0.3 });
+  // 扣到零：只剩自己人 → 孤岛的框变金
+  const tAt0 = qb(T('a8f', { zh: '扣到零', en: 'Down to zero' }) - 0.1), tIsl2 = qb(T('a8f', { zh: '孤岛', en: 'island' }) - 0.1);
+  pulse(eX.n, tAt0, 1.25, 0.25); pulse(eY.n, tAt0 + BEAT / 2, 1.25, 0.25); sfx('tick', tAt0, { g: 0.45 });
+  F((t) => ss(isl, 'borderColor', t >= tIsl2 && t < tGone + 0.3 ? C.gold : C.pale));
+  pulse(islL, tIsl2, 1.35, 0.3); sfx('thud', tIsl2, { g: 0.6 });
+  F((t) => ss(islL, 'color', t >= tIsl2 && t < tGone + 0.3 ? C.gold : C.pale));
   const py2 = slab(ui, 120, 600, ['<span class="hd">baseline gc.collect() -&gt; 21</span>', '  __del__ <span>X</span>', '  __del__ <span>Y</span>', '<span class="k">gc.collect() -&gt; 2</span>'], { size: 26 });
   const py2L = tx(ui, 'src', 'CPython 3.14.3', 124, 564);
   const ph2 = slab(ui, 900, 600, ['<span class="hd">gc_status before: runs=0 collected=0 roots=2</span>', '  __destruct <span>X</span>', '  __destruct <span>Y</span>', '<span class="k">gc_collect_cycles() = 2</span>'], { size: 26 });
@@ -218,11 +250,19 @@ scene('count', ({ root, s, c0 }) => {
     [null, { z: 1.03 }, tWide - (t3 + 0.65) - 0.05, { ease: 'none', sfx: false }],
     [tWide, { x: 940, y: 560, z: 0.7 }, 1.1, { ease: 'power2.inOut', sfx: false }],
     [null, { z: 0.73 }, tC6 - (tWide + 1.25) - 0.05, { ease: 'none', sfx: false }],
-    [tC6, { x: 2450, y: 560, z: 1.0 }, 1.1, { ease: 'power3.inOut', g: 0.45 }],
-    [null, { z: 1.03 }, tLoop - 0.6 - (tC6 + 1.25) - 0.05, { ease: 'none', sfx: false }],
-    [tLoop - 0.6, { x: 3200, y: 640, z: 1.0 }, 1.0, { ease: 'power3.inOut', sfx: false }],
-    [null, { z: 1.02 }, tIsl - (tLoop + 0.55) - 0.05, { ease: 'none', sfx: false }],
+    // 记账画面压低一点：「循环引用」大字在 a6 说完时就要上画面（逐句对应表），不能压在左上的指针源上
+    [tC6, { x: 2450, y: 460, z: 1.0 }, 1.1, { ease: 'power3.inOut', g: 0.45 }],
+    [null, { z: 1.03 }, tE6 - 0.1 - (tC6 + 1.25) - 0.05, { ease: 'none', sfx: false }],
+    [tE6 - 0.1, { x: 3200, y: 640, z: 1.0 }, 1.0, { ease: 'power3.inOut', sfx: false }],
+    [null, { z: 1.02 }, tIsl - (tE6 + 1.05) - 0.05, { ease: 'none', sfx: false }],
     [tIsl, { x: 3260, y: 600, z: 0.9 }, 0.8, { ease: 'power2.inOut', sfx: false }],
-    [null, { z: 0.93 }, s.end - (tIsl + 0.95), { ease: 'none', sfx: false }],
+    [null, { x: 3330, z: 0.93 }, tSubs[0] - 0.35 - (tIsl + 0.95), { ease: 'none', sfx: false }],
+    // 试减：镜头跟着扣减走——先看 X、Y 之间，再到 Z（外面还有名字指着它），最后退回整个孤岛
+    [tSubs[0] - 0.35, { x: 3240, y: 620, z: 1.08 }, 0.8, { ease: 'power3.inOut', sfx: false }],
+    [null, { x: 3300, z: 1.1 }, tAbove - 0.4 - (tSubs[0] + 0.6), { ease: 'none', sfx: false }],
+    [tAbove - 0.4, { x: 3640, y: 620, z: 1.05 }, 0.9, { ease: 'power3.inOut', sfx: false }],
+    [null, { x: 3690, z: 1.07 }, tAt0 - 0.4 - (tAbove + 0.65), { ease: 'none', sfx: false }],
+    [tAt0 - 0.4, { x: 3290, y: 600, z: 0.95 }, 0.9, { ease: 'power3.inOut', sfx: false }],
+    [null, { x: 3340, z: 0.97 }, s.end - (tAt0 + 0.65), { ease: 'none', sfx: false }],
   ]);
 });
