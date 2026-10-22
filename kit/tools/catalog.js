@@ -98,7 +98,7 @@ function validate(cat) {
   return errs;
 }
 // ── 生成：片单索引 videos/README.md ──
-const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+const mmss = (s) => { const seconds = Math.round(s); return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`; };
 const inIndex = (e) => `${groupOf(e.v)}/${e.v.slug}/`;   // 从 videos/README.md 到本片目录
 const cellText = (x) => String(x ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
 function link(e, from) { return e.status === 'planned' ? '`' + e.v.slug + '`' : `[\`${e.v.slug}\`](${from}${e.v.slug}/)`; }

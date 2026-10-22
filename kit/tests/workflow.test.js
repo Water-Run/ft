@@ -99,6 +99,18 @@ test('片单：slug 全仓库唯一，目录名与 project.json 一致，署名�
   fs.mkdirSync(path.join(f.root, 'videos/unknown-group'));
   assert.match(f.run('catalog', '--check').stderr, /既不是片单里的系列/);
 });
+test('片单时长四舍五入后正确跨分钟进位', t => {
+  const f = fixture(t), cat = f.catalog();
+  cat.videos[0].status = 'delivered';
+  f.saveCatalog(cat);
+  for (const [zh, en, expected] of [[59.49, 59.5, 'zh 0:59、en 1:00'], [299.96, 3600, 'zh 5:00、en 60:00']]) {
+    write(f.video, 'project.json', JSON.stringify({ ...f.project, delivery: { date: '2026-10-22', duration: { zh, en } } }));
+    const result = f.run('catalog');
+    assert.equal(result.status, 0, result.stderr);
+    assert.ok(fs.readFileSync(path.join(f.root, 'videos/README.md'), 'utf8').includes(`| ${expected} |`), expected);
+  }
+});
+
 test('语言按「条目 ＞ 系列 ＞ 中英双语」继承；与系列相同的条目语言被拒绝', t => {
   const f = fixture(t), cat = f.catalog();
   cat.series.push({ slug: 'zh-only', title: { zh: '只做中文的系列' }, languages: ['zh'] });
