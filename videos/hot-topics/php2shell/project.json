@@ -8,8 +8,8 @@
     "zh": "隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响",
     "en": "A Fatal RCE Hidden for 14 Years: What PHP2Shell Is and What It Means"
   },
-  "stage": "delivered",
-  "next": "发布后回填 release；会变化的事实发布前按 FACTS「复核」重查",
+  "stage": "released",
+  "next": "收集发布后的评价与反馈；核实平台标题与简介后补记",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -89,6 +89,14 @@
       "zh": 1.2
     }
   },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1GPn66sEh2",
+      "date": "2026-10-22",
+      "lang": "zh"
+    }
+  ],
   "delivery": {
     "date": "2026-10-22",
     "duration": {
