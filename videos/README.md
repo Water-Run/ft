@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 16，制作中 20，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 203 部：已成片 17，制作中 20，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 ## 已成片
 
@@ -10,6 +10,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/) | [热点](hot-topics/README.md) | zh 5:00 | 2026-10-22 | [哔哩哔哩](https://www.bilibili.com/video/BV1GPn66sEh2) | — | Claude Opus 5.5 |
 | [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | zh 1:36、en 1:36 | 2026-10-21 | [哔哩哔哩 zh](https://www.bilibili.com/video/BV1Hrnq6aEjH)、[YouTube en](https://www.youtube.com/watch?v=f_sNl3i9Bsg) | — | Claude Opus 5.5、Gemini 4 Argon、MiniMax M3.1 Flash |
 | [垃圾回收的艺术](standalone/garbage-collection/) | — | zh 11:10、en 11:48 | 2026-10-21 | [哔哩哔哩](https://www.bilibili.com/video/BV1Exni69Ew4)、[YouTube](https://www.youtube.com/watch?v=-7zriGm5_Xk) | — | DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon、MiniMax M3.1 Flash、Claude Opus 5.5 |
 | [200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/) | [XX 秒速通](in-seconds/README.md) | zh 3:20、en 3:20 | 2026-10-20 | [哔哩哔哩](https://www.bilibili.com/video/BV1Z7JZ6yEQb)、[YouTube](https://www.youtube.com/watch?v=Bkt7b_xbMYg) | 5（2026-10-20） | DeepSeek V4.1 Flash 1017、Claude Opus 5.5 |
@@ -33,7 +34,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 审 2026-10-21 中文第 8 稿（约 7:37；补深页槽、记录头、位图、差量回溯和 TIP，背景采用率数据已落盘）；确认后交制作方 | 最新 |
+| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 验收 | 等 WaterRun 看成片（out/firebird-zh-1080p60.mp4）并听配音与配乐；同意后登记交付（delivery）与片单状态 | 最新 |
 | [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
@@ -48,8 +49,8 @@
 | [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git](in-seconds/scion/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [英特尔的酷睿年代](eras/intel-core-era/) | [时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
+| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [过去的电子时代](eras/README.md) | 文案 | 写中文稿（交给 Gemini 4 Argon），导出交审 | 待同步 |
+| [英特尔的酷睿年代](eras/intel-core-era/) | [过去的电子时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 |
 | [宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快](standalone/lightweighting/) | — | 文案 | 写中文稿，导出交审 | 待同步 |
 | [RDP：Windows 远程的优雅实现](standalone/rdp/) | — | 文案 | 写中文稿，导出交审 | 待同步 |
@@ -317,9 +318,9 @@
 | 2 | 坎巴拉物理学 | zh + en | 计划中 | `ksp` |  |
 | 3 | Teardown 物理学 | zh + en | 计划中 | `teardown` |  |
 
-### 时代
+### 过去的电子时代
 
-[系列说明](eras/README.md)；英文名 Eras。缺省语言：zh + en。
+[系列说明](eras/README.md)；英文名 Electronic Eras。缺省语言：zh + en。
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
@@ -387,6 +388,14 @@
 | 12 | 协程：resume 与 yield 之间发生了什么<br>Coroutines: What Happens Between resume and yield | zh + en | 计划中 | `lua-coroutines` | 每个协程一条独立的栈，切换时保存与恢复什么。初步对应 ldo.c、lcorolib.c |
 | 13 | 错误：pcall、error 与长跳转<br>Errors: pcall, error, and the Long Jump | zh + en | 计划中 | `lua-errors` | 错误怎么从深处跳回保护调用的位置。初步对应 ldo.c |
 | 14 | C API：Lua 与 C 隔着一个栈对话<br>The C API: Talking to C Across a Stack | zh + en | 计划中 | `lua-c-api` | C 与 Lua 交换数据的虚拟栈、标准库怎么注册进来。初步对应 lapi.c、lauxlib.c、linit.c |
+
+### 热点
+
+[系列说明](hot-topics/README.md)。缺省语言：zh + en。
+
+| # | 标题 | 语言 | 状态 | 目录 | 备注 |
+|---|---|---|---|---|---|
+| 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](hot-topics/php2shell/) |  |
 
 ### 独立视频
 

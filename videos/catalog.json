@@ -19,7 +19,7 @@
     {"slug": "chassis-codes", "title": {"zh": "底盘代号与车型发展史", "en": "Chassis Codes and Model Histories"}},
     {"slug": "in-seconds", "title": {"zh": "XX 秒速通"}, "starter": "in-seconds"},
     {"slug": "game-physics", "title": {"zh": "游戏物理学", "en": "Game Physics"}},
-    {"slug": "eras", "title": {"zh": "时代", "en": "Eras"}},
+    {"slug": "eras", "title": {"zh": "过去的电子时代", "en": "Electronic Eras"}},
     {"slug": "open-source-projects", "title": {"zh": "开源项目", "en": "Open Source Projects"}},
     {"slug": "windows-internals", "title": {"zh": "Windows 是怎么工作的", "en": "How Windows Works"}},
     {"slug": "literary-animation", "title": {"zh": "文学作品动画化", "en": "Literature, Animated"}},
