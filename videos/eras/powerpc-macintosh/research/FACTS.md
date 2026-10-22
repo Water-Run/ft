@@ -19,6 +19,34 @@
 | 同期媒体（仅作定位与交叉印证，不作片中结论依据） | 《The New York Times》1994-03-15 商业版报道 | 仅用于「发布日」的独立印证，正文表述已与 Apple 一手材料交叉 |
 | 本片锁定的时间范围 | 1991-10-02（联盟签署）至 2006-01-10（MacBook Pro 发布） | 见 open 章 O01 |
 
+## 一手来源 URL 清单
+
+<!-- 2026-10-21 补录：前一轮取证把出处写成了材料名称，逐章表里没有直达 URL，本表补上，供复核与重做时逐条重抓。 -->
+
+| 编号 | 材料 | URL | 2026-10-21 核查 |
+|---|---|---|---|
+| S01 | Apple 新闻稿《Apple Unveils the World's Fastest Personal Computer—the Power Mac G5》（2003-06-23） | https://www.apple.com/newsroom/2003/06/23Apple-Unveils-the-Worlds-Fastest-Personal-Computer-the-Power-Mac-G5 | HTTP 200 |
+| S02 | Apple 新闻稿《Apple and IBM Introduce the PowerPC G5 Processor》（2003-06-23，WWDC） | https://www.apple.com/newsroom/2003/06/23Apple-and-IBM-Introduce-the-PowerPC-G5-Processor/ | HTTP 200（页面内容经搜索复核） |
+| S03 | Apple 新闻稿《Apple Ships New Power Mac G5》（2003-08-18） | https://www.apple.com/newsroom/2003/08/18Apple-Ships-New-Power-Mac-G5 | HTTP 200 |
+| S04 | Apple 新闻稿《Apple to Use Intel Microprocessors Beginning in 2006》（2005-06-06） | https://www.apple.com/newsroom/2005/06/06Apple-to-Use-Intel-Microprocessors-Beginning-in-2006 | HTTP 200 |
+| S05 | Apple 新闻稿《Apple Introduces MacBook Pro》（2006-01-10） | https://www.apple.com/newsroom/2006/01/10Apple-Introduces-MacBook-Pro | HTTP 200 |
+| S06 | Apple 新闻稿《Apple's Mac OS X to Ship on March 24》（2001-01-09） | https://www.apple.com/newsroom/2001/01/09Apples-Mac-OS-X-to-Ship-on-March-24/ | HTTP 200 |
+| S07 | Apple 新闻稿《Mac OS X Gold Master Released To Manufacturing》（2001-03-07） | https://www.apple.com/newsroom/2001/03/07Mac-OS-X-Gold-Master-Released-To-Manufacturing/ | HTTP 200 |
+| S08 | Apple 新闻稿《Mac OS X Hits Stores This Weekend》（2001-03-21） | https://www.apple.com/newsroom/2001/03/21Mac-OS-X-Hits-Stores-This-Weekend/ | HTTP 200 |
+| S09 | Apple 支持站《Macintosh Quadra 800 技术规格》（112217） | https://support.apple.com/en-us/112217 | HTTP 200 |
+| S10 | Apple 支持站《Macintosh LC III 技术规格》（112230） | https://support.apple.com/en-us/112230 | HTTP 200 |
+| S11 | Apple 支持站《Macintosh Performa 575 技术规格》（112242） | https://support.apple.com/en-us/112242 | HTTP 200 |
+| S12 | Apple 支持站《Macintosh Performa 475 技术规格》（112336） | https://support.apple.com/en-us/112336 | HTTP 200 |
+| S13 | Apple 支持站《iMac (333 MHz) 技术规格》（112286） | https://support.apple.com/en-us/112286 | HTTP 200 |
+| S14 | Apple 支持站《Mac mini (original) 技术规格》（112579） | https://support.apple.com/en-us/112579 | HTTP 200 |
+| S15 | Internet Archive《Apple/IBM/Motorola Alliance Press Conference Highlights》（出版者 Apple Inc.，1991-10-03） | https://archive.org/details/ibm-apple-highlights | HTTP 200 |
+| S16 | Internet Archive《A Guide To The Power Macintosh》（© 1994 Apple Computer） | https://archive.org/details/AGuideToThePowerMacintosh1994Apple | HTTP 200 |
+| S17 | Apple 开发者文档《Designing PCI Cards and Drivers for Power Macintosh Computers》（PDF） | URL 待重查 | 本轮未复核，交付前按标题在 developer.apple.com 存档库重新定位 |
+| S18 | Apple 开发者文档 Core Services `gestaltPowerMac8100_80` | URL 待重查 | 同上 |
+| S19 | Intel 新闻稿《Intel Unveils World's Best Processor》（2006-07-27） | URL 待重查 | 本轮未复核，交付前在 intc.com / intel.com 存档库重新定位 |
+
+上表只登记材料地址，不替代逐章表里的引语与字段。S17–S19 三个地址本轮未复核，写在「待核实」一类，交付前必须补上并重新核对相关陈述。
+
 ## 逐章
 
 ### open
@@ -99,6 +127,7 @@
 |---|---|---|
 | MiniMax M3.1 Flash（本次会话运行时标识 `minimax-M3.1-Flash`） | 取证、事实表与开工反馈应用（子任务执行） | 本次会话的运行时标识，由主会话记录 |
 | （主会话） | 片单重构、目录搭建与反馈记录校验 | 主会话的分工记录 |
+| Gemini 4 Argon | 中文文案稿：**已由策划者指派，稿件尚未交回**；交稿后据实补记具体分工 | 策划者 2026-10-21 会话原话（见本片 README「简报」与「文案任务书」） |
 | 配音与渲染 | **尚未开工**，如实记为尚未开工 | 本片 `README.md`「当前状态与接续」 |
 
 ## 复核

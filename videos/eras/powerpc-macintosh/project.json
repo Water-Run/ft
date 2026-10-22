@@ -1,7 +1,7 @@
 {
   "slug": "powerpc-macintosh",
   "stage": "script",
-  "next": "写中文稿，导出交审",
+  "next": "写中文稿（交给 Gemini 4 Argon），导出交审",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -61,12 +61,12 @@
     "still_seconds": 3,
     "camera": true,
     "style": {
-      "flat": true,
+      "flat": false,
       "no_emoji": true
     },
     "duration": [
-      840,
-      1080
+      240,
+      360
     ]
   }
 }
