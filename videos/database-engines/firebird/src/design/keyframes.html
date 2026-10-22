@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Firebird 关键帧</title>
+<!-- 关键帧：?d=1 官网（浅底 + 深色导航条）  ?d=2 页脚（深底）；?k=1 标题  2 信息最密  3 图解  4 章节卡 -->
+<link rel="stylesheet" href="../css/base.css">
+<style>
+@font-face { font-family: "Heebo"; src: url("/type/Heebo-wght.ttf"); font-weight: 100 900; }
+:root {
+  --fire: #EE2B24; --flame: #F68A21; --gold: #FAAC19;
+  --ink: #17222B; --teal: #2e6474; --page: #FCFCFC; --white: #FFFFFF;
+  --g1: #ECEDEE; --g2: #DCDEDF; --g3: #B9BCBF; --g4: #3A434B; --navy2: #233340;
+}
+body { font-family: "Heebo", "Sans SC"; }
+#stage { background: var(--page); color: var(--ink); }
+.d2 #stage { background: var(--ink); color: var(--white); }
+.abs { position: absolute; }
+.mono { font-family: "Mono"; }
+/* 常驻导航条：取自官网的 menubar 与选中态 */
+.bar { left: 0; top: 0; width: 1920px; height: 84px; background: var(--ink); display: flex; align-items: stretch; }
+.d2 .bar { background: var(--navy2); }
+.bar .brand { width: 360px; display: flex; align-items: center; padding-left: 48px; gap: 16px; }
+.bar .brand img.m { height: 58px; }
+.bar .brand img.w { height: 34px; }
+.bar .tab { display: flex; align-items: center; padding: 0 26px; color: var(--white); font-size: 28px; font-weight: 500; }
+.bar .tab b { font-family: "Heebo"; font-weight: 400; margin-right: 10px; opacity: 0.75; }
+.bar .tab.on { background: var(--teal); }
+.bar .tab.on b { opacity: 1; }
+.bar .ver { margin-left: auto; margin-right: 40px; align-self: center; border: 2px solid var(--g4); color: var(--white); font-size: 26px; padding: 6px 18px; font-family: "Heebo"; }
+.cap { left: 0; right: 0; bottom: 46px; height: 64px; display: flex; align-items: center; justify-content: center; font-size: 42px; font-weight: 500; }
+.h2 { font-size: 46px; font-weight: 500; }
+.note { font-size: 28px; color: var(--g4); }
+.d2 .note { color: var(--g3); }
+.dash { border-top: 2px dashed var(--g2); }
+.d2 .dash { border-top-color: var(--g4); }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="../js/data.js"></script>
+<script>
+const Q = new URLSearchParams(location.search), D = +(Q.get('d') || 1), K = +(Q.get('k') || 1);
+document.body.classList.add('d' + D);
+const st = document.getElementById('stage');
+const el = (cls, html, x, y, w, h, css = {}) => { const e = document.createElement('div'); e.className = 'abs ' + (cls || ''); if (html != null) e.innerHTML = html; Object.assign(e.style, { left: x + 'px', top: y + 'px' }, w != null ? { width: w + 'px' } : {}, h != null ? { height: h + 'px' } : {}, css); st.appendChild(e); return e; };
+const C = { ink: '#17222B', teal: '#2e6474', flame: '#F68A21', gold: '#FAAC19', fire: '#EE2B24', g1: '#ECEDEE', g2: '#DCDEDF', g3: '#B9BCBF', g4: '#3A434B', white: '#FFFFFF', page: '#FCFCFC', navy2: '#233340' };
+const dark = D === 2;
+const FG = dark ? C.white : C.ink, PANEL = dark ? C.navy2 : C.g1, LINE = dark ? C.g4 : C.g2;
+const DATA = window.FIREBIRD_DATA;
+
+function bar(active) {
+  const b = el('bar', null, 0, 0);
+  b.innerHTML = `<div class="brand"><img class="m" src="../img/fb-mark.png"><img class="w" src="../img/fb-word-white.png"></div>` +
+    [['', 'Firebird'], ['01', '来历'], ['02', '两个入口'], ['03', '页与槽'], ['04', '查询'], ['05', '更新'], ['06', '提交']]
+      .map(([n, t], i) => `<div class="tab${i === active ? ' on' : ''}">${n ? `<b>${n}</b>` : ''}${t}</div>`).join('') +
+    `<div class="ver">Firebird 5.0.4</div>`;
+}
+function caption(t) { el('cap', t, 0, 970, 1920, null, { top: 'auto', color: FG }); }
+
+// ── K1：o6 小众的第三选择，背景是使用率 ──
+function k1() {
+  bar(0);
+  const mk = el('', `<img src="../img/fb-mark.png" style="width:470px">`, 150, 190);
+  el('', '一个小众的第三选择', 760, 150, null, null, { fontSize: '86px', fontWeight: 700, letterSpacing: '2px' });
+  el('', 'Firebird', 752, 290, null, null, { fontFamily: 'Heebo', fontSize: '210px', fontWeight: 800, lineHeight: '210px', height: '210px', letterSpacing: '-4px' });
+  const u = DATA.usage_context; const x0 = 1010, k = 14.5;
+  el('dash', '', 760, 570, 1040, 0);
+  u.rows.forEach((r, i) => {
+    const y = 610 + i * 92, w = Math.max(12, r.percent * k), fb = r.database === 'Firebird';
+    el('', r.database, 760, y, null, null, { fontFamily: 'Heebo', fontSize: '40px', fontWeight: fb ? 700 : 400, color: fb ? FG : (dark ? C.g3 : C.g4) });
+    el('', '', x0, y + 6, w, 46, { background: fb ? C.flame : (dark ? C.g4 : C.g2) });
+    el('', r.percent.toFixed(1) + '%', x0 + w + 20, y, null, null, { fontFamily: 'Heebo', fontSize: '40px', fontWeight: fb ? 700 : 400 });
+  });
+  el('note', '2024 Stack Overflow 开发者调查 · 数据库使用率 · 全部答题者 · 多选 · n=52,418', 760, 892);
+  caption('一个小众的第三选择：Firebird');
+}
+
+// ── K2：第 231 页，0 号槽与记录头（信息最密） ──
+function k2() {
+  bar(3);
+  const P = DATA.page_map.clean_before.data_page_231, cols = 128, cs = 6, gx = 120, gy = 236;
+  el('h2', '第 231 页 · 数据页 · 8192 字节', gx, 128);
+  const cv = document.createElement('canvas'); cv.width = cols * cs; cv.height = 64 * cs; cv.className = 'abs'; Object.assign(cv.style, { left: gx + 'px', top: gy + 'px' }); st.appendChild(cv);
+  const g = cv.getContext('2d');
+  const own = new Array(8192).fill(null);
+  for (let b = 0; b < 16; b++) own[b] = 'hdr'; for (let b = 16; b < 24; b++) own[b] = 'dph';
+  for (let b = 24; b < 24 + P.slot_bytes; b++) own[b] = 'slot';
+  P.slots.forEach((s) => { for (let b = s.offset; b < s.offset + s.length; b++) own[b] = s.line === 0 ? 'alice' : 'rec'; });
+  const col = { hdr: FG, dph: dark ? C.g3 : C.g4, slot: C.teal, alice: C.flame, rec: dark ? C.g4 : C.g3, null: dark ? C.navy2 : C.g1 };
+  for (let b = 0; b < 8192; b++) { g.fillStyle = col[own[b]]; g.fillRect((b % cols) * cs, Math.floor(b / cols) * cs, cs - 1, cs - 1); }
+  el('note', '0', gx, gy + 64 * cs + 10); el('note', '8191', gx + cols * cs - 70, gy + 64 * cs + 10);
+  // 图例
+  [['页头 + 数据页头', FG], ['槽目录', C.teal], ['记录', dark ? C.g4 : C.g3], ['Alice', C.flame]].forEach(([t, c], i) => {
+    const lx = gx + [0, 290, 470, 620][i];
+    el('', '', lx, 690, 26, 26, { background: c }); el('', t, lx + 38, 682, null, null, { fontSize: '30px' });
+  });
+  // 右：0 号槽与记录
+  const rx = 1000, s0 = P.slots[0];
+  el('h2', '0 号槽', rx, 128);
+  const slotHex = ['e0', '1f', '20', '00'];
+  slotHex.forEach((h, i) => el('mono', h, rx + i * 92, 200, 80, 64, { background: C.teal, color: C.white, fontSize: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }));
+  el('', `偏移 <b style="font-family:Heebo">${s0.offset}</b>`, rx, 280, 172, null, { fontSize: '32px' });
+  el('', `长度 <b style="font-family:Heebo">${s0.length}</b>`, rx + 184, 280, 172, null, { fontSize: '32px' });
+  el('h2', `记录 · 偏移 ${s0.offset}`, rx, 370);
+  const hex = DATA.record_layout.original.record_hex.match(/../g), cw = 52;
+  hex.forEach((h, i) => {
+    const r = Math.floor(i / 16), c = i % 16, head = i < 13, ch = parseInt(h, 16);
+    const isName = i >= 22 && i <= 26, isAge = i >= 30;
+    el('mono', h, rx + c * cw, 440 + r * 150, cw - 4, 58, { background: head ? (dark ? C.g4 : C.ink) : (isName || isAge ? C.flame : PANEL), color: head ? C.white : C.ink === FG ? C.ink : (isName || isAge ? C.ink : C.white), fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' });
+  });
+  const lab = (t, i0, i1, row) => { const x = rx + i0 * cw, w = (i1 - i0 + 1) * cw - 4; el('', '', x, 440 + row * 150 + 64, w, 4, { background: FG }); el('', t, x, 440 + row * 150 + 74, Math.max(w, 100), null, { fontSize: '28px' }); };
+  lab('事务号 2', 0, 3, 0); lab('回溯页 0', 4, 7, 0); lab('回溯槽', 8, 9, 0); lab('标志', 10, 11, 0);
+  lab('alice', 6, 10, 1); lab('年龄 30', 14, 15, 1);
+  el('note', '前 13 字节是记录头，其后是压缩后的列值', rx, 820);
+  caption('记录自身也有头，带着事务号和回溯位置');
+}
+
+// ── K3：两个入口，同一个库文件 ──
+function k3() {
+  bar(2);
+  const box = (x, y, w, h, bg, c, title) => { const b = el('', '', x, y, w, h, { background: bg }); el('', title, x + 28, y + 20, null, null, { fontSize: '32px', fontWeight: 500, color: c }); return b; };
+  const chip = (x, y, w, t, bg, c, mono) => el(mono ? 'mono' : '', t, x, y, w, 72, { background: bg, color: c, fontSize: mono ? '30px' : '32px', fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center' });
+  // 远程
+  el('', '远程', 120, 128, null, null, { fontSize: '30px', color: dark ? C.g3 : C.g4 });
+  box(120, 180, 470, 230, PANEL, FG, '应用进程');
+  chip(150, 300, 410, 'fbclient', dark ? C.ink : C.white, FG, true);
+  el('mono', 'inet://服务器/users.fdb', 600, 262, 300, null, { fontSize: '26px', color: dark ? C.g3 : C.g4 });
+  el('', '', 590, 336, 230, 4, { background: FG });
+  box(820, 180, 500, 230, dark ? C.g4 : C.ink, C.white, 'firebird.exe');
+  chip(850, 300, 440, 'Engine13 引擎', C.teal, C.white);
+  // 嵌入式
+  el('dash', '', 120, 470, 1200, 0);
+  el('', '嵌入式', 120, 500, null, null, { fontSize: '30px', color: dark ? C.g3 : C.g4 });
+  box(120, 552, 1200, 230, PANEL, FG, '应用进程');
+  chip(150, 672, 410, 'fbclient', dark ? C.ink : C.white, FG, true);
+  el('', '', 560, 706, 290, 4, { background: FG });
+  el('mono', 'users.fdb', 600, 634, null, null, { fontSize: '26px', color: dark ? C.g3 : C.g4 });
+  chip(850, 672, 440, 'Engine13 引擎', C.teal, C.white);
+  // 文件
+  const fx = 1480, fy = 260;
+  el('', '', fx, fy, 320, 420, { background: dark ? C.white : C.white, outline: `4px solid ${FG}` });
+  el('', '', fx + 250, fy - 4, 74, 74, { background: dark ? C.ink : C.page, borderLeft: `4px solid ${FG}`, borderBottom: `4px solid ${FG}` });
+  el('mono', 'users.fdb', fx + 30, fy + 40, null, null, { fontSize: '34px', color: C.ink, fontWeight: 600 });
+  for (let i = 0; i < 9; i++) el('', '', fx + 30, fy + 120 + i * 30, 260, 18, { background: i === 4 ? C.flame : C.g2 });
+  el('', '', 1320, 340, 160, 4, { background: FG }); el('', '', 1320, 706, 70, 4, { background: FG }); el('', '', 1390, 560, 4, 150, { background: FG }); el('', '', 1390, 560, 90, 4, { background: FG });
+  el('note', '同一套页格式和存取代码', 1480, 720);
+  caption('两个入口，使用同一套页格式和存取代码');
+}
+
+// ── K4：章节卡 ──
+function k4() {
+  bar(3);
+  el('', '03', 112, 170, null, null, { fontFamily: 'Heebo', fontSize: '460px', fontWeight: 200, lineHeight: '1', color: C.teal, letterSpacing: '-10px' });
+  el('', '页、槽和记录头', 780, 330, null, null, { fontSize: '128px', fontWeight: 700 });
+  el('dash', '', 790, 520, 1010, 0);
+  el('', '数据怎么放：页内的槽目录、记录的入口与头', 790, 560, null, null, { fontSize: '40px', color: dark ? C.g3 : C.g4 });
+  el('', `<img src="../img/fb-mark.png" style="width:120px">`, 1680, 760);
+}
+({ 1: k1, 2: k2, 3: k3, 4: k4 })[K]();
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

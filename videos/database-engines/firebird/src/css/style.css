@@ -1,33 +1,98 @@
-/* Firebird 一集的视觉系统：本文件只锁死「必须使用」的部分。
- *
- * 视觉系统本身（字号阶梯、版式、部件类名、图形语言、章节卡、常驻元素、封面）
- * 由受托方按 brief/03-visual.md 的要求设计后重建。
- * 准备方不预置版面、类名与构图——那是受托方的活。
- *
- * 这里只给三样东西：
- *   1. 官网火鸟标志的实测三色（research/lab/09_logo_colors.py 的像素统计）；
- *   2. 官网正文墨色与拉丁字体 Heebo（firebirdsql.org 的样式表）；
- *   3. 底与字的默认关系。
- * 调色板同时锁在 project.json 的 check.style.palette，闸门按字面比对。
- *
- * 颜色出处（FACTS.md 的 V01–V04）：
- *   #FAAC19 火焰金 / #F68A21 火焰橙 / #EE2B24 火焰红 —— firebirdsql.org 的标志位图
- *   #17222b 官网正文色 —— firebirdsql.org/template/css/style.css
- *   #f7f7f5 纸白 / #ffffff / #d9d4cb 沙灰 / #8a8378 灰 —— 中性色
+/* Firebird 一集的视觉系统：方向 1「官网」（WaterRun 2026-10-21 选定）。
+ * 全部取自 firebirdsql.org：火鸟标志（img/fb-mark.png、fb-word-white.png，取自官网图片）、
+ * template/css/style.css 的颜色（#FCFCFC 页底、#17222B 导航条与正文、#2e6474 选中态与链接悬停、#ECEDEE 搜索框灰、
+ * #DCDEDF 虚线分隔、#B9BCBF / #3A434B 次级灰）与字体 Heebo；中文 Noto Sans SC，字节与 SQL 用 JetBrains Mono。
+ * 图形语言（全片不换义）：
+ *   灰色方角面板 = 容器（进程、文件、页）；墨色线与箭头 = 指向、调用；
+ *   青色 = 选中态：此刻正在讲的那一项（同官网导航与侧栏的选中项）；
+ *   火焰橙 = Alice 这条记录的当前版本；火焰金 = 它的历史版本；火焰红描边 = 事务（事务号与事务状态）。
  */
 @font-face { font-family: "Heebo"; src: url("/type/Heebo-wght.ttf"); font-weight: 100 900; }
 
 :root {
-  --fire: #EE2B24;        /* 火焰红 */
-  --flame: #F68A21;       /* 火焰橙 */
-  --gold: #FAAC19;        /* 火焰金 */
-  --ink: #17222b;         /* 官网正文墨色 */
-  --paper: #f7f7f5;       /* 纸白 */
-  --white: #ffffff;
-  --sand: #d9d4cb;        /* 沙灰 */
-  --grey: #8a8378;        /* 灰 */
-  --M: 120px;
+  --fire: #EE2B24;        /* 火焰红：事务 */
+  --flame: #F68A21;       /* 火焰橙：当前版本 */
+  --gold: #FAAC19;        /* 火焰金：历史版本 */
+  --ink: #17222B;         /* 官网导航条与正文墨色 */
+  --teal: #2e6474;        /* 官网选中态 */
+  --page: #FCFCFC;        /* 官网页底 */
+  --white: #FFFFFF;
+  --g1: #ECEDEE;          /* 面板灰（官网搜索框） */
+  --g2: #DCDEDF;          /* 分隔线（官网虚线） */
+  --g3: #B9BCBF;          /* 次级灰 */
+  --g4: #3A434B;          /* 次级字 */
+  --navy2: #233340;       /* 页脚次级底 */
 }
 
 body { font-family: "Heebo", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
+#bg { background: var(--page); }
+.scene { background: var(--page); }
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+/* ── 字号阶梯 ── */
+.hero { font-family: "Heebo"; font-weight: 800; font-size: 210px; line-height: 210px; letter-spacing: -4px; white-space: nowrap; }
+.t1 { font-size: 96px; font-weight: 700; line-height: 1.15; white-space: nowrap; }
+.t2 { font-size: 60px; font-weight: 500; line-height: 1.2; white-space: nowrap; }
+.t3 { font-size: 46px; font-weight: 500; line-height: 1.25; white-space: nowrap; }
+.t4 { font-size: 38px; font-weight: 400; line-height: 1.3; white-space: nowrap; }
+.t5 { font-size: 30px; font-weight: 400; line-height: 1.3; white-space: nowrap; color: var(--g4); }
+.lat { font-family: "Heebo"; }
+.b { font-weight: 700; }
+.mono { font-family: "Mono"; white-space: pre; }
+.m1 { font-family: "Mono"; font-size: 44px; white-space: pre; }
+.m2 { font-family: "Mono"; font-size: 36px; white-space: pre; }
+.m3 { font-family: "Mono"; font-size: 30px; white-space: pre; }
+.dim { color: var(--g4); }
+
+/* ── 部件 ── */
+.panel { background: var(--g1); }
+.dark { background: var(--ink); color: var(--white); }
+.chip { display: flex; align-items: center; justify-content: center; white-space: nowrap; font-size: 32px; font-weight: 500; }
+.chip.w { background: var(--white); color: var(--ink); }
+.chip.g { background: var(--g1); }
+.chip.ink { background: var(--ink); color: var(--white); }
+.sel { background: var(--teal) !important; color: var(--white) !important; }
+.sel .dim, .sel .rn { color: var(--white) !important; }
+.cur-rec { background: var(--flame); color: var(--ink); }
+.hist-rec { background: var(--gold); color: var(--ink); }
+.tx { outline: 5px solid var(--fire); outline-offset: -5px; }
+.rule { border-top: 2px dashed var(--g2); height: 0; }
+.vline { width: 4px; background: var(--ink); }
+.hline { height: 4px; background: var(--ink); }
+.label { font-size: 30px; color: var(--g4); white-space: nowrap; }
+
+/* 字节格：等宽、方角 */
+.byte { position: absolute; display: flex; align-items: center; justify-content: center; font-family: "Mono"; font-size: 30px; background: var(--g1); color: var(--ink); }
+.byte.hdr { background: var(--ink); color: var(--white); }
+.byte.cur-rec { background: var(--flame); color: var(--ink); }
+.byte.hist-rec { background: var(--gold); color: var(--ink); }
+.byte.sel { background: var(--teal); color: var(--white); }
+
+/* 官网文档侧栏式的箭头列表：灰底条目，选中项青底白字 */
+.alist { position: absolute; display: flex; flex-direction: column; gap: 12px; }
+.alist .it { display: flex; align-items: center; height: 64px; padding: 0 26px; background: var(--g1); font-size: 32px; white-space: nowrap; }
+.alist .it .ar { font-family: "Heebo"; font-weight: 700; margin-right: 18px; }
+.alist .it.sel .ar { color: var(--white); }
+
+/* ── 常驻：官网导航条 ── */
+#bar { position: absolute; left: 0; top: 0; width: 1920px; height: 84px; background: var(--ink); }
+#bar .brand { position: absolute; left: 48px; top: 13px; display: flex; align-items: center; gap: 16px; }
+#bar .brand img.m { height: 58px; }
+#bar .brand img.w { height: 34px; }
+#bar .tabs { position: absolute; left: 380px; top: 0; height: 84px; display: flex; }
+#bar .tab { position: relative; display: flex; align-items: center; padding: 0 24px; color: var(--white); font-size: 28px; font-weight: 500; white-space: nowrap; }
+#bar .tab b { font-family: "Heebo"; font-weight: 400; margin-right: 10px; }
+#bar .hi { position: absolute; top: 0; height: 84px; background: var(--teal); }
+#bar .ver { position: absolute; right: 40px; top: 16px; height: 52px; display: flex; align-items: center; border: 2px solid var(--g4); color: var(--white); font-size: 26px; padding: 0 18px; font-family: "Heebo"; }
+#bar .ver.sel { border-color: var(--teal); }
+
+/* ── 章节卡：导航条下方整页换成新页面 ── */
+.chapter { position: absolute; left: 0; top: 84px; width: 1920px; height: 996px; background: var(--page); }
+.chapter .no { position: absolute; left: 112px; top: 100px; font-family: "Heebo"; font-size: 460px; font-weight: 200; line-height: 1; color: var(--teal); letter-spacing: -10px; }
+.chapter .ti { position: absolute; left: 790px; top: 250px; font-size: 120px; font-weight: 700; white-space: nowrap; }
+.chapter .rl { position: absolute; left: 790px; top: 440px; width: 1010px; border-top: 2px dashed var(--g2); }
+
+/* ── 字幕：页底色衬底，线条经过时被挡住 ── */
+#caption span { font-size: 42px; font-weight: 500; color: var(--ink); background: var(--page); padding: 2px 22px; }
+#caption em { font-style: normal; color: var(--teal); }
+.foot #caption span { color: var(--white); background: var(--ink); }

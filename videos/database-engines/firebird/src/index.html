@@ -14,23 +14,25 @@
   <div id="caption"><span></span></div>
 </div>
 <script src="vendor/gsap.min.js"></script>
-<!-- 实测时长：每种语言一份，由 kit/tools/tts.js 生成（本片只做中文） -->
+<!-- 实测时长：由 kit/tools/tts.js 生成（本片只做中文） -->
 <script src="js/timing.zh.js"></script>
 <script src="js/script.js"></script>
 <script src="js/config.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/util.js"></script>
-<!-- 场景：一章一个（或数个）文件，按出场顺序列在这里 -->
+<script src="js/data.js"></script>
+<script src="js/parts.js"></script>
+<!-- 场景：按出场顺序 -->
 <script src="js/scenes/s0_open.js"></script>
 <script src="js/scenes/s1_history.js"></script>
 <script src="js/scenes/s2_engine.js"></script>
-<script src="js/scenes/s3_modes.js"></script>
-<script src="js/scenes/s4_store.js"></script>
+<script src="js/scenes/s3_store.js"></script>
+<script src="js/scenes/s4_query.js"></script>
 <script src="js/scenes/s5_update.js"></script>
-<script src="js/scenes/s6_concur.js"></script>
-<script src="js/scenes/s7_durable.js"></script>
-<script src="js/scenes/s8_outro.js"></script>
-<script src="js/scenes/s9_next.js"></script>
-<script src="js/scenes/s10_credits.js"></script>
+<script src="js/scenes/s6_durable.js"></script>
+<script src="js/scenes/s7_outro.js"></script>
+<script src="js/scenes/s8_next.js"></script>
+<script src="js/scenes/s9_credits.js"></script>
+<script src="js/boot.js"></script>
 </body>
 </html>

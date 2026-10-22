@@ -1,0 +1,4 @@
+2026 Stack Overflow 开发者调查｜数据库使用率｜全部答题者｜多选｜n=12,061
+PostgreSQL: 57.9%
+MySQL: 35.1%
+Firebird: 未列入 31 个选项（最少的选项 Datomic 0.5%）

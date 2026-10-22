@@ -1,14 +1,11 @@
 # Firebird：当前任务入口
 
-当前为 2026-10-21 中文第 8 稿，角色为**准备方**，文案待 WaterRun 确认。主线仍是一个数据库怎样实现；受众已经看过 MySQL/InnoDB/PostgreSQL 三期，但不熟悉 Firebird。最新原话、取舍与预算见 README「简报」。
+2026-10-21：中文第 8 稿已由 WaterRun 确认（`review/NOTES.md`、`review/approval.json`），进入制作；本轮角色为**制作方**。先读 README 的「状态」「简报」「设计」。
 
-- 开场是“前三期，我们从 MySQL”；“一个小众的第三选择：Firebird”原句不变。
-- 策划要求 o6 背景有采用规模数据；research/MATERIALS.md 与 FACTS S04 固定同年、同分组的 2024 调查使用率，明确多选与样本数，不称全球市占率。数据已生成，具体画面待制作。
-- 引擎主体按最新要求深入页槽、记录头、记录号分解、位图、差量还原、页面依赖和 TIP。早期“正文不报槽/位图”的取舍已被本轮明确要求替代。
-- 历史约 57 秒，已看过前三期的定位、自然衔接、前集机制对比都保留；不复讲 ACID/隔离级别课程。
-- SQLite 不在开头出现，只在结尾引出；结尾问“小巧，同时又强大”。
-- 当前估算约 7:37，成片必须短于 MyISAM 登记的 475.883 秒；check.duration 不变为 420–475 秒。
-- 唯一文案源稿为 src/js/script.js，事实只来自 research/FACTS.md；新增解析与数据在 research/lab/15、16，画面数据由 tools/gen_data.py 生成，不手抄。
-- 核查固定 Firebird v5.0.4。实验 15 只读原 08 快照解码，不是新在线更新或崩溃实验。头字段只按已核的短记录范围使用。
-- 文案未明确确认，不配音，不填验收或听看结论。旧场景骨架与 brief 制作建议不代表当前分镜；视觉与声音归制作方。
-- 本轮只写本片目录，不改共享文件。遵守根 AGENTS.md 与 docs/roles.md；署名只列实际参与者，具体模型版本不明时不补猜。
+- 文案只在 `src/js/script.js`；改字幕、句子或章名要重新交审。读法、停顿、lead 可改，记进 NOTES。
+- 事实只来自 `research/FACTS.md`；画面上的字节、页号、槽、事务状态、开场背景数据都由 `tools/gen_data.py` 从 `research/lab/out_*` 生成，不手抄。
+- 视觉：方向 1「官网」（导航条页签即章节、青色选中态、文档侧栏、火焰三色只给记录版本与事务）。颜色锁在 `check.style.palette`。
+- 开场背景按策划者最新要求用 DB-Engines 2026 年 10 月流行度得分（FACTS S06），标明不是市场份额；o6 旁白不变。
+- 配音 MiniMax `danya_xuejie` 语速 1.1；配乐 `tools/music.py`（柏林学派音序器）。制作者听不到声音，听感由策划者确认。
+- 章节卡：常驻层刷入，刷满后交给场景内的同款卡（`config.js` 的 `after()`），否则停留期会被静止检测判失败。
+- 只写本片目录；共享文件（系列说明、docs）的建议记在 README「复盘」。提交用 `git commit -m "…" -- videos/database-engines/firebird/`。

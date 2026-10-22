@@ -4,15 +4,14 @@
 
 ## 状态
 
-本轮角色：**准备方**。2026-10-21 已完成中文第 8 稿：开场改为“前三期，我们从 MySQL”；o6 原句保留，背景采用数据已提取并生成；引擎主体改为页/槽/记录头、记录号分解、位图取行、差量回溯和 TIP 提交状态。新增对原实验快照的字节解码，代码与数据已落盘。文案待 WaterRun 确认；未配音、未制作场景、未做成片验收。署名以 [project.json](project.json) 的 credits 为唯一来源；本轮模型的具体版本未记录，不补猜版本。
+| 项 | 记录 |
+|---|---|
+| 当前停在哪里 | 验收（2026-10-21）：成片已渲染、封装，`check.js --final` 全部通过；等策划者看片 |
+| 下一步，依赖什么 | WaterRun 看片、听配音与配乐；同意后在 `project.json` 登记 `delivery`、片单改为已成片；有意见就改源码重渲 |
+| 等待策划者的事 | 看成片、听配乐与配音；开场背景数据改用 DB-Engines 2026 年 10 月流行度得分（见简报）是否合意 |
+| 本次会话的角色 | **制作方**（Claude Opus 5.5）：从文案确认之后到交付。前期（取证、文案第 1–8 稿）为准备方所做，见下 |
 
-- 唯一文案源稿：[src/js/script.js](src/js/script.js)。
-- 当前全文与修改记录：[review/NOTES.md](review/NOTES.md)；导出稿路径与哈希见该文件。
-- 事实与范围：[research/FACTS.md](research/FACTS.md)。
-- 新增查询证据：[research/lab/out_13_query_path.txt](research/lab/out_13_query_path.txt)。
-- 下一步：WaterRun 校对本轮全文；取得明确确认后再交制作方。当前 approval 为 pending。
-
-旧任务书把“为什么能同时服务端与嵌入式”定成唯一主问题，并要求重复讲并发；本轮按下列策划者要求重排。旧 AGENTS、brief/ 与场景骨架里的章节、句号、预算和技术断言，不再作为当前稿的依据。视觉与声音材料仍可由制作方自行判断使用。
+早先的准备方记录（文案第 8 稿与配套材料）保留在下面各节；“文案待确认、未配音”等表述已由本节取代。
 
 ## 简报
 
@@ -75,7 +74,25 @@
 - 不报二进制体积、不列全部页类型、页数分布、字节偏移与版本清单，不做性能或选型排名。
 - 衔接是系列的讲述顺序，不是引擎的高低等级，也不暗示 Firebird 或 SQLite 由 PostgreSQL 演化而来。
 
+制作阶段的策划者原话（2026-10-21，同一会话）：
+
+> 准备实现Firebird动画.
+> 配音: 严肃女声
+> 视觉: 严格契合Firebird的视觉风格
+> 配乐: 小众, 独特, 年代感的电子乐, 契合Firebird的小众
+
+制作方随后询问第 8 稿是否确认，WaterRun 选“确认第 8 稿”（记录见 `review/NOTES.md`）。试听页上三项选择的原话：配音“V5 不过现在这几个语速都有点太慢了”，配乐“A 柏林学派音序器”，视觉“方向 1 官网（浅底）”。按此用 `danya_xuejie`、语速 1.1。
+
+开场背景数据的两次追加要求：
+
+> 对了, 开头那个占比, 用2026年最新的
+> 那就是有Firebird的最新数据, 不止Stackoverflow, 自己找找, 最新的占比数据
+
+2026 年 Stack Overflow 调查的数据库题（31 个选项）没有 Firebird（FACTS S05），所以按第二条找了别的来源：DB-Engines 关系数据库排名 2026 年 10 月同口径覆盖三者——MySQL 837.96（第 2）、PostgreSQL 688.75（第 4）、Firebird 18.36（第 21），画面标“流行度得分，不是装机量或市场份额”（FACTS S06）。DB-Engines 不提供“占比”，它的方法页写明得分是相对值、两倍分数即两倍流行，这是能找到的最新、同源、口径公开的数字；Enlyft 按使用公司数给出“0.02%”，但页面无日期、正文与图表数字不一致，未采用。o6 旁白不变。系列说明里“第四集配乐 124 拍/分”一行早于本次要求，以本次原话为准（见复盘）。
+
 ## 叙事与预算
+
+**实测（配音后，2026-10-21）**：全片 442.9 秒（7:22.9），在 420–475 秒之内，短于 MyISAM 的 475.883 秒。下文的估算是文案阶段的记录。
 
 按源稿现有停顿和工具估算，约 **456.7 秒（约 7:37）**，包括 13 秒静默片尾，与第 7 稿长度相近；精确估算和当前稿本哈希见 NOTES。相较 MyISAM 的交付记录约留 19 秒余量。存储、查询、修改与恢复四章约 4 分 40 秒。没有修改估算语速或时长阈值。尚未配音，不能当成实测片长。
 
@@ -115,15 +132,65 @@
 
 原策划者已给出的声音约束“配乐电子乐，富有节奏感”保留。此次文案任务没有新增视觉、配乐或分镜方案。
 
+## 设计
+
+**视觉：方向 1「官网」**（WaterRun 从两个方向的关键帧里选定，关键帧在 `src/design/keyframes.html`）。全部取自 firebirdsql.org（F16）：
+
+| 材料 | 出处 | 在片中的用途 |
+|---|---|---|
+| 火鸟标志（1024 px 透明底）、白色字标 | 官网 `img/main-logo-news.png`、`img/site/logo-firebird-black.png`（转透明底） | 常驻导航条左上角、开场大标志、引擎块上的小标志、片尾页脚 |
+| `#17222B` 深色导航条与正文墨色、`#2e6474` 选中态、`#FCFCFC` 页底、`#ECEDEE` 搜索框灰、`#DCDEDF` 虚线、`#B9BCBF`/`#3A434B` 次级灰 | 官网 `template/css/style.css` | 常驻导航条；页签即章节，当前章是青色选中块；面板与分隔；片尾用页脚的深底 |
+| 文档侧栏的箭头列表（灰底条目、选中项青底白字） | 官网文档页 | 提供程序链、执行计划步骤、收束三栏 |
+| Heebo | 官网样式表 | 拉丁字、数字；中文用 Noto Sans SC，字节与 SQL 用 JetBrains Mono |
+| 火焰三色 `#F68A21`/`#FAAC19`/`#EE2B24` | 标志位图像素统计（FACTS V02） | 橙 = Alice 记录的当前版本；金 = 历史版本；红描边 = 事务号与事务状态 |
+
+`check.style.palette` 改成上表的官网颜色：准备方预置的纸白、沙灰等中性色不是 Firebird 的，删去；新增的青、页底与几种灰取自官网样式表，理由是策划者要求“严格契合 Firebird 的视觉风格”。
+
+图形语言全片不换义：灰色方角面板 = 容器；青色 = 此刻选中的那一项；橙/金/红如上。每章主画面（F18）：开场——火鸟落进系列第 4 格，镜头推进去接大标志；01——横向时间轴上 InterBase 的封闭块被揭开、社区聚拢、三种形态合成一块核心；02——两条通道加提供程序侧栏，停掉服务端后嵌入式照样读写；03——按字节比例画出的第 231 页与 0 号槽四个字节；04——沿真实执行计划走的取行路径，右侧常驻计划侧栏；05——32 字节记录头的改写、页尾 384 字节放大镜里的搬动与 8 号槽差量、差量还原；06——缓存与磁盘两层的 ①② 写序与事务清单页的两位状态。画面上的字节、页号、槽、偏移、事务状态都由 `tools/gen_data.py` 从实验产物生成；制作中补了两项只读解码（`research/lab/17_page_map.py`：页类型、全部槽、B 树页层级、事务清单页；FACTS D12、D13、W08）。
+
+与近期作品的区别（F21）：PostgreSQL 一集是官网样式表加常驻大象；本片的骨架是官网的导航条与文档侧栏，章节切换是“点页签换页面”，片尾是官网页脚上滚。
+
+**配音**：MiniMax speech-2.8-hd。按音高与描述从全部中文音色里筛出 5 个严肃女声，用本片 10 句代表段合成试听页交策划者选（F17），选定 `danya_xuejie`；按“语速太慢”的意见取 1.1，全片 443.6 秒。
+
+**配乐**：`tools/music.py`，柏林学派音序器（选自两版小样，另一版是 Amiga 音轨器）。112 拍/分；十六分音符锯齿波音序经共振低通、八分音符正弦低音、弦乐机铺底、FM 钟琴；机制各章加底鼓与踩镲，各章和声进行不同；换章前通鼓下行加噪声上扬、新章第一拍落地；开场标题与收束处各一次抬起，开场与结尾各一次慢速主题；磁带抖晃与轻饱和。与本系列前三集（MyISAM 持续铺底、InnoDB 低频、PostgreSQL 72 拍/分工业）听得出不同。音效只给有含义的动作（页签切换 tick、数字砸入 thud、写盘 drive、还原一致 chime、出错 error 等）。
+
+## 交付
+
+验收版本（2026-10-21，策划者尚未看片，未登记交付）：
+
+| 文件（`out/`，不入库） | 内容 |
+|---|---|
+| `firebird-zh-1080p60.mp4` | 主混音（旁白 + 配乐 + 音效），109.5 MB |
+| `firebird-zh-1080p60-voice-only.mp4` | 仅旁白 |
+| `firebird-zh-1080p60-no-music.mp4` | 旁白 + 音效 |
+| `firebird-zh.srt` | 同步字幕（画面已内嵌字幕） |
+| `cover-zh-16x9.jpg`、`cover-zh-4x3.jpg`（及 2 倍 PNG） | 封面 |
+
+在最终 MP4 上实测（F08）：1920×1080，60/1 帧，26,573 帧，时长 442.881 秒（7:22.9，短于 MyISAM 的 475.883 秒）；响度 −15.6 LUFS，真峰值 −1.4 dBFS（ffmpeg ebur128）。`finish.js`：成片无 ≥3 秒静止、无空画面；430.2–431.4 秒片尾页脚上滚时画面内容很少（提示，非错误）。`check.js --final`：全部通过。
+
+看过的范围：逐句截图与各章 10–17 帧总览（预览渲染），正式成片按章抽 39 帧，章节卡交接、记录搬动、标志推进做了逐 0.1 秒抽查。**没有以正常速度连续观看全片；听不到声音**——配音语气、读音、配乐与音效的听感都需要策划者确认。`review/lessons.json` 记为 open 的：F04（未连续观看）、F06（配乐听感）、F12（读音由人耳最终判断）、F17（语速 1.1 未再交试听）、F19（中间帧只抽查了部分动作）。
+
+## 复盘
+
+- 系列说明 `videos/database-engines/README.md` 的「视觉与声音」一行仍写着第四集配乐是“124 拍/分的电子乐（四踩、酸性贝斯、方波琶音）”，那是旧方案；本集按策划者 2026-10-21 的要求改为柏林学派音序器（112 拍/分）。系列说明是共享文件，本会话不改，留给维护者更新。
+- `docs/guides/script.md` 第 9.2 节音色评价表可补一行：`danya_xuejie`（淡雅学姐，MiniMax）用在本片“严肃女声”，策划者试听后选定，评价“这几个语速都有点太慢了”，本片用 1.1。同属共享文件，留给维护者。
+- 总闸门的静止检测不看常驻层：章节卡放在常驻层时，停留期一律被判静止。本片的做法是章节卡刷满后交给场景里一份同样的卡（`config.js` 的 `after()`）。若别的片子也用常驻层章节卡，这一点值得写进 `docs/reference/pitfalls.md`。
+
 ## 复现与审稿
 
 ```sh
 python videos/database-engines/firebird/research/lab/13_query_path.py
 python videos/database-engines/firebird/research/lab/15_record_layout.py
-python videos/database-engines/firebird/research/lab/16_usage_context.py
+python videos/database-engines/firebird/research/lab/17_page_map.py        # 页类型、全部槽、B 树页层级、事务清单页（只读）
+python videos/database-engines/firebird/research/lab/18_usage_2026.py      # 2026 Stack Overflow（Firebird 未列入）
+python videos/database-engines/firebird/research/lab/19_dbengines_2026.py  # DB-Engines 2026 年 10 月（开场背景）
 python videos/database-engines/firebird/tools/gen_data.py
-node kit/tools/stats.js videos/database-engines/firebird
-node kit/tools/script-review.js videos/database-engines/firebird export --lang zh
+node kit/tools/tts.js videos/database-engines/firebird --lang zh           # MiniMax 需要 NO_PROXY 放行 api.minimaxi.com
+node kit/tools/audio.js videos/database-engines/firebird --lang zh
+node kit/tools/check.js videos/database-engines/firebird
+node kit/tools/render.js videos/database-engines/firebird --lang zh --gpu 1 --workers 4
+node kit/tools/finish.js videos/database-engines/firebird --lang zh
+node kit/tools/covers.js videos/database-engines/firebird
 ```
 
 实验需既有 research/_src/fb504 安装包与 Python fdb。新实验只创建自己的独立库，不启动服务端。文案确认的规则见 [仓库文案校对说明](../../../docs/guides/script-review.md)。

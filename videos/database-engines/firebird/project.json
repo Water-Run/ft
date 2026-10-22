@@ -1,7 +1,7 @@
 {
   "slug": "firebird",
-  "stage": "review",
-  "next": "等 WaterRun 审 2026-10-21 中文第 8 稿（约 7:37；补深页槽、记录头、位图、差量回溯和 TIP，背景采用率数据已落盘）；确认后交制作方",
+  "stage": "accept",
+  "next": "等 WaterRun 看成片（out/firebird-zh-1080p60.mp4）并听配音与配乐；同意后登记交付（delivery）与片单状态",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -21,9 +21,27 @@
           "查询路径实验",
           "中文第 2–8 稿"
         ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "补证",
+          "视觉设计",
+          "场景与动画",
+          "配乐",
+          "混音",
+          "验收"
+        ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "languages": [
@@ -47,7 +65,8 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4
+    "mb": 4,
+    "gpu": 1
   },
   "audio": {
     "music": "tools/music.py",
@@ -77,12 +96,15 @@
         "#EE2B24",
         "#F68A21",
         "#FAAC19",
-        "#17222b",
-        "#f7f7f5",
-        "#ffffff",
-        "#d9d4cb",
-        "#8a8378",
-        "#000000"
+        "#17222B",
+        "#2E6474",
+        "#FCFCFC",
+        "#FFFFFF",
+        "#ECEDEE",
+        "#DCDEDF",
+        "#B9BCBF",
+        "#3A434B",
+        "#233340"
       ]
     },
     "sfx": {
@@ -96,10 +118,10 @@
     "engine": "minimax",
     "model": "speech-2.8-hd",
     "voice": {
-      "zh": "Chinese (Mandarin)_Male_Announcer"
+      "zh": "danya_xuejie"
     },
     "speed": {
-      "zh": 1.08
+      "zh": 1.1
     }
   }
 }

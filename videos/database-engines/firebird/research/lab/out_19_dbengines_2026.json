@@ -1,0 +1,43 @@
+{
+  "source": "DB-Engines Ranking of relational DBMS",
+  "url": "https://db-engines.com/en/ranking/relational+dbms",
+  "month": "October 2026",
+  "systems_in_ranking": 170,
+  "rows": [
+    {
+      "database": "MySQL",
+      "rank": 2,
+      "rank_prev_month": 2,
+      "rank_prev_year": 2,
+      "score": 837.96,
+      "change_month": -6.85,
+      "change_year": -41.7
+    },
+    {
+      "database": "PostgreSQL",
+      "rank": 4,
+      "rank_prev_month": 4,
+      "rank_prev_year": 4,
+      "score": 688.75,
+      "change_month": 5.5,
+      "change_year": 45.56
+    },
+    {
+      "database": "Firebird",
+      "rank": 21,
+      "rank_prev_month": 21,
+      "rank_prev_year": 20,
+      "score": 18.36,
+      "change_month": 0.93,
+      "change_year": 0.94
+    }
+  ],
+  "measure": "popularity score (relative); not installations or market share",
+  "method_url": "https://db-engines.com/en/ranking_definition",
+  "method_quote": "when system A has twice as large a value in the DB-Engines Ranking as system B, then it is twice as popular",
+  "ratio_mysql_to_firebird": 45.6,
+  "ratio_postgresql_to_firebird": 37.5,
+  "html_sha256": "3d74b3e72dffb094bd8ad1dbbb4267c28115c6fa71f501ebbb668d76f45534d2",
+  "definition_sha256": "84b28e3a2262c4f58ff3f79bcfa6afb4d22554a5fab21b914388d9300fadad0f",
+  "caption": "DB-Engines 关系数据库流行度排名｜2026 年 10 月｜共 170 个系统｜得分为相对值，不是装机量或市场份额"
+}
