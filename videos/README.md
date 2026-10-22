@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 203 部：已成片 17，制作中 20，计划中 166。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 203 部：已成片 18，制作中 20，计划中 165。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 ## 已成片
 
@@ -27,14 +27,15 @@
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | zh 7:56 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ) | 8（2026-10-09） | Claude Opus 5.5 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/) | — | zh 3:13 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ) | 8（2026-10-09） | Claude（型号未记录）、DeepSeek（型号未记录） |
+| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | zh | — | [哔哩哔哩](https://www.bilibili.com/video/BV1apnz6pE9g) | — | MiniMax M3.1 Flash、未记录、Claude Opus 5.5 |
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-21.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-22.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | 验收 | 等 WaterRun 看成片（out/firebird-zh-1080p60.mp4）并听配音与配乐；同意后登记交付（delivery）与片单状态 | 最新 |
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 取证 | 实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审 | 最新 |
 | [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
@@ -44,7 +45,7 @@
 | [OpenCode 是怎么实现的？](agent-harnesses/opencode/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 待同步 |
-| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 最新 |
+| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 待同步 |
 | [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 |
 | [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
 | [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
@@ -68,8 +69,8 @@
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](database-engines/myisam/) |  |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) |  |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) |  |
-| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 制作中 | [`firebird`](database-engines/firebird/) |  |
-| 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 计划中 | `sqlite` |  |
+| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](database-engines/firebird/) |  |
+| 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
 | 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |  |
 | 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh | 计划中 | `mongodb` |  |
 | 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh | 计划中 | `redis-keydb` |  |

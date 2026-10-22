@@ -45,8 +45,8 @@ WaterRun 2026-10-19 定下后续各集的顺序与各自承担的角色。分集
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](myisam/) |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](innodb/) |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](postgresql/) |
-| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 制作中 | [`firebird`](firebird/) |
-| 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 计划中 | `sqlite` |
+| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](firebird/) |
+| 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](sqlite/) |
 | 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |
 | 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh | 计划中 | `mongodb` |
 | 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh | 计划中 | `redis-keydb` |

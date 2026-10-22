@@ -20,7 +20,7 @@
 ## 规则
 
 <!-- lessons:begin 由 node kit/tools/lessons.js render 从 docs/lessons.json 生成，不要手改 -->
-当前版本 2026-10-21.1，共 22 条。
+当前版本 2026-10-22.1，共 22 条。
 
 ### 立项
 
@@ -35,6 +35,16 @@
 - **来源**：P0、P5、P21、P33、C10、C13（见 [反馈记录](log/feedback.md)）
 
 ### 取证
+
+#### F02 一个例子走完每一步，控制理解负担
+
+用同一个具体例子走完机制：每一步交代输入、变化、原因和结果。讲多层系统时先建立整体结构与输入输出，再定位并展开局部，局部细节始终能回到全程中的位置；取证同时保留结构关系与一次操作的完整路径，不能只留内部字段。先讲清概念，再给术语、历史和数字。先定本片引入几个新名词，超出就删；每个术语第一次出现就用一句话讲清它是什么、为什么需要。难点先分到足够的时间，再安排包装与转场。
+
+- **为什么**：「有例子」不等于讲清楚；名词堆叠、概念跳跃时，观众跟不上。局部拆得再深，缺少整体结构和部件之间的关系，仍解释不了系统怎样工作。
+- **怎样查**：正常速度从输入跟到输出，每一步的原因都在画面或旁白里；列出全片新名词与它们的解释句。取证可还原整体结构与一条完整操作路径；文案与画面里的每个局部都说得出它位于整体哪里、负责哪一步。
+- **也用于**：文案、设计、验收
+- **案例**：正面 [myisam](../videos/database-engines/myisam/)、[two-factor-auth](../videos/in-seconds/two-factor-auth/)；反面 [lean4](../videos/in-seconds/lean4/)、[innodb](../videos/database-engines/innodb/)、[postgresql](../videos/database-engines/postgresql/)、[firebird](../videos/database-engines/firebird/)、[web-login](../videos/in-seconds/web-login/)
+- **来源**：P9、P17、P18、P34、P50、C10、C11（见 [反馈记录](log/feedback.md)）
 
 #### F07 取证画面脱敏
 
@@ -54,16 +64,6 @@
 - **也用于**：发布与反馈
 
 ### 文案
-
-#### F02 一个例子走完每一步，控制理解负担
-
-用同一个具体例子走完机制：每一步交代输入、变化、原因和结果。先讲清概念，再给术语、历史和数字。先定本片引入几个新名词，超出就删；每个术语第一次出现就用一句话讲清它是什么、为什么需要。难点先分到足够的时间，再安排包装与转场。
-
-- **为什么**：「有例子」不等于讲清楚；名词堆叠、概念跳跃时，观众跟不上。
-- **怎样查**：正常速度从输入跟到输出，每一步的原因都在画面或旁白里；列出全片新名词与它们的解释句。
-- **也用于**：验收
-- **案例**：正面 [myisam](../videos/database-engines/myisam/)、[two-factor-auth](../videos/in-seconds/two-factor-auth/)；反面 [lean4](../videos/in-seconds/lean4/)、[innodb](../videos/database-engines/innodb/)、[web-login](../videos/in-seconds/web-login/)
-- **来源**：P9、P17、P18、P34、C10、C11（见 [反馈记录](log/feedback.md)）
 
 #### F03 名称、比较与边界在第一次出现时交代
 
