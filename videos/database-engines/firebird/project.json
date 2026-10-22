@@ -1,7 +1,7 @@
 {
   "slug": "firebird",
-  "stage": "accept",
-  "next": "等 WaterRun 看成片（out/firebird-zh-1080p60.mp4）并听配音与配乐；同意后登记交付（delivery）与片单状态",
+  "stage": "released",
+  "next": "已发布并冻结；只追加发布记录与反馈，教训落实到后续片；仅经策划者明确要求重做才解冻",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -44,6 +44,14 @@
     ],
     "repository": "https://github.com/Water-Run/ft"
   },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1apnz6pE9g",
+      "date": "",
+      "lang": "zh"
+    }
+  ],
   "languages": [
     "zh"
   ],
