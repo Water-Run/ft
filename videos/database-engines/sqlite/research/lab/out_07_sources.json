@@ -1,0 +1,112 @@
+{
+  "summary": {
+    "source_files": 5,
+    "anchors": 18
+  },
+  "source_manifest": "555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+  "sources": [
+    {
+      "file": "src/btree.c",
+      "sha256": "c96f2e39d62659d649441a7330d753079056fc5cd1b67ce9489bb1be88b13050",
+      "anchors": [
+        {
+          "pattern": "^int sqlite3BtreeTableMoveto\\(",
+          "line": 5837
+        },
+        {
+          "pattern": "^int sqlite3BtreeIndexMoveto\\(",
+          "line": 6068
+        },
+        {
+          "pattern": "^static int balance_quick\\(",
+          "line": 8039
+        },
+        {
+          "pattern": "^static int balance_nonroot\\(",
+          "line": 8277
+        },
+        {
+          "pattern": "^static int balance_deeper\\(",
+          "line": 9081
+        }
+      ]
+    },
+    {
+      "file": "src/pager.c",
+      "sha256": "96d7bb9c4a5a6da0909ce0ab4714311e1ffa5f13007dc4c69f028a2760104ba4",
+      "anchors": [
+        {
+          "pattern": "^static int pager_playback\\(.*\\)\\{",
+          "line": 2872
+        },
+        {
+          "pattern": "^int sqlite3PagerGet\\(",
+          "line": 5788
+        },
+        {
+          "pattern": "^int sqlite3PagerWrite\\(",
+          "line": 6296
+        },
+        {
+          "pattern": "^int sqlite3PagerCommitPhaseOne\\(",
+          "line": 6527
+        }
+      ]
+    },
+    {
+      "file": "src/wal.c",
+      "sha256": "11ab3050c715b8d4b05f20c9030ea96ed70475080ba62fe3f60e441ac765eb47",
+      "anchors": [
+        {
+          "pattern": "^static int walTryBeginRead\\(",
+          "line": 3102
+        },
+        {
+          "pattern": "^int sqlite3WalFindFrame\\(",
+          "line": 3722
+        },
+        {
+          "pattern": "^int sqlite3WalReadFrame\\(",
+          "line": 3740
+        },
+        {
+          "pattern": "^int sqlite3WalFrames\\(",
+          "line": 4361
+        },
+        {
+          "pattern": "^int sqlite3WalCheckpoint\\(",
+          "line": 4387
+        }
+      ]
+    },
+    {
+      "file": "src/vdbe.c",
+      "sha256": "385dffa63edbac9f07388b19f02c024f64465c9383c35dea5eb92b0bbe352436",
+      "anchors": [
+        {
+          "pattern": "^case OP_SeekGE:",
+          "line": 4981
+        },
+        {
+          "pattern": "^case OP_SeekRowid:",
+          "line": 5632
+        },
+        {
+          "pattern": "^case OP_DeferredSeek:",
+          "line": 6872
+        }
+      ]
+    },
+    {
+      "file": "src/os_win.c",
+      "sha256": "e6c3639cacac92204ae53906b0881aacfaac5e80695a3b0b0f3636f2b0e13065",
+      "anchors": [
+        {
+          "pattern": "^static int winRead\\(",
+          "line": 1820
+        }
+      ]
+    }
+  ],
+  "limits": "Anchors locate implementation entry points; behavioural claims also require experiments and context."
+}

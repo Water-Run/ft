@@ -1,0 +1,58 @@
+{
+  "slug": "sqlite",
+  "layout": 2,
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
+  },
+  "stage": "research",
+  "next": "实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      { "name": "GPT-6.1 Sol", "roles": ["取证", "实测与结构测绘", "简报整理"] }
+    ],
+    "services": [],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    }
+  }
+}

@@ -1,0 +1,73 @@
+[environment] SELECT sqlite_version();
+[{"sqlite_version()":"3.54.1"}]
+
+[environment] SELECT sqlite_source_id();
+[{"sqlite_source_id()":"2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76"}]
+
+[environment] SELECT count(*) FROM dbstat;
+[{"count(*)":0}]
+
+[environment] PRAGMA compile_options;
+[{"compile_options":"ATOMIC_INTRINSICS=0"},
+{"compile_options":"COMPILER=msvc-1951"},
+{"compile_options":"DEFAULT_AUTOVACUUM"},
+{"compile_options":"DEFAULT_CACHE_SIZE=-2000"},
+{"compile_options":"DEFAULT_FILE_FORMAT=4"},
+{"compile_options":"DEFAULT_JOURNAL_SIZE_LIMIT=-1"},
+{"compile_options":"DEFAULT_MMAP_SIZE=0"},
+{"compile_options":"DEFAULT_PAGE_SIZE=4096"},
+{"compile_options":"DEFAULT_PCACHE_INITSZ=20"},
+{"compile_options":"DEFAULT_RECURSIVE_TRIGGERS"},
+{"compile_options":"DEFAULT_SECTOR_SIZE=4096"},
+{"compile_options":"DEFAULT_SYNCHRONOUS=2"},
+{"compile_options":"DEFAULT_WAL_AUTOCHECKPOINT=1000"},
+{"compile_options":"DEFAULT_WAL_SYNCHRONOUS=2"},
+{"compile_options":"DEFAULT_WORKER_THREADS=0"},
+{"compile_options":"DIRECT_OVERFLOW_READ"},
+{"compile_options":"DQS=0"},
+{"compile_options":"ENABLE_BYTECODE_VTAB"},
+{"compile_options":"ENABLE_CARRAY"},
+{"compile_options":"ENABLE_COLUMN_METADATA"},
+{"compile_options":"ENABLE_DBPAGE_VTAB"},
+{"compile_options":"ENABLE_DBSTAT_VTAB"},
+{"compile_options":"ENABLE_EXPLAIN_COMMENTS"},
+{"compile_options":"ENABLE_FTS3"},
+{"compile_options":"ENABLE_FTS4"},
+{"compile_options":"ENABLE_FTS5"},
+{"compile_options":"ENABLE_GEOPOLY"},
+{"compile_options":"ENABLE_MATH_FUNCTIONS"},
+{"compile_options":"ENABLE_OFFSET_SQL_FUNC"},
+{"compile_options":"ENABLE_PERCENTILE"},
+{"compile_options":"ENABLE_PREUPDATE_HOOK"},
+{"compile_options":"ENABLE_RTREE"},
+{"compile_options":"ENABLE_SESSION"},
+{"compile_options":"ENABLE_STMTVTAB"},
+{"compile_options":"ENABLE_STMT_SCANSTATUS"},
+{"compile_options":"ENABLE_UNKNOWN_SQL_FUNCTION"},
+{"compile_options":"MALLOC_SOFT_LIMIT=1024"},
+{"compile_options":"MAX_ATTACHED=10"},
+{"compile_options":"MAX_COLUMN=2000"},
+{"compile_options":"MAX_COMPOUND_SELECT=500"},
+{"compile_options":"MAX_DEFAULT_PAGE_SIZE=8192"},
+{"compile_options":"MAX_EXPR_DEPTH=1000"},
+{"compile_options":"MAX_FUNCTION_ARG=1000"},
+{"compile_options":"MAX_LENGTH=1000000000"},
+{"compile_options":"MAX_LIKE_PATTERN_LENGTH=50000"},
+{"compile_options":"MAX_MMAP_SIZE=0x7fff0000"},
+{"compile_options":"MAX_PAGE_COUNT=0xfffffffe"},
+{"compile_options":"MAX_PAGE_SIZE=65536"},
+{"compile_options":"MAX_SCHEMA=10000000"},
+{"compile_options":"MAX_SQL_LENGTH=1000000000"},
+{"compile_options":"MAX_TRIGGER_DEPTH=100"},
+{"compile_options":"MAX_VARIABLE_NUMBER=32766"},
+{"compile_options":"MAX_VDBE_OP=250000000"},
+{"compile_options":"MAX_WORKER_THREADS=8"},
+{"compile_options":"MUTEX_W32"},
+{"compile_options":"STRICT_SUBTYPE"},
+{"compile_options":"SYSTEM_MALLOC"},
+{"compile_options":"TEMP_STORE=1"},
+{"compile_options":"THREADSAFE=1"}]
+
+[environment] PRAGMA page_size;
+[{"page_size":4096}]
+

@@ -1,0 +1,44 @@
+[writer] PRAGMA journal_mode=WAL;
+[{"journal_mode":"wal"}]
+
+[writer] PRAGMA synchronous=FULL;
+PRAGMA wal_autocheckpoint=0;
+[{"wal_autocheckpoint":0}]
+
+[old-reader] BEGIN;
+(no result rows)
+
+[old-reader] SELECT age FROM users WHERE id=2050;
+[{"age":42}]
+
+[writer] BEGIN IMMEDIATE;
+UPDATE users SET age=43 WHERE id=2050;
+(no result rows)
+
+[other-writer] BEGIN IMMEDIATE;
+Error near line 8: database is locked
+
+[writer] COMMIT;
+(no result rows)
+
+[old-reader] SELECT age FROM users WHERE id=2050;
+[{"age":42}]
+
+[other-writer] SELECT age FROM users WHERE id=2050;
+[{"age":43}]
+
+[writer] SELECT rootpage FROM sqlite_schema WHERE name='users';
+[{"rootpage":2}]
+
+[writer] PRAGMA wal_checkpoint(PASSIVE);
+[{"busy":0,"log":5,"checkpointed":0}]
+
+[old-reader] COMMIT;
+(no result rows)
+
+[writer] PRAGMA wal_checkpoint(TRUNCATE);
+[{"busy":0,"log":0,"checkpointed":0}]
+
+[writer] PRAGMA integrity_check;
+[{"integrity_check":"ok"}]
+

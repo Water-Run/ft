@@ -1,0 +1,180 @@
+[index_then_table] .stats on
+(no result rows)
+
+[index_then_table] SELECT id,name,age FROM users WHERE name='Alice';
+[{"id":2050,"name":"Alice","age":42}]
+VM-steps: 15
+Memory Used:                         92168 (max 93296) bytes
+Number of Outstanding Allocations:   240 (max 242)
+Number of Pcache Overflow Bytes:     1032 (max 5136) bytes
+Largest Allocation:                  48000 bytes
+Largest Pcache Allocation:           4104 bytes
+Lookaside Slots Used:                86 (max 115)
+Successful lookaside attempts:       184
+Lookaside failures due to size:      1
+Lookaside failures due to OOM:       0
+Pager Heap Usage:                    10896 bytes
+Page cache hits:                     2
+Page cache misses:                   7
+Page cache writes:                   0
+Page cache spills:                   0
+Temporary data spilled to disk:      0
+Schema Heap Usage:                   1616 bytes
+Statement Heap/Lookaside Usage:      7360 bytes
+Fullscan Steps:                      0
+Sort Operations:                     0
+Autoindex Inserts:                   0
+Reprepare operations:                0
+Number of times run:                 1
+Memory used by prepared stmt:        7360
+
+[index_then_table] SELECT id,name,age FROM users WHERE name='Alice';
+[{"id":2050,"name":"Alice","age":42}]
+VM-steps: 15
+Memory Used:                         92168 (max 93296) bytes
+Number of Outstanding Allocations:   240 (max 242)
+Number of Pcache Overflow Bytes:     1032 (max 5136) bytes
+Largest Allocation:                  48000 bytes
+Largest Pcache Allocation:           4104 bytes
+Lookaside Slots Used:                86 (max 115)
+Successful lookaside attempts:       230
+Lookaside failures due to size:      1
+Lookaside failures due to OOM:       0
+Pager Heap Usage:                    10896 bytes
+Page cache hits:                     7
+Page cache misses:                   0
+Page cache writes:                   0
+Page cache spills:                   0
+Temporary data spilled to disk:      0
+Schema Heap Usage:                   1616 bytes
+Statement Heap/Lookaside Usage:      7360 bytes
+Fullscan Steps:                      0
+Sort Operations:                     0
+Autoindex Inserts:                   0
+Reprepare operations:                0
+Number of times run:                 1
+Memory used by prepared stmt:        7360
+
+[index_then_table] .stats off
+(no result rows)
+
+[covering] .stats on
+(no result rows)
+
+[covering] SELECT id,name FROM users WHERE name='Alice';
+[{"id":2050,"name":"Alice"}]
+VM-steps: 12
+Memory Used:                         92168 (max 93296) bytes
+Number of Outstanding Allocations:   240 (max 242)
+Number of Pcache Overflow Bytes:     1032 (max 5136) bytes
+Largest Allocation:                  48000 bytes
+Largest Pcache Allocation:           4104 bytes
+Lookaside Slots Used:                80 (max 115)
+Successful lookaside attempts:       175
+Lookaside failures due to size:      1
+Lookaside failures due to OOM:       0
+Pager Heap Usage:                    7056 bytes
+Page cache hits:                     2
+Page cache misses:                   4
+Page cache writes:                   0
+Page cache spills:                   0
+Temporary data spilled to disk:      0
+Schema Heap Usage:                   1616 bytes
+Statement Heap/Lookaside Usage:      5520 bytes
+Fullscan Steps:                      0
+Sort Operations:                     0
+Autoindex Inserts:                   0
+Reprepare operations:                0
+Number of times run:                 1
+Memory used by prepared stmt:        5520
+
+[covering] SELECT id,name FROM users WHERE name='Alice';
+[{"id":2050,"name":"Alice"}]
+VM-steps: 12
+Memory Used:                         92168 (max 93296) bytes
+Number of Outstanding Allocations:   240 (max 242)
+Number of Pcache Overflow Bytes:     1032 (max 5136) bytes
+Largest Allocation:                  48000 bytes
+Largest Pcache Allocation:           4104 bytes
+Lookaside Slots Used:                80 (max 115)
+Successful lookaside attempts:       212
+Lookaside failures due to size:      1
+Lookaside failures due to OOM:       0
+Pager Heap Usage:                    7056 bytes
+Page cache hits:                     4
+Page cache misses:                   0
+Page cache writes:                   0
+Page cache spills:                   0
+Temporary data spilled to disk:      0
+Schema Heap Usage:                   1616 bytes
+Statement Heap/Lookaside Usage:      5520 bytes
+Fullscan Steps:                      0
+Sort Operations:                     0
+Autoindex Inserts:                   0
+Reprepare operations:                0
+Number of times run:                 1
+Memory used by prepared stmt:        5520
+
+[covering] .stats off
+(no result rows)
+
+[table_scan] .stats on
+(no result rows)
+
+[table_scan] SELECT id,name,age FROM users NOT INDEXED WHERE name='Alice';
+[{"id":2050,"name":"Alice","age":42}]
+VM-steps: 12299
+Memory Used:                         406544 (max 406584) bytes
+Number of Outstanding Allocations:   480 (max 482)
+Number of Pcache Overflow Bytes:     313368 (max 313368) bytes
+Largest Allocation:                  48000 bytes
+Largest Pcache Allocation:           4104 bytes
+Lookaside Slots Used:                84 (max 115)
+Successful lookaside attempts:       183
+Lookaside failures due to size:      1
+Lookaside failures due to OOM:       0
+Pager Heap Usage:                    336016 bytes
+Page cache hits:                     2
+Page cache misses:                   261
+Page cache writes:                   0
+Page cache spills:                   0
+Temporary data spilled to disk:      0
+Schema Heap Usage:                   1608 bytes
+Statement Heap/Lookaside Usage:      6160 bytes
+Fullscan Steps:                      4095
+Sort Operations:                     0
+Autoindex Inserts:                   0
+Reprepare operations:                0
+Number of times run:                 1
+Memory used by prepared stmt:        6160
+
+[table_scan] SELECT id,name,age FROM users NOT INDEXED WHERE name='Alice';
+[{"id":2050,"name":"Alice","age":42}]
+VM-steps: 12299
+Memory Used:                         406544 (max 406728) bytes
+Number of Outstanding Allocations:   480 (max 482)
+Number of Pcache Overflow Bytes:     313368 (max 313368) bytes
+Largest Allocation:                  48000 bytes
+Largest Pcache Allocation:           4104 bytes
+Lookaside Slots Used:                84 (max 115)
+Successful lookaside attempts:       228
+Lookaside failures due to size:      1
+Lookaside failures due to OOM:       0
+Pager Heap Usage:                    336016 bytes
+Page cache hits:                     261
+Page cache misses:                   0
+Page cache writes:                   0
+Page cache spills:                   0
+Temporary data spilled to disk:      0
+Schema Heap Usage:                   1608 bytes
+Statement Heap/Lookaside Usage:      6160 bytes
+Fullscan Steps:                      4095
+Sort Operations:                     0
+Autoindex Inserts:                   0
+Reprepare operations:                0
+Number of times run:                 1
+Memory used by prepared stmt:        6160
+
+[table_scan] .stats off
+(no result rows)
+

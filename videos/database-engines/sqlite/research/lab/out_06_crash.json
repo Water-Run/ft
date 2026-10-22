@@ -1,0 +1,34 @@
+{
+  "summary": {
+    "baseline": [
+      {
+        "rows": 4096,
+        "age_sum": 200664
+      }
+    ],
+    "after_recovery": [
+      {
+        "rows": 4096,
+        "age_sum": 200664
+      }
+    ],
+    "uncommitted_main_file_changed": true,
+    "journal_present_before_reopen": true,
+    "journal_present_after_recovery": false,
+    "integrity_check": "ok"
+  },
+  "baseline_sha256": "561ff44c4a30d110a49e9cffa731cad6252558cb1267441c359f11f67acd00ad",
+  "dirty_sha256": "aeabac6115d569bd98569ee80b0ee003aea151a9b7802cbd884efa70daf532ce",
+  "recovered_sha256": "561ff44c4a30d110a49e9cffa731cad6252558cb1267441c359f11f67acd00ad",
+  "journal_bytes": 483848,
+  "journal_header_hex": "d9d505f920a163d700000001f4f1d058000002290000020000000400",
+  "journal_sha256": "4f25d3ed2d9f7e696f6bae0659343a8cfba991d1b9c693f099ad8450e66510ba",
+  "alice_after_recovery": [
+    {
+      "id": 2050,
+      "name": "Alice",
+      "age": 42
+    }
+  ],
+  "limits": "One controlled process termination with DELETE/FULL/cache_size=5; no power-loss test."
+}

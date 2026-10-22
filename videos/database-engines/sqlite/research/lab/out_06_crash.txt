@@ -1,0 +1,27 @@
+[baseline] SELECT count(*) AS rows,sum(age) AS age_sum FROM users;
+[{"rows":4096,"age_sum":200664}]
+
+[uncommitted-writer] PRAGMA journal_mode=DELETE;
+[{"journal_mode":"delete"}]
+
+[uncommitted-writer] PRAGMA synchronous=FULL;
+PRAGMA cache_size=5;
+PRAGMA cache_spill=ON;
+PRAGMA secure_delete=OFF;
+[{"secure_delete":0}]
+
+[uncommitted-writer] BEGIN IMMEDIATE;
+UPDATE users SET age=age+1;
+(no result rows)
+
+[uncommitted-writer] Shell process forcibly terminated, without COMMIT or graceful close.
+
+[recovery] SELECT count(*) AS rows,sum(age) AS age_sum FROM users;
+[{"rows":4096,"age_sum":200664}]
+
+[recovery] PRAGMA integrity_check;
+[{"integrity_check":"ok"}]
+
+[recovery] SELECT id,name,age FROM users WHERE id=2050;
+[{"id":2050,"name":"Alice","age":42}]
+

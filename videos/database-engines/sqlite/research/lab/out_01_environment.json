@@ -1,0 +1,123 @@
+{
+  "summary": {
+    "sqlite": "3.54.1",
+    "python_runner": "3.14.3",
+    "platform": "Windows",
+    "default_page_size": 4096
+  },
+  "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+  "source_manifest": "555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+  "executable_sha256": "3627c4ce2632949ee6d795c92e0a33f68fb30235f0a55a7719f0636414d8e1d3",
+  "archives": [
+    {
+      "name": "sqlite-tools-win-x64-3540100.zip",
+      "url": "https://www.sqlite.org/2026/sqlite-tools-win-x64-3540100.zip",
+      "bytes": 6984432,
+      "sha256": "fb20997ade5583a5fbf1e36db7bc3c82c9416b3f314f16961e1572aa4e49487d",
+      "sha3_256": "e171f3993a992edf076746926dd52b5e2ebfabaee38818e74987e1d8112ab987"
+    },
+    {
+      "name": "sqlite-src-3540100.zip",
+      "url": "https://www.sqlite.org/2026/sqlite-src-3540100.zip",
+      "bytes": 14899528,
+      "sha256": "387e7f6cad4797b17848c07d453dc6606917bb356a6cfe5a3abafd38c240c71b",
+      "sha3_256": "877c6f4996ce7adb368686bce21638de9e3d91534832ad3d9d119037d1bc22ad"
+    }
+  ],
+  "compile_options": [
+    "ATOMIC_INTRINSICS=0",
+    "COMPILER=msvc-1951",
+    "DEFAULT_AUTOVACUUM",
+    "DEFAULT_CACHE_SIZE=-2000",
+    "DEFAULT_FILE_FORMAT=4",
+    "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+    "DEFAULT_MMAP_SIZE=0",
+    "DEFAULT_PAGE_SIZE=4096",
+    "DEFAULT_PCACHE_INITSZ=20",
+    "DEFAULT_RECURSIVE_TRIGGERS",
+    "DEFAULT_SECTOR_SIZE=4096",
+    "DEFAULT_SYNCHRONOUS=2",
+    "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+    "DEFAULT_WAL_SYNCHRONOUS=2",
+    "DEFAULT_WORKER_THREADS=0",
+    "DIRECT_OVERFLOW_READ",
+    "DQS=0",
+    "ENABLE_BYTECODE_VTAB",
+    "ENABLE_CARRAY",
+    "ENABLE_COLUMN_METADATA",
+    "ENABLE_DBPAGE_VTAB",
+    "ENABLE_DBSTAT_VTAB",
+    "ENABLE_EXPLAIN_COMMENTS",
+    "ENABLE_FTS3",
+    "ENABLE_FTS4",
+    "ENABLE_FTS5",
+    "ENABLE_GEOPOLY",
+    "ENABLE_MATH_FUNCTIONS",
+    "ENABLE_OFFSET_SQL_FUNC",
+    "ENABLE_PERCENTILE",
+    "ENABLE_PREUPDATE_HOOK",
+    "ENABLE_RTREE",
+    "ENABLE_SESSION",
+    "ENABLE_STMTVTAB",
+    "ENABLE_STMT_SCANSTATUS",
+    "ENABLE_UNKNOWN_SQL_FUNCTION",
+    "MALLOC_SOFT_LIMIT=1024",
+    "MAX_ATTACHED=10",
+    "MAX_COLUMN=2000",
+    "MAX_COMPOUND_SELECT=500",
+    "MAX_DEFAULT_PAGE_SIZE=8192",
+    "MAX_EXPR_DEPTH=1000",
+    "MAX_FUNCTION_ARG=1000",
+    "MAX_LENGTH=1000000000",
+    "MAX_LIKE_PATTERN_LENGTH=50000",
+    "MAX_MMAP_SIZE=0x7fff0000",
+    "MAX_PAGE_COUNT=0xfffffffe",
+    "MAX_PAGE_SIZE=65536",
+    "MAX_SCHEMA=10000000",
+    "MAX_SQL_LENGTH=1000000000",
+    "MAX_TRIGGER_DEPTH=100",
+    "MAX_VARIABLE_NUMBER=32766",
+    "MAX_VDBE_OP=250000000",
+    "MAX_WORKER_THREADS=8",
+    "MUTEX_W32",
+    "STRICT_SUBTYPE",
+    "SYSTEM_MALLOC",
+    "TEMP_STORE=1",
+    "THREADSAFE=1"
+  ],
+  "source_files": [
+    {
+      "file": "src/btree.c",
+      "sha256": "c96f2e39d62659d649441a7330d753079056fc5cd1b67ce9489bb1be88b13050"
+    },
+    {
+      "file": "src/btreeInt.h",
+      "sha256": "903f2d3ba81ea9cba1dbb6fafef824688adef56a8b4d0fe7a8411261c2b4910e"
+    },
+    {
+      "file": "src/pager.c",
+      "sha256": "96d7bb9c4a5a6da0909ce0ab4714311e1ffa5f13007dc4c69f028a2760104ba4"
+    },
+    {
+      "file": "src/wal.c",
+      "sha256": "11ab3050c715b8d4b05f20c9030ea96ed70475080ba62fe3f60e441ac765eb47"
+    },
+    {
+      "file": "src/vdbe.c",
+      "sha256": "385dffa63edbac9f07388b19f02c024f64465c9383c35dea5eb92b0bbe352436"
+    },
+    {
+      "file": "src/os_win.c",
+      "sha256": "e6c3639cacac92204ae53906b0881aacfaac5e80695a3b0b0f3636f2b0e13065"
+    },
+    {
+      "file": "VERSION",
+      "sha256": "ac00bc246f381662294505074279244edd1d23f6e18455d7820852e6c5c37d8d"
+    },
+    {
+      "file": "manifest.uuid",
+      "sha256": "7b5efb6e3d4519a2412aaf3607f463191fab7e9251c49fdb799713fac2d79aa4"
+    }
+  ],
+  "scope": "All SQL uses this shell, not Python's bundled SQLite; no personal paths recorded."
+}

@@ -1,0 +1,76 @@
+{
+  "summary": {
+    "reader_before": 42,
+    "old_reader_after_commit": 42,
+    "fresh_reader_after_commit": 43,
+    "main_file_before_checkpoint": 42,
+    "committed_overlay": 43,
+    "main_file_after_checkpoint": 43,
+    "wal_frames": 5
+  },
+  "competing_writer_error": "Error near line 8: database is locked",
+  "main_hash_before": "2cdf8e13a3f315768683e8a66c61ce7292310194935a33c8ea34543fa7855784",
+  "main_hash_after_commit": "2cdf8e13a3f315768683e8a66c61ce7292310194935a33c8ea34543fa7855784",
+  "wal": {
+    "page_size": 1024,
+    "header_hex": "377f0682002de218000004000000000042139b45b2a96fe71a6a1655b9b597ac",
+    "frame_count": 5,
+    "frames": [
+      {
+        "frame": 1,
+        "page": 130,
+        "database_pages_if_commit": 0,
+        "payload_sha256": "c26310592d7e135546bd2959e2081b634b40588122397d2f6adf49b8a95d7920",
+        "checksum_valid": true
+      },
+      {
+        "frame": 2,
+        "page": 505,
+        "database_pages_if_commit": 0,
+        "payload_sha256": "42a19ffc293be72f7743a7068f36507a4c4a55776b7ae2f7c62d0caa93282237",
+        "checksum_valid": true
+      },
+      {
+        "frame": 3,
+        "page": 519,
+        "database_pages_if_commit": 0,
+        "payload_sha256": "aad1a0803d11ad8e9a01c8f30d6dc38c2c3fe7ba246ea013c879c80efb38dd06",
+        "checksum_valid": true
+      },
+      {
+        "frame": 4,
+        "page": 520,
+        "database_pages_if_commit": 0,
+        "payload_sha256": "03784090ce78715d123db24a852c0c864dc61efa116d423b77dd5e46e0cdc3dd",
+        "checksum_valid": true
+      },
+      {
+        "frame": 5,
+        "page": 521,
+        "database_pages_if_commit": 553,
+        "payload_sha256": "4759d97c9b65020d99ead2c05848bc7271d7b84fd84bfe29de3b17e21b968ec2",
+        "checksum_valid": true
+      }
+    ],
+    "last_commit_frame": 5
+  },
+  "checkpoint_with_reader": [
+    {
+      "busy": 0,
+      "log": 5,
+      "checkpointed": 0
+    }
+  ],
+  "checkpoint_after_reader": [
+    {
+      "busy": 0,
+      "log": 0,
+      "checkpointed": 0
+    }
+  ],
+  "limits": [
+    "Real separate processes, synchronized sequentially; not a stress/race test.",
+    "WAL salts are intentionally random; WAL hashes need not repeat across runs.",
+    "No real power loss or hardware durability test performed."
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "summary": {
+    "index_then_table": [
+      {
+        "page_cache_hits": 2,
+        "page_cache_misses": 7,
+        "fullscan_steps": 0,
+        "vm_steps": 15
+      },
+      {
+        "page_cache_hits": 7,
+        "page_cache_misses": 0,
+        "fullscan_steps": 0,
+        "vm_steps": 15
+      }
+    ],
+    "covering": [
+      {
+        "page_cache_hits": 2,
+        "page_cache_misses": 4,
+        "fullscan_steps": 0,
+        "vm_steps": 12
+      },
+      {
+        "page_cache_hits": 4,
+        "page_cache_misses": 0,
+        "fullscan_steps": 0,
+        "vm_steps": 12
+      }
+    ],
+    "table_scan": [
+      {
+        "page_cache_hits": 2,
+        "page_cache_misses": 261,
+        "fullscan_steps": 4095,
+        "vm_steps": 12299
+      },
+      {
+        "page_cache_hits": 261,
+        "page_cache_misses": 0,
+        "fullscan_steps": 4095,
+        "vm_steps": 12299
+      }
+    ]
+  },
+  "scenarios": {
+    "index_then_table": {
+      "sql": "SELECT id,name,age FROM users WHERE name='Alice';",
+      "runs": [
+        {
+          "result": [
+            {
+              "id": 2050,
+              "name": "Alice",
+              "age": 42
+            }
+          ],
+          "counters": {
+            "page_cache_hits": 2,
+            "page_cache_misses": 7,
+            "fullscan_steps": 0,
+            "vm_steps": 15
+          }
+        },
+        {
+          "result": [
+            {
+              "id": 2050,
+              "name": "Alice",
+              "age": 42
+            }
+          ],
+          "counters": {
+            "page_cache_hits": 7,
+            "page_cache_misses": 0,
+            "fullscan_steps": 0,
+            "vm_steps": 15
+          }
+        }
+      ]
+    },
+    "covering": {
+      "sql": "SELECT id,name FROM users WHERE name='Alice';",
+      "runs": [
+        {
+          "result": [
+            {
+              "id": 2050,
+              "name": "Alice"
+            }
+          ],
+          "counters": {
+            "page_cache_hits": 2,
+            "page_cache_misses": 4,
+            "fullscan_steps": 0,
+            "vm_steps": 12
+          }
+        },
+        {
+          "result": [
+            {
+              "id": 2050,
+              "name": "Alice"
+            }
+          ],
+          "counters": {
+            "page_cache_hits": 4,
+            "page_cache_misses": 0,
+            "fullscan_steps": 0,
+            "vm_steps": 12
+          }
+        }
+      ]
+    },
+    "table_scan": {
+      "sql": "SELECT id,name,age FROM users NOT INDEXED WHERE name='Alice';",
+      "runs": [
+        {
+          "result": [
+            {
+              "id": 2050,
+              "name": "Alice",
+              "age": 42
+            }
+          ],
+          "counters": {
+            "page_cache_hits": 2,
+            "page_cache_misses": 261,
+            "fullscan_steps": 4095,
+            "vm_steps": 12299
+          }
+        },
+        {
+          "result": [
+            {
+              "id": 2050,
+              "name": "Alice",
+              "age": 42
+            }
+          ],
+          "counters": {
+            "page_cache_hits": 261,
+            "page_cache_misses": 0,
+            "fullscan_steps": 4095,
+            "vm_steps": 12299
+          }
+        }
+      ]
+    }
+  },
+  "limits": [
+    "A fresh connection is not a cold OS filesystem cache.",
+    "These counters do not identify individual pages or physical disk reads.",
+    "No timing or general performance conclusion is drawn from this dataset."
+  ]
+}
