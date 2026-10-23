@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- 根 README 的动图。画面是时间 t 的纯函数：只由 window.seek(t) 决定，没有 CSS 动画、定时器与随机数。
+     重新生成：node kit/tools/gif.js docs/media/ft.html（输出 docs/media/ft.gif）。
+     动图里的时间 τ 先映射成海报时间 s：先正放组装，停住，再倒回 0 拆散——倒放即循环，也说明任意一帧都只由 t 算出。 -->
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>f(t)</title>
+<style>
+  @font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+  @font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+  @font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+  :root { --paper: #efe6d2; --ink: #171411; --red: #cf2a1d; --muted: #6d6458; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 540px; overflow: hidden; background: var(--paper); }
+  body { position: relative; font-family: "Sans SC", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  svg { position: absolute; left: 0; top: 0; }
+  .abs { position: absolute; white-space: nowrap; will-change: transform; }
+  .m { display: inline-block; overflow: hidden; vertical-align: top; }
+  .m > span { display: inline-block; }
+  #ft { left: 52px; top: -11px; font: 900 212px/1.3 "Inter"; letter-spacing: -0.03em; }
+  #ft .t { color: var(--red); }
+  #title { left: 64px; top: 268px; font: 900 58px/1.3 "Sans SC"; }
+  #block { position: relative; display: inline-block; margin-left: 2px; padding: 0 14px; }
+  #block i { position: absolute; left: 0; top: 6px; bottom: 6px; width: 100%; background: var(--red); transform-origin: 0 50%; }
+  #block .m { position: relative; color: var(--paper); }
+  #sub { left: 66px; top: 368px; font: 500 25px/1.4 "Sans SC"; color: var(--muted); letter-spacing: 0.04em; }
+  #sub b { display: inline-block; width: 3px; height: 28px; margin-left: 3px; vertical-align: -5px; background: var(--red); }
+  #cap { left: 260px; top: 462px; font: 500 14px/1 "Mono", "Sans SC"; color: var(--muted); letter-spacing: 0.02em; }
+  #readout { left: 92px; top: 502px; font: 600 18px/1 "Mono"; font-variant-numeric: tabular-nums; }
+  #stamp { left: 470px; top: 46px; padding: 6px 12px; border: 3px solid var(--red); outline: 1.5px solid var(--red); outline-offset: 3px;
+           font: 800 19px/1 "Mono"; color: var(--red); letter-spacing: 0.04em; transform-origin: 50% 50%; }
+</style>
+</head>
+<body>
+<svg id="art" width="1200" height="540" viewBox="0 0 1200 540"></svg>
+<div class="abs" id="ft"></div>
+<div class="abs" id="title"></div>
+<div class="abs" id="sub"></div>
+<div class="abs" id="cap">frame = f(t) · 任意一帧都由 t 唯一算出</div>
+<div class="abs" id="readout"></div>
+<div class="abs" id="stamp">GPL-3.0-or-later</div>
+<script>
+window.GIF = { width: 1200, height: 540, fps: 50, dur: 7.44, scale: 1.5 };
+const S = 4.4;                                   // 海报时间的总长，时间轴的刻度范围
+const INK = '#171411', RED = '#cf2a1d', PAPER = '#efe6d2';
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const out3 = (k) => 1 - Math.pow(1 - k, 3);
+const io3 = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const outBack = (k) => 1 + 2.70158 * Math.pow(k - 1, 3) + 1.70158 * Math.pow(k - 1, 2);
+const span = (s, a, d) => clamp((s - a) / d);    // s 在 [a, a+d] 内走过的比例
+const NS = 'http://www.w3.org/2000/svg';
+const art = document.getElementById('art');
+const el = (tag, attrs, parent = art) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+const $ = (id) => document.getElementById(id);
+
+// 动图时间 τ → 海报时间 s 与播放器状态
+function clock(tau) {
+  if (tau < S) return { s: tau, mode: 'play' };
+  if (tau < 6.2) return { s: S, mode: 'pause' };
+  if (tau < 7.2) return { s: S * (1 - io3((tau - 6.2) / 1.0)), mode: 'rewind' };
+  return { s: 0, mode: 'pause' };
+}
+
+// ── 右侧：红星、黑色圆盘与光芒 ──
+const CX = 920, CY = 234, R = 154, DISC = 184;
+const V = [0, 1, 2, 3, 4].map((k) => { const a = (-90 + 72 * k) * Math.PI / 180; return [CX + R * Math.cos(a), CY + R * Math.sin(a)]; });
+const ORDER = [0, 2, 4, 1, 3, 0];
+const SIDE = 2 * R * Math.sin(72 * Math.PI / 180), TRACE = 5 * SIDE;
+const RAYS = 32, rays = [];
+for (let i = 0; i < RAYS; i++) {
+  const a = (-90 + i * 360 / RAYS) * Math.PI / 180, long = i % 2 === 0;
+  rays.push({ a, len: long ? 44 : 26, line: el('line', { stroke: INK, 'stroke-width': long ? 3 : 2, 'stroke-linecap': 'butt' }) });
+}
+const guide = el('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: INK, 'stroke-width': 1.5, transform: `rotate(-90 ${CX} ${CY})`, 'stroke-dasharray': 2 * Math.PI * R });
+const dots = V.map(([x, y]) => el('circle', { cx: x, cy: y, r: 0, fill: INK }));
+const disc = el('circle', { cx: CX, cy: CY, r: 0, fill: INK });
+const starPts = [];
+for (let j = 0; j < 10; j++) { const a = (-90 + 36 * j) * Math.PI / 180, r = j % 2 ? R * 0.381966 : R; starPts.push((r * Math.cos(a)).toFixed(2) + ',' + (r * Math.sin(a)).toFixed(2)); }
+const fill = el('polygon', { points: starPts.join(' '), fill: RED });
+const trace = el('path', { d: 'M' + ORDER.map((k) => V[k].map((v) => v.toFixed(2)).join(',')).join('L'), fill: 'none', stroke: RED, 'stroke-width': 6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'stroke-dasharray': TRACE });
+const pen = el('circle', { r: 0, fill: INK, stroke: PAPER, 'stroke-width': 2 });
+
+// ── 底部：时间轴 ──
+const X0 = 260, X1 = 1136, TY = 512, sx = (s) => lerp(X0, X1, s / S);
+el('line', { x1: X0, x2: X1, y1: TY, y2: TY, stroke: INK, 'stroke-width': 1.5 });
+for (let k = 0; k <= S * 5 + 1e-6; k++) { const major = k % 5 === 0; el('line', { x1: sx(k / 5), x2: sx(k / 5), y1: TY, y2: TY + (major ? 10 : 5), stroke: INK, 'stroke-width': major ? 2 : 1.2 }); }
+const progress = el('line', { x1: X0, y1: TY, y2: TY, stroke: RED, 'stroke-width': 4 });
+const head = el('g', {});
+el('line', { x1: 0, x2: 0, y1: 498, y2: 528, stroke: RED, 'stroke-width': 2.5 }, head);
+el('path', { d: 'M-8,488L8,488L0,499Z', fill: RED }, head);
+const icon = el('path', { fill: INK });
+const ICONS = { play: 'M64,503L80,511L64,519Z', pause: 'M64,503h5v16h-5ZM74,503h5v16h-5Z', rewind: 'M80,503L80,519L72,511ZM72,503L72,519L64,511Z' };
+
+// ── 左侧：文字 ──
+const masked = (parent, text, cls = '') => [...text].map((c) => { const m = document.createElement('span'); m.className = 'm ' + cls; const inner = document.createElement('span'); inner.textContent = c; m.appendChild(inner); parent.appendChild(m); return inner; });
+const ftGlyphs = [...'f(t)'].map((c) => masked($('ft'), c, c === 't' ? 't' : '')[0]);
+const titleGlyphs = masked($('title'), '自由软件，');
+const block = document.createElement('span'); block.id = 'block'; $('title').appendChild(block);
+const blockBg = document.createElement('i'); block.appendChild(blockBg);
+const blockGlyphs = masked(block, '自由视频');
+const SUB = '以共产主义精神，共享知识与生产资料';
+const rise = (glyphs, s, start, step, dur = 0.34) => glyphs.forEach((g, i) => { g.style.transform = `translateY(${(1 - out3(span(s, start + i * step, dur))) * 105}%)`; });
+
+window.seek = function (tau) {
+  const { s, mode } = clock(tau);
+  // 尺规作图：外接圆、五个顶点，再一笔画出五角星
+  guide.setAttribute('stroke-dashoffset', 2 * Math.PI * R * (1 - io3(span(s, 0.05, 0.5))));
+  dots.forEach((d, i) => d.setAttribute('r', 5 * Math.max(0, outBack(span(s, 0.4 + i * 0.06, 0.18)))));
+  const u = io3(span(s, 0.6, 0.85));
+  trace.setAttribute('stroke-dashoffset', TRACE * (1 - u));
+  const seg = Math.min(4, Math.floor(u * 5)), f = u * 5 - seg, a = V[ORDER[seg]], b = V[ORDER[seg + 1]];
+  pen.setAttribute('cx', lerp(a[0], b[0], f)); pen.setAttribute('cy', lerp(a[1], b[1], f));
+  pen.setAttribute('r', 7 * span(s, 0.55, 0.08) * (1 - span(s, 1.45, 0.1)));
+  // 黑色圆盘托起红星，光芒依次射出
+  disc.setAttribute('r', DISC * Math.max(0, outBack(span(s, 1.35, 0.45))));
+  const k = span(s, 1.5, 0.45);
+  fill.setAttribute('transform', `translate(${CX} ${CY}) rotate(${-72 * (1 - out3(k))}) scale(${Math.max(0, outBack(k))})`);
+  rays.forEach((r, i) => {
+    const len = r.len * out3(span(s, 1.75 + i * 0.012, 0.3)), c = Math.cos(r.a), n = Math.sin(r.a), r0 = DISC + 14;
+    r.line.setAttribute('x1', CX + c * r0); r.line.setAttribute('y1', CY + n * r0);
+    r.line.setAttribute('x2', CX + c * (r0 + len)); r.line.setAttribute('y2', CY + n * (r0 + len));
+    r.line.setAttribute('visibility', len > 0.5 ? 'visible' : 'hidden');
+  });
+  // 标题、口号与打字
+  rise(ftGlyphs, s, 0.15, 0.1, 0.4);
+  rise(titleGlyphs, s, 1.9, 0.05);
+  blockBg.style.transform = `scaleX(${out3(span(s, 2.15, 0.3))})`;
+  rise(blockGlyphs, s, 2.3, 0.05);
+  const typed = span(s, 2.6, 0.7), n = Math.floor(typed * SUB.length + 1e-9);
+  $('sub').innerHTML = SUB.slice(0, n) + (typed > 0 && typed < 1 ? '<b></b>' : '');
+  // 许可证的印章最后盖上
+  const st = span(s, 3.35, 0.25);
+  $('stamp').style.opacity = clamp(st * 4);
+  $('stamp').style.transform = `rotate(${lerp(-16, -8, out3(st))}deg) scale(${lerp(1.8, 1, out3(st))})`;
+  // 播放器：进度、播放头与读数
+  const x = sx(s);
+  progress.setAttribute('x2', x);
+  head.setAttribute('transform', `translate(${x.toFixed(2)} 0)`);
+  icon.setAttribute('d', ICONS[mode]);
+  icon.setAttribute('fill', mode === 'rewind' ? RED : INK);
+  $('readout').textContent = `t = ${s.toFixed(2)} s`;
+  $('readout').style.color = mode === 'rewind' ? RED : INK;
+};
+window.READY = document.fonts.ready.then(() => Promise.all(['900 212px Inter', '900 58px "Sans SC"', '500 25px "Sans SC"', '600 18px Mono'].map((f) => document.fonts.load(f, 'f(t)自由软件视频以共产主义精神享知识与生产资料任意一帧都由唯一算出')))).then(() => window.seek(0));
+</script>
+</body>
+</html>

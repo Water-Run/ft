@@ -15,6 +15,7 @@ ft/
   .github/                   自动检查、问题和 PR 模板
   docs/                      仓库级规则（见文档地图）
     log/                     只追加的历史：反馈记录、测绘、旧排期、大事记
+    media/                   根 README 的动图：页面源码 ft.html 与生成的 ft.gif
   kit/
     studio.json              策划、校对者与源码仓库（独立 fork 改这里）
     engine/                  引擎：新片拷贝一份快照
@@ -77,6 +78,7 @@ videos/<系列或 standalone>/<片>/
 | `review/script.*.md` | `script-review.js export` | `src/js/script.js` |
 | `src/js/timing.*.js` | `tts.js` | 旁白与实际合成结果 |
 | `src/js/data.js` | 本片 `tools/gen_data.py` | `research/lab/` 的回显与产物 |
+| `docs/media/ft.gif` | `gif.js` | `docs/media/ft.html` |
 
 生成的文件开头注明来源，不手改；改源头再重新生成。已发布链接、评分、看过听过的结论不由工具猜测，由人或制作者据实写入。
 

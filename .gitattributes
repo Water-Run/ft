@@ -9,4 +9,5 @@ videos/**/research/lab/** -text
 # 二进制
 *.png binary
 *.jpg binary
+*.gif binary
 *.ttf binary
