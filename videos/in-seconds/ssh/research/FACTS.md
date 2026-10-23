@@ -165,7 +165,8 @@
 |---|---|---|---|
 | 策划 | WaterRun（英文版 `Planning: WaterRun`） | 题目、结构、取舍拍板、审稿 | `project.json` 的 `production.planner`；本片的系列与题目由策划者指定 |
 | 事实测绘与中文文案 | MiniMax M3.1 Flash（本次会话确认的模型标识 `minimax-M3.1-Flash-Preview`） | 一手来源核实与交叉核查、本机实验（`ssh -vvv` 抓握手、一次性密钥结构测量、`ssh -Q` 能力清单）、256 秒定长中文文案、交审材料、视觉系统与配乐方向 | 本次制作记录；实验脚本与回显见 `research/lab/` |
-| 视觉与配乐 | MiniMax M3.1 Flash（同上） | 俄国构成主义的视觉系统规范、20 年代管弦配乐方向 | 同上；规范见 `research/STYLE.md`，配乐程序见 `tools/music.py` |
+| 视觉与配乐（2026-10-19，已被替换） | MiniMax M3.1 Flash（同上） | 当时写下俄国构成主义与 20 年代管弦。2026-10-23 策划者要求重做，该方向不再使用 | 本文件旧记录 |
+| 视觉系统、配乐、文案对抗审稿 | Grok 4.7 | 2026-10-23 按策划者原话改为卡带未来主义、荧光绿、90 年代 8 位配乐，并开始中文稿对抗审稿 | `project.json` 的 `credits`；`research/STYLE.md`；`tools/music.py` |
 | 场景实现、声音编排、封面、渲染与审查 | Opus 5.5 | **尚未开工**。按委托任务书实现场景、编排声音、做封面、渲染与三项审查；开工后据实追加分工 | `project.json` 的 `production.maker` 与 `production.mode: delegated` |
 | 旁白合成 | 无 | **尚未合成**，未使用。确认后按 F17 先试听音色与语速再合成全片，届时据实登记 | `project.json` 的 `voices` 只是预设，尚未调用；`src/js/timing.*.js` 仍为空模板 |
 | 读音回听 | 无 | 未做 | `review/NOTES.md` 的「定稿后的调整」列出待试听项 |

@@ -1,25 +1,25 @@
-/* 本片的视觉系统「俄国构成主义」：红、黑、白三色平涂，用斜切平面、楔形、紧固钉与剪贴块讲事。
-   - 沿用系列调色板（墨 / 纸 / 朱红），只换图形语言与排版方式。系列识别靠字幕带、秒尺、剩余秒数与右上角仪表保住。
-   - 斜切的大色块互相压过，不并排；字大到顶出画面、允许被裁切。
-   - 图形各有唯一含义，全片用到底：
-       斜切平面 = 换场动作，也是连线两端的对峙；楔形 = 此刻正在推进的那一步；
-       紧固钉 = 协议里被逐个钉进去的一个确定步骤；骑缝章 = 主机私钥签在交换哈希上的那一笔；
-       剪贴块 = 真实发生过的终端回显。
-   - 禁止：圆角（紧固钉的 50% 除外）、渐变、阴影、拟物、柔和的中间调过渡、胶囊标签。
-   - 对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色。 */
+/* 本片的视觉系统「卡带未来主义」：黑底显像管、荧光绿、炭灰与军绿模块、米色塑料。
+   策划者 2026-10-23 指定。规范见 research/STYLE.md。
+   平涂：扫描线与噪点是实色，不用阴影、渐变、模糊。红色只给 .lamp-warn。 */
 :root {
-  --ink: #0c0d0f;
-  --paper: #f2efe8;
-  --ac: #ff4a1c;
-  --dim: #8a8782;             /* 墨色底上的次要文字（5.6:1） */
-  --dimp: #6b6964;            /* 纸色底上的次要文字（4.9:1） */
+  --ink: #070807;
+  --ac: #74ff9a;
+  --amber: #ffb23e;
+  --orange: #e07a2f;
+  --rust: #8c4a32;
+  --chassis: #2c312c;
+  --olive: #3e4a32;
+  --paper: #c4b8a4;
+  --warn: #d23b2e;
+  --dim: #1e6b3a;
+  --dimp: #6a6358;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--paper); }
+body { font-family: "Pixel", "Sans SC"; color: var(--ac); background: var(--ink); }
 #bg { background: var(--ink); }
 .scene { overflow: hidden; }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
-.mono { font-family: "Mono", "Sans SC"; }
+.mono, .num { font-family: "Mono", "Pixel", "Sans SC"; }
+.px { font-family: "Pixel", "Sans SC"; letter-spacing: .04em; text-transform: uppercase; }
 .ink { color: var(--ink); }
 .paper { color: var(--paper); }
 .ac { color: var(--ac); }
@@ -29,81 +29,56 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 .bg-ink { background: var(--ink); }
 .bg-paper { background: var(--paper); }
 .bg-ac { background: var(--ac); }
+.bg-olive { background: var(--olive); }
+.bg-chassis { background: var(--chassis); }
 
-/* 字号阶梯（1080p）：对比拉到极端。同一屏里最大的字至少是最小的字的四倍以上。
-   .t-0 真的顶到边缘，允许被裁掉一部分；注解不小于 28px。 */
-.t-0 { font-weight: 900; font-size: 400px; line-height: 1; letter-spacing: -.045em; }
-.t-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.02em; }
-.t-3 { font-weight: 700; font-size: 60px; line-height: 1.1; }
-.t-4 { font-weight: 700; font-size: 44px; line-height: 1.15; }
-.t-b { font-weight: 500; font-size: 38px; line-height: 1.3; }
-.t-n { font-weight: 500; font-size: 30px; line-height: 1.3; }
-.num { font-family: "Mono"; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+.t-0 { font-family: "Pixel", "Sans SC"; font-size: 280px; line-height: 1; letter-spacing: .02em; }
+.t-1 { font-family: "Pixel", "Sans SC"; font-size: 120px; line-height: 1; }
+.t-2 { font-family: "Pixel", "Sans SC"; font-size: 72px; line-height: 1.05; }
+.t-3 { font-family: "Pixel", "Sans SC"; font-size: 48px; line-height: 1.1; letter-spacing: .06em; text-transform: uppercase; }
+.t-4 { font-family: "Mono", "Sans SC"; font-size: 36px; line-height: 1.2; }
+.t-b { font-family: "Sans SC"; font-size: 36px; line-height: 1.3; }
+.t-n { font-family: "Pixel", "Sans SC"; font-size: 28px; line-height: 1.2; letter-spacing: .08em; text-transform: uppercase; }
 
-/* ── 斜切平面：45° 斜边切出的色块与遮罩。用来做换场、切分版面、压住别的元素。 ── */
-.slash { position: absolute; background: var(--ac); clip-path: polygon(0 0, 100% 0, calc(100% - 12%) 100%, 12% 100%); }
-.slash-ink { position: absolute; background: var(--ink); clip-path: polygon(0 0, 100% 0, calc(100% - 12%) 100%, 12% 100%); }
-.slash-paper { position: absolute; background: var(--paper); clip-path: polygon(0 0, 100% 0, calc(100% - 12%) 100%, 12% 100%); }
-.edge-diag { position: absolute; background: var(--ac); clip-path: polygon(0 0, 18% 0, 0 100%); }
+/* 显像管与模块 */
+.crt { position: absolute; background: var(--ink); border: 28px solid var(--chassis); }
+.crt-bezel { position: absolute; border: 10px solid var(--olive); }
+.mod { position: absolute; background: var(--olive); border: 6px solid var(--chassis); }
+.mod-beige { position: absolute; background: var(--paper); color: var(--ink); border: 6px solid var(--chassis); }
+.label { font-family: "Pixel", "Sans SC"; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: var(--paper); }
+.stripe { position: absolute; height: 10px; }
+.stripe i { display: block; float: left; width: 33.34%; height: 10px; }
+.stripe i:nth-child(1) { background: var(--amber); }
+.stripe i:nth-child(2) { background: var(--orange); }
+.stripe i:nth-child(3) { background: var(--rust); }
+.screw { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--chassis); border: 3px solid var(--paper); }
+.lamp { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: var(--dim); border: 3px solid var(--chassis); }
+.lamp.on { background: var(--ac); }
+.lamp-amber { background: var(--amber); }
+.lamp-warn { background: var(--warn); }
+.key { position: absolute; background: var(--chassis); border: 4px solid var(--paper); }
+.lever { position: absolute; width: 16px; background: var(--chassis); }
+.bar { position: absolute; display: flex; gap: 4px; }
+.bar b { display: block; width: 14px; height: 28px; background: var(--dim); }
+.bar b.on { background: var(--ac); }
+.scan { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+.scan-line { position: absolute; left: 0; width: 1920px; height: 1px; background: var(--dim); }
+.noise { position: absolute; width: 2px; height: 2px; background: var(--ac); }
 
-/* ── 楔形：此刻正在推进的那一步。尖端朝右，只用朱红。 ── */
-.wedge { position: absolute; background: var(--ac); clip-path: polygon(0 0, 100% 50%, 0 100%); }
-.wedge-inv { position: absolute; background: var(--ink); clip-path: polygon(100% 0, 0 50%, 100% 100%); }
-.wedge-mark { position: absolute; width: 22px; height: 22px; background: var(--ac); clip-path: polygon(0 0, 100% 50%, 0 100%); }
-
-/* ── 紧固钉：协议里被逐个钉进去的一个确定步骤。圆头 + 粗描边。 ── */
-.rivet { position: absolute; width: 34px; height: 34px; border: 7px solid var(--ink); border-radius: 50%; background: var(--paper); }
-.rivet-ac { position: absolute; width: 34px; height: 34px; border: 7px solid var(--ink); border-radius: 50%; background: var(--ac); }
-.rivet-on-paper { border-color: var(--paper); background: var(--ink); }
-
-/* ── 骑缝章：主机私钥签在交换哈希上的那一笔。方印压在连线上。 ── */
-.stamp { position: absolute; border: 10px solid var(--ac); background: var(--ink); }
-.stamp-label { position: absolute; font-weight: 900; color: var(--ac); letter-spacing: .02em; }
-
-/* ── 摄影蒙太奇：真实终端回显剪成的块状，互相压叠。实心描边，不做柔边。 ── */
-.clip { position: absolute; background: var(--ink); border: 5px solid var(--paper); padding: 18px 24px; }
-.clip-paper { position: absolute; background: var(--paper); border: 5px solid var(--ink); padding: 18px 24px; color: var(--ink); }
-.clip-ac { position: absolute; background: var(--ac); border: 5px solid var(--ink); padding: 18px 24px; color: var(--ink); }
-.clip .k { color: var(--ac); }
-.clip-paper .k { color: var(--ac); }
-
-/* ── 连线的两端：本机与远端，两个对峙的斜切几何块。 ── */
-.ends { position: absolute; width: 360px; height: 360px; }
-.ends-l { position: absolute; width: 360px; height: 360px; background: var(--paper); clip-path: polygon(0 0, 100% 0, 100% 78%, 22% 100%, 0 100%); }
-.ends-r { position: absolute; width: 360px; height: 360px; background: var(--ac); clip-path: polygon(0 22%, 78% 0, 100% 0, 100% 100%, 0 100%); }
-.link { position: absolute; height: 8px; background: var(--paper); }
-.link-thin { position: absolute; height: 3px; background: var(--dim); }
-
-/* ── DH 交换：两个各自推出的数，落点相乘。 ── */
-.e-num, .f-num { position: absolute; font-family: "Mono"; font-weight: 800; font-size: 150px; line-height: 1; color: var(--paper); }
-.e-num { color: var(--paper); }
-.f-num { color: var(--ac); }
-.mul { position: absolute; font-family: "Mono"; font-weight: 800; font-size: 150px; line-height: 1; color: var(--dim); }
-
-/* ── 字节格：协议报文的真实字段（一格一个字节）。 ── */
-.byte { position: absolute; font-family: "Mono"; font-weight: 700; text-align: center; }
-.byte.sel { background: var(--ac); color: var(--ink); }
-.idx { position: absolute; font-family: "Mono"; font-weight: 500; text-align: center; color: var(--dim); }
-.idx.on { color: var(--paper); font-weight: 800; }
-.hot { --c: var(--ac) !important; }
-
-/* 常驻层：字幕带、秒尺、剩余秒数、角上的阶段仪表 */
-.band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
+/* 常驻层 */
+.band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--chassis); }
 .band svg { position: absolute; left: 0; top: 0; }
-.hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
-.hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
-.hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 40px; width: 300px; height: 72px; }
-/* 右上仪表：一根斜杠走满全片，四段用小楔形标出，走过的部分变朱红。 */
-.hud-stage { position: absolute; left: 0; top: 18px; width: 300px; height: 14px; background: var(--dim); }
-.hud-stage-fill { position: absolute; left: 0; top: 0; height: 14px; background: var(--ac); clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 100%, 9px 100%); }
-.hud-mark { position: absolute; top: -7px; width: 16px; height: 28px; background: var(--paper); clip-path: polygon(0 0, 100% 50%, 0 100%); }
-.hud-mark.on { background: var(--ac); }
-.hud-stage-label { position: absolute; left: 0; top: 42px; font: 700 30px "Inter", "Sans SC"; }
+.hud-l { position: absolute; left: 48px; top: 28px; display: flex; align-items: baseline; color: var(--ac); }
+.hud-l .n { font: 46px "Pixel"; letter-spacing: .04em; }
+.hud-l .u { font: 28px "Pixel", "Sans SC"; margin-left: 8px; letter-spacing: .08em; }
+.hud-r { position: absolute; left: 1480px; top: 28px; width: 390px; height: 72px; }
+.hud-stage { position: absolute; left: 0; top: 8px; width: 390px; height: 18px; background: var(--dim); }
+.hud-stage-fill { position: absolute; left: 0; top: 0; height: 18px; background: var(--ac); }
+.hud-mark { position: absolute; top: -4px; width: 4px; height: 26px; background: var(--paper); }
+.hud-mark.on { background: var(--amber); }
+.hud-stage-label { position: absolute; left: 0; top: 32px; font: 26px "Pixel", "Sans SC"; letter-spacing: .1em; text-transform: uppercase; color: var(--ac); }
 
-/* 字幕：压在字幕带上 */
-#caption { bottom: 30px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--ac); }
+#caption { bottom: 28px; height: 56px; z-index: 50; }
+#caption span { font-size: 36px; color: var(--ac); font-family: "Sans SC"; }
+.en #caption span { font-family: "Pixel", "Sans SC"; font-size: 34px; letter-spacing: .02em; }
+#caption em { font-style: normal; color: var(--amber); }

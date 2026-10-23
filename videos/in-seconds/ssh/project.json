@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "review",
-  "next": "等 WaterRun 审中文第 1 稿",
+  "next": "与 WaterRun 展开中文稿对抗审稿；视觉已改为卡带未来主义，场景等文案确认后再画",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -12,6 +12,14 @@
           "实验",
           "中文文案",
           "视觉与配乐方向"
+        ]
+      },
+      {
+        "name": "Grok 4.7",
+        "roles": [
+          "视觉系统",
+          "配乐",
+          "文案对抗审稿"
         ]
       }
     ],
@@ -77,16 +85,22 @@
       "no_radius": true,
       "no_emoji": true,
       "palette": [
-        "0C0D0F",
-        "F2EFE8",
-        "FF4A1C",
-        "8A8782",
-        "6B6964"
+        "070807",
+        "74FF9A",
+        "FFB23E",
+        "E07A2F",
+        "8C4A32",
+        "2C312C",
+        "3E4A32",
+        "C4B8A4",
+        "D23B2E",
+        "1E6B3A",
+        "6A6358"
       ],
       "fonts": [
-        "Sans SC",
-        "Inter",
-        "Mono"
+        "Pixel",
+        "Mono",
+        "Sans SC"
       ]
     },
     "pace": {

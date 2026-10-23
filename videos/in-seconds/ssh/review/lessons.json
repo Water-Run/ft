@@ -30,16 +30,16 @@
     "F05": {
       "rev": 1,
       "result": "pending",
-      "note": "构成主义的图形承担解释任务，不是装饰：斜切平面 = 连线两端的对峙与换场动作；楔形 = 此刻正在推进的那一步；紧固钉 = 协议里被逐个钉进去的确定步骤（r3–r5 的 A–F 六个）；骑缝章 = 主机私钥签在交换哈希上的那一笔（h3）；剪贴块 = 真实终端回显。不用整屏刷换推进。",
+      "note": "2026-10-23 起图形用卡带未来主义，不再用构成主义。显像管、模块、拨杆、条形读数和指示灯承担解释：一格一格的读数标握手阶段，警示灯只给失败或断开，真实回显贴在显像管里。动效按 12 帧一步，不用顺滑缓动。场景文件仍是基座占位，确认文案后再画。",
       "evidence": "",
-      "script_evidence": "research/STYLE.md 的「本片专属的部件语汇」；src/css/style.css 的 .wedge / .rivet / .stamp / .clip / .ends 类；review/NOTES.md 的「画面落点」"
+      "script_evidence": "research/STYLE.md；src/css/style.css 的 .crt / .mod / .bar / .lamp"
     },
     "F06": {
       "rev": 1,
       "result": "pending",
-      "note": "配乐是本片自写的 20 年代管弦（tools/music.py，程序合成，不采样外部音源）：弦乐 ostinato 推着走、铜管落在主机密钥签名生效与结论抬起、打击乐给骨架、低音半音下行 D–C–C♯–B 带一个减七和弦，织体随叙事逐层加厚、结论处推到最满。按 P27：先有一层持续、有低频分量的铺底，再加动机与节奏，不用稀疏钢琴或和弦代替。每秒一声的秒针保留在打击层里当节奏骨架（待策划者确认，见 review/NOTES.md 取舍 2）。音效：换场用 thud（斜切平面像一枚钉子敲下去）而不是 whoosh；关键动作才配音效，留白不填。",
+      "note": "配乐按策划者 2026-10-23 的要求改为程序合成的 90 年代 8 位电子乐（tools/music.py）：方波主旋律、三角波低音、噪声击打，120 拍/分，不采样外部音源。织体随场景加厚，c1 处抬起。听感尚未由人确认。",
       "evidence": "",
-      "script_evidence": "tools/music.py 的 LAYER 与 CH 表（intro→walk→drive→race→seal→forge→peak→edge→lift）；src/js/config.js 的换场音效 sfx('thud', ...)；project.json 的 audio.score.lift_cue = c1"
+      "script_evidence": "tools/music.py；project.json 的 audio.score.lift_cue = c1；research/STYLE.md 的配乐原话"
     },
     "F07": {
       "rev": 1,
@@ -107,7 +107,7 @@
     "F16": {
       "rev": 1,
       "result": "pending",
-      "note": "视觉语言是俄国构成主义（策划者指定），但画面内容全部取自 SSH 本身，不能变成与题目无关的纯装饰：真实终端回显（SSH2_MSG_KEXINIT sent、debug1: kex: algorithm: curve25519-sha256、Server host key: ssh-ed25519 SHA256:…、Authenticated to 127.0.0.1 … using \"publickey\"）、真实 known_hosts 那一行、真实 ed25519 公钥的 51 字节结构（两个长度前缀串：11 字节 ssh-ed25519 + 32 字节公钥，长度字段是大端）、协议里的具体名词（KEXINIT、SSH_MSG_NEWKEYS、ssh-userauth、known_hosts、chacha20-poly1305）。构成主义的图形承担解释任务：斜切平面 = 连线两端的对峙，楔形 = 此刻推进的那一步，紧固钉 = 六次哈希派生，骑缝章 = 主机私钥签在交换哈希上的那一笔，剪贴块 = 真实回显。随机截一帧应当能认出在讲 SSH。对照：PostgreSQL 一集（取讲解对象自己的视觉材料）为正面对照。",
+      "note": "视觉语言是卡带未来主义（策划者 2026-10-23 指定，主色荧光绿）。画面内容仍全部取自 SSH 本身：真实终端回显（SSH2_MSG_KEXINIT sent、debug1: kex: algorithm: curve25519-sha256、Server host key: ssh-ed25519 SHA256:…、Authenticated to 127.0.0.1 … using \"publickey\"）、真实 known_hosts 那一行、真实 ed25519 公钥的 51 字节结构、协议名词（KEXINIT、SSH_MSG_NEWKEYS、ssh-userauth、known_hosts、chacha20-poly1305）。模块和灯不能变成与题目无关的控制台装饰。随机截一帧应当能认出在讲 SSH。场景尚未按新风格重画。",
       "evidence": "",
       "script_evidence": "research/STYLE.md 的「本片专属的部件语汇」与「这套视觉与讲解对象的关系」；review/NOTES.md 的「画面落点」逐句对应真实回显；research/lab/out_01_keygen.txt 与 out_03_handshake.txt"
     },

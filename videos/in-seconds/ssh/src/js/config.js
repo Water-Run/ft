@@ -1,9 +1,8 @@
-// 「XX 秒速通」系列的引擎配置，本片按俄国构成主义重做：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角的仪表）、换场。
-// 本片是系列的正式视觉例外：保留定长时间线、语速、字幕带与秒尺、剩余秒数、右上角仪表的位置与做法；
-// 换掉基座的「计时盘」图形语言：换场改成斜切平面横扫全屏，右上角仪表改成当前握手的阶段读数。
-// 视觉规范见 research/STYLE.md。
-document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
-window.PALETTE = { ink: '#0c0d0f', paper: '#f2efe8', ac: '#ff4a1c', dim: '#8a8782', dimp: '#6b6964' };
+// 「XX 秒速通」系列的引擎配置。本片视觉是卡带未来主义：黑底显像管、荧光绿、模块化面板。
+// 保留定长时间线、语速、字幕带与秒尺、剩余秒数、右上角仪表的位置。
+// 动效按 12 帧一步（0.2 秒）。视觉规范见 research/STYLE.md。
+document.documentElement.classList.add(LANG);
+window.PALETTE = { ink: '#070807', paper: '#c4b8a4', ac: '#74ff9a', dim: '#1e6b3a', dimp: '#6a6358', amber: '#ffb23e', warn: '#d23b2e' };
 const C = window.PALETTE;
 const VH = 968;                                           // 字幕带以上的画幅高度；镜头以这块区域为画幅：makeCamera(world, 1920, VH)
 // 节拍网格：配乐 120 拍/分，一秒两拍。画面上的重音吸附到八分音符（0.25 秒）上，与配乐同拍
@@ -16,13 +15,13 @@ const hudGround = (side, t0, t1, g) => { HUDG[side].push([t0, t1, g]); };
 const WIPE = 0.5;                                         // 换场用时：一拍
 
 window.ENGINE = {
-  fonts: [['500 20px "Sans SC"', '字A'], ['700 20px "Sans SC"', '字A'], ['900 20px "Sans SC"', '字A'],
-    ['500 20px "Inter"', 'Aa0'], ['700 20px "Inter"', 'Aa0'], ['800 20px "Inter"', 'Aa0'], ['900 20px "Inter"', 'Aa0'],
-    ['500 20px "Mono"', 'A0'], ['700 20px "Mono"', 'A0'], ['800 20px "Mono"', 'A0']],
+  fonts: [['20px "Sans SC"', '字A'], ['36px "Sans SC"', '字A'],
+    ['28px "Pixel"', 'A0'], ['46px "Pixel"', 'A0'], ['72px "Pixel"', 'SSH'],
+    ['36px "Mono"', 'A0']],
   sceneFade: false,
   chrome() {
     const hud = document.getElementById('hud');
-    // ── 字幕带与秒尺：一秒一格，走过的变成朱红；每 30 秒一道长刻度 ──
+    // ── 字幕带与秒尺：一秒一格，走过的变成荧光绿；每 30 秒一道长刻度 ──
     const band = h('div', 'band', hud);
     const rs = svg('svg', { width: 1920, height: 40, viewBox: '0 0 1920 40' }, band);
     const X = (s) => 8 + s * (1904 / TOTAL), ticks = [];
@@ -42,11 +41,19 @@ window.ENGINE = {
     let lastN = null;
     F((t) => { const v = String(Math.max(0, Math.ceil(TOTAL - t - 1e-6))).padStart(3, '0'); if (v !== lastN) { num.textContent = v; lastN = v; } });
     for (let sec = TOTAL - 5; sec < TOTAL; sec++) {
-      fromTo(left, sec, { scale: 1 }, { keyframes: [{ scale: 1.28, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
+      fromTo(left, sec, { scale: 1 }, { scale: 1.2, duration: 0.2, ease: 'steps(1)', transformOrigin: '0% 50%', immediateRender: false });
       sfx('tick', sec, { g: 0.8, p: -0.6 });
     }
-    // ── 右上：本集的仪表 —— 当前握手的阶段读数 ──
-    // 一根斜杠走满全片（0→TOTAL）；四段用小楔形标出，走过的部分变朱红，下面写当前阶段的名字。
+    // ── 右上：一格一格的条形读数，标当前握手阶段 ──
+    const scan = h('div', 'scan', hud);
+    for (let y = 0; y < 1080; y += 4) { const line = h('div', 'scan-line', scan); line.style.top = y + 'px'; }
+    let seed = 20261023;
+    const rnd = () => (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296;
+    for (let i = 0; i < 70; i++) {
+      const dot = h('div', 'noise', hud);
+      dot.style.left = Math.floor(rnd() * 1920) + 'px';
+      dot.style.top = Math.floor(rnd() * 1080) + 'px';
+    }
     const right = h('div', 'hud-r', hud);
     window.HUD = { left, right };
     const STAGE_IDS = ['kex', 'dh', 'hostkey', 'userauth'];
@@ -75,8 +82,8 @@ window.ENGINE = {
     let gl = null, gr = null;
     F((t) => {
       const a = groundAt('L', t), b = groundAt('R', t);
-      if (a !== gl) { left.style.color = a === 'ink' ? C.paper : C.ink; gl = a; }
-      if (b !== gr) { right.style.color = b === 'ink' ? C.paper : C.ink; gr = b; }
+      if (a !== gl) { left.style.color = a === 'ink' ? C.ac : C.ink; gl = a; }
+      if (b !== gr) { right.style.color = b === 'ink' ? C.ac : C.ink; gr = b; }
     });
   },
   after() {

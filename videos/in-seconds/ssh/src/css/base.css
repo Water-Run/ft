@@ -4,9 +4,10 @@
 @font-face { font-family: "Serif SC"; src: url("/fonts/NotoSerifSC.ttf"); font-weight: 200 900; }
 @font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
 @font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
-body { font-family: "Sans SC", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: #070807; }
+body { font-family: "Sans SC"; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
 #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
 #bg, #scenes, #hud { position: absolute; inset: 0; }
 #hud { pointer-events: none; }

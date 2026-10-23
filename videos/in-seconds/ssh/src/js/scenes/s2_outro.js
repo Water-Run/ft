@@ -4,7 +4,7 @@ scene('outro', ({ root, s, c0 }) => {
   const cam = makeCamera(world, 1920, VH);
   blk(world, 'bg-ink', -200, -200, 2320, 1400);
   const t0 = s.start + 0.35;
-  const big = txt(world, '', tr('主题', 'Topic'), 92, 96); css(big, { font: '900 300px "Inter", "Sans SC"', letterSpacing: '-.04em', lineHeight: '1' });
+  const big = txt(world, '', tr('主题', 'Topic'), 92, 96); css(big, { font: '280px "Pixel", "Sans SC"', letterSpacing: '.02em', lineHeight: '1' });
   const line = txt(world, 't-3 ac', tr('一句话的概括', 'One line to keep'), 108, 452);
   slam(big, t0, { from: 1.2, d: 0.4 }); sfx('thud', t0, { g: 0.8, p: -0.3 });
   wipe(line, t0 + 0.25, { dir: 'l', d: 0.4 });
