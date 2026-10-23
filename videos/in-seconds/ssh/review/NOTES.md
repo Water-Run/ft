@@ -240,7 +240,9 @@
 
 2026-10-23 策划者补充系列受众，原话见本片 README「简报」与系列说明。第 2 稿尚未按「入门、普及、低认知负担」重写。
 
-同日策划者指定 Gemini 4 Argon 做 2–3 轮中文优化。第 1 轮要丢给它的全文是 `research/GEMINI-PROMPT.md`。它的产出交回后，由 Grok 4.7 提意见，再交回下一轮。Credit 已记入 `project.json`。产出返回前，不把 Gemini 写成某一稿的作者。
+同日策划者指定 Gemini 4 Argon（AI Studio，不是网页端）做 2–3 轮中文优化。第 1 轮 Prompt 是 `research/GEMINI-PROMPT.md`。`SSH-ZH-R1` 已交回。
+
+Grok 4.7 对第 1 轮的意见，供第 2 轮使用，全文在 `research/GEMINI-PROMPT-R2.md`。要点：低认知负担还在，但创作者、OpenSSH 的维护者、RFC 4253，以及这一次选出的三个算法名，都要在旁白里各出现一次。A–F 和报文细节仍不进嘴。另外要改掉「登录框」、把共同密钥说成直接加密的钥匙、把画面上的结果说成整份清单，以及把第一次连接的风险放到很后面才补。尚未确认，也还没有写回 `script.js`。
 
 ## 需要策划者拍板的取舍
 

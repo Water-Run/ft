@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "review",
-  "next": "Gemini 4 Argon 按 research/GEMINI-PROMPT.md 做中文第 1 轮；产出交回后由 Grok 4.7 提意见，计划 2–3 轮。确认前不配音、不画正式场景",
+  "next": "把 research/GEMINI-PROMPT-R2.md 交给 AI Studio 的 Gemini 4 Argon。第 1 轮过于删名。确认前不配音、不画正式场景",
   "credits": {
     "planner": "WaterRun",
     "models": [

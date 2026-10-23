@@ -13,7 +13,7 @@
 | 项 | 当前记录 |
 |---|---|
 | 最近完成的步骤与版本 | 2026-10-23：视觉改为卡带未来主义。同日中文第 2 稿已导出，尚未确认 |
-| 下一步及依赖 | 把 `research/GEMINI-PROMPT.md` 交给 Gemini 4 Argon 做第 1 轮。产出交回后由 Grok 4.7 提意见，计划 2–3 轮。确认前不配音、不画场景 |
+| 下一步及依赖 | 把 `research/GEMINI-PROMPT-R2.md` 交给 AI Studio 里的 Gemini 4 Argon。第 1 轮已返回，创作者和文档编号被删得太多。确认前不配音、不画场景 |
 | 当前稿本 / 校对结论 | 第 2 稿 `review/script.zh.23ca426cd3568665be1ad47ae5364057cb39ff120c258d3fd8d36130c60ec675.md`，pending。第 1 稿保留 |
 | 输出在哪台制作机 | 使用不含私人主机信息的制作机代号 |
 | 未完成、未检查与阻塞 | 英文为直译草稿，待中文确认后重译；未配音、未写场景、未做读音回听；片尾名单待 Opus 5.5 开工后据实追加 |
@@ -90,7 +90,9 @@ node kit/tools/script-review.js videos/in-seconds/ssh check
 
 > 这个速通系列明确是更加入门, 普及化的, 要低认知负担, 如果用户很有水平那他看的是别的系列, 比如数据库引擎之类的. 面向更广大的群体.
 
-风格卡与可复制描述全文在 [STYLE.md](research/STYLE.md)。主屏幕黑底荧光绿 `#74FF9A`。构成主义与 20 年代管弦不再沿用。系列受众写在 [XX 秒速通](../README.md)。第 2 稿写于这句话落盘之前，还是一份协议走查，下一轮按低认知负担重看。
+> Gemini对于优化过于入门的, 对于软件的创作者之类的还是应该说明名称等. 文档编号也要列出等.
+
+风格卡与可复制描述全文在 [STYLE.md](research/STYLE.md)。主屏幕黑底荧光绿 `#74FF9A`。系列受众写在 [XX 秒速通](../README.md)。Gemini 4 Argon 的第 1 轮把创作者和 RFC 编号都拿掉了；第 2 轮要加回来，各讲一次。反馈全文在 [GEMINI-PROMPT-R2.md](research/GEMINI-PROMPT-R2.md)。
 
 ## 视觉系统
 
@@ -144,7 +146,7 @@ pwsh -File videos/in-seconds/ssh/research/lab/03_handshake.ps1
 |---|---|
 | MiniMax M3.1 Flash（运行时标识 `minimax-M3.1-Flash-Preview`） | 事实测绘与一手来源核实、本机三组实验、256 秒定长中文文案、交审材料。当时的构成主义与 20 年代管弦已于 2026-10-23 停用 |
 | Grok 4.7 | 2026-10-23 视觉系统（卡带未来主义）、8 位配乐、中文稿对抗审稿、给 Gemini 的第 1 轮 Prompt |
-| Gemini 4 Argon | 中文稿优化，计划 2–3 轮。第 1 轮 Prompt 在 `research/GEMINI-PROMPT.md`，产出尚未返回 |
+| Gemini 4 Argon | 中文稿优化，计划 2–3 轮。第 1 轮 `SSH-ZH-R1` 已交回，尚未采用。第 2 轮反馈在 `research/GEMINI-PROMPT-R2.md` |
 | Opus 5.5 | 场景实现、声音编排、封面、渲染与成片审查——**尚未开工**，开工后据实追加 |
 
 旁白合成与读音回听**尚未进行**，不列入名单；网页检索用的是会话内置的网页抓取服务，未披露底层模型，记「模型未披露」。完整名单与依据在 `research/FACTS.md` 的「制作署名」一节。
