@@ -2,7 +2,9 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 203 部：已成片 18，制作中 20，计划中 165。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 203 部：已成片 18，制作中 7，计划中 178。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+
+[Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
 ## 已成片
 
@@ -31,30 +33,17 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-22.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-23.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
-| 片 | 系列 | 阶段 | 下一步 | 规则 |
-|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 取证 | 实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审 | 最新 |
-| [Lua 语言的设计哲学：一切皆表](language-philosophy/lua-philosophy/) | [编程语言哲学](language-philosophy/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [CVVT 可变气门正时技术是什么？](fuel-vehicle-tech/cvvt/) | [老旧燃油车](fuel-vehicle-tech/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [Spectrum](design-languages/spectrum/) | [设计语言与视觉规范](design-languages/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [磁带、磁盘和软盘：利用磁力存储的机械年代](storage-media/magnetic/) | [存储介质](storage-media/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [C 语言的发展史](silicon-history/c-language-history/) | [电子发展史](silicon-history/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [CodeX CLI 是怎么实现的？](agent-harnesses/codex/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [OpenCode 是怎么实现的？](agent-harnesses/opencode/) | [Harness 群观](agent-harnesses/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 |
-| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 待同步 |
-| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 待同步 |
-| [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 |
-| [192 秒认识 CoT：先思考，再回答](in-seconds/chain-of-thought/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [150 秒认识 EA211 的全家桶：大众的横置四缸家族](in-seconds/ea211-family/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git](in-seconds/scion/) | [XX 秒速通](in-seconds/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [过去的电子时代](eras/README.md) | 文案 | 写中文稿（交给 Gemini 4 Argon），导出交审 | 待同步 |
-| [英特尔的酷睿年代](eras/intel-core-era/) | [过去的电子时代](eras/README.md) | 文案 | 写中文稿，导出交审 | 待同步 |
-| [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 |
-| [宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快](standalone/lightweighting/) | — | 文案 | 写中文稿，导出交审 | 待同步 |
-| [RDP：Windows 远程的优雅实现](standalone/rdp/) | — | 文案 | 写中文稿，导出交审 | 待同步 |
+| 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
+|---|---|---|---|---|---|
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 取证 | 实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审 | 待同步 | GPT-6.1 Sol |
+| [磁带、磁盘和软盘：利用磁力存储的机械年代](storage-media/magnetic/) | [存储介质](storage-media/README.md) | 文案 | 写中文稿，导出交审 | 待同步 | DeepSeek V4.1 Flash 1017 |
+| [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
+| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 待同步 | MiniMax M3.1 Flash |
+| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 待同步 | MiniMax M3.1 Flash、未记录 |
+| [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 | Grok 4.7 |
+| [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 全部选题
 
@@ -95,7 +84,7 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | Lua 语言的设计哲学：一切皆表<br>The Design Philosophy of Lua: Everything Is a Table | zh + en | 制作中 | [`lua-philosophy`](language-philosophy/lua-philosophy/) |  |
+| 1 | Lua 语言的设计哲学：一切皆表<br>The Design Philosophy of Lua: Everything Is a Table | zh + en | 计划中 | [`lua-philosophy`](language-philosophy/lua-philosophy/) |  |
 | 2 | Python 语言的设计哲学：一切皆对象 | zh + en | 计划中 | `python` |  |
 | 3 | MiniScript 语言的设计哲学：小而可嵌入 | zh + en | 计划中 | `miniscript-philosophy` |  |
 | 4 | Rust 语言的设计哲学：不靠垃圾回收的内存安全 | zh + en | 计划中 | `rust-philosophy` |  |
@@ -126,7 +115,7 @@
 |---|---|---|---|---|---|
 | 1 | 四冲程循环：一次燃烧如何变成往复运动 | zh + en | 计划中 | `four-stroke-cycle` |  |
 | 2 | 燃油喷射与点火系统 | zh + en | 计划中 | `fuel-injection-ignition` |  |
-| 3 | CVVT 可变气门正时技术是什么？<br>CVVT: What Is Variable Valve Timing? | zh + en | 制作中 | [`cvvt`](fuel-vehicle-tech/cvvt/) |  |
+| 3 | CVVT 可变气门正时技术是什么？<br>CVVT: What Is Variable Valve Timing? | zh + en | 计划中 | [`cvvt`](fuel-vehicle-tech/cvvt/) |  |
 | 4 | 涡轮增压：进气压力如何提高 | zh + en | 计划中 | `turbocharging` |  |
 | 5 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 | `power-torque-curve` |  |
 | 6 | 变速器原理 | zh + en | 计划中 | `transmissions` |  |
@@ -140,7 +129,7 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | Metro | zh + en | 计划中 | `metro-design` | Microsoft · Windows Phone 7 的设计语言 |
-| 2 | Spectrum<br>Spectrum | zh + en | 制作中 | [`spectrum`](design-languages/spectrum/) |  |
+| 2 | Spectrum<br>Spectrum | zh + en | 计划中 | [`spectrum`](design-languages/spectrum/) |  |
 | 3 | Carbon Design | zh + en | 计划中 | `carbon` | IBM · Carbon Design System |
 | 4 | Material 3 | zh + en | 计划中 | `material-3` | Google · Material Design |
 | 5 | Fluent 2 | zh + en | 计划中 | `fluent-2` | Microsoft · Fluent 2 Web |
@@ -189,7 +178,7 @@
 | 12 | Linux 内核发展史<br>History of the Linux Kernel | zh + en | 计划中 | `linux-kernel-evolution` |  |
 | 13 | Python 语言的发展史 | zh + en | 计划中 | `python-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
 | 14 | Lua 语言的发展史 | zh + en | 计划中 | `lua-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
-| 15 | C 语言的发展史<br>The History of the C Language | zh + en | 制作中 | [`c-language-history`](silicon-history/c-language-history/) |  |
+| 15 | C 语言的发展史<br>The History of the C Language | zh + en | 计划中 | [`c-language-history`](silicon-history/c-language-history/) |  |
 | 16 | Java 语言的发展史 | zh + en | 计划中 | `java-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
 | 17 | C# 语言的发展史 | zh + en | 计划中 | `csharp-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
 | 18 | JavaScript 与 TypeScript 的发展史 | zh + en | 计划中 | `javascript-typescript-history` | 电子发展史系列；与「编程语言哲学」的分工：本集讲时间线上的演进与版本转折，那一集讲设计哲学 |
@@ -254,8 +243,8 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | CodeX CLI 是怎么实现的？<br>How Is the CodeX CLI Built? | zh + en | 制作中 | [`codex`](agent-harnesses/codex/) |  |
-| 2 | OpenCode 是怎么实现的？<br>How Is OpenCode Built? | zh + en | 制作中 | [`opencode`](agent-harnesses/opencode/) |  |
+| 1 | CodeX CLI 是怎么实现的？<br>How Is the CodeX CLI Built? | zh + en | 计划中 | [`codex`](agent-harnesses/codex/) |  |
+| 2 | OpenCode 是怎么实现的？<br>How Is OpenCode Built? | zh + en | 计划中 | [`opencode`](agent-harnesses/opencode/) |  |
 | 3 | Codewhale | zh + en | 计划中 | `codewhale` | 原始清单中出现两次，这里只列一条 |
 | 4 | DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |  |
 | 5 | OpenClaude | zh + en | 计划中 | `openclaude` |  |
@@ -302,11 +291,11 @@
 | 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 | `virtual-machine-types` |  |
 | 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | [`harness`](in-seconds/harness/) |  |
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
-| 20 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 制作中 | [`chain-of-thought`](in-seconds/chain-of-thought/) |  |
+| 20 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 计划中 | [`chain-of-thought`](in-seconds/chain-of-thought/) |  |
 | 21 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh + en | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
 | 22 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 已成片 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
-| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh + en | 制作中 | [`ea211-family`](in-seconds/ea211-family/) |  |
-| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh + en | 制作中 | [`scion`](in-seconds/scion/) |  |
+| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh + en | 计划中 | [`ea211-family`](in-seconds/ea211-family/) |  |
+| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh + en | 计划中 | [`scion`](in-seconds/scion/) |  |
 | 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
 
 ### 游戏物理学
@@ -325,12 +314,12 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | PowerPC 时代的麦金塔<br>The Macintosh of the PowerPC Era | zh + en | 制作中 | [`powerpc-macintosh`](eras/powerpc-macintosh/) |  |
+| 1 | PowerPC 时代的麦金塔<br>The Macintosh of the PowerPC Era | zh + en | 计划中 | [`powerpc-macintosh`](eras/powerpc-macintosh/) |  |
 | 2 | 恐龙年代的 AMD | zh + en | 计划中 | `amd-early` |  |
 | 3 | AMD 的农机时代 | zh + en | 计划中 | `amd-bulldozer-era` |  |
 | 4 | DOS 时代的 Windows | zh + en | 计划中 | `dos-windows` |  |
 | 5 | Win8 平板和英特尔的凌动时代 | zh + en | 计划中 | `win8-atom` |  |
-| 6 | 英特尔的酷睿年代<br>Intel's Core Era | zh + en | 制作中 | [`intel-core-era`](eras/intel-core-era/) |  |
+| 6 | 英特尔的酷睿年代<br>Intel's Core Era | zh + en | 计划中 | [`intel-core-era`](eras/intel-core-era/) |  |
 | 7 | 苏维埃的三进制计算机时代 | zh + en | 计划中 | `soviet-trinary` |  |
 | 8 | CRT 一统天下的时代 | zh + en | 计划中 | `crt-era` |  |
 | 9 | Java 1.8 的时代 | zh + en | 计划中 | `java-8` |  |
@@ -412,7 +401,7 @@
 | 8 | 枪械自动原理 | zh + en | 计划中 | `firearm-actions` |  |
 | 9 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh + en | 计划中 | `lcd-panels` |  |
 | 10 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 已成片 | [`garbage-collection`](standalone/garbage-collection/) |  |
-| 11 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快<br>One Less Horsepower, One Kilo Less: What Lightweighting Buys You | zh + en | 制作中 | [`lightweighting`](standalone/lightweighting/) |  |
+| 11 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快<br>One Less Horsepower, One Kilo Less: What Lightweighting Buys You | zh + en | 计划中 | [`lightweighting`](standalone/lightweighting/) |  |
 | 12 | SQL 数据库群观 | zh + en | 计划中 | `sql-survey` |  |
 | 13 | 中国汽油价格变迁史 | zh + en | 计划中 | `china-gasoline-prices` |  |
 | 14 | 向高度寻求减少冲突——立交系统 | zh + en | 计划中 | `interchanges` |  |
@@ -420,7 +409,7 @@
 | 16 | Svn，Git 和代码管理 | zh + en | 计划中 | `svn-git` |  |
 | 17 | 力大砖飞——今天的计算机到底快到什么速度？ | zh + en | 计划中 | `how-fast-are-computers` |  |
 | 18 | 怎么实现一个 AI 自动客服？ | zh + en | 计划中 | `ai-support` |  |
-| 19 | RDP：Windows 远程的优雅实现<br>RDP: The Elegant Implementation of Windows Remote Access | zh + en | 制作中 | [`rdp`](standalone/rdp/) |  |
+| 19 | RDP：Windows 远程的优雅实现<br>RDP: The Elegant Implementation of Windows Remote Access | zh + en | 计划中 | [`rdp`](standalone/rdp/) |  |
 | 20 | 人均算力发展史 | zh + en | 计划中 | `compute-per-capita` |  |
 | 21 | 发射器：手拉，反吹，电手和汽水 | zh + en | 计划中 | `airsoft-mechanisms` |  |
 | 22 | ComputerUse 是怎么控制你的电脑的？ | zh + en | 计划中 | `computer-use` |  |

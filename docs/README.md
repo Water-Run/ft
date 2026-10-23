@@ -22,7 +22,8 @@
 | 判断成片是否合格 | [质量标准](standards.md) → [经验规则](lessons.md) → [验收](guides/acceptance.md) |
 | 发布、收集反馈、归档清理 | [发布与收尾](guides/release.md) |
 | 开一个系列或加一集 | [系列](guides/series.md) → `videos/<系列>/README.md` |
-| 查看开发安排 | [当前开发计划](log/plans/2026-10-20--31.md) → [片单](../videos/README.md)（各片的阶段与下一步） |
+| 查看当前工作 | [片单](../videos/README.md)（阶段与下一步）→ 本片 README；署名查 [Credit 盘点](../videos/CREDITS.md)。旧排期只作历史背景 |
+| 做仓库维护 | [宗旨与原则](principles.md) → 本页「信息归属」「维护」→ 受影响的专题、模板与工具 |
 | 改工具、引擎或模板 | [仓库结构](reference/repository.md) → [工具](reference/tools.md) → [引擎](reference/engine.md) → [踩过的坑](reference/pitfalls.md) |
 | 装环境、换机器 | [环境](reference/environment.md) |
 
@@ -38,11 +39,6 @@
 | [standards.md](standards.md) | 成片的质量标准 |
 | [lessons.md](lessons.md) | 经验规则：从反馈提炼出的通用规则，按阶段排列（由 `lessons.json` 生成） |
 | [getting-started.md](getting-started.md) | 从 clone 到第一部片子 |
-
-**计划**
-
-| 文档 | 内容 |
-|---|---|
 
 **专题**（怎样做好一个阶段）
 
@@ -67,7 +63,7 @@
 | [reference/engine.md](reference/engine.md) | 引擎函数 |
 | [reference/pitfalls.md](reference/pitfalls.md) | 踩过的坑 |
 | [reference/environment.md](reference/environment.md) | 环境、两台机器、空间 |
-| [reference/third-party.md](reference/third-party.md) | 第三方组件、许可与商标 |
+| [reference/third-party.md](reference/third-party.md) | GPL、第三方制作、源码交付、组件许可与商标 |
 
 **记录**（只追加的历史，做事时不必读）
 
@@ -75,7 +71,7 @@
 |---|---|
 | [log/feedback.md](log/feedback.md) | 策划者评价与观众评论的原始记录（P、C 编号） |
 | [log/reviews/](log/reviews/) | 成片测绘与评分复盘 |
-| [log/plans/](log/plans/) | 开发计划，按日期命名；最新一份是当前的安排 |
+| [log/plans/](log/plans/) | 排期的历史快照；当前阶段与下一步查片单和本片记录 |
 | [log/history.md](log/history.md) | 仓库自身的大事：迁入、重构 |
 
 ## 4. 信息归属
@@ -85,9 +81,9 @@
 | 信息 | 唯一来源 | 派生（由工具生成，不手改） |
 |---|---|---|
 | 选题、系列归属、标题、语言、片单状态 | `videos/catalog.json` | `videos/README.md`、各系列说明的分集表 |
-| 开发日期与同日顺序 | `docs/log/plans/` 里最新的一份计划 | — |
+| 排期的历史安排 | `docs/log/plans/` 的对应日期记录；不据此认定当前进度 | — |
 | 系列的定位与共同约定 | `videos/<系列>/README.md` | — |
-| 一部片子的阶段、署名、发布记录、评分 | 该片 `project.json` 的 `stage`、`credits`、`release`、`reception` | 片尾名单、`videos/README.md` |
+| 一部片子的阶段、署名、发布记录、评分 | 该片 `project.json` 的 `stage`、`credits`、`release`、`reception` | 片尾名单、`videos/README.md`、`videos/CREDITS.md` |
 | 一部片子的简报、设计决定、交付说明、复盘 | 该片 `README.md` | — |
 | 事实 | 该片 `research/FACTS.md` 与证据 | 画面数据（`tools/gen_data.py` → `src/js/data.js`） |
 | 文案 | 该片 `src/js/script.js` | 校对稿、配音输入、字幕 |
@@ -108,3 +104,4 @@
 5. **新增文档先登记。** `docs/` 下的每个文件都要出现在本页第 3 节，否则 `repo-check.js` 报错。宁可扩写已有的一篇，也不新开一篇。
 6. **生成的就别手改。** 标着「由工具生成」的文件与区段，改源头再重新生成。
 7. **改规则同时改落点。** 规则变了，同步对应的模板、工具与测试，并运行 `npm test`、`npm run check:repo`。
+8. **维护要有删减。** 先定位读者要作的决定，再合并重复说明、移除失效入口和冲突要求。不要为一句要求新建一套表；没有可核对内容的完成声明删掉。每次维护说明改变了什么、怎样验证、仍有哪些实际限制。

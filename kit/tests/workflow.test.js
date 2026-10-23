@@ -7,6 +7,8 @@ const { spawnSync, execFileSync } = require('node:child_process');
 const ROOT = path.resolve(__dirname, '../..');
 const review = require('../tools/script-review');
 const { verify } = require('../tools/clean');
+const credits = require('../tools/credits');
+const artifacts = require('../tools/artifact-record');
 
 function fixture(t) {
   const temporary = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'ft-workflow-'));
@@ -50,10 +52,63 @@ function approve(f, lang = 'zh') {
 }
 const lessonsIn = (root) => require(path.join(root, 'kit/tools/lessons.js'));
 
+test('产物内容核对拒绝同尺寸替换、漏记、越界和缺失文件', async t => {
+  const f = fixture(t);
+  write(f.video, 'out/one.mp4', 'first');
+  const record = await artifacts.capture(f.video, ['out/one.mp4']);
+  assert.deepEqual(await artifacts.verify(f.video, record, ['out/one.mp4']), []);
+  write(f.video, 'out/one.mp4', 'other');
+  assert.match((await artifacts.verify(f.video, record, ['out/one.mp4'])).join(), /不一致/);
+  assert.ok((await artifacts.verify(f.video, {}, ['out/one.mp4'])).length);
+  assert.ok((await artifacts.verify(f.video, record, ['out/missing.mp4'])).length);
+  for (const relative of ['../outside', '/absolute', 'C:/outside', 'out/../one.mp4']) assert.throws(() => artifacts.localFile(f.video, relative));
+});
+
+test('混音来源包括辅助脚本，Python 字节码缓存不改变输入集合', t => {
+  const f = fixture(t), p = { audio: { music: 'tools/music.py' } };
+  write(f.video, 'tools/music.py', '# fixture');
+  write(f.video, 'tools/helper.py', '# helper');
+  const before = artifacts.audioInputs(f.video, p, 'zh', []);
+  write(f.video, 'tools/__pycache__/music.cpython-314.pyc', 'cache');
+  assert.deepEqual(artifacts.audioInputs(f.video, p, 'zh', []), before);
+  assert.ok(before.includes('tools/helper.py'));
+});
+
+test('完整交付报告绑定每个文件；最终文件、混音输入、封面或检查缺失都会阻止交付', async t => {
+  const f = fixture(t), p = { ...f.project, languages: ['zh'], audio: { music: 'none' } };
+  const sources = { 'js/script.js': 'synthetic-source', 'js/timing.zh.js': 'synthetic-timing' }, L = { total: 2, cues: { a: { id: 'a', silent: false } } }, lang = 'zh', tag = '1080p60';
+  const save = (relative, data) => write(f.video, relative, JSON.stringify(data));
+  for (const relative of [...artifacts.audioInputs(f.video, p, lang, Object.values(L.cues)), ...artifacts.audioOutputs(p, lang), 'out/zh/video.mp4', ...artifacts.finalFiles(p, lang, tag), ...artifacts.coverFiles(lang)]) write(f.video, relative, 'Synthetic test fixture only');
+  save('out/zh/video.json', { schema: 1, lang, fps: 60, scale: 1, width: 1920, height: 1080, frames: 120, total: 2, sources, output: await artifacts.fingerprint(path.join(f.video, 'out/zh/video.mp4')) });
+  save('build/audio.zh.json', { schema: 1, lang, sources, config: artifacts.audioConfig(p), inputs: await artifacts.capture(f.video, artifacts.audioInputs(f.video, p, lang, Object.values(L.cues))), outputs: await artifacts.capture(f.video, artifacts.audioOutputs(p, lang)) });
+  const loudness = { I: -16, TP: -1.5 };
+  const fin = { schema: 2, lang, tag, config: artifacts.finishConfig(p), sources, duration: 2, frames: 120, probe: 'width=1920\nheight=1080\nr_frame_rate=60/1\n', loudness, measurements: Object.fromEntries(artifacts.finalFiles(p, lang, tag).filter((x) => x.endsWith('.mp4')).map((x) => [path.basename(x), loudness])), freezes: [], blank: { blank: [], sparse: [] }, inputs: await artifacts.capture(f.video, artifacts.finishInputs(p, lang)), outputs: await artifacts.capture(f.video, artifacts.finalFiles(p, lang, tag)) };
+  save('build/finish.zh.json', fin);
+  save('build/covers.zh.json', { schema: 1, lang, sources, outputs: await artifacts.capture(f.video, artifacts.coverFiles(lang)) });
+  const check = () => artifacts.deliveryProblems(f.video, p, lang, L, sources);
+  assert.deepEqual(await check(), []);
+  for (const relative of [artifacts.finalFiles(p, lang, tag)[0], 'audio/zh/cues/a.mp3', artifacts.coverFiles(lang)[0], 'out/zh/video.mp4']) {
+    const original = fs.readFileSync(path.join(f.video, relative));
+    write(f.video, relative, Buffer.alloc(original.length, 42));
+    assert.match((await check()).join(), /不一致/, relative);
+    write(f.video, relative, original);
+  }
+  for (const change of [{ blank: null }, { loudness: { I: null, TP: null } }, { freezes: null }, { schema: 1 }, { measurements: {} }]) {
+    save('build/finish.zh.json', { ...fin, ...change });
+    assert.ok((await check()).length, JSON.stringify(change));
+  }
+  save('build/finish.zh.json', fin);
+  assert.ok((await artifacts.deliveryProblems(f.video, { ...p, audio: { music: 'none', lufs: -14 } }, lang, L, sources)).length);
+  assert.deepEqual(await artifacts.audioProblems(f.video, { ...p, audio: { music: 'none', lufs: -14 } }, lang, Object.values(L.cues), sources), [], '只改封装响度不要求重做混音');
+  assert.ok((await artifacts.deliveryProblems(f.video, p, lang, L, { ...sources, 'js/script.js': 'changed' })).length);
+  assert.deepEqual(artifacts.sourceChanges({ ...sources, 'js/timing.en.js': 'old' }, { ...sources, 'js/timing.en.js': 'new' }, lang), []);
+});
+
 test('新建视频按分组放在 videos/<系列或 standalone>/ 下，署名取自 studio 配置并作为唯一来源；重建不覆盖', t => {
   const f = fixture(t);
   assert.equal(f.project.layout, 2);
   assert.equal(f.project.stage, 'brief');
+  assert.equal(f.project.license, 'GPL-3.0-or-later');
   assert.equal(f.project.credits.planner, 'Example Planner');
   assert.equal(f.project.credits.repository, 'https://github.com/example/films');
   assert.deepEqual(f.project.credits.models, []);
@@ -77,6 +132,27 @@ test('练习目录不改片单；旧的位置写法、错误 slug、选项和语
   assert.ok(fs.existsSync(path.join(f.root, 'out/sandbox/practice/project.json')));
   for (const args of [['../escape', '--title', 'X'], ['standalone/bad', '--title', 'X'], ['Bad_Slug', '--title', 'X'], ['bad', '--langs', 'zh,zh', '--title', 'X'], ['bad', '--typo'], ['bad', '--langs', 'fr', '--title', 'X']]) assert.notEqual(f.run('new', ...args).status, 0, args.join(' '));
   assert.ok(!fs.existsSync(path.join(f.root, 'videos/standalone/bad')));
+});
+
+test('计划中仅有 README 的目录可重新立项，人工简报原样保留；有其他文件则拒绝覆盖', t => {
+  const f = fixture(t), cat = f.catalog();
+  cat.videos.push({ slug: 'restart', title: { zh: '重开选题' }, status: 'planned' });
+  f.saveCatalog(cat);
+  const dir = path.join(f.root, 'videos/standalone/restart'), brief = '# 重开选题\n\n## 简报\n\n> 这是测试策划者要求保留的原话。\n';
+  write(dir, 'README.md', brief);
+  write(dir, 'research/keep.txt', 'not disposable');
+  assert.notEqual(f.run('new', 'restart').status, 0);
+  assert.equal(fs.readFileSync(path.join(dir, 'research/keep.txt'), 'utf8'), 'not disposable');
+  fs.unlinkSync(path.join(dir, 'research/keep.txt'));
+  fs.rmdirSync(path.join(dir, 'research'));
+  const result = f.run('new', 'restart');
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(fs.readFileSync(path.join(dir, 'README.md'), 'utf8'), brief);
+  assert.ok(fs.existsSync(path.join(dir, 'src/js/script.js')));
+  assert.equal(JSON.parse(fs.readFileSync(path.join(dir, 'project.json'), 'utf8')).stage, 'brief');
+  assert.equal(f.catalog().videos.find((v) => v.slug === 'restart').status, 'in-progress');
+  assert.notEqual(f.run('new', 'restart').status, 0);
+  assert.equal(f.run('catalog', '--check').status, 0);
 });
 test('片单：slug 全仓库唯一，目录名与 project.json 一致，署名不能写客户端名', t => {
   const f = fixture(t), cat = f.catalog();
@@ -111,6 +187,85 @@ test('片单时长四舍五入后正确跨分钟进位', t => {
   }
 });
 
+test('交付署名拒绝漏填、占位、简称、客户端及空分工；服务可以注明模型未披露', () => {
+  const p = { languages: ['zh', 'en'], credits: { planner: 'Example Planner', repository: 'https://github.com/example/films', models: [{ name: 'GPT-6.1 Sol', roles: [{ zh: '取证', en: 'Research' }] }], services: [{ name: '语音服务（模型未披露）', roles: ['配音'] }] } };
+  const check = (project) => credits.problems(project, 'project.json', { final: true });
+  assert.deepEqual(check(p), []);
+  for (const planner of ['WaterRun', '山间笔记', 'Unknown']) assert.deepEqual(check({ ...p, credits: { ...p.credits, planner } }), [], '人的公开署名由本人选择，不套用模型名称检查');
+  assert.ok(check({ ...p, license: 'Proprietary' }).some((x) => /GPL-3.0-or-later/.test(x)));
+  for (const name of ['未记录', 'GPT-6（型号未记录）', '型号未记录（经 Codex 客户端）', '待确认', 'Unknown', 'TBD', '6.1Sol', 'Codex', 'GPT6']) {
+    assert.ok(check({ ...p, credits: { ...p.credits, models: [{ name, roles: ['取证'] }] } }).length, name);
+  }
+  for (const change of [{ models: [] }, { planner: '' }, { repository: '' }, { repository: 'github.com/example/films' }, { models: null }, { services: {} }, { models: [null] }, { models: [{ name: 'GPT-6.1 Sol', roles: [''] }] }, { models: [{ name: 'GPT-6.1 Sol', roles: [{}] }] }]) assert.ok(check({ ...p, credits: { ...p.credits, ...change } }).length, JSON.stringify(change));
+  assert.ok(check({}).length);
+  assert.deepEqual(credits.problems({ credits: { models: [{ name: '未记录', roles: ['取证'] }] } }), [], '历史记录和草稿仍可如实保留缺口');
+});
+
+test('check --final 在新旧目录都先拦住署名缺口，不启动媒体检查', t => {
+  const f = fixture(t);
+  for (const layout of [undefined, 2]) for (const models of [[], [{ name: '未记录', roles: ['文案'] }]]) {
+    write(f.video, 'project.json', JSON.stringify({ ...f.project, layout, credits: { ...f.project.credits, models } }));
+    const r = f.run('check', f.video, '--final');
+    assert.equal(r.status, 1, r.stderr);
+    assert.match(r.stderr, /署名登记/);
+    assert.doesNotMatch(r.stderr, /文案校对|Chrome|浏览器/);
+    assert.ok(!fs.existsSync(path.join(f.video, '.ft-work.lock')));
+  }
+});
+
+test('片尾核对分工、开源标记及完整可见的名字，不能用被裁文字或字幕充数', () => {
+  const p = { credits: { planner: 'Example Planner', models: [{ name: 'GPT-6.1 Sol', roles: [{ zh: '取证', en: 'Research' }] }], services: [], repository: 'https://github.com/example/films' } };
+  const texts = ['Planning', 'Example Planner', 'GPT-6.1 Sol', 'Research', 'Open-source video', 'GPL-3.0-or-later', 'github.com/example/films'];
+  const frame = texts.map((text) => ({ k: 'text', text, op: 1, x: 100, y: 100, w: 400, h: 30, cut: '' }));
+  assert.deepEqual(credits.screenProblems(p, 'en', [frame]), []);
+  assert.match(credits.screenProblems(p, 'en', [frame.filter((x) => x.text !== 'Research')]).join(), /Research/);
+  assert.match(credits.screenProblems(p, 'en', [frame.filter((x) => x.text !== 'Open-source video')]).join(), /Open-source video/);
+  assert.match(credits.screenProblems(p, 'en', [frame.filter((x) => x.text !== 'GPL-3.0-or-later')]).join(), /GPL-3.0-or-later/);
+  for (const change of [{ cut: 'R' }, { x: -5 }, { x: 1800 }, { y: 1070 }, { op: 0.2 }, { k: 'cap' }]) {
+    const hidden = frame.map((x) => x.text === 'GPT-6.1 Sol' ? { ...x, ...change } : x);
+    assert.match(credits.screenProblems(p, 'en', [hidden]).join(), /GPT-6.1 Sol/, JSON.stringify(change));
+  }
+  assert.deepEqual(credits.cueProblems([{ cues: [['c', null, { credits: true, pause: 8 }]] }]), []);
+  for (const cue of [['c', 'Narration', { credits: true, pause: 8 }], ['c', null, { credits: true, pause: 0 }], ['c', null, { credits: true, pause: 8, tts: 'Spoken' }], ['c', null, { pause: 8 }]]) assert.ok(credits.cueProblems([{ cues: [cue] }]).length);
+});
+
+test('Credit 盘点覆盖在制与发布名单，检查生成物过期，保留历史署名不回写', t => {
+  const f = fixture(t);
+  const p = { ...f.project, stage: 'released', credits: { ...f.project.credits, models: [{ name: '未记录', roles: ['文案'] }] } };
+  write(f.video, 'project.json', JSON.stringify(p));
+  const before = fs.readFileSync(path.join(f.video, 'project.json'), 'utf8');
+  assert.equal(f.run('catalog').status, 0);
+  const file = path.join(f.root, 'videos/CREDITS.md'), report = fs.readFileSync(file, 'utf8');
+  assert.match(report, /已发布（冻结）/);
+  assert.match(report, /未记录：文案/);
+  assert.match(report, /真实型号未完整登记/);
+  assert.equal(fs.readFileSync(path.join(f.video, 'project.json'), 'utf8'), before);
+  fs.writeFileSync(file, 'stale');
+  assert.match(f.run('catalog', '--check').stderr, /videos\/CREDITS.md/);
+  write(f.video, 'project.json', JSON.stringify({ ...p, stage: 'script', credits: { ...p.credits, models: [{ name: 'GPT-6.1 Sol', roles: ['取证'] }] } }));
+  assert.equal(f.run('catalog').status, 0);
+  assert.match(fs.readFileSync(file, 'utf8'), /GPT-6.1 Sol：取证/);
+  assert.match(fs.readFileSync(path.join(f.root, 'videos/README.md'), 'utf8'), /GPT-6.1 Sol/);
+  assert.equal(f.run('catalog', '--check').status, 0);
+});
+
+test('旧目录也将 Credit 纳入渲染快照，修改型号或分工都会让快照变化', t => {
+  const f = fixture(t);
+  fs.writeFileSync(path.join(f.root, 'kit/tools/test-source-state.js'), "console.log(JSON.stringify(require('./lib').sourceState()))");
+  const p = { ...f.project, layout: undefined, credits: { ...f.project.credits, models: [{ name: 'GPT-6.1 Sol', roles: ['取证'] }] } };
+  const state = () => { const r = f.run('test-source-state', f.video); assert.equal(r.status, 0, r.stderr); return JSON.parse(r.stdout); };
+  write(f.video, 'project.json', JSON.stringify(p));
+  const first = state();
+  assert.ok(first['../project.json#credits']);
+  p.credits.models[0].roles.push('文案');
+  write(f.video, 'project.json', JSON.stringify(p));
+  assert.notEqual(first['../project.json#credits'], state()['../project.json#credits']);
+  const second = state();
+  p.stage = 'accept';
+  write(f.video, 'project.json', JSON.stringify(p));
+  assert.deepEqual(state(), second, '只更新流程状态不会让成片过期');
+});
+
 test('语言按「条目 ＞ 系列 ＞ 中英双语」继承；与系列相同的条目语言被拒绝', t => {
   const f = fixture(t), cat = f.catalog();
   cat.series.push({ slug: 'zh-only', title: { zh: '只做中文的系列' }, languages: ['zh'] });
@@ -130,6 +285,21 @@ test('交接检查要求事实、简报、交接说明与有效的文案确认',
   assert.match(result.stdout, /FACTS/);
   assert.match(result.stdout, /简报/);
   assert.match(result.stdout, /交接/);
+  const mixed = f.run('check', f.video, '--handoff', '--final');
+  assert.equal(mixed.status, 2);
+  assert.match(mixed.stderr, /不能同时使用/);
+});
+
+test('新版交接看已填写的事实记录，不因文档短拒绝，也不因占位说明长就放行', t => {
+  const f = fixture(t);
+  approve(f);
+  write(f.video, 'project.json', JSON.stringify({ ...f.project, check: { ...f.project.check, duration: [1, 60] } }));
+  write(f.video, 'README.md', '# 测试项目\n\n## 简报\n\n核心问题：测试交接文件检查。逐章答案、时长与语言见测试配置。\n\n## 交接\n\n已完成合成测试资料，实际影片不使用这些记录。\n');
+  write(f.video, 'research/FACTS.md', '# 说明\n' + '这是一段没有出处与核查状态的说明。'.repeat(100));
+  assert.notEqual(f.run('check', f.video, '--handoff').status, 0);
+  write(f.video, 'research/FACTS.md', '# 合成测试证据\n\n| 陈述 | 原始出处与定位 | 核查状态 |\n|---|---|---|\n| 测试值为 1 | 本测试中的固定输入 | 已核（仅测试夹具） |\n');
+  const result = f.run('check', f.video, '--handoff');
+  assert.equal(result.status, 0, result.stdout + result.stderr);
 });
 test('系列栏目可含引号，起点保留二进制字节，不能带入某一集的记录', t => {
   const f = fixture(t), cat = f.catalog();
@@ -200,6 +370,37 @@ test('交审稿逐句导出，保持旧确认；文字改后失效，纯停顿�
   assert.equal(JSON.parse(fs.readFileSync(path.join(f.video, 'review/approval.json'))).languages.zh.content_sha256, first.hash);
   assert.equal(fs.readdirSync(path.join(f.video, 'review')).filter(name => /^script\.zh\./.test(name)).length, 2);
 });
+
+test('交审先给连贯阅读再给逐句表，静默 cue 不进正文，重导不覆盖历史稿', t => {
+  const f = fixture(t), before = review.snapshot(f.video, f.project, 'zh');
+  assert.equal(f.run('script-review', f.video, 'export', '--lang', 'zh').status, 0);
+  const file = path.join(f.video, 'review', `script.zh.${before.hash}.md`), text = fs.readFileSync(file, 'utf8');
+  assert.ok(text.indexOf('## 连贯阅读') < text.indexOf('## 逐句校对'));
+  const prose = text.split('## 连贯阅读')[1].split('## 逐句校对')[0];
+  assert.match(prose, /这是第一句旁白，画面随它出现 动画的时间点，取自某个\*词\*被读到的时刻/);
+  assert.doesNotMatch(prose, /无旁白；画面停留|### credits/);
+  assert.match(text.split('## 逐句校对')[1], /\| o1 \|/);
+  assert.equal(review.snapshot(f.video, f.project, 'zh').hash, before.hash);
+  assert.equal(f.run('script-review', f.video, 'export', '--lang', 'zh').status, 0);
+  assert.equal(fs.readFileSync(file, 'utf8'), text);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(f.video, 'review/approval.json'), 'utf8')).languages.zh.status, 'pending');
+});
+
+test('仓库检查拦截失效 npm 入口，包括 node --test 后的测试文件', t => {
+  const f = fixture(t), { commandProblems } = require('../tools/repo-check');
+  assert.deepEqual(commandProblems({ scripts: { new: 'node kit/tools/new.js' } }, f.root), []);
+  const errors = commandProblems({ scripts: { feedback: 'node kit/tools/feedback.js', test: 'node --test kit/tests/missing.test.js' } }, f.root);
+  assert.equal(errors.length, 2);
+  assert.match(errors[0], /feedback.js/);
+  assert.match(errors[1], /missing.test.js/);
+});
+
+test('共享文档章节检查支持中文、重复标题和显式锚点，忽略代码中的假标题', () => {
+  const { markdownAnchors } = require('../tools/repo-check');
+  const anchors = markdownAnchors('# 文档\n## 6.2 事实\n## 重复\n## 重复\n```md\n## 代码里的假标题\n```\n<a id="manual"></a>\n');
+  assert.deepEqual([...anchors], ['文档', '62-事实', '重复', '重复-1', 'manual']);
+  assert.ok(!anchors.has('51-事实'));
+});
 test('确认者、日期、依据、标题及重复句号都被校验；旧项目不伪造批准', t => {
   const f = fixture(t); approve(f);
   const file = path.join(f.video, 'review/approval.json'), valid = JSON.parse(fs.readFileSync(file));
@@ -209,7 +410,8 @@ test('确认者、日期、依据、标题及重复句号都被校验；旧项�
   }
   fs.writeFileSync(file, JSON.stringify(valid));
   assert.equal(review.status(f.video, { ...f.project, titles: { zh: 'Changed' } }, ['zh']).ok, false);
-  assert.equal(review.status(f.video, { ...f.project, review: undefined }).legacy, true);
+  assert.equal(review.status(f.video, { ...f.project, review: undefined }).ok, false, '新版项目不能删除 review 绕过确认');
+  assert.equal(review.status(f.video, { ...f.project, layout: undefined, review: undefined }).legacy, true);
   assert.equal(review.status(f.video, { ...f.project, review: { required: false } }, ['zh']).ok, false);
   const script = path.join(f.video, 'src/js/script.js');
   fs.writeFileSync(script, fs.readFileSync(script, 'utf8').replace("['o2',", "['o1',"));

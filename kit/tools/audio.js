@@ -3,28 +3,41 @@
 //   key=value 原样传给 mix.py，临时覆盖 project.json 的 audio 段（各项含义见 mix.py 头部与 docs/guides/sound.md）
 //   --no-check   混完不跑数值自检（audio_check.py）
 // 步骤：导出旁白与章节的时间 build/mix.<语言>.json → 打开页面取场景登记的音效事件 build/sfx.<语言>.json → mix.py 合成 → 自检
-const { needVideo, LANGS, KIT, PY, ARGS, layout, run, pyEnv, startServer, openPage, flag, dirs, mkdirp, path, fs } = require('./lib');
+const { needVideo, PROJECT, VIDEO, LANGS, KIT, PY, ARGS, layout, sourceState, run, pyEnv, startServer, openPage, flag, dirs, mkdirp, path, fs } = require('./lib');
+const records = require('./artifact-record');
 (async () => {
   needVideo();
   require('./project-files').acquireLock(needVideo());
   require('./script-review').assertApproved(needVideo(), require('./lib').PROJECT(), LANGS(true));
   const kv = ARGS.filter((a) => /^[a-z_]+=/.test(a));
+  const official = !kv.some((a) => a.startsWith('out='));
+  if (official && kv.length) throw new Error('正式混音参数写入 project.json；临时参数须带 out=<试听文件>，避免实际混音与配置不一致');
   for (const lang of LANGS(true)) {
     const { L, measured } = layout(lang);
     if (!measured) { console.error(`${lang}：还没有实测时长，先运行 node kit/tools/tts.js`); process.exit(1); }
     const build = mkdirp(dirs(lang).build);
+    const sources = sourceState(), config = records.audioConfig(PROJECT()), inputFiles = records.audioInputs(VIDEO, PROJECT(), lang, Object.values(L.cues));
+    const inputs = await records.capture(VIDEO, inputFiles);
     const cues = L.order.map((id) => L.cues[id]).filter((c) => !c.silent).map((c) => ({ id: c.id, start: +c.start.toFixed(4), end: +c.end.toFixed(4) }));
     const scenes = L.scenes.map((s) => ({ id: s.id, start: +s.start.toFixed(4), end: +s.end.toFixed(4) }));
     fs.writeFileSync(path.join(build, `mix.${lang}.json`), JSON.stringify({ total: +L.total.toFixed(4), cues, scenes }));
     const { server, base } = await startServer();
-    const { browser, page } = await openPage(base, { lang });
-    const ev = await page.evaluate(() => (window.SFX || []).slice().sort((a, b) => a.t - b.t));
-    await browser.close(); server.close();
+    let browser, ev;
+    try {
+      const session = await openPage(base, { lang }); browser = session.browser;
+      ev = await session.page.evaluate(() => (window.SFX || []).slice().sort((a, b) => a.t - b.t));
+    } finally { if (browser) await browser.close(); server.close(); }
     fs.writeFileSync(path.join(build, `sfx.${lang}.json`), JSON.stringify(ev));
     const by = {}; for (const e of ev) by[e.n] = (by[e.n] || 0) + 1;
     console.log(`■ ${lang}  音效事件 ${ev.length} ${JSON.stringify(by)}`);
     console.log('  各场景音效数（不含打字声 key）: ' + L.scenes.map((s) => s.id + '=' + ev.filter((e) => e.n !== 'key' && e.t >= s.start && e.t < s.end).length).join('  '));
     run(PY(), [path.join(KIT, 'tools', 'mix.py'), ...kv], { env: pyEnv(lang) });
     if (!flag('no-check') && !kv.some((a) => a.startsWith('out='))) run(PY(), [path.join(KIT, 'tools', 'audio_check.py')], { env: pyEnv(lang) });
+    if (official) {
+      const changed = [...records.sourceChanges(sources, sourceState(), lang), ...await records.verify(VIDEO, inputs, inputFiles)];
+      if (config !== records.audioConfig(records.readRecord(path.join(VIDEO, 'project.json')))) changed.push('project.json 的混音配置');
+      if (changed.length) throw new Error('混音期间输入发生变化，须重新混音：' + changed.join('；'));
+      fs.writeFileSync(path.join(build, `audio.${lang}.json`), JSON.stringify({ schema: 1, lang, config, sources, inputs, outputs: await records.capture(VIDEO, records.audioOutputs(PROJECT(), lang)) }, null, 2) + '\n');
+    }
   }
-})();
+})().catch((error) => { console.error(error.message); process.exitCode = 1; });

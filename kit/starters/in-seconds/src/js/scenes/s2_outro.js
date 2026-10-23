@@ -13,7 +13,7 @@ scene('outro', ({ root, s, c0 }) => {
   const rows = [
     [tr('策划', 'Planning'), C.planner || ''],
     ...[...(C.models || []), ...(C.services || [])].map((m) => [(m.roles || []).map(label).join(' · '), m.name]),
-    [tr('开源视频', 'Open-source video'), String(C.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')],
+    [tr('开源视频', 'Open-source video') + ' · ' + ((window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later'), String(C.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')],
   ];
   rows.forEach(([k, v], i) => {
     const y = 124 + i * 122, last = i === rows.length - 1;

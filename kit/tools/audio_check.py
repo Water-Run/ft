@@ -1,4 +1,4 @@
-# 配乐与混音的数值自检（写脚本的模型听不到声音，只能看数）。由 kit/tools/audio.js 在混音后自动调用，也可单独跑：
+# 配乐与混音的数值自检；不能代替实际试听。由 kit/tools/audio.js 在混音后自动调用，也可单独跑：
 #   node kit/tools/audio.js <视频> 之后，环境变量 LVS_VIDEO、LVS_LANG、LVS_FFMPEG 齐备时 python kit/tools/audio_check.py
 # 输出三样：
 #   1. 配乐分轨在各章的三段能量（低 <150 Hz / 中 150–1500 / 高 >1500）：看各层是否按编排进出，低频是否过重

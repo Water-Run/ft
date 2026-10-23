@@ -36,13 +36,13 @@ npm run smoke
 
 ```json
 {
-  "planner": "实际策划者的公开署名",
-  "reviewer": "实际负责校对的人",
+  "planner": "策划者本人选定的公开署名",
+  "reviewer": "校对者本人选定的公开署名",
   "repository": "https://github.com/example/my-videos"
 }
 ```
 
-`new.js` 将这些公开信息拷入新片 `project.json` 的 `credits` 与 `review`，片尾名单从那里读；之后修改 studio 配置不会追改旧片。已有作品的原作者、历史确认和发布记录保持真实；新片的片尾实现须按自己的项目配置填写，不能把未参与者列进名单。原仓库的 WaterRun 审稿约定在原仓库继续适用。
+`planner` 与 `reviewer` 可以填写本人选择的姓名、昵称或笔名，不要求实名。`new.js` 将它们拷入新片 `project.json` 的 `credits` 与 `review`，片尾和校对记录使用这些署名。修改 studio 配置只影响后续新片；已有作品的贡献、确认与发布记录按实际情况保留。原仓库仍由 WaterRun 审稿。
 
 初次使用可保留 `videos/` 中的历史作品作参考，先用 `--scratch` 练习。希望空片单起步时，在自己的新仓库中保留 `kit/`、`docs/`、依赖清单、许可与贡献说明，创建 `videos/catalog.json`：
 
@@ -58,20 +58,20 @@ npm run smoke
 node kit/tools/new.js first-video --title "这部片子的问题" --title-en "The question this film answers"
 ```
 
-随后依次完成：
+随后依次完成，先把内容讲通再投入视听制作：
 
 1. 本片 README 的「简报」：受众、核心问题、时长上限、逐章推进、决定不讲的材料。
 2. `research/FACTS.md`：取证、来源、适用范围、核查状态。
 3. `src/js/script.js`：中文逐句文案；`review/NOTES.md`：术语解释与待讨论的取舍。
    写稿前读这一阶段的经验规则：`node kit/tools/lessons.js show --stage script`。
-4. `node kit/tools/script-review.js videos/standalone/first-video export`：生成可阅读的全文。
+4. `node kit/tools/script-review.js videos/standalone/first-video export`：生成连贯阅读与逐句校对两种视图。先通读叙事，再定位逐句问题。
 5. 把稿本交给指定校对者，按句号收集意见、修改并重新导出。得到明确确认后，按 [script-review.md](guides/script-review.md) 记录；中文确认后翻译，逐句校对译文。
 
 `new.js` 产生可运行的骨架，并不代表取证、审稿或场景已完成。模板中的 TODO 和示例必须替换；参与的模型按实际分工补进 `project.json` 的 `credits`。之后的阶段与闸门见 [制作周期](process.md)。
 
 ## 5. 安装完整出片环境
 
-安装带 libx264 的 ffmpeg / ffprobe 和 Python 3.10 或更新。建议将 Python 包装在仓库的 `.venv/` 中，工具会自动优先查找它。
+安装带 libx264 的 ffmpeg / ffprobe 和 Python 3.10 或更新。建议将 Python 依赖装在仓库的 `.venv/` 中，工具会自动优先查找它。
 
 PowerShell：
 
@@ -87,7 +87,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r kit/requirements.txt
 ```
 
-回听与像素检查另装 `kit/requirements-review.txt`；安装命令只需更换上面的 requirements 路径。Python 清单限定兼容范围，实际安装版本应记入交付记录；完整环境差异与可复现边界见 [environment.md](reference/environment.md) 和 [acceptance.md](guides/acceptance.md) 第 7 节。
+回听与像素检查另装 `kit/requirements-review.txt`；安装命令只需更换上面的 requirements 路径。Python 清单限定兼容范围，实际安装版本应记入交付记录；完整环境差异与可复现边界见 [environment.md](reference/environment.md) 和[成片重建](guides/acceptance.md#9-已交付的片子能否重建)。
 
 ```sh
 npm run doctor

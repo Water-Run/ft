@@ -212,8 +212,9 @@ function sourceState() {
   const crypto = require('crypto'), out = {}, root = path.join(needVideo(), 'src');
   const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true }).sort((x, y) => (x.name < y.name ? -1 : 1))) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (e.isFile()) out[path.relative(root, p).replace(/\\/g, '/')] = crypto.createHash('sha1').update(fs.readFileSync(p)).digest('hex'); } };
   walk(root);
-  // 新版目录的片尾名单从 project.json 读取：署名与标题变了，成片同样过期
-  const P = PROJECT(); if (P.layout >= 2) out['../project.json#credits'] = crypto.createHash('sha1').update(JSON.stringify([P.credits, P.titles])).digest('hex');
+  // 新旧目录都保留署名与标题的渲染快照；署名改了，不能继续交付旧画面。
+  const P = JSON.parse(fs.readFileSync(path.join(needVideo(), 'project.json'), 'utf8'));
+  out['../project.json#credits'] = crypto.createHash('sha1').update(JSON.stringify([P.credits, P.titles || { zh: P.title }, P.license || 'GPL-3.0-or-later'])).digest('hex');
   return out;
 }
 // index.html 加载的本片脚本与样式（不含引擎、脚本、时长与第三方库）：check.js 的源码规则只看这些

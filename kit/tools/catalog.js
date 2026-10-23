@@ -1,11 +1,12 @@
-// 片单：核对 videos/catalog.json、各片 project.json 与 videos/ 下的实际目录，生成片单索引 videos/README.md 与各系列说明 videos/<系列>/README.md 的分集表。
+// 片单：核对 videos/catalog.json、各片 project.json 与 videos/ 下的实际目录，生成片单索引 videos/README.md、署名盘点 videos/CREDITS.md 与各系列说明 videos/<系列>/README.md 的分集表。
 // 用法：node kit/tools/catalog.js            核对并重新生成
 //       node kit/tools/catalog.js --check    只核对；生成物与源头不一致时以非零码退出（提交前用，repo-check 会调用）
 // 片单的写法见 videos/catalog.json 开头的 about。新建视频用 new.js，它会登记片单；手改片单后运行本工具。
 // 目录分两层：系列里的一集在 videos/<系列>/<slug>/，独立视频在 videos/standalone/<slug>/。slug 全仓库唯一；归属以条目的 series 字段为准，目录与它一致。
 const fs = require('fs'), path = require('path');
 const REPO = path.resolve(__dirname, '..', '..');
-const CAT = path.join(REPO, 'videos', 'catalog.json'), INDEX = path.join(REPO, 'videos', 'README.md');
+const CAT = path.join(REPO, 'videos', 'catalog.json'), INDEX = path.join(REPO, 'videos', 'README.md'), CREDITS = path.join(REPO, 'videos', 'CREDITS.md');
+const { problems: creditProblems, roleText } = require('./credits');
 const STANDALONE = 'standalone';
 const groupOf = (v) => v.series || STANDALONE;                                 // 第一层目录：系列 slug，或 standalone
 const dirOf = (v) => `videos/${groupOf(v)}/${v.slug}`;
@@ -15,8 +16,6 @@ const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 // 语言：条目自己的 languages ＞ 所属系列的 languages ＞ 缺省的中英双语
 const DEFAULT_LANGS = ['zh', 'en'];
 const langsOk = (l) => Array.isArray(l) && l.length && new Set(l).size === l.length && l.every((x) => ['zh', 'en'].includes(x));
-// 署名里不能代替模型名的写法：客户端、运行框架、平台名，以及不带版本的系列名（见 docs/roles.md 第 5 节）
-const NOT_MODELS = [/^codex\b/i, /^claude code\b/i, /^cursor\b/i, /^opencode\b/i, /^chatgpt\b/i, /^copilot\b/i, /^(claude|gpt|gemini|deepseek|kimi|qwen|grok|opus|sonnet|haiku)\s*-?\d*$/i, /主会话/];
 function load() { return JSON.parse(fs.readFileSync(CAT, 'utf8')); }
 const readJSON = (f) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { return null; } };
 function lessonsVersion() { return (readJSON(path.join(REPO, 'docs', 'lessons.json')) || {}).version || null; }
@@ -35,18 +34,6 @@ function makers(p) {
   if (p.credits && Array.isArray(p.credits.models)) return p.credits.models.map((m) => m.name);
   const pr = p.production || {};
   return [pr.prepared_by, pr.maker].filter(Boolean).flatMap((x) => String(x).split(/[、,，]\s*/));
-}
-function creditProblems(p, where) {
-  const errs = [];
-  if (!p || !p.credits) return errs;
-  const c = p.credits;
-  if (!Array.isArray(c.models)) return [`${where}：credits.models 必须是数组`];
-  for (const m of [...c.models, ...(c.services || [])]) {
-    if (!m || typeof m.name !== 'string' || !m.name.trim()) { errs.push(`${where}：credits 里有缺少 name 的条目`); continue; }
-    if (!Array.isArray(m.roles) || !m.roles.length) errs.push(`${where}：${m.name} 缺少 roles（实际分工）`);
-  }
-  for (const m of c.models) if (m && typeof m.name === 'string' && NOT_MODELS.some((re) => re.test(m.name.trim()))) errs.push(`${where}：「${m.name}」不是模型的真实名称（写提供方公布的型号与版本，见 docs/roles.md 第 5 节）`);
-  return errs;
 }
 function validate(cat) {
   const errs = [];
@@ -101,12 +88,13 @@ function validate(cat) {
 const mmss = (s) => { const seconds = Math.round(s); return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`; };
 const inIndex = (e) => `${groupOf(e.v)}/${e.v.slug}/`;   // 从 videos/README.md 到本片目录
 const cellText = (x) => String(x ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
-function link(e, from) { return e.status === 'planned' ? '`' + e.v.slug + '`' : `[\`${e.v.slug}\`](${from}${e.v.slug}/)`; }
+function link(e, from) { return e.status === 'planned' && !fs.existsSync(path.join(REPO, e.dir, 'README.md')) ? '`' + e.v.slug + '`' : `[\`${e.v.slug}\`](${from}${e.v.slug}/)`; }
 function render(cat) {
   const all = entries(cat), n = (st) => all.filter((e) => e.status === st).length, current = lessonsVersion();
   const seriesName = (e) => (e.series ? `[${e.series.title.zh}](${e.series.slug}/README.md)` : '—');
   const L = ['# 片单', '', '<!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->', '',
-    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。`, ''];
+    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。`, '',
+    '[Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。', ''];
   // 已成片：按交付日期倒序
   const done = all.filter((e) => e.status === 'delivered').sort((a, b) => String(b.project?.delivery?.date || '').localeCompare(String(a.project?.delivery?.date || '')));
   L.push('## 已成片', '', '时长是成片的容器时长；评分是策划者给的分数（满分 10），记录在各片 `project.json` 的 `reception`。', '',
@@ -119,11 +107,11 @@ function render(cat) {
     L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${durs} | ${d.date || '—'} | ${rel} | ${score} | ${cellText(makers(p).join('、')) || '未记录'} |`);
   }
   L.push('', '## 制作中', '', `阶段与下一步取自各片 \`project.json\` 的 \`stage\`、\`next\`；「规则」一栏是本片复核记录对应的经验规则版本（当前 ${current || '—'}），落后时运行 \`node kit/tools/lessons.js <片> sync\`。`, '',
-    '| 片 | 系列 | 阶段 | 下一步 | 规则 |', '|---|---|---|---|---|');
+    '| 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |', '|---|---|---|---|---|---|');
   for (const e of all.filter((x) => x.status === 'in-progress')) {
     const p = e.project || {}, rec = readJSON(path.join(REPO, e.dir, 'review', 'lessons.json'));
     const ver = !rec ? '未接入' : rec.version === current ? '最新' : '待同步';
-    L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${STAGES[p.stage] || '未记录'} | ${cellText(p.next || '')} | ${ver} |`);
+    L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${STAGES[p.stage] || '未记录'} | ${cellText(p.next || '')} | ${ver} | ${cellText(makers(p).join('、')) || '未记录'} |`);
   }
   L.push('', '## 全部选题', '', '按系列列出，系列内的顺序即集数。', '');
   const head = '| # | 标题 | 语言 | 状态 | 目录 | 备注 |\n|---|---|---|---|---|---|';
@@ -135,6 +123,38 @@ function render(cat) {
   }
   const solo = all.filter((e) => !e.series);
   L.push('### 独立视频', '', head, ...solo.map((e, i) => row(e, i + 1)), '');
+  return L.join('\n');
+}
+// Credit 盘点只列记录，不推断型号、不评价模型质量，也不修改已发布片的原始名单。
+function renderCredits(cat) {
+  const all = entries(cat), started = all.filter((e) => e.project);
+  const published = (e) => e.project.stage === 'released' || (e.project.release || []).some((r) => r.url);
+  const movie = (e) => `[${cellText(e.v.title.zh)}](${inIndex(e)}README.md)`;
+  const state = (e) => published(e) ? '已发布（冻结）' : STAGES[e.project.stage] || STATUS[e.status];
+  const issues = started.map((e) => ({ e, gaps: creditProblems(e.project, 'project.json', { final: true }) })).filter((x) => x.gaps.length);
+  const models = new Map();
+  for (const e of started) for (const name of new Set(makers(e.project))) { if (!models.has(name)) models.set(name, []); models.get(name).push(e); }
+  const L = ['# 视频与 Credit 盘点', '', '<!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->', '',
+    `已登记制作项目 ${started.length} 部，已登记发布 ${started.filter(published).length} 部，其余 ${started.filter((e) => !published(e)).length} 部；另有 ${all.length - started.length} 个计划选题（可仅保留简报），见[片单](README.md)。`, '',
+    '此处核对结构化署名记录，未逐部观看成片；字段齐全不代表最终验收通过。模型名按原记录列出，不合并简称或猜测版本；一片可有多个模型，参与片数不能相加当成总片数。服务另列。', '',
+    '## 交付前署名缺口', '',
+    `共 ${issues.length} 部。已发布片保留原名单，后补身份与依据见本片 README；在制片须在交付前解决。规则见[署名](../docs/roles.md#5-署名)。`, '',
+    '| 片 | 状态 | 缺口 |', '|---|---|---|'];
+  for (const { e, gaps } of issues) L.push(`| ${movie(e)} | ${state(e)} | ${gaps.map((x) => cellText(x.replace(/^project.json：/, ''))).join('<br>')} |`);
+  if (!issues.length) L.push('| — | — | 未发现字段缺口；仍须核对参与记录与实际片尾 |');
+  L.push('', '## 按模型汇总', '', '| 原记录模型名 | 已发布 | 未发布 | 参与片目 |', '|---|---|---|---|');
+  for (const [name, es] of [...models].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], 'en'))) {
+    L.push(`| ${cellText(name)} | ${es.filter(published).length} | ${es.filter((e) => !published(e)).length} | ${es.map(movie).join('、')} |`);
+  }
+  const people = (rows, langs) => (rows || []).map((m) => `${cellText(m.name)}：${(m.roles || []).map((r) => cellText(typeof r === 'string' ? r : langs.map((l) => l + ' ' + roleText(r, l)).join(' / '))).join('、')}`).join('<br>') || '未登记';
+  for (const released of [false, true]) {
+    L.push('', released ? '## 已发布视频' : '## 未发布视频', '', '| 片 | 阶段 | 策划 | 模型与分工 | 服务与分工 |', '|---|---|---|---|---|');
+    for (const e of started.filter((x) => published(x) === released)) {
+      const c = e.project.credits || {};
+      L.push(`| ${movie(e)} | ${state(e)} | ${cellText(c.planner) || '未登记'} | ${people(c.models, e.languages)} | ${people(c.services, e.languages)} |`);
+    }
+  }
+  L.push('', '## 整理与取舍', '', '清理候选按上面的模型与分工定位，由策划者指定范围。已发布片按[发布后冻结](../docs/guides/release.md#发布后冻结)处理；生成物清理先预览、归档并校验。', '');
   return L.join('\n');
 }
 // ── 生成：videos/<系列>/README.md 的分集表。手写部分原样保留，只重写两个标记之间；文件不存在时生成骨架 ──
@@ -170,14 +190,14 @@ function save(cat) {
   out.push('  ]', '}');
   fs.writeFileSync(CAT, out.join('\n') + '\n');
 }
-function regenerate(cat = load()) { fs.writeFileSync(INDEX, render(cat)); return syncSeries(cat, true); }
+function regenerate(cat = load()) { fs.writeFileSync(INDEX, render(cat)); fs.writeFileSync(CREDITS, renderCredits(cat)); return syncSeries(cat, true); }
 // 视频所在的系列；独立视频返回 null
 function seriesOf(cat, videoDir) { if (!Array.isArray(cat.videos)) return null; const slug = path.basename(path.resolve(videoDir)), v = cat.videos.find((x) => x.slug === slug); return v && v.series ? cat.series.find((s) => s.slug === v.series) || null : null; }
-module.exports = { DEFAULT_LANGS, STANDALONE, groupOf, dirOf, load, save, entries, validate, render, regenerate, syncSeries, seriesOf, creditProblems, makers, CAT, INDEX, STATUS, STAGES, SLUG };
+module.exports = { DEFAULT_LANGS, STANDALONE, groupOf, dirOf, load, save, entries, validate, render, renderCredits, regenerate, syncSeries, seriesOf, creditProblems, makers, CAT, INDEX, CREDITS, STATUS, STAGES, SLUG };
 if (require.main === module) {
   const cat = load(), errs = validate(cat), check = process.argv.includes('--check');
   if (errs.length) { console.error('片单有问题：\n  ' + errs.join('\n  ')); process.exit(1); }
   const md = render(cat), cur = fs.existsSync(INDEX) ? fs.readFileSync(INDEX, 'utf8') : '';
-  if (check) { const stale = syncSeries(cat, false); if (cur !== md || stale.length) { console.error('生成物与源头不一致：' + [...(cur !== md ? ['videos/README.md'] : []), ...stale].join(' ') + '。运行 node kit/tools/catalog.js'); process.exit(1); } console.log('片单一致'); }
-  else { const stale = regenerate(cat); const all = entries(cat); console.log(`videos/README.md 已更新：${cat.series.length} 个系列，${all.length} 部视频（已成片 ${all.filter((e) => e.status === 'delivered').length}）` + (stale.length ? `；系列说明更新 ${stale.length} 份` : '')); }
+  if (check) { const stale = syncSeries(cat, false); if (!fs.existsSync(CREDITS) || fs.readFileSync(CREDITS, 'utf8') !== renderCredits(cat)) stale.push('videos/CREDITS.md'); if (cur !== md || stale.length) { console.error('生成物与源头不一致：' + [...(cur !== md ? ['videos/README.md'] : []), ...stale].join(' ') + '。运行 node kit/tools/catalog.js'); process.exit(1); } console.log('片单与 Credit 盘点一致'); }
+  else { const stale = regenerate(cat); const all = entries(cat); console.log(`videos/README.md、videos/CREDITS.md 已更新：${cat.series.length} 个系列，${all.length} 部视频（已成片 ${all.filter((e) => e.status === 'delivered').length}）` + (stale.length ? `；系列说明更新 ${stale.length} 份` : '')); }
 }

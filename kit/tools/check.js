@@ -13,13 +13,35 @@ const rows = [];
 const add = (name, ok, detail) => rows.push({ name, ok, detail: [].concat(detail || []) });
 const read = (f) => fs.readFileSync(path.join(VIDEO, f), 'utf8');
 const exists = (f) => fs.existsSync(path.join(VIDEO, f));
+if (flag('handoff') && flag('final')) { console.error('--handoff 与 --final 是不同阶段，不能同时使用'); process.exit(2); }
+const credits = require('./credits');
+const creditIssues = credits.problems(P, 'project.json', { final: flag('final') });
+if (creditIssues.length) { console.error('✗ 署名登记：\n  ' + creditIssues.join('\n  ')); process.exit(1); }
+if (flag('final')) add('署名登记', true, ['字段齐全；仍须对照本片参与记录和最终 MP4 核对，不能由工具推断漏登者。']);
+else {
+  const pending = credits.problems(P, 'project.json', { final: true });
+  if (pending.length) rows.push({ name: '（署名待补，交付前须处理）', ok: true, detail: pending });
+}
 
 // ── 交接检查（--handoff）：准备方交给制作方之前 ──
 if (flag('handoff')) {
   const readme = exists('README.md') ? read('README.md') : '';
   const section = (name) => { const lines = readme.split(/\r?\n/), i = lines.findIndex((l) => l.trim() === '## ' + name); if (i < 0) return null; const j = lines.findIndex((l, k) => k > i && /^## /.test(l)); return lines.slice(i + 1, j < 0 ? undefined : j).join('\n').replace(/<!--[\s\S]*?-->/g, '').trim(); };
   const mat = [];
-  if (!exists('research/FACTS.md') || read('research/FACTS.md').length < 800) mat.push('research/FACTS.md 不存在或内容过少：取证要在交接之前做完');
+  const facts = exists('research/FACTS.md') ? read('research/FACTS.md').replace(/<!--[\s\S]*?-->/g, '').replace(/```[\s\S]*?```/g, '') : '';
+  if (P.layout >= 2) {
+    // 查事实表是否真的填写，不用字数冒充取证质量；事实是否成立仍由逐项复核决定。
+    let columns = null, count = 0;
+    const filled = (x) => typeof x === 'string' && !!x.trim() && !/^(待填|TODO|—|-|\.{3})$/i.test(x.trim());
+    for (const line of facts.split(/\r?\n/)) {
+      if (!line.trim().startsWith('|')) { columns = null; continue; }
+      const cells = line.trim().replace(/^\||\|$/g, '').split(/(?<!\\)\|/).map((x) => x.trim());
+      const claim = cells.findIndex((x) => /陈述/.test(x)), source = cells.findIndex((x) => /出处|依据/.test(x)), status = cells.findIndex((x) => /核查|状态/.test(x));
+      if (claim >= 0 && source >= 0 && status >= 0) { columns = { claim, source, status }; continue; }
+      if (columns && filled(cells[columns.claim]) && filled(cells[columns.source]) && /已核|已验证|verified/i.test(cells[columns.status] || '')) count++;
+    }
+    if (!count) mat.push('research/FACTS.md 没有已填写的事实记录：按模板列出陈述、可定位的出处与核查状态；模板说明和字数不算证据');
+  } else if (facts.length < 800) mat.push('research/FACTS.md 不存在或旧格式记录内容过少：取证要在交接之前做完');
   if (!C.duration) mat.push('project.json 的 check.duration 未设：给出总长的允许范围');
   add('取证与约束', !mat.length, mat);
   const br = [];
@@ -150,17 +172,16 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
     const { server, base } = await startServer();
     const { browser, page } = await openPage(base, { lang });
     const ev = await page.evaluate(() => (window.SFX || []).slice().sort((a, b) => a.t - b.t));
-    // 片尾名单与 project.json 的 credits 一致（新版目录；docs/roles.md 第 5 节）：在片尾 cue 里取几帧，名单里的每个名字都要出现
+    // 新旧目录均查片尾：静默 cue 中，名字、实际分工与开源标记须完整出现在画面内。
     let creditGaps = null;
-    if (flag('final') && P.layout >= 2 && P.credits) {
-      const ids = layout(lang).SCRIPT.flatMap((sc) => sc.cues).filter((c) => c[2] && c[2].credits).map((c) => c[0]);
-      if (!ids.length) creditGaps = ['脚本里没有片尾名单的静默 cue（{ pause, credits: true }）'];
-      else {
-        const { COLLECT } = require('./inspect'), seen = new Set();
-        for (const id of ids) { const c = L.cues[id]; for (const k of [0.3, 0.55, 0.8, 0.97]) { await page.evaluate((x) => window.seek(x), c.start + c.d * k); for (const it of await page.evaluate(COLLECT)) if (it.k === 'text' && it.op >= 0.5) seen.add(it.text.replace(/\s+/g, '')); } }
-        const text = [...seen].join('|'), Cr = P.credits;
-        const want = [Cr.planner, ...(Cr.models || []).map((m) => m.name), ...(Cr.services || []).map((m) => m.name), String(Cr.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')].filter(Boolean);
-        creditGaps = want.filter((w) => !text.includes(w.replace(/\s+/g, ''))).map((w) => `片尾画面上找不到「${w}」`);
+    if (flag('final')) {
+      const script = layout(lang).SCRIPT;
+      creditGaps = credits.cueProblems(script);
+      if (!creditGaps.length) {
+        const ids = script.flatMap((sc) => sc.cues).filter((c) => c[2] && c[2].credits).map((c) => c[0]);
+        const { COLLECT } = require('./inspect'), frames = [];
+        for (const id of ids) { const c = L.cues[id]; for (const k of [0.3, 0.55, 0.8, 0.97]) { await page.evaluate((x) => window.seek(x), c.start + c.d * k); frames.push(await page.evaluate(COLLECT)); } }
+        creditGaps = credits.screenProblems(P, lang, frames);
       }
     }
     await browser.close(); server.close();
@@ -178,23 +199,7 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
 
     // ── 6 交付前 ──
     if (flag('final')) {
-      // 交付分辨率：render.scale 为 1 是 1920×1080，为 2 是 3840×2160；文件名随之为 1080p60、2160p60
-      const fx = [], slug = P.slug, fps = +(P.render.fps || 60), sc = +(P.render.scale || 1), W = Math.round(1920 * sc), H = Math.round(1080 * sc), tag = `${H}p${fps}`;
-      const wantFiles = [`out/${slug}-${lang}-${tag}.mp4`, `out/${slug}-${lang}-${tag}-voice-only.mp4`, `out/${slug}-${lang}.srt`, `out/cover-${lang}-16x9.jpg`, `out/cover-${lang}-4x3.jpg`, `out/cover-${lang}-16x9-3840x2160.png`, `out/cover-${lang}-4x3-3200x2400.png`];
-      for (const f of wantFiles) if (!exists(f)) fx.push('缺少 ' + f);
-      let fin = null; try { fin = JSON.parse(read(`build/finish.${lang}.json`)); } catch (e) { fx.push(`缺少 build/finish.${lang}.json：先运行 node kit/tools/finish.js`); }
-      if (fin) {
-        if (Math.abs(fin.duration - L.total) > 0.6) fx.push(`成片时长 ${fin.duration.toFixed(1)}s 与时间线 ${L.total.toFixed(1)}s 不一致：脚本或配音改过之后没有重新渲染`);
-        if (!new RegExp(`^width=${W}\r?$`, 'm').test(fin.probe) || !new RegExp(`^height=${H}\r?$`, 'm').test(fin.probe) || !new RegExp(`r_frame_rate=${fps}/1`).test(fin.probe)) fx.push(`成片规格不是 ${W}×${H} ${fps} 帧/秒`);
-        const lufs = +((P.audio || {}).lufs || -16);   // 响度目标按片设（project.json 的 audio.lufs），缺省 -16
-        if (!(fin.loudness.I >= lufs - 1.5 && fin.loudness.I <= lufs + 1.5)) fx.push(`响度 ${fin.loudness.I} LUFS 不在 ${lufs}±1.5`);
-        if (!(fin.loudness.TP <= -1)) fx.push(`峰值 ${fin.loudness.TP} dBFS 高于 -1`);
-        if (((C.levels || {}).STILL || 'error') === 'error') for (const z of fin.freezes) fx.push(`成片 ${z.start.toFixed(1)}s 起有 ${z.d.toFixed(1)} 秒画面不动`);
-        if (fin.blank) for (const z of fin.blank.blank) fx.push(`成片 ${z[0]}–${z[1]}s 是空画面`);
-      }
-      let rec = null; try { rec = JSON.parse(read(`out/${lang}/video.json`)); } catch (e) { fx.push(`缺少 out/${lang}/video.json：成片不是由 render.js 整片渲染得到的`); }
-      if (rec && (rec.scale || 1) !== sc) fx.push(`out/${lang}/video.json 记的是 ${rec.scale || 1} 倍渲染，project.json 的 render.scale 是 ${sc}：按交付分辨率重新渲染`);
-      if (rec) { const now = sourceState(); const changed = [...new Set([...Object.keys(now), ...Object.keys(rec.sources)])].filter((f) => now[f] !== rec.sources[f] && !(/^js\/timing\.\w+\.js$/.test(f) && f !== `js/timing.${lang}.js`)); if (changed.length) fx.push('这些源文件在渲染之后改过，成片已过期，要重新渲染：' + changed.map((f) => 'src/' + f).join(' ')); }
+      const fx = await require('./artifact-record').deliveryProblems(VIDEO, P, lang, L, sourceState());
       if (!exists('README.md')) fx.push('缺少本片的 README.md');
       else if (P.layout >= 2) {
         const rd = read('README.md').split(/\r?\n/), i = rd.findIndex((l) => l.trim() === '## 交付'), j = rd.findIndex((l, k) => k > i && /^## /.test(l));
@@ -210,6 +215,6 @@ add(`时长与节奏（${LANGS.map((l) => l + ' ' + mmss(totals[l])).join('，')
   console.log('');
   for (const x of rows) { console.log(`${x.ok ? '✓ 通过  ' : '✗ 不通过'}  ${x.name}`); for (const d of x.detail) console.log('      ' + d); }
   const bad = rows.filter((x) => !x.ok).length;
-  console.log(`\n${bad ? `结论：有 ${bad} 项不通过。逐项修正后重新运行 node kit/tools/check.js${flag('final') ? ' --final' : ''}` : '结论：全部通过'}`);
+  console.log(`\n${bad ? `结论：有 ${bad} 项不通过。逐项修正后重新运行 node kit/tools/check.js${flag('final') ? ' --final' : ''}` : '结论：自动检查通过；内容、叙事、实际视听与开源交付仍按验收记录核对，策划者明确同意后才交付。'}`);
   process.exit(bad ? 1 : 0);
 })();

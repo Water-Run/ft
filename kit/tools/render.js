@@ -14,6 +14,7 @@ const os = require('os');
 const { spawn, spawnSync } = require('child_process');
 const { needVideo, PROJECT, LANGS, FFMPEG, FFPROBE, arg, dirs, mkdirp, rel, startServer, openPage, sourceState, path, fs } = require('./lib');
 const pngfix = require('./pngfix');
+const records = require('./artifact-record');
 needVideo();
 require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
@@ -74,6 +75,7 @@ async function worker(f0, f1, ctx, segPath, prog) {
 }
 
 async function render(lang) {
+  const sources = sourceState();
   const OUT = path.resolve(arg('out', path.join(dirs(lang).out, 'video.mp4')));
   const { server, base } = await startServer();
   const open = () => openPage(base, { lang, scale: SCALE, gpu: GPU });
@@ -115,7 +117,8 @@ async function render(lang) {
   if (r.status !== 0 || outFrames !== N) { console.error(`渲染失败：成片有 ${outFrames} 帧，应为 ${N} 帧；各段留在 ${rel(segDir)}`); server.close(); process.exit(1); }
   fs.rmSync(segDir, { recursive: true, force: true });
   // 整片、不缩小、默认位置的渲染：记下这一版画面的规格与对应的源码状态，交付前据此判断成片是否过期、分辨率是否符合 render.scale
-  if (F0 === 0 && Math.abs(to - total) < 1e-6 && SCALE >= 1 && arg('out', null) == null) fs.writeFileSync(path.join(dirs(lang).out, 'video.json'), JSON.stringify({ lang, frames: N, fps: FPS, mb: MB, scale: SCALE, width: PW, height: PH, gpu: GPU, total, rendered: new Date().toISOString(), sources: sourceState() }, null, 1));
+  if (records.sourceChanges(sources, sourceState(), lang).length) { server.close(); throw new Error('渲染期间源码发生变化，不能把完成后的源码记成这一版画面的依据；重新渲染'); }
+  if (F0 === 0 && Math.abs(to - total) < 1e-6 && SCALE >= 1 && arg('out', null) == null) fs.writeFileSync(path.join(dirs(lang).out, 'video.json'), JSON.stringify({ schema: 1, lang, frames: N, fps: FPS, mb: MB, scale: SCALE, width: PW, height: PH, gpu: GPU, total, rendered: new Date().toISOString(), sources, output: await records.fingerprint(OUT) }, null, 1));
   server.close();
 }
 (async () => {

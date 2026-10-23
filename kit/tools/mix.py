@@ -17,7 +17,7 @@
 #   ctx = { sr, n, total, scenes: [{id, start, end}], cues: [{id, start, end}], audio: 本片的 audio 段, lang }
 #   模块可另给 FADE = (开头淡入秒数, 结尾淡出秒数)，缺省 (2.5, 3.0)。电平、旁白压低与限幅仍由这里统一处理。
 # 命令行 key=value 可临时覆盖上述各项，另有 out=<文件名>（默认 audio.wav）
-# 配乐与音效都是程序合成的，写脚本的人听不到：出片前要有人试听。
+# 配乐与音效由程序合成；出片前实际试听，按能力如实记录已听和未听范围。
 import json, os, subprocess, sys, wave
 import numpy as np
 VIDEO = os.environ["LVS_VIDEO"]; VLANG = os.environ.get("LVS_LANG", "zh").strip()

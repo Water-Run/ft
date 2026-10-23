@@ -1,4 +1,4 @@
-// 文案交审：export 生成只读稿本；check 核对人工记录与当前内容。
+// 文案交审：export 从唯一源稿生成连贯阅读与逐句校对视图；check 核对人工记录与当前内容。
 // node kit/tools/script-review.js <视频> export|check [--lang zh|en|all]
 // 本工具不会确认文案。review/approval.json 只能依据真实的人工确认填写。
 const fs = require('node:fs');
@@ -36,7 +36,9 @@ function snapshot(video, project, lang) {
   return { content, hash: digest(content), estimate: source.layoutScript({}), source };
 }
 function status(video, project, languages = project.languages) {
-  if (project.review === undefined) return { ok: true, legacy: true, problems: [], details: ['旧项目未启用版本闸门；仍按原有人工审稿规则执行。'] };
+  if (project.review === undefined) return project.layout >= 2
+    ? { ok: false, legacy: false, problems: ['新版项目缺少 review：不能删除校对配置来绕过确认'], details: [] }
+    : { ok: true, legacy: true, problems: [], details: ['旧项目未启用版本闸门；仍按原有人工审稿规则执行。'] };
   const problems = [], details = [];
   if (project.review?.required !== true) problems.push('review.required 必须为 true，不能关闭已配置的校对检查');
   const reviewer = project.review?.reviewer;
@@ -82,9 +84,16 @@ function exportReview(video, project, languages) {
       '- 事实、条件与推断：[FACTS.md](../research/FACTS.md)，按句号定位。',
       '- 意见与逐项处理：[校对记录](NOTES.md)。', '', '直接反馈句号、问题与建议即可；制作者修改 script.js 后重新导出。', ''];
     lines.push('写稿与交审前读一遍本阶段的经验规则：`node kit/tools/lessons.js show --stage script`。', '');
+    lines.push('## 连贯阅读', '', '先通读问题、解释与章节推进，再到逐句表定位意见。下文按源稿顺序连接字幕，保留原文字与标点；不含静默 cue。口播读法与停顿另按配音规则核对。', '');
+    for (const scene of current.content.scenes) {
+      const spoken = scene.cues.filter((cue) => !cue.silent);
+      if (!spoken.length) continue;
+      lines.push('### ' + cell(scene.id) + ' · ' + cell(scene.chapter?.join(' ') || '无章节卡'), '', spoken.map((cue) => cell(cue.text)).join(' '), '');
+    }
+    lines.push('## 逐句校对', '');
     for (const scene of current.content.scenes) {
       const timing = current.estimate.scenes.find(item => item.id === scene.id);
-      lines.push('## ' + cell(scene.id) + ' · ' + cell(scene.chapter?.join(' ') || '无章节卡'), '',
+      lines.push('### ' + cell(scene.id) + ' · ' + cell(scene.chapter?.join(' ') || '无章节卡'), '',
         '预估 ' + (timing.end - timing.start).toFixed(1) + ' 秒。', '', '| 句号 | 字幕 / 旁白原文 |', '|---|---|');
       for (const cue of scene.cues) lines.push('| ' + cell(cue.id) + ' | ' + (cue.silent ? '（无旁白；画面停留）' : cell(cue.text)) + ' |');
       lines.push('');

@@ -1,6 +1,7 @@
 {
   "slug": "{{SLUG}}",
   "layout": 2,
+  "license": "GPL-3.0-or-later",
   "languages": {{LANGS_JSON}},
   "titles": {{TITLES_JSON}},
   "stage": "brief",

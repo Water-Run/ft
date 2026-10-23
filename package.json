@@ -13,11 +13,12 @@
     "catalog": "node kit/tools/catalog.js",
     "new": "node kit/tools/new.js",
     "review": "node kit/tools/script-review.js",
-    "feedback": "node kit/tools/feedback.js",
+    "lessons": "node kit/tools/lessons.js",
     "clean": "node kit/tools/clean.js",
     "test": "node --test kit/tests/workflow.test.js",
     "check:repo": "node kit/tools/repo-check.js",
-    "smoke": "node kit/tools/smoke.js"
+    "smoke": "node kit/tools/smoke.js",
+    "smoke:media": "node kit/tools/media-smoke.js"
   },
   "dependencies": {
     "gsap": "3.13.0",

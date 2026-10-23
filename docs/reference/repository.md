@@ -28,6 +28,7 @@ ft/
   videos/
     catalog.json             片单：全部系列与视频的唯一登记
     README.md                片单索引（生成）
+    CREDITS.md               模型参与片目、各片分工与署名缺口（生成）
     <系列>/
       README.md              系列说明
       <片>/                  系列里的一集
@@ -63,13 +64,15 @@ videos/<系列或 standalone>/<片>/
 
 新片（`project.json` 的 `layout` 为 2）只放这些；`repo-check.js` 拒绝多出来的文件，例如每片的 `AGENTS.md`、`brief/`、`DELIVERY.md`——任务入口是根目录的 `AGENTS.md`，简报、交接与交付说明都在 README 里。2026-10-20 之前开工的片子保留各自当时的结构，不追改。
 
+尚未开工或经策划者要求清除旧成果的选题，可以只保留 `README.md` 中的简报与人工要求，片单状态为 `planned`，不保留 `project.json` 或旧取证、制作文件。`new.js <slug>` 只在「计划中且目录仅有 README」时保留该文件原文并建立其余骨架；有任何其他文件仍拒绝覆盖。
+
 运行时不依赖另一部片子的目录。引擎是立项时拷入的快照，之后升级 `kit/engine/` 不影响已有的片子。
 
 ## 3. 生成的文件
 
 | 文件 | 由谁生成 | 源头 |
 |---|---|---|
-| `videos/README.md`、各系列说明（`videos/<系列>/README.md`）的分集表 | `catalog.js` | `videos/catalog.json` 与各片 `project.json` |
+| `videos/README.md`、`videos/CREDITS.md`、各系列说明（`videos/<系列>/README.md`）的分集表 | `catalog.js` | `videos/catalog.json` 与各片 `project.json` |
 | `docs/lessons.md` 的规则表 | `lessons.js render` | `docs/lessons.json` |
 | `review/script.*.md` | `script-review.js export` | `src/js/script.js` |
 | `src/js/timing.*.js` | `tts.js` | 旁白与实际合成结果 |
@@ -84,6 +87,8 @@ npm test
 npm run check:repo
 ```
 
-前者在隔离的临时仓库里验证新建、校对、经验规则、清理归档恢复、路径边界与制作锁；后者检查入库边界、根目录、经验规则与反馈记录的编号、依赖锁、工具语法、文档登记与链接、视频目录、片单与署名。它们不检查网络链接、片中事实或成片观感。模板、浏览器或引擎相关的改动另跑 `npm run smoke`。
+前者在隔离的临时仓库里验证新建、校对、经验规则、清理归档恢复、路径边界与制作锁；后者检查入库边界、根目录、经验规则与反馈编号、依赖锁、npm 入口、工具语法、文档登记与文件链接、共享现行文档的章节链接、视频目录、片单与署名。它们不检查网络链接、片中事实或成片观感。模板、浏览器或引擎相关的改动另跑 `npm run smoke`（包括中英文 GPL 标识可见性）。
 
 CI 覆盖 Windows、Linux、macOS 与 Node 22.12 / 24。共享规则修改遵循「文档 → 模板 → 工具 → 测试」的对应关系，规则见 [文档地图](../README.md) 第 5 节。
+
+修改渲染、混音、封装或交付报告时，另跑 `npm run smoke:media`：在忽略的练习目录生成合成音画，验证真实媒体管线与错误分支。需要 Chrome、ffmpeg/ffprobe、Python 和 NumPy；不调用在线配音，也不代替真实影片的内容与视听验收。

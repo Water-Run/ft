@@ -11,6 +11,7 @@
 // 引擎文件（engine.js、util.js、boot.js、base.css）是拷进视频目录的快照：之后工具包怎么改，都不影响已经做完的片子。
 // 策划、校对者与源码仓库取 kit/studio.json；参与的模型在制作中如实补进 project.json 的 credits（docs/roles.md 第 5 节）。
 // --scratch：生成到 out/sandbox/<slug>，不改片单，供首次练习与模板验证。
+// 计划中且目录仅有 README.md 时，保留该简报原文并生成其余骨架；已有项目或其他文件仍拒绝覆盖。
 const fs = require('fs'), path = require('path');
 const { parseArgs } = require('node:util');
 const catalog = require('./catalog');
@@ -50,11 +51,14 @@ const seriesLangs = (series && series.languages) || catalog.DEFAULT_LANGS;
 if (opt('langs')) { entry.languages = opt('langs').split(','); if (entry.languages.join() === seriesLangs.join()) delete entry.languages; }   // 与系列缺省相同就不写，由系列继承
 const langs = entry.languages || seriesLangs;
 if (!langs.length || new Set(langs).size !== langs.length || langs.some((lang) => !['zh', 'en'].includes(lang))) { console.error('当前模板支持 zh、en，语言不能重复；扩展其他语言需先适配模板。'); process.exit(2); }
+const wasPlanned = (entry.status || 'planned') === 'planned';
 entry.status = 'in-progress';
 // 目录：videos/<系列或 standalone>/<slug>/；练习目录在 out/sandbox/<slug>/
 const relative = scratch ? 'out/sandbox/' + slug : catalog.dirOf(entry), dir = path.join(REPO, relative);
 require('./project-files').noLinks(dir);
-if (fs.existsSync(dir) && fs.readdirSync(dir).length) { console.error(`目录已存在且不为空：${relative}`); process.exit(1); }
+const existing = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
+const keepBrief = !scratch && wasPlanned && existing.length === 1 && existing[0] === 'README.md' && fs.lstatSync(path.join(dir, 'README.md')).isFile();
+if (existing.length && !keepBrief) { console.error(`目录已存在且不为空：${relative}`); process.exit(1); }
 const starterDir = series && series.starter ? path.join(KIT, 'starters', series.starter) : null;
 // 起点只带可复用的骨架：src/、project.json（阈值与占位符）、tools/、README.md 说明。校对、确认与事实记录属于某一集的历史，不许进起点。
 const STARTER_ALLOWED = ['src', 'tools', 'README.md', 'project.json'];
@@ -81,6 +85,7 @@ const vars = {
   TIMING_TAGS: langs.map((l) => `<script src="js/timing.${l}.js"></script>`).join('\n'),
 };
 const copyOne = (src, dst) => {
+  if (keepBrief && dst === path.join(dir, 'README.md')) return;
   if (fs.lstatSync(src).isSymbolicLink()) throw new Error('模板或起点不能包含符号链接：' + path.basename(src));
   if (/\.(js|css|html|md|json|txt|yml|yaml)$/.test(src)) fs.writeFileSync(dst, fs.readFileSync(src, 'utf8').replace(/\{\{([A-Z0-9_]+)\}\}/g, (x, k) => (vars[k] != null ? vars[k] : x)));
   else fs.copyFileSync(src, dst);
@@ -126,7 +131,7 @@ if (starterDir) {
 }
 const projectFile = path.join(dir, 'project.json'), project = JSON.parse(fs.readFileSync(projectFile, 'utf8'));
 delete project.production; delete project.feedback;
-Object.assign(project, { slug, languages: langs, layout: 2, stage: 'brief', next: '写简报（受众、核心问题、时长），开始取证' });
+Object.assign(project, { slug, languages: langs, layout: 2, license: 'GPL-3.0-or-later', stage: 'brief', next: '写简报（受众、核心问题、解释路径与取舍），开始取证' });
 project.credits = { planner: studio.planner, models: [], services: [], repository: studio.repository };
 project.review = { required: true, reviewer: studio.reviewer };
 fs.writeFileSync(projectFile, JSON.stringify(project, null, 2) + '\n');

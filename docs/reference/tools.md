@@ -13,21 +13,22 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 
 ## 1. 一览
 
-表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js`、`voices.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
+表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js`、`media-smoke.js`、`voices.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
 
 | 工具 | 作用 | 语言 | 大致耗时 |
 |---|---|---|---|
-| `new.js <片> [--series <系列>]` | 新建并登记片单；系列有起点时盖上起点；`--scratch` 在 `out/sandbox/` 练习且不改片单；策划、校对者与仓库取 studio 配置 | — | 瞬间 |
+| `new.js <片> [--series <系列>]` | 新建并登记片单；计划中且仅有 README 的目录保留简报原文；系列有起点时盖上起点；`--scratch` 在 `out/sandbox/` 练习且不改片单；策划、校对者与仓库取 studio 配置 | — | 瞬间 |
 | `doctor.js [视频]` | 完整环境自检；`--visual` 只查 Node、浏览器与字体；只诊断不清理 | — | 几秒 |
-| `script-review.js export / check` | 导出逐句校对稿 / 核对内容与人工确认记录，见 [文案校对](../guides/script-review.md) | 导出主语言，检查全部；可用 `--lang` | 瞬间 |
+| `script-review.js export / check` | 同一源稿导出连贯阅读与逐句校对视图 / 核对内容与人工确认记录，见 [文案校对](../guides/script-review.md) | 导出主语言，检查全部；可用 `--lang` | 瞬间 |
 | `lessons.js show [--stage 阶段]` | 打印经验规则；开工前读这一阶段的几条。`render` 重新生成 `docs/lessons.md` | — | 瞬间 |
 | `lessons.js <视频> sync / check [--final]` | 把新增或改变的规则带入本片的 `review/lessons.json`；`check --final` 核对每条都有结论 | — | 瞬间 |
 | `readable.js [--scene 场景]` | 量每段文字的完整可读时长，对照经验规则 F04 的下限 | 第一种 | 每分钟片长约半分钟 |
 | `clean.js <视频>` | 默认预览；`--archive <新目录> --apply` 归档校验后清理；`--verify <归档>` 核对备份 | 全部 | 取决于文件量 |
-| `repo-check.js` | 入库边界、根目录、经验规则、依赖锁、工具语法、文档登记与链接、视频目录、片单与署名 | — | 几秒 |
-| `smoke.js` | 新建隔离练习、导出稿本、打开中英模板截图；不配音 | 中文、英文 | 约十几秒 |
+| `repo-check.js` | 入库边界、根目录、经验规则、依赖锁、npm 命令入口、工具语法、文档登记与链接、视频目录、片单与署名 | — | 几秒 |
+| `smoke.js` | 新建隔离练习、导出稿本、打开中英模板截图、核对 GPL 标识可见；不配音 | 中文、英文 | 约十几秒 |
+| `media-smoke.js` | 隔离合成短片跑真实渲染、混音、封装和封面，验证文件替换、媒体命令失败、跳过检查、片尾静止会被挡住；需完整媒体环境，不联网配音 | 中文测试夹具 | 约一分钟 |
 | `assets.js` | 核对字体与语音识别模型；`--fetch` 下载 | — | 视网络 |
-| `catalog.js` | 核对片单并生成 `videos/README.md` 与各系列说明的分集表；`--check` 只核对 | — | 瞬间 |
+| `catalog.js` | 核对片单并生成 `videos/README.md`、`videos/CREDITS.md` 与各系列说明的分集表；`--check` 只核对 | — | 瞬间 |
 | `tts.js` | 合成旁白，写 `timing.<语言>.js`，打印时间线 | 全部 | 有缓存时几秒 |
 | `tts_probe.js "写法一" "写法二"` | 读法试验：各合成一句并回听 | 第一种 | 约半分钟 |
 | `voices.js [--engine edge,minimax] [--lang zh,en] [--only 字样] [--zip]` | 音色试听库：同一段范例文本用每个可用音色各合成一遍，生成 `out/voices/index.html` 试听页（见 [文案与配音](../guides/script.md) 第 9 节） | — | 有缓存时几秒；全部重合成约十分钟 |
@@ -152,8 +153,9 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `tts` | 可选。配音引擎：`{ "engine": "minimax" 或 { "zh": "minimax", "en": "edge" }, "model": "speech-2.8-hd", "voice": { "zh": "<MiniMax 音色 id>" }, "speed": { "zh": 1.0 } }`。没有这一块，或该语言引擎为 `edge`，照旧按 `voices`、`rates` 走 edge-tts。MiniMax 密钥取环境变量 `MINIMAX_API_KEY` 或 `kit/local/minimax-tts.md`（不入库），接口区域可在 `kit/config.local.json` 写 `minimax_base`；本机没有密钥时整种语言退回 edge-tts。缓存键含引擎、模型、音色、语速与文本 |
 | `asr_prompts` | 给语音识别的提示：一句话说明内容并带上术语的正确拼写，回听时识别得更准 |
 | `layout` | 新片为 `2`：目录按 [仓库结构](repository.md) 第 2 节的新约定；没有这一项的是 2026-10-20 之前开工的旧片 |
+| `license` | 新片为 `GPL-3.0-or-later`，片尾从这里显示；旧配置省略时按仓库许可。第三方材料按其实际许可单列，见[开源交付](third-party.md) |
 | `stage`、`next` | 当前阶段与下一步，取值见 [制作周期](../process.md) 第 1 节；片单索引据此显示。每次停工前更新 |
-| `credits` | 署名的唯一来源：`planner`、`models`（`name` 为真实型号，`roles` 为实际分工）、`services`（配音、语音识别、检索等服务）、`repository`。片尾名单从这里读，写法见 [角色与权限](../roles.md) 第 5 节 |
+| `credits` | 署名的唯一来源：`planner` 为策划者选定的公开署名（姓名、昵称或笔名均可）；`models` 记录准确型号与实际分工；`services` 记录配音、语音识别、检索等服务；`repository` 为源码仓库。`check.js --final` 核对字段和片尾，并检查署名变更后成片是否过期；不能补造缺失的渲染记录。写法见[署名规则](../roles.md#5-署名) |
 | `review` | `{ "required": true, "reviewer": "WaterRun" }`（fork 配置实际校对者）；内容哈希、日期、依据在本片 `review/approval.json` |
 | `delivery` | 交付后填写：`date`，以及各语言最终文件的 `duration`（秒，实测） |
 | `release` | 发布后填写，每个平台一条：`platform`、`url`、`date`，可加 `title`、`lang` |
@@ -251,6 +253,8 @@ node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库
 | 文件 | 作用 | 调用方 |
 |---|---|---|
 | `project-files.js` | 路径边界、逐文件哈希与单片制作锁 | 制作、校对与清理工具 |
+| `artifact-record.js` | 产物与输入的内容校验和、源码与配置状态、最终交付报告核对 | 渲染、混音、封装、封面与总闸门 |
+| `credits.js` | 署名字段、片尾静默 cue、完整可见的名单、分工与 GPL 标识 | `catalog.js`、`check.js` |
 | `lib.js` | 公共部分：定位仓库与视频目录、读本机配置、语言、时间线、静态服务器、打开页面 | 多数 Node 工具 |
 | `inspect.js` | 「用文字看画面」的公共部分：收集某一刻可见的元素，做版面判断 | `look.js`、`scan.js` |
 | `pngfix.js` | PNG 的解码，以及 RGBA 到 RGB 的改写 | `render.js`、`inspect.js` |
