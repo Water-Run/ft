@@ -23,7 +23,7 @@
 | 结构（建议） | 它是什么、由谁做 → 从检出里读出来的架构 → 一次任务的完整回合（实测）→ 工具与权限模型 → 上下文管理 → 与其他 Harness 的差异 → 它的来路（沿革） |
 | 演示与取证 | 各集用同一项任务做演示，便于横向比较；这类软件变化快，涉及的版本与日期逐项标明。秒速通《192 秒了解 LLM 的手：Harness 是什么，怎么工作的？》（`videos/in-seconds/harness`）是总论，可作本系列的引子 |
 | 历史变迁 | 每集固定有一节讲沿革，见下 |
-| 视觉与声音 | 每集取自本集的讲解对象，不设系列统一的视觉与配乐（F16、F21） |
+| 视觉与声音 | 按本页定位保持系列视觉风格与节奏；首集将实际共用的版式与节奏约定写回这里。各集的图形取自自身对象、配乐按内容设计，不把上一集的具体方案当作模板（F16、F21）。 |
 | 术语与读法 | 同一批术语（harness、agent loop、工具契约、上下文压缩、审批、沙箱、MCP、ACP）在各集的写法与读法一致；英文原名首次出现时给出原文 |
 
 ### 取证的标准
@@ -75,8 +75,8 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | CodeX CLI 是怎么实现的？ | zh + en | 制作中 | [`codex`](codex/) |
-| 2 | OpenCode 是怎么实现的？ | zh + en | 制作中 | [`opencode`](opencode/) |
+| 1 | CodeX CLI 是怎么实现的？ | zh + en | 计划中 | [`codex`](codex/) |
+| 2 | OpenCode 是怎么实现的？ | zh + en | 计划中 | [`opencode`](opencode/) |
 | 3 | Codewhale | zh + en | 计划中 | `codewhale` |
 | 4 | DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |
 | 5 | OpenClaude | zh + en | 计划中 | `openclaude` |
