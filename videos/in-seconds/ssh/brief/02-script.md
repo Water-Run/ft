@@ -2,11 +2,11 @@
 
 <!-- 准备方填写。脚本的通用写法在 docs/guides/script.md。 -->
 
-旁白已定稿、已合成、读音已核对。全文在 `src/js/script.js`；每句的起止时刻与词边界用 `node kit/tools/timeline.js videos/in-seconds/ssh [句号…]` 查。
+中文旁白已确认，尚未合成，读音尚未回听。全文在 `src/js/script.js`。配音用 MiniMax speech-2.8-hd：中文 `Chinese (Mandarin)_Radio_Host`，英文 `Friendly_Person`，语速 1.0。英文译文未确认，确认前不合成英文。
 
 ## 1. 全文
 
-<!-- 准备方待填：链接 review/ 下各语言已确认的稿本与内容 SHA-256、NOTES.md 的确认记录；不复制另一份可能过期的全文。交接前运行 script-review.js check。 -->
+中文确认稿：[script.zh.3577ae2c…](../review/script.zh.3577ae2c1ba07d7740371bcc5224512679c1b4ad7370a5e0693081a6352b8643.md)，SHA-256 `3577ae2c1ba07d7740371bcc5224512679c1b4ad7370a5e0693081a6352b8643`。依据在 [NOTES.md](../review/NOTES.md) 开头。英文校对稿已导出，`approval.json` 里 en 仍是 pending。
 
 ## 2. 能不能改
 

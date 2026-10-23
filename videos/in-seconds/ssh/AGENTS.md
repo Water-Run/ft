@@ -4,15 +4,11 @@
 
 > **状态：制作中。** 本文件是准备方写给受托模型（Opus 5.5）的任务入口。交付并验收之后，把这一行改为「已交付（日期）」；此后本文件只作记录，不应据此重新开工。
 
-<!-- 准备方：把带「待填」的部分写完，删掉所有这类注释。写法与要求见仓库的 docs/roles.md。 -->
-
-准备方完成交接检查且文案确认有效后，按本文件和任务书做到交付；文案实质改动仍须交指定校对者 WaterRun 确认。规则见仓库 `docs/guides/script-review.md`。
+准备方完成交接检查且中文确认有效后，按本文件和任务书做到交付。文案实质改动仍须交 WaterRun 确认。配音音色已经指定，不要再问，也不要改成 edge-tts。规则见仓库 `docs/guides/script-review.md`。
 
 ## 1. 要做出什么
 
-<!-- 准备方待填：时长、规格、语言；主题的一两句话（有几层意思就写几层）；受众；讲法与语气。 -->
-
-一部 256 秒、1920×1080、60 帧/秒的视频。中文旁白已确认。英文是逐句草稿，未确认。两种语言都要旁白、内嵌字幕、配乐与音效，以及各两版封面。受众是速通系列的入门观众。视觉是卡带未来主义，主色荧光绿。配乐是本片的 90 年代 8 位，不沿用系列计时盘。
+一部 256 秒、1920×1080、60 帧/秒的视频。中文旁白已确认。英文是逐句译文，未确认。两种语言都要旁白、内嵌字幕、配乐与音效，以及各两版封面。受众是速通系列的入门观众。视觉是卡带未来主义，主色荧光绿。配乐是本片的 90 年代 8 位。旁白是 MiniMax speech-2.8-hd：中文 `Chinese (Mandarin)_Radio_Host`，英文 `Friendly_Person`，语速 1.0。
 
 ## 2. 分工
 
@@ -21,8 +17,7 @@
 | 内容 | 位置 |
 |---|---|
 | 事实取证：实验回显、源码、统计、出处 | `research/FACTS.md`、`research/lab/` |
-| 中文旁白（已确认，尚未合成） | `src/js/script.js`、`review/approval.json` |
-| 事实、实验回显 | `research/FACTS.md`、`research/lab/` |
+| 中文旁白（已确认，尚未合成）与英文译文（未确认） | `src/js/script.js`、`review/approval.json` |
 | 视觉系统与配乐方向 | `research/STYLE.md`、`src/css/style.css`、`tools/music.py` |
 | 每句画面上必须有的文字 | `expect.zh.json` |
 | 交接说明 | 本片 README 的「简报」「交接」 |
@@ -50,14 +45,14 @@
 | 8 | 仓库 `docs/guides/scenes.md`、`docs/guides/sound.md`，再读 `brief/05-motion-sound.md` | 镜头、动作、音效、配乐的通用规则与本片的特别规定 |
 | 9 | 仓库 `docs/reference/tools.md`、`docs/reference/engine.md`、`docs/reference/pitfalls.md` | 工具与引擎的用法、已知的坑 |
 | 10 | 仓库 `docs/guides/acceptance.md`，再读 `brief/06-acceptance.md` | 验收闸门、三项审查、交付说明的写法 |
-| 11 | `src/design/` 下的示范场景与关键帧、`src/css/style.css` | 照着写的范例 |
+| 11 | `research/STYLE.md`、`src/css/style.css` | 视觉系统。没有 `src/design/` 关键帧，构图由制作方定 |
 
 ## 4. 环境
 
 - 工作目录是仓库根目录；本片在 `videos/in-seconds/ssh`。所有命令形如 `node kit/tools/<工具>.js videos/in-seconds/ssh [参数…]`，在任何系统的任何 shell 里用法相同。
 - 开工前运行 `node kit/tools/doctor.js videos/in-seconds/ssh`，确认环境可用。
 - 只在本片目录内读写。不改 `kit/`、`docs/`、别的视频目录；不改本片的 `src/js/engine.js`、`util.js`、`boot.js`、`css/base.css`。
-- 旁白还没有合成。中文确认之后再跑 `tts.js`。英文未确认，不要把它当成定稿去配音。
+- 旁白还没有合成。中文确认后可以合成中文。英文未确认，不要合成英文。音色用 `project.json` 的 `tts`，不要改。
 - 不要启动常驻的本地服务器：每个工具自己起临时服务器，用完即关。
 
 **你很可能不能看图。** 不要假设自己看过画面，也不要在说明里写「画面看起来……」。判断画面一律靠工具的文字输出：`look.js` 把某一时刻画面上每个可见元素的位置、字号、颜色、文字列出来，并指出版面问题；`scan.js` 扫全片。环境确实能读图片时，`shots/` 下的截图可以作为补充。

@@ -37,9 +37,9 @@
     "F06": {
       "rev": 1,
       "result": "pending",
-      "note": "配乐按策划者 2026-10-23 的要求改为程序合成的 90 年代 8 位电子乐（tools/music.py）：方波主旋律、三角波低音、噪声击打，120 拍/分，不采样外部音源。织体随场景加厚，c1 处抬起。听感尚未由人确认。",
+      "note": "配乐按策划者 2026-10-23 的要求改为程序合成的 90 年代 8 位电子乐（tools/music.py）：方波主旋律、三角波低音、噪声击打，120 拍/分，不采样外部音源。织体在 s58 收束处抬起。旁白音色已定为 MiniMax speech-2.8-hd 的电台男主播与 Friendly Person，尚未合成。听感尚未由人确认。",
       "evidence": "",
-      "script_evidence": "tools/music.py；project.json 的 audio.score.lift_cue = c1；research/STYLE.md 的配乐原话"
+      "script_evidence": "tools/music.py；project.json 的 audio.score.lift_cue = s58 与 tts.voice；research/STYLE.md 的配乐原话"
     },
     "F07": {
       "rev": 1,
@@ -79,7 +79,7 @@
     "F12": {
       "rev": 1,
       "result": "pending",
-      "note": "SAY 表已列出每个专名的读法（SSH→S S H、Diffie-Hellman→迪菲-赫尔曼、known_hosts→known hosts、OpenSSH→Open SSH、ssh-ed25519、curve25519-sha256、chacha20-poly1305、ssh-userauth、RFC 4253→R F C 四二五三），h2 一句的读法是「哈希值」而不是字母 H。字幕断句与口播分开设计；按 F17 先试听代表段（o1–o4、d3–d6、a5–a7、c1–c3）再合成全片。",
+      "note": "SAY 表列出 SSH、known_hosts、curve25519-sha256、ssh-ed25519、chacha20-poly1305、RFC 4253、OpenBSD 的读法。中文稿不再念 Diffie-Hellman 的英文拼写，旁白用「迪菲-赫尔曼」。字幕断句与口播分开。合成前先试听 s01–s09、s27–s30、s53–s57、s58–s62。",
       "evidence": "",
       "script_evidence": "src/js/script.js 的 SAY 表与 d2 / h2 / h6 的逐句 tts 字段；review/NOTES.md 的「定稿后的调整」读法表"
     },
@@ -93,7 +93,7 @@
     "F14": {
       "rev": 1,
       "result": "pending",
-      "note": "片尾是 248.00–256.00 的静默 cue：pause: 7.5、credits: true、无 tts、无字幕。署名与模型分工放在 research/FACTS.md 的「制作署名」与本片 README 的「制作署名与片尾」，不进旁白正文。未发生的分工不写：旁白合成与读音回听尚未做，Opus 5.5 尚未开工。",
+      "note": "片尾预定 248.5–256.0 的静默 cue：pause 7.5、credits true、无 tts、无字幕。署名写 MiniMax speech-2.8-hd 与音色 id，不写 Edge TTS。旁白尚未合成，Opus 5.5 尚未开工。口播估算目前长过片尾定点，实测前不删句。",
       "evidence": "",
       "script_evidence": "src/js/script.js 的 outro 场与 z1 cue；research/FACTS.md 的「制作署名」表；README.md 的「制作署名与片尾」"
     },
