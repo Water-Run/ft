@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 203 部：已成片 18，制作中 7，计划中 178。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
+共 203 部：已成片 18，制作中 4，计划中 181。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -38,11 +38,8 @@
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 取证 | 实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审 | 待同步 | GPT-6.1 Sol |
-| [磁带、磁盘和软盘：利用磁力存储的机械年代](storage-media/magnetic/) | [存储介质](storage-media/README.md) | 文案 | 写中文稿，导出交审 | 待同步 | DeepSeek V4.1 Flash 1017 |
-| [150 秒学会怎么打手枪？](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
+| [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 审中文第 1 稿 | 待同步 | MiniMax M3.1 Flash |
-| [96 秒速通模型的各个参数](in-seconds/model-parameters/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 审查四轮自我对抗编辑后的 192 秒中文稿；确认后英译、重写逐句画面约束并试听配音 | 待同步 | MiniMax M3.1 Flash、未记录 |
-| [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 优化中文稿后交 WaterRun 确认 | 待同步 | Grok 4.7 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 全部选题
@@ -144,7 +141,7 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 制作中 | [`magnetic`](storage-media/magnetic/) |  |
+| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 计划中 | [`magnetic`](storage-media/magnetic/) |  |
 | 2 | 旋转的光盘年代 | zh + en | 计划中 | `optical` |  |
 | 3 | 手里的量子力学：闪存的一统天下 | zh + en | 计划中 | `flash` |  |
 
@@ -275,7 +272,7 @@
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | [`two-factor-auth`](in-seconds/two-factor-auth/) |  |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | [`lean4`](in-seconds/lean4/) |  |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 | `how-opus-animates` |  |
-| 4 | 150 秒学会怎么打手枪？<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | [`pistol-shooting`](in-seconds/pistol-shooting/) |  |
+| 4 | 150秒学会怎么打手枪<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | [`pistol-shooting`](in-seconds/pistol-shooting/) |  |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | [`dense-vs-moe`](in-seconds/dense-vs-moe/) |  |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 | `rear-seatbelt` |  |
 | 7 | 256 秒搞懂 SSH | zh + en | 制作中 | [`ssh`](in-seconds/ssh/) |  |
@@ -287,9 +284,9 @@
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 | `modern-crypto` |  |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 | `quantization` |  |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 | `frameworks` |  |
-| 16 | 96 秒速通模型的各个参数<br>Model Parameters in 96 Seconds | zh + en | 制作中 | [`model-parameters`](in-seconds/model-parameters/) |  |
+| 16 | 96 秒速通模型的各个参数<br>Model Parameters in 96 Seconds | zh + en | 计划中 | [`model-parameters`](in-seconds/model-parameters/) |  |
 | 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh + en | 计划中 | `virtual-machine-types` |  |
-| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 制作中 | [`harness`](in-seconds/harness/) |  |
+| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh + en | 计划中 | [`harness`](in-seconds/harness/) |  |
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
 | 20 | 192 秒认识 CoT：先思考，再回答<br>Chain of Thought in 192 Seconds: Think First, Then Answer | zh + en | 计划中 | [`chain-of-thought`](in-seconds/chain-of-thought/) |  |
 | 21 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh + en | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |

@@ -27,7 +27,7 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 制作中 | [`magnetic`](magnetic/) |
+| 1 | 磁带、磁盘和软盘：利用磁力存储的机械年代 | zh + en | 计划中 | [`magnetic`](magnetic/) |
 | 2 | 旋转的光盘年代 | zh + en | 计划中 | `optical` |
 | 3 | 手里的量子力学：闪存的一统天下 | zh + en | 计划中 | `flash` |
 <!-- catalog:end -->

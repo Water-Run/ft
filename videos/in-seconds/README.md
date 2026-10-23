@@ -52,7 +52,7 @@
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 已成片 | [`two-factor-auth`](two-factor-auth/) |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠 | zh + en | 已成片 | [`lean4`](lean4/) |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 | `how-opus-animates` |
-| 4 | 150 秒学会怎么打手枪？ | zh + en | 制作中 | [`pistol-shooting`](pistol-shooting/) |
+| 4 | 150秒学会怎么打手枪 | zh + en | 制作中 | [`pistol-shooting`](pistol-shooting/) |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](dense-vs-moe/) |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 | `rear-seatbelt` |
 | 7 | 256 秒搞懂 SSH | zh + en | 制作中 | [`ssh`](ssh/) |
@@ -64,9 +64,9 @@
 | 13 | 256 秒有关现代密码学 | zh + en | 计划中 | `modern-crypto` |
 | 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 | `quantization` |
 | 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 | `frameworks` |
-| 16 | 96 秒速通模型的各个参数 | zh + en | 制作中 | [`model-parameters`](model-parameters/) |
+| 16 | 96 秒速通模型的各个参数 | zh + en | 计划中 | [`model-parameters`](model-parameters/) |
 | 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
-| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 制作中 | [`harness`](harness/) |
+| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 计划中 | [`harness`](harness/) |
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
 | 20 | 192 秒认识 CoT：先思考，再回答 | zh + en | 计划中 | [`chain-of-thought`](chain-of-thought/) |
 | 21 | 120 秒速通 Harness 是如何压缩上下文的 | zh + en | 计划中 | `context-compaction` |
