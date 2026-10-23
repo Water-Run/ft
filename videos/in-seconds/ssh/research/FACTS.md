@@ -153,7 +153,7 @@
 
 ## 文案审查
 
-2026-10-19 导出第 1 轮。中文稿本 `review/script.zh.489a8237d3a9740d55b80e8e2a30696922dc042353cffd5ea002559b883dd7e0.md`，内容 SHA-256 `489a8237d3a9740d55b80e8e2a30696922dc042353cffd5ea002559b883dd7e0`。英文直译草稿 `review/script.en.543280754b03f0c724f4b4c78ea89ee9e130d3eb9150910704460e097ba3cb1a.md`，内容 SHA-256 `543280754b03f0c724f4b4c78ea89ee9e130d3eb9150910704460e097ba3cb1a`。两者的 `review/approval.json` 状态都是 pending。导出记录与逐句意见见 `review/NOTES.md`。
+2026-10-19 第 1 稿仍在 `review/script.zh.489a8237d3a9740d55b80e8e2a30696922dc042353cffd5ea002559b883dd7e0.md`。2026-10-23 第 2 稿（尚未确认）是 `review/script.zh.23ca426cd3568665be1ad47ae5364057cb39ff120c258d3fd8d36130c60ec675.md`，内容 SHA-256 `23ca426cd3568665be1ad47ae5364057cb39ff120c258d3fd8d36130c60ec675`。英文对照草稿 `review/script.en.cecf20e54f936a87ebf1ccf5f91d3f8f290a3c20f129d2ab3e9c9e9986cdd68c.md`。两者 pending。本文件「句号」列仍按第 1 稿编号；第 2 稿改了哪些句，见 `review/NOTES.md` 的第 2 稿表。确认前不把第 2 稿回写成新的事实行。
 
 英文目前是直译草稿，未定稿；中文确认后重译。
 

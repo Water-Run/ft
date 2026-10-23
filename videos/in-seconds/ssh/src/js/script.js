@@ -9,9 +9,11 @@
 // - 场景的 at 是它开始的时刻（秒）。上一场的旁白说完之后，余下的时间留白到这一刻；说不完就是超出，记入 L.problems，总闸门不通过。
 // - TOTAL 是全片的时长，最后一场补齐到这一刻。
 //
-// 2026-10-19 第 1 稿（MiniMax M3.1 Flash）。主问题：按下回车、SSH 还没登录成功的那一秒里，到底发生了什么。
-// 讲法：一次真实连接贯穿，按时间顺序拆，每一步说清「这一步防住了什么」。
-// 英文目前是直译草稿，等中文确认后重译。
+// 2026-10-23 第 2 稿（Grok 4.7，在第 1 稿上改，尚未经 WaterRun 确认）。
+// 主问题仍是：按下回车之后那一秒里发生了什么。一次连接按时间顺序拆。
+// 本轮：开头先报版本；传输层与认证层的分工说清；迪菲-赫尔曼与这次的 curve25519 分开；
+// OpenSSH 点明是 Windows 上的 9.5p2；边界只留第一次连接的盲区；结论拆成四拍。
+// 英文仍是对照草稿，等中文确认后重译。
 (function (root) {
   const isBrowser = typeof window !== 'undefined';
   const LANG = (isBrowser ? new URLSearchParams(location.search).get('lang') : process.env.VLANG) || 'zh';
@@ -25,9 +27,9 @@
       id: 'open', at: 0, chap: null, lead: 0.1, tail: 0.18,
       cues: [
         ['o1', { zh: '敲下 *ssh* 命令，回车，屏幕静了一秒。', en: 'Type the *ssh* command, press Enter. Silence.' }, { gap: 0.22 }],
-        ['o2', { zh: '这一秒里，两台机器换出一把外人算不出的密钥。', en: 'Both machines agreed a key nobody else can compute.' }, { gap: 0.22 }],
-        ['o3', { zh: '服务器亮出身份证明，你才被放进去。', en: 'The server shows who it is. Then you get in.' }, { gap: 0.22 }],
-        ['o4', { zh: '这套流程叫 *SSH*，本片把它拆开看。', en: 'This is called *SSH*. We take it apart.' }, { gap: 0.22 }],
+        ['o2', { zh: '这一秒里，两端先报上自己的版本。', en: 'In that second, both sides first announce a version.' }, { gap: 0.22 }],
+        ['o3', { zh: '然后才换密钥，并验明服务器。', en: 'Then they make a key, and check the server.' }, { gap: 0.22 }],
+        ['o4', { zh: '这套流程叫 *SSH*，本片按这一次连接拆开。', en: 'This is called *SSH*. We follow one connection.' }, { gap: 0.22 }],
         ['oT', null, { pause: 2.2, gap: 0 }],
       ],
     },
@@ -38,47 +40,46 @@
         ['w1', { zh: '*SSH* 是一套协议，不是一个程序。', en: '*SSH* is a protocol, not a program.' }, { gap: 0.22 }],
         ['w2', { zh: '1995 年，Tatu Ylonen 公开了第一个版本。', en: 'In 1995, Tatu Ylonen published the first version.' }, { gap: 0.22 }],
         ['w3', { zh: '2006 年，它成了标准文档 *RFC 4253*。', en: 'In 2006 it became a standard, RFC *4253*.' }, { gap: 0.22 }],
-        ['w4', { zh: '它分成好几层，本片讲最底下那层。', en: 'It has several layers; this film covers the bottom one.' }, { gap: 0.22 }],
-        ['w5', { zh: '这一层只认服务器是谁，不认你是谁。', en: 'This layer proves who the server is, never who you are.' }, { gap: 0.22 }],
-        ['w6', { zh: '认你是谁，是上面另一个协议的事。', en: 'Proving who you is a protocol one layer up.' }, { gap: 0.22 }],
-        ['w7', { zh: '现在用的 *ssh* 来自 OpenBSD 项目。', en: 'The *ssh* used today comes from the OpenBSD project.' }, { gap: 0.22 }],
+        ['w4', { zh: '它分成两层。底下这层先认服务器。', en: 'It has two layers. The lower one checks the server first.' }, { gap: 0.22 }],
+        ['w5', { zh: '这一层不认你是谁。', en: 'This layer does not check who you are.' }, { gap: 0.22 }],
+        ['w6', { zh: '认你是谁，留到上面那一层，后半段再讲。', en: 'Who you are waits for the upper layer, later in this film.' }, { gap: 0.22 }],
+        ['w7', { zh: '今天这份 *ssh*，由 OpenBSD 项目的开发者维护。', en: 'Today\'s *ssh* is maintained by OpenBSD project developers.' }, { gap: 0.22 }],
       ],
     },
     {
       // 算法清单协商：各发一份清单，按偏好排序，取第一个共同的；没有就断开。
       id: 'kex', at: 45.03, chap: null, lead: 0.1, tail: 0.18,
       cues: [
-        ['k1', { zh: '连上之后，两端先各发一份清单。', en: 'Once connected, both sides send a list.' }, { gap: 0.22 }],
+        ['k1', { zh: '报完版本，两端各发一份清单。', en: 'After the versions, each side sends a list.' }, { gap: 0.22 }],
         ['k2', { zh: '清单里写着自己支持哪些算法，按偏好排。', en: 'Each list names supported algorithms, by preference.' }, { gap: 0.22 }],
         ['k3', { zh: '加密算法取客户端清单里第一个对方有的。', en: 'The cipher is the first on the client list the server has.' }, { gap: 0.22 }],
         ['k4', { zh: '一个共同的都没有，双方当场断开。', en: 'With none in common, both sides disconnect.' }, { gap: 0.22 }],
-        ['k5', { zh: '这一条连接用的软件是 OpenSSH 9.5p2。', en: 'The software here is OpenSSH 9.5p2.' }, { gap: 0.22 }],
+        ['k5', { zh: '这条连接用的是 Windows 上的 OpenSSH 9.5p2。', en: 'This connection uses OpenSSH 9.5p2 for Windows.' }, { gap: 0.22 }],
         ['k6', { zh: '密钥交换用 *curve25519-sha256*。', en: 'Key exchange uses *curve25519-sha256*.' }, { gap: 0.22 }],
         ['k7', { zh: '主机身份用 *ssh-ed25519*。', en: 'The host identity uses *ssh-ed25519*.' }, { gap: 0.22 }],
         ['k8', { zh: '加密用 *chacha20-poly1305*。', en: 'Encryption uses *chacha20-poly1305*.' }, { gap: 0.22 }],
+        ['k9', { zh: '这几项是这一次的结果，不是规范里的必选项。', en: 'These are this connection\'s results, not the spec\'s required set.' }, { gap: 0.22 }],
       ],
     },
     {
       // 密钥交换：迪菲-赫尔曼。双方各算一半，结果相同，这个数不过网。
-      id: 'dh', at: 77.39, chap: null, lead: 0.1, tail: 0.18,
+      id: 'dh', at: 83.2, chap: null, lead: 0.1, tail: 0.18,
       cues: [
-        ['d1', { zh: '换密钥，用的是一个双方各算一半的办法。', en: 'Both sides compute half of the key.' }, { gap: 0.22 }],
-        ['d2', { zh: '方法叫 *Diffie-Hellman*。', en: 'The method is called *Diffie-Hellman*.' }, { gap: 0.22 }],
-        ['d3', { zh: '客户端随机取一个数，算出 e，发给服务器。', en: 'The client picks x, computes e, sends it.' }, { gap: 0.22 }],
-        ['d4', { zh: '服务器也随机取一个数，算出 f，发回来。', en: 'The server picks y, computes f, sends back.' }, { gap: 0.22 }],
-        ['d5', { zh: '两边各自把对方的数乘上自己的秘密。', en: 'Each multiplies the other number by its secret.' }, { gap: 0.22 }],
-        ['d6', { zh: '两边算出同一个数，只有它们算得出。', en: 'Both sides get the same number. Only they can.' }, { gap: 0.22 }],
-        ['d7', { zh: '这个共同的密钥，没有在网络上传输过。', en: 'That shared key was never transmitted.' }, { gap: 0.22 }],
-        ['d8', { zh: '窃听者只看到 e 和 f，算不出这个数。', en: 'A listener sees e and f, cannot compute it.' }, { gap: 0.22 }],
-        ['d9', { zh: '但这套办法不认服务器，还得再验一次身份。', en: 'But this does not identify the server. Separate step.' }, { gap: 0.22 }],
+        ['d1', { zh: '规范正文先写另一种换法，叫 *Diffie-Hellman*。', en: 'The spec first describes another method, *Diffie-Hellman*.' }, { gap: 0.22 }],
+        ['d2', { zh: '两边各留一个秘密，把算出来的数发给对方。', en: 'Each side keeps a secret and sends a computed number.' }, { gap: 0.22 }],
+        ['d3', { zh: '两边各自算出同一个密钥。', en: 'Both sides each compute the same key.' }, { gap: 0.22 }],
+        ['d4', { zh: '这个密钥本身，不在网上传输。', en: 'That key itself is not transmitted.' }, { gap: 0.22 }],
+        ['d5', { zh: '这次连接没有用这种换法。', en: 'This connection did not use that method.' }, { gap: 0.22 }],
+        ['d6', { zh: '回显里写的是 *curve25519-sha256*。', en: 'The log names *curve25519-sha256*.' }, { gap: 0.22 }],
+        ['d7', { zh: '换密钥本身，还不认服务器是谁。', en: 'Key exchange alone does not identify the server.' }, { gap: 0.22 }],
       ],
     },
     {
       // 主机密钥：签名交换哈希，客户端验签，再跟 known_hosts 对照。
-      id: 'hostkey', at: 109.93, chap: null, lead: 0.1, tail: 0.18,
+      id: 'hostkey', at: 108.2, chap: null, lead: 0.1, tail: 0.18,
       cues: [
         ['h1', { zh: '服务器有一把身份密钥，叫主机密钥。', en: 'The server has an identity key, the host key.' }, { gap: 0.22 }],
-        ['h2', { zh: '刚才那个共同的数，和两边的标识，凑成一个哈希 H。', en: 'The shared number and both IDs hash into one.' }, { gap: 0.22, tts: { zh: '刚才那个共同的数，和两边的标识，凑成一个哈希值。', en: 'The shared number and both IDs hash into one.' } }],
+        ['h2', { zh: '服务器要签的，是这次交换得到的一个哈希。', en: 'The server signs a hash from this exchange.' }, { gap: 0.22, tts: { zh: '服务器要签的，是这次交换得到的一个哈希值。', en: 'The server signs a hash from this exchange.' } }],
         ['h3', { zh: '服务器用主机私钥给这个哈希签名。', en: 'The server signs that hash with the host private key.' }, { gap: 0.22 }],
         ['h4', { zh: '客户端用主机公钥验这个签名，对不上就断开。', en: 'The client checks the signature; mismatch ends it.' }, { gap: 0.22 }],
         ['h5', { zh: '公钥还得跟本地存的那份对得上，才算数。', en: 'It must match the copy stored locally.' }, { gap: 0.22 }],
@@ -90,7 +91,7 @@
     },
     {
       // 密钥派生：六次哈希，A 到 F；之后全部加密，连包头一起。
-      id: 'derive', at: 145.07, chap: null, lead: 0.1, tail: 0.18,
+      id: 'derive', at: 142.6, chap: null, lead: 0.1, tail: 0.18,
       cues: [
         ['r1', { zh: '身份对了，还要把共同的数变成能用的密钥。', en: 'Identity settled, the number must become real keys.' }, { gap: 0.22 }],
         ['r2', { zh: '办法是反复做哈希，每做一次加一个字母。', en: 'Hash repeatedly, adding a letter each time.' }, { gap: 0.22 }],
@@ -99,16 +100,17 @@
         ['r5', { zh: 'C、D 是加密密钥，E、F 是完整性密钥。', en: 'C and D are encryption keys, E and F integrity.' }, { gap: 0.22 }],
         ['r6', { zh: '从这一刻起，发出去的内容全部加密。', en: 'From then on, everything sent is encrypted.' }, { gap: 0.22 }],
         ['r7', { zh: '连包头一起加密，外面看不出传的是什么。', en: 'Even the header is encrypted. Nothing shows outside.' }, { gap: 0.22 }],
-        ['r8', { zh: '每包都算一次校验码，传多了要换一次密钥。', en: 'Every packet carries a check code; long transfers rekey.' }, { gap: 0.22 }],
+        ['r8', { zh: '每包都算一次校验码。', en: 'Every packet carries a check code.' }, { gap: 0.22 }],
+        ['r9', { zh: '双方再各发一条消息，新密钥从下一条开始生效。', en: 'Each side then sends one message. The next packets use the new keys.' }, { gap: 0.22 }],
       ],
     },
     {
       // 用户认证：ssh-userauth 服务，公钥认证，报公钥、签数据、验签。
-      id: 'userauth', at: 174.35, chap: null, lead: 0.1, tail: 0.18,
+      id: 'userauth', at: 176.4, chap: null, lead: 0.1, tail: 0.18,
       cues: [
         ['a1', { zh: '服务器是谁已经清楚了，现在该证明你是谁。', en: 'The server is settled. Now you must prove who you are.' }, { gap: 0.22 }],
         ['a2', { zh: '接着客户端请求认证服务，叫 *ssh-userauth*。', en: 'The client requests the auth service, *ssh-userauth*.' }, { gap: 0.22 }],
-        ['a3', { zh: '认证方法里，公钥认证是必须实现的一种。', en: 'Public key is the one auth method that must be implemented.' }, { gap: 0.22 }],
+        ['a3', { zh: '公钥认证是唯一必须实现的方法。', en: 'Public key is the only method that must be implemented.' }, { gap: 0.22 }],
         ['a4', { zh: '客户端先把公钥报过去，服务器回一个确认包。', en: 'The client offers the public key; the server acknowledges.' }, { gap: 0.22 }],
         ['a5', { zh: '客户端用私钥签一份数据：会话标识、用户名、方法名。', en: 'The client signs with the private key: session id, user name.' }, { gap: 0.22 }],
         ['a6', { zh: '服务器拿公钥验这份签名，对了就放行。', en: 'The server checks the signature with the public key, then admits you.' }, { gap: 0.22 }],
@@ -118,24 +120,23 @@
     },
     {
       // 边界：第一次连接的盲区、转发认证代理、端口转发；外加重换密钥的规矩。
-      id: 'edge', at: 207.67, chap: null, lead: 0.1, tail: 0.18,
+      id: 'edge', at: 209.2, chap: null, lead: 0.1, tail: 0.18,
       cues: [
-        ['e1', { zh: '这套办法有三处要留心。', en: 'There are three places to watch.' }, { gap: 0.22 }],
-        ['e2', { zh: '第一处：第一次连接没有记录可比，是它自己的盲区。', en: 'First: on the first connection there is no record to compare.' }, { gap: 0.22 }],
-        ['e3', { zh: '第二处：转发认证代理，等于把钥匙的用法也交出去。', en: 'Second: forwarding the agent hands over your keys’ use.' }, { gap: 0.22 }],
-        ['e4', { zh: '对方主机上能碰代理的人，就能借你的身份登录。', en: 'Anyone reaching the agent there can log in as you.' }, { gap: 0.22 }],
-        ['e5', { zh: '第三处：端口转发能在隧道里再开一条通道。', en: 'Third: port forwarding opens another channel in the tunnel.' }, { gap: 0.22 }],
-        ['e6', { zh: '能到哪儿，取决于两端的配置，不只由加密保证。', en: 'How far it reaches depends on both ends, not encryption.' }, { gap: 0.22 }],
-        ['e7', { zh: '还有一条：传够 1 GB 或连够一小时，就换一次密钥。', en: 'One more rule: after a gigabyte or an hour, keys change.' }, { gap: 0.22 }],
+        ['e1', { zh: '有一处要留心。', en: 'One place to watch.' }, { gap: 0.22 }],
+        ['e2', { zh: '第一次连接，本地没有旧记录可比。', en: 'On the first connection, there is no old record.' }, { gap: 0.22 }],
+        ['e3', { zh: '这时不核对就接受，就挡不住有人冒充服务器。', en: 'Accepting it unchecked does not stop an impersonator.' }, { gap: 0.22 }],
       ],
     },
     {
       // 结论：回到开头的那一秒。
-      id: 'close', at: 237.34, chap: null, lead: 0.1, tail: 0.18,
+      id: 'close', at: 219.4, chap: null, lead: 0.4, tail: 0.3,
       cues: [
-        ['c1', { zh: '所以那一秒，做完了四件事。', en: 'In that second, four things happened.' }, { gap: 0.22 }],
-        ['c2', { zh: '协商算法，换出密钥，验明服务器，证明自己。', en: 'Negotiate, agree a key, verify server, prove yourself.' }, { gap: 0.22 }],
-        ['c3', { zh: '登录框出现前，这四件事已经做完了。', en: 'All four were done before the prompt appeared.' }, { gap: 0.22 }],
+        ['c1', { zh: '所以那一秒，做完了四件事。', en: 'So that second did four things.' }, { gap: 0.6 }],
+        ['c2', { zh: '对上算法。', en: 'Agree the algorithms.' }, { gap: 3.1 }],
+        ['c3', { zh: '换出密钥。', en: 'Make a key.' }, { gap: 3.1 }],
+        ['c4', { zh: '验明服务器。', en: 'Check the server.' }, { gap: 3.1 }],
+        ['c5', { zh: '证明自己。', en: 'Prove yourself.' }, { gap: 3.1 }],
+        ['c6', { zh: '登录框出现前，这四件事已经做完。', en: 'All four were done before the prompt.' }, { gap: 0.4 }],
       ],
     },
     {

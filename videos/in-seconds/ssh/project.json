@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "review",
-  "next": "与 WaterRun 展开中文稿对抗审稿；视觉已改为卡带未来主义，场景等文案确认后再画",
+  "next": "等 WaterRun 审中文第 2 稿；确认前不配音、不画正式场景",
   "credits": {
     "planner": "WaterRun",
     "models": [
