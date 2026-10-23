@@ -28,7 +28,7 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | Metro | zh + en | 计划中 | `metro-design` |
-| 2 | Spectrum | zh + en | 制作中 | [`spectrum`](spectrum/) |
+| 2 | Spectrum | zh + en | 计划中 | [`spectrum`](spectrum/) |
 | 3 | Carbon Design | zh + en | 计划中 | `carbon` |
 | 4 | Material 3 | zh + en | 计划中 | `material-3` |
 | 5 | Fluent 2 | zh + en | 计划中 | `fluent-2` |
