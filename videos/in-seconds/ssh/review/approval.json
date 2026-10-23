@@ -2,15 +2,15 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "23ca426cd3568665be1ad47ae5364057cb39ff120c258d3fd8d36130c60ec675",
+      "status": "approved",
+      "content_sha256": "3577ae2c1ba07d7740371bcc5224512679c1b4ad7370a5e0693081a6352b8643",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-24T00:28:57+08:00",
+      "evidence": "2026-10-24 会话：WaterRun 对三句修改回复「可以」，并要求结束与 Gemini 的沟通，完成准备后交给 Opus。确认的是 SSH-ZH-R3 加上这三句，记录在 review/NOTES.md。"
     },
     "en": {
       "status": "pending",
-      "content_sha256": "cecf20e54f936a87ebf1ccf5f91d3f8f290a3c20f129d2ab3e9c9e9986cdd68c",
+      "content_sha256": "027d26c337ec59e967356a1dd9012d38c253fd9b6a20cfba5bc032109f884598",
       "reviewer": "WaterRun",
       "confirmed_at": "",
       "evidence": ""

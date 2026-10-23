@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
-  "stage": "review",
-  "next": "SSH-ZH-R3 可作工作稿。若再交 Gemini，只改 GEMINI-R3-NOTE.md 里的三句。确认前不配音、不画正式场景",
+  "stage": "design",
+  "next": "交给 Opus 5.5。中文已确认。先配音看实测时长，再画场景。英文未确认",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -25,7 +25,7 @@
       {
         "name": "Gemini 4 Argon",
         "roles": [
-          "中文稿优化"
+          "中文稿"
         ]
       }
     ],

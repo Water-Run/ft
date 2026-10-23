@@ -153,7 +153,7 @@
 
 ## 文案审查
 
-2026-10-19 第 1 稿仍在 `review/script.zh.489a8237d3a9740d55b80e8e2a30696922dc042353cffd5ea002559b883dd7e0.md`。2026-10-23 第 2 稿（尚未确认）是 `review/script.zh.23ca426cd3568665be1ad47ae5364057cb39ff120c258d3fd8d36130c60ec675.md`，内容 SHA-256 `23ca426cd3568665be1ad47ae5364057cb39ff120c258d3fd8d36130c60ec675`。英文对照草稿 `review/script.en.cecf20e54f936a87ebf1ccf5f91d3f8f290a3c20f129d2ab3e9c9e9986cdd68c.md`。两者 pending。本文件「句号」列仍按第 1 稿编号；第 2 稿改了哪些句，见 `review/NOTES.md` 的第 2 稿表。确认前不把第 2 稿回写成新的事实行。
+2026-10-24 中文确认稿是 `review/script.zh.3577ae2c1ba07d7740371bcc5224512679c1b4ad7370a5e0693081a6352b8643.md`，内容 SHA-256 `3577ae2c1ba07d7740371bcc5224512679c1b4ad7370a5e0693081a6352b8643`。依据是 WaterRun 同日会话里的「可以」，加上 `SSH-ZH-R3` 的三句修改，见 `review/NOTES.md`。英文草稿 `review/script.en.027d26c337ec59e967356a1dd9012d38c253fd9b6a20cfba5bc032109f884598.md` 未确认。本文件「句号」列仍是 2026-10-19 第 1 稿的编号，不能拿来对当前的 s01–s62。
 
 英文目前是直译草稿，未定稿；中文确认后重译。
 
