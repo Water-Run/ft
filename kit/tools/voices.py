@@ -177,6 +177,73 @@ def notes_from_docs():
         pass
     return out
 
+# 试听页脚本：同时只播一条；每行有序号、评论和「使用」勾选。笔记存在浏览器 localStorage。
+SCRIPT = r'''<style>
+td.num{font:13px ui-monospace,Consolas,monospace;color:#555;width:42px}
+td.use{white-space:nowrap;width:72px}
+td.note{min-width:220px}
+td.note textarea{width:100%;min-height:52px;box-sizing:border-box;font:13px/1.4 inherit;padding:6px}
+tr.playing td{background:#e7f6ee}
+</style>
+<script>
+const NOTE_KEY='ft-voice-notes-v1';
+function notes(){try{return JSON.parse(localStorage.getItem(NOTE_KEY)||'{}')}catch(e){return {}}}
+function saveNotes(all){localStorage.setItem(NOTE_KEY,JSON.stringify(all))}
+function stopOthers(current){
+  document.querySelectorAll('audio').forEach(a=>{if(a!==current){a.pause();a.onended=null}})
+}
+function playAll(btn){
+  const t=btn.closest('h2').nextElementSibling,as=[...t.querySelectorAll('audio')];
+  let i=0;
+  const next=()=>{if(i>=as.length)return;const a=as[i++];a.scrollIntoView({block:'center'});a.onended=next;a.play()};
+  stopOthers(null);next();
+}
+function copyNotes(){
+  const lines=[];
+  document.querySelectorAll('tr[data-id]').forEach(tr=>{
+    const id=tr.dataset.id,box=tr.querySelector('textarea'),use=tr.querySelector('input[type=checkbox]');
+    if(!box.value.trim()&&!use.checked)return;
+    lines.push(tr.dataset.n+'. '+id+(use.checked?' | 使用':'')+(box.value.trim()?' | '+box.value.trim().replace(/\s+/g,' '):''));
+  });
+  const text=lines.join('\n')||'（还没有评论或勾选）';
+  navigator.clipboard.writeText(text).then(()=>{alert('已复制 '+lines.length+' 条')},()=>{prompt('复制这些评价：',text)});
+}
+document.querySelectorAll('table').forEach(table=>{
+  const head=table.querySelector('tr');
+  ['序号','使用','评论'].forEach((label,i)=>{
+    const th=document.createElement('th');th.textContent=label;
+    if(i===0)head.insertBefore(th,head.firstChild);else head.appendChild(th);
+  });
+});
+let n=0;
+const saved=notes();
+document.querySelectorAll('table tr').forEach(tr=>{
+  if(!tr.querySelector('code'))return;
+  const id=tr.querySelector('code').textContent.trim();
+  n+=1;tr.dataset.id=id;tr.dataset.n=String(n);
+  const num=document.createElement('td');num.className='num';num.textContent=String(n);
+  tr.insertBefore(num,tr.firstChild);
+  const use=document.createElement('td');use.className='use';
+  const check=document.createElement('input');check.type='checkbox';check.checked=!!(saved[id]&&saved[id].use);
+  const lab=document.createElement('label');lab.appendChild(check);lab.appendChild(document.createTextNode(' 使用'));
+  use.appendChild(lab);tr.appendChild(use);
+  const note=document.createElement('td');note.className='note';
+  const box=document.createElement('textarea');box.placeholder='听完写在这里';box.value=(saved[id]&&saved[id].comment)||'';
+  note.appendChild(box);tr.appendChild(note);
+  const write=()=>{const all=notes();all[id]={use:check.checked,comment:box.value};saveNotes(all)};
+  check.addEventListener('change',write);box.addEventListener('input',write);
+});
+document.querySelectorAll('audio').forEach(a=>{
+  a.addEventListener('play',()=>{stopOthers(a);document.querySelectorAll('tr.playing').forEach(tr=>tr.classList.remove('playing'));const tr=a.closest('tr');if(tr)tr.classList.add('playing')});
+  a.addEventListener('pause',()=>{const tr=a.closest('tr');if(tr&&a.paused&&!a.ended)tr.classList.remove('playing')});
+});
+const bar=document.createElement('p');
+const copy=document.createElement('button');copy.textContent='复制已填评价';copy.onclick=copyNotes;
+bar.appendChild(document.createTextNode('勾选和评论保存在这台浏览器里，刷新还在。填完点 '));
+bar.appendChild(copy);bar.appendChild(document.createTextNode('，把文字发回来。'));
+document.querySelector('h1').after(bar);
+</script>'''
+
 def write_index(allv):
     notes = notes_from_docs()
     E = html.escape
@@ -207,10 +274,8 @@ h2{margin-top:32px}button{font-size:13px;margin-left:12px}</style></head><body>
 <p>由 <code>node kit/tools/voices.js</code> 生成。每个音色读同一段文本，语速用引擎缺省值（Edge +0%%，MiniMax 1.0），只比较音色本身；片子里常把语速调到 1.05–1.25。评价写进 <code>docs/guides/script.md</code> 第 9 节「音色记录」，下次生成时显示在最后一栏。</p>
 <p><b>中文范例</b></p><blockquote>%s</blockquote><p><b>英文范例</b></p><blockquote>%s</blockquote>
 %s
-<script>
-function playAll(btn){const t=btn.closest('h2').nextElementSibling,as=[...t.querySelectorAll('audio')];let i=0;
- const next=()=>{if(i>=as.length)return;const a=as[i++];a.scrollIntoView({block:'center'});a.onended=next;a.play();};next();}
-</script></body></html>''' % (E(SAMPLES['zh']), E(SAMPLES['en']), '\n'.join(parts))
+</body></html>''' % (E(SAMPLES['zh']), E(SAMPLES['en']), '\n'.join(parts))
+    page = page.replace('</body>', SCRIPT + '</body>')
     open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(page)
 
 main()
