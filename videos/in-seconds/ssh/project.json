@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "design",
-  "next": "交给 Opus 5.5。中文已确认。先配音看实测时长，再画场景。英文未确认",
+  "next": "英文译文待 WaterRun 确认。中文已确认。确认前 Opus 可看稿，先不要配英文",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -19,7 +19,8 @@
         "roles": [
           "视觉系统",
           "配乐",
-          "文案对抗审稿"
+          "文案对抗审稿",
+          "英文翻译"
         ]
       },
       {
