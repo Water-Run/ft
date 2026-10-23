@@ -1,7 +1,0 @@
-# 取证时刻（UTC）：2026-10-20T04:05:50Z
-
-==============================================================================
-TARGET: https://archive.org/wayback/available?url=spectrum.adobe.com/page/fonts/&timestamp=2021
-HTTP 200  bytes=257  SHA256(content)=136b175058e34c18d2426fd67a189cc8499aa03b8a89c58e0cf336b5a3a68594
-------------------------------------------------------------------------------
-{"url": "spectrum.adobe.com/page/fonts/", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20211208030011/https://spectrum.adobe.com/page/fonts/", "timestamp": "20211208030011"}}, "timestamp": "2021"}

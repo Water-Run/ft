@@ -1,8 +1,0 @@
-# 取证时刻（UTC）：2026-10-20T04:08:44Z
-# 工具：7.6.7 / curl.exe
-
-==============================================================================
-URL: http://web.archive.org/cdx/search/cdx?url=news.adobe.com/news/2018*&output=text&fl=original,timestamp&collapse=urlkey&limit=60
-bytes=0  SHA256(content)=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-正文行数：1
-

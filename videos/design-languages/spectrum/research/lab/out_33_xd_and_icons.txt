@@ -1,9 +1,0 @@
-# 取证时刻（UTC）：2026-10-20T04:07:16Z
-# 工具：7.6.7 / curl.exe
-
-==============================================================================
-URL: https://helpx.adobe.com/xd/release-notes.html
-bytes=402  SHA256(content)=73439b20c84b6cf815bcc0bec4cfd3ad5d03df08f4990b731777317c50476811
-正文行数：5
-You don't have permission to access "http://helpx.adobe.com/xd/release-notes.html" on this server.
-匹配行数：1
