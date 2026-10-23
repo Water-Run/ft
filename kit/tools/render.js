@@ -1,10 +1,11 @@
 // 并行出帧：N 个无头 Chrome 各渲染一段时间线，逐帧截图经管道送入 ffmpeg，最后无损拼接成 out/<语言>/video.mp4（无声）。
 // 用法：node kit/tools/render.js <视频> [--lang zh] [--fps 60] [--scale 1] [--workers N] [--from 0] [--to 总长] [--out 文件] [--crf 15]
 //       --mb 4        运动模糊：每帧渲染 N 个子帧再平均（耗时 ×N）；--shutter 0.5 快门开角占一帧的比例
-//       --gpu 1       启用硬件加速（WebGL 场景需要；普通场景在有显卡的机器上也能提速，先用 glprobe.js 探测、再与 CPU 出图比一小段）
+//       --gpu 1       显式启用 GPU / WebGL；0 保留浏览器默认策略，并不强制软件渲染。先用 glprobe.js 探测，再与默认模式比一小段。
+//       --encoder auto|libx264|h264_nvenc  编码后端，缺省 libx264；auto 实测 NVENC，不可用时回退 CPU；--cq 19 是 NVENC 质量，不能与 CRF 等同
 //       --scale 2     出 3840×2160（4K）；交付分辨率写在 project.json 的 render.scale，check.js --final 按它核对
 //       --threads 4   每个编码进程的线程数（不限时每个进程按 CPU 核数开线程，1080p 下各占约 1.6 GB，九路就是 14 GB）
-// 省略 --lang 时依次渲染全部语言。缺省值取 project.json 的 render 段（fps、mb、shutter、crf、workers、gpu、scale），命令行优先。workers 缺省为 CPU 线程数的三分之一（2–9），且不超过可用内存 ÷ 3 GB。
+// 省略 --lang 时依次渲染全部语言。缺省值取 project.json 的 render 段（fps、mb、shutter、crf、cq、encoder、workers、gpu、scale），命令行优先。workers 缺省为 CPU 线程数的三分之一（1–9），且不超过可用内存 ÷ 3 GB（至少一路）；NVENC 自动并发至多两路。
 // 完整性：每张截图入管道前先验 PNG 的头、尺寸与结尾；每一段编码完数一遍帧数，不符就单独重渲那一段；
 //         拼接后再数一遍总帧数。任何一步对不上都以非零退出码结束，不会交出一部悄悄少了帧的片子。日志末行应有 verified frames=<总帧数>。
 // 像素格式：截图通常是 RGB，但个别帧会因为合成层边缘的几个透明像素变成 RGBA。图像流的格式中途一变，ffmpeg 就重建滤镜图：
@@ -20,10 +21,20 @@ require('./project-files').acquireLock(needVideo());
 require('./script-review').assertApproved(needVideo(), PROJECT(), LANGS(true));
 const R = PROJECT().render, opt = (k, d) => arg(k, R[k] != null ? R[k] : d);
 const FPS = +opt('fps', 60), SCALE = +opt('scale', 1), CRF = String(opt('crf', 15));
-// 缺省并发：CPU 线程数的三分之一（2–9），再按可用内存收紧——每路一个 Chrome 与一个编码器，长片约占 3 GB；默认并发曾把 40 GB 的机器用尽
-const WORKERS = +opt('workers', Math.max(2, Math.min(9, Math.floor(os.cpus().length / 3), Math.floor(os.freemem() / 3e9))));
+// 缺省并发：CPU 线程数的三分之一（1–9），再按可用内存收紧——每路一个 Chrome 与一个编码器，长片约占 3 GB；默认并发曾把 40 GB 的机器用尽
+const WORKERS = +opt('workers', Math.max(1, Math.min(9, Math.floor(os.cpus().length / 3), Math.floor(os.freemem() / 3e9))));
 const MB = Math.max(1, +opt('mb', 1)), SHUTTER = +opt('shutter', 0.5), GPU = !!+opt('gpu', 0), THREADS = String(+arg('threads', 4));
 const PW = Math.round(1920 * SCALE), PH = Math.round(1080 * SCALE);
+const ENCODER = String(opt('encoder', 'libx264')), CQ = +opt('cq', 19);
+let encoding;
+function validateOptions() {
+  for (const [key, value] of Object.entries({ fps: FPS, workers: WORKERS, mb: MB, threads: +THREADS })) {
+    if (!Number.isSafeInteger(value) || value < 1) throw new Error(key + ' 必须是正整数');
+  }
+  if (!Number.isFinite(SCALE) || SCALE <= 0 || PW < 2 || PH < 2 || PW % 2 || PH % 2) throw new Error('scale 必须产生正的偶数宽高');
+  if (!Number.isFinite(SHUTTER) || SHUTTER < 0 || SHUTTER > 1) throw new Error('shutter 必须在 0–1 之间');
+  for (const [key, value] of Object.entries({ crf: +CRF, cq: CQ })) if (!Number.isFinite(value) || value < 0 || value > 51) throw new Error(key + ' 必须在 0–51 之间');
+}
 // 缩放出图（低清预演、4K）时显式给出裁剪区与比例：新版 Chrome 的直接截图不理会小于 1 的设备像素比，出来仍是 1920×1080
 const SHOT = SCALE !== 1 ? { clip: { x: 0, y: 0, width: 1920, height: 1080, scale: SCALE } } : {};
 const IEND = Buffer.from([0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
@@ -40,10 +51,13 @@ async function worker(f0, f1, ctx, segPath, prog) {
   // 子帧以 FPS×MB 的帧率送入，tmix 取 MB 帧平均后每 MB 帧留一帧
   const vf = (MB > 1 ? `tmix=frames=${MB},select='not(mod(n+1,${MB}))',setpts=PTS-${MB - 1}/(${FPS * MB}*TB),` : '') + 'scale=in_range=full:out_range=tv:out_color_matrix=bt709';
   const ff = spawn(FFMPEG(), ['-y', '-loglevel', 'error', '-threads', '2', '-f', 'image2pipe', '-framerate', String(FPS * MB), '-c:v', 'png', '-i', '-',
-    '-vf', vf, '-c:v', 'libx264', '-threads', THREADS, '-preset', 'medium', '-crf', CRF, '-pix_fmt', 'yuv420p', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709',
+    '-vf', vf, ...encoding.args, '-pix_fmt', 'yuv420p', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709',
     '-g', String(FPS * 2), '-r', String(FPS), segPath], { stdio: ['pipe', 'inherit', 'inherit'] });
   let pipeErr = null; ff.stdin.on('error', (e) => { pipeErr = e; });
+  let processError = null;
+  ff.on('error', (e) => { processError = e; });
   const done = new Promise((r) => ff.on('close', r));
+  let code;
   let bad = 0, rgba = 0;
   try {
     for (let f = f0; f < f1; f++) {
@@ -60,16 +74,25 @@ async function worker(f0, f1, ctx, segPath, prog) {
         }
         if (!buf) throw new Error(`t=${t.toFixed(3)} 的截图重试后仍不是合法的 ${PW}x${PH} PNG`);
         if (buf[25] === 6) { buf = pngfix.rgbaToRgb(buf).png; rgba++; }
-        if (pipeErr) throw pipeErr;
-        if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
+        if (processError || pipeErr || ff.stdin.destroyed || ff.stdin.writableEnded || ff.exitCode !== null || ff.signalCode !== null) {
+          throw processError || pipeErr || new Error('编码器在帧写完之前退出或关闭了输入管道');
+        }
+        if (!ff.stdin.write(buf)) await new Promise((resolve, reject) => {
+          const clean = () => { ff.stdin.off('drain', drained); ff.stdin.off('error', failed); ff.stdin.off('close', closed); };
+          const drained = () => { clean(); resolve(); };
+          const failed = (e) => { clean(); reject(e); };
+          const closed = () => failed(new Error('编码管道提前关闭'));
+          ff.stdin.once('drain', drained); ff.stdin.once('error', failed); ff.stdin.once('close', closed);
+        });
       }
       prog.n++;
     }
   } finally {
     ff.stdin.end();
-    await done;
+    code = await done;
     await browser.close().catch(() => {});
   }
+  if (processError || pipeErr || code !== 0) throw processError || pipeErr || new Error('编码失败，退出码 ' + code);
   if (bad) console.log(`  ${path.basename(segPath)}: ${bad} 张不合法的截图已重试`);
   if (rgba) console.log(`  ${path.basename(segPath)}: ${rgba} 张 RGBA 截图已改写为 RGB`);
 }
@@ -83,12 +106,17 @@ async function render(lang) {
   const total = await first.page.evaluate(() => window.TOTAL);
   const from = +arg('from', 0), to = +arg('to', total);
   const F0 = Math.round(from * FPS), F1 = Math.round(to * FPS), N = F1 - F0;
-  const W = Math.min(WORKERS, Math.max(1, Math.floor(N / 30)));
+  if (![from, to, total].every(Number.isFinite) || from < 0 || to > total + 1e-6 || N <= 0) {
+    await first.browser.close(); server.close(); throw new Error('渲染范围须在时间线内，且至少包含一帧');
+  }
+  // 硬件会话数与显存有上限；未明确指定 workers 时先从两路开始。
+  const cap = encoding.name === 'h264_nvenc' && arg('workers', R.workers) == null ? Math.min(WORKERS, 2) : WORKERS;
+  const W = Math.min(cap, Math.max(1, Math.floor(N / 30)));
   mkdirp(path.dirname(OUT));
   const segDir = OUT + '.segs'; fs.rmSync(segDir, { recursive: true, force: true }); mkdirp(segDir);
   const ctxs = [first];
   for (let i = 1; i < W; i++) ctxs.push(await open());   // 串行打开
-  console.log(`■ ${lang}  页面就绪 ${W} 个  fps=${FPS} mb=${MB} scale=${SCALE} threads=${THREADS}  ${from.toFixed(2)}–${to.toFixed(2)}s 共 ${N} 帧`);
+  console.log(`■ ${lang}  页面就绪 ${W} 个  fps=${FPS} mb=${MB} scale=${SCALE} threads=${THREADS} gpu=${GPU} encoder=${encoding.name}  ${from.toFixed(2)}–${to.toFixed(2)}s 共 ${N} 帧`);
   const prog = { n: 0 }, t0 = Date.now();
   const timer = setInterval(() => { const el = (Date.now() - t0) / 1000; console.log(`frames ${prog.n}/${N}  ${(prog.n / el).toFixed(1)} fps  eta ${((N - prog.n) / Math.max(1, prog.n / el)).toFixed(0)}s`); }, 15000);
   const plan = [];
@@ -118,10 +146,15 @@ async function render(lang) {
   fs.rmSync(segDir, { recursive: true, force: true });
   // 整片、不缩小、默认位置的渲染：记下这一版画面的规格与对应的源码状态，交付前据此判断成片是否过期、分辨率是否符合 render.scale
   if (records.sourceChanges(sources, sourceState(), lang).length) { server.close(); throw new Error('渲染期间源码发生变化，不能把完成后的源码记成这一版画面的依据；重新渲染'); }
-  if (F0 === 0 && Math.abs(to - total) < 1e-6 && SCALE >= 1 && arg('out', null) == null) fs.writeFileSync(path.join(dirs(lang).out, 'video.json'), JSON.stringify({ schema: 1, lang, frames: N, fps: FPS, mb: MB, scale: SCALE, width: PW, height: PH, gpu: GPU, total, rendered: new Date().toISOString(), sources, output: await records.fingerprint(OUT) }, null, 1));
+  const report = { schema: 1, lang, frames: N, fps: FPS, mb: MB, scale: SCALE, width: PW, height: PH, gpu: GPU, encoder: encoding.name, crf: +CRF, cq: CQ, workers: W, from: F0 / FPS, to: F1 / FPS, seconds: (Date.now() - t0) / 1000, total, rendered: new Date().toISOString(), sources, output: await records.fingerprint(OUT) };
+  if (F0 === 0 && Math.abs(to - total) < 1e-6 && SCALE >= 1 && arg('out', null) == null) fs.writeFileSync(path.join(dirs(lang).out, 'video.json'), JSON.stringify(report, null, 1));
+  else fs.writeFileSync(OUT + '.json', JSON.stringify(report, null, 1));
   server.close();
 }
 (async () => {
+  validateOptions();
+  encoding = require('./encoder').selectEncoder(FFMPEG(), ENCODER, { crf: CRF, cq: CQ, threads: THREADS, width: PW, height: PH, fps: FPS });
+  for (const a of encoding.attempts) if (!a.ok) console.log(`${a.encoder} 探测失败，回退 CPU：${a.reason}`);
   const langs = LANGS(true);
   if (arg('out', null) != null && langs.length > 1) { console.error('带 --out 时一次只能渲染一种语言：加上 --lang <语言>'); process.exit(2); }
   for (const lang of langs) await render(lang);

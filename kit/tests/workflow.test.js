@@ -10,6 +10,25 @@ const { verify } = require('../tools/clean');
 const credits = require('../tools/credits');
 const artifacts = require('../tools/artifact-record');
 
+test('编码器实际探测、自动回退与显式失败；硬件质量参数独立于 CRF', () => {
+  const { selectEncoder, encodingArgs } = require('../tools/encoder');
+  const called = [];
+  const execute = (cmd, args) => {
+    const name = args[args.indexOf('-c:v') + 1]; called.push(name);
+    return name === 'h264_nvenc' ? { status: 1, stderr: 'driver unavailable' } : { status: 0 };
+  };
+  assert.equal(selectEncoder('ffmpeg', 'auto', {}, execute).name, 'libx264');
+  assert.deepEqual(called, ['h264_nvenc', 'libx264']);
+  called.length = 0;
+  assert.throws(() => selectEncoder('ffmpeg', 'h264_nvenc', {}, execute), /driver unavailable/);
+  assert.deepEqual(called, ['h264_nvenc']);
+  assert.throws(() => selectEncoder('ffmpeg', 'unknown', {}, execute), /encoder/);
+  assert.throws(() => selectEncoder('ffmpeg', 'auto', {}, () => ({ status: null, error: new Error('timeout') })), /timeout/);
+  assert.equal(encodingArgs('h264_nvenc', { crf: 30, cq: 17 }).includes('-crf'), false);
+  assert.equal(encodingArgs('libx264', { crf: 15 }).includes('-cq'), false);
+  assert.equal(selectEncoder('ffmpeg', 'auto', {}, () => ({ status: 0 })).name, 'h264_nvenc');
+});
+
 function fixture(t) {
   const temporary = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'ft-workflow-'));
   const root = path.join(temporary, 'repo');

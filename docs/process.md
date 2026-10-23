@@ -16,7 +16,7 @@
 | 文案 | `script` | 写中文稿，逐章检查是否回答核心问题 | `src/js/script.js`、`review/NOTES.md` | [文案与配音](guides/script.md)、`--stage script` |
 | 审稿 | `review` | 导出全文交校对，按意见改，直到明确确认；再翻译、校对译文 | `review/script.*.md`、`review/approval.json` | [文案校对](guides/script-review.md) |
 | 配音 | `voice` | 代表段试听候选音色，交策划者确认，再合成全片并回听 | `src/js/timing.*.js` | [文案与配音](guides/script.md)、`--stage voice` |
-| 设计 | `design` | 从讲解对象的材料出发做两三个方向的关键帧，选定一个，做一段代表性动画 | `src/css/style.css`、`src/design/`、README 的「设计」 | [视觉设计](guides/visual.md)、`--stage design` |
+| 设计 | `design` | 比较解释方法与关键帧，选定导演方案；做有声代表段验证，再铺开 | `src/css/style.css`、`src/design/`、README 的「设计」 | [视觉设计](guides/visual.md)、`--stage design` |
 | 实现 | `build` | 写场景、常驻元素、片尾；边写边查 | `src/js/` | [场景与动态](guides/scenes.md)、[引擎](reference/engine.md)、[踩过的坑](reference/pitfalls.md)、`--stage build` |
 | 声音 | `sound` | 配乐、音效、混音 | `tools/music.py`、`out/<语言>/audio.wav` | [声音](guides/sound.md)、`--stage sound` |
 | 成片 | `render` | 低清预演、正式渲染、封装、封面 | `out/` | [工具](reference/tools.md) |
