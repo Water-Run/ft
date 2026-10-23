@@ -148,6 +148,24 @@ node kit/tools/asr.js <视频>
 
 ## 9. 音色记录
 
+### 9.0 怎么选
+
+策划者原话（2026-10-24）：
+
+> 原则上, 每个视频和上一个之前配音音色, 除非特别说明.
+
+> 之后,视频加入固定流程, 定稿后, 选取合适, 尽可能和之前不同的10个配音(5中文5英文), Demo片段, 我来选择具体用哪个, 然后到正式制作. 除非我特别说明自己选择配音, 不要问我.
+
+文案定稿之后，从试听库挑 10 段：5 个中文、5 个英文。气质要贴这集，并且尽量不重复上一部已经用过的音色。用同一段代表句做成 Demo，交给策划者点选。选定后再合成全片。策划者在会话里直接点名音色时，就用点名的，不再做这 10 段，也不再问。没有这句特别说明时，不要问「用哪个音色」。
+
+上一部已选定的音色（下一部避开，除非策划者要求沿用）：
+
+| 日期 | 片子 | 中文 | 英文 | 模型 |
+|---|---|---|---|---|
+| 2026-10-24 | 《256 秒搞懂 SSH》（已选定，尚未合成） | `Chinese (Mandarin)_Radio_Host`（电台男主播） | `Friendly_Person`（Friendly Person） | MiniMax speech-2.8-hd，语速 1.0 |
+
+再往前已进成片的，同样不要当作默认可重复：Tmux 用过 `Chinese (Mandarin)_Reliable_Executive` 与 `English_Trustworthy_Man`；HTTP 状态码用过 `Chinese (Mandarin)_News_Anchor` 与 `English_ConfidentWoman`。停用音色见下表，不再进入这 10 段。
+
 ### 9.1 试听库
 
 选音色之前先真的听一遍：
@@ -168,6 +186,8 @@ node kit/tools/voices.js --zip                 # 另打成 out/voices-<日期>.z
 
 | 音色 | 引擎 | 用在 | WaterRun 的评价 | 以后 |
 |---|---|---|---|---|
+| `Chinese (Mandarin)_Radio_Host` | MiniMax speech-2.8-hd | 《256 秒搞懂 SSH》中文，语速 1.0。2026-10-24 从试听库点选，尚未合成 | 点名使用，没有另写听感 | 本片用。下一部避开，除非特别说明沿用 |
+| `Friendly_Person` | MiniMax speech-2.8-hd | 《256 秒搞懂 SSH》英文，语速 1.0。同上 | 点名「Friendly Person」，没有另写听感 | 同上 |
 | `English_Aussie_Bloke` | MiniMax | Web 登录英文（语速 1.08） | 「英文配音很一般，之后不要用这个音色了」（2026-10-20，P38） | **停用** |
 | `Chinese (Mandarin)_Reliable_Executive` | MiniMax | Tmux 中文、OpenCart 中文 | 配音太「懒洋洋」（2026-10-19，P29） | 评价针对整体语气，未停用音色；再用须先试听 |
 | `English_Trustworthy_Man` | MiniMax | Tmux 英文 | 同上（P29） | 同上 |
