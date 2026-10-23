@@ -31,12 +31,12 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | PowerPC 时代的麦金塔 | zh + en | 制作中 | [`powerpc-macintosh`](powerpc-macintosh/) |
+| 1 | PowerPC 时代的麦金塔 | zh + en | 计划中 | [`powerpc-macintosh`](powerpc-macintosh/) |
 | 2 | 恐龙年代的 AMD | zh + en | 计划中 | `amd-early` |
 | 3 | AMD 的农机时代 | zh + en | 计划中 | `amd-bulldozer-era` |
 | 4 | DOS 时代的 Windows | zh + en | 计划中 | `dos-windows` |
 | 5 | Win8 平板和英特尔的凌动时代 | zh + en | 计划中 | `win8-atom` |
-| 6 | 英特尔的酷睿年代 | zh + en | 制作中 | [`intel-core-era`](intel-core-era/) |
+| 6 | 英特尔的酷睿年代 | zh + en | 计划中 | [`intel-core-era`](intel-core-era/) |
 | 7 | 苏维埃的三进制计算机时代 | zh + en | 计划中 | `soviet-trinary` |
 | 8 | CRT 一统天下的时代 | zh + en | 计划中 | `crt-era` |
 | 9 | Java 1.8 的时代 | zh + en | 计划中 | `java-8` |
