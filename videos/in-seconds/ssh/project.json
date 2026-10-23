@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "review",
-  "next": "把 research/GEMINI-PROMPT-R3.md 交给 AI Studio 的 Gemini 4 Argon。确认前不配音、不画正式场景",
+  "next": "SSH-ZH-R3 可作工作稿。若再交 Gemini，只改 GEMINI-R3-NOTE.md 里的三句。确认前不配音、不画正式场景",
   "credits": {
     "planner": "WaterRun",
     "models": [
