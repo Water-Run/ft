@@ -68,10 +68,10 @@
 | 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
 | 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 制作中 | [`harness`](harness/) |
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
-| 20 | 192 秒认识 CoT：先思考，再回答 | zh + en | 制作中 | [`chain-of-thought`](chain-of-thought/) |
+| 20 | 192 秒认识 CoT：先思考，再回答 | zh + en | 计划中 | [`chain-of-thought`](chain-of-thought/) |
 | 21 | 120 秒速通 Harness 是如何压缩上下文的 | zh + en | 计划中 | `context-compaction` |
 | 22 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
-| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh + en | 制作中 | [`ea211-family`](ea211-family/) |
-| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh + en | 制作中 | [`scion`](scion/) |
+| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh + en | 计划中 | [`ea211-family`](ea211-family/) |
+| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh + en | 计划中 | [`scion`](scion/) |
 | 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` |
 <!-- catalog:end -->
