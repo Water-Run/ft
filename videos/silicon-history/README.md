@@ -45,7 +45,7 @@
 | 12 | Linux 内核发展史 | zh + en | 计划中 | `linux-kernel-evolution` |
 | 13 | Python 语言的发展史 | zh + en | 计划中 | `python-history` |
 | 14 | Lua 语言的发展史 | zh + en | 计划中 | `lua-history` |
-| 15 | C 语言的发展史 | zh + en | 制作中 | [`c-language-history`](c-language-history/) |
+| 15 | C 语言的发展史 | zh + en | 计划中 | [`c-language-history`](c-language-history/) |
 | 16 | Java 语言的发展史 | zh + en | 计划中 | `java-history` |
 | 17 | C# 语言的发展史 | zh + en | 计划中 | `csharp-history` |
 | 18 | JavaScript 与 TypeScript 的发展史 | zh + en | 计划中 | `javascript-typescript-history` |
