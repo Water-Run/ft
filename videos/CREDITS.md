@@ -49,7 +49,7 @@
 |---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md) | 取证 | WaterRun | GPT-6.1 Sol：取证、实测与结构测绘、简报整理 | 未登记 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
-| [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 设计 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿 | 网页抓取服务（模型未披露）：网页检索 |
+| [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 设计 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host / en Narration · Friendly_Person |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 
 ## 已发布视频

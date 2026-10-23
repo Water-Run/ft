@@ -169,7 +169,7 @@
 | 视觉系统、配乐、文案对抗审稿、英文翻译 | Grok 4.7 | 2026-10-23 改视觉与配乐。2026-10-24 按已确认中文把 s01–s62 译成英文，译文未确认 | `project.json` 的 `credits`；`src/js/script.js`；`review/NOTES.md` |
 | 中文稿优化 | Gemini 4 Argon | 2026-10-23 起计划 2–3 轮，均未采用。`SSH-ZH-R1` 过简。`SSH-ZH-R2`（2026-10-24）骨架可留，但「谈妥了一切」「不是现在的默认」「1995 年版本变成 RFC」和钥匙段落的顺序不对，正文字数大约 734，估时约 160 秒。第 3 轮反馈在 `research/GEMINI-PROMPT-R3.md` | 策划者会话；三份 Prompt |
 | 场景实现、声音编排、封面、渲染与审查 | Opus 5.5 | **尚未开工**。按委托任务书实现场景、编排声音、做封面、渲染与三项审查；开工后据实追加分工 | `project.json` 的 `production.maker` 与 `production.mode: delegated` |
-| 旁白合成 | 无 | **尚未合成**，未使用。确认后按 F17 先试听音色与语速再合成全片，届时据实登记 | `project.json` 的 `voices` 只是预设，尚未调用；`src/js/timing.*.js` 仍为空模板 |
+| 旁白合成 | MiniMax speech-2.8-hd | **尚未合成。** 2026-10-24 策划者指定：中文 `Chinese (Mandarin)_Radio_Host`（电台男主播），英文 `Friendly_Person`（Friendly Person），语速均为 1.0。署名写模型全名和音色 id，不写 Edge TTS | `project.json` 的 `tts` 与 `credits.services`；`review/NOTES.md` |
 | 读音回听 | 无 | 未做 | `review/NOTES.md` 的「定稿后的调整」列出待试听项 |
 | 网页检索与摘录 | 模型未披露 | 本次用到的是会话内置的网页抓取服务，读取了 RFC 4253、RFC 4252、OpenSSH 的 `ssh_config(5)` 与 `PROTOCOL`、OpenSSH 9.8 发布说明、项目页与历史页。该服务未披露底层模型 | 抓取记录见本文件「取证环境」一节的链接与本地下载校验值 |
 

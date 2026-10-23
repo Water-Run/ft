@@ -250,6 +250,8 @@ Grok 4.7 对第 1 轮的意见在 `research/GEMINI-PROMPT-R2.md`。
 
 2026-10-24，Grok 4.7 按已确认的中文把 s01–s62 重译成英文，写入 `src/js/script.js`。导出稿 `review/script.en.a2ebdd56e67314f0a1af226dc6c90b0a7f458346704e465ecffd074d5122c7ce.md`。中文确认哈希未变。英文 `approval.json` 仍是 pending。专名读法在 SAY 表：curve25519-sha256、ssh-ed25519、chacha20-poly1305、RFC 4253、OpenBSD、known_hosts。按词数估算，英文讲完比片尾定点大约超 65 秒，和中文一样先听实测，不为此删句。
 
+同日策划者指定配音，不再另问：中文 `Chinese (Mandarin)_Radio_Host`（电台男主播），英文 `Friendly_Person`（Friendly Person），模型 MiniMax speech-2.8-hd，语速 1.0。尚未合成。署名写在 `credits.services`，不写 Edge TTS。
+
 ## 需要策划者拍板的取舍
 
 **第 1、2 条已于 2026-10-23 关闭。** 第 3–8 条仍是 2026-10-19 交审时留下的，尚未确认。

@@ -92,6 +92,12 @@ node kit/tools/script-review.js videos/in-seconds/ssh check
 
 > Gemini对于优化过于入门的, 对于软件的创作者之类的还是应该说明名称等. 文档编号也要列出等.
 
+策划者要求（2026-10-24 原话）：
+
+> SSH这个视频选择: Friendly Person、电台男主播
+
+中文 `Chinese (Mandarin)_Radio_Host`，英文 `Friendly_Person`。模型 MiniMax speech-2.8-hd，语速 1.0，与试听 Demo 一致。尚未合成。
+
 风格卡全文在 [STYLE.md](research/STYLE.md)。主屏幕黑底荧光绿 `#74FF9A`。配乐是 90 年代 8 位。系列受众写在 [XX 秒速通](../README.md)。
 
 核心问题：按下回车之后、登录成功之前的那一秒里，两台机器做完了什么。
@@ -112,8 +118,8 @@ node kit/tools/script-review.js videos/in-seconds/ssh check
 
 没做，归 Opus 5.5：
 
-- 英文确认。译文已在 `src/js/script.js`，校对稿已导出，WaterRun 还没点头。
-- 配音、读音试听、实测时间线。`src/js/timing.*.js` 仍是空的。
+- 英文确认。译文已在 `src/js/script.js`，校对稿已导出，WaterRun 还没点头。确认前不要合成英文。
+- 配音按已定音色合成。中文 `Chinese (Mandarin)_Radio_Host`，英文 `Friendly_Person`，模型 `MiniMax speech-2.8-hd`，语速 1.0。不要改回 edge-tts，也不要再问音色。`src/js/timing.*.js` 仍是空的。
 - 分镜和场景。`src/js/scenes/` 里除开场和片尾的旧底外，其余只是空场景，好让页面能打开。不要沿用开场里的计时盘占位。
 - 没有 `src/design/` 关键帧。构图由制作方定。
 - 音效、混音、渲染、封面终稿、三项审查。
@@ -175,7 +181,7 @@ pwsh -File videos/in-seconds/ssh/research/lab/03_handshake.ps1
 | Gemini 4 Argon | 中文稿优化。`SSH-ZH-R3`（2026-10-24）可作为工作稿，尚未确认。只剩三句，见 `research/GEMINI-R3-NOTE.md` |
 | Opus 5.5 | 场景实现、声音编排、封面、渲染与成片审查——**尚未开工**，开工后据实追加 |
 
-旁白合成与读音回听**尚未进行**，不列入名单；网页检索用的是会话内置的网页抓取服务，未披露底层模型，记「模型未披露」。完整名单与依据在 `research/FACTS.md` 的「制作署名」一节。
+旁白尚未合成。选定的合成模型与音色已写入 `project.json` 的 `tts` 和 `credits.services`：MiniMax speech-2.8-hd；中文 `Chinese (Mandarin)_Radio_Host`，英文 `Friendly_Person`。读音回听未做。网页检索用的是会话内置的网页抓取服务，未披露底层模型，记「模型未披露」。完整名单与依据在 `research/FACTS.md` 的「制作署名」一节。
 
 <!-- 各语言、各视频版本的片尾时段与核对结果：完整性、字号、对比度、停留时间；名单与成片一致。 -->
 

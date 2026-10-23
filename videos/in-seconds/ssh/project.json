@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "design",
-  "next": "英文译文待 WaterRun 确认。中文已确认。确认前 Opus 可看稿，先不要配英文",
+  "next": "音色已定，不再询问。中文 Chinese (Mandarin)_Radio_Host，英文 Friendly_Person，均为 MiniMax speech-2.8-hd、语速 1.0。英文稿确认后合成",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -36,6 +36,15 @@
         "roles": [
           "网页检索"
         ]
+      },
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          {
+            "zh": "配音 · Chinese (Mandarin)_Radio_Host",
+            "en": "Narration · Friendly_Person"
+          }
+        ]
       }
     ],
     "repository": "https://github.com/Water-Run/ft"
@@ -49,12 +58,24 @@
     "en": "SSH in 256 Seconds: What Happens Before the Login Prompt"
   },
   "voices": {
-    "zh": "zh-CN-YunyangNeural",
-    "en": "en-US-AndrewNeural"
+    "zh": "Chinese (Mandarin)_Radio_Host",
+    "en": "Friendly_Person"
   },
   "rates": {
     "zh": "+6%",
     "en": "+8%"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Radio_Host",
+      "en": "Friendly_Person"
+    },
+    "speed": {
+      "zh": 1.0,
+      "en": 1.0
+    }
   },
   "asr_prompts": {
     "zh": "以下是普通话的讲解。",
