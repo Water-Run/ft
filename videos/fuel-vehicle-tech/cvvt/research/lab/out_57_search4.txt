@@ -1,7 +1,0 @@
-# 取证时刻（UTC）：2026-10-20T04:17:53Z
-# 检索：Ford EcoBoost media.ford.com technology variable cam timing
-
-==============================================================================
-QUERY: Ford EcoBoost media.ford.com technology variable cam timing
-1. safest
-   https://tb-manual.torproject.org/security-settings/#safest
