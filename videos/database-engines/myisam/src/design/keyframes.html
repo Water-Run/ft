@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>MyISAM 关键帧</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  #stage { overflow: hidden; }
+  svg.k { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  svg.k text { white-space: pre; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="../js/data.js"></script>
+<script>
+// 三个视觉方向 × 三帧（?d=1|2|3&f=1|2|3）。字节与数字全部取自 data.js（tools/gen_data.py 由 MySQL 5.5.62 的实测快照生成）。
+// d=1「mysql> 终端」  d=2「5.x 手册」  d=3「字节格」
+// f=1 标题  f=2 删掉两行之后的数据文件与空位链  f=3 表锁时间轴（动画进行到一半的一帧）
+const Q = new URLSearchParams(location.search), DIR = +(Q.get('d') || 1), FR = +(Q.get('f') || 1);
+const R = window.REAL, NS = 'http://www.w3.org/2000/svg', stage = document.getElementById('stage');
+const TEAL = '#00758F', ORANGE = '#F29111';                 // MySQL 标志的两色
+const T = {
+  1: { bg: '#0c0c0c', ink: '#d0d0d0', dim: '#7a7a7a', faint: '#3a3a3a', teal: '#3fb4cc', orange: ORANGE, font: 'Mono', title: 'Mono' },
+  2: { bg: '#ffffff', ink: '#1d2b33', dim: '#5e6e77', faint: '#d7dee2', teal: TEAL, orange: ORANGE, font: 'Sans SC', title: 'Sans SC' },
+  3: { bg: '#eceeef', ink: '#1d2b33', dim: '#66757d', faint: '#cdd4d8', teal: TEAL, orange: ORANGE, font: 'Mono', title: 'Sans SC' },
+}[DIR];
+stage.style.background = T.bg;
+const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'k'); stage.appendChild(svg);
+const el = (tag, a, p = svg) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+const tx = (x, y, s, a = {}) => { const e = el('text', { x, y, fill: T.ink, 'font-family': a.f || T.font, 'font-size': a.s || 30, 'font-weight': a.w || 500, ...a.attr }); e.textContent = s; return e; };
+const img = (src, x, y, h) => { const i = document.createElement('img'); i.src = src; Object.assign(i.style, { position: 'absolute', left: x + 'px', top: y + 'px', height: h + 'px' }); stage.appendChild(i); };
+const hatch = (id, col) => { const d = el('defs', {}); const p = el('pattern', { id, width: 12, height: 12, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, d); el('rect', { width: 12, height: 12, fill: T.bg }, p); el('rect', { width: 5, height: 12, fill: col, 'fill-opacity': .35 }, p); };
+
+// 数据：删掉两行之后的 users.MYD（128 字节，每行 16 字节）
+const myd = R.usersMYD[1].match(/.{32}/g).map((h, i) => {
+  const b = h.match(/../g).map((x) => parseInt(x, 16));
+  const del = b[0] === 0;
+  return { i, hex: h.match(/../g), del, link: del ? parseInt(h.slice(2, 14), 16) : null,
+           id: del ? null : b[1] | (b[2] << 8), name: del ? null : String.fromCharCode(...b.slice(5, 15)).trim(), age: del ? null : b[15] };
+});
+const head = R.state['2_delete'].dellink[2];                // 链头（字节偏移）
+
+if (FR === 1) title();
+if (FR === 2) dataFile();
+if (FR === 3) lockTimeline();
+
+function title() {
+  if (DIR === 1) {
+    const L = ["mysql> SELECT * FROM users WHERE name = 'alice';", '+----+-------+-----+', '| id | name  | age |', '+----+-------+-----+',
+               '|  1 | alice |  30 |', '+----+-------+-----+', '1 row in set (0.007 sec)'];
+    L.forEach((s, i) => tx(120, 150 + i * 46, s, { s: 34, attr: { fill: i === 0 ? T.ink : (i === 6 ? T.orange : T.dim) } }));
+    tx(120, 640, '一个数据库引擎是如何实现的？', { s: 56, w: 500, f: 'Sans SC' });
+    tx(112, 790, '从 MyISAM 说起', { s: 132, w: 800, f: 'Sans SC', attr: { fill: T.orange } });
+    tx(120, 880, 'users.frm   users.MYD   users.MYI', { s: 34, attr: { fill: T.teal } });
+  } else if (DIR === 2) {
+    img('../img/mysql-logo.svg', 120, 90, 150);
+    tx(120, 470, '一个数据库引擎是如何实现的？', { s: 60, w: 600, attr: { fill: T.teal } });
+    tx(112, 640, '从 MyISAM 说起', { s: 150, w: 800 });
+    tx(120, 720, 'MySQL 5.5 之前的默认存储引擎', { s: 34, w: 500, attr: { fill: T.dim } });
+    const files = [['users.frm', '表结构', T.dim], ['users.MYD', '数据', T.teal], ['users.MYI', '索引', T.orange]];
+    files.forEach(([n, d, c], i) => {
+      const x = 1240 + i * 210, y = 110;
+      el('path', { d: `M${x} ${y} h120 l40 40 v170 h-160 z`, fill: T.bg, stroke: c, 'stroke-width': 5 });
+      el('path', { d: `M${x + 120} ${y} v40 h40`, fill: 'none', stroke: c, 'stroke-width': 5 });
+      tx(x + 80, y + 140, d, { s: 36, w: 700, attr: { 'text-anchor': 'middle', fill: c } });
+      tx(x + 80, y + 270, n, { s: 26, f: 'Mono', attr: { 'text-anchor': 'middle', fill: T.ink } });
+    });
+  } else {
+    // 背景铺一层真实字节：alice 那 16 个字节高亮
+    const all = R.usersMYD[0].match(/../g);
+    for (let r = 0; r < 8; r++) for (let c = 0; c < 16; c++) {
+      const v = all[r * 16 + c], hot = r === 0;
+      tx(1120 + c * 42, 170 + r * 52, v, { s: 28, attr: { fill: hot ? T.orange : T.faint, 'font-weight': hot ? 700 : 500 } });
+    }
+    tx(1120, 130, 'users.MYD  0000–007F', { s: 24, attr: { fill: T.dim } });
+    tx(120, 560, '一个数据库引擎是如何实现的？', { s: 56, w: 600, f: 'Sans SC', attr: { fill: T.teal } });
+    tx(112, 720, '从 MyISAM 说起', { s: 150, w: 800, f: 'Sans SC' });
+    tx(120, 800, '每一个字节，都可以摊开来看', { s: 34, w: 500, f: 'Sans SC', attr: { fill: T.dim } });
+  }
+}
+
+function dataFile() {
+  const X = 220, Y = 250, RH = 72;
+  tx(120, 130, 'users.MYD', { s: 44, w: 700, f: DIR === 2 ? 'Sans SC' : 'Mono', attr: { fill: DIR === 1 ? T.orange : T.teal } });
+  tx(DIR === 1 ? 420 : 420, 130, '128 字节 · 每行 16 字节 · 删掉两行之后', { s: 28, f: 'Sans SC', attr: { fill: T.dim } });
+  if (DIR === 2) {
+    // 每行画成四段：标志 | id | 名字 | 年龄（宽度按字节数）
+    const W = 64, segs = [[0, 1, '标志'], [1, 4, 'id'], [5, 10, '名字'], [15, 1, '年龄']];
+    segs.forEach(([a, n, s]) => tx(X + (a + n / 2) * W, Y - 22, s, { s: 24, attr: { 'text-anchor': 'middle', fill: T.dim } }));
+    hatch('h2', T.dim);
+    myd.forEach((r) => {
+      const y = Y + r.i * RH;
+      tx(X - 30, y + 46, r.i * 16, { s: 24, f: 'Mono', attr: { 'text-anchor': 'end', fill: T.dim } });
+      if (r.del) {
+        el('rect', { x: X, y: y + 6, width: 16 * W, height: RH - 12, fill: 'url(#h2)', stroke: T.dim, 'stroke-width': 2 });
+        el('rect', { x: X, y: y + 6, width: W, height: RH - 12, fill: T.orange });
+        tx(X + W / 2, y + 47, '00', { s: 28, f: 'Mono', w: 700, attr: { 'text-anchor': 'middle', fill: '#fff' } });
+        el('rect', { x: X + W, y: y + 6, width: 6 * W, height: RH - 12, fill: T.bg, stroke: T.orange, 'stroke-width': 3 });
+        tx(X + 4 * W, y + 47, r.link === 0xffffffffffff ? '链尾' : '→ 第 ' + r.link + ' 行', { s: 28, f: 'Sans SC', w: 700, attr: { 'text-anchor': 'middle', fill: T.orange } });
+      } else {
+        segs.forEach(([a, n]) => el('rect', { x: X + a * W, y: y + 6, width: n * W, height: RH - 12, fill: r.name === 'alice' ? '#e6f3f6' : T.bg, stroke: T.teal, 'stroke-width': 2 }));
+        tx(X + W / 2, y + 47, 'ff', { s: 26, f: 'Mono', attr: { 'text-anchor': 'middle', fill: T.dim } });
+        tx(X + 3 * W, y + 47, r.id, { s: 30, f: 'Mono', w: 700, attr: { 'text-anchor': 'middle' } });
+        tx(X + 10 * W, y + 47, r.name, { s: 30, f: 'Mono', w: 700, attr: { 'text-anchor': 'middle' } });
+        tx(X + 15.5 * W, y + 47, r.age, { s: 30, f: 'Mono', w: 700, attr: { 'text-anchor': 'middle' } });
+      }
+    });
+    // 空位链：链头（.MYI 文件头）→ 第 5 行 → 第 2 行 → 链尾
+    const ax = X + 16 * W + 60, yOf = (i) => Y + i * RH + RH / 2;
+    const mk = el('marker', { id: 'ah', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto' }, el('defs', {}));
+    el('path', { d: 'M0 0 L10 5 L0 10 z', fill: T.orange }, mk);
+    el('path', { d: `M${ax + 200} ${yOf(5)} L${ax + 12} ${yOf(5)}`, stroke: T.orange, 'stroke-width': 4, fill: 'none', 'marker-end': 'url(#ah)' });
+    tx(ax + 210, yOf(5) - 14, '链头', { s: 28, f: 'Sans SC', w: 700, attr: { fill: T.orange } });
+    tx(ax + 210, yOf(5) + 22, '.MYI 文件头记着 ' + head + '，即第 ' + head / 16 + ' 行', { s: 22, f: 'Sans SC', attr: { fill: T.dim } });
+    el('path', { d: `M${ax - 20} ${yOf(5) + 10} C ${ax + 90} ${yOf(5) + 10}, ${ax + 90} ${yOf(2)}, ${ax + 4} ${yOf(2)}`, stroke: T.orange, 'stroke-width': 4, fill: 'none', 'marker-end': 'url(#ah)' });
+  } else {
+    // 终端与字节格都按 16 列字节画；终端是十六进制转储的样子，字节格是一格一格
+    const CW = DIR === 1 ? 48 : 56, X0 = DIR === 1 ? 300 : 260;
+    for (let c = 0; c < 16; c++) tx(X0 + c * CW + CW / 2, Y - 24, c.toString(16).toUpperCase(), { s: 22, attr: { 'text-anchor': 'middle', fill: T.dim } });
+    myd.forEach((r) => {
+      const y = Y + r.i * RH;
+      tx(X0 - 30, y + 46, r.i.toString(16).padStart(4, '0') + '0', { s: 24, attr: { 'text-anchor': 'end', fill: T.dim } });
+      r.hex.forEach((v, c) => {
+        const x = X0 + c * CW;
+        const isFlag = c === 0, isLink = r.del && c >= 1 && c <= 6;
+        const col = r.del ? (isFlag || isLink ? T.orange : T.faint) : (r.name === 'alice' ? T.orange : (isFlag ? T.dim : T.ink));
+        if (DIR === 3) el('rect', { x: x + 2, y: y + 8, width: CW - 4, height: RH - 16, fill: isFlag && r.del ? T.orange : '#fff',
+                                    stroke: isLink ? T.orange : (r.del ? T.faint : T.teal), 'stroke-width': isLink ? 3 : 1.5 });
+        tx(x + CW / 2, y + 46, v, { s: DIR === 1 ? 28 : 26, w: (r.name === 'alice' || isFlag || isLink) ? 700 : 500,
+                                    attr: { 'text-anchor': 'middle', fill: DIR === 3 && isFlag && r.del ? '#fff' : col } });
+      });
+      const side = X0 + 16 * CW + 40;
+      if (r.del) tx(side, y + 46, r.link === 0xffffffffffff ? '已删除 · 链尾' : '已删除 · 下一个空位：第 ' + r.link + ' 行', { s: 26, f: 'Sans SC', w: 700, attr: { fill: T.orange } });
+      else tx(side, y + 46, `${r.id}  ${r.name}  ${r.age}`, { s: 26, attr: { fill: r.name === 'alice' ? T.orange : T.dim } });
+    });
+    tx(X0, Y + 8 * RH + 60, '空位链：链头（.MYI 文件头 = ' + head + '）→ 第 5 行 → 第 2 行 → 链尾', { s: 28, f: 'Sans SC', w: 600, attr: { fill: T.orange } });
+  }
+}
+
+function lockTimeline() {
+  // 时间轴 0–10 个单位；播放头在 5.6：bob、dave 的读还在继续，carol 的写在排队（斜纹），alice 的读排在 carol 后面
+  const GX = 520, GW = 1200, U = GW / 10, LH = 150, GY = 300, P = 5.6;
+  const lanes = [['bob', 'SELECT · 统计整张表'], ['dave', 'SELECT'], ['carol', 'UPDATE · 改 alice 的年龄']], NL = lanes.length;
+  const bars = [[0, 0.3, 6.2, 'r'], [1, 1.0, 4.4, 'r'], [2, 2.0, 6.2, 'q'], [2, 6.2, 8.4, 'w']];
+  tx(120, 140, '表 users · 整张表一把锁', { s: 40, w: 700, f: DIR === 2 ? 'Sans SC' : (DIR === 1 ? 'Mono' : 'Sans SC'), attr: { fill: DIR === 1 ? T.orange : T.teal } });
+  tx(GX + GW, GY - 40, '时间 →', { s: 24, attr: { 'text-anchor': 'end', fill: T.dim } });
+  hatch('h3', DIR === 1 ? T.dim : T.dim);
+  lanes.forEach(([n, s], i) => {
+    const y = GY + i * LH;
+    el('line', { x1: 120, y1: y, x2: GX + GW, y2: y, stroke: T.faint, 'stroke-width': 1.5 });
+    tx(120, y + 56, n, { s: 36, w: 700, f: 'Mono' });
+    tx(120, y + 94, s, { s: 22, f: 'Sans SC', attr: { fill: T.dim } });
+  });
+  el('line', { x1: 120, y1: GY + NL * LH, x2: GX + GW, y2: GY + NL * LH, stroke: T.faint, 'stroke-width': 1.5 });
+  bars.forEach(([lane, a, b, k]) => {
+    const vis = Math.max(0, Math.min(P, b) - a);
+    if (vis <= 0) return;
+    const x = GX + a * U, y = GY + lane * LH + 30, w = vis * U, h = 60;
+    const col = k === 'r' ? T.teal : T.orange;
+    if (DIR === 1) {
+      // 终端：用整块字符表示持有，用浅点字符表示排队
+      // 终端：一格一个字符宽，持有画实心块，排队画暗格
+      for (let c = 0; c < Math.floor(w / 20); c++) el('rect', { x: x + c * 20, y: y + 6, width: 17, height: 48, fill: k === 'q' ? T.faint : col });
+      if (k === 'q' && vis > 1.2) tx(x + 8, y - 6, '等待', { s: 22, f: 'Sans SC', attr: { fill: T.dim } });
+    } else if (DIR === 2) {
+      el('rect', { x, y, width: w, height: h, fill: k === 'q' ? 'url(#h3)' : col, 'fill-opacity': k === 'q' ? 1 : 0.9 });
+      if (w > 90) tx(x + 16, y + 40, k === 'r' ? '读 · 共享' : k === 'w' ? '写 · 独占' : '等待', { s: 24, w: 700, f: 'Sans SC', attr: { fill: k === 'q' ? T.dim : '#fff' } });
+    } else {
+      const cells = Math.floor(w / 30);
+      for (let c = 0; c < cells; c++) el('rect', { x: x + c * 30 + 2, y, width: 26, height: h, fill: k === 'q' ? '#fff' : col, stroke: k === 'q' ? T.dim : col, 'stroke-width': 1.5, 'stroke-dasharray': k === 'q' ? '4 4' : '' });
+    }
+  });
+  const px = GX + P * U;
+  el('line', { x1: px, y1: GY - 20, x2: px, y2: GY + NL * LH + 20, stroke: T.ink, 'stroke-width': 3 });
+  tx(px, GY - 30, '现在', { s: 22, f: 'Sans SC', w: 700, attr: { 'text-anchor': 'middle', fill: T.ink } });
+  tx(120, GY + NL * LH + 80, '读锁可以共享，写锁独占：carol 只能等 bob 读完', { s: 34, f: 'Sans SC', w: 600, attr: { fill: T.ink } });
+}
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

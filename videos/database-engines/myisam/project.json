@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
-  "stage": "review",
-  "next": "第 4 稿（补修表，约 9:40）交 WaterRun 确认；配音 3 个调调 Demo 与关键帧",
+  "stage": "voice",
+  "next": "合成全片配音（温润男声）；配乐按「再平淡一点，契合画面」重做 3 个调调；D1 终端风格的场景",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -22,7 +22,14 @@
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "旁白合成（Chinese (Mandarin)_Gentleman，语速 1.1）"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "voices": {
@@ -44,10 +51,25 @@
     "gpu": 1
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
-    "duck_db": 9,
-    "sfx_db": -8
+    "music": "tools/music.py",
+    "music_db": -20,
+    "duck_db": 8,
+    "sfx_db": -8,
+    "energy": {
+      "intro": 0.45,
+      "s1": 0.3,
+      "s2": 0.3,
+      "s3": 0.35,
+      "s4": 0.4,
+      "s5": 0.4,
+      "s6": 0.5,
+      "s7": 0.55,
+      "s8": 0.6,
+      "s9": 0.7,
+      "s10": 0.75,
+      "credits": 0.5
+    },
+    "hits": "scenes"
   },
   "check": {
     "caption_width": {
@@ -62,6 +84,16 @@
     "style": {
       "flat": true,
       "no_emoji": true
+    }
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Gentleman"
+    },
+    "speed": {
+      "zh": 1.1
     }
   }
 }
