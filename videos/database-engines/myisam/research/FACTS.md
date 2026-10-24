@@ -128,6 +128,12 @@
 | k4b–k4c | bob 统计整张表时，carol 改 alice 的年龄只能等他读完 | 本表「08」读锁共享、写锁独占（`thr_lock`）；9.7.4 实测 [v97/out_05](lab/v97/out_05_locks.json) 第一组：读整表 3 秒内两个修改都处于「Waiting for table level lock」 |
 | k7b | 中间有了空位，插入又得排队 | 5.5.62 `mi_locking.c:388`（只有 `dellink == HA_OFFSET_ERROR` 才允许并发插入）；9.7.4 实测 v97/out_05 第四组 |
 | m10b–m10e | 它也没有事务；执行 ROLLBACK，MySQL 只回一句警告，改过的数据留在文件里 | 本表「09」SHOW ENGINES 的 Transactions 为 NO；5.5.62 `sql/share/errmsg-utf8.txt` 的 `ER_WARNING_NOT_COMPLETE_ROLLBACK`：「Some non-transactional changed tables couldn't be rolled back」；9.7.4 实测 [v97/out_06](lab/v97/out_06_no_transaction.json)：警告 1196，值未回退 |
+| m9b–m9c | CHECK TABLE 逐项核对数据文件大小、行数、索引项数；文件里数出 11 行而文件头记着 10 行，表被判为损坏 | 本表「09」：`lab/remote/06c.out` 的 CHECK TABLE 回显（「Size of datafile is: 176 Should be: 160」「Record-count is not ok; is 11 Should be: 10」「Found 11 key parts. Should be: 10」「Corrupt」） |
+| m10 | 修复的办法，是重新扫描数据文件，重建索引（旧版原句，本稿补出处） | 5.5.62 `storage/myisam/mi_check.c`：`mi_repair` 经 `sort_get_next_record` 逐条读数据文件（第 1628 行）；第 2683 行注释「Quick repair (not touching data file, rebuilding indexes)」 |
+| m10f–m10g | REPAIR TABLE 报告行数从 10 改成 11，那一行又查得到了 | `06c.out`：「Number of rows changed from 10 to 11」「status OK」；修复后 `SELECT … WHERE id = 13` 返回 olivia |
+| m10h–m10k | 服务停着时也可以用 myisamchk 检查、修复 `.MYD`、`.MYI` | MySQL 9.7 手册 [myisamchk](https://dev.mysql.com/doc/refman/9.7/en/myisamchk.html)：「checks, repairs, or optimizes them. myisamchk works with MyISAM tables (tables that have .MYD and .MYI files …)」；[MyISAM 表维护与崩溃恢复](https://dev.mysql.com/doc/refman/9.7/en/myisam-crash-recovery.html)：外部锁关闭（缺省）时要先停掉 mysqld 或 flush tables |
+| m10i | 可以让服务器打开表时发现上次没关好就自动修复 | 9.7 手册 [MyISAM Startup Options](https://dev.mysql.com/doc/refman/9.7/en/myisam-start.html)：「Automatic recovery is activated if you start mysqld with the myisam_recover_options system variable set … when the server opens a MyISAM table, it checks whether the table is marked as crashed or whether the open count variable for the table is not 0」 |
+| m10j | 修复本身也可能丢数据，官方建议先备份 | myisamchk 页：「It is best to make a backup of a table before performing a table repair operation; under some circumstances the operation might cause data loss」 |
 | n4b | 改和删：原地覆盖，删掉的留下空位，给后来的行 | 本表「03」「04」；c13 的依据 |
 | n8b | 撤不回的 ROLLBACK，在 InnoDB 那里能撤回 | 9.7.4 实测 v97/out_06：同样的语句对 InnoDB 副本，值回到原样 |
 
