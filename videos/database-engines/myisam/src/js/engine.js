@@ -1,14 +1,18 @@
-// 时间线引擎：整部片子是时间 t 的纯函数。
+// 时间线引擎（工具包通用版）：整部片子是时间 t 的纯函数。
 // - GSAP 时间线（暂停态）负责位移、透明度等补间，逐帧 seek
 // - F() 注册的帧函数负责打字机、计数、字幕这类「由 t 直接算出内容」的东西
 // 这样任意一帧都能独立渲染，分片并行出帧不会有状态漂移。
+// 约束：不用 CSS animation / transition，不用 setTimeout / requestAnimationFrame 驱动画面，不用 tl.call()；
+//       随机数要固定种子。一切状态只由 window.seek(t) 决定。
+// 各视频在 js/config.js 里给出 window.ENGINE = { fonts: [[css 字体串, 样字]…], chrome() {…}, after() {…}, sceneFade, sceneCut }
+//   chrome()：建常驻元素（章节卡、角标、进度条）；after()：全部场景建好之后做跨场景的编排（场间转场、字幕配色）
 const L = layoutScript(window.DUR);
 const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out', duration: 0.7 } });
 const FF = [];
 const F = (fn) => FF.push(fn);
 const SCENE_BUILDERS = {};
 // 音效事件：场景里调用 sfx('tick', t) 登记，混音时由 tools/mix.py 合成并铺到时间线上。
-// 名称见 mix.py 的 SFX 表；g 为相对音量（1 = 该音效的默认音量），p 为声像（-1 左 … 1 右）
+// 名称：tick key blip pop whoosh thud chime error riser beep drive（见 kit/tools/mix.py 的 SFX 表）；g 为相对音量（1 = 默认），p 为声像（-1 左 … 1 右）
 const SFX = [];
 const sfx = (name, t, o = {}) => { SFX.push({ n: name, t: +(+t).toFixed(3), g: o.g != null ? o.g : 1, p: o.p || 0 }); };
 window.SFX = SFX;
@@ -26,6 +30,7 @@ const ease = {
 function T(id, word, shift = 0) {
   const c = L.cues[id];
   if (!c) { console.warn('no cue', id); return 0; }
+  if (typeof pick === 'function') word = pick(word);        // 双语脚本：T('c5', { zh: '读', en: 'reads' })
   if (!word) return c.start + shift;
   const txt = c.tts || '';
   word = ttsNorm(word);
@@ -132,9 +137,9 @@ function classAt(e, cls, t0, t1 = Infinity) {
   F((t) => { const on = t >= t0 && t < t1; if (on !== last) { e.classList.toggle(cls, on); last = on; } });
 }
 // 一闪而过的强调
-function flash(e, t, color = 'rgba(242,145,17,.55)') {
+function flash(e, t, color = 'rgba(255,255,255,.55)') {
   sfx('blip', t);
-  tl.fromTo(e, { boxShadow: `0 0 0 0px ${color}` }, { boxShadow: `0 0 0 10px rgba(242,145,17,0)`, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
+  tl.fromTo(e, { boxShadow: `0 0 0 0px ${color}` }, { boxShadow: `0 0 0 10px rgba(255,255,255,0)`, duration: 0.9, ease: 'power2.out', immediateRender: false }, t);
 }
 // SVG 路径描线
 function draw(path, t, d = 0.9, o = {}) {
@@ -144,116 +149,93 @@ function draw(path, t, d = 0.9, o = {}) {
   tl.fromTo(path, { strokeDashoffset: len, autoAlpha: 1 }, { strokeDashoffset: 0, duration: d, ease: o.ease || 'power2.inOut', immediateRender: true }, t);
 }
 
-// ── 字幕 / HUD / 背景 ──
-function initChrome() {
+// ── 镜头：内容放进一个 world 容器，镜头运动 = 对 world 做反向变换 ──
+// const cam = makeCamera(worldEl);  cam.track(起点时刻, { x, y, z }, [[t, { … }, d], …])   x/y 为镜头中心在 world 里的坐标，z 为放大倍数
+// cam.to(t, { x, y, z, r }, { d, ease }) 是单段的写法：各段在时间上不能重叠
+// 连续的推、拉、摇、移比「整屏淡入淡出换面板」有动势得多；配合不同深度的层可做视差
+function makeCamera(world, W = 1920, H = 1080) {
+  const st = { x: W / 2, y: H / 2, z: 1, r: 0 };
+  const apply = () => { world.style.transform = `translate(${W / 2}px, ${H / 2}px) scale(${st.z}) rotate(${st.r}deg) translate(${-st.x}px, ${-st.y}px)`; };
+  world.style.transformOrigin = '0 0';
+  F(apply); apply();
+  return {
+    st,
+    to(t, v, o = {}) { tl.to(st, { ...v, duration: o.d || 1.4, ease: o.ease || 'power3.inOut' }, t); if (o.sfx !== false) sfx('whoosh', t, { g: o.sfxGain != null ? o.sfxGain : 0.6 }); },
+    cut(t, v) { tl.set(st, v, t); },
+    // 一条镜头轨迹：在 startT 把镜头放到 start，然后依次经过各关键帧。每一段都显式给出起点（上一段的终点）与终点，
+    // 所以镜头的位置只由 t 决定，与播放历史无关；用 cam.to() 时若两段在时间上重叠，后一段的起点取决于「第一次渲染到它时」镜头在哪。
+    // keys: [[t, { x, y, z, r }, d, { ease, sfx, g }], …]。t 写 null 表示接在上一段结束后 0.15 秒；只写要变的分量即可；
+    // 缓慢的漂移写 { sfx: false }，其余每段登记一声 whoosh。
+    track(startT, start, keys) {
+      let cur = { ...st, ...start }, prevEnd = startT;
+      tl.set(st, { ...cur }, startT);
+      for (const [t, v, d = 1.4, o = {}] of keys) {
+        const tt = t == null ? prevEnd + 0.15 : t, next = { ...cur, ...v };
+        tl.fromTo(st, { ...cur }, { ...next, duration: d, ease: o.ease || 'power3.inOut', immediateRender: true }, tt);
+        if (o.sfx !== false) sfx('whoosh', tt, { g: o.g != null ? o.g : 0.6 });
+        cur = next; prevEnd = tt + d;
+      }
+    },
+    // 把镜头对准某个元素（构建期量位置），pad 为四周留白比例
+    frame(t, el, o = {}) { const b = box(el, world); const z = Math.min(W / (b.w * (1 + (o.pad != null ? o.pad : 0.4))), H / (b.h * (1 + (o.pad != null ? o.pad : 0.4)))); this.to(t, { x: b.cx, y: b.cy, z: Math.min(o.maxZ || 6, z) }, o); },
+  };
+}
+
+// ── 字幕：按旁白时间显示；字幕文本里 *词* 表示强调 ──
+function initCaptions() {
   const cap = document.querySelector('#caption span');
+  if (!cap) return;
   const capHtml = (s) => s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
   const cues = L.order.map((id) => L.cues[id]).filter((c) => c.cap);
   let lastCap = null;
   F((t) => {
     let cur = null, a = 0;
     for (let i = 0; i < cues.length; i++) {
-      const c = cues[i];
-      const next = cues[i + 1];
+      const c = cues[i], next = cues[i + 1];
       const end = Math.min(c.end + 0.28, next ? next.start - 0.06 : c.end + 0.5);
       if (t >= c.start - 0.08 && t < end) { cur = c; a = Math.min(clamp((t - (c.start - 0.08)) / 0.14), clamp((end - t) / 0.14)); break; }
     }
     if (cur !== lastCap) { cap.innerHTML = cur ? capHtml(cur.cap) : ''; lastCap = cur; }
     cap.style.opacity = cur ? a.toFixed(3) : 0;
   });
-
-  // 顶部章节标记与底部进度
-  const no = document.querySelector('.hud-no'), title = document.querySelector('.hud-title'), chapBox = document.querySelector('.hud-chap');
-  const fill = document.querySelector('.hud-fill'), ticks = document.querySelector('.hud-ticks');
-  for (const s of L.scenes.slice(1)) h('i', '', ticks).style.left = (s.start / L.total * 1920 - 1) + 'px';
-  let lastScene = null;
-  F((t) => {
-    fill.style.width = (clamp(t / L.total) * 1920).toFixed(2) + 'px';
-    let s = L.scenes.find((x) => t >= x.start && t < x.end) || L.scenes[L.scenes.length - 1];
-    let a = 0;
-    if (s.chap) a = Math.min(clamp((t - (s.start + s.lead - 0.5)) / 0.6), clamp((s.end + 0.1 - t) / 0.5));
-    if (s !== lastScene) { no.textContent = s.chap ? s.chap[0] : ''; title.textContent = s.chap ? s.chap[1] : ''; lastScene = s; }
-    chapBox.style.opacity = a.toFixed(3);
-  });
-  const brand = document.querySelector('.hud-brand');
-  F((t) => { const s0 = L.scenes[1].start; brand.style.opacity = (clamp((t - s0) / 1.2) * clamp((L.total - 2.6 - t) / 0.8)).toFixed(3); });
-
-  // 片头从黑场淡入
-  const veil = h('div', '', document.getElementById('stage'));
-  css(veil, { position: 'absolute', inset: 0, background: '#020d12', pointerEvents: 'none' });
-  F((t) => { const a = 1 - clamp(t / 0.9); veil.style.opacity = a.toFixed(3); veil.style.display = a <= 0 ? 'none' : ''; });
-
-  // 背景缓慢流动
-  const b1 = document.querySelector('.b1'), b2 = document.querySelector('.b2'), b3 = document.querySelector('.b3'), grid = document.querySelector('.bg-grid');
-  F((t) => {
-    b1.style.transform = `translate(${(Math.sin(t * 0.045) * 160).toFixed(1)}px, ${(Math.cos(t * 0.038) * 90).toFixed(1)}px)`;
-    b2.style.transform = `translate(${(Math.cos(t * 0.036 + 1) * 190).toFixed(1)}px, ${(Math.sin(t * 0.05 + 2) * 110).toFixed(1)}px)`;
-    b3.style.transform = `translate(${(Math.sin(t * 0.03 + 3) * 140).toFixed(1)}px, ${(Math.cos(t * 0.042) * 80).toFixed(1)}px)`;
-    grid.style.backgroundPosition = `${(20 + t * 1.2).toFixed(2)}px 20px`;
-  });
-}
-
-// ── 章节卡：把章节标题排成一张 mysql 结果集 ──
-function initChapterCards() {
-  const host = document.getElementById('chapcard');
-  const probe = h('span', 'mono', host, '0'.repeat(100));
-  css(probe, { position: 'absolute', visibility: 'hidden', fontSize: '50px', whiteSpace: 'pre' });
-  const ch = probe.getBoundingClientRect().width / 100;
-  probe.remove();
-  for (const s of L.scenes) {
-    if (!s.chap) continue;
-    const [no, title] = s.chap;
-    const el = h('div', 'chap', host);
-    const q = h('div', 'cq', el);
-    const tbl = h('div', '', el);
-    css(tbl, { fontSize: '50px', lineHeight: '1' });
-    const m = h('span', 'ctt', host, title);
-    css(m, { position: 'absolute', visibility: 'hidden', whiteSpace: 'nowrap', fontSize: '50px', fontFamily: 'var(--sans)', fontWeight: 500, letterSpacing: '0.08em' });
-    const n2 = Math.ceil(m.getBoundingClientRect().width / ch) + 2;
-    m.remove();
-    const n1 = 6;
-    const border = () => `<div class="crow"><span class="cb">+${'-'.repeat(n1)}+${'-'.repeat(n2)}+</span></div>`;
-    tbl.innerHTML = border() +
-      `<div class="crow" style="height:86px"><span class="cb">|</span><span class="cno" style="width:${n1 * ch}px;font-size:50px">${no}</span><span class="cb">|</span>` +
-      `<span style="width:${n2 * ch}px;padding-left:${ch}px;font-family:var(--sans);font-weight:500;font-size:50px;letter-spacing:.08em;color:var(--text)">${title}</span><span class="cb">|</span></div>` + border();
-    const foot = h('div', 'cfoot', el, '1 row in set (0.00 sec)');
-    const t0 = s.start + 0.3, t1 = s.start + s.lead - 0.42;
-    typeText(q, `<span class="faint">mysql&gt;</span> SELECT * FROM chapter WHERE no = <b>${+no}</b>;`, t0, 80, { cursorUntil: t0 + 0.62 });
-    sfx('whoosh', t0 - 0.25, { g: 0.8 }); sfx('thud', t0 + 0.66, { g: 0.7 });
-    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, immediateRender: true }, t0);
-    const rows = [...tbl.children, foot];
-    tl.fromTo(rows, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, stagger: 0.07, ease: 'power2.out', immediateRender: true }, t0 + 0.62);
-    tl.to(el, { autoAlpha: 0, y: -18, duration: 0.4, ease: 'power2.in' }, t1);
-    F((t) => { el.style.display = (t > t0 - 0.1 && t < t1 + 0.6) ? '' : 'none'; });
-  }
 }
 
 // ── 启动 ──
 async function boot() {
-  await Promise.all([
-    document.fonts.load('400 20px "Sans SC"', '引擎A'), document.fonts.load('700 20px "Serif SC"', '引擎A'), document.fonts.load('400 20px "Mono"', 'A0'),
-  ]);
+  const E = window.ENGINE || {};
+  // 本片的 project.json（署名等资料，片尾名单从这里读）。由工具的本地服务器提供；取不到时为 null
+  window.PROJECT = await fetch('/project.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  await Promise.all((E.fonts || []).map(([font, sample]) => document.fonts.load(font, sample)));
   await document.fonts.ready;
-  initChrome();
-  initChapterCards();
+  initCaptions();
+  if (E.chrome) E.chrome();                 // 项目自己的常驻元素：章节卡、角标、进度、背景运动
   const host = document.getElementById('scenes');
   for (const s of L.scenes) {
     const root = h('div', 'scene', host);
     root.id = 'sc-' + s.id;
     const build = SCENE_BUILDERS[s.id];
-    const c0 = s.start + (s.chap ? s.lead - 0.35 : 0.1);   // 场景内容可以开始出现的时刻
+    const c0 = s.start + (s.chap ? s.lead - 0.35 : 0.1);   // 场景内容可以开始出现的时刻（章节卡之后）
     if (build) build({ root, s, c0 });
-    // 整场淡入淡出；场景外不参与排版
-    tl.fromTo(root, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'power1.out', immediateRender: true }, c0);
-    if (s !== L.scenes[L.scenes.length - 1]) tl.to(root, { autoAlpha: 0, duration: 0.55, ease: 'power1.in' }, s.end - 0.3);
-    F((t) => { root.style.display = (t >= c0 - 0.05 && t <= s.end + 0.4) ? '' : 'none'; });
+    if (E.sceneFade !== false) {
+      // 默认：整场淡入淡出。想做场间的连续转场（匹配剪辑、镜头穿越）就设 ENGINE.sceneFade = false，自己编排
+      tl.fromTo(root, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'power1.out', immediateRender: true }, c0);
+      if (s !== L.scenes[L.scenes.length - 1]) tl.to(root, { autoAlpha: 0, duration: 0.55, ease: 'power1.in' }, s.end - 0.3);
+      F((t) => { root.style.display = (t >= c0 - 0.05 && t <= s.end + 0.4) ? '' : 'none'; });
+    } else if (!E.after) {
+      // sceneFade = false 且没有 after()：场景之间硬切。每个场景只在「本场开始后 sceneCut 秒」到「下一场开始后 sceneCut 秒」之间显示，
+      // 切换那一刻由常驻层（#hud）里的整屏色块盖住（章节卡或转场色块）。有 after() 时，场景的显隐与转场由它自己编排。
+      const cut = E.sceneCut != null ? E.sceneCut : 0.45;
+      const idx = L.scenes.indexOf(s), nx = L.scenes[idx + 1];
+      const a = idx === 0 ? -1 : s.start + cut, b = nx ? nx.start + cut : Infinity;
+      F((t) => { root.style.display = (t >= a && t < b) ? '' : 'none'; });
+    }
   }
+  if (E.after) E.after();                    // 场景都建好之后：场间转场、字幕配色等跨场景的编排
+  await Promise.all(window.PENDING || []);   // 异步资源（例如 util.js 的 freeze() 由 canvas 转成的图片）：承诺放进 window.PENDING，这里等它们就绪
   tl.set({}, {}, L.total);
   window.seek = (t) => { tl.time(t, false); for (const fn of FF) fn(t); };
   window.TOTAL = L.total;
-  const q = new URLSearchParams(location.search);
-  if (q.get('clean')) document.getElementById('stage').classList.add('clean');
-  window.seek(parseFloat(q.get('t') || '0'));
+  window.seek(parseFloat(new URLSearchParams(location.search).get('t') || '0'));
   document.body.dataset.ready = '1';
   return true;
 }

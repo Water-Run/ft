@@ -1,27 +1,15 @@
 {
   "slug": "myisam",
-  "stage": "released",
-  "delivery": {
-    "date": "2026-10-01",
-    "duration": {
-      "zh": 475.883
-    }
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
-  "release": [
-    {
-      "platform": "哔哩哔哩",
-      "url": "https://www.bilibili.com/video/BV1u2YA65EMQ",
-      "date": "2026-10-01"
-    }
-  ],
-  "reception": [
-    {
-      "date": "2026-10-09",
-      "score": 8,
-      "by": "WaterRun",
-      "ref": "docs/log/reviews/2026-10-09.md"
-    }
-  ],
+  "stage": "research",
+  "next": "新版取证：MySQL 9.7.4 LTS 原生运行，4096 行人物数据，整棵 B 树、查询路径、原地改、删除与复用、表锁、无日志的中断；然后按全系列主线写稿交审",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -30,69 +18,50 @@
         "roles": [
           "取证",
           "文案",
-          "视觉",
-          "场景",
-          "声音"
+          "视觉设计"
         ]
       }
     ],
-    "services": [
-      {
-        "name": "Microsoft Edge 在线语音（模型未披露）",
-        "roles": [
-          "旁白合成"
-        ]
-      }
-    ],
+    "services": [],
     "repository": "https://github.com/Water-Run/ft"
-  },
-  "languages": [
-    "zh"
-  ],
-  "titles": {
-    "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural"
   },
   "rates": {
-    "zh": "-4%"
+    "zh": "+0%"
   },
   "asr_prompts": {
-    "zh": "以下是普通话的技术讲解，涉及 MySQL、MyISAM、InnoDB、B 树、VARCHAR、OPTIMIZE TABLE。"
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
   },
   "render": {
     "fps": 60,
-    "mb": 1
+    "mb": 4,
+    "gpu": 1
   },
   "audio": {
-    "music": "pad",
+    "music": "pulse",
     "music_db": -21,
     "duck_db": 9,
-    "sfx_db": -8,
-    "voice_norm": "peak",
-    "pad_low": 1,
-    "pad_top": 1,
-    "limit": false,
-    "sfx": false
+    "sfx_db": -8
   },
   "check": {
     "caption_width": {
-      "zh": 28
+      "zh": 26,
+      "en": 44
     },
-    "min_font": 16,
-    "levels": {
-      "SMALL": "warn",
-      "CONTRAST": "warn",
-      "OVERLAP": "warn",
-      "STILL": "warn",
-      "EMPTY": "warn",
-      "NONDET": "warn"
-    },
-    "sfx": {
-      "per_seconds": 0,
-      "kinds": 0,
-      "max_gap": 0
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
     }
   }
 }
