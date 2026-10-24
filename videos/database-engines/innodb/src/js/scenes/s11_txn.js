@@ -76,9 +76,9 @@ scene('s11', ({ root, s, c0 }) => {
   // k24：三样合在一起，就是 InnoDB 的事务——三张卡下面一道括线收成「事务」，三样部件一起亮
   const brace3 = h('div', 'abs', W); px(brace3, 120 + 270, 752, 2 * 570, 22); css(brace3, { borderLeft: '3px solid var(--main)', borderRight: '3px solid var(--main)', borderBottom: '3px solid var(--main)' });
   const txTag = h('div', 'tag', W, 'InnoDB 的事务'); px(txTag, 120 + 270 + 570 - 110, 786); css(txTag, { fontSize: '32px', padding: '6px 18px' });
-  wipe(brace3, T('k24', '合在一起') - 0.1, { dir: 'l', d: 0.6 }); vanish(txTag, 0); slam(txTag, T('k24', '事务'), { from: 1.4 }); sfx('thud', T('k24', '事务'), { g: 0.6 });
+  wipe(brace3, T('k24', '合在一起') - 0.1, { dir: 'l', d: 0.6 }); vanish(txTag, 0); slam(txTag, T('k24', 'InnoDB') - 0.1, { from: 1.4 }); sfx('thud', T('k24', 'InnoDB'), { g: 0.6 });
   [undo, p27, redo].forEach((b) => onWin(b, T('k24', '合在一起'), Tend('k24') + 0.3));
-  const out2 = Tend('k24') + 0.4;
+  const out2 = Tend('k24') + 0.9;
   [brace3, txTag].forEach((e) => exit(e, out2, { y: 16, d: 0.3 }));
   qCards.forEach((c, i) => exit(c, out2 + i * 0.05, { y: 20, d: 0.3 }));
   badges.forEach((b) => exit(b, out2, { d: 0.2 }));

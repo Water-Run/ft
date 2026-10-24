@@ -51,7 +51,7 @@ scene('s9', ({ root, s, c0 }) => {
   W.appendChild(ov);
 
   // ── 时刻 ──
-  const tMark = T('d1', '删掉');
+  const tMark = T('d1', '删掉'), tFlag = T('d2', '删除标记') - 0.2;   // 泳道上 DELETE 在「删掉」；卡片上的删除标记讲到时才翻
   const tPurge = T('d5', '移走');
   const tDave = T('d7', '注册');
   const tRe = T('d8');                       // 换一个时机：回到「刚删掉、还没 purge」
@@ -66,7 +66,7 @@ scene('s9', ({ root, s, c0 }) => {
   const aliceState = (t) => {                // 'live' | 'marked' | 'gone'
     if (t >= tRe + 0.3) return t >= tBobC2 + 0.4 ? 'gone' : 'marked';
     if (t >= tPurge) return 'gone';
-    if (t >= tMark) return 'marked';
+    if (t >= tFlag) return 'marked';
     return 'live';
   };
   const trxEl = alice.querySelector('.trx');

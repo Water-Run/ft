@@ -116,7 +116,7 @@ scene('s2', ({ root, s, c0 }) => {
   slide(tblLab, tA + 0.3, { x: -20 });
   rowEls.forEach((r, i) => { slide(r.id, tA + 0.35 + i * 0.1, { x: -20 }); wipe(r.a, tA + 0.45 + i * 0.1, { dir: 'l', d: 0.4 }); });
   const tBind = T('t1', '捆');
-  rowEls.forEach((r, i) => { appear(r.ar, T('t1') + 0.1 + i * 0.15); wipe(r.b, T('t1') + 0.2 + i * 0.15, { dir: 'l', d: 0.4 }); });
+  rowEls.forEach((r, i) => { appear(r.ar, T('t1', '修改') - 0.2 + i * 0.25); wipe(r.b, T('t1', '修改') - 0.1 + i * 0.25, { dir: 'l', d: 0.4 }); });   // 讲到「几个修改」时每一行改成新值
   css(brace, { background: 'rgba(0, 117, 143, 0.06)' }); wipe(brace, tBind - 0.1, { dir: 'l', d: 0.6 }); sfx('whoosh', tBind - 0.1, { g: 0.4 });
   arrowIn(pOk, T('t2', '全部生效') - 0.15, 0.6); wipe(okBox, T('t2', '全部生效'), { dir: 'l', d: 0.5 }); vanish(okMark, 0); slam(okMark, T('t2', '全部生效') + 0.3);
   arrowIn(pNo, T('t2', '撤回') - 0.15, 0.6); wipe(noBox, T('t2', '撤回'), { dir: 'l', d: 0.5 }); vanish(noMark, 0); slam(noMark, T('t2', '撤回') + 0.3);
@@ -221,7 +221,7 @@ scene('s2', ({ root, s, c0 }) => {
     '事务是一次状态的变换，具有原子性（全有或全无）、持久性（故障后仍在）和一致性（正确的变换）');
   const d83 = doc(1000, 'ACM Computing Surveys 15(4) · December 1983', 'Principles of Transaction-Oriented Database Recovery', 'Theo Härder · Andreas Reuter',
     `"These four properties, ${fl('atomicity')}, ${fl('consistency')}, <b class="s2-hl2">${fl('isolation')}</b>, and ${fl('durability')} ${hl('(ACID)', 's2-hl2')}, describe the major highlights of the transaction paradigm"`,
-    '四个性质：原子性、一致性、隔离性、持久性（ACID），概括了事务的要点');
+    '四个性质合称 ACID，概括了事务的要点');
   st.textContent += '.s2-hl { color: var(--ink2); font-weight: 500; } .s2-hl.on { color: var(--main); font-weight: 800; background: #DCEFF1; } .s2-hl2 { color: var(--ink2); font-weight: 500; } .s2-hl2.on { color: var(--acc); font-weight: 800; background: var(--accL); }'
     + ' .s2-tt.on { background: #DCEFF1; } .s2-fl { font-weight: 500; } .s2-fl.on { background: var(--teal); color: var(--ink); font-weight: 800; }';
   // t11：1981 年的报告；t11b 原文出来，三个性质按旁白的顺序标出（原文里的顺序是原子性、持久性、一致性）
@@ -281,13 +281,16 @@ scene('s2', ({ root, s, c0 }) => {
   });
   // 小图在讲到时演一遍
   const pa = cards[0].querySelectorAll('.s2-g')[0].children;              // A：左边一格格填满（全成），右边一格不动（全不成）
-  const tA1 = T('q1') + 0.1, tA2 = T('q1', '全不成'); let lastA = -1;
+  const tA1 = T('q1') + 0.1, tA2 = Tend('q1') + 0.1; let lastA = -1;   // 一格格填满，填到这句说完
   F((t) => { const k = Math.round(32 * clamp((t - tA1) / Math.max(0.6, tA2 - tA1 - 0.2))); if (k === lastA) return; lastA = k; for (let i = 0; i < 32; i++) pa[i].style.background = i < k ? 'var(--main)' : ''; });
   cards[0].querySelectorAll('.s2-g')[0].classList.remove('full');
+  // 两种结局各标一句：讲到「全成」「全不成」时出来
+  const qA1 = h('div', 'abs t-small', cards[0], '全成'); px(qA1, 82, 282); const qA2 = h('div', 'abs t-small', cards[0], '全不成'); px(qA2, 240, 282);
+  vanish(qA1, 0); show(qA1, T('q1', '全成'), { y: 6, d: 0.3 }); vanish(qA2, 0); show(qA2, T('q1', '全不成'), { y: 6, d: 0.3 });
   const [cBolt, cOk] = cards[1].querySelectorAll('.mono');               // C：崩溃来了，页仍完整
   vanish(cBolt, 0); slam(cBolt, T('q2', '崩溃'), { from: 1.8 }); vanish(cOk, 0); slam(cOk, T('q2', '错乱'), { from: 1.5 });
   const iBars = [...cards[2].querySelectorAll('.s2-pic > div')].slice(0, 2); // I：两个会话各自往前走
-  iBars.forEach((b, j) => fromTo(b, T('q3') + 0.3 + j * 0.15, { width: 0 }, { width: 250, duration: T('q3', '互不干扰') - T('q3') - 0.3, ease: 'none' }));
+  iBars.forEach((b, j) => { vanish(b, 0); appear(b, T('q3') + 0.3 + j * 0.15); fromTo(b, T('q3') + 0.3 + j * 0.15, { width: 0 }, { width: 250, duration: T('q3', '互不干扰') - T('q3') - 0.3, ease: 'none' }); });   // 条子开始长之前不露出边框
   const dBox = cards[3].querySelector('.box'), dArr = cards[3].querySelector('.mono');   // D：提交之后落到磁盘
   vanish(dArr, 0); appear(dArr, T('q4', '提交')); wipe(dBox, T('q4', '提交') + 0.2, { dir: 'l', d: 0.4 });
   const dOk = h('div', 'mono c-main', cards[3], '✓'); css(dOk, { position: 'absolute', right: '24px', top: '18px', fontSize: '48px' });   // 放在卡片右上角：放进 dBox 会被它擦除用的裁剪区切掉

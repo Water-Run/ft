@@ -155,7 +155,7 @@ scene('s4', ({ root, s, c0 }) => {
   const got = h('div', 'pill fill', W, 'Alice → 2050'); px(got, NMX(K9) - 10, NMY + 52); vanish(got, 0); slam(got, T('b12', '2050'), { from: 1.3 });
   // 回表：从页 9 回到主键树
   const back = path(ov, `M${NMX(K9) + 40},${NMY + 10} C${980},${730} ${1040},${600} ${1180},${430}`, 'mainD', { w: 3.4 });
-  arrowIn(back, T('b13', '回到'), 0.7);
+  arrowIn(back, T('b13') + 0.1, 0.7);
   const pathPK3 = path(ov, `M1215,424 L${PKX(K27) + 20},${PKY}`, 'mainD', { w: 4 });
   arrowIn(pathPK3, T('b13', '整行') - 0.2, 0.4);
   const row = h('div', 'pill fill', W, '2050 · Alice · 42'); px(row, PKX(K27) - 60, PKY + 56); vanish(row, 0); slam(row, T('b13', '整行'), { from: 1.3 }); sfx('pop', T('b13', '整行'));

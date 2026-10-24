@@ -95,7 +95,7 @@ scene('s10', ({ root, s, c0 }) => {
   const carW = h('div', 'vbar wait', GL, '<span style="font:600 22px &quot;Sans SC&quot;">Carol 等锁</span>'); px(carW, xU + 230, 792, LN.X(T('k6', '提交')) - xU - 230, 40);
   vanish(bobR, 0); slam(bobR, T('k10', '读'), { from: 1.3 }); sfx('pop', T('k10', '读'), { g: 0.45 });
   vanish(carW, 0); wipe(carW, T('k10z', '改这一行') - 0.1, { dir: 'l', d: 0.6 }); sfx('tick', T('k10z', '等'), { g: 0.4 });
-  const FLk = [[T('k10', '旧版本'), T('k10', '旧版本') + 1.0]]; { let last = null; F((t) => { const on = FLk.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; uRec.classList.toggle('s10flash', on); }); }
+  const FLk = [[T('k10', '旧版本'), T('k10', '旧版本') + 1.0], [T('k11z', 'undo'), T('k11z', 'undo') + 1.0]]; { let last = null; F((t) => { const on = FLk.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; uRec.classList.toggle('s10flash', on); }); }
   const lkAgain = lockAt(p27, 500, 88); vanish(lkAgain, 0); appear(lkAgain, T('k10z', '这把锁') - 0.2); vanish(lkAgain, Tend('k10z') + 0.3);
   const out1 = Tend('k10z') + 0.4;
   exit(GL, out1, { y: 16, d: 0.3 });
@@ -117,10 +117,23 @@ scene('s10', ({ root, s, c0 }) => {
   // 第一排：k8 摆出五问，1–3 讲到时亮起并写出答案
   const rowA = QA.map((q, i) => mkCard(i));
   const tA0 = T('k8') + 0.3;
-  rowA.forEach((c, i) => { slide(c, tA0 + i * 0.15, { y: 30 }); sfx('tick', tA0 + i * 0.15, { g: 0.35 }); });
+  rowA.forEach((c, i) => { slide(c, tA0 + i * 0.5, { y: 30 }); sfx('tick', tA0 + i * 0.5, { g: 0.35 }); });
+  const ans = h('div', 'tag', W, 'InnoDB 的回答'); px(ans, 120, 572); css(ans, { fontSize: '26px' });
+  vanish(ans, 0); slam(ans, T('k8z', 'InnoDB'), { from: 1.3 }); exit(ans, T('k9') - 0.1, { d: 0.3 });
   rowA.forEach((c, i) => { const a = c.querySelector('.qa'); vanish(a, 0); if (i < 3) show(a, T(QA[i][2]) + 0.3, { y: 8, d: 0.35 }); });
   [0, 1, 2].forEach((i) => lit(rowA[i], 'on', T(QA[i][2]), i < 2 ? T(QA[i + 1][2]) : T('k9') - 0.1));
   rowA.forEach((c, i) => exit(c, T('k9') - 0.1 + i * 0.04, { y: 24, d: 0.3 }));
+  // 每一问在架构图上演一下（另用一个类，不和第四问里的 hot 混用）：
+  // 一 放：users.ibd 的页一格格亮过去；二 找：根页 4 亮、再到第 27 页；三 改和删：undo 里旧版本闪一下，页 27 那一行挂上删除标记
+  const st3 = h('style', '', W); st3.textContent = '.sq.s10a { background: var(--main) !important; border-color: var(--main) !important; } .sq.s10a .l { color: #fff !important; }';
+  const AW = new Map(), aWin = (el, a, b) => { if (!AW.has(el)) AW.set(el, []); AW.get(el).push([a, b]); };
+  { const t0 = T('k8az') + 0.1, st = Math.max(0.08, (Tend('k8az') - t0) / ibdSq.length); ibdSq.forEach((e, i) => aWin(e, t0 + i * st, Tend('k8az') + 0.4)); }
+  aWin(ibdSq[0], T('k8b', '根页') - 0.1, Tend('k8b')); aWin(ibdSq[i27], T('k8b', '叶子') - 0.1, Tend('k8bz') + 0.3);
+  for (const [el, wins] of AW) { let last = null; F((t) => { const on = wins.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; el.classList.toggle('s10a', on); }); }
+  const hui = h('div', 'tag', p27, '回表'); px(hui, 420, 10); css(hui, { fontSize: '22px' }); vanish(hui, 0); slam(hui, T('k8bz', '回表'), { from: 1.3 }); exit(hui, T('k8c') + 0.6, { d: 0.25 });
+  { let last = null; const w = [T('k8c', 'undo'), T('k8c', 'undo') + 1.1]; F((t) => { const on = t >= w[0] && t < w[1]; if (on === last) return; last = on; uRec2.classList.toggle('s10flash', on); }); }
+  const delM = h('div', 'tag acc', p27, '删除标记'); px(delM, 300, 120); css(delM, { fontSize: '22px' });
+  vanish(delM, 0); slam(delM, T('k8cz', '标记'), { from: 1.3 }); exit(delM, Tend('k8cz') + 0.4, { y: -8, d: 0.4 });
   // 第一到第三问，架构图里对应的部件亮起
   onWin(ibd, T('k8a'), Tend('k8az') + 0.3); onWin(bp, T('k8b'), Tend('k8bz') + 0.3); onWin(ibd, T('k8bz', '回表'), Tend('k8bz') + 0.3); onWin(undo, T('k8c'), Tend('k8cz') + 0.3);
   // 第二排：讲完事务与并发，五张卡摆回来，前四张已经回答过（淡），第五张亮起
@@ -129,6 +142,8 @@ scene('s10', ({ root, s, c0 }) => {
   rowB.forEach((c, i) => { vanish(c, 0); appear(c, tB0 + i * 0.06); if (i < 4) c.classList.add('done'); });
   const a5 = rowB[4].querySelector('.qa'); vanish(a5, 0); show(a5, T('k11', 'redo') - 0.1, { y: 8, d: 0.35 });
   lit(rowB[4], 'on', T('k11'));
+  // 五问答完：每张卡右上角依次打一个勾
+  rowB.forEach((c, i) => { const ck = h('div', 'abs mono c-main', c, '✓'); css(ck, { position: 'absolute', right: '20px', top: '14px', fontSize: '40px' }); vanish(ck, 0); slam(ck, Tend('k11z') + 0.2 + i * 0.18, { from: 1.5 }); sfx('tick', Tend('k11z') + 0.2 + i * 0.18, { g: 0.35 }); });
   onWin(redo, T('k11', 'redo'), s.end); onWin(undo, T('k11z', 'undo'), s.end);
   // 重做：redo 带子上扫一遍
   const rscan = h('div', 'abs', redo); px(rscan, 200, 44, 10, 42); css(rscan, { background: 'var(--main)' });

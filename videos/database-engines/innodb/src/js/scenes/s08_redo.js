@@ -46,7 +46,7 @@ scene('s8', ({ root, s, c0 }) => {
 
   // 关键时刻
   const tKill = T('j14', '强行结束');
-  const tDirtyA = T('j3', '脏页') - 0.3;                          // Alice 那一页变脏
+  const tDirtyA = T('j3') + 0.1;                          // Alice 那一页变脏
   const tFlushOther = T('j4', '安排');                            // 另一张脏页先写回
   const tUpd2 = T('j13');                                         // 管理员开始改：一页页变脏
   const tLogIn = T('j6'), tLogOut = T('j7', '磁盘');
@@ -76,7 +76,7 @@ scene('s8', ({ root, s, c0 }) => {
     });
   });
   // 「脏页」这个名字标在 Alice 那一页下面
-  const dTag = h('div', 'abs', bp, '脏页'); px(dTag, 22 + (i27 % 8) * 62 - 4, 58 + Math.floor(i27 / 8) * 64 + 44); css(dTag, { font: '700 22px "Sans SC"', color: 'var(--acc)' });
+  const dTag = h('div', 'abs', bp, '脏页'); px(dTag, 22 + (i27 % 8) * 62 + 28, 58 + Math.floor(i27 / 8) * 64 + 44); css(dTag, { font: '700 22px "Sans SC"', color: 'var(--acc)' });   // 写在页格右下，不压竖着进来的那根红线
   vanish(dTag, 0); appear(dTag, T('j3', '脏页')); vanish(dTag, Tend('j8') + 0.3);
   // 「会不会丢」：内存那一块套上砖红虚框
   const risk = h('div', 'abs', W); px(risk, 116, 106, 568, 458); css(risk, { border: '4px dashed var(--acc)' }); risk.dataset.name = '内存会丢';
@@ -185,9 +185,12 @@ scene('s8', ({ root, s, c0 }) => {
     if (key === lastAdm) return; lastAdm = key;
     adm.style.left = Math.round(xa0) + 'px'; adm.style.width = Math.max(0, Math.round(w)) + 'px';
     adm.style.visibility = w > 2 && t < T('j21') - 0.4 ? 'visible' : 'hidden';
-    adm.innerHTML = t >= tU0 ? (w > 60 ? '<span>撤销中</span>' : '') : (w > 150 ? `<span class="num">${n}</span>` : '');
+    adm.innerHTML = t >= tU0 ? '' : (w > 150 ? `<span class="num">${n}</span>` : '');
   });
   const phB = LB.playhead(T('j11') + 0.4, tKill, 590, 830);
+  // 「撤销中」单独一个标签（不随条子变短而消失）
+  const undoTag = h('div', 'tag acc', GB, '撤销中'); px(undoTag, xa0 + 10, LB.Y(1) + 34); css(undoTag, { fontSize: '24px' });
+  vanish(undoTag, 0); slam(undoTag, tU0, { from: 1.3 }); exit(undoTag, T('j18') - 0.1, { d: 0.25 });
   // 强行结束：一条砖红竖线劈过架构图与泳道，内存那一块空了
   const kill = h('div', 'abs', W); px(kill, xK + 20, 572, 6, 290); css(kill, { background: 'var(--acc)' }); kill.dataset.name = '强行结束';
   const lost = h('div', 'abs', W); px(lost, 116, 106, 568, 458); css(lost, { border: '4px solid var(--acc)' }); lost.dataset.name = '进程内存丢失';
@@ -205,6 +208,11 @@ scene('s8', ({ root, s, c0 }) => {
   ];
   // j7b：预写日志——先写日志，后写数据（K7）
   const wal = h('div', 'tag', W, '预写日志 · write-ahead logging'); px(wal, 1110, 336); css(wal, { fontSize: '26px' });
+  // j7b：先写日志（①，redo），后写数据（②，users.ibd）
+  const st1 = h('div', 'tag', W, '① 先'); px(st1, 1100, 424); css(st1, { fontSize: '24px' });
+  const st2 = h('div', 'tag', W, '② 后'); px(st2, 900, 208); css(st2, { fontSize: '24px', background: 'var(--main)' });
+  vanish(st1, 0); slam(st1, T('j7b', '先写日志'), { from: 1.3 }); vanish(st2, 0); slam(st2, T('j7b', '后写数据'), { from: 1.3 });
+  [st1, st2].forEach((e) => exit(e, T('j9') - 0.1, { d: 0.3 }));
   vanish(wal, 0); slam(wal, T('j7b', '预写日志'), { from: 1.3 }); exit(wal, T('j9') - 0.1, { d: 0.3 }); sfx('pop', T('j7b', '预写日志'), { g: 0.5 });
   const logBox = h('div', 'box', W); px(logBox, 1050, 570, 800, 384);
   const logHead = h('div', 'abs t-small', logBox, 'mysqld 重启后的日志'); px(logHead, 20, 10);
@@ -314,6 +322,7 @@ scene('s8', ({ root, s, c0 }) => {
   const dwNote = h('div', 'tag', W, '磁盘上单独的一块 · 先存一份完整的'); px(dwNote, 840 - 90, 900); css(dwNote, { fontSize: '24px' });
   vanish(dwNote, 0); slam(dwNote, T('j23b', '单独'), { from: 1.3 }); exit(dwNote, T('j24') - 0.1, { d: 0.3 }); sfx('pop', T('j23b', '单独'), { g: 0.45 });
   lit(P2.p, 's8-dwhl', T('j23bz', '完整') - 0.2, T('j24') - 0.1);
+  [1, 2, 3, 4].forEach((i) => lit(dbwSq[i], 'hot', T('j23bz') + 0.2 + (i - 1) * 0.6, Tend('j24') + 0.5));   // 写出的页一页页先存进双写缓冲区
   st8.textContent += ' .s8-dwhl { outline: 4px solid var(--main); outline-offset: 4px; }';
   lit(dbwSq[0], 'hot', tW2 + 0.4, Tend('j24') + 0.5);
   lit(ibdSq[PAGES.indexOf(D.alice.page)], 'hot', tW3 + 0.4, Tend('j24') + 0.5);

@@ -65,7 +65,7 @@ scene('s7', ({ root, s, c0 }) => {
   tl.fromTo(big, { y: -186, scale: 2.4 }, { y: -88, scale: 1, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tIn);
   lit(box, 's7-whole', tMy, tIn + 0.2);
   const myTag = h('div', 'tag acc', W, 'MyISAM：整张表'); px(myTag, 1560, 86);
-  slam(myTag, tMy, { from: 1.3 }); exit(myTag, tIn, { y: -10, d: 0.3 }); sfx('thud', tMy + 0.1, { g: 0.6 });
+  slam(myTag, tMy, { from: 1.3 }); exit(myTag, tIn + 0.4, { y: -10, d: 0.3 }); sfx('thud', tMy + 0.1, { g: 0.6 });
   const inTag = h('div', 'tag', W, 'InnoDB：这一条记录'); px(inTag, cx(2050) + 24, RY - 70);
   slam(inTag, tIn + 0.6, { from: 1.3 }); exit(inTag, tA - 0.1, { y: -10, d: 0.3 }); sfx('pop', tIn + 0.65, { g: 0.6 });
 
@@ -153,6 +153,7 @@ scene('s7', ({ root, s, c0 }) => {
   lockFor(2051, 'Alice', tGo + 0.2);
   stAt(0, 560, '拿到 2051 · 完成', 'ok', tGo + 0.3);
   sfx('chime', tGo + 0.3, { g: 0.45 });
+  exit(det, Tend('g12') + 0.5, { y: -10, d: 0.3 });             // 章末：「选中回滚」的说明收起
 
   W.appendChild(ov);
 });

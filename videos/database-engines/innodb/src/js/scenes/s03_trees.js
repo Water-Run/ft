@@ -126,6 +126,8 @@ scene('s3', ({ root, s, c0 }) => {
   exit(ddl, T('a3') - 0.05, { y: -12, d: 0.35 });
   const pkMark = h('div', 'abs', W); px(pkMark, 290, 330 + 48 - 2, 560, 50); css(pkMark, { border: '3px solid var(--main)' });
   vanish(pkMark, 0); show(pkMark, T('a1', '主键') - 0.1, { s: 1.04, y: 0, d: 0.35 }); exit(pkMark, T('a3') - 0.05, { y: -12, d: 0.35 });
+  const pkTag = h('div', 'tag', W, '主键'); px(pkTag, 870, 382); css(pkTag, { fontSize: '26px' });
+  vanish(pkTag, 0); slam(pkTag, T('a1', '主键'), { from: 1.3 }); exit(pkTag, T('a3') - 0.05, { y: -12, d: 0.35 }); sfx('pop', T('a1', '主键'), { g: 0.4 });
   // a4：读进内存一次就是一整页（第 4 页在文件条上标出来）
   const c4 = h('div', 'abs num', W, '4'); px(c4, FX + 4 * FP - 10, FY + 34, 46); css(c4, { textAlign: 'center', font: '700 24px Inter', color: 'var(--mainD)' });
   vanish(c4, 0); appear(c4, tCol1);
@@ -198,6 +200,7 @@ scene('s3', ({ root, s, c0 }) => {
   // 「根」「叶子」
   const lblRoot = h('div', 'tag', W, '根'); px(lblRoot, LX(0) - 92, 214);
   const lblLeaf = h('div', 'tag', W, '叶子'); px(lblLeaf, LX(0) - 106, BY + 80);
+  [0, 1].forEach((k) => lit(leaves[k], 'hot', T('a11', '编号') + k * 0.35, Tend('a11') + 0.3));   // a11：「每一页叶子」——两页叶子各亮一下，对上根页里的两项
   slam(lblRoot, T('a12', '根'), { from: 1.3 }); slam(lblLeaf, T('a12', '叶子'), { from: 1.3 }); sfx('pop', T('a12', '根'), { g: 0.5 });
 
   // a16：叶子里放的就是整行——第 27 页拉出来看三行
