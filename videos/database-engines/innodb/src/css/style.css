@@ -1,38 +1,146 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* InnoDB 的视觉系统：「手册架构图 + 会话泳道」。
+   底色、面板、页的青色取自 MySQL 手册的 InnoDB 架构图（内存 In-Memory / 磁盘 On-Disk 两大块，页是一个个小方块）；
+   人与事务按时间走在泳道上：已提交是 MySQL 标志的蓝，未提交是砖红斜纹，等待是砖红虚框。结构性样式在 base.css。
+   对比度（压在 --bg 上）：--ink 16:1，--ink2 7.4:1，--main 4.9:1，--acc 5.0:1；--mainD 上的白字 7.6:1。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --bg: #F4F3F2;          /* 手册架构图的暖灰底 */
+  --panel: #FFFFFF;
+  --band: #E6E3DE;        /* 内存、磁盘两大块的底 */
+  --edge: #D3CEC7;
+  --ink: #15191C;
+  --ink2: #4A5358;
+  --mute: #8D9599;        /* 只用于线条与 32px 以上的大字 */
+  --main: #00758F;        /* MySQL 标志的蓝：已提交、正在讲的路径 */
+  --mainD: #2D5A68;       /* 手册图里的深青：页号、强调块 */
+  --teal: #AED9D7;        /* 页的填充 */
+  --pale: #D9EEEF;
+  --acc: #B5452E;         /* 未提交、等待、出错 */
+  --accL: #F3DCD5;
+  --M: 120px;
 }
 body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+#bg { background: var(--bg); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+/* 字号阶梯 */
+.d-1 { font-weight: 900; font-size: 150px; line-height: 1.02; letter-spacing: -.02em; }
+.d-2 { font-weight: 800; font-size: 84px; line-height: 1.08; letter-spacing: -.01em; }
+.t-h { font-weight: 700; font-size: 44px; line-height: 1.25; }
+.t-body { font-weight: 500; font-size: 36px; line-height: 1.35; }
+.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--ink2); }
+.t-small { font-weight: 500; font-size: 24px; line-height: 1.3; color: var(--ink2); }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+.num { font-family: "Inter"; font-variant-numeric: tabular-nums; }
+.c-main { color: var(--main); } .c-mainD { color: var(--mainD); } .c-acc { color: var(--acc); } .c-ink2 { color: var(--ink2); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 常驻的身份标识：手册页眉那样的小方块 + InnoDB */
+.ident { position: absolute; left: 60px; top: 34px; display: flex; align-items: center; gap: 12px; font: 700 26px "Inter"; color: var(--mainD); z-index: 40; }
+.ident i { display: block; width: 20px; height: 20px; background: var(--mainD); }
+.ident b { font-weight: 500; color: var(--ink2); font-size: 22px; margin-left: 6px; }
+
+/* 内存 / 磁盘两大块（手册架构图） */
+.zone { position: absolute; background: var(--band); }
+.zone > .zt { position: absolute; left: 0; right: 0; top: 14px; text-align: center; font: 700 30px "Sans SC"; color: var(--ink); }
+.zone > .ze { position: absolute; left: 0; right: 0; top: 52px; text-align: center; font: 500 22px "Inter"; color: var(--ink2); }
+.box { position: absolute; background: var(--panel); border: 1.5px solid var(--edge); }
+.box > .bt { position: absolute; left: 0; right: 0; top: 10px; text-align: center; font: 700 26px "Sans SC"; color: var(--ink); }
+.box.dashed { border-style: dashed; }
+.box.on { border-color: var(--main); border-width: 3px; }
+
+/* 页：手册图里的青色小方块。fill 是页里装了多少 */
+.pg { position: absolute; background: var(--panel); border: 1.5px solid var(--mainD); }
+.pg > .fill { position: absolute; left: 0; right: 0; bottom: 0; background: var(--teal); }
+.pg > .no { position: absolute; left: 0; right: 0; top: -34px; text-align: center; font: 700 24px "Inter"; color: var(--mainD); }
+.pg > .cnt { position: absolute; left: -10px; right: -10px; bottom: -32px; text-align: center; font: 500 22px "Inter"; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.pg.hot { border-color: var(--main); border-width: 3px; }
+.pg.hot > .fill { background: var(--main); }
+.pg.dim { opacity: .35; }
+.sq { position: absolute; width: 34px; height: 34px; border: 1.5px solid var(--mainD); background: var(--panel); }
+.sq.on { background: var(--teal); }
+.sq.hot { background: var(--main); border-color: var(--main); }
+.sq.nm { background: #E2F0F3; border-color: var(--main); }
+.sq.nm .l { color: var(--main); }
+.sq.nm.hot { background: var(--main); border-color: var(--main); }
+.sq.dirty { background: var(--accL); border-color: var(--acc); }
+.sq .l { position: absolute; left: 0; right: 0; top: 3px; text-align: center; font: 700 22px "Inter"; color: var(--mainD); }
+.sq.hot .l { color: #fff; }
+
+/* 根页：一排节点指针 */
+.rootpg { position: absolute; display: flex; border: 1.5px solid var(--mainD); background: var(--pale); }
+.rootpg > span { display: block; text-align: center; font: 600 22px "Inter"; color: var(--ink); border-right: 1px solid #B9D6D8; padding-top: 9px; font-variant-numeric: tabular-nums; }
+.rootpg > span:last-child { border-right: 0; }
+.rootpg > span.hit { background: var(--mainD); color: #fff; }
+
+/* 字节条：一行记录摊开 */
+.bytes { position: absolute; display: flex; gap: 10px; }
+.fld { position: relative; border: 1.5px solid var(--edge); background: var(--panel); padding: 8px 10px 6px; min-width: 70px; }
+.fld .k { font: 600 22px "Sans SC"; color: var(--ink2); }
+.fld .hx { font: 500 22px "Mono"; color: var(--ink); white-space: pre; margin-top: 4px; }
+.fld .v { font: 700 30px "Inter"; color: var(--ink); margin-top: 2px; }
+.fld.hidden { background: var(--pale); border-color: var(--mainD); }
+.fld.hidden .k { color: var(--mainD); }
+.fld.hot { border-color: var(--main); border-width: 3px; }
+.fld.unc { border-color: var(--acc); border-width: 3px; }
+
+/* 泳道：人、事务、时间 */
+.lane-name { position: absolute; font: 700 30px "Inter", "Sans SC"; color: var(--ink); }
+.lane-line { position: absolute; height: 2px; background: var(--edge); }
+.pill { position: absolute; padding: 6px 16px 7px; border: 2px solid var(--main); background: var(--panel); font: 600 22px "Mono", "Sans SC"; color: var(--main); white-space: pre; }
+.pill.acc { border-color: var(--acc); color: var(--acc); }
+.pill.fill { background: var(--main); color: #fff; }
+.pill.fill.acc { background: var(--acc); color: #fff; }
+.pill.ink { border-color: var(--ink2); color: var(--ink); }
+.vbar { position: absolute; height: 44px; border: 2px solid var(--main); background: var(--main); color: #fff; font: 700 26px "Inter"; padding: 5px 12px; }
+.vbar.old { background: var(--pale); color: var(--mainD); border-color: var(--main); }
+.vbar.unc { background-color: var(--accL); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M-2,2 l4,-4 M0,14 L14,0 M12,16 l4,-4' stroke='%23B5452E' stroke-width='3'/%3E%3C/svg%3E"); color: var(--acc); border-color: var(--acc); }
+.vbar.unc > span { background: var(--panel); padding: 0 6px; }
+.vbar.bad { background: var(--acc); border-color: var(--acc); }
+.vbar.hl { outline: 4px solid var(--main); outline-offset: 4px; }
+.vbar.wait { background: transparent; border: 2px dashed var(--acc); color: var(--acc); }
+.playhead { position: absolute; width: 2px; background: var(--ink); }
+.tick { position: absolute; font: 500 22px "Inter"; color: var(--ink2); }
+
+/* 锁：小挂锁 */
+.lock { position: absolute; width: 26px; height: 22px; background: var(--mainD); }
+.lock::before { content: ""; position: absolute; left: 5px; top: -12px; width: 12px; height: 12px; border: 3px solid var(--mainD); border-bottom: 0; }
+.lock.acc { background: var(--acc); } .lock.acc::before { border-color: var(--acc); }
+
+/* SQL 与回显 */
+.sql { position: absolute; font: 500 34px "Mono", "Sans SC"; color: var(--ink); white-space: pre; }
+.sql .kw { color: var(--main); font-weight: 700; }
+.echo { position: absolute; font: 500 26px "Mono", "Sans SC"; color: var(--ink2); white-space: pre; }
+.echo.err { color: var(--acc); }
+.gloss { position: absolute; font: 500 24px "Sans SC"; color: var(--ink2); }
+
+/* 卡片：概念、问题 */
+.card { position: absolute; background: var(--panel); border: 1.5px solid var(--edge); padding: 22px 28px; white-space: normal; }
+.card .ct { font: 800 40px "Sans SC"; color: var(--ink); }
+.card .cs { font: 500 28px "Sans SC"; color: var(--ink2); margin-top: 8px; line-height: 1.4; }
+.card.on { border-color: var(--main); border-width: 3px; }
+.mini { display: inline-block; font: 600 22px "Inter", "Sans SC"; padding: 3px 10px; margin-right: 8px; vertical-align: middle; }
+.mini.b { background: var(--main); color: #fff; border: 2px solid var(--main); }
+.mini.w { border: 2px dashed var(--acc); color: var(--acc); }
+.mini.lk { position: relative; width: 24px; height: 20px; padding: 0; background: var(--mainD); margin: 8px 0 0 2px; }
+.mini.lk::before { content: ""; position: absolute; left: 5px; top: -11px; width: 10px; height: 11px; border: 3px solid var(--mainD); border-bottom: 0; }
+.tag { position: absolute; font: 700 22px "Sans SC"; color: #fff; background: var(--mainD); padding: 3px 10px; }
+.tag.acc { background: var(--acc); }
+
+/* 章节卡：整屏暖灰底，左边大号章节号，标题，下面一排页小方块随卡片停留一格格填满 */
+.chapter { position: absolute; inset: 0; background: var(--bg); z-index: 60; }
+.chapter .no { position: absolute; left: var(--M); top: 250px; font: 800 220px "Inter"; color: var(--mainD); line-height: 1; letter-spacing: -.03em; }
+.chapter .ti { position: absolute; left: var(--M); top: 520px; font: 900 112px "Sans SC"; color: var(--ink); line-height: 1.1; }
+.chapter .row { position: absolute; left: var(--M); top: 760px; display: flex; gap: 10px; }
+.chapter .row i { display: block; width: 46px; height: 46px; border: 2px solid var(--mainD); background: var(--panel); }
+.chapter .row i.on { background: var(--teal); }
 
 /* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption { bottom: 46px; height: 64px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--ink); background: var(--bg); padding: 2px 16px; }
+#caption em { font-style: normal; font-weight: 800; color: var(--main); }
 
 /* 片尾名单 */
-.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
+.credits { white-space: normal; width: 1560px; columns: 2; column-gap: 120px; }
 .credit-row { break-inside: avoid; margin-bottom: 30px; }
+
+/* 缓冲池里的页被再次用到（命中）：外圈一道蓝框 */
+.hitpg { outline: 4px solid var(--main); outline-offset: 3px; }

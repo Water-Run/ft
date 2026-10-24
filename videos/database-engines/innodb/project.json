@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
   },
   "stage": "review",
-  "next": "等 WaterRun 审 R9（review/compare-r8-r9.md）；确认后出视觉方案、配音与配乐候选",
+  "next": "等 WaterRun 确认文案 R10（review/compare-r9-r10.md）；确认后配音、按实测时间重排、编配乐，出有声预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -17,7 +17,10 @@
         "name": "Claude Opus 5.5",
         "roles": [
           "取证",
-          "文案"
+          "文案",
+          "视觉",
+          "场景",
+          "配乐"
         ]
       }
     ],
@@ -27,6 +30,23 @@
   "review": {
     "required": true,
     "reviewer": "WaterRun"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "female-chengshu-jingpin"
+    },
+    "speed": {
+      "zh": 1.2
+    }
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "style": "commit",
+    "music_db": -16,
+    "duck_db": 8,
+    "sfx_db": -8
   },
   "render": {
     "fps": 60,
