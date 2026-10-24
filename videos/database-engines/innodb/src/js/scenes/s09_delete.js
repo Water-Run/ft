@@ -53,7 +53,7 @@ scene('s9', ({ root, s, c0 }) => {
   // ── 时刻 ──
   const tMark = T('d1', '删掉');
   const tPurge = T('d5', '移走');
-  const tDave = T('d7', '空位') - 0.4;
+  const tDave = T('d7', '注册');
   const tRe = T('d8');                       // 换一个时机：回到「刚删掉、还没 purge」
   const tLockR = T('d8', '锁定读');
   const tBobC2 = T('d13', '提交');
@@ -191,7 +191,7 @@ scene('s9', ({ root, s, c0 }) => {
   px(ph, cx(iA) - GAP / 2 - 70, Y0 - 80, 140, 64); css(ph, { border: '2.5px dashed var(--acc)', background: 'var(--panel)' });
   ph.firstChild.style.top = '12px';
   ph.dataset.name = '幻影';
-  vanish(ph, 0); slam(ph, T('d12', '幻影') - 0.2, { from: 1.3 }); exit(ph, Tend('d12') + 0.2, { d: 0.3 });
+  vanish(ph, 0); slam(ph, T('d12', '幻影') - 0.2, { from: 1.3 }); exit(ph, T('d13', '插') - 0.2, { d: 0.3 });
   sfx('error', T('d12', '幻影'), { g: 0.4 });
   const dvArrow = path(ov, `M${L2.X(T('d9', '插进'))},${L2.Y(1) - 70} L${L2.X(T('d9', '插进'))},${600} L${120 + cx(iA) - GAP / 2},${110 + Y0 + CH - 24}`, 'acc', { w: 2.2, dashed: '7 6' });
   arrowIn(dvArrow, T('d9', '挡住') - 0.3, 0.5); svgOut(dvArrow, tBobC2);

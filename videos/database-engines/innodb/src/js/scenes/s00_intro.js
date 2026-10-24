@@ -60,11 +60,11 @@ scene('intro', ({ root, s }) => {
   const steps = (c, a, b, ta, tb) => swaps(c.querySelector('.cs'), [[ta, a], [tb, a + b]]);
   const G1A = '<span class="mono" style="font-size:30px">42 → 43</span>', G1B = '<span class="mono c-acc" style="font-size:30px;margin-left:18px">↶ ✕</span>';
   const G2A = '<span class="mini lk"></span><span class="mono" style="font-size:26px;margin:0 14px 0 8px">users</span><span class="mini b">Carol 写</span>', G2B = '<span class="mini w">Bob 等</span>';
-  const G3A = '<span class="mono" style="font-size:26px">CHECK TABLE</span>', G3B = '<span class="mono" style="font-size:26px"> · REPAIR TABLE</span>';
+  const G30 = '<span class="mono c-acc" style="font-size:28px;margin-right:12px">⚡</span>', G3A = '<span class="mono" style="font-size:26px">CHECK TABLE</span>', G3B = '<span class="mono" style="font-size:26px"> · REPAIR TABLE</span>';
   slide(g1, T('h5'), { y: 30 }); slide(g2, T('h6'), { y: 30 }); slide(g3, T('h7'), { y: 30 });
   [[g1, 'h5'], [g2, 'h6'], [g3, 'h7']].forEach(([, c]) => sfx('thud', T(c) + 0.1, { g: 0.5 }));
-  steps(g1, G1A, G1B, T('h5', '一组'), T('h5', '撤回')); steps(g2, G2A, G2B, T('h6', '在写'), T('h6', '等')); steps(g3, G3A, G3B, T('h7', '检查'), T('h7', '修复'));
-  [T('h5', '一组'), T('h5', '撤回'), T('h6', '在写'), T('h6', '等'), T('h7', '检查'), T('h7', '修复')].forEach((t) => sfx('pop', t, { g: 0.35 }));
+  steps(g1, G1A, G1B, T('h5', '一组'), T('h5', '撤回')); steps(g2, G2A, G2B, T('h6', '在写'), T('h6', '等')); swaps(g3.querySelector('.cs'), [[T('h7', '断电') - 0.2, G30], [T('h7', '检查') - 0.4, G30 + G3A], [T('h7', '修复') - 0.6, G30 + G3A + G3B]]);
+  [T('h5', '一组'), T('h5', '撤回'), T('h6', '在写'), T('h6', '等'), T('h7', '断电') - 0.2, T('h7', '检查') - 0.4, T('h7', '修复') - 0.6].forEach((t) => sfx('pop', t, { g: 0.35 }));
   // h4：讲到「三处做不到」时，两个文件稍稍退后，给下面的三张卡让出注意
   [myd, myi].forEach((e) => to(e, T('h4', '三处'), { opacity: 0.4, duration: 0.6 }));
   ptr.forEach((p) => tl.to(p, { opacity: 0.4, duration: 0.6 }, T('h4', '三处')));
@@ -91,7 +91,7 @@ scene('intro', ({ root, s }) => {
   // h11：要撤回——那一行的「42 → 43」掉过头来，问号换成撤回的箭头
   swaps(rowChip, [[T('h11', '撤回'), 'Alice · 2050 · 42 ← 43']]);
   swaps(qm, [[T('h11', '撤回'), '<span style="font:900 64px Inter;color:var(--acc)">↶</span>']]);
-  [rowChip, qm].forEach((e) => exit(e, T('h12') + 0.1, { y: -10, d: 0.3 }));
+  [rowChip, qm].forEach((e) => exit(e, T('h12') + 0.6, { y: -10, d: 0.3 }));
 
   // 两条泳道：MyISAM 的副本与另一张表；横轴是时间，播放头走过 UPDATE 与 ROLLBACK
   const xU = 760, xR = 1260;

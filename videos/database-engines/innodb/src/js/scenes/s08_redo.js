@@ -154,7 +154,7 @@ scene('s8', ({ root, s, c0 }) => {
   const upToLog = path(ov, `M${xUpd + 70},${LA.Y(0) - 84} L${xUpd + 70},${548}`, 'mainD', { w: 2.2 });
   arrowIn(upToLog, tLogIn - 0.2, 0.5);
   packet([[xUpd, LA.Y(0) - 84], [xUpd, 580], [x27, 580], [x27, y27 + 18]], T('j2', '缓冲池') - 0.4, 1.1, '43');   // 这次修改送进缓冲池里的页
-  packet([[xUpd + 70, LA.Y(0) - 84], [xUpd + 70, 556]], tLogIn, 0.7, 'redo');                                  // 同时记一条 redo 进日志缓冲
+  packet([[xUpd + 70, LA.Y(0) - 84], [xUpd + 70, 556]], tLogIn, 0.7, '');                                  // 同时记一条 redo 进日志缓冲
   const sA = Tend('j8') + 0.3;
   [upTo27, upToLog].forEach((p) => svgOut(p, sA));
   exit(GA, sA, { y: 20, d: 0.35 });
@@ -174,7 +174,7 @@ scene('s8', ({ root, s, c0 }) => {
   // 管理员那根斜纹条：随播放头长到强行结束为止，重启后从右往左收回（撤销）。条内计数涨到 258（R1）
   const adm = h('div', 'vbar unc', GB, ''); px(adm, 0, LB.Y(1) - 22);
   const xa0 = LB.X(T('j13') + 0.2), xa1 = LB.X(tKill);
-  const tU0 = T('j17', 'undo'), tU1 = Tend('j17');
+  const tU0 = T('j17') + 0.2, tU1 = Tend('j17');
   let lastAdm = '';
   F((t) => {
     let w = 0;
@@ -185,7 +185,7 @@ scene('s8', ({ root, s, c0 }) => {
     if (key === lastAdm) return; lastAdm = key;
     adm.style.left = Math.round(xa0) + 'px'; adm.style.width = Math.max(0, Math.round(w)) + 'px';
     adm.style.visibility = w > 2 && t < T('j21') - 0.4 ? 'visible' : 'hidden';
-    adm.innerHTML = w > 150 ? `<span>${t >= tU0 ? '撤销中' : `已改 ${n} 行`}</span>` : '';
+    adm.innerHTML = t >= tU0 ? (w > 60 ? '<span>撤销中</span>' : '') : (w > 150 ? `<span class="num">${n}</span>` : '');
   });
   const phB = LB.playhead(T('j11') + 0.4, tKill, 590, 830);
   // 强行结束：一条砖红竖线劈过架构图与泳道，内存那一块空了

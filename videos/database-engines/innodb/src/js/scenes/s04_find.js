@@ -159,15 +159,15 @@ scene('s4', ({ root, s, c0 }) => {
   const pathPK3 = path(ov, `M1215,424 L${PKX(K27) + 20},${PKY}`, 'mainD', { w: 4 });
   arrowIn(pathPK3, T('b13', '整行') - 0.2, 0.4);
   const row = h('div', 'pill fill', W, '2050 · Alice · 42'); px(row, PKX(K27) - 60, PKY + 56); vanish(row, 0); slam(row, T('b13', '整行'), { from: 1.3 }); sfx('pop', T('b13', '整行'));
-  const tagBack = h('div', 'tag', W, '回表'); px(tagBack, 1010, 560); css(tagBack, { fontSize: '28px' }); vanish(tagBack, 0); slam(tagBack, T('b14', '回表'), { from: 1.4 }); sfx('thud', T('b14', '回表'), { g: 0.6 });
-  [back, pathPK3].forEach((p) => svgOut(p, tq4 - 0.2)); [row, tagBack].forEach((e) => exit(e, tq4 - 0.2, { y: 8, d: 0.3 }));
+  const tagBack = h('div', 'tag', W, '回表'); px(tagBack, 1266, 384); css(tagBack, { fontSize: '28px' }); vanish(tagBack, 0); slam(tagBack, T('b14', '回表'), { from: 1.4 }); sfx('thud', T('b14', '回表'), { g: 0.6 });
+  [back, pathPK3].forEach((p) => svgOut(p, T('b15', '回表') + 0.3)); exit(row, tq4 - 0.2, { y: 8, d: 0.3 }); exit(tagBack, T('b15', '回表') + 0.3, { y: 8, d: 0.3 });
 
   // b15：只要编号：停在页 9，不必回表（E1）
   const exp = h('div', 'abs', W, `<div class="mono" style="font-size:22px;color:var(--ink)">${esc(D.explain.id_only)}</div><div class="gloss" style="position:static;margin-top:4px">执行计划：覆盖索引查找，姓名索引里就有编号</div>`);
   px(exp, 712, 560);
-  vanish(exp, 0); show(exp, T('b15', '省了') - 0.4, { y: 8, d: 0.4 });
+  vanish(exp, 0); show(exp, T('b15') + 0.3, { y: 8, d: 0.4 });
   const stop = h('div', 'tag', W, '到这里就够了'); px(stop, NMX(K9) + 210, NMY + 60); vanish(stop, 0); slam(stop, T('b15', '本来就有'), { from: 1.3 });
-  [exp, stop, got].forEach((e) => exit(e, T('b16') - 0.1, { y: 8, d: 0.3 })); svgOut(pathNM, T('b16') - 0.1);
+  [stop, got].forEach((e) => exit(e, T('b16') - 0.1, { y: 8, d: 0.3 })); exit(exp, T('b16', '挪出去') - 0.2, { y: 8, d: 0.3 }); svgOut(pathNM, T('b16') - 0.1);
 
   // b16：缓冲池满了：一页很久没被用到，被挪出去，新读的页放进它的位置（M27）
   const tL = T('b16');

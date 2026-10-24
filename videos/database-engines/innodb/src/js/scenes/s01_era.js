@@ -107,7 +107,7 @@ scene('s1', ({ root, s, c0 }) => {
   ];
   const cards = Q.map((q, i) => {
     const c = h('div', 'card s1-q', W, `<div class="ct"><span class="num c-mainD" style="margin-right:12px">${i + 1}</span><span class="s1-ti c-ink2" style="font-size:30px">MyISAM：${q.gap}</span></div><div class="cs" style="height:52px"></div>`);
-    px(c, q.x, 600, 420, 178); slide(c, T('y6', '三处') + i * 0.12, { y: 36 }); sfx('thud', T('y6', '三处') + i * 0.12, { g: 0.4 });
+    px(c, q.x, 600, 420, 178); slide(c, T('y6') + 0.2 + i * 0.12, { y: 36 }); sfx('thud', T('y6') + 0.2 + i * 0.12, { g: 0.4 });
     swaps(c.querySelector('.s1-ti'), [[T(q.t), q.title]]);
     lit(c.querySelector('.s1-ti'), 's1-on', T(q.t));
     return c;

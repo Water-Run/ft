@@ -13,7 +13,7 @@ scene('s3', ({ root, s, c0 }) => {
   // ── 时间 → 已经插了多少行 ──
   const tR0 = T('a6'), tR1 = T('a8', '满了'), tSplit = T('a9', '一分为二');
   const tG0 = T('a13'), tG1 = Tend('a15') - 0.4;
-  const tBack0 = T('a24') + 0.1, tBack1 = Math.max(T('a24') + 1.2, Tend('a24') - 0.1), tAlice = T('a25'), tFwd0 = Tend('a27') + 0.2, tFwd1 = tFwd0 + 1.3;
+  const tBack0 = T('a24') + 0.1, tBack1 = Math.max(T('a24') + 1.2, Tend('a24') - 0.1), tAlice = T('a25'), tFwd0 = Tend('a27') + 0.2, tFwd1 = tFwd0 + 0.6;
   const nAt = (t) => {
     if (t < tR0) return 0;
     if (t < tR1) return Math.max(1, Math.round(lerp(1, 207, ease.io3(clamp((t - tR0) / (tR1 - tR0))))));
@@ -171,7 +171,7 @@ scene('s3', ({ root, s, c0 }) => {
   const callLine = path(ov, `M${LX(K27)},${BY + BH + 30} L${LX(K27)},598`, 'main', { w: 2 });
   callLine.setAttribute('opacity', 0);
   wipe(call, T('a16', '整行'), { dir: 't', d: 0.5 }); tl.fromTo(callLine, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, T('a16', '整行'));
-  exit(call, T('a17') + 0.05, { y: 10, d: 0.3 }); tl.to(callLine, { opacity: 0, duration: 0.25 }, T('a17') + 0.05);
+  exit(call, Tend('a17') - 0.1, { y: 10, d: 0.3 }); tl.to(callLine, { opacity: 0, duration: 0.25 }, Tend('a17') - 0.1);
   // a17–a18：叶子链与范围读：2170…2180 从第 27 页的尾巴顺着链读进第 29 页（T9、S4）
   chain.forEach((p, k) => tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, T('a17', '左右') + k * 0.04));
   sfx('blip', T('a17', '左右'), { g: 0.5 });
@@ -194,7 +194,7 @@ scene('s3', ({ root, s, c0 }) => {
   const tagB = h('div', 'tag', W, 'B+ 树'); px(tagB, 1660, 546); css(tagB, { fontSize: '28px' });
   const tagC = h('div', 'tag', W, '聚簇索引：表本身'); px(tagC, 1390, 546); css(tagC, { fontSize: '28px', background: 'var(--main)' });
   slam(tagB, T('a19', 'B'), { from: 1.4 }); slam(tagC, T('a20', '聚簇索引'), { from: 1.3 });
-  [tagB, tagC].forEach((e) => exit(e, T('a21') - 0.1, { y: 8, d: 0.3 })); sfx('pop', T('a19', 'B')); sfx('pop', T('a20', '聚簇索引'));
+  [tagB, tagC].forEach((e) => exit(e, T('a22') - 0.1, { y: 8, d: 0.3 })); sfx('pop', T('a19', 'B')); sfx('pop', T('a20', '聚簇索引'));
   const tblFrame = h('div', 'abs', W); px(tblFrame, LX(0) - 50, 196, LX(20) - LX(0) + 100, BY + BH + 60 - 196); css(tblFrame, { border: '3px dashed var(--main)' });
   const tblLbl = h('div', 'tag', W, 'users 表'); px(tblLbl, LX(0) - 50, BY + BH + 66); css(tblLbl, { background: 'var(--main)', fontSize: '26px' });
   vanish(tblFrame, 0); vanish(tblLbl, 0);
@@ -268,7 +268,7 @@ scene('s3', ({ root, s, c0 }) => {
   const toPK = path(ov, `M${1060},${530} C${1080},${420} ${LX(K27) + 90},${420} ${LX(K27) + BW / 2 + 8},${BY + 110}`, 'main', { w: 2.6 });
   const toNM = path(ov, `M${880},${578} C${640},${640} ${NX(NK9) + 20},${600} ${NX(NK9)},${NBY - 44}`, 'main', { w: 2.6 });
   arrowIn(toPK, T('a25', '两棵树') - 0.2, 0.6); arrowIn(toNM, T('a25', '两棵树') + 0.1, 0.6);
-  litWin(leaves[K27], 'hot', [[T('a16'), T('a17')], [tS0, tSx], [T('a26', '主键树'), tFwd0]]);
+  litWin(leaves[K27], 'hot', [[T('a16'), Tend('a17') - 0.1], [tS0, tSx], [T('a26', '主键树'), tFwd0]]);
   lit(nleaves[NK9], 'hot', T('a27', '姓名索引'), tFwd0);
   exit(chip, tFwd0, { y: -8, d: 0.3 });
   [toPK, toNM].forEach((p) => tl.to(p, { autoAlpha: 0, duration: 0.3 }, tFwd0));
@@ -277,8 +277,8 @@ scene('s3', ({ root, s, c0 }) => {
   const atNM = h('div', 'abs mono', W, '<b style="color:var(--main)">Alice</b> · User00001…'); px(atNM, NX(NK9) + 46, NBY + 10); css(atNM, { fontSize: '26px', color: 'var(--ink2)', background: 'var(--panel)', border: '1.5px solid var(--main)', padding: '2px 10px' });
   vanish(atNM, 0); show(atNM, T('a27', '字母') - 0.2, { x: -10, y: 0, d: 0.4 }); exit(atNM, tFwd0, { d: 0.3 });
   swaps(atNM, [[T('a27', '字母') - 0.2, '<b style="color:var(--main)">Alice</b>'], [T('a27', '前面'), '<b style="color:var(--main)">Alice</b> &lt; User00001 &lt; User00002 …']]);
-  const lblR = h('div', 'tag', W, '当时最右边'); px(lblR, LX(K27) - 60, 160); vanish(lblR, 0); slam(lblR, T('a26', '最右边'), { from: 1.3 }); exit(lblR, tFwd0, { d: 0.3 });
-  const lblL = h('div', 'tag', W, '最左边'); px(lblL, NX(NK9) - 40, 520); vanish(lblL, 0); slam(lblL, T('a27', '最左边'), { from: 1.3 }); exit(lblL, tFwd0, { d: 0.3 });
+  const lblR = h('div', 'tag', W, '当时最右边'); px(lblR, LX(K27) - 60, 160); vanish(lblR, 0); slam(lblR, T('a26', '最右边') - 0.3, { from: 1.3 }); exit(lblR, tFwd0 + 0.3, { d: 0.3 });
+  const lblL = h('div', 'tag', W, '最左边'); px(lblL, NX(NK9) - 40, 520); vanish(lblL, 0); slam(lblL, T('a27', '排在'), { from: 1.3 }); exit(lblL, tFwd0 + 0.3, { d: 0.3 });
 
   // ── a28：一百万行，三层（T5） ──
   const big3 = h('div', 'box', W); px(big3, 420, 300, 1080, 420);
@@ -298,7 +298,7 @@ scene('s3', ({ root, s, c0 }) => {
   to(ndropsOv, tB - 0.2, { opacity: 0.12, duration: 0.4 });
   wipe(big3, tB, { dir: 'b', d: 0.5 });
   [L1, L2, L3].forEach((e, i) => wipe(e, T('a28', '三层') - 0.4 + i * 0.25, { dir: 'l', d: 0.45 }));
-  show(b3n, T('a28', '三层') + 0.6, { y: 6, d: 0.4 });
+  show(b3n, tB + 0.5, { y: 6, d: 0.4 });
   sfx('thud', T('a28', '三层'), { g: 0.6 });
 
   W.appendChild(ov);

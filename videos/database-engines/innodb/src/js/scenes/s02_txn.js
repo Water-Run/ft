@@ -127,8 +127,10 @@ scene('s2', ({ root, s, c0 }) => {
     + `<rect x="${G.x}" y="${G.y}" width="${64 * G.c}" height="${64 * G.c}" fill="url(#s2cells)"/>`;
   const full = grid.querySelector('#s2full'), part = grid.querySelector('#s2part');
   const n4096 = h('div', 'abs', W, '<span style="font:800 64px Inter;color:var(--ink)">4096</span><span class="t-note" style="margin-left:12px">行</span>'); px(n4096, 1270, 250);
-  const cnt = h('div', 'abs', W, '<span class="num c-acc" style="font:800 64px Inter">0</span><span class="t-note" style="margin-left:12px">已改</span>'); px(cnt, 1270, 350);
-  const cntN = cnt.querySelector('span');
+  // 计数只放数字（单独一个元素），「已改」是旁边另一个元素：滚动中的数字不算要读的文字
+  const cnt = h('div', 'abs', W); px(cnt, 1270, 350);
+  const cntN = h('div', 'abs num c-acc', cnt, '0'); px(cntN, 0, 0, 150); css(cntN, { font: '800 64px Inter', textAlign: 'right' });
+  const cntL = h('div', 'abs t-note', cnt, '已改'); px(cntL, 162, 26);
   const leg = h('div', 'abs', W, '<span class="s2-cell unc" style="position:relative;display:inline-block;min-width:60px;height:36px;vertical-align:middle"></span><span class="t-note" style="margin-left:12px">改了，还没提交</span>'); px(leg, 1270, 470);
   const stop = h('div', 'abs', W, '<span style="font:800 96px Inter;color:var(--acc)">?</span>'); px(stop, 1280, 560);
   const tg0 = T('t9', 'UPDATE') + 0.5, tStop = T('t10', '停');
@@ -208,7 +210,7 @@ scene('s2', ({ root, s, c0 }) => {
   to(cards[1], T('q5'), { opacity: 0.4, duration: 0.4 });
 
   // 引向下一章：数据放在哪里
-  const out4 = T('q6') + 0.3;
+  const out4 = T('q6') + 1.2;
   [acid, quote, quoteZ, ...cards, ...qcards.map((q) => q[0])].forEach((e, i) => s2_out(e, out4 + (i % 4) * 0.04, { y: -16, d: 0.35 }));
   qcards.forEach(([, p]) => svgOut(p, out4, 0.25));
   // 一个 .ibd 文件，一页一页：讲到「放在哪里」时页一格格亮起
