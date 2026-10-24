@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
-  "stage": "accept",
-  "next": "中文成片待 WaterRun 审看：试听配乐与配音（语速 1.08），确认读音四处。策划者 2026-10-24 决定本片只做中文",
+  "stage": "review",
+  "next": "已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布",
   "credits": {
     "planner": "WaterRun",
     "models": [

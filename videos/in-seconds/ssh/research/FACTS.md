@@ -21,6 +21,7 @@
 | 一次性密钥 | 每次运行临时生成，实验结束即删除；口令从环境变量取，不写进任何文件。脚本 `research/lab/01_keygen.ps1`，完整回显 `out_01_keygen.txt` |
 | 本机能力清单 | `ssh -Q <类别>`。脚本 `research/lab/02_ssh_capabilities.ps1`，完整回显 `out_02_ssh_capabilities.txt` |
 | RFC 4253 | <https://www.rfc-editor.org/rfc/rfc4253.txt>，2006-01，Standards Track，T. Ylonen / C. Lonvick（编）。本地下载 SHA-256 `B471173305154F6C66FACFFCF7A4A25FC5C32765CB30542120BE6C20A88F1ED3` |
+| RFC 8731、RFC 5656 | <https://www.rfc-editor.org/rfc/rfc8731.txt>、<https://www.rfc-editor.org/rfc/rfc5656.txt>，读取日 2026-10-24（只取 §3 与 §4 的定义句） |
 | RFC 4252 | <https://www.rfc-editor.org/rfc/rfc4252.txt>，2006-01，Standards Track。本地下载 SHA-256 `A36B882CF77B107335D49921B5E955B4BA78E253205DFBCE5096EBC0E78BDF14` |
 | `ssh_config(5)` | OpenSSH 官方仓库 `openssh/openssh-portable` 的 `master` 分支 `ssh_config.5`，版本行 `$OpenBSD: ssh_config.5,v 1.433 2026/10/09 08:25:28 dtucker Exp $`。读取日 2026-10-19 |
 | `PROTOCOL` | 同上仓库 `master` 分支的 `PROTOCOL` 文件，开头自述为「OpenSSH's deviations and extensions to the published SSH protocol」。读取日 2026-10-19 |
@@ -94,6 +95,7 @@
 | k8 | 这一次用的软件版本是 OpenSSH 9.5p2 | `ssh -V` 回显 `OpenSSH_for_Windows_9.5p2, LibreSSL 3.8.2`（`out_02_ssh_capabilities.txt` 第一节） | 本机实测 | 已复现 |
 | h6 | 服务器出示的主机密钥指纹是一串 SHA256 摘要 | 实验回显 `debug1: Server host key: ssh-ed25519 SHA256:...`；`ssh_config(5)` 的 `FingerprintHash` 条说明 `sha256` 是默认值 | 本机实测 | 已复现 |
 | h7 | 客户端把主机公钥写进 known_hosts 文件，一行四段：主机名与端口、密钥类型、公钥本体、注释（此处无注释） | 实验回显：`known_hosts` 落在临时目录，内容形如 `[127.0.0.1]:2222 ssh-ed25519 <68 字符的 base64>`；`ssh_config(5)` 的 `UserKnownHostsFile` 条说明默认是 `~/.ssh/known_hosts` | 本机实测与读原文 | 已复现 |
+| k9 | 这次协商出的 curve25519-sha256，是迪菲-赫尔曼放到椭圆曲线上的做法：两边各生成一对临时密钥，交换公钥，各自算出共享密钥 | RFC 8731（Standards Track，2020-02，「Secure Shell (SSH) Key Exchange Method Using Curve25519 and Curve448」）§3：「The key exchange procedure is similar to the ECDH method described in Section 4 of [RFC5656]」，方法名「curve25519-sha256」；RFC 5656（Standards Track，2009-12）§4：「The Elliptic Curve Diffie-Hellman (ECDH) key exchange method generates a shared secret from an ephemeral local elliptic curve private key and ephemeral remote elliptic curve public key.」，流程图里两边各「Generate ephemeral key pair」「Compute shared secret」 | 读原文（2026-10-24，Claude Opus 5.5 补录）；实验回显 `SSH2_MSG_KEX_ECDH_REPLY received` | 已读与复现 |
 
 ## known_hosts 与「第一次连接」
 
