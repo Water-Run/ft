@@ -32,14 +32,14 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-23.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-24.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | 审稿 | 第 2 稿（旧版原文）已交 WaterRun 确认；做 5.x 时代视觉方向的关键帧；确认后出中文配音 Demo 与配乐试听 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | 配音 | 第 3 稿已确认；做 5.x 时代视觉方向关键帧与中文配音 Demo（5 段）交 WaterRun 选 | 最新 | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
-| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 最新 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
+| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 全部选题

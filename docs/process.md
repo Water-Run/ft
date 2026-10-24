@@ -15,7 +15,7 @@
 | 取证 | `research` | 查一手来源、做实验；收集讲解对象自己的视觉与声音材料 | `research/FACTS.md`、`research/lab/`、`research/MATERIALS.md` | [取证](guides/research.md) |
 | 文案 | `script` | 写中文稿，逐章检查是否回答核心问题 | `src/js/script.js`、`review/NOTES.md` | [文案与配音](guides/script.md)、`--stage script` |
 | 审稿 | `review` | 导出全文交校对，按意见改，直到明确确认；再翻译、校对译文 | `review/script.*.md`、`review/approval.json` | [文案校对](guides/script-review.md) |
-| 配音 | `voice` | 文案定稿后出配音 Demo：中文 5 段，有英文版时另加英文 5 段；气质合适，并尽量不同于上一部已用音色。策划者点选后再合成全片。策划者若已直接指定音色，就用指定的，不再出 Demo，也不再询问 | `src/js/timing.*.js` | [文案与配音](guides/script.md) 第 9 节、`--stage voice` |
+| 配音 | `voice` | 文案定稿后给出 3 个配音调调（音色加读法）的 Demo，有英文版时英文另给 3 个；契合对象，有质感和史诗感，并尽量不同于上一部已用音色。策划者点选后再合成全片。策划者若已直接指定音色，就用指定的，不再出 Demo，也不再询问 | `src/js/timing.*.js` | [文案与配音](guides/script.md) 第 9 节、`--stage voice` |
 | 设计 | `design` | 比较解释方法与关键帧，选定导演方案；做有声代表段验证，再铺开 | `src/css/style.css`、`src/design/`、README 的「设计」 | [视觉设计](guides/visual.md)、`--stage design` |
 | 实现 | `build` | 写场景、常驻元素、片尾；边写边查 | `src/js/` | [场景与动态](guides/scenes.md)、[引擎](reference/engine.md)、[踩过的坑](reference/pitfalls.md)、`--stage build` |
 | 声音 | `sound` | 配乐、音效、混音 | `tools/music.py`、`out/<语言>/audio.wav` | [声音](guides/sound.md)、`--stage sound` |
