@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "version": "2026-10-23.1",
+  "version": "2026-10-24.1",
   "items": {
     "F01": {
       "rev": 2,
@@ -129,6 +129,12 @@
       "evidence": ""
     },
     "F22": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F23": {
       "rev": 1,
       "result": "pending",
       "note": "",
