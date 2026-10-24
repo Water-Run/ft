@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
-  "stage": "voice",
-  "next": "第 3 稿已确认；做 5.x 时代视觉方向关键帧与中文配音 Demo（5 段）交 WaterRun 选",
+  "stage": "review",
+  "next": "暂停中（等 WaterRun 说继续）：写第 4 稿补检查与修复（REPAIR）并交审；配音 3 个调调；关键帧以旧版过程动画为底",
   "credits": {
     "planner": "WaterRun",
     "models": [
