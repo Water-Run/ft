@@ -6,29 +6,104 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+     WaterRun（2026-10-24）：「封面要画的更立体高级, 体现MyISAM存储本质上是线性的特点.」
+     画面：users.MYD 的 128 个真实字节（5.5.62 实测快照，data.js）排成一条立体的线：一格一个字节，一行十六格，一行接一行
+     伸向远处的消失点；线的尽头是下一行要写的位置（0080）。透视由本页自己投影（相机、消失点可分别控制），各面平涂，不用渐变。
+     D1 终端的配色：黑底，MySQL 橙作焦点，蓝绿作次要。 */
+  :root { --bg: #0b0b0c; --dim: #8a8a8a; --teal: #3fb4cc; --orange: #F29111; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--bg); overflow: hidden; }
+  svg { position: absolute; left: 0; top: 0; }
+  .kicker { position: absolute; font: 500 var(--kfs) "Sans SC"; color: var(--dim); letter-spacing: .02em; white-space: nowrap; }
+  .title { position: absolute; font: 900 var(--tfs) "Sans SC"; color: var(--orange); line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
+  .r169 { --kfs: 54px; --tfs: 176px; } .r43 { --kfs: 52px; --tfs: 164px; }
+  .r169 .kicker { left: 112px; top: 236px; } .r169 .title { left: 104px; top: 316px; line-height: 1.06; }
+  .r43 .kicker { left: 96px; top: 210px; } .r43 .title { left: 88px; top: 286px; line-height: 1.06; }
 </style>
 </head>
 <body>
 <div id="stage">
+  <svg id="art"></svg>
   <div class="kicker"></div>
   <div class="title"></div>
 </div>
+<script src="js/data.js"></script>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', R43 = q.get('r') === '43';
+  document.documentElement.className = (R43 ? 'r43' : 'r169') + ' ' + lang;
+  const TEXT = { zh: { kicker: '一个数据库引擎是如何实现的？', title: '从 MyISAM<br>说起', note: '第 N 行 = N × 16' } }[lang];
   document.querySelector('.kicker').textContent = TEXT.kicker;
   document.querySelector('.title').innerHTML = TEXT.title;
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+
+  const W = R43 ? 1600 : 1920, Hh = R43 ? 1200 : 1080;
+  // 相机：世界坐标里线沿 +X 伸展，Y 指向线的后方，Z 向上；单位是一格
+  const CAM = R43 ? { eye: [-7.17, -3.32, 4.26], at: [4.8, 0.5, -0.66], f: 1588, c: [1037, 788] }
+                  : { eye: [-7.17, -3.32, 4.26], at: [4.8, 0.5, -0.66], f: 1588, c: [1244, 709] };
+  const sub = (a, b) => a.map((v, i) => v - b[i]), dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const norm = (a) => { const l = Math.hypot(...a); return a.map((v) => v / l); };
+  const fw = norm(sub(CAM.at, CAM.eye)), rt = norm(cross(fw, [0, 0, 1])), up = cross(rt, fw);
+  const P = (x, y, z) => { const d = sub([x, y, z], CAM.eye), zz = dot(d, fw); return [CAM.c[0] + CAM.f * dot(d, rt) / zz, CAM.c[1] - CAM.f * dot(d, up) / zz]; };
+
+  const NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('art');
+  svg.setAttribute('width', W); svg.setAttribute('height', Hh); svg.setAttribute('viewBox', `0 0 ${W} ${Hh}`);
+  const el = (tag, a, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  const poly = (pts, fill, stroke, sw = 1.2) => el('polygon', { points: pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '), fill, stroke: stroke || fill, 'stroke-width': sw, 'stroke-linejoin': 'round' });
+  // 平面上的文字：把局部 100×100 的方框仿射到地面或顶面的四边形上（局部左上 = 远左角）
+  const flatText = (x0, x1, y0, y1, z, str, size, fill, weight = 600, anchor = 'middle') => {
+    const a = P(x0, y1, z), b = P(x1, y1, z), c = P(x0, y0, z);
+    const g = el('g', { transform: `matrix(${(b[0] - a[0]) / 100} ${(b[1] - a[1]) / 100} ${(c[0] - a[0]) / 100} ${(c[1] - a[1]) / 100} ${a[0]} ${a[1]})` });
+    const t = el('text', { x: anchor === 'middle' ? 50 : 0, y: 50, 'text-anchor': anchor, 'dominant-baseline': 'central', 'font-family': 'Mono', 'font-weight': weight, 'font-size': size, fill }, g);
+    t.textContent = str;
+  };
+  const rgb = (hex, f) => { const n = parseInt(hex.slice(1), 16); return `rgb(${Math.round((n >> 16) * f)},${Math.round(((n >> 8) & 255) * f)},${Math.round((n & 255) * f)})`; };
+
+  const bytes = window.REAL.usersMYD[0].match(/../g);              // 刚写入 8 行、还没有删除时的 users.MYD
+  const N = bytes.length, CELL = 1, GAP = 0.1, ROWGAP = 0.42, HT = 0.55;
+  const xOf = (i) => i * (CELL + GAP) + Math.floor(i / 16) * ROWGAP;
+  const fog = (x) => 1 - 0.5 * Math.min(1, x / xOf(N + 16));       // 越远越暗（每个面仍是平涂）
+
+  // 地面上的细轨，一直通到消失点
+  { const a = P(-3, 0.5, 0), b = P(400, 0.5, 0); el('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: '#1d3f47', 'stroke-width': 3 }); }
+  // 下一行的位置（0080）：十六个虚线格，先画，因为最远
+  for (let j = 15; j >= 0; j--) {
+    const x0 = xOf(N + j), x1 = x0 + CELL;
+    poly([P(x0, 0, 0), P(x1, 0, 0), P(x1, 1, 0), P(x0, 1, 0)], 'none', rgb('#F29111', 0.55 * fog(x0)), 2).setAttribute('stroke-dasharray', '6 5');
+  }
+  // 从远到近画每一格：左端面、前面、顶面
+  const cube = (x0, x1, y0, y1, h, top, front, side, edge) => {
+    poly([P(x0, y0, 0), P(x0, y1, 0), P(x0, y1, h), P(x0, y0, h)], side);
+    poly([P(x0, y0, 0), P(x1, y0, 0), P(x1, y0, h), P(x0, y0, h)], front);
+    poly([P(x0, y0, h), P(x1, y0, h), P(x1, y1, h), P(x0, y1, h)], top, edge, 1.6);
+  };
+  { const x0 = xOf(N);                                               // 立在 0080 的光标：高而细，远处也看得见
+    cube(x0, x0 + 0.5, 0, 1, 3.2, '#F29111', '#b86a08', '#7a4503', '#ffb347'); }
+  for (let i = N - 1; i >= 0; i--) {
+    const row = Math.floor(i / 16), col = i % 16, x0 = xOf(i), x1 = x0 + CELL, k = fog(x0), alice = row === 0, odd = row % 2 === 1;
+    const top = alice ? '#F29111' : (odd ? '#1f4a54' : '#2b606c'), front = alice ? '#a85f05' : (odd ? '#123038' : '#1a3f47'), side = alice ? '#6f3f02' : (odd ? '#0a1c20' : '#0f272d');
+    const edge = alice ? '#ffb347' : (odd ? '#2f6a77' : '#3d7f8d');
+    cube(x0, x1, 0, 1, HT, rgb(top, k), rgb(front, k), rgb(side, k), rgb(edge, k));
+    flatText(x0, x1, 0, 1, HT, bytes[i], 46, alice ? '#2a1702' : rgb(col === 0 ? '#7fb3be' : '#d6f2f7', k));
+  }
+
+  // 行首偏移：竖直的小标签，钉在每行第一格的后上角，字号随透视缩小
+  const cellPx = (x) => { const a = P(x, 0, HT), b = P(x + 1, 0, HT); return Math.hypot(b[0] - a[0], b[1] - a[1]); };
+  const tag = (x, str, color, min = 18) => {
+    const size = Math.max(min, 46 * cellPx(x) / cellPx(0));
+    const p = P(x, 1, HT);
+    const t = el('text', { x: p[0] - size * 0.2, y: p[1] - size * 0.45, 'font-family': 'Mono', 'font-weight': 500, 'font-size': size.toFixed(1), fill: color, 'text-anchor': 'end' });
+    t.textContent = str;
+  };
+  for (let row = 0; row < 2; row++) tag(xOf(row * 16), (row * 16).toString(16).padStart(4, '0'), rgb('#3fb4cc', fog(xOf(row * 16))));   // 再远的行挤在一起，不标
+  tag(xOf(N), '0080', '#F29111', 22);
+  // 左下角：文件名与定位公式（底部 15% 之上）
+  const note = el('text', { x: R43 ? 96 : 112, y: R43 ? 880 : 800, 'font-family': 'Mono', 'font-weight': 500, 'font-size': 40, fill: '#3fb4cc' });
+  for (const [i, line] of ['users.MYD', TEXT.note].entries()) { const ts = el('tspan', { x: R43 ? 96 : 112, dy: i ? 56 : 0 }, note); ts.textContent = line; }
+
+  const sample = document.getElementById('stage').textContent + TEXT.note + '0123456789abcdef';
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('500 40px "Mono"', sample), document.fonts.load('600 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
