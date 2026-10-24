@@ -8,7 +8,7 @@
     "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
   },
   "stage": "review",
-  "next": "第 3 稿（约 13:44）与四张关键帧已交 WaterRun 审；全系列文案主线确认后调整首尾衔接，再出 10 段配音 Demo 与配乐试听",
+  "next": "排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审",
   "credits": {
     "planner": "WaterRun",
     "models": [
