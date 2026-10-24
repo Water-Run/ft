@@ -1,0 +1,205 @@
+{
+  "summary": {
+    "version": "9.7.4",
+    "myisam": {
+      "ENGINE": "MyISAM",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    "innodb": {
+      "ENGINE": "InnoDB",
+      "SUPPORT": "DEFAULT",
+      "TRANSACTIONS": "YES"
+    },
+    "default_storage_engine": "InnoDB"
+  },
+  "archive": {
+    "url": "https://cdn.mysql.com/Downloads/MySQL-9.7/mysql-9.7.4-winx64.zip",
+    "md5": "e05aaa40639d8548e0f68b7a70685a3b",
+    "sha256": "641bdaf01004927194c561b956f14f915a3166c9b0f9b1b5464ae63152bf4b96",
+    "bytes": 344052123,
+    "official_md5_source": "https://dev.mysql.com/downloads/mysql/ (2026-10-24)"
+  },
+  "mysqld_sha256": "e720999e28a38eb1540bef9ed7ec115d21c5ac3fdff9989c2f2663af8c9b7511",
+  "engines": [
+    {
+      "ENGINE": "ARCHIVE",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    {
+      "ENGINE": "BLACKHOLE",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    {
+      "ENGINE": "CSV",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    {
+      "ENGINE": "FEDERATED",
+      "SUPPORT": "NO",
+      "TRANSACTIONS": "NULL"
+    },
+    {
+      "ENGINE": "InnoDB",
+      "SUPPORT": "DEFAULT",
+      "TRANSACTIONS": "YES"
+    },
+    {
+      "ENGINE": "MEMORY",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    {
+      "ENGINE": "MRG_MYISAM",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    {
+      "ENGINE": "MyISAM",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    },
+    {
+      "ENGINE": "ndbcluster",
+      "SUPPORT": "NO",
+      "TRANSACTIONS": "NULL"
+    },
+    {
+      "ENGINE": "ndbinfo",
+      "SUPPORT": "NO",
+      "TRANSACTIONS": "NULL"
+    },
+    {
+      "ENGINE": "PERFORMANCE_SCHEMA",
+      "SUPPORT": "YES",
+      "TRANSACTIONS": "NO"
+    }
+  ],
+  "settings": [
+    {
+      "Variable_name": "concurrent_insert",
+      "Value": "AUTO"
+    },
+    {
+      "Variable_name": "default_storage_engine",
+      "Value": "InnoDB"
+    },
+    {
+      "Variable_name": "key_buffer_size",
+      "Value": "8388608"
+    },
+    {
+      "Variable_name": "key_cache_block_size",
+      "Value": "1024"
+    },
+    {
+      "Variable_name": "lock_wait_timeout",
+      "Value": "31536000"
+    },
+    {
+      "Variable_name": "myisam_data_pointer_size",
+      "Value": "6"
+    },
+    {
+      "Variable_name": "myisam_recover_options",
+      "Value": "OFF"
+    }
+  ],
+  "source": {
+    "repository": "https://github.com/mysql/mysql-server",
+    "tag": "mysql-9.7.4",
+    "files": [
+      {
+        "file": "storage/myisam/mi_search.cc",
+        "sha256": "34005019134ba22d37b69e031a989d1ecd6de526f664ce20983c4d1ce0c57dde",
+        "lines": 1706
+      },
+      {
+        "file": "storage/myisam/mi_open.cc",
+        "sha256": "dc13be0eb90322d6aca5e43a1d88280f02ab57affb25d716951a97db0f3b2db1",
+        "lines": 1355
+      },
+      {
+        "file": "storage/myisam/mi_key.cc",
+        "sha256": "5532e920765a49c753e17f735e60171f0ce92bd2e7df729e53040e80134c884e",
+        "lines": 511
+      },
+      {
+        "file": "storage/myisam/mi_write.cc",
+        "sha256": "52876cee9e719726ee335c9dce41dc8492ee073b9e212f61dd8fbc38ac7b8567",
+        "lines": 935
+      },
+      {
+        "file": "storage/myisam/mi_delete.cc",
+        "sha256": "067c808f45a97463acd0b94325f71299e96f9f656db068dfde7241746cd8dcf3",
+        "lines": 812
+      },
+      {
+        "file": "storage/myisam/mi_update.cc",
+        "sha256": "e21f59564837afce7934a4e31d3dc18a491c819999783fb0ccc4e2aee15b22a5",
+        "lines": 221
+      },
+      {
+        "file": "storage/myisam/mi_statrec.cc",
+        "sha256": "17c7809ec717a872339d17b798e8aad8cdb5ded353b99cca4ef64006f1e24c85",
+        "lines": 270
+      },
+      {
+        "file": "storage/myisam/mi_locking.cc",
+        "sha256": "e6582fbb4b3896057ce17aff430b9310499a72c0fbed79197569b577506d894f",
+        "lines": 520
+      },
+      {
+        "file": "storage/myisam/mi_check.cc",
+        "sha256": "2dabf808b03b689907d47b9a551066f03cb2cd9fa4933781733f5a9195449ad0",
+        "lines": 3861
+      },
+      {
+        "file": "storage/myisam/mi_rkey.cc",
+        "sha256": "56f52d5aec9c97e9369e305d5111dd547a7e23b80c9cfe21a422b5ebe41c5744",
+        "lines": 207
+      },
+      {
+        "file": "storage/myisam/ha_myisam.cc",
+        "sha256": "de4c417ed0b1700270e37e2b54ec584c708ca4556b3bd2162006002cbfa0f6e0",
+        "lines": 2107
+      },
+      {
+        "file": "storage/myisam/myisamdef.h",
+        "sha256": "c0f57a238808f1c10bc755fdebd1a6f7af02cbe42cdf62e50fbd2086a8e65007",
+        "lines": 887
+      },
+      {
+        "file": "include/myisam.h",
+        "sha256": "56f43e708a0059cb2e6fb7dd51d51c47e41c91a56754e96bee5049c4d9fd8ee8",
+        "lines": 445
+      },
+      {
+        "file": "include/my_base.h",
+        "sha256": "85fd63b066f9e251084c00e2784053d22d4a6540ba75fd0c33544c43e44f28f2",
+        "lines": 1237
+      },
+      {
+        "file": "include/my_compare.h",
+        "sha256": "6410da08d96febb8f3bbf361608eaf7884aded84e291e1a0ab7b8b4070b58b80",
+        "lines": 134
+      },
+      {
+        "file": "mysys/mf_keycache.cc",
+        "sha256": "c0c7461def1dd08dca8d42cecc14f43da054d2bb42b6106524b7780d289aba6f",
+        "lines": 3681
+      },
+      {
+        "file": "mysys/thr_lock.cc",
+        "sha256": "b0767f0d17a5ae00ae74b29c3c53eef2e5ff167fd0b33363fc750f557c19969f",
+        "lines": 1325
+      }
+    ]
+  },
+  "limits": [
+    "Windows 11 x64, official noinstall ZIP, fresh data directory, 127.0.0.1 only, root without password."
+  ]
+}

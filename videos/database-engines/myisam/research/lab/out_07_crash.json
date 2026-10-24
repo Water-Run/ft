@@ -1,0 +1,69 @@
+{
+  "summary": {
+    "changed_rows": 155,
+    "unchanged_rows": 3940,
+    "first_unchanged_id": "156",
+    "alice": [
+      {
+        "id": "2050",
+        "name": "Alice",
+        "age": "42"
+      }
+    ],
+    "open_count_after_kill": 1,
+    "check": [
+      [
+        "warning",
+        "1 client is using or hasn't closed the table properly"
+      ],
+      [
+        "error",
+        "Checksum for key:  3 doesn't match checksum for records"
+      ],
+      [
+        "error",
+        "Corrupt"
+      ]
+    ],
+    "repair": [
+      [
+        "status",
+        "OK"
+      ]
+    ],
+    "check_after_repair": [
+      [
+        "status",
+        "OK"
+      ]
+    ]
+  },
+  "before": [
+    {
+      "changed": "0",
+      "unchanged": "4095"
+    }
+  ],
+  "after_restart": [
+    {
+      "changed": "155",
+      "unchanged": "3940"
+    }
+  ],
+  "after_repair": [
+    {
+      "changed": "155",
+      "unchanged": "3940"
+    }
+  ],
+  "state_after_kill": {
+    "open_count": 1,
+    "changed": 1,
+    "records": 4096,
+    "del": 0
+  },
+  "limits": [
+    "Process kill on one host, not a power loss; rows are updated in place one by one, so the split point depends on timing and differs between runs.",
+    "myisam_recover_options=OFF (default)."
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "summary": {
+    "index": [
+      {
+        "Key_reads": 3,
+        "Key_read_requests": 9,
+        "Handler_read_rnd_next": 6,
+        "file_reads": {
+          "users.MYD": {
+            "reads": 1,
+            "bytes": 56
+          },
+          "users.MYI": {
+            "reads": 0,
+            "bytes": 0
+          }
+        }
+      },
+      {
+        "Key_reads": 0,
+        "Key_read_requests": 9,
+        "Handler_read_rnd_next": 6,
+        "file_reads": {
+          "users.MYD": {
+            "reads": 1,
+            "bytes": 56
+          },
+          "users.MYI": {
+            "reads": 0,
+            "bytes": 0
+          }
+        }
+      }
+    ],
+    "scan": [
+      {
+        "Key_reads": 0,
+        "Key_read_requests": 0,
+        "Handler_read_rnd_next": 4103,
+        "file_reads": {
+          "users.MYD": {
+            "reads": 4096,
+            "bytes": 229376
+          },
+          "users.MYI": {
+            "reads": 0,
+            "bytes": 0
+          }
+        }
+      },
+      {
+        "Key_reads": 0,
+        "Key_read_requests": 0,
+        "Handler_read_rnd_next": 4103,
+        "file_reads": {
+          "users.MYD": {
+            "reads": 4096,
+            "bytes": 229376
+          },
+          "users.MYI": {
+            "reads": 0,
+            "bytes": 0
+          }
+        }
+      }
+    ],
+    "covering": [
+      {
+        "Key_reads": 3,
+        "Key_read_requests": 9,
+        "Handler_read_rnd_next": 6,
+        "file_reads": {
+          "users.MYD": {
+            "reads": 1,
+            "bytes": 56
+          },
+          "users.MYI": {
+            "reads": 0,
+            "bytes": 0
+          }
+        }
+      },
+      {
+        "Key_reads": 0,
+        "Key_read_requests": 9,
+        "Handler_read_rnd_next": 6,
+        "file_reads": {
+          "users.MYD": {
+            "reads": 1,
+            "bytes": 56
+          },
+          "users.MYI": {
+            "reads": 0,
+            "bytes": 0
+          }
+        }
+      }
+    ]
+  },
+  "scenarios": {
+    "index": {
+      "sql": "SELECT id, name, age FROM users WHERE name='Alice'",
+      "runs": [
+        {
+          "result": [
+            {
+              "id": "2050",
+              "name": "Alice",
+              "age": "42"
+            }
+          ],
+          "file_reads": {
+            "users.MYD": {
+              "reads": 1,
+              "bytes": 56
+            },
+            "users.MYI": {
+              "reads": 0,
+              "bytes": 0
+            }
+          },
+          "counters": {
+            "Handler_read_key": 6,
+            "Handler_read_next": 1,
+            "Handler_read_rnd_next": 6,
+            "Key_read_requests": 9,
+            "Key_reads": 3
+          }
+        },
+        {
+          "result": [
+            {
+              "id": "2050",
+              "name": "Alice",
+              "age": "42"
+            }
+          ],
+          "file_reads": {
+            "users.MYD": {
+              "reads": 1,
+              "bytes": 56
+            },
+            "users.MYI": {
+              "reads": 0,
+              "bytes": 0
+            }
+          },
+          "counters": {
+            "Handler_read_key": 6,
+            "Handler_read_next": 1,
+            "Handler_read_rnd_next": 6,
+            "Key_read_requests": 9,
+            "Key_reads": 0
+          }
+        }
+      ]
+    },
+    "scan": {
+      "sql": "SELECT id, name, age FROM users IGNORE INDEX (idx_name) WHERE name='Alice'",
+      "runs": [
+        {
+          "result": [
+            {
+              "id": "2050",
+              "name": "Alice",
+              "age": "42"
+            }
+          ],
+          "file_reads": {
+            "users.MYD": {
+              "reads": 4096,
+              "bytes": 229376
+            },
+            "users.MYI": {
+              "reads": 0,
+              "bytes": 0
+            }
+          },
+          "counters": {
+            "Handler_read_key": 5,
+            "Handler_read_next": 0,
+            "Handler_read_rnd_next": 4103,
+            "Key_read_requests": 0,
+            "Key_reads": 0
+          }
+        },
+        {
+          "result": [
+            {
+              "id": "2050",
+              "name": "Alice",
+              "age": "42"
+            }
+          ],
+          "file_reads": {
+            "users.MYD": {
+              "reads": 4096,
+              "bytes": 229376
+            },
+            "users.MYI": {
+              "reads": 0,
+              "bytes": 0
+            }
+          },
+          "counters": {
+            "Handler_read_key": 5,
+            "Handler_read_next": 0,
+            "Handler_read_rnd_next": 4103,
+            "Key_read_requests": 0,
+            "Key_reads": 0
+          }
+        }
+      ]
+    },
+    "covering": {
+      "sql": "SELECT id FROM users WHERE name='Alice'",
+      "runs": [
+        {
+          "result": [
+            {
+              "id": "2050"
+            }
+          ],
+          "file_reads": {
+            "users.MYD": {
+              "reads": 1,
+              "bytes": 56
+            },
+            "users.MYI": {
+              "reads": 0,
+              "bytes": 0
+            }
+          },
+          "counters": {
+            "Handler_read_key": 6,
+            "Handler_read_next": 1,
+            "Handler_read_rnd_next": 6,
+            "Key_read_requests": 9,
+            "Key_reads": 3
+          }
+        },
+        {
+          "result": [
+            {
+              "id": "2050"
+            }
+          ],
+          "file_reads": {
+            "users.MYD": {
+              "reads": 1,
+              "bytes": 56
+            },
+            "users.MYI": {
+              "reads": 0,
+              "bytes": 0
+            }
+          },
+          "counters": {
+            "Handler_read_key": 6,
+            "Handler_read_next": 1,
+            "Handler_read_rnd_next": 6,
+            "Key_read_requests": 9,
+            "Key_reads": 0
+          }
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Counters are global; nothing else runs on this private server during a scenario.",
+    "Status queries themselves touch no MyISAM user table.",
+    "File reads are mysqld's calls to the OS; OS cache and device are not observed."
+  ]
+}

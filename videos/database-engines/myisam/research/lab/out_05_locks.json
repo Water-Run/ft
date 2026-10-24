@@ -1,0 +1,234 @@
+{
+  "summary": {
+    "Bob reads the whole table; Alice and Carol write": {
+      "states_at_1s": [
+        [
+          "Bob",
+          "User sleep"
+        ],
+        [
+          "Alice",
+          "Waiting for table level lock"
+        ],
+        [
+          "Carol",
+          "Waiting for table level lock"
+        ]
+      ],
+      "finished_s": {
+        "Bob": 3.01,
+        "Alice": 3.01,
+        "Carol": 3.01
+      }
+    },
+    "Alice writes slowly; Bob reads, Dave inserts": {
+      "states_at_1s": [
+        [
+          "Bob",
+          "Waiting for table level lock"
+        ],
+        [
+          "Alice",
+          "User sleep"
+        ],
+        [
+          "Dave",
+          "Waiting for table level lock"
+        ]
+      ],
+      "finished_s": {
+        "Alice": 3.0,
+        "Bob": 3.0,
+        "Dave": 3.0
+      }
+    },
+    "Bob reads the whole table; Dave appends, Carol writes": {
+      "states_at_1s": [
+        [
+          "Bob",
+          "User sleep"
+        ],
+        [
+          "Carol",
+          "Waiting for table level lock"
+        ]
+      ],
+      "finished_s": {
+        "Dave": 0.3,
+        "Bob": 3.0,
+        "Carol": 3.0
+      }
+    }
+  },
+  "parts": {
+    "Bob reads the whole table; Alice and Carol write": {
+      "first": [
+        "Bob",
+        "SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM users WHERE age > 0"
+      ],
+      "then": [
+        [
+          "Alice",
+          "UPDATE users SET age=43 WHERE id=2050"
+        ],
+        [
+          "Carol",
+          "UPDATE users SET age=31 WHERE id=2052"
+        ]
+      ],
+      "states_at_1s": [
+        [
+          "Bob",
+          "User sleep",
+          "SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM use"
+        ],
+        [
+          "Alice",
+          "Waiting for table level lock",
+          "UPDATE users SET age=43 WHERE id=2050"
+        ],
+        [
+          "Carol",
+          "Waiting for table level lock",
+          "UPDATE users SET age=31 WHERE id=2052"
+        ]
+      ],
+      "finished": {
+        "Bob": {
+          "seconds": 3.01,
+          "last_line": "| 4096 |       0 |"
+        },
+        "Alice": {
+          "seconds": 3.01,
+          "last_line": ""
+        },
+        "Carol": {
+          "seconds": 3.01,
+          "last_line": ""
+        }
+      }
+    },
+    "Alice writes slowly; Bob reads, Dave inserts": {
+      "first": [
+        "Alice",
+        "UPDATE users SET age=44 + 0*SLEEP(3) WHERE id=2050"
+      ],
+      "then": [
+        [
+          "Bob",
+          "SELECT age FROM users WHERE id=2050"
+        ],
+        [
+          "Dave",
+          "INSERT INTO users VALUES (4097, 'Dave', 30)"
+        ]
+      ],
+      "states_at_1s": [
+        [
+          "Bob",
+          "Waiting for table level lock",
+          "SELECT age FROM users WHERE id=2050"
+        ],
+        [
+          "Alice",
+          "User sleep",
+          "UPDATE users SET age=44 + 0*SLEEP(3) WHERE id=2050"
+        ],
+        [
+          "Dave",
+          "Waiting for table level lock",
+          "INSERT INTO users VALUES (4097, 'Dave', 30)"
+        ]
+      ],
+      "finished": {
+        "Alice": {
+          "seconds": 3.0,
+          "last_line": ""
+        },
+        "Bob": {
+          "seconds": 3.0,
+          "last_line": "|  44 |"
+        },
+        "Dave": {
+          "seconds": 3.0,
+          "last_line": ""
+        }
+      }
+    },
+    "Bob reads the whole table; Dave appends, Carol writes": {
+      "first": [
+        "Bob",
+        "SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM users WHERE age > 0"
+      ],
+      "then": [
+        [
+          "Dave",
+          "INSERT INTO users VALUES (4098, 'Dave2', 31)"
+        ],
+        [
+          "Carol",
+          "UPDATE users SET age=32 WHERE id=2052"
+        ]
+      ],
+      "states_at_1s": [
+        [
+          "Bob",
+          "User sleep",
+          "SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM use"
+        ],
+        [
+          "Carol",
+          "Waiting for table level lock",
+          "UPDATE users SET age=32 WHERE id=2052"
+        ]
+      ],
+      "finished": {
+        "Dave": {
+          "seconds": 0.3,
+          "last_line": ""
+        },
+        "Bob": {
+          "seconds": 3.0,
+          "last_line": "| 4097 |       0 |"
+        },
+        "Carol": {
+          "seconds": 3.0,
+          "last_line": ""
+        }
+      }
+    }
+  },
+  "final_rows": [
+    {
+      "id": "2050",
+      "name": "Alice",
+      "age": "44"
+    },
+    {
+      "id": "2052",
+      "name": "User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+      "age": "32"
+    },
+    {
+      "id": "4097",
+      "name": "Dave",
+      "age": "30"
+    },
+    {
+      "id": "4098",
+      "name": "Dave2",
+      "age": "31"
+    }
+  ],
+  "connections": {
+    "Bob": "10",
+    "Alice": "11",
+    "Carol": "12",
+    "Dave": "13"
+  },
+  "limits": [
+    "SLEEP keeps a statement (and its table lock) open for about 3 s; wall-clock timings on one host.",
+    "A single-row primary-key SELECT is read during optimization and does not hold the lock for its whole run.",
+    "concurrent_insert=AUTO and no deleted rows in the table, so appends do not wait for readers."
+  ]
+}

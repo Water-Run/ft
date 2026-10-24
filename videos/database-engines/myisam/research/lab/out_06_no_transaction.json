@@ -1,0 +1,36 @@
+{
+  "summary": {
+    "users": {
+      "engine": "MyISAM",
+      "age_after_rollback": 43,
+      "warning_codes": [
+        "1196"
+      ]
+    },
+    "users_innodb": {
+      "engine": "InnoDB",
+      "age_after_rollback": 42,
+      "warning_codes": []
+    }
+  },
+  "tables": {
+    "users": {
+      "engine": "MyISAM",
+      "rollback_output": "+---------+------+---------------------------------------------------------------+\n| Level   | Code | Message                                                       |\n+---------+------+---------------------------------------------------------------+\n| Warning | 1196 | Some non-transactional changed tables couldn't be rolled back |\n+---------+------+---------------------------------------------------------------+",
+      "warnings": [
+        {
+          "Level": "Warning",
+          "Code": "1196",
+          "Message": "Some non-transactional changed tables couldn't be rolled back"
+        }
+      ],
+      "age_after_rollback": 43
+    },
+    "users_innodb": {
+      "engine": "InnoDB",
+      "rollback_output": "",
+      "warnings": [],
+      "age_after_rollback": 42
+    }
+  }
+}

@@ -1,0 +1,37 @@
+[client] SELECT VERSION() AS v
++-------+
+| v     |
++-------+
+| 9.7.4 |
++-------+
+
+[client] SELECT ENGINE, SUPPORT, TRANSACTIONS FROM information_schema.ENGINES ORDER BY ENGINE
++--------------------+---------+--------------+
+| ENGINE             | SUPPORT | TRANSACTIONS |
++--------------------+---------+--------------+
+| ARCHIVE            | YES     | NO           |
+| BLACKHOLE          | YES     | NO           |
+| CSV                | YES     | NO           |
+| FEDERATED          | NO      | NULL         |
+| InnoDB             | DEFAULT | YES          |
+| MEMORY             | YES     | NO           |
+| MRG_MYISAM         | YES     | NO           |
+| MyISAM             | YES     | NO           |
+| ndbcluster         | NO      | NULL         |
+| ndbinfo            | NO      | NULL         |
+| PERFORMANCE_SCHEMA | YES     | NO           |
++--------------------+---------+--------------+
+
+[client] SHOW VARIABLES WHERE Variable_name IN ('default_storage_engine','key_buffer_size','key_cache_block_size','concurrent_insert','myisam_recover_options','myisam_data_pointer_size','lock_wait_timeout')
++--------------------------+----------+
+| Variable_name            | Value    |
++--------------------------+----------+
+| concurrent_insert        | AUTO     |
+| default_storage_engine   | InnoDB   |
+| key_buffer_size          | 8388608  |
+| key_cache_block_size     | 1024     |
+| lock_wait_timeout        | 31536000 |
+| myisam_data_pointer_size | 6        |
+| myisam_recover_options   | OFF      |
++--------------------------+----------+
+

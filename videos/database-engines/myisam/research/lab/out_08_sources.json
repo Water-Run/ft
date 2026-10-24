@@ -1,0 +1,145 @@
+{
+  "summary": {
+    "handler: insert": "storage/myisam/ha_myisam.cc:820",
+    "handler: index lookup": "storage/myisam/ha_myisam.cc:1522",
+    "handler: table scan": "storage/myisam/ha_myisam.cc:1607",
+    "write a row": "storage/myisam/mi_write.cc:60",
+    "fixed row: reuse deleted slot first": "storage/myisam/mi_statrec.cc:35",
+    "fixed row: delete mark + chain link": "storage/myisam/mi_statrec.cc:101",
+    "fixed row: read by position": "storage/myisam/mi_statrec.cc:150",
+    "update a row": "storage/myisam/mi_update.cc:38",
+    "delete a row": "storage/myisam/mi_delete.cc:51",
+    "B-tree search": "storage/myisam/mi_search.cc:77",
+    "child pointer = block x 1024": "storage/myisam/mi_search.cc:515",
+    "row pointer = row number x record length": "storage/myisam/mi_search.cc:571",
+    "packed key decoding": "storage/myisam/mi_search.cc:713",
+    "key cache read": "mysys/mf_keycache.cc:2112",
+    "table lock": "mysys/thr_lock.cc:467",
+    "wait for table lock": "mysys/thr_lock.cc:347",
+    "open counter marks unclosed table": "storage/myisam/mi_locking.cc:474",
+    "CHECK: key checksum mismatch": "storage/myisam/mi_check.cc:1208"
+  },
+  "points": [
+    {
+      "what": "handler: insert",
+      "file": "storage/myisam/ha_myisam.cc",
+      "line": 820,
+      "text": "int ha_myisam::write_row(uchar *buf) {"
+    },
+    {
+      "what": "handler: index lookup",
+      "file": "storage/myisam/ha_myisam.cc",
+      "line": 1522,
+      "text": "int ha_myisam::index_read_map(uchar *buf, const uchar *key,"
+    },
+    {
+      "what": "handler: table scan",
+      "file": "storage/myisam/ha_myisam.cc",
+      "line": 1607,
+      "text": "int ha_myisam::rnd_next(uchar *buf) {"
+    },
+    {
+      "what": "write a row",
+      "file": "storage/myisam/mi_write.cc",
+      "line": 60,
+      "text": "int mi_write(MI_INFO *info, uchar *record) {"
+    },
+    {
+      "what": "fixed row: reuse deleted slot first",
+      "file": "storage/myisam/mi_statrec.cc",
+      "line": 35,
+      "text": "int _mi_write_static_record(MI_INFO *info, const uchar *record) {"
+    },
+    {
+      "what": "fixed row: delete mark + chain link",
+      "file": "storage/myisam/mi_statrec.cc",
+      "line": 101,
+      "text": "temp[0] = '\\0'; /* Mark that record is deleted */"
+    },
+    {
+      "what": "fixed row: read by position",
+      "file": "storage/myisam/mi_statrec.cc",
+      "line": 150,
+      "text": "int _mi_read_static_record(MI_INFO *info, my_off_t pos, uchar *record) {"
+    },
+    {
+      "what": "update a row",
+      "file": "storage/myisam/mi_update.cc",
+      "line": 38,
+      "text": "int mi_update(MI_INFO *info, const uchar *oldrec, uchar *newrec) {"
+    },
+    {
+      "what": "delete a row",
+      "file": "storage/myisam/mi_delete.cc",
+      "line": 51,
+      "text": "int mi_delete(MI_INFO *info, const uchar *record) {"
+    },
+    {
+      "what": "B-tree search",
+      "file": "storage/myisam/mi_search.cc",
+      "line": 77,
+      "text": "int _mi_search(MI_INFO *info, MI_KEYDEF *keyinfo, uchar *key, uint key_len,"
+    },
+    {
+      "what": "child pointer = block x 1024",
+      "file": "storage/myisam/mi_search.cc",
+      "line": 515,
+      "text": "my_off_t _mi_kpos(uint nod_flag, uchar *after_key) {"
+    },
+    {
+      "what": "row pointer = row number x record length",
+      "file": "storage/myisam/mi_search.cc",
+      "line": 571,
+      "text": "my_off_t _mi_dpos(MI_INFO *info, uint nod_flag, const uchar *after_key) {"
+    },
+    {
+      "what": "packed key decoding",
+      "file": "storage/myisam/mi_search.cc",
+      "line": 713,
+      "text": "uint _mi_get_pack_key(MI_KEYDEF *keyinfo, uint nod_flag, uchar **page_pos,"
+    },
+    {
+      "what": "key cache read",
+      "file": "mysys/mf_keycache.cc",
+      "line": 2112,
+      "text": "uchar *key_cache_read(KEY_CACHE *keycache, st_keycache_thread_var *thread_var,"
+    },
+    {
+      "what": "table lock",
+      "file": "mysys/thr_lock.cc",
+      "line": 467,
+      "text": "enum enum_thr_lock_result thr_lock(THR_LOCK_DATA *data, THR_LOCK_INFO *owner,"
+    },
+    {
+      "what": "wait for table lock",
+      "file": "mysys/thr_lock.cc",
+      "line": 347,
+      "text": "static enum enum_thr_lock_result wait_for_lock(struct st_lock_list *wait,"
+    },
+    {
+      "what": "open counter marks unclosed table",
+      "file": "storage/myisam/mi_locking.cc",
+      "line": 474,
+      "text": "int _mi_mark_file_changed(MI_INFO *info) {"
+    },
+    {
+      "what": "CHECK: key checksum mismatch",
+      "file": "storage/myisam/mi_check.cc",
+      "line": 1208,
+      "text": "param, \"Checksum for key: %2d doesn't match checksum for records\","
+    }
+  ],
+  "file_sha256": {
+    "storage/myisam/ha_myisam.cc": "de4c417ed0b1700270e37e2b54ec584c708ca4556b3bd2162006002cbfa0f6e0",
+    "storage/myisam/mi_write.cc": "52876cee9e719726ee335c9dce41dc8492ee073b9e212f61dd8fbc38ac7b8567",
+    "storage/myisam/mi_statrec.cc": "17c7809ec717a872339d17b798e8aad8cdb5ded353b99cca4ef64006f1e24c85",
+    "storage/myisam/mi_update.cc": "e21f59564837afce7934a4e31d3dc18a491c819999783fb0ccc4e2aee15b22a5",
+    "storage/myisam/mi_delete.cc": "067c808f45a97463acd0b94325f71299e96f9f656db068dfde7241746cd8dcf3",
+    "storage/myisam/mi_search.cc": "34005019134ba22d37b69e031a989d1ecd6de526f664ce20983c4d1ce0c57dde",
+    "mysys/mf_keycache.cc": "c0c7461def1dd08dca8d42cecc14f43da054d2bb42b6106524b7780d289aba6f",
+    "mysys/thr_lock.cc": "b0767f0d17a5ae00ae74b29c3c53eef2e5ff167fd0b33363fc750f557c19969f",
+    "storage/myisam/mi_locking.cc": "e6582fbb4b3896057ce17aff430b9310499a72c0fbed79197569b577506d894f",
+    "storage/myisam/mi_check.cc": "2dabf808b03b689907d47b9a551066f03cb2cd9fa4933781733f5a9195449ad0"
+  },
+  "source": "github.com/mysql/mysql-server tag mysql-9.7.4"
+}

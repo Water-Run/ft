@@ -1,0 +1,71 @@
+[admin] CREATE DATABASE demo
+(no result rows)
+
+[admin] USE demo
+(no result rows)
+
+[admin] SET SESSION cte_max_recursion_depth=10000
+(no result rows)
+
+[admin] CREATE TABLE users(id INT NOT NULL PRIMARY KEY, name CHAR(50) CHARACTER SET ascii NOT NULL, age TINYINT UNSIGNED NOT NULL, KEY idx_name(name), KEY idx_age(age)) ENGINE=MyISAM
+(no result rows)
+
+[admin] INSERT INTO users WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i+1 FROM n WHERE i<4096) SELECT i, IF(i=2050,'Alice',CONCAT('User',LPAD(i,5,'0'),'-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), IF(i=2050,42,18+i%63) FROM n
+(no result rows)
+
+[admin] FLUSH TABLES
+(no result rows)
+
+[admin] CREATE TABLE users_innodb ENGINE=InnoDB AS SELECT * FROM users
+(no result rows)
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age=43 WHERE id=2050
+(no result rows)
+
+[Alice] ROLLBACK; SHOW WARNINGS
++---------+------+---------------------------------------------------------------+
+| Level   | Code | Message                                                       |
++---------+------+---------------------------------------------------------------+
+| Warning | 1196 | Some non-transactional changed tables couldn't be rolled back |
++---------+------+---------------------------------------------------------------+
+
+[Alice] SELECT age FROM users WHERE id=2050
++-----+
+| age |
++-----+
+|  43 |
++-----+
+
+[Alice] SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='demo' AND TABLE_NAME='users'
++--------+
+| ENGINE |
++--------+
+| MyISAM |
++--------+
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users_innodb SET age=43 WHERE id=2050
+(no result rows)
+
+[Alice] ROLLBACK; SHOW WARNINGS
+(no result rows)
+
+[Alice] SELECT age FROM users_innodb WHERE id=2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Alice] SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA='demo' AND TABLE_NAME='users_innodb'
++--------+
+| ENGINE |
++--------+
+| InnoDB |
++--------+
+

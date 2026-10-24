@@ -1,0 +1,163 @@
+{
+  "summary": {
+    "after 4096 rows": {
+      "slot_hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
+      "records": 4096,
+      "deleted": 0,
+      "dellink": 18446744073709551615,
+      "myd_bytes": 229376
+    },
+    "Alice age 43": {
+      "slot_hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+      "records": 4096,
+      "deleted": 0,
+      "dellink": 18446744073709551615,
+      "myd_bytes": 229376
+    },
+    "Alice deleted": {
+      "slot_hex": "00ffffffffffff6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+      "records": 4095,
+      "deleted": 1,
+      "dellink": 114744,
+      "myd_bytes": 229376
+    },
+    "Dave inserted": {
+      "slot_hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
+      "records": 4096,
+      "deleted": 0,
+      "dellink": 18446744073709551615,
+      "myd_bytes": 229376
+    }
+  },
+  "steps": [
+    {
+      "step": "after 4096 rows",
+      "myd_bytes": 229376,
+      "myi_bytes": 297984,
+      "state": {
+        "records": 4096,
+        "del": 0,
+        "dellink": 18446744073709551615,
+        "data_file_length": 229376
+      },
+      "slot_114744": {
+        "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
+        "flag_byte": 255
+      },
+      "name_entries": 4096,
+      "age_entries": 4096,
+      "alice_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 20,
+        "hit_slot": 0,
+        "rowref": 2049
+      },
+      "dave_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 20,
+        "miss": true
+      }
+    },
+    {
+      "step": "Alice age 43",
+      "myd_bytes": 229376,
+      "myi_bytes": 297984,
+      "state": {
+        "records": 4096,
+        "del": 0,
+        "dellink": 18446744073709551615,
+        "data_file_length": 229376
+      },
+      "slot_114744": {
+        "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+        "flag_byte": 255
+      },
+      "name_entries": 4096,
+      "age_entries": 4096,
+      "alice_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 20,
+        "hit_slot": 0,
+        "rowref": 2049
+      },
+      "dave_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 20,
+        "miss": true
+      }
+    },
+    {
+      "step": "Alice deleted",
+      "myd_bytes": 229376,
+      "myi_bytes": 297984,
+      "state": {
+        "records": 4095,
+        "del": 1,
+        "dellink": 114744,
+        "data_file_length": 229376
+      },
+      "slot_114744": {
+        "hex": "00ffffffffffff6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+        "flag_byte": 0
+      },
+      "name_entries": 4095,
+      "age_entries": 4095,
+      "alice_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 19,
+        "miss": true
+      },
+      "dave_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 19,
+        "miss": true
+      }
+    },
+    {
+      "step": "Dave inserted",
+      "myd_bytes": 229376,
+      "myi_bytes": 297984,
+      "state": {
+        "records": 4096,
+        "del": 0,
+        "dellink": 18446744073709551615,
+        "data_file_length": 229376
+      },
+      "slot_114744": {
+        "hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
+        "flag_byte": 255
+      },
+      "name_entries": 4096,
+      "age_entries": 4096,
+      "alice_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 20,
+        "miss": true
+      },
+      "dave_in_name_index": {
+        "block": 43,
+        "kind": "leaf",
+        "entries": 20,
+        "hit_slot": 0,
+        "rowref": 2049
+      }
+    }
+  ],
+  "sql_after": [
+    {
+      "id": "4097",
+      "name": "Dave",
+      "age": "30"
+    }
+  ],
+  "limits": [
+    "Fixed-row table, concurrent_insert=AUTO; one deleted row is reused by the next insert."
+  ]
+}
