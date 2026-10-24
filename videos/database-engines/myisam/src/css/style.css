@@ -1,38 +1,95 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统：D1「mysql> 终端」（WaterRun 2026-10-24 选定）。结构性样式在 base.css。
+   取自讲解对象（F16）：MySQL 5.x 命令行客户端的样子（黑底、等宽字、ASCII 表格边框、提示符），
+   MySQL 标志的橙 #F29111 作焦点，标志的蓝绿 #00758F 提亮成 #3fb4cc 作次要（黑底上要读得清）。
+   平涂：不用阴影、渐变、模糊、圆角与半透明叠色。
+   颜色的含义全片不换（F20）：橙 = 正在讲的那一个（焦点、alice、光标）；蓝绿 = 结构与指针；
+   红 = 删除、出错；灰 = 不在讲的、残留的字节；绿 = 年龄字段（只在字节图里区分字段）。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --bg: #0b0b0c;
+  --pane: #111214;            /* 终端窗、页、文件块的底 */
+  --line: #2c2e31;            /* 框线 */
+  --ink: #d9d9d9;
+  --hi: #f4f4f4;
+  --dim: #8a8a8a;
+  --faint: #4a4a4a;           /* 只用于线条 */
+  --mute: #808080;            /* 次要文字的最暗一级（黑底上对比度 4.7） */
+  --orange: #F29111;
+  --orange-d: #a85f05;
+  --teal: #3fb4cc;
+  --teal-m: #2b606c;
+  --teal-d: #173a42;
+  --green: #a6d36b;
+  --red: #e5534b;
+  --M: 120px;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+body { font-family: "Sans SC", sans-serif; color: var(--ink); }
+/* font 简写会把连字设置重置回去：等宽字里的 -> 会被连成箭头。全局关掉 */
+* { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+#bg { background: var(--bg); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
+.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
+/* 字号阶梯：1080p 下正文 38px 起，注解不小于 26px */
+.d-1 { font-weight: 900; font-size: 150px; line-height: 1.04; letter-spacing: -.02em; color: var(--hi); }
+.d-2 { font-weight: 800; font-size: 72px; line-height: 1.1; color: var(--hi); }
+.t-big { font-weight: 700; font-size: 52px; line-height: 1.25; color: var(--hi); }
 .t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
 .t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
-.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 终端窗：一条标题栏 + 内容区；整行输出瞬间出现，只有敲的命令用打字机 */
+.term { position: absolute; background: var(--pane); border: 2px solid var(--line); overflow: hidden; }
+.term .bar { height: 46px; border-bottom: 2px solid var(--line); display: flex; align-items: center; padding: 0 20px; gap: 18px; font: 500 24px "Mono"; color: var(--dim); }
+.term .bar b { font-weight: 500; color: var(--ink); }
+.term .body { position: absolute; left: 26px; top: 66px; right: 26px; }
+.tl { font: 500 30px/1.42 "Mono"; white-space: pre; color: var(--ink); height: 43px; }
+.tl .p { color: var(--orange); }
+.tl .k { color: var(--teal); }
+
+/* 字节格：一格一个字节 */
+.hx { position: absolute; }
+.hx .row { position: absolute; left: 0; height: 52px; }
+.hx .off { position: absolute; font: 500 26px/52px "Mono"; color: var(--mute); }
+.hx .b { position: absolute; top: 0; width: 48px; height: 52px; font: 500 30px/52px "Mono"; text-align: center; }   /* 字色只由字段类给 */
+.hx .dec { position: absolute; font: 500 30px/52px "Mono"; color: var(--dim); white-space: pre; }
+.f-flag { color: #b4b4b4; } .f-id { color: var(--teal); } .f-name { color: var(--ink); } .f-pad { color: var(--mute); } .f-age { color: var(--green); }
+.f-del { color: var(--bg); background: var(--red); } .f-ptr { color: var(--red); } .f-ghost { color: var(--mute); text-decoration: line-through; }
+.f-hot { color: var(--bg); background: var(--orange); }
+.f-new { color: var(--orange); }
+
+/* 方框、刻度与标签 */
+.ring { position: absolute; border: 3px solid var(--orange); }
+.ring.t { border-color: var(--teal); } .ring.r { border-color: var(--red); } .ring.d { border-color: var(--faint); }
+.brk { position: absolute; border: 2px solid var(--faint); border-top: 0; height: 14px; }
+.tag { position: absolute; font: 500 26px "Mono"; color: var(--dim); white-space: pre; }
+.lab { position: absolute; font: 500 30px "Sans SC"; color: var(--dim); white-space: pre; }
+.blk { position: absolute; background: var(--pane); border: 2px solid var(--line); }
+
+/* 常驻：顶栏。左边是会话，右边是这张表的三个文件，当前讲到的文件用橙色标出 */
+.topband { position: absolute; left: 0; right: 0; top: 0; height: 96px; background: var(--bg); border-bottom: 2px solid var(--line); }
+.filebar { position: absolute; left: var(--M); right: var(--M); top: 30px; height: 40px; display: flex; align-items: center; font: 500 24px "Mono"; color: var(--mute); }
+.filebar .sess { flex: 1; }
+.filebar .sess b { color: var(--orange); font-weight: 500; }
+.filebar .fl { margin-left: 34px; padding-bottom: 4px; border-bottom: 3px solid transparent; }
+.filebar .fl.on { color: var(--orange); border-bottom-color: var(--orange); }
+
+/* 章节卡：整屏黑底，像在终端里敲出一行注释 */
+.chapter { position: absolute; inset: 0; background: var(--bg); padding: 330px var(--M) 0; }
+.chapter .no { font: 500 40px "Mono"; color: var(--dim); }
+.chapter .no b { color: var(--orange); font-weight: 500; }
+.chapter .ti { font-weight: 900; font-size: 132px; line-height: 1.1; margin-top: 26px; color: var(--hi); letter-spacing: -.01em; }
+.chapter .cur { display: inline-block; width: .5em; height: .9em; margin-left: .12em; vertical-align: -.06em; background: var(--orange); }
 
 /* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
+/* 字幕在底部一条实心带上（和顶栏一样）：镜头推近时画面从它下面过去，字幕始终读得清 */
+#caption { bottom: 0; height: 112px; z-index: 50; background: var(--bg); border-top: 2px solid var(--line); }
 #caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption em { font-style: normal; font-weight: 700; color: var(--orange); }
 
 /* 片尾名单 */
-.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
+.credits { white-space: normal; width: 1560px; columns: 2; column-gap: 120px; }
 .credit-row { break-inside: avoid; margin-bottom: 30px; }
+.credit-row .t-note { font-family: "Mono", "Sans SC"; }
+
+/* 颜色工具类放在最后，压过各部件自带的字色 */
+.c-o { color: var(--orange); } .c-t { color: var(--teal); } .c-d { color: var(--dim); } .c-f { color: var(--mute); }
+.c-r { color: var(--red); } .c-g { color: var(--green); } .c-h { color: var(--hi); }

@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
-  "stage": "voice",
-  "next": "合成全片配音（温润男声）；配乐按「再平淡一点，契合画面」重做 3 个调调；D1 终端风格的场景",
+  "stage": "build",
+  "next": "渲染成片并验收；ASR 三处候选待回听",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -52,7 +52,7 @@
   },
   "audio": {
     "music": "tools/music.py",
-    "music_db": -20,
+    "music_db": -16,
     "duck_db": 8,
     "sfx_db": -8,
     "energy": {
