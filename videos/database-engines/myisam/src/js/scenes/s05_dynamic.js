@@ -32,7 +32,7 @@ scene('s5', ({ root, s, c0 }) => {
   const segs = [[0, 20, "'hello'"], [20, 64, "'MyISAM stores rows in a .MYD file'"], [64, 84, "'short'"]].map(([a, b, t_], k) => {
     const lb = h('div', 'abs mono', world, `${b - a} B`); px(lb, X + a * CW, Y - 44); css(lb, { fontSize: '26px', color: '#8a8a8a' });
     const br = h('div', 'abs', world); px(br, X + a * CW, Y - 10, (b - a) * CW - 3, 6); css(br, { background: k === 1 ? '#1f4a54' : '#2b606c' });
-    appear(lb, T('e1', '长度') + 0.3 + k * 0.15); appear(br, T('e1', '长度') + 0.3 + k * 0.15);
+    appear(lb, T('e1', '长度') - 0.1 + k * 0.12); appear(br, T('e1', '长度') - 0.1 + k * 0.12);
     return [lb, br];
   });
   const dyn = h('div', 'abs mono', world, 'Row_format: <span class="c-o">Dynamic</span>'); px(dyn, X + 900, 200); css(dyn, { fontSize: '30px', color: '#8a8a8a' });
@@ -57,7 +57,7 @@ scene('s5', ({ root, s, c0 }) => {
   const lFix = h('div', 'abs mono', cmp, '定长：每行 205 字节，3 行 615'); px(lFix, 1250, 0); css(lFix, { fontSize: '28px', color: '#8a8a8a' });
   const lDyn = h('div', 'abs mono', cmp, '动态：84'); px(lDyn, 188, 70); css(lDyn, { fontSize: '28px', color: '#3fb4cc' });
   css(lFix, { left: '0px', top: '-40px' });
-  wipe(bFix, T('e4') - 0.4, { dir: 'l', d: 0.6 }); appear(lFix, T('e4') - 0.3);
+  wipe(bFix, T('e4') - 0.2, { dir: 'l', d: 0.6 }); appear(lFix, T('e4') - 0.2);
   wipe(bDyn, T('e4', '省下') + 0.1, { dir: 'l', d: 0.3 }); appear(lDyn, T('e4', '省下') + 0.2); sfx('tick', T('e4', '省下'), { g: 0.5 });
   hide(cmp, T('e5') - 0.1, { y: 0, d: 0.2 });
 
@@ -69,7 +69,7 @@ scene('s5', ({ root, s, c0 }) => {
   // 想要的长度（56 字节）比原块（20 字节）长：红色的一截压到了第 2 行上
   const over = h('div', 'abs', world); px(over, X, Y - 4, 56 * CW, 52); css(over, { border: '3px solid #e5534b' });
   const overL = tag(world, X + 20 * CW + 10, Y + 58, '56 B > 20 B', 'c-r');
-  wipe(over, T('e5', '改长') - 0.1, { dir: 'l', d: 0.5 }); appear(overL, T('e5', '改长') + 0.3); sfx('error', T('e5', '放不下'), { g: 0.6 });
+  wipe(over, T('e5', '改长') - 0.1, { dir: 'l', d: 0.5 }); appear(overL, T('e5', '放不下') - 0.15); sfx('error', T('e5', '放不下'), { g: 0.6 });
   hide([over, overL], T('e6', '别处') - 0.2, { y: 0, d: 0.2 }); hide(bar, T('e6', '指针') , { y: 0, d: 0.3 });
   // 写到别处：原块里留 7 字节 + 指向 0x54 的指针；其余 49 字节追加到末尾（块头 07 00 31）
   const tS = T('e6', '别处') - 0.2;
@@ -81,7 +81,7 @@ scene('s5', ({ root, s, c0 }) => {
   appear(tailL, tS + 0.4);
   const ptr = path(ov, `M ${X + 9 * CW} ${Y + 50} C ${X + 9 * CW} ${Y + 170}, ${X + 86 * CW} ${Y + 170}, ${X + 86 * CW} ${Y + 52}`, 'red', { w: 3 });
   arrowIn(ptr, T('e6', '指针') - 0.1, 0.8); sfx('pop', T('e6', '连起来'), { g: 0.5 });
-  const ptrL = tag(world, X + 30 * CW, Y + 150, '8 字节的指针 → 0x54', 'c-r'); appear(ptrL, T('e6', '指针') + 0.4);
+  const ptrL = tag(world, X + 30 * CW, Y + 150, '8 字节的指针 → 0x54', 'c-r'); appear(ptrL, T('e6', '指针') + 0.1);
   const twoL = lab(world, X + 30 * CW, Y + 200, '7 B + 49 B', 'c-o'); appear(twoL, T('e7') - 0.2); sfx('chime', T('e7', '两段'), { g: 0.4 });
 
   // 示意：更新越多，碎片越多；OPTIMIZE TABLE 把它们排回连续

@@ -1,4 +1,4 @@
-// 07 一次查询的全过程。主画面：在十万行的 users_big 里按主键找 4242。每读一页，就有一块从底下的 .MYI 文件飞上来：
+// 07 一次查询的全过程。主画面：在十万行的 users_big 里按主键找 4242，三页连成一条往下走的路径。每读一页，索引文件条上标出它的位置，一个小方块升上去，这一页亮起：
 // 根页 @175104（页内二分 9 → 4 → 2 → 1 → 0）→ 中间页 @3072 → 叶子页 @95232 → 行号 4241 → 4241 × 16 = 67856 →
 // 从 .MYD 读出 16 个字节，解码，交还上层。读过的三页留在键缓存里，再查一次就不用读磁盘。全部取自 snap_05（FACTS「07」）。
 scene('s7', ({ root, s, c0 }) => {
@@ -16,7 +16,7 @@ scene('s7', ({ root, s, c0 }) => {
   slide(call, T('g3', '接口') - 0.2, { x: -24, d: 0.4 }); sfx('pop', T('g3', '接口'), { g: 0.5 });
   // 调用往下走：从接口落到底下的索引文件
   const go = h('div', 'abs', world); css(go, { background: '#F29111', width: '18px', height: '18px' });
-  fromTo(go, T('g3', '按索引') - 0.2, { left: 1391, top: 214, autoAlpha: 1 }, { left: 1391, top: 846, duration: Tend('g3') + 0.4 - T('g3', '按索引'), ease: 'power1.inOut' });
+  fromTo(go, T('g3', '按索引') - 0.2, { left: 1391, top: 214, autoAlpha: 1 }, { left: 130, top: 852, duration: Tend('g3') + 0.4 - T('g3', '按索引'), ease: 'power1.inOut' });   // 落到索引文件（左边那条）的文件头
   vanish(go, 0); appear(go, T('g3', '按索引') - 0.2); vanish(go, Tend('g3') + 0.25);
 
   // 底下：两个文件
@@ -39,15 +39,19 @@ scene('s7', ({ root, s, c0 }) => {
     if (P.more) { const e = h('div', 'abs mono', box, '…'); px(e, KX - 120 + 11 * CW + 4, 18); css(e, { fontSize: '26px', lineHeight: '58px', color: '#808080' }); cells.push(e); }
     return { box, cells, P };
   });
-  // 一次读页：从 .MYI 的对应位置飞上来一块，落成这一页
+  // 一次读页：索引文件条上先标出这一页在文件里的位置，一个小方块从那里升到这一页，这一页亮起（读到之前是暗的）
   const flyFrom = (pos) => 120 + pos / B.keyFileLength * 760;
-  const readPage = (i, t, quiet) => {
-    const P = pg[i].P, blk = h('div', 'abs', world); css(blk, { background: '#F29111' });
-    fromTo(blk, t, { left: flyFrom(P.at), top: 860, width: 14, height: 44, autoAlpha: 1 }, { left: 120, top: P.y, width: 1700, height: 96, duration: 0.55, ease: 'power3.inOut' });
-    vanish(blk, 0); appear(blk, t); vanish(blk, t + 0.56);
-    classAt(pg[i].box, 'dimmed', 0, t + 0.55); classAt(pg[i].box, 'lit', t + 0.55, t + 1.6);   // 读到之前这一页是暗的；读进来时亮起
-    if (!quiet) { sfx('drive', t, { g: 0.55 }); sfx('thud', t + 0.55, { g: 0.4 }); }
+  const readPage = (i, t) => {
+    const P = pg[i].P, x0 = flyFrom(P.at);
+    const tick = h('div', 'abs', world); px(tick, x0 - 3, 850, 6, 64); css(tick, { background: '#F29111' }); vanish(tick, 0); appear(tick, t - 0.15);
+    const sq = h('div', 'abs', world); css(sq, { background: '#F29111', width: '36px', height: '36px' });
+    fromTo(sq, t, { left: x0 - 18, top: 864 }, { left: 132, top: P.y + 30, duration: 0.6, ease: 'power2.inOut', immediateRender: false });
+    vanish(sq, 0); appear(sq, t); vanish(sq, t + 0.62);
+    classAt(pg[i].box, 'dimmed', 0, t + 0.6); classAt(pg[i].box, 'lit', t + 0.6, t + 1.8);
+    sfx('drive', t, { g: 0.45 }); sfx('thud', t + 0.6, { g: 0.4 });
   };
+  // 页与页之间的指针：从这一页选中的位置指向下一页
+  const ptr = (x, y0, y1, t) => { const p = path(ov, `M ${x} ${y0} L ${x} ${y1}`, 'orange', { w: 3 }); arrowIn(p, t, 0.3); return p; };
   // 文件头给出根页的位置
   const hdr = h('div', 'abs mono', world, `文件头 key_root[0] = <span class="c-o">${B.root.pos}</span>`); px(hdr, 120, 800); css(hdr, { fontSize: '28px', color: '#8a8a8a' });
   appear(hdr, T('g4', '文件头') - 0.1); sfx('tick', T('g4', '文件头'), { g: 0.5 });
@@ -62,27 +66,31 @@ scene('s7', ({ root, s, c0 }) => {
   F((t) => { const k = Math.min(order.length - 1, Math.max(0, Math.floor((t - tB0) / ((tB1 - tB0) / order.length)))); probe.style.left = (120 + KX - 120 + order[k] * CW - 6) + 'px'; probe.style.top = (290 + 15) + 'px'; });
   order.forEach((ix, j) => sfx('tick', tB0 + j * (tB1 - tB0) / order.length, { g: 0.4 }));
   classAt(pg[0].cells[0], 'c-o', tB1);
-  const why = tag(world, 120 + KX - 120, 290 + 102, '4242 < 4692：走第一个子页', 'c-o'); appear(why, tB1 - 0.1);
+  const why = tag(world, 120 + KX - 120 + 24, 290 + 104, '4242 < 4692：走第一个子页', 'c-o'); appear(why, tB1 - 0.1);
+  const p1 = ptr(KX - 10, 290 + 98, 424 - 6, tB1 + 0.1);   // 根页 → 中间页（4692 左边的那个子页）
   vanish(probe, T('g6') - 0.1);
   // 再向下两层
   const tMid = T('g6', '两层') - 0.3;
   readPage(1, tMid);
   classAt(pg[1].cells[5], 'c-o', tMid + 0.7); classAt(pg[1].cells[6], 'c-o', tMid + 0.7);
-  const why2 = tag(world, 120 + KX - 120 + 5 * CW, 424 + 102, '4182 ≤ 4242 < 4284', 'c-o'); appear(why2, tMid + 0.8); vanish(why, tMid);
+  const why2 = tag(world, KX + 6 * CW + 14, 424 + 104, '4182 ≤ 4242 < 4284', 'c-o'); appear(why2, tMid + 0.8); vanish(why, tMid);
+  const p2 = ptr(KX + 6 * CW - 10, 424 + 98, 558 - 6, tMid + 0.9);   // 中间页 → 叶子页（4182 与 4284 之间的那个子页）
   const tLf = T('g6', '叶子') - 0.2;
   readPage(2, tLf);
   vanish(why2, T('g7') - 0.2);
   const hit = ring(world, { x: 120 + KX - 120 + 5 * CW - 6, y: 558 + 15, w: CW + 2, h: 66 });
   vanish(hit, 0); appear(hit, T('g6', '4242') - 0.1); classAt(pg[2].cells[5], 'c-o', T('g6', '4242') - 0.1); sfx('chime', T('g6', '4242'), { g: 0.4 });
   // 叶子项：键 4242，旁边记着行号 4241
-  const leafE = h('div', 'abs mono', world, '<span class="c-t">00 00 10 92</span>  <span class="c-o">00 00 00 00 10 91</span>   →  键 4242，行号 <span class="c-o">4241</span>'); px(leafE, 120 + KX - 120, 672); css(leafE, { fontSize: '30px', color: '#d9d9d9' });
+  const leafE = h('div', 'abs mono', world, '<span class="c-t">00 00 10 92</span>  <span class="c-o">00 00 00 00 10 91</span>  →  行号 <span class="c-o">4241</span>'); px(leafE, 140, 672); css(leafE, { fontSize: '30px', color: '#d9d9d9' });
   slide(leafE, T('g7', '行号') - 0.4, { y: -16, d: 0.4 }); sfx('pop', T('g7', '行号'), { g: 0.5 });
   // 行号 × 16 → 数据文件里的偏移 67856
-  const offE = h('div', 'abs mono', world, `4241 × 16 = <span class="c-o">${B.rowOffset}</span>`); px(offE, 980, 800); css(offE, { fontSize: '30px', color: '#d9d9d9' });
+  const offE = h('div', 'abs mono', world, `4241 × 16 = <span class="c-o">${B.rowOffset}</span>`); px(offE, 1150, 790); css(offE, { fontSize: '30px', color: '#d9d9d9' });
   appear(offE, T('g8', '乘以') - 0.2);
   const mx = 980 + B.rowOffset / B.dataFileLength * 840;
   const mark = h('div', 'abs', world); px(mark, mx - 2, 846, 5, 72); css(mark, { background: '#F29111' });
   appear(mark, T('g8', '偏移') - 0.2); sfx('tick', T('g8', '偏移'), { g: 0.5 });
+  // 叶子页的 4242 → 数据文件里的那一行
+  const p3 = path(ov, `M ${KX + 5 * CW + 49} ${558 + 80} C ${KX + 5 * CW + 49} ${740}, ${mx} ${760}, ${mx} ${846}`, 'orange', { w: 3 }); arrowIn(p3, T('g8', '偏移') - 0.3, 0.45);
   // 读出 16 个字节，按列解码
   const rb = B.row4242.match(/../g);
   const rowEl = h('div', 'abs', world); px(rowEl, 120, 736, 1700, 60);
@@ -93,7 +101,7 @@ scene('s7', ({ root, s, c0 }) => {
   fromTo(blk, tR, { left: mx - 7, top: 860, width: 14, height: 44 }, { left: 120, top: 736, width: 16 * 54, height: 60, duration: 0.5, ease: 'power3.inOut' });
   vanish(blk, 0); appear(blk, tR); vanish(blk, tR + 0.51); sfx('drive', tR, { g: 0.5 });
   vanish(rowEl, 0); appear(rowEl, tR + 0.5); vanish(dec, 0); appear(dec, T('g9', '解码') - 0.1);
-  hide(leafE, tR - 0.2, { y: 0, d: 0.2 });
+  hide(leafE, tR - 0.2, { y: 0, d: 0.2 }); tl.to([p1, p2, p3], { autoAlpha: 0, duration: 0.25 }, tR - 0.2);
   // 交还上层
   const back = h('div', 'abs mono', world, '4242 · u592299 · 60'); css(back, { fontSize: '30px', color: '#0b0b0c', background: '#F29111', padding: '4px 12px' });
   const tUp = T('g9', '交还') - 0.2;

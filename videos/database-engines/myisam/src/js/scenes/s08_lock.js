@@ -49,7 +49,9 @@ scene('s8', ({ root, s, c0 }) => {
   const LANES = [['bob', 'SELECT · 统计整张表'], ['dave', 'SELECT'], ['carol', 'UPDATE · 改 alice 的年龄'], ['alice', 'SELECT']];
   const BARS = [[0, 0.2, 5.4, 'r'], [1, 0.9, 2.9, 'r'], [2, 2.4, 5.4, 'q'], [2, 5.4, 7.4, 'w'], [3, 6.0, 7.4, 'q'], [3, 7.4, 8.8, 'r']];
   // 播放头从 bob 开始统计整张表时就在走：讲到读锁共享时，dave 也读进来
-  const pos1 = seg([[T('k1'), 0], [T('k3') - 0.2, 0.9], [Tend('k3') + 0.3, 2.3], [T('k4', '写锁') - 0.1, 2.3], [Tend('k4') + 0.2, 9.2]]);
+  // 播放头对准旁白（WaterRun：「写锁是独占的 说的是否写还很远」）：讲读锁共享时 dave 跟着读、carol 开始排队；
+  // 讲到「写锁」的那一刻 bob 正好读完、carol 开始写；「一个连接在写」时写锁条在长；「其他连接都要等待」时 alice 在排队
+  const pos1 = seg([[T('k1'), 0], [T('k3') - 0.2, 0.9], [T('k4', '写锁') - 0.1, 5.4], [T('k4', '在写') + 0.2, 7.0], [T('k4', '等待') + 0.2, 7.6], [Tend('k4') + 0.6, 9.2]]);
   const G1 = gantt(140, 280, LANES, BARS, pos1, { reveal: [T('k1') - 0.2, 0.55] });
   vanish(G1.g, 0); appear(G1.g, c0 + 0.2); sfx('tick', c0 + 0.2, { g: 0.4 });   // 四条泳道一开场就在，播放头从 k1 起走
   // 「整张表一把锁」：一个框把四条泳道整个圈住
@@ -57,7 +59,7 @@ scene('s8', ({ root, s, c0 }) => {
   vanish(all, 0); appear(all, T('k2', '加锁') - 0.1); vanish(all, T('k3') - 0.1); sfx('thud', T('k2', '加锁'), { g: 0.5 });
   const axis = tag(world, G1.GX + 10 * G1.UNIT - 120, 230, '时间 →'); appear(axis, T('k1'));
   const legend = h('div', 'abs', world); px(legend, 140, 720); legend.innerHTML = '<span class="mono" style="font-size:28px;color:#3fb4cc">■ 读 · 共享</span>　　<span class="mono" style="font-size:28px;color:#F29111">■ 写 · 独占</span>　　<span class="mono" style="font-size:28px;color:#808080">■ 排队</span>';
-  appear(legend, T('k3', '读锁') - 0.2);
+  appear(legend, T('k1') + 2.0);   // 图例随泳道一起在场，不在讲解中途弹出
   sfx('blip', T('k3', '共享'), { g: 0.4 }); sfx('error', T('k4', '等待') - 0.4, { g: 0.4 }); sfx('pop', T('k4', '一个连接'), { g: 0.4 });
   // bob 正在统计整张表；carol 只能等 bob 读完
   const ringB = ring(world, { x: G1.GX + 0.2 * G1.UNIT - 6, y: 280 + 22, w: 5.2 * G1.UNIT + 8, h: 58 }, 't');
@@ -86,12 +88,12 @@ scene('s8', ({ root, s, c0 }) => {
   const curL = tag(world, SX, SY + 96, 'SELECT 读到末尾为止', 'c-t'), insL = tag(world, endX + 20, SY + 96, 'INSERT 追加在后面', 'c-o');
   const tCI = T('k5') - 0.3;
   strip.slice(0, 12).forEach((e, i) => slide(e, T('k5') - 0.1 + i * 0.3, { y: -40, d: 0.35 })); sfx('drive', T('k5') - 0.1, { g: 0.5 });   // 文件一行一行落下来
-  slide(cond, T('k6') - 0.1, { x: -24, d: 0.4 }); appear(endM, T('k6') + 0.3); appear(endL, T('k6') + 0.4);   // 查询开始时的文件末尾：查询一开始就定下来
+  slide(cond, T('k6') - 0.1, { x: -24, d: 0.4 }); appear(endM, T('k6', '末尾') - 0.15); appear(endL, T('k6', '末尾') - 0.1);
   slam(ciT, T('k7', '并发') - 0.1, { from: 1.25 }); sfx('thud', T('k7', '并发'), { g: 0.55 });
   const tR0 = T('k6') + 0.8, tR1 = Tend('k7') + 0.4;   // 查询在 k6 开头就开始读，读到它开始时的末尾为止
   vanish(cur, 0); appear(cur, tR0); appear(curL, tR0);
   // 有空位时又来一次查询：读游标重新从头读；读完之后，排队的新行才填进空位
-  const tQ0 = T('k7b') + 0.2, tFill = Math.min(Tend('k7b') + 0.8, T('k8') - 0.8);
+  const tQ0 = T('k7b') + 0.2, tFill = Math.min(Tend('k7b') + 1.9, T('k8') - 0.8);
   // 查询读过的那一段：一条淡色带跟着读游标往前长
   const readBand = h('div', 'abs', world); px(readBand, SX - 8, SY - 10, 0, 90); css(readBand, { background: '#3fb4cc', opacity: '0.2' });
   F((t) => { const k = t < tQ0 ? ease.io3(clamp((t - tR0) / (tR1 - tR0))) : clamp((t - tQ0) / (tFill - 0.2 - tQ0)); cur.style.left = (SX - 6 + k * 11 * CW) + 'px'; readBand.style.width = (t < tR0 ? 0 : k * 11 * CW + CW + 4) + 'px'; });
@@ -108,7 +110,7 @@ scene('s8', ({ root, s, c0 }) => {
   const toHole = path(ov, `M ${SX + 4 * CW + 29} ${SY - 96} L ${SX + 4 * CW + 29} ${SY - 8}`, 'red', { w: 3, dashed: '8 8' });
   arrowIn(toHole, T('k7b', '填空位') - 0.2, 0.4);
   const wait = h('div', 'abs mono', world, '░░░ 等查询读完'); px(wait, SX + 4 * CW + 80, SY - 160); css(wait, { fontSize: '30px', color: '#808080' });
-  appear(wait, T('k7b', '填空位') + 0.4); sfx('tick', T('k7b', '填空位') + 0.4, { g: 0.5 });
+  appear(wait, T('k7b', '排队') - 0.15); sfx('tick', T('k7b', '排队') - 0.15, { g: 0.5 });
   fromTo(newR, tFill, { y: 0 }, { y: 170, duration: 0.4, ease: 'power3.in', immediateRender: false }); vanish(wait, tFill); tl.to(toHole, { autoAlpha: 0, duration: 0.2 }, tFill);
   sfx('pop', tFill + 0.4, { g: 0.45 });
   [insL, curL].forEach((e) => vanish(e, tH));
@@ -116,12 +118,20 @@ scene('s8', ({ root, s, c0 }) => {
   // ── 第三站：读多写少，开销很小；写入一多，整张表成了瓶颈 ──
   const RX = 4140;
   const rl = [['连接 1', ''], ['连接 2', ''], ['连接 3', ''], ['连接 4', '']];
-  const rb = []; for (let l = 0; l < 4; l++) for (let j = 0; j < 4; j++) { const a = 0.15 + j * 2.4 + l * 0.3; rb.push([l, a, Math.min(a + 2.1, 9.8), 'r']); }
+  // 读多写少：读锁大量重叠；中间只有连接 3 写了一次，写的那一小段别人短暂排队（WaterRun：「读多写少 读少写多 动画变成只有读和只有写」）
+  const rb = [[0, 0.2, 2.2, 'r'], [0, 2.6, 4.6, 'r'], [0, 5.6, 7.6, 'r'], [0, 8.0, 9.8, 'r'],
+    [1, 0.5, 2.5, 'r'], [1, 2.9, 4.7, 'r'], [1, 5.6, 7.9, 'r'], [1, 8.3, 9.8, 'r'],
+    [2, 0.8, 2.8, 'r'], [2, 4.3, 4.7, 'q'], [2, 4.7, 5.4, 'w'], [2, 5.7, 7.7, 'r'], [2, 8.1, 9.8, 'r'],
+    [3, 1.1, 3.1, 'r'], [3, 3.3, 4.6, 'r'], [3, 5.0, 5.4, 'q'], [3, 5.4, 7.4, 'r'], [3, 7.8, 9.8, 'r']];
   const G2 = gantt(RX, 200, rl, rb, seg([[T('k8') - 0.3, 0], [Tend('k8') + 0.3, 9.9]]), { labW: 220, lh: 84 });
   vanish(G2.g, 0); appear(G2.g, T('k8') - 0.4);
   sfx('chime', T('k8', '很小'), { g: 0.35 });
   const wl = [['连接 1', ''], ['连接 2', ''], ['连接 3', ''], ['连接 4', '']];
-  const wb = [[0, 0.2, 1.8, 'w'], [1, 0.4, 1.8, 'q'], [1, 1.8, 3.4, 'w'], [2, 0.7, 3.4, 'q'], [2, 3.4, 5.0, 'w'], [3, 1.0, 5.0, 'q'], [3, 5.0, 6.6, 'w'], [0, 2.4, 6.6, 'q'], [0, 6.6, 8.2, 'w'], [1, 4.0, 8.2, 'q'], [1, 8.2, 9.8, 'w']];
+  // 写多：写锁一个接一个串行；连接 4 只是读，也得在写锁之间排队
+  const wb = [[0, 0.2, 1.6, 'w'], [0, 2.4, 5.0, 'q'], [0, 5.0, 6.4, 'w'],
+    [1, 0.4, 1.6, 'q'], [1, 1.6, 3.0, 'w'], [1, 4.0, 7.0, 'q'], [1, 7.0, 8.4, 'w'],
+    [2, 0.7, 3.6, 'q'], [2, 3.6, 5.0, 'w'], [2, 6.0, 8.4, 'q'], [2, 8.4, 9.8, 'w'],
+    [3, 1.0, 3.0, 'q'], [3, 3.0, 3.6, 'r'], [3, 4.2, 6.4, 'q'], [3, 6.4, 7.0, 'r'], [3, 8.0, 9.8, 'q']];
   const G3 = gantt(RX, 660, wl, wb, seg([[T('k9') - 0.3, 0], [Tend('k9') + 0.6, 9.9]]), { labW: 220, lh: 70 });
   vanish(G3.g, 0); appear(G3.g, T('k9') - 0.4);
   sfx('error', T('k9', '瓶颈'), { g: 0.45 });

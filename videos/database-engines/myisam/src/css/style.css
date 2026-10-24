@@ -71,6 +71,8 @@ path.thick { stroke-width: 5px; }
 .lit-cell { outline: 3px solid var(--orange); outline-offset: 3px; }
 .struck { text-decoration: line-through; color: var(--red); }
 .hot-cell { background: var(--orange) !important; }
+.lane-on { color: var(--orange) !important; }   /* 盖过行内的灰色字 */
+.tok-dim { color: #808080 !important; border-color: #4a4a4a !important; }
 .hole { background: transparent !important; outline: 3px solid var(--red); outline-offset: -3px; }
 
 /* 常驻：顶栏。左边是会话，右边是这张表的三个文件，当前讲到的文件用橙色标出 */

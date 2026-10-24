@@ -82,7 +82,7 @@ function lab(parent, x, y, html, cls = '') { const e = h('div', 'lab ' + cls, pa
 // 年份与版本只取 FACTS「时间轴的年份」。返回各部件，由场景决定什么时候长出来。
 // const T_ = timeline(父, x, y, w)；T_.yx(年) 给出某年在父元素里的 x
 const MYSQL_VERSIONS = [['3.23', 2001], ['4.0', 2003], ['4.1', 2004], ['5.0', 2005], ['5.1', 2008], ['5.5', 2010], ['5.6', 2013], ['5.7', 2015], ['8.0', 2018], ['9.7.4', 2026]];
-function timeline(parent, x, y, w) {
+function timeline(parent, x, y, w, labels = ['3.23', '5.5']) {
   const Y0 = 1999, Y1 = 2027, yx = (yr) => x + (yr - Y0) / (Y1 - Y0) * w;
   const axis = h('div', 'abs', parent); px(axis, x, y, w, 3); css(axis, { background: '#4a4a4a' });
   const years = [], vers = [];
@@ -92,11 +92,10 @@ function timeline(parent, x, y, w) {
     if (lb) { px(lb, yx(yr) - 40, y + 22); css(lb, { width: '80px', textAlign: 'center', fontSize: '26px', color: '#808080' }); }
     years.push([k, lb]);
   }
-  let prev = -9, row = 0;
-  for (const [v, yr] of MYSQL_VERSIONS) {
-    row = yr - prev <= 1 && row === 0 ? 1 : 0; prev = yr;   // 相邻一年的版本（4.0 / 4.1 / 5.0）错开两行，免得标签挤在一起
-    const k = h('div', 'abs', parent); px(k, yx(yr) - 1, y - 14 - row * 40, 3, 14 + row * 40); css(k, { background: '#808080' });
-    const lb = h('div', 'abs mono', parent, v); px(lb, yx(yr) - 40, y - 52 - row * 40); css(lb, { width: '80px', textAlign: 'center', fontSize: '28px', color: '#808080' });
+  // 只标旁白讲到的版本（WaterRun 2026-10-24：「信息又过量了」）；其余版本的年份留在 FACTS
+  for (const [v, yr] of MYSQL_VERSIONS.filter(([v]) => labels.includes(v))) {
+    const k = h('div', 'abs', parent); px(k, yx(yr) - 1, y - 16, 3, 16); css(k, { background: '#808080' });
+    const lb = h('div', 'abs mono', parent, `MySQL ${v} · ${yr}`); px(lb, yx(yr) - 150, y - 60); css(lb, { width: '300px', textAlign: 'center', fontSize: '30px', color: '#808080' });
     vers.push({ v, yr, k, lb });
   }
   const ver = (v) => vers.find((e) => e.v === v);

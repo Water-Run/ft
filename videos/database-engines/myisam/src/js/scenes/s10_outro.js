@@ -72,7 +72,6 @@ scene('s10', ({ root, s, c0 }) => {
   const iA = T('n7', 'InnoDB') - 0.3, iB = iA + 2.0;
   appear(TL.inno, iA); fromTo(TL.inno, iA, { width: 0 }, { width: TL.wInno, duration: iB - iA, ease: 'power1.out' });
   fromTo(TL.still, iA + 0.3, { width: 0 }, { width: TL.wStill, duration: iB - iA, ease: 'power1.out' }); appear(TL.stillL, iB - 0.2);
-  TL.vers.forEach(({ yr, lb }) => { if (yr > 2010) classAt(lb, 'c-t', iA + (iB - iA) * (yr - 2010) / 17, Infinity); });
   const sw = ring(world, { x: TL.yx(2010) - 50, y: TL.BY - 10, w: 100, h: TL.BH + 20 }, 't'); vanish(sw, 0); appear(sw, T('n7', '5.5') - 0.1); vanish(sw, T('n8') - 0.1);
   sfx('tick', T('n7', '5.5'), { g: 0.5 }); sfx('thud', T('n7', 'InnoDB'), { g: 0.6 });
   // 行级锁、事务、崩溃恢复：挂在 InnoDB 那一段下面

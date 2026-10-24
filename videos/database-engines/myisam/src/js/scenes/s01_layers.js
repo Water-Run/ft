@@ -34,8 +34,6 @@ scene('s1', ({ root, s, c0 }) => {
   sfx('pop', T('a2', '解析'), { g: 0.45 }); sfx('pop', T('a2', '选择'), { g: 0.45 });
   classAt(lo, 'lit', T('a3') - 0.1, Tend('a4') + 0.4);
   arrowIn(aDown, T('a3', '写进') - 0.1, 0.4); arrowIn(aUp, T('a3', '读出') - 0.1, 0.4);
-  // 数据在引擎与磁盘之间来回：写进去、读出来，磁盘上的格子跟着闪一下
-  F((t) => { const a = T('a3', '写进'), b = Tend('a3') + 0.6; const k = t >= a && t < b ? Math.floor((t - a) / 0.18) % 8 : -1; for (let i = 0; i < 8; i++) disk.children[i].style.opacity = k === i ? '0.45' : '1'; });
   show(engT, T('a4', '存储') - 0.1, { x: -16, d: 0.4 }); sfx('thud', T('a4', '存储'), { g: 0.5 });
 
   // 开场那条查询：一个小令牌，从左边进来，走过解析与执行计划，落到接口
@@ -50,14 +48,28 @@ scene('s1', ({ root, s, c0 }) => {
   calls.forEach((c, i) => { const e = h('div', 'blk mono', band, c); const w = c.length * 18 + 44; px(e, cx, 14, w, 66); css(e, { fontSize: '30px', lineHeight: '62px', textAlign: 'center', color: i < 3 ? '#d9d9d9' : '#808080' }); chips.push(e); cx += w + 22; });
   appear(bandL, c0 + 0.6);
   chips.forEach((e, i) => slide(e, c0 + 0.6 + i * 0.06, { y: 14, d: 0.35 }));
-  chips.forEach((e, i) => classAt(e, 'c-t', T('a5', '接口') - 0.1 + i * 0.08, Tend('a5') + 0.3));   // 讲到「接口」，这一排依次亮一遍
+  // 讲到「接口」：一个框把这一排方法圈起来（不逐个闪）
+  const bandR = ring(world, { x: 290, y: 446, w: cx + 0, h: 82 }, 't'); vanish(bandR, 0); appear(bandR, T('a5', '接口') - 0.1); vanish(bandR, T('a6') - 0.2);
   sfx('tick', T('a5', '接口'), { g: 0.5 });
+  // 三个方法各演一遍自己的动作，方法名只在动作进行时亮着：
+  // 写入一行 → 一行从上层经 write_row() 落到磁盘；读下一行 → 磁盘上读出一行，经 rnd_next() 送回上层；按索引查找 → 那条 SELECT 经 index_read_map() 落到引擎
   const lit = [T('a6', '写入'), T('a6', '读下'), T('a6', '按索引')];
-  lit.forEach((t_, i) => { classAt(chips[i], 'c-o', t_ - 0.1, i < 2 ? lit[i + 1] - 0.1 : Tend('a6') + 0.6); sfx('blip', t_, { g: 0.45 }); });
-  // 令牌：走完上层后，沿 index_read_map 落到下层
+  const chipX = (i) => 300 + chips[i].offsetLeft + chips[i].offsetWidth / 2;
+  const along = (pts) => (t) => { let x = pts[0][1], y = pts[0][2]; if (t >= pts[pts.length - 1][0]) { x = pts[pts.length - 1][1]; y = pts[pts.length - 1][2]; } else for (let i = 1; i < pts.length; i++) if (t < pts[i][0]) { const k = ease.io3(clamp((t - pts[i - 1][0]) / (pts[i][0] - pts[i - 1][0]))); x = lerp(pts[i - 1][1], pts[i][1], k); y = lerp(pts[i - 1][2], pts[i][2], k); break; } return [x, y]; };
+  const rowBlock = (color, pts) => { const e = h('div', 'abs', world); world.insertBefore(e, band); css(e, { width: '120px', height: '24px', background: color }); vanish(e, 0); appear(e, pts[0][0]); vanish(e, pts[pts.length - 1][0] + 0.05);
+    const at = along(pts); F((t) => { const [x, y] = at(t); e.style.left = (x - 60) + 'px'; e.style.top = (y - 12) + 'px'; }); return e; };
+  // 三个词相隔不到一秒：每个动作约 0.6 秒，按词依次进行，互不重叠
+  const tW = lit[0] - 0.12, tR = lit[1] - 0.05;
+  rowBlock('#F29111', [[tW, chipX(0), 330], [tW + 0.2, chipX(0), 488], [tW + 0.4, 720, 712], [tW + 0.6, 480, 894]]);
+  const rdC = ring(world, { x: 416, y: 874, w: 128, h: 40 }, 't'); vanish(rdC, 0); appear(rdC, tR - 0.05); vanish(rdC, tR + 0.35);
+  rowBlock('#3fb4cc', [[tR + 0.05, 480, 894], [tR + 0.25, 720, 712], [tR + 0.45, chipX(1), 488], [tR + 0.65, chipX(1), 330]]);
+  classAt(chips[0], 'c-o', tW, tW + 0.65); classAt(chips[1], 'c-o', tR, tR + 0.7); classAt(chips[2], 'c-o', lit[2] - 0.15, Tend('a6') + 0.6);
+  lit.forEach((t_) => sfx('blip', t_, { g: 0.4 }));
+  // 写、读的示范进行时，那条 SELECT 先暗着等；轮到按索引查找时它才动
+  classAt(tok, 'tok-dim', tW - 0.1, lit[2] - 0.3);
   const bIdx = { x: 300 + chips[2].offsetLeft, w: chips[2].offsetWidth };
-  const tArr = lit[2] + 0.6;
-  path0.push([T('a5', '接口') + 0.4, 1100, 204], [lit[2] - 0.1, bIdx.x + 10, 458], [tArr, 590, 690]);
+  const tArr = lit[2] + 0.7;
+  path0.push([lit[2] - 0.35, 1100, 204], [lit[2] + 0.15, bIdx.x + 10, 546], [tArr, 556, 694]);   // 穿过 index_read_map() 那一格，停在它下方（不盖住方法名），再落进卡带正中
   F((t) => {
     const P = path0; let x = P[0][1], y = P[0][2];
     if (t >= P[P.length - 1][0]) { x = P[P.length - 1][1]; y = P[P.length - 1][2]; }
@@ -65,7 +77,7 @@ scene('s1', ({ root, s, c0 }) => {
     tok.style.left = x + 'px'; tok.style.top = y + 'px';
   });
   show(tok, T('a2') - 0.2, { y: 0, x: -20, d: 0.4 });
-  vanish(tok, tArr + 0.05);
+  tl.to(tok, { autoAlpha: 0, duration: 0.25, ease: 'power1.in' }, tArr - 0.2);   // 落进引擎时淡出
 
   // ── 卡带：引擎可以换 ──
   const names = ['MyISAM', 'InnoDB', 'MEMORY', 'CSV', 'ARCHIVE'];
@@ -73,8 +85,9 @@ scene('s1', ({ root, s, c0 }) => {
   const carts = names.map((n, i) => { const e = h('div', 'blk mono', world, n); px(e, i === 0 ? SLX : SPX, i === 0 ? SLY : SPY + (i - 1) * 74, 380, 76); css(e, { fontSize: '34px', lineHeight: '72px', textAlign: 'center', color: i === 0 ? '#F29111' : '#808080', borderColor: i === 0 ? '#F29111' : '#2c2e31' }); return e; });
   carts.forEach((e, i) => css(e, { height: (i === 0 ? 76 : 62) + 'px', lineHeight: (i === 0 ? 72 : 58) + 'px', fontSize: (i === 0 ? 34 : 28) + 'px', width: (i === 0 ? 380 : 300) + 'px' }));
   wipe(carts[0], c0 + 0.6, { dir: 'l', d: 0.4 }); vanish(slot, 0);
+  world.appendChild(tok);   // 令牌落进引擎时在卡带上面
   classAt(carts[0], 'f-hot', tArr, tArr + 0.6); sfx('pop', tArr, { g: 0.5 });   // 查询落到引擎
-  carts.slice(1).forEach((e, i) => slide(e, T('a7', '替换') - 0.5 + i * 0.1, { x: 30, d: 0.4 }));
+  carts.slice(1).forEach((e, i) => slide(e, T('a7', '替换') - 0.25 + i * 0.1, { x: 30, d: 0.4 }));
   // 换一次：MyISAM 出去、InnoDB 进来；再换回来。每段都显式给起止
   const tA = T('a7', '替换'), tB = T('a7', '只要') + 0.1, tC = Tend('a8') - 0.2;
   fromTo(carts[0], tA, { x: 0, y: 0 }, { x: SPX - SLX, y: SPY - SLY, duration: 0.55, ease: 'power3.inOut' });   // 两张卡带对调位置
@@ -90,29 +103,21 @@ scene('s1', ({ root, s, c0 }) => {
 
   // ── 时间轴：3.23（2001）起 MyISAM 是默认引擎，到 5.5（2010）换成 InnoDB；之后 MyISAM 仍可用（FACTS「时间轴的年份」）──
   const TL = timeline(world, 2090, 640, 1720);
-  const t9 = T('a9a') - 0.2;
+  const t9 = Tend('a8') + 0.7;   // 换页到站时轴线、年份与「默认的存储引擎」就在
   wipe(TL.axis, t9, { dir: 'l', d: 0.7 }); sfx('drive', t9, { g: 0.4 });
   TL.years.forEach(([k, lb], i) => { appear(k, t9 + 0.1 + i * 0.02); if (lb) appear(lb, t9 + 0.1 + i * 0.02); });
   appear(TL.lane, t9 + 0.3); wipe(TL.isam, t9 + 0.4, { dir: 'l', d: 0.4 });
   // MyISAM 这条带从 2001 一路长到 2010：带头经过哪个版本，哪个版本亮起来
-  const g0 = T('a9a', '三点') - 0.1, g1 = T('a9', '5.5') + 0.2;
+  const g0 = T('a9a', '三点') - 0.1, g1 = T('a9', '默认') + 0.2;   // 一路长到讲「默认」时到 2010
   appear(TL.my, g0); fromTo(TL.my, g0, { width: 0 }, { width: TL.wMy, duration: g1 - g0, ease: 'none' });
   sfx('pop', T('a9a', '三点'), { g: 0.5 });
-  const i0 = T('a9', '5.5') + 0.3, i1 = i0 + 2.2;
+  // 讲到「默认」：MyISAM 这条带被框住；这句讲完，InnoDB 从 2010 接过来，一直长到换章（「仍可用」的细线留给第 10 章）
+  classAt(TL.my, 'lit-cell', T('a9', '默认') - 0.1, Tend('a9') + 0.2); classAt(TL.lane, 'lane-on', T('a9', '默认') - 0.1, Infinity);
+  const i0 = Tend('a9') - 0.2, i1 = i0 + 2.0;
   appear(TL.inno, i0); fromTo(TL.inno, i0, { width: 0 }, { width: TL.wInno, duration: i1 - i0, ease: 'power1.out' });
-  fromTo(TL.still, i0 + 0.3, { width: 0 }, { width: TL.wStill, duration: i1 - i0, ease: 'power1.out' });
-  appear(TL.stillL, i1 - 0.3); sfx('thud', i0, { g: 0.5 });
-  // 大号读数：MyISAM 成为默认的起点（3.23 · 2001）与终点（5.5 · 2010）
-  const big = h('div', 'abs mono', world, ''); px(big, 2090, 250); css(big, { fontSize: '88px', lineHeight: '96px' });
-  const at = (yr) => (yr <= 2010 ? g0 + (g1 - g0) * (yr - 2001) / 9 : i0 + (i1 - i0) * (yr - 2010) / 17);
-  keyed(big).at(0, { html: '' });
-  // 只显示起点与终点：中间的版本由轴上逐个点亮，读数不跟着闪
-  MYSQL_VERSIONS.filter(([v]) => v === '3.23' || v === '5.5').forEach(([v, yr]) => keyed(big).at(at(yr), { html: `<span style="color:${yr <= 2010 ? '#F29111' : '#3fb4cc'}">MySQL ${v}</span><span style="color:#808080"> · ${yr}</span>` }));
-  TL.vers.forEach(({ yr, k, lb }) => {
-    const tv = yr <= 2010 ? g0 + (g1 - g0) * (yr - 2001) / 9 : i0 + (i1 - i0) * (yr - 2010) / 17;
-    appear(k, t9 + 0.3); appear(lb, t9 + 0.3);
-    classAt(lb, yr <= 2010 ? 'c-o' : 'c-t', tv, Infinity); if (yr <= 2010) sfx('tick', tv, { g: 0.3 });
-  });
+  vanish(TL.still, 0); vanish(TL.stillL, 0); sfx('thud', i0, { g: 0.5 });
+  // 讲到的两个版本：带头到达时标签滑出（3.23 · 2001 起，5.5 · 2010 止）
+  TL.vers.forEach(({ yr, k, lb }) => { const tv = yr <= 2010 ? g0 + (g1 - g0) * (yr - 2001) / 9 : i0; appear(k, t9 + 0.3); slide(lb, tv - 0.1, { y: 14, d: 0.45 }); classAt(lb, 'c-o', tv, Infinity); sfx('tick', tv, { g: 0.35 }); });
 
   track(cam, s.start, { x: 960, y: 540, z: 1 }, [
     [c0 + 0.1, { z: 1.02 }, T('a2') - c0 - 0.6, { ease: 'none', sfx: false }],
