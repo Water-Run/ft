@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "3577ae2c1ba07d7740371bcc5224512679c1b4ad7370a5e0693081a6352b8643",
+      "content_sha256": "83655321685c15ebf5083ba8f086dfe7fce82042013ccb4971ba5f752564b06b",
       "reviewer": "WaterRun",
       "confirmed_at": "2026-10-24T00:28:57+08:00",
-      "evidence": "2026-10-24 会话：WaterRun 对三句修改回复「可以」，并要求结束与 Gemini 的沟通，完成准备后交给 Opus。确认的是 SSH-ZH-R3 加上这三句，记录在 review/NOTES.md。"
+      "evidence": "2026-10-24 会话：WaterRun 对三句修改回复「可以」，并要求结束与 Gemini 的沟通，完成准备后交给 Opus。确认的是 SSH-ZH-R3 加上这三句，记录在 review/NOTES.md。 2026-10-24 制作方按 script-review.md 第 3 节做了不改含义的字幕断句（8 句在逗号或冒号处拆成两条），沿用同一确认，只更新哈希，记录在 review/NOTES.md「制作方：字幕断句」。"
     },
     "en": {
       "status": "pending",

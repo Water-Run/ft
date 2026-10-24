@@ -168,13 +168,51 @@
 | 视觉与配乐（2026-10-19，已被替换） | MiniMax M3.1 Flash（同上） | 当时写下俄国构成主义与 20 年代管弦。2026-10-23 策划者要求重做，该方向不再使用 | 本文件旧记录 |
 | 视觉系统、配乐、文案对抗审稿、英文翻译 | Grok 4.7 | 2026-10-23 改视觉与配乐。2026-10-24 按已确认中文把 s01–s62 译成英文，译文未确认 | `project.json` 的 `credits`；`src/js/script.js`；`review/NOTES.md` |
 | 中文稿优化 | Gemini 4 Argon | 2026-10-23 起计划 2–3 轮，均未采用。`SSH-ZH-R1` 过简。`SSH-ZH-R2`（2026-10-24）骨架可留，但「谈妥了一切」「不是现在的默认」「1995 年版本变成 RFC」和钥匙段落的顺序不对，正文字数大约 734，估时约 160 秒。第 3 轮反馈在 `research/GEMINI-PROMPT-R3.md` | 策划者会话；三份 Prompt |
-| 场景实现、声音编排、封面、渲染与审查 | Opus 5.5 | **尚未开工**。按委托任务书实现场景、编排声音、做封面、渲染与三项审查；开工后据实追加分工 | `project.json` 的 `production.maker` 与 `production.mode: delegated` |
-| 旁白合成 | MiniMax speech-2.8-hd | **尚未合成。** 2026-10-24 策划者指定：中文 `Chinese (Mandarin)_Radio_Host`（电台男主播），英文 `Friendly_Person`（Friendly Person），语速均为 1.0。署名写模型全名和音色 id，不写 Edge TTS | `project.json` 的 `tts` 与 `credits.services`；`review/NOTES.md` |
-| 读音回听 | 无 | 未做 | `review/NOTES.md` 的「定稿后的调整」列出待试听项 |
+| 分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | Claude Opus 5.5（模型标识 `claude-opus-5-5`） | 2026-10-24 接手：中文配音合成（字幕断句、语速 1.08）、分镜细化、全部场景与常驻元素、重写 8 位配乐 `tools/music.py`、音效编排与混音、封面、渲染、三项审查与交付记录。Grok 4.7 写的配乐脚本已整体重写，原分工改记为「配乐初稿」 | 本次会话记录；`project.json` 的 `credits`；`brief/storyboard-detail.md` |
+| 旁白合成 | MiniMax speech-2.8-hd | 中文已合成：`Chinese (Mandarin)_Radio_Host`（电台男主播），语速 1.08（1.0 实测超长 11.2 秒，见 `review/NOTES.md`）。英文 `Friendly_Person` 未合成：英文稿未确认。署名写模型全名和音色 id，不写 Edge TTS | `project.json` 的 `tts` 与 `credits.services`；`review/NOTES.md` |
+| 读音回听 | Whisper（`kit/tools/asr.js`，见「复核」） | 中文成片的语音识别筛查；只作筛查，读音与语气未经人耳确认 | 本文件「复核」 |
 | 网页检索与摘录 | 模型未披露 | 本次用到的是会话内置的网页抓取服务，读取了 RFC 4253、RFC 4252、OpenSSH 的 `ssh_config(5)` 与 `PROTOCOL`、OpenSSH 9.8 发布说明、项目页与历史页。该服务未披露底层模型 | 抓取记录见本文件「取证环境」一节的链接与本地下载校验值 |
 
 开源视频：[本片源码](https://github.com/Water-Run/ft)（依据：`project.json` 的 `production.repository`）。画面上须完整可读 `github.com/Water-Run/ft`，英文标签 `Open-source video`。
 
 ## 复核
 
-<!-- 成片后的三项审查（事实、读音与节奏、旁白与画面对应）逐条记在这里。 -->
+2026-10-24，Claude Opus 5.5（制作方）。对象：中文成片的全部画面文字与旁白。英文未制作，未复核。
+
+**方法。** 用 `look.js`、`scan.js` 的逐句输出和 `sheets.js cue` 的总览图，把每句说完时画面上的文字逐条对回本文件与 `research/lab/` 的回显。我能看截图，所以总览图与单帧截图也逐张看过；成片视频本身没有连续播放观看，声音没有听过。
+
+**画面文字与出处。**
+
+| 画面内容 | 出处 | 结论 |
+|---|---|---|
+| 命令 `ssh -p 2222 ftlab@127.0.0.1` | 实验的端口、回环地址与脱敏用户名（`03_handshake.ps1`）；实验原命令是 `ssh -vvv -p 2222 -i … -l ftlab 127.0.0.1 exit`，画面取等价的简写 | 演示用写法，参数与实验一致 |
+| 右上铭牌 `SSH-2.0` | o2：版本标识串 `SSH-2.0-…` | 一致 |
+| 「一套远程登录协议」「不是程序名」、`ssh.exe` 划掉、`RFC 4253 · ABSTRACT` | RFC 4253 摘要（w1）；`ssh.exe` 见「取证环境」 | 一致 |
+| `1995`、`Tatu Ylonen`、`RFC 4253 §15.2 · NOVEMBER 1995` | w2 | 一致。磁带标签原稿写 `SSH-1`、`TYPE II`，本文件无依据，已改为 `SSH`、`1995` |
+| `Request for Comments: 4253`、`Standards Track`、`January 2006`、`The Secure Shell (SSH) Transport Layer Protocol` | w3、w4 | 一致 |
+| `"developed by a few developers of the OpenBSD Project"`、`OPENSSH.COM` | w6 | 一致；中文只说「由 OpenBSD 项目的开发者维护」 |
+| 两行版本回显、`2.0` | `out_03_handshake.txt` 第 50–51 行 | 逐字一致 |
+| 两张 `SSH2_MSG_KEXINIT` 清单的前三项与总数（客户端 kex 11、host key 16、cipher 6；服务端 10、1、6） | 回显第 64–84 行 | 逐项数过，一致 |
+| 「按偏好从高到低」「不是字母序」「从头往下找」「你有、对方也有的第一个」 | k2、k3；「算法现状」里 `ssh -Q` 按字母序的说明 | 一致 |
+| 「没有交集 → 连接断开」与 `"both sides MUST disconnect" RFC 4253 §7.1` | k4 | 一致；画面写明是规则，不是这次连接 |
+| 三行协商结果回显、`OpenSSH_for_Windows_9.5p2` | 回显第 94–96 行；k8 | 逐字一致 |
+| RFC 4253 必须实现的 `diffie-hellman-group1-sha1`、`diffie-hellman-group14-sha1`、`ssh-dss`、`3des-cbc` | 「算法现状」 | 只列了 REQUIRED 项，一致 |
+| 「迪菲-赫尔曼」`RFC 4253 §8`；秘密 x、y；公开值 e、f；两边各自算出 K；K 不在线上 | d1–d4 | 一致 |
+| `debug1: SSH2_MSG_KEX_ECDH_REPLY received`、`curve25519-sha256` | 回显第 101 行；k6 | 一致 |
+| 「本地再变一次」「数据包钥匙」 | r3（按旁白不画 A–F；两把钥匙图示只表示「变出来的钥匙」，不表示数量） | 一致 |
+| `HOST KEY`、`ssh-ed25519`、「主机私钥」签名、「主机公钥验签」 | k6、h2、h3 | 一致 |
+| `H = hash(V_C \|\| V_S \|\| I_C \|\| I_S \|\| K_S \|\| e \|\| f \|\| K)   RFC 4253 §8` 与六块输入 | h1 | 一致。这是 RFC 对经典 DH 的写法，本次连接用的是 curve25519，旁白只说「整个交换过程收成一份哈希」 |
+| `~/.ssh/known_hosts`、`[127.0.0.1]:2222 ssh-ed25519` 与公钥体（方块占位） | e4、h7 | 一致；公钥本体不出现 |
+| 指纹 `SHA256:g6PoA9wiW3y53PxinYaTpcdUILkmw5VNG3RK/qJBbs8` | 回显第 102 行（一次性主机密钥，实验后已删除） | 一致。放在文件卡外面，因为 known_hosts 里存的是公钥本身 |
+| `"ssh will refuse to connect to hosts whose host key has changed."`、`ssh_config(5)` | e1 | 一致；「身份变了」的对照是示意方块，不是伪造的指纹串 |
+| 「（空）还没有旧记录」、询问框「记下它吗？ YES / NO」 | e2；回显第 56–61 行 | 询问框是中文示意，不是 OpenSSH 的原文提示 |
+| `SSH2_MSG_NEWKEYS sent / received` | 回显第 123、127 行；r5 | 一致 |
+| `service_accept: ssh-userauth`、`Authentications that can continue: publickey`、`Authenticated to 127.0.0.1 ([127.0.0.1]:2222) using "publickey".` | 回显第 142、146、162 行；a1、a8 | 逐字一致 |
+| `-----BEGIN OPENSSH PRIVATE KEY-----` | u6 | 一致 |
+| 片尾名单 | `project.json` 的 `credits`；本文件「制作署名」 | 一致 |
+
+**发现并更正。** ① 磁带标签 `SSH-1`、`TYPE II` 无出处，已删。② 开头与结尾原来用带毫秒的时间码 `00:01.000` 表示「一秒」，本文件没有这条连接的耗时实测，已改成不带数字的十格读数和「那一秒」。③ 指纹原先写在 known_hosts 文件卡里，已移到卡外。
+
+**脱敏。** 画面只出现 `127.0.0.1`、端口 `2222`、脱敏用户名 `ftlab` 和一次性密钥的指纹；没有出现 `C:\Users\…` 路径、主机名或真实用户名。
+
+**未核查。** 英文版画面与旁白；外部来源本轮没有重新联网复读，沿用 2026-10-19 的读取记录。

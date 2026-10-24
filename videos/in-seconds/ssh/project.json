@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
-  "stage": "design",
-  "next": "音色已定，不再询问。中文 Chinese (Mandarin)_Radio_Host，英文 Friendly_Person，均为 MiniMax speech-2.8-hd、语速 1.0。英文稿确认后合成",
+  "stage": "accept",
+  "next": "中文成片待 WaterRun 审看：试听配乐与配音（语速 1.08），确认读音四处；英文稿确认后再合成英文并渲染",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -18,7 +18,7 @@
         "name": "Grok 4.7",
         "roles": [
           "视觉系统",
-          "配乐",
+          "配乐初稿",
           "文案对抗审稿",
           "英文翻译"
         ]
@@ -27,6 +27,17 @@
         "name": "Gemini 4 Argon",
         "roles": [
           "中文稿"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "分镜",
+          "场景实现",
+          "配乐",
+          "音效与混音",
+          "封面",
+          "渲染与验收"
         ]
       }
     ],
@@ -73,8 +84,8 @@
       "en": "Friendly_Person"
     },
     "speed": {
-      "zh": 1.0,
-      "en": 1.0
+      "zh": 1.08,
+      "en": 1
     }
   },
   "asr_prompts": {

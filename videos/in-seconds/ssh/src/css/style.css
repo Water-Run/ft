@@ -51,8 +51,8 @@ body { font-family: "Pixel", "Sans SC"; color: var(--ac); background: var(--ink)
 .stripe i:nth-child(1) { background: var(--amber); }
 .stripe i:nth-child(2) { background: var(--orange); }
 .stripe i:nth-child(3) { background: var(--rust); }
-.screw { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--chassis); border: 3px solid var(--paper); }
-.lamp { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: var(--dim); border: 3px solid var(--chassis); }
+.screw { position: absolute; width: 14px; height: 14px; background: var(--chassis); border: 3px solid var(--dimp); }
+.lamp { position: absolute; width: 22px; height: 22px; background: var(--dim); border: 4px solid var(--ink); }
 .lamp.on { background: var(--ac); }
 .lamp-amber { background: var(--amber); }
 .lamp-warn { background: var(--warn); }
@@ -82,3 +82,41 @@ body { font-family: "Pixel", "Sans SC"; color: var(--ac); background: var(--ink)
 #caption span { font-size: 36px; color: var(--ac); font-family: "Sans SC"; }
 .en #caption span { font-family: "Pixel", "Sans SC"; font-size: 34px; letter-spacing: .02em; }
 #caption em { font-style: normal; color: var(--amber); }
+
+/* ── 制作方补充（Opus 5.5）：控制台部件 ── */
+.term { font-family: "Pixel", "Sans SC"; font-size: 36px; line-height: 1.12; color: var(--ac); white-space: pre; }
+.term .a, .term.a { color: var(--amber); }
+.term .p, .term.p { color: var(--paper); }
+.term .d, .term.d { color: var(--paper); }
+.zh { font-family: "Sans SC"; }
+.plate { font-family: "Pixel", "Sans SC"; font-size: 28px; line-height: 1; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: var(--paper); padding: 6px 12px 4px; white-space: nowrap; }
+.plate.zh { font-family: "Sans SC"; font-size: 26px; letter-spacing: .04em; padding: 5px 12px; font-weight: 600; }
+.plate.amb { background: var(--amber); }
+.plate.grn { background: var(--ac); }
+.plate.olv { background: var(--olive); color: var(--paper); }
+.cap-zh { font-family: "Sans SC"; font-size: 34px; line-height: 1.3; color: var(--paper); white-space: nowrap; }
+.cap-zh.ac { color: var(--ac); }
+.cap-zh.amb { color: var(--amber); }
+.big { font-family: "Pixel", "Sans SC"; line-height: 1; letter-spacing: .02em; color: var(--ac); }
+.tok { position: absolute; font-family: "Pixel", "Sans SC"; font-size: 30px; line-height: 1; color: var(--ink); background: var(--paper); border: 4px solid var(--chassis); padding: 6px 12px 4px; white-space: nowrap; }
+.tok.zh { font-family: "Sans SC"; font-size: 26px; padding: 6px 12px; font-weight: 600; }
+.tok.grn { background: var(--ac); }
+.tok.amb { background: var(--amber); }
+.tok.rust { background: var(--orange); color: var(--ink); border-color: var(--rust); }
+.vault { position: absolute; background: var(--ink); border: 4px solid var(--amber); }
+.cell { position: absolute; background: var(--dim); }
+.cell.on { background: var(--ac); }
+.card { position: absolute; background: var(--paper); color: var(--ink); border: 6px solid var(--chassis); }
+.card .hd { position: absolute; left: 0; top: 0; right: 0; height: 44px; background: var(--chassis); color: var(--paper); font: 28px "Pixel", "Sans SC"; letter-spacing: .1em; line-height: 44px; padding-left: 16px; text-transform: uppercase; white-space: nowrap; }
+.card .ln { position: absolute; font: 32px "Pixel", "Sans SC"; color: var(--ink); white-space: pre; }
+.card .lz { position: absolute; font: 600 28px "Sans SC"; color: var(--ink); white-space: nowrap; }
+.rack { position: absolute; background: var(--chassis); }
+.slot { position: absolute; background: var(--ink); }
+.ink-bg { background: var(--ink); }
+.hud-r { left: 1400px; top: 24px; width: 470px; height: 84px; }
+.hud-plate { position: absolute; left: 0; top: 0; height: 40px; font: 28px "Pixel"; letter-spacing: .1em; line-height: 40px; padding: 0 10px; background: var(--paper); color: var(--ink); }
+.hud-gate { position: absolute; top: 0; width: 76px; height: 40px; background: var(--chassis); border: 3px solid var(--dimp); font: 28px "Pixel"; line-height: 34px; text-align: center; color: var(--paper); }
+.hud-gate.cur { border-color: var(--amber); color: var(--amber); }
+.hud-gate.done { background: var(--ac); border-color: var(--ac); color: var(--ink); }
+.hud-now { position: absolute; right: 0; top: 50px; font: 26px "Sans SC"; color: var(--ac); white-space: nowrap; }
+.snow { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; image-rendering: pixelated; }

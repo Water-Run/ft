@@ -14,9 +14,12 @@
       id: 'open', at: 0, chap: null, lead: 0.35, tail: 0.2,
       cues: [
         ['s01', { zh: '敲下 *ssh* 命令回车，屏幕总会静上一秒。', en: 'Type *ssh* and press Enter. The screen always goes quiet for a second.' }, g],
-        ['s02', { zh: '钥匙不从网上传，私钥也不出本机，两台电脑却能建立起加密连接。', en: 'The key stays off the wire. The private key stays home. The link still encrypts.' }, g],
-        ['s03', { zh: '支配这一秒的，是 *SSH*：一套远程登录协议，不是某一个程序的名字。', en: 'What governs that second is *SSH*: a remote-login protocol, not one program\'s name.' }, g],
-        ['s04', { zh: '隔着网络连向远处的机器，既要防人半路偷听，也要防人冒名顶替。', en: 'Across the network it stops eavesdropping, and it stops a fake server.' }, g],
+        ['s02', { zh: '钥匙不从网上传，私钥也不出本机，', en: 'The key stays off the wire. The private key stays home.' }, { ...g, gap: 0.04, tts: { zh: '钥匙不从网上传，私钥也不出本机，' } }],
+        ['s02b', { zh: '两台电脑却能建立起加密连接。', en: 'The link still encrypts.' }, g],
+        ['s03', { zh: '支配这一秒的，是 *SSH*：', en: 'What governs that second is *SSH*:' }, { ...g, gap: 0.04, tts: { zh: '支配这一秒的，是 S S H：' } }],
+        ['s03b', { zh: '一套远程登录协议，不是某一个程序的名字。', en: 'a remote-login protocol, not one program\'s name.' }, g],
+        ['s04', { zh: '隔着网络连向远处的机器，', en: 'Across the network it stops eavesdropping,' }, { ...g, gap: 0.04, tts: { zh: '隔着网络连向远处的机器，' } }],
+        ['s04b', { zh: '既要防人半路偷听，也要防人冒名顶替。', en: 'and it stops a fake server.' }, g],
         ['s05', { zh: '在你真正登录成功之前，两台机器必须先过四道关。', en: 'Before the login succeeds, the two machines must pass four gates.' }, g],
         ['s06', { zh: '对上算法，选定彼此都会的加密。', en: 'Match algorithms. Choose encryption both sides know.' }, g],
         ['s07', { zh: '换出密钥，却不让钥匙在网上传。', en: 'Make a key, and do not send that key across the network.' }, g],
@@ -25,15 +28,16 @@
       ],
     },
     {
-      id: 'what', chap: null, lead: 0.15, tail: 0.15,
+      id: 'what', chap: null, lead: 0.15, tail: 0.6,
       cues: [
         ['s10', { zh: '1995 年，Tatu Ylonen 公开了它的第一个版本。', en: 'In 1995, Tatu Ylonen published its first version.' }, g],
         ['s11', { zh: '2006 年，它的传输层写成标准文档，编号 *RFC 4253*。', en: 'In 2006 its transport layer became the standard *RFC 4253*.' }, g],
-        ['s12', { zh: '今天常用的这份 ssh 程序，由 OpenBSD 项目的开发者维护。', en: 'Today\'s usual ssh program is maintained by OpenBSD project developers.' }, g],
+        ['s12', { zh: '今天常用的这份 ssh 程序，', en: 'Today\'s usual ssh program' }, { ...g, gap: 0.04, tts: { zh: '今天常用的这份 S S H 程序，' } }],
+        ['s12b', { zh: '由 OpenBSD 项目的开发者维护。', en: 'is maintained by OpenBSD project developers.' }, g],
       ],
     },
     {
-      id: 'kex', chap: null, lead: 0.15, tail: 0.15,
+      id: 'kex', chap: null, lead: 0.15, tail: 1.0,
       cues: [
         ['s13', { zh: '连上线后，两端不急着换钥匙，先互报版本标识。', en: 'Once online, they do not rush the key. First they exchange version strings.' }, g],
         ['s14', { zh: '双方借此确认：彼此说的是哪一版 *SSH*。', en: 'Each side thus confirms which version of *SSH* the other is speaking.' }, g],
@@ -51,7 +55,7 @@
       ],
     },
     {
-      id: 'dh', chap: null, lead: 0.15, tail: 0.15,
+      id: 'dh', chap: null, lead: 0.15, tail: 0.9,
       cues: [
         ['s26', { zh: '算法敲定之后，两台机器开始换出密钥。', en: 'Once the algorithms are set, the two machines begin to make a key.' }, g],
         ['s27', { zh: '标准文档先写过一种经典换法，名字叫迪菲-赫尔曼。', en: 'The standard first describes a classic method. Its name is Diffie-Hellman.' }, g],
@@ -60,14 +64,15 @@
         ['s30', { zh: '但这次连接没有用它，走的是刚才选出的那套密钥交换。', en: 'This connection did not use that method. It used the key exchange just chosen.' }, g],
         ['s31', { zh: '换完之后，两台机器手里同样有了一把共同密钥。', en: 'When the exchange is done, both machines hold the same shared secret.' }, g],
         ['s32', { zh: '后面的通信加密，靠的就是这把共同密钥。', en: 'The encryption that follows depends on that shared secret.' }, g],
-        ['s33', { zh: '但这把共同密钥，和真正用来加密数据包的钥匙不是同一把。', en: 'But that shared secret is not the key that actually encrypts the packets.' }, g],
+        ['s33', { zh: '但这把共同密钥，', en: 'But that shared secret' }, { ...g, gap: 0.04, tts: { zh: '但这把共同密钥，' } }],
+        ['s33b', { zh: '和真正用来加密数据包的钥匙不是同一把。', en: 'is not the key that actually encrypts the packets.' }, g],
         ['s34', { zh: '它还要在本地再变一次，才变成数据包真正使用的钥匙。', en: 'It still has to be changed once, locally, into the keys the packets use.' }, g],
         ['s35', { zh: '钥匙虽已备好，隐患却还在。', en: 'The keys are ready. The danger is not gone.' }, g],
         ['s36', { zh: '光换出共同密钥，还不能认出对面的服务器是谁。', en: 'A shared secret alone still cannot tell you which server is on the other side.' }, g],
       ],
     },
     {
-      id: 'hostkey', chap: null, lead: 0.15, tail: 0.15,
+      id: 'hostkey', chap: null, lead: 0.15, tail: 0.8,
       cues: [
         ['s37', { zh: '对面必须亮出身份：那是一把长期的主机密钥。', en: 'The other side must show who it is: a long-term host key.' }, g],
         ['s38', { zh: '它用来证明：我还是上次那一台。', en: 'It is there to prove: I am still the machine from last time.' }, g],
@@ -75,22 +80,25 @@
         ['s40', { zh: '服务器用自己的主机私钥，给这份短摘要签名。', en: 'The server signs that short digest with its own host private key.' }, g],
         ['s41', { zh: '你的电脑拿它的主机公钥查验，对不上就当场断开。', en: 'Your computer checks it with the host public key. If it fails, the link drops.' }, g],
         ['s42', { zh: '光验过签名，还不算数。', en: 'A signature that checks out is still not enough.' }, g],
-        ['s43', { zh: '你电脑里有一份 *known_hosts* 记录：存着你这台电脑记下的服务器指纹。', en: 'Your computer keeps a *known_hosts* record: the server fingerprint it stored.' }, g],
+        ['s43', { zh: '你电脑里有一份 *known_hosts* 记录：', en: 'Your computer keeps a *known_hosts* record:' }, { ...g, gap: 0.04, tts: { zh: '你电脑里有一份 known hosts 记录：' } }],
+        ['s43b', { zh: '存着你这台电脑记下的服务器指纹。', en: 'the server fingerprint it stored.' }, g],
         ['s44', { zh: '以后服务器这把身份若是变了，电脑会当场报错。', en: 'If the server\'s identity changes later, the computer reports an error at once.' }, g],
         ['s45', { zh: '要是电脑里已经有记录，眼前的公钥就必须跟它完全一样。', en: 'If a record already exists, this public key must match it exactly.' }, g],
       ],
     },
     {
-      id: 'edge', chap: null, lead: 0.15, tail: 0.15,
+      id: 'edge', chap: null, lead: 0.15, tail: 0.8,
       cues: [
         ['s46', { zh: '可要是第一次连接，你电脑里还没有旧记录可比。', en: 'But on the first connection, your computer has no old record to compare.' }, g],
         ['s47', { zh: '程序默认先停下来问人，等你点头了才记下这份身份。', en: 'By default the program stops and asks. It records the identity only after you agree.' }, g],
-        ['s48', { zh: '这时如果不核对指纹就直接接受，有人冒充服务器是挡不住的。', en: 'Accept it then without checking the fingerprint, and an impersonator is not stopped.' }, g],
-        ['s49', { zh: '从第一次连接起，你就可能认错人，把假身份当成真的记下来。', en: 'From the first connection, you may store an impostor as the real server.' }, g],
+        ['s48', { zh: '这时如果不核对指纹就直接接受，', en: 'Accept it then without checking the fingerprint,' }, { ...g, gap: 0.04, tts: { zh: '这时如果不核对指纹就直接接受，' } }],
+        ['s48b', { zh: '有人冒充服务器是挡不住的。', en: 'and an impersonator is not stopped.' }, g],
+        ['s49', { zh: '从第一次连接起，你就可能认错人，', en: 'From the first connection,' }, { ...g, gap: 0.04, tts: { zh: '从第一次连接起，你就可能认错人，' } }],
+        ['s49b', { zh: '把假身份当成真的记下来。', en: 'you may store an impostor as the real server.' }, g],
       ],
     },
     {
-      id: 'userauth', chap: null, lead: 0.15, tail: 0.15,
+      id: 'userauth', chap: null, lead: 0.15, tail: 0.9,
       cues: [
         ['s50', { zh: '双方宣布新密钥生效之后，后面的内容才开始加密。', en: 'Only after both sides announce the new keys does later traffic become encrypted.' }, g],
         ['s51', { zh: '服务器认完之后，最后才轮到证明你是你。', en: 'After the server is recognized, it is finally your turn to prove you are you.' }, g],

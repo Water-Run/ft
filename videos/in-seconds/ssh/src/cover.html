@@ -5,81 +5,96 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
+  /* 封面：与正片同一套卡带未来主义。显像管里是片子的主画面——两台机器、中间那条线、线上方被拦下的钥匙、四道关。 */
   :root {
-    --ink: #070807; --ac: #74ff9a; --paper: #c4b8a4; --chassis: #2c312c;
-    --olive: #3e4a32; --amber: #ffb23e; --orange: #e07a2f; --rust: #8c4a32; --dim: #1e6b3a;
+    --ink: #070807; --ac: #74ff9a; --paper: #c4b8a4; --chassis: #2c312c; --olive: #3e4a32;
+    --amber: #ffb23e; --orange: #e07a2f; --rust: #8c4a32; --dim: #1e6b3a; --dimp: #6a6358;
   }
   html, body, #stage { width: var(--W); height: var(--H); background: var(--ink); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
   #stage { position: relative; overflow: hidden; color: var(--ac); font-family: "Pixel", "Sans SC"; }
   .abs { position: absolute; white-space: nowrap; }
-  .bezel { background: var(--chassis); }
-  .panel { background: var(--olive); }
-  .plastic { background: var(--paper); color: var(--ink); }
-  .kicker { font: 40px "Pixel", "Sans SC"; letter-spacing: .14em; color: var(--ink); }
-  .big { font: 220px "Pixel"; line-height: 1; letter-spacing: .02em; }
-  .ttl { font: 64px "Sans SC"; line-height: 1.15; color: var(--ac); }
-  .en .ttl { font-family: "Pixel", "Sans SC"; letter-spacing: .04em; }
-  .code { font: 36px "Pixel"; letter-spacing: .16em; color: var(--amber); }
-  .cell { position: absolute; width: 22px; height: 36px; background: var(--dim); }
-  .cell.on { background: var(--ac); }
-  .stripe { position: absolute; height: 12px; }
-  .stripe i { display: block; float: left; width: 33.34%; height: 12px; }
+  .frame { border: 28px solid var(--chassis); background: var(--ink); }
+  .bez { border: 10px solid var(--olive); }
+  .plate { font: 34px "Pixel"; letter-spacing: .12em; color: var(--ink); background: var(--paper); padding: 6px 14px 2px; }
+  .sec { font: 380px "Pixel"; line-height: .9; color: var(--amber); letter-spacing: .01em; }
+  .secu { font: 700 120px "Sans SC"; color: var(--amber); line-height: 1; }
+  .gd { font: 700 150px "Sans SC"; color: var(--paper); line-height: 1; }
+  .ssh { font: 260px "Pixel"; color: var(--ac); line-height: .9; }
+  .en .gd { font: 120px "Pixel"; letter-spacing: .02em; }
+  .sub { font: 500 44px "Sans SC"; color: var(--paper); }
+  .en .sub { font: 44px "Pixel"; letter-spacing: .04em; }
+  .mod { background: var(--olive); border: 6px solid var(--chassis); }
+  .lab { font: 26px "Pixel"; letter-spacing: .12em; color: var(--ink); background: var(--paper); padding: 4px 10px 1px; }
+  .vault { background: var(--ink); border: 4px solid var(--amber); }
+  .wire { background: var(--chassis); }
+  .cell { background: var(--ac); }
+  .gate { background: var(--ac); color: var(--ink); font: 34px "Pixel"; text-align: center; line-height: 52px; }
+  .stripe { height: 14px; }
+  .stripe i { display: block; float: left; width: 33.34%; height: 14px; }
   .stripe i:nth-child(1) { background: var(--amber); }
   .stripe i:nth-child(2) { background: var(--orange); }
   .stripe i:nth-child(3) { background: var(--rust); }
-  .r169 .bezel { left: 70px; top: 70px; width: 1780px; height: 860px; }
-  .r169 .panel { left: 96px; top: 96px; width: 1728px; height: 760px; }
-  .r169 .plastic { left: 128px; top: 128px; width: 420px; height: 64px; }
-  .r169 .kicker { left: 148px; top: 136px; }
-  .r169 .big { left: 128px; top: 240px; }
-  .r169 .ttl { left: 128px; top: 520px; }
-  .r169 .code { left: 128px; top: 760px; }
-  .r169 .stripe { left: 128px; top: 820px; width: 360px; }
-  .r43 .bezel { left: 48px; top: 48px; width: 1504px; height: 980px; }
-  .r43 .panel { left: 72px; top: 72px; width: 1456px; height: 860px; }
-  .r43 .plastic { left: 100px; top: 100px; width: 420px; height: 64px; }
-  .r43 .kicker { left: 120px; top: 108px; }
-  .r43 .big { left: 100px; top: 210px; font-size: 200px; }
-  .r43 .ttl { left: 100px; top: 480px; font-size: 56px; }
-  .r43 .code { left: 100px; top: 760px; }
-  .r43 .stripe { left: 100px; top: 840px; width: 360px; }
+  svg { position: absolute; }
 </style>
 </head>
 <body>
-<div id="stage">
-  <div class="abs bezel"></div>
-  <div class="abs panel"></div>
-  <div class="abs plastic"></div>
-  <div class="abs kicker">SYS</div>
-  <div class="abs big">SSH</div>
-  <div class="abs ttl"></div>
-  <div class="abs code">256 SEC</div>
-  <div class="abs stripe"><i></i><i></i><i></i></div>
-</div>
+<div id="stage"></div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
-  const title = {
-    zh: '256 秒搞懂 SSH',
-    en: 'SSH in 256 Seconds',
-  }[lang];
-  document.querySelector('.ttl').textContent = title;
+  const W = wide ? 1920 : 1600, H = wide ? 1080 : 1200;
   const stage = document.getElementById('stage');
-  const x0 = wide ? 1180 : 980, y0 = wide ? 280 : 260;
-  for (let i = 0; i < 16; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'abs cell' + (i < 10 ? ' on' : '');
-    cell.style.left = (x0 + (i % 8) * 30) + 'px';
-    cell.style.top = (y0 + Math.floor(i / 8) * 48) + 'px';
-    stage.appendChild(cell);
+  const el = (cls, html, x, y, w, h) => { const e = document.createElement('div'); e.className = 'abs ' + cls; if (html != null) e.innerHTML = html; e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; stage.appendChild(e); return e; };
+  const KEY = ['.####.........', '#....#........', '#....#########', '#....#..#.#.#.', '.####...#.#...'];
+  const MARK = ['#...#', '.#.#.', '..#..', '.#.#.', '#...#'];
+  const pix = (bits, x, y, s, color) => {
+    const w = bits[0].length * s, h = bits.length * s;
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); g.setAttribute('width', w); g.setAttribute('height', h); g.style.left = x + 'px'; g.style.top = y + 'px';
+    bits.forEach((row, j) => [...row].forEach((c, i) => { if (c === '#') { const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect'); r.setAttribute('x', i * s); r.setAttribute('y', j * s); r.setAttribute('width', s); r.setAttribute('height', s); r.setAttribute('fill', color); g.appendChild(r); } }));
+    stage.appendChild(g); return g;
+  };
+  // 显像管外框
+  el('frame', null, 40, 40, W - 80, H - 80);
+  el('bez', null, 68, 68, W - 136, H - 136);
+  el('plate', 'SSH-2.0', 110, 104);
+  // 片名：秒数醒目
+  const L = wide ? 110 : 110;
+  el('sec', '256', L - 6, wide ? 170 : 170);
+  el('secu', lang === 'zh' ? '秒' : 's', L + 470, 336);
+  if (lang === 'zh') { el('gd', '搞懂', L, wide ? 560 : 560); el('ssh', 'SSH', L + 320, wide ? 516 : 516); }
+  else { el('ssh', 'SSH', L, wide ? 516 : 516); el('gd', 'in seconds', L + 450, wide ? 590 : 590); }
+  el('sub', lang === 'zh' ? '按下回车后的那一秒，两台机器做完了什么' : 'What happens in the second after Enter', L, wide ? 820 : 820);
+  el('stripe', '<i></i><i></i><i></i>', L, wide ? 900 : 900, 420);
+  // 主画面缩影：CLIENT —— 线 —— SERVER；线上方的钥匙被拦下；下方四道关全亮
+  const ox = wide ? 1150 : 900, oy = wide ? 170 : 900, s = wide ? 1 : 1;
+  if (wide) {
+    el('mod', null, ox, oy + 120, 250, 250); el('lab', 'CLIENT', ox + 14, oy + 134);
+    el('vault', null, ox + 14, oy + 230, 210, 110); pix(KEY, ox + 40, oy + 262, 9, 'var(--amber)');
+    el('mod', null, ox + 420, oy + 120, 250, 250); el('lab', 'SERVER', ox + 434, oy + 134);
+    el('vault', null, ox + 434, oy + 230, 210, 110); pix(KEY, ox + 460, oy + 262, 9, 'var(--amber)');
+    el('wire', null, ox + 250, oy + 238, 170, 12);
+    for (let i = 0; i < 3; i++) el('cell', null, ox + 262 + i * 52, oy + 238, 32, 12);
+    pix(KEY, ox + 258, oy + 160, 7, 'var(--amber)'); pix(MARK, ox + 364, oy + 156, 9, 'var(--paper)');
+    for (let i = 0; i < 4; i++) el('gate', String(i + 1).padStart(2, '0'), ox + i * 172, oy + 440, 154, 52);
+  } else {
+    // 4:3：主画面放在片名下方
+    const bx = 110, by = 980;
+    el('mod', null, bx, by - 30, 220, 150); el('lab', 'CLIENT', bx + 12, by - 18);
+    pix(KEY, bx + 30, by + 50, 8, 'var(--amber)');
+    el('mod', null, bx + 560, by - 30, 220, 150); el('lab', 'SERVER', bx + 572, by - 18);
+    pix(KEY, bx + 590, by + 50, 8, 'var(--amber)');
+    el('wire', null, bx + 220, by + 40, 340, 12);
+    for (let i = 0; i < 5; i++) el('cell', null, bx + 236 + i * 64, by + 40, 36, 12);
+    pix(KEY, bx + 290, by - 30, 8, 'var(--amber)'); pix(MARK, bx + 416, by - 34, 10, 'var(--paper)');
+    for (let i = 0; i < 4; i++) el('gate', String(i + 1).padStart(2, '0'), bx + 1000 + (i % 2) * 150, by - 30 + Math.floor(i / 2) * 76, 130, 52);
   }
   const sample = stage.textContent;
   Promise.all([
-    document.fonts.load('40px "Pixel"', 'SSH'),
-    document.fonts.load('64px "Sans SC"', sample),
-    document.fonts.load('36px "Mono"', '256'),
+    document.fonts.load('40px "Pixel"', 'SSH256'),
+    document.fonts.load('700 64px "Sans SC"', sample),
+    document.fonts.load('500 44px "Sans SC"', sample),
   ]).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

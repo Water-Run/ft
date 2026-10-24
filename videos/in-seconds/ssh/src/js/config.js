@@ -45,38 +45,30 @@ window.ENGINE = {
       sfx('tick', sec, { g: 0.8, p: -0.6 });
     }
     // ── 右上：一格一格的条形读数，标当前握手阶段 ──
-    const scan = h('div', 'scan', hud);
-    for (let y = 0; y < 1080; y += 4) { const line = h('div', 'scan-line', scan); line.style.top = y + 'px'; }
-    let seed = 20261023;
-    const rnd = () => (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296;
-    for (let i = 0; i < 70; i++) {
-      const dot = h('div', 'noise', hud);
-      dot.style.left = Math.floor(rnd() * 1920) + 'px';
-      dot.style.top = Math.floor(rnd() * 1080) + 'px';
-    }
+    // 扫描线与噪点：一张 SVG，一像素实线、固定种子的实心点
+    const scan = svg('svg', { class: 'scan', width: 1920, height: 1080, viewBox: '0 0 1920 1080' }, hud);
+    let dpath = ''; for (let y = 0; y < 1080; y += 4) dpath += `M0 ${y + 0.5}H1920`;
+    svg('path', { d: dpath, stroke: C.dim, 'stroke-width': 1, opacity: 0.32 }, scan);
+    const rnd = seeded(20261023);
+    for (let i = 0; i < 70; i++) svg('rect', { x: Math.floor(rnd() * 1920), y: Math.floor(rnd() * 1080), width: 2, height: 2, fill: C.ac }, scan);
+    scan.dataset.name = 'scanlines';
     const right = h('div', 'hud-r', hud);
     window.HUD = { left, right };
-    const STAGE_IDS = ['kex', 'dh', 'hostkey', 'userauth'];
-    const STAGE_NAME = {
-      zh: ['算法协商', '密钥交换', '主机认证', '用户认证'],
-      en: ['Negotiation', 'Key exchange', 'Host auth', 'User auth'],
-    };
-    const stageAt = STAGE_IDS.map((id) => { const s = L.scenes.find((x) => x.id === id); return s ? s.start : 0; });
-    const stageBox = h('div', 'hud-stage', right);
-    const stageFill = h('div', 'hud-stage-fill', stageBox);
-    const stageMarks = stageAt.map((at) => { const m = h('i', 'hud-mark', stageBox); m.style.left = (at / TOTAL * 100).toFixed(3) + '%'; return m; });
-    const stageLabel = h('div', 'hud-stage-label', right);
-    let lastStage = -1, lastPct = -1;
+    // 右上仪表：铭牌 SSH-2.0（取自版本标识串），四道关一格一格点亮；当前这一关琥珀框，走完变绿
+    h('div', 'hud-plate', right, 'SSH-2.0');
+    const GATES = [['kex', 'kex'], ['dh', 'dh'], ['hostkey', 'edge'], ['userauth', 'userauth']];
+    const GATE_NAME = { zh: ['对上算法', '换出密钥', '认明主机', '证明自己'], en: ['Algorithms', 'Key', 'Host', 'You'] };
+    const span = GATES.map(([a, b]) => { const s0 = L.scenes.find((x) => x.id === a), s1 = L.scenes.find((x) => x.id === b); return [s0 ? s0.start : 0, s1 ? s1.end : 0]; });
+    const cells = GATES.map((g, i) => { const c = h('div', 'hud-gate', right, String(i + 1).padStart(2, '0')); c.style.left = (150 + i * 80) + 'px'; return c; });
+    const now = h('div', 'hud-now', right);
+    let lastK = null;
     F((t) => {
-      const p = Math.max(0, Math.min(1, t / TOTAL)), pct = p * 100;
-      if (Math.abs(pct - lastPct) > 0.05) { stageFill.style.width = pct.toFixed(2) + '%'; lastPct = pct; }
-      let k = 0;
-      for (let i = 0; i < stageAt.length; i++) if (t >= stageAt[i]) k = i + 1;
-      if (k !== lastStage) {
-        lastStage = k;
-        for (let i = 0; i < stageMarks.length; i++) stageMarks[i].classList.toggle('on', i < k);
-        stageLabel.textContent = k ? STAGE_NAME[LANG][k - 1] : (LANG === 'zh' ? '等待握手' : 'waiting');
-      }
+      let cur = -1, done = 0;
+      span.forEach(([a, b], i) => { if (t >= a && t < b) cur = i; if (t >= b) done = i + 1; });
+      const k = cur + ':' + done;
+      if (k === lastK) return; lastK = k;
+      cells.forEach((c, i) => { c.classList.toggle('done', i < done); c.classList.toggle('cur', i === cur); });
+      now.textContent = cur >= 0 ? `${String(cur + 1).padStart(2, '0')} · ${GATE_NAME[LANG][cur]}` : done >= 4 ? (LANG === 'zh' ? '四道关已走完' : 'all four passed') : (LANG === 'zh' ? '等待握手' : 'waiting');
     });
     const groundAt = (side, t) => { let g = 'ink'; for (const [a, b, v] of HUDG[side]) if (t >= a && t < b) g = v; return g; };
     let gl = null, gr = null;
@@ -87,26 +79,28 @@ window.ENGINE = {
     });
   },
   after() {
-    // 场景的显隐与换场：本片全片只用一种换场 —— 斜切平面横扫全屏。
-    // 一块 45° 的斜边从左缘扫到右缘：斜边上沿在画左外时新的一章还没露头，下沿在画右外时整屏换完。
+    // 换场：显像管换台。雪花闪两帧，新画面从中间一条亮线上下展开（12 帧一步的两格）
     const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
-    const SPAN = 1920 + 968;                               // 画幅宽 + 斜边跨越的高度：45° 斜线
+    const snowBox = h('div', 'abs', document.getElementById('stage')); px(snowBox, 0, 0, 1920, 968); snowBox.style.zIndex = 40;
+    const snows = snowFrames(3).map((cv) => { cv.className = 'snow'; snowBox.appendChild(cv); return freeze(cv); });
+    const CUT = 0.3;
     F((t) => {
       L.scenes.forEach((s, i) => {
         const nx = L.scenes[i + 1], root = roots[i];
-        const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + WIPE);
+        const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + 0.12);
         root.style.display = vis ? '' : 'none';
         let clip = 'none';
-        if (vis && i > 0 && t < s.start + WIPE) {
-          const p = ease.io3(clamp((t - s.start) / WIPE));
-          const xTop = (-968 + p * SPAN).toFixed(1);         // 斜边上沿的 x（像素）
-          const xBot = (0 + p * SPAN).toFixed(1);            // 斜边下沿的 x（像素）
-          clip = `polygon(0px 0px, ${xTop}px 0px, ${xBot}px 100%, 0px 100%)`;
+        if (vis && i > 0 && t < s.start + CUT) {
+          const k = Math.floor(clamp((t - s.start - 0.1) / (CUT - 0.1)) * 4) / 4;   // 四格
+          const m = (50 * (1 - k)).toFixed(1);
+          clip = `inset(${m}% 0% ${m}% 0%)`;
         }
         if (clip !== lastClip[i]) { root.style.clipPath = clip; lastClip[i] = clip; }
       });
+      let sn = -1;
+      for (const s of L.scenes.slice(1)) if (t >= s.start - 0.05 && t < s.start + 0.12) sn = Math.floor((t - s.start + 0.05) / 0.05) % 3;
+      snows.forEach((im, j) => { const v = j === sn ? '1' : '0'; if (im.style.opacity !== v) im.style.opacity = v; });
     });
-    // 换场的声音：斜切平面像一枚钉子敲下去，用 thud（撞击）而不是 whoosh（气流）。
-    for (const s of L.scenes.slice(1)) sfx('thud', s.start - 0.3, { g: 0.55, p: 0.2 });
+    for (const s of L.scenes.slice(1)) sfx('drive', s.start - 0.05, { g: 0.6 });
   },
 };
