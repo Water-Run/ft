@@ -1,4 +1,4 @@
-# Harness 群观
+# 开源 Harness 详解
 
 逐个讲解编码智能体的运行框架（Harness）：它怎样把模型接到工具、文件和终端上。
 
@@ -19,7 +19,7 @@
 
 | 项 | 约定 |
 |---|---|
-| 标题 | `<对象>是怎么实现的？`，例如「CodeX CLI 是怎么实现的？」「OpenCode 是怎么实现的？」；每集一个 Harness 对象 |
+| 标题 | `开源 Harness 详解：<对象>`，例如「开源 Harness 详解：CodeX」「开源 Harness 详解：OpenCode」；每集一个 Harness 对象。系列名与标题格式按 WaterRun 2026-10-24 原话「Harness部分重命名为 开源Harness详解. 标题为 开源Harness详解: CodeX 开源Harness详解: OpenCode ... 这样」，排版按仓库体例加空格、用全角冒号 |
 | 结构（建议） | 它是什么、由谁做 → 从检出里读出来的架构 → 一次任务的完整回合（实测）→ 工具与权限模型 → 上下文管理 → 与其他 Harness 的差异 → 它的来路（沿革） |
 | 演示与取证 | 各集用同一项任务做演示，便于横向比较；这类软件变化快，涉及的版本与日期逐项标明。秒速通《192 秒了解 LLM 的手：Harness 是什么，怎么工作的？》（`videos/in-seconds/harness`）是总论，可作本系列的引子 |
 | 历史变迁 | 每集固定有一节讲沿革，见下 |
@@ -75,16 +75,16 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | CodeX CLI 是怎么实现的？ | zh + en | 计划中 | [`codex`](codex/) |
-| 2 | OpenCode 是怎么实现的？ | zh + en | 计划中 | [`opencode`](opencode/) |
-| 3 | Codewhale | zh + en | 计划中 | `codewhale` |
-| 4 | DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |
-| 5 | OpenClaude | zh + en | 计划中 | `openclaude` |
-| 6 | Grok Build | zh + en | 计划中 | `grok-build` |
-| 7 | Mimo Code | zh + en | 计划中 | `mimo-code` |
-| 8 | Kimi Code | zh + en | 计划中 | `kimi-code` |
-| 9 | Qwen Code | zh + en | 计划中 | `qwen-code` |
-| 10 | ZCode | zh + en | 计划中 | `zcode` |
-| 11 | MiniMax Code | zh + en | 计划中 | `minimax-code` |
-| 12 | Pi | zh + en | 计划中 | `pi` |
+| 1 | 开源 Harness 详解：CodeX | zh + en | 计划中 | [`codex`](codex/) |
+| 2 | 开源 Harness 详解：OpenCode | zh + en | 计划中 | [`opencode`](opencode/) |
+| 3 | 开源 Harness 详解：Codewhale | zh + en | 计划中 | `codewhale` |
+| 4 | 开源 Harness 详解：DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |
+| 5 | 开源 Harness 详解：OpenClaude | zh + en | 计划中 | `openclaude` |
+| 6 | 开源 Harness 详解：Grok Build | zh + en | 计划中 | `grok-build` |
+| 7 | 开源 Harness 详解：Mimo Code | zh + en | 计划中 | `mimo-code` |
+| 8 | 开源 Harness 详解：Kimi Code | zh + en | 计划中 | `kimi-code` |
+| 9 | 开源 Harness 详解：Qwen Code | zh + en | 计划中 | `qwen-code` |
+| 10 | 开源 Harness 详解：ZCode | zh + en | 计划中 | `zcode` |
+| 11 | 开源 Harness 详解：MiniMax Code | zh + en | 计划中 | `minimax-code` |
+| 12 | 开源 Harness 详解：Pi | zh + en | 计划中 | `pi` |
 <!-- catalog:end -->

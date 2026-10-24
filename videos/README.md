@@ -37,7 +37,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 第 3 稿（约 13:44）与四张关键帧已交 WaterRun 审；确认后出 10 段配音 Demo 与配乐试听，再做有声代表段 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 第 3 稿（约 13:44）与四张关键帧已交 WaterRun 审；全系列文案主线确认后调整首尾衔接，再出 10 段配音 Demo 与配乐试听 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 最新 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
@@ -52,14 +52,14 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](database-engines/myisam/) |  |
-| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) |  |
-| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) |  |
-| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](database-engines/firebird/) |  |
+| 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](database-engines/myisam/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
+| 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
+| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
+| 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](database-engines/firebird/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
 | 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
 | 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |  |
 | 7 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh | 计划中 | `mongodb` |  |
-| 8 | 一个数据库引擎是如何实现的？——缓存：Redis和KeyDB | zh | 计划中 | `redis-keydb` |  |
+| 8 | 一个数据库引擎是如何实现的？——缓存：Redis、KeyDB 与 Valkey | zh | 计划中 | `redis-keydb-valkey` |  |
 
 ### 编程语言
 
@@ -234,24 +234,24 @@
 |---|---|---|---|---|---|
 | 1 | 米格 29，第聂伯河雨燕 | zh + en | 计划中 | `mig-29` |  |
 
-### Harness 群观
+### 开源 Harness 详解
 
-[系列说明](agent-harnesses/README.md)；英文名 A Survey of Harnesses。缺省语言：zh + en。
+[系列说明](agent-harnesses/README.md)；英文名 Open-Source Harnesses Explained。缺省语言：zh + en。
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | CodeX CLI 是怎么实现的？<br>How Is the CodeX CLI Built? | zh + en | 计划中 | [`codex`](agent-harnesses/codex/) |  |
-| 2 | OpenCode 是怎么实现的？<br>How Is OpenCode Built? | zh + en | 计划中 | [`opencode`](agent-harnesses/opencode/) |  |
-| 3 | Codewhale | zh + en | 计划中 | `codewhale` | 原始清单中出现两次，这里只列一条 |
-| 4 | DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |  |
-| 5 | OpenClaude | zh + en | 计划中 | `openclaude` |  |
-| 6 | Grok Build | zh + en | 计划中 | `grok-build` |  |
-| 7 | Mimo Code | zh + en | 计划中 | `mimo-code` |  |
-| 8 | Kimi Code | zh + en | 计划中 | `kimi-code` |  |
-| 9 | Qwen Code | zh + en | 计划中 | `qwen-code` |  |
-| 10 | ZCode | zh + en | 计划中 | `zcode` |  |
-| 11 | MiniMax Code | zh + en | 计划中 | `minimax-code` |  |
-| 12 | Pi | zh + en | 计划中 | `pi` |  |
+| 1 | 开源 Harness 详解：CodeX<br>Open-Source Harnesses Explained: CodeX | zh + en | 计划中 | [`codex`](agent-harnesses/codex/) |  |
+| 2 | 开源 Harness 详解：OpenCode<br>Open-Source Harnesses Explained: OpenCode | zh + en | 计划中 | [`opencode`](agent-harnesses/opencode/) |  |
+| 3 | 开源 Harness 详解：Codewhale | zh + en | 计划中 | `codewhale` | 原始清单中出现两次，这里只列一条 |
+| 4 | 开源 Harness 详解：DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |  |
+| 5 | 开源 Harness 详解：OpenClaude | zh + en | 计划中 | `openclaude` |  |
+| 6 | 开源 Harness 详解：Grok Build | zh + en | 计划中 | `grok-build` |  |
+| 7 | 开源 Harness 详解：Mimo Code | zh + en | 计划中 | `mimo-code` |  |
+| 8 | 开源 Harness 详解：Kimi Code | zh + en | 计划中 | `kimi-code` |  |
+| 9 | 开源 Harness 详解：Qwen Code | zh + en | 计划中 | `qwen-code` |  |
+| 10 | 开源 Harness 详解：ZCode | zh + en | 计划中 | `zcode` |  |
+| 11 | 开源 Harness 详解：MiniMax Code | zh + en | 计划中 | `minimax-code` |  |
+| 12 | 开源 Harness 详解：Pi | zh + en | 计划中 | `pi` |  |
 
 ### 底盘代号与车型发展史
 

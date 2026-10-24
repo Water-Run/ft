@@ -1,6 +1,6 @@
-# CodeX CLI 是怎么实现的？
+# 开源 Harness 详解：CodeX
 
-系列：[Harness 群观](../README.md)。
+系列：[开源 Harness 详解](../README.md)。2026-10-24 由「CodeX CLI 是怎么实现的？」改名，见系列说明。
 
 ## 状态
 
