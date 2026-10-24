@@ -6,29 +6,80 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+     与正片同一套视觉：手册架构图的暖灰底与青色页方块；右边（4:3 在下边）是本片的主画面——users 表那棵主键 B+ 树，
+     根页 4 加 21 页叶子，叶子的高度是实测的行数（data.js，FACTS T1–T3）。底部约 15% 不放文字。 */
+  :root { --bg: #F4F3F2; --ink: #15191C; --ink2: #4A5358; --main: #00758F; --mainD: #2D5A68; --teal: #AED9D7; --pale: #D9EEEF; --acc: #B5452E; --accL: #F3DCD5; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; --M: 120px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 100px; }
+  #stage { position: relative; background: var(--bg); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .series { position: absolute; left: var(--M); font: 700 46px "Sans SC"; color: var(--ink2); }
+  .part { position: absolute; font: 800 44px "Inter"; color: #fff; background: var(--mainD); padding: 6px 20px; }
+  .t1 { position: absolute; left: var(--M); font: 900 168px "Sans SC"; line-height: 1.04; color: var(--ink); letter-spacing: -.01em; }
+  .t2 { position: absolute; left: var(--M); font: 800 228px "Inter"; line-height: 1; color: var(--mainD); letter-spacing: -.02em; }
+  .tree { position: absolute; }
+  .tree .root { position: absolute; height: 40px; border: 3px solid var(--mainD); background: var(--pale); }
+  .tree .leaf { position: absolute; border: 3px solid var(--mainD); background: #fff; }
+  .tree .leaf i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--teal); }
+  .tree .leaf.hot { border-color: var(--main); }
+  .tree .leaf.hot i { background: var(--main); }
+  .tree svg { position: absolute; left: 0; top: 0; overflow: visible; }
+  .bar { position: absolute; height: 58px; font: 800 36px "Inter"; padding: 6px 16px; }
+  .bar.unc { color: var(--acc); border: 3px solid var(--acc); background-color: var(--accL);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M-2,2 l4,-4 M0,16 L16,0 M14,18 l4,-4' stroke='%23B5452E' stroke-width='3.5'/%3E%3C/svg%3E"); }
+  .bar.unc b { background: #fff; padding: 0 8px; }
+  .bar.ok { color: #fff; background: var(--main); border: 3px solid var(--main); }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
+  <div class="series"></div>
+  <div class="part">PART 2</div>
+  <div class="t1"></div>
+  <div class="t2">InnoDB</div>
+  <div class="tree"></div>
+  <div class="bar unc"><b>43</b></div>
+  <div class="bar ok">43</div>
 </div>
+<script src="js/data.js"></script>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  const R43 = q.get('r') === '43';
+  document.documentElement.className = (R43 ? 'r43' : 'r169') + ' ' + lang;
+  const $ = (s) => document.querySelector(s);
+  const pos = (e, o) => { for (const k in o) e.style[k] = typeof o[k] === 'number' ? o[k] + 'px' : o[k]; };
+  $('.series').textContent = '一个数据库引擎是如何实现的？';
+  $('.t1').textContent = '事务性与现代化';
+  // 版式：16:9 标题在左、树在右；4:3 标题在上、树在下
+  const L = R43
+    ? { series: [100, 96], part: [1300, 88], t1: 196, t2: 380, tree: { x: 100, y: 690, w: 1400, h: 300 }, bars: [100, 620] }
+    : { series: [120, 110], part: [1620, 104], t1: 214, t2: 410, tree: { x: 1010, y: 450, w: 790, h: 420 }, bars: [120, 690] };
+  pos($('.series'), { top: L.series[1] });
+  pos($('.part'), { left: L.part[0], top: L.part[1] });
+  pos($('.t1'), { top: L.t1 });
+  pos($('.t2'), { top: L.t2 });
+  // 一行的两个版本：未提交（斜纹）→ 提交（实心）——事务这件事本身
+  pos($('.bar.unc'), { left: L.bars[0], top: L.bars[1], width: R43 ? 260 : 220 });
+  pos($('.bar.ok'), { left: L.bars[0] + (R43 ? 260 : 220), top: L.bars[1], width: R43 ? 260 : 220 });
+  // 主键树：根页 + 21 页叶子，叶子里的填充按实测行数（满页 207 行）
+  const T = L.tree, tree = $('.tree'), leaves = window.DATA.pk.leaves, n = leaves.length;
+  pos(tree, { left: T.x, top: T.y, width: T.w, height: T.h });
+  const pitch = T.w / n, lw = Math.round(pitch * 0.72), lh = Math.round(T.h * 0.62), ly = T.h - lh;
+  const root = document.createElement('div'); root.className = 'root'; tree.appendChild(root);
+  pos(root, { left: 0, top: 0, width: T.w });
+  const NS = 'http://www.w3.org/2000/svg';
+  const sv = document.createElementNS(NS, 'svg'); sv.setAttribute('width', T.w); sv.setAttribute('height', T.h); tree.appendChild(sv);
+  leaves.forEach((l, k) => {
+    const cx = pitch * (k + 0.5);
+    const ln = document.createElementNS(NS, 'line');
+    Object.entries({ x1: cx, y1: 43, x2: cx, y2: ly - 3, stroke: '#2D5A68', 'stroke-width': 2.5 }).forEach(([a, v]) => ln.setAttribute(a, v));
+    sv.appendChild(ln);
+    const e = document.createElement('div'); e.className = 'leaf' + (l.page === 27 ? ' hot' : ''); tree.appendChild(e);
+    pos(e, { left: cx - lw / 2, top: ly, width: lw, height: lh });
+    const f = document.createElement('i'); e.appendChild(f); f.style.height = (100 * l.n / 207).toFixed(1) + '%';
+  });
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('800 40px "Inter"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

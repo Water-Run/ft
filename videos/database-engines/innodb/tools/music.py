@@ -144,6 +144,9 @@ class Mix:
 def _sections(ctx, bar):
     total = ctx['total']
     hits = (ctx.get('audio') or {}).get('hits') or [total * 0.23, total * 0.47, total * 0.87]
+    # hits 也可以写场景号（如 "s3"），取该场开始的时刻：配音后时间线变了，段落仍落在章节开头
+    starts = {sc['id']: sc['start'] for sc in ctx.get('scenes') or []}
+    hits = [starts.get(h, total * 0.5) if isinstance(h, str) else h for h in hits]
     return [round(h / bar) * bar for h in hits]
 
 

@@ -46,7 +46,12 @@
     "style": "commit",
     "music_db": -16,
     "duck_db": 8,
-    "sfx_db": -8
+    "sfx_db": -8,
+    "hits": [
+      "s3",
+      "s6",
+      "s8"
+    ]
   },
   "render": {
     "fps": 60,
