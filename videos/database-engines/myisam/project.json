@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
-  "stage": "delivered",
-  "next": "WaterRun 已确认并投稿；补登记发布信息",
+  "stage": "released",
+  "next": "已发布（2026-10-24），冻结",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -97,5 +97,22 @@
     "speed": {
       "zh": 1.1
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-10-24",
+    "duration": {
+      "zh": 577.98
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1PMHK6mEtm",
+      "date": "2026-10-24",
+      "title": "未核（本机读取平台页面失败：接口 412，网页抓取无内容）",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }
