@@ -1,7 +1,7 @@
 """research/lab 的实测产物 → src/js/data.js（画面上的页号、树边、计数都从这里取）。
 
 运行：python videos/database-engines/sqlite/tools/gen_data.py
-只读 out_02/05/08 的 JSON，不重新做实验。
+只读 out_02/04/05/08/09 的 JSON，不重新做实验。
 """
 import json
 from pathlib import Path
@@ -27,6 +27,7 @@ def tree(t, keep_seps=()):
 
 def main():
     s02, s05, s08 = load("out_02_structure.json"), load("out_05_wal.json"), load("out_08_trace.json")
+    s04, s09 = load("out_04_reuse.json"), load("out_09_page.json")
     main_db = s02["main"]
     trees = {t["name"]: t for t in main_db["trees"]}
 
@@ -65,6 +66,13 @@ def main():
         "bytecode": [{"addr": b["addr"], "op": b["opcode"], "p2": b["p2"], "p4": b["p4"], "note": b["comment"]}
                      for b in s02["plans"]["index_then_table"]["bytecode"]],
         "trace": {k: v for k, v in s08["summary"].items()},
+        "page130": {k: s09["alice_page"][k] for k in ("header_bytes", "cell_count", "pointer_array", "cell_content_start", "unallocated_bytes", "pointers")}
+                   | {"cells": [{"slot": c["slot"], "off": c["offset"], "rowid": c["rowid"], "bytes": c["cell_bytes"]} for c in s09["alice_page"]["cells"]]},
+        "note": {"page": s09["note_page"]["page"], "payload": s09["note_page"]["cell"]["payload_bytes"], "local": s09["note_page"]["cell"]["local_payload_bytes"],
+                 "chain": s09["overflow_chain"]},
+        "magic": s09["summary"]["file_magic"],
+        "aliceCellHex": next(c["cell_hex"] for c in s09["alice_page"]["cells"] if c["rowid"] == 2050),
+        "reuse": s04["summary"],
         "wal": {"frames": [f["page"] for f in s05["wal"]["frames"]], "commitPages": s05["wal"]["frames"][-1]["database_pages_if_commit"],
                 "summary": s05["summary"], "lockedError": s05["competing_writer_error"].split(": ", 1)[-1]},
     }

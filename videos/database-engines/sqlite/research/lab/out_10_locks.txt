@@ -1,0 +1,43 @@
+[writer] PRAGMA journal_mode=DELETE;
+[{"journal_mode":"delete"}]
+
+[writer] PRAGMA synchronous=FULL;
+(no result rows)
+
+[old-reader] BEGIN;
+(no result rows)
+
+[old-reader] SELECT age FROM users WHERE id=2050;
+[{"age":42}]
+
+[writer] BEGIN IMMEDIATE;
+UPDATE users SET age=43 WHERE id=2050;
+(no result rows)
+
+[new-reader] SELECT age FROM users WHERE id=2050;
+[{"age":42}]
+
+[writer] COMMIT;
+Error near line 15: database is locked
+
+[new-reader] SELECT age FROM users WHERE id=2050;
+Error near line 10: database is locked
+
+[old-reader] SELECT age FROM users WHERE id=2050;
+[{"age":42}]
+
+[old-reader] COMMIT;
+(no result rows)
+
+[writer] COMMIT;
+(no result rows)
+
+[new-reader] SELECT age FROM users WHERE id=2050;
+[{"age":43}]
+
+[old-reader] SELECT age FROM users WHERE id=2050;
+[{"age":43}]
+
+[writer] PRAGMA integrity_check;
+[{"integrity_check":"ok"}]
+

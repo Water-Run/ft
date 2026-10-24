@@ -1,0 +1,538 @@
+{
+  "summary": {
+    "file_magic": "SQLite format 3",
+    "alice_page": 130,
+    "alice_slot": 9,
+    "alice_offset": 489,
+    "alice_cell_bytes": 13,
+    "alice_payload_bytes": 10,
+    "page130_cells": 17,
+    "page130_unallocated_bytes": 41,
+    "note_payload_bytes": 12005,
+    "note_local_bytes": 785,
+    "overflow_pages": [
+      543,
+      544,
+      545,
+      546,
+      547,
+      548,
+      549,
+      550,
+      551,
+      552,
+      553
+    ]
+  },
+  "file_header": {
+    "magic": "SQLite format 3",
+    "page_size": 1024,
+    "page_count": 553,
+    "change_counter": 6
+  },
+  "alice_page": {
+    "page": 130,
+    "file_offset": 132096,
+    "flag_hex": "0d",
+    "header_bytes": 8,
+    "cell_count": 17,
+    "pointer_array": [
+      8,
+      42
+    ],
+    "cell_content_start": 83,
+    "unallocated_bytes": 41,
+    "first_freeblock": 0,
+    "fragmented_bytes": 0,
+    "pointers": [
+      966,
+      908,
+      850,
+      792,
+      734,
+      676,
+      618,
+      560,
+      502,
+      489,
+      431,
+      373,
+      315,
+      257,
+      199,
+      141,
+      83
+    ],
+    "cells": [
+      {
+        "slot": 0,
+        "offset": 966,
+        "rowid": 2041,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f79040071015573657230323034312d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e2b",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02041-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            43
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 1,
+        "offset": 908,
+        "rowid": 2042,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f7a040071015573657230323034322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e2c",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02042-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            44
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 2,
+        "offset": 850,
+        "rowid": 2043,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f7b040071015573657230323034332d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e2d",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02043-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            45
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 3,
+        "offset": 792,
+        "rowid": 2044,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f7c040071015573657230323034342d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e2e",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02044-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            46
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 4,
+        "offset": 734,
+        "rowid": 2045,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f7d040071015573657230323034352d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e2f",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02045-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            47
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 5,
+        "offset": 676,
+        "rowid": 2046,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f7e040071015573657230323034362d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e30",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02046-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            48
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 6,
+        "offset": 618,
+        "rowid": 2047,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "378f7f040071015573657230323034372d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e31",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02047-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            49
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 7,
+        "offset": 560,
+        "rowid": 2048,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379000040071015573657230323034382d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e32",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            50
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 8,
+        "offset": 502,
+        "rowid": 2049,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379001040071015573657230323034392d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e33",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            51
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 9,
+        "offset": 489,
+        "rowid": 2050,
+        "payload_bytes": 10,
+        "cell_header_bytes": 3,
+        "cell_bytes": 13,
+        "cell_hex": "0a900204001701416c6963652a",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            23,
+            1
+          ],
+          "values": [
+            null,
+            "Alice",
+            42
+          ],
+          "payload_bytes": 10
+        }
+      },
+      {
+        "slot": 10,
+        "offset": 431,
+        "rowid": 2051,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379003040071015573657230323035312d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e35",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            53
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 11,
+        "offset": 373,
+        "rowid": 2052,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379004040071015573657230323035322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e36",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            54
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 12,
+        "offset": 315,
+        "rowid": 2053,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379005040071015573657230323035332d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e37",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02053-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            55
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 13,
+        "offset": 257,
+        "rowid": 2054,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379006040071015573657230323035342d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e38",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02054-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            56
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 14,
+        "offset": 199,
+        "rowid": 2055,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379007040071015573657230323035352d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e39",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02055-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            57
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 15,
+        "offset": 141,
+        "rowid": 2056,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379008040071015573657230323035362d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e3a",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02056-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            58
+          ],
+          "payload_bytes": 55
+        }
+      },
+      {
+        "slot": 16,
+        "offset": 83,
+        "rowid": 2057,
+        "payload_bytes": 55,
+        "cell_header_bytes": 3,
+        "cell_bytes": 58,
+        "cell_hex": "379009040071015573657230323035372d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e3b",
+        "record": {
+          "header_size": 4,
+          "serial_types": [
+            0,
+            113,
+            1
+          ],
+          "values": [
+            null,
+            "User02057-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+            59
+          ],
+          "payload_bytes": 55
+        }
+      }
+    ]
+  },
+  "note_page": {
+    "page": 542,
+    "file_offset": 553984,
+    "flag_hex": "0d",
+    "header_bytes": 8,
+    "cell_count": 1,
+    "pointer_array": [
+      8,
+      10
+    ],
+    "cell_content_start": 232,
+    "unallocated_bytes": 222,
+    "first_freeblock": 0,
+    "fragmented_bytes": 0,
+    "pointers": [
+      232
+    ],
+    "cell": {
+      "slot": 0,
+      "offset": 232,
+      "rowid": 1,
+      "payload_bytes": 12005,
+      "cell_header_bytes": 3,
+      "local_payload_bytes": 785,
+      "first_overflow_page": 543,
+      "cell_bytes": 792
+    }
+  },
+  "overflow_chain": [
+    {
+      "page": 543,
+      "next": 544
+    },
+    {
+      "page": 544,
+      "next": 545
+    },
+    {
+      "page": 545,
+      "next": 546
+    },
+    {
+      "page": 546,
+      "next": 547
+    },
+    {
+      "page": 547,
+      "next": 548
+    },
+    {
+      "page": 548,
+      "next": 549
+    },
+    {
+      "page": 549,
+      "next": 550
+    },
+    {
+      "page": 550,
+      "next": 551
+    },
+    {
+      "page": 551,
+      "next": 552
+    },
+    {
+      "page": 552,
+      "next": 553
+    },
+    {
+      "page": 553,
+      "next": 0
+    }
+  ],
+  "limits": [
+    "Bytes decoded from the measured file with the format specification; layout facts are for this file only.",
+    "Local payload limits follow fileformat section 1.6 for a 1024-byte page without reserved bytes."
+  ]
+}

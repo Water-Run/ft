@@ -133,6 +133,46 @@ if (F === 3) {
   text(leafX[route[2]] + 4, ly + lh + 56, '叶页 263：Alice · 2050', { class: 'la', 'font-size': 38, 'font-weight': 700, fill: C.blue });
   text(1800, ly + lh + 56, `叶页 ${D.counts.namesLeaf} 条 + 内部页 ${D.counts.namesInterior} 条 = 4096`, { class: 'zh', 'font-size': 38, 'font-weight': 600, 'text-anchor': 'end' });
 }
+if (F === 4) {
+  chrome('04', '一页里有什么');
+  const P = D.page130, X0 = 120, W = 1680, k = W / D.file.pageSize, y = 300, h = 96;
+  text(120, 236, '叶页 130', { class: 'zh', 'font-size': 96, 'font-weight': 700 });
+  text(560, 236, '1024 字节，按真实比例', { class: 'zh', 'font-size': 38, 'font-weight': 600, fill: C.dim });
+  // 整页一条：页头、指针区、空地、从页尾往前排的行（按字节真实比例）
+  const bx = (o) => X0 + o * k;
+  el('rect', { x: bx(0), y, width: P.pointer_array[1] * k, height: h, fill: C.teal });
+  el('rect', { x: bx(P.pointer_array[1]), y, width: P.unallocated_bytes * k, height: h, fill: C.paper });
+  for (const c of P.cells) el('rect', { x: bx(c.off) + 1, y, width: c.bytes * k - 2, height: h, fill: c.rowid === 2050 ? C.blue : C.ink });
+  el('rect', { x: X0, y, width: W, height: h, fill: 'none', stroke: C.ink, 'stroke-width': 3 });
+  text(1800, y - 22, '行从页尾往前放', { class: 'zh', 'font-size': 28, 'font-weight': 700, 'text-anchor': 'end' });
+  for (const o of [489, 1024]) text(bx(o) + (o === 1024 ? 0 : 6), y + h + 38, o, { class: 'k', 'font-size': 28, 'text-anchor': o === 1024 ? 'end' : 'middle', fill: o === 489 ? C.blue : C.dim, 'font-weight': 700 });
+  // 放大：开头 83 个字节
+  const iy = 500, ih = 84, iw = 620, ik = iw / P.cell_content_start, ix = (o) => X0 + o * ik;
+  el('path', { d: `M${bx(0)} ${y + h} L${ix(0)} ${iy} M${bx(P.cell_content_start)} ${y + h} L${ix(P.cell_content_start)} ${iy}`, stroke: C.ink, 'stroke-width': 2, 'stroke-opacity': .45, fill: 'none' });
+  el('rect', { x: ix(0), y: iy, width: 8 * ik, height: ih, fill: C.teal });
+  for (let i = 0; i < P.cell_count; i++) el('rect', { x: ix(8 + 2 * i) + 1, y: iy, width: 2 * ik - 2, height: ih, fill: i === 9 ? C.blue : C.ink, 'fill-opacity': i === 9 ? 1 : .7 });
+  el('rect', { x: ix(P.pointer_array[1]), y: iy, width: P.unallocated_bytes * ik, height: ih, fill: C.paper, stroke: C.ink, 'stroke-width': 2, 'stroke-dasharray': '7 6' });
+  el('rect', { x: ix(0), y: iy, width: iw, height: ih, fill: 'none', stroke: C.ink, 'stroke-width': 3 });
+  const brace = (o1, o2, s, col = C.ink) => { const x1 = ix(o1) + 4, x2 = ix(o2) - 4, yy = iy + ih + 16; el('path', { d: `M${x1} ${yy} L${x1} ${yy + 10} L${x2} ${yy + 10} L${x2} ${yy}`, stroke: col, 'stroke-width': 3, fill: 'none' }); text((x1 + x2) / 2, yy + 50, s, { class: 'zh', 'font-size': 28, 'font-weight': 700, 'text-anchor': 'middle', fill: col }); };
+  brace(0, 8, '页头 8'); brace(8, P.pointer_array[1], '17 个指针 × 2'); brace(P.pointer_array[1], P.cell_content_start, '空地 41', C.dim);
+  // 行号 2050 的指针写着 489
+  const px = ix(8 + 2 * 9) + ik;
+  behind(el('path', { d: `M${px} ${iy} C ${px} ${iy - 90}, ${bx(489) + 6} ${y + h + 120}, ${bx(489) + 6} ${y + h + 48}`, fill: 'none', stroke: C.blue, 'stroke-width': 4 }));
+  // 放大：Alice 的 13 个字节
+  const hex = D.aliceCellHex.match(/../g), cw = 80, cy = 740, ch = 96, cx0 = 1800 - hex.length * cw;
+  el('path', { d: `M${bx(489)} ${y + h} L${cx0} ${cy} M${bx(489 + 13)} ${y + h} L${cx0 + hex.length * cw} ${cy}`, stroke: C.blue, 'stroke-width': 2, 'stroke-opacity': .5, fill: 'none' });
+  hex.forEach((v, i) => {
+    el('rect', { x: cx0 + i * cw, y: cy, width: cw, height: ch, fill: i >= 3 ? C.sky : C.paper, stroke: C.ink, 'stroke-width': 3 });
+    text(cx0 + i * cw + cw / 2, cy + 62, v, { class: 'k', 'font-size': 38, 'font-weight': 700, 'text-anchor': 'middle' });
+  });
+  const groups = [[0, 1, '长度'], [1, 3, '行号 2050'], [3, 7, '类型'], [7, 12, 'Alice'], [12, 13, '42']];
+  groups.forEach(([g1, g2, s2], gi) => {
+    const x1 = cx0 + g1 * cw + 6, x2 = cx0 + g2 * cw - 6, yy = cy + ch + 16;
+    el('path', { d: `M${x1} ${yy} L${x1} ${yy + 10} L${x2} ${yy + 10} L${x2} ${yy}`, stroke: C.ink, 'stroke-width': 3, fill: 'none' });
+    text((x1 + x2) / 2, yy + 50, s2, { class: gi === 3 ? 'la' : 'zh', 'font-size': 30, 'font-weight': 700, 'text-anchor': 'middle', fill: gi >= 3 ? C.blue : C.ink });
+  });
+  text(1800, cy - 24, '第 489 字节起，13 个字节', { class: 'zh', 'font-size': 28, 'font-weight': 700, fill: C.blue, 'text-anchor': 'end' });
+}
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

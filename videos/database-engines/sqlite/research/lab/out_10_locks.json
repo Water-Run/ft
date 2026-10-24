@@ -1,0 +1,70 @@
+{
+  "summary": {
+    "journal_mode": "delete",
+    "reader_during_uncommitted_write": 42,
+    "commit_with_open_reader": "database is locked",
+    "new_reader_after_failed_commit": "database is locked",
+    "commit_after_reader_finished": "ok",
+    "values_after": [
+      43,
+      43
+    ]
+  },
+  "steps": [
+    {
+      "process": "old-reader",
+      "action": "BEGIN; SELECT age",
+      "result": 42
+    },
+    {
+      "process": "writer",
+      "action": "BEGIN IMMEDIATE; UPDATE age=43",
+      "result": "ok"
+    },
+    {
+      "process": "new-reader",
+      "action": "SELECT age while writer has not committed",
+      "result": 42
+    },
+    {
+      "process": "writer",
+      "action": "COMMIT while old reader still reading",
+      "result": "database is locked"
+    },
+    {
+      "process": "new-reader",
+      "action": "SELECT age after the failed COMMIT",
+      "result": "database is locked"
+    },
+    {
+      "process": "old-reader",
+      "action": "SELECT age again",
+      "result": 42
+    },
+    {
+      "process": "old-reader",
+      "action": "COMMIT (ends read transaction)",
+      "result": "ok"
+    },
+    {
+      "process": "writer",
+      "action": "COMMIT again",
+      "result": "ok"
+    },
+    {
+      "process": "new-reader",
+      "action": "SELECT age",
+      "result": 43
+    },
+    {
+      "process": "old-reader",
+      "action": "SELECT age",
+      "result": 43
+    }
+  ],
+  "limits": [
+    "Busy timeout 0, so every conflict returns immediately instead of waiting.",
+    "Controlled sequential order between real processes on one Windows host; not a race test.",
+    "Lock names follow atomiccommit.html sections 3.2-3.12; the shell reports only success or 'locked'."
+  ]
+}
