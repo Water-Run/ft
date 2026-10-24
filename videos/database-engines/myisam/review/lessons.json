@@ -1,144 +1,168 @@
 {
   "schema": 2,
-  "version": "2026-10-24.1",
+  "version": "2026-10-24.2",
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：开场 0:00–0:30 提出「数据放在哪里、怎样被找到」，01–09 章逐个回答（放、找、改删、并发、出错），10 章 8:37–9:00 五个问题收束（2026-10-24 通读第 5 稿与逐句截图 scan.js）"
     },
     "F02": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "同一张 users 表（alice 等 8 行）从建表走到字节、删除、索引、查询、锁与崩溃；十万行的 users_big 只在 06–07 章用于规模。新名词（存储引擎、handler、定长/动态格式、dellink、B 树、键缓存、表锁、并发插入、open_count、CHECK/REPAIR）在首次出现处有旁白与画面（通读第 5 稿 + 总览图）"
     },
     "F03": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "名称与比较首次出现：MyISAM（开场）、.frm/.MYD/.MYI（02 章，扩展名含义出自 FACTS）、定长 vs 动态（05 章 615 vs 84 字节）、MyISAM vs InnoDB（10 章，行级锁/事务/崩溃恢复与 ROLLBACK 实测）（通读第 5 稿）"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js：zh 0:00–9:36 量到 400 段文字，0 段不够下限（2026-10-24）。制作方不能以正常速度连续观看视频，只用每 3 秒一帧的总览图与逐句截图复查；连续观看需要人来做",
       "evidence": ""
     },
     "F05": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "总览图逐帧看机制段：03 章字节重排与 N×16 跳行、04 章删除改写 7 字节与空位链、05 章一行分两段、06 章页分裂、07 章逐页读入、08 章读写锁时间轴与并发插入、09 章断电前后与 CHECK/REPAIR，均能看出前后状态。未做连续观看"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方听不到声音：主混音、无配乐版、仅旁白版都没有试听。响度与事件数（音效 270 余个、9 种）只是数值",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "终端与画面只出现 mysql> myisam_demo、表名、文件名与实测数据；没有本机路径、用户名或地址（scan.js 逐句文字清单 + 总览图逐帧）。封面同"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "ffprobe 与 finish.js 读取最终文件 out/myisam-zh-1080p60.mp4：h264 1920×1080 60 帧、AAC，时长 577.98 s；响度 I = -15.9 LUFS、TP = -1.3 dBFS（2026-10-24）；与 README「交付」逐项一致"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "策划者反馈记在 docs/log/feedback.md P59–P77（来源类别与日期）与本片 review/NOTES.md；事实异议回到 FACTS（「时间轴的年份」一节注明来源与检索方式）"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "旁白不引用其他集；只在结尾画面标 PART 2 · InnoDB 与旁白「它在同样的五个问题上给出了更复杂的答案」作衔接，不需要看过前后集（通读第 5 稿）"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "英文回显旁都有中文：CHECK/REPAIR 各行释义、Warning 1196 释义、Select tables optimized away 释义、SHOW ENGINES 的 Transactions 列、第 10 章 Corrupt；接口名 write_row 等由旁白说明；readable.js 显示均留够阅读时间"
     },
     "F12": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方听不到音轨。ASR 筛出三处候选待人耳回听：m10h「服务停着的时候」被转成「停滞」；m10b「它也没有事务」被转成「事故」「适合」；m4「不记日志」被转成「不接日治」",
       "evidence": ""
     },
     "F13": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "01 章时间轴交代 MyISAM 的年代：3.23（2001）起为默认，5.5（2010）起换成 InnoDB，之后仍可用到 9.7.4；开场字幕「MySQL 5 时代的经典引擎」（总览图 1:00–1:10）"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "导出的校对稿（review/script.zh.563be4ff….md）只有旁白与字幕；片尾 9:27–9:36 为终端里的名单，credits 场景无旁白（script.js 中为 silent）"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏查说明性小字：去掉了复述字幕的说明（P76）；留下的「示意」「SHOW ENGINES（节选）」「MyISAM 仍可用」都是对画面性质的标注（scan.js 文字清单）"
     },
     "F16": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 MySQL 5.x 命令行客户端：等宽字、ASCII 表格边框、十六进制转储；MySQL 橙 #F29111 与蓝绿取自 MySQL 标志（research/MATERIALS.md）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方听不到声音；音色由 WaterRun 在 5 个候选中选定（温润男声，语速 1.1），成片语气未经试听",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "各章主画面见 README「设计」表：两层结构、三个文件、128 字节、空位链、notes 字节带、MYI 页与 B 树、三页查找路径、锁时间轴、崩溃现场、五块小画面（总览图逐帧；未做连续观看）"
     },
     "F19": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "抽查动作中间帧：换页时整页上滚淡出、时间轴带子生长、页分裂、行写回原位、空位被填；scan.js 无重叠与对比度错误（总览图每 3 秒一帧 + look.js 抽查，非逐 0.1 秒全量）"
     },
     "F20": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "颜色含义全片一致：橙 = 正在讲的焦点 / MyISAM，蓝绿 = 结构 / InnoDB，红 = 删除、错误、断电，绿 = 年龄字段（README「设计」）；每个图形对应一个被讲的对象"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "check.js 自成一体项通过；视觉为 D1 终端风格、配乐「磷光」为本片程序合成。未与近期两部片子并排看关键帧、并排听开头（制作方听不到声音）",
       "evidence": ""
     },
     "F22": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "成组的对象整组在场、只推进当前的那个：02 章三张卡同时在场轮流点亮，06 章文件头四个字段同时在场光标逐行移动，10 章五块小画面同时在场逐块动起来；挂在旁白词上的出现时刻统一校到讲到时（提前不超过 0.2 秒），逐条核对过偏差较大的 11 处"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "讲机制处由过程推进：接口三个方法各演一遍写入、读取、按索引查找的动作；表锁时间轴的播放头对准旁白（讲到写锁时写入开始）；并发插入的读游标与排队的新行；B 树分裂；三页之间的指针与逐页读入；断电后计数器与 CHECK/REPAIR（总览图逐帧 + 抽帧）"
+    },
+    "F24": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "镜头不推近、不缩放，只在换页时动，停留时每页单向横移不超过 48 像素；scan.js 的 CUT、CAPZONE 为 0（2026-10-24 最后一次扫描）；逐句截图核对正在讲的内容在画内"
+    },
+    "F25": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "sheets.js 每 3 秒一帧通看全片两轮（2026-10-24），空框等旁白的画面改为内容先在场（01、02、05、06、07、09、10 章）；去掉复述字幕的说明；时间轴补年份；没有挤满的帧"
+    },
+    "F26": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "第 10 章「四个」→「五个」由策划者指出后修改（P73），不是制作方主动发现；此后对照第 5 稿通读全稿，章节卡、数字、列举个数与画面一致（10 章五块、标题「五个问题」）"
+    },
+    "F27": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "交付前以总览图通看全片三轮（每 3 秒一帧，193 帧，2026-10-24），并对 01、07、08 章逐 0.2 秒抽帧；发现并修正：时间轴带子露出一截、OPTIMIZE 一行压箭头、接口方法名轮流闪烁与 SELECT 令牌盖住方法名、07 章读页的整行闪块与缺少页间指针、08 章写锁讲早于画面、读多写少画成全读、多处静止；扫描提示逐条处理（CUT/CAPZONE 0，仅 DENSE 一条为 03 章 128 个字节的字节表，属本章主画面）"
     }
   },
   "history": []
