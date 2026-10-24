@@ -7,12 +7,13 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
   },
-  "stage": "research",
-  "next": "实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审",
+  "stage": "review",
+  "next": "第 1 稿（约 9:22）与关键帧已交 WaterRun，按要求暂停；确认后出 10 段配音 Demo 与配乐试听，再做有声代表段",
   "credits": {
     "planner": "WaterRun",
     "models": [
-      { "name": "GPT-6.1 Sol", "roles": ["取证", "实测与结构测绘", "简报整理"] }
+      { "name": "GPT-6.1 Sol", "roles": ["取证", "实测与结构测绘", "简报整理"] },
+      { "name": "Claude Opus 5.5", "roles": ["补充取证", "文案", "视觉设计"] }
     ],
     "services": [],
     "repository": "https://github.com/Water-Run/ft"
@@ -32,7 +33,8 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4
+    "mb": 4,
+    "gpu": 1
   },
   "audio": {
     "music": "pulse",

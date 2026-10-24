@@ -35,6 +35,17 @@
 | S07 | [WAL](https://www.sqlite.org/wal.html)：§2 提交、§2.1 检查点、§2.2 读快照与写者；结合 S02 §4 的帧格式和校验 |
 | S08 | [原子提交](https://www.sqlite.org/atomiccommit.html)：§3 单文件提交、§4 回滚、§6.3 提交前缓存溢写；回滚模式与 WAL 的实现分开 |
 
+2026-10-24 制作方补读（下列页面当日阅读）：
+
+| 来源 | 定位 |
+|---|---|
+| S09 | [SQLite 版本 3 概述](https://www.sqlite.org/version3.html)：“The new database file format uses B+trees for tables. In a B+tree, all data is stored in the leaves of the tree instead of in both the leaves and the intermediate branch nodes. … Traditional B-trees are still used for indices.” |
+| S10 | [关于 SQLite](https://www.sqlite.org/about.html)：in-process library；“does not have a separate server process”；“A complete SQL database with multiple tables, indices … is contained in a single disk file”。[首页](https://www.sqlite.org/index.html)：“SQLite is a C-language library”、标语 “Small. Fast. Reliable. Choose any three.” |
+| S11 | [最广泛部署](https://www.sqlite.org/mostdeployed.html)：每部智能手机广泛使用，“each holding hundreds of SQLite database files”，属官网估计。[发布年表](https://www.sqlite.org/chronology.html)：1.0 于 2000-08-17，3.54.1 于 2026-10-16 |
+| S12 | [公有领域](https://www.sqlite.org/copyright.html)：“All of the code and documentation in SQLite has been dedicated to the public domain”；同版 src/btree.c 第 1–9 行：“The author disclaims copyright to this source code. In place of a legal notice, here is a blessing: May you do good and not evil. May you find forgiveness for yourself and forgive others. May you share freely, never taking more than you give.” pager.c、wal.c、vdbe.c 开头同一段 |
+| S13 | [PRAGMA journal_mode](https://www.sqlite.org/pragma.html#pragma_journal_mode)：“The DELETE journaling mode is the default … the delete operation is the action that causes the transaction to commit.” [WAL](https://www.sqlite.org/wal.html) §1：“The WAL approach inverts this”；“readers do not block writers and a writer does not block readers”；检查点停在读者的 end mark，“otherwise it might overwrite part of the database file that the reader is actively using” |
+| S14 | 文件格式 S02 §1.6：内部页 “contains K keys together with K+1 pointers to child b-tree pages”，“all children of an interior b-tree have the same depth”；同版 src/btreeInt.h 第 19–33 行 Ptr/Key 交替与 O(log M) 查找页数；页头标志 leafdata(4) 表示数据只在叶页 |
+
 ## 先建立整体结构
 
 | 编号 | 候选陈述 | 实测与交叉核对 | 适用范围、核查状态 |
@@ -100,6 +111,29 @@
 |---|---|---|
 | F01 | Alice 位于页 130、槽 9，页内偏移 489、文件偏移 132585；payload 为 10 字节 04001701416c6963652a | 02 table_route_reconstructed.cell：头长 4，serial types=0/23/1，值 NULL/Alice/42；rowid=2050 在单元键中，SQL 的 INTEGER PRIMARY KEY 仍返回 2050。S02 §1.6/2.1/2.3；本例已核，不泛化其他主键声明 |
 | F02 | notes 的 12000 字节文本使用页 543–553 的 11 页溢出链 | 02 long_note：从本地 payload 和指针解出完整文本、长度与哈希，并核对 DBSTAT 溢出页集；S02 §1.7。已核，不把页数当普遍阈值 |
+
+## 制作方补证（2026-10-24）
+
+写稿时为正式文案补充的陈述。G、H 两组的数字由 [02](lab/out_02_structure.json) 的整树数据直接计数，I 组来自新增的 [08](lab/out_08_trace.json)。
+
+| 编号 | 陈述 | 证据 | 范围与状态 |
+|---|---|---|---|
+| G01 | SQLite 是 C 语言库，在应用进程内运行，没有单独的服务进程；多张表和索引都在一个普通磁盘文件里 | S10；S06 classic serverless：“same process … no message passing or network activity” | 官方说明，已读于 2026-10-24 |
+| G02 | 1.0 发布于 2000 年；本片用 2026-10-16 发布的 3.54.1 | S11 年表；01 环境 | 已核 |
+| G03 | 官网估计每部智能手机里有成百个 SQLite 数据库文件 | S11 原文 “each holding hundreds of SQLite database files” | 官网估计，旁白须标明“官网估计” |
+| G04 | 代码属于公有领域；源码文件开头不写版权声明，写一段祝福 | S12；同版 btree.c、pager.c、wal.c、vdbe.c 第 1–9 行 | 已核于 3.54.1 源码 |
+| H01 | 内部页有 K 个分界、K+1 个子页；本库 users 根页 2 有 2 个分界、3 个子页，第 133 页有 94 个分界、95 个子页 | S14；02 nodes[].separators 与 children | 已核 |
+| H02 | 同一棵树的叶页都在同一层：users 的 256 个叶页、姓名索引的 228 个叶页深度都相同 | S14；02 nodes[].depth：users 1/3/256，姓名索引 1/14/228，年龄索引 1/36 | 已核 |
+| H03 | 表是 B+ 树：4096 行全在叶页；内部页的 255 个行号只作分界，例如根页的 1560，在叶页 99（行 1545–1560）里另有完整的一行 | S09；02 叶页单元合计 4096、内部单元 255；页头标志 0x05/0x0d 含 leafdata | 已核 |
+| H04 | 索引是传统 B 树：姓名索引叶页 3869 条、内部页 227 条，合计正好 4096，不重复；根页 262 的第一个分界 ['User00306…', 306] 不在任何叶页（叶页 279 止于 305，叶页 280 始于 307） | S09；02 计数与 index_interior_real_record；B03 | 已核 |
+| H05 | 沿姓名索引找 Alice 时范围逐层缩小：4096 → 306（第 281 页子树）→ 18（叶页 263）；沿表树找 2050：4096 → 1521（第 133 页子树）→ 17（叶页 130，行 2041–2057，位于分界 2040 与 2057 之间） | 02 子树条目计数 | 已核，数值仅属本样本 |
+| H06 | 编译出的程序共 15 条指令，其中两条 OpenRead 分别打开根页 2（users）与根页 262（姓名索引） | 02 plans.index_then_table.bytecode 第 1、2 条 | 已核；是程序清单，不是执行轨迹 |
+| I01 | 首次查询在文件接口上实际读取的页依次为 1、262、281、263、2、133、130，共 7 页；只取 id、姓名时为 1、262、281、263；强制扫描读 261 个不同的页 | 08：官方命令行 -vfstrace 记录每次 xRead，偏移 ÷ 1024 + 1 为页号；与 B01 重建路线和 03 的未命中数一致 | 已核；记录的是 SQLite 向操作系统发出的读请求，不观测系统缓存与设备 |
+| I02 | 同一连接再查一次，不再读任何页，只读文件头偏移 24 处的 16 字节，核对文件是否被改过 | 08 第二次运行；同版 pager.c 第 5452–5481 行（变化则清空缓存） | 已核 |
+| G05 | Firebird 3.0 起，同一个核心引擎既可由网络服务程序加载，也可作为嵌入式引擎加载 | [Firebird 3.0 发布说明](https://www.firebirdsql.org/file/documentation/release_notes/html/en/3_0/rlsnotes30.html)：“the Firebird core is now a unified library … loadable either as an embedded engine or by the ‘network listener’ executable”；§3 Remodelled Architecture “integrates the core engine for Classic/Superclassic, Superserver and embedded models in a common binary” | 读于 2026-10-24；只用于衔接，不比较两者实现 |
+| G06 | ClickHouse 是列式存储、面向在线分析（OLAP）的 SQL 数据库；分析查询动辄处理数十亿到数万亿行 | [ClickHouse 文档 What is ClickHouse?](https://clickhouse.com/docs/intro)：“column-oriented SQL database management system (DBMS) for online analytical processing (OLAP)”；“analytics queries routinely process billions and trillions of rows” | 读于 2026-10-24；只用于结尾引出 |
+| G07 | 全部功能打开时，SQLite 库可以小于 900 KiB，视平台与编译选项而定 | S10 about.html：“With all features enabled, the library size can be less than 900KiB, depending on the target platform and compiler optimization settings” | 官方说明；旁白用“可以小于” |
+| I03 | 回滚日志是默认模式；删除日志文件的那一刻即提交。WAL 正好相反：原内容留在主文件，改动追加进 WAL，读写互不阻塞，写者同时只有一个 | S13；E01–E05 | 已核 |
 
 ## 已核与尚未核
 

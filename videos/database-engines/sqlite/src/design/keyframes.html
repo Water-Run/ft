@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>SQLite 关键帧</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body { background: var(--paper); }
+  #stage { background: var(--paper); }
+  svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  .logo { position: absolute; }
+  .k { font-family: "Mono"; font-weight: 500; }
+  .zh { font-family: "Sans SC"; }
+  .la { font-family: "Inter"; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="../js/data.js"></script>
+<script>
+// 关键帧：静态页面，?f=1 标题、?f=2 users 的 B+ 树、?f=3 姓名索引的 B 树与 Alice 的路线。
+// 所有页号、子页数、计数取自 data.js（tools/gen_data.py 由实测生成）。
+const D = window.DATA, F = +(new URLSearchParams(location.search).get('f') || 1);
+const root = document.getElementById("stage");
+const C = { ink: '#003b57', teal: '#044a64', blue: '#0f80cc', sky: '#97d9f6', dim: '#5b7685', paper: '#ffffff' };
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.createElementNS(NS, 'svg'); root.appendChild(svg);
+function el(tag, a, parent = svg) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; }
+function text(x, y, s, a = {}) { const t = el('text', { x, y, fill: C.ink, ...a }); t.textContent = s; return t; }
+// 压在连线上的标签：先垫一块纸色底，线从标签后面穿过
+function label(x, y, s, a) { const t = text(x, y, s, a), b = t.getBBox(), r = el('rect', { x: b.x - 10, y: b.y - 4, width: b.width + 20, height: b.height + 8, fill: C.paper }); svg.insertBefore(r, t); return t; }
+function behind(e) { svg.insertBefore(e, svg.firstChild); return e; }
+function logo(x, y, h) { const i = document.createElement('img'); i.src = '../img/sqlite-banner.svg'; i.className = 'logo'; Object.assign(i.style, { left: x + 'px', top: y + 'px', height: h + 'px' }); root.appendChild(i); }
+function chrome(no, title) {   // 常驻：左上官方标志，右上章节
+  logo(120, 44, 64);
+  text(1800, 92, no, { 'text-anchor': 'end', class: 'la', 'font-size': 28, 'font-weight': 700, fill: C.teal, dx: -12 - title.length * 30 });
+  text(1800, 92, title, { 'text-anchor': 'end', class: 'zh', 'font-size': 28, 'font-weight': 700, fill: C.teal });
+  el('rect', { x: 120, y: 128, width: 1680, height: 3, fill: C.teal });
+}
+const fillOf = { u: C.ink, n: C.blue, a: C.sky, s: C.teal, t: C.dim, o: '#b9c8d0' };
+
+// 文件：553 页排成 7 行 × 79 列，一页一格，按归属上色
+function fileGrid(x, y, w, cell, gap) {
+  const cols = 79, owner = D.file.owner;
+  for (let i = 0; i < owner.length; i++) {
+    const cx = x + (i % cols) * (cell + gap), cy = y + Math.floor(i / cols) * (cell + gap);
+    el('rect', { x: cx, y: cy, width: cell, height: cell, fill: fillOf[owner[i]] });
+  }
+  return { h: Math.ceil(owner.length / cols) * (cell + gap) - gap };
+}
+
+if (F === 1) {
+  logo(120, 96, 120);
+  text(120, 336, '一个数据库引擎是如何实现的？', { class: 'zh', 'font-size': 48, 'font-weight': 600, fill: C.teal });
+  text(112, 520, '小而强大', { class: 'zh', 'font-size': 180, 'font-weight': 800, 'letter-spacing': '-4' });
+  text(120, 604, 'Small. Fast. Reliable. Choose any three.', { class: 'la', 'font-size': 38, 'font-weight': 600, fill: C.teal });
+  text(120, 652, '官网标语：小、快、可靠，三样都选', { class: 'zh', 'font-size': 28, 'font-weight': 500, fill: C.dim });
+  const g = fileGrid(120, 724, 1680, 17, 4.27);
+  text(120, 724 + g.h + 52, 'main.db　553 页 × 1024 字节　一个文件', { class: 'zh', 'font-size': 28, 'font-weight': 500, fill: C.dim });
+  const legend = [['u', 'users 表'], ['n', '姓名索引'], ['a', '年龄索引'], ['o', '长文本续页']];
+  let lx = 1800;
+  for (const [k, s] of legend.reverse()) { const w = s.length * 28 + 40; lx -= w + 28; el('rect', { x: lx, y: 724 + g.h + 30, width: 24, height: 24, fill: fillOf[k] }); text(lx + 36, 724 + g.h + 52, s, { class: 'zh', 'font-size': 28, 'font-weight': 500 }); }
+}
+
+if (F === 2) {
+  chrome('02', '数据怎么放');
+  const U = D.users, by = Object.fromEntries(U.nodes.map((n) => [n.p, n]));
+  const r = by[U.root], mids = r.c.map((p) => by[p]);
+  const leaves = mids.flatMap((m) => m.c), X0 = 120, W = 1680, pitch = W / leaves.length;
+  const leafX = Object.fromEntries(leaves.map((p, i) => [p, X0 + i * pitch]));
+  text(120, 236, 'B+ 树', { class: 'la', 'font-size': 96, 'font-weight': 700 });
+  text(120, 292, 'users 表：4096 行全在叶页里', { class: 'zh', 'font-size': 38, 'font-weight': 600 });
+  // 根页：K 个分界夹着 K+1 个子页指针
+  const keys = r.s, slot = 44, kw = 136, rw = slot * (keys.length + 1) + kw * keys.length, rx = 960 - rw / 2 + 240, ry = 214, rh = 76;
+  let cx = rx; const ptr = [];
+  for (let i = 0; i <= keys.length; i++) {
+    el('rect', { x: cx, y: ry, width: slot, height: rh, fill: C.paper, stroke: C.ink, 'stroke-width': 3 });
+    el('circle', { cx: cx + slot / 2, cy: ry + rh / 2, r: 7, fill: C.ink }); ptr.push(cx + slot / 2); cx += slot;
+    if (i < keys.length) { el('rect', { x: cx, y: ry, width: kw, height: rh, fill: C.paper, stroke: C.ink, 'stroke-width': 3 }); text(cx + kw / 2, ry + 52, keys[i], { class: 'k', 'font-size': 40, 'text-anchor': 'middle', fill: i === 0 ? C.blue : C.ink, 'font-weight': 700 }); cx += kw; }
+  }
+  text(rx + rw + 24, ry + 50, '根页 2', { class: 'zh', 'font-size': 30, 'font-weight': 700 });
+  // 第二层：3 个内部页，放在各自叶页范围的中点
+  const my = 470, mh = 64, mw = 250, mp = {};
+  mids.forEach((m, i) => {
+    const xs = m.c.map((p) => leafX[p]), mx = (xs[0] + xs[xs.length - 1] + pitch) / 2;
+    mp[m.p] = mx;
+    el('line', { x1: ptr[i], y1: ry + rh / 2, x2: mx, y2: my, stroke: C.ink, 'stroke-width': 3 });
+    el('rect', { x: mx - mw / 2, y: my, width: mw, height: mh, fill: C.paper, stroke: C.ink, 'stroke-width': 3 });
+    text(mx, my + 44, `第 ${m.p} 页`, { class: 'zh', 'font-size': 30, 'font-weight': 700, 'text-anchor': 'middle' });
+    label(mx, my + mh + 40, `${m.n} 个分界 · ${m.c.length} 个子页`, { class: 'zh', 'font-size': 28, 'font-weight': 500, 'text-anchor': 'middle', fill: C.dim });
+  });
+  // 叶层：256 页，实心
+  const ly = 700, lh = 120;
+  for (const m of mids) for (const p of m.c) behind(el('line', { x1: mp[m.p], y1: my + mh, x2: leafX[p] + pitch / 2, y2: ly, stroke: C.ink, 'stroke-opacity': .22, 'stroke-width': 1 }));
+  for (const p of leaves) el('rect', { x: leafX[p] + 1, y: ly, width: pitch - 2.2, height: lh, fill: p === 99 ? C.blue : C.ink });
+  // 根页里的 1560 只是路标：完整的第 1560 行在叶页 99
+  const k0 = rx + slot + kw / 2;
+  behind(el('path', { d: `M${k0} ${ry + rh + 6} C ${k0} ${ry + 260}, ${leafX[99] + pitch / 2} ${ly - 200}, ${leafX[99] + pitch / 2} ${ly - 8}`, fill: 'none', stroke: C.blue, 'stroke-width': 4, 'stroke-dasharray': '10 8' }));
+  label(leafX[99] + pitch / 2 + 18, ly - 24, '叶页 99：第 1560 行', { class: 'zh', 'font-size': 30, 'font-weight': 700, fill: C.blue });
+  text(120, ly + lh + 56, '256 个叶页，都在第三层', { class: 'zh', 'font-size': 38, 'font-weight': 600 });
+  text(1800, ly + lh + 56, '内部页只存分界和子页页号', { class: 'zh', 'font-size': 38, 'font-weight': 600, 'text-anchor': 'end', fill: C.dim });
+}
+
+if (F === 3) {
+  chrome('02', '数据怎么放');
+  const N = D.names, by = Object.fromEntries(N.nodes.map((n) => [n.p, n]));
+  const r = by[N.root], mids = r.c.map((p) => by[p]);
+  const leaves = mids.flatMap((m) => m.c), X0 = 120, W = 1680, pitch = W / leaves.length;
+  const leafX = Object.fromEntries(leaves.map((p, i) => [p, X0 + i * pitch]));
+  const route = D.route.index;
+  text(120, 236, 'B 树', { class: 'la', 'font-size': 96, 'font-weight': 700 });
+  text(120, 292, '姓名索引：每一层都存着条目', { class: 'zh', 'font-size': 38, 'font-weight': 600 });
+  // 一个页画成一条横格：每格一个条目（姓名 + 行号），内部页与叶页一样都是真正的条目
+  function node(x, y, w, h, n, hot) {
+    el('rect', { x, y, width: w, height: h, fill: hot ? C.sky : C.paper, stroke: hot ? C.blue : C.ink, 'stroke-width': hot ? 4 : 3 });
+    const cw = w / n; for (let i = 1; i < n; i++) el('line', { x1: x + i * cw, y1: y + 6, x2: x + i * cw, y2: y + h - 6, stroke: C.ink, 'stroke-opacity': .5, 'stroke-width': 1.5 });
+  }
+  const rw = 560, rx = 960 - rw / 2 + 240, ry = 214, rh = 70;
+  node(rx, ry, rw, rh, r.n, true);
+  text(rx + rw + 24, ry + 48, '根页 262 · 13 条', { class: 'zh', 'font-size': 30, 'font-weight': 700 });
+  const my = 470, mh = 44, mp = {};
+  mids.forEach((m, i) => {
+    const xs = m.c.map((p) => leafX[p]), x1 = xs[0], x2 = xs[xs.length - 1] + pitch, mw = Math.min(104, x2 - x1 - 10), mx = (x1 + x2) / 2;
+    mp[m.p] = mx; const hot = m.p === route[1];
+    el('line', { x1: rx + (i + 0.5) * rw / (r.n + 1), y1: ry + rh, x2: mx, y2: my, stroke: hot ? C.blue : C.ink, 'stroke-width': hot ? 5 : 2, 'stroke-opacity': hot ? 1 : .55 });
+    node(mx - mw / 2, my, mw, mh, m.n, hot);
+  });
+  label(mp[route[1]] + 70, my + mh + 40, '第 281 页 · 剩 306 条', { class: 'zh', 'font-size': 28, 'font-weight': 700, fill: C.blue });
+  const ly = 700, lh = 120;
+  for (const m of mids) for (const p of m.c) { const hot = p === route[2]; const ln = el('line', { x1: mp[m.p], y1: my + mh, x2: leafX[p] + pitch / 2, y2: ly, stroke: hot ? C.blue : C.ink, 'stroke-opacity': hot ? 1 : .2, 'stroke-width': hot ? 5 : 1 }); if (!hot) behind(ln); }
+  for (const p of leaves) el('rect', { x: leafX[p] + 1, y: ly, width: pitch - 2.2, height: lh, fill: p === route[2] ? C.blue : C.ink });
+  text(leafX[route[2]] + 4, ly + lh + 56, '叶页 263：Alice · 2050', { class: 'la', 'font-size': 38, 'font-weight': 700, fill: C.blue });
+  text(1800, ly + lh + 56, `叶页 ${D.counts.namesLeaf} 条 + 内部页 ${D.counts.namesInterior} 条 = 4096`, { class: 'zh', 'font-size': 38, 'font-weight': 600, 'text-anchor': 'end' });
+}
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

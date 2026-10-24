@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "languages": {
+    "zh": {
+      "status": "pending",
+      "content_sha256": "0414667abd9dc9e85050b8645c984d534051bdb23738b9a2423461cb44a7fd05",
+      "reviewer": "WaterRun",
+      "confirmed_at": "",
+      "evidence": ""
+    }
+  }
+}

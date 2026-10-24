@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-STEPS = ["01_environment", "02_structure", "03_queries", "04_reuse", "05_wal", "06_crash", "07_sources"]
+STEPS = ["01_environment", "02_structure", "03_queries", "04_reuse", "05_wal", "06_crash", "07_sources", "08_trace"]
 
 
 if __name__ == "__main__":

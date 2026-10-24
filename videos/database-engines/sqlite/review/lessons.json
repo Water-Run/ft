@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "version": "2026-10-22.1",
+  "version": "2026-10-23.1",
   "items": {
     "F01": {
-      "rev": 1,
+      "rev": 2,
       "result": "pending",
       "note": "",
       "evidence": ""
@@ -105,7 +105,7 @@
       "evidence": ""
     },
     "F18": {
-      "rev": 1,
+      "rev": 2,
       "result": "pending",
       "note": "",
       "evidence": ""
@@ -117,7 +117,7 @@
       "evidence": ""
     },
     "F20": {
-      "rev": 1,
+      "rev": 2,
       "result": "pending",
       "note": "",
       "evidence": ""
@@ -139,6 +139,36 @@
     {
       "version": "2026-10-21.1",
       "id": "F02",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-22.1",
+      "id": "F01",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-22.1",
+      "id": "F18",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-22.1",
+      "id": "F20",
       "item": {
         "rev": 1,
         "result": "pending",

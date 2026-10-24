@@ -1,0 +1,485 @@
+[index_then_table] sqlite3 -readonly -vfstrace main.db
+SELECT id,name,age FROM users WHERE name='Alice';
+@@SECOND_RUN@@
+SELECT id,name,age FROM users WHERE name='Alice';
+trace.enabled_for("win32")
+trace.xFullPathname("main.db") -> SQLITE_OK, out="main.db"
+trace.xOpen(main.db,flags=0x101) -> SQLITE_OK, outFlags=0x1
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xRead(main.db,n=100,ofst=0) -> SQLITE_OK
+trace.xFileControl(main.db,BUSYHANDLER) -> SQLITE_NOTFOUND
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xFileControl(main.db,PDB) -> SQLITE_NOTFOUND
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=0) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xFileControl(main.db,HAS_MOVED) -> SQLITE_NOTFOUND
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xClose(main.db) -> SQLITE_OK
+trace.xFullPathname("main.db") -> SQLITE_OK, out="main.db"
+trace.xOpen(main.db,flags=0x101) -> SQLITE_OK, outFlags=0x1
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xRead(main.db,n=100,ofst=0) -> SQLITE_OK
+trace.xFileControl(main.db,BUSYHANDLER) -> SQLITE_NOTFOUND
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xFileControl(main.db,PDB) -> SQLITE_NOTFOUND
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=0) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=267264) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=286720) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=268288) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=1024) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=135168) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=132096) -> SQLITE_OK
+2050|Alice|42
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+@@SECOND_RUN@@
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+2050|Alice|42
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xFileControl(main.db,HAS_MOVED) -> SQLITE_NOTFOUND
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xClose(main.db) -> SQLITE_OK
+
+[covering] sqlite3 -readonly -vfstrace main.db
+SELECT id,name FROM users WHERE name='Alice';
+@@SECOND_RUN@@
+SELECT id,name FROM users WHERE name='Alice';
+trace.enabled_for("win32")
+trace.xFullPathname("main.db") -> SQLITE_OK, out="main.db"
+trace.xOpen(main.db,flags=0x101) -> SQLITE_OK, outFlags=0x1
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xRead(main.db,n=100,ofst=0) -> SQLITE_OK
+trace.xFileControl(main.db,BUSYHANDLER) -> SQLITE_NOTFOUND
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xFileControl(main.db,PDB) -> SQLITE_NOTFOUND
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=0) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xFileControl(main.db,HAS_MOVED) -> SQLITE_NOTFOUND
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xClose(main.db) -> SQLITE_OK
+trace.xFullPathname("main.db") -> SQLITE_OK, out="main.db"
+trace.xOpen(main.db,flags=0x101) -> SQLITE_OK, outFlags=0x1
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xRead(main.db,n=100,ofst=0) -> SQLITE_OK
+trace.xFileControl(main.db,BUSYHANDLER) -> SQLITE_NOTFOUND
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xFileControl(main.db,PDB) -> SQLITE_NOTFOUND
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=0) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=267264) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=286720) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=268288) -> SQLITE_OK
+2050|Alice
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+@@SECOND_RUN@@
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+2050|Alice
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xFileControl(main.db,HAS_MOVED) -> SQLITE_NOTFOUND
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xClose(main.db) -> SQLITE_OK
+
+[table_scan] sqlite3 -readonly -vfstrace main.db
+SELECT id,name,age FROM users NOT INDEXED WHERE name='Alice';
+@@SECOND_RUN@@
+SELECT id,name,age FROM users NOT INDEXED WHERE name='Alice';
+trace.enabled_for("win32")
+trace.xFullPathname("main.db") -> SQLITE_OK, out="main.db"
+trace.xOpen(main.db,flags=0x101) -> SQLITE_OK, outFlags=0x1
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xRead(main.db,n=100,ofst=0) -> SQLITE_OK
+trace.xFileControl(main.db,BUSYHANDLER) -> SQLITE_NOTFOUND
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xFileControl(main.db,PDB) -> SQLITE_NOTFOUND
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=0) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xFileControl(main.db,HAS_MOVED) -> SQLITE_NOTFOUND
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xClose(main.db) -> SQLITE_OK
+trace.xFullPathname("main.db") -> SQLITE_OK, out="main.db"
+trace.xOpen(main.db,flags=0x101) -> SQLITE_OK, outFlags=0x1
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xRead(main.db,n=100,ofst=0) -> SQLITE_OK
+trace.xFileControl(main.db,BUSYHANDLER) -> SQLITE_NOTFOUND
+trace.xFileControl(main.db,MMAP_SIZE,0) -> SQLITE_OK, 0
+trace.xFileControl(main.db,PDB) -> SQLITE_NOTFOUND
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=0) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+trace.xRead(main.db,n=1024,ofst=1024) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=134144) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=2048) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=3072) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=4096) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=5120) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=6144) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=7168) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=8192) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=9216) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=10240) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=11264) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=12288) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=13312) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=14336) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=15360) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=16384) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=17408) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=18432) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=19456) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=20480) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=21504) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=22528) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=23552) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=24576) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=25600) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=26624) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=27648) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=28672) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=29696) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=30720) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=31744) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=32768) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=33792) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=34816) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=35840) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=36864) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=37888) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=38912) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=39936) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=40960) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=41984) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=43008) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=44032) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=45056) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=46080) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=47104) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=48128) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=49152) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=50176) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=51200) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=52224) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=53248) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=54272) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=55296) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=56320) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=57344) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=58368) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=59392) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=60416) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=61440) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=62464) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=63488) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=64512) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=65536) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=66560) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=67584) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=68608) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=69632) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=70656) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=71680) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=72704) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=73728) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=74752) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=75776) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=76800) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=77824) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=78848) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=79872) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=80896) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=81920) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=82944) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=83968) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=84992) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=86016) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=87040) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=88064) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=89088) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=90112) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=91136) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=92160) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=93184) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=94208) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=95232) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=96256) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=97280) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=98304) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=99328) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=100352) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=135168) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=101376) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=102400) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=103424) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=104448) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=105472) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=106496) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=107520) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=108544) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=109568) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=110592) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=111616) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=112640) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=113664) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=114688) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=115712) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=116736) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=117760) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=118784) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=119808) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=120832) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=121856) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=122880) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=123904) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=124928) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=125952) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=126976) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=128000) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=129024) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=130048) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=131072) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=132096) -> SQLITE_OK
+2050|Alice|42
+trace.xRead(main.db,n=1024,ofst=133120) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=136192) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=137216) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=138240) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=139264) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=140288) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=141312) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=142336) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=143360) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=144384) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=145408) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=146432) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=147456) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=148480) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=149504) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=150528) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=151552) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=152576) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=153600) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=154624) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=155648) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=156672) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=157696) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=158720) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=159744) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=160768) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=161792) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=162816) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=163840) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=164864) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=165888) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=166912) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=167936) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=168960) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=169984) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=171008) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=172032) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=173056) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=174080) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=175104) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=176128) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=177152) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=178176) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=179200) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=180224) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=181248) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=182272) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=183296) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=184320) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=185344) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=186368) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=187392) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=188416) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=189440) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=190464) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=191488) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=192512) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=193536) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=194560) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=195584) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=196608) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=197632) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=198656) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=199680) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=266240) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=200704) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=201728) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=202752) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=203776) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=204800) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=205824) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=206848) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=207872) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=208896) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=209920) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=210944) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=211968) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=212992) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=214016) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=215040) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=216064) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=217088) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=218112) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=219136) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=220160) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=221184) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=222208) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=223232) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=224256) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=225280) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=226304) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=227328) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=228352) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=229376) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=230400) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=231424) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=232448) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=233472) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=234496) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=235520) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=236544) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=237568) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=238592) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=239616) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=240640) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=241664) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=242688) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=243712) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=244736) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=245760) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=246784) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=247808) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=248832) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=249856) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=250880) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=251904) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=252928) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=253952) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=254976) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=256000) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=257024) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=258048) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=259072) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=260096) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=261120) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=262144) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=263168) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=264192) -> SQLITE_OK
+trace.xRead(main.db,n=1024,ofst=265216) -> SQLITE_OK
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+@@SECOND_RUN@@
+trace.xLock(main.db,SHARED) -> SQLITE_OK
+trace.xAccess("main.db-journal",0) -> SQLITE_OK, out=0
+trace.xRead(main.db,n=16,ofst=24) -> SQLITE_OK
+trace.xAccess("main.db-wal",0) -> SQLITE_OK, out=0
+trace.xFileSize(main.db) -> SQLITE_OK, size=566272
+2050|Alice|42
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xFileControl(main.db,HAS_MOVED) -> SQLITE_NOTFOUND
+trace.xDeviceCharacteristics(main.db) -> 0x00009800
+trace.xUnlock(main.db,NONE) -> SQLITE_OK
+trace.xClose(main.db) -> SQLITE_OK
+
