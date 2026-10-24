@@ -51,19 +51,30 @@
   .note { font: 500 24px "Sans SC"; color: var(--ink2); white-space: nowrap; }
   .num { font-variant-numeric: tabular-nums; }
   svg { position: absolute; left: 0; top: 0; overflow: visible; }
+  /* 立体：每块东西都有厚度——同色系的深一档实色一层层错开叠出侧面（平涂，不模糊、不渐变）；右边的图整块放在一块倾斜的板上 */
+  .x3 { box-shadow: var(--ex); }
+  .plate { position: absolute; left: 0; top: 0; width: var(--W); height: var(--H); transform-style: preserve-3d; }
+  .r169 .plate { transform-origin: 1030px 520px; transform: perspective(2200px) rotateY(18deg) rotateX(6deg); }
+  .r43 .plate { transform-origin: 800px 820px; transform: perspective(2200px) rotateX(12deg) rotateY(-8deg); }
+  .t2 { text-shadow: 1px 1px 0 #1B3E4A, 2px 2px 0 #1B3E4A, 3px 3px 0 #1B3E4A, 4px 4px 0 #1B3E4A, 5px 5px 0 #1B3E4A, 6px 6px 0 #1B3E4A, 7px 7px 0 #1B3E4A, 8px 8px 0 #1B3E4A, 9px 9px 0 #1B3E4A, 10px 10px 0 #1B3E4A; }
+  .t1 { text-shadow: 1px 1px 0 #3B4246, 2px 2px 0 #3B4246, 3px 3px 0 #3B4246, 4px 4px 0 #3B4246, 5px 5px 0 #3B4246; }
+  .part { box-shadow: 1px 1px 0 #1B3E4A, 2px 2px 0 #1B3E4A, 3px 3px 0 #1B3E4A, 4px 4px 0 #1B3E4A, 5px 5px 0 #1B3E4A, 6px 6px 0 #1B3E4A; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <svg id="ov" width="10" height="10"></svg>
+  <div class="plate" id="plate"><svg id="ov" width="10" height="10"></svg></div>
 </div>
 <script src="js/data.js"></script>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', R43 = q.get('r') === '43';
   document.documentElement.className = (R43 ? 'r43' : 'r169') + ' ' + lang;
   const D = window.DATA, A = D.alice;
-  const stage = document.getElementById('stage');
-  const add = (cls, html, x, y, w, h) => { const e = document.createElement('div'); e.className = 'a ' + cls; e.innerHTML = html; e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; stage.appendChild(e); return e; };
+  const stage = document.getElementById('stage'), plate = document.getElementById('plate');
+  const add = (cls, html, x, y, w, h, parent = stage) => { const e = document.createElement('div'); e.className = 'a ' + cls; e.innerHTML = html; e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; parent.appendChild(e); return e; };
+  // 厚度：k 层、每层 1px，颜色是这块东西自己的深一档
+  const ex = (e, col, k = 10) => { e.classList.add('x3'); e.style.setProperty('--ex', Array.from({ length: k }, (_, i) => `${i + 1}px ${i + 1}px 0 ${col}`).join(', ')); return e; };
+  const art = (cls, html, x, y, w, h) => add(cls, html, x, y, w, h, plate);
   const NS = 'http://www.w3.org/2000/svg', ov = document.getElementById('ov');
   const sv = (tag, a, parent = ov) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
   const COL = { main: '#00758F', acc: '#B5452E', mainD: '#2D5A68' };
@@ -91,46 +102,46 @@
 
   // 一笔事务：两句 SQL（与开场实验同一张表、同一行，X2）
   const [cx, cy, cw, ch] = L.code;
-  add('box', '', cx, cy, cw, ch);
-  add('code', `<span class="kw">START TRANSACTION</span>;\n<span class="kw">UPDATE</span> users <span class="kw">SET</span> age = ${A.after.age} <span class="kw">WHERE</span> id = 2050;`, cx + 24, cy + 16);
+  ex(art('box', '', cx, cy, cw, ch), '#CFC8BE', 12);
+  art('code', `<span class="kw">START TRANSACTION</span>;\n<span class="kw">UPDATE</span> users <span class="kw">SET</span> age = ${A.after.age} <span class="kw">WHERE</span> id = 2050;`, cx + 24, cy + 16);
 
   // Alice 这一行：改成 43，还没提交（砖红斜纹）
   const ly = L.laneY, bh = 64;
-  add('lname', 'Alice · 2050', ...L.name);
-  add('lane', '', L.x0, ly, L.x1 - L.x0, 2);
+  art('lname', 'Alice · 2050', ...L.name);
+  art('lane', '', L.x0, ly, L.x1 - L.x0, 2);
   const fx = L.fork;
-  add('bar unc', `<b>${A.after.age}</b>`, L.x0, ly - bh / 2, fx - L.x0, bh);
+  ex(art('bar unc', `<b>${A.after.age}</b>`, L.x0, ly - bh / 2, fx - L.x0, bh), '#7E2F1F', 12);
   // 只有两条路：COMMIT 生效，ROLLBACK 撤回
   const bx = L.branch, upY = ly - L.spread, dnY = ly + L.spread;
   arrow(`M${fx + 2},${ly} C${fx + 34},${ly} ${fx + 8},${upY} ${bx - 6},${upY}`, 'main');
   arrow(`M${fx + 2},${ly} C${fx + 34},${ly} ${fx + 8},${dnY} ${bx - 6},${dnY}`, 'acc');
-  const pc = add('pill ok', 'COMMIT', bx, upY - 25), pr = add('pill no', 'ROLLBACK', bx, dnY - 25);
+  const pc = ex(art('pill ok', 'COMMIT', bx, upY - 25), '#0A4C5D', 7), pr = ex(art('pill no', 'ROLLBACK', bx, dnY - 25), '#7E2F1F', 7);
   const gap = 18, okX = bx + pc.offsetWidth + gap, oldX = bx + pr.offsetWidth + gap;
-  const okBar = add('bar ok', String(A.after.age), okX, upY - bh / 2, L.x1 - okX, bh);
-  const oldBar = add('bar old', String(D.rollback.users), oldX, dnY - bh / 2, L.x1 - oldX, bh);
+  const okBar = ex(art('bar ok', String(A.after.age), okX, upY - bh / 2, L.x1 - okX, bh), '#0A4C5D', 12);
+  const oldBar = ex(art('bar old', String(D.rollback.users), oldX, dnY - bh / 2, L.x1 - oldX, bh), '#3E7F8F', 12);
 
   // 磁盘一侧：redo 写到磁盘，提交了的就不会丢；undo 里留着改之前的 42
   const [zx, zy, zw, zh] = L.disk;
-  add('zone', '', zx, zy, zw, zh);
-  add('zt', '磁盘<small>On-Disk</small>', zx, zy + 10, zw);
+  ex(art('zone', '', zx, zy, zw, zh), '#C9C2B7', 14);
+  art('zt', '磁盘<small>On-Disk</small>', zx, zy + 10, zw);
   const inner = zw - 60;
   const R = R43 ? { x: zx + 20, y: zy + 90, w: zw - 40, h: 120 } : { x: zx + 20, y: zy + 86, w: Math.round(inner * 0.56), h: zh - 104 };
   const U = R43 ? { x: zx + 20, y: zy + 226, w: zw - 40, h: 116 } : { x: R.x + R.w + 20, y: zy + 86, w: inner - R.w, h: zh - 104 };
-  add('box', '', R.x, R.y, R.w, R.h);
-  add('bt', 'redo 日志', R.x, R.y + 6, R.w);
+  ex(art('box', '', R.x, R.y, R.w, R.h), '#CFC8BE', 8);
+  art('bt', 'redo 日志', R.x, R.y + 6, R.w);
   { const x = R.x + 20, w = R.w - 40, y = R.y + 50;
-    const t = add('', '', x, y, w, 24); t.style.cssText += ';border:2px solid var(--mainD);background:#fff;box-sizing:border-box';
-    const f = add('', '', x, y, Math.round(w * 0.86), 24); f.style.cssText += ';border:2px solid var(--mainD);background:var(--teal);box-sizing:border-box';
-    add('note num', '日志序号 ' + fmt(D.crash.lsn), x, y + 30); }
-  add('box', '', U.x, U.y, U.w, U.h);
-  add('bt', 'undo', U.x, U.y + 6, U.w);
-  const uRow = add('bar old', `<span style="font:500 26px Mono">2050 Alice ${A.before.age}</span>`, U.x + 18, U.y + 56, U.w - 36, 44);
+    const t = art('', '', x, y, w, 24); t.style.cssText += ';border:2px solid var(--mainD);background:#fff;box-sizing:border-box';
+    const f = art('', '', x, y, Math.round(w * 0.86), 24); f.style.cssText += ';border:2px solid var(--mainD);background:var(--teal);box-sizing:border-box';
+    art('note num', '日志序号 ' + fmt(D.crash.lsn), x, y + 30); }
+  ex(art('box', '', U.x, U.y, U.w, U.h), '#CFC8BE', 8);
+  art('bt', 'undo', U.x, U.y + 6, U.w);
+  const uRow = art('bar old', `<span style="font:500 26px Mono">2050 Alice ${A.before.age}</span>`, U.x + 18, U.y + 56, U.w - 36, 44);
   uRow.style.height = '44px';
   // 两条路各自靠磁盘上的哪一块：COMMIT 等 redo 写到磁盘，ROLLBACK 从 undo 取回旧值
   // 16:9 磁盘在下面，连线会穿过另一条路，改在两个结果下面各写一句；4:3 磁盘在右边，直接连过去
   if (!R43) {
-    add('cap', '写进 redo，提交了的不会丢', okX, upY + bh / 2 + 8);
-    add('cap', `从 undo 取回 ${A.before.age}`, oldX, dnY + bh / 2 + 8);
+    art('cap', '写进 redo，提交了的不会丢', okX + 6, upY + bh / 2 + 18);
+    art('cap', `从 undo 取回 ${A.before.age}`, oldX + 6, dnY + bh / 2 + 18);
   } else {
     arrow(`M${L.x1 + 6},${upY} C${zx - 20},${upY} ${zx - 30},${R.y + R.h / 2} ${R.x - 6},${R.y + R.h / 2}`, 'main', 2.4, true);
     arrow(`M${U.x - 6},${U.y + 76} C${zx - 30},${U.y + 76} ${zx - 20},${dnY} ${L.x1 + 10},${dnY}`, 'mainD', 2.4, true);

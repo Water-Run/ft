@@ -131,9 +131,9 @@ scene('s11', ({ root, s, c0 }) => {
   const left = pane(120, 'InnoDB', `<div class="t-small" style="margin-bottom:8px">表（页 ${A.page}）</div>${rowB(`2050  Alice   ${A.after.age}`)}<div class="t-small" style="margin:18px 0 8px">undo</div>${rowB(`2050  Alice   ${A.before.age}`, 'old')}`);
   const right = pane(1040, '更老牌的开源 SQL 数据库', `<div class="t-small" style="margin-bottom:8px">表</div>${rowB(`2050  Alice   ${A.after.age}`)}`);
   const since = h('div', 'abs t-small', right, '前身 POSTGRES：1986 年在伯克利开始实现'); px(since, 24, 316);   // K9
-  vanish(since, 0); show(since, T('k16', '旧版本') - 0.2, { y: 8, d: 0.4 });
+  vanish(since, 0); show(since, T('k16z', '旧版本') - 0.2, { y: 8, d: 0.4 });
   const oldIn = h('div', 'abs', right, rowB(`2050  Alice   ${A.before.age}`, 'old')); px(oldIn, 24, 210);       // 旧版本也留在表里（M34）
-  vanish(oldIn, 0); slide(oldIn, T('k16', '表里') - 0.3, { x: 60 }); sfx('pop', T('k16', '表里'), { g: 0.5 });
+  vanish(oldIn, 0); slide(oldIn, T('k16z', '表里') - 0.3, { x: 60 }); sfx('pop', T('k16z', '表里'), { g: 0.5 });
   wipe(left, tN + 0.3, { dir: 'l', d: 0.5 }); wipe(right, T('k16', '开源') - 0.3, { dir: 'l', d: 0.5 }); sfx('whoosh', tN + 0.3, { g: 0.4 });
   const next = h('div', 'tag', W, 'PART 3 · PostgreSQL'); px(next, 1040, 700); css(next, { font: '800 40px Inter', padding: '8px 22px' });
   slam(next, T('k17', '另一条路'), { from: 1.4 }); sfx('thud', T('k17', '另一条路') + 0.05);

@@ -139,7 +139,7 @@ scene('s6', ({ root, s, c0 }) => {
 
   // 快照卡的标题旁补一句：第一次读时拍下
   const firstRead = card.querySelector('.s6-first'); vanish(firstRead, 0);
-  show(firstRead, T('f12', '第一次读'), { y: 6, d: 0.4 });
+  show(firstRead, T('f12z', '第一次读'), { y: 6, d: 0.4 });
 
   // f13：Alice 提交；Bob 再读，还是 42（快照没变）
   LN.event(0, tC, 'COMMIT', 'fill');

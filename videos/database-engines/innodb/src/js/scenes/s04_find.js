@@ -126,17 +126,17 @@ scene('s4', ({ root, s, c0 }) => {
   vanish(rowHit, 0); slam(rowHit, tHit + 0.5, { from: 1.3 });
   // 讲到「连成一条链」时，链从第一行描到最后一行；讲到「目录」时目录亮
   const chainPath = recSvg.querySelector('path'); const len = 99999;
-  chainPath.style.strokeDasharray = len; tl.fromTo(chainPath, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: Math.max(1.6, Tend('b7') - T('b7', '链')), ease: 'none', immediateRender: true }, T('b7', '链'));
+  chainPath.style.strokeDasharray = len; tl.fromTo(chainPath, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: Math.max(1.6, Tend('b7z') - T('b7', '链')), ease: 'none', immediateRender: true }, T('b7', '链'));
   tl.fromTo(dirCells, { attr: { fill: '#FFFFFF' } }, { attr: { fill: '#D9EEEF' }, duration: 0.3, stagger: Math.max(0.01, (Tend('b8') - T('b8', '目录')) / 60), immediateRender: true }, T('b8', '目录'));
   wipe(pg27, T('b6'), { dir: 'l', d: 0.5 }); sfx('whoosh', T('b6'), { g: 0.5 });
   const walker = h('div', 'abs', pg27); css(walker, { width: '60px', height: '15px', border: '3px solid var(--acc)' });
-  const tW0 = T('b7', '链'), tW1 = Math.max(tW0 + 1.6, Tend('b7'));
+  const tW0 = T('b7', '链'), tW1 = Math.max(tW0 + 1.6, Tend('b7z'));
   F((t) => { const on = t >= tW0 && t < tW1 + 0.4; walker.style.display = on ? '' : 'none'; if (on) { const p = recPos(Math.min(D.dir.n_recs - 1, Math.floor(clamp((t - tW0) / (tW1 - tW0)) * D.dir.n_recs))); px(walker, p.x + 1, p.y); } });
-  [pkT, nmT].forEach((e) => { tl.to(e, { opacity: 0, duration: 0.2 }, T('b6')); tl.to(e, { opacity: 1, duration: 0.3 }, Tend('b9') + 0.5); });
+  [pkT, nmT].forEach((e) => { tl.to(e, { opacity: 0, duration: 0.2 }, T('b6')); tl.to(e, { opacity: 1, duration: 0.3 }, Tend('b9z') + 0.5); });
   // b6：207 行一组一组地亮出来
   recEls.forEach((r, i) => tl.fromTo(r, { opacity: 0 }, { opacity: 1, duration: 0.15, immediateRender: true }, T('b6') + 0.4 + (i / recEls.length) * Math.max(1.2, Tend('b6') - T('b6') - 0.6)));
-  wipeOut(pg27, Tend('b9') + 0.3, { dir: 'r', d: 0.4 });
-  svgOut(pathPK, Tend('b9') + 0.3);
+  wipeOut(pg27, Tend('b9z') + 0.3, { dir: 'r', d: 0.4 });
+  svgOut(pathPK, Tend('b9z') + 0.3);
 
   // b10：再找一次：两页都在缓冲池里
   // 同一个元素的几段高亮合成一个帧函数（几个 classAt 管同一个类名，倒着 seek 时会互相覆盖）

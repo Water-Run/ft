@@ -24,7 +24,14 @@
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "旁白合成"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "review": {

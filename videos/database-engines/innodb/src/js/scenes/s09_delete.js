@@ -55,7 +55,7 @@ scene('s9', ({ root, s, c0 }) => {
   const tPurge = T('d5', '移走');
   const tDave = T('d7', '注册');
   const tRe = T('d8');                       // 换一个时机：回到「刚删掉、还没 purge」
-  const tLockR = T('d8', '锁定读');
+  const tLockR = T('d8z', '锁定读');
   const tBobC2 = T('d13', '提交');
 
   // 页进场；五条记录与链
@@ -129,20 +129,20 @@ scene('s9', ({ root, s, c0 }) => {
   // ── 泳道一（d1–d7）：管理员、Bob、Dave ──
   const LY = 650, RH = 112;
   const G1 = h('div', 'abs', W); px(G1, 0, 0);
-  const L1 = lanes(G1, { x: 120, y: LY, w: 1680, gap: 190, rowH: RH, names: ['管理员', 'Bob', 'Dave'], pts: [[c0 + 0.3, 330], [tMark, 520], [T('d3', '读得到'), 900], [T('d4', '提交'), 1120], [tDave, 1500], [Tend('d7'), 1760]] });
+  const L1 = lanes(G1, { x: 120, y: LY, w: 1680, gap: 190, rowH: RH, names: ['管理员', 'Bob', 'Dave'], pts: [[c0 + 0.3, 330], [tMark, 520], [T('d3z', '读得到'), 900], [T('d4', '提交'), 1120], [tDave, 1500], [Tend('d7z'), 1760]] });
   L1.enter(c0 + 0.3);
   const e1 = [];
   e1.push(L1.event(0, tMark, 'DELETE 2050', 'acc', -44));
   e1.push(L1.bar(L1.Y(1) - 20, c0 + 0.3, T('d4', '提交'), '快照', 'old'));          // D1：Bob 的快照在删除之前就开着
-  e1.push(L1.event(1, T('d3', '读得到'), 'SELECT 2050', '', -44));
+  e1.push(L1.event(1, T('d3z', '读得到'), 'SELECT 2050', '', -44));
   e1.push(L1.event(1, T('d4', '提交'), 'COMMIT', '', -44));
   e1.push(L1.event(2, tDave, 'INSERT 2050 Dave 35', '', -44));
   e1.forEach((e) => { if (e.classList.contains('vbar')) css(e, { height: '40px', fontSize: '22px', padding: '4px 10px' }); });
-  const bobSees = h('div', 'echo', G1, 'Alice · 42'); px(bobSees, L1.X(T('d3', '读得到')) - 60, L1.Y(1) + 26); css(bobSees, { color: 'var(--main)', fontWeight: 700 });
-  appear(bobSees, T('d3', '42') - 0.1); sfx('pop', T('d3', '42'));
-  const readA = path(ov, `M${L1.X(T('d3', '读得到'))},${L1.Y(1) - 64} L${L1.X(T('d3', '读得到'))},${600} L${120 + cx(iA) + CW / 2},${110 + Y0 + CH + 4}`, 'main', { w: 2.2, dashed: '7 6' });
+  const bobSees = h('div', 'echo', G1, 'Alice · 42'); px(bobSees, L1.X(T('d3z', '读得到')) - 60, L1.Y(1) + 26); css(bobSees, { color: 'var(--main)', fontWeight: 700 });
+  appear(bobSees, T('d3z', '42') - 0.1); sfx('pop', T('d3z', '42'));
+  const readA = path(ov, `M${L1.X(T('d3z', '读得到'))},${L1.Y(1) - 64} L${L1.X(T('d3z', '读得到'))},${600} L${120 + cx(iA) + CW / 2},${110 + Y0 + CH + 4}`, 'main', { w: 2.2, dashed: '7 6' });
   arrowIn(readA, T('d3', '快照'), 0.6); svgOut(readA, T('d4'));
-  const ph1 = L1.playhead(c0 + 0.3, Tend('d7'), 590, LY + 2 * RH + 40);
+  const ph1 = L1.playhead(c0 + 0.3, Tend('d7z'), 590, LY + 2 * RH + 40);
   const out1 = tRe - 0.1;
   exit(G1, out1, { y: 16, d: 0.3 });
 
@@ -161,7 +161,7 @@ scene('s9', ({ root, s, c0 }) => {
   const okD = h('div', 'pill fill', G2, '插入成功'); px(okD, L2.X(tBobC2) + 20, L2.Y(1) - 20); slam(okD, tBobC2 + 0.2, { from: 1.3 }); sfx('pop', tBobC2 + 0.2);
   const r1 = h('div', 'echo', G2, '2049、2051'); px(r1, L2.X(tLockR) + 172, L2.Y(0) - 60); css(r1, { color: 'var(--main)', fontWeight: 700 });
   const r2 = h('div', 'echo', G2, '2049、2051'); px(r2, L2.X(T('d11', '再读')) + 60, L2.Y(0) - 60); css(r2, { color: 'var(--main)', fontWeight: 700 });
-  appear(r1, T('d8', '两行')); appear(r2, T('d11', '那两行'));
+  appear(r1, T('d8z', '两行')); appear(r2, T('d11', '那两行'));
   const ph2 = L2.playhead(tRe + 0.4, Tend('d13') + 0.4, 640, LY + 40 + 150 + 40);
   // 锁：2049 只锁记录（X,REC_NOT_GAP）；2050、2051 锁记录加前面的间隙（X）。取自 performance_schema.data_locks（X6）
   const modeOf = (id) => D.locks.gap.find((l) => l.data === String(id)).mode;

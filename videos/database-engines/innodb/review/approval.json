@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "1c8996c4b806c77cbcbce625078443782e21c3a4a4a14918a8d1b4af5f3f6e37",
+      "content_sha256": "a5b9273eecce450d971798bc0b7883b0511c9e6be5c21b731bf24ed6c486e829",
       "reviewer": "WaterRun",
       "confirmed_at": "2026-10-25T01:06:27+08:00",
-      "evidence": "2026-10-25 会话中 WaterRun 看过 R12 后给出修改意见并说「就按这版本吧 出preview我看看」；R13 即按这些意见改出的版本。新增的 j23b 与第 10、11 章句子由制作方按意见补写，随预览复核（review/NOTES.md「明确确认」）。"
+      "evidence": "2026-10-25 会话中 WaterRun 看过 R12 后给出修改意见并说「就按这版本吧 出preview我看看」；R13 即按这些意见改出的版本。新增的 j23b 与第 10、11 章句子由制作方按意见补写，随预览复核（review/NOTES.md「明确确认」）。2026-10-25 配音前按「不改含义的字幕断句」拆分 23 句超长字幕，沿用此确认、更新哈希（NOTES「定稿后的调整」）。"
     }
   }
 }

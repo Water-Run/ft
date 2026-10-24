@@ -70,10 +70,10 @@ scene('s2', ({ root, s, c0 }) => {
   st.textContent += '.s2-uw.on { background: #DCEFF1; color: var(--mainD); font-weight: 700; }';
   lit(qt.querySelector('.s2-uw'), 'on', T('t0c', '工作单位'));
   const qtZ = qt.querySelector('.gloss'); vanish(qtZ, 0); show(qtZ, T('t0c', '工作单位'), { y: 8, d: 0.4 });
-  [aBox, bBox].forEach((b, i) => wipe(b, T('t0c', '账户') - 0.3 + i * 0.15, { dir: 'l', d: 0.45 }));
-  vanish(coin, 0); appear(coin, T('t0c', '转一笔钱'));
-  fromTo(coin, T('t0c', '转一笔钱') + 0.2, { x: 0 }, { x: 760, duration: 1.4, ease: 'power2.inOut' });
-  swaps(aN, [[T('t0c', '转一笔钱') + 0.2, '0']]); swaps(bN, [[T('t0c', '转一笔钱') + 1.6, '100']]); vanish(coin, T('t0c', '转一笔钱') + 1.6);
+  [aBox, bBox].forEach((b, i) => wipe(b, T('t0cz', '账户') - 0.3 + i * 0.15, { dir: 'l', d: 0.45 }));
+  vanish(coin, 0); appear(coin, T('t0cz', '转一笔钱'));
+  fromTo(coin, T('t0cz', '转一笔钱') + 0.2, { x: 0 }, { x: 760, duration: 1.4, ease: 'power2.inOut' });
+  swaps(aN, [[T('t0cz', '转一笔钱') + 0.2, '0']]); swaps(bN, [[T('t0cz', '转一笔钱') + 1.6, '100']]); vanish(coin, T('t0cz', '转一笔钱') + 1.6);
   vanish(okL, 0); slam(okL, T('t0d', '转过去'), { from: 1.3 });
   vanish(noL, 0); slam(noL, T('t0d', '原账户'), { from: 1.3 });
   vanish(mid, 0); slam(mid, T('t0d', '不会'), { from: 1.3 }); sfx('error', T('t0d', '不会'), { g: 0.35 });
@@ -149,7 +149,7 @@ scene('s2', ({ root, s, c0 }) => {
 
   // ── 二、平时：每一句自己就是一个事务，执行完自动提交 ──
   const ac = h('div', 'abs mono', W, 'mysql&gt; <span class="c-main" style="font-weight:700">SELECT</span> @@autocommit;\n<b class="c-main">1</b>'); px(ac, 140, 190); css(ac, { fontSize: '36px', lineHeight: '1.5' });
-  const t7a = T('t7'), t7b = Tend('t7');
+  const t7a = T('t7'), t7b = Tend('t7z');
   const LA = lanes(W, { x: 140, y: 560, w: 1640, gap: 200, rowH: 120, names: ['会话'], pts: [[t7a + 0.2, 380], [t7b - 0.2, 1740]] });
   const SQLS = ['SELECT …', 'UPDATE …', 'DELETE …'];
   const xs = [520, 960, 1400];
@@ -163,7 +163,7 @@ scene('s2', ({ root, s, c0 }) => {
   });
   LA.enter(t7a - 0.1); LA.playhead(t7a + 0.2, t7b, 470, 650);
   slide(ac, t7a + 0.3, { y: -20 });
-  const out2 = Tend('t7') + 0.2;
+  const out2 = Tend('t7z') + 0.2;
   [ac, ...LA.els.names, ...LA.els.lines, ...segs.flat()].forEach((e) => s2_out(e, out2, { y: -16, d: 0.3 }));
   // 播放头的显隐只由 lanes 的帧函数管（t7b 之后自己隐藏），这里不再补间，免得倒着 seek 时两边打架
 
@@ -233,7 +233,7 @@ scene('s2', ({ root, s, c0 }) => {
   const chip = (x, l, w, cls) => { const e = h('div', 'tag' + (cls ? ' ' + cls : ''), GD, `<b style="font:800 30px Inter;margin-right:10px">${l}</b>${w}`); px(e, x, 730); css(e, { fontSize: '26px', padding: '6px 16px' }); vanish(e, 0); return e; };
   const cA = chip(140, 'A', '原子性'), cC = chip(340, 'C', '一致性'), cD = chip(540, 'D', '持久性'), cI = chip(1000, 'I', '隔离性', 'acc');
   [[cA, '原子性'], [cC, '一致性'], [cD, '持久性']].forEach(([e, w]) => { slam(e, T('t11b', w), { from: 1.3 }); sfx('pop', T('t11b', w), { g: 0.35 }); });
-  slam(cI, T('t11c', '隔离性'), { from: 1.3 }); sfx('pop', T('t11c', '隔离性'), { g: 0.4 });
+  slam(cI, T('t11cz', '隔离性'), { from: 1.3 }); sfx('pop', T('t11cz', '隔离性'), { g: 0.4 });
   st.textContent += ' .tag.s2-c3 { background: var(--main); }';
   [cA, cC, cD].forEach((e, i) => lit(e, 's2-c3', T('t11c', '四个性质') + i * 0.12));
   wipe(d81.querySelector('.s2-q'), T('t11b') - 0.1, { dir: 'l', d: 0.7 }); show(d81.querySelector('.s2-z'), T('t11b', '三个性质') - 0.2, { y: 8, d: 0.4 });
@@ -248,7 +248,7 @@ scene('s2', ({ root, s, c0 }) => {
   const acid4 = h('div', 'abs', GD, '<span style="font:800 64px Inter;color:var(--mainD);letter-spacing:.3em">A·C·I·D</span>'); px(acid4, 760, 800);
   vanish(acid4, 0); show(acid4, T('t11d', '首字母') + 0.1, { s: 0.9, y: 0, d: 0.35 }); sfx('thud', T('t11d', '首字母') + 0.1, { g: 0.4 });
   const [hI, hAcid] = d83.querySelectorAll('.s2-hl2');
-  lit(hI, 'on', T('t11c', '隔离性'));
+  lit(hI, 'on', T('t11cz', '隔离性'));
   d83.querySelectorAll('.s2-fl').forEach((e, i) => lit(e, 'on', T('t11d', '首字母') + i * 0.3));
   lit(hAcid, 'on', T('t11d', 'ACID'));
   s2_out(GD, T('t11d', 'ACID') + 0.9, { y: -16, d: 0.35 });

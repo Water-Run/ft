@@ -94,10 +94,10 @@ scene('s10', ({ root, s, c0 }) => {
   const bobR = h('div', 'pill', GL, `Bob 读 → ${A.before.age}`); px(bobR, xU, 792); css(bobR, { fontSize: '24px', borderColor: 'var(--main)', color: 'var(--main)' });
   const carW = h('div', 'vbar wait', GL, '<span style="font:600 22px &quot;Sans SC&quot;">Carol 等锁</span>'); px(carW, xU + 230, 792, LN.X(T('k6', '提交')) - xU - 230, 40);
   vanish(bobR, 0); slam(bobR, T('k10', '读'), { from: 1.3 }); sfx('pop', T('k10', '读'), { g: 0.45 });
-  vanish(carW, 0); wipe(carW, T('k10', '改这一行') - 0.1, { dir: 'l', d: 0.6 }); sfx('tick', T('k10', '等'), { g: 0.4 });
+  vanish(carW, 0); wipe(carW, T('k10z', '改这一行') - 0.1, { dir: 'l', d: 0.6 }); sfx('tick', T('k10z', '等'), { g: 0.4 });
   const FLk = [[T('k10', '旧版本'), T('k10', '旧版本') + 1.0]]; { let last = null; F((t) => { const on = FLk.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; uRec.classList.toggle('s10flash', on); }); }
-  const lkAgain = lockAt(p27, 500, 88); vanish(lkAgain, 0); appear(lkAgain, T('k10', '这把锁') - 0.2); vanish(lkAgain, Tend('k10') + 0.3);
-  const out1 = Tend('k10') + 0.4;
+  const lkAgain = lockAt(p27, 500, 88); vanish(lkAgain, 0); appear(lkAgain, T('k10z', '这把锁') - 0.2); vanish(lkAgain, Tend('k10z') + 0.3);
+  const out1 = Tend('k10z') + 0.4;
   exit(GL, out1, { y: 16, d: 0.3 });
   [n1, n2, n3, n4, n5, n6].forEach((n) => exit(n, out1, { d: 0.25 }));
   svgOut(rp, out1);
@@ -122,14 +122,14 @@ scene('s10', ({ root, s, c0 }) => {
   [0, 1, 2].forEach((i) => lit(rowA[i], 'on', T(QA[i][2]), i < 2 ? T(QA[i + 1][2]) : T('k9') - 0.1));
   rowA.forEach((c, i) => exit(c, T('k9') - 0.1 + i * 0.04, { y: 24, d: 0.3 }));
   // 第一到第三问，架构图里对应的部件亮起
-  onWin(ibd, T('k8a'), Tend('k8a') + 0.3); onWin(bp, T('k8b'), Tend('k8b') + 0.3); onWin(ibd, T('k8b', '回表'), Tend('k8b') + 0.3); onWin(undo, T('k8c'), Tend('k8c') + 0.3);
+  onWin(ibd, T('k8a'), Tend('k8az') + 0.3); onWin(bp, T('k8b'), Tend('k8bz') + 0.3); onWin(ibd, T('k8bz', '回表'), Tend('k8bz') + 0.3); onWin(undo, T('k8c'), Tend('k8cz') + 0.3);
   // 第二排：讲完事务与并发，五张卡摆回来，前四张已经回答过（淡），第五张亮起
   const rowB = QA.map((q, i) => mkCard(i));
   const tB0 = T('k11') - 0.3;
   rowB.forEach((c, i) => { vanish(c, 0); appear(c, tB0 + i * 0.06); if (i < 4) c.classList.add('done'); });
   const a5 = rowB[4].querySelector('.qa'); vanish(a5, 0); show(a5, T('k11', 'redo') - 0.1, { y: 8, d: 0.35 });
   lit(rowB[4], 'on', T('k11'));
-  onWin(redo, T('k11', 'redo'), s.end); onWin(undo, T('k11', 'undo'), s.end);
+  onWin(redo, T('k11', 'redo'), s.end); onWin(undo, T('k11z', 'undo'), s.end);
   // 重做：redo 带子上扫一遍
   const rscan = h('div', 'abs', redo); px(rscan, 200, 44, 10, 42); css(rscan, { background: 'var(--main)' });
   { const w2 = [T('k11', 'redo'), T('k11', 'redo') + 1.2]; let last = null;

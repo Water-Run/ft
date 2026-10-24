@@ -91,14 +91,14 @@ scene('s5', ({ root, s, c0 }) => {
   fromTo(chip, tFly, { x: 0, y: 0 }, { x: recBox.x + 76 - (ageBox.x + 12), y: recBox.y + 6 - (ageBox.y + 74), duration: 1.0, ease: 'power2.inOut' });
   vanish(chip, tFly + 1.05); appear(rec, tFly + 1.0); sfx('blip', tFly + 1.0, { g: 0.6 });
   const keep = h('div', 'abs mono c-main', undo, '↶'); px(keep, 470, 88); css(keep, { fontSize: '40px' });
-  vanish(keep, 0); slam(keep, T('e6', '撤销'), { from: 1.6 });
+  vanish(keep, 0); slam(keep, T('e6z', '撤销'), { from: 1.6 });
   // e7：43 原地写进年龄字节（偏移不变）
   const fHx = (f) => f.querySelector('.hx'), fV = (f) => f.querySelector('.v');
   const tW = T('e7', '43');
-  swaps(fHx(fAge), [[tW, hx(after, 67, 68)], [T('e10', '42'), hx(before, 67, 68)]]);
-  swaps(fV(fAge), [[tW, String(A.after.age)], [T('e10', '42'), String(A.before.age)]]);
-  lit(fAge, 'unc', tW, T('e10', '42'));
-  lit(fAge, 'hot', T('e10', '42'), T('e12'));
+  swaps(fHx(fAge), [[tW, hx(after, 67, 68)], [T('e10z', '42'), hx(before, 67, 68)]]);
+  swaps(fV(fAge), [[tW, String(A.after.age)], [T('e10z', '42'), String(A.before.age)]]);
+  lit(fAge, 'unc', tW, T('e10z', '42'));
+  lit(fAge, 'hot', T('e10z', '42'), T('e12'));
   to(mark, T('e7', '原来的位置'), { scaleX: 1.15, duration: 0.25, yoyo: true, repeat: 1, ease: 'power1.inOut' });
   sfx('tick', tW, { g: 0.6 });
   // e8：事务号换成这一笔；e9：回滚指针指向那条 undo 记录
@@ -112,23 +112,23 @@ scene('s5', ({ root, s, c0 }) => {
   const rpBox = box(fRp, W), lx = rpBox.x + 20;
   const link = path(ov, `M${lx},${rpBox.b + 6} L${lx},${recBox.y - 4}`, 'main', { w: 3 });
   arrowIn(link, tRp + 0.1, 0.9);
-  lit(rec, 's5-hit', tRp + 1.0, T('e10', '42') + 0.3);
+  lit(rec, 's5-hit', tRp + 1.0, T('e10z', '42') + 0.3);
   // 顺着指针：一个点沿回滚指针走到 undo 记录
   const dot = svg('circle', { r: 9, fill: '#00758F', cx: lx, cy: rpBox.b + 6 }, ov);
-  const tD0 = Math.min(T('e10', '顺着'), tRb + 0.6), tD1 = T('e10', '找到'), L0 = link.getTotalLength();
+  const tD0 = Math.min(T('e10z', '顺着'), tRb + 0.6), tD1 = T('e10z', '找到'), L0 = link.getTotalLength();
   let lastD = null;
   F((t) => { const on = t >= tD0 && t < tD1 + 0.3; const k = on ? Math.round(clamp((t - tD0) / (tD1 - tD0)) * 100) : -1; if (k === lastD) return; lastD = k;
     dot.style.display = on ? '' : 'none'; if (on) { const pt = link.getPointAtLength(L0 * k / 100); dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y); } });
   // e10：ROLLBACK 顺着指针取回 42
   to(link, tRb + 0.2, { strokeWidth: 5, duration: 0.3 });
   const back = h('div', 's5-chip', W, '42'); px(back, recBox.x + 76, recBox.y + 6);
-  const tBack = T('e10', '找到');
+  const tBack = T('e10z', '找到');
   vanish(back, 0); appear(back, tBack);
   fromTo(back, tBack + 0.05, { x: 0, y: 0 }, { x: ageBox.x + 12 - (recBox.x + 76), y: ageBox.y + 74 - (recBox.y + 6), duration: 1.0, ease: 'power2.inOut' });
-  vanish(back, T('e10', '42') + 0.02); sfx('pop', T('e10', '42'));
+  vanish(back, T('e10z', '42') + 0.02); sfx('pop', T('e10z', '42'));
   // 回滚后这两格的新内容没有实测，只淡出
-  [fTrx, fRp].forEach((f) => lit(f, 's5-dim', T('e10', '42')));
-  svgOut(link, T('e10', '42') + 0.2, 0.4);
+  [fTrx, fRp].forEach((f) => lit(f, 's5-dim', T('e10z', '42')));
+  svgOut(link, T('e10z', '42') + 0.2, 0.4);
   lit(b42, 'hl', T('e11'));
   tl.fromTo(fAge, { scale: 1 }, { scale: 1.08, duration: 0.3, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, T('e11', '撤得回'));
   // 回滚指针的最高位：改之前是 1（插入时写的），改之后是 0（这次更新写的）（T7、X1）。注在格子底下、指针线的右边
@@ -137,13 +137,13 @@ scene('s5', ({ root, s, c0 }) => {
   const bit = h('div', 's5-bit', W); px(bit, lx + 30, rpBox.b + 12);
   swaps(bit, [[0, `${rp0} = <b>1</b>${bits(rp0).slice(1)}<br>最高位 1：插入`], [T('e9', 'undo'), `${rp1} = <b>0</b>${bits(rp1).slice(1)}<br>最高位 0：更新`]]);
   show(bit, T('e5', '回滚指针') + 0.4, { y: 10, d: 0.4 });
-  to(bit, T('e10', '42'), { autoAlpha: 0, duration: 0.3 });
+  to(bit, T('e10z', '42'), { autoAlpha: 0, duration: 0.3 });
   // 事务号：1558 是建表时插入这一行的那一笔；2061 在事务进行时 innodb_trx 里查到的也是它（T7、X1）
   const trxBox = box(fTrx, W);
   const tnote = h('div', 's5-bit', W); px(tnote, trxBox.x + 4, trxBox.b + 12);
   swaps(tnote, [[0, '建表时插入<br>这一行的事务'], [Tend('e8') - 0.4, `innodb_trx 里<br>也是 ${A.trxOpen}`]]);
   show(tnote, T('e4', '最后') , { y: 10, d: 0.4 });
-  to(tnote, T('e10', '42'), { autoAlpha: 0, duration: 0.3 });
+  to(tnote, T('e10z', '42'), { autoAlpha: 0, duration: 0.3 });
   // e11：开头那两张表，并排看；e12：MyISAM 没有 undo，43 留在文件里
   wipe(my, T('e11') + 0.4, { dir: 'l', d: 0.5 }); sfx('whoosh', T('e11') + 0.4, { g: 0.4 });
   [undo, pg, pgLab, offLab].forEach((e) => to(e, T('e12', 'undo'), { opacity: 0.35, duration: 0.4 }));

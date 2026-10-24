@@ -14,7 +14,7 @@ scene('s3', ({ root, s, c0 }) => {
   // ── 时间 → 已经插了多少行 ──
   const tR0 = T('a6'), tR1 = T('a8', '满了'), tSplit = T('a9', '一分为二');
   const tG0 = T('a13'), tG1 = Tend('a15') - 0.4;
-  const tBack0 = T('a24') + 0.1, tBack1 = Math.max(T('a24') + 1.2, Tend('a24') - 0.1), tAlice = T('a25'), tFwd0 = Tend('a27') + 0.2, tFwd1 = tFwd0 + 0.6;
+  const tBack0 = T('a24') + 0.1, tBack1 = Math.max(T('a24') + 1.2, Tend('a24') - 0.1), tAlice = T('a25'), tFwd0 = Tend('a27z') + 0.2, tFwd1 = tFwd0 + 0.6;
   const nAt = (t) => {
     if (t < tR0) return 0;
     if (t < tR1) return Math.max(1, Math.round(lerp(1, 207, ease.io3(clamp((t - tR0) / (tR1 - tR0))))));

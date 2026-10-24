@@ -103,10 +103,10 @@ scene('intro', ({ root, s }) => {
   const eng1 = h('div', 'tag', B, '引擎：？'); px(eng1, 160, 700 + 30);
   swaps(eng1, [[T('h15', 'InnoDB'), 'InnoDB']]);
   // h8b：同一张 users 表复制一份——先出 users，副本从它那里「复制」上去；各标上用的引擎
-  const tCopy = T('h8b', '副本');
+  const tCopy = T('h8bz', '副本');
   slide(LN.els.names[1], T('h8b') + 0.1, { x: -40 }); wipe(LN.els.lines[1], T('h8b') + 0.2, { dir: 'l', d: 0.7 });
   slide(LN.els.names[0], tCopy - 0.2, { y: 230, d: 0.7, ease: 'power3.out' }); wipe(LN.els.lines[0], tCopy + 0.1, { dir: 'l', d: 0.7 });
-  slide(eng0, T('h8b', 'MyISAM'), { x: -30 }); slide(eng1, T('h8b', '另一个引擎'), { x: -30 });
+  slide(eng0, T('h8bz', 'MyISAM'), { x: -30 }); slide(eng1, T('h8bz', '另一个引擎'), { x: -30 });
   sfx('pop', tCopy, { g: 0.5 });
   lit(eng1, 'acc', 0, T('h15', 'InnoDB'));
   tl.fromTo(eng1, { scale: 1 }, { scale: 1.25, duration: 0.2, ease: 'power2.out', immediateRender: false }, T('h15', 'InnoDB')); tl.to(eng1, { scale: 1, duration: 0.3 }, T('h15', 'InnoDB') + 0.2);
@@ -166,10 +166,10 @@ scene('intro', ({ root, s }) => {
   undoSq.forEach((e, i) => lit(e, 'on', T('h16', '事务') + 0.3 + i * Math.max(0.15, (Tend('h16') - T('h16', '事务')) / 9)));
   // h18：现代的数据库引擎由这些部件组成——讲到「怎样做出来」时各部件依次亮一下，最后停在事务上
   const parts = [bp, lb, ibd, undo, redo, dbw];
-  const tParts = T('h18', '怎样');
+  const tParts = T('h18z', '怎样');
   // 每个部件里的页依次闪一下（类名 hot，与前面的 on 互不相扰）
-  const step = Math.max(0.3, (Tend('h18') - tParts) / (parts.length + 1));
+  const step = Math.max(0.3, (Tend('h18z') - tParts) / (parts.length + 1));
   parts.forEach((b, i) => b.querySelectorAll('.sq').forEach((e) => lit(e, 'hot', tParts + i * step, tParts + i * step + step * 0.9)));
-  [lb, ibd, dbw, redo, bp].forEach((b) => to(b, Tend('h18') + 0.1, { opacity: 0.45, duration: 0.5 }));
+  [lb, ibd, dbw, redo, bp].forEach((b) => to(b, Tend('h18z') + 0.1, { opacity: 0.45, duration: 0.5 }));
   to(c1, T('h18', '事务'), { scale: 1.12, duration: 0.4, ease: 'back.out(2)' });
 });

@@ -251,7 +251,7 @@ scene('s8', ({ root, s, c0 }) => {
   const g2 = svg('rect', { x: 0, y: 0, width: 0, height: cell, fill: '#B5452E' }, grid);
   const gL = h('div', 'abs t-small num', W, `4096 行，改过的 ${C.rowsAtKill} 行`); px(gL, 1360, 576);
   vanish(grid, 0); appear(grid, tG); show(gL, tG, { y: 8, d: 0.4 });
-  const tB0 = T('j20', '整个撤回'), tB1 = Tend('j20');
+  const tB0 = T('j20z', '整个撤回'), tB1 = Tend('j20z');
   let lastG = -1;
   F((t) => {
     // 先把「改到第 258 行」重演一遍（4 整行 + 2 格），再整个撤回
@@ -313,7 +313,7 @@ scene('s8', ({ root, s, c0 }) => {
   // j23b：双写缓冲区是磁盘上单独的一块存储区，写出的页先在这里完整地存一份（M16）
   const dwNote = h('div', 'tag', W, '磁盘上单独的一块 · 先存一份完整的'); px(dwNote, 840 - 90, 900); css(dwNote, { fontSize: '24px' });
   vanish(dwNote, 0); slam(dwNote, T('j23b', '单独'), { from: 1.3 }); exit(dwNote, T('j24') - 0.1, { d: 0.3 }); sfx('pop', T('j23b', '单独'), { g: 0.45 });
-  lit(P2.p, 's8-dwhl', T('j23b', '完整') - 0.2, T('j24') - 0.1);
+  lit(P2.p, 's8-dwhl', T('j23bz', '完整') - 0.2, T('j24') - 0.1);
   st8.textContent += ' .s8-dwhl { outline: 4px solid var(--main); outline-offset: 4px; }';
   lit(dbwSq[0], 'hot', tW2 + 0.4, Tend('j24') + 0.5);
   lit(ibdSq[PAGES.indexOf(D.alice.page)], 'hot', tW3 + 0.4, Tend('j24') + 0.5);
