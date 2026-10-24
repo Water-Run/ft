@@ -167,7 +167,7 @@ scene('s4', ({ root, s, c0 }) => {
   px(exp, 712, 560);
   vanish(exp, 0); show(exp, T('b15') + 0.3, { y: 8, d: 0.4 });
   const cov = h('div', 'tag', W, '覆盖索引'); px(cov, 1440, 530); css(cov, { fontSize: '28px' });
-  vanish(cov, 0); slam(cov, T('b15b', '覆盖索引'), { from: 1.4 }); exit(cov, T('b16') - 0.1, { d: 0.3 }); sfx('pop', T('b15b', '覆盖索引'), { g: 0.5 });
+  vanish(cov, 0); slam(cov, T('b15b', '覆盖索引'), { from: 1.4 }); exit(cov, T('b16') + 0.1, { d: 0.3 }); sfx('pop', T('b15b', '覆盖索引'), { g: 0.5 });
   const stop = h('div', 'tag', W, '到这里就够了'); px(stop, NMX(K9) + 210, NMY + 60); vanish(stop, 0); slam(stop, T('b15', '本来就有'), { from: 1.3 });
   [stop, got].forEach((e) => exit(e, T('b16') - 0.1, { y: 8, d: 0.3 })); exit(exp, T('b16', '挪出去') - 0.2, { y: 8, d: 0.3 }); svgOut(pathNM, T('b16') - 0.1);
 

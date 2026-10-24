@@ -6,6 +6,7 @@
 scene('s3', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
   const ov = overlay(W);
+  const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   const disp = (e, on) => { const v = on ? '' : 'none'; if (e.style.display !== v) e.style.display = v; };
   // 同一个元素的几段高亮写成一个帧函数，避免几个 classAt 互相覆盖
   const litWin = (e, cls, wins) => { let last = null; F((t) => { const on = wins.some(([a, b]) => t >= a && t < b); if (on !== last) { e.classList.toggle(cls, on); last = on; } }); };
@@ -101,6 +102,7 @@ scene('s3', ({ root, s, c0 }) => {
     bigF.style.transform = `translateY(${y.toFixed(1)}px) scaleY(${sy.toFixed(4)})`;
   });
   wipe(bigF, T('a2') + 0.2, { dir: 'l', d: 0.7 }); sfx('whoosh', T('a2') + 0.2, { g: 0.4 });
+  { const s3f = h('style', '', W); s3f.textContent = '.s3-fn.on { color: var(--main); }'; } bfName.classList.add('s3-fn'); lit(bfName, 'on', T('a2', '.ibd'));
   [bfName, ...bticks].forEach((e) => exit(e, tCol0 - 0.25, { y: 0, d: 0.2 }));
   vanish(bigF, tCol1);
   cells.forEach((c) => { vanish(c, 0); appear(c, tCol1); });
@@ -334,6 +336,7 @@ scene('s3', ({ root, s, c0 }) => {
   [L1, L2, L3].forEach((e, i) => wipe(e, T('a28', '三层') - 0.4 + i * 0.25, { dir: 'l', d: 0.45 }));
   show(b3n, tB + 0.5, { y: 6, d: 0.4 });
   sfx('thud', T('a28', '三层'), { g: 0.6 });
+  drift(big3, Tend('a28') - 0.4, s.end, 1.03);
 
   W.appendChild(ov);
   W.appendChild(big3);                                        // 三层的小卡压在连线上面

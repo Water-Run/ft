@@ -218,7 +218,7 @@ scene('s8', ({ root, s, c0 }) => {
   const r1 = h('div', 'tag', GB, 'Alice：43'); px(r1, 780, LB.Y(0) - 76); css(r1, { fontSize: '26px' });
   const r2 = h('div', 'tag', GB, `其余 ${fmt(C.unchanged)} 行：原值`); px(r2, 640, LB.Y(1) + 34); css(r2, { fontSize: '26px' });
   slam(r1, T('j18', '43'), { from: 1.3 }); slam(r2, T('j18', '一个都没变') - 0.2, { from: 1.3 }); sfx('pop', T('j18', '43'));
-  lit(a43, 'hl', T('j18', '43'), Tend('j19'));
+  { const w43 = [[T('j18', '43'), Tend('j19')], [T('j19c', '先重做'), T('j20') - 0.3]]; let l43 = null; F((t) => { const on = w43.some(([a, b]) => t >= a && t < b); if (on !== l43) { a43.classList.toggle('hl', on); l43 = on; } }); }   // 两段高亮写成一个帧函数
   // 没提交的不留：管理员改过的那段只剩一个虚框
   const ghostAdm = h('div', 'abs', GB); px(ghostAdm, xa0, LB.Y(1) - 22, xa1 - xa0, 44); css(ghostAdm, { border: '2px dashed var(--acc)' }); ghostAdm.dataset.name = '撤掉的修改';
   vanish(ghostAdm, 0); appear(ghostAdm, T('j19', '不留'));
@@ -231,12 +231,16 @@ scene('s8', ({ root, s, c0 }) => {
     + '<div style="font:700 26px Inter;color:var(--ink);margin-top:6px;line-height:1.3">ARIES: A Transaction Recovery Method … Using <span class="s8-wal">Write-Ahead Logging</span></div>'
     + '<div class="t-note" style="font-family:Inter;margin-top:4px"><span class="s8-who">C. Mohan 等 · IBM</span></div>'
     + '<div class="mono" style="font-size:23px;color:var(--ink2);margin-top:12px;line-height:1.45;white-space:normal">"… the paradigm of repeating history to <span class="s8-r">redo all missing updates</span> before performing the <span class="s8-u">rollbacks</span> of the loser transactions during restart …"</div>'
-    + '<div class="gloss" style="position:static;margin-top:8px;white-space:normal">重启时先「重演历史」，把缺的修改全部重做，再回滚没完成的事务</div>');
+    + '<div class="gloss" style="position:static;margin-top:8px;white-space:normal">重启时先重做缺的修改，再回滚没完成的事务</div>');
   px(ar, 1050, 560, 800);
   const st8 = h('style', '', W); st8.textContent = '.s8-r.on { color: var(--main); font-weight: 800; background: #DCEFF1; } .s8-u.on { color: var(--acc); font-weight: 800; background: var(--accL); } .s8-wal.on { color: var(--main); background: #DCEFF1; } .s8-who.on { background: #DCEFF1; color: var(--mainD); }';
   lit(ar.querySelector('.s8-who'), 'on', T('j19b', 'Mohan'));
   slide(ar, T('j19b') + 0.1, { x: 40 }); sfx('pop', T('j19b') + 0.2, { g: 0.5 });
   lit(ar.querySelector('.s8-wal'), 'on', T('j19b', 'ARIES')); lit(ar.querySelector('.s8-r'), 'on', T('j19c', '先重做')); lit(ar.querySelector('.s8-u'), 'on', T('j19c', '再撤销'));
+  tl.fromTo(ar, { scale: 1 }, { scale: 1.02, duration: Math.max(0.5, tG - 0.3 - T('j19b') - 0.6), ease: 'none', immediateRender: false }, T('j19b') + 0.6);   // 读卡片时慢慢推近
+  // j19c：「先重做」指回泳道上 Alice 重做回来的 43，「再撤销」指回管理员那段撤掉的修改
+  st8.textContent += ' .s8-gh { background: var(--accL); }';
+  lit(ghostAdm, 's8-gh', T('j19c', '再撤销'), tG - 0.3);
   exit(ar, tG - 0.3, { x: 30, d: 0.35 });
   const gridW = 64, cell = 5;
   const grid = svg('svg', { width: gridW * cell, height: gridW * cell, viewBox: `0 0 ${gridW * cell} ${gridW * cell}` }, W);

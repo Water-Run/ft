@@ -22,6 +22,7 @@ scene('s1', ({ root, s, c0 }) => {
     .s1-big { position: absolute; font: 900 84px "Sans SC"; color: var(--mainD); }
   `;
   const ov = overlay(W);
+  const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   // 年份 → 横坐标：2003 到 2027
   const X0 = 200, X1 = 1720, Y0 = 1992, Y1 = 2027;
   const xOf = (yr) => X0 + (yr - Y0) / (Y1 - Y0) * (X1 - X0);
@@ -93,15 +94,18 @@ scene('s1', ({ root, s, c0 }) => {
   const tFl = T('y1', 'InnoDB') + 0.3, stFl = Math.max(0.3, (Tend('y1') - tFl) / files.length);
   fl.forEach((e, i) => { vanish(e, 0); appear(e, tFl + i * stFl); sfx('tick', tFl + i * stFl, { g: 0.3 }); });
   // 轴下方 1994 年：Heikki Tuuri 写下最早的代码
+  const dot94 = h('div', 's1-dot', G); px(dot94, xOf(1994) - 9, yAxis - 8); vanish(dot94, 0); slam(dot94, T('y1', '1994 年'), { from: 1.8 }); sfx('tick', T('y1', '1994 年'), { g: 0.4 });
   const hkStem = h('div', 's1-stem', G); px(hkStem, xOf(1994) - 1, yAxis + 6, null, 64); css(hkStem, { background: 'var(--main)' });
   const hk = h('div', 's1-lab', G, 'Heikki Tuuri<small>1994 · 最早的代码</small>'); px(hk, xOf(1994) + 14, yAxis + 52);
   wipe(hkStem, T('y1', 'Heikki') - 0.2, { dir: 't', d: 0.3 }); slide(hk, T('y1', 'Heikki'), { x: -20 }); sfx('pop', T('y1', 'Heikki'), { g: 0.4 });
   // y1d：一行一行把名字框起来（底色也变，扫描能看到这一步）
-  st.textContent += '.s1-who { color: var(--main); } .s1-who.s1-hl { color: var(--acc); background: var(--accL); outline: 3px solid var(--acc); outline-offset: 2px; font-weight: 700; } .s1-lab.s1-hl { background: var(--accL); outline: 3px solid var(--acc); outline-offset: 4px; }';
+  st.textContent += '.s1-who { color: var(--main); } .s1-who.s1-hl { color: var(--acc); background: var(--accL); outline: 3px solid var(--acc); outline-offset: 2px; font-weight: 700; } .s1-lab.s1-hl { color: var(--acc); background: var(--accL); outline: 3px solid var(--acc); outline-offset: 4px; }'
+    + ' .s1-row.s1-hl { color: var(--mainD); }';
   const tHl0 = T('y1d', '开头'), stHl = Math.max(0.3, (T('y1d', '名字') - tHl0) / (files.length - 1));
-  panel.querySelectorAll('.s1-who').forEach((e, i) => lit(e, 's1-hl', tHl0 + i * stHl));
+  panel.querySelectorAll('.s1-who').forEach((e, i) => { lit(e, 's1-hl', tHl0 + i * stHl); fl[i].classList.add('s1-row'); lit(fl[i], 's1-hl', tHl0 + i * stHl); });
   lit(hk, 's1-hl', T('y1d', '名字'));
-  [panel, hkStem, hk].forEach((e) => s1_out(e, T('y2') - 0.1, { y: 12, d: 0.35 }));
+  drift(panel, T('y1', 'InnoDB') + 0.3, T('y2') - 0.1, 1.02);
+  [panel, hkStem, hk, dot94].forEach((e) => s1_out(e, T('y2') - 0.1, { y: 12, d: 0.35 }));
   for (const [n, t] of [[nAcq, T('y2', '2005 年')], [nDef, T('y3', '2010 年')], [nNow, T('y4', '9.7')]]) {
     slam(n.d, t, { from: 1.8 }); wipe(n.sm2, t + 0.02, { dir: 'b', d: 0.2 }); wipe(n.sm, t + 0.12, { dir: 'b', d: 0.3 }); slide(n.lab, t + 0.2, { y: 16 }); sfx('thud', t, { g: 0.5 });
   }

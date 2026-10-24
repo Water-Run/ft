@@ -185,6 +185,6 @@ scene('s10', ({ root, s, c0 }) => {
   slam(next, T('k17', '另一条路'), { from: 1.4 }); sfx('thud', T('k17', '另一条路') + 0.05);
   to(left, Tend('k17') + 0.4, { opacity: 0.45, duration: 0.6 });   // 章末 InnoDB 退后，留下下一集的那条路
   // 收干净，留给片尾硬切
-  const tEnd = s.end - 0.6;
+  const tEnd = s.end - 0.15;                                  // 退场和片尾硬切几乎同时，片尾名单前不留空屏
   [left, right, next].forEach((e, i) => exit(e, tEnd + i * 0.05, { y: -16, d: 0.35 }));
 });

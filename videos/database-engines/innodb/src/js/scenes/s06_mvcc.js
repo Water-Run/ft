@@ -6,6 +6,7 @@
 scene('s6', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
   const st = h('style', null, root);
+  const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   st.textContent = `
 .s6-unc { background-color: #F3DCD5; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M-2,2 l4,-4 M0,14 L14,0 M12,16 l4,-4' stroke='%23B5452E' stroke-width='3'/%3E%3C/svg%3E"); border-color: var(--acc) !important; border-width: 3px !important; }
 .s6-unc .v { color: var(--acc) !important; background: var(--panel); display: inline-block; padding: 0 6px; }
@@ -184,8 +185,8 @@ scene('s6', ({ root, s, c0 }) => {
   px(mv, 120, 410); wipe(mv, T('f21', '多版本'), { dir: 'l', d: 0.6 }); sfx('thud', T('f21', '多版本') + 0.1, { g: 0.6 });
   // f22：1983 年 Bernstein 与 Goodman 给出多版本并发控制的正确性理论（K8，原文）
   // 论文卡片是不透明的，盖在淡下去的泳道上，不和泳道里的字叠在一起
-  const bg = h('div', 'card', W, '<span class="tag" style="position:static;font-size:24px;margin-right:14px">1983 · ACM TODS 8(4) · Bernstein · Goodman</span>'
-    + '<div class="mono" style="font-size:23px;color:var(--ink2);margin-top:14px;line-height:1.45;white-space:normal">"This paper presents a theory for analyzing the <span class="s6-k">correctness</span> of concurrency control algorithms for <span class="s6-k">multiversion</span> database systems."</div>'
+  const bg = h('div', 'card', W, '<span class="tag s6-bt" style="position:static;font-size:24px;margin-right:14px">1983 · ACM TODS 8(4)</span>'
+    + '<div class="mono s6-bq" style="font-size:23px;color:var(--ink2);margin-top:14px;line-height:1.45;white-space:normal">"This paper presents a theory for analyzing the <span class="s6-k">correctness</span> of concurrency control algorithms for <span class="s6-k">multiversion</span> database systems."</div>'
     + '<div class="gloss s6-bz" style="position:static;margin-top:8px;white-space:normal">这篇论文给出一套理论，分析多版本数据库的并发控制算法是否正确</div>');
   px(bg, 120, 530, 1180); vanish(bg, 0); show(bg, T('f22') + 0.1, { y: 12, d: 0.45 }); sfx('pop', T('f22') + 0.2, { g: 0.5 });
   // 译文跟着出来；「多版本」「正确性」讲到时用底色标出
@@ -193,6 +194,9 @@ scene('s6', ({ root, s, c0 }) => {
   const bgZ = bg.querySelector('.s6-bz'); vanish(bgZ, 0); show(bgZ, T('f22', 'Bernstein'), { y: 8, d: 0.4 });
   const [kC, kM] = bg.querySelectorAll('.s6-k');
   lit(kM, 'on', T('f22', 'Goodman')); lit(kC, 'on', T('f22', '正确性'));
+  swaps(bg.querySelector('.s6-bt'), [[T('f22', 'Goodman') - 0.1, '1983 · ACM TODS 8(4) · Bernstein · Goodman']]);
+  st.textContent += ' .s6-bq.on { color: var(--ink) !important; }'; lit(bg.querySelector('.s6-bq'), 'on', T('f22', '正确性'));
+  drift(bg, T('f22') + 0.6, s.end, 1.02);
   // 收尾：泳道一带慢慢淡下去，只留两个版本与 MVCC（整组放进一个容器，只对容器补间）
   const dimBox = h('div', 'abs', W); px(dimBox, 0, 0, 1920, 1080);
   [...W.querySelectorAll('.pill, .s6-val, .vbar, .playhead, .lane-name, .lane-line, .s6-trk, .lock'), trkL2, eq, rcTag, rcTag2].forEach((e) => dimBox.appendChild(e));

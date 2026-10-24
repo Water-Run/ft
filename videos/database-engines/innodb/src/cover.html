@@ -6,80 +6,141 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     与正片同一套视觉：手册架构图的暖灰底与青色页方块；右边（4:3 在下边）是本片的主画面——users 表那棵主键 B+ 树，
-     根页 4 加 21 页叶子，叶子的高度是实测的行数（data.js，FACTS T1–T3）。底部约 15% 不放文字。 */
-  :root { --bg: #F4F3F2; --ink: #15191C; --ink2: #4A5358; --main: #00758F; --mainD: #2D5A68; --teal: #AED9D7; --pale: #D9EEEF; --acc: #B5452E; --accL: #F3DCD5; }
+     WaterRun（2026-10-25）：「封面要和MyISAM一样的, 体现高级的, InnoDB的质感. 主体核心就是事务性」
+     与 PART 1 同一种版式：黑底、左边标签 + 问句 + 大标题 + 左下一段实测、右边一幅自己投影的立体图。
+     画面是一笔事务：管理员给每个人的年龄加一（R1），这一笔里的几行还没提交——砖红斜纹，和正片「未提交」同一种画法；
+     到了岔路口只有两条路：COMMIT，整笔生效，一直通向远处（实心蓝）；ROLLBACK，整笔撤回，每一行回到原来的年龄。
+     行与年龄取自页 27 的实测记录（data.js 的 del.start，FACTS D1）。透视由本页自己投影，各面平涂，不用渐变。
+     配色：黑底偏一点蓝，MySQL 蓝作焦点（提亮到黑底上看得清），砖红只表示未提交。 */
+  :root { --bg: #0a0f12; --dim: #8b969b; --blue: #2fa8d0; --ink: #e9eff1; --red: #e0613f; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; }
-  #stage { position: relative; background: var(--bg); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .series { position: absolute; left: var(--M); font: 700 46px "Sans SC"; color: var(--ink2); }
-  .part { position: absolute; font: 800 44px "Inter"; color: #fff; background: var(--mainD); padding: 6px 20px; }
-  .t1 { position: absolute; left: var(--M); font: 900 168px "Sans SC"; line-height: 1.04; color: var(--ink); letter-spacing: -.01em; }
-  .t2 { position: absolute; left: var(--M); font: 800 228px "Inter"; line-height: 1; color: var(--mainD); letter-spacing: -.02em; }
-  .tree { position: absolute; }
-  .tree .root { position: absolute; height: 40px; border: 3px solid var(--mainD); background: var(--pale); }
-  .tree .leaf { position: absolute; border: 3px solid var(--mainD); background: #fff; }
-  .tree .leaf i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--teal); }
-  .tree .leaf.hot { border-color: var(--main); }
-  .tree .leaf.hot i { background: var(--main); }
-  .tree svg { position: absolute; left: 0; top: 0; overflow: visible; }
-  .bar { position: absolute; height: 58px; font: 800 36px "Inter"; padding: 6px 16px; }
-  .bar.unc { color: var(--acc); border: 3px solid var(--acc); background-color: var(--accL);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M-2,2 l4,-4 M0,16 L16,0 M14,18 l4,-4' stroke='%23B5452E' stroke-width='3.5'/%3E%3C/svg%3E"); }
-  .bar.unc b { background: #fff; padding: 0 8px; }
-  .bar.ok { color: #fff; background: var(--main); border: 3px solid var(--main); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--bg); overflow: hidden; }
+  svg { position: absolute; left: 0; top: 0; }
+  .kicker { position: absolute; font: 500 var(--kfs) "Sans SC"; color: var(--dim); letter-spacing: .02em; white-space: nowrap; }
+  .t1 { position: absolute; font: 900 var(--t1fs) "Sans SC"; color: var(--ink); line-height: 1; white-space: nowrap; }
+  .t2 { position: absolute; font: 800 var(--t2fs) "Inter"; color: var(--blue); line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+  .r169 { --kfs: 54px; --t1fs: 128px; --t2fs: 236px; } .r43 { --kfs: 50px; --t1fs: 120px; --t2fs: 220px; }
+  .r169 .kicker { left: 112px; top: 236px; } .r169 .t1 { left: 106px; top: 322px; } .r169 .t2 { left: 96px; top: 470px; }
+  .r43 .kicker { left: 96px; top: 210px; } .r43 .t1 { left: 90px; top: 290px; } .r43 .t2 { left: 80px; top: 430px; }
+  /* 系列第二集，与片头标题页同一种标签 */
+  .part { position: absolute; font: 500 var(--pfs) "Mono"; line-height: 1.5; padding: 0 .45em; color: var(--blue); border: 3px solid var(--blue); letter-spacing: .04em; }
+  .r169 { --pfs: 46px; } .r43 { --pfs: 42px; }
+  .r169 .part { left: 112px; top: 128px; } .r43 .part { left: 96px; top: 108px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="series"></div>
+  <svg id="art"></svg>
   <div class="part">PART 2</div>
+  <div class="kicker"></div>
   <div class="t1"></div>
   <div class="t2">InnoDB</div>
-  <div class="tree"></div>
-  <div class="bar unc"><b>43</b></div>
-  <div class="bar ok">43</div>
 </div>
 <script src="js/data.js"></script>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  const R43 = q.get('r') === '43';
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', R43 = q.get('r') === '43';
   document.documentElement.className = (R43 ? 'r43' : 'r169') + ' ' + lang;
-  const $ = (s) => document.querySelector(s);
-  const pos = (e, o) => { for (const k in o) e.style[k] = typeof o[k] === 'number' ? o[k] + 'px' : o[k]; };
-  $('.series').textContent = '一个数据库引擎是如何实现的？';
-  $('.t1').textContent = '事务性与现代化';
-  // 版式：16:9 标题在左、树在右；4:3 标题在上、树在下
-  const L = R43
-    ? { series: [100, 96], part: [1300, 88], t1: 196, t2: 380, tree: { x: 100, y: 690, w: 1400, h: 300 }, bars: [100, 620] }
-    : { series: [120, 110], part: [1620, 104], t1: 214, t2: 410, tree: { x: 1010, y: 450, w: 790, h: 420 }, bars: [120, 690] };
-  pos($('.series'), { top: L.series[1] });
-  pos($('.part'), { left: L.part[0], top: L.part[1] });
-  pos($('.t1'), { top: L.t1 });
-  pos($('.t2'), { top: L.t2 });
-  // 一行的两个版本：未提交（斜纹）→ 提交（实心）——事务这件事本身
-  pos($('.bar.unc'), { left: L.bars[0], top: L.bars[1], width: R43 ? 260 : 220 });
-  pos($('.bar.ok'), { left: L.bars[0] + (R43 ? 260 : 220), top: L.bars[1], width: R43 ? 260 : 220 });
-  // 主键树：根页 + 21 页叶子，叶子里的填充按实测行数（满页 207 行）
-  const T = L.tree, tree = $('.tree'), leaves = window.DATA.pk.leaves, n = leaves.length;
-  pos(tree, { left: T.x, top: T.y, width: T.w, height: T.h });
-  const pitch = T.w / n, lw = Math.round(pitch * 0.72), lh = Math.round(T.h * 0.62), ly = T.h - lh;
-  const root = document.createElement('div'); root.className = 'root'; tree.appendChild(root);
-  pos(root, { left: 0, top: 0, width: T.w });
-  const NS = 'http://www.w3.org/2000/svg';
-  const sv = document.createElementNS(NS, 'svg'); sv.setAttribute('width', T.w); sv.setAttribute('height', T.h); tree.appendChild(sv);
-  leaves.forEach((l, k) => {
-    const cx = pitch * (k + 0.5);
-    const ln = document.createElementNS(NS, 'line');
-    Object.entries({ x1: cx, y1: 43, x2: cx, y2: ly - 3, stroke: '#2D5A68', 'stroke-width': 2.5 }).forEach(([a, v]) => ln.setAttribute(a, v));
-    sv.appendChild(ln);
-    const e = document.createElement('div'); e.className = 'leaf' + (l.page === 27 ? ' hot' : ''); tree.appendChild(e);
-    pos(e, { left: cx - lw / 2, top: ly, width: lw, height: lh });
-    const f = document.createElement('i'); e.appendChild(f); f.style.height = (100 * l.n / 207).toFixed(1) + '%';
-  });
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('800 40px "Inter"', sample)])
+  const TEXT = { zh: { kicker: '一个数据库引擎是如何实现的？', t1: '事务性与现代化', note: '全成，或者全不成' } }[lang];
+  document.querySelector('.kicker').textContent = TEXT.kicker;
+  document.querySelector('.t1').textContent = TEXT.t1;
+  const D = window.DATA;
+
+  const W = R43 ? 1600 : 1920, Hh = R43 ? 1200 : 1080;
+  // 相机：世界坐标里主线沿 +X 伸向远处，Y 指向线的后方，Z 向上；单位是一格
+  const CAM = R43 ? { eye: [-7.4, -3.6, 4.6], at: [5.2, 0.2, -0.7], f: 1420, c: [1070, 815] }
+                  : { eye: [-7.4, -3.6, 4.6], at: [5.2, 0.2, -0.7], f: 1500, c: [1270, 700] };
+  const sub = (a, b) => a.map((v, i) => v - b[i]), dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const norm = (a) => { const l = Math.hypot(...a); return a.map((v) => v / l); };
+  const fw = norm(sub(CAM.at, CAM.eye)), rt = norm(cross(fw, [0, 0, 1])), up = cross(rt, fw);
+  const P = (x, y, z) => { const d = sub([x, y, z], CAM.eye), zz = dot(d, fw); return [CAM.c[0] + CAM.f * dot(d, rt) / zz, CAM.c[1] - CAM.f * dot(d, up) / zz]; };
+
+  const NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('art');
+  svg.setAttribute('width', W); svg.setAttribute('height', Hh); svg.setAttribute('viewBox', `0 0 ${W} ${Hh}`);
+  const el = (tag, a, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  const pts = (ps) => ps.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const poly = (ps, fill, stroke, sw = 1.2) => el('polygon', { points: pts(ps), fill, stroke: stroke || fill, 'stroke-width': sw, 'stroke-linejoin': 'round' });
+  const rgb = (hex, f) => { const n = parseInt(hex.slice(1), 16); return `rgb(${Math.round((n >> 16) * f)},${Math.round(((n >> 8) & 255) * f)},${Math.round((n & 255) * f)})`; };
+  // 未提交：砖红斜纹（与正片 .vbar.unc 同一种画法，提亮到黑底上）
+  { const defs = el('defs', {}), pat = el('pattern', { id: 'unc', width: 18, height: 18, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    el('rect', { width: 18, height: 18, fill: '#3a140c' }, pat); el('rect', { width: 7, height: 18, fill: '#e0613f' }, pat); }
+
+  // 一个立方格：沿方向 u（地面上的单位向量）放，起点 o，长 len，宽 1（向 v = u 逆时针 90°），高 h
+  // 从远到近画：调用方负责顺序；这里只画看得见的三个面（顶、朝相机的侧面、朝相机的端面）
+  const box = (o, u, len, h, c, label, labelFill, z0 = 0) => {
+    const v = [-u[1], u[0]];
+    const at = (s, t, z) => P(o[0] + u[0] * s + v[0] * t, o[1] + u[1] * s + v[1] * t, z);
+    const z1 = z0 + h;
+    // 朝相机的长边：v 的负方向（相机在 -Y 一侧）；端面：靠近相机的一端（s = 0）
+    poly([at(0, 0, z0), at(0, 1, z0), at(0, 1, z1), at(0, 0, z1)], c.side);
+    poly([at(0, 0, z0), at(len, 0, z0), at(len, 0, z1), at(0, 0, z1)], c.front);
+    poly([at(0, 0, z1), at(len, 0, z1), at(len, 1, z1), at(0, 1, z1)], c.top, c.edge, 1.6);
+    if (label != null) {
+      const a = at(0, 1, z1), b = at(len, 1, z1), d = at(0, 0, z1);
+      const g = el('g', { transform: `matrix(${(b[0] - a[0]) / 100} ${(b[1] - a[1]) / 100} ${(d[0] - a[0]) / 100} ${(d[1] - a[1]) / 100} ${a[0]} ${a[1]})` });
+      const t = el('text', { x: 50, y: 50, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'Mono', 'font-weight': 700, 'font-size': 52, fill: labelFill }, g);
+      t.textContent = label;
+    }
+  };
+  const X = [1, 0], CELL = 1, GAP = 0.12, HT = 0.55;
+
+  // 页 27 上 2047 起的几行：这一笔事务给每人的年龄加一（R1：UPDATE users SET age = age + 1）
+  const recs = D.del.start.records.filter((r) => r.id >= 2047).slice(0, 4);
+  const NB = 4;                                     // 在途（未提交）的几行
+  const FORK = NB * (CELL + GAP) + 0.25;            // 岔路口
+  const fog = (s) => 1 - 0.55 * Math.min(1, s / 34);
+
+  // 地面上的细轨：主线一直通到消失点；岔线朝相机右前方拐出去
+  const RB = norm([0.42, -0.9, 0]);                 // ROLLBACK 支线的方向
+  { const a = P(-3, 0.5, 0), b = P(400, 0.5, 0); el('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: '#17384a', 'stroke-width': 3 });
+    const c = P(FORK, 0.5, 0), d = P(FORK + RB[0] * 12, 0.5 + RB[1] * 12, 0); el('line', { x1: c[0], y1: c[1], x2: d[0], y2: d[1], stroke: '#2a3236', 'stroke-width': 3 }); }
+
+  // COMMIT 支线：同样这几行，整笔生效，实心蓝，一直伸到远处
+  const BLUE = { top: '#1f86a8', front: '#135a72', side: '#0b3a4a', edge: '#4fc0e0' };
+  // 前 NB 格就是这一笔的几行（新年龄），再往后是表里其余的行，一直排到远处
+  for (let i = 33; i >= 0; i--) {
+    const s0 = FORK + 0.45 + i * (CELL + GAP), k = fog(s0 - FORK);
+    const c = { top: rgb(BLUE.top, k), front: rgb(BLUE.front, k), side: rgb(BLUE.side, k), edge: rgb(BLUE.edge, k) };
+    box([s0, 0], X, CELL, HT, c, i < NB ? String(recs[i].age + 1) : null, rgb('#e6f6fb', k));
+  }
+  // ROLLBACK 支线：整笔撤回，每一行回到原来的年龄（灰）
+  const GREY = { top: '#3b474d', front: '#262f33', side: '#182023', edge: '#6b7a81' };
+  const rbO = (j) => [FORK + RB[0] * (0.7 + j * (CELL + GAP)) - RB[1] * 0 , 0.5 + RB[1] * (0.7 + j * (CELL + GAP)) - 0.5];
+  for (let j = NB - 1; j >= 0; j--) box(rbO(j), [RB[0], RB[1]], CELL, HT, GREY, String(recs[j].age), '#c9d3d7');
+
+  // 在途的这一笔：砖红斜纹，外面一圈细框把它们捆成一个整体
+  for (let i = NB - 1; i >= 0; i--) {
+    const s0 = i * (CELL + GAP);
+    box([s0, 0], X, CELL, HT, { top: 'url(#unc)', front: '#5a2015', side: '#3a140c', edge: '#ff8a66' }, String(recs[i].age + 1), '#fff');
+  }
+  { const z = HT + 0.18, e = 0.12, x0 = -e, x1 = (NB - 1) * (CELL + GAP) + CELL + e, y0 = -e, y1 = 1 + e;
+    el('polyline', { points: pts([P(x0, y0, z), P(x1, y0, z), P(x1, y1, z), P(x0, y1, z), P(x0, y0, z)]), fill: 'none', stroke: '#e0613f', 'stroke-width': 2.4, 'stroke-dasharray': '10 7' }); }
+
+  // 岔路口的两块路牌
+  const sign = (p, str, color, size, anchor = 'start') => { const t = el('text', { x: p[0], y: p[1], 'font-family': 'Mono', 'font-weight': 700, 'font-size': size, fill: color, 'text-anchor': anchor }); t.textContent = str; return t; };
+  { const a = P(FORK + 0.15, -0.25, 0), b = P(FORK + 0.15, -0.25, 2.3);    // COMMIT：一根立柱
+    el('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: '#2fa8d0', 'stroke-width': 5 });
+    sign([b[0] - 16, b[1] + 16], 'COMMIT', '#2fa8d0', R43 ? 44 : 50, 'end');   // 写在立柱左边，不压远处的蓝格
+    const c = rbO(2), cp = P(c[0] + RB[0] * 0.5 - RB[1] * 1.0, c[1] + RB[1] * 0.5 + RB[0] * 1.0, HT);   // 灰格上方
+    sign([cp[0], cp[1] - 34], 'ROLLBACK', '#aab7bc', R43 ? 40 : 44, 'middle'); }
+  // START TRANSACTION：写在这一笔的前下方，一根短线指向它
+  { const p = P(NB * (CELL + GAP) * 0.55, -0.15, 0), q2 = [p[0] + 40, p[1] + 96];
+    el('line', { x1: p[0], y1: p[1], x2: q2[0], y2: q2[1] - 30, stroke: '#e0613f', 'stroke-width': 2 });
+    sign([q2[0] - 20, q2[1]], 'START TRANSACTION', '#e0613f', R43 ? 30 : 32, 'start'); }
+
+  // 左下：开场那一幕——同样一句 ROLLBACK，两张表的结果（实测 X2）
+  { const X0 = R43 ? 96 : 112, Y0 = R43 ? 850 : 790, fs = R43 ? 34 : 38;
+    [['mysql> ROLLBACK;', '', '#8b969b'], ['users_myisam', 'age = ' + D.rollback.users_myisam, '#8b969b'], ['users', 'age = ' + D.rollback.users, '#2fa8d0']].forEach(([n, v, c], i) => {
+      el('text', { x: X0, y: Y0 + i * (fs + 14), 'font-family': 'Mono', 'font-weight': 500, 'font-size': fs, fill: c }).textContent = n;
+      if (v) el('text', { x: X0 + (R43 ? 560 : 620), y: Y0 + i * (fs + 14), 'font-family': 'Mono', 'font-weight': 500, 'font-size': fs, fill: c, 'text-anchor': 'end' }).textContent = v;
+    }); }
+  // 右下：事务的意思
+  sign([R43 ? 1110 : 1440, R43 ? 880 : 730], TEXT.note, '#2fa8d0', R43 ? 40 : 42, 'start');
+
+  const sample = document.getElementById('stage').textContent + TEXT.note + '0123456789 =>;ACDEIKLMNORSTUBVmysqlage';
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('800 40px "Inter"', 'InnoDB'), document.fonts.load('500 40px "Mono"', sample), document.fonts.load('700 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
