@@ -1,0 +1,72 @@
+[admin] CREATE DATABASE IF NOT EXISTS demo
+(no result rows)
+
+[admin] USE demo
+(no result rows)
+
+[admin] SET SESSION cte_max_recursion_depth=10000
+(no result rows)
+
+[admin] CREATE TABLE users(id INT NOT NULL PRIMARY KEY, name CHAR(50) CHARACTER SET ascii NOT NULL, age TINYINT UNSIGNED NOT NULL, KEY idx_name(name), KEY idx_age(age)) ENGINE=InnoDB
+(no result rows)
+
+[admin] INSERT INTO users WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i+1 FROM n WHERE i<4096) SELECT i, IF(i=2050,'Alice',CONCAT('User',LPAD(i,5,'0'),'-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), IF(i=2050,42,18+i%63) FROM n
+(no result rows)
+
+[admin] FLUSH TABLES users FOR EXPORT
+(no result rows)
+
+[admin] UNLOCK TABLES
+(no result rows)
+
+[Bob] START TRANSACTION WITH CONSISTENT SNAPSHOT
+(no result rows)
+
+[Bob] SELECT id, name, age FROM users WHERE id = 2050
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+
+[admin] DELETE FROM users WHERE id = 2050
+(no result rows)
+
+[admin] SELECT COUNT(*) AS n FROM users WHERE id = 2050
++---+
+| n |
++---+
+| 0 |
++---+
+
+[Bob] SELECT id, name, age FROM users WHERE id = 2050
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+
+[admin] FLUSH TABLES users FOR EXPORT
+(no result rows)
+
+[admin] UNLOCK TABLES
+(no result rows)
+
+[Bob] COMMIT
+(no result rows)
+
+[admin] FLUSH TABLES users FOR EXPORT
+(no result rows)
+
+[admin] UNLOCK TABLES
+(no result rows)
+
+[Dave] INSERT INTO users VALUES (2050, 'Dave', 35)
+(no result rows)
+
+[admin] FLUSH TABLES users FOR EXPORT
+(no result rows)
+
+[admin] UNLOCK TABLES
+(no result rows)
+

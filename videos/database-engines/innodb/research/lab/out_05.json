@@ -1,0 +1,108 @@
+{
+  "queries": [
+    {
+      "label": "by_id_cold",
+      "sql": "SELECT * FROM users WHERE id = 2050",
+      "result": [
+        {
+          "id": "2050",
+          "name": "Alice",
+          "age": "42"
+        }
+      ],
+      "disk_reads": 3,
+      "logical_reads": 1248,
+      "new_pages_in_pool": [
+        4,
+        27
+      ]
+    },
+    {
+      "label": "by_id_warm",
+      "sql": "SELECT * FROM users WHERE id = 2050",
+      "result": [
+        {
+          "id": "2050",
+          "name": "Alice",
+          "age": "42"
+        }
+      ],
+      "disk_reads": 0,
+      "logical_reads": 1226,
+      "new_pages_in_pool": []
+    },
+    {
+      "label": "by_name_cold_secondary",
+      "sql": "SELECT * FROM users WHERE name = 'Alice'",
+      "result": [
+        {
+          "id": "2050",
+          "name": "Alice",
+          "age": "42"
+        }
+      ],
+      "disk_reads": 2,
+      "logical_reads": 1235,
+      "new_pages_in_pool": [
+        5,
+        9
+      ]
+    },
+    {
+      "label": "by_name_warm",
+      "sql": "SELECT * FROM users WHERE name = 'Alice'",
+      "result": [
+        {
+          "id": "2050",
+          "name": "Alice",
+          "age": "42"
+        }
+      ],
+      "disk_reads": 0,
+      "logical_reads": 1234,
+      "new_pages_in_pool": []
+    }
+  ],
+  "explain_by_name": [
+    {
+      "EXPLAIN": "-> Index lookup on users using idx_name (name = 'Alice')  (cost=0.35 rows=1)"
+    }
+  ],
+  "explain_by_id": [
+    {
+      "EXPLAIN": "-> Rows fetched before execution  (cost=0..0 rows=1)"
+    }
+  ],
+  "summary": [
+    {
+      "label": "by_id_cold",
+      "disk_reads": 3,
+      "logical_reads": 1248,
+      "new_pages_in_pool": [
+        4,
+        27
+      ]
+    },
+    {
+      "label": "by_id_warm",
+      "disk_reads": 0,
+      "logical_reads": 1226,
+      "new_pages_in_pool": []
+    },
+    {
+      "label": "by_name_cold_secondary",
+      "disk_reads": 2,
+      "logical_reads": 1235,
+      "new_pages_in_pool": [
+        5,
+        9
+      ]
+    },
+    {
+      "label": "by_name_warm",
+      "disk_reads": 0,
+      "logical_reads": 1234,
+      "new_pages_in_pool": []
+    }
+  ]
+}

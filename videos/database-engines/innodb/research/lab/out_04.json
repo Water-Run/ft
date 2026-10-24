@@ -1,0 +1,101 @@
+{
+  "config": {
+    "flush_at_commit": "1",
+    "doublewrite": "ON",
+    "redo_capacity": "104857600",
+    "page_size": "16384",
+    "fast_shutdown": "1"
+  },
+  "log_before": "\nLOG\n---\nLog capacity                 104857600\nLog capacity used            104857600\nLog sequence number          20294879\nLog buffer assigned up to    20294879\nLog buffer completed up to   20294879\nLog written up to            20294879\nLog flushed up to            20294879\nAdded dirty pages up to      20294879\nPages flushed up to          19036061\nLast checkpoint at           19036061\nLog minimum file id is       5\nLog maximum file id is       6\n290 log i/o's done, 290.00 log i/o's/second\n----------------------\nBUFFER POOL AND MEMORY\n----------------------\nTotal large memory allocated 0\nDic",
+  "bulk_progress_at_kill": [
+    {
+      "rows_modified": "258",
+      "state": "RUNNING"
+    }
+  ],
+  "log_at_kill": "\nLOG\n---\nLog capacity                 104857600\nLog capacity used            104857600\nLog sequence number          20359513\nLog buffer assigned up to    20359513\nLog buffer completed up to   20359513\nLog written up to            20359347\nLog flushed up to            20359181\nAdded dirty pages up to      20359513\nPages flushed up to          19036061\nLast checkpoint at           19036061\nLog minimum file id is       5\nLog maximum file id is       6\n649 log i/o's done, 89.75 log i/o's/second\n----------------------\nBUFFER POOL AND MEMORY\n----------------------\nTotal large memory allocated 0\nDict",
+  "restart_seconds": 3.2,
+  "alice_after_restart": [
+    {
+      "id": "2050",
+      "name": "Alice",
+      "age": "43"
+    }
+  ],
+  "bulk_after_restart": [
+    {
+      "changed": "0",
+      "unchanged": "4095"
+    }
+  ],
+  "server_log_recovery_lines": [
+    "2026-10-24T13:15:12.895285Z 1 [Note] [MY-013532] [InnoDB] Using '.\\#ib_16384_0.dblwr' for doublewrite",
+    "2026-10-24T13:15:12.895443Z 1 [Note] [MY-013532] [InnoDB] Using '.\\#ib_16384_1.dblwr' for doublewrite",
+    "2026-10-24T13:15:12.932491Z 1 [Note] [MY-013883] [InnoDB] The latest found checkpoint is at lsn = 19036061 in redo log file .\\#innodb_redo\\#ib_redo5.",
+    "2026-10-24T13:15:12.937169Z 1 [Note] [MY-013086] [InnoDB] Starting to parse redo log at lsn = 19035677, whereas checkpoint_lsn = 19036061 and start_lsn = 19035648",
+    "2026-10-24T13:15:12.937218Z 1 [Note] [MY-012532] [InnoDB] Applying a batch of 0 redo log records ...",
+    "2026-10-24T13:15:12.949489Z 1 [Note] [MY-013252] [InnoDB] Using undo tablespace '.\\undo_001'.",
+    "2026-10-24T13:15:12.954500Z 1 [Note] [MY-013252] [InnoDB] Using undo tablespace '.\\undo_002'.",
+    "2026-10-24T13:15:12.975503Z 1 [Note] [MY-012910] [InnoDB] Opened 2 existing undo tablespaces.",
+    "2026-10-24T13:15:12.975555Z 1 [Note] [MY-011980] [InnoDB] GTID recovery trx_no: 1030",
+    "2026-10-24T13:15:13.078324Z 1 [Note] [MY-013018] [InnoDB] Created 128 and tracked 128 new rollback segment(s) in the temporary tablespace. 128 are now active.",
+    "2026-10-24T13:15:13.200837Z 0 [Note] [MY-013911] [Server] Crash recovery finished in InnoDB engine. No attempts to commit, rollback or prepare any transactions.",
+    "2026-10-24T13:15:13.202464Z 0 [Note] [MY-012487] [InnoDB] DDL log recovery : begin",
+    "2026-10-24T13:15:13.202629Z 0 [Note] [MY-012488] [InnoDB] DDL log recovery : end",
+    "2026-10-24T13:15:13.202920Z 0 [Note] [MY-011946] [InnoDB] Loading buffer pool(s) from <run>\\data\\ib_buffer_pool",
+    "2026-10-24T13:15:20.599839Z 1 [Note] [MY-013532] [InnoDB] Using '.\\#ib_16384_0.dblwr' for doublewrite",
+    "2026-10-24T13:15:20.604066Z 1 [Note] [MY-013532] [InnoDB] Using '.\\#ib_16384_1.dblwr' for doublewrite",
+    "2026-10-24T13:15:20.618109Z 1 [Note] [MY-013566] [InnoDB] Double write buffer files: 2, --innodb-doublewrite-files=2, segments_per_file=2",
+    "2026-10-24T13:15:20.618430Z 1 [Note] [MY-013532] [InnoDB] Using '.\\#ib_16384_0.dblwr' for doublewrite",
+    "2026-10-24T13:15:20.618668Z 1 [Note] [MY-013532] [InnoDB] Using '.\\#ib_16384_1.dblwr' for doublewrite",
+    "2026-10-24T13:15:20.661095Z 1 [Note] [MY-013883] [InnoDB] The latest found checkpoint is at lsn = 19036061 in redo log file .\\#innodb_redo\\#ib_redo5.",
+    "2026-10-24T13:15:20.666017Z 1 [Note] [MY-013086] [InnoDB] Starting to parse redo log at lsn = 19035677, whereas checkpoint_lsn = 19036061 and start_lsn = 19035648",
+    "2026-10-24T13:15:20.666039Z 1 [Note] [MY-012547] [InnoDB] Log scan progressed past the checkpoint LSN 19035677.",
+    "2026-10-24T13:15:20.666083Z 1 [Note] [MY-012552] [InnoDB] Starting crash recovery.",
+    "2026-10-24T13:15:20.779490Z 1 [Note] [MY-012550] [InnoDB] Doing recovery: scanned up to log sequence number 20362083",
+    "2026-10-24T13:15:20.779627Z 1 [Note] [MY-012532] [InnoDB] Applying a batch of 187 redo log records ...",
+    "2026-10-24T13:15:20.971227Z 1 [Note] [MY-013252] [InnoDB] Using undo tablespace '.\\undo_001'.",
+    "2026-10-24T13:15:20.979108Z 1 [Note] [MY-013252] [InnoDB] Using undo tablespace '.\\undo_002'.",
+    "2026-10-24T13:15:21.001705Z 1 [Note] [MY-012910] [InnoDB] Opened 2 existing undo tablespaces.",
+    "2026-10-24T13:15:21.001757Z 1 [Note] [MY-011980] [InnoDB] GTID recovery trx_no: 1564",
+    "2026-10-24T13:15:21.038742Z 1 [Note] [MY-013023] [InnoDB] 1 transaction(s) which must be rolled back or cleaned up in total 274 row operations to undo",
+    "2026-10-24T13:15:21.088756Z 1 [Note] [MY-013018] [InnoDB] Created 128 and tracked 128 new rollback segment(s) in the temporary tablespace. 128 are now active.",
+    "2026-10-24T13:15:21.173560Z 0 [Note] [MY-013911] [Server] Crash recovery finished in InnoDB engine. No attempts to commit, rollback or prepare any transactions.",
+    "2026-10-24T13:15:21.175175Z 0 [Note] [MY-012487] [InnoDB] DDL log recovery : begin",
+    "2026-10-24T13:15:21.175387Z 0 [Note] [MY-012488] [InnoDB] DDL log recovery : end",
+    "2026-10-24T13:15:21.175609Z 0 [Note] [MY-013014] [InnoDB] Starting in background the rollback of uncommitted transactions",
+    "2026-10-24T13:15:21.175623Z 0 [Note] [MY-013011] [InnoDB] Rolling back trx with id 1563, 274 rows to undo",
+    "2026-10-24T13:15:21.175869Z 0 [Note] [MY-011946] [InnoDB] Loading buffer pool(s) from <run>\\data\\ib_buffer_pool",
+    "2026-10-24T13:15:21.178422Z 0 [Note] [MY-013012] [InnoDB] Rollback of trx with id 1563 completed",
+    "2026-10-24T13:15:21.178437Z 0 [Note] [MY-013015] [InnoDB] Rollback of non-prepared transactions completed",
+    "2026-10-24T13:15:22.233180Z 0 [Note] [MY-011944] [InnoDB] Dumping buffer pool(s) to <run>\\data\\ib_buffer_pool"
+  ],
+  "summary": {
+    "alice": [
+      {
+        "id": "2050",
+        "name": "Alice",
+        "age": "43"
+      }
+    ],
+    "bulk_rows_modified_at_kill": [
+      {
+        "rows_modified": "258",
+        "state": "RUNNING"
+      }
+    ],
+    "bulk_after_restart": [
+      {
+        "changed": "0",
+        "unchanged": "4095"
+      }
+    ],
+    "config": {
+      "flush_at_commit": "1",
+      "doublewrite": "ON",
+      "redo_capacity": "104857600",
+      "page_size": "16384",
+      "fast_shutdown": "1"
+    }
+  }
+}

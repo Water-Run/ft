@@ -1,0 +1,280 @@
+{
+  "manual_snapshots": {
+    "D01": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.2.1 Clustered and Secondary Indexes",
+      "sha256": "9d5497d00d1d1a5eed94aa609ad3a07aa1b7ceb9199e5a9fcf5773249a3cb8c6",
+      "matches_r8_record": true
+    },
+    "D02": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-physical-structure.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.2.2 The Physical Structure of an InnoDB Index",
+      "sha256": "0afc34d640875825c908aa03e9d559dd1274d4e27f65561d504ceb36f4aedc18",
+      "matches_r8_record": true
+    },
+    "D03": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.3 InnoDB Multi-Versioning",
+      "sha256": "808bbeab5fd18bce846da9258634313dc80cc2ea37c21a5e56bacbc285a648a0",
+      "matches_r8_record": true
+    },
+    "D04": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-consistent-read.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.3 Consistent Nonlocking Reads",
+      "sha256": "45e60f6c796a74df0b66fe773af39b0ad2b0a3d12d8ce991d49c89f1d0a43bdd",
+      "matches_r8_record": true
+    },
+    "D05": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.1 InnoDB Locking",
+      "sha256": "102677ae621761d6289fd3ea300a7e3858189e825b26e8826014295ec3123569",
+      "matches_r8_record": true
+    },
+    "D06": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.5 Redo Log",
+      "sha256": "b7f23ec68401a362d8d16076f16d755b28b8d2e5b961514dbf5703522c862d54",
+      "matches_r8_record": true
+    },
+    "D07": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-recovery.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.18.2 InnoDB Recovery",
+      "sha256": "0ede3fef070946686dab3906f515b04128d5e3926efe7f7fc8ad357c3c8fee1d",
+      "matches_r8_record": true
+    },
+    "D08": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-undo-logs.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.6 Undo Logs",
+      "sha256": "6f8a470cc35b9be9e1bd3f55b7d36de384655add11bba3db44e0a414b7f7ecfc",
+      "matches_r8_record": true
+    },
+    "D09": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.5.1 Buffer Pool",
+      "sha256": "f3c1099c70bfdde2dd15115b29721315a2bd8393cc270f82e19439216ce33632",
+      "matches_r8_record": true
+    },
+    "D10": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-doublewrite-buffer.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.6.4 Doublewrite Buffer",
+      "sha256": "b31d6a241a680eb12706e523ff5720f01dc0b0957ef372414499e02d7e851aa6",
+      "matches_r8_record": true
+    },
+    "D12": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.2 autocommit, Commit, and Rollback",
+      "sha256": "39ebabe3622cacf0a97aebcc8b02df87726c6f626de5b92a57c94a28c7394372",
+      "matches_r8_record": true
+    },
+    "D13": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-deadlocks.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.5 Deadlocks in InnoDB",
+      "sha256": "19fe097da515dcd471451f87ab03a42e354697b31ea7abd478feab5882f5aa95",
+      "matches_r8_record": true
+    },
+    "D18": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.1 Transaction Isolation Levels",
+      "sha256": "94866e027126567676bf89132939edda70f106237defc4238bbf4e2a47157e73",
+      "matches_r8_record": true
+    }
+  },
+  "quotes": [
+    {
+      "what": "clustered index stores row data",
+      "doc": "D01",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "quote": "Each InnoDB table has a special index called the clustered index that stores row data."
+    },
+    {
+      "what": "secondary record contains primary key",
+      "doc": "D01",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "quote": "each record in a secondary index contains the primary key columns for the row, as well as the columns specified for the secondary index."
+    },
+    {
+      "what": "indexes are B-trees",
+      "doc": "D02",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-physical-structure.html",
+      "quote": "With the exception of spatial indexes, InnoDB indexes are B-tree data structures."
+    },
+    {
+      "what": "page size 16KB",
+      "doc": "D02",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-physical-structure.html",
+      "quote": "The default size of an index page is 16KB."
+    },
+    {
+      "what": "sequential insert fills 15/16",
+      "doc": "D02",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-physical-structure.html",
+      "quote": "If index records are inserted in a sequential order (ascending or descending), the resulting index pages are about 15/16 full."
+    },
+    {
+      "what": "DB_TRX_ID 6 bytes",
+      "doc": "D03",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "quote": "A 6-byte DB_TRX_ID field indicates the transaction identifier for the last transaction that inserted or updated the row."
+    },
+    {
+      "what": "DB_ROLL_PTR 7 bytes",
+      "doc": "D03",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "quote": "A 7-byte DB_ROLL_PTR field called the roll pointer."
+    },
+    {
+      "what": "delete is not immediate",
+      "doc": "D03",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "quote": "a row is not physically removed from the database immediately when you delete it with an SQL statement."
+    },
+    {
+      "what": "removed when undo discarded",
+      "doc": "D03",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "quote": "InnoDB only physically removes the corresponding row and its index records when it discards the update undo log record written for the deletion."
+    },
+    {
+      "what": "this removal is purge",
+      "doc": "D03",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "quote": "This removal operation is called a purge"
+    },
+    {
+      "what": "consistent read = snapshot",
+      "doc": "D04",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-consistent-read.html",
+      "quote": "A consistent read means that InnoDB uses multi-versioning to present to a query a snapshot of the database at a point in time."
+    },
+    {
+      "what": "record lock",
+      "doc": "D05",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+      "quote": "A record lock is a lock on an index record."
+    },
+    {
+      "what": "gap lock",
+      "doc": "D05",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+      "quote": "A gap lock is a lock on a gap between index records"
+    },
+    {
+      "what": "next-key lock",
+      "doc": "D05",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+      "quote": "A next-key lock is a combination of a record lock on the index record and a gap lock on the gap before the index record."
+    },
+    {
+      "what": "next-key prevents phantoms",
+      "doc": "D05",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-locking.html",
+      "quote": "InnoDB uses next-key locks for searches and index scans, which prevents phantom rows"
+    },
+    {
+      "what": "redo log purpose",
+      "doc": "D06",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+      "quote": "The redo log is a disk-based data structure used during crash recovery to correct data written by incomplete transactions."
+    },
+    {
+      "what": "recovery starts at checkpoint",
+      "doc": "D06",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+      "quote": "recovery starts at the latest checkpoint LSN."
+    },
+    {
+      "what": "crash rolls back uncommitted",
+      "doc": "D07",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-recovery.html",
+      "quote": "InnoDB automatically rolls back uncommitted transactions that were present at the time of the crash."
+    },
+    {
+      "what": "undo log",
+      "doc": "D08",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-undo-logs.html",
+      "quote": "An undo log is a collection of undo log records associated with a single read-write transaction."
+    },
+    {
+      "what": "buffer pool midpoint",
+      "doc": "D09",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+      "quote": "3/8 of the buffer pool is devoted to the old sublist."
+    },
+    {
+      "what": "doublewrite",
+      "doc": "D10",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-doublewrite-buffer.html",
+      "quote": "The doublewrite buffer is a storage area where InnoDB writes pages flushed from the buffer pool before writing the pages to their proper positions in the InnoDB data files."
+    },
+    {
+      "what": "explicit transaction",
+      "doc": "D12",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+      "quote": "can perform a multiple-statement transaction by starting it with an explicit START TRANSACTION or BEGIN statement and ending it with a COMMIT or ROLLBACK statement."
+    },
+    {
+      "what": "deadlock detection",
+      "doc": "D13",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-deadlocks.html",
+      "quote": "When deadlock detection is enabled (the default) and a deadlock does occur, InnoDB detects the condition and rolls back one of the transactions (the victim)."
+    },
+    {
+      "what": "default isolation",
+      "doc": "D18",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "quote": "The default isolation level for InnoDB is REPEATABLE READ"
+    },
+    {
+      "what": "RR snapshot by first read",
+      "doc": "D18",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "quote": "Consistent reads within the same transaction read the snapshot established by the first read."
+    }
+  ],
+  "source": {
+    "storage/innobase/include/data0type.h": {
+      "url": "https://raw.githubusercontent.com/mysql/mysql-server/mysql-9.7.4/storage/innobase/include/data0type.h",
+      "sha256": "2d5d25a85fcd3ef28317f7a9bd710a9abd72daa2c65538389de9c7ee15c0b4e9"
+    }
+  },
+  "points": [
+    {
+      "what": "trx id field length 6",
+      "file": "storage/innobase/include/data0type.h",
+      "line": 185,
+      "text": "constexpr size_t DATA_TRX_ID_LEN = 6;"
+    },
+    {
+      "what": "roll ptr field length 7",
+      "file": "storage/innobase/include/data0type.h",
+      "line": 191,
+      "text": "constexpr size_t DATA_ROLL_PTR_LEN = 7;"
+    }
+  ],
+  "note": [
+    "2026-10-24 本机抓取 dev.mysql.com 与 downloads.mysql.com 一律返回 403（直连与代理都是），所以手册用旧版取证时",
+    "2026-10-09 存下的官方页面快照（research/_src/manual/D01–D19，URL 与 SHA-256 记在 research/r8/sources.json）："
+  ],
+  "summary": {
+    "quotes": 25,
+    "snapshots": {
+      "D01": true,
+      "D02": true,
+      "D03": true,
+      "D04": true,
+      "D05": true,
+      "D06": true,
+      "D07": true,
+      "D08": true,
+      "D09": true,
+      "D10": true,
+      "D12": true,
+      "D13": true,
+      "D18": true
+    },
+    "points": [
+      "storage/innobase/include/data0type.h:185",
+      "storage/innobase/include/data0type.h:191"
+    ]
+  }
+}

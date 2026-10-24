@@ -1,0 +1,191 @@
+[admin] CREATE DATABASE IF NOT EXISTS demo
+(no result rows)
+
+[admin] USE demo
+(no result rows)
+
+[admin] SET SESSION cte_max_recursion_depth=10000
+(no result rows)
+
+[admin] CREATE TABLE users(id INT NOT NULL PRIMARY KEY, name CHAR(50) CHARACTER SET ascii NOT NULL, age TINYINT UNSIGNED NOT NULL, KEY idx_name(name), KEY idx_age(age)) ENGINE=InnoDB
+(no result rows)
+
+[admin] INSERT INTO users WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i+1 FROM n WHERE i<4096) SELECT i, IF(i=2050,'Alice',CONCAT('User',LPAD(i,5,'0'),'-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), IF(i=2050,42,18+i%63) FROM n
+(no result rows)
+
+[admin] SET GLOBAL innodb_fast_shutdown = 0
+(no result rows)
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 15170 |
+| Innodb_buffer_pool_reads         | 825   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
+(no result rows)
+
+[Bob] SELECT * FROM users WHERE id = 2050
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 16418 |
+| Innodb_buffer_pool_reads         | 828   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|          27 |
++-------------+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 17642 |
+| Innodb_buffer_pool_reads         | 828   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|          27 |
++-------------+
+
+[Bob] SELECT * FROM users WHERE id = 2050
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 18868 |
+| Innodb_buffer_pool_reads         | 828   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|          27 |
++-------------+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 20092 |
+| Innodb_buffer_pool_reads         | 828   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|          27 |
++-------------+
+
+[Bob] SELECT * FROM users WHERE name = 'Alice'
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 21327 |
+| Innodb_buffer_pool_reads         | 830   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|           5 |
+|           9 |
+|          27 |
++-------------+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 22551 |
+| Innodb_buffer_pool_reads         | 830   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|           5 |
+|           9 |
+|          27 |
++-------------+
+
+[Bob] SELECT * FROM users WHERE name = 'Alice'
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+
+[Bob] SHOW GLOBAL STATUS WHERE Variable_name IN ('Innodb_buffer_pool_reads', 'Innodb_buffer_pool_read_requests')
++----------------------------------+-------+
+| Variable_name                    | Value |
++----------------------------------+-------+
+| Innodb_buffer_pool_read_requests | 23785 |
+| Innodb_buffer_pool_reads         | 830   |
++----------------------------------+-------+
+
+[Bob] SELECT PAGE_NUMBER AS page_number FROM information_schema.innodb_buffer_page WHERE TABLE_NAME = '`demo`.`users`' ORDER BY PAGE_NUMBER
++-------------+
+| page_number |
++-------------+
+|           4 |
+|           5 |
+|           9 |
+|          27 |
++-------------+
+
+[Bob] EXPLAIN SELECT * FROM users WHERE name = 'Alice'
++-------------------------------------------------------------------------------+
+| EXPLAIN                                                                       |
++-------------------------------------------------------------------------------+
+| -> Index lookup on users using idx_name (name = 'Alice')  (cost=0.35 rows=1)
+ |
++-------------------------------------------------------------------------------+
+
+[Bob] EXPLAIN SELECT * FROM users WHERE id = 2050
++-------------------------------------------------------+
+| EXPLAIN                                               |
++-------------------------------------------------------+
+| -> Rows fetched before execution  (cost=0..0 rows=1)
+ |
++-------------------------------------------------------+
+

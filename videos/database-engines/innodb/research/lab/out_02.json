@@ -1,0 +1,222 @@
+{
+  "A_before": {
+    "path": [
+      4,
+      27
+    ],
+    "page": 27,
+    "offset": 6184,
+    "header_hex": "0402a80049",
+    "fields_hex": "80000802000000000616820000011d3100416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
+    "record": {
+      "id": 2050,
+      "trx_id": 1558,
+      "roll_ptr": "820000011d3100",
+      "name": "Alice",
+      "age": 42,
+      "_bytes": 68
+    },
+    "page_max_trx_id": 0
+  },
+  "A_trx_id_while_open": [
+    {
+      "trx_id": "2061"
+    }
+  ],
+  "A_after": {
+    "path": [
+      4,
+      27
+    ],
+    "page": 27,
+    "offset": 6184,
+    "header_hex": "0402a80049",
+    "fields_hex": "8000080200000000080d010000011f0110416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+    "record": {
+      "id": 2050,
+      "trx_id": 2061,
+      "roll_ptr": "010000011f0110",
+      "name": "Alice",
+      "age": 43,
+      "_bytes": 68
+    },
+    "page_max_trx_id": 0
+  },
+  "B": {
+    "users": {
+      "after_rollback": "42",
+      "warnings": ""
+    },
+    "users_myisam": {
+      "after_rollback": "43",
+      "warnings": "+---------+------+---------------------------------------------------------------+\n| Level   | Code | Message                                                       |\n+---------+------+---------------------------------------------------------------+\n| Warning | 1196 | Some non-transactional changed tables couldn't be rolled back |\n+---------+------+---------------------------------------------------------------+"
+    }
+  },
+  "C": {
+    "REPEATABLE READ": {
+      "bob_first": "42",
+      "bob_while_alice_uncommitted": "42",
+      "bob_after_alice_commit": "42",
+      "bob_locking_read": "43"
+    },
+    "READ COMMITTED": {
+      "bob_first": "42",
+      "bob_while_alice_uncommitted": "42",
+      "bob_after_alice_commit": "43",
+      "bob_locking_read": "43"
+    }
+  },
+  "D": {
+    "locks_while_carol_waits": [
+      {
+        "trx": "2587",
+        "idx": "PRIMARY",
+        "type": "RECORD",
+        "mode": "X,REC_NOT_GAP",
+        "status": "GRANTED",
+        "data": "2050"
+      },
+      {
+        "trx": "2587",
+        "idx": "NULL",
+        "type": "TABLE",
+        "mode": "IX",
+        "status": "GRANTED",
+        "data": "NULL"
+      },
+      {
+        "trx": "2588",
+        "idx": "PRIMARY",
+        "type": "RECORD",
+        "mode": "X,REC_NOT_GAP",
+        "status": "WAITING",
+        "data": "2050"
+      },
+      {
+        "trx": "2588",
+        "idx": "NULL",
+        "type": "TABLE",
+        "mode": "IX",
+        "status": "GRANTED",
+        "data": "NULL"
+      }
+    ],
+    "carol_result": "ERROR 1205 (HY000) at line 3: Lock wait timeout exceeded; try restarting transaction",
+    "carol_waited_s": 3.0,
+    "carol_other_row": ""
+  },
+  "E": {
+    "bob_first": [
+      "2049",
+      "2051"
+    ],
+    "locks": [
+      {
+        "trx": "2593",
+        "idx": "PRIMARY",
+        "type": "RECORD",
+        "mode": "X,REC_NOT_GAP",
+        "status": "GRANTED",
+        "data": "2049"
+      },
+      {
+        "trx": "2593",
+        "idx": "PRIMARY",
+        "type": "RECORD",
+        "mode": "X",
+        "status": "GRANTED",
+        "data": "2050"
+      },
+      {
+        "trx": "2593",
+        "idx": "PRIMARY",
+        "type": "RECORD",
+        "mode": "X",
+        "status": "GRANTED",
+        "data": "2051"
+      },
+      {
+        "trx": "2593",
+        "idx": "NULL",
+        "type": "TABLE",
+        "mode": "IX",
+        "status": "GRANTED",
+        "data": "NULL"
+      }
+    ],
+    "dave_blocked": "ERROR 1205 (HY000) at line 3: Lock wait timeout exceeded; try restarting transaction",
+    "dave_waited_s": 3.1,
+    "bob_second": [
+      "2049",
+      "2051"
+    ],
+    "dave_after_bob": "",
+    "final": [
+      {
+        "id": "2049",
+        "name": "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": "51"
+      },
+      {
+        "id": "2050",
+        "name": "Dave",
+        "age": "35"
+      },
+      {
+        "id": "2051",
+        "name": "User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": "53"
+      }
+    ]
+  },
+  "F": {
+    "carol": "ERROR 1213 (40001) at line 11: Deadlock found when trying to get lock; try restarting transaction",
+    "alice": "",
+    "deadlock_section_head": "LATEST DETECTED DEADLOCK\n------------------------\n2026-10-24 21:11:45 55192\n*** (1) TRANSACTION:\nTRANSACTION 2600, ACTIVE 1 sec starting index read\nmysql tables in use 1, locked 1\nLOCK WAIT 3 lock struct(s), heap size 1128, 2 row lock(s), undo log entries 1\nMySQL thread id 10, OS thread handle 48940, query id 130 localhost 127.0.0.1 root updating\nUPDATE users SET age = age + 1 WHERE id = 2051\n\n*** (1) HOLDS THE LOCK(S):\nRECORD LOCKS space id 2 page no 27 n bits 280 index PRIMARY of table `demo`.`users` trx id 2600 lock_mode X locks rec but not gap\nRecord lock, heap no 84 PHYSICAL RECORD: n_fields 5; compact format; info bits 0\n 0: len 4; hex 80000801; asc     ;;\n 1: len 6; hex 000000000a28; asc      (;;\n 2: len 7; hex 01000001220110; asc     \"  ;;\n 3: len 30; hex 5573657230323034392d6162636465666768696a6b6c6d6e6f7071727374; asc User02049-abcdefghijklmnopqrst; (total 50 bytes);\n 4: len 1; hex 34; asc 4;;\n\n\n*** (1) WAITING FOR THIS LOCK TO BE GRANTED:\nRECORD LOCKS space id 2 page no 27 n bits 280 index PRIMARY of table `demo`.`users` trx id 2600 lock_mode X locks rec but not gap waiting\nRecord lock, heap no 86 PHYSICAL RECORD: n_fields 5; compact format; info bits 0\n 0: len 4; hex 80",
+    "final": [
+      {
+        "id": "2049",
+        "age": "52"
+      },
+      {
+        "id": "2051",
+        "age": "54"
+      }
+    ]
+  },
+  "summary": {
+    "row_header": {
+      "before": {
+        "trx_id": 1558,
+        "roll_ptr": "820000011d3100",
+        "age": 42
+      },
+      "after": {
+        "trx_id": 2061,
+        "roll_ptr": "010000011f0110",
+        "age": 43
+      }
+    },
+    "rollback": {
+      "users": "42",
+      "users_myisam": "43"
+    },
+    "mvcc": {
+      "REPEATABLE READ": {
+        "bob_first": "42",
+        "bob_while_alice_uncommitted": "42",
+        "bob_after_alice_commit": "42",
+        "bob_locking_read": "43"
+      },
+      "READ COMMITTED": {
+        "bob_first": "42",
+        "bob_while_alice_uncommitted": "42",
+        "bob_after_alice_commit": "43",
+        "bob_locking_read": "43"
+      }
+    },
+    "carol": "ERROR 1205 (HY000) at line 3: Lock wait timeout exceeded; try restarting transac",
+    "dave_blocked": "ERROR 1205 (HY000) at line 3: Lock wait timeout exceeded; try restarting transac",
+    "deadlock": "ERROR 1213 (40001) at line 11: Deadlock found when trying to get lock; try restarting tran"
+  }
+}

@@ -1,0 +1,1513 @@
+{
+  "environment": {
+    "version": "9.7.4",
+    "page_size": "16384",
+    "file_per_table": "1",
+    "row_format": "dynamic",
+    "fill_factor": "100",
+    "log_bin": "0",
+    "isolation": "REPEATABLE-READ",
+    "change_buffering": "all",
+    "buffer_pool": "134217728",
+    "doublewrite": "ON",
+    "flush_log_at_trx_commit": "1"
+  },
+  "indexes": [
+    {
+      "tbl": "demo/users",
+      "idx": "PRIMARY",
+      "index_id": "154",
+      "root": "4",
+      "space": "2"
+    },
+    {
+      "tbl": "demo/users",
+      "idx": "idx_name",
+      "index_id": "155",
+      "root": "5",
+      "space": "2"
+    },
+    {
+      "tbl": "demo/users",
+      "idx": "idx_age",
+      "index_id": "156",
+      "root": "6",
+      "space": "2"
+    },
+    {
+      "tbl": "demo/users_big",
+      "idx": "PRIMARY",
+      "index_id": "157",
+      "root": "4",
+      "space": "3"
+    },
+    {
+      "tbl": "demo/users_big",
+      "idx": "idx_name",
+      "index_id": "158",
+      "root": "5",
+      "space": "3"
+    },
+    {
+      "tbl": "demo/users_big",
+      "idx": "idx_age",
+      "index_id": "159",
+      "root": "6",
+      "space": "3"
+    }
+  ],
+  "row_counts": {
+    "users": "4096",
+    "users_big": "1000000"
+  },
+  "alice": [
+    {
+      "id": "2050",
+      "name": "Alice",
+      "age": "42"
+    }
+  ],
+  "tables": {
+    "users": {
+      "file_bytes": 802816,
+      "pages": 49,
+      "sha256": "f50d690aae0e3f06bb6ad1c8b824ce83cea92a6737519f0b0f4c7b092fa3ab39",
+      "trees": {
+        "PRIMARY": {
+          "root": 4,
+          "index_id": 154,
+          "height": 2,
+          "levels": [
+            {
+              "level": 1,
+              "pages": 1,
+              "records": 21,
+              "min_recs": 21,
+              "max_recs": 21,
+              "fill_bytes_avg": 393,
+              "page_list": [
+                {
+                  "page": 4,
+                  "n_recs": 21,
+                  "prev": 4294967295,
+                  "next": 4294967295,
+                  "heap_top": 393,
+                  "first": {
+                    "id": 1,
+                    "child": 7
+                  },
+                  "last": {
+                    "id": 4037,
+                    "child": 47
+                  }
+                }
+              ],
+              "root_entries": [
+                {
+                  "id": 1,
+                  "child": 7
+                },
+                {
+                  "id": 104,
+                  "child": 8
+                },
+                {
+                  "id": 311,
+                  "child": 11
+                },
+                {
+                  "id": 518,
+                  "child": 13
+                },
+                {
+                  "id": 725,
+                  "child": 15
+                },
+                {
+                  "id": 932,
+                  "child": 16
+                },
+                {
+                  "id": 1139,
+                  "child": 18
+                },
+                {
+                  "id": 1346,
+                  "child": 20
+                },
+                {
+                  "id": 1553,
+                  "child": 24
+                },
+                {
+                  "id": 1760,
+                  "child": 25
+                },
+                {
+                  "id": 1967,
+                  "child": 27
+                },
+                {
+                  "id": 2174,
+                  "child": 29
+                },
+                {
+                  "id": 2381,
+                  "child": 31
+                },
+                {
+                  "id": 2588,
+                  "child": 32
+                },
+                {
+                  "id": 2795,
+                  "child": 34
+                },
+                {
+                  "id": 3002,
+                  "child": 36
+                },
+                {
+                  "id": 3209,
+                  "child": 40
+                },
+                {
+                  "id": 3416,
+                  "child": 42
+                },
+                {
+                  "id": 3623,
+                  "child": 43
+                },
+                {
+                  "id": 3830,
+                  "child": 45
+                },
+                {
+                  "id": 4037,
+                  "child": 47
+                }
+              ]
+            },
+            {
+              "level": 0,
+              "pages": 21,
+              "records": 4096,
+              "min_recs": 60,
+              "max_recs": 207,
+              "fill_bytes_avg": 14720,
+              "page_list": [
+                {
+                  "page": 7,
+                  "n_recs": 103,
+                  "prev": 4294967295,
+                  "next": 8,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 1,
+                    "name": "User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 103,
+                    "name": "User00103-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 8,
+                  "n_recs": 207,
+                  "prev": 7,
+                  "next": 11,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 104,
+                    "name": "User00104-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 310,
+                    "name": "User00310-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 11,
+                  "n_recs": 207,
+                  "prev": 8,
+                  "next": 13,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 311,
+                    "name": "User00311-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 517,
+                    "name": "User00517-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 13,
+                  "n_recs": 207,
+                  "prev": 11,
+                  "next": 15,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 518,
+                    "name": "User00518-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 724,
+                    "name": "User00724-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 15,
+                  "n_recs": 207,
+                  "prev": 13,
+                  "next": 16,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 725,
+                    "name": "User00725-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 931,
+                    "name": "User00931-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 16,
+                  "n_recs": 207,
+                  "prev": 15,
+                  "next": 18,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 932,
+                    "name": "User00932-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 1138,
+                    "name": "User01138-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 18,
+                  "n_recs": 207,
+                  "prev": 16,
+                  "next": 20,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 1139,
+                    "name": "User01139-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 1345,
+                    "name": "User01345-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 20,
+                  "n_recs": 207,
+                  "prev": 18,
+                  "next": 24,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 1346,
+                    "name": "User01346-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 1552,
+                    "name": "User01552-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 24,
+                  "n_recs": 207,
+                  "prev": 20,
+                  "next": 25,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 1553,
+                    "name": "User01553-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 1759,
+                    "name": "User01759-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 25,
+                  "n_recs": 207,
+                  "prev": 24,
+                  "next": 27,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 1760,
+                    "name": "User01760-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 1966,
+                    "name": "User01966-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 27,
+                  "n_recs": 207,
+                  "prev": 25,
+                  "next": 29,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 1967,
+                    "name": "User01967-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 2173,
+                    "name": "User02173-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 29,
+                  "n_recs": 207,
+                  "prev": 27,
+                  "next": 31,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 2174,
+                    "name": "User02174-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 2380,
+                    "name": "User02380-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 31,
+                  "n_recs": 207,
+                  "prev": 29,
+                  "next": 32,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 2381,
+                    "name": "User02381-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 2587,
+                    "name": "User02587-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 32,
+                  "n_recs": 207,
+                  "prev": 31,
+                  "next": 34,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 2588,
+                    "name": "User02588-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 2794,
+                    "name": "User02794-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 34,
+                  "n_recs": 207,
+                  "prev": 32,
+                  "next": 36,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 2795,
+                    "name": "User02795-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 3001,
+                    "name": "User03001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 36,
+                  "n_recs": 207,
+                  "prev": 34,
+                  "next": 40,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 3002,
+                    "name": "User03002-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 3208,
+                    "name": "User03208-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 40,
+                  "n_recs": 207,
+                  "prev": 36,
+                  "next": 42,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 3209,
+                    "name": "User03209-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 3415,
+                    "name": "User03415-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 42,
+                  "n_recs": 207,
+                  "prev": 40,
+                  "next": 43,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 3416,
+                    "name": "User03416-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 3622,
+                    "name": "User03622-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 43,
+                  "n_recs": 207,
+                  "prev": 42,
+                  "next": 45,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 3623,
+                    "name": "User03623-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 3829,
+                    "name": "User03829-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 45,
+                  "n_recs": 207,
+                  "prev": 43,
+                  "next": 47,
+                  "heap_top": 15231,
+                  "first": {
+                    "id": 3830,
+                    "name": "User03830-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 4036,
+                    "name": "User04036-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                },
+                {
+                  "page": 47,
+                  "n_recs": 60,
+                  "prev": 45,
+                  "next": 4294967295,
+                  "heap_top": 4500,
+                  "first": {
+                    "id": 4037,
+                    "name": "User04037-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  },
+                  "last": {
+                    "id": 4096,
+                    "name": "User04096-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+                  }
+                }
+              ]
+            }
+          ],
+          "alice_path": [
+            {
+              "page": 4,
+              "level": 1
+            },
+            {
+              "page": 27,
+              "level": 0
+            }
+          ],
+          "alice_record": {
+            "page": 27,
+            "offset": 6184,
+            "header_hex": "0402a80049",
+            "fields_hex": "80000802000000000616820000011d3100416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
+            "record": {
+              "id": 2050,
+              "trx_id": 1558,
+              "roll_ptr": "820000011d3100",
+              "name": "Alice",
+              "age": 42,
+              "_bytes": 68
+            }
+          }
+        },
+        "idx_name": {
+          "root": 5,
+          "index_id": 155,
+          "height": 2,
+          "levels": [
+            {
+              "level": 1,
+              "pages": 1,
+              "records": 16,
+              "min_recs": 16,
+              "max_recs": 16,
+              "fill_bytes_avg": 1128,
+              "page_list": [
+                {
+                  "page": 5,
+                  "n_recs": 16,
+                  "prev": 4294967295,
+                  "next": 4294967295,
+                  "heap_top": 1128,
+                  "first": {
+                    "name": "User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1,
+                    "child": 9
+                  },
+                  "last": {
+                    "name": "User03960-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3960,
+                    "child": 46
+                  }
+                }
+              ],
+              "root_entries": [
+                {
+                  "name": "User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 1,
+                  "child": 9
+                },
+                {
+                  "name": "User00137-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 137,
+                  "child": 10
+                },
+                {
+                  "name": "User00410-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 410,
+                  "child": 12
+                },
+                {
+                  "name": "User00683-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 683,
+                  "child": 14
+                },
+                {
+                  "name": "User00956-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 956,
+                  "child": 17
+                },
+                {
+                  "name": "User01229-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 1229,
+                  "child": 19
+                },
+                {
+                  "name": "User01502-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 1502,
+                  "child": 21
+                },
+                {
+                  "name": "User01775-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 1775,
+                  "child": 26
+                },
+                {
+                  "name": "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 2048,
+                  "child": 28
+                },
+                {
+                  "name": "User02322-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 2322,
+                  "child": 30
+                },
+                {
+                  "name": "User02595-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 2595,
+                  "child": 33
+                },
+                {
+                  "name": "User02868-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 2868,
+                  "child": 35
+                },
+                {
+                  "name": "User03141-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 3141,
+                  "child": 39
+                },
+                {
+                  "name": "User03414-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 3414,
+                  "child": 41
+                },
+                {
+                  "name": "User03687-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 3687,
+                  "child": 44
+                },
+                {
+                  "name": "User03960-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                  "id": 3960,
+                  "child": 46
+                }
+              ]
+            },
+            {
+              "level": 0,
+              "pages": 16,
+              "records": 4096,
+              "min_recs": 137,
+              "max_recs": 273,
+              "fill_bytes_avg": 15726,
+              "page_list": [
+                {
+                  "page": 9,
+                  "n_recs": 137,
+                  "prev": 4294967295,
+                  "next": 10,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "Alice",
+                    "id": 2050
+                  },
+                  "last": {
+                    "name": "User00136-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 136
+                  }
+                },
+                {
+                  "page": 10,
+                  "n_recs": 273,
+                  "prev": 9,
+                  "next": 12,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User00137-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 137
+                  },
+                  "last": {
+                    "name": "User00409-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 409
+                  }
+                },
+                {
+                  "page": 12,
+                  "n_recs": 273,
+                  "prev": 10,
+                  "next": 14,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User00410-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 410
+                  },
+                  "last": {
+                    "name": "User00682-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 682
+                  }
+                },
+                {
+                  "page": 14,
+                  "n_recs": 273,
+                  "prev": 12,
+                  "next": 17,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User00683-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 683
+                  },
+                  "last": {
+                    "name": "User00955-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 955
+                  }
+                },
+                {
+                  "page": 17,
+                  "n_recs": 273,
+                  "prev": 14,
+                  "next": 19,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User00956-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 956
+                  },
+                  "last": {
+                    "name": "User01228-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1228
+                  }
+                },
+                {
+                  "page": 19,
+                  "n_recs": 273,
+                  "prev": 17,
+                  "next": 21,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User01229-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1229
+                  },
+                  "last": {
+                    "name": "User01501-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1501
+                  }
+                },
+                {
+                  "page": 21,
+                  "n_recs": 273,
+                  "prev": 19,
+                  "next": 26,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User01502-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1502
+                  },
+                  "last": {
+                    "name": "User01774-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1774
+                  }
+                },
+                {
+                  "page": 26,
+                  "n_recs": 273,
+                  "prev": 21,
+                  "next": 28,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User01775-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 1775
+                  },
+                  "last": {
+                    "name": "User02047-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2047
+                  }
+                },
+                {
+                  "page": 28,
+                  "n_recs": 273,
+                  "prev": 26,
+                  "next": 30,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2048
+                  },
+                  "last": {
+                    "name": "User02321-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2321
+                  }
+                },
+                {
+                  "page": 30,
+                  "n_recs": 273,
+                  "prev": 28,
+                  "next": 33,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User02322-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2322
+                  },
+                  "last": {
+                    "name": "User02594-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2594
+                  }
+                },
+                {
+                  "page": 33,
+                  "n_recs": 273,
+                  "prev": 30,
+                  "next": 35,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User02595-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2595
+                  },
+                  "last": {
+                    "name": "User02867-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2867
+                  }
+                },
+                {
+                  "page": 35,
+                  "n_recs": 273,
+                  "prev": 33,
+                  "next": 39,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User02868-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 2868
+                  },
+                  "last": {
+                    "name": "User03140-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3140
+                  }
+                },
+                {
+                  "page": 39,
+                  "n_recs": 273,
+                  "prev": 35,
+                  "next": 41,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User03141-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3141
+                  },
+                  "last": {
+                    "name": "User03413-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3413
+                  }
+                },
+                {
+                  "page": 41,
+                  "n_recs": 273,
+                  "prev": 39,
+                  "next": 44,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User03414-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3414
+                  },
+                  "last": {
+                    "name": "User03686-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3686
+                  }
+                },
+                {
+                  "page": 44,
+                  "n_recs": 273,
+                  "prev": 41,
+                  "next": 46,
+                  "heap_top": 16227,
+                  "first": {
+                    "name": "User03687-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3687
+                  },
+                  "last": {
+                    "name": "User03959-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3959
+                  }
+                },
+                {
+                  "page": 46,
+                  "n_recs": 137,
+                  "prev": 44,
+                  "next": 4294967295,
+                  "heap_top": 8203,
+                  "first": {
+                    "name": "User03960-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 3960
+                  },
+                  "last": {
+                    "name": "User04096-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+                    "id": 4096
+                  }
+                }
+              ]
+            }
+          ],
+          "alice_path": [
+            {
+              "page": 5,
+              "level": 1
+            },
+            {
+              "page": 9,
+              "level": 0
+            }
+          ],
+          "alice_record": {
+            "page": 9,
+            "offset": 8149,
+            "header_hex": "000450e0a8",
+            "fields_hex": "416c69636520202020202020202020202020202020202020202020202020202020202020202020202020202020202020202080000802",
+            "record": {
+              "name": "Alice",
+              "id": 2050,
+              "_bytes": 54
+            }
+          }
+        }
+      }
+    },
+    "users_big": {
+      "file_bytes": 163577856,
+      "pages": 9984,
+      "sha256": "b6b035311456cde978cc52e0572f9912efa5d7b065e8d133be488a0afa1ab5ec",
+      "trees": {
+        "PRIMARY": {
+          "root": 4,
+          "index_id": 157,
+          "height": 3,
+          "levels": [
+            {
+              "level": 2,
+              "pages": 1,
+              "records": 5,
+              "min_recs": 5,
+              "max_recs": 5,
+              "fill_bytes_avg": 185,
+              "page_list": [
+                {
+                  "page": 4,
+                  "n_recs": 5,
+                  "prev": 4294967295,
+                  "next": 4294967295,
+                  "heap_top": 185,
+                  "first": {
+                    "id": 1,
+                    "child": 108
+                  },
+                  "last": {
+                    "id": 871367,
+                    "child": 121
+                  }
+                }
+              ],
+              "root_entries": [
+                {
+                  "id": 1,
+                  "child": 108
+                },
+                {
+                  "id": 124304,
+                  "child": 109
+                },
+                {
+                  "id": 373325,
+                  "child": 111
+                },
+                {
+                  "id": 622346,
+                  "child": 116
+                },
+                {
+                  "id": 871367,
+                  "child": 121
+                }
+              ]
+            },
+            {
+              "level": 1,
+              "pages": 5,
+              "records": 4832,
+              "min_recs": 601,
+              "max_recs": 1203,
+              "fill_bytes_avg": 14248,
+              "page_list": [
+                {
+                  "page": 108,
+                  "n_recs": 601,
+                  "prev": 4294967295,
+                  "next": 109,
+                  "heap_top": 15759,
+                  "first": {
+                    "id": 1,
+                    "child": 7
+                  },
+                  "last": {
+                    "id": 124097,
+                    "child": 1272
+                  }
+                },
+                {
+                  "page": 109,
+                  "n_recs": 1203,
+                  "prev": 108,
+                  "next": 111,
+                  "heap_top": 15759,
+                  "first": {
+                    "id": 124304,
+                    "child": 1273
+                  },
+                  "last": {
+                    "id": 373118,
+                    "child": 3627
+                  }
+                },
+                {
+                  "page": 111,
+                  "n_recs": 1203,
+                  "prev": 109,
+                  "next": 116,
+                  "heap_top": 15759,
+                  "first": {
+                    "id": 373325,
+                    "child": 3628
+                  },
+                  "last": {
+                    "id": 622139,
+                    "child": 5918
+                  }
+                },
+                {
+                  "page": 116,
+                  "n_recs": 1203,
+                  "prev": 111,
+                  "next": 121,
+                  "heap_top": 15759,
+                  "first": {
+                    "id": 622346,
+                    "child": 5919
+                  },
+                  "last": {
+                    "id": 871160,
+                    "child": 8209
+                  }
+                },
+                {
+                  "page": 121,
+                  "n_recs": 622,
+                  "prev": 116,
+                  "next": 4294967295,
+                  "heap_top": 8206,
+                  "first": {
+                    "id": 871367,
+                    "child": 8210
+                  },
+                  "last": {
+                    "id": 999914,
+                    "child": 9343
+                  }
+                }
+              ]
+            },
+            {
+              "level": 0,
+              "pages": 4832,
+              "records": 1000000,
+              "min_recs": 87,
+              "max_recs": 207,
+              "fill_bytes_avg": 15229
+            }
+          ]
+        },
+        "idx_name": {
+          "root": 5,
+          "index_id": 158,
+          "height": 3,
+          "levels": [
+            {
+              "level": 2,
+              "pages": 1,
+              "records": 15,
+              "min_recs": 15,
+              "max_recs": 15,
+              "fill_bytes_avg": 1065,
+              "page_list": [
+                {
+                  "page": 5,
+                  "n_recs": 15,
+                  "prev": 4294967295,
+                  "next": 4294967295,
+                  "heap_top": 1065,
+                  "first": {
+                    "name": "User0000001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 1,
+                    "child": 103
+                  },
+                  "last": {
+                    "name": "User0939531-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 939531,
+                    "child": 122
+                  }
+                }
+              ],
+              "root_entries": [
+                {
+                  "name": "User0000001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 1,
+                  "child": 103
+                },
+                {
+                  "name": "User0034536-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 34536,
+                  "child": 104
+                },
+                {
+                  "name": "User0104151-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 104151,
+                  "child": 105
+                },
+                {
+                  "name": "User0173766-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 173766,
+                  "child": 106
+                },
+                {
+                  "name": "User0243381-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 243381,
+                  "child": 107
+                },
+                {
+                  "name": "User0312996-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 312996,
+                  "child": 110
+                },
+                {
+                  "name": "User0382611-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 382611,
+                  "child": 112
+                },
+                {
+                  "name": "User0452226-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 452226,
+                  "child": 113
+                },
+                {
+                  "name": "User0521841-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 521841,
+                  "child": 114
+                },
+                {
+                  "name": "User0591456-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 591456,
+                  "child": 115
+                },
+                {
+                  "name": "User0661071-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 661071,
+                  "child": 117
+                },
+                {
+                  "name": "User0730686-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 730686,
+                  "child": 118
+                },
+                {
+                  "name": "User0800301-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 800301,
+                  "child": 119
+                },
+                {
+                  "name": "User0869916-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 869916,
+                  "child": 120
+                },
+                {
+                  "name": "User0939531-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                  "id": 939531,
+                  "child": 122
+                }
+              ]
+            },
+            {
+              "level": 1,
+              "pages": 15,
+              "records": 3664,
+              "min_recs": 127,
+              "max_recs": 255,
+              "fill_bytes_avg": 16046,
+              "page_list": [
+                {
+                  "page": 103,
+                  "n_recs": 127,
+                  "prev": 4294967295,
+                  "next": 104,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0000001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 1,
+                    "child": 9
+                  },
+                  "last": {
+                    "name": "User0034263-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 34263,
+                    "child": 350
+                  }
+                },
+                {
+                  "page": 104,
+                  "n_recs": 255,
+                  "prev": 103,
+                  "next": 105,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0034536-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 34536,
+                    "child": 351
+                  },
+                  "last": {
+                    "name": "User0103878-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 103878,
+                    "child": 1053
+                  }
+                },
+                {
+                  "page": 105,
+                  "n_recs": 255,
+                  "prev": 104,
+                  "next": 106,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0104151-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 104151,
+                    "child": 1054
+                  },
+                  "last": {
+                    "name": "User0173493-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 173493,
+                    "child": 1756
+                  }
+                },
+                {
+                  "page": 106,
+                  "n_recs": 255,
+                  "prev": 105,
+                  "next": 107,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0173766-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 173766,
+                    "child": 1757
+                  },
+                  "last": {
+                    "name": "User0243108-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 243108,
+                    "child": 2395
+                  }
+                },
+                {
+                  "page": 107,
+                  "n_recs": 255,
+                  "prev": 106,
+                  "next": 110,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0243381-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 243381,
+                    "child": 2396
+                  },
+                  "last": {
+                    "name": "User0312723-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 312723,
+                    "child": 3098
+                  }
+                },
+                {
+                  "page": 110,
+                  "n_recs": 255,
+                  "prev": 107,
+                  "next": 112,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0312996-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 312996,
+                    "child": 3099
+                  },
+                  "last": {
+                    "name": "User0382338-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 382338,
+                    "child": 3673
+                  }
+                },
+                {
+                  "page": 112,
+                  "n_recs": 255,
+                  "prev": 110,
+                  "next": 113,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0382611-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 382611,
+                    "child": 3674
+                  },
+                  "last": {
+                    "name": "User0451953-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 451953,
+                    "child": 4376
+                  }
+                },
+                {
+                  "page": 113,
+                  "n_recs": 255,
+                  "prev": 112,
+                  "next": 114,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0452226-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 452226,
+                    "child": 4377
+                  },
+                  "last": {
+                    "name": "User0521568-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 521568,
+                    "child": 5015
+                  }
+                },
+                {
+                  "page": 114,
+                  "n_recs": 255,
+                  "prev": 113,
+                  "next": 115,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0521841-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 521841,
+                    "child": 5016
+                  },
+                  "last": {
+                    "name": "User0591183-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 591183,
+                    "child": 5654
+                  }
+                },
+                {
+                  "page": 115,
+                  "n_recs": 255,
+                  "prev": 114,
+                  "next": 117,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0591456-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 591456,
+                    "child": 5655
+                  },
+                  "last": {
+                    "name": "User0660798-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 660798,
+                    "child": 6229
+                  }
+                },
+                {
+                  "page": 117,
+                  "n_recs": 255,
+                  "prev": 115,
+                  "next": 118,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0661071-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 661071,
+                    "child": 6230
+                  },
+                  "last": {
+                    "name": "User0730413-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 730413,
+                    "child": 6932
+                  }
+                },
+                {
+                  "page": 118,
+                  "n_recs": 255,
+                  "prev": 117,
+                  "next": 119,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0730686-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 730686,
+                    "child": 6933
+                  },
+                  "last": {
+                    "name": "User0800028-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 800028,
+                    "child": 7571
+                  }
+                },
+                {
+                  "page": 119,
+                  "n_recs": 255,
+                  "prev": 118,
+                  "next": 120,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0800301-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 800301,
+                    "child": 7572
+                  },
+                  "last": {
+                    "name": "User0869643-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 869643,
+                    "child": 8146
+                  }
+                },
+                {
+                  "page": 120,
+                  "n_recs": 255,
+                  "prev": 119,
+                  "next": 122,
+                  "heap_top": 16185,
+                  "first": {
+                    "name": "User0869916-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 869916,
+                    "child": 8147
+                  },
+                  "last": {
+                    "name": "User0939258-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 939258,
+                    "child": 8849
+                  }
+                },
+                {
+                  "page": 122,
+                  "n_recs": 222,
+                  "prev": 120,
+                  "next": 4294967295,
+                  "heap_top": 14106,
+                  "first": {
+                    "name": "User0939531-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 939531,
+                    "child": 8850
+                  },
+                  "last": {
+                    "name": "User0999864-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKL",
+                    "id": 999864,
+                    "child": 9391
+                  }
+                }
+              ]
+            },
+            {
+              "level": 0,
+              "pages": 3664,
+              "records": 1000000,
+              "min_recs": 137,
+              "max_recs": 273,
+              "fill_bytes_avg": 16225
+            }
+          ]
+        }
+      }
+    }
+  },
+  "summary": {
+    "users": {
+      "PRIMARY": [
+        1,
+        21
+      ],
+      "idx_name": [
+        1,
+        16
+      ]
+    },
+    "users_big": {
+      "PRIMARY": [
+        1,
+        5,
+        4832
+      ],
+      "idx_name": [
+        1,
+        15,
+        3664
+      ]
+    },
+    "alice": {
+      "primary_path": [
+        4,
+        27
+      ],
+      "name_path": [
+        5,
+        9
+      ],
+      "row": {
+        "id": 2050,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d3100",
+        "name": "Alice",
+        "age": 42,
+        "_bytes": 68
+      }
+    }
+  }
+}

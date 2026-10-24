@@ -1,0 +1,258 @@
+{
+  "start": {
+    "page": 27,
+    "n_recs": 207,
+    "garbage": 0,
+    "heap_top": 15231,
+    "page_free_offset": 0,
+    "records": [
+      {
+        "offset": 6038,
+        "id": 2048,
+        "name": "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 50,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30e4",
+        "deleted": false
+      },
+      {
+        "offset": 6111,
+        "id": 2049,
+        "name": "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 51,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30f2",
+        "deleted": false
+      },
+      {
+        "offset": 6184,
+        "id": 2050,
+        "name": "Alice",
+        "age": 42,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d3100",
+        "deleted": false
+      },
+      {
+        "offset": 6257,
+        "id": 2051,
+        "name": "User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 53,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d310e",
+        "deleted": false
+      },
+      {
+        "offset": 6330,
+        "id": 2052,
+        "name": "User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 54,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d311c",
+        "deleted": false
+      }
+    ]
+  },
+  "bob_before": [
+    {
+      "id": "2050",
+      "name": "Alice",
+      "age": "42"
+    }
+  ],
+  "admin_sees": [
+    {
+      "n": "0"
+    }
+  ],
+  "bob_after_delete": [
+    {
+      "id": "2050",
+      "name": "Alice",
+      "age": "42"
+    }
+  ],
+  "history_while_bob_open": 35,
+  "delete_marked": {
+    "page": 27,
+    "n_recs": 207,
+    "garbage": 0,
+    "heap_top": 15231,
+    "page_free_offset": 0,
+    "records": [
+      {
+        "offset": 6038,
+        "id": 2048,
+        "name": "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 50,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30e4",
+        "deleted": false
+      },
+      {
+        "offset": 6111,
+        "id": 2049,
+        "name": "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 51,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30f2",
+        "deleted": false
+      },
+      {
+        "offset": 6184,
+        "id": 2050,
+        "name": "Alice",
+        "age": 42,
+        "trx_id": 1561,
+        "roll_ptr": "02000001090110",
+        "deleted": true
+      },
+      {
+        "offset": 6257,
+        "id": 2051,
+        "name": "User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 53,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d310e",
+        "deleted": false
+      },
+      {
+        "offset": 6330,
+        "id": 2052,
+        "name": "User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 54,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d311c",
+        "deleted": false
+      }
+    ]
+  },
+  "history_after": 36,
+  "purged": {
+    "page": 27,
+    "n_recs": 206,
+    "garbage": 73,
+    "heap_top": 15231,
+    "page_free_offset": 6184,
+    "records": [
+      {
+        "offset": 6038,
+        "id": 2048,
+        "name": "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 50,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30e4",
+        "deleted": false
+      },
+      {
+        "offset": 6111,
+        "id": 2049,
+        "name": "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 51,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30f2",
+        "deleted": false
+      },
+      {
+        "offset": 6257,
+        "id": 2051,
+        "name": "User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 53,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d310e",
+        "deleted": false
+      },
+      {
+        "offset": 6330,
+        "id": 2052,
+        "name": "User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 54,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d311c",
+        "deleted": false
+      }
+    ]
+  },
+  "dave": {
+    "page": 27,
+    "n_recs": 207,
+    "garbage": 0,
+    "heap_top": 15231,
+    "page_free_offset": 0,
+    "records": [
+      {
+        "offset": 6038,
+        "id": 2048,
+        "name": "User02048-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 50,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30e4",
+        "deleted": false
+      },
+      {
+        "offset": 6111,
+        "id": 2049,
+        "name": "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 51,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d30f2",
+        "deleted": false
+      },
+      {
+        "offset": 6184,
+        "id": 2050,
+        "name": "Dave",
+        "age": 35,
+        "trx_id": 1565,
+        "roll_ptr": "820000010b0110",
+        "deleted": false
+      },
+      {
+        "offset": 6257,
+        "id": 2051,
+        "name": "User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 53,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d310e",
+        "deleted": false
+      },
+      {
+        "offset": 6330,
+        "id": 2052,
+        "name": "User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+        "age": 54,
+        "trx_id": 1558,
+        "roll_ptr": "820000011d311c",
+        "deleted": false
+      }
+    ]
+  },
+  "summary": {
+    "bob_still_sees_alice": [
+      {
+        "id": "2050",
+        "name": "Alice",
+        "age": "42"
+      }
+    ],
+    "marked": {
+      "offset": 6184,
+      "id": 2050,
+      "name": "Alice",
+      "age": 42,
+      "trx_id": 1561,
+      "roll_ptr": "02000001090110",
+      "deleted": true
+    },
+    "after_purge_has_2050": false,
+    "garbage": [
+      0,
+      0,
+      73,
+      0
+    ],
+    "alice_offset": 6184,
+    "dave_offset": 6184,
+    "page_free_after_purge": 6184
+  }
+}

@@ -1,0 +1,302 @@
+[admin] CREATE DATABASE IF NOT EXISTS demo
+(no result rows)
+
+[admin] USE demo
+(no result rows)
+
+[admin] SET SESSION cte_max_recursion_depth=10000
+(no result rows)
+
+[admin] CREATE TABLE users(id INT NOT NULL PRIMARY KEY, name CHAR(50) CHARACTER SET ascii NOT NULL, age TINYINT UNSIGNED NOT NULL, KEY idx_name(name), KEY idx_age(age)) ENGINE=InnoDB
+(no result rows)
+
+[admin] INSERT INTO users WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i+1 FROM n WHERE i<4096) SELECT i, IF(i=2050,'Alice',CONCAT('User',LPAD(i,5,'0'),'-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), IF(i=2050,42,18+i%63) FROM n
+(no result rows)
+
+[admin] CREATE TABLE users_myisam ENGINE=MyISAM AS SELECT * FROM users
+(no result rows)
+
+[admin] SET GLOBAL innodb_fast_shutdown = 0
+(no result rows)
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age = 43 WHERE id = 2050
+(no result rows)
+
+[Alice] SELECT trx_id FROM information_schema.innodb_trx
++--------+
+| trx_id |
++--------+
+|   2061 |
++--------+
+
+[Alice] COMMIT
+(no result rows)
+
+[Alice] SET GLOBAL innodb_fast_shutdown = 0
+(no result rows)
+
+[admin] UPDATE users SET age = 42 WHERE id = 2050
+(no result rows)
+
+[admin] UPDATE users_myisam SET age = 42 WHERE id = 2050
+(no result rows)
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age = 43 WHERE id = 2050
+(no result rows)
+
+[Alice] ROLLBACK; SHOW WARNINGS
+(no result rows)
+
+[Alice] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users_myisam SET age = 43 WHERE id = 2050
+(no result rows)
+
+[Alice] ROLLBACK; SHOW WARNINGS
++---------+------+---------------------------------------------------------------+
+| Level   | Code | Message                                                       |
++---------+------+---------------------------------------------------------------+
+| Warning | 1196 | Some non-transactional changed tables couldn't be rolled back |
++---------+------+---------------------------------------------------------------+
+
+[Alice] SELECT age FROM users_myisam WHERE id = 2050
++-----+
+| age |
++-----+
+|  43 |
++-----+
+
+[admin] UPDATE users_myisam SET age = 42 WHERE id = 2050
+(no result rows)
+
+[Bob] SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ
+(no result rows)
+
+[Bob] START TRANSACTION
+(no result rows)
+
+[Bob] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age = 43 WHERE id = 2050
+(no result rows)
+
+[Bob] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Alice] COMMIT
+(no result rows)
+
+[Bob] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Bob] SELECT age FROM users WHERE id = 2050 FOR SHARE
++-----+
+| age |
++-----+
+|  43 |
++-----+
+
+[Bob] COMMIT
+(no result rows)
+
+[admin] UPDATE users SET age = 42 WHERE id = 2050
+(no result rows)
+
+[Bob] SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED
+(no result rows)
+
+[Bob] START TRANSACTION
+(no result rows)
+
+[Bob] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age = 43 WHERE id = 2050
+(no result rows)
+
+[Bob] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  42 |
++-----+
+
+[Alice] COMMIT
+(no result rows)
+
+[Bob] SELECT age FROM users WHERE id = 2050
++-----+
+| age |
++-----+
+|  43 |
++-----+
+
+[Bob] SELECT age FROM users WHERE id = 2050 FOR SHARE
++-----+
+| age |
++-----+
+|  43 |
++-----+
+
+[Bob] COMMIT
+(no result rows)
+
+[admin] UPDATE users SET age = 42 WHERE id = 2050
+(no result rows)
+
+[Carol] SET SESSION innodb_lock_wait_timeout = 3
+(no result rows)
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age = 43 WHERE id = 2050
+(no result rows)
+
+[admin] SELECT ENGINE_TRANSACTION_ID AS trx, INDEX_NAME AS idx, LOCK_TYPE AS type, LOCK_MODE AS mode, LOCK_STATUS AS status, LOCK_DATA AS data FROM performance_schema.data_locks WHERE OBJECT_NAME='users' ORDER BY ENGINE_TRANSACTION_ID, LOCK_TYPE, LOCK_DATA
++------+---------+--------+---------------+---------+------+
+| trx  | idx     | type   | mode          | status  | data |
++------+---------+--------+---------------+---------+------+
+| 2587 | PRIMARY | RECORD | X,REC_NOT_GAP | GRANTED | 2050 |
+| 2587 | NULL    | TABLE  | IX            | GRANTED | NULL |
+| 2588 | PRIMARY | RECORD | X,REC_NOT_GAP | WAITING | 2050 |
+| 2588 | NULL    | TABLE  | IX            | GRANTED | NULL |
++------+---------+--------+---------------+---------+------+
+
+[Carol] UPDATE users SET age = 44 WHERE id = 2050
+ERROR 1205 (HY000) at line 3: Lock wait timeout exceeded; try restarting transaction
+
+[Carol] UPDATE users SET age = age WHERE id = 2051
+(no result rows)
+
+[Alice] ROLLBACK
+(no result rows)
+
+[admin] DELETE FROM users WHERE id = 2050
+(no result rows)
+
+[Dave] SET SESSION innodb_lock_wait_timeout = 3
+(no result rows)
+
+[Bob] SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ
+(no result rows)
+
+[Bob] START TRANSACTION
+(no result rows)
+
+[Bob] SELECT id FROM users WHERE id BETWEEN 2049 AND 2051 FOR UPDATE
++------+
+| id   |
++------+
+| 2049 |
+| 2051 |
++------+
+
+[admin] SELECT ENGINE_TRANSACTION_ID AS trx, INDEX_NAME AS idx, LOCK_TYPE AS type, LOCK_MODE AS mode, LOCK_STATUS AS status, LOCK_DATA AS data FROM performance_schema.data_locks WHERE OBJECT_NAME='users' ORDER BY ENGINE_TRANSACTION_ID, LOCK_TYPE, LOCK_DATA
++------+---------+--------+---------------+---------+------+
+| trx  | idx     | type   | mode          | status  | data |
++------+---------+--------+---------------+---------+------+
+| 2593 | PRIMARY | RECORD | X,REC_NOT_GAP | GRANTED | 2049 |
+| 2593 | PRIMARY | RECORD | X             | GRANTED | 2050 |
+| 2593 | PRIMARY | RECORD | X             | GRANTED | 2051 |
+| 2593 | NULL    | TABLE  | IX            | GRANTED | NULL |
++------+---------+--------+---------------+---------+------+
+
+[Dave] INSERT INTO users VALUES (2050, 'Dave', 35)
+ERROR 1205 (HY000) at line 3: Lock wait timeout exceeded; try restarting transaction
+
+[Bob] SELECT id FROM users WHERE id BETWEEN 2049 AND 2051 FOR UPDATE
++------+
+| id   |
++------+
+| 2049 |
+| 2051 |
++------+
+
+[Bob] COMMIT
+(no result rows)
+
+[Dave] INSERT INTO users VALUES (2050, 'Dave', 35)
+(no result rows)
+
+[admin] SELECT id, name, age FROM users WHERE id BETWEEN 2049 AND 2051
++------+----------------------------------------------------+-----+
+| id   | name                                               | age |
++------+----------------------------------------------------+-----+
+| 2049 | User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |  51 |
+| 2050 | Dave                                               |  35 |
+| 2051 | User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |  53 |
++------+----------------------------------------------------+-----+
+
+[admin] DELETE FROM users WHERE id = 2050
+(no result rows)
+
+[admin] INSERT INTO users VALUES (2050, 'Alice', 42)
+(no result rows)
+
+[Alice] START TRANSACTION
+(no result rows)
+
+[Carol] START TRANSACTION
+(no result rows)
+
+[Alice] UPDATE users SET age = age + 1 WHERE id = 2049
+(no result rows)
+
+[Carol] UPDATE users SET age = age + 1 WHERE id = 2051
+(no result rows)
+
+[Carol] UPDATE users SET age = age + 1 WHERE id = 2049
+ERROR 1213 (40001) at line 11: Deadlock found when trying to get lock; try restarting transaction
+
+[Alice] UPDATE users SET age = age + 1 WHERE id = 2051
+(no result rows)
+
+[Alice] COMMIT
+(no result rows)
+
+[admin] SELECT id, age FROM users WHERE id IN (2049, 2051)
++------+-----+
+| id   | age |
++------+-----+
+| 2049 |  52 |
+| 2051 |  54 |
++------+-----+
+
