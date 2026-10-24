@@ -160,13 +160,14 @@ node kit/tools/asr.js <视频>
 
 > 之后,视频加入固定流程, 定稿后, 选取合适, 尽可能和之前不同的10个配音(5中文5英文), Demo片段, 我来选择具体用哪个, 然后到正式制作. 除非我特别说明自己选择配音, 不要问我.
 
-文案定稿之后，给出 **3 个调调**供策划者选：每个调调是一种音色加一种读法（语速、语气），用本片同一段代表句做成 Demo。配音要契合本片的对象，有质感和史诗感，尽量不重复上一部已经用过的音色。片子有英文版时，英文另给 3 个。策划者原话（2026-10-24）：「配音的质感和史诗感. 每个视频也给出3个调调供选择」「BGM 配音等也要契合对应主体, 更有质感和史诗感」。选定后再合成全片。策划者在会话里直接点名音色时，就用点名的，不再做 Demo，也不再问。没有这句特别说明时，不要问「用哪个音色」。
+文案定稿之后，给出 **5 个配音候选**供策划者选：用本片同一段代表句做成 Demo，音色契合本片的对象，尽可能和前几部不同；读法平实清楚，不做史诗腔。默认只有中文；片子有英文版时，英文另给 5 个。策划者原话（2026-10-24，P67，更正了 P65 的误读）：「这三个都不好 这是配音, 要五个, 我说的是配乐史诗感」。「3 个调调」与质感、史诗感说的是配乐，见[声音](sound.md)第 2 节。选定后再合成全片。策划者在会话里直接点名音色时，就用点名的，不再做 Demo，也不再问。没有这句特别说明时，不要问「用哪个音色」。
 
 上一部已选定的音色（下一部避开，除非策划者要求沿用）：
 
 | 日期 | 片子 | 中文 | 英文 | 模型 |
 |---|---|---|---|---|
 | 2026-10-24 | 《256 秒搞懂 SSH》（已选定，尚未合成） | `Chinese (Mandarin)_Radio_Host`（电台男主播） | `Friendly_Person`（Friendly Person） | MiniMax speech-2.8-hd，语速 1.0 |
+| 2026-10-24 | 《一个数据库引擎是如何实现的？——从 MyISAM 说起》新版 | `Chinese (Mandarin)_Gentleman`（温润男声） | （只有中文） | MiniMax speech-2.8-hd，语速 1.1 |
 
 再往前已进成片的，同样不要当作默认可重复：Tmux 用过 `Chinese (Mandarin)_Reliable_Executive` 与 `English_Trustworthy_Man`；HTTP 状态码用过 `Chinese (Mandarin)_News_Anchor` 与 `English_ConfidentWoman`。停用音色见下表，不再进入这 10 段。
 
@@ -197,7 +198,10 @@ node kit/tools/voices.js --zip                 # 另打成 out/voices-<日期>.z
 | `English_Trustworthy_Man` | MiniMax | Tmux 英文 | 同上（P29） | 同上 |
 | `Chinese (Mandarin)_News_Anchor` | MiniMax | PostgreSQL 试听（语速 0.95）；HTTP 状态码中文（语速 1.2） | PostgreSQL：「这个配音太老气了，换一个」（2026-10-19）。HTTP 状态码：整片看片后「没问题了」（2026-10-21），没有单独评价音色 | 两次的语速与片子的气质都不同，评价也不同；再用须先试听 |
 | `female-yujie` | MiniMax | PostgreSQL 试听 | 「太妩媚」 | 未用；针对 PostgreSQL 的气质 |
-| `Chinese (Mandarin)_Male_Announcer` | MiniMax | PostgreSQL 中文（语速 1.1） | 试听成片后「都没问题」（2026-10-19） | 可用 |
+| `Chinese (Mandarin)_Male_Announcer` | MiniMax | PostgreSQL 中文（语速 1.1）；MyISAM 新版「史诗·纪录片」调调试听（语速 1.1） | PostgreSQL：试听成片后「都没问题」（2026-10-19）。MyISAM：与 `Lyrical_Voice`、`Wise_Women` 一起「这三个都不好」（2026-10-24，P67），评价针对按史诗腔挑的读法 | 可用，先试听 |
+| `Chinese (Mandarin)_Lyrical_Voice` | MiniMax speech-2.8-hd | MyISAM 新版「抒情·讲故事」调调试听（语速 1.25） | 「这三个都不好」（2026-10-24，P67） | 未用；评价针对史诗腔的挑法，再用须先试听 |
+| `Chinese (Mandarin)_Wise_Women` | MiniMax speech-2.8-hd | MyISAM 新版「阅历·知性」调调试听（语速 1.1） | 同上 | 同上 |
+| `Chinese (Mandarin)_Gentleman` | MiniMax speech-2.8-hd | MyISAM 新版中文，语速 1.1 | 5 个候选（另有 `male-qn-jingying-jingpin`、`Chinese (Mandarin)_Sincere_Adult`、`female-chengshu-jingpin`、`Chinese (Mandarin)_Mature_Woman`）中点选，没有另写听感 | 本片用。下一部避开，除非特别说明沿用 |
 | `male-qn-jingying`（精英青年） | MiniMax | Web 登录中文（语速 1.05） | 没有单独评价 | 可用，先试听 |
 | `English_ConfidentWoman` | MiniMax | HTTP 状态码英文（语速 1.25） | 整片看片后「没问题了」（2026-10-21），没有单独评价音色 | 可用，先试听 |
 | `zh-CN-YunyangNeural` | edge-tts | 缺省中文音色，早期片子 | 没有单独评价 | 先在试听库里听 |
