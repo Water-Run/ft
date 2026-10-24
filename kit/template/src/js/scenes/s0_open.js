@@ -15,7 +15,7 @@ scene('open', ({ root, s, c0 }) => {
   const tw = T('o2', { zh: '词', en: 'word' });                 // 「词」这个字被读到的时刻
   slide(sub, tw, { x: -60 }); sfx('pop', tw);
 
-  // 镜头始终在动：站内用极慢的推近保持画面不死。镜头写成一条轨迹：起点，然后是各关键帧 [时刻, 去向, 时长, 选项]
+  // 镜头写成一条轨迹：起点，然后是各关键帧 [时刻, 去向, 时长, 选项]。动不动、怎么动按本片设计定（docs/guides/scenes.md 第 3 节）；这里只有一段极慢的推近，可以删
   cam.track(s.start, { x: 960, y: 540, z: 1 }, [
     [s.start + 0.1, { z: 1.05 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }],
   ]);

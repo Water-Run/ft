@@ -106,7 +106,7 @@ const st = [];
 for (const sc of first.SCRIPT) {
   const hit = sceneSrc.find((x) => new RegExp(`scene\\(\\s*['"\`]${sc.id}['"\`]`).test(x.src));
   if (!hit) { st.push(`场景 ${sc.id} 没有实现：src/index.html 加载的脚本里没有 scene('${sc.id}', …)`); continue; }
-  if (C.camera && !/makeCamera\(/.test(hit.src)) st.push(`src/${hit.f} 没有用镜头（makeCamera）：本片要求每个场景都有镜头运动`);
+  if (C.camera && !/makeCamera\(/.test(hit.src)) st.push(`src/${hit.f} 没有用镜头（makeCamera）：本片要求每个场景都建镜头（镜头可以不动，见 docs/guides/scenes.md 第 3 节）`);
 }
 for (const f of lintFiles) if (/TODO/.test(read('src/' + f))) st.push(`src/${f} 里还有 TODO（模板占位或未完成的部分）`);
 add(`场景齐全（${first.SCRIPT.length} 个场景）`, !st.length, st);
