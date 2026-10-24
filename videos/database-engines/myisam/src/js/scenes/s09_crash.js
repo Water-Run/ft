@@ -164,6 +164,7 @@ scene('s9', ({ root, s, c0 }) => {
   eng.innerHTML = '<span class="c-d">SHOW ENGINES（节选）</span>\n<span class="c-d">Engine   Transactions  XA   Savepoints</span>\nMyISAM   <span class="c-r">NO</span>            <span class="c-r">NO</span>   <span class="c-r">NO</span>';
   const engR = ring(world, { x: FX + 150, y: 140 + 2 * 43.5 - 4, w: 62, h: 50 }, 'r');   // Transactions 那一列的 NO
   wipe(eng, T('m10b') - 0.3, { dir: 'l', d: 0.5 }); vanish(engR, 0); appear(engR, T('m10b', '事务') - 0.1); sfx('error', T('m10b', '事务'), { g: 0.45 });
+  const engG = tag(world, FX + 900, 140 + 2 * 43.5 + 8, 'Transactions：事务', 'c-t'); appear(engG, T('m10b', '事务'));   // 英文列名的中文释义（F11）
   const t2 = term(world, FX, 360, 1700, 520, '<b>mysql</b>  9.7.4');
   appear(t2.el, T('m10c') - 0.9);
   const tc = T('m10c') - 0.8;

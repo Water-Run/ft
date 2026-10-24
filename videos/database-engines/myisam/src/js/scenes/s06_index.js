@@ -52,6 +52,7 @@ scene('s6', ({ root, s, c0 }) => {
   appear(cnt.el, tC - 0.2);
   cnt.cmd('<span class="k">EXPLAIN SELECT COUNT</span>(*) <span class="k">FROM</span> users;', tC, { cps: 44 });
   cnt.line('Extra: <span class="c-o">Select tables optimized away</span>', T('f5', '立即') - 0.3, { snd: 'blip' });
+  const gloss = tag(world, BX + 26, 520 + 116, '不用读表：行数取自文件头的 records', 'c-t'); appear(gloss, T('f5', '立即') + 0.2);   // 英文回显的中文释义（F11）
   classAt(fEl[0], 'c-o', T('f5', '行数') - 0.1, Tend('f5') + 0.4);
   // 一页 1024 字节
   segEl.slice(1).forEach(([e, lb], i) => { wipe(e, T('f6', '1024') - 0.3 + i * 0.2, { dir: 'l', d: 0.35 }); if (lb) appear(lb, T('f6', '1024') + i * 0.2); });

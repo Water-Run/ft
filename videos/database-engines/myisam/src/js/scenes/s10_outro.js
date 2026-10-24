@@ -56,7 +56,7 @@ scene('s10', ({ root, s, c0 }) => {
   { const { art } = tiles[4], cs = [...Array(11)].map((_, k) => cell(art, k * 44, 20, 38, 50, k === 10 ? '#F29111' : '#2b606c'));
     const rec = h('div', 'abs mono', art, 'records 10'); px(rec, 0, 110); css(rec, { fontSize: '30px', color: '#d9d9d9' });
     const st = h('div', 'abs mono', art, ''); px(st, 260, 110); css(st, { fontSize: '30px' });
-    keyed(st).at(T('n6', '检查') - 0.1, { html: '<span class="c-r">Corrupt</span>' }).at(T('n6', '修复') - 0.15, { html: '<span class="c-t">OK</span>' });
+    keyed(st).at(T('n6', '检查') - 0.1, { html: '<span class="c-r">Corrupt 损坏</span>' }).at(T('n6', '修复') - 0.15, { html: '<span class="c-t">OK</span>' });
     keyed(rec).at(T('n6', '修复') - 0.15, { html: 'records <span class="c-t">11</span>' });
     classAt(cs[10], 'bad', T('n6', '检查') - 0.1, T('n6', '修复') - 0.15);
     sfx('error', T('n6', '检查'), { g: 0.4 }); sfx('chime', T('n6', '修复') - 0.15, { g: 0.4 }); }
