@@ -3,7 +3,8 @@
 performance_schema.file_summary_by_instance counts mysqld's read calls per file. The key cache
 is emptied by restarting the server before each scenario; each query then runs twice.
 """
-from lab_common import Cli, Server, build, finish, new_run, stop_all
+import subprocess
+from lab_common import PORT, TRANSCRIPT, Cli, Server, build, finish, new_run, stop_all, tool
 
 QUERIES = {"index": "SELECT id, name, age FROM users WHERE name='Alice'",
            "scan": "SELECT id, name, age FROM users IGNORE INDEX (idx_name) WHERE name='Alice'",
@@ -46,13 +47,21 @@ def main():
             results[name] = {"sql": sql, "runs": runs}
     finally:
         server.stop(); stop_all()
+    # 交互客户端在每条查询后打印的回显（含耗时），供开场引用
+    server.start()
+    try:
+        shown = subprocess.run([tool("mysql"), "-uroot", "-h127.0.0.1", f"-P{PORT}", "-vvv", "--table", "demo", "-e",
+                                QUERIES["index"]], capture_output=True, text=True).stdout
+    finally:
+        server.stop(); stop_all()
+    TRANSCRIPT.extend(["[mysql -vvv]", shown.strip(), ""])
     idx = results["index"]["runs"]
     assert idx[0]["result"] == [{"id": "2050", "name": "Alice", "age": "42"}]
     finish("03_queries", {
         "summary": {name: [{"Key_reads": r["counters"]["Key_reads"], "Key_read_requests": r["counters"]["Key_read_requests"],
                             "Handler_read_rnd_next": r["counters"]["Handler_read_rnd_next"],
                             "file_reads": r["file_reads"]} for r in v["runs"]] for name, v in results.items()},
-        "scenarios": results,
+        "scenarios": results, "client_echo": shown.strip().splitlines(),
         "limits": ["Counters are global; nothing else runs on this private server during a scenario.",
                    "Status queries themselves touch no MyISAM user table.",
                    "File reads are mysqld's calls to the OS; OS cache and device are not observed."]})

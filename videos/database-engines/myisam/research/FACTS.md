@@ -21,6 +21,7 @@
 | S02 | [9.7 手册 · Serialized Dictionary Information](https://dev.mysql.com/doc/refman/9.7/en/serialized-dictionary-information.html)：「Other storage engines store SDI data in .sdi files … in a compact JSON format」 |
 | S03 | [9.7 手册 · Internal Locking Methods](https://dev.mysql.com/doc/refman/9.7/en/internal-locking.html)：「MySQL uses table-level locking for MyISAM … permitting only one session to update those tables at a time」；并发插入：「If a MyISAM table has no free blocks in the middle of the data file, rows are always inserted at the end … you can insert rows into a MyISAM table at the same time other clients are reading from it」 |
 | S04 | MySQL 5.5.62 源码 `sql/mysqld.cc` 第 3236–3244 行注释：「From MySQL 5.5 onwards, the default storage engine is InnoDB (except in the embedded server, where the default continues to be MyISAM)」（旧版取证时取得的同版源码；5.5 手册与 5.5.5 发布说明的网页 2026-10-24 已下线） |
+| S06 | [9.7 手册 · What to Do If MySQL Keeps Crashing / Corrupted MyISAM Tables](https://dev.mysql.com/doc/refman/9.7/en/corrupted-myisam-tables.html)：「you can still get corrupted tables if … The mysqld process is killed in the middle of a write」；S01 特性表「Transactions No」 |
 | S05 | 同版源码 9.7.4：`storage/myisam/` 的 `mi_open.cc`（文件头）、`mi_search.cc`（查找、压缩键、子块与行指针换算）、`mi_statrec.cc`（定长行的写、删、复用）、`mysys/mf_keycache.cc`（键缓存）、`mysys/thr_lock.cc`（表锁）、`mi_check.cc`；行号见 08 |
 
 ## 增：怎么放
@@ -44,6 +45,7 @@
 | B02 | 第一次查询从磁盘读入 3 个索引块；再查一次，索引块都已在键缓存里，读入 0 块 | [03](lab/out_03_queries.json)：`Key_reads` 3 / 0（每次先重启服务，键缓存为空） | 已核；不量操作系统缓存 |
 | B03 | 数据行没有缓存：两次查询都向 `users.MYD` 读了 1 次、56 字节 | 03：performance_schema 文件读取统计 `users.MYD` 1 次 56 字节，两次相同；S01 无数据缓存 | 已核 |
 | B04 | 不用索引时逐行读完数据文件：4096 次读取，共 229376 字节 | 03 scan | 已核 |
+| B06 | 沿姓名索引逐层缩小范围：4096 个名字 → 过了根，第 62 块的子树里剩 360 个 → 叶块 43 里 20 个 | 02 trees 子树条目计数 | 已核，数值只属本样本 |
 | B05 | 按主键找 2050：根块 3 → 叶块 22，同样得到行号 2049 | 02 id_route | 重建路线，已核 |
 
 ## 改、删：怎么改，怎么删
@@ -76,6 +78,7 @@
 |---|---|---|---|
 | E01 | 管理员给每个人的年龄加一，进行到一半时服务进程被强行结束：重启后前 155 行改了，其余 3940 行没改，Alice 仍是 42 | [07](lab/out_07_crash.json) | 已核；改到第几行随时机变化（另一次为 157） |
 | E02 | 被中断后 `.MYI` 文件头的打开计数停在 1；`CHECK TABLE` 报「1 client is using or hasn't closed the table properly」，并报年龄索引与数据的校验和不一致、表损坏 | 07 open_count_after_kill、check；S05 `mi_check.cc` 校验和报错 | 已核 |
+| E04 | 官方说明：MyISAM 不支持事务；mysqld 在写到一半被终止时表可能损坏 | S06 | 官方说明，与 E01–E03 的实测一致 |
 | E03 | `REPAIR TABLE` 修好了表的结构，但改了一半的数据没有回去：仍是 155 行改了 | 07 repair、after_repair | 已核 |
 
 ## 未核与不讲

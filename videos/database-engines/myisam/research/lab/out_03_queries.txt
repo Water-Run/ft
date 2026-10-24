@@ -32,7 +32,7 @@
 +-----------------------+-------+
 | Handler_read_key      | 1794  |
 | Handler_read_next     | 4199  |
-| Handler_read_rnd_next | 162   |
+| Handler_read_rnd_next | 161   |
 | Key_read_requests     | 0     |
 | Key_reads             | 0     |
 +-----------------------+-------+
@@ -50,7 +50,7 @@
 +-----------------------+-------+
 | Handler_read_key      | 1800  |
 | Handler_read_next     | 4200  |
-| Handler_read_rnd_next | 168   |
+| Handler_read_rnd_next | 167   |
 | Key_read_requests     | 9     |
 | Key_reads             | 3     |
 +-----------------------+-------+
@@ -72,7 +72,7 @@
 +-----------------------+-------+
 | Handler_read_key      | 1857  |
 | Handler_read_next     | 4202  |
-| Handler_read_rnd_next | 174   |
+| Handler_read_rnd_next | 173   |
 | Key_read_requests     | 9     |
 | Key_reads             | 3     |
 +-----------------------+-------+
@@ -90,7 +90,7 @@
 +-----------------------+-------+
 | Handler_read_key      | 1863  |
 | Handler_read_next     | 4203  |
-| Handler_read_rnd_next | 180   |
+| Handler_read_rnd_next | 179   |
 | Key_read_requests     | 18    |
 | Key_reads             | 3     |
 +-----------------------+-------+
@@ -276,4 +276,18 @@
 | users.MYD |      1 |    56 |
 | users.MYI |      0 |     0 |
 +-----------+--------+-------+
+
+[mysql -vvv]
+--------------
+SELECT id, name, age FROM users WHERE name='Alice'
+--------------
+
++------+-------+-----+
+| id   | name  | age |
++------+-------+-----+
+| 2050 | Alice |  42 |
++------+-------+-----+
+1 row in set (0.042 sec)
+
+Bye
 

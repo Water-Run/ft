@@ -266,6 +266,20 @@
       ]
     }
   },
+  "client_echo": [
+    "--------------",
+    "SELECT id, name, age FROM users WHERE name='Alice'",
+    "--------------",
+    "",
+    "+------+-------+-----+",
+    "| id   | name  | age |",
+    "+------+-------+-----+",
+    "| 2050 | Alice |  42 |",
+    "+------+-------+-----+",
+    "1 row in set (0.042 sec)",
+    "",
+    "Bye"
+  ],
   "limits": [
     "Counters are global; nothing else runs on this private server during a scenario.",
     "Status queries themselves touch no MyISAM user table.",
