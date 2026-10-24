@@ -43,7 +43,7 @@ scene('intro', ({ root, s }) => {
   // h1：数据文件先出来，一行一行摊开；h2：索引文件出来
   appear(myd, 0); sfx('whoosh', 0.05, { g: 0.4 });                    // 片头第一帧就有数据文件（不留空画面）
   const tRows0 = 0.1, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
-  rowEls.forEach((r, k) => { vanish(r, 0); appear(r, lerp(tRows0, tRows1, k / (rowEls.length - 1))); });
+  rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 5 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头几行第一帧就在
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
   wipe(myi, T('h2', '两个文件'), { dir: 'l', d: 0.6 });               // 讲到「两个文件」时第二个文件框就出来
   slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') + 0.3, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') + 0.3, { g: 0.6 });
@@ -73,8 +73,8 @@ scene('intro', ({ root, s }) => {
   // h8：先看第一处
   lit(g1, 'on', T('h8'));
   [g2, g3].forEach((c) => to(c, T('h8'), { opacity: 0.35, duration: 0.4 }));
-  const outA = T('h8b') + 0.25;                                       // 和下一段的泳道交叠着换，不留空画面
-  exit(A, outA, { y: 20, d: 0.4 });
+  const outA = T('h8b') + 0.1;                                       // 句子交界处硬切到实验那一段：MyISAM 的两个文件收掉，泳道与小表同一刻出现（不叠、不留空画面）
+  vanish(A, outA);
 
   // ── 二、同样三句，两张表（X2） ──
   const B = part();
@@ -105,7 +105,7 @@ scene('intro', ({ root, s }) => {
   swaps(eng1, [[T('h15', 'InnoDB'), 'InnoDB']]);
   // h8b：同一张 users 表复制一份——先出 users，副本从它那里「复制」上去；各标上用的引擎
   const tCopy = T('h8bz', '副本');
-  slide(LN.els.names[1], T('h8b') + 0.1, { x: -40 }); wipe(LN.els.lines[1], T('h8b') + 0.2, { dir: 'l', d: 0.7 });
+  vanish(LN.els.names[1], 0); appear(LN.els.names[1], outA); vanish(LN.els.lines[1], 0); appear(LN.els.lines[1], outA);
   slide(LN.els.names[0], tCopy - 0.2, { y: 230, d: 0.7, ease: 'power3.out' }); wipe(LN.els.lines[0], tCopy + 0.1, { dir: 'l', d: 0.7 });
   slide(eng0, T('h8bz', 'MyISAM'), { x: -30 }); slide(eng1, T('h8bz', '另一个引擎'), { x: -30 });
   sfx('pop', tCopy, { g: 0.5 });
@@ -115,7 +115,7 @@ scene('intro', ({ root, s }) => {
     for (let r = 0; r < 3; r++) { const ln = h('div', 'abs', g); px(ln, 10, 44 + r * 22, 152, 10); css(ln, { background: 'var(--pale)' }); }
     return g; };
   const tU = tbl(700), tM = tbl(700);
-  wipe(tU, T('h8b', '表') - 0.1, { dir: 't', d: 0.4 }); sfx('tick', T('h8b', '表'), { g: 0.4 });
+  vanish(tU, 0); appear(tU, outA); sfx('tick', outA, { g: 0.4 });   // 小表和泳道同一刻出现
   vanish(tM, 0); appear(tM, tCopy - 0.1); fromTo(tM, tCopy - 0.1, { y: 0 }, { y: -230, duration: 0.8, ease: 'power3.inOut' });
   [tU, tM].forEach((e) => exit(e, tP0 - 0.4, { d: 0.3 }));
   lit(eng1, 'acc', 0, T('h15', 'InnoDB'));

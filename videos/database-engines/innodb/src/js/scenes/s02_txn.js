@@ -196,8 +196,8 @@ scene('s2', ({ root, s, c0 }) => {
     full.setAttribute('height', r * G.c); part.setAttribute('y', G.y + r * G.c); part.setAttribute('width', c * G.c);
     cntN.textContent = k;
   });
-  const t8 = Math.min(T('t8'), out2 + 0.1);                          // 第三节在第二节收走时就进来
-  slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.3, 36, { cursor: false });
+  const t8 = Math.min(T('t8'), out2 - 0.25);                         // 第三节在第二节收走之前就进来                          // 第三节在第二节收走时就进来
+  slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.1, 48, { cursor: false });
   svgIn(grid, T('t9', '所有人') - 0.3, 0.5);
   slam(n4096, T('t9', '4096'), { from: 1.4 }); sfx('thud', T('t9', '4096'), { g: 0.5 });
   slide(cnt, tg0 - 0.1, { x: -20 }); slide(leg, tg0 + 0.2, { x: -20 });
