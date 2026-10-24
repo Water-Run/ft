@@ -17,7 +17,7 @@ scene('s8', ({ root, s, c0 }) => {
   const bp = boxEl(ZM, 20, 84, 520, 200, '缓冲池');
   const lb = boxEl(ZM, 20, 300, 520, 130, '日志缓冲');
   const ibd = boxEl(ZD, 20, 84, 640, 200, 'users.ibd');
-  const dbw = boxEl(ZD, 680, 84, 380, 200, 'doublewrite');
+  const dbw = boxEl(ZD, 680, 84, 380, 200, '双写缓冲区');
   const redo = boxEl(ZD, 20, 300, 1040, 130, 'redo 日志');
   // 页方块（44px，页号 22px）
   const sq8 = (parent, x, y, label) => { const e = h('div', 'sq', parent, label != null ? `<div class="l">${label}</div>` : ''); px(e, x, y, 44, 44); const l = e.querySelector('.l'); if (l) css(l, { fontSize: '22px', top: '7px' }); e.dataset.name = '页' + (label != null ? label : ''); return e; };
@@ -203,6 +203,9 @@ scene('s8', ({ root, s, c0 }) => {
     [C.log[4].replace(/^1 transaction\(s\) which must be rolled back or cleaned up in total /, '1 transaction(s) … in total '), '1 笔事务，共要撤销 ' + C.undo + ' 次行操作', T('j17', 'undo')],
     [C.log[6], '事务 ' + C.trx + ' 回滚完成', Tend('j17') - 0.4],
   ];
+  // j7b：预写日志——先写日志，后写数据（K7）
+  const wal = h('div', 'tag', W, '预写日志 · write-ahead logging'); px(wal, 1110, 336); css(wal, { fontSize: '26px' });
+  vanish(wal, 0); slam(wal, T('j7b', '预写日志'), { from: 1.3 }); exit(wal, T('j9') - 0.1, { d: 0.3 }); sfx('pop', T('j7b', '预写日志'), { g: 0.5 });
   const logBox = h('div', 'box', W); px(logBox, 1050, 570, 800, 384);
   const logHead = h('div', 'abs t-small', logBox, 'mysqld 重启后的日志'); px(logHead, 20, 10);
   slide(logBox, tR - 0.2, { x: 40 }); sfx('whoosh', tR - 0.2, { g: 0.4 });
@@ -222,7 +225,19 @@ scene('s8', ({ root, s, c0 }) => {
 
   // 第二章的问题：4096 格里改过的 258 格全部退回（R1、R4）
   const tG = T('j20');
-  exit(logBox, tG - 0.3, { x: 30, d: 0.35 });
+  exit(logBox, T('j19b') - 0.2, { x: 30, d: 0.35 });
+  // j19b–j19c：1992 年的 ARIES：先重演历史、重做缺失的修改，再回滚没完成的事务（K7，原文）
+  const ar = h('div', 'card', W, '<div class="t-small" style="font-family:Inter">ACM TODS 17(1) · March 1992</div>'
+    + '<div style="font:700 26px Inter;color:var(--ink);margin-top:6px;line-height:1.3">ARIES: A Transaction Recovery Method … Using <span class="s8-wal">Write-Ahead Logging</span></div>'
+    + '<div class="t-note" style="font-family:Inter;margin-top:4px"><span class="s8-who">C. Mohan 等 · IBM</span></div>'
+    + '<div class="mono" style="font-size:23px;color:var(--ink2);margin-top:12px;line-height:1.45;white-space:normal">"… the paradigm of repeating history to <span class="s8-r">redo all missing updates</span> before performing the <span class="s8-u">rollbacks</span> of the loser transactions during restart …"</div>'
+    + '<div class="gloss" style="position:static;margin-top:8px;white-space:normal">重启时先「重演历史」，把缺的修改全部重做，再回滚没完成的事务</div>');
+  px(ar, 1050, 560, 800);
+  const st8 = h('style', '', W); st8.textContent = '.s8-r.on { color: var(--main); font-weight: 800; background: #DCEFF1; } .s8-u.on { color: var(--acc); font-weight: 800; background: var(--accL); } .s8-wal.on { color: var(--main); background: #DCEFF1; } .s8-who.on { background: #DCEFF1; color: var(--mainD); }';
+  lit(ar.querySelector('.s8-who'), 'on', T('j19b', 'Mohan'));
+  slide(ar, T('j19b') + 0.1, { x: 40 }); sfx('pop', T('j19b') + 0.2, { g: 0.5 });
+  lit(ar.querySelector('.s8-wal'), 'on', T('j19b', 'ARIES')); lit(ar.querySelector('.s8-r'), 'on', T('j19c', '先重做')); lit(ar.querySelector('.s8-u'), 'on', T('j19c', '再撤销'));
+  exit(ar, tG - 0.3, { x: 30, d: 0.35 });
   const gridW = 64, cell = 5;
   const grid = svg('svg', { width: gridW * cell, height: gridW * cell, viewBox: `0 0 ${gridW * cell} ${gridW * cell}` }, W);
   css(grid, { position: 'absolute', left: '1360px', top: '612px' }); grid.dataset.name = '4096 行';
@@ -255,13 +270,13 @@ scene('s8', ({ root, s, c0 }) => {
     return { p, t, old, fill };
   };
   const P1 = big(220, `缓冲池 · 页 ${D.alice.page}`);
-  const P2 = big(840, 'doublewrite');
+  const P2 = big(840, '双写缓冲区');
   const P3 = big(1460, `users.ibd · 页 ${D.alice.page}`);
   P1.fill.style.height = '236px';
   P2.old.style.background = 'var(--panel)';
   [P1, P2, P3].forEach((B, i) => { wipe(B.p, tD + 0.3 + i * 0.1, { dir: 'b', d: 0.5 }); wipe(B.t, tD + 0.35 + i * 0.1, { dir: 'l', d: 0.4 }); });
   const tWrite = T('j21', '写到一半') - 0.3, tTorn = T('j21', '断电');
-  const tTwice = T('j22') + 0.3, tW2 = T('j23', 'doublewrite'), tW3 = T('j23', '原位');
+  const tTwice = T('j22') + 0.3, tW2 = T('j23', '双写缓冲区'), tW3 = T('j23', '原位');
   const tBad = T('j24', '写坏'), tFix = T('j24', '完整') - 0.1;
   // 页里写进去了多少：P3 从上往下写；j21 写到一半断电；j23 两步都写完；j24 原位那份坏了半页，再从 doublewrite 补全
   const p3Fill = (t) => {

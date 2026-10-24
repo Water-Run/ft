@@ -166,6 +166,8 @@ scene('s4', ({ root, s, c0 }) => {
   const exp = h('div', 'abs', W, `<div class="mono" style="font-size:22px;color:var(--ink)">${esc(D.explain.id_only)}</div><div class="gloss" style="position:static;margin-top:4px">执行计划：覆盖索引查找，姓名索引里就有编号</div>`);
   px(exp, 712, 560);
   vanish(exp, 0); show(exp, T('b15') + 0.3, { y: 8, d: 0.4 });
+  const cov = h('div', 'tag', W, '覆盖索引'); px(cov, 1440, 530); css(cov, { fontSize: '28px' });
+  vanish(cov, 0); slam(cov, T('b15b', '覆盖索引'), { from: 1.4 }); exit(cov, T('b16') - 0.1, { d: 0.3 }); sfx('pop', T('b15b', '覆盖索引'), { g: 0.5 });
   const stop = h('div', 'tag', W, '到这里就够了'); px(stop, NMX(K9) + 210, NMY + 60); vanish(stop, 0); slam(stop, T('b15', '本来就有'), { from: 1.3 });
   [stop, got].forEach((e) => exit(e, T('b16') - 0.1, { y: 8, d: 0.3 })); exit(exp, T('b16', '挪出去') - 0.2, { y: 8, d: 0.3 }); svgOut(pathNM, T('b16') - 0.1);
 
@@ -181,6 +183,9 @@ scene('s4', ({ root, s, c0 }) => {
   css(fresh, { background: 'var(--main)', border: '2px solid var(--main)' });
   slam(fresh, T('b16', '腾地方'), { from: 1.4 });
   sfx('whoosh', tOut, { g: 0.4 }); sfx('pop', T('b16', '腾地方'), { g: 0.5 });
+  // 章末：缓冲池里的页从左到右轮一遍（一直有页进出）
+  { const s4s = h('style', '', W); s4s.textContent = '.s4-pulse { background: var(--main) !important; }'; }
+  more.forEach((e, i) => { if (e !== old) lit(e, 's4-pulse', Tend('b16') + 0.3 + i * 0.08, Tend('b16') + 0.7 + i * 0.08); });
 
   W.appendChild(ov);
   W.appendChild(pg27);                                        // 页 27 的放大图压在树的连线上面

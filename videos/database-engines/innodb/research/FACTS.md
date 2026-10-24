@@ -97,6 +97,7 @@
 | V3 | MyISAM 不能回滚：ROLLBACK 后数据留在改过的样子，只回警告 1196 | 本片 X2 |
 | V4 | MyISAM 锁整张表：读锁共享、写锁独占，一个连接在写，其他连接都要等 | MyISAM 事实表「08」（`mysys/thr_lock.c`）与 9.7.4 实测：读整表时两个修改都处于「Waiting for table level lock」 |
 | V5 | MyISAM 不记日志；上次没正常关闭的表要 CHECK TABLE 检查、REPAIR TABLE 修复 | MyISAM 事实表「09」 |
+| V6 | MyISAM 自 MySQL 3.23 加入；3.23 作为正式版在 2001 年初发布（`mysql-3.23.31` 标签的提交日期 2001-01-17）。时间轴上 MyISAM 当默认引擎的那一段从 2001 年画起 | MyISAM 事实表「时间轴的年份」与「a9a」 |
 
 ### K 事务与 InnoDB 的来历（第 3 稿，`08_history.py` → `out_08.json`）
 

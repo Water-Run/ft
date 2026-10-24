@@ -1562,6 +1562,53 @@ window.DATA = {
    ]
   }
  },
+ "created": [
+  {
+   "file": "page/page0page.cc",
+   "text": "Created 2/2/1994 Heikki Tuuri",
+   "year": 1994
+  },
+  {
+   "file": "btr/btr0btr.cc",
+   "text": "Created 6/2/1994 Heikki Tuuri",
+   "year": 1994
+  },
+  {
+   "file": "buf/buf0buf.cc",
+   "text": "Created 11/5/1995 Heikki Tuuri",
+   "year": 1995
+  },
+  {
+   "file": "trx/trx0trx.cc",
+   "text": "Created 3/26/1996 Heikki Tuuri",
+   "year": 1996
+  },
+  {
+   "file": "trx/trx0undo.cc",
+   "text": "Created 3/26/1996 Heikki Tuuri",
+   "year": 1996
+  },
+  {
+   "file": "lock/lock0lock.cc",
+   "text": "Created 5/7/1996 Heikki Tuuri",
+   "year": 1996
+  },
+  {
+   "file": "read/read0read.cc",
+   "text": "Created 2/16/1997 Heikki Tuuri",
+   "year": 1997
+  },
+  {
+   "file": "log/log0recv.cc",
+   "text": "Created 9/20/1997 Heikki Tuuri",
+   "year": 1997
+  },
+  {
+   "file": "row/row0sel.cc",
+   "text": "Created 12/19/1997 Heikki Tuuri",
+   "year": 1997
+  }
+ ],
  "crash": {
   "lsn": 20359513,
   "checkpoint": 19036061,

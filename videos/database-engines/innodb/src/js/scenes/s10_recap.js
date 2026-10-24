@@ -21,7 +21,7 @@ scene('s10', ({ root, s, c0 }) => {
   const ibd = boxEl(ZD, 20, 84, 470, 160, 'users.ibd');
   const undo = boxEl(ZD, 510, 84, 470, 160, 'undo');
   const redo = boxEl(ZD, 20, 258, 960, 90, 'redo 日志');
-  const dbw = boxEl(ZD, 20, 360, 960, 90, 'doublewrite');
+  const dbw = boxEl(ZD, 20, 360, 960, 90, '双写缓冲区');
   // 缓冲池里放大的页 27，Alice 那一行
   const p27 = h('div', 'abs', bp); px(p27, 24, 54, 552, 160); css(p27, { border: '2px solid var(--mainD)', background: 'var(--pale)' }); p27.dataset.name = '页 ' + A.page;
   const p27t = h('div', 'abs', p27, `页 ${A.page}`); px(p27t, 14, 8); css(p27t, { font: '700 24px "Sans SC"', color: 'var(--mainD)' });
@@ -115,7 +115,7 @@ scene('s10', ({ root, s, c0 }) => {
       vanish(bd, 0); slam(bd, t + 0.2 + j * 0.15, { from: 1.4 }); badges.push(bd);
       onWin(b, t, Tend(Q.k) + 0.2);
     });
-    if (Q.L === 'I') { const l2 = lockAt(p27, 500, 88); vanish(l2, 0); appear(l2, T('k10', '行锁')); exit(l2, Tend(Q.k) + 0.2, { d: 0.2 }); }
+    if (Q.L === 'I') { const l2 = lockAt(p27, 500, 88); vanish(l2, 0); appear(l2, T('k10', '行级锁')); exit(l2, Tend(Q.k) + 0.2, { d: 0.2 }); }
   });
   // 读靠多版本、撤销靠 undo：undo 里那一版亮一下；重做靠 redo：带子上扫一遍
   const FL = [[T('k10', '多版本'), T('k10', '多版本') + 0.9], [T('k11', 'undo'), T('k11', 'undo') + 0.9], [T('k15', '多版本'), T('k15', '多版本') + 0.9]];
@@ -175,12 +175,15 @@ scene('s10', ({ root, s, c0 }) => {
   const pane = (x, title, rowsHtml) => { const b = boxEl(W, x, 300, 760, 360, ''); const t = h('div', 'abs', b, title); px(t, 24, 18); css(t, { font: '800 34px "Sans SC"', color: 'var(--ink)' }); const r = h('div', 'abs', b, rowsHtml); px(r, 24, 90); return b; };
   const rowB = (txt, cls) => `<div class="mono" style="font-size:28px;padding:8px 14px;margin-bottom:14px;border:2px solid ${cls === 'old' ? 'var(--main)' : 'var(--mainD)'};background:${cls === 'old' ? 'var(--pale)' : 'var(--panel)'};width:560px">${txt}</div>`;
   const left = pane(120, 'InnoDB', `<div class="t-small" style="margin-bottom:8px">表（页 ${A.page}）</div>${rowB(`2050  Alice   ${A.after.age}`)}<div class="t-small" style="margin:18px 0 8px">undo</div>${rowB(`2050  Alice   ${A.before.age}`, 'old')}`);
-  const right = pane(1040, '另一个开源数据库', `<div class="t-small" style="margin-bottom:8px">表</div>${rowB(`2050  Alice   ${A.after.age}`)}`);
+  const right = pane(1040, '更老牌的开源 SQL 数据库', `<div class="t-small" style="margin-bottom:8px">表</div>${rowB(`2050  Alice   ${A.after.age}`)}`);
+  const since = h('div', 'abs t-small', right, '前身 POSTGRES：1986 年在伯克利开始实现'); px(since, 24, 316);   // K9
+  vanish(since, 0); show(since, T('k16', '旧版本') - 0.2, { y: 8, d: 0.4 });
   const oldIn = h('div', 'abs', right, rowB(`2050  Alice   ${A.before.age}`, 'old')); px(oldIn, 24, 210);       // 旧版本也留在表里（M34）
   vanish(oldIn, 0); slide(oldIn, T('k16', '表里') - 0.3, { x: 60 }); sfx('pop', T('k16', '表里'), { g: 0.5 });
-  wipe(left, tN + 0.3, { dir: 'l', d: 0.5 }); wipe(right, T('k16', '旧版本') - 0.3, { dir: 'l', d: 0.5 }); sfx('whoosh', tN + 0.3, { g: 0.4 });
+  wipe(left, tN + 0.3, { dir: 'l', d: 0.5 }); wipe(right, T('k16', '开源') - 0.3, { dir: 'l', d: 0.5 }); sfx('whoosh', tN + 0.3, { g: 0.4 });
   const next = h('div', 'tag', W, 'PART 3 · PostgreSQL'); px(next, 1040, 700); css(next, { font: '800 40px Inter', padding: '8px 22px' });
   slam(next, T('k17', '另一条路'), { from: 1.4 }); sfx('thud', T('k17', '另一条路') + 0.05);
+  to(left, Tend('k17') + 0.4, { opacity: 0.45, duration: 0.6 });   // 章末 InnoDB 退后，留下下一集的那条路
   // 收干净，留给片尾硬切
   const tEnd = s.end - 0.6;
   [left, right, next].forEach((e, i) => exit(e, tEnd + i * 0.05, { y: -16, d: 0.35 }));

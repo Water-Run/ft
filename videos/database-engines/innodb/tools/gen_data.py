@@ -13,7 +13,7 @@ def load(n):
     return json.load(io.open(os.path.join(LAB, f'out_{n}.json'), encoding='utf-8'))
 
 
-o1, o2, o3, o4, o5, o7 = load('01'), load('02'), load('03'), load('04'), load('05'), load('07')
+o1, o2, o3, o4, o5, o7, o8 = load('01'), load('02'), load('03'), load('04'), load('05'), load('07'), load('08')
 U = o1['tables']['users']['trees']
 B = o1['tables']['users_big']['trees']
 
@@ -63,6 +63,7 @@ DATA = {
     'locks': {'carol': o2['D']['locks_while_carol_waits'], 'gap': o2['E']['locks'], 'carolErr': o2['D']['carol_result'].split(': ', 1)[1],
               'deadErr': o2['F']['carol'].split(': ', 1)[1]},
     'del': {k: page_state(o3[k]) for k in ('start', 'delete_marked', 'purged', 'dave')},
+    'created': [{'file': c['file'].replace('storage/innobase/', ''), 'text': c['text'], 'year': c['year']} for c in o8['innodb_created']],   # K6
     'crash': {'lsn': 20359513, 'checkpoint': 19036061, 'scanned': 20362083, 'redo': 187, 'undo': 274, 'trx': 1563,
               'rowsAtKill': int(o4['bulk_progress_at_kill'][0]['rows_modified']), 'unchanged': int(o4['bulk_after_restart'][0]['unchanged']),
               'log': [logline(pick(k)) for k in KEEP]},

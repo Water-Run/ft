@@ -191,8 +191,10 @@ scene('s9', ({ root, s, c0 }) => {
   px(ph, cx(iA) - GAP / 2 - 70, Y0 - 80, 140, 64); css(ph, { border: '2.5px dashed var(--acc)', background: 'var(--panel)' });
   ph.firstChild.style.top = '12px';
   ph.dataset.name = '幻影';
-  vanish(ph, 0); slam(ph, T('d12', '幻影') - 0.2, { from: 1.3 }); exit(ph, T('d13', '插') - 0.2, { d: 0.3 });
-  sfx('error', T('d12', '幻影'), { g: 0.4 });
+  vanish(ph, 0); slam(ph, T('d12', '多出') - 0.2, { from: 1.3 }); exit(ph, T('d13', '插') - 0.2, { d: 0.3 });
+  sfx('error', T('d12', '多出'), { g: 0.4 });
+  const tagP = h('div', 'tag acc', pg, '幻读'); px(tagP, 0, 0); css(tagP, { position: 'absolute', right: '8px', top: '8px', left: 'auto', fontSize: '26px' });
+  vanish(tagP, 0); slam(tagP, T('d12', '幻读'), { from: 1.4 }); exit(tagP, T('d13', '插') - 0.2, { d: 0.3 });
   const dvArrow = path(ov, `M${L2.X(T('d9', '插进'))},${L2.Y(1) - 70} L${L2.X(T('d9', '插进'))},${600} L${120 + cx(iA) - GAP / 2},${110 + Y0 + CH - 24}`, 'acc', { w: 2.2, dashed: '7 6' });
   arrowIn(dvArrow, T('d9', '挡住') - 0.3, 0.5); svgOut(dvArrow, tBobC2);
   // 本场收尾

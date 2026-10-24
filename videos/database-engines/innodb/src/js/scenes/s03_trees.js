@@ -1,5 +1,5 @@
 // 第 03 章 一个文件，两棵树：建一张空表 → 第 4 页一行一行装满 → 第 208 行分裂成两页叶子、第 4 页成了根
-// → 一路长到 4096 行、21 页叶子 → 叶子左右相连、范围读顺着走 → B+ 树、聚簇索引、隐藏行号
+// → 一路长到 4096 行、21 页叶子 → 叶子左右相连、范围读顺着走 → B+ 树、聚簇索引
 // → 姓名索引是第二棵树 → 倒回第 2050 行：Alice 同时插进两棵树（主键树最右、姓名索引最左）→ 一百万行也只有三层。
 // 树的每一刻都由「此刻插到第几行 n」算出来：页与行数取自一行一行插入的实测（FACTS G1–G4，D.growth）。
 // 约定：帧函数只切 display（这一页此刻存不存在），GSAP 只动 opacity / 位移（入场、变淡），两者不碰同一个属性。
@@ -72,25 +72,61 @@ scene('s3', ({ root, s, c0 }) => {
       c.style.background = bg; c.style.borderColor = bd;
     });
   });
-  cells.forEach((c, i) => wipe(c, c0 + 0.1 + i * 0.012, { dir: 'b', d: 0.25 }));
-  const scanF = h('div', 'abs', W); css(scanF, { height: '30px', width: '26px', background: 'var(--main)', opacity: 0.55 });
-  const tF0 = T('a2') + 0.3, tF1 = Math.max(tF0 + 1.5, Tend('a2'));
-  F((t) => { const on = t >= tF0 && t < tF1; disp(scanF, on); if (on) px(scanF, FX + Math.min(48, Math.floor((t - tF0) / (tF1 - tF0) * 49)) * FP, FY); });
-  const ticks = [0, 8, 16, 24, 32, 40, 48].map((p, i) => { const e = h('div', 'abs num', W, String(p)); px(e, FX + p * FP - 10, FY + 34, 46); css(e, { textAlign: 'center', font: '500 22px Inter', color: 'var(--ink2)' }); vanish(e, 0); appear(e, T('a3', '一页') + i * Math.max(0.2, (Tend('a3') - T('a3', '一页')) / 8)); return e; });
-  wipe(fileLbl, Math.max(c0 + 0.2, T('a2', '.ibd') - 0.2), { dir: 'l', d: 0.5 }); wipe(fileNote, T('a3', '16') - 0.1, { dir: 'l', d: 0.4 });
-  sfx('whoosh', c0 + 0.1, { g: 0.4 });
+
+  // ── a2–a4：页是怎样组织的。a2 文件出现，是一整条；a3 一刀一刀切成 49 页，放大其中一页：16 KB；
+  // a4 整条收到画面顶上，成了后面一直留着的文件条（页的位置都和它对得上），第 4 页从那里读进内存 ──
+  const BIGY0 = 740, BIGY = 450, BIGH = 110, NP = D.file.pages;
+  const tCut0 = T('a3', '一页') - 0.1, tCut1 = Math.max(tCut0 + 1.2, T('a3', '16') - 0.3);
+  const tRise = T('a3') + 0.05, tCol0 = T('a4') - 0.1, tCol1 = tCol0 + 0.7;
+  const bigF = h('div', 'abs', W); px(bigF, 0, 0, 1920, 1080); css(bigF, { pointerEvents: 'none', transformOrigin: '0 0' });
+  const bfName = h('div', 'abs', bigF, '<span class="mono" style="font-size:34px;font-weight:700">users.ibd</span>'); px(bfName, FX, BIGY0 - 54);
+  const solid = h('div', 'abs', bigF); css(solid, { border: '2px solid var(--mainD)', background: 'var(--panel)' });
+  const bcells = []; for (let p = 0; p < NP; p++) { const c = h('div', 'abs', bigF); px(c, FX + p * FP, BIGY0, 26, BIGH); css(c, { border: '1.5px solid var(--mainD)', background: 'var(--panel)' }); bcells.push(c); }
+  const bticks = [0, 8, 16, 24, 32, 40, 48].map((p) => { const e = h('div', 'abs num', bigF, String(p)); px(e, FX + p * FP - 10, BIGY0 + BIGH + 10, 46); css(e, { textAlign: 'center', font: '500 24px Inter', color: 'var(--ink2)' }); vanish(e, 0); appear(e, lerp(tCut0, tCut1, (p + 1) / NP)); return e; });
+  // 切：前 k 页已经切开（一格一格），剩下的还是一整条
+  let lastK = -1;
+  F((t) => {
+    const k = Math.round(NP * clamp((t - tCut0) / (tCut1 - tCut0))); if (k === lastK) return; lastK = k;
+    bcells.forEach((c, i) => disp(c, i < k));
+    disp(solid, k < NP); px(solid, FX + k * FP, BIGY0, (NP - k) * FP - 4, BIGH);
+  });
+  for (let i = 0; i < 7; i++) sfx('tick', lerp(tCut0, tCut1, i / 7), { g: 0.25 });
+  // 整条的位置：a3 开头从下方升到中间，a4 开头收成顶上的文件条（帧函数只管 transform，GSAP 只管显隐）
+  const sCol = 30 / BIGH, yCol = FY - sCol * BIGY0;
+  let lastBF = '';
+  F((t) => {
+    const r = ease.io3(clamp((t - tRise) / 0.6)), c = ease.io3(clamp((t - tCol0) / (tCol1 - tCol0)));
+    const y = lerp(lerp(0, BIGY - BIGY0, r), yCol, c), sy = lerp(1, sCol, c);
+    const k = y.toFixed(1) + ',' + sy.toFixed(4); if (k === lastBF) return; lastBF = k;
+    bigF.style.transform = `translateY(${y.toFixed(1)}px) scaleY(${sy.toFixed(4)})`;
+  });
+  wipe(bigF, T('a2') + 0.2, { dir: 'l', d: 0.7 }); sfx('whoosh', T('a2') + 0.2, { g: 0.4 });
+  [bfName, ...bticks].forEach((e) => exit(e, tCol0 - 0.25, { y: 0, d: 0.2 }));
+  vanish(bigF, tCol1);
+  cells.forEach((c) => { vanish(c, 0); appear(c, tCol1); });
+  // 放大一页：16 KB（第 4 页——等一下读进内存、成为表的起点的就是它）
+  const hl4 = h('div', 'abs', W); px(hl4, FX + 4 * FP, BIGY, 26, BIGH); css(hl4, { border: '3px solid var(--mainD)', background: 'var(--teal)' });
+  const mag = h('div', 'box', W, '<div style="font:800 56px Inter;color:var(--mainD)">16 KB</div><div class="num" style="font:600 26px Inter;color:var(--ink2);margin-top:6px">16 384 字节</div>');
+  px(mag, FX + 4 * FP + 13 - 130, 650, 260, 170); css(mag, { padding: '30px 0 0 0', textAlign: 'center', borderColor: 'var(--mainD)', borderWidth: '2px' });
+  const magL = path(ov, `M${FX + 4 * FP},${BIGY + BIGH} L${FX + 4 * FP + 13 - 130},650`, 'mainD', { w: 1.6, arrow: false });
+  const magR = path(ov, `M${FX + 4 * FP + 26},${BIGY + BIGH} L${FX + 4 * FP + 13 + 130},650`, 'mainD', { w: 1.6, arrow: false });
+  const tMag = T('a3', '16') - 0.1;
+  vanish(hl4, 0); appear(hl4, tMag); vanish(hl4, tCol0);
+  [magL, magR].forEach((e) => { svgIn(e, tMag + 0.1, 0.3); svgOut(e, tCol0 - 0.2, 0.2); });
+  vanish(mag, 0); show(mag, tMag + 0.2, { s: 0.9, y: 0, d: 0.4 }); exit(mag, T('a5') - 0.2, { y: 10, d: 0.3 }); sfx('pop', tMag + 0.2, { g: 0.5 });
+  const ticks = [0, 8, 16, 24, 32, 40, 48].map((p) => { const e = h('div', 'abs num', W, String(p)); px(e, FX + p * FP - 10, FY + 34, 46); css(e, { textAlign: 'center', font: '500 22px Inter', color: 'var(--ink2)' }); vanish(e, 0); appear(e, tCol1); return e; });
+  wipe(fileLbl, tCol1, { dir: 'l', d: 0.4 }); wipe(fileNote, tCol1 + 0.1, { dir: 'l', d: 0.4 });
   // a1：建表语句（与实验同一张表，lab_common.SCHEMA）；KEY idx_name 等第二棵树出现时再提
   const ddl = h('div', 'abs mono', W, ''); px(ddl, 300, 330); css(ddl, { fontSize: '32px', lineHeight: '1.5' });
   const DDL = '<span class="c-main" style="font-weight:700">CREATE TABLE</span> users (\n  id   INT <span class="c-main" style="font-weight:700">PRIMARY KEY</span>,\n  name CHAR(50),\n  age  TINYINT UNSIGNED,\n  KEY idx_name (name),\n  KEY idx_age (age)\n);';
   const tDdl = Math.max(c0 + 0.3, T('a1') - 0.2);
-  typeText(ddl, DDL, tDdl, 34, { cursorUntil: Tend('a1') + 0.4 });
-  exit(ddl, T('a4') - 0.3, { y: -12, d: 0.35 });
+  typeText(ddl, DDL, tDdl, 48, { cursorUntil: Tend('a1') + 0.4 });
+  exit(ddl, T('a3') - 0.05, { y: -12, d: 0.35 });
   const pkMark = h('div', 'abs', W); px(pkMark, 290, 330 + 48 - 2, 560, 50); css(pkMark, { border: '3px solid var(--main)' });
-  vanish(pkMark, 0); show(pkMark, T('a1', '主键') - 0.1, { s: 1.04, y: 0, d: 0.35 }); exit(pkMark, T('a4') - 0.3, { y: -12, d: 0.35 });
-  // a3：一页 16 KB；a4：读进内存一次就是一整页
+  vanish(pkMark, 0); show(pkMark, T('a1', '主键') - 0.1, { s: 1.04, y: 0, d: 0.35 }); exit(pkMark, T('a3') - 0.05, { y: -12, d: 0.35 });
+  // a4：读进内存一次就是一整页（第 4 页在文件条上标出来）
   const c4 = h('div', 'abs num', W, '4'); px(c4, FX + 4 * FP - 10, FY + 34, 46); css(c4, { textAlign: 'center', font: '700 24px Inter', color: 'var(--mainD)' });
-  const cell16 = h('div', 'abs num', W, '16 384 字节 ↓'); px(cell16, FX + 4 * FP - 60, FY - 38); css(cell16, { font: '700 24px Inter', color: 'var(--mainD)' });
-  vanish(c4, 0); appear(c4, T('a3', '16')); show(cell16, T('a3', '16'), { y: -6, d: 0.4 }); exit(cell16, T('a5') - 0.2, { y: -6, d: 0.3 });
+  vanish(c4, 0); appear(c4, tCol1);
   const mem = h('div', 'box dashed', W, '<div class="bt">内存</div>'); px(mem, 1540, 260, 260, 180);
   const memPg = h('div', 'abs', mem); px(memPg, 102, 80, 54, 60); css(memPg, { border: '2px solid var(--mainD)', background: 'var(--teal)' });
   const fly = h('div', 'abs', W); px(fly, FX + 4 * FP, FY, 26, 30); css(fly, { border: '2px solid var(--mainD)', background: 'var(--teal)' });
@@ -192,21 +228,14 @@ scene('s3', ({ root, s, c0 }) => {
   tl.fromTo(rootPK, { backgroundColor: '#D9EEEF' }, { backgroundColor: '#AED9D7', duration: 0.3, immediateRender: true }, T('a19', '路标')); tl.to(rootPK, { backgroundColor: '#D9EEEF', duration: 0.5 }, T('a19', '路标') + 0.8);
   // a19–a20：B+ 树、聚簇索引
   const tagB = h('div', 'tag', W, 'B+ 树'); px(tagB, 1660, 546); css(tagB, { fontSize: '28px' });
-  const tagC = h('div', 'tag', W, '聚簇索引：表本身'); px(tagC, 1390, 546); css(tagC, { fontSize: '28px', background: 'var(--main)' });
+  const tagC = h('div', 'tag', W, '聚簇索引'); px(tagC, 1390, 546); css(tagC, { fontSize: '28px', background: 'var(--main)' });
   slam(tagB, T('a19', 'B'), { from: 1.4 }); slam(tagC, T('a20', '聚簇索引'), { from: 1.3 });
-  [tagB, tagC].forEach((e) => exit(e, T('a22') - 0.1, { y: 8, d: 0.3 })); sfx('pop', T('a19', 'B')); sfx('pop', T('a20', '聚簇索引'));
+  exit(tagB, T('a22') - 0.1, { y: 8, d: 0.3 }); exit(tagC, T('a22') + 0.1, { y: 8, d: 0.3 }); sfx('pop', T('a19', 'B')); sfx('pop', T('a20', '聚簇索引'));
   const tblFrame = h('div', 'abs', W); px(tblFrame, LX(0) - 50, 196, LX(20) - LX(0) + 100, BY + BH + 60 - 196); css(tblFrame, { border: '3px dashed var(--main)' });
   const tblLbl = h('div', 'tag', W, 'users 表'); px(tblLbl, LX(0) - 50, BY + BH + 66); css(tblLbl, { background: 'var(--main)', fontSize: '26px' });
   vanish(tblFrame, 0); vanish(tblLbl, 0);
   show(tblFrame, T('a20', '表本身') - 0.1, { s: 1.02, y: 0, d: 0.4 }); slam(tblLbl, T('a20', '表本身') + 0.2, { from: 1.3 });
   exit(tblFrame, Tend('a20') + 0.2, { d: 0.3, y: 0 }); exit(tblLbl, Tend('a20') + 0.2, { d: 0.3 });
-  // a21：没有主键时的隐藏行号（M29）
-  const hid = h('div', 'box', W); px(hid, 140, 600, 700, 250);
-  const hidT = h('div', 'abs t-note', hid, '没有主键的表'); px(hidT, 24, 14);
-  const hidHead = h('div', 'abs', hid, '<span class="fld hidden" style="display:inline-block;padding:4px 10px"><span class="k">DB_ROW_ID · 6 字节</span></span>'); px(hidHead, 24, 60);
-  [['1', 'Erin', '31'], ['2', 'Frank', '27'], ['3', 'Grace', '45']].forEach((r, i) => { const e = h('div', 'abs mono', hid, `<span style="color:var(--mainD);background:var(--pale);padding:0 10px">${r[0].padStart(3)}</span>   ${r[1].padEnd(8)}${r[2]}`); px(e, 24, 112 + i * 42); css(e, { fontSize: '28px' }); slide(e, T('a21') + 0.8 + i * Math.max(0.6, (Tend('a21') - T('a21') - 0.8) / 3.2), { x: -30 }); });
-  css(hidHead, { fontSize: '22px' });
-  wipe(hid, T('a21'), { dir: 'l', d: 0.5 }); exit(hid, Tend('a21') + 0.3, { y: 10, d: 0.3 });
 
   // ── 姓名索引：第二棵树（16 页叶子）。每页叶子包一层：入场动外层，帧函数切内层 ──
   const NX = (j) => 247 + j * 94.5, NBW = 64, NBY = 700, NBH = 130;
@@ -244,11 +273,16 @@ scene('s3', ({ root, s, c0 }) => {
   [['Alice', 2050], ['User00001…', 1], ['User00002…', 2]].forEach(([a, b], i) => {
     const e = h('div', 'abs mono', nCall, a); px(e, 20 + i * 196, 12); css(e, { fontSize: '24px', color: i === 0 ? 'var(--main)' : 'var(--ink)' });
     const f = h('div', 'abs mono', nCall, `→ ${b}`); px(f, 20 + i * 196, 52); css(f, { fontSize: '24px', color: 'var(--ink2)' });
+    lit(f, 's3-id', T('a23', '编号') + i * 0.15);                 // 讲到「编号」时，每一项后面的编号标出来
   });
+  { const s3s = h('style', '', W); s3s.textContent = '.s3-id { background: #DCEFF1; color: var(--mainD) !important; font-weight: 700; }'; }
   const nCallLine = path(ov, `M${NX(0)},${NBY + NBH + 30} L${NX(1) - 20},${880}`, 'main', { w: 1.8, arrow: false });
   vanish(nCall, 0); nCallLine.setAttribute('opacity', 0);
   show(nCall, T('a23', '名字'), { y: 8, d: 0.4 }); tl.fromTo(nCallLine, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, T('a23', '名字'));
-  exit(nCall, T('a24') - 0.1, { y: 8, d: 0.3 }); tl.to(nCallLine, { opacity: 0, duration: 0.25 }, T('a24') - 0.1);
+  exit(nCall, T('a24') - 0.1, { y: 8, d: 0.3 });
+  // a23b：主键以外的索引叫二级索引
+  const tag2 = h('div', 'tag', W, '二级索引'); px(tag2, NX(0) + 250, 560); css(tag2, { fontSize: '26px', background: 'var(--main)' });
+  vanish(tag2, 0); slam(tag2, T('a23b', '二级索引'), { from: 1.3 }); exit(tag2, T('a24') + 0.2, { d: 0.3 }); sfx('pop', T('a23b', '二级索引'), { g: 0.5 }); tl.to(nCallLine, { opacity: 0, duration: 0.25 }, T('a24') - 0.1);
 
   // ── 倒回第 2050 行：Alice 同时插进两棵树（G4） ──
   // 「已插入的行」计数：长树时与倒回时在场；第 208 行那一下用砖红

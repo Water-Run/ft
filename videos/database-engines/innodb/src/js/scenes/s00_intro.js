@@ -44,13 +44,14 @@ scene('intro', ({ root, s }) => {
   const tRows0 = 0.6, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
   rowEls.forEach((r, k) => { vanish(r, 0); appear(r, lerp(tRows0, tRows1, k / (rowEls.length - 1))); });
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
-  wipe(myi, T('h2', '索引') - 0.3, { dir: 'l', d: 0.6 });
+  wipe(myi, T('h2', '两个文件'), { dir: 'l', d: 0.6 });               // 讲到「两个文件」时第二个文件框就出来
   slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') + 0.3, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') + 0.3, { g: 0.6 });
-  // h3：B 树长出来，叶子项指向数据文件里的行
-  wipe(tRoot, T('h3', 'B'), { dir: 't', d: 0.4 });
-  treeLines.forEach((p, i) => arrowIn(p, T('h3', 'B') + 0.15 + i * 0.08, 0.4));
-  leafs.forEach((l, i) => wipe(l, T('h3', 'B') + 0.3 + i * 0.1, { dir: 't', d: 0.45 }));
-  ptr.forEach((p, i) => arrowIn(p, T('h3', '位置') - 0.2 + i * 0.12, 0.7)); sfx('blip', T('h3', '位置'), { g: 0.6 });
+  // 索引文件里的 B 树与指向数据文件的箭头：旁白只说「一个放索引」，细节交给画面（R11 并掉了 h3）
+  const tTree = T('h2', '索引') + 0.5, tPtr = Math.max(tTree + 1.0, Tend('h2') - 0.3);
+  wipe(tRoot, tTree, { dir: 't', d: 0.4 });
+  treeLines.forEach((p, i) => arrowIn(p, tTree + 0.15 + i * 0.08, 0.4));
+  leafs.forEach((l, i) => wipe(l, tTree + 0.3 + i * 0.1, { dir: 't', d: 0.45 }));
+  ptr.forEach((p, i) => arrowIn(p, tPtr + i * 0.12, 0.7)); sfx('blip', tPtr, { g: 0.6 });
 
   // h4–h7：三处做不到：三张小卡，卡里的小图随关键词补全
   const gapY = 790;
@@ -68,7 +69,7 @@ scene('intro', ({ root, s }) => {
   // h4：讲到「三处做不到」时，两个文件稍稍退后，给下面的三张卡让出注意
   [myd, myi].forEach((e) => to(e, T('h4', '三处'), { opacity: 0.4, duration: 0.6 }));
   ptr.forEach((p) => tl.to(p, { opacity: 0.4, duration: 0.6 }, T('h4', '三处')));
-  // h8：第一处，一眼就能看见
+  // h8：先看第一处
   lit(g1, 'on', T('h8'));
   [g2, g3].forEach((c) => to(c, T('h8'), { opacity: 0.35, duration: 0.4 }));
   const outA = Tend('h8') + 0.15;
@@ -101,7 +102,12 @@ scene('intro', ({ root, s }) => {
   const eng0 = h('div', 'tag', B, 'MyISAM'); px(eng0, 160, 470 + 30);
   const eng1 = h('div', 'tag', B, '引擎：？'); px(eng1, 160, 700 + 30);
   swaps(eng1, [[T('h15', 'InnoDB'), 'InnoDB']]);
-  LN.enter(T('h12')); slide(eng0, T('h12') + 0.2, { x: -30 }); slide(eng1, T('h12') + 0.3, { x: -30 });
+  // h8b：同一张 users 表复制一份——先出 users，副本从它那里「复制」上去；各标上用的引擎
+  const tCopy = T('h8b', '副本');
+  slide(LN.els.names[1], T('h8b') + 0.1, { x: -40 }); wipe(LN.els.lines[1], T('h8b') + 0.2, { dir: 'l', d: 0.7 });
+  slide(LN.els.names[0], tCopy - 0.2, { y: 230, d: 0.7, ease: 'power3.out' }); wipe(LN.els.lines[0], tCopy + 0.1, { dir: 'l', d: 0.7 });
+  slide(eng0, T('h8b', 'MyISAM'), { x: -30 }); slide(eng1, T('h8b', '另一个引擎'), { x: -30 });
+  sfx('pop', tCopy, { g: 0.5 });
   lit(eng1, 'acc', 0, T('h15', 'InnoDB'));
   tl.fromTo(eng1, { scale: 1 }, { scale: 1.25, duration: 0.2, ease: 'power2.out', immediateRender: false }, T('h15', 'InnoDB')); tl.to(eng1, { scale: 1, duration: 0.3 }, T('h15', 'InnoDB') + 0.2);
   sfx('thud', T('h15', 'InnoDB') + 0.05);
@@ -138,7 +144,7 @@ scene('intro', ({ root, s }) => {
   for (let c = 0; c < 8; c++) sq(undo, 30 + c * 54, 72, null);
   const redo = boxEl(zd, 530, 247, 480, 135, 'redo 日志');
   for (let c = 0; c < 8; c++) sq(redo, 30 + c * 54, 72, null);
-  const dbw = boxEl(zd, 30, 396, 980, 130, 'doublewrite');
+  const dbw = boxEl(zd, 30, 396, 980, 130, '双写缓冲区');
   for (let c = 0; c < 16; c++) sq(dbw, 30 + c * 58, 66, null);
   const sup = h('div', 'abs t-note', C, '一个数据库引擎是如何实现的？'); px(sup, 120, 104); css(sup, { fontSize: '38px', color: 'var(--ink2)' });
   const ttl = h('div', 'abs', C, '<span style="font:900 96px \'Sans SC\';color:var(--ink)">事务性与现代化：</span><span style="font:800 104px Inter;color:var(--mainD)">InnoDB</span>'); px(ttl, 112, 152);
@@ -151,21 +157,13 @@ scene('intro', ({ root, s }) => {
   const bpSq = [...bp.querySelectorAll('.sq')];
   bpSq.forEach((e, i) => { if (!e.classList.contains('on') && i % 3 === 1) lit(e, 'on', tT + 1.0 + (i / bpSq.length) * 1.4); });
 
-  // 四、三处，各由架构图里的部件补上（M20、M21）
+  // 四、撤得回，是因为有事务：架构图里的 undo 亮起（M20）；另外两处留到后面各章再讲（R12 删去 h17）
   const callout = (el, html, t) => { const c = h('div', 'tag', el, html); px(c, 12, -18); css(c, { fontSize: '24px' }); slam(c, t, { from: 1.3 }); sfx('pop', t, { g: 0.5 }); return c; };
   const c1 = callout(undo, '事务：回滚', T('h16', '事务'));
   lit(undo, 'on', T('h16', '事务'));
-  // undo 里一格格记下旧值；行级锁落在 users.ibd 的一页上；redo 一格格写满
-  const undoSq = [...undo.querySelectorAll('.sq')], redoSq = [...redo.querySelectorAll('.sq')], ibdSq = [...ibd.querySelectorAll('.sq')];
+  // undo 里一格格记下旧值
+  const undoSq = [...undo.querySelectorAll('.sq')];
   undoSq.forEach((e, i) => lit(e, 'on', T('h16', '事务') + 0.3 + i * Math.max(0.15, (Tend('h16') - T('h16', '事务')) / 9)));
-  const c2 = callout(ibd, '行级锁', T('h17', '行级锁'));
-  const lk = lockAt(ibd, 30 + 3 * 52 + 4, 64 + 1 * 54 + 6); vanish(lk, 0); slam(lk, T('h17', '行级锁') + 0.15, { from: 1.6 });
-  const c3 = callout(redo, '崩溃恢复', T('h17', '崩溃恢复'));
-  redoSq.forEach((e, i) => lit(e, 'on', T('h17', '崩溃恢复') + 0.2 + i * 0.12));
-  const quote = h('div', 'abs', C, '<div class="mono" style="font-size:22px;color:var(--ink2)">"…transactions featuring commit, rollback, and crash-recovery capabilities…"</div><div class="gloss" style="position:static;margin-top:6px">MySQL 9.7 手册：事务带有提交、回滚和崩溃恢复的能力</div>');
-  px(quote, 760, 892); vanish(quote, 0);
-  show(quote, T('h16') + 0.4, { y: 10, d: 0.5 });
-  exit(quote, T('h18') - 0.2, { y: 10, d: 0.3 });
   // h18：现代的数据库引擎由这些部件组成——讲到「怎样做出来」时各部件依次亮一下，最后停在事务上
   const parts = [bp, lb, ibd, undo, redo, dbw];
   const tParts = T('h18', '怎样');
@@ -174,5 +172,4 @@ scene('intro', ({ root, s }) => {
   parts.forEach((b, i) => b.querySelectorAll('.sq').forEach((e) => lit(e, 'hot', tParts + i * step, tParts + i * step + step * 0.9)));
   [lb, ibd, dbw, redo, bp].forEach((b) => to(b, Tend('h18') + 0.1, { opacity: 0.45, duration: 0.5 }));
   to(c1, T('h18', '事务'), { scale: 1.12, duration: 0.4, ease: 'back.out(2)' });
-  [c2, c3].forEach((c) => to(c, T('h18', '事务'), { opacity: 0.45, duration: 0.5 }));
 });

@@ -23,7 +23,7 @@ scene('s1', ({ root, s, c0 }) => {
   `;
   const ov = overlay(W);
   // 年份 → 横坐标：2003 到 2027
-  const X0 = 200, X1 = 1720, Y0 = 2000, Y1 = 2027;
+  const X0 = 200, X1 = 1720, Y0 = 1992, Y1 = 2027;
   const xOf = (yr) => X0 + (yr - Y0) / (Y1 - Y0) * (X1 - X0);
   const yAxis = 480;
   const yDefault = 2010 + 186 / 365;                       // 5.5.5：2010-07-06（H2）
@@ -34,26 +34,27 @@ scene('s1', ({ root, s, c0 }) => {
   const G = h('div', 'abs', W); px(G, 0, 0, 1920, 1080); css(G, { pointerEvents: 'none' });
   const ovG = overlay(G);
   const axis = h('div', 's1-axis', G); px(axis, X0, yAxis, X1 - X0);
-  const years = [2005, 2010, 2015, 2020, 2025].map((yr) => { const e = h('div', 's1-yr', G, String(yr)); px(e, xOf(yr) - 26, yAxis + 16); return e; });
-  const ticks = [2005, 2010, 2015, 2020, 2025].map((yr) => { const e = h('div', 's1-stem', G); px(e, xOf(yr) - 1, yAxis, null, 12); css(e, { background: 'var(--ink)' }); return e; });
+  const years = [1995, 2000, 2005, 2010, 2015, 2020, 2025].map((yr) => { const e = h('div', 's1-yr', G, String(yr)); px(e, xOf(yr) - 26, yAxis + 16); return e; });
+  const ticks = [1995, 2000, 2005, 2010, 2015, 2020, 2025].map((yr) => { const e = h('div', 's1-stem', G); px(e, xOf(yr) - 1, yAxis, null, 12); css(e, { background: 'var(--ink)' }); return e; });
   const bandLab = h('div', 'abs t-small', G, 'MySQL 的默认引擎'); px(bandLab, X0, 326);
   // 带子是纯色块，名字是压在上面的另一层（色块随播放头变宽）
-  const bMy = h('div', 's1-band my', G); px(bMy, X0, 362, 0);
+  const yMy = 2001;                                        // MyISAM 自 3.23 加入，3.23 正式版 2001 年初（V6）
+  const bMy = h('div', 's1-band my', G); px(bMy, xOf(yMy), 362, 0);
   const bIn = h('div', 's1-band inno', G); px(bIn, xOf(yDefault), 362, 0);
-  const lMy = h('div', 'abs', G, 'MyISAM'); px(lMy, X0 + 16, 371); css(lMy, { font: '700 28px Inter', color: '#fff' });
+  const lMy = h('div', 'abs', G, 'MyISAM'); px(lMy, xOf(yMy) + 16, 371); css(lMy, { font: '700 28px Inter', color: '#fff' });
   const lIn = h('div', 'abs', G, 'InnoDB'); px(lIn, xOf(yDefault) + 16, 371); css(lIn, { font: '700 28px Inter', color: '#fff' });
 
-  // 播放头沿时间轴走：y1 起于 2003，y2 到 2005，y3 到 2010，y4 走到今天
-  const P = [[T('y1'), xOf(Y0)], [T('y2', '2005 年'), xOf(yAcq)], [T('y3', '2010 年'), xOf(yDefault)], [Tend('y4') - 0.2, xOf(yToday)]];
+  // 播放头沿时间轴走：y1 到 1994，源码面板一行行出来时走到 1997，y2 经过 2001 到 2005，y3 到 2010，y4 走到今天
+  const P = [[T('y1e'), xOf(Y0 + 0.5)], [T('y1', '1994 年'), xOf(1994.1)], [Tend('y1d') - 0.3, xOf(1997.7)], [T('y2') - 0.2, xOf(yMy)], [T('y2', '2005 年'), xOf(yAcq)], [T('y3', '2010 年'), xOf(yDefault)], [Tend('y4') - 0.2, xOf(yToday)]];
   const xAt = (t) => { if (t <= P[0][0]) return P[0][1]; for (let i = 1; i < P.length; i++) if (t <= P[i][0]) return lerp(P[i - 1][1], P[i][1], ease.io3((t - P[i - 1][0]) / (P[i][0] - P[i - 1][0]))); return P[P.length - 1][1]; };
-  const ph = h('div', 'playhead', G); px(ph, 0, 340, null, 160);
+  const ph = h('div', 'playhead', G); px(ph, 0, 362, null, 138);   // 从带子上沿开始，不穿过「MySQL 的默认引擎」几个字
   let last = null;
   F((t) => {
     const x = Math.round(xAt(t)), on = t >= P[0][0] - 0.3 && t < Tend('y5') + 0.4;
     const xb = t < P[0][0] - 0.3 ? X0 : x;
     const k = (on ? 1 : 0) + ':' + x + ':' + xb; if (k === last) return; last = k;
     ph.style.visibility = on ? 'visible' : 'hidden'; ph.style.left = x + 'px';
-    const wMy = Math.max(0, Math.min(xb, xOf(yDefault)) - X0), wIn = Math.max(0, xb - xOf(yDefault));
+    const wMy = Math.max(0, Math.min(xb, xOf(yDefault)) - xOf(yMy)), wIn = Math.max(0, xb - xOf(yDefault));
     bMy.style.width = wMy + 'px'; bIn.style.width = wIn + 'px';
     lMy.style.display = wMy >= 150 ? '' : 'none'; lIn.style.display = wIn >= 140 ? '' : 'none';
   });
@@ -82,21 +83,40 @@ scene('s1', ({ root, s, c0 }) => {
   ticks.forEach((e, i) => appear(e, c0 + 0.3 + i * 0.08));
   wipe(bandLab, c0 + 0.5, { dir: 'l', d: 0.5 });
   vanish(bMy, 0); appear(bMy, T('y1') - 0.3); vanish(bIn, 0); appear(bIn, T('y3', '2010 年'));
-  slide(ib, T('y1', 'Innobase') - 0.2, { x: -40 }); sfx('pop', T('y1', 'Innobase'), { g: 0.5 });
+  slide(ib, T('y1e', 'Innobase') - 0.2, { x: -40 }); sfx('pop', T('y1e', 'Innobase'), { g: 0.5 });
+  // y1–y1d：InnoDB 自己的来历——轴下方是 9.7.4 源码文件头的原文（K6）：一行一个文件，写下的日期从 1994 到 1997，作者都是 Heikki Tuuri
+  const files = D.created.filter((c) => ['page/page0page.cc', 'btr/btr0btr.cc', 'trx/trx0trx.cc', 'lock/lock0lock.cc', 'log/log0recv.cc'].includes(c.file));
+  const panel = h('div', 'box', G); px(panel, 930, yAxis + 50, 790, 56 + files.length * 36);
+  h('div', 'abs t-small', panel, 'MySQL 9.7.4 源码 · storage/innobase/').style.cssText = 'position:absolute;left:20px;top:10px';
+  const fl = files.map((c, i) => { const m = c.text.match(/^Created (\S+) (.+)$/); const e = h('div', 'abs mono', panel, `${c.file.padEnd(20)}<span class="c-main">Created ${m[1].padEnd(10)}</span><span class="s1-who">${m[2]}</span>`); px(e, 20, 46 + i * 36); css(e, { fontSize: '23px' }); return e; });
+  wipe(panel, T('y1', 'InnoDB') - 0.2, { dir: 'l', d: 0.5 });
+  const tFl = T('y1', 'InnoDB') + 0.3, stFl = Math.max(0.3, (Tend('y1') - tFl) / files.length);
+  fl.forEach((e, i) => { vanish(e, 0); appear(e, tFl + i * stFl); sfx('tick', tFl + i * stFl, { g: 0.3 }); });
+  // 轴下方 1994 年：Heikki Tuuri 写下最早的代码
+  const hkStem = h('div', 's1-stem', G); px(hkStem, xOf(1994) - 1, yAxis + 6, null, 64); css(hkStem, { background: 'var(--main)' });
+  const hk = h('div', 's1-lab', G, 'Heikki Tuuri<small>1994 · 最早的代码</small>'); px(hk, xOf(1994) + 14, yAxis + 52);
+  wipe(hkStem, T('y1', 'Heikki') - 0.2, { dir: 't', d: 0.3 }); slide(hk, T('y1', 'Heikki'), { x: -20 }); sfx('pop', T('y1', 'Heikki'), { g: 0.4 });
+  // y1d：一行一行把名字框起来（底色也变，扫描能看到这一步）
+  st.textContent += '.s1-who { color: var(--main); } .s1-who.s1-hl { color: var(--acc); background: var(--accL); outline: 3px solid var(--acc); outline-offset: 2px; font-weight: 700; } .s1-lab.s1-hl { background: var(--accL); outline: 3px solid var(--acc); outline-offset: 4px; }';
+  const tHl0 = T('y1d', '开头'), stHl = Math.max(0.3, (T('y1d', '名字') - tHl0) / (files.length - 1));
+  panel.querySelectorAll('.s1-who').forEach((e, i) => lit(e, 's1-hl', tHl0 + i * stHl));
+  lit(hk, 's1-hl', T('y1d', '名字'));
+  [panel, hkStem, hk].forEach((e) => s1_out(e, T('y2') - 0.1, { y: 12, d: 0.35 }));
   for (const [n, t] of [[nAcq, T('y2', '2005 年')], [nDef, T('y3', '2010 年')], [nNow, T('y4', '9.7')]]) {
     slam(n.d, t, { from: 1.8 }); wipe(n.sm2, t + 0.02, { dir: 'b', d: 0.2 }); wipe(n.sm, t + 0.12, { dir: 'b', d: 0.3 }); slide(n.lab, t + 0.2, { y: 16 }); sfx('thud', t, { g: 0.5 });
   }
   arrowIn(acqArrow, T('y2', 'Oracle') + 0.3, 0.7);
-  slam(demo, T('y5', '9.7.4'), { from: 1.4 }); sfx('pop', T('y5', '9.7.4'));
-  lit(nNow.lab, 'c-main', T('y5', '9.7.4'));
+  // y5：不配旁白，只上画面——本片演示用的就是 9.7.4
+  slam(demo, T('y5') + 0.1, { from: 1.4 }); sfx('pop', T('y5') + 0.1);
+  lit(nNow.lab, 'c-main', T('y5') + 0.1);
   // 演示用的服务器自己报的版本（research/lab/out_01.json 的 environment.version）
   const ver = h('div', 'abs mono', G, ''); px(ver, 1290, 560); css(ver, { fontSize: '30px', color: 'var(--ink)' });
   const verOut = h('div', 'abs mono', G, '9.7.4'); px(verOut, 1290, 606); css(verOut, { fontSize: '30px', color: 'var(--main)', fontWeight: 700 });
-  const tv = typeText(ver, 'mysql&gt; <span class="c-main">SELECT</span> @@version;', T('y5') + 0.1, 16, { cursor: false });
+  const tv = typeText(ver, 'mysql&gt; <span class="c-main">SELECT</span> @@version;', T('y5') + 0.3, 20, { cursor: false });
   vanish(verOut, 0); appear(verOut, tv + 0.25); sfx('blip', tv + 0.25, { g: 0.5 });
   [ver, verOut].forEach((e) => s1_out(e, T('y6') + 0.2, { y: -12, d: 0.3 }));
   G.appendChild(ovG);
-  tl.fromTo(G, { y: 190 }, { y: 0, duration: 0.9, ease: 'power3.inOut', immediateRender: true }, T('y6') - 0.1);
+  // 轴下方有了 InnoDB 自己的来历与源码面板，时间轴不再下移居中
 
   // 三个问题：各带一个小图
   // 三个问题：y6 先摆出 MyISAM 做不到的三处，y7–y9 各自变成一个问题，小图在讲到时动起来
@@ -107,7 +127,7 @@ scene('s1', ({ root, s, c0 }) => {
   ];
   const cards = Q.map((q, i) => {
     const c = h('div', 'card s1-q', W, `<div class="ct"><span class="num c-mainD" style="margin-right:12px">${i + 1}</span><span class="s1-ti c-ink2" style="font-size:30px">MyISAM：${q.gap}</span></div><div class="cs" style="height:52px"></div>`);
-    px(c, q.x, 600, 420, 178); slide(c, T('y6') + 0.2 + i * 0.12, { y: 36 }); sfx('thud', T('y6') + 0.2 + i * 0.12, { g: 0.4 });
+    px(c, q.x, 600, 420, 178); slide(c, T('y6') + 0.2 + i * 0.5, { y: 36 }); sfx('thud', T('y6') + 0.2 + i * 0.5, { g: 0.4 });
     swaps(c.querySelector('.s1-ti'), [[T(q.t), q.title]]);
     lit(c.querySelector('.s1-ti'), 's1-on', T(q.t));
     return c;
@@ -133,5 +153,6 @@ scene('s1', ({ root, s, c0 }) => {
   links.forEach((p, i) => arrowIn(p, T('y10') + 0.2 + i * 0.35, 0.9));
   slam(big, tT, { from: 1.5 }); sfx('thud', tT + 0.05);
   cards.forEach((c) => lit(c, 'on', tT));
+  cards.forEach((c) => to(c, Tend('y10') + 0.3, { opacity: 0.45, duration: 0.6 }));   // 章末三张卡退后，只留「事务」
   W.appendChild(ov);
 });

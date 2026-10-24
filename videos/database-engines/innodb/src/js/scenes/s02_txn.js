@@ -28,6 +28,54 @@ scene('s2', ({ root, s, c0 }) => {
   const ov = overlay(W);
   const TC = (id, w) => T(id, w);
 
+
+  // ── 零、事务这个概念的来历：Jim Gray 与 System R（K1、K2：ACM 图灵奖页面原文） ──
+  const G0 = h('div', 'abs', W); px(G0, 0, 0, 1920, 1080); css(G0, { pointerEvents: 'none' });
+  const who = h('div', 'card', G0, '<div style="font:800 64px Inter;color:var(--ink)">Jim Gray</div>'
+    + '<div class="cs" style="margin-top:14px;font-size:30px">IBM 圣何塞研究所 · <span class="num">1972–1980</span></div>'
+    + '<div class="cs" style="font-size:30px">关系数据库 <b style="font-family:Inter;color:var(--mainD)">System R</b></div>');
+  px(who, 140, 170, 640);
+  // t0：事务这个概念，比 InnoDB 早得多——一条短的年代轴：右边 1994 年 InnoDB（K6），左边七十年代
+  const era = h('div', 'abs', G0); px(era, 0, 0, 1920, 1080);
+  const eAx = h('div', 'abs', era); px(eAx, 240, 660, 1440, 3); css(eAx, { background: 'var(--ink)' });
+  const eDot = (x) => { const d = h('div', 'abs', era); px(d, x - 9, 652, 18, 18); css(d, { background: 'var(--mainD)' }); return d; };
+  const dIn = eDot(1500), d70 = eDot(420);
+  const lIn = h('div', 'abs', era, '<span class="num" style="font:800 40px Inter;color:var(--mainD)">1994</span><span style="font:700 32px Inter;color:var(--ink);margin-left:14px">InnoDB</span>'); px(lIn, 1380, 584);
+  const l70 = h('div', 'abs', era, '<span style="font:800 40px \'Sans SC\';color:var(--mainD)">七十年代</span><span style="font:700 32px \'Sans SC\';color:var(--ink);margin-left:14px">事务</span>'); px(l70, 330, 584);
+  const eArr = path(ov, 'M1470,700 C1200,760 700,760 450,702', 'main', { w: 2.6 });
+  const eGap = h('div', 'abs t-note', era, '早得多'); px(eGap, 900, 750);
+  wipe(eAx, T('t0') + 0.1, { dir: 'l', d: 0.7 });
+  vanish(dIn, 0); slam(dIn, T('t0', 'InnoDB') - 0.1, { from: 1.6 }); slide(lIn, T('t0', 'InnoDB'), { y: 12 }); sfx('tick', T('t0', 'InnoDB'), { g: 0.4 });
+  arrowIn(eArr, T('t0', '早得多') - 0.4, 0.8); vanish(d70, 0); slam(d70, T('t0', '早得多') + 0.3, { from: 1.6 }); slide(l70, T('t0', '早得多') + 0.4, { y: 12 }); show(eGap, T('t0', '早得多'), { y: 8, d: 0.4 });
+  s2_out(era, T('t0c') - 0.4, { y: 12, d: 0.35 }); svgOut(eArr, T('t0c') - 0.4, 0.3);
+  const qt = h('div', 'abs', G0, '<div class="mono" style="font-size:23px;color:var(--ink2);white-space:normal;width:960px;line-height:1.45">"He defined the transaction as a <span class="s2-uw">unit of work</span>, such as moving money from one bank account to another … either the money moves, or it stays in the original account."</div>'
+    + '<div class="gloss" style="position:static;margin-top:10px;white-space:normal;width:960px">ACM 图灵奖页面：他把事务定义成一个工作单位，比如转账——要么钱转过去，要么留在原账户</div>');
+  px(qt, 840, 176);
+  // 转账：两个账户、一笔钱；成功是钱到了另一边，失败是钱回到原处，不会停在半路
+  const acct = (x, name, v) => { const b = boxEl(G0, x, 560, 340, 200, ''); h('div', 'abs t-note', b, name).style.cssText = 'position:absolute;left:24px;top:16px'; const n = h('div', 'abs num', b, v); px(n, 24, 70); css(n, { font: '800 72px Inter', color: 'var(--mainD)' }); return [b, n]; };
+  const [aBox, aN] = acct(240, '账户 A', '100'), [bBox, bN] = acct(1340, '账户 B', '0');
+  const coin = h('div', 'pill fill', G0, '100'); px(coin, 620, 640); css(coin, { fontSize: '30px' });
+  const mid = h('div', 'abs', G0, '<span class="pill acc" style="position:static;font-size:30px">50 ？</span><span class="mono c-acc" style="font-size:44px;margin-left:16px">✕</span>'); px(mid, 860, 800);
+  const okL = h('div', 'abs', G0, '<span class="mini b">转过去</span>'); px(okL, 1350, 790);
+  const noL = h('div', 'abs', G0, '<span class="mini b">留在原账户</span>'); px(noL, 250, 790);
+  // t0b–t0e：Jim Gray 的卡片一行一行出来
+  slide(who, T('t0b') - 0.1, { x: -40 }); sfx('pop', T('t0b'), { g: 0.5 });
+  const [, whoL2, whoL3] = who.children;
+  vanish(whoL2, 0); show(whoL2, T('t0b', 'IBM') - 0.1, { y: 8, d: 0.35 });
+  vanish(whoL3, 0); show(whoL3, T('t0e', 'System') - 0.2, { y: 8, d: 0.35 });
+  wipe(qt, T('t0c') - 0.2, { dir: 'l', d: 0.8 });
+  st.textContent += '.s2-uw.on { background: #DCEFF1; color: var(--mainD); font-weight: 700; }';
+  lit(qt.querySelector('.s2-uw'), 'on', T('t0c', '工作单位'));
+  [aBox, bBox].forEach((b, i) => wipe(b, T('t0c', '账户') - 0.3 + i * 0.15, { dir: 'l', d: 0.45 }));
+  vanish(coin, 0); appear(coin, T('t0c', '转一笔钱'));
+  fromTo(coin, T('t0c', '转一笔钱') + 0.2, { x: 0 }, { x: 760, duration: 1.4, ease: 'power2.inOut' });
+  swaps(aN, [[T('t0c', '转一笔钱') + 0.2, '0']]); swaps(bN, [[T('t0c', '转一笔钱') + 1.6, '100']]); vanish(coin, T('t0c', '转一笔钱') + 1.6);
+  vanish(okL, 0); slam(okL, T('t0d', '转过去'), { from: 1.3 });
+  vanish(noL, 0); slam(noL, T('t0d', '原账户'), { from: 1.3 });
+  vanish(mid, 0); slam(mid, T('t0d', '不会'), { from: 1.3 }); sfx('error', T('t0d', '不会'), { g: 0.35 });
+  const out0 = Tend('t0d') + 0.8;
+  s2_out(G0, out0, { y: -16, d: 0.35 });
+
   // ── 一、捆成一个整体，两条路 ──
   const code = boxEl(W, 140, 150, 900, 240); css(code, { borderColor: 'var(--edge)' });
   const l0 = sqlLine(code, 34, 26, '', { size: 30 });
@@ -59,7 +107,7 @@ scene('s2', ({ root, s, c0 }) => {
   const pOk = path(ov, 'M1040,250 C1100,250 1100,300 1144,300', 'main', { w: 3 });
   const pNo = path(ov, 'M1040,330 C1100,330 1100,615 1144,615', 'acc', { w: 3 });
 
-  const tA = c0 + 0.1;
+  const tA = out0 + 0.3;
   wipe(code, tA, { dir: 'l', d: 0.6 });
   slide(tblLab, tA + 0.3, { x: -20 });
   rowEls.forEach((r, i) => { slide(r.id, tA + 0.35 + i * 0.1, { x: -20 }); wipe(r.a, tA + 0.45 + i * 0.1, { dir: 'l', d: 0.4 }); });
@@ -113,7 +161,7 @@ scene('s2', ({ root, s, c0 }) => {
   slide(ac, t7a + 0.3, { y: -20 });
   const out2 = Tend('t7') + 0.2;
   [ac, ...LA.els.names, ...LA.els.lines, ...segs.flat()].forEach((e) => s2_out(e, out2, { y: -16, d: 0.3 }));
-  W.querySelectorAll('.playhead').forEach((e) => s2_out(e, out2, { d: 0.2 }));
+  // 播放头的显隐只由 lanes 的帧函数管（t7b 之后自己隐藏），这里不再补间，免得倒着 seek 时两边打架
 
   // ── 三、一句改 4096 行，改到一半停下 ──
   const admin = h('div', 'lane-name', W, '管理员'); px(admin, 140, 170);
@@ -153,6 +201,40 @@ scene('s2', ({ root, s, c0 }) => {
   [admin, big, n4096, cnt, leg, stop].forEach((e, i) => s2_out(e, out3 + i * 0.03, { y: -16, d: 0.3 }));
   svgOut(grid, out3, 0.3);
 
+
+  // ── 四之前：1981 年 Gray 的报告写下三个性质；1983 年 Härder 和 Reuter 列出四个性质，合称 ACID（K3、K4：原文） ──
+  const GD = h('div', 'abs', W); px(GD, 0, 0, 1920, 1080); css(GD, { pointerEvents: 'none' });
+  // 卡片先出题头（年份、标题、作者），原文与译文讲到时再出来
+  const doc = (x, head, title, who, quote, gloss) => {
+    const c = h('div', 'card', GD, `<div class="t-small" style="font-family:Inter">${head}</div><div style="font:700 30px Inter;color:var(--ink);margin-top:8px;line-height:1.25"><span class="s2-tt">${title}</span></div><div class="t-note" style="font-family:Inter;margin-top:6px">${who}</div>`
+      + `<div class="mono s2-q" style="font-size:23px;color:var(--ink2);margin-top:18px;line-height:1.5;white-space:normal">${quote}</div><div class="gloss s2-z" style="position:static;margin-top:12px;white-space:normal">${gloss}</div>`);
+    px(c, x, 300, 780); vanish(c.querySelector('.s2-q'), 0); vanish(c.querySelector('.s2-z'), 0); return c;
+  };
+  const fl = (w) => `<b class="s2-fl">${w[0]}</b>${w.slice(1)}`;
+  const hl = (w, cls) => `<b class="${cls || 's2-hl'}">${w}</b>`;
+  const d81 = doc(140, 'Tandem TR 81.3 · June 1981', 'The Transaction Concept: Virtues and Limitations', 'Jim Gray',
+    `"A transaction is a transformation of state which has the properties of ${hl('atomicity')} (all or nothing), ${hl('durability')} (effects survive failures) and ${hl('consistency')} (a correct transformation)."`,
+    '事务是一次状态的变换，具有原子性（全有或全无）、持久性（故障后仍在）和一致性（正确的变换）');
+  const d83 = doc(1000, 'ACM Computing Surveys 15(4) · December 1983', 'Principles of Transaction-Oriented Database Recovery', 'Theo Härder · Andreas Reuter',
+    `"These four properties, ${fl('atomicity')}, ${fl('consistency')}, <b class="s2-hl2">${fl('isolation')}</b>, and ${fl('durability')} ${hl('(ACID)', 's2-hl2')}, describe the major highlights of the transaction paradigm"`,
+    '四个性质：原子性、一致性、隔离性、持久性（ACID），概括了事务的要点');
+  st.textContent += '.s2-hl { color: var(--ink2); font-weight: 500; } .s2-hl.on { color: var(--main); font-weight: 800; background: #DCEFF1; } .s2-hl2 { color: var(--ink2); font-weight: 500; } .s2-hl2.on { color: var(--acc); font-weight: 800; background: var(--accL); }'
+    + ' .s2-tt.on { background: #DCEFF1; } .s2-fl { font-weight: 500; } .s2-fl.on { background: var(--teal); color: var(--ink); font-weight: 800; }';
+  // t11：1981 年的报告；t11b 原文出来，三个性质按旁白的顺序标出（原文里的顺序是原子性、持久性、一致性）
+  slide(d81, T('t11') + 0.1, { x: -40 }); sfx('pop', T('t11') + 0.2, { g: 0.5 });
+  lit(d81.querySelector('.s2-tt'), 'on', T('t11', '事务的概念'));
+  wipe(d81.querySelector('.s2-q'), T('t11b') - 0.1, { dir: 'l', d: 0.7 }); show(d81.querySelector('.s2-z'), T('t11b', '三个性质') - 0.2, { y: 8, d: 0.4 });
+  const [hA, hD, hC] = d81.querySelectorAll('.s2-hl');
+  lit(hA, 'on', T('t11b', '原子性')); lit(hC, 'on', T('t11b', '一致性')); lit(hD, 'on', T('t11b', '持久性'));
+  // t11c：1983 年列出四个性质，多出来的隔离性标红；t11d 四个首字母、(ACID)
+  slide(d83, T('t11c') + 0.1, { x: 40 }); sfx('pop', T('t11c') + 0.2, { g: 0.5 });
+  wipe(d83.querySelector('.s2-q'), T('t11c', '四个性质') - 0.3, { dir: 'l', d: 0.7 }); show(d83.querySelector('.s2-z'), T('t11c', '四个性质'), { y: 8, d: 0.4 });
+  const [hI, hAcid] = d83.querySelectorAll('.s2-hl2');
+  lit(hI, 'on', T('t11c', '隔离性'));
+  d83.querySelectorAll('.s2-fl').forEach((e, i) => lit(e, 'on', T('t11d', '首字母') + i * 0.3));
+  lit(hAcid, 'on', T('t11d', 'ACID'));
+  s2_out(GD, T('t11d', 'ACID') + 0.9, { y: -16, d: 0.35 });
+
   // ── 四、ACID ──
   const acid = h('div', 'abs', W, '<span style="font:800 104px Inter;color:var(--mainD);letter-spacing:.06em">ACID</span>'); px(acid, 140, 118);
   const quote = h('div', 'abs mono', W, '"…database design principles that emphasize aspects of reliability…"'); css(quote, { fontSize: '22px', color: 'var(--ink2)' });
@@ -167,13 +249,13 @@ scene('s2', ({ root, s, c0 }) => {
     // I：两个会话各走各的
     '<div style="position:absolute;left:0;top:6px;width:250px;height:34px;background:var(--main)"></div><div style="position:absolute;left:0;top:52px;width:250px;height:34px;border:2px solid var(--main);background:var(--pale)"></div><div class="t-small" style="position:absolute;left:262px;top:8px">Alice</div><div class="t-small" style="position:absolute;left:262px;top:54px">Bob</div>',
     // D：提交之后落到磁盘
-    '<span class="mini b" style="position:absolute;left:0;top:28px;font-family:Mono">COMMIT</span><div class="mono c-mainD" style="position:absolute;left:132px;top:22px;font-size:36px">→</div><div class="box" style="left:182px;top:4px;width:120px;height:80px"><div class="t-small" style="position:absolute;left:10px;top:24px;font-family:Mono">users.ibd</div></div>',
+    '<span class="mini b" style="position:absolute;left:0;top:28px;font-family:Mono">COMMIT</span><div class="mono c-mainD" style="position:absolute;left:124px;top:22px;font-size:36px">→</div><div class="box" style="left:168px;top:4px;width:156px;height:80px"><div class="t-small" style="position:absolute;left:10px;top:24px;font-family:Mono">users.ibd</div></div>',
   ];
   const LET = [['A', '原子性', 'q1'], ['C', '一致性', 'q2'], ['I', '隔离性', 'q3'], ['D', '持久性', 'q4']];
   const cards = LET.map(([l, term, q], i) => {
     const c = h('div', 'card', W, `<div class="s2-letter">${l}</div><div class="s2-term">${term}</div><div class="s2-pic">${pics[i]}</div>`);
     px(c, 140 + i * 418, 330, 386, 330);
-    slide(c, T('t11') + 0.3 + i * 0.12, { y: 30 });
+    slide(c, T('t11d', 'ACID') + 1.2 + i * 0.12, { y: 30 });
     // 亮起的时段：A、I、D 从讲到它起一直亮着；C 只亮到 q5（帧函数一处管，不分两次 lit）
     const a = T(q), b = i === 1 ? T('q5') : Infinity;
     let on0 = null; F((t) => { const on = t >= a && t < b; if (on !== on0) { c.classList.toggle('on', on); on0 = on; } });
@@ -190,7 +272,7 @@ scene('s2', ({ root, s, c0 }) => {
   iBars.forEach((b, j) => fromTo(b, T('q3') + 0.3 + j * 0.15, { width: 0 }, { width: 250, duration: T('q3', '互不干扰') - T('q3') - 0.3, ease: 'none' }));
   const dBox = cards[3].querySelector('.box'), dArr = cards[3].querySelector('.mono');   // D：提交之后落到磁盘
   vanish(dArr, 0); appear(dArr, T('q4', '提交')); wipe(dBox, T('q4', '提交') + 0.2, { dir: 'l', d: 0.4 });
-  const dOk = h('div', 'mono c-main', dBox, '✓'); css(dOk, { position: 'absolute', right: '-2px', top: '-50px', fontSize: '34px' });
+  const dOk = h('div', 'mono c-main', cards[3], '✓'); css(dOk, { position: 'absolute', right: '24px', top: '18px', fontSize: '48px' });   // 放在卡片右上角：放进 dBox 会被它擦除用的裁剪区切掉
   vanish(dOk, 0); slam(dOk, T('q4', '不会丢'), { from: 1.6 }); sfx('pop', T('q4', '不会丢'), { g: 0.5 });
   // A、I、D 连回三个问题；C 退到背景
   const QN = [['撤回', '<span class="mini b">42</span><span class="mini w">43</span><span class="mono c-main" style="font-size:28px">↶</span>'],
@@ -205,8 +287,20 @@ scene('s2', ({ root, s, c0 }) => {
     arrowIn(p, tq - 0.1, 0.35); slide(c, tq, { y: 24 }); sfx('pop', tq, { g: 0.45 });
     return [c, p];
   });
-  wipe(acid, T('t11', 'ACID') - 0.1, { dir: 'l', d: 0.5 }); sfx('thud', T('t11', 'ACID'));
-  wipe(quote, T('t12') - 0.1, { dir: 'l', d: 0.9 }); show(quoteZ, T('t12', '可靠'), { y: 10, d: 0.5 });
+  wipe(acid, T('t11d', 'ACID') + 1.0, { dir: 'l', d: 0.5 }); sfx('thud', T('t11d', 'ACID') + 1.0);
+  // q4b：1998 年图灵奖（K5）
+  const tur = h('div', 'abs', W, '<span class="tag" style="position:static;font-size:26px;margin-right:16px">1998 · ACM 图灵奖 · Jim Gray</span><span class="mono s2-tq" style="font-size:22px;color:var(--ink2)">"For seminal contributions to <span class="s2-hl">database</span> and <span class="s2-hl">transaction processing</span> research …"</span><div class="gloss s2-tz" style="position:static;margin-top:8px">表彰他在数据库与事务处理研究上的开创性贡献</div>');
+  px(tur, 140, 790); vanish(tur, 0); show(tur, T('q4b') + 0.1, { y: 14, d: 0.4 }); s2_out(tur, T('q5') - 0.1, { y: 10, d: 0.3 }); sfx('pop', T('q4b') + 0.2, { g: 0.5 });
+  const [turQ, turZ] = [tur.querySelector('.s2-tq'), tur.querySelector('.s2-tz')];
+  vanish(turQ, 0); wipe(turQ, T('q4b', 'Gray') - 0.1, { dir: 'l', d: 0.6 }); vanish(turZ, 0); show(turZ, T('q4b', 'Gray') + 0.2, { y: 8, d: 0.4 });
+  const [tDb, tTp] = turQ.querySelectorAll('.s2-hl');
+  lit(tDb, 'on', T('q4b', '数据库')); lit(tTp, 'on', T('q4b', '事务处理'));
+  // q4r：四个性质合在一起，为的是数据可靠——四张卡此刻都亮着，下面一道括线收成「可靠」；手册原文写在 ACID 旁边（M25）
+  wipe(quote, T('q4r', '一件事') - 0.3, { dir: 'l', d: 0.9 }); show(quoteZ, T('q4r', '可靠'), { y: 10, d: 0.5 });
+  const brace4 = h('div', 'abs', W); px(brace4, 140 + 193, 672, 3 * 418, 22); css(brace4, { borderLeft: '3px solid var(--main)', borderRight: '3px solid var(--main)', borderBottom: '3px solid var(--main)' });
+  const rely = h('div', 'tag', W, '可靠'); px(rely, 140 + 193 + 3 * 418 / 2 - 44, 704); css(rely, { fontSize: '30px' });
+  wipe(brace4, T('q4r', '合在一起'), { dir: 'l', d: 0.6 }); vanish(rely, 0); slam(rely, T('q4r', '可靠'), { from: 1.4 }); sfx('thud', T('q4r', '可靠'), { g: 0.5 });
+  [brace4, rely].forEach((e) => s2_out(e, T('q5') - 0.1, { y: 10, d: 0.3 }));
   to(cards[1], T('q5'), { opacity: 0.4, duration: 0.4 });
 
   // 引向下一章：数据放在哪里
