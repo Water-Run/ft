@@ -16,7 +16,7 @@
         ]
       ],
       "finished_s": {
-        "Bob": 3.01,
+        "Bob": 3.0,
         "Alice": 3.01,
         "Carol": 3.01
       }
@@ -37,9 +37,9 @@
         ]
       ],
       "finished_s": {
-        "Alice": 3.0,
-        "Bob": 3.0,
-        "Dave": 3.0
+        "Alice": 3.01,
+        "Bob": 3.01,
+        "Dave": 3.01
       }
     },
     "Bob reads the whole table; Dave appends, Carol writes": {
@@ -55,8 +55,24 @@
       ],
       "finished_s": {
         "Dave": 0.3,
-        "Bob": 3.0,
-        "Carol": 3.0
+        "Bob": 3.01,
+        "Carol": 3.02
+      }
+    },
+    "after a deletion leaves a hole: Bob reads, a new user inserts": {
+      "states_at_1s": [
+        [
+          "Bob",
+          "User sleep"
+        ],
+        [
+          "Dave",
+          "Waiting for table level lock"
+        ]
+      ],
+      "finished_s": {
+        "Bob": 3.01,
+        "Dave": 3.01
       }
     }
   },
@@ -95,7 +111,7 @@
       ],
       "finished": {
         "Bob": {
-          "seconds": 3.01,
+          "seconds": 3.0,
           "last_line": "| 4096 |       0 |"
         },
         "Alice": {
@@ -142,15 +158,15 @@
       ],
       "finished": {
         "Alice": {
-          "seconds": 3.0,
+          "seconds": 3.01,
           "last_line": ""
         },
         "Bob": {
-          "seconds": 3.0,
+          "seconds": 3.01,
           "last_line": "|  44 |"
         },
         "Dave": {
-          "seconds": 3.0,
+          "seconds": 3.01,
           "last_line": ""
         }
       }
@@ -188,11 +204,45 @@
           "last_line": ""
         },
         "Bob": {
-          "seconds": 3.0,
+          "seconds": 3.01,
           "last_line": "| 4097 |       0 |"
         },
         "Carol": {
-          "seconds": 3.0,
+          "seconds": 3.02,
+          "last_line": ""
+        }
+      }
+    },
+    "after a deletion leaves a hole: Bob reads, a new user inserts": {
+      "first": [
+        "Bob",
+        "SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM users WHERE age > 0"
+      ],
+      "then": [
+        [
+          "Dave",
+          "INSERT INTO users VALUES (4099, 'User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 30)"
+        ]
+      ],
+      "states_at_1s": [
+        [
+          "Bob",
+          "User sleep",
+          "SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM use"
+        ],
+        [
+          "Dave",
+          "Waiting for table level lock",
+          "INSERT INTO users VALUES (4099, 'User04099-abcdefg"
+        ]
+      ],
+      "finished": {
+        "Bob": {
+          "seconds": 3.01,
+          "last_line": "| 4097 |       0 |"
+        },
+        "Dave": {
+          "seconds": 3.01,
           "last_line": ""
         }
       }
@@ -218,6 +268,11 @@
       "id": "4098",
       "name": "Dave2",
       "age": "31"
+    },
+    {
+      "id": "4099",
+      "name": "User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN",
+      "age": "30"
     }
   ],
   "connections": {
@@ -229,6 +284,6 @@
   "limits": [
     "SLEEP keeps a statement (and its table lock) open for about 3 s; wall-clock timings on one host.",
     "A single-row primary-key SELECT is read during optimization and does not hold the lock for its whole run.",
-    "concurrent_insert=AUTO and no deleted rows in the table, so appends do not wait for readers."
+    "concurrent_insert=AUTO: appends skip the wait only while the data file has no holes (parts 3 and 4)."
   ]
 }

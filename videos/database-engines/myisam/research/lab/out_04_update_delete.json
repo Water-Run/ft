@@ -1,163 +1,322 @@
 {
   "summary": {
-    "after 4096 rows": {
-      "slot_hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
+    "4096 rows": {
       "records": 4096,
       "deleted": 0,
-      "dellink": 18446744073709551615,
+      "chain_head": 18446744073709551615,
       "myd_bytes": 229376
     },
-    "Alice age 43": {
-      "slot_hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+    "Alice's birthday": {
       "records": 4096,
       "deleted": 0,
-      "dellink": 18446744073709551615,
+      "chain_head": 18446744073709551615,
       "myd_bytes": 229376
     },
-    "Alice deleted": {
-      "slot_hex": "00ffffffffffff6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+    "user 2 deleted": {
       "records": 4095,
       "deleted": 1,
-      "dellink": 114744,
+      "chain_head": 56,
       "myd_bytes": 229376
     },
-    "Dave inserted": {
-      "slot_hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
+    "user 5 deleted": {
+      "records": 4094,
+      "deleted": 2,
+      "chain_head": 224,
+      "myd_bytes": 229376
+    },
+    "Dave registers": {
+      "records": 4095,
+      "deleted": 1,
+      "chain_head": 56,
+      "myd_bytes": 229376
+    },
+    "user 4098 registers": {
       "records": 4096,
       "deleted": 0,
-      "dellink": 18446744073709551615,
+      "chain_head": 18446744073709551615,
       "myd_bytes": 229376
+    },
+    "user 4099 registers": {
+      "records": 4097,
+      "deleted": 0,
+      "chain_head": 18446744073709551615,
+      "myd_bytes": 229432
     }
   },
   "steps": [
     {
-      "step": "after 4096 rows",
+      "step": "4096 rows",
       "myd_bytes": 229376,
-      "myi_bytes": 297984,
       "state": {
         "records": 4096,
-        "del": 0,
-        "dellink": 18446744073709551615,
-        "data_file_length": 229376
+        "deleted": 0,
+        "chain_head": 18446744073709551615
       },
-      "slot_114744": {
-        "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
-        "flag_byte": 255
-      },
-      "name_entries": 4096,
-      "age_entries": 4096,
-      "alice_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 20,
-        "hit_slot": 0,
-        "rowref": 2049
-      },
-      "dave_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 20,
-        "miss": true
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202a",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "ff020000005573657230303030322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e14",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "ff050000005573657230303030352d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e17",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": null,
+          "flag_byte": null,
+          "chain_next_row": null
+        }
       }
     },
     {
-      "step": "Alice age 43",
+      "step": "Alice's birthday",
       "myd_bytes": 229376,
-      "myi_bytes": 297984,
       "state": {
         "records": 4096,
-        "del": 0,
-        "dellink": 18446744073709551615,
-        "data_file_length": 229376
+        "deleted": 0,
+        "chain_head": 18446744073709551615
       },
-      "slot_114744": {
-        "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
-        "flag_byte": 255
-      },
-      "name_entries": 4096,
-      "age_entries": 4096,
-      "alice_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 20,
-        "hit_slot": 0,
-        "rowref": 2049
-      },
-      "dave_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 20,
-        "miss": true
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "ff020000005573657230303030322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e14",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "ff050000005573657230303030352d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e17",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": null,
+          "flag_byte": null,
+          "chain_next_row": null
+        }
       }
     },
     {
-      "step": "Alice deleted",
+      "step": "user 2 deleted",
       "myd_bytes": 229376,
-      "myi_bytes": 297984,
       "state": {
         "records": 4095,
-        "del": 1,
-        "dellink": 114744,
-        "data_file_length": 229376
+        "deleted": 1,
+        "chain_head": 56
       },
-      "slot_114744": {
-        "hex": "00ffffffffffff6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
-        "flag_byte": 0
-      },
-      "name_entries": 4095,
-      "age_entries": 4095,
-      "alice_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 19,
-        "miss": true
-      },
-      "dave_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 19,
-        "miss": true
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "00ffffffffffff657230303030322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e14",
+          "flag_byte": 0,
+          "chain_next_row": 281474976710655
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "ff050000005573657230303030352d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e17",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": null,
+          "flag_byte": null,
+          "chain_next_row": null
+        }
       }
     },
     {
-      "step": "Dave inserted",
+      "step": "user 5 deleted",
       "myd_bytes": 229376,
-      "myi_bytes": 297984,
+      "state": {
+        "records": 4094,
+        "deleted": 2,
+        "chain_head": 224
+      },
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "00ffffffffffff657230303030322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e14",
+          "flag_byte": 0,
+          "chain_next_row": 281474976710655
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "00000000000001657230303030352d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e17",
+          "flag_byte": 0,
+          "chain_next_row": 1
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": null,
+          "flag_byte": null,
+          "chain_next_row": null
+        }
+      }
+    },
+    {
+      "step": "Dave registers",
+      "myd_bytes": 229376,
+      "state": {
+        "records": 4095,
+        "deleted": 1,
+        "chain_head": 56
+      },
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "00ffffffffffff657230303030322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e14",
+          "flag_byte": 0,
+          "chain_next_row": 281474976710655
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": null,
+          "flag_byte": null,
+          "chain_next_row": null
+        }
+      }
+    },
+    {
+      "step": "user 4098 registers",
+      "myd_bytes": 229376,
       "state": {
         "records": 4096,
-        "del": 0,
-        "dellink": 18446744073709551615,
-        "data_file_length": 229376
+        "deleted": 0,
+        "chain_head": 18446744073709551615
       },
-      "slot_114744": {
-        "hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
-        "flag_byte": 255
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "ff021000005573657230343039382d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e1d",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": null,
+          "flag_byte": null,
+          "chain_next_row": null
+        }
+      }
+    },
+    {
+      "step": "user 4099 registers",
+      "myd_bytes": 229432,
+      "state": {
+        "records": 4097,
+        "deleted": 0,
+        "chain_head": 18446744073709551615
       },
-      "name_entries": 4096,
-      "age_entries": 4096,
-      "alice_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 20,
-        "miss": true
-      },
-      "dave_in_name_index": {
-        "block": 43,
-        "kind": "leaf",
-        "entries": 20,
-        "hit_slot": 0,
-        "rowref": 2049
+      "slots": {
+        "Alice (row 2049)": {
+          "offset": 114744,
+          "hex": "ff02080000416c6963652020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202b",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 1 (user 2)": {
+          "offset": 56,
+          "hex": "ff021000005573657230343039382d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e1d",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4 (user 5)": {
+          "offset": 224,
+          "hex": "ff0110000044617665202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020201e",
+          "flag_byte": 255,
+          "chain_next_row": null
+        },
+        "row 4096 (end)": {
+          "offset": 229376,
+          "hex": "ff031000005573657230343039392d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e1e",
+          "flag_byte": 255,
+          "chain_next_row": null
+        }
       }
     }
   ],
-  "sql_after": [
+  "scan_order_first_rows": [
+    {
+      "id": "1",
+      "name": "User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+    },
+    {
+      "id": "4098",
+      "name": "User04098-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+    },
+    {
+      "id": "3",
+      "name": "User00003-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+    },
+    {
+      "id": "4",
+      "name": "User00004-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
+    },
     {
       "id": "4097",
-      "name": "Dave",
-      "age": "30"
+      "name": "Dave"
+    },
+    {
+      "id": "6",
+      "name": "User00006-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"
     }
   ],
   "limits": [
-    "Fixed-row table, concurrent_insert=AUTO; one deleted row is reused by the next insert."
+    "Fixed-row table; the delete chain is last-in first-out as in mi_statrec.cc."
   ]
 }

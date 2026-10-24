@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 STEPS = ["01_environment", "02_structure", "03_queries", "04_update_delete", "05_locks", "06_no_transaction",
-         "07_crash", "08_sources"]
+         "07_crash", "08_sources", "09_dynamic"]
 
 if __name__ == "__main__":
     for name in STEPS:

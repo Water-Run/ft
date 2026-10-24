@@ -22,10 +22,16 @@
 [Alice] FLUSH TABLES
 (no result rows)
 
-[Alice] DELETE FROM users WHERE id=2050
+[users] DELETE FROM users WHERE id=2
 (no result rows)
 
-[Alice] FLUSH TABLES
+[users] FLUSH TABLES
+(no result rows)
+
+[users] DELETE FROM users WHERE id=5
+(no result rows)
+
+[users] FLUSH TABLES
 (no result rows)
 
 [Dave] INSERT INTO users VALUES (4097, 'Dave', 30)
@@ -34,10 +40,27 @@
 [Dave] FLUSH TABLES
 (no result rows)
 
-[Dave] SELECT id, name, age FROM users WHERE id IN (2050, 4097)
-+------+------+-----+
-| id   | name | age |
-+------+------+-----+
-| 4097 | Dave |  30 |
-+------+------+-----+
+[users] INSERT INTO users VALUES (4098, 'User04098-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 29)
+(no result rows)
+
+[users] FLUSH TABLES
+(no result rows)
+
+[users] INSERT INTO users VALUES (4099, 'User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 30)
+(no result rows)
+
+[users] FLUSH TABLES
+(no result rows)
+
+[users] SELECT id, name FROM users LIMIT 6
++------+----------------------------------------------------+
+| id   | name                                               |
++------+----------------------------------------------------+
+|    1 | User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |
+| 4098 | User04098-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |
+|    3 | User00003-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |
+|    4 | User00004-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |
+| 4097 | Dave                                               |
+|    6 | User00006-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |
++------+----------------------------------------------------+
 

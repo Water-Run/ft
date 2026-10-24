@@ -66,12 +66,16 @@ def main():
         parts["Bob reads the whole table; Dave appends, Carol writes"] = scenario(obs, ("Bob", bob, BOB_SCAN), [
             ("Dave", dave, "INSERT INTO users VALUES (4098, 'Dave2', 31)"),
             ("Carol", carol, "UPDATE users SET age=32 WHERE id=2052")])
-        final = admin.rows("SELECT id, name, age FROM demo.users WHERE id IN (2050, 2052, 4097, 4098) ORDER BY id")
+        # 四、删掉一行、文件中间有了空位之后，Bob 读着时新用户的插入也要等
+        admin.run("DELETE FROM demo.users WHERE id=2")
+        parts["after a deletion leaves a hole: Bob reads, a new user inserts"] = scenario(obs, ("Bob", bob, BOB_SCAN), [
+            ("Dave", dave, "INSERT INTO users VALUES (4099, 'User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 30)")])
+        final = admin.rows("SELECT id, name, age FROM demo.users WHERE id IN (2050, 2052, 4097, 4098, 4099) ORDER BY id")
         for c in (admin, bob, alice, carol, dave, obs):
             c.close()
     finally:
         server.stop(); stop_all()
-    p1, p2, p3 = parts.values()
+    p1, p2, p3, p4 = parts.values()
     who = {v: k for k, v in ids.items()}
     for p in parts.values():
         for s in p["states_at_1s"]:
@@ -79,13 +83,14 @@ def main():
     assert p1["finished"]["Alice"]["seconds"] >= 2.9 and p1["finished"]["Carol"]["seconds"] >= 2.9
     assert p2["finished"]["Bob"]["seconds"] >= 2.9 and p2["finished"]["Dave"]["seconds"] >= 2.9
     assert p3["finished"]["Dave"]["seconds"] < 0.6 and p3["finished"]["Carol"]["seconds"] >= 2.9
+    assert p4["finished"]["Dave"]["seconds"] >= 2.9
     finish("05_locks", {
         "summary": {name: {"states_at_1s": [s[:2] for s in p["states_at_1s"]],
                            "finished_s": {k: v["seconds"] for k, v in p["finished"].items()}} for name, p in parts.items()},
         "parts": parts, "final_rows": final, "connections": ids,
         "limits": ["SLEEP keeps a statement (and its table lock) open for about 3 s; wall-clock timings on one host.",
                    "A single-row primary-key SELECT is read during optimization and does not hold the lock for its whole run.",
-                   "concurrent_insert=AUTO and no deleted rows in the table, so appends do not wait for readers."]})
+                   "concurrent_insert=AUTO: appends skip the wait only while the data file has no holes (parts 3 and 4)."]})
 
 
 if __name__ == "__main__":

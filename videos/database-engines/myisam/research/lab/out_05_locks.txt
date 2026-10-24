@@ -109,7 +109,28 @@
 [Carol] UPDATE users SET age=32 WHERE id=2052
 (no result rows)
 
-[admin] SELECT id, name, age FROM demo.users WHERE id IN (2050, 2052, 4097, 4098) ORDER BY id
+[admin] DELETE FROM demo.users WHERE id=2
+(no result rows)
+
+[observer] SELECT ID AS who, STATE AS state, LEFT(INFO, 50) AS info FROM performance_schema.processlist WHERE COMMAND = 'Query' AND INFO NOT LIKE '%processlist%' ORDER BY ID
++-----+------------------------------+----------------------------------------------------+
+| who | state                        | info                                               |
++-----+------------------------------+----------------------------------------------------+
+|  10 | User sleep                   | SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM use |
+|  13 | Waiting for table level lock | INSERT INTO users VALUES (4099, 'User04099-abcdefg |
++-----+------------------------------+----------------------------------------------------+
+
+[Bob] SELECT COUNT(*) AS n, SLEEP(3) AS reading FROM users WHERE age > 0
++------+---------+
+| n    | reading |
++------+---------+
+| 4097 |       0 |
++------+---------+
+
+[Dave] INSERT INTO users VALUES (4099, 'User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 30)
+(no result rows)
+
+[admin] SELECT id, name, age FROM demo.users WHERE id IN (2050, 2052, 4097, 4098, 4099) ORDER BY id
 +------+----------------------------------------------------+-----+
 | id   | name                                               | age |
 +------+----------------------------------------------------+-----+
@@ -117,5 +138,6 @@
 | 2052 | User02052-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |  32 |
 | 4097 | Dave                                               |  30 |
 | 4098 | Dave2                                              |  31 |
+| 4099 | User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN |  30 |
 +------+----------------------------------------------------+-----+
 

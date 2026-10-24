@@ -1,56 +1,67 @@
-"""Alice's birthday, Alice's deletion, Dave's registration: bytes of the same 56-byte slot at each step.
+"""Fixed rows changing in place: Alice's birthday, two users deleting their accounts, new users filling the holes.
 
-Files are read after FLUSH TABLES (key cache written back; MyISAM writes rows straight to the data file).
+Users 2 and 5 delete their accounts (rows 1 and 4); Dave and then user 4098 register and take
+the holes from the head of the chain; user 4099 finds no hole and goes to the end of the file.
+Files are read after FLUSH TABLES (MyISAM writes rows straight to the data file).
 """
 import myi
 from lab_common import Cli, Server, build, finish, new_run, stop_all
 
-DEC = [lambda v: int.from_bytes(v[0], "big", signed=True), lambda v: v[0].decode("ascii"), lambda v: v[0][0]]
+REC = 56
+WATCH = {"Alice (row 2049)": 2049, "row 1 (user 2)": 1, "row 4 (user 5)": 4, "row 4096 (end)": 4096}
 
 
 def snapshot(server, label):
     path = server.data / "demo"
     d, myd = (path / "users.MYI").read_bytes(), (path / "users.MYD").read_bytes()
     h, s, b, kds = myi.header(d)
-    slot = myd[114744:114744 + 56]
-    name_tree = myi.walk(d, kds[1], s["key_root"][1], b["key_reflength"], b["rec_reflength"], DEC[1])
-    age_tree = myi.walk(d, kds[2], s["key_root"][2], b["key_reflength"], b["rec_reflength"], DEC[2])
-    find = lambda name: myi.search(d, kds[1], s["key_root"][1], b["key_reflength"], b["rec_reflength"], [name], DEC[1])
-    return {"step": label, "myd_bytes": len(myd), "myi_bytes": len(d),
-            "state": {k: s[k] for k in ("records", "del", "dellink", "data_file_length")},
-            "slot_114744": {"hex": slot.hex(), "flag_byte": slot[0]},
-            "name_entries": name_tree["entries"], "age_entries": age_tree["entries"],
-            "alice_in_name_index": find(b"Alice")[-1], "dave_in_name_index": find(b"Dave")[-1]}
+    slots = {}
+    for name, n in WATCH.items():
+        raw = myd[n * REC:(n + 1) * REC]
+        slots[name] = {"offset": n * REC, "hex": raw.hex() if raw else None,
+                       "flag_byte": raw[0] if raw else None,
+                       "chain_next_row": int.from_bytes(raw[1:7], "big") if raw and raw[0] == 0 else None}   # 链里存行号，文件头存字节偏移
+    return {"step": label, "myd_bytes": len(myd),
+            "state": {"records": s["records"], "deleted": s["del"], "chain_head": s["dellink"]}, "slots": slots}
 
 
 def main():
-    run = new_run("04")
-    server = Server(run, "server").start()
+    server = Server(new_run("04"), "server").start()
     steps = []
     try:
         c = Cli("admin"); build(c); c.close()
-        alice = Cli("Alice", "demo"); dave = Cli("Dave", "demo")
-        steps.append(snapshot(server, "after 4096 rows"))
+        alice, dave, other = Cli("Alice", "demo"), Cli("Dave", "demo"), Cli("users", "demo")
+        steps.append(snapshot(server, "4096 rows"))
         alice.run("UPDATE users SET age=43 WHERE id=2050"); alice.run("FLUSH TABLES")
-        steps.append(snapshot(server, "Alice age 43"))
-        alice.run("DELETE FROM users WHERE id=2050"); alice.run("FLUSH TABLES")
-        steps.append(snapshot(server, "Alice deleted"))
+        steps.append(snapshot(server, "Alice's birthday"))
+        other.run("DELETE FROM users WHERE id=2"); other.run("FLUSH TABLES")
+        steps.append(snapshot(server, "user 2 deleted"))
+        other.run("DELETE FROM users WHERE id=5"); other.run("FLUSH TABLES")
+        steps.append(snapshot(server, "user 5 deleted"))
         dave.run("INSERT INTO users VALUES (4097, 'Dave', 30)"); dave.run("FLUSH TABLES")
-        steps.append(snapshot(server, "Dave inserted"))
-        where = dave.rows("SELECT id, name, age FROM users WHERE id IN (2050, 4097)")
-        alice.close(); dave.close()
+        steps.append(snapshot(server, "Dave registers"))
+        other.run("INSERT INTO users VALUES (4098, 'User04098-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 29)")
+        other.run("FLUSH TABLES")
+        steps.append(snapshot(server, "user 4098 registers"))
+        other.run("INSERT INTO users VALUES (4099, 'User04099-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN', 30)")
+        other.run("FLUSH TABLES")
+        steps.append(snapshot(server, "user 4099 registers"))
+        order = other.rows("SELECT id, name FROM users LIMIT 6")          # 表扫描顺序即文件顺序
+        for x in (alice, dave, other):
+            x.close()
     finally:
         server.stop(); stop_all()
-    a, u, d, v = steps
-    assert a["slot_114744"]["hex"][-2:] == "2a" and u["slot_114744"]["hex"][-2:] == "2b"
-    assert d["state"]["del"] == 1 and d["state"]["dellink"] == 114744 and d["slot_114744"]["flag_byte"] == 0
-    assert v["state"]["del"] == 0 and v["myd_bytes"] == a["myd_bytes"]
+    s = {x["step"]: x for x in steps}
+    assert s["Alice's birthday"]["slots"]["Alice (row 2049)"]["hex"][-2:] == "2b"
+    assert s["user 5 deleted"]["state"]["chain_head"] == 4 * REC and s["user 5 deleted"]["slots"]["row 4 (user 5)"]["chain_next_row"] == 1
+    assert s["Dave registers"]["slots"]["row 4 (user 5)"]["hex"][10:18] == "44617665"            # 'Dave' 写进 5 号的空位
+    assert s["user 4098 registers"]["state"]["deleted"] == 0
+    assert s["user 4099 registers"]["myd_bytes"] == 4097 * REC
     finish("04_update_delete", {
-        "summary": {s["step"]: {"slot_hex": s["slot_114744"]["hex"], "records": s["state"]["records"],
-                                "deleted": s["state"]["del"], "dellink": s["state"]["dellink"],
-                                "myd_bytes": s["myd_bytes"]} for s in steps},
-        "steps": steps, "sql_after": where,
-        "limits": ["Fixed-row table, concurrent_insert=AUTO; one deleted row is reused by the next insert."]})
+        "summary": {x["step"]: {"records": x["state"]["records"], "deleted": x["state"]["deleted"],
+                                "chain_head": x["state"]["chain_head"], "myd_bytes": x["myd_bytes"]} for x in steps},
+        "steps": steps, "scan_order_first_rows": order,
+        "limits": ["Fixed-row table; the delete chain is last-in first-out as in mi_statrec.cc."]})
 
 
 if __name__ == "__main__":

@@ -1,0 +1,69 @@
+[notes] CREATE DATABASE demo
+(no result rows)
+
+[notes] USE demo
+(no result rows)
+
+[notes] CREATE TABLE notes(id INT NOT NULL PRIMARY KEY, author CHAR(10) CHARACTER SET ascii NOT NULL, body VARCHAR(200) CHARACTER SET ascii NOT NULL) ENGINE=MyISAM
+(no result rows)
+
+[notes] INSERT INTO notes VALUES (1, 'Alice', 'Hello'), (2, 'Bob', 'Hi Alice'), (3, 'Carol', 'See you')
+(no result rows)
+
+[notes] FLUSH TABLES
+(no result rows)
+
+[notes] SHOW TABLE STATUS LIKE 'notes'
++-------+--------+---------+------------+------+----------------+-------------+-----------------+--------------+-----------+----------------+---------------------+---------------------+------------+--------------------+----------+----------------+---------+
+| Name  | Engine | Version | Row_format | Rows | Avg_row_length | Data_length | Max_data_length | Index_length | Data_free | Auto_increment | Create_time         | Update_time         | Check_time | Collation          | Checksum | Create_options | Comment |
++-------+--------+---------+------------+------+----------------+-------------+-----------------+--------------+-----------+----------------+---------------------+---------------------+------------+--------------------+----------+----------------+---------+
+| notes | MyISAM |      10 | Dynamic    |    3 |             22 |          68 | 281474976710655 |         2048 |         0 |              1 | 2026-10-24 11:16:03 | 2026-10-24 11:16:03 | NULL       | utf8mb4_0900_ai_ci |     NULL |                |         |
++-------+--------+---------+------------+------+----------------+-------------+-----------------+--------------+-----------+----------------+---------------------+---------------------+------------+--------------------+----------+----------------+---------+
+
+[notes] UPDATE notes SET body='Today is my birthday. I am 43 now. Thanks to everyone who sent a message, and see you all at the party on Saturday evening.' WHERE id=1
+(no result rows)
+
+[notes] FLUSH TABLES
+(no result rows)
+
+[notes] SELECT id, LENGTH(body) AS len FROM notes WHERE id=1
++----+-----+
+| id | len |
++----+-----+
+|  1 | 123 |
++----+-----+
+
+[notes] OPTIMIZE TABLE notes
++------------+----------+----------+----------+
+| Table      | Op       | Msg_type | Msg_text |
++------------+----------+----------+----------+
+| demo.notes | optimize | status   | OK       |
++------------+----------+----------+----------+
+
+[notes] FLUSH TABLES
+(no result rows)
+
+[myisamchk -dvv notes.MYI]
+MyISAM file:         notes.MYI
+Record format:       Packed
+Collation:           utf8mb4_0900_ai_ci (255)
+File-version:        1
+Creation time:       2026-10-24 11:16:03
+Recover time:        2026-10-24 11:16:03
+Status:              checked,analyzed,optimized keys,sorted index pages
+Data records:                    3  Deleted blocks:                 0
+Datafile parts:                  3  Deleted data:                   0
+Datafile pointer (bytes):        6  Keyfile pointer (bytes):        6
+Datafile length:               188  Keyfile length:              2048
+Max datafile length: 281474976710654  Max keyfile length: 288230376151710719
+Recordlength:                  216
+
+table description:
+Key Start Len Index   Type                     Rec/key         Root  Blocksize
+1   1     4   unique  long                           1         1024       1024
+
+Field Start Length Nullpos Nullbit Type
+1     1     4                      no zeros                           
+2     5     10                     no endspace                        
+3     15    201                    varchar
+

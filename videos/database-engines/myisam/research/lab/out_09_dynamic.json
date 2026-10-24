@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "three short notes": [
+      [
+        0,
+        "whole",
+        20,
+        null,
+        "\u0002\u0001\u0000\u0000\u0000\u0005Alice\u0005Hello"
+      ],
+      [
+        20,
+        "whole",
+        24,
+        null,
+        "\u0002\u0002\u0000\u0000\u0000\u0003Bob\bHi Alice"
+      ],
+      [
+        44,
+        "whole",
+        24,
+        null,
+        "\u0002\u0003\u0000\u0000\u0000\u0005Carol\u0007See you"
+      ]
+    ],
+    "Alice's note grows": [
+      [
+        0,
+        "first part",
+        20,
+        68,
+        "\u0002\u0001\u0000\u0000\u0000\u0005A"
+      ],
+      [
+        20,
+        "whole",
+        24,
+        null,
+        "\u0002\u0002\u0000\u0000\u0000\u0003Bob\bHi Alice"
+      ],
+      [
+        44,
+        "whole",
+        24,
+        null,
+        "\u0002\u0003\u0000\u0000\u0000\u0005Carol\u0007See you"
+      ],
+      [
+        68,
+        "last part",
+        132,
+        null,
+        "lice{Today is my birthda"
+      ]
+    ],
+    "after OPTIMIZE TABLE": [
+      [
+        0,
+        "whole",
+        140,
+        null,
+        "\u0002\u0001\u0000\u0000\u0000\u0005Alice{Today is my "
+      ],
+      [
+        140,
+        "whole",
+        24,
+        null,
+        "\u0002\u0002\u0000\u0000\u0000\u0003Bob\bHi Alice"
+      ],
+      [
+        164,
+        "whole",
+        24,
+        null,
+        "\u0002\u0003\u0000\u0000\u0000\u0005Carol\u0007See you"
+      ]
+    ]
+  },
+  "stages": {
+    "three short notes": {
+      "file": {
+        "bytes": 68,
+        "blocks": [
+          {
+            "type": 1,
+            "kind": "whole",
+            "header": 3,
+            "data": 17,
+            "block": 17,
+            "next": null,
+            "total": 20,
+            "text": "\u0002\u0001\u0000\u0000\u0000\u0005Alice\u0005Hello",
+            "offset": 0
+          },
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 18,
+            "block": 20,
+            "next": null,
+            "total": 24,
+            "text": "\u0002\u0002\u0000\u0000\u0000\u0003Bob\bHi Alice",
+            "offset": 20
+          },
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 19,
+            "block": 20,
+            "next": null,
+            "total": 24,
+            "text": "\u0002\u0003\u0000\u0000\u0000\u0005Carol\u0007See you",
+            "offset": 44
+          }
+        ]
+      },
+      "row_format": "Dynamic"
+    },
+    "Alice's note grows": {
+      "file": {
+        "bytes": 200,
+        "blocks": [
+          {
+            "type": 5,
+            "kind": "first part",
+            "header": 13,
+            "data": 7,
+            "block": 7,
+            "next": 68,
+            "total": 20,
+            "text": "\u0002\u0001\u0000\u0000\u0000\u0005A",
+            "offset": 0
+          },
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 18,
+            "block": 20,
+            "next": null,
+            "total": 24,
+            "text": "\u0002\u0002\u0000\u0000\u0000\u0003Bob\bHi Alice",
+            "offset": 20
+          },
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 19,
+            "block": 20,
+            "next": null,
+            "total": 24,
+            "text": "\u0002\u0003\u0000\u0000\u0000\u0005Carol\u0007See you",
+            "offset": 44
+          },
+          {
+            "type": 9,
+            "kind": "last part",
+            "header": 4,
+            "data": 128,
+            "block": 128,
+            "next": null,
+            "total": 132,
+            "text": "lice{Today is my birthday. I am 43 now. Thanks to everyone who sent a message, and see you all at the party on Saturday evening.",
+            "offset": 68
+          }
+        ]
+      },
+      "read_back": [
+        {
+          "id": "1",
+          "len": "123"
+        }
+      ]
+    },
+    "after OPTIMIZE TABLE": {
+      "file": {
+        "bytes": 188,
+        "blocks": [
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 135,
+            "block": 136,
+            "next": null,
+            "total": 140,
+            "text": "\u0002\u0001\u0000\u0000\u0000\u0005Alice{Today is my birthday. I am 43 now. Thanks to everyone who sent a message, and see you all at the party on Saturday evening.",
+            "offset": 0
+          },
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 18,
+            "block": 20,
+            "next": null,
+            "total": 24,
+            "text": "\u0002\u0002\u0000\u0000\u0000\u0003Bob\bHi Alice",
+            "offset": 140
+          },
+          {
+            "type": 3,
+            "kind": "whole",
+            "header": 4,
+            "data": 19,
+            "block": 20,
+            "next": null,
+            "total": 24,
+            "text": "\u0002\u0003\u0000\u0000\u0000\u0005Carol\u0007See you",
+            "offset": 164
+          }
+        ]
+      }
+    }
+  },
+  "limits": [
+    "Three rows only; block sizes depend on row lengths and MyISAM's minimum block of 20 bytes."
+  ]
+}
