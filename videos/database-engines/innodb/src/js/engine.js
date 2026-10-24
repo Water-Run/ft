@@ -203,6 +203,8 @@ function initCaptions() {
 // ── 启动 ──
 async function boot() {
   const E = window.ENGINE || {};
+  // 本片的 project.json（署名等资料，片尾名单从这里读）。由工具的本地服务器提供；取不到时为 null
+  window.PROJECT = await fetch('/project.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
   await Promise.all((E.fonts || []).map(([font, sample]) => document.fonts.load(font, sample)));
   await document.fonts.ready;
   initCaptions();

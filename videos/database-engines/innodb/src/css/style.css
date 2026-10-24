@@ -1,99 +1,38 @@
-/* 本片的视觉系统取自 MySQL 与 InnoDB 自己的样子（出处与测色记在 README「视觉系统」）：
-   - 画法来自 MySQL 9.7 参考手册「InnoDB Architecture」一图（innodb-architecture-8-0.png）：浅灰底上的圆角面板与面板标题、
-     青色深浅的圆角页块、文件与日志图标、虚线框表示可选或示意的部分。
-   - 颜色：MySQL 标志的蓝 #00758F（此刻讲到的东西：正在讲的行、选中的版本、提交的结果、标题里的关键词）与橙 #F29111
-     （锁、被锁的空隙、脏页、要当心的状态）；页块用架构图的青色系，由浅到深表示「空、普通、索引、正在用」。
-   - 字：拉丁文字与数字用 Open Sans（mysql.com 的正文字体，OFL 1.1，随片放在 src/type/），中文用 Sans SC，SQL 与字节用 Mono。
-   - 运动：面板与元素淡入、轻微上移或弹出；镜头只在面板之间移动，停留时不晃动。不用整屏擦除。
-   对比度（WCAG）：墨 #1E3742 / 底 #EEF1F0 11.0:1；灰 #5A6B72 / 面板 #FAFBFA 5.4:1、/ 底 4.9:1；标志蓝 / 面板 5.1:1、/ 底 4.7:1；白字 / 标志蓝 5.3:1；
-   白字 / 深青 #22505C 8.9:1、/ #3F7D86 4.7:1；墨 / 标志橙 5.3:1；墨 / 浅青 #BDDCD7 8.6:1、/ #E4EFEE 10.6:1。 */
-@font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wdth-wght.ttf"); font-weight: 300 800; font-stretch: 75% 100%; }
+/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
+   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
 :root {
-  --bg: #eef1f0; --panel: #fafbfa; --line: #cdc6be; --ink: #1e3742; --dim: #5a6b72; --blue: #00758f; --or: #f29111; --white: #ffffff;
-  --t0: #e4efee; --t1: #bddcd7; --t2: #84bdb5; --t3: #3f7d86; --t4: #22505c;
+  --paper: #f1efe9;
+  --ink: #16181d;
+  --accent: #d9480f;
+  --dim: #8c8f96;
+  --M: 120px;                 /* 版心边距 */
 }
-body { font-family: "Open Sans", "Sans SC"; color: var(--ink); }
-#bg { background: var(--bg); }
-.scene { overflow: hidden; }
-.world { position: absolute; left: 0; top: 0; width: 16000px; height: 968px; white-space: nowrap; }
-.abs, .blk { position: absolute; }
-.wrap { white-space: normal; }
-.mono { font-family: "Mono", "Sans SC"; }
-.ink { color: var(--ink); } .dim { color: var(--dim); } .blue { color: var(--blue); } .white { color: var(--white); }
-.bg-blue { background: var(--blue); } .bg-ink { background: var(--ink); } .bg-or { background: var(--or); } .bg-t0 { background: var(--t0); }
-.bg-t1 { background: var(--t1); } .bg-t2 { background: var(--t2); } .bg-t3 { background: var(--t3); } .bg-t4 { background: var(--t4); }
+body { font-family: "Inter", "Sans SC"; color: var(--ink); }
+#bg { background: var(--paper); }
+/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
+   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
+.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯（1080p）。注解不小于 28px */
-.t-0 { font: 800 150px/1 "Open Sans", "Sans SC"; letter-spacing: -.02em; }
-.t-1 { font: 800 96px/1.05 "Open Sans", "Sans SC"; letter-spacing: -.01em; }
-.t-2 { font: 700 64px/1.12 "Sans SC", "Open Sans"; }
-.t-3 { font: 700 48px/1.16 "Sans SC", "Open Sans"; }
-.t-4 { font: 600 38px/1.25 "Sans SC", "Open Sans"; }
-.t-n { font: 500 30px/1.32 "Sans SC", "Open Sans"; }
-.t-s { font: 600 28px/1.3 "Sans SC", "Open Sans"; }
+/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
+.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
+.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
+.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
+.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
+.accent { color: var(--accent); }
 
-/* 面板：架构图里的圆角浅色框与面板标题 */
-.panel { position: absolute; background: var(--panel); border: 3px solid var(--line); border-radius: 22px; }
-.panel.hot { border-color: var(--blue); }
-.panel.warn { border-color: var(--or); }
-.panel.sketch { background: transparent; border: 3px dashed var(--dim); }
-.ptl { position: absolute; font: 700 36px/1.2 "Sans SC", "Open Sans"; color: var(--ink); }
-.ptl.mono { font: 700 34px/1.2 "Mono", "Sans SC"; }
-/* 页块：圆角小方块 */
-.tile { position: absolute; border-radius: 12px; background: var(--t1); }
-.tile.t0 { background: var(--t0); } .tile.t2 { background: var(--t2); } .tile.t3 { background: var(--t3); } .tile.t4 { background: var(--t4); }
-.tile.or { background: var(--or); } .tile.blue { background: var(--blue); }
-.tile.ring { outline: 5px solid var(--blue); }
-/* 记录：圆角条 */
-.row { position: absolute; height: 56px; border-radius: 10px; background: var(--t0); font: 700 30px/56px "Mono", "Sans SC"; padding-left: 20px; box-sizing: border-box; color: var(--ink); }
-.row.t1 { background: var(--t1); }
-.row.on { background: var(--blue); color: var(--white); }
-.row.dk { background: var(--t4); color: var(--white); }
-.row.lk { background: var(--or); color: var(--ink); }
-.row.old { background: transparent; border: 3px dashed var(--dim); line-height: 50px; }
-/* SQL 与回显：白底细框 */
-.sql { position: absolute; height: 58px; border-radius: 10px; background: var(--white); border: 2px solid var(--line); font: 600 30px/54px "Mono", "Sans SC"; padding: 0 20px; box-sizing: border-box; color: var(--ink); }
-.out { position: absolute; font: 700 30px/1.3 "Mono", "Sans SC"; color: var(--blue); }
-/* 文件与日志图标：折角的白纸 */
-.file { position: absolute; background: var(--white); border: 3px solid var(--ink); border-radius: 12px; }
-.file::after { content: ""; position: absolute; right: -3px; top: -3px; width: 38px; height: 38px; background: var(--bg); border-left: 3px solid var(--ink); border-bottom: 3px solid var(--ink); border-radius: 0 0 0 12px; }
-.file.inpanel::after { background: var(--panel); }
-.file i { position: absolute; left: 18px; height: 10px; border-radius: 5px; background: var(--t2); }
-.file b.tag { position: absolute; left: 14px; bottom: 14px; font: 800 28px/1 "Open Sans"; color: var(--white); background: var(--t4); border-radius: 6px; padding: 4px 8px; }
-/* 锁：标志橙的圆角块加锁梁 */
-.lock { position: absolute; width: 40px; height: 36px; border-radius: 9px; background: var(--or); }
-.lock::before { content: ""; position: absolute; left: 9px; top: -16px; width: 14px; height: 18px; border: 6px solid var(--or); border-bottom: none; border-radius: 12px 12px 0 0; }
-/* 被锁的空隙、脏页：橙色斜线 */
-/* 斜线用一小块 SVG 平铺（平涂，不用渐变） */
-.gap { position: absolute; border-radius: 12px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Crect width='18' height='18' fill='%23F29111' fill-opacity='.16'/%3E%3Cpath d='M-4.5 4.5L4.5-4.5M0 18L18 0M13.5 22.5L22.5 13.5' stroke='%23F29111' stroke-width='6'/%3E%3C/svg%3E"); background-size: 18px 18px; }
-/* 小标签：示意、状态 */
-.tag { position: absolute; font: 600 28px/1 "Sans SC", "Open Sans"; color: var(--dim); border: 2px solid var(--line); border-radius: 8px; padding: 6px 12px; background: var(--panel); }
-.tag.blue { color: var(--white); background: var(--blue); border-color: var(--blue); }
-.tag.or { color: var(--ink); background: var(--or); border-color: var(--or); }
-/* 文献卡 */
-.yr { position: absolute; font: 800 110px/1 "Open Sans"; letter-spacing: -.02em; color: var(--blue); }
-.ptitle { position: absolute; font: 700 44px/1.2 "Open Sans"; white-space: normal; color: var(--ink); }
-.pmeta { position: absolute; font: 500 30px/1.3 "Open Sans", "Sans SC"; color: var(--dim); white-space: normal; }
-.quote { position: absolute; font: 500 34px/1.38 "Open Sans"; white-space: normal; color: var(--ink); }
-.quote .hl, .ptitle .hl { background: var(--blue); color: var(--white); border-radius: 6px; padding: 0 6px; margin: 0 -6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-/* 压在标志蓝、深青上的字 */
-.onblue { color: var(--white) !important; }
-.ib { display: inline-block; }
+/* 章节卡：整屏色块 */
+.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
+.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
+.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
 
-/* 常驻层：左上角的章节标签、章节标题、字幕带 */
-.chip { position: absolute; left: 64px; top: 40px; height: 52px; display: flex; align-items: center; gap: 14px; }
-.chip .no { height: 52px; min-width: 52px; padding: 0 12px; box-sizing: border-box; border-radius: 12px; background: var(--blue); color: var(--white); font: 800 28px/52px "Open Sans"; text-align: center; }
-.chip .nm { font: 700 30px "Sans SC", "Open Sans"; color: var(--ink); }
-.chead { position: absolute; left: 120px; top: 300px; }
-.chead .no { position: absolute; left: 0; top: 0; width: 150px; height: 150px; border-radius: 30px; background: var(--blue); color: var(--white); font: 800 84px/150px "Open Sans"; text-align: center; }
-.chead .nm { position: absolute; left: 0; top: 190px; font: 900 96px/1.05 "Sans SC", "Open Sans"; color: var(--ink); white-space: nowrap; }
-.chead .tl { position: absolute; left: 4px; top: 330px; height: 40px; }
-.chead .tl i { position: absolute; top: 0; width: 56px; height: 40px; border-radius: 9px; background: var(--t1); }
-.band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--panel); }
-.band .rl { position: absolute; left: 0; top: 0; width: 1920px; height: 2px; background: var(--line); }
-.band .pg { position: absolute; left: 0; top: -2px; height: 5px; background: var(--blue); border-radius: 0 3px 3px 0; }
-.band .tk { position: absolute; top: -8px; width: 3px; height: 10px; border-radius: 2px; background: var(--dim); }
-#caption { bottom: 26px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); font-family: "Sans SC", "Open Sans"; }
-#caption em { font-style: normal; font-weight: 700; color: var(--blue); }
-.dimmed { opacity: .45; }
+/* 字幕 */
+#caption { bottom: 52px; height: 60px; z-index: 50; }
+#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+.en #caption span { font-size: 36px; }
+#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+
+/* 片尾名单 */
+.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
+.credit-row { break-inside: avoid; margin-bottom: 30px; }

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>一个数据库引擎是如何实现的？——事务性与现代化：InnoDB</title>
+<title>InnoDB</title>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,28 +14,16 @@
   <div id="caption"><span></span></div>
 </div>
 <script src="vendor/gsap.min.js"></script>
-<!-- 实测时长：由 kit/tools/tts.js 生成 -->
+<!-- 实测时长：每种语言一份，由 kit/tools/tts.js 生成 -->
 <script src="js/timing.zh.js"></script>
 <script src="js/script.js"></script>
-<!-- 画面数据：由 tools/gen_data.py 从 research/lab/ 生成 -->
-<script src="js/data.js"></script>
 <script src="js/config.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/util.js"></script>
-<script src="js/parts.js"></script>
-<!-- 场景：按出场顺序 -->
-<script src="js/scenes/s00_intro.js"></script>
-<script src="js/scenes/s01_history.js"></script>
-<script src="js/scenes/s02_tx.js"></script>
-<script src="js/scenes/s03_concurrency.js"></script>
-<script src="js/scenes/s04_logs.js"></script>
-<script src="js/scenes/s05_layout.js"></script>
-<script src="js/scenes/s06_buffer.js"></script>
-<script src="js/scenes/s07_versions.js"></script>
-<script src="js/scenes/s08_locks.js"></script>
-<script src="js/scenes/s09_redo.js"></script>
-<script src="js/scenes/s10_back.js"></script>
-<script src="js/scenes/s11_end.js"></script>
+<!-- 场景：一章一个（或数个）文件，按出场顺序列在这里 -->
+<script src="js/scenes/s0_open.js"></script>
+<script src="js/scenes/s1_demo.js"></script>
+<script src="js/scenes/s9_credits.js"></script>
 <script src="js/boot.js"></script>
 </body>
 </html>

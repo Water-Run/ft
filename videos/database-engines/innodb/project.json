@@ -1,131 +1,57 @@
 {
   "slug": "innodb",
-  "stage": "released",
-  "delivery": {
-    "date": "2026-10-18",
-    "duration": {
-      "zh": 949.467
-    }
-  },
-  "release": [
-    {
-      "platform": "哔哩哔哩",
-      "url": "https://www.bilibili.com/video/BV1vanV6nEYq",
-      "date": "2026-10-18"
-    }
-  ],
-  "reception": [],
-  "credits": {
-    "planner": "WaterRun",
-    "models": [
-      {
-        "name": "GPT-6（型号未记录）",
-        "roles": [
-          "实验",
-          "来源与源码核查"
-        ]
-      },
-      {
-        "name": "Claude Haiku 5.5",
-        "roles": [
-          "第 1–4 轮文案"
-        ]
-      },
-      {
-        "name": "Claude Opus 5.5",
-        "roles": [
-          "第 5 轮起文案",
-          "重做",
-          "视觉",
-          "场景",
-          "配乐",
-          "收尾与审查"
-        ]
-      }
-    ],
-    "services": [
-      {
-        "name": "Microsoft Edge 在线语音（模型未披露）",
-        "roles": [
-          "旁白合成"
-        ]
-      },
-      {
-        "name": "Whisper small",
-        "roles": [
-          "读音回听"
-        ]
-      },
-      {
-        "name": "WebSearch、WebFetch（模型未披露）",
-        "roles": [
-          "网页检索"
-        ]
-      }
-    ],
-    "repository": "https://github.com/Water-Run/ft"
-  },
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
   "languages": [
     "zh"
   ],
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
   },
-  "voices": {
-    "zh": "zh-CN-YunyangNeural"
+  "stage": "research",
+  "next": "取证：MySQL 9.7.4 上实测主键树与姓名索引树的全部层级，并重测回滚、多版本、锁、删除与 purge、崩溃恢复；再以 R8 为底写 R9 交审",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "文案"
+        ]
+      }
+    ],
+    "services": [],
+    "repository": "https://github.com/Water-Run/ft"
   },
-  "rates": {
-    "zh": "-2%"
-  },
-  "asr_prompts": {
-    "zh": "以下是普通话的讲解。"
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
   },
   "render": {
     "fps": 60,
-    "mb": 4
-  },
-  "audio": {
-    "music": "tools/music.py",
-    "music_db": -11,
-    "duck_db": 9,
-    "sfx_db": -9
+    "mb": 4,
+    "gpu": 1
   },
   "check": {
     "caption_width": {
-      "zh": 26
+      "zh": 26,
+      "en": 44
     },
     "max_cue_seconds": 6,
-    "min_font": 28,
+    "min_font": 22,
     "margin": 60,
     "still_seconds": 3,
     "camera": true,
     "style": {
       "flat": true,
-      "no_emoji": true,
-      "palette": [
-        "EEF1F0",
-        "FAFBFA",
-        "CDC6BE",
-        "1E3742",
-        "5A6B72",
-        "00758F",
-        "F29111",
-        "E4EFEE",
-        "BDDCD7",
-        "84BDB5",
-        "3F7D86",
-        "22505C",
-        "FFFFFF"
-      ],
-      "fonts": [
-        "Open Sans",
-        "Sans SC",
-        "Mono"
-      ]
+      "no_emoji": true
     },
-    "duration": [
-      840,
-      960
-    ]
+    "duration": {
+      "zh": [
+        840,
+        1020
+      ]
+    }
   }
 }
