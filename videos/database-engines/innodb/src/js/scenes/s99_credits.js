@@ -4,6 +4,7 @@ scene('credits', ({ root, s }) => {
   const C = (window.PROJECT && window.PROJECT.credits) || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
   const items = [[tr('策划', 'Planning'), C.planner || '']];
   for (const m of [...(C.models || []), ...(C.services || [])]) items.push([(m.roles || []).map(label).join(' · '), m.name]);
   // 两列排开；行数多时压低行高，大块的高度随行数定，整组在画面里竖直居中

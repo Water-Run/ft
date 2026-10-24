@@ -5,6 +5,7 @@
 // 约定：帧函数只切 display（这一页此刻存不存在），GSAP 只动 opacity / 位移（入场、变淡），两者不碰同一个属性。
 scene('s3', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
   const ov = overlay(W);
   const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   const disp = (e, on) => { const v = on ? '' : 'none'; if (e.style.display !== v) e.style.display = v; };
@@ -200,7 +201,7 @@ scene('s3', ({ root, s, c0 }) => {
   // 「根」「叶子」
   const lblRoot = h('div', 'tag', W, '根'); px(lblRoot, LX(0) - 92, 214);
   const lblLeaf = h('div', 'tag', W, '叶子'); px(lblLeaf, LX(0) - 106, BY + 80);
-  [0, 1].forEach((k) => lit(leaves[k], 'hot', T('a11', '编号') + k * 0.35, Tend('a11') + 0.3));   // a11：「每一页叶子」——两页叶子各亮一下，对上根页里的两项
+  [0, 1].forEach((k) => litWin(leaves[k], 'hot', [[T('a11', '编号') + k * 0.35, Tend('a11') + 0.3], [T('a12', '叶子') - 0.1 + k * 0.2, Tend('a12') + 0.3]]));   // a11 每页叶子；a12「下面是叶子」再亮一次   // a11：「每一页叶子」——两页叶子各亮一下，对上根页里的两项
   slam(lblRoot, T('a12', '根'), { from: 1.3 }); slam(lblLeaf, T('a12', '叶子'), { from: 1.3 }); sfx('pop', T('a12', '根'), { g: 0.5 });
 
   // a16：叶子里放的就是整行——第 27 页拉出来看三行

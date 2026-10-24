@@ -7,6 +7,7 @@
 // 同一个属性只由一个帧函数或一串首尾相接的补间改写，画面只由 t 决定。
 scene('s8', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
   const ov = overlay(W);
   const C = D.crash;
   const fmt = (n) => n.toLocaleString('en-US').replace(/,/g, ' ');

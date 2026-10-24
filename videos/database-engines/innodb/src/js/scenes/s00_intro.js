@@ -3,6 +3,7 @@
 // 每一段放在自己的容器里，整段退场时动容器（容器里有帧函数管显隐的版本条、播放头，不能对它们单独做退场补间）。
 scene('intro', ({ root, s }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
   const part = () => { const g = h('div', 'abs', W); px(g, 0, 0, 1920, 1080); css(g, { pointerEvents: 'none' }); return g; };
   const fileSize = (n) => D.files.find((f) => f.file === n).bytes.toLocaleString('en-US').replace(/,/g, ' ');
 
@@ -108,6 +109,15 @@ scene('intro', ({ root, s }) => {
   slide(LN.els.names[0], tCopy - 0.2, { y: 230, d: 0.7, ease: 'power3.out' }); wipe(LN.els.lines[0], tCopy + 0.1, { dir: 'l', d: 0.7 });
   slide(eng0, T('h8bz', 'MyISAM'), { x: -30 }); slide(eng1, T('h8bz', '另一个引擎'), { x: -30 });
   sfx('pop', tCopy, { g: 0.5 });
+  // 「复制一份」：users 那一道上先出一张小表，讲到「副本」时它复制出一张，飞到上面一道（只画表头与行，不写字）
+  const tbl = (y) => { const g = h('div', 'abs', B); px(g, 500, y - 58, 176, 116); css(g, { border: '2px solid var(--mainD)', background: 'var(--panel)' });
+    const hd = h('div', 'abs', g); px(hd, 0, 0, 172, 26); css(hd, { background: 'var(--teal)', borderBottom: '2px solid var(--mainD)' });
+    for (let r = 0; r < 3; r++) { const ln = h('div', 'abs', g); px(ln, 10, 44 + r * 22, 152, 10); css(ln, { background: 'var(--pale)' }); }
+    return g; };
+  const tU = tbl(700), tM = tbl(700);
+  wipe(tU, T('h8b', '表') - 0.1, { dir: 't', d: 0.4 }); sfx('tick', T('h8b', '表'), { g: 0.4 });
+  vanish(tM, 0); appear(tM, tCopy - 0.1); fromTo(tM, tCopy - 0.1, { y: 0 }, { y: -230, duration: 0.8, ease: 'power3.inOut' });
+  [tU, tM].forEach((e) => exit(e, tP0 - 0.4, { d: 0.3 }));
   lit(eng1, 'acc', 0, T('h15', 'InnoDB'));
   tl.fromTo(eng1, { scale: 1 }, { scale: 1.25, duration: 0.2, ease: 'power2.out', immediateRender: false }, T('h15', 'InnoDB')); tl.to(eng1, { scale: 1, duration: 0.3 }, T('h15', 'InnoDB') + 0.2);
   sfx('thud', T('h15', 'InnoDB') + 0.05);

@@ -4,6 +4,7 @@
 // 三、引出下一集：另一个更老牌的开源 SQL 数据库把旧版本留在表里（K9、M34）。
 scene('s11', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
   const ov = overlay(W);
   const A = D.alice;
   const ON = new Map(), onWin = (el, a, b) => { if (!ON.has(el)) ON.set(el, []); ON.get(el).push([a, b]); };

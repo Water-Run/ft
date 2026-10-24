@@ -3,6 +3,7 @@
 // ROLLBACK：顺着回滚指针取回 42 写回去（X2）。回滚后行头的事务号恢复成什么没有实测，那两格回滚时只淡出、不写数字。最后对照 MyISAM 撤不回（V3）。
 scene('s5', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s5_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);

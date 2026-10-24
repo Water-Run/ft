@@ -33,6 +33,7 @@ window.ENGINE = {
       const t0 = s.start + cut, t1 = s.start + s.lead - 0.45;
       slam(no, t0, { from: 1.25, d: 0.35 });
       wipeOut(card, t1, { dir: 'r', d: 0.4 });
+      tl.fromTo(card, { scale: 1 }, { scale: 1.035, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false, transformOrigin: '50% 50%' }, t0);   // 章节卡停留时也慢慢推近
       let last = -1;
       F((t) => { const k = Math.round(clamp((t - (t0 + 0.3)) / (t1 - t0 - 0.5)) * N); if (k === last) return; last = k; cells.forEach((c, i) => c.classList.toggle('on', i < k)); });
       sfx('whoosh', t0 - 0.05, { g: 0.5 }); sfx('thud', t0 + 0.1, { g: 0.5 });

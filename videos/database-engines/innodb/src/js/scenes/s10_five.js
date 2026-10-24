@@ -6,6 +6,7 @@
 // 五 出错：先 redo 重做，再 undo 撤销（M12、R3）。
 scene('s10', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
   const ov = overlay(W);
   const A = D.alice;
   const ON = new Map(), onWin = (el, a, b) => { if (!ON.has(el)) ON.set(el, []); ON.get(el).push([a, b]); };

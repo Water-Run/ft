@@ -5,6 +5,7 @@
 // 事务号 6175 取自 FACTS G5（「Alice 先改、Bob 后读」那一次的 innodb_trx）；读到的值取自 D.mvcc（X3、X4）。
 scene('s6', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
   const st = h('style', null, root);
   const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   st.textContent = `
@@ -183,8 +184,8 @@ scene('s6', ({ root, s, c0 }) => {
   exit(card, T('f21') - 0.3, { x: 40, d: 0.35 });
   const mv = h('div', 'abs', W, '<span style="font:800 72px Inter;color:var(--mainD)">MVCC</span><span style="font:700 34px \'Sans SC\';color:var(--ink);margin-left:18px">多版本并发控制</span>');
   px(mv, 120, 410); wipe(mv, T('f21', '多版本'), { dir: 'l', d: 0.6 }); sfx('thud', T('f21', '多版本') + 0.1, { g: 0.6 });
-  // 脚注（K8）：多版本并发控制的正确性理论出自 1983 年 Bernstein 与 Goodman；不配旁白，挂在上面两个版本那幅图下
-  const fnote = h('div', 'abs t-small', W, '注：多版本并发控制的正确性理论，见 Bernstein 与 Goodman，1983 年'); px(fnote, 1000, 396);
+  // 脚注（K8）：多版本并发控制的正确性理论出自 1983 年 Bernstein 与 Goodman；不配旁白，作 MVCC 标题的脚注
+  const fnote = h('div', 'abs t-small', W, '注：多版本并发控制的正确性理论，见 Bernstein 与 Goodman，1983 年'); px(fnote, 124, 508);   // 落在 MVCC 标题下面，不压右边 Bob 的快照卡
   vanish(fnote, 0); show(fnote, T('f20') + 0.3, { y: 6, d: 0.4 });
   // 收尾：泳道一带慢慢淡下去，只留两个版本与 MVCC（整组放进一个容器，只对容器补间）
   const dimBox = h('div', 'abs', W); px(dimBox, 0, 0, 1920, 1080);

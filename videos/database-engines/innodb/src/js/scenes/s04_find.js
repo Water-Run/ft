@@ -3,6 +3,7 @@
 // 再找一次不读盘；按名字找：页 5 → 页 9 拿到 2050 → 回到主键树取整行（L2）；只要编号时不必回表（E1）；缓冲池满了按 LRU 挪出旧页（M27）。
 scene('s4', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
+  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
   const ov = overlay(W);
 
   // ── 架构图 ──
