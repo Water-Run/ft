@@ -45,7 +45,7 @@
 
 | 片 | 阶段 | 策划 | 模型与分工 | 服务与分工 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/README.md) | 审稿 | WaterRun | Claude Opus 5.5：取证、文案 | 未登记 |
+| [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/README.md) | 审稿 | WaterRun | Claude Opus 5.5：取证、文案、视觉、场景、配乐 | 未登记 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md) | 审稿 | WaterRun | GPT-6.1 Sol：取证、实测与结构测绘、简报整理<br>Claude Opus 5.5：补充取证、文案、视觉设计 | 未登记 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
 | [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 审稿 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐初稿、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿<br>Claude Opus 5.5：分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host |
