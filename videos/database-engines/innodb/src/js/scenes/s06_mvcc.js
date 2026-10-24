@@ -85,15 +85,15 @@ scene('s6', ({ root, s, c0 }) => {
   // f5：脏读——若是直接读这个没提交的 43
   const dirty = path(ov, `M${xB1 - 6},${LN.Y(1) - 22} C${xB1 - 6},560 825,560 825,337`, 'acc', { w: 2.2, dashed: '8 7' });
   arrowIn(dirty, T('f5', '脏读') - 0.3, 0.5);
-  const dX = mark(752, 455, '✗', 'c-acc', T('f5', '脏读') + 0.15);
+  const dX = mark(752, 455, MARK.no(40), 'c-acc', T('f5', '脏读') + 0.15);
   const dTag = h('div', 'tag acc', W, '脏读'); px(dTag, 800, 460); slam(dTag, T('f5', '脏读'), { from: 1.3 });
   [dirty].forEach((p) => svgOut(p, T('f6') - 0.1, 0.3));
   [dX, dTag].forEach((e) => exit(e, T('f6') - 0.1, { y: -10, d: 0.3 }));
 
   // f6–f8：Bob 的快照：拍下那一刻已经提交的事务看得见；6175 还没提交，不在里面
   const card = h('div', 'card', W, `<div class="ct" style="font-size:32px">Bob 的快照<span class="s6-first" style="font:500 22px 'Sans SC';color:var(--ink2);margin-left:12px">· 第一次读时拍下</span></div>
-    <div class="cs" style="font-size:26px;margin-top:6px"><span class="c-main" style="font-weight:800">✓</span> 拍下之前已提交的事务</div>
-    <div class="cs" style="font-size:26px;margin-top:2px"><span class="c-acc" style="font-weight:800">✗</span> <span class="num">${TRX}</span>：拍下时还没提交</div>`);
+    <div class="cs" style="font-size:26px;margin-top:6px">${MARK.ok(26)} 拍下之前已提交的事务</div>
+    <div class="cs" style="font-size:26px;margin-top:2px">${MARK.no(26)} <span class="num">${TRX}</span>：拍下时还没提交</div>`);
   px(card, 1340, 398, 460); css(card, { padding: '12px 22px' });
   const [cl1, cl2] = [card.children[1], card.children[2]];
   slide(card, T('f6', '快照'), { x: 40 }); sfx('thud', T('f6', '快照') + 0.1, { g: 0.5 });
@@ -105,15 +105,15 @@ scene('s6', ({ root, s, c0 }) => {
   // Bob 的读先到这一行：行上的事务号 6175 不在快照的已提交里
   const toRow = path(ov, `M${xB1},${LN.Y(1) - 22} C${xB1},540 375,540 375,337`, 'main', { w: 2.2, dashed: '8 7' });
   arrowIn(toRow, T('f8', '事务号') - 0.4, 0.6);
-  const tX = mark(353, 200, '✗', 'c-acc', T('f8', '不在'));
+  const tX = mark(353, 200, MARK.no(40), 'c-acc', T('f8', '不在'));
   // f9：这个版本 Bob 不能看
-  const aX = mark(803, 200, '✗', 'c-acc', T('f9', '不能看'));
+  const aX = mark(803, 200, MARK.no(40), 'c-acc', T('f9', '不能看'));
   sfx('error', T('f9', '不能看'), { g: 0.35 });
   // f10：顺着回滚指针去 undo，取回 42
   const rp2 = path(ov, 'M530,334 L530,368 L1090,368 L1090,336', 'main', { w: 4.5 });
   arrowIn(rp2, T('f10', '回滚指针') - 0.1, 0.7);
   lit(uAge, 'hot', T('f10', 'undo'));
-  const uOk = mark(1445, 268, '✓', 'c-main', T('f10', '42'));
+  const uOk = mark(1445, 268, MARK.ok(40), 'c-main', T('f10', '42'));
   const back = path(ov, `M1375,337 C1375,520 ${xB1 + 140},560 ${xB1 + 80},${LN.Y(1) - 24}`, 'main', { w: 2.2 });
   arrowIn(back, T('f10', '42') - 0.1, 0.7);
   lit(v1, 's6-ring', T('f10', '42') + 0.5, T('f10', '42') + 1.5);

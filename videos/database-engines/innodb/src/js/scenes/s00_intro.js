@@ -41,8 +41,8 @@ scene('intro', ({ root, s }) => {
   A.appendChild(ovA);                                          // 线压在两个文件框上面
 
   // h1：数据文件先出来，一行一行摊开；h2：索引文件出来
-  wipe(myd, 0.1, { dir: 'l', d: 0.7 }); sfx('whoosh', 0.1, { g: 0.4 });
-  const tRows0 = 0.6, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
+  appear(myd, 0); sfx('whoosh', 0.05, { g: 0.4 });                    // 片头第一帧就有数据文件（不留空画面）
+  const tRows0 = 0.1, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
   rowEls.forEach((r, k) => { vanish(r, 0); appear(r, lerp(tRows0, tRows1, k / (rowEls.length - 1))); });
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
   wipe(myi, T('h2', '两个文件'), { dir: 'l', d: 0.6 });               // 讲到「两个文件」时第二个文件框就出来
@@ -56,13 +56,13 @@ scene('intro', ({ root, s }) => {
 
   // h4–h7：三处做不到：三张小卡，卡里的小图随关键词补全
   const gapY = 790;
-  const mk = (x, title, n) => { const c = h('div', 'card', A, `<div class="ct"><span class="num c-acc" style="margin-right:14px">${n}</span>${title}<span class="c-acc" style="margin-left:10px">✕</span></div><div class="cs"></div>`); px(c, x, gapY, 520); return c; };
+  const mk = (x, title, n) => { const c = h('div', 'card', A, `<div class="ct"><span class="num c-acc" style="margin-right:14px">${n}</span>${title}<span style="margin-left:10px">${MARK.no(30)}</span></div><div class="cs"></div>`); px(c, x, gapY, 520); return c; };
   const g1 = mk(150, '事务', 1), g2 = mk(700, '表锁', 2), g3 = mk(1250, '日志', 3);
   // 卡里的小图分两步补全：讲到关键词时把那一步的内容换上去（换的是文字本身）
   const steps = (c, a, b, ta, tb) => swaps(c.querySelector('.cs'), [[ta, a], [tb, a + b]]);
-  const G1A = '<span class="mono" style="font-size:30px">42 → 43</span>', G1B = '<span class="mono c-acc" style="font-size:30px;margin-left:18px">↶ ✕</span>';
+  const G1A = '<span class="mono" style="font-size:30px">42 → 43</span>', G1B = '<span class="mono c-acc" style="font-size:30px;margin-left:18px">↶ ' + MARK.no(28) + '</span>';
   const G2A = '<span class="mini lk"></span><span class="mono" style="font-size:26px;margin:0 14px 0 8px">users</span><span class="mini b">Carol 写</span>', G2B = '<span class="mini w">Bob 等</span>';
-  const G30 = '<span class="mono c-acc" style="font-size:28px;margin-right:12px">⚡</span>', G3A = '<span class="mono" style="font-size:26px">CHECK TABLE</span>', G3B = '<span class="mono" style="font-size:26px"> · REPAIR TABLE</span>';
+  const G30 = '<span style="margin-right:12px">' + MARK.bolt(30) + '</span>', G3A = '<span class="mono" style="font-size:26px">CHECK TABLE</span>', G3B = '<span class="mono" style="font-size:26px"> · REPAIR TABLE</span>';
   slide(g1, T('h5'), { y: 30 }); slide(g2, T('h6'), { y: 30 }); slide(g3, T('h7'), { y: 30 });
   [[g1, 'h5'], [g2, 'h6'], [g3, 'h7']].forEach(([, c]) => sfx('thud', T(c) + 0.1, { g: 0.5 }));
   steps(g1, G1A, G1B, T('h5', '一组'), T('h5', '撤回')); steps(g2, G2A, G2B, T('h6', '在写'), T('h6', '等')); swaps(g3.querySelector('.cs'), [[T('h7', '断电') - 0.2, G30], [T('h7', '检查') - 0.4, G30 + G3A], [T('h7', '修复') - 0.8, G30 + G3A + G3B]]);
@@ -73,7 +73,7 @@ scene('intro', ({ root, s }) => {
   // h8：先看第一处
   lit(g1, 'on', T('h8'));
   [g2, g3].forEach((c) => to(c, T('h8'), { opacity: 0.35, duration: 0.4 }));
-  const outA = Tend('h8') + 0.15;
+  const outA = T('h8b') + 0.25;                                       // 和下一段的泳道交叠着换，不留空画面
   exit(A, outA, { y: 20, d: 0.4 });
 
   // ── 二、同样三句，两张表（X2） ──

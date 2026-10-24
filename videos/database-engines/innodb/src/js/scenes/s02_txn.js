@@ -46,7 +46,7 @@ scene('s2', ({ root, s, c0 }) => {
   const l70 = h('div', 'abs', era, '<span style="font:800 40px \'Sans SC\';color:var(--mainD)">七十年代</span><span style="font:700 32px \'Sans SC\';color:var(--ink);margin-left:14px">事务</span>'); px(l70, 330, 584);
   const eArr = path(ov, 'M1470,700 C1200,760 700,760 450,702', 'main', { w: 2.6 });
   const eGap = h('div', 'abs t-note', era, '早得多'); px(eGap, 900, 750);
-  wipe(eAx, T('t0') + 0.1, { dir: 'l', d: 0.7 });
+  wipe(eAx, c0 + 0.05, { dir: 'l', d: 0.7 });
   vanish(dIn, 0); slam(dIn, T('t0', 'InnoDB') - 0.1, { from: 1.6 }); slide(lIn, T('t0', 'InnoDB'), { y: 12 }); sfx('tick', T('t0', 'InnoDB'), { g: 0.4 });
   arrowIn(eArr, T('t0', '早得多') - 0.4, 0.8); vanish(d70, 0); slam(d70, T('t0', '早得多') + 0.3, { from: 1.6 }); slide(l70, T('t0', '早得多') + 0.4, { y: 12 }); show(eGap, T('t0', '早得多'), { y: 8, d: 0.4 });
   to(era, Tend('t0b') - 0.2, { opacity: 0.35, duration: 0.5 }); tl.to(eArr, { opacity: 0.35, duration: 0.5 }, Tend('t0b') - 0.2);
@@ -58,7 +58,7 @@ scene('s2', ({ root, s, c0 }) => {
   const acct = (x, name, v) => { const b = boxEl(G0, x, 560, 340, 200, ''); h('div', 'abs t-note', b, name).style.cssText = 'position:absolute;left:24px;top:16px'; const n = h('div', 'abs num', b, v); px(n, 24, 70); css(n, { font: '800 72px Inter', color: 'var(--mainD)' }); return [b, n]; };
   const [aBox, aN] = acct(240, '账户 A', '100'), [bBox, bN] = acct(1340, '账户 B', '0');
   const coin = h('div', 'pill fill', G0, '100'); px(coin, 620, 640); css(coin, { fontSize: '30px' });
-  const mid = h('div', 'abs', G0, '<span class="pill acc" style="position:static;font-size:30px">50 ？</span><span class="mono c-acc" style="font-size:44px;margin-left:16px">✕</span>'); px(mid, 860, 800);
+  const mid = h('div', 'abs', G0, '<span class="pill acc" style="position:static;font-size:30px">50 ？</span><span style="margin-left:16px">' + MARK.no(40) + '</span>'); px(mid, 860, 800);
   const okL = h('div', 'abs', G0, '<span class="mini b">转过去</span>'); px(okL, 1350, 790);
   const noL = h('div', 'abs', G0, '<span class="mini b">留在原账户</span>'); px(noL, 250, 790);
   // t0b–t0e：Jim Gray 的卡片一行一行出来
@@ -101,7 +101,7 @@ scene('s2', ({ root, s, c0 }) => {
   });
   // 右边两条路
   const okBox = boxEl(W, 1150, 150, 630, 300); const noBox = boxEl(W, 1150, 500, 630, 230);
-  const okMark = h('div', 's2-mark c-main', okBox, '✓'); px(okMark, 586, 14);
+  const okMark = h('div', 's2-mark c-main', okBox, MARK.ok(40)); px(okMark, 586, 14);
   const noMark = h('div', 's2-mark c-acc', noBox, '↶'); px(noMark, 584, 12);
   const pC = h('div', 'pill fill', okBox, 'COMMIT'); px(pC, 28, 22);
   const pR = h('div', 'pill fill acc', noBox, 'ROLLBACK'); px(pR, 28, 22);
@@ -196,7 +196,7 @@ scene('s2', ({ root, s, c0 }) => {
     full.setAttribute('height', r * G.c); part.setAttribute('y', G.y + r * G.c); part.setAttribute('width', c * G.c);
     cntN.textContent = k;
   });
-  const t8 = T('t8');
+  const t8 = Math.min(T('t8'), out2 + 0.1);                          // 第三节在第二节收走时就进来
   slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.3, 36, { cursor: false });
   svgIn(grid, T('t9', '所有人') - 0.3, 0.5);
   slam(n4096, T('t9', '4096'), { from: 1.4 }); sfx('thud', T('t9', '4096'), { g: 0.5 });
@@ -264,7 +264,7 @@ scene('s2', ({ root, s, c0 }) => {
     '<div class="s2-g full" style="left:0;top:8px">' + '<i></i>'.repeat(32) + '</div><div class="t-note" style="position:absolute;left:148px;top:20px">或</div>'
       + '<div class="s2-g" style="left:190px;top:8px">' + '<i></i>'.repeat(32) + '</div>',
     // C：崩溃过后，页仍是完整的
-    '<div class="sq on" style="left:0;top:20px;width:56px;height:56px"></div><div class="mono c-acc" style="position:absolute;left:84px;top:18px;font-size:44px">⚡</div><div class="mono c-main" style="position:absolute;left:150px;top:18px;font-size:44px">✓</div>',
+    '<div class="sq on" style="left:0;top:20px;width:56px;height:56px"></div><div class="mono c-acc" style="position:absolute;left:84px;top:22px">' + MARK.bolt(44) + '</div><div class="mono c-main" style="position:absolute;left:150px;top:22px">' + MARK.ok(44) + '</div>',
     // I：两个会话各走各的
     '<div style="position:absolute;left:0;top:6px;width:250px;height:34px;background:var(--main)"></div><div style="position:absolute;left:0;top:52px;width:250px;height:34px;border:2px solid var(--main);background:var(--pale)"></div><div class="t-small" style="position:absolute;left:262px;top:8px">Alice</div><div class="t-small" style="position:absolute;left:262px;top:54px">Bob</div>',
     // D：提交之后落到磁盘
@@ -294,12 +294,12 @@ scene('s2', ({ root, s, c0 }) => {
   iBars.forEach((b, j) => { vanish(b, 0); appear(b, T('q3') + 0.3 + j * 0.15); fromTo(b, T('q3') + 0.3 + j * 0.15, { width: 0 }, { width: 250, duration: T('q3', '互不干扰') - T('q3') - 0.3, ease: 'none' }); });   // 条子开始长之前不露出边框
   const dBox = cards[3].querySelector('.box'), dArr = cards[3].querySelector('.mono');   // D：提交之后落到磁盘
   vanish(dArr, 0); appear(dArr, T('q4', '提交')); wipe(dBox, T('q4', '提交') + 0.2, { dir: 'l', d: 0.4 });
-  const dOk = h('div', 'mono c-main', cards[3], '✓'); css(dOk, { position: 'absolute', right: '24px', top: '18px', fontSize: '48px' });   // 放在卡片右上角：放进 dBox 会被它擦除用的裁剪区切掉
+  const dOk = h('div', 'mono c-main', cards[3], MARK.ok(44)); css(dOk, { position: 'absolute', right: '24px', top: '18px', fontSize: '48px' });   // 放在卡片右上角：放进 dBox 会被它擦除用的裁剪区切掉
   vanish(dOk, 0); slam(dOk, T('q4', '不会丢'), { from: 1.6 }); sfx('pop', T('q4', '不会丢'), { g: 0.5 });
   // A、I、D 连回三个问题；C 退到背景
   const QN = [['撤回', '<span class="mini b">42</span><span class="mini w">43</span><span class="mono c-main" style="font-size:28px">↶</span>'],
     ['同时读写', '<span class="mini b">Alice 改</span><span class="mini b" style="background:var(--panel);color:var(--main)">Bob 读</span>'],
-    ['停下之后', '<span class="mini b" style="font-family:Mono">COMMIT</span><span class="mono c-acc" style="font-size:28px">⚡</span>']];
+    ['停下之后', '<span class="mini b" style="font-family:Mono">COMMIT</span><span>' + MARK.bolt(28) + '</span>']];
   const map = [0, 2, 3];                                   // A → 撤回，I → 同时读写，D → 停下之后
   const qcards = QN.map(([t, pic], i) => {
     const x = 140 + map[i] * 418;

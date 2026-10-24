@@ -127,3 +127,10 @@ function drift3(cam, s, dir = 1) {
   while (t < t1 - 0.05) { const d = Math.min(P, t1 - t); keys.push([t, k % 2 === 0 ? A : B, Math.max(0.5, d), { ease: 'none', sfx: false }]); t += d; k++; }
   cam.track(t0, { ...B, x: 960 }, keys.length ? keys : [[t0, A, 1, { ease: 'none', sfx: false }]]);
 }
+
+// 对、错、断电三个记号：画成平涂的小图形，不用字体里的 emoji 与装饰符号（本片的源码规则）。size 是边长（px），color 是 CSS 颜色
+const MARK = {
+  ok: (size = 36, color = 'var(--main)') => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="vertical-align:middle;overflow:visible"><path d="M4 12.5 L9.5 18 L20 6" style="fill:none;stroke:${color};stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round"/></svg>`,
+  no: (size = 36, color = 'var(--acc)') => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="vertical-align:middle;overflow:visible"><path d="M6 6 L18 18 M18 6 L6 18" style="fill:none;stroke:${color};stroke-width:3.2;stroke-linecap:round"/></svg>`,
+  bolt: (size = 36, color = 'var(--acc)') => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="vertical-align:middle;overflow:visible"><path d="M13.5 2 L4.5 13.5 H11 L9.5 22 L19.5 9.5 H13 Z" style="fill:${color}"/></svg>`,
+};

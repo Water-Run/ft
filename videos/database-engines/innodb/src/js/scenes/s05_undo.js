@@ -55,7 +55,7 @@ scene('s5', ({ root, s, c0 }) => {
   // MyISAM 对照（e12）
   const my = boxEl(W, 1320, 450, 460, 230, 'users.MYD');
   const myRow = h('div', 'abs mono', my, `2050  Alice  <span style="display:inline-block;background:var(--acc);color:#fff;padding:0 6px">2b</span>`); px(myRow, 36, 84); css(myRow, { fontSize: '28px' });
-  const myV = h('div', 'abs', my, '<span style="font:800 44px Inter;color:var(--acc)">43</span><span class="mono c-acc" style="font-size:36px;margin-left:22px">↶ ✕</span>'); px(myV, 36, 140);
+  const myV = h('div', 'abs', my, '<span style="font:800 44px Inter;color:var(--acc)">43</span><span class="mono c-acc" style="font-size:36px;margin-left:22px">↶ ' + MARK.no(32) + '</span>'); px(myV, 36, 140);
 
   // 泳道：Alice，UPDATE 与 ROLLBACK
   const tU = T('e6', 'UPDATE'), tRb = T('e10', 'ROLLBACK'), tEnd = Tend('e11');

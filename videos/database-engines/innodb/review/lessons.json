@@ -4,165 +4,165 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "核心问题：一个现代的数据库引擎怎样做到事务——撤得回、同时读写互不干扰、停下之后提交的还在。开场实验 0:30–1:05 提出，第 01 章 y6–y10（1:40–1:57）问成三个问题，第 02 章对上 A、I、D，第 05、06–07、08 章分别回答（j20「第二章那个问题，答案就在这里」），第 11 章 k20–k24（14:21–14:40）收束；取舍记在 README「简报」与 review/compare-*.md。"
     },
     "F02": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "同一个例子走完全片：users 表 4096 行、Alice 2050 号 42→43，Bob 读、Carol 写、管理员改 4096 行、Dave 注册；新名词与解释句见 review/NOTES.md「术语表」。"
     },
     "F03": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "名称与版本第一次出现时交代：MySQL 9.7.4（y4 画面 SELECT @@version）、MyISAM 与 InnoDB 的对照用同一张表、同一句 ROLLBACK（X2，0:30–1:05）；历史年份都带出处（K1–K9）。"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js（实测配音时间）0 段不足，制作方 2026-10-25 用 sheets.js 通看：每句说完一帧（235 帧，shots/sheets/zh-cue_*）与每 3 秒一帧（305 帧，zh-every3_*）；制作方不能以正常速度连续看有声成片，连续观看留给 WaterRun 看预览时确认。",
       "evidence": ""
     },
     "F05": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "总览图里每章都有连续的过程（文件切页、树一页页长、泳道播放头、回滚指针、redo 扫描），但「连续观看」与「和近期两部片子并排比较」制作方没有做，待 WaterRun 看预览确认。",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方听不到音轨，只看了混音数值（旁白 −21 dB、配乐在旁白下 −38 dB 左右、音效 380 个、成片 −15.6 LUFS）；有没有存在感、音效有没有含义，待 WaterRun 听预览确认。",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏核对总览图、字幕（out/innodb-zh.srt）与封面：画面上只有 MySQL 源码的相对路径 storage/innobase/ 与 mysqld 日志里的 .\\#innodb_redo\\#ib_redo5，没有本机路径、用户名或地址。"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "ffprobe 读最终 MP4：h264 1920×1080 60 帧、AAC、914.895 s；响度 I = −15.6 LUFS、TP = −1.4 dBFS；与 README「交付」逐项一致。"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "反馈逐条记在 README「简报」与 review/NOTES.md「意见与处理」，每条注明日期与原话；技术判断均有出处编号（FACTS）。"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "对前集的引用只有开场 h1 一句「上一集」，随即自己讲清 MyISAM 的两个文件与三处做不到；全片内部回指（「第二章那个问题」）都在本片之内。"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每段外文原文（ACM 图灵奖页、1981 年报告、1983 年论文、ARIES、手册引文、mysqld 日志）旁都有中文释义，readable.js 0 段不足。"
     },
     "F12": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "Whisper 回听（out/zh/asr.txt）没有发现读错或漏读，年份逐字读、行读 háng、缩写逐字母读均按 SAY 表；按规则以人耳为准，制作方听不到，待 WaterRun 听预览确认。",
       "evidence": ""
     },
     "F13": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 01 章先交代对象与年代：Innobase（芬兰）、1994 年 Heikki Tuuri 写下最早的代码、2005 年 Oracle 收购、2010 年成为默认引擎、到 9.7 仍是默认；第 02 章交代事务这个概念的来历（Jim Gray、1981、1983）。"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "导出的校对稿里没有制作指令；片尾名单是无旁白的 credits cue（混音统计片尾旁白 −99 dB），名单完整：策划 WaterRun、Claude Opus 5.5（取证·文案·视觉·场景·配乐）、MiniMax speech-2.8-hd（旁白合成）、GPL-3.0-or-later 与仓库地址。"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏看总览图，没有制作者口吻的说明；画面上的小字是图例、出处与脚注（「注：多版本并发控制的正确性理论，见 Bernstein 与 Goodman，1983 年」）。"
     },
     "F16": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 MySQL 9.7 参考手册 InnoDB 架构图的语汇（In-Memory / On-Disk 分区、缓冲池、日志缓冲、双写缓冲区、redo / undo），主色是 MySQL 标志的蓝 #00758F；任取一帧都能认出是 InnoDB 的架构与页；颜色只表示三种状态，见 README「设计」。"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "音色由 WaterRun 在试听页里选定（成熟女声、语速 1.2）；成片的语气制作方听不到，待 WaterRun 听预览确认。",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每章一个主画面（制作方 2026-10-25 用 sheets.js 通看：每句说完一帧（235 帧，shots/sheets/zh-cue_*）与每 3 秒一帧（305 帧，zh-every3_*））：01 时间轴、02 转账与两条路→ACID 四张卡、03 文件条与两棵树的生长、04 架构图上的一次查找、05 Alice 这一行的字节与 undo、06 泳道与两个版本、07 页 27 的记录与锁、08 架构图上的 redo 与崩溃实验、09 页 27 的删除与间隙、10 架构图与五张卡、11 架构图与三个问题。"
     },
     "F19": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "scan.js 0 项错误；逐 0.1 秒看中间状态只抽查了几处新动作（a3 切页、开场复制小表、第 10 章换排、文献卡分步），没有逐个动作看完；已知一处：第 10 章 k10z→k11 换排时卡片比泳道早出 0.4 秒，随下一次重渲改。",
       "evidence": ""
     },
     "F20": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "图形与含义一一对应且全片不换义：砖红斜纹＝未提交、实心蓝＝已提交、砖红虚框＝在等、挂锁＝行锁；页方块、文件条、泳道各自只表示一种东西（README「设计」）。"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "与 MyISAM 一集不同：MyISAM 是终端黑底、橙色、男声；本集是手册架构图的暖灰纸面、MySQL 蓝、女声、配乐「两个事务」，封面也按本集主体重做。"
     },
     "F22": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "总览图里一组并列的对象整组在场、只推进其中几项（三个问题卡、ACID 四卡、五个问题卡、泳道），没有一句一屏的碎片。"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "讲机制的段落都有随时间推进的过程：文件切成 49 页、树从一页长到 21 页叶子、播放头走过泳道、回滚指针一路找到 undo、redo 带子增长与扫描、页 27 的记录打标记与清除；关掉声音也看得出发生了什么（总览图）。"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "镜头只有每章内的缓慢漂移（一推一拉 4%、横移 8px），没有推近切掉内容；每句说完的时刻用 look.js / 总览图看过，正在讲的内容都在画内，scan.js 没有 CUT、CAPZONE 提示。"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方 2026-10-25 用 sheets.js 通看：每句说完一帧（235 帧，shots/sheets/zh-cue_*）与每 3 秒一帧（305 帧，zh-every3_*）：每段都有讲解对象的实物在场；稀疏的开场实验段补了「复制一份」的小表；挤满的帧只有第 03 章两棵树全展开时（DENSE 提示 132 段），是两棵树的页号，保留。"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方主动通读改稿：删 a21、改 a24、t1、j11（R12），23 句超长字幕断句；改句后整章通读，章节卡、数字与画面一致（五个问题、三个问题、4096 行、258 行）。"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "README「交付」写明通看方式（总览图：每句一帧 + 每 3 秒一帧）、日期与发现的问题；scan.js 的 DENSE 提示已逐条看过并写明保留理由。"
     }
   },
   "history": []

@@ -147,7 +147,7 @@ scene('s8', ({ root, s, c0 }) => {
   const com = LA.event(0, T('j7', '提交'), 'COMMIT', '', -60);
   const uncA = LA.bar(LA.Y(0) - 22, T('j2', '改数据') + 0.1, T('j7', '提交'), '<span>43</span>', 'unc');
   const waitB = LA.bar(LA.Y(0) - 22, T('j7', '提交') + 0.1, tLogOut + 0.2, '', 'wait');
-  const okA = h('div', 'pill fill', GA, '✓'); px(okA, LA.X(tLogOut + 0.2) + 10, LA.Y(0) - 20); slam(okA, tLogOut + 0.25, { from: 1.4 }); sfx('pop', tLogOut + 0.25);
+  const okA = h('div', 'pill fill', GA, MARK.ok(24, '#fff')); px(okA, LA.X(tLogOut + 0.2) + 10, LA.Y(0) - 20); slam(okA, tLogOut + 0.25, { from: 1.4 }); sfx('pop', tLogOut + 0.25);
   const phA = LA.playhead(T('j2') - 0.2, Tend('j8'), 620, 740);
   const x27 = 120 + 20 + 22 + (i27 % 8) * 62 + 22, y27 = 110 + 84 + 58 + Math.floor(i27 / 8) * 64 + 46;
   const upTo27 = path(ov, `M${xUpd},${LA.Y(0) - 84} L${xUpd},${580} L${x27},${580} L${x27},${y27 + 4}`, 'acc', { w: 2.2 });
@@ -155,7 +155,10 @@ scene('s8', ({ root, s, c0 }) => {
   const upToLog = path(ov, `M${xUpd + 70},${LA.Y(0) - 84} L${xUpd + 70},${548}`, 'mainD', { w: 2.2 });
   arrowIn(upToLog, tLogIn - 0.2, 0.5);
   packet([[xUpd, LA.Y(0) - 84], [xUpd, 580], [x27, 580], [x27, y27 + 18]], T('j2', '缓冲池') - 0.4, 1.1, '43');   // 这次修改送进缓冲池里的页
-  packet([[xUpd + 70, LA.Y(0) - 84], [xUpd + 70, 556]], tLogIn, 0.7, '');                                  // 同时记一条 redo 进日志缓冲
+  packet([[xUpd + 70, LA.Y(0) - 84], [xUpd + 70, 556]], tLogIn, 0.7, '');
+  // 这一段的动作各配一声：改数据、页进缓冲池、变脏、另一张脏页写回、记 redo、redo 落盘
+  sfx('pop', T('j2', '改数据'), { g: 0.45 }); sfx('tick', T('j2', '缓冲池') + 0.7, { g: 0.4 }); sfx('blip', tDirtyA, { g: 0.45 });
+  sfx('whoosh', tFlushOther, { g: 0.35 }); sfx('tick', tLogIn + 0.6, { g: 0.4 }); sfx('thud', tLogOut, { g: 0.45 });                                  // 同时记一条 redo 进日志缓冲
   const sA = Tend('j8') + 0.3;
   [upTo27, upToLog].forEach((p) => svgOut(p, sA));
   exit(GA, sA, { y: 20, d: 0.35 });

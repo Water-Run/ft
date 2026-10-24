@@ -51,18 +51,15 @@
   .note { font: 500 24px "Sans SC"; color: var(--ink2); white-space: nowrap; }
   .num { font-variant-numeric: tabular-nums; }
   svg { position: absolute; left: 0; top: 0; overflow: visible; }
-  /* 立体：每块东西都有厚度——同色系的深一档实色一层层错开叠出侧面（平涂，不模糊、不渐变）；右边的图整块放在一块倾斜的板上 */
-  .x3 { box-shadow: var(--ex); }
+  /* 立体：每块东西都有厚度——右侧面与底面画成两块平涂的多边形（同色系深一档），标题是错开叠放的几层深色字；不用阴影、不模糊、不渐变。右边的图整块放在一块倾斜的板上 */
   .plate { position: absolute; left: 0; top: 0; width: var(--W); height: var(--H); transform-style: preserve-3d; }
   .r169 .plate { transform-origin: 1030px 520px; transform: perspective(2200px) rotateY(18deg) rotateX(6deg); }
   .r43 .plate { transform-origin: 800px 820px; transform: perspective(2200px) rotateX(12deg) rotateY(-8deg); }
-  .t2 { text-shadow: 1px 1px 0 #1B3E4A, 2px 2px 0 #1B3E4A, 3px 3px 0 #1B3E4A, 4px 4px 0 #1B3E4A, 5px 5px 0 #1B3E4A, 6px 6px 0 #1B3E4A, 7px 7px 0 #1B3E4A, 8px 8px 0 #1B3E4A, 9px 9px 0 #1B3E4A, 10px 10px 0 #1B3E4A; }
-  .t1 { text-shadow: 1px 1px 0 #3B4246, 2px 2px 0 #3B4246, 3px 3px 0 #3B4246, 4px 4px 0 #3B4246, 5px 5px 0 #3B4246; }
-  .part { box-shadow: 1px 1px 0 #1B3E4A, 2px 2px 0 #1B3E4A, 3px 3px 0 #1B3E4A, 4px 4px 0 #1B3E4A, 5px 5px 0 #1B3E4A, 6px 6px 0 #1B3E4A; }
 </style>
 </head>
 <body>
 <div id="stage">
+  <svg id="ovS" width="10" height="10"></svg>
   <div class="plate" id="plate"><svg id="ov" width="10" height="10"></svg></div>
 </div>
 <script src="js/data.js"></script>
@@ -72,11 +69,16 @@
   const D = window.DATA, A = D.alice;
   const stage = document.getElementById('stage'), plate = document.getElementById('plate');
   const add = (cls, html, x, y, w, h, parent = stage) => { const e = document.createElement('div'); e.className = 'a ' + cls; e.innerHTML = html; e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; parent.appendChild(e); return e; };
-  // 厚度：k 层、每层 1px，颜色是这块东西自己的深一档
-  const ex = (e, col, k = 10) => { e.classList.add('x3'); e.style.setProperty('--ex', Array.from({ length: k }, (_, i) => `${i + 1}px ${i + 1}px 0 ${col}`).join(', ')); return e; };
   const art = (cls, html, x, y, w, h) => add(cls, html, x, y, w, h, plate);
-  const NS = 'http://www.w3.org/2000/svg', ov = document.getElementById('ov');
+  const NS = 'http://www.w3.org/2000/svg', ov = document.getElementById('ov'), ovS = document.getElementById('ovS');
   const sv = (tag, a, parent = ov) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  // 厚度：右侧面与底面两块平涂多边形，向右下伸出 k 像素，颜色是这块东西自己的深一档；画在底层的 SVG 里，压在块的下面
+  const faces = (layer, e, col, k) => { const x = e.offsetLeft, y = e.offsetTop, w = e.offsetWidth, hh = e.offsetHeight;
+    sv('polygon', { points: `${x + w},${y} ${x + w + k},${y + k} ${x + w + k},${y + hh + k} ${x + w},${y + hh}`, style: `fill:${col}` }, layer);
+    sv('polygon', { points: `${x},${y + hh} ${x + w},${y + hh} ${x + w + k},${y + hh + k} ${x + k},${y + hh + k}`, style: `fill:${col}` }, layer); return e; };
+  const ex = (e, col, k = 10) => faces(ov, e, col, k);
+  // 立体字：先放 k 层深色的同一行字、每层错开 1px，最上面放本色
+  const deep = (cls, html, x, y, col, k) => { for (let i = k; i >= 1; i--) { const d = add(cls, html, x + i, y + i); d.style.color = col; d.dataset.overlapOk = ''; d.setAttribute('aria-hidden', 'true'); } return add(cls, html, x, y); };   // 厚度层是有意叠放的
   const COL = { main: '#00758F', acc: '#B5452E', mainD: '#2D5A68' };
   { const defs = sv('defs', {});
     for (const k in COL) { const m = sv('marker', { id: 'ah-' + k, viewBox: '0 0 10 10', refX: '8.2', refY: '5', markerWidth: '6', markerHeight: '6', orient: 'auto-start-reverse' }, defs);
@@ -93,10 +95,10 @@
     : { part: [112, 112], kicker: [112, 230], t1: [106, 306], t2: [98, 446], legend: [112, 780],
         code: [1030, 120, 790, 132], laneY: 470, x0: 1030, x1: 1820, name: [1030, 376], fork: 1350, branch: 1396, spread: 116, disk: [1030, 668, 790, 224] };
 
-  add('part', 'PART 2', ...L.part);
+  faces(ovS, add('part', 'PART 2', ...L.part), '#1B3E4A', 6);
   add('kicker', '一个数据库引擎是如何实现的？', ...L.kicker);
-  add('t1', '事务性与现代化', ...L.t1);
-  add('t2', 'InnoDB', ...L.t2);
+  deep('t1', '事务性与现代化', ...L.t1, '#3B4246', 5);
+  deep('t2', 'InnoDB', ...L.t2, '#1B3E4A', 10);
   // 图例：正片里颜色只表示这两种状态
   add('legend', '<i class="bar unc" style="height:34px;padding:0"></i>未提交<span class="gap"></span><i style="background:var(--main)"></i>已提交', ...L.legend);
 

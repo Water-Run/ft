@@ -148,7 +148,7 @@ scene('s1', ({ root, s, c0 }) => {
   const p2a = pic(1, '<span class="mini b">Alice 改</span>', 28), p2b = pic(1, '<span class="mini b" style="background:var(--panel);color:var(--main)">Bob 读</span>', 330), p2c = pic(1, '<span class="mono c-acc" style="font-size:34px">?</span>', 178);
   slide(p2a, T('y8') + 0.1, { x: -40 }); appear(p2b, T('y8', '同时')); fromTo(p2b, T('y8', '同时'), { x: 60 }, { x: -96, duration: 1.4, ease: 'power2.out' }); slam(p2c, T('y8', '干扰'), { from: 1.5 });
   // 3 停下之后：已经提交 → 机器停下 → 还在不在
-  const p3a = pic(2, '<span class="mini b">COMMIT</span>', 28), p3b = pic(2, '<span class="mono c-acc" style="font-size:34px">⚡</span>', 170), p3c = pic(2, '<span class="mono c-acc" style="font-size:34px">?</span>', 230);
+  const p3a = pic(2, '<span class="mini b">COMMIT</span>', 28), p3b = pic(2, '<span>' + MARK.bolt(34) + '</span>', 170), p3c = pic(2, '<span class="mono c-acc" style="font-size:34px">?</span>', 230);
   slide(p3a, T('y9') + 0.1, { x: -30 }); slam(p3b, T('y9', '停下'), { from: 1.8 }); sfx('error', T('y9', '停下'), { g: 0.35 }); slam(p3c, T('y9', '还在'), { from: 1.5 });
 
   // 收向「事务」

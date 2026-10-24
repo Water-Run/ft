@@ -122,7 +122,7 @@ scene('s3', ({ root, s, c0 }) => {
   // a1：建表语句（与实验同一张表，lab_common.SCHEMA）；KEY idx_name 等第二棵树出现时再提
   const ddl = h('div', 'abs mono', W, ''); px(ddl, 300, 330); css(ddl, { fontSize: '32px', lineHeight: '1.5' });
   const DDL = '<span class="c-main" style="font-weight:700">CREATE TABLE</span> users (\n  id   INT <span class="c-main" style="font-weight:700">PRIMARY KEY</span>,\n  name CHAR(50),\n  age  TINYINT UNSIGNED,\n  KEY idx_name (name),\n  KEY idx_age (age)\n);';
-  const tDdl = Math.max(c0 + 0.3, T('a1') - 0.2);
+  const tDdl = c0 + 0.05;
   typeText(ddl, DDL, tDdl, 48, { cursorUntil: Tend('a1') + 0.4 });
   exit(ddl, T('a3') - 0.05, { y: -12, d: 0.35 });
   const pkMark = h('div', 'abs', W); px(pkMark, 290, 330 + 48 - 2, 560, 50); css(pkMark, { border: '3px solid var(--main)' });

@@ -95,7 +95,7 @@ scene('s7', ({ root, s, c0 }) => {
   px(errT, 1020, 690 + 12); vanish(errT, 0); show(errT, tTo + 0.2, { y: 8, d: 0.4 });
   // g6：Carol 改 2051，不受影响
   LN.event(1, tC2, 'UPDATE 2051', 'ok', -56);
-  const ok51 = h('div', 'abs t-h c-main', W, '✓'); px(ok51, 1240 + 86, LN.Y(1) - 76); slam(ok51, tC2 + 0.35, { from: 1.6 });
+  const ok51 = h('div', 'abs t-h c-main', W, MARK.ok(48)); px(ok51, 1240 + 86, LN.Y(1) - 76); slam(ok51, tC2 + 0.35, { from: 1.6 });
   const to51 = path(ov, `M1240,${LN.Y(1) - 76} C1240,480 ${cx(2051)},480 ${cx(2051)},${RY + 150}`, 'main', { w: 2.2 });
   arrowIn(to51, tC2 + 0.05, 0.5);
   // g7：锁住的只是这一条——锁一跳
