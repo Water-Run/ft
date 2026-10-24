@@ -1,7 +1,7 @@
 {
   "slug": "ssh",
   "stage": "accept",
-  "next": "中文成片待 WaterRun 审看：试听配乐与配音（语速 1.08），确认读音四处；英文稿确认后再合成英文并渲染",
+  "next": "中文成片待 WaterRun 审看：试听配乐与配音（语速 1.08），确认读音四处。策划者 2026-10-24 决定本片只做中文",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -61,8 +61,7 @@
     "repository": "https://github.com/Water-Run/ft"
   },
   "languages": [
-    "zh",
-    "en"
+    "zh"
   ],
   "titles": {
     "zh": "256 秒搞懂 SSH",
