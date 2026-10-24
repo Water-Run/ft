@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
   "stage": "build",
-  "next": "渲染成片并验收；ASR 三处候选待回听",
+  "next": "预演交 WaterRun 看；通过后正式渲染并验收；ASR 三处候选待回听",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -17,8 +17,10 @@
         "name": "Claude Opus 5.5",
         "roles": [
           "旧版取证与文案（沿用）",
-          "补充取证",
-          "视觉设计"
+          "补充取证与文案扩充",
+          "视觉设计与场景动画",
+          "配乐与声音",
+          "封面"
         ]
       }
     ],
@@ -26,7 +28,7 @@
       {
         "name": "MiniMax speech-2.8-hd",
         "roles": [
-          "旁白合成（Chinese (Mandarin)_Gentleman，语速 1.1）"
+          "旁白合成"
         ]
       }
     ],

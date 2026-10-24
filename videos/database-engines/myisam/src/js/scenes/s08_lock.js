@@ -4,7 +4,7 @@
 // 时间轴是示意（FACTS「08」：演示排队关系，不对应实测时序）。
 scene('s8', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  const cam = makeCamera(world); cam.el = world;   // track() 换页时要淡出整块画布
   const ov = overlay(world);
   const st = h('style', '', root); st.textContent = `
     .ln { position:absolute; height:2px; background:#2c2e31; }
@@ -20,7 +20,12 @@ scene('s8', ({ root, s, c0 }) => {
       const y = y0 + i * LH;
       const l = h('div', 'ln', g); px(l, x0, y, GX - x0 + W, 2);
       const nm = h('div', 'abs mono', g, n); px(nm, x0, y + 14); css(nm, { fontSize: '34px', color: '#d9d9d9' });
-      if (d) { const dd = h('div', 'abs', g, d); px(dd, x0, y + 58); css(dd, { font: '500 26px "Sans SC"', color: '#8a8a8a' }); }
+      const dd = d ? h('div', 'abs', g, d) : null; if (dd) { px(dd, x0, y + 58); css(dd, { font: '500 26px "Sans SC"', color: '#8a8a8a' }); }
+      if (o.reveal) {   // 泳道逐条出现：整条泳道的底色先亮一下再淡掉
+        const tr = o.reveal[0] + i * o.reveal[1], band = h('div', 'abs', g); px(band, x0 - 12, y + 4, GX - x0 + W + 12, LH - 8); css(band, { background: '#3fb4cc' });
+        F((t) => { const k = (t - tr) / 1.2; band.style.opacity = k >= 0 && k < 1 ? (0.22 * (1 - k)).toFixed(3) : '0'; });   // 不透明度直接由 t 算出
+        [l, nm, dd].forEach((e) => { if (e) slide(e, tr, { x: -24, d: 0.4 }); });
+      }
     });
     const lb = h('div', 'ln', g); px(lb, x0, y0 + lanes.length * LH, GX - x0 + W, 2);
     const cells = bars.map(([lane, a, b, k]) => {
@@ -40,13 +45,16 @@ scene('s8', ({ root, s, c0 }) => {
 
   // ── 第一站：表 users，整张表一把锁 ──
   const head = h('div', 'abs mono', world, '表 <span class="c-o">users</span>'); px(head, 140, 136); css(head, { fontSize: '40px', color: '#d9d9d9' });
-  const lockL = h('div', 'abs t-big', world, '整张表一把锁'); px(lockL, 420, 128); css(lockL, { color: '#F29111' });
-  appear(head, c0 + 0.1); slam(lockL, T('k2', '加锁') - 0.1, { from: 1.25 }); sfx('thud', T('k2', '加锁'), { g: 0.6 });
+  appear(head, c0 + 0.1);
   const LANES = [['bob', 'SELECT · 统计整张表'], ['dave', 'SELECT'], ['carol', 'UPDATE · 改 alice 的年龄'], ['alice', 'SELECT']];
   const BARS = [[0, 0.2, 5.4, 'r'], [1, 0.9, 2.9, 'r'], [2, 2.4, 5.4, 'q'], [2, 5.4, 7.4, 'w'], [3, 6.0, 7.4, 'q'], [3, 7.4, 8.8, 'r']];
-  const pos1 = seg([[T('k3') - 0.2, 0], [Tend('k3') + 0.3, 2.3], [T('k4', '写锁') - 0.1, 2.3], [Tend('k4') + 0.2, 9.2]]);
-  const G1 = gantt(140, 280, LANES, BARS, pos1);
-  vanish(G1.g, 0); appear(G1.g, T('k1') - 0.2); sfx('tick', T('k1') - 0.2, { g: 0.4 });
+  // 播放头从 bob 开始统计整张表时就在走：讲到读锁共享时，dave 也读进来
+  const pos1 = seg([[T('k1'), 0], [T('k3') - 0.2, 0.9], [Tend('k3') + 0.3, 2.3], [T('k4', '写锁') - 0.1, 2.3], [Tend('k4') + 0.2, 9.2]]);
+  const G1 = gantt(140, 280, LANES, BARS, pos1, { reveal: [T('k1') - 0.2, 0.55] });
+  vanish(G1.g, 0); appear(G1.g, c0 + 0.2); sfx('tick', c0 + 0.2, { g: 0.4 });   // 四条泳道一开场就在，播放头从 k1 起走
+  // 「整张表一把锁」：一个框把四条泳道整个圈住
+  const all = ring(world, { x: 126, y: 270, w: G1.GX - 140 + 10 * G1.UNIT + 28, h: 4 * G1.LH + 8 }, 'o');
+  vanish(all, 0); appear(all, T('k2', '加锁') - 0.1); vanish(all, T('k3') - 0.1); sfx('thud', T('k2', '加锁'), { g: 0.5 });
   const axis = tag(world, G1.GX + 10 * G1.UNIT - 120, 230, '时间 →'); appear(axis, T('k1'));
   const legend = h('div', 'abs', world); px(legend, 140, 720); legend.innerHTML = '<span class="mono" style="font-size:28px;color:#3fb4cc">■ 读 · 共享</span>　　<span class="mono" style="font-size:28px;color:#F29111">■ 写 · 独占</span>　　<span class="mono" style="font-size:28px;color:#808080">■ 排队</span>';
   appear(legend, T('k3', '读锁') - 0.2);
@@ -59,6 +67,11 @@ scene('s8', ({ root, s, c0 }) => {
   const until = path(ov, `M ${G1.GX + 5.4 * G1.UNIT} ${280 + 80} L ${G1.GX + 5.4 * G1.UNIT} ${280 + 2 * G1.LH + 20}`, 'orange', { w: 3 });
   arrowIn(until, T('k4c', '读完') - 0.2, 0.4); sfx('tick', T('k4c', '读完'), { g: 0.5 });
   vanish(ringB, T('k5') - 0.3); vanish(ringC, T('k5') - 0.3);
+  // bob 在统计整张表：一个亮格沿着 bob 的读锁条从头扫到尾；carol 等着：她的框一闪一闪
+  const scanC = h('div', 'abs', world); px(scanC, 0, 280 + 28, 16, 44); css(scanC, { background: '#d9d9d9' });
+  vanish(scanC, 0); appear(scanC, T('k4b') - 0.1); vanish(scanC, T('k4c') - 0.1);
+  F((t) => { const k = clamp((t - T('k4b')) / Math.max(1, Tend('k4b') - T('k4b'))); scanC.style.left = (G1.GX + (0.2 + k * 5.0) * G1.UNIT) + 'px'; });
+  F((t) => { ringC.style.opacity = t >= T('k4c', '只能') && t < T('k5') - 0.3 && Math.floor((t - T('k4c', '只能')) / 0.5) % 2 ? '0.3' : '1'; });
 
   // ── 第二站：并发插入。中间没有空位：查询读到它开始时的末尾为止，插入同时追加在后面 ──
   const SX = 2140, SY = 470, CW = 66;
@@ -72,12 +85,16 @@ scene('s8', ({ root, s, c0 }) => {
   const cur = ring(world, { x: SX - 6, y: SY - 6, w: CW + 4, h: 82 }, 't');
   const curL = tag(world, SX, SY + 96, 'SELECT 读到末尾为止', 'c-t'), insL = tag(world, endX + 20, SY + 96, 'INSERT 追加在后面', 'c-o');
   const tCI = T('k5') - 0.3;
-  strip.slice(0, 12).forEach((e, i) => appear(e, T('k5') - 0.1 + i * 0.03)); sfx('drive', T('k5') - 0.1, { g: 0.5 });
-  appear(cond, T('k6', '没有空位') - 0.2); appear(endM, T('k6', '末尾') - 0.3); appear(endL, T('k6', '末尾') - 0.2);
+  strip.slice(0, 12).forEach((e, i) => slide(e, T('k5') - 0.1 + i * 0.3, { y: -40, d: 0.35 })); sfx('drive', T('k5') - 0.1, { g: 0.5 });   // 文件一行一行落下来
+  slide(cond, T('k6') - 0.1, { x: -24, d: 0.4 }); appear(endM, T('k6') + 0.3); appear(endL, T('k6') + 0.4);   // 查询开始时的文件末尾：查询一开始就定下来
   slam(ciT, T('k7', '并发') - 0.1, { from: 1.25 }); sfx('thud', T('k7', '并发'), { g: 0.55 });
-  const tR0 = T('k7') - 0.1, tR1 = Tend('k7') + 0.4;
+  const tR0 = T('k6') + 0.8, tR1 = Tend('k7') + 0.4;   // 查询在 k6 开头就开始读，读到它开始时的末尾为止
   vanish(cur, 0); appear(cur, tR0); appear(curL, tR0);
-  F((t) => { const k = ease.io3(clamp((t - tR0) / (tR1 - tR0))); cur.style.left = (SX - 6 + k * 11 * CW) + 'px'; });
+  // 有空位时又来一次查询：读游标重新从头读；读完之后，排队的新行才填进空位
+  const tQ0 = T('k7b') + 0.2, tFill = Math.min(Tend('k7b') + 0.8, T('k8') - 0.8);
+  // 查询读过的那一段：一条淡色带跟着读游标往前长
+  const readBand = h('div', 'abs', world); px(readBand, SX - 8, SY - 10, 0, 90); css(readBand, { background: '#3fb4cc', opacity: '0.2' });
+  F((t) => { const k = t < tQ0 ? ease.io3(clamp((t - tR0) / (tR1 - tR0))) : clamp((t - tQ0) / (tFill - 0.2 - tQ0)); cur.style.left = (SX - 6 + k * 11 * CW) + 'px'; readBand.style.width = (t < tR0 ? 0 : k * 11 * CW + CW + 4) + 'px'; });
   strip.slice(12, 17).forEach((e, i) => { vanish(e, 0); fromTo(e, T('k7', '插入') + i * 0.45, { y: -50, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.35, ease: 'power3.out' }); sfx('pop', T('k7', '插入') + i * 0.45, { g: 0.4 }); });
   strip.slice(17).forEach((e) => vanish(e, 0));
   appear(insL, T('k7', '插入'));
@@ -91,7 +108,9 @@ scene('s8', ({ root, s, c0 }) => {
   const toHole = path(ov, `M ${SX + 4 * CW + 29} ${SY - 96} L ${SX + 4 * CW + 29} ${SY - 8}`, 'red', { w: 3, dashed: '8 8' });
   arrowIn(toHole, T('k7b', '填空位') - 0.2, 0.4);
   const wait = h('div', 'abs mono', world, '░░░ 等查询读完'); px(wait, SX + 4 * CW + 80, SY - 160); css(wait, { fontSize: '30px', color: '#808080' });
-  appear(wait, T('k7b', '排队') - 0.2); sfx('tick', T('k7b', '排队'), { g: 0.5 });
+  appear(wait, T('k7b', '填空位') + 0.4); sfx('tick', T('k7b', '填空位') + 0.4, { g: 0.5 });
+  fromTo(newR, tFill, { y: 0 }, { y: 170, duration: 0.4, ease: 'power3.in', immediateRender: false }); vanish(wait, tFill); tl.to(toHole, { autoAlpha: 0, duration: 0.2 }, tFill);
+  sfx('pop', tFill + 0.4, { g: 0.45 });
   [insL, curL].forEach((e) => vanish(e, tH));
 
   // ── 第三站：读多写少，开销很小；写入一多，整张表成了瓶颈 ──
@@ -100,12 +119,12 @@ scene('s8', ({ root, s, c0 }) => {
   const rb = []; for (let l = 0; l < 4; l++) for (let j = 0; j < 4; j++) { const a = 0.15 + j * 2.4 + l * 0.3; rb.push([l, a, Math.min(a + 2.1, 9.8), 'r']); }
   const G2 = gantt(RX, 200, rl, rb, seg([[T('k8') - 0.3, 0], [Tend('k8') + 0.3, 9.9]]), { labW: 220, lh: 84 });
   vanish(G2.g, 0); appear(G2.g, T('k8') - 0.4);
-  const v1 = lab(world, RX + 220, 560, '全是读锁：互不阻塞，开销很小', 'c-t'); appear(v1, T('k8', '开销') - 0.3); sfx('chime', T('k8', '很小'), { g: 0.35 });
+  sfx('chime', T('k8', '很小'), { g: 0.35 });
   const wl = [['连接 1', ''], ['连接 2', ''], ['连接 3', ''], ['连接 4', '']];
   const wb = [[0, 0.2, 1.8, 'w'], [1, 0.4, 1.8, 'q'], [1, 1.8, 3.4, 'w'], [2, 0.7, 3.4, 'q'], [2, 3.4, 5.0, 'w'], [3, 1.0, 5.0, 'q'], [3, 5.0, 6.6, 'w'], [0, 2.4, 6.6, 'q'], [0, 6.6, 8.2, 'w'], [1, 4.0, 8.2, 'q'], [1, 8.2, 9.8, 'w']];
   const G3 = gantt(RX, 660, wl, wb, seg([[T('k9') - 0.3, 0], [Tend('k9') + 0.6, 9.9]]), { labW: 220, lh: 70 });
   vanish(G3.g, 0); appear(G3.g, T('k9') - 0.4);
-  const v2 = lab(world, RX + 1100, 600, '写入一多：同一时刻只有一个能写', 'c-o'); appear(v2, T('k9', '瓶颈') - 0.4); sfx('error', T('k9', '瓶颈'), { g: 0.45 });
+  sfx('error', T('k9', '瓶颈'), { g: 0.45 });
   sfx('tick', T('k9') - 0.3, { g: 0.4 });
 
   track(cam, s.start, { x: 960, y: 540, z: 1 }, [

@@ -21,11 +21,16 @@
   .r169 { --kfs: 54px; --tfs: 176px; } .r43 { --kfs: 50px; --tfs: 150px; }
   .r169 .kicker { left: 112px; top: 236px; } .r169 .title { left: 104px; top: 316px; line-height: 1.06; }
   .r43 .kicker { left: 96px; top: 210px; } .r43 .title { left: 88px; top: 286px; line-height: 1.06; }
+  /* 系列的第一集（WaterRun 2026-10-24：「新封面也要体现PART 1哈」），与片头标题页同一种标签 */
+  .part { position: absolute; font: 500 var(--pfs) "Mono"; line-height: 1.5; padding: 0 .45em; color: var(--orange); border: 3px solid var(--orange); letter-spacing: .04em; }
+  .r169 { --pfs: 46px; } .r43 { --pfs: 42px; }
+  .r169 .part { left: 112px; top: 128px; } .r43 .part { left: 96px; top: 108px; }
 </style>
 </head>
 <body>
 <div id="stage">
   <svg id="art"></svg>
+  <div class="part">PART 1</div>
   <div class="kicker"></div>
   <div class="title"></div>
 </div>

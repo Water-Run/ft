@@ -4,14 +4,14 @@
 // 「更新越多、碎片越多」与 OPTIMIZE 的整理是示意图（FACTS 注明），画面角上标「示意」。
 scene('s5', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  const cam = makeCamera(world); cam.el = world;   // track() 换页时要淡出整块画布
   const ov = overlay(world);
   const st = h('style', '', root); st.textContent = `
     .cell { position:absolute; height:44px; }
     .tc-h { background:#3fb4cc; } .tc-a { background:#2b606c; } .tc-b { background:#1f4a54; } .tc-z { background:#1d1f22; }
     .tc-p { background:#e5534b; } .tc-o { background:#F29111; } .tc-n { background:#a85f05; }`;
   const A = R.notesMYD[0].match(/../g), B = R.notesMYD[1].match(/../g);
-  const X = 200, Y = 560, CW = 14, N1 = B.length;              // 84 → 136 字节
+  const X = 200, Y = 560, CW = 12, N1 = B.length;              // 84 → 136 字节；一格 12 像素，136 字节在原尺寸下就放得下，镜头不必拉远
   // 每个字节属于哪一块、是不是块头
   const blockOf = (i) => (i < 20 ? 0 : i < 64 ? 1 : 2);
   const clsA = (i) => { const k = blockOf(i), o = i - [0, 20, 64][k]; if (o < 4) return 'tc-h'; return A[i] === '00' && (k !== 1 ? o >= 15 : o >= 43) ? 'tc-z' : (k === 1 ? 'tc-b' : 'tc-a'); };
@@ -24,10 +24,10 @@ scene('s5', ({ root, s, c0 }) => {
   const BODY = [['1', 'hello'], ['2', 'MyISAM stores rows in a .MYD file'], ['3', 'short']];
   const bodies = BODY.map(([id, b], i) => { const e = h('div', 'abs mono', world, `${id}  '${b}'`); px(e, X, 262 + i * 48); css(e, { fontSize: '30px', color: '#8a8a8a' }); return e; });
   appear(head, c0 + 0.1); appear(schema, c0 + 0.25);
-  bodies.forEach((e, i) => appear(e, T('e1', '变长') - 0.2 + i * 0.12)); sfx('blip', T('e1', '变长') - 0.2, { g: 0.45 });
-  // 字节带
-  for (let i = 0; i < 84; i++) appear(cells[i], T('e1', '长度') - 0.4 + i * 0.012);
-  appear(size, T('e1', '长度') - 0.4); sfx('drive', T('e1', '长度') - 0.4, { g: 0.6 });
+  // 表、三行与字节带一开场就在；讲到「长度不再相同」时，三块的长度标出来
+  bodies.forEach((e, i) => appear(e, c0 + 0.35 + i * 0.08)); sfx('blip', c0 + 0.35, { g: 0.4 });
+  for (let i = 0; i < 84; i++) appear(cells[i], c0 + 0.5 + i * 0.01);
+  appear(size, c0 + 0.5); sfx('drive', c0 + 0.5, { g: 0.5 });
   vanish(cells.slice(84), 0);
   const segs = [[0, 20, "'hello'"], [20, 64, "'MyISAM stores rows in a .MYD file'"], [64, 84, "'short'"]].map(([a, b, t_], k) => {
     const lb = h('div', 'abs mono', world, `${b - a} B`); px(lb, X + a * CW, Y - 44); css(lb, { fontSize: '26px', color: '#8a8a8a' });
@@ -37,7 +37,7 @@ scene('s5', ({ root, s, c0 }) => {
   });
   const dyn = h('div', 'abs mono', world, 'Row_format: <span class="c-o">Dynamic</span>'); px(dyn, X + 900, 200); css(dyn, { fontSize: '30px', color: '#8a8a8a' });
   const dynL = h('div', 'abs t-big', world, '动态格式'); px(dynL, X + 900, 252); css(dynL, { color: '#F29111' });
-  appear(dyn, T('e2') - 0.1); slam(dynL, T('e2', '动态'), { from: 1.25 }); sfx('thud', T('e2', '动态'), { g: 0.55 });
+  appear(dyn, T('e2') - 0.1); show(dynL, T('e2', '动态') - 0.1, { y: 12, d: 0.4 }); sfx('thud', T('e2', '动态'), { g: 0.45 });
 
   // 块头：类型、数据长度、填充
   const callX = X + 40, callY = Y + 120;
@@ -45,7 +45,7 @@ scene('s5', ({ root, s, c0 }) => {
   const hdrL = [['类型 3', 0, -44], ['数据 11 字节', 1, 74], ['填充 5', 3, -44]].map(([t_, k, dy]) => { const e = h('div', 'abs', world, t_); px(e, callX + k * 70, callY + dy); css(e, { font: '500 28px "Sans SC"', color: '#3fb4cc' }); return e; });
   const lead = path(ov, `M ${X + 30} ${Y + 50} L ${callX + 30} ${callY - 6}`, 'teal', { w: 2, arrow: false });
   const tH = T('e3', '头部') - 0.3;
-  draw(lead, tH, 0.3); hdr.forEach((e, k) => slide(e, tH + 0.1 + k * 0.08, { y: -16, d: 0.35 })); hdrL.forEach((e, k) => appear(e, T('e3', '多长') - 0.3 + k * 0.15));
+  draw(lead, tH, 0.3); hdr.forEach((e, k) => slide(e, tH + 0.1 + k * 0.08, { y: -16, d: 0.35 })); hdrL.forEach((e, k) => appear(e, tH + 0.5 + k * 0.15));
   sfx('pop', tH + 0.1, { g: 0.5 });
   for (const k of [0, 1, 2]) for (let o = 0; o < 4; o++) classAt(cells[[0, 20, 64][k] + o], 'tc-o', tH, T('e4') - 0.2);
   const tE4 = T('e4') - 0.3;
@@ -57,20 +57,20 @@ scene('s5', ({ root, s, c0 }) => {
   const lFix = h('div', 'abs mono', cmp, '定长：每行 205 字节，3 行 615'); px(lFix, 1250, 0); css(lFix, { fontSize: '28px', color: '#8a8a8a' });
   const lDyn = h('div', 'abs mono', cmp, '动态：84'); px(lDyn, 188, 70); css(lDyn, { fontSize: '28px', color: '#3fb4cc' });
   css(lFix, { left: '0px', top: '-40px' });
-  wipe(bFix, T('e4', '省下') - 0.4, { dir: 'l', d: 0.6 }); appear(lFix, T('e4', '省下') - 0.3);
+  wipe(bFix, T('e4') - 0.4, { dir: 'l', d: 0.6 }); appear(lFix, T('e4') - 0.3);
   wipe(bDyn, T('e4', '省下') + 0.1, { dir: 'l', d: 0.3 }); appear(lDyn, T('e4', '省下') + 0.2); sfx('tick', T('e4', '省下'), { g: 0.5 });
-  hide(cmp, T('e5') - 0.3, { y: 0, d: 0.3 });
+  hide(cmp, T('e5') - 0.1, { y: 0, d: 0.2 });
 
   // 改长第 1 行：放不下
   const bar = h('div', 'blk mono', world); px(bar, X, Y + 110, 1600, 58); css(bar, { fontSize: '26px', lineHeight: '54px', paddingLeft: '18px', whiteSpace: 'pre', overflow: 'hidden' });
   const barIn = h('span', '', bar, '');
-  appear(bar, T('e5') - 0.4);
-  typeText(barIn, "<span class=\"c-o\">mysql&gt; </span><span class=\"k\">UPDATE</span> notes <span class=\"k\">SET</span> body='hello, this row just grew longer than its old slot' <span class=\"k\">WHERE</span> id=1;", T('e5') - 0.3, 70, { cursorUntil: T('e5') + 1.5, sfxGain: 0.5 });
+  appear(bar, T('e5') + 0.1);
+  typeText(barIn, "<span class=\"c-o\">mysql&gt; </span><span class=\"k\">UPDATE</span> notes <span class=\"k\">SET</span> body='hello, this row just grew longer than its old slot' <span class=\"k\">WHERE</span> id=1;", T('e5') + 0.15, 70, { cursorUntil: T('e5') + 1.5, sfxGain: 0.5 });
   // 想要的长度（56 字节）比原块（20 字节）长：红色的一截压到了第 2 行上
   const over = h('div', 'abs', world); px(over, X, Y - 4, 56 * CW, 52); css(over, { border: '3px solid #e5534b' });
-  const overL = tag(world, X + 20 * CW + 10, Y + 58, '新的一行要 56 字节，原来的位置只有 20', 'c-r');
-  wipe(over, T('e5', '放不下') - 0.5, { dir: 'l', d: 0.5 }); appear(overL, T('e5', '放不下') - 0.2); sfx('error', T('e5', '放不下'), { g: 0.6 });
-  hide([over, overL], T('e6') - 0.1, { y: 0, d: 0.3 }); hide(bar, T('e6', '指针') , { y: 0, d: 0.3 });
+  const overL = tag(world, X + 20 * CW + 10, Y + 58, '56 B > 20 B', 'c-r');
+  wipe(over, T('e5', '改长') - 0.1, { dir: 'l', d: 0.5 }); appear(overL, T('e5', '改长') + 0.3); sfx('error', T('e5', '放不下'), { g: 0.6 });
+  hide([over, overL], T('e6', '别处') - 0.2, { y: 0, d: 0.2 }); hide(bar, T('e6', '指针') , { y: 0, d: 0.3 });
   // 写到别处：原块里留 7 字节 + 指向 0x54 的指针；其余 49 字节追加到末尾（块头 07 00 31）
   const tS = T('e6', '别处') - 0.2;
   const clsB = (i) => (i < 20 ? (i < 5 ? 'tc-h' : i < 13 ? 'tc-p' : 'tc-o') : i < 84 ? clsA(i) : (i < 87 ? 'tc-h' : 'tc-o'));
@@ -82,7 +82,7 @@ scene('s5', ({ root, s, c0 }) => {
   const ptr = path(ov, `M ${X + 9 * CW} ${Y + 50} C ${X + 9 * CW} ${Y + 170}, ${X + 86 * CW} ${Y + 170}, ${X + 86 * CW} ${Y + 52}`, 'red', { w: 3 });
   arrowIn(ptr, T('e6', '指针') - 0.1, 0.8); sfx('pop', T('e6', '连起来'), { g: 0.5 });
   const ptrL = tag(world, X + 30 * CW, Y + 150, '8 字节的指针 → 0x54', 'c-r'); appear(ptrL, T('e6', '指针') + 0.4);
-  const twoL = lab(world, X + 30 * CW, Y + 200, '一行，两段：7 字节 + 49 字节', 'c-o'); appear(twoL, T('e7', '两段') - 0.3); sfx('chime', T('e7', '两段'), { g: 0.4 });
+  const twoL = lab(world, X + 30 * CW, Y + 200, '7 B + 49 B', 'c-o'); appear(twoL, T('e7') - 0.2); sfx('chime', T('e7', '两段'), { g: 0.4 });
 
   // 示意：更新越多，碎片越多；OPTIMIZE TABLE 把它们排回连续
   const SY = 880, SX = X, SW = 20;
@@ -112,17 +112,9 @@ scene('s5', ({ root, s, c0 }) => {
   const h1 = path(ov, hop(p0[0], p0[1]), 'orange', { w: 2.5 }), h2 = path(ov, hop(p0[1], p0[2]), 'orange', { w: 2.5 });
   arrowIn(h1, T('e8', '跳转') - 0.3, 0.5); arrowIn(h2, T('e8', '跳转') + 0.2, 0.5); sfx('tick', T('e8', '跳转'), { g: 0.5 }); sfx('tick', T('e8', '跳转') + 0.5, { g: 0.5 });
   tl.to([h1, h2], { autoAlpha: 0, duration: 0.3 }, tOp - 0.3);
-  const opt = h('div', 'abs mono', world, '<span class="c-o">mysql&gt;</span> <span class="k">OPTIMIZE TABLE</span> notes;'); px(opt, SX, SY + 76); css(opt, { fontSize: '30px', color: '#d9d9d9' });
+  const opt = h('div', 'abs mono', world, '<span class="c-o">mysql&gt;</span> <span class="k">OPTIMIZE TABLE</span> notes;'); px(opt, SX + 1060, SY + 12); css(opt, { fontSize: '30px', color: '#d9d9d9' });   // 放在示意带右边：不压字幕栏，也不压跳转箭头
   appear(opt, T('e9', 'OPTIMIZE') - 0.3); sfx('blip', T('e9', 'OPTIMIZE') - 0.3, { g: 0.5 });
   sfx('whoosh', tOp, { g: 0.4 }); sfx('chime', tOp + 1.0, { g: 0.4 });
 
-  track(cam, s.start, { x: 960, y: 520, z: 1 }, [
-    [c0 + 0.1, { z: 1.03 }, T('e3') - c0 - 0.5, { ease: 'none', sfx: false }],
-    [T('e3') - 0.3, { x: 700, y: 620, z: 1.3 }, 1.0, { g: 0.4 }],
-    [Tend('e3') + 0.15, { x: 960, y: 560, z: 1 }, 0.8, { sfx: false }],
-    [T('e6') - 0.2, { x: 1150, y: 600, z: 0.92 }, 1.1, { g: 0.45 }],
-    [null, { z: 0.94 }, T('e8') - T('e6') - 1.4, { ease: 'none', sfx: false }],
-    [T('e8') - 0.4, { x: 1150, y: 760, z: 0.92 }, 1.0, { g: 0.4 }],
-    [null, { z: 0.95 }, s.end - T('e8') - 1.5, { ease: 'none', sfx: false }],
-  ]);
+  track(cam, s.start, { x: 960, y: 560, z: 1 }, []);   // 这一章只有一页，镜头不动
 });

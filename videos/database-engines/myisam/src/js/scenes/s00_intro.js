@@ -2,7 +2,7 @@
 // 0.007 秒是 9.7.4 上同样 8 行的表实测的客户端回显（FACTS「开场」）；磁盘条是 5.5.62 快照 users.MYD 的 128 个字节。
 scene('intro', ({ root, s }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  const cam = makeCamera(world); cam.el = world;   // track() 换页时要淡出整块画布
   const rows = rowsOf(R.usersMYD[0]);
 
   // ── 第一站：终端 ──
@@ -27,8 +27,8 @@ scene('intro', ({ root, s }) => {
     small.push(c);
   }
   const disk = lab(world, 128, STRIP_Y - 52, '磁盘');
-  wipe(strip, T('h2', '磁盘') - 0.1, { dir: 'l', d: 0.9 }); sfx('drive', T('h2', '磁盘') - 0.1, { g: 0.7 });
-  appear(disk, T('h2', '磁盘') - 0.1);
+  wipe(strip, T('h2') - 0.1, { dir: 'l', d: 1.2 }); sfx('drive', T('h2') - 0.1, { g: 0.7 });   // 讲「这一瞬间」时磁盘就铺开
+  appear(disk, T('h2') - 0.1);
 
   // 从结果那一行往下，到磁盘：数据放在哪里，怎样被找到
   const ov = overlay(world);
@@ -46,8 +46,11 @@ scene('intro', ({ root, s }) => {
   // ── 第二站（上方）：标题 ──
   const kick = h('div', 'abs', world, '一个数据库引擎是如何实现的？'); px(kick, 120, -770); css(kick, { font: '500 56px "Sans SC"', color: '#8a8a8a' });
   const title = h('div', 'abs d-1', world, ''); px(title, 108, -690); css(title, { color: '#F29111', fontSize: '170px' });
-  const era = h('div', 'abs mono', world, 'MySQL 5.0 · 5.1 · 5.5'); px(era, 124, -430); css(era, { fontSize: '40px', color: '#3fb4cc' });
+  const era = h('div', 'abs mono', world, 'MySQL 5.x'); px(era, 124, -430); css(era, { fontSize: '40px', color: '#3fb4cc' });
+  // 系列的第一集（WaterRun 2026-10-24：「开头体现这是第一集(画面) PART 1」）
+  const part = h('div', 'abs mono', world, 'PART 1'); px(part, 120, -872); css(part, { fontSize: '36px', lineHeight: '52px', padding: '0 16px', color: '#F29111', border: '2px solid #F29111' });
   const tT = T('hT');
+  wipe(part, tT + 0.05, { dir: 'l', d: 0.35 }); sfx('tick', tT + 0.05, { g: 0.5 });
   show(kick, tT + 0.25, { y: 0, d: 0.5 });
   typeText(title, '从 MyISAM 说起', tT + 0.6, 14, { cursorUntil: Tend('h6'), sfxGain: 0.6 });
   sfx('thud', tT + 0.6, { g: 0.5 });

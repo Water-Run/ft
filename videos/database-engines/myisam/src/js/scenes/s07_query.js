@@ -3,7 +3,7 @@
 // 从 .MYD 读出 16 个字节，解码，交还上层。读过的三页留在键缓存里，再查一次就不用读磁盘。全部取自 snap_05（FACTS「07」）。
 scene('s7', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  const cam = makeCamera(world); cam.el = world;   // track() 换页时要淡出整块画布
   const ov = overlay(world);
   const B = R.big;
 
@@ -14,6 +14,10 @@ scene('s7', ({ root, s, c0 }) => {
   typeText(sqlIn, '<span class="c-o">mysql&gt;</span> <span class="k">SELECT</span> * <span class="k">FROM</span> users_big <span class="k">WHERE</span> id = 4242;', T('g2', '主键') - 0.6, 40, { cursorUntil: T('g3'), sfxGain: 0.5 });
   const call = h('div', 'blk mono', world, 'index_read_map(4242)'); px(call, 1180, 124, 440, 88); css(call, { fontSize: '30px', lineHeight: '84px', textAlign: 'center', color: '#F29111' });
   slide(call, T('g3', '接口') - 0.2, { x: -24, d: 0.4 }); sfx('pop', T('g3', '接口'), { g: 0.5 });
+  // 调用往下走：从接口落到底下的索引文件
+  const go = h('div', 'abs', world); css(go, { background: '#F29111', width: '18px', height: '18px' });
+  fromTo(go, T('g3', '按索引') - 0.2, { left: 1391, top: 214, autoAlpha: 1 }, { left: 1391, top: 846, duration: Tend('g3') + 0.4 - T('g3', '按索引'), ease: 'power1.inOut' });
+  vanish(go, 0); appear(go, T('g3', '按索引') - 0.2); vanish(go, Tend('g3') + 0.25);
 
   // 底下：两个文件
   const myi = h('div', 'abs', world); px(myi, 120, 860, 760, 44); css(myi, { background: '#1f4a54' });
@@ -32,7 +36,7 @@ scene('s7', ({ root, s, c0 }) => {
     const box = h('div', 'blk', world); px(box, 120, P.y, 1700, 96);
     const nm = h('div', 'abs mono', box, `${P.name} <span class="c-d">@${P.at}</span>`); px(nm, 20, 26); css(nm, { fontSize: '28px', color: '#d9d9d9' });
     const cells = P.keys.map((k, i) => { const e = h('div', 'abs mono', box, String(k)); px(e, KX - 120 + i * CW, 18, CW - 10, 60); css(e, { fontSize: '28px', lineHeight: '58px', textAlign: 'center', color: '#8a8a8a', border: k === '…' ? '0' : '2px solid #2c2e31' }); return e; });
-    if (P.more) { const e = h('div', 'abs mono', box, '… 共 20 个'); px(e, KX - 120 + 11 * CW + 4, 18); css(e, { fontSize: '26px', lineHeight: '58px', color: '#808080' }); cells.push(e); }
+    if (P.more) { const e = h('div', 'abs mono', box, '…'); px(e, KX - 120 + 11 * CW + 4, 18); css(e, { fontSize: '26px', lineHeight: '58px', color: '#808080' }); cells.push(e); }
     return { box, cells, P };
   });
   // 一次读页：从 .MYI 的对应位置飞上来一块，落成这一页
@@ -41,13 +45,14 @@ scene('s7', ({ root, s, c0 }) => {
     const P = pg[i].P, blk = h('div', 'abs', world); css(blk, { background: '#F29111' });
     fromTo(blk, t, { left: flyFrom(P.at), top: 860, width: 14, height: 44, autoAlpha: 1 }, { left: 120, top: P.y, width: 1700, height: 96, duration: 0.55, ease: 'power3.inOut' });
     vanish(blk, 0); appear(blk, t); vanish(blk, t + 0.56);
-    appear(pg[i].box, t + 0.55);
+    classAt(pg[i].box, 'dimmed', 0, t + 0.55); classAt(pg[i].box, 'lit', t + 0.55, t + 1.6);   // 读到之前这一页是暗的；读进来时亮起
     if (!quiet) { sfx('drive', t, { g: 0.55 }); sfx('thud', t + 0.55, { g: 0.4 }); }
   };
   // 文件头给出根页的位置
   const hdr = h('div', 'abs mono', world, `文件头 key_root[0] = <span class="c-o">${B.root.pos}</span>`); px(hdr, 120, 800); css(hdr, { fontSize: '28px', color: '#8a8a8a' });
   appear(hdr, T('g4', '文件头') - 0.1); sfx('tick', T('g4', '文件头'), { g: 0.5 });
-  pg.forEach((p) => vanish(p.box, 0));
+  // 三页一开场就在（暗着）：要走的路先摆出来，读到哪页亮哪页
+  pg.forEach((p, i) => wipe(p.box, c0 + 0.5 + i * 0.12, { dir: 'l', d: 0.45 })); sfx('drive', c0 + 0.5, { g: 0.35 });
   readPage(0, T('g4', '读入') - 0.2);
   hide(hdr, T('g5') - 0.2, { y: 0, d: 0.3 });
   // 二分查找：9 → 4 → 2 → 1 → 0；4242 比第一个键 4692 还小，走第 0 个子页
@@ -66,7 +71,7 @@ scene('s7', ({ root, s, c0 }) => {
   const why2 = tag(world, 120 + KX - 120 + 5 * CW, 424 + 102, '4182 ≤ 4242 < 4284', 'c-o'); appear(why2, tMid + 0.8); vanish(why, tMid);
   const tLf = T('g6', '叶子') - 0.2;
   readPage(2, tLf);
-  vanish(why2, tLf + 0.6);
+  vanish(why2, T('g7') - 0.2);
   const hit = ring(world, { x: 120 + KX - 120 + 5 * CW - 6, y: 558 + 15, w: CW + 2, h: 66 });
   vanish(hit, 0); appear(hit, T('g6', '4242') - 0.1); classAt(pg[2].cells[5], 'c-o', T('g6', '4242') - 0.1); sfx('chime', T('g6', '4242'), { g: 0.4 });
   // 叶子项：键 4242，旁边记着行号 4241
@@ -119,8 +124,8 @@ scene('s7', ({ root, s, c0 }) => {
   track(cam, s.start, { x: 960, y: 540, z: 1 }, [
     [c0 + 0.1, { z: 1.02 }, T('g4') - c0 - 0.5, { ease: 'none', sfx: false }],
     [T('g5') - 0.3, { x: 900, y: 360, z: 1.25 }, 0.9, { g: 0.4 }],
-    [T('g6') - 0.2, { x: 960, y: 520, z: 1.05 }, 0.8, { sfx: false }],
-    [T('g8') - 0.3, { x: 1100, y: 700, z: 1.2 }, 0.9, { g: 0.4 }],
+    [T('g6') - 0.2, { x: 960, y: 560, z: 1.05 }, 0.8, { sfx: false }],   // 底下两个文件的标签要留在字幕栏上方
+    [T('g8') - 0.3, { x: 1000, y: 600, z: 1.08 }, 0.9, { g: 0.4 }],
     [T('g9', '交还') - 0.3, { x: 960, y: 540, z: 1 }, 0.8, { sfx: false }],
     [null, { z: 1.02 }, s.end - T('g9', '交还') - 1.3, { ease: 'none', sfx: false }],
   ]);

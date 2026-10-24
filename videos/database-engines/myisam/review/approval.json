@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "85e4af1ad60aa14eea1839a2d0900f415b354b1c18e24cb605d87e1d4e82a446",
+      "content_sha256": "563be4ff29b1787a01b042b239fb2314a18fa5c41d31bc1d33268ea9f515692e",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-10-24T13:54:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 4 稿"
+      "confirmed_at": "2026-10-24T17:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 5 稿（第 10 章「四个」→「五个」，WaterRun 指出并要求主动修改）"
     }
   }
 }

@@ -2,7 +2,7 @@
 // 下层的「卡带」可以换（引擎列表取自 SHOW ENGINES 实测，FACTS「01」）；最后在版本轴上：3.23 接替 ISAM，5.5 之前一直是默认。
 scene('s1', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  const cam = makeCamera(world); cam.el = world;   // track() 换页时要淡出整块画布
   const ov = overlay(world);
 
   // ── 上层：理解 SQL ──
@@ -23,15 +23,20 @@ scene('s1', ({ root, s, c0 }) => {
   const diskL = lab(world, 1290, 872, '磁盘');
   const aDown = path(ov, 'M 700 806 L 700 868', 'teal', { w: 2.5 }), aUp = path(ov, 'M 760 868 L 760 806', 'teal', { w: 2.5 });
 
+  // 整个结构一开场就在：上层的两步、接口、下层的引擎、磁盘。旁白讲到哪一块，哪一块点亮（WaterRun：「文字没有画面就没有」）
   wipe(up, c0 + 0.1, { dir: 'l', d: 0.5 }); appear(upL, c0 + 0.3);
-  wipe(lo, T('a1', '两层') - 0.1, { dir: 'l', d: 0.5 }); appear(loL, T('a1', '两层') + 0.1); sfx('thud', T('a1', '两层'), { g: 0.5 });
-  wipe(parse, T('a2', '解析') - 0.15, { dir: 'l', d: 0.35 }); sfx('pop', T('a2', '解析'), { g: 0.5 });
-  arrowIn(aP, T('a2', '选择') - 0.35, 0.35);
-  wipe(plan, T('a2', '选择') - 0.1, { dir: 'l', d: 0.35 }); sfx('pop', T('a2', '选择'), { g: 0.5 });
-  appear(slot, T('a3') - 0.1);
-  wipe(disk, T('a3', '磁盘') - 0.2, { dir: 'l', d: 0.6 }); appear(diskL, T('a3', '磁盘')); sfx('drive', T('a3', '磁盘') - 0.2, { g: 0.6 });
+  wipe(parse, c0 + 0.35, { dir: 'l', d: 0.35 }); arrowIn(aP, c0 + 0.6, 0.3); wipe(plan, c0 + 0.7, { dir: 'l', d: 0.35 });
+  wipe(lo, c0 + 0.5, { dir: 'l', d: 0.5 }); appear(loL, c0 + 0.7);
+  wipe(disk, c0 + 0.8, { dir: 'l', d: 0.6 }); appear(diskL, c0 + 1.0); sfx('drive', c0 + 0.8, { g: 0.45 });
+  sfx('thud', c0 + 0.1, { g: 0.4 });
+  classAt(up, 'lit', T('a1', '两层') - 0.1, T('a1', '两层') + 0.9); classAt(lo, 'lit', T('a1', '两层') + 0.3, T('a1', '两层') + 1.3); sfx('tick', T('a1', '两层'), { g: 0.4 });
+  classAt(parse, 'lit', T('a2', '解析') - 0.1, T('a2', '选择') - 0.1); classAt(plan, 'lit', T('a2', '选择') - 0.1, Tend('a2') + 0.4);
+  sfx('pop', T('a2', '解析'), { g: 0.45 }); sfx('pop', T('a2', '选择'), { g: 0.45 });
+  classAt(lo, 'lit', T('a3') - 0.1, Tend('a4') + 0.4);
   arrowIn(aDown, T('a3', '写进') - 0.1, 0.4); arrowIn(aUp, T('a3', '读出') - 0.1, 0.4);
-  slam(engT, T('a4', '存储'), { from: 1.3 }); sfx('thud', T('a4', '存储'), { g: 0.6 });
+  // 数据在引擎与磁盘之间来回：写进去、读出来，磁盘上的格子跟着闪一下
+  F((t) => { const a = T('a3', '写进'), b = Tend('a3') + 0.6; const k = t >= a && t < b ? Math.floor((t - a) / 0.18) % 8 : -1; for (let i = 0; i < 8; i++) disk.children[i].style.opacity = k === i ? '0.45' : '1'; });
+  show(engT, T('a4', '存储') - 0.1, { x: -16, d: 0.4 }); sfx('thud', T('a4', '存储'), { g: 0.5 });
 
   // 开场那条查询：一个小令牌，从左边进来，走过解析与执行计划，落到接口
   const tok = h('div', 'abs mono', world, "SELECT … name = 'alice'"); css(tok, { fontSize: '26px', color: '#F29111', background: '#0b0b0c', padding: '2px 8px', border: '2px solid #F29111' });
@@ -43,8 +48,9 @@ scene('s1', ({ root, s, c0 }) => {
   const calls = ['write_row()', 'rnd_next()', 'index_read_map()', 'update_row()', 'delete_row()'];
   const chips = []; let cx = 0;
   calls.forEach((c, i) => { const e = h('div', 'blk mono', band, c); const w = c.length * 18 + 44; px(e, cx, 14, w, 66); css(e, { fontSize: '30px', lineHeight: '62px', textAlign: 'center', color: i < 3 ? '#d9d9d9' : '#808080' }); chips.push(e); cx += w + 22; });
-  appear(bandL, T('a5', '接口') - 0.2);
-  chips.forEach((e, i) => slide(e, T('a5', '接口') - 0.1 + i * 0.1, { y: 18, d: 0.4 }));
+  appear(bandL, c0 + 0.6);
+  chips.forEach((e, i) => slide(e, c0 + 0.6 + i * 0.06, { y: 14, d: 0.35 }));
+  chips.forEach((e, i) => classAt(e, 'c-t', T('a5', '接口') - 0.1 + i * 0.08, Tend('a5') + 0.3));   // 讲到「接口」，这一排依次亮一遍
   sfx('tick', T('a5', '接口'), { g: 0.5 });
   const lit = [T('a6', '写入'), T('a6', '读下'), T('a6', '按索引')];
   lit.forEach((t_, i) => { classAt(chips[i], 'c-o', t_ - 0.1, i < 2 ? lit[i + 1] - 0.1 : Tend('a6') + 0.6); sfx('blip', t_, { g: 0.45 }); });
@@ -66,7 +72,7 @@ scene('s1', ({ root, s, c0 }) => {
   const SPX = 1340, SPY = 600, SLX = 530, SLY = 674;
   const carts = names.map((n, i) => { const e = h('div', 'blk mono', world, n); px(e, i === 0 ? SLX : SPX, i === 0 ? SLY : SPY + (i - 1) * 74, 380, 76); css(e, { fontSize: '34px', lineHeight: '72px', textAlign: 'center', color: i === 0 ? '#F29111' : '#808080', borderColor: i === 0 ? '#F29111' : '#2c2e31' }); return e; });
   carts.forEach((e, i) => css(e, { height: (i === 0 ? 76 : 62) + 'px', lineHeight: (i === 0 ? 72 : 58) + 'px', fontSize: (i === 0 ? 34 : 28) + 'px', width: (i === 0 ? 380 : 300) + 'px' }));
-  wipe(carts[0], T('a3') + 0.2, { dir: 'l', d: 0.4 });
+  wipe(carts[0], c0 + 0.6, { dir: 'l', d: 0.4 }); vanish(slot, 0);
   classAt(carts[0], 'f-hot', tArr, tArr + 0.6); sfx('pop', tArr, { g: 0.5 });   // 查询落到引擎
   carts.slice(1).forEach((e, i) => slide(e, T('a7', '替换') - 0.5 + i * 0.1, { x: 30, d: 0.4 }));
   // 换一次：MyISAM 出去、InnoDB 进来；再换回来。每段都显式给起止
@@ -80,29 +86,33 @@ scene('s1', ({ root, s, c0 }) => {
   sfx('thud', tC + 0.8, { g: 0.55 });
   // 接口不变：换卡带的时候，接口那一排一起亮一下
   chips.slice(0, 3).forEach((e, i) => classAt(e, 'c-t', tB + i * 0.12, tB + 1.4));
-  const keep = lab(world, 330, 340, '不关心数据怎样存放', 'c-t');
-  appear(keep, T('a8') + 0.1); sfx('tick', T('a8') + 0.1, { g: 0.4 });
+  classAt(up, 'lit-t', tB, tB + 1.6); sfx('tick', tB, { g: 0.4 });   // 换卡带时上层不动：上层的框亮一下
 
-  // ── 版本轴：3.23 接替 ISAM；5.5 之前默认 ──
-  const AX = 2120, AW = 1560, AY = 560;
-  const vers = ['3.22', '3.23', '4.0', '4.1', '5.0', '5.1', '5.5', '5.6'];
-  const vx = (i) => AX + i * (AW / (vers.length - 1));
-  const axis = h('div', 'abs', world); px(axis, AX, AY, AW, 3); css(axis, { background: '#4a4a4a' });
-  const vt = vers.map((v, i) => { const e = h('div', 'abs mono', world, v); px(e, vx(i) - 30, AY + 22); css(e, { fontSize: '30px', color: '#808080', width: '60px', textAlign: 'center' }); const tk_ = h('div', 'abs', world); px(tk_, vx(i) - 1, AY - 10, 3, 23); css(tk_, { background: '#4a4a4a' }); return [e, tk_]; });
-  const isam = h('div', 'abs mono', world, 'ISAM'); px(isam, vx(0), AY - 120, vx(1) - vx(0) - 6, 72); css(isam, { background: '#151618', color: '#8a8a8a', fontSize: '32px', lineHeight: '72px', paddingLeft: '18px', textDecoration: 'line-through' });
-  const myi = h('div', 'abs mono', world, 'MyISAM'); px(myi, vx(1), AY - 120, 0, 72); css(myi, { background: '#F29111', color: '#0b0b0c', fontSize: '32px', lineHeight: '72px', paddingLeft: '18px', overflow: 'hidden' });
-  const dflt = lab(world, vx(1) + 4, AY - 172, '默认的存储引擎', 'c-o');
-  const inno = h('div', 'abs mono', world, 'InnoDB'); px(inno, vx(6) + 6, AY - 120, vx(7) - vx(6) - 6, 72); css(inno, { border: '2px solid #3fb4cc', color: '#3fb4cc', fontSize: '32px', lineHeight: '68px', paddingLeft: '14px' });
-  const t9 = T('a9a') - 0.1;
-  wipe(axis, t9, { dir: 'l', d: 0.6 }); vt.forEach(([e, k], i) => { appear(e, t9 + 0.2 + i * 0.06); appear(k, t9 + 0.2 + i * 0.06); });
-  sfx('tick', t9 + 0.3, { g: 0.5 });
-  wipe(isam, T('a9a', 'I SAM') - 0.4, { dir: 'l', d: 0.4 });
-  fromTo(myi, T('a9a', '三点') - 0.1, { width: 0 }, { width: 24, duration: 0.35, ease: 'power2.out' });
-  sfx('pop', T('a9a', '三点'), { g: 0.6 });
-  fromTo(myi, T('a9', '5.5') - 0.2, { width: 24 }, { width: vx(6) - vx(1) - 6, duration: 1.6, ease: 'power2.inOut' });
-  appear(dflt, T('a9', '默认'));
-  wipe(inno, T('a9', '5.5') + 1.5, { dir: 'l', d: 0.4 }); sfx('thud', T('a9', 'My ISAM'), { g: 0.5 });
-  const ast = lab(world, vx(6) - 40, AY + 80, '5.5 起默认改为 InnoDB', 'c-t'); appear(ast, T('a9', 'My ISAM') + 0.3);
+  // ── 时间轴：3.23（2001）起 MyISAM 是默认引擎，到 5.5（2010）换成 InnoDB；之后 MyISAM 仍可用（FACTS「时间轴的年份」）──
+  const TL = timeline(world, 2090, 640, 1720);
+  const t9 = T('a9a') - 0.2;
+  wipe(TL.axis, t9, { dir: 'l', d: 0.7 }); sfx('drive', t9, { g: 0.4 });
+  TL.years.forEach(([k, lb], i) => { appear(k, t9 + 0.1 + i * 0.02); if (lb) appear(lb, t9 + 0.1 + i * 0.02); });
+  appear(TL.lane, t9 + 0.3); wipe(TL.isam, t9 + 0.4, { dir: 'l', d: 0.4 });
+  // MyISAM 这条带从 2001 一路长到 2010：带头经过哪个版本，哪个版本亮起来
+  const g0 = T('a9a', '三点') - 0.1, g1 = T('a9', '5.5') + 0.2;
+  appear(TL.my, g0); fromTo(TL.my, g0, { width: 0 }, { width: TL.wMy, duration: g1 - g0, ease: 'none' });
+  sfx('pop', T('a9a', '三点'), { g: 0.5 });
+  const i0 = T('a9', '5.5') + 0.3, i1 = i0 + 2.2;
+  appear(TL.inno, i0); fromTo(TL.inno, i0, { width: 0 }, { width: TL.wInno, duration: i1 - i0, ease: 'power1.out' });
+  fromTo(TL.still, i0 + 0.3, { width: 0 }, { width: TL.wStill, duration: i1 - i0, ease: 'power1.out' });
+  appear(TL.stillL, i1 - 0.3); sfx('thud', i0, { g: 0.5 });
+  // 大号读数：MyISAM 成为默认的起点（3.23 · 2001）与终点（5.5 · 2010）
+  const big = h('div', 'abs mono', world, ''); px(big, 2090, 250); css(big, { fontSize: '88px', lineHeight: '96px' });
+  const at = (yr) => (yr <= 2010 ? g0 + (g1 - g0) * (yr - 2001) / 9 : i0 + (i1 - i0) * (yr - 2010) / 17);
+  keyed(big).at(0, { html: '' });
+  // 只显示起点与终点：中间的版本由轴上逐个点亮，读数不跟着闪
+  MYSQL_VERSIONS.filter(([v]) => v === '3.23' || v === '5.5').forEach(([v, yr]) => keyed(big).at(at(yr), { html: `<span style="color:${yr <= 2010 ? '#F29111' : '#3fb4cc'}">MySQL ${v}</span><span style="color:#808080"> · ${yr}</span>` }));
+  TL.vers.forEach(({ yr, k, lb }) => {
+    const tv = yr <= 2010 ? g0 + (g1 - g0) * (yr - 2001) / 9 : i0 + (i1 - i0) * (yr - 2010) / 17;
+    appear(k, t9 + 0.3); appear(lb, t9 + 0.3);
+    classAt(lb, yr <= 2010 ? 'c-o' : 'c-t', tv, Infinity); if (yr <= 2010) sfx('tick', tv, { g: 0.3 });
+  });
 
   track(cam, s.start, { x: 960, y: 540, z: 1 }, [
     [c0 + 0.1, { z: 1.02 }, T('a2') - c0 - 0.6, { ease: 'none', sfx: false }],
@@ -111,7 +121,7 @@ scene('s1', ({ root, s, c0 }) => {
     [Tend('a4') + 0.1, { x: 960, y: 520, z: 1 }, 0.8, { sfx: false }],
     [null, { z: 1.03 }, T('a7') - Tend('a4') - 1.1, { ease: 'none', sfx: false }],
     [T('a7') - 0.3, { x: 1010, y: 600, z: 1.08 }, 1.0, { sfx: false }],
-    [Tend('a8') + 0.1, { x: 2900, y: 520, z: 1 }, 1.1, { g: 0.5 }],
+    [Tend('a8') + 0.1, { x: 2950, y: 560, z: 1 }, 1.1, { g: 0.5 }],
     [null, { z: 1.05 }, s.end - Tend('a8') - 1.4, { ease: 'none', sfx: false }],
   ]);
 });

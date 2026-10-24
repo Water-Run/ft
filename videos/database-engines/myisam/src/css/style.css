@@ -63,6 +63,15 @@ body { font-family: "Sans SC", sans-serif; color: var(--ink); }
 .tag { position: absolute; font: 500 26px "Mono"; color: var(--dim); white-space: pre; }
 .lab { position: absolute; font: 500 30px "Sans SC"; color: var(--dim); white-space: pre; }
 .blk { position: absolute; background: var(--pane); border: 2px solid var(--line); }
+.blk.lit { border-color: var(--orange); }                 /* 正在讲的那一块：内容早已在场，讲到时只点亮边框 */
+.blk.lit-t { border-color: var(--teal); }
+.dimmed { opacity: .35; }
+path.thick { stroke-width: 5px; }
+.bad { outline: 3px solid var(--red); outline-offset: 2px; }
+.lit-cell { outline: 3px solid var(--orange); outline-offset: 3px; }
+.struck { text-decoration: line-through; color: var(--red); }
+.hot-cell { background: var(--orange) !important; }
+.hole { background: transparent !important; outline: 3px solid var(--red); outline-offset: -3px; }
 
 /* 常驻：顶栏。左边是会话，右边是这张表的三个文件，当前讲到的文件用橙色标出 */
 .topband { position: absolute; left: 0; right: 0; top: 0; height: 96px; background: var(--bg); border-bottom: 2px solid var(--line); }
@@ -73,7 +82,7 @@ body { font-family: "Sans SC", sans-serif; color: var(--ink); }
 .filebar .fl.on { color: var(--orange); border-bottom-color: var(--orange); }
 
 /* 章节卡：整屏黑底，像在终端里敲出一行注释 */
-.chapter { position: absolute; inset: 0; background: var(--bg); padding: 330px var(--M) 0; }
+.chapter { position: absolute; inset: 0; background: var(--bg); }   /* 建在场景最后，自然盖住场景画面；不设 z-index，免得盖过顶栏 */
 .chapter .no { font: 500 40px "Mono"; color: var(--dim); }
 .chapter .no b { color: var(--orange); font-weight: 500; }
 .chapter .ti { font-weight: 900; font-size: 132px; line-height: 1.1; margin-top: 26px; color: var(--hi); letter-spacing: -.01em; }

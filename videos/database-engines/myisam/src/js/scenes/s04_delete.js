@@ -4,7 +4,7 @@
 // alice 的年龄字节显示为 1f：接着上一章的改写（c14），其余字节都是快照原样。
 scene('s4', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  const cam = makeCamera(world); cam.el = world;   // track() 换页时要淡出整块画布
   const ov = overlay(world);
   const snap = R.usersMYD.map((hx) => hx.slice(0, 30) + '1f' + hx.slice(32));
   const X = 200, Y = 290, RH = 58, CW = 54, OFFW = 118, DX = X + OFFW + 16 * CW + 130;
@@ -28,8 +28,7 @@ scene('s4', ({ root, s, c0 }) => {
   // ── d1 删除 id = 3：文件不变小 ──
   const t1 = T('d1') - 0.3;
   cmd('<span class="k">DELETE FROM</span> users <span class="k">WHERE</span> id = 3;', t1);
-  const same = tag(world, X + 470, 138, '没有变小', 'c-t'); appear(same, T('d1', '不会') - 0.1); hide(same, T('d2') - 0.2, { y: 0, d: 0.2 });
-  classAt(size, 'c-t', T('d1', '不会') - 0.1, T('d2') - 0.2); sfx('tick', T('d1', '不会'), { g: 0.5 });
+  keyed(size).at(T('d1', '不会') - 0.1, { cls: 'abs mono c-t' }).at(T('d2') - 0.2, { cls: 'abs mono' });   // size 后面还要由 keyed 换内容：类名也交给 keyed sfx('tick', T('d1', '不会'), { g: 0.5 });
   // ── d2 开头七个字节 ──
   const seven = ring(world, g.rowBox(2, 0, 6), 'r');
   wipe(seven, T('d2', '七个') - 0.25, { dir: 'l', d: 0.35 }); sfx('pop', T('d2', '七个'), { g: 0.5 });
@@ -41,8 +40,6 @@ scene('s4', ({ root, s, c0 }) => {
   for (let c = 7; c < 16; c++) keyed(g.cells[32 + c]).at(T('d3', '已删除'), { cls: 'b f-ghost' });
   rows1[2].match(/../g).slice(1, 7).forEach((b, k) => g.poke(33 + k, b, T('d4', '六个') + k * 0.07, 'f-ptr'));
   sfx('blip', T('d4', '六个'), { g: 0.5 });
-  const ptrN = tag(world, X + OFFW, Y + 9 * RH + 6, 'ff ff ff ff ff ff：前面没有空位了（链尾）', 'c-r');
-  appear(ptrN, T('d4', '指向') - 0.1); vanish(ptrN, T('d5') + 0.4);
 
   // ── d5 再删 id = 6：新的空位指回前一个（行号 2） ──
   const t5 = T('d5') - 0.3;
@@ -57,17 +54,16 @@ scene('s4', ({ root, s, c0 }) => {
   const link = path(ov, `M ${cx} ${y5} C ${cx + 90} ${y5}, ${cx + 90} ${y2}, ${cx + 4} ${y2}`, 'red', { w: 3 });
   arrowIn(link, T('d5', '指回') - 0.2, 0.6);
   // ── d6 链头记在索引文件里 ──
-  const chip = h('div', 'blk mono', world); px(chip, DX + 300, Y + 4 * RH - 6, 300, 128);
-  chip.innerHTML = '<div style="font-size:26px;color:#8a8a8a;padding:12px 18px 0">users.MYI 文件头</div><div class="dl" style="font-size:32px;padding:6px 18px;color:#e5534b">dellink = 0x50</div>';
+  const chip = h('div', 'blk mono', world); px(chip, DX + 250, Y + 4 * RH - 6, 290, 128);   // 右边留出页边：dellink = ff…ff 最长
+  chip.innerHTML = '<div style="font-size:26px;color:#8a8a8a;padding:12px 18px 0">users.MYI 文件头</div><div class="dl" style="font-size:28px;padding:8px 18px;color:#e5534b">dellink = 0x50</div>';
   const dl = chip.querySelector('.dl');
   wipe(chip, T('d6', '链头') - 0.3, { dir: 'r', d: 0.4 }); sfx('pop', T('d6', '链头'), { g: 0.55 });
-  const headA = path(ov, `M ${DX + 296} ${y5} L ${DX + 272} ${y5}`, 'red', { w: 3 });
+  const headA = path(ov, `M ${DX + 246} ${y5} L ${DX + 226} ${y5}`, 'red', { w: 3 });
   arrowIn(headA, T('d6', '链头') + 0.1, 0.3);
-  const chainN = lab(world, DX + 300, Y + 4 * RH - 60, '链：第 5 行 → 第 2 行', 'c-r');
-  appear(chainN, T('d6', '一条链') - 0.1);
+  classAt(link, 'thick', T('d6', '一条链') - 0.1, T('d7', '链头') - 0.2);   // 「一条链」：链的箭头加粗
 
   // ── d7 插入 ivan：先填链头的空位（第 5 行）；再插入 judy：填第 2 行 ──
-  const t7 = T('d7') - 0.4;
+  const t7 = T('d7') - 0.7;
   cmd("<span class=\"k\">INSERT INTO</span> users <span class=\"k\">VALUES</span> (9,'ivan',44);", t7);
   const fill = (r, hex32, t) => {
     hex32.match(/../g).forEach((b, c) => g.poke(r * 16 + c, b, t + c * 0.02, c === 0 ? 'f-new' : (userCls(c, b) + ' f-new')));
@@ -79,13 +75,11 @@ scene('s4', ({ root, s, c0 }) => {
   fill(5, rowsOf(snap[2])[5], tIv);
   tl.to(link, { autoAlpha: 0, duration: 0.3 }, tIv);
   keyed(dl).at(tIv + 0.2, { html: 'dellink = 0x20' });
-  keyed(chainN).at(tIv + 0.2, { html: '链：第 2 行 → 尽头' });
   fromTo(headA, tIv + 0.2, { y: 0 }, { y: y2 - y5, duration: 0.4, ease: 'power2.inOut' });
-  const t8 = Tend('d7') - 0.9;
-  cmd("<span class=\"k\">INSERT INTO</span> users <span class=\"k\">VALUES</span> (10,'judy',27),(11,'mallory',39);", t8 - 0.9);
+  const t8 = Tend('d7') + 1.6;   // 第二条语句敲在 d7 之后的停顿里
+  cmd("<span class=\"k\">INSERT INTO</span> users <span class=\"k\">VALUES</span> (10,'judy',27),(11,'mallory',39);", Tend('d7') + 0.7);
   fill(2, rowsOf(snap[3])[2], t8);
   keyed(dl).at(t8 + 0.2, { html: 'dellink = ff…ff' });
-  keyed(chainN).at(t8 + 0.2, { html: '链：空' });
   vanish(headA, t8 + 0.2);
   // ── d8 没有空位：追加到末尾，文件变成 144 字节 ──
   const tM = T('d8', '追加') - 0.2;
@@ -97,7 +91,6 @@ scene('s4', ({ root, s, c0 }) => {
 
   // ── d9 文件里的顺序 ≠ 插入的顺序 ──
   const order = h('div', 'abs mono', world, 'SELECT * 的返回顺序：1 2 <span class="c-o">10</span> 4 5 <span class="c-o">9</span> 7 8 11'); px(order, X + OFFW, Y + 10 * RH + 4); css(order, { fontSize: '32px', color: '#d9d9d9' });
-  vanish(endN, T('d9') - 0.2);
   wipe(order, T('d9', '顺序') - 0.3, { dir: 'l', d: 0.6 }); sfx('chime', T('d9', '插入') , { g: 0.4 });
 
   // 命令栏：按时刻显示最近一条，逐字敲出
@@ -114,7 +107,7 @@ scene('s4', ({ root, s, c0 }) => {
 
   track(cam, s.start, { x: 960, y: 560, z: 1 }, [
     [c0 + 0.1, { z: 1.02 }, T('d2') - c0 - 0.5, { ease: 'none', sfx: false }],
-    [T('d2') - 0.3, { x: 820, y: 440, z: 1.3 }, 1.0, { g: 0.4 }],
+    [T('d2') - 0.3, { x: 820, y: 520, z: 1.3 }, 1.0, { g: 0.4 }],   // 中心放低：链尾那行注释要留在字幕栏上方
     [null, { x: 880, z: 1.34 }, Tend('d4') - T('d2') - 1.0, { ease: 'none', sfx: false }],
     [Tend('d4') + 0.15, { x: 960, y: 520, z: 1.05 }, 0.8, { sfx: false }],
     [T('d6') - 0.3, { x: 1110, y: 520, z: 1.08 }, 1.0, { g: 0.4 }],
