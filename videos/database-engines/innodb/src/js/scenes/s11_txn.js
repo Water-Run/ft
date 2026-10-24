@@ -1,10 +1,8 @@
-// 第 10 章 回到三个问题。
-// 一、主画面是完整的架构图，一次修改按 1–6 走一遍：锁行（X5）→ 旧值进 undo、回滚指针指向它（X1）→ 缓冲池里改页，成了脏页（M27）
-//     → 记 redo（M12）→ 提交：redo 落盘（S7）、锁放开（X6）→ 脏页稍后经 doublewrite 写回（M31、M16）。
-// 二、三个问题各对上架构图里的部件：A 撤回靠 undo；I 读靠多版本、写靠行锁；D 先 redo 重做、再 undo 撤销。
-// 三、代价：每行 6 + 7 = 13 字节（T7、S1、S2）；旧版本要留着（M8）；锁要等、可能死锁（X5、X7）。
-// 四、引出下一集：另一个开源数据库把旧版本留在表里（M34）。
-scene('s10', ({ root, s, c0 }) => {
+// 第 11 章 事务，和它的代价（全片最后一章）：回到开头的三个问题，三样部件合起来就是 InnoDB 的事务；再看代价，引出下一集。
+// 一、三个问题各对上架构图里的部件：A 撤回靠 undo（X2）；I 读靠多版本、写靠行级锁（M9、M10）；D 停下之后提交的还在，靠 redo（M12、R4）；合起来就是事务（M20）。
+// 二、代价：每行 6 + 7 = 13 字节（T7、S1、S2）；旧版本要留着（M8）；锁要等、可能死锁（X5、X7）。
+// 三、引出下一集：另一个更老牌的开源 SQL 数据库把旧版本留在表里（K9、M34）。
+scene('s11', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
   const ov = overlay(W);
   const A = D.alice;
@@ -26,8 +24,7 @@ scene('s10', ({ root, s, c0 }) => {
   const p27 = h('div', 'abs', bp); px(p27, 24, 54, 552, 160); css(p27, { border: '2px solid var(--mainD)', background: 'var(--pale)' }); p27.dataset.name = '页 ' + A.page;
   const p27t = h('div', 'abs', p27, `页 ${A.page}`); px(p27t, 14, 8); css(p27t, { font: '700 24px "Sans SC"', color: 'var(--mainD)' });
   const row = h('div', 'abs mono', p27, ''); px(row, 70, 70, 400, 54); css(row, { background: 'var(--panel)', border: '2px solid var(--mainD)', fontSize: '28px', padding: '8px 14px' });
-  swaps(row, [[0, '2050  Alice   <b>42</b>'], [T('k4', '改') , '2050  Alice   <b style="color:var(--acc)">43</b>'], [T('k6', '提交') + 0.2, '2050  Alice   <b style="color:var(--main)">43</b>']]);
-  const lk = lockAt(p27, 500, 88);
+  row.innerHTML = '2050  Alice   <b style="color:var(--main)">43</b>';               // 这一章从事务提交之后讲起
   const sq10 = (parent, x, y, label, cls = '') => { const e = h('div', 'sq ' + cls, parent, label != null ? `<div class="l">${label}</div>` : ''); px(e, x, y, 40, 40); const l = e.querySelector('.l'); if (l) css(l, { fontSize: '22px', top: '5px' }); return e; };
   const ibdPages = [D.pk.root, ...PK_LEAVES].slice(0, 18);
   const ibdSq = ibdPages.map((p, i) => sq10(ibd, 18 + (i % 9) * 50, 52 + Math.floor(i / 9) * 50, p, 'on'));
@@ -45,65 +42,16 @@ scene('s10', ({ root, s, c0 }) => {
 
   wipe(ZM, c0 + 0.1, { dir: 'l', d: 0.6 }); wipe(ZD, c0 + 0.2, { dir: 'l', d: 0.6 }); sfx('whoosh', c0 + 0.1, { g: 0.4 });
 
-  // ── 一次修改：泳道 + 六步 ──
-  const GL = h('div', 'abs', W); px(GL, 0, 0);
-  const LN = lanes(GL, { x: 120, y: 700, w: 1680, gap: 190, rowH: 120, names: ['Alice'], pts: [[T('k1'), 330], [T('k2'), 420], [T('k6', '提交'), 1240], [Tend('k7'), 1740]] });
-  LN.enter(T('k1') + 0.2);
-  const evU = LN.event(0, T('k2'), 'UPDATE … age = 43', 'ink', -56);
-  const evC = LN.event(0, T('k6', '提交'), 'COMMIT', '', -56);
-  const bU = LN.bar(LN.Y(0) - 22, T('k2') + 0.1, T('k6', '提交'), '<span>43</span>', 'unc');
-  const bC = LN.bar(LN.Y(0) - 22, T('k6', '提交'), Tend('k7') + 0.5, '43');
-  const phL = LN.playhead(T('k1'), Tend('k7'), 630, 760);
-  // ① 锁行
-  vanish(lk, 0); appear(lk, T('k2', '锁住')); sfx('thud', T('k2', '锁住'), { g: 0.6 });
-  vanish(lk, T('k6', '锁随之放开'));
-  const n1 = NUM('1', 120 + 20 + 24 + 24, 110 + 84 + 54 + 84);
-  // ② 旧值进 undo，回滚指针指向它
-  const rp = path(ov, `M${120 + 20 + 24 + 70 + 428},${110 + 84 + 54 + 106} C${720},${352} ${740},${361} ${800},${361} L${1300},${361} L${1300},${282} L${1330},${282}`, 'main', { w: 2.6 });
-  const n2 = NUM('2', 1624, 262, W);
-  vanish(uRec, 0); slide(uRec, T('k3', 'undo'), { x: -30 });
-  arrowIn(rp, T('k3', '回滚指针'), 0.7);
-  // ③ 缓冲池里改这一页 → 脏页
-  lit(p27, 's10dirty', T('k4', '改'), T('k7', '写回') + 0.6);
-  const n3 = NUM('3', 120 + 20 + 24 + 520, 110 + 84 + 54 - 14);
-  // ④ 记 redo：日志缓冲进一格
-  const lbOn = (i, t) => (i < 3 && t >= T('k5') + 0.2 + i * 0.4 && t < T('k6', 'redo') + 0.4);
-  lbSq.forEach((e, i) => { let last = null; F((t) => { const on = lbOn(i, t); if (on === last) return; last = on; e.className = 'sq' + (on ? ' dirty' : ''); }); });
-  const n4 = NUM('4', 120 + 20 + 600 - 50, 110 + 334 + 8);
-  // ⑤ 提交：日志缓冲 → redo 落盘；锁放开
-  const logA = bigArrow(ov, 764, 110 + 258 + 45, 816, 24);
-  svgIn(logA, T('k6', 'redo') - 0.2); svgOut(logA, T('k7'));
-  fromTo(tapeNew, T('k6', '磁盘'), { width: 0 }, { width: 70, duration: 0.5, ease: 'power2.out' });
-  const n5 = NUM('5', 800 + 20 + 960 - 54, 110 + 258 + 6);
-  // ⑥ 脏页稍后写回：缓冲池 → doublewrite → users.ibd
-  const wbA = bigArrow(ov, 764, 110 + 360 + 45, 816, 24);
-  svgIn(wbA, T('k7', '写回') - 0.3); svgOut(wbA, Tend('k7') + 0.6);
-  lit(dbwSq[0], 'hot', T('k7', '写回'), Tend('k7') + 0.8);
-  lit(ibdSq[i27], 'hot', T('k7', '写回') + 0.5, Tend('k7') + 0.8);
-  const n6 = NUM('6', 800 + 20 + 960 - 54, 110 + 360 + 6);
-  const st = h('style', '', document.head, '.s10dirty { border-color: var(--acc) !important; background: var(--accL) !important; }');
-  // 六个编号在第一句时先按顺序摆出来（空心），走到哪一步哪一个变实心
-  [[n1, T('k2', '锁住')], [n2, T('k3', 'undo')], [n3, T('k4', '改')], [n4, T('k5', 'redo')], [n5, T('k6', '磁盘')], [n6, T('k7', '写回')]].forEach(([n, t], i) => {
-    vanish(n, 0); appear(n, T('k1') + 0.6 + i * 0.35); sfx('tick', T('k1') + 0.6 + i * 0.35, { g: 0.4 });
-    classAt(n, 's10act', t); sfx('pop', t, { g: 0.5 });
-  });
-  const dTag = h('div', 'tag acc', p27, '脏页'); px(dTag, 100, 8); css(dTag, { fontSize: '22px' });
-  vanish(dTag, 0); appear(dTag, T('k4', '脏页')); vanish(dTag, T('k7', '写回') + 0.6);
-  const out1 = Tend('k7') + 0.5;
-  exit(GL, out1, { y: 16, d: 0.3 });
-  [n1, n2, n3, n4, n5, n6].forEach((n) => exit(n, out1, { d: 0.25 }));
-  svgOut(rp, out1);
-
   // ── 三个问题，对上架构图里的部件 ──
   const QS = [
-    { k: 'k9', L: 'A', q: '改到一半，能不能整个撤回', on: [undo] },
-    { k: 'k10', L: 'I', q: '好几个人同时读写，会不会互相干扰', on: [undo, p27] },
-    { k: 'k11', L: 'D', q: '机器突然停下，提交了的还在不在', on: [redo, undo] },
+    { k: 'k21', L: 'A', q: '改到一半，能不能整个撤回', on: [undo] },
+    { k: 'k22', L: 'I', q: '好几个人同时读写，会不会互相干扰', on: [undo, p27] },
+    { k: 'k23', L: 'D', q: '机器突然停下，提交了的还在不在', on: [redo] },
   ];
   const qCards = QS.map((Q, i) => {
     const c = h('div', 'card', W, `<div class="ct"><span class="num c-main" style="margin-right:16px">${Q.L}</span><span style="font-size:26px">${Q.q}</span></div>`);
     px(c, 120 + i * 570, 650, 540); css(c, { padding: '18px 24px' });
-    slide(c, T('k8') + 0.2 + i * 0.12, { y: 30 }); return c;
+    slide(c, T('k20') + 0.2 + i * 0.12, { y: 30 }); return c;
   });
   const badges = [];
   QS.forEach((Q, i) => {
@@ -115,17 +63,23 @@ scene('s10', ({ root, s, c0 }) => {
       vanish(bd, 0); slam(bd, t + 0.2 + j * 0.15, { from: 1.4 }); badges.push(bd);
       onWin(b, t, Tend(Q.k) + 0.2);
     });
-    if (Q.L === 'I') { const l2 = lockAt(p27, 500, 88); vanish(l2, 0); appear(l2, T('k10', '行级锁')); exit(l2, Tend(Q.k) + 0.2, { d: 0.2 }); }
+    if (Q.L === 'I') { const l2 = lockAt(p27, 500, 88); vanish(l2, 0); appear(l2, T('k22', '行级锁')); exit(l2, Tend(Q.k) + 0.2, { d: 0.2 }); }
   });
   // 读靠多版本、撤销靠 undo：undo 里那一版亮一下；重做靠 redo：带子上扫一遍
-  const FL = [[T('k10', '多版本'), T('k10', '多版本') + 0.9], [T('k11', 'undo'), T('k11', 'undo') + 0.9], [T('k15', '多版本'), T('k15', '多版本') + 0.9]];
+  const FL = [[T('k21', 'undo'), T('k21', 'undo') + 0.9], [T('k22', '多版本'), T('k22', '多版本') + 0.9], [T('k15', '多版本'), T('k15', '多版本') + 0.9]];
   { let last = null; F((t) => { const on = FL.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; uRec.classList.toggle('s10flash', on); }); }
   const rscan = h('div', 'abs', redo); px(rscan, 200, 44, 10, 42); css(rscan, { background: 'var(--main)' });
-  { const W2 = [[T('k11', 'redo'), T('k11', 'redo') + 1.2], [T('k15', '日志'), T('k15', '日志') + 1.2]]; let last = null;
+  { const W2 = [[T('k23', 'redo'), T('k23', 'redo') + 1.2], [T('k15', '日志'), T('k15', '日志') + 1.2]]; let last = null;
     F((t) => { const w = W2.find(([a, b]) => t >= a && t < b); const x = w ? Math.round(lerp(200, 690, ease.io3(clamp((t - w[0]) / (w[1] - w[0]))))) : -1; if (x === last) return; last = x; rscan.style.display = w ? '' : 'none'; rscan.style.left = x + 'px'; }); }
   // 「事务」：行上那把锁再出现一下
   const l3 = lockAt(p27, 500, 88); vanish(l3, 0); appear(l3, T('k15', '事务')); vanish(l3, Tend('k15'));
-  const out2 = Tend('k11') + 0.3;
+  // k24：三样合在一起，就是 InnoDB 的事务——三张卡下面一道括线收成「事务」，三样部件一起亮
+  const brace3 = h('div', 'abs', W); px(brace3, 120 + 270, 752, 2 * 570, 22); css(brace3, { borderLeft: '3px solid var(--main)', borderRight: '3px solid var(--main)', borderBottom: '3px solid var(--main)' });
+  const txTag = h('div', 'tag', W, 'InnoDB 的事务'); px(txTag, 120 + 270 + 570 - 110, 786); css(txTag, { fontSize: '32px', padding: '6px 18px' });
+  wipe(brace3, T('k24', '合在一起') - 0.1, { dir: 'l', d: 0.6 }); vanish(txTag, 0); slam(txTag, T('k24', '事务'), { from: 1.4 }); sfx('thud', T('k24', '事务'), { g: 0.6 });
+  [undo, p27, redo].forEach((b) => onWin(b, T('k24', '合在一起'), Tend('k24') + 0.3));
+  const out2 = Tend('k24') + 0.4;
+  [brace3, txTag].forEach((e) => exit(e, out2, { y: 16, d: 0.3 }));
   qCards.forEach((c, i) => exit(c, out2 + i * 0.05, { y: 20, d: 0.3 }));
   badges.forEach((b) => exit(b, out2, { d: 0.2 }));
 

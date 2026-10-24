@@ -310,6 +310,11 @@ scene('s8', ({ root, s, c0 }) => {
   const n1 = h('div', 'tag', W, '①'); px(n1, 636, 692); const n2 = h('div', 'tag', W, '②'); px(n2, 1256, 692);
   svgIn(a1, tTwice); slam(n1, tTwice); svgIn(a2, tTwice + 0.5); slam(n2, tTwice + 0.5);
   lit(dbw, 'on', tW2, Tend('j24') + 0.5);
+  // j23b：双写缓冲区是磁盘上单独的一块存储区，写出的页先在这里完整地存一份（M16）
+  const dwNote = h('div', 'tag', W, '磁盘上单独的一块 · 先存一份完整的'); px(dwNote, 840 - 90, 900); css(dwNote, { fontSize: '24px' });
+  vanish(dwNote, 0); slam(dwNote, T('j23b', '单独'), { from: 1.3 }); exit(dwNote, T('j24') - 0.1, { d: 0.3 }); sfx('pop', T('j23b', '单独'), { g: 0.45 });
+  lit(P2.p, 's8-dwhl', T('j23b', '完整') - 0.2, T('j24') - 0.1);
+  st8.textContent += ' .s8-dwhl { outline: 4px solid var(--main); outline-offset: 4px; }';
   lit(dbwSq[0], 'hot', tW2 + 0.4, Tend('j24') + 0.5);
   lit(ibdSq[PAGES.indexOf(D.alice.page)], 'hot', tW3 + 0.4, Tend('j24') + 0.5);
   // j24：从 doublewrite 取回完整的一份

@@ -51,7 +51,7 @@ scene('s1', ({ root, s, c0 }) => {
   const ph = h('div', 'playhead', G); px(ph, 0, 362, null, 138);   // 从带子上沿开始，不穿过「MySQL 的默认引擎」几个字
   let last = null;
   F((t) => {
-    const x = Math.round(xAt(t)), on = t >= P[0][0] - 0.3 && t < Tend('y5') + 0.4;
+    const x = Math.round(xAt(t)), on = t >= P[0][0] - 0.3 && t < Tend('y4') + 1.0;
     const xb = t < P[0][0] - 0.3 ? X0 : x;
     const k = (on ? 1 : 0) + ':' + x + ':' + xb; if (k === last) return; last = k;
     ph.style.visibility = on ? 'visible' : 'hidden'; ph.style.left = x + 'px';
@@ -110,13 +110,13 @@ scene('s1', ({ root, s, c0 }) => {
     slam(n.d, t, { from: 1.8 }); wipe(n.sm2, t + 0.02, { dir: 'b', d: 0.2 }); wipe(n.sm, t + 0.12, { dir: 'b', d: 0.3 }); slide(n.lab, t + 0.2, { y: 16 }); sfx('thud', t, { g: 0.5 });
   }
   arrowIn(acqArrow, T('y2', 'Oracle') + 0.3, 0.7);
-  // y5：不配旁白，只上画面——本片演示用的就是 9.7.4
-  slam(demo, T('y5') + 0.1, { from: 1.4 }); sfx('pop', T('y5') + 0.1);
-  lit(nNow.lab, 'c-main', T('y5') + 0.1);
+  // y4：「这一集演示的 MySQL 9.7」——标出本片演示，敲出版本查询
+  slam(demo, T('y4', '演示'), { from: 1.4 }); sfx('pop', T('y4', '演示'));
+  lit(nNow.lab, 'c-main', T('y4', '演示'));
   // 演示用的服务器自己报的版本（research/lab/out_01.json 的 environment.version）
   const ver = h('div', 'abs mono', G, ''); px(ver, 1290, 560); css(ver, { fontSize: '30px', color: 'var(--ink)' });
   const verOut = h('div', 'abs mono', G, '9.7.4'); px(verOut, 1290, 606); css(verOut, { fontSize: '30px', color: 'var(--main)', fontWeight: 700 });
-  const tv = typeText(ver, 'mysql&gt; <span class="c-main">SELECT</span> @@version;', T('y5') + 0.3, 20, { cursor: false });
+  const tv = typeText(ver, 'mysql&gt; <span class="c-main">SELECT</span> @@version;', T('y4', '演示') + 0.2, 20, { cursor: false });
   vanish(verOut, 0); appear(verOut, tv + 0.25); sfx('blip', tv + 0.25, { g: 0.5 });
   [ver, verOut].forEach((e) => s1_out(e, T('y6') + 0.2, { y: -12, d: 0.3 }));
   G.appendChild(ovG);
