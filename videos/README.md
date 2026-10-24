@@ -36,7 +36,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | 配音 | 第 3 稿已确认；做 5.x 时代视觉方向关键帧与中文配音 Demo（5 段）交 WaterRun 选 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | 审稿 | 暂停中（等 WaterRun 说继续）：写第 4 稿补检查与修复（REPAIR）并交审；配音 3 个调调；关键帧以旧版过程动画为底 | 最新 | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
