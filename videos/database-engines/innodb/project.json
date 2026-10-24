@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
   },
-  "stage": "research",
-  "next": "取证：MySQL 9.7.4 上实测主键树与姓名索引树的全部层级，并重测回滚、多版本、锁、删除与 purge、崩溃恢复；再以 R8 为底写 R9 交审",
+  "stage": "review",
+  "next": "等 WaterRun 审 R9（review/compare-r8-r9.md）；确认后出视觉方案、配音与配乐候选",
   "credits": {
     "planner": "WaterRun",
     "models": [
