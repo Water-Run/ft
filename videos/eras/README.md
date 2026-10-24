@@ -12,7 +12,7 @@
 | 面向谁 | 见过那些年代的老设备、对那个时代有兴趣的观众 |
 | 怎么讲 | 重视历史与文学：把观众带进那个 Era 再说服人。开场从那个年代里的一个人、一台具体的机器或一个具体的时刻入手，句子可以有画面感；事实与出处照旧一条不落，不喊口号，不写成产品说明书。视觉与配乐每集取自本集的讲解对象（见下方「视觉」） |
 | 每集多长 | 5–20 分钟，视内容而定 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 ## 共同约定
 各集真正共享的约定记在这里，一项一行。视觉与配乐默认每集取自本集的讲解对象（经验规则 F16、F21），除非下面写明了策划者的决定；某一集的设计决定写在那一集的 README。要改约定先改这里。写法见 [系列](../../docs/guides/series.md)。
@@ -31,19 +31,19 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | PowerPC 时代的麦金塔 | zh + en | 计划中 | [`powerpc-macintosh`](powerpc-macintosh/) |
-| 2 | 恐龙年代的 AMD | zh + en | 计划中 | `amd-early` |
-| 3 | AMD 的农机时代 | zh + en | 计划中 | `amd-bulldozer-era` |
-| 4 | DOS 时代的 Windows | zh + en | 计划中 | `dos-windows` |
-| 5 | Win8 平板和英特尔的凌动时代 | zh + en | 计划中 | `win8-atom` |
-| 6 | 英特尔的酷睿年代 | zh + en | 计划中 | [`intel-core-era`](intel-core-era/) |
-| 7 | 苏维埃的三进制计算机时代 | zh + en | 计划中 | `soviet-trinary` |
-| 8 | CRT 一统天下的时代 | zh + en | 计划中 | `crt-era` |
-| 9 | Java 1.8 的时代 | zh + en | 计划中 | `java-8` |
-| 10 | Python 2 的时代 | zh + en | 计划中 | `python-2` |
-| 11 | MySQL 5.x 的时代 | zh + en | 计划中 | `mysql-5` |
-| 12 | 传统 C++ 的混乱时代 | zh + en | 计划中 | `legacy-cpp` |
-| 13 | PHP 5.x 的时代 | zh + en | 计划中 | `php-5` |
-| 14 | 功能机时代的 Java | zh + en | 计划中 | `feature-phone-java` |
-| 15 | 中国车市的三缸机时代 | zh + en | 计划中 | `china-three-cylinder` |
+| 1 | PowerPC 时代的麦金塔 | zh | 计划中 | [`powerpc-macintosh`](powerpc-macintosh/) |
+| 2 | 恐龙年代的 AMD | zh | 计划中 | `amd-early` |
+| 3 | AMD 的农机时代 | zh | 计划中 | `amd-bulldozer-era` |
+| 4 | DOS 时代的 Windows | zh | 计划中 | `dos-windows` |
+| 5 | Win8 平板和英特尔的凌动时代 | zh | 计划中 | `win8-atom` |
+| 6 | 英特尔的酷睿年代 | zh | 计划中 | [`intel-core-era`](intel-core-era/) |
+| 7 | 苏维埃的三进制计算机时代 | zh | 计划中 | `soviet-trinary` |
+| 8 | CRT 一统天下的时代 | zh | 计划中 | `crt-era` |
+| 9 | Java 1.8 的时代 | zh | 计划中 | `java-8` |
+| 10 | Python 2 的时代 | zh | 计划中 | `python-2` |
+| 11 | MySQL 5.x 的时代 | zh | 计划中 | `mysql-5` |
+| 12 | 传统 C++ 的混乱时代 | zh | 计划中 | `legacy-cpp` |
+| 13 | PHP 5.x 的时代 | zh | 计划中 | `php-5` |
+| 14 | 功能机时代的 Java | zh | 计划中 | `feature-phone-java` |
+| 15 | 中国车市的三缸机时代 | zh | 计划中 | `china-three-cylinder` |
 <!-- catalog:end -->

@@ -42,7 +42,7 @@ function fixture(t) {
   fs.copyFileSync(path.join(ROOT, '.gitignore'), path.join(root, '.gitignore'));
   execFileSync('git', ['init', '--quiet'], { cwd: root });
   const run = (tool, ...args) => spawnSync(process.execPath, [path.join(root, 'kit/tools', tool + '.js'), ...args], { cwd: root, encoding: 'utf8', env: { ...process.env, FT_PROJECT_LOCK: '', PYTHON: 'nonexistent-test-python' }, timeout: 20000 });
-  const created = run('new', 'example', '--title', '示例 <&> "稿本"', '--title-en', 'Example');
+  const created = run('new', 'example', '--title', '示例 <&> "稿本"', '--title-en', 'Example', '--langs', 'zh,en');   // 双语夹具：覆盖英文路径
   assert.equal(created.status, 0, created.stderr);
   const video = path.join(root, 'videos/standalone/example');
   const project = JSON.parse(fs.readFileSync(path.join(video, 'project.json'), 'utf8'));
@@ -285,8 +285,12 @@ test('旧目录也将 Credit 纳入渲染快照，修改型号或分工都会让
   assert.deepEqual(state(), second, '只更新流程状态不会让成片过期');
 });
 
-test('语言按「条目 ＞ 系列 ＞ 中英双语」继承；与系列相同的条目语言被拒绝', t => {
-  const f = fixture(t), cat = f.catalog();
+test('语言按「条目 ＞ 系列 ＞ 只做中文」继承；与系列相同的条目语言被拒绝', t => {
+  const f = fixture(t);
+  const solo = f.run('new', 'solo', '--title', '独立的一部');
+  assert.equal(solo.status, 0, solo.stderr);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(f.root, 'videos/standalone/solo/project.json'))).languages, ['zh'], '没有系列也没写语言时只做中文');
+  const cat = f.catalog();
   cat.series.push({ slug: 'zh-only', title: { zh: '只做中文的系列' }, languages: ['zh'] });
   f.saveCatalog(cat);
   assert.equal(f.run('new', 'episode', '--series', 'zh-only', '--title', '一集').status, 0);
@@ -328,7 +332,7 @@ test('系列栏目可含引号，起点保留二进制字节，不能带入某�
   const binary = Buffer.from([0, 255, 128, 192, 17, 39]);
   write(starter, 'src/images/sample.bin', binary);
   write(starter, 'README.md', '起点说明，不得覆盖本片 README');
-  const result = f.run('new', 'first', '--series', 'example-series', '--title', '第一集');
+  const result = f.run('new', 'first', '--series', 'example-series', '--title', '第一集', '--langs', 'zh,en');
   assert.equal(result.status, 0, result.stderr);
   const video = path.join(f.root, 'videos/example-series/first');
   assert.deepEqual(fs.readFileSync(path.join(video, 'src/images/sample.bin')), binary);

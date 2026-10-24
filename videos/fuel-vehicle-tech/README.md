@@ -10,7 +10,7 @@
 | 面向谁 | 对汽车感兴趣、没有工程背景的观众 |
 | 怎么讲 | 深入讲解，以科普和纠正误区为主，通俗易懂；用真实结构与厂商技术资料作取证材料，逐项给出处；示意性质的图形在画面上标「示意」；统一视觉风格与节奏 |
 | 每集多长 | 5–10 分钟 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 **收录的系统**（片单顺序）：四冲程循环 → 燃油喷射与点火 → CVVT → 涡轮增压 → 马力-扭矩曲线 → 变速器原理 → 变速箱群观 → 差速器与传动轴。顺序按「一次燃烧怎么发生、怎么被榨出效率、动力怎么传到车轮」排；每集独立可懂，不必按顺序看。
 
@@ -33,12 +33,12 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 四冲程循环：一次燃烧如何变成往复运动 | zh + en | 计划中 | `four-stroke-cycle` |
-| 2 | 燃油喷射与点火系统 | zh + en | 计划中 | `fuel-injection-ignition` |
-| 3 | CVVT 可变气门正时技术是什么？ | zh + en | 计划中 | [`cvvt`](cvvt/) |
-| 4 | 涡轮增压：进气压力如何提高 | zh + en | 计划中 | `turbocharging` |
-| 5 | 内燃机的马力-扭矩曲线 | zh + en | 计划中 | `power-torque-curve` |
-| 6 | 变速器原理 | zh + en | 计划中 | `transmissions` |
-| 7 | 发动机的补丁：变速箱群观 | zh + en | 计划中 | `transmission-survey` |
-| 8 | 差速器与传动轴 | zh + en | 计划中 | `differential-driveshaft` |
+| 1 | 四冲程循环：一次燃烧如何变成往复运动 | zh | 计划中 | `four-stroke-cycle` |
+| 2 | 燃油喷射与点火系统 | zh | 计划中 | `fuel-injection-ignition` |
+| 3 | CVVT 可变气门正时技术是什么？ | zh | 计划中 | [`cvvt`](cvvt/) |
+| 4 | 涡轮增压：进气压力如何提高 | zh | 计划中 | `turbocharging` |
+| 5 | 内燃机的马力-扭矩曲线 | zh | 计划中 | `power-torque-curve` |
+| 6 | 变速器原理 | zh | 计划中 | `transmissions` |
+| 7 | 发动机的补丁：变速箱群观 | zh | 计划中 | `transmission-survey` |
+| 8 | 差速器与传动轴 | zh | 计划中 | `differential-driveshaft` |
 <!-- catalog:end -->

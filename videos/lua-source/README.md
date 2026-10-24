@@ -10,7 +10,7 @@
 | 面向谁 | 写过 Lua 或别的脚本语言、能读一点 C 的人；没读过解释器源码 |
 | 怎么讲 | 每集从一个能在 Lua 里看到的现象出发（例如一张表越用越快、一个闭包记住了循环变量），再进到源码里的数据结构与关键函数，最后回到那个现象。源码只截原文片段，行号与版本随片署名 |
 | 每集多长 | 待首集确定 |
-| 语言 | 中文与英文（缺省），待策划者确认 |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 ## 共同约定
 
@@ -30,18 +30,18 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 全景：一行 Lua 从读入到跑完 | zh + en | 计划中 | `lua-overview` |
-| 2 | 值：一个 TValue 装下所有类型 | zh + en | 计划中 | `lua-values` |
-| 3 | 字符串：相同的短字符串只存一份 | zh + en | 计划中 | `lua-strings` |
-| 4 | 表：数组部分、哈希部分与扩容 | zh + en | 计划中 | `lua-tables` |
-| 5 | 编译：边读边生成字节码的一遍编译器 | zh + en | 计划中 | `lua-compiler` |
-| 6 | 字节码：基于寄存器的指令 | zh + en | 计划中 | `lua-bytecode` |
-| 7 | 虚拟机：一条条指令怎么执行 | zh + en | 计划中 | `lua-vm` |
-| 8 | 调用：栈、调用信息与尾调用 | zh + en | 计划中 | `lua-calls` |
-| 9 | 闭包：上值怎么从栈上搬走 | zh + en | 计划中 | `lua-closures` |
-| 10 | 元表：一次 __index 查找走过的路 | zh + en | 计划中 | `lua-metatables` |
-| 11 | 垃圾回收：增量模式与分代模式 | zh + en | 计划中 | `lua-gc` |
-| 12 | 协程：resume 与 yield 之间发生了什么 | zh + en | 计划中 | `lua-coroutines` |
-| 13 | 错误：pcall、error 与长跳转 | zh + en | 计划中 | `lua-errors` |
-| 14 | C API：Lua 与 C 隔着一个栈对话 | zh + en | 计划中 | `lua-c-api` |
+| 1 | 全景：一行 Lua 从读入到跑完 | zh | 计划中 | `lua-overview` |
+| 2 | 值：一个 TValue 装下所有类型 | zh | 计划中 | `lua-values` |
+| 3 | 字符串：相同的短字符串只存一份 | zh | 计划中 | `lua-strings` |
+| 4 | 表：数组部分、哈希部分与扩容 | zh | 计划中 | `lua-tables` |
+| 5 | 编译：边读边生成字节码的一遍编译器 | zh | 计划中 | `lua-compiler` |
+| 6 | 字节码：基于寄存器的指令 | zh | 计划中 | `lua-bytecode` |
+| 7 | 虚拟机：一条条指令怎么执行 | zh | 计划中 | `lua-vm` |
+| 8 | 调用：栈、调用信息与尾调用 | zh | 计划中 | `lua-calls` |
+| 9 | 闭包：上值怎么从栈上搬走 | zh | 计划中 | `lua-closures` |
+| 10 | 元表：一次 __index 查找走过的路 | zh | 计划中 | `lua-metatables` |
+| 11 | 垃圾回收：增量模式与分代模式 | zh | 计划中 | `lua-gc` |
+| 12 | 协程：resume 与 yield 之间发生了什么 | zh | 计划中 | `lua-coroutines` |
+| 13 | 错误：pcall、error 与长跳转 | zh | 计划中 | `lua-errors` |
+| 14 | C API：Lua 与 C 隔着一个栈对话 | zh | 计划中 | `lua-c-api` |
 <!-- catalog:end -->

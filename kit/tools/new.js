@@ -4,7 +4,7 @@
 //   片单（videos/catalog.json）里已有这一条时，标题与语言取自片单；没有时用下面的参数登记：
 //       --title "中文标题"  [--title-en "English title"]  [--langs zh,en]  [--series-title "系列的中文名"]（系列不存在时）
 // 目录是 videos/<系列>/<slug>/，独立视频是 videos/standalone/<slug>/；slug 全仓库唯一，用小写字母、数字、连字符。
-// 语言：片单条目的 languages ＞ 系列的 languages ＞ 中文与英文。--langs zh 只做中文（与系列缺省不同时记在条目上）。
+// 语言：片单条目的 languages ＞ 系列的 languages ＞ 只做中文。--langs zh,en 另出英文版（与系列缺省不同时记在条目上）。
 // 系列里的一集另外做两件事（见 docs/guides/series.md）：
 //   系列带有建议栏目（sections）时，按栏目生成章节草稿；系列指定了起点（starter）时，把 kit/starters/<起点>/ 盖在模板之上。
 //   起点里的样式与配乐只是能跑的占位，正式制作时按本片的对象重新设计（经验规则 F21）；check.js 会提示原样未改的文件。

@@ -10,7 +10,7 @@
 | 面向谁 | 对中国了解零散、想成体系地认识的观众 |
 | 怎么讲 | **地图必须合法**：只用带审图号的标准地图服务系统提供的底图，全系列同一套底图与画法，底图来源与审图号记入 `FACTS.md`；不在画面上手绘国界或边界，不作领土主张的表述；数据注明统计口径与截至日期，优先用官方统计 |
 | 每集多长 | 待定 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 ## 共同约定
 各集真正共享的约定记在这里，一项一行。视觉与配乐默认每集取自本集的讲解对象（经验规则 F16、F21），除非下面写明了策划者的决定；某一集的设计决定写在那一集的 README。要改约定先改这里。写法见 [系列](../../docs/guides/series.md)。
@@ -27,15 +27,15 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 中国的义务教育体系 | zh + en | 计划中 | `compulsory-education` |
-| 2 | 中国铁路网 | zh + en | 计划中 | `railway-network` |
-| 3 | 中国高速网 | zh + en | 计划中 | `expressway-network` |
-| 4 | 中国地理概览 | zh + en | 计划中 | `geography` |
-| 5 | 中国铁路车型概览（普铁） | zh + en | 计划中 | `rolling-stock` |
-| 6 | 中国铁路车型概览（动车组） | zh + en | 计划中 | `emu-stock` |
-| 7 | 中国警察制度 | zh + en | 计划中 | `police` |
-| 8 | 中国医院体系 | zh + en | 计划中 | `hospitals` |
-| 9 | 中国大型机场概览 | zh + en | 计划中 | `airports` |
-| 10 | 中国地铁：车型、标准和地铁网 | zh + en | 计划中 | `china-metro` |
-| 11 | 中国 BRT 快速公交 | zh + en | 计划中 | `brt` |
+| 1 | 中国的义务教育体系 | zh | 计划中 | `compulsory-education` |
+| 2 | 中国铁路网 | zh | 计划中 | `railway-network` |
+| 3 | 中国高速网 | zh | 计划中 | `expressway-network` |
+| 4 | 中国地理概览 | zh | 计划中 | `geography` |
+| 5 | 中国铁路车型概览（普铁） | zh | 计划中 | `rolling-stock` |
+| 6 | 中国铁路车型概览（动车组） | zh | 计划中 | `emu-stock` |
+| 7 | 中国警察制度 | zh | 计划中 | `police` |
+| 8 | 中国医院体系 | zh | 计划中 | `hospitals` |
+| 9 | 中国大型机场概览 | zh | 计划中 | `airports` |
+| 10 | 中国地铁：车型、标准和地铁网 | zh | 计划中 | `china-metro` |
+| 11 | 中国 BRT 快速公交 | zh | 计划中 | `brt` |
 <!-- catalog:end -->

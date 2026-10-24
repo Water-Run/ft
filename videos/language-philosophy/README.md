@@ -8,7 +8,7 @@
 | 面向谁 | 写过程序、想知道「为什么这样设计」的观众 |
 | 怎么讲 | 讲思想从哪来、解决什么问题、代价是什么；每个论点配一段能运行的短代码，实测输出作为证据；严格事实核查，设计者的原话与实现细节回到原始文档与源码核对；统一视觉风格与节奏 |
 | 每集多长 | 5–10 分钟 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 **收录的语言**（片单顺序）：Lua、Python、MiniScript、Rust、Zig、Nim、C#、TypeScript、OCaml、F#、Fish、PowerShell。只收有统一思想的语言；函数式、面向对象一类的编程范式不在本系列。
 
@@ -30,16 +30,16 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | Lua 语言的设计哲学：一切皆表 | zh + en | 计划中 | [`lua-philosophy`](lua-philosophy/) |
-| 2 | Python 语言的设计哲学：一切皆对象 | zh + en | 计划中 | `python` |
-| 3 | MiniScript 语言的设计哲学：小而可嵌入 | zh + en | 计划中 | `miniscript-philosophy` |
-| 4 | Rust 语言的设计哲学：不靠垃圾回收的内存安全 | zh + en | 计划中 | `rust-philosophy` |
-| 5 | Zig 语言的设计哲学：没有隐藏的控制流与内存分配 | zh + en | 计划中 | `zig-philosophy` |
-| 6 | Nim 语言的设计哲学：高效、有表达力、优雅 | zh + en | 计划中 | `nim` |
-| 7 | C# 语言的设计哲学：统一的类型系统 | zh + en | 计划中 | `csharp` |
-| 8 | TypeScript 语言的设计哲学：结构化类型，编译后擦除 | zh + en | 计划中 | `typescript` |
-| 9 | OCaml 语言的设计哲学：类型推断与模块系统 | zh + en | 计划中 | `ocaml` |
-| 10 | F# 语言的设计哲学：函数优先，运行在 .NET 上 | zh + en | 计划中 | `fsharp` |
-| 11 | Fish 语言的设计哲学：交互优先，语法不兼容 POSIX | zh + en | 计划中 | `fish` |
-| 12 | PowerShell 语言的设计哲学：管道传递对象，而非文本 | zh + en | 计划中 | `powershell-philosophy` |
+| 1 | Lua 语言的设计哲学：一切皆表 | zh | 计划中 | [`lua-philosophy`](lua-philosophy/) |
+| 2 | Python 语言的设计哲学：一切皆对象 | zh | 计划中 | `python` |
+| 3 | MiniScript 语言的设计哲学：小而可嵌入 | zh | 计划中 | `miniscript-philosophy` |
+| 4 | Rust 语言的设计哲学：不靠垃圾回收的内存安全 | zh | 计划中 | `rust-philosophy` |
+| 5 | Zig 语言的设计哲学：没有隐藏的控制流与内存分配 | zh | 计划中 | `zig-philosophy` |
+| 6 | Nim 语言的设计哲学：高效、有表达力、优雅 | zh | 计划中 | `nim` |
+| 7 | C# 语言的设计哲学：统一的类型系统 | zh | 计划中 | `csharp` |
+| 8 | TypeScript 语言的设计哲学：结构化类型，编译后擦除 | zh | 计划中 | `typescript` |
+| 9 | OCaml 语言的设计哲学：类型推断与模块系统 | zh | 计划中 | `ocaml` |
+| 10 | F# 语言的设计哲学：函数优先，运行在 .NET 上 | zh | 计划中 | `fsharp` |
+| 11 | Fish 语言的设计哲学：交互优先，语法不兼容 POSIX | zh | 计划中 | `fish` |
+| 12 | PowerShell 语言的设计哲学：管道传递对象，而非文本 | zh | 计划中 | `powershell-philosophy` |
 <!-- catalog:end -->

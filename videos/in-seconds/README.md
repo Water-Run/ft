@@ -10,7 +10,7 @@
 | 面向谁 | 更广大的群体。入门、普及，不假设观众已经会这个题目 |
 | 怎么讲 | 低认知负担。开门见山，一次只进入一个新东西；旁白用白话，观众能复述。深度、实现和名词表留给别的系列，例如数据库引擎。节奏和配乐仍然完整 |
 | 每集多长 | 96、100、120、128、150、192、200、256 秒之一；标题里写明的秒数即成片时长，各语言相同 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 ## 共同约定
 
@@ -52,27 +52,27 @@
 |---|---|---|---|---|
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 已成片 | [`two-factor-auth`](two-factor-auth/) |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠 | zh + en | 已成片 | [`lean4`](lean4/) |
-| 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh + en | 计划中 | `how-opus-animates` |
+| 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh | 计划中 | `how-opus-animates` |
 | 4 | 150秒学会怎么打手枪 | zh + en | 制作中 | [`pistol-shooting`](pistol-shooting/) |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](dense-vs-moe/) |
-| 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 | `rear-seatbelt` |
+| 6 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |
 | 7 | 256 秒搞懂 SSH | zh | 制作中 | [`ssh`](ssh/) |
-| 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 | `powershell-pwsh` |
-| 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 | `pty` |
-| 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 | `tire-width` |
+| 8 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |
+| 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |
+| 10 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |
 | 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
-| 12 | 150 秒学会 GPS 的工作原理 | zh + en | 计划中 | `gps` |
-| 13 | 256 秒有关现代密码学 | zh + en | 计划中 | `modern-crypto` |
-| 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh + en | 计划中 | `quantization` |
-| 15 | 96 秒讲清框架：它们替你做了哪些事 | zh + en | 计划中 | `frameworks` |
-| 16 | 96 秒速通模型的各个参数 | zh + en | 计划中 | [`model-parameters`](model-parameters/) |
-| 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh + en | 计划中 | `virtual-machine-types` |
-| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh + en | 计划中 | [`harness`](harness/) |
+| 12 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
+| 13 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |
+| 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh | 计划中 | `quantization` |
+| 15 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
+| 16 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
+| 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
+| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh | 计划中 | [`harness`](harness/) |
 | 19 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
-| 20 | 192 秒认识 CoT：先思考，再回答 | zh + en | 计划中 | [`chain-of-thought`](chain-of-thought/) |
-| 21 | 120 秒速通 Harness 是如何压缩上下文的 | zh + en | 计划中 | `context-compaction` |
+| 20 | 192 秒认识 CoT：先思考，再回答 | zh | 计划中 | [`chain-of-thought`](chain-of-thought/) |
+| 21 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
 | 22 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
-| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh + en | 计划中 | [`ea211-family`](ea211-family/) |
-| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh + en | 计划中 | [`scion`](scion/) |
-| 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh + en | 计划中 | `how-ram-works` |
+| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
+| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh | 计划中 | [`scion`](scion/) |
+| 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
 <!-- catalog:end -->

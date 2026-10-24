@@ -272,3 +272,19 @@ MyISAM 与 Windows 批处理在本轮各只有一条 UP 主的制作说明或自
 | 编号 | 反馈原话 | 后续落点 |
 |---|---|---|
 | P55 | 「题外话, Harness部分重命名为 开源Harness详解. 标题为 开源Harness详解: CodeX 开源Harness详解: OpenCode ... 这样」 | 片单中 `agent-harnesses` 系列改名「开源 Harness 详解」（英文 Open-Source Harnesses Explained），系列内 12 集标题统一为「开源 Harness 详解：<对象>」；按仓库体例在中英文之间加空格、用全角冒号，对象名沿用片单原写法（含 CodeX）。目录与 slug 不变。 |
+
+## 2026-10-24：之后的视频缺省只做中文
+
+来源类别：策划者 WaterRun，同一会话。适用于此后立项的视频；已发布的双语片不受影响。
+
+| 编号 | 反馈原话 | 后续落点 |
+|---|---|---|
+| P56 | 「另外, 之后视频默认只有中文.」 | 片单缺省语言由中英双语改为只做中文：`catalog.js` 的 `DEFAULT_LANGS`、`new.js` 说明、片单 about、22 份系列说明的「语言」一行；此前的 12 部双语片（含制作中的手枪射击）在片单条目上写明 `["zh", "en"]`，与各自 `project.json` 一致。配音 Demo 改为中文 5 段，有英文版时另加英文 5 段（[script.md](../guides/script.md) 第 3、9 节，[process.md](../process.md)）。 |
+
+## 2026-10-24：数据库引擎全系列梳理的范围
+
+来源类别：策划者 WaterRun，同一会话，P54 之后的补充。
+
+| 编号 | 反馈原话 | 后续落点 |
+|---|---|---|
+| P57 | 「现在开始完整的整个系列全部梳理吧, 完成这些工作, B站视频已经标记为归档.」「MyISAM文案也不用完全不动, 你可以看着修改.」「预期时长: MyISAM 10m, InnoDB 15m, PostgreSQL 10m, Firebird 8m, SQLite 10m, ClickHouse 12m, MongoDB 11m, Redis, KeyDB, Valkey 9m 当然, 一如既往的, 你有足够的自由度.」「另外, 现在的视频也没有提到对删除的处理, 增删查改和事务, 应该有, 还有其它的, 你比我懂, 你来决策.」 | 旧四集 README 记下哔哩哔哩已归档；MyISAM 的重做范围扩到文案修订。全系列文案主线写进[数据库引擎系列说明](../../videos/database-engines/README.md)：各集预期时长作为参照，每集固定覆盖增删查改、事务与删除后的空间处理，其余共同项由制作方决定并写明理由。 |

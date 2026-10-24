@@ -10,7 +10,7 @@
 | 面向谁 | 用过编码智能体、想知道它底下怎么跑的观众 |
 | 怎么讲 | 深入探索真实的代码实现（见下）；用直观的方式说明工作原理与特色，不只罗列功能；软件变化快，涉及的版本与日期逐项标明；统一视觉风格与节奏 |
 | 每集多长 | 5–10 分钟 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 本系列的做法只有一条：**源码拉下来，按源码讲。** 每一集都从公开仓库取一份固定版本的检出，片中讲的每一处机制都要指得出文件与行号；讲不了的、只从文档或旁述看到的，单独标出来。演示与截图用的是同一份检出，保证片中看到的就是分析过的那份代码。
 
@@ -75,16 +75,16 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 开源 Harness 详解：CodeX | zh + en | 计划中 | [`codex`](codex/) |
-| 2 | 开源 Harness 详解：OpenCode | zh + en | 计划中 | [`opencode`](opencode/) |
-| 3 | 开源 Harness 详解：Codewhale | zh + en | 计划中 | `codewhale` |
-| 4 | 开源 Harness 详解：DeepSeek Harness | zh + en | 计划中 | `deepseek-harness` |
-| 5 | 开源 Harness 详解：OpenClaude | zh + en | 计划中 | `openclaude` |
-| 6 | 开源 Harness 详解：Grok Build | zh + en | 计划中 | `grok-build` |
-| 7 | 开源 Harness 详解：Mimo Code | zh + en | 计划中 | `mimo-code` |
-| 8 | 开源 Harness 详解：Kimi Code | zh + en | 计划中 | `kimi-code` |
-| 9 | 开源 Harness 详解：Qwen Code | zh + en | 计划中 | `qwen-code` |
-| 10 | 开源 Harness 详解：ZCode | zh + en | 计划中 | `zcode` |
-| 11 | 开源 Harness 详解：MiniMax Code | zh + en | 计划中 | `minimax-code` |
-| 12 | 开源 Harness 详解：Pi | zh + en | 计划中 | `pi` |
+| 1 | 开源 Harness 详解：CodeX | zh | 计划中 | [`codex`](codex/) |
+| 2 | 开源 Harness 详解：OpenCode | zh | 计划中 | [`opencode`](opencode/) |
+| 3 | 开源 Harness 详解：Codewhale | zh | 计划中 | `codewhale` |
+| 4 | 开源 Harness 详解：DeepSeek Harness | zh | 计划中 | `deepseek-harness` |
+| 5 | 开源 Harness 详解：OpenClaude | zh | 计划中 | `openclaude` |
+| 6 | 开源 Harness 详解：Grok Build | zh | 计划中 | `grok-build` |
+| 7 | 开源 Harness 详解：Mimo Code | zh | 计划中 | `mimo-code` |
+| 8 | 开源 Harness 详解：Kimi Code | zh | 计划中 | `kimi-code` |
+| 9 | 开源 Harness 详解：Qwen Code | zh | 计划中 | `qwen-code` |
+| 10 | 开源 Harness 详解：ZCode | zh | 计划中 | `zcode` |
+| 11 | 开源 Harness 详解：MiniMax Code | zh | 计划中 | `minimax-code` |
+| 12 | 开源 Harness 详解：Pi | zh | 计划中 | `pi` |
 <!-- catalog:end -->

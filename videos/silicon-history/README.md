@@ -10,7 +10,7 @@
 | 面向谁 | 关注硬件、想理清脉络的观众 |
 | 怎么讲 | 深入、通俗易懂，不遗漏任何主要节点和它们的意义；指标口径全系列统一，每一项给出处并注明日期；统一视觉风格与节奏 |
 | 每集多长 | 5–15 分钟 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 **收录的范围**（片单顺序）：英特尔的三个时代、AMD 与 Ryzen、英伟达的三条显卡线、英特尔独显、高通、苹果自研芯片、Windows Server、Linux 内核，以及 Python、Lua、C、Java、C#、JavaScript 与 TypeScript 六门语言的发展史。
 
@@ -31,22 +31,22 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 英特尔——酷睿 i 时代之前 | zh + en | 计划中 | `intel-before-core-i` |
-| 2 | 英特尔——酷睿 i 时代 | zh + en | 计划中 | `intel-core-i` |
-| 3 | 英特尔——酷睿 i 时代之后 | zh + en | 计划中 | `intel-after-core-i` |
-| 4 | Ryzen！崛起：AMD，Yes！ | zh + en | 计划中 | `amd-ryzen` |
-| 5 | 英伟达 GTX 系列发展史 | zh + en | 计划中 | `nvidia-gtx` |
-| 6 | 英伟达 RTX 系列发展史 | zh + en | 计划中 | `nvidia-rtx` |
-| 7 | 英伟达的专业卡发展史 | zh + en | 计划中 | `nvidia-workstation` |
-| 8 | 英特尔独立显卡发展史 | zh + en | 计划中 | `intel-discrete-gpu` |
-| 9 | 高通：从 600 到 888 | zh + en | 计划中 | `qualcomm` |
-| 10 | 苹果的芯片自研之路 | zh + en | 计划中 | `apple` |
-| 11 | Windows Server 演变史 | zh + en | 计划中 | `windows-server` |
-| 12 | Linux 内核发展史 | zh + en | 计划中 | `linux-kernel-evolution` |
-| 13 | Python 语言的发展史 | zh + en | 计划中 | `python-history` |
-| 14 | Lua 语言的发展史 | zh + en | 计划中 | `lua-history` |
-| 15 | C 语言的发展史 | zh + en | 计划中 | [`c-language-history`](c-language-history/) |
-| 16 | Java 语言的发展史 | zh + en | 计划中 | `java-history` |
-| 17 | C# 语言的发展史 | zh + en | 计划中 | `csharp-history` |
-| 18 | JavaScript 与 TypeScript 的发展史 | zh + en | 计划中 | `javascript-typescript-history` |
+| 1 | 英特尔——酷睿 i 时代之前 | zh | 计划中 | `intel-before-core-i` |
+| 2 | 英特尔——酷睿 i 时代 | zh | 计划中 | `intel-core-i` |
+| 3 | 英特尔——酷睿 i 时代之后 | zh | 计划中 | `intel-after-core-i` |
+| 4 | Ryzen！崛起：AMD，Yes！ | zh | 计划中 | `amd-ryzen` |
+| 5 | 英伟达 GTX 系列发展史 | zh | 计划中 | `nvidia-gtx` |
+| 6 | 英伟达 RTX 系列发展史 | zh | 计划中 | `nvidia-rtx` |
+| 7 | 英伟达的专业卡发展史 | zh | 计划中 | `nvidia-workstation` |
+| 8 | 英特尔独立显卡发展史 | zh | 计划中 | `intel-discrete-gpu` |
+| 9 | 高通：从 600 到 888 | zh | 计划中 | `qualcomm` |
+| 10 | 苹果的芯片自研之路 | zh | 计划中 | `apple` |
+| 11 | Windows Server 演变史 | zh | 计划中 | `windows-server` |
+| 12 | Linux 内核发展史 | zh | 计划中 | `linux-kernel-evolution` |
+| 13 | Python 语言的发展史 | zh | 计划中 | `python-history` |
+| 14 | Lua 语言的发展史 | zh | 计划中 | `lua-history` |
+| 15 | C 语言的发展史 | zh | 计划中 | [`c-language-history`](c-language-history/) |
+| 16 | Java 语言的发展史 | zh | 计划中 | `java-history` |
+| 17 | C# 语言的发展史 | zh | 计划中 | `csharp-history` |
+| 18 | JavaScript 与 TypeScript 的发展史 | zh | 计划中 | `javascript-typescript-history` |
 <!-- catalog:end -->

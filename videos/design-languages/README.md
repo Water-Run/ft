@@ -10,7 +10,7 @@
 | 面向谁 | 看得懂界面、想理解背后规范的观众 |
 | 怎么讲 | 直接展示这套设计风格最显著的特点，富有冲击力，深入浅出；引用官方规范与真实产品界面作为取证材料，注明出处 |
 | 每集多长 | 3–5 分钟 |
-| 语言 | 中文与英文（缺省） |
+| 语言 | 只做中文（缺省，2026-10-24 起） |
 
 ## 共同约定
 各集真正共享的约定记在这里，一项一行。视觉与配乐默认每集取自本集的讲解对象（经验规则 F16、F21），除非下面写明了策划者的决定；某一集的设计决定写在那一集的 README。要改约定先改这里。写法见 [系列](../../docs/guides/series.md)。
@@ -27,13 +27,13 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | Metro | zh + en | 计划中 | `metro-design` |
-| 2 | Spectrum | zh + en | 计划中 | [`spectrum`](spectrum/) |
-| 3 | Carbon Design | zh + en | 计划中 | `carbon` |
-| 4 | Material 3 | zh + en | 计划中 | `material-3` |
-| 5 | Fluent 2 | zh + en | 计划中 | `fluent-2` |
-| 6 | Ant Design | zh + en | 计划中 | `ant-design` |
-| 7 | Adwaita | zh + en | 计划中 | `adwaita` |
-| 8 | Primer | zh + en | 计划中 | `primer` |
-| 9 | Apple HIG | zh + en | 计划中 | `apple-hig` |
+| 1 | Metro | zh | 计划中 | `metro-design` |
+| 2 | Spectrum | zh | 计划中 | [`spectrum`](spectrum/) |
+| 3 | Carbon Design | zh | 计划中 | `carbon` |
+| 4 | Material 3 | zh | 计划中 | `material-3` |
+| 5 | Fluent 2 | zh | 计划中 | `fluent-2` |
+| 6 | Ant Design | zh | 计划中 | `ant-design` |
+| 7 | Adwaita | zh | 计划中 | `adwaita` |
+| 8 | Primer | zh | 计划中 | `primer` |
+| 9 | Apple HIG | zh | 计划中 | `apple-hig` |
 <!-- catalog:end -->

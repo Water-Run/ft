@@ -13,8 +13,8 @@ const dirOf = (v) => `videos/${groupOf(v)}/${v.slug}`;
 const STATUS = { planned: '计划中', 'in-progress': '制作中', delivered: '已成片' };
 const STAGES = { brief: '立项', research: '取证', script: '文案', review: '审稿', voice: '配音', design: '设计', build: '实现', sound: '声音', render: '成片', accept: '验收', delivered: '已交付', released: '已发布' };
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-// 语言：条目自己的 languages ＞ 所属系列的 languages ＞ 缺省的中英双语
-const DEFAULT_LANGS = ['zh', 'en'];
+// 语言：条目自己的 languages ＞ 所属系列的 languages ＞ 缺省只做中文（策划者 2026-10-24 起）
+const DEFAULT_LANGS = ['zh'];
 const langsOk = (l) => Array.isArray(l) && l.length && new Set(l).size === l.length && l.every((x) => ['zh', 'en'].includes(x));
 function load() { return JSON.parse(fs.readFileSync(CAT, 'utf8')); }
 const readJSON = (f) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { return null; } };
@@ -93,7 +93,7 @@ function render(cat) {
   const all = entries(cat), n = (st) => all.filter((e) => e.status === st).length, current = lessonsVersion();
   const seriesName = (e) => (e.series ? `[${e.series.title.zh}](${e.series.slug}/README.md)` : '—');
   const L = ['# 片单', '', '<!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->', '',
-    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外，每部出中文与英文两个版本。`, '',
+    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。`, '',
     '[Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。', ''];
   // 已成片：按交付日期倒序
   const done = all.filter((e) => e.status === 'delivered').sort((a, b) => String(b.project?.delivery?.date || '').localeCompare(String(a.project?.delivery?.date || '')));
