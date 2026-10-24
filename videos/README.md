@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 203 部：已成片 18，制作中 4，计划中 181。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 203 部：已成片 17，制作中 5，计划中 181。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -27,7 +27,6 @@
 | [从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/) | — | zh 5:33、en 5:31 | 2026-10-07 | [哔哩哔哩](https://www.bilibili.com/video/BV17VH16mEsJ)、[YouTube](https://www.youtube.com/watch?v=CJdSoeKlXkk) | 6（2026-10-09） | Claude Opus 5.5 |
 | [120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/) | [XX 秒速通](in-seconds/README.md) | zh 2:00、en 2:00 | 2026-10-06 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) | 9（2026-10-09） | Claude Opus 5.5 |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
-| [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | zh 7:56 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1u2YA65EMQ) | 8（2026-10-09） | Claude Opus 5.5 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/) | — | zh 3:13 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ) | 8（2026-10-09） | Claude（型号未记录）、DeepSeek（型号未记录） |
 | [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | zh | — | [哔哩哔哩](https://www.bilibili.com/video/BV1apnz6pE9g) | — | MiniMax M3.1 Flash、未记录、Claude Opus 5.5 |
 
@@ -37,7 +36,8 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 第 3 稿（约 13:44）与四张关键帧已交 WaterRun 审；全系列文案主线确认后调整首尾衔接，再出 10 段配音 Demo 与配乐试听 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | 取证 | 新版取证：MySQL 9.7.4 LTS 原生运行，4096 行人物数据，整棵 B 树、查询路径、原地改、删除与复用、表锁、无日志的中断；然后按全系列主线写稿交审 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 最新 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
@@ -52,7 +52,7 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](database-engines/myisam/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
+| 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 制作中 | [`myisam`](database-engines/myisam/) | 新版制作中；旧版 2026-10-01 发布，已归档 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
 | 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](database-engines/firebird/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
