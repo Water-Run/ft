@@ -18,7 +18,7 @@
   svg { position: absolute; left: 0; top: 0; }
   .kicker { position: absolute; font: 500 var(--kfs) "Sans SC"; color: var(--dim); letter-spacing: .02em; white-space: nowrap; }
   .title { position: absolute; font: 900 var(--tfs) "Sans SC"; color: var(--orange); line-height: 1; letter-spacing: -.01em; white-space: nowrap; }
-  .r169 { --kfs: 54px; --tfs: 176px; } .r43 { --kfs: 52px; --tfs: 164px; }
+  .r169 { --kfs: 54px; --tfs: 176px; } .r43 { --kfs: 50px; --tfs: 150px; }
   .r169 .kicker { left: 112px; top: 236px; } .r169 .title { left: 104px; top: 316px; line-height: 1.06; }
   .r43 .kicker { left: 96px; top: 210px; } .r43 .title { left: 88px; top: 286px; line-height: 1.06; }
 </style>
@@ -73,10 +73,11 @@
     poly([P(x0, 0, 0), P(x1, 0, 0), P(x1, 1, 0), P(x0, 1, 0)], 'none', rgb('#F29111', 0.55 * fog(x0)), 2).setAttribute('stroke-dasharray', '6 5');
   }
   // 从远到近画每一格：左端面、前面、顶面
-  const cube = (x0, x1, y0, y1, h, top, front, side, edge) => {
-    poly([P(x0, y0, 0), P(x0, y1, 0), P(x0, y1, h), P(x0, y0, h)], side);
-    poly([P(x0, y0, 0), P(x1, y0, 0), P(x1, y0, h), P(x0, y0, h)], front);
-    poly([P(x0, y0, h), P(x1, y0, h), P(x1, y1, h), P(x0, y1, h)], top, edge, 1.6);
+  const cube = (x0, x1, y0, y1, h, top, front, side, edge, z0 = 0) => {
+    const z1 = z0 + h;
+    poly([P(x0, y0, z0), P(x0, y1, z0), P(x0, y1, z1), P(x0, y0, z1)], side);
+    poly([P(x0, y0, z0), P(x1, y0, z0), P(x1, y0, z1), P(x0, y0, z1)], front);
+    poly([P(x0, y0, z1), P(x1, y0, z1), P(x1, y1, z1), P(x0, y1, z1)], top, edge, 1.6);
   };
   { const x0 = xOf(N);                                               // 立在 0080 的光标：高而细，远处也看得见
     cube(x0, x0 + 0.5, 0, 1, 3.2, '#F29111', '#b86a08', '#7a4503', '#ffb347'); }
@@ -96,11 +97,38 @@
     const t = el('text', { x: p[0] - size * 0.2, y: p[1] - size * 0.45, 'font-family': 'Mono', 'font-weight': 500, 'font-size': size.toFixed(1), fill: color, 'text-anchor': 'end' });
     t.textContent = str;
   };
+
+  // 悬在上方的 users.MYI 主键页：8 个索引项，键是 id，值是行号；每项一根线落到它指向的行首。
+  // 索引里存的是行的位置而不是行本身，行号 × 16 就是数据文件里的偏移（FACTS「06」「07」）。
+  // 这块面板正对观众（不随透视），每格带一点固定方向的厚度，和下面的线是同一种立体感
+  { const BX = R43 ? 960 : 1090, BY = R43 ? 124 : 112, BW = R43 ? 48 : 56, BG = R43 ? 8 : 10, D = 7, FS = R43 ? 26 : 30;
+    for (let k = 7; k >= 0; k--) {                                  // 指针线先画，从格子中心出发，被面板盖住起点
+      const a = [BX + k * (BW + BG) + BW / 2, BY + BW / 2], b = P(xOf(16 * k) + 0.5, 0.9, HT), col = k === 0 ? '#F29111' : rgb('#3fb4cc', 0.85 * fog(xOf(16 * k)));
+      el('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: '#0b0b0c', 'stroke-width': k === 0 ? 7 : 4.5 });   // 深色衬底：橙线落在橙色格子上也看得见
+      el('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: col, 'stroke-width': k === 0 ? 2.6 : 1.5 });
+      el('circle', { cx: b[0], cy: b[1], r: k === 0 ? 7 : 4, fill: col, stroke: '#0b0b0c', 'stroke-width': 2.5 });
+    }
+    el('text', { x: BX, y: BY - 22, 'font-family': 'Mono', 'font-weight': 500, 'font-size': 26, fill: '#3fb4cc' }).textContent = 'users.MYI  主键 → 行号';
+    for (let k = 0; k < 8; k++) {
+      const x = BX + k * (BW + BG), alice = k === 0;
+      poly([[x + BW, BY], [x + BW + D, BY + D], [x + BW + D, BY + BW + D], [x + BW, BY + BW]], alice ? '#7a4503' : '#0f272d');
+      poly([[x, BY + BW], [x + BW, BY + BW], [x + BW + D, BY + BW + D], [x + D, BY + BW + D]], alice ? '#a85f05' : '#1a3f47');
+      poly([[x, BY], [x + BW, BY], [x + BW, BY + BW], [x, BY + BW]], alice ? '#F29111' : '#2b606c', alice ? '#ffb347' : '#3d7f8d', 1.6);
+      el('text', { x: x + BW / 2, y: BY + BW / 2 + 1, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-family': 'Mono', 'font-weight': 600, 'font-size': FS, fill: alice ? '#2a1702' : '#d6f2f7' }).textContent = k + 1;
+      el('text', { x: x + BW / 2, y: BY + BW + D + 20, 'text-anchor': 'middle', 'font-family': 'Mono', 'font-weight': 500, 'font-size': 20, fill: alice ? '#F29111' : '#5f8f99' }).textContent = k;
+    } }
+
   for (let row = 0; row < 2; row++) tag(xOf(row * 16), (row * 16).toString(16).padStart(4, '0'), rgb('#3fb4cc', fog(xOf(row * 16))));   // 再远的行挤在一起，不标
-  tag(xOf(N), '0080', '#F29111', 22);
-  // 左下角：文件名与定位公式（底部 15% 之上）
-  const note = el('text', { x: R43 ? 96 : 112, y: R43 ? 880 : 800, 'font-family': 'Mono', 'font-weight': 500, 'font-size': 40, fill: '#3fb4cc' });
-  for (const [i, line] of ['users.MYD', TEXT.note].entries()) { const ts = el('tspan', { x: R43 ? 96 : 112, dy: i ? 56 : 0 }, note); ts.textContent = line; }
+  tag(xOf(N), '0080', '#F29111', 22);                               // 偏移标签压在指针线上面
+
+  // 左下角：一张表就是三个文件（5.5.62 实测大小，FACTS「02」）
+  { const X = R43 ? 96 : 112, Y = R43 ? 836 : 772;
+    [['users.frm', '8,614 B', '#8a8a8a'], ['users.MYD', '128 B', '#F29111'], ['users.MYI', '3,072 B', '#3fb4cc']].forEach(([n, b, c], i) => {
+      el('text', { x: X, y: Y + i * 52, 'font-family': 'Mono', 'font-weight': 500, 'font-size': 38, fill: c }).textContent = n;
+      el('text', { x: X + 420, y: Y + i * 52, 'font-family': 'Mono', 'font-weight': 500, 'font-size': 38, fill: c, 'text-anchor': 'end' }).textContent = b;
+    }); }
+  // 右下：数据文件里怎样定位一行
+  el('text', { x: R43 ? 1110 : 1400, y: R43 ? 900 : 800, 'font-family': 'Mono', 'font-weight': 500, 'font-size': 40, fill: '#3fb4cc' }).textContent = TEXT.note;
 
   const sample = document.getElementById('stage').textContent + TEXT.note + '0123456789abcdef';
   Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('500 40px "Mono"', sample), document.fonts.load('600 40px "Mono"', sample)])
