@@ -115,6 +115,22 @@
 | MySQL 8.0（2018）系统表迁往 InnoDB，取消 `.frm` | 8.0 数据字典变更说明 |
 | InnoDB：按主键组织的 B+ 树、16 KB 页、行级锁、MVCC、事务日志 | InnoDB 官方手册的通行表述，片中只作对照，不展开 |
 
+## 新版扩充（2026-10-24）
+
+第 3 稿在旧版原文之间补的句子及依据。9.7.4 的实测与 5.5.62 同版源码互证：这些行为在两个版本的 MyISAM 代码里相同。
+
+| 句号 | 陈述 | 出处 |
+|---|---|---|
+| a9a | MyISAM 在 MySQL 3.23 加入，接替了更早的 ISAM | 本表「10 收束」第 1 行（官方手册 3.23/4.x 版）；MySQL 9.7 手册：「MyISAM is based on the older (and no longer available) ISAM storage engine」 |
+| c13–c14 | 定长行改一行，新的一行写回原来的位置；alice 改年龄，文件里只有年龄那一个字节变了 | 5.5.62 `mi_statrec.c:88` `_mi_update_static_record`（按原位置写回整行）；9.7.4 实测 [v97/out_04](lab/v97/out_04_update_delete.json)：改年龄前后同一位置只差最后一个字节 |
+| f12b–f12c | 根页把十万行分成 21 段，下一层每页再分成几十段；每往下一层范围缩小几十倍 | 本表「06」：根页 20 个键、中间层 21 页共 960 个键（每页约 46 个）、叶子 981 页 |
+| g11b | 再查一次，这三页就不必再从磁盘读 | 本表「07」键缓存原文；9.7.4 实测 [v97/out_03](lab/v97/out_03_queries.json)：重启后第一次 `Key_reads` 3，第二次 0 |
+| k4b–k4c | bob 统计整张表时，carol 改 alice 的年龄只能等他读完 | 本表「08」读锁共享、写锁独占（`thr_lock`）；9.7.4 实测 [v97/out_05](lab/v97/out_05_locks.json) 第一组：读整表 3 秒内两个修改都处于「Waiting for table level lock」 |
+| k7b | 中间有了空位，插入又得排队 | 5.5.62 `mi_locking.c:388`（只有 `dellink == HA_OFFSET_ERROR` 才允许并发插入）；9.7.4 实测 v97/out_05 第四组 |
+| m10b–m10e | 它也没有事务；执行 ROLLBACK，MySQL 只回一句警告，改过的数据留在文件里 | 本表「09」SHOW ENGINES 的 Transactions 为 NO；5.5.62 `sql/share/errmsg-utf8.txt` 的 `ER_WARNING_NOT_COMPLETE_ROLLBACK`：「Some non-transactional changed tables couldn't be rolled back」；9.7.4 实测 [v97/out_06](lab/v97/out_06_no_transaction.json)：警告 1196，值未回退 |
+| n4b | 改和删：原地覆盖，删掉的留下空位，给后来的行 | 本表「03」「04」；c13 的依据 |
+| n8b | 撤不回的 ROLLBACK，在 InnoDB 那里能撤回 | 9.7.4 实测 v97/out_06：同样的语句对 InnoDB 副本，值回到原样 |
+
 ## 第二轮复核（成片前）
 
 对照成片逐句、逐画面重新核对后所做的更正：
