@@ -72,6 +72,12 @@
       "sha256": "19fe097da515dcd471451f87ab03a42e354697b31ea7abd478feab5882f5aa95",
       "matches_r8_record": true
     },
+    "D17": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-row-format.html",
+      "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.10 InnoDB Row Formats",
+      "sha256": "f47050a510ee574453295413cd6f3a0fd58aafed23f993905cabec539411953f",
+      "matches_r8_record": true
+    },
     "D18": {
       "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
       "title": "MySQL :: MySQL 9.7 Reference Manual :: 17.7.2.1 Transaction Isolation Levels",
@@ -229,6 +235,156 @@
       "doc": "D18",
       "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
       "quote": "Consistent reads within the same transaction read the snapshot established by the first read."
+    },
+    {
+      "what": "hidden clustered index",
+      "doc": "D01",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-index-types.html",
+      "quote": "If a table has no PRIMARY KEY or suitable UNIQUE index, InnoDB generates a hidden clustered index named GEN_CLUST_INDEX on a synthetic column that contains row ID values."
+    },
+    {
+      "what": "DB_ROW_ID",
+      "doc": "D03",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-multi-versioning.html",
+      "quote": "A 6-byte DB_ROW_ID field contains a row ID that increases monotonically as new rows are inserted."
+    },
+    {
+      "what": "commit makes permanent",
+      "doc": "D12",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+      "quote": "A COMMIT means that the changes made in the current transaction are made permanent and become visible to other sessions."
+    },
+    {
+      "what": "rollback cancels all",
+      "doc": "D12",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+      "quote": "A ROLLBACK statement, on the other hand, cancels all modifications made by the current transaction."
+    },
+    {
+      "what": "autocommit default",
+      "doc": "D12",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+      "quote": "By default, MySQL starts the session for each new connection with autocommit enabled, so MySQL does a commit after each SQL statement if that statement did not return an error."
+    },
+    {
+      "what": "autocommit statement is a transaction",
+      "doc": "D12",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-autocommit-commit-rollback.html",
+      "quote": "If autocommit mode is enabled, each SQL statement forms a single transaction on its own."
+    },
+    {
+      "what": "isolation is the I",
+      "doc": "D18",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "quote": "Isolation is the I in the acronym ACID"
+    },
+    {
+      "what": "four isolation levels",
+      "doc": "D18",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "quote": "InnoDB offers all four transaction isolation levels described by the SQL:1992 standard: READ UNCOMMITTED , READ COMMITTED , REPEATABLE READ , and SERIALIZABLE ."
+    },
+    {
+      "what": "read view = committed before",
+      "doc": "D18",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-transaction-isolation-levels.html",
+      "quote": "a non-locking SELECT statement presents the state of the database from a read view which consists of transactions committed before the read view was created"
+    },
+    {
+      "what": "buffer pool caches pages",
+      "doc": "D09",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+      "quote": "The buffer pool is an area in main memory where InnoDB caches table and index data as it is accessed."
+    },
+    {
+      "what": "buffer pool divided into pages",
+      "doc": "D09",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+      "quote": "the buffer pool is divided into pages that can potentially hold multiple rows."
+    },
+    {
+      "what": "LRU ages out",
+      "doc": "D09",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-buffer-pool.html",
+      "quote": "data that is rarely used is aged out of the cache using a variation of the least recently used (LRU) algorithm."
+    },
+    {
+      "what": "record header links records",
+      "doc": "D17",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-row-format.html",
+      "quote": "The header is used to link together consecutive records, and for row-level locking."
+    },
+    {
+      "what": "LSN ever-increasing",
+      "doc": "D06",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+      "quote": "The passage of data through redo log files is represented by an ever-increasing LSN value."
+    },
+    {
+      "what": "dirty pages flushed",
+      "doc": "D06",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-redo-log.html",
+      "quote": "dirty pages are flushed from the buffer pool to tablespace data files"
+    },
+    {
+      "what": "doublewrite good copy",
+      "doc": "D10",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-doublewrite-buffer.html",
+      "quote": "InnoDB can find a good copy of the page from the doublewrite buffer during crash recovery."
+    },
+    {
+      "what": "deadlock victim",
+      "doc": "D13",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-deadlocks.html",
+      "quote": "rolls back one of the transactions (the victim)"
+    },
+    {
+      "what": "InnoDB default in 9.7",
+      "doc": "innodb-introduction",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-introduction.html",
+      "quote": "In MySQL 9.7, InnoDB is the default MySQL storage engine."
+    },
+    {
+      "what": "ACID with commit rollback crash recovery",
+      "doc": "innodb-introduction",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-introduction.html",
+      "quote": "Its DML operations follow the ACID model, with transactions featuring commit, rollback, and crash-recovery capabilities to protect user data."
+    },
+    {
+      "what": "row locking and consistent reads",
+      "doc": "innodb-introduction",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-introduction.html",
+      "quote": "Row-level locking and Oracle-style consistent reads increase multi-user concurrency and performance."
+    },
+    {
+      "what": "ACID is about reliability",
+      "doc": "mysql-acid",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-acid.html",
+      "quote": "The ACID model is a set of database design principles that emphasize aspects of reliability that are important for business data and mission-critical applications."
+    },
+    {
+      "what": "not corrupted by crashes",
+      "doc": "mysql-acid",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-acid.html",
+      "quote": "so that data is not corrupted and results are not distorted by exceptional conditions such as software crashes and hardware malfunctions."
+    },
+    {
+      "what": "atomicity involves transactions",
+      "doc": "mysql-acid",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-acid.html",
+      "quote": "The atomicity aspect of the ACID model mainly involves InnoDB transactions"
+    },
+    {
+      "what": "consistency protects from crashes",
+      "doc": "mysql-acid",
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-acid.html",
+      "quote": "The consistency aspect of the ACID model mainly involves internal InnoDB processing to protect data from crashes."
+    },
+    {
+      "what": "PostgreSQL keeps old row versions",
+      "doc": "pg-routine-vacuuming",
+      "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
+      "quote": "an UPDATE or DELETE of a row does not immediately remove the old version of the row."
     }
   ],
   "source": {
@@ -255,8 +411,25 @@
     "2026-10-24 本机抓取 dev.mysql.com 与 downloads.mysql.com 一律返回 403（直连与代理都是），所以手册用旧版取证时",
     "2026-10-09 存下的官方页面快照（research/_src/manual/D01–D19，URL 与 SHA-256 记在 research/r8/sources.json）："
   ],
+  "live_pages": {
+    "innodb-introduction": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/innodb-introduction.html",
+      "fetched": "2026-10-24",
+      "sha256": "ee98718c92423f7242b094119f5189646ae407d64558530797a147d7f301d453"
+    },
+    "mysql-acid": {
+      "url": "https://dev.mysql.com/doc/refman/9.7/en/mysql-acid.html",
+      "fetched": "2026-10-24",
+      "sha256": "18008f0f28d69697b195fb9b10a950f26c5ef7dc4e318ae07f24bb0fbf85f36a"
+    },
+    "pg-routine-vacuuming": {
+      "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
+      "fetched": "2026-10-24",
+      "sha256": "232d8e57e1bc9c20dcc48ebdcfe33f94fcf21b1069b55758484296f9a0c6779e"
+    }
+  },
   "summary": {
-    "quotes": 25,
+    "quotes": 50,
     "snapshots": {
       "D01": true,
       "D02": true,
@@ -270,6 +443,7 @@
       "D10": true,
       "D12": true,
       "D13": true,
+      "D17": true,
       "D18": true
     },
     "points": [

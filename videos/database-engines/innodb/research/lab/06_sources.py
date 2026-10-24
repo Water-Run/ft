@@ -3,9 +3,11 @@
 2026-10-24 本机抓取 dev.mysql.com 与 downloads.mysql.com 一律返回 403（直连与代理都是），所以手册用旧版取证时
 2026-10-09 存下的官方页面快照（research/_src/manual/D01–D19，URL 与 SHA-256 记在 research/r8/sources.json）：
 先核对快照的 SHA-256 与当时记录一致，再按 MANUAL 里的精确子串在合并空白后的文本里定位摘句，某句找不到就报错。
+同日晚些时候直连恢复，第 2 稿新用到的两页（InnoDB 简介、ACID）与片尾引出下一集用的 PostgreSQL 18 文档一页，
+直接抓取存进 research/_src/manual_974/，记下 SHA-256。
 源码从 GitHub 标签 mysql-9.7.4 取。
 """
-import hashlib, json, re, time, urllib.request
+import hashlib, html, json, re, time, urllib.request
 from lab_common import SOURCE, VIDEO, finish
 
 SNAP = SOURCE / "manual"
@@ -35,7 +37,39 @@ MANUAL = [
     ("deadlock detection", "D13", "When deadlock detection is enabled (the default) and a deadlock does occur, InnoDB detects the condition and rolls back one of the transactions (the victim)."),
     ("default isolation", "D18", "The default isolation level for InnoDB is REPEATABLE READ"),
     ("RR snapshot by first read", "D18", "Consistent reads within the same transaction read the snapshot established by the first read."),
+    # 第 2 稿补
+    ("hidden clustered index", "D01", "If a table has no PRIMARY KEY or suitable UNIQUE index, InnoDB generates a hidden clustered index named GEN_CLUST_INDEX on a synthetic column that contains row ID values."),
+    ("DB_ROW_ID", "D03", "A 6-byte DB_ROW_ID field contains a row ID that increases monotonically as new rows are inserted."),
+    ("commit makes permanent", "D12", "A COMMIT means that the changes made in the current transaction are made permanent and become visible to other sessions."),
+    ("rollback cancels all", "D12", "A ROLLBACK statement, on the other hand, cancels all modifications made by the current transaction."),
+    ("autocommit default", "D12", "By default, MySQL starts the session for each new connection with autocommit enabled, so MySQL does a commit after each SQL statement if that statement did not return an error."),
+    ("autocommit statement is a transaction", "D12", "If autocommit mode is enabled, each SQL statement forms a single transaction on its own."),
+    ("isolation is the I", "D18", "Isolation is the I in the acronym ACID"),
+    ("four isolation levels", "D18", "InnoDB offers all four transaction isolation levels described by the SQL:1992 standard: READ UNCOMMITTED , READ COMMITTED , REPEATABLE READ , and SERIALIZABLE ."),
+    ("read view = committed before", "D18", "a non-locking SELECT statement presents the state of the database from a read view which consists of transactions committed before the read view was created"),
+    ("buffer pool caches pages", "D09", "The buffer pool is an area in main memory where InnoDB caches table and index data as it is accessed."),
+    ("buffer pool divided into pages", "D09", "the buffer pool is divided into pages that can potentially hold multiple rows."),
+    ("LRU ages out", "D09", "data that is rarely used is aged out of the cache using a variation of the least recently used (LRU) algorithm."),
+    ("record header links records", "D17", "The header is used to link together consecutive records, and for row-level locking."),
+    ("LSN ever-increasing", "D06", "The passage of data through redo log files is represented by an ever-increasing LSN value."),
+    ("dirty pages flushed", "D06", "dirty pages are flushed from the buffer pool to tablespace data files"),
+    ("doublewrite good copy", "D10", "InnoDB can find a good copy of the page from the doublewrite buffer during crash recovery."),
+    ("deadlock victim", "D13", "rolls back one of the transactions (the victim)"),
 ]
+# 2026-10-24 晚些时候本机直连 dev.mysql.com 恢复（返回 200），补抓两页，存进 research/_src/manual_974/，记 SHA-256
+LIVE = "https://dev.mysql.com/doc/refman/9.7/en/"
+LIVE_QUOTES = [
+    ("InnoDB default in 9.7", "innodb-introduction", "In MySQL 9.7, InnoDB is the default MySQL storage engine."),
+    ("ACID with commit rollback crash recovery", "innodb-introduction", "Its DML operations follow the ACID model, with transactions featuring commit, rollback, and crash-recovery capabilities to protect user data."),
+    ("row locking and consistent reads", "innodb-introduction", "Row-level locking and Oracle-style consistent reads increase multi-user concurrency and performance."),
+    ("ACID is about reliability", "mysql-acid", "The ACID model is a set of database design principles that emphasize aspects of reliability that are important for business data and mission-critical applications."),
+    ("not corrupted by crashes", "mysql-acid", "so that data is not corrupted and results are not distorted by exceptional conditions such as software crashes and hardware malfunctions."),
+    ("atomicity involves transactions", "mysql-acid", "The atomicity aspect of the ACID model mainly involves InnoDB transactions"),
+    ("consistency protects from crashes", "mysql-acid", "The consistency aspect of the ACID model mainly involves internal InnoDB processing to protect data from crashes."),
+    # 片尾引出下一集用：PostgreSQL 把旧版本留在表里
+    ("PostgreSQL keeps old row versions", "pg-routine-vacuuming", "an UPDATE or DELETE of a row does not immediately remove the old version of the row."),
+]
+PAGES = {"pg-routine-vacuuming": "https://www.postgresql.org/docs/18/routine-vacuuming.html"}
 SRC = "https://raw.githubusercontent.com/mysql/mysql-server/mysql-9.7.4/"
 SRC_POINTS = [
     ("trx id field length 6", "storage/innobase/include/data0type.h", "constexpr size_t DATA_TRX_ID_LEN = 6;"),
@@ -63,6 +97,20 @@ def main():
             hit = texts[d].replace(" ,", ",").find(n)
         assert hit >= 0, (what, d, needle)
         out["quotes"].append({"what": what, "doc": d, "url": out["manual_snapshots"][d]["url"], "quote": needle})
+    out["live_pages"], ldir = {}, SOURCE / "manual_974"
+    ldir.mkdir(parents=True, exist_ok=True)
+    for name in sorted({q[1] for q in LIVE_QUOTES}):
+        p = ldir / f"{name}.html"
+        if not p.exists():
+            p.write_bytes(urllib.request.urlopen(PAGES.get(name, LIVE + name + ".html"), timeout=60).read())
+        raw = p.read_bytes()
+        body = re.sub(r"<[^>]+>", " ", raw.decode("utf-8", errors="replace"))
+        texts[name] = re.sub(r"\s+", " ", html.unescape(body))
+        out["live_pages"][name] = {"url": PAGES.get(name, LIVE + name + ".html"), "fetched": time.strftime("%Y-%m-%d", time.localtime(p.stat().st_mtime)),
+                                   "sha256": hashlib.sha256(raw).hexdigest()}
+    for what, name, needle in LIVE_QUOTES:
+        assert texts[name].find(needle) >= 0, (what, name, needle)
+        out["quotes"].append({"what": what, "doc": name, "url": PAGES.get(name, LIVE + name + ".html"), "quote": needle})
     sdir = SOURCE / "src_974"; sdir.mkdir(parents=True, exist_ok=True)
     for what, rel, needle in SRC_POINTS:
         p = sdir / rel.replace("/", "__")
