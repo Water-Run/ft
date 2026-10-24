@@ -1,0 +1,58 @@
+[admin] CREATE DATABASE myisam_demo DEFAULT CHARACTER SET latin1
+(no result rows)
+
+[admin] USE myisam_demo
+(no result rows)
+
+[admin] CREATE TABLE users (id INT NOT NULL, name CHAR(10) NOT NULL, age TINYINT NOT NULL, PRIMARY KEY (id), KEY idx_name (name)) ENGINE=MyISAM
+(no result rows)
+
+[admin] INSERT INTO users VALUES (1,'alice',30),(2,'bob',25),(3,'carol',41),(4,'dave',19),(5,'erin',33),(6,'frank',52),(7,'grace',28),(8,'heidi',36)
+(no result rows)
+
+[admin] UPDATE performance_schema.setup_consumers SET ENABLED='YES' WHERE NAME='events_statements_history_long'
+(no result rows)
+
+[admin] TRUNCATE performance_schema.events_statements_history_long
+(no result rows)
+
+[admin] SELECT TIMER_WAIT FROM performance_schema.events_statements_history_long WHERE SQL_TEXT = "SELECT * FROM users WHERE name = 'alice'" ORDER BY EVENT_ID
++------------+
+| TIMER_WAIT |
++------------+
+|  327600000 |
+|   96200000 |
+|   80200000 |
+|  141400000 |
+|   56800000 |
+|   72800000 |
+|   96000000 |
+|   70400000 |
+|   55300000 |
+|   54100000 |
+|   97900000 |
+|   90400000 |
+|   79000000 |
+|  153400000 |
+|   99500000 |
+|   95600000 |
+|   82400000 |
+|  167200000 |
+|  100200000 |
+|   58700000 |
++------------+
+
+[mysql -vvv]
+--------------
+SELECT * FROM users WHERE name = 'alice'
+--------------
+
++----+-------+-----+
+| id | name  | age |
++----+-------+-----+
+|  1 | alice |  30 |
++----+-------+-----+
+1 row in set (0.007 sec)
+
+Bye
+

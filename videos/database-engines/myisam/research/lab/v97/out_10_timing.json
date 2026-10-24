@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "runs": 20,
+    "first_us": 327.6,
+    "median_us": 93.0,
+    "min_us": 54.1,
+    "max_us": 327.6,
+    "client_echo": [
+      "1 row in set (0.007 sec)"
+    ]
+  },
+  "timer_wait_us": [
+    327.6,
+    96.2,
+    80.2,
+    141.4,
+    56.8,
+    72.8,
+    96.0,
+    70.4,
+    55.3,
+    54.1,
+    97.9,
+    90.4,
+    79.0,
+    153.4,
+    99.5,
+    95.6,
+    82.4,
+    167.2,
+    100.2,
+    58.7
+  ],
+  "query": "SELECT * FROM users WHERE name = 'alice'",
+  "limits": [
+    "Server-side statement time on one Windows machine; the table is already open and cached."
+  ]
+}

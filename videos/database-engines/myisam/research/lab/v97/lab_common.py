@@ -19,8 +19,8 @@ import time
 import urllib.request
 import zipfile
 
-VIDEO = Path(__file__).resolve().parents[2]
-LAB = VIDEO / "research/lab"
+VIDEO = Path(__file__).resolve().parents[3]
+LAB = VIDEO / "research/lab/v97"
 SOURCE = VIDEO / "research/_src"
 WORK = VIDEO / "out/lab"
 VERSION = "9.7.4"

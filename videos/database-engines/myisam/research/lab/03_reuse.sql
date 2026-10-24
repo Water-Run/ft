@@ -1,0 +1,8 @@
+USE myisam_demo;
+INSERT INTO users VALUES (9,'ivan',44);
+DELETE FROM notes WHERE id = 2;
+SHOW TABLE STATUS;
+SELECT * FROM users;
+SELECT COUNT(*) FROM users;
+EXPLAIN SELECT COUNT(*) FROM users;
+FLUSH TABLES;

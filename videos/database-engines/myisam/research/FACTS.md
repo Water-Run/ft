@@ -1,86 +1,137 @@
-# MyISAM（新版）：事实与实测
+# 事实核查记录
 
-取证日期：**2026-10-24**。对象：**MySQL 9.7.4 LTS** 自带的 MyISAM 存储引擎，Windows 11 x64 上运行官方压缩包。编号是候选陈述，文案句号确定后在 NOTES 里对应。旧版（MySQL 5.5.62）的事实表保留在 Git 历史（提交 `2686046` 及之前），新版不沿用其数字。
+> 新版（2026-10-24 起）沿用本表：WaterRun 看过新写的稿子后判定旧版叙事更好，文案恢复旧版原文，本表仍是文案的事实依据。MySQL 9.7.4 LTS 上的补充实测（`.sdi` 文件、引擎列表、表锁计时、ROLLBACK 警告等）在 [lab/v97/FACTS_9.7.md](lab/v97/FACTS_9.7.md)，只用于画面注解与制作参考，不进旁白。
 
-## 环境与复现范围
+本文件记录视频《一个数据库引擎是如何实现的？——从 MyISAM 说起》中每一项事实陈述的出处。
+核查分两路进行，结论须两路一致才写入脚本：
 
-| 项 | 实测记录 |
+1. **实验**：在仿真机（Windows Server 2008，`LegacyMySQL55` 服务，MySQL 5.5.62 Community Server）上建库 `myisam_demo`，执行 `lab/*.sql`，每个阶段 `FLUSH TABLES` 后把 `.frm / .MYD / .MYI` 复制出来。快照在 `lab/remote/snap_*`，回显在 `lab/remote/*.out`。
+2. **源码**：MySQL 5.5.62 的 `storage/myisam/`、`sql/`、`mysys/`（`src/`，取自 `mysql/mysql-server` 的 `mysql-5.5.62` 标签）。
+
+画面里出现的字节、偏移、页数由 `tools/gen_data.py` 从快照生成（`src/js/data.js`），不手写。`myi.py` 按 `mi_open.c` 的落盘顺序解析 `.MYI`。
+
+## 开场
+
+| 陈述 | 出处 |
 |---|---|
-| 程序 | 官方 `mysql-9.7.4-winx64.zip`，MD5 `e05aaa40639d8548e0f68b7a70685a3b` 与下载页一致；SHA-256 见 [01](lab/out_01_environment.json) |
-| 运行 | 每组实验新建数据目录（`--initialize-insecure`），只监听 127.0.0.1，root 无口令；数据目录在忽略的 `out/lab/` |
-| 源码 | `github.com/mysql/mysql-server` 标签 `mysql-9.7.4` 的 17 个文件，哈希见 01；入口行号见 [08](lab/out_08_sources.json) |
-| 数据 | `users(id INT PRIMARY KEY, name CHAR(50) CHARACTER SET ascii, age TINYINT UNSIGNED)`，`ENGINE=MyISAM`，姓名、年龄各一个索引；4096 行，2050 号 Alice 42 岁，其他人名 50 字节、年龄 18 + id % 63。规则与 SQLite 一集相同，生成 SQL 在 `lab_common.py` |
-| 人物 | Bob、Carol、Dave 是同时连接数据库的客户端会话；实验里按人物命名 |
-| 复现 | `python videos/database-engines/myisam/research/lab/run_all.py`；除 07 的中断位置随时机变化外，其余数字逐次相同 |
+| 「一条查询，一行结果，零点零零七秒」 | 2026-10-24 在 MySQL 9.7.4 上建与本表相同的 8 行 MyISAM 表，`SELECT * FROM users WHERE name = 'alice'` 的客户端回显为 `1 row in set (0.007 sec)`；服务端计时 20 次中位数 93 微秒（[v97/out_10_timing](lab/v97/out_10_timing.json)）。旧版写的「零点零零秒」是 5.5 客户端按百分之一秒取整的回显，WaterRun 认为读起来不对 |
 
-## 原始来源
+## 01 引擎的位置
 
-| 来源 | 定位 |
+| 陈述 | 出处 |
 |---|---|
-| S01 | [MySQL 9.7 手册 · The MyISAM Storage Engine](https://dev.mysql.com/doc/refman/9.7/en/myisam-storage-engine.html)：基于已不再提供的 ISAM；B 树索引；有索引缓存、无数据缓存；锁粒度为表；无 MVCC；「Each MyISAM table is stored on disk in two files … .MYD (MYData) … .MYI (MYIndex). The table definition is stored in the MySQL data dictionary」；「In MySQL 9.7 … InnoDB is the default engine」；「When rows are inserted in sorted order … the index tree is split so that the high node only contains one key」；默认键块 1024 字节 |
-| S02 | [9.7 手册 · Serialized Dictionary Information](https://dev.mysql.com/doc/refman/9.7/en/serialized-dictionary-information.html)：「Other storage engines store SDI data in .sdi files … in a compact JSON format」 |
-| S03 | [9.7 手册 · Internal Locking Methods](https://dev.mysql.com/doc/refman/9.7/en/internal-locking.html)：「MySQL uses table-level locking for MyISAM … permitting only one session to update those tables at a time」；并发插入：「If a MyISAM table has no free blocks in the middle of the data file, rows are always inserted at the end … you can insert rows into a MyISAM table at the same time other clients are reading from it」 |
-| S04 | MySQL 5.5.62 源码 `sql/mysqld.cc` 第 3236–3244 行注释：「From MySQL 5.5 onwards, the default storage engine is InnoDB (except in the embedded server, where the default continues to be MyISAM)」（旧版取证时取得的同版源码；5.5 手册与 5.5.5 发布说明的网页 2026-10-24 已下线） |
-| S06 | [9.7 手册 · What to Do If MySQL Keeps Crashing / Corrupted MyISAM Tables](https://dev.mysql.com/doc/refman/9.7/en/corrupted-myisam-tables.html)：「you can still get corrupted tables if … The mysqld process is killed in the middle of a write」；S01 特性表「Transactions No」 |
-| S05 | 同版源码 9.7.4：`storage/myisam/` 的 `mi_open.cc`（文件头）、`mi_search.cc`（查找、压缩键、子块与行指针换算）、`mi_statrec.cc`（定长行的写、删、复用）、`mysys/mf_keycache.cc`（键缓存）、`mysys/thr_lock.cc`（表锁）、`mi_check.cc`；行号见 08 |
+| handler 接口的方法名 `write_row / rnd_next / index_read_map / update_row / delete_row` | `storage/myisam/ha_myisam.cc`：`ha_myisam::write_row` → `mi_write`，`rnd_next` → `mi_scan`，`index_read_map` → `mi_rkey`，`update_row` → `mi_update`，`delete_row` → `mi_delete` |
+| 引擎列表 MyISAM / InnoDB / MEMORY / CSV / ARCHIVE | `SHOW ENGINES` 实测回显（`01_create.out`） |
+| 5.5 之前默认引擎是 MyISAM | 官方手册：5.5.5 起默认引擎改为 InnoDB；`sql/mysqld.cc:3241-3243` 两个默认值分支 |
+| InnoDB 5.5 数据在系统表空间 `ibdata` | 5.5 的 `innodb_file_per_table` 默认 OFF |
 
-## 增：怎么放
+## 02 三个文件
 
-| 编号 | 陈述 | 实测与交叉核对 | 范围与状态 |
+| 陈述 | 出处 |
+|---|---|
+| 建表并写入 8 行后目录里有 `users.frm` 8,614 B、`users.MYD` 128 B、`users.MYI` 3,072 B | `snap_01_create` 目录列表 |
+| 扩展名含义 MYData / MYIndex | 官方手册 MyISAM 一章；`include/myisam.h`：`MI_NAME_IEXT ".MYI"`、`MI_NAME_DEXT ".MYD"` |
+| `.frm` 由 SQL 层维护 | `sql/unireg.cc`、`sql/table.cc`；`users.frm` 首 4 字节 `fe 01 09 09`，第 4 字节 9 = `DB_TYPE_MYISAM`（`sql/handler.h:313`） |
+| 回显 `Query OK, 0 rows affected (0.14 sec)`、`Records: 8  Duplicates: 0  Warnings: 0` | `01_create.out` |
+
+## 03 定长行
+
+| 陈述 | 出处 |
+|---|---|
+| `users.MYD` 共 128 字节、无文件头、每 16 字节一行 | `snap_01_create/users.MYD` 的十六进制内容；`SHOW TABLE STATUS`：`Row_format: Fixed`、`Avg_row_length: 16` |
+| 行首 1 字节为标志位：最低位表示有效，其余位是各列的 NULL 标记 | 表 `nul`（两个可空列）四行的首字节依次为 `f9 fb fd ff`；`mi_statrec.c` 以首字节是否为 0 判断删除 |
+| INT 低位字节在前；CHAR(10) 以 `0x20` 补齐；TINYINT 1 字节 | 同一文件：`01 00 00 00`、`61 6c 69 63 65 20…`、`1e` |
+| 第 N 行偏移 = N × 16 | 文件内容；`Max_data_length = 4503599627370495 = 16 × 2^48 − 1`（行号以 6 字节指针寻址） |
+
+## 04 删除与空位
+
+| 陈述 | 出处 |
+|---|---|
+| 删除后文件长度不变，只改写行首 7 字节：首字节 `00` + 6 字节指针 | `snap_02_delete/users.MYD`：行 2 变为 `00 ff ff ff ff ff ff 72 6f 6c …`；`mi_statrec.c` `_mi_delete_static_record` |
+| 第二次删除的指针指回上一个空位 | 同文件行 5：`00 00 00 00 00 00 02 …`（指针 = 行号 2） |
+| 链头记在索引文件里 | `.MYI` 状态区 `dellink`（偏移 0x34）：两次删除后为 80（= 0x50，行 5） |
+| 插入先填链头空位，没有空位才追加 | `snap_03_reuse`：`ivan` 写入行 5；`snap_04_reuse2`：`judy` 写入行 2，`mallory` 追加到 0x80，文件 144 字节；`mi_write.c:65-68` |
+| 全表扫描按物理顺序返回 | `04_reuse2.out` 中 `SELECT * FROM users` 的顺序为 1, 2, 10, 4, 5, 9, 7, 8, 11 |
+
+## 05 变长行
+
+| 陈述 | 出处 |
+|---|---|
+| 含 VARCHAR 的表为动态格式 | `notes` 表 `Row_format: Dynamic` |
+| 三行分别占 20 / 44 / 20 字节；块头 `03 00 0b 05` = 类型、数据长 11、填充 5 | `snap_01_create/notes.MYD`；`myisamdef.h`：`MI_MIN_BLOCK_LENGTH 20`、`MI_DYN_ALIGN_SIZE 4` |
+| 若按定长存放每行 205 字节 | `notes.MYI` 基础信息 `reclength = 205` |
+| 改长第 1 行后被拆成两段：原块留 7 字节数据并带 8 字节指针 `→ 0x54`，其余 49 字节在文件末尾 | `snap_02_delete/notes.MYD`：`05 00 38 00 07 00…00 54 | 00 01 00 00 00 32 68`，0x54 处 `07 00 31` + `ello, this row…` |
+| `OPTIMIZE TABLE` 整理碎片 | 官方手册；`ha_myisam::optimize` |
+| 「多次更新之后」的碎片条 | 示意图，画面已标注「示意」 |
+
+## 06 索引文件与 B 树
+
+| 陈述 | 出处 |
+|---|---|
+| 文件头 396 字节，字段偏移：`records` 0x1c、`del` 0x24、`dellink` 0x34、`key_root[0]` 0x7c、`key_root[1]` 0x84；魔数 `fe fe 07 01` | `myi.py` 对 `users.MYI` 的解析，与 `mi_state_info_write`（`mi_open.c:870`）的顺序一致 |
+| 统计总行数不必扫描 | `EXPLAIN SELECT COUNT(*) FROM users` 的 Extra 为 `Select tables optimized away`（`03_reuse.out`） |
+| 页大小 1024 字节；两个索引各占一页，文件共 3072 字节 | `include/myisam.h`：`MI_KEY_BLOCK_LENGTH 1024`；`key_root` = 1024 / 2048 |
+| 页头 2 字节、已用 82 字节；每项 = 4 字节键（高位在前）+ 6 字节行号 | `users.MYI` 偏移 0x400 起：`00 52 | 00 00 00 01 | 00 00 00 00 00 00 …`；`mi_key.c` 的 `HA_SWAP_KEY` 分支；`rec_reflength = 6` |
+| 十万行的主键索引为 3 层：1 + 21 + 981 = 1003 页，键数 20 + 960 + 99,020 = 100,000 | `myi.walk_tree` 遍历 `users_big.MYI` |
+| 顺序插入时叶子页留 101 个键，分隔键 102 上移 | 同上：中间页 @3072 的键为 102, 204, …；叶子页 @95232 含 4183…4283 |
+| 主键与普通索引结构相同，存的都是行位置 | 两个 `keydef` 都是 B 树（`key_alg = 1`）；`myisamchk -dvv` 输出 |
+
+## 07 一次查询
+
+| 陈述 | 出处 |
+|---|---|
+| 路径：根页 @175104 → 中间页 @3072 → 叶子页 @95232 → 行号 4241 | `tools/gen_data.py` 输出；`research` 中的查找脚本复现 |
+| 叶子项字节 `00 00 10 92 | 00 00 00 00 10 91` | 0x1092 = 4242，0x1091 = 4241 |
+| 偏移 4241 × 16 = 67856，读出 `ff 92 10 00 00 75 35 39 32 32 39 39 20 20 20 3c` → 4242 / u592299 / 60 | `users_big.MYD` 对应位置的 16 字节 |
+| 页内二分查找，探测顺序为下标 9 → 4 → 2 → 1 → 0 | `mi_open.c:857`：定长非压缩键使用 `_mi_bin_search`；按 `mi_search.c` 中该函数的取中方式（`mid=(start+end)/2`，不小于则 `end=mid`）对根页 20 个键手算得到 |
+| 键缓存只缓存索引页，数据文件依赖操作系统缓存 | 官方手册「The MyISAM Key Cache」原文：“For index blocks, a special structure called the key cache (or key buffer) is maintained.”“For data blocks, MySQL uses no special cache. Instead it relies on the native operating system file system cache.” |
+
+## 08 表锁
+
+| 陈述 | 出处 |
+|---|---|
+| 读锁共享、写锁独占 | `mysys/thr_lock.c` |
+| 数据文件中间没有空位时，插入与查询可并行 | `mi_locking.c` `mi_check_status`：`dellink == HA_OFFSET_ERROR`；`concurrent_insert` 实测为 `AUTO`；官方手册「Concurrent Inserts」：“If a MyISAM table has no holes in the data file (deleted rows in the middle), an INSERT statement can be executed to add rows to the end of the table at the same time that SELECT statements are reading rows from the table.” |
+| 查询只读到它开始时的文件末尾 | `mi_locking.c` `mi_get_status`：读者取得锁时把状态复制到 `save_state` |
+| 甘特图 | 示意：演示排队关系，不对应具体实测时序 |
+
+## 09 崩溃
+
+| 陈述 | 出处 |
+|---|---|
+| 一次插入的顺序：标记已修改 → 写各索引 → 写数据行 → 行数 +1 | `mi_write.c:82-157` |
+| `open_count`：首次修改时 +1，正常关闭时 −1 | `mi_locking.c:505-555` 的注释与 `_mi_mark_file_changed` |
+| 模拟现场：数据文件 176 字节（含新行 olivia），文件头 `records = 10`、`data_file_length = 160`、`open_count = 1` | `snap_06_crash`；做法见 `lab/run2.bat`（两次插入之间复制 `.MYI`，之后复制 `.MYD`） |
+| 修复后 `open_count = 0`、`records = 11`、文件 176 字节 | `snap_07_repaired/users_crashed.MYI`（REPAIR 并 FLUSH TABLES 之后取回） |
+| `SELECT … WHERE id = 13` 返回 `Empty set`；`CHECK TABLE` 五行回显；`REPAIR TABLE` 报告 `Number of rows changed from 10 to 11` | `lab/remote/06c.out`，画面逐字照录 |
+| `SHOW ENGINES` 中 MyISAM 的 Transactions / XA / Savepoints 均为 NO | `01_create.out`，画面为节选并已标注 |
+
+## 10 收束
+
+| 陈述 | 出处 |
+|---|---|
+| MyISAM 自 MySQL 3.23 加入 | 官方手册 3.23/4.x 版「Storage Engines」一章：MyISAM 于 3.23.0 引入，取代 ISAM |
+| 2010 年 MySQL 5.5 把默认引擎改为 InnoDB | 5.5.5（2010-07）变更，5.5 GA 于 2010-12 |
+| MySQL 8.0（2018）系统表迁往 InnoDB，取消 `.frm` | 8.0 数据字典变更说明 |
+| InnoDB：按主键组织的 B+ 树、16 KB 页、行级锁、MVCC、事务日志 | InnoDB 官方手册的通行表述，片中只作对照，不展开 |
+
+## 第二轮复核（成片前）
+
+对照成片逐句、逐画面重新核对后所做的更正：
+
+| 位置 | 原表述 | 更正 | 依据 |
 |---|---|---|---|
-| A01 | 同一个 MySQL 9.7.4 服务器里，存储引擎可以选；InnoDB 是默认，支持事务；MyISAM 不支持事务 | [01](lab/out_01_environment.json)：`information_schema.ENGINES` 中 InnoDB `DEFAULT / YES`、MyISAM `YES / NO`；S01 | 已核 |
-| A02 | MySQL 5.5 起默认引擎是 InnoDB，此前是 MyISAM | S04 | 源码注释为一手依据；不说具体月份 |
-| A03 | 一张 MyISAM 表在目录里是三个文件：数据 `users.MYD`（229376 字节）、索引 `users.MYI`（297984 字节）、表定义 `users_375.sdi`（4345 字节，JSON） | [02](lab/out_02_structure.json) files；S01、S02 | 已核；`.sdi` 的数字后缀是表的内部编号 |
-| A04 | 每行定长 56 字节：1 字节标志 + 4 字节 id（低位在前）+ 50 字节姓名（不足补空格）+ 1 字节年龄；没有文件头，第 n 行从 n × 56 开始 | 02：`reclength` 56、文件 4096 × 56；Alice 那 56 字节 `ff 02080000 416c696365 20… 2a` | 已核；按插入顺序，Alice 是第 2049 行（从 0 数），偏移 114744 |
-| A05 | 姓名、年龄、主键各是 `.MYI` 里的一棵 B 树，键块 1024 字节：主键 2 层（1 + 41 块），姓名 3 层（1 + 12 + 205 块），年龄 2 层（1 + 29 块）；每棵树 4096 项 | 02：由字节解出全部块与父子关系，`myisamchk -i -e` 报各键 Max levels 2/3/2 | 已核 |
-| A06 | 这是经典 B 树：内部块里的每一项也是真正的条目（姓名 + 行号），子块指针夹在条目之间；叶块与内部块的条目合计正好 4096 | 02 trees：各层条目合计 4096；S05 `_mi_get_pack_key` 每项后跟行指针与子块指针 | 已核 |
-| A07 | 姓名索引的项按与上一项的公共前缀压缩存放（「char packed stripped」） | 02 `myisamchk -dvv`：Key 2 `char packed stripped`；S05 | 已核；画面不展开压缩格式 |
-| A08 | 从空表一行一行插入，叶块装满 20 个姓名后，第 21 行插入时树长高一层：新根块 5 只有一个条目 User00020，左叶 19 个、右叶 1 个；根的位置写在文件头里 | 02 growth：before 1 层 20 项，after 根 5 [User00020] → 子块 2、4；S01 顺序插入的分裂说明；文件头 `key_root` | 已核；20 只属本例的键长与 1024 字节块 |
+| 06 页内注解 | 「页内的字节序就是大小顺序」 | 改为只陈述「键按高位字节在前存放」 | 有符号整数键由 `ha_key_cmp` 解码后比较，并非逐字节比较；官方手册的说法是 “stored with the high byte first to permit better index compression” |
+| 07 二分探测 | 探测下标 9 → 4 → 1 → 0 | 9 → 4 → 2 → 1 → 0 | `_mi_bin_search` 的循环逐步手算 |
+| 08 小结 | 「加锁本身几乎没有开销」 | 「加锁本身的开销很小」 | 表述收紧 |
+| 09 修复后 | — | 增补实测快照 `snap_07_repaired` | `open_count = 0`，`records = 11` |
 
-## 查：怎么找
+外部事实另经联网复核：MyISAM 引入版本（3.23.0）、默认引擎变更（5.5.5，2010 年）、8.0 取消 `.frm` 并把系统表迁往 InnoDB、键缓存与并发插入的官方表述。
 
-| 编号 | 陈述 | 实测与交叉核对 | 范围与状态 |
-|---|---|---|---|
-| B01 | 按姓名找 Alice：根块 260 → 内部块 62 → 叶块 43，第一项就是 Alice，给出行号 2049；行号 × 56 = 114744，到数据文件取 56 字节 | 02 name_route；S05 `_mi_dpos`（静态行：行号 × 行长） | 重建路线，已核 |
-| B02 | 第一次查询从磁盘读入 3 个索引块；再查一次，索引块都已在键缓存里，读入 0 块 | [03](lab/out_03_queries.json)：`Key_reads` 3 / 0（每次先重启服务，键缓存为空） | 已核；不量操作系统缓存 |
-| B03 | 数据行没有缓存：两次查询都向 `users.MYD` 读了 1 次、56 字节 | 03：performance_schema 文件读取统计 `users.MYD` 1 次 56 字节，两次相同；S01 无数据缓存 | 已核 |
-| B04 | 不用索引时逐行读完数据文件：4096 次读取，共 229376 字节 | 03 scan | 已核 |
-| B06 | 沿姓名索引逐层缩小范围：4096 个名字 → 过了根，第 62 块的子树里剩 360 个 → 叶块 43 里 20 个 | 02 trees 子树条目计数 | 已核，数值只属本样本 |
-| B05 | 按主键找 2050：根块 3 → 叶块 22，同样得到行号 2049 | 02 id_route | 重建路线，已核 |
+审查方式：`tools/cuesheets.sh` 取每句旁白结束瞬间的画面（110 帧）逐一比对所述内容与画面元素；`tools/sheets.sh` 每 4 秒抽帧通看；语速与停顿由脚本统计（各章 4.4～4.9 字/秒，单句最高 6.0）。
 
-## 改、删：怎么改，怎么删
+## 未采用或已放弃的说法
 
-| 编号 | 陈述 | 实测与交叉核对 | 范围与状态 |
-|---|---|---|---|
-| C01 | Alice 过生日改成 43：同一位置的 56 字节里只有最后一个字节 `2a` 变成 `2b`，文件大小不变 | [04](lab/out_04_update_delete.json) | 已核 |
-| C02 | 删除一行（2 号用户注销）：这一行的第一个字节变成 `00`，接着 6 个字节写空位链的下一项（链尾为全 `ff`），其余旧字节原样留着；文件头记下删除数与链头（字节偏移 56）；文件不变小 | 04 user 2 deleted；S05 `_mi_delete_static_record`（写 `'\0'` 与原链头，链头改为本行位置） | 已核 |
-| C03 | 再删一行（5 号）：新空位的链接指回前一个空位（存的是行号 1），链头改为 224；空位连成一条链，链头在索引文件的文件头里 | 04 user 5 deleted | 已核；链里存行号、文件头存字节偏移 |
-| C04 | 新用户注册时先取链头的空位：Dave 写进 5 号的位置，下一个新用户写进 2 号的位置；再下一个没有空位，才追加到文件末尾（文件变成 229432 字节） | 04 Dave、4098、4099；S05 `_mi_write_static_record` 先取链头 | 已核 |
-| C05 | 所以文件里的顺序不等于插入的顺序：表扫描读出 1、4098、3、4、4097（Dave）、6 | 04 scan_order_first_rows | 已核 |
-| C06 | 有变长的列（VARCHAR）时，表用动态格式：每一行是一个块，块头写明长度；三条短留言依次占 20、24、24 字节 | [09](lab/out_09_dynamic.json) three short notes；S05 `mi_dynrec.cc` `_mi_get_block_info` | 已核；块的最小长度 20 字节 |
-| C07 | Alice 把留言改长，原来的块放不下：原处只留下开头几个字节，块头带上下一段的位置（偏移 68）；其余写进文件末尾一个 132 字节的新块。一行分成了两段 | 09 Alice's note grows：块类型「first part」→「last part」 | 已核 |
-| C08 | `OPTIMIZE TABLE` 把数据文件重写一遍：Alice 的行重新成为一个 140 字节的整块，三行首尾相接 | 09 after OPTIMIZE TABLE | 已核 |
-
-## 事务与并发
-
-| 编号 | 陈述 | 实测与交叉核对 | 范围与状态 |
-|---|---|---|---|
-| D01 | 没有事务：`START TRANSACTION`、改成 43、`ROLLBACK` 之后仍是 43，并得到警告 1196「Some non-transactional changed tables couldn't be rolled back」；同样的语句对 InnoDB 副本回到 42 | [06](lab/out_06_no_transaction.json) | 已核 |
-| D02 | Bob 读整张表的 3 秒里，Alice 和 Carol 的修改都在等待（状态「Waiting for table level lock」），Bob 读完它们才完成 | [05](lab/out_05_locks.json) 第一组：1 秒时两人等待，三人都在 3.01 秒完成；S03 | 已核；用 SLEEP 让读持续 3 秒 |
-| D03 | Alice 改的 3 秒里，Bob 的读、Dave 的插入也在等待 | 05 第二组 | 已核 |
-| D04 | 例外：Bob 读着的时候，Dave 往表尾追加新行不必等（0.3 秒完成），Carol 的修改仍要等 | 05 第三组；S03 并发插入（数据文件中间没有空位时） | 已核；中间有空位时这个例外不成立 |
-| D06 | 删除在文件中间留下空位之后，并发插入就不成立：Bob 读着的时候，新用户的插入也要等 Bob 读完 | 05 第四组：删掉 2 号后，插入在 3.01 秒完成；S03「Holes can result from rows having been deleted」 | 已核 |
-| D05 | 只按主键取一行的查询在优化阶段就读完那一行并提前释放锁，不会挡住写 | 05 调试记录与 limits | 观察已核；画面里 Bob 的读按整表读来演示 |
-
-## 出错怎么办
-
-| 编号 | 陈述 | 实测与交叉核对 | 范围与状态 |
-|---|---|---|---|
-| E01 | 管理员给每个人的年龄加一，进行到一半时服务进程被强行结束：重启后前 155 行改了，其余 3940 行没改，Alice 仍是 42 | [07](lab/out_07_crash.json) | 已核；改到第几行随时机变化（另一次为 157） |
-| E02 | 被中断后 `.MYI` 文件头的打开计数停在 1；`CHECK TABLE` 报「1 client is using or hasn't closed the table properly」，并报年龄索引与数据的校验和不一致、表损坏 | 07 open_count_after_kill、check；S05 `mi_check.cc` 校验和报错 | 已核 |
-| E04 | 官方说明：MyISAM 不支持事务；mysqld 在写到一半被终止时表可能损坏 | S06 | 官方说明，与 E01–E03 的实测一致 |
-| E03 | `REPAIR TABLE` 修好了表的结构，但改了一半的数据没有回去：仍是 155 行改了 | 07 repair、after_repair | 已核 |
-
-## 未核与不讲
-
-未做：断电与设备持久性、`delay_key_write` 等选项、压缩表、全文索引、多表锁的顺序、动态行的多段（三段以上）与空闲块合并。
+- 「B 树每页约 100 个键」：只对叶子页成立（实测 101），中间页为 45～60，故脚本只说「十万行，三层」。
+- 「删除只改一个字节」：实际改写 7 字节，脚本已按 7 字节表述。
+- 「崩溃后表无法打开」：`myisam-recover-options` 为默认值 OFF 时表仍能打开，只是结果不完整，需 `CHECK TABLE` 才报错；脚本表述为「需要检查」。

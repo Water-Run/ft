@@ -9,15 +9,15 @@
     "zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"
   },
   "stage": "review",
-  "next": "第 1 稿（约 9:10）已交 WaterRun 审；同时做视觉方向关键帧；确认后出中文配音 Demo 与配乐试听",
+  "next": "第 2 稿（旧版原文）已交 WaterRun 确认；做 5.x 时代视觉方向的关键帧；确认后出中文配音 Demo 与配乐试听",
   "credits": {
     "planner": "WaterRun",
     "models": [
       {
         "name": "Claude Opus 5.5",
         "roles": [
-          "取证",
-          "文案",
+          "旧版取证与文案（沿用）",
+          "补充取证",
           "视觉设计"
         ]
       }
