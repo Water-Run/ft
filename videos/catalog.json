@@ -139,7 +139,7 @@
     {"slug": "pistol-shooting", "series": "in-seconds", "title": {"zh": "150秒学会怎么打手枪", "en": "How to Shoot a Pistol in 150 Seconds"}, "status": "in-progress"},
     {"slug": "dense-vs-moe", "series": "in-seconds", "title": {"zh": "150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型", "en": "Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models"}, "status": "delivered"},
     {"slug": "rear-seatbelt", "series": "in-seconds", "title": {"zh": "150 秒明白不绑后排安全带的致命性"}},
-    {"slug": "ssh", "series": "in-seconds", "title": {"zh": "256 秒搞懂 SSH"}, "status": "in-progress"},
+    {"slug": "ssh", "series": "in-seconds", "title": {"zh": "256 秒搞懂 SSH"}, "languages": ["zh"], "status": "in-progress", "note": "已放弃（2026-10-24 策划者决定）"},
     {"slug": "powershell-pwsh", "series": "in-seconds", "title": {"zh": "150 秒关于 PowerShell 和 pwsh"}},
     {"slug": "pty", "series": "in-seconds", "title": {"zh": "150 秒有关终端模拟器（Pty）是什么，以及如何工作"}},
     {"slug": "tire-width", "series": "in-seconds", "title": {"zh": "200 秒，关于轮胎胎宽和抓地力"}},

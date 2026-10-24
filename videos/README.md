@@ -39,7 +39,7 @@
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 取证 | 实测与完整结构测绘已落盘；以整体树和 Alice 的同一条读写路线组织约 10 分钟中文提纲，再写文案交审 | 待同步 | GPT-6.1 Sol |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
-| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 设计 | 音色已定，不再询问。中文 Chinese (Mandarin)_Radio_Host，英文 Friendly_Person，均为 MiniMax speech-2.8-hd、语速 1.0。英文稿确认后合成 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon |
+| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 最新 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 全部选题
@@ -275,7 +275,7 @@
 | 4 | 150秒学会怎么打手枪<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | [`pistol-shooting`](in-seconds/pistol-shooting/) |  |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | [`dense-vs-moe`](in-seconds/dense-vs-moe/) |  |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 | `rear-seatbelt` |  |
-| 7 | 256 秒搞懂 SSH | zh + en | 制作中 | [`ssh`](in-seconds/ssh/) |  |
+| 7 | 256 秒搞懂 SSH | zh | 制作中 | [`ssh`](in-seconds/ssh/) | 已放弃（2026-10-24 策划者决定） |
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 | `powershell-pwsh` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 | `tire-width` |  |

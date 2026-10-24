@@ -56,7 +56,7 @@
 | 4 | 150秒学会怎么打手枪 | zh + en | 制作中 | [`pistol-shooting`](pistol-shooting/) |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](dense-vs-moe/) |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh + en | 计划中 | `rear-seatbelt` |
-| 7 | 256 秒搞懂 SSH | zh + en | 制作中 | [`ssh`](ssh/) |
+| 7 | 256 秒搞懂 SSH | zh | 制作中 | [`ssh`](ssh/) |
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh + en | 计划中 | `powershell-pwsh` |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh + en | 计划中 | `pty` |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh + en | 计划中 | `tire-width` |
