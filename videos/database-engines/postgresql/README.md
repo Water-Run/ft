@@ -16,7 +16,7 @@
 |---|---|
 | 范围 | 补上缺失的整体结构（堆表与索引的整体结构及其关系）与其他缺漏，改写文案后重新交审。 |
 | 从哪一阶段起 | 取证（补整树实测）→ 文案 |
-| 原发布 | [BV1xAnn6WEzv](https://www.bilibili.com/video/BV1xAnn6WEzv)；原成片、`project.json` 的 `release` 与 Git 历史中对应的源码保留，不覆盖 |
+| 原发布 | [BV1xAnn6WEzv](https://www.bilibili.com/video/BV1xAnn6WEzv)；2026-10-24 WaterRun 告知已在哔哩哔哩标记为归档（原话「B站视频已经标记为归档.」）。原成片、`project.json` 的 `release` 与 Git 历史中对应的源码保留，不覆盖 |
 | 署名 | 重做版 `credits` 完整更新：列出新版实际参与者及分工，沿用原版的部分照实注明；原版署名记录不改 |
 | 状态 | 已登记，尚未开工。先完成[全系列文案主线](../README.md#全系列计划2026-10-24)，开工时再改 `project.json` 的 `stage` |
 
