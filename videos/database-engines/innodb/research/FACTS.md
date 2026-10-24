@@ -98,6 +98,22 @@
 | V4 | MyISAM 锁整张表：读锁共享、写锁独占，一个连接在写，其他连接都要等 | MyISAM 事实表「08」（`mysys/thr_lock.c`）与 9.7.4 实测：读整表时两个修改都处于「Waiting for table level lock」 |
 | V5 | MyISAM 不记日志；上次没正常关闭的表要 CHECK TABLE 检查、REPAIR TABLE 修复 | MyISAM 事实表「09」 |
 
+### K 事务与 InnoDB 的来历（第 3 稿，`08_history.py` → `out_08.json`）
+
+原始文献或源码，存进 `research/_src/history/` 与 `research/_src/web/`，SHA-256 记在 `out_08.json`，摘句按原文逐字核对。
+
+| 编号 | 事实 | 出处 |
+|---|---|---|
+| K1 | Jim Gray 1972–1980 年是 IBM 圣何塞研究所的研究员，参加了后来叫 System R 的项目；1980–1990 年在 Tandem 公司 | ACM 图灵奖页面（2019 年存档）：「Research Staff Member, Computer Science Department, IBM Research, San Jose, CA (1972–1980)」「Gray soon joined this project, which became known as System R.」「Software Designer, Tandem Computers, Cupertino, CA (1980–1990)」 |
+| K2 | Gray 把事务定义为一个工作单位，例如从一个银行账户转钱到另一个账户：无论成不成功，都要让数据库保持一致——要么钱转过去，要么留在原账户 | 同上：「He defined the transaction as a unit of work, such as moving money from one bank account to another, … either the money moves, or it stays in the original account.」 |
+| K3 | 1981 年 6 月，Tandem 技术报告 TR 81.3《The Transaction Concept: Virtues and Limitations》（Jim Gray）：事务是一次状态变换，具有原子性（全有或全无）、持久性（效果在故障后保留）与一致性（正确的变换） | 作者分发的全文：「A transaction is a transformation of state which has the properties of atomicity (all or nothing), durability (effects survive failures) and consistency (a correct transformation).」 |
+| K4 | 1983 年 12 月，Theo Härder（西德凯泽斯劳滕大学）与 Andreas Reuter（IBM 圣何塞研究所）在 ACM Computing Surveys 15(4) 发表《Principles of Transaction-Oriented Database Recovery》，把事务的四个性质合称 ACID | 论文原文：「These four properties, atomicity, consistency, isolation, and durability (ACID), describe the major highlights of the transaction paradigm」 |
+| K5 | 1998 年图灵奖授予 Jim Gray，表彰他在数据库与事务处理研究上的开创性贡献 | ACM 图灵奖页面：「1998 CITATION For seminal contributions to database and transaction processing research and technical leadership in system implementation.」 |
+| K6 | InnoDB 9.7.4 源码的文件头都写着「Created 日期 Heikki Tuuri」：页 `page0page.cc` 与 B 树 `btr0btr.cc` 是 1994 年，缓冲池 `buf0buf.cc` 1995 年，事务 `trx0trx.cc`、undo `trx0undo.cc`、锁 `lock0lock.cc` 1996 年，读视图 `read0read.cc`、崩溃恢复 `log0recv.cc` 1997 年 | GitHub 标签 mysql-9.7.4，行号见 `out_08.json` |
+| K7 | 1992 年 3 月，IBM 的 C. Mohan 等在 ACM TODS 17(1) 发表 ARIES：恢复使用预写日志（write-ahead logging，WAL）；重启时先「重演历史」，把缺失的修改全部重做，再回滚没完成的事务 | 论文原文：「recovery using write-ahead logging (WAL)」「We introduce the paradigm of repeating history to redo all missing updates before performing the rollbacks of the loser transactions during restart after a system failure.」 |
+| K8 | 1983 年 12 月，Bernstein 与 Goodman 在 ACM TODS 8(4) 为多版本数据库系统的并发控制算法给出正确性理论 | ACM DL 存档：「This paper presents a theory for analyzing the correctness of concurrency control algorithms for multiversion database systems.」 |
+| K9 | PostgreSQL 源自加州大学伯克利分校的 POSTGRES：1986 年开始实现，由 Michael Stonebraker 教授领导；1996 年改名 PostgreSQL | PostgreSQL 18 文档《A Brief History of PostgreSQL》 |
+
 ## 官方手册与源码（`06_sources.py` → `out_06.json`）
 
 | 编号 | 原文摘句（MySQL 9.7 参考手册） | 页面 |
