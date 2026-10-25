@@ -138,7 +138,7 @@ scene('s1', ({ root, s, c0 }) => {
   st.textContent += '.s1-ti.s1-on { color: var(--ink) !important; font-size: 40px !important; }';
   // 「MyISAM」只在这一排卡片上方写一次（R13 第 5 条），讲到「三个问题」时换成「三个问题」
   const qHead = h('div', 'abs t-note', W, 'MyISAM 做不到的三处'); px(qHead, 200, 556); wipe(qHead, T('y6') + 0.1, { dir: 'l', d: 0.4 });
-  swaps(qHead, [[T('y6', '三个问题') - 0.1, '三个问题']]);
+  swaps(qHead, [[T('y7') - 0.1, '三个问题']]);
   // 小图：放在卡片下半部分，讲到哪一张就在哪一张里演一遍
   const pic = (i, html, x, t) => { const e = h('div', 'abs', cards[i], html); px(e, x, 96); css(e, { whiteSpace: 'nowrap' }); vanish(e, 0); return e; };
   // 1 撤回：42 → 改成 43（斜纹）→ 想撤回？

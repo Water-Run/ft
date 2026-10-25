@@ -140,7 +140,7 @@ scene('s5', ({ root, s, c0 }) => {
   const bits = (hh) => parseInt(hh, 16).toString(2).padStart(8, '0');
   const bit = h('div', 's5-bit', W); px(bit, lx + 30, rpBox.b + 12);
   bit.dataset.gloss = '回滚指针';                                  // 注解：第一次出现时先说它是什么，到 e9 再看它的位
-  swaps(bit, [[0, '<b>回滚指针</b>：7 字节<br>指向改之前的样子'], [T('e9', 'undo'), `<b>回滚指针</b> ${rp1} = <b>0</b>${bits(rp1).slice(1)}<br>最高位 0：更新，指向那条 undo 记录`]]);
+  swaps(bit, [[0, '<b>回滚指针</b>：7 字节<br>指向改之前的样子'], [T('e9', 'undo'), `<b>回滚指针</b> ${rp1} = <b>0</b>${bits(rp1).slice(1)}<br>最高位 0：更新`]]);
   show(bit, T('e5', '回滚指针') + 0.4, { y: 10, d: 0.4 });
   to(bit, T('e10z', '42'), { autoAlpha: 0, duration: 0.3 });
   // 事务号：1558 是建表时插入这一行的那一笔；2061 在事务进行时 innodb_trx 里查到的也是它（T7、X1）

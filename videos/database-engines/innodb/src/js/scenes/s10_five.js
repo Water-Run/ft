@@ -69,7 +69,7 @@ scene('s10', ({ root, s, c0 }) => {
     vanish(old, 0); appear(old, T('k8c', '旧值')); fromTo(old, T('k8c', '旧值'), { x: 0, y: 0 }, { x: 330 - 196 + 70, y: 30 - 20, duration: 0.7, ease: 'power2.inOut' });
     const del = box(art, 0, 100, 260, 46); txt(del, 12, 9, '2050 Alice', { color: 'var(--ink2)' });
     const flg = txt(del, 170, 9, '删除标记 1', { fontFamily: '"Sans SC"', color: 'var(--acc)' });
-    vanish(del, 0); show(del, T('k8cz') - 0.1, { y: 8, d: 0.3 }); vanish(flg, 0); appear(flg, T('k8cz', '标记'));
+    vanish(del, 0); show(del, T('k8cz') - 0.1, { y: 8, d: 0.3 }); vanish(flg, 0); appear(flg, T('k8cz') + 0.1);
     exit(del, T('k8cz', '清除'), { y: -14, d: 0.5 }); sfx('pop', T('k8cz', '标记'), { g: 0.4 }); sfx('whoosh', T('k8cz', '清除'), { g: 0.35 });
     answer(2, '改：旧值先进 undo；删：先打标记，没人需要了再清除', T('k8cz')); }
 
@@ -87,10 +87,10 @@ scene('s10', ({ root, s, c0 }) => {
     const scan = box(tape, 0, 0, 0, 30, 'var(--teal)', 'var(--teal)');
     fromTo(scan, T('k11', '重做') - 0.4, { width: 0 }, { width: 486, duration: 1.0, ease: 'power2.inOut' });
     const st1 = txt(art, 0, 70, '① 先重做：提交了的修改回来', { fontFamily: '"Sans SC"', color: 'var(--main)', fontWeight: 700 });
-    const st2 = txt(art, 0, 106, '② 再撤销：没提交的那一笔整个撤掉', { fontFamily: '"Sans SC"', color: 'var(--acc)', fontWeight: 700 });
+    const st2 = txt(art, 0, 106, '② 再撤销没提交的', { fontFamily: '"Sans SC"', color: 'var(--acc)', fontWeight: 700 });
     vanish(st1, 0); show(st1, T('k11', '重做'), { y: 6, d: 0.3 }); vanish(st2, 0); show(st2, T('k11z', 'undo'), { y: 6, d: 0.3 });
     sfx('pop', T('k11', '重做'), { g: 0.4 }); sfx('pop', T('k11z', 'undo'), { g: 0.4 });
-    answer(4, '先用 redo 重做，再用 undo 撤掉没提交的', Tend('k11z') - 0.4); }
+    answer(4, '先 redo 重做，再 undo 撤销', T('k11z')); }
 
   // 章末：五块都亮一下
   tiles.forEach((tt, i) => lit(tt.e, 'full', s.end - 1.4 + i * 0.1));

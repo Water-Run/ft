@@ -77,7 +77,6 @@ scene('intro', ({ root, s }) => {
   exit(myi, tM0, { x: 80, d: 0.45 }); [g2, g3].forEach((c, i) => exit(c, tM0 + i * 0.06, { y: 50, d: 0.4 }));
   [...ptr, ...treeLines].forEach((p) => tl.to(p, { opacity: 0, duration: 0.3 }, tM0));
   [...myd.children].forEach((c) => tl.to(c, { opacity: 0, duration: 0.35 }, outA - 0.45));   // 框连同里面的行一起缩小，快落地时字才淡掉
-  tl.fromTo(myd, { opacity: 0.4 }, { opacity: 1, duration: 0.3, immediateRender: false }, tM0);
   tl.fromTo(myd, { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: '0 0' }, { x: 500 - 150, y: 642 - 150, scaleX: 176 / 760, scaleY: 116 / 600, duration: outA - tM0 - 0.25, ease: 'power3.inOut', immediateRender: false }, tM0 + 0.25);
   vanish(myd, outA);                                                  // 落地那一刻换成泳道上的小表（同一个位置、同样大小）
   tl.fromTo(g1, { x: 0, y: 0, scale: 1, transformOrigin: '0 0' }, { x: 1290 - 150, y: 40 - 790, scale: 0.8, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, tM0);
@@ -160,8 +159,8 @@ scene('intro', ({ root, s }) => {
   const warnZ = h('div', 'gloss', B, '警告 1196：有些不支持事务的表，改动没法撤回'); px(warnZ, 900, 580);
   vanish(warn, 0); appear(warn, T('h13', '警告')); show(warnZ, T('h13', '警告') + 0.2, { y: 8, d: 0.4 }); sfx('error', T('h13', '警告'), { g: 0.5 });
   sfx('pop', T('h14', '42'));
-  const gInno = gloss(B, 160, 800, 'InnoDB', '<b>InnoDB</b>：MySQL 的存储引擎之一；2010 年 MySQL 5.5.5 起取代 MyISAM 成为默认，到 9.7 仍是默认', { w: 1000, src: 'MySQL 5.5 发布说明（H2）；MySQL 9.7 手册（M22）' });
-  vanish(gInno, 0); show(gInno, T('h15', 'InnoDB') + 0.2, { y: 8, d: 0.4 });
+  const gInno = gloss(W, 120, 896, 'InnoDB', '<b>InnoDB</b>：MySQL 的存储引擎；5.5.5 起是默认引擎<span class="gl-src" style="display:inline;margin-left:12px">H2、M22</span>', { w: 1100 });
+  vanish(gInno, 0); show(gInno, T('h15', 'InnoDB') + 0.2, { y: 8, d: 0.4 }); exit(gInno, T('h16', '事务') - 0.1, { y: 8, d: 0.3 });   // 跨过片名那一屏一直留着
   exit(B, T('hT') - 0.1, { y: -20, d: 0.35 });
 
   // ── 三、片名落在 InnoDB 的架构图上 ──
@@ -194,7 +193,7 @@ scene('intro', ({ root, s }) => {
   // 四、撤得回，是因为有事务：架构图里的 undo 亮起（M20）；另外两处留到后面各章再讲（R12 删去 h17）
   const callout = (el, html, t) => { const c = h('div', 'tag', el, html); px(c, 12, -18); css(c, { fontSize: '24px' }); slam(c, t, { from: 1.3 }); sfx('pop', t, { g: 0.5 }); return c; };
   const c1 = callout(undo, '事务：回滚', T('h16', '事务'));
-  const gTxn = gloss(C, 120, 896, '事务', '<b>事务</b>：把一组修改捆成一个整体，要么都生效，要么都撤回；撤回靠的是 undo（第 02、05 章细讲）', { w: 1300 });
+  const gTxn = gloss(C, 120, 896, '事务', '<b>事务</b>：一组修改捆成一个整体，要么都生效，要么都撤回', { w: 1300 });
   vanish(gTxn, 0); show(gTxn, T('h16', '事务') + 0.2, { y: 8, d: 0.4 });
   lit(undo, 'on', T('h16', '事务'));
   // undo 里一格格记下旧值

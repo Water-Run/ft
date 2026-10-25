@@ -89,8 +89,8 @@ scene('s6', ({ root, s, c0 }) => {
   const dTag = h('div', 'tag acc', W, '脏读'); px(dTag, 800, 460); slam(dTag, T('f5', '脏读'), { from: 1.3 });
   [dirty].forEach((p) => svgOut(p, T('f6') - 0.1, 0.3));
   [dX, dTag].forEach((e) => exit(e, T('f6') - 0.1, { y: -10, d: 0.3 }));
-  const gDirty = gloss(W, 900, 418, '脏读', '<b>脏读</b>：读到别人还没提交的数据。默认的可重复读不会；读未提交级别下会', { w: 620, src: 'MySQL 9.7 手册（M38、M42）' });
-  vanish(gDirty, 0); show(gDirty, T('f5', '脏读') + 0.2, { y: 8, d: 0.4 }); exit(gDirty, T('f6') - 0.1, { y: 8, d: 0.3 });
+  const gDirty = gloss(W, 900, 418, '脏读', '<b>脏读</b>：读到别人没提交的数据；默认级别下不会', { w: 620, src: '手册 M38、M42' });
+  vanish(gDirty, 0); show(gDirty, T('f5', '脏读') + 0.1, { y: 8, d: 0.4 }); exit(gDirty, T('f6', '快照') + 0.1, { y: 8, d: 0.3 });
 
   // f6–f8：Bob 的快照：拍下那一刻已经提交的事务看得见；6175 还没提交，不在里面
   const card = h('div', 'card', W, `<div class="ct" style="font-size:32px">Bob 的快照<span class="s6-first" style="font:500 22px 'Sans SC';color:var(--ink2);margin-left:12px">· 第一次读时拍下</span></div>
@@ -109,8 +109,8 @@ scene('s6', ({ root, s, c0 }) => {
   }
   vanish(card, 0); appear(card, tSh + 0.26);                  // 叶片合拢的那一刻，快照卡定格
   sfx('tick', tSh + 0.18, { g: 0.6 }); sfx('pop', tSh + 0.3, { g: 0.5 });
-  const gSnap = gloss(W, 900, 418, '快照', '<b>快照</b>（读视图）：拍下那一刻哪些事务已经提交；之后读每一行，都按它决定能看哪个版本', { w: 420, src: 'MySQL 9.7 手册（M9、M30）；源码（S6）' });
-  vanish(gSnap, 0); show(gSnap, T('f6', '快照') + 0.3, { y: 8, d: 0.4 }); exit(gSnap, T('f10') - 0.1, { y: 8, d: 0.3 });
+  const gSnap = gloss(W, 900, 418, '快照', '<b>快照</b>（读视图）：记下拍的那一刻哪些事务已提交，读每一行时按它挑版本', { w: 420, src: '手册 M9、M30；源码 S6' });
+  vanish(gSnap, 0); show(gSnap, T('f6', '快照') + 0.45, { y: 8, d: 0.4 }); exit(gSnap, T('f10') - 0.1, { y: 8, d: 0.3 });
   vanish(cl1, 0); vanish(cl2, 0);
   show(cl1, T('f7', '已经提交'), { y: 8, d: 0.35 });
   const snapLink = path(ov, `M${xB1 + 30},${LN.Y(1) - 22} C${xB1 + 30},620 1300,560 1338,470`, 'mute', { w: 1.8, dashed: '4 6', arrow: false });
@@ -182,15 +182,15 @@ scene('s6', ({ root, s, c0 }) => {
   arrowIn(same, T('f15', '不同的值') - 0.2, 0.6);
   const eq = h('div', 'abs', W, '两次都读到 42'); px(eq, 830, LN.Y(1) + 66); css(eq, { font: '700 24px "Sans SC"', color: 'var(--main)', background: 'var(--bg)', padding: '0 8px' });
   vanish(eq, 0); show(eq, T('f15', '挡住') - 0.2, { y: 6, d: 0.35 });
-  const gNR = gloss(W, 1250, LN.Y(1) + 20, '不可重复读', '<b>不可重复读</b>：同一个事务里两次读同一行，读到不同的值', { w: 520, src: 'MySQL 9.7 手册（M43）' });
-  vanish(gNR, 0); show(gNR, T('f15', '不可重复读') + 0.2, { y: 8, d: 0.4 }); exit(gNR, T('f16') - 0.1, { y: 8, d: 0.3 });
+  const gNR = gloss(W, 1250, LN.Y(1) + 20, '不可重复读', '<b>不可重复读</b>：两次读同一行，值不同', { w: 520, src: '手册 M43' });
+  vanish(gNR, 0); show(gNR, T('f15') + 0.1, { y: 8, d: 0.4 }); exit(gNR, T('f16') - 0.1, { y: 8, d: 0.3 });
   // f16：锁定读，直接读最新提交的版本：43
   const fs = LN.event(1, tFS, 'FOR SHARE', 'ink');
   const lk = lockAt(W, 0, 0); px(lk, xFS - 100, LN.Y(1) - 70); vanish(lk, 0); show(lk, tFS + 0.3, { y: -10, d: 0.4 });
   const vFS = valAt(xFS + 90, LN.Y(1), M.bob_locking_read, '', tFSv);
   const toCur = path(ovB, `M${xFS},${LN.Y(1) - 22} C${xFS},520 825,520 825,337`, 'main', { w: 2.2, dashed: '8 7' });
   arrowIn(toCur, tFSv - 0.5, 0.6); svgOut(toCur, T('f17') - 0.1, 0.3);
-  const gLR = gloss(W, 1250, LN.Y(1) + 44, '锁定读', '<b>锁定读</b>（FOR SHARE）：读的同时给这一行加锁，读的是最新提交的版本', { w: 520, src: '本片实验（X3）' });
+  const gLR = gloss(W, 1250, LN.Y(1) + 44, '锁定读', '<b>锁定读</b>：读时加锁，读最新提交的版本', { w: 520, src: '实验 X3' });
   vanish(gLR, 0); show(gLR, T('f16', '锁定读') + 0.2, { y: 8, d: 0.4 }); exit(gLR, T('f17') - 0.1, { y: 8, d: 0.3 });
 
   // f17–f18：读已提交——每读一次拍一张新快照，提交后读到 43
@@ -219,8 +219,8 @@ scene('s6', ({ root, s, c0 }) => {
   px(mv, 120, 410); wipe(mv, T('f21', '多版本'), { dir: 'l', d: 0.6 }); sfx('thud', T('f21', '多版本') + 0.1, { g: 0.6 });
   // 脚注（K8）：多版本并发控制的正确性理论出自 1983 年 Bernstein 与 Goodman；不配旁白，作 MVCC 标题的脚注
   const fnote = h('div', 'abs t-small', W, '多版本并发控制的正确性理论，由 Bernstein 与 Goodman 在 1983 年提出'); px(fnote, 124, 556);   // 落在 MVCC 标题与注解下面（措辞照 WaterRun 2026-10-25）
-  const gMV = gloss(W, 780, 420, '多版本并发控制', '<b>多版本并发控制</b>：一行留着几个版本，读的人按快照挑自己能看的那个，读和写互不等待', { w: 620, src: 'MySQL 9.7 手册（M56）' });
-  vanish(gMV, 0); show(gMV, T('f21', '多版本') + 0.4, { y: 8, d: 0.4 });
+  const gMV = gloss(W, 780, 420, '多版本并发控制', '<b>多版本并发控制</b>：一行多个版本，按快照挑', { w: 620, src: '手册 M56' });
+  vanish(gMV, 0); show(gMV, T('f21') + 0.1, { y: 8, d: 0.4 });
   vanish(fnote, 0); show(fnote, T('f20') + 0.3, { y: 6, d: 0.4 });
   // 收尾：泳道一带慢慢淡下去，只留两个版本与 MVCC（整组放进一个容器，只对容器补间）
   const dimBox = h('div', 'abs', W); px(dimBox, 0, 0, 1920, 1080);

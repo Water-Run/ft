@@ -272,10 +272,10 @@ scene('s2', ({ root, s, c0 }) => {
     sfx('thud', tFly + i * 0.16 + 0.7, { g: 0.35 });
     return e;
   });
-  [d81, d83].forEach((d) => tl.to(d, { opacity: 0.12, duration: 0.5 }, tFly));          // 文献退成背景
+  [d81, d83].forEach((d) => tl.to(d, { opacity: 0.12, duration: 0.5 }, tFly + 0.9));    // 字母飞出来之后，文献再退成背景
   s2_out(GD, T('t11d', 'ACID') + 0.9, { y: -16, d: 0.35 });
-  const gAcid = gloss(W, 560, 440, 'ACID', '<b>ACID</b>：Atomicity、Consistency、Isolation、Durability，四个英文词的首字母', { w: 800, src: 'Härder、Reuter《Principles of Transaction-Oriented Database Recovery》，1983' });
-  vanish(gAcid, 0); show(gAcid, T('t11d', 'ACID') + 0.2, { y: 10, d: 0.4 }); s2_out(gAcid, T('q1') - 0.15, { y: 8, d: 0.3 });
+  const gAcid = gloss(W, 560, 56, 'ACID', '<b>ACID</b>：Atomicity、Consistency、Isolation、Durability 四个词的首字母', { w: 1100 });   // 放在字母上方，一直留到合成「可靠」
+  vanish(gAcid, 0); show(gAcid, T('t11d', 'ACID') + 0.2, { y: 10, d: 0.4 }); tl.to(gAcid, { autoAlpha: 0, duration: 0.3 }, T('q4r', '合在一起'));
   // 一次只讲一个：讲到的字母亮、名字留着；别的字母退淡、名字收起（同屏要读的字少）
   const wEls = Ls.map((e) => e.querySelector('.w')), inEls = Ls.map((e) => e.querySelector('.in'));   // 帧函数只管里层（外层有入场、移动的补间）
   const QT = [T('q1'), T('q2'), T('q3'), T('q4')], tAll = T('q4r', '合在一起');
@@ -307,9 +307,9 @@ scene('s2', ({ root, s, c0 }) => {
     [ok, no, half].forEach((e) => vanish(e, 0));
     arrowIn(p1, T('q1', '全成') - 0.2, 0.4); show(ok, T('q1', '全成'), { x: -20, y: 0, d: 0.4 }); sfx('pop', T('q1', '全成'), { g: 0.4 });
     arrowIn(p2, T('q1', '全不成') - 0.2, 0.4); show(no, T('q1', '全不成'), { x: -20, y: 0, d: 0.4 }); sfx('pop', T('q1', '全不成'), { g: 0.4 });
-    pH.setAttribute('opacity', 0); tl.to(pH, { opacity: 1, duration: 0.3 }, Tend('q1')); show(half, Tend('q1') + 0.05, { x: -20, y: 0, d: 0.4 }); sfx('error', Tend('q1') + 0.3, { g: 0.35 });
-    const gA = gloss(g, 20, 420, '', '<b>原子性</b>：一个事务里的几处修改是一个整体——要么都生效，要么都撤回，不会只成一半', { w: 1100, src: 'MySQL 9.7 手册（M23、M25）' });
-    vanish(gA, 0); show(gA, T('q1', '全成') + 0.2, { y: 8, d: 0.4 }); }
+    pH.setAttribute('opacity', 0); tl.to(pH, { opacity: 1, duration: 0.3 }, T('q1', '全不成') + 0.35); show(half, T('q1', '全不成') + 0.4, { x: -20, y: 0, d: 0.4 }); sfx('error', Tend('q1') + 0.3, { g: 0.35 });
+    const gA = gloss(g, 20, 420, '', '<b>原子性</b>：一组修改不会只成一半', { w: 1100 });
+    vanish(gA, 0); show(gA, T('q1') + 0.1, { y: 8, d: 0.4 }); }
 
   // C：改到一半断电，重启后不留半截（R1：改到第 258 行时结束进程；R4：重启后被改过的 0 行）
   { const g = stage(1);
@@ -324,11 +324,11 @@ scene('s2', ({ root, s, c0 }) => {
       const r = Math.floor(k / 64), c = k % 64; L.f.setAttribute('height', r * 6); L.p.setAttribute('y', 1 + r * 6); L.p.setAttribute('width', c * 6); });
     const bolt = h('div', 'abs', g, MARK.bolt(96)); px(bolt, 480, 170); vanish(bolt, 0); slam(bolt, tg1, { from: 1.8 }); sfx('error', tg1, { g: 0.5 });
     const arr = h('div', 'abs mono c-mainD', g, '→'); px(arr, 640, 190); css(arr, { fontSize: '64px' }); vanish(arr, 0); appear(arr, tg1 + 0.35);
-    vanish(R.b, 0); show(R.b, tg1 + 0.45, { x: -20, y: 0, d: 0.4 });
+    vanish(R.b, 0); show(R.b, tg1 + 0.25, { x: -20, y: 0, d: 0.4 });
     const ok = h('div', 'abs', g, MARK.ok(72)); px(ok, 1230, 190); vanish(ok, 0); slam(ok, T('q2', '错乱'), { from: 1.5 }); sfx('pop', T('q2', '错乱'), { g: 0.45 });
-    const res = label(g, 1230, 290, '4095 行都是原值<br>被改过的：0 行', 't-note'); vanish(res, 0); show(res, T('q2', '错乱') + 0.1, { y: 8, d: 0.35 });
-    const gC = gloss(g, 40, 450, '', '<b>一致性</b>：手册说，它主要靠 InnoDB 内部的处理，保护数据不因崩溃而损坏；改到一半断电，重启后整个撤掉，不留半截（实测）', { w: 1300, src: 'MySQL 9.7 手册（M25）；本片实验（R1、R4）' });
-    vanish(gC, 0); show(gC, T('q2', '崩溃') + 0.2, { y: 8, d: 0.4 }); }
+    const res = label(g, 1230, 290, '被改过的：0 行', 't-note'); vanish(res, 0); show(res, tg1 + 0.5, { y: 8, d: 0.35 });
+    const gC = gloss(g, 40, 450, '', '<b>一致性</b>：崩溃也不留半截（实测）', { w: 1300 });
+    vanish(gC, 0); show(gC, T('q2') + 0.1, { y: 8, d: 0.4 }); }
 
   // I：Alice 改了还没提交，Bob 同时来读，读到的仍是 42（X3）
   { const g = stage(2);
@@ -345,9 +345,9 @@ scene('s2', ({ root, s, c0 }) => {
     slam(aU, tI0, { from: 1.3 }); fromTo(aNew, tI0 + 0.2, { width: 0 }, { width: 760, duration: Math.max(0.8, tI1 - tI0), ease: 'none' });
     slam(bR, T('q3', '同时'), { from: 1.3 }); slam(bV, T('q3', '同时') + 0.4, { from: 1.4 }); sfx('blip', T('q3', '同时') + 0.4, { g: 0.4 });
     slam(bOk, tI1, { from: 1.5 }); sfx('pop', tI1, { g: 0.45 });
-    const note = label(g, 1000, 206, 'Alice 还没提交，Bob 看不到她的 43', 't-note'); vanish(note, 0); show(note, tI1 + 0.1, { y: 8, d: 0.35 });
-    const gI = gloss(g, 0, 420, '', '<b>隔离性</b>：同时进行的事务互不干扰——一个事务没提交的修改，别的事务看不到（实测：默认的可重复读）', { w: 1300 });
-    vanish(gI, 0); show(gI, T('q3', '同时') + 0.3, { y: 8, d: 0.4 }); }
+    const note = label(g, 1000, 206, '看不到 Alice 没提交的 43', 't-note'); vanish(note, 0); show(note, T('q3', '同时') + 0.6, { y: 8, d: 0.35 });
+    const gI = gloss(g, 0, 420, '', '<b>隔离性</b>：没提交的修改，别人看不到', { w: 1300 });
+    vanish(gI, 0); show(gI, T('q3') + 0.1, { y: 8, d: 0.4 }); }
 
   // D：提交之后断电，重启后还在（R1、R4：断电前已提交的 Alice 43，重启后仍是 43）
   { const g = stage(3);
@@ -363,8 +363,8 @@ scene('s2', ({ root, s, c0 }) => {
     appear(arrs[1], tD0 + 0.6); show(s3, tD0 + 0.65, { s: 1.4, y: 0, d: 0.3 }); sfx('error', tD0 + 0.65, { g: 0.45 });
     appear(arrs[2], tD1 - 0.5); show(s4, tD1 - 0.45, { x: -20, y: 0, d: 0.3 });
     appear(arrs[3], tD1 - 0.1); show(s5, tD1, { x: -20, y: 0, d: 0.35 }); sfx('pop', tD1 + 0.1, { g: 0.5 });
-    const gD = gloss(g, 0, 420, '', '<b>持久性</b>：提交了的修改，断电重启之后还在（实测：断电前已提交的 Alice 43，重启后仍是 43）', { w: 1300 });
-    vanish(gD, 0); show(gD, tD0 + 0.3, { y: 8, d: 0.4 }); }
+    const gD = gloss(g, 0, 420, '', '<b>持久性</b>：提交了的，断电重启后还在', { w: 1300 });
+    vanish(gD, 0); show(gD, T('q4') + 0.1, { y: 8, d: 0.4 }); }
 
   // q4r：四个字母撞到一起合成一块，落下「可靠」（M25 手册原文写在下面）
   const LXc = [748, 914, 1040, 1170];                       // 220px Inter 粗体时四个字母挨着排的中心（A、C 宽，I 窄）
@@ -373,12 +373,12 @@ scene('s2', ({ root, s, c0 }) => {
   sfx('thud', tAll + 0.55, { g: 0.6 });
   const rely = h('div', 'abs', W, '<span style="font:900 120px \'Sans SC\';color:#fff;background:var(--mainD);padding:4px 40px;display:inline-block;line-height:1.15">可靠</span>'); px(rely, 960 - 160, 420);
   vanish(rely, 0); slam(rely, T('q4r', '可靠'), { from: 1.5 }); sfx('thud', T('q4r', '可靠'), { g: 0.6 });
-  const gRely = gloss(W, 560, 620, '可靠', '<b>可靠</b>：MySQL 手册对 ACID 的概括——「一组数据库设计原则，着眼于可靠性」', { w: 800, src: '"…database design principles that emphasize aspects of reliability…" · MySQL 9.7 手册' });
-  vanish(gRely, 0); show(gRely, T('q4r', '可靠') + 0.3, { y: 10, d: 0.4 });
-  [rely, gRely].forEach((e) => tl.to(e, { autoAlpha: 0, duration: 0.3 }, T('q4b') - 0.15));
+  const gRely = gloss(W, 560, 620, '可靠', '<b>可靠</b>：手册说 ACID「着眼于可靠性」<span class="gl-src" style="display:inline;margin-left:12px">M25</span>', { w: 800 });
+  vanish(gRely, 0); show(gRely, T('q4r', '可靠') + 0.1, { y: 10, d: 0.4 });
+  [rely, gRely].forEach((e) => tl.to(e, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15));   // 一直留到图灵奖讲完
   // q4b：1998 年图灵奖（K5）
   const tur = h('div', 'abs', W, '<span class="tag s2-tt2" style="position:static;font-size:26px;margin-right:16px">1998 · ACM 图灵奖</span><span class="mono s2-tq" style="font-size:22px;color:var(--ink2)">"For seminal contributions to <span class="s2-hl">database</span></span><span class="mono s2-tq2" style="font-size:22px;color:var(--ink2)"> and <span class="s2-hl">transaction processing</span> research …"</span><div class="gloss s2-tz" style="position:static;margin-top:8px">开创性贡献：数据库与事务处理研究</div>');
-  px(tur, 300, 470); vanish(tur, 0); show(tur, T('q4b') + 0.1, { y: 14, d: 0.4 }); tl.to(tur, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15); sfx('pop', T('q4b') + 0.2, { g: 0.5 });
+  px(tur, 300, 720); vanish(tur, 0); show(tur, T('q4b') + 0.1, { y: 14, d: 0.4 }); tl.to(tur, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15); sfx('pop', T('q4b') + 0.2, { g: 0.5 });
   const [turQ, turZ] = [tur.querySelector('.s2-tq'), tur.querySelector('.s2-tz')];
   const turQ2 = tur.querySelector('.s2-tq2');
   vanish(turZ, 0); show(turZ, T('q4b', 'Gray'), { y: 8, d: 0.4 });
@@ -423,6 +423,7 @@ scene('s2', ({ root, s, c0 }) => {
   const oCntP = h('div', 'abs', OG); px(oCntP, 1420, 300);
   const oCntPN = h('div', 'num', oCntP, '0'); css(oCntPN, { font: '800 56px Inter', color: 'var(--mainD)' }); h('div', 't-small', oCntP, '页 × 16 KB');
   const oCntB = h('div', 'abs num', OG, ''); px(oCntB, 1420, 420); css(oCntB, { font: '700 30px Inter', color: 'var(--ink2)' });
+  const oCntBu = h('div', 'abs t-small', OG, '字节'); px(oCntBu, 1420, 460); vanish(oCntBu, 0); appear(oCntBu, tS0);
   let lastS = '';
   F((t) => {
     const on = t >= tS0 && t < tS1 + 0.2, n = nRows(t), used = t < tS0 - 0.2 ? 0 : Math.min(D.file.pages, 4 + Math.ceil((D.file.pages - 4) * n / 4096));
@@ -432,15 +433,15 @@ scene('s2', ({ root, s, c0 }) => {
     pcs.forEach((c, p) => { const k = kind(p), live = p < used; const [bg, bd] = live ? COL[k] : ['transparent', 'var(--edge)'];
       c.style.background = bg; c.style.borderColor = bd; c.style.borderStyle = live ? 'solid' : 'dashed'; });
     oCntN.textContent = n.toLocaleString('en-US').replace(',', ' ');
-    oCntPN.textContent = used; oCntB.textContent = used ? (used * 16384).toLocaleString('en-US').replace(/,/g, ' ') + ' 字节' : '';
+    oCntPN.textContent = used; oCntB.textContent = used ? (used * 16384).toLocaleString('en-US').replace(/,/g, ' ') : '';
   });
   [fileT, oCnt, oCntP].forEach((e) => { vanish(e, 0); });
   show(fileT, out4 + 0.2, { y: 10, d: 0.4 }); show(oCnt, tS0, { x: -20, y: 0, d: 0.35 }); show(oCntP, tS0 + 0.2, { x: 20, y: 0, d: 0.35 });
   for (let k = 0; k < 8; k++) sfx('tick', lerp(tS0, tS1, k / 7), { g: 0.25 });
   // 图例：各页的用途（与第 03 章的配色一致）
-  const legend = h('div', 'abs t-small', OG, '<span class="s2-lg" style="background:var(--mainD)"></span>根页 &nbsp; <span class="s2-lg" style="background:var(--teal);border-color:var(--mainD)"></span>主键树的叶子 &nbsp; <span class="s2-lg" style="background:#CFE6EB;border-color:var(--main)"></span>姓名索引的叶子 &nbsp; <span class="s2-lg" style="background:var(--band)"></span>文件自己用的页 &nbsp; <span class="s2-lg"></span>其他页');
+  const legend = h('div', 'abs t-small', OG, '<span class="s2-lg" style="background:var(--mainD)"></span>根页 &nbsp; <span class="s2-lg" style="background:var(--teal);border-color:var(--mainD)"></span>主键叶子 &nbsp; <span class="s2-lg" style="background:#CFE6EB;border-color:var(--main)"></span>姓名索引叶子 &nbsp; <span class="s2-lg" style="background:var(--band)"></span>文件自用页');
   px(legend, G7.x - 160, G7.y + 7 * G7.c + 10); st.textContent += ' .s2-lg { display:inline-block; width:22px; height:22px; border:2px solid var(--edge); vertical-align:middle; margin-right:6px; }';
-  vanish(legend, 0); show(legend, tS1 - 0.3, { y: 8, d: 0.4 });
+  vanish(legend, 0); show(legend, tS0 + 0.4, { y: 8, d: 0.4 });
   const qm = h('div', 'abs', OG, '<span style="font:800 120px Inter;color:var(--mainD)">?</span>'); px(qm, 1440, 500);
   vanish(qm, 0); slam(qm, T('q6', '放在哪里'), { from: 1.5 }); sfx('thud', T('q6', '放在哪里'), { g: 0.45 });
   W.appendChild(ov);

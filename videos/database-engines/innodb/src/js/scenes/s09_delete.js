@@ -131,10 +131,10 @@ scene('s9', ({ root, s, c0 }) => {
   show(hdr, c0 + 0.8, { y: 0, d: 0.4 }); exit(hdr, tRe, { d: 0.25 });
   const freePtr = path(ov, `M${120 + 1060 + 300},${110 + 58} C${120 + 1060 + 300},${196} ${120 + cx(iA) + CW + 10},${186} ${120 + cx(iA) + CW - 30},${110 + Y0 - 2}`, 'acc', { w: 2.4, dashed: '8 6' });   // 从页头的「空闲链」下面出发，不穿过字
   tl.fromTo(freePtr, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, tPurge + 0.6); tl.fromTo(freePtr, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, tDave + 0.6);
-  const daveL = h('div', 'abs', W, `Dave 的行落在偏移 ${dv.offset}：正好用上 Alice 腾出的 ${DL.purged.garbage} 字节`); px(daveL, 166, 470); css(daveL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
+  const daveL = h('div', 'abs', W, `Dave 正好用上 Alice 腾出的 ${DL.purged.garbage} 字节`); px(daveL, 166, 470); css(daveL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
   vanish(daveL, 0); show(daveL, tDave + 0.5, { y: 8, d: 0.35 }); exit(daveL, tRe - 0.1, { d: 0.3 });
   // 清除（purge）的注解
-  const gPurge = gloss(W, 166, 470, '清除', '<b>清除</b>（purge）：后台把打了删除标记、已没有事务需要的行真正移走，它的空间进页里的空闲链', { w: 1200, src: 'MySQL 9.7 手册（M8）；本片实验（D1–D3）' });
+  const gPurge = gloss(W, 166, 470, '清除', '<b>清除</b>：后台真正移走没人需要的行', { w: 1200, src: 'M8、D1–D3' });
   vanish(gPurge, 0); show(gPurge, T('d5', '清除') + 0.1, { y: 8, d: 0.4 }); exit(gPurge, tDave + 0.3, { y: 8, d: 0.3 });
   const purgeTag = h('div', 'tag', W, 'purge'); px(purgeTag, 120 + cx(iA) + 80, 110 + Y0 - 48); css(purgeTag, { fontFamily: 'Inter', fontSize: '26px' });
   slam(purgeTag, tPurge - 0.1, { from: 1.4 }); exit(purgeTag, tDave - 0.2, { y: -10, d: 0.3 });
@@ -208,9 +208,9 @@ scene('s9', ({ root, s, c0 }) => {
   sfx('error', T('d12', '多出'), { g: 0.4 });
   const tagP = h('div', 'tag acc', pg, '幻读'); px(tagP, 0, 0); css(tagP, { position: 'absolute', right: '8px', top: '8px', left: 'auto', fontSize: '26px' });
   vanish(tagP, 0); slam(tagP, T('d12', '幻读'), { from: 1.4 }); exit(tagP, T('d13', '插') - 0.2, { d: 0.3 });
-  const gGap = gloss(W, 166, 494, '间隙', '<b>间隙</b>：两条记录之间、还没有行的那段编号范围；锁住它，别人就插不进来', { w: 820, src: 'MySQL 9.7 手册（M11）；data_locks 实测（X6）' });
+  const gGap = gloss(W, 166, 494, '间隙', '<b>间隙</b>：记录间的空档，锁住就插不进来', { w: 820, src: 'M11、X6' });
   vanish(gGap, 0); show(gGap, T('d10', '间隙') + 0.1, { y: 8, d: 0.4 }); exit(gGap, T('d12') - 0.1, { y: 8, d: 0.3 });
-  const gPh = gloss(W, 166, 494, '幻读', '<b>幻读</b>：同一个事务里第二次读，多出了别人新插的行', { w: 820, src: 'MySQL 9.7 手册（M44、M46）' });
+  const gPh = gloss(W, 166, 494, '幻读', '<b>幻读</b>：第二次读多出了新插的行', { w: 820, src: 'M44、M46' });
   vanish(gPh, 0); show(gPh, T('d12', '幻读') + 0.1, { y: 8, d: 0.4 }); exit(gPh, T('d13', '插') - 0.2, { y: 8, d: 0.3 });
   const dvArrow = path(ov, `M${L2.X(T('d9', '插进'))},${L2.Y(1) - 70} L${L2.X(T('d9', '插进'))},${600} L${120 + cx(iA) - GAP / 2},${110 + Y0 + CH - 24}`, 'acc', { w: 2.2, dashed: '7 6' });
   arrowIn(dvArrow, T('d9', '挡住') - 0.3, 0.5); svgOut(dvArrow, tBobC2);

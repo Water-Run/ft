@@ -112,8 +112,8 @@ scene('s4', ({ root, s, c0 }) => {
   // 目录：页尾一列 52 格，从下往上
   const DX = PG.w - 120, DY0 = PG.h - 30, DH = 9.4;
   const dirLbl = h('div', 'abs t-small', pg27, '目录'); px(dirLbl, DX - 2, 8);
-  const gDir = gloss(W, 144, 748, '页目录', '<b>页目录</b>：页尾的一列槽，按编号排好；每个槽记着一组（4–8 条）里最后一条的位置', { w: 472, src: '本片解析（P1）；源码（S5）' });
-  vanish(gDir, 0); show(gDir, T('b8', '页目录') + 0.1, { y: 8, d: 0.4 }); exit(gDir, T('b9', '对半') - 0.1, { y: 8, d: 0.3 });
+  const gDir = gloss(W, 144, 748, '页目录', '<b>页目录</b>：页尾一列槽，记每组记录的位置', { w: 472, src: 'P1、S5' });
+  vanish(gDir, 0); show(gDir, T('b8') + 0.1, { y: 8, d: 0.4 }); exit(gDir, T('b9', '对半') - 0.25, { y: 8, d: 0.2 });
   const dirCells = [];
   for (let k = 0; k < D.dir.n_dir_slots; k++) { const r = svg('rect', { x: DX, y: DY0 - (k + 1) * DH, width: 46, height: DH - 2, fill: '#D9EEEF', stroke: '#2D5A68', 'stroke-width': 0.8 }, recSvg); dirCells.push(r); }
   // 二分：依次亮起的目录格，旁边写出那一格指向的编号
@@ -122,14 +122,16 @@ scene('s4', ({ root, s, c0 }) => {
   // 范围框：还没排除的槽；每一步比较之后砍掉一半（按 P1 的探测顺序推出上下界）
   const RNG = []; { let lo = 0, hi = D.dir.n_dir_slots - 1; RNG.push([lo, hi]); probes.forEach((q) => { if (q.key > 2050) hi = q.slot; else lo = q.slot; RNG.push([lo, hi]); }); }
   const rng = h('div', 'abs', pg27); css(rng, { border: '3px solid var(--acc)', background: 'rgba(181,69,46,0.06)' });
-  const cmp = h('div', 'abs', pg27, ''); px(cmp, DX - 350, 16, 300); css(cmp, { font: '700 26px Inter', color: 'var(--ink)', textAlign: 'right' });   // 让开下面 users.ibd 框的标题位置
+  const cmpT = h('div', 'abs t-small', W, '页目录里对半找：'); px(cmpT, 150, 726); css(cmpT, { color: 'var(--ink)', fontWeight: 700 });
+  vanish(cmpT, 0); show(cmpT, tP0 - 0.05, { y: 6, d: 0.3 }); exit(cmpT, T('b10') - 0.1, { d: 0.3 });
+  probes.forEach((q, k) => { const e = h('div', 'abs num', W, `${k + 1}　${q.key} ${q.key > 2050 ? '&gt;' : q.key < 2050 ? '&lt;' : '='} 2050`); px(e, 150 + (k % 2) * 230, 760 + Math.floor(k / 2) * 34);
+    css(e, { font: '700 24px Inter', color: q.key === 2050 ? 'var(--mainD)' : 'var(--ink)' }); vanish(e, 0); appear(e, tP0 + k * tPstep); exit(e, T('b10') - 0.1, { d: 0.3 }); });
   let lastR = -1;
   F((t) => { const on = t >= tP0 - 0.3 && t <= Tend('b9z') - 0.1, k = !on ? -1 : t < tP0 ? 0 : Math.min(probes.length, Math.floor((t - tP0) / tPstep) + 1); if (k === lastR) return; lastR = k;
-    if (k < 0) { rng.style.visibility = 'hidden'; cmp.textContent = ''; return; }
+    if (k < 0) { rng.style.visibility = 'hidden'; return; }
     const [lo, hi] = RNG[k]; rng.style.visibility = 'visible';
     px(rng, DX - 6, DY0 - (hi + 1) * DH - 4, 58, (hi - lo + 1) * DH + 6);
-    const q = probes[Math.min(k, probes.length) - 1];
-    cmp.innerHTML = q ? `第 ${k} 步：${q.key} ${q.key > 2050 ? '&gt;' : q.key < 2050 ? '&lt;' : '='} 2050<div style="font:500 22px 'Sans SC';color:var(--ink2)">${q.key > 2050 ? '往前一半找' : q.key < 2050 ? '往后一半找' : '找到了，再收一收范围'}</div>` : '52 个槽里对半找'; });
+  });
   const pLbl = probes.map((p, i) => {
     const y = DY0 - (p.slot + 1) * DH;
     const e = h('div', 'abs num', pg27, `${p.key}`); px(e, DX - 92, y - 12, 84); css(e, { font: '700 24px Inter', textAlign: 'right', color: p.key === 2050 ? 'var(--main)' : 'var(--ink2)' });
@@ -147,7 +149,7 @@ scene('s4', ({ root, s, c0 }) => {
   tl.fromTo(hit, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, tHit); vanish(hitLbl, 0); appear(hitLbl, tHit);
   sfx('blip', tHit, { g: 0.6 });
   const rowHit = h('div', 'pill fill', pg27, '2050 · Alice · 42'); px(rowHit, pA.x + 74, pA.y - 6);
-  vanish(rowHit, 0); slam(rowHit, tHit + 0.5, { from: 1.3 });
+  vanish(rowHit, 0); slam(rowHit, tHit + 0.1, { from: 1.3 });
   // 讲到「连成一条链」时，链从第一行描到最后一行；讲到「目录」时目录亮
   const chainPath = recSvg.querySelector('path'); const len = 99999;
   chainPath.style.strokeDasharray = len; tl.fromTo(chainPath, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: Math.max(1.6, Tend('b7z') - T('b7', '链')), ease: 'none', immediateRender: true }, T('b7', '链'));
@@ -191,10 +193,10 @@ scene('s4', ({ root, s, c0 }) => {
   arrowIn(pathPK3, T('b13', '整行') - 0.2, 0.4);
   const row = h('div', 'pill fill', W, '2050 · Alice · 42'); px(row, PKX(K27) - 60, PKY + 56); vanish(row, 0); slam(row, T('b13', '整行'), { from: 1.3 }); sfx('pop', T('b13', '整行'));
   const tagBack = h('div', 'tag', W, '回表'); px(tagBack, 1266, 384); css(tagBack, { fontSize: '28px' }); vanish(tagBack, 0); slam(tagBack, T('b14', '回表'), { from: 1.4 }); sfx('thud', T('b14', '回表'), { g: 0.6 });
-  const gBack = gloss(W, 144, 748, '回表', '<b>回表</b>：二级索引里只有编号；拿着编号回到主键树，才取得到整行', { w: 472, src: '本片实验（L2）' });
-  vanish(gBack, 0); show(gBack, T('b14', '回表') + 0.2, { y: 8, d: 0.4 }); exit(gBack, T('b15b') - 0.2, { y: 8, d: 0.3 });
-  const gCov = gloss(W, 144, 748, '覆盖索引', '<b>覆盖索引</b>：要查的列在二级索引里都有，不必回表', { w: 472, src: '执行计划原文（E1）' });
-  vanish(gCov, 0); show(gCov, T('b15b', '覆盖索引') + 0.1, { y: 8, d: 0.4 }); exit(gCov, T('b16') - 0.1, { y: 8, d: 0.3 });
+  const gBack = gloss(W, 144, 748, '回表', '<b>回表</b>：二级索引里只有编号，要回主键树取整行', { w: 472, src: '本片实验（L2）' });
+  vanish(gBack, 0); show(gBack, T('b14', '回表') + 0.2, { y: 8, d: 0.4 }); exit(gBack, T('b15b', '覆盖索引') - 0.15, { y: 8, d: 0.3 });
+  const gCov = gloss(W, 144, 748, '覆盖索引', '<b>覆盖索引</b>：要的列二级索引里都有，不必回表', { w: 472, src: '执行计划原文（E1）' });
+  vanish(gCov, 0); show(gCov, T('b15b', '覆盖索引') + 0.1, { y: 8, d: 0.4 }); exit(gCov, Tend('b16'), { y: 8, d: 0.3 });
   [back, pathPK3].forEach((p) => svgOut(p, T('b15', '回表') + 0.3)); exit(row, tq4 - 0.2, { y: 8, d: 0.3 }); exit(tagBack, T('b15', '回表') + 0.3, { y: 8, d: 0.3 });
 
   // b15：只要编号：停在页 9，不必回表（E1）

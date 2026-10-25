@@ -140,8 +140,8 @@ scene('s8', ({ root, s, c0 }) => {
     const stale = h('div', 'abs', ibd); px(stale, 22 + (i27d % 10) * 62 - 5, 58 + Math.floor(i27d / 10) * 64 - 5, 54, 54); css(stale, { border: '3px dashed var(--acc)' });
     const staleL = h('div', 'abs', W, `页 ${D.alice.page}：内存里改过了，磁盘上这份还是旧的`); px(staleL, 740, 556); css(staleL, { font: '600 22px "Sans SC"', color: 'var(--acc)' });
     [stale, staleL].forEach((e) => { vanish(e, 0); show(e, tDirtyA + 0.4, { y: 0, d: 0.3 }); exit(e, Tend('j5') + 0.2, { d: 0.3 }); }); }
-  const flushL = h('div', 'abs t-small', W, '写回：先存进双写缓冲区，再写到原位'); px(flushL, 1240, 556);
-  vanish(flushL, 0); show(flushL, tFlushOther - 0.2, { y: 6, d: 0.3 }); exit(flushL, tDirtyA + 0.3 > tFlushOther ? tFlushOther + 1.6 : tFlush2 + 1.2, { d: 0.3 });
+  const flushL = h('div', 'abs t-small', W, '写回：先进双写缓冲区'); px(flushL, 1240, 556);
+  vanish(flushL, 0); show(flushL, tFlushOther - 0.2, { y: 6, d: 0.3 }); exit(flushL, tFlush2 + 2.0, { d: 0.3 });
   lit(ibdSq[PAGES.indexOf(BP[5])], 'hot', tFlush2 + 0.3, tFlush2 + 1.4);            // 再写回页 15
 
   // ── 泳道一：Alice 一次普通的修改（j2–j8） ──
@@ -224,9 +224,9 @@ scene('s8', ({ root, s, c0 }) => {
   [st1, st2].forEach((e) => exit(e, T('j9') - 0.1, { d: 0.3 }));
   sfx('pop', T('j7b', '预写日志'), { g: 0.5 });
   const GL8 = [['脏页', '<b>脏页</b>：缓冲池里改过、还没写回磁盘的页', 'MySQL 9.7 手册（M31）', T('j3', '脏页'), T('j6') - 0.1],
-    ['redo', '<b>redo</b> 日志：磁盘上的一份修改记录，只往后追加；崩溃恢复时靠它把修改重做出来', 'MySQL 9.7 手册（M12）', T('j6', 'redo'), T('j7b') - 0.1],
-    ['预写日志', '<b>预写日志</b>（write-ahead logging）：先把日志写到磁盘，数据页晚点再写', 'ARIES（K7）', T('j7b', '预写日志'), T('j9') - 0.1],
-    ['检查点', '<b>检查点</b>：日志里的一个位置；它之前的修改都已写进数据文件，重启时从这里往后重做', 'MySQL 9.7 手册（M12）；本片实验（R2、R3）', T('j9', '检查点'), Tend('j10') + 0.4]];
+    ['redo', '<b>redo</b>：磁盘上的修改记录', 'M12', T('j6', 'redo'), T('j7b') - 0.1],
+    ['预写日志', '<b>预写日志</b>：先写日志，后写数据页', 'ARIES（K7）', T('j7b', '预写日志'), T('j9') - 0.1],
+    ['检查点', '<b>检查点</b>：之前的修改已写进数据文件', 'M12、R2', T('j9', '检查点'), Tend('j10') + 1.3]];
   GL8.forEach(([term, html, src, a, b]) => { const g = gloss(W, 120, 880, term, html, { w: 1100, src }); vanish(g, 0); show(g, a + 0.15, { y: 8, d: 0.35 }); exit(g, b, { y: 8, d: 0.3 }); });
   const logBox = h('div', 'box', W); px(logBox, 1050, 570, 800, 384);
   const logHead = h('div', 'abs t-small', logBox, 'mysqld 重启后的日志'); px(logHead, 20, 10);
@@ -333,15 +333,15 @@ scene('s8', ({ root, s, c0 }) => {
   svgIn(a1, tTwice); slam(n1, tTwice); svgIn(a2, tTwice + 0.5); slam(n2, tTwice + 0.5);
   lit(dbw, 'on', tW2, Tend('j24') + 0.5);
   // j23b：双写缓冲区是磁盘上单独的一块存储区，写出的页先在这里完整地存一份（M16）
-  const dwNote = gloss(W, 220, 900, '双写缓冲区', '<b>双写缓冲区</b>：磁盘上单独的一块存储区；写出的页先在这里完整地存一份，再写到原位<span class="gl-src" style="display:inline;margin-left:12px">手册 M16</span>', { w: 1300 });
+  const dwNote = gloss(W, 220, 900, '双写缓冲区', '<b>双写缓冲区</b>：磁盘上单独一块；写出的页先在这里存一份，再写原位<span class="gl-src" style="display:inline;margin-left:12px">手册 M16</span>', { w: 1300 });
   vanish(dwNote, 0); show(dwNote, T('j23', '双写缓冲区') + 0.2, { y: 8, d: 0.4 }); exit(dwNote, T('j24') - 0.1, { d: 0.3 }); sfx('pop', T('j23b', '单独'), { g: 0.45 });
-  const tornL = h('div', 'abs', W, '写到一半断电：上半是新的，下半还是旧的'); px(tornL, 1240, 930); css(tornL, { font: '600 22px "Sans SC"', color: 'var(--acc)' });
-  vanish(tornL, 0); show(tornL, tTorn + 0.1, { y: 6, d: 0.3 }); exit(tornL, tTwice - 0.3, { d: 0.3 });
+  const tornL = h('div', 'abs', W, '半新半旧的坏页'); px(tornL, 1240, 930); css(tornL, { font: '600 22px "Sans SC"', color: 'var(--acc)' });
+  vanish(tornL, 0); show(tornL, tTorn + 0.1, { y: 6, d: 0.3 }); exit(tornL, T('j22') + 2.0, { d: 0.3 });
   const n1L = h('div', 'abs t-small', W, '先整页存一份'), n2L = h('div', 'abs t-small', W, '存好了，再写到原位');
   px(n1L, 600, 802); px(n2L, 1180, 802);
   [[n1L, tTwice], [n2L, tTwice + 0.5]].forEach(([e, t]) => { vanish(e, 0); show(e, t + 0.1, { y: 6, d: 0.3 }); exit(e, T('j24') - 0.1, { d: 0.3 }); });
-  const fixL = h('div', 'abs', W, '恢复时：原位这一页校验不过 → 从双写缓冲区取回完整的一份 → 再在上面重做 redo'); px(fixL, 220, 556); css(fixL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
-  vanish(fixL, 0); show(fixL, T('j24', '找回') - 0.2, { y: 8, d: 0.4 });
+  const fixL = h('div', 'abs', W, '恢复：先取回完整的一份，再重做 redo'); px(fixL, 220, 556); css(fixL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
+  vanish(fixL, 0); show(fixL, T('j24') + 0.1, { y: 8, d: 0.4 });
   lit(P2.p, 's8-dwhl', T('j23bz', '完整') - 0.2, T('j24') - 0.1);
   [1, 2, 3, 4].forEach((i) => lit(dbwSq[i], 'hot', T('j23bz') + 0.2 + (i - 1) * 0.6, Tend('j24') + 0.5));   // 写出的页一页页先存进双写缓冲区
   st8.textContent += ' .s8-dwhl { outline: 4px solid var(--main); outline-offset: 4px; }';

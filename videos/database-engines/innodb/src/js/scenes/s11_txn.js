@@ -137,7 +137,7 @@ scene('s11', ({ root, s, c0 }) => {
   vanish(oldIn, 0); slide(oldIn, T('k16z', '表里') - 0.3, { x: 60 }); sfx('pop', T('k16z', '表里'), { g: 0.5 });
   wipe(left, tN + 0.3, { dir: 'l', d: 0.5 }); wipe(right, T('k16', '关系') - 0.3, { dir: 'l', d: 0.5 }); sfx('whoosh', tN + 0.3, { g: 0.4 });
   // 「关系数据库」「正统」的出处：PostgreSQL 文档自称对象关系数据库，支持 SQL 标准的大部分（M67、M69）
-  const gPg = gloss(W, 1040, 676, '', '<b>PostgreSQL</b>：文档自称对象关系数据库（ORDBMS）；SQL:2023 的 177 项核心特性，至少支持 170 项', { w: 760, src: 'PostgreSQL 18 文档（M67、M69）' });
+  const gPg = gloss(W, 1040, 676, '', '<b>PostgreSQL</b>：对象关系数据库，支持 SQL 标准的大部分', { w: 760, src: 'M67' });
   vanish(gPg, 0); show(gPg, T('k16', '关系') + 0.4, { y: 8, d: 0.4 });
   const next = h('div', 'tag', W, 'PART 3 · PostgreSQL'); px(next, 1040, 820); css(next, { font: '800 40px Inter', padding: '8px 22px' });
   slam(next, T('k17', '另一条路'), { from: 1.4 }); sfx('thud', T('k17', '另一条路') + 0.05);

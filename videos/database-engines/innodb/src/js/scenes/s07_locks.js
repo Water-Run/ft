@@ -89,9 +89,9 @@ scene('s7', ({ root, s, c0 }) => {
   const wbar = LN.bar(LN.Y(1) - 18, tCw, tTo, '等锁', 'wait');
   const block = path(ov, `M${640},${LN.Y(1) - 70} C${640},470 ${cx(2050) + 60},470 ${cx(2050) + 60},${RY + 150}`, 'acc', { w: 2.2, dashed: '8 7' });
   arrowIn(block, tCw + 0.1, 0.6); svgOut(block, tTo, 0.3);
-  const queue = h('div', 's7-st wait', W, 'Carol · 排队等这把锁'); px(queue, cx(2050) + 80, RY + 160);
-  vanish(queue, 0); show(queue, tCw + 0.6, { y: -16, d: 0.35 }); sfx('tick', tCw + 0.6, { g: 0.4 });
-  swaps(queue, [[tTo, 'Carol · 等超时，放弃']]); lit(queue, 'err', tTo); exit(queue, tTo + 1.4, { y: 20, d: 0.4 });
+  const queue = h('div', 's7-st wait', W, 'Carol 在排队'); px(queue, cx(2050) + 80, RY + 160);
+  vanish(queue, 0); show(queue, tCw + 0.1, { y: -16, d: 0.35 }); sfx('tick', tCw + 0.1, { g: 0.4 });
+  swaps(queue, [[tTo, '超时，放弃']]); lit(queue, 'err', tTo); exit(queue, tTo + 2.4, { y: 20, d: 0.4 });
   const err = LN.event(1, tTo, 'ERROR 1205', 'fill acc', -56);
   sfx('error', tTo, { g: 0.5 });
   const errT = h('div', 'abs', W, `<div class="echo err" style="position:static;font-size:22px">${esc(D.locks.carolErr)}</div><div class="gloss" style="position:static;margin-top:4px">等锁超时，事务要重新开始</div><div class="gloss" style="position:static;margin-top:2px">等待上限 innodb_lock_wait_timeout：缺省 50 秒</div>`);
@@ -157,9 +157,9 @@ scene('s7', ({ root, s, c0 }) => {
   arrowIn(eAC, tAw + 0.2, 0.5); vanish(eAl, 0); show(eAl, tAw + 0.3, { y: 6, d: 0.3 });
   arrowIn(eCA, tCwt + 0.2, 0.5); vanish(eCl, 0); show(eCl, tCwt + 0.3, { y: 6, d: 0.3 });
   [eAC, eCA].forEach((p) => to(p, tDl, { attr: { 'stroke-width': 5 }, duration: 0.3 }));
-  const ring2 = h('div', 'abs', WG, '沿着边走一圈，回到了起点：有环'); px(ring2, 150, 262); css(ring2, { font: '700 22px "Sans SC"', color: 'var(--acc)' });
-  vanish(ring2, 0); show(ring2, tDet - 0.1, { y: 6, d: 0.35 });
-  const gDead = gloss(W, 1180, 772, '死锁', '<b>死锁</b>：两个事务各拿着对方要的锁，互相等，谁也等不到', { w: 620, src: '源码：等待图找环（S11–S13）；实验（X7）' });
+  const ring2 = h('div', 'abs', WG, '走一圈回到起点：有环'); px(ring2, 150, 262); css(ring2, { font: '700 22px "Sans SC"', color: 'var(--acc)' });
+  vanish(ring2, 0); show(ring2, tDl + 0.3, { y: 6, d: 0.35 });
+  const gDead = gloss(W, 1180, 772, '死锁', '<b>死锁</b>：互相等对方的锁，谁也等不到', { w: 620, src: 'S11–S13、X7' });
   vanish(gDead, 0); show(gDead, tDl + 0.1, { y: 8, d: 0.4 });
   // g11：两条等待围成一个环——死锁
   [arcA, arcC].forEach((p) => to(p, tDl, { attr: { 'stroke-width': 5 }, duration: 0.3 }));

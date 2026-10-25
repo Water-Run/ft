@@ -181,8 +181,8 @@ scene('s3', ({ root, s, c0 }) => {
   const g4 = gloss(W, 120, 300, '', '<b>页 4</b>：主键树的根页（根页号从 INNODB_INDEXES 查到）；空表时，整棵树就只有这一页', { w: 560, src: '本片实验（T1、G1）' });
   const g03 = gloss(W, 120, 470, '', '<b>页 0–3</b>：文件自己的管理页——空间头、插入缓冲位图、段信息、表结构', { w: 560, src: '本片解析与 innochecksum（F1）' });
   vanish(hl4s, 0); show(hl4s, T('a5', '第 4 页'), { s: 1.3, y: 0, d: 0.3 }); arrowIn(lead4, T('a5', '第 4 页') + 0.2, 0.5);
-  [g4, g03].forEach((g, i) => { vanish(g, 0); show(g, T('a5', '起点') + i * 0.6, { y: 8, d: 0.4 }); exit(g, T('a7') - 0.1, { y: 8, d: 0.3 }); });
-  exit(hl4s, T('a7') - 0.1, { d: 0.3 }); svgOut(lead4, T('a7') - 0.1, 0.3);
+  [g4, g03].forEach((g, i) => { vanish(g, 0); show(g, T('a5', '起点') + i * 0.6, { y: 8, d: 0.4 }); exit(g, T('a9') - 0.1, { y: 8, d: 0.3 }); });
+  exit(hl4s, T('a9') - 0.1, { d: 0.3 }); svgOut(lead4, T('a7') - 0.1, 0.3);
   for (let r = 1; r <= 207; r += 23) sfx('tick', lerp(tR0, tR1, ease.io3(r / 207)), { g: 0.25 });
   // 第 208 行放不下：这一页分成两半，各落进一页叶子；第 4 页往上收成根
   const LX = (k) => 236 + k * 72, BW = 56, BY = 370, BH = 150;
@@ -290,7 +290,7 @@ scene('s3', ({ root, s, c0 }) => {
   const r27 = D.del.start.records.filter((r) => r.id >= 2049 && r.id <= 2051);
   const callHd = h('div', 'abs mono t-small', call, `${'id'.padEnd(7)}${'name CHAR(50)'.padEnd(52)}age`); px(callHd, 26, 16); css(callHd, { color: 'var(--mainD)', fontWeight: 700 });
   r27.forEach((r, i) => { const e = h('div', 'abs mono', call, `${String(r.id).padEnd(7)}${r.name.padEnd(52)}${r.age}`); px(e, 26, 56 + i * 46); css(e, { fontSize: '24px', color: r.id === 2050 ? 'var(--main)' : 'var(--ink)', fontWeight: r.id === 2050 ? 700 : 500 }); });
-  const callPg = h('div', 'abs t-small', call, '页 27：207 行中的三行 · 整行（编号、名字、年龄）都在叶子里'); px(callPg, 26, 204);
+  const callPg = h('div', 'abs t-small', call, '页 27：207 行中的三行'); px(callPg, 26, 204);
   const callLine = path(ov, `M${LX(K27)},${BY + BH + 30} L${LX(K27)},596`, 'main', { w: 2 });
   callLine.setAttribute('opacity', 0);
   wipe(call, T('a16', '整行'), { dir: 't', d: 0.5 }); tl.fromTo(callLine, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, T('a16', '整行'));
@@ -343,18 +343,18 @@ scene('s3', ({ root, s, c0 }) => {
   [0, 1, 2].forEach((k) => path(cOv, `M${860 + 620},${100} L${860 + 205 + k * 210},${150}`, 'mainD', { w: 1.4, arrow: false }));
   const lnk = [0, 1].map((k) => path(cOv, `M${860 + 290 + k * 210},${198} L${860 + 330 + k * 210},${198}`, 'main', { w: 3 }));
   const badge = (par, x, y, n, txt) => { const e = h('div', 'abs', par, `<span class="tag" style="position:static;font-size:22px;margin-right:8px">${n}</span><span class="t-small" style="color:var(--ink)">${txt}</span>`); px(e, x, y); vanish(e, 0); return e; };
-  const b1 = badge(R_, 120, 262, '①', '行就在叶子里'), b2 = badge(R_, 40, 66, '②', '上层只放「编号 + 页号」'), b3 = badge(R_, 470, 262, '③', '同一层的页左右相连');
-  const gB = gloss(CMPG, 0, -46, 'B+ 树', '<b>B+ 树</b>：InnoDB 源码里叫 B+Tree（手册称 B-tree）<span class="gl-src" style="display:inline;margin-left:14px">源码 row0pread.h 等（S8）；手册（M35）</span>', { w: 1100 });
+  const b1 = badge(R_, 120, 262, '①', '行就在叶子里'), b2 = badge(R_, 40, 66, '②', '上层只放路标'), b3 = badge(R_, 470, 262, '③', '同层左右相连');
+  const gB = gloss(CMPG, 0, -46, 'B+ 树', '<b>B+ 树</b>：源码里叫 B+Tree（手册称 B-tree）<span class="gl-src" style="display:inline;margin-left:14px">S8、M35</span>', { w: 1100 });
   CMPG.appendChild(cOv);                                          // 连线压在小框上面
   vanish(CMPG, 0); show(CMPG, T('a19') - 0.1, { y: 30, d: 0.5 }); sfx('whoosh', T('a19') - 0.1, { g: 0.35 });
-  slam(b1, T('a19', '叶子'), { from: 1.3 }); slam(b2, T('a19', '路标'), { from: 1.3 }); slam(b3, Tend('a19') + 0.2, { from: 1.3 });
-  [T('a19', '叶子'), T('a19', '路标'), Tend('a19') + 0.2].forEach((t_) => sfx('pop', t_, { g: 0.4 }));
-  lnk.forEach((p_) => { p_.setAttribute('opacity', 0); tl.to(p_, { opacity: 1, duration: 0.3 }, Tend('a19') + 0.2); });
+  slam(b1, T('a19', '叶子'), { from: 1.3 }); slam(b2, T('a19', '路标'), { from: 1.3 }); slam(b3, T('a19', '路标') + 0.15, { from: 1.3 });
+  [T('a19', '叶子'), T('a19', '路标'), T('a19', '路标') + 0.5].forEach((t_) => sfx('pop', t_, { g: 0.4 }));
+  lnk.forEach((p_) => { p_.setAttribute('opacity', 0); tl.to(p_, { opacity: 1, duration: 0.3 }, T('a19', '路标') + 0.5); });
   vanish(gB, 0); show(gB, T('a19', 'B') + 0.2, { y: 8, d: 0.4 });
   tl.to(CMPG, { autoAlpha: 0, y: 20, duration: 0.35 }, T('a20') - 0.1);
   // a20：聚簇索引的注解（M1；没有主键时 InnoDB 自己生成一个，M29）
-  const gC = gloss(W, 122, 650, '聚簇索引', '<b>聚簇索引</b>：表本身就是这棵按主键排好的树，行存在叶子里；每张表只有一棵', { w: 1100, src: 'MySQL 9.7 手册（M1；没有主键时 InnoDB 自己生成一个，M29）' });
-  vanish(gC, 0); show(gC, T('a20', '聚簇索引') + 0.1, { y: 8, d: 0.4 }); exit(gC, T('a22') - 0.2, { y: 8, d: 0.3 });
+  const gC = gloss(W, 122, 650, '聚簇索引', '<b>聚簇索引</b>：表本身就是这棵主键树，每张表一棵', { w: 1100, src: '手册 M1、M29' });
+  vanish(gC, 0); show(gC, T('a20', '聚簇索引') + 0.1, { y: 8, d: 0.4 }); exit(gC, T('a22', '第二棵树') - 0.3, { y: 8, d: 0.3 });
   const tblFrame = h('div', 'abs', W); px(tblFrame, 122, 201, LX(20) + 50 - 122, BY + BH + 52 - 201); css(tblFrame, { border: '3px dashed var(--main)' });   // 上边在「49 页 × 16 KB」与「页 4」之间
   const tblLbl = h('div', 'tag', W, 'users 表'); px(tblLbl, 122, BY + BH + 58); css(tblLbl, { background: 'var(--main)', fontSize: '26px' });
   vanish(tblFrame, 0); vanish(tblLbl, 0);
@@ -397,7 +397,7 @@ scene('s3', ({ root, s, c0 }) => {
   { const tS = T('a22') + 0.15, dt = Math.max(0.05, (tN - 0.5 - tS) / 21);
     const s3x = h('style', '', W); s3x.textContent = '.pg.s3-scan { outline: 3px solid var(--acc); outline-offset: 2px; }';
     leaves.forEach((e, k) => lit(e, 's3-scan', tS + k * dt, tS + k * dt + 0.22));
-    const why = h('div', 'tag acc', W, "按名字找 'Alice'：主键树只能一页一页翻"); px(why, 700, BY + BH + 24); css(why, { fontSize: '26px' });
+    const why = h('div', 'tag acc', W, '按名字找：主键树只能一页页翻'); px(why, 700, BY + BH + 24); css(why, { fontSize: '26px' });
     vanish(why, 0); slam(why, tS, { from: 1.2 }); exit(why, tN + 0.3, { y: 8, d: 0.3 }); sfx('tick', tS, { g: 0.35 }); }
   // 两棵树同在时只标要讲的页（同屏要读的字少）：主键树只留页 27 的页号，根页的键收起；姓名索引的键只留头三项与最后一项，行数只留页 9
   { const t0 = tN - 0.2, t1 = Infinity; let last = null;
@@ -407,8 +407,8 @@ scene('s3', ({ root, s, c0 }) => {
       nmCells.forEach((e, j) => { e.style.visibility = on && !(j < 3 || j === nmCells.length - 1) ? 'hidden' : ''; });
       nleaves.forEach((e, j) => { const no = e.querySelector('.no'); if (no) no.style.visibility = on && NM_LEAVES[j] !== 9 ? 'hidden' : ''; if (e.cntEl) e.cntEl.style.visibility = on && NM_LEAVES[j] !== 9 ? 'hidden' : ''; }); }); }
   // a23b：二级索引的注解（M2、T4）
-  const g2nd = gloss(W, 1000, 880, '二级索引', '<b>二级索引</b>：主键以外的索引；按自己的键排，叶子里放「键 + 主键编号」', { w: 800, src: 'MySQL 9.7 手册（M2）；本片实验（T4）' });
-  vanish(g2nd, 0); show(g2nd, T('a23b', '二级索引') + 0.1, { y: 8, d: 0.4 }); exit(g2nd, T('a24') + 0.2, { y: 8, d: 0.3 });
+  const g2nd = gloss(W, 1000, 880, '二级索引', '<b>二级索引</b>：按自己的键排，叶子里是「键 + 主键」', { w: 800, src: '手册 M2；实验 T4' });
+  vanish(g2nd, 0); show(g2nd, T('a23b', '二级索引') + 0.1, { y: 8, d: 0.4 }); exit(g2nd, T('a25') - 0.1, { y: 8, d: 0.3 });
   // a23：叶子里一项是「名字 + 编号」——第 9 页拉开一角
   const nCall = h('div', 'box', W); px(nCall, NX(1) - 20, 878, 620, 86);
   [['Alice', 2050], ['User00001…', 1], ['User00002…', 2]].forEach(([a, b], i) => {
@@ -432,7 +432,7 @@ scene('s3', ({ root, s, c0 }) => {
     const c = h('div', 'abs', W); px(c, x, y);
     const cn = h('div', 'num', c); css(cn, { font: '800 64px Inter', color: 'var(--main)' });
     const cl = h('div', 't-small', c, '已插入的行');
-    if (inline) { css(cn, { display: 'inline-block', lineHeight: '1' }); css(cl, { display: 'inline-block', marginLeft: '14px' }); }
+    if (inline) { css(cn, { lineHeight: '1' }); css(cl, { position: 'absolute', left: '190px', top: '26px' }); }   // 标签放在数字右边，但是单独一块（滚动的数字不算要读的字）
     let last = '';
     F((t) => { const n = nAt(t); const red = t >= T('a9') && t < tSplit + 0.6; const k = n + (red ? 'r' : ''); if (k === last) return; last = k; cn.textContent = n; cn.style.color = red ? 'var(--acc)' : 'var(--main)'; });
     show(c, tIn, { y: 8, d: 0.3 }); exit(c, tOut, { y: 8, d: 0.3 });
