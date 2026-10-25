@@ -3,7 +3,7 @@
 // ROLLBACK：顺着回滚指针取回 42 写回去（X2）。回滚后行头的事务号恢复成什么没有实测，那两格回滚时只淡出、不写数字。最后对照 MyISAM 撤不回（V3）。
 scene('s5', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s5_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -81,8 +81,13 @@ scene('s5', ({ root, s, c0 }) => {
   lit(fRp, 'hot', T('e5', '回滚指针'), T('e6'));
   LN.enter(tU - 1.0);
 
+  // undo 先出场再用（R13 第 29 条）：讲到回滚指针「指向改之前的样子」时，磁盘上的 undo 区先空着出来、带注解；e6 再看到旧值写进去
+  const tUndo = T('e5', '改之前') - 0.1;
+  wipe(undo, tUndo, { dir: 'l', d: 0.5 }); sfx('whoosh', tUndo, { g: 0.35 });
+  const empty = h('div', 'abs t-small', undo, '还空着'); px(empty, 40, 104); vanish(empty, 0); appear(empty, tUndo + 0.3); vanish(empty, T('e6', '42'));
+  const gUndo = gloss(W, 1190, 460, 'undo', '<b>undo</b>：改一行之前，先把旧值记在这里；回滚、别人读旧版本，都靠它。默认放在两个 undo 表空间文件 undo_001、undo_002 里', { w: 600, src: 'MySQL 9.7 手册（M56、M60）；实验目录里可见（F4）' });
+  vanish(gUndo, 0); show(gUndo, tUndo + 0.4, { y: 8, d: 0.4 }); to(gUndo, T('e10'), { autoAlpha: 0, duration: 0.3 });
   // e6：旧值 42 先进 undo（从年龄格飞过去）
-  wipe(undo, T('e6') - 0.2, { dir: 'l', d: 0.5 });
   const ageBox = box(fAge, W), recBox = { x: 560 + 40, y: 450 + 92 };
   const chip = h('div', 's5-chip', W, '42'); px(chip, ageBox.x + 12, ageBox.y + 74);
   const tFly = T('e6', '42');
@@ -134,13 +139,15 @@ scene('s5', ({ root, s, c0 }) => {
   const rp0 = A.before.roll_ptr.slice(0, 2), rp1 = A.after.roll_ptr.slice(0, 2);
   const bits = (hh) => parseInt(hh, 16).toString(2).padStart(8, '0');
   const bit = h('div', 's5-bit', W); px(bit, lx + 30, rpBox.b + 12);
-  swaps(bit, [[0, `${rp0} = <b>1</b>${bits(rp0).slice(1)}<br>最高位 1：插入`], [T('e9', 'undo'), `${rp1} = <b>0</b>${bits(rp1).slice(1)}<br>最高位 0：更新`]]);
+  bit.dataset.gloss = '回滚指针';                                  // 注解：第一次出现时先说它是什么，到 e9 再看它的位
+  swaps(bit, [[0, '<b>回滚指针</b>：7 字节<br>指向改之前的样子'], [T('e9', 'undo'), `<b>回滚指针</b> ${rp1} = <b>0</b>${bits(rp1).slice(1)}<br>最高位 0：更新，指向那条 undo 记录`]]);
   show(bit, T('e5', '回滚指针') + 0.4, { y: 10, d: 0.4 });
   to(bit, T('e10z', '42'), { autoAlpha: 0, duration: 0.3 });
   // 事务号：1558 是建表时插入这一行的那一笔；2061 在事务进行时 innodb_trx 里查到的也是它（T7、X1）
   const trxBox = box(fTrx, W);
   const tnote = h('div', 's5-bit', W); px(tnote, trxBox.x + 4, trxBox.b + 12);
-  swaps(tnote, [[0, '建表时插入<br>这一行的事务'], [Tend('e8') - 0.4, `innodb_trx 里<br>也是 ${A.trxOpen}`]]);
+  tnote.dataset.gloss = '事务号';
+  swaps(tnote, [[0, '<b>事务号</b>：6 字节<br>最后改这一行的事务'], [Tend('e8') - 0.4, `<b>事务号</b>：innodb_trx 里<br>也是 ${A.trxOpen}`]]);
   show(tnote, T('e4', '最后') , { y: 10, d: 0.4 });
   to(tnote, T('e10z', '42'), { autoAlpha: 0, duration: 0.3 });
   // e11：开头那两张表，并排看；e12：MyISAM 没有 undo，43 留在文件里

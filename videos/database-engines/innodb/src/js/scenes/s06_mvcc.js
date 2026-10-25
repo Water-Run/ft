@@ -5,7 +5,7 @@
 // 事务号 6175 取自 FACTS G5（「Alice 先改、Bob 后读」那一次的 innodb_trx）；读到的值取自 D.mvcc（X3、X4）。
 scene('s6', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
   const st = h('style', null, root);
   const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   st.textContent = `

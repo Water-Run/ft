@@ -111,6 +111,11 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .echo { position: absolute; font: 500 26px "Mono", "Sans SC"; color: var(--ink2); white-space: pre; }
 .echo.err { color: var(--acc); }
 .gloss { position: absolute; font: 500 24px "Sans SC"; color: var(--ink2); }
+/* 注解（parts.js 的 gloss()）：左侧一道主色竖线，名词加粗；出处小一号另起一行 */
+.gl { position: absolute; font: 500 24px "Sans SC"; color: var(--ink2); line-height: 1.45; padding: 2px 0 2px 16px; border-left: 4px solid var(--main); white-space: normal; background: var(--bg); }
+.gl b { color: var(--mainD); font-weight: 800; }
+.gl .gl-src { font: 500 22px "Inter", "Sans SC"; color: var(--ink2); opacity: .8; margin-top: 2px; }
+.gl.acc { border-left-color: var(--acc); } .gl.acc b { color: var(--acc); }
 
 /* 卡片：概念、问题 */
 .card { position: absolute; background: var(--panel); border: 1.5px solid var(--edge); padding: 22px 28px; white-space: normal; }

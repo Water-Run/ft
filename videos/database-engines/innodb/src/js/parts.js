@@ -122,14 +122,21 @@ function lit(e, cls, t0, t1 = Infinity) { classAt(e, cls, t0, t1); return e; }
 // 文字按时刻换（keyed 的简写）
 function swaps(e, pairs) { const k = keyed(e); for (const [t, html] of pairs) k.at(t, { html }); return e; }
 
-// 缓慢漂移：本章内容在场的整段里（章节卡之后到场景结束），镜头匀速地一推一拉：10 秒推近 4%、横移 8px，再 10 秒退回，如此往复，不配音效。
-// 讲解时画面停着的段落也一直有细微的变化（像素级静止检查与观感都需要），速度恒定，长短章都一样；幅度小，留边 120px 以内的内容不会被推出画面。
-// dir 交替取 1 / -1，相邻两章往不同的方向漂。
-function drift3(cam, s, dir = 1) {
-  const t0 = s.first, t1 = s.end, P = 10, A = { x: 960 + 8 * dir, z: 1.04 }, B = { x: 960 - 8 * dir, z: 1 };
-  const keys = []; let t = t0, k = 0;
-  while (t < t1 - 0.05) { const d = Math.min(P, t1 - t); keys.push([t, k % 2 === 0 ? A : B, Math.max(0.5, d), { ease: 'none', sfx: false }]); t += d; k++; }
-  cam.track(t0, { ...B, x: 960 }, keys.length ? keys : [[t0, A, 1, { ease: 'none', sfx: false }]]);
+// 镜头（WaterRun 2026-10-25：「老毛病, 镜头一直在缩放....你不明白你直接参考MyISAM的不行?」；照 MyISAM 一集与 docs/guides/scenes.md 第 3 节）：
+// 不缩放、不推近、不往复。本章内容在场的整段里（章节卡之后到场景结束），镜头只朝 dir 一个方向匀速横移 48 像素，
+// 每秒不超过 2 像素（章越长越慢），不配音效；相邻两章 dir 取相反方向。画面停着时的变化靠内容的分步，不靠镜头。
+function pan1(cam, s, dir = 1) {
+  const t0 = s.first, t1 = s.end, PAN = 48, d = Math.max(PAN / 2, t1 - t0 - 0.05);   // 48 像素至少走 24 秒：不超过每秒 2 像素
+  cam.track(t0, { x: 960 - dir * PAN / 2, y: 540, z: 1 }, [[t0, { x: 960 + dir * PAN / 2 }, d, { ease: 'none', sfx: false }]]);
+}
+
+// 注解：新名词、关键结构第一次出现时，画面上的一行说明（是什么、指哪一块、数字或出处），不等旁白。
+// term 写进 data-gloss，供 scan.js 核对「标了星号的术语第一次出现时画面上有注解」；html 里第一段 <b> 是名词本身。
+// o.w 宽度（缺省 520），o.src 出处（小一号另起一行）。
+function gloss(parent, x, y, term, html, o = {}) {
+  const e = h('div', 'gl', parent, html + (o.src ? `<div class="gl-src">${o.src}</div>` : '')); px(e, x, y, o.w || 520);
+  if (term) e.dataset.gloss = term;
+  return e;
 }
 
 // 对、错、断电三个记号：画成平涂的小图形，不用字体里的 emoji 与装饰符号（本片的源码规则）。size 是边长（px），color 是 CSS 颜色

@@ -3,39 +3,37 @@
 // 每一段放在自己的容器里，整段退场时动容器（容器里有帧函数管显隐的版本条、播放头，不能对它们单独做退场补间）。
 scene('intro', ({ root, s }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, 1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
   const part = () => { const g = h('div', 'abs', W); px(g, 0, 0, 1920, 1080); css(g, { pointerEvents: 'none' }); return g; };
-  const fileSize = (n) => D.files.find((f) => f.file === n).bytes.toLocaleString('en-US').replace(/,/g, ' ');
 
   // ── 一、MyISAM：两个文件（V1、V2、G7） ──
   const A = part();
   const ovA = overlay(A);
   const myd = h('div', 'box', A); px(myd, 150, 150, 760, 600);
   h('div', 'abs', myd, `<span class="mono" style="font-size:34px;font-weight:700">users.MYD</span>`).style.cssText = 'position:absolute;left:28px;top:22px';
-  const mydS = h('div', 'abs t-small num', myd, fileSize('users_myisam.MYD') + ' 字节'); px(mydS, 520, 32);
   const mydTag = h('div', 'tag', myd, '数据'); px(mydTag, 340, 28);
   const age = (i) => (i === 2050 ? 42 : 18 + (i % 63));
   const nm = (i) => (i === 2050 ? 'Alice' : `User${String(i).padStart(5, '0')}-abc…`);
-  const ROWS = [1, 2, 3, 4, null, 2048, 2049, 2050, 2051, 2052, null, 4095, 4096];
+  // 只摆几行（同屏要读的字少）：省略的部分画成三个点，不写成文字
+  const ROWS = [1, null, 2049, 2050, 2051, null, 4096], RP = 64, dots = (par, x, y) => { const g = h('div', 'abs', par); px(g, x, y, 8, 34); for (let i = 0; i < 3; i++) { const d = h('div', 'abs', g); px(d, 0, i * 13, 7, 7); css(d, { background: 'var(--edge)', borderRadius: '50%' }); } return g; };
   const rowEls = [];
   ROWS.forEach((id, k) => {
-    const r = h('div', 'abs mono', myd, id == null ? '       ⋮' : `${String(id).padStart(5)}  ${nm(id).padEnd(16)} ${age(id)}`);
-    px(r, 34, 100 + k * 36); css(r, { fontSize: '25px', color: id === 2050 ? 'var(--main)' : 'var(--ink2)', fontWeight: id === 2050 ? 700 : 500 });
+    const r = id == null ? dots(myd, 80, 106 + k * RP) : h('div', 'abs mono', myd, `${String(id).padStart(5)}  ${nm(id).padEnd(16)} ${age(id)}`);
+    if (id != null) { px(r, 34, 100 + k * RP); css(r, { fontSize: '27px', color: id === 2050 ? 'var(--main)' : 'var(--ink2)', fontWeight: id === 2050 ? 700 : 500 }); }
     rowEls.push(r);
   });
   const myi = h('div', 'box', A); px(myi, 1010, 150, 760, 600);
   h('div', 'abs', myi, `<span class="mono" style="font-size:34px;font-weight:700">users.MYI</span>`).style.cssText = 'position:absolute;left:28px;top:22px';
-  const myiS = h('div', 'abs t-small num', myi, fileSize('users_myisam.MYI') + ' 字节'); px(myiS, 520, 32);
   const myiTag = h('div', 'tag', myi, '索引'); px(myiTag, 330, 28);
   // 叶子竖着排在左边、根在右边：叶子项指向数据文件的箭头直接往左走，不穿过别的叶子
   const tRoot = h('div', 'abs', myi, '<div style="text-align:center;font:700 24px \'Sans SC\';color:var(--mainD);padding-top:6px">根</div>'); px(tRoot, 500, 300, 180, 46); css(tRoot, { border: '1.5px solid var(--mainD)', background: 'var(--pale)' });
-  const LEAF = [{ y: 100, keys: [1, 2, 3] }, { y: 262, keys: [2049, 2050, 2051] }, { y: 424, keys: [4094, 4095, 4096] }];
+  const LEAF = [{ y: 100, keys: [1] }, { y: 262, keys: [2049, 2050, 2051] }, { y: 424, keys: [4096] }];
   const leafs = LEAF.map((L1) => { const l = h('div', 'abs', myi); px(l, 40, L1.y, 220, 146); css(l, { border: '1.5px solid var(--mainD)', background: 'var(--panel)' }); return l; });
   LEAF.forEach((L1, j) => L1.keys.forEach((kk, i) => { const e = h('div', 'abs mono', leafs[j], `${String(kk).padStart(4)} →`); px(e, 30, 12 + i * 40); css(e, { fontSize: '26px', color: kk === 2050 ? 'var(--main)' : 'var(--ink)' }); }));
-  leafs.forEach((l) => { const e = h('div', 'abs mono t-small', l, '⋮'); px(e, 180, 100); });
+  [leafs[0], leafs[2]].forEach((l) => dots(l, 60, 62));                // 只写一项，其余画成三个点
   const treeLines = LEAF.map((L1) => path(ovA, `M${1010 + 500},${150 + 323} L${1010 + 262},${150 + L1.y + 73}`, 'mainD', { arrow: false, w: 1.8 }));
   const ptr = [2049, 2050, 2051].map((id, i) => {
-    const y1 = 150 + 262 + 12 + i * 40 + 17, y2 = 150 + 100 + ROWS.indexOf(id) * 36 + 16;
+    const y1 = 150 + 262 + 12 + i * 40 + 17, y2 = 150 + 100 + ROWS.indexOf(id) * RP + 18;
     return path(ovA, `M${1010 + 40 - 6},${y1} C${960},${y1} ${960},${y2} ${150 + 500},${y2}`, id === 2050 ? 'main' : 'mute', { w: id === 2050 ? 2.6 : 1.8 });
   });
   A.appendChild(ovA);                                          // 线压在两个文件框上面
@@ -43,7 +41,7 @@ scene('intro', ({ root, s }) => {
   // h1：数据文件先出来，一行一行摊开；h2：索引文件出来
   appear(myd, 0); sfx('whoosh', 0.05, { g: 0.4 });                    // 片头第一帧就有数据文件（不留空画面）
   const tRows0 = 0.1, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
-  rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 5 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头几行第一帧就在
+  rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 2 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头两行第一帧就在
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
   wipe(myi, T('h2', '两个文件'), { dir: 'l', d: 0.6 });               // 讲到「两个文件」时第二个文件框就出来
   slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') + 0.3, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') + 0.3, { g: 0.6 });
@@ -73,8 +71,18 @@ scene('intro', ({ root, s }) => {
   // h8：先看第一处
   lit(g1, 'on', T('h8'));
   [g2, g3].forEach((c) => to(c, T('h8'), { opacity: 0.35, duration: 0.4 }));
-  const outA = T('h8b') + 0.1;                                       // 句子交界处硬切到实验那一段：MyISAM 的两个文件收掉，泳道与小表同一刻出现（不叠、不留空画面）
-  vanish(A, outA);
+  // h8 → h8b：用元素把两屏接起来（R13 第 2 条，不整屏硬切）：第 1 张卡移到右上角当这段实验的题头；索引文件、另两张卡、箭头有去向地退场；
+  // 数据文件 users.MYD 收成一张小表，落到 users 那一道上（「同一张 users 表」），下一句再从它复制出副本
+  const tM0 = T('h8') + 0.35, outA = Math.max(tM0 + 1.1, T('h8b', 'users') - 0.1);   // 收拢开始、小表落地
+  exit(myi, tM0, { x: 80, d: 0.45 }); [g2, g3].forEach((c, i) => exit(c, tM0 + i * 0.06, { y: 50, d: 0.4 }));
+  [...ptr, ...treeLines].forEach((p) => tl.to(p, { opacity: 0, duration: 0.3 }, tM0));
+  [...myd.children].forEach((c) => tl.to(c, { opacity: 0, duration: 0.35 }, outA - 0.45));   // 框连同里面的行一起缩小，快落地时字才淡掉
+  tl.fromTo(myd, { opacity: 0.4 }, { opacity: 1, duration: 0.3, immediateRender: false }, tM0);
+  tl.fromTo(myd, { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: '0 0' }, { x: 500 - 150, y: 642 - 150, scaleX: 176 / 760, scaleY: 116 / 600, duration: outA - tM0 - 0.25, ease: 'power3.inOut', immediateRender: false }, tM0 + 0.25);
+  vanish(myd, outA);                                                  // 落地那一刻换成泳道上的小表（同一个位置、同样大小）
+  tl.fromTo(g1, { x: 0, y: 0, scale: 1, transformOrigin: '0 0' }, { x: 1290 - 150, y: 40 - 790, scale: 0.8, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, tM0);
+  sfx('whoosh', tM0, { g: 0.35 }); sfx('tick', outA, { g: 0.4 });
+  tl.to(g1, { autoAlpha: 0, duration: 0.35 }, T('hT') - 0.1);       // 题头和实验那一段一起退场
 
   // ── 二、同样三句，两张表（X2） ──
   const B = part();
@@ -107,7 +115,7 @@ scene('intro', ({ root, s }) => {
   const tCopy = T('h8bz', '副本');
   vanish(LN.els.names[1], 0); appear(LN.els.names[1], outA); vanish(LN.els.lines[1], 0); appear(LN.els.lines[1], outA);
   slide(LN.els.names[0], tCopy - 0.2, { y: 230, d: 0.7, ease: 'power3.out' }); wipe(LN.els.lines[0], tCopy + 0.1, { dir: 'l', d: 0.7 });
-  slide(eng0, T('h8bz', 'MyISAM'), { x: -30 }); slide(eng1, T('h8bz', '另一个引擎'), { x: -30 });
+  slide(eng0, T('h8bz', 'MyISAM'), { x: -30 }); slide(eng1, T('h8c', '另一个引擎'), { x: -30 });
   sfx('pop', tCopy, { g: 0.5 });
   // 「复制一份」：users 那一道上先出一张小表，讲到「副本」时它复制出一张，飞到上面一道（只画表头与行，不写字）
   const tbl = (y) => { const g = h('div', 'abs', B); px(g, 500, y - 58, 176, 116); css(g, { border: '2px solid var(--mainD)', background: 'var(--panel)' });
@@ -115,7 +123,7 @@ scene('intro', ({ root, s }) => {
     for (let r = 0; r < 3; r++) { const ln = h('div', 'abs', g); px(ln, 10, 44 + r * 22, 152, 10); css(ln, { background: 'var(--pale)' }); }
     return g; };
   const tU = tbl(700), tM = tbl(700);
-  vanish(tU, 0); appear(tU, outA); sfx('tick', outA, { g: 0.4 });   // 小表和泳道同一刻出现
+  vanish(tU, 0); appear(tU, outA);                                   // 数据文件收成的小表落地，泳道同一刻出现
   vanish(tM, 0); appear(tM, tCopy - 0.1); fromTo(tM, tCopy - 0.1, { y: 0 }, { y: -230, duration: 0.8, ease: 'power3.inOut' });
   [tU, tM].forEach((e) => exit(e, tP0 - 0.4, { d: 0.3 }));
   lit(eng1, 'acc', 0, T('h15', 'InnoDB'));
@@ -133,11 +141,27 @@ scene('intro', ({ root, s }) => {
   LN.event(0, tPU, 'UPDATE', 'ink', -62); LN.event(1, tPU, 'UPDATE', 'ink', -62);
   LN.event(0, tPR, 'ROLLBACK', 'acc', -62); LN.event(1, tPR, 'ROLLBACK', '', -62);
   LN.playhead(tP0, tP1, 400, 500); LN.playhead(tP0, tP1, 618, 760);   // 每道一段：两道之间是 Warning 1196，播放头不从字上穿过
+  // 下面两道走到哪一步，上面三行 SQL 就标出哪一行（R13 第 4 条）：行首一个平涂小三角 + 整行浅底，
+  // 播放头起步时在 START TRANSACTION，走到 UPDATE、ROLLBACK 时移过去（0.25 秒滑一行），走完后收起
+  const sqlHl = h('div', 'abs', B); css(sqlHl, { background: 'var(--pale)' }); B.insertBefore(sqlHl, q1);
+  const tri = h('div', 'abs', B); css(tri, { width: '0', height: '0', borderTop: '12px solid transparent', borderBottom: '12px solid transparent', borderLeft: '17px solid var(--main)' });
+  const LY = [150, 205, 260], TS = [tP0, tPU, tPR], tHlOff = tP1 + 0.5;
+  let lastHl = '';
+  F((t) => {
+    const on = t >= tP0 - 0.2 && t < tHlOff; let k = 0; while (k < 2 && t >= TS[k + 1]) k++;
+    const y = k > 0 ? lerp(LY[k - 1], LY[k], ease.io3(clamp((t - TS[k]) / 0.25))) : LY[0];
+    const key = on ? y.toFixed(1) : '-'; if (key === lastHl) return; lastHl = key;
+    sqlHl.style.visibility = tri.style.visibility = on ? 'visible' : 'hidden';
+    px(sqlHl, 148, y - 5, 910, 54); px(tri, 124, y + 11);
+  });
+  [tPU, tPR].forEach((t) => sfx('tick', t + 0.05, { g: 0.3 }));
   const [w1, w2] = D.warning.split(/(?<=1196) /);
   const warn = h('div', 'echo err', B, `${esc(w1)}\n<span style="font-size:22px">${esc(w2)}</span>`); px(warn, 900, 505);
   const warnZ = h('div', 'gloss', B, '警告 1196：有些不支持事务的表，改动没法撤回'); px(warnZ, 900, 580);
   vanish(warn, 0); appear(warn, T('h13', '警告')); show(warnZ, T('h13', '警告') + 0.2, { y: 8, d: 0.4 }); sfx('error', T('h13', '警告'), { g: 0.5 });
   sfx('pop', T('h14', '42'));
+  const gInno = gloss(B, 160, 800, 'InnoDB', '<b>InnoDB</b>：MySQL 的存储引擎之一；2010 年 MySQL 5.5.5 起取代 MyISAM 成为默认，到 9.7 仍是默认', { w: 1000, src: 'MySQL 5.5 发布说明（H2）；MySQL 9.7 手册（M22）' });
+  vanish(gInno, 0); show(gInno, T('h15', 'InnoDB') + 0.2, { y: 8, d: 0.4 });
   exit(B, T('hT') - 0.1, { y: -20, d: 0.35 });
 
   // ── 三、片名落在 InnoDB 的架构图上 ──
@@ -170,6 +194,8 @@ scene('intro', ({ root, s }) => {
   // 四、撤得回，是因为有事务：架构图里的 undo 亮起（M20）；另外两处留到后面各章再讲（R12 删去 h17）
   const callout = (el, html, t) => { const c = h('div', 'tag', el, html); px(c, 12, -18); css(c, { fontSize: '24px' }); slam(c, t, { from: 1.3 }); sfx('pop', t, { g: 0.5 }); return c; };
   const c1 = callout(undo, '事务：回滚', T('h16', '事务'));
+  const gTxn = gloss(C, 120, 896, '事务', '<b>事务</b>：把一组修改捆成一个整体，要么都生效，要么都撤回；撤回靠的是 undo（第 02、05 章细讲）', { w: 1300 });
+  vanish(gTxn, 0); show(gTxn, T('h16', '事务') + 0.2, { y: 8, d: 0.4 });
   lit(undo, 'on', T('h16', '事务'));
   // undo 里一格格记下旧值
   const undoSq = [...undo.querySelectorAll('.sq')];

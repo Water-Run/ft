@@ -5,7 +5,7 @@
 // 约定：帧函数只切 display（这一页此刻存不存在），GSAP 只动 opacity / 位移（入场、变淡），两者不碰同一个属性。
 scene('s3', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
   const ov = overlay(W);
   const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   const disp = (e, on) => { const v = on ? '' : 'none'; if (e.style.display !== v) e.style.display = v; };

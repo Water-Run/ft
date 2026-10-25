@@ -1,10 +1,10 @@
 // 第 11 章 事务，和它的代价（全片最后一章）：回到开头的三个问题，三样部件合起来就是 InnoDB 的事务；再看代价，引出下一集。
 // 一、三个问题各对上架构图里的部件：A 撤回靠 undo（X2）；I 读靠多版本、写靠行级锁（M9、M10）；D 停下之后提交的还在，靠 redo（M12、R4）；合起来就是事务（M20）。
 // 二、代价：每行 6 + 7 = 13 字节（T7、S1、S2）；旧版本要留着（M8）；锁要等、可能死锁（X5、X7）。
-// 三、引出下一集：另一个更老牌的开源 SQL 数据库把旧版本留在表里（K9、M34）。
+// 三、引出下一集：另一个更老牌、更正统的关系数据库把旧版本留在表里（K9、M34）。
 scene('s11', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
   const ov = overlay(W);
   const A = D.alice;
   const ON = new Map(), onWin = (el, a, b) => { if (!ON.has(el)) ON.set(el, []); ON.get(el).push([a, b]); };
@@ -130,16 +130,19 @@ scene('s11', ({ root, s, c0 }) => {
   const pane = (x, title, rowsHtml) => { const b = boxEl(W, x, 300, 760, 360, ''); const t = h('div', 'abs', b, title); px(t, 24, 18); css(t, { font: '800 34px "Sans SC"', color: 'var(--ink)' }); const r = h('div', 'abs', b, rowsHtml); px(r, 24, 90); return b; };
   const rowB = (txt, cls) => `<div class="mono" style="font-size:28px;padding:8px 14px;margin-bottom:14px;border:2px solid ${cls === 'old' ? 'var(--main)' : 'var(--mainD)'};background:${cls === 'old' ? 'var(--pale)' : 'var(--panel)'};width:560px">${txt}</div>`;
   const left = pane(120, 'InnoDB', `<div class="t-small" style="margin-bottom:8px">表（页 ${A.page}）</div>${rowB(`2050  Alice   ${A.after.age}`)}<div class="t-small" style="margin:18px 0 8px">undo</div>${rowB(`2050  Alice   ${A.before.age}`, 'old')}`);
-  const right = pane(1040, '更老牌的开源 SQL 数据库', `<div class="t-small" style="margin-bottom:8px">表</div>${rowB(`2050  Alice   ${A.after.age}`)}`);
+  const right = pane(1040, '更老牌正统的关系数据库', `<div class="t-small" style="margin-bottom:8px">表</div>${rowB(`2050  Alice   ${A.after.age}`)}`);
   const since = h('div', 'abs t-small', right, '前身 POSTGRES：1986 年在伯克利开始实现'); px(since, 24, 316);   // K9
   vanish(since, 0); show(since, T('k16z', '旧版本') - 0.2, { y: 8, d: 0.4 });
   const oldIn = h('div', 'abs', right, rowB(`2050  Alice   ${A.before.age}`, 'old')); px(oldIn, 24, 210);       // 旧版本也留在表里（M34）
   vanish(oldIn, 0); slide(oldIn, T('k16z', '表里') - 0.3, { x: 60 }); sfx('pop', T('k16z', '表里'), { g: 0.5 });
-  wipe(left, tN + 0.3, { dir: 'l', d: 0.5 }); wipe(right, T('k16', '开源') - 0.3, { dir: 'l', d: 0.5 }); sfx('whoosh', tN + 0.3, { g: 0.4 });
-  const next = h('div', 'tag', W, 'PART 3 · PostgreSQL'); px(next, 1040, 700); css(next, { font: '800 40px Inter', padding: '8px 22px' });
+  wipe(left, tN + 0.3, { dir: 'l', d: 0.5 }); wipe(right, T('k16', '关系') - 0.3, { dir: 'l', d: 0.5 }); sfx('whoosh', tN + 0.3, { g: 0.4 });
+  // 「关系数据库」「正统」的出处：PostgreSQL 文档自称对象关系数据库，支持 SQL 标准的大部分（M67、M69）
+  const gPg = gloss(W, 1040, 676, '', '<b>PostgreSQL</b>：文档自称对象关系数据库（ORDBMS）；SQL:2023 的 177 项核心特性，至少支持 170 项', { w: 760, src: 'PostgreSQL 18 文档（M67、M69）' });
+  vanish(gPg, 0); show(gPg, T('k16', '关系') + 0.4, { y: 8, d: 0.4 });
+  const next = h('div', 'tag', W, 'PART 3 · PostgreSQL'); px(next, 1040, 820); css(next, { font: '800 40px Inter', padding: '8px 22px' });
   slam(next, T('k17', '另一条路'), { from: 1.4 }); sfx('thud', T('k17', '另一条路') + 0.05);
   to(left, Tend('k17') + 0.4, { opacity: 0.45, duration: 0.6 });   // 章末 InnoDB 退后，留下下一集的那条路
   // 收干净，留给片尾硬切
   const tEnd = s.end - 0.15;                                  // 退场和片尾硬切几乎同时，片尾名单前不留空屏
-  [left, right, next].forEach((e, i) => exit(e, tEnd + i * 0.05, { y: -16, d: 0.35 }));
+  [left, right, gPg, next].forEach((e, i) => exit(e, tEnd + i * 0.05, { y: -16, d: 0.35 }));
 });

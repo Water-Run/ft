@@ -5,7 +5,7 @@
 // 锁的模式与状态取自 D.locks（X5 的 performance_schema.data_locks），报错原文取自 D.locks.carolErr / deadErr（X5、X7）。
 scene('s7', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
   const st = h('style', null, root);
   st.textContent = `
 .s7-rec { position: absolute; width: 280px; height: 140px; background: var(--panel); border: 1.5px solid var(--mainD); padding: 10px 16px; }

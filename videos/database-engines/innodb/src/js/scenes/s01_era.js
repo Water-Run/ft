@@ -2,7 +2,7 @@
 // MyISAM 到 2010 年 7 月（5.5.5，H2）为止，之后是 InnoDB，一直到今天的 9.7（M22、G6）。下方三个问题小卡，最后收向「事务」。
 scene('s1', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  drift3(makeCamera(W), s, -1);            // 缓慢漂移（parts.js）
+  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s1_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -23,7 +23,6 @@ scene('s1', ({ root, s, c0 }) => {
     .s1-big { position: absolute; font: 900 84px "Sans SC"; color: var(--mainD); }
   `;
   const ov = overlay(W);
-  const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   // 年份 → 横坐标：2003 到 2027
   const X0 = 200, X1 = 1720, Y0 = 1992, Y1 = 2027;
   const xOf = (yr) => X0 + (yr - Y0) / (Y1 - Y0) * (X1 - X0);
@@ -105,7 +104,6 @@ scene('s1', ({ root, s, c0 }) => {
   const tHl0 = T('y1d', '开头'), stHl = Math.max(0.3, (T('y1d', '名字') - tHl0) / (files.length - 1));
   panel.querySelectorAll('.s1-who').forEach((e, i) => { lit(e, 's1-hl', tHl0 + i * stHl); fl[i].classList.add('s1-row'); lit(fl[i], 's1-hl', tHl0 + i * stHl); });
   lit(hk, 's1-hl', T('y1d', '名字'));
-  drift(panel, T('y1', 'InnoDB') + 0.3, T('y2') - 0.1, 1.02);
   [panel, hkStem, hk, dot94].forEach((e) => s1_out(e, T('y2') - 0.1, { y: 12, d: 0.35 }));
   for (const [n, t] of [[nAcq, T('y2', '2005 年')], [nDef, T('y3', '2010 年')], [nNow, T('y4', '9.7')]]) {
     slam(n.d, t, { from: 1.8 }); wipe(n.sm2, t + 0.02, { dir: 'b', d: 0.2 }); wipe(n.sm, t + 0.12, { dir: 'b', d: 0.3 }); slide(n.lab, t + 0.2, { y: 16 }); sfx('thud', t, { g: 0.5 });
@@ -131,14 +129,16 @@ scene('s1', ({ root, s, c0 }) => {
     { t: 'y9', gap: '没有日志', title: '停下之后', x: 1300 },
   ];
   const cards = Q.map((q, i) => {
-    const c = h('div', 'card s1-q', W, `<div class="ct"><span class="num c-mainD" style="margin-right:12px">${i + 1}</span><span class="s1-ti c-ink2" style="font-size:30px">MyISAM：${q.gap}</span></div><div class="cs" style="height:52px"></div>`);
+    const c = h('div', 'card s1-q', W, `<div class="ct"><span class="num c-mainD" style="margin-right:12px">${i + 1}</span><span class="s1-ti c-ink2" style="font-size:30px">${q.gap}</span></div><div class="cs" style="height:52px"></div>`);
     px(c, q.x, 600, 420, 178); slide(c, T('y6') + 0.2 + i * 0.5, { y: 36 }); sfx('thud', T('y6') + 0.2 + i * 0.5, { g: 0.4 });
     swaps(c.querySelector('.s1-ti'), [[T(q.t), q.title]]);
     lit(c.querySelector('.s1-ti'), 's1-on', T(q.t));
     return c;
   });
   st.textContent += '.s1-ti.s1-on { color: var(--ink) !important; font-size: 40px !important; }';
-  const qHead = h('div', 'abs t-note', W, '三个问题'); px(qHead, 200, 556); wipe(qHead, T('y6', '三个问题') - 0.1, { dir: 'l', d: 0.4 });
+  // 「MyISAM」只在这一排卡片上方写一次（R13 第 5 条），讲到「三个问题」时换成「三个问题」
+  const qHead = h('div', 'abs t-note', W, 'MyISAM 做不到的三处'); px(qHead, 200, 556); wipe(qHead, T('y6') + 0.1, { dir: 'l', d: 0.4 });
+  swaps(qHead, [[T('y6', '三个问题') - 0.1, '三个问题']]);
   // 小图：放在卡片下半部分，讲到哪一张就在哪一张里演一遍
   const pic = (i, html, x, t) => { const e = h('div', 'abs', cards[i], html); px(e, x, 96); css(e, { whiteSpace: 'nowrap' }); vanish(e, 0); return e; };
   // 1 撤回：42 → 改成 43（斜纹）→ 想撤回？
@@ -159,5 +159,6 @@ scene('s1', ({ root, s, c0 }) => {
   slam(big, tT, { from: 1.5 }); sfx('thud', tT + 0.05);
   cards.forEach((c) => lit(c, 'on', tT));
   cards.forEach((c) => to(c, Tend('y10') + 0.3, { opacity: 0.45, duration: 0.6 }));   // 章末三张卡退后，只留「事务」
+  s1_out(G, T('y10') + 0.2, { y: -16, d: 0.4 });                    // 收向「事务」时，上面的年代轴退场（同屏要读的字少）
   W.appendChild(ov);
 });
