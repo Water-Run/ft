@@ -7,7 +7,6 @@ scene('s6', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
   pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
   const st = h('style', null, root);
-  const drift = (e, t0, t1, k = 1.025) => tl.fromTo(e, { scale: 1 }, { scale: k, duration: Math.max(0.5, t1 - t0), ease: 'none', immediateRender: false }, t0);   // 读卡片时慢慢推近
   st.textContent = `
 .s6-unc { background-color: #F3DCD5; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M-2,2 l4,-4 M0,14 L14,0 M12,16 l4,-4' stroke='%23B5452E' stroke-width='3'/%3E%3C/svg%3E"); border-color: var(--acc) !important; border-width: 3px !important; }
 .s6-unc .v { color: var(--acc) !important; background: var(--panel); display: inline-block; padding: 0 6px; }
@@ -47,21 +46,22 @@ scene('s6', ({ root, s, c0 }) => {
   const xU = 470, xB1 = 640, xC = 980, xR2 = 1130, xFS = 1480;
   const LN = lanes(W, {
     x: 120, y: 690, w: 1680, gap: 200, rowH: 105, names: ['Alice', 'Bob', ''],
-    pts: [[c0, 330], [tU, xU], [tB1, xB1], [Tend('f4'), 700], [T('f12'), 780], [tC, xC], [tR2, xR2], [tFSv, xFS], [tEnd, 1760]],
+    pts: [[c0, 424], [tU, xU], [tB1, xB1], [Tend('f4'), 700], [T('f12'), 780], [tC, xC], [tR2, xR2], [tFSv, xFS], [tEnd, 1760]],
   });
-  const trkL = h('div', 's6-trk', W, '2050'); px(trkL, 120, 572);
-  const trkL2 = h('div', 'abs t-small', W, '这一行'); px(trkL2, 210, 578);
-  const trkLine = h('div', 'lane-line', W); px(trkLine, 320, 589, 1480);
-  const yT = 568;
-  LN.bar(yT, c0 + 0.2, tU, '42');
+  const trkL = h('div', 's6-trk', W, '2050'); px(trkL, 120, 604);
+  const trkL2 = h('div', 'abs t-small', W, '这一行'); px(trkL2, 210, 610);
+  const trkLine = h('div', 'lane-line', W); px(trkLine, 320, 621, 1480);
+  const yT = 600;
+  const pre42 = h('div', 'vbar', W, '42'); px(pre42, 330, yT, 94);   // 泳道开始之前这一行就是 42：一开始就整段画出来
+  LN.bar(yT, c0 + 0.2, tU, '');
   const vUnc = LN.bar(yT, tU, tC, `<span>43 · 事务 ${TRX}</span>`, 'unc');
   LN.bar(yT, tC, tEnd + 2, '43', '', { until: tEnd });
   // 入场：架构带先在，再是轨与泳道（讲解对象带着内容在场）
   wipe(zm, c0 + 0.1, { dir: 'b', d: 0.5 }); wipe(zd, c0 + 0.2, { dir: 'b', d: 0.5 });
-  slide(trkL, c0 + 0.35, { x: -30 }); slide(trkL2, c0 + 0.4, { x: -30 }); wipe(trkLine, c0 + 0.35, { dir: 'l', d: 0.6 });
+  slide(trkL, c0 + 0.35, { x: -30 }); slide(trkL2, c0 + 0.4, { x: -30 }); wipe(trkLine, c0 + 0.35, { dir: 'l', d: 0.6 }); wipe(pre42, c0 + 0.4, { dir: 'l', d: 0.5 });
   [0, 1].forEach((i) => { slide(LN.els.names[i], c0 + 0.45 + i * 0.1, { x: -40 }); wipe(LN.els.lines[i], c0 + 0.45 + i * 0.1, { dir: 'l', d: 0.7 }); });
   vanish(LN.els.lines[2], 0);
-  LN.playhead(c0 + 0.3, tEnd, 548, 930);
+  LN.playhead(c0 + 0.3, tEnd, 580, 930);
   sfx('whoosh', c0 + 0.1, { g: 0.4 });
 
   const ov = overlay(W);
@@ -89,6 +89,8 @@ scene('s6', ({ root, s, c0 }) => {
   const dTag = h('div', 'tag acc', W, '脏读'); px(dTag, 800, 460); slam(dTag, T('f5', '脏读'), { from: 1.3 });
   [dirty].forEach((p) => svgOut(p, T('f6') - 0.1, 0.3));
   [dX, dTag].forEach((e) => exit(e, T('f6') - 0.1, { y: -10, d: 0.3 }));
+  const gDirty = gloss(W, 900, 418, '脏读', '<b>脏读</b>：读到别人还没提交的数据。默认的可重复读不会；读未提交级别下会', { w: 620, src: 'MySQL 9.7 手册（M38、M42）' });
+  vanish(gDirty, 0); show(gDirty, T('f5', '脏读') + 0.2, { y: 8, d: 0.4 }); exit(gDirty, T('f6') - 0.1, { y: 8, d: 0.3 });
 
   // f6–f8：Bob 的快照：拍下那一刻已经提交的事务看得见；6175 还没提交，不在里面
   const card = h('div', 'card', W, `<div class="ct" style="font-size:32px">Bob 的快照<span class="s6-first" style="font:500 22px 'Sans SC';color:var(--ink2);margin-left:12px">· 第一次读时拍下</span></div>
@@ -96,7 +98,19 @@ scene('s6', ({ root, s, c0 }) => {
     <div class="cs" style="font-size:26px;margin-top:2px">${MARK.no(26)} <span class="num">${TRX}</span>：拍下时还没提交</div>`);
   px(card, 1340, 398, 460); css(card, { padding: '12px 22px' });
   const [cl1, cl2] = [card.children[1], card.children[2]];
-  slide(card, T('f6', '快照'), { x: 40 }); sfx('thud', T('f6', '快照') + 0.1, { g: 0.5 });
+  const tSh = T('f6', '快照') - 0.25, SR = 132;
+  const shut = svg('svg', { width: 2 * SR, height: 2 * SR, viewBox: `${-SR} ${-SR} ${2 * SR} ${2 * SR}`, style: `position:absolute;left:${1570 - SR}px;top:${473 - SR}px;overflow:visible` }, W);
+  for (let i = 0; i < 6; i++) {
+    const a = (i * 60) * Math.PI / 180, b = ((i + 1) * 60) * Math.PI / 180, m = ((i + 0.5) * 60) * Math.PI / 180;
+    const bl = svg('polygon', { points: `0,0 ${SR * 1.05 * Math.cos(a)},${SR * 1.05 * Math.sin(a)} ${SR * 1.05 * Math.cos(b)},${SR * 1.05 * Math.sin(b)}`, style: `fill:${i % 2 ? '#24505D' : '#2D5A68'};stroke:#F4F2EE;stroke-width:2` }, shut);
+    const dx = Math.cos(m) * 220, dy = Math.sin(m) * 220;
+    tl.fromTo(bl, { x: dx, y: dy, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.18, ease: 'power2.in', immediateRender: true }, tSh);
+    tl.to(bl, { x: dx, y: dy, opacity: 0, duration: 0.26, ease: 'power2.out' }, tSh + 0.28);
+  }
+  vanish(card, 0); appear(card, tSh + 0.26);                  // 叶片合拢的那一刻，快照卡定格
+  sfx('tick', tSh + 0.18, { g: 0.6 }); sfx('pop', tSh + 0.3, { g: 0.5 });
+  const gSnap = gloss(W, 900, 418, '快照', '<b>快照</b>（读视图）：拍下那一刻哪些事务已经提交；之后读每一行，都按它决定能看哪个版本', { w: 420, src: 'MySQL 9.7 手册（M9、M30）；源码（S6）' });
+  vanish(gSnap, 0); show(gSnap, T('f6', '快照') + 0.3, { y: 8, d: 0.4 }); exit(gSnap, T('f10') - 0.1, { y: 8, d: 0.3 });
   vanish(cl1, 0); vanish(cl2, 0);
   show(cl1, T('f7', '已经提交'), { y: 8, d: 0.35 });
   const snapLink = path(ov, `M${xB1 + 30},${LN.Y(1) - 22} C${xB1 + 30},620 1300,560 1338,470`, 'mute', { w: 1.8, dashed: '4 6', arrow: false });
@@ -127,17 +141,29 @@ scene('s6', ({ root, s, c0 }) => {
 
   // ── 隔离级别：四个，按 SQL 标准 ──
   const ovB = overlay(W);                                    // 卡片下层的连线（先建，后面的隔离级别卡片盖在它上面）
-  const ISO = [['READ UNCOMMITTED', '读未提交'], ['READ COMMITTED', '读已提交'], ['REPEATABLE READ', '可重复读'], ['SERIALIZABLE', '可串行化']];
-  const iso = ISO.map(([en, zh], i) => { const e = h('div', 's6-iso', W, `<div class="en">${en}</div><div class="zh">${zh}</div>`); px(e, 120 + i * 300, 398); return e; });
-  iso.forEach((e, i) => slide(e, T('f12a', '隔离级别') + i * 0.1, { y: 20 }));
+  const ISO = [['读未提交', 'READ UNCOMMITTED'], ['读已提交', 'READ COMMITTED'], ['可重复读', 'REPEATABLE READ'], ['可串行化', 'SERIALIZABLE']];
+  const PH = [['脏读', ['会', '不会', '不会', '不会']], ['不可重复读', ['会', '会', '不会', '不会']], ['幻读', ['会', '会', 'InnoDB 挡住', '不会']]];
+  const TX = 120, TY = 396, CW0 = 170, CW = 250;
+  const tbl = h('div', 'abs', W); px(tbl, TX, TY, CW0 + 4 * CW, 186); css(tbl, { pointerEvents: 'none' });
+  const cap = gloss(tbl, 0, 0, '隔离级别', '<b>隔离级别</b>：同时进行的事务彼此看得见多少；SQL:1992 定了四级，InnoDB 都支持<span class="gl-src" style="display:inline;margin-left:12px">手册 M26、M38–M46</span>', { w: CW0 + 4 * CW });
+  css(cap, { background: 'transparent' });
+  const iso = ISO.map(([zh, en], k) => { const e = h('div', 's6-col', tbl, `<div class="zh">${zh}</div><div class="en">${en}</div>`); px(e, CW0 + k * CW, 38, CW - 6, 148); return e; });
+  PH.forEach(([name, vals], r) => {
+    const lab = h('div', 'abs', tbl, name); px(lab, 0, 100 + r * 30); css(lab, { font: '700 22px "Sans SC"', color: 'var(--ink)' });
+    vals.forEach((v, k) => { const c = h('div', 'abs', tbl, v); px(c, CW0 + k * CW + 12, 100 + r * 30); css(c, { font: '600 22px "Sans SC"', color: v === '会' ? 'var(--acc)' : 'var(--main)' }); });
+  });
+  const rule = h('div', 'abs', tbl); px(rule, 0, 94, CW0 + 4 * CW, 2); css(rule, { background: 'var(--edge)' });
+  st.textContent += '.s6-col { position: absolute; border: 1.5px solid var(--edge); background: var(--panel); padding: 4px 10px; opacity: .55; }'
+    + ' .s6-col .zh { font: 700 24px "Sans SC"; color: var(--ink); } .s6-col .en { font: 600 22px "Mono"; color: var(--ink2); }'
+    + ' .s6-col.on { opacity: 1; border-color: var(--main); outline: 1.5px solid var(--main); outline-offset: -3px; } .s6-col.full { opacity: 1; }';
+  tbl.appendChild(rule); [...tbl.children].filter((e) => !e.classList.contains('s6-col') && e !== cap).forEach((e) => tbl.appendChild(e));   // 文字压在列框上面
+  vanish(tbl, 0); show(tbl, T('f12a', '隔离级别') - 0.1, { y: 16, d: 0.45 }); sfx('whoosh', T('f12a', '隔离级别'), { g: 0.35 });
   const dflt = h('span', null, iso[2].querySelector('.zh'), '默认');
-  css(dflt, { font: '700 22px "Sans SC"', color: '#fff', background: 'var(--mainD)', padding: '2px 8px', marginLeft: '12px', display: 'inline-block' });
+  css(dflt, { font: '700 20px "Sans SC"', color: '#fff', background: 'var(--mainD)', padding: '1px 6px', marginLeft: '10px', display: 'inline-block' });
   vanish(dflt, 0); slam(dflt, T('f12', '可重复读'), { from: 1.4 });
   lit(iso[2], 'on', T('f12', '可重复读'), T('f17'));
   lit(iso[1], 'on', T('f17', '读已提交'), T('f19'));
   iso.forEach((e, i) => { lit(e, 'full', T('f19', '四个'), Infinity); lit(e, 's6-sweep', T('f19', '四个') + i * 0.7, T('f19', '四个') + i * 0.7 + 0.9); });
-  const sqlStd = h('div', 'abs t-small', W, 'SQL:1992 标准的四个级别'); px(sqlStd, 120, 484);
-  vanish(sqlStd, 0); show(sqlStd, T('f19', 'S Q L'), { y: 6, d: 0.4 });
 
   // 快照卡的标题旁补一句：第一次读时拍下
   const firstRead = card.querySelector('.s6-first'); vanish(firstRead, 0);
@@ -154,14 +180,18 @@ scene('s6', ({ root, s, c0 }) => {
   // f15：两次读一样——一条弧连起两个 42
   const same = path(ov, `M${xB1 + 70},${LN.Y(1) + 26} C${xB1 + 200},${LN.Y(1) + 70} ${xR2 - 60},${LN.Y(1) + 70} ${xR2 + 60},${LN.Y(1) + 26}`, 'main', { w: 2, arrow: false });
   arrowIn(same, T('f15', '不同的值') - 0.2, 0.6);
-  const eq = h('div', 'abs t-h c-main', W, '='); px(eq, (xB1 + xR2) / 2 + 14, LN.Y(1) + 40); css(eq, { fontSize: '36px', lineHeight: '1', background: 'var(--bg)', padding: '0 8px' });
-  slam(eq, T('f15', '挡住'), { from: 1.5 });
+  const eq = h('div', 'abs', W, '两次都读到 42'); px(eq, 830, LN.Y(1) + 66); css(eq, { font: '700 24px "Sans SC"', color: 'var(--main)', background: 'var(--bg)', padding: '0 8px' });
+  vanish(eq, 0); show(eq, T('f15', '挡住') - 0.2, { y: 6, d: 0.35 });
+  const gNR = gloss(W, 1250, LN.Y(1) + 20, '不可重复读', '<b>不可重复读</b>：同一个事务里两次读同一行，读到不同的值', { w: 520, src: 'MySQL 9.7 手册（M43）' });
+  vanish(gNR, 0); show(gNR, T('f15', '不可重复读') + 0.2, { y: 8, d: 0.4 }); exit(gNR, T('f16') - 0.1, { y: 8, d: 0.3 });
   // f16：锁定读，直接读最新提交的版本：43
   const fs = LN.event(1, tFS, 'FOR SHARE', 'ink');
   const lk = lockAt(W, 0, 0); px(lk, xFS - 100, LN.Y(1) - 70); vanish(lk, 0); show(lk, tFS + 0.3, { y: -10, d: 0.4 });
   const vFS = valAt(xFS + 90, LN.Y(1), M.bob_locking_read, '', tFSv);
   const toCur = path(ovB, `M${xFS},${LN.Y(1) - 22} C${xFS},520 825,520 825,337`, 'main', { w: 2.2, dashed: '8 7' });
   arrowIn(toCur, tFSv - 0.5, 0.6); svgOut(toCur, T('f17') - 0.1, 0.3);
+  const gLR = gloss(W, 1250, LN.Y(1) + 44, '锁定读', '<b>锁定读</b>（FOR SHARE）：读的同时给这一行加锁，读的是最新提交的版本', { w: 520, src: '本片实验（X3）' });
+  vanish(gLR, 0); show(gLR, T('f16', '锁定读') + 0.2, { y: 8, d: 0.4 }); exit(gLR, T('f17') - 0.1, { y: 8, d: 0.3 });
 
   // f17–f18：读已提交——每读一次拍一张新快照，提交后读到 43
   const rcName = h('div', 'lane-name', W, 'Bob'); px(rcName, 120, LN.Y(2) - 20);
@@ -172,8 +202,10 @@ scene('s6', ({ root, s, c0 }) => {
   valAt(xB1 + 100, LN.Y(2), RC.bob_while_alice_uncommitted, '', T('f17', '新快照') + 0.4);
   pillAt(xR2, LN.Y(2), '读 · 新快照', '', T('f18', '一提交') - 0.1);
   valAt(xR2 + 100, LN.Y(2), RC.bob_after_alice_commit, '', T('f18', '43'));
-  const rcTag2 = h('div', 'abs t-small', W, '可重复读'); px(rcTag2, 205, LN.Y(1) + 14);
-  slide(rcTag2, T('f17', '读已提交') + 0.2, { x: -20 });
+  const rcTag2 = gloss(W, 205, LN.Y(1) + 8, '可重复读', '<b>可重复读</b>：第一次读时拍快照，<br>之后一直用它', { w: 440 });
+  vanish(rcTag2, 0); show(rcTag2, T('f12', '可重复读') + 0.2, { x: -20, y: 0, d: 0.4 });
+  const rcNote = gloss(W, 205, LN.Y(2) + 26, '读已提交', '<b>读已提交</b>：每读一次，拍一张新快照', { w: 560 });
+  vanish(rcNote, 0); show(rcNote, T('f17', '读已提交') + 0.3, { y: 6, d: 0.4 });
 
   // f20–f21：同一行，不同的事务看到不同的版本：42 在 undo，43 在页里
   const see42 = h('div', 'tag', W, '可重复读的 Bob 看到'); px(see42, 1520, 164);
@@ -181,17 +213,19 @@ scene('s6', ({ root, s, c0 }) => {
   [see42, see43].forEach((e, i) => slide(e, T('f20', '不同的版本') + i * 0.15, { y: 10 }));
   lit(fAge, 'hot', T('f20'), Infinity);
   // 四个级别讲完就收起，给 MVCC 腾出位置
-  [...iso, sqlStd].forEach((e, i) => exit(e, T('f20') - 0.1 + i * 0.04, { y: -10, d: 0.3 }));
+  exit(tbl, T('f20') - 0.1, { y: -10, d: 0.3 });
   exit(card, T('f21') - 0.3, { x: 40, d: 0.35 });
   const mv = h('div', 'abs', W, '<span style="font:800 72px Inter;color:var(--mainD)">MVCC</span><span style="font:700 34px \'Sans SC\';color:var(--ink);margin-left:18px">多版本并发控制</span>');
   px(mv, 120, 410); wipe(mv, T('f21', '多版本'), { dir: 'l', d: 0.6 }); sfx('thud', T('f21', '多版本') + 0.1, { g: 0.6 });
   // 脚注（K8）：多版本并发控制的正确性理论出自 1983 年 Bernstein 与 Goodman；不配旁白，作 MVCC 标题的脚注
-  const fnote = h('div', 'abs t-small', W, '注：多版本并发控制的正确性理论，见 Bernstein 与 Goodman，1983 年'); px(fnote, 124, 508);   // 落在 MVCC 标题下面，不压右边 Bob 的快照卡
+  const fnote = h('div', 'abs t-small', W, '多版本并发控制的正确性理论，由 Bernstein 与 Goodman 在 1983 年提出'); px(fnote, 124, 556);   // 落在 MVCC 标题与注解下面（措辞照 WaterRun 2026-10-25）
+  const gMV = gloss(W, 780, 420, '多版本并发控制', '<b>多版本并发控制</b>：一行留着几个版本，读的人按快照挑自己能看的那个，读和写互不等待', { w: 620, src: 'MySQL 9.7 手册（M56）' });
+  vanish(gMV, 0); show(gMV, T('f21', '多版本') + 0.4, { y: 8, d: 0.4 });
   vanish(fnote, 0); show(fnote, T('f20') + 0.3, { y: 6, d: 0.4 });
   // 收尾：泳道一带慢慢淡下去，只留两个版本与 MVCC（整组放进一个容器，只对容器补间）
   const dimBox = h('div', 'abs', W); px(dimBox, 0, 0, 1920, 1080);
-  [...W.querySelectorAll('.pill, .s6-val, .vbar, .playhead, .lane-name, .lane-line, .s6-trk, .lock'), trkL2, eq, rcTag, rcTag2].forEach((e) => dimBox.appendChild(e));
-  fromTo(dimBox, T('f21', '多版本') + 0.7, { opacity: 1 }, { opacity: 0.3, duration: 2.4, ease: 'power1.inOut' });
+  [...W.querySelectorAll('.pill, .s6-val, .vbar, .playhead, .lane-name, .lane-line, .s6-trk, .lock'), trkL2, eq, rcTag, rcTag2, rcNote].forEach((e) => dimBox.appendChild(e));
+  fromTo(dimBox, T('f21', '多版本') + 0.7, { opacity: 1 }, { opacity: 0, duration: 1.6, ease: 'power1.inOut' });   // 收尾只留两个版本与 MVCC（同屏要读的字少）
   svgOut(same, T('f21', '多版本') + 0.7, 2.4);
 
   W.appendChild(ov);

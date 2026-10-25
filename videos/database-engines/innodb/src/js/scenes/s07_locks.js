@@ -89,6 +89,9 @@ scene('s7', ({ root, s, c0 }) => {
   const wbar = LN.bar(LN.Y(1) - 18, tCw, tTo, '等锁', 'wait');
   const block = path(ov, `M${640},${LN.Y(1) - 70} C${640},470 ${cx(2050) + 60},470 ${cx(2050) + 60},${RY + 150}`, 'acc', { w: 2.2, dashed: '8 7' });
   arrowIn(block, tCw + 0.1, 0.6); svgOut(block, tTo, 0.3);
+  const queue = h('div', 's7-st wait', W, 'Carol · 排队等这把锁'); px(queue, cx(2050) + 80, RY + 160);
+  vanish(queue, 0); show(queue, tCw + 0.6, { y: -16, d: 0.35 }); sfx('tick', tCw + 0.6, { g: 0.4 });
+  swaps(queue, [[tTo, 'Carol · 等超时，放弃']]); lit(queue, 'err', tTo); exit(queue, tTo + 1.4, { y: 20, d: 0.4 });
   const err = LN.event(1, tTo, 'ERROR 1205', 'fill acc', -56);
   sfx('error', tTo, { g: 0.5 });
   const errT = h('div', 'abs', W, `<div class="echo err" style="position:static;font-size:22px">${esc(D.locks.carolErr)}</div><div class="gloss" style="position:static;margin-top:4px">等锁超时，事务要重新开始</div><div class="gloss" style="position:static;margin-top:2px">等待上限 innodb_lock_wait_timeout：缺省 50 秒</div>`);
@@ -139,22 +142,44 @@ scene('s7', ({ root, s, c0 }) => {
     const u = (t - tD0) / (tD1 - tD0), pth = u < 0.5 ? arcA : arcC, k = u < 0.5 ? u * 2 : (u - 0.5) * 2;
     const p = pth.getPointAtLength(k * pth.getTotalLength()); dot.setAttribute('cx', p.x.toFixed(1)); dot.setAttribute('cy', p.y.toFixed(1));
   });
+  // 等待图（右边一块）：每个在等的事务记下挡住它的那一个，画成一条边
+  const WG = boxEl(W, 1180, 460, 620, 300, '');
+  const wgT = h('div', 'abs t-small', WG, 'InnoDB 记下的「谁在等谁」（等待图）'); px(wgT, 20, 12);
+  const nodeA = h('div', 's7-st hold', WG, 'Alice'); px(nodeA, 60, 120); const nodeC = h('div', 's7-st hold', WG, 'Carol'); px(nodeC, 450, 120);
+  css(nodeC, { background: 'var(--acc)' });
+  const wgOv = overlay(WG);
+  const eAC = path(wgOv, 'M160,118 C260,60 360,60 446,118', 'acc', { w: 3 }), eCA = path(wgOv, 'M446,170 C360,228 260,228 160,170', 'acc', { w: 3 });
+  const eAl = h('div', 'abs t-small', WG, 'Alice 等 Carol（2051）'), eCl = h('div', 'abs t-small', WG, 'Carol 等 Alice（2049）');
+  px(eAl, 190, 42); px(eCl, 190, 222);
+  WG.appendChild(wgOv);
+  vanish(WG, 0); show(WG, tA9 + 0.2, { x: 20, y: 0, d: 0.4 });
+  [nodeA, nodeC].forEach((e, i) => { vanish(e, 0); slide(e, [tA9, tC10][i] + 0.2, { y: 10 }); });
+  arrowIn(eAC, tAw + 0.2, 0.5); vanish(eAl, 0); show(eAl, tAw + 0.3, { y: 6, d: 0.3 });
+  arrowIn(eCA, tCwt + 0.2, 0.5); vanish(eCl, 0); show(eCl, tCwt + 0.3, { y: 6, d: 0.3 });
+  [eAC, eCA].forEach((p) => to(p, tDl, { attr: { 'stroke-width': 5 }, duration: 0.3 }));
+  const ring2 = h('div', 'abs', WG, '沿着边走一圈，回到了起点：有环'); px(ring2, 150, 262); css(ring2, { font: '700 22px "Sans SC"', color: 'var(--acc)' });
+  vanish(ring2, 0); show(ring2, tDet - 0.1, { y: 6, d: 0.35 });
+  const gDead = gloss(W, 1180, 772, '死锁', '<b>死锁</b>：两个事务各拿着对方要的锁，互相等，谁也等不到', { w: 620, src: '源码：等待图找环（S11–S13）；实验（X7）' });
+  vanish(gDead, 0); show(gDead, tDl + 0.1, { y: 8, d: 0.4 });
   // g11：两条等待围成一个环——死锁
   [arcA, arcC].forEach((p) => to(p, tDl, { attr: { 'stroke-width': 5 }, duration: 0.3 }));
   const dTag = h('div', 'tag acc', W, '死锁'); px(dTag, (cx(2049) + cx(2051)) / 2 - 28, RY + 172);
   css(dTag, { fontSize: '30px', padding: '4px 14px' }); slam(dTag, tDl, { from: 1.5 }); sfx('error', tDl, { g: 0.4 });
   // g12：InnoDB 发现死锁，回滚 Carol；Alice 拿到 2051，继续
-  const det = h('div', 'tag', W, 'InnoDB 选中回滚：Carol'); px(det, 1150, 450);
-  slam(det, tDet, { from: 1.3 });
+  const det = h('div', 'tag', W, '挑改动少的那笔回滚：Carol'); px(det, 1180, 418);
+  slam(det, tDet + 0.3, { from: 1.3 });
+  const cX = h('div', 'abs', WG, MARK.no(56)); px(cX, 470, 112); vanish(cX, 0); slam(cX, tRb, { from: 1.6 });
+  [eAC, eCA, eAl, eCl, ring2].forEach((e) => (e.tagName === 'path' ? svgOut(e, tGo, 0.3) : exit(e, tGo, { d: 0.3 })));
   [cLk, cTg, cW].forEach((e) => exit(e, tRb, { y: -14, d: 0.35 })); svgOut(arcC, tRb, 0.35); exit(dTag, tRb, { d: 0.3 });
   const cErr = stAt(1, 800, 'ERROR 1213 · 回滚', 'err', tRb + 0.1);
   const dErr = h('div', 'abs', W, `<div class="echo err" style="position:static;font-size:22px">${esc(D.locks.deadErr)}</div><div class="gloss" style="position:static;margin-top:4px">发现死锁：这个事务被回滚，要重新开始</div>`);
-  px(dErr, 800, LN.Y(1) + 36); vanish(dErr, 0); show(dErr, tRb + 0.3, { y: 8, d: 0.4 });
+  px(dErr, 330, LN.Y(1) + 36);   // 让开右边的等待图 vanish(dErr, 0); show(dErr, tRb + 0.3, { y: 8, d: 0.4 });
   svgOut(arcA, tGo, 0.3); exit(aW, tGo, { d: 0.3 });
   lockFor(2051, 'Alice', tGo + 0.2);
   stAt(0, 560, '拿到 2051 · 完成', 'ok', tGo + 0.3);
   sfx('chime', tGo + 0.3, { g: 0.45 });
   exit(det, Tend('g12') + 0.5, { y: -10, d: 0.3 });             // 章末：「选中回滚」的说明收起
+  exit(gDead, Tend('g12') + 0.5, { y: 8, d: 0.3 });
 
   W.appendChild(ov);
 });
