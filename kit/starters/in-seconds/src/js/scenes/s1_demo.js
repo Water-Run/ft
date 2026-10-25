@@ -10,8 +10,7 @@ scene('demo', ({ root, s, c0 }) => {
   const say = txt(world, 't-1 ac', tr('结论', 'So'), 112, 560);
   slam(say, tEnd, { from: 1.2, d: 0.4 }); sfx('thud', tEnd);
   sfx('pop', Q(Tend('a1')), { g: 0.6 }); sfx('blip', s.start + 0.15, { g: 0.6 }); sfx('chime', tEnd + 0.5, { g: 0.6 });
-  cam.track(s.start, { x: 960, y: 484, z: 1.04 }, [
-    [s.start + 0.02, { z: 1 }, 0.9, { ease: 'power3.out', sfx: false }],
-    [s.start + 1.0, { z: 1.04 }, s.end - s.start - 1.1, { ease: 'none', sfx: false }],
-  ]);
+  // 停留：不缩放、不推近，只朝一个方向极慢横移（一屏合计不超过 48 像素、每秒不超过 2 像素；docs/guides/scenes.md 第 3 节）
+  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
+  cam.track(s.start, { x: 960 + dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 - dx / 2 }, hold, { ease: 'none', sfx: false }]]);   // 与上一屏方向相反
 });

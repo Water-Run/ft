@@ -4,13 +4,16 @@
 // 收集规则（在浏览器里执行）：
 //   文字项 text  ：自己带文字的元素；或「子元素全是行内元素」的一行（整行算一项，不拆成一个个 span）
 //   色块项 block ：有不透明背景色、面积够大的元素（终端、纸、色块、线）
-//   具名项 named ：带 data-name 属性的元素（SVG 图形、没有背景的容器等），用它给图形起名字
+//   具名项 named ：带 data-name 或 data-gloss 属性的元素（SVG 图形、没有背景的容器等），用它给图形起名字
 //   绘图项 gfx   ：<svg> 与 <canvas>。它们里面画了什么，文字规则看不见；这里只记一个内容指纹，用来判断画面有没有变
 //   不可见的不收：display:none、visibility:hidden、累计不透明度 < 0.03、完全在画外或被裁掉
 // 元素上的可选标记：
 //   data-name="软盘"      给这个元素起名，报告里用这个名字
 //   data-bleed            故意出血到画外的大字/大图形，不报「被画面边缘切掉」
 //   data-overlap-ok       故意压在别的文字上的元素，不报「文字重叠」
+//   data-gloss="术语"     这个元素是该术语的注解（是什么、指哪一块、数字或出处）；几个术语共用一个注解时用 || 隔开。
+//                         收集到的每一项都带 gloss（离它最近的 data-gloss），scan.js 的 GLOSS 据此核对术语第一次出现时注解在场
+// 镜头画布（.world，或 makeCamera 标上的 [data-camera]）的缩放另由 CAMERAS() 收集，scan.js 的 ZOOM 据此查停留时的推拉与往复。
 // 对比度：先按 DOM 推断文字压在哪个底色上；推断出不合格时再截下那一小块、按实际像素量一遍（refine），
 //         所以压在 SVG 图形、canvas、被 clip-path 裁开的图层上的文字不会误报。
 const W = 1920, H = 1080, CAP_TOP = 968;      // 字幕条占 968–1080
@@ -55,7 +58,8 @@ function COLLECT() {
     const vis = isect(full, clip);
     const bg = svgEl ? null : hex(cs.backgroundColor);
     const structural = el === stage || ['bg', 'scenes', 'hud', 'caption'].includes(el.id) || (typeof el.className === 'string' && /(^| )scene( |$)/.test(el.className));
-    const base = () => ({ i: seq++, name: nameOf(el), x: Math.round(full.x), y: Math.round(full.y), w: Math.round(full.w), h: Math.round(full.h), op: +o.toFixed(2),
+    const glossEl = el.closest('[data-gloss]');
+    const base = () => ({ i: seq++, name: nameOf(el), x: Math.round(full.x), y: Math.round(full.y), w: Math.round(full.w), h: Math.round(full.h), op: +o.toFixed(2), gloss: glossEl ? glossEl.getAttribute('data-gloss') : '',
       scene: (el.closest('.scene') || {}).id || (el.closest('#hud') ? 'hud' : el.closest('#caption') ? 'caption' : ''), bleed: !!el.closest('[data-bleed]'), ovok: !!el.closest('[data-overlap-ok]'),
       cut: vis && (vis.w < full.w - 1.5 || vis.h < full.h - 1.5) ? [full.x < clip.x - 1 ? 'L' : '', full.y < clip.y - 1 ? 'T' : '', full.x + full.w > clip.x + clip.w + 1 ? 'R' : '', full.y + full.h > clip.y + clip.h + 1 ? 'B' : ''].join('') : '',
       cutByStage: !!vis && (full.x < -1 || full.y < -1 || full.x + full.w > 1921 || full.y + full.h > 1081) });
@@ -96,13 +100,30 @@ function COLLECT() {
     let stack = bgStack;
     if (!structural && bg && !bg.includes('@') && vis && full.w * full.h >= 400) { out.push({ k: 'block', ...base(), bg }); stack = bgStack.concat(bg); }
     else if (structural && bg && !bg.includes('@')) stack = bgStack.concat(bg);
-    else if (el.hasAttribute('data-name') && vis && el.tagName !== 'svg') out.push({ k: 'named', ...base() });
+    else if ((el.hasAttribute('data-name') || el.hasAttribute('data-gloss')) && vis && el.tagName !== 'svg') out.push({ k: 'named', ...base() });
     if (svgEl && el.tagName !== 'svg' && el.tagName !== 'g') return;          // SVG 里只往 <g> 里走：带 data-name 的形状各记一项，其余由所在 <svg> 的指纹代表
     const c2 = (!svgEl && cs.overflow !== 'visible' && vis) ? vis : clip;
     if (!vis && !svgEl && cs.overflow !== 'visible') return;
     for (const c of kids) walk(c, o, c2, stack);
   };
   walk(stage, 1, STAGE, []);
+  return out;
+}
+
+// 镜头画布此刻的缩放（在浏览器里执行）：.world（模板的写法）与 makeCamera 标上的 [data-camera]。
+// 只收看得见的（自己与祖先都显示着、累计不透明度 ≥ 0.03）；key 按「场景 + 在本场里的序号」，跨帧不变。
+function CAMERAS() {
+  const out = [], seq = new Map();
+  for (const el of document.querySelectorAll('#stage .world, #stage [data-camera]')) {
+    const sc = el.closest('.scene'), scene = sc ? sc.id.replace(/^sc-/, '') : '';
+    const n = seq.get(scene) || 0; seq.set(scene, n + 1);
+    let op = 1, shown = true;
+    for (let e = el; e && e.nodeType === 1; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.display === 'none' || cs.visibility === 'hidden') { shown = false; break; } op *= parseFloat(cs.opacity || '1'); }
+    if (!shown || op < 0.03) continue;
+    const m = getComputedStyle(el).transform, p = m && m !== 'none' ? ((m.match(/\(([^)]+)\)/) || [])[1] || '').split(',').map(parseFloat) : null;
+    const z = !p || p.length < 4 ? 1 : p.length === 16 ? Math.hypot(p[0], p[1], p[2]) : Math.hypot(p[0], p[1]);
+    out.push({ key: scene + '#' + n, scene, name: el.getAttribute('data-name') || (el.classList.contains('world') ? '.world' : '[data-camera]'), z: +z.toFixed(6) });
+  }
   return out;
 }
 
@@ -150,19 +171,72 @@ function problems(items, paper) {
 // 一帧的文字描述
 function describe(items) {
   const lines = [];
+  const tail = (x) => `<${x.name}>${x.scene ? ' @' + x.scene : ''}${x.gloss ? ' ［注解 ' + x.gloss + '］' : ''}`;
   const f = (x) => `x=${String(x.x).padStart(5)} y=${String(x.y).padStart(5)} w=${String(x.w).padStart(5)} h=${String(x.h).padStart(4)}`;
   for (const x of items) {
     const op = x.op < 0.995 ? ` 不透明度 ${x.op}` : '';
     if (x.k === 'cap') lines.push(`  [字幕] ${x.text ? '「' + x.text + '」' : '（空）'}${op}`);
-    else if (x.k === 'text') lines.push(`  [文字] ${f(x)}  ${x.fs}px ${x.col}${op}${x.cut ? ' 被裁:' + x.cut : ''}  「${x.text.slice(0, 60)}」  <${x.name}>${x.scene ? ' @' + x.scene : ''}`);
-    else if (x.k === 'block') lines.push(`  [色块] ${f(x)}  底色 ${x.bg}${op}${x.cut ? ' 被裁:' + x.cut : ''}  <${x.name}>${x.scene ? ' @' + x.scene : ''}`);
-    else if (x.k === 'gfx') lines.push(`  [绘图] ${f(x)}${op}${x.cut ? ' 被裁:' + x.cut : ''}  ${x.kind === 'svg' ? `SVG（${x.n} 个可见形状）` : 'canvas'}，内容看截图  <${x.name}>${x.scene ? ' @' + x.scene : ''}`);
-    else lines.push(`  [图形] ${f(x)}${op}${x.cut ? ' 被裁:' + x.cut : ''}  <${x.name}>${x.scene ? ' @' + x.scene : ''}`);
+    else if (x.k === 'text') lines.push(`  [文字] ${f(x)}  ${x.fs}px ${x.col}${op}${x.cut ? ' 被裁:' + x.cut : ''}  「${x.text.slice(0, 60)}」  ${tail(x)}`);
+    else if (x.k === 'block') lines.push(`  [色块] ${f(x)}  底色 ${x.bg}${op}${x.cut ? ' 被裁:' + x.cut : ''}  ${tail(x)}`);
+    else if (x.k === 'gfx') lines.push(`  [绘图] ${f(x)}${op}${x.cut ? ' 被裁:' + x.cut : ''}  ${x.kind === 'svg' ? `SVG（${x.n} 个可见形状）` : 'canvas'}，内容看截图  ${tail(x)}`);
+    else lines.push(`  [图形] ${f(x)}${op}${x.cut ? ' 被裁:' + x.cut : ''}  ${tail(x)}`);
   }
   return lines.join('\n');
 }
 // 用来判断「画面有没有变」的签名：不含字幕；位置取整到 2px
 const signature = (items) => items.filter((x) => x.k !== 'cap').map((x) => [x.k, x.name, Math.round(x.x / 2), Math.round(x.y / 2), Math.round(x.w / 2), Math.round(x.h / 2), Math.round(x.op * 20), x.text || '', x.col || x.bg || x.sig || ''].join(',')).join(';');
+
+// 镜头缩放的持续变化与来回往复（scan.js 的 ZOOM）。samples：同一块镜头画布按时间排好的 [{ t, z }]，只含看得见的时刻。
+// 相邻两次采样之间缩放的相对变化超过 eps，记为这一段「在变」，方向按变大或变小；中间有看不见的时刻就断开。
+//   long：连续 long 秒以上每次采样都在变（不论方向）——停在一屏上还在推拉；
+//   back：一段超过 move 秒的缓慢缩放，同一块画布上又有反方向的缩放——来回往复。
+// move 秒以内的一次推拉是站与站之间的移动，单独出现不算；采样落在动作两端带来的误差按一个 step 放宽。
+function zoomProblems(samples, { step = 0.5, move = 2, long = 4, eps = 1e-4 } = {}) {
+  const runs = [];
+  let cur = null;
+  for (let i = 1; i < samples.length; i++) {
+    const a = samples[i - 1], b = samples[i], r = b.z / a.z - 1;
+    const dir = b.t - a.t > step * 1.5 || !(Math.abs(r) > eps) ? 0 : Math.sign(r);
+    if (!dir) { cur = null; continue; }
+    if (cur && cur.dir === dir && cur.to === a.t) { cur.to = b.t; cur.z1 = b.z; }
+    else { cur = { dir, from: a.t, to: b.t, z0: a.z, z1: b.z }; runs.push(cur); }
+  }
+  const out = [];
+  for (let i = 0; i < runs.length;) {
+    let j = i; while (j + 1 < runs.length && runs[j + 1].from === runs[j].to) j++;
+    if (runs[j].to - runs[i].from >= long - 1e-6) { const zs = runs.slice(i, j + 1).flatMap((r) => [r.z0, r.z1]); out.push({ kind: 'long', from: runs[i].from, to: runs[j].to, lo: Math.min(...zs), hi: Math.max(...zs), turns: j - i }); }
+    i = j + 1;
+  }
+  for (const s of runs.filter((r) => r.to - r.from > move + step + 1e-6)) {
+    const o = runs.find((r) => r.dir === -s.dir);
+    if (o) { const [a, b] = s.from < o.from ? [s, o] : [o, s]; out.push({ kind: 'back', a, b }); break; }
+  }
+  return out;
+}
+
+// 文案里用 *星号* 标出的术语各自第一次出现在哪一句（scan.js 的 GLOSS）：Map 句号 → [术语]。比较时忽略空白与大小写
+const glossKey = (s) => String(s || '').replace(/\s+/g, '').toLowerCase();
+function glossTerms(L) {
+  const seen = new Set(), out = new Map();
+  for (const id of L.order) {
+    const c = L.cues[id];
+    if (!c || c.silent || typeof c.cap !== 'string') continue;
+    for (const m of c.cap.matchAll(/\*([^*]+)\*/g)) {
+      const term = m[1].trim(), k = glossKey(term);
+      if (!k || seen.has(k)) continue;
+      seen.add(k); out.set(id, [...(out.get(id) || []), term]);
+    }
+  }
+  return out;
+}
+// 这一帧上有没有看得见的某个术语的注解：带 data-gloss 的元素或它里面的字、图形，不透明度过半、完整在画面内；
+// 字不能被裁、不能伸进字幕条。注解写得对不对、读不读得懂，工具不判断
+function glossShown(items, term) {
+  const k = glossKey(term);
+  return items.some((x) => x.gloss && x.k !== 'cap' && x.op >= 0.5 && !x.cutByStage && x.w > 0 && x.h > 0
+    && (x.k === 'text' ? !x.cut && x.y + x.h <= CAP_TOP + 2 : x.y <= CAP_TOP)
+    && x.gloss.split('||').some((g) => glossKey(g) === k));
+}
 
 // 按实际像素复核 CONTRAST：截下文字所在的那一小块，取出现最多的颜色当底色、与它反差最大的常见颜色当字色。
 // 页面必须还停在产生这些问题的那一刻。cache 跨帧复用（同一段文字在同一位置、同一推断下只量一次）。
@@ -197,4 +271,4 @@ async function refine(page, ps, cache = new Map()) {
   return out;
 }
 
-module.exports = { COLLECT, problems, refine, describe, signature, configure, CFG, W, H, CAP_TOP };
+module.exports = { COLLECT, CAMERAS, problems, refine, describe, signature, zoomProblems, glossTerms, glossShown, configure, CFG, W, H, CAP_TOP };

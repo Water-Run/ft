@@ -1,16 +1,16 @@
-// 扫全片：每 0.5 秒取一帧，用文字规则检查版面、空屏、静止、确定性，并核对「每句旁白说完时画面上该有的内容」。
+// 扫全片：每 0.5 秒取一帧，用文字规则检查版面、空屏、静止、镜头缩放、确定性，并核对「每句旁白说完时画面上该有的内容」与标星号术语的注解。
 // 用法：node kit/tools/scan.js <视频> [--lang en|all]
 //       node kit/tools/scan.js <视频> --from 20 --to 55      只扫一段（写某个场景时用）
 //       --json     另存 build/scan.<语言>.json（check.js 用）
 // 退出码：有 ✗ 即为 1。各项的含义与处理办法见 docs/guides/acceptance.md。
 // 可在 project.json 的 check 段调整：
 //   still_seconds（默认 3）  empty_seconds（默认 1）  dense（同屏文字项上限，默认 16）
-//   levels: { "STILL": "warn", "DENSE": "off", … }   把某一项改成 error / warn / off
+//   levels: { "STILL": "warn", "DENSE": "off", … }   把某一项改成 error / warn / off（ZOOM、GLOSS 也在这里调）
 //   expect: "expect.<lang>.json"                       逐句对应表的位置（相对视频目录；缺省即此名）。格式 { 句号: ["该在画面上的字", "甲||乙"] }
 const { needVideo, PROJECT, LANGS, VIDEO, layout, startServer, openPage, arg, flag, dirs, mkdirp, mmss, path, fs } = require('./lib');
-const { COLLECT, problems, refine, signature, configure, W, CAP_TOP } = require('./inspect');
+const { COLLECT, CAMERAS, problems, refine, signature, zoomProblems, glossTerms, glossShown, configure, W, CAP_TOP } = require('./inspect');
 const STEP = 0.5;
-const LEVELS = { CUT: 'warn', CAPZONE: 'warn', MARGIN: 'warn', DENSE: 'warn', SMALL: 'error', CONTRAST: 'error', OVERLAP: 'error', EMPTY: 'error', STILL: 'error', NONDET: 'error', EXPECT: 'error', NOTEXT: 'error', CAPWIDE: 'error', PAGE: 'error' };
+const LEVELS = { CUT: 'warn', CAPZONE: 'warn', MARGIN: 'warn', DENSE: 'warn', SMALL: 'error', CONTRAST: 'error', OVERLAP: 'error', EMPTY: 'error', STILL: 'error', NONDET: 'error', EXPECT: 'error', NOTEXT: 'error', ZOOM: 'error', GLOSS: 'error', CAPWIDE: 'error', PAGE: 'error' };
 async function scan(lang) {
   const C = PROJECT().check; configure(C);
   const level = { ...LEVELS, ...(C.levels || {}) };
@@ -23,7 +23,7 @@ async function scan(lang) {
   const times = []; for (let t = from; t < to - 0.01; t += STEP) times.push(+t.toFixed(2));
   const frames = [];
   const pxCache = new Map();
-  for (const t of times) { await page.evaluate((x) => window.seek(x), t); const items = await page.evaluate(COLLECT); frames.push({ t, items, ps: await refine(page, problems(items, paper), pxCache) }); }
+  for (const t of times) { await page.evaluate((x) => window.seek(x), t); const items = await page.evaluate(COLLECT); frames.push({ t, items, cams: await page.evaluate(CAMERAS), ps: await refine(page, problems(items, paper), pxCache) }); }
 
   const errors = [], warns = [];
   const add = (code, msg) => { const lv = level[code] || 'error'; if (lv === 'off') return; (lv === 'warn' ? warns : errors).push(`[${code}] ${msg}`); };
@@ -43,7 +43,7 @@ async function scan(lang) {
   const bigHud = (f) => f.items.some((x) => x.scene === 'hud' && x.op >= 0.5 && ((x.k === 'block' && x.w * x.h >= W * 1080 * 0.25) || (x.k === 'text' && x.fs >= 60)));
   let emptyFrom = null, stillFrom = null, lastSig = null;
   const flushEmpty = (t) => { if (emptyFrom != null && t - emptyFrom >= emptyMax) add('EMPTY', `${span(emptyFrom, t)} 画面上没有任何内容（空屏 ${(t - emptyFrom).toFixed(1)} 秒）`); emptyFrom = null; };
-  const flushStill = (t) => { if (stillFrom != null && t - stillFrom >= stillMax) add('STILL', `${span(stillFrom, t)} 画面 ${(t - stillFrom).toFixed(1)} 秒没有任何变化（除字幕外）。任意 ${stillMax} 秒内应有可见变化：加镜头运动或元素动作`); stillFrom = null; };
+  const flushStill = (t) => { if (stillFrom != null && t - stillFrom >= stillMax) add('STILL', `${span(stillFrom, t)} 画面 ${(t - stillFrom).toFixed(1)} 秒没有任何变化（除字幕外）。任意 ${stillMax} 秒内应有可见变化：让内容分步变化（下一步提前进场、高亮、标注、过程继续推进），不用镜头推拉或往复掩盖`); stillFrom = null; };
   for (const f of frames) {
     const c = content(f);
     if (!c.length && !bigHud(f)) { if (emptyFrom == null) emptyFrom = f.t; } else flushEmpty(f.t);
@@ -52,6 +52,15 @@ async function scan(lang) {
     lastSig = sig;
   }
   flushEmpty(to); flushStill(to);
+  // 2b 镜头缩放：停在一屏上时不缩放、不推近、不往复（docs/guides/scenes.md 第 3 节）。只看镜头画布（.world、[data-camera]）
+  const cams = new Map();
+  for (const f of frames) for (const c of f.cams) { const r = cams.get(c.key) || { scene: c.scene, name: c.name, pts: [] }; r.pts.push({ t: f.t, z: c.z }); cams.set(c.key, r); }
+  for (const r of cams.values()) {
+    const ps = zoomProblems(r.pts, { step: STEP }), longs = ps.filter((p) => p.kind === 'long'), back = ps.find((p) => p.kind === 'back');
+    const where = `场景 ${r.scene || '（场景外）'}（${r.name}）`, verb = (d) => (d > 0 ? '放大' : '缩小');
+    if (longs.length) { const w = longs.reduce((a, b) => (b.to - b.from > a.to - a.from ? b : a)); add('ZOOM', `${where} 镜头缩放持续在变 ${longs.length} 段，最长 ${span(w.from, w.to)} 共 ${(w.to - w.from).toFixed(1)} 秒（缩放在 ${w.lo.toFixed(3)}–${w.hi.toFixed(3)} 之间${w.turns ? `，其间换向 ${w.turns} 次` : ''}）。停留时不缩放、不推近，只可朝一个方向极慢横移；画面静止就让内容分步变化，不用镜头掩盖`); }
+    else if (back) add('ZOOM', `${where} 镜头缩放来回往复：${span(back.a.from, back.a.to)} ${verb(back.a.dir)}，${span(back.b.from, back.b.to)} ${verb(back.b.dir)}。停留时不推拉，只可朝一个方向极慢横移；站间的推拉在 2 秒内走完`);
+  }
   // 3 信息量：同时可见的文字项过多
   let dense = null;
   for (const f of frames) { const n = f.items.filter((x) => x.k === 'text' && x.op >= 0.5 && x.scene !== 'hud').length; if (n > denseMax && (!dense || n > dense.n)) dense = { n, t: f.t }; }
@@ -68,6 +77,8 @@ async function scan(lang) {
   const expPath = path.join(VIDEO, (C.expect || 'expect.<lang>.json').replace('<lang>', lang));
   const expect = fs.existsSync(expPath) ? JSON.parse(fs.readFileSync(expPath, 'utf8')) : {};
   const norm = (s) => s.replace(/\s+/g, '').toLowerCase();
+  // 5b 术语注解：文案里用 *星号* 标出的术语，第一次出现的那句说完时，画面上要有 data-gloss 等于它的注解
+  const glossAt = glossTerms(L);
   const cueRows = [];
   for (const id of L.order) {
     const c = L.cues[id]; const t = c.end - 0.05; if (t < from || t > to) continue;
@@ -84,13 +95,14 @@ async function scan(lang) {
     cueRows.push({ id, t, n: items.length, miss, texts: items.map((x) => x.text.slice(0, 22)) });
     if (miss.length) add('EXPECT', `句 ${id}（${c.cap || '停顿'}）说完时（t=${t.toFixed(1)}s）画面上缺少：${miss.map((m) => '「' + m + '」').join(' ')}`);
     else if (!c.silent && !items.length && !drawn) add('NOTEXT', `句 ${id}（${c.cap}）说完时（t=${t.toFixed(1)}s）画面上没有任何文字或图形`);
+    for (const term of glossAt.get(id) || []) if (!glossShown(every, term)) add('GLOSS', `句 ${id}（${c.cap}）说完时（t=${t.toFixed(1)}s）画面上没有术语「${term}」的注解：它第一次出现，画面要自己交代它是什么、指哪一块、数字或出处，不等旁白；注解元素带 data-gloss="${term}"`);
   }
   // 6 页面日志
   const bad = [...new Set(logs)].filter((l) => /pageerror|no cue|word not in cue|http 4|requestfailed/.test(l));
   for (const l of bad.slice(0, 20)) add('PAGE', l);
   await browser.close(); server.close();
 
-  console.log(`■ ${lang}  扫描 ${from.toFixed(1)}–${to.toFixed(1)}s，共 ${frames.length} 帧${Object.keys(expect).length ? `；逐句对应表 ${Object.keys(expect).length} 句` : '；没有逐句对应表（' + path.basename(expPath) + '）'}`);
+  console.log(`■ ${lang}  扫描 ${from.toFixed(1)}–${to.toFixed(1)}s，共 ${frames.length} 帧${Object.keys(expect).length ? `；逐句对应表 ${Object.keys(expect).length} 句` : '；没有逐句对应表（' + path.basename(expPath) + '）'}；标星号的术语 ${[...glossAt.values()].flat().length} 个`);
   console.log('\n逐句（每句说完那一刻画面上的文字）：');
   for (const r of cueRows) console.log(`  ${r.miss.length ? '✗' : '✓'} ${r.id.padEnd(4)} t=${r.t.toFixed(1).padStart(6)}  ${String(r.n).padStart(2)} 项  ${r.texts.slice(0, 7).join(' | ')}${r.texts.length > 7 ? ' …' : ''}`);
   console.log(`\n错误 ${errors.length} 项：` + (errors.length ? '\n' + errors.map((e) => '  ✗ ' + e).join('\n') : '无'));

@@ -152,11 +152,12 @@ function draw(path, t, d = 0.9, o = {}) {
 // ── 镜头：内容放进一个 world 容器，镜头运动 = 对 world 做反向变换 ──
 // const cam = makeCamera(worldEl);  cam.track(起点时刻, { x, y, z }, [[t, { … }, d], …])   x/y 为镜头中心在 world 里的坐标，z 为放大倍数
 // cam.to(t, { x, y, z, r }, { d, ease }) 是单段的写法：各段在时间上不能重叠
-// 连续的推、拉、摇、移比「整屏淡入淡出换面板」有动势得多；配合不同深度的层可做视差
+// 镜头只在站与站之间移动；停在一屏上时不缩放、不推近、不往复，最多朝一个方向极慢横移（docs/guides/scenes.md 第 3 节）
 function makeCamera(world, W = 1920, H = 1080) {
   const st = { x: W / 2, y: H / 2, z: 1, r: 0 };
   const apply = () => { world.style.transform = `translate(${W / 2}px, ${H / 2}px) scale(${st.z}) rotate(${st.r}deg) translate(${-st.x}px, ${-st.y}px)`; };
   world.style.transformOrigin = '0 0';
+  world.setAttribute('data-camera', '');        // 镜头画布的标记：scan.js 据此采样缩放，查停留时的推拉与往复（ZOOM）
   F(apply); apply();
   return {
     st,

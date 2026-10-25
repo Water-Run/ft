@@ -17,14 +17,12 @@ scene('open', ({ root, s, c0 }) => {
   wipe(card, tCard, { dir: 'l', d: 0.4 }); sfx('whoosh', tCard - 0.1, { g: 0.8 });
   slam(big, tCard + 0.35, { from: 1.3, d: 0.4 }); sfx('thud', tCard + 0.35);
   slide(n, tCard + 0.2, { x: 120, d: 0.45 }); slide(u, tCard + 0.28, { x: 120, d: 0.45 }); sfx('pop', tCard + 0.2, { g: 0.6, p: 0.4 });
-  fromTo(big, tCard + 0.8, { scale: 1 }, { scale: 1.04, transformOrigin: '0% 60%', duration: tOut - tCard - 0.8, ease: 'none', immediateRender: false });
   wipeOut(card, tOut, { dir: 'r', d: 0.4 }); sfx('whoosh', tOut, { g: 0.7 });
   hudGround('L', tCard + 0.2, tOut + 0.3, 'ac'); hudGround('R', tCard + 0.3, tOut + 0.1, 'ac');
   wipeOut(what, tCard + 0.4, { dir: 'l', d: 0.2 });
   const is = txt(world, 't-2', tr('它是什么', 'What it is'), 116, 360);
   wipe(is, Q(T('o3')), { dir: 'l', d: 0.4 }); sfx('pop', Q(T('o3')), { g: 0.7 });
-  cam.track(s.start, { x: 960, y: 484, z: 1.05 }, [
-    [s.start + 0.02, { z: 1 }, 0.85, { ease: 'power3.out', sfx: false }],
-    [s.start + 0.9, { z: 1.04 }, s.end - s.start - 1.0, { ease: 'none', sfx: false }],
-  ]);
+  // 停留：不缩放、不推近，只朝一个方向极慢横移（一屏合计不超过 48 像素、每秒不超过 2 像素；docs/guides/scenes.md 第 3 节）
+  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
+  cam.track(s.start, { x: 960 - dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
 });

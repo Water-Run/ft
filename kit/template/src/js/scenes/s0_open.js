@@ -15,8 +15,16 @@ scene('open', ({ root, s, c0 }) => {
   const tw = T('o2', { zh: '词', en: 'word' });                 // 「词」这个字被读到的时刻
   slide(sub, tw, { x: -60 }); sfx('pop', tw);
 
-  // 镜头写成一条轨迹：起点，然后是各关键帧 [时刻, 去向, 时长, 选项]。动不动、怎么动按本片设计定（docs/guides/scenes.md 第 3 节）；这里只有一段极慢的推近，可以删
-  cam.track(s.start, { x: 960, y: 540, z: 1 }, [
-    [s.start + 0.1, { z: 1.05 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }],
+  // 文案里用 *星号* 标出的术语，第一次出现的那句说完时，画面上要有它的注解：带 data-gloss="术语" 的元素，
+  // 交代它是什么、指画面上哪一块、数字或出处，补旁白没说的（docs/guides/scenes.md 第 7 节；scan.js 的 GLOSS 核对它在场）
+  const gloss = h('div', 'abs t-body', world, tr('词：T(句号, 词) 取的是它被读到的时刻', 'word: T(cue, word) is the moment it is spoken'));
+  px(gloss, 120, 640); gloss.dataset.gloss = tr('词', 'word');
+  show(gloss, tw + 0.3, { y: 20 });
+
+  // 镜头写成一条轨迹：起点，然后是各关键帧 [时刻, 去向, 时长, 选项]。动不动、怎么动按本片设计定（docs/guides/scenes.md 第 3 节）。
+  // 停在一屏上时不缩放、不推近、不往复；这里只朝一个方向极慢横移（一屏合计不超过 48 像素、每秒不超过 2 像素），可以删
+  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
+  cam.track(s.start, { x: 960 - dx / 2, y: 540, z: 1 }, [
+    [s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }],
   ]);
 });

@@ -587,3 +587,86 @@ test('配音引擎按 project.json 的 tts 块逐语言选择；没有 tts 块�
   assert.throws(() => ttsSpec('zh', { ...base, tts: { engine: 'minimax' } }), /tts\.voice/);
   assert.throws(() => ttsSpec('zh', { ...base, tts: { engine: 'other' } }), /tts\.engine/);
 });
+
+test('镜头缩放检查：停留时持续推拉与来回往复报错，两秒内的站间推拉与单向横移不报', () => {
+  const { zoomProblems } = require('../tools/inspect');
+  const sample = (from, to, z) => { const out = []; for (let t = from; t <= to + 1e-9; t += 0.5) out.push({ t: +t.toFixed(2), z: z(t) }); return out; };
+  const kinds = (samples) => zoomProblems(samples).map((p) => p.kind);
+  // 每 10 秒推近 4% 再拉回（被退回的写法）
+  const breathe = zoomProblems(sample(0, 30, (t) => 1 + 0.02 * (1 - Math.cos(t / 10 * 2 * Math.PI))));
+  assert.equal(breathe[0].kind, 'long');
+  assert.ok(breathe[0].to - breathe[0].from >= 29 && breathe[0].turns >= 2);
+  // 整屏慢推 1 → 1.05
+  assert.deepEqual(kinds(sample(0, 12, (t) => 1 + 0.05 * t / 12)), ['long']);
+  // 3 秒推近、停 2 秒、3 秒拉回：每段都不到 4 秒，但来回往复
+  assert.deepEqual(kinds(sample(0, 12, (t) => (t < 3 ? 1 + 0.01 * t : t < 5 ? 1.03 : t < 8 ? 1.03 - 0.01 * (t - 5) : 1))), ['back']);
+  // 站间：1.5 秒推近到 1.2，停 4 秒，1.5 秒拉回
+  assert.deepEqual(kinds(sample(0, 12, (t) => (t < 2 ? 1 : t < 3.5 ? 1 + 0.2 * (t - 2) / 1.5 : t < 7.5 ? 1.2 : t < 9 ? 1.2 - 0.2 * (t - 7.5) / 1.5 : 1))), []);
+  // 一次 3.5 秒的缓慢推近，不往回：不报（停留时不推近由人看，工具只拦持续与往复）
+  assert.deepEqual(kinds(sample(0, 10, (t) => (t < 2 ? 1 : t < 5.5 ? 1 + 0.03 * (t - 2) / 3.5 : 1.03))), []);
+  // 只横移：缩放恒定
+  assert.deepEqual(kinds(sample(0, 30, () => 0.95)), []);
+  // 中间看不见（场景没显示）的时段断开计数
+  assert.deepEqual(kinds([...sample(0, 3, (t) => 1 + 0.01 * t), ...sample(10, 13, (t) => 1.03 + 0.01 * (t - 10))]), []);
+});
+
+test('术语注解检查：标星号的术语只在第一次出现的那句核对；注解要看得见、不被裁、不压字幕条', () => {
+  const { glossTerms, glossShown } = require('../tools/inspect');
+  const L = { order: ['a', 'b', 'c', 'd'], cues: {
+    a: { cap: '表本身就是一棵*聚簇索引*' }, b: { cap: null, silent: true },
+    c: { cap: '*聚簇 索引*之外，还有*二级索引*与*回表*' }, d: { cap: '再说一次*回表*' } } };
+  assert.deepEqual([...glossTerms(L)], [['a', ['聚簇索引']], ['c', ['二级索引', '回表']]]);
+  const note = { k: 'text', gloss: '回表||覆盖索引', op: 1, x: 100, y: 200, w: 600, h: 40, cut: '', cutByStage: false };
+  assert.ok(glossShown([note], '回表'));
+  assert.ok(glossShown([note], '覆盖 索引'), '一个注解可写几个术语，比较时忽略空白');
+  assert.ok(!glossShown([note], '二级索引'));
+  for (const change of [{ op: 0.3 }, { cutByStage: true }, { cut: 'R' }, { y: 950 }, { k: 'cap' }, { gloss: '' }, { w: 0 }]) assert.ok(!glossShown([{ ...note, ...change }], '回表'), JSON.stringify(change));
+  assert.ok(glossShown([{ k: 'named', gloss: '二级索引', op: 1, x: 0, y: 300, w: 400, h: 300, cut: 'B', cutByStage: false }], '二级索引'), '装着字的容器也算');
+});
+
+test('看画面的收集：注解随显隐与刷出进出，镜头画布量到缩放（最小页面，本机没有 Chrome 时跳过）', async (t) => {
+  const exe = require('../tools/lib').chromePath();
+  if (!exe) { t.skip('本机没有 Chrome'); return; }
+  const puppeteer = require('puppeteer-core');
+  const { COLLECT, CAMERAS, glossShown } = require('../tools/inspect');
+  const profile = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'ft-inspect-'));
+  const browser = await puppeteer.launch({ executablePath: exe, headless: true, userDataDir: profile, args: process.platform === 'win32' ? [] : ['--no-sandbox'] });
+  t.after(async () => { await browser.close(); fs.rmSync(profile, { recursive: true, force: true }); });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1920, height: 1080 });
+  const at = (top) => `position:absolute;left:600px;top:${top}px;font-size:30px;white-space:nowrap`;
+  await page.setContent(`<body style="margin:0"><div id="stage" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#fff"><div id="scenes">
+    <div class="scene" id="sc-a" style="position:absolute;inset:0">
+      <div class="world" style="position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;transform:translate(960px,540px) scale(1.25) translate(-960px,-540px)">
+        <div data-gloss="回表" style="${at(350)}">回表：拿着编号回主键树取整行</div>
+        <div data-gloss="覆盖索引" style="${at(420)};opacity:0">覆盖索引：要的列都在索引里</div>
+        <div data-gloss="页目录" style="${at(490)};clip-path:inset(0 100% 0 0)">页目录：页尾的一列槽</div>
+        <div data-gloss="二级索引" style="${at(560)};width:500px;height:120px"><div>二级索引</div><div>按名字排，叶子里是名字与编号</div></div>
+      </div>
+    </div>
+    <div class="scene" id="sc-b" style="position:absolute;inset:0;display:none"><div class="world" style="transform:scale(2)"></div></div>
+    <div class="scene" id="sc-c" style="position:absolute;inset:0"><div data-camera style="position:absolute;transform:matrix(0.95,0,0,0.95,48,27)"></div></div>
+  </div><div id="hud"></div><div id="caption"><span></span></div></div></body>`);
+  const items = await page.evaluate(COLLECT);
+  assert.ok(glossShown(items, '回表'));
+  assert.ok(!glossShown(items, '覆盖索引'), '透明的注解不算');
+  assert.ok(!glossShown(items, '页目录'), '还没刷出来的注解不算');
+  assert.ok(glossShown(items, '二级索引'), '装着几行字的容器也算');
+  assert.deepEqual((await page.evaluate(CAMERAS)).map((c) => [c.key, c.z]), [['a#0', 1.25], ['c#0', 0.95]], '没显示的场景不量；makeCamera 标的画布也量');
+});
+
+test('中文交审稿附多音字清单：标出位置、读音与已改写的处理；英文稿不附', t => {
+  const f = fixture(t), script = path.join(f.video, 'src/js/script.js');
+  fs.writeFileSync(script, fs.readFileSync(script, 'utf8')
+    .replace("'术语的读法，写进 SAY 表'", "'树再长一层，每一行都重新排'")
+    .replace("[/SAY/g, 'S A Y'],", "[/SAY/g, 'S A Y'], [/长一层/g, '涨一层'],"));
+  const rows = review.polyphones(review.snapshot(f.video, f.project, 'zh').source), a2 = rows.find((row) => row.id === 'a2');
+  assert.deepEqual(a2.hits.map((hit) => [hit.ch, hit.i, hit.changed]), [['长', 2, true], ['行', 8, false], ['重', 10, false]]);
+  assert.equal(f.run('script-review', f.video, 'export', '--lang', 'all').status, 0);
+  const read = (lang) => fs.readFileSync(path.join(f.video, 'review', `script.${lang}.${review.snapshot(f.video, f.project, lang).hash}.md`), 'utf8');
+  const list = read('zh').split('## 多音字清单')[1].split('## 交审核对')[0];
+  assert.match(list, /\| a2 \| 树再【长】一层，每一【行】都【重】新排 \| 长 cháng \/ zhǎng；行 xíng \/ háng；重 zhòng \/ chóng \|/);
+  assert.match(list, /第 3 字「长」已由 SAY 改写；第 9 字「行」未改写；第 11 字「重」未改写；合成文本「树再涨一层，每一行都重新排。」/);
+  assert.match(list, /不是闸门/);
+  assert.doesNotMatch(read('en'), /多音字清单/);
+});

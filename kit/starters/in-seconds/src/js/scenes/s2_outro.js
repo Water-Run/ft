@@ -25,5 +25,7 @@ scene('outro', ({ root, s, c0 }) => {
     wipe(a, tt + 0.05, { dir: 'l', d: 0.3 }); wipe(b, tt + 0.12, { dir: 'l', d: 0.35 });
     sfx(last ? 'chime' : 'tick', tt, { g: last ? 0.6 : 0.7, p: 0.4 });
   });
-  cam.track(s.start, { x: 960, y: 484, z: 1 }, [[s.start + 0.1, { z: 1.03 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }]]);
+  // 停留：不缩放、不推近，只朝一个方向极慢横移（一屏合计不超过 48 像素、每秒不超过 2 像素；docs/guides/scenes.md 第 3 节）
+  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
+  cam.track(s.start, { x: 960 - dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
 });

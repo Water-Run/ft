@@ -19,7 +19,7 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 |---|---|---|---|
 | `new.js <片> [--series <系列>]` | 新建并登记片单；计划中且仅有 README 的目录保留简报原文；系列有起点时盖上起点；`--scratch` 在 `out/sandbox/` 练习且不改片单；策划、校对者与仓库取 studio 配置 | — | 瞬间 |
 | `doctor.js [视频]` | 完整环境自检；`--visual` 只查 Node、浏览器与字体；只诊断不清理 | — | 几秒 |
-| `script-review.js export / check` | 同一源稿导出连贯阅读与逐句校对视图 / 核对内容与人工确认记录，见 [文案校对](../guides/script-review.md) | 导出主语言，检查全部；可用 `--lang` | 瞬间 |
+| `script-review.js export / check` | 同一源稿导出连贯阅读与逐句校对视图（中文稿附多音字清单）/ 核对内容与人工确认记录，见 [文案校对](../guides/script-review.md) | 导出主语言，检查全部；可用 `--lang` | 瞬间 |
 | `lessons.js show [--stage 阶段]` | 打印经验规则；开工前读这一阶段的几条。`render` 重新生成 `docs/lessons.md` | — | 瞬间 |
 | `lessons.js <视频> sync / check [--final]` | 把新增或改变的规则带入本片的 `review/lessons.json`；`check --final` 核对每条都有结论 | — | 瞬间 |
 | `readable.js [--scene 场景]` | 量每段文字的完整可读时长，对照经验规则 F04 的下限 | 第一种 | 每分钟片长约半分钟 |
@@ -36,7 +36,7 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 | `stats.js` | 语速与停顿统计 | 全部 | 瞬间 |
 | `look.js <时刻…>` | 用文字看画面，并存截图 | 第一种 | 每次约 5 秒 |
 | `sheets.js cue` / `every N` / `at <时刻…>` | 把若干时刻的画面拼成总览图 | 第一种 | 约 20 秒 |
-| `scan.js` | 扫全片：版面、空屏、静止、确定性、逐句对应 | 第一种 | 8 分钟的片子约半分钟 |
+| `scan.js` | 扫全片：版面、空屏、静止、停留时的镜头缩放、确定性、逐句对应、术语注解 | 第一种 | 8 分钟的片子约半分钟 |
 | `check.js` | 总闸门；`--final` 交付前；`--handoff` 准备方交给制作方之前 | 全部 | 约 1–2 分钟 |
 | `margin.js` | 按像素量每句画面的外接范围，列出贴边的句子 | 第一种 | 约半分钟 |
 | `audio.js [键=值…]` | 混音并做数值自检 | 全部 | 8 分钟的片子每种语言约 1 分钟 |

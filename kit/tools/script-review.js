@@ -1,4 +1,4 @@
-// 文案交审：export 从唯一源稿生成连贯阅读与逐句校对视图；check 核对人工记录与当前内容。
+// 文案交审：export 从唯一源稿生成连贯阅读与逐句校对视图（中文稿另附多音字清单，供人耳核对读音）；check 核对人工记录与当前内容。
 // node kit/tools/script-review.js <视频> export|check [--lang zh|en|all]
 // 本工具不会确认文案。review/approval.json 只能依据真实的人工确认填写。
 const fs = require('node:fs');
@@ -6,6 +6,52 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { noLinks } = require('./project-files');
 const digest = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
+// 讲解片里常见、合成时真会读错的多音字与它们的读音。导出稿据此列「多音字清单」，给人耳核对，不是闸门：
+// Whisper 回听把同一个字的不同读音转成同一个字（「再长一层」读成 cháng 也转成「长」），查不出读音错。
+const POLYPHONES = {
+  长: 'cháng / zhǎng', 行: 'xíng / háng', 重: 'zhòng / chóng', 还: 'hái / huán', 数: 'shù / shǔ / shuò', 调: 'diào / tiáo',
+  种: 'zhǒng / zhòng', 处: 'chù / chǔ', 量: 'liàng / liáng', 更: 'gèng / gēng', 少: 'shǎo / shào', 干: 'gàn / gān',
+  空: 'kōng / kòng', 便: 'biàn / pián', 差: 'chà / chā / chāi', 传: 'chuán / zhuàn', 应: 'yīng / yìng', 当: 'dāng / dàng',
+  载: 'zài / zǎi', 间: 'jiān / jiàn', 校: 'jiào / xiào', 模: 'mó / mú', 塞: 'sāi / sè', 相: 'xiāng / xiàng', 卡: 'kǎ / qiǎ', 露: 'lù / lòu',
+};
+// a 的每个字是否原样保留在 b 里（最长公共子序列对齐）：用来判断某个多音字是否已被 SAY 表或 tts 改写
+function kept(a, b) {
+  const A = [...a], B = [...b], n = A.length, m = B.length;
+  const L = Array.from({ length: n + 1 }, () => new Uint16Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const keep = new Array(n).fill(false);
+  for (let i = 0, j = 0; i < n && j < m;) { if (A[i] === B[j]) { keep[i] = true; i++; j++; } else if (L[i + 1][j] >= L[i][j + 1]) i++; else j++; }
+  return keep;
+}
+// 旁白里含多音字的句子：[{ id, plain, said, hits: [{ ch, i, changed, by }] }]。said 是送去合成的文本；changed 表示这个字在 said 里已被改写
+function polyphones(source) {
+  const rows = [];
+  for (const scene of source.SCRIPT) for (const cue of scene.cues) {
+    const [id, text, options = {}] = cue;
+    if (options.pause != null || typeof text !== 'string') continue;
+    const plain = text.replace(/\*/g, ''), chars = [...plain], hits = [];
+    chars.forEach((ch, i) => { if (POLYPHONES[ch]) hits.push({ ch, i }); });
+    if (!hits.length) continue;
+    const said = String(typeof source.ttsText === 'function' ? source.ttsText(cue) : options.tts || plain);
+    const keep = kept(plain, said), by = options.tts ? 'tts' : 'SAY';
+    rows.push({ id, plain, said, hits: hits.map((hit) => ({ ...hit, changed: !keep[hit.i], by })) });
+  }
+  return rows;
+}
+function polyphoneSection(rows) {
+  const lines = ['## 多音字清单', '', '给人耳核对读音用，不是闸门。Whisper 回听会把同一个字的不同读音转成同一个字（「长」读成 cháng 或 zhǎng 都转成「长」），查不出读错。配音后逐条听实际音轨；读错的在 `SAY` 表按词改写（不全局替换单字）或改该句 `tts`，只重配这几句。已改写的也要听：改写只说明处理过，不保证读对。', ''];
+  if (!rows.length) return [...lines, '旁白里没有字表中的多音字。字表在 `kit/tools/script-review.js`，清单之外的多音字仍按 F12 自己留意。', ''];
+  const all = rows.flatMap((row) => row.hits), done = all.filter((hit) => hit.changed).length;
+  lines.push(`共 ${rows.length} 句、${all.length} 处；其中 ${done} 处已由 SAY 表或 tts 改写。`, '', '| 句号 | 字幕（多音字以【】标出） | 多音字 | 读法处理 |', '|---|---|---|---|');
+  for (const row of rows) {
+    const at = new Set(row.hits.map((hit) => hit.i)), marked = [...row.plain].map((ch, i) => (at.has(i) ? '【' + ch + '】' : ch)).join('');
+    const kinds = [...new Set(row.hits.map((hit) => hit.ch))].map((ch) => ch + ' ' + POLYPHONES[ch]).join('；');
+    const how = row.hits.map((hit) => `第 ${hit.i + 1} 字「${hit.ch}」${hit.changed ? '已由 ' + hit.by + ' 改写' : '未改写'}`).join('；') + (row.hits.some((hit) => hit.changed) ? `；合成文本「${row.said}」` : '');
+    lines.push('| ' + cell(row.id) + ' | ' + cell(marked) + ' | ' + cell(kinds) + ' | ' + cell(how) + ' |');
+  }
+  lines.push('');
+  return lines;
+}
 const cell = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('|', '\\|').replaceAll('\n', '<br>');
 
 function snapshot(video, project, lang) {
@@ -98,8 +144,10 @@ function exportReview(video, project, languages) {
       for (const cue of scene.cues) lines.push('| ' + cell(cue.id) + ' | ' + (cue.silent ? '（无旁白；画面停留）' : cell(cue.text)) + ' |');
       lines.push('');
     }
+    if (/^zh\b/.test(lang)) lines.push(...polyphoneSection(polyphones(current.source)));
     lines.push('## 交审核对', '', '- 标题、开头和结尾回答同一个问题。', '- 术语第一次出现有解释；因果、适用范围、版本和数字对应 FACTS.md。',
-      '- 根据句号逐条核对译文，记录简化与推断；片尾名单留足阅读时间。', '- 有疑问的地方逐条写入 NOTES.md，关闭意见后由指定校对者明确确认。', '');
+      '- 根据句号逐条核对译文，记录简化与推断；片尾名单留足阅读时间。', ...(/^zh\b/.test(lang) ? ['- 配音后按「多音字清单」逐条听读音；Whisper 回听查不出多音字读错。'] : []),
+      '- 有疑问的地方逐条写入 NOTES.md，关闭意见后由指定校对者明确确认。', '');
     const file = path.join(dir, name);
     noLinks(file);
     // 已导出的稿本不覆盖；完整内容哈希用于避免轮次被混淆。
@@ -120,4 +168,4 @@ if (require.main === module) {
     else throw new Error('用法：node kit/tools/script-review.js <视频> export|check [--lang zh|en|all]');
   } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
-module.exports = { snapshot, status, assertApproved, exportReview };
+module.exports = { snapshot, status, assertApproved, exportReview, polyphones, POLYPHONES };

@@ -17,9 +17,11 @@ scene('demo', ({ root, s, c0 }) => {
   appear(head2, move);
   slide(note, T('a2', 'SAY'), { y: 40 }); sfx('blip', T('a2', 'SAY'));
 
-  cam.track(s.start, { x: 960, y: 540, z: 1 }, [
-    [c0 + 0.1, { z: 1.03 }, move - c0 - 0.1, { ease: 'none', sfx: false }],      // 第一站：慢推
-    [move, { x: 2880, z: 1 }, 1.0],                                              // 移到第二站（自动登记一声 whoosh）
-    [null, { z: 1.04 }, s.end - move - 1.25, { ease: 'none', sfx: false }],      // 第二站：慢推。null 表示接在上一段之后 0.15 秒
+  // 停在一站上时不缩放、不推近：只朝一个方向极慢横移（一站合计不超过 48 像素、每秒不超过 2 像素），相邻两站方向相反
+  const d1 = move - c0 - 0.1, d2 = s.end - move - 1.25, p1 = Math.min(48, 2 * d1), p2 = Math.min(48, 2 * d2);
+  cam.track(s.start, { x: 960 - p1 / 2, y: 540, z: 1 }, [
+    [c0 + 0.1, { x: 960 + p1 / 2 }, d1, { ease: 'none', sfx: false }],         // 第一站：朝右横移
+    [move, { x: 2880 + p2 / 2 }, 1.0],                                           // 移到第二站（自动登记一声 whoosh）
+    [null, { x: 2880 - p2 / 2 }, d2, { ease: 'none', sfx: false }],              // 第二站：朝左横移。null 表示接在上一段之后 0.15 秒
   ]);
 });
