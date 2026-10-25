@@ -74,7 +74,7 @@ scene('s2', ({ root, s, c0 }) => {
   [aBox, bBox].forEach((b, i) => wipe(b, T('t0cz', '账户') - 0.3 + i * 0.15, { dir: 'l', d: 0.45 }));
   vanish(coin, 0); appear(coin, T('t0cz', '转一笔钱'));
   fromTo(coin, T('t0cz', '转一笔钱') + 0.2, { x: 0 }, { x: 760, duration: 1.4, ease: 'power2.inOut' });
-  swaps(aN, [[T('t0cz', '转一笔钱') + 0.2, '0']]); swaps(bN, [[T('t0cz', '转一笔钱') + 1.6, '100']]); vanish(coin, T('t0cz', '转一笔钱') + 1.6);
+  swaps(aN, [[T('t0cz', '转一笔钱') + 0.2, '0']]); swaps(bN, [[T('t0cz', '转一笔钱') + 1.2, ''], [T('t0cz', '转一笔钱') + 1.6, '100']]); vanish(coin, T('t0cz', '转一笔钱') + 1.6);   // 钱快到时 B 的 0 先收起，不被落下的钱盖住半个
   vanish(okL, 0); slam(okL, T('t0d', '转过去'), { from: 1.3 });
   vanish(noL, 0); slam(noL, T('t0d', '原账户'), { from: 1.3 });
   vanish(mid, 0); slam(mid, T('t0d', '不会'), { from: 1.3 }); sfx('error', T('t0d', '不会'), { g: 0.35 });
@@ -140,12 +140,12 @@ scene('s2', ({ root, s, c0 }) => {
   noRows.forEach(([id, c], i) => { to(id, T('t6', '撤回') - 0.2, { opacity: 1, duration: 0.3 }); to(c, T('t6', '撤回') - 0.1 + i * 0.12, { opacity: 1, duration: 0.3 }); });
   // 回滚时，左边表里那两格未提交的新值滑回原值底下、淡掉
   const tBack = T('t6', '做过的'), tGone = T('t6', '撤回');
-  rowEls.forEach((r, i) => { tl.fromTo(r.b, { x: 0, opacity: 1 }, { x: -170, opacity: 0.15, duration: tGone - tBack, ease: 'power2.inOut', immediateRender: false }, tBack + i * 0.15); to(r.ar, tBack, { opacity: 0.2, duration: 0.4 }); });
+  rowEls.forEach((r, i) => { tl.fromTo(r.b, { x: 0, opacity: 1 }, { x: -170, opacity: 0, duration: tGone - tBack, ease: 'power2.inOut', immediateRender: false }, tBack + i * 0.15); to(r.ar, tBack, { opacity: 0.2, duration: 0.4 }); });
   // 两条路各自亮起时，另一条退到背景
   lit(okBox, 'on', T('t5', 'COMMIT'), T('t6', 'ROLLBACK')); lit(noBox, 'on', T('t6', 'ROLLBACK'));
 
   const out1 = Tend('t6') + 0.25;
-  [code, brace, braceTag, tblLab, okBox, noBox, ...rowEls.flatMap((r) => [r.id, r.a, r.ar, r.b])].forEach((e, i) => s2_out(e, out1 + (i % 6) * 0.03, { y: -16, d: 0.3 }));
+  [code, brace, braceTag, tblLab, okBox, noBox, ...rowEls.flatMap((r) => [r.id, r.a, r.ar])].forEach((e, i) => s2_out(e, out1 + (i % 6) * 0.03, { y: -16, d: 0.3 }));
   [pOk, pNo].forEach((p) => svgOut(p, out1, 0.25));
 
   // ── 二、平时：每一句自己就是一个事务，执行完自动提交 ──
@@ -165,7 +165,8 @@ scene('s2', ({ root, s, c0 }) => {
   LA.enter(t7a - 0.1); LA.playhead(t7a + 0.2, t7b, 470, 650);
   slide(ac, t7a + 0.3, { y: -20 });
   const out2 = Tend('t7z') + 0.2;
-  [ac, ...LA.els.names, ...LA.els.lines, ...segs.flat()].forEach((e) => s2_out(e, out2, { y: -16, d: 0.3 }));
+  s2_out(ac, out2 - 0.6, { y: -16, d: 0.3 });                        // 先收走 SQL：下一节的语句就打在这个位置
+  [...LA.els.names, ...LA.els.lines, ...segs.flat()].forEach((e) => s2_out(e, out2, { y: -16, d: 0.3 }));
   // 播放头的显隐只由 lanes 的帧函数管（t7b 之后自己隐藏），这里不再补间，免得倒着 seek 时两边打架
 
   // ── 三、一句改 4096 行，改到一半停下 ──
@@ -196,7 +197,7 @@ scene('s2', ({ root, s, c0 }) => {
     full.setAttribute('height', r * G.c); part.setAttribute('y', G.y + r * G.c); part.setAttribute('width', c * G.c);
     cntN.textContent = k;
   });
-  const t8 = Math.min(T('t8'), out2 - 0.25);                         // 第三节在第二节收走之前就进来                          // 第三节在第二节收走时就进来
+  const t8 = Math.min(T('t8'), out2 - 0.25);                         // 第三节在泳道收走之前就进来（SQL 已先收走，不叠字）
   slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.1, 48, { cursor: false });
   svgIn(grid, T('t9', '所有人') - 0.3, 0.5);
   slam(n4096, T('t9', '4096'), { from: 1.4 }); sfx('thud', T('t9', '4096'), { g: 0.5 });

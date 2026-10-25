@@ -181,15 +181,14 @@ scene('s3', ({ root, s, c0 }) => {
   vanish(rootPK, 0); vanish(rootLbl, 0); appear(rootPK, tRoot); appear(rootLbl, tRoot);
   let lastTree = '';
   F((t) => {
-    const n = nAt(t), a = t >= tSplit + 0.6 ? pkState(n) : null;
-    const grow = a ? clamp((t - (tSplit + 0.6)) / 0.9) : 1;     // 分裂刚完成时两页叶子的行数从页里「落」下来
-    const key = a ? n + ':' + grow.toFixed(2) : '-';
+    const n = nAt(t), a = t >= tSplit + 0.6 ? pkState(n) : null;   // 两半落到叶子位置时，叶子就是那两半的行数（不清空重数）
+    const key = a ? String(n) : '-';
     if (key === lastTree) return; lastTree = key;
     let k0 = 0;
     D.pk.leaves.forEach((l, k) => {
       const on = !!(a && a[l.page] != null);
       disp(leaves[k], on); disp(rootCells[k], on); disp(drops[k], on); if (k < 20) disp(chain[k], !!(a && a[D.pk.leaves[k + 1].page] != null));
-      if (on) { k0 = k + 1; const v = n <= 208 ? Math.round(a[l.page] * ease.out3(grow)) : a[l.page]; leaves[k].fillEl.style.height = (100 * v / 207).toFixed(1) + '%'; leaves[k].cntEl.textContent = v; }
+      if (on) { k0 = k + 1; const v = a[l.page]; leaves[k].fillEl.style.height = (100 * v / 207).toFixed(1) + '%'; leaves[k].cntEl.textContent = v; }
     });
     rootPK.style.width = (k0 ? LX(k0 - 1) - LX(0) + 68 : 0) + 'px'; disp(rootPK, k0 > 0);
   });
@@ -197,7 +196,7 @@ scene('s3', ({ root, s, c0 }) => {
   // a10：两页各装一半——两页叶子的行数亮起
   [0, 1].forEach((k) => lit(leaves[k].cntEl, 'c-acc', T('a10', '一半') - 0.2 + k * 0.25, Tend('a10') + 0.4));
   // a11：根页里的两项依次亮起，各指向一页叶子
-  [0, 1].forEach((k) => { lit(rootCells[k], 'c-main', T('a11', '两项') + k * 0.5, Tend('a11') + 0.3); tl.fromTo(drops[k], { attr: { 'stroke-width': 1.6 } }, { attr: { 'stroke-width': 4 }, duration: 0.25, immediateRender: true }, T('a11', '两项') + k * 0.5); tl.to(drops[k], { attr: { 'stroke-width': 1.6 }, duration: 0.3 }, Tend('a11') + 0.3); });
+  [0, 1].forEach((k) => { lit(rootCells[k], 'c-main', T('a11', '两项') + k * 0.5, Tend('a11') + 0.3); tl.fromTo(drops[k], { attr: { 'stroke-width': 1.6 } }, { attr: { 'stroke-width': 2.8 }, duration: 0.25, immediateRender: true }, T('a11', '两项') + k * 0.5); tl.to(drops[k], { attr: { 'stroke-width': 1.6 }, duration: 0.3 }, Tend('a11') + 0.3); });
   // 「根」「叶子」
   const lblRoot = h('div', 'tag', W, '根'); px(lblRoot, LX(0) - 92, 214);
   const lblLeaf = h('div', 'tag', W, '叶子'); px(lblLeaf, LX(0) - 106, BY + 80);
@@ -233,12 +232,12 @@ scene('s3', ({ root, s, c0 }) => {
   leaves.forEach((e, k) => { const f = h('div', 'abs', e); px(f, 0, 0, BW - 3, BH - 3); css(f, { background: 'var(--main)', opacity: 0 }); tl.fromTo(f, { opacity: 0 }, { opacity: 0.85, duration: 0.18, immediateRender: true }, tWave + k * 0.06); tl.to(f, { opacity: 0, duration: 0.4 }, tWave + k * 0.06 + 0.25); });
   tl.fromTo(rootPK, { backgroundColor: '#D9EEEF' }, { backgroundColor: '#AED9D7', duration: 0.3, immediateRender: true }, T('a19', '路标')); tl.to(rootPK, { backgroundColor: '#D9EEEF', duration: 0.5 }, T('a19', '路标') + 0.8);
   // a19–a20：B+ 树、聚簇索引
-  const tagB = h('div', 'tag', W, 'B+ 树'); px(tagB, 1660, 546); css(tagB, { fontSize: '28px' });
-  const tagC = h('div', 'tag', W, '聚簇索引'); px(tagC, 1390, 546); css(tagC, { fontSize: '28px', background: 'var(--main)' });
+  const tagB = h('div', 'tag', W, 'B+ 树'); px(tagB, 1660, 554); css(tagB, { fontSize: '28px' });
+  const tagC = h('div', 'tag', W, '聚簇索引'); px(tagC, 1390, 554); css(tagC, { fontSize: '28px', background: 'var(--main)' });
   slam(tagB, T('a19', 'B'), { from: 1.4 }); slam(tagC, T('a20', '聚簇索引'), { from: 1.3 });
   exit(tagB, T('a22') - 0.1, { y: 8, d: 0.3 }); exit(tagC, T('a22') + 0.1, { y: 8, d: 0.3 }); sfx('pop', T('a19', 'B')); sfx('pop', T('a20', '聚簇索引'));
-  const tblFrame = h('div', 'abs', W); px(tblFrame, LX(0) - 50, 196, LX(20) - LX(0) + 100, BY + BH + 60 - 196); css(tblFrame, { border: '3px dashed var(--main)' });
-  const tblLbl = h('div', 'tag', W, 'users 表'); px(tblLbl, LX(0) - 50, BY + BH + 66); css(tblLbl, { background: 'var(--main)', fontSize: '26px' });
+  const tblFrame = h('div', 'abs', W); px(tblFrame, 122, 166, LX(20) + 50 - 122, BY + BH + 52 - 166); css(tblFrame, { border: '3px dashed var(--main)' });   // 上边在「49 页 × 16 KB」与「页 4」之间
+  const tblLbl = h('div', 'tag', W, 'users 表'); px(tblLbl, 122, BY + BH + 58); css(tblLbl, { background: 'var(--main)', fontSize: '26px' });
   vanish(tblFrame, 0); vanish(tblLbl, 0);
   show(tblFrame, T('a20', '表本身') - 0.1, { s: 1.02, y: 0, d: 0.4 }); slam(tblLbl, T('a20', '表本身') + 0.2, { from: 1.3 });
   exit(tblFrame, Tend('a20') + 0.2, { d: 0.3, y: 0 }); exit(tblLbl, Tend('a20') + 0.2, { d: 0.3 });
@@ -275,14 +274,14 @@ scene('s3', ({ root, s, c0 }) => {
     rootNM.style.width = (j0 ? NX(j0 - 1) - NX(0) + 100 : 0) + 'px'; disp(rootNM, j0 > 0);
   });
   // a23：叶子里一项是「名字 + 编号」——第 9 页拉开一角
-  const nCall = h('div', 'box', W); px(nCall, NX(1) - 20, 852, 620, 100);
+  const nCall = h('div', 'box', W); px(nCall, NX(1) - 20, 878, 620, 86);
   [['Alice', 2050], ['User00001…', 1], ['User00002…', 2]].forEach(([a, b], i) => {
-    const e = h('div', 'abs mono', nCall, a); px(e, 20 + i * 196, 12); css(e, { fontSize: '24px', color: i === 0 ? 'var(--main)' : 'var(--ink)' });
-    const f = h('div', 'abs mono', nCall, `→ ${b}`); px(f, 20 + i * 196, 52); css(f, { fontSize: '24px', color: 'var(--ink2)' });
+    const e = h('div', 'abs mono', nCall, a); px(e, 20 + i * 196, 8); css(e, { fontSize: '24px', color: i === 0 ? 'var(--main)' : 'var(--ink)' });
+    const f = h('div', 'abs mono', nCall, `→ ${b}`); px(f, 20 + i * 196, 44); css(f, { fontSize: '24px', color: 'var(--ink2)' });
     lit(f, 's3-id', T('a23', '编号') + i * 0.15);                 // 讲到「编号」时，每一项后面的编号标出来
   });
   { const s3s = h('style', '', W); s3s.textContent = '.s3-id { background: #DCEFF1; color: var(--mainD) !important; font-weight: 700; }'; }
-  const nCallLine = path(ov, `M${NX(0)},${NBY + NBH + 30} L${NX(1) - 20},${880}`, 'main', { w: 1.8, arrow: false });
+  const nCallLine = path(ov, `M${NX(0)},${NBY + NBH + 42} L${NX(1) - 20},${905}`, 'main', { w: 1.8, arrow: false });
   vanish(nCall, 0); nCallLine.setAttribute('opacity', 0);
   show(nCall, T('a23', '名字'), { y: 8, d: 0.4 }); tl.fromTo(nCallLine, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, T('a23', '名字'));
   exit(nCall, T('a24') - 0.1, { y: 8, d: 0.3 });
@@ -293,20 +292,21 @@ scene('s3', ({ root, s, c0 }) => {
   // ── 倒回第 2050 行：Alice 同时插进两棵树（G4） ──
   // 「已插入的行」计数：长树时与倒回时在场；第 208 行那一下用砖红
   // 两段各用一个计数元素（一个元素只入场一次）
-  const counter = (tIn, tOut) => {
-    const c = h('div', 'abs', W); px(c, 1600, 520);
+  const counter = (tIn, tOut, x = 1600, y = 520, inline = false) => {
+    const c = h('div', 'abs', W); px(c, x, y);
     const cn = h('div', 'num', c); css(cn, { font: '800 64px Inter', color: 'var(--main)' });
-    h('div', 't-small', c, '已插入的行');
+    const cl = h('div', 't-small', c, '已插入的行');
+    if (inline) { css(cn, { display: 'inline-block', lineHeight: '1' }); css(cl, { display: 'inline-block', marginLeft: '14px' }); }
     let last = '';
     F((t) => { const n = nAt(t); const red = t >= T('a9') && t < tSplit + 0.6; const k = n + (red ? 'r' : ''); if (k === last) return; last = k; cn.textContent = n; cn.style.color = red ? 'var(--acc)' : 'var(--main)'; });
     show(c, tIn, { y: 8, d: 0.3 }); exit(c, tOut, { y: 8, d: 0.3 });
   };
-  counter(tR0, tG1 + 0.8); counter(tBack0, tFwd1 + 0.3);
+  counter(tR0, tG1 + 0.8); counter(tBack0, tFwd1 + 0.3, 1380, 528, true);   // 第二段：两棵树都展开时，右边只剩主键树行数与「页 5」之间这一条空当
   const NK9 = NM_LEAVES.indexOf(9);
   const chip = h('div', 'pill fill', W, 'Alice · 2050 · 42'); px(chip, 830, 530);
   vanish(chip, 0); slam(chip, tAlice - 0.1, { from: 1.4 }); sfx('pop', tAlice);
   const toPK = path(ov, `M${1060},${530} C${1080},${420} ${LX(K27) + 90},${420} ${LX(K27) + BW / 2 + 8},${BY + 110}`, 'main', { w: 2.6 });
-  const toNM = path(ov, `M${880},${578} C${640},${640} ${NX(NK9) + 20},${600} ${NX(NK9)},${NBY - 44}`, 'main', { w: 2.6 });
+  const toNM = path(ov, `M${830},${548} C${480},${544} ${168},${540} ${168},${650} S${180},${765} ${NX(NK9) - NBW / 2 - 4},${765}`, 'main', { w: 2.6 });   // 绕过根页 5 的左端，从左边进叶子 9
   arrowIn(toPK, T('a25', '两棵树') - 0.2, 0.6); arrowIn(toNM, T('a25', '两棵树') + 0.1, 0.6);
   litWin(leaves[K27], 'hot', [[T('a16'), Tend('a17') - 0.1], [tS0, tSx], [T('a26', '主键树'), tFwd0]]);
   lit(nleaves[NK9], 'hot', T('a27', '姓名索引'), tFwd0);
@@ -318,7 +318,7 @@ scene('s3', ({ root, s, c0 }) => {
   vanish(atNM, 0); show(atNM, T('a27', '字母') - 0.2, { x: -10, y: 0, d: 0.4 }); exit(atNM, tFwd0, { d: 0.3 });
   swaps(atNM, [[T('a27', '字母') - 0.2, '<b style="color:var(--main)">Alice</b>'], [T('a27', '前面'), '<b style="color:var(--main)">Alice</b> &lt; User00001 &lt; User00002 …']]);
   const lblR = h('div', 'tag', W, '当时最右边'); px(lblR, LX(K27) - 60, 160); vanish(lblR, 0); slam(lblR, T('a26', '最右边') - 0.3, { from: 1.3 }); exit(lblR, tFwd0 + 0.3, { d: 0.3 });
-  const lblL = h('div', 'tag', W, '最左边'); px(lblL, NX(NK9) - 40, 520); vanish(lblL, 0); slam(lblL, T('a27', '排在'), { from: 1.3 }); exit(lblL, tFwd0 + 0.3, { d: 0.3 });
+  const lblL = h('div', 'tag', W, '最左边'); px(lblL, NX(NK9) - 40, 878); vanish(lblL, 0); slam(lblL, T('a27', '排在'), { from: 1.3 }); exit(lblL, tFwd0 + 0.3, { d: 0.3 });
 
   // ── a28：一百万行，三层（T5） ──
   const big3 = h('div', 'box', W); px(big3, 420, 300, 1080, 420);

@@ -33,10 +33,10 @@ scene('s4', ({ root, s, c0 }) => {
   sfx('whoosh', c0 + 0.1, { g: 0.4 });
   lit(pool, 'on', T('b2', '缓冲池'), T('b3'));
   // b1：读一行先要把页读进内存——磁盘到内存的粗箭头（手册图的画法）
-  const arrMem = bigArrow(ov, 760, 300, 600, 30, '#2D5A68');
+  const arrMem = bigArrow(ov, 760, 284, 600, 30, '#2D5A68');   // 箭头翼不碰缓冲池的白框
   svgIn(arrMem, T('b1', '内存') - 0.2, 0.4); svgOut(arrMem, T('b3'), 0.3);
-  // b2：放读过的页——一页从磁盘那边进来，落在缓冲池最后一格（别的表、别的查询读过的页）
-  [[14, T('b2', '内存')], [13, T('b2', '读过')]].forEach(([i, t]) => {
+  // b2：放读过的页——两页从磁盘那边进来，落在缓冲池最后两格（别的表、别的查询读过的页）；先落靠里的一格，后来的那页不从它上面飞过
+  [[13, T('b2', '内存')], [14, T('b2', '读过')]].forEach(([i, t]) => {
     const v = h('div', 'abs', W); { const p = SLOT(i); px(v, p.x, p.y, 62, 62); }
     css(v, { background: 'var(--teal)', border: '2px solid var(--mainD)' });
     vanish(v, 0); appear(v, t); fromTo(v, t, { x: 700 }, { x: 0, duration: 0.8, ease: 'power3.out' });
@@ -46,26 +46,27 @@ scene('s4', ({ root, s, c0 }) => {
   const tq1 = T('b3'), tq2 = T('b10'), tq3 = T('b11'), tq4 = T('b15');
   const LN = lanes(W, { x: 120, y: 152, w: 1680, gap: 120, rowH: 0, names: ['查询'], pts: [[tq1 - 0.6, 260], [tq2, 860], [tq3, 1180], [tq4, 1560], [Tend('b16'), 1780]] });
   LN.enter(c0 + 0.2);
-  const q1 = LN.event(0, tq1, 'id = 2050', 'ink'), q2 = LN.event(0, tq2, 'id = 2050', 'ink'), q3 = LN.event(0, tq3, "name = 'Alice'", 'ink'), q4 = LN.event(0, tq4, "只要 id · name = 'Alice'", 'ink');
-  LN.playhead(tq1 - 0.6, Tend('b16'), 118, 186);
+  const q1 = LN.event(0, tq1, 'id = 2050', 'ink', -36), q2 = LN.event(0, tq2, 'id = 2050', 'ink', -36), q3 = LN.event(0, tq3, "name = 'Alice'", 'ink', -36), q4 = LN.event(0, tq4, "只要 id · name = 'Alice'", 'ink', -36);   // 框在线上方：播放头停在这一刻时不压框里的字
+  LN.playhead(tq1 - 0.6, Tend('b16'), 142, 184);
   const reads = (x, n, t) => { const e = h('div', 'abs num', W, `读盘 ${n} 页`); px(e, x, 186); css(e, { font: '600 22px Inter', color: n ? 'var(--acc)' : 'var(--main)' }); show(e, t, { y: -6, d: 0.3 }); return e; };
   reads(LN.X(tq1) - 50, D.lookup[0].pages.length, T('b5', '磁盘'));
   reads(LN.X(tq2) - 50, D.lookup[1].pages.length, T('b10', '磁盘'));
   reads(LN.X(tq3) - 50, D.lookup[2].pages.length, T('b12', '叶子'));
 
   // 从磁盘读进缓冲池：页方块飞到缓冲池的格子里
-  const fillSlot = (i, label, t, color) => {
+  const fillSlot = (i, label, t, color, instant = false) => {
     const p = SLOT(i);
     const pg = h('div', 'abs', W, `<div style="text-align:center;font:700 26px Inter;color:#fff;padding-top:14px">${label}</div>`); px(pg, p.x, p.y, 62, 62); css(pg, { background: color, border: `2px solid ${color}` });
-    show(pg, t, { s: 0.6, y: 0, d: 0.35 }); return pg;
+    if (instant) { vanish(pg, 0); appear(pg, t); } else show(pg, t, { s: 0.6, y: 0, d: 0.35 });
+    return pg;
   };
   const flyTo = (srcEl, i, t, color) => {
     const b = box(srcEl), p = SLOT(i);
     const f = h('div', 'abs', W); px(f, b.x, b.y, b.w, b.h); css(f, { background: color, border: `2px solid ${color}` });
     vanish(f, 0); appear(f, t);
-    fromTo(f, t, { x: 0, y: 0, scale: 1, transformOrigin: '0 0' }, { x: p.x - b.x, y: p.y - b.y, scale: 62 / b.w, duration: 0.7, ease: 'power3.inOut' });
+    fromTo(f, t, { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: '0 0' }, { x: p.x - b.x, y: p.y - b.y, scaleX: 62 / b.w, scaleY: 62 / b.h, duration: 0.7, ease: 'power3.inOut' });
     vanish(f, t + 0.72); sfx('pop', t + 0.65, { g: 0.5 });
-    return fillSlot(i, srcEl.textContent.trim(), t + 0.7, color);
+    return fillSlot(i, srcEl.textContent.trim(), t + 0.7, color, true);
   };
   // b3–b5：按编号找：根页 4 → 叶页 27，两页都从磁盘读
   const pathPK = path(ov, `M1215,424 L${PKX(K27) + 20},${PKY}`, 'main', { w: 4 });
@@ -101,7 +102,7 @@ scene('s4', ({ root, s, c0 }) => {
   lab(0, String(firstId), -44); const iA = 2050 - firstId;
   // 目录：页尾一列 52 格，从下往上
   const DX = PG.w - 120, DY0 = PG.h - 30, DH = 9.4;
-  const dirLbl = h('div', 'abs t-small', pg27, '目录'); px(dirLbl, DX - 4, 52);
+  const dirLbl = h('div', 'abs t-small', pg27, '目录'); px(dirLbl, DX - 2, 8);
   const dirCells = [];
   for (let k = 0; k < D.dir.n_dir_slots; k++) { const r = svg('rect', { x: DX, y: DY0 - (k + 1) * DH, width: 46, height: DH - 2, fill: '#D9EEEF', stroke: '#2D5A68', 'stroke-width': 0.8 }, recSvg); dirCells.push(r); }
   // 二分：依次亮起的目录格，旁边写出那一格指向的编号
@@ -110,7 +111,7 @@ scene('s4', ({ root, s, c0 }) => {
   const pLbl = probes.map((p, i) => {
     const y = DY0 - (p.slot + 1) * DH;
     const e = h('div', 'abs num', pg27, `${p.key}`); px(e, DX - 92, y - 12, 84); css(e, { font: '700 24px Inter', textAlign: 'right', color: p.key === 2050 ? 'var(--main)' : 'var(--ink2)' });
-    vanish(e, 0); appear(e, tP0 + i * tPstep); if (p.key !== 2050) tl.to(e, { autoAlpha: 0, duration: 0.15 }, tP0 + (i + 1) * tPstep + 0.05);
+    vanish(e, 0); appear(e, tP0 + i * tPstep); if (p.key !== 2050) tl.to(e, { autoAlpha: 0, duration: 0.1 }, tP0 + (i + 1) * tPstep - 0.1);   // 下一格亮之前收起，相邻两格的编号不叠在一起
     tl.fromTo(dirCells[p.slot], { attr: { fill: '#D9EEEF' } }, { attr: { fill: p.key === 2050 ? '#00758F' : '#B5452E' }, duration: 0.1, immediateRender: true }, tP0 + i * tPstep);
     if (p.key !== 2050) tl.to(dirCells[p.slot], { attr: { fill: '#D9EEEF' }, duration: 0.15 }, tP0 + (i + 1) * tPstep);
     sfx('tick', tP0 + i * tPstep, { g: 0.4 });
@@ -123,7 +124,7 @@ scene('s4', ({ root, s, c0 }) => {
   const tHit = tP0 + probes.length * tPstep;
   tl.fromTo(hit, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, tHit); vanish(hitLbl, 0); appear(hitLbl, tHit);
   sfx('blip', tHit, { g: 0.6 });
-  const rowHit = h('div', 'pill fill', pg27, '2050 · Alice · 42'); px(rowHit, pA.x + 60, pA.y - 6);
+  const rowHit = h('div', 'pill fill', pg27, '2050 · Alice · 42'); px(rowHit, pA.x + 74, pA.y - 6);
   vanish(rowHit, 0); slam(rowHit, tHit + 0.5, { from: 1.3 });
   // 讲到「连成一条链」时，链从第一行描到最后一行；讲到「目录」时目录亮
   const chainPath = recSvg.querySelector('path'); const len = 99999;
@@ -153,7 +154,7 @@ scene('s4', ({ root, s, c0 }) => {
   const s5 = flyTo(nmRoot, 2, T('b12', '叶子') - 0.3, 'var(--main)');
   const s9 = flyTo(nmLeaf[K9], 3, T('b12', '叶子'), 'var(--main)');
   lit(nmLeaf[K9], 'hot', T('b12', '叶子'), T('b16'));
-  const got = h('div', 'pill fill', W, 'Alice → 2050'); px(got, NMX(K9) - 10, NMY + 52); vanish(got, 0); slam(got, T('b12', '2050'), { from: 1.3 });
+  const got = h('div', 'pill fill', W, 'Alice → 2050'); px(got, NMX(K9) - 10, NMY + 46); vanish(got, 0); slam(got, T('b12', '2050'), { from: 1.3 });
   // 回表：从页 9 回到主键树
   const back = path(ov, `M${NMX(K9) + 40},${NMY + 10} C${980},${730} ${1040},${600} ${1180},${430}`, 'mainD', { w: 3.4 });
   arrowIn(back, T('b13') + 0.1, 0.7);
@@ -166,10 +167,10 @@ scene('s4', ({ root, s, c0 }) => {
   // b15：只要编号：停在页 9，不必回表（E1）
   const exp = h('div', 'abs', W, `<div class="mono" style="font-size:22px;color:var(--ink)">${esc(D.explain.id_only)}</div><div class="gloss" style="position:static;margin-top:4px">执行计划：覆盖索引查找，姓名索引里就有编号</div>`);
   px(exp, 712, 560);
-  vanish(exp, 0); show(exp, T('b15') + 0.3, { y: 8, d: 0.4 });
-  const cov = h('div', 'tag', W, '覆盖索引'); px(cov, 1440, 530); css(cov, { fontSize: '28px' });
+  vanish(exp, 0); show(exp, Math.max(T('b15') + 0.3, T('b15', '回表') + 0.65), { y: 8, d: 0.4 });   // 回表的弧线收走后再出，不让弧线穿过字
+  const cov = h('div', 'tag', W, '覆盖索引'); px(cov, 1340, 592); css(cov, { fontSize: '28px' });
   vanish(cov, 0); slam(cov, T('b15b', '覆盖索引'), { from: 1.4 }); exit(cov, T('b16') + 0.1, { d: 0.3 }); sfx('pop', T('b15b', '覆盖索引'), { g: 0.5 });
-  const stop = h('div', 'tag', W, '到这里就够了'); px(stop, NMX(K9) + 210, NMY + 60); vanish(stop, 0); slam(stop, T('b15', '本来就有'), { from: 1.3 });
+  const stop = h('div', 'tag', W, '到这里就够了'); px(stop, NMX(K9) + 210, NMY + 54); vanish(stop, 0); slam(stop, T('b15', '本来就有'), { from: 1.3 });
   [stop, got].forEach((e) => exit(e, T('b16') - 0.1, { y: 8, d: 0.3 })); exit(exp, T('b16', '挪出去') - 0.2, { y: 8, d: 0.3 }); svgOut(pathNM, T('b16') - 0.1);
 
   // b16：缓冲池满了：一页很久没被用到，被挪出去，新读的页放进它的位置（M27）

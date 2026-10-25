@@ -73,11 +73,15 @@ function lanes(parent, o) {
       });
       return e;
     },
-    // 播放头：从 tA 到 tB 可见
+    // 播放头：从 tA 走到 tB，停在终点淡出（0.3 秒），不在一帧里消失
     playhead(tA, tB, top, bottom) {
       const p = h('div', 'playhead', parent); px(p, 0, top, null, bottom - top);
       let last = null;
-      F((t) => { const on = t >= tA && t <= tB; const x = Math.round(X(t)); const k = on ? x : -1; if (k === last) return; last = k; p.style.visibility = on ? 'visible' : 'hidden'; p.style.left = x + 'px'; });
+      F((t) => {
+        const on = t >= tA && t <= tB + 0.3; const x = Math.round(X(Math.min(t, tB))); const a = on ? Math.round(20 * (1 - clamp((t - tB) / 0.3))) / 20 : 0;
+        const k = on ? x + '|' + a : -1; if (k === last) return; last = k;
+        p.style.visibility = on && a > 0 ? 'visible' : 'hidden'; p.style.left = x + 'px'; p.style.opacity = a;
+      });
       return p;
     },
   };

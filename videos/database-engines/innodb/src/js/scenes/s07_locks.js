@@ -13,7 +13,6 @@ scene('s7', ({ root, s, c0 }) => {
 .s7-rec .i { font: 700 44px "Inter"; color: var(--ink); line-height: 1.15; }
 .s7-rec .n { font: 500 22px "Mono"; color: var(--ink2); }
 .s7-rec.me .i { color: var(--main); }
-.s7-whole { border: 4px solid var(--acc) !important; }
 .s7-hl { border: 3px solid var(--acc) !important; }
 .s7-ring { position: absolute; width: 64px; height: 64px; border: 3px solid var(--main); }
 .s7-own { position: absolute; font: 700 22px "Inter"; color: #fff; background: var(--mainD); padding: 2px 8px; }
@@ -64,7 +63,8 @@ scene('s7', ({ root, s, c0 }) => {
   // 大锁先压在整页的上沿（MyISAM：整张表），再落到 2050 这一条上（InnoDB）
   tl.fromTo(big, { autoAlpha: 0, y: -186, scale: 3.4 }, { autoAlpha: 1, y: -186, scale: 2.4, duration: 0.35, ease: 'back.out(2)', immediateRender: true }, tMy);
   tl.fromTo(big, { y: -186, scale: 2.4 }, { y: -88, scale: 1, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tIn);
-  lit(box, 's7-whole', tMy, tIn + 0.2);
+  const whole = h('div', 'abs', W); px(whole, 120, 100, 1680, 310); css(whole, { border: '4px solid var(--acc)' });
+  vanish(whole, 0); show(whole, tMy, { y: 0, d: 0.2 }); exit(whole, tIn + 0.2, { y: 0, d: 0.3 });
   const myTag = h('div', 'tag acc', W, 'MyISAM：整张表'); px(myTag, 1560, 86);
   slam(myTag, tMy, { from: 1.3 }); exit(myTag, tIn + 0.4, { y: -10, d: 0.3 }); sfx('thud', tMy + 0.1, { g: 0.6 });
   const inTag = h('div', 'tag', W, 'InnoDB：这一条记录'); px(inTag, cx(2050) + 24, RY - 70);

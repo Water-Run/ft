@@ -126,6 +126,7 @@ scene('s6', ({ root, s, c0 }) => {
   st.textContent += '.s6-go { background: var(--main) !important; height: 4px !important; }';
 
   // ── 隔离级别：四个，按 SQL 标准 ──
+  const ovB = overlay(W);                                    // 卡片下层的连线（先建，后面的隔离级别卡片盖在它上面）
   const ISO = [['READ UNCOMMITTED', '读未提交'], ['READ COMMITTED', '读已提交'], ['REPEATABLE READ', '可重复读'], ['SERIALIZABLE', '可串行化']];
   const iso = ISO.map(([en, zh], i) => { const e = h('div', 's6-iso', W, `<div class="en">${en}</div><div class="zh">${zh}</div>`); px(e, 120 + i * 300, 398); return e; });
   iso.forEach((e, i) => slide(e, T('f12a', '隔离级别') + i * 0.1, { y: 20 }));
@@ -159,7 +160,7 @@ scene('s6', ({ root, s, c0 }) => {
   const fs = LN.event(1, tFS, 'FOR SHARE', 'ink');
   const lk = lockAt(W, 0, 0); px(lk, xFS - 100, LN.Y(1) - 70); vanish(lk, 0); show(lk, tFS + 0.3, { y: -10, d: 0.4 });
   const vFS = valAt(xFS + 90, LN.Y(1), M.bob_locking_read, '', tFSv);
-  const toCur = path(ov, `M${xFS},${LN.Y(1) - 22} C${xFS},520 825,520 825,337`, 'main', { w: 2.2, dashed: '8 7' });
+  const toCur = path(ovB, `M${xFS},${LN.Y(1) - 22} C${xFS},520 825,520 825,337`, 'main', { w: 2.2, dashed: '8 7' });
   arrowIn(toCur, tFSv - 0.5, 0.6); svgOut(toCur, T('f17') - 0.1, 0.3);
 
   // f17–f18：读已提交——每读一次拍一张新快照，提交后读到 43

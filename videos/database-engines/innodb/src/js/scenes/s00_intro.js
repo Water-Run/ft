@@ -132,7 +132,7 @@ scene('intro', ({ root, s }) => {
   lit(in42, 'hl', T('h14', '42'));
   LN.event(0, tPU, 'UPDATE', 'ink', -62); LN.event(1, tPU, 'UPDATE', 'ink', -62);
   LN.event(0, tPR, 'ROLLBACK', 'acc', -62); LN.event(1, tPR, 'ROLLBACK', '', -62);
-  LN.playhead(tP0, tP1, 400, 760);
+  LN.playhead(tP0, tP1, 400, 500); LN.playhead(tP0, tP1, 618, 760);   // 每道一段：两道之间是 Warning 1196，播放头不从字上穿过
   const [w1, w2] = D.warning.split(/(?<=1196) /);
   const warn = h('div', 'echo err', B, `${esc(w1)}\n<span style="font-size:22px">${esc(w2)}</span>`); px(warn, 900, 505);
   const warnZ = h('div', 'gloss', B, '警告 1196：有些不支持事务的表，改动没法撤回'); px(warnZ, 900, 580);

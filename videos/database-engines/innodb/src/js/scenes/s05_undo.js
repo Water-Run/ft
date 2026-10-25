@@ -14,15 +14,13 @@ scene('s5', ({ root, s, c0 }) => {
     .s5-pg i { position: absolute; left: 10px; right: 10px; height: 2px; background: #C9DADC; }
     .s5-pg b { position: absolute; left: 6px; right: 6px; height: 10px; background: var(--main); }
     .fld .v { font-variant-numeric: tabular-nums; }
-    .fld.s5-dim { opacity: .45; }
-    .fld.s5-dim .hx, .fld.s5-dim .v { opacity: 0; }
     .s5-strip .fld { padding: 10px 12px 8px; }
     .s5-strip .fld .k { font-size: 24px; }
     .s5-strip .fld .hx { font-size: 26px; margin-top: 6px; }
     .s5-strip .fld .v { font-size: 34px; margin-top: 4px; }
     .s5-bit { position: absolute; font: 500 23px "Mono", "Sans SC"; color: var(--ink2); white-space: pre; line-height: 1.45; }
     .s5-bit b { color: var(--main); }
-    .s5-rec.s5-hit { border-width: 4px; }
+    .s5-rec.s5-hit { outline: 2px solid var(--main); outline-offset: -4px; }
   `;
   const A = D.alice;
   const hx = (h0, a, b) => hexSp(h0.slice(a * 2, b * 2));
@@ -128,7 +126,7 @@ scene('s5', ({ root, s, c0 }) => {
   fromTo(back, tBack + 0.05, { x: 0, y: 0 }, { x: ageBox.x + 12 - (recBox.x + 76), y: ageBox.y + 74 - (recBox.y + 6), duration: 1.0, ease: 'power2.inOut' });
   vanish(back, T('e10z', '42') + 0.02); sfx('pop', T('e10z', '42'));
   // 回滚后这两格的新内容没有实测，只淡出
-  [fTrx, fRp].forEach((f) => lit(f, 's5-dim', T('e10z', '42')));
+  [fTrx, fRp].forEach((f) => { to(f, T('e10z', '42'), { opacity: 0.45, duration: 0.3 }); to([fHx(f), fV(f)], T('e10z', '42'), { opacity: 0, duration: 0.3 }); });   // 两格变淡、内容淡出
   svgOut(link, T('e10z', '42') + 0.2, 0.4);
   lit(b42, 'hl', T('e11'));
   tl.fromTo(fAge, { scale: 1 }, { scale: 1.08, duration: 0.3, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, T('e11', '撤得回'));

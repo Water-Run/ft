@@ -79,8 +79,8 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .fld .v { font: 700 30px "Inter"; color: var(--ink); margin-top: 2px; }
 .fld.hidden { background: var(--pale); border-color: var(--mainD); }
 .fld.hidden .k { color: var(--mainD); }
-.fld.hot { border-color: var(--main); border-width: 3px; }
-.fld.unc { border-color: var(--acc); border-width: 3px; }
+.fld.hot { border-color: var(--main); outline: 1.5px solid var(--main); outline-offset: -3px; }   /* 加粗只画在里面，不改盒子大小 */
+.fld.unc { border-color: var(--acc); outline: 1.5px solid var(--acc); outline-offset: -3px; }
 
 /* 泳道：人、事务、时间 */
 .lane-name { position: absolute; font: 700 30px "Inter", "Sans SC"; color: var(--ink); }
@@ -90,7 +90,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .pill.fill { background: var(--main); color: #fff; }
 .pill.fill.acc { background: var(--acc); color: #fff; }
 .pill.ink { border-color: var(--ink2); color: var(--ink); }
-.vbar { position: absolute; height: 44px; border: 2px solid var(--main); background: var(--main); color: #fff; font: 700 26px "Inter"; padding: 5px 12px; }
+.vbar { position: absolute; height: 44px; border: 2px solid var(--main); background: var(--main); color: #fff; font: 700 26px "Inter"; padding: 5px 12px; overflow: hidden; white-space: nowrap; }   /* 条随播放头长出来，字跟着条露出，不伸出条外 */
 .vbar.old { background: var(--pale); color: var(--mainD); border-color: var(--main); }
 .vbar.unc { background-color: var(--accL); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M-2,2 l4,-4 M0,14 L14,0 M12,16 l4,-4' stroke='%23B5452E' stroke-width='3'/%3E%3C/svg%3E"); color: var(--acc); border-color: var(--acc); }
 .vbar.unc > span { background: var(--panel); padding: 0 6px; }
