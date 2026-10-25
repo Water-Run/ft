@@ -173,7 +173,7 @@ scene('s7', ({ root, s, c0 }) => {
   [cLk, cTg, cW].forEach((e) => exit(e, tRb, { y: -14, d: 0.35 })); svgOut(arcC, tRb, 0.35); exit(dTag, tRb, { d: 0.3 });
   const cErr = stAt(1, 800, 'ERROR 1213 · 回滚', 'err', tRb + 0.1);
   const dErr = h('div', 'abs', W, `<div class="echo err" style="position:static;font-size:22px">${esc(D.locks.deadErr)}</div><div class="gloss" style="position:static;margin-top:4px">发现死锁：这个事务被回滚，要重新开始</div>`);
-  px(dErr, 330, LN.Y(1) + 36);   // 让开右边的等待图 vanish(dErr, 0); show(dErr, tRb + 0.3, { y: 8, d: 0.4 });
+  px(dErr, 330, LN.Y(1) + 36); vanish(dErr, 0); show(dErr, tRb + 0.3, { y: 8, d: 0.4 });   // 让开右边的等待图
   svgOut(arcA, tGo, 0.3); exit(aW, tGo, { d: 0.3 });
   lockFor(2051, 'Alice', tGo + 0.2);
   stAt(0, 560, '拿到 2051 · 完成', 'ok', tGo + 0.3);
