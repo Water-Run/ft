@@ -123,11 +123,17 @@ function lit(e, cls, t0, t1 = Infinity) { classAt(e, cls, t0, t1); return e; }
 function swaps(e, pairs) { const k = keyed(e); for (const [t, html] of pairs) k.at(t, { html }); return e; }
 
 // 镜头（WaterRun 2026-10-25：「老毛病, 镜头一直在缩放....你不明白你直接参考MyISAM的不行?」；照 MyISAM 一集与 docs/guides/scenes.md 第 3 节）：
-// 不缩放、不推近、不往复。本章内容在场的整段里（章节卡之后到场景结束），镜头只朝 dir 一个方向匀速横移 48 像素，
-// 每秒不超过 2 像素（章越长越慢），不配音效；相邻两章 dir 取相反方向。画面停着时的变化靠内容的分步，不靠镜头。
-function pan1(cam, s, dir = 1) {
-  const t0 = s.first, t1 = s.end, PAN = 48, d = Math.max(PAN / 2, t1 - t0 - 0.05);   // 48 像素至少走 24 秒：不超过每秒 2 像素
-  cam.track(t0, { x: 960 - dir * PAN / 2, y: 540, z: 1 }, [[t0, { x: 960 + dir * PAN / 2 }, d, { ease: 'none', sfx: false }]]);
+// 不缩放、不推近。一章按内容分成几屏（breaks 给出每一屏开头的句号）；停在一屏上时只朝一个方向极慢横移，
+// 一屏最多 48 像素、每秒不超过 2 像素，下一屏换方向（只在换屏时换），始终在中线左右 24 像素以内；不配音效。画面停着时的变化首先靠内容的分步。
+function pan1(cam, s, dir = 1, breaks = []) {
+  const t0 = s.first, t1 = s.end - 0.05, R = 24, V = 2;
+  const ts = [t0, ...breaks.map((id) => T(id)).filter((t) => t > t0 + 1 && t < t1 - 1), t1].sort((a, b) => a - b);
+  let x = -dir * R, d = dir; const keys = [];
+  for (let k = 0; k + 1 < ts.length; k++) {
+    const dur = ts[k + 1] - ts[k] - 0.02, to = Math.max(-R, Math.min(R, x + d * Math.min(2 * R, V * dur)));
+    keys.push([ts[k] + 0.01, { x: 960 + to }, Math.max(0.5, dur), { ease: 'none', sfx: false }]); x = to; d = -d;
+  }
+  cam.track(t0, { x: 960 - dir * R, y: 540, z: 1 }, keys);
 }
 
 // 注解：新名词、关键结构第一次出现时，画面上的一行说明（是什么、指哪一块、数字或出处），不等旁白。

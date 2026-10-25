@@ -3,7 +3,7 @@
 // ROLLBACK：顺着回滚指针取回 42 写回去（X2）。回滚后行头的事务号恢复成什么没有实测，那两格回滚时只淡出、不写数字。最后对照 MyISAM 撤不回（V3）。
 scene('s5', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
+  pan1(makeCamera(W), s, -1, ['e3', 'e6', 'e9', 'e11']);             // 镜头只极慢横移（parts.js）
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s5_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -67,9 +67,15 @@ scene('s5', ({ root, s, c0 }) => {
   const ov = overlay(W);
   // ── 时刻 ──
   const t1 = c0 + 0.1;
-  typeText(sql, sql.innerHTML, T('e1'), 40, { cursor: false });
+  typeText(sql, sql.innerHTML, T('e1'), 16, { cursor: false });   // 打得慢一点，跟着这句话
   wipe(pg, t1, { dir: 'b', d: 0.6 }); appear(pgLab, t1 + 0.2);
   slam(mark, T('e1', '43') - 0.2, { from: 1.6 }); appear(offLab, T('e1', '43'));
+  // 「回到开头那一幕」：年龄先大大地出在中间，42 跳成 43，再落进页里这一行的位置
+  { const big = h('div', 'abs num', W, String(A.before.age)); px(big, 760, 230); css(big, { font: '900 180px Inter' });
+    const tB = T('e1', '开头'), tF = T('e2') - 0.55;
+    vanish(big, 0); slam(big, tB, { from: 1.3 }); swaps(big, [[T('e1', '43'), String(A.after.age)]]); lit(big, 'c-acc', T('e1', '43'));
+    tl.fromTo(big, { x: 0, y: 0, scale: 1, transformOrigin: '0 0' }, { x: 386 - 760, y: 450 + 320 * A.offset / 16384 - 16 - 230, scale: 0.15, duration: 0.5, ease: 'power3.in', immediateRender: false }, tF);
+    vanish(big, tF + 0.5); sfx('pop', T('e1', '43'), { g: 0.4 }); }
   // 字节条：e2 摊开
   appear(ctx, T('e2') - 0.1);
   strip.f.forEach((e, i) => wipe(e, T('e2') + 0.1 + i * 0.12, { dir: 't', d: 0.4 }));

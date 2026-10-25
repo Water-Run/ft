@@ -4,7 +4,7 @@
 // 三、引出下一集：另一个更老牌、更正统的关系数据库把旧版本留在表里（K9、M34）。
 scene('s11', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1);             // 镜头只极慢横移（parts.js）
+  pan1(makeCamera(W), s, -1, ['k21', 'k24', 'k13', 'k16']);             // 镜头只极慢横移（parts.js）
   const ov = overlay(W);
   const A = D.alice;
   const ON = new Map(), onWin = (el, a, b) => { if (!ON.has(el)) ON.set(el, []); ON.get(el).push([a, b]); };

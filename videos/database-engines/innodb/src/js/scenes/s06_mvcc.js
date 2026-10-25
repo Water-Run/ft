@@ -5,7 +5,7 @@
 // 事务号 6175 取自 FACTS G5（「Alice 先改、Bob 后读」那一次的 innodb_trx）；读到的值取自 D.mvcc（X3、X4）。
 scene('s6', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
+  pan1(makeCamera(W), s, 1, ['f4', 'f6', 'f9', 'f12a', 'f15', 'f17', 'f20']);              // 镜头只极慢横移（parts.js）
   const st = h('style', null, root);
   st.textContent = `
 .s6-unc { background-color: #F3DCD5; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M-2,2 l4,-4 M0,14 L14,0 M12,16 l4,-4' stroke='%23B5452E' stroke-width='3'/%3E%3C/svg%3E"); border-color: var(--acc) !important; border-width: 3px !important; }

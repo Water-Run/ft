@@ -3,7 +3,7 @@
 // 每一段放在自己的容器里，整段退场时动容器（容器里有帧函数管显隐的版本条、播放头，不能对它们单独做退场补间）。
 scene('intro', ({ root, s }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
+  pan1(makeCamera(W), s, 1, ['h4', 'h8', 'h12', 'hT']);              // 镜头只极慢横移（parts.js）
   const part = () => { const g = h('div', 'abs', W); px(g, 0, 0, 1920, 1080); css(g, { pointerEvents: 'none' }); return g; };
 
   // ── 一、MyISAM：两个文件（V1、V2、G7） ──
@@ -40,10 +40,11 @@ scene('intro', ({ root, s }) => {
 
   // h1：数据文件先出来，一行一行摊开；h2：索引文件出来
   appear(myd, 0); sfx('whoosh', 0.05, { g: 0.4 });                    // 片头第一帧就有数据文件（不留空画面）
+  tl.fromTo(myd, { x: -90 }, { x: 0, duration: 1.6, ease: 'power3.out', immediateRender: true }, 0);   // 边摊开边滑到位
   const tRows0 = 0.1, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
   rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 2 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头两行第一帧就在
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
-  wipe(myi, T('h2', '两个文件'), { dir: 'l', d: 0.6 });               // 讲到「两个文件」时第二个文件框就出来
+  wipe(myi, Math.min(T('h2', '两个文件'), 2.4), { dir: 'l', d: 0.9 });   // 索引文件早一点出来（片头这几秒画面要有变化），标签等讲到时再上
   slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') + 0.3, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') + 0.3, { g: 0.6 });
   // 索引文件里的 B 树与指向数据文件的箭头：旁白只说「一个放索引」，细节交给画面（R11 并掉了 h3）
   const tTree = T('h2', '索引') + 0.5, tPtr = Math.max(tTree + 1.0, Tend('h2') - 0.3);
@@ -61,7 +62,7 @@ scene('intro', ({ root, s }) => {
   const G1A = '<span class="mono" style="font-size:30px">42 → 43</span>', G1B = '<span class="mono c-acc" style="font-size:30px;margin-left:18px">↶ ' + MARK.no(28) + '</span>';
   const G2A = '<span class="mini lk"></span><span class="mono" style="font-size:26px;margin:0 14px 0 8px">users</span><span class="mini b">Carol 写</span>', G2B = '<span class="mini w">Bob 等</span>';
   const G30 = '<span style="margin-right:12px">' + MARK.bolt(30) + '</span>', G3A = '<span class="mono" style="font-size:26px">CHECK TABLE</span>', G3B = '<span class="mono" style="font-size:26px"> · REPAIR TABLE</span>';
-  slide(g1, T('h5'), { y: 30 }); slide(g2, T('h6'), { y: 30 }); slide(g3, T('h7'), { y: 30 });
+  slide(g1, T('h5'), { y: 30 }); slide(g2, Tend('h5') + 0.05, { y: 30 }); slide(g3, Tend('h6') + 0.05, { y: 30 });   // 下一张卡在句间就进来
   [[g1, 'h5'], [g2, 'h6'], [g3, 'h7']].forEach(([, c]) => sfx('thud', T(c) + 0.1, { g: 0.5 }));
   steps(g1, G1A, G1B, T('h5', '一组'), T('h5', '撤回')); steps(g2, G2A, G2B, T('h6', '在写'), T('h6', '等')); swaps(g3.querySelector('.cs'), [[T('h7', '断电') - 0.2, G30], [T('h7', '检查') - 0.4, G30 + G3A], [T('h7', '修复') - 0.8, G30 + G3A + G3B]]);
   [T('h5', '一组'), T('h5', '撤回'), T('h6', '在写'), T('h6', '等'), T('h7', '断电') - 0.2, T('h7', '检查') - 0.4, T('h7', '修复') - 0.6].forEach((t) => sfx('pop', t, { g: 0.35 }));
@@ -69,8 +70,8 @@ scene('intro', ({ root, s }) => {
   [myd, myi].forEach((e) => to(e, T('h4', '三处'), { opacity: 0.4, duration: 0.6 }));
   ptr.forEach((p) => tl.to(p, { opacity: 0.4, duration: 0.6 }, T('h4', '三处')));
   // h8：先看第一处
-  lit(g1, 'on', T('h8'));
-  [g2, g3].forEach((c) => to(c, T('h8'), { opacity: 0.35, duration: 0.4 }));
+  lit(g1, 'on', Tend('h7') + 0.9);
+  [g2, g3].forEach((c) => to(c, Tend('h7') + 0.9, { opacity: 0.35, duration: 0.4 }));   // 第三处讲完就把第一处挑出来
   // h8 → h8b：用元素把两屏接起来（R13 第 2 条，不整屏硬切）：第 1 张卡移到右上角当这段实验的题头；索引文件、另两张卡、箭头有去向地退场；
   // 数据文件 users.MYD 收成一张小表，落到 users 那一道上（「同一张 users 表」），下一句再从它复制出副本
   const tM0 = T('h8') + 0.35, outA = Math.max(tM0 + 1.1, T('h8b', 'users') - 0.1);   // 收拢开始、小表落地
@@ -88,7 +89,7 @@ scene('intro', ({ root, s }) => {
   const q1 = sqlLine(B, 160, 150, 'START TRANSACTION;');
   const q2 = sqlLine(B, 160, 205, 'UPDATE users SET age = 43 WHERE id = 2050;');
   const q3 = sqlLine(B, 160, 260, 'ROLLBACK;');
-  const tq1 = Math.max(outA + 0.5, T('h9') - 0.1), tq2 = Math.max(tq1 + 0.7, T('h9', '43') - 1.2);
+  const tq1 = Math.max(outA + 0.5, T('h8c') + 0.6), tq2 = Math.max(tq1 + 0.7, T('h9', '43') - 1.2);
   typeText(q1, q1.innerHTML, tq1, 34, { cursor: false });
   const tq2e = typeText(q2, q2.innerHTML, tq2, 40, { cursor: false });
   typeText(q3, q3.innerHTML, T('h11', 'ROLLBACK'), 26, { cursor: false });
@@ -111,11 +112,15 @@ scene('intro', ({ root, s }) => {
   const eng1 = h('div', 'tag', B, '引擎：？'); px(eng1, 160, 700 + 30);
   swaps(eng1, [[T('h15', 'InnoDB'), 'InnoDB']]);
   // h8b：同一张 users 表复制一份——先出 users，副本从它那里「复制」上去；各标上用的引擎
-  const tCopy = T('h8bz', '副本');
+  const tCopy = T('h8b', '复制');                                   // 讲到「复制一份」时就复制
   vanish(LN.els.names[1], 0); appear(LN.els.names[1], outA); vanish(LN.els.lines[1], 0); appear(LN.els.lines[1], outA);
   slide(LN.els.names[0], tCopy - 0.2, { y: 230, d: 0.7, ease: 'power3.out' }); wipe(LN.els.lines[0], tCopy + 0.1, { dir: 'l', d: 0.7 });
   slide(eng0, T('h8bz', 'MyISAM'), { x: -30 }); slide(eng1, T('h8c', '另一个引擎'), { x: -30 });
   sfx('pop', tCopy, { g: 0.5 });
+  // 讲到哪一张表，哪一道就铺上浅底（副本 → 原表）
+  const band = (i, ta, tb) => { const e = h('div', 'abs', B); px(e, 150, 470 + i * 230 - 105, 1640, 210); css(e, { background: 'var(--pale)', opacity: 0 }); B.insertBefore(e, B.firstChild);
+    tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, ta); tl.fromTo(e, { opacity: 1 }, { opacity: 0, duration: 0.4, immediateRender: false }, tb); };
+  band(0, T('h8bz') - 0.1, T('h8c') - 0.1); band(1, T('h8c') - 0.1, T('h9') + 0.3);
   // 「复制一份」：users 那一道上先出一张小表，讲到「副本」时它复制出一张，飞到上面一道（只画表头与行，不写字）
   const tbl = (y) => { const g = h('div', 'abs', B); px(g, 500, y - 58, 176, 116); css(g, { border: '2px solid var(--mainD)', background: 'var(--panel)' });
     const hd = h('div', 'abs', g); px(hd, 0, 0, 172, 26); css(hd, { background: 'var(--teal)', borderBottom: '2px solid var(--mainD)' });

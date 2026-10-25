@@ -7,7 +7,7 @@
 // 同一个属性只由一个帧函数或一串首尾相接的补间改写，画面只由 t 决定。
 scene('s8', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
+  pan1(makeCamera(W), s, 1, ['j4', 'j7', 'j9', 'j11', 'j15', 'j19', 'j21', 'j23']);              // 镜头只极慢横移（parts.js）
   const ov = overlay(W);
   const C = D.crash;
   const fmt = (n) => n.toLocaleString('en-US').replace(/,/g, ' ');

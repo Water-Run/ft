@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "version": "2026-10-24.2",
+  "version": "2026-10-25.1",
   "items": {
     "F01": {
       "rev": 2,
@@ -9,10 +9,10 @@
       "evidence": "核心问题：一个现代的数据库引擎怎样做到事务——撤得回、同时读写互不干扰、停下之后提交的还在。开场实验 0:30–1:05 提出，第 01 章 y6–y10（1:40–1:57）问成三个问题，第 02 章对上 A、I、D，第 05、06–07、08 章分别回答（j20「第二章那个问题，答案就在这里」），第 11 章 k20–k24（14:21–14:40）收束；取舍记在 README「简报」与 review/compare-*.md。"
     },
     "F02": {
-      "rev": 2,
-      "result": "pass",
+      "rev": 3,
+      "result": "pending",
       "note": "",
-      "evidence": "同一个例子走完全片：users 表 4096 行、Alice 2050 号 42→43，Bob 读、Carol 写、管理员改 4096 行、Dave 注册；新名词与解释句见 review/NOTES.md「术语表」。"
+      "evidence": ""
     },
     "F03": {
       "rev": 1,
@@ -27,9 +27,9 @@
       "evidence": ""
     },
     "F05": {
-      "rev": 1,
-      "result": "open",
-      "note": "总览图里每章都有连续的过程（文件切页、树一页页长、泳道播放头、回滚指针、redo 扫描），但「连续观看」与「和近期两部片子并排比较」制作方没有做，待 WaterRun 看预览确认。",
+      "rev": 2,
+      "result": "pending",
+      "note": "",
       "evidence": ""
     },
     "F06": {
@@ -69,9 +69,9 @@
       "evidence": "每段外文原文（ACM 图灵奖页、1981 年报告、1983 年论文、ARIES、手册引文、mysqld 日志）旁都有中文释义，readable.js 0 段不足。"
     },
     "F12": {
-      "rev": 1,
-      "result": "open",
-      "note": "Whisper 回听（out/zh/asr.txt）没有发现读错或漏读，年份逐字读、行读 háng、缩写逐字母读均按 SAY 表；按规则以人耳为准，制作方听不到，待 WaterRun 听预览确认。",
+      "rev": 2,
+      "result": "pending",
+      "note": "",
       "evidence": ""
     },
     "F13": {
@@ -129,10 +129,10 @@
       "evidence": "与 MyISAM 一集不同：MyISAM 是终端黑底、橙色、男声；本集是手册架构图的暖灰纸面、MySQL 蓝、女声、配乐「两个事务」，封面也按本集主体重做。"
     },
     "F22": {
-      "rev": 1,
-      "result": "pass",
+      "rev": 2,
+      "result": "pending",
       "note": "",
-      "evidence": "总览图里一组并列的对象整组在场、只推进其中几项（三个问题卡、ACID 四卡、五个问题卡、泳道），没有一句一屏的碎片。"
+      "evidence": ""
     },
     "F23": {
       "rev": 1,
@@ -165,5 +165,46 @@
       "evidence": "README「交付」写明通看方式（总览图：每句一帧 + 每 3 秒一帧）、日期与发现的问题；scan.js 的 DENSE 提示已逐条看过并写明保留理由。"
     }
   },
-  "history": []
+  "history": [
+    {
+      "version": "2026-10-24.2",
+      "id": "F02",
+      "item": {
+        "rev": 2,
+        "result": "pass",
+        "note": "",
+        "evidence": "同一个例子走完全片：users 表 4096 行、Alice 2050 号 42→43，Bob 读、Carol 写、管理员改 4096 行、Dave 注册；新名词与解释句见 review/NOTES.md「术语表」。"
+      }
+    },
+    {
+      "version": "2026-10-24.2",
+      "id": "F05",
+      "item": {
+        "rev": 1,
+        "result": "open",
+        "note": "总览图里每章都有连续的过程（文件切页、树一页页长、泳道播放头、回滚指针、redo 扫描），但「连续观看」与「和近期两部片子并排比较」制作方没有做，待 WaterRun 看预览确认。",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.2",
+      "id": "F12",
+      "item": {
+        "rev": 1,
+        "result": "open",
+        "note": "Whisper 回听（out/zh/asr.txt）没有发现读错或漏读，年份逐字读、行读 háng、缩写逐字母读均按 SAY 表；按规则以人耳为准，制作方听不到，待 WaterRun 听预览确认。",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.2",
+      "id": "F22",
+      "item": {
+        "rev": 1,
+        "result": "pass",
+        "note": "",
+        "evidence": "总览图里一组并列的对象整组在场、只推进其中几项（三个问题卡、ACID 四卡、五个问题卡、泳道），没有一句一屏的碎片。"
+      }
+    }
+  ]
 }

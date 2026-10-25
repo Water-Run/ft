@@ -5,7 +5,7 @@
 // 四、ACID 四张小卡（M25、M26、M23），A、I、D 连回三个问题；最后引向「数据放在哪里」。
 scene('s2', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1);              // 镜头只极慢横移（parts.js）
+  pan1(makeCamera(W), s, 1, ['t1', 't5', 't7', 't8', 't11', 't11d', 'q2', 'q4', 'q4b', 'q6']);              // 镜头只极慢横移（parts.js）
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s2_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -244,7 +244,7 @@ scene('s2', ({ root, s, c0 }) => {
   slam(cI, T('t11cz', '隔离性'), { from: 1.3 }); sfx('pop', T('t11cz', '隔离性'), { g: 0.4 });
   st.textContent += ' .tag.s2-c3 { background: var(--main); }';
   [cA, cC, cD].forEach((e, i) => lit(e, 's2-c3', T('t11c', '四个性质') + i * 0.12));
-  wipe(d81.querySelector('.s2-q'), T('t11b') - 0.1, { dir: 'l', d: 0.7 }); show(d81.querySelector('.s2-z'), T('t11b', '三个性质') - 0.2, { y: 8, d: 0.4 });
+  wipe(d81.querySelector('.s2-q'), T('t11', '写下') - 0.1, { dir: 'l', d: 1.2 }); show(d81.querySelector('.s2-z'), T('t11b', '三个性质') - 0.2, { y: 8, d: 0.4 });   // 讲到「写下」时原文就展开
   const [hA, hD, hC] = d81.querySelectorAll('.s2-hl');
   lit(hA, 'on', T('t11b', '原子性')); lit(hC, 'on', T('t11b', '一致性')); lit(hD, 'on', T('t11b', '持久性'));
   // t11c：1983 年列出四个性质，多出来的隔离性标红
