@@ -9,7 +9,7 @@ scene('intro', ({ root, s }) => {
   // ── 一、MyISAM：两个文件（V1、V2、G7） ──
   const A = part();
   const ovA = overlay(A);
-  const myd = h('div', 'box', A); px(myd, 150, 150, 760, 600);
+  const myd = h('div', 'box', A); px(myd, 150, 150, 760, 600); css(myd, { borderColor: 'var(--mainD)', borderWidth: '2px' });   // 片头第一帧就要看得出这个文件框
   h('div', 'abs', myd, `<span class="mono" style="font-size:34px;font-weight:700">users.MYD</span>`).style.cssText = 'position:absolute;left:28px;top:22px';
   const mydTag = h('div', 'tag', myd, '数据'); px(mydTag, 340, 28);
   const age = (i) => (i === 2050 ? 42 : 18 + (i % 63));
@@ -42,7 +42,7 @@ scene('intro', ({ root, s }) => {
   appear(myd, 0); sfx('whoosh', 0.05, { g: 0.4 });                    // 片头第一帧就有数据文件（不留空画面）
   tl.fromTo(myd, { x: -90 }, { x: 0, duration: 1.6, ease: 'power3.out', immediateRender: true }, 0);   // 边摊开边滑到位
   const tRows0 = 0.1, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
-  rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 2 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头两行第一帧就在
+  rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 4 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头两行第一帧就在
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
   wipe(myi, Math.min(T('h2', '两个文件'), 2.6), { dir: 'l', d: 0.9 });   // 索引文件早一点出来（片头这几秒画面要有变化），标签等讲到时再上
   slam(mydTag, T('h2', '两个文件'), { from: 1.3 }); slam(myiTag, T('h2', '两个文件') + 0.15, { from: 1.3 });

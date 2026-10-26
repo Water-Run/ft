@@ -167,8 +167,8 @@ scene('s2', ({ root, s, c0 }) => {
     wipe(fr, t - 0.05, { dir: 'l', d: 0.35 }); slam(p, t, { from: 1.2 }); slam(c, t + 0.55, { from: 1.2 }); sfx('pop', t + 0.55, { g: 0.4 });
     return [fr, p, c];
   });
-  LA.enter(t7a - 0.1); LA.playhead(t7a + 0.2, t7b, 470, 650);
-  slide(ac, t7a + 0.3, { y: -20 });
+  LA.enter(Math.min(t7a - 0.1, out1 + 0.15)); LA.playhead(t7a + 0.2, t7b, 470, 650);   // 上一节收走的同时这一节就进来，中间不留空画面
+  slide(ac, Math.min(t7a + 0.3, out1 + 0.2), { y: -20 });
   const out2 = Tend('t7z') + 0.2;
   s2_out(ac, out2 - 0.6, { y: -16, d: 0.3 });                        // 先收走 SQL：下一节的语句就打在这个位置
   [...LA.els.names, ...LA.els.lines, ...segs.flat()].forEach((e) => s2_out(e, out2, { y: -16, d: 0.3 }));
@@ -235,7 +235,7 @@ scene('s2', ({ root, s, c0 }) => {
   st.textContent += '.s2-hl { color: var(--ink2); font-weight: 500; } .s2-hl.on { color: var(--main); font-weight: 800; background: #DCEFF1; } .s2-hl2 { color: var(--ink2); font-weight: 500; } .s2-hl2.on { color: var(--acc); font-weight: 800; background: var(--accL); }'
     + ' .s2-tt.on { background: #DCEFF1; } .s2-fl { font-weight: 500; } .s2-fl.on { background: var(--teal); color: var(--ink); font-weight: 800; }';
   // t11：1981 年的报告；t11b 原文出来，三个性质按旁白的顺序标出（原文里的顺序是原子性、持久性、一致性）
-  slide(d81, T('t11') + 0.1, { x: -40 }); sfx('pop', T('t11') + 0.2, { g: 0.5 });
+  slide(d81, Math.min(T('t11') + 0.1, out3 + 0.2), { x: -40 }); sfx('pop', T('t11') + 0.2, { g: 0.5 });   // 上一节收走的同时文献卡就进来
   show(d81.querySelector('.t-note'), T('t11', 'Gray') - 0.1, { y: 6, d: 0.35 });
   lit(d81.querySelector('.s2-tt'), 'on', T('t11', '事务的概念'));
   // 讲到哪个性质，卡片下面就出哪个字母：A、C、D 在 1981 年的卡下，I 在 1983 年的卡下（砖红：多出来的那一个）
