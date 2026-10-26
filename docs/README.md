@@ -22,12 +22,18 @@
 | 判断成片是否合格 | [质量标准](standards.md) → [经验规则](lessons.md) → [验收](guides/acceptance.md) |
 | 发布、收集反馈、归档清理 | [发布与收尾](guides/release.md) |
 | 开一个系列或加一集 | [系列](guides/series.md) → `videos/<系列>/README.md` |
-| 查看当前工作 | [片单](../videos/README.md)（阶段与下一步）→ 本片 README；署名查 [Credit 盘点](../videos/CREDITS.md)。旧排期只作历史背景 |
+| 查看当前工作 | [周 TODO](todo.md)（安排）→ [片单](../videos/README.md)（阶段与下一步）→ 本片 README；署名查 [Credit 盘点](../videos/CREDITS.md)。旧排期只作历史背景 |
 | 做仓库维护 | [宗旨与原则](principles.md) → 本页「信息归属」「维护」→ 受影响的专题、模板与工具 |
 | 改工具、引擎或模板 | [仓库结构](reference/repository.md) → [工具](reference/tools.md) → [引擎](reference/engine.md) → [踩过的坑](reference/pitfalls.md) |
 | 装环境、换机器 | [环境](reference/environment.md) |
 
 ## 3. 全部文档
+
+**当前计划**
+
+| 文档 | 内容 |
+|---|---|
+| [todo.md](todo.md) | 当前制作周 TODO；由策划者安排各周选题与目标 |
 
 **核心**（规则本身）
 
@@ -81,6 +87,7 @@
 | 信息 | 唯一来源 | 派生（由工具生成，不手改） |
 |---|---|---|
 | 选题、系列归属、标题、语言、片单状态 | `videos/catalog.json` | `videos/README.md`、各系列说明的分集表 |
+| 当前周安排 | `docs/todo.md`；只写安排，实际阶段以单片记录为准 | — |
 | 排期的历史安排 | `docs/log/plans/` 的对应日期记录；不据此认定当前进度 | — |
 | 系列的定位与共同约定 | `videos/<系列>/README.md` | — |
 | 一部片子的阶段、署名、发布记录、评分 | 该片 `project.json` 的 `stage`、`credits`、`release`、`reception` | 片尾名单、`videos/README.md`、`videos/CREDITS.md` |

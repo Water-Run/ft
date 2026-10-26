@@ -63,16 +63,23 @@
 | 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
 | 12 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
 | 13 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |
-| 14 | 128 秒讲清量化：怎样让模型变小，代价是什么 | zh | 计划中 | `quantization` |
-| 15 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
-| 16 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
-| 17 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
-| 18 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh | 计划中 | [`harness`](harness/) |
-| 19 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
-| 20 | 192 秒认识 CoT：先思考，再回答 | zh | 计划中 | [`chain-of-thought`](chain-of-thought/) |
-| 21 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
-| 22 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
-| 23 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
-| 24 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh | 计划中 | [`scion`](scion/) |
-| 25 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
+| 14 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
+| 15 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
+| 16 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
+| 17 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？ | zh | 计划中 | [`harness`](harness/) |
+| 18 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
+| 19 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
+| 20 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
+| 21 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
+| 22 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh | 计划中 | [`scion`](scion/) |
+| 23 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
+| 24 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
+| 25 | 192 秒了解 Linux 权限机制 | zh | 计划中 | `linux-permissions` |
+| 26 | 192 秒了解 Windows 权限机制 | zh | 计划中 | `windows-permissions` |
+| 27 | 192 秒了解 Android 权限机制 | zh | 计划中 | `android-permissions` |
+| 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |
+| 29 | 150 秒速通 Git | zh | 计划中 | `git` |
+| 30 | 256 秒速通五种主流配置文件格式 | zh | 计划中 | `config-file-formats` |
+| 31 | 128秒认识冯·诺伊曼架构 | zh | 计划中 | `von-neumann` |
+| 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` |
 <!-- catalog:end -->
