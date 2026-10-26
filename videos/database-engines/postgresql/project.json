@@ -1,46 +1,26 @@
 {
   "slug": "postgresql",
-  "stage": "released",
-  "delivery": {
-    "date": "2026-10-19",
-    "duration": {
-      "zh": 688.083
-    }
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"
   },
-  "release": [
-    {
-      "platform": "哔哩哔哩",
-      "url": "https://www.bilibili.com/video/BV1xAnn6WEzv",
-      "date": "2026-10-19"
-    }
-  ],
-  "reception": [
-    {
-      "date": "2026-10-20",
-      "score": 8,
-      "by": "WaterRun",
-      "ref": "P30"
-    }
-  ],
+  "stage": "research",
+  "next": "新版开工（2026-10-26）：视觉稿 review/keyframes-r1.html 等 WaterRun 看；同时在 PostgreSQL 18.6 上按 README「取证计划」重新实测",
   "credits": {
     "planner": "WaterRun",
     "models": [
       {
-        "name": "6.1Sol",
-        "roles": [
-          "事实测绘",
-          "第 1–3 稿文案",
-          "视听方案"
-        ]
-      },
-      {
         "name": "Claude Opus 5.5",
         "roles": [
-          "第 4–12 稿文案",
+          "取证",
+          "文案",
           "视觉",
           "场景",
-          "配乐",
-          "成片与审查"
+          "配乐"
         ]
       }
     ],
@@ -54,53 +34,12 @@
     ],
     "repository": "https://github.com/Water-Run/ft"
   },
-  "languages": [
-    "zh"
-  ],
-  "titles": {
-    "zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"
-  },
-  "voices": {
-    "zh": "zh-CN-YunyangNeural"
-  },
-  "rates": {
-    "zh": "+0%"
-  },
-  "asr_prompts": {
-    "zh": "以下是普通话的讲解。"
-  },
   "review": {
     "required": true,
     "reviewer": "WaterRun"
   },
-  "render": {
-    "fps": 60,
-    "mb": 4
-  },
-  "audio": {
-    "music": "tools/music.py",
-    "music_db": -11,
-    "duck_db": 7,
-    "sfx_db": -10
-  },
-  "check": {
-    "duration": [
-      480,
-      840
-    ],
-    "caption_width": {
-      "zh": 26,
-      "en": 44
-    },
-    "max_cue_seconds": 7.5,
-    "min_font": 22,
-    "margin": 60,
-    "still_seconds": 3,
-    "camera": true,
-    "style": {
-      "flat": true,
-      "no_emoji": true
-    }
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
   },
   "tts": {
     "engine": "minimax",
@@ -109,7 +48,39 @@
       "zh": "Chinese (Mandarin)_Male_Announcer"
     },
     "speed": {
-      "zh": 1.1
+      "zh": 1.2
+    }
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -16,
+    "duck_db": 8,
+    "sfx_db": -8
+  },
+  "render": {
+    "fps": 60,
+    "mb": 1,
+    "gpu": 1
+  },
+  "check": {
+    "duration": {
+      "zh": [
+        720,
+        1080
+      ]
+    },
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
     }
   }
 }
