@@ -23,7 +23,8 @@
     {"slug": "windows-internals", "title": {"zh": "Windows工作机制深入", "en": "How Windows Works"}},
     {"slug": "literary-animation", "title": {"zh": "文学作品动画化", "en": "Literature, Animated"}},
     {"slug": "hot-topics", "title": {"zh": "热点"}},
-    {"slug": "office-internals", "title": {"zh": "Office 底层原理"}}
+    {"slug": "office-internals", "title": {"zh": "Office 底层原理"}},
+    {"slug": "source-code", "title": {"zh": "源码全解析"}}
   ],
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "note": "新版 2026-10-24 发布；旧版 2026-10-01 发布，已归档"},
@@ -185,6 +186,14 @@
     {"slug": "powerpoint-internals", "title": {"zh": "PowerPoint 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "word-internals", "title": {"zh": "Word 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "office-binary-formats", "title": {"zh": "回顾：传统 Office 二进制格式"}, "series": "office-internals"},
+    {"slug": "lua-source", "title": {"zh": "一个生产级解释器的最小实现——Lua源码全解析"}, "status": "planned", "note": "2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。", "series": "source-code"},
+    {"slug": "pegasus", "series": "source-code", "title": {"zh": "Pegasus 源码全解析"}, "note": "对象：Lua 的 Web 框架 Pegasus。"},
+    {"slug": "parsedown", "series": "source-code", "title": {"zh": "parsedown 源码全解析"}},
+    {"slug": "tinydb", "series": "source-code", "title": {"zh": "tinydb 源码全解析"}},
+    {"slug": "moonscript", "series": "source-code", "title": {"zh": "moonscript 源码全解析"}},
+    {"slug": "luastatic", "series": "source-code", "title": {"zh": "luastatic 源码全解析"}},
+    {"slug": "tokei", "series": "source-code", "title": {"zh": "tokei 源码全解析"}},
+    {"slug": "ripgrep", "series": "source-code", "title": {"zh": "ripgrep 源码全解析"}},
     {"slug": "windows-batch", "title": {"zh": "古代来的 Shell：Windows 批处理（.bat）"}, "status": "delivered"},
     {"slug": "openclaw-hermes", "title": {"zh": "OpenClaw, Hermes 和实现", "en": "OpenClaw, Hermes, and Their Implementation"}, "languages": ["zh", "en"], "status": "delivered"},
     {"slug": "opencart-1-5-admin", "title": {"zh": "10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端", "en": "What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End"}, "status": "delivered"},
@@ -215,7 +224,6 @@
     {"slug": "termux-proot", "title": {"zh": "代价很小的安卓 Linux 虚拟机：Termux 和 Proot", "en": "A Cheap Android Linux VM: Termux and Proot"}, "note": "2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。"},
     {"slug": "c-data-structures", "title": {"zh": "一个视频讲明白全部 C 数据结构", "en": "Every C Data Structure in One Video"}, "note": "2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针"},
     {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"},
-    {"slug": "lua-source", "title": {"zh": "一个生产级解释器的最小实现——Lua源码全解析"}, "status": "planned", "note": "2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。"},
     {"slug": "c", "title": {"zh": "C 生万物：C 语言"}, "note": "2026-10-26 由已取消的「编程语言」系列改为独立视频。"},
     {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}, "status": "planned", "note": "2026-10-26 改为独立视频；5–7 分钟，富有哲学意味与质感。"},
     {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "planned", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},

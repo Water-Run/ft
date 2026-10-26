@@ -19,7 +19,7 @@
 
 1. 一个数据库引擎是如何实现的？——不是 SQL：MongoDB（`mongodb`）
 2. [RDP：Windows 远程的优雅实现](../videos/standalone/rdp/README.md)（`rdp`）
-3. [一个生产级解释器的最小实现——Lua源码全解析](../videos/standalone/lua-source/README.md)（`lua-source`）
+3. [一个生产级解释器的最小实现——Lua源码全解析](../videos/source-code/lua-source/README.md)（`lua-source`）
 
 ## 11W3
 

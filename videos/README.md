@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 195 部：已成片 17，制作中 6，计划中 172。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 202 部：已成片 17，制作中 6，计划中 179。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -366,6 +366,21 @@
 | 4 | Word 的底层是什么样的？ | zh | 计划中 | `word-internals` |  |
 | 5 | 回顾：传统 Office 二进制格式 | zh | 计划中 | `office-binary-formats` |  |
 
+### 源码全解析
+
+[系列说明](source-code/README.md)。缺省语言：zh。
+
+| # | 标题 | 语言 | 状态 | 目录 | 备注 |
+|---|---|---|---|---|---|
+| 1 | 一个生产级解释器的最小实现——Lua源码全解析 | zh | 计划中 | [`lua-source`](source-code/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 |
+| 2 | Pegasus 源码全解析 | zh | 计划中 | `pegasus` | 对象：Lua 的 Web 框架 Pegasus。 |
+| 3 | parsedown 源码全解析 | zh | 计划中 | `parsedown` |  |
+| 4 | tinydb 源码全解析 | zh | 计划中 | `tinydb` |  |
+| 5 | moonscript 源码全解析 | zh | 计划中 | `moonscript` |  |
+| 6 | luastatic 源码全解析 | zh | 计划中 | `luastatic` |  |
+| 7 | tokei 源码全解析 | zh | 计划中 | `tokei` |  |
+| 8 | ripgrep 源码全解析 | zh | 计划中 | `ripgrep` |  |
+
 ### 独立视频
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
@@ -400,9 +415,8 @@
 | 28 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh | 计划中 | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
 | 29 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
 | 30 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
-| 31 | 一个生产级解释器的最小实现——Lua源码全解析 | zh | 计划中 | [`lua-source`](standalone/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 |
-| 32 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
-| 33 | CoT：先思考，再回答 | zh | 计划中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；5–7 分钟，富有哲学意味与质感。 |
-| 34 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
-| 35 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
-| 36 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |
+| 31 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
+| 32 | CoT：先思考，再回答 | zh | 计划中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；5–7 分钟，富有哲学意味与质感。 |
+| 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
+| 34 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
+| 35 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |
