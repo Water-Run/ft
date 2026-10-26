@@ -8,7 +8,7 @@
 |---|---|
 | 当前停在哪里 | 2026-10-26 新版开工：旧版的事实、来源与实验存档到 `research/r12/`；`project.json` 换成新版（取证阶段）；视觉稿 R1 在 [review/keyframes-r1.html](review/keyframes-r1.html)（一种风格、七帧） |
 | 下一步，依赖什么 | WaterRun 看视觉稿；同时在 PostgreSQL 18.6 上按「取证计划」重新实测，写新版 [FACTS](research/FACTS.md)；事实齐了再写文案交审 |
-| 等待策划者的事 | 看视觉稿 R1；确认旧版署名「6.1Sol」的准确型号（新版若沿用旧版叙事的任何部分，要按准确型号登记）；文案定稿后试听男声候选 |
+| 等待策划者的事 | 看、听试听页 `out/audition/pg-audition-r1.html`（自包含：视觉稿七帧、赋格小样、三个男声预选；由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`voice_audition.py`、`audition_build.py` 生成，out/ 不入库）；确认旧版署名「6.1Sol」的准确型号（新版若沿用旧版叙事的任何部分，要按准确型号登记） |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
 | 未做的事 | 18.6 的安装与全部实测；文案；配音、配乐；`src/` 仍是旧版成片的源码，进入实现阶段时换成现行模板（旧版源码保留在 Git 历史） |
 
