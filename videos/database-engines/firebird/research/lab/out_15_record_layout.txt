@@ -1,9 +1,0 @@
-Firebird 5.0.4 / ODS 13.1; page size 8192
-Pointer: {'pointer_page': 225, 'sequence': 0, 'entry': 0, 'data_page': 231}
-Before: page 231, slot 0, offset 8160, transaction 2
-After: same slot, offset 7880, transaction 11
-Back pointer: page 231, slot 8, transaction 2
-Current header delta flag: True; historical chained flag: True
-Historical difference reconstructs original payload exactly: True
-Changed unpacked bytes: [{'offset_in_unpacked_record': 48, 'before': 30, 'after': 31}]
-Transaction inventory: page 222, transaction 11, state after commit 3 (binary 11)

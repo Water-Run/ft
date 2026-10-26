@@ -1,3 +1,0 @@
-扫描文件： cover.html, base.css, style.css, config.js
-调色板： ['EE2B24', 'F68A21', 'FAAC19', '17222B', 'F7F7F5', 'FFFFFF', 'D9D4CB', '8A8378', '000000']
-样式检查通过：无渐变、阴影、模糊、圆角、rgb()/hsl() 与 emoji；颜色全部在调色板内。
