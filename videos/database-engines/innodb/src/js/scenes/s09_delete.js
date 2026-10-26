@@ -5,7 +5,7 @@
 // 二、换一个时机：Bob 锁定读 2049..2051，锁住记录与间隙（X6、D.locks.gap、M10）；Dave 的插入要等；Bob 再读仍两行（M11）；Bob 提交后 Dave 插入。
 scene('s9', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1, ['d3', 'd5', 'd7', 'd8', 'd10', 'd12']);             // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const ov = overlay(W);
   const DL = D.del;
   const recOf = (state, id) => DL[state].records.find((r) => r.id === id);

@@ -2,7 +2,7 @@
 // MyISAM 到 2010 年 7 月（5.5.5，H2）为止，之后是 InnoDB，一直到今天的 9.7（M22、G6）。下方三个问题小卡，最后收向「事务」。
 scene('s1', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1, ['y1', 'y4', 'y6']);             // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s1_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -125,6 +125,7 @@ scene('s1', ({ root, s, c0 }) => {
   const ver = h('div', 'abs mono', G, ''); px(ver, 1290, 560); css(ver, { fontSize: '30px', color: 'var(--ink)' });
   const verOut = h('div', 'abs mono', G, '9.7.4'); px(verOut, 1290, 606); css(verOut, { fontSize: '30px', color: 'var(--main)', fontWeight: 700 });
   const tv = typeText(ver, 'mysql&gt; <span class="c-main">SELECT</span> @@version;', T('y4', '演示') + 0.2, 20, { cursor: false });
+  lit(dflt, 'read-focus', T('y4', '它'), T('y6'));   // 「依旧是它」明确指回已在场的默认引擎
   vanish(verOut, 0); appear(verOut, tv + 0.25); sfx('blip', tv + 0.25, { g: 0.5 });
   [ver, verOut].forEach((e) => s1_out(e, T('y6') + 0.2, { y: -12, d: 0.3 }));
   G.appendChild(ovG);

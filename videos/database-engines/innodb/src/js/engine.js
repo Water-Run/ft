@@ -160,6 +160,7 @@ function makeCamera(world, W = 1920, H = 1080) {
   F(apply); apply();
   return {
     st,
+    apply,                                  // 连续微动在同一次 seek 中更新并应用，避免帧函数顺序带来一帧滞后
     to(t, v, o = {}) { tl.to(st, { ...v, duration: o.d || 1.4, ease: o.ease || 'power3.inOut' }, t); if (o.sfx !== false) sfx('whoosh', t, { g: o.sfxGain != null ? o.sfxGain : 0.6 }); },
     cut(t, v) { tl.set(st, v, t); },
     // 一条镜头轨迹：在 startT 把镜头放到 start，然后依次经过各关键帧。每一段都显式给出起点（上一段的终点）与终点，

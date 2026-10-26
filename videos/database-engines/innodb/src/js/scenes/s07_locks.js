@@ -5,7 +5,7 @@
 // 锁的模式与状态取自 D.locks（X5 的 performance_schema.data_locks），报错原文取自 D.locks.carolErr / deadErr（X5、X7）。
 scene('s7', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1, ['g3', 'g6', 'g8', 'g11']);             // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const st = h('style', null, root);
   st.textContent = `
 .s7-rec { position: absolute; width: 280px; height: 140px; background: var(--panel); border: 1.5px solid var(--mainD); padding: 10px 16px; }
@@ -64,6 +64,7 @@ scene('s7', ({ root, s, c0 }) => {
   // g2：MyISAM 锁整张表（大锁罩住整页）→ InnoDB 只锁这一条（大锁收到 2050 上面）
   const big = lockAt(W, cx(2050) - 13, RY + 50);
   const tMy = T('g2', 'MyISAM'), tIn = T('g2', 'InnoDB');
+  lit(recs[REC.findIndex((r) => r.id === 2050)], 'read-focus', T('g2', '就锁'), T('g4'));   // 从整张表的红框落到被锁的这一条，锁的范围看得见
   // 大锁先压在整页的上沿（MyISAM：整张表），再落到 2050 这一条上（InnoDB）
   tl.fromTo(big, { autoAlpha: 0, y: -186, scale: 3.4 }, { autoAlpha: 1, y: -186, scale: 2.4, duration: 0.35, ease: 'back.out(2)', immediateRender: true }, tMy);
   tl.fromTo(big, { y: -186, scale: 2.4 }, { y: -98, scale: 1, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tIn);   // 锁落在记录框的上沿之上，不压红边

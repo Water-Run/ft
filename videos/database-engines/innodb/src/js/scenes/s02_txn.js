@@ -5,7 +5,7 @@
 // 四、ACID 四张小卡（M25、M26、M23），A、I、D 连回三个问题；最后引向「数据放在哪里」。
 scene('s2', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1, ['t1', 't5', 't7', 't8', 't11', 't11d', 'q2', 'q4', 'q4b', 'q6']);              // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s2_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -126,6 +126,7 @@ scene('s2', ({ root, s, c0 }) => {
   arrowIn(pNo, tNo0, 0.5); wipe(noBox, tNo0 + 0.2, { dir: 'l', d: 0.45 }); vanish(noMark, 0); slam(noMark, tRev + 0.15);
   sfx('pop', T('t2', '生效'), { g: 0.4 }); sfx('pop', tRev + 0.15, { g: 0.4 });
   slam(braceTag, T('t3', '整体'), { from: 1.4 }); sfx('thud', T('t3', '整体'));
+  to(brace, T('t3', '整体'), { backgroundColor: 'rgba(0, 117, 143, 0.20)', duration: 0.35 });   // 「整体」落在包住两次修改的括号内
   typeText(l0, '<span class="kw">START TRANSACTION</span>;', T('t4') - 0.05, 30, { cursor: false });
   // 执行光标：从 START 一行一行往下走，走到两条路的分岔口等 COMMIT 或 ROLLBACK
   const cur = h('div', 'abs', code); px(cur, 14, 18, 872, 54); css(cur, { background: 'var(--pale)' }); code.insertBefore(cur, code.firstChild);

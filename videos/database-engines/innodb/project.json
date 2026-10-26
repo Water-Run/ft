@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
   },
-  "stage": "review",
-  "next": "R14 成片已出（out/innodb-zh-1080p60.mp4，check --final 通过），等 WaterRun 看、听成片确认（读音、声音、配音语气）；同意后投稿并登记发布",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 BV1x1nR6XETE，WaterRun 2026-10-26 回报）；按发布后冻结，只收集反馈，不再改动成片与制作源码",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -62,7 +62,7 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4,
+    "mb": 1,
     "gpu": 1
   },
   "check": {
@@ -85,5 +85,22 @@
         1020
       ]
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-10-26",
+    "duration": {
+      "zh": 949.76
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1x1nR6XETE",
+      "date": "2026-10-26",
+      "title": "未核（本机读取平台页面失败：接口 412，网页抓取无内容）",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }

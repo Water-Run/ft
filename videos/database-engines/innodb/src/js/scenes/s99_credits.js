@@ -5,7 +5,7 @@ scene('credits', ({ root, s }) => {
   const C = (window.PROJECT && window.PROJECT.credits) || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1, []);              // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const rows = [[tr('策划', 'Planning'), C.planner || '']];
   for (const m of [...(C.models || []), ...(C.services || [])]) for (const r of m.roles || []) rows.push([label(r), m.name]);
   rows.push([tr('许可', 'License'), (window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later']);

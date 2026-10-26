@@ -3,7 +3,7 @@
 // ROLLBACK：顺着回滚指针取回 42 写回去（X2）。回滚后行头的事务号恢复成什么没有实测，那两格回滚时只淡出、不写数字。最后对照 MyISAM 撤不回（V3）。
 scene('s5', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1, ['e3', 'e6', 'e9', 'e11']);             // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   // 退场：和 exit() 一样，但不带 overwrite（overwrite 会在倒着 seek 时吃掉同一元素先前的显隐补间）
   const s5_out = (e, t, o = {}) => tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y != null ? o.y : -14, duration: o.d || 0.35, ease: 'power2.in' }, t);
   const st = h('style', '', W);
@@ -82,6 +82,7 @@ scene('s5', ({ root, s, c0 }) => {
   appear(legend, T('e2') + 0.9);
   // e3：编号、名字、年龄，然后是两个看不见的字段
   [fId, fName, fAge].forEach((e, i) => lit(e, 'hot', T('e3', ['编号', '名字', '年龄'][i]), T('e3', '看不见')));
+  [[fId, '编号', '名字'], [fName, '名字', '年龄'], [fAge, '年龄', '之外']].forEach(([e, word, next]) => lit(e, 'read-focus', T('e3', word), T('e3', next)));   // 读者能跟上正在指出哪个已有字段
   [fTrx, fRp].forEach((e) => lit(e, 'hidden', T('e3', '看不见')));
   // 两个看不见的字段先用深色块盖着（SELECT 查不到它们），讲到「看不见」时掀开
   h('style', '', W).textContent = '.fld.s5-mask { background: var(--ink) !important; } .fld.s5-mask > * { visibility: hidden; } .fld.s5-mask::after { content: "SELECT 看不到"; position: absolute; left: 12px; top: 14px; font: 600 22px "Sans SC"; color: #fff; }';

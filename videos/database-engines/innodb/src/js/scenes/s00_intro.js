@@ -3,7 +3,7 @@
 // 每一段放在自己的容器里，整段退场时动容器（容器里有帧函数管显隐的版本条、播放头，不能对它们单独做退场补间）。
 scene('intro', ({ root, s }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1, ['h4', 'h8', 'h12', 'hT']);              // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const part = () => { const g = h('div', 'abs', W); px(g, 0, 0, 1920, 1080); css(g, { pointerEvents: 'none' }); return g; };
 
   // ── 一、MyISAM：两个文件（V1、V2、G7） ──
@@ -22,9 +22,11 @@ scene('intro', ({ root, s }) => {
     if (id != null) { px(r, 34, 100 + k * RP); css(r, { fontSize: '27px', color: id === 2050 ? 'var(--main)' : 'var(--ink2)', fontWeight: id === 2050 ? 700 : 500 }); }
     rowEls.push(r);
   });
+  lit(rowEls[ROWS.indexOf(2050)], 'read-focus', T('h1', '摊开'), T('h4'));   // 从真实的数据行认出后面一直跟随的 Alice
   const myi = h('div', 'box', A); px(myi, 1010, 150, 760, 600);
   h('div', 'abs', myi, `<span class="mono" style="font-size:34px;font-weight:700">users.MYI</span>`).style.cssText = 'position:absolute;left:28px;top:22px';
   const myiTag = h('div', 'tag', myi, '索引'); px(myiTag, 330, 28);
+  lit(myd, 'file-reading', T('h2', '数据'), T('h4')); lit(myi, 'file-reading', T('h2', '索引'), T('h4'));   // 「一个放数据，一个放索引」各自指到对应文件，位置保持稳定
   // 叶子竖着排在左边、根在右边：叶子项指向数据文件的箭头直接往左走，不穿过别的叶子
   const tRoot = h('div', 'abs', myi, '<div style="text-align:center;font:700 24px \'Sans SC\';color:var(--mainD);padding-top:6px">根</div>'); px(tRoot, 500, 300, 180, 46); css(tRoot, { border: '1.5px solid var(--mainD)', background: 'var(--pale)' });
   const LEAF = [{ y: 100, keys: [1] }, { y: 262, keys: [2049, 2050, 2051] }, { y: 424, keys: [4096] }];
@@ -107,6 +109,7 @@ scene('intro', ({ root, s }) => {
   const qm = h('div', 'abs', B, '<span style="font:900 64px Inter;color:var(--acc)">？</span>'); px(qm, 1480, 176);
   slide(rowChip, tq2e + 0.1, { x: -30 }); sfx('pop', tq2e + 0.1, { g: 0.5 });
   slam(qm, T('h10', '还没到'), { from: 1.6 }); sfx('thud', T('h10', '还没到'), { g: 0.5 });
+  lit(q2, 'read-focus', T('h10', '生日'), T('h11'));   // 想起生日还没到，指回需要撤回的 UPDATE
   // h11：要撤回——那一行的「42 → 43」掉过头来，问号换成撤回的箭头
   // 要撤回：那一行的标签从红色（改了）换成深青（退回去）
   const rowBack = h('div', 'pill fill', B, 'Alice · 2050 · 42 ← 43'); px(rowBack, 1150 - 30 + 30, 196); css(rowBack, { background: 'var(--mainD)', borderColor: 'var(--mainD)' });

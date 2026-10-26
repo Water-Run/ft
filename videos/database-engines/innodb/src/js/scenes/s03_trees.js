@@ -5,7 +5,7 @@
 // 约定：帧函数只切 display（这一页此刻存不存在），GSAP 只动 opacity / 位移（入场、变淡），两者不碰同一个属性。
 scene('s3', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, -1, ['a3', 'a5', 'a8', 'a10', 'a13', 'a16', 'a19', 'a22', 'a24', 'a26', 'a28']);             // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const ov = overlay(W);
   const disp = (e, on) => { const v = on ? '' : 'none'; if (e.style.display !== v) e.style.display = v; };
   // 同一个元素的几段高亮写成一个帧函数，避免几个 classAt 互相覆盖
@@ -280,7 +280,7 @@ scene('s3', ({ root, s, c0 }) => {
   F((t) => {
     const n = nAt(t), a = t >= tFullOn ? pkState(n) : null;   // 两页叶子时由近景树演，a13 起整棵树接着长
     const rootOn = t >= tFullOn, cntOn = t < Tend('a15') + 1.0;   // 叶子里的行数长树时才标
-    const key = (a ? String(n) : '-') + (rootOn ? 'r' : '') + (cntOn ? 'c' : '');
+    const key = (a ? String(n) : '-') + (rootOn ? 'r' : '') + (cntOn ? 'c' : '') + (t >= T('a13') && t < tG1 ? 'w' : '');
     if (key === lastTree) return; lastTree = key;
     let k0 = 0;
     D.pk.leaves.forEach((l, k) => {
@@ -288,6 +288,7 @@ scene('s3', ({ root, s, c0 }) => {
       disp(leaves[k], on); disp(rootCells[k], on && rootOn); disp(drops[k], on && rootOn); if (k < 20) disp(chain[k], !!(a && a[D.pk.leaves[k + 1].page] != null));
       if (on) { k0 = k + 1; const v = a[l.page]; leaves[k].fillEl.style.height = (100 * v / 207).toFixed(1) + '%'; leaves[k].cntEl.textContent = cntOn ? v : ''; }
     });
+    leaves.forEach((e, k) => e.classList.toggle('s3-writing', t >= T('a13') && t < tG1 && k === k0 - 1));   // 明确指出正在接收新行的最右一页
     rootPK.style.width = (k0 ? RX(k0 - 1) - RX(0) + 68 : 0) + 'px'; disp(rootPK, k0 > 0 && rootOn);
   });
   PKE.slice(1).forEach((e) => sfx('tick', tOfRow(e.row), { g: 0.35 }));   // 每开一页叶子一声
@@ -302,7 +303,7 @@ scene('s3', ({ root, s, c0 }) => {
   vanish(gNext, 0); show(gNext, T('a13') + 0.1, { y: 8, d: 0.4 }); exit(gNext, Tend('a14') + 0.6, { y: 8, d: 0.3 });
   // a10：两页各装一半——两页叶子的行数亮起
   [0, 1].forEach((k) => lit(cuLeaves[k].cntEl, 'c-acc', T('a10', '一半') - 0.2 + k * 0.25, Tend('a10') + 0.4));
-  h('style', '', W).textContent = '.fill.s3-deep { background: var(--main) !important; } .fill.s3-deepn { background: var(--main) !important; }';
+  h('style', '', W).textContent = '.fill.s3-deep { background: var(--main) !important; } .fill.s3-deepn { background: var(--main) !important; } .pg.s3-writing { border-color: var(--main); border-width: 3px; } .pg.s3-writing > .fill { background: var(--main); }';
   [0, 1].forEach((k) => lit(cuLeaves[k].fillEl, 's3-deep', T('a10', '叶子') + k * 0.25, T('a11') + 0.2));   // 「两页叶子」：两页装着的部分整块变深
   { const sum = h('div', 'abs num', CU, '103 + 105 = 208'); px(sum, 820, 690); css(sum, { font: '800 40px Inter', color: 'var(--acc)' }); vanish(sum, 0); show(sum, T('a10', '一半') + 0.3, { y: 10, d: 0.4 }); exit(sum, T('a11', '两项') - 0.2, { d: 0.3 }); }
   // a11：根页里的两项依次亮起，各指向一页叶子
@@ -330,7 +331,8 @@ scene('s3', ({ root, s, c0 }) => {
   const call = h('div', 'box', W); px(call, 300, 600, 1320, 250);
   const r27 = D.del.start.records.filter((r) => r.id >= 2049 && r.id <= 2051);
   const callHd = h('div', 'abs mono t-small', call, `${'id'.padEnd(7)}${'name CHAR(50)'.padEnd(52)}age`); px(callHd, 26, 16); css(callHd, { color: 'var(--mainD)', fontWeight: 700 });
-  r27.forEach((r, i) => { const e = h('div', 'abs mono', call, `${String(r.id).padEnd(7)}${r.name.padEnd(52)}${r.age}`); px(e, 26, 56 + i * 46); css(e, { fontSize: '24px', color: r.id === 2050 ? 'var(--main)' : 'var(--ink)', fontWeight: r.id === 2050 ? 700 : 500 }); });
+  r27.forEach((r, i) => { const e = h('div', 'abs mono', call, `${String(r.id).padEnd(7)}${r.name.padEnd(52)}${r.age}`); px(e, 26, 56 + i * 46); css(e, { fontSize: '24px', color: r.id === 2050 ? 'var(--main)' : 'var(--ink)', fontWeight: r.id === 2050 ? 700 : 500 });
+    if (r.id === 2050) lit(e, 'read-focus', Tend('a16') + 0.3, T('a17', '左右')); });   // 编号、名字、年龄在同一整行里
   const callPg = h('div', 'abs t-small', call, '页 27：207 行中的三行'); px(callPg, 26, 204);
   const callLine = path(ov, `M${LX(K27)},${BY + BH + 30} L${LX(K27)},596`, 'main', { w: 2 });
   callLine.setAttribute('opacity', 0);

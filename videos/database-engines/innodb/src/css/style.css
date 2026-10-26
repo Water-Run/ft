@@ -74,6 +74,10 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 /* 字节条：一行记录摊开 */
 .bytes { position: absolute; display: flex; gap: 10px; }
 .fld { position: relative; border: 1.5px solid var(--edge); background: var(--panel); padding: 8px 10px 6px; min-width: 70px; }
+/* 阅读指向：落在当前解释的已有行、语句或字段上，位置与内容不变。 */
+#stage .read-focus { background: var(--main) !important; border-color: var(--main) !important; }
+#stage .read-focus, #stage .read-focus * { color: #fff !important; }
+.file-reading { outline: 4px solid var(--main); outline-offset: -4px; }
 .fld .k { font: 600 22px "Sans SC"; color: var(--ink2); }
 .fld .hx { font: 500 22px "Mono"; color: var(--ink); white-space: pre; margin-top: 4px; }
 .fld .v { font: 700 30px "Inter"; color: var(--ink); margin-top: 2px; }

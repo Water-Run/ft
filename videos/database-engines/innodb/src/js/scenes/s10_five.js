@@ -6,7 +6,7 @@
 //    → 提交：redo 落盘、锁放开（S7、X6）→ 脏页稍后写回（M31）；别人读旧版本、要改就等锁（M9、X3、X5）；五 出错：先 redo 重做，再 undo 撤销（M12、R3）。
 scene('s10', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1, ['k8b', 'k8c', 'k9', 'k5', 'k10', 'k11']);              // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const st = h('style', '', W);
   st.textContent = `
 .s10t { position: absolute; background: var(--panel); border: 1.5px solid var(--edge); opacity: .55; }

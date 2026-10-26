@@ -3,7 +3,7 @@
 // 再找一次不读盘；按名字找：页 5 → 页 9 拿到 2050 → 回到主键树取整行（L2）；只要编号时不必回表（E1）；缓冲池满了按 LRU 挪出旧页（M27）。
 scene('s4', ({ root, s, c0 }) => {
   const W = h('div', 'world', root);
-  pan1(makeCamera(W), s, 1, ['b3', 'b6', 'b9', 'b11', 'b14', 'b16']);              // 镜头只极慢横移（parts.js）
+  microDrift(makeCamera(W));                  // Continuous 2D micro drift (parts.js)
   const ov = overlay(W);
 
   // ── 架构图 ──
@@ -161,13 +161,13 @@ scene('s4', ({ root, s, c0 }) => {
   sfx('blip', tHit, { g: 0.6 });
   const rowHit = h('div', 'pill fill', pg27, '2050 · Alice · 42'); px(rowHit, pA.x + 74, pA.y - 6);
   vanish(rowHit, 0); slam(rowHit, tHit + 0.1, { from: 1.3 });
-  // 讲到「连成一条链」时，链从第一行描到最后一行；讲到「目录」时目录亮
-  const chainPath = recSvg.querySelector('path'); const len = 99999;
-  chainPath.style.strokeDasharray = len; tl.fromTo(chainPath, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: Math.max(1.6, Tend('b7z') - T('b7', '链')), ease: 'none', immediateRender: true }, T('b7', '链'));
+  // 讲记录的主键顺序时，链从第一行描到最后一行；按实际路径长度描线，避免大半段都还没画进可见区
+  const chainPath = recSvg.querySelector('path'), len = chainPath.getTotalLength(), tChain = T('b7') + 0.1;
+  chainPath.style.strokeDasharray = len; tl.fromTo(chainPath, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: Math.max(1.6, Tend('b7z') - tChain), ease: 'none', immediateRender: true }, tChain);
   tl.fromTo(dirCells, { attr: { fill: '#FFFFFF' } }, { attr: { fill: '#D9EEEF' }, duration: 0.3, stagger: Math.max(0.01, (Tend('b8') - T('b8', '目录')) / 60), immediateRender: true }, T('b8', '目录'));
   wipe(pg27, T('b6'), { dir: 'l', d: 0.5 }); sfx('whoosh', T('b6'), { g: 0.5 });
   const walker = h('div', 'abs', pg27); css(walker, { width: '60px', height: '15px', border: '3px solid var(--acc)' });
-  const tW0 = T('b7', '链'), tW1 = Math.max(tW0 + 1.6, Tend('b7z'));
+  const tW0 = tChain, tW1 = Math.max(tW0 + 1.6, Tend('b7z'));
   F((t) => { const on = t >= tW0 && t < tW1 + 0.4; walker.style.display = on ? '' : 'none'; if (on) { const p = recPos(Math.min(D.dir.n_recs - 1, Math.floor(clamp((t - tW0) / (tW1 - tW0)) * D.dir.n_recs))); px(walker, p.x + 1, p.y); } });
   [pkT, nmT].forEach((e) => { tl.to(e, { opacity: 0, duration: 0.2 }, T('b6')); tl.to(e, { opacity: 1, duration: 0.3 }, Tend('b9z') + 0.5); });
   // b6：207 行一组一组地亮出来
