@@ -17,7 +17,6 @@
 | [96 秒了解 HTTP 状态码](in-seconds/http-status-codes/) | [XX 秒速通](in-seconds/README.md) | zh 1:36、en 1:36 | 2026-10-21 | [哔哩哔哩 zh](https://www.bilibili.com/video/BV1Hrnq6aEjH)、[YouTube en](https://www.youtube.com/watch?v=f_sNl3i9Bsg) | — | Claude Opus 5.5、Gemini 4 Argon、MiniMax M3.1 Flash |
 | [垃圾回收的艺术](standalone/garbage-collection/) | — | zh 11:10、en 11:48 | 2026-10-21 | [哔哩哔哩](https://www.bilibili.com/video/BV1Exni69Ew4)、[YouTube](https://www.youtube.com/watch?v=-7zriGm5_Xk) | — | DeepSeek V4.1 Flash 1017、Claude Fable 5.1、Gemini 4 Argon、MiniMax M3.1 Flash、Claude Opus 5.5 |
 | [200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/) | [XX 秒速通](in-seconds/README.md) | zh 3:20、en 3:20 | 2026-10-20 | [哔哩哔哩](https://www.bilibili.com/video/BV1Z7JZ6yEQb)、[YouTube](https://www.youtube.com/watch?v=Bkt7b_xbMYg) | 5（2026-10-20） | DeepSeek V4.1 Flash 1017、Claude Opus 5.5 |
-| [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh 11:28 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1xAnn6WEzv) | 8（2026-10-20） | 6.1Sol、Claude Opus 5.5 |
 | [128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/) | [XX 秒速通](in-seconds/README.md) | zh 2:08、en 2:08 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1oSn56oEUQ)、[YouTube](https://www.youtube.com/watch?v=qCklpfGDWXk) | — | DeepSeek V4.1 Flash 1017、Grok 4.7、Claude Opus 5.5 |
 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/) | — | zh 16:50 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1RNnJ6AELR) | — | GPT-6（型号未记录）、GPT-6 Astra、Claude Opus 5.5 |
 | [150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](in-seconds/dense-vs-moe/) | [XX 秒速通](in-seconds/README.md) | zh 2:30、en 2:30 | 2026-10-09 | [哔哩哔哩](https://www.bilibili.com/video/BV1gPpt69EsM)、[YouTube](https://www.youtube.com/watch?v=orNp9XxWvnc) | — | Claude Opus 5.5 |
@@ -28,6 +27,7 @@
 | [120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/) | [XX 秒速通](in-seconds/README.md) | zh 2:00、en 2:00 | 2026-10-06 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) | 9（2026-10-09） | Claude Opus 5.5 |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/) | — | zh 3:13 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ) | 8（2026-10-09） | Claude（型号未记录）、DeepSeek（型号未记录） |
+| [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh | — | 未登记 | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | zh | — | [哔哩哔哩](https://www.bilibili.com/video/BV1apnz6pE9g) | — | MiniMax M3.1 Flash、未记录、Claude Opus 5.5 |
 
 ## 制作中
@@ -54,7 +54,7 @@
 |---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 制作中 | [`myisam`](database-engines/myisam/) | 新版制作中；旧版 2026-10-01 发布，已归档 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档 |
-| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
+| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](database-engines/firebird/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
 | 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
 | 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |  |

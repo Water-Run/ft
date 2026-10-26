@@ -29,7 +29,7 @@
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "in-progress", "note": "新版制作中；旧版 2026-10-01 发布，已归档"},
     {"slug": "innodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "status": "delivered", "note": "重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档"},
-    {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}, "status": "delivered", "note": "2026-10-24 策划者要求重做，见系列说明「全系列计划」"},
+    {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"}, "status": "delivered", "note": "重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档"},
     {"slug": "firebird", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——Firebird，小众的第三选择"}, "status": "delivered", "note": "2026-10-24 策划者要求重做，见系列说明「全系列计划」"},
     {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "in-progress"},
     {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse"}},
