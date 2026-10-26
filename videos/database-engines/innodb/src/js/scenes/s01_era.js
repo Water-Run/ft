@@ -83,21 +83,15 @@ scene('s1', ({ root, s, c0 }) => {
   years.forEach((e, i) => slide(e, c0 + 0.3 + i * 0.08, { y: 12 }));
   ticks.forEach((e, i) => appear(e, c0 + 0.3 + i * 0.08));
   wipe(bandLab, c0 + 0.5, { dir: 'l', d: 0.5 });
-  vanish(bMy, 0); appear(bMy, T('y1') - 0.3); vanish(bIn, 0); appear(bIn, T('y3', '换成'));   // 讲到「换成了 InnoDB」时蓝色的带子才接上
-  // Innobase：先大大地出在画面中间，讲到「芬兰」后收到时间轴左上方
-  { const tIb = T('y1e', 'Innobase') - 0.2, tMv = T('y1e', '芬兰') + 0.4, tE = tMv + 0.9, hf = (tMv - tIb) / (tE - tIb);
-    appear(ib, tIb);
-    tl.fromTo(ib, { x: 560, y: 120, scale: 1.6, transformOrigin: '0 0' }, { x: 0, y: 0, scale: 1, duration: tE - tIb, immediateRender: true,
-      ease: (p) => { if (p < hf) return 0; const q = (p - hf) / (1 - hf); return q < 0.5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2; } }, tIb);
-    tl.fromTo(ib, { opacity: 0.2 }, { opacity: 1, duration: 0.4, immediateRender: false }, tIb); }
-  sfx('pop', T('y1e', 'Innobase'), { g: 0.5 });
-  { const loc = ib.querySelector('.cs'); vanish(loc, 0); slam(loc, T('y1e', '芬兰'), { from: 1.4 }); sfx('tick', T('y1e', '芬兰'), { g: 0.35 }); }   // 讲到「芬兰」时副标题才出来
+  vanish(bMy, 0); appear(bMy, T('y1') - 0.3); vanish(bIn, 0); appear(bIn, T('y3', '2010 年'));
+  slide(ib, T('y1e', 'Innobase') - 0.2, { x: -24 }); sfx('pop', T('y1e', 'Innobase'), { g: 0.4 });
+  { const loc = ib.querySelector('.cs'); vanish(loc, 0); show(loc, T('y1e', '芬兰'), { y: 6, d: 0.3 }); }   // 讲到「芬兰」时副标题才出来
   // y1–y1d：InnoDB 自己的来历——轴下方是 9.7.4 源码文件头的原文（K6）：一行一个文件，写下的日期从 1994 到 1997，作者都是 Heikki Tuuri
   const files = D.created.filter((c) => ['page/page0page.cc', 'btr/btr0btr.cc', 'trx/trx0trx.cc', 'lock/lock0lock.cc', 'log/log0recv.cc'].includes(c.file));
   const panel = h('div', 'box', G); px(panel, 930, yAxis + 50, 790, 56 + files.length * 36);
   h('div', 'abs t-small', panel, 'MySQL 9.7.4 源码 · storage/innobase/').style.cssText = 'position:absolute;left:20px;top:10px';
   const fl = files.map((c, i) => { const m = c.text.match(/^Created (\S+) (.+)$/); const e = h('div', 'abs mono', panel, `${c.file.padEnd(20)}<span class="c-main">Created ${m[1].padEnd(10)}</span><span class="s1-who">${m[2]}</span>`); px(e, 20, 46 + i * 36); css(e, { fontSize: '23px' }); return e; });
-  wipe(panel, T('y1', 'InnoDB') - 0.2, { dir: 'l', d: 0.5 });
+  wipe(panel, T('y1') - 0.2, { dir: 'l', d: 0.6 });                // 讲 1994 年的这一句一开始，源码面板就在轴下方展开
   const tFl = T('y1', 'InnoDB') + 0.3, stFl = Math.max(0.3, (Tend('y1') - tFl) / files.length);
   fl.forEach((e, i) => { vanish(e, 0); appear(e, tFl + i * stFl); sfx('tick', tFl + i * stFl, { g: 0.3 }); });
   // 轴下方 1994 年：Heikki Tuuri 写下最早的代码
@@ -111,18 +105,19 @@ scene('s1', ({ root, s, c0 }) => {
   const tHl0 = T('y1d', '开头'), stHl = Math.max(0.3, (T('y1d', '名字') - tHl0) / (files.length - 1));
   panel.querySelectorAll('.s1-who').forEach((e, i) => { lit(e, 's1-hl', tHl0 + i * stHl); fl[i].classList.add('s1-row'); lit(fl[i], 's1-hl', tHl0 + i * stHl); });
   lit(hk, 's1-hl', T('y1d', '名字'));
-  [panel, hkStem, hk, dot94].forEach((e) => s1_out(e, T('y2') - 0.1, { y: 12, d: 0.35 }));
-  // 讲到年份时，年份先大大地出在下方，再落进时间轴上它的那个点
-  const tL2 = Math.max(T('y2', '2005 年') + 0.9, T('y2', 'Oracle') - 0.3), tL3 = Math.max(T('y3', '2010 年') + 1.0, T('y3', '默认引擎') - 0.3);
-  [['2005', T('y2', '2005 年'), tL2, yAcq], ['2010', T('y3', '2010 年'), tL3, yDefault]].forEach(([txt, t0, tL, yr]) => {
-    const e = h('div', 'abs num', G, txt); px(e, 760, 600); css(e, { font: '900 160px Inter', color: 'var(--mainD)' });
-    vanish(e, 0); slam(e, t0, { from: 1.3 }); sfx('thud', t0, { g: 0.4 });
-    tl.fromTo(e, { x: 0, y: 0, scale: 1, transformOrigin: '0 0' }, { x: xOf(yr) - 760 - 12, y: yAxis - 600 - 12, scale: 0.12, duration: 0.7, ease: 'power3.in', immediateRender: false }, tL);
-    vanish(e, tL + 0.7); });
-  for (const [n, t] of [[nAcq, tL2 + 0.7], [nDef, tL3 + 0.7], [nNow, T('y4', '9.7')]]) {
+  [panel, hkStem, hk, dot94].forEach((e) => s1_out(e, T('y2', '收购'), { y: 12, d: 0.35 }));   // 收购那一下再收走
+  for (const [n, t] of [[nAcq, T('y2', '2005 年')], [nDef, T('y3', '2010 年')], [nNow, T('y4', '9.7')]]) {
     slam(n.d, t, { from: 1.8 }); wipe(n.sm2, t + 0.02, { dir: 'b', d: 0.2 }); wipe(n.sm, t + 0.12, { dir: 'b', d: 0.3 }); slide(n.lab, t + 0.2, { y: 16 }); sfx('thud', t, { g: 0.5 });
   }
-  arrowIn(acqArrow, Math.max(tL2 + 1.0, T('y2', '收购')), 0.7);
+  arrowIn(acqArrow, T('y2', 'Oracle') + 0.3, 0.7);
+  // y3：轴下方一行「默认存储引擎」，讲到「换成」时 MyISAM 划掉、换上 InnoDB（H2）
+  const dflt = h('div', 'box', G); px(dflt, 200, 560, 640, 96);
+  dflt.innerHTML = '<div class="abs t-small" style="left:24px;top:10px">MySQL 5.5.5 起</div><div class="abs" style="left:24px;top:44px;font:700 30px Inter,&quot;Sans SC&quot;">默认存储引擎：<span class="s1-old">MyISAM</span><span class="s1-new c-main">　InnoDB</span></div>';
+  st.textContent += ' .s1-old.s1-x { text-decoration: line-through; text-decoration-thickness: 3px; color: var(--ink2); }';
+  wipe(dflt, T('y3', '默认引擎') - 0.2, { dir: 'l', d: 0.6 });
+  const dNew = dflt.querySelector('.s1-new'); vanish(dNew, 0); show(dNew, T('y3', '换成'), { x: -10, d: 0.35 });
+  lit(dflt.querySelector('.s1-old'), 's1-x', T('y3', '换成')); sfx('tick', T('y3', '换成'), { g: 0.35 });
+  s1_out(dflt, T('y6') + 0.2, { y: -12, d: 0.3 });
   // y4：「这一集演示的 MySQL 9.7」——标出本片演示，敲出版本查询
   slam(demo, T('y4', '演示'), { from: 1.4 }); sfx('pop', T('y4', '演示'));
   lit(nNow.lab, 'c-main', T('y4', '演示'));

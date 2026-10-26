@@ -45,9 +45,9 @@ scene('intro', ({ root, s }) => {
   rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 2 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头两行第一帧就在
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
   wipe(myi, Math.min(T('h2', '两个文件'), 2.4), { dir: 'l', d: 0.9 });   // 索引文件早一点出来（片头这几秒画面要有变化），标签等讲到时再上
-  slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') + 0.3, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') + 0.3, { g: 0.6 });
+  slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') - 0.05, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') - 0.05, { g: 0.6 });
   // 索引文件里的 B 树与指向数据文件的箭头：旁白只说「一个放索引」，细节交给画面（R11 并掉了 h3）
-  const tTree = T('h2', '索引') + 0.5, tPtr = Math.max(tTree + 1.0, Tend('h2') - 0.3);
+  const tTree = T('h2', '索引') + 0.1, tPtr = Math.max(tTree + 1.0, Tend('h2') - 0.3);
   wipe(tRoot, tTree, { dir: 't', d: 0.4 });
   treeLines.forEach((p, i) => arrowIn(p, tTree + 0.15 + i * 0.08, 0.4));
   leafs.forEach((l, i) => wipe(l, tTree + 0.3 + i * 0.1, { dir: 't', d: 0.45 }));
@@ -160,11 +160,15 @@ scene('intro', ({ root, s }) => {
   });
   [tPU, tPR].forEach((t) => sfx('tick', t + 0.05, { g: 0.3 }));
   const [w1, w2] = D.warning.split(/(?<=1196) /);
-  const warn = h('div', 'echo err', B, `${esc(w1)}\n<span style="font-size:22px">${esc(w2)}</span>`); px(warn, 900, 505);
-  const warnZ = h('div', 'gloss', B, '警告 1196：有些不支持事务的表，改动没法撤回'); px(warnZ, 900, 580);
+  // 警告里的关键词 non-transactional（不支持事务）随后单独标出（R14 第 3 条）
+  const warn = h('div', 'echo err', B, `${esc(w1)}\n<span style="font-size:22px">${esc(w2).replace('non-transactional', '<b class="s0-nt">non-transactional</b>')}</span>`); px(warn, 900, 505);
+  const warnZ = h('div', 'gloss', B, '警告 1196：有些<b class="s0-nt">不支持事务</b>的表，改动没法撤回'); px(warnZ, 900, 580);
+  h('style', '', B).textContent = '.s0-nt { font-weight: 800; padding: 0 4px; } .s0-nt.on { color: #fff; background: var(--acc); }';
+  warn.querySelectorAll('.s0-nt').forEach((e) => lit(e, 'on', T('h13', '警告') + 0.7)); warnZ.querySelectorAll('.s0-nt').forEach((e) => lit(e, 'on', T('h13', '警告') + 0.9));
+  sfx('tick', T('h13', '警告') + 0.7, { g: 0.4 });
   vanish(warn, 0); appear(warn, T('h13', '警告')); show(warnZ, T('h13', '警告') + 0.2, { y: 8, d: 0.4 }); sfx('error', T('h13', '警告'), { g: 0.5 });
   sfx('pop', T('h14', '42'));
-  const gInno = gloss(W, 120, 896, 'InnoDB', '<b>InnoDB</b>：MySQL 的存储引擎；5.5.5 起是默认引擎<span class="gl-src" style="display:inline;margin-left:12px">H2、M22</span>', { w: 1100 });
+  const gInno = gloss(W, 120, 896, 'InnoDB', '<b>InnoDB</b>：MySQL 的存储引擎；5.5.5 起是默认引擎', { w: 1100 });
   vanish(gInno, 0); show(gInno, T('h15', 'InnoDB') + 0.2, { y: 8, d: 0.4 }); exit(gInno, T('h16', '事务') - 0.1, { y: 8, d: 0.3 });   // 跨过片名那一屏一直留着
   exit(B, T('hT') - 0.1, { y: -20, d: 0.35 });
 
@@ -198,8 +202,7 @@ scene('intro', ({ root, s }) => {
   // 四、撤得回，是因为有事务：架构图里的 undo 亮起（M20）；另外两处留到后面各章再讲（R12 删去 h17）
   const callout = (el, html, t) => { const c = h('div', 'tag', el, html); px(c, 12, -18); css(c, { fontSize: '24px' }); slam(c, t, { from: 1.3 }); sfx('pop', t, { g: 0.5 }); return c; };
   const c1 = callout(undo, '事务：回滚', T('h16', '事务'));
-  const gTxn = gloss(C, 120, 896, '事务', '<b>事务</b>：一组修改捆成一个整体，要么都生效，要么都撤回', { w: 1300 });
-  vanish(gTxn, 0); show(gTxn, T('h16', '事务') + 0.2, { y: 8, d: 0.4 });
+  c1.dataset.gloss = '事务';                                         // 「事务：回滚」这个标注就是画面上的交代（R14 第 5 条：这里不再另加一行事务的注解）
   lit(undo, 'on', T('h16', '事务'));
   // undo 里一格格记下旧值
   const undoSq = [...undo.querySelectorAll('.sq')];

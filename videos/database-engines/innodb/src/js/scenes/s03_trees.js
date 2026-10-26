@@ -345,7 +345,7 @@ scene('s3', ({ root, s, c0 }) => {
   const lnk = [0, 1].map((k) => path(cOv, `M${860 + 290 + k * 210},${198} L${860 + 330 + k * 210},${198}`, 'main', { w: 3 }));
   const badge = (par, x, y, n, txt) => { const e = h('div', 'abs', par, `<span class="tag" style="position:static;font-size:22px;margin-right:8px">${n}</span><span class="t-small" style="color:var(--ink)">${txt}</span>`); px(e, x, y); vanish(e, 0); return e; };
   const b1 = badge(R_, 120, 262, '①', '行就在叶子里'), b2 = badge(R_, 40, 66, '②', '上层只放路标'), b3 = badge(R_, 470, 262, '③', '同层左右相连');
-  const gB = gloss(CMPG, 0, -46, 'B+ 树', '<b>B+ 树</b>：源码里叫 B+Tree（手册称 B-tree）<span class="gl-src" style="display:inline;margin-left:14px">S8、M35</span>', { w: 1100 });
+  const gB = gloss(CMPG, 0, -46, 'B+ 树', '<b>B+ 树</b>：源码里叫 B+Tree（手册称 B-tree）', { w: 1100 });
   CMPG.appendChild(cOv);                                          // 连线压在小框上面
   vanish(CMPG, 0); show(CMPG, T('a19') - 0.1, { y: 30, d: 0.5 }); sfx('whoosh', T('a19') - 0.1, { g: 0.35 });
   slam(b1, T('a19', '叶子'), { from: 1.3 }); slam(b2, T('a19', '路标'), { from: 1.3 }); slam(b3, T('a19', '路标') + 0.15, { from: 1.3 });
@@ -475,7 +475,7 @@ scene('s3', ({ root, s, c0 }) => {
   const lab = (y, txt) => { const e = h('div', 'abs num', big3, txt); px(e, 800, y); css(e, { font: '700 26px Inter', color: 'var(--mainD)' }); return e; };
   const t1_ = lab(100, `根 · ${D.big.PRIMARY[0]} 页`), t2_ = lab(178, `中间 · ${D.big.PRIMARY[1]} 页`), t3_ = lab(276, `叶子 · ${D.big.PRIMARY[2].toLocaleString('en-US').replace(',', ' ')} 页`);
   big3.appendChild(b3ov);
-  const b3n = h('div', 'abs t-small', big3, `姓名索引：${D.big.idx_name.map((x) => x.toLocaleString('en-US').replace(',', ' ')).join(' + ')} 页，也是三层（T5）`); px(b3n, 30, 360);
+  const b3n = h('div', 'abs t-small', big3, `姓名索引：${D.big.idx_name.map((x) => x.toLocaleString('en-US').replace(',', ' ')).join(' + ')} 页，也是三层`); px(b3n, 30, 360);
   const tB = T('a28', '一百万');
   vanish(big3, 0);
   [...leaves, ...rootCells, rootPK, rootNM, rootLbl, rootNMLbl, lblRoot, lblLeaf, tagB, tagC, ...nmGroups].forEach((e) => to(e, tB - 0.2, { opacity: 0, duration: 0.4 }));   // 一百万行这一屏只留它自己（同屏要读的字少）

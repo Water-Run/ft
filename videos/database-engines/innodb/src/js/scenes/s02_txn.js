@@ -373,7 +373,7 @@ scene('s2', ({ root, s, c0 }) => {
   sfx('thud', tAll + 0.55, { g: 0.6 });
   const rely = h('div', 'abs', W, '<span style="font:900 120px \'Sans SC\';color:#fff;background:var(--mainD);padding:4px 40px;display:inline-block;line-height:1.15">可靠</span>'); px(rely, 960 - 160, 420);
   vanish(rely, 0); slam(rely, T('q4r', '可靠'), { from: 1.5 }); sfx('thud', T('q4r', '可靠'), { g: 0.6 });
-  const gRely = gloss(W, 560, 620, '可靠', '<b>可靠</b>：手册说 ACID「着眼于可靠性」<span class="gl-src" style="display:inline;margin-left:12px">M25</span>', { w: 800 });
+  const gRely = gloss(W, 560, 620, '可靠', '<b>可靠</b>：手册说 ACID「着眼于可靠性」', { w: 800 });
   vanish(gRely, 0); show(gRely, T('q4r', '可靠') + 0.1, { y: 10, d: 0.4 });
   [rely, gRely].forEach((e) => tl.to(e, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15));   // 一直留到图灵奖讲完
   // q4b：1998 年图灵奖（K5）

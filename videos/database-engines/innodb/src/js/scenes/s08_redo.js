@@ -333,7 +333,7 @@ scene('s8', ({ root, s, c0 }) => {
   svgIn(a1, tTwice); slam(n1, tTwice); svgIn(a2, tTwice + 0.5); slam(n2, tTwice + 0.5);
   lit(dbw, 'on', tW2, Tend('j24') + 0.5);
   // j23b：双写缓冲区是磁盘上单独的一块存储区，写出的页先在这里完整地存一份（M16）
-  const dwNote = gloss(W, 220, 900, '双写缓冲区', '<b>双写缓冲区</b>：磁盘上单独一块；写出的页先在这里存一份，再写原位<span class="gl-src" style="display:inline;margin-left:12px">手册 M16</span>', { w: 1300 });
+  const dwNote = gloss(W, 220, 900, '双写缓冲区', '<b>双写缓冲区</b>：磁盘上单独一块；写出的页先在这里存一份，再写原位', { w: 1300 });
   vanish(dwNote, 0); show(dwNote, T('j23', '双写缓冲区') + 0.2, { y: 8, d: 0.4 }); exit(dwNote, T('j24') - 0.1, { d: 0.3 }); sfx('pop', T('j23b', '单独'), { g: 0.45 });
   const tornL = h('div', 'abs', W, '半新半旧的坏页'); px(tornL, 1240, 930); css(tornL, { font: '600 22px "Sans SC"', color: 'var(--acc)' });
   vanish(tornL, 0); show(tornL, tTorn + 0.1, { y: 6, d: 0.3 }); exit(tornL, T('j22') + 2.0, { d: 0.3 });

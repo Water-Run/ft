@@ -145,7 +145,7 @@ scene('s6', ({ root, s, c0 }) => {
   const PH = [['脏读', ['会', '不会', '不会', '不会']], ['不可重复读', ['会', '会', '不会', '不会']], ['幻读', ['会', '会', 'InnoDB 挡住', '不会']]];
   const TX = 120, TY = 396, CW0 = 170, CW = 250;
   const tbl = h('div', 'abs', W); px(tbl, TX, TY, CW0 + 4 * CW, 186); css(tbl, { pointerEvents: 'none' });
-  const cap = gloss(tbl, 0, 0, '隔离级别', '<b>隔离级别</b>：同时进行的事务彼此看得见多少；SQL:1992 定了四级，InnoDB 都支持<span class="gl-src" style="display:inline;margin-left:12px">手册 M26、M38–M46</span>', { w: CW0 + 4 * CW });
+  const cap = gloss(tbl, 0, 0, '隔离级别', '<b>隔离级别</b>：同时进行的事务彼此看得见多少；SQL:1992 定了四级，InnoDB 都支持', { w: CW0 + 4 * CW });
   css(cap, { background: 'transparent' });
   const iso = ISO.map(([zh, en], k) => { const e = h('div', 's6-col', tbl, `<div class="zh">${zh}</div><div class="en">${en}</div>`); px(e, CW0 + k * CW, 38, CW - 6, 148); return e; });
   PH.forEach(([name, vals], r) => {
