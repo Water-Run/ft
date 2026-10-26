@@ -27,7 +27,7 @@
 | [120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/) | [XX 秒速通](in-seconds/README.md) | zh 2:00、en 2:00 | 2026-10-06 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) | 9（2026-10-09） | Claude Opus 5.5 |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/) | — | zh 3:13 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ) | 8（2026-10-09） | Claude（型号未记录）、DeepSeek（型号未记录） |
-| [一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh | — | 未登记 | — | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh | — | 未登记 | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——Firebird，小众的第三选择](database-engines/firebird/) | [数据库引擎](database-engines/README.md) | zh | — | [哔哩哔哩](https://www.bilibili.com/video/BV1apnz6pE9g) | — | MiniMax M3.1 Flash、未记录、Claude Opus 5.5 |
 
 ## 制作中
@@ -54,7 +54,7 @@
 |---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 制作中 | [`myisam`](database-engines/myisam/) | 新版制作中；旧版 2026-10-01 发布，已归档 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档 |
-| 3 | 一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
+| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
 | 4 | 一个数据库引擎是如何实现的？——Firebird，小众的第三选择 | zh | 已成片 | [`firebird`](database-engines/firebird/) | 2026-10-24 策划者要求重做，见系列说明「全系列计划」 |
 | 5 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
 | 6 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |  |
