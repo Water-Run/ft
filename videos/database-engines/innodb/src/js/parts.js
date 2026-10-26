@@ -123,18 +123,19 @@ function lit(e, cls, t0, t1 = Infinity) { classAt(e, cls, t0, t1); return e; }
 function swaps(e, pairs) { const k = keyed(e); for (const [t, html] of pairs) k.at(t, { html }); return e; }
 
 // 镜头（WaterRun 2026-10-25：「老毛病, 镜头一直在缩放....你不明白你直接参考MyISAM的不行?」；照 MyISAM 一集与 docs/guides/scenes.md 第 3 节）：
-// 不缩放、不推近。一章按内容分成几屏（breaks 给出每一屏开头的句号）；停在一屏上时只朝一个方向极慢横移，
-// 一屏最多 16 像素、每秒不超过 0.8 像素，下一屏换方向（只在换屏时换），始终在中线左右 8 像素以内（WaterRun 2026-10-26 两次要求再淡）；不配音效。画面停着时的变化首先靠内容的分步。
-// 每一屏的横移两头缓入缓出（sine），换方向时先慢下来再反向，不是匀速撞回头（WaterRun 2026-10-26：「反向时带非线性自然衔接, 幅度更小一点」）。
+// 不缩放、不推近、不来回。一章按内容分成几屏（breaks 给出每一屏开头的句号）；每一屏只朝 dir 一个方向极慢横移 16 像素（两头缓入缓出，
+// 每秒不超过 0.8 像素），一章之内各屏都朝同一个方向，不左右来回；换屏时随着内容切换在 0.6 秒内回到起点（WaterRun 2026-10-26：
+// 「镜头晃动再淡化」「不是左右重复 包括之后」）。相邻两章方向相反。不配音效。画面停着时的变化首先靠内容。
 function pan1(cam, s, dir = 1, breaks = []) {
-  const t0 = s.first, t1 = s.end - 0.05, R = 8, V = 0.8;
-  const ts = [t0, ...breaks.map((id) => T(id)).filter((t) => t > t0 + 1 && t < t1 - 1), t1].sort((a, b) => a - b);
-  let x = -dir * R, d = dir; const keys = [];
+  const t0 = s.first, t1 = s.end - 0.05, R = 8, V = 0.8, BACK = 0.6;
+  const ts = [t0, ...breaks.map((id) => T(id)).filter((t) => t > t0 + 2 && t < t1 - 2), t1].sort((a, b) => a - b);
+  const keys = [];
   for (let k = 0; k + 1 < ts.length; k++) {
-    const dur = ts[k + 1] - ts[k] - 0.02, to = Math.max(-R, Math.min(R, x + d * Math.min(2 * R, V * dur)));
-    keys.push([ts[k] + 0.01, { x: 960 + to }, Math.max(0.5, dur), { ease: 'sine.inOut', sfx: false }]); x = to; d = -d;
+    const a = ts[k] + (k ? BACK : 0) + 0.01, dur = ts[k + 1] - a - 0.02, amp = Math.min(R, V * dur / 2);
+    if (k) keys.push([ts[k] + 0.01, { x: 960 - dir * amp }, BACK - 0.02, { ease: 'power2.inOut', sfx: false }]);
+    keys.push([a, { x: 960 + dir * amp }, Math.max(0.5, dur), { ease: 'sine.inOut', sfx: false }]);
   }
-  cam.track(t0, { x: 960 - dir * R, y: 540, z: 1 }, keys);
+  cam.track(t0, { x: 960 - dir * Math.min(R, V * (ts[1] - t0) / 2), y: 540, z: 1 }, keys);
 }
 
 // 注解：新名词、关键结构第一次出现时，画面上的一行说明（是什么、指哪一块、数字或出处），不等旁白。

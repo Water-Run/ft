@@ -200,9 +200,10 @@ scene('intro', ({ root, s }) => {
   const dbw = boxEl(zd, 30, 396, 980, 130, '双写缓冲区');
   for (let c = 0; c < 16; c++) sq(dbw, 30 + c * 58, 66, null);
   const sup = h('div', 'abs t-note', C, '一个数据库引擎是如何实现的？'); px(sup, 120, 104); css(sup, { fontSize: '38px', color: 'var(--ink2)' });
-  const ttl = h('div', 'abs', C, '<span style="font:900 96px \'Sans SC\';color:var(--ink)">事务性与现代化：</span><span style="font:800 104px Inter;color:var(--mainD)">InnoDB</span>'); px(ttl, 112, 152);
+  const ttl = h('div', 'abs', C, '<span style="font:900 96px \'Sans SC\';color:var(--ink)"><span class="s0-tx">事务性</span>与现代化：</span><span style="font:800 104px Inter;color:var(--mainD)">InnoDB</span>'); px(ttl, 112, 152);
   const partTag = h('div', 'tag', C, 'PART 2'); px(partTag, 1620, 130); css(partTag, { fontSize: '34px', padding: '6px 18px', fontFamily: 'Inter' });
   const tT = T('hT');
+  h('style', '', C).textContent = '.s0-tx.on { color: var(--main); background: var(--pale); }'; lit(ttl.querySelector('.s0-tx'), 'on', T('h18', '事务') - 0.1);   // 「就从事务开始」：片名里的「事务性」亮起
   wipe(zm, tT, { dir: 'b', d: 0.6 }); wipe(zd, tT + 0.12, { dir: 'b', d: 0.6 });
   wipe(sup, tT + 0.25, { dir: 'l', d: 0.5 }); wipe(ttl, tT + 0.4, { dir: 'l', d: 0.7 }); slam(partTag, tT + 0.9, { from: 1.5 });
   sfx('whoosh', tT, { g: 0.6 }); sfx('thud', tT + 0.95);

@@ -164,6 +164,7 @@ scene('s5', ({ root, s, c0 }) => {
   [undo, pg, pgLab, offLab].forEach((e) => to(e, T('e12', 'undo'), { opacity: 0.35, duration: 0.4 }));
   const myByte = myRow.querySelector('span');
   to(myByte, T('e12', '改过的字节'), { scale: 1.3, duration: 0.25, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+  h('style', '', W).textContent += '.box.s5-bad { background: #FBF1EE !important; border-color: var(--acc) !important; }'; lit(my, 's5-bad', T('e12', '留在') - 0.1, Infinity);
   vanish(myV, 0); slam(myV, T('e12', '留在'), { from: 1.3 }); sfx('error', T('e12', '留在'), { g: 0.4 });
   // 章末收场：画面依次退下，下一章的章节卡接上
   const outE = s.end - 1.1;

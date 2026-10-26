@@ -48,8 +48,8 @@ scene('s2', ({ root, s, c0 }) => {
   wipe(eAx, c0 + 0.05, { dir: 'l', d: 0.7 });
   vanish(dIn, 0); slam(dIn, T('t0', 'InnoDB') - 0.1, { from: 1.6 }); slide(lIn, T('t0', 'InnoDB'), { y: 12 }); sfx('tick', T('t0', 'InnoDB'), { g: 0.4 });
   arrowIn(eArr, T('t0', '早得多') - 0.4, 0.8); vanish(d70, 0); slam(d70, T('t0', '早得多') + 0.3, { from: 1.6 }); slide(l70, T('t0', '早得多') + 0.4, { y: 12 }); show(eGap, T('t0', '早得多'), { y: 8, d: 0.4 });
-  to(era, Tend('t0b') - 0.2, { opacity: 0.35, duration: 0.5 }); tl.to(eArr, { opacity: 0.35, duration: 0.5 }, Tend('t0b') - 0.2);
-  s2_out(era, T('t0c') - 0.4, { y: 12, d: 0.35 }); svgOut(eArr, T('t0c') - 0.4, 0.3);
+  to(era, T('t0b', 'IBM') + 0.6, { opacity: 0.35, duration: 0.5 }); tl.to(eArr, { opacity: 0.35, duration: 0.5 }, T('t0b', 'IBM') + 0.6);
+  s2_out(era, Tend('t0b') + 0.3, { y: 12, d: 0.35 }); svgOut(eArr, Tend('t0b') + 0.3, 0.3);
   const qt = h('div', 'abs', G0, '<div class="mono" style="font-size:23px;color:var(--ink2);white-space:normal;width:960px;line-height:1.45">"He defined the transaction as a <span class="s2-uw">unit of work</span>, such as moving money from one bank account to another … either the money moves, or it stays in the original account."</div>'
     + '<div class="gloss" style="position:static;margin-top:10px;white-space:normal;width:960px">ACM 图灵奖页面：他把事务定义成一个工作单位，比如转账——要么钱转过去，要么留在原账户</div>');
   px(qt, 840, 176);
@@ -125,7 +125,7 @@ scene('s2', ({ root, s, c0 }) => {
   arrowIn(pOk, tOk0, 0.5); wipe(okBox, tOk0 + 0.2, { dir: 'l', d: 0.45 }); vanish(okMark, 0); slam(okMark, T('t2', '生效'));
   arrowIn(pNo, tNo0, 0.5); wipe(noBox, tNo0 + 0.2, { dir: 'l', d: 0.45 }); vanish(noMark, 0); slam(noMark, tRev + 0.15);
   sfx('pop', T('t2', '生效'), { g: 0.4 }); sfx('pop', tRev + 0.15, { g: 0.4 });
-  slam(braceTag, T('t3', '事务'), { from: 1.4 }); sfx('thud', T('t3', '事务'));
+  slam(braceTag, T('t3', '整体'), { from: 1.4 }); sfx('thud', T('t3', '整体'));
   typeText(l0, '<span class="kw">START TRANSACTION</span>;', T('t4') - 0.05, 30, { cursor: false });
   // 执行光标：从 START 一行一行往下走，走到两条路的分岔口等 COMMIT 或 ROLLBACK
   const cur = h('div', 'abs', code); px(cur, 14, 18, 872, 54); css(cur, { background: 'var(--pale)' }); code.insertBefore(cur, code.firstChild);
@@ -203,10 +203,11 @@ scene('s2', ({ root, s, c0 }) => {
     cntN.textContent = k;
   });
   const t8 = Math.min(T('t8'), out2 - 0.25);                         // 第三节在泳道收走之前就进来（SQL 已先收走，不叠字）
-  slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.1, 48, { cursor: false });
+  slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.1, 14, { cursor: false });   // 打得慢一点，随这两句一路打出来
   st.textContent += ' .sql.s2-this { background: var(--pale); outline: 2px solid var(--main); outline-offset: 8px; }';
   lit(big, 's2-this', T('t9z', '这句') - 0.1, Tend('t9z') + 0.6);   // 「比如这句 UPDATE」：说到「这句」时这一行亮起（R13 第 7 条）
-  svgIn(grid, T('t8', '很多行') - 0.1, 0.6);                        // 讲到「很多行」时 4096 格就铺开
+  svgIn(grid, T('t8', '很多行') - 0.1, 0.6);
+  tl.fromTo(grid, { opacity: 1 }, { opacity: 0.35, duration: 0.25, immediateRender: false }, T('t9', '所有人')); tl.fromTo(grid, { opacity: 0.35 }, { opacity: 1, duration: 0.35, immediateRender: false }, T('t9', '所有人') + 0.3);   // 「所有人」：4096 格整片闪一下                        // 讲到「很多行」时 4096 格就铺开
   slam(n4096, T('t9z', '4096'), { from: 1.4 }); sfx('thud', T('t9z', '4096'), { g: 0.5 });
   slide(cnt, tg0 - 0.1, { x: -20 }); slide(leg, tg0 + 0.2, { x: -20 });
   slam(stop, tStop + 0.1, { from: 1.6 }); sfx('error', tStop, { g: 0.6 });
@@ -378,7 +379,7 @@ scene('s2', ({ root, s, c0 }) => {
   [rely, gRely].forEach((e) => tl.to(e, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15));   // 一直留到图灵奖讲完
   // q4b：1998 年图灵奖（K5）
   const tur = h('div', 'abs', W, '<span class="tag s2-tt2" style="position:static;font-size:26px;margin-right:16px">1998 · ACM 图灵奖</span><span class="mono s2-tq" style="font-size:22px;color:var(--ink2)">"For seminal contributions to <span class="s2-hl">database</span></span><span class="mono s2-tq2" style="font-size:22px;color:var(--ink2)"> and <span class="s2-hl">transaction processing</span> research …"</span><div class="gloss s2-tz" style="position:static;margin-top:8px">开创性贡献：数据库与事务处理研究</div>');
-  px(tur, 300, 720); vanish(tur, 0); show(tur, T('q4b') + 0.1, { y: 14, d: 0.4 }); tl.to(tur, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15); sfx('pop', T('q4b') + 0.2, { g: 0.5 });
+  px(tur, 300, 720); vanish(tur, 0); show(tur, T('q4b') + 0.1, { y: 14, d: 0.4 }); tl.fromTo(rely, { opacity: 1 }, { opacity: 0.3, duration: 0.5, immediateRender: false }, T('q4b', '研究')); tl.to(tur, { autoAlpha: 0, duration: 0.3 }, T('q5') - 0.15); sfx('pop', T('q4b') + 0.2, { g: 0.5 });   // 讲到图灵奖这件事时，「可靠」退成背景
   const [turQ, turZ] = [tur.querySelector('.s2-tq'), tur.querySelector('.s2-tz')];
   const turQ2 = tur.querySelector('.s2-tq2');
   vanish(turZ, 0); show(turZ, T('q4b', 'Gray'), { y: 8, d: 0.4 });
@@ -408,7 +409,7 @@ scene('s2', ({ root, s, c0 }) => {
   const OG = h('div', 'abs', W); px(OG, 0, 0, 1920, 1080); css(OG, { pointerEvents: 'none' }); vanish(OG, 0); show(OG, out4 + 0.1, { y: 0, d: 0.4 });   // 这一屏之前整组藏着
   // ── q6：引向下一章（R14：要契合数据的逻辑结构、有规模、井井有条）——4096 行按逐行插入的实测（D.growth）同时长成两棵树：
   // 主键树按编号、姓名索引按名字，新行都接在最右边那页叶子；页满了就从文件里取下一个空页（T10），所以下面的文件页条里两棵树的页交替出现 ──
-  const tS0 = T('q6') + 0.7, tS1 = Tend('q6') + 4.2;
+  const tS0 = T('q6') + 0.5, tS1 = Tend('q6') + 1.9;
   const nRows = (t) => Math.round(4096 * Math.pow(clamp((t - tS0) / (tS1 - tS0)), 1.7));
   const GE = (ix) => D.growth.filter((e) => e.index === ix);
   const PE = GE('PRIMARY'), NE = GE('idx_name');
@@ -429,19 +430,20 @@ scene('s2', ({ root, s, c0 }) => {
     });
     return { root, items };
   };
-  const PT = tree6(226, 312, 140, PK_LEAVES, { root: 'var(--mainD)', fill: 'var(--teal)' });
-  const NT = tree6(548, 634, 116, NM_LEAVES, { root: 'var(--main)', fill: '#CFE6EB' });
-  const tagP = h('div', 'tag', OG, '主键树'); px(tagP, 96, 232); css(tagP, { fontSize: '26px', background: 'var(--mainD)' });
-  const tagN = h('div', 'tag', OG, '姓名索引'); px(tagN, 86, 554); css(tagN, { fontSize: '26px', background: 'var(--main)' });
-  const sub6 = h('div', 'abs t-small', OG, '按编号排'); px(sub6, 96, 282);
-  const sub6n = h('div', 'abs t-small', OG, '按名字排'); px(sub6n, 86, 604);
+  const PT = tree6(170, 236, 96, PK_LEAVES, { root: 'var(--mainD)', fill: 'var(--teal)' });
+  const NT = tree6(400, 466, 84, NM_LEAVES, { root: 'var(--main)', fill: '#CFE6EB' });
+  const tagP = h('div', 'tag', OG, '主键树'); px(tagP, 96, 176); css(tagP, { fontSize: '26px', background: 'var(--mainD)' });
+  const tagN = h('div', 'tag', OG, '姓名索引'); px(tagN, 86, 406); css(tagN, { fontSize: '26px', background: 'var(--main)' });
+  const sub6 = h('div', 'abs t-small', OG, '按编号排'); px(sub6, 96, 224);
+  const sub6n = h('div', 'abs t-small', OG, '按名字排'); px(sub6n, 86, 454);
   // 文件：49 页按页号排成一条
-  const fT = h('div', 'abs mono', OG, 'users.ibd'); px(fT, 90, 838); css(fT, { fontSize: '28px', fontWeight: 700 });
-  const fcs = [...Array(D.file.pages)].map((_, p) => { const c = h('div', 'abs', OG); px(c, 260 + p * 28, 836, 24, 34); c.dataset.name = '页' + p; return c; });
-  const fticks = [0, 8, 16, 24, 32, 40, 48].map((p) => { const e = h('div', 'abs num', OG, String(p)); px(e, 260 + p * 28 - 11, 876, 46); css(e, { textAlign: 'center', font: '500 22px Inter', color: 'var(--ink2)' }); return e; });
+  const fT = h('div', 'abs mono', OG, 'users.ibd'); px(fT, 150, 596); css(fT, { fontSize: '30px', fontWeight: 700 });
+  const FX6 = 150, FW6 = 34, FY6 = 640, FH6 = 190;
+  const fcs = [...Array(D.file.pages)].map((_, p) => { const c = h('div', 'abs', OG); px(c, FX6 + p * FW6, FY6, FW6 - 4, FH6); css(c, { overflow: 'hidden' }); c.dataset.name = '页' + p; const f = h('div', 'abs', c); css(f, { left: '0', right: '0', bottom: '0', height: '0' }); c.fill = f; return c; });
+  const fticks = [0, 8, 16, 24, 32, 40, 48].map((p) => { const e = h('div', 'abs num', OG, String(p)); px(e, FX6 + p * FW6 + 15 - 23, FY6 + FH6 + 8, 46); css(e, { textAlign: 'center', font: '500 22px Inter', color: 'var(--ink2)' }); return e; });
   // 计数：行、页
-  const cR = h('div', 'abs', OG); px(cR, 1690, 300); const cRN = h('div', 'num', cR, '0'); css(cRN, { font: '800 60px Inter', color: 'var(--main)' }); h('div', 't-small', cR, '行');
-  const cP = h('div', 'abs', OG); px(cP, 1690, 560); const cPN = h('div', 'num', cP, '7'); css(cPN, { font: '800 52px Inter', color: 'var(--mainD)' }); h('div', 't-small', cP, '页');
+  const cR = h('div', 'abs', OG); px(cR, 1690, 200); const cRN = h('div', 'num', cR, '0'); css(cRN, { font: '800 60px Inter', color: 'var(--main)' }); h('div', 't-small', cR, '行');
+  const cP = h('div', 'abs', OG); px(cP, 1690, 420); const cPN = h('div', 'num', cP, '7'); css(cPN, { font: '800 52px Inter', color: 'var(--mainD)' }); h('div', 't-small', cP, '页');
   // 行：每一行从根页往下落进此刻最右边的那页叶子（编号、名字都是递增插入的，新行总在最右边）
   const DASH = 12, dashes = [...Array(DASH * 2)].map((_, j) => { const e = h('div', 'abs', OG); css(e, { height: '22px', width: '4px', background: j < DASH ? 'var(--mainD)' : 'var(--main)' }); return e; });
   let last6 = '';
@@ -460,21 +462,21 @@ scene('s2', ({ root, s, c0 }) => {
     let maxP = 6, used = 7;
     fcs.forEach((c, p) => { if ((a && a[p] != null) || (b && b[p] != null)) maxP = Math.max(maxP, p); });
     fcs.forEach((c, p) => {
-      let bg = 'transparent', bd = 'var(--edge)', st_ = 'dashed';
+      let bg = 'transparent', bd = 'var(--edge)', st_ = 'dashed', lv = 1;   // lv：页里装了多少（叶子按实测行数，其余整页上色）
       if (p < 4) { bg = 'var(--band)'; st_ = 'solid'; }
-      else if (p === 4) { bg = up ? 'var(--mainD)' : 'var(--teal)'; bd = 'var(--mainD)'; st_ = 'solid'; }
-      else if (p === 5) { bg = 'var(--main)'; bd = bg; st_ = 'solid'; }
+      else if (p === 4) { bg = up ? 'var(--mainD)' : 'var(--teal)'; bd = 'var(--mainD)'; st_ = 'solid'; if (!up) lv = n / 207; }
+      else if (p === 5) { bg = n < 274 ? '#CFE6EB' : 'var(--main)'; bd = 'var(--main)'; st_ = 'solid'; if (n < 274) lv = n / 273; }
       else if (p === 6) { bg = 'var(--mute)'; bd = bg; st_ = 'solid'; }
-      else if (a && a[p] != null) { bg = 'var(--teal)'; bd = 'var(--mainD)'; st_ = 'solid'; }
-      else if (b && b[p] != null) { bg = '#CFE6EB'; bd = 'var(--main)'; st_ = 'solid'; }
+      else if (a && a[p] != null) { bg = 'var(--teal)'; bd = 'var(--mainD)'; st_ = 'solid'; lv = a[p] / 207; }
+      else if (b && b[p] != null) { bg = '#CFE6EB'; bd = 'var(--main)'; st_ = 'solid'; lv = b[p] / 273; }
       else if (p < maxP || n >= 4096) { bg = 'var(--panel)'; st_ = 'solid'; }
       if (st_ === 'solid') used = Math.max(used, p + 1);
-      css(c, { background: bg, border: `2px ${st_} ${bd}` });
+      css(c, { background: st_ === 'solid' ? 'var(--panel)' : 'transparent', border: `2px ${st_} ${bd}` }); c.fill.style.background = bg; c.fill.style.height = (st_ === 'solid' ? Math.min(100, 100 * lv) : 0).toFixed(1) + '%';
     });
     cRN.textContent = n.toLocaleString('en-US').replace(',', ' '); cPN.textContent = n >= 4096 ? D.file.pages : used;
     const xP = LX6(Math.max(0, kP - 1)) + LW6 / 2, xN = LX6(Math.max(0, kN - 1)) + LW6 / 2;
     dashes.forEach((e, j) => { const top = j < DASH, i = top ? j : j - DASH, ph = ((t - tS0) * 1.8 + i / DASH) % 1;
-      const x = (top ? xP : xN) + (((i * 37) % 7) - 3) * 5 - 2, y = lerp(top ? 150 : 482, top ? 352 : 666, ph);
+      const x = (top ? xP : xN) + (((i * 37) % 7) - 3) * 5 - 2, y = lerp(top ? 110 : 350, top ? 262 : 488, ph);
       e.style.visibility = on ? 'visible' : 'hidden'; e.style.left = x.toFixed(0) + 'px'; e.style.top = y.toFixed(0) + 'px'; e.style.opacity = (0.3 + 0.7 * Math.sin(Math.PI * ph)).toFixed(2); });
   });
   [tagP, tagN, sub6, sub6n, fT, cR, cP].forEach((e, i) => { vanish(e, 0); show(e, out4 + 0.2 + (i % 4) * 0.08, { y: 8, d: 0.35 }); });
@@ -482,9 +484,9 @@ scene('s2', ({ root, s, c0 }) => {
   [PE[0].row, NE[0].row, ...PE.slice(1, 4).map((e) => e.row)].forEach((r) => sfx('tick', tS0 + (tS1 - tS0) * Math.pow(r / 4096, 1 / 1.7), { g: 0.35 }));
   // 图例（与第 03 章同一套颜色）
   const chip6 = (bg, bd) => `<span style="display:inline-block;width:20px;height:20px;background:${bg};border:1.5px solid ${bd};vertical-align:-3px;margin:0 6px 0 18px"></span>`;
-  const legend = h('div', 'abs t-small', OG, chip6('var(--band)', 'var(--edge)') + '文件自用' + chip6('var(--mainD)', 'var(--mainD)') + '主键根' + chip6('var(--teal)', 'var(--mainD)') + '主键叶子'
-    + chip6('var(--main)', 'var(--main)') + '姓名索引根' + chip6('#CFE6EB', 'var(--main)') + '姓名索引叶子' + chip6('var(--mute)', 'var(--mute)') + '别的索引' + chip6('var(--panel)', 'var(--edge)') + '其他');
-  px(legend, 242, 916); css(legend, { whiteSpace: 'nowrap' });
+  const legend = h('div', 'abs t-small', OG, chip6('var(--band)', 'var(--edge)') + '文件自用' + chip6('var(--mainD)', 'var(--mainD)').replace('margin:0 6px 0 18px', 'margin:0 2px 0 18px') + chip6('var(--teal)', 'var(--mainD)') + '主键树'
+    + chip6('var(--main)', 'var(--main)').replace('margin:0 6px 0 18px', 'margin:0 2px 0 18px') + chip6('#CFE6EB', 'var(--main)') + '姓名索引' + chip6('var(--mute)', 'var(--mute)') + '别的索引' + chip6('var(--panel)', 'var(--edge)') + '其他');
+  px(legend, 132, 880); css(legend, { whiteSpace: 'nowrap' });
   vanish(legend, 0); show(legend, tS0 + 0.4, { y: 8, d: 0.4 });
   W.appendChild(ov);
 });

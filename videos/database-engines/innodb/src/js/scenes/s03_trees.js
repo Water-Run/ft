@@ -136,6 +136,13 @@ scene('s3', ({ root, s, c0 }) => {
   const ddl = h('div', 'abs mono', W, ''); px(ddl, 300, 330); css(ddl, { fontSize: '32px', lineHeight: '1.5' });
   const DDL = '<span class="c-main" style="font-weight:700">CREATE TABLE</span> users (\n  id   INT <span class="c-main" style="font-weight:700">PRIMARY KEY</span>,\n  name CHAR(50),\n  age  TINYINT UNSIGNED,\n  KEY idx_name (name),\n  KEY idx_age (age)\n);';
   const tDdl = c0 + 0.05;
+  const tbl0 = h('div', 'abs', W); px(tbl0, 1120, 330, 600, 230); css(tbl0, { border: '2px solid var(--mainD)', background: 'var(--panel)' }); tbl0.dataset.name = '空表';
+  const tbl0T = h('div', 'abs mono', W, 'users'); px(tbl0T, 1120, 286); css(tbl0T, { fontSize: '28px', fontWeight: 700 });
+  const hdr0 = [['编号', 'id'], ['名字', 'name'], ['年龄', 'age']].map(([zh, en], k) => { const e = h('div', 'abs', tbl0, `${zh} <span class="mono" style="font-size:22px;opacity:.8">${en}</span>`); px(e, k * 200, 0, 200, 56); css(e, { background: 'var(--mainD)', color: '#fff', font: '700 26px "Sans SC"', padding: '12px 16px', boxSizing: 'border-box', borderRight: k < 2 ? '2px solid #fff' : '' }); return e; });
+  const empty0 = h('div', 'abs t-small', tbl0, '还没有行'); px(empty0, 230, 130);
+  [tbl0, tbl0T].forEach((e) => { vanish(e, 0); show(e, T('a1', '空的') - 0.1, { y: 10, d: 0.4 }); exit(e, T('a3') - 0.05, { y: -12, d: 0.35 }); });
+  hdr0.forEach((e, k) => { vanish(e, 0); wipe(e, T('a1', ['编号', '名字', '年龄'][k]) - 0.1, { dir: 'l', d: 0.4 }); });
+  vanish(empty0, 0); show(empty0, T('a1', '主键') + 0.2, { y: 6, d: 0.3 });
   typeText(ddl, DDL, tDdl, 48, { cursorUntil: Tend('a1') + 0.4 });
   exit(ddl, T('a3') - 0.05, { y: -12, d: 0.35 });
   const pkMark = h('div', 'abs', W); px(pkMark, 290, 330 + 48 - 2, 560, 50); css(pkMark, { border: '3px solid var(--main)' });
@@ -295,6 +302,8 @@ scene('s3', ({ root, s, c0 }) => {
   vanish(gNext, 0); show(gNext, T('a13') + 0.1, { y: 8, d: 0.4 }); exit(gNext, Tend('a14') + 0.6, { y: 8, d: 0.3 });
   // a10：两页各装一半——两页叶子的行数亮起
   [0, 1].forEach((k) => lit(cuLeaves[k].cntEl, 'c-acc', T('a10', '一半') - 0.2 + k * 0.25, Tend('a10') + 0.4));
+  h('style', '', W).textContent = '.fill.s3-deep { background: var(--main) !important; } .fill.s3-deepn { background: var(--main) !important; }';
+  [0, 1].forEach((k) => lit(cuLeaves[k].fillEl, 's3-deep', T('a10', '叶子') + k * 0.25, T('a11') + 0.2));   // 「两页叶子」：两页装着的部分整块变深
   { const sum = h('div', 'abs num', CU, '103 + 105 = 208'); px(sum, 820, 690); css(sum, { font: '800 40px Inter', color: 'var(--acc)' }); vanish(sum, 0); show(sum, T('a10', '一半') + 0.3, { y: 10, d: 0.4 }); exit(sum, T('a11', '两项') - 0.2, { d: 0.3 }); }
   // a11：根页里的两项依次亮起，各指向一页叶子
   [0, 1].forEach((k) => { lit(cuCells[k], 'c-main', T('a11', '两项') + k * 0.5, Tend('a11') + 0.3); });
@@ -453,6 +462,7 @@ scene('s3', ({ root, s, c0 }) => {
     lit(f, 's3-id', T('a23', '编号') + i * 0.15);                 // 讲到「编号」时，每一项后面的编号标出来
   });
   { const s3s = h('style', '', W); s3s.textContent = '.s3-id { background: #DCEFF1; color: var(--mainD) !important; font-weight: 700; }'; }
+  nleaves.forEach((p, j) => lit(p.fillEl, 's3-deepn', T('a23', '叶子') + j * 0.04, T('a23', '编号')));   // 「它的叶子里」：姓名索引的叶子整排变深
   const nCallLine = path(ov, `M${NX(0)},${NBY + NBH + 42} L${NX(1) - 20},${905}`, 'main', { w: 1.8, arrow: false });
   vanish(nCall, 0); nCallLine.setAttribute('opacity', 0);
   show(nCall, T('a23', '名字'), { y: 8, d: 0.4 }); tl.fromTo(nCallLine, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, T('a23', '名字'));
@@ -481,6 +491,7 @@ scene('s3', ({ root, s, c0 }) => {
   const toNM = path(ov, `M${830},${548} C${480},${544} ${168},${540} ${168},${650} S${180},${765} ${NX(NK9) - NBW / 2 - 4},${765}`, 'main', { w: 2.6 });   // 绕过根页 5 的左端，从左边进叶子 9
   arrowIn(toPK, T('a25', '两棵树') - 0.2, 0.6); arrowIn(toNM, T('a25', '两棵树') + 0.1, 0.6);
   litWin(leaves[K27], 'hot', [[T('a16'), Tend('a17') - 0.1], [tS0, tSx], [T('a26', '主键树'), tFwd0]]);
+  lit(leaves[K27].fillEl, 's3-deep', T('a26', '2049'), T('a27'));   // Alice 进的这一页整块变深
   nmGroups.forEach((g) => { tl.fromTo(g, { opacity: 1 }, { opacity: 0.35, duration: 0.4, immediateRender: false }, T('a26', '主键树')); tl.fromTo(g, { opacity: 0.35 }, { opacity: 1, duration: 0.4, immediateRender: false }, T('a27') - 0.1); });
   leaves.forEach((g) => { tl.fromTo(g, { opacity: 1 }, { opacity: 0.35, duration: 0.4, immediateRender: false }, T('a27') - 0.1); tl.fromTo(g, { opacity: 0.35 }, { opacity: 1, duration: 0.4, immediateRender: false }, tFwd0); });
   lit(nleaves[NK9], 'hot', T('a27', '姓名索引'), tFwd0);

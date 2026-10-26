@@ -179,8 +179,8 @@ scene('s9', ({ root, s, c0 }) => {
   e2.push(L2.event(1, T('d9', '插进'), 'INSERT 2050', '', -46));
   const waitD = L2.bar(L2.Y(1) - 20, T('d9', '插进') + 0.2, tBobC2, '', 'wait'); css(waitD, { height: '40px' });
   const okD = h('div', 'pill fill', G2, '插入成功'); px(okD, L2.X(tBobC2) + 20, L2.Y(1) - 20); slam(okD, tBobC2 + 0.2, { from: 1.3 }); sfx('pop', tBobC2 + 0.2);
-  const r1 = h('div', 'echo', G2, '2049、2051'); px(r1, L2.X(tLockR) + 172, L2.Y(0) - 60); css(r1, { color: 'var(--main)', fontWeight: 700 });
-  const r2 = h('div', 'echo', G2, '2049、2051'); px(r2, L2.X(T('d11', '再读')) + 60, L2.Y(0) - 60); css(r2, { color: 'var(--main)', fontWeight: 700 });
+  const r1 = h('div', 'echo', G2, '2049、2051'); px(r1, L2.X(tLockR) - 20, L2.Y(0) + 16); css(r1, { color: 'var(--main)', fontWeight: 700 });
+  const r2 = h('div', 'echo', G2, '2049、2051'); px(r2, L2.X(T('d11', '再读')) - 190, L2.Y(0) + 16); css(r2, { color: 'var(--main)', fontWeight: 700 });
   appear(r1, T('d8z', '两行')); appear(r2, T('d11', '那两行'));
   const ph2 = L2.playhead(tRe + 0.4, Tend('d13') + 0.4, 640, LY + 40 + 150 + 40);
   // 锁：2049 只锁记录（X,REC_NOT_GAP）；2050、2051 锁记录加前面的间隙（X）。取自 performance_schema.data_locks（X6）
@@ -196,7 +196,8 @@ scene('s9', ({ root, s, c0 }) => {
       lockEls.push(g, gl);
     }
   });
-  const st9 = h('style', '', document.head, '.s9w::before { border-color: #fff !important; }');
+  const st9 = h('style', '', document.head, '.s9w::before { border-color: #fff !important; } .s9-sel2 { background: #FBF1EE !important; }');
+  lit(alice, 's9-sel2', T('d1', '注销'), tFlag);   // 「Alice 注销了」
   lockEls.forEach((e, k) => { vanish(e, 0); appear(e, tLockR + 0.3 + (k % 4) * 0.05); });
   lockEls.forEach((e) => exit(e, tBobC2 + 0.05, { d: 0.25 }));
   sfx('thud', tLockR + 0.3, { g: 0.6 });

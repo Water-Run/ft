@@ -47,6 +47,10 @@ scene('s8', ({ root, s, c0 }) => {
 
   // 关键时刻
   const tKill = T('j14', '强行结束');
+  { const bo = h('div', 'abs', W); px(bo, -60, -60, 2040, 1200); css(bo, { background: '#15191C', opacity: 0, pointerEvents: 'none' }); const tb = T('j1', '停下');
+    tl.fromTo(bo, { opacity: 0 }, { opacity: 0.6, duration: 0.08, immediateRender: false }, tb); tl.fromTo(bo, { opacity: 0.6 }, { opacity: 0, duration: 0.7, immediateRender: false }, tb + 0.3); }   // 「机器突然停下」：整个画面暗一下
+  h('style', '', W).textContent = '.box.s8-on { background: #CBE5E4 !important; border-color: var(--main) !important; }';
+  lit(bp, 's8-on', T('j2', '缓冲池') - 0.1, T('j3') + 0.2); lit(redo, 's8-on', T('j15', '检查点') - 0.2, T('j16', '重做') + 0.6); lit(ibd, 's8-on', T('j4', '什么时候'), T('j4', '安排') + 1.0);
   const tDirtyA = T('j3') + 0.1;                          // Alice 那一页变脏
   const tFlushOther = T('j4', '安排');                            // 另一张脏页先写回
   const tUpd2 = T('j13');                                         // 管理员开始改：一页页变脏
@@ -345,8 +349,9 @@ scene('s8', ({ root, s, c0 }) => {
   const fixL = h('div', 'abs', W, '恢复：先取回完整的一份，再重做 redo'); px(fixL, 220, 556); css(fixL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
   vanish(fixL, 0); show(fixL, T('j24') + 0.1, { y: 8, d: 0.4 });
   lit(P2.p, 's8-dwhl', T('j23bz', '完整') - 0.2, T('j24') - 0.1);
+  lit(dbw, 's8-dwbox', T('j23b', '单独') - 0.1, T('j24'));   // 「单独的一块存储区」：双写缓冲区整块铺底
   [1, 2, 3, 4].forEach((i) => lit(dbwSq[i], 'hot', T('j23bz') + 0.2 + (i - 1) * 0.6, Tend('j24') + 0.5));   // 写出的页一页页先存进双写缓冲区
-  st8.textContent += ' .s8-dwhl { outline: 4px solid var(--main); outline-offset: 4px; }';
+  st8.textContent += ' .s8-dwhl { outline: 4px solid var(--main); outline-offset: 4px; } .box.s8-dwbox { background: var(--pale) !important; border-color: var(--main) !important; }';
   lit(dbwSq[0], 'hot', tW2 + 0.4, Tend('j24') + 0.5);
   lit(ibdSq[PAGES.indexOf(D.alice.page)], 'hot', tW3 + 0.4, Tend('j24') + 0.5);
   // j24：从 doublewrite 取回完整的一份

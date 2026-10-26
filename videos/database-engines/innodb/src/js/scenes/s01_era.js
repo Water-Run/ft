@@ -114,7 +114,7 @@ scene('s1', ({ root, s, c0 }) => {
   const dflt = h('div', 'box', G); px(dflt, 200, 560, 640, 96);
   dflt.innerHTML = '<div class="abs t-small" style="left:24px;top:10px">MySQL 5.5.5 起</div><div class="abs" style="left:24px;top:44px;font:700 30px Inter,&quot;Sans SC&quot;">默认存储引擎：<span class="s1-old">MyISAM</span><span class="s1-new c-main">　InnoDB</span></div>';
   st.textContent += ' .s1-old.s1-x { text-decoration: line-through; text-decoration-thickness: 3px; color: var(--ink2); }';
-  wipe(dflt, T('y3', '默认引擎') - 0.2, { dir: 'l', d: 0.6 });
+  wipe(dflt, T('y3', 'MySQL') + 0.2, { dir: 'l', d: 0.6 });
   const dNew = dflt.querySelector('.s1-new'); vanish(dNew, 0); show(dNew, T('y3', '换成'), { x: -10, d: 0.35 });
   lit(dflt.querySelector('.s1-old'), 's1-x', T('y3', '换成')); sfx('tick', T('y3', '换成'), { g: 0.35 });
   s1_out(dflt, T('y6') + 0.2, { y: -12, d: 0.3 });

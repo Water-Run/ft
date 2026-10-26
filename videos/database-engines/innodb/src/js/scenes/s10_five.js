@@ -34,7 +34,7 @@ scene('s10', ({ root, s, c0 }) => {
   const tiles = TILES.map(([q, x, y, a, b], i) => {
     const e = h('div', 's10t', W, `<div class="q"><span class="n">${i + 1}</span>${q}</div>`); px(e, x, y, TW, TH);
     const art = h('div', 'abs', e); px(art, 22, 64, TW - 44, TH - 150);
-    wipe(e, c0 + 0.3 + i * 0.12, { dir: 't', d: 0.4 }); sfx('tick', c0 + 0.3 + i * 0.12, { g: 0.3 });
+    wipe(e, c0 + 0.3 + i * 0.7, { dir: 't', d: 0.5 }); sfx('tick', c0 + 0.3 + i * 0.7, { g: 0.3 });   // 讲「五个问题」时五块一块一块铺开
     lit(e, 'lit', T(a) - 0.2, Tend(b) + 0.3);
     return { e, art, t0: T(a), t1: T(b) };
   });
@@ -72,7 +72,7 @@ scene('s10', ({ root, s, c0 }) => {
     const row = box(art, 0, 10, 260, 46); txt(row, 12, 9, '2050 Alice', { color: 'var(--ink)' });
     const age = box(art, 190, 18, 56, 30, 'var(--pale)'); txt(age, 10, 1, '42', { color: 'var(--mainD)' });
     const undo = box(art, 320, 4, 170, 58, 'var(--pale)', 'var(--main)'); txt(undo, 10, 4, 'undo', { fontFamily: 'Mono', fontSize: '22px' });
-    const old = box(art, 0, 0, 44, 26, 'var(--main)', 'var(--main)'); txt(old, 8, 0, '42', { color: '#fff', fontSize: '22px' }); px(old, 196, 20);
+    const old = box(art, 0, 0, 46, 30, 'var(--main)', 'var(--main)'); { const t_ = txt(old, 0, 0, '42', { color: '#fff', fontSize: '22px', lineHeight: '28px' }); css(t_, { width: '44px', textAlign: 'center' }); } px(old, 194, 18);
     swaps(age.firstChild, [[T('k8c', '旧值') + 0.6, '43']]);
     vanish(old, 0); appear(old, T('k8c', '旧值')); fromTo(old, T('k8c', '旧值'), { x: 0, y: 0 }, { x: 330 - 196 + 70, y: 30 - 20, duration: 0.7, ease: 'power2.inOut' });
     const del = box(art, 0, 100, 310, 46); txt(del, 12, 9, '2050 Alice', { color: 'var(--ink2)' });
@@ -89,19 +89,19 @@ scene('s10', ({ root, s, c0 }) => {
     lab(0, -2, '内存'); lab(0, 98, '磁盘');
     const pg = box(art, 56, 0, 186, 88, 'var(--panel)'); ttl(pg, '页 27');
     const rowE = box(pg, 8, 40, 128, 32, 'var(--pale)', 'var(--main)'); const rowT = txt(rowE, 8, 2, '2050 · 42', { fontFamily: 'Mono', color: 'var(--ink)' });
-    const dirty = txt(pg, 104, 4, '脏页', { fontFamily: '"Sans SC"', color: 'var(--acc)', fontWeight: 700, background: '#fff', padding: '0 6px' });
+    const dirty = txt(pg, 80, 4, '脏页', { fontFamily: '"Sans SC"', color: 'var(--acc)', fontWeight: 700, background: '#fff', padding: '0 6px' });
     const und = box(art, 262, 0, 104, 88, 'var(--pale)', 'var(--main)'); ttl(und, 'undo');
-    const rlog = box(art, 396, 0, 100, 88, 'var(--panel)'); ttl(rlog, 'redo');
+    const rlog = box(art, 408, 0, 88, 88, 'var(--panel)'); ttl(rlog, 'redo');
     const fileB = box(art, 56, 100, 186, 84, 'var(--band)', 'var(--edge)'); ttl(fileB, 'users.ibd');
-    const rfile = box(art, 396, 100, 100, 84, 'var(--band)', 'var(--edge)'); ttl(rfile, 'redo');
+    const rfile = box(art, 408, 100, 88, 84, 'var(--band)', 'var(--edge)'); ttl(rfile, 'redo');
     const lk = lockAt(art, 56 + 8 + 128 + 10, 38, '');
     const ptr = path(ov4, 'M200,62 C228,62 240,62 262,62', 'mainD', { w: 2 });
-    const old = box(art, 0, 0, 40, 28, 'var(--main)', 'var(--main)'); txt(old, 9, 1, '42', { color: '#fff', fontSize: '22px' }); px(old, 56 + 8 + 82, 40 + 2);
-    const rq = box(art, 0, 0, 30, 30, 'var(--main)', 'var(--main)'); px(rq, 396 + 35, 44);
+    const old = box(art, 0, 0, 46, 30, 'var(--main)', 'var(--main)'); { const t_ = txt(old, 0, 0, '42', { color: '#fff', fontSize: '22px', lineHeight: '28px' }); css(t_, { width: '44px', textAlign: 'center' }); } px(old, 56 + 8 + 80, 40 + 1);
+    const rq = box(art, 0, 0, 30, 30, 'var(--main)', 'var(--main)'); px(rq, 408 + 29, 44);
     const pgCopy = box(art, 56, 0, 186, 88, 'var(--pale)', 'var(--acc)');
-    const bob = h('div', 'pill', art, 'Bob 读旧版本'); px(bob, 248, 112); css(bob, { fontSize: '22px', padding: '2px 8px' });
-    const carol = h('div', 'pill', art, 'Carol 等锁'); px(carol, 248, 150); css(carol, { fontSize: '22px', padding: '2px 8px', borderStyle: 'dashed', borderColor: 'var(--acc)', color: 'var(--acc)' });
-    const bobL = path(ov4, 'M314,112 L314,90', 'main', { w: 2 }), carolL = path(ov4, 'M252,162 C224,162 214,120 206,82', 'acc', { w: 2, dashed: '5 5' });
+    const bob = h('div', 'pill', art, 'Bob 读旧版本'); px(bob, 246, 102); css(bob, { fontFamily: '"Sans SC"', fontSize: '22px', padding: '1px 7px' });
+    const carol = h('div', 'pill', art, 'Carol 等锁'); px(carol, 246, 148); css(carol, { fontFamily: '"Sans SC"', fontSize: '22px', padding: '1px 7px', borderStyle: 'dashed', borderColor: 'var(--acc)', color: 'var(--acc)' });
+    const bobL = path(ov4, 'M314,102 L314,90', 'main', { w: 2 }), carolL = path(ov4, 'M246,162 C224,162 214,120 206,82', 'acc', { w: 2, dashed: '5 5' });
     art.appendChild(ov4);
     [lk, old, rq, pgCopy, dirty, bob, carol].forEach((e) => vanish(e, 0));
     // k2 锁住要改的行
@@ -111,7 +111,7 @@ scene('s10', ({ root, s, c0 }) => {
     arrowIn(ptr, T('k3', '回滚指针'), 0.5);
     // k4 改这一页：42 → 43，这一页成了脏页
     swaps(rowT, [[T('k4', '改这一页'), '2050 · 43']]); lit(pg, 's10-dirty', T('k4', '脏页') - 0.1, T('k7', '写回') + 0.7);
-    show(dirty, T('k4', '脏页') - 0.1, { y: 4, d: 0.3 }); exit(dirty, T('k7', '写回') + 0.7, { d: 0.3 });
+    appear(dirty, T('k4', '脏页') - 0.1); vanish(dirty, T('k7', '写回') + 0.7);
     // k5 记进 redo（内存里的日志缓冲）
     slam(rq, T('k5', 'redo'), { from: 1.5 }); sfx('pop', T('k5', 'redo'), { g: 0.4 });
     // k6 提交：redo 写到磁盘上，锁随之放开
@@ -142,7 +142,7 @@ scene('s10', ({ root, s, c0 }) => {
     const rU = box(pg, 10, 88, 292, 34, 'var(--panel)', 'var(--acc)'); rU.classList.add('s10-unc');
     const rUt = txt(rU, 10, 3, '没提交的修改', { fontFamily: '"Sans SC"', color: 'var(--acc)', fontWeight: 700 });
     const und = box(art, 332, 52, 164, 132, 'var(--pale)', 'var(--main)'); txt(und, 8, 4, 'undo', { fontFamily: 'Mono', fontSize: '22px', color: 'var(--ink2)' });
-    const chip = box(art, 0, 0, 64, 30, 'var(--main)', 'var(--main)'); txt(chip, 10, 2, '旧值', { color: '#fff', fontSize: '22px', fontFamily: '"Sans SC"' }); px(chip, 332 + 50, 52 + 70);
+    const chip = box(art, 0, 0, 66, 34, 'var(--main)', 'var(--main)'); { const t_ = txt(chip, 0, 2, '旧值', { color: '#fff', fontSize: '22px', fontFamily: '"Sans SC"', lineHeight: '28px' }); css(t_, { width: '64px', textAlign: 'center' }); } px(chip, 332 + 50, 52 + 66);
     art.appendChild(ov5);
     vanish(bolt, 0); slam(bolt, T('k11') + 0.1, { from: 1.8 }); sfx('error', T('k11') + 0.1, { g: 0.4 });
     // 重做：读头沿 redo 走一遍；走完，提交了的修改回到页里

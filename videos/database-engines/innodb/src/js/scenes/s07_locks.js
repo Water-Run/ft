@@ -53,6 +53,7 @@ scene('s7', ({ root, s, c0 }) => {
   const LN = lanes(W, { x: 120, y: 540, w: 1680, gap: 200, rowH: 130, names: ['Alice', 'Carol'],
     pts: [[c0, 330], [tA, 430], [tCw, 640], [tTo, 1060], [tC2, 1240], [Tend('g7'), 1400]] });
   LN.enter(c0 + 0.5);
+  [0, 1].forEach((i) => { const e = h('div', 'abs', W); px(e, 120, LN.Y(i) - 56, 1680, 112); css(e, { background: 'var(--pale)', opacity: 0 }); W.insertBefore(e, W.firstChild); tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: 0.35, immediateRender: false }, T('g1', '两个人')); tl.fromTo(e, { opacity: 1 }, { opacity: 0, duration: 0.35, immediateRender: false }, T('g2')); });   // 「两个人要改同一行」
 
   // g1：两个人要改同一行——两人的 UPDATE 都指向 2050（先只是意图，虚线）
   // 虚线从人出发（名字的右端），指向 2050（R14：线条要指向人）

@@ -64,10 +64,11 @@ scene('s6', ({ root, s, c0 }) => {
   LN.playhead(c0 + 0.3, tEnd, 580, 930);
   sfx('whoosh', c0 + 0.1, { g: 0.4 });
 
-  { const band = (i, a, b) => { const e = h('div', 'abs', W); px(e, 120, LN.Y(i) - 52, 1680, 104); css(e, { background: 'var(--pale)', opacity: 0 }); W.insertBefore(e, W.firstChild);
+  { const band = (i, a, b) => { const e = h('div', 'abs', W); px(e, 120, LN.Y(i) - 52, 1680, 104); css(e, { background: '#B9DCDB', opacity: 0 }); W.insertBefore(e, W.firstChild);
       tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: 0.35, immediateRender: false }, a); tl.fromTo(e, { opacity: 1 }, { opacity: 0, duration: 0.35, immediateRender: false }, b); };
     band(0, T('f1', '在改'), T('f2') + 0.4); band(1, T('f1', '在读'), T('f2') + 0.4);
-    band(0, T('f12a', '同时'), T('f12')); band(1, T('f12a', '同时'), T('f12')); }
+    [0, 1].forEach((i) => { band(i, T('f11', '不用等') - 0.2, Tend('f11') + 0.1); band(i, T('f12a', '看得见'), T('f12')); });   // 两人互不等待；同时进行
+    band(1, T('f3', 'Bob'), T('f5')); band(1, T('f15', '不可重复读') - 0.2, T('f16') + 0.4); }   // 「这时 Bob 来读」
   const ov = overlay(W);
   const pillAt = (x, y, text, cls, t) => { const e = h('div', 'pill ' + cls, W, text); const w = e.offsetWidth, hh = e.offsetHeight; px(e, x - w / 2, y - hh / 2); slam(e, t, { from: 1.25, d: 0.35 }); return e; };
   const valAt = (x, y, text, cls, t) => { const e = h('div', 's6-val ' + cls, W, text); const hh = e.offsetHeight; px(e, x, y - hh / 2); slam(e, t, { from: 1.4, d: 0.35 }); sfx('pop', t, { g: 0.55 }); return e; };
@@ -86,7 +87,7 @@ scene('s6', ({ root, s, c0 }) => {
   const bRead1 = LN.event(1, tB1, '读');
   const v1 = valAt(xB1 + 40, LN.Y(1), M.bob_while_alice_uncommitted, '', tR1);
   // 结果写成一块：Bob 这一次读到的值
-  const res1 = h('div', 'tag', W, `Bob 读到 <b class="num" style="font-size:30px">${M.bob_while_alice_uncommitted}</b>`); px(res1, 1000, 770); css(res1, { fontSize: '28px', padding: '8px 18px' });
+  const res1 = h('div', 'pill', W, `Bob 读到 <b class="num" style="font-size:28px">${M.bob_while_alice_uncommitted}</b>`); px(res1, 1000, LN.Y(1) + 34); css(res1, { fontFamily: '"Sans SC"', fontSize: '26px' });
   vanish(res1, 0); slam(res1, tR1 + 0.2, { from: 1.3 }); exit(res1, T('f6') - 0.1, { y: -10, d: 0.3 });
 
   // f5：脏读——若是直接读这个没提交的 43
@@ -94,8 +95,8 @@ scene('s6', ({ root, s, c0 }) => {
   arrowIn(dirty, T('f5', '脏读') - 0.3, 0.5);
   const dX = mark(752, 455, MARK.no(40), 'c-acc', T('f5', '脏读') + 0.15);
   const dTag = h('div', 'tag acc', W, '脏读'); px(dTag, 800, 460); slam(dTag, T('f5', '脏读'), { from: 1.3 });
-  [dirty].forEach((p) => svgOut(p, T('f6') - 0.1, 0.3));
-  [dX, dTag].forEach((e) => exit(e, T('f6') - 0.1, { y: -10, d: 0.3 }));
+  [dirty].forEach((p) => svgOut(p, T('f5z', '不会') + 0.3, 0.3));   // 「默认不会让它发生」：这条脏读的路收走
+  [dX, dTag].forEach((e) => exit(e, T('f5z', '不会') + 0.3, { y: -10, d: 0.3 }));
   const gDirty = gloss(W, 900, 418, '脏读', '<b>脏读</b>：读到别人没提交的数据', { w: 620, src: '手册 M38、M42' });
   vanish(gDirty, 0); show(gDirty, T('f5', '脏读') + 0.1, { y: 8, d: 0.4 }); exit(gDirty, T('f6', '快照') + 0.1, { y: 8, d: 0.3 });
 
@@ -152,7 +153,7 @@ scene('s6', ({ root, s, c0 }) => {
   // ── 隔离级别（R14：先简单，f19 讲到 SQL 标准时时间线退场，四个级别放大、完整列出，再到 MVCC）──
   const ovB = overlay(W);                                    // 卡片下层的连线（先建，后面的元素盖在它上面）
   const gIso = gloss(W, 120, 440, '隔离级别', '<b>隔离级别</b>：同时进行的事务彼此看得见多少', { w: 760, src: '手册 M26' });
-  vanish(gIso, 0); show(gIso, T('f12a', '隔离级别') + 0.1, { y: 8, d: 0.4 }); exit(gIso, T('f13') - 0.1, { y: 8, d: 0.3 });
+  vanish(gIso, 0); show(gIso, T('f12a') + 0.15, { y: 8, d: 0.4 }); exit(gIso, T('f13') - 0.1, { y: 8, d: 0.3 });
   // f19：四个级别的完整对照（M26、M48；幻读在可重复读下由 InnoDB 的间隙锁挡住，第 09 章）
   const ISO = [['读未提交', 'READ UNCOMMITTED'], ['读已提交', 'READ COMMITTED'], ['可重复读', 'REPEATABLE READ'], ['可串行化', 'SERIALIZABLE']];
   const PH = [['脏读', ['会', '不会', '不会', '不会']], ['不可重复读', ['会', '会', '不会', '不会']], ['幻读', ['会', '会', 'InnoDB 挡住', '不会']]];
@@ -226,16 +227,18 @@ scene('s6', ({ root, s, c0 }) => {
   // f20–f21：同一行，不同的事务看到不同的版本：42 在 undo，43 在页里
   const see42 = h('div', 'tag', W, '可重复读的 Bob 看到'); px(see42, 1520, 164);
   const see43 = h('div', 'tag', W, '锁定读、读已提交看到'); px(see43, 670, 164);
+  { const ovS = overlay(W); [[see42, 1600], [see43, 750]].forEach(([e, x]) => { const p_ = path(ovS, `M${x},206 L${x},232`, 'mainD', { w: 2.4 }); arrowIn(p_, T('f21', 'MVCC'), 0.4); }); }   // 讲到 MVCC 时，两个标签各指向自己看到的那一版
   [see42, see43].forEach((e, i) => slide(e, T('f20') + 0.1 + i * 0.25, { y: 10 }));
   lit(fAge, 'hot', T('f20'), Infinity);
   exit(card, T('f19') - 0.1, { x: 40, d: 0.35 });                 // 四个级别的大表出来之前，快照卡和泳道一起退场
   const mv = h('div', 'abs', W, '<span style="font:800 72px Inter;color:var(--mainD)">MVCC</span><span style="font:700 34px \'Sans SC\';color:var(--ink);margin-left:18px">多版本并发控制</span>');
-  px(mv, 120, 410); wipe(mv, T('f21', '多版本'), { dir: 'l', d: 0.6 }); sfx('thud', T('f21', '多版本') + 0.1, { g: 0.6 });
+  px(mv, 120, 410); wipe(mv, T('f21', 'MVCC') - 0.2, { dir: 'l', d: 0.6 });
+  { const ul = h('div', 'abs', W); px(ul, 124, 506, 620, 4); css(ul, { background: 'var(--main)' }); vanish(ul, 0); wipe(ul, Tend('f21') + 0.4, { dir: 'l', d: 0.9 }); } sfx('thud', T('f21', 'MVCC'), { g: 0.6 });   // 收尾：MVCC 标题下面画一道
   // 脚注（K8）：多版本并发控制的正确性理论出自 1983 年 Bernstein 与 Goodman；不配旁白，作 MVCC 标题的脚注
   const fnote = h('div', 'abs t-small', W, '多版本并发控制的正确性理论，由 Bernstein 与 Goodman 在 1983 年提出'); px(fnote, 124, 556);   // 落在 MVCC 标题与注解下面（措辞照 WaterRun 2026-10-25）
   const gMV = gloss(W, 780, 420, '多版本并发控制', '<b>多版本并发控制</b>：一行多个版本，按快照挑', { w: 620, src: '手册 M56' });
   vanish(gMV, 0); show(gMV, T('f21') + 0.1, { y: 8, d: 0.4 });
-  vanish(fnote, 0); show(fnote, T('f20') + 0.3, { y: 6, d: 0.4 });
+  px(fnote, 160, 905); vanish(fnote, 0); show(fnote, T('f20') + 0.3, { y: 6, d: 0.4 });   // 放在表格下面，表格收起后它还在   // 等四个级别的表收起后再出
   // 收尾：泳道一带慢慢淡下去，只留两个版本与 MVCC（整组放进一个容器，只对容器补间）
   const dimBox = h('div', 'abs', W); px(dimBox, 0, 0, 1920, 1080);
   [...W.querySelectorAll('.pill, .s6-val, .vbar, .playhead, .lane-name, .lane-line, .s6-trk, .lock'), trkL2, eq, rcTag, rcTag2, rcNote, rrTag].forEach((e) => dimBox.appendChild(e));
