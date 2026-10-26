@@ -79,7 +79,7 @@
 | 27 | 192 秒了解 Android 权限机制 | zh | 计划中 | `android-permissions` |
 | 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |
 | 29 | 150 秒速通 Git | zh | 计划中 | `git` |
-| 30 | 256 秒速通五种主流配置文件格式 | zh | 计划中 | `config-file-formats` |
-| 31 | 128秒认识冯·诺伊曼架构 | zh | 计划中 | `von-neumann` |
+| 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](config-file-formats/) |
+| 31 | 128秒认识冯·诺伊曼架构 | zh | 制作中 | [`von-neumann`](von-neumann/) |
 | 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` |
 <!-- catalog:end -->

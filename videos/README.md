@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 195 部：已成片 17，制作中 4，计划中 174。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 195 部：已成片 17，制作中 6，计划中 172。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -39,6 +39,8 @@
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
+| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 文案 | 核查来稿事实与比较口径，校对 150 秒预算；按构成主义海报规范细化视觉实现 | 最新 | Gemini 4 Argon |
+| [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | 文案 | 核查来稿事实、通读校对并核对 128 秒预算；依策划者提供的卡带未来主义设计继续细化 | 最新 | Gemini 4 Argon |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 全部选题
@@ -280,8 +282,8 @@
 | 27 | 192 秒了解 Android 权限机制 | zh | 计划中 | `android-permissions` |  |
 | 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |  |
 | 29 | 150 秒速通 Git | zh | 计划中 | `git` |  |
-| 30 | 256 秒速通五种主流配置文件格式 | zh | 计划中 | `config-file-formats` | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
-| 31 | 128秒认识冯·诺伊曼架构 | zh | 计划中 | `von-neumann` | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
+| 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
+| 31 | 128秒认识冯·诺伊曼架构 | zh | 制作中 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 
 ### 游戏物理学

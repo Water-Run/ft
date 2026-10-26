@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-已登记制作项目 21 部，已登记发布 16 部，其余 5 部；另有 174 个计划选题（可仅保留简报），见[片单](README.md)。
+已登记制作项目 23 部，已登记发布 16 部，其余 7 部；另有 172 个计划选题（可仅保留简报），见[片单](README.md)。
 
 此处核对结构化署名记录，未逐部观看成片；字段齐全不代表最终验收通过。模型名按原记录列出，不合并简称或猜测版本；一片可有多个模型，参与片数不能相加当成总片数。服务另列。
 
@@ -23,7 +23,7 @@
 | 原记录模型名 | 已发布 | 未发布 | 参与片目 |
 |---|---|---|---|
 | Claude Opus 5.5 | 15 | 4 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/README.md)、[一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/README.md)、[一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/README.md)、[一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md)、[120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/README.md)、[200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](in-seconds/lean4/README.md)、[150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](in-seconds/dense-vs-moe/README.md)、[256 秒搞懂 SSH](in-seconds/ssh/README.md)、[128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/README.md)、[隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md)、[10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](standalone/openclaw-opencode-v2/README.md)、[从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
-| Gemini 4 Argon | 2 | 2 | [256 秒搞懂 SSH](in-seconds/ssh/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
+| Gemini 4 Argon | 2 | 4 | [256 秒搞懂 SSH](in-seconds/ssh/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md)、[128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
 | DeepSeek V4.1 Flash 1017 | 3 | 0 | [128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
 | MiniMax M3.1 Flash | 2 | 1 | [256 秒搞懂 SSH](in-seconds/ssh/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
 | GPT-6 Astra | 1 | 1 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md) |
@@ -45,6 +45,8 @@
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md) | 审稿 | WaterRun | GPT-6.1 Sol：取证、实测与结构测绘、简报整理<br>Claude Opus 5.5：补充取证、文案、视觉设计 | 未登记 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
 | [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 审稿 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐初稿、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿<br>Claude Opus 5.5：分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host |
+| [150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md) | 文案 | WaterRun | Gemini 4 Argon：文案、逐句画面设计 | 未登记 |
+| [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md) | 文案 | WaterRun | Gemini 4 Argon：文案、逐句画面设计 | 未登记 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 
 ## 已发布视频
