@@ -206,7 +206,7 @@ scene('s2', ({ root, s, c0 }) => {
   slide(admin, t8, { x: -30 }); typeText(big, big.innerHTML, t8 + 0.1, 48, { cursor: false });
   st.textContent += ' .sql.s2-this { background: var(--pale); outline: 2px solid var(--main); outline-offset: 8px; }';
   lit(big, 's2-this', T('t9z', '这句') - 0.1, Tend('t9z') + 0.6);   // 「比如这句 UPDATE」：说到「这句」时这一行亮起（R13 第 7 条）
-  svgIn(grid, T('t9', '所有人') - 0.3, 0.5);
+  svgIn(grid, T('t8', '很多行') - 0.1, 0.6);                        // 讲到「很多行」时 4096 格就铺开
   slam(n4096, T('t9z', '4096'), { from: 1.4 }); sfx('thud', T('t9z', '4096'), { g: 0.5 });
   slide(cnt, tg0 - 0.1, { x: -20 }); slide(leg, tg0 + 0.2, { x: -20 });
   slam(stop, tStop + 0.1, { from: 1.6 }); sfx('error', tStop, { g: 0.6 });
@@ -402,47 +402,89 @@ scene('s2', ({ root, s, c0 }) => {
     return [c, p];
   });
 
-  // ── q6：引向下一章——整张表当场组织起来（R13 第 9 条）：4096 行涌进 users.ibd，按页装好，49 页各按实测的用途上色 ──
   const out4 = T('q6') + 0.25;
   [...Ls, ...qcards.map((q) => q[0])].forEach((e, i) => tl.to(e, { autoAlpha: 0, y: -16, duration: 0.35 }, out4 + (i % 4) * 0.04));
   qcards.forEach(([, p]) => svgOut(p, out4, 0.25));
   const OG = h('div', 'abs', W); px(OG, 0, 0, 1920, 1080); css(OG, { pointerEvents: 'none' }); vanish(OG, 0); show(OG, out4 + 0.1, { y: 0, d: 0.4 });   // 这一屏之前整组藏着
-  const G7 = { x: 760, y: 230, c: 82, s: 70 };              // 7 × 7 = 49 页
-  const fileT = h('div', 'abs', OG, '<span class="mono" style="font-size:40px;font-weight:700">users.ibd</span>'); px(fileT, G7.x, G7.y - 76);
-  const pcs = [];
-  const PKS = new Set(PK_LEAVES), NMS = new Set(NM_LEAVES);
-  const kind = (p) => (p < 4 ? 'sys' : p === D.pk.root ? 'pkr' : p === D.nm.root ? 'nmr' : PKS.has(p) ? 'pk' : NMS.has(p) ? 'nm' : 'etc');
-  const COL = { sys: ['var(--band)', 'var(--edge)'], pkr: ['var(--mainD)', 'var(--mainD)'], nmr: ['var(--main)', 'var(--main)'], pk: ['var(--teal)', 'var(--mainD)'], nm: ['#CFE6EB', 'var(--main)'], etc: ['var(--panel)', 'var(--edge)'] };
-  for (let p = 0; p < D.file.pages; p++) { const c = h('div', 'abs', OG); px(c, G7.x + (p % 7) * G7.c, G7.y + Math.floor(p / 7) * G7.c, G7.s, G7.s); css(c, { border: '2px dashed var(--edge)', background: 'transparent' }); c.dataset.name = '页' + p; pcs.push(c); }
-  // 一条条的行从左边涌进来（每条是一行；细线随时间往右走，进到文件里就不见了）
-  const STREAM = 36, tS0 = out4 + 0.35, tS1 = Math.max(tS0 + 2.0, Tend('q6') - 0.4);
-  const lines = [...Array(STREAM)].map(() => { const e = h('div', 'abs', OG); css(e, { height: '4px', width: '70px', background: 'var(--main)' }); return e; });
-  const nRows = (t) => Math.round(4096 * ease.io3(clamp((t - tS0) / (tS1 - tS0))));
-  const oCnt = h('div', 'abs', OG); px(oCnt, 150, 520);
-  const oCntN = h('div', 'num', oCnt, '0'); css(oCntN, { font: '800 64px Inter', color: 'var(--main)' }); h('div', 't-small', oCnt, '行进来了');
-  const oCntP = h('div', 'abs', OG); px(oCntP, 1420, 300);
-  const oCntPN = h('div', 'num', oCntP, '0'); css(oCntPN, { font: '800 56px Inter', color: 'var(--mainD)' }); h('div', 't-small', oCntP, '页 × 16 KB');
-  const oCntB = h('div', 'abs num', OG, ''); px(oCntB, 1420, 420); css(oCntB, { font: '700 30px Inter', color: 'var(--ink2)' });
-  const oCntBu = h('div', 'abs t-small', OG, '字节'); px(oCntBu, 1420, 460); vanish(oCntBu, 0); appear(oCntBu, tS0);
-  let lastS = '';
+  // ── q6：引向下一章（R14：要契合数据的逻辑结构、有规模、井井有条）——4096 行按逐行插入的实测（D.growth）同时长成两棵树：
+  // 主键树按编号、姓名索引按名字，新行都接在最右边那页叶子；页满了就从文件里取下一个空页（T10），所以下面的文件页条里两棵树的页交替出现 ──
+  const tS0 = T('q6') + 0.7, tS1 = Tend('q6') + 4.2;
+  const nRows = (t) => Math.round(4096 * Math.pow(clamp((t - tS0) / (tS1 - tS0)), 1.7));
+  const GE = (ix) => D.growth.filter((e) => e.index === ix);
+  const PE = GE('PRIMARY'), NE = GE('idx_name');
+  const pkSt = (n) => { if (n < 208) return null; let e = PE[0]; for (const x of PE) if (x.row <= n) e = x;
+    const c = { ...e.pages }; delete c[4]; const ex = PK_LEAVES.filter((p) => c[p] != null); c[ex[ex.length - 1]] += n - e.row; return c; };
+  const nmSt = (n) => { if (n < 274) return null; let e = NE[0]; for (const x of NE) if (x.row <= n) e = x;
+    const c = { ...e.pages }; delete c[5]; const ex = NM_LEAVES.filter((p) => c[p] != null); const al = e.row < 2050 && n >= 2050 ? 1 : 0;
+    c[ex[ex.length - 1]] += n - e.row - al; c[9] += al; return c; };
+  const LX6 = (k) => 260 + k * 66, LW6 = 54;
+  const tree6 = (rootY, leafY, leafH, list, cls) => {
+    const root = h('div', 'abs', OG); px(root, LX6(0), rootY, LW6, 40); css(root, { background: cls.root, border: `1.5px solid ${cls.root}` });
+    const items = list.map((pg, k) => {
+      const stem = h('div', 'abs', OG); px(stem, LX6(k) + LW6 / 2 - 1, rootY + 40, 2, leafY - rootY - 40); css(stem, { background: cls.root });
+      const box = h('div', 'abs', OG); px(box, LX6(k), leafY, LW6, leafH); css(box, { border: `1.5px solid ${cls.root}`, background: 'var(--panel)', overflow: 'hidden' });
+      const fill = h('div', 'abs', box); css(fill, { left: '0', right: '0', bottom: '0', background: cls.fill });
+      const no = h('div', 'abs num', OG, String(pg)); px(no, LX6(k) - 6, leafY + leafH + 6, LW6 + 12); css(no, { textAlign: 'center', font: '600 22px Inter', color: cls.root });
+      return { stem, box, fill, no };
+    });
+    return { root, items };
+  };
+  const PT = tree6(226, 312, 140, PK_LEAVES, { root: 'var(--mainD)', fill: 'var(--teal)' });
+  const NT = tree6(548, 634, 116, NM_LEAVES, { root: 'var(--main)', fill: '#CFE6EB' });
+  const tagP = h('div', 'tag', OG, '主键树'); px(tagP, 96, 232); css(tagP, { fontSize: '26px', background: 'var(--mainD)' });
+  const tagN = h('div', 'tag', OG, '姓名索引'); px(tagN, 86, 554); css(tagN, { fontSize: '26px', background: 'var(--main)' });
+  const sub6 = h('div', 'abs t-small', OG, '按编号排'); px(sub6, 96, 282);
+  const sub6n = h('div', 'abs t-small', OG, '按名字排'); px(sub6n, 86, 604);
+  // 文件：49 页按页号排成一条
+  const fT = h('div', 'abs mono', OG, 'users.ibd'); px(fT, 90, 838); css(fT, { fontSize: '28px', fontWeight: 700 });
+  const fcs = [...Array(D.file.pages)].map((_, p) => { const c = h('div', 'abs', OG); px(c, 260 + p * 28, 836, 24, 34); c.dataset.name = '页' + p; return c; });
+  const fticks = [0, 8, 16, 24, 32, 40, 48].map((p) => { const e = h('div', 'abs num', OG, String(p)); px(e, 260 + p * 28 - 11, 876, 46); css(e, { textAlign: 'center', font: '500 22px Inter', color: 'var(--ink2)' }); return e; });
+  // 计数：行、页
+  const cR = h('div', 'abs', OG); px(cR, 1690, 300); const cRN = h('div', 'num', cR, '0'); css(cRN, { font: '800 60px Inter', color: 'var(--main)' }); h('div', 't-small', cR, '行');
+  const cP = h('div', 'abs', OG); px(cP, 1690, 560); const cPN = h('div', 'num', cP, '7'); css(cPN, { font: '800 52px Inter', color: 'var(--mainD)' }); h('div', 't-small', cP, '页');
+  // 行：每一行从根页往下落进此刻最右边的那页叶子（编号、名字都是递增插入的，新行总在最右边）
+  const DASH = 12, dashes = [...Array(DASH * 2)].map((_, j) => { const e = h('div', 'abs', OG); css(e, { height: '22px', width: '4px', background: j < DASH ? 'var(--mainD)' : 'var(--main)' }); return e; });
+  let last6 = '';
   F((t) => {
-    const on = t >= tS0 && t < tS1 + 0.2, n = nRows(t), used = t < tS0 - 0.2 ? 0 : Math.min(D.file.pages, 4 + Math.ceil((D.file.pages - 4) * n / 4096));
-    const key = (on ? Math.round(t * 30) : -1) + ':' + n + ':' + used; if (key === lastS) return; lastS = key;
-    lines.forEach((e, j) => { const ph = ((t - tS0) * 2.2 + j / STREAM) % 1, x = 120 + ph * (G7.x - 200), y = 300 + ((j * 37) % 11) * 42;
-      e.style.visibility = on && n < 4096 ? 'visible' : 'hidden'; e.style.left = x.toFixed(0) + 'px'; e.style.top = y + 'px'; e.style.opacity = (0.35 + 0.65 * Math.sin(Math.PI * ph)).toFixed(2); });
-    pcs.forEach((c, p) => { const k = kind(p), live = p < used; const [bg, bd] = live ? COL[k] : ['transparent', 'var(--edge)'];
-      c.style.background = bg; c.style.borderColor = bd; c.style.borderStyle = live ? 'solid' : 'dashed'; });
-    oCntN.textContent = n.toLocaleString('en-US').replace(',', ' ');
-    oCntPN.textContent = used; oCntB.textContent = used ? (used * 16384).toLocaleString('en-US').replace(/,/g, ' ') : '';
+    const n = t < tS0 ? 0 : nRows(t), on = t >= tS0 && n < 4096, a = pkSt(n), b = nmSt(n), up = n >= 208;
+    const key = n + ':' + (on ? Math.round(t * 30) : -1); if (key === last6) return; last6 = key;
+    let kP = 0, kN = 0;
+    PT.items.forEach((it, k) => { const v = a ? a[PK_LEAVES[k]] : null, vis = v != null; if (vis) kP = k + 1;
+      [it.stem, it.box, it.no].forEach((e) => { e.style.visibility = vis ? 'visible' : 'hidden'; }); if (vis) it.fill.style.height = (100 * v / 207).toFixed(1) + '%'; });
+    NT.items.forEach((it, k) => { const v = b ? b[NM_LEAVES[k]] : null, vis = v != null; if (vis) kN = k + 1;
+      [it.stem, it.box, it.no].forEach((e) => { e.style.visibility = vis ? 'visible' : 'hidden'; }); if (vis) it.fill.style.height = (100 * v / 273).toFixed(1) + '%'; });
+    // 根页：分裂之前它自己就是唯一的一页，之后横跨下面的叶子、只记路标
+    PT.root.style.width = (kP ? LX6(kP - 1) + LW6 - LX6(0) : LW6) + 'px'; PT.root.style.visibility = t >= tS0 ? 'visible' : 'hidden';
+    NT.root.style.width = (kN ? LX6(kN - 1) + LW6 - LX6(0) : LW6) + 'px'; NT.root.style.visibility = t >= tS0 ? 'visible' : 'hidden';
+    // 文件页条：0–3 文件自用；4 主键根（分裂前是装行的页）；5 姓名索引的根；6 年龄索引的根（T10）；其余按两棵树此刻占用的页上色
+    let maxP = 6, used = 7;
+    fcs.forEach((c, p) => { if ((a && a[p] != null) || (b && b[p] != null)) maxP = Math.max(maxP, p); });
+    fcs.forEach((c, p) => {
+      let bg = 'transparent', bd = 'var(--edge)', st_ = 'dashed';
+      if (p < 4) { bg = 'var(--band)'; st_ = 'solid'; }
+      else if (p === 4) { bg = up ? 'var(--mainD)' : 'var(--teal)'; bd = 'var(--mainD)'; st_ = 'solid'; }
+      else if (p === 5) { bg = 'var(--main)'; bd = bg; st_ = 'solid'; }
+      else if (p === 6) { bg = 'var(--mute)'; bd = bg; st_ = 'solid'; }
+      else if (a && a[p] != null) { bg = 'var(--teal)'; bd = 'var(--mainD)'; st_ = 'solid'; }
+      else if (b && b[p] != null) { bg = '#CFE6EB'; bd = 'var(--main)'; st_ = 'solid'; }
+      else if (p < maxP || n >= 4096) { bg = 'var(--panel)'; st_ = 'solid'; }
+      if (st_ === 'solid') used = Math.max(used, p + 1);
+      css(c, { background: bg, border: `2px ${st_} ${bd}` });
+    });
+    cRN.textContent = n.toLocaleString('en-US').replace(',', ' '); cPN.textContent = n >= 4096 ? D.file.pages : used;
+    const xP = LX6(Math.max(0, kP - 1)) + LW6 / 2, xN = LX6(Math.max(0, kN - 1)) + LW6 / 2;
+    dashes.forEach((e, j) => { const top = j < DASH, i = top ? j : j - DASH, ph = ((t - tS0) * 1.8 + i / DASH) % 1;
+      const x = (top ? xP : xN) + (((i * 37) % 7) - 3) * 5 - 2, y = lerp(top ? 150 : 482, top ? 352 : 666, ph);
+      e.style.visibility = on ? 'visible' : 'hidden'; e.style.left = x.toFixed(0) + 'px'; e.style.top = y.toFixed(0) + 'px'; e.style.opacity = (0.3 + 0.7 * Math.sin(Math.PI * ph)).toFixed(2); });
   });
-  [fileT, oCnt, oCntP].forEach((e) => { vanish(e, 0); });
-  show(fileT, out4 + 0.2, { y: 10, d: 0.4 }); show(oCnt, tS0, { x: -20, y: 0, d: 0.35 }); show(oCntP, tS0 + 0.2, { x: 20, y: 0, d: 0.35 });
-  for (let k = 0; k < 8; k++) sfx('tick', lerp(tS0, tS1, k / 7), { g: 0.25 });
-  // 图例：各页的用途（与第 03 章的配色一致）
-  const legend = h('div', 'abs t-small', OG, '<span class="s2-lg" style="background:var(--mainD)"></span>根页 &nbsp; <span class="s2-lg" style="background:var(--teal);border-color:var(--mainD)"></span>主键叶子 &nbsp; <span class="s2-lg" style="background:#CFE6EB;border-color:var(--main)"></span>姓名索引叶子 &nbsp; <span class="s2-lg" style="background:var(--band)"></span>文件自用页');
-  px(legend, G7.x - 160, G7.y + 7 * G7.c + 10); st.textContent += ' .s2-lg { display:inline-block; width:22px; height:22px; border:2px solid var(--edge); vertical-align:middle; margin-right:6px; }';
+  [tagP, tagN, sub6, sub6n, fT, cR, cP].forEach((e, i) => { vanish(e, 0); show(e, out4 + 0.2 + (i % 4) * 0.08, { y: 8, d: 0.35 }); });
+  fticks.forEach((e) => { vanish(e, 0); appear(e, out4 + 0.3); });
+  [PE[0].row, NE[0].row, ...PE.slice(1, 4).map((e) => e.row)].forEach((r) => sfx('tick', tS0 + (tS1 - tS0) * Math.pow(r / 4096, 1 / 1.7), { g: 0.35 }));
+  // 图例（与第 03 章同一套颜色）
+  const chip6 = (bg, bd) => `<span style="display:inline-block;width:20px;height:20px;background:${bg};border:1.5px solid ${bd};vertical-align:-3px;margin:0 6px 0 18px"></span>`;
+  const legend = h('div', 'abs t-small', OG, chip6('var(--band)', 'var(--edge)') + '文件自用' + chip6('var(--mainD)', 'var(--mainD)') + '主键根' + chip6('var(--teal)', 'var(--mainD)') + '主键叶子'
+    + chip6('var(--main)', 'var(--main)') + '姓名索引根' + chip6('#CFE6EB', 'var(--main)') + '姓名索引叶子' + chip6('var(--mute)', 'var(--mute)') + '别的索引' + chip6('var(--panel)', 'var(--edge)') + '其他');
+  px(legend, 242, 916); css(legend, { whiteSpace: 'nowrap' });
   vanish(legend, 0); show(legend, tS0 + 0.4, { y: 8, d: 0.4 });
-  const qm = h('div', 'abs', OG, '<span style="font:800 120px Inter;color:var(--mainD)">?</span>'); px(qm, 1440, 500);
-  vanish(qm, 0); slam(qm, T('q6', '放在哪里'), { from: 1.5 }); sfx('thud', T('q6', '放在哪里'), { g: 0.45 });
   W.appendChild(ov);
 });

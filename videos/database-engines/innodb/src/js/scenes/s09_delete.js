@@ -214,6 +214,8 @@ scene('s9', ({ root, s, c0 }) => {
   vanish(gPh, 0); show(gPh, T('d12', '幻读') + 0.1, { y: 8, d: 0.4 }); exit(gPh, T('d13', '插') - 0.2, { y: 8, d: 0.3 });
   const dvArrow = path(ov, `M${L2.X(T('d9', '插进'))},${L2.Y(1) - 70} L${L2.X(T('d9', '插进'))},${600} L${120 + cx(iA) - GAP / 2},${110 + Y0 + CH - 24}`, 'acc', { w: 2.2, dashed: '7 6' });
   arrowIn(dvArrow, T('d9', '挡住') - 0.3, 0.5); svgOut(dvArrow, tBobC2);
+  const dWait = h('div', 'tag acc', G2, 'Dave 在等'); px(dWait, L2.X(T('d9', '插进')) + 24, L2.Y(1) + 26); css(dWait, { fontSize: '26px' });
+  vanish(dWait, 0); slam(dWait, T('d9', '挡住') + 0.15, { from: 1.3 }); exit(dWait, tBobC2, { d: 0.3 });
   // 本场收尾
   const tEnd = s.end - 0.7;
   exit(G2, tEnd, { y: 16, d: 0.3 });

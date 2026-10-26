@@ -70,8 +70,9 @@ scene('s11', ({ root, s, c0 }) => {
   const FL = [[T('k21', 'undo'), T('k21', 'undo') + 0.9], [T('k22', '多版本'), T('k22', '多版本') + 0.9], [T('k15', '多版本'), T('k15', '多版本') + 0.9]];
   { let last = null; F((t) => { const on = FL.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; uRec.classList.toggle('s10flash', on); }); }
   const rscan = h('div', 'abs', redo); px(rscan, 200, 44, 10, 42); css(rscan, { background: 'var(--main)' });
-  { const W2 = [[T('k23', 'redo'), T('k23', 'redo') + 1.2], [T('k15', '日志'), T('k15', '日志') + 1.2]]; let last = null;
-    F((t) => { const w = W2.find(([a, b]) => t >= a && t < b); const x = w ? Math.round(lerp(200, 690, ease.io3(clamp((t - w[0]) / (w[1] - w[0]))))) : -1; if (x === last) return; last = x; rscan.style.display = w ? '' : 'none'; rscan.style.left = x + 'px'; }); }
+  // 重启后按 redo 重做：带子从头到尾一路填满（k23 整句都在走）
+  { const W2 = [[T('k23') + 0.2, Tend('k23') + 0.3], [T('k15', '日志'), T('k15', '日志') + 1.2]]; let last = null;
+    F((t) => { const w = W2.find(([a, b]) => t >= a && t < b); const x = w ? Math.round(lerp(10, 490, ease.io3(clamp((t - w[0]) / (w[1] - w[0]))))) : -1; if (x === last) return; last = x; rscan.style.display = w ? '' : 'none'; rscan.style.width = Math.max(10, x) + 'px'; }); }
   // 「事务」：行上那把锁再出现一下
   const l3 = lockAt(p27, 500, 88); vanish(l3, 0); appear(l3, T('k15', '事务')); vanish(l3, Tend('k15'));
   // k24：三样合在一起，就是 InnoDB 的事务——三张卡下面一道括线收成「事务」，三样部件一起亮

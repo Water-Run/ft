@@ -83,6 +83,9 @@ scene('s5', ({ root, s, c0 }) => {
   // e3：编号、名字、年龄，然后是两个看不见的字段
   [fId, fName, fAge].forEach((e, i) => lit(e, 'hot', T('e3', ['编号', '名字', '年龄'][i]), T('e3', '看不见')));
   [fTrx, fRp].forEach((e) => lit(e, 'hidden', T('e3', '看不见')));
+  // 两个看不见的字段先用深色块盖着（SELECT 查不到它们），讲到「看不见」时掀开
+  h('style', '', W).textContent = '.fld.s5-mask { background: var(--ink) !important; } .fld.s5-mask > * { visibility: hidden; } .fld.s5-mask::after { content: "SELECT 看不到"; position: absolute; left: 12px; top: 14px; font: 600 22px "Sans SC"; color: #fff; }';
+  [fTrx, fRp].forEach((e, i) => lit(e, 's5-mask', T('e2') + 0.1 + (i + 2) * 0.12, T('e3', '看不见') - 0.1 + i * 0.12));
   lit(fTrx, 'hot', T('e4', '事务号'), T('e5'));
   lit(fRp, 'hot', T('e5', '回滚指针'), T('e6'));
   LN.enter(tU - 1.0);

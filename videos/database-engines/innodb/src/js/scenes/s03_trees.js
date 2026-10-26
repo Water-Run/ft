@@ -12,7 +12,7 @@ scene('s3', ({ root, s, c0 }) => {
   const litWin = (e, cls, wins) => { let last = null; F((t) => { const on = wins.some(([a, b]) => t >= a && t < b); if (on !== last) { e.classList.toggle(cls, on); last = on; } }); };
 
   // ── 时间 → 已经插了多少行 ──
-  const tR0 = T('a6'), tR1 = T('a8', '满了'), tSplit = T('a9', '一分为二');
+  const tR0 = T('a6'), tR1 = T('a8', '满了'), tSplit = T('a9', '一分为二'), tUp4 = tSplit + 2.25;   // tUp4：页 4 升为根的那一刻（与下面 tRootIn 同一算法）
   const tG0 = T('a13'), tG1 = Tend('a15') - 0.4, tGs = T('a15') - 0.2, NSLOW = 760;   // 208 → 760 行慢放（开出叶页 11、13、15），之后加速
   const tBack0 = T('a24') + 0.1, tBack1 = Math.max(T('a24') + 1.2, Tend('a24') - 0.1), tAlice = T('a25'), tFwd0 = Tend('a27z') + 0.2, tFwd1 = tFwd0 + 0.6;
   const nAt = (t) => {
@@ -61,19 +61,26 @@ scene('s3', ({ root, s, c0 }) => {
   const PKSET = new Set(PK_LEAVES), NMSET = new Set(NM_LEAVES);
   let lastCells = '';
   F((t) => {
-    const n = nAt(t), a = pkState(n), b = nmState(n), named = t >= T('a22', '第二棵树') - 0.8;
-    const key = n + (named ? 'n' : '');
+    const n = nAt(t), a = pkState(n), b = nmState(n), named = t >= T('a22z', '一棵树') - 0.8, up = t >= tUp4;
+    const key = n + (named ? 'n' : '') + (up ? 'u' : '');
     if (key === lastCells) return; lastCells = key;
     cells.forEach((c, p) => {
       let bg = 'var(--panel)', bd = 'var(--edge)';
       if (p < 4) { bg = 'var(--band)'; }
-      else if (p === 4 && n > 0) { bg = 'var(--mainD)'; bd = 'var(--mainD)'; }
-      else if (p === 5 && n > 0) { bg = named ? 'var(--main)' : 'var(--edge)'; bd = bg; }
+      else if (p === 4 && n > 0) { bg = up ? 'var(--mainD)' : 'var(--teal)'; bd = 'var(--mainD)'; }   // 页 4：先是装行的页，分裂后成了根
+      else if ((p === 5 || p === 6) && n > 0) { bg = p === 5 && named ? 'var(--main)' : 'var(--mute)'; bd = bg; }   // 5 姓名索引的根、6 年龄索引的根（T10）
       else if (a && PKSET.has(p) && a[p] != null) { bg = 'var(--teal)'; bd = 'var(--mainD)'; }
-      else if (b && NMSET.has(p) && b[p] != null) { bg = named ? '#CFE6EB' : 'var(--band)'; bd = named ? 'var(--main)' : 'var(--edge)'; }
+      else if (b && NMSET.has(p) && b[p] != null) { bg = named ? '#CFE6EB' : 'var(--mute)'; bd = named ? 'var(--main)' : 'var(--mute)'; }
       c.style.background = bg; c.style.borderColor = bd;
     });
   });
+
+  // 页条的图例（R14：观众看不出颜色怎么选的）；讲到姓名索引时，「别的索引」里分出「姓名索引」
+  { const chip = (bg, bd) => `<span style="display:inline-block;width:20px;height:20px;background:${bg};border:1.5px solid ${bd};vertical-align:-3px;margin:0 6px 0 18px"></span>`;
+    const A_ = chip('var(--band)', 'var(--edge)') + '文件自用' + chip('var(--mainD)', 'var(--mainD)') + '主键根' + chip('var(--teal)', 'var(--mainD)') + '主键叶子';
+    const Z_ = chip('var(--mute)', 'var(--mute)') + '别的索引' + chip('var(--panel)', 'var(--edge)') + '其他';
+    const lg = h('div', 'abs t-small', W, A_ + Z_); px(lg, 860, 178, 940); css(lg, { textAlign: 'right', whiteSpace: 'nowrap' });
+    vanish(lg, 0); show(lg, T('a4') + 1.0, { y: 6, d: 0.35 }); swaps(lg, [[T('a22z', '一棵树') - 0.8, A_ + chip('#CFE6EB', 'var(--main)') + '姓名索引' + Z_]]); }
 
   // 第几行在什么时刻插进来（长树段的反函数）；每页主键叶子开出来的时刻
   const pkFirst = PK_LEAVES.map((pg) => { let r = Infinity; for (const e of PKE) if (e.pages[pg] != null) r = Math.min(r, e.row); return Math.max(208, r); });
@@ -197,7 +204,11 @@ scene('s3', ({ root, s, c0 }) => {
   vanish(cutL, 0); wipe(cutL, tCut - 0.2, { dir: 'l', d: 0.4 }); exit(cutL, tFall, { d: 0.25 });
   tl.to(h1, { y: -14, duration: 0.35, ease: 'power2.out' }, tCut + 0.2); tl.to(h2, { y: 14, duration: 0.35, ease: 'power2.out' }, tCut + 0.2);   // 两半先分开
   sfx('thud', tCut + 0.2, { g: 0.6 });
-  [r208, r208L].forEach((e) => exit(e, tCut + 0.2, { y: 10, d: 0.3 }));
+  exit(r208L, tCut + 0.2, { y: 10, d: 0.3 });
+  // 第 208 行不是消失：它飞进后一半的末尾，跟着后一半落进页 8（所以页 8 是 105 行）
+  tl.fromTo(r208, { x: 0, y: 0 }, { x: -4 * RPX, y: 256 + 23 * RPY + 14 - 200, duration: 0.45, ease: 'power3.inOut', immediateRender: false }, tCut + 0.25);
+  vanish(r208, tCut + 0.72);
+  { const e = h('div', 'abs', h2); px(e, 0, 12 * RPY, RW, RH_); css(e, { background: 'var(--acc)' }); vanish(e, 0); appear(e, tCut + 0.72); }
   const fall = (e, k, n, top0, h0, y0) => {                    // 落进近景树那一页叶子的「已装」部分
     const hh = 250 * n / 207, top1 = 400 + 250 - hh, lx = [800, 1120][k] - 75;
     tl.fromTo(e, { x: 0, y: y0, scaleX: 1, scaleY: 1, transformOrigin: '0 0' }, { x: lx - 776, y: top1 - top0, scaleX: 150 / 369, scaleY: hh / h0, duration: 0.95, ease: 'power3.inOut', immediateRender: false }, tFall);
@@ -206,6 +217,13 @@ scene('s3', ({ root, s, c0 }) => {
   fall(h1, 0, 103, 256, 12 * RPY, -14); fall(h2, 1, 105, 256 + 11 * RPY, 12 * RPY, 14);
   sfx('whoosh', tFall, { g: 0.4 });
   [gauge, gLab, gRow, full, idTop, idBot].forEach((e) => exit(e, tCut, { d: 0.3 }));
+  // 新页从哪来（T10）：文件里按顺序取下一个空页；页 7、8 在页条上标出，虚线连到落下来的两页叶子
+  const gAlloc = gloss(W, 120, 300, '', '<b>两页新的</b>：取文件里下一个空页；5、6 已是另两个索引的根', { w: 560 });
+  vanish(gAlloc, 0); show(gAlloc, tCut - 0.1, { y: 8, d: 0.4 }); exit(gAlloc, T('a12') - 0.1, { y: 8, d: 0.3 });
+  const hl78 = h('div', 'abs', W); px(hl78, FX + 7 * FP - 4, FY - 4, 2 * FP + 4, 38); css(hl78, { border: '3px solid var(--acc)' });
+  vanish(hl78, 0); show(hl78, tCut + 0.1, { s: 1.3, y: 0, d: 0.3 }); exit(hl78, T('a12') - 0.1, { d: 0.3 });
+  const to78 = [800, 1120].map((x, i) => path(ov, `M${FX + (7 + i) * FP + 13},${FY + 40} C${FX + (7 + i) * FP + 13},${260} ${x},${300} ${x},${352}`, 'acc', { w: 2, dashed: '6 6', arrow: false }));
+  to78.forEach((p_) => { p_.setAttribute('opacity', 0); tl.fromTo(p_, { opacity: 0 }, { opacity: 0.8, duration: 0.3, immediateRender: false }, tFall + 0.5); tl.to(p_, { opacity: 0, duration: 0.3 }, T('a12') - 0.1); });
   // 第 4 页（空出来的框）留着，a11 讲到「留在上面」时升到上面，变成根
   const tRootIn = tLeaf + 0.4;                                  // 两半落定，第 4 页升到上面成了根（a11 再一项项写进去）
   tl.fromTo(big, { x: 0, y: 0, scaleX: 1, scaleY: 1, transformOrigin: '0 0' }, { x: 810 - 760, y: 210 - 240, scaleX: 300 / 400, scaleY: 64 / 420, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tRootIn - 0.7);
@@ -232,6 +250,10 @@ scene('s3', ({ root, s, c0 }) => {
   cuLines.forEach((l, i) => arrowIn(l, T('a11', '两项') + i * 0.5, 0.45));
   [0, 1].forEach((i) => sfx('tick', T('a11', '两项') + i * 0.5, { g: 0.4 }));
   [cuTagR, cuTagL].forEach((e) => vanish(e, 0));
+  // 页 4 从装行的页变成上一层：落定时写明它现在只记路标；页条上那一格同一刻从浅绿变深青
+  const up4 = h('div', 'tag', CU, '页 4 留在上面：不放行，只记路标'); px(up4, CUR.x + CUR.w + 24, CUR.y + 12); css(up4, { fontSize: '24px' });
+  vanish(up4, 0); slam(up4, tRootIn + 0.05, { from: 1.2 }); exit(up4, T('a12', '根') - 0.15, { d: 0.25 }); sfx('pop', tRootIn + 0.05, { g: 0.4 });
+  { const hh = 250 * 105 / 207, m = h('div', 'abs', CU); px(m, CUL[1].x - CUW / 2 + 6, CUY + CUH - hh + 3, CUW - 15, 6); css(m, { background: 'var(--acc)' }); vanish(m, 0); appear(m, tLeaf); }   // 页 8 顶上那一条是第 208 行
   // 收进整棵树：整组缩向整棵树前两页叶子所在的位置，同时淡出；整棵树同一刻淡入
   tl.fromTo(CU, { x: 0, y: 0, scale: 1, transformOrigin: '0 0' }, { x: 584, y: 132, scale: 0.42, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tMorph);   // 缩到整棵树此刻（两页叶子、居中）的位置
   tl.to(CU, { autoAlpha: 0, duration: 0.35, ease: 'power1.in' }, tMorph + 0.35);
@@ -262,6 +284,15 @@ scene('s3', ({ root, s, c0 }) => {
     rootPK.style.width = (k0 ? RX(k0 - 1) - RX(0) + 68 : 0) + 'px'; disp(rootPK, k0 > 0 && rootOn);
   });
   PKE.slice(1).forEach((e) => sfx('tick', tOfRow(e.row), { g: 0.35 }));   // 每开一页叶子一声
+  // 页条上方一个小三角指着「下一个空页」：哪棵树先满，就把它给哪棵（T10）
+  const nextP = h('div', 'abs', W, '<svg width="22" height="16" viewBox="0 0 22 16" style="display:block"><path d="M0 0 L22 0 L11 14 Z" style="fill:var(--acc)"/></svg>'); nextP.dataset.name = '下一个空页';
+  let lastNP = null;
+  F((t) => { const on = t >= tCut - 0.3 && t < tG1 + 0.6, n = nAt(t), a = pkState(n), b = nmState(n);
+    let p = 7; while ((a && a[p] != null) || (b && b[p] != null)) p++;
+    const k = on ? p : -1; if (k === lastNP) return; lastNP = k;
+    nextP.style.visibility = on ? 'visible' : 'hidden'; px(nextP, FX + p * FP + 2, FY - 22); });
+  const gNext = gloss(W, 120, 580, '', '<b>下一个空页</b>：哪棵树先满就给哪棵——9、10 给了另一个索引', { w: 900 });
+  vanish(gNext, 0); show(gNext, T('a13') + 0.1, { y: 8, d: 0.4 }); exit(gNext, Tend('a14') + 0.6, { y: 8, d: 0.3 });
   // a10：两页各装一半——两页叶子的行数亮起
   [0, 1].forEach((k) => lit(cuLeaves[k].cntEl, 'c-acc', T('a10', '一半') - 0.2 + k * 0.25, Tend('a10') + 0.4));
   { const sum = h('div', 'abs num', CU, '103 + 105 = 208'); px(sum, 820, 690); css(sum, { font: '800 40px Inter', color: 'var(--acc)' }); vanish(sum, 0); show(sum, T('a10', '一半') + 0.3, { y: 10, d: 0.4 }); exit(sum, T('a11', '两项') - 0.2, { d: 0.3 }); }
@@ -355,7 +386,7 @@ scene('s3', ({ root, s, c0 }) => {
   tl.to(CMPG, { autoAlpha: 0, y: 20, duration: 0.35 }, T('a20') - 0.1);
   // a20：聚簇索引的注解（M1；没有主键时 InnoDB 自己生成一个，M29）
   const gC = gloss(W, 122, 650, '聚簇索引', '<b>聚簇索引</b>：表本身就是这棵主键树，每张表一棵', { w: 1100, src: '手册 M1、M29' });
-  vanish(gC, 0); show(gC, T('a20', '聚簇索引') + 0.1, { y: 8, d: 0.4 }); exit(gC, T('a22', '第二棵树') - 0.3, { y: 8, d: 0.3 });
+  vanish(gC, 0); show(gC, T('a20', '聚簇索引') + 0.1, { y: 8, d: 0.4 }); exit(gC, T('a22z', '一棵树') - 0.3, { y: 8, d: 0.3 });
   const tblFrame = h('div', 'abs', W); px(tblFrame, 122, 201, LX(20) + 50 - 122, BY + BH + 52 - 201); css(tblFrame, { border: '3px dashed var(--main)' });   // 上边在「49 页 × 16 KB」与「页 4」之间
   const tblLbl = h('div', 'tag', W, 'users 表'); px(tblLbl, 122, BY + BH + 58); css(tblLbl, { background: 'var(--main)', fontSize: '26px' });
   vanish(tblFrame, 0); vanish(tblLbl, 0);
@@ -372,13 +403,17 @@ scene('s3', ({ root, s, c0 }) => {
   const nleaves = D.nm.leaves.map((l, j) => { const p = pageBox(nmGroups[j], NX(j) - NBW / 2, NBY, NBW, NBH, l.page, { cnt: true }); css(p, { borderColor: 'var(--main)' }); css(p.fillEl, { background: '#CFE6EB' }); css(p.querySelector('.no'), { color: 'var(--main)' }); return p; });
   const ndropsOv = overlay(W);
   const ndrops = D.nm.leaves.map((l, j) => path(ndropsOv, `M${NX(j)},645 L${NX(j)},${NBY - 40}`, 'main', { w: 1.4 }));
-  const tN = T('a22', '第二棵树');
+  const tN = T('a22z', '一棵树');
   [...leaves, rootPK, ...rootCells].forEach((e) => tl.to(e, { opacity: 0.55, duration: 0.5 }, T('a22') + 0.1));
   [...leaves, rootPK, ...rootCells].forEach((e) => tl.to(e, { opacity: 1, duration: 0.5 }, T('a24') + 0.1));
   const key2 = h('div', 'abs mono', W, '<span class="c-main" style="font-weight:700">KEY</span> idx_name (name)'); px(key2, 1300, 560); css(key2, { fontSize: '30px' });
   vanish(key2, 0); wipe(key2, T('a22', '名字') - 0.2, { dir: 'l', d: 0.5 }); exit(key2, T('a23') + 0.2, { y: -8, d: 0.3 });
   vanish(ndropsOv, 0); show(ndropsOv, tN + 0.3, { y: 0, d: 0.5 });
   [rootNM, rootNMLbl].forEach((e, i) => wipe(e, tN + i * 0.05, { dir: 'l', d: 0.4 }));
+  // 两棵树同在时各标上名字（R14：主键树、姓名索引要标清楚）
+  const nmPK = h('div', 'tag', W, '主键树'); px(nmPK, 200, 174); css(nmPK, { fontSize: '26px', background: 'var(--mainD)' });
+  const nmNM = h('div', 'tag', W, '姓名索引'); px(nmNM, 70, 604); css(nmNM, { fontSize: '26px', background: 'var(--main)' });
+  [nmPK, nmNM].forEach((e, i) => { vanish(e, 0); slam(e, tN + 0.1 + i * 0.2, { from: 1.3 }); });
   nmGroups.forEach((g, j) => show(g, tN + 0.2 + j * 0.05, { y: 16, d: 0.35 }));
   sfx('whoosh', tN, { g: 0.5 });
   let lastN = '';
@@ -399,7 +434,7 @@ scene('s3', ({ root, s, c0 }) => {
     const s3x = h('style', '', W); s3x.textContent = '.pg.s3-scan { outline: 3px solid var(--acc); outline-offset: 2px; }';
     leaves.forEach((e, k) => lit(e, 's3-scan', tS + k * dt, tS + k * dt + 0.22));
     const why = h('div', 'tag acc', W, '按名字找：主键树只能一页页翻'); px(why, 700, BY + BH + 24); css(why, { fontSize: '26px' });
-    vanish(why, 0); slam(why, tS, { from: 1.2 }); exit(why, tN + 0.3, { y: 8, d: 0.3 }); sfx('tick', tS, { g: 0.35 }); }
+    vanish(why, 0); slam(why, tS, { from: 1.2 }); exit(why, tN + 0.9, { y: 8, d: 0.3 }); sfx('tick', tS, { g: 0.35 }); }
   // 两棵树同在时只标要讲的页（同屏要读的字少）：主键树只留页 27 的页号，根页的键收起；姓名索引的键只留头三项与最后一项，行数只留页 9
   { const t0 = tN - 0.2, t1 = Infinity; let last = null;
     F((t) => { const on = t >= t0 && t < t1; if (on === last) return; last = on;
@@ -478,7 +513,7 @@ scene('s3', ({ root, s, c0 }) => {
   const b3n = h('div', 'abs t-small', big3, `姓名索引：${D.big.idx_name.map((x) => x.toLocaleString('en-US').replace(',', ' ')).join(' + ')} 页，也是三层`); px(b3n, 30, 360);
   const tB = T('a28', '一百万');
   vanish(big3, 0);
-  [...leaves, ...rootCells, rootPK, rootNM, rootLbl, rootNMLbl, lblRoot, lblLeaf, tagB, tagC, ...nmGroups].forEach((e) => to(e, tB - 0.2, { opacity: 0, duration: 0.4 }));   // 一百万行这一屏只留它自己（同屏要读的字少）
+  [...leaves, ...rootCells, rootPK, rootNM, rootLbl, rootNMLbl, lblRoot, lblLeaf, tagB, tagC, nmPK, nmNM, ...nmGroups].forEach((e) => to(e, tB - 0.2, { opacity: 0, duration: 0.4 }));   // 一百万行这一屏只留它自己（同屏要读的字少）
   [...drops, ...chain].forEach((p) => tl.to(p, { opacity: 0, duration: 0.4 }, tB - 0.2));
   to(ndropsOv, tB - 0.2, { opacity: 0, duration: 0.4 });
   wipe(big3, tB, { dir: 'b', d: 0.5 });

@@ -141,7 +141,7 @@ scene('s8', ({ root, s, c0 }) => {
     const staleL = h('div', 'abs', W, `页 ${D.alice.page}：内存里改过了，磁盘上这份还是旧的`); px(staleL, 740, 556); css(staleL, { font: '600 22px "Sans SC"', color: 'var(--acc)' });
     [stale, staleL].forEach((e) => { vanish(e, 0); show(e, tDirtyA + 0.4, { y: 0, d: 0.3 }); exit(e, Tend('j5') + 0.2, { d: 0.3 }); }); }
   const flushL = h('div', 'abs t-small', W, '写回：先进双写缓冲区'); px(flushL, 1240, 556);
-  vanish(flushL, 0); show(flushL, tFlushOther - 0.2, { y: 6, d: 0.3 }); exit(flushL, tFlush2 + 2.0, { d: 0.3 });
+  vanish(flushL, 0); show(flushL, tFlushOther - 0.2, { y: 6, d: 0.3 }); exit(flushL, tFlush2 + 2.2, { d: 0.3 });
   lit(ibdSq[PAGES.indexOf(BP[5])], 'hot', tFlush2 + 0.3, tFlush2 + 1.4);            // 再写回页 15
 
   // ── 泳道一：Alice 一次普通的修改（j2–j8） ──

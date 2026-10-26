@@ -14,11 +14,17 @@ scene('s4', ({ root, s, c0 }) => {
   const slots = [];
   const MID = 9;                                              // 15 格里旧的一段约占 3/8：后 6 格（M54）
   for (let i = 0; i < 15; i++) { const p = SLOT(i); const e = h('div', 'abs', W); px(e, p.x, p.y, 62, 62); css(e, { border: '1.5px dashed var(--edge)', background: i < MID ? '#EEF6F7' : '#F1EEE9' }); slots.push(e); }
-  const midBar = h('div', 'abs', W); { const a = SLOT(MID - 1), b = SLOT(MID); px(midBar, (a.x + 62 + b.x) / 2 - 2, a.y - 10, 4, 82); css(midBar, { background: 'var(--acc)' }); }
-  const midLab = h('div', 'abs t-small', W, '中点'); { const b = SLOT(MID); px(midLab, b.x - 30, b.y - 38); css(midLab, { color: 'var(--acc)', fontWeight: 700 }); }
-  const lruLeg = h('div', 'abs t-small', W, '<b style="color:var(--main)">新的一段 5/8</b> │ <b style="color:var(--ink2)">旧的一段 3/8</b><br>链头在左上，链尾在右下；读进来先放中点'); px(lruLeg, 160, 648); css(lruLeg, { lineHeight: '1.5' });
+  const midBar = h('div', 'abs', W); { const a = SLOT(MID - 1), b = SLOT(MID); px(midBar, (a.x + 62 + b.x) / 2 - 2, a.y - 2, 4, 70); css(midBar, { background: 'var(--acc)' }); }
+  const midLab = h('div', 'abs t-small', W, '中点'); { const b = SLOT(MID); px(midLab, b.x - 34, b.y - 31); css(midLab, { lineHeight: '28px' }); css(midLab, { color: 'var(--acc)', fontWeight: 700 }); }   // 「中点」放在两排格子之间的空当里，不压上一排
+  // 链的顺序：一条细线按格子的先后串起来，链头在左上、链尾在右下（R14：原来的一大句说明改成画出来）
+  const lruOv = overlay(W); W.insertBefore(lruOv, slots[0]);
+  path(lruOv, [...Array(15)].map((_, k) => { const q = SLOT(k); return `${k ? 'L' : 'M'}${q.x + 31},${q.y + 31}`; }).join(' '), 'mute', { arrow: false, w: 1.4 });
+  const headL = h('div', 'abs t-small', W, '链头'); { const q = SLOT(0); px(headL, q.x + 6, q.y - 34); }
+  const tailL = h('div', 'abs t-small', W, '链尾'); { const q = SLOT(14); px(tailL, q.x + 6, q.y + 66); }
+  const segChip = (bg) => `<span style="display:inline-block;width:20px;height:20px;background:${bg};border:1.5px dashed var(--edge);vertical-align:-3px;margin-right:6px"></span>`;
+  const lruLeg = h('div', 'abs t-small', W, segChip('#EEF6F7') + '<b style="color:var(--main)">新的一段</b>' + '<span style="margin-left:26px"></span>' + segChip('#F1EEE9') + '<b style="color:var(--ink2)">旧的一段</b>'); px(lruLeg, 160, 676); css(lruLeg, { whiteSpace: 'nowrap' });
   // 注解栏：缓冲池底下这一块，依次换上这一章的几个名词
-  const gPool = gloss(W, 144, 748, '缓冲池', '<b>缓冲池</b>：内存里缓存页的地方，按页管理；本机 128 MiB。页按最近使用排成一条 LRU 链', { w: 472, src: 'MySQL 9.7 手册（M27、M52）' });
+  const gPool = gloss(W, 144, 748, '缓冲池', '<b>缓冲池</b>：内存里放页的地方（本机 128 MiB）', { w: 472, src: 'MySQL 9.7 手册（M27、M52）' });
   const ibd = boxEl(zd, 24, 96, 1082, 540, 'users.ibd');
   // 主键树（迷你）：根页 4 + 21 页叶子
   const PKX = (k) => 700 + 18 + k * 50, PKY = 500, NMX = (j) => 700 + 18 + j * 66, NMY = 760;
@@ -38,8 +44,13 @@ scene('s4', ({ root, s, c0 }) => {
   slots.forEach((e, i) => show(e, c0 + 0.3 + i * 0.02, { y: 6, d: 0.3 }));
   sfx('whoosh', c0 + 0.1, { g: 0.4 });
   lit(pool, 'on', T('b2', '缓冲池'), T('b3'));
-  [midBar, midLab, lruLeg].forEach((e) => { vanish(e, 0); show(e, T('b2', '缓冲池') + 0.3, { y: 6, d: 0.4 }); });
-  vanish(gPool, 0); show(gPool, T('b2', '缓冲池') + 0.2, { y: 8, d: 0.4 }); exit(gPool, T('b6') - 0.2, { y: 8, d: 0.3 });
+  [midBar, midLab, lruLeg, lruOv, headL, tailL].forEach((e) => { vanish(e, 0); show(e, T('b2', '缓冲池') + 0.3, { y: 6, d: 0.4 }); });
+  vanish(gPool, 0); show(gPool, T('b2', '缓冲池') + 0.2, { y: 8, d: 0.4 }); exit(gPool, T('b3') + 2.0, { y: 8, d: 0.3 });
+  // 缓冲池的两个说法也在缓冲池下面交代：LRU 链、中点（R14：中点不在正中，别让人疑惑）
+  const gLRU = gloss(W, 144, 748, '', '<b>LRU 链</b>：按最近用过排队，链尾的先换出', { w: 472, src: '手册 M52、M53' });
+  vanish(gLRU, 0); show(gLRU, T('b3') + 2.1, { y: 8, d: 0.4 }); exit(gLRU, T('b5') - 0.05, { y: 8, d: 0.3 });
+  const gMid = gloss(W, 144, 748, '', '<b>中点</b>：新旧两段的分界；旧的一段占 3/8', { w: 472, src: '手册 M53、M54' });
+  vanish(gMid, 0); show(gMid, T('b5') + 0.05, { y: 8, d: 0.4 }); exit(gMid, Tend('b7') - 0.1, { y: 8, d: 0.3 });
   // b1：读一行先要把页读进内存——磁盘到内存的粗箭头（手册图的画法）
   const arrMem = bigArrow(ov, 760, 284, 600, 30, '#2D5A68');   // 箭头翼不碰缓冲池的白框
   svgIn(arrMem, T('b1', '内存') - 0.2, 0.4); svgOut(arrMem, T('b3'), 0.3);
@@ -112,7 +123,7 @@ scene('s4', ({ root, s, c0 }) => {
   // 目录：页尾一列 52 格，从下往上
   const DX = PG.w - 120, DY0 = PG.h - 30, DH = 9.4;
   const dirLbl = h('div', 'abs t-small', pg27, '目录'); px(dirLbl, DX - 2, 8);
-  const gDir = gloss(W, 144, 748, '页目录', '<b>页目录</b>：页尾一列槽，记每组记录的位置', { w: 472, src: 'P1、S5' });
+  const gDir = gloss(W, 1290, 892, '页目录', '<b>页目录</b>：页尾一列槽，记每组记录的位置', { w: 490, src: 'P1、S5' });   // 注解放在页目录正下方（R14：图文对应，左边是内存）
   vanish(gDir, 0); show(gDir, T('b8') + 0.1, { y: 8, d: 0.4 }); exit(gDir, T('b9', '对半') - 0.25, { y: 8, d: 0.2 });
   const dirCells = [];
   for (let k = 0; k < D.dir.n_dir_slots; k++) { const r = svg('rect', { x: DX, y: DY0 - (k + 1) * DH, width: 46, height: DH - 2, fill: '#D9EEEF', stroke: '#2D5A68', 'stroke-width': 0.8 }, recSvg); dirCells.push(r); }
@@ -122,10 +133,10 @@ scene('s4', ({ root, s, c0 }) => {
   // 范围框：还没排除的槽；每一步比较之后砍掉一半（按 P1 的探测顺序推出上下界）
   const RNG = []; { let lo = 0, hi = D.dir.n_dir_slots - 1; RNG.push([lo, hi]); probes.forEach((q) => { if (q.key > 2050) hi = q.slot; else lo = q.slot; RNG.push([lo, hi]); }); }
   const rng = h('div', 'abs', pg27); css(rng, { border: '3px solid var(--acc)', background: 'rgba(181,69,46,0.06)' });
-  const cmpT = h('div', 'abs t-small', W, '页目录里对半找：'); px(cmpT, 150, 726); css(cmpT, { color: 'var(--ink)', fontWeight: 700 });
+  const cmpT = h('div', 'abs t-small', W, '页目录里对半找：'); px(cmpT, 690, 896); css(cmpT, { color: 'var(--ink)', fontWeight: 700 });
   vanish(cmpT, 0); show(cmpT, tP0 - 0.05, { y: 6, d: 0.3 }); exit(cmpT, T('b10') - 0.1, { d: 0.3 });
-  probes.forEach((q, k) => { const e = h('div', 'abs num', W, `${k + 1}　${q.key} ${q.key > 2050 ? '&gt;' : q.key < 2050 ? '&lt;' : '='} 2050`); px(e, 150 + (k % 2) * 230, 760 + Math.floor(k / 2) * 34);
-    css(e, { font: '700 24px Inter', color: q.key === 2050 ? 'var(--mainD)' : 'var(--ink)' }); vanish(e, 0); appear(e, tP0 + k * tPstep); exit(e, T('b10') - 0.1, { d: 0.3 }); });
+  probes.forEach((q, k) => { const e = h('div', 'abs num', W, `${k + 1}　${q.key} ${q.key > 2050 ? '&gt;' : q.key < 2050 ? '&lt;' : '='} 2050`); px(e, 886 + (k % 3) * 200, 896 + Math.floor(k / 3) * 32);
+    css(e, { font: '700 22px Inter', color: q.key === 2050 ? 'var(--mainD)' : 'var(--ink)' }); vanish(e, 0); appear(e, tP0 + k * tPstep); exit(e, T('b10') - 0.1, { d: 0.3 }); });
   let lastR = -1;
   F((t) => { const on = t >= tP0 - 0.3 && t <= Tend('b9z') - 0.1, k = !on ? -1 : t < tP0 ? 0 : Math.min(probes.length, Math.floor((t - tP0) / tPstep) + 1); if (k === lastR) return; lastR = k;
     if (k < 0) { rng.style.visibility = 'hidden'; return; }
@@ -144,9 +155,8 @@ scene('s4', ({ root, s, c0 }) => {
   // 落到 2050 那一格：一条线从目录格指回那一行
   const hitY = DY0 - (D.dir.start_slot.slot + 1) * DH + DH / 2, pA = recPos(iA);
   const hit = svg('path', { d: `M${DX},${hitY} C${DX - 160},${hitY} ${pA.x + 200},${pA.y + 8} ${pA.x + 58},${pA.y + 8}`, fill: 'none', stroke: '#00758F', 'stroke-width': 3 }, recSvg);
-  const hitLbl = lab(iA, '2050', 6); css(hitLbl, { color: 'var(--main)', fontWeight: 800, fontSize: '26px' });
   const tHit = tP0 + probes.length * tPstep;
-  tl.fromTo(hit, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, tHit); vanish(hitLbl, 0); appear(hitLbl, tHit);
+  tl.fromTo(hit, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, tHit);
   sfx('blip', tHit, { g: 0.6 });
   const rowHit = h('div', 'pill fill', pg27, '2050 · Alice · 42'); px(rowHit, pA.x + 74, pA.y - 6);
   vanish(rowHit, 0); slam(rowHit, tHit + 0.1, { from: 1.3 });
@@ -193,9 +203,9 @@ scene('s4', ({ root, s, c0 }) => {
   arrowIn(pathPK3, T('b13', '整行') - 0.2, 0.4);
   const row = h('div', 'pill fill', W, '2050 · Alice · 42'); px(row, PKX(K27) - 60, PKY + 56); vanish(row, 0); slam(row, T('b13', '整行'), { from: 1.3 }); sfx('pop', T('b13', '整行'));
   const tagBack = h('div', 'tag', W, '回表'); px(tagBack, 1266, 384); css(tagBack, { fontSize: '28px' }); vanish(tagBack, 0); slam(tagBack, T('b14', '回表'), { from: 1.4 }); sfx('thud', T('b14', '回表'), { g: 0.6 });
-  const gBack = gloss(W, 144, 748, '回表', '<b>回表</b>：二级索引里只有编号，要回主键树取整行', { w: 472, src: '本片实验（L2）' });
+  const gBack = gloss(W, 700, 892, '回表', '<b>回表</b>：二级索引里只有编号，要回主键树取整行', { w: 1000, src: '本片实验（L2）' });
   vanish(gBack, 0); show(gBack, T('b14', '回表') + 0.2, { y: 8, d: 0.4 }); exit(gBack, T('b15b', '覆盖索引') - 0.15, { y: 8, d: 0.3 });
-  const gCov = gloss(W, 144, 748, '覆盖索引', '<b>覆盖索引</b>：要的列二级索引里都有，不必回表', { w: 472, src: '执行计划原文（E1）' });
+  const gCov = gloss(W, 700, 892, '覆盖索引', '<b>覆盖索引</b>：要的列二级索引里都有，不必回表', { w: 1000, src: '执行计划原文（E1）' });
   vanish(gCov, 0); show(gCov, T('b15b', '覆盖索引') + 0.1, { y: 8, d: 0.4 }); exit(gCov, Tend('b16'), { y: 8, d: 0.3 });
   [back, pathPK3].forEach((p) => svgOut(p, T('b15', '回表') + 0.3)); exit(row, tq4 - 0.2, { y: 8, d: 0.3 }); exit(tagBack, T('b15', '回表') + 0.3, { y: 8, d: 0.3 });
 

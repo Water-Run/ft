@@ -62,9 +62,15 @@ scene('intro', ({ root, s }) => {
   const G1A = '<span class="mono" style="font-size:30px">42 → 43</span>', G1B = '<span class="mono c-acc" style="font-size:30px;margin-left:18px">↶ ' + MARK.no(28) + '</span>';
   const G2A = '<span class="mini lk"></span><span class="mono" style="font-size:26px;margin:0 14px 0 8px">users</span><span class="mini b">Carol 写</span>', G2B = '<span class="mini w">Bob 等</span>';
   const G30 = '<span style="margin-right:12px">' + MARK.bolt(30) + '</span>', G3A = '<span class="mono" style="font-size:26px">CHECK TABLE</span>', G3B = '<span class="mono" style="font-size:26px"> · REPAIR TABLE</span>';
-  slide(g1, T('h5'), { y: 30 }); slide(g2, Tend('h5') + 0.05, { y: 30 }); slide(g3, Tend('h6') + 0.05, { y: 30 });   // 下一张卡在句间就进来
+  // 三张卡在说「三处」时一起进场、随即变淡；讲到哪一处，哪一张变实
+  { const tC0 = T('h4', '三处');
+    [g1, g2, g3].forEach((c, i) => slide(c, tC0 + i * 0.2, { y: 30 }));
+    [['h5', g1], ['h6', g2], ['h7', g3]].forEach(([c, e]) => lit(e, 'on', T(c), Tend(c) + 0.3)); }
   [[g1, 'h5'], [g2, 'h6'], [g3, 'h7']].forEach(([, c]) => sfx('thud', T(c) + 0.1, { g: 0.5 }));
   steps(g1, G1A, G1B, T('h5', '一组'), T('h5', '撤回')); steps(g2, G2A, G2B, T('h6', '在写'), T('h6', '等')); swaps(g3.querySelector('.cs'), [[T('h7', '断电') - 0.2, G30], [T('h7', '检查') - 0.4, G30 + G3A], [T('h7', '修复') - 0.8, G30 + G3A + G3B]]);
+  // 「断电」：整个画面暗一下
+  { const bo = h('div', 'abs', A); px(bo, -60, -60, 2040, 1200); css(bo, { background: '#15191C', opacity: 0, pointerEvents: 'none' }); const tb = T('h7', '断电');
+    tl.fromTo(bo, { opacity: 0 }, { opacity: 0.6, duration: 0.08, immediateRender: false }, tb); tl.fromTo(bo, { opacity: 0.6 }, { opacity: 0, duration: 0.7, immediateRender: false }, tb + 0.3); }
   [T('h5', '一组'), T('h5', '撤回'), T('h6', '在写'), T('h6', '等'), T('h7', '断电') - 0.2, T('h7', '检查') - 0.4, T('h7', '修复') - 0.6].forEach((t) => sfx('pop', t, { g: 0.35 }));
   // h4：讲到「三处做不到」时，两个文件稍稍退后，给下面的三张卡让出注意
   [myd, myi].forEach((e) => to(e, T('h4', '三处'), { opacity: 0.4, duration: 0.6 }));
@@ -100,6 +106,9 @@ scene('intro', ({ root, s }) => {
   slam(qm, T('h10', '还没到'), { from: 1.6 }); sfx('thud', T('h10', '还没到'), { g: 0.5 });
   // h11：要撤回——那一行的「42 → 43」掉过头来，问号换成撤回的箭头
   swaps(rowChip, [[T('h11', '撤回'), 'Alice · 2050 · 42 ← 43']]);
+  // 要撤回：那一行的标签从红色（改了）换成深青（退回去）
+  h('style', '', B).textContent += '.pill.s0-back { background: var(--mainD) !important; border-color: var(--mainD) !important; }';
+  lit(rowChip, 's0-back', T('h11', 'ROLLBACK')); tl.fromTo(rowChip, { scale: 1 }, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, T('h11', 'ROLLBACK'));
   swaps(qm, [[T('h11', '撤回'), '<span style="font:900 64px Inter;color:var(--acc)">↶</span>']]);
   [rowChip, qm].forEach((e) => exit(e, T('h12') + 0.6, { y: -10, d: 0.3 }));
 

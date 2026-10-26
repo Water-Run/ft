@@ -15,7 +15,8 @@ scene('s10', ({ root, s, c0 }) => {
 .s10t .n { color: var(--main); margin-right: 10px; font-family: Inter; }
 .s10t .a { position: absolute; left: 22px; right: 18px; bottom: 14px; font: 600 24px "Sans SC"; color: var(--mainD); line-height: 1.4; white-space: normal; }
 .s10s { position: absolute; font: 500 22px "Sans SC"; color: var(--ink2); white-space: nowrap; }
-.s10s.on { color: var(--ink); font-weight: 700; }
+.s10s.on { color: #fff; background: var(--mainD); font-weight: 700; padding: 0 10px; margin-left: -10px; }
+.s10s.on .k { color: var(--teal); }
 .s10s .k { display: inline-block; width: 26px; color: var(--main); font: 700 22px Inter; }
 `;
   const hd = h('div', 'abs', W, '<span style="font:800 40px \'Sans SC\';color:var(--ink)">五个问题</span><span class="t-note" style="margin-left:16px">一个数据库引擎必须回答的</span>');

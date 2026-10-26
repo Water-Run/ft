@@ -81,6 +81,9 @@ scene('s6', ({ root, s, c0 }) => {
   // f3–f4：Bob 读，读到 42
   const bRead1 = LN.event(1, tB1, '读');
   const v1 = valAt(xB1 + 40, LN.Y(1), M.bob_while_alice_uncommitted, '', tR1);
+  // 结果写成一块：Bob 这一次读到的值
+  const res1 = h('div', 'tag', W, `Bob 读到 <b class="num" style="font-size:30px">${M.bob_while_alice_uncommitted}</b>`); px(res1, 1000, 770); css(res1, { fontSize: '28px', padding: '8px 18px' });
+  vanish(res1, 0); slam(res1, tR1 + 0.2, { from: 1.3 }); exit(res1, T('f6') - 0.1, { y: -10, d: 0.3 });
 
   // f5：脏读——若是直接读这个没提交的 43
   const dirty = path(ov, `M${xB1 - 6},${LN.Y(1) - 22} C${xB1 - 6},560 825,560 825,337`, 'acc', { w: 2.2, dashed: '8 7' });
@@ -89,7 +92,7 @@ scene('s6', ({ root, s, c0 }) => {
   const dTag = h('div', 'tag acc', W, '脏读'); px(dTag, 800, 460); slam(dTag, T('f5', '脏读'), { from: 1.3 });
   [dirty].forEach((p) => svgOut(p, T('f6') - 0.1, 0.3));
   [dX, dTag].forEach((e) => exit(e, T('f6') - 0.1, { y: -10, d: 0.3 }));
-  const gDirty = gloss(W, 900, 418, '脏读', '<b>脏读</b>：读到别人没提交的数据；默认级别下不会', { w: 620, src: '手册 M38、M42' });
+  const gDirty = gloss(W, 900, 418, '脏读', '<b>脏读</b>：读到别人没提交的数据', { w: 620, src: '手册 M38、M42' });
   vanish(gDirty, 0); show(gDirty, T('f5', '脏读') + 0.1, { y: 8, d: 0.4 }); exit(gDirty, T('f6', '快照') + 0.1, { y: 8, d: 0.3 });
 
   // f6–f8：Bob 的快照：拍下那一刻已经提交的事务看得见；6175 还没提交，不在里面
@@ -123,6 +126,9 @@ scene('s6', ({ root, s, c0 }) => {
   // f9：这个版本 Bob 不能看
   const aX = mark(803, 200, MARK.no(40), 'c-acc', T('f9', '不能看'));
   sfx('error', T('f9', '不能看'), { g: 0.35 });
+  // 未提交的 43 这一段盖上深色：Bob 看不见这个版本
+  h('style', '', W).textContent = '.vbar.s6-hid { background: var(--ink) !important; border-color: var(--ink) !important; } .vbar.s6-hid > * { visibility: hidden; } .vbar.s6-hid::after { content: "Bob 看不见这个版本"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font: 600 24px "Sans SC"; color: #fff; white-space: nowrap; }';
+  lit(vUnc, 's6-hid', T('f9', '不能看') - 0.2, Tend('f10'));
   // f10：顺着回滚指针去 undo，取回 42
   const rp2 = path(ov, 'M530,334 L530,368 L1090,368 L1090,336', 'main', { w: 4.5 });
   arrowIn(rp2, T('f10', '回滚指针') - 0.1, 0.7);

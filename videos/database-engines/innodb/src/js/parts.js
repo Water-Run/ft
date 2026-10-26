@@ -124,10 +124,10 @@ function swaps(e, pairs) { const k = keyed(e); for (const [t, html] of pairs) k.
 
 // 镜头（WaterRun 2026-10-25：「老毛病, 镜头一直在缩放....你不明白你直接参考MyISAM的不行?」；照 MyISAM 一集与 docs/guides/scenes.md 第 3 节）：
 // 不缩放、不推近。一章按内容分成几屏（breaks 给出每一屏开头的句号）；停在一屏上时只朝一个方向极慢横移，
-// 一屏最多 28 像素、每秒不超过 1.4 像素，下一屏换方向（只在换屏时换），始终在中线左右 14 像素以内；不配音效。画面停着时的变化首先靠内容的分步。
+// 一屏最多 16 像素、每秒不超过 0.8 像素，下一屏换方向（只在换屏时换），始终在中线左右 8 像素以内（WaterRun 2026-10-26 两次要求再淡）；不配音效。画面停着时的变化首先靠内容的分步。
 // 每一屏的横移两头缓入缓出（sine），换方向时先慢下来再反向，不是匀速撞回头（WaterRun 2026-10-26：「反向时带非线性自然衔接, 幅度更小一点」）。
 function pan1(cam, s, dir = 1, breaks = []) {
-  const t0 = s.first, t1 = s.end - 0.05, R = 14, V = 1.4;
+  const t0 = s.first, t1 = s.end - 0.05, R = 8, V = 0.8;
   const ts = [t0, ...breaks.map((id) => T(id)).filter((t) => t > t0 + 1 && t < t1 - 1), t1].sort((a, b) => a - b);
   let x = -dir * R, d = dir; const keys = [];
   for (let k = 0; k + 1 < ts.length; k++) {
