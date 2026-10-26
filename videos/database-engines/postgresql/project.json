@@ -6,7 +6,7 @@
     "zh"
   ],
   "titles": {
-    "zh": "一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL"
+    "zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"
   },
   "stage": "research",
   "next": "新版开工（2026-10-26）：视觉稿 review/keyframes-r1.html 等 WaterRun 看；同时在 PostgreSQL 18.6 上按 README「取证计划」重新实测",
