@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"
   },
   "stage": "review",
-  "next": "等 WaterRun 确认文案 R10（review/compare-r9-r10.md）；确认后配音、按实测时间重排、编配乐，出有声预览",
+  "next": "R14 成片已出（out/innodb-zh-1080p60.mp4，check --final 通过），等 WaterRun 看、听成片确认（读音、声音、配音语气）；同意后投稿并登记发布",
   "credits": {
     "planner": "WaterRun",
     "models": [
