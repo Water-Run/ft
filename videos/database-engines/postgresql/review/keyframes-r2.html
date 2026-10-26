@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PostgreSQL 视觉稿 R2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* R2（2026-10-26，WaterRun：「风格更加Pg点 包括Pg蓝」）：每帧顶上一条 Pg 蓝通栏（名字、版本、章节），页与节点、表头、标签改用 Pg 蓝，纸面加一层很淡的蓝色工程网格；加一帧整屏 Pg 蓝的章节卡。
+   PostgreSQL 一集的视觉稿：取自 PostgreSQL 官方文档的语汇（配色、Open Sans、带横线的标题、文档表格、注意框、psql 会话），
+   不放大象标志（系列约定 P84）。每帧 1920×1080，页面上按 0.5 倍显示。数字都标了出处；未实测的只画结构。 */
+:root {
+  --pg: #336791; --navy: #193145; --sky: #699eca; --thead: #e0ecef; --rule: #e7eae8; --border: #dee2e6;
+  --code: #f8f9fa; --ink: #212529; --ink2: #5b6670; --dead: #c4cad0; --warn: #b8442f; --warnL: #f6e3dd;
+  --paper: #ffffff; --bg: #eef1f4;
+  --sans: "Open Sans", "Noto Sans SC", "Microsoft YaHei", sans-serif; --mono: "JetBrains Mono", Consolas, monospace;
+}
+body { margin: 0; background: var(--bg); font-family: var(--sans); color: var(--ink); }
+header.doc { max-width: 1940px; margin: 24px auto 8px; padding: 0 16px; }
+header.doc h1 { font: 700 26px var(--sans); color: var(--navy); margin: 0 0 6px; }
+header.doc p { margin: 2px 0; font-size: 15px; color: var(--ink2); line-height: 1.6; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, 960px); gap: 20px; justify-content: center; padding: 12px 16px 40px; }
+.cell { width: 960px; }
+.cell .lab { font: 600 14px var(--sans); color: var(--ink2); margin: 0 0 6px; }
+.frame { width: 1920px; height: 1080px; zoom: 0.5; position: relative; overflow: hidden; background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%23336791' stroke-opacity='0.06' stroke-width='1.5'/%3E%3C/svg%3E"); box-shadow: 0 2px 10px rgba(25,49,69,.12); }
+/* 顶上的 Pg 蓝通栏：左边名字与版本，右边章节 */
+.frame::before { content: ""; position: absolute; left: 0; top: 0; right: 0; height: 88px; background: var(--pg); z-index: 0; }
+.frame::after { content: attr(data-ch); position: absolute; right: 72px; top: 24px; font: 600 28px var(--sans); color: #dbe8f3; letter-spacing: .5px; }
+.frame.card { background: var(--pg); }
+.frame.card::before, .frame.card::after { display: none; }
+.abs { position: absolute; }
+/* 常驻的左上角标识：没有标志，只有名字与版本 */
+.ident { position: absolute; left: 72px; top: 22px; font: 800 32px var(--sans); color: #fff; letter-spacing: .2px; z-index: 1; }
+.ident small { font: 600 26px var(--sans); color: #cfe0ee; margin-left: 14px; }
+/* 文档标题：蓝字，右侧一条浅灰横线（官网 h2 的式样） */
+.h2 { position: absolute; display: flex; align-items: center; gap: 22px; font: 700 46px var(--sans); color: var(--pg); }
+.h2::after { content: ""; flex: 1; height: 3px; background: #cfe0ee; }
+.cap { position: absolute; font: 600 24px var(--sans); color: var(--ink2); }
+.cap b { color: var(--navy); }
+.note { position: absolute; border-left: 6px solid var(--pg); background: #e6eff7; padding: 14px 22px; font: 500 24px var(--sans); line-height: 1.5; color: var(--ink); }
+.note b { color: var(--pg); }
+.note.warn { border-color: var(--warn); background: var(--warnL); }
+.note.warn b { color: var(--warn); }
+.src { position: absolute; font: 500 22px var(--sans); color: var(--ink2); }
+.mono { font-family: var(--mono); }
+/* psql 会话 */
+.psql { position: absolute; background: var(--code); border: 2px solid #b9cfe2; border-left: 6px solid var(--pg); padding: 18px 26px; font: 500 26px var(--mono); color: var(--ink); white-space: pre; line-height: 1.45; font-variant-ligatures: none; }
+.psql .p { color: var(--pg); font-weight: 700; } .psql .k { color: var(--navy); font-weight: 700; } .psql .d { color: var(--ink2); }
+.psql .hi { background: #dbe8f3; } .psql .dead { color: #8a949c; }
+/* 文档表格 */
+table.doc { position: absolute; border-collapse: collapse; font: 500 26px var(--sans); }
+table.doc th { background: var(--pg); color: #fff; font-weight: 700; text-align: left; padding: 12px 22px; border: 2px solid var(--border); }
+table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--border); }
+/* 页、元组 */
+.page { position: absolute; border: 3px solid var(--pg); background: #fff; }
+.tup { position: absolute; height: 34px; background: #cfe0ee; border: 2px solid var(--pg); font: 600 20px var(--mono); color: var(--navy); line-height: 30px; padding: 0 8px; white-space: nowrap; overflow: hidden; }
+.tup.dead { background: repeating-linear-gradient(135deg, #eceff1 0 8px, #dfe3e6 8px 16px); border-color: #9aa4ad; color: #6c757d; }
+.tup.new { background: var(--pg); color: #fff; }
+.lp { position: absolute; width: 14px; height: 30px; background: var(--sky); }
+.node { position: absolute; border: 2.5px solid var(--pg); background: #fff; font: 600 22px var(--mono); color: var(--navy); text-align: center; line-height: 40px; height: 44px; }
+.edge { position: absolute; background: var(--sky); transform-origin: 0 0; height: 2.5px; }
+.tag { position: absolute; font: 700 22px var(--sans); color: #fff; background: var(--pg); padding: 4px 12px; }
+.tag.blue { background: var(--pg); } .tag.warn { background: var(--warn); }
+.bar { position: absolute; height: 58px; }
+.mysql { background: #aab3bb; } .pgc { background: var(--pg); }
+.big { position: absolute; font: 800 120px var(--sans); color: var(--pg); letter-spacing: -2px; }
+.axis { position: absolute; height: 3px; background: var(--ink2); }
+</style>
+</head>
+<body>
+<header class="doc">
+  <h1>PostgreSQL 一集 · 视觉稿 R2（2026-10-26）</h1>
+  <p>一种风格、七帧关键帧。语汇取自 PostgreSQL 官方文档：Pg 蓝 #336791、深蓝 #193145、浅蓝 #699eca（旧版本与快照）、文档表头 #e0ecef；Open Sans；带横线的标题；「图 n」图注；注解用文档的「注意」框，贴在被解释的东西旁边；所有 SQL 都以 psql 会话出现。不放大象标志。</p>
+  <p>数字：调查数字为旧版取证（Stack Overflow 官方表），新版重核并补 2024、2025；行版本与页的数字为<b>旧版实测（PostgreSQL 18.4，alice 30 → 31）</b>，新版在 18.6 上用同一个 Alice（2050，42 → 43）重测；元组头字段大小取自手册。未实测的地方只画结构，不写数字。</p>
+</header>
+<div class="grid">
+
+<!-- 1 开场：占有率 -->
+<div class="cell"><div class="lab">1 · 开场：占有率（开发者调查里的此消彼长）</div>
+<div class="frame" data-ch="开场">
+  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="h2" style="left:72px; top:120px; width:1776px;">开发者过去一年实际用过的数据库</div>
+  <div class="cap" style="left:72px; top:198px;">Stack Overflow 开发者调查 · 全部答题者 · 可多选</div>
+  <!-- 三年，每年两条：MySQL（中性灰）与 PostgreSQL（Pg 蓝）；横轴 0–60% -->
+  <div class="axis" style="left:420px; top:860px; width:1320px;"></div>
+  <div class="cap" style="left:405px; top:874px;">0%</div><div class="cap" style="left:1710px; top:874px;">60%</div>
+  <div class="cap" style="left:150px; top:330px; font-size:40px; color:var(--ink);">2022</div>
+  <div class="bar mysql" style="left:420px; top:300px; width:1031px;"></div><div class="cap" style="left:1470px; top:310px;">MySQL <b>46.85%</b></div>
+  <div class="bar pgc" style="left:420px; top:366px; width:959px;"></div><div class="cap" style="left:1398px; top:376px;">PostgreSQL <b style="color:var(--pg)">43.59%</b></div>
+  <div class="cap" style="left:150px; top:520px; font-size:40px; color:var(--ink);">2023</div>
+  <div class="bar pgc" style="left:420px; top:490px; width:1002px;"></div><div class="cap" style="left:1442px; top:500px;">PostgreSQL <b style="color:var(--pg)">45.55%</b></div>
+  <div class="bar mysql" style="left:420px; top:556px; width:904px;"></div><div class="cap" style="left:1344px; top:566px;">MySQL <b>41.09%</b></div>
+  <div class="cap" style="left:150px; top:710px; font-size:40px; color:var(--ink);">2026</div>
+  <div class="bar pgc" style="left:420px; top:680px; width:1274px;"></div><div class="abs" style="left:1210px; top:681px; font:800 46px var(--sans); color:#fff; line-height:56px;">PostgreSQL 57.9%</div>
+  <div class="bar mysql" style="left:420px; top:746px; width:772px;"></div><div class="cap" style="left:1212px; top:756px;">MySQL <b>35.1%</b></div>
+  <div class="note" style="left:72px; top:930px; width:1300px;"><b>注意</b>　自报使用、可以多选；比例不是市场份额，也不说明谁迁到了谁。</div>
+  <div class="src" style="left:72px; top:1020px;">旧版取证 S01–S03（Stack Overflow 官方表）· 新版重核并补 2024、2025</div>
+</div></div>
+
+<!-- 2 钩子：改一行，页里多了一行 -->
+<div class="cell"><div class="lab">2 · 钩子：同一个 UPDATE，InnoDB 原地改，PostgreSQL 多出一个版本</div>
+<div class="frame" data-ch="开场 · 同一句 UPDATE">
+  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="h2" style="left:72px; top:120px; width:1776px;">改一行，页里多了一行</div>
+  <!-- 左：上一集的 InnoDB（中性灰，作对照） -->
+  <div class="cap" style="left:72px; top:220px; color:#7c868f;">上一集 · InnoDB</div>
+  <div class="page" style="left:72px; top:268px; width:720px; height:300px; border-color:#9aa4ad;"></div>
+  <div class="tup" style="left:110px; top:330px; width:640px; background:#e5e8eb; border-color:#9aa4ad; color:#4d565e;">2050  Alice  42 → 43（原地改）</div>
+  <div class="tup" style="left:110px; top:470px; width:330px; background:#f1f3f5; border-color:#9aa4ad; color:#6c757d;">undo：旧值 42</div>
+  <div class="cap" style="left:110px; top:590px; color:#7c868f;">行还是那一行，旧值去了 undo</div>
+  <!-- 右：PostgreSQL 的堆页，两条版本 -->
+  <div class="cap" style="left:920px; top:220px;"><b style="color:var(--pg)">PostgreSQL</b> · users 的堆，页 0</div>
+  <div class="page" style="left:920px; top:268px; width:928px; height:300px;"></div>
+  <div class="tup dead" style="left:960px; top:316px; width:848px;">lp 1   alice  30   xmin 755   xmax 763   → (0,9)</div>
+  <div class="tup new" style="left:960px; top:380px; width:848px;">lp 9   alice  31   xmin 763   xmax 0</div>
+  <div class="tag warn" style="left:1660px; top:232px;">旧版本：还在</div>
+  <div class="tag blue" style="left:1690px; top:432px;">新版本</div>
+  <div class="cap" style="left:960px; top:590px;">旧版本没有被覆盖：它的 xmax 记下改它的事务，t_ctid 指向新版本</div>
+  <div class="psql" style="left:920px; top:650px; width:876px;"><span class="p">postgres=#</span> <span class="k">SELECT</span> lp, t_xmin, t_xmax, t_ctid
+  <span class="k">FROM</span> heap_page_items(get_raw_page('users', 0));
+ lp | t_xmin | t_xmax | t_ctid
+----+--------+--------+--------
+<span class="hi">  1 |    755 |    763 | (0,9) </span>
+<span class="d">  … </span>
+<span class="hi">  9 |    763 |      0 | (0,9) </span></div>
+  <div class="src" style="left:72px; top:1000px;">旧版实测 · PostgreSQL 18.4 · alice 30 → 31（pageinspect）；新版在 18.6 上用 Alice 2050，42 → 43 重测</div>
+</div></div>
+
+
+<!-- 章节卡：整屏 Pg 蓝 -->
+<div class="cell"><div class="lab">章节卡：整屏 Pg 蓝，章号、章名与这一章要回答的问题</div>
+<div class="frame card">
+  <div class="abs" style="left:160px; top:300px; font:800 200px var(--sans); color:#fff; opacity:.22;">02</div>
+  <div class="abs" style="left:170px; top:520px; font:800 96px var(--sans); color:#fff;">一张表放在哪</div>
+  <div class="abs" style="left:174px; top:660px; font:600 36px var(--sans); color:#cfe0ee;">一个堆、两棵 B 树，行的地址叫 ctid</div>
+  <div class="abs" style="left:174px; top:760px; width:520px; height:6px; background:#fff;"></div>
+  <div class="abs" style="left:72px; top:44px; font:800 32px var(--sans); color:#fff;">PostgreSQL<span style="font:600 26px var(--sans); color:#cfe0ee; margin-left:14px;">18.6</span></div>
+</div></div>
+<!-- 3 整体结构：一个堆，加上各自独立的索引树 -->
+<div class="cell"><div class="lab">3 · 整体结构：表是堆，索引各是一棵 B 树，叶子里存行的地址</div>
+<div class="frame" data-ch="02 · 一张表放在哪">
+  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="h2" style="left:72px; top:120px; width:1776px;">一张表：一个堆，加上各自独立的索引树</div>
+  <!-- 主键树（上）：根、叶子；姓名树（下） -->
+  <div class="cap" style="left:72px; top:226px;"><b>users_pkey</b>　按编号排</div>
+  <div class="node" style="left:640px; top:220px; width:260px;">根</div>
+  <div class="node" style="left:300px; top:320px; width:150px;">叶</div><div class="node" style="left:520px; top:320px; width:150px;">叶</div>
+  <div class="node" style="left:740px; top:320px; width:150px;">叶</div><div class="node" style="left:960px; top:320px; width:150px;">叶</div>
+  <svg class="abs" style="left:0; top:0;" width="1920" height="1080">
+    <g stroke="#699eca" stroke-width="2.5" fill="none">
+      <path d="M700,264 L375,320"/><path d="M745,264 L595,320"/><path d="M800,264 L815,320"/><path d="M850,264 L1035,320"/>
+      <path d="M700,834 L495,880"/><path d="M770,834 L715,880"/><path d="M840,834 L935,880"/>
+    </g>
+    <g stroke="#336791" stroke-width="3" fill="none" marker-end="url(#ar)">
+      <path d="M375,364 C375,430 245,470 230,512"/>
+      <path d="M715,880 C715,780 610,740 560,676"/>
+    </g>
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#336791"/></marker></defs>
+  </svg>
+  <div class="cap" style="left:1150px; top:330px;">叶子里：<span class="mono">编号 → ctid</span></div>
+  <!-- 堆：一长条 8 KB 页，行按到达顺序放 -->
+  <div class="cap" style="left:560px; top:470px;"><b>users</b>　堆：8 KB 一页，按到达顺序放，不按主键排</div>
+  <div id="heap"></div>
+  <div class="cap" style="left:72px; top:690px;">页 0</div><div class="cap" style="left:1760px; top:690px;">…</div>
+  <!-- 姓名树（下） -->
+  <div class="cap" style="left:72px; top:800px;"><b>users_name_idx</b>　按名字排</div>
+  <div class="node" style="left:640px; top:790px; width:260px;">根</div>
+  <div class="node" style="left:420px; top:880px; width:150px;">叶</div><div class="node" style="left:640px; top:880px; width:150px;">叶</div><div class="node" style="left:860px; top:880px; width:150px;">叶</div>
+  <div class="note" style="left:1150px; top:780px; width:640px;"><b>ctid</b>　行的地址：（页号, 页内第几项）。两棵树的叶子都只记这个地址，整行在堆里。</div>
+  <div class="cap" style="left:1150px; top:930px; width:690px; line-height:1.5;">另有两个小文件：<span class="mono">_fsm</span> 记每页还剩多少空间，<span class="mono">_vm</span> 记哪些页全部可见</div>
+  <div class="src" style="left:72px; top:1010px;">结构示意 · 页数、层数在 18.6 上用 4096 行实测后画全</div>
+</div></div>
+
+<!-- 4 一页之内：页布局与元组头 -->
+<div class="cell"><div class="lab">4 · 一页之内：项目指针从前往后，行版本从后往前，元组头 23 字节</div>
+<div class="frame" data-ch="03 · 一页之内">
+  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="h2" style="left:72px; top:120px; width:1776px;">一页之内</div>
+  <!-- 横向一页：0 · 24 · lower · upper · 8192 -->
+  <div class="page" style="left:120px; top:250px; width:1680px; height:120px;"></div>
+  <div class="abs" style="left:122px; top:252px; width:110px; height:116px; background:var(--navy);"></div>
+  <div class="abs" style="left:130px; top:296px; font:700 22px var(--sans); color:#fff;">页头</div>
+  <div id="lps"></div>
+  <div class="abs" style="left:520px; top:252px; width:860px; height:116px; background:repeating-linear-gradient(90deg,#fff 0 22px,#f3f6f8 22px 24px);"></div>
+  <div class="cap" style="left:820px; top:296px;">空闲空间</div>
+  <div id="tups"></div>
+  <div class="cap mono" style="left:110px; top:380px;">0</div><div class="cap mono" style="left:222px; top:380px;">24</div>
+  <div class="cap mono" style="left:496px; top:380px;">lower 60</div><div class="cap mono" style="left:1350px; top:380px;">upper 7760</div><div class="cap mono" style="left:1740px; top:380px;">8192</div>
+  <div class="cap" style="left:250px; top:430px;">项目指针 → 从前往后长</div><div class="cap" style="left:1420px; top:430px;">← 行版本从页尾往前放</div>
+  <!-- 元组头展开 -->
+  <div class="cap" style="left:120px; top:530px;"><b>一个行版本</b>：元组头 23 字节，后面是这一行的数据</div>
+  <table class="doc" style="left:120px; top:590px;">
+    <tr><th>t_xmin</th><th>t_xmax</th><th>t_cid</th><th>t_ctid</th><th>t_infomask2</th><th>t_infomask</th><th>t_hoff</th><th style="background:#cfe0ee;">数据：编号 · 名字 · 年龄</th></tr>
+    <tr><td>4</td><td>4</td><td>4</td><td>6</td><td>2</td><td>2</td><td>1</td><td style="color:var(--ink2);">本行的列</td></tr>
+  </table>
+  <div class="note" style="left:120px; top:780px; width:780px;"><b>xmin</b>　写下这个版本的事务号。<br><b>xmax</b>　删掉或改掉它的事务号；还活着时是 0。</div>
+  <div class="note" style="left:960px; top:780px; width:840px;"><b>t_ctid</b>　指向这一行更新后的版本；没被改过时指向自己。</div>
+  <div class="src" style="left:120px; top:1000px;">页布局与字段大小：PostgreSQL 手册「数据库页布局」；lower 60 / upper 7760：旧版实测（18.4，更新后），新版重测</div>
+</div></div>
+
+<!-- 5 并发：快照与可见性 -->
+<div class="cell"><div class="lab">5 · 事务与并发：Bob 的快照里，763 还没提交，所以他看见旧版本</div>
+<div class="frame" data-ch="07 · 事务与并发">
+  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="h2" style="left:72px; top:120px; width:1776px;">Bob 能看见哪一个版本</div>
+  <!-- 事务提交状态（pg_xact）：每个事务两位 -->
+  <div class="cap" style="left:72px; top:230px;"><b>pg_xact</b>　每个事务的提交状态</div>
+  <div class="abs" style="left:72px; top:280px; width:1776px; height:70px; border:2px solid var(--border); background:#fff;"></div>
+  <div class="abs mono" style="left:110px; top:296px; font-size:26px; color:var(--ink2);">… 754</div>
+  <div class="abs" style="left:300px; top:290px; width:180px; height:50px; background:var(--pg); color:#fff; font:700 26px var(--mono); text-align:center; line-height:50px;">755 已提交</div>
+  <div class="abs mono" style="left:520px; top:296px; font-size:26px; color:var(--ink2);">756 … 762</div>
+  <div class="abs" style="left:760px; top:290px; width:260px; height:50px; background:repeating-linear-gradient(135deg,var(--warnL) 0 10px,#fff 10px 20px); border:2.5px solid var(--warn); color:var(--warn); font:700 26px var(--mono); text-align:center; line-height:46px;">763 进行中</div>
+  <div class="tag" style="left:1090px; top:296px;">Alice 的事务</div>
+  <!-- 两个版本各自过一遍可见性规则 -->
+  <div class="tup dead" style="left:72px; top:430px; width:840px;">lp 1   alice  30   xmin 755   xmax 763</div>
+  <div class="tup new" style="left:72px; top:560px; width:840px;">lp 9   alice  31   xmin 763   xmax 0</div>
+  <div class="cap" style="left:960px; top:420px; color:var(--ink);">xmin 755 已提交 ✓　xmax 763 还没提交 → 删除不算数</div>
+  <div class="tag blue" style="left:960px; top:470px;">Bob 看得见：30</div>
+  <div class="cap" style="left:960px; top:550px; color:var(--ink);">xmin 763 还没提交 → 这个版本不存在</div>
+  <div class="tag warn" style="left:960px; top:600px;">Bob 看不见</div>
+  <div class="cap" style="left:72px; top:660px;">Bob 的连接</div>
+  <div class="psql" style="left:72px; top:700px; width:900px;"><span class="p">demo=&gt;</span> <span class="k">SELECT</span> age <span class="k">FROM</span> users <span class="k">WHERE</span> id = 1;
+ age
+-----
+<span class="hi">  30 </span>
+(1 row)</div>
+  <div class="note" style="left:1060px; top:720px; width:780px;"><b>快照</b>　开始读时记下：哪些事务已经结束、哪些还在进行。读每个版本，都拿它的 xmin、xmax 去对照。</div>
+  <div class="src" style="left:72px; top:1010px;">旧版实测（18.4）：未提交时另一连接读到 30。事务号 755、763 同上；新版重测，并实测 PostgreSQL 默认的读已提交与可重复读的差别</div>
+</div></div>
+
+<!-- 6 删与回收：VACUUM -->
+<div class="cell"><div class="lab">6 · 回收：没有快照再需要旧版本时，VACUUM 收回空间，项目指针改成跳转</div>
+<div class="frame" data-ch="08 · 删与回收">
+  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="h2" style="left:72px; top:120px; width:1776px;">VACUUM：旧版本没人要了，才收走</div>
+  <div class="cap" style="left:72px; top:226px;">之前</div>
+  <div class="page" style="left:72px; top:270px; width:820px; height:420px;"></div>
+  <div class="tup dead" style="left:110px; top:310px; width:740px;">lp 1   alice  30   （旧版本）</div>
+  <div class="tup" style="left:110px; top:370px; width:740px;">lp 2   bob</div><div class="tup" style="left:110px; top:430px; width:740px;">lp 3   carol</div>
+  <div class="tup" style="left:110px; top:490px; width:740px; background:#eef4f9;">…</div>
+  <div class="tup new" style="left:110px; top:600px; width:740px;">lp 9   alice  31</div>
+  <!-- 扫描线 -->
+  <div class="abs" style="left:960px; top:250px; width:10px; height:460px; background:var(--pg);"></div>
+  <div class="tag blue" style="left:910px; top:722px;">VACUUM</div>
+  <div class="cap" style="left:1030px; top:226px;">之后</div>
+  <div class="page" style="left:1030px; top:270px; width:820px; height:420px;"></div>
+  <div class="tup" style="left:1068px; top:310px; width:740px; background:#fff; border-style:dashed; color:var(--pg);">lp 1   → 跳到 lp 9（空间已收回）</div>
+  <div class="tup" style="left:1068px; top:370px; width:740px;">lp 2   bob</div><div class="tup" style="left:1068px; top:430px; width:740px;">lp 3   carol</div>
+  <div class="tup" style="left:1068px; top:490px; width:740px; background:#eef4f9;">…</div>
+  <div class="tup new" style="left:1068px; top:600px; width:740px;">lp 9   alice  31</div>
+  <div class="note warn" style="left:72px; top:800px; width:840px;"><b>注意</b>　还有快照可能读它时，VACUUM 不能收；长时间不结束的事务会让旧版本越积越多。</div>
+  <div class="note" style="left:1000px; top:800px; width:810px;"><b>重定向</b>　索引还指着 lp 1，所以 lp 1 留下来当路标，指向新版本。</div>
+  <div class="src" style="left:72px; top:1010px;">旧版实测（18.4）：可重复读的快照还在时 VACUUM 保留 lp 1，快照结束后 lp 1 成为重定向。新版重测，并补删除、冻结与空间复用</div>
+</div></div>
+
+<!-- 7 片尾：psql 里查名单 -->
+<div class="cell"><div class="lab">7 · 片尾：在 psql 里查名单（系列约定），名字只取自 project.json</div>
+<div class="frame" data-ch="片尾">
+  <!-- psql 的结果表：按列排版（中文在等宽字体里不是严格两格宽，逐字符对齐会歪） -->
+  <div class="psql" style="left:240px; top:110px; width:1380px; height:770px; font-size:34px; padding:34px 46px; white-space:normal;">
+    <div><span class="p">postgres=#</span> <span class="k">SELECT</span> * <span class="k">FROM</span> credits;</div>
+    <div id="cred" style="margin-top:14px;"></div>
+    <div style="margin-top:30px;"><span class="p">postgres=#</span></div>
+  </div>
+  <div class="src" style="left:240px; top:1000px;">名单随新版 project.json 的 credits 变化；只上画面，不配旁白</div>
+</div></div>
+
+</div>
+<script>
+// 只为这一页排版：生成堆页条、项目指针与行版本的小方块（不是视频源码）
+(function () {
+  const heap = document.getElementById('heap'), F = heap.closest('.frame');
+  for (let p = 0; p < 16; p++) {
+    const x = 72 + p * 106, pg = document.createElement('div'); pg.className = 'page'; Object.assign(pg.style, { left: x + 'px', top: '520px', width: '96px', height: '150px' }); F.appendChild(pg);
+    const n = p < 15 ? 5 : 2;
+    for (let i = 0; i < n; i++) { const t = document.createElement('div'); t.className = 'abs'; Object.assign(t.style, { left: (x + 10) + 'px', top: (642 - i * 24) + 'px', width: '76px', height: '16px', background: (p * 7 + i * 3) % 11 === 0 ? '#dfe3e6' : '#cfe0ee', border: '1.5px solid ' + ((p * 7 + i * 3) % 11 === 0 ? '#9aa4ad' : '#336791') }); F.appendChild(t); }
+  }
+  const lps = document.getElementById('lps'), F2 = lps.closest('.frame');
+  for (let i = 0; i < 9; i++) { const e = document.createElement('div'); e.className = 'lp'; Object.assign(e.style, { left: (244 + i * 30) + 'px', top: '296px' }); F2.appendChild(e); }
+  for (let i = 0; i < 9; i++) { const e = document.createElement('div'); e.className = 'abs'; Object.assign(e.style, { left: (1386 + i * 45) + 'px', top: '262px', width: '40px', height: '96px', background: i === 8 ? '#e2e6e9' : (i === 0 ? '#336791' : '#cfe0ee'), border: '2px solid ' + (i === 8 ? '#9aa4ad' : '#336791') }); F2.appendChild(e); }
+  // 片尾名单：两列，列宽固定，竖线与横线照 psql 的样子
+  const rows = [['策划', 'WaterRun'], ['取证', 'Claude Opus 5.5'], ['文案', 'Claude Opus 5.5'], ['视觉', 'Claude Opus 5.5'], ['场景', 'Claude Opus 5.5'], ['配乐', 'Claude Opus 5.5'], ['旁白合成', 'MiniMax speech-2.8-hd'], ['许可', 'GPL-3.0-or-later'], ['开源视频', 'github.com/Water-Run/ft']];
+  const C = document.getElementById('cred');
+  const row = (a, b, head) => { const r = document.createElement('div'); r.style.cssText = 'display:grid; grid-template-columns:230px 34px 1fr; line-height:1.5;' + (head ? 'text-align:center;' : '');
+    r.innerHTML = `<span style="padding-left:14px; ${head ? 'text-align:center;' : ''}">${a}</span><span>|</span><span style="padding-left:12px; ${head ? 'text-align:left; padding-left:180px;' : ''}">${b}</span>`; C.appendChild(r); };
+  row('role', 'name', true);
+  const sep = document.createElement('div'); sep.style.cssText = 'display:grid; grid-template-columns:230px 34px 640px; color:#5b6670;'; sep.innerHTML = '<span style="border-top:2px solid #5b6670; margin-top:22px;"></span><span style="text-align:center;">+</span><span style="border-top:2px solid #5b6670; margin-top:22px;"></span>'; C.appendChild(sep);
+  rows.forEach(([a, b]) => row(a, b));
+  const n = document.createElement('div'); n.textContent = `(${rows.length} rows)`; n.style.marginTop = '6px'; C.appendChild(n);
+})();
+</script>
+</body>
+</html>

@@ -45,10 +45,10 @@
     "engine": "minimax",
     "model": "speech-2.8-hd",
     "voice": {
-      "zh": "Chinese (Mandarin)_Male_Announcer"
+      "zh": "Chinese (Mandarin)_Reliable_Executive"
     },
     "speed": {
-      "zh": 1.2
+      "zh": 1.1
     }
   },
   "audio": {

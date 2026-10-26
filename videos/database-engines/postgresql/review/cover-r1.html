@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>PostgreSQL 封面 R1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@500;700;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* 封面 R1（2026-10-26）：系列约定「有质感、立体，契合本集主体」、立体不损害可读性（P83），不放产品标志（P84）。
+   WaterRun：「新HTML包括封面 封面注意立体型和质感」「风格更加Pg点 包括Pg蓝」。
+   整幅 Pg 蓝底 + 固定种子的噪点纸纹与很淡的网格；左边标题（白字面、深蓝立体侧面）；右边等轴立体的一排 8 KB 堆页，
+   最前一页的顶面上是行：新版本 Pg 蓝、旧版本灰色斜纹并标出 xmax；上方一棵立体的小索引树，一根线从叶子落到那一行（ctid）。 */
+:root { --pg: #336791; --navy: #193145; --sky: #699eca; --pale: #cfe0ee; }
+html, body { margin: 0; background: #0d1a24; }
+.cv { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--pg); font-family: "Open Sans", "Noto Sans SC", sans-serif; }
+.abs { position: absolute; }
+svg.full { position: absolute; left: 0; top: 0; }
+.part { position: absolute; left: 96px; top: 96px; font: 800 40px "Open Sans"; color: #fff; padding: 6px 22px; border: 4px solid #fff; letter-spacing: 2px; }
+.q { position: absolute; left: 100px; top: 210px; font: 700 46px "Noto Sans SC"; color: var(--pale); }
+/* 大字：白色字面，深蓝的立体侧面（层层错开的阴影）；侧面只往右下，笔画之间不糊 */
+.t1 { position: absolute; left: 92px; top: 300px; font: 900 148px "Noto Sans SC"; color: #fff; letter-spacing: 4px; }
+.t2 { position: absolute; left: 92px; top: 500px; font: 800 168px "Open Sans"; color: #fff; letter-spacing: -2px; }
+.facts { position: absolute; left: 100px; top: 760px; font: 600 34px "Noto Sans SC"; color: var(--pale); line-height: 1.6; }
+.facts b { color: #fff; }
+.ver { position: absolute; left: 100px; top: 930px; font: 700 30px "JetBrains Mono"; color: #fff; background: var(--navy); padding: 6px 18px; }
+</style>
+</head>
+<body>
+<div class="cv" id="cv">
+  <!-- 纸纹与网格（固定种子，静态） -->
+  <svg class="full" width="1920" height="1080">
+    <defs>
+      <filter id="grain" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" result="n"/>
+        <feColorMatrix type="saturate" values="0"/>
+        <feComponentTransfer><feFuncA type="table" tableValues="0 0.22"/></feComponentTransfer>
+      </filter>
+      <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.5"/></pattern>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#grid)"/>
+    <rect width="1920" height="1080" filter="url(#grain)" opacity="0.55"/>
+  </svg>
+  <svg class="full" id="art" width="1920" height="1080"></svg>
+  <div class="part">PART 3</div>
+  <div class="q">一个数据库引擎是如何实现的？</div>
+  <div class="t1" id="t1">学院派的正统</div>
+  <div class="t2" id="t2">PostgreSQL</div>
+  <div class="facts">表是一个堆，<b>8 KB 一页</b><br>改一行，页里<b>多写一个新版本</b></div>
+  <div class="ver">PostgreSQL 18.6</div>
+</div>
+<script>
+// 大字的立体侧面：深蓝，逐像素往右下错开（只做侧面，不加模糊阴影，字面保持清楚）
+function deep(id, depth, color) { const e = document.getElementById(id); const sh = []; for (let i = 1; i <= depth; i++) sh.push(`${i}px ${i}px 0 ${color}`); sh.push(`${depth + 6}px ${depth + 10}px 14px rgba(13,26,36,.35)`); e.style.textShadow = sh.join(','); }
+deep('t1', 7, '#1f4560'); deep('t2', 9, '#193145');
+
+// 等轴投影：x 往右下、y 往左下、z 往上
+const NS = 'http://www.w3.org/2000/svg', svgEl = document.getElementById('art');
+// 立体图形的各面叠一层纸纹（固定种子），有质感但不脏
+svgEl.innerHTML = '<defs><filter id="paper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/><feComposite in="SourceGraphic" in2="g" operator="arithmetic" k1="0" k2="1" k3="0.10" k4="-0.05"/></filter></defs>';
+const art = document.createElementNS(NS, 'g'); art.setAttribute('filter', 'url(#paper)'); svgEl.appendChild(art);
+const C30 = Math.cos(Math.PI / 6), S30 = 0.5;
+function P(ox, oy, s) { return (x, y, z) => [ox + (x - y) * C30 * s, oy + (x + y) * S30 * s - z * s]; }
+function poly(pts, fill, stroke, sw = 2, extra = {}) { const e = document.createElementNS(NS, 'polygon'); e.setAttribute('points', pts.map((p) => p.join(',')).join(' ')); e.setAttribute('fill', fill); if (stroke) { e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', sw); e.setAttribute('stroke-linejoin', 'round'); } for (const k in extra) e.setAttribute(k, extra[k]); art.appendChild(e); return e; }
+function line(a, b, stroke, sw, dash) { const e = document.createElementNS(NS, 'line'); e.setAttribute('x1', a[0]); e.setAttribute('y1', a[1]); e.setAttribute('x2', b[0]); e.setAttribute('y2', b[1]); e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', sw); e.setAttribute('stroke-linecap', 'round'); if (dash) e.setAttribute('stroke-dasharray', dash); art.appendChild(e); return e; }
+function text(x, y, s, size, fill, weight = 700, family = 'JetBrains Mono') { const e = document.createElementNS(NS, 'text'); e.setAttribute('x', x); e.setAttribute('y', y); e.setAttribute('fill', fill); e.setAttribute('font-size', size); e.setAttribute('font-weight', weight); e.setAttribute('font-family', family); e.textContent = s; art.appendChild(e); return e; }
+// 一块立方体：顶面最亮，右面次之，左前面最暗；三面都描深蓝边
+function box(p, x, y, z, w, d, h, top, right, left) {
+  const v = (a, b, c) => p(x + a, y + b, z + c);
+  poly([v(0, d, 0), v(w, d, 0), v(w, d, h), v(0, d, h)], left, '#193145', 2);          // y = d 的一面（左前）
+  poly([v(w, 0, 0), v(w, d, 0), v(w, d, h), v(w, 0, h)], right, '#193145', 2);         // x = w 的一面（右前）
+  poly([v(0, 0, h), v(w, 0, h), v(w, d, h), v(0, d, h)], top, '#193145', 2);           // 顶面
+}
+// 地上的影子（平涂的深色，不用渐变）
+const pS = P(1330, 650, 1);
+poly([pS(-60, 330, -2), pS(980, 330, -2), pS(980, -40, -2), pS(-60, -40, -2)], '#193145', null, 0, { opacity: 0.35 });
+// 一排堆页：页 0 在最前，后面的页往右上排开（等轴里沿 x 方向）
+const p = P(1330, 650, 1);
+const PW = 150, PD = 300, PH = 56, GAP = 30;
+for (let i = 5; i >= 1; i--) box(p, i * (PW + GAP), 0, 0, PW, PD, PH, '#eef4fa', '#b9cfe2', '#8fb0cc');
+// 页 0：放大一点、顶面上画行
+const p0 = P(1330, 650, 1);
+box(p0, 0, 0, 0, PW, PD, PH, '#ffffff', '#b9cfe2', '#8fb0cc');
+const rows = [{ y: 30, kind: 'live' }, { y: 70, kind: 'live' }, { y: 110, kind: 'dead' }, { y: 150, kind: 'live' }, { y: 190, kind: 'new' }, { y: 230, kind: 'live' }];
+for (const r of rows) {
+  const c = r.kind === 'new' ? '#336791' : r.kind === 'dead' ? '#c9d0d6' : '#cfe0ee';
+  const pts = [p0(14, r.y, PH), p0(PW - 14, r.y, PH), p0(PW - 14, r.y + 26, PH), p0(14, r.y + 26, PH)];
+  poly(pts, c, '#193145', 1.5);
+  if (r.kind === 'dead') for (let k = 0; k < 6; k++) line(p0(20 + k * 20, r.y + 2, PH), p0(36 + k * 20, r.y + 24, PH), '#8a949c', 2);
+}
+// 旧版本、新版本的标注（画在页的右边，等轴外的平面字）
+const dPt = p0(PW, 123, PH), nPt = p0(PW, 203, PH);
+line([dPt[0] + 6, dPt[1]], [dPt[0] + 120, dPt[1] - 60], '#ffffff', 2.5);
+text(dPt[0] + 128, dPt[1] - 66, 'xmax ≠ 0  旧版本', 30, '#ffffff', 700, 'Noto Sans SC');
+const nTo = p0(-10, 330, 0);                                  // 引到页 0 左下方的蓝底上，白字才清楚
+line([nPt[0] - 70, nPt[1] + 20], [nTo[0] - 40, nTo[1] + 60], '#ffffff', 2.5);
+text(nTo[0] - 200, nTo[1] + 104, '新版本', 30, '#ffffff', 700, 'Noto Sans SC');
+// 页号刻度
+const pl = p0(0, PD, 0); text(pl[0] - 60, pl[1] + 44, '页 0', 28, '#cfe0ee', 700, 'Noto Sans SC');
+// 上方的小索引树：根与三片叶子，都是立体小块
+const pt = P(1240, 250, 1);
+box(pt, 120, 0, 120, 140, 70, 26, '#ffffff', '#b9cfe2', '#8fb0cc');
+const leaves = [[0, 0], [190, 0], [380, 0]];
+leaves.forEach(([x]) => box(pt, x, 150, 20, 110, 60, 22, '#ffffff', '#b9cfe2', '#8fb0cc'));
+const rootB = pt(190, 70, 120), lf = leaves.map(([x]) => pt(x + 55, 150, 42));
+lf.forEach((q) => line([rootB[0], rootB[1]], q, '#ffffff', 3));
+// 一根线从叶子落到页 0 的新版本（ctid）
+const from = pt(55 + 0, 210, 20), to = p0(PW / 2, 203, PH);
+line(from, to, '#ffffff', 3.5, '10 8');
+const mid = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2];
+text(mid[0] + 18, mid[1] + 10, 'ctid', 32, '#ffffff', 700);
+text(pt(120, 0, 160)[0] - 10, pt(120, 0, 160)[1] - 16, '索引', 28, '#cfe0ee', 700, 'Noto Sans SC');
+</script>
+</body>
+</html>
