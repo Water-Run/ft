@@ -1,6 +1,7 @@
 // 把视觉稿或封面的 HTML 截成 1920×1080 的图片（供试听页嵌入）。
 // 用法：node keyframes_shot.cjs <html> <输出目录> <前缀>
-//   视觉稿（含 .frame）：每帧存为 <前缀>_<n>.png，帧的说明存为 <前缀>.json；封面（含 #cv）：存为 <前缀>.png
+//   视觉稿（含 .frame）：每帧存为 <前缀>_<n>.png，帧的说明存为 <前缀>.json；封面（含 #cv）：存为 <前缀>.png；
+//   一页几种封面（#cv-a、#cv-b…）：存为 <前缀>_a.png、<前缀>_b.png…
 const path = require('path');
 const fs = require('fs');
 const lib = require('../../../../kit/tools/lib.js');
@@ -11,9 +12,16 @@ const puppeteer = require('../../../../node_modules/puppeteer-core');
   const page = await browser.newPage();
   await page.setViewport({ width: 2000, height: 1200 });
   await page.goto('file:///' + path.resolve(html).replace(/\\/g, '/'), { waitUntil: 'networkidle0', timeout: 60000 });
-  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => document.fonts.ready.then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))));
   const cover = await page.$('#cv');
-  if (cover) {
+  const variants = await page.$$('.cv[id^="cv-"]');
+  if (variants.length) {
+    for (const v of variants) {
+      const id = await v.evaluate((e) => e.id.slice(3));
+      await v.screenshot({ path: path.join(out, `${prefix}_${id}.png`) });
+    }
+    console.log('covers', variants.length);
+  } else if (cover) {
     await cover.screenshot({ path: path.join(out, `${prefix}.png`) });
     console.log('cover');
   } else {

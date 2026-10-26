@@ -1,10 +1,11 @@
 # 把封面、视觉稿截图、配乐小样与配音样本打包成一个自包含的 HTML（图片与音频都以 base64 嵌入，不依赖外部文件与网络），
-# 供 WaterRun 拷到远程设备上看、听。用法：python audition_build.py <试听目录> <轮次：r1 | r2>
+# 供 WaterRun 拷到远程设备上看、听。用法：python audition_build.py <试听目录> <轮次：r1 | r2 | r3>
 # 前置（都写进同一个试听目录）：
 #   node keyframes_shot.cjs ../review/keyframes-rN.html <目录> <帧前缀>     视觉稿各帧与说明
-#   node keyframes_shot.cjs ../review/cover-r1.html <目录> cover_r1          封面（R2 起）
-#   python fugue_sketch.py <目录>/fugue.wav  或  python music_sketch.py <目录>/music_r2.wav
+#   node keyframes_shot.cjs ../review/cover-r1.html <目录> cover_r1          封面（R2）；cover-r2.html → cover_r2_a / _b（R3）
+#   python fugue_sketch.py <目录>/fugue.wav  或  python music_sketch.py <目录>/music_r3.wav（R2 的配乐见提交 e3f8a3e）
 #   python voice_audition.py <目录>                                           男声样本与 voices.json
+#   python demo_mix.py <目录> <目录>/music_r3.wav demo_r3                     配乐 + 配音 demo（R3）
 import base64, html, json, os, subprocess, sys
 
 FF = os.environ.get('LVS_FFMPEG') or os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'assets', 'ffmpeg', 'bin', 'ffmpeg.exe')
@@ -22,7 +23,7 @@ def at(sec):
     return '%d:%02d' % (int(sec) // 60, int(sec) % 60)
 
 
-B66, B112 = 60 / 66, 60 / 112
+B66, B112, B56 = 60 / 66, 60 / 112, 60 / 56
 ROUNDS = {
     'r1': {
         'title': '学院派的正统：PostgreSQL · 试听与视觉稿 R1',
@@ -37,12 +38,27 @@ ROUNDS = {
     'r2': {
         'title': '学院派的正统：PostgreSQL · 试听与视觉稿 R2',
         'ask': '这一版按你对 R1 的意见改：配音定为沉稳高管；配乐改成表现计算机系统的秩序；视觉更有 Pg 的味道、Pg 蓝用得更足；加了封面。要你看的：①封面；②配乐 R2 的方向；③视觉稿 R2。',
-        'frames': 'kf2', 'cover': 'cover_r1.png', 'music': 'music_r2.wav', 'voices': ['Chinese (Mandarin)_Reliable_Executive'],
+        'frames': 'kf2', 'music': 'music_r2.wav', 'voices': ['Chinese (Mandarin)_Reliable_Executive'],
+        'cover': [('cover_r1.png', '封面 16:9（1920×1080）；4:3 版按同一版式排')],
+        'cover_text': '整幅 Pg 蓝，叠一层纸纹与很淡的网格；标题白字面、深蓝立体侧面，缩小后仍清楚；右边是等轴立体的一排 8 KB 堆页，最前一页的顶面上看得见新旧两版行（旧版本标出 xmax），上方一棵小索引树，一根线从叶子落到新版本（ctid）。不放大象标志。源页 <code>review/cover-r1.html</code>。',
         'music_head': '配乐 R2 · 数据的秩序',
         'music_text': '你说「配乐更体现计算机 数据库海量数据的井井有条 复杂有序的计算机系统」。改成一层层精确的音型叠起来：D 小调，112 拍/分，十六分音符的网格；一支拨弦走琶音像一路数据流，木琴同一音型错开三个十六分音符跟进（卡农），低音八分音符的脉冲像 WAL 的心跳；上一版的赋格主题留在弦乐上，作学院派的线索；高潮全部合奏，崩溃停一拍后从一支声部重新建起，最后各声部依次退出（像 VACUUM）、落在 D 大调。约 70 秒，全部由程序合成（本片 <code>tools/music_sketch.py</code>）。',
         'marks': [(0, '拨弦琶音单独：一路数据流'), (4 * 4 * B112, '木琴同一音型错开跟进：卡农'), (8 * 4 * B112, '低音八分音符脉冲：WAL 的心跳'), (12 * 4 * B112, '弦乐长和弦，赋格主题在弦乐上'),
                   (18 * 4 * B112, '全部合奏：钟声、定音鼓，主题高八度'), (22 * 4 * B112, '全体停一拍：崩溃'), (22 * 4 * B112 + B112, '数据流从一支声部重新建起，木琴、低音依次回来'), (28 * 4 * B112, '各声部依次退出（VACUUM），落在 D 大调')],
         'visual_head': '视觉稿 R2 · 八帧（加章节卡），Pg 蓝更足',
+    },
+    'r3': {
+        'title': '学院派的正统：PostgreSQL · 试听 R3',
+        'ask': '这一版按你对 R2 的意见改：封面上的「PostgreSQL」改用官方配色，出了 A、B 两种做法；配乐 R3 慢下来、空下来；加了一段一分半的配乐 + 配音 demo。视觉稿没有新意见，这一轮没改，附在最后对照。要你定的：①封面 A 还是 B；②配乐 R3 的方向；③demo 里配乐与配音的比例。',
+        'frames': 'kf2', 'music': 'music_r3.wav', 'voices': [], 'demo': 'demo_r3',
+        'cover': [('cover_r2_a.png', 'A 深蓝底：底色官方深蓝 #264d6d，「PostgreSQL」用官网深色主题的高亮蓝 #50b0f0（对比约 3.7:1）'),
+                  ('cover_r2_b.png', 'B 白板：底色 Pg 蓝 #336791，「PostgreSQL」用 Pg 蓝写在立体的白板上（对比约 6:1）')],
+        'cover_text': '你说「封面的PostgreSQL 可能使用一种有区分度的蓝色, 或者Pg官方色中和蓝色底的对比色 需要官方配色」。颜色只取 postgresql.org 官网样式表（main.css）里的官方配色：#336791 Pg 蓝（标题、链接、主按钮）、#264d6d 深蓝、#193145 链接悬停的深蓝、#e7eae8 极浅灰、#699eca 与 #50b0f0（官网深色主题里的 Pg 蓝与高亮蓝）。官方配色里和 Pg 蓝对比够大的只有白、浅灰和深色主题的浅蓝，所以出两种：A 把底色压深，字用浅蓝；B 底色不动，字仍是 Pg 蓝，写在一块立体的白板上，像官网白底蓝字的标题。其余同 R1。源页 <code>review/cover-r2.html</code>。',
+        'music_head': '配乐 R3 · 沉稳',
+        'music_text': '你说 R2「节奏太快 太吵杂 没有体现Pg的沉稳 节奏和前两期差不多」。R3 慢下来、空下来：56 拍/分（前两集 MyISAM 用过 66，InnoDB 用过 76、84、100，R2 是 112），每小节只有一个和弦，同时最多四层；秩序靠一支从头到尾不变的八分音符音型（柔音钢琴，中音区），不再用密集的十六分音符；音色都去掉刺耳的高次泛音（4 kHz 以上的能量只有 R2 的约 1/170），不用钟、定音鼓，也不再有崩溃的急停。赋格主题仍在，由大提琴低声奏出，时值放大一倍。约两分钟，全部由程序合成（本片 <code>tools/music_sketch.py</code>）。',
+        'marks': [(0, '低音与长和弦（D 小调）'), (2 * 4 * B56, '柔音钢琴的八分音符音型进来，从此不变'), (6 * 4 * B56, '大提琴低声奏出赋格主题（时值放大一倍）'), (12 * 4 * B56, '小提琴高八度回答，钢片琴偶尔点几个音'),
+                  (18 * 4 * B56, '渐强到属和弦'), (20 * 4 * B56, '只剩长和弦与低音：一口气'), (21 * 4 * B56, '主题开头在高低八度上齐奏'), (24 * 4 * B56, '落在 D 大调，各层依次退出')],
+        'visual_head': '视觉稿 R2 · 八帧（这一轮没改，附上对照）',
     },
 }
 
@@ -91,23 +107,30 @@ def main(d, rnd):
     H.append('<header class="top"><div><h1>%s</h1><p>数据库引擎系列第 3 集（重做版）· 2026-10-26 · 制作方 Claude Opus 5.5 · 本页自包含，图片与音频都嵌在文件里，离线可看可听</p></div></header><main>' % html.escape(R['title']))
     H.append('<div class="note">%s<br>%s</div>' % (html.escape(R['ask']), NUMBERS))
     if R['cover']:
-        jpg = os.path.join(d, os.path.splitext(R['cover'])[0] + '.jpg')
-        ff('-i', os.path.join(d, R['cover']), '-q:v', '2', jpg)
-        H.append('<h2>封面</h2><p>整幅 Pg 蓝，叠一层纸纹与很淡的网格；标题白字面、深蓝立体侧面，缩小后仍清楚；右边是等轴立体的一排 8 KB 堆页，最前一页的顶面上看得见新旧两版行（旧版本标出 xmax），上方一棵小索引树，一根线从叶子落到新版本（ctid）。不放大象标志。源页 <code>review/cover-r1.html</code>。</p>')
-        H.append('<figure><img alt="封面" src="data:image/jpeg;base64,%s"><figcaption>封面 16:9（1920×1080）；4:3 版按同一版式排</figcaption></figure>' % b64(jpg))
+        H.append('<h2>封面</h2><p>%s</p>' % R['cover_text'])
+        for png, cap in R['cover']:
+            jpg = os.path.join(d, os.path.splitext(png)[0] + '.jpg')
+            ff('-i', os.path.join(d, png), '-q:v', '2', jpg)
+            H.append('<figure><img alt="封面" src="data:image/jpeg;base64,%s"><figcaption>%s</figcaption></figure>' % (b64(jpg), html.escape(cap)))
+    if R.get('demo'):
+        dm = json.load(open(os.path.join(d, R['demo'] + '.json'), encoding='utf-8'))
+        H.append('<h2>配乐 + 配音 · 一分半 demo</h2><p>配乐 R3 垫在选定的男声下面。电平照本片的设定：配乐 %d dB，说话时再压低 %d dB；混法和成片用的 <code>kit/tools/mix.py</code> 相同（旁白按响度对齐再软限幅），听起来接近成片的比例。本片 <code>tools/demo_mix.py</code> 生成。</p>' % (dm['music_db'], dm['duck_db']))
+        H.append('<div class="card"><h3>demo · %s</h3><div class="meta">MiniMax %s · <code>%s</code> · 语速 %.2f 倍 · 实测每秒 %.2f 字 · 共 %.1f 秒</div><audio controls preload="metadata" src="data:audio/mpeg;base64,%s"></audio></div>'
+                 % (at(dm['seconds']), html.escape(dm['model']), html.escape(dm['voice']), dm['speed'], dm['rate'], dm['seconds'], b64(os.path.join(d, R['demo'] + '.mp3'))))
+        H.append('<p>试听文字只为试听，不是文案，没有取证，不进成片；成片文案按取证另写，经校对确认后才配音：</p><blockquote>%s</blockquote>' % '<br>'.join(html.escape(s['text']) for s in dm['segments']))
     H.append('<h2>%s</h2><p>%s</p>' % (html.escape(R['music_head']), R['music_text']))
     H.append('<div class="card"><audio controls preload="metadata" src="data:audio/mpeg;base64,%s"></audio></div>' % music)
     H.append('<table><tr><th>时刻</th><th>听到什么</th></tr>' + ''.join('<tr><td>%s</td><td>%s</td></tr>' % (at(s), html.escape(t)) for s, t in R['marks']) + '</table>')
     if R['voices'] is None:
         H.append('<h2>配音 · 三个男声预选</h2><p>同一段试听文字，语速都对齐到 InnoDB 一集旁白的实际语速（每秒约 %.2f 字），只比音色。试听文字只为试音，不是定稿文案：</p><blockquote>%s</blockquote>' % (vmeta['target_rate'], html.escape(vmeta['text'])))
-    else:
+    elif R['voices']:
         H.append('<h2>配音 · 已选定</h2><p>你在 R1 里选了这一个；这里留着它，方便和配乐一起听。试听文字只为试音，不是定稿文案：</p><blockquote>%s</blockquote>' % html.escape(vmeta['text']))
     for v, data in voices:
         H.append('<div class="card"><h3>%s</h3><div class="meta">MiniMax %s · <code>%s</code> · 语速 %.2f 倍 · 实测每秒 %.2f 字 · %.1f 秒 · %s</div><audio controls preload="metadata" src="data:audio/mpeg;base64,%s"></audio></div>'
                  % (html.escape(v['name']), html.escape(vmeta['model']), html.escape(v['voice']), v['speed'], v['rate'], v['seconds'], html.escape(v['desc']), data))
     H.append('<h2>%s</h2>' % html.escape(R['visual_head']))
     H.append('<p>语汇取自 PostgreSQL 官方文档：Pg 蓝 #336791、深蓝 #193145、浅蓝 #699eca（旧版本、快照）；Open Sans；带横线的标题；「图 n」图注；注解用文档的「注意」框，贴在被解释的东西旁边；所有 SQL 都以 psql 会话出现。不放大象标志。主画面是 PostgreSQL 自己的对象：堆页、两棵独立的 B 树、带 xmin/xmax 的行版本、快照、VACUUM。成片里会动起来，每章一个主画面逐步推进。%s</p>'
-             % ('R2：每帧顶上一条 Pg 蓝通栏（名字、版本、章节），页与节点、表头、标签改用 Pg 蓝，纸面加一层很淡的蓝色工程网格；加一帧整屏 Pg 蓝的章节卡。' if rnd == 'r2' else ''))
+             % ('R2：每帧顶上一条 Pg 蓝通栏（名字、版本、章节），页与节点、表头、标签改用 Pg 蓝，纸面加一层很淡的蓝色工程网格；加一帧整屏 Pg 蓝的章节卡。' if rnd in ('r2', 'r3') else ''))
     for lab, data in zip(labels, imgs):
         H.append('<figure><img alt="%s" src="data:image/jpeg;base64,%s"><figcaption>%s</figcaption></figure>' % (html.escape(lab), data, html.escape(lab)))
     H.append('</main></body></html>')
