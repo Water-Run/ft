@@ -481,6 +481,8 @@ scene('s3', ({ root, s, c0 }) => {
   const toNM = path(ov, `M${830},${548} C${480},${544} ${168},${540} ${168},${650} S${180},${765} ${NX(NK9) - NBW / 2 - 4},${765}`, 'main', { w: 2.6 });   // 绕过根页 5 的左端，从左边进叶子 9
   arrowIn(toPK, T('a25', '两棵树') - 0.2, 0.6); arrowIn(toNM, T('a25', '两棵树') + 0.1, 0.6);
   litWin(leaves[K27], 'hot', [[T('a16'), Tend('a17') - 0.1], [tS0, tSx], [T('a26', '主键树'), tFwd0]]);
+  nmGroups.forEach((g) => { tl.fromTo(g, { opacity: 1 }, { opacity: 0.35, duration: 0.4, immediateRender: false }, T('a26', '主键树')); tl.fromTo(g, { opacity: 0.35 }, { opacity: 1, duration: 0.4, immediateRender: false }, T('a27') - 0.1); });
+  leaves.forEach((g) => { tl.fromTo(g, { opacity: 1 }, { opacity: 0.35, duration: 0.4, immediateRender: false }, T('a27') - 0.1); tl.fromTo(g, { opacity: 0.35 }, { opacity: 1, duration: 0.4, immediateRender: false }, tFwd0); });
   lit(nleaves[NK9], 'hot', T('a27', '姓名索引'), tFwd0);
   exit(chip, tFwd0, { y: -8, d: 0.3 });
   [toPK, toNM].forEach((p) => tl.to(p, { autoAlpha: 0, duration: 0.3 }, tFwd0));

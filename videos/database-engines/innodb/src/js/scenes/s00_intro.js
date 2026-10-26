@@ -44,10 +44,11 @@ scene('intro', ({ root, s }) => {
   const tRows0 = 0.1, tRows1 = Math.max(tRows0 + 2.5, Tend('h1') - 0.3);
   rowEls.forEach((r, k) => { vanish(r, 0); appear(r, k < 2 ? 0 : lerp(tRows0, tRows1, k / (rowEls.length - 1))); });   // 头两行第一帧就在
   for (let k = 0; k < rowEls.length; k += 2) sfx('tick', lerp(tRows0, tRows1, k / (rowEls.length - 1)), { g: 0.3 });
-  wipe(myi, Math.min(T('h2', '两个文件'), 2.4), { dir: 'l', d: 0.9 });   // 索引文件早一点出来（片头这几秒画面要有变化），标签等讲到时再上
-  slam(mydTag, T('h2', '数据'), { from: 1.3 }); slam(myiTag, T('h2', '索引') - 0.05, { from: 1.3 }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') - 0.05, { g: 0.6 });
+  wipe(myi, Math.min(T('h2', '两个文件'), 2.6), { dir: 'l', d: 0.9 });   // 索引文件早一点出来（片头这几秒画面要有变化），标签等讲到时再上
+  slam(mydTag, T('h2', '两个文件'), { from: 1.3 }); slam(myiTag, T('h2', '两个文件') + 0.15, { from: 1.3 });
+  [[mydTag, T('h2', '数据')], [myiTag, T('h2', '索引') - 0.05]].forEach(([e, t]) => { tl.fromTo(e, { scale: 1 }, { scale: 1.3, duration: 0.15, ease: 'power2.out', immediateRender: false }, t); tl.fromTo(e, { scale: 1.3 }, { scale: 1, duration: 0.2, ease: 'power2.in', immediateRender: false }, t + 0.15); }); sfx('pop', T('h2', '数据'), { g: 0.6 }); sfx('pop', T('h2', '索引') - 0.05, { g: 0.6 });
   // 索引文件里的 B 树与指向数据文件的箭头：旁白只说「一个放索引」，细节交给画面（R11 并掉了 h3）
-  const tTree = T('h2', '索引') + 0.1, tPtr = Math.max(tTree + 1.0, Tend('h2') - 0.3);
+  const tTree = T('h2') + 0.2, tPtr = Math.max(tTree + 1.0, Tend('h2') - 0.3);
   wipe(tRoot, tTree, { dir: 't', d: 0.4 });
   treeLines.forEach((p, i) => arrowIn(p, tTree + 0.15 + i * 0.08, 0.4));
   leafs.forEach((l, i) => wipe(l, tTree + 0.3 + i * 0.1, { dir: 't', d: 0.45 }));
@@ -65,7 +66,9 @@ scene('intro', ({ root, s }) => {
   // 三张卡在说「三处」时一起进场、随即变淡；讲到哪一处，哪一张变实
   { const tC0 = T('h4', '三处');
     [g1, g2, g3].forEach((c, i) => slide(c, tC0 + i * 0.2, { y: 30 }));
-    [['h5', g1], ['h6', g2], ['h7', g3]].forEach(([c, e]) => lit(e, 'on', T(c), Tend(c) + 0.3)); }
+    [['h5', g1], ['h6', g2], ['h7', g3]].forEach(([c, e]) => lit(e, 'on', T(c), Tend(c) + 0.3));
+    [[g1, T('h5', '一组'), T('h5', '撤回')], [g2, T('h6', '表锁'), T('h6', '等')], [g3, T('h7', '断电'), T('h7', '修复')]].forEach(([e, a, b]) => {
+      tl.fromTo(e, { y: 0 }, { y: -26, duration: 0.3, ease: 'power2.out', immediateRender: false }, a); tl.fromTo(e, { y: -26 }, { y: 0, duration: 0.3, ease: 'power2.inOut', immediateRender: false }, b + 0.3); }); }
   [[g1, 'h5'], [g2, 'h6'], [g3, 'h7']].forEach(([, c]) => sfx('thud', T(c) + 0.1, { g: 0.5 }));
   steps(g1, G1A, G1B, T('h5', '一组'), T('h5', '撤回')); steps(g2, G2A, G2B, T('h6', '在写'), T('h6', '等')); swaps(g3.querySelector('.cs'), [[T('h7', '断电') - 0.2, G30], [T('h7', '检查') - 0.4, G30 + G3A], [T('h7', '修复') - 0.8, G30 + G3A + G3B]]);
   // 「断电」：整个画面暗一下
@@ -73,8 +76,8 @@ scene('intro', ({ root, s }) => {
     tl.fromTo(bo, { opacity: 0 }, { opacity: 0.6, duration: 0.08, immediateRender: false }, tb); tl.fromTo(bo, { opacity: 0.6 }, { opacity: 0, duration: 0.7, immediateRender: false }, tb + 0.3); }
   [T('h5', '一组'), T('h5', '撤回'), T('h6', '在写'), T('h6', '等'), T('h7', '断电') - 0.2, T('h7', '检查') - 0.4, T('h7', '修复') - 0.6].forEach((t) => sfx('pop', t, { g: 0.35 }));
   // h4：讲到「三处做不到」时，两个文件稍稍退后，给下面的三张卡让出注意
-  [myd, myi].forEach((e) => to(e, T('h4', '三处'), { opacity: 0.4, duration: 0.6 }));
-  ptr.forEach((p) => tl.to(p, { opacity: 0.4, duration: 0.6 }, T('h4', '三处')));
+  [myd, myi].forEach((e) => to(e, T('h4') + 0.1, { opacity: 0.4, duration: 0.6 }));
+  ptr.forEach((p) => tl.to(p, { opacity: 0.4, duration: 0.6 }, T('h4') + 0.1));
   // h8：先看第一处
   lit(g1, 'on', Tend('h7') + 0.9);
   [g2, g3].forEach((c) => to(c, Tend('h7') + 0.9, { opacity: 0.35, duration: 0.4 }));   // 第三处讲完就把第一处挑出来
@@ -105,12 +108,11 @@ scene('intro', ({ root, s }) => {
   slide(rowChip, tq2e + 0.1, { x: -30 }); sfx('pop', tq2e + 0.1, { g: 0.5 });
   slam(qm, T('h10', '还没到'), { from: 1.6 }); sfx('thud', T('h10', '还没到'), { g: 0.5 });
   // h11：要撤回——那一行的「42 → 43」掉过头来，问号换成撤回的箭头
-  swaps(rowChip, [[T('h11', '撤回'), 'Alice · 2050 · 42 ← 43']]);
   // 要撤回：那一行的标签从红色（改了）换成深青（退回去）
-  h('style', '', B).textContent += '.pill.s0-back { background: var(--mainD) !important; border-color: var(--mainD) !important; }';
-  lit(rowChip, 's0-back', T('h11', 'ROLLBACK')); tl.fromTo(rowChip, { scale: 1 }, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, T('h11', 'ROLLBACK'));
+  const rowBack = h('div', 'pill fill', B, 'Alice · 2050 · 42 ← 43'); px(rowBack, 1150 - 30 + 30, 196); css(rowBack, { background: 'var(--mainD)', borderColor: 'var(--mainD)' });
+  vanish(rowBack, 0); appear(rowBack, T('h11', 'ROLLBACK')); exit(rowBack, T('h12') + 0.6, { y: -10, d: 0.3 });   // 原标签不动，叠一张深青的新标签
   swaps(qm, [[T('h11', '撤回'), '<span style="font:900 64px Inter;color:var(--acc)">↶</span>']]);
-  [rowChip, qm].forEach((e) => exit(e, T('h12') + 0.6, { y: -10, d: 0.3 }));
+  exit(qm, T('h12') + 0.6, { y: -10, d: 0.3 }); vanish(rowChip, T('h11', 'ROLLBACK') + 0.01);   // 原标签在深青的新标签出现时收起
 
   // 两条泳道：MyISAM 的副本与另一张表；横轴是时间，播放头走过 UPDATE 与 ROLLBACK
   const xU = 760, xR = 1260;

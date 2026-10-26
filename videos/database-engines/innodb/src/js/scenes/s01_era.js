@@ -144,7 +144,8 @@ scene('s1', ({ root, s, c0 }) => {
     lit(c.querySelector('.s1-ti'), 's1-on', T(q.t));
     return c;
   });
-  st.textContent += '.s1-ti.s1-on { color: var(--ink) !important; font-size: 40px !important; }';
+  st.textContent += '.s1-ti.s1-on { color: var(--ink) !important; font-size: 40px !important; } .card.s1-act { background: #E9F4F5 !important; border-color: var(--main) !important; }';
+  [[0, T('y7', '撤回'), T('y8', '同时')], [1, T('y8', '同时'), T('y9', '停下')], [2, T('y9', '停下'), T('y10')]].forEach(([i, a, b]) => lit(cards[i], 's1-act', a, b));
   // 「MyISAM」只在这一排卡片上方写一次（R13 第 5 条），讲到「三个问题」时换成「三个问题」
   const qHead = h('div', 'abs t-note', W, 'MyISAM 做不到的三处'); px(qHead, 200, 556); wipe(qHead, T('y6') + 0.1, { dir: 'l', d: 0.4 });
   swaps(qHead, [[T('y7') - 0.1, '三个问题']]);

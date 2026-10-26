@@ -129,6 +129,7 @@ scene('s4', ({ root, s, c0 }) => {
   for (let k = 0; k < D.dir.n_dir_slots; k++) { const r = svg('rect', { x: DX, y: DY0 - (k + 1) * DH, width: 46, height: DH - 2, fill: '#D9EEEF', stroke: '#2D5A68', 'stroke-width': 0.8 }, recSvg); dirCells.push(r); }
   // 二分：依次亮起的目录格，旁边写出那一格指向的编号
   const probes = D.dir.binary_search_probes;
+  recEls.forEach((r) => { tl.fromTo(r, { opacity: 1 }, { opacity: 0.3, duration: 0.4, immediateRender: false }, T('b9') + 0.1); tl.fromTo(r, { opacity: 0.3 }, { opacity: 1, duration: 0.4, immediateRender: false }, Tend('b9z') - 0.2); });   // 在页目录里找时，页里的行退成背景
   const tP0 = T('b9', '对半'), tPstep = Math.max(0.45, (Tend('b9') + 1.3 - tP0) / probes.length);   // 每一步停得够读出比较
   // 范围框：还没排除的槽；每一步比较之后砍掉一半（按 P1 的探测顺序推出上下界）
   const RNG = []; { let lo = 0, hi = D.dir.n_dir_slots - 1; RNG.push([lo, hi]); probes.forEach((q) => { if (q.key > 2050) hi = q.slot; else lo = q.slot; RNG.push([lo, hi]); }); }

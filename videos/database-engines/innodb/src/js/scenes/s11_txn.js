@@ -31,7 +31,9 @@ scene('s11', ({ root, s, c0 }) => {
   const ibdSq = ibdPages.map((p, i) => sq10(ibd, 18 + (i % 9) * 50, 52 + Math.floor(i / 9) * 50, p, 'on'));
   const i27 = ibdPages.indexOf(A.page);
   const lbSq = Array.from({ length: 9 }, (_, i) => sq10(lb, 22 + i * 64, 58, null));
-  const dbwSq = Array.from({ length: 16 }, (_, i) => sq10(dbw, 22 + i * 58, 44, null));
+  const dbwSq = Array.from({ length: 16 }, (_, i) => sq10(dbw, 200 + i * 46, 30, null));
+  // 两个窄条的标题放在左边，内容从 200 起，不和标题叠（R14）
+  [redo, dbw].forEach((b) => css(b.querySelector('.bt'), { textAlign: 'left', left: '22px', right: 'auto', top: '30px' }));
   // undo：Alice 改之前的那一版
   const uRec = h('div', 'abs mono', undo, `2050  Alice   <b>${A.before.age}</b>`); px(uRec, 24, 60); css(uRec, { fontSize: '26px', background: 'var(--pale)', border: '2px solid var(--main)', padding: '6px 12px' });
   const uRec2 = h('div', 'abs mono', undo, '旧版本 …'); px(uRec2, 24, 112); css(uRec2, { fontSize: '22px', color: 'var(--ink2)', border: '1.5px dashed var(--edge)', padding: '2px 10px' });
@@ -69,10 +71,10 @@ scene('s11', ({ root, s, c0 }) => {
   // 读靠多版本、撤销靠 undo：undo 里那一版亮一下；重做靠 redo：带子上扫一遍
   const FL = [[T('k21', 'undo'), T('k21', 'undo') + 0.9], [T('k22', '多版本'), T('k22', '多版本') + 0.9], [T('k15', '多版本'), T('k15', '多版本') + 0.9]];
   { let last = null; F((t) => { const on = FL.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; uRec.classList.toggle('s10flash', on); }); }
-  const rscan = h('div', 'abs', redo); px(rscan, 200, 44, 10, 42); css(rscan, { background: 'var(--main)' });
+  const rscan = h('div', 'abs', redo); px(rscan, 201, 53, 10, 24); css(rscan, { background: 'var(--main)' });   // 填在带子里面
   // 重启后按 redo 重做：带子从头到尾一路填满（k23 整句都在走）
   { const W2 = [[T('k23') + 0.2, Tend('k23') + 0.3], [T('k15', '日志'), T('k15', '日志') + 1.2]]; let last = null;
-    F((t) => { const w = W2.find(([a, b]) => t >= a && t < b); const x = w ? Math.round(lerp(10, 490, ease.io3(clamp((t - w[0]) / (w[1] - w[0]))))) : -1; if (x === last) return; last = x; rscan.style.display = w ? '' : 'none'; rscan.style.width = Math.max(10, x) + 'px'; }); }
+    F((t) => { const w = W2.find(([a, b]) => t >= a && t < b); const x = w ? Math.round(lerp(10, 738, ease.io3(clamp((t - w[0]) / (w[1] - w[0]))))) : -1; if (x === last) return; last = x; rscan.style.display = w ? '' : 'none'; rscan.style.width = Math.max(10, x) + 'px'; }); }
   // 「事务」：行上那把锁再出现一下
   const l3 = lockAt(p27, 500, 88); vanish(l3, 0); appear(l3, T('k15', '事务')); vanish(l3, Tend('k15'));
   // k24：三样合在一起，就是 InnoDB 的事务——三张卡下面一道括线收成「事务」，三样部件一起亮
@@ -101,7 +103,10 @@ scene('s11', ({ root, s, c0 }) => {
   const plus = h('div', 'abs', W, '<span class="num" style="font:800 64px Inter;color:var(--mainD)">6 + 7 = 13</span><span style="font:700 36px \'Sans SC\';color:var(--mainD);margin-left:12px">字节</span>');
   px(plus, 1290, 790); vanish(plus, 0); slam(plus, T('k12', '13'), { from: 1.3 }); sfx('thud', T('k12', '13'));
   // 旧版本留着：undo 里的旧版本一条条摞着
-  const olds = [0, 1, 2].map((k) => { const e = h('div', 'abs mono', undo, '旧版本'); e.dataset.overlapOk = ''; px(e, 170 + k * 16, 104 + k * 8); css(e, { fontSize: '22px', background: 'var(--panel)', border: '1.5px solid var(--main)', padding: '2px 10px' }); vanish(e, 0); appear(e, T('k13') + 0.3 + k * 0.25); return e; });
+  // 旧版本留着：undo 里「旧版本 …」换成一排三条旧版本，越留越多（排开，不叠）
+  vanish(uRec2, T('k13') + 0.3);
+  const olds = [0, 1, 2].map((k) => { const e = h('div', 'abs mono', undo, '旧版本'); px(e, 24 + k * 116, 112); css(e, { fontSize: '22px', background: 'var(--panel)', border: '1.5px solid var(--main)', padding: '2px 10px' }); vanish(e, 0); appear(e, T('k13') + 0.3 + k * 0.25); return e; });
+  { const more = h('div', 'abs mono', undo, '…'); px(more, 24 + 3 * 116, 112); css(more, { fontSize: '22px', color: 'var(--ink2)' }); vanish(more, 0); appear(more, T('k13') + 1.1); olds.push(more); }
   onWin(undo, T('k13'), Tend('k13'));
   // 锁要等：一根等锁的虚框条；还可能死锁：两把锁互相指着
   const GW = h('div', 'abs', W); px(GW, 0, 0);

@@ -37,6 +37,8 @@ scene('s7', ({ root, s, c0 }) => {
     px(e, RX(i), RY); e.dataset.name = '记录' + r.id; return e;
   });
   const idx = (id) => REC.findIndex((r) => r.id === id);
+  h('style', '', W).textContent = '.s7-rec.s7-sel { background: #E9F4F5 !important; } .box.s7-cyc { background: #F8EAE6 !important; }';
+  lit(recs[idx(2050)], 's7-sel', T('g2', '锁哪一行') - 0.3, T('g3'));
   const cx = (id) => RX(idx(id)) + 140;
   const ov = overlay(W);
   const chain = REC.slice(0, -1).map((r, i) => path(ov, `M${RX(i) + 284},${RY + 70} L${RX(i + 1) - 6},${RY + 70}`, 'mainD', { w: 2 }));
@@ -53,7 +55,8 @@ scene('s7', ({ root, s, c0 }) => {
   LN.enter(c0 + 0.5);
 
   // g1：两个人要改同一行——两人的 UPDATE 都指向 2050（先只是意图，虚线）
-  const want = [0, 1].map((i) => path(ov, `M${330 + i * 30},${LN.Y(i) - 20} C${330 + i * 30},460 ${cx(2050) - 40 + i * 80},440 ${cx(2050) - 20 + i * 40},${RY + 146}`, 'mute', { w: 2, dashed: '6 7' }));
+  // 虚线从人出发（名字的右端），指向 2050（R14：线条要指向人）
+  const want = [0, 1].map((i) => path(ov, `M${250 + i * 16},${LN.Y(i) - 6} C${310 + i * 40},${LN.Y(i) - 110} ${cx(2050) - 40 + i * 80},440 ${cx(2050) - 20 + i * 40},${RY + 146}`, 'mute', { w: 2, dashed: '6 7' }));
   want.forEach((p, i) => arrowIn(p, T('g1', '同一行') + i * 0.15, 0.6));
   want.forEach((p) => svgOut(p, T('g2') - 0.1, 0.3));
 
@@ -62,7 +65,7 @@ scene('s7', ({ root, s, c0 }) => {
   const tMy = T('g2', 'MyISAM'), tIn = T('g2', 'InnoDB');
   // 大锁先压在整页的上沿（MyISAM：整张表），再落到 2050 这一条上（InnoDB）
   tl.fromTo(big, { autoAlpha: 0, y: -186, scale: 3.4 }, { autoAlpha: 1, y: -186, scale: 2.4, duration: 0.35, ease: 'back.out(2)', immediateRender: true }, tMy);
-  tl.fromTo(big, { y: -186, scale: 2.4 }, { y: -88, scale: 1, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tIn);
+  tl.fromTo(big, { y: -186, scale: 2.4 }, { y: -98, scale: 1, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tIn);   // 锁落在记录框的上沿之上，不压红边
   const whole = h('div', 'abs', W); px(whole, 120, 100, 1680, 310); css(whole, { border: '4px solid var(--acc)' });
   vanish(whole, 0); show(whole, tMy, { y: 0, d: 0.2 }); exit(whole, tIn + 0.2, { y: 0, d: 0.3 });
   const myTag = h('div', 'tag acc', W, 'MyISAM：整张表'); px(myTag, 1560, 86);
@@ -117,7 +120,7 @@ scene('s7', ({ root, s, c0 }) => {
   const tA9 = T('g9', '2049'), tAw = T('g9', '又要'), tC10 = T('g10', '2051'), tCwt = T('g10', '又要');
   const tDl = T('g11', '死锁'), tDet = T('g12', '发现'), tRb = T('g12', '回滚'), tGo = T('g12', '继续');
   const lockFor = (id, who, t, cls = '') => {
-    const lk = lockAt(W, cx(id) - 13, RY - 38, cls); vanish(lk, 0); slam(lk, t, { from: 2 });
+    const lk = lockAt(W, cx(id) - 13, RY - 48, cls); vanish(lk, 0); slam(lk, t, { from: 2 });
     const tag = h('div', 's7-own' + (cls ? ' c' : ''), W, who); px(tag, cx(id) + 22, RY - 72); slam(tag, t + 0.1, { from: 1.4 }); sfx('thud', t + 0.05, { g: 0.5 });
     return [lk, tag];
   };
@@ -144,7 +147,7 @@ scene('s7', ({ root, s, c0 }) => {
   });
   // 等待图（右边一块）：每个在等的事务记下挡住它的那一个，画成一条边
   const WG = boxEl(W, 1180, 460, 620, 300, '');
-  const wgT = h('div', 'abs t-small', WG, 'InnoDB 记下的「谁在等谁」（等待图）'); px(wgT, 20, 12);
+  const wgT = h('div', 'abs t-small', WG, '「谁在等谁」（等待图）'); px(wgT, 20, 12);
   const nodeA = h('div', 's7-st hold', WG, 'Alice'); px(nodeA, 60, 120); const nodeC = h('div', 's7-st hold', WG, 'Carol'); px(nodeC, 450, 120);
   css(nodeC, { background: 'var(--acc)' });
   const wgOv = overlay(WG);
@@ -152,7 +155,7 @@ scene('s7', ({ root, s, c0 }) => {
   const eAl = h('div', 'abs t-small', WG, 'Alice 等 Carol（2051）'), eCl = h('div', 'abs t-small', WG, 'Carol 等 Alice（2049）');
   px(eAl, 190, 42); px(eCl, 190, 222);
   WG.appendChild(wgOv);
-  vanish(WG, 0); show(WG, tA9 + 0.2, { x: 20, y: 0, d: 0.4 });
+  vanish(WG, 0); show(WG, tA9 + 0.2, { x: 20, y: 0, d: 0.4 }); lit(WG, 's7-cyc', Tend('g10') + 0.05, T('g12', '回滚'));   // 走一圈回到起点：等待图整块转成浅红
   [nodeA, nodeC].forEach((e, i) => { vanish(e, 0); slide(e, [tA9, tC10][i] + 0.2, { y: 10 }); });
   arrowIn(eAC, tAw + 0.2, 0.5); vanish(eAl, 0); show(eAl, tAw + 0.3, { y: 6, d: 0.3 });
   arrowIn(eCA, tCwt + 0.2, 0.5); vanish(eCl, 0); show(eCl, tCwt + 0.3, { y: 6, d: 0.3 });

@@ -151,6 +151,8 @@ scene('s8', ({ root, s, c0 }) => {
   const xUpd = LA.X(T('j2', '改数据'));
   const upd = LA.event(0, T('j2', '改数据'), 'UPDATE', 'ink', -60);
   const com = LA.event(0, T('j7', '提交'), 'COMMIT', '', -60);
+  { const e = h('div', 'abs', GA); px(e, 120, LA.Y(0) - 60, 1680, 120); css(e, { background: 'var(--accL)', opacity: 0 }); GA.insertBefore(e, GA.firstChild);
+    tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, T('j7', '提交') + 0.1); tl.fromTo(e, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, tLogOut + 0.3); }   // 等 redo 写到磁盘的这段
   const uncA = LA.bar(LA.Y(0) - 22, T('j2', '改数据') + 0.1, T('j7', '提交'), '<span>43</span>', 'unc');
   const waitB = LA.bar(LA.Y(0) - 22, T('j7', '提交') + 0.1, tLogOut + 0.2, '', 'wait');
   const okA = h('div', 'pill fill', GA, MARK.ok(24, '#fff')); px(okA, LA.X(tLogOut + 0.2) + 10, LA.Y(0) - 20); slam(okA, tLogOut + 0.25, { from: 1.4 }); sfx('pop', tLogOut + 0.25);

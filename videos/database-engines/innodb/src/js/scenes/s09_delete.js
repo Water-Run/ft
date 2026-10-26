@@ -80,16 +80,20 @@ scene('s9', ({ root, s, c0 }) => {
     flagB.textContent = m ? '1' : '0'; flag.style.color = m ? 'var(--acc)' : 'var(--ink2)';
     alice.style.borderColor = m ? 'var(--acc)' : 'var(--mainD)';
     alice.style.borderWidth = m ? '4px' : '2px';
+    alice.classList.toggle('s9-marked', m);
     trxEl.textContent = '事务 ' + (m ? mrk.trx_id : recOf('start', 2050).trx_id);
   });
-  // purge 的那一下：Alice 往上抬起再消失（只在 tPurge 前后 0.6 秒）
-  const ghost = alice.cloneNode(true); pg.appendChild(ghost); ghost.dataset.name = '';
+  h('style', '', W).textContent = `.s9-marked { background-color: #FBF1EE !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M-2,2 l4,-4 M0,14 L14,0 M12,16 l4,-4' stroke='%23E7B9AD' stroke-width='3'/%3E%3C/svg%3E"); }`;
+  // purge 的那一下：Alice 抬起、淡出（外层管显隐，内层管位移与透明度，互不碰同一个属性）
+  const ghostW = h('div', 'abs', pg); px(ghostW, 0, 0, 0, 0);
+  const ghost = alice.cloneNode(true); ghostW.appendChild(ghost); ghost.dataset.name = ''; ghost.classList.add('s9-marked');
   css(ghost, { borderColor: 'var(--acc)', borderWidth: '4px' });
   ghost.querySelector('b').textContent = '1';
   ghost.querySelector('.trx').textContent = '事务 ' + mrk.trx_id;
-  vanish(ghost, 0); appear(ghost, tPurge);                    // 显隐与位移分开写
-  fromTo(ghost, tPurge, { y: 0 }, { y: -70, duration: 1.0, ease: 'power2.in' });
-  vanish(ghost, tPurge + 1.0);
+  vanish(ghostW, 0); appear(ghostW, tPurge);
+  fromTo(ghost, tPurge, { y: 0 }, { y: -80, duration: 1.1, ease: 'power2.in' });
+  tl.fromTo(ghost, { opacity: 0.45 }, { opacity: 0, duration: 1.0, ease: 'power1.in', immediateRender: false }, tPurge);   // 从已经淡下去的样子接着淡出
+  vanish(ghostW, tPurge + 1.1);
   sfx('whoosh', tPurge, { g: 0.5 });
   // 链：2049→2050、2050→2051 两段在 Alice 不在时隐藏，绕过她的那根亮起
   const linkOn = (t) => aliceState(t) !== 'gone' || daveIn(t);
@@ -119,6 +123,9 @@ scene('s9', ({ root, s, c0 }) => {
     dave.style.visibility = on ? 'visible' : 'hidden';
     dave.style.transform = `translateY(${Math.round(-120 * (1 - ease.out3(k)))}px)`; dave.style.opacity = (0.2 + 0.8 * k).toFixed(2);
   });
+  tl.fromTo(alice, { opacity: 1 }, { opacity: 0.45, duration: 0.5, immediateRender: false }, T('d4', '需要')); tl.fromTo(alice, { opacity: 0.45 }, { opacity: 1, duration: 0.3, immediateRender: false }, tRe + 0.3);   // 再没有事务需要她
+  { h('style', '', W).textContent += '.s9-sel { background: var(--pale) !important; }'; const W2 = [[T('d10', '两行'), T('d10', '间隙')], [T('d11', '那两行'), T('d12')]]; let last = null;
+    F((t) => { const on = W2.some(([a, b]) => t >= a && t < b); if (on === last) return; last = on; [cards[1], cards[3]].forEach((e) => e.classList.toggle('s9-sel', on)); }); }
   // 页头：可回收字节与空闲链头随状态变（D3、D4）
   let lastHd = '';
   F((t) => {
@@ -131,10 +138,10 @@ scene('s9', ({ root, s, c0 }) => {
   show(hdr, c0 + 0.8, { y: 0, d: 0.4 }); exit(hdr, tRe, { d: 0.25 });
   const freePtr = path(ov, `M${120 + 1060 + 300},${110 + 58} C${120 + 1060 + 300},${196} ${120 + cx(iA) + CW + 10},${186} ${120 + cx(iA) + CW - 30},${110 + Y0 - 2}`, 'acc', { w: 2.4, dashed: '8 6' });   // 从页头的「空闲链」下面出发，不穿过字
   tl.fromTo(freePtr, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: true }, tPurge + 0.6); tl.fromTo(freePtr, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, tDave + 0.6);
-  const daveL = h('div', 'abs', W, `Dave 正好用上 Alice 腾出的 ${DL.purged.garbage} 字节`); px(daveL, 166, 470); css(daveL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
+  const daveL = h('div', 'abs', W, `Dave 正好用上 Alice 腾出的 ${DL.purged.garbage} 字节`); px(daveL, 120 + cx(iA) - 60, 476); css(daveL, { font: '600 24px "Sans SC"', color: 'var(--main)' });
   vanish(daveL, 0); show(daveL, tDave + 0.5, { y: 8, d: 0.35 }); exit(daveL, tRe - 0.1, { d: 0.3 });
   // 清除（purge）的注解
-  const gPurge = gloss(W, 166, 470, '清除', '<b>清除</b>：后台真正移走没人需要的行', { w: 1200, src: 'M8、D1–D3' });
+  const gPurge = gloss(W, 120 + cx(iA) - 60, 470, '清除', '<b>清除</b>：后台真正移走没人需要的行', { w: 520, src: 'M8、D1–D3' });   // 在 Alice 那条记录正下方
   vanish(gPurge, 0); show(gPurge, T('d5', '清除') + 0.1, { y: 8, d: 0.4 }); exit(gPurge, tDave + 0.3, { y: 8, d: 0.3 });
   const purgeTag = h('div', 'tag', W, 'purge'); px(purgeTag, 120 + cx(iA) + 80, 110 + Y0 - 48); css(purgeTag, { fontFamily: 'Inter', fontSize: '26px' });
   slam(purgeTag, tPurge - 0.1, { from: 1.4 }); exit(purgeTag, tDave - 0.2, { y: -10, d: 0.3 });
@@ -208,11 +215,11 @@ scene('s9', ({ root, s, c0 }) => {
   sfx('error', T('d12', '多出'), { g: 0.4 });
   const tagP = h('div', 'tag acc', pg, '幻读'); px(tagP, 0, 0); css(tagP, { position: 'absolute', right: '8px', top: '8px', left: 'auto', fontSize: '26px' });
   vanish(tagP, 0); slam(tagP, T('d12', '幻读'), { from: 1.4 }); exit(tagP, T('d13', '插') - 0.2, { d: 0.3 });
-  const gGap = gloss(W, 166, 494, '间隙', '<b>间隙</b>：记录间的空档，锁住就插不进来', { w: 820, src: 'M11、X6' });
+  const gGap = gloss(W, 290, 500, '间隙', '<b>间隙</b>：记录间的空档，锁住就插不进来', { w: 480, src: 'M11、X6' });   // 在 2049 与 2050 之间那段间隙的左下方
   vanish(gGap, 0); show(gGap, T('d10', '间隙') + 0.1, { y: 8, d: 0.4 }); exit(gGap, T('d12') - 0.1, { y: 8, d: 0.3 });
-  const gPh = gloss(W, 166, 494, '幻读', '<b>幻读</b>：第二次读多出了新插的行', { w: 820, src: 'M44、M46' });
+  const gPh = gloss(W, 290, 500, '幻读', '<b>幻读</b>：第二次读多出了新插的行', { w: 480, src: 'M44、M46' });
   vanish(gPh, 0); show(gPh, T('d12', '幻读') + 0.1, { y: 8, d: 0.4 }); exit(gPh, T('d13', '插') - 0.2, { y: 8, d: 0.3 });
-  const dvArrow = path(ov, `M${L2.X(T('d9', '插进'))},${L2.Y(1) - 70} L${L2.X(T('d9', '插进'))},${600} L${120 + cx(iA) - GAP / 2},${110 + Y0 + CH - 24}`, 'acc', { w: 2.2, dashed: '7 6' });
+  const dvArrow = path(ov, `M${L2.X(T('d9', '插进'))},${L2.Y(1) - 70} L${L2.X(T('d9', '插进'))},${590} C${L2.X(T('d9', '插进'))},${520} ${120 + cx(iA) - GAP / 2},${560} ${120 + cx(iA) - GAP / 2},${110 + Y0 + CH - 24}`, 'acc', { w: 2.2, dashed: '7 6' });
   arrowIn(dvArrow, T('d9', '挡住') - 0.3, 0.5); svgOut(dvArrow, tBobC2);
   const dWait = h('div', 'tag acc', G2, 'Dave 在等'); px(dWait, L2.X(T('d9', '插进')) + 24, L2.Y(1) + 26); css(dWait, { fontSize: '26px' });
   vanish(dWait, 0); slam(dWait, T('d9', '挡住') + 0.15, { from: 1.3 }); exit(dWait, tBobC2, { d: 0.3 });
