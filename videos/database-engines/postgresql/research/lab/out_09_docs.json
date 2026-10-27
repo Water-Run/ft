@@ -425,7 +425,7 @@
   },
   "turing-mit": {
    "url": "https://news.mit.edu/2015/michael-stonebraker-wins-turing-award-0325",
-   "sha256": "058ca2628323bcfa8128e77e7bfa4473c62d0636a7d9820d3bc346a097351b93",
+   "sha256": "262071adb86ceae85d27914df90b2d54ff5fd962136bf61ba0f5f8e195171a12",
    "fetched": "2026-10-27",
    "found": {
     "Turing Award + Nobel Prize of computing": [
@@ -449,6 +449,32 @@
     ],
     "arXiv:1901.01973v1": [
      "Describe the issue below: Description: License: CC BY 4.0 arXiv:1901.01973v1 [cs.DB] 07 Jan 2019 Looking Back at Postgres Joseph M."
+    ]
+   }
+  },
+  "oracle-core": {
+   "url": "https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/Oracle-Compliance-To-Core-SQL2011.html",
+   "sha256": "0350045fcfc35e970a34476b8ed31f7c35c881ca160fa4da451c9a50cefa727b",
+   "fetched": "2026-10-27",
+   "found": {
+    "F501 + does not support this feature": [
+     "F501, Feature and conformance views Oracle does not support this feature."
+    ],
+    "SQL:2011 compliance": [
+     "F812, Basic flagging Oracle has a flagger, but it flags SQL-92 compliance rather than SQL:2011 compliance."
+    ]
+   }
+  },
+  "mssql-standards": {
+   "url": "https://learn.microsoft.com/en-us/openspecs/sql_standards/ms-sqlstandlp/89fb00b1-4b9e-4296-92ce-a2b3f7ca01d2",
+   "sha256": "424cf95b354e289721a4cf219328d7f5671f1d1d8e7fcc6f093a5f81d568c7e2",
+   "fetched": "2026-10-27",
+   "found": {
+    "SQL Server 2008 R2 + SQL Server 2012": [
+     "Click here to view this version of the [MS-SQLXQUERY] PDF. [MS-TSQLISO02]: SQL Server Transact-SQL ISO/IEC 9075-2 Standards Support Document Describes the level of support that is provided by Transact-SQL in both SQL Server 2008 R2 and SQL Server 2012 for Part 2: Foundation (SQL/Foundation) of the SQL language ISO/IEC 9075 international standard specification.",
+     "Click here to view this version of the [MS-TSQLISO02] PDF. [MS-TSQLISO03]: SQL Server Transact-SQL ISO/IEC 9075-3 Standards Support Document Describes the level of support that is provided by Transact-SQL in both SQL Server 2008 R2 and SQL Server 2012 for Part 3: Call-Level Interface (SQL/CLI) of the SQL language ISO/IEC 9075 international standard specification.",
+     "Click here to view this version of the [MS-TSQLISO03] PDF. [MS-TSQLISO11]: SQL Server Transact-SQL ISO/IEC 9075-11 Standards Support Document Describes the level of support that is provided by Transact-SQL in both SQL Server 2008 R2 and SQL Server 2012 for Part 11: Information and Definition Schemas (SQL/Schemata) of the SQL language ISO/IEC 9075 international standard specification.",
+     "Click here to view this version of the [MS-TSQLISO11] PDF. [MS-TSQLISO14]: SQL Server Transact-SQL ISO/IEC 9075-14 Standards Support Document Describes the level of support that is provided by Transact-SQL in both SQL Server 2008 R2 and SQL Server 2012 for Part 14: XML-Related Specifications (SQL/XML) of the SQL language ISO/IEC 9075 international standard specification and for the XML standards on which the international standard is based."
     ]
    }
   },

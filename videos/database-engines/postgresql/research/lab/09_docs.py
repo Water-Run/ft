@@ -50,6 +50,12 @@ PAGES = {
     'turing-mit': ('https://news.mit.edu/2015/michael-stonebraker-wins-turing-award-0325', [['Turing Award', 'Nobel Prize of computing'], ['invented many of the concepts'],
                                                                                           ['Publication Date']]),
     'hellerstein': ('https://arxiv.org/html/1901.01973v1', [['Post-Ingres'], ['arXiv:1901.01973v1']]),
+    # 标准符合度的旁证（画面脚注）：各家公布的口径不同，只如实列出，不比较「谁最多」
+    'oracle-core': ('https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/Oracle-Compliance-To-Core-SQL2011.html',
+                    [['F501', 'does not support this feature'], ['SQL:2011 compliance']]),
+    'mssql-standards': ('https://learn.microsoft.com/en-us/openspecs/sql_standards/ms-sqlstandlp/89fb00b1-4b9e-4296-92ce-a2b3f7ca01d2',
+                        [['SQL Server 2008 R2', 'SQL Server 2012']]),
+    # MySQL 手册的《MySQL Standards Compliance》在本机脚本下载一律断开，改用网页工具读取，原文记在 FACTS H10
     # 片尾引出下一集：SQLite 是嵌入式的、没有独立的服务进程
     'sqlite-about': ('https://www.sqlite.org/about.html', [['embedded SQL database engine'], ['separate server process']]),
 }

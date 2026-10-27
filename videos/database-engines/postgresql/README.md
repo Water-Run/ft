@@ -6,9 +6,9 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 2026-10-27 重做版文案第 1 稿交审：`src/js/script.js`，导出稿与交审说明见 [review/NOTES.md](review/NOTES.md)（157 条旁白，估算约 12.9 分钟）。取证已完成：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/)。试听已定：配音沉稳高管、配乐 R3「沉稳」、封面 R2 的 A、视觉稿 R2 |
+| 当前停在哪里 | 2026-10-27 重做版文案第 2 稿交审（按第 1 稿的逐句意见修改、各章扩充）：`src/js/script.js`，导出稿与交审说明见 [review/NOTES.md](review/NOTES.md)（282 条旁白、3427 字，InnoDB 一集是 3458 字）。取证已完成：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/)。试听已定：配音沉稳高管、配乐 R3「沉稳」、封面 R2 的 A、视觉稿 R2 |
 | 下一步，依赖什么 | WaterRun 校对文案；确认后配音（MiniMax 沉稳高管），再换成现行模板做场景 |
-| 等待策划者的事 | 校对文案第 1 稿（review/NOTES.md 的「需要你决定」有两项）。试听页都在 `out/audition/`（不入库）：R3 `pg-audition-r3.html` 是定稿那一轮，demo 已按成片响度重混（第一版整体低约 2 dB）；由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
+| 等待策划者的事 | 校对文案第 2 稿（review/NOTES.md 的「需要你决定」有一项）。试听页都在 `out/audition/`（不入库）：R3 `pg-audition-r3.html` 是定稿那一轮，demo 已按成片响度重混（第一版整体低约 2 dB）；由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
 | 未做的事 | 文案确认；配音、配乐；`src/` 仍是旧版成片的源码，进入实现阶段时换成现行模板（旧版源码保留在 Git 历史） |
 
@@ -49,7 +49,7 @@
 | 10 五个问题 | 片尾总结式，一屏五块，各用前面的画法重演一个最小过程 | 同 InnoDB 一集的版式，换成本集的对象 |
 | 11 取舍与引出 | 与 InnoDB 的取舍（主键读、二级索引、更新的写放大与 HOT、回收与膨胀、默认隔离、可扩展：类型、索引方法、扩展）；引出下一集 SQLite：一个小巧的、嵌进程序里的引擎，怎样做成强大的生产级关系数据库 | 两种实现并排收束 |
 
-时长：应比 InnoDB 一集（949.76 秒）短（WaterRun 2026-10-27），文案第 1 稿估算约 12.9 分钟；`project.json` 检查范围 720–1080 秒。以讲清、跟得上为准。
+时长：应比 InnoDB 一集（949.76 秒）短（WaterRun 2026-10-27）。第 1 稿压到约 12.9 分钟后，WaterRun 要求各章扩充（l ~30、p ~25、i ~15、q ~25、u ~30、m ~30、d ~35、w ~25、z ~14，「确保认知负载控制」）；第 2 稿 282 句、3427 字（InnoDB 3458 字），WaterRun：「3427可以接受」；`project.json` 检查范围 720–1080 秒。以讲清、跟得上为准。
 
 ## 设计
 
@@ -58,6 +58,11 @@
 封面 R1：[review/cover-r1.html](review/cover-r1.html)（WaterRun：「新HTML包括封面 封面注意立体型和质感」）。整幅 Pg 蓝、纸纹与网格；标题白字面、深蓝立体侧面；右边等轴立体的一排 8 KB 堆页，最前一页顶面上是新旧两版行（旧版本标 xmax），上方一棵立体的小索引树，一根线从叶子落到新版本（ctid）。实现阶段移到 `src/cover.html`，并补 4:3 版。
 封面 R2：[review/cover-r2.html](review/cover-r2.html)。WaterRun 看过 R1：「封面的PostgreSQL 可能使用一种有区分度的蓝色, 或者Pg官方色中和蓝色底的对比色 需要官方配色」。本片的颜色从此只取 postgresql.org 官网样式表 `media/css/main.css`（2026-10-26 读取）里的官方配色：#336791 Pg 蓝（标题、链接、主按钮）、#264d6d 深蓝、#193145 链接悬停的深蓝、#e7eae8 极浅灰、#699eca 与 #50b0f0（深色主题里的 Pg 蓝与高亮蓝）。出两种：A 深蓝底 #264d6d、「PostgreSQL」用 #50b0f0（对比约 3.7:1）；B 底色仍是 Pg 蓝、「PostgreSQL」用 Pg 蓝写在一块立体的白板上（对比约 6:1）。WaterRun 2026-10-27 定 **A**：「Cover A, Pg是蓝色的」。实现阶段按 A 做 `src/cover.html` 与 4:3 版。
 
+- **文案第 2 稿带来的画面要求**（WaterRun 2026-10-27 对第 1 稿的意见）：
+  - h2 的 Ingres 加注解：伯克利做的关系数据库；
+  - h4 拆字动画：POSTGRES 拆成 POST + (IN)GRES，再合回；
+  - l10–l11 的 ctid 加注解：第几页、第几项；
+  - h15 加脚注，列出其他数据库公布的符合情况：Oracle 23ai 按 SQL:2011 逐项说明、写明有不支持的项；SQL Server 的官方文档只到 2012 版；MySQL 没有逐项清单（FACTS H10）。不画各家的覆盖率对比，因为口径不同，排不出名次。
 - **语汇取自 PostgreSQL 官方文档，不放大象标志**：Pg 蓝 #336791 是 PostgreSQL 与此刻在讲的东西；深蓝 #193145；浅蓝 #699eca 是旧版本、快照与路径；文档表头 #e0ecef；MySQL / InnoDB 用中性灰；砖红只给拒绝、等待与「还在进行」。Open Sans（拉丁与数字）、中文黑体、等宽字给 psql。
 - **文档的部件当画面部件**：带横线的蓝色标题；「图 n」图注；注解用文档的「注意」框，贴在被解释的东西旁边；所有 SQL 都以 psql 会话出现（`postgres=#`、对齐的结果表、`(n rows)`）；pageinspect 的原样输出就是「实物」。
 - **主画面是 PostgreSQL 自己的对象**（旧版评价「动画过于简陋」，F18）：一长条 8 KB 的堆页、两棵独立的 B 树、带 xmin/xmax 的行版本、快照数轴、pg_xact、VACUUM 的扫过、WAL 带。每章一个主画面，过程逐步推进。
