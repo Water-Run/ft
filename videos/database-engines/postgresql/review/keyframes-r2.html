@@ -72,14 +72,14 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
 <header class="doc">
   <h1>PostgreSQL 一集 · 视觉稿 R2（2026-10-26）</h1>
   <p>一种风格、七帧关键帧。语汇取自 PostgreSQL 官方文档：Pg 蓝 #336791、深蓝 #193145、浅蓝 #699eca（旧版本与快照）、文档表头 #e0ecef；Open Sans；带横线的标题；「图 n」图注；注解用文档的「注意」框，贴在被解释的东西旁边；所有 SQL 都以 psql 会话出现。不放大象标志。</p>
-  <p>数字：调查数字为旧版取证（Stack Overflow 官方表），新版重核并补 2024、2025；行版本与页的数字为<b>旧版实测（PostgreSQL 18.4，alice 30 → 31）</b>，新版在 18.6 上用同一个 Alice（2050，42 → 43）重测；元组头字段大小取自手册。未实测的地方只画结构，不写数字。</p>
+  <p>数字：调查数字为旧版取证（Stack Overflow 官方表），新版重核并补 2024、2025；行版本与页的数字为<b>旧版实测（PostgreSQL 18.4，alice 30 → 31）</b>，新版在 18 上用同一个 Alice（2050，42 → 43）重测；元组头字段大小取自手册。未实测的地方只画结构，不写数字。</p>
 </header>
 <div class="grid">
 
 <!-- 1 开场：占有率 -->
 <div class="cell"><div class="lab">1 · 开场：占有率（开发者调查里的此消彼长）</div>
 <div class="frame" data-ch="开场">
-  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="ident">PostgreSQL<small>18</small></div>
   <div class="h2" style="left:72px; top:120px; width:1776px;">开发者过去一年实际用过的数据库</div>
   <div class="cap" style="left:72px; top:198px;">Stack Overflow 开发者调查 · 全部答题者 · 可多选</div>
   <!-- 三年，每年两条：MySQL（中性灰）与 PostgreSQL（Pg 蓝）；横轴 0–60% -->
@@ -101,7 +101,7 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
 <!-- 2 钩子：改一行，页里多了一行 -->
 <div class="cell"><div class="lab">2 · 钩子：同一个 UPDATE，InnoDB 原地改，PostgreSQL 多出一个版本</div>
 <div class="frame" data-ch="开场 · 同一句 UPDATE">
-  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="ident">PostgreSQL<small>18</small></div>
   <div class="h2" style="left:72px; top:120px; width:1776px;">改一行，页里多了一行</div>
   <!-- 左：上一集的 InnoDB（中性灰，作对照） -->
   <div class="cap" style="left:72px; top:220px; color:#7c868f;">上一集 · InnoDB</div>
@@ -124,7 +124,7 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
 <span class="hi">  1 |    755 |    763 | (0,9) </span>
 <span class="d">  … </span>
 <span class="hi">  9 |    763 |      0 | (0,9) </span></div>
-  <div class="src" style="left:72px; top:1000px;">旧版实测 · PostgreSQL 18.4 · alice 30 → 31（pageinspect）；新版在 18.6 上用 Alice 2050，42 → 43 重测</div>
+  <div class="src" style="left:72px; top:1000px;">旧版实测 · PostgreSQL 18.4 · alice 30 → 31（pageinspect）；新版在 18 上用 Alice 2050，42 → 43 重测</div>
 </div></div>
 
 
@@ -135,12 +135,12 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
   <div class="abs" style="left:170px; top:520px; font:800 96px var(--sans); color:#fff;">一张表放在哪</div>
   <div class="abs" style="left:174px; top:660px; font:600 36px var(--sans); color:#cfe0ee;">一个堆、两棵 B 树，行的地址叫 ctid</div>
   <div class="abs" style="left:174px; top:760px; width:520px; height:6px; background:#fff;"></div>
-  <div class="abs" style="left:72px; top:44px; font:800 32px var(--sans); color:#fff;">PostgreSQL<span style="font:600 26px var(--sans); color:#cfe0ee; margin-left:14px;">18.6</span></div>
+  <div class="abs" style="left:72px; top:44px; font:800 32px var(--sans); color:#fff;">PostgreSQL<span style="font:600 26px var(--sans); color:#cfe0ee; margin-left:14px;">18</span></div>
 </div></div>
 <!-- 3 整体结构：一个堆，加上各自独立的索引树 -->
 <div class="cell"><div class="lab">3 · 整体结构：表是堆，索引各是一棵 B 树，叶子里存行的地址</div>
 <div class="frame" data-ch="02 · 一张表放在哪">
-  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="ident">PostgreSQL<small>18</small></div>
   <div class="h2" style="left:72px; top:120px; width:1776px;">一张表：一个堆，加上各自独立的索引树</div>
   <!-- 主键树（上）：根、叶子；姓名树（下） -->
   <div class="cap" style="left:72px; top:226px;"><b>users_pkey</b>　按编号排</div>
@@ -169,13 +169,13 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
   <div class="node" style="left:420px; top:880px; width:150px;">叶</div><div class="node" style="left:640px; top:880px; width:150px;">叶</div><div class="node" style="left:860px; top:880px; width:150px;">叶</div>
   <div class="note" style="left:1150px; top:780px; width:640px;"><b>ctid</b>　行的地址：（页号, 页内第几项）。两棵树的叶子都只记这个地址，整行在堆里。</div>
   <div class="cap" style="left:1150px; top:930px; width:690px; line-height:1.5;">另有两个小文件：<span class="mono">_fsm</span> 记每页还剩多少空间，<span class="mono">_vm</span> 记哪些页全部可见</div>
-  <div class="src" style="left:72px; top:1010px;">结构示意 · 页数、层数在 18.6 上用 4096 行实测后画全</div>
+  <div class="src" style="left:72px; top:1010px;">结构示意 · 页数、层数在 18 上用 4096 行实测后画全</div>
 </div></div>
 
 <!-- 4 一页之内：页布局与元组头 -->
 <div class="cell"><div class="lab">4 · 一页之内：项目指针从前往后，行版本从后往前，元组头 23 字节</div>
 <div class="frame" data-ch="03 · 一页之内">
-  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="ident">PostgreSQL<small>18</small></div>
   <div class="h2" style="left:72px; top:120px; width:1776px;">一页之内</div>
   <!-- 横向一页：0 · 24 · lower · upper · 8192 -->
   <div class="page" style="left:120px; top:250px; width:1680px; height:120px;"></div>
@@ -202,7 +202,7 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
 <!-- 5 并发：快照与可见性 -->
 <div class="cell"><div class="lab">5 · 事务与并发：Bob 的快照里，763 还没提交，所以他看见旧版本</div>
 <div class="frame" data-ch="07 · 事务与并发">
-  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="ident">PostgreSQL<small>18</small></div>
   <div class="h2" style="left:72px; top:120px; width:1776px;">Bob 能看见哪一个版本</div>
   <!-- 事务提交状态（pg_xact）：每个事务两位 -->
   <div class="cap" style="left:72px; top:230px;"><b>pg_xact</b>　每个事务的提交状态</div>
@@ -232,7 +232,7 @@ table.doc td { background: #fff; padding: 12px 22px; border: 2px solid var(--bor
 <!-- 6 删与回收：VACUUM -->
 <div class="cell"><div class="lab">6 · 回收：没有快照再需要旧版本时，VACUUM 收回空间，项目指针改成跳转</div>
 <div class="frame" data-ch="08 · 删与回收">
-  <div class="ident">PostgreSQL<small>18.6</small></div>
+  <div class="ident">PostgreSQL<small>18</small></div>
   <div class="h2" style="left:72px; top:120px; width:1776px;">VACUUM：旧版本没人要了，才收走</div>
   <div class="cap" style="left:72px; top:226px;">之前</div>
   <div class="page" style="left:72px; top:270px; width:820px; height:420px;"></div>

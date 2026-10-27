@@ -58,7 +58,7 @@ function build(key) {
   <div class="t1">学院派的正统</div>
   <div class="t2">PostgreSQL</div>
   <div class="facts">表是一个堆，<b>8 KB 一页</b><br>改一行，页里<b>多写一个新版本</b></div>
-  <div class="ver">PostgreSQL 18.6</div>`;
+  <div class="ver">PostgreSQL 18</div>`;
   const art = cv.querySelector('.art');
   // 大字的立体侧面：逐像素往右下错开，不加模糊（字面保持清楚）
   const deep = (el, depth, color) => { const sh = []; for (let i = 1; i <= depth; i++) sh.push(`${i}px ${i}px 0 ${color}`); sh.push(`${depth + 6}px ${depth + 10}px 14px rgba(13,26,36,.35)`); el.style.textShadow = sh.join(','); };

@@ -86,7 +86,7 @@ td { padding:6px 10px; border:1px solid var(--border); }
 .note { border-left:5px solid var(--pg); background:#e6eff7; padding:10px 14px; font-size:14.5px; line-height:1.7; margin-top:16px; }
 blockquote { margin:8px 0; padding:10px 14px; background:#f8f9fa; border:1px solid var(--border); font-size:16px; line-height:1.8; }
 '''
-NUMBERS = '数字说明：调查数字是旧版取证，新版会重核；行版本、事务号、页偏移是旧版在 PostgreSQL 18.4 上的实测（alice 30 → 31），新版在 18.6 上用 Alice（2050，42 → 43）重测；没实测的地方只画了结构。'
+NUMBERS = '数字说明：调查数字是旧版取证，新版会重核；行版本、事务号、页偏移是旧版在 PostgreSQL 18.4 上的实测（alice 30 → 31），新版在 18（本机 18.4）上用 Alice（2050，42 → 43）重测；没实测的地方只画了结构。'
 
 
 def main(d, rnd):
