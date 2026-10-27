@@ -1,0 +1,422 @@
+{
+ "script": "10_source",
+ "date": "2026-10-27",
+ "tag": "REL_18_4",
+ "repo": "https://github.com/postgres/postgres",
+ "files": {
+  "src/include/storage/itemid.h": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/include/storage/itemid.h",
+   "sha256": "05730143bad8e627be4df37d024cffd299c88e2af68c81860d4e2944f8102037",
+   "found": {
+    "lp_off 15 位、lp_flags 2 位、lp_len 15 位": {
+     "line": 27,
+     "text": "unsigned\tlp_off:15,\t\t/* offset to tuple (from start of page) */",
+     "context": [
+      "typedef struct ItemIdData",
+      "{",
+      "\tunsigned\tlp_off:15,\t\t/* offset to tuple (from start of page) */",
+      "\t\t\t\tlp_flags:2,\t\t/* state of line pointer, see below */",
+      "\t\t\t\tlp_len:15;\t\t/* byte length of tuple */",
+      "} ItemIdData;"
+     ]
+    },
+    "LP_UNUSED": {
+     "line": 38,
+     "text": "#define LP_UNUSED\t\t0\t\t/* unused (should always have lp_len=0) */",
+     "context": [
+      " * for immediate re-use, the other states are not.",
+      " */",
+      "#define LP_UNUSED\t\t0\t\t/* unused (should always have lp_len=0) */",
+      "#define LP_NORMAL\t\t1\t\t/* used (should always have lp_len>0) */",
+      "#define LP_REDIRECT\t\t2\t\t/* HOT redirect (should have lp_len=0) */",
+      "#define LP_DEAD\t\t\t3\t\t/* dead, may or may not have storage */"
+     ]
+    },
+    "LP_NORMAL": {
+     "line": 39,
+     "text": "#define LP_NORMAL\t\t1\t\t/* used (should always have lp_len>0) */",
+     "context": [
+      " */",
+      "#define LP_UNUSED\t\t0\t\t/* unused (should always have lp_len=0) */",
+      "#define LP_NORMAL\t\t1\t\t/* used (should always have lp_len>0) */",
+      "#define LP_REDIRECT\t\t2\t\t/* HOT redirect (should have lp_len=0) */",
+      "#define LP_DEAD\t\t\t3\t\t/* dead, may or may not have storage */",
+      ""
+     ]
+    },
+    "LP_REDIRECT": {
+     "line": 40,
+     "text": "#define LP_REDIRECT\t\t2\t\t/* HOT redirect (should have lp_len=0) */",
+     "context": [
+      "#define LP_UNUSED\t\t0\t\t/* unused (should always have lp_len=0) */",
+      "#define LP_NORMAL\t\t1\t\t/* used (should always have lp_len>0) */",
+      "#define LP_REDIRECT\t\t2\t\t/* HOT redirect (should have lp_len=0) */",
+      "#define LP_DEAD\t\t\t3\t\t/* dead, may or may not have storage */",
+      "",
+      "/*"
+     ]
+    },
+    "LP_DEAD": {
+     "line": 41,
+     "text": "#define LP_DEAD\t\t\t3\t\t/* dead, may or may not have storage */",
+     "context": [
+      "#define LP_NORMAL\t\t1\t\t/* used (should always have lp_len>0) */",
+      "#define LP_REDIRECT\t\t2\t\t/* HOT redirect (should have lp_len=0) */",
+      "#define LP_DEAD\t\t\t3\t\t/* dead, may or may not have storage */",
+      "",
+      "/*",
+      " * Item offsets and lengths are represented by these types when"
+     ]
+    }
+   }
+  },
+  "src/include/storage/bufpage.h": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/include/storage/bufpage.h",
+   "sha256": "d750f101a40a4b161fb91884c9fd66aec22484d14711776764cb5c65fa98ac9e",
+   "found": {
+    "页头结构": {
+     "line": 159,
+     "text": "typedef struct PageHeaderData",
+     "context": [
+      " */",
+      "",
+      "typedef struct PageHeaderData",
+      "{",
+      "\t/* XXX LSN is member of *any* block, not only page-organized ones */",
+      "\tPageXLogRecPtr pd_lsn;\t\t/* LSN: next byte after last byte of xlog"
+     ]
+    },
+    "pd_lower": {
+     "line": 166,
+     "text": "LocationIndex pd_lower;\t\t/* offset to start of free space */",
+     "context": [
+      "\tuint16\t\tpd_checksum;\t/* checksum */",
+      "\tuint16\t\tpd_flags;\t\t/* flag bits, see below */",
+      "\tLocationIndex pd_lower;\t\t/* offset to start of free space */",
+      "\tLocationIndex pd_upper;\t\t/* offset to end of free space */",
+      "\tLocationIndex pd_special;\t/* offset to start of special space */",
+      "\tuint16\t\tpd_pagesize_version;"
+     ]
+    },
+    "pd_upper": {
+     "line": 167,
+     "text": "LocationIndex pd_upper;\t\t/* offset to end of free space */",
+     "context": [
+      "\tuint16\t\tpd_flags;\t\t/* flag bits, see below */",
+      "\tLocationIndex pd_lower;\t\t/* offset to start of free space */",
+      "\tLocationIndex pd_upper;\t\t/* offset to end of free space */",
+      "\tLocationIndex pd_special;\t/* offset to start of special space */",
+      "\tuint16\t\tpd_pagesize_version;",
+      "\tTransactionId pd_prune_xid; /* oldest prunable XID, or zero if none */"
+     ]
+    },
+    "pd_prune_xid": {
+     "line": 170,
+     "text": "TransactionId pd_prune_xid; /* oldest prunable XID, or zero if none */",
+     "context": [
+      "\tLocationIndex pd_special;\t/* offset to start of special space */",
+      "\tuint16\t\tpd_pagesize_version;",
+      "\tTransactionId pd_prune_xid; /* oldest prunable XID, or zero if none */",
+      "\tItemIdData\tpd_linp[FLEXIBLE_ARRAY_MEMBER]; /* line pointer array */",
+      "} PageHeaderData;",
+      ""
+     ]
+    }
+   }
+  },
+  "src/include/access/htup_details.h": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/include/access/htup_details.h",
+   "sha256": "175dad20a31eea61d724bf2954457dc09d4635e552ba63b2ac1cf1c9508c0626",
+   "found": {
+    "元组头结构": {
+     "line": 153,
+     "text": "struct HeapTupleHeaderData",
+     "context": [
+      "} DatumTupleFields;",
+      "",
+      "struct HeapTupleHeaderData",
+      "{",
+      "\tunion",
+      "\t{"
+     ]
+    },
+    "t_ctid": {
+     "line": 161,
+     "text": "ItemPointerData t_ctid;\t\t/* current TID of this or newer tuple (or a",
+     "context": [
+      "\t}\t\t\tt_choice;",
+      "",
+      "\tItemPointerData t_ctid;\t\t/* current TID of this or newer tuple (or a",
+      "\t\t\t\t\t\t\t\t * speculative insertion token) */",
+      "",
+      "\t/* Fields below here must match MinimalTupleData! */"
+     ]
+    },
+    "HEAP_XMIN_FROZEN": {
+     "line": 206,
+     "text": "#define HEAP_XMIN_FROZEN\t\t(HEAP_XMIN_COMMITTED|HEAP_XMIN_INVALID)",
+     "context": [
+      "#define HEAP_XMIN_COMMITTED\t\t0x0100\t/* t_xmin committed */",
+      "#define HEAP_XMIN_INVALID\t\t0x0200\t/* t_xmin invalid/aborted */",
+      "#define HEAP_XMIN_FROZEN\t\t(HEAP_XMIN_COMMITTED|HEAP_XMIN_INVALID)",
+      "#define HEAP_XMAX_COMMITTED\t\t0x0400\t/* t_xmax committed */",
+      "#define HEAP_XMAX_INVALID\t\t0x0800\t/* t_xmax invalid/aborted */",
+      "#define HEAP_XMAX_IS_MULTI\t\t0x1000\t/* t_xmax is a MultiXactId */"
+     ]
+    },
+    "HEAP_HOT_UPDATED": {
+     "line": 295,
+     "text": "#define HEAP_HOT_UPDATED\t\t0x4000\t/* tuple was HOT-updated */",
+     "context": [
+      "#define HEAP_KEYS_UPDATED\t\t0x2000\t/* tuple was updated and key cols",
+      "\t\t\t\t\t\t\t\t\t\t * modified, or tuple deleted */",
+      "#define HEAP_HOT_UPDATED\t\t0x4000\t/* tuple was HOT-updated */",
+      "#define HEAP_ONLY_TUPLE\t\t\t0x8000\t/* this is heap-only tuple */",
+      "",
+      "#define HEAP2_XACT_MASK\t\t\t0xE000\t/* visibility-related bits */"
+     ]
+    },
+    "HEAP_ONLY_TUPLE": {
+     "line": 296,
+     "text": "#define HEAP_ONLY_TUPLE\t\t\t0x8000\t/* this is heap-only tuple */",
+     "context": [
+      "\t\t\t\t\t\t\t\t\t\t * modified, or tuple deleted */",
+      "#define HEAP_HOT_UPDATED\t\t0x4000\t/* tuple was HOT-updated */",
+      "#define HEAP_ONLY_TUPLE\t\t\t0x8000\t/* this is heap-only tuple */",
+      "",
+      "#define HEAP2_XACT_MASK\t\t\t0xE000\t/* visibility-related bits */",
+      ""
+     ]
+    },
+    "HEAP_XMAX_INVALID": {
+     "line": 208,
+     "text": "#define HEAP_XMAX_INVALID\t\t0x0800\t/* t_xmax invalid/aborted */",
+     "context": [
+      "#define HEAP_XMIN_FROZEN\t\t(HEAP_XMIN_COMMITTED|HEAP_XMIN_INVALID)",
+      "#define HEAP_XMAX_COMMITTED\t\t0x0400\t/* t_xmax committed */",
+      "#define HEAP_XMAX_INVALID\t\t0x0800\t/* t_xmax invalid/aborted */",
+      "#define HEAP_XMAX_IS_MULTI\t\t0x1000\t/* t_xmax is a MultiXactId */",
+      "#define HEAP_UPDATED\t\t\t0x2000\t/* this is UPDATEd version of row */",
+      "#define HEAP_MOVED_OFF\t\t\t0x4000\t/* moved to another place by pre-9.0"
+     ]
+    },
+    "SizeofHeapTupleHeader": {
+     "line": 185,
+     "text": "#define SizeofHeapTupleHeader offsetof(HeapTupleHeaderData, t_bits)",
+     "context": [
+      "/* typedef appears in htup.h */",
+      "",
+      "#define SizeofHeapTupleHeader offsetof(HeapTupleHeaderData, t_bits)",
+      "",
+      "/*",
+      " * information stored in t_infomask:"
+     ]
+    }
+   }
+  },
+  "src/backend/access/heap/pruneheap.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/access/heap/pruneheap.c",
+   "sha256": "691d18c0e205c446210feb1a7a60aa948c11cd21475354a706f975ea97f49a33",
+   "found": {
+    "读取时剪枝的门槛": {
+     "line": 240,
+     "text": "minfree = Max(minfree, BLCKSZ / 10);",
+     "context": [
+      "\tminfree = RelationGetTargetPageFreeSpace(relation,",
+      "\t\t\t\t\t\t\t\t\t\t\t HEAP_DEFAULT_FILLFACTOR);",
+      "\tminfree = Max(minfree, BLCKSZ / 10);",
+      "",
+      "\tif (PageIsFull(page) || PageGetHeapFreeSpace(page) < minfree)",
+      "\t{"
+     ]
+    },
+    "门槛的判断": {
+     "line": 242,
+     "text": "if (PageIsFull(page) || PageGetHeapFreeSpace(page) < minfree)",
+     "context": [
+      "\tminfree = Max(minfree, BLCKSZ / 10);",
+      "",
+      "\tif (PageIsFull(page) || PageGetHeapFreeSpace(page) < minfree)",
+      "\t{",
+      "\t\t/* OK, try to get exclusive buffer lock */",
+      "\t\tif (!ConditionalLockBufferForCleanup(buffer))"
+     ]
+    }
+   }
+  },
+  "src/backend/access/heap/heapam.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/access/heap/heapam.c",
+   "sha256": "bb59b527ec160ef4304e45538533b1caaff31ca33766e81a24759e9256a56622",
+   "found": {
+    "换页更新前先锁旧元组": {
+     "line": 3826,
+     "text": "* temporarily mark it locked, while we release the page-level lock.",
+     "context": [
+      "\t\t/*",
+      "\t\t * To prevent concurrent sessions from updating the tuple, we have to",
+      "\t\t * temporarily mark it locked, while we release the page-level lock.",
+      "\t\t *",
+      "\t\t * To satisfy the rule that any xid potentially appearing in a buffer",
+      "\t\t * written out to disk, we unfortunately have to WAL log this"
+     ]
+    },
+    "HOT 的条件：没有改到索引列且同页放得下": {
+     "line": 4018,
+     "text": "use_hot_update = true;",
+     "context": [
+      "\t\tif (!bms_overlap(modified_attrs, hot_attrs))",
+      "\t\t{",
+      "\t\t\tuse_hot_update = true;",
+      "",
+      "\t\t\t/*",
+      "\t\t\t * If none of the columns that are used in hot-blocking indexes"
+     ]
+    }
+   }
+  },
+  "src/backend/access/heap/README.HOT": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/access/heap/README.HOT",
+   "sha256": "99602a5cf2e6fd3033d7376a7911e7c9cd4a91cd49e57a5774a1cdedb774e430",
+   "found": {
+    "HOT 的定义": {
+     "line": 3,
+     "text": "Heap Only Tuples (HOT)",
+     "context": [
+      "src/backend/access/heap/README.HOT",
+      "",
+      "Heap Only Tuples (HOT)",
+      "======================",
+      "",
+      "The Heap Only Tuple (HOT) feature eliminates redundant index entries and"
+     ]
+    },
+    "重定向": {
+     "line": 86,
+     "text": "line pointer 1 into a \"redirecting line pointer\", which links to tuple 2",
+     "context": [
+      "since the index still links to that line pointer and we still need to",
+      "be able to find tuple 2 in an index search.  HOT handles this by turning",
+      "line pointer 1 into a \"redirecting line pointer\", which links to tuple 2",
+      "but has no actual tuple attached.  This state of affairs looks like",
+      "",
+      "\tIndex points to 1"
+     ]
+    }
+   }
+  },
+  "src/bin/initdb/initdb.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/bin/initdb/initdb.c",
+   "sha256": "92d56b22abad61337b4badc4c8b94a50763b858f979b2e018fa730442776d5d2",
+   "found": {
+    "initdb 默认开启校验和": {
+     "line": 167,
+     "text": "static bool data_checksums = true;",
+     "context": [
+      "static bool sync_only = false;",
+      "static bool show_setting = false;",
+      "static bool data_checksums = true;",
+      "static char *xlog_dir = NULL;",
+      "static int\twal_segment_size_mb = (DEFAULT_XLOG_SEG_SIZE) / (1024 * 1024);",
+      "static DataDirSyncMethod sync_method = DATA_DIR_SYNC_METHOD_FSYNC;"
+     ]
+    }
+   }
+  },
+  "src/backend/storage/buffer/bufmgr.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/storage/buffer/bufmgr.c",
+   "sha256": "33d6d9a41fcfbeb4bb075debb971d43e30986579e59667a9ba8a1443d4243e9b",
+   "found": {
+    "写盘时在副本上算校验和": {
+     "line": 4363,
+     "text": "bufToWrite = PageSetChecksumCopy((Page) bufBlock, buf->tag.blockNum);",
+     "context": [
+      "\t * copy the page to private storage if we do checksumming.",
+      "\t */",
+      "\tbufToWrite = PageSetChecksumCopy((Page) bufBlock, buf->tag.blockNum);",
+      "",
+      "\tio_start = pgstat_prepare_io_time(track_io_timing);",
+      ""
+     ]
+    }
+   }
+  },
+  "src/backend/optimizer/util/plancat.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/optimizer/util/plancat.c",
+   "sha256": "b953af14cb2539fbb32e4d1e8eea30f3eaa1b6336091369c03531fb9dcd5a6ff",
+   "found": {
+    "规划时取每个索引的树高（索引方法提供的函数）": {
+     "line": 493,
+     "text": "info->tree_height = amroutine->amgettreeheight(indexRelation);",
+     "context": [
+      "\t\t\t\tif (amroutine->amgettreeheight)",
+      "\t\t\t\t{",
+      "\t\t\t\t\tinfo->tree_height = amroutine->amgettreeheight(indexRelation);",
+      "\t\t\t\t}",
+      "\t\t\t\telse",
+      "\t\t\t\t{"
+     ]
+    }
+   }
+  },
+  "src/backend/access/nbtree/nbtree.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/access/nbtree/nbtree.c",
+   "sha256": "68d53814bac69c7ffb349b6fd9a079310b1dda58b70964960955ee52748a459a",
+   "found": {
+    "B 树的取树高函数": {
+     "line": 153,
+     "text": "amroutine->amgettreeheight = btgettreeheight;",
+     "context": [
+      "\tamroutine->amcanreturn = btcanreturn;",
+      "\tamroutine->amcostestimate = btcostestimate;",
+      "\tamroutine->amgettreeheight = btgettreeheight;",
+      "\tamroutine->amoptions = btoptions;",
+      "\tamroutine->amproperty = btproperty;",
+      "\tamroutine->ambuildphasename = btbuildphasename;"
+     ]
+    },
+    "它调用 _bt_getrootheight": {
+     "line": 1759,
+     "text": "return _bt_getrootheight(rel);",
+     "context": [
+      "btgettreeheight(Relation rel)",
+      "{",
+      "\treturn _bt_getrootheight(rel);",
+      "}",
+      "",
+      "CompareType"
+     ]
+    }
+   }
+  },
+  "src/backend/access/nbtree/nbtpage.c": {
+   "url": "https://github.com/postgres/postgres/blob/REL_18_4/src/backend/access/nbtree/nbtpage.c",
+   "sha256": "bae82605c88a216061aa1c1bd99c75da65d50474b23a33376041b63159bd3343",
+   "found": {
+    "树高从元数据页读": {
+     "line": 675,
+     "text": "_bt_getrootheight(Relation rel)",
+     "context": [
+      " */",
+      "int",
+      "_bt_getrootheight(Relation rel)",
+      "{",
+      "\tBTMetaPageData *metad;",
+      ""
+     ]
+    },
+    "用途：规划器估代价": {
+     "line": 670,
+     "text": "*\t\tThis is used by the planner for cost-estimation purposes.  Since it's",
+     "context": [
+      " *\t\tto start any btree index search.",
+      " *",
+      " *\t\tThis is used by the planner for cost-estimation purposes.  Since it's",
+      " *\t\tonly an estimate, slightly-stale data is fine, hence we don't worry",
+      " *\t\tabout updating previously cached data.",
+      " */"
+     ]
+    }
+   }
+  }
+ }
+}

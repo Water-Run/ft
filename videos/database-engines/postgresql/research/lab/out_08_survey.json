@@ -1,0 +1,109 @@
+{
+ "script": "08_survey",
+ "date": "2026-10-27",
+ "attribution": "Stack Exchange Inc. / Stack Overflow Developer Survey，按年署名",
+ "warning": "各年为不同样本的多选自报使用比例；不是市场份额，也不是同一批用户的迁移。",
+ "years": [
+  {
+   "year": 2022,
+   "url": "https://survey.stackoverflow.co/2022/",
+   "copy": "fetched 2026-10-27",
+   "sha256": "b8459eb00a079392b3d08b821dbf2d8baa30fab20c75509ab11983aaa860e110",
+   "scope": "All Respondents",
+   "data": {
+    "MySQL": {
+     "percent": 46.85,
+     "respondents": 28520
+    },
+    "PostgreSQL": {
+     "percent": 43.59,
+     "respondents": 26538
+    }
+   },
+   "table_id": "databasespfb1",
+   "leader": "MySQL"
+  },
+  {
+   "year": 2023,
+   "url": "https://survey.stackoverflow.co/2023/",
+   "copy": "fetched 2026-10-27",
+   "sha256": "11b6968aa6d397ac0a95a6f84393fad617c9b37e62aa476f7be07963310db777",
+   "scope": "All Respondents",
+   "data": {
+    "PostgreSQL": {
+     "percent": 45.55,
+     "respondents": 34909
+    },
+    "MySQL": {
+     "percent": 41.09,
+     "respondents": 31489
+    }
+   },
+   "table_id": "databasedmk1u",
+   "leader": "PostgreSQL"
+  },
+  {
+   "year": 2024,
+   "url": "https://survey.stackoverflow.co/2024/technology",
+   "copy": "fetched 2026-10-27",
+   "sha256": "ffca0061300a8188743c27d4e47f401f83e1a16ef449a68adbdc57d58a978a93",
+   "scope": "All Respondents",
+   "data": {
+    "PostgreSQL": {
+     "percent": 48.7
+    },
+    "MySQL": {
+     "percent": 40.3
+    }
+   },
+   "context": "want to continue to do so, please check both boxes in that row.) All Respondents Professional Developers Learning to Code Other Coders All Respondents to-do <g ",
+   "leader": "PostgreSQL"
+  },
+  {
+   "year": 2025,
+   "url": "https://survey.stackoverflow.co/2025/technology",
+   "copy": "fetched 2026-10-27",
+   "sha256": "721a084a2139830bbdef949add7415104d59d85fb021e01c52b5ce63155dd577",
+   "scope": "All Respondents",
+   "data": {
+    "PostgreSQL": {
+     "percent": 55.6
+    },
+    "MySQL": {
+     "percent": 40.5
+    }
+   },
+   "context": "k both boxes in that row.) All Respondents Professional Developers Learning to Code Professionals that Use AI Learners that Use AI Write-Ins All Respondents <g ",
+   "leader": "PostgreSQL"
+  },
+  {
+   "year": 2026,
+   "url": "https://survey.stackoverflow.co/2026/technology/data/databases",
+   "copy": "fetched 2026-10-27",
+   "sha256": "df353f64106242430324467af8991017e9c909f609f5de49e14e594c1bad6315",
+   "scope": "All Respondents",
+   "data": {
+    "PostgreSQL": {
+     "percent": 57.9,
+     "respondents": 6984
+    },
+    "MySQL": {
+     "percent": 35.1,
+     "respondents": 4235
+    }
+   },
+   "export": {
+    "url": "https://survey.stackoverflow.co/2026/technology/data/databases",
+    "licence": {
+     "name": "ODbL 1.0",
+     "url": "https://opendatacommons.org/licenses/odbl/1-0/",
+     "holder": "Stack Exchange Inc."
+    },
+    "question": "Databases",
+    "n": 12061,
+    "demographic": "All Respondents"
+   },
+   "leader": "PostgreSQL"
+  }
+ ]
+}

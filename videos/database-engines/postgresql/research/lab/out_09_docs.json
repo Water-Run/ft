@@ -1,0 +1,431 @@
+{
+ "script": "09_docs",
+ "date": "2026-10-27",
+ "pages": {
+  "page-layout": {
+   "url": "https://www.postgresql.org/docs/18/storage-page-layout.html",
+   "sha256": "068cbeec4fef596339e8cf9a169482e4c37b9ae5f1dd222112e9cc20b650a4e2",
+   "fetched": "2026-10-27",
+   "found": {
+    "24 bytes + page header": [
+     "The first 24 bytes of each page consists of a page header ( PageHeaderData )."
+    ],
+    "ItemIdData": [
+     "ItemIdData Array of item identifiers pointing to the actual items.",
+     "Following the page header are item identifiers ( ItemIdData ), each requiring four bytes."
+    ],
+    "23 bytes": [
+     "There is a fixed-size header (occupying 23 bytes on most machines), followed by an optional null bitmap, an optional object ID field, and the user data."
+    ],
+    "t_xmin": [
+     "HeapTupleHeaderData Layout Field Type Length Description t_xmin TransactionId 4 bytes insert XID stamp t_xmax TransactionId 4 bytes delete XID stamp t_cid CommandId 4 bytes insert and/or delete CID stamp (overlays with t_xvac) t_xvac TransactionId 4 bytes XID for VACUUM operation moving a row version t_ctid ItemPointerData 6 bytes current TID of this or newer row version t_infomask2 uint16 2 bytes number of attributes, plus various flag bits t_infomask uint16 2 bytes various flag bits t_hoff uint8 1 byte offset to user data All the details can be found in src/include/access/htup_details.h ."
+    ],
+    "t_xmax": [
+     "HeapTupleHeaderData Layout Field Type Length Description t_xmin TransactionId 4 bytes insert XID stamp t_xmax TransactionId 4 bytes delete XID stamp t_cid CommandId 4 bytes insert and/or delete CID stamp (overlays with t_xvac) t_xvac TransactionId 4 bytes XID for VACUUM operation moving a row version t_ctid ItemPointerData 6 bytes current TID of this or newer row version t_infomask2 uint16 2 bytes number of attributes, plus various flag bits t_infomask uint16 2 bytes various flag bits t_hoff uint8 1 byte offset to user data All the details can be found in src/include/access/htup_details.h ."
+    ],
+    "t_ctid": [
+     "HeapTupleHeaderData Layout Field Type Length Description t_xmin TransactionId 4 bytes insert XID stamp t_xmax TransactionId 4 bytes delete XID stamp t_cid CommandId 4 bytes insert and/or delete CID stamp (overlays with t_xvac) t_xvac TransactionId 4 bytes XID for VACUUM operation moving a row version t_ctid ItemPointerData 6 bytes current TID of this or newer row version t_infomask2 uint16 2 bytes number of attributes, plus various flag bits t_infomask uint16 2 bytes various flag bits t_hoff uint8 1 byte offset to user data All the details can be found in src/include/access/htup_details.h ."
+    ],
+    "number of item identifiers + pd_lower": [
+     "The number of item identifiers present can be determined by looking at pd_lower , which is increased to allocate a new identifier."
+    ],
+    "item identifier is never moved": [
+     "Because an item identifier is never moved until it is freed, its index can be used on a long-term basis to reference an item, even when the item itself is moved around on the page to compact free space."
+    ]
+   }
+  },
+  "file-layout": {
+   "url": "https://www.postgresql.org/docs/18/storage-file-layout.html",
+   "sha256": "3a5a3518c2efab7e7861c7120ac2f6196c07c81983f53629c08c19aec125a764",
+   "fetched": "2026-10-27",
+   "found": {
+    "filenode": [
+     "For ordinary relations, these files are named after the table or index's filenode number, which can be found in pg_class . relfilenode .",
+     "But for temporary relations, the file name is of the form t BBB _ FFF , where BBB is the process number of the backend which created the file, and FFF is the filenode number.",
+     "The free space map is stored in a file named with the filenode number plus the suffix _fsm .",
+     "Caution Note that while a table's filenode often matches its OID, this is not necessarily the case; some operations, like TRUNCATE , REINDEX , CLUSTER and some forms of ALTER TABLE , can change the filenode while preserving the OID."
+    ],
+    "exceeds 1 GB": [
+     "When a table or index exceeds 1 GB, it is divided into gigabyte-sized segments ."
+    ],
+    "_fsm": [
+     "The free space map is stored in a file named with the filenode number plus the suffix _fsm .",
+     "But keep in mind that this function just gives the name of the first segment of the main fork of the relation — you may need to append a segment number and/or _fsm , _vm , or _init to find all the files associated with the relation."
+    ],
+    "_vm": [
+     "Tables also have a visibility map , stored in a fork with the suffix _vm , to track which pages are known to have no dead tuples.",
+     "But keep in mind that this function just gives the name of the first segment of the main fork of the relation — you may need to append a segment number and/or _fsm , _vm , or _init to find all the files associated with the relation."
+    ],
+    "free space map": [
+     "In either case, in addition to the main file (a/k/a main fork), each table and index has a free space map (see Section 66.3 ), which stores information about free space available in the relation.",
+     "The free space map is stored in a file named with the filenode number plus the suffix _fsm .",
+     "The segment size can be adjusted using the configuration option --with-segsize when building PostgreSQL .) In principle, free space map and visibility map forks could require multiple segments as well, though this is unlikely to happen in practice."
+    ],
+    "visibility map": [
+     "Tables also have a visibility map , stored in a fork with the suffix _vm , to track which pages are known to have no dead tuples.",
+     "The visibility map is described further in Section 66.4 .",
+     "The segment size can be adjusted using the configuration option --with-segsize when building PostgreSQL .) In principle, free space map and visibility map forks could require multiple segments as well, though this is unlikely to happen in practice."
+    ]
+   }
+  },
+  "fsm": {
+   "url": "https://www.postgresql.org/docs/18/storage-fsm.html",
+   "sha256": "15b46344110e516843547ab0d33dd0fd72bef9eb57ca39dfaa531c6a16b16fda",
+   "fetched": "2026-10-27",
+   "found": {
+    "free space map": [
+     "Free Space Map October 15, 2026: PostgreSQL 19 RC 1 Released!",
+     "Free Space Map Prev Up Chapter 66.",
+     "Free Space Map # Each heap and index relation, except for hash indexes, has a Free Space Map ( FSM ) to keep track of available space in the relation.",
+     "The Free Space Map is organized as a tree of FSM pages."
+    ],
+    "binary tree": [
+     "Within each FSM page is a binary tree, stored in an array with one byte per node."
+    ]
+   }
+  },
+  "vm": {
+   "url": "https://www.postgresql.org/docs/18/storage-vm.html",
+   "sha256": "4ce3fe08df02f1af774bf67b4437f4bfbddb9783873c9eb88f10a88f0d88f1dd",
+   "fetched": "2026-10-27",
+   "found": {
+    "all-visible": [
+     "The first bit, if set, indicates that the page is all-visible, or in other words that the page does not contain any tuples that need to be vacuumed."
+    ],
+    "all tuples on the page have been frozen": [
+     "The second bit, if set, means that all tuples on the page have been frozen."
+    ],
+    "index-only scans": [
+     "This information can also be used by index-only scans to answer queries using only the index tuple."
+    ]
+   }
+  },
+  "hot": {
+   "url": "https://www.postgresql.org/docs/18/storage-hot.html",
+   "sha256": "8db1ade22e8d0b23dba2f871c8a220a2d081f8b8cfe51e314c7e7972d567a0c9",
+   "fetched": "2026-10-27",
+   "found": {
+    "does not modify any columns referenced": [
+     "This optimization is possible when: The update does not modify any columns referenced by the table's indexes, not including summarizing indexes."
+    ],
+    "sufficient free space": [
+     "There is sufficient free space on the page containing the old row for the updated row.",
+     "If you don't, HOT updates will still happen because new rows will naturally migrate to new pages and existing pages with sufficient free space for new row versions."
+    ],
+    "New index entries are not needed": [
+     "In such cases, heap-only tuples provide two optimizations: New index entries are not needed to represent updated rows, however, summary indexes may still need to be updated."
+    ],
+    "Indexes always refer": [
+     "(Indexes always refer to the page item identifier of the original row version."
+    ],
+    "new index entries for each updated row": [
+     "This can also require new index entries for each updated row, and removal of old versions of rows and their index entries can be expensive."
+    ]
+   }
+  },
+  "mvcc-intro": {
+   "url": "https://www.postgresql.org/docs/18/mvcc-intro.html",
+   "sha256": "b384a58f9f51881ddab984eff9b1687c065f7caa796d6946f09f2159a280254d",
+   "fetched": "2026-10-27",
+   "found": {
+    "snapshot": [
+     "This means that each SQL statement sees a snapshot of data (a database version ) as it was some time ago, regardless of the current state of the underlying data.",
+     "PostgreSQL maintains this guarantee even when providing the strictest level of transaction isolation through the use of an innovative Serializable Snapshot Isolation ( SSI ) level."
+    ],
+    "reading never blocks writing": [
+     "The main advantage of using the MVCC model of concurrency control rather than locking is that in MVCC locks acquired for querying (reading) data do not conflict with locks acquired for writing data, and so reading never blocks writing and writing never blocks reading."
+    ]
+   }
+  },
+  "isolation": {
+   "url": "https://www.postgresql.org/docs/18/transaction-iso.html",
+   "sha256": "42a64110b076015643e964bb1bc4e72a4143111916376e4e12991e4b6980c8e9",
+   "fetched": "2026-10-27",
+   "found": {
+    "Read Committed + default": [
+     "Read Committed Isolation Level # Read Committed is the default isolation level in PostgreSQL ."
+    ],
+    "could not serialize access due to concurrent update": [
+     "But if the first updater commits (and actually updated or deleted the row, not just locked it) then the repeatable read transaction will be rolled back with the message ERROR: could not serialize access due to concurrent update because a repeatable read transaction cannot modify or lock rows changed by other transactions after the repeatable read transaction began."
+    ],
+    "Repeatable Read + only sees data committed before the transaction began": [
+     "Repeatable Read Isolation Level # The Repeatable Read isolation level only sees data committed before the transaction began; it never sees either uncommitted data or changes committed by concurrent transactions during the transaction's execution."
+    ],
+    "would-be updater will wait": [
+     "In this case, the would-be updater will wait for the first updating transaction to commit or roll back (if it is still in progress)."
+    ],
+    "apply its operation to the updated version": [
+     "If the first updater commits, the second updater will ignore the row if the first updater deleted it, otherwise it will attempt to apply its operation to the updated version of the row."
+    ]
+   }
+  },
+  "explicit-locking": {
+   "url": "https://www.postgresql.org/docs/18/explicit-locking.html",
+   "sha256": "67d777203648ed6081b427a30187dc0e40634aba0fcb2e43b0a24d691315fe98",
+   "fetched": "2026-10-27",
+   "found": {
+    "deadlock": [
+     "Deadlocks 13.3.5.",
+     "Deadlocks # The use of explicit locking can increase the likelihood of deadlocks , wherein two (or more) transactions each hold locks that the other wants.",
+     "PostgreSQL automatically detects deadlock situations and resolves them by aborting one of the transactions involved, allowing the other(s) to complete.",
+     "(Exactly which transaction will be aborted is difficult to predict and should not be relied upon.) Note that deadlocks can also occur as the result of row-level locks (and thus, they can occur even if explicit locking is not used)."
+    ],
+    "Row-level locks do not affect data querying": [
+     "Row-level locks do not affect data querying; they block only writers and lockers to the same row."
+    ],
+    "no limit on the number of rows locked": [
+     "PostgreSQL doesn't remember any information about modified rows in memory, so there is no limit on the number of rows locked at one time."
+    ]
+   }
+  },
+  "create-index": {
+   "url": "https://www.postgresql.org/docs/18/sql-createindex.html",
+   "sha256": "7b4c4ddeceadb39ef1f52ab854c9115a0c2bfc49d78481accdeb4376e5871790",
+   "fetched": "2026-10-27",
+   "found": {
+    "B-trees + leaf pages are filled": [
+     "For B-trees, leaf pages are filled to this percentage during initial index builds, and also when extending the index at the right (adding new largest key values)."
+    ],
+    "default + fillfactor + 90": [
+     "B-trees use a default fillfactor of 90, but any integer value from 10 to 100 can be selected."
+    ]
+   }
+  },
+  "vacuum": {
+   "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
+   "sha256": "232d8e57e1bc9c20dcc48ebdcfe33f94fcf21b1069b55758484296f9a0c6779e",
+   "fetched": "2026-10-27",
+   "found": {
+    "dead row versions": [
+     "The standard form of VACUUM removes dead row versions in tables and indexes and marks the space available for future reuse.",
+     "Tip Plain VACUUM may not be satisfactory when a table contains large numbers of dead row versions as a result of massive update or delete activity.",
+     "Normally, it will skip pages that don't have any dead row versions even if those pages might still have row versions with old XID values.",
+     "This happens when relfrozenxid is more than vacuum_freeze_table_age transactions old, when VACUUM 's FREEZE option is used, or when all pages that are not already all-frozen happen to require vacuuming to remove dead row versions."
+    ],
+    "32 bits": [
+     "But since transaction IDs have limited size (32 bits) a cluster that runs for a long time (more than 4 billion transactions) would suffer transaction ID wraparound : the XID counter wraps around to zero, and all of a sudden transactions that were in the past appear to be in the future — which means their output become invisible."
+    ],
+    "two billion transactions": [
+     "(Actually the data is still there, but that's cold comfort if you cannot get at it.) To avoid this, it is necessary to vacuum every table in every database at least once every two billion transactions.",
+     "Therefore, once a row version has been created with a particular normal XID, the row version will appear to be “ in the past ” for the next two billion transactions, no matter which normal XID we are talking about.",
+     "If the row version still exists after more than two billion transactions, it will suddenly appear to be in the future.",
+     "The maximum time that a table can go unvacuumed is two billion transactions minus the vacuum_freeze_min_age value at the time of the last aggressive vacuum."
+    ],
+    "frozen": [
+     "The reason that periodic vacuuming solves the problem is that VACUUM will mark rows as frozen , indicating that they were inserted by a transaction that committed sufficiently far in the past that the effects of the inserting transaction are certain to be visible to all current and future transactions.",
+     "To prevent this, PostgreSQL reserves a special XID, FrozenTransactionId , which does not follow the normal XID comparison rules and is always considered older than every normal XID.",
+     "Frozen row versions are treated as if the inserting XID were FrozenTransactionId , so that they will appear to be “ in the past ” to all normal transactions regardless of wraparound issues, and so such row versions will be valid until deleted, no matter how long that is.",
+     "Note In PostgreSQL versions before 9.4, freezing was implemented by actually replacing a row's insertion XID with FrozenTransactionId , which was visible in the row's xmin system column."
+    ],
+    "autovacuum": [
+     "The Autovacuum Daemon PostgreSQL databases require periodic maintenance known as vacuuming .",
+     "For many installations, it is sufficient to let vacuuming be performed by the autovacuum daemon , which is described in Section 24.1.6 .",
+     "You might need to adjust the autovacuuming parameters described there to obtain best results for your situation.",
+     "Administrators who rely on autovacuuming may still wish to skim this material to help them understand and adjust autovacuuming. 24.1.1."
+    ],
+    "vacuum threshold + base threshold + scale factor": [
+     "The vacuum threshold is defined as: vacuum threshold = Minimum(vacuum max threshold, vacuum base threshold + vacuum scale factor * number of tuples) where the vacuum max threshold is autovacuum_vacuum_max_threshold , the vacuum base threshold is autovacuum_vacuum_threshold , the vacuum scale factor is autovacuum_vacuum_scale_factor , and the number of tuples is pg_class . reltuples ."
+    ],
+    "autovacuum_vacuum_max_threshold": [
+     "The vacuum threshold is defined as: vacuum threshold = Minimum(vacuum max threshold, vacuum base threshold + vacuum scale factor * number of tuples) where the vacuum max threshold is autovacuum_vacuum_max_threshold , the vacuum base threshold is autovacuum_vacuum_threshold , the vacuum scale factor is autovacuum_vacuum_scale_factor , and the number of tuples is pg_class . reltuples ."
+    ]
+   }
+  },
+  "wal-intro": {
+   "url": "https://www.postgresql.org/docs/18/wal-intro.html",
+   "sha256": "c7b845504fcfbcbcd6e67eb82f72ab4596d86670e83b57325e9bc604779db050",
+   "fetched": "2026-10-27",
+   "found": {
+    "changes to data files + only after those changes have been logged": [
+     "Briefly, WAL 's central concept is that changes to data files (where tables and indexes reside) must be written only after those changes have been logged, that is, after WAL records describing the changes have been flushed to permanent storage."
+    ],
+    "in the event of a crash": [
+     "If we follow this procedure, we do not need to flush data pages to disk on every transaction commit, because we know that in the event of a crash we will be able to recover the database using the log: any changes that have not been applied to the data pages can be redone from the WAL records."
+    ],
+    "fsync": [
+     "Furthermore, when the server is processing many small concurrent transactions, one fsync of the WAL file may suffice to commit many transactions."
+    ]
+   }
+  },
+  "wal-reliability": {
+   "url": "https://www.postgresql.org/docs/18/wal-reliability.html",
+   "sha256": "cf39c64d11a6dccbcac21d69869527b8e2efbee5afcc48d71d7a2677888775e8",
+   "fetched": "2026-10-27",
+   "found": {
+    "full page images + before modifying": [
+     "To guard against such failures, PostgreSQL periodically writes full page images to permanent WAL storage before modifying the actual page on disk."
+    ],
+    "checksummed by default": [
+     "Data pages are checksummed by default, and full page images recorded in WAL records are always checksum protected."
+    ]
+   }
+  },
+  "wal-config": {
+   "url": "https://www.postgresql.org/docs/18/wal-configuration.html",
+   "sha256": "731aeb515577e12531d70716ff702497d5bfdde8f62348cde702252013b725db",
+   "fetched": "2026-10-27",
+   "found": {
+    "Checkpoints + points in the sequence of transactions": [
+     "Checkpoints are points in the sequence of transactions at which it is guaranteed that the heap and index data files have been updated with all information written before that checkpoint."
+    ],
+    "checkpoint_timeout": [
+     "A checkpoint is begun every checkpoint_timeout seconds, or if max_wal_size is about to be exceeded, whichever comes first.",
+     "If no WAL has been written since the previous checkpoint, new checkpoints will be skipped even if checkpoint_timeout has passed.",
+     "Reducing checkpoint_timeout and/or max_wal_size causes checkpoints to occur more often.",
+     "That period is controlled by checkpoint_completion_target , which is given as a fraction of the checkpoint interval (configured by using checkpoint_timeout )."
+    ],
+    "max_wal_size": [
+     "A checkpoint is begun every checkpoint_timeout seconds, or if max_wal_size is about to be exceeded, whichever comes first.",
+     "Reducing checkpoint_timeout and/or max_wal_size causes checkpoints to occur more often.",
+     "If checkpoints happen closer together than checkpoint_warning seconds, a message will be output to the server log recommending increasing max_wal_size .",
+     "Bulk operations such as large COPY transfers might cause a number of such warnings to appear if you have not set max_wal_size high enough."
+    ]
+   }
+  },
+  "index-only": {
+   "url": "https://www.postgresql.org/docs/18/indexes-index-only-scans.html",
+   "sha256": "f7854047ad4638cd7e279d0794c1133ae0274bfa27bb3bf26d1b60c644c12c32",
+   "fetched": "2026-10-27",
+   "found": {
+    "All indexes in PostgreSQL are secondary indexes": [
+     "Index-Only Scans and Covering Indexes # All indexes in PostgreSQL are secondary indexes, meaning that each index is stored separately from the table's main data area (which is called the table's heap in PostgreSQL terminology)."
+    ],
+    "visibility map": [
+     "This information is stored in a bit in the table's visibility map .",
+     "An index-only scan, after finding a candidate index entry, checks the visibility map bit for the corresponding heap page.",
+     "Even in the successful case, this approach trades visibility map accesses for heap accesses; but since the visibility map is four orders of magnitude smaller than the heap it describes, far less physical I/O is needed to access it.",
+     "In most situations the visibility map remains cached in memory all the time."
+    ]
+   }
+  },
+  "btree-dedup": {
+   "url": "https://www.postgresql.org/docs/18/btree.html",
+   "sha256": "6aa09a9aa1930bb3a1114b924a93d6066feb610b64d1986eb1cc6848ebf5ffde",
+   "fetched": "2026-10-27",
+   "found": {
+    "deduplication": [
+     "These functions allow the core code to determine when it is safe to apply the btree deduplication optimization.",
+     "As far as the operator class is concerned, returning true indicates that deduplication is safe (or safe for the collation whose OID was passed to its equalimage function).",
+     "However, the core code will only deem deduplication safe for an index when every indexed column uses an operator class that registers an equalimage function, and each function actually returns true when called.",
+     "Most operator classes register btequalimage() , which indicates that deduplication is safe unconditionally."
+    ],
+    "posting list": [
+     "Deduplication works by periodically merging groups of duplicate tuples together, forming a single posting list tuple for each group.",
+     "Unlike GIN posting list tuples, B-Tree posting list tuples do not need to expand every time a new duplicate is inserted; they are merely an alternative physical representation of the original logical contents of the leaf page.",
+     "CREATE INDEX and REINDEX apply deduplication to create posting list tuples, though the strategy they use is slightly different.",
+     "Each group of duplicate ordinary tuples encountered in the sorted input taken from the table is merged into a posting list tuple before being added to the current pending leaf page."
+    ]
+   }
+  },
+  "history": {
+   "url": "https://www.postgresql.org/docs/18/history.html",
+   "sha256": "bd4f7c61fb5702011b4a2eb97959fa9e86e25fea1183c135fcef0715a98887d2",
+   "fetched": "2026-10-27",
+   "found": {
+    "POSTGRES + 1986": [
+     "The implementation of POSTGRES began in 1986."
+    ],
+    "led by Professor Michael Stonebraker": [
+     "The Berkeley POSTGRES Project # The POSTGRES project, led by Professor Michael Stonebraker, was sponsored by the Defense Advanced Research Projects Agency ( DARPA ), the Army Research Office ( ARO ), the National Science Foundation ( NSF ), and ESL, Inc."
+    ],
+    "Andrew Yu": [
+     "Postgres95 # In 1994, Andrew Yu and Jolly Chen added an SQL language interpreter to POSTGRES ."
+    ],
+    "new name, PostgreSQL": [
+     "We chose a new name, PostgreSQL , to reflect the relationship between the original POSTGRES and the more recent versions with SQL capability."
+    ],
+    "6.0": [
+     "At the same time, we set the version numbering to start at 6.0, putting the numbers back into the sequence originally begun by the Berkeley POSTGRES project."
+    ]
+   }
+  },
+  "features": {
+   "url": "https://www.postgresql.org/docs/18/features.html",
+   "sha256": "fdfe24cd58045479c43e172899df6a27c4a080847dfda36e58e5e4724d1fe5da",
+   "fetched": "2026-10-27",
+   "found": {
+    "SQL:2023": [
+     "The 2023 version is referred to as ISO/IEC 9075:2023, or simply as SQL:2023.",
+     "PostgreSQL supports most of the major features of SQL:2023.",
+     "It might be worth noting that at the time of writing, no current version of any database management system claims full conformance to Core SQL:2023.",
+     "In the following two sections, we provide a list of those features that PostgreSQL supports, followed by a list of the features defined in SQL:2023 which are not yet supported in PostgreSQL ."
+    ],
+    "Core conformance": [
+     "Out of 177 mandatory features required for full Core conformance, PostgreSQL conforms to at least 170."
+    ],
+    "no current version": [
+     "It might be worth noting that at the time of writing, no current version of any database management system claims full conformance to Core SQL:2023."
+    ]
+   }
+  },
+  "release-18": {
+   "url": "https://www.postgresql.org/about/news/postgresql-18-released-3142/",
+   "sha256": "5934e41e303b0ba846a1a401e7638d3c56093be8212a0a9f74586507ded61ea9",
+   "fetched": "2026-10-27",
+   "found": {
+    "2025-09-25": [
+     "Posted on 2025-09-25 by PostgreSQL Global Development Group PostgreSQL Project The PostgreSQL Global Development Group today announced the release of PostgreSQL 18 , the latest version of the world's most advanced open source database."
+    ],
+    "checksums": [
+     "Other notable changes Databases initialized with PostgreSQL 18 initdb now have page checksums enabled by default.",
+     "This can affect upgrades from non-checksum enabled clusters, which would require you to create a new PostgreSQL 18 cluster with the --no-data-checksums option when using pg_upgrade ."
+    ]
+   }
+  },
+  "release-notes-18": {
+   "url": "https://www.postgresql.org/docs/18/release-18.html",
+   "sha256": "a64c3cc0f4cb0ce0815ea892285451be9ce2cfff7e1106c3a1f8602f8adb45c5",
+   "fetched": "2026-10-27",
+   "found": {
+    "data checksums + initdb": [
+     "Observe the following incompatibilities: Change initdb default to enable data checksums (Greg Sabino Mullane) § Checksums can be disabled with the new initdb option --no-data-checksums . pg_upgrade requires matching cluster checksum settings, so this new option can be useful to upgrade non-checksum old clusters."
+    ],
+    "Release date": [
+     "Acknowledgments Release date: 2025-09-25 E.6.1."
+    ]
+   }
+  },
+  "berkeley-stonebraker": {
+   "url": "https://www2.eecs.berkeley.edu/Faculty/Homepages/stonebraker.html",
+   "sha256": "d4bdb58c3ac7d3a19c89fa95b2dd6a55cdf5ab84ad2396cdc668ac336f9050e8",
+   "fetched": "2026-10-27",
+   "found": {
+    "INGRES + POSTGRES": [
+     "While at Berkeley, he developed prototypes for the INGRES relational data management system (DBMS), the object-relational DBMS, POSTGRES, and the federated data system, Mariposa."
+    ],
+    "Turing Award": [
+     "Turing Award , 2014 IEEE John von Neumann Medal , 2005 National Academy of Engineering (NAE) Member , 1997 Association for Computing Machinery (ACM) Fellow , 1994 ACM SIGMOD Edgar F."
+    ]
+   }
+  },
+  "turing-mit": {
+   "url": "https://news.mit.edu/2015/michael-stonebraker-wins-turing-award-0325",
+   "sha256": "d5ef50a2bdd7c72a54d2d19cb0a7627dcf6a2fb49e1d0e441b29bfd83915dba4",
+   "fetched": "2026-10-27",
+   "found": {
+    "Turing Award + Nobel Prize of computing": [
+     "Turing Award , often referred to as “the Nobel Prize of computing.” This year marks the first time that the Turing Award comes with a Google-funded $1 million prize."
+    ],
+    "invented many of the concepts": [
+     "In its announcement today, ACM said that Stonebraker “invented many of the concepts that are used in almost all modern database systems ... and founded numerous companies successfully commercializing his pioneering database technology work.” An adjunct professor of computer science and engineering at MIT and a principal investigator at CSAIL, Stonebraker sometimes jokes that he didn’t know what he was researching for more than 30 years. “But then, out of nowhere, some marketing guys started talking about ‘big data,’” he says. “That’s when I realized that I’d been studying this thing for the better part of my academic life.” Stonebraker's work over the past four decades has helped spur a multibillion-dollar “big data” industry that he himself has participated in, creating and leading nine separate companies, including VoltDB, Tamr, Paradigm4, and Vertica (which was bought by Hewlett-Packard in 2011 for $340 million). “Mike has been a trailblazer in the field of databases by asking the essential questions about how we collect, organize, and access information in our lives,” says Daniela Rus, director of CSAIL and the Andrew and Erna Viterbi Professor of Electrical Engineering and Computer Science. “He has been both a devoted academic and a serial entrepreneur, and all of us at CSAIL are so inspired by his work and proud to have him as a colleague.” In his previous work at the University of California at Berkeley, Stonebraker developed two of his most influential systems, Ingres and Postgres, which provide the foundational ideas — and, in many cases, specific source code — that spawned several contemporary database products, including IBM’s Informix and EMC’s Greenplum."
+    ],
+    "Publication Date": [
+     "Adam Conner-Simons | CSAIL Publication Date : March 25, 2015 Press Inquiries Press Contact : Adam Conner-Simons Email: aconner@csail.mit.edu Phone: 617-324-9135 MIT Computer Science & Artificial Intelligence Lab Media Download ↓ Download Image Caption : Michael Stonebraker Credits : Photo: M."
+    ]
+   }
+  },
+  "hellerstein": {
+   "url": "https://arxiv.org/html/1901.01973v1",
+   "sha256": "f839e1997e0aa15c08f467580409ffd7467d6f454c61d85e466098ffa2feb605",
+   "fetched": "2026-10-27",
+   "found": {
+    "Post-Ingres": [
+     "Postgres: An Overview As indicated by the name, Postgres was \"Post-Ingres\": a system designed to take what Ingres could do, and go beyond."
+    ],
+    "arXiv:1901.01973v1": [
+     "Describe the issue below: Description: License: CC BY 4.0 arXiv:1901.01973v1 [cs.DB] 07 Jan 2019 Looking Back at Postgres Joseph M."
+    ]
+   }
+  }
+ }
+}

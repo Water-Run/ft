@@ -22,7 +22,10 @@
 | `05_delete_vacuum.py` | `out_05_delete_vacuum.json` | 删除、长事务挡住回收、VACUUM 收回行与索引项、Dave 复用空间、冻结 |
 | `06_wal_crash.py` | `out_06_wal_crash.json` | 提交时 WAL 落盘而数据页未写回、检查点后的整页写、pg_waldump、断电式停机后的恢复 |
 | `07_orthodox.py` | `out_07_orthodox.json` | 事务里的 DDL 回滚；CHECK、外键、主键、NOT NULL 约束的报错 |
+| `08_survey.py` | `out_08_survey.json` | Stack Overflow 调查 2022–2026 年数据库题「All Respondents」口径的两库比例；原页重新下载到 `research/_src/`，记 SHA-256 |
+| `09_docs.py` | `out_09_docs.json` | 18 手册、发布公告、伯克利教员页、MIT News、Hellerstein 回顾里本集要用的原句（逐字）；原页存 `research/_src/` |
+| `10_source.py` | `out_10_source.json` | REL_18_4 源码里的定义与规则，记文件、行号与原文 |
 
-重做：`python <脚本>`（需要 psycopg 3，Python 3.10 及以上；二进制目录可用环境变量 `PG_BIN` 指定）。
+重做：`python <脚本>`（01–07 需要 psycopg 3；08、09 需要 beautifulsoup4；Python 3.10 及以上；二进制目录可用环境变量 `PG_BIN` 指定）。
 
 重跑会得到同样的结构、页号与事务号。WAL 位置、校验和、进程号与时间会变。

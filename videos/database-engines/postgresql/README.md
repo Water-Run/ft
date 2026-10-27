@@ -6,11 +6,11 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 2026-10-27 试听定稿：配音沉稳高管、配乐 R3「沉稳」、封面 R2 的 A（深蓝底、高亮蓝字）、视觉稿 R2；旧版的事实、来源与实验存档在 `research/r12/`；`project.json` 是新版（取证阶段） |
-| 下一步，依赖什么 | 在 PostgreSQL 18（本机 18.4）上按「取证计划」重新实测，写新版 [FACTS](research/FACTS.md)；事实齐了再写文案交审 |
+| 当前停在哪里 | 2026-10-27 取证完成：新版 [FACTS](research/FACTS.md)（调查、来历与标题、整体结构、一页之内、增、查、改、事务与并发、删与回收、出错，各条附实测回显或原文），实验与原句在 [research/lab/](research/lab/)。试听已定：配音沉稳高管、配乐 R3「沉稳」、封面 R2 的 A、视觉稿 R2 |
+| 下一步，依赖什么 | 按 FACTS 写文案（叙事提纲十一章，Alice、Bob、Carol、Dave 沿用系列人物），交 WaterRun 校对；确认后才配音 |
 | 等待策划者的事 | 无。试听页都在 `out/audition/`（不入库）：R3 `pg-audition-r3.html` 是定稿那一轮，demo 已按成片响度重混（第一版整体低约 2 dB）；由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
-| 未做的事 | 全部实测；文案；配音、配乐；`src/` 仍是旧版成片的源码，进入实现阶段时换成现行模板（旧版源码保留在 Git 历史） |
+| 未做的事 | 文案；配音、配乐；`src/` 仍是旧版成片的源码，进入实现阶段时换成现行模板（旧版源码保留在 Git 历史） |
 
 ## 简报
 

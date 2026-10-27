@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"
   },
   "stage": "research",
-  "next": "试听已定（2026-10-27：沉稳高管、配乐 R3、封面 A、视觉稿 R2）；在 PostgreSQL 18（本机 18.4）上按 README「取证计划」重新实测，写新版 FACTS",
+  "next": "取证完成（2026-10-27，research/FACTS.md 与 research/lab/）；按 FACTS 写文案，交 WaterRun 校对",
   "credits": {
     "planner": "WaterRun",
     "models": [
