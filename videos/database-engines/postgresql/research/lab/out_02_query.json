@@ -1,0 +1,1040 @@
+{
+ "script": "02_query",
+ "date": "2026-10-27",
+ "environment": {
+  "os": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "python": "3.14.3",
+  "psycopg": "3.3.5",
+  "topology": "新建独立集群（临时目录、随机端口、只听 127.0.0.1）；不连接已有服务",
+  "conf": {
+   "listen_addresses": "'127.0.0.1'",
+   "autovacuum": "off",
+   "fsync": "on",
+   "synchronous_commit": "on",
+   "full_page_writes": "on",
+   "log_line_prefix": "'%m [%p] '",
+   "log_checkpoints": "on",
+   "lc_messages": "'C'"
+  }
+ },
+ "commands": [
+  {
+   "program": "initdb",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-U",
+    "lab",
+    "-A",
+    "trust",
+    "--encoding=UTF8",
+    "--locale=C"
+   ],
+   "exit": 0,
+   "output": "The files belonging to this database system will be owned by user \"user\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are enabled.\n\ncreating directory <work>/cluster ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default \"max_connections\" ... 100\nselecting default \"shared_buffers\" ... 128MB\nselecting default time zone ... Asia/Shanghai\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\Program^ Files^\\PostgreSQL^\\18^\\bin^\\pg^_ctl^\" -D ^\"D^:^\\Coding^\\ft^\\videos^\\database^-engines^\\postgresql^\\research^\\^_src^\\lab^-02^_query^-c6f40509^\\cluster^\" -l logfile start\n\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  }
+ ],
+ "queries": [
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pageinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_freespacemap",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_visibility",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_buffercache",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_walinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_name ON users (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_age ON users (age)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "1",
+    "1"
+   ],
+   "tag": "insert 1",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "2050",
+    "2050"
+   ],
+   "tag": "insert 2050",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "4096",
+    "4096"
+   ],
+   "tag": "insert 4096",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "ANALYZE users",
+   "tag": "analyze",
+   "status": "ANALYZE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT relname, relpages, reltuples FROM pg_class WHERE relname IN ('users', 'users_pkey', 'idx_name', 'idx_age') ORDER BY relname",
+   "status": "SELECT 4",
+   "rows": [
+    {
+     "relname": "idx_age",
+     "relpages": 7,
+     "reltuples": 4096.0
+    },
+    {
+     "relname": "idx_name",
+     "relpages": 41,
+     "reltuples": 4096.0
+    },
+    {
+     "relname": "users",
+     "relpages": 47,
+     "reltuples": 4096.0
+    },
+    {
+     "relname": "users_pkey",
+     "relpages": 14,
+     "reltuples": 4096.0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM users WHERE id = 2050",
+   "tag": "plan by_id",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (id = 2050)"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=39 read=1"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM users WHERE name = 'Alice'",
+   "tag": "plan by_name",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=6"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM users WHERE age = 42",
+   "tag": "plan by_age",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Bitmap Heap Scan on users  (cost=4.79..55.04 rows=66 width=57) (actual rows=66.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Recheck Cond: (age = 42)"
+    },
+    {
+     "QUERY PLAN": "  Heap Blocks: exact=47"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=52"
+    },
+    {
+     "QUERY PLAN": "  ->  Bitmap Index Scan on idx_age  (cost=0.00..4.78 rows=66 width=0) (actual rows=66.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "        Index Cond: (age = 42)"
+    },
+    {
+     "QUERY PLAN": "        Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "        Buffers: shared hit=5"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=5"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM users WHERE id BETWEEN 2000 AND 2100",
+   "tag": "plan id_range",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using users_pkey on users  (cost=0.28..11.30 rows=101 width=57) (actual rows=101.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: ((id >= 2000) AND (id <= 2100))"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=4"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=6"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT count(*) FROM users",
+   "tag": "plan count_all",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Aggregate  (cost=98.20..98.21 rows=1 width=8) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=47"
+    },
+    {
+     "QUERY PLAN": "  ->  Seq Scan on users  (cost=0.00..87.96 rows=4096 width=0) (actual rows=4096.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "        Buffers: shared hit=47"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT id FROM users WHERE name = 'Alice'",
+   "tag": "plan id_by_name",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=4) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT name FROM users WHERE name = 'Alice'",
+   "tag": "plan name_by_name",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Only Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=51) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Heap Fetches: 1"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    }
+   ]
+  },
+  {
+   "conn": "cold-by_id",
+   "sql": "SELECT count(*) AS n FROM pg_buffercache b JOIN pg_class r ON b.relfilenode = r.relfilenode WHERE r.relname IN ('users', 'users_pkey', 'idx_name', 'idx_age')",
+   "tag": "cold check by_id",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n": 0
+    }
+   ]
+  },
+  {
+   "conn": "cold-by_id",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM users WHERE id = 2050",
+   "tag": "cold plan by_id",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (id = 2050)"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared read=3"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=56 read=7"
+    }
+   ]
+  },
+  {
+   "conn": "cold-by_id",
+   "sql": "SELECT r.relname, b.relforknumber AS fork, array_agg(b.relblocknumber ORDER BY b.relblocknumber) AS blocks, count(*) AS n FROM pg_buffercache b JOIN pg_class r ON b.relfilenode = r.relfilenode WHERE r.relname IN ('users', 'users_pkey', 'idx_name', 'idx_age') GROUP BY 1, 2 ORDER BY 1, 2",
+   "tag": "cold pages by_id",
+   "status": "SELECT 4",
+   "rows": [
+    {
+     "relname": "idx_age",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    },
+    {
+     "relname": "idx_name",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    },
+    {
+     "relname": "users",
+     "fork": 0,
+     "blocks": "[23]",
+     "n": 1
+    },
+    {
+     "relname": "users_pkey",
+     "fork": 0,
+     "blocks": "[0, 3, 7]",
+     "n": 3
+    }
+   ]
+  },
+  {
+   "conn": "cold-by_name",
+   "sql": "SELECT count(*) AS n FROM pg_buffercache b JOIN pg_class r ON b.relfilenode = r.relfilenode WHERE r.relname IN ('users', 'users_pkey', 'idx_name', 'idx_age')",
+   "tag": "cold check by_name",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n": 0
+    }
+   ]
+  },
+  {
+   "conn": "cold-by_name",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT * FROM users WHERE name = 'Alice'",
+   "tag": "cold plan by_name",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared read=3"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=55 read=9"
+    }
+   ]
+  },
+  {
+   "conn": "cold-by_name",
+   "sql": "SELECT r.relname, b.relforknumber AS fork, array_agg(b.relblocknumber ORDER BY b.relblocknumber) AS blocks, count(*) AS n FROM pg_buffercache b JOIN pg_class r ON b.relfilenode = r.relfilenode WHERE r.relname IN ('users', 'users_pkey', 'idx_name', 'idx_age') GROUP BY 1, 2 ORDER BY 1, 2",
+   "tag": "cold pages by_name",
+   "status": "SELECT 4",
+   "rows": [
+    {
+     "relname": "idx_age",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    },
+    {
+     "relname": "idx_name",
+     "fork": 0,
+     "blocks": "[0, 1, 3]",
+     "n": 3
+    },
+    {
+     "relname": "users",
+     "fork": 0,
+     "blocks": "[23]",
+     "n": 1
+    },
+    {
+     "relname": "users_pkey",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "conn": "cold-count_all",
+   "sql": "SELECT count(*) AS n FROM pg_buffercache b JOIN pg_class r ON b.relfilenode = r.relfilenode WHERE r.relname IN ('users', 'users_pkey', 'idx_name', 'idx_age')",
+   "tag": "cold check count_all",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n": 0
+    }
+   ]
+  },
+  {
+   "conn": "cold-count_all",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT count(*) FROM users",
+   "tag": "cold plan count_all",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Aggregate  (cost=98.20..98.21 rows=1 width=8) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared read=47"
+    },
+    {
+     "QUERY PLAN": "  ->  Seq Scan on users  (cost=0.00..87.96 rows=4096 width=0) (actual rows=4096.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "        Buffers: shared read=47"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=58 read=6"
+    }
+   ]
+  },
+  {
+   "conn": "cold-count_all",
+   "sql": "SELECT r.relname, b.relforknumber AS fork, array_agg(b.relblocknumber ORDER BY b.relblocknumber) AS blocks, count(*) AS n FROM pg_buffercache b JOIN pg_class r ON b.relfilenode = r.relfilenode WHERE r.relname IN ('users', 'users_pkey', 'idx_name', 'idx_age') GROUP BY 1, 2 ORDER BY 1, 2",
+   "tag": "cold pages count_all",
+   "status": "SELECT 4",
+   "rows": [
+    {
+     "relname": "idx_age",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    },
+    {
+     "relname": "idx_name",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    },
+    {
+     "relname": "users",
+     "fork": 0,
+     "blocks": "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46]",
+     "n": 47
+    },
+    {
+     "relname": "users_pkey",
+     "fork": 0,
+     "blocks": "[0]",
+     "n": 1
+    }
+   ]
+  },
+  {
+   "conn": "vm",
+   "sql": "SELECT * FROM pg_visibility_map_summary('users')",
+   "tag": "vm before vacuum",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": 0,
+     "all_frozen": 0
+    }
+   ]
+  },
+  {
+   "conn": "vm",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT name FROM users WHERE name = 'Alice'",
+   "tag": "ios before vacuum",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Only Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=51) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Heap Fetches: 1"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=1 read=2"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=96 read=1"
+    }
+   ]
+  },
+  {
+   "conn": "vm",
+   "sql": "VACUUM users",
+   "tag": "vacuum",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "vm",
+   "sql": "SELECT * FROM pg_visibility_map_summary('users')",
+   "tag": "vm after vacuum",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": 47,
+     "all_frozen": 0
+    }
+   ]
+  },
+  {
+   "conn": "vm",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT name FROM users WHERE name = 'Alice'",
+   "tag": "ios after vacuum",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Only Scan using idx_name on users  (cost=0.28..4.30 rows=1 width=51) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Heap Fetches: 0"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=5"
+    }
+   ]
+  },
+  {
+   "conn": "vm",
+   "sql": "EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, SUMMARY OFF) SELECT id FROM users WHERE name = 'Alice'",
+   "tag": "id by name after vacuum",
+   "status": "EXPLAIN",
+   "rows": [
+    {
+     "QUERY PLAN": "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=4) (actual rows=1.00 loops=1)"
+    },
+    {
+     "QUERY PLAN": "  Index Cond: (name = 'Alice'::bpchar)"
+    },
+    {
+     "QUERY PLAN": "  Index Searches: 1"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    },
+    {
+     "QUERY PLAN": "Planning:"
+    },
+    {
+     "QUERY PLAN": "  Buffers: shared hit=3"
+    }
+   ]
+  }
+ ],
+ "notes": [],
+ "plans_before_vacuum": {
+  "by_id": [
+   "Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)",
+   "  Index Cond: (id = 2050)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=39 read=1"
+  ],
+  "by_name": [
+   "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=6"
+  ],
+  "by_age": [
+   "Bitmap Heap Scan on users  (cost=4.79..55.04 rows=66 width=57) (actual rows=66.00 loops=1)",
+   "  Recheck Cond: (age = 42)",
+   "  Heap Blocks: exact=47",
+   "  Buffers: shared hit=52",
+   "  ->  Bitmap Index Scan on idx_age  (cost=0.00..4.78 rows=66 width=0) (actual rows=66.00 loops=1)",
+   "        Index Cond: (age = 42)",
+   "        Index Searches: 1",
+   "        Buffers: shared hit=5",
+   "Planning:",
+   "  Buffers: shared hit=5"
+  ],
+  "id_range": [
+   "Index Scan using users_pkey on users  (cost=0.28..11.30 rows=101 width=57) (actual rows=101.00 loops=1)",
+   "  Index Cond: ((id >= 2000) AND (id <= 2100))",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=4",
+   "Planning:",
+   "  Buffers: shared hit=6"
+  ],
+  "count_all": [
+   "Aggregate  (cost=98.20..98.21 rows=1 width=8) (actual rows=1.00 loops=1)",
+   "  Buffers: shared hit=47",
+   "  ->  Seq Scan on users  (cost=0.00..87.96 rows=4096 width=0) (actual rows=4096.00 loops=1)",
+   "        Buffers: shared hit=47",
+   "Planning:",
+   "  Buffers: shared hit=3"
+  ],
+  "id_by_name": [
+   "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=4) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3"
+  ],
+  "name_by_name": [
+   "Index Only Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=51) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Heap Fetches: 1",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3"
+  ]
+ },
+ "cold_paths": {
+  "by_id": {
+   "plan": [
+    "Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)",
+    "  Index Cond: (id = 2050)",
+    "  Index Searches: 1",
+    "  Buffers: shared read=3",
+    "Planning:",
+    "  Buffers: shared hit=56 read=7"
+   ],
+   "pages": [
+    {
+     "relname": "idx_age",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    },
+    {
+     "relname": "idx_name",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    },
+    {
+     "relname": "users",
+     "fork": 0,
+     "blocks": [
+      23
+     ],
+     "n": 1
+    },
+    {
+     "relname": "users_pkey",
+     "fork": 0,
+     "blocks": [
+      0,
+      3,
+      7
+     ],
+     "n": 3
+    }
+   ]
+  },
+  "by_name": {
+   "plan": [
+    "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)",
+    "  Index Cond: (name = 'Alice'::bpchar)",
+    "  Index Searches: 1",
+    "  Buffers: shared read=3",
+    "Planning:",
+    "  Buffers: shared hit=55 read=9"
+   ],
+   "pages": [
+    {
+     "relname": "idx_age",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    },
+    {
+     "relname": "idx_name",
+     "fork": 0,
+     "blocks": [
+      0,
+      1,
+      3
+     ],
+     "n": 3
+    },
+    {
+     "relname": "users",
+     "fork": 0,
+     "blocks": [
+      23
+     ],
+     "n": 1
+    },
+    {
+     "relname": "users_pkey",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    }
+   ]
+  },
+  "count_all": {
+   "plan": [
+    "Aggregate  (cost=98.20..98.21 rows=1 width=8) (actual rows=1.00 loops=1)",
+    "  Buffers: shared read=47",
+    "  ->  Seq Scan on users  (cost=0.00..87.96 rows=4096 width=0) (actual rows=4096.00 loops=1)",
+    "        Buffers: shared read=47",
+    "Planning:",
+    "  Buffers: shared hit=58 read=6"
+   ],
+   "pages": [
+    {
+     "relname": "idx_age",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    },
+    {
+     "relname": "idx_name",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    },
+    {
+     "relname": "users",
+     "fork": 0,
+     "blocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46
+     ],
+     "n": 47
+    },
+    {
+     "relname": "users_pkey",
+     "fork": 0,
+     "blocks": [
+      0
+     ],
+     "n": 1
+    }
+   ]
+  }
+ },
+ "index_only": {
+  "before_vacuum": [
+   "Index Only Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=51) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Heap Fetches: 1",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=1 read=2",
+   "Planning:",
+   "  Buffers: shared hit=96 read=1"
+  ],
+  "after_vacuum": [
+   "Index Only Scan using idx_name on users  (cost=0.28..4.30 rows=1 width=51) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Heap Fetches: 0",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=5"
+  ],
+  "id_by_name_after_vacuum": [
+   "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=4) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=3"
+  ]
+ },
+ "server_log": "2026-10-27 09:41:37.086 CST [65932] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:41:37.088 CST [65932] LOG:  listening on IPv4 address \"127.0.0.1\", port 53922\n2026-10-27 09:41:37.210 CST [34880] LOG:  database system was shut down at 2026-10-27 09:41:33 CST\n2026-10-27 09:41:37.221 CST [65932] LOG:  database system is ready to accept connections\n2026-10-27 09:41:39.153 CST [65932] LOG:  received fast shutdown request\n2026-10-27 09:41:39.154 CST [65932] LOG:  aborting any active transactions\n2026-10-27 09:41:39.160 CST [65932] LOG:  background worker \"logical replication launcher\" (PID 65912) exited with exit code 1\n2026-10-27 09:41:39.163 CST [27588] LOG:  shutting down\n2026-10-27 09:41:39.164 CST [27588] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:41:39.228 CST [27588] LOG:  checkpoint complete: wrote 237 buffers (1.4%), wrote 5 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.025 s, sync=0.032 s, total=0.066 s; sync files=63, longest=0.002 s, average=0.001 s; distance=2450 kB, estimate=2450 kB; lsn=0/1A55B80, redo lsn=0/1A55B80\n2026-10-27 09:41:39.329 CST [65932] LOG:  database system is shut down\n2026-10-27 09:41:39.637 CST [50148] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:41:39.639 CST [50148] LOG:  listening on IPv4 address \"127.0.0.1\", port 53922\n2026-10-27 09:41:39.754 CST [26836] LOG:  database system was shut down at 2026-10-27 09:41:39 CST\n2026-10-27 09:41:39.769 CST [50148] LOG:  database system is ready to accept connections\n2026-10-27 09:41:39.953 CST [50148] LOG:  received fast shutdown request\n2026-10-27 09:41:39.954 CST [50148] LOG:  aborting any active transactions\n2026-10-27 09:41:39.962 CST [50148] LOG:  background worker \"logical replication launcher\" (PID 65868) exited with exit code 1\n2026-10-27 09:41:39.965 CST [29688] LOG:  shutting down\n2026-10-27 09:41:39.966 CST [29688] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:41:39.986 CST [29688] LOG:  checkpoint complete: wrote 6 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.005 s, total=0.022 s; sync files=7, longest=0.002 s, average=0.001 s; distance=34 kB, estimate=34 kB; lsn=0/1A5E410, redo lsn=0/1A5E410\n2026-10-27 09:41:40.009 CST [50148] LOG:  database system is shut down\n2026-10-27 09:41:40.323 CST [55304] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:41:40.324 CST [55304] LOG:  listening on IPv4 address \"127.0.0.1\", port 53922\n2026-10-27 09:41:40.443 CST [51892] LOG:  database system was shut down at 2026-10-27 09:41:39 CST\n2026-10-27 09:41:40.455 CST [55304] LOG:  database system is ready to accept connections\n2026-10-27 09:41:40.637 CST [55304] LOG:  received fast shutdown request\n2026-10-27 09:41:40.639 CST [55304] LOG:  aborting any active transactions\n2026-10-27 09:41:40.658 CST [55304] LOG:  background worker \"logical replication launcher\" (PID 13468) exited with exit code 1\n2026-10-27 09:41:40.658 CST [27148] LOG:  shutting down\n2026-10-27 09:41:40.659 CST [27148] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:41:40.672 CST [27148] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.002 s, total=0.015 s; sync files=2, longest=0.002 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1A5E488, redo lsn=0/1A5E488\n2026-10-27 09:41:40.697 CST [55304] LOG:  database system is shut down\n2026-10-27 09:41:41.026 CST [31920] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:41:41.027 CST [31920] LOG:  listening on IPv4 address \"127.0.0.1\", port 53922\n2026-10-27 09:41:41.137 CST [32932] LOG:  database system was shut down at 2026-10-27 09:41:40 CST\n2026-10-27 09:41:41.163 CST [31920] LOG:  database system is ready to accept connections\n2026-10-27 09:41:41.424 CST [31920] LOG:  received fast shutdown request\n2026-10-27 09:41:41.426 CST [31920] LOG:  aborting any active transactions\n2026-10-27 09:41:41.434 CST [31920] LOG:  background worker \"logical replication launcher\" (PID 66612) exited with exit code 1\n2026-10-27 09:41:41.435 CST [17620] LOG:  shutting down\n2026-10-27 09:41:41.437 CST [17620] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:41:41.459 CST [17620] LOG:  checkpoint complete: wrote 55 buffers (0.3%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.006 s, total=0.024 s; sync files=8, longest=0.002 s, average=0.001 s; distance=432 kB, estimate=432 kB; lsn=0/1ACA678, redo lsn=0/1ACA678\n2026-10-27 09:41:41.502 CST [31920] LOG:  database system is shut down\n"
+}

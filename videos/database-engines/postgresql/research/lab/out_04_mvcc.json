@@ -1,0 +1,835 @@
+{
+ "script": "04_mvcc",
+ "date": "2026-10-27",
+ "environment": {
+  "os": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "python": "3.14.3",
+  "psycopg": "3.3.5",
+  "topology": "新建独立集群（临时目录、随机端口、只听 127.0.0.1）；不连接已有服务",
+  "conf": {
+   "listen_addresses": "'127.0.0.1'",
+   "autovacuum": "off",
+   "fsync": "on",
+   "synchronous_commit": "on",
+   "full_page_writes": "on",
+   "log_line_prefix": "'%m [%p] '",
+   "log_checkpoints": "on",
+   "lc_messages": "'C'",
+   "deadlock_timeout": "'1s'"
+  }
+ },
+ "commands": [
+  {
+   "program": "initdb",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-U",
+    "lab",
+    "-A",
+    "trust",
+    "--encoding=UTF8",
+    "--locale=C"
+   ],
+   "exit": 0,
+   "output": "The files belonging to this database system will be owned by user \"user\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are enabled.\n\ncreating directory <work>/cluster ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default \"max_connections\" ... 100\nselecting default \"shared_buffers\" ... 128MB\nselecting default time zone ... Asia/Shanghai\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\Program^ Files^\\PostgreSQL^\\18^\\bin^\\pg^_ctl^\" -D ^\"D^:^\\Coding^\\ft^\\videos^\\database^-engines^\\postgresql^\\research^\\^_src^\\lab^-04^_mvcc^-10621147^\\cluster^\" -l logfile start\n\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  }
+ ],
+ "queries": [
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pageinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_freespacemap",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_visibility",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_buffercache",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_walinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_name ON users (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_age ON users (age)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "1",
+    "1"
+   ],
+   "tag": "insert 1",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "2050",
+    "2050"
+   ],
+   "tag": "insert 2050",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "4096",
+    "4096"
+   ],
+   "tag": "insert 4096",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM users",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid FROM users WHERE id = 2050",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(23,26)"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "alice",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4856"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "UPDATE users SET age = 43 WHERE id = 2050",
+   "tag": "alice update (uncommitted)",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_xact_status('4856') AS s",
+   "tag": "status while uncommitted",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "in progress"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "SELECT age, ctid::text AS ctid FROM users WHERE id = 2050",
+   "tag": "alice reads own change",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 43,
+     "ctid": "(46,49)"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "old version while uncommitted",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 5904,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "2809",
+     "t_xmax": "4856",
+     "t_ctid": "(46,49)",
+     "t_infomask2": 3,
+     "t_infomask": 258,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 46)) WHERE lp IN (49) ORDER BY lp",
+   "tag": "new version while uncommitted",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 49,
+     "lp_off": 3880,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4856",
+     "t_xmax": "0",
+     "t_ctid": "(46,49)",
+     "t_infomask2": 3,
+     "t_infomask": 10242,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002b00"
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "SHOW transaction_isolation",
+   "status": "SHOW",
+   "rows": [
+    {
+     "transaction_isolation": "read committed"
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "SELECT age FROM users WHERE id = 2050",
+   "tag": "bob reads during alice tx",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "SELECT pg_current_snapshot()::text AS snap",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "snap": "4856:4856:"
+    }
+   ]
+  },
+  {
+   "conn": "bob_rr",
+   "sql": "BEGIN ISOLATION LEVEL REPEATABLE READ",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "bob_rr",
+   "sql": "SELECT age FROM users WHERE id = 2050",
+   "tag": "bob_rr reads during alice tx",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "bob_rr",
+   "sql": "SELECT pg_current_snapshot()::text AS snap",
+   "tag": "bob_rr snapshot",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "snap": "4856:4856:"
+    }
+   ]
+  },
+  {
+   "conn": "carol",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "carol",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4857"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT application_name, state, wait_event_type, wait_event, query FROM pg_stat_activity WHERE pid IN (41404, 32912) ORDER BY application_name",
+   "tag": "who waits",
+   "status": "SELECT 2",
+   "rows": [
+    {
+     "application_name": "alice",
+     "state": "idle in transaction",
+     "wait_event_type": "Client",
+     "wait_event": "ClientRead",
+     "query": "SELECT age, ctid::text AS ctid FROM users WHERE id = 2050"
+    },
+    {
+     "application_name": "carol",
+     "state": "active",
+     "wait_event_type": "Lock",
+     "wait_event": "transactionid",
+     "query": "UPDATE users SET age = age + 1 WHERE id = 2050 RETURNING age"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_blocking_pids(32912) = ARRAY[41404] AS b",
+   "tag": "carol blocked by alice",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "b": true
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT a.application_name, l.locktype, l.transactionid::text AS transactionid, l.relation::regclass::text AS relation, l.page, l.tuple, l.mode, l.granted FROM pg_locks l JOIN pg_stat_activity a ON a.pid = l.pid WHERE l.pid IN (41404, 32912) AND l.locktype IN ('transactionid', 'tuple') ORDER BY a.application_name, l.locktype",
+   "tag": "locks",
+   "status": "SELECT 4",
+   "rows": [
+    {
+     "application_name": "alice",
+     "locktype": "transactionid",
+     "transactionid": "4856",
+     "relation": null,
+     "page": null,
+     "tuple": null,
+     "mode": "ExclusiveLock",
+     "granted": true
+    },
+    {
+     "application_name": "carol",
+     "locktype": "transactionid",
+     "transactionid": "4857",
+     "relation": null,
+     "page": null,
+     "tuple": null,
+     "mode": "ExclusiveLock",
+     "granted": true
+    },
+    {
+     "application_name": "carol",
+     "locktype": "transactionid",
+     "transactionid": "4856",
+     "relation": null,
+     "page": null,
+     "tuple": null,
+     "mode": "ShareLock",
+     "granted": false
+    },
+    {
+     "application_name": "carol",
+     "locktype": "tuple",
+     "transactionid": null,
+     "relation": "users",
+     "page": 23,
+     "tuple": 26,
+     "mode": "ExclusiveLock",
+     "granted": true
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "COMMIT",
+   "tag": "alice commit",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "carol",
+   "sql": "UPDATE users SET age = age + 1 WHERE id = 2050 RETURNING age",
+   "tag": "carol update (waits)",
+   "status": "UPDATE 1",
+   "rows": [
+    {
+     "age": 44
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_xact_status('4856') AS s",
+   "tag": "status after commit",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "committed"
+    }
+   ]
+  },
+  {
+   "conn": "carol",
+   "sql": "ROLLBACK",
+   "tag": "carol rollback",
+   "status": "ROLLBACK",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_xact_status('4857') AS s",
+   "tag": "carol status after rollback",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "aborted"
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "SELECT age FROM users WHERE id = 2050",
+   "tag": "bob reads after commit",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 43
+    }
+   ]
+  },
+  {
+   "conn": "bob_rr",
+   "sql": "SELECT age FROM users WHERE id = 2050",
+   "tag": "bob_rr reads after commit",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "bob_rr",
+   "sql": "UPDATE users SET age = 50 WHERE id = 2050",
+   "tag": "bob_rr tries to update",
+   "error": {
+    "sqlstate": "40001",
+    "message": "could not serialize access due to concurrent update",
+    "detail": "",
+    "hint": ""
+   }
+  },
+  {
+   "conn": "bob_rr",
+   "sql": "ROLLBACK",
+   "status": "ROLLBACK",
+   "rows": []
+  },
+  {
+   "conn": "alice",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "alice",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4859"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "INSERT INTO users VALUES (5000, 'Mallory', 30) RETURNING ctid::text AS ctid",
+   "tag": "insert then rollback",
+   "status": "INSERT 0 1",
+   "rows": [
+    {
+     "ctid": "(46,51)"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "ROLLBACK",
+   "status": "ROLLBACK",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_xact_status('4859') AS s",
+   "tag": "rolled back status",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "aborted"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 46)) WHERE lp IN (51) ORDER BY lp",
+   "tag": "aborted tuple before read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 51,
+     "lp_off": 3704,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4859",
+     "t_xmax": "0",
+     "t_ctid": "(46,51)",
+     "t_infomask2": 3,
+     "t_infomask": 2050,
+     "t_hoff": 24,
+     "t_data": "88130000674d616c6c6f727920202020202020202020202020202020202020202020202020202020202020202020202020202020202020001e00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT count(*) AS n FROM users WHERE id = 5000",
+   "tag": "anyone sees mallory?",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n": 0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 46)) WHERE lp IN (51) ORDER BY lp",
+   "tag": "aborted tuple after read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 51,
+     "lp_off": 3704,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4859",
+     "t_xmax": "0",
+     "t_ctid": "(46,51)",
+     "t_infomask2": 3,
+     "t_infomask": 2562,
+     "t_hoff": 24,
+     "t_data": "88130000674d616c6c6f727920202020202020202020202020202020202020202020202020202020202020202020202020202020202020001e00"
+    }
+   ]
+  },
+  {
+   "conn": "deadlock_1",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "deadlock_2",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "deadlock_1",
+   "sql": "UPDATE users SET age = age WHERE id = 2050",
+   "tag": "d1 locks 2050",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "deadlock_2",
+   "sql": "UPDATE users SET age = age WHERE id = 2051",
+   "tag": "d2 locks 2051",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "deadlock_1",
+   "sql": "UPDATE users SET age = age WHERE id = 2051",
+   "tag": "deadlock_1 wants 2051",
+   "error": {
+    "sqlstate": "40P01",
+    "message": "deadlock detected",
+    "detail": "Process 67532 waits for ShareLock on transaction 4861; blocked by process 43812.\nProcess 43812 waits for ShareLock on transaction 4860; blocked by process 67532.",
+    "hint": "See server log for query details."
+   }
+  },
+  {
+   "conn": "deadlock_2",
+   "sql": "UPDATE users SET age = age WHERE id = 2050",
+   "tag": "deadlock_2 wants 2050",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "deadlock_1",
+   "sql": "ROLLBACK",
+   "status": "ROLLBACK",
+   "rows": []
+  },
+  {
+   "conn": "deadlock_2",
+   "sql": "ROLLBACK",
+   "status": "ROLLBACK",
+   "rows": []
+  }
+ ],
+ "notes": [],
+ "steps": {
+  "1_alice_uncommitted": {
+   "xid": "4856",
+   "status": "in progress",
+   "alice_sees": {
+    "age": 43,
+    "ctid": "(46,49)"
+   },
+   "old_version": {
+    "lp": 26,
+    "lp_off": 5904,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "2809",
+    "t_xmax": "4856",
+    "t_ctid": "(46,49)",
+    "t_infomask2": 3,
+    "t_infomask": 258,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_COMMITTED"
+    ]
+   },
+   "new_version": {
+    "lp": 49,
+    "lp_off": 3880,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4856",
+    "t_xmax": "0",
+    "t_ctid": "(46,49)",
+    "t_infomask2": 3,
+    "t_infomask": 10242,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00+\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMAX_INVALID",
+     "HEAP_UPDATED"
+    ]
+   }
+  },
+  "2_bob": {
+   "isolation": "read committed",
+   "reads": 42,
+   "snapshot": "4856:4856:"
+  },
+  "2_bob_rr": {
+   "reads": 42,
+   "snapshot": "4856:4856:"
+  },
+  "3_carol_waits": {
+   "activity": [
+    {
+     "application_name": "alice",
+     "state": "idle in transaction",
+     "wait_event_type": "Client",
+     "wait_event": "ClientRead",
+     "query": "SELECT age, ctid::text AS ctid FROM users WHERE id = 2050"
+    },
+    {
+     "application_name": "carol",
+     "state": "active",
+     "wait_event_type": "Lock",
+     "wait_event": "transactionid",
+     "query": "UPDATE users SET age = age + 1 WHERE id = 2050 RETURNING age"
+    }
+   ],
+   "blocked_by_alice": true,
+   "locks": [
+    {
+     "application_name": "alice",
+     "locktype": "transactionid",
+     "transactionid": "4856",
+     "relation": null,
+     "page": null,
+     "tuple": null,
+     "mode": "ExclusiveLock",
+     "granted": true
+    },
+    {
+     "application_name": "carol",
+     "locktype": "transactionid",
+     "transactionid": "4857",
+     "relation": null,
+     "page": null,
+     "tuple": null,
+     "mode": "ExclusiveLock",
+     "granted": true
+    },
+    {
+     "application_name": "carol",
+     "locktype": "transactionid",
+     "transactionid": "4856",
+     "relation": null,
+     "page": null,
+     "tuple": null,
+     "mode": "ShareLock",
+     "granted": false
+    },
+    {
+     "application_name": "carol",
+     "locktype": "tuple",
+     "transactionid": null,
+     "relation": "users",
+     "page": 23,
+     "tuple": 26,
+     "mode": "ExclusiveLock",
+     "granted": true
+    }
+   ]
+  },
+  "4_after_commit": {
+   "alice_status": "committed",
+   "carol": {
+    "xid": "4857",
+    "returning": [
+     {
+      "age": 44
+     }
+    ],
+    "waited_s": 1.1
+   },
+   "carol_status": "aborted",
+   "bob_reads": 43,
+   "bob_rr_reads": 42,
+   "bob_rr_update": {
+    "sqlstate": "40001",
+    "message": "could not serialize access due to concurrent update"
+   }
+  },
+  "5_rolled_back_insert": {
+   "xid": "4859",
+   "ctid": "(46,51)",
+   "status": "aborted",
+   "item_before_read": {
+    "lp": 51,
+    "lp_off": 3704,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4859",
+    "t_xmax": "0",
+    "t_ctid": "(46,51)",
+    "t_infomask2": 3,
+    "t_infomask": 2050,
+    "t_hoff": 24,
+    "t_data": "b'\\x88\\x13\\x00\\x00gMallory                                           \\x00\\x1e\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMAX_INVALID"
+    ]
+   },
+   "visible": 0,
+   "item_after_read": {
+    "lp": 51,
+    "lp_off": 3704,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4859",
+    "t_xmax": "0",
+    "t_ctid": "(46,51)",
+    "t_infomask2": 3,
+    "t_infomask": 2562,
+    "t_hoff": 24,
+    "t_data": "b'\\x88\\x13\\x00\\x00gMallory                                           \\x00\\x1e\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_INVALID",
+     "HEAP_XMAX_INVALID"
+    ]
+   }
+  },
+  "6_deadlock": {
+   "deadlock_1": {
+    "sqlstate": "40P01",
+    "message": "deadlock detected",
+    "detail": "Process 67532 waits for ShareLock on transaction 4861; blocked by process 43812.\nProcess 43812 waits for ShareLock on transaction 4860; blocked by process 67532.",
+    "hint": "See server log for query details."
+   },
+   "deadlock_2": "ok"
+  }
+ },
+ "pids_are_roles": "连接名即角色；进程号只用于对照等待关系",
+ "server_log": "2026-10-27 09:45:32.828 CST [54268] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:45:32.829 CST [54268] LOG:  listening on IPv4 address \"127.0.0.1\", port 52429\n2026-10-27 09:45:32.901 CST [10524] LOG:  database system was shut down at 2026-10-27 09:45:29 CST\n2026-10-27 09:45:32.909 CST [54268] LOG:  database system is ready to accept connections\n2026-10-27 09:45:35.913 CST [10896] ERROR:  could not serialize access due to concurrent update\n2026-10-27 09:45:35.913 CST [10896] STATEMENT:  UPDATE users SET age = 50 WHERE id = 2050\n2026-10-27 09:45:36.995 CST [67532] ERROR:  deadlock detected\n2026-10-27 09:45:36.995 CST [67532] DETAIL:  Process 67532 waits for ShareLock on transaction 4861; blocked by process 43812.\n\tProcess 43812 waits for ShareLock on transaction 4860; blocked by process 67532.\n\tProcess 67532: UPDATE users SET age = age WHERE id = 2051\n\tProcess 43812: UPDATE users SET age = age WHERE id = 2050\n2026-10-27 09:45:36.995 CST [67532] HINT:  See server log for query details.\n2026-10-27 09:45:36.995 CST [67532] CONTEXT:  while updating tuple (23,27) in relation \"users\"\n2026-10-27 09:45:36.995 CST [67532] STATEMENT:  UPDATE users SET age = age WHERE id = 2051\n2026-10-27 09:45:37.020 CST [54268] LOG:  received fast shutdown request\n2026-10-27 09:45:37.021 CST [54268] LOG:  aborting any active transactions\n2026-10-27 09:45:37.031 CST [54268] LOG:  background worker \"logical replication launcher\" (PID 67492) exited with exit code 1\n2026-10-27 09:45:37.031 CST [65612] LOG:  shutting down\n2026-10-27 09:45:37.032 CST [65612] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:45:37.080 CST [65612] LOG:  checkpoint complete: wrote 233 buffers (1.4%), wrote 5 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.016 s, sync=0.027 s, total=0.049 s; sync files=60, longest=0.002 s, average=0.001 s; distance=2444 kB, estimate=2444 kB; lsn=0/1A54398, redo lsn=0/1A54398\n2026-10-27 09:45:37.165 CST [54268] LOG:  database system is shut down\n"
+}

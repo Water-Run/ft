@@ -1,0 +1,3236 @@
+{
+ "script": "03_update",
+ "date": "2026-10-27",
+ "environment": {
+  "os": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "python": "3.14.3",
+  "psycopg": "3.3.5",
+  "topology": "新建独立集群（临时目录、随机端口、只听 127.0.0.1）；不连接已有服务",
+  "conf": {
+   "listen_addresses": "'127.0.0.1'",
+   "autovacuum": "off",
+   "fsync": "on",
+   "synchronous_commit": "on",
+   "full_page_writes": "on",
+   "log_line_prefix": "'%m [%p] '",
+   "log_checkpoints": "on",
+   "lc_messages": "'C'"
+  }
+ },
+ "commands": [
+  {
+   "program": "initdb",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-U",
+    "lab",
+    "-A",
+    "trust",
+    "--encoding=UTF8",
+    "--locale=C"
+   ],
+   "exit": 0,
+   "output": "The files belonging to this database system will be owned by user \"user\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are enabled.\n\ncreating directory <work>/cluster ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default \"max_connections\" ... 100\nselecting default \"shared_buffers\" ... 128MB\nselecting default time zone ... Asia/Shanghai\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\Program^ Files^\\PostgreSQL^\\18^\\bin^\\pg^_ctl^\" -D ^\"D^:^\\Coding^\\ft^\\videos^\\database^-engines^\\postgresql^\\research^\\^_src^\\lab^-03^_update^-09dcc109^\\cluster^\" -l logfile start\n\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  }
+ ],
+ "queries": [
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pageinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_freespacemap",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_visibility",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_buffercache",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_walinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_name ON users (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_age ON users (age)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "1",
+    "1"
+   ],
+   "tag": "insert 1",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "2050",
+    "2050"
+   ],
+   "tag": "insert 2050",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "4096",
+    "4096"
+   ],
+   "tag": "insert 4096",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users_ff90 (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL) WITH (fillfactor = 90)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_ff90_name ON users_ff90 (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_ff90_age ON users_ff90 (age)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users_ff90 SELECT * FROM users ORDER BY id",
+   "status": "INSERT 0 4096",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users_hot (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL) WITH (fillfactor = 90)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_hot_name ON users_hot (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users_hot SELECT * FROM users ORDER BY id",
+   "status": "INSERT 0 4096",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM ANALYZE users",
+   "tag": "vacuum analyze users",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM ANALYZE users_ff90",
+   "tag": "vacuum analyze users_ff90",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM ANALYZE users_hot",
+   "tag": "vacuum analyze users_hot",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid, xmin::text AS xmin, age FROM users WHERE id = 2050",
+   "tag": "users before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(23,26)",
+     "xmin": "2809",
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 23))",
+   "tag": "users page 23 header before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D0AC18",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 376,
+     "upper": 448,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "users alice item before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 5904,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "2809",
+     "t_xmax": "0",
+     "t_ctid": "(23,26)",
+     "t_infomask2": 3,
+     "t_infomask": 2306,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility('users', 23)",
+   "tag": "users vm before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": true,
+     "all_frozen": false,
+     "pd_all_visible": true
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "CHECKPOINT",
+   "status": "CHECKPOINT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_lsn()::text AS lsn",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D27970"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4866"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "UPDATE users SET age = 43 WHERE id = 2050",
+   "tag": "users update",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "COMMIT",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_lsn()::text AS lsn",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D32300"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "users old version after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 5904,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "2809",
+     "t_xmax": "4866",
+     "t_ctid": "(46,49)",
+     "t_infomask2": 3,
+     "t_infomask": 258,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 46)) WHERE lp IN (49) ORDER BY lp",
+   "tag": "users new version after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 49,
+     "lp_off": 3880,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4866",
+     "t_xmax": "0",
+     "t_ctid": "(46,49)",
+     "t_infomask2": 3,
+     "t_infomask": 10242,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002b00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 23))",
+   "tag": "users page 23 header after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D2CC08",
+     "checksum": 0,
+     "flags": 2,
+     "lower": 376,
+     "upper": 448,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4866"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 46))",
+   "tag": "users page 46 header after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D2CC08",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 220,
+     "upper": 3880,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility('users', 23)",
+   "tag": "users vm old page after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": false,
+     "all_frozen": false,
+     "pd_all_visible": false
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT start_lsn::text, resource_manager, record_type, record_length, main_data_length, fpi_length, block_ref FROM pg_get_wal_records_info('0/1D27970', '0/1D32300')",
+   "tag": "users wal",
+   "status": "SELECT 8",
+   "rows": [
+    {
+     "start_lsn": "0/1D27970",
+     "resource_manager": "XLOG",
+     "record_type": "FPI_FOR_HINT",
+     "record_length": 8221,
+     "main_data_length": 0,
+     "fpi_length": 8172,
+     "block_ref": "blkref #0: rel 1663/5/1255 fork main blk 47 (FPW); hole: offset: 180, length: 20"
+    },
+    {
+     "start_lsn": "0/1D299A8",
+     "resource_manager": "Heap2",
+     "record_type": "PRUNE_ON_ACCESS",
+     "record_length": 52,
+     "main_data_length": 2,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/1255 fork main blk 47"
+    },
+    {
+     "start_lsn": "0/1D299E0",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 8179,
+     "main_data_length": 8,
+     "fpi_length": 8120,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23 (FPW); hole: offset: 376, length: 72"
+    },
+    {
+     "start_lsn": "0/1D2B9F0",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 4605,
+     "main_data_length": 14,
+     "fpi_length": 4532,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 (FPW); hole: offset: 220, length: 3660 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1D2CC08",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7453,
+     "main_data_length": 2,
+     "fpi_length": 7400,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7 (FPW); hole: offset: 1496, length: 792"
+    },
+    {
+     "start_lsn": "0/1D2E940",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7573,
+     "main_data_length": 2,
+     "fpi_length": 7520,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 1 (FPW); hole: offset: 464, length: 672"
+    },
+    {
+     "start_lsn": "0/1D306F0",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7113,
+     "main_data_length": 2,
+     "fpi_length": 7060,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 5 (FPW); hole: offset: 420, length: 1132"
+    },
+    {
+     "start_lsn": "0/1D322D8",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "main_data_length": 8,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid, xmin::text AS xmin, age FROM users WHERE id = 2050",
+   "tag": "users first read after update",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(46,49)",
+     "xmin": "4866",
+     "age": 43
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "users old version after first read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 0,
+     "lp_flags": 3,
+     "lp_len": 0,
+     "t_xmin": null,
+     "t_xmax": null,
+     "t_ctid": null,
+     "t_infomask2": null,
+     "t_infomask": null,
+     "t_hoff": null,
+     "t_data": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 23))",
+   "tag": "users page 23 header after first read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D34298",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 376,
+     "upper": 536,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT n_tup_upd, n_tup_hot_upd, n_tup_newpage_upd FROM pg_stat_user_tables WHERE relname = 'users'",
+   "tag": "users stats",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n_tup_upd": 1,
+     "n_tup_hot_upd": 0,
+     "n_tup_newpage_upd": 1
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid, xmin::text AS xmin, age FROM users_ff90 WHERE id = 2050",
+   "tag": "users_ff90 before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(25,75)",
+     "xmin": "4859",
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_ff90', 25))",
+   "tag": "users_ff90 page 25 header before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D1A640",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 340,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_ff90', 25)) WHERE lp IN (75) ORDER BY lp",
+   "tag": "users_ff90 alice item before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 1592,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4859",
+     "t_xmax": "0",
+     "t_ctid": "(25,75)",
+     "t_infomask2": 3,
+     "t_infomask": 2306,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility('users_ff90', 25)",
+   "tag": "users_ff90 vm before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": true,
+     "all_frozen": false,
+     "pd_all_visible": true
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "CHECKPOINT",
+   "status": "CHECKPOINT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_lsn()::text AS lsn",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D362A8"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4867"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "UPDATE users_ff90 SET age = 43 WHERE id = 2050",
+   "tag": "users_ff90 update",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "COMMIT",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_lsn()::text AS lsn",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D3D6C0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_ff90', 25)) WHERE lp IN (75) ORDER BY lp",
+   "tag": "users_ff90 old version after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 1592,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4859",
+     "t_xmax": "4867",
+     "t_ctid": "(25,80)",
+     "t_infomask2": 3,
+     "t_infomask": 258,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_ff90', 25)) WHERE lp IN (80) ORDER BY lp",
+   "tag": "users_ff90 new version after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 80,
+     "lp_off": 1152,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4867",
+     "t_xmax": "0",
+     "t_ctid": "(25,80)",
+     "t_infomask2": 3,
+     "t_infomask": 10242,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002b00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_ff90', 25))",
+   "tag": "users_ff90 page 25 header after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D37FC8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4867"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_ff90', 25))",
+   "tag": "users_ff90 page 25 header after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D37FC8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4867"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility('users_ff90', 25)",
+   "tag": "users_ff90 vm old page after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": false,
+     "all_frozen": false,
+     "pd_all_visible": false
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT start_lsn::text, resource_manager, record_type, record_length, main_data_length, fpi_length, block_ref FROM pg_get_wal_records_info('0/1D362A8', '0/1D3D6C0')",
+   "tag": "users_ff90 wal",
+   "status": "SELECT 5",
+   "rows": [
+    {
+     "start_lsn": "0/1D362A8",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 7449,
+     "main_data_length": 14,
+     "fpi_length": 7384,
+     "block_ref": "blkref #0: rel 1663/5/16476 fork main blk 25 (FPW); hole: offset: 344, length: 808"
+    },
+    {
+     "start_lsn": "0/1D37FC8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7453,
+     "main_data_length": 2,
+     "fpi_length": 7400,
+     "block_ref": "blkref #0: rel 1663/5/16482 fork main blk 7 (FPW); hole: offset: 1496, length: 792"
+    },
+    {
+     "start_lsn": "0/1D39D00",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7573,
+     "main_data_length": 2,
+     "fpi_length": 7520,
+     "block_ref": "blkref #0: rel 1663/5/16484 fork main blk 1 (FPW); hole: offset: 464, length: 672"
+    },
+    {
+     "start_lsn": "0/1D3BAB0",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_POST",
+     "record_length": 7113,
+     "main_data_length": 2,
+     "fpi_length": 7060,
+     "block_ref": "blkref #0: rel 1663/5/16485 fork main blk 5 (FPW); hole: offset: 420, length: 1132"
+    },
+    {
+     "start_lsn": "0/1D3D698",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "main_data_length": 8,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid, xmin::text AS xmin, age FROM users_ff90 WHERE id = 2050",
+   "tag": "users_ff90 first read after update",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(25,80)",
+     "xmin": "4867",
+     "age": 43
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_ff90', 25)) WHERE lp IN (75) ORDER BY lp",
+   "tag": "users_ff90 old version after first read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 0,
+     "lp_flags": 3,
+     "lp_len": 0,
+     "t_xmin": null,
+     "t_xmax": null,
+     "t_ctid": null,
+     "t_infomask2": null,
+     "t_infomask": null,
+     "t_hoff": null,
+     "t_data": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_ff90', 25))",
+   "tag": "users_ff90 page 25 header after first read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D3D6F8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT n_tup_upd, n_tup_hot_upd, n_tup_newpage_upd FROM pg_stat_user_tables WHERE relname = 'users_ff90'",
+   "tag": "users_ff90 stats",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n_tup_upd": 1,
+     "n_tup_hot_upd": 0,
+     "n_tup_newpage_upd": 0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid, xmin::text AS xmin, age FROM users_hot WHERE id = 2050",
+   "tag": "users_hot before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(25,75)",
+     "xmin": "4862",
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_hot', 25))",
+   "tag": "users_hot page 25 header before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D22260",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 340,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_hot', 25)) WHERE lp IN (75) ORDER BY lp",
+   "tag": "users_hot alice item before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 1592,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4862",
+     "t_xmax": "0",
+     "t_ctid": "(25,75)",
+     "t_infomask2": 3,
+     "t_infomask": 2306,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility('users_hot', 25)",
+   "tag": "users_hot vm before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": true,
+     "all_frozen": false,
+     "pd_all_visible": true
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "CHECKPOINT",
+   "status": "CHECKPOINT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_lsn()::text AS lsn",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D3F708"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4868"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "UPDATE users_hot SET age = 43 WHERE id = 2050",
+   "tag": "users_hot update",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "COMMIT",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_lsn()::text AS lsn",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D41468"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_hot', 25)) WHERE lp IN (75) ORDER BY lp",
+   "tag": "users_hot old version after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 1592,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4862",
+     "t_xmax": "4868",
+     "t_ctid": "(25,80)",
+     "t_infomask2": 16387,
+     "t_infomask": 258,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_hot', 25)) WHERE lp IN (80) ORDER BY lp",
+   "tag": "users_hot new version after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 80,
+     "lp_off": 1152,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4868",
+     "t_xmax": "0",
+     "t_ctid": "(25,80)",
+     "t_infomask2": 32771,
+     "t_infomask": 10242,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002b00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_hot', 25))",
+   "tag": "users_hot page 25 header after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D41440",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4868"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_hot', 25))",
+   "tag": "users_hot page 25 header after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D41440",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4868"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility('users_hot', 25)",
+   "tag": "users_hot vm old page after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": false,
+     "all_frozen": false,
+     "pd_all_visible": false
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT start_lsn::text, resource_manager, record_type, record_length, main_data_length, fpi_length, block_ref FROM pg_get_wal_records_info('0/1D3F708', '0/1D41468')",
+   "tag": "users_hot wal",
+   "status": "SELECT 2",
+   "rows": [
+    {
+     "start_lsn": "0/1D3F708",
+     "resource_manager": "Heap",
+     "record_type": "HOT_UPDATE",
+     "record_length": 7449,
+     "main_data_length": 14,
+     "fpi_length": 7384,
+     "block_ref": "blkref #0: rel 1663/5/16486 fork main blk 25 (FPW); hole: offset: 344, length: 808"
+    },
+    {
+     "start_lsn": "0/1D41440",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "main_data_length": 8,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid, xmin::text AS xmin, age FROM users_hot WHERE id = 2050",
+   "tag": "users_hot first read after update",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(25,80)",
+     "xmin": "4868",
+     "age": 43
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_hot', 25)) WHERE lp IN (75) ORDER BY lp",
+   "tag": "users_hot old version after first read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 80,
+     "lp_flags": 2,
+     "lp_len": 0,
+     "t_xmin": null,
+     "t_xmax": null,
+     "t_ctid": null,
+     "t_infomask2": null,
+     "t_infomask": null,
+     "t_hoff": null,
+     "t_data": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users_hot', 25))",
+   "tag": "users_hot page 25 header after first read",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1D414A8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT n_tup_upd, n_tup_hot_upd, n_tup_newpage_upd FROM pg_stat_user_tables WHERE relname = 'users_hot'",
+   "tag": "users_hot stats",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n_tup_upd": 1,
+     "n_tup_hot_upd": 1,
+     "n_tup_newpage_upd": 0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_hot', 25)) WHERE lp IN (75,80) ORDER BY lp",
+   "tag": "hot items after first read",
+   "status": "SELECT 2",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 80,
+     "lp_flags": 2,
+     "lp_len": 0,
+     "t_xmin": null,
+     "t_xmax": null,
+     "t_ctid": null,
+     "t_infomask2": null,
+     "t_infomask": null,
+     "t_hoff": null,
+     "t_data": null
+    },
+    {
+     "lp": 80,
+     "lp_off": 1240,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4868",
+     "t_xmax": "0",
+     "t_ctid": "(25,80)",
+     "t_infomask2": 32771,
+     "t_infomask": 10498,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002b00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM (VERBOSE) users_hot",
+   "tag": "vacuum hot",
+   "status": "VACUUM",
+   "rows": [],
+   "notices": [
+    "INFO\nvacuuming \"postgres.public.users_hot\"",
+    "INFO\nfinished vacuuming \"postgres.public.users_hot\": index scans: 0\npages: 0 removed, 52 remain, 52 scanned (100.00% of total), 0 eagerly scanned\ntuples: 0 removed, 4096 remain, 0 are dead but not yet removable\nremovable cutoff: 4869, which was 0 XIDs old when operation ended\nfrozen: 0 pages from table (0.00% of total) had 0 tuples frozen\nvisibility map: 1 pages set all-visible, 0 pages set all-frozen (0 were all-visible)\nindex scan not needed: 0 pages from table (0.00% of total) had 0 dead item identifiers removed\navg read rate: 0.000 MB/s, avg write rate: 12.892 MB/s\nbuffer usage: 115 hits, 0 reads, 1 dirtied\nWAL usage: 2 records, 2 full page images, 16497 bytes, 0 buffers full\nsystem usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s"
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users_hot', 25)) WHERE lp IN (75,80) ORDER BY lp",
+   "tag": "hot items after vacuum",
+   "status": "SELECT 2",
+   "rows": [
+    {
+     "lp": 75,
+     "lp_off": 80,
+     "lp_flags": 2,
+     "lp_len": 0,
+     "t_xmin": null,
+     "t_xmax": null,
+     "t_ctid": null,
+     "t_infomask2": null,
+     "t_infomask": null,
+     "t_hoff": null,
+     "t_data": null
+    },
+    {
+     "lp": 80,
+     "lp_off": 1240,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4868",
+     "t_xmax": "0",
+     "t_ctid": "(25,80)",
+     "t_infomask2": 32771,
+     "t_infomask": 10498,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002b00"
+    }
+   ]
+  }
+ ],
+ "notes": [],
+ "indexes": {
+  "users": [
+   "idx_age",
+   "idx_name",
+   "users_pkey"
+  ],
+  "users_ff90": [
+   "idx_ff90_age",
+   "idx_ff90_name",
+   "users_ff90_pkey"
+  ],
+  "users_hot": [
+   "idx_hot_name",
+   "users_hot_pkey"
+  ]
+ },
+ "index_entries": [
+  {
+   "tag": "users before",
+   "index": "idx_age",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(23,26)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users before",
+   "index": "idx_name",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(23,26)",
+     "itemoffset": 2,
+     "ctid": "(23,26)",
+     "itemlen": 64,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users before",
+   "index": "users_pkey",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(23,26)",
+     "itemoffset": 221,
+     "ctid": "(23,26)",
+     "itemlen": 16,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users after",
+   "index": "idx_age",
+   "tids": [
+    "(23,26)",
+    "(46,49)"
+   ],
+   "found": [
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(23,26)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    },
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(46,49)",
+     "itemoffset": 85,
+     "ctid": "(46,49)",
+     "itemlen": 16,
+     "htid": "(46,49)",
+     "tids": null,
+     "dead": false,
+     "data": "2b 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users after",
+   "index": "idx_name",
+   "tids": [
+    "(23,26)",
+    "(46,49)"
+   ],
+   "found": [
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(23,26)",
+     "itemoffset": 2,
+     "ctid": "(23,26)",
+     "itemlen": 64,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    },
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(46,49)",
+     "itemoffset": 3,
+     "ctid": "(46,49)",
+     "itemlen": 64,
+     "htid": "(46,49)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users after",
+   "index": "users_pkey",
+   "tids": [
+    "(23,26)",
+    "(46,49)"
+   ],
+   "found": [
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(23,26)",
+     "itemoffset": 221,
+     "ctid": "(23,26)",
+     "itemlen": 16,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    },
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(46,49)",
+     "itemoffset": 222,
+     "ctid": "(46,49)",
+     "itemlen": 16,
+     "htid": "(46,49)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users after first read",
+   "index": "idx_age",
+   "tids": [
+    "(23,26)",
+    "(46,49)"
+   ],
+   "found": [
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(23,26)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    },
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(46,49)",
+     "itemoffset": 85,
+     "ctid": "(46,49)",
+     "itemlen": 16,
+     "htid": "(46,49)",
+     "tids": null,
+     "dead": false,
+     "data": "2b 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users after first read",
+   "index": "idx_name",
+   "tids": [
+    "(23,26)",
+    "(46,49)"
+   ],
+   "found": [
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(23,26)",
+     "itemoffset": 2,
+     "ctid": "(23,26)",
+     "itemlen": 64,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    },
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(46,49)",
+     "itemoffset": 3,
+     "ctid": "(46,49)",
+     "itemlen": 64,
+     "htid": "(46,49)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users after first read",
+   "index": "users_pkey",
+   "tids": [
+    "(23,26)",
+    "(46,49)"
+   ],
+   "found": [
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(23,26)",
+     "itemoffset": 221,
+     "ctid": "(23,26)",
+     "itemlen": 16,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": true,
+     "data": "02 08 00 00 00 00 00 00"
+    },
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(46,49)",
+     "itemoffset": 222,
+     "ctid": "(46,49)",
+     "itemlen": 16,
+     "htid": "(46,49)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 before",
+   "index": "idx_ff90_age",
+   "tids": [
+    "(25,75)"
+   ],
+   "found": [
+    {
+     "index": "idx_ff90_age",
+     "leaf": 5,
+     "points_to": "(25,75)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(1,8)\",\"(1,71)\",\"(2,55)\",\"(3,39)\",\"(4,23)\",\"(5,7)\",\"(5,70)\",\"(6,54)\",\"(7,38)\",\"(8,22)\",\"(9,6)\",\"(9,69)\",\"(10,53)\",\"(11,37)\",\"(12,21)\",\"(13,5)\",\"(13,68)\",\"(14,52)\",\"(15,36)\",\"(16,20)\",\"(17,4)\",\"(17,67)\",\"(18,51)\",\"(19,35)\",\"(20,19)\",\"(21,3)\",\"(21,66)\",\"(22,50)\",\"(23,34)\",\"(24,18)\",\"(25,2)\",\"(25,65)\",\"(25,75)\",\"(26,49)\",\"(27,33)\",\"(28,17)\",\"(29,1)\",\"(29,64)\",\"(30,48)\",\"(31,32)\",\"(32,16)\",\"(32,79)\",\"(33,63)\",\"(34,47)\",\"(35,31)\",\"(36,15)\",\"(36,78)\",\"(37,62)\",\"(38,46)\",\"(39,30)\",\"(40,14)\",\"(40,77)\",\"(41,61)\",\"(42,45)\",\"(43,29)\",\"(44,13)\",\"(44,76)\",\"(45,60)\",\"(46,44)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 before",
+   "index": "idx_ff90_name",
+   "tids": [
+    "(25,75)"
+   ],
+   "found": [
+    {
+     "index": "idx_ff90_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 before",
+   "index": "users_ff90_pkey",
+   "tids": [
+    "(25,75)"
+   ],
+   "found": [
+    {
+     "index": "users_ff90_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 after",
+   "index": "idx_ff90_age",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_ff90_age",
+     "leaf": 5,
+     "points_to": "(25,75)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(1,8)\",\"(1,71)\",\"(2,55)\",\"(3,39)\",\"(4,23)\",\"(5,7)\",\"(5,70)\",\"(6,54)\",\"(7,38)\",\"(8,22)\",\"(9,6)\",\"(9,69)\",\"(10,53)\",\"(11,37)\",\"(12,21)\",\"(13,5)\",\"(13,68)\",\"(14,52)\",\"(15,36)\",\"(16,20)\",\"(17,4)\",\"(17,67)\",\"(18,51)\",\"(19,35)\",\"(20,19)\",\"(21,3)\",\"(21,66)\",\"(22,50)\",\"(23,34)\",\"(24,18)\",\"(25,2)\",\"(25,65)\",\"(25,75)\",\"(26,49)\",\"(27,33)\",\"(28,17)\",\"(29,1)\",\"(29,64)\",\"(30,48)\",\"(31,32)\",\"(32,16)\",\"(32,79)\",\"(33,63)\",\"(34,47)\",\"(35,31)\",\"(36,15)\",\"(36,78)\",\"(37,62)\",\"(38,46)\",\"(39,30)\",\"(40,14)\",\"(40,77)\",\"(41,61)\",\"(42,45)\",\"(43,29)\",\"(44,13)\",\"(44,76)\",\"(45,60)\",\"(46,44)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    },
+    {
+     "index": "idx_ff90_age",
+     "leaf": 5,
+     "points_to": "(25,80)",
+     "itemoffset": 78,
+     "ctid": "(16,8251)",
+     "itemlen": 376,
+     "htid": "(0,25)",
+     "tids": "{\"(0,25)\",\"(1,9)\",\"(1,72)\",\"(2,56)\",\"(3,40)\",\"(4,24)\",\"(5,8)\",\"(5,71)\",\"(6,55)\",\"(7,39)\",\"(8,23)\",\"(9,7)\",\"(9,70)\",\"(10,54)\",\"(11,38)\",\"(12,22)\",\"(13,6)\",\"(13,69)\",\"(14,53)\",\"(15,37)\",\"(16,21)\",\"(17,5)\",\"(17,68)\",\"(18,52)\",\"(19,36)\",\"(20,20)\",\"(21,4)\",\"(21,67)\",\"(22,51)\",\"(23,35)\",\"(24,19)\",\"(25,3)\",\"(25,66)\",\"(25,80)\",\"(26,50)\",\"(27,34)\",\"(28,18)\",\"(29,2)\",\"(29,65)\",\"(30,49)\",\"(31,33)\",\"(32,17)\",\"(33,1)\",\"(33,64)\",\"(34,48)\",\"(35,32)\",\"(36,16)\",\"(36,79)\",\"(37,63)\",\"(38,47)\",\"(39,31)\",\"(40,15)\",\"(40,78)\",\"(41,62)\",\"(42,46)\",\"(43,30)\",\"(44,14)\",\"(44,77)\",\"(45,61)\"}",
+     "dead": false,
+     "data": "2b 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 after",
+   "index": "idx_ff90_name",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_ff90_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    },
+    {
+     "index": "idx_ff90_name",
+     "leaf": 1,
+     "points_to": "(25,80)",
+     "itemoffset": 3,
+     "ctid": "(25,80)",
+     "itemlen": 64,
+     "htid": "(25,80)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 after",
+   "index": "users_ff90_pkey",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "users_ff90_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    },
+    {
+     "index": "users_ff90_pkey",
+     "leaf": 7,
+     "points_to": "(25,80)",
+     "itemoffset": 222,
+     "ctid": "(25,80)",
+     "itemlen": 16,
+     "htid": "(25,80)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 after first read",
+   "index": "idx_ff90_age",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_ff90_age",
+     "leaf": 5,
+     "points_to": "(25,75)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(1,8)\",\"(1,71)\",\"(2,55)\",\"(3,39)\",\"(4,23)\",\"(5,7)\",\"(5,70)\",\"(6,54)\",\"(7,38)\",\"(8,22)\",\"(9,6)\",\"(9,69)\",\"(10,53)\",\"(11,37)\",\"(12,21)\",\"(13,5)\",\"(13,68)\",\"(14,52)\",\"(15,36)\",\"(16,20)\",\"(17,4)\",\"(17,67)\",\"(18,51)\",\"(19,35)\",\"(20,19)\",\"(21,3)\",\"(21,66)\",\"(22,50)\",\"(23,34)\",\"(24,18)\",\"(25,2)\",\"(25,65)\",\"(25,75)\",\"(26,49)\",\"(27,33)\",\"(28,17)\",\"(29,1)\",\"(29,64)\",\"(30,48)\",\"(31,32)\",\"(32,16)\",\"(32,79)\",\"(33,63)\",\"(34,47)\",\"(35,31)\",\"(36,15)\",\"(36,78)\",\"(37,62)\",\"(38,46)\",\"(39,30)\",\"(40,14)\",\"(40,77)\",\"(41,61)\",\"(42,45)\",\"(43,29)\",\"(44,13)\",\"(44,76)\",\"(45,60)\",\"(46,44)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    },
+    {
+     "index": "idx_ff90_age",
+     "leaf": 5,
+     "points_to": "(25,80)",
+     "itemoffset": 78,
+     "ctid": "(16,8251)",
+     "itemlen": 376,
+     "htid": "(0,25)",
+     "tids": "{\"(0,25)\",\"(1,9)\",\"(1,72)\",\"(2,56)\",\"(3,40)\",\"(4,24)\",\"(5,8)\",\"(5,71)\",\"(6,55)\",\"(7,39)\",\"(8,23)\",\"(9,7)\",\"(9,70)\",\"(10,54)\",\"(11,38)\",\"(12,22)\",\"(13,6)\",\"(13,69)\",\"(14,53)\",\"(15,37)\",\"(16,21)\",\"(17,5)\",\"(17,68)\",\"(18,52)\",\"(19,36)\",\"(20,20)\",\"(21,4)\",\"(21,67)\",\"(22,51)\",\"(23,35)\",\"(24,19)\",\"(25,3)\",\"(25,66)\",\"(25,80)\",\"(26,50)\",\"(27,34)\",\"(28,18)\",\"(29,2)\",\"(29,65)\",\"(30,49)\",\"(31,33)\",\"(32,17)\",\"(33,1)\",\"(33,64)\",\"(34,48)\",\"(35,32)\",\"(36,16)\",\"(36,79)\",\"(37,63)\",\"(38,47)\",\"(39,31)\",\"(40,15)\",\"(40,78)\",\"(41,62)\",\"(42,46)\",\"(43,30)\",\"(44,14)\",\"(44,77)\",\"(45,61)\"}",
+     "dead": false,
+     "data": "2b 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 after first read",
+   "index": "idx_ff90_name",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_ff90_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    },
+    {
+     "index": "idx_ff90_name",
+     "leaf": 1,
+     "points_to": "(25,80)",
+     "itemoffset": 3,
+     "ctid": "(25,80)",
+     "itemlen": 64,
+     "htid": "(25,80)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_ff90 after first read",
+   "index": "users_ff90_pkey",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "users_ff90_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": true,
+     "data": "02 08 00 00 00 00 00 00"
+    },
+    {
+     "index": "users_ff90_pkey",
+     "leaf": 7,
+     "points_to": "(25,80)",
+     "itemoffset": 222,
+     "ctid": "(25,80)",
+     "itemlen": 16,
+     "htid": "(25,80)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_hot before",
+   "index": "idx_hot_name",
+   "tids": [
+    "(25,75)"
+   ],
+   "found": [
+    {
+     "index": "idx_hot_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_hot before",
+   "index": "users_hot_pkey",
+   "tids": [
+    "(25,75)"
+   ],
+   "found": [
+    {
+     "index": "users_hot_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_hot after",
+   "index": "idx_hot_name",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_hot_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_hot after",
+   "index": "users_hot_pkey",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "users_hot_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_hot after first read",
+   "index": "idx_hot_name",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_hot_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "users_hot after first read",
+   "index": "users_hot_pkey",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "users_hot_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "hot after vacuum",
+   "index": "idx_hot_name",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "idx_hot_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "hot after vacuum",
+   "index": "users_hot_pkey",
+   "tids": [
+    "(25,75)",
+    "(25,80)"
+   ],
+   "found": [
+    {
+     "index": "users_hot_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  }
+ ],
+ "hot_prune": {
+  "after_read": [
+   {
+    "lp": 75,
+    "lp_off": 80,
+    "lp_flags": 2,
+    "lp_len": 0,
+    "t_xmin": null,
+    "t_xmax": null,
+    "t_ctid": null,
+    "t_infomask2": null,
+    "t_infomask": null,
+    "t_hoff": null,
+    "t_data": null
+   },
+   {
+    "lp": 80,
+    "lp_off": 1240,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4868",
+    "t_xmax": "0",
+    "t_ctid": "(25,80)",
+    "t_infomask2": 32771,
+    "t_infomask": 10498,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00+\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_COMMITTED",
+     "HEAP_XMAX_INVALID",
+     "HEAP_UPDATED",
+     "HEAP_ONLY_TUPLE"
+    ]
+   }
+  ],
+  "after_vacuum": [
+   {
+    "lp": 75,
+    "lp_off": 80,
+    "lp_flags": 2,
+    "lp_len": 0,
+    "t_xmin": null,
+    "t_xmax": null,
+    "t_ctid": null,
+    "t_infomask2": null,
+    "t_infomask": null,
+    "t_hoff": null,
+    "t_data": null
+   },
+   {
+    "lp": 80,
+    "lp_off": 1240,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4868",
+    "t_xmax": "0",
+    "t_ctid": "(25,80)",
+    "t_infomask2": 32771,
+    "t_infomask": 10498,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00+\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_COMMITTED",
+     "HEAP_XMAX_INVALID",
+     "HEAP_UPDATED",
+     "HEAP_ONLY_TUPLE"
+    ]
+   }
+  ],
+  "index_after_vacuum": {
+   "idx_hot_name": [
+    {
+     "index": "idx_hot_name",
+     "leaf": 1,
+     "points_to": "(25,75)",
+     "itemoffset": 2,
+     "ctid": "(25,75)",
+     "itemlen": 64,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ],
+   "users_hot_pkey": [
+    {
+     "index": "users_hot_pkey",
+     "leaf": 7,
+     "points_to": "(25,75)",
+     "itemoffset": 221,
+     "ctid": "(25,75)",
+     "itemlen": 16,
+     "htid": "(25,75)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  }
+ },
+ "results": {
+  "users": {
+   "before": {
+    "ctid": "(23,26)",
+    "xmin": "2809",
+    "page_header": {
+     "lsn": "0/1D0AC18",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 376,
+     "upper": 448,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "free_bytes": 72,
+    "alice_item": [
+     {
+      "lp": 26,
+      "lp_off": 5904,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "2809",
+      "t_xmax": "0",
+      "t_ctid": "(23,26)",
+      "t_infomask2": 3,
+      "t_infomask": 2306,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMIN_COMMITTED",
+       "HEAP_XMAX_INVALID"
+      ]
+     }
+    ],
+    "vm": [
+     {
+      "all_visible": true,
+      "all_frozen": false,
+      "pd_all_visible": true
+     }
+    ],
+    "index_entries": {
+     "idx_age": [
+      {
+       "index": "idx_age",
+       "leaf": 5,
+       "points_to": "(23,26)",
+       "itemoffset": 71,
+       "ctid": "(16,8252)",
+       "itemlen": 376,
+       "htid": "(0,24)",
+       "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+       "dead": false,
+       "data": "2a 00 00 00 00 00 00 00"
+      }
+     ],
+     "idx_name": [
+      {
+       "index": "idx_name",
+       "leaf": 1,
+       "points_to": "(23,26)",
+       "itemoffset": 2,
+       "ctid": "(23,26)",
+       "itemlen": 64,
+       "htid": "(23,26)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_pkey": [
+      {
+       "index": "users_pkey",
+       "leaf": 7,
+       "points_to": "(23,26)",
+       "itemoffset": 221,
+       "ctid": "(23,26)",
+       "itemlen": 16,
+       "htid": "(23,26)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "update": {
+    "xid": "4866",
+    "lsn_before": "0/1D27970",
+    "lsn_after": "0/1D32300"
+   },
+   "after": {
+    "ctid": "(46,49)",
+    "xmin": "4866",
+    "same_page": false,
+    "old_item": [
+     {
+      "lp": 26,
+      "lp_off": 5904,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "2809",
+      "t_xmax": "4866",
+      "t_ctid": "(46,49)",
+      "t_infomask2": 3,
+      "t_infomask": 258,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMIN_COMMITTED"
+      ]
+     }
+    ],
+    "new_item": [
+     {
+      "lp": 49,
+      "lp_off": 3880,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4866",
+      "t_xmax": "0",
+      "t_ctid": "(46,49)",
+      "t_infomask2": 3,
+      "t_infomask": 10242,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00+\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMAX_INVALID",
+       "HEAP_UPDATED"
+      ]
+     }
+    ],
+    "old_page_header": {
+     "lsn": "0/1D2CC08",
+     "checksum": 0,
+     "flags": 2,
+     "lower": 376,
+     "upper": 448,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4866"
+    },
+    "new_page_header": {
+     "lsn": "0/1D2CC08",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 220,
+     "upper": 3880,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "vm_old_page": [
+     {
+      "all_visible": false,
+      "all_frozen": false,
+      "pd_all_visible": false
+     }
+    ],
+    "index_entries": {
+     "idx_age": [
+      {
+       "index": "idx_age",
+       "leaf": 5,
+       "points_to": "(23,26)",
+       "itemoffset": 71,
+       "ctid": "(16,8252)",
+       "itemlen": 376,
+       "htid": "(0,24)",
+       "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+       "dead": false,
+       "data": "2a 00 00 00 00 00 00 00"
+      },
+      {
+       "index": "idx_age",
+       "leaf": 5,
+       "points_to": "(46,49)",
+       "itemoffset": 85,
+       "ctid": "(46,49)",
+       "itemlen": 16,
+       "htid": "(46,49)",
+       "tids": null,
+       "dead": false,
+       "data": "2b 00 00 00 00 00 00 00"
+      }
+     ],
+     "idx_name": [
+      {
+       "index": "idx_name",
+       "leaf": 1,
+       "points_to": "(23,26)",
+       "itemoffset": 2,
+       "ctid": "(23,26)",
+       "itemlen": 64,
+       "htid": "(23,26)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      },
+      {
+       "index": "idx_name",
+       "leaf": 1,
+       "points_to": "(46,49)",
+       "itemoffset": 3,
+       "ctid": "(46,49)",
+       "itemlen": 64,
+       "htid": "(46,49)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_pkey": [
+      {
+       "index": "users_pkey",
+       "leaf": 7,
+       "points_to": "(23,26)",
+       "itemoffset": 221,
+       "ctid": "(23,26)",
+       "itemlen": 16,
+       "htid": "(23,26)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      },
+      {
+       "index": "users_pkey",
+       "leaf": 7,
+       "points_to": "(46,49)",
+       "itemoffset": 222,
+       "ctid": "(46,49)",
+       "itemlen": 16,
+       "htid": "(46,49)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "wal": [
+    {
+     "start_lsn": "0/1D27970",
+     "resource_manager": "XLOG",
+     "record_type": "FPI_FOR_HINT",
+     "record_length": 8221,
+     "main_data_length": 0,
+     "fpi_length": 8172,
+     "block_ref": "blkref #0: rel 1663/5/1255 fork main blk 47 (FPW); hole: offset: 180, length: 20"
+    },
+    {
+     "start_lsn": "0/1D299A8",
+     "resource_manager": "Heap2",
+     "record_type": "PRUNE_ON_ACCESS",
+     "record_length": 52,
+     "main_data_length": 2,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/1255 fork main blk 47"
+    },
+    {
+     "start_lsn": "0/1D299E0",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 8179,
+     "main_data_length": 8,
+     "fpi_length": 8120,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23 (FPW); hole: offset: 376, length: 72"
+    },
+    {
+     "start_lsn": "0/1D2B9F0",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 4605,
+     "main_data_length": 14,
+     "fpi_length": 4532,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 (FPW); hole: offset: 220, length: 3660 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1D2CC08",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7453,
+     "main_data_length": 2,
+     "fpi_length": 7400,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7 (FPW); hole: offset: 1496, length: 792"
+    },
+    {
+     "start_lsn": "0/1D2E940",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7573,
+     "main_data_length": 2,
+     "fpi_length": 7520,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 1 (FPW); hole: offset: 464, length: 672"
+    },
+    {
+     "start_lsn": "0/1D306F0",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7113,
+     "main_data_length": 2,
+     "fpi_length": 7060,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 5 (FPW); hole: offset: 420, length: 1132"
+    },
+    {
+     "start_lsn": "0/1D322D8",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "main_data_length": 8,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ],
+   "after_first_read": {
+    "old_item": [
+     {
+      "lp": 26,
+      "lp_off": 0,
+      "lp_flags": 3,
+      "lp_len": 0,
+      "t_xmin": null,
+      "t_xmax": null,
+      "t_ctid": null,
+      "t_infomask2": null,
+      "t_infomask": null,
+      "t_hoff": null,
+      "t_data": null
+     }
+    ],
+    "old_page_header": {
+     "lsn": "0/1D34298",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 376,
+     "upper": 536,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "index_entries": {
+     "idx_age": [
+      {
+       "index": "idx_age",
+       "leaf": 5,
+       "points_to": "(23,26)",
+       "itemoffset": 71,
+       "ctid": "(16,8252)",
+       "itemlen": 376,
+       "htid": "(0,24)",
+       "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+       "dead": false,
+       "data": "2a 00 00 00 00 00 00 00"
+      },
+      {
+       "index": "idx_age",
+       "leaf": 5,
+       "points_to": "(46,49)",
+       "itemoffset": 85,
+       "ctid": "(46,49)",
+       "itemlen": 16,
+       "htid": "(46,49)",
+       "tids": null,
+       "dead": false,
+       "data": "2b 00 00 00 00 00 00 00"
+      }
+     ],
+     "idx_name": [
+      {
+       "index": "idx_name",
+       "leaf": 1,
+       "points_to": "(23,26)",
+       "itemoffset": 2,
+       "ctid": "(23,26)",
+       "itemlen": 64,
+       "htid": "(23,26)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      },
+      {
+       "index": "idx_name",
+       "leaf": 1,
+       "points_to": "(46,49)",
+       "itemoffset": 3,
+       "ctid": "(46,49)",
+       "itemlen": 64,
+       "htid": "(46,49)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_pkey": [
+      {
+       "index": "users_pkey",
+       "leaf": 7,
+       "points_to": "(23,26)",
+       "itemoffset": 221,
+       "ctid": "(23,26)",
+       "itemlen": 16,
+       "htid": "(23,26)",
+       "tids": null,
+       "dead": true,
+       "data": "02 08 00 00 00 00 00 00"
+      },
+      {
+       "index": "users_pkey",
+       "leaf": 7,
+       "points_to": "(46,49)",
+       "itemoffset": 222,
+       "ctid": "(46,49)",
+       "itemlen": 16,
+       "htid": "(46,49)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "stats": [
+    {
+     "n_tup_upd": 1,
+     "n_tup_hot_upd": 0,
+     "n_tup_newpage_upd": 1
+    }
+   ]
+  },
+  "users_ff90": {
+   "before": {
+    "ctid": "(25,75)",
+    "xmin": "4859",
+    "page_header": {
+     "lsn": "0/1D1A640",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 340,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "free_bytes": 900,
+    "alice_item": [
+     {
+      "lp": 75,
+      "lp_off": 1592,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4859",
+      "t_xmax": "0",
+      "t_ctid": "(25,75)",
+      "t_infomask2": 3,
+      "t_infomask": 2306,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMIN_COMMITTED",
+       "HEAP_XMAX_INVALID"
+      ]
+     }
+    ],
+    "vm": [
+     {
+      "all_visible": true,
+      "all_frozen": false,
+      "pd_all_visible": true
+     }
+    ],
+    "index_entries": {
+     "idx_ff90_age": [
+      {
+       "index": "idx_ff90_age",
+       "leaf": 5,
+       "points_to": "(25,75)",
+       "itemoffset": 71,
+       "ctid": "(16,8252)",
+       "itemlen": 376,
+       "htid": "(0,24)",
+       "tids": "{\"(0,24)\",\"(1,8)\",\"(1,71)\",\"(2,55)\",\"(3,39)\",\"(4,23)\",\"(5,7)\",\"(5,70)\",\"(6,54)\",\"(7,38)\",\"(8,22)\",\"(9,6)\",\"(9,69)\",\"(10,53)\",\"(11,37)\",\"(12,21)\",\"(13,5)\",\"(13,68)\",\"(14,52)\",\"(15,36)\",\"(16,20)\",\"(17,4)\",\"(17,67)\",\"(18,51)\",\"(19,35)\",\"(20,19)\",\"(21,3)\",\"(21,66)\",\"(22,50)\",\"(23,34)\",\"(24,18)\",\"(25,2)\",\"(25,65)\",\"(25,75)\",\"(26,49)\",\"(27,33)\",\"(28,17)\",\"(29,1)\",\"(29,64)\",\"(30,48)\",\"(31,32)\",\"(32,16)\",\"(32,79)\",\"(33,63)\",\"(34,47)\",\"(35,31)\",\"(36,15)\",\"(36,78)\",\"(37,62)\",\"(38,46)\",\"(39,30)\",\"(40,14)\",\"(40,77)\",\"(41,61)\",\"(42,45)\",\"(43,29)\",\"(44,13)\",\"(44,76)\",\"(45,60)\",\"(46,44)\"}",
+       "dead": false,
+       "data": "2a 00 00 00 00 00 00 00"
+      }
+     ],
+     "idx_ff90_name": [
+      {
+       "index": "idx_ff90_name",
+       "leaf": 1,
+       "points_to": "(25,75)",
+       "itemoffset": 2,
+       "ctid": "(25,75)",
+       "itemlen": 64,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_ff90_pkey": [
+      {
+       "index": "users_ff90_pkey",
+       "leaf": 7,
+       "points_to": "(25,75)",
+       "itemoffset": 221,
+       "ctid": "(25,75)",
+       "itemlen": 16,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "update": {
+    "xid": "4867",
+    "lsn_before": "0/1D362A8",
+    "lsn_after": "0/1D3D6C0"
+   },
+   "after": {
+    "ctid": "(25,80)",
+    "xmin": "4867",
+    "same_page": true,
+    "old_item": [
+     {
+      "lp": 75,
+      "lp_off": 1592,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4859",
+      "t_xmax": "4867",
+      "t_ctid": "(25,80)",
+      "t_infomask2": 3,
+      "t_infomask": 258,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMIN_COMMITTED"
+      ]
+     }
+    ],
+    "new_item": [
+     {
+      "lp": 80,
+      "lp_off": 1152,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4867",
+      "t_xmax": "0",
+      "t_ctid": "(25,80)",
+      "t_infomask2": 3,
+      "t_infomask": 10242,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00+\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMAX_INVALID",
+       "HEAP_UPDATED"
+      ]
+     }
+    ],
+    "old_page_header": {
+     "lsn": "0/1D37FC8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4867"
+    },
+    "new_page_header": {
+     "lsn": "0/1D37FC8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4867"
+    },
+    "vm_old_page": [
+     {
+      "all_visible": false,
+      "all_frozen": false,
+      "pd_all_visible": false
+     }
+    ],
+    "index_entries": {
+     "idx_ff90_age": [
+      {
+       "index": "idx_ff90_age",
+       "leaf": 5,
+       "points_to": "(25,75)",
+       "itemoffset": 71,
+       "ctid": "(16,8252)",
+       "itemlen": 376,
+       "htid": "(0,24)",
+       "tids": "{\"(0,24)\",\"(1,8)\",\"(1,71)\",\"(2,55)\",\"(3,39)\",\"(4,23)\",\"(5,7)\",\"(5,70)\",\"(6,54)\",\"(7,38)\",\"(8,22)\",\"(9,6)\",\"(9,69)\",\"(10,53)\",\"(11,37)\",\"(12,21)\",\"(13,5)\",\"(13,68)\",\"(14,52)\",\"(15,36)\",\"(16,20)\",\"(17,4)\",\"(17,67)\",\"(18,51)\",\"(19,35)\",\"(20,19)\",\"(21,3)\",\"(21,66)\",\"(22,50)\",\"(23,34)\",\"(24,18)\",\"(25,2)\",\"(25,65)\",\"(25,75)\",\"(26,49)\",\"(27,33)\",\"(28,17)\",\"(29,1)\",\"(29,64)\",\"(30,48)\",\"(31,32)\",\"(32,16)\",\"(32,79)\",\"(33,63)\",\"(34,47)\",\"(35,31)\",\"(36,15)\",\"(36,78)\",\"(37,62)\",\"(38,46)\",\"(39,30)\",\"(40,14)\",\"(40,77)\",\"(41,61)\",\"(42,45)\",\"(43,29)\",\"(44,13)\",\"(44,76)\",\"(45,60)\",\"(46,44)\"}",
+       "dead": false,
+       "data": "2a 00 00 00 00 00 00 00"
+      },
+      {
+       "index": "idx_ff90_age",
+       "leaf": 5,
+       "points_to": "(25,80)",
+       "itemoffset": 78,
+       "ctid": "(16,8251)",
+       "itemlen": 376,
+       "htid": "(0,25)",
+       "tids": "{\"(0,25)\",\"(1,9)\",\"(1,72)\",\"(2,56)\",\"(3,40)\",\"(4,24)\",\"(5,8)\",\"(5,71)\",\"(6,55)\",\"(7,39)\",\"(8,23)\",\"(9,7)\",\"(9,70)\",\"(10,54)\",\"(11,38)\",\"(12,22)\",\"(13,6)\",\"(13,69)\",\"(14,53)\",\"(15,37)\",\"(16,21)\",\"(17,5)\",\"(17,68)\",\"(18,52)\",\"(19,36)\",\"(20,20)\",\"(21,4)\",\"(21,67)\",\"(22,51)\",\"(23,35)\",\"(24,19)\",\"(25,3)\",\"(25,66)\",\"(25,80)\",\"(26,50)\",\"(27,34)\",\"(28,18)\",\"(29,2)\",\"(29,65)\",\"(30,49)\",\"(31,33)\",\"(32,17)\",\"(33,1)\",\"(33,64)\",\"(34,48)\",\"(35,32)\",\"(36,16)\",\"(36,79)\",\"(37,63)\",\"(38,47)\",\"(39,31)\",\"(40,15)\",\"(40,78)\",\"(41,62)\",\"(42,46)\",\"(43,30)\",\"(44,14)\",\"(44,77)\",\"(45,61)\"}",
+       "dead": false,
+       "data": "2b 00 00 00 00 00 00 00"
+      }
+     ],
+     "idx_ff90_name": [
+      {
+       "index": "idx_ff90_name",
+       "leaf": 1,
+       "points_to": "(25,75)",
+       "itemoffset": 2,
+       "ctid": "(25,75)",
+       "itemlen": 64,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      },
+      {
+       "index": "idx_ff90_name",
+       "leaf": 1,
+       "points_to": "(25,80)",
+       "itemoffset": 3,
+       "ctid": "(25,80)",
+       "itemlen": 64,
+       "htid": "(25,80)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_ff90_pkey": [
+      {
+       "index": "users_ff90_pkey",
+       "leaf": 7,
+       "points_to": "(25,75)",
+       "itemoffset": 221,
+       "ctid": "(25,75)",
+       "itemlen": 16,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      },
+      {
+       "index": "users_ff90_pkey",
+       "leaf": 7,
+       "points_to": "(25,80)",
+       "itemoffset": 222,
+       "ctid": "(25,80)",
+       "itemlen": 16,
+       "htid": "(25,80)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "wal": [
+    {
+     "start_lsn": "0/1D362A8",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 7449,
+     "main_data_length": 14,
+     "fpi_length": 7384,
+     "block_ref": "blkref #0: rel 1663/5/16476 fork main blk 25 (FPW); hole: offset: 344, length: 808"
+    },
+    {
+     "start_lsn": "0/1D37FC8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7453,
+     "main_data_length": 2,
+     "fpi_length": 7400,
+     "block_ref": "blkref #0: rel 1663/5/16482 fork main blk 7 (FPW); hole: offset: 1496, length: 792"
+    },
+    {
+     "start_lsn": "0/1D39D00",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7573,
+     "main_data_length": 2,
+     "fpi_length": 7520,
+     "block_ref": "blkref #0: rel 1663/5/16484 fork main blk 1 (FPW); hole: offset: 464, length: 672"
+    },
+    {
+     "start_lsn": "0/1D3BAB0",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_POST",
+     "record_length": 7113,
+     "main_data_length": 2,
+     "fpi_length": 7060,
+     "block_ref": "blkref #0: rel 1663/5/16485 fork main blk 5 (FPW); hole: offset: 420, length: 1132"
+    },
+    {
+     "start_lsn": "0/1D3D698",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "main_data_length": 8,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ],
+   "after_first_read": {
+    "old_item": [
+     {
+      "lp": 75,
+      "lp_off": 0,
+      "lp_flags": 3,
+      "lp_len": 0,
+      "t_xmin": null,
+      "t_xmax": null,
+      "t_ctid": null,
+      "t_infomask2": null,
+      "t_infomask": null,
+      "t_hoff": null,
+      "t_data": null
+     }
+    ],
+    "old_page_header": {
+     "lsn": "0/1D3D6F8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "index_entries": {
+     "idx_ff90_age": [
+      {
+       "index": "idx_ff90_age",
+       "leaf": 5,
+       "points_to": "(25,75)",
+       "itemoffset": 71,
+       "ctid": "(16,8252)",
+       "itemlen": 376,
+       "htid": "(0,24)",
+       "tids": "{\"(0,24)\",\"(1,8)\",\"(1,71)\",\"(2,55)\",\"(3,39)\",\"(4,23)\",\"(5,7)\",\"(5,70)\",\"(6,54)\",\"(7,38)\",\"(8,22)\",\"(9,6)\",\"(9,69)\",\"(10,53)\",\"(11,37)\",\"(12,21)\",\"(13,5)\",\"(13,68)\",\"(14,52)\",\"(15,36)\",\"(16,20)\",\"(17,4)\",\"(17,67)\",\"(18,51)\",\"(19,35)\",\"(20,19)\",\"(21,3)\",\"(21,66)\",\"(22,50)\",\"(23,34)\",\"(24,18)\",\"(25,2)\",\"(25,65)\",\"(25,75)\",\"(26,49)\",\"(27,33)\",\"(28,17)\",\"(29,1)\",\"(29,64)\",\"(30,48)\",\"(31,32)\",\"(32,16)\",\"(32,79)\",\"(33,63)\",\"(34,47)\",\"(35,31)\",\"(36,15)\",\"(36,78)\",\"(37,62)\",\"(38,46)\",\"(39,30)\",\"(40,14)\",\"(40,77)\",\"(41,61)\",\"(42,45)\",\"(43,29)\",\"(44,13)\",\"(44,76)\",\"(45,60)\",\"(46,44)\"}",
+       "dead": false,
+       "data": "2a 00 00 00 00 00 00 00"
+      },
+      {
+       "index": "idx_ff90_age",
+       "leaf": 5,
+       "points_to": "(25,80)",
+       "itemoffset": 78,
+       "ctid": "(16,8251)",
+       "itemlen": 376,
+       "htid": "(0,25)",
+       "tids": "{\"(0,25)\",\"(1,9)\",\"(1,72)\",\"(2,56)\",\"(3,40)\",\"(4,24)\",\"(5,8)\",\"(5,71)\",\"(6,55)\",\"(7,39)\",\"(8,23)\",\"(9,7)\",\"(9,70)\",\"(10,54)\",\"(11,38)\",\"(12,22)\",\"(13,6)\",\"(13,69)\",\"(14,53)\",\"(15,37)\",\"(16,21)\",\"(17,5)\",\"(17,68)\",\"(18,52)\",\"(19,36)\",\"(20,20)\",\"(21,4)\",\"(21,67)\",\"(22,51)\",\"(23,35)\",\"(24,19)\",\"(25,3)\",\"(25,66)\",\"(25,80)\",\"(26,50)\",\"(27,34)\",\"(28,18)\",\"(29,2)\",\"(29,65)\",\"(30,49)\",\"(31,33)\",\"(32,17)\",\"(33,1)\",\"(33,64)\",\"(34,48)\",\"(35,32)\",\"(36,16)\",\"(36,79)\",\"(37,63)\",\"(38,47)\",\"(39,31)\",\"(40,15)\",\"(40,78)\",\"(41,62)\",\"(42,46)\",\"(43,30)\",\"(44,14)\",\"(44,77)\",\"(45,61)\"}",
+       "dead": false,
+       "data": "2b 00 00 00 00 00 00 00"
+      }
+     ],
+     "idx_ff90_name": [
+      {
+       "index": "idx_ff90_name",
+       "leaf": 1,
+       "points_to": "(25,75)",
+       "itemoffset": 2,
+       "ctid": "(25,75)",
+       "itemlen": 64,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      },
+      {
+       "index": "idx_ff90_name",
+       "leaf": 1,
+       "points_to": "(25,80)",
+       "itemoffset": 3,
+       "ctid": "(25,80)",
+       "itemlen": 64,
+       "htid": "(25,80)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_ff90_pkey": [
+      {
+       "index": "users_ff90_pkey",
+       "leaf": 7,
+       "points_to": "(25,75)",
+       "itemoffset": 221,
+       "ctid": "(25,75)",
+       "itemlen": 16,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": true,
+       "data": "02 08 00 00 00 00 00 00"
+      },
+      {
+       "index": "users_ff90_pkey",
+       "leaf": 7,
+       "points_to": "(25,80)",
+       "itemoffset": 222,
+       "ctid": "(25,80)",
+       "itemlen": 16,
+       "htid": "(25,80)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "stats": [
+    {
+     "n_tup_upd": 1,
+     "n_tup_hot_upd": 0,
+     "n_tup_newpage_upd": 0
+    }
+   ]
+  },
+  "users_hot": {
+   "before": {
+    "ctid": "(25,75)",
+    "xmin": "4862",
+    "page_header": {
+     "lsn": "0/1D22260",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 340,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "free_bytes": 900,
+    "alice_item": [
+     {
+      "lp": 75,
+      "lp_off": 1592,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4862",
+      "t_xmax": "0",
+      "t_ctid": "(25,75)",
+      "t_infomask2": 3,
+      "t_infomask": 2306,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMIN_COMMITTED",
+       "HEAP_XMAX_INVALID"
+      ]
+     }
+    ],
+    "vm": [
+     {
+      "all_visible": true,
+      "all_frozen": false,
+      "pd_all_visible": true
+     }
+    ],
+    "index_entries": {
+     "idx_hot_name": [
+      {
+       "index": "idx_hot_name",
+       "leaf": 1,
+       "points_to": "(25,75)",
+       "itemoffset": 2,
+       "ctid": "(25,75)",
+       "itemlen": 64,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_hot_pkey": [
+      {
+       "index": "users_hot_pkey",
+       "leaf": 7,
+       "points_to": "(25,75)",
+       "itemoffset": 221,
+       "ctid": "(25,75)",
+       "itemlen": 16,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "update": {
+    "xid": "4868",
+    "lsn_before": "0/1D3F708",
+    "lsn_after": "0/1D41468"
+   },
+   "after": {
+    "ctid": "(25,80)",
+    "xmin": "4868",
+    "same_page": true,
+    "old_item": [
+     {
+      "lp": 75,
+      "lp_off": 1592,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4862",
+      "t_xmax": "4868",
+      "t_ctid": "(25,80)",
+      "t_infomask2": 16387,
+      "t_infomask": 258,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMIN_COMMITTED",
+       "HEAP_HOT_UPDATED"
+      ]
+     }
+    ],
+    "new_item": [
+     {
+      "lp": 80,
+      "lp_off": 1152,
+      "lp_flags": 1,
+      "lp_len": 82,
+      "t_xmin": "4868",
+      "t_xmax": "0",
+      "t_ctid": "(25,80)",
+      "t_infomask2": 32771,
+      "t_infomask": 10242,
+      "t_hoff": 24,
+      "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00+\\x00'",
+      "flags": [
+       "HEAP_HASVARWIDTH",
+       "HEAP_XMAX_INVALID",
+       "HEAP_UPDATED",
+       "HEAP_ONLY_TUPLE"
+      ]
+     }
+    ],
+    "old_page_header": {
+     "lsn": "0/1D41440",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4868"
+    },
+    "new_page_header": {
+     "lsn": "0/1D41440",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1152,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "4868"
+    },
+    "vm_old_page": [
+     {
+      "all_visible": false,
+      "all_frozen": false,
+      "pd_all_visible": false
+     }
+    ],
+    "index_entries": {
+     "idx_hot_name": [
+      {
+       "index": "idx_hot_name",
+       "leaf": 1,
+       "points_to": "(25,75)",
+       "itemoffset": 2,
+       "ctid": "(25,75)",
+       "itemlen": 64,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_hot_pkey": [
+      {
+       "index": "users_hot_pkey",
+       "leaf": 7,
+       "points_to": "(25,75)",
+       "itemoffset": 221,
+       "ctid": "(25,75)",
+       "itemlen": 16,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "wal": [
+    {
+     "start_lsn": "0/1D3F708",
+     "resource_manager": "Heap",
+     "record_type": "HOT_UPDATE",
+     "record_length": 7449,
+     "main_data_length": 14,
+     "fpi_length": 7384,
+     "block_ref": "blkref #0: rel 1663/5/16486 fork main blk 25 (FPW); hole: offset: 344, length: 808"
+    },
+    {
+     "start_lsn": "0/1D41440",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "main_data_length": 8,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ],
+   "after_first_read": {
+    "old_item": [
+     {
+      "lp": 75,
+      "lp_off": 80,
+      "lp_flags": 2,
+      "lp_len": 0,
+      "t_xmin": null,
+      "t_xmax": null,
+      "t_ctid": null,
+      "t_infomask2": null,
+      "t_infomask": null,
+      "t_hoff": null,
+      "t_data": null
+     }
+    ],
+    "old_page_header": {
+     "lsn": "0/1D414A8",
+     "checksum": 0,
+     "flags": 0,
+     "lower": 344,
+     "upper": 1240,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    },
+    "index_entries": {
+     "idx_hot_name": [
+      {
+       "index": "idx_hot_name",
+       "leaf": 1,
+       "points_to": "(25,75)",
+       "itemoffset": 2,
+       "ctid": "(25,75)",
+       "itemlen": 64,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+      }
+     ],
+     "users_hot_pkey": [
+      {
+       "index": "users_hot_pkey",
+       "leaf": 7,
+       "points_to": "(25,75)",
+       "itemoffset": 221,
+       "ctid": "(25,75)",
+       "itemlen": 16,
+       "htid": "(25,75)",
+       "tids": null,
+       "dead": false,
+       "data": "02 08 00 00 00 00 00 00"
+      }
+     ]
+    }
+   },
+   "stats": [
+    {
+     "n_tup_upd": 1,
+     "n_tup_hot_upd": 1,
+     "n_tup_newpage_upd": 0
+    }
+   ]
+  }
+ },
+ "server_log": "2026-10-27 09:44:15.883 CST [65832] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:44:15.884 CST [65832] LOG:  listening on IPv4 address \"127.0.0.1\", port 49404\n2026-10-27 09:44:15.941 CST [39576] LOG:  database system was shut down at 2026-10-27 09:44:13 CST\n2026-10-27 09:44:15.948 CST [65832] LOG:  database system is ready to accept connections\n2026-10-27 09:44:17.651 CST [46620] LOG:  checkpoint starting: immediate force wait\n2026-10-27 09:44:17.766 CST [46620] LOG:  checkpoint complete: wrote 472 buffers (2.9%), wrote 5 SLRU buffers; 1 WAL file(s) added, 0 removed, 0 recycled; write=0.037 s, sync=0.037 s, total=0.116 s; sync files=75, longest=0.002 s, average=0.001 s; distance=5337 kB, estimate=5337 kB; lsn=0/1D278F8, redo lsn=0/1D278A0\n2026-10-27 09:44:17.999 CST [46620] LOG:  checkpoint starting: immediate force wait\n2026-10-27 09:44:18.021 CST [46620] LOG:  checkpoint complete: wrote 10 buffers (0.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.007 s, total=0.022 s; sync files=9, longest=0.002 s, average=0.001 s; distance=58 kB, estimate=4809 kB; lsn=0/1D36230, redo lsn=0/1D361D8\n2026-10-27 09:44:18.232 CST [46620] LOG:  checkpoint starting: immediate force wait\n2026-10-27 09:44:18.251 CST [46620] LOG:  checkpoint complete: wrote 7 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.006 s, sync=0.006 s, total=0.019 s; sync files=8, longest=0.003 s, average=0.001 s; distance=37 kB, estimate=4332 kB; lsn=0/1D3F690, redo lsn=0/1D3F638\n2026-10-27 09:44:18.497 CST [65832] LOG:  received fast shutdown request\n2026-10-27 09:44:18.499 CST [65832] LOG:  aborting any active transactions\n2026-10-27 09:44:18.506 CST [65832] LOG:  background worker \"logical replication launcher\" (PID 25100) exited with exit code 1\n2026-10-27 09:44:18.508 CST [46620] LOG:  shutting down\n2026-10-27 09:44:18.509 CST [46620] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:44:18.521 CST [46620] LOG:  checkpoint complete: wrote 3 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.003 s, total=0.014 s; sync files=4, longest=0.002 s, average=0.001 s; distance=23 kB, estimate=3901 kB; lsn=0/1D45550, redo lsn=0/1D45550\n2026-10-27 09:44:18.560 CST [65832] LOG:  database system is shut down\n"
+}

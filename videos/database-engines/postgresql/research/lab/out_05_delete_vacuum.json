@@ -1,0 +1,1563 @@
+{
+ "script": "05_delete_vacuum",
+ "date": "2026-10-27",
+ "environment": {
+  "os": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "python": "3.14.3",
+  "psycopg": "3.3.5",
+  "topology": "新建独立集群（临时目录、随机端口、只听 127.0.0.1）；不连接已有服务",
+  "conf": {
+   "listen_addresses": "'127.0.0.1'",
+   "autovacuum": "off",
+   "fsync": "on",
+   "synchronous_commit": "on",
+   "full_page_writes": "on",
+   "log_line_prefix": "'%m [%p] '",
+   "log_checkpoints": "on",
+   "lc_messages": "'C'"
+  }
+ },
+ "commands": [
+  {
+   "program": "initdb",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-U",
+    "lab",
+    "-A",
+    "trust",
+    "--encoding=UTF8",
+    "--locale=C"
+   ],
+   "exit": 0,
+   "output": "The files belonging to this database system will be owned by user \"user\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are enabled.\n\ncreating directory <work>/cluster ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default \"max_connections\" ... 100\nselecting default \"shared_buffers\" ... 128MB\nselecting default time zone ... Asia/Shanghai\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\Program^ Files^\\PostgreSQL^\\18^\\bin^\\pg^_ctl^\" -D ^\"D^:^\\Coding^\\ft^\\videos^\\database^-engines^\\postgresql^\\research^\\^_src^\\lab^-05^_delete^_vacuum^-358b6da9^\\cluster^\" -l logfile start\n\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  }
+ ],
+ "queries": [
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pageinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_freespacemap",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_visibility",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_buffercache",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_walinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_name ON users (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_age ON users (age)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "1",
+    "1"
+   ],
+   "tag": "insert 1",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "2050",
+    "2050"
+   ],
+   "tag": "insert 2050",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "4096",
+    "4096"
+   ],
+   "tag": "insert 4096",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM users",
+   "tag": "settle",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid FROM users WHERE id = 2050",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(23,26)"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 23))",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1A4F478",
+     "checksum": 0,
+     "flags": 4,
+     "lower": 376,
+     "upper": 448,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_freespace('users', 23) AS avail",
+   "tag": "fsm before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "avail": 64
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "BEGIN ISOLATION LEVEL REPEATABLE READ",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "bob",
+   "sql": "SELECT name, age FROM users WHERE id = 2050",
+   "tag": "bob reads before delete",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "name": "Alice                                             ",
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4856"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "DELETE FROM users WHERE id = 2050",
+   "tag": "delete alice",
+   "status": "DELETE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "COMMIT",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "alice after delete",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 5904,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "2809",
+     "t_xmax": "4856",
+     "t_ctid": "(23,26)",
+     "t_infomask2": 8195,
+     "t_infomask": 258,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT count(*) AS n FROM users WHERE id = 2050",
+   "tag": "admin after delete",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n": 0
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "SELECT name, age FROM users WHERE id = 2050",
+   "tag": "bob reads after delete",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "name": "Alice                                             ",
+     "age": 42
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "SELECT pg_current_snapshot()::text AS s",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "4856:4856:"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT application_name, backend_xmin::text AS backend_xmin, state FROM pg_stat_activity WHERE backend_xmin IS NOT NULL ORDER BY application_name",
+   "tag": "who holds back xmin",
+   "status": "SELECT 2",
+   "rows": [
+    {
+     "application_name": "admin",
+     "backend_xmin": "4857",
+     "state": "active"
+    },
+    {
+     "application_name": "bob",
+     "backend_xmin": "4856",
+     "state": "idle in transaction"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM (VERBOSE) users",
+   "tag": "vacuum while bob holds snapshot",
+   "status": "VACUUM",
+   "rows": [],
+   "notices": [
+    "INFO\nvacuuming \"postgres.public.users\"",
+    "INFO\nfinished vacuuming \"postgres.public.users\": index scans: 0\npages: 0 removed, 47 remain, 47 scanned (100.00% of total), 0 eagerly scanned\ntuples: 0 removed, 4096 remain, 1 are dead but not yet removable\nremovable cutoff: 4856, which was 1 XIDs old when operation ended\nfrozen: 0 pages from table (0.00% of total) had 0 tuples frozen\nvisibility map: 0 pages set all-visible, 0 pages set all-frozen (0 were all-visible)\nindex scan not needed: 0 pages from table (0.00% of total) had 0 dead item identifiers removed\navg read rate: 0.000 MB/s, avg write rate: 0.000 MB/s\nbuffer usage: 115 hits, 0 reads, 0 dirtied\nWAL usage: 1 records, 0 full page images, 258 bytes, 0 buffers full\nsystem usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s"
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "alice after blocked vacuum",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 5904,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "2809",
+     "t_xmax": "4856",
+     "t_ctid": "(23,26)",
+     "t_infomask2": 8195,
+     "t_infomask": 1282,
+     "t_hoff": 24,
+     "t_data": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00"
+    }
+   ]
+  },
+  {
+   "conn": "bob",
+   "sql": "COMMIT",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM (VERBOSE) users",
+   "tag": "vacuum after bob",
+   "status": "VACUUM",
+   "rows": [],
+   "notices": [
+    "INFO\nvacuuming \"postgres.public.users\"",
+    "INFO\nfinished vacuuming \"postgres.public.users\": index scans: 1\npages: 0 removed, 47 remain, 47 scanned (100.00% of total), 0 eagerly scanned\ntuples: 1 removed, 4095 remain, 0 are dead but not yet removable\nremovable cutoff: 4857, which was 0 XIDs old when operation ended\nfrozen: 0 pages from table (0.00% of total) had 0 tuples frozen\nvisibility map: 1 pages set all-visible, 0 pages set all-frozen (0 were all-visible)\nindex scan needed: 1 pages from table (2.13% of total) had 1 dead item identifiers removed\nindex \"users_pkey\": pages: 14 in total, 0 newly deleted, 0 currently deleted, 0 reusable\nindex \"idx_name\": pages: 41 in total, 0 newly deleted, 0 currently deleted, 0 reusable\nindex \"idx_age\": pages: 7 in total, 0 newly deleted, 0 currently deleted, 0 reusable\navg read rate: 0.000 MB/s, avg write rate: 0.000 MB/s\nbuffer usage: 197 hits, 0 reads, 0 dirtied\nWAL usage: 10 records, 0 full page images, 1359 bytes, 0 buffers full\nsystem usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s"
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 23))",
+   "tag": "page after vacuum",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1A54180",
+     "checksum": 0,
+     "flags": 5,
+     "lower": 376,
+     "upper": 536,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "alice slot after vacuum",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 0,
+     "lp_flags": 0,
+     "lp_len": 0,
+     "t_xmin": null,
+     "t_xmax": null,
+     "t_ctid": null,
+     "t_infomask2": null,
+     "t_infomask": null,
+     "t_hoff": null,
+     "t_data": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_freespace('users', 23) AS avail",
+   "tag": "fsm after vacuum",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "avail": 128
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT blkno, avail FROM pg_freespace('users') WHERE avail > 0 ORDER BY blkno",
+   "tag": "pages with free space",
+   "status": "SELECT 47",
+   "rows": [
+    {
+     "blkno": 0,
+     "avail": 64
+    },
+    {
+     "blkno": 1,
+     "avail": 64
+    },
+    {
+     "blkno": 2,
+     "avail": 64
+    },
+    {
+     "blkno": 3,
+     "avail": 64
+    },
+    {
+     "blkno": 4,
+     "avail": 64
+    },
+    {
+     "blkno": 5,
+     "avail": 64
+    },
+    {
+     "blkno": 6,
+     "avail": 64
+    },
+    {
+     "blkno": 7,
+     "avail": 64
+    },
+    {
+     "blkno": 8,
+     "avail": 64
+    },
+    {
+     "blkno": 9,
+     "avail": 64
+    },
+    {
+     "blkno": 10,
+     "avail": 64
+    },
+    {
+     "blkno": 11,
+     "avail": 64
+    },
+    {
+     "blkno": 12,
+     "avail": 64
+    },
+    {
+     "blkno": 13,
+     "avail": 64
+    },
+    {
+     "blkno": 14,
+     "avail": 64
+    },
+    {
+     "blkno": 15,
+     "avail": 64
+    },
+    {
+     "blkno": 16,
+     "avail": 64
+    },
+    {
+     "blkno": 17,
+     "avail": 64
+    },
+    {
+     "blkno": 18,
+     "avail": 64
+    },
+    {
+     "blkno": 19,
+     "avail": 64
+    },
+    {
+     "blkno": 20,
+     "avail": 64
+    },
+    {
+     "blkno": 21,
+     "avail": 64
+    },
+    {
+     "blkno": 22,
+     "avail": 64
+    },
+    {
+     "blkno": 23,
+     "avail": 128
+    },
+    {
+     "blkno": 24,
+     "avail": 64
+    },
+    {
+     "blkno": 25,
+     "avail": 64
+    },
+    {
+     "blkno": 26,
+     "avail": 64
+    },
+    {
+     "blkno": 27,
+     "avail": 64
+    },
+    {
+     "blkno": 28,
+     "avail": 64
+    },
+    {
+     "blkno": 29,
+     "avail": 64
+    },
+    {
+     "blkno": 30,
+     "avail": 64
+    },
+    {
+     "blkno": 31,
+     "avail": 64
+    },
+    {
+     "blkno": 32,
+     "avail": 64
+    },
+    {
+     "blkno": 33,
+     "avail": 64
+    },
+    {
+     "blkno": 34,
+     "avail": 64
+    },
+    {
+     "blkno": 35,
+     "avail": 64
+    },
+    {
+     "blkno": 36,
+     "avail": 64
+    },
+    {
+     "blkno": 37,
+     "avail": 64
+    },
+    {
+     "blkno": 38,
+     "avail": 64
+    },
+    {
+     "blkno": 39,
+     "avail": 64
+    },
+    {
+     "blkno": 40,
+     "avail": 64
+    },
+    {
+     "blkno": 41,
+     "avail": 64
+    },
+    {
+     "blkno": 42,
+     "avail": 64
+    },
+    {
+     "blkno": 43,
+     "avail": 64
+    },
+    {
+     "blkno": 44,
+     "avail": 64
+    },
+    {
+     "blkno": 45,
+     "avail": 64
+    },
+    {
+     "blkno": 46,
+     "avail": 3744
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT n_live_tup, n_dead_tup FROM pg_stat_user_tables WHERE relname = 'users'",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "n_live_tup": 4095,
+     "n_dead_tup": 0
+    }
+   ]
+  },
+  {
+   "conn": "dave",
+   "sql": "INSERT INTO users VALUES (2050, 'Dave', 35) RETURNING ctid::text AS ctid",
+   "tag": "dave registers",
+   "status": "INSERT 0 1",
+   "rows": [
+    {
+     "ctid": "(23,26)"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "dave item",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 448,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4857",
+     "t_xmax": "0",
+     "t_ctid": "(23,26)",
+     "t_infomask2": 3,
+     "t_infomask": 2050,
+     "t_hoff": 24,
+     "t_data": "02080000674461766520202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002300"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM page_header(get_raw_page('users', 23))",
+   "tag": "dave page",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lsn": "0/1A54708",
+     "checksum": 0,
+     "flags": 1,
+     "lower": 376,
+     "upper": 448,
+     "special": 8192,
+     "pagesize": 8192,
+     "version": 4,
+     "prune_xid": "0"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT name, boot_val, unit FROM pg_settings WHERE name IN ('autovacuum', 'autovacuum_naptime', 'autovacuum_vacuum_threshold', 'autovacuum_vacuum_scale_factor', 'autovacuum_vacuum_insert_threshold', 'autovacuum_vacuum_insert_scale_factor', 'autovacuum_vacuum_max_threshold', 'autovacuum_freeze_max_age', 'vacuum_freeze_min_age', 'vacuum_freeze_table_age', 'vacuum_failsafe_age') ORDER BY name",
+   "tag": "autovacuum defaults",
+   "status": "SELECT 11",
+   "rows": [
+    {
+     "name": "autovacuum",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_freeze_max_age",
+     "boot_val": "200000000",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_naptime",
+     "boot_val": "60",
+     "unit": "s"
+    },
+    {
+     "name": "autovacuum_vacuum_insert_scale_factor",
+     "boot_val": "0.2",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_insert_threshold",
+     "boot_val": "1000",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_max_threshold",
+     "boot_val": "100000000",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_scale_factor",
+     "boot_val": "0.2",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_threshold",
+     "boot_val": "50",
+     "unit": null
+    },
+    {
+     "name": "vacuum_failsafe_age",
+     "boot_val": "1600000000",
+     "unit": null
+    },
+    {
+     "name": "vacuum_freeze_min_age",
+     "boot_val": "50000000",
+     "unit": null
+    },
+    {
+     "name": "vacuum_freeze_table_age",
+     "boot_val": "150000000",
+     "unit": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT relfrozenxid::text AS relfrozenxid, age(relfrozenxid) AS age, pg_current_xact_id()::text AS now FROM pg_class WHERE relname = 'users'",
+   "tag": "relfrozenxid before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "relfrozenxid": "760",
+     "age": 4098,
+     "now": "4858"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "dave before freeze",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 448,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4857",
+     "t_xmax": "0",
+     "t_ctid": "(23,26)",
+     "t_infomask2": 3,
+     "t_infomask": 2050,
+     "t_hoff": 24,
+     "t_data": "02080000674461766520202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002300"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM (FREEZE, VERBOSE) users",
+   "tag": "vacuum freeze",
+   "status": "VACUUM",
+   "rows": [],
+   "notices": [
+    "INFO\naggressively vacuuming \"postgres.public.users\"",
+    "INFO\nfinished vacuuming \"postgres.public.users\": index scans: 0\npages: 0 removed, 47 remain, 47 scanned (100.00% of total), 0 eagerly scanned\ntuples: 0 removed, 4096 remain, 0 are dead but not yet removable\nremovable cutoff: 4859, which was 0 XIDs old when operation ended\nnew relfrozenxid: 4859, which is 4099 XIDs ahead of previous value\nfrozen: 47 pages from table (100.00% of total) had 4096 tuples frozen\nvisibility map: 0 pages set all-visible, 46 pages set all-frozen (46 were all-visible)\nindex scan not needed: 0 pages from table (0.00% of total) had 0 dead item identifiers removed\navg read rate: 0.000 MB/s, avg write rate: 0.000 MB/s\nbuffer usage: 118 hits, 0 reads, 0 dirtied\nWAL usage: 94 records, 0 full page images, 14360 bytes, 0 buffers full\nsystem usage: CPU: user: 0.01 s, system: 0.00 s, elapsed: 0.00 s"
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT relfrozenxid::text AS relfrozenxid, age(relfrozenxid) AS age FROM pg_class WHERE relname = 'users'",
+   "tag": "relfrozenxid after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "relfrozenxid": "4859",
+     "age": 0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 23)) WHERE lp IN (26) ORDER BY lp",
+   "tag": "dave after freeze",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 26,
+     "lp_off": 448,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4857",
+     "t_xmax": "0",
+     "t_ctid": "(23,26)",
+     "t_infomask2": 3,
+     "t_infomask": 2818,
+     "t_hoff": 24,
+     "t_data": "02080000674461766520202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002300"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT * FROM pg_visibility_map_summary('users')",
+   "tag": "vm after freeze",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "all_visible": 46,
+     "all_frozen": 46
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT datname, datfrozenxid::text AS datfrozenxid, age(datfrozenxid) AS age FROM pg_database ORDER BY datname",
+   "status": "SELECT 3",
+   "rows": [
+    {
+     "datname": "postgres",
+     "datfrozenxid": "744",
+     "age": 4115
+    },
+    {
+     "datname": "template0",
+     "datfrozenxid": "744",
+     "age": 4115
+    },
+    {
+     "datname": "template1",
+     "datfrozenxid": "744",
+     "age": 4115
+    }
+   ]
+  }
+ ],
+ "notes": [],
+ "steps": {
+  "0_before": {
+   "ctid": "(23,26)",
+   "page_header": {
+    "lsn": "0/1A4F478",
+    "checksum": 0,
+    "flags": 4,
+    "lower": 376,
+    "upper": 448,
+    "special": 8192,
+    "pagesize": 8192,
+    "version": 4,
+    "prune_xid": "0"
+   },
+   "free": 72,
+   "fsm": 64,
+   "index_entries": {
+    "users_pkey": [
+     {
+      "index": "users_pkey",
+      "leaf": 7,
+      "points_to": "(23,26)",
+      "itemoffset": 221,
+      "ctid": "(23,26)",
+      "itemlen": 16,
+      "htid": "(23,26)",
+      "tids": null,
+      "dead": false,
+      "data": "02 08 00 00 00 00 00 00"
+     }
+    ],
+    "idx_name": [
+     {
+      "index": "idx_name",
+      "leaf": 1,
+      "points_to": "(23,26)",
+      "itemoffset": 2,
+      "ctid": "(23,26)",
+      "itemlen": 64,
+      "htid": "(23,26)",
+      "tids": null,
+      "dead": false,
+      "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+     }
+    ],
+    "idx_age": [
+     {
+      "index": "idx_age",
+      "leaf": 5,
+      "points_to": "(23,26)",
+      "itemoffset": 71,
+      "ctid": "(16,8252)",
+      "itemlen": 376,
+      "htid": "(0,24)",
+      "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+      "dead": false,
+      "data": "2a 00 00 00 00 00 00 00"
+     }
+    ]
+   }
+  },
+  "1_deleted": {
+   "xid": "4856",
+   "bob_before": {
+    "name": "Alice                                             ",
+    "age": 42
+   },
+   "item": {
+    "lp": 26,
+    "lp_off": 5904,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "2809",
+    "t_xmax": "4856",
+    "t_ctid": "(23,26)",
+    "t_infomask2": 8195,
+    "t_infomask": 258,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_COMMITTED",
+     "HEAP_KEYS_UPDATED"
+    ]
+   },
+   "admin_sees": 0
+  },
+  "2_blocked": {
+   "bob_sees": {
+    "name": "Alice                                             ",
+    "age": 42
+   },
+   "bob_snapshot": "4856:4856:",
+   "oldest": [
+    {
+     "application_name": "admin",
+     "backend_xmin": "4857",
+     "state": "active"
+    },
+    {
+     "application_name": "bob",
+     "backend_xmin": "4856",
+     "state": "idle in transaction"
+    }
+   ],
+   "item_after_vacuum": {
+    "lp": 26,
+    "lp_off": 5904,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "2809",
+    "t_xmax": "4856",
+    "t_ctid": "(23,26)",
+    "t_infomask2": 8195,
+    "t_infomask": 1282,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gAlice                                             \\x00*\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_COMMITTED",
+     "HEAP_XMAX_COMMITTED",
+     "HEAP_KEYS_UPDATED"
+    ]
+   },
+   "index_entries": {
+    "users_pkey": [
+     {
+      "index": "users_pkey",
+      "leaf": 7,
+      "points_to": "(23,26)",
+      "itemoffset": 221,
+      "ctid": "(23,26)",
+      "itemlen": 16,
+      "htid": "(23,26)",
+      "tids": null,
+      "dead": false,
+      "data": "02 08 00 00 00 00 00 00"
+     }
+    ],
+    "idx_name": [
+     {
+      "index": "idx_name",
+      "leaf": 1,
+      "points_to": "(23,26)",
+      "itemoffset": 2,
+      "ctid": "(23,26)",
+      "itemlen": 64,
+      "htid": "(23,26)",
+      "tids": null,
+      "dead": false,
+      "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+     }
+    ],
+    "idx_age": [
+     {
+      "index": "idx_age",
+      "leaf": 5,
+      "points_to": "(23,26)",
+      "itemoffset": 71,
+      "ctid": "(16,8252)",
+      "itemlen": 376,
+      "htid": "(0,24)",
+      "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+      "dead": false,
+      "data": "2a 00 00 00 00 00 00 00"
+     }
+    ]
+   }
+  },
+  "3_reclaimed": {
+   "item": {
+    "lp": 26,
+    "lp_off": 0,
+    "lp_flags": 0,
+    "lp_len": 0,
+    "t_xmin": null,
+    "t_xmax": null,
+    "t_ctid": null,
+    "t_infomask2": null,
+    "t_infomask": null,
+    "t_hoff": null,
+    "t_data": null
+   },
+   "page_header": {
+    "lsn": "0/1A54180",
+    "checksum": 0,
+    "flags": 5,
+    "lower": 376,
+    "upper": 536,
+    "special": 8192,
+    "pagesize": 8192,
+    "version": 4,
+    "prune_xid": "0"
+   },
+   "free": 160,
+   "fsm": 128,
+   "fsm_last_page": [
+    {
+     "blkno": 0,
+     "avail": 64
+    },
+    {
+     "blkno": 1,
+     "avail": 64
+    },
+    {
+     "blkno": 2,
+     "avail": 64
+    },
+    {
+     "blkno": 3,
+     "avail": 64
+    },
+    {
+     "blkno": 4,
+     "avail": 64
+    },
+    {
+     "blkno": 5,
+     "avail": 64
+    },
+    {
+     "blkno": 6,
+     "avail": 64
+    },
+    {
+     "blkno": 7,
+     "avail": 64
+    },
+    {
+     "blkno": 8,
+     "avail": 64
+    },
+    {
+     "blkno": 9,
+     "avail": 64
+    },
+    {
+     "blkno": 10,
+     "avail": 64
+    },
+    {
+     "blkno": 11,
+     "avail": 64
+    },
+    {
+     "blkno": 12,
+     "avail": 64
+    },
+    {
+     "blkno": 13,
+     "avail": 64
+    },
+    {
+     "blkno": 14,
+     "avail": 64
+    },
+    {
+     "blkno": 15,
+     "avail": 64
+    },
+    {
+     "blkno": 16,
+     "avail": 64
+    },
+    {
+     "blkno": 17,
+     "avail": 64
+    },
+    {
+     "blkno": 18,
+     "avail": 64
+    },
+    {
+     "blkno": 19,
+     "avail": 64
+    },
+    {
+     "blkno": 20,
+     "avail": 64
+    },
+    {
+     "blkno": 21,
+     "avail": 64
+    },
+    {
+     "blkno": 22,
+     "avail": 64
+    },
+    {
+     "blkno": 23,
+     "avail": 128
+    },
+    {
+     "blkno": 24,
+     "avail": 64
+    },
+    {
+     "blkno": 25,
+     "avail": 64
+    },
+    {
+     "blkno": 26,
+     "avail": 64
+    },
+    {
+     "blkno": 27,
+     "avail": 64
+    },
+    {
+     "blkno": 28,
+     "avail": 64
+    },
+    {
+     "blkno": 29,
+     "avail": 64
+    },
+    {
+     "blkno": 30,
+     "avail": 64
+    },
+    {
+     "blkno": 31,
+     "avail": 64
+    },
+    {
+     "blkno": 32,
+     "avail": 64
+    },
+    {
+     "blkno": 33,
+     "avail": 64
+    },
+    {
+     "blkno": 34,
+     "avail": 64
+    },
+    {
+     "blkno": 35,
+     "avail": 64
+    },
+    {
+     "blkno": 36,
+     "avail": 64
+    },
+    {
+     "blkno": 37,
+     "avail": 64
+    },
+    {
+     "blkno": 38,
+     "avail": 64
+    },
+    {
+     "blkno": 39,
+     "avail": 64
+    },
+    {
+     "blkno": 40,
+     "avail": 64
+    },
+    {
+     "blkno": 41,
+     "avail": 64
+    },
+    {
+     "blkno": 42,
+     "avail": 64
+    },
+    {
+     "blkno": 43,
+     "avail": 64
+    },
+    {
+     "blkno": 44,
+     "avail": 64
+    },
+    {
+     "blkno": 45,
+     "avail": 64
+    },
+    {
+     "blkno": 46,
+     "avail": 3744
+    }
+   ],
+   "index_entries": {
+    "users_pkey": [],
+    "idx_name": [],
+    "idx_age": []
+   },
+   "stats": [
+    {
+     "n_live_tup": 4095,
+     "n_dead_tup": 0
+    }
+   ]
+  },
+  "4_dave": {
+   "ctid": "(23,26)",
+   "same_page_as_alice": true,
+   "same_slot_as_alice": true,
+   "item": {
+    "lp": 26,
+    "lp_off": 448,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4857",
+    "t_xmax": "0",
+    "t_ctid": "(23,26)",
+    "t_infomask2": 3,
+    "t_infomask": 2050,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gDave                                              \\x00#\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMAX_INVALID"
+    ]
+   },
+   "page_header": {
+    "lsn": "0/1A54708",
+    "checksum": 0,
+    "flags": 1,
+    "lower": 376,
+    "upper": 448,
+    "special": 8192,
+    "pagesize": 8192,
+    "version": 4,
+    "prune_xid": "0"
+   }
+  },
+  "5_freeze": {
+   "settings": [
+    {
+     "name": "autovacuum",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_freeze_max_age",
+     "boot_val": "200000000",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_naptime",
+     "boot_val": "60",
+     "unit": "s"
+    },
+    {
+     "name": "autovacuum_vacuum_insert_scale_factor",
+     "boot_val": "0.2",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_insert_threshold",
+     "boot_val": "1000",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_max_threshold",
+     "boot_val": "100000000",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_scale_factor",
+     "boot_val": "0.2",
+     "unit": null
+    },
+    {
+     "name": "autovacuum_vacuum_threshold",
+     "boot_val": "50",
+     "unit": null
+    },
+    {
+     "name": "vacuum_failsafe_age",
+     "boot_val": "1600000000",
+     "unit": null
+    },
+    {
+     "name": "vacuum_freeze_min_age",
+     "boot_val": "50000000",
+     "unit": null
+    },
+    {
+     "name": "vacuum_freeze_table_age",
+     "boot_val": "150000000",
+     "unit": null
+    }
+   ],
+   "before": [
+    {
+     "relfrozenxid": "760",
+     "age": 4098,
+     "now": "4858"
+    }
+   ],
+   "dave_before": {
+    "lp": 26,
+    "lp_off": 448,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4857",
+    "t_xmax": "0",
+    "t_ctid": "(23,26)",
+    "t_infomask2": 3,
+    "t_infomask": 2050,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gDave                                              \\x00#\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMAX_INVALID"
+    ]
+   },
+   "after": [
+    {
+     "relfrozenxid": "4859",
+     "age": 0
+    }
+   ],
+   "dave_after": {
+    "lp": 26,
+    "lp_off": 448,
+    "lp_flags": 1,
+    "lp_len": 82,
+    "t_xmin": "4857",
+    "t_xmax": "0",
+    "t_ctid": "(23,26)",
+    "t_infomask2": 3,
+    "t_infomask": 2818,
+    "t_hoff": 24,
+    "t_data": "b'\\x02\\x08\\x00\\x00gDave                                              \\x00#\\x00'",
+    "flags": [
+     "HEAP_HASVARWIDTH",
+     "HEAP_XMIN_COMMITTED",
+     "HEAP_XMIN_INVALID",
+     "HEAP_XMAX_INVALID"
+    ]
+   },
+   "vm": [
+    {
+     "all_visible": 46,
+     "all_frozen": 46
+    }
+   ],
+   "datfrozenxid": [
+    {
+     "datname": "postgres",
+     "datfrozenxid": "744",
+     "age": 4115
+    },
+    {
+     "datname": "template0",
+     "datfrozenxid": "744",
+     "age": 4115
+    },
+    {
+     "datname": "template1",
+     "datfrozenxid": "744",
+     "age": 4115
+    }
+   ]
+  }
+ },
+ "index_entries": [
+  {
+   "tag": "before delete",
+   "index": "users_pkey",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(23,26)",
+     "itemoffset": 221,
+     "ctid": "(23,26)",
+     "itemlen": 16,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "before delete",
+   "index": "idx_name",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(23,26)",
+     "itemoffset": 2,
+     "ctid": "(23,26)",
+     "itemlen": 64,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "before delete",
+   "index": "idx_age",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(23,26)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "after blocked vacuum",
+   "index": "users_pkey",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "users_pkey",
+     "leaf": 7,
+     "points_to": "(23,26)",
+     "itemoffset": 221,
+     "ctid": "(23,26)",
+     "itemlen": 16,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "02 08 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "after blocked vacuum",
+   "index": "idx_name",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "idx_name",
+     "leaf": 1,
+     "points_to": "(23,26)",
+     "itemoffset": 2,
+     "ctid": "(23,26)",
+     "itemlen": 64,
+     "htid": "(23,26)",
+     "tids": null,
+     "dead": false,
+     "data": "67 41 6c 69 63 65 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "after blocked vacuum",
+   "index": "idx_age",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": [
+    {
+     "index": "idx_age",
+     "leaf": 5,
+     "points_to": "(23,26)",
+     "itemoffset": 71,
+     "ctid": "(16,8252)",
+     "itemlen": 376,
+     "htid": "(0,24)",
+     "tids": "{\"(0,24)\",\"(0,87)\",\"(1,62)\",\"(2,37)\",\"(3,12)\",\"(3,75)\",\"(4,50)\",\"(5,25)\",\"(5,88)\",\"(6,63)\",\"(7,38)\",\"(8,13)\",\"(8,76)\",\"(9,51)\",\"(10,26)\",\"(11,1)\",\"(11,64)\",\"(12,39)\",\"(13,14)\",\"(13,77)\",\"(14,52)\",\"(15,27)\",\"(16,2)\",\"(16,65)\",\"(17,40)\",\"(18,15)\",\"(18,78)\",\"(19,53)\",\"(20,28)\",\"(21,3)\",\"(21,66)\",\"(22,41)\",\"(23,16)\",\"(23,26)\",\"(23,79)\",\"(24,54)\",\"(25,29)\",\"(26,4)\",\"(26,67)\",\"(27,42)\",\"(28,17)\",\"(28,80)\",\"(29,55)\",\"(30,30)\",\"(31,5)\",\"(31,68)\",\"(32,43)\",\"(33,18)\",\"(33,81)\",\"(34,56)\",\"(35,31)\",\"(36,6)\",\"(36,69)\",\"(37,44)\",\"(38,19)\",\"(38,82)\",\"(39,57)\",\"(40,32)\",\"(41,7)\",\"(41,70)\"}",
+     "dead": false,
+     "data": "2a 00 00 00 00 00 00 00"
+    }
+   ]
+  },
+  {
+   "tag": "after vacuum",
+   "index": "users_pkey",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": []
+  },
+  {
+   "tag": "after vacuum",
+   "index": "idx_name",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": []
+  },
+  {
+   "tag": "after vacuum",
+   "index": "idx_age",
+   "tids": [
+    "(23,26)"
+   ],
+   "found": []
+  }
+ ],
+ "server_log": "2026-10-27 09:46:40.016 CST [49540] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:46:40.018 CST [49540] LOG:  listening on IPv4 address \"127.0.0.1\", port 60458\n2026-10-27 09:46:40.140 CST [51156] LOG:  database system was shut down at 2026-10-27 09:46:36 CST\n2026-10-27 09:46:40.151 CST [49540] LOG:  database system is ready to accept connections\n2026-10-27 09:46:42.524 CST [49540] LOG:  received fast shutdown request\n2026-10-27 09:46:42.526 CST [49540] LOG:  aborting any active transactions\n2026-10-27 09:46:42.536 CST [49540] LOG:  background worker \"logical replication launcher\" (PID 38176) exited with exit code 1\n2026-10-27 09:46:42.536 CST [66296] LOG:  shutting down\n2026-10-27 09:46:42.537 CST [66296] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:46:42.594 CST [66296] LOG:  checkpoint complete: wrote 233 buffers (1.4%), wrote 5 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.022 s, sync=0.027 s, total=0.058 s; sync files=60, longest=0.002 s, average=0.001 s; distance=2460 kB, estimate=2460 kB; lsn=0/1A582A0, redo lsn=0/1A582A0\n2026-10-27 09:46:42.684 CST [49540] LOG:  database system is shut down\n"
+}

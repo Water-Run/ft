@@ -1,0 +1,1042 @@
+{
+ "script": "06_wal_crash",
+ "date": "2026-10-27",
+ "environment": {
+  "os": "Windows",
+  "release": "11",
+  "machine": "AMD64",
+  "python": "3.14.3",
+  "psycopg": "3.3.5",
+  "topology": "新建独立集群（临时目录、随机端口、只听 127.0.0.1）；不连接已有服务",
+  "conf": {
+   "listen_addresses": "'127.0.0.1'",
+   "autovacuum": "off",
+   "fsync": "on",
+   "synchronous_commit": "on",
+   "full_page_writes": "on",
+   "log_line_prefix": "'%m [%p] '",
+   "log_checkpoints": "on",
+   "lc_messages": "'C'"
+  }
+ },
+ "commands": [
+  {
+   "program": "initdb",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-U",
+    "lab",
+    "-A",
+    "trust",
+    "--encoding=UTF8",
+    "--locale=C"
+   ],
+   "exit": 0,
+   "output": "The files belonging to this database system will be owned by user \"user\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are enabled.\n\ncreating directory <work>/cluster ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default \"max_connections\" ... 100\nselecting default \"shared_buffers\" ... 128MB\nselecting default time zone ... Asia/Shanghai\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\Program^ Files^\\PostgreSQL^\\18^\\bin^\\pg^_ctl^\" -D ^\"D^:^\\Coding^\\ft^\\videos^\\database^-engines^\\postgresql^\\research^\\^_src^\\lab^-06^_wal^_crash^-eaa602a6^\\cluster^\" -l logfile start\n\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_waldump",
+   "args": [
+    "-p",
+    "<work>\\cluster\\pg_wal",
+    "-s",
+    "0/1A62908",
+    "-e",
+    "0/1A663C8"
+   ],
+   "exit": 0,
+   "output": "rmgr: Heap        len (rec/tot):     54/    54, tx:       4857, lsn: 0/01A62908, prev 0/01A60AD8, desc: LOCK xmax: 4857, off: 26, infobits: [LOCK_ONLY, EXCL_LOCK], flags: 0x00, blkref #0: rel 1663/5/16466 blk 23\nrmgr: Heap        len (rec/tot):    132/   132, tx:       4857, lsn: 0/01A62940, prev 0/01A62908, desc: UPDATE old_xmax: 4857, old_off: 26, old_infobits: [], flags: 0x00, new_xmax: 0, new_off: 50, blkref #0: rel 1663/5/16466 blk 46, blkref #1: rel 1663/5/16466 blk 23\nrmgr: Btree       len (rec/tot):     64/    64, tx:       4857, lsn: 0/01A629C8, prev 0/01A62940, desc: INSERT_LEAF off: 223, blkref #0: rel 1663/5/16472 blk 7\nrmgr: Btree       len (rec/tot):     53/  7573, tx:       4857, lsn: 0/01A62A08, prev 0/01A629C8, desc: INSERT_LEAF off: 3, blkref #0: rel 1663/5/16474 blk 1 FPW\nrmgr: Btree       len (rec/tot):     53/  7113, tx:       4857, lsn: 0/01A647B8, prev 0/01A62A08, desc: INSERT_LEAF off: 85, blkref #0: rel 1663/5/16475 blk 5 FPW\nrmgr: Transaction len (rec/tot):     34/    34, tx:       4857, lsn: 0/01A663A0, prev 0/01A647B8, desc: COMMIT 2026-10-27 09:49:05.558965 �й���׼ʱ��\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "immediate",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-l",
+    "<work>\\server.log",
+    "-w",
+    "start"
+   ],
+   "exit": 0,
+   "output": "waiting for server to start.... done\nserver started\n"
+  },
+  {
+   "program": "pg_ctl",
+   "args": [
+    "-D",
+    "<work>\\cluster",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+   ],
+   "exit": 0,
+   "output": "waiting for server to shut down.... done\nserver stopped\n"
+  }
+ ],
+ "queries": [
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pageinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_freespacemap",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_visibility",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_buffercache",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE EXTENSION pg_walinspect",
+   "status": "CREATE EXTENSION",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE TABLE users (id int NOT NULL PRIMARY KEY, name char(50) NOT NULL, age smallint NOT NULL)",
+   "status": "CREATE TABLE",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_name ON users (name)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "CREATE INDEX idx_age ON users (age)",
+   "status": "CREATE INDEX",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "1",
+    "1"
+   ],
+   "tag": "insert 1",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "2050",
+    "2050"
+   ],
+   "tag": "insert 2050",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "INSERT INTO users SELECT i, CASE WHEN i = 2050 THEN 'Alice' ELSE 'User' || lpad(i::text, 5, '0') || '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN' END, CASE WHEN i = 2050 THEN 42 ELSE 18 + i %% 63 END FROM generate_series(%s::int, %s::int) AS i",
+   "params": [
+    "4096",
+    "4096"
+   ],
+   "tag": "insert 4096",
+   "status": "INSERT 0 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "VACUUM users",
+   "tag": "settle",
+   "status": "VACUUM",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_relation_filepath('users') AS p",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "p": "base/5/16466"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT ctid::text AS ctid FROM users WHERE id = 2050",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(23,26)"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "CHECKPOINT",
+   "tag": "checkpoint 1",
+   "status": "CHECKPOINT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT checkpoint_lsn::text, redo_lsn::text, timeline_id, checkpoint_time IS NOT NULL AS has_time FROM pg_control_checkpoint()",
+   "tag": "control checkpoint",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "checkpoint_lsn": "0/1A53C98",
+     "redo_lsn": "0/1A53C40",
+     "timeline_id": 1,
+     "has_time": true
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT name, setting, boot_val, unit FROM pg_settings WHERE name IN ('wal_level', 'synchronous_commit', 'fsync', 'full_page_writes', 'wal_log_hints', 'data_checksums', 'checkpoint_timeout', 'max_wal_size', 'min_wal_size', 'wal_buffers', 'wal_writer_delay', 'wal_sync_method') ORDER BY name",
+   "tag": "wal settings",
+   "status": "SELECT 12",
+   "rows": [
+    {
+     "name": "checkpoint_timeout",
+     "setting": "300",
+     "boot_val": "300",
+     "unit": "s"
+    },
+    {
+     "name": "data_checksums",
+     "setting": "on",
+     "boot_val": "off",
+     "unit": null
+    },
+    {
+     "name": "fsync",
+     "setting": "on",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "full_page_writes",
+     "setting": "on",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "max_wal_size",
+     "setting": "1024",
+     "boot_val": "1024",
+     "unit": "MB"
+    },
+    {
+     "name": "min_wal_size",
+     "setting": "80",
+     "boot_val": "80",
+     "unit": "MB"
+    },
+    {
+     "name": "synchronous_commit",
+     "setting": "on",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "wal_buffers",
+     "setting": "512",
+     "boot_val": "-1",
+     "unit": "8kB"
+    },
+    {
+     "name": "wal_level",
+     "setting": "replica",
+     "boot_val": "replica",
+     "unit": null
+    },
+    {
+     "name": "wal_log_hints",
+     "setting": "off",
+     "boot_val": "off",
+     "unit": null
+    },
+    {
+     "name": "wal_sync_method",
+     "setting": "open_datasync",
+     "boot_val": "open_datasync",
+     "unit": null
+    },
+    {
+     "name": "wal_writer_delay",
+     "setting": "200",
+     "boot_val": "200",
+     "unit": "ms"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_insert_lsn()::text AS l",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "l": "0/1A59E08"
+    }
+   ]
+  },
+  {
+   "conn": "carol",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "carol",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4856"
+    }
+   ]
+  },
+  {
+   "conn": "carol",
+   "sql": "UPDATE users SET age = 99 WHERE id = 2049",
+   "tag": "carol uncommitted update of 2049",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "carol",
+   "sql": "SELECT ctid::text AS ctid FROM users WHERE id = 2049",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "ctid": "(46,49)"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_insert_lsn()::text AS l",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "l": "0/1A62908"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT writes, fsyncs FROM pg_stat_io WHERE object = 'wal' AND context = 'normal' AND backend_type = 'client backend'",
+   "tag": "wal io before",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "writes": 4104,
+     "fsyncs": 0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_insert_lsn()::text AS l",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "l": "0/1A62908"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "BEGIN",
+   "status": "BEGIN",
+   "rows": []
+  },
+  {
+   "conn": "alice",
+   "sql": "SELECT pg_current_xact_id()::text AS xid",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "xid": "4857"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "UPDATE users SET age = 43 WHERE id = 2050",
+   "tag": "alice update",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_flush_lsn()::text AS f, pg_current_wal_insert_lsn()::text AS i",
+   "tag": "flush vs insert before commit",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "f": "0/1A53D10",
+     "i": "0/1A663A0"
+    }
+   ]
+  },
+  {
+   "conn": "alice",
+   "sql": "COMMIT",
+   "tag": "alice commit",
+   "status": "COMMIT",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_insert_lsn()::text AS l",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "l": "0/1A663C8"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_flush_lsn()::text AS f, pg_current_wal_insert_lsn()::text AS i",
+   "tag": "flush vs insert after commit",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "f": "0/1A663C8",
+     "i": "0/1A663C8"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT writes, fsyncs FROM pg_stat_io WHERE object = 'wal' AND context = 'normal' AND backend_type = 'client backend'",
+   "tag": "wal io after",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "writes": 4105,
+     "fsyncs": 0
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT start_lsn::text, resource_manager, record_type, record_length, fpi_length, block_ref FROM pg_get_wal_records_info('0/1A59E08', '0/1A62908')",
+   "tag": "wal of carol uncommitted update (read after alice commit flushed it)",
+   "status": "SELECT 5",
+   "rows": [
+    {
+     "start_lsn": "0/1A59E08",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 8179,
+     "fpi_length": 8120,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23 (FPW); hole: offset: 376, length: 72"
+    },
+    {
+     "start_lsn": "0/1A5BE18",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 4605,
+     "fpi_length": 4532,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 (FPW); hole: offset: 220, length: 3660 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A5D030",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7453,
+     "fpi_length": 7400,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7 (FPW); hole: offset: 1496, length: 792"
+    },
+    {
+     "start_lsn": "0/1A5ED68",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7505,
+     "fpi_length": 7452,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 21 (FPW); hole: offset: 460, length: 740"
+    },
+    {
+     "start_lsn": "0/1A60AD8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7701,
+     "fpi_length": 7648,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 2 (FPW); hole: offset: 1400, length: 544"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT start_lsn::text, resource_manager, record_type, record_length, fpi_length, block_ref FROM pg_get_wal_records_info('0/1A62908', '0/1A663C8')",
+   "tag": "wal of alice update",
+   "status": "SELECT 6",
+   "rows": [
+    {
+     "start_lsn": "0/1A62908",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 54,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A62940",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 132,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A629C8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 64,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7"
+    },
+    {
+     "start_lsn": "0/1A62A08",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7573,
+     "fpi_length": 7520,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 1 (FPW); hole: offset: 464, length: 672"
+    },
+    {
+     "start_lsn": "0/1A647B8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7113,
+     "fpi_length": 7060,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 5 (FPW); hole: offset: 420, length: 1132"
+    },
+    {
+     "start_lsn": "0/1A663A0",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_walfile_name('0/1A62908') AS f",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "f": "000000010000000000000001"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_insert_lsn()::text AS l",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "l": "0/1A6D360"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "UPDATE users SET age = age WHERE id = 2051",
+   "tag": "second change on page 23",
+   "status": "UPDATE 1",
+   "rows": []
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT pg_current_wal_insert_lsn()::text AS l",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "l": "0/1A6F070"
+    }
+   ]
+  },
+  {
+   "conn": "admin",
+   "sql": "SELECT start_lsn::text, resource_manager, record_type, record_length, fpi_length, block_ref FROM pg_get_wal_records_info('0/1A6D360', '0/1A6F070')",
+   "tag": "wal of second change",
+   "status": "SELECT 6",
+   "rows": [
+    {
+     "start_lsn": "0/1A6D360",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 54,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A6D398",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 132,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A6D420",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 64,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7"
+    },
+    {
+     "start_lsn": "0/1A6D460",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 112,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 21"
+    },
+    {
+     "start_lsn": "0/1A6D4D0",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7005,
+     "fpi_length": 6952,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 4 (FPW); hole: offset: 400, length: 1240"
+    },
+    {
+     "start_lsn": "0/1A6F048",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ]
+  },
+  {
+   "conn": "after-crash",
+   "sql": "SELECT age, ctid::text AS ctid FROM users WHERE id = 2050",
+   "tag": "alice after recovery",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 43,
+     "ctid": "(46,50)"
+    }
+   ]
+  },
+  {
+   "conn": "after-crash",
+   "sql": "SELECT age, ctid::text AS ctid FROM users WHERE id = 2049",
+   "tag": "bob after recovery",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "age": 51,
+     "ctid": "(23,25)"
+    }
+   ]
+  },
+  {
+   "conn": "after-crash",
+   "sql": "SELECT pg_xact_status('4856') AS s",
+   "tag": "carol status after recovery",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "aborted"
+    }
+   ]
+  },
+  {
+   "conn": "after-crash",
+   "sql": "SELECT pg_xact_status('4857') AS s",
+   "tag": "alice status after recovery",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "s": "committed"
+    }
+   ]
+  },
+  {
+   "conn": "after-crash",
+   "sql": "SELECT lp, lp_off, lp_flags, lp_len, t_xmin::text AS t_xmin, t_xmax::text AS t_xmax, t_ctid::text AS t_ctid, t_infomask2, t_infomask, t_hoff, t_data FROM heap_page_items(get_raw_page('users', 46)) WHERE lp IN (49) ORDER BY lp",
+   "tag": "carol version after recovery",
+   "status": "SELECT 1",
+   "rows": [
+    {
+     "lp": 49,
+     "lp_off": 3880,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4856",
+     "t_xmax": "0",
+     "t_ctid": "(46,49)",
+     "t_infomask2": 3,
+     "t_infomask": 10754,
+     "t_hoff": 24,
+     "t_data": "01080000675573657230323034392d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e006300"
+    }
+   ]
+  }
+ ],
+ "notes": [],
+ "steps": {
+  "1_checkpoint": {
+   "control": [
+    {
+     "checkpoint_lsn": "0/1A53C98",
+     "redo_lsn": "0/1A53C40",
+     "timeline_id": 1,
+     "has_time": true
+    }
+   ],
+   "settings": [
+    {
+     "name": "checkpoint_timeout",
+     "setting": "300",
+     "boot_val": "300",
+     "unit": "s"
+    },
+    {
+     "name": "data_checksums",
+     "setting": "on",
+     "boot_val": "off",
+     "unit": null
+    },
+    {
+     "name": "fsync",
+     "setting": "on",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "full_page_writes",
+     "setting": "on",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "max_wal_size",
+     "setting": "1024",
+     "boot_val": "1024",
+     "unit": "MB"
+    },
+    {
+     "name": "min_wal_size",
+     "setting": "80",
+     "boot_val": "80",
+     "unit": "MB"
+    },
+    {
+     "name": "synchronous_commit",
+     "setting": "on",
+     "boot_val": "on",
+     "unit": null
+    },
+    {
+     "name": "wal_buffers",
+     "setting": "512",
+     "boot_val": "-1",
+     "unit": "8kB"
+    },
+    {
+     "name": "wal_level",
+     "setting": "replica",
+     "boot_val": "replica",
+     "unit": null
+    },
+    {
+     "name": "wal_log_hints",
+     "setting": "off",
+     "boot_val": "off",
+     "unit": null
+    },
+    {
+     "name": "wal_sync_method",
+     "setting": "open_datasync",
+     "boot_val": "open_datasync",
+     "unit": null
+    },
+    {
+     "name": "wal_writer_delay",
+     "setting": "200",
+     "boot_val": "200",
+     "unit": "ms"
+    }
+   ]
+  },
+  "2_carol": {
+   "xid": "4856",
+   "new_ctid": "(46,49)",
+   "wal_range": [
+    "0/1A59E08",
+    "0/1A62908"
+   ],
+   "wal": [
+    {
+     "start_lsn": "0/1A59E08",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 8179,
+     "fpi_length": 8120,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23 (FPW); hole: offset: 376, length: 72"
+    },
+    {
+     "start_lsn": "0/1A5BE18",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 4605,
+     "fpi_length": 4532,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 (FPW); hole: offset: 220, length: 3660 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A5D030",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7453,
+     "fpi_length": 7400,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7 (FPW); hole: offset: 1496, length: 792"
+    },
+    {
+     "start_lsn": "0/1A5ED68",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7505,
+     "fpi_length": 7452,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 21 (FPW); hole: offset: 460, length: 740"
+    },
+    {
+     "start_lsn": "0/1A60AD8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7701,
+     "fpi_length": 7648,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 2 (FPW); hole: offset: 1400, length: 544"
+    }
+   ]
+  },
+  "3_alice_commit": {
+   "xid": "4857",
+   "lsn_before": "0/1A62908",
+   "lsn_after": "0/1A663C8",
+   "flush_before_commit": {
+    "f": "0/1A53D10",
+    "i": "0/1A663A0"
+   },
+   "flush_after_commit": {
+    "f": "0/1A663C8",
+    "i": "0/1A663C8"
+   },
+   "wal_io_before": [
+    {
+     "writes": 4104,
+     "fsyncs": 0
+    }
+   ],
+   "wal_io_after": [
+    {
+     "writes": 4105,
+     "fsyncs": 0
+    }
+   ],
+   "page_in_buffer": {
+    "pd_lsn": "0/1A629C8",
+    "alice_xmax": 4857,
+    "alice_ctid": "(46,50)"
+   },
+   "page_on_disk": {
+    "pd_lsn": "0/1A4F478",
+    "alice_xmax": 0,
+    "alice_ctid": "(23,26)"
+   },
+   "wal": [
+    {
+     "start_lsn": "0/1A62908",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 54,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A62940",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 132,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A629C8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 64,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7"
+    },
+    {
+     "start_lsn": "0/1A62A08",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7573,
+     "fpi_length": 7520,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 1 (FPW); hole: offset: 464, length: 672"
+    },
+    {
+     "start_lsn": "0/1A647B8",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7113,
+     "fpi_length": 7060,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 5 (FPW); hole: offset: 420, length: 1132"
+    },
+    {
+     "start_lsn": "0/1A663A0",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ],
+   "pg_waldump": "rmgr: Heap        len (rec/tot):     54/    54, tx:       4857, lsn: 0/01A62908, prev 0/01A60AD8, desc: LOCK xmax: 4857, off: 26, infobits: [LOCK_ONLY, EXCL_LOCK], flags: 0x00, blkref #0: rel 1663/5/16466 blk 23\nrmgr: Heap        len (rec/tot):    132/   132, tx:       4857, lsn: 0/01A62940, prev 0/01A62908, desc: UPDATE old_xmax: 4857, old_off: 26, old_infobits: [], flags: 0x00, new_xmax: 0, new_off: 50, blkref #0: rel 1663/5/16466 blk 46, blkref #1: rel 1663/5/16466 blk 23\nrmgr: Btree       len (rec/tot):     64/    64, tx:       4857, lsn: 0/01A629C8, prev 0/01A62940, desc: INSERT_LEAF off: 223, blkref #0: rel 1663/5/16472 blk 7\nrmgr: Btree       len (rec/tot):     53/  7573, tx:       4857, lsn: 0/01A62A08, prev 0/01A629C8, desc: INSERT_LEAF off: 3, blkref #0: rel 1663/5/16474 blk 1 FPW\nrmgr: Btree       len (rec/tot):     53/  7113, tx:       4857, lsn: 0/01A647B8, prev 0/01A62A08, desc: INSERT_LEAF off: 85, blkref #0: rel 1663/5/16475 blk 5 FPW\nrmgr: Transaction len (rec/tot):     34/    34, tx:       4857, lsn: 0/01A663A0, prev 0/01A647B8, desc: COMMIT 2026-10-27 09:49:05.558965 �й���׼ʱ��\n",
+   "walfile": "000000010000000000000001"
+  },
+  "4_second_change": {
+   "wal": [
+    {
+     "start_lsn": "0/1A6D360",
+     "resource_manager": "Heap",
+     "record_type": "LOCK",
+     "record_length": 54,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A6D398",
+     "resource_manager": "Heap",
+     "record_type": "UPDATE",
+     "record_length": 132,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16466 fork main blk 46 blkref #1: rel 1663/5/16466 fork main blk 23"
+    },
+    {
+     "start_lsn": "0/1A6D420",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 64,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16472 fork main blk 7"
+    },
+    {
+     "start_lsn": "0/1A6D460",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 112,
+     "fpi_length": 0,
+     "block_ref": "blkref #0: rel 1663/5/16474 fork main blk 21"
+    },
+    {
+     "start_lsn": "0/1A6D4D0",
+     "resource_manager": "Btree",
+     "record_type": "INSERT_LEAF",
+     "record_length": 7005,
+     "fpi_length": 6952,
+     "block_ref": "blkref #0: rel 1663/5/16475 fork main blk 4 (FPW); hole: offset: 400, length: 1240"
+    },
+    {
+     "start_lsn": "0/1A6F048",
+     "resource_manager": "Transaction",
+     "record_type": "COMMIT",
+     "record_length": 34,
+     "fpi_length": 0,
+     "block_ref": null
+    }
+   ]
+  },
+  "5_recovery": {
+   "server_log": "2026-10-27 09:49:05.976 CST [46620] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:49:05.977 CST [46620] LOG:  listening on IPv4 address \"127.0.0.1\", port 64115\n2026-10-27 09:49:06.062 CST [63752] LOG:  database system was interrupted; last known up at 2026-10-27 09:49:05 CST\n2026-10-27 09:49:06.391 CST [63752] LOG:  database system was not properly shut down; automatic recovery in progress\n2026-10-27 09:49:06.395 CST [63752] LOG:  redo starts at 0/1A53C40\n2026-10-27 09:49:06.400 CST [63752] LOG:  invalid record length at 0/1A6F098: expected at least 24, got 0\n2026-10-27 09:49:06.400 CST [63752] LOG:  redo done at 0/1A6F070 system usage: CPU: user: 0.00 s, system: 0.01 s, elapsed: 0.00 s\n2026-10-27 09:49:06.405 CST [42040] LOG:  checkpoint starting: end-of-recovery immediate wait\n2026-10-27 09:49:06.425 CST [42040] LOG:  checkpoint complete: wrote 17 buffers (0.1%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.007 s, sync=0.008 s, total=0.021 s; sync files=10, longest=0.002 s, average=0.001 s; distance=109 kB, estimate=109 kB; lsn=0/1A6F098, redo lsn=0/1A6F098\n2026-10-27 09:49:06.438 CST [46620] LOG:  database system is ready to accept connections\n",
+   "alice": {
+    "age": 43,
+    "ctid": "(46,50)"
+   },
+   "bob": {
+    "age": 51,
+    "ctid": "(23,25)"
+   },
+   "carol_status": "aborted",
+   "alice_status": "committed",
+   "carol_version_in_page": [
+    {
+     "lp": 49,
+     "lp_off": 3880,
+     "lp_flags": 1,
+     "lp_len": 82,
+     "t_xmin": "4856",
+     "t_xmax": "0",
+     "t_ctid": "(46,49)",
+     "t_infomask2": 3,
+     "t_infomask": 10754,
+     "t_hoff": 24,
+     "t_data": "b'\\x01\\x08\\x00\\x00gUser02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN\\x00c\\x00'",
+     "flags": [
+      "HEAP_HASVARWIDTH",
+      "HEAP_XMIN_INVALID",
+      "HEAP_XMAX_INVALID",
+      "HEAP_UPDATED"
+     ]
+    }
+   ]
+  }
+ },
+ "server_log_before_crash": "2026-10-27 09:49:03.140 CST [45096] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:49:03.143 CST [45096] LOG:  listening on IPv4 address \"127.0.0.1\", port 64115\n2026-10-27 09:49:03.310 CST [66348] LOG:  database system was shut down at 2026-10-27 09:48:59 CST\n2026-10-27 09:49:03.322 CST [45096] LOG:  database system is ready to accept connections\n2026-10-27 09:49:05.352 CST [26888] LOG:  checkpoint starting: immediate force wait\n2026-10-27 09:49:05.429 CST [26888] LOG:  checkpoint complete: wrote 233 buffers (1.4%), wrote 5 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.040 s, sync=0.032 s, total=0.078 s; sync files=60, longest=0.002 s, average=0.001 s; distance=2442 kB, estimate=2442 kB; lsn=0/1A53C98, redo lsn=0/1A53C40\n",
+ "server_log": "2026-10-27 09:49:03.140 CST [45096] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:49:03.143 CST [45096] LOG:  listening on IPv4 address \"127.0.0.1\", port 64115\n2026-10-27 09:49:03.310 CST [66348] LOG:  database system was shut down at 2026-10-27 09:48:59 CST\n2026-10-27 09:49:03.322 CST [45096] LOG:  database system is ready to accept connections\n2026-10-27 09:49:05.352 CST [26888] LOG:  checkpoint starting: immediate force wait\n2026-10-27 09:49:05.429 CST [26888] LOG:  checkpoint complete: wrote 233 buffers (1.4%), wrote 5 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.040 s, sync=0.032 s, total=0.078 s; sync files=60, longest=0.002 s, average=0.001 s; distance=2442 kB, estimate=2442 kB; lsn=0/1A53C98, redo lsn=0/1A53C40\n2026-10-27 09:49:05.637 CST [45096] LOG:  received immediate shutdown request\n2026-10-27 09:49:05.661 CST [45096] LOG:  database system is shut down\n2026-10-27 09:49:05.976 CST [46620] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit\n2026-10-27 09:49:05.977 CST [46620] LOG:  listening on IPv4 address \"127.0.0.1\", port 64115\n2026-10-27 09:49:06.062 CST [63752] LOG:  database system was interrupted; last known up at 2026-10-27 09:49:05 CST\n2026-10-27 09:49:06.391 CST [63752] LOG:  database system was not properly shut down; automatic recovery in progress\n2026-10-27 09:49:06.395 CST [63752] LOG:  redo starts at 0/1A53C40\n2026-10-27 09:49:06.400 CST [63752] LOG:  invalid record length at 0/1A6F098: expected at least 24, got 0\n2026-10-27 09:49:06.400 CST [63752] LOG:  redo done at 0/1A6F070 system usage: CPU: user: 0.00 s, system: 0.01 s, elapsed: 0.00 s\n2026-10-27 09:49:06.405 CST [42040] LOG:  checkpoint starting: end-of-recovery immediate wait\n2026-10-27 09:49:06.425 CST [42040] LOG:  checkpoint complete: wrote 17 buffers (0.1%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.007 s, sync=0.008 s, total=0.021 s; sync files=10, longest=0.002 s, average=0.001 s; distance=109 kB, estimate=109 kB; lsn=0/1A6F098, redo lsn=0/1A6F098\n2026-10-27 09:49:06.438 CST [46620] LOG:  database system is ready to accept connections\n2026-10-27 09:49:06.601 CST [46620] LOG:  received fast shutdown request\n2026-10-27 09:49:06.602 CST [46620] LOG:  aborting any active transactions\n2026-10-27 09:49:06.611 CST [46620] LOG:  background worker \"logical replication launcher\" (PID 60948) exited with exit code 1\n2026-10-27 09:49:06.612 CST [42040] LOG:  shutting down\n2026-10-27 09:49:06.613 CST [42040] LOG:  checkpoint starting: shutdown immediate\n2026-10-27 09:49:06.623 CST [42040] LOG:  checkpoint complete: wrote 6 buffers (0.0%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.002 s, total=0.012 s; sync files=4, longest=0.001 s, average=0.001 s; distance=40 kB, estimate=102 kB; lsn=0/1A79470, redo lsn=0/1A79470\n2026-10-27 09:49:06.644 CST [46620] LOG:  database system is shut down\n"
+}

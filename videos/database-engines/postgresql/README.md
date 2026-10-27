@@ -8,7 +8,7 @@
 |---|---|
 | 当前停在哪里 | 2026-10-27 试听定稿：配音沉稳高管、配乐 R3「沉稳」、封面 R2 的 A（深蓝底、高亮蓝字）、视觉稿 R2；旧版的事实、来源与实验存档在 `research/r12/`；`project.json` 是新版（取证阶段） |
 | 下一步，依赖什么 | 在 PostgreSQL 18（本机 18.4）上按「取证计划」重新实测，写新版 [FACTS](research/FACTS.md)；事实齐了再写文案交审 |
-| 等待策划者的事 | 确认旧版署名「6.1Sol」的准确型号（新版若沿用旧版叙事的任何部分，要按准确型号登记）。试听页都在 `out/audition/`（不入库）：R3 `pg-audition-r3.html` 是定稿那一轮，demo 已按成片响度重混（第一版整体低约 2 dB）；由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
+| 等待策划者的事 | 无。试听页都在 `out/audition/`（不入库）：R3 `pg-audition-r3.html` 是定稿那一轮，demo 已按成片响度重混（第一版整体低约 2 dB）；由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
 | 未做的事 | 全部实测；文案；配音、配乐；`src/` 仍是旧版成片的源码，进入实现阶段时换成现行模板（旧版源码保留在 Git 历史） |
 
@@ -17,6 +17,7 @@
 策划者 WaterRun 原话：
 
 - 2026-10-26：「现在 可以思考下一期 PostgreSQL了. 开场白还是占用率, 用户基于看完InnoDB. 当然, 新版本的内容要详细的多. Pg的美学很有特点, 你应该一个视觉稿就能契合.」「pg用最新生产版本」
+- 2026-10-27：「可以, 开始, 旧版本不用署名」——开始取证；旧版的署名（含「6.1Sol」）不进新版名单，不再追问型号。旧材料只作线索，新版的事实全部重测、重读原文。
 - 2026-10-27：「Pg我系统安装的是18大版本了, 那就以此即可」——以大版本 18 为准，实测用本机的 18.4；片中与封面写「PostgreSQL 18」。
 - 2026-10-27，看过试听 R3：封面「Cover A, Pg是蓝色的」；配乐 R3「可以」；demo「声音好像有点太小」——demo 漏了成片的最后一步（finish.js 把整体响度提到 -16 LUFS），已补上重混；分轨实测旁白比配乐响 18.2 LU，InnoDB 一集成片是 16.9 LU，比例不动。
 - 2026-10-26：「注意Firebird已经移除, 下一期是将小巧强大的SQLite. 如何在小巧的嵌入式实现强大的生产级关系数据库.」——片尾引出 SQLite，不再引出 Firebird。
