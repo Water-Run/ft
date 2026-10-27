@@ -114,7 +114,7 @@ def main(d, rnd):
             H.append('<figure><img alt="封面" src="data:image/jpeg;base64,%s"><figcaption>%s</figcaption></figure>' % (b64(jpg), html.escape(cap)))
     if R.get('demo'):
         dm = json.load(open(os.path.join(d, R['demo'] + '.json'), encoding='utf-8'))
-        H.append('<h2>配乐 + 配音 · 一分半 demo</h2><p>配乐 R3 垫在选定的男声下面。电平照本片的设定：配乐 %d dB，说话时再压低 %d dB；混法和成片用的 <code>kit/tools/mix.py</code> 相同（旁白按响度对齐再软限幅），听起来接近成片的比例。本片 <code>tools/demo_mix.py</code> 生成。</p>' % (dm['music_db'], dm['duck_db']))
+        H.append('<h2>配乐 + 配音 · 一分半 demo</h2><p>配乐 R3 垫在选定的男声下面。电平照本片的设定：配乐 %d dB，说话时再压低 %d dB；混法和成片用的 <code>kit/tools/mix.py</code> 相同（旁白按响度对齐再软限幅），最后照成片的 <code>finish.js</code> 把整体响度提到 %.1f LUFS、真峰值 %.1f dBFS（第一版漏了这一步，整体低约 2 dB）。分轨实测旁白比配乐响 %.1f LU（InnoDB 一集成片是 16.9 LU）。本片 <code>tools/demo_mix.py</code> 生成。</p>' % (dm['music_db'], dm['duck_db'], dm['lufs'], dm['true_peak'], dm['voice_over_music_lu']))
         H.append('<div class="card"><h3>demo · %s</h3><div class="meta">MiniMax %s · <code>%s</code> · 语速 %.2f 倍 · 实测每秒 %.2f 字 · 共 %.1f 秒</div><audio controls preload="metadata" src="data:audio/mpeg;base64,%s"></audio></div>'
                  % (at(dm['seconds']), html.escape(dm['model']), html.escape(dm['voice']), dm['speed'], dm['rate'], dm['seconds'], b64(os.path.join(d, R['demo'] + '.mp3'))))
         H.append('<p>试听文字只为试听，不是文案，没有取证，不进成片；成片文案按取证另写，经校对确认后才配音：</p><blockquote>%s</blockquote>' % '<br>'.join(html.escape(s['text']) for s in dm['segments']))

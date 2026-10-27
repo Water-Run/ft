@@ -1,5 +1,8 @@
 # 配乐 + 配音的一分半试听 demo：选定的男声读一段试听文字，配乐垫在下面，电平与压低量照本片 project.json 的 audio，
-# 混法与 kit/tools/mix.py 相同（旁白按响度对齐到 -21 dB 再软限幅；说话时配乐再压低 duck_db），听起来接近成片。
+# 混法与 kit/tools/mix.py 相同（旁白按响度对齐到 -21 dB 再软限幅；说话时配乐再压低 duck_db），
+# 最后照 kit/tools/finish.js 把整体响度提到成片目标（-16 LUFS）并限幅，听起来接近成片。
+# 第一版漏了最后这一步，整体只有 -18.1 LUFS（成片是 -16），WaterRun 听了说「声音好像有点太小」（2026-10-27）。
+# 同时量过分轨：旁白比配乐响 18.2 LU，InnoDB 一集成片是 16.9 LU，比例本身不偏小。
 # WaterRun 2026-10-26：「新Demo还包括BGM+配音的1.5分钟demo」。
 # 试听文字只为试听，不是文案，没有取证，不进成片；成片文案按 research/FACTS.md 另写，经校对确认后才配音。
 # 用法：python demo_mix.py <试听目录> <配乐.wav> <输出前缀>   需要 MiniMax 密钥；本机要让 api.minimaxi.com 与 .aliyuncs.com 不走代理。
@@ -42,6 +45,12 @@ def decode(path, ch=1):
     return a if ch == 1 else a.reshape(-1, ch).T
 
 
+def loudness(path):
+    t = subprocess.run([FF, '-hide_banner', '-nostats', '-i', path, '-af', 'ebur128=peak=true', '-f', 'null', '-'], capture_output=True, text=True, encoding='utf-8', errors='replace').stderr
+    s = t[t.rfind('Summary:'):]
+    return {'I': float(re.search(r'I:\s+(-?[\d.]+) LUFS', s).group(1)), 'TP': float(re.search(r'Peak:\s+(-?[\d.]+) dBFS', s).group(1))}
+
+
 def smooth(x, k):
     c = np.cumsum(np.concatenate([np.zeros(k // 2 + 1), x, np.zeros(k - k // 2)]))
     return ((c[k:] - c[:-k]) / k)[: len(x)]
@@ -76,19 +85,37 @@ def main(d, music_wav, prefix):
     music = music / max(1e-9, np.abs(music).max())
     music = np.pad(music, ((0, 0), (0, max(0, N - music.shape[1]))))[:, :N]
     fade = np.clip(np.arange(N) / (2.5 * SR), 0, 1) * np.clip((N - np.arange(N)) / (3.5 * SR), 0, 1)
-    out = music * (10 ** ((AUD['music_db'] - AUD['duck_db'] * duck) / 20) * fade) + voice
+    music = music * (10 ** ((AUD['music_db'] - AUD['duck_db'] * duck) / 20) * fade)
+    out = music + voice
     peak = np.abs(out).max()
     if peak > 0.97:
-        out *= 0.97 / peak
-    wav = os.path.join(d, prefix + '.wav')
-    with wave.open(wav, 'wb') as w:
-        w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.clip(out.T, -1, 1) * 32767).astype('<i2').tobytes())
-    subprocess.run([FF, '-v', 'error', '-y', '-i', wav, '-codec:a', 'libmp3lame', '-b:a', '192k', os.path.join(d, prefix + '.mp3')], check=True)
+        out *= 0.97 / peak; music *= 0.97 / peak; voice *= 0.97 / peak
+
+    def write(path, y):
+        y = np.broadcast_to(y, (2, N)) if y.ndim == 1 else y
+        with wave.open(path, 'wb') as w:
+            w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.clip(y.T, -1, 1) * 32767).astype('<i2').tobytes())
+    wav = os.path.join(d, prefix + '.wav'); write(wav, out)
+    # 分轨各量一次响度：旁白比配乐响多少 LU（同一位置量，和别的片子的成片分轨可比）
+    write(os.path.join(d, prefix + '_voice.wav'), voice); write(os.path.join(d, prefix + '_music.wav'), music)
+    gap = round(loudness(os.path.join(d, prefix + '_voice.wav'))['I'] - loudness(os.path.join(d, prefix + '_music.wav'))['I'], 1)
+    # 最后一步照 kit/tools/finish.js：按实测响度加一个固定增益到目标（audio.lufs，缺省 -16 LUFS），再限幅；真峰值超过 -1 dBFS 就压低限幅上限重做
+    target = float(AUD.get('lufs', -16)); m0 = loudness(wav)
+    gain = max(-6.0, min(20.0, target - m0['I'] + 0.4)); lim = 0.84
+    final = os.path.join(d, prefix + '_final.wav')
+    for _ in range(3):
+        subprocess.run([FF, '-v', 'error', '-y', '-i', wav, '-af', 'volume=%.1fdB,alimiter=limit=%.3f:level=disabled:attack=5:release=80' % (gain, lim), final], check=True)
+        m1 = loudness(final)
+        if m1['TP'] <= -1.0:
+            break
+        lim *= 10 ** ((-1.0 - m1['TP'] - 0.05) / 20)
+    subprocess.run([FF, '-v', 'error', '-y', '-i', final, '-codec:a', 'libmp3lame', '-b:a', '192k', os.path.join(d, prefix + '.mp3')], check=True)
     speech = sum(s['end'] - s['start'] for s in segs)
     meta = {'voice': voice_id, 'speed': speed, 'model': TTS['model'], 'music_db': AUD['music_db'], 'duck_db': AUD['duck_db'], 'seconds': round(total, 2),
+            'lufs': m1['I'], 'true_peak': m1['TP'], 'gain_db': round(gain, 1), 'voice_over_music_lu': gap,
             'rate': round(sum(units(p) for p in PARAS) / speech, 2), 'segments': [{k: s[k] for k in ('start', 'end', 'text')} for s in segs]}
     json.dump(meta, open(os.path.join(d, prefix + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    print(prefix, 'total', round(total, 1), 's', 'speech', round(speech, 1), 's', 'rate', meta['rate'], 'peak', round(min(peak, 0.97), 3))
+    print(prefix, 'total', round(total, 1), 's', 'speech', round(speech, 1), 's', 'rate', meta['rate'], 'before', m0['I'], 'LUFS', 'gain', round(gain, 1), 'dB', 'after', m1['I'], 'LUFS', 'TP', m1['TP'], 'dBFS', 'voice-music', gap, 'LU')
 
 
 if __name__ == '__main__':
