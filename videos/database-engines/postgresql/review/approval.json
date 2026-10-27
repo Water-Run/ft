@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "62b8fa9848a41036d477366a504784756e7fcf83a32dc37adaf92ffb43ce618e",
+      "status": "approved",
+      "content_sha256": "957aa04445401df80c74100be114999ea43817df5dcf7ce50f242a45ede246d1",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-27T14:59:00+08:00",
+      "evidence": "review/NOTES.md「确认记录」：WaterRun 2026-10-27 看过第 2 稿后回复「o8 而MySQL降至仅35% 其它基本不错了, 开始做preview吧」；按其原话改 o8 后的稿本即此内容哈希。"
     }
   }
 }

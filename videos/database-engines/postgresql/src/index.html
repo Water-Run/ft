@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>一个数据库引擎是如何实现的？——开源巅峰 PostgreSQL</title>
+<title>一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL</title>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,25 +14,29 @@
   <div id="caption"><span></span></div>
 </div>
 <script src="vendor/gsap.min.js"></script>
-<!-- 实测时长：每种语言一份，由 kit/tools/tts.js 生成 -->
+<!-- 实测时长：由 kit/tools/tts.js 生成 -->
 <script src="js/timing.zh.js"></script>
 <script src="js/script.js"></script>
 <script src="js/config.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/util.js"></script>
+<!-- 本片的数据与部件 -->
 <script src="js/data.js"></script>
 <script src="js/parts.js"></script>
-<!-- 场景：一章一个（或数个）文件，按出场顺序列在这里 -->
-<script src="js/scenes/s0_open.js"></script>
-<script src="js/scenes/s1_history.js"></script>
-<script src="js/scenes/s2_storage.js"></script>
-<script src="js/scenes/s3_query.js"></script>
-<script src="js/scenes/s4_modify.js"></script>
-<script src="js/scenes/s5_mvcc.js"></script>
-<script src="js/scenes/s6_vacuum.js"></script>
-<script src="js/scenes/s7_recovery.js"></script>
-<script src="js/scenes/s8_compare.js"></script>
-<script src="js/scenes/s9_outro.js"></script>
+<!-- 场景：按出场顺序 -->
+<script src="js/scenes/s00_open.js"></script>
+<script src="js/scenes/s01_history.js"></script>
+<script src="js/scenes/s02_layout.js"></script>
+<script src="js/scenes/s03_page.js"></script>
+<script src="js/scenes/s04_insert.js"></script>
+<script src="js/scenes/s05_query.js"></script>
+<script src="js/scenes/s06_update.js"></script>
+<script src="js/scenes/s07_mvcc.js"></script>
+<script src="js/scenes/s08_delete.js"></script>
+<script src="js/scenes/s09_crash.js"></script>
+<script src="js/scenes/s10_five.js"></script>
+<script src="js/scenes/s11_tradeoff.js"></script>
+<script src="js/scenes/s12_credits.js"></script>
 <script src="js/boot.js"></script>
 </body>
 </html>

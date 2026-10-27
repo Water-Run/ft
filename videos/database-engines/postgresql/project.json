@@ -53,7 +53,7 @@
   },
   "audio": {
     "music": "tools/music.py",
-    "music_db": -16,
+    "music_db": -13,
     "duck_db": 8,
     "sfx_db": -8
   },

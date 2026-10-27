@@ -1,114 +1,92 @@
-/* PostgreSQL 一集的视觉系统。全部取自 postgresql.org 现行样式表（/dyncss/base.css）与官方大象标志：
-   - 主色 #336791（链接、标题、按钮、特性区底色）；深蓝 #193145（链接高亮）；浅蓝 #699eca。
-   - 标题 Open Sans 600、#336791，右侧跟一条 #e7eae8 的装饰横线（#pgContentWrap h2:after）。
-   - 文档表格表头 #e0ecef、蓝字；单元格白底、#dee2e6 边框；代码块 #f8f9fa。
-   - 文档提示框：注意 #d1ecf1 / #ced4da、提示 #e8f7e6 / #84c578、警告 #fbeded / #df421e、小心 #fff3cd / #e2b21f。
-   - 正文 #212121 / #4a4a4a，次要 #6b6b6b。
-   语义：蓝 = PostgreSQL 与此刻在讲的东西；中性灰 = MySQL / InnoDB 及背景；浅蓝 = 旧版本、快照；警告红只给拒绝与等待。
-   字：拉丁文字与数字 Open Sans（OFL 1.1，随片放在 src/type/），中文 Sans SC，SQL、psql 回显与字节 Mono。 */
+/* PostgreSQL 一集（重做版）的视觉系统：取自 postgresql.org 官网样式表的官方配色与官方文档的版式（视觉稿 R2，WaterRun 2026-10-26 确认）。
+   - Pg 蓝 #336791：PostgreSQL 与此刻在讲的东西；深蓝 #264d6d / #193145；浅蓝 #699eca：旧版本、快照、路径；文档表头 #e0ecef。
+   - MySQL / InnoDB 用中性灰；砖红只给拒绝、等待与「还在进行」。
+   - 拉丁文字与数字 Open Sans（OFL 1.1，随片放在 src/type/），中文 Sans SC，SQL、psql 回显与字节 Mono。
+   - 顶上一条 88 像素的 Pg 蓝通栏：左边名字与版本，右边章节；章节卡整屏 Pg 蓝。不放大象标志（系列约定）。 */
 @font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wdth-wght.ttf"); font-weight: 300 800; font-stretch: 75% 100%; }
 
 :root {
-  --pg: #336791; --pg-dk: #193145; --pg-lt: #699eca; --pg-wash: #e0ecef;
-  --paper: #ffffff; --mist: #f3f5f9; --rule: #e7eae8; --line: #dee2e6; --code: #f8f9fa;
-  --ink: #212121; --ink2: #4a4a4a; --mute: #6b6b6b; --grey: #8a8f94; --grey-lt: #ced4da;
-  --note-bg: #d1ecf1; --note-bd: #ced4da;
-  --tip-bg: #e8f7e6; --tip-bd: #84c578; --tip-fg: #2f6b26;
-  --warn-bg: #fbeded; --warn-bd: #df421e; --warn-fg: #b2331a;
-  --caut-bg: #fff3cd; --caut-bd: #e2b21f; --caut-fg: #7a5a00;
+  --pg: #336791; --pg-dk: #264d6d; --navy: #193145; --sky: #699eca; --sky-lt: #cfe0ee; --wash: #e0ecef; --hi: #dbe8f3;
+  --paper: #ffffff; --rule: #e7eae8; --line: #dee2e6; --code: #f8f9fa;
+  --ink: #1f2a33; --ink2: #4f5c67; --mute: #5f6a73; --grey: #9aa4ad; --grey-lt: #e5e8eb;
+  --dead: #dfe3e6; --warn: #b8442f; --warn-lt: #f6e3dd; --ok: #2f6b26; --ok-lt: #e8f7e6;
+  --sans: "Open Sans", "Sans SC", sans-serif; --mono: "Mono", "Sans SC", monospace;
 }
-body { font-family: "Open Sans", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-.scene { background: var(--paper); overflow: hidden; }
-.world { position: absolute; left: 0; top: 0; width: 16000px; height: 4000px; }
+body { font-family: var(--sans); color: var(--ink); }
+#bg { background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0V40' fill='none' stroke='%23336791' stroke-opacity='0.06' stroke-width='1.5'/%3E%3C/svg%3E"); }
+.scene { overflow: hidden; }
+.world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.mono { font-family: var(--mono); }
 
-/* 字号阶梯 */
-.t-0 { font: 700 150px/1.02 "Open Sans", "Sans SC"; letter-spacing: -.015em; color: var(--pg); }
-.t-1 { font: 700 96px/1.08 "Sans SC", "Open Sans"; color: var(--pg); }
-.t-2 { font: 600 64px/1.15 "Sans SC", "Open Sans"; color: var(--pg); }
-.t-3 { font: 600 46px/1.2 "Sans SC", "Open Sans"; color: var(--ink); }
-.t-4 { font: 500 38px/1.3 "Sans SC", "Open Sans"; color: var(--ink2); }
-.t-n { font: 500 32px/1.35 "Sans SC", "Open Sans"; color: var(--ink2); }
-.t-s { font: 500 28px/1.3 "Sans SC", "Open Sans"; color: var(--mute); }
-.num { font-family: "Open Sans", "Sans SC"; font-variant-numeric: tabular-nums; }
-.mono { font-family: "Mono"; }
-.pg { color: var(--pg); } .dk { color: var(--pg-dk); } .lt { color: var(--pg-lt); } .mute { color: var(--mute); } .grey { color: var(--mute); }
-.ink { color: var(--ink); } .warn { color: var(--warn-fg); } .okc { color: var(--tip-fg); }
-.b7 { font-weight: 700; } .b6 { font-weight: 600; }
+/* 顶栏（常驻） */
+.band { position: absolute; left: 0; top: 0; width: 1920px; height: 88px; background: var(--pg); }
+.ident { position: absolute; left: 72px; top: 22px; font: 800 32px var(--sans); color: #fff; letter-spacing: .2px; }
+.ident small { font: 600 26px var(--sans); color: var(--sky-lt); margin-left: 14px; }
+.chlabel { position: absolute; right: 72px; top: 24px; font: 600 28px var(--sans); color: var(--hi); text-align: right; white-space: nowrap; }
 
-/* 文档式标题：蓝字 + 右侧装饰横线 */
-.hd { position: absolute; display: flex; align-items: center; white-space: nowrap; font: 600 54px/1.2 "Sans SC", "Open Sans"; color: var(--pg); }
-.hd .ln { flex: 1 1 auto; height: 4px; background: var(--rule); margin-left: 28px; }
-.hd.sm { font-size: 40px; } .hd.sm .ln { height: 3px; margin-left: 22px; }
+/* 章节卡：整屏 Pg 蓝 */
+.chapter { position: absolute; left: 0; right: 0; top: 88px; bottom: 0; background: var(--pg); }
+.chapter .no { position: absolute; left: 160px; top: 162px; font: 800 220px var(--sans); color: #fff; opacity: .22; letter-spacing: -4px; }
+.chapter .ti { position: absolute; left: 170px; top: 412px; font: 800 100px "Sans SC", sans-serif; color: #fff; }
+.chapter .q { position: absolute; left: 174px; top: 560px; font: 600 38px "Sans SC", sans-serif; color: #e8f1f8; }
+.chapter .ru { position: absolute; left: 174px; top: 652px; width: 520px; height: 6px; background: #fff; }
+.chapter .id2 { position: absolute; left: 72px; top: 44px; font: 800 32px var(--sans); color: #fff; }
+.chapter .id2 small { font: 600 26px var(--sans); color: var(--sky-lt); margin-left: 14px; }
 
-/* 文档表格 */
-.dt { position: absolute; border-collapse: collapse; font: 500 34px/1.25 "Sans SC", "Open Sans"; color: var(--ink); background: var(--paper); }
-.dt th { background: var(--pg-wash); color: var(--pg); font-weight: 600; text-align: left; padding: 12px 26px; border: 2px solid var(--line); }
-.dt td { padding: 11px 26px; border: 2px solid var(--line); white-space: nowrap; }
-.dt td.n { font-family: "Open Sans"; font-variant-numeric: tabular-nums; text-align: right; }
-.dt tr.hl td { background: var(--pg); color: #fff; border-color: var(--pg); }
-.dt tr.fade td { color: var(--grey-lt); }
+/* 字幕：白底条，左侧 Pg 蓝竖线；术语 Pg 蓝 */
+#caption { bottom: 40px; height: 72px; }
+#caption span { font: 500 40px "Sans SC", sans-serif; color: var(--ink); background: rgba(255,255,255,.94); padding: 6px 22px 8px; border-left: 6px solid var(--pg); box-shadow: 0 1px 0 var(--line); }
+#caption em { font-style: normal; color: var(--pg); font-weight: 700; }
 
-/* psql 会话：代码块底色，提示符 postgres=# */
-.psql { position: absolute; background: var(--code); border: 2px solid var(--line); padding: 22px 30px; font: 400 34px/1.42 "Mono"; color: var(--ink); white-space: pre; }
-.psql .pr { color: var(--pg); font-weight: 700; }
-.psql .o { color: var(--ink2); }
-.psql .c { color: var(--mute); }
-.psql .e { color: var(--warn-fg); font-weight: 700; }
+/* 文档部件 */
+.h2 { position: absolute; display: flex; align-items: center; gap: 22px; font: 700 44px var(--sans); color: var(--pg); white-space: nowrap; }
+.h2::after { content: ""; flex: 1; height: 3px; background: var(--sky-lt); }
+.cap { position: absolute; font: 600 26px var(--sans); color: var(--ink2); white-space: nowrap; }
+.cap b { color: var(--navy); }
+.lbl { position: absolute; font: 700 24px var(--sans); color: var(--pg); white-space: nowrap; }
+.note { position: absolute; border-left: 6px solid var(--pg); background: #e6eff7; padding: 14px 22px; font: 500 26px var(--sans); line-height: 1.5; color: var(--ink); }
+.note b { color: var(--pg); }
+.note.warn { border-color: var(--warn); background: var(--warn-lt); }
+.note.warn b { color: var(--warn); }
+.note.grey { border-color: var(--grey); background: #f1f3f5; color: #46505a; }
+.note.grey b { color: #46505a; }
+.src { position: absolute; font: 500 22px var(--sans); color: var(--mute); white-space: nowrap; }
+.tag { position: absolute; font: 700 23px var(--sans); color: #fff; background: var(--pg); padding: 4px 14px; white-space: nowrap; }
+.tag.warn { background: var(--warn); } .tag.grey { background: #5f6a73; } .tag.navy { background: var(--navy); } .tag.ok { background: var(--ok); }
+.psql { position: absolute; background: var(--code); border: 2px solid #b9cfe2; border-left: 6px solid var(--pg); padding: 16px 24px; font: 500 25px var(--mono); color: var(--ink); white-space: pre; line-height: 1.45; }
+.psql .p { color: var(--pg); font-weight: 700; } .psql .k { color: var(--navy); font-weight: 700; } .psql .d { color: var(--ink2); }
+.psql .hi { background: var(--hi); } .psql .er { color: var(--warn); font-weight: 700; } .psql .ok { color: var(--ok); font-weight: 700; }
+table.doc { position: absolute; border-collapse: collapse; font: 500 25px var(--sans); }
+table.doc th { background: var(--pg); color: #fff; font-weight: 700; text-align: left; padding: 10px 20px; border: 2px solid var(--line); white-space: nowrap; }
+table.doc td { background: #fff; padding: 10px 20px; border: 2px solid var(--line); white-space: nowrap; }
+table.doc td.mono, table.doc th.mono { font-family: var(--mono); }
+table.doc tr.hl td { background: var(--hi); }
 
-/* 文档提示框 */
-.adm { position: absolute; border: 3px solid; padding: 20px 30px 22px; font: 500 34px/1.38 "Sans SC", "Open Sans"; color: var(--ink); background: var(--paper); }
-.adm .at { display: block; font-weight: 700; font-size: 30px; margin-bottom: 6px; letter-spacing: .04em; }
-.adm.note { background: var(--note-bg); border-color: var(--note-bd); } .adm.note .at { color: var(--pg-dk); }
-.adm.tip { background: var(--tip-bg); border-color: var(--tip-bd); } .adm.tip .at { color: var(--tip-fg); }
-.adm.warning { background: var(--warn-bg); border-color: var(--warn-bd); } .adm.warning .at { color: var(--warn-fg); }
-.adm.caution { background: var(--caut-bg); border-color: var(--caut-bd); } .adm.caution .at { color: var(--caut-fg); }
-
-/* 页、指针、行版本 */
-.page { position: absolute; background: var(--paper); border: 4px solid var(--pg); }
-.pzone { position: absolute; }
-.phead { position: absolute; background: var(--pg-dk); }
-.lp { position: absolute; background: var(--pg); }
-.lp.red { background: var(--pg-lt); }
-.lp.dead { background: var(--grey-lt); }
-.free { position: absolute; background: var(--paper); border-top: 3px dashed var(--line); border-bottom: 3px dashed var(--line); }
-.tup { position: absolute; display: flex; align-items: stretch; height: 64px; border: 3px solid var(--pg); background: var(--paper); font: 600 30px/58px "Open Sans", "Sans SC"; color: var(--ink); white-space: nowrap; }
-.tup .hdr { background: var(--pg-wash); color: var(--pg-dk); padding: 0 16px; border-right: 3px solid var(--pg); font-family: "Mono"; font-weight: 500; font-size: 26px; }
-.tup .f { padding: 0 18px; border-right: 2px solid var(--line); }
-.tup .f:last-child { border-right: 0; }
-.tup.old { border-color: var(--pg-lt); color: var(--mute); }
-.tup.old .hdr { background: var(--mist); color: var(--mute); border-color: var(--pg-lt); }
-.tup.ghost { border-style: dashed; border-color: var(--grey-lt); color: var(--grey-lt); }
-.tup.ghost .hdr { background: var(--paper); color: var(--grey-lt); border-color: var(--grey-lt); }
-.tag { position: absolute; font: 600 26px/1 "Open Sans", "Sans SC"; color: var(--pg); background: var(--paper); border: 2px solid var(--pg); padding: 8px 14px; white-space: nowrap; }
-.tag.fill { background: var(--pg); color: #fff; }
-.tag.grey { color: var(--mute); border-color: var(--grey-lt); }
-.tag.warn { color: var(--warn-fg); border-color: var(--warn-bd); background: var(--warn-bg); }
-.tag.ok { color: var(--tip-fg); border-color: var(--tip-bd); background: var(--tip-bg); }
-
-/* 图示块 */
-.blk { position: absolute; border: 3px solid var(--pg); background: var(--paper); }
-.blk.fill { background: var(--pg); }
-.blk.wash { background: var(--pg-wash); }
-.blk.grey { border-color: var(--grey-lt); background: var(--mist); }
-.blk.dash { border-style: dashed; background: transparent; }
-.lbl { position: absolute; white-space: nowrap; font: 600 32px/1.2 "Sans SC", "Open Sans"; color: var(--pg); }
-.lbl.c { text-align: center; }
-.lbl.w { color: #fff; }
-.lbl.g { color: var(--ink2); }
-
-/* 常驻层：左上角标志与章名（类似 postgresql.org 导航栏）；章节卡用特性区的蓝底 */
-.hud-brand { position: absolute; left: 44px; top: 26px; display: flex; align-items: center; gap: 16px; white-space: nowrap; }
-.hud-brand img { width: 46px; height: 47px; }
-.hud-brand .wm { font: 600 30px/1 "Open Sans"; color: var(--pg); letter-spacing: -.005em; }
-.hud-brand .ch { font: 500 26px/1 "Sans SC", "Open Sans"; color: var(--mute); padding-left: 16px; border-left: 2px solid var(--rule); }
-.chapter { position: absolute; inset: 0; background: var(--pg); }
-.chapter .no { position: absolute; left: 150px; top: 300px; font: 700 210px/1 "Open Sans"; color: #fff; letter-spacing: -.02em; }
-.chapter .ti { position: absolute; left: 156px; top: 560px; font: 600 104px/1.15 "Sans SC", "Open Sans"; color: #fff; white-space: nowrap; }
-.chapter .ln { position: absolute; left: 160px; top: 528px; width: 300px; height: 6px; background: var(--pg-lt); }
-.chapter img { position: absolute; right: 120px; top: 190px; width: 560px; height: 577px; opacity: .22; }
-.chapter .ft { position: absolute; left: 160px; top: 842px; font: 500 30px/1 "Open Sans", "Sans SC"; color: var(--pg-wash); letter-spacing: .02em; }
-
-/* 字幕：白底条上的深色字，压在图上时有衬底 */
-#caption span { font: 500 44px/1.2 "Sans SC", "Open Sans"; color: var(--ink); background: rgba(255,255,255,.92); padding: 6px 22px; }
-#caption span em { font-style: normal; color: var(--pg); }
+/* 页、行、指针、树 */
+.page { position: absolute; border: 3px solid var(--pg); background: #fff; }
+.page.grey { border-color: var(--grey); }
+.pg-mini { position: absolute; border: 2px solid var(--pg); background: #fff; }
+.pg-mini.full { background: var(--wash); }
+.pg-mini.hl { background: var(--pg); }
+.tup { position: absolute; height: 40px; background: var(--sky-lt); border: 2px solid var(--pg); font: 600 22px var(--mono); color: var(--navy); line-height: 36px; padding: 0 10px; white-space: nowrap; overflow: hidden; }
+.tup.dead { background: repeating-linear-gradient(135deg, #eceff1 0 8px, #dfe3e6 8px 16px); border-color: var(--grey); color: #46505a; }
+.tup.new { background: var(--pg); color: #fff; }
+.tup.grey { background: var(--grey-lt); border-color: var(--grey); color: #4d565e; }
+.tup.ghost { background: #fff; border-style: dashed; color: var(--pg); }
+.lp { position: absolute; background: var(--sky); }
+.lp.hl { background: var(--navy); }
+.node { position: absolute; border: 2.5px solid var(--pg); background: #fff; font: 600 22px var(--mono); color: var(--navy); text-align: center; line-height: 37px; height: 42px; white-space: nowrap; overflow: hidden; }
+.node.hl { background: var(--pg); color: #fff; }
+.node.leaf { background: var(--wash); }
+.node.grey { border-color: var(--grey); color: #4d565e; background: var(--grey-lt); }
+.bar { position: absolute; height: 52px; }
+.bar.my { background: #aab3bb; } .bar.pgc { background: var(--pg); }
+.big { position: absolute; font: 800 120px var(--sans); color: var(--pg); letter-spacing: -2px; white-space: nowrap; }
+.hexcell { position: absolute; font: 600 24px var(--mono); text-align: center; line-height: 46px; height: 50px; border: 2px solid var(--pg); background: #fff; color: var(--navy); white-space: nowrap; }
+.hexcell.hd { background: var(--wash); }
+.hexcell.data { background: var(--sky-lt); }
+.hexcell.hl { background: var(--pg); color: #fff; }
+.axis { position: absolute; height: 3px; background: var(--ink2); }
+.gloss { position: absolute; border-left: 6px solid var(--pg); background: #fff; padding: 10px 18px; font: 500 24px var(--sans); line-height: 1.45; color: var(--ink); box-shadow: 0 2px 0 var(--line); }
+.gloss b { color: var(--pg); }
+.credits-box { position: absolute; }

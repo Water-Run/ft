@@ -1,1824 +1,1126 @@
-// 由 tools/gen_data.py 从研究记录生成，不要手改。
-(function(root){
-const data = {
-  "provenance": {
-    "physical": {
-      "file": "research/lab/out_03_decode.json",
-      "sha256": "0406eb9c23fb2935d395b64673b348b8601d1fa4bf3fe758c9599712d1ce2ca9"
-    },
-    "survey": {
-      "file": "research/lab/out_04_survey.json",
-      "sha256": "f6b00d5ed4ca1c1f6617a9e91ee72cc2ef4adaa6e04f5a676450c0be5a6dd1c9"
-    },
-    "style": {
-      "file": "research/lab/out_05_style.json",
-      "sha256": "9c1bf41a2e70219c5694ed3347e3c730a1c496a69d4fb65f3b0de5a6975c91f2"
-    },
-    "compare": {
-      "file": "research/lab/out_08_compare.json",
-      "sha256": "96c0400ff2f780f4f04524b33fe14c42158616399914313637e0cbf031b98639"
-    },
-    "trend": {
-      "file": "research/lab/out_10_trend.json",
-      "sha256": "8f82f5def453d254f4a4da111f64426d0b8da28a543269051b65422247935e2c"
-    }
+// 由 tools/gen_data.py 从 research/lab 的回显生成，不要手改。
+window.DATA = {
+ "survey": [
+  {
+   "year": 2022,
+   "pg": 43.59,
+   "my": 46.85
   },
-  "physical": {
-    "schema": 1,
-    "source": "out_01_probe.json",
-    "source_sha256": "4e82f3998271448c855c39a41c0461f1aad899f66c3d20aacea0597c7acb9476",
-    "version": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit",
-    "checked_items": 62,
-    "checks": {
-      "uncommitted_reader_sees_30": true,
-      "conflicting_update_times_out": true,
-      "rc_next_statement_sees_31": true,
-      "rr_keeps_30": true,
-      "old_version_retained_for_snapshot": true,
-      "old_version_reclaimed_after_release": true,
-      "new_ctid_changed": true,
-      "duplicate_primary_key_rejected": true,
-      "two_table_rollback": true,
-      "concurrent_booking_waits": true,
-      "overlapping_booking_rejected": true,
-      "adjacent_booking_accepted": true,
-      "unknown_user_foreign_key_rejected": true,
-      "committed_update_survives": true,
-      "uncommitted_update_invisible": true
-    },
-    "layout": [
-      {
-        "relname": "notes",
-        "relfilenode": 16440,
-        "path": "base/5/16440",
-        "bytes": 8192,
-        "amname": "heap"
-      },
-      {
-        "relname": "users",
-        "relfilenode": 16430,
-        "path": "base/5/16430",
-        "bytes": 8192,
-        "amname": "heap"
-      },
-      {
-        "relname": "users_name_idx",
-        "relfilenode": 16439,
-        "path": "base/5/16439",
-        "bytes": 16384,
-        "amname": "btree"
-      },
-      {
-        "relname": "users_pkey",
-        "relfilenode": 16437,
-        "path": "base/5/16437",
-        "bytes": 16384,
-        "amname": "btree"
-      }
-    ],
-    "plans": {
-      "small": "Seq Scan",
-      "many": "Index Scan"
-    },
-    "snapshots": {
-      "before": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 56,
-        "upper": 7808,
-        "free_bytes": 7752,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 30,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,1)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0100000017616c6963652020202020001e00"
-          },
-          {
-            "lp": 2,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          }
-        ],
-        "sha256": "126d642983922433eb30a80d649dbc2fa23cf9fef951034a1974caa53c452275"
-      },
-      "uncommitted": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 60,
-        "upper": 7760,
-        "free_bytes": 7700,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 30,
-            "xmin": 755,
-            "xmax": 763,
-            "ctid": "(0,9)",
-            "hot_updated": true,
-            "heap_only": false,
-            "data_hex": "0100000017616c6963652020202020001e00"
-          },
-          {
-            "lp": 2,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          },
-          {
-            "lp": 9,
-            "offset": 7760,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 31,
-            "xmin": 763,
-            "xmax": 0,
-            "ctid": "(0,9)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963652020202020001f00"
-          }
-        ],
-        "sha256": "3e23bc6b51e142f25dde2e63efc5f261f03c94bb53631c895e0a7cf8adce44ac"
-      },
-      "committed_pinned": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 60,
-        "upper": 7760,
-        "free_bytes": 7700,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 30,
-            "xmin": 755,
-            "xmax": 763,
-            "ctid": "(0,9)",
-            "hot_updated": true,
-            "heap_only": false,
-            "data_hex": "0100000017616c6963652020202020001e00"
-          },
-          {
-            "lp": 2,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          },
-          {
-            "lp": 9,
-            "offset": 7760,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 31,
-            "xmin": 763,
-            "xmax": 0,
-            "ctid": "(0,9)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963652020202020001f00"
-          }
-        ],
-        "sha256": "1b12b6bc6618f10bc3c0d33de3bcb4e6c462c5ffd9494d8ecd6a87930c02a349"
-      },
-      "vacuum_pinned": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 60,
-        "upper": 7760,
-        "free_bytes": 7700,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 30,
-            "xmin": 755,
-            "xmax": 763,
-            "ctid": "(0,9)",
-            "hot_updated": true,
-            "heap_only": false,
-            "data_hex": "0100000017616c6963652020202020001e00"
-          },
-          {
-            "lp": 2,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          },
-          {
-            "lp": 9,
-            "offset": 7760,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 31,
-            "xmin": 763,
-            "xmax": 0,
-            "ctid": "(0,9)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963652020202020001f00"
-          }
-        ],
-        "sha256": "1b12b6bc6618f10bc3c0d33de3bcb4e6c462c5ffd9494d8ecd6a87930c02a349"
-      },
-      "vacuum_released": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 60,
-        "upper": 7808,
-        "free_bytes": 7748,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 9,
-            "flags": 2,
-            "length": 0
-          },
-          {
-            "lp": 2,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          },
-          {
-            "lp": 9,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 31,
-            "xmin": 763,
-            "xmax": 0,
-            "ctid": "(0,9)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963652020202020001f00"
-          }
-        ],
-        "sha256": "d42f4d555c10887327b5f699781aa7663da3216eef9dba742ec844b5f15d00fe"
-      },
-      "indexed_update": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 64,
-        "upper": 7760,
-        "free_bytes": 7696,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 9,
-            "flags": 2,
-            "length": 0
-          },
-          {
-            "lp": 2,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          },
-          {
-            "lp": 9,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 31,
-            "xmin": 763,
-            "xmax": 767,
-            "ctid": "(0,10)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963652020202020001f00"
-          },
-          {
-            "lp": 10,
-            "offset": 7760,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alicia",
-            "age": 31,
-            "xmin": 767,
-            "xmax": 0,
-            "ctid": "(0,10)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0100000017616c6963696120202020001f00"
-          }
-        ],
-        "sha256": "5c6d2f842e6ac1453a53cb45a2e0c63dd1f0cd93c2f854713082c7017800c6d4"
-      },
-      "after_recovery": {
-        "header_bytes": 24,
-        "item_bytes": 4,
-        "page_bytes": 8192,
-        "lower": 68,
-        "upper": 7712,
-        "free_bytes": 7644,
-        "rows": [
-          {
-            "lp": 1,
-            "offset": 9,
-            "flags": 2,
-            "length": 0
-          },
-          {
-            "lp": 2,
-            "offset": 8144,
-            "flags": 1,
-            "length": 42,
-            "id": 2,
-            "name": "bob",
-            "age": 25,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,2)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "0200000017626f6220202020202020001900"
-          },
-          {
-            "lp": 3,
-            "offset": 8096,
-            "flags": 1,
-            "length": 42,
-            "id": 3,
-            "name": "carol",
-            "age": 41,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,3)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "03000000176361726f6c2020202020002900"
-          },
-          {
-            "lp": 4,
-            "offset": 8048,
-            "flags": 1,
-            "length": 42,
-            "id": 4,
-            "name": "dave",
-            "age": 19,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,4)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "040000001764617665202020202020001300"
-          },
-          {
-            "lp": 5,
-            "offset": 8000,
-            "flags": 1,
-            "length": 42,
-            "id": 5,
-            "name": "erin",
-            "age": 33,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,5)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "05000000176572696e202020202020002100"
-          },
-          {
-            "lp": 6,
-            "offset": 7952,
-            "flags": 1,
-            "length": 42,
-            "id": 6,
-            "name": "frank",
-            "age": 52,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,6)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "06000000176672616e6b2020202020003400"
-          },
-          {
-            "lp": 7,
-            "offset": 7904,
-            "flags": 1,
-            "length": 42,
-            "id": 7,
-            "name": "grace",
-            "age": 28,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,7)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "070000001767726163652020202020001c00"
-          },
-          {
-            "lp": 8,
-            "offset": 7856,
-            "flags": 1,
-            "length": 42,
-            "id": 8,
-            "name": "heidi",
-            "age": 36,
-            "xmin": 755,
-            "xmax": 0,
-            "ctid": "(0,8)",
-            "hot_updated": false,
-            "heap_only": false,
-            "data_hex": "080000001768656964692020202020002400"
-          },
-          {
-            "lp": 9,
-            "offset": 7808,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alice",
-            "age": 31,
-            "xmin": 763,
-            "xmax": 767,
-            "ctid": "(0,10)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963652020202020001f00"
-          },
-          {
-            "lp": 10,
-            "offset": 7760,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alicia",
-            "age": 31,
-            "xmin": 767,
-            "xmax": 779,
-            "ctid": "(0,11)",
-            "hot_updated": true,
-            "heap_only": false,
-            "data_hex": "0100000017616c6963696120202020001f00"
-          },
-          {
-            "lp": 11,
-            "offset": 7712,
-            "flags": 1,
-            "length": 42,
-            "id": 1,
-            "name": "alicia",
-            "age": 32,
-            "xmin": 779,
-            "xmax": 0,
-            "ctid": "(0,11)",
-            "hot_updated": false,
-            "heap_only": true,
-            "data_hex": "0100000017616c6963696120202020002000"
-          }
-        ],
-        "sha256": "cf6feb2ecd64293bfa55ba8f2c7b613d00038a6febfc4372e49d480f69c4610a"
-      }
-    },
-    "bookings": [
-      {
-        "id": 1,
-        "user_id": 1,
-        "device": 1,
-        "slot": "[\"2026-01-01 09:00:00\",\"2026-01-01 10:00:00\")"
-      },
-      {
-        "id": 3,
-        "user_id": 1,
-        "device": 1,
-        "slot": "[\"2026-01-01 10:00:00\",\"2026-01-01 11:00:00\")"
-      }
-    ],
-    "extensions": [
-      {
-        "extname": "btree_gist",
-        "extversion": "1.8"
-      },
-      {
-        "extname": "hstore",
-        "extversion": "1.8"
-      },
-      {
-        "extname": "pageinspect",
-        "extversion": "1.13"
-      },
-      {
-        "extname": "plpgsql",
-        "extversion": "1.0"
-      }
-    ],
-    "after_recovery": [
-      {
-        "id": 1,
-        "name": "alicia    ",
-        "age": 32
-      },
-      {
-        "id": 2,
-        "name": "bob       ",
-        "age": 25
-      }
-    ]
+  {
+   "year": 2023,
+   "pg": 45.55,
+   "my": 41.09
   },
-  "survey": {
-    "schema": 1,
-    "checked_at": "2026-10-19",
-    "attribution": "Stack Exchange Inc. / Stack Overflow Developer Survey，按年署名。2026 数据 ODbL 1.0。",
-    "warning": "多选自报开发使用，非全球市场份额；不同年份样本不能当同一批用户迁移。",
-    "years": [
-      {
-        "year": 2022,
-        "source": "https://survey.stackoverflow.co/2022/",
-        "scope": "All Respondents / used / multiple choice",
-        "table_id": "databasespfb1",
-        "source_sha256": "b8459eb00a079392b3d08b821dbf2d8baa30fab20c75509ab11983aaa860e110",
-        "data": [
-          {
-            "name": "MySQL",
-            "percent": 46.85,
-            "respondents": 28520
-          },
-          {
-            "name": "PostgreSQL",
-            "percent": 43.59,
-            "respondents": 26538
-          }
-        ]
-      },
-      {
-        "year": 2023,
-        "source": "https://survey.stackoverflow.co/2023/",
-        "scope": "All Respondents / used / multiple choice",
-        "table_id": "databasedmk1u",
-        "source_sha256": "11b6968aa6d397ac0a95a6f84393fad617c9b37e62aa476f7be07963310db777",
-        "data": [
-          {
-            "name": "PostgreSQL",
-            "percent": 45.55,
-            "respondents": 34909
-          },
-          {
-            "name": "MySQL",
-            "percent": 41.09,
-            "respondents": 31489
-          }
-        ]
-      },
-      {
-        "year": 2026,
-        "source": "https://survey.stackoverflow.co/2026/technology/data/databases",
-        "scope": "All Respondents / used / multiple choice",
-        "question_n": 12061,
-        "source_sha256": "36804dd7a6bda9c2718b6a845998154c12421aced5d43345975dbe7fdae09b1e",
-        "data": [
-          {
-            "name": "PostgreSQL",
-            "percent": 57.9,
-            "respondents": 6984
-          },
-          {
-            "name": "MySQL",
-            "percent": 35.1,
-            "respondents": 4235
-          }
-        ],
-        "licence": {
-          "name": "ODbL 1.0",
-          "url": "https://opendatacommons.org/licenses/odbl/1-0/",
-          "holder": "Stack Exchange Inc."
-        }
-      }
-    ]
+  {
+   "year": 2024,
+   "pg": 48.7,
+   "my": 40.3
   },
-  "style": {
-    "checked_at": "2026-10-19",
-    "source_page": "https://wiki.postgresql.org/wiki/File:PostgreSQL_logo.3colors.svg",
-    "svg_url": "https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg",
-    "svg_sha256": "51f93e19516081fc7d6fe6ab9bbab07abe5f7819e28016eefacea6dea691bc54",
-    "svg_colors": [
-      "#000000",
-      "#336791",
-      "#ffffff"
-    ],
-    "palette": {
-      "blue": "#336791",
-      "paper": "#f4f5f6",
-      "graphite": "#20282e",
-      "white": "#ffffff",
-      "alert": "#a94819"
-    },
-    "contrast": [
-      {
-        "text": "graphite",
-        "background": "paper",
-        "ratio": 13.699,
-        "normal_text_pass": true
-      },
-      {
-        "text": "blue",
-        "background": "paper",
-        "ratio": 5.513,
-        "normal_text_pass": true
-      },
-      {
-        "text": "white",
-        "background": "blue",
-        "ratio": 6.018,
-        "normal_text_pass": true
-      },
-      {
-        "text": "alert",
-        "background": "paper",
-        "ratio": 5.303,
-        "normal_text_pass": true
-      }
-    ],
-    "status": "方案数值校验；未制作关键帧或确认观感"
+  {
+   "year": 2025,
+   "pg": 55.6,
+   "my": 40.5
   },
-  "compare": {
-    "schema": 1,
-    "checked_at": "2026-10-19T02:09:31.015724+08:00",
-    "scope": "同一合成任务表；索引语义与实际计划核对，不进行跨数据库吞吐/延迟比较",
-    "environment": {
-      "os": "Windows",
-      "work": "research/_src/compare-a1345c3752f7",
-      "python": "3.14.3",
-      "psycopg": "3.3.5",
-      "server": {
-        "version": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit",
-        "version_num": "180004",
-        "isolation": "read committed"
-      }
-    },
-    "commands": [
-      {
-        "program": "initdb",
-        "exit": 0,
-        "output": "The files belonging to this database system will be owned by user \"user\".\nThis user must also own the server process.\n\nThe database cluster will be initialized with locale \"C\".\nThe default text search configuration will be set to \"english\".\n\nData page checksums are enabled.\n\ncreating directory <video>/research/_src/compare-a1345c3752f7/cluster ... ok\ncreating subdirectories ... ok\nselecting dynamic shared memory implementation ... windows\nselecting default \"max_connections\" ... 100\nselecting default \"shared_buffers\" ... 128MB\nselecting default time zone ... Asia/Shanghai\ncreating configuration files ... ok\nrunning bootstrap script ... ok\nperforming post-bootstrap initialization ... ok\nsyncing data to disk ... ok\n\nSuccess. You can now start the database server using:\n\n    ^\"C^:^\\Program^ Files^\\PostgreSQL^\\18^\\bin^\\pg^_ctl^\" -D ^\"D^:^\\Coding^\\ft^\\videos^\\series^\\database^-engines^\\postgresql^\\research^\\^_src^\\compare^-a1345c3752f7^\\cluster^\" -l logfile start\n\n"
-      },
-      {
-        "program": "pg_ctl",
-        "exit": 0,
-        "output": "waiting for server to start.... done\nserver started\n"
-      },
-      {
-        "program": "pg_ctl",
-        "exit": 0,
-        "output": "waiting for server to shut down.... done\nserver stopped\n"
-      }
-    ],
-    "queries": [
-      {
-        "sql": "SELECT version() AS version,current_setting('server_version_num') AS version_num,current_setting('default_transaction_isolation') AS isolation",
-        "rows": [
-          {
-            "version": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit",
-            "version_num": "180004",
-            "isolation": "read committed"
-          }
-        ],
-        "status": "SELECT 1"
-      },
-      {
-        "sql": "CREATE TABLE jobs (id integer PRIMARY KEY,status text NOT NULL,meta jsonb NOT NULL)",
-        "rows": [],
-        "status": "CREATE TABLE"
-      },
-      {
-        "sql": "INSERT INTO jobs SELECT i,CASE WHEN i%100=0 THEN 'open' ELSE 'done' END,jsonb_build_object('kind',CASE WHEN i%97=0 THEN 'alert' ELSE 'normal' END,'user_id',i%1000) FROM generate_series(1,20000) AS i",
-        "rows": [],
-        "status": "INSERT 0 20000"
-      },
-      {
-        "sql": "CREATE INDEX jobs_open_idx ON jobs(id) WHERE status='open'",
-        "rows": [],
-        "status": "CREATE INDEX"
-      },
-      {
-        "sql": "CREATE INDEX jobs_meta_gin ON jobs USING gin(meta)",
-        "rows": [],
-        "status": "CREATE INDEX"
-      },
-      {
-        "sql": "ANALYZE jobs",
-        "rows": [],
-        "status": "ANALYZE"
-      },
-      {
-        "sql": "SELECT count(*) AS total,count(*) FILTER (WHERE status='open') AS open,count(*) FILTER (WHERE meta @> '{\"kind\":\"alert\"}') AS alert FROM jobs",
-        "rows": [
-          {
-            "total": 20000,
-            "open": 200,
-            "alert": 206
-          }
-        ],
-        "status": "SELECT 1"
-      },
-      {
-        "sql": "EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) SELECT id FROM jobs WHERE status='open' ORDER BY id LIMIT 10",
-        "rows": [
-          {
-            "QUERY PLAN": [
-              {
-                "Plan": {
-                  "Node Type": "Limit",
-                  "Parallel Aware": false,
-                  "Async Capable": false,
-                  "Startup Cost": 0.14,
-                  "Total Cost": 0.99,
-                  "Plan Rows": 10,
-                  "Plan Width": 4,
-                  "Actual Startup Time": 0.069,
-                  "Actual Total Time": 0.073,
-                  "Actual Rows": 10.0,
-                  "Actual Loops": 1,
-                  "Disabled": false,
-                  "Shared Hit Blocks": 10,
-                  "Shared Read Blocks": 1,
-                  "Shared Dirtied Blocks": 0,
-                  "Shared Written Blocks": 0,
-                  "Local Hit Blocks": 0,
-                  "Local Read Blocks": 0,
-                  "Local Dirtied Blocks": 0,
-                  "Local Written Blocks": 0,
-                  "Temp Read Blocks": 0,
-                  "Temp Written Blocks": 0,
-                  "Plans": [
-                    {
-                      "Node Type": "Index Only Scan",
-                      "Parent Relationship": "Outer",
-                      "Parallel Aware": false,
-                      "Async Capable": false,
-                      "Scan Direction": "Forward",
-                      "Index Name": "jobs_open_idx",
-                      "Relation Name": "jobs",
-                      "Alias": "jobs",
-                      "Startup Cost": 0.14,
-                      "Total Cost": 17.14,
-                      "Plan Rows": 200,
-                      "Plan Width": 4,
-                      "Actual Startup Time": 0.068,
-                      "Actual Total Time": 0.072,
-                      "Actual Rows": 10.0,
-                      "Actual Loops": 1,
-                      "Disabled": false,
-                      "Heap Fetches": 10,
-                      "Index Searches": 1,
-                      "Shared Hit Blocks": 10,
-                      "Shared Read Blocks": 1,
-                      "Shared Dirtied Blocks": 0,
-                      "Shared Written Blocks": 0,
-                      "Local Hit Blocks": 0,
-                      "Local Read Blocks": 0,
-                      "Local Dirtied Blocks": 0,
-                      "Local Written Blocks": 0,
-                      "Temp Read Blocks": 0,
-                      "Temp Written Blocks": 0
-                    }
-                  ]
-                },
-                "Planning": {
-                  "Shared Hit Blocks": 15,
-                  "Shared Read Blocks": 4,
-                  "Shared Dirtied Blocks": 0,
-                  "Shared Written Blocks": 0,
-                  "Local Hit Blocks": 0,
-                  "Local Read Blocks": 0,
-                  "Local Dirtied Blocks": 0,
-                  "Local Written Blocks": 0,
-                  "Temp Read Blocks": 0,
-                  "Temp Written Blocks": 0
-                },
-                "Planning Time": 0.272,
-                "Triggers": [],
-                "Execution Time": 0.08
-              }
-            ]
-          }
-        ],
-        "status": "EXPLAIN"
-      },
-      {
-        "sql": "EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) SELECT id FROM jobs WHERE meta @> '{\"kind\":\"alert\"}'",
-        "rows": [
-          {
-            "QUERY PLAN": [
-              {
-                "Plan": {
-                  "Node Type": "Bitmap Heap Scan",
-                  "Parallel Aware": false,
-                  "Async Capable": false,
-                  "Relation Name": "jobs",
-                  "Alias": "jobs",
-                  "Startup Cost": 22.43,
-                  "Total Cost": 250.82,
-                  "Plan Rows": 182,
-                  "Plan Width": 4,
-                  "Actual Startup Time": 0.116,
-                  "Actual Total Time": 0.2,
-                  "Actual Rows": 206.0,
-                  "Actual Loops": 1,
-                  "Disabled": false,
-                  "Recheck Cond": "(meta @> '{\"kind\": \"alert\"}'::jsonb)",
-                  "Rows Removed by Index Recheck": 0,
-                  "Exact Heap Blocks": 206,
-                  "Lossy Heap Blocks": 0,
-                  "Shared Hit Blocks": 217,
-                  "Shared Read Blocks": 0,
-                  "Shared Dirtied Blocks": 0,
-                  "Shared Written Blocks": 0,
-                  "Local Hit Blocks": 0,
-                  "Local Read Blocks": 0,
-                  "Local Dirtied Blocks": 0,
-                  "Local Written Blocks": 0,
-                  "Temp Read Blocks": 0,
-                  "Temp Written Blocks": 0,
-                  "Plans": [
-                    {
-                      "Node Type": "Bitmap Index Scan",
-                      "Parent Relationship": "Outer",
-                      "Parallel Aware": false,
-                      "Async Capable": false,
-                      "Index Name": "jobs_meta_gin",
-                      "Startup Cost": 0.0,
-                      "Total Cost": 22.39,
-                      "Plan Rows": 182,
-                      "Plan Width": 0,
-                      "Actual Startup Time": 0.096,
-                      "Actual Total Time": 0.096,
-                      "Actual Rows": 206.0,
-                      "Actual Loops": 1,
-                      "Disabled": false,
-                      "Index Cond": "(meta @> '{\"kind\": \"alert\"}'::jsonb)",
-                      "Index Searches": 1,
-                      "Shared Hit Blocks": 11,
-                      "Shared Read Blocks": 0,
-                      "Shared Dirtied Blocks": 0,
-                      "Shared Written Blocks": 0,
-                      "Local Hit Blocks": 0,
-                      "Local Read Blocks": 0,
-                      "Local Dirtied Blocks": 0,
-                      "Local Written Blocks": 0,
-                      "Temp Read Blocks": 0,
-                      "Temp Written Blocks": 0
-                    }
-                  ]
-                },
-                "Planning": {
-                  "Shared Hit Blocks": 7,
-                  "Shared Read Blocks": 0,
-                  "Shared Dirtied Blocks": 0,
-                  "Shared Written Blocks": 0,
-                  "Local Hit Blocks": 0,
-                  "Local Read Blocks": 0,
-                  "Local Dirtied Blocks": 0,
-                  "Local Written Blocks": 0,
-                  "Temp Read Blocks": 0,
-                  "Temp Written Blocks": 0
-                },
-                "Planning Time": 0.068,
-                "Triggers": [],
-                "Execution Time": 0.213
-              }
-            ]
-          }
-        ],
-        "status": "EXPLAIN"
-      },
-      {
-        "sql": "SELECT c.relname,a.amname,pg_get_expr(i.indpred,i.indrelid) AS predicate,pg_relation_size(c.oid) AS bytes FROM pg_class c JOIN pg_index i ON i.indexrelid=c.oid JOIN pg_am a ON a.oid=c.relam WHERE i.indrelid='jobs'::regclass ORDER BY c.relname",
-        "rows": [
-          {
-            "relname": "jobs_meta_gin",
-            "amname": "gin",
-            "predicate": null,
-            "bytes": 294912
-          },
-          {
-            "relname": "jobs_open_idx",
-            "amname": "btree",
-            "predicate": "(status = 'open'::text)",
-            "bytes": 16384
-          },
-          {
-            "relname": "jobs_pkey",
-            "amname": "btree",
-            "predicate": null,
-            "bytes": 466944
-          }
-        ],
-        "status": "SELECT 3"
-      }
-    ],
-    "checks": {
-      "postgresql_18_4": true,
-      "partial_predicate_selects_200_of_20000": true,
-      "partial_index_used": true,
-      "jsonb_gin_index_used": true,
-      "jsonb_query_returns_expected_rows": true
-    },
-    "counts": {
-      "total": 20000,
-      "open": 200,
-      "alert": 206
-    },
-    "partial_plan": {
-      "Plan": {
-        "Node Type": "Limit",
-        "Parallel Aware": false,
-        "Async Capable": false,
-        "Startup Cost": 0.14,
-        "Total Cost": 0.99,
-        "Plan Rows": 10,
-        "Plan Width": 4,
-        "Actual Startup Time": 0.069,
-        "Actual Total Time": 0.073,
-        "Actual Rows": 10.0,
-        "Actual Loops": 1,
-        "Disabled": false,
-        "Shared Hit Blocks": 10,
-        "Shared Read Blocks": 1,
-        "Shared Dirtied Blocks": 0,
-        "Shared Written Blocks": 0,
-        "Local Hit Blocks": 0,
-        "Local Read Blocks": 0,
-        "Local Dirtied Blocks": 0,
-        "Local Written Blocks": 0,
-        "Temp Read Blocks": 0,
-        "Temp Written Blocks": 0,
-        "Plans": [
-          {
-            "Node Type": "Index Only Scan",
-            "Parent Relationship": "Outer",
-            "Parallel Aware": false,
-            "Async Capable": false,
-            "Scan Direction": "Forward",
-            "Index Name": "jobs_open_idx",
-            "Relation Name": "jobs",
-            "Alias": "jobs",
-            "Startup Cost": 0.14,
-            "Total Cost": 17.14,
-            "Plan Rows": 200,
-            "Plan Width": 4,
-            "Actual Startup Time": 0.068,
-            "Actual Total Time": 0.072,
-            "Actual Rows": 10.0,
-            "Actual Loops": 1,
-            "Disabled": false,
-            "Heap Fetches": 10,
-            "Index Searches": 1,
-            "Shared Hit Blocks": 10,
-            "Shared Read Blocks": 1,
-            "Shared Dirtied Blocks": 0,
-            "Shared Written Blocks": 0,
-            "Local Hit Blocks": 0,
-            "Local Read Blocks": 0,
-            "Local Dirtied Blocks": 0,
-            "Local Written Blocks": 0,
-            "Temp Read Blocks": 0,
-            "Temp Written Blocks": 0
-          }
-        ]
-      },
-      "Planning": {
-        "Shared Hit Blocks": 15,
-        "Shared Read Blocks": 4,
-        "Shared Dirtied Blocks": 0,
-        "Shared Written Blocks": 0,
-        "Local Hit Blocks": 0,
-        "Local Read Blocks": 0,
-        "Local Dirtied Blocks": 0,
-        "Local Written Blocks": 0,
-        "Temp Read Blocks": 0,
-        "Temp Written Blocks": 0
-      },
-      "Planning Time": 0.272,
-      "Triggers": [],
-      "Execution Time": 0.08
-    },
-    "jsonb_plan": {
-      "Plan": {
-        "Node Type": "Bitmap Heap Scan",
-        "Parallel Aware": false,
-        "Async Capable": false,
-        "Relation Name": "jobs",
-        "Alias": "jobs",
-        "Startup Cost": 22.43,
-        "Total Cost": 250.82,
-        "Plan Rows": 182,
-        "Plan Width": 4,
-        "Actual Startup Time": 0.116,
-        "Actual Total Time": 0.2,
-        "Actual Rows": 206.0,
-        "Actual Loops": 1,
-        "Disabled": false,
-        "Recheck Cond": "(meta @> '{\"kind\": \"alert\"}'::jsonb)",
-        "Rows Removed by Index Recheck": 0,
-        "Exact Heap Blocks": 206,
-        "Lossy Heap Blocks": 0,
-        "Shared Hit Blocks": 217,
-        "Shared Read Blocks": 0,
-        "Shared Dirtied Blocks": 0,
-        "Shared Written Blocks": 0,
-        "Local Hit Blocks": 0,
-        "Local Read Blocks": 0,
-        "Local Dirtied Blocks": 0,
-        "Local Written Blocks": 0,
-        "Temp Read Blocks": 0,
-        "Temp Written Blocks": 0,
-        "Plans": [
-          {
-            "Node Type": "Bitmap Index Scan",
-            "Parent Relationship": "Outer",
-            "Parallel Aware": false,
-            "Async Capable": false,
-            "Index Name": "jobs_meta_gin",
-            "Startup Cost": 0.0,
-            "Total Cost": 22.39,
-            "Plan Rows": 182,
-            "Plan Width": 0,
-            "Actual Startup Time": 0.096,
-            "Actual Total Time": 0.096,
-            "Actual Rows": 206.0,
-            "Actual Loops": 1,
-            "Disabled": false,
-            "Index Cond": "(meta @> '{\"kind\": \"alert\"}'::jsonb)",
-            "Index Searches": 1,
-            "Shared Hit Blocks": 11,
-            "Shared Read Blocks": 0,
-            "Shared Dirtied Blocks": 0,
-            "Shared Written Blocks": 0,
-            "Local Hit Blocks": 0,
-            "Local Read Blocks": 0,
-            "Local Dirtied Blocks": 0,
-            "Local Written Blocks": 0,
-            "Temp Read Blocks": 0,
-            "Temp Written Blocks": 0
-          }
-        ]
-      },
-      "Planning": {
-        "Shared Hit Blocks": 7,
-        "Shared Read Blocks": 0,
-        "Shared Dirtied Blocks": 0,
-        "Shared Written Blocks": 0,
-        "Local Hit Blocks": 0,
-        "Local Read Blocks": 0,
-        "Local Dirtied Blocks": 0,
-        "Local Written Blocks": 0,
-        "Temp Read Blocks": 0,
-        "Temp Written Blocks": 0
-      },
-      "Planning Time": 0.068,
-      "Triggers": [],
-      "Execution Time": 0.213
-    },
-    "indexes": [
-      {
-        "relname": "jobs_meta_gin",
-        "amname": "gin",
-        "predicate": null,
-        "bytes": 294912
-      },
-      {
-        "relname": "jobs_open_idx",
-        "amname": "btree",
-        "predicate": "(status = 'open'::text)",
-        "bytes": 16384
-      },
-      {
-        "relname": "jobs_pkey",
-        "amname": "btree",
-        "predicate": null,
-        "bytes": 466944
-      }
-    ],
-    "success": true
-  },
-  "trend": {
-    "schema": 1,
-    "checked_at": "2026-10-19",
-    "attribution": "Stack Exchange Inc. / Stack Overflow Developer Survey，按年署名。",
-    "warning": "各年为不同样本的多选自报使用比例；2024 起题目改为“过去一年做过大量开发工作”的数据库。不是市场份额，也不是同一批用户的迁移。",
-    "crossover": 2023,
-    "years": [
-      {
-        "year": 2018,
-        "source": "https://survey.stackoverflow.co/2018/",
-        "scope": "All Respondents",
-        "source_sha256": "3f19bc46ca6b7fe4152219ffd7103893cc56251e7974817abdb5506473f8ede0",
-        "MySQL": 58.7,
-        "PostgreSQL": 32.9,
-        "leader": "MySQL"
-      },
-      {
-        "year": 2019,
-        "source": "https://survey.stackoverflow.co/2019/",
-        "scope": "All Respondents",
-        "source_sha256": "f915265c8acb119704a3784b03f3da9ee5b7287123fca1ec6b4739166de5fc4a",
-        "MySQL": 54.0,
-        "PostgreSQL": 34.3,
-        "leader": "MySQL"
-      },
-      {
-        "year": 2020,
-        "source": "https://survey.stackoverflow.co/2020/",
-        "scope": "All Respondents",
-        "source_sha256": "68e7c8e11e3e6c74dfa34fdb0e1db89860cac3078df58e180ee76ac737040a8a",
-        "MySQL": 55.6,
-        "PostgreSQL": 36.1,
-        "leader": "MySQL"
-      },
-      {
-        "year": 2021,
-        "source": "https://survey.stackoverflow.co/2021/",
-        "scope": "All Respondents",
-        "source_sha256": "8f35f7f7bba0d87d91e37b143e4a0319f35291bc457fab14fab82cbb52fe7e0b",
-        "MySQL": 50.18,
-        "PostgreSQL": 40.42,
-        "leader": "MySQL"
-      },
-      {
-        "year": 2022,
-        "source": "https://survey.stackoverflow.co/2022/",
-        "scope": "All Respondents",
-        "source_sha256": "b8459eb00a079392b3d08b821dbf2d8baa30fab20c75509ab11983aaa860e110",
-        "MySQL": 46.85,
-        "PostgreSQL": 43.59,
-        "leader": "MySQL"
-      },
-      {
-        "year": 2023,
-        "source": "https://survey.stackoverflow.co/2023/",
-        "scope": "All Respondents",
-        "source_sha256": "11b6968aa6d397ac0a95a6f84393fad617c9b37e62aa476f7be07963310db777",
-        "MySQL": 41.09,
-        "PostgreSQL": 45.55,
-        "leader": "PostgreSQL"
-      },
-      {
-        "year": 2024,
-        "source": "https://survey.stackoverflow.co/2024/technology",
-        "scope": "All Respondents",
-        "source_sha256": "ffca0061300a8188743c27d4e47f401f83e1a16ef449a68adbdc57d58a978a93",
-        "MySQL": 40.3,
-        "PostgreSQL": 48.7,
-        "leader": "PostgreSQL"
-      },
-      {
-        "year": 2025,
-        "source": "https://survey.stackoverflow.co/2025/technology",
-        "scope": "All Respondents",
-        "source_sha256": "721a084a2139830bbdef949add7415104d59d85fb021e01c52b5ce63155dd577",
-        "MySQL": 40.5,
-        "PostgreSQL": 55.6,
-        "leader": "PostgreSQL"
-      },
-      {
-        "year": 2026,
-        "source": "https://survey.stackoverflow.co/2026/technology/data/databases",
-        "scope": "All Respondents",
-        "source_sha256": "36804dd7a6bda9c2718b6a845998154c12421aced5d43345975dbe7fdae09b1e",
-        "MySQL": 35.1,
-        "PostgreSQL": 57.9,
-        "leader": "PostgreSQL"
-      }
-    ]
+  {
+   "year": 2026,
+   "pg": 57.9,
+   "my": 35.1
   }
+ ],
+ "survey2026top": [
+  {
+   "response": "PostgreSQL",
+   "percent": 57.9
+  },
+  {
+   "response": "SQLite",
+   "percent": 42.1
+  },
+  {
+   "response": "MySQL",
+   "percent": 35.1
+  },
+  {
+   "response": "Redis",
+   "percent": 28.3
+  },
+  {
+   "response": "Microsoft SQL Server",
+   "percent": 27.1
+  }
+ ],
+ "heap": {
+  "pages": 47,
+  "rows": [
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   88,
+   48
+  ],
+  "first": [
+   1,
+   89,
+   177,
+   265,
+   353,
+   441,
+   529,
+   617,
+   705,
+   793,
+   881,
+   969,
+   1057,
+   1145,
+   1233,
+   1321,
+   1409,
+   1497,
+   1585,
+   1673,
+   1761,
+   1849,
+   1937,
+   2025,
+   2113,
+   2201,
+   2289,
+   2377,
+   2465,
+   2553,
+   2641,
+   2729,
+   2817,
+   2905,
+   2993,
+   3081,
+   3169,
+   3257,
+   3345,
+   3433,
+   3521,
+   3609,
+   3697,
+   3785,
+   3873,
+   3961,
+   4049
+  ],
+  "bytes": 385024
+ },
+ "alice": {
+  "ctid": [
+   23,
+   26
+  ],
+  "xmin": 2809,
+  "row_size": 82,
+  "name_size": 51
+ },
+ "files": {
+  "users": {
+   "path": "base/5/16466",
+   "node": 16466,
+   "sizes": {
+    "16466": 385024,
+    "16466_fsm": 24576,
+    "16466_vm": 8192
+   }
+  },
+  "users_pkey": {
+   "path": "base/5/16472",
+   "node": 16472,
+   "sizes": {
+    "16472": 114688
+   }
+  },
+  "idx_name": {
+   "path": "base/5/16474",
+   "node": 16474,
+   "sizes": {
+    "16474": 335872
+   }
+  },
+  "idx_age": {
+   "path": "base/5/16475",
+   "node": 16475,
+   "sizes": {
+    "16475": 57344
+   }
+  }
+ },
+ "trees": {
+  "users_pkey": {
+   "root": 3,
+   "pages": 14,
+   "leaves": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+   ],
+   "leafCount": 12,
+   "aliceLeaf": 7,
+   "aliceLeafPos": 5,
+   "aliceItem": {
+    "off": 221,
+    "len": 16
+   },
+   "keys": [
+    "",
+    "6f 01 00 00 00 00 00 00",
+    "dd 02 00 00 00 00 00 00",
+    "4b 04 00 00 00 00 00 00",
+    "b9 05 00 00 00 00 00 00",
+    "27 07 00 00 00 00 00 00",
+    "95 08 00 00 00 00 00 00",
+    "03 0a 00 00 00 00 00 00",
+    "71 0b 00 00 00 00 00 00",
+    "df 0c 00 00 00 00 00 00",
+    "4d 0e 00 00 00 00 00 00",
+    "bb 0f 00 00 00 00 00 00"
+   ],
+   "liveItems": 4107,
+   "keyInts": [
+    null,
+    367,
+    733,
+    1099,
+    1465,
+    1831,
+    2197,
+    2563,
+    2929,
+    3295,
+    3661,
+    4027
+   ]
+  },
+  "idx_name": {
+   "root": 3,
+   "pages": 41,
+   "leaves": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40
+   ],
+   "leafCount": 39,
+   "aliceLeaf": 1,
+   "aliceLeafPos": 0,
+   "aliceItem": {
+    "off": 2,
+    "len": 64
+   },
+   "keys": [
+    "",
+    "67 55 73 65 72 30 30 31 30 38 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 32 31 35 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 33 32 32 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 34 32 39 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 35 33 36 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 36 34 33 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 37 35 30 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 38 35 37 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 30 39 36 34 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 30 37 31 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 31 37 38 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 32 38 35 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 33 39 32 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 34 39 39 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 36 30 36 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 37 31 33 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 38 32 30 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 31 39 32 37 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 30 33 34 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 31 34 32 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 32 34 39 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 33 35 36 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 34 36 33 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 35 37 30 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 36 37 37 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 37 38 34 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 38 39 31 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 32 39 39 38 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 31 30 35 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 32 31 32 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 33 31 39 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 34 32 36 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 35 33 33 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 36 34 30 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 37 34 37 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 38 35 34 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 33 39 36 31 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00",
+    "67 55 73 65 72 30 34 30 36 38 2d 61 62 63 64 65 66 67 68 69 6a 6b 6c 6d 6e 6f 70 71 72 73 74 75 76 77 78 79 7a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 00 00 00 00 00"
+   ],
+   "liveItems": 4134
+  },
+  "idx_age": {
+   "root": 3,
+   "pages": 7,
+   "leaves": [
+    1,
+    5,
+    4,
+    6,
+    2
+   ],
+   "leafCount": 5,
+   "aliceLeaf": 5,
+   "aliceLeafPos": 1,
+   "aliceItem": {
+    "off": 71,
+    "len": 376
+   },
+   "keys": [
+    "",
+    "20 00 00 00 00 00 00 00",
+    "2e 00 00 00 00 00 00 00",
+    "3c 00 00 00 00 00 00 00",
+    "4a 00 00 00 00 00 00 00"
+   ],
+   "liveItems": 726
+  }
+ },
+ "agePosting": {
+  "count": 60,
+  "len": 376
+ },
+ "page23": {
+  "blk": 23,
+  "lower": 376,
+  "upper": 448,
+  "special": 8192,
+  "lps": 88,
+  "aliceLp": 26,
+  "aliceOff": 5904,
+  "aliceLen": 82,
+  "headerHex": "f90a00000000000000000000000017001a00030002091800",
+  "dataHex": "0208000067416c696365202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020002a00",
+  "flags": [
+   "HEAP_HASVARWIDTH",
+   "HEAP_XMIN_COMMITTED",
+   "HEAP_XMAX_INVALID"
+  ],
+  "checksumDisk": 36525
+ },
+ "growth": {
+  "heapNewPageRows": [
+   1,
+   89,
+   177,
+   265,
+   353,
+   441,
+   529,
+   617,
+   705,
+   793,
+   881,
+   969,
+   1057,
+   1145,
+   1233,
+   1321,
+   1409,
+   1497,
+   1585,
+   1673,
+   1761,
+   1849,
+   1937,
+   2025,
+   2113,
+   2201,
+   2289,
+   2377,
+   2465,
+   2553,
+   2641,
+   2729,
+   2817,
+   2905,
+   2993,
+   3081,
+   3169,
+   3257,
+   3345,
+   3433,
+   3521,
+   3609,
+   3697,
+   3785,
+   3873,
+   3961,
+   4049
+  ],
+  "rootAtRow": {
+   "idx_name": 120,
+   "users_pkey": 408,
+   "idx_age": 1113
+  },
+  "pkPageRows": [
+   1,
+   408,
+   774,
+   1140,
+   1506,
+   1872,
+   2238,
+   2604,
+   2970,
+   3336,
+   3702,
+   4068
+  ],
+  "pagesAtAlice": {
+   "heap": 24,
+   "users_pkey": 8,
+   "idx_name": 22,
+   "idx_age": 5
+  }
+ },
+ "aliceAtInsert": {
+  "ctid": "(23,26)",
+  "xmin": "2809",
+  "leaf": {
+   "users_pkey": 7,
+   "idx_name": 1,
+   "idx_age": 1
+  },
+  "rightmost_leaf": {
+   "users_pkey": 7,
+   "idx_name": 21,
+   "idx_age": 2
+  },
+  "heap_pages": 24
+ },
+ "plans": {
+  "by_id": [
+   "Index Scan using users_pkey on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)",
+   "  Index Cond: (id = 2050)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=39 read=1"
+  ],
+  "by_name": [
+   "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=57) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=6"
+  ],
+  "by_age": [
+   "Bitmap Heap Scan on users  (cost=4.79..55.04 rows=66 width=57) (actual rows=66.00 loops=1)",
+   "  Recheck Cond: (age = 42)",
+   "  Heap Blocks: exact=47",
+   "  Buffers: shared hit=52",
+   "  ->  Bitmap Index Scan on idx_age  (cost=0.00..4.78 rows=66 width=0) (actual rows=66.00 loops=1)",
+   "        Index Cond: (age = 42)",
+   "        Index Searches: 1",
+   "        Buffers: shared hit=5",
+   "Planning:",
+   "  Buffers: shared hit=5"
+  ],
+  "id_range": [
+   "Index Scan using users_pkey on users  (cost=0.28..11.30 rows=101 width=57) (actual rows=101.00 loops=1)",
+   "  Index Cond: ((id >= 2000) AND (id <= 2100))",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=4",
+   "Planning:",
+   "  Buffers: shared hit=6"
+  ],
+  "count_all": [
+   "Aggregate  (cost=98.20..98.21 rows=1 width=8) (actual rows=1.00 loops=1)",
+   "  Buffers: shared hit=47",
+   "  ->  Seq Scan on users  (cost=0.00..87.96 rows=4096 width=0) (actual rows=4096.00 loops=1)",
+   "        Buffers: shared hit=47",
+   "Planning:",
+   "  Buffers: shared hit=3"
+  ],
+  "id_by_name": [
+   "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=4) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3"
+  ],
+  "name_by_name": [
+   "Index Only Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=51) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Heap Fetches: 1",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3"
+  ]
+ },
+ "cold": {
+  "by_id": [
+   {
+    "rel": "idx_age",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   },
+   {
+    "rel": "idx_name",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   },
+   {
+    "rel": "users",
+    "blocks": [
+     23
+    ],
+    "n": 1
+   },
+   {
+    "rel": "users_pkey",
+    "blocks": [
+     0,
+     3,
+     7
+    ],
+    "n": 3
+   }
+  ],
+  "by_name": [
+   {
+    "rel": "idx_age",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   },
+   {
+    "rel": "idx_name",
+    "blocks": [
+     0,
+     1,
+     3
+    ],
+    "n": 3
+   },
+   {
+    "rel": "users",
+    "blocks": [
+     23
+    ],
+    "n": 1
+   },
+   {
+    "rel": "users_pkey",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   }
+  ],
+  "count_all": [
+   {
+    "rel": "idx_age",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   },
+   {
+    "rel": "idx_name",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   },
+   {
+    "rel": "users",
+    "blocks": null,
+    "n": 47
+   },
+   {
+    "rel": "users_pkey",
+    "blocks": [
+     0
+    ],
+    "n": 1
+   }
+  ]
+ },
+ "ios": {
+  "before_vacuum": [
+   "Index Only Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=51) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Heap Fetches: 1",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=1 read=2",
+   "Planning:",
+   "  Buffers: shared hit=96 read=1"
+  ],
+  "after_vacuum": [
+   "Index Only Scan using idx_name on users  (cost=0.28..4.30 rows=1 width=51) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Heap Fetches: 0",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=5"
+  ],
+  "id_by_name_after_vacuum": [
+   "Index Scan using idx_name on users  (cost=0.28..8.30 rows=1 width=4) (actual rows=1.00 loops=1)",
+   "  Index Cond: (name = 'Alice'::bpchar)",
+   "  Index Searches: 1",
+   "  Buffers: shared hit=3",
+   "Planning:",
+   "  Buffers: shared hit=3"
+  ]
+ },
+ "update": {
+  "users": {
+   "old": [
+    23,
+    26
+   ],
+   "new": [
+    46,
+    49
+   ],
+   "xid": 4866,
+   "freeBefore": 72,
+   "samePage": false,
+   "stats": {
+    "n_tup_upd": 1,
+    "n_tup_hot_upd": 0,
+    "n_tup_newpage_upd": 1
+   },
+   "wal": [
+    [
+     "Heap",
+     "LOCK",
+     8179,
+     8120
+    ],
+    [
+     "Heap",
+     "UPDATE",
+     4605,
+     4532
+    ],
+    [
+     "Btree",
+     "INSERT_LEAF",
+     7453,
+     7400
+    ],
+    [
+     "Btree",
+     "INSERT_LEAF",
+     7573,
+     7520
+    ],
+    [
+     "Btree",
+     "INSERT_LEAF",
+     7113,
+     7060
+    ],
+    [
+     "Transaction",
+     "COMMIT",
+     34,
+     0
+    ]
+   ],
+   "index": {
+    "idx_age": [
+     [
+      5,
+      71,
+      "(23,26)"
+     ],
+     [
+      5,
+      85,
+      "(46,49)"
+     ]
+    ],
+    "idx_name": [
+     [
+      1,
+      2,
+      "(23,26)"
+     ],
+     [
+      1,
+      3,
+      "(46,49)"
+     ]
+    ],
+    "users_pkey": [
+     [
+      7,
+      221,
+      "(23,26)"
+     ],
+     [
+      7,
+      222,
+      "(46,49)"
+     ]
+    ]
+   },
+   "afterRead": {
+    "lpFlags": 3,
+    "free": 160
+   }
+  },
+  "users_ff90": {
+   "old": [
+    25,
+    75
+   ],
+   "new": [
+    25,
+    80
+   ],
+   "xid": 4867,
+   "freeBefore": 900,
+   "samePage": true,
+   "stats": {
+    "n_tup_upd": 1,
+    "n_tup_hot_upd": 0,
+    "n_tup_newpage_upd": 0
+   },
+   "wal": [
+    [
+     "Heap",
+     "UPDATE",
+     7449,
+     7384
+    ],
+    [
+     "Btree",
+     "INSERT_LEAF",
+     7453,
+     7400
+    ],
+    [
+     "Btree",
+     "INSERT_LEAF",
+     7573,
+     7520
+    ],
+    [
+     "Btree",
+     "INSERT_POST",
+     7113,
+     7060
+    ],
+    [
+     "Transaction",
+     "COMMIT",
+     34,
+     0
+    ]
+   ],
+   "index": {
+    "idx_ff90_age": [
+     [
+      5,
+      71,
+      "(25,75)"
+     ],
+     [
+      5,
+      78,
+      "(25,80)"
+     ]
+    ],
+    "idx_ff90_name": [
+     [
+      1,
+      2,
+      "(25,75)"
+     ],
+     [
+      1,
+      3,
+      "(25,80)"
+     ]
+    ],
+    "users_ff90_pkey": [
+     [
+      7,
+      221,
+      "(25,75)"
+     ],
+     [
+      7,
+      222,
+      "(25,80)"
+     ]
+    ]
+   },
+   "afterRead": {
+    "lpFlags": 3,
+    "free": 896
+   }
+  },
+  "users_hot": {
+   "old": [
+    25,
+    75
+   ],
+   "new": [
+    25,
+    80
+   ],
+   "xid": 4868,
+   "freeBefore": 900,
+   "samePage": true,
+   "stats": {
+    "n_tup_upd": 1,
+    "n_tup_hot_upd": 1,
+    "n_tup_newpage_upd": 0
+   },
+   "wal": [
+    [
+     "Heap",
+     "HOT_UPDATE",
+     7449,
+     7384
+    ],
+    [
+     "Transaction",
+     "COMMIT",
+     34,
+     0
+    ]
+   ],
+   "index": {
+    "idx_hot_name": [
+     [
+      1,
+      2,
+      "(25,75)"
+     ]
+    ],
+    "users_hot_pkey": [
+     [
+      7,
+      221,
+      "(25,75)"
+     ]
+    ]
+   },
+   "afterRead": {
+    "lpFlags": 2,
+    "free": 896
+   }
+  },
+  "hotAfterRead": [
+   {
+    "lp": 75,
+    "flags": 2,
+    "off": 80
+   },
+   {
+    "lp": 80,
+    "flags": 1,
+    "off": 1240
+   }
+  ]
+ },
+ "mvcc": {
+  "xid": 4856,
+  "snapshot": "4856:4856:",
+  "bobReads": 42,
+  "carolXid": 4857,
+  "carolGot": 44,
+  "bobAfter": 43,
+  "bobRR": 42,
+  "rrError": {
+   "sqlstate": "40001",
+   "message": "could not serialize access due to concurrent update"
+  },
+  "locks": [
+   [
+    "alice",
+    "transactionid",
+    "4856",
+    "ExclusiveLock",
+    true
+   ],
+   [
+    "carol",
+    "transactionid",
+    "4857",
+    "ExclusiveLock",
+    true
+   ],
+   [
+    "carol",
+    "transactionid",
+    "4856",
+    "ShareLock",
+    false
+   ],
+   [
+    "carol",
+    "tuple",
+    null,
+    "ExclusiveLock",
+    true
+   ]
+  ],
+  "wait": [
+   [
+    "alice",
+    "Client",
+    "ClientRead"
+   ],
+   [
+    "carol",
+    "Lock",
+    "transactionid"
+   ]
+  ]
+ },
+ "delete": {
+  "xid": 4856,
+  "freeBefore": 72,
+  "freeAfter": 160,
+  "fsmAfter": 128,
+  "dave": [
+   23,
+   26
+  ],
+  "vacuum": {
+   "vacuum while bob holds snapshot": [
+    "finished vacuuming \"postgres.public.users\": index scans: 0",
+    "tuples: 0 removed, 4096 remain, 1 are dead but not yet removable",
+    "removable cutoff: 4856, which was 1 XIDs old when operation ended",
+    "index scan not needed: 0 pages from table (0.00% of total) had 0 dead item identifiers removed"
+   ],
+   "vacuum after bob": [
+    "finished vacuuming \"postgres.public.users\": index scans: 1",
+    "tuples: 1 removed, 4095 remain, 0 are dead but not yet removable",
+    "removable cutoff: 4857, which was 0 XIDs old when operation ended",
+    "index scan needed: 1 pages from table (2.13% of total) had 1 dead item identifiers removed"
+   ]
+  },
+  "frozen": [
+   "760",
+   "4859"
+  ]
+ },
+ "wal": {
+  "flushBefore": {
+   "f": "0/1A53D10",
+   "i": "0/1A663A0"
+  },
+  "flushAfter": {
+   "f": "0/1A663C8",
+   "i": "0/1A663C8"
+  },
+  "buffer": {
+   "pd_lsn": "0/1A629C8",
+   "alice_xmax": 4857,
+   "alice_ctid": "(46,50)"
+  },
+  "disk": {
+   "pd_lsn": "0/1A4F478",
+   "alice_xmax": 0,
+   "alice_ctid": "(23,26)"
+  },
+  "carolFpi": [
+   [
+    "LOCK",
+    8120
+   ],
+   [
+    "UPDATE",
+    4532
+   ],
+   [
+    "INSERT_LEAF",
+    7400
+   ],
+   [
+    "INSERT_LEAF",
+    7452
+   ],
+   [
+    "INSERT_LEAF",
+    7648
+   ]
+  ],
+  "second": [
+   [
+    "LOCK",
+    0
+   ],
+   [
+    "UPDATE",
+    0
+   ],
+   [
+    "INSERT_LEAF",
+    0
+   ],
+   [
+    "INSERT_LEAF",
+    0
+   ],
+   [
+    "INSERT_LEAF",
+    6952
+   ],
+   [
+    "COMMIT",
+    0
+   ]
+  ],
+  "recovery": [
+   "LOG:  database system was interrupted; last known up at 2026-10-27 09:49:05 CST",
+   "LOG:  database system was not properly shut down; automatic recovery in progress",
+   "LOG:  redo starts at 0/1A53C40",
+   "LOG:  redo done at 0/1A6F070 system usage: CPU: user: 0.00 s, system: 0.01 s, elapsed: 0.00 s",
+   "LOG:  database system is ready to accept connections"
+  ],
+  "after": {
+   "alice": {
+    "age": 43,
+    "ctid": "(46,50)"
+   },
+   "bob": {
+    "age": 51,
+    "ctid": "(23,25)"
+   },
+   "carol_status": "aborted",
+   "alice_status": "committed"
+  }
+ },
+ "orthodox": {
+  "1_ddl_rollback": {
+   "columns_inside_tx": 4,
+   "columns_after": 3,
+   "orders_exists_after": false,
+   "mallory_after": 0
+  },
+  "2_constraints": {
+   "check": {
+    "sqlstate": "23514",
+    "message": "new row for relation \"users\" violates check constraint \"age_range\"",
+    "detail": "Failing row contains (5001, Judy                                              , 200)."
+   },
+   "foreign_key": {
+    "sqlstate": "23503",
+    "message": "insert or update on table \"orders\" violates foreign key constraint \"orders_user_id_fkey\"",
+    "detail": "Key (user_id)=(9999) is not present in table \"users\"."
+   },
+   "primary_key": {
+    "sqlstate": "23505",
+    "message": "duplicate key value violates unique constraint \"users_pkey\"",
+    "detail": "Key (id)=(2050) already exists."
+   },
+   "not_null": {
+    "sqlstate": "23502",
+    "message": "null value in column \"name\" of relation \"users\" violates not-null constraint",
+    "detail": "Failing row contains (5002, null, 30)."
+   },
+   "delete_referenced": {
+    "sqlstate": "23503",
+    "message": "update or delete on table \"users\" violates foreign key constraint \"orders_user_id_fkey\" on table \"orders\"",
+    "detail": "Key (id)=(2050) is still referenced from table \"orders\"."
+   }
+  }
+ }
 };
-if(typeof module!=="undefined" && module.exports) module.exports=data;
-else root.PG_DATA=data;
-})(typeof window!=="undefined"?window:globalThis);
