@@ -101,7 +101,29 @@
     },
     "question": "Databases",
     "n": 12061,
-    "demographic": "All Respondents"
+    "demographic": "All Respondents",
+    "top5": [
+     {
+      "response": "PostgreSQL",
+      "percent": 57.9
+     },
+     {
+      "response": "SQLite",
+      "percent": 42.1
+     },
+     {
+      "response": "MySQL",
+      "percent": 35.1
+     },
+     {
+      "response": "Redis",
+      "percent": 28.3
+     },
+     {
+      "response": "Microsoft SQL Server",
+      "percent": 27.1
+     }
+    ]
    },
    "leader": "PostgreSQL"
   }

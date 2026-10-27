@@ -65,6 +65,22 @@
      "Tables also have a visibility map , stored in a fork with the suffix _vm , to track which pages are known to have no dead tuples.",
      "The visibility map is described further in Section 66.4 .",
      "The segment size can be adjusted using the configuration option --with-segsize when building PostgreSQL .) In principle, free space map and visibility map forks could require multiple segments as well, though this is unlikely to happen in practice."
+    ],
+    "pg_xact + commit status": [
+     "Contents of PGDATA Item Description PG_VERSION A file containing the major version number of PostgreSQL base Subdirectory containing per-database subdirectories current_logfiles File recording the log file(s) currently written to by the logging collector global Subdirectory containing cluster-wide tables, such as pg_database pg_commit_ts Subdirectory containing transaction commit timestamp data pg_dynshmem Subdirectory containing files used by the dynamic shared memory subsystem pg_logical Subdirectory containing status data for logical decoding pg_multixact Subdirectory containing multitransaction status data (used for shared row locks) pg_notify Subdirectory containing LISTEN/NOTIFY status data pg_replslot Subdirectory containing replication slot data pg_serial Subdirectory containing information about committed serializable transactions pg_snapshots Subdirectory containing exported snapshots pg_stat Subdirectory containing permanent files for the statistics subsystem pg_stat_tmp Subdirectory containing temporary files for the statistics subsystem pg_subtrans Subdirectory containing subtransaction status data pg_tblspc Subdirectory containing symbolic links to tablespaces pg_twophase Subdirectory containing state files for prepared transactions pg_wal Subdirectory containing WAL (Write Ahead Log) files pg_xact Subdirectory containing transaction commit status data postgresql.auto.conf A file used for storing configuration parameters that are set by ALTER SYSTEM postmaster.opts A file recording the command-line options the server was last started with postmaster.pid A lock file recording the current postmaster process ID (PID), cluster data directory path, postmaster start timestamp, port number, Unix-domain socket directory path (could be empty), first valid listen_address (IP address or * , or empty if not listening on TCP), and shared memory segment ID (this file is not present after server shutdown) For each database in the cluster there is a subdirectory within PGDATA /base , named after the database's OID in pg_database ."
+    ]
+   }
+  },
+  "create-table": {
+   "url": "https://www.postgresql.org/docs/18/sql-createtable.html",
+   "sha256": "a237971aeee16aa1b6da68f20ee2798989b4dc4118bd8d0afc836a8da7da8209",
+   "fetched": "2026-10-27",
+   "found": {
+    "fillfactor for a table + default": [
+     "Specifying these parameters for partitioned tables is not supported, but you may specify them for individual leaf partitions. fillfactor ( integer ) # The fillfactor for a table is a percentage between 10 and 100. 100 (complete packing) is the default."
+    ],
+    "remaining space on each page is reserved for updating rows": [
+     "When a smaller fillfactor is specified, INSERT operations pack table pages only to the indicated percentage; the remaining space on each page is reserved for updating rows on that page."
     ]
    }
   },
@@ -228,6 +244,9 @@
     ],
     "autovacuum_vacuum_max_threshold": [
      "The vacuum threshold is defined as: vacuum threshold = Minimum(vacuum max threshold, vacuum base threshold + vacuum scale factor * number of tuples) where the vacuum max threshold is autovacuum_vacuum_max_threshold , the vacuum base threshold is autovacuum_vacuum_threshold , the vacuum scale factor is autovacuum_vacuum_scale_factor , and the number of tuples is pg_class . reltuples ."
+    ],
+    "Frozen row versions + in the past": [
+     "Frozen row versions are treated as if the inserting XID were FrozenTransactionId , so that they will appear to be “ in the past ” to all normal transactions regardless of wraparound issues, and so such row versions will be valid until deleted, no matter how long that is."
     ]
    }
   },
@@ -279,6 +298,9 @@
      "Reducing checkpoint_timeout and/or max_wal_size causes checkpoints to occur more often.",
      "If checkpoints happen closer together than checkpoint_warning seconds, a message will be output to the server log recommending increasing max_wal_size .",
      "Bulk operations such as large COPY transfers might cause a number of such warnings to appear if you have not set max_wal_size high enough."
+    ],
+    "crash recovery procedure looks at the latest checkpoint": [
+     "(The change records were previously flushed to the WAL files.) In the event of a crash, the crash recovery procedure looks at the latest checkpoint record to determine the point in the WAL (known as the redo record) from which it should start the REDO operation."
     ]
    }
   },
@@ -295,6 +317,9 @@
      "An index-only scan, after finding a candidate index entry, checks the visibility map bit for the corresponding heap page.",
      "Even in the successful case, this approach trades visibility map accesses for heap accesses; but since the visibility map is four orders of magnitude smaller than the heap it describes, far less physical I/O is needed to access it.",
      "In most situations the visibility map remains cached in memory all the time."
+    ],
+    "bitmap scans + sorted order": [
+     "(As described in Section 11.5 , bitmap scans try to alleviate this cost by doing the heap accesses in sorted order, but that only goes so far.) To solve this performance problem, PostgreSQL supports index-only scans , which can answer queries from an index alone without any heap access."
     ]
    }
   },
@@ -400,7 +425,7 @@
   },
   "turing-mit": {
    "url": "https://news.mit.edu/2015/michael-stonebraker-wins-turing-award-0325",
-   "sha256": "d5ef50a2bdd7c72a54d2d19cb0a7627dcf6a2fb49e1d0e441b29bfd83915dba4",
+   "sha256": "058ca2628323bcfa8128e77e7bfa4473c62d0636a7d9820d3bc346a097351b93",
    "fetched": "2026-10-27",
    "found": {
     "Turing Award + Nobel Prize of computing": [
@@ -424,6 +449,19 @@
     ],
     "arXiv:1901.01973v1": [
      "Describe the issue below: Description: License: CC BY 4.0 arXiv:1901.01973v1 [cs.DB] 07 Jan 2019 Looking Back at Postgres Joseph M."
+    ]
+   }
+  },
+  "sqlite-about": {
+   "url": "https://www.sqlite.org/about.html",
+   "sha256": "4b99169565af75a3e637a2cba19c1a3f59ab770444239931c969f94ab218357e",
+   "fetched": "2026-10-27",
+   "found": {
+    "embedded SQL database engine": [
+     "SQLite is an embedded SQL database engine."
+    ],
+    "separate server process": [
+     "Unlike most other SQL databases, SQLite does not have a separate server process."
     ]
    }
   }

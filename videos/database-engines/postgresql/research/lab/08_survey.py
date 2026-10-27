@@ -80,7 +80,9 @@ def exported(path):
             pct = round(row['pct'] * 100, 1)
             assert round(row['count'] / e['demographic']['n'] * 100, 1) == pct
             out[row['response']] = {'percent': pct, 'respondents': row['count']}
-    return out, {k: e.get(k) for k in ('url', 'licence', 'question', 'title') if k in e} | {'n': e['demographic']['n'], 'demographic': e['demographic'].get('name')}
+    top = sorted(e['data'], key=lambda r: -r['pct'])[:5]          # 这一题全部选项里勾选最多的前五个
+    return out, {k: e.get(k) for k in ('url', 'licence', 'question', 'title') if k in e} | {'n': e['demographic']['n'], 'demographic': e['demographic'].get('name'),
+                                                                                       'top5': [{'response': r['response'], 'percent': round(r['pct'] * 100, 1)} for r in top]}
 
 
 years = []

@@ -29,6 +29,7 @@ CHECKS = {
                                          ('HOT 的条件：没有改到索引列且同页放得下', r'use_hot_update = true')],
     'src/backend/access/heap/README.HOT': [('HOT 的定义', r'Heap Only Tuple'), ('重定向', r'redirect')],
     'src/bin/initdb/initdb.c': [('initdb 默认开启校验和', r'static bool data_checksums = true')],
+    'src/backend/access/heap/hio.c': [('插入时向空闲空间图要一页放得下的', r'targetBlock = GetPageWithFreeSpace\(relation')],
     'src/backend/storage/buffer/bufmgr.c': [('写盘时在副本上算校验和', r'bufToWrite = PageSetChecksumCopy\(')],
     'src/backend/optimizer/util/plancat.c': [('规划时取每个索引的树高（索引方法提供的函数）', r'tree_height = amroutine->amgettreeheight\(indexRelation\)')],
     'src/backend/access/nbtree/nbtree.c': [('B 树的取树高函数', r'amgettreeheight = btgettreeheight'), ('它调用 _bt_getrootheight', r'return _bt_getrootheight\(rel\)')],

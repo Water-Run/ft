@@ -46,6 +46,7 @@ Stack Overflow 开发者调查「Databases」题、「All Respondents」口径�
 | S5 | 2026 年：PostgreSQL 57.9%（6 984 人），MySQL 35.1%（4 235 人）；这一题的答题人数 12 061 | [2026 原页](https://survey.stackoverflow.co/2026/technology/data/databases)附带的导出 JSON：demographic「All Respondents」、n 12061；百分比与「人数 ÷ n」逐项核对一致；数据许可 ODbL 1.0，Stack Exchange Inc. | 原文 |
 | S6 | 2022 → 2026：PostgreSQL 43.59% → 57.9%，MySQL 46.85% → 35.1%；2023 起 PostgreSQL 每年领先 | S1–S5 | 原文 |
 | S7 | 2026 年的答题人数（12 061）远少于 2022、2023 年（两库人数之和就超过 5 万）；画面与旁白用百分比，写明各年是不同样本 | S1、S2、S5 | 原文 |
+| S8 | 2026 年这一题全部选项里，勾选最多的前五个是 PostgreSQL 57.9%、SQLite 42.1%、MySQL 35.1%、Redis 28.3%、Microsoft SQL Server 27.1%：PostgreSQL 第一，SQLite 第二 | 2026 原页导出 JSON 的全部选项按比例排序（`out_08_survey.json` years[2026].export.top5） | 原文 |
 
 ## 来历与标题
 
@@ -115,6 +116,7 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | Q7 | 按名字只取编号：仍是普通索引扫描，要回堆，因为姓名索引里没有编号；InnoDB 的姓名索引里带主键，同样的查询只读索引 | `out_02_query.json` plans_before_vacuum.id_by_name；InnoDB 一集 FACTS E1 | 实测＋引用 |
 | Q8 | 按名字只取名字：仅索引扫描。VACUUM 前「Heap Fetches: 1」（可见性图还没标，要回堆确认这一行可见），VACUUM 后「Heap Fetches: 0」，代价估计 8.30 → 4.30 | `out_02_query.json` index_only；手册 Visibility Map 的「index-only scans」原句（`out_09_docs.json` vm） | 实测＋原文 |
 | Q9 | 对照 InnoDB：冷启动按主键查读主键树的根与叶，按名字查读姓名索引的根与叶，再回主键树 | InnoDB 一集 FACTS L1、L2 | 引用 |
+| Q10 | 位图扫描先从索引取出全部地址，再按页的顺序去读堆，减少在堆里来回跳 | 手册 Index-Only Scans：「bitmap scans try to alleviate this cost by doing the heap accesses in sorted order」；Q5 | 原文＋实测 |
 
 ## 改
 
@@ -131,6 +133,8 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | U7 | HOT 的两个条件：更新没有改到任何被索引引用的列（BRIN 这类摘要索引除外）；旧行所在的页有足够空间放新行。满足时不用加新索引项；索引始终指向原来那行的项目指针 | [18 手册《Heap-Only Tuples (HOT)》](https://www.postgresql.org/docs/18/storage-hot.html)：「The update does not modify any columns referenced by the table's indexes, not including summarizing indexes.」「There is sufficient free space on the page containing the old row for the updated row.」「New index entries are not needed to represent updated rows」「Indexes always refer to the page item identifier of the original row version.」 | 原文＋实测（U5、U6） |
 | U8 | 所以系列原表上 Alice 改年龄两个条件都不满足：年龄有索引（U5），第 23 页也满了（U1）；统计里这次更新记作「换页更新」（n_tup_newpage_upd 1） | U1、U5；results.users.stats | 实测 |
 | U9 | 对照 InnoDB：同一位置原地改，旧值进 undo（行里的回滚指针指向它）；回滚时用 undo 改回 42 | InnoDB 一集 FACTS X1、X2 | 引用 |
+| U10 | 表的填充因子默认 100（把页装满）；调小后，插入只把页装到那个比例，剩下的空间留给这一页上的行更新 | [18 手册 CREATE TABLE](https://www.postgresql.org/docs/18/sql-createtable.html)：「The fillfactor for a table is a percentage between 10 and 100. 100 (complete packing) is the default.」「When a smaller fillfactor is specified, INSERT operations pack table pages only to the indicated percentage; the remaining space on each page is reserved for updating rows on that page.」 | 原文 |
+| U11 | 更新时先看旧行所在的页放不放得下新版本，放不下才换页 | 源码 `heapam.c` 第 3815、3817 行：`newtupsize = MAXALIGN(newtup->t_len);`、`if (need_toast \|\| newtupsize > pagefree)` 进入换页的分支；U1、U5 | 原文＋实测 |
 
 ## 事务与并发
 
@@ -149,6 +153,8 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | X9 | 死锁：两个事务交叉改 2050、2051，等待超过 deadlock_timeout（本实验设为 1 秒）后，一方报 40P01「deadlock detected」，细节写明谁在等谁的事务；另一方继续 | steps.6_deadlock | 实测 |
 | X10 | 默认隔离级别是读已提交 | 手册 Transaction Isolation（Read Committed 与「default」同句，`out_09_docs.json` isolation）；X2 实测 | 实测＋原文 |
 | X11 | 对照 InnoDB：默认可重复读；Carol 等记录锁，3 秒超时报 1205；死锁报 1213 | InnoDB 一集 FACTS 关键配置行、X3–X5、X7 | 引用 |
+| X12 | 每个事务的提交状态单独存放，在数据目录的 pg_xact 子目录里；`pg_xact_status()` 读到的进行中、已提交、已中止就来自这里 | 手册 File Layout 的数据目录表：「pg_xact Subdirectory containing transaction commit status data」；X1、X6、X8 的 `pg_xact_status` 实测 | 原文＋实测 |
+| X13 | 行头里的 xmax 也用来记行锁：换页更新前给旧行加的临时锁，WAL 里记为 `LOCK xmax: 4856 … infobits: [LOCK_ONLY, EXCL_LOCK]` | `out_06_wal_crash.json` steps.3_alice_commit.pg_waldump；U3 | 实测 |
 
 ## 删与回收
 
@@ -166,6 +172,8 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | D8 | 冻结：VACUUM (FREEZE) 后表的 relfrozenxid 760 → 4859；Dave 那一行的 infomask 同时置上 HEAP_XMIN_COMMITTED 与 HEAP_XMIN_INVALID，两位同时置上就是「已冻结」 | steps.5_freeze；源码 htup_details.h 第 206 行 `#define HEAP_XMIN_FROZEN (HEAP_XMIN_COMMITTED\|HEAP_XMIN_INVALID)` | 实测＋原文 |
 | D9 | 自动清理默认开启，每 60 秒检查一次；一张表的死行数超过「50 + 0.2 × 行数」（且不超过 1 亿）就清理它；表的冻结年龄到 2 亿时强制清理 | steps.5_freeze.settings 的 boot_val（autovacuum on、autovacuum_naptime 60 s、autovacuum_vacuum_threshold 50、autovacuum_vacuum_scale_factor 0.2、autovacuum_vacuum_max_threshold 100000000、autovacuum_freeze_max_age 200000000）；手册 Routine Vacuuming：「vacuum threshold = Minimum(vacuum max threshold, vacuum base threshold + vacuum scale factor * number of tuples)」 | 实测（默认值）＋原文 |
 | D10 | 对照 InnoDB：删除后 Bob 仍读到 Alice；purge 做完后 Dave 的行用上 Alice 留下的同一处空间 | InnoDB 一集 FACTS D1、D3、D4 | 引用 |
+| D11 | 冻结的行对所有普通事务都算「过去」，不受事务号回绕影响，一直有效到被删除 | 手册 Routine Vacuuming：「Frozen row versions are treated as if the inserting XID were FrozenTransactionId, so that they will appear to be "in the past" to all normal transactions regardless of wraparound issues」 | 原文 |
+| D12 | 插入一行时，PostgreSQL 向空闲空间图要一页放得下的页 | 源码 `src/backend/access/heap/hio.c` 第 584 行 `targetBlock = GetPageWithFreeSpace(relation, targetFreeSpace)`；D4、D5 | 原文＋实测 |
 
 ## 出错怎么办
 
@@ -182,6 +190,14 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | W7 | 断电式停机后启动，日志依次是：「database system was interrupted」→「database system was not properly shut down; automatic recovery in progress」→「redo starts at 0/1A53C40」→「redo done at 0/1A6F070」→ 恢复结束的检查点 →「database system is ready to accept connections」 | steps.5_recovery.server_log | 实测 |
 | W8 | 恢复后：Alice 是 43（已提交的在）；Bob 仍是 51，Carol 没提交的 99 看不见；Carol 的事务状态是 aborted，她写下的版本仍在第 46 页第 49 项，第一次被读到时标上 HEAP_XMIN_INVALID——没提交的不用撤，它的版本本来就看不见 | steps.5_recovery（alice、bob、carol_status、carol_version_in_page） | 实测 |
 | W9 | 对照 InnoDB：重启时重放 redo，再用 undo 回滚没提交的事务；双写缓冲区防写坏的页 | InnoDB 一集 FACTS R3、F5、M16 | 引用 |
+| W10 | 检查点：保证此前写进 WAL 的修改都已写进数据文件；崩溃后从最近一个检查点记下的位置开始重放 | [18 手册《WAL Configuration》](https://www.postgresql.org/docs/18/wal-configuration.html)：「Checkpoints are points in the sequence of transactions at which it is guaranteed that the heap and index data files have been updated with all information written before that checkpoint.」「In the event of a crash, the crash recovery procedure looks at the latest checkpoint record to determine the point in the WAL (known as the redo record) from which it should start the REDO operation.」；W7 | 原文＋实测 |
+
+## 引出下一集
+
+| 编号 | 陈述 | 依据 | 状态 |
+|---|---|---|---|
+| B1 | SQLite 是嵌入式的 SQL 数据库引擎，和大多数 SQL 数据库不同，它没有独立的服务进程 | [sqlite.org《About SQLite》](https://www.sqlite.org/about.html)：「SQLite is an embedded SQL database engine.」「Unlike most other SQL databases, SQLite does not have a separate server process.」（`out_09_docs.json` sqlite-about） | 原文 |
+| B2 | 2026 年调查里排在 PostgreSQL 之后的第二名是 SQLite | S8 | 原文 |
 
 ## 取证中发现、未必进成片的事实
 

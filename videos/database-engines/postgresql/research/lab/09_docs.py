@@ -19,7 +19,9 @@ D = 'https://www.postgresql.org/docs/18/'
 PAGES = {
     'page-layout': (D + 'storage-page-layout.html', [['24 bytes', 'page header'], ['ItemIdData'], ['23 bytes'], ['t_xmin'], ['t_xmax'], ['t_ctid'],
                                                      ['number of item identifiers', 'pd_lower'], ['item identifier is never moved']]),
-    'file-layout': (D + 'storage-file-layout.html', [['filenode'], ['exceeds 1 GB'], ['_fsm'], ['_vm'], ['free space map'], ['visibility map']]),
+    'file-layout': (D + 'storage-file-layout.html', [['filenode'], ['exceeds 1 GB'], ['_fsm'], ['_vm'], ['free space map'], ['visibility map'],
+                                                     ['pg_xact', 'commit status']]),
+    'create-table': (D + 'sql-createtable.html', [['fillfactor for a table', 'default'], ['remaining space on each page is reserved for updating rows']]),
     'fsm': (D + 'storage-fsm.html', [['free space map'], ['binary tree']]),
     'vm': (D + 'storage-vm.html', [['all-visible'], ['all tuples on the page have been frozen'], ['index-only scans']]),
     'hot': (D + 'storage-hot.html', [['does not modify any columns referenced'], ['sufficient free space'], ['New index entries are not needed'],
@@ -31,11 +33,13 @@ PAGES = {
     'explicit-locking': (D + 'explicit-locking.html', [['deadlock'], ['Row-level locks do not affect data querying'], ['no limit on the number of rows locked']]),
     'create-index': (D + 'sql-createindex.html', [['B-trees', 'leaf pages are filled'], ['default', 'fillfactor', '90']]),
     'vacuum': (D + 'routine-vacuuming.html', [['dead row versions'], ['32 bits'], ['two billion transactions'], ['frozen'], ['autovacuum'],
-                                              ['vacuum threshold', 'base threshold', 'scale factor'], ['autovacuum_vacuum_max_threshold']]),
+                                              ['vacuum threshold', 'base threshold', 'scale factor'], ['autovacuum_vacuum_max_threshold'],
+                                              ['Frozen row versions', 'in the past']]),
     'wal-intro': (D + 'wal-intro.html', [['changes to data files', 'only after those changes have been logged'], ['in the event of a crash'], ['fsync']]),
     'wal-reliability': (D + 'wal-reliability.html', [['full page images', 'before modifying'], ['checksummed by default']]),
-    'wal-config': (D + 'wal-configuration.html', [['Checkpoints', 'points in the sequence of transactions'], ['checkpoint_timeout'], ['max_wal_size']]),
-    'index-only': (D + 'indexes-index-only-scans.html', [['All indexes in PostgreSQL are secondary indexes'], ['visibility map']]),
+    'wal-config': (D + 'wal-configuration.html', [['Checkpoints', 'points in the sequence of transactions'], ['checkpoint_timeout'], ['max_wal_size'],
+                                                  ['crash recovery procedure looks at the latest checkpoint']]),
+    'index-only': (D + 'indexes-index-only-scans.html', [['All indexes in PostgreSQL are secondary indexes'], ['visibility map'], ['bitmap scans', 'sorted order']]),
     'btree-dedup': (D + 'btree.html', [['deduplication'], ['posting list']]),
     'history': (D + 'history.html', [['POSTGRES', '1986'], ['led by Professor Michael Stonebraker'], ['Andrew Yu'], ['new name, PostgreSQL'], ['6.0']]),
     'features': (D + 'features.html', [['SQL:2023'], ['Core conformance'], ['no current version']]),
@@ -46,6 +50,8 @@ PAGES = {
     'turing-mit': ('https://news.mit.edu/2015/michael-stonebraker-wins-turing-award-0325', [['Turing Award', 'Nobel Prize of computing'], ['invented many of the concepts'],
                                                                                           ['Publication Date']]),
     'hellerstein': ('https://arxiv.org/html/1901.01973v1', [['Post-Ingres'], ['arXiv:1901.01973v1']]),
+    # 片尾引出下一集：SQLite 是嵌入式的、没有独立的服务进程
+    'sqlite-about': ('https://www.sqlite.org/about.html', [['embedded SQL database engine'], ['separate server process']]),
 }
 
 

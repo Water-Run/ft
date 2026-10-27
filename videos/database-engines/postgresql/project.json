@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"
   },
-  "stage": "research",
-  "next": "取证完成（2026-10-27，research/FACTS.md 与 research/lab/）；按 FACTS 写文案，交 WaterRun 校对",
+  "stage": "review",
+  "next": "重做版文案第 1 稿待 WaterRun 校对（review/NOTES.md）；确认后配音、做场景",
   "credits": {
     "planner": "WaterRun",
     "models": [
