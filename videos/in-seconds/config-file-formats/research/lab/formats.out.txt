@@ -1,0 +1,7 @@
+XML 字符 73 数据 13 标签 60
+JSON 字符 43 {'server': {'port': 8080, 'host': 'localhost'}}
+TOML {'server': {'port': 8080, 'host': 'localhost'}} {'server': {'db': {'port': 8080}}}
+YAML NO -> {'country': False}
+YAML 正确 -> {'server': {'db': {'port': 8080, 'host': 'a'}}}
+YAML 少一个空格 -> ParserError
+YAML 少两个空格 -> {'server': {'db': {'port': 8080}, 'host': 'a'}}

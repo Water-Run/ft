@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "7017c23ce31812110a1a5763a7afec16cfa194f2a8724c0d61db2da06d74f518",
+      "status": "approved",
+      "content_sha256": "954388c2c58ec05d9153932cdfb127407eb5574e63a82e3a883a7814b7dd1bf1",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-10-28T00:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-10-28：WaterRun 对第 2 稿（8e89a86f…）选择「确认，可以配音」；其后只拆字幕断句，字词不变"
     }
   }
 }

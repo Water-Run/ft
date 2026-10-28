@@ -7,10 +7,10 @@
     "zh": "150秒认识五大主流配置文件"
   },
   "voices": {
-    "zh": "zh-CN-YunyangNeural"
+    "zh": "zh-CN-XiaoxiaoNeural"
   },
   "rates": {
-    "zh": "+6%",
+    "zh": "+14%",
     "en": "+8%"
   },
   "asr_prompts": {
@@ -26,7 +26,7 @@
     "duck_db": 7,
     "sfx_db": -9,
     "score": {
-      "lift_cue": "a2"
+      "lift_cue": "e6"
     }
   },
   "check": {
@@ -72,8 +72,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "script",
-  "next": "核查来稿事实与比较口径，校对 150 秒预算；按构成主义海报规范细化视觉实现",
+  "stage": "render",
+  "next": "WaterRun 看预览后给意见；之后正式渲染、验收",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -83,9 +83,24 @@
           "文案",
           "逐句画面设计"
         ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "事实核查与改稿",
+          "画面实现",
+          "配乐"
+        ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "Microsoft Edge 在线语音（模型未披露）",
+        "roles": [
+          "旁白合成"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "review": {

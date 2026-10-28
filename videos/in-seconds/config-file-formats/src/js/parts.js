@@ -57,3 +57,59 @@ function civilFromDays(z) {
 const unixOf = (y, m = 1, d = 1) => daysFromCivil(y, m, d) * 86400;
 const two = (n) => String(n).padStart(2, '0');
 const clockOf = (u, withSec = true) => { const s = ((u % 86400) + 86400) % 86400; return two(Math.floor(s / 3600)) + ':' + two(Math.floor(s / 60) % 60) + (withSec ? ':' + two(Math.floor(s) % 60) : ''); };
+
+// ── 本集：构成主义海报的部件 ──
+// 巨字：一个字母一个 span，字号按 grow 逐个放大，按基线排开；整组斜放，允许出画（被画框裁掉）
+function giant(parent, word, o) {
+  const g = h('div', 'abs giant ' + (o.cls || ''), parent); px(g, o.x, o.y);
+  const letters = [...word].map((ch, i) => { const e = h('span', '', g, ch === ' ' ? '&nbsp;' : esc(ch)); e.style.fontSize = (o.size * Math.pow(o.grow || 1.22, i)).toFixed(0) + 'px'; return e; });
+  gsap.set(g, { rotation: o.rot || 0, transformOrigin: '0% 100%', yPercent: -100 });
+  g.dataset.overlapOk = '1';
+  return { g, letters };
+}
+// 巨字逐个砸下：每个字母比上一个晚 gap 秒
+function giantIn(G, t, gap = 0.09) {
+  G.letters.forEach((e, i) => { slam(e, t + i * gap, { from: 1.6, d: 0.32, ease: 'power4.out' }); });
+  sfx('thud', t, { g: 0.9, p: -0.4 }); sfx('thud', t + (G.letters.length - 1) * gap, { g: 0.7, p: -0.2 });
+}
+// 斜线：一条有宽度的平涂长条，从起点向终点「切」出来
+function slash(parent, x1, y1, x2, y2, w, cls) {
+  const len = Math.hypot(x2 - x1, y2 - y1), e = blk(parent, cls, x1, y1 - w / 2, len, w);
+  gsap.set(e, { rotation: Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI, transformOrigin: '0% 50%' });
+  e.dataset.overlapOk = '1';
+  return e;
+}
+const cut = (e, t, d = 0.35) => { tl.fromTo(e, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: d, ease: 'power4.inOut', immediateRender: true }, t); sfx('whoosh', t, { g: 0.6, p: 0.3 }); return e; };
+// 平涂多边形（整幅 SVG）；pts 是 [[x, y], …]
+function poly(parent, pts, fill) {
+  const s = svg('svg', { class: 'abs', width: 1920, height: 968, viewBox: '0 0 1920 968' }, parent); px(s, 0, 0);
+  svg('polygon', { points: pts.map((p) => p.join(',')).join(' '), fill: COL[fill] || fill }, s);
+  s.dataset.overlapOk = '1';
+  return s;
+}
+// 盖印：略放大落下、无过冲，配一声闷响
+function stamp(e, t, o = {}) { tl.fromTo(e, { autoAlpha: 0, scale: o.from || 1.18 }, { autoAlpha: 1, scale: 1, duration: o.d || 0.16, ease: 'power2.in', immediateRender: true }, t); sfx(o.sfx || 'thud', t + (o.d || 0.16), { g: o.g || 0.6, p: o.p || 0.2 }); return e; }
+// 一组元素整体退场：沿斜线方向收走
+const clearOut = (e, t) => { tl.to(e, { autoAlpha: 0, x: -80, duration: 0.3, ease: 'power3.in' }, t); };
+// 代码块
+const code = (parent, html, x, y, size, cls = '') => { const e = txt(parent, 'code ' + cls, html, x, y); e.style.fontSize = size + 'px'; return e; };
+const tag = (parent, cls, html, x, y) => txt(parent, 'tag ' + cls, html, x, y);
+// 字数条：n 个字符，每字符 u 像素，从左长出；数字随条一起数上去
+function countBar(parent, x, y, n, u, cls, label, t) {
+  const b = blk(parent, cls, x, y, n * u, 46);
+  const l = txt(parent, 'bar-l', '', x + n * u + 20, y + 2);
+  tl.fromTo(b, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.6, ease: 'power3.out', immediateRender: true }, t);
+  countTo(l, 0, n, t, 0.6, (v) => label + ' ' + Math.round(v)); appear(l, t);
+  return { b, l };
+}
+// 油墨纸纹：固定种子的噪点与纤维，画一次冻结成图，盖在画面上（正片叠底）
+function paperGrain() {
+  const c = document.createElement('canvas'); c.width = 1920; c.height = 968; c.className = 'grain';
+  const g = c.getContext('2d'), r = seeded(1917);
+  for (let i = 0; i < 26000; i++) { const a = r(); g.fillStyle = a < 0.5 ? 'rgba(27,24,22,0.10)' : 'rgba(120,96,60,0.07)'; g.fillRect(r() * 1920, r() * 968, 1 + r() * 2.2, 1 + r() * 2.2); }
+  g.strokeStyle = 'rgba(120,96,60,0.06)'; g.lineWidth = 1;
+  for (let i = 0; i < 700; i++) { const x = r() * 1920, y = r() * 968, a = r() * Math.PI, l = 6 + r() * 26; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke(); }
+  for (let i = 0; i < 90; i++) { g.fillStyle = 'rgba(233,224,204,0.35)'; g.fillRect(r() * 1920, r() * 968, 2 + r() * 10, 1 + r() * 2); }   // 漏墨的白点
+  document.getElementById('hud').prepend(c);
+  freeze(c).className = 'grain';
+}

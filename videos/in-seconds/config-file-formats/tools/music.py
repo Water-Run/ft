@@ -1,10 +1,10 @@
-# 占位：起点自带的配乐（首集的 120 拍秒针）。按本集的对象重写（经验规则 F06、F21）；与起点完全相同时 check.js 会提示，新版目录交付前不通过。
-# 「XX 秒速通」系列的配乐：程序合成，120 拍/分，一秒两拍；每个 30 秒的时间步是 15 小节，段落交界落在换码的那一拍上。
-# 由 kit/tools/mix.py 调用（project.json 的 audio.music 写成 "tools/music.py"）：compose(ctx) 返回 (2, N) 的数组，电平与旁白压低仍由 mix.py 统一处理。
+# 本片配乐：构成主义海报的「印刷车间」。程序合成，120 拍/分，C 小调；军鼓式的军乐节拍、每小节第一拍一记铜管似的和弦重击、
+# 每秒一声铁砧似的金属敲击（压印机落下）。由 kit/tools/mix.py 调用（project.json 的 audio.music 写成 "tools/music.py"）：
+# compose(ctx) 返回 (2, N) 的数组，电平与旁白压低仍由 mix.py 统一处理。
 #   ctx: { sr, n, total, scenes: [{id, start, end}], cues: [{id, start, end}], audio: project.json 的 audio 段 }
-# 编排由场景的先后决定：第一场是引子，中间各场逐场加层，最后一个正片场景转为半拍并在结论处抬起，片尾只留铺底与秒针。
+# 编排由场景的先后决定：第一场是引子，中间各场逐场加层，最后一个正片场景转为半拍并在结论处抬起，片尾只留铺底与敲击。
 #   audio.score.lift_cue：结论那一句的句号。抬起的那一拍 = 该句开始后 0.2 秒就近取整拍（场景里的大字也落在这一拍）。
-# 设计：配的是讲解，不是舞曲。底鼓很轻，没有主旋律；每秒一声的「秒针」贯穿全片；音色只用正弦、加法合成的锯齿与噪声。
+# 设计：有力量但不抢旁白；没有主旋律；音色只用正弦、加法合成的锯齿与噪声。
 # 制作者听不到声音：出片前看 audio.js 的数值自检，听感由人确认。
 import numpy as np
 
@@ -14,15 +14,15 @@ BAR = 4 * BEAT
 FADE = (0.02, 0.35)                     # 第一拍就起，不做慢淡入；结尾只留一个很短的收口
 hz = lambda m: 440.0 * 2 ** ((m - 69) / 12)
 
-# D 小调：i – VI – III – VII，每小节一个和弦；每个时间步的最后三小节停在 VI、VII、VII 上，悬到下一段的第一拍解决
+# C 小调：i – VI – III – VII，每小节一个和弦；每段的最后三小节停在 VI、VII、VII 上，悬到下一段的第一拍解决
 CHORDS = {
-    "Dm":  {"root": 38, "tones": [62, 65, 69, 72, 76]},     # D F A C E
-    "Bb":  {"root": 34, "tones": [58, 62, 65, 69, 72]},     # Bb D F A C
-    "F":   {"root": 41, "tones": [60, 65, 69, 72, 76]},     # C F A C E
-    "C":   {"root": 36, "tones": [60, 62, 67, 72, 74]},     # C D G C D（挂二）
-    "D5":  {"root": 38, "tones": [62, 69, 74, 76, 81]},     # 片尾：D A D E A，不带三音
+    "Cm":  {"root": 36, "tones": [60, 63, 67, 70, 74]},     # C Eb G Bb D
+    "Ab":  {"root": 32, "tones": [56, 60, 63, 67, 70]},     # Ab C Eb G Bb
+    "Eb":  {"root": 39, "tones": [58, 63, 67, 70, 74]},     # Bb Eb G Bb D
+    "Bb":  {"root": 34, "tones": [58, 62, 65, 70, 72]},     # Bb D F Bb C
+    "C5":  {"root": 36, "tones": [60, 67, 72, 74, 79]},     # 片尾：C G C D G，不带三音
 }
-CYCLE = ["Dm", "Bb", "F", "C"]
+CYCLE = ["Cm", "Ab", "Eb", "Bb"]
 
 
 def compose(ctx):
@@ -36,7 +36,7 @@ def compose(ctx):
     lift = None
     if spec.get("lift_cue") in cue:
         lift = round((cue[spec["lift_cue"]]["start"] + 0.2) / BEAT) * BEAT
-    stems = {k: np.zeros((2, N)) for k in ("kick", "hat", "rim", "tick", "bass", "pluck", "arp", "pad", "fx")}
+    stems = {k: np.zeros((2, N)) for k in ("kick", "hat", "rim", "snare", "stab", "tick", "bass", "pluck", "arp", "pad", "fx")}
 
     def put(name, sig, t, g=1.0, pan=0.0):
         i = int(round(t * SR))
@@ -60,9 +60,22 @@ def compose(ctx):
     def rim():
         t = tt(0.09); x = np.diff(rng.standard_normal(len(t)), prepend=0)
         return (0.6 * x / (np.abs(x).max() + 1e-9) * np.exp(-t / 0.012) + np.sin(2 * np.pi * 1720 * t) * np.exp(-t / 0.02)) * np.minimum(1, t / 0.001)
-    def tick(tock=False):                                                   # 秒针：一声很短的木质敲击，嘀与嗒音高不同
-        t = tt(0.06); f = 1900 if tock else 2500
-        return (np.sin(2 * np.pi * f * t) * np.exp(-t / 0.007) + 0.35 * np.sin(2 * np.pi * f * 2.76 * t) * np.exp(-t / 0.003)) * np.minimum(1, t / 0.0006)
+    def tick(tock=False):                                                   # 铁砧：不成谐的几组分音，衰减有长有短；两声音高不同
+        t = tt(0.4); f = 820 if tock else 1040
+        y = sum(a * np.sin(2 * np.pi * f * k * t) * np.exp(-t / d) for k, a, d in ((1, 1, 0.09), (2.76, 0.6, 0.05), (5.4, 0.35, 0.02), (8.9, 0.2, 0.008)))
+        return y * np.minimum(1, t / 0.0005) / 2.1
+    def snare():                                                            # 军鼓：一段带通噪声，加一个 190 Hz 的鼓皮
+        t = tt(0.22); x = rng.standard_normal(len(t)); X = np.fft.rfft(x); fq = np.fft.rfftfreq(len(x), 1 / SR)
+        nz = np.fft.irfft(X * (fq > 1200) * (fq < 7000), len(x)); nz /= np.abs(nz).max() + 1e-9
+        return (0.8 * nz * np.exp(-t / 0.06) + 0.6 * np.sin(2 * np.pi * 190 * t) * np.exp(-t / 0.04)) * np.minimum(1, t / 0.001)
+    def stab(ch, d=0.34):                                                   # 铜管似的和弦重击：每个和弦音一支加法锯齿，起音很快、亮度随时间关上
+        t = tt(d); y = np.zeros(len(t))
+        for m in ch["tones"][:3]:
+            f = hz(m - 12)
+            for k in range(1, 12):
+                if f * k > 4000: break
+                y += np.sin(2 * np.pi * f * k * t) / k * np.exp(-t * (3 + 9 * (k - 1)))
+        return y * np.minimum(1, t / 0.006) * np.clip((d - t) / 0.05, 0, 1) / 3
     def bass(m, d):                                                         # 加法合成的锯齿，高次谐波衰减得快：相当于滤波器随时间关上
         t = tt(d); f = hz(m); y = np.zeros(len(t))
         for k in range(1, 9):
@@ -113,7 +126,8 @@ def compose(ctx):
         air = np.fft.irfft(X * (fq > 2500) * (fq < 9000), len(x)) * np.exp(-t / 0.3) * 0.5
         return (y + air / (np.abs(air).max() + 1e-9) * 0.22) * np.minimum(1, t / 0.002)
 
-    K, HC, HO, RM, TK, TC, BM = kick(), hat(), hat(True), rim(), tick(), tick(True), boom()
+    K, HC, HO, RM, TK, TC, BM, SN = kick(), hat(), hat(True), rim(), tick(), tick(True), boom(), snare()
+    STABS = {}
     def pl(m, d, bright, t, g, pan, echo=True):
         note("pluck", ("p", m, d, bright), lambda: pluck(m, d, bright), t, g, pan, wet=0.32, echo=3 * BEAT / 4 if echo else 0.0)
 
@@ -128,7 +142,7 @@ def compose(ctx):
         t0 = b * BAR; k, s = section_of(t0)
         local = int(round((t0 - s["start"]) / BAR)); left = int(round((s["end"] - t0) / BAR))      # 段内第几小节、离段尾还有几小节
         kind = "outro" if k == len(body) else "intro" if k == 0 else "half" if k == len(body) - 1 else "groove"
-        ch = "D5" if kind == "outro" else (["Bb", "C", "C"][3 - left] if left <= 3 and kind != "half" else CYCLE[local % 4])
+        ch = "C5" if kind == "outro" else (["Ab", "Bb", "Bb"][3 - left] if 1 <= left <= 3 and kind != "half" else CYCLE[local % 4])
         plan.append({"b": b, "t": t0, "k": k, "kind": kind, "local": local, "left": left, "ch": ch, "dens": k})
 
     # ── 铺底：每小节一个和弦，首尾交叠 ──
@@ -142,10 +156,10 @@ def compose(ctx):
         g = {"intro": 0.9, "groove": 0.8, "half": 1.15}[p["kind"]]
         dry, wt = pad_wet(p["ch"], BAR, 0.35 if p["b"] else 0.9)
         put2("pad", dry, p["t"], g * 0.7); put2("pad", wt, p["t"], g * 0.5)
-    dry, wt = pad_wet("D5", max(1.0, total - t_out - 3.4), 0.25, 1.6)
+    dry, wt = pad_wet("C5", max(1.0, total - t_out - 3.4), 0.25, 1.6)
     put2("pad", dry, t_out, 1.6 * 0.7); put2("pad", wt, t_out, 1.6 * 0.4)
 
-    # ── 秒针：全片每秒一声，嘀嗒交替，左右略分 ──
+    # ── 铁砧：全片每秒一声，两种音高交替，左右略分 ──
     for sec in range(int(total)):
         put("tick", TC if sec % 2 else TK, float(sec), 1.0 if sec % 2 == 0 else 0.8, -0.25 if sec % 2 == 0 else 0.25)
 
@@ -163,14 +177,15 @@ def compose(ctx):
             elif kind == "groove":
                 put("kick", K, tb, 0.85 if beat == 0 else 0.72)
                 put("hat", HC, tb + BEAT / 2, 0.8, 0.3)
+                if beat in (1, 3): put("snare", SN, tb, 0.8, 0.1)
                 if p["dens"] >= 2:
                     put("hat", HC, tb + BEAT / 4, 0.3, -0.3); put("hat", HC, tb + 3 * BEAT / 4, 0.3, -0.3)
-                    if beat in (1, 3): put("rim", RM, tb, 0.8, 0.2)
+                    if beat == 3: put("snare", SN, tb + BEAT / 2, 0.45, -0.1)
                 if beat == 3 and p["local"] % 4 == 3: put("hat", HO, tb + BEAT / 2, 0.5, 0.3)
             elif kind == "half":
                 if in_lift:
                     put("kick", K, tb, 0.85 if beat == 0 else 0.72); put("hat", HC, tb + BEAT / 2, 0.8, 0.3)
-                    if beat in (1, 3): put("rim", RM, tb, 0.8, 0.2)
+                    if beat in (1, 3): put("snare", SN, tb, 0.85, 0.1)
                 else:
                     if beat == 0: put("kick", K, tb, 0.8)
                     if beat == 2: put("rim", RM, tb, 0.9, 0.2)
@@ -183,6 +198,11 @@ def compose(ctx):
             else:
                 put("bass", bass(ch["root"], 0.24), tb, 0.95)
                 put("bass", bass(ch["root"] + (12 if beat == 3 else 0), 0.22), tb + BEAT / 2, 0.7)
+        # 和弦重击：正片各段每小节第一拍，引子从第 5 小节起
+        if (kind == "groove" or lifted or (kind == "intro" and p["local"] >= 4)) and t0 < t_out:
+            if p["ch"] not in STABS: STABS[p["ch"]] = stab(CHORDS[p["ch"]])
+            put("stab", STABS[p["ch"]], t0, 0.9 if kind == "groove" or lifted else 0.6, -0.1)
+            if kind == "groove" and p["local"] % 2 == 1: put("stab", STABS[p["ch"]], t0 + 1.5 * BEAT, 0.55, 0.15)
         # 拨弦琶音：第 2 段起八分音符的稀疏音型；第 3 段再叠一层高八度的十六分音符（数据的质感）
         tones = ch["tones"]
         if kind == "groove" or lifted:
@@ -211,16 +231,16 @@ def compose(ctx):
         put("fx", BM, s["start"], 1.0)
     put("fx", BM, t_out, 0.9)
     # 片尾：两小节上行的拨弦，倒数第二秒一声钟音似的高音，随后只剩秒针
-    for i, m in enumerate([74, 76, 81, 86]):
+    for i, m in enumerate([72, 74, 79, 84]):
         pl(m, 1.2, 0.2, t_out + 0.5 + i * BEAT, 0.8, -0.3 + 0.2 * i)
     te = np.floor(total) - 2.0
-    for m, g in ((86, 0.9), (81, 0.5), (74, 0.5)): pl(m, 2.2, 0.15, te, g, 0.0, echo=False)
+    for m, g in ((84, 0.9), (79, 0.5), (72, 0.5)): pl(m, 2.2, 0.15, te, g, 0.0, echo=False)
 
     # ── 混合：低音在底鼓落下的瞬间让一下 ──
     kenv = np.abs(stems["kick"]).max(axis=0)
     w = int(0.05 * SR); cs = np.cumsum(np.concatenate([np.zeros(w // 2 + 1), kenv, np.zeros(w - w // 2)])); kenv = ((cs[w:] - cs[:-w]) / w)[:N]; kenv /= max(1e-9, kenv.max())
     stems["bass"] *= 1 - 0.55 * kenv
-    GAIN = {"kick": 0.44, "hat": 0.30, "rim": 0.22, "tick": 0.30, "bass": 0.17, "pluck": 0.34, "arp": 0.26, "pad": 0.20, "fx": 0.36}
+    GAIN = {"kick": 0.48, "hat": 0.26, "rim": 0.22, "snare": 0.30, "stab": 0.24, "tick": 0.16, "bass": 0.17, "pluck": 0.34, "arp": 0.26, "pad": 0.20, "fx": 0.36}
     GAIN.update(spec.get("gains") or {})
     mixd = sum(stems[k] * GAIN[k] for k in stems)
     ctx["stems"] = {k: float(np.sqrt(np.mean((v * GAIN[k]) ** 2))) for k, v in stems.items()}       # 各分轨进入混合后的电平，供检查
