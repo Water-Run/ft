@@ -180,7 +180,7 @@
           {
             "zh": "每行写一个完整的 JSON 值，就是 .jsonl"
           },
-          { "tts": { "zh": "每行写一个完整的 JSON 值，就是 JSON L，" }, "gap": 0.08 }
+          { "tts": { "zh": "每行写一个完整的 Jason 值，就是 Jason L，" }, "gap": 0.08 }
         ],
         [
           "c4b",
@@ -251,7 +251,7 @@
           {
             "zh": "按 YAML 1.1 的规则，不加引号的 NO，代表挪威"
           },
-          { "tts": { "zh": "按 YAML 1.1 的规则，不加引号的 NO，代表挪威，" }, "gap": 0.08 }
+          { "tts": { "zh": "按 Yammel 1.1 的规则，不加引号的 NO，代表挪威，" }, "gap": 0.08 }
         ],
         [
           "d6b",
@@ -330,7 +330,8 @@
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
   const SAY = {
     zh: [
-      [/\.jsonl/g, 'JSON L'], [/\.json/g, 'JSON'], [/\.xml/g, 'XML'], [/\.yaml/g, 'YAML'], [/\.toml/g, 'TOML'], [/\.ini/g, 'INI'],
+      // 读法经 tts_probe 回听（2026-10-28，Edge Xiaoxiao）：JSON 直写会读成字母，YAML、TOML 会被拼读
+      [/\.jsonl/g, 'Jason L'], [/\.json/g, 'Jason'], [/JSON/g, 'Jason'], [/\.xml/g, 'XML'], [/\.yaml/g, 'Yammel'], [/YAML/g, 'Yammel'], [/\.toml/g, 'Tommel'], [/TOML/g, 'Tommel'], [/\.ini/g, 'INI'],
     ],
     en: [
     ],

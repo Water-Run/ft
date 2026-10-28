@@ -33,3 +33,9 @@
 ## 配音
 
 MiniMax 当日返回 2056（Token Plan 用量上限），改用 Edge `zh-CN-XiaoxiaoNeural`，语速 +14%。读法：`.ini/.xml/.json/.jsonl/.yaml/.toml` 读作字母名（SAY 表）。
+
+## WaterRun 看预览 r1 的意见（2026-10-28，未看完）
+
+- 00:54「标签 60」的字压在 `<config>` 框的左边线上。已改：字数条与 JSON 段统一为每字符 8 像素，标签字落在框外。
+- 「视频要更有节奏感和冲击力，尤其是各个配置文件更大层面的结构缺乏展示」——待全部意见到齐后一起改。
+- 「Json Yaml Toml 的读法等都有问题」。已改 SAY 表（不改字幕）：JSON → `Jason`，JSONL → `Jason L`，YAML → `Yammel`，TOML → `Tommel`。改之前 ASR 回听到的是「JSO班」「Y.A. & Bell」「PO&BEL」，改之后是 Jason、Yamal、Tom Mal。已重新合成配音。

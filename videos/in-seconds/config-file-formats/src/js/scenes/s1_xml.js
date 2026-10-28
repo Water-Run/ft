@@ -56,8 +56,8 @@ scene('xml', ({ root, s }) => {
   const tB6 = W('b6');
   [tree, dtd, ok].forEach((e) => clearOut(e, tB6 - 0.1));
   const lab = txt(world, 'note', '本例去掉空白后', 120, 700); appear(lab, tB6);
-  countBar(world, 120, 760, 60, 11, 'bg-ink', '标签', W('b6', '外面'));
-  countBar(world, 120, 830, 13, 11, 'bg-ac', '数据', W('b6', '里面'));
+  countBar(world, 120, 760, 60, 8, 'bg-ink', '标签', W('b6', '外面'));
+  countBar(world, 120, 830, 13, 8, 'bg-ac', '数据', W('b6', '里面'));
   sfx('tick', W('b6', '外面'), { g: 0.6 }); sfx('tick', W('b6', '里面'), { g: 0.6, p: 0.3 });
   tl.to(data, { scale: 0.78, duration: 0.5, ease: 'power3.inOut' }, W('b6', '一大截'));
   hold(cam, s, -1);
