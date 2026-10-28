@@ -5,75 +5,60 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 系列起点的封面版式，文字与纸色一侧的读数换成本集的；做完删掉这一行。
-     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
-     4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
-  :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。kit/tools/covers.js 按 2 倍像素出图。
+     与正片同一套构成主义海报：米色纸底、一道红色大斜板、黑底上的一份配置文件（红字是数据），五个格式名逐个放大、斜排、出画。
+     4:3 是重新排布，不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
+  :root { --ink: #1B1816; --paper: #E9E0CC; --ac: #D4291F; }
   html, body, #stage { width: var(--W); height: var(--H); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { background: var(--ink); color: var(--paper); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; position: relative; }
   .abs { position: absolute; white-space: nowrap; }
-  .paper { background: var(--paper); }
-  .big { font: 900 440px "Inter"; letter-spacing: -.04em; line-height: 1; }
-  .tag { background: var(--ac); color: var(--ink); display: flex; align-items: baseline; padding: 6px 34px 16px; }
-  .tag b { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
-  .tag i { font: 900 96px "Inter", "Sans SC"; font-style: normal; margin-left: 18px; line-height: 1; }
-  .ttl { font: 900 76px "Inter", "Sans SC"; line-height: 1.16; letter-spacing: -.01em; }
-  .en .ttl { font-size: 80px; }
-  .kick { font: 700 40px "Inter", "Sans SC"; color: var(--ink); }
-  .code { font: 800 150px "Mono"; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
-  svg { position: absolute; overflow: visible; }
-  /* 16:9：左墨右纸 */
-  .r169 .paper { left: 1090px; top: 0; width: 830px; height: 1080px; }
-  .r169 .big { left: 84px; top: 52px; }
-  .r169 .tag { left: 100px; top: 492px; }
-  .r169 .ttl { left: 100px; top: 722px; }
-  .r169 .kick { left: 1150px; top: 64px; }
-  .r169 .code { left: 1212px; top: 716px; }
-  /* 4:3：上墨下纸 */
-  .r43 .paper { left: 0; top: 770px; width: 1600px; height: 430px; }
-  .r43 .big { left: 66px; top: 60px; font-size: 470px; }
-  .r43 .tag { left: 1090px; top: 120px; }
-  .r43 .tag b { font-size: 150px; }
-  .r43 .tag i { font-size: 84px; }
-  .r43 .ttl { left: 84px; top: 548px; font-size: 80px; }
-  .r43 .kick { left: 1090px; top: 388px; color: var(--paper); }
-  .r43 .code { left: 80px; top: 824px; font-size: 168px; }
+  svg.abs { overflow: visible; }
+  .names { font: 900 100px "Inter"; letter-spacing: -.04em; line-height: .86; transform-origin: 0 100%; }
+  .names div:nth-child(odd) { color: var(--ink); }
+  .names div:nth-child(even) { color: var(--ac); }
+  .doc { background: var(--ink); color: var(--paper); font: 800 40px "Mono"; line-height: 1.38; padding: 34px 44px; white-space: pre; }
+  .doc .d { color: #F0553F; }
+  .doc .p { color: #B9B0A0; }
+  .tag { background: var(--ink); color: var(--paper); display: flex; align-items: baseline; padding: 8px 30px 16px; }
+  .tag b { font: 800 150px "Mono"; letter-spacing: -.03em; line-height: 1; color: #F0553F; }
+  .tag i { font: 900 84px "Sans SC"; font-style: normal; margin-left: 14px; line-height: 1; }
+  .ttl { font: 900 92px "Sans SC"; line-height: 1.12; letter-spacing: -.01em; }
+  /* 16:9 */
+  .r169 .names { left: 70px; top: 120px; transform: rotate(-8deg); }
+  .r169 .doc { left: 1180px; top: 70px; }
+  .r169 .tag { left: 1180px; top: 560px; }
+  .r169 .ttl { left: 90px; top: 690px; }
+  /* 4:3 */
+  .r43 .names { left: 60px; top: 90px; transform: rotate(-8deg); }
+  .r43 .doc { left: 940px; top: 120px; font-size: 36px; }
+  .r43 .tag { left: 940px; top: 560px; }
+  .r43 .ttl { left: 80px; top: 780px; font-size: 96px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="abs paper"></div>
-  <div class="abs big"></div>
-  <div class="abs tag"><b></b><i></i></div>
-  <div class="abs ttl"></div>
-  <div class="abs kick"></div>
-  <div class="abs code"></div>
+  <svg class="abs" id="slab" width="100%" height="100%"></svg>
+  <div class="abs names"></div>
+  <div class="abs doc"></div>
+  <div class="abs tag"><b>150</b><i>秒</i></div>
+  <div class="abs ttl">认识五大主流<br>配置文件</div>
 </div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
-  document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
-  const TEXT = {
-    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
-    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
-  }[lang];
-  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
-  document.querySelector('.tag i').textContent = TEXT.unit;
-  document.querySelector('.ttl').innerHTML = TEXT.title;
-  document.querySelector('.kick').textContent = TEXT.kick;
-  // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
-  const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
-  const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
-  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';
-  const line = (x1, y1, x2, y2, c, w) => { const e = document.createElementNS(NS, 'line'); for (const [k, v] of Object.entries({ x1, y1, x2, y2, stroke: c, 'stroke-width': w })) e.setAttribute(k, v); s.appendChild(e); };
-  for (let i = 0; i < 30; i++) { const a = i * Math.PI / 15, big = i % 5 === 0, r0 = r * (big ? 0.8 : 0.89); line(r0 * Math.sin(a), -r0 * Math.cos(a), r * Math.sin(a), -r * Math.cos(a), i >= 1 && i <= sec ? AC : INK, big ? r * 0.04 : r * 0.022); }
-  const a = sec * Math.PI / 15; line(-0.2 * r * Math.sin(a), 0.2 * r * Math.cos(a), 1.08 * r * Math.sin(a), -1.08 * r * Math.cos(a), AC, r * 0.034);
-  const hub = document.createElementNS(NS, 'rect'); for (const [k, v] of Object.entries({ x: -r * 0.05, y: -r * 0.05, width: r * 0.1, height: r * 0.1, fill: AC })) hub.setAttribute(k, v); s.appendChild(hub);
-  document.getElementById('stage').appendChild(s);
+  const q = new URLSearchParams(location.search), wide = q.get('r') !== '43';
+  document.documentElement.className = wide ? 'r169' : 'r43';
+  const W = wide ? 1920 : 1600, H = wide ? 1080 : 1200;
+  // 一道红色大斜板，从左下切到右上
+  document.getElementById('slab').innerHTML = `<polygon points="0,${H * 0.48} ${W},${H * 0.08} ${W},${H * 0.22} 0,${H * 0.62}" fill="#D4291F"/>`;
+  // 五个格式名：一个比一个大
+  const names = document.querySelector('.names');
+  ['.ini', '.xml', '.json', '.yaml', '.toml'].forEach((n, i) => { const d = document.createElement('div'); d.textContent = n; d.style.fontSize = Math.round((wide ? 96 : 92) * Math.pow(1.13, i)) + 'px'; names.appendChild(d); });
+  // 同一份配置（片中主画面的 TOML 写法）
+  const P = (s) => `<span class="p">${s}</span>`, D = (s) => `<span class="d">${s}</span>`;
+  document.querySelector('.doc').innerHTML = [`${P('[')}server${P(']')}`, `host ${P('=')} ${D('"localhost"')}`, `port ${P('=')} ${D('8080')}`, '', `${P('[')}server${P('.')}db${P(']')}`, `user ${P('=')} ${D('"app"')}`, `port ${P('=')} ${D('5432')}`].join('\n');
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

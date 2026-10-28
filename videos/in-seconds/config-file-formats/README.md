@@ -6,7 +6,7 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 预览 r2 待策划者看（`out/zh/preview-r2.mp4`，960×540、30fps，不入库）；尚未正式渲染与验收 |
+| 当前停在哪里 | 正式成片已出（`out/zh/config-file-formats-zh-1080p60.mp4`，另有无配乐、仅人声版与 SRT；封面 `out/cover-zh-*`，均不入库）；`check.js --final` 只剩 F27「以观众身份看完全片」待人确认 |
 | 已落盘 | 取证（FACTS + `research/lab/formats.py` 实测）；第 2 稿经 WaterRun 确认；Edge 配音；五幕场景、片尾名单、配乐 |
 | 本次会话的角色 | 制作方（Claude Opus 5.5，2026-10-28） |
 | 下一步 | 按 WaterRun 对 r1 的意见改；之后 4K/GPU 正式渲染、`check.js --final`、验收 |

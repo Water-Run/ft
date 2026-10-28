@@ -58,7 +58,7 @@ scene('toml', ({ root, s }) => {
   onBeam(chips[1], 20, tM + 0.1); onBeam(chips[2], 290, tM + 0.3);
   const lm = txt(beam, 'say', '机器好解析', 40, 80); lm.style.fontSize = '52px'; stamp(lm, tM + 0.5, { g: 0.4 });
   tl.to(beam, { rotation: -6, transformOrigin: '50% 100%', duration: 0.5, ease: 'power2.out' }, tM + 0.45);
-  onBeam(chips[0], 900, tH + 0.05); onBeam(chips[3], 1110, tH + 0.2); onBeam(chips[4], 1360, tH + 0.35);
+  onBeam(chips[0], 880, tH + 0.05); onBeam(chips[3], 1100, tH + 0.2); onBeam(chips[4], 1400, tH + 0.35);
   const lh = txt(beam, 'say ac', '人好读写', 1250, 80); lh.style.fontSize = '52px'; stamp(lh, tH + 0.5, { g: 0.4 });
   tl.to(beam, { keyframes: [{ rotation: 4, duration: 0.5, ease: 'power2.out' }, { rotation: -1.5, duration: 0.6, ease: 'power2.inOut' }, { rotation: 0, duration: 0.7, ease: 'power2.inOut' }], transformOrigin: '50% 100%' }, tH + 0.65);
   sfx('pop', tH + 2.4, { g: 0.6, p: 0.3 });

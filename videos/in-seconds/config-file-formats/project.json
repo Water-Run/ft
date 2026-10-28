@@ -72,8 +72,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "render",
-  "next": "WaterRun 看预览后给意见；之后正式渲染、验收",
+  "stage": "accept",
+  "next": "WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付",
   "credits": {
     "planner": "WaterRun",
     "models": [

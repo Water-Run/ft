@@ -189,6 +189,8 @@ function docMorph(d, lines, t, o = {}) {
 const docFind = (d, pred) => d.toks.filter(pred);
 // 冲击：场景整体抖一下
 function shake(root, t, a = 12) {
+  if (a < 14) return;                       // 只留最重的落点；幅度收到四成（WaterRun 看 r2：「画面有点抖」）
+  a *= 0.4;
   tl.fromTo(root, { x: 0, y: 0 }, { keyframes: [{ x: a, y: -a * 0.4, duration: 0.035, ease: 'none' }, { x: -a * 0.7, y: a * 0.3, duration: 0.05, ease: 'none' }, { x: a * 0.35, y: 0, duration: 0.05, ease: 'none' }, { x: 0, y: 0, duration: 0.08, ease: 'power2.out' }], immediateRender: false }, t);
 }
 // 换场：一块红色斜板从左边压过来盖住左半幅（上一场的最后一刻），下一场开头再抽走；右边的文件不动，首尾相接
