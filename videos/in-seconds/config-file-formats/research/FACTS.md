@@ -31,14 +31,14 @@
 | b1 | XML 1.0 于 1998-02-10 成为 W3C 推荐标准 | [REC-xml-19980210](https://www.w3.org/TR/1998/REC-xml-19980210) 文首 | 已核 |
 | b2–b3 | 非空元素以开始标签起、结束标签止，元素可嵌套 | 同上 §3「Logical Structures」 | 已核 |
 | b4 | 开始标签可带属性（名与值）；有文档类型声明时可做有效性校验（well-formed 之外的 valid） | 同上 §3.1、§2.8 | 已核 |
-| b5–b6 | 示例 `<config><server><port>8080</port><host>localhost</host></server></config>` 去空白 73 字符，数据 13，标签 60 | `research/lab/formats.out.txt` | 实测 |
+| b5–b6 | 全片主画面的完整示例（server 里套 db）写成 XML，去空白 115 字符，其中数据 20、标签 95；画面上一个方块代表一个字符 | `research/lab/formats.out.txt`「完整示例」 | 实测 |
 
 ## JSON 与 JSONL
 
 | 句号 | 陈述 | 依据 | 状态 |
 |---|---|---|---|
 | c1 | Crockford 称 2001 年春「发现」JSON，首条 JSON 消息发于 2001 年 4 月 | [The Discovery of JSON](https://nofluffjuststuff.com/blog/douglas_crockford/2008/01/the_discovery_of_json)；[JSON Saga 讲稿](https://mamund.site44.com/rwcbook/the-json-saga/index.html) | 已核 |
-| c2 | 同一示例写成 JSON 去空白 43 字符（XML 73） | `research/lab/formats.out.txt` | 实测；不推广为「小一半」 |
+| c2 | 同一完整示例写成 JSON 去空白 75 字符（XML 115）；JSON 与 TOML 解析结果与 XML 表达的结构相同 | `research/lab/formats.out.txt`「完整示例」 | 实测；不推广为「小一半」 |
 | c3 | 值的类型：字符串、数字、true/false、null、对象、数组 | [json.org](https://www.json.org/json-en.html) | 已核 |
 | c4 | JSON Lines：UTF-8，每行一个合法 JSON 值，以 `\n` 分隔；适合日志文件、逐条处理 | [jsonlines.org](https://jsonlines.org/) | 已核 |
 | c5 | json.org 语法没有注释 | [json.org](https://www.json.org/json-en.html) | 已核 |
@@ -51,7 +51,7 @@
 | d1 | 设计目标第一条是便于人阅读 | 同上 §1.1「Goals」 | 已核 |
 | d2 | 块式写法靠缩进表示层级；也有带 `[]` `{}` 的流式写法和引号标量，故**不是**「去掉了所有括号和引号」 | 同上 §1.2、§7 | 已核，来稿已改 |
 | d3 | 注释以 `#` 开头 | 同上 §6.6 | 已核 |
-| d5 | 示例中某行少一个空格 → ParserError；少两个空格 → 不报错，`host` 从 `db` 移到 `server` 下 | `research/lab/formats.out.txt` | 实测 |
+| d5 | 完整示例的 YAML 末行 `port: 5432`：缩进 4 → 3 为 ParserError；4 → 2 不报错，解析结果里 `server.port` 变成 5432（原来的 8080 被覆盖），`db` 里没有 port | `research/lab/formats.out.txt`「完整示例」 | 实测 |
 | d6 | YAML 1.1 布尔类型的隐式写法包括 `n|N|no|No|NO`；PyYAML 把 `country: NO` 解析为 `False`。YAML 1.2 去掉了多数这类隐式类型 | [yaml.org/type/bool](https://yaml.org/type/bool.html)；YAML 1.2.2 §0；实测 | 已核，旁白限定为 1.1 |
 
 ## TOML 与收尾

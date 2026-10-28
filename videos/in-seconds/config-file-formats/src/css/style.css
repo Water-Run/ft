@@ -65,3 +65,18 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 #caption span { font-size: 40px; font-weight: 700; color: var(--paper); font-family: "Sans SC", "Inter"; }
 #caption em { font-style: normal; font-weight: 800; color: #F0553F; }
 .credit-row { margin-bottom: 26px; }
+
+/* 活的配置文件：黑底上的字块。红 = 数据（压在黑上 5.1:1） */
+.tk { font-family: "Mono"; font-weight: 800; line-height: 1; white-space: pre; color: var(--paper); }
+.tk.dv { color: #F0553F; }
+.tk.to, .tk.tc, .tk.b, .tk.q, .tk.p { color: #B9B0A0; }
+.m-heads .tk.to, .m-tails .tk.tc, .m-punct .tk.b, .m-punct .tk.q { color: #F0553F; }
+.m-dim .tk.to, .m-dim .tk.tc { color: #6E675C; }
+.srv .srv-l { font: 900 62px "Sans SC"; color: var(--paper); }
+.srv .srv-n { display: flex; align-items: baseline; gap: 24px; }
+.srv .srv-n .u { font: 800 58px "Sans SC"; color: var(--paper); }
+.srv .srv-n .v { font: 800 150px "Mono"; color: #F0553F; letter-spacing: -.03em; line-height: 1; }
+.tk.sel { background: var(--paper); color: var(--ink); }
+.m-eq .tk.p { color: #F0553F; }
+.m-sec .tk.b { color: #F0553F; }
+.giant .yr { font: 700 28px "Mono"; letter-spacing: 0; margin-left: 10px; color: var(--dimp); }

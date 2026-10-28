@@ -1,70 +1,84 @@
-// 第 4 幕：YAML。括号与引号被抹去、缩进成阶梯 → 注释 → 少一个空格：报错；少两个：层级悄悄变了（PyYAML 实测）→ YAML 1.1 把 NO 读成 False。
+// 第 4 幕：YAML。括号与引号飞散，只剩缩进 → 注释 → 末行少一个空格：报错；少两个：不报错，server 的 8080 被 5432 顶掉（PyYAML 实测）→ YAML 1.1 把挪威的 NO 读成 False。
 scene('yaml', ({ root, s }) => {
-  const world = h('div', 'world', root);
-  const cam = makeCamera(world, 1920, VH);
-  blk(world, 'bg-paper', -100, -100, 2120, 1170);
+  const { world, cam } = stage(root, s);
+  const doc = makeDoc(world, FMT.json);
+  classAt(doc.el, 'm-punct', s.start, W('d2', '不用括号') + 0.2);
 
-  // ── d1：大斜线重切；红色巨字 YAML 斜跨右半屏、出画 ──
-  const k = slash(world, -100, 470, 2100, 330, 26, 'bg-ink'); cut(k, s.start + 0.05, 0.3);
-  const G = giant(world, 'YAML', { x: 960, y: 330, size: 170, grow: 1.24, rot: -6, cls: 'ac' });
-  giantIn(G, s.start + 0.2, 0.1);
-  const yr = tag(world, 'k', '2001 · 第一个实现', 120, 150); stamp(yr, W('d1', '2001') + 0.3);
-  const goal = tag(world, 'o', '设计目标：人好读', 120, 226); stamp(goal, W('d1', '阅读'), { g: 0.4 });
+  // ── d1：YAML 巨字；设计目标是人好读 ──
+  const G = giant(world, 'YAML', { x: 90, y: 950, size: 190, grow: 1.22, rot: -7, cls: 'ac' });
+  giantIn(G, s.start + 0.3, 0.1); shake(root, s.start + 0.42, 12);
+  const yr = tag(world, 'k', '2001 · 第一个实现', 64, 310); stamp(yr, W('d1', '2001') + 0.3);
+  const goal = tag(world, 'o', '设计目标：人好读', 64, 380); stamp(goal, W('d1', '阅读'), { g: 0.4 });
 
-  // ── d2：黑块抹掉 {} 与 ""，只剩缩进；左侧红色横条是缩进阶梯 ──
-  const X = 260, Y = 520, LH = 92, CW = 38.4;     // 64px 等宽字一格宽 0.6em
-  const ghost = code(world, '{"server": {"db": {\n  "port": 8080, "host": "localhost"}}}', X - 120, Y, 50, 'dimp');
-  appear(ghost, s.start + 0.3);
-  const tErase = W('d2', '不用括号');
-  const eraser = blk(world, 'bg-ink', X - 140, Y - 20, 1400, 180);
-  tl.fromTo(eraser, { scaleX: 0 }, { keyframes: [{ scaleX: 1, duration: 0.3, ease: 'power3.in' }, { scaleX: 0, duration: 0.3, ease: 'power3.out' }], transformOrigin: '0 50%', immediateRender: true }, tErase);
-  tl.set(eraser, { transformOrigin: '100% 50%' }, tErase + 0.3); vanish(ghost, tErase + 0.3); sfx('whoosh', tErase, { g: 0.7 });
-  const L = [['server:', 0], ['db:', 2], ['port: 8080', 4], ['host: localhost', 4]].map(([t, ind], i) => {
-    const e = code(world, ' '.repeat(ind) + t.replace(/^(\w+):/, '$1<span class="r">:</span>'), X, Y - 60 + i * LH, 64, 'ink');
-    const bar = blk(world, 'bg-ac', X, Y - 60 + i * LH + 20, Math.max(8, ind * CW - 10), 48);
-    if (!ind) bar.style.opacity = 0;
-    appear(e, tErase + 0.3 + i * 0.06);
-    return { e, bar, ind };
-  });
+  // ── d2：括号和引号全部飞走；行首缩进成了阶梯 ──
+  const tE = W('d2', '不用括号');
+  docResize(doc, 6, tE + 0.3, 10); docMorph(doc, FMT.yaml, tE, { seed: 13 }); shake(root, tE + 0.8, 10);
+  const lQ = tag(world, 'o', '多数字符串不加引号', 64, 450); stamp(lQ, W('d2', '引号'), { g: 0.4 });
   const tInd = W('d2b', '缩进');
-  L.forEach((l, i) => { if (l.ind) tl.fromTo(l.bar, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.3, ease: 'power3.out', immediateRender: true }, tInd + i * 0.08); });
-  sfx('tick', tInd, { g: 0.6 }); sfx('tick', tInd + 0.24, { g: 0.6, p: 0.4 });
-  const lInd = tag(world, 'r', '缩进 = 层级', X + 720, Y - 60); stamp(lInd, W('d2b', '层级'));
+  const ind = [[1, 2], [2, 2], [3, 2], [4, 4], [5, 4]].map(([row, n], i) => {
+    const b = blk(world, 'bg-ac', DOC.x, DOC.y + row * DOC.lh + 4, n * CWD - 8, 40);
+    tl.fromTo(b, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.25, ease: 'power3.out', immediateRender: true }, tInd + i * 0.08);
+    return b;
+  });
+  sfx('tick', tInd, { g: 0.6 }); sfx('tick', tInd + 0.3, { g: 0.6, p: 0.4 });
+  const pL = pointer(world, 'r', '缩进 = 层级', 4, W('d2b', '层级'), { w: 220, x: 640 });
 
-  // ── d3：注释 ──
-  const cmt = tag(world, 'r big', '# 端口设置', X + 600, Y - 60 + 2 * LH + 2);
-  stamp(cmt, W('d3', '井号'), { sfx: 'pop' });
+  // ── d3：井号写注释 ──
+  const tC = W('d3', '井号');
+  const yc = FMT.yaml.map((l, i) => (i === 2 ? l + '  # 对外端口' : l));
+  docMorph(doc, yc, tC, { seed: 17, d: 0.3 });
+  [goal, lQ, pL.e, pL.ln].forEach((e) => clearOut(e, tC));
 
-  // ── d4：缩进阶梯上出现一道斜向切口 ──
+  // ── d4：缩进阶梯上裂开一道 ──
   const tCrack = W('d4', '隐患');
-  const crack = slash(world, X - 20, Y + 280, X + 200, Y - 40, 10, 'bg-paper'); cut(crack, tCrack, 0.25);
-  clearOut(lInd, tCrack);
+  const crack = slash(world, DOC.x - 30, DOC.y + 6 * DOC.lh, DOC.x + 160, DOC.y + DOC.lh - 20, 8, 'bg-paper'); cut(crack, tCrack, 0.2);
+  shake(root, tCrack + 0.2, 8);
 
-  // ── d5：少一个空格 → ParserError；少两个 → host 跑到 server 下 ──
-  const host = L[3];
+  // ── d5：末行少一个空格 → ParserError；少两个 → 不报错，server 的端口被换成 5432 ──
+  const last = docFind(doc, (k) => k.row === 5), bar5 = ind[4];
   const t1 = W('d5', '少敲'), tErr = W('d5', '报错'), t2 = W('d5', '层级');
-  tl.to(host.e, { x: -CW, duration: 0.2, ease: 'power3.in' }, t1); tl.to(host.bar, { width: 4 * CW - 10 - CW, duration: 0.2 }, t1);
-  const err = h('div', 'abs bg-ink', world); px(err, X + 900, Y + 140, 520, 90); code(err, 'ParserError', 30, 8, 60, 'paper');
-  stamp(err, tErr, { g: 0.9 }); sfx('blip', tErr + 0.1, { g: 0.7 });
-  tl.to(host.e, { x: -2 * CW, duration: 0.2, ease: 'power3.in' }, t2); tl.to(host.bar, { width: 2 * CW - 10, duration: 0.2 }, t2);
+  last.forEach((k) => tl.fromTo(k.e, { x: 0 }, { x: -CWD, duration: 0.2, ease: 'power3.in', immediateRender: false }, t1));
+  tl.fromTo(bar5, { width: 4 * CWD - 8 }, { width: 3 * CWD - 8, duration: 0.2, immediateRender: false }, t1); sfx('key', t1 + 0.1, { g: 1 });
+  const err = tag(world, 'k big', '<span class="mono">ParserError</span>', 360, 420);
+  stamp(err, tErr, { g: 1 }); shake(root, tErr + 0.16, 16);
   vanish(err, t2);
-  const was = code(world, '应为 server.db.host', X + 900, Y + 120, 40, 'dimp');
-  const now = code(world, '实为 server.host', X + 900, Y + 180, 48, 'ink');
-  appear(was, t2 + 0.1); stamp(now, t2 + 0.35, { sfx: 'pop' });
-  const sl = blk(world, 'bg-dimp', X + 890, Y + 146, 440, 6); css(sl, { background: 'var(--dimp)' }); tl.fromTo(sl, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.25, immediateRender: true }, t2 + 0.3);
-  const lab = txt(world, 'note', 'PyYAML 6.0.3 实测', X + 900, Y + 260); appear(lab, t2 + 0.5);
+  last.forEach((k) => tl.fromTo(k.e, { x: -CWD }, { x: -2 * CWD, duration: 0.2, ease: 'power3.in', immediateRender: false }, t2));
+  tl.fromTo(bar5, { width: 3 * CWD - 8 }, { width: 2 * CWD - 8, duration: 0.2, immediateRender: false }, t2); sfx('key', t2 + 0.1, { g: 1 });
+  // 解析结果：server.port 那一格里的 8080 被 5432 撞飞
+  const res = h('div', 'abs', world); px(res, 300, 400);
+  const rh = txt(res, 'note', '解析结果（PyYAML 6.0.3 实测）', 0, 0);
+  const rk = code(res, 'server.port =', 0, 60, 48, 'ink');
+  const r8 = code(res, '8080', 400, 60, 48, 'ink');
+  const rd = code(res, 'server.db.port = 无', 0, 130, 40, 'dimp');
+  appear(res, t2 + 0.25);
+  const fly = code(world, '5432', DOC.x + 8 * CWD, DOC.y + 5 * DOC.lh, 46, 'ac');
+  gsap.set(fly, { autoAlpha: 0 });
+  tl.fromTo(fly, { autoAlpha: 1, x: 0, y: 0 }, { x: 700 - DOC.x - 8 * CWD, y: 460 - DOC.y - 5 * DOC.lh, duration: 0.45, ease: 'power3.in', immediateRender: false }, t2 + 0.45);
+  tl.fromTo(r8, { x: 0, y: 0, rotation: 0, autoAlpha: 1 }, { x: 260, y: 500, rotation: 70, autoAlpha: 0, duration: 0.7, ease: 'power2.in', immediateRender: false }, t2 + 0.9);
+  sfx('thud', t2 + 0.9, { g: 1, p: -0.3 }); shake(root, t2 + 0.9, 16);
+  const silent = tag(world, 'r', '不报错，8080 被悄悄顶掉', 300, 600); stamp(silent, t2 + 1.2);
 
-  // ── d6：NO 被 FALSE 盖印 ──
-  const tD6 = W('d6');
-  [...L.map((l) => l.e), ...L.map((l) => l.bar), cmt, crack, was, now, sl, lab].forEach((e) => clearOut(e, tD6));
-  const rule = tag(world, 'k', 'YAML 1.1 规则', 120, 520); stamp(rule, W('d6', 'YAML'));
-  const kv = code(world, 'country: <span class="no">NO</span>', 120, 600, 150, 'ink');
-  stamp(kv, W('d6', '不加引号'), { sfx: 'pop' });
-  const nor = tag(world, 'o', '挪威', 980, 470); stamp(nor, W('d6', '挪威'), { g: 0.4 });
-  const fal = h('div', 'abs bg-ac', world); px(fal, 760, 590, 640, 190); txt(fal, 'giant paper', 'FALSE', 30, 24).style.fontSize = '150px';
-  gsap.set(fal, { rotation: -5 }); fal.dataset.overlapOk = kv.dataset.overlapOk = '1'; fal.firstChild.dataset.overlapOk = '1';
+  // ── d6：NO 先长成 NORWAY（挪威），再被盖成 FALSE ──
+  const t6 = W('d6');
+  [res, fly, silent, crack, yr].forEach((e) => clearOut(e, t6 - 0.1));
+  last.forEach((k) => tl.to(k.e, { x: 0, duration: 0.3, ease: 'power3.out' }, t6));
+  tl.to(bar5, { width: 4 * CWD - 8, duration: 0.3 }, t6);
+  const rule = tag(world, 'k', 'YAML 1.1 规则', 120, 330); stamp(rule, W('d6', 'YAML'));
+  const kv = h('div', 'abs code ink', world); px(kv, 120, 420); kv.style.fontSize = '90px';
+  kv.innerHTML = 'country: <span class="no">NO</span><span class="rway ac">RWAY</span>';
+  const rway = kv.querySelector('.rway');
+  stamp(kv, W('d6', '不加引号'), { g: 0.6 });
+  vanish(rway, 0); appear(rway, W('d6', '挪威'));
+  tl.fromTo(rway, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(-20% -5% -20% 0%)', duration: 0.35, ease: 'power3.out', immediateRender: false }, W('d6', '挪威'));
+  const nor = tag(world, 'o', 'NO = 挪威的国家代码', 120, 560); stamp(nor, W('d6', '挪威') + 0.2, { g: 0.4 });
   const tF = W('d6b', '否');
-  stamp(fal, tF - 0.15, { from: 1.4, d: 0.18, g: 1, p: -0.3 });
-  const res = txt(world, 'note', '读出来是布尔值 False', 760, 820); appear(res, tF + 0.3);
-  hold(cam, s, -1);
+  tl.to(rway, { clipPath: 'inset(0% 100% 0% 0%)', duration: 0.2, ease: 'power3.in' }, tF - 0.45);
+  const fal = h('div', 'abs bg-ac', world); px(fal, 120 + 9 * 54 - 30, 405, 440, 140);
+  txt(fal, 'giant paper', 'FALSE', 24, 22).style.fontSize = '110px';
+  gsap.set(fal, { rotation: -6 }); fal.dataset.overlapOk = kv.dataset.overlapOk = '1'; fal.firstChild.dataset.overlapOk = '1';
+  stamp(fal, tF - 0.15, { from: 1.6, d: 0.16, g: 1, p: -0.4 }); shake(root, tF, 16);
+  const resF = tag(world, 'k', '读出来是布尔值 False（PyYAML 实测）', 120, 580); stamp(resF, tF + 0.4);
+  clearOut(nor, tF - 0.2);
+  slabIn(root, s.end);
+  hold(cam, s, -1, s.start + 0.9);
 });

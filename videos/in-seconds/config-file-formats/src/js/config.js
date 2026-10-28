@@ -11,7 +11,7 @@ const Qf = (t, g = 0.25) => Math.floor(t / g + 1e-6) * g;         // 不晚于 t
 // 常驻元素的字色跟着它底下的底色走：缺省压在纸色上；场景登记「某一侧在某段时间里压在墨色（'ink'）或红（'ac'）上」
 const HUDG = { L: [], R: [] };
 const hudGround = (side, t0, t1, g) => { HUDG[side].push([t0, t1, g]); };
-const WIPE = 0.5;                                         // 换场用时：一拍
+const WIPE = 0;                                           // 换场是硬切：上一幕最后一刻红板压住左半幅，下一幕开头抽走（parts.js 的 slabIn / slabOut），右边的文件首尾相接
 
 window.ENGINE = {
   fonts: [['500 20px "Sans SC"', '字A'], ['700 20px "Sans SC"', '字A'], ['900 20px "Sans SC"', '字A'],

@@ -2,6 +2,11 @@ XML 字符 73 数据 13 标签 60
 JSON 字符 43 {'server': {'port': 8080, 'host': 'localhost'}}
 TOML {'server': {'port': 8080, 'host': 'localhost'}} {'server': {'db': {'port': 8080}}}
 YAML NO -> {'country': False}
+完整示例 XML 字符 115 数据 20 标签 95
+完整示例 JSON 字符 75 True | TOML True
+完整示例 YAML 末行缩进 4 -> {'server': {'host': 'localhost', 'port': 8080, 'db': {'user': 'app', 'port': 5432}}}
+完整示例 YAML 末行缩进 3 -> ParserError
+完整示例 YAML 末行缩进 2 -> {'server': {'host': 'localhost', 'port': 5432, 'db': {'user': 'app'}}}
 YAML 正确 -> {'server': {'db': {'port': 8080, 'host': 'a'}}}
 YAML 少一个空格 -> ParserError
 YAML 少两个空格 -> {'server': {'db': {'port': 8080}, 'host': 'a'}}
