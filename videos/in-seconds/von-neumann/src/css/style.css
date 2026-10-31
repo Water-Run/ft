@@ -20,6 +20,8 @@
   --blue9: color-mix(in srgb, var(--blue) 9%, transparent);
   --ochre8: color-mix(in srgb, var(--ochre) 8%, transparent);
   --veil: color-mix(in srgb, var(--paper2) 92%, transparent);
+  --tape-i: color-mix(in srgb, var(--blue) 22%, var(--paper2));   /* 指令纸带：淡蓝底 */
+  --tape-d: color-mix(in srgb, var(--ochre) 24%, var(--paper2));  /* 数据纸带：淡赭底 */
   --red: #b3311f;
   --blue: #234e86;
   --ochre: #85570c;
@@ -73,8 +75,8 @@ body { font-family: "Serif SC"; color: var(--ink); }
 .hud-l .n { font: 700 44px "Mono"; letter-spacing: .02em; }
 .hud-l .u { font: 700 28px "Serif SC"; margin-left: 10px; }
 .hud-r { position: absolute; left: 1560px; top: 34px; width: 300px; height: 80px; text-align: right; color: var(--ink); }
-.hud-r .k { font: 500 24px "Mono"; letter-spacing: .1em; color: var(--soft); }
-.hud-r .v { font: 700 44px "Mono"; margin-top: 2px; }
+.hud-r .k { font: 600 26px "Serif SC"; color: var(--soft); }
+.hud-r .v { font: 700 44px "Mono", "Serif SC"; margin-top: 2px; }
 
 /* 字幕：压在墨色字幕带上 */
 #caption { bottom: 30px; height: 60px; z-index: 50; }

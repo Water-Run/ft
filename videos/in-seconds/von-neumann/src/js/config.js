@@ -1,4 +1,4 @@
-// 引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、左上剩余秒数、右上程序计数器）、换场。
+// 引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、左上剩余秒数、右上「正在读第几格」）、换场。
 // 视觉系统「技术手册」见 css/style.css 开头。
 document.documentElement.classList.add(LANG);
 window.PALETTE = { ink: '#1c2633', paper: '#efe7d4', red: '#b3311f', blue: '#234e86', ochre: '#85570c', soft: '#57534a', dim: '#9c9585' };
@@ -9,7 +9,7 @@ const BEAT = 60 / 104;
 const Q = (t, g = BEAT / 2) => Math.round(t / g + 1e-6) * g;
 const Qf = (t, g = BEAT / 2) => Math.floor(t / g + 1e-6) * g;
 
-// 程序计数器：场景登记「从某时刻起 PC 显示某值」；null 显示「—」
+// 正在读第几格：场景登记「从某时刻起显示某值」；null 显示「—」
 const PCK = [];
 const pcAt = (t, v) => { PCK.push([t, v]); };
 
@@ -44,14 +44,14 @@ window.ENGINE = {
       fromTo(left, sec, { scale: 1 }, { keyframes: [{ scale: 1.28, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
       sfx('tick', sec, { g: 0.8, p: -0.6 });
     }
-    // ── 右上：程序计数器 PC。机器开始按格读指令时亮起，跟着指针走 ──
-    const right = h('div', 'hud-r', hud, `<div class="k">${tr('程序计数器 · PC', 'PROGRAM COUNTER')}</div><div class="v">—</div>`);
-    right.dataset.name = '程序计数器';
+    // ── 右上：控制器正在读第几格（程序计数器）。指针出现时亮起，跟着指针走 ──
+    const right = h('div', 'hud-r', hud, `<div class="k">${tr('正在读', 'READING')}</div><div class="v">—</div>`);
+    right.dataset.name = '正在读第几格';
     const val = right.lastChild;
     let lastV = null;
     F((t) => {
       let v = null; for (const [a, b] of PCK) if (t >= a) v = b;
-      const s = v == null ? '— —' : String(v).padStart(2, '0');
+      const s = v == null ? '—' : tr(`第 ${String(v).padStart(2, '0')} 格`, `CELL ${String(v).padStart(2, '0')}`);
       if (s !== lastV) { val.textContent = s; lastV = s; }
     });
     window.HUD = { left, right };

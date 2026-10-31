@@ -7,7 +7,7 @@
 #   - 低音：三角波四分音符 根–五–八–五。继电器的滴答每拍一下，是全片的「机器在走」。
 #   - 编排跟着场景走：open 里先只有滴答与低音（芯片、ENIAC），讲到 1945 年的报告时动机在低八度进来；
 #     program 动机回到中音区；cycle 高八度并加众赞歌式第二声部，「几十亿圈」处加三角波分解和弦；
-#     bottleneck 前半段和弦停在属音上、主奏只剩每小节一个音（堵住了），加缓存之后恢复，结论处终止在 Dm；片尾一个长和弦。
+#     bottleneck 前半段和弦停在属音上、主奏只剩每小节一个音（堵住了），加缓存之后恢复，结论处终止在 Dm；片尾（5 秒）一个长和弦。
 #   - 全程一层很弱的唱片底噪，与配音的老式处理（tools/vintage_voice.py）同一个年代感。
 # 制作者听不到声音：出片前看 audio.js 的数值自检，听感由人确认。
 import numpy as np
@@ -81,11 +81,11 @@ def compose(ctx):
     # 场景时刻
     s_prog, s_cyc, s_bot, s_cr = sc["program"]["start"], sc["cycle"]["start"], sc["bottleneck"]["start"], sc["credits"]["start"]
     t_report = cue["a1"]["start"] if "a1" in cue else 17.7
-    t_spin = cue["c5"]["start"] + 2.6 if "c5" in cue else 77.5
-    t_spin_end = cue["c5"]["end"] + 0.25 if "c5" in cue else 79.5
+    t_spin = cue["c9"]["start"] if "c9" in cue else 79.4
+    t_spin_end = cue["c9"]["end"] + 1.2 if "c9" in cue else 83.4
     t_jam0 = cue["d1"]["start"] if "d1" in cue else s_bot
-    t_cache = cue["d4"]["start"] if "d4" in cue else s_bot + 11
-    t_end = cue["d6"]["end"] if "d6" in cue else s_cr - 3.5
+    t_cache = cue["d5"]["start"] if "d5" in cue else s_bot + 14
+    t_end = cue["d7"]["end"] if "d7" in cue else s_cr - 0.5
     n_bars = int(np.ceil(ctx["total"] / BAR)) + 1
     # 结论终止：d6 说完后的第一个小节线落在主和弦上
     k_final = int(np.ceil((t_end - 0.2) / BAR))

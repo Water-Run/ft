@@ -81,7 +81,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "build",
-  "next": "WaterRun 看预览 r01（out/zh/preview-r01.mp4）给意见；改完后正式渲染、封面、验收",
+  "next": "WaterRun 看预览 r02（out/zh/preview-r02.mp4）给意见；改完后正式渲染、封面、验收",
   "credits": {
     "planner": "WaterRun",
     "models": [
