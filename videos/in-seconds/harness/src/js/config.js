@@ -68,9 +68,9 @@ window.ENGINE = {
     });
   },
   after() {
-    // 场景的显隐与换场：新场景由左向右直刷，一拍刷完。ask 与 loop 是同一个环上走完的五圈，画面都建在 ask 里，中间不换场。
-    const SEG = L.scenes.filter((s) => s.id !== 'loop');
-    document.getElementById('sc-loop').style.display = 'none';
+    // 场景的显隐与换场：新场景由左向右直刷，一拍刷完。loop 与 walk 在同一个环上（先给地图，再走五圈），画面都建在 loop 里，中间不换场。
+    const SEG = L.scenes.filter((s) => s.id !== 'walk');
+    document.getElementById('sc-walk').style.display = 'none';
     const roots = SEG.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
     F((t) => {
       SEG.forEach((s, i) => {

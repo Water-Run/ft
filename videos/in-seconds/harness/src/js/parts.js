@@ -1,4 +1,4 @@
-// 本片的部件：环（一圈 = 一次请求）、对话栈（整段对话，一条一行）、代码卡。数据取自 data.js（tools/gen_data.py 由实验记录生成）。
+// 本片的部件：Agent Loop 的环与站卡（一圈 = 问一次模型）、对话栈（整段对话，一条一行）、代码卡。数据取自 data.js（tools/gen_data.py 由实验记录生成）。
 // 所有部件的状态都只由 t 决定：用 F() 逐帧算，不存历史。
 
 // ── 小工具 ──
@@ -24,31 +24,39 @@ function centered(parent, cls, html, cx, y, w = 900) {
   return e;
 }
 
-// ── 环：一圈 = 一次请求。四站：模型 → 工具调用 → Harness 执行 → 结果交回 ──
-// keys：[[时刻, 角度]]，角度累计（第 2 圈从 360 起）；两个关键帧之间缓入缓出地走。stopAt：这一刻起指针停下（空心）
-const STATIONS = [[tr('模型', 'Model'), 0], [tr('工具调用', 'Tool call'), 90], [tr('Harness 执行', 'Harness runs'), 180], [tr('结果交回', 'Result back'), 270]];
-function makeRing(parent, o) {
+// ── Agent Loop：环 + 四张站卡。一圈 = 问一次模型；指针走到哪一站，哪张卡亮 ──
+// 站：模型（上）→ 工具调用（右）→ Harness 执行（下）→ 结果交回（左）→ 回到模型。刻度与指针在环外，环内留给场景放内容。
+// o.cards：{ model|call|exec|back: [x, y, w, h] }；o.bodies：各站卡的初始内容；keys：[[时刻, 角度, 用时]]，角度累计（第 2 圈从 360 起）；
+// o.from：这一刻起站卡才跟着指针亮；stopAt：这一刻起指针停下（空心）
+const STATIONS = [
+  ['model', 0, tr('模型', 'Model'), 'Model'],
+  ['call', 90, tr('工具调用', 'Tool call'), 'Tool Call'],
+  ['exec', 180, tr('Harness 执行', 'Harness runs it'), ''],
+  ['back', 270, tr('结果交回', 'Result back'), 'Result'],
+];
+function makeLoop(parent, o) {
   const { cx, cy, R } = o;
   const S = svg('svg', { class: 'abs', width: 1920, height: 968, viewBox: '0 0 1920 968' }, parent); px(S, 0, 0);
-  S.dataset.name = tr('环', 'loop ring');
-  const ring = svg('circle', { cx, cy, r: R, fill: 'none', stroke: C.paper, 'stroke-width': 4 }, S);
+  S.dataset.name = 'Agent Loop';
+  svg('circle', { cx, cy, r: R, fill: 'none', stroke: C.paper, 'stroke-width': 4 }, S);
   const ticks = [];
   for (let i = 0; i < 60; i++) {
-    const a = i / 60 * Math.PI * 2 - Math.PI / 2, big = i % 15 === 0, r1 = R - (big ? 34 : 14);
-    ticks.push(svg('line', { x1: cx + Math.cos(a) * r1, y1: cy + Math.sin(a) * r1, x2: cx + Math.cos(a) * R, y2: cy + Math.sin(a) * R, stroke: C.dim, 'stroke-width': big ? 6 : 3 }, S));
+    const a = i / 60 * Math.PI * 2 - Math.PI / 2, big = i % 15 === 0, r2 = R + (big ? 30 : 14);
+    ticks.push(svg('line', { x1: cx + Math.cos(a) * (R + 4), y1: cy + Math.sin(a) * (R + 4), x2: cx + Math.cos(a) * r2, y2: cy + Math.sin(a) * r2, stroke: C.dim, 'stroke-width': big ? 6 : 3 }, S));
   }
   const RA = R + 22;
   const arc = svg('path', { d: '', fill: 'none', stroke: C.ac, 'stroke-width': 10 }, S);
   const dot = svg('circle', { cx, cy: cy - RA, r: 16, fill: C.ac, stroke: C.ac, 'stroke-width': 5 }, S);
-  const labels = STATIONS.map(([name, deg]) => {
-    const a = deg / 180 * Math.PI - Math.PI / 2, x = cx + Math.cos(a) * (R + 92), y = cy + Math.sin(a) * (R + 72);
-    const w = 320, left = deg === 90 ? x : deg === 270 ? x - w : x - w / 2;
-    const wrap = h('div', 'abs slab', parent); px(wrap, left, y - 30, w, 60);
-    css(wrap, { justifyContent: deg === 90 ? 'flex-start' : deg === 270 ? 'flex-end' : 'center' });
-    const e = h('div', 'st', wrap, name);
-    return e;
+  const cards = {};
+  STATIONS.forEach(([k, deg, name, en]) => {
+    const [x, y, w, hh] = o.cards[k];
+    const box = h('div', 'abs node ' + k, parent); px(box, x, y, w, hh);
+    box.dataset.name = name;
+    const head = h('div', 'nh', box, `<span>${name}</span>${en ? `<span class="en">${en}</span>` : ''}`);
+    const body = h('div', 'nb', box, (o.bodies && o.bodies[k]) || '');
+    cards[k] = { box, head, body };
   });
-  const keys = o.keys || [[0, 0]], stopAt = o.stopAt != null ? o.stopAt : Infinity, d = o.d || 0.7;
+  const keys = o.keys || [[0, 0]], stopAt = o.stopAt != null ? o.stopAt : Infinity, from = o.from != null ? o.from : -Infinity, d = o.d || 0.7;
   // 每段起点 = 上一个关键帧的角度：顺序扫一遍，状态只取决于 t
   const angle = (t) => {
     let v = keys[0][1];
@@ -61,9 +69,9 @@ function makeRing(parent, o) {
   };
   let last = null;
   F((t) => {
-    const deg = angle(t), lap = Math.min(o.laps || 99, Math.floor(deg / 360 + 1e-6)), inLap = deg - lap * 360;
-    const stopped = t >= stopAt;
-    const key = deg.toFixed(2) + (stopped ? 's' : '');
+    const deg = angle(t), inLap = ((deg % 360) + 360) % 360, stopped = t >= stopAt, live = t >= from;
+    const act = live ? Math.floor(((inLap + 4) % 360) / 90) : -1;
+    const key = deg.toFixed(2) + (stopped ? 's' : '') + act;
     if (key === last) return; last = key;
     const a0 = -Math.PI / 2, a1 = inLap / 180 * Math.PI - Math.PI / 2;
     const P = (a) => `${(cx + Math.cos(a) * RA).toFixed(1)} ${(cy + Math.sin(a) * RA).toFixed(1)}`;
@@ -71,12 +79,9 @@ function makeRing(parent, o) {
     dot.setAttribute('cx', (cx + Math.cos(a1) * RA).toFixed(1)); dot.setAttribute('cy', (cy + Math.sin(a1) * RA).toFixed(1));
     dot.setAttribute('fill', stopped ? C.ink : C.ac);
     ticks.forEach((l, i) => l.setAttribute('stroke', i * 6 <= inLap + 0.5 && inLap > 0.5 ? C.ac : C.dim));
-    labels.forEach((e, i) => {
-      const dd = Math.abs(((inLap - STATIONS[i][1]) % 360 + 540) % 360 - 180);
-      e.classList.toggle('on', dd < 6 && !stopped);
-    });
+    STATIONS.forEach(([k], i) => cards[k].box.classList.toggle('on', i === act));
   });
-  return { S, labels, angle, lapAt: (t) => Math.floor(angle(t) / 360 + 1e-6) + 1, cx, cy, R };
+  return { S, cards, angle, dot, cx, cy, R };
 }
 
 // ── 对话栈：整段对话，一条一行，从下往上摞。rows：[[类别, 角色, 文字, 入场时刻]] ──
@@ -118,7 +123,7 @@ function makeConv(parent, o) {
       brLab.innerHTML = s[3] || '';
     } else { br.style.visibility = 'hidden'; brLab.innerHTML = ''; }
     css(head, { top: (top - 74).toFixed(1) + 'px' });
-    css(brLab, { top: (top - 68).toFixed(1) + 'px', left: (x + 100) + 'px' });
+    css(brLab, { top: (top - 68).toFixed(1) + 'px', left: (o.labX || x + 100) + 'px' });
   });
   return { els, br, brLab, head, rowH, topAt: (t) => bottom - seen(t).reduce((a, b) => a + b, 0) * rowH(t) };
 }

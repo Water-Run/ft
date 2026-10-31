@@ -1,9 +1,9 @@
 # 本片的配乐：WaterRun 2026-10-31 从三个 Demo 里选了 A「秒针」（120 拍、每秒一声秒针、拨弦琶音、轻底鼓）。
 # 正式版按本片重写：和弦走 D 小调 i–iv–VII–III（Dm–Gm–C–F），不用系列起点的 i–VI–III–VII；
-# 母题是「一圈」：每发出一次请求（a4 之后、l1、l4、l6、l7 各一次），落一声钟音，和画面上指针回到「模型」一站同拍。
+# 母题是「一圈」：走一遍时每发出一次请求（w2、w3、w4、w6、w7 开头各一次），落一声钟音，和画面上整段对话飞到「模型」一站同拍。
 # 由 kit/tools/mix.py 调用（project.json 的 audio.music）：compose(ctx) 返回 (2, N) 的数组，电平与旁白压低由 mix.py 统一处理。
 #   ctx: { sr, n, total, scenes: [{id, start, end}], cues: [{id, start, end}], audio: project.json 的 audio 段 }
-# 段落：open 引子（秒针 + 铺底，片名卡一记重音）→ ask/loop 主段（加底鼓、贝斯、八分音符琶音）→ more 抬一层（十六分音符的高音）
+# 段落：open 引子（秒针 + 铺底，片名卡一记重音）→ loop/walk 主段（加底鼓、贝斯、八分音符琶音）→ more 抬一层（十六分音符的高音）
 #   → end 半拍、抬起（audio.score.lift_cue）→ 片尾只留铺底与秒针，最后一声钟。
 # 制作者听不到声音：出片前看 audio.js 的数值自检，听感由人确认。
 import numpy as np
@@ -86,7 +86,7 @@ def compose(ctx):
             out[:, i:j] += y[:, : j - i] * g
 
     # ── 段落的边界 ──
-    t_ask = scenes["ask"]["start"]
+    t_ask = scenes["loop"]["start"]
     t_more = scenes["more"]["start"]
     t_end = scenes["end"]["start"]
     t_out = scenes["outro"]["start"]
@@ -129,11 +129,9 @@ def compose(ctx):
     put(bell(74, 2.6), round(t_card / BEAT) * BEAT, 0.08)
     # 每发出一次请求，落一声钟音（和画面上指针回到「模型」一站同拍）
     sends = []
-    if "a4" in cue:
-        sends.append(cue["a4"]["end"] + 0.15)
-    for cid in ("l1", "l4", "l6", "l7"):
+    for cid in ("w2", "w3", "w4", "w6", "w7"):
         if cid in cue:
-            sends.append(cue[cid]["start"] + 0.4)
+            sends.append(cue[cid]["start"] + 0.1)
     for i, ts in enumerate(sends):
         put(bell([69, 72, 74, 76, 81][min(i, 4)], 2.0), round(ts / (BEAT / 2)) * (BEAT / 2), 0.07, 0.2)
     # 抬起：结论那一拍

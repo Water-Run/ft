@@ -1,161 +1,181 @@
-// 这一次运行里还看得出的几件事：每次重发整段对话（五圈、五摞，E8、D5）→ 太长时压成摘要（示意，D6）→ 边界（本片 Harness 的规则，E10）
-// → 同一个模型换 Harness，分数不同（LangChain 报告，D8）。
+// Harness 还管着的几件事，左边始终是同一块「模型」：
+// 一、上下文：模型不记事，每一圈整段重发，五圈从 2 条涨到 11 条（E8、D5）→ 二、再长下去，旧的部分压成摘要（D6）
+// → 三、边界：只许碰项目里的文件（E10、D7）→ 四、同一个模型换五套 Harness，得分不同（2026-10 的论文，D10）。
 scene('more', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
+  const hold = s.end - s.start - 0.2, dx = 16;
   const cam = makeCamera(world, 1920, VH);
   cam.track(s.start, { x: 960 - dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
   const R0 = D.rounds;
-  const KIND = (role, i) => (role === 'tool' ? 'tool' : role === 'assistant' ? 'call' : 'say');
+  const KIND = (role) => (role === 'tool' ? 'tool' : role === 'assistant' ? 'call' : 'say');
+  const cellCls = (k) => (k === 'call' ? 'bg-ac' : k === 'tool' ? 'bg-paper' : '');
+  const outline = (b) => css(b, { border: '3px solid var(--paper)', boxSizing: 'border-box' });
+  const tA1 = Q(T('m3') - 0.4), tB = tA1 + 0.25, tB1 = Q(T('m4') - 0.35), tC = tB1 + 0.25, tC1 = Q(T('m5') - 0.35), tD = tC1 + 0.25;
 
-  // ── 一、五圈与五摞：每一圈发出的整段对话（m1–m2） ──
-  const tA1 = Q(T('m3') - 0.5);                    // 这一部分收起的时刻
+  // ── 左：同一块「模型」，四部分都在；到第四部分换成论文里的那个模型 ──
+  const model = blk(world, 'bg-paper', 110, 300, 380, 300); model.dataset.name = tr('模型', 'model');
+  const mT = centered(model, 'ink', tr('模型', 'Model'), 190, 54, 380); mT.style.font = '900 96px "Sans SC"';
+  const mS = centered(model, 'ink', tr('不记事', 'no memory'), 190, 180, 380); mS.style.font = '700 40px "Sans SC"';
+  wipe(model, c0 + 0.05, { dir: 'l', d: 0.45 });
+  sfx('thud', Q(T('m1', '不记事')), { g: 0.5 }); slam(mS, Q(T('m1', '不记事')) - 0.1, { from: 1.4, d: 0.4 });
+  keyed(mS).at(tD + 0.1, { html: tr('同一个模型', 'same model') });
+  keyed(mT).at(T('m6', 'Claude') - 0.15, { html: 'Claude Opus 5' });
+  F((t) => { const v = t >= T('m6', 'Claude') - 0.15 ? '900 50px Inter' : '900 96px "Sans SC"'; if (mT.style.font !== v) mT.style.font = v; });
+  sfx('pop', T('m6', 'Claude') - 0.15, { g: 0.6 });
+
+  // ── 一、上下文：五圈、五摞（m1–m2） ──
   const ga = h('div', 'abs', world); px(ga, 0, 0, 1920, 968);
-  const S = svg('svg', { class: 'abs', width: 1920, height: 968, viewBox: '0 0 1920 968' }, ga); px(S, 0, 0); S.dataset.name = tr('五圈', 'five laps');
-  const cx = 400, cy = 500;
-  const tStack = (i) => (i === 0 ? c0 + 0.45 : Math.min(T('m1', '每问') + (i - 1) * 0.6, Tend('m1') - 0.8 + i * 0.1));
-  R0.forEach((r, i) => {
-    const c = svg('circle', { cx, cy, r: 92 + i * 54, fill: 'none', stroke: C.ac, 'stroke-width': i === 4 ? 10 : 6, transform: `rotate(-90 ${cx} ${cy})` }, S);
-    const t0 = tStack(i) - 0.1;
-    draw(c, t0, 0.5);
-    F((t) => { const v = t >= t0 ? '' : 'none'; if (c.style.display !== v) c.style.display = v; });
-  });
-  const mid = centered(ga, 'paper', tr('模型', 'Model'), cx, cy - 32, 300); mid.style.font = '900 52px "Sans SC"';
-  wipe(mid, c0 + 0.1, { dir: 'l', d: 0.4 });
-  const head = txt(ga, 'lab dim', tr('每一圈发出的整段对话', 'The whole conversation, sent each lap'), 760, 150);
-  wipe(head, c0 + 0.15, { dir: 'l', d: 0.4 });
+  const headA = txt(ga, 'paper', `${tr('上下文', 'Context')} <span class="en ac">Context</span>　${tr('每一圈整段重发', 'resent in full every lap')}`, 640, 140); headA.style.font = '700 40px "Sans SC"';
+  wipe(headA, c0 + 0.15, { dir: 'l', d: 0.4 });
   const leg = [['bg-ac', tr('工具调用', 'tool call')], ['bg-paper', tr('结果', 'result')], ['', tr('说明、你', 'system, you')]];
   leg.forEach(([cls, nm], i) => {
-    const sw = blk(ga, cls, 1240 + i * 210, 156, 28, 28); if (!cls) css(sw, { border: '3px solid var(--paper)', boxSizing: 'border-box' });
-    const l = txt(ga, 'paper', nm, 1280 + i * 210, 150); l.style.font = '500 30px "Sans SC"';
+    const sw = blk(ga, cls, 640 + i * 230, 212, 28, 28); if (!cls) outline(sw);
+    const l = txt(ga, 'paper', nm, 680 + i * 230, 206); l.style.font = '500 30px "Sans SC"';
     wipe(sw, c0 + 0.3 + i * 0.08, { dir: 'l', d: 0.3 }); wipe(l, c0 + 0.34 + i * 0.08, { dir: 'l', d: 0.3 });
   });
+  const tStack = (i) => (i === 0 ? c0 + 0.45 : Math.min(T('m1', '每一圈') + (i - 1) * 0.5, Tend('m1') - 0.6 + i * 0.1));
   const tops = [];
   R0.forEach((r, i) => {
-    const x = 760 + i * 214, rowH = 52;
+    const x = 640 + i * 240, rowH = 44, bottom = 770;
     r.roles.forEach((role, j) => {
-      const k = KIND(role, j), y = 800 - (j + 1) * rowH;
-      const b = blk(ga, k === 'call' ? 'bg-ac' : k === 'tool' ? 'bg-paper' : '', x, y, 160, rowH - 8);
-      if (k === 'say') css(b, { border: '3px solid var(--paper)', boxSizing: 'border-box' });
+      const k = KIND(role), b = blk(ga, cellCls(k), x, bottom - (j + 1) * rowH, 170, rowH - 8);
+      if (k === 'say') outline(b);
       b.dataset.name = k;
       wipe(b, tStack(i) + j * 0.03, { dir: 'b', d: 0.25 });
     });
-    tops.push([x + 80, 800 - r.sent * rowH - 8]);
-    const a = txt(ga, 'paper', tr(`第 ${r.n} 圈`, `Lap ${r.n}`), x, 820); a.style.font = '700 32px "Sans SC"';
-    const b = txt(ga, 'dim', tr(`${r.sent} 条`, `${r.sent} msgs`), x, 866); b.style.font = '700 32px "Sans SC"';
-    wipe(a, tStack(i), { dir: 'l', d: 0.3 }); wipe(b, tStack(i) + 0.05, { dir: 'l', d: 0.3 });
+    tops.push([x + 85, bottom - r.sent * rowH - 8]);
+    const a = txt(ga, 'paper', tr(`第 ${r.n} 圈`, `Lap ${r.n}`), x, 786); a.style.font = '700 30px "Sans SC"';
+    const b = txt(ga, 'paper', tr(`${r.sent} 条`, `${r.sent} msgs`), x, 826); b.style.font = '800 34px "Sans SC"';
+    const c = txt(ga, 'dim', `${r.tokens} tokens`, x, 874); c.style.font = '600 26px Mono';
+    wipe(a, tStack(i), { dir: 'l', d: 0.3 }); wipe(b, tStack(i) + 0.05, { dir: 'l', d: 0.3 }); wipe(c, tStack(i) + 0.1, { dir: 'l', d: 0.3 });
     if (i === 0) { classAt(b, 'hl', T('m2', '2') - 0.1, tA1); sfx('tick', T('m2', '2') - 0.1, { g: 0.7, p: -0.4 }); }
     if (i === 4) { classAt(b, 'hl', T('m2', '11') - 0.1, tA1); sfx('tick', T('m2', '11') - 0.1, { g: 0.7, p: 0.5 }); }
     sfx('blip', tStack(i), { g: 0.5, p: -0.6 + i * 0.3 });
   });
-  const ov = overlay(ga);
-  const trend = path(ov, 'M ' + tops.map((p) => p.join(' ')).join(' L '), 'ac', { w: 4, dashed: '10 10', arrow: false });
+  const ova = overlay(ga);
+  const trend = path(ova, 'M ' + tops.map((p) => p.join(' ')).join(' L '), 'ac', { w: 4, dashed: '10 10', arrow: false });
   arrowIn(trend, T('m2', '涨') - 0.2, 0.6); sfx('whoosh', T('m2', '涨') - 0.2, { g: 0.35 });
-  const gS = txt(ga, 'gloss', tr('模型的接口不保存上一次的对话（DeepSeek 文档：「无状态」），历史要每次全部带上', 'The API is stateless: send the whole history every time'), 64, 820);
-  css(gS, { width: '620px' });
-  wipe(gS, T('m1', '不记事') - 0.1, { dir: 'l', d: 0.5 });
+  const inA = path(ova, 'M 610 450 L 506 450', 'paper', { w: 5 }); arrowIn(inA, T('m1', '重发') - 0.2, 0.4);
+  const gS = txt(ga, 'gloss', tr('模型的接口不保存上一次的对话（DeepSeek 文档：「无状态」），历史每次都要全部带上', 'The API is stateless: send the whole history every time'), 110, 630);
+  css(gS, { width: '400px' });
+  wipe(gS, T('m1', '不记事') + 0.2, { dir: 'l', d: 0.5 });
   wipeOut(ga, tA1, { dir: 'l', d: 0.4 });
 
-  // ── 二、太长时压成摘要（示意：这次只有 11 条，没有压缩）（m3）：左边是第 5 次发出的 11 条，右边是压过之后 ──
-  const tB = tA1 + 0.3, tB1 = Q(T('m4') - 0.45);
+  // ── 二、再长下去：顶到上限，旧的部分压成一段摘要（m3） ──
   const gb = h('div', 'abs', world); px(gb, 0, 0, 1920, 968);
-  const bottom = 880, rh = 56, LX = 300, RX = 1100, SW = 520;
-  const roles = R0[4].roles, keep = (j) => j < 2 || j >= roles.length - 2;
-  const nOld = roles.filter((_, j) => !keep(j)).length;
-  const tSq = T('m3', '压成') - 0.2;
-  const cell = (x, y, k, t0, dir = 'b') => {
-    const b = blk(gb, k === 'call' ? 'bg-ac' : k === 'tool' ? 'bg-paper' : '', x, y, SW, rh - 8);
-    if (k === 'say') css(b, { border: '3px solid var(--paper)', boxSizing: 'border-box' });
-    b.dataset.name = k; wipe(b, t0, { dir, d: 0.25 }); return b;
-  };
-  roles.forEach((role, j) => cell(LX, bottom - (j + 1) * rh, KIND(role, j), tB + j * 0.03)); sfx('blip', tB, { g: 0.55, p: -0.4 });
-  // 要压掉的 7 条：括起来
-  const oldTop = bottom - (roles.length - 2) * rh, oldBot = bottom - 2 * rh;
-  const brk = h('div', 'abs bracket', gb); px(brk, LX + SW + 18, oldTop, 24, oldBot - oldTop - 8); css(brk, { borderLeft: 'none', borderRight: '6px solid var(--ac)', borderColor: 'var(--ac)' });
-  wipe(brk, T('m3', 'Harness') - 0.1, { dir: 't', d: 0.5 }); sfx('tick', T('m3', 'Harness') - 0.1, { g: 0.6 });
-  const limY = bottom - roles.length * rh - 14;
-  const lim = blk(gb, '', LX - 30, limY, SW + 60, 0); css(lim, { borderTop: '5px dashed var(--ac)' }); lim.dataset.name = tr('上限', 'limit');
-  fromTo(lim, T('m3', '太长') - 0.2, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.5, ease: 'power3.out' }); sfx('tick', T('m3', '太长') - 0.2, { g: 0.6 });
-  const limL = txt(gb, 'ac', tr('快装不下（示意）', 'near the limit (illustration)'), LX + SW + 50, limY - 22); limL.style.font = '700 30px "Sans SC"';
-  wipe(limL, T('m3', '太长'), { dir: 'l', d: 0.4 });
-  const capL = txt(gb, 'lab dim', tr('第 5 次发出的 11 条', 'The 11 messages of request 5'), LX, bottom - roles.length * rh - 70);
-  wipe(capL, tB + 0.1, { dir: 'l', d: 0.3 });
-  const ovb = overlay(gb);
-  const arr = path(ovb, `M ${LX + SW + 60} ${(oldTop + oldBot) / 2} L ${RX - 30} ${bottom - 3 * rh + 24}`, 'ac', { w: 6 });
-  arrowIn(arr, tSq, 0.5);
-  // 右边：说明、你的话留着；中间 7 条变成一段摘要；最近的两条留着
-  const right = [['say', 0], ['say', 1], ['sum'], [KIND(roles[roles.length - 2]), 3], [KIND(roles[roles.length - 1]), 4]];
-  right.forEach(([k], i) => {
-    const y = bottom - (i + 1) * rh, t0 = tSq + 0.45 + i * 0.08;
-    if (k !== 'sum') { cell(RX, y, k, t0, 'l'); return; }
-    const sum = h('div', 'abs row say', gb, `<span class="role">${tr('摘要', 'Summary')}</span><span class="tx">${tr(`前面 ${nOld} 条，压成一段话`, `${nOld} older messages, condensed`)}</span>`);
-    px(sum, RX, y, SW, rh - 8); css(sum, { borderStyle: 'dashed', borderColor: 'var(--ac)' });
-    wipe(sum, t0, { dir: 'l', d: 0.4 });
+  const SX = 640, SW = 520, rh = 44, bottom = 860;
+  const roles = R0[4].roles, NX = 4;                      // 第 5 圈的 11 条，再长出 4 条
+  const tMore = T('m3', '再长'), tSq = T('m3', '压成') - 0.25;
+  const list = [...roles.map((r) => KIND(r)), ...Array(NX).fill('more')];
+  const n = list.length, old = (j) => j >= 2 && j < n - 2;
+  const cells = list.map((k, j) => {
+    const b = blk(gb, k === 'more' ? '' : cellCls(k), SX, 0, SW, rh - 8);
+    if (k === 'say') outline(b);
+    if (k === 'more') { css(b, { border: '3px dashed var(--dim)', boxSizing: 'border-box' }); b.innerHTML = '<span class="dim" style="font:700 26px Mono;padding-left:16px;line-height:30px">…</span>'; }
+    b.dataset.name = k;
+    return b;
   });
-  sfx('pop', tSq + 0.6, { g: 0.6 });
-  const capR = txt(gb, 'lab dim', tr('压过之后：5 条', 'After: 5 messages'), RX, bottom - 5 * rh - 56);
-  wipe(capR, tSq + 0.8, { dir: 'l', d: 0.3 });
-  const nb = txt(gb, 'dim', tr('示意。本片这次运行只有 11 条，用不着压；对话长到快装不下时，Harness 才把较早的部分压成摘要', 'Illustration only: this run never needed it'), 64, 150);
-  css(nb, { font: '500 30px "Sans SC"', width: '1700px', whiteSpace: 'normal' });
-  wipe(nb, tB + 0.2, { dir: 'l', d: 0.5 });
+  const sumRow = h('div', 'abs row say', gb, `<span class="role">${tr('摘要', 'Summary')}</span><span class="tx">${tr('前面 11 条，压成一段', '11 older messages, condensed')}</span>`);
+  css(sumRow, { borderStyle: 'dashed', borderColor: 'var(--ac)' });
+  px(sumRow, SX, 0, SW, 0);
+  const tIn = (j) => (j < roles.length ? tB + j * 0.03 : tMore - 0.1 + (j - roles.length) * 0.2);
+  let lastB = null;
+  F((t) => {
+    const k = ease.io3(clamp((t - tSq) / 0.6)), key = k.toFixed(3) + (t >= tB ? 1 : 0) + list.map((_, j) => (t >= tIn(j) ? 1 : 0)).join('');
+    if (key === lastB) return; lastB = key;
+    let y = bottom;
+    cells.forEach((b, j) => {
+      const on = t >= tIn(j), f = old(j) ? 1 - k : 1, hh = rh * f * (on ? 1 : 0);
+      if (j === 2) { const sh = rh * k; y -= sh; css(sumRow, { top: y.toFixed(1) + 'px', height: Math.max(0, sh - 8).toFixed(1) + 'px', visibility: k > 0 ? 'visible' : 'hidden' }); }
+      y -= hh;
+      css(b, { top: y.toFixed(1) + 'px', height: Math.max(0, hh - 8).toFixed(1) + 'px', visibility: on && hh > 9 ? 'visible' : 'hidden' });
+    });
+  });
+  list.forEach((k, j) => { if (j >= roles.length) sfx('tick', tIn(j), { g: 0.45, p: 0.2 }); });
+  sfx('blip', tB, { g: 0.5, p: -0.4 }); sfx('whoosh', tSq, { g: 0.5 }); sfx('pop', tSq + 0.6, { g: 0.6 });
+  const limY = bottom - n * rh - 6;
+  const lim = blk(gb, '', SX - 40, limY, SW + 80, 0); css(lim, { borderTop: '5px dashed var(--ac)' }); lim.dataset.name = tr('上限', 'limit');
+  fromTo(lim, tMore - 0.3, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.5, ease: 'power3.out' }); sfx('tick', tMore - 0.3, { g: 0.6 });
+  const limL = txt(gb, 'ac', tr('上下文的上限', 'context limit'), SX + SW + 60, limY - 22); limL.style.font = '700 32px "Sans SC"';
+  wipe(limL, tMore - 0.1, { dir: 'l', d: 0.4 });
+  const inB = path(overlay(gb), 'M 610 450 L 506 450', 'paper', { w: 5 }); arrowIn(inB, tB + 0.2, 0.4);
+  const cT = txt(gb, 'paper', `${tr('压缩', 'Compaction')} <span class="en ac">Compaction</span>`, 1260, 330); cT.style.font = '900 64px "Sans SC"';
+  const cS = txt(gb, 'paper', tr('旧的消息压成一段摘要，<br>最近的留着', 'Older messages become one summary;<br>recent ones stay'), 1260, 430); css(cS, { font: '500 34px "Sans SC"', lineHeight: '1.4' });
+  const cN = txt(gb, 'num paper', '', 1260, 560); cN.style.fontSize = '64px';
+  keyed(cN).at(tB, { html: tr('11 条', '11 msgs') }).at(tMore + 0.75, { html: tr(`${n} 条`, `${n} msgs`) }).at(tSq + 0.6, { html: tr(`${n} 条 → <span class="ac">5 条</span>`, `${n} → <span class="ac">5</span>`) });
+  wipe(cT, tSq - 0.1, { dir: 'l', d: 0.45 }); wipe(cS, tSq + 0.2, { dir: 'l', d: 0.45 }); wipe(cN, tB + 0.2, { dir: 'l', d: 0.4 });
   wipeOut(gb, tB1, { dir: 'l', d: 0.4 });
 
-  // ── 三、边界：本片的 Harness 只许碰项目目录里的文件（m4） ──
-  const tC = tB1 + 0.3, tC1 = Q(T('m5') - 0.45);
+  // ── 三、边界：只许碰项目里的文件；越界的调用被 Harness 拦下（m4） ──
   const gc = h('div', 'abs', world); px(gc, 0, 0, 1920, 968);
-  const dir = h('div', 'abs', gc); px(dir, 180, 260, 720, 480); css(dir, { border: '6px dashed var(--paper)', boxSizing: 'border-box' });
-  dir.dataset.name = tr('项目目录', 'project folder');
-  const dl = txt(gc, 'paper', tr('项目目录', 'Project folder'), 180, 196); dl.style.font = '700 38px "Sans SC"';
-  const fa = h('div', 'abs file hit mono', gc, 'cart.py'); px(fa, 250, 360, 360, 64); css(fa, { fontSize: '34px', lineHeight: '58px' });
-  const fb = h('div', 'abs file hit mono', gc, 'test_cart.py'); px(fb, 250, 452, 360, 64); css(fb, { fontSize: '34px', lineHeight: '58px' });
-  wipe(dir, tC, { dir: 'l', d: 0.5 }); wipe(dl, tC + 0.1, { dir: 'l', d: 0.3 });
-  wipe(fa, tC + 0.25, { dir: 'l', d: 0.3 }); wipe(fb, tC + 0.35, { dir: 'l', d: 0.3 });
-  const out = h('div', 'abs file mono', gc, tr('项目外的文件', 'outside file')); px(out, 1260, 420, 420, 64); css(out, { fontFamily: '"Sans SC"', fontSize: '34px', lineHeight: '58px' });
-  wipe(out, T('m4', '边界') - 0.1, { dir: 'r', d: 0.4 });
+  const headC = txt(gc, 'paper', `${tr('边界', 'Boundary')} <span class="en ac">Permissions</span>`, 640, 140); headC.style.font = '700 40px "Sans SC"';
+  wipe(headC, tC, { dir: 'l', d: 0.4 });
+  const box = h('div', 'abs', gc); px(box, 960, 240, 460, 470); css(box, { border: '5px dashed var(--paper)', boxSizing: 'border-box' }); box.dataset.name = tr('项目目录', 'project folder');
+  const bl = txt(gc, 'paper', tr('项目目录', 'Project folder'), 990, 262); bl.style.font = '700 34px "Sans SC"';
+  const fa = h('div', 'abs file mono', gc, 'cart.py'); px(fa, 990, 340, 360, 60); css(fa, { fontSize: '32px', lineHeight: '54px' });
+  const fb = h('div', 'abs file mono', gc, 'test_cart.py'); px(fb, 990, 424, 360, 60); css(fb, { fontSize: '32px', lineHeight: '54px' });
+  const fo = h('div', 'abs file mono', gc, '../notes.txt'); px(fo, 1520, 560, 300, 60); css(fo, { fontSize: '32px', lineHeight: '54px' });
+  wipe(box, tC + 0.05, { dir: 'l', d: 0.5 }); wipe(bl, tC + 0.15, { dir: 'l', d: 0.3 });
+  wipe(fa, tC + 0.25, { dir: 'l', d: 0.3 }); wipe(fb, tC + 0.32, { dir: 'l', d: 0.3 }); wipe(fo, tC + 0.4, { dir: 'r', d: 0.3 });
   const ovc = overlay(gc);
-  const tryP = path(ovc, 'M 640 452 L 1230 452', 'ac', { w: 6, arrow: false });
-  arrowIn(tryP, T('m4', '只许') - 0.3, 0.5);
-  const wall = blk(gc, 'bg-ac', 892, 340, 18, 224); wall.dataset.name = tr('拦下', 'blocked');
-  fromTo(wall, T('m4', '只许') + 0.15, { scaleY: 0 }, { scaleY: 1, transformOrigin: '50% 50%', duration: 0.3, ease: 'back.out(2)' });
-  sfx('thud', T('m4', '只许') + 0.15, { g: 0.7 });
-  // 越界时，本片 Harness 交回给模型的是一句拒绝（01_harness.py 的 inside()）；这次运行没有触发
-  const rej = h('div', 'abs card-p', gc, `<div class="dimp" style="font:600 24px 'Sans SC'">${tr('越界时 Harness 交回的结果', 'What Harness returns')}</div><div class="ink mono" style="font:600 30px Mono,'Sans SC'">${esc('只能访问项目目录里的文件：…')}</div>`);
-  px(rej, 980, 600); css(rej, { whiteSpace: 'nowrap' });
-  wipe(rej, T('m4', '项目') - 0.1, { dir: 'l', d: 0.4 });
-  const nc = txt(gc, 'dim', tr('本片这个 Harness 写死的规则；这次运行没有越界', "This Harness's own rule; not triggered in this run"), 980, 760); nc.style.font = '500 28px "Sans SC"';
-  wipe(nc, T('m4', '项目') + 0.2, { dir: 'l', d: 0.4 });
+  // Harness 在模型与文件之间检查路径：项目里的放过去，项目外的拦下
+  const gate = path(ovc, 'M 930 250 L 930 700', 'ac', { w: 4, dashed: '8 10', arrow: false });
+  const gateL = txt(gc, 'ac', tr('Harness 检查路径', 'Harness checks the path'), 820, 196); gateL.style.font = '700 28px "Sans SC"';
+  arrowIn(gate, tC + 0.3, 0.5); wipe(gateL, tC + 0.4, { dir: 'l', d: 0.4 });
+  const okP = path(ovc, 'M 500 380 C 700 380, 800 370, 980 370', 'paper', { w: 5 });
+  const okL = txt(gc, 'mono paper', 'read_file("cart.py")', 520, 310); okL.style.font = '700 30px Mono';
+  arrowIn(okP, T('m4', '边界') - 0.2, 0.5); wipe(okL, T('m4', '边界') - 0.2, { dir: 'l', d: 0.4 }); classAt(fa, 'hit', T('m4', '边界') + 0.3);
+  sfx('blip', T('m4', '边界') - 0.2, { g: 0.5 });
+  const tNo = T('m4', '只许') - 0.3;
+  const noP = path(ovc, 'M 500 540 C 650 540, 820 560, 916 560', 'ac', { w: 5, arrow: false });
+  const noL = txt(gc, 'mono ac', 'read_file("../notes.txt")', 520, 488); noL.style.font = '700 26px Mono';
+  arrowIn(noP, tNo, 0.5); wipe(noL, tNo, { dir: 'l', d: 0.4 });
+  const wall = blk(gc, 'bg-ac', 920, 500, 20, 120); wall.dataset.name = tr('拦下', 'blocked');
+  fromTo(wall, tNo + 0.45, { scaleY: 0 }, { scaleY: 1, transformOrigin: '50% 50%', duration: 0.3, ease: 'back.out(2)' }); sfx('thud', tNo + 0.45, { g: 0.7 });
+  const rej = h('div', 'abs card-p', gc, `<div class="dimp" style="font:600 26px 'Sans SC'">${tr('Harness 交回给模型的结果', 'What Harness hands back')}</div><div class="ink" style="font:700 32px 'Sans SC'">${esc('只能访问项目目录里的文件')}</div>`);
+  px(rej, 640, 740); css(rej, { whiteSpace: 'nowrap' });
+  wipe(rej, T('m4', '项目') - 0.1, { dir: 'l', d: 0.4 }); sfx('pop', T('m4', '项目') - 0.1, { g: 0.5 });
+  const backP = path(ovc, 'M 630 790 C 560 790, 420 760, 330 610', 'paper', { w: 4, dashed: '10 10' }); arrowIn(backP, T('m4', '项目') + 0.2, 0.5);
   wipeOut(gc, tC1, { dir: 'l', d: 0.4 });
 
-  // ── 四、同一个模型，换一套 Harness（m5–m7，LangChain 报告） ──
-  const tD = tC1 + 0.3;
+  // ── 四、同一个模型，换五套 Harness（m5–m7，2026-10 的论文，D10） ──
   const gd = h('div', 'abs', world); px(gd, 0, 0, 1920, 968);
-  const mchip = h('div', 'abs bg-paper ink', gd, `<div class="dimp" style="font:600 26px 'Sans SC'">${tr('同一个模型', 'Same model')}</div><div class="mono" style="font:800 44px Mono">gpt-5.2-codex</div>`);
-  px(mchip, 120, 380); css(mchip, { padding: '20px 30px' });
-  slide(mchip, Q(T('m5', '同一个')) - 0.1, { x: -60, d: 0.45 }); sfx('thud', Q(T('m5', '同一个')), { g: 0.6 });
-  const bx = 820, bw = 940, by = [330, 560], vals = [52.8, 66.5];
+  const HS = [['OpenHands', 57.14], ['Claude Code', 49.21], ['openJiuwen', 41.27], ['DSH', 34.92], ['PI', 30.16]];
+  const bx = 960, bw = 700, by = (i) => 210 + i * 116;
   const ovd = overlay(gd);
-  const names = [tr('改之前的 Harness', 'Harness before'), tr('改过的 Harness', 'Harness after')];
-  const bars = names.map((nm, i) => {
-    const l = txt(gd, 'paper', nm, bx, by[i] - 56); l.style.font = '700 34px "Sans SC"';
-    const track = blk(gd, '', bx, by[i], bw, 90); css(track, { border: '3px solid var(--dim)', boxSizing: 'border-box' });
-    const fill = blk(gd, i ? 'bg-ac' : 'bg-paper', bx, by[i], 0, 90); fill.dataset.name = nm;
-    const n = txt(gd, i ? 'ac num' : 'paper num', '', bx, by[i] + 100); n.style.fontSize = '64px';
-    const tt = T('m5', '换一套') - 0.1 + i * 0.15;
-    wipe(l, tt, { dir: 'l', d: 0.35 }); wipe(track, tt + 0.05, { dir: 'l', d: 0.4 }); sfx('pop', tt, { g: 0.5, p: 0.4 });
-    const p = path(ovd, `M 520 ${430} C 640 430, 680 ${by[i] + 45}, ${bx - 12} ${by[i] + 45}`, 'paper', { w: 4 });
-    arrowIn(p, T('m5', '本事') - 0.3 + i * 0.25, 0.5); sfx('tick', T('m5', '本事') - 0.3 + i * 0.25, { g: 0.5, p: 0.3 });
-    const tv = Qf(T('m7', i ? '66.5' : '52.8') - 0.35);
-    fromTo(fill, tv, { width: 0 }, { width: bw * vals[i] / 100, duration: 0.7, ease: 'power3.out', immediateRender: false });
-    appear(fill, tv);
-    appear(n, tv); countTo(n, 0, vals[i], tv, 0.7, (v) => v.toFixed(1));
-    F((t) => { const k = ease.out3(clamp((t - tv) / 0.7)); n.style.left = (bx + bw * vals[i] / 100 * k + 20).toFixed(1) + 'px'; n.style.top = (by[i] + 8) + 'px'; });
-    sfx(i ? 'chime' : 'thud', tv + 0.5, { g: i ? 0.8 : 0.6 });
-    return { l, track, fill, n };
+  const headD = txt(gd, 'dim', tr('Harness', 'Harness'), 640, 140); css(headD, { font: '700 30px Inter' });
+  const headV = txt(gd, 'dim', tr('得分（满分 100%）', 'Score (of 100%)'), bx, 140); headV.style.font = '700 30px "Sans SC"';
+  wipe(headD, tD + 0.1, { dir: 'l', d: 0.3 }); wipe(headV, tD + 0.15, { dir: 'l', d: 0.3 });
+  const tFill = T('m7', '换了') - 0.1;
+  HS.forEach(([nm, v], i) => {
+    const y = by(i), tt = T('m5', '换一套') - 0.2 + i * 0.12;
+    const l = txt(gd, 'paper', nm, 640, y + 14); l.style.font = '800 40px Inter';
+    const track = blk(gd, '', bx, y, bw, 76); css(track, { border: '3px solid var(--dim)', boxSizing: 'border-box' });
+    const top = i === 0, low = i === HS.length - 1;
+    const fill = blk(gd, top ? 'bg-ac' : low ? 'bg-paper' : 'bg-dim', bx, y, 0, 76); fill.dataset.name = nm;
+    const num = txt(gd, (top ? 'ac' : 'paper') + ' num', '', bx, y + 12); num.style.fontSize = '48px';
+    const p = path(ovd, `M 500 450 C 560 450, 570 ${y + 38}, 626 ${y + 38}`, 'paper', { w: 3, arrow: false });
+    arrowIn(p, tt, 0.4); wipe(l, tt + 0.1, { dir: 'l', d: 0.35 }); wipe(track, tt + 0.15, { dir: 'l', d: 0.4 }); sfx('pop', tt + 0.1, { g: 0.45, p: 0.4 });
+    const tv = tFill + i * 0.18;
+    fromTo(fill, tv, { width: 0 }, { width: bw * v / 100, duration: 0.7, ease: 'power3.out', immediateRender: false }); appear(fill, tv);
+    appear(num, tv); countTo(num, 0, v, tv, 0.7, (x) => x.toFixed(1) + '%');
+    F((t) => { const k = ease.out3(clamp((t - tv) / 0.7)); num.style.left = (bx + bw * v / 100 * k + 18).toFixed(1) + 'px'; });
+    sfx('tick', tv, { g: 0.5, p: 0.3 });
   });
-  const axis = txt(gd, 'dim', tr('满分 100', 'out of 100'), bx + bw - 140, by[1] + 110); axis.style.font = '500 26px "Sans SC"';
-  wipe(axis, T('m7', '分数') - 0.2, { dir: 'l', d: 0.3 });
-  const src = txt(gd, 'dim', tr('LangChain《Improving Deep Agents with harness engineering》，2026-02-17　·　评测：Terminal Bench 2.0　·　只改了系统提示、工具与中间件',
-    'LangChain, "Improving Deep Agents with harness engineering", 2026-02-17 · Terminal Bench 2.0'), 120, 800);
-  css(src, { font: '500 26px "Sans SC", Inter', width: '1680px', whiteSpace: 'normal' });
-  wipe(src, T('m6', 'LangChain') - 0.1, { dir: 'l', d: 0.6 }); sfx('blip', T('m6', 'LangChain') - 0.1, { g: 0.5 });
+  // 最高、最低：说到时砸一下
+  sfx('thud', T('m7', '最低') - 0.05, { g: 0.6 }); sfx('chime', T('m7', '最高') - 0.05, { g: 0.8 });
+  const lowT = txt(gd, 'ink bg-paper', tr('最低', 'lowest'), bx + bw + 30, by(4) + 16); css(lowT, { font: '800 32px "Sans SC"', padding: '2px 12px' });
+  const topT = txt(gd, 'ink bg-ac', tr('最高', 'highest'), bx + bw + 30, by(0) + 16); css(topT, { font: '800 32px "Sans SC"', padding: '2px 12px' });
+  slam(lowT, Q(T('m7', '最低')) - 0.1, { from: 1.4, d: 0.35 }); slam(topT, Q(T('m7', '最高')) - 0.1, { from: 1.4, d: 0.35 });
+  // 同样的 63 道题：模型下面一格一题
+  const grid = h('div', 'abs', gd); px(grid, 110, 640, 380, 220); grid.dataset.name = tr('63 道题', '63 tasks');
+  const cellsG = [];
+  for (let i = 0; i < 63; i++) { const c = blk(grid, 'bg-dim', (i % 9) * 42, Math.floor(i / 9) * 30, 34, 22); cellsG.push(c); }
+  const t63 = T('m6', '63') - 0.2;
+  cellsG.forEach((c, i) => appear(c, t63 + i * 0.012)); sfx('blip', t63, { g: 0.6 });
+  const gl = txt(gd, 'paper', tr('同样的 63 道题', 'the same 63 tasks'), 110, 860); gl.style.font = '700 30px "Sans SC"';
+  wipe(gl, t63 + 0.3, { dir: 'l', d: 0.4 });
+  const src = txt(gd, 'dim', tr('《Finding the Right Fit: Model-Harness Interactions across Agent Tasks》<br>（找到合适的搭配：不同 Agent 任务中模型与 Harness 的相互作用）<br>Yixuan Li 等　·　arXiv 2610.00917　·　2026-10-01　·　题目取自 Terminal-Bench 4', 'Yixuan Li et al., "Finding the Right Fit", arXiv 2610.00917, 2026-10-01 · 63 tasks from Terminal-Bench 4'), 640, 790);
+  css(src, { font: '500 26px "Sans SC", Inter', lineHeight: '1.4' });
+  wipe(src, T('m6', '论文') - 0.2, { dir: 'l', d: 0.6 }); sfx('blip', T('m6', '论文') - 0.2, { g: 0.5 });
 });

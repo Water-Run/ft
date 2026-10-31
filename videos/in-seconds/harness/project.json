@@ -86,7 +86,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "build",
-  "next": "WaterRun 看第 1 版预览（out/zh/preview-r01.mp4），听读音与配乐；按意见改后正式渲染、验收",
+  "next": "WaterRun 确认第 3 稿（审片页 out/audition/r02.html）；确认后合成新句、对齐画面，出第 2 版预览",
   "credits": {
     "planner": "WaterRun",
     "models": [

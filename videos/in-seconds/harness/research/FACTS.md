@@ -21,7 +21,9 @@
 
 一次完整操作见实验 E1–E8：5 次请求，5 次工具调用（读 2 个文件、跑测试、改 1 行、再跑测试），第 5 次回复没有工具调用，循环停下。每次请求都带着全部历史，发出的消息数 2 → 5 → 7 → 9 → 11，`prompt_tokens` 489 → 1044（E8）。
 
-Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做什么、拦下不允许的调用（D7）。同一个模型换一套 Harness，评测分数会变（D8、D9）。
+这个循环有通用的名字：agent loop（D4 所引文档的标题《How the agent loop works》）。
+
+Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做什么、拦下不允许的调用（D7）。同一个模型换一套 Harness，评测分数会变（D9、D10、D11）。
 
 尚未弄清、不进旁白：各家对 Harness 的边界说法并不一致（见末节）。
 
@@ -38,6 +40,7 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | E7 | 第 5 次请求 11 条消息；响应 `finish_reason` 为 `stop`，没有工具调用，正文「测试通过了。我把 `cart.py` 里 `total` 的 `sum(prices[1:])` 改成 `sum(prices)`，因为原来的写法会跳过第一件商品的价格。」；循环结束后 Harness 自己再跑一遍测试，通过 | `rounds[4]`、`final_check`、`after` | 已核 |
 | E8 | 5 次请求发出的消息数 2、5、7、9、11；`prompt_tokens` 489、683、835、987、1044；请求体 1243、2133、2834、3402、3724 字节 | 各轮 `len(request.messages)`、`response.usage`、`request_bytes` | 已核（2026-10-31 更正，见「复核」） |
 | E9 | 第二次运行（`_b`）走的是同一条路（读两个文件 → 跑测试 → 改同一行 → 再跑 → 停），也是 5 次请求；`prompt_tokens` 489、683、775、915、972，与 `_a` 略有出入 | `out_01_harness_b.json` | 已核。片中数字只取 `_a` |
+| E11 | 5 次请求都带着同一份工具清单 `read_file`、`edit_file`、`run_tests` | 各轮 `request.tools` | 2026-10-31 制作方读 JSON，已核 |
 | E10 | 这个 Harness 每次请求都发送全部消息；工具只能访问项目目录里的文件，越界时返回「只能访问项目目录里的文件」；工具出错时把错误作为结果交回模型 | `01_harness.py` 的 `main()` 循环、`make_tools()` 里的 `inside()` | 已核（读源码）。越界在本次运行中没有触发 |
 
 ## 文档事实（D）
@@ -52,6 +55,8 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | D6 | 上下文接近上限时，Harness 把较早的历史压成摘要 | Claude Agent SDK 文档 § Automatic compaction：「When the context window approaches its limit, the SDK automatically compacts the conversation: it summarizes older history to free space …」 | LangChain《The Anatomy of an Agent Harness》把 compaction 列为 Harness 的 Hooks/Middleware 之一 | 已核 |
 | D7 | Harness 可以拦下工具调用；被拒绝时，模型收到的是一条拒绝消息 | Claude Agent SDK 文档 § Hooks：「a `PreToolUse` hook that rejects a tool call prevents it from executing, and Claude receives the rejection message instead.」§ Tool permissions：「When a tool is denied, Claude receives a rejection message as the tool result …」 | LangChain（D3 同文）：Harness 给模型「enforceable constraints」；本片 Harness 的路径限制（E10） | 已核。旁白 m4 只说「比如只许碰项目里的文件」，即 E10 |
 | D8 | LangChain 报告：只改 Harness、模型固定为 `gpt-5.2-codex`，其编程 Agent 在 Terminal Bench 2.0 上从 52.8 升到 66.5；改的是系统提示、工具与中间件 | LangChain，Vivek Trivedy，《Improving Deep Agents with harness engineering》，2026-02-17，TLDR 与 § The Goal of Harness Engineering：「… `13.7 points` from `52.8` to `66.5` on Terminal Bench 2.0. We only tweaked the harness and kept the model fixed, `gpt-5.2-codex`.」https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering | 数字只有 LangChain 自己的报告（转载不算独立印证），所以旁白写成「LangChain 报告」；榜单页面由前端渲染，未能读到条目 | 已核原文；作为报告引用 |
+| D10 | 同一个模型 Claude Opus 5、同一批 63 道题（Terminal-Bench 4 的一个子集），换 5 套 Harness，平均得分：OpenHands 57.14%、Claude Code 49.21%、openJiuwen 41.27%、DSH 34.92%、PI 30.16% | Yixuan Li 等，《Finding the Right Fit: Model-Harness Interactions across Agent Tasks》，arXiv:2610.00917，2026-10-01 提交（v1），Table 1 的 Terminal-Bench 4 / Claude Opus 5 一行（0.5714、0.3492、0.3016、0.4127、—、0.4921）；§ 4.1：「Claude drops from 57.14% with OpenHands to 30.16% with PI」；§ 3.1：「All configurations use the same task identifiers.」；§ 1：「a 63-task non-H100 subset of Terminal-Bench 4」 https://arxiv.org/abs/2610.00917 | 一般结论有独立印证（D11）；具体数字只有这篇论文，旁白写成「一篇论文」 | 2026-10-31 读摘要页与 HTML 正文，已核。论文自述子集与计分方式不是官方榜单的复现（§ 2），旁白不说「官方成绩」；各 Harness 的上下文管理、压缩、重试、工具都用各自的默认（§ 3.2），这正是 Harness 的差别 |
+| D11 | 评测同时测模型与 Harness，同一个模型配不同的 Harness 得分不同 | Snorkel 的 Terminal-Bench 2.1 榜单页 FAQ：「Terminal-Bench 2.1 evaluates the model and agent harness together.」「The same model can therefore receive different Terminal-Bench 2.1 scores when paired with different agent harnesses.」 https://snorkel.ai/leaderboard/terminal-bench-2-1/ | 同页榜单：Gemini 3 Pro 配 Terminus 2 为 73.9%，配 Gemini CLI 为 65.8% | 2026-10-31 读页面，已核。只作一般结论的印证，不进画面 |
 | D9 | 同一个模型换 Harness，分数差别与换模型相当 | Jiwoo Han、Yuekai Sun，《How good is your harness?》，ICML 2026 研讨会海报，摘要：「the harness matters as much as the LLM: the gains from simply picking the best harness are comparable to those from picking the best LLM.」https://icml.cc/virtual/2026/68323 | D8 | 已核摘要。支撑 m5 的一般说法 |
 
 ## 逐章
@@ -66,36 +71,37 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | o5 | Harness 是包在模型外面的一层程序 | D3 |
 | o6 | Model + Harness，就是 Agent | D3（LangChain 的公式「Agent = Model + Harness」，画面署名） |
 
-### ask
-
-| 句号 | 陈述 | 依据 |
-|---|---|---|
-| a1–a4 | 第一次请求发出三样东西：项目文件说明、三个工具、用户那句话 | E2 |
-| a5 | 模型回的仍是文字，格式特殊，叫工具调用 | D1；E3 的 `tool_calls`（JSON 文本） |
-| a6 | 它要读两个文件，自己打不开 | E3；D1 |
-| a7 | Harness 照着去读，把内容放回对话 | E3 的 `tool_results`；E10 |
-
 ### loop
 
 | 句号 | 陈述 | 依据 |
 |---|---|---|
-| l1 | 带上整段对话再问一次 | D5、E8 |
-| l2–l3 | 第二次要跑测试；失败，应为 10，实际 7 | E4 |
-| l4–l5 | 第三次找到原因：漏算第一件；改掉这一行 | E5 |
-| l6 | 第四次再跑：通过 | E6 |
-| l7 | 第五次没有工具调用，循环停下 | E7、D4 |
-| l8–l9 | 模型决定、Harness 执行、结果交回，这个循环是核心 | D4；D3（LangChain：「tool execution, feedback loops」） |
+| p1 | Harness 的核心是一个循环，叫 Agent Loop | D4（文档标题 agent loop）；D3 |
+| p2 | 每一圈把整段对话连同工具清单发给模型 | D5、E8、E11 |
+| p3 | 模型回的仍是文字，写明要用哪个工具，叫工具调用 | D1；E3 的 `tool_calls`（JSON 文本） |
+| p4 | Harness 执行，把结果放回对话，再问一次 | D1、D4；E3 |
+| p5 | 模型不再调用工具时循环停下 | D4、E7 |
+
+### walk
+
+| 句号 | 陈述 | 依据 |
+|---|---|---|
+| w1 | 开头那次修测试一共转了五圈 | E8（5 次请求） |
+| w2 | 第一圈要看两个文件，Harness 读出来放回对话 | E3 |
+| w3 | 第二圈跑测试：应为 10，实际 7 | E4 |
+| w4–w5 | 第三圈找到原因：这一行从第二件才开始加（`prices[1:]`），漏了第一件；改掉这一行 | E1、E5 |
+| w6 | 第四圈再跑：通过 | E6 |
+| w7 | 第五圈没有工具调用，循环停下 | E7、D4 |
 
 ### more
 
 | 句号 | 陈述 | 依据 |
 |---|---|---|
-| m1 | 模型不记事，每次重发整段对话 | D5、E8 |
-| m2 | 五次请求，发出的对话从 2 条涨到 11 条 | E8 |
-| m3 | 太长时 Harness 把旧的部分压成摘要 | D6 |
+| m1 | 模型不记事，每一圈重发整段对话 | D5、E8 |
+| m2 | 五圈下来，发出的对话从 2 条涨到 11 条 | E8 |
+| m3 | 再长下去，Harness 把旧的部分压成摘要 | D6（本片的运行没有触发，旁白用「再长下去」） |
 | m4 | 它管边界，比如只许碰项目里的文件 | E10、D7 |
-| m5 | 同一个模型，换一套 Harness，本事不一样 | D9、D8 |
-| m6–m7 | LangChain 报告：只改 Harness，分数 52.8 → 66.5 | D8 |
+| m5 | 同一个模型，换一套 Harness，本事不一样 | D9、D10、D11 |
+| m6–m7 | 2026 年 10 月的论文：Claude Opus 5、同样 63 道题，五套 Harness 得分最低 30%（PI 30.16%）、最高 57%（OpenHands 57.14%） | D10 |
 
 ### end
 
@@ -104,6 +110,9 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | e1–e2 | 模型想、Harness 做并把结果交回 | D1、D4 |
 
 ## 取证中发现、没有进入成片的事实
+
+- D8（LangChain 2026-02 的报告，`gpt-5.2-codex` 只改 Harness，52.8 → 66.5）是第 2 稿 m6–m7 的依据。WaterRun 看第 1 版预览后认为「gpt5.2 有点老了」，第 3 稿改用 2026-10 的 D10。
+- Terminal-Bench 4.0 的 Snorkel 榜单（https://snorkel.ai/leaderboard/terminal-bench-4-0/ ，2026-10-31 读）23 条记录里每个模型只出现一次，没有同一模型配不同 Harness 的对照，所以没有采用。
 
 - Harness 的边界并无统一定义：LangChain 取最宽的「模型以外的一切」；有评论者（Birgitta Böckeler，经搜索摘要得知，未读原文）认为 Harness 是 Agent 接入、用来解决具体问题的东西。片中只用 LangChain 的公式并署名。
 - LangChain 把 Harness 的组成列为：System Prompts；Tools, Skills, MCPs；Bundled Infrastructure（filesystem, sandbox, browser）；Orchestration Logic（subagent spawning, handoffs, model routing）；Hooks/Middleware（compaction, continuation, lint checks）（D2 同文）。入门片不展开。
@@ -115,4 +124,5 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 
 - 2026-10-31 制作方按选定方向做关键帧时，逐条数了 `out_01_harness_a.json` 各轮 `request.messages`：实际发出 2、5、7、9、11 条，不是此前记的 3、6、8、10、12。原因是 `01_harness.py` 在追加模型回复之后才数条数、写进 `.txt`，事实表照抄了 `.txt`。已更正 E2、E4–E8、m2 与第 22 行，脚本已修（见 `lab/README.md` 勘误）；`prompt_tokens` 与请求体字节数取自 JSON，不受影响。旁白 m2 随之改为「2 条涨到了 11 条」，须重新交校对确认。
 - 2026-10-31 制作方写画面时按 JSON 数各轮 `tool_calls`：2、1、1、1、0，共 5 次，不是第 22 行原先写的 6 次（括号里列的本来就是 5 次）。已更正；旁白不提这个数，画面上「5 次工具调用」由 `tools/gen_data.py` 从 JSON 算出。
+- 2026-10-31 第 3 稿：m6–m7 改用 D10。数字逐个对过 Table 1 的 Claude Opus 5 一行与 § 4.1 的原句；63 道题的子集与「不是官方榜单的复现」的限定见 D10 核查栏。
 - 其余：未做（成片后进行）。

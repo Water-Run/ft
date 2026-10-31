@@ -3,7 +3,7 @@
 scene('open', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   // 第 0 帧镜头就要在起点（docs/reference/pitfalls.md「全片的第 0 帧」）
-  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold), cam0 = { x: 960 - dx / 2, y: 484, z: 1 };
+  const hold = s.end - s.start - 0.2, dx = 16, cam0 = { x: 960 - dx / 2, y: 484, z: 1 };
   F((t) => { if (t < s.start + 0.1 && window._camOpen) Object.assign(window._camOpen.st, cam0); });
   const cam = makeCamera(world, 1920, VH); window._camOpen = cam;
   cam.track(s.start, cam0, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
@@ -24,6 +24,7 @@ scene('open', ({ root, s, c0 }) => {
   const card = codeCard(g1, 'cart.py', D.cart_before.split('\n').map(esc), 1000, 170, 840, 40, 66);
   wipe(card.card, s.start + 0.3, { dir: 'r', d: 0.6 });
   const line3 = card.ls[2];
+  line3.innerHTML = `<span class="ln">3</span>    return sum(prices<span class="hl">[1:]</span>)`;
   keyed(line3).at(T('o2', '改掉') + 0.25, { html: `<span class="ln">3</span>    return sum(prices<span class="strike">[1:]</span>)` })
     .at(T('o2', '改掉') + 0.75, { html: `<span class="ln">3</span>${esc(D.cart_after.split('\n')[2])}` });
   sfx('pop', T('o2', '改掉') + 0.25, { g: 0.6, p: 0.4 });
@@ -36,9 +37,9 @@ scene('open', ({ root, s, c0 }) => {
   const st = txt(test, 'ink bg-ac', tr('失败', 'FAIL'), 620, 16); css(st, { font: '900 46px "Sans SC"', padding: '4px 24px' });
   keyed(st).at(T('o2', '通过') - 0.05, { html: tr('通过', 'PASS'), cls: 'abs ink bg-paper' });
   const detail = txt(g1, 'mono dim', '', 1000, 616); detail.style.font = '600 32px Mono, "Sans SC"';
-  keyed(detail).at(T('o2', '跑'), { html: esc('失败：total([3, 5, 2]) 应为 10，实际得到 7') })
+  keyed(detail).at(s.start + 0.6, { html: esc('失败：total([3, 5, 2]) 应为 10，实际得到 7') })
     .at(T('o2', '通过') - 0.05, { html: esc('通过：total([3, 5, 2]) = 10') });
-  wipe(test, s.start + 0.45, { dir: 'r', d: 0.6 });
+  wipe(test, s.start + 0.45, { dir: 'r', d: 0.6 }); wipe(detail, s.start + 0.6, { dir: 'l', d: 0.5 });
   sfx('blip', T('o2', '跑'), { g: 0.6 }); sfx('chime', T('o2', '通过'), { g: 0.7 });
 
   // AI 的「手」：读、跑、改三下，各指向被动的那一块；到 o3 变成虚线、退成灰色
@@ -107,6 +108,24 @@ scene('open', ({ root, s, c0 }) => {
     fromTo(ln, tt, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.3, ease: 'power3.out' });
     slide(chip, tt + 0.08, { x: -40, d: 0.4 }); sfx('pop', tt + 0.08, { g: 0.45, p: 0.5 });
     return chip;
+  });
+  const youB = h('div', 'row say', g2, `<span class="role">${tr('你', 'You')}</span><span class="tx">${esc(D.task)}</span>`); px(youB, 90, 340, 460, 80);
+  youB.querySelector('.tx').style.fontSize = '28px'; youB.querySelector('.role').style.width = '70px';
+  wipe(youB, t2 + 0.1, { dir: 'l', d: 0.4 });
+  const ov2 = overlay(g2);
+  const inA = path(ov2, 'M 556 380 L 676 380', 'paper', { w: 5 }); arrowIn(inA, Q(T('o5', '包')) + 0.3, 0.4);
+  const proj = h('div', 'abs', g2); px(proj, 1540, 170, 300, 330); css(proj, { border: '3px dashed var(--dim)', boxSizing: 'border-box' });
+  proj.dataset.name = tr('项目', 'project');
+  const pl = txt(g2, 'dim', tr('项目', 'Project'), 1560, 186); pl.style.font = '700 28px "Sans SC"';
+  const PI = [['cart.py', 240], ['test_cart.py', 316], [tr('终端', 'terminal'), 392]].map(([n, y]) => { const e = h('div', 'abs file mono', g2, n); px(e, 1564, y, 252, 52); css(e, { fontSize: '28px', lineHeight: '46px' }); return e; });
+  wipe(proj, T('o5', 'Harness') + 0.2, { dir: 'l', d: 0.4 }); wipe(pl, T('o5', 'Harness') + 0.25, { dir: 'l', d: 0.3 });
+  PI.forEach((e, i) => wipe(e, T('o5', 'Harness') + 0.3 + i * 0.08, { dir: 'l', d: 0.3 }));
+  // read_file → cart.py，edit_file → cart.py，run_tests → 终端
+  [[0, 0], [1, 0], [2, 2]].forEach(([ci, pi], j) => {
+    const y1 = 222 + ci * 104 + 30, y2 = [240, 316, 392][pi] + 26;
+    const p2 = path(ov2, `M 1484 ${y1} C 1515 ${y1}, 1525 ${y2}, 1558 ${y2}`, 'ac', { w: 4 });
+    arrowIn(p2, T('o5', 'Harness') + 0.55 + j * 0.15, 0.4);
+    classAt(PI[pi], 'hit', T('o5', 'Harness') + 0.8 + j * 0.15);
   });
   const gH = txt(g2, 'gloss', tr('<b>Harness</b>：模型以外的那层程序。它把对话和工具清单发给模型，照模型写的去读文件、跑测试、改代码，再把结果交回', '<b>Harness</b>: the program around the model'), 1230, 548);
   css(gH, { width: '620px' }); gH.dataset.gloss = 'Harness';
