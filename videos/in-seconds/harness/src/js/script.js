@@ -87,7 +87,7 @@
   const SAY = {
     zh: [
       [/52\.8/g, '五十二点八'], [/66\.5/g, '六十六点五'],
-      [/LangChain/g, 'Lang Chain'], [/\bAI\b/g, 'A I'],
+      [/一行/g, '一航'], [/LangChain/g, 'Lang Chain'], [/\bAI\b/g, 'A I'],
     ],
     en: [
     ],

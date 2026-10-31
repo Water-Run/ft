@@ -74,7 +74,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "WaterRun 校对文案（review/script.zh.md）；确认后给 5 个配音候选",
+  "next": "WaterRun 校对文案，并在试听页 out/audition/index.html 里选定配音、配乐与视觉方向",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -83,7 +83,9 @@
         "roles": [
           "取证",
           "实验",
-          "文案"
+          "文案",
+          "关键帧",
+          "配乐 Demo"
         ]
       }
     ],
