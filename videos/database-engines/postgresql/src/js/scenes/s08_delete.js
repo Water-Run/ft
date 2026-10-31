@@ -23,9 +23,9 @@ scene('delete', ({ root, s, c0 }) => {
   const adm = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">SELECT</span> … <span class="k">WHERE</span> id = 2050;\n<span class="d">(0 rows)</span>`, 1040, 196, 800); css(adm, { fontSize: '23px' });
   show(adm, T('d4'), { x: 20 }); sfx('blip', T('d4'), { g: 0.4, p: 0.4 });
   const bob = psqlBox(A, `<span class="p">bob=*&gt;</span> <span class="k">SELECT</span> name, age … ;\n<span class="hi"> Alice | 42 </span>  <span class="d">（可重复读，删除前开始）</span>`, 1040, 330, 800); css(bob, { fontSize: '23px' });
-  show(bob, T('d5b', 'Alice'), { x: 20 }); sfx('blip', T('d5b', 'Alice'), { g: 0.5, p: 0.4 });
+  show(bob, T('d5', 'Bob'), { x: 20 }); sfx('blip', T('d5', 'Bob'), { g: 0.5, p: 0.4 });
   const vg = glossBox(A, 'VACUUM', '<b>VACUUM</b>：收走已经没人需要的旧版本和删掉的行，<br>连同索引里指向它们的项', 1040, 470, 800);
-  show(vg, T('d6', 'VACUUM') + 0.1, { x: 20 }); sfx('pop', T('d6', 'VACUUM') + 0.1, { g: 0.5 });
+  show(vg, T('d6') + 0.6, { x: 20 }); sfx('pop', T('d6') + 0.6, { g: 0.5 });
   const rule = noteBox(A, '只要还有快照可能用到，就不能收', 72, 580, 900, 'warn'); show(rule, T('d7'), { y: 10 });
   const vb = E.vacuum['vacuum while bob holds snapshot'];
   const v1 = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">VACUUM</span> (VERBOSE) users;\n<span class="d">${vline(vb, /^tuples/)}\n${vline(vb, /^removable cutoff/)}</span>`, 72, 670, 1500);
@@ -33,6 +33,8 @@ scene('delete', ({ root, s, c0 }) => {
   // VACUUM 到了这一行就停手：Bob 的快照还可能读它
   const stop = tagEl(A, '停：Bob 的快照还在', 520, 296, 'warn'); css(stop, { fontSize: '24px' }); show(stop, T('d9', '还不能') - 0.3, { y: 8 });
   const dead = tagEl(A, '已死，但还不能回收：Bob 的快照可能还要读', 72, 850, 'warn'); slam(dead, T('d9', '还不能'), { from: 1.12 }); sfx('error', T('d9', '还不能'), { g: 0.5 });
+  const fA = focusRing(A);
+  fA.at(T('d3', 'xmax'), row).at(T('d4', '查不到'), adm).at(T('d4', '还在'), row).at(T('d5', 'Bob'), bob).at(T('d5', '开着'), [1040, 366, 800, 44]).at(T('d5b', 'Alice'), row).at(T('d6', '旧版本'), row).at(T('d7', '快照'), rule).at(T('d8', '做一次'), v1).at(T('d9', '已死'), dead).off(tB - 0.4);
 
   // ── B：Bob 结束后收走；Dave 住进来 ──
   hdoc(B, 'Bob 结束后，再做一次 VACUUM', 72, 128);
@@ -77,6 +79,8 @@ scene('delete', ({ root, s, c0 }) => {
   slide(drow, T('d18', '26'), { y: -30 }); hide(empty, T('d18', '26'), { d: 0.2 }); sfx('thud', T('d18', '26'), { g: 0.6 });
   const same = tagEl(B, '正是 Alice 原来的位置', 1040, 800); slam(same, T('d19', '原来'), { from: 1.15 }); sfx('chime', T('d19', '原来'), { g: 0.6 });
   const inn = noteBox(B, '<b>InnoDB</b>　要等后台的 purge 做完，Dave 才用上这块空间', 1040, 860, 800, 'grey'); show(inn, T('d20'), { y: 10 });
+  const fB = focusRing(B);
+  fB.at(T('d11', '索引'), [1040, 380, 760, 150]).at(T('d12', '26'), empty).at(T('d13', '空隙'), pg2).at(T('d13', '72'), fr).at(T('d14', '哪页'), pg2).at(T('d14', '小文件'), fsm).at(T('d17', '放得下'), fsm.children[1]).at(T('d18', '26'), drow).at(T('d19', '原来'), same).at(T('d20', 'purge'), inn).at(T('d20', '空间'), drow).off(tC - 0.4);
 
   // ── C：读取时清理；自动清理；长事务 ──
   hdoc(C, '不是每次都要等 VACUUM', 72, 128);
@@ -103,6 +107,8 @@ scene('delete', ({ root, s, c0 }) => {
   const t0 = T('d28'), t1 = Tend('d28b');
   for (let i = 0; i < 14; i++) { const d = h('div', 'abs', C); px(d, 180 + i * 104, 770, 80, 34); css(d, { background: '#dfe3e6', border: '2px solid var(--grey)' }); show(d, t0 + (t1 - t0) * i / 14, { y: -10, d: 0.2 }); }
   const pile = tagEl(C, '死行越积越多', 1500, 620, 'warn'); show(pile, T('d28b', '越积越多'), { y: 8 }); sfx('error', T('d28b', '越积越多'), { g: 0.4 });
+  const fC = focusRing(C);
+  fC.at(T('d22'), pg3).at(T('d23', '顺手清理'), cond).at(T('d24', '查询'), trd.el).at(T('d24b', '清掉'), lpd).at(T('d26', '自动清理'), auto).at(T('d28', '事务'), longTx).off(tD - 0.4);
 
   // ── D：事务号会绕回；冻结 ──
   hdoc(Dd, '事务号只有 32 位', 72, 128);
@@ -124,4 +130,6 @@ scene('delete', ({ root, s, c0 }) => {
   css(fz, { fontSize: '23px' }); wipe(fz, T('d33', '冻结'), { dir: 'l' }); sfx('pop', T('d33', '冻结'));
   const fzG = glossBox(Dd, '冻结', '<b>冻结</b>：两个提示位同时记上，表示这一行对所有事务都算「过去」，不再比较事务号', 760, 700, 1080);
   show(fzG, T('d33', '冻结') + 0.4, { y: 10 }); sfx('chime', T('d34', '过去'), { g: 0.5 });
+  const fD = focusRing(Dd);
+  fD.at(T('d30', '32'), [160, 230, 520, 520]).at(T('d31', '未来'), past).at(T('d32', '20'), rule2).at(T('d32', 'VACUUM'), [160, 230, 520, 520]).at(T('d33', '冻结'), fz).at(T('d34', '对谁都'), fzG).off(Tend('d34') + 0.4);
 });

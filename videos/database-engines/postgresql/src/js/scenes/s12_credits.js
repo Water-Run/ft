@@ -19,7 +19,8 @@ scene('credits', ({ root, s }) => {
   wipe(box, s.start + 0.2, { dir: 't', d: 0.5 });
   const e = typeText(cmd, '<span class="k">SELECT</span> * <span class="k">FROM</span> credits;', s.start + 0.7, 28, { cursorUntil: s.start + 2.2 });
   line.forEach((c) => show(c, e + 0.2, { y: 0, d: 0.2 }));
-  rowEls.forEach((cs, i) => cs.forEach((c) => show(c, e + 0.45 + i * 0.22, { x: -14, y: 0, d: 0.3 })));
-  show(foot, e + 0.55 + rows.length * 0.22, { y: 0, d: 0.3 });
+  const gapR = Math.min(1.0, (s.end - e - 2.6) / (rows.length + 1));
+  rowEls.forEach((cs, i) => cs.forEach((c) => show(c, e + 0.45 + i * gapR, { x: -14, y: 0, d: 0.3 })));
+  show(foot, e + 0.55 + rows.length * gapR, { y: 0, d: 0.3 });
   sfx('blip', e + 0.2, { g: 0.4 });
 });

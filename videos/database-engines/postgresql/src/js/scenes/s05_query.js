@@ -48,6 +48,7 @@ scene('query', ({ root, s, c0 }) => {
   classAt(nt.leaves[0], 'hl', tLeaf); show(reads[1], tLeaf, { y: 8 }); sfx('tick', tLeaf, { p: -0.6 });
   keyed(cur).at(T('q5', '地址'), { html: `(${P},${LP})` }); sfx('pop', T('q5', '地址'), { p: -0.6 });
   const adr = capt(A, `叶子里：Alice → (${P},${LP})`, 120, 600); css(adr, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 }); show(adr, T('q5', '地址'), { y: -8 });
+  keyed(adr).at(T('q5', '26'), { html: `叶子里：Alice → (${P},${LP})　= 第 ${P} 页 · 第 ${LP} 项` }); sfx('tick', T('q5', '26'), { p: 0.3 });
   const a1 = curve(ov, [nt.leafX(0), 546], [pageX, 650], 'accent', { bend: 600 });
   arrowIn(a1, tPg - 0.6, 0.6); to(cur, tPg - 0.6, { x: pageX - 960 + 30, y: 280, duration: 0.6, ease: 'power2.inOut' });
   classAt(strip.pages[P], 'hl', tPg); show(reads[2], tPg, { y: 8 }); sfx('tick', tPg);
@@ -66,14 +67,15 @@ scene('query', ({ root, s, c0 }) => {
   const chk = h('div', 'abs', A); px(chk, 940, 800, 900, 150); chk.dataset.name = '可见性检查';
   const c1 = h('div', 'note', chk, `<b>xmin ${D.alice.xmin}</b>　已经提交　✓`); px(c1, 0, 0, 430);
   const c2 = h('div', 'note', chk, '<b>xmax 0</b>　没有谁作废　✓'); px(c2, 460, 0, 430);
-  const res = tagEl(chk, '看得见：Alice，42 岁', 0, 96, 'ok'); css(res, { fontSize: '28px' });
+  const res = tagEl(chk, '看得见', 0, 96, 'ok'); css(res, { fontSize: '28px' }); keyed(res).at(T('q8b', 'Alice'), { html: '看得见：Alice，42 岁' });
   const chkL = capt(A, '这个版本能不能看见？', 940, 766); css(chkL, { fontSize: '24px', color: 'var(--ink)', fontWeight: 700 });
   show(chkL, T('q7', '能不能'), { y: 8 });
   show(c1, T('q8', 'xmin'), { y: 10 }); show(c2, T('q8', 'xmax'), { y: 10 }); sfx('tick', T('q8', 'xmin')); sfx('tick', T('q8', 'xmax'), { g: 0.6 });
   slam(res, T('q8b', '看得见'), { from: 1.15 }); sfx('chime', T('q8b', '看得见'), { g: 0.7 }); hide(cur, T('q8b', '看得见'), { d: 0.25 });
   A.appendChild(cur);                                                          // 游标压在页面之上
   // 一共三页
-  reads.forEach((e, i) => to(e, T('q10', '三页') + i * 0.12, { backgroundColor: '#336791', duration: 0.2 })); keyed(readL).at(T('q10', '三页'), { html: '一共 3 页' }); sfx('pop', T('q10', '三页'));
+  [['树根', '根'], ['叶子', '叶子'], ['堆页', `第 ${P} 页`]].forEach(([w, txt], i) => { keyed(reads[i]).at(T('q10', w), { html: '✓ ' + txt }); sfx('tick', T('q10', w), { g: 0.5, p: i * 0.2 }); });
+  keyed(readL).at(T('q10') - 0.3, { html: '一共读了' }).at(T('q10', '三页'), { html: '一共 3 页' }); sfx('pop', T('q10', '三页'));
 
   // ── B：一共多少人：顺序扫描 ──
   hdoc(B, '一共有多少人？', 72, 128);
@@ -123,11 +125,13 @@ scene('query', ({ root, s, c0 }) => {
   for (let i = 0; i < D.heap.pages; i++) { const b = h('div', 'abs', vm); px(b, (i % 16) * 42, 50 + Math.floor(i / 16) * 52, 34, 40); css(b, { border: '2px solid var(--pg)', background: '#fff' }); bits.push(b); }
   const vmG = glossBox(C, '可见性图', `<b>可见性图</b>：堆旁边的小文件，每页一格。<br>格子记上，表示这页的行对所有事务都可见`, 1150, 600, 690);
   wipe(vm, T('q20', '小文件'), { dir: 'r' }); show(vmG, T('q20', '可见性图') + 0.1, { y: 10 }); sfx('pop', T('q20', '可见性图') + 0.1, { g: 0.5 });
-  bits.forEach((b, i) => set(b, T('q21', '记一笔') + i * 0.02, { background: 'var(--pg)' })); sfx('tick', T('q21', '记一笔'), { p: 0.4 });
+  const tb0 = T('q21'), tb1 = Math.max(tb0 + 1.2, T('q21', '记一笔'));
+  bits.forEach((b, i) => set(b, tb0 + (tb1 - tb0) * i / 47, { background: 'var(--pg)' })); sfx('tick', tb0, { p: 0.4 }); sfx('tick', tb1, { p: 0.6 });
   // 记过的页不必回堆：地址停在可见性图上那一格
   const bx = 1150 + (P % 16) * 42, by = 380 + 50 + Math.floor(P / 16) * 52;
   fly(C, `(${P},${LP})`, [1110, 200], [bx - 30, by - 4], T('q22', '记过') - 0.3, { cls: 'navy', fs: 22, d: 0.6 });
   to(bits[P], T('q22', '记过') + 0.4, { backgroundColor: '#193145', duration: 0.2 });
   const hf0 = tagEl(C, 'Heap Fetches: 0：不再回堆', 72, 650, 'ok'); css(hf0, { fontSize: '28px' }); show(hf0, T('q22', '不必') + 0.2, { y: 8 }); sfx('chime', T('q22', '不必') + 0.2, { g: 0.6 });
   const byv = tagEl(C, '格子由 VACUUM 记上', 1150, 790, 'navy'); show(byv, T('q23', 'VACUUM'), { y: 8 });
+  fly(C, 'VACUUM', [1500, 880], [1300, 520], T('q23', 'VACUUM') + 0.1, { cls: 'navy', fs: 24, d: 0.9, hold: 0.4 }); sfx('whoosh', T('q23', 'VACUUM') + 0.1, { g: 0.3 });
 });

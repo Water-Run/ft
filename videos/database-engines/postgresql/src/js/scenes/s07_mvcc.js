@@ -51,7 +51,7 @@ scene('mvcc', ({ root, s, c0 }) => {
   const sn1 = h('div', 'abs cap', snap, '<b>Bob 的快照</b>'); px(sn1, 20, 12);
   const sn2 = h('div', 'abs mono', snap, M.snapshot); px(sn2, 20, 56); css(sn2, { font: '700 46px "Mono"', color: 'var(--pg)' });
   const sn3 = h('div', 'abs cap', snap, `${X} 起的事务：都还看不见`); px(sn3, 20, 124); css(sn3, { color: 'var(--warn)', fontSize: '28px', fontWeight: 700 });
-  wipe(snap, T('m6', '快照') - 0.2, { dir: 'r' }); show(sn3, T('m7', '看不见'), { y: 8 }); sfx('pop', T('m7', '看不见'), { g: 0.5, p: 0.5 });
+  wipe(snap, T('m6', '快照') - 0.2, { dir: 'r' }); show(sn3, T('m7', '起的事务'), { y: 8 }); keyed(sn3).at(0, { html: `<span>${X} 起的事务：</span>` }).at(T('m7', '看不见'), { html: `${X} 起的事务：都还看不见` }); sfx('pop', T('m7', '看不见'), { g: 0.5, p: 0.5 });
   const snG = glossBox(A, '快照', '<b>快照</b>：查询开始那一刻，记下哪些事务已经结束、哪些还没有', 980, 860, 868);
   show(snG, T('m6', '快照'), { y: 10 }); sfx('pop', T('m6', '快照'), { g: 0.5 });
   [al, toX].forEach((e) => hide(e, T('m6') - 0.1, { d: 0.25 }));
@@ -70,6 +70,10 @@ scene('mvcc', ({ root, s, c0 }) => {
   tb.print(Math.max(eB + 0.2, T('m10', '42') - 0.2), ' age'); tb.print(Math.max(eB + 0.3, T('m10', '42') - 0.1), ` <span class="hi"> ${M.bobReads} </span>`); sfx('blip', T('m10', '42'), { g: 0.6 });
   hide(lens, T('m11') - 0.1, { d: 0.3 });
   const nowait = tagEl(A, '读和写互不等待', 72, 604, 'ok'); css(nowait, { fontSize: '28px' }); slam(nowait, T('m11'), { from: 1.15 }); sfx('chime', T('m11', '也不用等'), { g: 0.6 });
+  const rA = focusRing(A);
+  rA.at(T('m4', '另有一处'), xs.box).at(T('m4b', '进行中'), xs.c2).at(T('m5'), tb.el).at(T('m6', '快照'), snap).at(T('m7', String(X)), sn2).off(T('m8') - 0.3);
+  const rA2 = focusRing(A);
+  rA2.at(T('m10', '旧版本'), vo.e).at(T('m11', '也不用等'), nowait).off(tB - 0.4);
 
   // ── B：Carol 也要改这一行：撞上 Alice 的锁，等到她提交 ──
   hdoc(B, 'Carol 也要改这一行', 72, 128);
@@ -117,6 +121,8 @@ scene('mvcc', ({ root, s, c0 }) => {
   // Bob 再查一次，读到 43
   const bob2 = tagEl(B, `Bob 再查：${M.bobAfter}`, 1220, 760, 'navy'); css(bob2, { fontSize: '28px' }); show(bob2, T('m20', '43'), { y: 8 }); sfx('blip', T('m20', '43'), { g: 0.5 });
   fly(B, '读', [1300, 740], [1000, 526], T('m20') - 0.1, { cls: 'navy', fs: 24, d: 0.5 });
+  const rB = focusRing(B);
+  rB.at(T('m12', 'Carol'), tc.el).at(T('m13', '等'), wb).at(T('m14', '事务结束'), xs2.c2).at(T('m15', '锁'), bo.e).at(T('m15', 'xmax'), bo.xmax).at(T('m15b'), many).at(T('m17'), ta.el).at(T('m18', '已提交'), xs2.c2).at(T('m19', '43'), bn.e).at(T('m20', '43'), bob2).off(tC - 0.4);
 
   // ── C：两种隔离级别：两条时间线，快照在哪里拍 ──
   hdoc(C, '两种隔离级别：快照在什么时候拍', 72, 128);
@@ -135,14 +141,14 @@ scene('mvcc', ({ root, s, c0 }) => {
   const cml = tagEl(C, 'Alice 提交', TX(0.5) - 70, 196, 'warn'); css(cml, { fontSize: '24px' });
   // 读已提交：每条语句一张新快照
   const yR = 300;
-  lane(yR, '读已提交（默认）', 'var(--pg)', '读已提交', '<b>读已提交</b>：每条语句开始时，都拿一张新快照', T('m21'));
+  const LR = lane(yR, '读已提交（默认）', 'var(--pg)', '读已提交', '<b>读已提交</b>：每条语句开始时，都拿一张新快照', T('m21'));
   show(cm, T('m22') - 0.1, { y: 0 }); show(cml, T('m22') - 0.1, { y: 8 });
   snapAt(0.18, yR - 30, T('m22', '每条语句')); ev(0.18, yR + 60, 'SELECT → 42', 'navy', T('m22', '每条语句') + 0.3);
   snapAt(0.78, yR - 30, T('m22', '新快照')); ev(0.78, yR + 60, `SELECT → ${M.bobAfter}`, '', T('m22', '新快照') + 0.3);
   sfx('blip', T('m22', '新快照') + 0.3, { g: 0.5 });
   // 可重复读：整个事务只用开头那一张
   const yP = 620, ovC = overlay(C);
-  lane(yP, '可重复读', 'var(--navy)', '可重复读', '<b>可重复读</b>：整个事务只用开头那一张快照', T('m23'));
+  const LP2 = lane(yP, '可重复读', 'var(--navy)', '可重复读', '<b>可重复读</b>：整个事务只用开头那一张快照', T('m23'));
   snapAt(0.08, yP - 30, T('m24', '开头')); ev(0.08, yP + 60, 'BEGIN', 'grey', T('m24', '开头') - 0.2);
   ev(0.3, yP + 60, 'SELECT → 42', 'navy', T('m24', '开头') + 0.4);
   const back1 = curve(ovC, [TX(0.3), yP + 60], [TX(0.08) + 30, yP + 14], 'navy', { bend: yP - 10, dashed: true }); arrowIn(back1, T('m24', '开头') + 0.5, 0.4);
@@ -154,4 +160,6 @@ scene('mvcc', ({ root, s, c0 }) => {
   show(er, T('m25', '报错'), { y: 8 }); sfx('error', T('m25', '报错') + 0.1, { g: 0.6, p: 0.5 });
   const zh = tagEl(C, '无法串行化：并发修改了同一行（SQLSTATE 40001）', L0, yP + 180, 'warn'); css(zh, { fontSize: '26px' }); show(zh, T('m26'), { y: 8 });
   const inn = noteBox(C, '<b>InnoDB</b>　默认是可重复读', 72, 880, 640, 'grey'); show(inn, T('m27'), { y: 10 });
+  const rC = focusRing(C);
+  rC.at(T('m21', '读已提交'), LR.hd).at(T('m23', '可重复读'), LP2.hd).at(T('m26', '无法串行化'), zh).at(T('m27', '可重复读'), LP2.hd).off(s.end - 0.6);
 });

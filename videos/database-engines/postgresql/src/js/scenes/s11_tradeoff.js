@@ -19,11 +19,12 @@ scene('tradeoff', ({ root, s, c0 }) => {
     ['旧版本', '在 undo 里，purge 收走', '留在表里，靠清理来收；跟不上，死行越积越多', 't5', 't7'],
     ['换来的', '', '读写互不挡路；回滚、崩溃以后都不用撤销', 't9', 't9'],
   ];
+  const EA = [], EB = [];
   pairs.forEach(([k, a, b, ca, cb], i) => {
     const y = 270 + i * 120;
     const kl = h('div', 'abs', A, k); px(kl, 72, y + 22); css(kl, { font: '800 30px "Sans SC"', color: 'var(--ink2)' });
-    const ea = h('div', 'abs', A, a); px(ea, 290, y, 780, 96); css(ea, { background: a ? '#5f6a73' : 'transparent', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
-    const eb = h('div', 'abs', A, b); px(eb, 1100, y, 748, 96); css(eb, { background: 'var(--pg)', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
+    const ea = h('div', 'abs', A, i === 2 ? a.split('，')[0] : a); px(ea, 290, y, 780, 96); if (i === 2) keyed(ea).at(T('t5', 'undo') - 0.2, { html: a }); css(ea, { background: a ? '#5f6a73' : 'transparent', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
+    const eb = h('div', 'abs', A, i === 4 ? b.split('；')[0] : b); px(eb, 1100, y, 748, 96); EA[i] = ea; EB[i] = eb; if (i === 4) keyed(eb).at(T('t10'), { html: b.split('；')[0] + '；回滚、崩溃以后' }).at(T('t10', '撤销') - 0.3, { html: b }); css(eb, { background: 'var(--pg)', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
     show(kl, T(ca) - 0.1, { x: -10 }); if (a) wipe(ea, ca === 't2' ? T('t2', '按主键找') : i === 3 ? T('t6', '每个索引') : T(ca), { dir: 'l', d: 0.4 }); wipe(eb, T(cb) + (cb === ca ? 0.5 : 0), { dir: 'r', d: 0.4 });
     sfx('tick', T(cb) + (cb === ca ? 0.5 : 0), { g: 0.5, p: 0.4 });
   });
@@ -31,6 +32,9 @@ scene('tradeoff', ({ root, s, c0 }) => {
   for (let k = 0; k < 4; k++) { const dr = h('div', 'tup dead', A, '死行'); px(dr, 1520 + k * 82, 884, 74); css(dr, { fontSize: '22px', textAlign: 'center' }); show(dr, T('t8', '越积越多') - 0.3 + k * 0.25, { y: -16, d: 0.3 }); }
   const gain = tagEl(A, '换来的', 290, 790, 'ok'); show(gain, T('t9'), { x: -10 }); sfx('chime', T('t10', '撤销'), { g: 0.6 });
 
+  const fA = focusRing(A);
+  fA.at(T('t2', '一棵树'), EA[0]).at(T('t3', '索引'), EB[0]).at(T('t4', '名字'), EB[1]).at(T('t5', '原位改'), EA[2]).at(T('t6', '新版本'), EB[2]).at(T('t6', '每个索引'), EA[3]).at(T('t7', '清理'), EB[3])
+    .at(T('t8', '越积越多'), tail).at(T('t9', '读写'), EB[4]).at(T('t10', '撤销'), EB[4]).off(tB - 0.4);
   // ── B：四十年后；第二名是 SQLite ──
   hdoc(B, '2026 年开发者调查 · 勾选最多的数据库', 72, 128);
   const top = D.survey2026top;
@@ -65,4 +69,6 @@ scene('tradeoff', ({ root, s, c0 }) => {
   hide(born, T('t14') - 0.3, { d: 0.25 });
   const qq = h('div', 'abs', B, '小巧的引擎，怎样做成生产级的关系数据库？'); px(qq, 72, 690); css(qq, { font: '800 40px "Sans SC"', color: 'var(--navy)' });
   show(qq, T('t15'), { y: 10 }); sfx('riser', T('t15') - 0.2, { g: 0.4 });
+  const fB = focusRing(B);
+  fB.at(T('t11', '伯克利'), born).at(T('t12', '成了'), bars[0].b).at(T('t12', '最多'), first).at(T('t13', '调查'), [72, 230, 1400, 460]).at(T('t13', 'SQLite'), second).at(T('t14', '服务进程'), srv).at(T('t14', '嵌进'), proc).at(T('t15', '小巧'), lite).at(T('t15', '生产级'), qq).off(Tend('t15') + 0.3);
 });

@@ -247,4 +247,6 @@ scene('layout', ({ root, s, c0 }) => {
   sfx('pop', T('l25', '地址'), { p: 0.4 });
   idx.forEach((e, i) => fly(C, `(${P},${LP})`, [1110 + i * 280, 360], [1140 + i * 260, 520], T('l25', '地址') + 0.4 + i * 0.15, { cls: 'navy', fs: 22, d: 0.6 }));
   const same = tagEl(C, '主键索引也一样', 1010, 380); show(same, T('l25', '主键索引'), { y: -8 }); sfx('tick', T('l25', '主键索引'), { p: 0.4 });
+  const fC = focusRing(C);
+  fC.at(T('l24', '整行'), hp).at(T('l25', '每个索引'), [1010, 300, 800, 42]).at(T('l25', '主键索引'), idx[0]).off(Tend('l25') + 0.3);
 });
