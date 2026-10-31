@@ -41,7 +41,7 @@ scene('query', ({ root, s, c0 }) => {
   const cur = tagEl(A, '找 Alice', 960 - 70, 380, 'warn'); css(cur, { fontSize: '24px' }); cur.dataset.name = '游标';
   set(cur, 0, { autoAlpha: 0 });
   const tRoot = T('q4', '根'), tLeaf = T('q4b', '叶子'), tPg = T('q6', '23'), tRow = T('q6b', '这一行');
-  set(cur, tRoot - 0.3, { autoAlpha: 1 });
+  set(cur, tRoot - 0.3, { autoAlpha: 1, x: 190, y: 30 });   // 先停在根的右边，不压住「根」字
   classAt(nt.root, 'hl', tRoot); show(readL, tRoot); show(reads[0], tRoot, { y: 8 }); sfx('tick', tRoot);
   to(cur, tLeaf - 0.5, { x: nt.leafX(0) - 960 + 10, y: 76, duration: 0.5, ease: 'power2.inOut' });
   const pathE = path(ov, `M${90 + 870},450 L${nt.leafX(0)},506`, 'accent', { w: 4, arrow: false }); draw(pathE, tLeaf - 0.5, 0.5);
@@ -55,24 +55,30 @@ scene('query', ({ root, s, c0 }) => {
   // 第 23 页：第 26 个指针 → 这一行
   const pg = h('div', 'page', A); px(pg, 90, 800, 760, 140); pg.dataset.name = '第 23 页';
   const lpE = h('div', 'node hl', pg, `指针 ${LP}`); px(lpE, 14, 46, 150); css(lpE, { height: '48px', lineHeight: '43px', fontSize: '24px' });
-  const row = h('div', 'tup new', pg, '2050  Alice  42'); px(row, 420, 46, 320); css(row, { height: '48px', lineHeight: '44px', fontSize: '26px' });
-  const ovp = overlay(pg); const pa = link(ovp, [[164, 70], [416, 70]], 'navy');
+  // 这一行：行头两格（xmin、xmax）+ 数据。行头深色，和第三章的字段条一样
+  const row = h('div', 'abs', pg); px(row, 236, 46, 514, 48); row.dataset.name = 'Alice 这一行';
+  const rc = (x, w, html, head) => { const c = h('div', 'abs', row, html); px(c, x, 0, w, 48); css(c, { background: head ? 'var(--navy)' : 'var(--pg)', color: '#fff', font: `600 ${head ? 22 : 24}px var(--mono)`, lineHeight: '48px', textAlign: 'center', whiteSpace: 'nowrap' }); return c; };
+  const cXmin = rc(0, 150, `xmin ${D.alice.xmin}`, true), cXmax = rc(154, 110, 'xmax 0', true), cData = rc(268, 246, '2050 Alice 42');
+  const ovp = overlay(pg); const pa = link(ovp, [[164, 70], [232, 70]], 'navy');
   const pgl = capt(A, `第 ${P} 页`, 90, 766); css(pgl, { fontSize: '24px', color: 'var(--pg)', fontWeight: 700 });
   wipe(pg, T('q6b') - 0.3, { dir: 't' }); show(pgl, T('q6b') - 0.2);
-  show(lpE, T('q6b', '26'), { x: -10 }); arrowIn(pa, T('q6b', '26') + 0.2, 0.4); show(row, tRow, { x: 10 }); sfx('tick', tRow);
+  show(lpE, T('q6b', '26'), { x: -10 }); arrowIn(pa, T('q6b', '26') + 0.2, 0.3); show(row, tRow, { x: 10 }); sfx('tick', tRow);
   to(cur, T('q6b', '26') - 0.2, { x: 110 - 960 + 70, y: 424, duration: 0.45, ease: 'power2.inOut' });
-  to(cur, tRow, { x: 520 - 960 + 70, duration: 0.45, ease: 'power2.inOut' });
-  // 还没完：看行头，这个版本能不能看见
+  to(cur, tRow, { x: 330 - 960 + 70, duration: 0.45, ease: 'power2.inOut' });
+  // 还没完：看行头，这个版本能不能看见。两条都满足才看得见：① 写入它的事务提交了；② 没有谁作废它（删掉或改出新版本）
   keyed(cur).at(T('q7', '行头'), { html: '看行头' });
-  const chk = h('div', 'abs', A); px(chk, 940, 800, 900, 150); chk.dataset.name = '可见性检查';
-  const c1 = h('div', 'note', chk, `<b>xmin ${D.alice.xmin}</b>　已经提交　✓`); px(c1, 0, 0, 430);
-  const c2 = h('div', 'note', chk, '<b>xmax 0</b>　没有谁作废　✓'); px(c2, 460, 0, 430);
-  const res = tagEl(chk, '看得见', 0, 96, 'ok'); css(res, { fontSize: '28px' }); keyed(res).at(T('q8b', 'Alice'), { html: '看得见：Alice，42 岁' });
-  const chkL = capt(A, '这个版本能不能看见？', 940, 766); css(chkL, { fontSize: '24px', color: 'var(--ink)', fontWeight: 700 });
-  show(chkL, T('q7', '能不能'), { y: 8 });
-  show(c1, T('q8', 'xmin'), { y: 10 }); show(c2, T('q8', 'xmax'), { y: 10 }); sfx('tick', T('q8', 'xmin')); sfx('tick', T('q8', 'xmax'), { g: 0.6 });
+  const chk = h('div', 'abs', A); px(chk, 900, 806, 940, 160); chk.dataset.name = '可见性检查';
+  const chkRow = (y, n, html) => { const r = h('div', 'note', chk, `<b>${n}</b>　${html}`); px(r, 0, y, 940); css(r, { fontSize: '24px', padding: '6px 16px' }); return r; };
+  const c1 = chkRow(0, '①', `<b>xmin ${D.alice.xmin}</b>：写入它的事务提交了吗？`), c2 = chkRow(54, '②', '<b>xmax 0</b>：有谁作废了它吗？（删掉，或改出新版本）');
+  keyed(c1).at(T('q8', '提交') + 0.1, { html: `<b>①</b>　<b>xmin ${D.alice.xmin}</b>：写入它的事务提交了吗？　<b style="color:var(--ok)">已提交 ✓</b>` });
+  keyed(c2).at(T('q8', '0') + 0.1, { html: '<b>②</b>　<b>xmax 0</b>：有谁作废了它吗？　<b style="color:var(--ok)">没有 ✓</b>' });
+  const res = tagEl(chk, '看得见', 0, 116, 'ok'); css(res, { fontSize: '26px' }); keyed(res).at(T('q8b', 'Alice'), { html: '看得见 → 查询结果：Alice，42 岁' });
+  const chkL = capt(A, '这个版本能不能看见？两条都满足才行', 900, 770); css(chkL, { fontSize: '24px', color: 'var(--ink)', fontWeight: 700 });
+  show(chkL, T('q7', '能不能'), { y: 8 }); show(c1, T('q8', 'xmin') - 0.1, { y: 10 }); show(c2, T('q8', 'xmax') - 0.1, { y: 10 });
+  [[cXmin, T('q8', 'xmin')], [cXmax, T('q8', 'xmax')]].forEach(([c, t]) => { set(c, t - 0.1, { backgroundColor: '#b8442f' }); set(c, t + 0.9, { backgroundColor: '#2f6b26' }); });
+  sfx('tick', T('q8', 'xmin')); sfx('tick', T('q8', 'xmax'), { g: 0.6 });
   slam(res, T('q8b', '看得见'), { from: 1.15 }); sfx('chime', T('q8b', '看得见'), { g: 0.7 }); hide(cur, T('q8b', '看得见'), { d: 0.25 });
-  A.appendChild(cur);                                                          // 游标压在页面之上
+  fly(A, 'Alice，42', [90 + 3 + 236 + 268 + 60, 800 + 3 + 46], [900 + 300, 806 + 116], T('q8b', 'Alice') - 0.6, { cls: 'ok', fs: 24, d: 0.5, sink: true });  A.appendChild(cur);                                                          // 游标压在页面之上
   // 一共三页
   [['树根', '根'], ['叶子', '叶子'], ['堆页', `第 ${P} 页`]].forEach(([w, txt], i) => { keyed(reads[i]).at(T('q10', w), { html: '✓ ' + txt }); sfx('tick', T('q10', w), { g: 0.5, p: i * 0.2 }); });
   keyed(readL).at(T('q10') - 0.3, { html: '一共读了' }).at(T('q10', '三页'), { html: '一共 3 页' }); sfx('pop', T('q10', '三页'));
@@ -114,14 +120,13 @@ scene('query', ({ root, s, c0 }) => {
   const pa2 = link(ovC, [[1400, 268], [1460, 316]], 'accent');
   arrowIn(pa2, T('q16', '堆') - 0.5, 0.4); wipe(PH.b, T('q16', '堆') - 0.3, { dir: 'l', d: 0.4 }); sfx('tick', T('q16', '堆'), { p: 0.4 });
   fly(C, `(${P},${LP})`, [1220, 250], [1478, 300], T('q16', '堆') - 0.5, { cls: 'navy', fs: 22, d: 0.5, sink: true });
-  fly(C, `(${P},${LP})`, [1220, 250], [1478, 300], T('q17'), { cls: 'navy', fs: 22, d: 0.5, sink: true });
   // 只要名字：名字就在叶子里，可以不去堆；但要确认这一行看得见，行头在堆里
   const nameIn = tagEl(C, '名字就在叶子里', 1000, 410, 'ok'); css(nameIn, { fontSize: '24px' }); show(nameIn, T('q18', '名字'), { y: 8 });
   const tio = term(C, 72, 520, 1000, 4, { fs: 23, lh: 36, name: 'psql 会话' });
   const pick = (arr) => arr.filter((l) => /Index Only Scan|Heap Fetches/.test(l)).map(planLine);
   const e3 = tio.type(T('q18') - 0.2, `<span class="k">SELECT</span> name <span class="k">FROM</span> users <span class="k">WHERE</span> name = 'Alice';`, 'postgres=#', 40);
   pick(D.ios.before_vacuum).forEach((l, i) => tio.print(Math.max(e3 + 0.1, T('q18', '不去堆')) + i * 0.15, `<span class="d">${l}</span>`)); sfx('blip', T('q18', '不去堆'), { g: 0.5 });
-  tio.print(T('q22', '不必'), `<span class="ok">${esc(pick(D.ios.after_vacuum).find((l) => /Heap Fetches/.test(l)).trim())}</span><span class="d">　（VACUUM 之后再查）</span>`);
+  tio.print(T('q22', '不必'), `<span class="ok">${esc(pick(D.ios.after_vacuum).find((l) => /Heap Fetches/.test(l)).trim())}</span><span class="d">　（格子记上之后再查）</span>`);
   fly(C, `(${P},${LP})`, [1220, 250], [1478, 300], T('q19', '行头'), { cls: 'warn', fs: 22, d: 0.5, sink: true });
   const hf = noteBox(C, '<b>Heap Fetches: 1</b>　还要回堆一次：看行头才知道这一行能不能看见', 72, 740, 1000); show(hf, T('q19', '行头'), { y: 10 });
   hide(hf, T('q22', '不必') - 0.2, { d: 0.3 }); hide(nameIn, T('q19') + 0.2, { d: 0.25 });
@@ -139,7 +144,9 @@ scene('query', ({ root, s, c0 }) => {
   fly(C, `(${P},${LP})`, [1220, 250], [bx - 30, by - 4], T('q22', '记过') - 0.3, { cls: 'navy', fs: 22, d: 0.6 });
   to(bits[P], T('q22', '记过') + 0.4, { backgroundColor: '#193145', duration: 0.2 });
   const hf0 = tagEl(C, 'Heap Fetches: 0：不再回堆', 72, 750, 'ok'); css(hf0, { fontSize: '28px' }); show(hf0, T('q22', '不必') + 0.2, { y: 8 }); sfx('chime', T('q22', '不必') + 0.2, { g: 0.6 });
-  const byv = tagEl(C, '格子由 VACUUM 记上', 1150, 860, 'navy'); show(byv, T('q23', 'VACUUM'), { y: 8 }); hide(vmG, T('q23', 'VACUUM') - 0.2, { d: 0.2 });
+  // VACUUM 第一次出现：当场交代它是什么（第 8 章细讲），再说它顺手记格子
+  const byv = glossBox(C, 'VACUUM', '<b>VACUUM</b>：PostgreSQL 的清理命令，收走没人要的旧版本（第 8 章细讲）；<br>清理时顺手把这些格子记上', 1150, 740, 690);
+  hide(vmG, T('q23', 'VACUUM') - 0.35, { d: 0.2 }); show(byv, T('q23', 'VACUUM') - 0.1, { y: 10 }); sfx('pop', T('q23', 'VACUUM'), { g: 0.5 });
   fly(C, 'VACUUM', [1500, 880], [1300, 560], T('q23', 'VACUUM') + 0.1, { cls: 'navy', fs: 24, d: 0.9, hold: 0.4 }); sfx('whoosh', T('q23', 'VACUUM') + 0.1, { g: 0.3 });
   const fC = focusRing(C);
   fC.at(T('q15', '整行'), IL.rs[1]).at(T('q16', '地址'), PL.rs[0]).at(T('q16', '堆'), PH.rs[1]).at(T('q18', '名字'), PL.rs[0]).at(T('q19', '行头'), PH.rs[1]).at(T('q20', '小文件'), vm).off(T('q21') - 0.1);

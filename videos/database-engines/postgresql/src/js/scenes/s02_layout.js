@@ -48,17 +48,17 @@ scene('layout', ({ root, s, c0 }) => {
   keyed(kb).at(T('l5', '88'), { html: '<b>8 KB · 88 行</b>' });
   const p46 = grid.pos(46);
   const lastL = capt(A, `最后一页 <b>${D.heap.rows[46]}</b> 行`, p46.x - 70, p46.y - 34); css(lastL, { fontSize: '26px', color: 'var(--navy)' }); show(lastL, T('l5', '47'), { y: 8 });
-  const all47 = h('div', 'abs', A); px(all47, GX, GY + 3 * 146 - 20, GW, 6); css(all47, { background: 'var(--navy)' });
-  const all47L = capt(A, '<b>全部 47 页</b>', GX + GW / 2 - 80, GY + 3 * 146 - 8); css(all47L, { fontSize: '26px', color: 'var(--navy)' });
+  const all47 = h('div', 'abs', A); px(all47, GX, GY + 3 * 146 + 2, GW, 6); css(all47, { background: 'var(--navy)' });
+  const all47L = capt(A, '<b>全部 47 页</b>', GX + GW / 2 - 80, GY + 3 * 146 + 14); css(all47L, { fontSize: '26px', color: 'var(--navy)' });
   fromTo(all47, T('l5b', '47') - 0.2, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.6 }); show(all47L, T('l5b', '47'), { y: -8 }); sfx('whoosh', T('l5b', '47'), { g: 0.25 });
   [all47, all47L].forEach((x) => hide(x, T('l6', '堆') - 0.2, { d: 0.25 }));
   // 这样的文件叫堆
-  const frame = h('div', 'abs', A); px(frame, GX - 12, GY - 12, GW + 24, 3 * 146 - 10); css(frame, { border: '4px solid var(--navy)' }); frame.dataset.name = '堆';
+  const frame = h('div', 'abs', A); px(frame, GX - 12, GY - 12, GW + 24, 3 * 146 + 36); css(frame, { border: '4px solid var(--navy)' }); frame.dataset.name = '堆';
   show(frame, T('l6', '堆') - 0.1, { y: 0, s: 1.02, d: 0.4 });
   const heapG = glossBox(A, '堆', '<b>堆</b>：表的数据文件。行按到达的顺序放，不按编号排序，哪页有空放哪页', GX, 862, 1100);
   show(heapG, T('l6', '堆'), { y: 10 }); sfx('pop', T('l6', '堆'), { g: 0.6 });
   // 谁先来谁在前：每一行页卡的第一页上，写着从几号起
-  [kb, lastL].forEach((e) => hide(e, T('l6b') - 0.1, { d: 0.25 }));
+  hide(kb, T('l6', '堆') - 0.3, { d: 0.2 }); hide(lastL, T('l6b') - 0.1, { d: 0.25 });
   [0, 16, 32].forEach((i, j) => { const q = grid.pos(i); const l = tagEl(A, `${D.heap.first[i]} 号起`, q.x + 2, q.y + 40, 'navy'); css(l, { fontSize: '22px' }); show(l, T('l6b', '谁先来') + j * 0.35, { x: -10 }); hide(l, T('l7') + 0.1, { d: 0.2 }); });
   sfx('tick', T('l6b', '谁先来'), { g: 0.4 });
   // Alice 是第 2050 个：标记沿着页卡走到第 23 页
@@ -73,7 +73,7 @@ scene('layout', ({ root, s, c0 }) => {
   const tP = T('l8', '23');
   to(grid.pages[P], tP, { borderColor: '#193145', borderWidth: '4px', duration: 0.15 }); sfx('tick', tP);
   // 第 23 页拿出来放大：和真的页一样，上面是页头和 88 个指针，下面是 88 行（第 1 项在页尾）
-  [grid, frame].forEach((e) => to(e, tP + 0.3, { opacity: 0.15, duration: 0.4 })); [heapG, cnt, mk].forEach((e) => hide(e, tP + 0.2, { d: 0.3 })); gone(ta.el, tP + 0.1);
+  [grid, frame].forEach((e) => to(e, tP + 0.3, { opacity: 0.07, duration: 0.4 })); [heapG, cnt, mk].forEach((e) => hide(e, tP + 0.2, { d: 0.3 })); gone(ta.el, tP + 0.1);
   const BX = 300, BY = 330, BW = 22 * 36 + 24;
   const big = h('div', 'abs', A); px(big, BX, BY, BW, 540); css(big, { border: '4px solid var(--navy)', background: '#fff' }); big.dataset.name = '第 23 页放大';
   const bt = capt(A, `<b>第 ${P} 页</b>（${D.heap.first[P]}–${D.heap.first[P] + 87} 号）`, BX, BY - 44); css(bt, { fontSize: '28px', color: 'var(--navy)' });
@@ -82,7 +82,7 @@ scene('layout', ({ root, s, c0 }) => {
   for (let i = 0; i < 88; i++) { const c = h('div', 'abs', big); px(c, 12 + (i % 22) * 36, 44 + Math.floor(i / 22) * 24, 32, 20); css(c, { background: 'var(--sky)' }); lps.push(c); }
   const gp = h('div', 'abs', big, '空隙'); px(gp, 12, 146, BW - 32, 40); css(gp, { background: 'repeating-linear-gradient(90deg,#fff 0 10px,#eef3f7 10px 12px)', font: '600 22px "Sans SC"', color: 'var(--mute)', lineHeight: '40px', textAlign: 'center' });
   for (let k = 1; k <= 88; k++) { const j = 88 - k; const c = h('div', 'abs', big); px(c, 12 + (j % 22) * 36, 196 + Math.floor(j / 22) * 82, 32, 76); css(c, { background: 'var(--sky-lt)', border: '1.5px solid var(--pg)' }); rws[k] = c; }
-  const lpsL = capt(big, '88 个指针', BW - 160, 4); css(lpsL, { color: '#fff', fontSize: '22px' });
+  const lpsL = capt(big, '88 个指针', BW - 160, 2); css(lpsL, { color: '#fff', fontSize: '22px', lineHeight: '30px' });
   tl.fromTo(big, { autoAlpha: 0, x: pA.x - BX, y: pA.y - BY, scale: 0.13, transformOrigin: '0 0' }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.6, ease: 'power3.inOut', immediateRender: true }, tP + 0.2);
   show(bt, tP + 0.7, { y: 8 }); sfx('whoosh', tP + 0.2, { g: 0.35 });
   const rowsL = capt(A, '行从页尾往前放：第 1 项在最后', BX + BW + 24, BY + 470); css(rowsL, { fontSize: '24px' }); show(rowsL, tP + 0.9, { x: -10 });
@@ -135,7 +135,7 @@ scene('layout', ({ root, s, c0 }) => {
       [g, tile].forEach((x) => tl.fromTo(x, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, immediateRender: true }, T('l13', '文件') - 0.1 + k * 0.01));
       tiles.push(tile);
     }
-    const meta = capt(B, ci === 1 ? '第 0 页元数据 · 第 3 页根' : '0 = 元数据　3 = 根', c.x, FY - 62); css(meta, { fontSize: '22px', color: 'var(--navy)' }); show(meta, T('l13', '文件') + 0.3);
+    const meta = capt(B, ci === 1 ? '第 0 页元数据 · 第 3 页根' : '0 = 元数据　3 = 根', c.x, FY - 62); meta.classList.add('ko'); css(meta, { fontSize: '22px', color: 'var(--navy)' }); show(meta, T('l13', '文件') + 0.3);
     c.tiles = tiles; c.meta = meta;
   });
   sfx('tick', T('l13', '文件'), { g: 0.5 });
@@ -156,7 +156,7 @@ scene('layout', ({ root, s, c0 }) => {
   const tFly = T('l13b') - 0.1;
   COL.forEach((c) => {
     const t = c.t, nl = t.leafCount, lw = Math.min(64, (c.w - (nl - 1) * 3) / nl), lg = (c.w - nl * lw) / Math.max(1, nl - 1);
-    const rootW = 220, rx = c.x + c.w / 2 - rootW / 2;
+    const rootW = t.leafCount <= 6 ? 280 : 220, rx = c.x + c.w / 2 - rootW / 2;   // 年龄树的根要写下 4 个分隔键
     const rootT = c.tiles[t.root];
     fromTo(rootT, tFly, { x: 0, y: 0, width: c.tw - (c.tw >= 40 ? 4 : 1), height: FH }, { x: rx - (c.x + t.root * c.tw), y: RY - FY, width: rootW, height: 46, duration: 0.8, ease: 'power3.inOut' });
     c.leafPos = [];
@@ -178,14 +178,14 @@ scene('layout', ({ root, s, c0 }) => {
   const head = (c, html, t) => { const l = capt(B, html, c.x, RY - 60); css(l, { fontSize: '26px', color: 'var(--ink)' }); show(l, t, { y: 8 }); return l; };
   colFrame(cP, T('l14'), T('l15') - 0.1); head(cP, `<b>主键树</b>：一个根 · ${Tr.users_pkey.leafCount} 页叶子`, T('l14'));
   keyText(cP.rx + 16, RY + 10, '367 · 733 · …', T('l14', '根'));
-  [[0, '1'], [5, '1831'], [11, '4027']].forEach(([i, k]) => { const l = capt(B, k, cP.leafPos[i] - 26, LY + 52, 'cap mono'); css(l, { fontSize: '22px', color: 'var(--navy)' }); show(l, T('l14', '叶子'), { y: -6 }); });
+  [[0, '1'], [5, '1831'], [11, '4027']].forEach(([i, k]) => { const l = capt(B, k, cP.leafPos[i] - 26, LY + 52, 'cap mono ko'); css(l, { fontSize: '22px', color: 'var(--navy)' }); show(l, T('l14', '叶子'), { y: -6 }); });
   colFrame(cN, T('l15'), T('l16') - 0.1); head(cN, `<b>姓名树</b>：一个根 · ${Tr.idx_name.leafCount} 页叶子`, T('l15'));
   keyText(cN.rx + 16, RY + 10, 'User00108 · …', T('l15', '根'));
-  const nAl = capt(B, 'Alice…', cN.x, LY + 52, 'cap mono'); css(nAl, { fontSize: '22px', color: 'var(--navy)' }); show(nAl, T('l15', '叶子'), { y: -6 });
+  const nAl = capt(B, 'Alice…', cN.x, LY + 52, 'cap mono ko'); css(nAl, { fontSize: '22px', color: 'var(--navy)' }); show(nAl, T('l15', '叶子'), { y: -6 });
   const sz = tagEl(B, `一项姓名 ${Tr.idx_name.aliceItem.len} 字节（编号只要 ${Tr.users_pkey.aliceItem.len}）：一页放得少`, cN.x, LY + 86, 'navy'); css(sz, { fontSize: '24px' }); show(sz, T('l15b', '64'), { y: 8 }); hide(sz, T('l16') - 0.1, { d: 0.25 });
   colFrame(cA, T('l16'), Tend('l17') + 0.2); head(cA, `<b>年龄树</b>：一个根 · ${Tr.idx_age.leafCount} 页叶子`, T('l16'));
   keyText(cA.rx + 16, RY + 10, '32 · 46 · 60 · 74', T('l16', '根'));
-  ['&lt;32', '32–45', '46–59', '60–73', '74+'].forEach((k, i) => { const l = capt(B, k, cA.leafPos[i] - 30, LY + 52, 'cap mono'); css(l, { fontSize: '22px', color: 'var(--navy)' }); show(l, T('l16', '叶子') + i * 0.06, { y: -6 }); });
+  ['&lt;32', '32–45', '46–59', '60–73', '74+'].forEach((k, i) => { const l = capt(B, k, cA.leafPos[i] - 30, LY + 52, 'cap mono ko'); css(l, { fontSize: '22px', color: 'var(--navy)' }); show(l, T('l16', '叶子') + i * 0.06, { y: -6 }); });
   const order = tagEl(B, '叶子按键排：第 1、5、4、6、2 页', cA.x, LY + 86, 'navy'); css(order, { fontSize: '24px' }); show(order, T('l16', '叶子'), { y: 8 }); hide(order, Math.max(T('l16', '叶子') + 1.2, T('l17', '合成一项') - 0.3), { d: 0.25 });
   const ag1 = cA.tiles[Tr.idx_age.leaves[1]]; to(ag1, T('l17') - 0.1, { backgroundColor: '#336791', duration: 0.2 });
   const post = tagEl(B, `42 岁这一项：装着 ${D.agePosting.count} 个地址`, cA.x, LY + 86, 'navy'); css(post, { fontSize: '24px' }); show(post, Math.max(T('l16', '叶子') + 1.5, T('l17', '合成一项')), { y: 8 });
@@ -213,7 +213,7 @@ scene('layout', ({ root, s, c0 }) => {
   const zn = zoom(1028, 200, '姓名树：最左边那页叶子', [`Alice → (${P2},${L2})`, 'User00001 → (0,1)', 'User00002 → (0,2)'], T('l20') - 0.3);
   set(zn.rows[0], T('l20', 'Alice'), { backgroundColor: '#336791', color: '#fff' }); sfx('tick', T('l20', 'Alice'));
   const a2 = curve(ovB2, [1028, 281], [pageX + 10, 690], 'warn', { w: 4, bend: 560 }); arrowIn(a2, T('l20', '这个地址') - 0.2, 0.5); sfx('tick', T('l20', '这个地址'));
-  const sameB = tagEl(B2, '两棵树，同一个地址', 780, 470, 'warn'); css(sameB, { fontSize: '30px' }); show(sameB, T('l20', '这个地址') + 0.2, { y: 8 }); hide(sameB, T('l20b') - 0.1, { d: 0.25 });
+  const sameB = tagEl(B2, '两棵树，同一个地址', 1020, 560, 'warn'); css(sameB, { fontSize: '30px' }); show(sameB, T('l20', '这个地址') + 0.2, { y: 8 }); hide(sameB, T('l20b') - 0.1, { d: 0.25 });
   // 按地址去堆里取行：地址落到第 23 页，这一页展开，第 26 个指针指向那一行，整行取出来
   fly(B2, `(${P2},${L2})`, [900, 520], [pageX - 50, 650], T('l20b') - 0.1, { cls: 'navy', fs: 28, d: 0.6 });
   const mp = h('div', 'page', B2); px(mp, 560, 450, 800, 170); mp.dataset.name = '第 23 页';

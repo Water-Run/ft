@@ -55,7 +55,7 @@ scene('delete', ({ root, s, c0 }) => {
   // VACUUM 沿行指针一个个看过去，到第 26 个停手：Bob 的快照还可能读这一行
   const swA = h('div', 'abs', pa.box); px(swA, 10, 30, 6, 44); css(swA, { background: 'var(--navy)' }); swA.dataset.name = '扫描线';
   const ts0 = T('d8') + 0.3, ts1 = Math.max(ts0 + 1, T('d9', '还不能') - 0.5);
-  set(swA, 0, { autoAlpha: 0 }); set(swA, ts0, { autoAlpha: 1 }); tl.fromTo(swA, { x: 0 }, { x: 4 * 70 + 30, duration: ts1 - ts0, ease: 'power1.inOut', immediateRender: false }, ts0); sfx('whoosh', ts0, { g: 0.25 });
+  set(swA, 0, { autoAlpha: 0 }); set(swA, ts0, { autoAlpha: 1 }); tl.fromTo(swA, { x: 0 }, { x: 4 * 70 - 6, duration: ts1 - ts0, ease: 'power1.inOut', immediateRender: false }, ts0); sfx('whoosh', ts0, { g: 0.25 });
   tl.fromTo(pa.p26, { boxShadow: '0 0 0 0px #b8442f' }, { boxShadow: '0 0 0 5px #b8442f', duration: 0.2, immediateRender: false }, ts1);
   const stop = tagEl(A, '停：Bob 的快照还在', 420, 330, 'warn'); css(stop, { fontSize: '24px' }); show(stop, ts1, { y: 8 });
   const dead = tagEl(A, '已死，但还不能回收：Bob 的快照可能还要读', 72, 868, 'warn'); slam(dead, T('d9', '还不能'), { from: 1.12 }); sfx('error', T('d9', '还不能'), { g: 0.5 });
@@ -73,8 +73,8 @@ scene('delete', ({ root, s, c0 }) => {
   // VACUUM 沿行指针扫过去，这回过了第 26 个也不停：那一行收走，指针空出来
   const sw2 = h('div', 'abs', pb.box); px(sw2, 10, 30, 6, 44); css(sw2, { background: 'var(--navy)' }); sw2.dataset.name = '扫描线';
   const tk = T('d10b', '收走');
-  set(sw2, 0, { autoAlpha: 0 }); set(sw2, eV, { autoAlpha: 1 }); tl.fromTo(sw2, { x: 0 }, { x: 4 * 70 + 30, duration: Math.max(0.6, tk - eV), ease: 'none', immediateRender: false }, eV);
-  tl.fromTo(sw2, { x: 4 * 70 + 30 }, { x: 6 * 70 + 30, duration: 0.4, ease: 'none', immediateRender: false }, Math.max(eV + 0.6, tk)); hide(sw2, Math.max(eV + 0.6, tk) + 0.45, { d: 0.2 }); sfx('whoosh', eV, { g: 0.3 });
+  set(sw2, 0, { autoAlpha: 0 }); set(sw2, eV, { autoAlpha: 1 }); tl.fromTo(sw2, { x: 0 }, { x: 4 * 70 - 6, duration: Math.max(0.6, tk - eV), ease: 'none', immediateRender: false }, eV);
+  tl.fromTo(sw2, { x: 4 * 70 - 6 }, { x: 6 * 70 + 70, duration: 0.4, ease: 'none', immediateRender: false }, Math.max(eV + 0.6, tk)); hide(sw2, Math.max(eV + 0.6, tk) + 0.45, { d: 0.2 }); sfx('whoosh', eV, { g: 0.3 });
   collapse(rowB, tk); gone(pb.ar, tk + 0.1, 0.25); sfx('pop', tk);
   const idxs = [['主键树', '2050'], ['姓名树', 'Alice'], ['年龄树', '42']].map(([n, k], i) => {
     const e = h('div', 'tup', B, `${n}：${k} → (${P},${LP})`); px(e, 1040 + 0, 380 + i * 54, 760); return e;
@@ -138,7 +138,7 @@ scene('delete', ({ root, s, c0 }) => {
   for (let i = 0; i < 14; i++) { const d = h('div', 'abs', C); px(d, 180 + i * 104, 770, 80, 34); css(d, { background: '#dfe3e6', border: '2px solid var(--grey)' }); show(d, t0 + (t1 - t0) * i / 14, { y: -10, d: 0.2 }); }
   const pile = tagEl(C, '死行越积越多', 1500, 620, 'warn'); show(pile, T('d28b', '越积越多'), { y: 8 }); sfx('error', T('d28b', '越积越多'), { g: 0.4 });
   const fC = focusRing(C);
-  fC.at(T('d22'), pc.box).at(T('d23', '顺手清理'), cond).at(T('d24', '查询'), trd.el).at(T('d24b', '清掉'), pc.p26).at(T('d24b', '160'), pc.gapBox(98)).at(T('d26', '自动清理'), auto).at(T('d28', '事务'), longTx).off(tD - 0.4);
+  fC.at(T('d22'), pc.box).at(T('d23', '顺手清理'), cond).at(T('d24', '查询'), [1040, 260, 800, 76]).at(T('d24b', '清掉'), pc.p26).at(T('d24b', '160'), pc.gapBox(98)).at(T('d26', '自动清理'), auto).at(T('d28', '事务'), longTx).off(tD - 0.4);
 
   // ── D：事务号会绕回；冻结 ──
   hdoc(Dd, '事务号只有 32 位', 72, 128);
@@ -171,14 +171,15 @@ scene('delete', ({ root, s, c0 }) => {
     dot.style.background = future && !frozen ? '#b8442f' : '#193145';
     dot.style.boxShadow = frozen ? '0 0 0 5px #9db6cc' : 'none';
   });
-  show(dotL, T('d31'), { y: 8 }); hide(dotL, tm0 + 0.1, { d: 0.2 });
+  set(dotL, 0, { autoAlpha: 0 }); tl.fromTo(dotL, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T('d31')); gone(dotL, tm0 + 0.1, 0.2);
   const past = tagEl(Dd, '过去的事务，看起来像在未来', 150, 772, 'warn'); show(past, tm1 - 0.2, { y: 8 }); sfx('error', tm1 - 0.2, { g: 0.4 });
   const pastAr = link(ovD, [[230, 770], [212, 660]], 'accent'); arrowIn(pastAr, tm1 - 0.1, 0.3); gone(pastAr, tf0, 0.2); gone(past, tf0, 0.2);
   const frzL = tagEl(Dd, '冻结：对谁都算过去', 80, 196, 'navy'); css(frzL, { fontSize: '24px' }); show(frzL, tf1 - 0.2, { y: 8 }); sfx('chime', tf1 - 0.2, { g: 0.4 });  show(now, T('d30', '32') + 1.4, { s: 0.5 });
   const rule2 = noteBox(Dd, '<b>所以</b>　每张表至少每 20 亿个事务 VACUUM 一遍', 760, 400, 1080); show(rule2, T('d32', '20'), { y: 10 }); sfx('tick', T('d32', '20'));
-  const fz = tableDoc(Dd, ['Dave 那一行', '冻结前', '冻结后'], [['提示位', 'XMAX_INVALID', 'XMIN_COMMITTED + XMIN_INVALID + XMAX_INVALID'], ['表的 relfrozenxid', E.frozen[0], E.frozen[1]]], 760, 520, { mono: [1, 2] });
+  // 冻结前后：只用白话写行头里 xmin 的两个标记位（实测 D8），不摆原始标志名
+  const fz = tableDoc(Dd, ['Dave 那一行的行头', '冻结前', '冻结后'], [['xmin 的两个标记位', '都没记（要去查提交状态）', '「已提交」「无效」同时记上 = 已冻结']], 760, 520);
   css(fz, { fontSize: '23px' }); wipe(fz, T('d33', '冻结'), { dir: 'l' }); sfx('pop', T('d33', '冻结'));
-  const fzG = glossBox(Dd, '冻结', '<b>冻结</b>：两个提示位同时记上，表示这一行对所有事务都算「过去」，不再比较事务号', 760, 700, 1080);
+  const fzG = glossBox(Dd, '冻结', '<b>冻结</b>：两个标记位同时记上，表示这一行对所有事务都算「过去」，不再比较事务号', 760, 700, 1080);
   show(fzG, T('d33', '冻结') + 0.4, { y: 10 });
   const fD = focusRing(Dd);
   fD.at(T('d30', '32'), [160, 230, 520, 520]).at(T('d31', '未来'), past).at(T('d32', '20'), rule2).at(T('d32', 'VACUUM'), [160, 230, 520, 520]).at(T('d33', '冻结'), fz).at(T('d34', '对谁都'), fzG).at(tf1, frzL).off(Tend('d34') + 0.6);

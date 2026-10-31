@@ -28,12 +28,12 @@ scene('crash', ({ root, s, c0 }) => {
   recEls.slice(4).forEach((e, i) => show(e, T('w4') + i * 0.15, { x: -10, d: 0.2 }));
   sfx('tick', T('w4'), { g: 0.5 });
   const flush = h('div', 'abs', A); px(flush, 72 + 2 * 222 - 3, 350, 6, 120); css(flush, { background: 'var(--warn)' }); flush.dataset.name = '已落盘到这里';
-  const flushL = h('div', 'abs mono', A, `已落盘 ${W.flushBefore.f}`); px(flushL, 72 + 2 * 222 - 110, 470); css(flushL, { font: '700 22px "Mono"', color: 'var(--warn)' });
+  const flushL = h('div', 'abs', A, '已落盘到这里'); px(flushL, 72 + 2 * 222 - 110, 470); css(flushL, { font: '700 24px "Sans SC"', color: 'var(--warn)', whiteSpace: 'nowrap' });   // 不写日志位置的十六进制：没讲过，观众看不懂
   show(flush, T('w4') - 0.1); show(flushL, T('w4') - 0.1);
   const mem = tagEl(A, '这几条还在内存里', 72 + 4 * 222, 300, 'warn'); show(mem, T('w4', '内存'), { y: 8 });
   const tC = T('w5', '磁盘');
   to(flush, tC, { x: 6 * 222 - 3, duration: 0.6, ease: 'power3.inOut' }); sfx('thud', tC + 0.5, { g: 0.6 });
-  keyed(flushL).at(tC + 0.6, { html: `已落盘 ${W.flushAfter.f}` }); to(flushL, tC, { x: 6 * 222 - 150, duration: 0.6, ease: 'power3.inOut' });
+  to(flushL, tC, { x: 6 * 222 - 150, duration: 0.6, ease: 'power3.inOut' });
   recEls.slice(2).forEach((e) => set(e, tC + 0.5, { borderStyle: 'solid', background: 'var(--pg)', color: '#fff' }));
   hide(mem, tC, { d: 0.25 });
   // 数据页：内存里的已经改了，磁盘上的还是旧的

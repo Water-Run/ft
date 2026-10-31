@@ -17,9 +17,9 @@ scene('credits', ({ root, s }) => {
   const rowEls = rows.map(([r, n]) => [cell(r, 'padding-left:14px'), cell('|'), cell(n, 'padding-left:12px')]);
   const foot = h('div', '', box, `(${rows.length} rows)`); css(foot, { marginTop: '8px' });
   wipe(box, s.start + 0.2, { dir: 't', d: 0.5 });
-  const e = typeText(cmd, '<span class="k">SELECT</span> * <span class="k">FROM</span> credits;', s.start + 0.7, 28, { cursorUntil: s.start + 2.2 });
+  const e = typeText(cmd, '<span class="k">SELECT</span> * <span class="k">FROM</span> credits;', s.start + 0.5, 70, { cursorUntil: s.start + 1.3 });
   line.forEach((c) => show(c, e + 0.2, { y: 0, d: 0.2 }));
-  const gapR = Math.min(1.0, (s.end - e - 2.6) / (rows.length + 1));
+  const gapR = Math.min(0.28, (s.end - e - 2.6) / (rows.length + 1));   // 查得快一点（WaterRun：「结尾那个查询查快一点」），名单早些出全、停住读
   rowEls.forEach((cs, i) => cs.forEach((c) => show(c, e + 0.45 + i * gapR, { x: -14, y: 0, d: 0.3 })));
   show(foot, e + 0.55 + rows.length * gapR, { y: 0, d: 0.3 });
   sfx('blip', e + 0.2, { g: 0.4 });

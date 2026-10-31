@@ -53,7 +53,7 @@ scene('history', ({ root, s, c0 }) => {
   const tAfter = T('h4', '之后');
   fadeOut(inn, tAfter, 0.45, { y: -40 });
   tl.fromTo(gres, { x: 0 }, { x: -wI, duration: 0.55, ease: 'power3.inOut', immediateRender: false }, tAfter + 0.2);
-  const meaning = capt(A, '<b style="color:var(--pg)">POST</b> + <span style="color:#8a949c">IN</span>GRES：Ingres 之后', NX, NY + 150); css(meaning, { fontSize: '28px' });
+  const meaning = capt(A, '<b style="color:var(--pg)">POST</b> + <span style="color:#8a949c">IN</span>GRES：Ingres 之后', NX, NY + 168); css(meaning, { fontSize: '28px' });
   show(meaning, tAfter + 0.2, { y: 10 });
   // 1994：加上 SQL
   node(1994, 'Andrew Yu、Jolly Chen<br>加上 SQL', T('h6') - 0.5, false, -110);
@@ -61,7 +61,7 @@ scene('history', ({ root, s, c0 }) => {
   hide(meaning, T('h6'), { d: 0.3 });
   const plus = tagEl(A, '+ SQL', NX + wP + wG + 36, NY + 26, 'navy'); css(plus, { fontSize: '54px', padding: '6px 22px' }); set(plus, 0, { autoAlpha: 0 });
   fadeIn(plus, T('h6', 'SQL'), 40, 0.45); sfx('pop', T('h6', 'SQL'));
-  const ql = capt(A, '查询语言从 PostQUEL 换成 SQL，有了 psql', NX, NY + 150); css(ql, { fontSize: '26px', color: 'var(--ink2)' });
+  const ql = capt(A, '查询语言从 PostQUEL 换成 SQL，有了 psql', NX, NY + 168); css(ql, { fontSize: '26px', color: 'var(--ink2)' });
   show(ql, T('h6', 'SQL') + 0.5, { y: 10 }); hide(ql, T('h8') - 0.1, { d: 0.3 });
   const open = tagEl(A, '开源发布', X(1994) + 40, Y + 26, 'ok'); css(open, { fontSize: '24px' }); slam(open, T('h7', '开源'), { from: 1.2 }); sfx('pop', T('h7', '开源'), { g: 0.6 });
   // 之后的名字：共同的前缀「Postgre」不动，只换后面那一段；淡入淡出，不跳
@@ -80,7 +80,7 @@ scene('history', ({ root, s, c0 }) => {
   node(1996, '定名 PostgreSQL<br>版本号接着伯克利的 4.2，从 6.0 起', T('h8') - 0.5, true, -40);
   goto(1996, T('h8') - 0.5);
   // 就是 POSTGRES 加上 SQL：两段下面各划一道
-  const under = (x, w, label, t) => { const bar = h('div', 'abs', A); px(bar, x, NY + 136, w, 6); css(bar, { background: 'var(--navy)' }); const l = capt(A, label, x, NY + 150); css(l, { fontSize: '28px', color: 'var(--navy)', fontWeight: 700 }); fromTo(bar, t, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.4 }); show(l, t + 0.1, { y: 8 }); hide(bar, t18 - 0.1, { d: 0.25 }); hide(l, t18 - 0.1, { d: 0.25 }); };
+  const under = (x, w, label, t) => { const bar = h('div', 'abs', A); px(bar, x, NY + 160, w, 6); css(bar, { background: 'var(--navy)' }); const l = capt(A, label, x, NY + 174); css(l, { fontSize: '28px', color: 'var(--navy)', fontWeight: 700 }); fromTo(bar, t, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.4 }); show(l, t + 0.1, { y: 8 }); hide(bar, t18 - 0.1, { d: 0.25 }); hide(l, t18 - 0.1, { d: 0.25 }); };
   under(NX, wB, 'POSTGRES', T('h8b', 'POSTGRES')); under(NX + wB, wS, 'SQL', T('h8b', 'SQL')); sfx('tick', T('h8b', 'SQL'));
   // 今天：18
   fadeIn(v18, t18, 30, 0.45); sfx('pop', t18, { g: 0.5 });
@@ -89,7 +89,7 @@ scene('history', ({ root, s, c0 }) => {
   // 2014：图灵奖，奖章飞进斯通布雷克的人物卡
   node(2014, '图灵奖<br>（2014 年度）', T('h10') - 0.5, false, -50);
   goto(2014, T('h10') - 0.5);
-  const medal = fly(A, '2014 年度图灵奖', [X(2014) - 90, Y + 90], [400, 208], T('h10', '授给'), { cls: 'warn', fs: 26, d: 0.9, stay: true });
+  const medal = fly(A, '2014 年度图灵奖', [X(2014) - 90, Y + 90], [372, 254], T('h10', '授给'), { cls: 'warn', fs: 22, d: 0.9, stay: true });   // 落在卡片第一行右边的空处，不压名字
   sfx('chime', T('h10', '授给') + 1.0, { g: 0.6 });
 
   // ── B：SQL:2023 的核心部分 177 项；PostgreSQL 至少 170；各家公布的情况 ──

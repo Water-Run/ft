@@ -30,7 +30,7 @@ scene('open', ({ root, s }) => {
   // 每一年：线段在 [a, b] 里画到这一年，到 b 时落点、出数
   const span = { 2022: [null, T('o4'), T('o3', 'MySQL')], 2023: [T('o5'), T('o5', '反超') + 0.2], 2024: [tO6, tO6 + dO6 / 2], 2025: [tO6 + dO6 / 2, Tend('o6')], 2026: [T('o7'), T('o7', '58'), T('o8', '35')] };
   const dot = (yr, v, color, t) => { const d = h('div', 'abs', A); px(d, XS(yr) - 11, YS(v) - 11, 22, 22); css(d, { background: '#fff', border: `5px solid ${color}`, borderRadius: '50%' }); slam(d, t, { from: 1.6 }); };
-  const val = (yr, v, color, t, above) => { const l = capt(A, `<b style="color:${color}">${v}%</b>`, XS(yr) - 44, YS(v) + (above ? -50 : 16)); css(l, { fontSize: '26px' }); show(l, t + 0.1, { y: above ? 8 : -8 }); };
+  const val = (yr, v, color, t, above) => { const l = capt(A, `<b style="color:${color}">${v}%</b>`, XS(yr) - 49, YS(v) + (above ? -50 : 16)); l.classList.add('ko'); css(l, { fontSize: '26px' }); show(l, t + 0.1, { y: above ? 8 : -8 }); };
   const seg = (p, r, key, color, a, d) => draw(path(ov, `M${XS(p.year)},${YS(p[key])} L${XS(r.year)},${YS(r[key])}`, color, { w: 6, arrow: false }), a, d, { ease: 'none' });
   D.survey.forEach((r, i) => {
     const sp = span[r.year], pgAbove = r.pg > r.my;
@@ -60,7 +60,7 @@ scene('open', ({ root, s }) => {
   const a = D.survey[0], b = D.survey[1], kx = (a.my - a.pg) / ((a.my - a.pg) + (b.pg - b.my));
   const cx = XS(a.year) + kx * 330, cy = YS(a.pg + kx * (b.pg - a.pg));
   const ring = h('div', 'abs', A); px(ring, cx - 22, cy - 22, 44, 44); css(ring, { border: '4px solid var(--navy)', borderRadius: '50%' });
-  const lead = tagEl(A, 'PostgreSQL 反超', cx + 30, cy + 36);
+  const lead = tagEl(A, 'PostgreSQL 反超', cx - 120, cy + 84);
   slam(ring, T('o5', '反超'), { from: 1.8 }); slam(lead, T('o5', '反超') + 0.1, { from: 1.15 }); sfx('pop', T('o5', '反超'));
 
   // ── B：同一张表、同一句 UPDATE，两台引擎各自怎么做 ──

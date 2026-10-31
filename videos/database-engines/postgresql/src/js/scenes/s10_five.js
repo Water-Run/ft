@@ -39,7 +39,7 @@ scene('five', ({ root, s, c0 }) => {
   const core = h('div', 'abs', world); px(core, 1240, 870, 600, 70); css(core, { background: 'var(--pg)' }); core.dataset.name = '同一个做法';
   const cl = h('div', 'abs', core, '改一行，就写一个新版本'); px(cl, 24, 12); css(cl, { font: '800 34px "Sans SC"', color: '#fff' });
   const tz = T('z12', '同一个做法');
-  rows.forEach((r, i) => { const l = path(ov, `M${72},${220 + i * 128 + 56} C${30},${220 + i * 128 + 56} ${30},905 ${1240},905`, 'dim', { w: 2.5, arrow: false }); draw(l, tz + i * 0.08, 0.6); });
+  rows.forEach((r, i) => { const y0 = 220 + i * 128 + 56, l = path(ov, `M72,${y0} L48,${y0} L48,885 Q48,905 68,905 L1240,905`, 'dim', { w: 2.5, arrow: false }); draw(l, tz + i * 0.08, 0.6); });   // 沿左边空白走下来再横到底，不穿过各行的字
   wipe(core, T('z13') - 0.1, { dir: 'l', d: 0.5 }); sfx('chime', T('z13', '新版本'), { g: 0.7 });
   const fz = focusRing(world);
   fz.at(T('z2') + 0.2, AL[0]).at(T('z3', '地址'), PIC[0]).at(T('z4') + 0.2, AL[1]).at(T('z5', '看见'), PIC[1]).at(T('z6') + 0.2, AL[2]).at(T('z7', '回收'), PIC[2])

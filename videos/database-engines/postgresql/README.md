@@ -6,9 +6,9 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 2026-10-31 预览 r6：WaterRun 看 r5 后要求自查迭代，做了三轮（第五章叶子页、第六章 92 字节与索引到堆、HOT、第七章看见哪个版本、第八章同一个第 23 页的实物与事务号的圈等）。改了什么见 [review/NOTES.md](review/NOTES.md)「预览 r6」。文案仍是确认过的第 2 稿（指纹 `957aa044…`）。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
+| 当前停在哪里 | 2026-10-31 预览 r6：WaterRun 看 r5 后要求自查迭代，做了三轮（第五章叶子页、第六章 92 字节与索引到堆、HOT、第七章看见哪个版本、第八章同一个第 23 页的实物与事务号的圈等）。改了什么见 [review/NOTES.md](review/NOTES.md)「预览 r6」。文案是确认过的第 2 稿，2026-10-31 按 WaterRun 指出的重复删去 q17（指纹 `7d520d3f…`，原 `957aa044…`）。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
 | 下一步，依赖什么 | WaterRun 看预览 r6；按意见改；正式渲染与交付检查 |
-| 等待策划者的事 | 看预览 r6；q17 是否删去；d4 的字幕是否改成「可这一行还在页里」。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
+| 等待策划者的事 | 看预览 r7；d4 的字幕是否改成「可这一行还在页里」。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
 | 未做的事 | 正式渲染与交付检查 |
 

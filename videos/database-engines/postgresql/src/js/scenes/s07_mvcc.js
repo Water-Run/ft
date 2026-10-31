@@ -42,15 +42,15 @@ scene('mvcc', ({ root, s, c0 }) => {
   keyed(al).at(T('m3', String(X)), { html: `Alice 的事务 ${X}：还没提交` });
   // 每个事务提交了没有，另有一处记着：这时 4856 是「进行中」
   const xs = xactStrip(A, 250, T('m4') - 0.2);
-  const toX = curve(ovA, [420 + 105, 520], [420 + 400 + 170, 314], 'warn', { bend: 420 }); arrowIn(toX, T('m4b', '进行中') - 0.3, 0.5); sfx('tick', T('m4b', '进行中'), { p: 0.4 });
+  const toX = curve(ovA, [420 + 214 + 105, 430], [420 + 400 + 170, 316], 'warn', { bend: 372 }); arrowIn(toX, T('m4b', '进行中') - 0.3, 0.5); sfx('tick', T('m4b', '进行中'), { p: 0.4 });   // 从旧版本的 xmax（也是 4856）往上连到提交状态，不穿过别的字
   // Bob 来读，带着一张快照
   const tb = term(A, 72, 660, 860, 3, { name: 'Bob 的会话' });
   const eB = tb.type(T('m5') - 0.1, '<span class="k">SELECT</span> age <span class="k">FROM</span> users <span class="k">WHERE</span> id = 2050;', 'bob=&gt;', 45);
   const snap = h('div', 'abs', A); px(snap, 980, 660, 560, 180); snap.dataset.name = 'Bob 的快照';
   css(snap, { border: '4px solid var(--navy)', background: '#fff' });
   const sn1 = h('div', 'abs cap', snap, '<b>Bob 的快照</b>'); px(sn1, 20, 12);
-  const sn2 = h('div', 'abs mono', snap, M.snapshot); px(sn2, 20, 56); css(sn2, { font: '700 46px "Mono"', color: 'var(--pg)' });
-  const sn3 = h('div', 'abs cap', snap, `${X} 起的事务：都还看不见`); px(sn3, 20, 124); css(sn3, { color: 'var(--warn)', fontSize: '28px', fontWeight: 700 });
+  const sn2 = h('div', 'abs', snap, `查询里看到的原样：<span class="mono">${M.snapshot}</span>`); px(sn2, 20, 128); css(sn2, { font: '500 22px var(--sans)', color: 'var(--ink2)' });   // 原始格式只作旁证，小字
+  const sn3 = h('div', 'abs cap', snap, `${X} 起的事务：都还看不见`); px(sn3, 20, 62); css(sn3, { color: 'var(--warn)', fontSize: '34px', fontWeight: 700 });
   wipe(snap, T('m6', '快照') - 0.2, { dir: 'r' }); show(sn3, T('m7', '起的事务'), { y: 8 }); keyed(sn3).at(0, { html: `<span>${X} 起的事务：</span>` }).at(T('m7', '看不见'), { html: `${X} 起的事务：都还看不见` }); sfx('pop', T('m7', '看不见'), { g: 0.5, p: 0.5 });
   const snG = glossBox(A, '快照', '<b>快照</b>：查询开始那一刻，记下哪些事务已经结束、哪些还没有', 980, 860, 868);
   show(snG, T('m6', '快照'), { y: 10 }); sfx('pop', T('m6', '快照'), { g: 0.5 });
@@ -71,7 +71,7 @@ scene('mvcc', ({ root, s, c0 }) => {
   hide(lens, T('m11') - 0.1, { d: 0.3 });
   const nowait = tagEl(A, '读和写互不等待', 72, 604, 'ok'); css(nowait, { fontSize: '28px' }); slam(nowait, T('m11'), { from: 1.15 }); sfx('chime', T('m11', '也不用等'), { g: 0.6 });
   const rA = focusRing(A);
-  rA.at(T('m4', '另有一处'), xs.box).at(T('m4b', '进行中'), xs.c2).at(T('m5'), tb.el).at(T('m6', '快照'), snap).at(T('m7', String(X)), sn2).off(T('m8') - 0.3);
+  rA.at(T('m4', '另有一处'), xs.box).at(T('m4b', '进行中'), xs.c2).at(T('m5'), tb.el).at(T('m6', '快照'), snap).at(T('m7', String(X)), sn3).off(T('m8') - 0.3);
   const rA2 = focusRing(A);
   rA2.at(T('m10', '旧版本'), vo.e).at(T('m11', '也不用等'), nowait).off(tB - 0.4);
 
@@ -80,7 +80,7 @@ scene('mvcc', ({ root, s, c0 }) => {
   const xs2 = xactStrip(B, 250, tB + 0.1);
   const bo = verRow(B, 430, `xmin ${D.alice.xmin}`, `xmax ${X}`, '2050 Alice 42'), bn = verRow(B, 520, `xmin ${X}`, 'xmax 0', '2050 Alice 43', true);
   [bo, bn].forEach((r) => { show(r.e, tB + 0.2, { y: 0 }); show(r.l, tB + 0.2, { y: 0 }); });
-  const tc = term(B, 72, 660, 860, 3, { name: 'Carol 的会话' });
+  const tc = term(B, 72, 660, 860, 3, { fs: 23, lh: 34, name: 'Carol 的会话' });
   const eC = tc.type(T('m12') - 0.1, '<span class="k">UPDATE</span> users <span class="k">SET</span> age = age + 1 <span class="k">WHERE</span> id = 2050;', 'carol=*&gt;', 50);
   // Carol 的请求撞上被锁的那一行，停住；等待条一直涨
   const creq = tagEl(B, 'Carol：age + 1', 1220, 640, 'warn'); css(creq, { fontSize: '24px' });

@@ -77,6 +77,46 @@ function term(p, x, y, w, rows, o = {}) {
 }
 // 淡出退场：写明起点（避免「从当前值开始」在跳播时取到不同的起点）
 function gone(e, t, d = 0.3) { tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: d, immediateRender: false }, t); }
+// 描线：开描之前整条线隐藏（否则长度为零的那一截会露出圆头，画面上多一个小点）
+draw = function (path, t, d = 0.9, o = {}) {
+  const len = path.getTotalLength();
+  path.style.strokeDasharray = o.dash ? o.dash : len;
+  if (o.dash) { tl.fromTo(path, { autoAlpha: 0 }, { autoAlpha: 1, duration: d * 0.6, immediateRender: true }, t); return; }
+  tl.fromTo(path, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: true }, t);
+  tl.fromTo(path, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: d, ease: o.ease || 'power2.inOut', immediateRender: true }, t);
+};
+// 箭头头部：实心三角，比折线箭头清楚；线端藏在三角里，不露出圆头
+const overlay_KIT = overlay;
+overlay = function (parent) {
+  const s = overlay_KIT(parent);
+  s.querySelectorAll('marker').forEach((m) => {
+    m.setAttribute('refX', '7.5'); m.setAttribute('markerWidth', '5'); m.setAttribute('markerHeight', '5');
+    const q = m.querySelector('path'); q.setAttribute('d', 'M0,0.6 L10,5 L0,9.4 Z'); q.setAttribute('fill', q.getAttribute('stroke')); q.setAttribute('stroke', 'none');
+  });
+  return s;
+};
+// 视线框的边不能从字中间穿过：边要切到的说明文字（离得近的）一并框进来；框不进来的就把这一侧收紧
+function ringRect(p, b, pad, target) {
+  let x0 = b.x - pad, y0 = b.y - pad, x1 = b.x + b.w + pad, y1 = b.y + b.h + pad;
+  const texts = [...p.querySelectorAll('*')].filter((e) => e.dataset.name !== '视线框' && !(target && target.nodeType && (target === e || target.contains(e) || e.contains(target))) && !e.closest('svg') &&
+    [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())).map((e) => box(e, p)).filter((q) => q.w > 4 && q.h > 8);
+  for (let k = 0; k < 2; k++) {
+    for (const q of texts) {
+      const ov = q.x < x1 && q.x + q.w > x0 && q.y < y1 && q.y + q.h > y0;
+      const inside = q.x >= x0 && q.x + q.w <= x1 && q.y >= y0 && q.y + q.h <= y1;
+      if (!ov || inside) continue;
+      const nx0 = Math.min(x0, q.x - 8), ny0 = Math.min(y0, q.y - 6), nx1 = Math.max(x1, q.x + q.w + 8), ny1 = Math.max(y1, q.y + q.h + 6);
+      if (x0 - nx0 <= 70 && y0 - ny0 <= 60 && nx1 - x1 <= 70 && ny1 - y1 <= 60) { x0 = nx0; y0 = ny0; x1 = nx1; y1 = ny1; continue; }
+      // 太远框不进来：挑改动最小的一侧收紧，让那条边落在字外；收紧后不能切进目标本身
+      const opts = [
+        ['y0', q.y + q.h + 2, q.y + q.h + 2 <= b.y], ['y1', q.y - 2, q.y - 2 >= b.y + b.h],
+        ['x0', q.x + q.w + 2, q.x + q.w + 2 <= b.x], ['x1', q.x - 2, q.x - 2 >= b.x + b.w],
+      ].filter((o) => o[2]).map(([k, v]) => [k, v, Math.abs(v - { y0, y1, x0, x1 }[k])]).sort((m, n) => m[2] - n[2]);
+      if (opts.length) { const [kk, v] = opts[0]; if (kk === 'y0') y0 = v; else if (kk === 'y1') y1 = v; else if (kk === 'x0') x0 = v; else x1 = v; }
+    }
+  }
+  return { left: x0, top: y0, width: x1 - x0, height: y1 - y0 };
+}
 // 视线框：一屏一个，讲到哪个东西就移到哪个东西上（at 给元素或 [x, y, w, h]；坐标是屏内坐标）。每一步写明起点，跳播也一样
 function focusRing(p, color = '#b8442f') {
   const r = h('div', 'abs', p); css(r, { border: `5px solid ${color}`, pointerEvents: 'none' }); r.dataset.name = '视线框';
@@ -84,8 +124,16 @@ function focusRing(p, color = '#b8442f') {
   set(r, 0, { autoAlpha: 0 });
   const api = {
     at(t, target, pad = 10) {
-      const b = Array.isArray(target) ? { x: target[0], y: target[1], w: target[2], h: target[3] } : box(target, p);
-      const st = { left: b.x - pad, top: b.y - pad, width: b.w + 2 * pad, height: b.h + 2 * pad };
+      let b = Array.isArray(target) ? { x: target[0], y: target[1], w: target[2], h: target[3] } : box(target, p);
+      if (!Array.isArray(target)) {   // 容器里伸出盒子外的字（如挂在下面的说明）也算进目标，框不从它们中间穿过
+        for (const e of target.querySelectorAll('*')) {
+          if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+          const q = box(e, p); if (q.w < 4 || q.h < 8) continue;
+          const x0 = Math.min(b.x, q.x), y0 = Math.min(b.y, q.y), x1 = Math.max(b.x + b.w, q.x + q.w), y1 = Math.max(b.y + b.h, q.y + q.h);
+          b = { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+        }
+      }
+      const st = ringRect(p, b, pad, Array.isArray(target) ? null : target);
       if (!prev) { set(r, t, { ...st, autoAlpha: 1 }); } else tl.fromTo(r, { ...prev }, { ...st, duration: 0.35, ease: 'power2.inOut', immediateRender: false }, t);
       prev = st; return api;
     },

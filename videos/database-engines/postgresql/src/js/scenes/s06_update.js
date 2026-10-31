@@ -103,7 +103,7 @@ scene('update', ({ root, s, c0 }) => {
   oldAr.forEach((a) => tl.fromTo(a, { opacity: 1 }, { opacity: 0.3, duration: 0.3, immediateRender: false }, T('u13', '新地址') - 0.2));
   rs.forEach((r, i) => {
     const tt = T('u13', '新地址') + i * 0.18;
-    fly(B, `(${nP},${nL})`, [1250, HY - 10], [r.x + 330, LY + 100], tt - 0.65, { cls: 'navy', fs: 24, d: 0.55, sink: true });
+    fly(B, `(${nP},${nL})`, [1250, HY - 52], [r.x + 330, LY + 100], tt - 0.65, { cls: 'navy', fs: 24, d: 0.55, sink: true });
     slide(r.e2, tt, { y: 30 }); arrowIn(newAr[i], tt + 0.1, 0.35); sfx('pop', tt, { g: 0.5, p: -0.5 + i * 0.5 });
   });
   const same = noteBox(B, '名字、编号都没变，可旧项指着旧地址：每个索引都得再插一项', 72, 594, 1200); show(same, T('u14b'), { y: 10 });
@@ -170,12 +170,12 @@ scene('update', ({ root, s, c0 }) => {
   set(t1, 0, { autoAlpha: 0 }); set(t1, T('u23') + 0.2, { autoAlpha: 1 }); set(t2, 0, { autoAlpha: 0 }); set(t2, T('u24', 'HOT') - 0.4, { autoAlpha: 1 });
   [...t1.querySelectorAll('tr')].forEach((r, i) => show(r, T('u23') + 0.2 + i * 0.3, { x: -10, y: 0, d: 0.3 }));
   [...t2.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24', 'HOT') - 0.4 + i * 0.3, { x: -10, y: 0, d: 0.3 })); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
-  const tlab = capt(C, '各写了哪些日志记录', 72, TY - 40); show(tlab, T('u23'));
+  const tlab = capt(C, '各写了哪些日志记录（每次修改先记一条日志，第 9 章细讲）', 72, TY - 40); show(tlab, T('u23'));
   const rC = focusRing(C);
   rC.at(T('u19', '一是'), cond1).at(T('u20', '二是'), cond2).at(T('u20', '原来那一页'), [980, PY + 92, 420, 56]).at(T('u21', '本页') + 0.4, [990, PY + 100, 400, 40]).at(T('u21b'), hidx)
     .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '没有索引插入'), t1).at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).off(T('u27') - 0.1);
   // 日志对照讲完就收起，下面换成填充比例：一页装到九成，剩下一成留给更新
-  [t1, t2, tlab, jump].forEach((e) => gone(e, T('u25') - 0.2, 0.3));
+  [t1, t2, tlab].forEach((e) => gone(e, T('u25') - 0.2, 0.3)); gone(jump, T('u23') - 0.25, 0.25);   // 日志的说明要占这一行，查询跳转的说明先收
   const ff = noteBox(C, '<b>填充比例</b>　表默认 100（装满）；改小后，每页留出的空间给更新用', 72, 640, 1100); show(ff, T('u27'), { y: 10 });
   const ffb = h('div', 'page', C); px(ffb, 72, 760, 860, 56); ffb.dataset.name = '留一成空位的页';
   const ffa = h('div', 'abs', ffb); px(ffa, 4, 4, 0, 42); css(ffa, { background: 'var(--sky-lt)' });

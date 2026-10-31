@@ -91,3 +91,6 @@ table.doc tr.hl td { background: var(--hi); }
 .gloss b { color: var(--pg); }
 .credits-box { position: absolute; }
 .psql, .psql * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }   /* => 不连写成箭头 */
+
+/* 压在线上的说明文字：纸色底，线从字后面过，不割字 */
+.ko { background: var(--paper); padding: 0 5px; z-index: 3; }
