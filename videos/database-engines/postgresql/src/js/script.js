@@ -6,7 +6,7 @@
   const LANG = (isBrowser ? new URLSearchParams(location.search).get('lang') : process.env.VLANG) || 'zh';
   const pick = (v) => (v && typeof v === 'object' && !Array.isArray(v) && ('zh' in v || LANG in v) ? v[LANG] : v);
   const tr = (zh, en) => (LANG === 'zh' ? zh : en);
-  const c = (id, text, facts, o = {}) => [id, text, { facts: facts ? facts.split(' ') : [], gap: 0.4, ...o }];
+  const c = (id, text, facts, o = {}) => [id, text, { facts: facts ? facts.split(' ') : [], gap: 0.6, ...o }];   // 句间默认 0.6 秒：讲结构时给出看懂的间隙（WaterRun 看 r4：「有一点点跟不上, 你要给合适的理解间隙」）
 
   const RAW = [
     {
@@ -27,7 +27,7 @@
         c('o13', 'InnoDB 在原位改掉这一行，旧值放进 undo', 'U9'),
         c('o14', 'PostgreSQL 不覆盖这一行，另写了一行', 'U1'),
         c('o15', '表里，多出了一个版本', 'U1', { gap: 1.2 }),
-        c('o16', '同一件事，PostgreSQL 走的是另一条路', null, { gap: 0.6 }),
+        c('o16', '同一件事，PostgreSQL 走的是另一条路', null, { gap: 1.2 }),   // 说完留一口气再进片名（WaterRun 看 r4：「留白呢」）
         ['oT', null, { pause: 2.5 }],
       ],
     },

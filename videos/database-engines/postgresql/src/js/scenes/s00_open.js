@@ -138,10 +138,20 @@ scene('open', ({ root, s }) => {
   const pgSide = [EP.head, EP.body, P23.pg, P23.l, prow], inSide = [EI.head, EI.body, LI.pg, LI.l, lrow, undo, old42];
   pgSide.forEach((e) => { to(e, T('o13') - 0.2, { opacity: 0.35, duration: 0.4 }); to(e, T('o14') - 0.3, { opacity: 1, duration: 0.4 }); });
   inSide.forEach((e) => to(e, T('o14') - 0.3, { opacity: 0.35, duration: 0.4 }));
-  // 另一条路：InnoDB 退得更远，PostgreSQL 这边打出结论
-  [...inSide, vI].forEach((e) => to(e, T('o16'), { opacity: 0.2, duration: 0.5 }));
-  const way = tagEl(B, 'PostgreSQL 的路：不覆盖，另写一个版本', 1016, 830); css(way, { fontSize: '32px', padding: '8px 22px' });
-  slam(way, T('o16', '另一条路'), { from: 1.2 }); sfx('thud', T('o16', '另一条路'), { g: 0.6 });
+  // 另一条路：InnoDB 整体退出画面；PostgreSQL 一侧移到中间，上方大字打出它的做法；说完停一停，新版本的蓝块铺满整屏，变成片名卡
+  const tW = T('o16') - 0.1;
+  [...inSide, vI, EI.head, EI.body].forEach((e) => tl.fromTo(e, { x: 0 }, { x: -260, autoAlpha: 0, duration: 0.7, ease: 'power2.in', immediateRender: false }, tW));
+  gone(tm.el, tW, 0.4); sfx('whoosh', tW, { g: 0.4 });
+  const pgMove = [EP.head, EP.body, P23.pg, P23.l, P46.pg, P46.l, prow, xm, vP, ovB];
+  pgMove.forEach((e) => tl.fromTo(e, { x: 0 }, { x: -470, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, tW + 0.2));
+  tl.fromTo(nrow, { x: 424 }, { x: 424 - 470, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, tW + 0.2);
+  const way = h('div', 'abs', B, '不覆盖，<span style="color:var(--navy)">另写一个版本</span>'); px(way, 518, 224); css(way, { font: '800 72px "Sans SC"', color: 'var(--pg)', whiteSpace: 'nowrap' }); way.dataset.name = '另一条路';
+  show(way, T('o16', '另一条路') - 0.2, { y: 30, d: 0.6 }); sfx('thud', T('o16', '另一条路'), { g: 0.6 });
+  const tC0 = tC - 0.75;
+  const burst = h('div', 'abs', world); css(burst, { background: 'var(--pg-dk)' }); burst.dataset.name = '新版本铺满整屏';
+  tl.fromTo(burst, { autoAlpha: 0, left: 1460 - 470, top: 636, width: 340, height: 48 }, { autoAlpha: 1, duration: 0.05, immediateRender: true }, tC0);
+  tl.fromTo(burst, { left: 1460 - 470, top: 636, width: 340, height: 48 }, { left: 0, top: 0, width: 1920, height: 1080, duration: 0.75, ease: 'power3.in', immediateRender: false }, tC0 + 0.02);
+  sfx('riser', tC0, { g: 0.35 }); gone(burst, tC + 0.1, 0.25);
 
   // ── C：片名 ──
   const card = h('div', 'abs', C); px(card, 0, 0, 1920, 1080); css(card, { background: 'var(--pg-dk)' });
@@ -150,5 +160,5 @@ scene('open', ({ root, s }) => {
   const k3 = h('div', 'abs', C, 'PostgreSQL'); px(k3, 164, 620); css(k3, { font: '800 140px "Open Sans"', color: '#50b0f0', letterSpacing: '-2px' });
   wipe(k1, tC + 0.15, { dir: 'l' }); slam(k2, tC + 0.3, { from: 1.08 }); slide(k3, tC + 0.55, { x: -60 });
   sfx('thud', tC + 0.35);
-  const part = tagEl(C, 'PART 3 · 数据库引擎系列', 170, 820, 'navy'); css(part, { fontSize: '30px', padding: '8px 22px' }); show(part, tC + 1.3, { x: -20 });
+  const part = tagEl(C, 'PART 3', 170, 820, 'navy'); css(part, { fontSize: '30px', padding: '8px 22px' }); show(part, tC + 1.3, { x: -20 });
 });

@@ -5,80 +5,91 @@ scene('history', ({ root, s, c0 }) => {
   const [A, B, C] = screens(world, [c0, tB, tC, s.end]);
   drift(world, s, [tB, tC], -1);
 
-  // ── A：年代线。一个标记沿轴走到讲到的年份；上方的名字只有一个，说到新名字的那一刻就变 ──
+  // ── A：年代线。左栏是人物与 Ingres 的旁注（画面自己交代，不等旁白）；上方的名字只有一个，跟着旁白平滑地变 ──
   hdoc(A, '从伯克利的研究项目，到今天的 PostgreSQL 18', 72, 128);
-  const Y = 680, X = (yr) => 160 + (yr - 1984) * 37;                // 1984–2027 映射到 160–1751
+  const Y = 760, X = (yr) => 160 + (yr - 1984) * 37;                // 1984–2027 映射到 160–1751
   const axis = h('div', 'axis', A); px(axis, 120, Y, 1680); css(axis, { height: '4px', background: 'var(--pg)' });
   fromTo(axis, c0 + 0.1, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.9, ease: 'power2.inOut' });
-  // 标记：三角 + 竖线
   const mk = h('div', 'abs', A); px(mk, X(1986) - 14, Y - 58, 28, 58); mk.dataset.name = '年代标记';
   mk.innerHTML = '<div style="position:absolute;left:0;top:0;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:20px solid var(--navy)"></div><div style="position:absolute;left:12px;top:18px;width:4px;height:40px;background:var(--navy)"></div>';
   show(mk, T('h1'), { y: -16, d: 0.4 });
-  const goto = (yr, t) => { to(mk, t, { x: X(yr) - X(1986), duration: 0.7, ease: 'power2.inOut' }); sfx('whoosh', t, { g: 0.25 }); };
+  let mkX = 0;
+  const goto = (yr, t) => { const nx = X(yr) - X(1986); tl.fromTo(mk, { x: mkX }, { x: nx, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, t); mkX = nx; sfx('whoosh', t, { g: 0.25 }); };
   const node = (yr, label, t, up = true, dx = -60) => {
     const dot = h('div', 'abs', A); px(dot, X(yr) - 11, Y - 9, 22, 22); css(dot, { background: '#fff', border: '5px solid var(--pg)', borderRadius: '50%' });
     const y = h('div', 'lbl', A, String(yr)); px(y, X(yr) - 34, up ? Y - 110 : Y + 30); css(y, { fontSize: '30px' });
-    const l = h('div', 'cap', A, label); px(l, X(yr) + dx, up ? Y - 186 : Y + 76); css(l, { fontSize: '26px', lineHeight: '1.4' });
+    const l = h('div', 'cap', A, label); px(l, X(yr) + dx, up ? Y - 190 : Y + 76); css(l, { fontSize: '26px', lineHeight: '1.4' });
     slam(dot, t + 0.5, { from: 1.6 }); show(y, t + 0.55, { y: up ? 10 : -10 }); show(l, t + 0.65, { y: up ? 10 : -10 });
     sfx('tick', t + 0.5, { g: 0.6 });
     return { dot, y, l };
   };
-  // 1986：伯克利
   const n86 = node(1986, '伯克利开始实现', T('h1') - 0.5, true, -40);
   keyed(n86.l).at(T('h1', '研究系统'), { html: '伯克利开始实现<br>一个研究系统' }); sfx('tick', T('h1', '研究系统'), { g: 0.4 });
-  // 斯通布雷克与 Ingres
-  const sb = tagEl(A, 'Michael Stonebraker 教授', 72, 214, 'navy'); css(sb, { fontSize: '30px' }); show(sb, T('h2', '斯通布雷克'), { x: -20 });
-  const ing = glossBox(A, 'Ingres', '<b>Ingres</b>：斯通布雷克之前<br>在伯克利做的关系数据库', 72, 290, 500);
-  show(ing, T('h2', 'Ingres') - 0.2, { x: -20 }); sfx('pop', T('h2', 'Ingres'), { g: 0.6 });
-  // 名字：INGRES 先出现（灰），POST 从左边进来，IN 退出，GRES 合上去 = POSTGRES
+  // 左栏：人物卡（FACTS H1、H6、H11）
+  const card = (y, head, lines, color) => {
+    const b = h('div', 'abs', A); px(b, 72, y, 500); css(b, { background: '#fff', border: `3px solid ${color}` }); b.dataset.name = head;
+    const hd = h('div', '', b, head); css(hd, { background: color, color: '#fff', font: '700 28px "Open Sans","Sans SC"', padding: '8px 18px' });
+    const ls = lines.map((s) => { const r = h('div', '', b, s); css(r, { font: '500 24px "Sans SC"', color: 'var(--ink)', padding: '6px 18px', lineHeight: '1.4' }); return r; });
+    return { b, ls };
+  };
+  const sb = card(200, 'Michael Stonebraker', ['伯克利的教授', '先后主持 INGRES、POSTGRES'], 'var(--navy)');
+  wipe(sb.b, T('h2', '斯通布雷克') - 0.2, { dir: 'l', d: 0.45 }); sfx('pop', T('h2', '斯通布雷克'), { g: 0.5 });
+  set(sb.ls[1], 0, { autoAlpha: 0 }); show(sb.ls[1], T('h2', 'Ingres') - 0.2, { y: 6 });
+  const ing = card(390, 'Ingres', ['最早的关系数据库之一', '它和 Postgres 的思想与代码，<br>后来催生了 Informix、Greenplum 等产品'], 'var(--pg)');
+  ing.b.dataset.gloss = 'Ingres';
+  wipe(ing.b, T('h2', 'Ingres') - 0.3, { dir: 'l', d: 0.45 }); sfx('pop', T('h2', 'Ingres'), { g: 0.6 });
+  // 名字：INGRES（灰）→ POST 从左边进来、IN 退出、GRES 合上去 = POSTGRES → Postgres95 → PostgreSQL → PostgreSQL 18
   const NX = 700, NY = 196, NF = { font: '800 110px "Open Sans"', letterSpacing: '2px', whiteSpace: 'nowrap' };
-  const mkw = (txt, color) => { const e = h('div', 'abs', A, txt); css(e, { ...NF, color }); return e; };
+  const mkw = (txt, color) => { const e = h('div', 'abs', A, txt); css(e, { ...NF, color }); set(e, 0, { autoAlpha: 0 }); e.dataset.name = '名字'; return e; };
   const post = mkw('POST', 'var(--pg)'), inn = mkw('IN', '#8a949c'), gres = mkw('GRES', '#8a949c');
   const wP = post.offsetWidth, wI = inn.offsetWidth, wG = gres.offsetWidth;
   px(post, NX, NY); px(inn, NX + wP, NY); px(gres, NX + wP + wI, NY);
-  [post, inn, gres].forEach((e) => { e.dataset.name = '名字'; });
+  const fadeIn = (e, t, x0 = 0, d = 0.45) => tl.fromTo(e, { autoAlpha: 0, x: x0 }, { autoAlpha: 1, x: 0, duration: d, ease: 'power2.out', immediateRender: false }, t);
+  const fadeOut = (e, t, d = 0.4, to_ = {}) => tl.fromTo(e, { autoAlpha: 1, x: 0, y: 0 }, { autoAlpha: 0, duration: d, ease: 'power2.in', immediateRender: false, ...to_ }, t);
   const tIng = T('h2', 'Ingres');
-  show(inn, tIng, { y: 16 }); show(gres, tIng + 0.05, { y: 16 });
+  fadeIn(inn, tIng); fadeIn(gres, tIng + 0.05);
   const tPG = T('h4', 'POSTGRES');
-  show(post, tPG, { x: -40, y: 0 }); sfx('pop', tPG);
-  set(gres, tPG, { color: 'var(--pg)' });
+  fadeIn(post, tPG, -60, 0.5); tl.fromTo(gres, { color: '#8a949c' }, { color: '#336791', duration: 0.4, immediateRender: false }, tPG); sfx('pop', tPG);
   const tAfter = T('h4', '之后');
-  to(inn, tAfter, { y: -50, autoAlpha: 0, duration: 0.45, ease: 'power2.in' });
-  to(gres, tAfter + 0.25, { x: -wI, duration: 0.5, ease: 'power3.inOut' });
+  fadeOut(inn, tAfter, 0.45, { y: -40 });
+  tl.fromTo(gres, { x: 0 }, { x: -wI, duration: 0.55, ease: 'power3.inOut', immediateRender: false }, tAfter + 0.2);
   const meaning = capt(A, '<b style="color:var(--pg)">POST</b> + <span style="color:#8a949c">IN</span>GRES：Ingres 之后', NX, NY + 150); css(meaning, { fontSize: '28px' });
   show(meaning, tAfter + 0.2, { y: 10 });
-  // 1994：加上 SQL；名字旁边挂上一块「+ SQL」
+  // 1994：加上 SQL
   node(1994, 'Andrew Yu、Jolly Chen<br>加上 SQL', T('h6') - 0.5, false, -110);
   goto(1994, T('h6') - 0.5);
-  hide(meaning, T('h6'), { d: 0.3 }); hide(ing, T('h6'), { d: 0.3 });
-  const plus = tagEl(A, '+ SQL', NX + wP + wG + 36, NY + 26, 'navy'); css(plus, { fontSize: '54px', padding: '6px 22px' });
-  slam(plus, T('h6', 'SQL'), { from: 1.3 }); sfx('pop', T('h6', 'SQL'));
-  const open = tagEl(A, '开源发布', X(1994) - 70, Y + 170, 'ok'); css(open, { fontSize: '26px' }); slam(open, T('h7', '开源'), { from: 1.2 }); sfx('pop', T('h7', '开源'), { g: 0.6 });
-  // 名字随后的几次变化：交叉淡变，不闪
+  hide(meaning, T('h6'), { d: 0.3 });
+  const plus = tagEl(A, '+ SQL', NX + wP + wG + 36, NY + 26, 'navy'); css(plus, { fontSize: '54px', padding: '6px 22px' }); set(plus, 0, { autoAlpha: 0 });
+  fadeIn(plus, T('h6', 'SQL'), 40, 0.45); sfx('pop', T('h6', 'SQL'));
+  const ql = capt(A, '查询语言从 PostQUEL 换成 SQL，有了 psql', NX, NY + 150); css(ql, { fontSize: '26px', color: 'var(--ink2)' });
+  show(ql, T('h6', 'SQL') + 0.5, { y: 10 }); hide(ql, T('h8') - 0.1, { d: 0.3 });
+  const open = tagEl(A, '开源发布', X(1994) + 40, Y + 26, 'ok'); css(open, { fontSize: '24px' }); slam(open, T('h7', '开源'), { from: 1.2 }); sfx('pop', T('h7', '开源'), { g: 0.6 });
+  // 之后的名字：共同的前缀「Postgre」不动，只换后面那一段；淡入淡出，不跳
   const t95 = T('h7', 'Postgres95'), tPQ = T('h8', 'PostgreSQL'), t18 = T('h9', '18');
-  [post, gres].forEach((e) => to(e, t95 - 0.05, { autoAlpha: 0, duration: 0.3 }));
-  const names = morphText(A, NX, NY, { ...NF, color: 'var(--pg)' }, [
-    [t95, 'Postgres<span style="color:var(--navy)">95</span>'],
-    [tPQ, '<span class="a">Postgre</span><span class="b">SQL</span>'],
-    [t18, 'PostgreSQL<span style="color:var(--navy)"> 18</span>'],
-  ]);
-  names.forEach((e) => { e.dataset.name = '名字'; });
-  // 「+ SQL」跟着名字挪，定名时并进名字里
-  to(plus, t95, { x: names[0].offsetWidth - wP - wG + 10, duration: 0.4, ease: 'power2.inOut' });
-  const sqlSpan = names[1].querySelector('.b'), pgSpan = names[1].querySelector('.a');
-  to(plus, tPQ - 0.1, { x: NX + sqlSpan.offsetLeft - (NX + wP + wG + 36), y: -26, autoAlpha: 0, duration: 0.45, ease: 'power2.inOut' });
-  node(1996, '定名 PostgreSQL<br>版本号从 6.0 起', T('h8') - 0.5, true, -40);
+  const base = mkw('Postgre', 'var(--pg)'), s95 = mkw('s<span style="color:var(--navy)">95</span>', 'var(--pg)'), sql = mkw('SQL', 'var(--pg)'), v18 = mkw('<span style="color:var(--navy)"> 18</span>', 'var(--pg)');
+  const wB = base.offsetWidth, wS = sql.offsetWidth, w95 = s95.offsetWidth;
+  px(base, NX, NY); px(s95, NX + wB, NY); px(sql, NX + wB, NY); px(v18, NX + wB + wS, NY);
+  [post, gres].forEach((e) => tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, ease: 'none', immediateRender: false }, t95));
+  [base, s95].forEach((e) => tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'none', immediateRender: false }, t95));
+  const plusX0 = NX + wP + wG + 36, plusX1 = NX + wB + w95 + 30;
+  tl.fromTo(plus, { x: 0 }, { x: plusX1 - plusX0, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, t95);
+  // 定名：s95 淡出，「+ SQL」滑进它的位置并化成名字的一部分
+  fadeOut(s95, tPQ - 0.1, 0.35);
+  tl.fromTo(plus, { x: plusX1 - plusX0, autoAlpha: 1 }, { x: NX + wB - 22 - plusX0, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, tPQ - 0.1);
+  tl.fromTo(sql, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, tPQ + 0.15); sfx('pop', tPQ + 0.15);
+  node(1996, '定名 PostgreSQL<br>版本号接着伯克利的 4.2，从 6.0 起', T('h8') - 0.5, true, -40);
   goto(1996, T('h8') - 0.5);
   // 就是 POSTGRES 加上 SQL：两段下面各划一道
   const under = (x, w, label, t) => { const bar = h('div', 'abs', A); px(bar, x, NY + 136, w, 6); css(bar, { background: 'var(--navy)' }); const l = capt(A, label, x, NY + 150); css(l, { fontSize: '28px', color: 'var(--navy)', fontWeight: 700 }); fromTo(bar, t, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.4 }); show(l, t + 0.1, { y: 8 }); hide(bar, t18 - 0.1, { d: 0.25 }); hide(l, t18 - 0.1, { d: 0.25 }); };
-  under(NX, pgSpan.offsetWidth, 'POSTGRES', T('h8b', 'POSTGRES')); under(NX + sqlSpan.offsetLeft, sqlSpan.offsetWidth, 'SQL', T('h8b', 'SQL')); sfx('tick', T('h8b', 'SQL'));
+  under(NX, wB, 'POSTGRES', T('h8b', 'POSTGRES')); under(NX + wB, wS, 'SQL', T('h8b', 'SQL')); sfx('tick', T('h8b', 'SQL'));
   // 今天：18
+  fadeIn(v18, t18, 30, 0.45); sfx('pop', t18, { g: 0.5 });
   node(2025, 'PostgreSQL 18<br>2025 年 9 月发布', T('h9') - 0.4, true, -250);
   goto(2025, T('h9') - 0.4);
-  // 2014：图灵奖，奖章飞到斯通布雷克名下
+  // 2014：图灵奖，奖章飞进斯通布雷克的人物卡
   node(2014, '图灵奖<br>（2014 年度）', T('h10') - 0.5, false, -50);
   goto(2014, T('h10') - 0.5);
-  const medal = fly(A, '2014 年度图灵奖', [X(2014) - 90, Y + 160], [72, 290], T('h10', '授给'), { cls: 'warn', fs: 30, d: 0.9, stay: true });
+  const medal = fly(A, '2014 年度图灵奖', [X(2014) - 90, Y + 140], [400, 208], T('h10', '授给'), { cls: 'warn', fs: 26, d: 0.9, stay: true });
   sfx('chime', T('h10', '授给') + 1.0, { g: 0.6 });
 
   // ── B：SQL:2023 的核心部分 177 项；PostgreSQL 至少 170；各家公布的情况 ──
