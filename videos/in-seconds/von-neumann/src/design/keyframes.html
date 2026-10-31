@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧 · 50 年代计算机</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  /* 关键帧比较页：?d=A|B 方向，?f=1|2|3 帧（1 片名，2 译码 c3，3 瓶颈 d1–d3）。静态，不含动画。
+     A「操作台」：搪瓷面板、白炽指示灯、刻字铭牌；一格存储 = 一排灯，亮 = 1。
+     B「技术手册」：米色纸、墨线方框图、编码纸表格、穿孔纸带；一条指令 = 一段纸带。 */
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+  .abs { position: absolute; }
+  svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+  /* ── A：操作台 ── */
+  .A { --bg: #1d2623; --plate: #2c3834; --edge: #44524c; --cream: #ece3cb; --dim: #aab4a9;
+       --amber: #ffb43c; --amber-off: #4a3d24; --green: #8fe3a6; --green-off: #23402f; --red: #ff5a3c; }
+  .A #stage { background: var(--bg); color: var(--cream); font-family: "Sans SC"; }
+  .A #stage::before { content: ""; position: absolute; inset: 0;
+       background: repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px),
+                   radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.05), transparent 70%); }
+  .A .plate { background: var(--plate); border: 2px solid var(--edge); box-shadow: inset 0 2px 0 rgba(255,255,255,.06), 0 6px 0 rgba(0,0,0,.35); }
+  .A .engr { font: 600 26px "Mono"; letter-spacing: .14em; color: var(--dim); text-transform: uppercase; }
+  .A .lab { font: 700 34px "Sans SC"; color: var(--cream); letter-spacing: .04em; }
+  .A .screw { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #9aa49c, #3b4440); }
+  .A .lamp { display: inline-block; width: 34px; height: 34px; border-radius: 50%; margin: 0 7px; background: radial-gradient(circle at 40% 35%, #6b5a3a, var(--amber-off)); box-shadow: inset 0 -3px 0 rgba(0,0,0,.4); }
+  .A .lamp.on { background: radial-gradient(circle at 40% 35%, #fff4d6, var(--amber) 55%, #c9771a); box-shadow: 0 0 22px 4px rgba(255,180,60,.45); }
+  .A .lamp.g { background: radial-gradient(circle at 40% 35%, #38604a, var(--green-off)); }
+  .A .lamp.g.on { background: radial-gradient(circle at 40% 35%, #eafff0, var(--green) 55%, #3fa865); box-shadow: 0 0 22px 4px rgba(143,227,166,.4); }
+
+  /* ── B：技术手册 ── */
+  .B { --paper: #efe7d4; --ink: #1c2633; --soft: #57534a; --rule: rgba(28,38,51,.12); --red: #b3311f; --blue: #234e86; --ochre: #85570c; }
+  .B #stage { background: var(--paper); color: var(--ink); font-family: "Serif SC"; }
+  .B #stage::before { content: ""; position: absolute; inset: 0;
+       background: linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 40px 40px,
+                   linear-gradient(90deg, var(--rule) 1px, transparent 1px) 0 0 / 40px 40px; opacity: .55; }
+  .B #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+       background: radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(120,95,50,.18)); }
+  .B .type { font: 500 26px "Mono"; letter-spacing: .08em; color: var(--soft); text-transform: uppercase; }
+  .B .box { border: 3px solid var(--ink); background: rgba(239,231,212,.92); }
+  .B .tape { background: #f6efd9; border-top: 2px solid #cdbf9a; border-bottom: 2px solid #cdbf9a; box-shadow: 0 3px 0 rgba(0,0,0,.08); }
+
+  /* 常驻元素（两方向共用位置）：左上剩余秒数、右上仪表、底部字幕带与秒尺 */
+  .hud-left { left: 60px; top: 44px; font: 700 40px "Mono"; letter-spacing: .04em; }
+  .hud-right { right: 60px; top: 40px; text-align: right; }
+  .capband { left: 0; top: 968px; width: 1920px; height: 112px; }
+  .ruler { left: 0; top: 968px; width: 1920px; height: 6px; }
+  .cap { left: 0; top: 994px; width: 1920px; text-align: center; font: 500 46px "Sans SC"; }
+  .A .capband { background: rgba(10,14,12,.86); } .A .ruler { background: #3a4741; } .A .ruler i { background: var(--amber); }
+  .B .capband { background: var(--ink); } .B .cap { color: var(--paper); } .B .ruler { background: #4a5462; } .B .ruler i { background: var(--red); }
+  .ruler i { position: absolute; left: 0; top: 0; height: 6px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const q = new URLSearchParams(location.search);
+const D = q.get('d') || 'A', F = +(q.get('f') || 1);
+document.documentElement.className = D;
+const S = document.getElementById('stage');
+const el = (html) => { S.insertAdjacentHTML('beforeend', html); };
+const lamps = (bits, cls = '') => [...bits].map((b) => `<i class="lamp ${cls} ${b === '1' ? 'on' : ''}"></i>`).join('');
+const T = { 1: [4.6, '靠的是一张蓝图：冯·诺伊曼架构'], 2: [70.4, '第二步，拆：前半截是“加”，后半截是“第 8 格”'], 3: [101.5, '1977 年，这条通道有了名字：冯·诺伊曼瓶颈'] }[F];
+const hud = (meter) => {
+  el(`<div class="abs capband"></div><div class="abs ruler"><i style="width:${(T[0] / 128 * 1920).toFixed(0)}px"></i></div>`);
+  el(`<div class="abs cap">${T[1]}</div>`);
+  el(`<div class="abs hud-left">${Math.ceil(128 - T[0])}<span style="font-size:24px;opacity:.6"> 秒</span></div>`);
+  el(`<div class="abs hud-right">${meter}</div>`);
+};
+
+// 存储器的 9 格：1–4 指令（加、加、存、停），5–9 数据
+const MEM = [
+  ['0001', '1000', 'i', '加 第8格'], ['0001', '1001', 'i', '加 第9格'], ['0011', '0111', 'i', '存 第7格'], ['1111', '0000', 'i', '停'],
+  ['0000', '0000', 'd', '0'], ['0000', '0000', 'd', '0'], ['0000', '0000', 'd', '—'], ['0000', '0101', 'd', '5'], ['0000', '0011', 'd', '3'],
+];
+
+if (D === 'A') {
+  const meterA = `<div class="engr" style="font-size:24px">程序计数器 · PC</div><div style="margin-top:8px">${lamps('0001')}</div>`;
+  if (F === 1) {
+    // 片名：操作台正面，一大块黑胶木铭牌 + 灯阵组成的 128
+    const dig = { '1': ['00100', '01100', '00100', '00100', '00100', '00100', '01110'],
+                  '2': ['01110', '10001', '00001', '00110', '01000', '10000', '11111'],
+                  '8': ['01110', '10001', '10001', '01110', '10001', '10001', '01110'] };
+    el(`<div class="abs plate" style="left:120px;top:150px;width:1680px;height:760px"></div>`);
+    [[140, 170], [1766, 170], [140, 876], [1766, 876]].forEach(([x, y]) => el(`<i class="screw" style="left:${x}px;top:${y}px"></i>`));
+    let x0 = 200;
+    for (const ch of '128') {
+      const rows = dig[ch].map((r) => `<div style="height:44px">${[...r].map((b) => `<i class="lamp ${b === '1' ? 'on' : ''}" style="width:30px;height:30px;margin:0 6px"></i>`).join('')}</div>`).join('');
+      el(`<div class="abs" style="left:${x0}px;top:230px">${rows}</div>`); x0 += 230;
+    }
+    el(`<div class="abs engr" style="left:206px;top:560px">SECONDS · 秒</div>`);
+    el(`<div class="abs" style="left:900px;top:220px;width:820px;height:420px;background:#0e1110;border:2px solid #000;box-shadow:inset 0 0 0 6px #171c1a"></div>`);
+    el(`<div class="abs" style="left:960px;top:260px;font:900 112px 'Serif SC';line-height:1.15;color:var(--cream)">冯·诺伊曼<br>架构</div>`);
+    el(`<div class="abs engr" style="left:964px;top:556px;color:var(--amber)">STORED-PROGRAM COMPUTER · 1945</div>`);
+    el(`<div class="abs" style="left:206px;top:680px">${lamps('0001100000110101')}</div>`);
+    el(`<div class="abs engr" style="left:206px;top:740px">同一块芯片 · 上一秒算账 · 下一秒打游戏</div>`);
+    // 一排拨动开关
+    el(`<div class="abs" style="left:206px;top:800px;display:flex;gap:30px">${[...'1010011101001011'].map((b) => `<i style="display:block;width:22px;height:54px;border-radius:11px;background:#111;position:relative"><b style="position:absolute;left:4px;${b === '1' ? 'top:4px' : 'bottom:4px'};width:14px;height:22px;border-radius:7px;background:#cfd3cc"></b></i>`).join('')}</div>`);
+  }
+  if (F === 2) {
+    // 译码：左控制器（指令寄存器拆成两半），中通道，右存储器 9 格
+    el(`<div class="abs plate" style="left:120px;top:150px;width:700px;height:500px"></div>`);
+    el(`<div class="abs engr" style="left:150px;top:172px">CONTROL · 控制器</div>`);
+    el(`<div class="abs lab" style="left:150px;top:220px;font-size:30px;color:var(--dim)">指令寄存器</div>`);
+    el(`<div class="abs" style="left:150px;top:278px;padding:18px 10px;background:#121715;border:2px solid #000">${lamps('0001')}<span style="display:inline-block;width:34px"></span>${lamps('1000')}</div>`);
+    el(`<div class="abs" style="left:150px;top:360px;width:212px;border-top:3px solid var(--amber)"></div><div class="abs" style="left:442px;top:360px;width:212px;border-top:3px solid var(--amber)"></div>`);
+    el(`<div class="abs" style="left:150px;top:378px;width:212px;text-align:center"><div style="font:900 96px 'Serif SC';color:var(--amber);line-height:1">加</div><div class="engr" style="margin-top:6px">动作 · OP</div></div>`);
+    el(`<div class="abs" style="left:442px;top:378px;width:212px;text-align:center"><div style="font:900 96px 'Serif SC';color:var(--amber);line-height:1">8</div><div class="engr" style="margin-top:6px">第几格 · ADDR</div></div>`);
+    el(`<div class="abs plate" style="left:120px;top:690px;width:700px;height:230px"></div>`);
+    el(`<div class="abs engr" style="left:150px;top:712px">ARITHMETIC · 运算器</div>`);
+    el(`<div class="abs" style="left:150px;top:770px">${lamps('00000000', 'g')}</div><div class="abs lab" style="left:150px;top:840px;font-size:28px;color:var(--dim)">累加器 = 0</div>`);
+    // 通道
+    el(`<div class="abs" style="left:820px;top:520px;width:280px;height:44px;background:#0d100f;border-top:2px solid var(--edge);border-bottom:2px solid var(--edge)"></div>`);
+    el(`<div class="abs engr" style="left:842px;top:478px;font-size:24px">通道 · BUS</div>`);
+    el(`<div class="abs" style="left:858px;top:528px;height:28px;width:120px;background:var(--amber);box-shadow:0 0 18px rgba(255,180,60,.6)"></div>`);
+    // 存储器
+    el(`<div class="abs plate" style="left:1100px;top:150px;width:700px;height:770px"></div>`);
+    el(`<div class="abs engr" style="left:1130px;top:172px">MEMORY · 存储器</div>`);
+    MEM.forEach(([op, ad, k, note], i) => {
+      const y = 228 + i * 76, cur = i === 0;
+      el(`<div class="abs" style="left:1130px;top:${y}px;width:640px;height:64px;${cur ? 'background:rgba(255,180,60,.12);outline:2px solid var(--amber)' : ''}"></div>`);
+      el(`<div class="abs" style="left:1146px;top:${y + 10}px;font:700 36px 'Mono';color:${cur ? 'var(--amber)' : 'var(--dim)'};width:50px;text-align:right">${i + 1}</div>`);
+      el(`<div class="abs" style="left:1210px;top:${y + 14}px">${lamps(op + ad, k === 'i' ? '' : 'g').replace(/margin: 0 7px/g, '')}</div>`);
+      el(`<div class="abs" style="left:1640px;top:${y + 12}px;font:600 30px 'Sans SC';color:${k === 'i' ? 'var(--amber)' : 'var(--green)'}">${note}</div>`);
+    });
+    el(`<div class="abs" style="left:1060px;top:240px;font:900 40px 'Mono';color:var(--amber)">▶</div>`);
+    hud(meterA);
+  }
+  if (F === 3) {
+    // 瓶颈：五部分铭牌，中间一条窄通道，蓝黄（琥珀/绿）字块堵在入口，红色警示灯牌
+    const box = (x, y, w, h, en, zh) => { el(`<div class="abs plate" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"></div><div class="abs engr" style="left:${x + 26}px;top:${y + 22}px">${en}</div><div class="abs lab" style="left:${x + 26}px;top:${y + 62}px">${zh}</div>`); };
+    box(120, 330, 210, 260, 'IN', '输入'); box(1590, 330, 210, 260, 'OUT', '输出');
+    box(380, 180, 420, 270, 'CONTROL', '控制器'); box(380, 480, 420, 270, 'ARITH', '运算器');
+    box(1120, 180, 420, 570, 'MEMORY', '存储器');
+    el(`<div class="abs" style="left:800px;top:448px;width:320px;height:52px;background:#0d100f;border-top:2px solid var(--red);border-bottom:2px solid var(--red)"></div>`);
+    const q = 'iddidiidd';
+    [...q].forEach((k, i) => el(`<div class="abs" style="left:${1130 + (i % 3) * 40}px;top:${380 + Math.floor(i / 3) * 44}px;width:34px;height:34px;background:${k === 'i' ? 'var(--amber)' : 'var(--green)'}"></div>`));
+    el(`<div class="abs" style="left:1060px;top:456px;width:44px;height:36px;background:var(--amber)"></div>`);
+    el(`<div class="abs" style="left:406px;top:640px">${lamps('00000000', 'g')}</div><div class="abs engr" style="left:406px;top:696px;font-size:24px;color:var(--dim)">空转 · 等数据</div>`);
+    el(`<div class="abs" style="left:700px;top:820px;width:520px;height:110px;background:#2a0d08;border:3px solid var(--red);box-shadow:0 0 34px rgba(255,90,60,.35)"></div>`);
+    el(`<div class="abs" style="left:728px;top:838px;font:900 50px 'Serif SC';color:var(--red)">冯·诺伊曼瓶颈</div><div class="abs" style="left:1100px;top:852px;font:700 34px 'Mono';color:var(--red)">1977</div>`);
+    el(`<div class="abs" style="left:950px;top:500px;width:3px;height:320px;background:var(--red)"></div>`);
+    hud(meterA);
+  }
+}
+
+if (D === 'B') {
+  const meterB = `<div class="type" style="font-size:24px">程序计数器</div><div style="font:700 44px 'Mono';margin-top:2px">PC = 01</div>`;
+  const tape = (x, y, bits, w = 46, color = 'var(--ink)') => {
+    const holes = [...bits].map((b, i) => `<span style="position:absolute;left:${16 + i * w}px;top:16px;width:22px;height:22px;border-radius:50%;background:${b === '1' ? color : 'transparent'};border:2px solid ${b === '1' ? color : 'rgba(28,38,51,.18)'}"></span><span style="position:absolute;left:${24 + i * w}px;top:46px;width:6px;height:6px;border-radius:50%;background:rgba(28,38,51,.35)"></span>`).join('');
+    el(`<div class="abs tape" style="left:${x}px;top:${y}px;width:${bits.length * w + 18}px;height:62px">${holes}</div>`);
+  };
+  if (F === 1) {
+    el(`<div class="abs type" style="left:120px;top:120px">FIRST DRAFT · 1945 · 图 1</div>`);
+    el(`<div class="abs" style="left:116px;top:180px;font:900 168px 'Serif SC';line-height:1.08">冯·诺伊曼<br>架构</div>`);
+    el(`<div class="abs" style="left:120px;top:560px;width:900px;border-top:3px solid var(--ink)"></div>`);
+    el(`<div class="abs" style="left:120px;top:584px;font:600 40px 'Serif SC';color:var(--soft)">不改一根电线，机器为什么能换着干活</div>`);
+    el(`<div class="abs" style="left:1240px;top:150px;font:900 330px 'Mono';letter-spacing:-.04em;line-height:1;color:var(--red)">128</div>`);
+    el(`<div class="abs type" style="left:1250px;top:480px">SECONDS · 秒</div>`);
+    // 一条横贯的纸带：128 的二进制
+    tape(-20, 720, '0000000010000000000110000000000101000000001', 46);
+    el(`<div class="abs type" style="left:120px;top:810px;font-size:24px">纸带上的孔 = 1，没孔 = 0</div>`);
+  }
+  if (F === 2) {
+    // 左：方框图的控制器 + 运算器；中：通道；右：编码纸（地址 | 内容 | 说明）；放大镜下纸带拆成两段
+    el(`<div class="abs type" style="left:120px;top:120px">图 4 · 第二步：拆</div>`);
+    el(`<div class="abs box" style="left:120px;top:170px;width:640px;height:450px"></div>`);
+    el(`<div class="abs" style="left:146px;top:186px;font:900 44px 'Serif SC'">控制器</div><div class="abs type" style="left:146px;top:244px;font-size:24px">CENTRAL CONTROL · CC</div>`);
+    tape(150, 300, '00011000', 70);
+    el(`<div class="abs" style="left:150px;top:370px;width:282px;height:20px;border:3px solid var(--red);border-top:0"></div><div class="abs" style="left:440px;top:370px;width:282px;height:20px;border:3px solid var(--red);border-top:0"></div>`);
+    el(`<div class="abs" style="left:150px;top:400px;width:282px;text-align:center;font:900 110px 'Serif SC';color:var(--red);line-height:1">加</div>`);
+    el(`<div class="abs" style="left:440px;top:400px;width:282px;text-align:center;font:900 110px 'Serif SC';color:var(--red);line-height:1">8</div>`);
+    el(`<div class="abs" style="left:150px;top:530px;width:282px;text-align:center;font:500 30px 'Serif SC';color:var(--soft)">前半截：做什么</div><div class="abs" style="left:440px;top:530px;width:282px;text-align:center;font:500 30px 'Serif SC';color:var(--soft)">后半截：第几格</div>`);
+    el(`<div class="abs box" style="left:120px;top:660px;width:640px;height:250px"></div>`);
+    el(`<div class="abs" style="left:146px;top:676px;font:900 44px 'Serif SC'">运算器</div><div class="abs type" style="left:146px;top:734px;font-size:24px">CENTRAL ARITHMETIC · CA</div>`);
+    el(`<div class="abs" style="left:146px;top:790px;font:700 64px 'Mono'">0</div><div class="abs" style="left:210px;top:810px;font:500 30px 'Serif SC';color:var(--soft)">← 运算器里的数</div>`);
+    // 通道
+    el(`<div class="abs" style="left:760px;top:520px;width:380px;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);height:40px"></div><div class="abs type" style="left:860px;top:478px;font-size:24px">通道</div>`);
+    // 编码纸
+    el(`<div class="abs box" style="left:1140px;top:170px;width:660px;height:740px;background:#f7f1e1"></div>`);
+    el(`<div class="abs" style="left:1166px;top:186px;font:900 44px 'Serif SC'">存储器</div><div class="abs type" style="left:1360px;top:204px;font-size:24px">MEMORY · M</div>`);
+    el(`<div class="abs" style="left:1140px;top:252px;width:660px;border-top:3px solid var(--ink)"></div>`);
+    el(`<div class="abs type" style="left:1166px;top:262px;font-size:24px">格</div><div class="abs type" style="left:1260px;top:262px;font-size:24px">内容</div><div class="abs type" style="left:1590px;top:262px;font-size:24px">是什么</div>`);
+    MEM.forEach(([op, ad, k, note], i) => {
+      const y = 300 + i * 66, cur = i === 0, col = k === 'i' ? 'var(--blue)' : 'var(--ochre)';
+      el(`<div class="abs" style="left:1140px;top:${y + 60}px;width:660px;border-top:1px solid rgba(28,38,51,.25)"></div>`);
+      if (cur) el(`<div class="abs" style="left:1146px;top:${y + 2}px;width:648px;height:56px;border:3px solid var(--red);border-radius:30px"></div>`);
+      el(`<div class="abs" style="left:1166px;top:${y + 8}px;font:700 36px 'Mono'">${i + 1}</div>`);
+      el(`<div class="abs" style="left:1260px;top:${y + 10}px;font:600 34px 'Mono';letter-spacing:.12em;color:${col}">${op} ${ad}</div>`);
+      el(`<div class="abs" style="left:1590px;top:${y + 10}px;font:600 30px 'Serif SC';color:${col}">${k === 'i' ? '指令 ' : '数据 '}${note}</div>`);
+    });
+    hud(meterB);
+  }
+  if (F === 3) {
+    el(`<div class="abs type" style="left:120px;top:120px">图 9 · 代价</div>`);
+    const box = (x, y, w, h, zh, en) => el(`<div class="abs box" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"></div><div class="abs" style="left:${x + 24}px;top:${y + 18}px;font:900 44px 'Serif SC'">${zh}</div><div class="abs type" style="left:${x + 24}px;top:${y + 76}px;font-size:24px">${en}</div>`);
+    box(120, 360, 200, 220, '输入', 'I'); box(1600, 360, 200, 220, '输出', 'O');
+    box(380, 180, 420, 280, '控制器', 'CC'); box(380, 490, 420, 280, '运算器', 'CA'); box(1120, 180, 420, 590, '存储器', 'M');
+    el(`<div class="abs" style="left:800px;top:452px;width:320px;height:46px;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)"></div>`);
+    // 纸带段堆在入口
+    [[1060, 456, 'var(--blue)'], [1130, 420, 'var(--ochre)'], [1150, 470, 'var(--blue)'], [1200, 440, 'var(--ochre)'], [1180, 510, 'var(--blue)'], [1250, 480, 'var(--ochre)']]
+      .forEach(([x, y, c], i) => el(`<div class="abs tape" style="left:${x}px;top:${y}px;width:120px;height:38px;transform:rotate(${[-4, 6, -8, 3, 9, -5][i]}deg);border-left:8px solid ${c}"></div>`));
+    el(`<div class="abs" style="left:870px;top:400px;width:200px;height:150px;border:4px solid var(--red);border-radius:50%"></div>`);
+    el(`<div class="abs" style="left:640px;top:820px;font:900 72px 'Serif SC';color:var(--red)">冯·诺伊曼瓶颈</div><div class="abs" style="left:1170px;top:842px;font:700 44px 'Mono';color:var(--red)">1977</div>`);
+    el(`<div class="abs" style="left:640px;top:910px;font:500 28px 'Serif SC';color:var(--soft)">一次只过一个</div>`);
+    el(`<div class="abs" style="left:420px;top:620px;font:500 34px 'Serif SC';color:var(--soft)">在等…</div>`);
+    hud(meterB);
+  }
+}
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

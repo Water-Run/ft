@@ -74,16 +74,23 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "script",
-  "next": "核查来稿事实、通读校对并核对 128 秒预算；依策划者提供的卡带未来主义设计继续细化",
+  "stage": "review",
+  "next": "WaterRun 确认第 2 稿并点选配音、配乐；之后合成全片、做场景、出预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
       {
         "name": "Gemini 4 Argon",
         "roles": [
-          "文案",
-          "逐句画面设计"
+          "文案初稿",
+          "逐句画面初稿"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "文案修改"
         ]
       }
     ],
