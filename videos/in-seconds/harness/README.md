@@ -8,9 +8,9 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 验收：第 4 稿已确认（2026-10-31），正式版 `out/harness-zh-1080p60.mp4` 已渲染、封装，封面已出，自动检查通过；交付记录见「交付」 |
-| 下一步，依赖什么 | WaterRun 连续看、听正式版（读音与听感制作者无法确认），同意后登记交付、发布 |
-| 等待策划者的事 | 看正式版，确认 w3b「实际是 7」、m6b「Claude Opus」等读音 |
+| 当前停在哪里 | 已发布：哔哩哔哩 2026-10-31（<https://www.bilibili.com/video/BV1vbxy6HEym>）。成片与制作源码冻结 |
+| 下一步，依赖什么 | 收集评价与评论，写进「评价与复盘」；只有策划者明确要求重做才解冻 |
+| 等待策划者的事 | 无 |
 | 本次会话的角色 | 准备方兼制作方（Claude Opus 5.5，2026-10-31 起），从取证做到成片 |
 
 ## 简报
@@ -84,6 +84,8 @@
 - Credit 核对：名单取自 `project.json` 的 `credits`，按本会话的实际分工核对——策划 WaterRun；Claude Opus 5.5 取证、实验、文案、视觉设计、场景、配乐、音效、封面；MiniMax `speech-2.8-hd`（音色 `Chinese (Mandarin)_Crisp_Girl`）旁白配音；DeepSeek `deepseek-flash` 是实验里被调用的模型；取证时用了制作会话自带的网页搜索与网页读取。片尾在逐句抽帧的 z1（2:29）画面上逐行出现；没有连续播放核对停留时间。
 - 开源交付：本片源码在本仓库 `videos/in-seconds/harness/`，GPL-3.0-or-later；成片对应的源码快照记在 `out/zh/video.json`。第三方：字体 Inter、JetBrains Mono、Noto Sans SC（SIL OFL 1.1，`kit/assets.json`）；GSAP 3.13.0 运行时由 `npm ci` 取得（GreenSock Standard License，不是开源许可，见 `docs/reference/third-party.md`）；配乐由本片 `tools/music.py` 生成；旁白是 MiniMax 语音合成的输出。论文与文档只引用标题、出处与数字。
 - 实际看过、听过的范围：看了逐句抽帧总览、每 5 秒总览、改动处的单帧与封面；没有连续观看，没有听过任何声音。
+
+发布：WaterRun 2026-10-31 回报「视频发布了」，投稿 <https://www.bilibili.com/video/BV1vbxy6HEym>。平台页面与接口（2026-10-31 读）：标题「150 秒了解 Agent 的手：Harness」，发布时间 2026-10-31 21:52:48（北京时间），UP 主 WaterRun，归入合集「速通教学」（第 8 集），时长显示 151 秒（成片实测 150.000 秒），简介为「Model + Harness = Agent」与仓库地址 <https://github.com/Water-Run/ft>，页面带「含AI生成内容」标注。片尾的仓库地址 2026-10-31 可公开访问（HTTP 200）。YouTube：未核。交付登记据此补记：策划者发布即视为看过并同意；6 条 `open` 的经验规则（读音、听感、连续观看）未经策划者逐条答复。
 
 ## 评价与复盘
 
