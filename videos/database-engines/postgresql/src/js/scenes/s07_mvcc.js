@@ -92,9 +92,9 @@ scene('mvcc', ({ root, s, c0 }) => {
 
   // ── B：Carol 也要改这一行：撞上 Alice 的锁，等到她提交 ──
   hdoc(B, 'Carol 也要改这一行', 72, 128);
-  const xs2 = xactStrip(B, 250, tB + 0.1);
+  const xs2 = xactStrip(B, 250, tB - 1.0);   // 与前一段同一位置，换段前就摆好：交叉淡变时它们不动不闪
   const bo = verRow(B, 430, `xmin ${D.alice.xmin}`, `xmax ${X}`, '2050 Alice 42'), bn = verRow(B, 520, `xmin ${X}`, 'xmax 0', '2050 Alice 43', true);
-  [bo, bn].forEach((r) => { show(r.e, tB + 0.2, { y: 0 }); show(r.l, tB + 0.2, { y: 0 }); });
+  [bo, bn].forEach((r) => { show(r.e, tB - 1.0, { y: 0 }); show(r.l, tB - 1.0, { y: 0 }); });
   const tc = term(B, 72, 660, 860, 3, { fs: 23, lh: 34, name: 'Carol 的会话' });
   const eC = tc.type(T('m12') - 0.1, '<span class="k">UPDATE</span> users <span class="k">SET</span> age = age + 1 <span class="k">WHERE</span> id = 2050;', 'carol=*&gt;', 50);
   // Carol 的请求撞上被锁的那一行，停住；等待条一直涨

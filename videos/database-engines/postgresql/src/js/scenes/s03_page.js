@@ -74,7 +74,7 @@ scene('page', ({ root, s, c0 }) => {
   [loL, upL].forEach((e, i) => { css(e, { fontSize: '24px', color: '#7d5500' }); e.classList.add('ko'); show(e, T('p2b', i ? '结束' : '开始'), { x: -8 }); });
   [fLo, fUp, loL, upL].forEach((e) => hide(e, T('p6b') - 0.2, { d: 0.25 })); [aLo, aUp].forEach((e) => gone(e, T('p6b') - 0.2, 0.25));
   // 再来一行 88 字节 + 指针 4 字节 = 92：比空闲空间长，放不下
-  const nr = h('div', 'abs', A, '新的一行 88 + 指针 4 = 92 字节'); px(nr, GX + 8 * cw, GY + 5 * lh, 92 * cw, 40);   // 压在空闲空间下面几行上，不挡页头、指针的说明 nr.dataset.name = '新的一行';
+  const nr = h('div', 'abs', A, '新的一行 88 + 指针 4 = 92 字节'); px(nr, GX + 8 * cw, GY + 9 * lh, 92 * cw, 40);   // 压在空闲空间下面几行上，不挡页头、指针的说明 nr.dataset.name = '新的一行';
   css(nr, { background: 'var(--pg)', color: '#fff', font: '700 22px "Sans SC"', lineHeight: '40px', textAlign: 'center', whiteSpace: 'nowrap' });
   const tNo = T('p6b', '88') - 0.2;
   set(nr, 0, { autoAlpha: 0 }); tl.fromTo(nr, { autoAlpha: 0, y: -30 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, tNo);
@@ -210,7 +210,7 @@ scene('page', ({ root, s, c0 }) => {
   set(bandT, 0, { autoAlpha: 0 }); slam(bandT, T('p16', '范围') - 0.2, { from: 1.3 }); set(inf, 0, { autoAlpha: 0 }); slam(inf, T('p16b', '没有尽头') - 0.2, { from: 1.35 });
   sfx('whoosh', T('p16b') + 0.1, { g: 0.3 });
   const infG = h('div', 'abs', A, '∞'); px(infG, AX1 + 14, AXY - 58); css(infG, { font: '800 64px "Open Sans"', color: 'var(--pg)' }); set(infG, 0, { autoAlpha: 0 }); slam(infG, T('p16b', '延续') - 0.2, { from: 1.6 });
-  const uses = tagEl(A, '改、删、并发：都看这两个数', HX + 12 * CW + 20, HY0 + CH + 40, 'navy'); css(uses, { fontSize: '22px' }); slam(uses, T('p16c', '离不开') - 0.2, { from: 1.3 }); hide(uses, T('p17') - 0.1, { d: 0.25 });
+  const uses = tagEl(A, '改、删、并发：都看这两个数', HX + 18 * CW + 10, HY0 + CH + 40, 'navy'); css(uses, { fontSize: '22px' }); slam(uses, T('p16c', '离不开') - 0.2, { from: 1.3 }); hide(uses, T('p17') - 0.1, { d: 0.25 });
   // t_ctid：这一行最新版本的地址；没改过，指着自己
   const tCt = T('p17', 't_ctid') - 0.2;
   for (let i = 12; i < 18; i++) { fromTo(hc[i], tCt, { opacity: 0.35 }, { opacity: 1, duration: 0.2, immediateRender: false }); fromTo(hc[i], tCt, { backgroundColor: '#193145' }, { backgroundColor: '#336791', duration: 0.2 }); }

@@ -105,7 +105,9 @@ scene('update', ({ root, s, c0 }) => {
   const heapCard = (x, html, cls, name) => { const c = h('div', 'page', B); px(c, x, HY, 560, 64); c.dataset.name = name; const r = h('div', 'tup ' + cls, c, html); px(r, 10, 9, 534); return c; };
   const hOld = heapCard(330, `第 ${oP} 页 第 ${oL} 项　2050 Alice 42`, '', '旧版本'), hNew = heapCard(1030, `第 ${nP} 页 第 ${nL} 项　2050 Alice 43`, 'new', '新版本');
   const hl = capt(B, '堆里的两个版本', 72, HY + 16); css(hl, { fontSize: '24px', color: 'var(--mute)' });
-  wipe(hOld, tB + 0.2, { dir: 'l', d: 0.4 }); wipe(hNew, tB + 0.35, { dir: 'l', d: 0.4 }); show(hl, tB + 0.4);
+  // 前一段末尾的两行版本（旧：第 23 页那一行，新：第 46 页那一行）直接飞到这里，成为「堆里的两个版本」
+  tl.fromTo(hOld, { x: 92 - 330, y: 620 - 500 }, { x: 0, y: 0, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tB - 0.3);
+  tl.fromTo(hNew, { x: 1028 - 1030, y: 586 - 500 }, { x: 0, y: 0, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tB - 0.3); show(hl, tB + 0.4); sfx('whoosh', tB - 0.3, { g: 0.3 });
   rs.forEach((r, i) => { wipe(r.box, T('u12') + i * 0.1, { dir: 'l' }); show(r.l, T('u12') + i * 0.1); show(r.e1, T('u12', '项') + i * 0.1, { y: 8 }); });
   // 旧项 → 旧地址；新项 → 新地址（箭头从叶子底边出发，落在版本行的上沿）
   const ovB = overlay(B);

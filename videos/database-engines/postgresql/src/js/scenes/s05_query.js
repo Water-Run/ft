@@ -55,7 +55,7 @@ scene('query', ({ root, s, c0 }) => {
   const adr = capt(A, `叶子里：Alice → (${P},${LP})`, 120, 600); css(adr, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 }); show(adr, T('q5', '地址'), { y: -8 });
   keyed(adr).at(T('q5', '26'), { html: `叶子里：Alice → (${P},${LP})　= 第 ${P} 页 · 第 ${LP} 项` }); sfx('tick', T('q5', '26'), { p: 0.3 });
   const a1 = curve(ov, [nt.leafX(0), 546], [pageX, 650], 'accent', { bend: 600 });
-  arrowIn(a1, tPg - 0.6, 0.6); to(cur, tPg - 0.6, { x: pageX - 960 + 30, y: 280, duration: 0.6, ease: 'power2.inOut' });
+  arrowIn(a1, tPg - 0.6, 0.6); to(cur, tPg - 0.6, { x: pageX - 960 + 30, y: 210, duration: 0.6, ease: 'power2.inOut' });   // 停在堆的上方，不压住页卡
   classAt(strip.pages[P], 'hl', tPg); show(reads[2], tPg, { y: 8 }); sfx('tick', tPg);
   // 第 23 页：第 26 个指针 → 这一行
   const pg = h('div', 'page', A); px(pg, 90, 800, 760, 140); pg.dataset.name = '第 23 页';

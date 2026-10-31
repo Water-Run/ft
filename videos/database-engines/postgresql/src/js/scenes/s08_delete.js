@@ -67,9 +67,9 @@ scene('delete', ({ root, s, c0 }) => {
   const tv = term(B, 72, 196, 1500, 3, { fs: 23, lh: 34, name: 'psql 会话' });
   const eV = tv.type(T('d10') - 0.2, '<span class="k">VACUUM</span> (VERBOSE) users;', 'postgres=#', 45);
   tv.print(Math.max(eV + 0.1, T('d10b') - 0.3), `<span class="d">${vline(va, /^tuples/)}</span>`); tv.print(Math.max(eV + 0.2, T('d11')), `<span class="d">${vline(va, /^index scan needed/)}</span>`);
-  const pb = page23(B, 72, 400, `第 ${P} 页`);
+  const pb = page23(B, 72, 376, `第 ${P} 页`);   // 与前一段同一位置
   const rowB = rowCells(pb.box, 'dead', [[200, 'xmax 本次删除', true], [662, '2050  Alice  42']]);
-  show(pb.box, tB + 0.1); show(pb.cap, tB + 0.1); show(rowB, tB + 0.2); arrowIn(pb.ar, tB + 0.3, 0.2);
+  show(pb.box, tB - 1.0); show(pb.cap, tB - 1.0); show(rowB, tB - 1.0); arrowIn(pb.ar, tB - 1.0, 0.2);
   // VACUUM 沿行指针扫过去，这回过了第 26 个也不停：那一行收走，指针空出来
   const sw2 = h('div', 'abs', pb.box); px(sw2, 10, 30, 6, 44); css(sw2, { background: 'var(--navy)' }); sw2.dataset.name = '扫描线';
   const tk = T('d10b', '收走');
