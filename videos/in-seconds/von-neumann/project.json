@@ -10,8 +10,7 @@
     "zh": "zh-CN-YunyangNeural"
   },
   "rates": {
-    "zh": "+6%",
-    "en": "+8%"
+    "zh": "+6%"
   },
   "asr_prompts": {
     "zh": "以下是普通话的讲解。"
@@ -44,19 +43,26 @@
     "still_seconds": 2.5,
     "camera": true,
     "style": {
-      "flat": true,
+      "flat": false,
       "no_radius": true,
       "no_emoji": true,
       "palette": [
-        "0C0D0F",
-        "F2EFE8",
-        "FF4A1C",
-        "8A8782",
-        "6B6964"
+        "EFE7D4",
+        "F6EFDC",
+        "1C2633",
+        "57534A",
+        "B3311F",
+        "234E86",
+        "85570C",
+        "CDBF9A",
+        "9C9585",
+        "E2694F",
+        "F0A48F",
+        "785F32"
       ],
       "fonts": [
+        "Serif SC",
         "Sans SC",
-        "Inter",
         "Mono"
       ]
     },
@@ -74,8 +80,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "review",
-  "next": "WaterRun 确认第 2 稿并点选配音、配乐；之后合成全片、做场景、出预览",
+  "stage": "build",
+  "next": "WaterRun 看预览 r01（out/zh/preview-r01.mp4）给意见；改完后正式渲染、封面、验收",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -90,11 +96,23 @@
         "name": "Claude Opus 5.5",
         "roles": [
           "取证",
-          "文案修改"
+          "文案修改",
+          "视觉设计",
+          "场景实现",
+          "配乐",
+          "音效",
+          "验收"
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "Microsoft neural TTS",
+        "roles": [
+          "配音 · zh-CN-YunyangNeural"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "review": {

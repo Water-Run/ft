@@ -10,7 +10,7 @@
 // - 场景的 at 是它开始的时刻（秒）。上一场的旁白说完之后，余下的时间留白到这一刻；说不完就是超出，记入 L.problems，总闸门不通过。
 // - TOTAL 是全片的时长，最后一场补齐到这一刻。
 // 第 2 稿（2026-10-31）：在 Gemini 4 Argon 来稿（2026-10-26）的基础上，按 research/FACTS.md 核实并压缩到 128 秒；
-// 改动与理由见 review/NOTES.md。四场定点 0、34、60、94 秒，片尾名单 120.5–128 秒。
+// 改动与理由见 review/NOTES.md。四场定点 0、35.5、58、90 秒，片尾名单 119.5–128 秒。
 (function (root) {
   const isBrowser = typeof window !== 'undefined';
   const LANG = (isBrowser ? new URLSearchParams(location.search).get('lang') : process.env.VLANG) || 'zh';
@@ -34,7 +34,7 @@
       ],
     },
     {
-      id: 'program', at: 36, chap: null, lead: 0.2, tail: 0.3,
+      id: 'program', at: 35.5, chap: null, lead: 0.2, tail: 0.3,
       cues: [
         ['b1', { zh: "这就是“存储程序”" }, {"gap": 0.5}],
         ['b2', { zh: "要算的数叫数据，算的步骤叫指令" }, {}],
@@ -45,7 +45,7 @@
       ],
     },
     {
-      id: 'cycle', at: 59.5, chap: null, lead: 0.2, tail: 0.3,
+      id: 'cycle', at: 58, chap: null, lead: 0.2, tail: 0.3,
       cues: [
         ['c1', { zh: "机器干活，就靠三个动作不停循环" }, {"gap": 0.5}],
         ['c2', { zh: "第一步，取：从第 1 格取出一条指令" }, {}],
@@ -57,7 +57,7 @@
       ],
     },
     {
-      id: 'bottleneck', at: 92, chap: null, lead: 0.2, tail: 0.3,
+      id: 'bottleneck', at: 90, chap: null, lead: 0.2, tail: 0.3,
       cues: [
         ['d1', { zh: "代价是：指令和数据走同一条通道，一次只能过一个" }, {}],
         ['d2', { zh: "运算器再快，也得等着" }, {}],
@@ -68,9 +68,9 @@
       ],
     },
     {
-      id: 'credits', at: 120.5, chap: null, lead: 0, tail: 0,
+      id: 'credits', at: 119.5, chap: null, lead: 0, tail: 0,
       cues: [
-        ['z1', null, { pause: 7.5, gap: 0, credits: true }],   // 名单取自 project.json 的 credits
+        ['z1', null, { pause: 8.5, gap: 0, credits: true }],   // 名单取自 project.json 的 credits
       ],
     },
   ];

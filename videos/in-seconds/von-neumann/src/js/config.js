@@ -1,38 +1,39 @@
-// 「XX 秒速通」系列的引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角留给本集的仪表）、换场。
-// TODO: 系列起点。右上角的仪表（window.HUD.right）与换场方式按本集的题目来做，做完删掉这一行；做法对照首集 two-factor-auth 的 config.js。
-document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
-window.PALETTE = { ink: '#0c0d0f', paper: '#f2efe8', ac: '#ff4a1c', dim: '#8a8782', dimp: '#6b6964' };
+// 引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、左上剩余秒数、右上程序计数器）、换场。
+// 视觉系统「技术手册」见 css/style.css 开头。
+document.documentElement.classList.add(LANG);
+window.PALETTE = { ink: '#1c2633', paper: '#efe7d4', red: '#b3311f', blue: '#234e86', ochre: '#85570c', soft: '#57534a', dim: '#9c9585' };
 const C = window.PALETTE;
-const VH = 968;                                           // 字幕带以上的画幅高度；镜头以这块区域为画幅：makeCamera(world, 1920, VH)
-// 节拍网格：配乐 120 拍/分，一秒两拍。画面上的重音吸附到八分音符（0.25 秒）上，与配乐同拍
-const BEAT = 0.5;
-const Q = (t, g = 0.25) => Math.round(t / g + 1e-6) * g;          // 最近的格点
-const Qf = (t, g = 0.25) => Math.floor(t / g + 1e-6) * g;         // 不晚于 t 的格点：动作宁早勿晚
-// 常驻元素的字色跟着它底下的底色走：场景登记「某一侧在某段时间里压在纸色（'paper'）或朱红（'ac'）上」
-const HUDG = { L: [], R: [] };
-const hudGround = (side, t0, t1, g) => { HUDG[side].push([t0, t1, g]); };
-const WIPE = 0.5;                                         // 换场用时：一拍
+const VH = 968;                                           // 字幕带以上的画幅高度；镜头以这块区域为画幅
+// 节拍网格：配乐 104 拍/分（tools/music.py）。画面上的重音吸附到十六分音符上
+const BEAT = 60 / 104;
+const Q = (t, g = BEAT / 2) => Math.round(t / g + 1e-6) * g;
+const Qf = (t, g = BEAT / 2) => Math.floor(t / g + 1e-6) * g;
+
+// 程序计数器：场景登记「从某时刻起 PC 显示某值」；null 显示「—」
+const PCK = [];
+const pcAt = (t, v) => { PCK.push([t, v]); };
 
 window.ENGINE = {
-  fonts: [['500 20px "Sans SC"', '字A'], ['700 20px "Sans SC"', '字A'], ['900 20px "Sans SC"', '字A'],
-    ['500 20px "Inter"', 'Aa0'], ['700 20px "Inter"', 'Aa0'], ['800 20px "Inter"', 'Aa0'], ['900 20px "Inter"', 'Aa0'],
-    ['500 20px "Mono"', 'A0'], ['700 20px "Mono"', 'A0'], ['800 20px "Mono"', 'A0']],
+  fonts: [['500 20px "Serif SC"', '字A'], ['600 20px "Serif SC"', '字A'], ['700 20px "Serif SC"', '字A'], ['900 20px "Serif SC"', '字A'],
+    ['500 20px "Sans SC"', '字A'], ['800 20px "Sans SC"', '字A'],
+    ['500 20px "Mono"', 'A0'], ['600 20px "Mono"', 'A0'], ['700 20px "Mono"', 'A0']],
   sceneFade: false,
   chrome() {
     const hud = document.getElementById('hud');
-    // ── 字幕带与秒尺：一秒一格，走过的变成朱红；每 30 秒一道长刻度 ──
+    // ── 字幕带与秒尺：一秒一格，走过的变成红铅笔色；每 32 秒（每一场）一道长刻度 ──
     const band = h('div', 'band', hud);
     const rs = svg('svg', { width: 1920, height: 40, viewBox: '0 0 1920 40' }, band);
     const X = (s) => 8 + s * (1904 / TOTAL), ticks = [];
+    const long = new Set(L.scenes.map((s) => Math.round(s.start)));
     for (let i = 0; i <= TOTAL; i++) {
-      const big = i % 30 === 0, mid = i % 10 === 0, w = big ? 4 : 2;
+      const big = long.has(i) || i === TOTAL, mid = i % 10 === 0, w = big ? 4 : 2;
       ticks.push(svg('rect', { x: X(i) - w / 2, y: 0, width: w, height: big ? 24 : mid ? 15 : 8, fill: C.dim }, rs));
     }
-    const head = svg('path', { d: 'M-7,34 L0,24 L7,34 Z', fill: C.ac }, rs);
+    const head = svg('path', { d: 'M-7,34 L0,24 L7,34 Z', fill: '#e2694f' }, rs);
     let lastS = -2;
     F((t) => {
       const s = Math.floor(t + 1e-6);
-      if (s !== lastS) { for (let i = 0; i <= TOTAL; i++) ticks[i].setAttribute('fill', i <= s ? C.ac : C.dim); lastS = s; }
+      if (s !== lastS) { for (let i = 0; i <= TOTAL; i++) ticks[i].setAttribute('fill', i <= s ? '#e2694f' : C.dim); lastS = s; }
       head.setAttribute('transform', `translate(${X(clamp(t, 0, TOTAL)).toFixed(2)},0)`);
     });
     // ── 左上：剩余秒数；最后五秒逐秒跳一下 ──
@@ -43,29 +44,34 @@ window.ENGINE = {
       fromTo(left, sec, { scale: 1 }, { keyframes: [{ scale: 1.28, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
       sfx('tick', sec, { g: 0.8, p: -0.6 });
     }
-    // ── 右上：本集的仪表放进这个容器（宽 300、高 72，右缘离画面 60px）──
-    const right = h('div', 'hud-r', hud);
-    window.HUD = { left, right };
-    const groundAt = (side, t) => { let g = 'ink'; for (const [a, b, v] of HUDG[side]) if (t >= a && t < b) g = v; return g; };
-    let gl = null, gr = null;
+    // ── 右上：程序计数器 PC。机器开始按格读指令时亮起，跟着指针走 ──
+    const right = h('div', 'hud-r', hud, `<div class="k">${tr('程序计数器 · PC', 'PROGRAM COUNTER')}</div><div class="v">—</div>`);
+    right.dataset.name = '程序计数器';
+    const val = right.lastChild;
+    let lastV = null;
     F((t) => {
-      const a = groundAt('L', t), b = groundAt('R', t);
-      if (a !== gl) { left.style.color = a === 'ink' ? C.paper : C.ink; gl = a; }
-      if (b !== gr) { right.style.color = b === 'ink' ? C.paper : C.ink; gr = b; }
+      let v = null; for (const [a, b] of PCK) if (t >= a) v = b;
+      const s = v == null ? '— —' : String(v).padStart(2, '0');
+      if (s !== lastV) { val.textContent = s; lastV = s; }
     });
+    window.HUD = { left, right };
   },
   after() {
-    // 场景的显隐与换场：缺省是新场景由左向右直刷，一拍刷完。本集有自己的换场母题时改这里。
+    PCK.sort((a, b) => a[0] - b[0]);
+    // 正片四场共用同一张方框图，场与场之间直接接上（上一场的末态就是下一场的初态）；片尾像翻过一页，从右向左刷入
     const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
+    const W = 0.6;
     F((t) => {
       L.scenes.forEach((s, i) => {
         const nx = L.scenes[i + 1], root = roots[i];
-        const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + WIPE);
+        const nxWipe = nx && nx.id === 'credits' ? W : 0;
+        const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + nxWipe);
         root.style.display = vis ? '' : 'none';
-        const clip = vis && i > 0 && t < s.start + WIPE ? `inset(0px ${(1920 * (1 - ease.io3(clamp((t - s.start) / WIPE)))).toFixed(1)}px 0px 0px)` : 'none';
+        const clip = vis && s.id === 'credits' && t < s.start + W ? `inset(0px 0px 0px ${(1920 * (1 - ease.io3(clamp((t - s.start) / W)))).toFixed(1)}px)` : 'none';
         if (clip !== lastClip[i]) { root.style.clipPath = clip; lastClip[i] = clip; }
       });
     });
-    for (const s of L.scenes.slice(1)) sfx('whoosh', s.start - 0.3, { g: 0.7 });
+    const cr = L.scenes.find((s) => s.id === 'credits');
+    if (cr) sfx('whoosh', cr.start - 0.1, { g: 0.6 });
   },
 };

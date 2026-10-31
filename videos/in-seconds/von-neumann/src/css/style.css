@@ -1,65 +1,87 @@
-/* TODO: 起点自带的占位样式（首集的「计时盘」）。按本集的讲解对象重做视觉系统（经验规则 F16、F21），做完删掉这一行。 */
-/* 本片的视觉系统「计时盘」：墨色与纸色两种底，一种强调色（朱红）。平涂，不用阴影、渐变、圆角。
-   - 墨色底 = 手机一侧；纸色底 = 服务器一侧。两侧并排时就是一张左右对开的画面。
-   - 朱红只给「此刻」：表盘的指针、已经走过的刻度、时间轴上的现在、被选中的字节与最终的验证码。
-   - 圆只表示时间（30 秒表盘）；方块表示数据（字节、比特、二维码的模块）；斜线表示不可信的一方（泄露的副本、假网站）。
-   - 字：数字与数据用 Mono，拉丁文字用 Inter，中文用 Sans SC。
-   对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色（5.8:1）。 */
+/* 本片的视觉系统「技术手册」：五十年代计算机说明书与工程图的样子。米色纸、墨线方框图、编码纸、穿孔纸带。
+   - 方框（3px 墨线）= 机器的部件；双线 = 通道；纸带 = 一个字（一条指令或一个数），孔 = 1。
+   - 颜色只有三种含义：蓝墨 = 指令，赭色 = 数据，红铅笔 = 此刻正在发生的事（圈、下划线、指针），也用于瓶颈。
+   - 字：中文 Serif SC（印刷体说明书），编号、比特、打字机标签用 Mono，拉丁小字大写加字距。
+   对比度（纸色 #efe7d4 上）：墨 #1c2633 13.6:1；蓝 #234e86 7.0:1；赭 #85570c 5.3:1；红 #b3311f 5.1:1；次要字 #57534a 6.4:1。 */
 :root {
-  --ink: #0c0d0f;
-  --paper: #f2efe8;
-  --ac: #ff4a1c;
-  --dim: #8a8782;             /* 墨色底上的次要文字（5.6:1） */
-  --dimp: #6b6964;            /* 纸色底上的次要文字（4.9:1） */
+  --paper: #efe7d4;
+  --paper2: #f6efdc;          /* 纸带、编码纸的浅纸 */
+  --ink: #1c2633;
+  --soft: #57534a;
+  --vign: #785f32;            /* 纸边发黄的暗角 */
+  /* 半透明的墨、色：都由上面几种颜色按比例混出，不另加颜色 */
+  --rule: color-mix(in srgb, var(--ink) 11%, transparent);
+  --ink20: color-mix(in srgb, var(--ink) 20%, transparent);
+  --ink22: color-mix(in srgb, var(--ink) 22%, transparent);
+  --ink35: color-mix(in srgb, var(--ink) 35%, transparent);
+  --ink45: color-mix(in srgb, var(--ink) 45%, transparent);
+  --shade: color-mix(in srgb, var(--ink) 10%, transparent);
+  --red8: color-mix(in srgb, var(--red) 8%, transparent);
+  --blue9: color-mix(in srgb, var(--blue) 9%, transparent);
+  --ochre8: color-mix(in srgb, var(--ochre) 8%, transparent);
+  --veil: color-mix(in srgb, var(--paper2) 92%, transparent);
+  --red: #b3311f;
+  --blue: #234e86;
+  --ochre: #85570c;
+  --tapeedge: #cdbf9a;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--paper); }
-#bg { background: var(--ink); }
+body { font-family: "Serif SC"; color: var(--ink); }
+#bg { background:
+  linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 40px 40px,
+  linear-gradient(90deg, var(--rule) 1px, transparent 1px) 0 0 / 40px 40px,
+  var(--paper); }
+#bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 46%, transparent 58%, color-mix(in srgb, var(--vign) 16%, transparent)); }
 .scene { overflow: hidden; }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
-.mono { font-family: "Mono", "Sans SC"; }
-.ink { color: var(--ink); }
-.paper { color: var(--paper); }
-.ac { color: var(--ac); }
-.dim { color: var(--dim); }
-.dimp { color: var(--dimp); }
 .blk { position: absolute; }
-.bg-ink { background: var(--ink); }
-.bg-paper { background: var(--paper); }
-.bg-ac { background: var(--ac); }
 
-/* 字号阶梯（1080p）：对比要强。注解不小于 28px */
-.t-0 { font-weight: 900; font-size: 400px; line-height: 1; letter-spacing: -.045em; }
-.t-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.02em; }
-.t-3 { font-weight: 700; font-size: 60px; line-height: 1.1; }
+/* 字 */
+.mono { font-family: "Mono"; }
+.type { font-family: "Mono"; font-weight: 500; font-size: 26px; letter-spacing: .1em; color: var(--soft); text-transform: uppercase; }
+.ttl { font-family: "Serif SC"; font-weight: 900; }
+.soft { color: var(--soft); }
+.red { color: var(--red); }
+.blue { color: var(--blue); }
+.ochre { color: var(--ochre); }
+.t-0 { font-weight: 900; font-size: 168px; line-height: 1.06; }
+.t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; }
+.t-3 { font-weight: 900; font-size: 60px; line-height: 1.1; }
 .t-4 { font-weight: 700; font-size: 44px; line-height: 1.15; }
-.t-b { font-weight: 500; font-size: 38px; line-height: 1.3; }
+.t-b { font-weight: 500; font-size: 36px; line-height: 1.3; }
 .t-n { font-weight: 500; font-size: 30px; line-height: 1.3; }
-.num { font-family: "Mono"; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
 
-/* 验证码：六个等宽的数字格，换码时逐位滚动 */
-.code { position: absolute; display: flex; font-family: "Mono"; font-weight: 800; line-height: 1; }
-.code .cd { position: relative; width: .6em; height: 1em; overflow: hidden; }
-.code .cd span { position: absolute; left: 0; top: 0; width: .6em; text-align: center; }
+/* 部件 */
+.box { position: absolute; border: 3px solid var(--ink); background: var(--paper); }
+.box .bt { position: absolute; left: 22px; top: 14px; font: 900 44px "Serif SC"; }
+.box .be { position: absolute; left: 24px; top: 72px; font: 500 24px "Mono"; letter-spacing: .1em; color: var(--soft); }
+.sheet { position: absolute; background: var(--paper2); border: 2px solid var(--ink35); box-shadow: 4px 5px 0 var(--shade); }
+.tape { position: absolute; height: 48px; background: var(--paper2); border-top: 2px solid var(--tapeedge); border-bottom: 2px solid var(--tapeedge); box-shadow: 0 3px 0 var(--shade); }
+.tape .st { position: absolute; left: 0; top: -2px; bottom: -2px; width: 10px; }
+.tape .ho { position: absolute; top: 10px; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--ink20); }
+.tape .ho.on { background: var(--ink); border-color: var(--ink); }
+.tape .sp { position: absolute; top: 35px; width: 5px; height: 5px; border-radius: 50%; background: var(--ink35); }
+.tape .lb { position: absolute; top: 4px; font: 700 30px "Serif SC"; }
+.row .n { position: absolute; font: 700 34px "Mono"; }
+.row .bits { position: absolute; font: 600 30px "Mono"; letter-spacing: .1em; }
+.row .nt { position: absolute; font: 600 28px "Serif SC"; }
+.stamp { position: absolute; border: 4px solid var(--red); color: var(--red); padding: 4px 18px 8px; font: 900 48px "Serif SC"; transform: rotate(-4deg); }
 
-/* 字节格 */
-.byte { position: absolute; font-family: "Mono"; font-weight: 700; text-align: center; }
-.byte.sel { background: var(--ac); color: var(--ink); }
-.idx { position: absolute; font-family: "Mono"; font-weight: 500; text-align: center; color: var(--dim); }
-.idx.on { color: var(--paper); font-weight: 800; }
-.hot { --c: var(--ac) !important; }
-
-/* 常驻层：字幕带、秒尺、剩余秒数、角上的验证码与表盘 */
+/* 常驻层：字幕带与秒尺、左上剩余秒数、右上程序计数器 */
 .band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
 .band svg { position: absolute; left: 0; top: 0; }
-.hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
-.hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
-.hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 40px; width: 300px; height: 72px; }
+.hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; color: var(--ink); }
+.hud-l .n { font: 700 44px "Mono"; letter-spacing: .02em; }
+.hud-l .u { font: 700 28px "Serif SC"; margin-left: 10px; }
+.hud-r { position: absolute; left: 1560px; top: 34px; width: 300px; height: 80px; text-align: right; color: var(--ink); }
+.hud-r .k { font: 500 24px "Mono"; letter-spacing: .1em; color: var(--soft); }
+.hud-r .v { font: 700 44px "Mono"; margin-top: 2px; }
 
-/* 字幕：压在字幕带上 */
+/* 字幕：压在墨色字幕带上 */
 #caption { bottom: 30px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--ac); }
+#caption span { font-size: 42px; font-weight: 500; color: var(--paper); font-family: "Sans SC"; }
+#caption em { font-style: normal; font-weight: 800; color: #f0a48f; }
+.s-i { background: var(--blue); }
+.s-d { background: var(--ochre); }
+.hot-step { border-color: var(--red) !important; color: var(--red); background: var(--red8); }
+.circ { border-radius: 50%; }
+.gone { visibility: hidden; }
