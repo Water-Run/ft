@@ -8,9 +8,9 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 预览迭代：WaterRun 看过第 1 版预览（`out/zh/preview-r01.mp4`）后要求优化叙事、降低认知负担。第 3 稿与按它重做的画面已完成；WaterRun 看过后指出只剩 w3、w4 的问题（前面没交代程序在算什么），改成第 4 稿（`review/script.zh.5b92b15c….md`）。画面暂按估算时长排；第 4 稿还没确认，没有配音 |
-| 下一步，依赖什么 | WaterRun 确认第 4 稿后合成新句、按实测时长对齐画面，出第 2 版预览 |
-| 等待策划者的事 | 确认第 4 稿（相对第 3 稿只改 w3、w4） |
+| 当前停在哪里 | 验收：第 4 稿已确认（2026-10-31），正式版 `out/harness-zh-1080p60.mp4` 已渲染、封装，封面已出，自动检查通过；交付记录见「交付」 |
+| 下一步，依赖什么 | WaterRun 连续看、听正式版（读音与听感制作者无法确认），同意后登记交付、发布 |
+| 等待策划者的事 | 看正式版，确认 w3b「实际是 7」、m6b「Claude Opus」等读音 |
 | 本次会话的角色 | 准备方兼制作方（Claude Opus 5.5，2026-10-31 起），从取证做到成片 |
 
 ## 简报
@@ -67,7 +67,23 @@
 
 ## 交付
 
-<!-- 验收后写。 -->
+正式版（2026-10-31，第 4 稿，WaterRun 2026-10-31 21:09 确认并要求「直接对抗迭代消灭Bug, 出正式版本」）：
+
+| 文件（`out/`，不入库） | 规格 | SHA-256 |
+|---|---|---|
+| `harness-zh-1080p60.mp4` | 1920×1080、60 fps、h264 + aac，150.000 s；I = -15.7 LUFS，TP = -1.3 dBFS（在最终文件上测） | `ef0c6142c3dcd76f09ba5b9cbdff82e535165a3d65af85a9b057f7c4c542d864` |
+| `harness-zh-1080p60-no-music.mp4` | 同上，无配乐 | `6ba57dd7148af3f389170d62f2109e1278c29ed36eff480822638239318ffa68` |
+| `harness-zh-1080p60-voice-only.mp4` | 同上，仅旁白 | `cf472e1fe47cd63c96c33799e0f990e1cf3f61adf2507a2ba5fd4943b21ce964` |
+| `harness-zh.srt` | 中文字幕 | `b75cd39a8bb33738fc797d6fc63c093ddc3b84adc2aedadeddc2c922fbeff3e8` |
+| `cover-zh-16x9.jpg`、`cover-zh-4x3.jpg` 及 3840×2160、3200×2400 的 PNG | 封面 | 见 `build/covers.zh.json` |
+
+- 渲染：`render.js --gpu 1 --workers 4`，9000 帧逐帧核对；画面帧数、声音时长与时间线总长都是 150.00 s（`finish.js`）。成片上没有 ≥3 秒的静止段与空画面。
+- 检查：`check.js` 全部通过（仅有 1:25 前后同屏文字偏多的提示）；`readable.js` 184 段文字全部达到 F04 的下限；`scan.js` 无错误；`preview.js` 低清预演无超过 2.5 秒的静止段。`check.js --final` 的结论见下。
+- 成片审查中发现并改掉的：配音后 m6 字幕超过一行（按规则断句为 m6、m6b）；三处画面静止超过 2.5 秒；m6b 的「63」在配音时间里找不到，方格出得太早；涨势线压在对话方块上；16 段文字停留时间不够读完；对话栈的括号与环上的指针弧在「顺着播放」和「直接跳到某一刻」时画面不一致（会让并行渲染出错）。
+- 记为 `open` 的经验规则（`review/lessons.json`）：F05、F06、F12、F17、F19、F27。制作者看不了连续画面、听不到声音，只用了抽帧总览、数值检查与语音识别回听。需要 WaterRun 连续看、听一遍，尤其是语音识别里听成别的的两处：w3b「实际是 7」（转写成「实际17」）、m6b「Claude Opus」（转写成「Cloud Office」），以及 o6「Model 加 Harness」、w4 与 w5 的「一行」。
+- Credit 核对：名单取自 `project.json` 的 `credits`，按本会话的实际分工核对——策划 WaterRun；Claude Opus 5.5 取证、实验、文案、视觉设计、场景、配乐、音效、封面；MiniMax `speech-2.8-hd`（音色 `Chinese (Mandarin)_Crisp_Girl`）旁白配音；DeepSeek `deepseek-flash` 是实验里被调用的模型；取证时用了制作会话自带的网页搜索与网页读取。片尾在逐句抽帧的 z1（2:29）画面上逐行出现；没有连续播放核对停留时间。
+- 开源交付：本片源码在本仓库 `videos/in-seconds/harness/`，GPL-3.0-or-later；成片对应的源码快照记在 `out/zh/video.json`。第三方：字体 Inter、JetBrains Mono、Noto Sans SC（SIL OFL 1.1，`kit/assets.json`）；GSAP 3.13.0 运行时由 `npm ci` 取得（GreenSock Standard License，不是开源许可，见 `docs/reference/third-party.md`）；配乐由本片 `tools/music.py` 生成；旁白是 MiniMax 语音合成的输出。论文与文档只引用标题、出处与数字。
+- 实际看过、听过的范围：看了逐句抽帧总览、每 5 秒总览、改动处的单帧与封面；没有连续观看，没有听过任何声音。
 
 ## 评价与复盘
 

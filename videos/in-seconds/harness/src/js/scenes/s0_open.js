@@ -127,9 +127,9 @@ scene('open', ({ root, s, c0 }) => {
     arrowIn(p2, T('o5', 'Harness') + 0.55 + j * 0.15, 0.4);
     classAt(PI[pi], 'hit', T('o5', 'Harness') + 0.8 + j * 0.15);
   });
-  const gH = txt(g2, 'gloss', tr('<b>Harness</b>：模型以外的那层程序。它把对话和工具清单发给模型，照模型写的去读文件、跑测试、改代码，再把结果交回', '<b>Harness</b>: the program around the model'), 1230, 548);
+  const gH = txt(g2, 'gloss', tr('<b>Harness</b>：模型外面那层程序，替模型动手', '<b>Harness</b>: the program around the model, acting for it'), 1230, 548);
   css(gH, { width: '620px' }); gH.dataset.gloss = 'Harness';
-  wipe(gH, Tend('o5') - 0.6, { dir: 'l', d: 0.5 });
+  wipe(gH, Q(T('o5', 'Harness')) + 0.2, { dir: 'l', d: 0.5 });
 
   const fy = 690;
   const f1 = txt(g2, 'paper', 'Model', 380, fy); css(f1, { font: '900 88px Inter' });
@@ -141,7 +141,8 @@ scene('open', ({ root, s, c0 }) => {
   slide(f1, tf - 0.1, { y: 40, d: 0.4 }); slide(f2, T('o6', 'Harness') - 0.25, { y: 40, d: 0.3 });
   slide(f3, T('o6', 'Harness') - 0.1, { y: 40, d: 0.4 }); slide(f4, T('o6', 'Agent') - 0.3, { y: 40, d: 0.3 });
   slam(f5, Q(T('o6', 'Agent')), { from: 1.3, d: 0.4 }); sfx('thud', Q(T('o6', 'Agent')));
-  const gA = txt(g2, 'gloss', tr('<b>Agent</b>：模型加上替它动手的程序，能自己把一件事做完　· 公式出自 LangChain', '<b>Agent</b>: model plus the program that acts for it · formula from LangChain'), 380, 820);
-  gA.dataset.gloss = 'Agent';
-  wipe(gA, Q(T('o6', 'Agent')) - 0.2, { dir: 'l', d: 0.5 });
+  // 公式本身就是 Agent 的注解；出处在说「Model」时先出来，留够读的时间
+  f5.dataset.gloss = 'Agent';
+  const gA = txt(g2, 'gloss', tr('公式出自 LangChain', 'Formula from LangChain'), 380, 820);
+  wipe(gA, T('o6') - 0.1, { dir: 'l', d: 0.5 });
 });

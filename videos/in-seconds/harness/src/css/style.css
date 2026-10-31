@@ -68,6 +68,8 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 .price.skip { border-style: dashed; border-color: var(--dim); color: var(--dim); text-decoration: line-through; text-decoration-color: var(--ac); text-decoration-thickness: 6px; }
 .ubrk { box-sizing: border-box; border: 5px solid var(--ac); border-top: none; }
 .pass { background: var(--paper); color: var(--ink); padding: 0 12px; }
+.row.sumhl { background: var(--ac); color: var(--ink); border-style: solid !important; }
+.row.sumhl .role { color: var(--ink); }
 /* 工具清单：随每次请求另外发去的一张清单 */
 .toolsbox2 { box-sizing: border-box; border: 3px dashed var(--dim); padding: 8px 16px; color: var(--paper); }
 .toolsbox2 .role { font: 500 26px "Sans SC"; color: var(--dim); }

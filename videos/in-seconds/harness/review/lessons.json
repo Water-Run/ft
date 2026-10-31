@@ -4,164 +4,164 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：开头 0:00–0:28 提出「模型只会输出文字，谁动的手」，0:28–1:31 讲 Agent Loop 并走完一次修测试，1:31–2:09 讲 Harness 还管的事与换 Harness 的分数，2:09–2:22 回答「Agent 的手 = Harness」；按第 4 稿通读与逐句抽帧总览（sheets.js cue，29 帧）与每 5 秒总览（sheets.js every 5）核对"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:28–1:31：先给一圈的四步（p1–p5），再用同一次修测试走五圈，每圈一个动作；新名词旁白只用 Harness、Agent、Agent Loop、工具调用，各在首次出现时有注解（scan.js GLOSS 通过）；第 4 稿按 WaterRun 意见在 w3b 先交代「测试算的是购物车总价」"
     },
     "F03": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 1:55–2:09：比较对象与口径在第一次出现时交代（同一个 Claude Opus 5、同样 63 道题、五套 Harness），出处与论文日期在画面上；逐句抽帧核对"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片 readable.js 每 0.1 秒取帧，184 段文字 0 段不够下限（正式渲染前，源码与成片一致）；preview.js 无超过 2.5 秒的静止段。看懂所需的余量未经连续观看确认，见 F27"
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作者不能连续观看动画，只抽查了 w3b、w4、m2、m3 等处的中间帧（sheets.js at）。运动是否把关系讲清，需要 WaterRun 以正常速度看一遍",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作者听不到声音：只看了 audio.js 的电平（旁白 -21.1 dB、配乐 -34.2 dB、成片 -18.6 LUFS）与音效覆盖（check.js 136 个事件、6 种）。音效与配乐的听感、钟音是否与发出请求同拍，需要人耳确认",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面上的实验内容取自 out_01_harness_a.json，临时目录路径在记录里已替换成「.」，画面没有本机路径、主机名、用户名；逐句抽帧核对"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "在最终文件 out/harness-zh-1080p60.mp4 上测（finish.js）：1920×1080、60 fps、h264 + aac、150.000 s，I = -15.7 LUFS、TP = -1.3 dBFS；画面 9000 帧 = 声音 150.00 s = 时间线 150.00 s；README「交付」照此填写"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md 的「意见与处理」逐条标明来源：WaterRun 原话与制作方自查分开记；README「简报」引原话与日期"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "本片不提系列的其他集，开头从「让 AI 修测试」的情境开始；逐句通读第 4 稿"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 1:55–2:09：论文英文标题旁给了中文译名「找到合适的搭配：不同 Agent 任务中模型与 Harness 的相互作用」；英文术语都贴在中文名旁（上下文 Context、压缩 Compaction 等）"
     },
     "F12": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作者听不到声音：asr.js（faster-whisper small）回听 29 句，转写里 w3b「实际是 7」成了「实际17」、m6b「Claude Opus」成了「Cloud Office」，其余只是同音字。这两处以及 o6「Model 加 Harness」、w4/w5「一行」（读法表写作「一航」）的读音需要人耳确认",
       "evidence": ""
     },
     "F13": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "开头用观众熟悉的「让 AI 修测试」引出对象，再讲 Harness 是什么；zh 0:00–0:28"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾 z1 是无旁白的静默 cue（credits: true），名单取自 project.json；script-review.js 检查通过"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 3 稿起删去画面上的「示意」「这次运行没有越界」等说明；逐句抽帧查过没有制作者口吻的小字"
     },
     "F16": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉对象取自本片：对话栈、工具调用、Agent Loop 的环、cart.py 与三件商品；风格按 WaterRun 的要求回到首集的瑞士风（README「简报」）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "配音 D 由 WaterRun 在试听页选定（2026-10-31）；第 4 稿的新句合成后制作者没法试听，精神与语气需要人耳确认",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "open：项目与模型 → Harness 框；loop/walk：同一个环与对话栈；more：常驻的「模型」与四个部分；end：同一个环；逐句抽帧总览（sheets.js cue，29 帧）与每 5 秒总览（sheets.js every 5）"
     },
     "F19": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "只抽查了少数中间帧（擦除、指针移动、压缩过程）。飞入与渐变的中间帧没有逐帧看完，需要连续观看确认",
       "evidence": ""
     },
     "F20": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每个图形都对应一段解释：站卡 = 循环的四步，对话栈 = 上下文，三件商品 = 测试算的总价，分数条 = 五套 Harness；逐句抽帧总览（sheets.js cue，29 帧）与每 5 秒总览（sheets.js every 5）"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "没有参考其他片子的源码；部件写在本片 parts.js"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js GLOSS 通过（Harness、Agent、Agent Loop、工具调用）；System Prompt、Tools、Context、Tool Call、Compaction、Permissions 都贴在所指的东西上；逐句抽帧总览（sheets.js cue，29 帧）与每 5 秒总览（sheets.js every 5）"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "循环用指针走站、站卡换内容、对话一条条摞上去来演示，压缩在原地进行，不是一页页换图；逐句抽帧总览（sheets.js cue，29 帧）与每 5 秒总览（sheets.js every 5）"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "镜头只做 ±8px 的单向横移，不推拉；scan.js 的 ZOOM 通过"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面上有旁白没说的内容：每圈的 tokens 与字节数、模型的原话、说明原文、论文出处；逐句抽帧总览（sheets.js cue，29 帧）与每 5 秒总览（sheets.js every 5）"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作中主动改文案：发现 m2 条数与工具调用次数的错误并更正（FACTS「复核」）；m6 字幕超宽按规则断句；改动记在 review/NOTES.md"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作者没有连续观看能力：只看了逐句与每 5 秒的抽帧总览、readable.js 与 scan.js 的结果。交付前需要 WaterRun 以观众身份连续看完一遍",
       "evidence": ""
     }
   },

@@ -118,8 +118,8 @@ scene('loop', ({ root, s, c0 }) => {
   let lastP = null;
   F((t) => {
     let k = -1;
-    sendAt.forEach((ts, i) => { if (t >= ts - 0.55 && t < ts + 0.15) k = i; });
-    const key = k < 0 ? 'x' : k + ':' + t.toFixed(3);
+    sendAt.forEach((ts, i) => { if (t >= ts - 0.55 && t < ts + 2.8) k = i; });          // 飞到之后停在模型一站旁边，留够读的时间
+    const key = k < 0 ? 'x' : k + ':' + Math.min(1, (t - (sendAt[k] - 0.55)) / 0.55).toFixed(3);
     if (key === lastP) return; lastP = key;
     if (k < 0) { pkt.style.visibility = 'hidden'; return; }
     const p = ease.io3(clamp((t - (sendAt[k] - 0.55)) / 0.55)), y0 = conv.topAt(sendAt[k] - 0.55);
@@ -183,9 +183,7 @@ scene('loop', ({ root, s, c0 }) => {
   });
   // 算式：应为 10 → 实际 7 → 原因 → 改好 → 通过
   const sum = centered(world, 'paper', '', cx, cy + 160, 440); sum.style.font = '700 30px "Sans SC", Mono';
-  keyed(sum).at(T('w3b', '应为') - 0.1, { html: `${tr('总价', 'total')} 3 + 5 + 2 ${tr('应为', 'should be')} <b class="mono">10</b>` })
-    .at(T('w3b', '实际') - 0.05, { html: `${tr('应为', 'expected')} 10 · ${tr('实际', 'got')} <b class="mono hl">7</b>` })
-    .at(tIn, { html: `<span class="mono ac">[1:]</span> ${tr('从第二件开始加', 'starts at item 2')}` })
+  keyed(sum).at(T('w3b', '应为') - 0.1, { html: `3 + 5 + 2 ${tr('应为', 'should be')} <b class="mono">10</b>，${tr('实际', 'got')} <b class="mono hl">7</b>` })
     .at(tSkip, { html: `${tr('漏加第一件', 'item 1 skipped')}：5 + 2 = <b class="mono hl">7</b>` })
     .at(tFix, { html: `3 + 5 + 2 = <b class="mono">10</b>` })
     .at(T('w6', '通过') - 0.05, { html: `3 + 5 + 2 = <b class="mono">10</b> · <span class="pass">${tr('通过', 'PASS')}</span>` });

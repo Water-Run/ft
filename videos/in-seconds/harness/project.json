@@ -85,8 +85,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "build",
-  "next": "WaterRun 确认第 4 稿（相对第 3 稿只改 w3、w4）；确认后合成新句、对齐画面，出第 2 版预览",
+  "stage": "accept",
+  "next": "WaterRun 连续看、听正式版 out/harness-zh-1080p60.mp4（重点 w3b「实际是 7」、m6b「Claude Opus」的读音），同意后登记交付与发布",
   "credits": {
     "planner": "WaterRun",
     "models": [

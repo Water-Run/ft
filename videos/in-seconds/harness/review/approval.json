@@ -3,9 +3,9 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "d795b5e6e1d6a5b5d82e3c8e50fcbe9b2031c8ceecc1d51a8d95ac35e1efd5e7",
+      "content_sha256": "95d43d5b236274cedf07e77e73f772116781d2d338f2e341b73aa018b716b97d",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-10-31T15:43:00+08:00",
+      "confirmed_at": "2026-10-31T21:09:00+08:00",
       "evidence": "review/NOTES.md#明确确认"
     }
   }
