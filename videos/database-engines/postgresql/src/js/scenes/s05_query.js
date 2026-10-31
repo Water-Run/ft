@@ -1,9 +1,14 @@
-// 05 查：按名字找 Alice 的完整路径（Q1–Q3）→ 全表计数走顺序扫描（Q4）→ 对照 InnoDB（Q9）与可见性图（T8、Q8）
+// 05 查（第 3 稿）：按名字找 Alice 的完整路径（Q1–Q3），看不看得见用第三章的「范围」→ 全表计数走顺序扫描（Q4）→ 对照 InnoDB（Q9）。
+// 整章一个画面：下面那条堆一直留着，数全部时扫的就是这条堆，对照 InnoDB 时地址也落回它（可见性图挪到第八章 VACUUM 之后）
 scene('query', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const tB = Tend('q10') + 0.5, tC = Tend('q13') + 0.5;
-  const [A, B, C] = screens(world, [c0, tB, tC, s.end]);
-  drift(world, s, [tB, tC], -1);
+  const S = h('div', 'abs', world); px(S, 0, 0, 1920, 1080); appear(S, c0);
+  const [A, B, C] = [0, 1, 2].map(() => { const e = h('div', 'abs', S); px(e, 0, 0, 1920, 1080); return e; });   // 三段内容在同一个画面上交叉淡变；堆放在 S 里不变
+  tl.fromTo(A, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, tB - 0.3);
+  tl.fromTo(B, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: true }, tB - 0.3); tl.fromTo(B, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, tC - 0.3);
+  tl.fromTo(C, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: true }, tC - 0.3);
+  drift(world, s, [], -1);
   const [P, LP] = D.alice.ctid, Tn = D.trees.idx_name;
   const planLine = (l) => esc(l.replace(/\s*\(cost=[^)]*\)/, '').replace(/\s*\(actual[^)]*\)/, ''));
 
@@ -31,7 +36,7 @@ scene('query', ({ root, s, c0 }) => {
   const nl = capt(A, `<b>姓名树</b>　${Tn.leafCount} 页叶子`, 1300, 404);
   const tT = T('q4') - 0.4;
   show(nl, tT); slam(nt.root, tT, { from: 1.2 }); nt.edges.forEach((e, i) => draw(e, tT + 0.05 + i * 0.005, 0.2)); nt.leaves.forEach((lf, i) => show(lf, tT + 0.1 + i * 0.006, { y: 6, d: 0.15 }));
-  const strip = heapStrip(A, 90, 650, { w: 33, gap: 4, h: 80, labels: [0, P, 46] });
+  const strip = heapStrip(S, 90, 650, { w: 33, gap: 4, h: 80, labels: [0, P, 46] });
   show(strip, T('q4') - 0.2, { y: 10 });
   const pageX = 90 + P * 37 + 16;
   // 读过的页：根、叶子、堆页，各记一格
@@ -66,30 +71,30 @@ scene('query', ({ root, s, c0 }) => {
   to(cur, T('q6b', '26') - 0.2, { x: 110 - 960 + 70, y: 424, duration: 0.45, ease: 'power2.inOut' });
   to(cur, tRow, { x: 330 - 960 + 70, duration: 0.45, ease: 'power2.inOut' });
   // 还没完：看行头，这个版本能不能看见。两条都满足才看得见：① 写入它的事务提交了；② 没有谁作废它（删掉或改出新版本）
-  keyed(cur).at(T('q7', '行头'), { html: '看行头' });
+  keyed(cur).at(T('q7', '能不能'), { html: '看行头' });
   // 看得见吗：用第三章那条「可见范围」——从 xmin 起，到 xmax 止。xmin 已提交，起点算数；xmax 是 0，没有止点；这次查询落在范围里，看得见
   const chk = h('div', 'abs', A); px(chk, 900, 806, 940, 160); chk.dataset.name = '可见性检查';
   const rk = h('div', 'abs', chk); px(rk, 0, 0, 5, 64); css(rk, { background: 'var(--navy)' });
   const band = h('div', 'abs', chk); px(band, 5, 10, 935, 44); band.dataset.name = '可见范围';
-  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 62%, rgba(51,103,145,.12) 100%)', transformOrigin: '0 50%' });
+  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 62%, rgba(51,103,145,.12) 100%)', overflow: 'hidden' });
   const bl = h('div', 'abs', band, `xmin ${D.alice.xmin}`); px(bl, 16, 0); css(bl, { font: '700 24px var(--mono)', color: '#fff', lineHeight: '44px', whiteSpace: 'nowrap' });
   const br = h('div', 'abs', band, 'xmax 0：没有止点 →'); px(br, 650, 0); css(br, { font: '700 24px "Sans SC"', color: 'var(--pg-dk)', lineHeight: '44px', whiteSpace: 'nowrap' });
-  const tXm = T('q8', 'xmin'), tXx = T('q8', 'xmax');
+  const tXm = T('q8', 'xmin'), tXx = T('q8a', 'xmax');
   show(rk, tXm - 0.1, { y: 0, d: 0.2 });
-  tl.fromTo(band, { autoAlpha: 1, scaleX: 0 }, { scaleX: 0.6, duration: 0.5, ease: 'power2.out', immediateRender: true }, tXm - 0.1);
-  tl.fromTo(band, { scaleX: 0.6 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, tXx);
+  tl.fromTo(band, { autoAlpha: 1, width: 0 }, { width: 935 * 0.6, duration: 0.5, ease: 'power2.out', immediateRender: true }, tXm - 0.1);   // 长度用 width 动画，条里的字不被压扁
+  tl.fromTo(band, { width: 935 * 0.6 }, { width: 935, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, tXx);
   set(bl, 0, { autoAlpha: 0 }); show(bl, tXm, { y: 0, d: 0.25 }); keyed(bl).at(T('q8', '提交'), { html: `xmin ${D.alice.xmin} 已提交 ✓` });
   set(br, 0, { autoAlpha: 0 }); show(br, tXx + 0.4, { x: -10, d: 0.3 });
   // 这次查询：一枚竖针落进范围里
   const pin = h('div', 'abs', chk); px(pin, 520, -30, 4, 96); css(pin, { background: 'var(--warn)' });
   const pinL = h('div', 'abs', chk, '这次查询'); px(pinL, 450, -66); css(pinL, { font: '700 24px "Sans SC"', color: 'var(--warn)', whiteSpace: 'nowrap' });
   set(pin, 0, { autoAlpha: 0 }); set(pinL, 0, { autoAlpha: 0 });
-  tl.fromTo([pin, pinL], { autoAlpha: 0, y: -24 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, T('q8b') - 0.35);
+  tl.fromTo([pin, pinL], { autoAlpha: 0, y: -24 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, T('q8b', '落在') - 0.35);
   const res = tagEl(chk, '看得见', 0, 76, 'ok'); css(res, { fontSize: '26px' }); keyed(res).at(T('q8b', 'Alice'), { html: '看得见 → 查询结果：Alice，42 岁' });
   const chkL = capt(A, '这个版本能不能看见？', 900, 772); css(chkL, { fontSize: '24px', color: 'var(--ink)', fontWeight: 700 });
   show(chkL, T('q7', '能不能'), { y: 8 });
-  [[cXmin, T('q8', 'xmin')], [cXmax, T('q8', 'xmax')]].forEach(([c, t]) => { set(c, t - 0.1, { backgroundColor: '#b8442f' }); set(c, t + 0.9, { backgroundColor: '#2f6b26' }); });
-  sfx('tick', T('q8', 'xmin')); sfx('tick', T('q8', 'xmax'), { g: 0.6 });
+  [[cXmin, T('q8', 'xmin')], [cXmax, T('q8a', 'xmax')]].forEach(([c, t]) => { set(c, t - 0.1, { backgroundColor: '#b8442f' }); set(c, t + 0.9, { backgroundColor: '#2f6b26' }); });
+  sfx('tick', T('q8', 'xmin')); sfx('tick', T('q8a', 'xmax'), { g: 0.6 });
   slam(res, T('q8b', '看得见'), { from: 1.15 }); sfx('chime', T('q8b', '看得见'), { g: 0.7 }); hide(cur, T('q8b', '看得见'), { d: 0.25 });
   fly(A, 'Alice，42', [90 + 3 + 236 + 268 + 60, 800 + 3 + 46], [900 + 300, 806 + 76], T('q8b', 'Alice') - 0.6, { cls: 'ok', fs: 24, d: 0.5, sink: true });  A.appendChild(cur);                                                          // 游标压在页面之上
   // 一共三页
@@ -101,19 +106,17 @@ scene('query', ({ root, s, c0 }) => {
   const tq2 = term(B, 72, 196, 1100, 5, { fs: 23, lh: 32, name: 'psql 会话' });
   const e2 = tq2.type(T('q11') + 0.1, '<span class="k">SELECT</span> count(*) <span class="k">FROM</span> users;', 'postgres=#', 40);
   D.plans.count_all.slice(0, 4).map(planLine).forEach((l, i) => tq2.print(Math.max(e2 + 0.1, T('q12')) + i * 0.1, `<span class="d">${l}</span>`)); sfx('blip', T('q12'), { g: 0.5 });
-  const strip2 = heapStrip(B, 90, 520, { w: 33, gap: 4, h: 150 });
-  show(strip2, T('q11') + 0.3, { y: 10 });
-  const sweep = h('div', 'abs', B); px(sweep, 90, 500, 8, 200); css(sweep, { background: 'var(--navy)' }); sweep.dataset.name = '扫描线';
+  const sweep = h('div', 'abs', B); px(sweep, 90, 630, 8, 120); css(sweep, { background: 'var(--navy)' }); sweep.dataset.name = '扫描线';
   const tsw = T('q12b');
   set(sweep, 0, { opacity: 0 }); set(sweep, tsw, { opacity: 1 });
   fromTo(sweep, tsw, { x: 0 }, { x: 47 * 37, duration: 2.2, ease: 'none' });
-  strip2.pages.forEach((p, i) => classAt(p, 'full', tsw + 2.2 * i / 47));
+  strip.pages.forEach((p, i) => classAt(p, 'full', tsw + 2.2 * i / 47));
   sfx('whoosh', tsw, { g: 0.3 }); sfx('tick', tsw + 2.2, { g: 0.5 });
-  const rd = capt(B, '', 1400, 700); css(rd, { fontSize: '30px', color: 'var(--ink)' });
+  const rd = capt(B, '', 1400, 560); css(rd, { fontSize: '30px', color: 'var(--ink)' });
   F((t) => { const k = clamp((t - tsw) / 2.2); rd.innerHTML = t < tsw ? '' : `已读 <b>${Math.max(1, Math.ceil(k * 47))}</b> / 47 页`; });
-  const all = tagEl(B, `顺序扫描：${D.heap.pages} 页全部读一遍`, 90, 720, 'navy'); css(all, { fontSize: '28px' }); show(all, tsw + 2.3, { y: 8 });
+  const all = tagEl(B, `顺序扫描：${D.heap.pages} 页全部读一遍`, 90, 780, 'navy'); css(all, { fontSize: '28px' }); show(all, tsw + 2.3, { y: 8 });
   const nidx = noteBox(B, '每一行都要数，索引帮不上忙', 1220, 230, 600); show(nidx, T('q12', '不走索引'), { x: 20 });
-  const rule = noteBox(B, '<b>按名字找一个人</b>：走姓名索引，读 3 页　　<b>数全部</b>：47 页从头读到尾', 90, 820, 1100); show(rule, T('q13'), { y: 10 }); sfx('pop', T('q13'), { g: 0.5 });
+  const rule = noteBox(B, '<b>按名字找一个人</b>：走姓名索引，读 3 页　　<b>数全部</b>：47 页从头读到尾', 90, 850, 1100); show(rule, T('q13'), { y: 10 }); sfx('pop', T('q13'), { g: 0.5 });
 
   // ── C：两种叶子页的实物（上）；只要名字时的仅索引扫描与可见性图（下） ──
   hdoc(C, '叶子里有什么', 72, 128);
@@ -128,39 +131,11 @@ scene('query', ({ root, s, c0 }) => {
   const IL = leafPage(72, 200, 840, 'InnoDB · 主键树的叶子页：整行就在这里', [['2049 · User02049-… · 51'], ['2050 · Alice · 42', true], ['2051 · User02051-… · 53']], 'grey');
   wipe(IL.b, T('q15') - 0.1, { dir: 'l', d: 0.45 }); IL.rs.forEach((r, i) => show(r, T('q15', '整行') - 0.3 + i * 0.12, { x: -10, y: 0, d: 0.3 })); sfx('tick', T('q15', '整行'), { p: -0.4 });
   const PL = leafPage(1000, 200, 400, '姓名树的叶子页', [[`Alice → (${P},${LP})`, true], ['User00001-… → (0,1)'], ['User00002-… → (0,2)']], 'pg');
-  const PH = leafPage(1460, 200, 388, `堆 · 第 ${P} 页`, [['…'], ['2050 · Alice · 42', true], ['…']], 'pg');
   wipe(PL.b, T('q16') - 0.1, { dir: 'l', d: 0.45 }); PL.rs.forEach((r, i) => show(r, T('q16', '地址') - 0.2 + i * 0.1, { x: -10, y: 0, d: 0.3 }));
-  const pa2 = link(ovC, [[1400, 268], [1460, 316]], 'accent');
-  arrowIn(pa2, T('q16', '堆') - 0.5, 0.4); wipe(PH.b, T('q16', '堆') - 0.3, { dir: 'l', d: 0.4 }); sfx('tick', T('q16', '堆'), { p: 0.4 });
-  fly(C, `(${P},${LP})`, [1220, 250], [1478, 300], T('q16', '堆') - 0.5, { cls: 'navy', fs: 22, d: 0.5, sink: true });
-  // 只要名字：名字就在叶子里，可以不去堆；但要确认这一行看得见，行头在堆里
-  const nameIn = tagEl(C, '名字就在叶子里', 1000, 410, 'ok'); css(nameIn, { fontSize: '24px' }); show(nameIn, T('q18', '名字'), { y: 8 });
-  const tio = term(C, 72, 520, 1000, 4, { fs: 23, lh: 36, name: 'psql 会话' });
-  const pick = (arr) => arr.filter((l) => /Index Only Scan|Heap Fetches/.test(l)).map(planLine);
-  const e3 = tio.type(T('q18') - 0.2, `<span class="k">SELECT</span> name <span class="k">FROM</span> users <span class="k">WHERE</span> name = 'Alice';`, 'postgres=#', 40);
-  pick(D.ios.before_vacuum).forEach((l, i) => tio.print(Math.max(e3 + 0.1, T('q18', '不去堆')) + i * 0.15, `<span class="d">${l}</span>`)); sfx('blip', T('q18', '不去堆'), { g: 0.5 });
-  tio.print(T('q22', '不必'), `<span class="ok">${esc(pick(D.ios.after_vacuum).find((l) => /Heap Fetches/.test(l)).trim())}</span><span class="d">　（格子记上之后再查）</span>`);
-  fly(C, `(${P},${LP})`, [1220, 250], [1478, 300], T('q19', '行头'), { cls: 'warn', fs: 22, d: 0.5, sink: true });
-  const hf = noteBox(C, '<b>Heap Fetches: 1</b>　还要回堆一次：看行头才知道这一行能不能看见', 72, 740, 1000); show(hf, T('q19', '行头'), { y: 10 });
-  hide(hf, T('q22', '不必') - 0.2, { d: 0.3 }); hide(nameIn, T('q19') + 0.2, { d: 0.25 });
-  // 可见性图：堆旁边的小文件，每页一格
-  const vm = h('div', 'abs', C); px(vm, 1150, 500, 690, 230); vm.dataset.name = '可见性图';
-  const vmt = h('div', 'cap mono', vm, `${D.files.users.node}_vm · 堆旁边的小文件`); px(vmt, 0, 0); css(vmt, { color: 'var(--pg)', fontWeight: 700 });
-  const bits = [];
-  for (let i = 0; i < D.heap.pages; i++) { const b = h('div', 'abs', vm); px(b, (i % 16) * 42, 50 + Math.floor(i / 16) * 52, 34, 40); css(b, { border: '2px solid var(--pg)', background: '#fff' }); bits.push(b); }
-  const vmG = glossBox(C, '可见性图', `<b>可见性图</b>：每页一格。格子记上，<br>表示这页的行对所有事务都可见`, 1150, 740, 690);
-  wipe(vm, T('q20', '小文件'), { dir: 'r' }); show(vmG, T('q20', '可见性图') + 0.1, { y: 10 }); sfx('pop', T('q20', '可见性图') + 0.1, { g: 0.5 });
-  const tb0 = T('q21'), tb1 = Math.max(tb0 + 1.2, T('q21', '记一笔'));
-  bits.forEach((b, i) => set(b, tb0 + (tb1 - tb0) * i / 47, { background: 'var(--pg)' })); sfx('tick', tb0, { p: 0.4 }); sfx('tick', tb1, { p: 0.6 });
-  // 记过的页不必回堆：地址停在可见性图上那一格
-  const bx = 1150 + (P % 16) * 42, by = 500 + 50 + Math.floor(P / 16) * 52;
-  fly(C, `(${P},${LP})`, [1220, 250], [bx - 30, by - 4], T('q22', '记过') - 0.3, { cls: 'navy', fs: 22, d: 0.6 });
-  to(bits[P], T('q22', '记过') + 0.4, { backgroundColor: '#193145', duration: 0.2 });
-  const hf0 = tagEl(C, 'Heap Fetches: 0：不再回堆', 72, 750, 'ok'); css(hf0, { fontSize: '28px' }); show(hf0, T('q22', '不必') + 0.2, { y: 8 }); sfx('chime', T('q22', '不必') + 0.2, { g: 0.6 });
-  // VACUUM 第一次出现：当场交代它是什么（第 8 章细讲），再说它顺手记格子
-  const byv = glossBox(C, 'VACUUM', '<b>VACUUM</b>：PostgreSQL 的清理命令，收走没人要的旧版本（第 8 章细讲）；<br>清理时顺手把这些格子记上', 1150, 740, 690);
-  hide(vmG, T('q23', 'VACUUM') - 0.35, { d: 0.2 }); show(byv, T('q23', 'VACUUM') - 0.1, { y: 10 }); sfx('pop', T('q23', 'VACUUM'), { g: 0.5 });
-  fly(C, 'VACUUM', [1500, 880], [1300, 560], T('q23', 'VACUUM') + 0.1, { cls: 'navy', fs: 24, d: 0.9, hold: 0.4 }); sfx('whoosh', T('q23', 'VACUUM') + 0.1, { g: 0.3 });
+  // 地址落回下面那条堆（第 23 页）：还得再去一趟
+  const pa2 = curve(ovC, [1400, 290], [pageX, 646], 'accent', { w: 3.5, bend: 520 }); arrowIn(pa2, T('q16', '堆') - 0.4, 0.5); sfx('tick', T('q16', '堆'), { p: 0.4 });
+  fly(C, `(${P},${LP})`, [1300, 300], [pageX - 40, 600], T('q16', '堆') - 0.4, { cls: 'navy', fs: 22, d: 0.5, sink: true });
+  const again = tagEl(C, '还得再去一趟堆', pageX + 30, 590, 'warn'); css(again, { fontSize: '24px' }); show(again, T('q16', '再去') - 0.1, { x: -8 });
   const fC = focusRing(C);
-  fC.at(T('q15', '整行'), IL.rs[1]).at(T('q16', '地址'), PL.rs[0]).at(T('q16', '堆'), PH.rs[1]).at(T('q18', '名字'), PL.rs[0]).at(T('q19', '行头'), PH.rs[1]).at(T('q20', '小文件'), vm).off(T('q21') - 0.1);
+  fC.at(T('q15', '整行'), IL.rs[1]).at(T('q16', '地址'), PL.rs[0]).at(T('q16', '堆'), strip.pages[P]).off(s.end - 0.5);
 });

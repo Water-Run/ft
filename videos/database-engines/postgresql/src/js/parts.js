@@ -4,21 +4,22 @@ const FRAME = { top: 110, bottom: 940, left: 72, right: 1848 };   // 顶栏以�
 // 画面比声音提前：按词对齐的提前 0.3 秒，按句对齐的提前 0.12 秒。动画到位要一点时间，卡在词的起点上看着比声音慢
 // （WaterRun 看 r3b：「画面跟不上动画 比如 支持事务」；看 r7：「有不少画面比旁白稍微延迟的情况」，由 0.12 / 0 加大）
 const T_EXACT = T;
-T = function (id, word, shift = 0) { return T_EXACT(id, word, shift) - (word ? 0.3 : 0.12); };
+// 找不到的句号放到片尾：返回负数会让 GSAP 把整条时间线往后推（插入负时刻时它会平移所有已有动画），整片对不上时刻
+T = function (id, word, shift = 0) { if (!L.cues[id]) { console.warn('no cue', id); return L.total; } return Math.max(0, T_EXACT(id, word, shift) - (word ? 0.3 : 0.12)); };
 
 // ── 屏与镜头 ──
 // 一章由若干屏组成，在原地换内容。screens(world, [t0, t1, t2, …]) 建 n 个屏：第 i 屏从 marks[i] 出现到 marks[i+1] 换走
+// 换屏是原地交叉淡变 0.6 秒，不上移、不升起、不配换屏声（WaterRun 看 r8：「你还是做PPT的思路」「画面缺乏连续性」）
 function screens(world, marks, opts = {}) {
   const out = [];
   for (let i = 0; i < marks.length - 1; i++) {
     const el = h('div', 'abs', world); px(el, 0, 0, 1920, 1080);
     const a = marks[i], b = marks[i + 1];
-    // 原地换屏：旧内容上移淡出，新内容从下方升起（比左右刷屏更像同一张画布换内容）
-    if (i === 0) appear(el, a); else tl.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out', immediateRender: true }, a);
-    if (i < marks.length - 2) tl.fromTo(el, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -40, duration: 0.4, ease: 'power2.in', immediateRender: false }, b - 0.35);
+    // 第一屏在章节标题出来时就淡入（比 c0 早 1.8 秒），标题期间画面已有内容，不空着
+    if (i === 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power1.out', immediateRender: true }, Math.max(0, a - 1.8)); else tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: 'power1.inOut', immediateRender: true }, a - 0.3);
+    if (i < marks.length - 2) tl.fromTo(el, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, ease: 'power1.inOut', immediateRender: false }, b - 0.3);
     out.push(el);
   }
-  if (opts.sfx !== false) for (let i = 1; i < marks.length - 1; i++) sfx('whoosh', marks[i], { g: 0.35 });
   return out;
 }
 // 镜头：每屏只朝一个方向极慢横移（每秒不超过 1.2 像素、一屏合计不超过 24 像素），dir 按章交替。
@@ -232,6 +233,30 @@ function pageBar(p, x, y, w, hgt = 90) {
   return { el, head, lps, free, rows, k };
 }
 
+// ── 第 23 页的字节表：8192 个字节，一行 128 个，排成 64 行（像 MyISAM 一集摊开 .MYD 那样）──
+// 页头、指针、空隙、行都按真实的字节位置画；跨行的段折到下一行接着画，所以空隙会从一行末尾接到下一行开头
+// 返回各段的块（每段是若干个 div，一行一个），pos(偏移) 给出某个字节左上角在父容器里的坐标
+function byteGrid(p, x, y, o = {}) {
+  const COLS = 128, cw = o.cw || 13, lh = o.lh || 10, G = D.page23;
+  const el = h('div', 'abs', p); px(el, x, y, COLS * cw, 64 * lh); el.dataset.name = '第 23 页的 8192 字节';
+  const bg = h('div', 'abs', el); px(bg, 0, 0, COLS * cw, 64 * lh);
+  css(bg, { background: `repeating-linear-gradient(0deg, transparent 0 ${lh - 2}px, #fff ${lh - 2}px ${lh}px), repeating-linear-gradient(90deg, #dde6ee 0 ${cw - 1}px, #fff ${cw - 1}px ${cw}px)` });
+  const seg = (a, b, st, gapR = 0) => {
+    const out = [];
+    for (let q = a; q < b;) {
+      const line = Math.floor(q / COLS), c0 = q % COLS, c1 = Math.min(COLS, c0 + (b - q));
+      const d = h('div', 'abs', el); px(d, c0 * cw, line * lh, (c1 - c0) * cw - (q + (c1 - c0) >= b ? gapR : 0), lh - 2); css(d, st);
+      out.push(d); q += c1 - c0;
+    }
+    return out;
+  };
+  const head = seg(0, 24, { background: 'var(--navy)' });
+  const ptrs = []; for (let i = 0; i < G.lps; i++) ptrs.push(seg(24 + i * 4, 28 + i * 4, { background: 'var(--sky)' }, 2));
+  const rows = [null]; for (let i = 1; i <= G.lps; i++) { const off = 8192 - 88 * i; rows.push(seg(off, off + 88, { background: 'var(--sky-lt)', boxShadow: 'inset 0 0 0 1px #9dbbd6' }, 2)); }
+  const gap = seg(G.lower, G.upper, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 4px,#fff 4px 8px)', outline: '2px solid #c98f00', outlineOffset: '-1px' });
+  const pos = (off) => ({ x: x + (off % COLS) * cw, y: y + Math.floor(off / COLS) * lh });
+  return { el, head, ptrs, rows, gap, seg, pos, cw, lh, COLS };
+}
 // ── 字节格：Alice 那一行的 82 字节，按字段分组 ──
 function tupleFields() {
   const hh = D.page23.headerHex, dh = D.page23.dataHex;

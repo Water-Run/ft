@@ -34,14 +34,14 @@ window.ENGINE = {
     }
     // 主线：顶栏中间一排「文件」，第一次讲到时出现，讲到哪个文件哪个亮（WaterRun 看 r7：「各个概念缺乏连接, 协调和主线」）
     // 位置固定，后出现的文件不挤动前面的；亮暗由时间直接算出（不用 CSS 过渡）
-    const FILES = [['heap', '堆', 'l6'], ['pk', '主键树', 'l14'], ['name', '姓名树', 'l15'], ['age', '年龄树', 'l16'],
-      ['vm', '可见性图', 'q20'], ['fsm', '空闲空间图', 'd15'], ['xact', '提交状态', 'm4'], ['wal', 'WAL', 'w2']];
-    const ACTIVE = [['l6', 'heap'], ['l14', 'pk'], ['l15', 'name'], ['l16', 'age'], ['l18', 'pk name'], ['l20b', 'heap pk name'], ['l21', ''], ['l24', 'heap pk name age'],
+    const FILES = [['heap', '堆', 'l6'], ['pk', '主键树', 'l14'], ['name', '姓名树', 'l12b'], ['age', '年龄树', 'l14'],
+      ['vm', '可见性图', 'v2b'], ['fsm', '空闲空间图', 'd15'], ['xact', '提交状态', 'm4'], ['wal', 'WAL', 'w2']];
+    const ACTIVE = [['l6', 'heap'], ['l12b', 'name'], ['l13e', 'name heap'], ['l14', 'pk name age'], ['l19', 'pk heap'], ['l20b', 'heap pk name age'], ['l21', ''], ['l24', 'heap pk name age'],
       ['p1', 'heap'], ['i1', 'heap'], ['i6', 'pk name age'], ['i7', 'pk'], ['i8', 'name'], ['i10', 'pk'],
-      ['q1', ''], ['q4', 'name'], ['q6', 'heap'], ['q10', 'name heap'], ['q11', 'heap'], ['q13', ''], ['q15', 'heap'], ['q18', 'name'], ['q19', 'heap'], ['q20', 'vm'],
-      ['u1', 'heap'], ['u12', 'pk name age'], ['u16', ''], ['u18', 'heap'], ['u25', 'heap age'], ['u27', 'heap pk'], ['u28', 'heap'],
+      ['q1', ''], ['q4', 'name'], ['q6', 'heap'], ['q10', 'name heap'], ['q11', 'heap'], ['q13', ''], ['q15', 'heap'],
+      ['u1', 'heap'], ['u12', 'pk name age'], ['u16', ''], ['u18', 'heap'], ['u25', 'heap age'], ['u27', 'heap'],
       ['m1', 'heap'], ['m4', 'xact'], ['m5', 'heap'], ['m8', 'heap xact'], ['m11', 'heap'], ['m17', 'xact'], ['m19', 'heap'],
-      ['d1', 'heap'], ['d11', 'heap pk name age'], ['d12', 'heap'], ['d14', 'fsm'], ['d18', 'heap'], ['d20', ''], ['d22', 'heap'], ['d30', 'heap xact'], ['d33', 'heap'],
+      ['d1', 'heap'], ['d11', 'heap pk name age'], ['d12', 'heap'], ['d14', 'fsm'], ['d18', 'heap'], ['d20', ''], ['v1', 'vm'], ['v4', 'name vm'], ['d22', 'heap'], ['d30', 'heap xact'], ['d33', 'heap'],
       ['w1', 'wal'], ['w6', 'heap'], ['w8', 'heap wal'], ['w10', 'wal'], ['w12b', ''], ['w13', 'heap wal'], ['w20', 'heap xact'], ['w22', ''],
       ['z1', ''], ['z2', 'heap pk name age'], ['z4', 'name heap vm'], ['z6', 'heap fsm'], ['z8', 'xact heap'], ['z10', 'wal'], ['z12', 'heap'], ['t1', '']]
       .map(([id, ids]) => [L.cues[id].start - 0.12, new Set(ids.split(' ').filter(Boolean))]);
@@ -65,15 +65,28 @@ window.ENGINE = {
         k.o.style.opacity = v; k.d.style.opacity = 1 - v;   // 亮的那层盖上来时，暗的那层同时退掉（两层字不同时可见）
       }
     });
-    // 章节卡：整屏 Pg 蓝，从左刷入，停留，向右收走
+    // 章节标题：不再整屏盖住画面，改成左下角一条标题，画面照常在动（WaterRun 看 r8：「你还是做PPT的思路, 而不是视频, 最直接的就是画面缺乏连续性」）
     for (const s of L.scenes) {
       if (!s.chap) continue;
-      const card = h('div', 'chapter', hud,
-        `<div class="no">${s.chap[0]}</div><div class="ti">${esc(s.chap[1])}</div>` +
-        `<div class="q">${esc(CHAPTER_Q[s.id] || '')}</div><div class="ru"></div>`);
-      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.45;
-      wipe(card, t0, { dir: 'l', d: 0.4 }); wipeOut(card, t1, { dir: 'r', d: 0.4 });
-      sfx('whoosh', t0, { g: 0.45 }); sfx('thud', t0 + 0.36, { g: 0.55 });
+      const card = h('div', 'chap2', hud, `<span class="no">${s.chap[0]}</span><span class="ti">${esc(s.chap[1])}</span><span class="q">${esc(CHAPTER_Q[s.id] || '')}</span>`);
+      const t0 = s.start + 0.1, t1 = s.start + s.lead + 0.2;
+      wipe(card, t0, { dir: 'l', d: 0.45 }); wipeOut(card, t1, { dir: 'l', d: 0.4 });
+      sfx('whoosh', t0, { g: 0.35 }); sfx('thud', t0 + 0.4, { g: 0.4 });
     }
+  },
+  // 场与场之间交叉淡变 0.7 秒（不硬切、不靠整屏色块遮）：前一场的最后一屏与后一场的第一屏按同样的位置摆放，淡变时像同一个画面在继续
+  after() {
+    const XF = 0.7;
+    L.scenes.forEach((s, i) => {
+      const root = document.getElementById('sc-' + s.id), nx = L.scenes[i + 1];
+      const a = i === 0 ? -1 : s.start, b = nx ? nx.start : Infinity;
+      F((t) => {
+        const on = t >= a - 0.01 && t < b + XF;
+        root.style.display = on ? '' : 'none';
+        if (!on) return;
+        const fin = i === 0 ? 1 : clamp((t - a) / XF), fout = nx ? 1 - clamp((t - b) / XF) : 1;
+        root.style.opacity = Math.min(fin, fout).toFixed(3);
+      });
+    });
   },
 };

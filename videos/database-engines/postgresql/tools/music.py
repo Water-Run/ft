@@ -235,7 +235,7 @@ def chapter(m, sid, t0, t1):
                 names[b0 + k] = SUBJ[k]
         if b0 < len(bars):
             melody(m, inst, notes, bars[b0][0], until=t1)
-    m.add('felt', 38, t0, 2 * BEAT, 0.30, -0.1, 0.4)                      # 章首：低八度的一声
+    m.add('felt', 38, t0, 2 * BEAT, 0.18, -0.1, 0.4)                      # 章首：低八度的一声（章节标题不再整屏，这一声也放轻）
     for i, ((t, d), name) in enumerate(zip(bars, names)):
         bed(m, t, d, name, P.get('pad', 0.22) * (1.15 if i == 0 else 1.0))
         if P.get('felt') is not None and i >= P['felt']:
@@ -252,7 +252,10 @@ def compose(ctx):
     order = [s['id'] for s in ctx['scenes']]
     total = ctx['total']
     m = Mix(ctx['n'])
-    g0 = lambda sid: 0.0 if sid == 'open' else sc[sid]['start'] + DROP
+    # 各章的小节对齐到同一张全片的节拍网格：换章时拍子接着走，不在章首重新数小节（WaterRun 看 r7：「BGM连续性优化」）
+    grid0 = sc[order[1]]['start'] + DROP if len(order) > 1 else 0.0
+    snap = lambda t: grid0 + round((t - grid0) / BAR) * BAR
+    g0 = lambda sid: 0.0 if sid == 'open' else snap(sc[sid]['start'] + DROP)
     g1 = lambda sid: g0(order[order.index(sid) + 1]) if order.index(sid) + 1 < len(order) else total
     at = lambda cid, frac=0.0, dflt=None: (cue[cid]['start'] + frac * (cue[cid]['end'] - cue[cid]['start'])) if cid in cue else dflt
 

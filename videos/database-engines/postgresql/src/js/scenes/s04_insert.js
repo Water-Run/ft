@@ -78,9 +78,9 @@ scene('insert', ({ root, s, c0 }) => {
   const fill1 = h('div', 'abs', L1); px(fill1, 6, 6, 0, 102); css(fill1, { background: 'var(--sky-lt)' });
   const full = capt(B, '一页叶子', 200, 460); css(full, { fontSize: '26px' });
   const tS = T('i10');
-  wipe(L1, tS - 0.4, { dir: 'l' }); show(full, tS - 0.4);
+  slam(L1, tS - 0.4, { from: 1.25 }); show(full, tS - 0.4);
   // 装满与对半分都写明起点：画面提前量加大后，两段可能挨得很近，不能让后一段从前一段的中途接手（跳播会不一样）
-  fromTo(fill1, tS - 0.1, { width: 0 }, { width: 502, duration: Math.min(0.7, T('i10', '一分为二') - tS - 0.05), ease: 'power1.in' });
+  fromTo(fill1, tS - 0.1, { width: 0 }, { width: 502, duration: Math.max(0.5, T('i10', '一分为二') - tS - 0.05), ease: 'power1.in' });   // 一路装到满，满的那一刻正好分裂
   const fl = capt(B, '满了', 600, 460); css(fl, { fontSize: '26px', color: 'var(--warn)', fontWeight: 700 }); 
   // 一分为二：右半边搬到新的一页
   const Lb = h('div', 'page', B); px(Lb, 780, 500, 520, 120); Lb.dataset.name = '新的一页叶子';
@@ -91,6 +91,8 @@ scene('insert', ({ root, s, c0 }) => {
   fromTo(fill1, tSp, { width: 502 }, { width: 251, duration: 0.01, immediateRender: false });
   to(half, tSp + 0.05, { x: 780 - 200 - 251, duration: 0.6, ease: 'power3.inOut' }); to(half, tSp + 0.7, { backgroundColor: '#cfe0ee', duration: 0.3 });
   const halfL = capt(B, '对半分：两页各装五成', 560, 640); css(halfL, { fontSize: '26px', color: 'var(--pg-dk)', fontWeight: 700 }); show(halfL, tSp + 0.7, { y: -8 });
+  // 「各装一半」：分开的两页一起亮起
+  const hl2 = h('div', 'abs', B); px(hl2, 196, 496, 1108, 128); css(hl2, { background: 'rgba(255,200,60,.35)', border: '3px solid #e0a11b' }); set(hl2, 0, { autoAlpha: 0 }); set(hl2, T('i10', '各装一半') - 0.1, { autoAlpha: 1 }); set(hl2, T('i11') - 0.1, { autoAlpha: 0 });
   show(fl, tS + 0.6, { y: 8, d: 0.3 }); hide(fl, Math.max(tSp, tS + 1.0), { d: 0.2 }); sfx('thud', tSp + 0.6, { g: 0.6 });
   const rt = h('div', 'node', B, '根'); px(rt, 670, 300, 160); css(rt, { height: '52px', lineHeight: '47px', fontSize: '26px' });
   const e1 = path(ovB, 'M720,352 L460,500', 'dim', { w: 2.5, arrow: false }), e2 = path(ovB, 'M780,352 L1040,500', 'dim', { w: 2.5, arrow: false });
@@ -99,67 +101,76 @@ scene('insert', ({ root, s, c0 }) => {
   const gr = D.growth.rootAtRow;
   const rows = tableDoc(B, ['树', '长出根，是在插入第几行时'], [['姓名树', `第 ${gr.idx_name} 行`], ['主键树', `第 ${gr.users_pkey} 行`], ['年龄树', `第 ${gr.idx_age} 行`]], 1380, 190);
   css(rows, { fontSize: '24px' }); show(rows, T('i11') + 0.8, { x: 20 });
-  // 编号一路递增：最右边那页满了就分裂，左边那页留在九成
+  // 编号一路递增：最右边那页满了就分裂。先演「要是对半分」：左边那页以后不进新编号，永远一半；所以装到九成就停；也不装满；最后才起名「填充比例」（G4、G6）
   // 根出来以后停一停，再换到主键树的那一排叶子
   const tOut = Math.max(tR + 2.4, T('i12', '递增') - 0.2);
   [L1, Lb, half, rt, e1, e2, full, halfL].forEach((e) => gone(e, tOut, 0.35));   // fill1 在 L1 里，随 L1 一起淡出；单独给它一个淡出，倒着跳回来时它会留在隐藏状态
   const row9 = h('div', 'abs', B); px(row9, 120, 520, 1700, 140); row9.dataset.name = '主键树的叶子：最右边分裂';
-  const LW = 260, leaves9 = [];
+  const LW = 260, FW = LW - 10, leaves9 = [];
   for (let i = 0; i < 6; i++) {
     const lf = h('div', 'page', row9); px(lf, i * (LW + 20), 0, LW, 100);
-    const f = h('div', 'abs', lf); px(f, 5, 5, i < 4 ? (LW - 10) * 0.9 : 0, 84); css(f, { background: 'var(--sky-lt)' });
-    lf.f = f; leaves9.push(lf);
-    if (i < 4) { const n9i = h('div', 'abs', lf, '九成'); px(n9i, 90, 28); css(n9i, { font: '700 26px "Sans SC"', color: 'var(--pg-dk)' }); }
+    const f = h('div', 'abs', lf); px(f, 5, 5, i < 4 ? FW * 0.9 : 0, 84); css(f, { background: 'var(--sky-lt)' });
+    const lab = h('div', 'abs', lf, ''); px(lab, 70, 28); css(lab, { font: '700 26px "Sans SC"', color: 'var(--pg-dk)', whiteSpace: 'nowrap' });
+    lf.f = f; lf.lab = lab; leaves9.push(lf);
   }
   const tr9 = tOut + 0.4;
   // 这排叶子属于主键树：上面一个根，连线到每一页；最右边分裂出新的一页时，根下多一条线
   const rt9 = h('div', 'node', B, '主键树的根'); px(rt9, 700, 360, 300); css(rt9, { height: '52px', lineHeight: '47px', fontSize: '26px' });
   show(rt9, tr9 - 0.2, { y: -10 });
   const ov9 = overlay(B);
-  for (let i = 0; i < 6; i++) { const e9 = path(ov9, `M850,412 L${120 + i * (LW + 20) + LW / 2},520`, 'dim', { w: 2, arrow: false }); draw(e9, i < 5 ? tr9 - 0.2 + i * 0.08 : T('i12', '分裂'), 0.3); }
+  const tSplit = T('i12', '分裂');
+  for (let i = 0; i < 6; i++) { const e9 = path(ov9, `M850,412 L${120 + i * (LW + 20) + LW / 2},520`, 'dim', { w: 2, arrow: false }); draw(e9, i < 5 ? tr9 - 0.2 + i * 0.08 : tSplit, 0.3); }
   leaves9.slice(0, 5).forEach((lf, i) => show(lf, tr9 - 0.2 + i * 0.1, { x: -20, d: 0.25 }));
   set(leaves9[5], 0, { autoAlpha: 0 });
-  to(leaves9[4].f, tr9 + 0.6, { width: LW - 10, duration: 1.0, ease: 'none' });                 // 最右边那页装满
-  const tSplit = T('i12', '分裂');
-  set(leaves9[5], tSplit, { autoAlpha: 1 }); to(leaves9[4].f, tSplit, { width: (LW - 10) * 0.9, duration: 0.4 });
-  to(leaves9[5].f, tSplit, { width: (LW - 10) * 0.1, duration: 0.4 }); sfx('thud', tSplit, { g: 0.55 });
-  const n9 = h('div', 'abs', leaves9[4], '九成满'); px(n9, 70, 28); css(n9, { font: '700 26px "Sans SC"', color: 'var(--pg-dk)' }); show(n9, T('i13', '九成'), { y: 8 });
-  const lt = tagEl(B, '左边那页', 120 + 4 * (LW + 20) + 60, 632, 'navy'); css(lt, { fontSize: '24px' }); show(lt, T('i13', '左边'), { y: 8 });
-  // 后来的编号都更大：只往最右边加，不挤回左边
-  const tL = T('i14');
-  const r9 = focusRing(B); r9.at(T('i12', '分裂'), leaves9[4]).at(T('i13', '左边'), leaves9[4]).at(tL + 0.2, leaves9[5]).off(s.end - 0.4);
-  to(leaves9[5].f, tL + 0.3, { width: (LW - 10) * 0.6, duration: Tend('i14') - tL, ease: 'none' });
-  [0, 1, 2].forEach((j) => fly(B, '更大的编号', [1500, 860], [120 + 5 * (LW + 20) + 40, 540], tL + 0.2 + j * 0.6, { cls: 'navy', fs: 22, d: 0.45 }));
-  const nNew = capt(B, '新编号只往最右边加，左边几页不会再进新编号', 120, 640); css(nNew, { fontSize: '24px', color: 'var(--navy)' }); show(nNew, T('i14', '不会'), { y: -6 });
-  // 为什么也不装满（G6，i14b）：左边几页都留着一成（黄色斜纹）；要是装满，之后改一行、叶子里多一项，这页就得再分裂（右下的小图）；
-  // 留了一成的页，这一项落进空位里就行（i14b 说完的停顿里演示）。原先这里是一段两行的文字说明（WaterRun 看 r7：「为什么只装9成加一句旁白解释」）
-  hide(nNew, T('i14b') - 0.1, { d: 0.25 });
+  fromTo(leaves9[4].f, tr9 + 0.6, { width: 0 }, { width: FW, duration: Math.max(0.4, tSplit - tr9 - 0.7), ease: 'none' });   // 最右边那页装满
+  // 先按一般的分裂对半分：左右各一半
+  set(leaves9[5], tSplit, { autoAlpha: 1 });
+  fromTo(leaves9[4].f, tSplit, { width: FW }, { width: FW * 0.5, duration: 0.4, immediateRender: false }); fromTo(leaves9[5].f, tSplit, { width: 0 }, { width: FW * 0.5, duration: 0.4 }); sfx('thud', tSplit, { g: 0.55 });
+  // 可后来的编号都更大，只进最右边：左边那页再也进不来
+  const tB2 = T('i12b', '左边') - 0.2;
+  [0, 1, 2].forEach((j) => fly(B, '更大的编号', [1500, 880], [120 + 5 * (LW + 20) + 60, 540], tB2 + j * 0.5, { cls: 'navy', fs: 22, d: 0.45, sink: true }));
+  fromTo(leaves9[5].f, tB2 + 0.6, { width: FW * 0.5 }, { width: FW * 0.85, duration: 1.2, ease: 'none', immediateRender: false });
+  const lt = tagEl(B, '左边那页：以后不会再进新编号', 120 + 4 * (LW + 20) - 120, 640, 'navy'); css(lt, { fontSize: '24px' }); show(lt, T('i12b', '左边') - 0.1, { y: 8 }); hide(lt, T('i13') - 0.2, { d: 0.25 });
+  // 要是对半分：它就永远半空（左边几页都画成一半，空着的一半打上红色虚线）
+  const tC2 = T('i12c', '对半分') - 0.2, t13 = T('i13', '九成') - 0.2;
+  leaves9.slice(0, 4).forEach((lf) => fromTo(lf.f, tC2, { width: FW * 0.9 }, { width: FW * 0.5, duration: 0.4 }));
+  leaves9.slice(0, 5).forEach((lf) => { const e = h('div', 'abs', lf); px(e, 5 + FW * 0.5, 5, FW * 0.5, 84); css(e, { border: '3px dashed var(--warn)', background: 'rgba(184,68,47,.06)' }); set(e, 0, { autoAlpha: 0 }); show(e, tC2 + 0.3, { y: 0, d: 0.25 }); hide(e, t13, { d: 0.25 }); });
+  const halfT = tagEl(B, '要是对半分：左边这些页永远只装一半', 120, 640, 'warn'); css(halfT, { fontSize: '24px' }); show(halfT, tC2 + 0.3, { y: 8 }); hide(halfT, t13, { d: 0.25 }); sfx('error', tC2 + 0.3, { g: 0.35 });
+  // 所以左边那页装到九成就停；右边新页只拿走一成
+  leaves9.slice(0, 5).forEach((lf, i) => { fromTo(lf.f, t13, { width: FW * 0.5 }, { width: FW * 0.9, duration: 0.5, immediateRender: false }); keyed(lf.lab).at(t13 + 0.4, { html: i === 4 ? '九成就停' : '九成' }); });
+  fromTo(leaves9[5].f, t13, { width: FW * 0.85 }, { width: FW * 0.1, duration: 0.5, immediateRender: false }); sfx('pop', t13 + 0.3, { g: 0.5 });
+  const r9 = focusRing(B); r9.at(tSplit, leaves9[4]).at(tB2, leaves9[4]).at(t13, [120, 520, 5 * (LW + 20) - 20, 100]).off(T('i14b') - 0.1);
+  // 也不装满：左边几页都留着一成（黄色斜纹）；要是装满，之后改一行、叶子里多一项，这页就得再分裂（右下的小图）
   const tW = T('i14b', '不装满'), tF = T('i14b', '装满的页'), tM = T('i14b', '改几行'), tQ = T('i14b', '分裂');
-  const RW = (LW - 10) * 0.1;
+  const RW = FW * 0.1;
   const rooms = leaves9.slice(0, 5).map((lf, i) => {
-    const r = h('div', 'abs', lf); px(r, 5 + (LW - 10) * 0.9, 5, RW, 84); css(r, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
+    const r = h('div', 'abs', lf); px(r, 5 + FW * 0.9, 5, RW, 84); css(r, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
     set(r, 0, { autoAlpha: 0 }); show(r, tW + i * 0.06, { y: 0, d: 0.3 }); return r;
   });
   const roomL = capt(B, '每页留着一成空位', 120, 640); css(roomL, { fontSize: '24px', color: '#7d5500', fontWeight: 700 }); show(roomL, tW + 0.2, { y: -6 });
   sfx('tick', tW, { g: 0.5 });
   const cf = h('div', 'abs', B); px(cf, 1300, 700, 560, 190); cf.dataset.name = '要是装满';
   const cfl = h('div', 'abs', cf, '要是装满：'); px(cfl, 0, 0); css(cfl, { font: '700 24px "Sans SC"', color: 'var(--warn)' });
-  const fp = h('div', 'page', cf); px(fp, 0, 40, LW, 100); const ff = h('div', 'abs', fp); px(ff, 5, 5, LW - 10, 84); css(ff, { background: 'var(--sky-lt)' });
-  const fp2 = h('div', 'page', cf); px(fp2, 0, 40, LW, 100); const ff2 = h('div', 'abs', fp2); px(ff2, 5, 5, (LW - 10) / 2, 84); css(ff2, { background: 'var(--sky-lt)' });
+  const fp = h('div', 'page', cf); px(fp, 0, 40, LW, 100); const ff = h('div', 'abs', fp); px(ff, 5, 5, FW, 84); css(ff, { background: 'var(--sky-lt)' });
+  const fp2 = h('div', 'page', cf); px(fp2, 0, 40, LW, 100); const ff2 = h('div', 'abs', fp2); px(ff2, 5, 5, FW / 2, 84); css(ff2, { background: 'var(--sky-lt)' });
   set(cf, 0, { autoAlpha: 0 }); tl.fromTo(cf, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, tF);
   set(fp2, 0, { autoAlpha: 0 });
   fly(B, '多一项', [1500, 900], [1300 + LW / 2 - 40, 760], tM, { cls: 'navy', fs: 22, d: 0.45, sink: true });
   fromTo(fp, tQ, { borderColor: '#336791' }, { borderColor: '#b8442f', duration: 0.15 });
-  fromTo(ff, tQ + 0.05, { width: LW - 10 }, { width: (LW - 10) / 2, duration: 0.35, ease: 'power2.inOut' });
+  fromTo(ff, tQ + 0.05, { width: FW }, { width: FW / 2, duration: 0.35, ease: 'power2.inOut' });
   tl.fromTo(fp2, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: LW + 20, duration: 0.45, ease: 'power3.out', immediateRender: false }, tQ + 0.05);
   const spl = h('div', 'tag warn', cf, '又要分裂'); px(spl, 0, 152); css(spl, { fontSize: '24px' }); set(spl, 0, { autoAlpha: 0 }); show(spl, tQ + 0.3, { y: -6 });
   sfx('thud', tQ + 0.05, { g: 0.55 });
-  // 说完以后：留了一成的页，多一项落进空位，不用分裂
-  const tE = Tend('i14b') + 0.15, lx2 = 120 + 2 * (LW + 20);
+  // 留了一成的页：多一项落进空位，不用分裂
+  const tE = Tend('i14b') + 0.05, lx2 = 120 + 2 * (LW + 20);
   fly(B, '多一项', [lx2 + 40, 860], [lx2 + LW - 70, 540], tE, { cls: 'navy', fs: 22, d: 0.45, sink: true });
-  fromTo(leaves9[2].f, tE + 0.55, { width: (LW - 10) * 0.9 }, { width: (LW - 10) * 0.95, duration: 0.25 });
+  fromTo(leaves9[2].f, tE + 0.55, { width: FW * 0.9 }, { width: FW * 0.95, duration: 0.25 });
   fromTo(rooms[2], tE + 0.55, { width: RW, x: 0 }, { width: RW / 2, x: RW / 2, duration: 0.25 });
   hide(roomL, tE + 0.5, { d: 0.2 });
   const okL = h('div', 'tag ok', B, '留了一成：放得下，不用分裂'); px(okL, 120, 640); css(okL, { fontSize: '24px' }); set(okL, 0, { autoAlpha: 0 }); show(okL, tE + 0.7, { y: -6 });
   sfx('pop', tE + 0.6, { g: 0.5 });
+  // 起名：一页装到几成就停，叫填充比例；索引默认 90
+  const ffN = h('div', 'abs', B, '<b>填充比例</b>：一页装到几成就停　·　索引默认 <b>90</b>'); ffN.dataset.gloss = '填充比例'; px(ffN, 120, 440); css(ffN, { font: '500 30px "Sans SC"', color: 'var(--ink)', background: '#fff', padding: '6px 16px', borderLeft: '8px solid #e0a11b' });
+  set(ffN, 0, { autoAlpha: 0 }); show(ffN, T('i15', '填充比例') - 0.2, { x: -12 }); sfx('pop', T('i15', '填充比例'), { g: 0.5 });
+  fromTo(rt9, T('i15', '填充比例') - 0.3, { opacity: 1 }, { opacity: 0.25, duration: 0.3 });
 });

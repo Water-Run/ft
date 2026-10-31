@@ -9,7 +9,7 @@ scene('history', ({ root, s, c0 }) => {
   hdoc(A, '从伯克利的研究项目，到今天的 PostgreSQL 18', 72, 128);
   const Y = 800, X = (yr) => 160 + (yr - 1984) * 37;                // 1984–2027 映射到 160–1751
   const axis = h('div', 'axis', A); px(axis, 120, Y, 1680); css(axis, { height: '4px', background: 'var(--pg)' });
-  fromTo(axis, c0 + 0.1, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.9, ease: 'power2.inOut' });
+  fromTo(axis, c0 - 1.5, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: Math.max(1.2, T('h1', '研究系统') - c0 + 1.5), ease: 'power1.inOut' });   // 年代轴一路画到 h1 讲完，开头不留静止
   const mk = h('div', 'abs', A); px(mk, X(1986) - 14, Y - 58, 28, 58); mk.dataset.name = '年代标记';
   mk.innerHTML = '<div style="position:absolute;left:0;top:0;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:20px solid var(--navy)"></div><div style="position:absolute;left:12px;top:18px;width:4px;height:40px;background:var(--navy)"></div>';
   show(mk, T('h1'), { y: -16, d: 0.4 });
@@ -24,7 +24,10 @@ scene('history', ({ root, s, c0 }) => {
     return { dot, y, l };
   };
   const n86 = node(1986, '伯克利开始实现', T('h1') - 0.5, true, -40);
-  keyed(n86.l).at(T('h1', '研究系统'), { html: '伯克利开始实现<br>一个研究系统' }); sfx('tick', T('h1', '研究系统'), { g: 0.4 });
+  keyed(n86.l).at(T('h1', '研究系统'), { html: '伯克利开始实现<br>一个研究系统' });
+  // 开头一行大字：年份与地点
+  const dl = h('div', 'abs', A, '1986 · 伯克利'); px(dl, 700, 330); css(dl, { font: '800 96px "Open Sans","Sans SC"', color: 'var(--pg)', whiteSpace: 'nowrap' }); set(dl, 0, { autoAlpha: 0 }); slam(dl, T('h1', '伯克利') - 0.2, { from: 1.25 }); gone(dl, T('h2') - 0.3, 0.3);
+  sfx('tick', T('h1', '研究系统'), { g: 0.4 }); tl.fromTo(n86.l, { scale: 1.2 }, { scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, T('h1', '研究系统') - 0.05);   // 已经在画面上：只弹一下，不重设显隐
   // 左栏：人物卡（FACTS H1、H6、H11）
   const card = (y, head, lines, color) => {
     const b = h('div', 'abs', A); px(b, 72, y, 500); css(b, { background: '#fff', border: `3px solid ${color}` }); b.dataset.name = head;

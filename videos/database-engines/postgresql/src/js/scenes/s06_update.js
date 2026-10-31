@@ -63,10 +63,11 @@ scene('update', ({ root, s, c0 }) => {
   const keep = tagEl(A, '数据不动', 92 + 560, 678, 'ok'); css(keep, { fontSize: '24px' }); show(keep, T('u7', '不动'), { y: -8 });
   to(old.data, T('u7', '不动'), { boxShadow: 'inset 0 0 0 4px #2f6b26', duration: 0.3 });
   [old.xmax, old.ctid].forEach((c, i) => to(c, T('u7b', '两处') + i * 0.15, { backgroundColor: '#336791', duration: 0.2 }));
-  keyed(old.xmax).at(T('u8', '事务号'), { html: `xmax <b>${U.xid}</b>` }); set(old.xmax, T('u8', '事务号'), { backgroundColor: '#b8442f' }); sfx('tick', T('u8', '事务号'));
+  // 不写更新实验的事务号：第七章讲的是并发实验的 4856，两处数字不同会让人疑惑
+  keyed(old.xmax).at(T('u8', '事务号'), { html: 'xmax <b>本次事务</b>' }); set(old.xmax, T('u8', '事务号'), { backgroundColor: '#b8442f' }); sfx('tick', T('u8', '事务号'));
   keyed(old.ctid).at(T('u9', '新版本'), { html: `t_ctid (${nP},${nL})` }); sfx('tick', T('u9', '新版本'));
   const ov = overlay(A); const ar = curve(ov, [92 + 328 + 105, 620], [1028 + 255, 586], 'navy', { bend: 500 }); arrowIn(ar, T('u9', '新版本') - 0.2, 0.6);
-  keyed(nv.xmin).at(T('u10', 'xmin'), { html: `xmin <b>${U.xid}</b>` }); set(nv.xmin, T('u10', 'xmin'), { backgroundColor: '#b8442f' }); sfx('tick', T('u10', 'xmin'));
+  keyed(nv.xmin).at(T('u10', 'xmin'), { html: 'xmin <b>本次事务</b>' }); set(nv.xmin, T('u10', 'xmin'), { backgroundColor: '#b8442f' }); sfx('tick', T('u10', 'xmin'));
   // 视线框：跟着旁白指到正在讲的那一处
   const rA = focusRing(A);
   rA.at(T('u4', '原来那一页'), pgA).at(T('u5', '72'), gapA).at(T('u5b', '新版本'), [72, 742, 616, 50]).at(T('u5b', '指针'), [692, 742, 120, 50]).at(T('u5b', '92') + 0.25, [72, 742, 860, 112]).at(T('u6b', '49'), [1028, 586, 820, 52])
@@ -77,14 +78,15 @@ scene('update', ({ root, s, c0 }) => {
   [oldL, keep].forEach((e) => hide(e, T('u11') - 0.1, { d: 0.2 }));
   // 两个版本，两段可见范围（第三章的画法）：旧版本到这个事务号止，新版本从它起，首尾相接
   const RX = 72, RM = 420, RE = 730, RY2 = 806;
-  const rb = (x0, x1, html, bg, fg) => { const b = h('div', 'abs', A, html); px(b, x0, RY2, x1 - x0, 42); css(b, { background: bg, color: fg, font: '700 22px "Sans SC"', lineHeight: '42px', padding: '0 12px', boxSizing: 'border-box', whiteSpace: 'nowrap', transformOrigin: '0 50%' }); return b; };
-  const rOld = rb(RX, RM, `旧版本：${D.alice.xmin} → ${U.xid}`, 'var(--sky-lt)', 'var(--navy)'), rNew = rb(RM, RE, `新版本：${U.xid} →`, 'linear-gradient(90deg,var(--pg) 70%,rgba(51,103,145,.15))', '#fff');
+  const rb = (x0, x1, html, bg, fg) => { const b = h('div', 'abs', A, html); px(b, x0, RY2, x1 - x0, 42); css(b, { background: bg, color: fg, font: '700 22px "Sans SC"', lineHeight: '42px', padding: '0 12px', boxSizing: 'border-box', whiteSpace: 'nowrap', overflow: 'hidden' }); return b; };
+  const rOld = rb(RX, RM, `旧版本：${D.alice.xmin} → 本次事务`, 'var(--sky-lt)', 'var(--navy)'), rNew = rb(RM, RE, '新版本：本次事务 →', 'linear-gradient(90deg,var(--pg) 70%,rgba(51,103,145,.15))', '#fff');
   const rTk = h('div', 'abs', A); px(rTk, RM - 2, RY2 - 12, 4, 66); css(rTk, { background: 'var(--warn)' });
   const rLb = capt(A, '可见范围', RX, RY2 - 36); css(rLb, { fontSize: '22px', color: 'var(--ink2)' });
   [rOld, rNew, rTk, rLb].forEach((e) => set(e, 0, { autoAlpha: 0 }));
-  tl.fromTo(rOld, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.4, immediateRender: false }, T('u11', '两个版本') - 0.2);
-  tl.fromTo(rNew, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.4, immediateRender: false }, T('u11', '两个版本') + 0.2);
-  show(rTk, T('u11', '两个版本') + 0.15, { y: 0, d: 0.2 }); show(rLb, T('u11', '两个版本') - 0.2, { y: 6 });
+  // 旁白 u10b：旧版本的范围到这个事务为止，新版本从这里开始（长度用 width 动画，条里的字不被压扁）
+  tl.fromTo(rOld, { autoAlpha: 1, width: 0 }, { width: RM - RX, duration: 0.5, immediateRender: false }, T('u10b', '旧版本') - 0.2);
+  tl.fromTo(rNew, { autoAlpha: 1, width: 0 }, { width: RE - RM, duration: 0.5, immediateRender: false }, T('u10b', '新版本') - 0.2);
+  show(rTk, T('u10b', '为止') - 0.2, { y: 0, d: 0.2 }); show(rLb, T('u10b') - 0.3, { y: 6 });
 
   // ── B：三个索引各加一项；对照 InnoDB ──
   hdoc(B, '三个索引，各插一项', 72, 128);
@@ -147,7 +149,7 @@ scene('update', ({ root, s, c0 }) => {
   const mk = (txt, x, cls) => { const e = tagEl(C, txt, x, 278, cls); css(e, { fontSize: '24px' }); return e; };
   const ok1 = mk('✓ users_hot', 72, 'ok'), ok2 = mk('✓ users_hot', 620, 'ok');
   const x1 = mk('✗ users：年龄有索引', 270, 'warn'), x2 = mk(`✗ users：第 ${oP} 页满了`, 818, 'warn');
-  show(ok1, T('u23', '年龄不建索引'), { y: 8 }); show(ok2, T('u23', '一成空位'), { y: 8 }); sfx('tick', T('u23', '一成空位'), { p: 0.3 });
+  show(ok1, T('u23', '年龄不建索引'), { y: 8 }); show(ok2, T('u23', '90'), { y: 8 }); sfx('tick', T('u23', '90'), { p: 0.3 });
   slam(x1, T('u26', '年龄有索引'), { from: 1.2 }); slam(x2, T('u26', '满了'), { from: 1.2 }); sfx('error', T('u26', '年龄有索引'), { g: 0.5 }); sfx('error', T('u26', '满了'), { g: 0.5 });
   // 页内：旧项 → 新项；索引只指旧项。页一开始就在：旧版本、留着的空位、指向旧版本的索引
   const [hP, hL] = H.old, [, hN] = H.new;
@@ -172,31 +174,28 @@ scene('update', ({ root, s, c0 }) => {
   fly(C, '查询', [330, PY - 6], [560, PY - 14], T('u22') + 0.1, { cls: 'warn', fs: 24, d: 0.5, hold: 0.3 });
   fly(C, '查询', [560, PY - 14], [1010, PY + 66], T('u22', '跳过去') - 0.3, { cls: 'warn', fs: 24, d: 0.5, hold: 0.4 });
   // 两次更新写的日志
-  const walRows = (arr) => arr.map((w) => [w[0], w[1]]);
-  const TY = 606;
-  const t1 = tableDoc(C, ['users（年龄有索引）', ''], walRows(U.wal), 72, TY, { mono: [0, 1] });
-  const t2 = tableDoc(C, ['users_hot', ''], walRows(H.wal), 760, TY, { mono: [0, 1] });
-  css(t1, { fontSize: '23px' }); css(t2, { fontSize: '23px' });
-  set(t1, 0, { autoAlpha: 0 }); set(t1, T('u24') - 0.1, { autoAlpha: 1 }); set(t2, 0, { autoAlpha: 0 }); set(t2, T('u24', 'HOT') - 0.4, { autoAlpha: 1 });
-  [...t1.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24') - 0.1 + i * 0.25, { x: -10, y: 0, d: 0.3 }));
-  [...t2.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24', 'HOT') - 0.4 + i * 0.3, { x: -10, y: 0, d: 0.3 })); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
-  const tlab = capt(C, '各写了哪些日志记录（每次修改先记一条日志，第 9 章细讲）', 72, TY - 40); show(tlab, T('u24') - 0.2);
+  // 两张表各改一次年龄：索引加了几项（U2、U6）。不列日志记录：日志第九章才讲
+  const TY = 640;
+  const cmpRow = (y, name, res, cls) => { const r = h('div', 'abs', C); px(r, 72, y, 1300, 56); const n = h('div', 'abs', r, name); px(n, 0, 0, 520, 56); css(n, { background: '#fff', border: '2px solid var(--line)', font: '600 26px "Sans SC"', lineHeight: '52px', paddingLeft: '18px', color: 'var(--ink)' }); const v = tagEl(r, res, 540, 8, cls); css(v, { fontSize: '26px' }); return r; };
+  const t1 = cmpRow(TY, 'users（年龄有索引、页装满）', '三个索引各加一项', 'warn'), t2 = cmpRow(TY + 72, 'users_hot（年龄不建索引、留一成）', 'HOT：索引一项都没加', 'ok');
+  set(t1, 0, { autoAlpha: 0 }); set(t2, 0, { autoAlpha: 0 });
+  show(t1, T('u24') - 0.1, { x: -10 }); show(t2, T('u24', 'HOT') - 0.2, { x: -10 }); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
   // 旁白顺序（2026-10-31 调）：条件 → Alice 两条都不满足 → 表默认装满、可以改小 → 换一张留一成的表验证
   // 填充比例接上第四章：左边是主键树那页叶子（留一成，同样的黄色斜纹），右边是表的页（默认装满）；改小以后，表的页也留出一成
   const FY2 = 690;
-  const lfL = capt(C, '主键树的叶子（第 4 章）：留一成', 72, FY2 - 44); css(lfL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
+  const lfL = capt(C, '索引的叶子：填充比例 90（第 4 章）', 72, FY2 - 44); css(lfL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
   const lf = h('div', 'page', C); px(lf, 72, FY2, 380, 76); lf.dataset.name = '主键树的叶子';
   const lff = h('div', 'abs', lf); px(lff, 4, 4, 372 * 0.9 - 4, 62); css(lff, { background: 'var(--sky-lt)' });
   const lfr = h('div', 'abs', lf); px(lfr, 372 * 0.9, 4, 372 * 0.1, 62); css(lfr, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
-  const tpL = capt(C, '表的页：默认装满', 540, FY2 - 44); css(tpL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
+  const tpL = capt(C, '表的页：填充比例默认 100', 540, FY2 - 44); css(tpL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
   const tp = h('div', 'page', C); px(tp, 540, FY2, 860, 76); tp.dataset.name = '表的页';
   const tpf = h('div', 'abs', tp); px(tpf, 4, 4, 0, 62); css(tpf, { background: 'var(--sky-lt)' });
   const tpr = h('div', 'abs', tp); px(tpr, 852 * 0.9, 4, 852 * 0.1, 62); css(tpr, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
   const tprL = capt(C, '留给更新', 1420, FY2 + 20); css(tprL, { fontSize: '26px', color: '#7d5500', fontWeight: 700 });
   const ffN = capt(C, '<b>填充比例</b>（fillfactor）：表默认 100，把页装满；改成 90，每页留出一成给更新', 72, FY2 + 100); css(ffN, { fontSize: '24px' });
-  const tLf = T('u27', '主键树'), tTb = T('u27', '表默认'), tSm = T('u28', '改小');
-  show(lfL, tLf - 0.1, { y: 8 }); wipe(lf, tLf, { dir: 'l', d: 0.35 }); set(lfr, 0, { autoAlpha: 0 }); show(lfr, T('u27', '一成'), { y: 0, d: 0.3 }); sfx('tick', T('u27', '一成'), { g: 0.5 });
-  show(tpL, tTb - 0.1, { y: 8 }); wipe(tp, tTb, { dir: 'l', d: 0.3 }); tl.fromTo(tpf, { width: 0 }, { width: 844, duration: 0.7, immediateRender: false }, T('u27', '装满') - 0.4);
+  const tLf = T('u27', '表也有') - 0.4, tTb = T('u27', '100'), tSm = T('u28', '改小');
+  show(lfL, tLf - 0.1, { y: 8 }); wipe(lf, tLf, { dir: 'l', d: 0.35 }); set(lfr, 0, { autoAlpha: 0 }); show(lfr, tLf + 0.4, { y: 0, d: 0.3 }); sfx('tick', tLf + 0.4, { g: 0.5 });
+  show(tpL, tTb - 0.1, { y: 8 }); wipe(tp, tTb, { dir: 'l', d: 0.3 }); tl.fromTo(tpf, { width: 0 }, { width: 844, duration: 0.7, immediateRender: false }, T('u27b', '装满') - 0.4);
   set(tpr, 0, { autoAlpha: 0 }); tl.fromTo(tpf, { width: 844 }, { width: 852 * 0.9 - 4, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, tSm - 0.3);
   show(tpr, tSm, { y: 0, d: 0.3 }); show(tprL, tSm + 0.1, { x: -8 }); show(ffN, tSm + 0.3, { y: 8 });
   keyed(tpL).at(tSm, { html: '表的页：填充比例改成 90' }); sfx('pop', tSm, { g: 0.5 });
@@ -204,6 +203,6 @@ scene('update', ({ root, s, c0 }) => {
   const rC = focusRing(C);
   rC.at(T('u19', '一是'), cond1).at(T('u20', '二是'), cond2).at(T('u20', '原来那一页'), [980, PY + 92, 420, 56]).at(T('u21', '本页') + 0.4, [990, PY + 100, 400, 40]).at(T('u21b'), hidx)
     .at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).at(tLf, lf).at(tTb, tp)
-    .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '没有索引插入'), t1).off(s.end - 0.5);
+    .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '一项都没加'), t2).off(s.end - 0.5);
   gone(jump, T('u24') - 0.35, 0.25);
 });

@@ -69,8 +69,10 @@ scene('tradeoff', ({ root, s, c0 }) => {
   const procL = h('div', 'abs cap', proc, '一个程序'); px(procL, 14, 6);
   const app2 = h('div', 'node', proc, '应用代码'); px(app2, 20, 60, 200);
   const lite = h('div', 'node', proc, 'SQLite'); px(lite, 260, 60, 200); css(lite, { borderColor: 'var(--navy)', color: 'var(--navy)' });
-  const file = h('div', 'node grey', pic, '一个文件'); px(file, 1330, 60, 200);
-  const ln2 = path(ovp, 'M960,81 L1326,81', 'navy', { w: 3 });
+  // 「一个文件」与 SQLite 框对齐（SQLite 在虚线框里，比外面低一截）；箭头按两个框的实际位置画在中线上（WaterRun 看 r8：「SQlite那个箭头指向的问题怎么还没修好?」）
+  const lb = box(lite, pic);
+  const file = h('div', 'node grey', pic, '一个文件'); px(file, 1330, lb.y, 200);
+  const ln2 = path(ovp, `M${lb.x + lb.w},${lb.y + lb.h / 2} L1326,${lb.y + lb.h / 2}`, 'navy', { w: 3 });
   show(app1, T('t14') - 0.2, { x: -10 }); show(srv, T('t14') - 0.1, { x: -10 }); arrowIn(ln, T('t14'), 0.3);
   wipe(proc, T('t14', '嵌进'), { dir: 'l' }); show(procL, T('t14', '嵌进')); show(app2, T('t14', '嵌进') + 0.1); slam(lite, T('t14', '嵌进') + 0.25, { from: 1.2 }); sfx('pop', T('t14', '嵌进') + 0.25);
   show(file, T('t14', '嵌进') + 0.5, { x: 10 }); arrowIn(ln2, T('t14', '嵌进') + 0.4, 0.3);

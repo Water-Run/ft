@@ -24,6 +24,9 @@ scene('crash', ({ root, s, c0 }) => {
   const tape = h('div', 'abs', A); px(tape, 72, 370, 1776, 80); tape.dataset.name = '日志带';
   const recs = ['…', '…', 'Carol 的修改', 'Carol 的修改', 'Alice：LOCK', 'Alice：UPDATE', 'Alice：索引 ×3', 'Alice：COMMIT'];
   const recEls = recs.map((r, i) => { const e = h('div', 'abs', tape, r); px(e, i * 222, 0, 212, 72); css(e, { border: '3px solid var(--pg)', background: i < 2 ? 'var(--pg)' : '#fff', font: '600 22px "Sans SC"', textAlign: 'center', lineHeight: '66px', color: i < 2 ? '#fff' : 'var(--navy)' }); if (i >= 2) css(e, { borderStyle: 'dashed' }); return e; });
+  // 一条日志里记着什么：改了哪一页、改成什么（w2b）
+  const rec1 = tagEl(A, '一条日志：改了哪一页 · 改成什么', 72 + 2 * 222, 460, 'navy'); css(rec1, { fontSize: '24px' }); show(rec1, T('w2b', '一条日志') - 0.1, { y: -8 }); hide(rec1, T('w4') - 0.2, { d: 0.25 });
+  const recAr = link(overlay(A), [[72 + 2 * 222 + 100, 458], [72 + 2 * 222 + 100, 446]], 'navy'); arrowIn(recAr, T('w2b', '一条日志'), 0.2); gone(recAr, T('w4') - 0.2, 0.25);
   show(tapeL, T('w2', '日志') - 0.1); recEls.slice(0, 4).forEach((e, i) => show(e, (i < 2 ? T('w2', '日志') : T('w3') - 0.2) + i * 0.06, { x: -10, d: 0.2 }));
   recEls.slice(4).forEach((e, i) => show(e, T('w4') + i * 0.15, { x: -10, d: 0.2 }));
   sfx('tick', T('w4'), { g: 0.5 });
@@ -39,7 +42,7 @@ scene('crash', ({ root, s, c0 }) => {
   // 数据页：内存里的已经改了，磁盘上的还是旧的
   const bufP = h('div', 'page', A); px(bufP, 72, 560, 840, 120); bufP.dataset.name = '内存里的第 23 页';
   const bufL = capt(A, '内存里的第 23 页', 72, 520);
-  const bufR = h('div', 'tup new', bufP, `Alice 旧版本　xmax ${W.buffer.alice_xmax}　→ ${W.buffer.alice_ctid}`); px(bufR, 16, 36, 800);
+  const bufR = h('div', 'tup new', bufP, 'Alice 旧版本　xmax 记上本次事务　→ 指向新版本'); px(bufR, 16, 36, 800);   // 不写这次实验的事务号与新地址：与第六、七章的实测不同，会让人疑惑
   const dskP = h('div', 'page grey', A); px(dskP, 1000, 560, 840, 120); dskP.dataset.name = '磁盘上的第 23 页';
   const dskL = capt(A, '磁盘上（数据文件里）的第 23 页', 1000, 520);
   const dskR = h('div', 'tup grey', dskP, `Alice　xmax ${W.disk.alice_xmax}　（还是旧的）`); px(dskR, 16, 36, 800);

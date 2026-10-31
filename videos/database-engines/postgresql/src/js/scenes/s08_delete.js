@@ -1,9 +1,9 @@
-// 08 删与回收：DELETE 只记 xmax（D1、D2）；Bob 的快照挡住 VACUUM（D3、D6）→ 收回、Dave 复用（D4、D5、D10、D12）→ 读取时清理、自动清理、长事务（U4、D9）→ 回绕与冻结（D7、D8、D11）
+// 08 删与回收（第 3 稿：DELETE 后「范围到此为止」；可见性图从第五章挪来，接在 VACUUM 之后）：DELETE 只记 xmax（D1、D2）；Bob 的快照挡住 VACUUM（D3、D6）→ 收回、Dave 复用（D4、D5、D10、D12）→ 读取时清理、自动清理、长事务（U4、D9）→ 回绕与冻结（D7、D8、D11）
 scene('delete', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const tB = Tend('d9') + 0.5, tC = Tend('d20') + 0.5, tD = Tend('d28b') + 0.5;
-  const [A, B, C, Dd] = screens(world, [c0, tB, tC, tD, s.end]);
-  drift(world, s, [tB, tC, tD], 1);
+  const tB = Tend('d9') + 0.5, tV = Tend('d20') + 0.5, tC = Tend('v8') + 0.5, tD = Tend('d28b') + 0.5;
+  const [A, B, V, C, Dd] = screens(world, [c0, tB, tV, tC, tD, s.end]);
+  drift(world, s, [tB, tV, tC, tD], 1);
   const E = D.delete, [P, LP] = D.alice.ctid;
   const vline = (arr, re) => esc(arr.find((l) => re.test(l)) || '');
   // 第 23 页的实物：页头、一排行指针（第 26 个高亮）、指针和行之间的空隙、页底的行。三屏都用它，讲的始终是同一个位置
@@ -39,8 +39,8 @@ scene('delete', ({ root, s, c0 }) => {
   const rowA = rowCells(pa.box, '', [[200, 'xmax 0', true], [662, '2050  Alice  42']]), xmc = rowA.children[0];
   wipe(pa.box, T('d1') + 0.3, { dir: 'l' }); show(pa.cap, T('d1') + 0.3); show(rowA, T('d1') + 0.6, { y: 8 }); arrowIn(pa.ar, T('d1') + 0.8, 0.3);
   const keepT = tagEl(A, '这一行不擦掉', 260, 330, 'ok'); css(keepT, { fontSize: '26px' }); show(keepT, T('d2', '不擦掉'), { y: 8 }); sfx('tick', T('d2', '不擦掉')); hide(keepT, T('d3') - 0.1, { d: 0.2 });
-  keyed(xmc).at(T('d3', 'xmax'), { html: `xmax <b>${E.xid}</b>` }); set(xmc, T('d3', 'xmax'), { backgroundColor: '#b8442f' }); sfx('tick', T('d3', 'xmax'));
-  const xmT = tagEl(A, `xmax 记上删除它的事务 ${E.xid}：可见范围到这里为止`, 260, 590, 'warn'); css(xmT, { fontSize: '26px' }); show(xmT, T('d3') + 0.3, { y: 8 });   // 接第三章的「可见范围」
+  keyed(xmc).at(T('d3', 'xmax'), { html: 'xmax <b>本次删除</b>' }); set(xmc, T('d3', 'xmax'), { backgroundColor: '#b8442f' }); sfx('tick', T('d3', 'xmax'));
+  const xmT = tagEl(A, 'xmax 记上删除它的事务', 260, 590, 'warn'); keyed(xmT).at(T('d3b', '范围') - 0.2, { html: 'xmax 记上删除它的事务：这一版的范围到此为止' }); css(xmT, { fontSize: '26px' }); show(xmT, T('d3') + 0.3, { y: 8 });   // 接第三章的「可见范围」
   const still = tagEl(A, '行还在页里', 72, 590, 'navy'); show(still, T('d4', '还在'), { y: 8 }); sfx('pop', T('d4', '还在'), { g: 0.5 });
   const adm = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">SELECT</span> … <span class="k">WHERE</span> id = 2050;\n<span class="d">(0 rows)</span>`, 1040, 196, 800); css(adm, { fontSize: '23px' });
   show(adm, T('d4'), { x: 20 }); sfx('blip', T('d4'), { g: 0.4, p: 0.4 });
@@ -68,7 +68,7 @@ scene('delete', ({ root, s, c0 }) => {
   const eV = tv.type(T('d10') - 0.2, '<span class="k">VACUUM</span> (VERBOSE) users;', 'postgres=#', 45);
   tv.print(Math.max(eV + 0.1, T('d10b') - 0.3), `<span class="d">${vline(va, /^tuples/)}</span>`); tv.print(Math.max(eV + 0.2, T('d11')), `<span class="d">${vline(va, /^index scan needed/)}</span>`);
   const pb = page23(B, 72, 400, `第 ${P} 页`);
-  const rowB = rowCells(pb.box, 'dead', [[200, `xmax ${E.xid}`, true], [662, '2050  Alice  42']]);
+  const rowB = rowCells(pb.box, 'dead', [[200, 'xmax 本次删除', true], [662, '2050  Alice  42']]);
   show(pb.box, tB + 0.1); show(pb.cap, tB + 0.1); show(rowB, tB + 0.2); arrowIn(pb.ar, tB + 0.3, 0.2);
   // VACUUM 沿行指针扫过去，这回过了第 26 个也不停：那一行收走，指针空出来
   const sw2 = h('div', 'abs', pb.box); px(sw2, 10, 30, 6, 44); css(sw2, { background: 'var(--navy)' }); sw2.dataset.name = '扫描线';
@@ -111,6 +111,52 @@ scene('delete', ({ root, s, c0 }) => {
   const inn = noteBox(B, '<b>InnoDB</b>　要等后台的 purge 做完，Dave 才用上这块空间', 1040, 860, 800, 'grey'); show(inn, T('d20'), { y: 10 });
   const fB = focusRing(B);
   fB.at(T('d11', '索引'), [1040, 380, 760, 150]).at(T('d12', '26'), pb.p26).at(T('d13', '空隙'), pb.gapBox(40)).at(T('d13', '160') + 0.6, pb.gapBox(98)).at(T('d14', '小文件'), fsm).at(T('d17', '放得下'), fsm.children[1]).at(T('d18', '26'), drow).at(T('d19', '原来'), same).at(T('d20', 'purge'), inn).at(T('d20', '空间'), drow).off(tC - 0.4);
+
+  // ── 可见性图（第 3 稿从第五章挪到这里：讲完 VACUUM 再讲）：VACUUM 顺手给全可见的页记一笔；只查名字的查询看到这一笔，就不用回堆看行头（T8、Q8）──
+  hdoc(V, 'VACUUM 顺手记下的另一件事', 72, 128);
+  const ovV = overlay(V);
+  const planLine = (l) => esc(l.replace(/\s*\(cost=[^)]*\)/, '').replace(/\s*\(actual[^)]*\)/, ''));
+  const vStrip = heapStrip(V, 90, 660, { w: 33, gap: 4, h: 80, labels: [0, P, 46] });
+  const vStripL = capt(V, '<b>堆</b>（users 的数据文件）', 90, 620); css(vStripL, { fontSize: '24px' });
+  show(vStrip, tV + 0.1, { y: 10 }); show(vStripL, tV + 0.1);
+  // 可见性图：堆旁边的小文件，每页一格；VACUUM 扫过一页，页里的行对谁都看得见，就记上这一格
+  const vm = h('div', 'abs', V); px(vm, 1180, 196, 690, 230); vm.dataset.name = '可见性图';
+  const vmt = h('div', 'cap', vm, `<b>可见性图</b>　${D.files.users.node}_vm · 堆旁边的小文件`); px(vmt, 0, 0); css(vmt, { color: 'var(--pg)', fontSize: '24px' });
+  const bits = [];
+  for (let i = 0; i < D.heap.pages; i++) { const b = h('div', 'abs', vm); px(b, (i % 16) * 42, 50 + Math.floor(i / 16) * 52, 34, 40); css(b, { border: '2px solid var(--pg)', background: '#fff' }); bits.push(b); }
+  const bitN = capt(vm, `第 ${P} 页这一格`, (P % 16) * 42 - 40, 50 + Math.floor(P / 16) * 52 + 44); css(bitN, { fontSize: '22px', color: 'var(--navy)' }); set(bitN, 0, { autoAlpha: 0 });
+  wipe(vm, T('v2b', '可见性图') - 0.3, { dir: 'r' }); sfx('pop', T('v2b', '可见性图'), { g: 0.5 });
+  const tb0 = T('v2', '看得见') - 0.2, tb1 = T('v2b', '记一笔') + 0.4;
+  bits.forEach((b, i) => set(b, tb0 + (tb1 - tb0) * i / 47, { background: 'var(--pg)' })); sfx('tick', tb0, { p: 0.4 }); sfx('tick', tb1, { p: 0.6 });
+  const scanV = h('div', 'abs', V); css(scanV, { border: '4px solid var(--warn)' }); scanV.dataset.name = 'VACUUM 扫过';
+  F((t) => { const k = clamp((t - tb0) / (tb1 - tb0)), i = Math.min(46, Math.floor(k * 47)); px(scanV, 90 + i * 37 - 4, 656, 41, 88); scanV.style.opacity = t < tb0 || t > tb1 + 0.2 ? 0 : 1; });
+  const vmG = glossBox(V, '可见性图', '<b>可见性图</b>：每页一格。格子记上，表示这页的行对所有事务都看得见', 1180, 450, 690);
+  show(vmG, T('v2b', '记一笔') - 0.1, { y: 10 }); fromTo(vmt, T('v3', '小文件') - 0.2, { color: '#336791' }, { color: '#b8442f', duration: 0.2 });
+  // 有什么用：姓名索引的叶子里有名字，却没有行头
+  const PL = h('div', 'abs', V); px(PL, 90, 196, 560); css(PL, { border: '3px solid var(--pg)', background: '#fff' }); PL.dataset.name = '姓名树的叶子';
+  const plh = h('div', '', PL, '姓名树的叶子：名字 → 行的地址'); css(plh, { background: 'var(--pg)', color: '#fff', font: '700 24px "Sans SC"', padding: '6px 16px' });
+  const plr = [[`Alice → (${P}, ${LP})`, true], ['User00001 → (0, 1)'], ['User00002 → (0, 2)']].map(([txt, hi]) => { const r = h('div', '', PL, txt); css(r, { font: '600 26px var(--mono)', padding: '6px 16px', borderTop: '1.5px solid var(--line)', color: hi ? '#fff' : 'var(--navy)', background: hi ? 'var(--pg)' : '#fff' }); return r; });
+  wipe(PL, T('v4', '叶子') - 0.3, { dir: 'l', d: 0.4 });
+  const nameIn = tagEl(V, '名字就在这里', 670, 250, 'ok'); css(nameIn, { fontSize: '24px' }); show(nameIn, T('v4', '有名字') - 0.1, { x: -8 });
+  const noHead = tagEl(V, '行头在堆里', 90 + P * 37 - 50, 600, 'warn'); css(noHead, { fontSize: '24px' }); show(noHead, T('v4', '没有行头') - 0.1, { y: -8 });
+  [nameIn, noHead].forEach((e) => hide(e, T('v6') + 0.2, { d: 0.25 }));
+  // 只要名字：本来不必去堆；可要确认看得见，还得回堆看行头 —— VACUUM 之前实测回堆 1 次；页记了这一笔，之后 0 次
+  const tio = term(V, 90, 432, 1060, 4, { fs: 23, lh: 34, name: 'psql 会话' });
+  const pickL = (arr) => arr.filter((l) => /Index Only Scan|Heap Fetches/.test(l)).map(planLine);
+  const e3 = tio.type(T('v5') - 0.2, `<span class="k">SELECT</span> name <span class="k">FROM</span> users <span class="k">WHERE</span> name = 'Alice';`, 'postgres=#', 45);
+  pickL(D.ios.before_vacuum).forEach((l, i) => tio.print(Math.max(e3 + 0.1, T('v6', '回堆') - 0.3) + i * 0.15, `<span class="d">${l}</span>`)); sfx('blip', T('v6', '回堆'), { g: 0.5 });
+  const pq = [90 + P * 37 + 16, 656];
+  const toHeap = curve(ovV, [650, 236], pq, 'warn', { w: 3.5, bend: 420 }); arrowIn(toHeap, T('v6', '回堆') - 0.4, 0.5);
+  const hf1 = tagEl(V, 'VACUUM 之前：回堆 1 次（Heap Fetches: 1）', 90, 780, 'warn'); css(hf1, { fontSize: '24px' }); show(hf1, T('v6', '行头') - 0.1, { y: -6 });
+  gone(toHeap, T('v7') - 0.2, 0.25);
+  const bq = [1180 + (P % 16) * 42 + 17, 196 + 50 + Math.floor(P / 16) * 52];
+  fly(V, `(${P},${LP})`, [660, 236], [bq[0] - 50, bq[1] - 46], T('v7', '记了') - 0.6, { cls: 'navy', fs: 22, d: 0.6, sink: true });   // 地址飞到可见性图第 23 页那一格（不画连线，免得穿过文件名）
+  fromTo(bits[P], T('v7', '记了'), { backgroundColor: '#336791' }, { backgroundColor: '#e0a11b', duration: 0.2 });
+  tio.print(T('v8', '之后') - 0.2, `<span class="ok">${esc(pickL(D.ios.after_vacuum).find((l) => /Heap Fetches/.test(l)).trim())}</span><span class="d">　（VACUUM 之后）</span>`);
+  const hf0 = tagEl(V, 'VACUUM 之后：一次都不用（Heap Fetches: 0）', 90, 830, 'ok'); css(hf0, { fontSize: '24px' }); show(hf0, T('v8', '一次都不用') - 0.2, { y: -6 }); sfx('chime', T('v8', '一次都不用'), { g: 0.6 });
+  const fV = focusRing(V);
+  fV.at(T('v2b', '记一笔'), vm).at(T('v4', '有名字'), plr[0]).at(T('v6', '行头'), vStrip.pages[P]).at(T('v7', '记了'), bits[P]).off(tC - 0.4);
+
   // ── C：读取时清理；自动清理；长事务 ──
   hdoc(C, '不是每次都要等 VACUUM', 72, 128);
   const U = D.update.users;
@@ -156,6 +202,7 @@ scene('delete', ({ root, s, c0 }) => {
   const wrapT = tagEl(Dd, '用完，就回到开头', 720, 230, 'warn'); css(wrapT, { fontSize: '30px' }); show(wrapT, T('d30', '绕回'), { x: -20 });
   const pastH = capt(Dd, '过去 · 约 20 亿个', 330, 316), futH = capt(Dd, '未来 · 约 20 亿个', 330, 640);
   css(pastH, { fontSize: '26px', color: 'var(--navy)', fontWeight: 700 }); css(futH, { fontSize: '26px', color: '#7a2a1c', fontWeight: 700 });
+  const fut2 = tagEl(Dd, '这一版范围的起点，跑到了「未来」：看不见了', 760, 600, 'warn'); css(fut2, { fontSize: '26px' }); show(fut2, T('d31b', '看不见') - 0.3, { y: 8 }); hide(fut2, T('d32') - 0.1, { d: 0.25 });
   const th = T('d31') - 0.2; show(halves, th, { y: 0, d: 0.4 }); show(pastH, th + 0.1, { y: 8 }); show(futH, th + 0.2, { y: -8 });
   // 一行旧数据的事务号不变，「现在」一直往前走：它从过去那半边退到 9 点钟，再过去就落进了未来那半边
   const dot = h('div', 'abs', Dd); px(dot, 0, 0, 30, 30); css(dot, { borderRadius: '50%', border: '4px solid #fff' }); dot.dataset.name = '一行旧数据';
