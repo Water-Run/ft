@@ -1,8 +1,10 @@
 <!doctype html>
 <!-- 根 README 的动图。画面是时间 t 的纯函数：只由 window.seek(t) 决定，没有 CSS 动画、定时器与随机数。
      重新生成：node kit/tools/gif.js docs/media/ft.html（输出 docs/media/ft.gif）。
-     一切运动以 T 为周期（旋转、谐波、标注、复制、高亮），t = T 的画面就是 t = 0 的画面，循环播放没有接缝。
-     四段对应自由软件的四项自由：运行（机器转动）、研究（标注尺寸）、修改（加入谐波、改写公式）、分发（波形复制出去）。 -->
+     视觉借鉴数字仪表盘：两只圆表、发光外环、斜分的玻璃内盘、透视网格与地平线、带倒影的大字、指示灯。
+     内容是一次大语言模型推理：输入的 token 进入上下文（左表），模型 f(t) 每次生成一个 token；
+     它先绕右环进入输出（右表），再绕左环回到上下文，成为下一步的输入，轨迹是一个 ∞。
+     回答依次点亮自由软件的四项自由：运行、研究、修改、分发。一切以 T 为周期，t = T 的画面就是 t = 0 的画面。 -->
 <html lang="zh">
 <head>
 <meta charset="utf-8">
@@ -11,136 +13,335 @@
   @font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
   @font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
   @font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
-  :root { --bg: #0d4185; --line: #eef5ff; --dim: #9fbde6; --accent: #67d4ff; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 1200px; height: 540px; overflow: hidden; background: var(--bg); }
-  body { position: relative; font-family: "Sans SC", sans-serif; color: var(--line); }
+  html, body { width: 1200px; height: 540px; overflow: hidden; background: #000; }
   svg { position: absolute; left: 0; top: 0; }
-  .abs { position: absolute; white-space: nowrap; will-change: transform; }
-  #ft { left: 56px; top: 22px; font: 900 188px/1.25 "Inter"; letter-spacing: -0.03em; }
-  #ft .t { color: var(--accent); }
-  #title { left: 62px; top: 236px; font: 900 78px/1.2 "Sans SC"; letter-spacing: 0.04em; }
-  #sub { left: 66px; top: 350px; font: 500 21px/1 "Sans SC"; color: var(--dim); letter-spacing: 0.06em; }
-  .chip { position: absolute; top: 390px; width: 92px; height: 46px; border: 1.5px solid; border-radius: 3px; font: 700 23px/43px "Sans SC"; text-align: center; letter-spacing: 0.08em; }
-  #gpl { left: 66px; top: 466px; display: flex; align-items: center; gap: 14px; }
-  #gpl b { padding: 7px 12px; border: 1.5px solid var(--line); font: 700 18px/1 "Mono"; letter-spacing: 0.02em; }
-  #gpl span { font: 500 17px/1 "Sans SC"; color: var(--dim); letter-spacing: 0.04em; }
-  #fig { left: 640px; top: 40px; font: 500 14px/1 "Mono"; color: var(--dim); letter-spacing: 0.08em; }
-  #formula { left: 640px; top: 478px; font: 500 16px/1 "Mono"; color: var(--line); }
-  #formula .t { color: var(--accent); }
-  #formula .add { color: var(--accent); }
-  .note { position: absolute; font: italic 600 16px/1 "Mono"; color: var(--accent); white-space: nowrap; }
+  #art { fill: #eef6ff; }
+  text { font-family: "Sans SC", sans-serif; }
+  .num { font: 600 19px "Inter"; }
+  .big { font: 600 54px "Inter"; }
+  .unit { font: 500 13px "Inter"; letter-spacing: 0.12em; fill: #8fb4e6; }
+  .lab { font: 500 15px "Sans SC"; letter-spacing: 0.2em; fill: #8fb4e6; }
+  .row { font: 500 17px "Sans SC"; letter-spacing: 0.08em; }
+  .lamp { font: 500 13px "Sans SC"; letter-spacing: 0.15em; }
+  .line { font: 500 22px "Sans SC"; letter-spacing: 0.04em; }
+  .tag { font: 500 15px "Sans SC"; letter-spacing: 0.1em; fill: #6f95c9; }
+  .corner { font: 500 15px "Sans SC"; letter-spacing: 0.08em; fill: #8fb4e6; }
+  .mono { font-family: "Mono"; }
 </style>
 </head>
 <body>
-<svg id="art" width="1200" height="540" viewBox="0 0 1200 540"></svg>
-<div class="abs" id="ft"><span>f(</span><span class="t">t</span><span>)</span></div>
-<div class="abs" id="title">自由视频</div>
-<div class="abs" id="sub">与自由软件一样，人人可以</div>
-<div id="chips"></div>
-<div class="abs" id="gpl"><b>GPL-3.0-or-later</b><span>源码、文案与工具全部公开</span></div>
-<div class="abs" id="fig">FIG.1　frame = f(t)</div>
-<div class="abs" id="formula"></div>
-<div class="note" id="nA">A</div>
-<div class="note" id="nT">T</div>
-<div class="note" id="nW">ωt</div>
+<svg id="art" width="1200" height="540" viewBox="0 0 1200 540">
+  <defs>
+    <radialGradient id="gScreen" cx="600" cy="236" r="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0d2f72"/><stop offset="0.35" stop-color="#081d4b"/><stop offset="0.75" stop-color="#040f2b"/><stop offset="1" stop-color="#02081a"/>
+    </radialGradient>
+    <radialGradient id="gHaze" cx="600" cy="236" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 236) scale(400 120) translate(-600 -236)">
+      <stop offset="0" stop-color="#3f8dff" stop-opacity="0.75"/><stop offset="0.45" stop-color="#1f5fd0" stop-opacity="0.32"/><stop offset="1" stop-color="#0d2f72" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gHorizon" x1="330" x2="870" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7cc8ff" stop-opacity="0"/><stop offset="0.5" stop-color="#d8efff"/><stop offset="1" stop-color="#7cc8ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gFloorFade" x1="0" x2="0" y1="236" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.95"/><stop offset="0.6" stop-color="#fff" stop-opacity="0.35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gFloorSide" x1="300" x2="900" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000"/><stop offset="0.22" stop-color="#fff"/><stop offset="0.78" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <mask id="mFloor" maskUnits="userSpaceOnUse" x="0" y="236" width="1200" height="240">
+      <rect x="0" y="236" width="1200" height="240" fill="url(#gFloorSide)"/>
+    </mask>
+    <mask id="mFloorV" maskUnits="userSpaceOnUse" x="0" y="236" width="1200" height="240">
+      <rect x="0" y="236" width="1200" height="240" fill="url(#gFloorFade)"/>
+    </mask>
+    <linearGradient id="gReflect" x1="0" x2="0" y1="332" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="mReflect" maskUnits="userSpaceOnUse" x="300" y="330" width="600" height="70">
+      <rect x="300" y="330" width="600" height="70" fill="url(#gReflect)"/>
+    </mask>
+    <radialGradient id="gFlare" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#bfe6ff" stop-opacity="0.85"/><stop offset="0.35" stop-color="#3f9bff" stop-opacity="0.35"/><stop offset="1" stop-color="#1f5fd0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gDisc" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#061536"/><stop offset="0.47" stop-color="#0b2559"/><stop offset="0.53" stop-color="#1747a8"/><stop offset="1" stop-color="#4b9dff"/>
+    </linearGradient>
+    <radialGradient id="gDiscShade" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0.72" stop-color="#020817" stop-opacity="0"/><stop offset="1" stop-color="#020817" stop-opacity="0.55"/>
+    </radialGradient>
+    <radialGradient id="gVignette" cx="600" cy="270" r="700" gradientUnits="userSpaceOnUse">
+      <stop offset="0.62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.7"/>
+    </radialGradient>
+    <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9cc8ff" stop-opacity="0.07"/><stop offset="0.35" stop-color="#9cc8ff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="fSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+</svg>
 <script>
-window.GIF = { width: 1200, height: 540, fps: 50, dur: 8, scale: 1.5 };
-const T = 8, W = Math.PI;                          // 循环周期 8 秒；基频每 2 秒转一圈，一个循环正好四圈
-const LINE = '#eef5ff', DIM = '#9fbde6', ACCENT = '#67d4ff', BG = '#0d4185';
+window.GIF = { width: 1200, height: 540, fps: 25, dur: 19.6, scale: 1 };
+const T = 19.6;
+const WHITE = '#eef6ff', DIM = '#8fb4e6', FAINT = '#2c4a7c', RING = '#2f8fff', CYAN = '#63d6ff', LIMIT = '#ff6178';
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const mod = (a, n) => ((a % n) + n) % n;
 const io3 = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
 const span = (s, a, d) => clamp((s - a) / d);
-const bump = (s, a, b, r) => io3(span(s, a, r)) * (1 - io3(span(s, b - r, r)));   // [a, b] 内为 1，两端各用 r 秒渐变
+const lerp = (a, b, k) => a + (b - a) * k;
+const mix = (a, b, k) => '#' + [1, 3, 5].map((i) => Math.round(lerp(parseInt(a.substr(i, 2), 16), parseInt(b.substr(i, 2), 16), clamp(k))).toString(16).padStart(2, '0')).join('');
 const NS = 'http://www.w3.org/2000/svg';
 const art = document.getElementById('art');
-const el = (tag, attrs, parent = art) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+const el = (tag, attrs, parent = art, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; parent.appendChild(e); return e; };
 const set = (e, attrs) => { for (const k in attrs) e.setAttribute(k, attrs[k]); };
-const $ = (id) => document.getElementById(id);
+const f2 = (v) => v.toFixed(2);
+const RAD = Math.PI / 180;
 
-// ── 图纸：网格与图框（静止） ──
-for (let x = 0; x <= 1200; x += 24) el('line', { x1: x, x2: x, y1: 0, y2: 540, stroke: LINE, 'stroke-opacity': x % 120 ? 0.05 : 0.11 });
-for (let y = 12; y <= 540; y += 24) el('line', { x1: 0, x2: 1200, y1: y, y2: y, stroke: LINE, 'stroke-opacity': (y - 12) % 120 ? 0.05 : 0.11 });
-el('rect', { x: 16, y: 16, width: 1168, height: 508, fill: 'none', stroke: LINE, 'stroke-opacity': 0.45, 'stroke-width': 1.5 });
-el('rect', { x: 22, y: 22, width: 1156, height: 496, fill: 'none', stroke: LINE, 'stroke-opacity': 0.2 });
+// ── 版面：两只表以 x = 600 为轴左右对称 ──
+const MID = 600, CY = 292, GAP = 370, R = 172, HY = 236;      // 表心 600 ± 370；外环半径 172；地平线 y = 236
+const GL = { x: MID - GAP, y: CY }, GR = { x: MID + GAP, y: CY };
+const polar = (c, r, deg) => ({ x: c.x + r * Math.cos(deg * RAD), y: c.y - r * Math.sin(deg * RAD) });
+const A0 = 225, SWEEP = 270;                                    // 刻度从左下 225° 顺时针扫到右下 −45°
+const angleOf = (v, max) => A0 - SWEEP * clamp(v / max, 0, 1.06);
+const arcPath = (c, r, a1, a2) => { const p = polar(c, r, a1), q = polar(c, r, a2); return `M${f2(p.x)},${f2(p.y)}A${r},${r} 0 ${Math.abs(a1 - a2) > 180 ? 1 : 0} 1 ${f2(q.x)},${f2(q.y)}`; };
 
-// ── 右侧的机器：旋转矢量画出 f(t)，波形向右流出 ──
-const CX = 730, CY = 245, R1 = 88, X0 = 880, X1 = 1130, V = 62.5;   // V：波形流速（像素/秒），一个周期 2 秒走 125 像素
-// 修改段加入 3、5、7 次谐波（方波的前几项），分发段收回；m 以 T 为周期
-const harm = (t) => { t = mod(t, T); return io3(span(t, 4.15, 0.8)) * (1 - io3(span(t, 7.1, 0.8))); };
-const TERMS = [1, 3, 5, 7];
-const f = (t) => { const th = W * t, m = harm(t); return TERMS.reduce((y, k) => y + (k === 1 ? 1 : m) / k * Math.sin(k * th), 0); };
-el('line', { x1: CX - R1 - 30, x2: X1 + 10, y1: CY, y2: CY, stroke: DIM, 'stroke-opacity': 0.5, 'stroke-dasharray': '6 4' });
-el('line', { x1: CX, x2: CX, y1: CY - R1 - 30, y2: CY + R1 + 30, stroke: DIM, 'stroke-opacity': 0.5, 'stroke-dasharray': '6 4' });
-el('line', { x1: X0, x2: X0, y1: CY - R1 - 14, y2: CY + R1 + 14, stroke: DIM, 'stroke-opacity': 0.5 });
-const rings = TERMS.map((k) => el('circle', { fill: 'none', stroke: k === 1 ? LINE : DIM, 'stroke-width': k === 1 ? 1.6 : 1.2, 'stroke-opacity': k === 1 ? 0.8 : 0.75 }));
-const arcs = el('path', { fill: 'none', stroke: ACCENT, 'stroke-width': 1.5 });
-const copies = [-1, 1].map(() => el('path', { fill: 'none', stroke: DIM, 'stroke-width': 2.5, 'stroke-linejoin': 'round' }));
-const fork = el('line', { stroke: DIM, 'stroke-width': 1.2, 'stroke-dasharray': '4 4' });
-const copyHeads = [-1, 1].map(() => el('circle', { r: 4, fill: DIM }));
-const wave = el('path', { fill: 'none', stroke: ACCENT, 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
-const arms = el('path', { fill: 'none', stroke: LINE, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
-const proj = el('line', { stroke: LINE, 'stroke-opacity': 0.6, 'stroke-width': 1.2, 'stroke-dasharray': '3 4' });
-const tip = el('circle', { r: 6, fill: ACCENT, stroke: LINE, 'stroke-width': 2 });
-const head = el('circle', { r: 4.5, fill: LINE });
-// 研究段的尺寸标注
-const dims = el('g', {});
-const LAMBDA = 2 * V;
-el('path', { d: `M${X0},${CY - R1 - 30}h${LAMBDA}M${X0},${CY - R1 - 36}v12M${X0 + LAMBDA},${CY - R1 - 36}v12`, stroke: ACCENT, 'stroke-width': 1.5, fill: 'none' }, dims);
-el('path', { d: `M${X1 + 22},${CY}v${-R1}M${X1 + 16},${CY}h12M${X1 + 16},${CY - R1}h12`, stroke: ACCENT, 'stroke-width': 1.5, fill: 'none' }, dims);
-const place = (id, x, y) => { const e = $(id); e.style.left = x + 'px'; e.style.top = y + 'px'; return e; };
-place('nT', X0 + LAMBDA / 2 - 5, CY - R1 - 56);
-place('nA', X1 + 30, CY - R1 / 2 - 8);
+// ── 屏幕底色、地平线的光晕、玻璃反光 ──
+el('rect', { x: 0, y: 0, width: 1200, height: 540, fill: 'url(#gScreen)' });
+el('rect', { x: 0, y: 0, width: 1200, height: 540, fill: 'url(#gHaze)' });
 
-// ── 左侧：四项自由 ──
-const FREEDOMS = ['运行', '研究', '修改', '分发'];
-const chips = FREEDOMS.map((name, i) => { const c = document.createElement('div'); c.className = 'chip'; c.textContent = name; c.style.left = (66 + i * 104) + 'px'; $('chips').appendChild(c); return c; });
-const mix = (a, b, k) => '#' + [0, 2, 4].map((i) => Math.round(lerp(parseInt(a.substr(1 + i, 2), 16), parseInt(b.substr(1 + i, 2), 16), k)).toString(16).padStart(2, '0')).join('');
-const lerp = (a, b, k) => a + (b - a) * k;
-const BASE = 'f(<span class="t">t</span>) = sin ωt', MORE = ' + sin 3ωt/3 + sin 5ωt/5 + sin 7ωt/7';
+// ── 透视网格：横线按透视排开，竖线汇向地平线中点（静止，运动留给 token） ──
+const floor = el('g', { mask: 'url(#mFloor)' });
+const floorV = el('g', { mask: 'url(#mFloorV)' }, floor);
+for (let j = -14; j <= 14; j++) el('line', { x1: MID, y1: HY, x2: MID + j * 64, y2: HY + 260, stroke: '#4f9dff', 'stroke-opacity': 0.34, 'stroke-width': 1 }, floorV);
+for (let i = 0; i < 12; i++) { const z = i + 0.5, y = HY + 210 / (z + 0.35); if (y < 480) el('line', { x1: 260, x2: 940, y1: f2(y), y2: f2(y), stroke: '#4f9dff', 'stroke-width': 1, 'stroke-opacity': f2(clamp(0.5 - z * 0.035)) }, floorV); }
+el('rect', { x: 330, y: HY - 1, width: 540, height: 2, fill: 'url(#gHorizon)' });
+el('rect', { x: 380, y: HY - 6, width: 440, height: 12, fill: 'url(#gHorizon)', opacity: 0.35, filter: 'url(#fGlow)' });
+
+// ── 中央的闪光（每生成一个 token 亮一下） ──
+const flare = el('ellipse', { cx: MID, cy: CY, rx: 130, ry: 84, fill: 'url(#gFlare)', opacity: 0 });
+
+// ── ∞ 轨道：两只表的外环加上在中心交叉的两条内公切线 ──
+// 一圈的顺序：中心 → 右环（输出）→ 中心 → 左环（上下文）→ 中心
+const PHI = Math.acos(R / GAP) / RAD, TAN = Math.sqrt(GAP * GAP - R * R), ARC = (360 - 2 * PHI) * RAD * R;
+const SEG = [
+  { k: 'line', a: { x: MID, y: CY }, b: polar(GR, R, 180 - PHI), len: TAN },
+  { k: 'arc', c: GR, from: 180 - PHI, dir: -1, len: ARC },
+  { k: 'line', a: polar(GR, R, 180 + PHI), b: { x: MID, y: CY }, len: TAN },
+  { k: 'line', a: { x: MID, y: CY }, b: polar(GL, R, PHI), len: TAN },
+  { k: 'arc', c: GL, from: PHI, dir: 1, len: ARC },
+  { k: 'line', a: polar(GL, R, -PHI), b: { x: MID, y: CY }, len: TAN },
+];
+const LOOP = SEG.reduce((s, g) => s + g.len, 0);
+const at = (d) => {
+  d = mod(d, LOOP);
+  for (const g of SEG) {
+    if (d <= g.len) { const k = d / g.len; return g.k === 'line' ? { x: lerp(g.a.x, g.b.x, k), y: lerp(g.a.y, g.b.y, k) } : polar(g.c, R, g.from + g.dir * (d / R) / RAD); }
+    d -= g.len;
+  }
+  return { x: MID, y: CY };
+};
+const ENTER_R = TAN, ENTER_L = 3 * TAN + ARC;                   // 进入右环、进入左环时在一圈里走过的距离
+let track = ''; for (let d = 0; d <= LOOP; d += 6) { const p = at(d); track += (track ? 'L' : 'M') + f2(p.x) + ',' + f2(p.y); }
+el('path', { d: track, fill: 'none', stroke: '#5aa8ff', 'stroke-opacity': 0.16, 'stroke-width': 1.5, 'stroke-dasharray': '3 6' });
+
+// ── 两只表 ──
+function gauge(c, max, step, limit, label) {
+  const g = el('g', {});
+  el('circle', { cx: c.x, cy: c.y, r: 104, fill: 'url(#gDisc)' }, g);
+  el('circle', { cx: c.x, cy: c.y, r: 104, fill: 'url(#gDiscShade)' }, g);
+  el('circle', { cx: c.x, cy: c.y, r: 104, fill: 'none', stroke: '#6fb2ff', 'stroke-opacity': 0.35, 'stroke-width': 1.2 }, g);
+  el('path', { d: arcPath(c, R, A0, A0 - SWEEP), fill: 'none', stroke: RING, 'stroke-width': 9, 'stroke-opacity': 0.35, filter: 'url(#fGlow)' }, g);
+  el('path', { d: arcPath(c, R, A0, A0 - SWEEP), fill: 'none', stroke: '#62b4ff', 'stroke-width': 2.6, 'stroke-linecap': 'round' }, g);
+  for (let v = 0; v <= max + 1e-9; v += step / 2) {
+    const p = polar(c, 124, angleOf(v, max)), major = Math.abs(v / step - Math.round(v / step)) < 1e-6;
+    el('circle', { cx: f2(p.x), cy: f2(p.y), r: major ? 2.2 : 1.4, fill: v >= limit ? LIMIT : WHITE, 'fill-opacity': major ? 0.95 : 0.6 }, g);
+    if (major) { const q = polar(c, 147, angleOf(v, max)); el('text', { x: f2(q.x), y: f2(q.y), class: 'num', 'text-anchor': 'middle', 'dominant-baseline': 'central', fill: v >= limit ? LIMIT : WHITE }, g, String(v)); }
+  }
+  el('text', { x: c.x, y: c.y + 140, class: 'lab', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, g, label);
+  const fill = el('path', { fill: 'none', stroke: WHITE, 'stroke-width': 5.5, 'stroke-linecap': 'butt', 'stroke-opacity': 0.92 }, g);
+  const needleGlow = el('line', { stroke: '#bfe3ff', 'stroke-width': 9, 'stroke-opacity': 0.5, filter: 'url(#fSoft)' }, g);
+  const needle = el('line', { stroke: '#ffffff', 'stroke-width': 4, 'stroke-linecap': 'round' }, g);
+  const big = el('text', { x: c.x, y: c.y - 6, class: 'big', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, g, '0');
+  el('text', { x: c.x, y: c.y + 36, class: 'unit', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, g, 'TOKENS');
+  return { c, max, fill, needle, needleGlow, big };
+}
+const left = gauge(GL, 24, 3, 21, '上下文');
+const right = gauge(GR, 16, 2, Infinity, '输出');
+function showGauge(G, v, n) {
+  const a = angleOf(v, G.max), p = polar(G.c, 152, a), q = polar(G.c, 184, a);
+  G.fill.setAttribute('d', v > 0.02 ? arcPath(G.c, 165, A0, a) : '');
+  set(G.needle, { x1: f2(p.x), y1: f2(p.y), x2: f2(q.x), y2: f2(q.y) });
+  set(G.needleGlow, { x1: f2(p.x), y1: f2(p.y), x2: f2(q.x), y2: f2(q.y) });
+  G.big.textContent = String(n);
+}
+
+// ── 彗星：生成的 token 沿 ∞ 走一圈；拖尾由若干段渐隐的线组成 ──
+const TRAIL = 560, PIECES = 28;
+const trail = Array.from({ length: PIECES }, (_, i) => el('path', { fill: 'none', stroke: mix('#1f5fd0', '#bfe9ff', i / (PIECES - 1)), 'stroke-width': lerp(1.2, 5, i / (PIECES - 1)), 'stroke-linecap': 'round', 'stroke-opacity': lerp(0.08, 0.95, i / (PIECES - 1)) }));
+const headGlow = el('circle', { r: 15, fill: '#9fd8ff', 'fill-opacity': 0.45, filter: 'url(#fGlow)' });
+const head = el('circle', { r: 5.5, fill: '#ffffff' });
+// 输入的 token 从提示行飞进左表
+const feeds = Array.from({ length: 5 }, () => el('path', { fill: 'none', stroke: CYAN, 'stroke-width': 2.5, 'stroke-linecap': 'round' }));
+const feedHeads = feeds.map(() => el('circle', { r: 4, fill: '#ffffff' }));
+
+// ── 文字：状态行、提示行、中央大字与倒影、指示灯、输出行、角注 ──
+el('text', { x: MID - 130, y: 40, class: 'row', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, art, '自由软件');
+el('text', { x: MID + 130, y: 40, class: 'row', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, art, '自由视频');
+el('circle', { cx: MID, cy: 40, r: 3, fill: CYAN });
+const prompt = el('text', { y: 104, class: 'line', 'dominant-baseline': 'central' });
+const caret = el('rect', { y: 91, width: 2.5, height: 26, fill: CYAN });
+const bigTok = el('text', { x: MID, y: 292, 'text-anchor': 'middle', 'dominant-baseline': 'central' });
+const reflect = el('g', { mask: 'url(#mReflect)' });
+const bigRef = el('text', { x: MID, y: 292, 'text-anchor': 'middle', 'dominant-baseline': 'central', transform: `translate(0 ${2 * 333}) scale(1 -1)` }, reflect);
+const LAMPS = [
+  { name: '运行', d: 'M-6,-8L8,0L-6,8Z' },
+  { name: '研究', d: 'M4,-2A6,6 0 1 1 3.99,-2.2M2.3,2.3L8,8' },
+  { name: '修改', d: 'M-8,8L-7,3L4,-8L8,-4L-3,7ZM1,-5L5,-1' },
+  { name: '分发', d: 'M-2.8,-1.3L2.8,-4.7M-2.8,1.3L2.8,4.7M-2.5,0A2.5,2.5 0 1 1 -2.5,-0.01M7.5,-6A2.5,2.5 0 1 1 7.5,-6.01M7.5,6A2.5,2.5 0 1 1 7.5,5.99' },
+];
+const lamps = LAMPS.map((L, i) => {
+  const x = MID + (i - 1.5) * 76;
+  const glow = el('path', { d: L.d, transform: `translate(${x} 410)`, fill: 'none', stroke: '#9fd8ff', 'stroke-width': 6, 'stroke-linejoin': 'round', filter: 'url(#fSoft)', opacity: 0 });
+  const icon = el('path', { d: L.d, transform: `translate(${x} 410)`, fill: 'none', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+  const label = el('text', { x, y: 440, class: 'lamp', 'text-anchor': 'middle', 'dominant-baseline': 'central' }, art, L.name);
+  return { glow, icon, label };
+});
+const output = el('text', { y: 498, class: 'line', 'dominant-baseline': 'central' });
+el('text', { x: 44, y: 510, class: 'corner', 'dominant-baseline': 'central' }, art, 'GPL-3.0-or-later');
+el('text', { x: 1156, y: 510, class: 'corner', 'text-anchor': 'end', 'dominant-baseline': 'central' }, art, '知识共享 · 各尽所能');
+el('rect', { x: 0, y: 0, width: 1200, height: 540, fill: 'url(#gVignette)' });
+el('rect', { x: 0, y: 0, width: 1200, height: 540, fill: 'url(#gGlass)' });
+el('rect', { x: 7, y: 7, width: 1186, height: 526, rx: 30, fill: 'none', stroke: '#9cc8ff', 'stroke-opacity': 0.18, 'stroke-width': 1.5 });
+el('path', { d: 'M0,0H1200V540H0Z M37,7H1163A30,30 0 0 1 1193,37V503A30,30 0 0 1 1163,533H37A30,30 0 0 1 7,503V37A30,30 0 0 1 37,7Z', fill: '#000', 'fill-rule': 'evenodd' });
+
+// ── 时间表 ──
+const PROMPT = ['什么', '是', '自由', '视频', '？'];
+const ANSWER = ['像', '自由', '软件', '一样：', '人人', '可以', '运行、', '研究、', '修改、', '分发。'];
+const LIGHT = { 6: 0, 7: 1, 8: 2, 9: 3 };                     // 生成这几个 token 时点亮对应的指示灯
+const TYPE0 = 0.8, TYPE = 0.36, FLY = 0.5;                       // 提示逐个打出，每个 token 飞进左表用 0.5 秒
+const LAP = 1.2, SPEED = LOOP / LAP, G0 = 3.15;                  // 每生成一个 token，彗星正好走完一圈
+const gen = (k) => G0 + k * LAP;                                 // 第 k 个 token 的生成时刻；k = ANSWER.length 是结束符
+const END = gen(ANSWER.length);
+const START_D = ENTER_L + 83.2 - LOOP, START_T = G0 + START_D / SPEED;   // 预填充：彗星从左表顶上出发，回到中心时生成第一个 token
+const HOLD = END + 0.55, RESET = 17.4, RESET_LEN = 1.2;
+const feedArrive = (i) => TYPE0 + i * TYPE + FLY;
+// 指针：每加一个 token 走一格，带一点回弹
+const spring = (tau) => (tau <= 0 ? 0 : 1 - Math.exp(-tau * 14) * Math.cos(tau * 22));
+const settled = (tau) => (tau >= 0 ? 1 : 0);
+let PROMPT_X = 0, OUTPUT_X = 0, WIDTHS = {};
+
+function tokenStyle(text) {
+  if (text === 'f(t)') return { font: '600 86px Inter', fill: WHITE };
+  if (text === '<eos>') return { font: '600 52px Mono', fill: CYAN };
+  return { font: '700 80px "Sans SC"', fill: WHITE };
+}
 
 window.seek = function (tau) {
-  const s = mod(tau, T), th = W * s, m = harm(s);
-  // 四项自由依次高亮，每段 2 秒；第四段末尾交还给第一段，正好接上循环
-  chips.forEach((c, i) => {
-    const k = io3(span(mod(s - 2 * i + 0.25, T), 0, 0.25)) * (1 - io3(span(mod(s - 2 * i + 0.25, T), 2, 0.25)));
-    c.style.background = mix(BG, LINE, k);
-    c.style.color = mix(DIM, BG, k);
-    c.style.borderColor = mix('#5f86bd', LINE, k);
+  const s = mod(tau, T);
+  const fade = 1 - io3(span(s, RESET, 0.7));                     // 一轮结束时文字与指示灯淡出
+  const down = 1 - io3(span(s, RESET, RESET_LEN));                // 指针回零
+
+  // 上下文与输出的计数
+  let ctx = 0, ctxV = 0, out = 0, outV = 0;
+  PROMPT.forEach((_, i) => { const t0 = feedArrive(i); ctx += settled(s - t0); ctxV += spring(s - t0); });
+  ANSWER.forEach((_, k) => {
+    const tr = gen(k) + ENTER_R / SPEED, tl = gen(k) + ENTER_L / SPEED;
+    out += settled(s - tr); outV += spring(s - tr);
+    ctx += settled(s - tl); ctxV += spring(s - tl);
   });
-  // 旋转矢量：基频加上随 m 出现的谐波，形成一串小圆
-  let x = CX, y = CY, d = `M${x},${y}`;
-  TERMS.forEach((k, j) => {
-    const r = R1 * (k === 1 ? 1 : m) / k;
-    set(rings[j], { cx: x.toFixed(2), cy: y.toFixed(2), r: r.toFixed(2), visibility: r > 0.6 ? 'visible' : 'hidden' });
-    x += r * Math.cos(k * th); y -= r * Math.sin(k * th);
-    d += `L${x.toFixed(2)},${y.toFixed(2)}`;
+  showGauge(left, ctxV * down, Math.round(ctx * down));
+  showGauge(right, outV * down, Math.round(out * down));
+
+  // 提示行：逐个打出，光标闪烁
+  const typed = s > RESET + 0.7 ? 0 : PROMPT.filter((_, i) => s >= TYPE0 + i * TYPE).length;   // 淡出之后清空，光标回到开头
+  prompt.innerHTML = `<tspan class="tag">输入　</tspan><tspan opacity="${f2(fade)}">${PROMPT.slice(0, typed).join('')}</tspan>`;
+  prompt.setAttribute('x', f2(PROMPT_X));
+  const promptEnd = PROMPT_X + WIDTHS.promptTag + (typed ? WIDTHS.prompt[typed - 1] : 0);
+  const blink = mod(s * 2, 1) < 0.55;
+  set(caret, { x: f2(promptEnd + 4), opacity: (s < G0 || s > RESET + 0.7) && blink ? 1 : 0 });
+
+  // 输入 token 的飞行
+  feeds.forEach((fd, i) => {
+    const k = span(s, TYPE0 + i * TYPE, FLY), on = k > 0.001 && k < 1;
+    fd.setAttribute('visibility', on ? 'visible' : 'hidden'); feedHeads[i].setAttribute('visibility', on ? 'visible' : 'hidden');
+    if (!on) return;
+    const p0 = { x: PROMPT_X + WIDTHS.promptTag + (i ? WIDTHS.prompt[i - 1] : 0) + 10, y: 86 }, p2 = polar(GL, R, 90), p1 = { x: (p0.x + p2.x) / 2, y: 62 };
+    const bz = (u) => ({ x: (1 - u) * (1 - u) * p0.x + 2 * (1 - u) * u * p1.x + u * u * p2.x, y: (1 - u) * (1 - u) * p0.y + 2 * (1 - u) * u * p1.y + u * u * p2.y });
+    const e = io3(k), a = Math.max(0, e - 0.28); let d = '';
+    for (let j = 0; j <= 12; j++) { const p = bz(a + (e - a) * j / 12); d += (d ? 'L' : 'M') + f2(p.x) + ',' + f2(p.y); }
+    fd.setAttribute('d', d); fd.setAttribute('stroke-opacity', f2(0.9 * Math.sin(Math.PI * k)));
+    const h = bz(e); set(feedHeads[i], { cx: f2(h.x), cy: f2(h.y) });
   });
-  arms.setAttribute('d', d);
-  set(tip, { cx: x.toFixed(2), cy: y.toFixed(2) });
-  set(proj, { x1: x.toFixed(2), y1: y.toFixed(2), x2: X0, y2: y.toFixed(2) });
-  set(head, { cx: X0, cy: y.toFixed(2) });
-  // 波形：横向每一点是更早时刻的 f，向右流出
-  let w = '';
-  for (let px = X0; px <= X1 + 0.01; px += 2) w += (w ? 'L' : 'M') + px + ',' + (CY - R1 * f(s - (px - X0) / V)).toFixed(2);
-  wave.setAttribute('d', w);
-  // 分发：波形复制到上下两路，再收回
-  const out = io3(span(s, 6.05, 0.6)) * (1 - io3(span(s, 7.3, 0.6))), op = bump(s, 6.05, 7.9, 0.3), dy = 118 * out;
-  copies.forEach((c, i) => set(c, { d: w, transform: `translate(0 ${(i ? 1 : -1) * dy})`, 'stroke-opacity': op, visibility: op > 0.01 ? 'visible' : 'hidden' }));
-  copyHeads.forEach((c, i) => set(c, { cx: X0, cy: (y + (i ? 1 : -1) * dy).toFixed(2), 'fill-opacity': op, visibility: op > 0.01 ? 'visible' : 'hidden' }));
-  set(fork, { x1: X0 - 10, x2: X0 - 10, y1: (y - dy).toFixed(2), y2: (y + dy).toFixed(2), 'stroke-opacity': op, visibility: op > 0.01 ? 'visible' : 'hidden' });
-  // 研究：标出振幅、周期与相位
-  const look = bump(s, 2.05, 3.95, 0.3), a = mod(th, 2 * Math.PI);
-  dims.setAttribute('opacity', look);
-  set(arcs, { d: `M${CX + 30},${CY}A30,30 0 ${a > Math.PI ? 1 : 0} 0 ${(CX + 30 * Math.cos(a)).toFixed(2)},${(CY - 30 * Math.sin(a)).toFixed(2)}`, 'stroke-opacity': look });
-  ['nA', 'nT', 'nW'].forEach((id) => { $(id).style.opacity = look; });
-  place('nW', CX + 48 * Math.cos(a / 2) - 10, CY - 48 * Math.sin(a / 2) - 8);
-  // 修改：公式随谐波一项项改写
-  const n = Math.round(m * MORE.length);
-  $('formula').innerHTML = BASE + (n ? `<span class="add">${MORE.slice(0, n)}</span>` : '');
+
+  // 彗星：从预填充出发，到结束符停在中心
+  const dHead = (s - G0) * SPEED, dMin = START_D, dMax = ANSWER.length * LOOP;
+  const hd = Math.min(dHead, dMax), lo = Math.max(dMin, dHead - TRAIL);
+  trail.forEach((pc, i) => {
+    const a = Math.max(lo, dHead - TRAIL * (1 - i / PIECES)), b = Math.min(hd, dHead - TRAIL * (1 - (i + 1) / PIECES));
+    if (b - a < 0.5) { pc.setAttribute('visibility', 'hidden'); return; }
+    let d = ''; for (let x = a; x < b; x += Math.max(2, (b - a) / 4)) { const p = at(x); d += (d ? 'L' : 'M') + f2(p.x) + ',' + f2(p.y); }
+    const p = at(b); d += 'L' + f2(p.x) + ',' + f2(p.y);
+    set(pc, { d, visibility: 'visible' });
+  });
+  const headOn = s >= START_T && dHead <= dMax;
+  const hp = at(hd);
+  set(head, { cx: f2(hp.x), cy: f2(hp.y), visibility: headOn ? 'visible' : 'hidden' });
+  set(headGlow, { cx: f2(hp.x), cy: f2(hp.y), visibility: headOn ? 'visible' : 'hidden' });
+
+  // 中央：f(t)、逐个生成的 token、结束符
+  let k = -1; for (let j = 0; j <= ANSWER.length; j++) if (s >= gen(j)) k = j;
+  let text = 'f(t)', since = s - (k >= 0 ? gen(k) : 0), pop = 1;
+  if (k >= 0 && k < ANSWER.length) { text = ANSWER[k]; pop = io3(span(since, 0, 0.18)); }
+  else if (k === ANSWER.length && s < HOLD) { text = '<eos>'; pop = io3(span(since, 0, 0.18)); }
+  else if (k === ANSWER.length) { pop = io3(span(s, HOLD, 0.35)); }
+  else { pop = 1; }
+  const st = tokenStyle(text), sc = lerp(1.18, 1, pop);
+  [bigTok, bigRef].forEach((t) => { t.textContent = text; t.style.font = st.font; t.setAttribute('fill', st.fill); });
+  bigTok.setAttribute('opacity', f2(pop)); bigRef.setAttribute('opacity', f2(pop));
+  bigTok.setAttribute('transform', `translate(${MID} 292) scale(${sc.toFixed(4)}) translate(${-MID} -292)`);
+  const flash = k >= 0 && k <= ANSWER.length && since < 0.4 ? Math.exp(-since * 12) : 0;
+  flare.setAttribute('opacity', f2(clamp(flash * 1.1)));
+
+  // 指示灯：生成到四项自由时点亮
+  lamps.forEach((L, i) => {
+    const kk = +Object.keys(LIGHT).find((x) => LIGHT[x] === i), t0 = gen(kk);
+    const on = (s >= t0 ? 1 : 0) * fade, burst = s >= t0 ? Math.exp(-(s - t0) * 5) : 0;
+    L.icon.setAttribute('stroke', mix(FAINT, '#e8f6ff', on));
+    L.glow.setAttribute('opacity', f2(clamp(on * 0.55 + burst * 0.6)));
+    L.label.setAttribute('fill', mix('#3e5f93', WHITE, on));
+  });
+
+  // 输出行：进入右环时追加，最新的 token 先亮后定
+  const shown = ANSWER.filter((_, j) => s >= gen(j) + ENTER_R / SPEED).length;
+  const lastAge = shown ? s - (gen(shown - 1) + ENTER_R / SPEED) : 9;
+  const glint = io3(span(s, END + 0.9, 1.0));
+  const body = ANSWER.slice(0, Math.max(0, shown - 1)).join(''), last = shown ? ANSWER[shown - 1] : '';
+  output.innerHTML = `<tspan class="tag">输出　</tspan><tspan opacity="${f2(fade)}">${body}</tspan><tspan opacity="${f2(fade)}" fill="${mix(WHITE, CYAN, Math.exp(-lastAge * 3))}">${last}</tspan>`;
+  output.setAttribute('x', f2(OUTPUT_X));
+  output.querySelectorAll('tspan')[1].setAttribute('fill', glint > 0 && glint < 1 ? mix(WHITE, '#bfe9ff', Math.sin(Math.PI * glint)) : WHITE);
 };
-window.READY = document.fonts.ready.then(() => Promise.all(['900 188px Inter', '900 78px "Sans SC"', '500 21px "Sans SC"', '700 23px "Sans SC"', '700 18px Mono', 'italic 600 16px Mono'].map((font) => document.fonts.load(font, 'f(t)自由视频与软件一样人人可以运行研究修改分发源码文案工具全部公开GPL-3.0ωAT')))).then(() => window.seek(0));
+
+window.READY = document.fonts.ready
+  .then(() => Promise.all(['600 19px Inter', '600 54px Inter', '600 86px Inter', '500 13px Inter', '700 80px "Sans SC"', '500 22px "Sans SC"', '500 15px "Sans SC"', '500 17px "Sans SC"', '500 13px "Sans SC"', '600 52px Mono']
+    .map((font) => document.fonts.load(font, 'f(t)<eos>TOKENS0123456789' + PROMPT.join('') + ANSWER.join('') + '输入输出上下文自由软件视频运行研究修改分发知识共享各尽所能GPL-3.0-or-later'))))
+  .then(() => {
+    // 提示行与输出行按写完时的宽度居中，打字过程中起点不动
+    const probe = el('text', { class: 'line', x: 0, y: -100 });
+    const width = (html) => { probe.innerHTML = html; return probe.getComputedTextLength(); };
+    WIDTHS.promptTag = width('<tspan class="tag">输入　</tspan>');
+    WIDTHS.prompt = PROMPT.map((_, i) => width(PROMPT.slice(0, i + 1).join('')));
+    PROMPT_X = MID - (WIDTHS.promptTag + WIDTHS.prompt[PROMPT.length - 1]) / 2;
+    OUTPUT_X = MID - width(`<tspan class="tag">输出　</tspan><tspan>${ANSWER.join('')}</tspan>`) / 2;
+    probe.remove();
+    // 字距加在每个字之后，居中与右对齐的文字会因此偏左：按字距补回，使字形本身对齐
+    const LINE_LS = parseFloat(getComputedStyle(prompt).letterSpacing) || 0;
+    PROMPT_X += LINE_LS / 2; OUTPUT_X += LINE_LS / 2;
+    art.querySelectorAll('text').forEach((t) => {
+      const ls = parseFloat(getComputedStyle(t).letterSpacing) || 0, anchor = t.getAttribute('text-anchor');
+      if (ls && anchor === 'middle') t.setAttribute('dx', f2(ls / 2));
+      if (ls && anchor === 'end') t.setAttribute('dx', f2(ls));
+    });
+    window.seek(0);
+  });
 </script>
 </body>
 </html>
