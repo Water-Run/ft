@@ -33,14 +33,14 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-10-26.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-01.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 重做版文案第 1 稿待 WaterRun 校对（review/NOTES.md）；确认后配音、做场景 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 重做版文案第 1 稿待 WaterRun 校对（review/NOTES.md）；确认后配音、做场景 | 待同步 | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第四部：PostgreSQL 重做版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
-| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
+| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 待同步 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 已放弃
