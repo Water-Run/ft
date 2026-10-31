@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 17，制作中 6，计划中 179。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 202 部：已成片 17，制作中 7，计划中 178。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -39,8 +39,9 @@
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
-| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 文案 | 核查来稿事实与比较口径，校对 150 秒预算；按构成主义海报规范细化视觉实现 | 最新 | Gemini 4 Argon |
-| [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | 文案 | 核查来稿事实、通读校对并核对 128 秒预算；依策划者提供的卡带未来主义设计继续细化 | 最新 | Gemini 4 Argon |
+| [150 秒了解 Agent 的手：Harness](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 校对文案（review/script.zh.md）；确认后给 5 个配音候选 | 最新 | Claude Opus 5.5 |
+| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
+| [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | 已发布 | 已发布（哔哩哔哩，2026-10-31 WaterRun 回报）；冻结。收集评价与评论，写进 README「评价与复盘」 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 
 ## 全部选题
@@ -269,7 +270,7 @@
 | 14 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |  |
 | 15 | 96 秒速通模型的各个参数<br>Model Parameters in 96 Seconds | zh | 计划中 | [`model-parameters`](in-seconds/model-parameters/) |  |
 | 16 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh | 计划中 | `virtual-machine-types` |  |
-| 17 | 192 秒了解 LLM 的手：Harness 是什么，怎么工作的？<br>The LLM's Hands in 192 Seconds: What a Harness Is and How It Works | zh | 计划中 | [`harness`](in-seconds/harness/) |  |
+| 17 | 150 秒了解 Agent 的手：Harness | zh | 制作中 | [`harness`](in-seconds/harness/) | 2026-10-31 策划者改题：由《192 秒了解 LLM 的手：Harness 是什么，怎么工作的？》改为 150 秒、只做中文，回到首集 2FA 的瑞士风。 |
 | 18 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
 | 19 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
 | 20 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 已成片 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
