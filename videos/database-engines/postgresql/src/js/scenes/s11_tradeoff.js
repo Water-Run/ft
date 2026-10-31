@@ -62,20 +62,25 @@ scene('tradeoff', ({ root, s, c0 }) => {
   // 服务进程 vs 嵌在程序里
   const pic = h('div', 'abs', B); px(pic, 72, 760, 1776, 170); pic.dataset.name = '服务进程与嵌入';
   const app1 = h('div', 'node', pic, '应用'); px(app1, 0, 60, 160);
-  const srv = h('div', 'node hl', pic, 'PostgreSQL 服务进程'); px(srv, 300, 60, 360);
-  const ovp = overlay(pic); const ln = path(ovp, 'M160,81 L300,81', 'accent', { w: 3 });
-  const proc = h('div', 'abs', pic); px(proc, 900, 20, 560, 130); css(proc, { border: '3px dashed var(--navy)' });
+  // 整组往左收：右边留出页边，SQLite 到「一个文件」的箭头落在文件框的中线上（WaterRun 看 r7：「Sqlite那个箭头指向框边缘快跑出去了」）
+  const srv = h('div', 'node hl', pic, 'PostgreSQL 服务进程'); px(srv, 240, 60, 340);
+  const ovp = overlay(pic); const ln = path(ovp, 'M160,81 L236,81', 'accent', { w: 3 });
+  const proc = h('div', 'abs', pic); px(proc, 700, 20, 540, 130); css(proc, { border: '3px dashed var(--navy)' });
   const procL = h('div', 'abs cap', proc, '一个程序'); px(procL, 14, 6);
-  const app2 = h('div', 'node', proc, '应用代码'); px(app2, 20, 60, 220);
-  const lite = h('div', 'node', proc, 'SQLite'); px(lite, 300, 60, 220); css(lite, { borderColor: 'var(--navy)', color: 'var(--navy)' });
-  const file = h('div', 'node grey', pic, '一个文件'); px(file, 1560, 60, 200);
-  const ln2 = path(ovp, 'M1420,81 L1560,81', 'navy', { w: 3 });
+  const app2 = h('div', 'node', proc, '应用代码'); px(app2, 20, 60, 200);
+  const lite = h('div', 'node', proc, 'SQLite'); px(lite, 260, 60, 200); css(lite, { borderColor: 'var(--navy)', color: 'var(--navy)' });
+  const file = h('div', 'node grey', pic, '一个文件'); px(file, 1330, 60, 200);
+  const ln2 = path(ovp, 'M960,81 L1326,81', 'navy', { w: 3 });
   show(app1, T('t14') - 0.2, { x: -10 }); show(srv, T('t14') - 0.1, { x: -10 }); arrowIn(ln, T('t14'), 0.3);
   wipe(proc, T('t14', '嵌进'), { dir: 'l' }); show(procL, T('t14', '嵌进')); show(app2, T('t14', '嵌进') + 0.1); slam(lite, T('t14', '嵌进') + 0.25, { from: 1.2 }); sfx('pop', T('t14', '嵌进') + 0.25);
   show(file, T('t14', '嵌进') + 0.5, { x: 10 }); arrowIn(ln2, T('t14', '嵌进') + 0.4, 0.3);
   hide(born, T('t14') - 0.3, { d: 0.25 });
   const qq = h('div', 'abs', B, '小巧的引擎，怎样做成生产级的关系数据库？'); px(qq, 72, 690); css(qq, { font: '800 40px "Sans SC"', color: 'var(--navy)' });
   show(qq, T('t15'), { y: 10 }); sfx('riser', T('t15') - 0.2, { g: 0.4 });
+  // 最后一句：SQLite 头上打出下一集的集数（本片开头标的是 PART 3，SQLite 是第 4 集；WaterRun 看 r7：「最后一句出来要打PART小标签在SQlite指示是下一集」）
+  const nxt = tagEl(B, 'PART 4 · 下一集', 72 + 700 + 260 + 10, 722, 'navy'); css(nxt, { fontSize: '26px', padding: '6px 18px' });
+  const nxtL = h('div', 'abs', B); px(nxtL, 72 + 700 + 260 + 100, 768, 3, 72); css(nxtL, { background: 'var(--navy)' });
+  slam(nxt, T('t15', '生产级') - 0.2, { from: 1.25 }); show(nxtL, T('t15', '生产级') - 0.1, { y: -6 }); sfx('thud', T('t15', '生产级') - 0.2, { g: 0.5 });
   const fB = focusRing(B);
   fB.at(T('t11', '伯克利'), born).at(T('t12', '成了'), bars[0].b).at(T('t12', '最多'), first).at(T('t13', '调查'), [72, 230, 1400, 460]).at(T('t13', 'SQLite'), second).at(T('t14', '服务进程'), srv).at(T('t14', '嵌进'), proc).at(T('t15', '小巧'), lite).at(T('t15', '生产级'), qq).off(Tend('t15') + 0.3);
 });

@@ -193,7 +193,7 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | W6 | pg_waldump 读出的这次修改（节选）：`rmgr: Heap … desc: UPDATE old_xmax: 4857, old_off: 26 … new_off: 50, blkref #0: rel 1663/5/16466 blk 46, blkref #1: rel 1663/5/16466 blk 23` | steps.3_alice_commit.pg_waldump | 实测 |
 | W7 | 断电式停机后启动，日志依次是：「database system was interrupted」→「database system was not properly shut down; automatic recovery in progress」→「redo starts at 0/1A53C40」→「redo done at 0/1A6F070」→ 恢复结束的检查点 →「database system is ready to accept connections」 | steps.5_recovery.server_log | 实测 |
 | W8 | 恢复后：Alice 是 43（已提交的在）；Bob 仍是 51，Carol 没提交的 99 看不见；Carol 的事务状态是 aborted，她写下的版本仍在第 46 页第 49 项，第一次被读到时标上 HEAP_XMIN_INVALID——没提交的不用撤，它的版本本来就看不见 | steps.5_recovery（alice、bob、carol_status、carol_version_in_page） | 实测 |
-| W9 | 对照 InnoDB：重启时重放 redo，再用 undo 回滚没提交的事务；双写缓冲区防写坏的页 | InnoDB 一集 FACTS R3、F5、M16 | 引用 |
+| W9 | 对照 InnoDB：重启时重放 redo，再用 undo 回滚没提交的事务；双写缓冲区防写坏的页：页从缓冲池刷下去时，先写进双写缓冲区，再写到数据文件里的原位 | InnoDB 一集 FACTS R3、F5、M16（MySQL 手册 Doublewrite Buffer：「The doublewrite buffer is a storage area where InnoDB writes pages flushed from the buffer pool before writing the pages to their proper positions in the InnoDB data files.」） | 引用 |
 | W10 | 检查点：保证此前写进 WAL 的修改都已写进数据文件；崩溃后从最近一个检查点记下的位置开始重放 | [18 手册《WAL Configuration》](https://www.postgresql.org/docs/18/wal-configuration.html)：「Checkpoints are points in the sequence of transactions at which it is guaranteed that the heap and index data files have been updated with all information written before that checkpoint.」「In the event of a crash, the crash recovery procedure looks at the latest checkpoint record to determine the point in the WAL (known as the redo record) from which it should start the REDO operation.」；W7 | 原文＋实测 |
 
 ## 引出下一集

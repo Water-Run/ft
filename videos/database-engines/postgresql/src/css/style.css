@@ -22,6 +22,9 @@ body { font-family: var(--sans); color: var(--ink); }
 .band { position: absolute; left: 0; top: 0; width: 1920px; height: 88px; background: var(--pg); }
 .ident { position: absolute; left: 72px; top: 22px; font: 800 32px var(--sans); color: #fff; letter-spacing: .2px; }
 .ident small { font: 600 26px var(--sans); color: var(--sky-lt); margin-left: 14px; }
+.files { position: absolute; left: 440px; top: 25px; display: flex; gap: 10px; }
+.file { position: relative; font: 600 22px "Sans SC", sans-serif; line-height: 28px; padding: 2px 13px; color: rgba(255,255,255,.62); border: 2px solid rgba(255,255,255,.32); white-space: nowrap; }
+.file .o { position: absolute; left: -2px; top: -2px; right: -2px; bottom: -2px; background: #fff; color: var(--pg); display: flex; align-items: center; justify-content: center; font-weight: 800; }
 .chlabel { position: absolute; right: 72px; top: 24px; font: 600 28px var(--sans); color: var(--hi); text-align: right; white-space: nowrap; }
 
 /* 章节卡：整屏 Pg 蓝 */

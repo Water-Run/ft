@@ -21,11 +21,16 @@ scene('page', ({ root, s, c0 }) => {
   rowsEls.forEach((r) => set(r, 0, { autoAlpha: 0 }));
   // 放大：前 448 字节（页头 + 项目指针 + 空隙）
   const ZX = 120, ZY = 300, ZW = 1680, ZH = 120, Z = ZW / G.upper;
-  const g1 = path(ov, `M${X0},${BY} L${ZX},${ZY + ZH}`, 'dim', { w: 1.5, arrow: false }), g2 = path(ov, `M${X0 + G.upper * k},${BY} L${ZX + ZW},${ZY + ZH}`, 'dim', { w: 1.5, arrow: false });
+  // 放大的来处：整页条上开头这一段描上框，从它向上张开一块实心的淡蓝漏斗，接到放大条的整个底边（原先两条细斜线，看着像空隙连到下面；WaterRun 看 r7：「空隙不是跨上下的? 或者你可以用U型之类的」）
+  const funnel = path(ov, `M${X0},${BY} L${X0 + G.upper * k},${BY} L${ZX + ZW},${ZY + ZH} L${ZX},${ZY + ZH} Z`, 'dim', { w: 1.5, arrow: false });
+  funnel.setAttribute('fill', 'rgba(105,158,202,.16)'); funnel.setAttribute('stroke', 'rgba(105,158,202,.55)');
+  const seg = h('div', 'abs', A); px(seg, X0 - 3, BY - 3, G.upper * k + 6, BH); css(seg, { border: '3px solid var(--pg)', zIndex: 2 }); seg.dataset.name = '开头这一段';
   const zoom = h('div', 'page', A); px(zoom, ZX, ZY, ZW, ZH); zoom.dataset.name = '前 448 字节放大';
   const zcap = capt(A, `放大：开头 ${G.upper} 字节`, ZX + 600, ZY - 44); css(zcap, { fontSize: '24px' });
   const tZ = T('p2') - 0.4;
-  wipe(zoom, tZ, { dir: 'l', d: 0.5 }); draw(g1, tZ, 0.4); draw(g2, tZ, 0.4); show(zcap, tZ + 0.1);
+  show(seg, tZ - 0.2, { y: 0, d: 0.25 });
+  tl.fromTo(funnel, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45, immediateRender: true }, tZ);
+  wipe(zoom, tZ + 0.1, { dir: 'l', d: 0.5 }); show(zcap, tZ + 0.1);
   // 页头 24 字节
   const zh = h('div', 'abs', zoom); px(zh, 0, 0, 24 * Z, ZH - 6); css(zh, { background: 'var(--navy)' }); zh.dataset.name = '页头';
   const zhl = h('div', 'abs', zh, '页头'); px(zhl, 12, 38); css(zhl, { font: '700 26px "Sans SC"', color: '#fff' });
@@ -158,9 +163,23 @@ scene('page', ({ root, s, c0 }) => {
   sfx('whoosh', T('p13') + 0.2, { g: 0.35 });
   const n14 = tagEl(B, 'Alice 注册时的事务', 120, 810); css(n14, { fontSize: '26px' }); show(n14, T('p14b', '2809'), { y: -8 });
   const n15 = tagEl(B, '还没有谁作废它', 700, 810); css(n15, { fontSize: '26px' }); show(n15, T('p15b', '0'), { y: -8 });
+  hide(pad, T('p13') - 0.1, { d: 0.25 });
+  // 可见范围：一条事务号的区间，从 xmin 起、到 xmax 止；xmax 还是 0，就没有止点。第五到第八章沿用同一个画法（WaterRun 看 r7：「xmin和xmax是可见事务范围 min max 这个表述更好理解」）
+  const RX0 = 214, RX1 = 1216, RY0 = 466, xminV = le32(TF.head[0][1]);
+  const rk = h('div', 'abs', B); px(rk, RX0 - 2, RY0 - 12, 5, 68); css(rk, { background: 'var(--navy)' });
+  const rkl = capt(B, `从 <b>xmin ${xminV}</b> 起`, 96, RY0 - 50); css(rkl, { fontSize: '24px' });
+  const band = h('div', 'abs', B); px(band, RX0 + 3, RY0, RX1 - RX0 - 3, 44); band.dataset.name = '可见范围';
+  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 62%, rgba(51,103,145,.12) 100%)', transformOrigin: '0 50%' });
+  const bandT = h('div', 'abs', band, '这一版能被看见的范围'); px(bandT, 300, 0); css(bandT, { font: '700 24px "Sans SC"', color: '#fff', lineHeight: '44px', whiteSpace: 'nowrap' });   // 左边留空：t_ctid 指回自己的那条线从这里穿过色带
+  const bandR = h('div', 'abs', band, 'xmax = 0：没有止点 →'); px(bandR, RX1 - RX0 - 290, 0); css(bandR, { font: '700 24px "Sans SC"', color: 'var(--pg-dk)', lineHeight: '44px', whiteSpace: 'nowrap' });
+  const tR0 = T('p16', 'xmin'), tR1 = T('p16', 'xmax');
+  show(rk, tR0, { y: 0, d: 0.2 }); show(rkl, tR0, { y: 6 }); sfx('tick', tR0, { g: 0.5 });
+  tl.fromTo(band, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power2.inOut', immediateRender: true }, tR1 - 0.1);
+  show(bandT, T('p16', '范围') - 0.2, { y: 0, d: 0.3 }); show(bandR, tR1 + 0.5, { x: -10, d: 0.3 }); sfx('whoosh', tR1 - 0.1, { g: 0.3 });
+  [rk, rkl, band].forEach((e) => to(e, Tend('p18') + 0.1, { opacity: 0.45, duration: 0.4 }));
   // t_ctid 指着自己：从卡片绕回这一行
   const ovB = overlay(B);
-  const self = curve(ovB, [1256 + 270, 560], [CX + 40, CY + CH], 'navy', { bend: 470 }); arrowIn(self, T('p17b', '自己') - 0.3, 0.7);
+  const self = path(ovB, `M1290,558 C1290,535 440,548 440,${CY + CH + 2}`, 'navy', { w: 3 }); arrowIn(self, T('p17b', '自己') - 0.3, 0.7);   // 从 t_ctid 卡片走到行头的 t_ctid 字段下面，压在色带和卡片之间，不穿过字
   const selfT = tagEl(B, '指着自己', 1280, 810, 'navy'); css(selfT, { fontSize: '26px' }); show(selfT, T('p17b', '自己'), { y: -8 }); sfx('pop', T('p17b', '自己'), { g: 0.5 });
   // InnoDB 的行头：事务号与回滚指针
   const inn = h('div', 'abs', B); px(inn, 96, 860, 1400, 64); inn.dataset.name = 'InnoDB 的行头';

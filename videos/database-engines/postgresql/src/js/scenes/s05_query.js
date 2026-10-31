@@ -67,18 +67,31 @@ scene('query', ({ root, s, c0 }) => {
   to(cur, tRow, { x: 330 - 960 + 70, duration: 0.45, ease: 'power2.inOut' });
   // 还没完：看行头，这个版本能不能看见。两条都满足才看得见：① 写入它的事务提交了；② 没有谁作废它（删掉或改出新版本）
   keyed(cur).at(T('q7', '行头'), { html: '看行头' });
+  // 看得见吗：用第三章那条「可见范围」——从 xmin 起，到 xmax 止。xmin 已提交，起点算数；xmax 是 0，没有止点；这次查询落在范围里，看得见
   const chk = h('div', 'abs', A); px(chk, 900, 806, 940, 160); chk.dataset.name = '可见性检查';
-  const chkRow = (y, n, html) => { const r = h('div', 'note', chk, `<b>${n}</b>　${html}`); px(r, 0, y, 940); css(r, { fontSize: '24px', padding: '6px 16px' }); return r; };
-  const c1 = chkRow(0, '①', `<b>xmin ${D.alice.xmin}</b>：写入它的事务提交了吗？`), c2 = chkRow(54, '②', '<b>xmax 0</b>：有谁作废了它吗？（删掉，或改出新版本）');
-  keyed(c1).at(T('q8', '提交') + 0.1, { html: `<b>①</b>　<b>xmin ${D.alice.xmin}</b>：写入它的事务提交了吗？　<b style="color:var(--ok)">已提交 ✓</b>` });
-  keyed(c2).at(T('q8', '0') + 0.1, { html: '<b>②</b>　<b>xmax 0</b>：有谁作废了它吗？　<b style="color:var(--ok)">没有 ✓</b>' });
-  const res = tagEl(chk, '看得见', 0, 116, 'ok'); css(res, { fontSize: '26px' }); keyed(res).at(T('q8b', 'Alice'), { html: '看得见 → 查询结果：Alice，42 岁' });
-  const chkL = capt(A, '这个版本能不能看见？两条都满足才行', 900, 770); css(chkL, { fontSize: '24px', color: 'var(--ink)', fontWeight: 700 });
-  show(chkL, T('q7', '能不能'), { y: 8 }); show(c1, T('q8', 'xmin') - 0.1, { y: 10 }); show(c2, T('q8', 'xmax') - 0.1, { y: 10 });
+  const rk = h('div', 'abs', chk); px(rk, 0, 0, 5, 64); css(rk, { background: 'var(--navy)' });
+  const band = h('div', 'abs', chk); px(band, 5, 10, 935, 44); band.dataset.name = '可见范围';
+  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 62%, rgba(51,103,145,.12) 100%)', transformOrigin: '0 50%' });
+  const bl = h('div', 'abs', band, `xmin ${D.alice.xmin}`); px(bl, 16, 0); css(bl, { font: '700 24px var(--mono)', color: '#fff', lineHeight: '44px', whiteSpace: 'nowrap' });
+  const br = h('div', 'abs', band, 'xmax 0：没有止点 →'); px(br, 650, 0); css(br, { font: '700 24px "Sans SC"', color: 'var(--pg-dk)', lineHeight: '44px', whiteSpace: 'nowrap' });
+  const tXm = T('q8', 'xmin'), tXx = T('q8', 'xmax');
+  show(rk, tXm - 0.1, { y: 0, d: 0.2 });
+  tl.fromTo(band, { autoAlpha: 1, scaleX: 0 }, { scaleX: 0.6, duration: 0.5, ease: 'power2.out', immediateRender: true }, tXm - 0.1);
+  tl.fromTo(band, { scaleX: 0.6 }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, tXx);
+  set(bl, 0, { autoAlpha: 0 }); show(bl, tXm, { y: 0, d: 0.25 }); keyed(bl).at(T('q8', '提交'), { html: `xmin ${D.alice.xmin} 已提交 ✓` });
+  set(br, 0, { autoAlpha: 0 }); show(br, tXx + 0.4, { x: -10, d: 0.3 });
+  // 这次查询：一枚竖针落进范围里
+  const pin = h('div', 'abs', chk); px(pin, 520, -30, 4, 96); css(pin, { background: 'var(--warn)' });
+  const pinL = h('div', 'abs', chk, '这次查询'); px(pinL, 450, -66); css(pinL, { font: '700 24px "Sans SC"', color: 'var(--warn)', whiteSpace: 'nowrap' });
+  set(pin, 0, { autoAlpha: 0 }); set(pinL, 0, { autoAlpha: 0 });
+  tl.fromTo([pin, pinL], { autoAlpha: 0, y: -24 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, T('q8b') - 0.35);
+  const res = tagEl(chk, '看得见', 0, 76, 'ok'); css(res, { fontSize: '26px' }); keyed(res).at(T('q8b', 'Alice'), { html: '看得见 → 查询结果：Alice，42 岁' });
+  const chkL = capt(A, '这个版本能不能看见？', 900, 772); css(chkL, { fontSize: '24px', color: 'var(--ink)', fontWeight: 700 });
+  show(chkL, T('q7', '能不能'), { y: 8 });
   [[cXmin, T('q8', 'xmin')], [cXmax, T('q8', 'xmax')]].forEach(([c, t]) => { set(c, t - 0.1, { backgroundColor: '#b8442f' }); set(c, t + 0.9, { backgroundColor: '#2f6b26' }); });
   sfx('tick', T('q8', 'xmin')); sfx('tick', T('q8', 'xmax'), { g: 0.6 });
   slam(res, T('q8b', '看得见'), { from: 1.15 }); sfx('chime', T('q8b', '看得见'), { g: 0.7 }); hide(cur, T('q8b', '看得见'), { d: 0.25 });
-  fly(A, 'Alice，42', [90 + 3 + 236 + 268 + 60, 800 + 3 + 46], [900 + 300, 806 + 116], T('q8b', 'Alice') - 0.6, { cls: 'ok', fs: 24, d: 0.5, sink: true });  A.appendChild(cur);                                                          // 游标压在页面之上
+  fly(A, 'Alice，42', [90 + 3 + 236 + 268 + 60, 800 + 3 + 46], [900 + 300, 806 + 76], T('q8b', 'Alice') - 0.6, { cls: 'ok', fs: 24, d: 0.5, sink: true });  A.appendChild(cur);                                                          // 游标压在页面之上
   // 一共三页
   [['树根', '根'], ['叶子', '叶子'], ['堆页', `第 ${P} 页`]].forEach(([w, txt], i) => { keyed(reads[i]).at(T('q10', w), { html: '✓ ' + txt }); sfx('tick', T('q10', w), { g: 0.5, p: i * 0.2 }); });
   keyed(readL).at(T('q10') - 0.3, { html: '一共读了' }).at(T('q10', '三页'), { html: '一共 3 页' }); sfx('pop', T('q10', '三页'));
@@ -100,7 +113,7 @@ scene('query', ({ root, s, c0 }) => {
   F((t) => { const k = clamp((t - tsw) / 2.2); rd.innerHTML = t < tsw ? '' : `已读 <b>${Math.max(1, Math.ceil(k * 47))}</b> / 47 页`; });
   const all = tagEl(B, `顺序扫描：${D.heap.pages} 页全部读一遍`, 90, 720, 'navy'); css(all, { fontSize: '28px' }); show(all, tsw + 2.3, { y: 8 });
   const nidx = noteBox(B, '每一行都要数，索引帮不上忙', 1220, 230, 600); show(nidx, T('q12', '不走索引'), { x: 20 });
-  const rule = noteBox(B, '<b>找一行</b>：走索引　　<b>找全部</b>：从头读到尾', 90, 820, 980); show(rule, T('q13'), { y: 10 }); sfx('pop', T('q13'), { g: 0.5 });
+  const rule = noteBox(B, '<b>按名字找一个人</b>：走姓名索引，读 3 页　　<b>数全部</b>：47 页从头读到尾', 90, 820, 1100); show(rule, T('q13'), { y: 10 }); sfx('pop', T('q13'), { g: 0.5 });
 
   // ── C：两种叶子页的实物（上）；只要名字时的仅索引扫描与可见性图（下） ──
   hdoc(C, '叶子里有什么', 72, 128);

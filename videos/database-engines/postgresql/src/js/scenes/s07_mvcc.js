@@ -46,32 +46,47 @@ scene('mvcc', ({ root, s, c0 }) => {
   // Bob 来读，带着一张快照
   const tb = term(A, 72, 660, 860, 3, { name: 'Bob 的会话' });
   const eB = tb.type(T('m5') - 0.1, '<span class="k">SELECT</span> age <span class="k">FROM</span> users <span class="k">WHERE</span> id = 2050;', 'bob=&gt;', 45);
-  const snap = h('div', 'abs', A); px(snap, 980, 660, 560, 180); snap.dataset.name = 'Bob 的快照';
+  // Bob 的快照画成一条事务号的轴：4856 处切一刀，右边是「还看不见」。两个版本各是一段可见范围（第三章的画法）：
+  // 新版本从 4856 起，整段落在看不见的一边；旧版本到 4856 止，可这个止点也在看不见的一边，作废还不算数，照旧看得见（WaterRun 看 r7：「xmin和xmax是可见事务范围」）
+  const snap = h('div', 'abs', A); px(snap, 980, 640, 868, 280); snap.dataset.name = 'Bob 的快照';
   css(snap, { border: '4px solid var(--navy)', background: '#fff' });
   const sn1 = h('div', 'abs cap', snap, '<b>Bob 的快照</b>'); px(sn1, 20, 12);
-  const sn2 = h('div', 'abs', snap, `查询里看到的原样：<span class="mono">${M.snapshot}</span>`); px(sn2, 20, 128); css(sn2, { font: '500 22px var(--sans)', color: 'var(--ink2)' });   // 原始格式只作旁证，小字
-  const sn3 = h('div', 'abs cap', snap, `${X} 起的事务：都还看不见`); px(sn3, 20, 62); css(sn3, { color: 'var(--warn)', fontSize: '34px', fontWeight: 700 });
-  wipe(snap, T('m6', '快照') - 0.2, { dir: 'r' }); show(sn3, T('m7', '起的事务'), { y: 8 }); keyed(sn3).at(0, { html: `<span>${X} 起的事务：</span>` }).at(T('m7', '看不见'), { html: `${X} 起的事务：都还看不见` }); sfx('pop', T('m7', '看不见'), { g: 0.5, p: 0.5 });
-  const snG = glossBox(A, '快照', '<b>快照</b>：查询开始那一刻，记下哪些事务已经结束、哪些还没有', 980, 860, 868);
+  const sn2 = h('div', 'abs', snap, `原样：<span class="mono">${M.snapshot}</span>`); px(sn2, 600, 16); css(sn2, { font: '500 22px var(--sans)', color: 'var(--ink2)' });   // 原始格式只作旁证，小字
+  const CUT = 470, AX0 = 40, AX1 = 840;
+  const fut = h('div', 'abs', snap); px(fut, CUT, 56, AX1 - CUT + 20, 150); css(fut, { background: 'repeating-linear-gradient(135deg,#eef0f2 0 8px,#fff 8px 16px)' });
+  const cut = h('div', 'abs', snap); px(cut, CUT - 2, 52, 4, 172); css(cut, { background: 'var(--warn)' });
+  const sn3 = h('div', 'abs', snap, `${X} 起：都还看不见`); px(sn3, CUT + 14, 214); css(sn3, { color: 'var(--warn)', font: '700 28px "Sans SC"', whiteSpace: 'nowrap' });
+  const ax = h('div', 'abs', snap); px(ax, AX0, 206, AX1 - AX0, 3); css(ax, { background: 'var(--ink2)' });
+  const axl = h('div', 'abs', snap, '事务号 →'); px(axl, AX0, 214); css(axl, { font: '600 22px "Sans SC"', color: 'var(--ink2)' });
+  const xt = h('div', 'abs', snap, String(X)); px(xt, CUT - 34, 178); css(xt, { font: '700 22px var(--mono)', color: 'var(--warn)', background: '#fff' });
+  const vband = (y, x0, x1, txt, cls, fg = '#fff') => { const b = h('div', 'abs', snap, txt); px(b, x0, y, x1 - x0, 40); css(b, { font: '700 22px "Sans SC"', lineHeight: '40px', padding: '0 12px', whiteSpace: 'nowrap', color: fg, background: cls, transformOrigin: '0 50%' }); return b; };
+  const bOld = vband(70, AX0 + 20, CUT, `旧版本 42：${D.alice.xmin} → ${X}`, 'var(--sky-lt)', 'var(--navy)'), bNew = vband(124, CUT, AX1, `新版本 43：${X} →`, 'var(--pg)');
+  wipe(snap, T('m6', '快照') - 0.2, { dir: 'r' });
+  [fut, cut, sn3, xt].forEach((e) => set(e, 0, { autoAlpha: 0 }));
+  show(fut, T('m7', '起的事务') - 0.1, { y: 0, d: 0.35 }); show(cut, T('m7', '起的事务') - 0.1, { y: 0, d: 0.2 }); show(xt, T('m7', '起的事务'), { y: 0 });
+  show(sn3, T('m7', '看不见') - 0.1, { y: 8 }); sfx('pop', T('m7', '看不见'), { g: 0.5, p: 0.5 });
+  set(bOld, 0, { autoAlpha: 0 }); set(bNew, 0, { autoAlpha: 0 });
+  tl.fromTo(bNew, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T('m8') - 0.1);
+  tl.fromTo(bOld, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.out', immediateRender: false }, T('m9') - 0.1);
+  const snG = glossBox(A, '快照', '<b>快照</b>：查询开始那一刻，记下哪些事务已经结束、哪些还没有', 72, 836, 860);
   show(snG, T('m6', '快照'), { y: 10 }); sfx('pop', T('m6', '快照'), { g: 0.5 });
   [al, toX].forEach((e) => hide(e, T('m6') - 0.1, { d: 0.25 }));
-  // 快照像一块滤镜：先盖到新版本上（xmin 4856 看不见），再盖到旧版本的 xmax 上（作废还不算数）
-  const lens = h('div', 'abs', A); px(lens, 410, 512, 780, 72); css(lens, { border: '4px dashed var(--navy)', background: 'rgba(25,49,69,.10)' }); lens.dataset.name = '快照的滤镜';
-  const tL = T('m8') - 0.2;
-  tl.fromTo(lens, { autoAlpha: 0, x: 570, y: 150, scale: 0.6 }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.6, ease: 'power3.inOut', immediateRender: true }, tL); sfx('whoosh', tL, { g: 0.35 });
+  // 新版本整段在看不见的一边：虚掉；旧版本的止点在看不见的一边：止点不算，这段一直延到右边
   const tNo = T('m8', '看不见');
+  set(bNew, tNo, { background: '#fff', color: 'var(--pg)', outline: '3px dashed var(--pg)', outlineOffset: '-3px' });
   set(vn.data, tNo, { background: '#fff', color: 'var(--pg)', border: '3px dashed var(--pg)' }); set(vn.xmin, tNo, { background: '#fff', color: 'var(--warn)', border: '3px dashed var(--warn)' }); set(vn.xmax, tNo, { background: '#fff', color: 'var(--navy)', border: '3px dashed var(--navy)' });
   const xNew = tagEl(A, '✗ 这个版本不算', 1220, 528, 'warn'); css(xNew, { fontSize: '26px' }); show(xNew, tNo, { x: 20 }); sfx('error', tNo + 0.05, { g: 0.4 });
-  to(lens, T('m9') - 0.1, { x: 214, y: -90, width: 220, duration: 0.5, ease: 'power2.inOut' });
-  set(vo.xmax, T('m9', '不算数'), { textDecoration: 'line-through' });
-  const xOld = tagEl(A, '✓ xmax 还不算数：照旧看得见', 1220, 438, 'ok'); css(xOld, { fontSize: '26px' }); show(xOld, T('m9', '不算数'), { x: 20 }); sfx('tick', T('m9', '不算数'));
+  const tNs = T('m9', '不算数');
+  fromTo(bOld, tNs, { width: CUT - AX0 - 20 }, { width: AX1 - AX0 - 20, duration: 0.5, ease: 'power2.inOut' });
+  keyed(bOld).at(tNs, { html: `旧版本 42：${D.alice.xmin} 起，止点 ${X} 还不算 →` });
+  set(vo.xmax, tNs, { textDecoration: 'line-through' });
+  const xOld = tagEl(A, '✓ xmax 还不算数：照旧看得见', 1220, 438, 'ok'); css(xOld, { fontSize: '26px' }); show(xOld, tNs, { x: 20 }); sfx('tick', tNs);
   // 所以 Bob 读到旧版本 42
   fly(A, '读', [540, 650], [900, 436], T('m10') - 0.3, { cls: 'navy', fs: 24, d: 0.5 });
   tb.print(Math.max(eB + 0.2, T('m10', '42') - 0.2), ' age'); tb.print(Math.max(eB + 0.3, T('m10', '42') - 0.1), ` <span class="hi"> ${M.bobReads} </span>`); sfx('blip', T('m10', '42'), { g: 0.6 });
-  hide(lens, T('m11') - 0.1, { d: 0.3 });
   const nowait = tagEl(A, '读和写互不等待', 72, 604, 'ok'); css(nowait, { fontSize: '28px' }); slam(nowait, T('m11'), { from: 1.15 }); sfx('chime', T('m11', '也不用等'), { g: 0.6 });
   const rA = focusRing(A);
-  rA.at(T('m4', '另有一处'), xs.box).at(T('m4b', '进行中'), xs.c2).at(T('m5'), tb.el).at(T('m6', '快照'), snap).at(T('m7', String(X)), sn3).off(T('m8') - 0.3);
+  rA.at(T('m4', '另有一处'), xs.box).at(T('m4b', '进行中'), xs.c2).at(T('m5'), tb.el).off(T('m6', '快照') - 0.2);
   const rA2 = focusRing(A);
   rA2.at(T('m10', '旧版本'), vo.e).at(T('m11', '也不用等'), nowait).off(tB - 0.4);
 
@@ -91,6 +106,14 @@ scene('mvcc', ({ root, s, c0 }) => {
   const wl = capt(B, 'Carol 等待中', 72, 862); css(wl, { fontSize: '26px', color: 'var(--warn)', fontWeight: 700 });
   const tW0 = T('m13', '等'), tW1 = T('m17');
   show(wb, tW0, { y: 0 }); show(wl, tW0, { y: 8 }); fromTo(wf, tW0, { width: 0 }, { width: 856, duration: tW1 - tW0, ease: 'none' }); sfx('error', tW0, { g: 0.35 });
+  // 为什么 Bob 不用等、Carol 要等：读只按快照挑一个版本；写要改这一行，撞上 xmax 里还没结束的 4856，得等它有个结果（WaterRun 看 r7：「没反应出来为什么一个可以另一个不可以」）
+  const bar = h('div', 'abs', B); px(bar, 1192, 418, 7, 80); css(bar, { background: 'var(--warn)' }); bar.dataset.name = '挡住';
+  set(bar, 0, { autoAlpha: 0 }); tl.fromTo(bar, { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 1, scaleY: 1, duration: 0.25, immediateRender: false }, tW0 - 0.1);
+  fromTo(bo.xmax, tW0 - 0.1, { boxShadow: 'inset 0 0 0 0px #b8442f' }, { boxShadow: 'inset 0 0 0 5px #b8442f', duration: 0.25 });
+  const why2 = tagEl(B, `写：xmax 里的 ${X} 还没结束 → 只能等`, 1220, 520, 'warn'), why1 = tagEl(B, '读（Bob）：按快照挑一个版本 → 不用等', 1220, 566, 'ok');
+  [why1, why2].forEach((e) => css(e, { fontSize: '23px' }));
+  show(why2, tW0 + 0.1, { x: 16 }); show(why1, tW0 + 0.9, { x: 16 }); sfx('tick', tW0 + 0.9, { g: 0.4 });
+  [why1, why2, bar].forEach((e) => hide(e, T('m15b') - 0.25, { d: 0.25 }));
   // 她等的是 Alice 的事务结束；实测的 pg_locks
   const toX2 = curve(overlay(B), [1220, 466], [420 + 400 + 170, 314], 'warn', { bend: 330 }); arrowIn(toX2, T('m14', '事务结束') - 0.3, 0.5);
   const lk = tableDoc(B, ['连接', '锁的对象', '拿到了吗'],
@@ -104,7 +127,7 @@ scene('mvcc', ({ root, s, c0 }) => {
   const here = tagEl(B, '锁就记在这里', 420 + 214, 384, 'warn'); css(here, { fontSize: '24px' }); show(here, T('m15', 'xmax'), { y: 8 });
   const many = h('div', 'abs', B); px(many, 1220, 420, 620, 180); many.dataset.name = '许多行的行头';
   for (let i = 0; i < 4; i++) { const r = h('div', 'abs', many, `xmax ${X}`); px(r, 0, i * 44, 200, 38); css(r, { background: 'var(--navy)', color: '#fff', font: '600 22px var(--mono)', lineHeight: '38px', textAlign: 'center' }); const d = h('div', 'abs', many, '……'); px(d, 210, i * 44, 160, 38); css(d, { background: 'var(--sky-lt)', font: '600 22px var(--mono)', lineHeight: '38px', textAlign: 'center', color: 'var(--navy)' }); }
-  const manyL = capt(many, '锁记在每一行上，不占内存', 0, 180); css(manyL, { fontSize: '24px' });
+  const manyL = capt(many, '锁写在每一行自己的行头里，内存里不记 → 锁多少行都行', 0, 180); css(manyL, { fontSize: '24px' });
   [lk, lkl].forEach((e) => hide(e, T('m15b') - 0.2, { d: 0.25 }));
   show(many, T('m15b'), { x: 20 }); sfx('tick', T('m15b'), { g: 0.5 });
   hide(many, T('m17') - 0.1, { d: 0.25 });

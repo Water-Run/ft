@@ -1,9 +1,10 @@
 // 本片的部件：屏与镜头、文档部件、堆页条、B 树、页的比例条、字节格。数据只读 window.DATA（tools/gen_data.py 生成）。
 const D = window.DATA;
 const FRAME = { top: 110, bottom: 940, left: 72, right: 1848 };   // 顶栏以下、字幕以上的可读区
-// 按词对齐的画面提前 0.12 秒：动画到位要一点时间，卡在词的起点上看着比声音慢（WaterRun 看 r3b：「画面跟不上动画 比如 支持事务」）
+// 画面比声音提前：按词对齐的提前 0.3 秒，按句对齐的提前 0.12 秒。动画到位要一点时间，卡在词的起点上看着比声音慢
+// （WaterRun 看 r3b：「画面跟不上动画 比如 支持事务」；看 r7：「有不少画面比旁白稍微延迟的情况」，由 0.12 / 0 加大）
 const T_EXACT = T;
-T = function (id, word, shift = 0) { return T_EXACT(id, word, shift) - (word ? 0.12 : 0); };
+T = function (id, word, shift = 0) { return T_EXACT(id, word, shift) - (word ? 0.3 : 0.12); };
 
 // ── 屏与镜头 ──
 // 一章由若干屏组成，在原地换内容。screens(world, [t0, t1, t2, …]) 建 n 个屏：第 i 屏从 marks[i] 出现到 marks[i+1] 换走
@@ -95,37 +96,15 @@ overlay = function (parent) {
   });
   return s;
 };
-// 视线框的边不能从字中间穿过：边要切到的说明文字（离得近的）一并框进来；框不进来的就把这一侧收紧
-function ringRect(p, b, pad, target) {
-  let x0 = b.x - pad, y0 = b.y - pad, x1 = b.x + b.w + pad, y1 = b.y + b.h + pad;
-  const texts = [...p.querySelectorAll('*')].filter((e) => e.dataset.name !== '视线框' && !(target && target.nodeType && (target === e || target.contains(e) || e.contains(target))) && !e.closest('svg') &&
-    [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())).map((e) => box(e, p)).filter((q) => q.w > 4 && q.h > 8);
-  for (let k = 0; k < 2; k++) {
-    for (const q of texts) {
-      const ov = q.x < x1 && q.x + q.w > x0 && q.y < y1 && q.y + q.h > y0;
-      const inside = q.x >= x0 && q.x + q.w <= x1 && q.y >= y0 && q.y + q.h <= y1;
-      if (!ov || inside) continue;
-      const nx0 = Math.min(x0, q.x - 8), ny0 = Math.min(y0, q.y - 6), nx1 = Math.max(x1, q.x + q.w + 8), ny1 = Math.max(y1, q.y + q.h + 6);
-      if (x0 - nx0 <= 70 && y0 - ny0 <= 60 && nx1 - x1 <= 70 && ny1 - y1 <= 60) { x0 = nx0; y0 = ny0; x1 = nx1; y1 = ny1; continue; }
-      // 太远框不进来：挑改动最小的一侧收紧，让那条边落在字外；收紧后不能切进目标本身
-      const opts = [
-        ['y0', q.y + q.h + 2, q.y + q.h + 2 <= b.y], ['y1', q.y - 2, q.y - 2 >= b.y + b.h],
-        ['x0', q.x + q.w + 2, q.x + q.w + 2 <= b.x], ['x1', q.x - 2, q.x - 2 >= b.x + b.w],
-      ].filter((o) => o[2]).map(([k, v]) => [k, v, Math.abs(v - { y0, y1, x0, x1 }[k])]).sort((m, n) => m[2] - n[2]);
-      if (opts.length) { const [kk, v] = opts[0]; if (kk === 'y0') y0 = v; else if (kk === 'y1') y1 = v; else if (kk === 'x0') x0 = v; else x1 = v; }
-    }
-  }
-  return { left: x0, top: y0, width: x1 - x0, height: y1 - y0 };
-}
-// 视线框：一屏一个，讲到哪个东西就移到哪个东西上（at 给元素或 [x, y, w, h]；坐标是屏内坐标）。每一步写明起点，跳播也一样
-function focusRing(p, color = '#b8442f') {
-  const r = h('div', 'abs', p); css(r, { border: `5px solid ${color}`, pointerEvents: 'none' }); r.dataset.name = '视线框';
-  let prev = null;
-  set(r, 0, { autoAlpha: 0 });
+// 指认：讲到哪个东西，就在它本身上铺一层淡黄底，原地淡入、淡出，不在屏上移动
+// （原先是一个红框从一处移到另一处；WaterRun 看 r7：「各个文字打框动来动去看的眼花, 别太局限这一种指示视觉的方式」）
+// at 给元素或 [x, y, w, h]（屏内坐标）；元素里伸出盒子外的字一并算进去。名字仍叫「视线框」，检查工具按这个名字跳过它
+function focusRing(p) {
+  let cur = null;
   const api = {
-    at(t, target, pad = 10) {
+    at(t, target, pad = 6) {
       let b = Array.isArray(target) ? { x: target[0], y: target[1], w: target[2], h: target[3] } : box(target, p);
-      if (!Array.isArray(target)) {   // 容器里伸出盒子外的字（如挂在下面的说明）也算进目标，框不从它们中间穿过
+      if (!Array.isArray(target)) {
         for (const e of target.querySelectorAll('*')) {
           if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
           const q = box(e, p); if (q.w < 4 || q.h < 8) continue;
@@ -133,11 +112,15 @@ function focusRing(p, color = '#b8442f') {
           b = { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
         }
       }
-      const st = ringRect(p, b, pad, Array.isArray(target) ? null : target);
-      if (!prev) { set(r, t, { ...st, autoAlpha: 1 }); } else tl.fromTo(r, { ...prev }, { ...st, duration: 0.35, ease: 'power2.inOut', immediateRender: false }, t);
-      prev = st; return api;
+      const big = b.w * b.h > 40000;
+      const m = h('div', 'abs', p); px(m, b.x - pad, b.y - pad, b.w + 2 * pad, b.h + 2 * pad); m.dataset.name = '视线框';
+      css(m, { background: big ? 'rgba(255,205,80,.16)' : 'rgba(255,200,60,.34)', mixBlendMode: 'multiply', borderRadius: '3px', pointerEvents: 'none' });
+      set(m, 0, { autoAlpha: 0 });
+      tl.fromTo(m, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, immediateRender: false }, t);
+      if (cur) gone(cur, t, 0.25);
+      cur = m; return api;
     },
-    off(t) { gone(r, t, 0.25); return api; },
+    off(t) { if (cur) gone(cur, t, 0.25); cur = null; return api; },
   };
   return api;
 }

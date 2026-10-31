@@ -1,7 +1,7 @@
 // 09 出错怎么办：WAL 先落盘、数据页晚写（W1–W3）；检查点与整页写（W4、W5、W10）→ 强行停机后重放；没提交的版本本来就看不见（W7–W9）
 scene('crash', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const tB = Tend('w12') + 0.5;
+  const tB = Tend('w12b') + 0.5;
   const [A, B] = screens(world, [c0, tB, s.end]);
   drift(world, s, [tB], -1);
   const W = D.wal;
@@ -58,24 +58,46 @@ scene('crash', ({ root, s, c0 }) => {
   fromTo(cpb, T('w9', '写进') - 0.3, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.4 }); show(cpbl, T('w9', '写进') - 0.2, { y: 6 }); sfx('tick', T('w9', '写进'));
   [cpb, cpbl].forEach((e) => hide(e, T('w10') - 0.2, { d: 0.25 }));
   hide(late, T('w10') - 0.2, { d: 0.25 }); hide(cpG, T('w10') - 0.2, { d: 0.25 });
-  // 整页写：检查点后第一次改这一页，日志里带上整页
-  const fpi1 = W.carolFpi[0][1];
-  const big = h('div', 'abs', A); px(big, 72, 780, 840, 60); css(big, { background: 'var(--pg)' }); big.dataset.name = '带整页的记录';
-  const bigL = h('div', 'abs', big, `第一次改第 23 页：日志带上整页 ${fpi1} 字节`); px(bigL, 16, 12); css(bigL, { font: '700 24px "Sans SC"', color: '#fff' });
-  const small = h('div', 'abs', A); px(small, 72, 860, 120, 50); css(small, { background: 'var(--sky-lt)', border: '2px solid var(--pg)' });
-  const smallL = capt(A, '再改同一页：不带整页', 210, 866);
-  fromTo(big, T('w10', '整页'), { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.6, ease: 'power2.out' }); sfx('thud', T('w10', '整页'), { g: 0.5 });
-  show(small, T('w10', '整页') + 0.8, { x: -10 }); show(smallL, T('w10', '整页') + 0.9);
-  // 写到一半的页：用日志里的整页恢复
+  // 整页写：检查点后第一次改第 23 页，Carol 那条日志记录里带上这一页的原样——就是第三章那张页：页头、指针、行；
+  // 中间那 72 字节的空隙不写（实测整页镜像 8120 = 8192 − 72，N3）。原先只是一条写着字节数的蓝条（WaterRun 看 r7：「日志里的整页体现和InnoDB双写缓冲区, 包括其他的关联概念」）
+  const fpi1 = W.carolFpi[0][1], G3 = D.page23, kk = 840 / 8192, IY = 806;
+  const tF = T('w10', '整页');
+  set(recEls[2], tF, { borderColor: '#e0a11b', borderWidth: '5px', lineHeight: '62px' }); keyed(recEls[2]).at(tF, { html: 'Carol 的修改 + 整页' });
+  const imgL = capt(A, `这条记录带着第 23 页的原样（${fpi1} 字节）`, 72, IY - 40); css(imgL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
+  const img = h('div', 'abs', A); px(img, 72, IY, 840, 64); css(img, { border: '4px solid #e0a11b', background: '#fff' }); img.dataset.name = '日志里的整页';
+  const sg = (a, b, bg) => { const e = h('div', 'abs', img); px(e, a * kk, 0, Math.max(2, (b - a) * kk), 56); css(e, { background: bg }); return e; };
+  sg(0, 24, 'var(--navy)'); sg(24, G3.lower, 'var(--sky)'); sg(G3.upper, 8192, 'repeating-linear-gradient(90deg,var(--sky-lt) 0 6px,#fff 6px 7px)');
+  const hole = h('div', 'abs', A, `中间的空隙 ${G3.upper - G3.lower} 字节：不写`); px(hole, 72 + G3.lower * kk - 10, IY + 72); css(hole, { font: '700 22px "Sans SC"', color: '#7d5500', whiteSpace: 'nowrap' });
+  const holeT = h('div', 'abs', A); px(holeT, 72 + G3.lower * kk + 2, IY + 58, 3, 16); css(holeT, { background: '#7d5500' });
+  const small = capt(A, '再改同一页：不再带整页', 560, IY + 72); css(small, { fontSize: '22px' });
+  show(imgL, tF - 0.1, { y: 8 }); wipe(img, tF, { dir: 'l', d: 0.5 }); sfx('thud', tF, { g: 0.5 });
+  show(hole, tF + 0.8, { y: -6 }); show(holeT, tF + 0.8, { y: 0 }); show(small, Math.max(tF + 1.6, Tend('w10') - 0.3), { x: -10 });
+  // 写到一半的页：用日志里的整页恢复（整页从日志那张图飞过去，盖住写坏的下半页）
   const torn = h('div', 'abs', A); px(torn, 1000, 760, 840, 150); torn.dataset.name = '写了一半的页';
   const tTop = h('div', 'abs', torn); px(tTop, 0, 0, 840, 75); css(tTop, { background: 'var(--sky-lt)', border: '3px solid var(--pg)' });
   const tBot = h('div', 'abs', torn); px(tBot, 0, 75, 840, 75); css(tBot, { background: 'repeating-linear-gradient(135deg,var(--warn-lt) 0 10px,#fff 10px 20px)', border: '3px dashed var(--warn)' });
-  const tl1 = h('div', 'abs', torn, '只写了一半：页坏了'); px(tl1, 20, 96); css(tl1, { font: '700 24px "Sans SC"', color: 'var(--warn)' });
+  const tl1 = h('div', 'abs', torn, '磁盘上的第 23 页只写了一半：坏了'); px(tl1, 20, 96); css(tl1, { font: '700 24px "Sans SC"', color: 'var(--warn)' });
   wipe(torn, T('w11', '一半'), { dir: 'l' }); sfx('error', T('w11', '一半') + 0.2, { g: 0.5 });
-  set(tBot, T('w12', '恢复'), { background: 'var(--sky-lt)', border: '3px solid var(--pg)' });
-  keyed(tl1).at(T('w12', '恢复'), { html: '用日志里的整页写回：恢复' }); set(tl1, T('w12', '恢复'), { color: 'var(--navy)' }); sfx('chime', T('w12', '恢复'), { g: 0.6 });
+  const ghost = h('div', 'abs', A); px(ghost, 72, IY, 840, 64); css(ghost, { border: '4px solid #e0a11b', background: 'repeating-linear-gradient(90deg,var(--sky-lt) 0 6px,#fff 6px 7px)' });
+  const tRe = T('w12', '整页');
+  set(ghost, 0, { autoAlpha: 0 }); tl.fromTo(ghost, { autoAlpha: 1, x: 0, y: 0 }, { x: 928, y: 26, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tRe); gone(ghost, tRe + 0.7, 0.25);
+  set(tBot, tRe + 0.6, { background: 'var(--sky-lt)', border: '3px solid var(--pg)' });
+  keyed(tl1).at(tRe + 0.6, { html: '用日志里的整页写回：恢复' }); set(tl1, tRe + 0.6, { color: 'var(--navy)' }); sfx('chime', tRe + 0.6, { g: 0.6 });
+  // InnoDB 防同一件事：双写缓冲区——页先写进双写缓冲区，再写到数据文件里的原位（W9）。占下面左边这块：整页那张图收起
+  const tI = T('w12b');
+  [imgL, img, hole, holeT, small].forEach((e) => gone(e, tI - 0.3, 0.3));
+  const dwb = h('div', 'abs', A); px(dwb, 72, 740, 880, 180); dwb.dataset.name = 'InnoDB 的双写缓冲区';
+  const innL = h('div', 'abs', dwb, '<b>InnoDB</b>：页先写进双写缓冲区，再写到数据文件里的原位'); px(innL, 0, 0); css(innL, { font: '600 24px "Sans SC"', color: 'var(--ink)', whiteSpace: 'nowrap' });
+  const bx = (x, txt, bg) => { const e = h('div', 'abs', dwb, txt); px(e, x, 60, 230, 64); css(e, { background: bg, color: '#fff', font: '700 24px "Sans SC"', lineHeight: '64px', textAlign: 'center' }); return e; };
+  const ib1 = bx(0, '内存里的页', '#5f6a73'), ib2 = bx(320, '① 双写缓冲区', '#4f5c67'), ib3 = bx(640, '② 原位', '#4f5c67');
+  const ovI = overlay(A); const ia1 = link(ovI, [[72 + 236, 832], [72 + 314, 832]], 'grey'), ia2 = link(ovI, [[72 + 556, 832], [72 + 634, 832]], 'grey');
+  const innN = h('div', 'abs', dwb, '原位写坏了，就拿双写缓冲区里那份恢复'); px(innN, 0, 138); css(innN, { font: '500 22px "Sans SC"', color: 'var(--ink2)', whiteSpace: 'nowrap' });
+  [innL, ib1, ib2, ib3, innN].forEach((e) => set(e, 0, { autoAlpha: 0 }));
+  show(innL, tI - 0.1, { y: 8 }); show(ib1, tI + 0.1, { x: -10 }); arrowIn(ia1, T('w12b', '双写') - 0.2, 0.3); show(ib2, T('w12b', '双写'), { x: -10 });
+  arrowIn(ia2, T('w12b', '双写') + 0.5, 0.3); show(ib3, T('w12b', '双写') + 0.7, { x: -10 }); show(innN, T('w12b', '双写') + 1.1, { y: 6 }); sfx('pop', T('w12b', '双写'), { g: 0.5 });
   const fA = focusRing(A);
-  fA.at(T('w2', 'WAL'), walG).at(T('w3', '落盘'), tape).at(T('w4', '提交之前'), [72 + 4 * 222, 370, 4 * 222, 80]).at(T('w4', '内存'), mem).at(T('w6', '旧的'), dskP).at(T('w7', '晚些'), bufP).at(T('w8', '检查点') + 0.2, cpG).at(T('w9', '之前'), [72, 370, 444, 110]).at(T('w10', '整页'), big).at(T('w11', '断电'), dskP).at(T('w11', '一半'), torn).off(tB - 0.4);
+  fA.at(T('w2', 'WAL'), walG).at(T('w3', '落盘'), tape).at(T('w4', '提交之前'), [72 + 4 * 222, 370, 4 * 222, 80]).at(T('w4', '内存'), mem).at(T('w6', '旧的'), dskP).at(T('w7', '晚些'), bufP).at(T('w8', '检查点') + 0.2, cpG).at(T('w9', '之前'), [72, 370, 444, 110])
+    .at(T('w10', '第一次改'), recEls[2]).at(T('w11', '断电'), dskP).at(T('w11', '一半'), torn).off(tI - 0.2);
 
   // ── B：强行停机，再启动 ──
   hdoc(B, '试一次：强行停机', 72, 128);

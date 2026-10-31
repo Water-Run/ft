@@ -79,7 +79,8 @@ scene('insert', ({ root, s, c0 }) => {
   const full = capt(B, '一页叶子', 200, 460); css(full, { fontSize: '26px' });
   const tS = T('i10');
   wipe(L1, tS - 0.4, { dir: 'l' }); show(full, tS - 0.4);
-  to(fill1, tS - 0.1, { width: 502, duration: 0.7, ease: 'power1.in' });
+  // 装满与对半分都写明起点：画面提前量加大后，两段可能挨得很近，不能让后一段从前一段的中途接手（跳播会不一样）
+  fromTo(fill1, tS - 0.1, { width: 0 }, { width: 502, duration: Math.min(0.7, T('i10', '一分为二') - tS - 0.05), ease: 'power1.in' });
   const fl = capt(B, '满了', 600, 460); css(fl, { fontSize: '26px', color: 'var(--warn)', fontWeight: 700 }); 
   // 一分为二：右半边搬到新的一页
   const Lb = h('div', 'page', B); px(Lb, 780, 500, 520, 120); Lb.dataset.name = '新的一页叶子';
@@ -87,7 +88,7 @@ scene('insert', ({ root, s, c0 }) => {
   const tSp = T('i10', '一分为二');
   wipe(Lb, tSp - 0.2, { dir: 'l', d: 0.3 });
   set(half, 0, { autoAlpha: 0 }); set(half, tSp, { autoAlpha: 1 });
-  to(fill1, tSp, { width: 251, duration: 0.01 });
+  fromTo(fill1, tSp, { width: 502 }, { width: 251, duration: 0.01, immediateRender: false });
   to(half, tSp + 0.05, { x: 780 - 200 - 251, duration: 0.6, ease: 'power3.inOut' }); to(half, tSp + 0.7, { backgroundColor: '#cfe0ee', duration: 0.3 });
   const halfL = capt(B, '对半分：两页各装五成', 560, 640); css(halfL, { fontSize: '26px', color: 'var(--pg-dk)', fontWeight: 700 }); show(halfL, tSp + 0.7, { y: -8 });
   show(fl, tS + 0.6, { y: 8, d: 0.3 }); hide(fl, Math.max(tSp, tS + 1.0), { d: 0.2 }); sfx('thud', tSp + 0.6, { g: 0.6 });
@@ -101,7 +102,7 @@ scene('insert', ({ root, s, c0 }) => {
   // 编号一路递增：最右边那页满了就分裂，左边那页留在九成
   // 根出来以后停一停，再换到主键树的那一排叶子
   const tOut = Math.max(tR + 2.4, T('i12', '递增') - 0.2);
-  [L1, Lb, fill1, half, rt, e1, e2, full, halfL].forEach((e) => gone(e, tOut, 0.35));
+  [L1, Lb, half, rt, e1, e2, full, halfL].forEach((e) => gone(e, tOut, 0.35));   // fill1 在 L1 里，随 L1 一起淡出；单独给它一个淡出，倒着跳回来时它会留在隐藏状态
   const row9 = h('div', 'abs', B); px(row9, 120, 520, 1700, 140); row9.dataset.name = '主键树的叶子：最右边分裂';
   const LW = 260, leaves9 = [];
   for (let i = 0; i < 6; i++) {
@@ -129,13 +130,36 @@ scene('insert', ({ root, s, c0 }) => {
   const r9 = focusRing(B); r9.at(T('i12', '分裂'), leaves9[4]).at(T('i13', '左边'), leaves9[4]).at(tL + 0.2, leaves9[5]).off(s.end - 0.4);
   to(leaves9[5].f, tL + 0.3, { width: (LW - 10) * 0.6, duration: Tend('i14') - tL, ease: 'none' });
   [0, 1, 2].forEach((j) => fly(B, '更大的编号', [1500, 860], [120 + 5 * (LW + 20) + 40, 540], tL + 0.2 + j * 0.6, { cls: 'navy', fs: 22, d: 0.45 }));
-  // 为什么是九成（G6）：对半分的话，左边那页以后再也进不来新编号，永远半空；也不装满，留一成给以后落到这页的少量插入和更新
-  const why = h('div', 'note', B); px(why, 120, 690, 1180); why.dataset.name = '为什么是九成';
-  why.innerHTML = '<b>为什么只装九成（填充因子默认 90）</b>' +
-    '<div style="margin-top:8px">· 编号只增不减，新编号总落在最右边，左边那页以后不会再进新编号；对半分的话，每页都只有五成满</div>' +
-    '<div style="margin-top:4px">· 也不装满：留一成，之后有少量插入或更新落到这页，不必马上再分裂</div>';
-  css(why, { fontSize: '24px', lineHeight: '1.45' });
-  const wl = why.querySelectorAll('div');
-  show(why, T('i13', '九成') + 0.2, { y: 10 }); set(wl[0], 0, { autoAlpha: 0 }); set(wl[1], 0, { autoAlpha: 0 });
-  show(wl[0], T('i14') - 0.1, { y: 6 }); show(wl[1], Math.max(T('i14') + 2.2, Tend('i14') - 0.2), { y: 6 });
+  const nNew = capt(B, '新编号只往最右边加，左边几页不会再进新编号', 120, 640); css(nNew, { fontSize: '24px', color: 'var(--navy)' }); show(nNew, T('i14', '不会'), { y: -6 });
+  // 为什么也不装满（G6，i14b）：左边几页都留着一成（黄色斜纹）；要是装满，之后改一行、叶子里多一项，这页就得再分裂（右下的小图）；
+  // 留了一成的页，这一项落进空位里就行（i14b 说完的停顿里演示）。原先这里是一段两行的文字说明（WaterRun 看 r7：「为什么只装9成加一句旁白解释」）
+  hide(nNew, T('i14b') - 0.1, { d: 0.25 });
+  const tW = T('i14b', '不装满'), tF = T('i14b', '装满的页'), tM = T('i14b', '改几行'), tQ = T('i14b', '分裂');
+  const RW = (LW - 10) * 0.1;
+  const rooms = leaves9.slice(0, 5).map((lf, i) => {
+    const r = h('div', 'abs', lf); px(r, 5 + (LW - 10) * 0.9, 5, RW, 84); css(r, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
+    set(r, 0, { autoAlpha: 0 }); show(r, tW + i * 0.06, { y: 0, d: 0.3 }); return r;
+  });
+  const roomL = capt(B, '每页留着一成空位', 120, 640); css(roomL, { fontSize: '24px', color: '#7d5500', fontWeight: 700 }); show(roomL, tW + 0.2, { y: -6 });
+  sfx('tick', tW, { g: 0.5 });
+  const cf = h('div', 'abs', B); px(cf, 1300, 700, 560, 190); cf.dataset.name = '要是装满';
+  const cfl = h('div', 'abs', cf, '要是装满：'); px(cfl, 0, 0); css(cfl, { font: '700 24px "Sans SC"', color: 'var(--warn)' });
+  const fp = h('div', 'page', cf); px(fp, 0, 40, LW, 100); const ff = h('div', 'abs', fp); px(ff, 5, 5, LW - 10, 84); css(ff, { background: 'var(--sky-lt)' });
+  const fp2 = h('div', 'page', cf); px(fp2, 0, 40, LW, 100); const ff2 = h('div', 'abs', fp2); px(ff2, 5, 5, (LW - 10) / 2, 84); css(ff2, { background: 'var(--sky-lt)' });
+  set(cf, 0, { autoAlpha: 0 }); tl.fromTo(cf, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, tF);
+  set(fp2, 0, { autoAlpha: 0 });
+  fly(B, '多一项', [1500, 900], [1300 + LW / 2 - 40, 760], tM, { cls: 'navy', fs: 22, d: 0.45, sink: true });
+  fromTo(fp, tQ, { borderColor: '#336791' }, { borderColor: '#b8442f', duration: 0.15 });
+  fromTo(ff, tQ + 0.05, { width: LW - 10 }, { width: (LW - 10) / 2, duration: 0.35, ease: 'power2.inOut' });
+  tl.fromTo(fp2, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: LW + 20, duration: 0.45, ease: 'power3.out', immediateRender: false }, tQ + 0.05);
+  const spl = h('div', 'tag warn', cf, '又要分裂'); px(spl, 0, 152); css(spl, { fontSize: '24px' }); set(spl, 0, { autoAlpha: 0 }); show(spl, tQ + 0.3, { y: -6 });
+  sfx('thud', tQ + 0.05, { g: 0.55 });
+  // 说完以后：留了一成的页，多一项落进空位，不用分裂
+  const tE = Tend('i14b') + 0.15, lx2 = 120 + 2 * (LW + 20);
+  fly(B, '多一项', [lx2 + 40, 860], [lx2 + LW - 70, 540], tE, { cls: 'navy', fs: 22, d: 0.45, sink: true });
+  fromTo(leaves9[2].f, tE + 0.55, { width: (LW - 10) * 0.9 }, { width: (LW - 10) * 0.95, duration: 0.25 });
+  fromTo(rooms[2], tE + 0.55, { width: RW, x: 0 }, { width: RW / 2, x: RW / 2, duration: 0.25 });
+  hide(roomL, tE + 0.5, { d: 0.2 });
+  const okL = h('div', 'tag ok', B, '留了一成：放得下，不用分裂'); px(okL, 120, 640); css(okL, { fontSize: '24px' }); set(okL, 0, { autoAlpha: 0 }); show(okL, tE + 0.7, { y: -6 });
+  sfx('pop', tE + 0.6, { g: 0.5 });
 });

@@ -40,7 +40,7 @@ scene('delete', ({ root, s, c0 }) => {
   wipe(pa.box, T('d1') + 0.3, { dir: 'l' }); show(pa.cap, T('d1') + 0.3); show(rowA, T('d1') + 0.6, { y: 8 }); arrowIn(pa.ar, T('d1') + 0.8, 0.3);
   const keepT = tagEl(A, '这一行不擦掉', 260, 330, 'ok'); css(keepT, { fontSize: '26px' }); show(keepT, T('d2', '不擦掉'), { y: 8 }); sfx('tick', T('d2', '不擦掉')); hide(keepT, T('d3') - 0.1, { d: 0.2 });
   keyed(xmc).at(T('d3', 'xmax'), { html: `xmax <b>${E.xid}</b>` }); set(xmc, T('d3', 'xmax'), { backgroundColor: '#b8442f' }); sfx('tick', T('d3', 'xmax'));
-  const xmT = tagEl(A, `xmax 记上删除它的事务：${E.xid}`, 260, 590, 'warn'); css(xmT, { fontSize: '26px' }); show(xmT, T('d3') + 0.3, { y: 8 });
+  const xmT = tagEl(A, `xmax 记上删除它的事务 ${E.xid}：可见范围到这里为止`, 260, 590, 'warn'); css(xmT, { fontSize: '26px' }); show(xmT, T('d3') + 0.3, { y: 8 });   // 接第三章的「可见范围」
   const still = tagEl(A, '行还在页里', 72, 590, 'navy'); show(still, T('d4', '还在'), { y: 8 }); sfx('pop', T('d4', '还在'), { g: 0.5 });
   const adm = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">SELECT</span> … <span class="k">WHERE</span> id = 2050;\n<span class="d">(0 rows)</span>`, 1040, 196, 800); css(adm, { fontSize: '23px' });
   show(adm, T('d4'), { x: 20 }); sfx('blip', T('d4'), { g: 0.4, p: 0.4 });

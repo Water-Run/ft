@@ -75,6 +75,16 @@ scene('update', ({ root, s, c0 }) => {
   // 同一个 Alice，两个版本
   const two = tagEl(A, '同一个 Alice，两个版本', 760, 760); css(two, { fontSize: '30px' }); slam(two, T('u11', '两个版本'), { from: 1.15 }); sfx('thud', T('u11', '两个版本'), { g: 0.6 });
   [oldL, keep].forEach((e) => hide(e, T('u11') - 0.1, { d: 0.2 }));
+  // 两个版本，两段可见范围（第三章的画法）：旧版本到这个事务号止，新版本从它起，首尾相接
+  const RX = 72, RM = 420, RE = 730, RY2 = 806;
+  const rb = (x0, x1, html, bg, fg) => { const b = h('div', 'abs', A, html); px(b, x0, RY2, x1 - x0, 42); css(b, { background: bg, color: fg, font: '700 22px "Sans SC"', lineHeight: '42px', padding: '0 12px', boxSizing: 'border-box', whiteSpace: 'nowrap', transformOrigin: '0 50%' }); return b; };
+  const rOld = rb(RX, RM, `旧版本：${D.alice.xmin} → ${U.xid}`, 'var(--sky-lt)', 'var(--navy)'), rNew = rb(RM, RE, `新版本：${U.xid} →`, 'linear-gradient(90deg,var(--pg) 70%,rgba(51,103,145,.15))', '#fff');
+  const rTk = h('div', 'abs', A); px(rTk, RM - 2, RY2 - 12, 4, 66); css(rTk, { background: 'var(--warn)' });
+  const rLb = capt(A, '可见范围', RX, RY2 - 36); css(rLb, { fontSize: '22px', color: 'var(--ink2)' });
+  [rOld, rNew, rTk, rLb].forEach((e) => set(e, 0, { autoAlpha: 0 }));
+  tl.fromTo(rOld, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.4, immediateRender: false }, T('u11', '两个版本') - 0.2);
+  tl.fromTo(rNew, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.4, immediateRender: false }, T('u11', '两个版本') + 0.2);
+  show(rTk, T('u11', '两个版本') + 0.15, { y: 0, d: 0.2 }); show(rLb, T('u11', '两个版本') - 0.2, { y: 6 });
 
   // ── B：三个索引各加一项；对照 InnoDB ──
   hdoc(B, '三个索引，各插一项', 72, 128);
@@ -143,7 +153,7 @@ scene('update', ({ root, s, c0 }) => {
   const [hP, hL] = H.old, [, hN] = H.new;
   const PY = 372;
   const pgH = h('div', 'page', C); px(pgH, 520, PY, 900, 170); pgH.dataset.name = `users_hot 第 ${hP} 页`;
-  const pl = capt(C, `users_hot · 第 ${hP} 页`, 520, PY - 38);
+  const pl = capt(C, `一页里：旧版本，和留着的空位`, 520, PY - 38);
   keyed(pl).at(T('u23', '换一张'), { html: `users_hot：每页留一成空位、年龄不建索引 · 第 ${hP} 页` });
   const hold = h('div', 'tup', pgH, `第 ${hL} 项　2050  Alice  42`); px(hold, 20, 24, 400);
   const hgap = h('div', 'abs', pgH, '留着的空位'); px(hgap, 460, 92, 420, 56); css(hgap, { background: 'repeating-linear-gradient(135deg,#fff 0 7px,#dbe8f3 7px 14px)', border: '2px dashed var(--pg)', font: '700 22px "Sans SC"', color: 'var(--pg)', lineHeight: '52px', textAlign: 'center' }); hgap.dataset.name = '空位';
@@ -167,20 +177,33 @@ scene('update', ({ root, s, c0 }) => {
   const t1 = tableDoc(C, ['users（年龄有索引）', ''], walRows(U.wal), 72, TY, { mono: [0, 1] });
   const t2 = tableDoc(C, ['users_hot', ''], walRows(H.wal), 760, TY, { mono: [0, 1] });
   css(t1, { fontSize: '23px' }); css(t2, { fontSize: '23px' });
-  set(t1, 0, { autoAlpha: 0 }); set(t1, T('u23') + 0.2, { autoAlpha: 1 }); set(t2, 0, { autoAlpha: 0 }); set(t2, T('u24', 'HOT') - 0.4, { autoAlpha: 1 });
-  [...t1.querySelectorAll('tr')].forEach((r, i) => show(r, T('u23') + 0.2 + i * 0.3, { x: -10, y: 0, d: 0.3 }));
+  set(t1, 0, { autoAlpha: 0 }); set(t1, T('u24') - 0.1, { autoAlpha: 1 }); set(t2, 0, { autoAlpha: 0 }); set(t2, T('u24', 'HOT') - 0.4, { autoAlpha: 1 });
+  [...t1.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24') - 0.1 + i * 0.25, { x: -10, y: 0, d: 0.3 }));
   [...t2.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24', 'HOT') - 0.4 + i * 0.3, { x: -10, y: 0, d: 0.3 })); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
-  const tlab = capt(C, '各写了哪些日志记录（每次修改先记一条日志，第 9 章细讲）', 72, TY - 40); show(tlab, T('u23'));
+  const tlab = capt(C, '各写了哪些日志记录（每次修改先记一条日志，第 9 章细讲）', 72, TY - 40); show(tlab, T('u24') - 0.2);
+  // 旁白顺序（2026-10-31 调）：条件 → Alice 两条都不满足 → 表默认装满、可以改小 → 换一张留一成的表验证
+  // 填充比例接上第四章：左边是主键树那页叶子（留一成，同样的黄色斜纹），右边是表的页（默认装满）；改小以后，表的页也留出一成
+  const FY2 = 690;
+  const lfL = capt(C, '主键树的叶子（第 4 章）：留一成', 72, FY2 - 44); css(lfL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
+  const lf = h('div', 'page', C); px(lf, 72, FY2, 380, 76); lf.dataset.name = '主键树的叶子';
+  const lff = h('div', 'abs', lf); px(lff, 4, 4, 372 * 0.9 - 4, 62); css(lff, { background: 'var(--sky-lt)' });
+  const lfr = h('div', 'abs', lf); px(lfr, 372 * 0.9, 4, 372 * 0.1, 62); css(lfr, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
+  const tpL = capt(C, '表的页：默认装满', 540, FY2 - 44); css(tpL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
+  const tp = h('div', 'page', C); px(tp, 540, FY2, 860, 76); tp.dataset.name = '表的页';
+  const tpf = h('div', 'abs', tp); px(tpf, 4, 4, 0, 62); css(tpf, { background: 'var(--sky-lt)' });
+  const tpr = h('div', 'abs', tp); px(tpr, 852 * 0.9, 4, 852 * 0.1, 62); css(tpr, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
+  const tprL = capt(C, '留给更新', 1420, FY2 + 20); css(tprL, { fontSize: '26px', color: '#7d5500', fontWeight: 700 });
+  const ffN = capt(C, '<b>填充比例</b>（fillfactor）：表默认 100，把页装满；改成 90，每页留出一成给更新', 72, FY2 + 100); css(ffN, { fontSize: '24px' });
+  const tLf = T('u27', '主键树'), tTb = T('u27', '表默认'), tSm = T('u28', '改小');
+  show(lfL, tLf - 0.1, { y: 8 }); wipe(lf, tLf, { dir: 'l', d: 0.35 }); set(lfr, 0, { autoAlpha: 0 }); show(lfr, T('u27', '一成'), { y: 0, d: 0.3 }); sfx('tick', T('u27', '一成'), { g: 0.5 });
+  show(tpL, tTb - 0.1, { y: 8 }); wipe(tp, tTb, { dir: 'l', d: 0.3 }); tl.fromTo(tpf, { width: 0 }, { width: 844, duration: 0.7, immediateRender: false }, T('u27', '装满') - 0.4);
+  set(tpr, 0, { autoAlpha: 0 }); tl.fromTo(tpf, { width: 844 }, { width: 852 * 0.9 - 4, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, tSm - 0.3);
+  show(tpr, tSm, { y: 0, d: 0.3 }); show(tprL, tSm + 0.1, { x: -8 }); show(ffN, tSm + 0.3, { y: 8 });
+  keyed(tpL).at(tSm, { html: '表的页：填充比例改成 90' }); sfx('pop', tSm, { g: 0.5 });
+  [lfL, lf, tpL, tp, tprL, ffN].forEach((e) => gone(e, T('u24') - 0.35, 0.3));
   const rC = focusRing(C);
   rC.at(T('u19', '一是'), cond1).at(T('u20', '二是'), cond2).at(T('u20', '原来那一页'), [980, PY + 92, 420, 56]).at(T('u21', '本页') + 0.4, [990, PY + 100, 400, 40]).at(T('u21b'), hidx)
-    .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '没有索引插入'), t1).at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).off(T('u27') - 0.1);
-  // 日志对照讲完就收起，下面换成填充比例：一页装到九成，剩下一成留给更新
-  [t1, t2, tlab].forEach((e) => gone(e, T('u25') - 0.2, 0.3)); gone(jump, T('u23') - 0.25, 0.25);   // 日志的说明要占这一行，查询跳转的说明先收
-  const ff = noteBox(C, '<b>填充比例</b>　表默认 100（装满）；改小后，每页留出的空间给更新用', 72, 640, 1100); show(ff, T('u27'), { y: 10 });
-  const ffb = h('div', 'page', C); px(ffb, 72, 760, 860, 56); ffb.dataset.name = '留一成空位的页';
-  const ffa = h('div', 'abs', ffb); px(ffa, 4, 4, 0, 42); css(ffa, { background: 'var(--sky-lt)' });
-  const ffr = h('div', 'abs', ffb); px(ffr, 770, 4, 82, 42); css(ffr, { background: 'repeating-linear-gradient(135deg,#fff 0 6px,#dbe8f3 6px 12px)' });
-  const ffl = capt(C, '留给更新', 950, 768); css(ffl, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 });
-  wipe(ffb, T('u27') + 0.4, { dir: 'l', d: 0.3 }); tl.fromTo(ffa, { width: 0 }, { width: 848, duration: 0.8, immediateRender: false }, T('u27', '装满') - 0.4);
-  show(ffr, T('u28', '改小'), { y: 0 }); show(ffl, T('u28', '改小') + 0.1, { x: -8 }); tl.fromTo(ffa, { width: 848 }, { width: 762, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, T('u28', '改小') - 0.3);
+    .at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).at(tLf, lf).at(tTb, tp)
+    .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '没有索引插入'), t1).off(s.end - 0.5);
+  gone(jump, T('u24') - 0.35, 0.25);
 });

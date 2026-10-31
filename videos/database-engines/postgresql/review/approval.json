@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "7d520d3fdccacab6c49377838df78ac3721cf0d8cc7c0ab9ed5d5920800eba0f",
+      "content_sha256": "3828dd1e744a21bfb32baffb02639b98c00007689bba65b041f074146212184f",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-10-31T23:00:00+08:00",
-      "evidence": "review/NOTES.md「r7 进行中」：第 2 稿 2026-10-27 由 WaterRun 确认（原哈希 957aa044…）；2026-10-31 WaterRun 看预览 r6 时指出「还得再去一趟堆重复两次 动画闪烁 这个bug离谱了哈」，按此删去与 q16 后半句重复的 q17，其余文字未改，即此内容哈希。"
+      "confirmed_at": "2026-10-31T15:33:00+08:00",
+      "evidence": "review/NOTES.md「r8 进行中」：第 2 稿 2026-10-27 由 WaterRun 确认（原哈希 957aa044…），2026-10-31 按其看 r6 的原话删去 q17（哈希 7d520d3f…）。2026-10-31 WaterRun 看预览 r7 给出 q13 的新说法「不同查询的性质, 决定了他要走哪条路」（照用，「他」写作「它」）；同日在会话里逐项选定：i14b 加「也不装满：装满的页，之后改几行就又要分裂」、第六章 u25–u28 调到 u23 之前并把 u27 改为「主键树的叶子还留一成，表默认却把每一页装满」、p16 加「从 xmin 到 xmax，就是这一版能被看见的范围」、w12b 加「InnoDB 防同一件事，靠的是双写缓冲区」，即此内容哈希。"
     }
   }
 }
