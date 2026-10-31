@@ -1,10 +1,9 @@
-/* TODO: 起点自带的占位样式（首集的「计时盘」）。按本集的讲解对象重做视觉系统（经验规则 F16、F21），做完删掉这一行。 */
-/* 本片的视觉系统「计时盘」：墨色与纸色两种底，一种强调色（朱红）。平涂，不用阴影、渐变、圆角。
-   - 墨色底 = 手机一侧；纸色底 = 服务器一侧。两侧并排时就是一张左右对开的画面。
-   - 朱红只给「此刻」：表盘的指针、已经走过的刻度、时间轴上的现在、被选中的字节与最终的验证码。
-   - 圆只表示时间（30 秒表盘）；方块表示数据（字节、比特、二维码的模块）；斜线表示不可信的一方（泄露的副本、假网站）。
-   - 字：数字与数据用 Mono，拉丁文字用 Inter，中文用 Sans SC。
-   对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色（5.8:1）。 */
+/* 本片的视觉系统：按策划者的要求回到首集 2FA 的瑞士风（墨、纸、朱红，平涂，不用阴影、渐变、圆角），对象换成本片自己的：
+   - 环 = 循环：一圈是一次请求，指针走过四站（模型 → 工具调用 → Harness 执行 → 结果交回）。圆只表示这个循环。
+   - 对话栈 = 整段对话：一条消息一行，从下往上摞；每到「模型」一站，左边的括号括出这一次发出的条数。
+   - 朱红只给「工具调用」与「此刻」：工具调用的行与文字、环上走过的弧与指针、新添的消息的标记。结果是纸色块，说明、你的话、回复是空心框。
+   - 字：代码、数字与工具名用 Mono，拉丁文字用 Inter，中文用 Sans SC。
+   对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色。 */
 :root {
   --ink: #0c0d0f;
   --paper: #f2efe8;
@@ -14,8 +13,8 @@
 }
 body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 #bg { background: var(--ink); }
-.scene { overflow: hidden; }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
+.scene { overflow: hidden; background: var(--ink); }
+/* world 是镜头拍摄的那块「大画布」。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; }
 .ink { color: var(--ink); }
@@ -27,39 +26,85 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 .bg-ink { background: var(--ink); }
 .bg-paper { background: var(--paper); }
 .bg-ac { background: var(--ac); }
+.cwrap { display: flex; justify-content: center; }
 
 /* 字号阶梯（1080p）：对比要强。注解不小于 28px */
-.t-0 { font-weight: 900; font-size: 400px; line-height: 1; letter-spacing: -.045em; }
-.t-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
+.t-0 { font-weight: 900; font-size: 300px; line-height: 1; letter-spacing: -.045em; }
+.t-1 { font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -.03em; }
 .t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.02em; }
 .t-3 { font-weight: 700; font-size: 60px; line-height: 1.1; }
 .t-4 { font-weight: 700; font-size: 44px; line-height: 1.15; }
-.t-b { font-weight: 500; font-size: 38px; line-height: 1.3; }
+.t-b { font-weight: 500; font-size: 36px; line-height: 1.3; }
 .t-n { font-weight: 500; font-size: 30px; line-height: 1.3; }
+.lab { font-weight: 700; font-size: 30px; letter-spacing: .02em; }
+.gloss { font-weight: 500; font-size: 28px; line-height: 1.4; color: var(--dim); white-space: normal; }
+.gloss b { color: var(--paper); font-weight: 700; }
 .num { font-family: "Mono"; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
 
-/* 验证码：六个等宽的数字格，换码时逐位滚动 */
-.code { position: absolute; display: flex; font-family: "Mono"; font-weight: 800; line-height: 1; }
-.code .cd { position: relative; width: .6em; height: 1em; overflow: hidden; }
-.code .cd span { position: absolute; left: 0; top: 0; width: .6em; text-align: center; }
+/* 环的站名 */
+.slab { position: absolute; display: flex; align-items: center; }
+.st { font: 700 32px "Inter", "Sans SC"; color: var(--paper); }
+.st.on { color: var(--ac); font-size: 40px; }
 
-/* 字节格 */
-.byte { position: absolute; font-family: "Mono"; font-weight: 700; text-align: center; }
-.byte.sel { background: var(--ac); color: var(--ink); }
-.idx { position: absolute; font-family: "Mono"; font-weight: 500; text-align: center; color: var(--dim); }
-.idx.on { color: var(--paper); font-weight: 800; }
-.hot { --c: var(--ac) !important; }
+/* 对话栈 */
+.row { position: absolute; display: flex; align-items: center; padding-left: 18px; box-sizing: border-box; overflow: hidden; }
+.row .role { font: 500 26px "Sans SC"; width: 120px; flex: none; }
+.row .tx { font: 600 28px "Mono", "Sans SC"; }
+.row.tight .tx { font-size: 26px; }
+.row.say { border: 3px solid var(--paper); color: var(--paper); }
+.row.say .role { color: var(--dim); }
+.row.call { background: var(--ac); color: var(--ink); }
+.row.tool { background: var(--paper); color: var(--ink); }
+.bracket { border: 6px solid var(--paper); border-right: none; box-sizing: border-box; }
+.conv-lab { font: 500 28px "Sans SC"; }
 
-/* 常驻层：字幕带、秒尺、剩余秒数、角上的验证码与表盘 */
+/* 主场的小部件：圈数、工具清单、项目文件、环中间的读数、请求的三样东西 */
+.lapbox { font: 800 32px "Mono"; text-align: center; line-height: 50px; box-sizing: border-box; border: 3px solid var(--dim); color: var(--dim); }
+.lapbox.done { border-color: var(--paper); color: var(--paper); }
+.lapbox.cur { border-color: var(--ac); background: var(--ac); color: var(--ink); }
+.toolsbox { display: flex; align-items: center; padding-left: 18px; box-sizing: border-box; border: 3px dashed var(--dim); color: var(--paper); }
+.toolsbox .role { font: 500 26px "Sans SC"; color: var(--dim); width: 120px; flex: none; }
+.toolsbox .tn { font: 600 26px "Mono"; margin-right: 22px; color: var(--dim); }
+.toolsbox .tn.lit { color: var(--ac); }
+.file { font: 600 26px "Mono"; line-height: 38px; padding-left: 14px; box-sizing: border-box; border: 3px solid var(--dim); color: var(--paper); }
+.file.hit { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.file.want { background: var(--ac); border-color: var(--ac); color: var(--ink); }
+.hub { white-space: nowrap; }
+.slot { font: 700 30px "Sans SC"; text-align: center; line-height: 110px; background: var(--dim); color: var(--ink); }   /* 还没放进去：灰块 */
+.slot.full { background: var(--paper); color: var(--ink); }   /* 放进去了：纸色 */
+.strikebar { background: var(--ac); }
+.hl { color: var(--ink) !important; background: var(--ac); padding: 0 10px; }
+
+/* 代码卡 */
+.code-card { background: var(--paper); color: var(--ink); }
+.cc-name { font: 700 28px "Mono"; color: var(--dimp); }
+.cc-line { font: 500 34px "Mono", "Sans SC"; white-space: pre; }
+.cc-line .ln { color: var(--dimp); display: inline-block; width: 52px; }
+.strike { text-decoration: line-through; text-decoration-color: var(--ac); text-decoration-thickness: 5px; }
+
+/* 环中间的读数与工具调用的原文 */
+.hub-k { font: 700 30px "Sans SC"; color: var(--dim); }
+.callx { font: 800 52px "Mono"; color: var(--ac); }
+.argx { font: 600 30px "Mono", "Sans SC"; color: var(--paper); }
+.card-p { background: var(--paper); color: var(--ink); padding: 18px 26px; }
+
+/* 常驻层：字幕带、秒尺、剩余秒数、右上角的仪表（这一次请求发出的字节数） */
 .band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
 .band svg { position: absolute; left: 0; top: 0; }
 .hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
 .hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
 .hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 40px; width: 300px; height: 72px; }
+.hud-r { position: absolute; left: 1500px; top: 40px; width: 360px; height: 72px; }
+.hud-r .k { position: absolute; left: 0; top: 4px; font: 700 28px "Sans SC"; }
+.hud-r .v { position: absolute; right: 0; top: -4px; font: 800 40px "Mono"; }
+.hud-r .bar { position: absolute; left: 0; top: 54px; width: 360px; height: 12px; box-sizing: border-box; border: 2px solid var(--dimp); }
+.hud-r .bar i { position: absolute; left: 0; top: 0; height: 12px; background: var(--ac); }
 
 /* 字幕：压在字幕带上 */
 #caption { bottom: 30px; height: 60px; z-index: 50; }
 #caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
 .en #caption span { font-size: 36px; }
 #caption em { font-style: normal; font-weight: 800; color: var(--ac); }
+
+/* 片尾名单 */
+.credits-k { font: 500 28px "Sans SC"; color: var(--dim); }

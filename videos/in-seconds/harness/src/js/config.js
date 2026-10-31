@@ -1,5 +1,5 @@
-// 「XX 秒速通」系列的引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角留给本集的仪表）、换场。
-// TODO: 系列起点。右上角的仪表（window.HUD.right）与换场方式按本集的题目来做，做完删掉这一行；做法对照首集 two-factor-auth 的 config.js。
+// 「XX 秒速通」系列的引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角本集的仪表）、换场。
+// 本集的仪表：这一次请求发出了多少字节（实验记录的 request_bytes，第 1–5 次 1243 → 3724）。发出的时刻由主场登记进 window.SENDS。
 document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
 window.PALETTE = { ink: '#0c0d0f', paper: '#f2efe8', ac: '#ff4a1c', dim: '#8a8782', dimp: '#6b6964' };
 const C = window.PALETTE;
@@ -43,8 +43,21 @@ window.ENGINE = {
       fromTo(left, sec, { scale: 1 }, { keyframes: [{ scale: 1.28, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
       sfx('tick', sec, { g: 0.8, p: -0.6 });
     }
-    // ── 右上：本集的仪表放进这个容器（宽 300、高 72，右缘离画面 60px）──
-    const right = h('div', 'hud-r', hud);
+    // ── 右上：这一次请求发出的字节数；每到「模型」一站（发出请求）跳到新的值，条按最大值 3724 的比例 ──
+    const right = h('div', 'hud-r', hud, `<div class="k">${tr('这次发出 · 字节', 'Sent · bytes')}</div><div class="v mono">—</div><div class="bar"><i></i></div>`);
+    const rv = right.querySelector('.v'), rb = right.querySelector('.bar i');
+    window.SENDS = window.SENDS || [];
+    const MAXB = Math.max(...window.DATA.rounds.map((r) => r.bytes));
+    let lastR = null;
+    F((t) => {
+      let b = null, b0 = 0, t0 = 0;
+      for (const [ts, v] of window.SENDS) if (t >= ts) { b0 = b == null ? 0 : b; b = v; t0 = ts; }
+      const k = b == null ? 0 : ease.out3(clamp((t - t0) / 0.6)), shown = b == null ? null : Math.round(lerp(b0, b, k));
+      const key = shown + ':' + k.toFixed(3);
+      if (key === lastR) return; lastR = key;
+      rv.textContent = shown == null ? '—' : String(shown);
+      rb.style.width = (shown == null ? 0 : shown / MAXB * 360).toFixed(1) + 'px';
+    });
     window.HUD = { left, right };
     const groundAt = (side, t) => { let g = 'ink'; for (const [a, b, v] of HUDG[side]) if (t >= a && t < b) g = v; return g; };
     let gl = null, gr = null;
@@ -55,17 +68,19 @@ window.ENGINE = {
     });
   },
   after() {
-    // 场景的显隐与换场：缺省是新场景由左向右直刷，一拍刷完。本集有自己的换场母题时改这里。
-    const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
+    // 场景的显隐与换场：新场景由左向右直刷，一拍刷完。ask 与 loop 是同一个环上走完的五圈，画面都建在 ask 里，中间不换场。
+    const SEG = L.scenes.filter((s) => s.id !== 'loop');
+    document.getElementById('sc-loop').style.display = 'none';
+    const roots = SEG.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
     F((t) => {
-      L.scenes.forEach((s, i) => {
-        const nx = L.scenes[i + 1], root = roots[i];
+      SEG.forEach((s, i) => {
+        const nx = SEG[i + 1], root = roots[i];
         const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + WIPE);
         root.style.display = vis ? '' : 'none';
         const clip = vis && i > 0 && t < s.start + WIPE ? `inset(0px ${(1920 * (1 - ease.io3(clamp((t - s.start) / WIPE)))).toFixed(1)}px 0px 0px)` : 'none';
         if (clip !== lastClip[i]) { root.style.clipPath = clip; lastClip[i] = clip; }
       });
     });
-    for (const s of L.scenes.slice(1)) sfx('whoosh', s.start - 0.3, { g: 0.7 });
+    for (const s of SEG.slice(1)) sfx('whoosh', s.start - 0.3, { g: 0.7 });
   },
 };

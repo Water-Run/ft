@@ -1,59 +1,132 @@
-// 系列共用的部件：小工具、斜线块、字节格、比特格、日历换算。与题目有关的部件（首集的验证码与 30 秒表盘）写在各集自己的 parts.js 里。
+// 本片的部件：环（一圈 = 一次请求）、对话栈（整段对话，一条一行）、代码卡。数据取自 data.js（tools/gen_data.py 由实验记录生成）。
 // 所有部件的状态都只由 t 决定：用 F() 逐帧算，不存历史。
 
 // ── 小工具 ──
 const txt = (parent, cls, html, x, y) => { const e = h('div', 'abs ' + cls, parent, html); px(e, x, y); return e; };
 const blk = (parent, cls, x, y, w, hh) => { const e = h('div', 'blk ' + cls, parent); px(e, x, y, w, hh); return e; };
-const backOut = (k) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
-const group3 = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-// ── 斜线块：不可信的一方（泄露的副本、假网站）。用 SVG 线条画，不用渐变 ──
-function hatch(parent, x, y, w, hh, color, gap = 18, sw = 5) {
-  const s = svg('svg', { class: 'abs', width: w, height: hh, viewBox: `0 0 ${w} ${hh}` }, parent); px(s, x, y);
-  for (let d = -hh; d < w; d += gap) svg('line', { x1: d, y1: hh, x2: d + hh, y2: 0, stroke: color, 'stroke-width': sw }, s);
-  s.dataset.name = 'hatch';
-  return s;
-}
-
-// ── 字节格：一排（或几排）十六进制字节。返回各格元素 ──
-// o: { x, y, pitch, w, h, size, cols（每排几个）, rowGap, cls, idx（在上方标序号）, idxSize }
-function byteCells(parent, bytes, o) {
-  const cols = o.cols || bytes.length, out = [], idx = [];
-  bytes.forEach((b, i) => {
-    const cx = o.x + (i % cols) * o.pitch, cy = o.y + Math.floor(i / cols) * (o.rowGap || o.h);
-    const e = h('div', 'byte ' + (o.cls || ''), parent, b); px(e, cx, cy, o.w, o.h); css(e, { fontSize: o.size + 'px', lineHeight: o.h + 'px' });
-    out.push(e);
-    if (o.idx) { const n = h('div', 'idx', parent, String(i)); px(n, cx, cy - (o.idxSize || 28) * 1.5, o.w); n.style.fontSize = (o.idxSize || 28) + 'px'; idx.push(n); }
+const D = window.DATA;
+// 一段动作在 t 时刻走到哪里：0…1，缓入缓出
+const prog = (t, t0, d, f = ease.io3) => f(clamp((t - t0) / d));
+// 由 t 直接算出显隐的区间：[t0, t1) 内可见，前后各 fade 秒渐变
+function during(e, t0, t1, fade = 0.25) {
+  let last = null;
+  F((t) => {
+    const a = t < t0 ? 0 : t < t0 + fade ? (t - t0) / fade : t < t1 ? 1 : t < t1 + fade ? 1 - (t - t1) / fade : 0;
+    const k = a.toFixed(3);
+    if (k !== last) { e.style.opacity = k; e.style.visibility = a > 0 ? 'visible' : 'hidden'; last = k; }
   });
-  out.idx = idx;
-  return out;
+  return e;
+}
+// 居中放置：外面包一层定宽的 flex 容器，补间只动里面的元素（不靠 transform 居中，见 docs/reference/pitfalls.md）
+function centered(parent, cls, html, cx, y, w = 900) {
+  const wrap = h('div', 'abs cwrap', parent); px(wrap, cx - w / 2, y, w);
+  const e = h('div', cls, wrap, html);
+  return e;
 }
 
-// ── 比特格：实心 = 1，空心 = 0。每 8 个一组 ──
-function bitCells(parent, bits, o) {
-  const out = [];
-  [...bits].forEach((c, i) => {
-    const e = h('div', 'blk', parent); px(e, o.x + i * (o.s + o.gap) + Math.floor(i / 8) * (o.group || 0), o.y, o.s, o.s);
-    e.style.setProperty('--c', o.color);                                    // 颜色放在变量里：加上类名 hot 即变成朱红，不必换元素
-    css(e, c === '1' ? { background: 'var(--c)' } : { border: `${o.bw || 4}px solid var(--c)` });
-    e.dataset.name = 'bit' + c;
-    out.push(e);
+// ── 环：一圈 = 一次请求。四站：模型 → 工具调用 → Harness 执行 → 结果交回 ──
+// keys：[[时刻, 角度]]，角度累计（第 2 圈从 360 起）；两个关键帧之间缓入缓出地走。stopAt：这一刻起指针停下（空心）
+const STATIONS = [[tr('模型', 'Model'), 0], [tr('工具调用', 'Tool call'), 90], [tr('Harness 执行', 'Harness runs'), 180], [tr('结果交回', 'Result back'), 270]];
+function makeRing(parent, o) {
+  const { cx, cy, R } = o;
+  const S = svg('svg', { class: 'abs', width: 1920, height: 968, viewBox: '0 0 1920 968' }, parent); px(S, 0, 0);
+  S.dataset.name = tr('环', 'loop ring');
+  const ring = svg('circle', { cx, cy, r: R, fill: 'none', stroke: C.paper, 'stroke-width': 4 }, S);
+  const ticks = [];
+  for (let i = 0; i < 60; i++) {
+    const a = i / 60 * Math.PI * 2 - Math.PI / 2, big = i % 15 === 0, r1 = R - (big ? 34 : 14);
+    ticks.push(svg('line', { x1: cx + Math.cos(a) * r1, y1: cy + Math.sin(a) * r1, x2: cx + Math.cos(a) * R, y2: cy + Math.sin(a) * R, stroke: C.dim, 'stroke-width': big ? 6 : 3 }, S));
+  }
+  const RA = R + 22;
+  const arc = svg('path', { d: '', fill: 'none', stroke: C.ac, 'stroke-width': 10 }, S);
+  const dot = svg('circle', { cx, cy: cy - RA, r: 16, fill: C.ac, stroke: C.ac, 'stroke-width': 5 }, S);
+  const labels = STATIONS.map(([name, deg]) => {
+    const a = deg / 180 * Math.PI - Math.PI / 2, x = cx + Math.cos(a) * (R + 92), y = cy + Math.sin(a) * (R + 72);
+    const w = 320, left = deg === 90 ? x : deg === 270 ? x - w : x - w / 2;
+    const wrap = h('div', 'abs slab', parent); px(wrap, left, y - 30, w, 60);
+    css(wrap, { justifyContent: deg === 90 ? 'flex-start' : deg === 270 ? 'flex-end' : 'center' });
+    const e = h('div', 'st', wrap, name);
+    return e;
   });
-  return out;
+  const keys = o.keys || [[0, 0]], stopAt = o.stopAt != null ? o.stopAt : Infinity, d = o.d || 0.7;
+  // 每段起点 = 上一个关键帧的角度：顺序扫一遍，状态只取决于 t
+  const angle = (t) => {
+    let v = keys[0][1];
+    for (let i = 1; i < keys.length; i++) {
+      const [k0, a] = keys[i];
+      if (t < k0) break;
+      v = lerp(keys[i - 1][1], a, prog(t, k0, keys[i][2] || d));
+    }
+    return v;
+  };
+  let last = null;
+  F((t) => {
+    const deg = angle(t), lap = Math.min(o.laps || 99, Math.floor(deg / 360 + 1e-6)), inLap = deg - lap * 360;
+    const stopped = t >= stopAt;
+    const key = deg.toFixed(2) + (stopped ? 's' : '');
+    if (key === last) return; last = key;
+    const a0 = -Math.PI / 2, a1 = inLap / 180 * Math.PI - Math.PI / 2;
+    const P = (a) => `${(cx + Math.cos(a) * RA).toFixed(1)} ${(cy + Math.sin(a) * RA).toFixed(1)}`;
+    arc.setAttribute('d', inLap > 0.5 ? `M ${P(a0)} A ${RA} ${RA} 0 ${inLap > 180 ? 1 : 0} 1 ${P(a1)}` : '');
+    dot.setAttribute('cx', (cx + Math.cos(a1) * RA).toFixed(1)); dot.setAttribute('cy', (cy + Math.sin(a1) * RA).toFixed(1));
+    dot.setAttribute('fill', stopped ? C.ink : C.ac);
+    ticks.forEach((l, i) => l.setAttribute('stroke', i * 6 <= inLap + 0.5 && inLap > 0.5 ? C.ac : C.dim));
+    labels.forEach((e, i) => {
+      const dd = Math.abs(((inLap - STATIONS[i][1]) % 360 + 540) % 360 - 180);
+      e.classList.toggle('on', dd < 6 && !stopped);
+    });
+  });
+  return { S, labels, angle, lapAt: (t) => Math.floor(angle(t) / 360 + 1e-6) + 1, cx, cy, R };
 }
 
-// ── 日历换算（纯算术，不取系统时间）：公历日期 ↔ 自 1970-01-01 起的天数 ──
-function daysFromCivil(y, m, d) {
-  y -= m <= 2 ? 1 : 0;
-  const era = Math.floor(y / 400), yoe = y - era * 400, doy = Math.floor((153 * (m + (m > 2 ? -3 : 9)) + 2) / 5) + d - 1, doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
-  return era * 146097 + doe - 719468;
+// ── 对话栈：整段对话，一条一行，从下往上摞。rows：[[类别, 角色, 文字, 入场时刻]] ──
+// 类别：say（说明、你、回复：空心）、call（工具调用：朱红）、tool（结果：纸色）。行高随条数收紧，状态只由 t 算出
+function makeConv(parent, o) {
+  const { x, bottom, w } = o, maxH = o.maxH || 650, maxRow = o.maxRow || 76;
+  const els = o.rows.map(([k, role, text, t0]) => {
+    const e = h('div', 'row ' + k, parent, `<span class="role">${role}</span><span class="tx">${text}</span>`);
+    px(e, x, bottom - maxRow, w, maxRow - 8);
+    const mark = blk(parent, 'bg-ac', x + w + 12, 0, 10, 10);
+    return { e, mark, t0, k };
+  });
+  const sentKeys = o.sent || [];                    // [[时刻, 条数, 第几次]]：括号括住这一次发出的条数
+  const br = h('div', 'abs bracket', parent); px(br, x - 38, 0, 22, 10);
+  const brLab = txt(parent, 'conv-lab dim', '', x, 0);
+  const head = txt(parent, 'lab dim', tr('对话', 'Conversation'), x, 0);
+  const seen = (t) => els.map((r) => clamp((t - r.t0) / 0.45));
+  const rowH = (t) => { const n = seen(t).reduce((a, b) => a + b, 0); return Math.min(maxRow, maxH / Math.max(1, n)); };
+  const sentAt = (t) => { let s = null; for (const k of sentKeys) if (t >= k[0]) s = k; return s; };
+  const newFrom = o.newFrom || (() => 0);
+  let last = null;
+  F((t) => {
+    const p = seen(t), rh = rowH(t), s = sentAt(t), nf = newFrom(t);
+    const key = p.map((v) => v.toFixed(2)).join() + rh.toFixed(1) + (s ? s[0] : '') + nf;
+    if (key === last) return; last = key;
+    let top = bottom;
+    els.forEach((r, i) => {
+      const y = bottom - (i + 1) * rh, k = ease.out3(p[i]);
+      css(r.e, { top: y.toFixed(1) + 'px', height: (rh - 8).toFixed(1) + 'px', opacity: k.toFixed(3), visibility: p[i] > 0 ? 'visible' : 'hidden', transform: `translateX(${((1 - k) * 80).toFixed(1)}px)` });
+      r.e.classList.toggle('tight', rh < 64);
+      const fresh = p[i] > 0 && i >= nf;
+      css(r.mark, { top: y.toFixed(1) + 'px', height: (rh - 8).toFixed(1) + 'px', visibility: fresh ? 'visible' : 'hidden', opacity: k.toFixed(3) });
+      if (p[i] > 0) top = y;
+    });
+    // 括号：这一次发出的是哪几条
+    if (s) {
+      const n = s[1], k = prog(t, s[0], 0.5), hh = n * rh * k;
+      css(br, { top: (bottom - hh).toFixed(1) + 'px', height: Math.max(0, hh - 8).toFixed(1) + 'px', visibility: k > 0 ? 'visible' : 'hidden' });
+      brLab.innerHTML = s[3] || '';
+    } else { br.style.visibility = 'hidden'; brLab.innerHTML = ''; }
+    css(head, { top: (top - 74).toFixed(1) + 'px' });
+    css(brLab, { top: (top - 68).toFixed(1) + 'px', left: (x + 100) + 'px' });
+  });
+  return { els, br, brLab, head, rowH, topAt: (t) => bottom - seen(t).reduce((a, b) => a + b, 0) * rowH(t) };
 }
-function civilFromDays(z) {
-  z += 719468;
-  const era = Math.floor(z / 146097), doe = z - era * 146097, yoe = Math.floor((doe - Math.floor(doe / 1460) + Math.floor(doe / 36524) - Math.floor(doe / 146096)) / 365);
-  const doy = doe - (365 * yoe + Math.floor(yoe / 4) - Math.floor(yoe / 100)), mp = Math.floor((5 * doy + 2) / 153), d = doy - Math.floor((153 * mp + 2) / 5) + 1, m = mp < 10 ? mp + 3 : mp - 9;
-  return { y: yoe + era * 400 + (m <= 2 ? 1 : 0), m, d };
+
+// ── 代码卡：纸色底、墨色字，左边行号 ──
+function codeCard(parent, name, lines, x, y, w, size = 34, lh = 56) {
+  const card = h('div', 'abs code-card', parent); px(card, x, y, w, 76 + lines.length * lh);
+  txt(card, 'cc-name mono', name, 24, 14);
+  const ls = lines.map((l, i) => { const e = txt(card, 'cc-line mono', `<span class="ln">${i + 1}</span>${l}`, 24, 66 + i * lh); e.style.fontSize = size + 'px'; return e; });
+  return { card, ls };
 }
-const unixOf = (y, m = 1, d = 1) => daysFromCivil(y, m, d) * 86400;
-const two = (n) => String(n).padStart(2, '0');
-const clockOf = (u, withSec = true) => { const s = ((u % 86400) + 86400) % 86400; return two(Math.floor(s / 3600)) + ':' + two(Math.floor(s / 60) % 60) + (withSec ? ':' + two(Math.floor(s) % 60) : ''); };

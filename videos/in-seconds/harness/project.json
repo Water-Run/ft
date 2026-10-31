@@ -37,7 +37,7 @@
     "duck_db": 7,
     "sfx_db": -9,
     "score": {
-      "lift_cue": "a2"
+      "lift_cue": "e1"
     }
   },
   "check": {
@@ -85,8 +85,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "review",
-  "next": "WaterRun 明确确认文案第 2 稿（o6、m2 已改）；确认后用配音 D 合成全片旁白，按「环为主、消息栈为辅」做有声代表段",
+  "stage": "build",
+  "next": "WaterRun 看第 1 版预览（out/zh/preview-r01.mp4），听读音与配乐；按意见改后正式渲染、验收",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -96,12 +96,21 @@
           "取证",
           "实验",
           "文案",
-          "关键帧",
-          "配乐 Demo"
+          "视觉设计",
+          "场景",
+          "配乐",
+          "音效",
+          "封面"
         ]
       }
     ],
     "services": [
+      {
+        "name": "MiniMax speech-2.8-hd（音色 Chinese (Mandarin)_Crisp_Girl）",
+        "roles": [
+          "旁白配音"
+        ]
+      },
       {
         "name": "DeepSeek deepseek-flash（经 DeepSeek API）",
         "roles": [
