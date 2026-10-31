@@ -9,7 +9,6 @@
   body { background: var(--paper); }
   #stage { background: var(--paper); }
   svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-  .logo { position: absolute; }
   .k { font-family: "Mono"; font-weight: 500; }
   .zh { font-family: "Sans SC"; }
   .la { font-family: "Inter"; }
@@ -31,9 +30,9 @@ function text(x, y, s, a = {}) { const t = el('text', { x, y, fill: C.ink, ...a 
 // 压在连线上的标签：先垫一块纸色底，线从标签后面穿过
 function label(x, y, s, a) { const t = text(x, y, s, a), b = t.getBBox(), r = el('rect', { x: b.x - 10, y: b.y - 4, width: b.width + 20, height: b.height + 8, fill: C.paper }); svg.insertBefore(r, t); return t; }
 function behind(e) { svg.insertBefore(e, svg.firstChild); return e; }
-function logo(x, y, h) { const i = document.createElement('img'); i.src = '../img/sqlite-banner.svg'; i.className = 'logo'; Object.assign(i.style, { left: x + 'px', top: y + 'px', height: h + 'px' }); root.appendChild(i); }
-function chrome(no, title) {   // 常驻：左上官方标志，右上章节
-  logo(120, 44, 64);
+// 系列约定：画面不放产品标志（WaterRun 2026-10-25），左上角改为纯文字的引擎名与版本
+function chrome(no, title) {   // 常驻：左上引擎名与版本，右上章节
+  text(120, 92, 'SQLite 3.54.1', { class: 'la', 'font-size': 34, 'font-weight': 700, fill: C.ink });
   text(1800, 92, no, { 'text-anchor': 'end', class: 'la', 'font-size': 28, 'font-weight': 700, fill: C.teal, dx: -12 - title.length * 30 });
   text(1800, 92, title, { 'text-anchor': 'end', class: 'zh', 'font-size': 28, 'font-weight': 700, fill: C.teal });
   el('rect', { x: 120, y: 128, width: 1680, height: 3, fill: C.teal });
@@ -51,7 +50,8 @@ function fileGrid(x, y, w, cell, gap) {
 }
 
 if (F === 1) {
-  logo(120, 96, 120);
+  text(120, 150, 'PART 4', { class: 'la', 'font-size': 32, 'font-weight': 700, fill: C.teal });
+  text(116, 254, 'SQLite', { class: 'la', 'font-size': 100, 'font-weight': 800, fill: C.ink });
   text(120, 336, '一个数据库引擎是如何实现的？', { class: 'zh', 'font-size': 48, 'font-weight': 600, fill: C.teal });
   text(112, 520, '小而强大', { class: 'zh', 'font-size': 180, 'font-weight': 800, 'letter-spacing': '-4' });
   text(120, 604, 'Small. Fast. Reliable. Choose any three.', { class: 'la', 'font-size': 38, 'font-weight': 600, fill: C.teal });
@@ -64,7 +64,7 @@ if (F === 1) {
 }
 
 if (F === 2) {
-  chrome('02', '数据怎么放');
+  chrome('02', '怎么放');
   const U = D.users, by = Object.fromEntries(U.nodes.map((n) => [n.p, n]));
   const r = by[U.root], mids = r.c.map((p) => by[p]);
   const leaves = mids.flatMap((m) => m.c), X0 = 120, W = 1680, pitch = W / leaves.length;
@@ -103,7 +103,7 @@ if (F === 2) {
 }
 
 if (F === 3) {
-  chrome('02', '数据怎么放');
+  chrome('03', '怎么找');
   const N = D.names, by = Object.fromEntries(N.nodes.map((n) => [n.p, n]));
   const r = by[N.root], mids = r.c.map((p) => by[p]);
   const leaves = mids.flatMap((m) => m.c), X0 = 120, W = 1680, pitch = W / leaves.length;
