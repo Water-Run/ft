@@ -176,6 +176,7 @@ Alice 所在的堆第 23 页（检查点后）原样存在 `lab/pages/`：缓冲
 | D10 | 对照 InnoDB：删除后 Bob 仍读到 Alice；purge 做完后 Dave 的行用上 Alice 留下的同一处空间 | InnoDB 一集 FACTS D1、D3、D4 | 引用 |
 | D11 | 冻结的行对所有普通事务都算「过去」，不受事务号回绕影响，一直有效到被删除 | 手册 Routine Vacuuming：「Frozen row versions are treated as if the inserting XID were FrozenTransactionId, so that they will appear to be "in the past" to all normal transactions regardless of wraparound issues」 | 原文 |
 | D12 | 插入一行时，PostgreSQL 向空闲空间图要一页放得下的页 | 源码 `src/backend/access/heap/hio.c` 第 584 行 `targetBlock = GetPageWithFreeSpace(relation, targetFreeSpace)`；D4、D5 | 原文＋实测 |
+| D13 | 事务号按模 2³² 比较：每个普通事务号前面约有 20 亿个「更老」的、后面约有 20 亿个「更新」的，事务号空间是一个没有终点的圈；一行版本存在超过 20 亿个事务后，会突然显得在未来 | 手册 18 Routine Vacuuming 24.1.5：「Normal XIDs are compared using modulo-2^32 arithmetic. This means that for every normal XID, there are two billion XIDs that are "older" and two billion that are "newer"; another way to say it is that the normal XID space is circular with no endpoint.」「If the row version still exists after more than two billion transactions, it will suddenly appear to be in the future.」（2026-10-31 查） | 原文 |
 
 ## 出错怎么办
 

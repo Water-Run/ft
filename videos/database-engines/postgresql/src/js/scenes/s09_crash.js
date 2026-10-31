@@ -11,8 +11,11 @@ scene('crash', ({ root, s, c0 }) => {
   const walG = glossBox(A, 'WAL', '<b>WAL</b>（预写日志）：每次修改先写一条日志；<br>数据页写回磁盘之前，描述它的日志必须已经落盘', 1040, 190, 800);
   show(walG, T('w2', 'WAL') + 0.1, { x: 20 }); sfx('pop', T('w2', 'WAL') + 0.1, { g: 0.5 });
   // 问题：提交了，断电，还在吗
-  const qa = tagEl(A, '已提交的修改', 72, 206, 'navy'), qb = tagEl(A, '断电', 340, 206, 'warn');
-  const qc = tagEl(A, '还在吗？', 470, 206, 'navy'); css(qc, { fontSize: '34px' });
+  // 问题先在画面中央大字提出，日志带出来时再缩到左上角让位
+  const qw = h('div', 'abs', A); px(qw, 0, 0, 1920, 1080); css(qw, { transformOrigin: '72px 206px', pointerEvents: 'none' });
+  const qa = tagEl(qw, '已提交的修改', 72, 206, 'navy'), qb = tagEl(qw, '断电', 340, 206, 'warn');
+  const qc = tagEl(qw, '还在吗？', 470, 206, 'navy'); css(qc, { fontSize: '34px' });
+  set(qw, 0, { x: 470, y: 300, scale: 1.45 }); tl.fromTo(qw, { x: 470, y: 300, scale: 1.45 }, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('w2') - 0.5);
   css(qa, { fontSize: '34px' }); css(qb, { fontSize: '34px' });
   show(qa, T('w1', '提交'), { x: -10 }); slam(qb, T('w1', '断电'), { from: 1.25 }); sfx('error', T('w1', '断电'), { g: 0.4 }); show(qc, T('w1', '还在吗'), { y: 8 });
   [qa, qb, qc].forEach((e) => hide(e, T('w8') - 0.2, { d: 0.25 }));

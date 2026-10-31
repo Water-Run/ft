@@ -136,30 +136,38 @@ scene('mvcc', ({ root, s, c0 }) => {
   };
   const ev = (k, y, html, cls, t) => { const e = tagEl(C, html, TX(k) - 60, y, cls); css(e, { fontSize: '24px' }); show(e, t, { y: 10 }); return e; };
   const snapAt = (k, y, t) => { const e = h('div', 'abs', C, '快照'); px(e, TX(k) - 40, y, 80, 44); css(e, { border: '3px solid var(--navy)', background: '#fff', font: '700 22px "Sans SC"', color: 'var(--navy)', textAlign: 'center', lineHeight: '38px' }); slam(e, t, { from: 1.4 }); sfx('tick', t, { g: 0.5 }); return e; };
-  // 中间一道竖线：Alice 提交
-  const cm = h('div', 'abs', C); px(cm, TX(0.5) - 2, 230, 4, 650); css(cm, { background: 'var(--warn)' }); cm.dataset.name = 'Alice 提交';
+  // 每次读，下面摆出 Alice 的两个版本：看得见的那个实心，看不见的虚线淡掉
+  const seen = (k, y, val, t) => {
+    const box = h('div', 'abs', C); px(box, TX(k) - 80, y + 112, 160, 80); box.dataset.name = '这次看见的版本';
+    [['旧版本 42', 42], ['新版本 43', 43]].forEach(([txt, v], i) => {
+      const r = h('div', 'tup ' + (v === val ? 'new' : 'ghost'), box, txt); px(r, 0, i * 42, 160); css(r, { textAlign: 'center' });
+      if (v !== val) css(r, { opacity: 0.55 });
+    });
+    show(box, t, { y: 8 }); return box;
+  };  // 中间一道竖线：Alice 提交
+  const yR = 280, yP = 560;
+  const cm = h('div', 'abs', C); px(cm, TX(0.5) - 2, 230, 4, yP + 200 - 230); css(cm, { background: 'var(--warn)' }); cm.dataset.name = 'Alice 提交';
   const cml = tagEl(C, 'Alice 提交', TX(0.5) - 70, 196, 'warn'); css(cml, { fontSize: '24px' });
   // 读已提交：每条语句一张新快照
-  const yR = 300;
   const LR = lane(yR, '读已提交（默认）', 'var(--pg)', '读已提交', '<b>读已提交</b>：每条语句开始时，都拿一张新快照', T('m21'));
   show(cm, T('m22') - 0.1, { y: 0 }); show(cml, T('m22') - 0.1, { y: 8 });
-  snapAt(0.18, yR - 30, T('m22', '每条语句')); ev(0.18, yR + 60, 'SELECT → 42', 'navy', T('m22', '每条语句') + 0.3);
-  snapAt(0.78, yR - 30, T('m22', '新快照')); ev(0.78, yR + 60, `SELECT → ${M.bobAfter}`, '', T('m22', '新快照') + 0.3);
+  snapAt(0.18, yR - 30, T('m22', '每条语句')); ev(0.18, yR + 60, 'SELECT → 42', 'navy', T('m22', '每条语句') + 0.3); seen(0.18, yR, 42, T('m22', '每条语句') + 0.6);
+  snapAt(0.78, yR - 30, T('m22', '新快照')); ev(0.78, yR + 60, `SELECT → ${M.bobAfter}`, '', T('m22', '新快照') + 0.3); seen(0.78, yR, M.bobAfter, T('m22', '新快照') + 0.6);
   sfx('blip', T('m22', '新快照') + 0.3, { g: 0.5 });
   // 可重复读：整个事务只用开头那一张
-  const yP = 620, ovC = overlay(C);
+  const ovC = overlay(C);
   const LP2 = lane(yP, '可重复读', 'var(--navy)', '可重复读', '<b>可重复读</b>：整个事务只用开头那一张快照', T('m23'));
   snapAt(0.08, yP - 30, T('m24', '开头')); ev(0.08, yP + 60, 'BEGIN', 'grey', T('m24', '开头') - 0.2);
-  ev(0.3, yP + 60, 'SELECT → 42', 'navy', T('m24', '开头') + 0.4);
+  ev(0.3, yP + 60, 'SELECT → 42', 'navy', T('m24', '开头') + 0.4); seen(0.3, yP, 42, T('m24', '开头') + 0.7);
   const back1 = curve(ovC, [TX(0.3), yP + 60], [TX(0.08) + 30, yP + 14], 'navy', { bend: yP - 10, dashed: true }); arrowIn(back1, T('m24', '开头') + 0.5, 0.4);
-  ev(0.68, yP + 60, `SELECT → ${M.bobRR}`, 'navy', T('m24b', '42') - 0.2);
+  ev(0.68, yP + 60, `SELECT → ${M.bobRR}`, 'navy', T('m24b', '42') - 0.2); seen(0.68, yP, M.bobRR, T('m24b', '42') + 0.1);
   const back2 = curve(ovC, [TX(0.68), yP + 60], [TX(0.08) + 40, yP + 14], 'navy', { bend: yP - 50, dashed: true }); arrowIn(back2, T('m24b', '42') - 0.1, 0.5); sfx('blip', T('m24b', '42'), { g: 0.5, p: 0.5 });
   // 再去改 Alice：报错
   ev(0.9, yP + 60, 'UPDATE', 'warn', T('m25', '改') - 0.1);
-  const er = h('div', 'abs', C, `<span class="mono">ERROR:  ${esc(M.rrError.message)}</span>`); px(er, L0, yP + 130, 1260); css(er, { font: '700 24px var(--mono)', color: 'var(--warn)', whiteSpace: 'nowrap' });
+  const er = h('div', 'abs', C, `<span class="mono">ERROR:  ${esc(M.rrError.message)}</span>`); px(er, L0, yP + 214, 1260); css(er, { font: '700 24px var(--mono)', color: 'var(--warn)', whiteSpace: 'nowrap' });
   show(er, T('m25', '报错'), { y: 8 }); sfx('error', T('m25', '报错') + 0.1, { g: 0.6, p: 0.5 });
-  const zh = tagEl(C, '无法串行化：并发修改了同一行（SQLSTATE 40001）', L0, yP + 180, 'warn'); css(zh, { fontSize: '26px' }); show(zh, T('m26'), { y: 8 });
-  const inn = noteBox(C, '<b>InnoDB</b>　默认是可重复读', 72, 880, 640, 'grey'); show(inn, T('m27'), { y: 10 });
+  const zh = tagEl(C, '无法串行化：并发修改了同一行（SQLSTATE 40001）', L0, yP + 262, 'warn'); css(zh, { fontSize: '26px' }); show(zh, T('m26'), { y: 8 });
+  const inn = noteBox(C, '<b>InnoDB</b>　默认是可重复读', 72, 900, 640, 'grey'); show(inn, T('m27'), { y: 10 });
   const rC = focusRing(C);
   rC.at(T('m21', '读已提交'), LR.hd).at(T('m23', '可重复读'), LP2.hd).at(T('m26', '无法串行化'), zh).at(T('m27', '可重复读'), LP2.hd).off(s.end - 0.6);
 });

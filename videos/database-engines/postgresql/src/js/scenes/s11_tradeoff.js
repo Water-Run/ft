@@ -9,8 +9,6 @@ scene('tradeoff', ({ root, s, c0 }) => {
   hdoc(A, '同一张表，两套答案', 72, 128);
   const hi = tagEl(A, 'InnoDB', 290, 196, 'grey'); css(hi, { fontSize: '34px' });
   const hp = tagEl(A, 'PostgreSQL', 1100, 196); css(hp, { fontSize: '34px' });
-  ['放', '找', '改和删', '并发', '出错'].forEach((w, i) => { const c = tagEl(A, w, 700 + i * 150, 136, 'grey'); show(c, T('t1', '五个问题') + i * 0.12, { y: 8 }); });
-  sfx('tick', T('t1', '五个问题'), { g: 0.5 });
   show(hi, T('t1', '两套答案')); show(hp, T('t1', '两套答案') + 0.15);
   const pairs = [
     ['按主键找', '一棵树走到底，叶子里就是整行', '从索引到堆，多走一步', 't2', 't3'],
@@ -20,7 +18,16 @@ scene('tradeoff', ({ root, s, c0 }) => {
     ['换来的', '', '读写互不挡路；回滚、崩溃以后都不用撤销', 't9', 't9'],
   ];
   const EA = [], EB = [];
-  pairs.forEach(([k, a, b, ca, cb], i) => {
+  // 先摆出空格子：一行一个对照项，左边 InnoDB、右边 PostgreSQL，随旁白一格格填上
+  pairs.forEach(([, a], i) => {
+    const y = 270 + i * 120;
+    [[290, 780, a], [1100, 748, true]].forEach(([x, w, has], j) => {
+      if (!has) return;
+      const ph = h('div', 'abs', A, '&nbsp;'); px(ph, x, y, w, 96); css(ph, { border: '2px dashed #c5d3df', font: '600 26px "Sans SC"', padding: '28px 20px', boxSizing: 'border-box', height: '96px' });
+      show(ph, T('t1', '两套答案') + 0.2 + i * 0.08 + j * 0.04, { y: 6, d: 0.25 });
+    });
+  });
+  sfx('tick', T('t1', '两套答案') + 0.2, { g: 0.4 });  pairs.forEach(([k, a, b, ca, cb], i) => {
     const y = 270 + i * 120;
     const kl = h('div', 'abs', A, k); px(kl, 72, y + 22); css(kl, { font: '800 30px "Sans SC"', color: 'var(--ink2)' });
     const ea = h('div', 'abs', A, i === 2 ? a.split('，')[0] : a); px(ea, 290, y, 780, 96); if (i === 2) keyed(ea).at(T('t5', 'undo') - 0.2, { html: a }); css(ea, { background: a ? '#5f6a73' : 'transparent', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });

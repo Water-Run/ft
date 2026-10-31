@@ -100,7 +100,9 @@ function fly(p, html, a, b, t, o = {}) {
   set(e, 0, { autoAlpha: 0 });
   tl.fromTo(e, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.18, immediateRender: false }, t);
   tl.to(e, { x: b[0] - a[0], y: b[1] - a[1], duration: d, ease: o.ease || 'power2.inOut' }, t + 0.15);
-  if (o.stay !== true) tl.to(e, { autoAlpha: 0, duration: 0.2 }, t + 0.15 + d + (o.hold || 0.05));
+  // sink：落到目标上时缩小淡去，像被目标吸收，不压住目标上的字
+  if (o.sink) tl.fromTo(e, { autoAlpha: 1, scale: 1 }, { autoAlpha: 0, scale: 0.55, duration: 0.25, ease: 'power1.in', immediateRender: false }, t + 0.15 + d - 0.2);
+  else if (o.stay !== true) tl.to(e, { autoAlpha: 0, duration: 0.2 }, t + 0.15 + d + (o.hold || 0.05));
   return e;
 }
 // 交叉淡变：同一处的文字换成新的（旧的淡出、新的淡入），不闪

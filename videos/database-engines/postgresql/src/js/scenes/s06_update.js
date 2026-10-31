@@ -40,9 +40,20 @@ scene('update', ({ root, s, c0 }) => {
   to(nv.e, T('u4', '放不放得下') - 0.3, { y: -194, duration: 0.5, ease: 'power2.inOut' });
   keyed(nvL).at(T('u4', '放不放得下') + 0.3, { html: '新版本 · 放得下吗？' });
   hide(gapAl, T('u4', '放不放得下') - 0.35, { d: 0.15 }); show(gapAl, T('u6', '别的页') + 0.5, { y: 0 });
-  to(gapA, T('u5', '72'), { boxShadow: 'inset 0 0 0 4px #b8442f', duration: 0.3 }); keyed(la).at(T('u5', '72'), { html: `<b>第 ${oP} 页</b>　88 行 · 空隙 <b style="color:var(--warn)">${U.freeBefore} 字节</b>` }); sfx('tick', T('u5', '72'));
+  tl.fromTo(gapA, { boxShadow: 'inset 0 0 0 0px #b8442f' }, { boxShadow: 'inset 0 0 0 4px #b8442f', duration: 0.3, immediateRender: false }, T('u5', '72')); keyed(la).at(T('u5', '72'), { html: `<b>第 ${oP} 页</b>　88 行 · 空隙 <b style="color:var(--warn)">${U.freeBefore} 字节</b>` }); sfx('tick', T('u5', '72'));
   keyed(nvL).at(T('u5b', '92'), { html: '要 92 字节 &gt; 72' }); set(nvL, T('u5b', '92'), { backgroundColor: '#b8442f' }); sfx('error', T('u5b', '92') + 0.1, { g: 0.5 });
   to(nv.e, T('u5b', '92') + 0.2, { y: -310, duration: 0.3, ease: 'power2.out' });
+  // 92 字节怎么来的：新版本一行 88 字节（82 字节补齐到 88），再加一个 4 字节的指针；空隙只有 72
+  // 按旁白一段段出来：「新版本」→ 88 字节那段，「指针」→ 接上 4 字节，「92」→ 下面摆出 72 字节的空隙对比
+  const bd = h('div', 'abs', A); px(bd, 72, 742, 860, 116); bd.dataset.name = '92 字节的来历';
+  const bdCell = (x, y, w, html, st) => { const c = h('div', 'abs', bd, html); px(c, x, y, w, 50); css(c, { font: '700 24px var(--sans)', lineHeight: '50px', textAlign: 'center', whiteSpace: 'nowrap', ...st }); return c; };
+  const bdRow = bdCell(0, 0, 616, '新版本一行：88 字节', { background: 'var(--pg)', color: '#fff' });
+  const bdPtr = bdCell(620, 0, 120, '指针 4', { background: 'var(--navy)', color: '#fff' });
+  const bdGap = bdCell(0, 62, 504, '第 23 页的空隙：72 字节', { border: '3px dashed var(--warn)', color: 'var(--warn)', lineHeight: '44px' });
+  const bdSum = bdCell(750, 0, 110, '= 92', { color: 'var(--warn)', textAlign: 'left', fontSize: '28px' });
+  wipe(bdRow, T('u5b', '新版本') - 0.1, { dir: 'l', d: 0.45 }); wipe(bdPtr, T('u5b', '指针') - 0.1, { dir: 'l', d: 0.3 });
+  show(bdSum, T('u5b', '92') - 0.1, { x: -10 }); wipe(bdGap, T('u5b', '92') + 0.25, { dir: 'l', d: 0.4 }); sfx('tick', T('u5b', '指针'), { p: 0.3 });
+  gone(bd, T('u7') - 0.2, 0.3); tl.fromTo(gapA, { boxShadow: 'inset 0 0 0 4px #b8442f' }, { boxShadow: 'inset 0 0 0 0px #b8442f', duration: 0.3, immediateRender: false }, T('u7') - 0.2);
   // 只好写到别的页：第 46 页第 49 项
   to(nv.e, T('u6', '别的页'), { x: 936, y: -34, duration: 0.8, ease: 'power3.inOut' }); sfx('whoosh', T('u6', '别的页'), { g: 0.4 });
   hide(nvL, T('u6', '别的页'), { d: 0.25 });
@@ -58,7 +69,7 @@ scene('update', ({ root, s, c0 }) => {
   keyed(nv.xmin).at(T('u10', 'xmin'), { html: `xmin <b>${U.xid}</b>` }); set(nv.xmin, T('u10', 'xmin'), { backgroundColor: '#b8442f' }); sfx('tick', T('u10', 'xmin'));
   // 视线框：跟着旁白指到正在讲的那一处
   const rA = focusRing(A);
-  rA.at(T('u4', '原来那一页'), pgA).at(T('u5', '72'), gapA).at(T('u5b', '指针'), [92, 426, 820, 52]).at(T('u6b', '49'), [1028, 586, 820, 52])
+  rA.at(T('u4', '原来那一页'), pgA).at(T('u5', '72'), gapA).at(T('u5b', '新版本'), [72, 742, 616, 50]).at(T('u5b', '指针'), [692, 742, 120, 50]).at(T('u5b', '92') + 0.25, [72, 742, 860, 112]).at(T('u6b', '49'), [1028, 586, 820, 52])
     .at(T('u7', '数据'), [92 + 542, 620, 278, 52]).at(T('u7b', '两处'), [92 + 174, 620, 364, 52]).at(T('u8', 'xmax'), [92 + 174, 620, 150, 52])
     .at(T('u9', 't_ctid'), [92 + 328, 620, 210, 52]).at(T('u10', 'xmin'), [1028, 586, 170, 52]).off(T('u11') - 0.1);
   // 同一个 Alice，两个版本
@@ -67,32 +78,53 @@ scene('update', ({ root, s, c0 }) => {
 
   // ── B：三个索引各加一项；对照 InnoDB ──
   hdoc(B, '三个索引，各插一项', 72, 128);
-  const leafRow = (x, y, name, ent) => {
-    const box = h('div', 'page', B); px(box, x, y, 520, 220); box.dataset.name = name + '的叶子';
-    const l = capt(B, `<b>${name}</b>　叶子 ${ent[0][0]}`, x, y - 42);
+  // 上：三棵树的叶子，各有一项指着旧版本；下：堆里的两个版本（接着 A 屏）。先看旧项都指向旧地址，再从新版本那里取地址、每个叶子插一项
+  const LY = 236, HY = 500;
+  const leafRow = (x, name, ent) => {
+    const box = h('div', 'page', B); px(box, x, LY, 520, 170); box.dataset.name = name + '的叶子';
+    const l = capt(B, `<b>${name}</b>　叶子 ${ent[0][0]}`, x, LY - 42);
     const keyOf = { 主键树: '2050', 姓名树: 'Alice', 年龄树: '42 / 43' }[name];
-    const e1 = h('div', 'tup', box, `第 ${ent[0][1]} 项　${name === '年龄树' ? '42' : keyOf} → ${ent[0][2]}`); px(e1, 14, 40, 490);
-    const e2 = h('div', 'tup new', box, `第 ${ent[1][1]} 项　${name === '年龄树' ? '43' : keyOf} → ${ent[1][2]}`); px(e2, 14, 120, 490);
-    return { box, l, e1, e2 };
+    const e1 = h('div', 'tup', box, `第 ${ent[0][1]} 项　${name === '年龄树' ? '42' : keyOf} → ${ent[0][2]}`); px(e1, 14, 24, 490);
+    const e2 = h('div', 'tup new', box, `第 ${ent[1][1]} 项　${name === '年龄树' ? '43' : keyOf} → ${ent[1][2]}`); px(e2, 14, 96, 490);
+    return { box, l, e1, e2, x };
   };
   const ix = U.index;
-  const rs = [leafRow(72, 260, '主键树', ix.users_pkey), leafRow(700, 260, '姓名树', ix.idx_name), leafRow(1328, 260, '年龄树', ix.idx_age)];
-  rs.forEach((r, i) => { wipe(r.box, T('u12') + i * 0.1, { dir: 'l' }); show(r.l, T('u12') + i * 0.1); show(r.e1, T('u12', '旧地址') + i * 0.08, { y: 8 }); });
-  rs.forEach((r, i) => { fly(B, `(${nP},${nL})`, [900, 190], [72 + i * 628 + 300, 260 + 120], T('u13', '新地址') - 0.6 + i * 0.15, { cls: 'navy', fs: 24, d: 0.55 }); slide(r.e2, T('u13', '新地址') + i * 0.15, { y: 30 }); sfx('pop', T('u13', '新地址') + i * 0.15, { g: 0.5, p: -0.5 + i * 0.5 }); });
-  const src = tagEl(B, `新版本在 (${nP},${nL})`, 760, 180, 'navy'); css(src, { fontSize: '24px' }); show(src, T('u13') - 0.2, { y: -8 }); hide(src, T('u14b'), { d: 0.25 });
-  const same = noteBox(B, '名字、编号都没变，可旧项指着旧地址：每个索引都得再插一项', 72, 530, 1200); show(same, T('u14b'), { y: 10 });
+  const rs = [leafRow(72, '主键树', ix.users_pkey), leafRow(700, '姓名树', ix.idx_name), leafRow(1328, '年龄树', ix.idx_age)];
+  const heapCard = (x, html, cls, name) => { const c = h('div', 'page', B); px(c, x, HY, 560, 64); c.dataset.name = name; const r = h('div', 'tup ' + cls, c, html); px(r, 10, 9, 534); return c; };
+  const hOld = heapCard(330, `第 ${oP} 页 第 ${oL} 项　2050 Alice 42`, '', '旧版本'), hNew = heapCard(1030, `第 ${nP} 页 第 ${nL} 项　2050 Alice 43`, 'new', '新版本');
+  const hl = capt(B, '堆里的两个版本', 72, HY + 16); css(hl, { fontSize: '24px', color: 'var(--mute)' });
+  wipe(hOld, tB + 0.2, { dir: 'l', d: 0.4 }); wipe(hNew, tB + 0.35, { dir: 'l', d: 0.4 }); show(hl, tB + 0.4);
+  rs.forEach((r, i) => { wipe(r.box, T('u12') + i * 0.1, { dir: 'l' }); show(r.l, T('u12') + i * 0.1); show(r.e1, T('u12', '项') + i * 0.1, { y: 8 }); });
+  // 旧项 → 旧地址；新项 → 新地址（箭头从叶子底边出发，落在版本行的上沿）
+  const ovB = overlay(B);
+  const oldAr = rs.map((r, i) => curve(ovB, [r.x + 150, LY + 170], [490 + i * 120, HY], 'navy'));
+  const newAr = rs.map((r, i) => curve(ovB, [r.x + 370, LY + 170], [1190 + i * 120, HY], 'accent'));
+  oldAr.forEach((a, i) => arrowIn(a, T('u12', '旧地址') + i * 0.12, 0.4)); sfx('tick', T('u12', '旧地址'), { p: -0.3 });
+  oldAr.forEach((a) => tl.fromTo(a, { opacity: 1 }, { opacity: 0.3, duration: 0.3, immediateRender: false }, T('u13', '新地址') - 0.2));
+  rs.forEach((r, i) => {
+    const tt = T('u13', '新地址') + i * 0.18;
+    fly(B, `(${nP},${nL})`, [1250, HY - 10], [r.x + 330, LY + 100], tt - 0.65, { cls: 'navy', fs: 24, d: 0.55, sink: true });
+    slide(r.e2, tt, { y: 30 }); arrowIn(newAr[i], tt + 0.1, 0.35); sfx('pop', tt, { g: 0.5, p: -0.5 + i * 0.5 });
+  });
+  const same = noteBox(B, '名字、编号都没变，可旧项指着旧地址：每个索引都得再插一项', 72, 594, 1200); show(same, T('u14b'), { y: 10 });
   // InnoDB
-  const ib = h('div', 'abs', B); px(ib, 72, 640, 1776, 280); ib.dataset.name = 'InnoDB 的做法';
+  const IBY = 700;
+  const ib = h('div', 'abs', B); px(ib, 72, IBY, 1776, 230); ib.dataset.name = 'InnoDB 的做法';
   const it = capt(ib, 'InnoDB', 0, 0); css(it, { fontSize: '30px', color: 'var(--mute)', fontWeight: 700 });
   const irow = h('div', 'tup grey', ib, '主键树的叶子：2050  Alice  42'); px(irow, 0, 52, 760); keyed(irow).at(T('u16', '原位改'), { html: '主键树的叶子：2050  Alice  <b>43</b>（原位改）' });
   const iundo = h('div', 'tup grey', ib, 'undo：旧值 42'); px(iundo, 0, 112, 360); css(iundo, { background: '#f1f3f5' });
   const iname = h('div', 'tup grey', ib, '姓名索引：Alice → 主键 2050（不用动）'); px(iname, 860, 52, 700);
   show(it, T('u16') - 0.2); show(irow, T('u16') - 0.1, { y: 8 }); slide(iundo, T('u16', 'undo'), { y: 20 }); sfx('pop', T('u16', 'undo'), { g: 0.5, p: -0.4 });
+  // 旧值 42 从叶子里那一行掉进 undo；姓名索引按主键指回那一行
+  fly(B, '42', [392, IBY + 50], [72 + 150, IBY + 110], T('u16', 'undo') - 0.55, { cls: 'grey', fs: 22, d: 0.45, sink: true });
+  to(irow, T('u16', '原位改'), { backgroundColor: '#d5dade', duration: 0.25 });
+  const iar = link(ovB, [[72 + 856, IBY + 72], [72 + 766, IBY + 72]], 'grey'); arrowIn(iar, T('u17', '主键') + 0.3, 0.3);
   show(iname, T('u17', '主键'), { x: 20 }); sfx('tick', T('u17b', '不用动'), { p: 0.3 });
   const ok = tagEl(ib, '主键没变，姓名索引就不用动', 860, 120, 'grey'); show(ok, T('u17b', '不用动'), { y: 8 });
   const rB = focusRing(B);
-  rB.at(T('u12', '旧地址'), [72, 260, 1776, 220]).at(T('u13', '新地址'), [72, 380, 1776, 60]).at(T('u14b', '名字'), [700 + 14, 260 + 120, 490, 40]).at(T('u14b', '编号'), [72 + 14, 260 + 120, 490, 40]).at(T('u14b', '也一样'), [72, 370, 1776, 60])
-    .at(T('u16', '原位改'), [72, 640 + 52, 760, 40]).at(T('u16', 'undo'), [72, 640 + 112, 360, 40]).at(T('u17', '姓名索引'), [72 + 860, 640 + 52, 700, 40]).off(tC - 0.4);
+  rB.at(T('u12', '项') + 0.2, [72, LY, 1776, 170]).at(T('u12', '旧地址') + 0.2, hOld).at(T('u13', '新地址') - 0.6, hNew).at(T('u13', '新地址') + 0.7, [72, LY + 90, 1776, 60])
+    .at(T('u14b', '名字'), [700 + 14, LY + 96, 494, 46]).at(T('u14b', '编号'), [72 + 14, LY + 96, 494, 46]).at(T('u14b', '也一样'), [72, LY + 90, 1776, 60])
+    .at(T('u16', '原位改'), [72, IBY + 52, 760, 40]).at(T('u16', 'undo'), [72, IBY + 112, 360, 40]).at(T('u17', '姓名索引'), [72 + 860, IBY + 52, 700, 40]).off(tC - 0.4);
 
   // ── C：HOT ──
   hdoc(C, 'HOT：新版本留在本页，索引一项都不加', 72, 128);
@@ -101,40 +133,54 @@ scene('update', ({ root, s, c0 }) => {
   const goal = tagEl(C, '目标：索引一项都不加', 1180, 306, 'ok'); css(goal, { fontSize: '28px' }); show(goal, T('u18', '少动索引'), { y: 10 }); hide(goal, T('u21') - 0.3, { d: 0.25 });
   const cond1 = noteBox(C, '<b>条件一</b>　改的列上没有索引', 72, 200, 520); const cond2 = noteBox(C, '<b>条件二</b>　新版本放得进原来那一页', 620, 200, 520);
   show(cond1, T('u19', '一是'), { y: 10 }); show(cond2, T('u20', '二是'), { y: 10 }); sfx('tick', T('u19', '一是')); sfx('tick', T('u20', '二是'));
-  // 页内：旧项 → 新项；索引只指旧项
+  // 每个条件下面记两张表的结果：users_hot 两条都满足（u23），Alice 的 users 两条都不满足（u26）
+  const mk = (txt, x, cls) => { const e = tagEl(C, txt, x, 278, cls); css(e, { fontSize: '24px' }); return e; };
+  const ok1 = mk('✓ users_hot', 72, 'ok'), ok2 = mk('✓ users_hot', 620, 'ok');
+  const x1 = mk('✗ users：年龄有索引', 270, 'warn'), x2 = mk(`✗ users：第 ${oP} 页满了`, 818, 'warn');
+  show(ok1, T('u23', '年龄不建索引'), { y: 8 }); show(ok2, T('u23', '一成空位'), { y: 8 }); sfx('tick', T('u23', '一成空位'), { p: 0.3 });
+  slam(x1, T('u26', '年龄有索引'), { from: 1.2 }); slam(x2, T('u26', '满了'), { from: 1.2 }); sfx('error', T('u26', '年龄有索引'), { g: 0.5 }); sfx('error', T('u26', '满了'), { g: 0.5 });
+  // 页内：旧项 → 新项；索引只指旧项。页一开始就在：旧版本、留着的空位、指向旧版本的索引
   const [hP, hL] = H.old, [, hN] = H.new;
-  const pgH = h('div', 'page', C); px(pgH, 520, 330, 900, 220); pgH.dataset.name = `users_hot 第 ${hP} 页`;
-  const pl = capt(C, `留一成空位、年龄不建索引的表 · 第 ${hP} 页`, 520, 290);
-  const hold = h('div', 'tup', pgH, `第 ${hL} 项　2050  Alice  42`); px(hold, 20, 40, 400);
-  const hnew = h('div', 'tup new', pgH, `第 ${hN} 项　2050  Alice  43`); px(hnew, 470, 130, 400);
+  const PY = 372;
+  const pgH = h('div', 'page', C); px(pgH, 520, PY, 900, 170); pgH.dataset.name = `users_hot 第 ${hP} 页`;
+  const pl = capt(C, `users_hot · 第 ${hP} 页`, 520, PY - 38);
+  keyed(pl).at(T('u23', '换一张'), { html: `users_hot：每页留一成空位、年龄不建索引 · 第 ${hP} 页` });
+  const hold = h('div', 'tup', pgH, `第 ${hL} 项　2050  Alice  42`); px(hold, 20, 24, 400);
+  const hgap = h('div', 'abs', pgH, '留着的空位'); px(hgap, 460, 92, 420, 56); css(hgap, { background: 'repeating-linear-gradient(135deg,#fff 0 7px,#dbe8f3 7px 14px)', border: '2px dashed var(--pg)', font: '700 22px "Sans SC"', color: 'var(--pg)', lineHeight: '52px', textAlign: 'center' }); hgap.dataset.name = '空位';
+  const hnew = h('div', 'tup new', pgH, `第 ${hN} 项　2050  Alice  43`); px(hnew, 470, 100, 400);
   const ovH = overlay(C);
-  const hidx = h('div', 'node', C, `索引：Alice → (${hP},${hL})`); px(hidx, 72, 400, 400);
-  const ia = link(ovH, [[472, 420], [540, 390]], 'accent');
-  const ja = curve(ovH, [940, 390], [990, 460], 'navy', { bend: 380 });
-  wipe(pgH, T('u21') - 0.2, { dir: 'l' }); show(pl, T('u21') - 0.1); show(hold, T('u21'), { y: 8 });
-  slide(hnew, T('u21', '本页'), { x: 30 }); sfx('pop', T('u21', '本页')); arrowIn(ja, T('u21', '指向它'), 0.4);
-  show(hidx, T('u21b'), { x: -20 }); arrowIn(ia, T('u21b') + 0.2, 0.3);
-  const zero = tagEl(C, '索引：0 项新增', 72, 470, 'ok'); show(zero, T('u21b', '不加'), { y: 8 }); sfx('tick', T('u21b', '不加'));
-  const jump = capt(C, '查询先到第 ' + hL + ' 项，再在页内跳到第 ' + hN + ' 项', 520, 560); show(jump, T('u22', '跳过去'), { y: 8 });
-  fly(C, '查询', [330, 360], [560, 344], T('u22') + 0.1, { cls: 'warn', fs: 24, d: 0.5, hold: 0.3 });
-  fly(C, '查询', [560, 344], [1010, 434], T('u22', '跳过去') - 0.3, { cls: 'warn', fs: 24, d: 0.5, hold: 0.4 });
+  const hidx = h('div', 'node', C, `索引：Alice → (${hP},${hL})`); px(hidx, 72, PY + 20, 400);
+  const ia = link(ovH, [[472, PY + 44], [540, PY + 44]], 'accent');
+  const ja = curve(ovH, [900, PY + 64], [990, PY + 100], 'navy', { bend: PY + 90 });
+  const t0 = T('u18') + 0.3;
+  wipe(pgH, t0, { dir: 'l' }); show(pl, t0 + 0.1); show(hold, t0 + 0.3, { y: 8 }); show(hgap, t0 + 0.45, { y: 0 });
+  show(hidx, t0 + 0.6, { x: -20 }); arrowIn(ia, t0 + 0.8, 0.3);
+  slide(hnew, T('u21', '本页'), { x: 30 }); gone(hgap, T('u21', '本页') + 0.1, 0.3); sfx('pop', T('u21', '本页')); arrowIn(ja, T('u21', '指向它'), 0.4);
+  const zero = tagEl(C, '索引：0 项新增', 72, PY + 86, 'ok'); show(zero, T('u21b', '不加'), { y: 8 }); sfx('tick', T('u21b', '不加'));
+  to(hidx, T('u21b', '不加'), { boxShadow: '0 0 0 4px #2f6b26', duration: 0.3 });
+  const jump = capt(C, '查询先到第 ' + hL + ' 项，再在页内跳到第 ' + hN + ' 项', 520, PY + 180); show(jump, T('u22', '跳过去'), { y: 8 });
+  fly(C, '查询', [330, PY - 6], [560, PY - 14], T('u22') + 0.1, { cls: 'warn', fs: 24, d: 0.5, hold: 0.3 });
+  fly(C, '查询', [560, PY - 14], [1010, PY + 66], T('u22', '跳过去') - 0.3, { cls: 'warn', fs: 24, d: 0.5, hold: 0.4 });
   // 两次更新写的日志
   const walRows = (arr) => arr.map((w) => [w[0], w[1]]);
-  const t1 = tableDoc(C, ['users（年龄有索引）', ''], walRows(U.wal), 72, 606, { mono: [0, 1] });
-  const t2 = tableDoc(C, ['users_hot', ''], walRows(H.wal), 760, 606, { mono: [0, 1] });
+  const TY = 606;
+  const t1 = tableDoc(C, ['users（年龄有索引）', ''], walRows(U.wal), 72, TY, { mono: [0, 1] });
+  const t2 = tableDoc(C, ['users_hot', ''], walRows(H.wal), 760, TY, { mono: [0, 1] });
   css(t1, { fontSize: '23px' }); css(t2, { fontSize: '23px' });
   set(t1, 0, { autoAlpha: 0 }); set(t1, T('u23') + 0.2, { autoAlpha: 1 }); set(t2, 0, { autoAlpha: 0 }); set(t2, T('u24', 'HOT') - 0.4, { autoAlpha: 1 });
   [...t1.querySelectorAll('tr')].forEach((r, i) => show(r, T('u23') + 0.2 + i * 0.3, { x: -10, y: 0, d: 0.3 }));
   [...t2.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24', 'HOT') - 0.4 + i * 0.3, { x: -10, y: 0, d: 0.3 })); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
-  const tlab = capt(C, '各写了哪些日志记录', 72, 566); show(tlab, T('u23'));
-  // Alice 这次：两条都不满足
-  const x1 = tagEl(C, '✗ 年龄有索引', 1220, 660, 'warn'), x2 = tagEl(C, `✗ 第 ${oP} 页满了`, 1220, 720, 'warn');
-  slam(x1, T('u26', '年龄有索引'), { from: 1.2 }); slam(x2, T('u26', '满了'), { from: 1.2 }); sfx('error', T('u26', '年龄有索引'), { g: 0.5 }); sfx('error', T('u26', '满了'), { g: 0.5 });
+  const tlab = capt(C, '各写了哪些日志记录', 72, TY - 40); show(tlab, T('u23'));
   const rC = focusRing(C);
-  rC.at(T('u23', '一成空位'), pgH).at(T('u24', 'HOT'), t2).at(T('u24', '没有索引插入'), t1).at(T('u25', '两个条件'), [72, 200, 1068, 70]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).off(T('u27') - 0.1);
-  const ff = noteBox(C, '<b>填充比例</b>　表默认 100（装满）；改小后，每页留出的空间给更新用', 1180, 780, 660); show(ff, T('u27'), { y: 10 });
-  const ffb = h('div', 'page', C); px(ffb, 1180, 884, 660, 56); ffb.dataset.name = '留一成空位的页';
+  rC.at(T('u19', '一是'), cond1).at(T('u20', '二是'), cond2).at(T('u20', '原来那一页'), [980, PY + 92, 420, 56]).at(T('u21', '本页') + 0.4, [990, PY + 100, 400, 40]).at(T('u21b'), hidx)
+    .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '没有索引插入'), t1).at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).off(T('u27') - 0.1);
+  // 日志对照讲完就收起，下面换成填充比例：一页装到九成，剩下一成留给更新
+  [t1, t2, tlab, jump].forEach((e) => gone(e, T('u25') - 0.2, 0.3));
+  const ff = noteBox(C, '<b>填充比例</b>　表默认 100（装满）；改小后，每页留出的空间给更新用', 72, 640, 1100); show(ff, T('u27'), { y: 10 });
+  const ffb = h('div', 'page', C); px(ffb, 72, 760, 860, 56); ffb.dataset.name = '留一成空位的页';
   const ffa = h('div', 'abs', ffb); px(ffa, 4, 4, 0, 42); css(ffa, { background: 'var(--sky-lt)' });
-  const ffr = h('div', 'abs', ffb, '留给更新'); px(ffr, 590, 4, 62, 42); css(ffr, { background: 'repeating-linear-gradient(135deg,#fff 0 6px,#dbe8f3 6px 12px)', font: '700 22px "Sans SC"', color: 'var(--navy)', lineHeight: '42px', whiteSpace: 'nowrap', overflow: 'visible', textAlign: 'right' });
-  wipe(ffb, T('u28') - 0.2, { dir: 'l', d: 0.3 }); to(ffa, T('u28'), { width: 584, duration: 0.8 }); show(ffr, T('u28', '改小'), { y: 0 });
+  const ffr = h('div', 'abs', ffb); px(ffr, 770, 4, 82, 42); css(ffr, { background: 'repeating-linear-gradient(135deg,#fff 0 6px,#dbe8f3 6px 12px)' });
+  const ffl = capt(C, '留给更新', 950, 768); css(ffl, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 });
+  wipe(ffb, T('u27') + 0.4, { dir: 'l', d: 0.3 }); tl.fromTo(ffa, { width: 0 }, { width: 848, duration: 0.8, immediateRender: false }, T('u27', '装满') - 0.4);
+  show(ffr, T('u28', '改小'), { y: 0 }); show(ffl, T('u28', '改小') + 0.1, { x: -8 }); tl.fromTo(ffa, { width: 848 }, { width: 762, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, T('u28', '改小') - 0.3);
 });
