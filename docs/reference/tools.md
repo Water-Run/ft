@@ -13,7 +13,7 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 
 ## 1. 一览
 
-表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`remote.js`、`repo-check.js`、`smoke.js`、`media-smoke.js`、`voices.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
+表中省略 `<视频>`（视频目录形如 `videos/<系列>/<片>`，独立的片子是 `videos/standalone/<片>`）。`new.js`、`catalog.js`、`assets.js`、`repo-check.js`、`smoke.js`、`media-smoke.js`、`voices.js` 与 `lessons.js show / render` 不针对某一部视频；`doctor.js` 的视频目录可选。`clean.js` 清理时必须明确给出目录，`--verify` 则只接受归档目录；其余工具需要视频目录。
 
 | 工具 | 作用 | 语言 | 大致耗时 |
 |---|---|---|---|
@@ -41,12 +41,10 @@ node kit/tools/<工具>.js <视频目录> [参数…]
 | `margin.js` | 按像素量每句画面的外接范围，列出贴边的句子 | 第一种 | 约半分钟 |
 | `audio.js [键=值…]` | 混音并做数值自检 | 全部 | 8 分钟的片子每种语言约 1 分钟 |
 | `asr.js` | 语音识别回听旁白，逐句对照 | 全部 | 每种语言约 1–2 分钟 |
-| `preview.js [--mix] [--from 秒 --to 秒]` | 有声区间 / 全片预演与像素静止检测；可设 scale、fps、gpu、encoder、workers | 第一种，可指定 all | 依区间与画面复杂度 |
+| `preview.js [--mix] [--from 秒 --to 秒] [--round r3]` | 有声区间 / 全片预演与像素静止检测；`--round` 另存一份交审用的 `preview-r3.mp4`；可设 scale、fps、gpu、encoder、workers | 第一种，可指定 all | 依区间与画面复杂度 |
 | `render.js` | 正式渲染成无声画面 | 全部 | 见下 |
 | `finish.js` | 响度处理、封装、字幕、成片检查 | 全部 | 每种语言约 1 分钟 |
 | `covers.js` | 出各语言的两版封面 | 全部 | 约 15 秒 |
-| `remote.js push` / `run` / `pull` / `sh` | 两台机器分工时的同步与远程执行 | — | — |
-| `pngprobe.js <起> <止> [步长]` | 诊断：找出截图像素格式发生变化的时刻 | 第一种 | — |
 | `glprobe.js` | 探测无头浏览器的 WebGL 能力 | — | 几秒 |
 | `encoder.js [--encoder auto]` | 实际编码三帧，探测 NVIDIA NVENC 与 CPU 后备；不需要视频目录 | — | 几秒 |
 | `gif.js <页面.html>` | 把由 `window.seek(t)` 驱动的页面录成循环 GIF，如根 README 的动图 `docs/media/ft.html`；不需要视频目录 | — | 十几秒 |
@@ -108,9 +106,9 @@ node kit/tools/render.js <视频> --lang zh --gpu 1 --encoder auto --workers 2
 |---|---|
 | 验证一段解释、转场和声音（先选实际的起止秒数） | `node kit/tools/preview.js <视频> --lang zh --from 20 --to 40 --mix --scale 0.5 --fps 30 --gpu 1 --encoder auto --workers 2` |
 | 全片粗看结构与节奏 | `node kit/tools/preview.js <视频> --lang zh --mix --gpu 1 --encoder auto --workers 2`；缺省 480×270、15fps、mb=1 |
+| 交给策划者的一轮预览（先做完[自对抗审查](../process.md#2-自对抗审查)） | 同上，加 `--round r3`（常配 `--scale 0.5 --fps 30`）；交出 `out/zh/preview-r3.mp4`，以后的验证预演不会覆盖它 |
 | 检查正式尺寸的小字与运动模糊 | `node kit/tools/render.js <视频> --lang zh --from 20 --to 40 --out out/zh/detail.mp4 --gpu 1 --encoder auto --workers 2`；沿用本片正式 fps / scale / mb |
 | 正式成片 | `audio.js` → `render.js` → `finish.js` → `covers.js` → `check.js --final`，继续执行实际视听与策划者验收 |
-| 另一台 GPU 机器出片 | 用 [两台机器分工](environment.md#3-两台机器分工) 的 `remote.js` 同步和执行以上命令；先固定依赖、字体与源码版本，再回传产物与记录 |
 
 `--out` 路径相对当前工作目录。预演输出在本片 `out/<语言>/preview.mp4`（有声）与 `preview_video.mp4`（无声），每次替换；区间预演自动裁取相应的音轨，实际起止量化到帧边界。`--lang all` 可依次生成全部语言。失败不保留上次的有声预演或通过报告；静止超限时仍保留本次样片供定位，同时失败退出。
 
@@ -252,31 +250,16 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `chrome`、`ffmpeg`、`ffprobe`、`python` | 可执行文件的位置 |
 | `asr_model`、`asr_device` | 语音识别模型的名字（缺省 `fw-small`）与设备（缺省 `cpu`） |
 | `hf_endpoint` | 下载模型用的地址，可换成镜像站 |
-| `remote` | 渲染机：`{ "ssh": "<ssh 主机别名>", "path": "<渲染机上仓库的路径>" }` |
 
 ffmpeg 也可以放在 `assets/ffmpeg/bin/` 下。
 
 Python 还会查仓库的 `.venv/`。`kit/studio.json` 是公开制作默认值，不能放可执行路径、主机或凭据；它与本机配置各自独立。
 
-## 7. 两台机器分工：`remote.js`
-
-在一台机器上写代码、看帧、扫描，在另一台（渲染机）上配音、混音、渲染时用。两边各有一份仓库；配置好 `remote` 之后：
-
-```bash
-node kit/tools/remote.js push                          # 把工作树同步过去（已跟踪与未被忽略的文件；本机删掉的在对面也删）
-node kit/tools/remote.js run tts <视频>                # 先同步，再在渲染机上运行工具；结束后取回被改写的 timing.<语言>.js
-node kit/tools/remote.js run render <视频> --lang zh
-node kit/tools/remote.js pull <视频>/out/cover-zh-16x9.jpg <视频>/shots     # 取回生成物
-node kit/tools/remote.js sh "<命令>"                   # 在渲染机的仓库目录下执行一条命令
-```
-
-同步的是工作树，不是提交：没提交的改动也会过去。生成物与 `assets/`、`node_modules/` 不同步，各留在产生它们的机器上。详见 [environment.md](environment.md)。
-
-## 8. 诊断
+## 7. 诊断
 
 | 现象 | 用什么查 |
 |---|---|
-| 成片比时间线短 | 渲染日志有没有 `verified frames=`；`pngprobe.js <视频> <起> <止>` 找截图格式变化的时刻 |
+| 成片比时间线短 | 渲染日志有没有 `verified frames=`，`finish.js` 是否报音画长度不符；原因见 [踩过的坑](pitfalls.md)「成片悄悄少了一段」 |
 | 页面没能就绪 | 工具会打印页面日志：脚本报错、资源 404、`T()` 找不到句号 |
 | 某一刻画面不对 | `look.js <视频> <时刻>` 看文字描述与截图；在入场时刻前后多取几帧 |
 | 想知道某个词何时被读到 | `timeline.js <视频> <句号>` |

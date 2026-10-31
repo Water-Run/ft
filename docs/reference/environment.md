@@ -1,8 +1,8 @@
 # 环境搭建
 
-本文说明在一台新机器上要装什么、怎样确认可用、两台机器怎样分工，以及生成物占多少空间、怎样清理。
+本文说明在一台新机器上要装什么、怎样确认可用，以及生成物占多少空间、怎样清理。
 
-首次使用的分阶段步骤见 [getting-started.md](../getting-started.md)，归档与清理的完整流程见 [release.md](../guides/release.md)。只有一台机器也能完成全部制作，远端配置是可选项。
+首次使用的分阶段步骤见 [getting-started.md](../getting-started.md)，归档与清理的完整流程见 [release.md](../guides/release.md)。
 
 ## 1. 需要什么
 
@@ -50,48 +50,7 @@ Python 包使用 `.venv/` 安装 `kit/requirements.txt`；可选审查包使用 
 - 写 PowerShell 脚本时，自定义函数不要叫 `mv`、`del`、`cp`、`rm` 这类名字：它们是内置别名，调用时执行的是内置命令而不是自己的函数。
 - cmd 里 `if not exist x mkdir x & 后续命令` 会把后续命令一并归入 `if`，写成 `(if not exist x mkdir x) & …`。
 
-## 3. 两台机器分工
-
-常见的分法：在一台机器上写代码、看帧、跑扫描；在另一台性能更好的机器（渲染机）上配音、混音、渲染。有显卡的机器适合做渲染机。两边各有一份仓库，各自 `npm ci`、各自放 `assets/`。
-
-下文把生成音频、画面与成片的机器称为**制作机**；只用一台机器时，它就是唯一的机器。分工时，制作机即**渲染机**，另一台称为**本机**（写代码、看帧、扫描）。
-
-在写代码的那台机器的 `kit/config.local.json` 里写：
-
-```json
-{ "remote": { "ssh": "<ssh 主机别名>", "path": "<渲染机上仓库的路径>" } }
-```
-
-之后：
-
-```bash
-node kit/tools/remote.js push                     # 同步工作树
-node kit/tools/remote.js run tts <视频>           # 在渲染机上合成旁白，并取回 timing.<语言>.js
-node kit/tools/remote.js run audio <视频>
-node kit/tools/remote.js run render <视频>
-node kit/tools/remote.js run finish <视频>
-node kit/tools/remote.js pull <视频>/shots        # 取回生成物
-```
-
-要点：
-
-- 要求能免口令 `ssh` 到渲染机，且那边的 `PATH` 里有 `node` 与 `tar`。
-- 同步的是工作树（已跟踪与未被忽略的文件），不是提交；没提交的改动也会过去，本机删掉的文件在对面也删。
-- 生成物不同步：`audio/`、`out/`、`build/`、`shots/` 各留在产生它们的机器上。渲染机上的画面与本机预览不完全一致（canvas、大倍率缩放、连续运动），成片以渲染机为准；需要核对时在渲染机上出帧再取回。
-- 配音缓存只在渲染机上。本机没有音频也能看帧与扫描，因为时间线只依赖入库的 `timing.<语言>.js`。
-- 渲染机是共用的机器时，开工前看一眼它的内存与磁盘。每个编码进程限 4 线程，约占 0.7 GB；九路并行约 6–7 GB。渲染失败后，先按临时档案目录的名字（`lvs-chrome-`）确认残留的无头浏览器，再清理；其他浏览器进程不在清理范围内，不结束。
-
-**提交历史的同步**与工作树的同步是两回事：提交在一边做，用 `git push` 或 `git pull` 带到另一边。仓库正常情况下只有 `main` 一个分支，两边都直接在 `main` 上提交（见 [process.md](../process.md) 的「并行开工与分支」）。渲染机上的仓库不是裸仓库时，可以让它接受推送并保持工作树不动（工作树已经由 `remote.js push` 同步过，内容与新提交一致）：
-
-```bash
-# 在渲染机的仓库里，一次性设置
-git config receive.denyCurrentBranch updateInstead
-printf '#!/bin/sh\ngit read-tree "$1"\n' > .git/hooks/push-to-checkout
-```
-
-这个钩子在收到推送时只把索引换成新提交，不改工作树。
-
-## 4. 空间占用与清理
+## 3. 空间占用与清理
 
 空间应以当前文件实测；下表是既有制作中的量级参考，不代表每次 clone 或每部影片的固定大小：
 

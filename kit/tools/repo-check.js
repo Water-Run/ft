@@ -27,6 +27,45 @@ function markdownAnchors(markdown) {
   return anchors;
 }
 
+// Markdown 写法在 GitHub（cmark-gfm）上会不会露出原始符号。中文标点紧贴 ** 时，
+// 按 CommonMark 的左右侧规则常常配不成加粗，星号原样显示；表格一行的格数与表头不同时，多出的格被丢掉。
+const MD_PUNCT = /[!-\/:-@\[-`{-~\p{P}]/u, MD_SPACE = /[\s\p{Zs}]/u;
+function markdownStyleProblems(markdown) {
+  const problems = [], lines = markdown.split(/\r?\n/);
+  let fence = null, table = 0;
+  const cells = (row) => row.replace(/\\\|/g, 'xx').replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').length;
+  lines.forEach((raw, i) => {
+    const n = i + 1, f = raw.match(/^\s{0,3}(`{3,}|~{3,})/);
+    if (fence) { if (f && f[1][0] === fence[0] && f[1].length >= fence.length) fence = null; return; }
+    if (f) { fence = f[1]; table = 0; return; }
+    if (/^\s{0,3}#{1,6}[^\s#]/.test(raw)) problems.push(`第 ${n} 行：标题的 # 后面缺空格`);
+    // 表格：表头下一行是分隔行；之后连续的行与表头同样多的格
+    const sep = /^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?\s*$/;
+    if (!table && i + 1 < lines.length && raw.includes('|') && sep.test(lines[i + 1]) && lines[i + 1].includes('-')) table = cells(raw);
+    else if (table && (!raw.trim() || !raw.includes('|'))) table = 0;
+    else if (table && !sep.test(raw) && cells(raw) !== table) problems.push(`第 ${n} 行：表格这一行有 ${cells(raw)} 格，表头是 ${table} 格`);
+    // 加粗：去掉注释、代码内容与转义后，按定界符的左右侧规则配对
+    let s = raw.replace(/<!--.*?-->/g, (m) => ' '.repeat(m.length)).replace(/\\[*_`|]/g, 'xx');
+    s = s.replace(/(`+)(.+?)\1(?!`)/g, (m, ticks, body) => ticks + 'x'.repeat(body.length) + ticks);
+    s = s.replace(/^(\s*)[*+-](\s)/, '$1-$2');
+    const segments = table ? s.split('|') : [s];
+    for (const seg of segments) {
+      const stack = [];
+      for (const m of seg.matchAll(/\*{2,}/g)) {
+        if (/^\s*\*{3,}\s*$/.test(seg)) break;
+        const before = m.index ? seg[m.index - 1] : ' ', after = seg[m.index + m[0].length] ?? ' ';
+        const left = !MD_SPACE.test(after) && (!MD_PUNCT.test(after) || MD_SPACE.test(before) || MD_PUNCT.test(before));
+        const right = !MD_SPACE.test(before) && (!MD_PUNCT.test(before) || MD_SPACE.test(after) || MD_PUNCT.test(after));
+        if (right && stack.length) stack.pop();
+        else if (left) stack.push(m.index);
+        else { problems.push(`第 ${n} 行：「${seg.slice(Math.max(0, m.index - 8), m.index + m[0].length + 8).trim()}」里的 ** 配不成对，会原样显示`); stack.length = 0; break; }
+      }
+      if (stack.length) problems.push(`第 ${n} 行：「${seg.slice(Math.max(0, stack[0] - 4), stack[0] + 12).trim()}」开头的 ** 没有配对，会原样显示`);
+    }
+  });
+  return problems;
+}
+
 function checkRepository(root = path.resolve(__dirname, '../..')) {
   const errors = [];
   const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
@@ -85,6 +124,11 @@ function checkRepository(root = path.resolve(__dirname, '../..')) {
     }
   }
 
+  // 6b. 共享的现行文档在 GitHub 上不露出 Markdown 原始符号（历史记录与各片目录各自维护）
+  for (const file of listed.filter((file) => /^[^/]+\.md$/.test(file) || /^docs\/(?!log\/).*\.md$/.test(file) || /^kit\/.*\.md$/.test(file) || /^\.github\/.*\.md$/.test(file) || /^videos\/[^/]+\.md$/.test(file) || /^videos\/[^/]+\/README\.md$/.test(file))) {
+    for (const problem of markdownStyleProblems(read(file))) errors.push(file + '：' + problem);
+  }
+
   // 7. 新版目录（project.json 的 layout 为 2）的视频只放约定的文件
   const VIDEO_ALLOWED = /^(README\.md|project\.json|research|review|src|tools|expect\.[a-z]+\.json|\.gitignore|\.gitattributes)$/;
   for (const group of fs.readdirSync(path.join(root, 'videos'), { withFileTypes: true }).filter((d) => d.isDirectory())) {
@@ -102,9 +146,9 @@ function checkRepository(root = path.resolve(__dirname, '../..')) {
   return errors;
 }
 
-module.exports = { commandProblems, markdownAnchors, checkRepository };
+module.exports = { commandProblems, markdownAnchors, markdownStyleProblems, checkRepository };
 if (require.main === module) {
   const errors = checkRepository();
   if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
-  else console.log('仓库检查通过：入库边界、根目录、经验规则、依赖锁、命令入口、工具语法、文档登记与链接、视频目录、片单与署名。');
+  else console.log('仓库检查通过：入库边界、根目录、经验规则、依赖锁、命令入口、工具语法、文档登记与链接、Markdown 写法、视频目录、片单与署名。');
 }

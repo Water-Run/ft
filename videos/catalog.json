@@ -1,5 +1,5 @@
 {
-  "about": "片单：全部视频的唯一结构化登记。series 定义系列（slug、title、可选的 languages 缺省语言、starter 起点、sections 建议栏目）；videos 按系列分组排列，系列内的先后即集数。视频条目：slug 全仓库唯一，目录为 videos/<slug>/；series 写所属系列（独立视频不写）；status 取 planned（缺省）、in-progress、delivered；languages 缺省继承系列，系列也没写则只做中文（2026-10-24 起；此前的双语片在条目上写明 [\"zh\", \"en\"]）。计划中的标题是工作标题。制作阶段、署名、发布与评分不写在这里，写在各片 project.json。改动后运行 node kit/tools/catalog.js。",
+  "about": "片单：全部视频的唯一结构化登记。series 定义系列（slug、title、可选的 languages 缺省语言、starter 起点、sections 建议栏目）；videos 按系列分组排列，系列内的先后即集数。视频条目：slug 全仓库唯一，目录为 videos/<series>/<slug>/，独立视频为 videos/standalone/<slug>/；series 写所属系列（独立视频不写）；status 取 planned（缺省）、in-progress、delivered、abandoned，跟着当前版本走：重做中的旧片是 in-progress，策划者决定不再制作的是 abandoned；languages 缺省继承系列，系列也没写则只做中文（2026-10-24 起；此前的双语片在条目上写明 [\"zh\", \"en\"]）。计划中的标题是工作标题。制作阶段、署名、发布与评分不写在这里，写在各片 project.json。改动后运行 node kit/tools/catalog.js。",
   "series": [
     {"slug": "database-engines", "title": {"zh": "数据库引擎", "en": "Database Engines"}, "languages": ["zh"]},
     {"slug": "language-philosophy", "title": {"zh": "编程语言哲学", "en": "Programming Language Philosophy"}},
@@ -29,7 +29,7 @@
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "note": "新版 2026-10-24 发布；旧版 2026-10-01 发布，已归档"},
     {"slug": "innodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "status": "delivered", "note": "重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档"},
-    {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"}, "status": "delivered", "note": "重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档"},
+    {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"}, "status": "in-progress", "note": "重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档"},
     {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "in-progress"},
     {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse"}},
     {"slug": "mongodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——不是 SQL：MongoDB"}},
@@ -129,7 +129,7 @@
     {"slug": "pistol-shooting", "series": "in-seconds", "title": {"zh": "150秒学会怎么打手枪", "en": "How to Shoot a Pistol in 150 Seconds"}, "languages": ["zh", "en"], "status": "in-progress"},
     {"slug": "dense-vs-moe", "series": "in-seconds", "title": {"zh": "150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型", "en": "Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models"}, "languages": ["zh", "en"], "status": "delivered"},
     {"slug": "rear-seatbelt", "series": "in-seconds", "title": {"zh": "150 秒明白不绑后排安全带的致命性"}},
-    {"slug": "ssh", "series": "in-seconds", "title": {"zh": "256 秒搞懂 SSH"}, "status": "in-progress", "note": "已放弃（2026-10-24 策划者决定）"},
+    {"slug": "ssh", "series": "in-seconds", "title": {"zh": "256 秒搞懂 SSH"}, "status": "abandoned", "note": "2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布"},
     {"slug": "powershell-pwsh", "series": "in-seconds", "title": {"zh": "150 秒关于 PowerShell 和 pwsh"}},
     {"slug": "pty", "series": "in-seconds", "title": {"zh": "150 秒有关终端模拟器（Pty）是什么，以及如何工作"}},
     {"slug": "tire-width", "series": "in-seconds", "title": {"zh": "200 秒，关于轮胎胎宽和抓地力"}},
@@ -153,7 +153,7 @@
     {"slug": "ios-permissions", "series": "in-seconds", "title": {"zh": "192 秒了解 iOS 权限机制"}},
     {"slug": "git", "series": "in-seconds", "title": {"zh": "150 秒速通 Git"}},
     {"slug": "config-file-formats", "series": "in-seconds", "title": {"zh": "150秒认识五大主流配置文件"}, "note": "范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。", "status": "in-progress"},
-    {"slug": "von-neumann", "title": {"zh": "128秒认识冯·诺伊曼架构"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。", "status": "in-progress"},
+    {"slug": "von-neumann", "title": {"zh": "128秒认识冯·诺伊曼架构"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。", "status": "delivered"},
     {"slug": "ipv4", "title": {"zh": "100 秒速通 IPv4"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。"},
     {"slug": "beamng-soft-body", "series": "game-physics", "title": {"zh": "BeamNG 物理学"}},
     {"slug": "ksp", "series": "game-physics", "title": {"zh": "坎巴拉物理学"}},

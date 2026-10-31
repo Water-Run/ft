@@ -8,7 +8,7 @@
     "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
   },
   "stage": "review",
-  "next": "排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审",
+  "next": "排在系列第四部：PostgreSQL 重做版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审",
   "credits": {
     "planner": "WaterRun",
     "models": [

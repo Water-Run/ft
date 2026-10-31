@@ -2,7 +2,8 @@
 // node kit/tools/preview.js <视频> [--lang zh] [--from 秒 --to 秒] [--mix]
 // --mix 先运行 audio.js 刷新混音（不调用 TTS）；--scale 0.5 --fps 30 可看清文字与运动。
 // --gpu 1 --encoder auto --workers 2 可用显卡；encoder、gpu、workers 未指定时沿用 project.render。
-// 产物固定为 out/<语言>/preview_video.mp4、preview.mp4；区间样片按实际首帧时刻裁音频。
+// 产物固定为 out/<语言>/preview_video.mp4、preview.mp4；区间样片按实际首帧时刻裁音频。每次运行先删掉旧的 preview.mp4。
+// --round r3：成功后另存一份 preview-r3.mp4，交给策划者看的是这一份；以后的验证预演不会覆盖它，同名文件已存在时拒绝。
 // 预演不写正式交付记录；过期混音、媒体命令失败、片尾持续静止都以非零退出。
 const { spawnSync } = require('child_process');
 const { needVideo, PROJECT, LANGS, VIDEO, FFMPEG, arg, flag, run, dirs, mkdirp, rel, mmss, layout, sourceState, path, fs } = require('./lib');
@@ -19,6 +20,9 @@ async function preview(lang) {
   const d = dirs(lang), limit = +(PROJECT().check.still_seconds || 3), sources = sourceState();
   const v = path.join(mkdirp(d.out), 'preview_video.mp4'), voiced = path.join(d.out, 'preview.mp4');
   const reportPath = path.join(mkdirp(d.build), `preview.${lang}.json`);
+  const round = arg('round', null), kept = round && path.join(d.out, `preview-${round}.mp4`);
+  if (round && !/^[A-Za-z0-9._-]+$/.test(round)) throw new Error('--round 只能用字母、数字、点、下划线和连字符，如 r3');
+  if (kept && fs.existsSync(kept)) throw new Error('已有 ' + rel(kept) + '：交出去的预览不覆盖，换一个轮次名');
   // 旧的有声样片或通过报告不能冒充本次失败后的结果。
   fs.rmSync(voiced, { force: true }); fs.rmSync(reportPath, { force: true });
   if (flag('mix')) run(process.execPath, [path.join(__dirname, 'audio.js'), VIDEO, '--lang', lang]);
@@ -57,6 +61,10 @@ async function preview(lang) {
   fs.writeFileSync(reportPath, JSON.stringify({ preview: true, from: off, to: rendered.to, audio: hasAudio, encoder: rendered.encoder,
     sources, freezes: b.map((x, i) => ({ start: +(a[i] + off).toFixed(2), d: x })) }));
   console.log(bad ? `✗ 有 ${bad} 段静止超过 ${limit} 秒：回到对应场景检查解释与动作` : `✓ 没有超过 ${limit} 秒的静止段`);
+  if (kept && !bad) {
+    if (!hasAudio) throw new Error('没有混音，不能另存交审的预览：加 --mix');
+    fs.copyFileSync(voiced, kept); console.log('交审用的预览：' + rel(kept));
+  } else if (kept) console.log('有静止段，没有另存 ' + rel(kept));
   return bad > 0;
 }
 (async () => {

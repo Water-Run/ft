@@ -56,7 +56,7 @@
 | 4 | 150秒学会怎么打手枪 | zh + en | 制作中 | [`pistol-shooting`](pistol-shooting/) |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](dense-vs-moe/) |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |
-| 7 | 256 秒搞懂 SSH | zh | 制作中 | [`ssh`](ssh/) |
+| 7 | 256 秒搞懂 SSH | zh | 已放弃 | [`ssh`](ssh/) |
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |
@@ -80,6 +80,6 @@
 | 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |
 | 29 | 150 秒速通 Git | zh | 计划中 | `git` |
 | 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](config-file-formats/) |
-| 31 | 128秒认识冯·诺伊曼架构 | zh | 制作中 | [`von-neumann`](von-neumann/) |
+| 31 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
 | 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` |
 <!-- catalog:end -->

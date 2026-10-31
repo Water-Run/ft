@@ -5,7 +5,7 @@ node_modules/
 /assets/*
 !/assets/README.md
 
-# 本机配置（Chrome、ffmpeg、Python 的位置，渲染机的地址等）
+# 本机配置（Chrome、ffmpeg、Python 的位置等）
 /kit/config.local.json
 
 # 本机密钥与不入库的制作备忘
@@ -37,9 +37,3 @@ __pycache__/
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# 成片复盘的原始截帧、源码快照与测量日志；公开结论在 docs/reviews/
-/out/reviews/
-
-# remote.js 同步时在仓库根目录留下的临时文件
-/.lvs-*

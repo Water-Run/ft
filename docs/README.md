@@ -18,6 +18,7 @@
 |---|---|
 | 第一次来 | [宗旨与原则](principles.md) → [快速入门](getting-started.md) |
 | 做一部片子（任何角色） | [角色与权限](roles.md) → [制作周期](process.md) → 本片 README → 当前阶段的专题与 `lessons.js show --stage <阶段>` |
+| 交出审片页、预览或成片之前 | [自对抗审查](process.md#2-自对抗审查) → [质量标准](standards.md) → `lessons.js show --stage preview` |
 | 只做前期（准备方） | [角色与权限](roles.md) 第 3 节 → [取证](guides/research.md) → [文案与配音](guides/script.md) → [文案校对](guides/script-review.md) |
 | 判断成片是否合格 | [质量标准](standards.md) → [经验规则](lessons.md) → [验收](guides/acceptance.md) |
 | 发布、收集反馈、归档清理 | [发布与收尾](guides/release.md) |
@@ -41,7 +42,7 @@
 |---|---|
 | [principles.md](principles.md) | 宗旨：自由软件、自由视频、共产主义；制作原则 |
 | [roles.md](roles.md) | 策划、校对、准备方、制作方、维护者各自的权限；冲突时谁说了算；署名；并行与提交 |
-| [process.md](process.md) | 制作周期：阶段、三道闸门、改动后的重做、交接、停工与接续 |
+| [process.md](process.md) | 制作周期：主线（审片页、预览迭代、正式片）、自对抗审查、阶段、三道闸门、改动后的重做、交接与接续 |
 | [standards.md](standards.md) | 成片的质量标准 |
 | [lessons.md](lessons.md) | 经验规则：从反馈提炼出的通用规则，按阶段排列（由 `lessons.json` 生成） |
 | [getting-started.md](getting-started.md) | 从 clone 到第一部片子 |
@@ -68,7 +69,7 @@
 | [reference/tools.md](reference/tools.md) | 工具速查与 `project.json` 字段 |
 | [reference/engine.md](reference/engine.md) | 引擎函数 |
 | [reference/pitfalls.md](reference/pitfalls.md) | 踩过的坑 |
-| [reference/environment.md](reference/environment.md) | 环境、两台机器、空间 |
+| [reference/environment.md](reference/environment.md) | 环境、空间与清理 |
 | [reference/third-party.md](reference/third-party.md) | GPL、第三方制作、源码交付、组件许可与商标 |
 
 **记录**（只追加的历史，做事时不必读）

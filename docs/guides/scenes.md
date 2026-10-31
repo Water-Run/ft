@@ -166,7 +166,7 @@ note.dataset.gloss = tr('聚簇索引', 'clustered index');
 
 ## 9. 自查循环
 
-每写完一小段就查，不攒到最后：
+每写完一小段就查，不攒到最后。交出预览之前另做一轮全片的[自对抗审查](../process.md#2-自对抗审查)。
 
 ```bash
 node kit/tools/look.js <视频> a3 a4              # 这两句说完时的画面

@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 17，制作中 7，计划中 178。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 202 部：已成片 17，制作中 6，计划中 178，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,6 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | zh 2:08 | 2026-10-31 | [哔哩哔哩](https://www.bilibili.com/video/BV1Pxxr6oEjx) | — | Gemini 4 Argon、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/) | [数据库引擎](database-engines/README.md) | zh 15:50 | 2026-10-26 | [哔哩哔哩](https://www.bilibili.com/video/BV1x1nR6XETE) | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | zh 9:38 | 2026-10-24 | [哔哩哔哩](https://www.bilibili.com/video/BV1PMHK6mEtm) | — | Claude Opus 5.5 |
 | [隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/) | [热点](hot-topics/README.md) | zh 5:00 | 2026-10-22 | [哔哩哔哩](https://www.bilibili.com/video/BV1GPn66sEh2) | — | Claude Opus 5.5 |
@@ -28,7 +29,6 @@
 | [120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/) | [XX 秒速通](in-seconds/README.md) | zh 2:00、en 2:00 | 2026-10-06 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) | 9（2026-10-09） | Claude Opus 5.5 |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/) | — | zh 3:13 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ) | 8（2026-10-09） | Claude（型号未记录）、DeepSeek（型号未记录） |
-| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh | — | 未登记 | — | Claude Opus 5.5 |
 
 ## 制作中
 
@@ -36,13 +36,20 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 重做版文案第 1 稿待 WaterRun 校对（review/NOTES.md）；确认后配音、做场景 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第四部：PostgreSQL 重做版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
-| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
 | [150 秒了解 Agent 的手：Harness](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 实现 | WaterRun 看第 1 版预览（out/zh/preview-r01.mp4），听读音与配乐；按意见改后正式渲染、验收 | 最新 | Claude Opus 5.5 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
-| [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | 已发布 | 已发布（哔哩哔哩，2026-10-31 WaterRun 回报）；冻结。收集评价与评论，写进 README「评价与复盘」 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
+
+## 已放弃
+
+策划者决定不再制作的片子；目录与记录保留，不交付、不发布。
+
+| 片 | 系列 | 停在 | 说明 |
+|---|---|---|---|
+| [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布 |
 
 ## 全部选题
 
@@ -56,7 +63,7 @@
 |---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](database-engines/myisam/) | 新版 2026-10-24 发布；旧版 2026-10-01 发布，已归档 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档 |
-| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
+| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 制作中 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
 | 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
 | 5 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |  |
 | 6 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh | 计划中 | `mongodb` |  |
@@ -260,7 +267,7 @@
 | 4 | 150秒学会怎么打手枪<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | [`pistol-shooting`](in-seconds/pistol-shooting/) |  |
 | 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | [`dense-vs-moe`](in-seconds/dense-vs-moe/) |  |
 | 6 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |  |
-| 7 | 256 秒搞懂 SSH | zh | 制作中 | [`ssh`](in-seconds/ssh/) | 已放弃（2026-10-24 策划者决定） |
+| 7 | 256 秒搞懂 SSH | zh | 已放弃 | [`ssh`](in-seconds/ssh/) | 2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布 |
 | 8 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |  |
 | 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |  |
 | 10 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |  |
@@ -284,7 +291,7 @@
 | 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |  |
 | 29 | 150 秒速通 Git | zh | 计划中 | `git` |  |
 | 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
-| 31 | 128秒认识冯·诺伊曼架构 | zh | 制作中 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
+| 31 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 
 ### 游戏物理学

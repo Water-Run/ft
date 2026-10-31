@@ -6,8 +6,8 @@
 
 1. [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](../videos/database-engines/postgresql/README.md)（`postgresql`）
 2. [一个数据库引擎是如何实现的？——小而强大：SQLite](../videos/database-engines/sqlite/README.md)（`sqlite`）
-3. [192 秒了解 LLM 的手：Harness 是什么，怎么工作的？](../videos/in-seconds/harness/README.md)（`harness`）
-4. 150秒认识五大主流配置文件（`config-file-formats`）
+3. [150 秒了解 Agent 的手：Harness](../videos/in-seconds/harness/README.md)（`harness`）
+4. [150秒认识五大主流配置文件](../videos/in-seconds/config-file-formats/README.md)（`config-file-formats`）
 
 ## 11W1
 

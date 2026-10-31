@@ -65,7 +65,7 @@ node kit/tools/new.js first-video --title "这部片子的问题" --title-en "Th
 3. `src/js/script.js`：中文逐句文案；`review/NOTES.md`：术语解释与待讨论的取舍。
    写稿前读这一阶段的经验规则：`node kit/tools/lessons.js show --stage script`。
 4. `node kit/tools/script-review.js videos/standalone/first-video export`：生成连贯阅读与逐句校对两种视图。先通读叙事，再定位逐句问题。
-5. 把稿本交给指定校对者，按句号收集意见、修改并重新导出。得到明确确认后，按 [script-review.md](guides/script-review.md) 记录；中文确认后翻译，逐句校对译文。
+5. 做本地审片页（文案、配音候选、配乐小样与关键帧，见[制作周期](process.md#1-主线)），把稿本交给指定校对者，按句号收集意见、修改并重新导出。得到明确确认后，按 [script-review.md](guides/script-review.md) 记录；中文确认后翻译，逐句校对译文。
 
 `new.js` 产生可运行的骨架，并不代表取证、审稿或场景已完成。模板中的 TODO 和示例必须替换；参与的模型按实际分工补进 `project.json` 的 `credits`。之后的阶段与闸门见 [制作周期](process.md)。
 

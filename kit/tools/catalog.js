@@ -10,8 +10,9 @@ const { problems: creditProblems, roleText } = require('./credits');
 const STANDALONE = 'standalone';
 const groupOf = (v) => v.series || STANDALONE;                                 // 第一层目录：系列 slug，或 standalone
 const dirOf = (v) => `videos/${groupOf(v)}/${v.slug}`;
-const STATUS = { planned: '计划中', 'in-progress': '制作中', delivered: '已成片' };
-const STAGES = { brief: '立项', research: '取证', script: '文案', review: '审稿', voice: '配音', design: '设计', build: '实现', sound: '声音', render: '成片', accept: '验收', delivered: '已交付', released: '已发布' };
+const STATUS = { planned: '计划中', 'in-progress': '制作中', delivered: '已成片', abandoned: '已放弃' };
+const FINISHED = new Set(['delivered', 'released']);                          // project.json 里表示「本版已交付」的阶段
+const STAGES = { brief: '立项', research: '取证', script: '文案', review: '审稿', voice: '配音', design: '设计', build: '实现', sound: '声音', preview: '预览迭代', render: '成片', accept: '验收', delivered: '已交付', released: '已发布' };
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 // 语言：条目自己的 languages ＞ 所属系列的 languages ＞ 缺省只做中文（策划者 2026-10-24 起）
 const DEFAULT_LANGS = ['zh'];
@@ -68,6 +69,8 @@ function validate(cat) {
     if (p.slug !== v.slug) errs.push(`${e.dir}/project.json 的 slug 是 ${p.slug}，与目录名不一致`);
     if (langs.join() !== e.languages.join()) errs.push(`${e.dir} 的语言与片单不一致：project.json 是 ${langs.join(', ')}，片单是 ${e.languages.join(', ')}`);
     if (p.stage != null && !STAGES[p.stage]) errs.push(`${e.dir}/project.json 的 stage 只能是 ${Object.keys(STAGES).join(' / ')}`);
+    // 片单状态跟着当前版本走：重做中的旧片是「制作中」，已交付或已发布的是「已成片」
+    if (p.stage != null && e.status !== 'abandoned' && (e.status === 'delivered') !== FINISHED.has(p.stage)) errs.push(`${e.dir}：片单是「${STATUS[e.status]}」，project.json 的阶段却是「${STAGES[p.stage] || p.stage}」；两边按当前版本改成一致`);
     errs.push(...creditProblems(p, e.dir + '/project.json'));
   }
   // 反过来：videos/ 下第一层只有系列与 standalone，第二层只有片单里属于它的视频
@@ -93,7 +96,7 @@ function render(cat) {
   const all = entries(cat), n = (st) => all.filter((e) => e.status === st).length, current = lessonsVersion();
   const seriesName = (e) => (e.series ? `[${e.series.title.zh}](${e.series.slug}/README.md)` : '—');
   const L = ['# 片单', '', '<!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->', '',
-    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。`, '',
+    `共 ${all.length} 部：已成片 ${n('delivered')}，制作中 ${n('in-progress')}，计划中 ${n('planned')}${n('abandoned') ? `，已放弃 ${n('abandoned')}` : ''}。系列里的一集在 \`videos/<系列>/<片>/\`，独立视频在 \`videos/standalone/<片>/\`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。`, '',
     '[Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。', ''];
   // 已成片：按交付日期倒序
   const done = all.filter((e) => e.status === 'delivered').sort((a, b) => String(b.project?.delivery?.date || '').localeCompare(String(a.project?.delivery?.date || '')));
@@ -113,6 +116,11 @@ function render(cat) {
     const ver = !rec ? '未接入' : rec.version === current ? '最新' : '待同步';
     L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${STAGES[p.stage] || '未记录'} | ${cellText(p.next || '')} | ${ver} | ${cellText(makers(p).join('、')) || '未记录'} |`);
   }
+  const dropped = all.filter((x) => x.status === 'abandoned');
+  if (dropped.length) {
+    L.push('', '## 已放弃', '', '策划者决定不再制作的片子；目录与记录保留，不交付、不发布。', '', '| 片 | 系列 | 停在 | 说明 |', '|---|---|---|---|');
+    for (const e of dropped) { const p = e.project || {}; L.push(`| [${cellText(e.v.title.zh)}](${inIndex(e)}) | ${seriesName(e)} | ${STAGES[p.stage] || '—'} | ${cellText(e.v.note || p.next || '')} |`); }
+  }
   L.push('', '## 全部选题', '', '按系列列出，系列内的顺序即集数。', '');
   const head = '| # | 标题 | 语言 | 状态 | 目录 | 备注 |\n|---|---|---|---|---|---|';
   const row = (e, i) => `| ${i} | ${cellText(e.v.title.zh)}${e.v.title.en ? '<br>' + cellText(e.v.title.en) : ''} | ${e.languages.join(' + ')} | ${STATUS[e.status]} | ${link(e, groupOf(e.v) + '/')} | ${cellText(e.v.note || '')} |`;
@@ -130,7 +138,7 @@ function renderCredits(cat) {
   const all = entries(cat), started = all.filter((e) => e.project);
   const published = (e) => e.project.stage === 'released' || (e.project.release || []).some((r) => r.url);
   const movie = (e) => `[${cellText(e.v.title.zh)}](${inIndex(e)}README.md)`;
-  const state = (e) => published(e) ? '已发布（冻结）' : STAGES[e.project.stage] || STATUS[e.status];
+  const state = (e) => published(e) ? '已发布（冻结）' : e.status === 'abandoned' ? STATUS.abandoned : STAGES[e.project.stage] || STATUS[e.status];
   const issues = started.map((e) => ({ e, gaps: creditProblems(e.project, 'project.json', { final: true }) })).filter((x) => x.gaps.length);
   const models = new Map();
   for (const e of started) for (const name of new Set(makers(e.project))) { if (!models.has(name)) models.set(name, []); models.get(name).push(e); }

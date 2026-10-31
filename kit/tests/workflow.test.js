@@ -199,11 +199,40 @@ test('片单时长四舍五入后正确跨分钟进位', t => {
   cat.videos[0].status = 'delivered';
   f.saveCatalog(cat);
   for (const [zh, en, expected] of [[59.49, 59.5, 'zh 0:59、en 1:00'], [299.96, 3600, 'zh 5:00、en 60:00']]) {
-    write(f.video, 'project.json', JSON.stringify({ ...f.project, delivery: { date: '2026-10-22', duration: { zh, en } } }));
+    write(f.video, 'project.json', JSON.stringify({ ...f.project, stage: 'delivered', delivery: { date: '2026-10-22', duration: { zh, en } } }));
     const result = f.run('catalog');
     assert.equal(result.status, 0, result.stderr);
     assert.ok(fs.readFileSync(path.join(f.root, 'videos/README.md'), 'utf8').includes(`| ${expected} |`), expected);
   }
+});
+
+test('片单状态跟着当前版本：已成片与已交付、已发布的阶段互相对应；已放弃的单列', t => {
+  const f = fixture(t), cat = f.catalog(), file = path.join(f.video, 'project.json');
+  cat.videos[0].status = 'delivered'; f.saveCatalog(cat);
+  assert.match(f.run('catalog', '--check').stderr, /片单是「已成片」，project\.json 的阶段却是「立项」/);
+  write(f.video, 'project.json', JSON.stringify({ ...f.project, stage: 'released' }));
+  cat.videos[0].status = 'in-progress'; f.saveCatalog(cat);
+  assert.match(f.run('catalog', '--check').stderr, /片单是「制作中」，project\.json 的阶段却是「已发布」/);
+  write(f.video, 'project.json', JSON.stringify({ ...f.project, stage: 'preview' }));
+  assert.equal(f.run('catalog').status, 0);
+  assert.match(fs.readFileSync(path.join(f.root, 'videos/README.md'), 'utf8'), /\| 预览迭代 \|/);
+  cat.videos[0].status = 'abandoned'; cat.videos[0].note = '策划者决定不再制作'; f.saveCatalog(cat);
+  assert.equal(f.run('catalog').status, 0, fs.readFileSync(file, 'utf8'));
+  const index = fs.readFileSync(path.join(f.root, 'videos/README.md'), 'utf8');
+  assert.match(index, /已放弃 1/);
+  assert.match(index, /## 已放弃[\s\S]*策划者决定不再制作/);
+  assert.doesNotMatch(index.split('## 已放弃')[0].split('## 制作中')[1], /示例/);
+});
+
+test('Markdown 写法：中文标点紧贴 ** 配不成对、表格格数不齐、标题缺空格都报出；正常写法不报', () => {
+  const { markdownStyleProblems: md } = require('../tools/repo-check');
+  for (const ok of ['正常 **加粗**，好。', '（**括号里**）也好', '- **列表项。** 说明', '**核心**（规则本身）', '`a**b` 在代码里', '转义 \\*\\* 不算', '```\n**代码块**的\n```', '| a | b |\n|---|---|\n| `x\\|y` | 2 |'])
+    assert.deepEqual(md(ok), [], ok);
+  assert.match(md('看**「片单」**的')[0], /配不成对/);
+  assert.match(md('写在 **`code`**的')[0], /没有配对|配不成对/);
+  assert.match(md('| a | b |\n|---|---|\n| 1 | 2 | 3 |')[0], /3 格，表头是 2 格/);
+  assert.match(md('| a | b |\n|---|---|\n| `x|y` | 2 |')[0], /3 格，表头是 2 格/);
+  assert.match(md('##标题')[0], /缺空格/);
 });
 
 test('交付署名拒绝漏填、占位、简称、客户端及空分工；服务可以注明模型未披露', () => {
@@ -252,6 +281,7 @@ test('Credit 盘点覆盖在制与发布名单，检查生成物过期，保留�
   const f = fixture(t);
   const p = { ...f.project, stage: 'released', credits: { ...f.project.credits, models: [{ name: '未记录', roles: ['文案'] }] } };
   write(f.video, 'project.json', JSON.stringify(p));
+  const cat = f.catalog(); cat.videos[0].status = 'delivered'; f.saveCatalog(cat);
   const before = fs.readFileSync(path.join(f.video, 'project.json'), 'utf8');
   assert.equal(f.run('catalog').status, 0);
   const file = path.join(f.root, 'videos/CREDITS.md'), report = fs.readFileSync(file, 'utf8');
@@ -262,6 +292,7 @@ test('Credit 盘点覆盖在制与发布名单，检查生成物过期，保留�
   fs.writeFileSync(file, 'stale');
   assert.match(f.run('catalog', '--check').stderr, /videos\/CREDITS.md/);
   write(f.video, 'project.json', JSON.stringify({ ...p, stage: 'script', credits: { ...p.credits, models: [{ name: 'GPT-6.1 Sol', roles: ['取证'] }] } }));
+  cat.videos[0].status = 'in-progress'; f.saveCatalog(cat);
   assert.equal(f.run('catalog').status, 0);
   assert.match(fs.readFileSync(file, 'utf8'), /GPT-6.1 Sol：取证/);
   assert.match(fs.readFileSync(path.join(f.root, 'videos/README.md'), 'utf8'), /GPT-6.1 Sol/);

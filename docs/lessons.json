@@ -10,6 +10,7 @@
     "design": "设计",
     "build": "实现",
     "sound": "声音",
+    "preview": "预览迭代",
     "accept": "验收",
     "release": "发布与反馈"
   },
@@ -116,6 +117,7 @@
       "rev": 1,
       "stages": [
         "build",
+        "preview",
         "accept"
       ],
       "title": "看得完，也看得懂（不能「刷一下」）",
@@ -146,6 +148,7 @@
       "rev": 3,
       "stages": [
         "build",
+        "preview",
         "accept"
       ],
       "title": "运动解释关系",
@@ -442,6 +445,7 @@
       "stages": [
         "design",
         "build",
+        "preview",
         "accept"
       ],
       "title": "每章一个主画面",
@@ -464,6 +468,7 @@
       "rev": 1,
       "stages": [
         "build",
+        "preview",
         "accept"
       ],
       "title": "中间帧也是画面",
@@ -537,6 +542,7 @@
       "stages": [
         "design",
         "build",
+        "preview",
         "accept"
       ],
       "title": "画面自己承担注解，不必与旁白逐句对应",
@@ -561,6 +567,7 @@
       "stages": [
         "design",
         "build",
+        "preview",
         "accept"
       ],
       "title": "动画演示过程本身，不做幻灯片",
@@ -583,6 +590,7 @@
       "stages": [
         "design",
         "build",
+        "preview",
         "accept"
       ],
       "title": "镜头服从内容：正在讲的东西始终看得见",
@@ -605,6 +613,7 @@
       "stages": [
         "design",
         "build",
+        "preview",
         "accept"
       ],
       "title": "画面自己承载内容，不被文案捆住",
@@ -644,6 +653,7 @@
       "rev": 1,
       "stages": [
         "build",
+        "preview",
         "accept"
       ],
       "title": "检查通过不等于看得懂：交付前以观众身份看完全片",
