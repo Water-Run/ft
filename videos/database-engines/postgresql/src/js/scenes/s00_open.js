@@ -132,9 +132,14 @@ scene('open', ({ root, s }) => {
   const vI = tagEl(B, '这一行：1 个版本', 100, 718, 'grey'), vP = tagEl(B, '这一行：2 个版本', 1016, 740);
   css(vI, { fontSize: '26px' }); css(vP, { fontSize: '30px' });
   show(vI, T('o15', '版本') - 0.3, { y: 8 }); slam(vP, T('o15', '版本'), { from: 1.2 }); sfx('thud', T('o15', '版本'), { g: 0.6 });
-  // 另一条路：InnoDB 退到一边，PostgreSQL 亮起
-  [EI.head, EI.body, LI.pg, LI.l, lrow, undo, old42, vI].forEach((e) => to(e, T('o16'), { opacity: 0.4, duration: 0.6 }));
-  to(EP.body, T('o16'), { borderWidth: '6px', duration: 0.4 });
+  // 视线：讲 InnoDB 时 PostgreSQL 一侧压暗；讲 PostgreSQL 时反过来
+  const pgSide = [EP.head, EP.body, P23.pg, P23.l, prow], inSide = [EI.head, EI.body, LI.pg, LI.l, lrow, undo, old42];
+  pgSide.forEach((e) => { to(e, T('o13') - 0.2, { opacity: 0.35, duration: 0.4 }); to(e, T('o14') - 0.3, { opacity: 1, duration: 0.4 }); });
+  inSide.forEach((e) => to(e, T('o14') - 0.3, { opacity: 0.35, duration: 0.4 }));
+  // 另一条路：InnoDB 退得更远，PostgreSQL 这边打出结论
+  [...inSide, vI].forEach((e) => to(e, T('o16'), { opacity: 0.2, duration: 0.5 }));
+  const way = tagEl(B, 'PostgreSQL 的路：不覆盖，另写一个版本', 1016, 830); css(way, { fontSize: '32px', padding: '8px 22px' });
+  slam(way, T('o16', '另一条路'), { from: 1.2 }); sfx('thud', T('o16', '另一条路'), { g: 0.6 });
 
   // ── C：片名 ──
   const card = h('div', 'abs', C); px(card, 0, 0, 1920, 1080); css(card, { background: 'var(--pg-dk)' });

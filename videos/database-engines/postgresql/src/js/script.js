@@ -363,7 +363,7 @@
   // 字幕 → 送去合成的读法。长词写在前面。配音前用 kit/tools/tts_probe.js 试，配音后对着交审稿的多音字清单逐条听。
   const SAY = {
     zh: [
-      [/PostgreSQL/g, 'Postgres Q L'],
+      [/PostgreSQL/g, 'Postgres-QL'],                // 「Postgres Q L」中间会停一下（WaterRun 看 r3b：「postgres和ql之间不要停顿」）
       [/Postgres95/g, 'Postgres 九五'],
       [/POSTGRES/g, 'Postgres'],
       [/InnoDB/g, 'Inno D B'],
@@ -384,6 +384,9 @@
       [/(\d{4}) 年/g, (_, y) => [...y].map((n) => '零一二三四五六七八九'[+n]).join('') + ' 年'],
       [/重放/g, '崇放'],
       [/(?<![执进运银发可流不])行(?![为动走])/g, '航'],
+      // 中文与英文、数字之间的空格会读成停顿（「旧值放进 undo」），合成前去掉；字母之间的空格保留（S Q L 逐个念）
+      [/([\u4e00-\u9fff，。、；：？！「」])\s+(?=[A-Za-z0-9])/g, '$1'],
+      [/([A-Za-z0-9%])\s+(?=[\u4e00-\u9fff，。、；：？！「」])/g, '$1'],
     ],
     en: [],
   };

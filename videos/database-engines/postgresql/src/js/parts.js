@@ -1,6 +1,9 @@
 // 本片的部件：屏与镜头、文档部件、堆页条、B 树、页的比例条、字节格。数据只读 window.DATA（tools/gen_data.py 生成）。
 const D = window.DATA;
 const FRAME = { top: 110, bottom: 940, left: 72, right: 1848 };   // 顶栏以下、字幕以上的可读区
+// 按词对齐的画面提前 0.12 秒：动画到位要一点时间，卡在词的起点上看着比声音慢（WaterRun 看 r3b：「画面跟不上动画 比如 支持事务」）
+const T_EXACT = T;
+T = function (id, word, shift = 0) { return T_EXACT(id, word, shift) - (word ? 0.12 : 0); };
 
 // ── 屏与镜头 ──
 // 一章由若干屏组成，在原地换内容。screens(world, [t0, t1, t2, …]) 建 n 个屏：第 i 屏从 marks[i] 出现到 marks[i+1] 换走
@@ -16,9 +19,10 @@ function screens(world, marks, opts = {}) {
   if (opts.sfx !== false) for (let i = 1; i < marks.length - 1; i++) sfx('whoosh', marks[i], { g: 0.35 });
   return out;
 }
-// 镜头：每屏只朝一个方向极慢横移（每秒不超过 1.2 像素、一屏合计不超过 24 像素，左右各留够 60 像素边），换屏时回位；dir 按章交替
+// 镜头：本片不漂移。原先每屏极慢横移、换屏时 0.04 秒回位，回位那一下整屏跳动（WaterRun 看 r3b：「画面有些抖动」「似乎是切画面就触发抖动」）
 function drift(world, s, marks, dir = 1) {
   const cam = makeCamera(world);
+  if (!drift.on) { cam.track(s.start, { x: 960, y: 540, z: 1 }, []); return cam; }
   const pts = [s.start, ...marks.filter((m) => m > s.start + 0.2 && m < s.end - 0.2), s.end];
   const segs = [];
   let first = null;
@@ -114,6 +118,25 @@ function heapStrip(p, x, y, o = {}) {
     const l = h('div', 'cap mono', el, String(i)); px(l, i * (w + gap) + w / 2 - 14, hgt + 6); css(l, { fontSize: '22px' });
   }
   el.pages = pages; el.pw = w + gap;
+  return el;
+}
+// ── 堆的物理样子：一页页 8 KB 的页卡，按在文件里的先后一行行排开 ──
+// 每张页卡与真的页一样：顶上一道页头（深蓝），接着是项目指针（从左往右长），行从页底往上放，中间是空隙
+function heapGrid(p, x, y, o = {}) {
+  const n = D.heap.pages, cols = o.cols || 16, cw = o.cw || 100, ch = o.ch || 112, gx = o.gx || 8, gy = o.gy || 34;
+  const el = h('div', 'abs', p); px(el, x, y, cols * (cw + gx) - gx, Math.ceil(n / cols) * (ch + gy)); el.dataset.name = '堆：47 页';
+  const pages = [];
+  for (let i = 0; i < n; i++) {
+    const cx = (i % cols) * (cw + gx), cy = Math.floor(i / cols) * (ch + gy);
+    const pg = h('div', 'abs', el); px(pg, cx, cy, cw, ch); css(pg, { border: '2px solid var(--pg)', background: '#fff', overflow: 'hidden' });
+    const hd = h('div', 'abs', pg); px(hd, 0, 0, cw - 4, 7); css(hd, { background: 'var(--navy)' });
+    const lp = h('div', 'abs', pg); px(lp, 0, 7, cw - 4, 7); css(lp, { background: 'var(--sky)', transformOrigin: '0 50%' });
+    const full = (ch - 4 - 16) * D.heap.rows[i] / 88;
+    const rows = h('div', 'abs', pg); css(rows, { left: '0px', right: '0px', bottom: '0px', height: full + 'px', background: 'repeating-linear-gradient(0deg,#cfe0ee 0 5px,#fff 5px 6px)', transformOrigin: '50% 100%' });
+    const lab = h('div', 'abs cap mono', el, String(i)); px(lab, cx + 2, cy + ch + 2); css(lab, { fontSize: '22px', color: 'var(--ink2)' });
+    pg.lp = lp; pg.rows = rows; pg.lab = lab; pg.k = D.heap.rows[i] / 88; pages.push(pg);
+  }
+  el.pages = pages; el.pos = (i) => ({ x: x + (i % cols) * (cw + gx), y: y + Math.floor(i / cols) * (ch + gy), w: cw, h: ch });
   return el;
 }
 // 一页里的第 k 行（自下而上，88 行一页）所在的位置，用来指 Alice
