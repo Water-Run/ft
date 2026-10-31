@@ -39,7 +39,7 @@
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第五部：MyISAM、InnoDB、PostgreSQL、Firebird 新版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 已放弃（WaterRun 2026-10-24：「算了, 这个视频不制作了, 标记为放弃.」）。停在第二版文案待确认；第一版中文成片未被接受，不交付、不发布 | 待同步 | MiniMax M3.1 Flash、Grok 4.7、Gemini 4 Argon、Claude Opus 5.5 |
-| [150 秒了解 Agent 的手：Harness](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 明确确认文案第 2 稿（o6、m2 已改）；确认后用配音 D 合成全片旁白，按「环为主、消息栈为辅」做有声代表段 | 最新 | Claude Opus 5.5 |
+| [150 秒了解 Agent 的手：Harness](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | 实现 | WaterRun 看第 1 版预览（out/zh/preview-r01.mp4），听读音与配乐；按意见改后正式渲染、验收 | 最新 | Claude Opus 5.5 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
 | [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | 已发布 | 已发布（哔哩哔哩，2026-10-31 WaterRun 回报）；冻结。收集评价与评论，写进 README「评价与复盘」 | 最新 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
