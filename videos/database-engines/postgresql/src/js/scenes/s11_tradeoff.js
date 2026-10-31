@@ -7,8 +7,8 @@ scene('tradeoff', ({ root, s, c0 }) => {
 
   // ── A：两套答案 ──
   hdoc(A, '同一张表，两套答案', 72, 128);
-  const hi = capt(A, 'InnoDB', 380, 200); css(hi, { fontSize: '34px', color: 'var(--mute)', fontWeight: 800 });
-  const hp = capt(A, '<b style="color:var(--pg)">PostgreSQL</b>', 1180, 200); css(hp, { fontSize: '34px', fontWeight: 800 });
+  const hi = tagEl(A, 'InnoDB', 290, 196, 'grey'); css(hi, { fontSize: '34px' });
+  const hp = tagEl(A, 'PostgreSQL', 1100, 196); css(hp, { fontSize: '34px' });
   ['放', '找', '改和删', '并发', '出错'].forEach((w, i) => { const c = tagEl(A, w, 700 + i * 150, 136, 'grey'); show(c, T('t1', '五个问题') + i * 0.12, { y: 8 }); });
   sfx('tick', T('t1', '五个问题'), { g: 0.5 });
   show(hi, T('t1', '两套答案')); show(hp, T('t1', '两套答案') + 0.15);
@@ -24,7 +24,7 @@ scene('tradeoff', ({ root, s, c0 }) => {
     const kl = h('div', 'abs', A, k); px(kl, 72, y + 22); css(kl, { font: '800 30px "Sans SC"', color: 'var(--ink2)' });
     const ea = h('div', 'abs', A, a); px(ea, 290, y, 780, 96); css(ea, { background: a ? '#5f6a73' : 'transparent', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
     const eb = h('div', 'abs', A, b); px(eb, 1100, y, 748, 96); css(eb, { background: 'var(--pg)', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
-    show(kl, T(ca) - 0.1, { x: -10 }); if (a) wipe(ea, ca === 't2' ? T('t2', '一棵树') : i === 3 ? T('t6', '每个索引') : T(ca), { dir: 'l', d: 0.4 }); wipe(eb, T(cb) + (cb === ca ? 0.5 : 0), { dir: 'r', d: 0.4 });
+    show(kl, T(ca) - 0.1, { x: -10 }); if (a) wipe(ea, ca === 't2' ? T('t2', '按主键找') : i === 3 ? T('t6', '每个索引') : T(ca), { dir: 'l', d: 0.4 }); wipe(eb, T(cb) + (cb === ca ? 0.5 : 0), { dir: 'r', d: 0.4 });
     sfx('tick', T(cb) + (cb === ca ? 0.5 : 0), { g: 0.5, p: 0.4 });
   });
   const tail = tagEl(A, '清理跟不上：死行越积越多', 1100, 880, 'warn'); css(tail, { fontSize: '28px' }); show(tail, T('t8'), { y: 10 }); sfx('error', T('t8'), { g: 0.35 });

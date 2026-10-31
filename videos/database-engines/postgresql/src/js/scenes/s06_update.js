@@ -89,6 +89,7 @@ scene('update', ({ root, s, c0 }) => {
   hdoc(C, 'HOT：新版本留在本页，索引一项都不加', 72, 128);
   const hotG = glossBox(C, 'HOT', '<b>HOT</b>（Heap-Only Tuple）：只在堆里的新版本，<br>不给索引加项', 1180, 196, 660);
   show(hotG, T('u18', 'HOT') + 0.1, { x: 20 }); sfx('pop', T('u18', 'HOT') + 0.1, { g: 0.5 });
+  const goal = tagEl(C, '目标：索引一项都不加', 1180, 306, 'ok'); css(goal, { fontSize: '28px' }); show(goal, T('u18', '少动索引'), { y: 10 }); hide(goal, T('u21') - 0.3, { d: 0.25 });
   const cond1 = noteBox(C, '<b>条件一</b>　改的列上没有索引', 72, 200, 520); const cond2 = noteBox(C, '<b>条件二</b>　新版本放得进原来那一页', 620, 200, 520);
   show(cond1, T('u19', '一是'), { y: 10 }); show(cond2, T('u20', '二是'), { y: 10 }); sfx('tick', T('u19', '一是')); sfx('tick', T('u20', '二是'));
   // 页内：旧项 → 新项；索引只指旧项

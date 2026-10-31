@@ -82,11 +82,11 @@ scene('crash', ({ root, s, c0 }) => {
   tk.type(T('w13') - 0.2, body(l1), 'carol=*&gt;', 45);
   tk.type(T('w14') - 0.1, body(l2), 'alice=&gt;', 45);
   tk.print(T('w15', '停掉') - 0.1, l3);
-  const stL = capt(B, '停机前', 1000, 200);
+  const stL = tagEl(B, '停机前，表里的这两行', 1000, 190, 'navy'); css(stL, { fontSize: '28px' });
   const sb = h('div', 'tup', B, 'Bob → 99　没提交'); px(sb, 1000, 250, 520); css(sb, { borderStyle: 'dashed', borderColor: 'var(--warn)' });
   const sa = h('div', 'tup new', B, 'Alice → 43　已提交'); px(sa, 1000, 320, 520);
   const off = tagEl(B, '强行停机', 1000, 380, 'warn'); css(off, { fontSize: '34px' }); slam(off, T('w15', '停掉'), { from: 1.2 });
-  show(stL, T('w13', '99') - 0.1); show(sb, T('w13', '99'), { x: 20 }); show(sa, T('w14', '提交'), { x: 20 }); sfx('pop', T('w14', '提交'), { g: 0.4 });
+  show(stL, T('w13') + 0.2, { y: 8 }); show(sb, T('w13', '99'), { x: 20 }); show(sa, T('w14', '提交'), { x: 20 }); sfx('pop', T('w14', '提交'), { g: 0.4 });
   sfx('blip', T('w13'), { g: 0.5 }); sfx('blip', T('w14'), { g: 0.5 }); sfx('error', T('w15', '停掉'), { g: 0.7 });
   // 重启日志：逐行出现，旁边给中文释义
   const notes = ['上次运行被中断了', '没有正常关闭：自动恢复', '从这里开始重放日志', '重放完毕', '可以接受连接了'];

@@ -13,6 +13,10 @@ scene('layout', ({ root, s, c0 }) => {
   const tRes = Math.max(e0 + 0.1, T('l2') + 0.2);
   ta.print(tRes, ' pg_relation_filepath'); ta.print(tRes + 0.12, ` <span class="hi">${D.files.users.path}</span>`); sfx('blip', tRes, { g: 0.5, p: -0.3 });
   const SX = 92, SY = 430, SW = 47 * 37 - 4, SH = 150;
+  const tblChip = tagEl(A, 'users 表 · 4096 行', SX, SY + 40, 'navy'); css(tblChip, { fontSize: '34px', padding: '10px 26px' });
+  show(tblChip, T('l1', '这张表') - 0.2, { y: 16 }); sfx('pop', T('l1', '这张表'), { g: 0.4 });
+  to(tblChip, T('l1', '磁盘'), { y: 30, duration: 0.5, ease: 'power2.inOut' });
+  hide(tblChip, T('l2', '文件') - 0.7, { d: 0.25 });
   // 结果里的路径落下来，变成一整条文件
   const tFile = T('l2', '文件');
   fly(A, D.files.users.path, [130, 296], [SX + 24, SY + 50], tFile - 0.5, { cls: 'navy', fs: 28, d: 0.5 });

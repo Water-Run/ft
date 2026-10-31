@@ -15,7 +15,8 @@ scene('delete', ({ root, s, c0 }) => {
   const pg = h('div', 'page', A); px(pg, 72, 340, 900, 150); pg.dataset.name = `第 ${P} 页`;
   const pgl = capt(A, `第 ${P} 页`, 72, 300);
   const row = h('div', 'tup', pg, `第 ${LP} 项　2050  Alice  42　xmax <span id="dx">0</span>`); px(row, 20, 50, 850);
-  wipe(pg, T('d2'), { dir: 'l' }); show(pgl, T('d2')); show(row, T('d2') + 0.15, { y: 8 });
+  wipe(pg, T('d1') + 0.3, { dir: 'l' }); show(pgl, T('d1') + 0.3); show(row, T('d1') + 0.5, { y: 8 });
+  const keepT = tagEl(A, '这一行不擦掉', 300, 296, 'ok'); css(keepT, { fontSize: '26px' }); show(keepT, T('d2', '不擦掉'), { y: 8 }); sfx('tick', T('d2', '不擦掉')); hide(keepT, T('d3') - 0.1, { d: 0.2 });
   keyed(row.querySelector('#dx')).at(T('d3', 'xmax'), { html: `<b style="color:var(--warn)">${E.xid}</b>` }); sfx('tick', T('d3', 'xmax'));
   const xmT = tagEl(A, `xmax 记上删除它的事务：${E.xid}`, 420, 510, 'warn'); css(xmT, { fontSize: '28px' }); show(xmT, T('d3') + 0.3, { y: 8 });
   const still = tagEl(A, '行还在页里', 72, 510, 'navy'); show(still, T('d4', '还在'), { y: 8 }); sfx('pop', T('d4', '还在'), { g: 0.5 });
