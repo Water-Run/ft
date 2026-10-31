@@ -45,7 +45,7 @@
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md) | 审稿 | WaterRun | GPT-6.1 Sol：取证、实测与结构测绘、简报整理<br>Claude Opus 5.5：补充取证、文案、视觉设计 | 未登记 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
 | [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 已放弃 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐初稿、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿<br>Claude Opus 5.5：分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host |
-| [150 秒了解 Agent 的手：Harness](in-seconds/harness/README.md) | 实现 | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉设计、场景、配乐、音效、封面 | MiniMax speech-2.8-hd（音色 Chinese (Mandarin)_Crisp_Girl）：旁白配音<br>DeepSeek deepseek-flash（经 DeepSeek API）：实验中被调用的模型<br>制作会话自带的 WebSearch、WebFetch（内部所用模型未披露）：取证时查找与摘录原始来源 |
+| [150 秒了解 Agent 的手：Harness](in-seconds/harness/README.md) | 验收 | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉设计、场景、配乐、音效、封面 | MiniMax speech-2.8-hd（音色 Chinese (Mandarin)_Crisp_Girl）：旁白配音<br>DeepSeek deepseek-flash（经 DeepSeek API）：实验中被调用的模型<br>制作会话自带的 WebSearch、WebFetch（内部所用模型未披露）：取证时查找与摘录原始来源 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md) | 验收 | WaterRun | Gemini 4 Argon：文案、逐句画面设计<br>Claude Opus 5.5：事实核查与改稿、画面实现、配乐 | Microsoft Edge 在线语音（模型未披露）：旁白合成 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 
