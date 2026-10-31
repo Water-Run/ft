@@ -80,8 +80,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "build",
-  "next": "WaterRun 看预览 r03（out/zh/preview-r03.mp4）给意见；改完后正式渲染、封面、验收",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩，2026-10-31 WaterRun 回报）；冻结。收集评价与评论，写进 README「评价与复盘」",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -118,5 +118,22 @@
   "review": {
     "required": true,
     "reviewer": "WaterRun"
-  }
+  },
+  "delivery": {
+    "date": "2026-10-31",
+    "duration": {
+      "zh": 128.0
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1Pxxr6oEjx",
+      "date": "2026-10-31",
+      "title": "未核（本机读取平台页面失败：网页抓取无内容，接口返回网页）",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }

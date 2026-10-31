@@ -79,7 +79,7 @@ const rowTape = (i) => [1170, rowY(i) + 10];              // 纸带停在第 i �
 const laneY = G.busY - 24;
 // 两套程序（第 1–4 格）与数据（第 5–9 格）。说明栏是人读的注解
 const PROG = {
-  calc: [['00011000', '加 第8格'], ['00011001', '加 第9格'], ['00110111', '存 第7格'], ['11110000', '停']],
+  calc: [['00011000', '加 第8格'], ['00011001', '加 第9格'], ['00110111', '存 第7格'], ['10000001', '回 第1格']],
   game: [['01010101', '画 棋盘'], ['01100110', '读 按键'], ['01110101', '落 一子'], ['10000001', '回 第1格']],
 };
 const DATA = [['00000000', '0'], ['00000000', '0'], ['00000000', '—'], ['00000101', '5'], ['00000011', '3']];
@@ -167,7 +167,7 @@ function machine(world, st = {}) {
   M.screen = h('div', 'sheet', world); px(M.screen, S.x, S.y, S.w, S.h); M.screen.dataset.name = '屏幕';
   M.screenLab = txt(world, 'type', tr('屏幕', 'SCREEN'), S.x, S.y - 36); M.screenLab.style.fontSize = '24px';
   M.scrCalcBox = h('div', 'abs', M.screen); px(M.scrCalcBox, 18, 56);                 // 外层只管显隐，里层只管文字（可以打字）
-  M.scrCalc = h('div', 'abs mono', M.scrCalcBox, '5+3=8'); px(M.scrCalc, 0, 0); css(M.scrCalc, { font: '700 40px "Mono"' });
+  M.scrCalc = h('div', 'abs', M.scrCalcBox, scrTotal(st.total ?? 8)); px(M.scrCalc, 0, -26); M.scrCalc.dataset.name = '结余';
   M.scrGame = h('div', 'abs', M.screen); px(M.scrGame, 54, 22, 108, 120);
   const sg = svg('svg', { width: 108, height: 120, viewBox: '0 0 108 120' }, M.scrGame);
   M.scrLines = ['M36,6 L36,114', 'M72,6 L72,114', 'M4,42 L104,42', 'M4,78 L104,78'].map((d) => svg('path', { d, stroke: C.ink, 'stroke-width': 4, fill: 'none' }, sg));
@@ -181,6 +181,16 @@ function machine(world, st = {}) {
   M.screenLink = path(M.wires, `M1640,${S.y + S.h / 2} L${S.x},${S.y + S.h / 2}`, 'ink', { w: 3, arrow: true });
   if (!st.screen) { hide0(M.screen); hide0(M.screenLab); hide0(M.screenLink); }
   return M;
+}
+
+// 屏幕上的「结余」：算账程序每存一次（第 3 格），屏幕就显示第 7 格里的数
+const scrTotal = (n) => `<div style="font:700 30px 'Serif SC';color:var(--soft)">${tr('结余', 'TOTAL')}</div><div style="font:700 56px 'Mono';line-height:1">${n}</div>`;
+
+// 沿 route() 的路径按进度 u（0–1）取位置（匀速分段，飞转时逐帧算）
+function routeAt(K, u) {
+  const t0 = K[0][0], t1 = K[K.length - 1][0], t = t0 + clamp(u) * (t1 - t0);
+  for (let i = 0; i < K.length - 1; i++) { const [ta, xa, ya, oa = {}] = K[i], [tb, xb, yb, ob = {}] = K[i + 1]; if (t <= tb) { const k = (t - ta) / Math.max(1e-6, tb - ta); return [lerp(xa, xb, k), lerp(ya, yb, k), lerp(oa.s ?? 1, ob.s ?? 1, k)]; } }
+  const [, x, y, o = {}] = K[K.length - 1]; return [x, y, o.s ?? 1];
 }
 
 // 指针按 keys = [[t, 格号] …] 移动，每步用 min(0.35, 间隔 × 0.6) 秒走到；同时更新右上角的读数。from 之前不显示
@@ -197,13 +207,14 @@ function pcTo(M, keys, from) {
 }
 
 // 三步小环上的红圈：sched = [[t, 第几步 0–2 或 -1 熄灭] …]；spin = [t0, t1]：这段时间里越转越快
-function stepCursor(M, sched, spin) {
+function stepCursor(M, sched, spin) {                    // spin 可以是 [t0, t1]，也可以是函数 (t) => 第几步 | undefined
   const cur = h('div', 'abs circ', M.world); px(cur, 0, 0, 96, 96); css(cur, { border: '6px solid var(--red)' }); cur.dataset.name = '当前这一步';
   sched.sort((a, b) => a[0] - b[0]);
   let last = null;
   F((t) => {
     let k = -1; for (const [a, b] of sched) if (t >= a) k = b;
-    if (spin && t >= spin[0] && t < spin[1]) { const u = t - spin[0]; k = Math.floor(u * (2 + 9 * u)) % 3; }   // 转过的格数 = u·(2 + 9u)：越来越快
+    if (typeof spin === 'function') { const v = spin(t); if (v !== undefined) k = v; }
+    else if (spin && t >= spin[0] && t < spin[1]) { const u = t - spin[0]; k = Math.floor(u * (2 + 9 * u)) % 3; }   // 转过的格数 = u·(2 + 9u)：越来越快
     if (k === last) return; last = k;
     cur.style.visibility = k < 0 ? 'hidden' : '';
     if (k >= 0) { const [x, y] = M.nodePos[k]; cur.style.left = (x - 48) + 'px'; cur.style.top = (y - 48) + 'px'; }

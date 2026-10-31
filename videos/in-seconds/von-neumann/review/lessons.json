@@ -4,164 +4,164 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：主问题在 0:04–0:07（o2「它是怎么做到的？」）提出，1:24–1:32（c10–c11）与 2:00–2:02（d7）回答；第 3 稿全文通读，成片按每 4 秒总览图（shots/sheets/zh-v3_*.jpg）通看"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:55–1:17：同一个例子（第 1 格「加 第8格」、第 8 格的 5）走完取、拆、做，0 变 5；新名词与解释句见 review/NOTES.md 第 2、3 稿；逐帧看 0:58–1:17（sheets r02/r03）"
     },
     "F03": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "名称首次出现即交代：冯·诺伊曼架构（0:08–0:12 蓝图→片名）、1945 年报告（0:22 封面与中文注）、冯·诺伊曼瓶颈（1:43–1:48 先说 1977 年命名，再盖章，附 BACKUS 图灵奖演讲）；比较「运算器再快」以同一通道为条件。按 FACTS 逐句核对"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js（发布版源码）：多数文字停留够长；未达下限的有开场账本「结余」1.4/1.9 s、片名 2.6/2.7 s、题目卡 A 2.8/2.9 s、报告封面日期与中文注 1.7/2.1 s 与 1.3/4.9 s、「数据」标签 1.3/1.9 s、对照说明 1.5/1.9 s、「BACKUS 图灵奖演讲」2.0/2.7 s、换程序前的游戏程序四格 1.4–1.6/2.1 s；飞转时的译码字与右上角读数按设计快速变化（计数类）。已在发布后撤回的修改里改过，未进入线上版，留作后续经验",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "纸带沿「存储格→通道→控制器/运算器」真实移动，取、做两步与数据流向一一对应；瓶颈段一次只放过一个；缓存段就近取。逐帧看 1:01–1:16、1:38–1:58"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方听不到声音：配乐（巴洛克脉冲，WaterRun 选定 A）、音效 194 个事件 9 种、混音数值自检通过（旁白 -21.4 dB、配乐 -29.7 dB、无削波），实际听感未经制作方核对，请 WaterRun 看成片时确认",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片无终端、路径、主机名与个人信息；四张封面与每 4 秒总览图逐张看过"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "out/von-neumann-zh-1080p60.mp4：1920×1080、60 fps、128.000 s，最终 MP4 上测得 I=-16.6 LUFS、TP=-1.3 dBFS（finish.js）；画面 7680 帧＝声音 128.00 s＝时间线 128.00 s；README「交付」照此填写"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md 逐条照录 WaterRun 原话并注日期（r01、r02、r03 意见与三次确认）；制作方的判断与推断另段写明"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片不引用其他集；ENIAC、EDVAC 报告与瓶颈的背景都在本片内补齐"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "EDVAC 报告英文封面下方有中文注「《EDVAC 报告初稿》冯·诺伊曼 1945 年 6 月 30 日」（0:24–0:27）；出处行用中文；ENIAC 为机器名，旁白以「在它之前，计算机」交代"
     },
     "F12": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "Whisper small 回听无漏读；「冯·诺伊曼」被识别为「缝陆一曼」类同音字（原声同样），多音字（重、数、干、相、少、种、间）未经人耳核对，请 WaterRun 确认",
       "evidence": ""
     },
     "F13": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "ENIAC 以「题 A：算炮弹轨迹」交代用途与年代（0:13–0:21），EDVAC 报告给日期与作者（0:22–0:27），再进入本片路线"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾 z1 为无旁白静默 cue（2:03–2:08）；导出的校对稿无制作指令（script-review.js 检查）"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏列出画面小字：图注、出处一行、部件名与数据，无说明制作取舍的话；「版权页」字样已按 r02 意见删除"
     },
     "F16": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自五十年代说明书与 EDVAC 报告打字稿、穿孔纸带、ENIAC 接线板；方向 B 由 WaterRun 2026-10-31 选定"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "五个候选（原声与老式处理各一）做成试听页，WaterRun 点选「zh-CN-YunyangNeural 老式」后合成全片"
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "program、cycle、bottleneck 三场共用同一张方框图（控制器、运算器、存储器、通道），场间直接接续；开场由芯片展开成蓝图、ENIAC 接线变纸带存入存储器"
     },
     "F19": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "转场中间帧看过：0:08.4 芯片方框展开、0:29 虚线空框、1:19–1:23 飞转各帧（sheets r03/r04）；scan.js 每 0.5 秒取样无错误"
     },
     "F20": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "颜色含义全片不变：蓝＝指令、赭＝数据、红铅笔＝此刻（圈、框、指针）与瓶颈；方框＝部件、双线＝通道、纸带＝一个字"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "check.js「自成一体」通过：style.css、tools/music.py 与起点及其他片不同；视觉与配乐按本片对象与策划者选择设计"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "存储程序（章）、指令/数据（区域标签）、冯·诺伊曼瓶颈（章与出处）、缓存（两块缓存框）首次出现时画面注解在场；scan.js GLOSS 无错误"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "机制段以连续过程推进：纸带取指、代码表查动作、8421 算格号、数送进运算器、飞转时各部件逐帧联动，不靠新面板出现推进"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "推近控制器（1:04–1:10）与通道（1:35–1:48）时正在讲的内容完整在画内；scan.js 仅提示推近时运算器的数整个压在字幕条下（此刻不讲，画面上不可见）"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "关掉声音按每 4 秒总览图通看，每一段都有讲解对象在场；finish.js 空画面检查结果见 README「交付」"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方主动改稿：第 2 稿取证压缩、第 3 稿按意见重写、断句修改，均记入 review/NOTES.md 并经确认"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方不能连续观看带声音的视频：已按每 4 秒总览图与关键时刻逐帧看过全片（shots/sheets/zh-v3_*.jpg、zh-r03_01.jpg、zh-r04_01.jpg），以观众身份的连续通看留给 WaterRun",
       "evidence": ""
     }
   },

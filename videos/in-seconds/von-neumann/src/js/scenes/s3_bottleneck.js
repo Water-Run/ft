@@ -4,7 +4,8 @@ scene('bottleneck', ({ root, s }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
   const ov = overlay(world);
-  const M = machine(world, { rows: 'game', acc: 8, r7: ['00001000', '8'], screen: 'game' });
+  const T7 = window.CALC_TOTAL ?? 8;
+  const M = machine(world, { rows: 'game', acc: window.CALC_ACC ?? 8, r7: [bin8(T7), String(T7)], screen: 'game', total: T7 });
   M.rows.forEach((r) => { r.el.style.opacity = '0.35'; });
   hide(M.wheel, s.start + 0.2, { d: 0.4 }); M.steps.forEach((e) => hide(e, s.start + 0.2, { d: 0.4 })); hide(M.busLabel, s.start + 0.2, { d: 0.3 });
 

@@ -71,10 +71,10 @@ body { font-family: "Serif SC"; color: var(--ink); }
 /* 常驻层：字幕带与秒尺、左上剩余秒数、右上程序计数器 */
 .band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
 .band svg { position: absolute; left: 0; top: 0; }
-.hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; color: var(--ink); }
+.hud-l { position: absolute; left: 52px; top: 30px; display: flex; align-items: baseline; color: var(--ink); background: var(--paper); padding: 6px 14px 8px 12px; }
 .hud-l .n { font: 700 44px "Mono"; letter-spacing: .02em; }
 .hud-l .u { font: 700 28px "Serif SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 34px; width: 300px; height: 80px; text-align: right; color: var(--ink); }
+.hud-r { position: absolute; left: 1600px; top: 26px; width: 272px; height: 96px; text-align: right; color: var(--ink); background: var(--paper); padding: 6px 12px 0 0; }
 .hud-r .k { font: 600 26px "Serif SC"; color: var(--soft); }
 .hud-r .v { font: 700 44px "Mono", "Serif SC"; margin-top: 2px; }
 

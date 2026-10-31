@@ -48,11 +48,15 @@ window.ENGINE = {
     const right = h('div', 'hud-r', hud, `<div class="k">${tr('正在读', 'READING')}</div><div class="v">—</div>`);
     right.dataset.name = '正在读第几格';
     const val = right.lastChild;
-    let lastV = null;
+    // 指针在场时才显示；收起后淡出，再出现时淡入。透明度由 t 算出（找最近一次切换的时刻），不存历史
+    let lastV = null, lastO = null;
     F((t) => {
-      let v = null; for (const [a, b] of PCK) if (t >= a) v = b;
-      const s = v == null ? '—' : tr(`第 ${String(v).padStart(2, '0')} 格`, `CELL ${String(v).padStart(2, '0')}`);
+      let v = null, tOn = -1e9, tOff = -1e9, prev = null;
+      for (const [a, b] of PCK) { if (t < a) break; if ((b == null) !== (prev == null)) { if (b == null) tOff = a; else tOn = a; } prev = b; v = b; }
+      const o = v == null ? clamp(1 - (t - tOff) / 0.25) : clamp((t - tOn) / 0.3);
+      const s = v == null ? lastV || '' : tr(`第 ${String(v).padStart(2, '0')} 格`, `CELL ${String(v).padStart(2, '0')}`);
       if (s !== lastV) { val.textContent = s; lastV = s; }
+      const os = o.toFixed(2); if (os !== lastO) { right.style.opacity = os; lastO = os; }
     });
     window.HUD = { left, right };
   },

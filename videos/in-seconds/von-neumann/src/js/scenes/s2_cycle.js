@@ -50,7 +50,7 @@ scene('cycle', ({ root, s }) => {
   // 代码表：控制器左边的一张小表，写着几个动作对应的 0 和 1（本片的玩具机器）
   const book = h('div', 'sheet', world); px(book, 50, 176, 220, 236); book.dataset.name = '代码表';
   const bt = txt(book, 'ttl', tr('代码表', 'Codes'), 18, 10); css(bt, { fontSize: '30px' });
-  [['0001', tr('加', 'ADD')], ['0011', tr('存', 'STORE')], ['1111', tr('停', 'HALT')]].forEach(([b, w], k) => {
+  [['0001', tr('加', 'ADD')], ['0011', tr('存', 'STORE')], ['1000', tr('回', 'JUMP')]].forEach(([b, w], k) => {
     const r = h('div', 'abs', book, `<span style="font:600 30px 'Mono'">${b}</span><span style="font:900 32px 'Serif SC';margin-left:24px">${w}</span>`); px(r, 18, 64 + k * 54);
   });
   const tBook = Q(Tend('c4')) + 0.1;
@@ -94,35 +94,113 @@ scene('cycle', ({ root, s }) => {
   fromTo(M.acc, tSum, { scale: 1.3 }, { scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false, transformOrigin: '0% 50%' });
   sfx('thud', tAdd, { g: 0.5, p: -0.4 }); sfx('chime', tSum, { g: 0.7, p: -0.4 });
 
-  // ── 然后，轮到第 2 格：指针下移；停顿里第 2 格「加 第9格」完整走一遍：5 + 3 = 8 ──
-  const fr2 = frameBox(world, 1104, rowY(2) + 2, 532, ROW.h - 4); hide0(fr2); appear(fr2, tRow2); vanish(fr2, tSpin);
+  // ── 然后，轮到第 2 格：指针下移；从这一圈起机器接着往下跑，一圈比一圈快，一直快到几十亿圈（c9），最后减速停下 ──
+  // 整段是同一个过程逐帧算出来的：每一圈「取」第 r 格的指令进控制器，「拆」出动作和格号，「做」：加的话把数送进运算器，
+  // 存的话把运算器里的数送回第 7 格，回的话下一圈回到第 1 格。所有部件跟着动：指针、格子的红框、小环上的红圈、代码表、
+  // 控制器里的纸带与读数、运算器里的数、屏幕上的结余，以及通道里的纸带。
+  const fr2 = frameBox(world, 1104, rowY(2) + 2, 532, ROW.h - 4); hide0(fr2); appear(fr2, tRow2);
   opK.at(tRow2, { html: '' }); adK.at(tRow2, { html: '' }); vanish(bL, tRow2); vanish(bR, tRow2);
   keyed(bitsL).at(tRow2, { html: '' }); keyed(bitsR).at(tRow2, { html: '' }); vanish(wts, tRow2);
   sfx('beep', tRow2, { g: 0.45, p: 0.4 });
-  const t2 = Q(Tend('c8')) + 0.05;
-  const f2 = tape(world, PROG.calc[1][0], 'i'); mover(f2, route(2, G.slot.x, G.slot.y, t2, 0.8), t2 + 0.82);
-  halves(PROG.calc[1][0], t2 + 0.8, tSpin);
-  keyed(bitsL).at(t2 + 0.85, { html: cells('0001') }).at(tSpin, { html: '' }); keyed(bitsR).at(t2 + 0.85, { html: cells('1001') }).at(tSpin, { html: '' });
-  hiBook(t2 + 0.9, tSpin);
-  opK.at(t2 + 0.9, { html: tr('加', 'ADD') }).at(tSpin, { html: '' }); adK.at(t2 + 1.0, { html: '= ' + tr('第9格', 'cell 9') }).at(tSpin, { html: '' });
-  sched.push([t2, 0], [t2 + 0.8, 1], [t2 + 1.1, 2]);
-  const three = tape(world, DATA[4][0], 'd'); mover(three, route(9, G.accTape.x, G.accTape.y, t2 + 1.1, 0.8), t2 + 1.92);
-  exK.at(t2 + 1.9, { html: '+ 3' }).at(t2 + 2.3, { html: '' }); acK.at(t2 + 2.3, { html: '8' });
-  sfx('drive', t2, { g: 0.45 }); sfx('beep', t2 + 0.8, { g: 0.4, p: -0.4 }); sfx('drive', t2 + 1.1, { g: 0.4, p: 0.2 }); sfx('pop', t2 + 2.3, { g: 0.5, p: -0.4 });
-
-  // ── 越转越快：红圈加速轮转，通道里纸带连成一串，指针飞快地跳；上方的计数器滚到几十亿，秒表走一圈 ──
-  stepCursor(M, sched, [tSpin, tSpinEnd]);
-  // 飞转讲的是如今的芯片，不是这台玩具机器的某一格：指针先收起；转完回到第 2 格，算账程序接着走第 3 格（存 第7格）、第 4 格（停）
-  const tRun = tCalc + 0.5;
-  pk.push([tSpin, null], [tSpinEnd, 2], [tRun, 3], [tRun + 1.0, 4], [tSwap + 0.9, 1]);
+  const tS0 = Q(tRow2 + 0.45), tE = Q(Tend('c9') + 1.2);
+  vanish(fr2, tS0);
+  // 每一圈的时长：1.5 秒起，每圈乘 0.66 加速到 0.04 秒，结尾 0.75 秒减速
+  const decel = [0.06, 0.1, 0.16, 0.25];
+  const cyc = []; let t = tS0, P = 1.5;
+  while (P > 0.04 && t + P < tE - 1.5) { cyc.push(P); t += P; P *= 0.66; }
+  const fast = tE - decel.reduce((x, y) => x + y, 0) - t, nFast = Math.max(1, Math.round(fast / 0.04));
+  for (let k = 0; k < nFast; k++) cyc.push(fast / nFast);
+  cyc.push(...decel);
+  // 逐圈的状态：第几格、开始时刻、执行前的累加数与结余
+  const C1 = []; let row = 2, acc = 5, total = 0; t = tS0;
+  for (const per of cyc) {
+    const [op] = PROG.calc[row - 1];
+    C1.push({ t0: t, P: per, row, acc, total });
+    if (row === 1) acc += 5; else if (row === 2) acc += 3; else if (row === 3) total = acc;
+    row = row === 4 ? 1 : row + 1; t += per;
+  }
+  const END = { row, acc, total };
+  window.CALC_TOTAL = END.total; window.CALC_ACC = END.acc;  // 下一场（瓶颈）里屏幕、第 7 格与运算器接着用这两个数
+  const at = (tt) => { if (tt < tS0 || tt >= tE) return null; let k = 0; while (k + 1 < C1.length && C1[k + 1].t0 <= tt) k++; const c = C1[k]; return { ...c, k, u: (tt - c.t0) / c.P }; };
+  // 飞转里用的一套元素（与前面单步演示的元素分开，交接时同一位置，不闪）
+  const ti = tape(world, '00000000', 'i'), td = tape(world, '00000000', 'd');
+  ti.dataset.name = '飞转中的指令'; td.dataset.name = '飞转中的数据';
+  const sp = h('div', 'abs', world, M.pc.innerHTML); sp.dataset.name = '飞转中的指针';
+  const rf = frameBox(world, 1104, 0, 532, ROW.h - 4); rf.dataset.name = '飞转中的格';
+  const bf = frameBox(book, 8, 0, 204, 50);
+  const sL = txt(world, 'mono blue', '', xL, 300), sR = txt(world, 'mono blue', '', xR, 300), sOp = txt(world, 'ttl red', '', xL, 346), sAd = txt(world, 'ttl red', '', xR + 116, 330);
+  [sL, sR].forEach((e) => css(e, { font: '700 34px "Mono"' })); css(sOp, { fontSize: '64px', lineHeight: '1' }); css(sAd, { fontSize: '50px', lineHeight: '1' });
+  const sAcc = txt(world, 'mono', '', 310, 620); css(sAcc, { font: '700 130px "Mono"', lineHeight: '1' }); sAcc.dataset.name = '飞转中的累加数';
+  [ti, td, sp, rf, bf, sL, sR, sOp, sAd, sAcc].forEach((e) => { e.style.visibility = 'hidden'; });
+  const ops = { 1: [tr('加', 'ADD'), '0001', 0], 2: [tr('加', 'ADD'), '0001', 0], 3: [tr('存', 'STORE'), '0011', 1], 4: [tr('回', 'JUMP'), '1000', 2] };
+  const addr = { 1: 8, 2: 9, 3: 7, 4: 1 };
+  const bin4 = (n) => n.toString(2).padStart(4, '0');
+  let lastKey = '';
+  F((tt) => {
+    const c = at(tt), on = !!c, tail = tt >= tE && tt < tE + 0.4;         // 结束后指针再留 0.4 秒，与原来的指针交接
+    M.acc.style.visibility = on ? 'hidden' : '';
+    if (!on) {
+      [ti, td, rf, bf, sL, sR, sOp, sAd, sAcc].forEach((e) => { e.style.visibility = 'hidden'; });
+      sp.style.visibility = tail ? '' : 'hidden';
+      if (tail) sp.style.transform = `translate(1062px,${rowY(END.row) + 14}px)`;
+      const scr = tt >= tE ? 'end' : 'start';                // 屏幕内容也只由 t 决定：飞转前 0，停下后是最后的结余
+      if (lastKey !== scr) { M.scrCalc.innerHTML = scrTotal(tt >= tE ? END.total : 0); lastKey = scr; }
+      return;
+    }
+    const { row: r, u, P: per, acc: a0, total: tot } = c;
+    // 指针：慢的时候滑过去，快的时候直接跳
+    const prevRow = r === 1 ? 4 : r - 1, mv = clamp(u / Math.min(0.2, 0.3 / per * 0.2));
+    const py = lerp(rowY(prevRow), rowY(r), r === 1 ? 1 : ease.io3(mv)) + 14;
+    sp.style.visibility = ''; sp.style.transform = `translate(1062px,${py.toFixed(1)}px)`;
+    rf.style.visibility = ''; rf.style.top = (rowY(r) + 2) + 'px';
+    // 取：u 0–0.38 纸带从第 r 格走到控制器；之后停在槽里
+    const [ix, iy, is] = routeAt(route(r, G.slot.x, G.slot.y, 0, 1), u / 0.38);
+    ti.style.visibility = ''; ti.style.transform = `translate(${ix.toFixed(1)}px,${iy.toFixed(1)}px) scale(${is.toFixed(3)})`;
+    // 拆：u ≥ 0.38 读出两半，查代码表
+    const [opName, opBits, bookRow] = ops[r];
+    const showDec = u >= 0.38;
+    const key = r + '|' + (showDec ? 1 : 0) + '|' + (u >= 0.95 ? 1 : 0) + '|' + c.k;
+    if (key !== lastKey) {
+      lastKey = key;
+      ti.holes.forEach((h_, i) => h_.classList.toggle('on', PROG.calc[r - 1][0][i] === '1'));
+      sL.innerHTML = showDec ? cells(opBits) : ''; sR.innerHTML = showDec ? cells(bin4(addr[r])) : '';
+      sOp.textContent = showDec ? opName : ''; sAd.textContent = showDec ? '= ' + tr(`第${addr[r]}格`, `cell ${addr[r]}`) : '';
+      bf.style.top = (58 + bookRow * 54) + 'px';
+      const accNow = u >= 0.95 && (r === 1 || r === 2) ? a0 + (r === 1 ? 5 : 3) : a0;
+      sAcc.textContent = String(accNow);
+      if (r === 3 && u >= 0.95) { M.scrCalc.innerHTML = scrTotal(a0); } else { M.scrCalc.innerHTML = scrTotal(tot); }
+    }
+    [sL, sR, sOp, sAd, sAcc].forEach((e) => { e.style.visibility = ''; });
+    bf.style.visibility = showDec ? '' : 'hidden';
+    // 做：u 0.55–0.95，加 → 数从第 8/9 格送进运算器；存 → 运算器的数送回第 7 格；回 → 不搬数
+    if (r === 4 || u < 0.55) { td.style.visibility = 'hidden'; }
+    else {
+      const v = clamp((u - 0.55) / 0.4);
+      let x, y, sc;
+      if (r === 3) { const K = route(7, G.accTape.x, G.accTape.y, 0, 1); [x, y, sc] = routeAt(K, 1 - v); }
+      else [x, y, sc] = routeAt(route(r === 1 ? 8 : 9, G.accTape.x, G.accTape.y, 0, 1), v);
+      td.style.visibility = ''; td.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${sc.toFixed(3)})`;
+    }
+  });
+  // 第 7 格与运算器在停下后显示最后的结果
+  M.setRow(7, tE, bin8(END.total), String(END.total), 'd');
+  acK.at(tE, { html: String(END.acc) });
+  // 小环上的红圈跟着每一圈的进度走：取（0–0.38）→ 拆（0.38–0.55）→ 做
+  stepCursor(M, sched, (tt) => { const c = at(tt); if (!c) return undefined; return c.u < 0.38 ? 0 : c.u < 0.55 ? 1 : 2; });
+  // 指针与右上角的读数：每一圈开始时指到第 r 格
+  pk.push([tS0, null]); C1.forEach((c) => pcAt(c.t0 + 0.001, c.row)); pk.push([tE, END.row], [tSwap + 0.9, 1]);
   pcTo(M, pk, Q(T('c2')));
-  const st7 = tape(world, '00001000', 'd'); mover(st7, [[tRun + 0.1, G.accTape.x, G.accTape.y, { s: 0.8 }], [tRun + 0.35, 752, laneY, { s: 0.8 }], [tRun + 0.6, 1112, laneY, { s: 0.8, e: (u) => u }], [tRun + 0.85, ...rowTape(7), { s: 0.92 }]], tRun + 0.86);
-  M.setRow(7, tRun + 0.86, '00001000', '8', 'd'); sfx('drive', tRun + 0.1, { g: 0.4, p: 0.3 }); sfx('tick', tRun + 0.85, { g: 0.5, p: 0.5 });
+  // 音效：慢的几圈每一步一声，快了以后按拍子滴答
+  C1.forEach((c) => { if (c.P > 0.3) { sfx('drive', c.t0, { g: 0.35 }); sfx('beep', c.t0 + c.P * 0.38, { g: 0.35, p: -0.4 }); if (c.row !== 4) sfx('tick', c.t0 + c.P * 0.95, { g: 0.4, p: c.row === 3 ? 0.5 : -0.4 }); } });
+  // 屏幕从飞转开始就在场：结余跟着第 3 格的「存」一次次更新
+  appear(M.screen, tS0); wipe(M.screen, tS0, { dir: 'l', d: 0.4 }); appear(M.screenLab, tS0 + 0.2); drawIn(M.screenLink, tS0, 0.4);
+  M.screenAt(tS0, 'calc'); sfx('pop', tS0, { g: 0.5, p: 0.8 });
+  const tSpin2 = C1.find((c) => c.P < 0.3).t0;
   const stream = [];
   for (let k = 0; k < 16; k++) { const e = blk(world, '', 0, 0, 40, 18); e.style.background = k % 3 === 1 ? 'var(--blue)' : 'var(--ochre)'; e.dataset.name = '飞过的纸带'; stream.push(e); }
-  F((t) => {
-    const on = t >= tSpin + 0.3 && t < tSpinEnd;
-    const u = t - tSpin, dist = 300 * u + 520 * u * u;       // 越走越快
+  F((tt) => {
+    const on = tt >= tSpin2 && tt < tE - 0.5;
+    const u = tt - tSpin2, dist = 400 * u + 700 * u * u;
     stream.forEach((e, k) => {
       if (!on) { e.style.visibility = 'hidden'; return; }
       const dir = k % 2 ? -1 : 1, ph = (dist + k * 41) % 360;
@@ -131,39 +209,39 @@ scene('cycle', ({ root, s }) => {
       e.style.transform = `translate(${x.toFixed(0)}px,${y}px)`;
     });
   });
-  const counter = h('div', 'sheet', world); px(counter, 560, 24, 780, 104); counter.dataset.name = '圈数';
+  const counter = h('div', 'sheet', world); px(counter, 470, 24, 980, 104); counter.dataset.name = '圈数';
   const watch = h('div', 'abs', counter); px(watch, 22, 14, 76, 76);
   const ws = svg('svg', { width: 76, height: 76, viewBox: '-38 -38 76 76' }, watch);
   svg('circle', { r: 32, fill: 'none', stroke: C.ink, 'stroke-width': 4 }, ws); svg('path', { d: 'M-6,-40 L6,-40', stroke: C.ink, 'stroke-width': 5 }, ws);
   const hand = svg('path', { d: 'M0,0 L0,-26', stroke: C.red, 'stroke-width': 4 }, ws);
   const wl = txt(counter, 'type', tr('1 秒', '1 S'), 110, 34); wl.style.fontSize = '26px';
-  const line = h('div', 'abs', counter); px(line, 200, 14, 560, 76); css(line, { display: 'flex', alignItems: 'baseline', justifyContent: 'flex-end', gap: '16px' });
+  const line = h('div', 'abs', counter); px(line, 190, 14, 760, 76); css(line, { display: 'flex', alignItems: 'baseline', justifyContent: 'flex-end', gap: '16px' });
   const num = h('span', 'mono', line); css(num, { font: '700 64px "Mono"', letterSpacing: '.02em' }); num.dataset.name = '已转的圈数';
   const unit = h('span', 'ttl', line, tr('圈', 'loops')); css(unit, { fontSize: '52px' });
-  hide0(counter); wipe(counter, tSpin, { dir: 't', d: 0.4 }); hide(counter, tSpinEnd + 0.1, { d: 0.35 });
+  hide0(counter); wipe(counter, tSpin, { dir: 't', d: 0.4 }); hide(counter, tE + 0.1, { d: 0.35 });
   const tFull = tSpin + 2.6;                                 // 秒表走完一圈时，计数到几十亿
   let lastN = '';
-  F((t) => {
-    const u = clamp((t - tSpin) / (tFull - tSpin));
+  F((tt) => {
+    const u = clamp((tt - tSpin) / (tFull - tSpin));
     hand.setAttribute('transform', `rotate(${(360 * u).toFixed(1)})`);
     let v = Math.floor(Math.pow(10, 9.6 * Math.pow(u, 1.6))) + 2;
-    if (t > tFull) v += Math.floor((t - tFull) * 1.3e9);
+    if (tt > tFull) v += Math.floor((tt - tFull) * 1.3e9);
     const sN = group(v);
     if (sN !== lastN) { num.textContent = sN; lastN = sN; }
   });
-  for (let t = tSpin; t < tSpinEnd; t += BEAT / 2) sfx('tick', t, { g: 0.3, p: 0.1 });
+  for (let tt = tSpin2; tt < tE - 0.5; tt += BEAT / 2) sfx('tick', tt, { g: 0.32, p: 0.1 });
   sfx('riser', tFull - 1.2, { g: 0.35 });
 
-  // ── 换用途：屏幕显示算账的结果；第 1–4 格整块换成游戏的程序，屏幕跟着换成棋盘 ──
-  const tScr = Q(T('c10'));
-  appear(M.screen, tScr); wipe(M.screen, tScr, { dir: 'l', d: 0.4 }); appear(M.screenLab, tScr + 0.2); drawIn(M.screenLink, tScr, 0.4);
-  M.screenAt(tScr, 'calc'); sfx('pop', tScr, { g: 0.6, p: 0.8 });
-  // 装上算账的程序，它跑一遍：指针走过第 1–4 格，屏幕上一个字一个字打出 5+3=8
-  M.scrCalc.textContent = ''; typeText(M.scrCalc, '5+3=8', tRun + 1.0, 4, { cursor: false, sfxGain: 0.5 });
+  // ── 换用途：第 1–4 格整块换成游戏的程序，屏幕跟着换成棋盘 ──
   const band = frameBox(world, 1104, rowY(1) + 2, 532, 4 * ROW.h - 4, 'var(--blue)', 3); band.style.background = 'var(--blue9)'; hide0(band); band.dataset.name = '第1–4格的程序';
   const pName = txt(world, 't-4 blue', '', 1330, 146); const pK = keyed(pName);
   pK.at(tCalc, { html: tr('算账程序', 'Bookkeeping') }).at(tSwap, { html: '' }).at(tSwap + 0.9, { html: tr('游戏程序', 'Game') });
   wipe(band, tCalc, { dir: 't', d: 0.4 }); sfx('pop', tCalc, { g: 0.6, p: 0.4 }); sfx('pop', tSwap + 0.9, { g: 0.6, p: 0.4 });
+  // 「装算账的指令」：红框依次扫过第 1–4 格两遍——这四格就是算账的程序
+  const sweep = frameBox(world, 1104, 0, 532, ROW.h - 4); sweep.dataset.name = '扫过程序的红框';
+  const sk = []; const tsw0 = tCalc + 0.35, step = (tSwap - 0.15 - tsw0) / 8;
+  for (let k = 0; k <= 8; k++) { const r = (k % 4) + 1; sk.push([tsw0 + k * step, 1104, rowY(r) + 2, { e: k % 4 === 0 ? (u) => (u < 1 ? 0 : 1) : ease.io3 }]); if (k < 8) sfx('tick', tsw0 + k * step, { g: 0.35, p: 0.5 }); }
+  mover(sweep, sk, tSwap - 0.1);
   for (let r = 1; r <= 4; r++) {
     const out = tape(world, PROG.calc[r - 1][0], 'i'), inn = tape(world, PROG.game[r - 1][0], 'i');
     const a = tSwap + (r - 1) * 0.08, [rx, ry] = rowTape(r);
@@ -186,4 +264,5 @@ scene('cycle', ({ root, s }) => {
   // 推近通道时，格子变淡：下一场看通道
   M.rows.forEach((r) => fromTo(r.el, tToBus, { opacity: 1 }, { opacity: 0.35, duration: 0.6, immediateRender: false }));
 });
+const bin8 = (n) => (n & 255).toString(2).padStart(8, '0');
 const group = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');

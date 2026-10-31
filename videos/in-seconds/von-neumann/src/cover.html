@@ -44,10 +44,10 @@ function diagram(x, y, k) {
   box(0, 0, 330, 250, LANG === 'zh' ? '控制器' : 'Control'); box(0, 290, 330, 250, LANG === 'zh' ? '运算器' : 'Arithmetic'); box(560, 0, 340, 540, LANG === 'zh' ? '存储器' : 'Memory');
   add('path', { d: 'M330,250 L560,250 M330,290 L560,290', stroke: c('--ink'), 'stroke-width': 5, fill: 'none' });
   for (let i = 0; i < 8; i++) {
-    const yy = 82 + i * 56, ins = i < 3;
+    const yy = 82 + i * 56, ins = i < 4;
     add('rect', { x: 580, y: yy + 8, width: 8, height: 38, fill: ins ? c('--blue') : c('--ochre') });
     const t = add('text', { x: 602, y: yy + 38, fill: ins ? c('--blue') : c('--ochre'), 'font-family': 'Mono', 'font-weight': 600, 'font-size': 30, 'letter-spacing': 3 });
-    t.textContent = ['0001 1000', '0001 1001', '0011 0111', '0000 0000', '0000 0000', '0000 1000', '0000 0101', '0000 0011'][i];
+    t.textContent = ['0001 1000', '0001 1001', '0011 0111', '1000 0001', '0000 0000', '0000 1000', '0000 0101', '0000 0011'][i];
     add('path', { d: `M560,${yy + 54} L900,${yy + 54}`, stroke: c('--ink'), 'stroke-opacity': 0.25, 'stroke-width': 2 });
   }
   add('path', { d: 'M548,108 L520,92 L520,124 Z', fill: c('--red') });
