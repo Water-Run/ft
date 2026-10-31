@@ -6,11 +6,11 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 2026-10-31 预览 r3：按 WaterRun 对 r2 的意见（「整个视频过于PPT」）全片改造画面，每章一个会动的主画面，命令逐字敲出、请求与地址飞到要去的地方、名字连续变形；改了什么见 [review/NOTES.md](review/NOTES.md)「预览 r3」。文案仍是确认过的第 2 稿（指纹 `957aa044…`），配音沉稳高管，配乐 `tools/music.py`。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
-| 下一步，依赖什么 | WaterRun 看预览 r3；「PostgreSQL」的念法与「SQL:2023」中间的停顿要重新配音，MiniMax 余额不足（1008），恢复后先试读法再全片重配；封面 `src/cover.html`（16:9、4:3）出图；正式渲染 |
-| 等待策划者的事 | 看预览 r3；q17 是否删去；d4 的字幕是否改成「可这一行还在页里」；MiniMax 余额。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
+| 当前停在哪里 | 2026-10-31 预览 r4：按 WaterRun 看 r3b 的意见彻底改造（结构画成物理的样子：堆是一页页的页卡、索引是文件里的一排页再飞成树；讲谁亮谁的视线框；建表语句交代索引来历；念法改为 Postgres-QL、中英文之间不停顿；换屏不再抖动；片尾名单逐行出现；封面出图）。改了什么见 [review/NOTES.md](review/NOTES.md)「预览 r4」。文案仍是确认过的第 2 稿（指纹 `957aa044…`）。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
+| 下一步，依赖什么 | WaterRun 看预览 r4；按意见改；正式渲染与交付检查 |
+| 等待策划者的事 | 看预览 r4；q17 是否删去；d4 的字幕是否改成「可这一行还在页里」。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
-| 未做的事 | 封面出图；正式渲染与交付检查 |
+| 未做的事 | 正式渲染与交付检查 |
 
 ## 简报
 

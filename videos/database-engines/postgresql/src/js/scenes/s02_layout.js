@@ -12,6 +12,7 @@ scene('layout', ({ root, s, c0 }) => {
   const GX = 100, GY = 400, GW = 16 * 108 - 8;
   const tblChip = tagEl(A, 'users 表 · 4096 行', GX, GY + 30, 'navy'); css(tblChip, { fontSize: '34px', padding: '10px 26px' });
   show(tblChip, T('l1', '这张表') - 0.2, { y: 16 }); sfx('pop', T('l1', '这张表'), { g: 0.4 });
+  fromTo(tblChip, T('l1', '磁盘'), { y: 0 }, { y: 70, duration: 0.6, ease: 'power2.inOut', immediateRender: false }); sfx('whoosh', T('l1', '磁盘'), { g: 0.3 });
   const e0 = ta.type(T('l1', '磁盘') - 0.2, `<span class="k">SELECT</span> pg_relation_filepath('users');`, 'postgres=#', 45);
   const tRes = Math.max(e0 + 0.1, T('l2') + 0.1);
   ta.print(tRes, ' pg_relation_filepath'); ta.print(tRes + 0.12, ` <span class="hi">${D.files.users.path}</span>`); sfx('blip', tRes, { g: 0.5, p: -0.3 });

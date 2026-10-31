@@ -20,24 +20,24 @@ function screens(world, marks, opts = {}) {
   if (opts.sfx !== false) for (let i = 1; i < marks.length - 1; i++) sfx('whoosh', marks[i], { g: 0.35 });
   return out;
 }
-// 镜头：本片不漂移。原先每屏极慢横移、换屏时 0.04 秒回位，回位那一下整屏跳动（WaterRun 看 r3b：「画面有些抖动」「似乎是切画面就触发抖动」）
+// 镜头：每屏只朝一个方向极慢横移（每秒不超过 1.2 像素、一屏合计不超过 24 像素），dir 按章交替。
+// 换屏时的回位与换屏同步、用 0.65 秒缓动做完（混在新内容升起的动作里）；原先 0.04 秒回位，那一下整屏跳动（WaterRun 看 r3b：「似乎是切画面就触发抖动」）
 function drift(world, s, marks, dir = 1) {
   const cam = makeCamera(world);
-  if (!drift.on) { cam.track(s.start, { x: 960, y: 540, z: 1 }, []); return cam; }
-  const pts = [s.start, ...marks.filter((m) => m > s.start + 0.2 && m < s.end - 0.2), s.end];
+  const pts = [s.start, ...marks.filter((m) => m > s.start + 0.8 && m < s.end - 0.8), s.end];
   const segs = [];
   let first = null;
   for (let i = 0; i < pts.length - 1; i++) {
-    const a = pts[i], b = pts[i + 1], dur = Math.max(0.4, b - a - 0.1), dx = Math.min(24, 1.2 * dur);
+    const a = pts[i], b = pts[i + 1], last = i === pts.length - 2;
+    const st = i === 0 ? a + 0.05 : a + 0.3, en = last ? b - 0.05 : b - 0.35, dur = Math.max(0.3, en - st), dx = Math.min(24, 1.2 * dur);
     const x0 = 960 - dir * dx / 2, x1 = 960 + dir * dx / 2;
     if (i === 0) first = { x: x0, y: 540, z: 1 };
-    else segs.push([a, { x: x0 }, 0.04, { ease: 'none', sfx: false }]);
-    segs.push([a + 0.05, { x: x1 }, Math.max(0.3, dur - 0.05), { ease: 'none', sfx: false }]);
+    else segs.push([a - 0.35, { x: x0 }, 0.65, { ease: 'power2.inOut', sfx: false }]);
+    segs.push([st, { x: x1 }, dur, { ease: 'none', sfx: false }]);
   }
   cam.track(s.start, first, segs);
   return cam;
 }
-
 // ── 文档部件 ──
 const hdoc = (p, text, x, y, w = 1776) => { const e = h('div', 'h2', p, text); px(e, x, y, w); return e; };
 const capt = (p, html, x, y, cls = 'cap') => { const e = h('div', cls, p, html); px(e, x, y); return e; };
