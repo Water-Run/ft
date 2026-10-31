@@ -24,7 +24,8 @@ scene('history', ({ root, s, c0 }) => {
     return { dot, y, l };
   };
   // 1986：伯克利
-  node(1986, '伯克利开始实现<br>一个研究系统', T('h1') - 0.5, true, -40);
+  const n86 = node(1986, '伯克利开始实现', T('h1') - 0.5, true, -40);
+  keyed(n86.l).at(T('h1', '研究系统'), { html: '伯克利开始实现<br>一个研究系统' }); sfx('tick', T('h1', '研究系统'), { g: 0.4 });
   // 斯通布雷克与 Ingres
   const sb = tagEl(A, 'Michael Stonebraker 教授', 72, 214, 'navy'); css(sb, { fontSize: '30px' }); show(sb, T('h2', '斯通布雷克'), { x: -20 });
   const ing = glossBox(A, 'Ingres', '<b>Ingres</b>：斯通布雷克之前<br>在伯克利做的关系数据库', 72, 290, 500);
@@ -85,14 +86,15 @@ scene('history', ({ root, s, c0 }) => {
   const grid = h('div', 'abs', B); px(grid, 96, 236, 780, 528); grid.dataset.name = '177 个格子';
   const cells = [];
   for (let i = 0; i < 177; i++) { const c = h('div', 'abs', grid); px(c, (i % 15) * 52, Math.floor(i / 15) * 44, 46, 38); css(c, { border: '2.5px solid var(--pg)', background: '#fff' }); cells.push(c); }
-  const tg = T('h12', '177') - 0.6;
-  cells.forEach((c, i) => show(c, tg + (i % 15) * 0.012 + Math.floor(i / 15) * 0.03, { s: 0.6, d: 0.2 }));
+  const tg = T('h12', '核心') - 0.2, tg1 = Tend('h12') - 0.3;
+  cells.forEach((c, i) => show(c, tg + (tg1 - tg) * Math.floor(i / 15) / 12 + (i % 15) * 0.01, { s: 0.6, d: 0.2 }));
   sfx('tick', tg, { g: 0.5 });
   // 170 格依次涂满，计数跟着走
-  const tf = T('h13', '170') - 1.0, dur = 1.4;
+  const tf = T('h13') + 0.1, dur = Math.max(1.2, T('h13', '170') + 0.3 - tf);
   cells.forEach((c, i) => { if (i < 170) set(c, tf + dur * i / 170, { background: 'var(--pg)' }); });
   const cnt = h('div', 'big', B, ''); px(cnt, 960, 236); css(cnt, { fontSize: '96px' });
-  F((t) => { const k = clamp((t - tf) / dur); cnt.innerHTML = t < tf ? '' : `${Math.round(k * 170)}<span style="font-size:48px;color:var(--ink2)"> / 177</span>`; });
+  const t177 = T('h12', '177') + 0.3;
+  F((t) => { const k = clamp((t - tf) / dur); cnt.innerHTML = t < t177 ? '' : t < tf ? '0<span style="font-size:48px;color:var(--ink2)"> / 177</span>' : `${Math.round(k * 170)}<span style="font-size:48px;color:var(--ink2)"> / 177</span>`; });
   sfx('whoosh', tf, { g: 0.3 }); sfx('thud', tf + dur, { g: 0.6 });
   const cntL = capt(B, 'PostgreSQL 18 至少符合的项数', 966, 372); show(cntL, tf + dur, { y: 10 });
   // 没涂的 7 格：没有哪个数据库声称全部符合

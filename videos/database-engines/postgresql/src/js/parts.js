@@ -12,8 +12,9 @@ function screens(world, marks, opts = {}) {
   for (let i = 0; i < marks.length - 1; i++) {
     const el = h('div', 'abs', world); px(el, 0, 0, 1920, 1080);
     const a = marks[i], b = marks[i + 1];
-    if (i === 0) appear(el, a); else wipe(el, a, { dir: i % 2 ? 'r' : 'l', d: 0.45 });
-    if (i < marks.length - 2) wipeOut(el, b - 0.02, { dir: i % 2 ? 'l' : 'r', d: 0.4 });
+    // 原地换屏：旧内容上移淡出，新内容从下方升起（比左右刷屏更像同一张画布换内容）
+    if (i === 0) appear(el, a); else tl.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out', immediateRender: true }, a);
+    if (i < marks.length - 2) tl.fromTo(el, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -40, duration: 0.4, ease: 'power2.in', immediateRender: false }, b - 0.35);
     out.push(el);
   }
   if (opts.sfx !== false) for (let i = 1; i < marks.length - 1; i++) sfx('whoosh', marks[i], { g: 0.35 });
@@ -70,6 +71,24 @@ function term(p, x, y, w, rows, o = {}) {
     print(t, html, o2 = {}) { const d = line(html); if (o2.cls) d.classList.add(o2.cls); show(d, t, { y: 12, d: 0.35 }); return d; },
     clear(t) { live.forEach((d) => hide(d, t, { d: 0.2, y: -8 })); live = []; n = 0; },
   };
+}
+// 淡出退场：写明起点（避免「从当前值开始」在跳播时取到不同的起点）
+function gone(e, t, d = 0.3) { tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: d, immediateRender: false }, t); }
+// 视线框：一屏一个，讲到哪个东西就移到哪个东西上（at 给元素或 [x, y, w, h]；坐标是屏内坐标）。每一步写明起点，跳播也一样
+function focusRing(p, color = '#b8442f') {
+  const r = h('div', 'abs', p); css(r, { border: `5px solid ${color}`, pointerEvents: 'none' }); r.dataset.name = '视线框';
+  let prev = null;
+  set(r, 0, { autoAlpha: 0 });
+  const api = {
+    at(t, target, pad = 10) {
+      const b = Array.isArray(target) ? { x: target[0], y: target[1], w: target[2], h: target[3] } : box(target, p);
+      const st = { left: b.x - pad, top: b.y - pad, width: b.w + 2 * pad, height: b.h + 2 * pad };
+      if (!prev) { set(r, t, { ...st, autoAlpha: 1 }); } else tl.fromTo(r, { ...prev }, { ...st, duration: 0.35, ease: 'power2.inOut', immediateRender: false }, t);
+      prev = st; return api;
+    },
+    off(t) { gone(r, t, 0.25); return api; },
+  };
+  return api;
 }
 // 一个「请求」从 a 飞到 b（屏内坐标），到了以后淡掉；返回元素
 function fly(p, html, a, b, t, o = {}) {

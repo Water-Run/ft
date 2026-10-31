@@ -92,6 +92,7 @@ scene('page', ({ root, s, c0 }) => {
   const move = T('p9', '挪动');
   to(dr, move, { x: -420, duration: 0.8, ease: 'power3.inOut' }); to(da, move, { attr: { d: 'M470,106 L780,106' }, duration: 0.8, ease: 'power3.inOut' }); sfx('whoosh', move, { g: 0.4 });
   const stay = tagEl(demo, '指针还在原处', 300, 10, 'ok'); css(stay, { fontSize: '26px' }); show(stay, T('p9', '指针不会'), { y: 8 });
+  const mem = tagEl(demo, `记住：第 ${LP} 个`, 0, 150, 'navy'); css(mem, { fontSize: '26px' }); show(mem, T('p10', '第几个'), { y: 8 }); sfx('tick', T('p10', '第几个'), { g: 0.4 });
   const found = tagEl(demo, '还是找得到', 790, 10, 'ok'); css(found, { fontSize: '26px' }); show(found, T('p10', '找得到'), { y: 8 }); sfx('chime', T('p10', '找得到'), { g: 0.6 });
   hide(offT, tD - 0.1, { d: 0.25 });
 
@@ -132,11 +133,16 @@ scene('page', ({ root, s, c0 }) => {
     c.dataset.gloss = name; c.dataset.name = name + ' 卡';
     c.innerHTML = `<div style="position:absolute;left:24px;top:14px;font:700 32px var(--mono);color:var(--navy)">${name}</div>` +
       `<div style="position:absolute;left:24px;top:62px;font:700 56px var(--mono);color:var(--pg)">${v}</div>` +
-      `<div style="position:absolute;right:20px;top:24px;font:500 22px var(--mono);color:var(--ink2)">${hex}</div>` +
-      `<div style="position:absolute;left:24px;top:144px;font:500 24px var(--sans);color:var(--ink)">${desc}</div>`;
+      `<div class="hex" style="position:absolute;right:20px;top:24px;font:500 22px var(--mono);color:var(--ink2)">原样 ${hex}</div>` +
+      `<div class="desc" style="position:absolute;left:24px;top:144px;font:500 24px var(--sans);color:var(--ink)">${desc}</div>`;
     const [sx] = segX[name];
     tl.fromTo(c, { autoAlpha: 0, x: sx - x, y: CY - 560, scale: 0.3, transformOrigin: '0 0' }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.6, ease: 'power3.out', immediateRender: true }, T('p13') + 0.2 + i * 0.25);
     to(c, T(cue, w), { borderColor: 'var(--pg)', duration: 0.2 }); sfx('tick', T(cue, w), { g: 0.6 });
+    const dsc = c.querySelector('.desc'); set(dsc, 0, { autoAlpha: 0 }); show(dsc, T(cue) + 0.3, { y: 8, d: 0.4 });
+    const hx = c.querySelector('.hex'); set(hx, 0, { autoAlpha: 0 }); show(hx, T(cue, w), { y: -6, d: 0.4 });
+    const [a0, n0] = { xmin: [0, 4], xmax: [4, 4], t_ctid: [12, 6] }[name];
+    for (let q = a0; q < a0 + n0; q++) set(cells[q], T(cue), { backgroundColor: '#b8442f' });
+    if (i === 0) { const lead3 = tagEl(B, '行头里的三样', 96, 520, 'navy'); css(lead3, { fontSize: '24px' }); show(lead3, T('p13', '三样'), { y: 8 }); hide(lead3, T('p14') - 0.1, { d: 0.2 }); }
     return c;
   });
   sfx('whoosh', T('p13') + 0.2, { g: 0.35 });
@@ -149,8 +155,11 @@ scene('page', ({ root, s, c0 }) => {
   // InnoDB 的行头：事务号与回滚指针
   const inn = h('div', 'abs', B); px(inn, 96, 860, 1400, 64); inn.dataset.name = 'InnoDB 的行头';
   inn.innerHTML = '<div style="position:absolute;left:0;top:0;height:64px;line-height:64px;padding:0 20px;font:700 26px var(--sans);color:var(--mute)">InnoDB 的行头</div>' +
-    '<div style="position:absolute;left:230px;top:4px;width:330px;height:56px;line-height:56px;background:#4f5c67;color:#fff;font:700 26px var(--sans);text-align:center">事务号 · 6 字节</div>' +
-    '<div style="position:absolute;left:570px;top:4px;width:400px;height:56px;line-height:56px;background:#5f6a73;color:#fff;font:700 26px var(--sans);text-align:center">回滚指针 · 7 字节</div>';
+    '<div class="s1" style="position:absolute;left:230px;top:4px;width:330px;height:56px;line-height:56px;background:#4f5c67;color:#fff;font:700 26px var(--sans);text-align:center">事务号 · 6 字节</div>' +
+    '<div class="s2" style="position:absolute;left:570px;top:4px;width:400px;height:56px;line-height:56px;background:#5f6a73;color:#fff;font:700 26px var(--sans);text-align:center">回滚指针 · 7 字节</div>';
   wipe(inn, T('p18'), { dir: 'l', d: 0.5 }); sfx('pop', T('p18', '回滚'), { g: 0.5, p: -0.4 });
+  const s1 = inn.querySelector('.s1'), s2 = inn.querySelector('.s2'); set(s1, 0, { autoAlpha: 0 }); set(s2, 0, { autoAlpha: 0 });
+  show(s1, T('p18', '事务号'), { x: -20, y: 0 }); show(s2, T('p18', '回滚指针'), { x: -20, y: 0 });
+  cards.forEach((c) => to(c, Tend('p18') + 0.1, { opacity: 0.45, duration: 0.4 }));
   [n14, n15, selfT].forEach((e) => hide(e, T('p18') - 0.1, { d: 0.25 }));
 });

@@ -9,12 +9,17 @@ scene('credits', ({ root, s }) => {
   rows.push(['许可', (window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later']);
   rows.push(['开源视频', String(C.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')]);
   const box = psqlBox(world, '', 240, 130, 1440); css(box, { fontSize: '32px', padding: '30px 46px', whiteSpace: 'normal', height: '780px' });
-  const head = h('div', '', box, '<span class="p">postgres=#</span> <span class="k">SELECT</span> * <span class="k">FROM</span> credits;');
+  // 查询逐字敲出，结果一行行出来，最后整张名单停住留够时间读（WaterRun：「片尾的credit查询要动画」）
+  const head = h('div', '', box, '<span class="p">postgres=#</span> '); const cmd = h('span', '', head);
   const grid = h('div', '', box); css(grid, { marginTop: '14px', display: 'grid', gridTemplateColumns: '260px 34px 1fr', lineHeight: '1.55' });
   const cell = (t, st = '') => { const e = h('span', '', grid, esc(t)); e.style.cssText = st; return e; };
-  cell(' role', 'text-align:center'); cell('|'); cell(' name', 'padding-left:12px');
-  cell('', 'border-top:2px solid var(--ink2);margin-top:24px'); cell('+', 'text-align:center;color:var(--ink2)'); cell('', 'border-top:2px solid var(--ink2);margin-top:24px');
-  for (const [r, n] of rows) { cell(r, 'padding-left:14px'); cell('|'); cell(n, 'padding-left:12px'); }
+  const line = [cell(' role', 'text-align:center'), cell('|'), cell(' name', 'padding-left:12px'), cell('', 'border-top:2px solid var(--ink2);margin-top:24px'), cell('+', 'text-align:center;color:var(--ink2)'), cell('', 'border-top:2px solid var(--ink2);margin-top:24px')];
+  const rowEls = rows.map(([r, n]) => [cell(r, 'padding-left:14px'), cell('|'), cell(n, 'padding-left:12px')]);
   const foot = h('div', '', box, `(${rows.length} rows)`); css(foot, { marginTop: '8px' });
   wipe(box, s.start + 0.2, { dir: 't', d: 0.5 });
+  const e = typeText(cmd, '<span class="k">SELECT</span> * <span class="k">FROM</span> credits;', s.start + 0.7, 28, { cursorUntil: s.start + 2.2 });
+  line.forEach((c) => show(c, e + 0.2, { y: 0, d: 0.2 }));
+  rowEls.forEach((cs, i) => cs.forEach((c) => show(c, e + 0.45 + i * 0.22, { x: -14, y: 0, d: 0.3 })));
+  show(foot, e + 0.55 + rows.length * 0.22, { y: 0, d: 0.3 });
+  sfx('blip', e + 0.2, { g: 0.4 });
 });

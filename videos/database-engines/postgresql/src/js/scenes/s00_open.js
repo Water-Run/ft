@@ -54,6 +54,8 @@ scene('open', ({ root, s }) => {
   hide(nP0, T('o5') - 0.3, { d: 0.3 }); hide(nM0, T('o5') - 0.3, { d: 0.3 });
   const nP = capt(A, '<b style="color:#336791">PostgreSQL</b>', XS(2026) + 36, YS(last.pg) - 18); show(nP, span[2026][1] + 0.3, { x: -10 });
   const nM = capt(A, '<b style="color:#4f5c67">MySQL</b>', XS(2026) + 36, YS(last.my) - 18); show(nM, span[2026][2] + 0.3, { x: -10 });
+  const d22 = D.survey[0], gapT = tagEl(A, `差 ${(d22.my - d22.pg).toFixed(1)} 个百分点`, XS(2022) + 34, YS((d22.my + d22.pg) / 2) - 20, 'grey'); css(gapT, { fontSize: '24px' });
+  show(gapT, T('o4', '紧随其后'), { x: -10 }); hide(gapT, T('o5') - 0.2, { d: 0.2 });
   // 交叉点：在 2022 与 2023 之间按两年的数值插值
   const a = D.survey[0], b = D.survey[1], kx = (a.my - a.pg) / ((a.my - a.pg) + (b.pg - b.my));
   const cx = XS(a.year) + kx * 330, cy = YS(a.pg + kx * (b.pg - a.pg));
@@ -148,4 +150,5 @@ scene('open', ({ root, s }) => {
   const k3 = h('div', 'abs', C, 'PostgreSQL'); px(k3, 164, 620); css(k3, { font: '800 140px "Open Sans"', color: '#50b0f0', letterSpacing: '-2px' });
   wipe(k1, tC + 0.15, { dir: 'l' }); slam(k2, tC + 0.3, { from: 1.08 }); slide(k3, tC + 0.55, { x: -60 });
   sfx('thud', tC + 0.35);
+  const part = tagEl(C, 'PART 3 · 数据库引擎系列', 170, 820, 'navy'); css(part, { fontSize: '30px', padding: '8px 22px' }); show(part, tC + 1.3, { x: -20 });
 });

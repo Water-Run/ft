@@ -32,7 +32,7 @@
       ],
     },
     {
-      id: 'history', chap: ['01', '学院出身'], lead: 3.3, tail: 0.7,
+      id: 'history', chap: ['01', '学院出身'], lead: 2.9, tail: 0.7,
       cues: [
         c('h1', '1986 年，伯克利开始实现一个研究系统', 'H1'),
         c('h2', '领头的是斯通布雷克教授，他之前做过关系数据库 *Ingres*', 'H1 H2'),
@@ -53,7 +53,7 @@
       ],
     },
     {
-      id: 'layout', chap: ['02', '一张表放在哪'], lead: 3.3, tail: 0.7,
+      id: 'layout', chap: ['02', '一张表放在哪'], lead: 2.9, tail: 0.7,
       cues: [
         c('l1', '先看这张表在磁盘上的样子', 'T1'),
         c('l2', '在 PostgreSQL 里，一张表就是一个文件', 'T1'),
@@ -90,7 +90,7 @@
       ],
     },
     {
-      id: 'page', chap: ['03', '一页之内'], lead: 3.3, tail: 0.7,
+      id: 'page', chap: ['03', '一页之内'], lead: 2.9, tail: 0.7,
       cues: [
         c('p1', '打开第 23 页', 'P3'),
         c('p2', '开头 24 字节是页头', 'P1'),
@@ -121,7 +121,7 @@
       ],
     },
     {
-      id: 'insert', chap: ['04', '增'], lead: 3.3, tail: 0.7,
+      id: 'insert', chap: ['04', '增'], lead: 2.9, tail: 0.7,
       cues: [
         c('i1', '这些页，是怎样一行行填满的？', 'G1'),
         c('i2', '用户一个个注册，新行放进最后一页', 'G1'),
@@ -141,7 +141,7 @@
       ],
     },
     {
-      id: 'query', chap: ['05', '查'], lead: 3.3, tail: 0.7,
+      id: 'query', chap: ['05', '查'], lead: 2.9, tail: 0.7,
       cues: [
         c('q1', '现在，按名字找 Alice', 'Q3'),
         c('q2', 'SQL 先交给*规划器*', 'Q1 Q2'),
@@ -172,7 +172,7 @@
       ],
     },
     {
-      id: 'update', chap: ['06', '改'], lead: 3.3, tail: 0.7,
+      id: 'update', chap: ['06', '改'], lead: 2.9, tail: 0.7,
       cues: [
         c('u1', 'Alice 过生日，42 岁改成 43', 'U1'),
         c('u2', 'PostgreSQL 不覆盖原来那一行', 'U1'),
@@ -209,7 +209,7 @@
       ],
     },
     {
-      id: 'mvcc', chap: ['07', '事务与并发'], lead: 3.3, tail: 0.7,
+      id: 'mvcc', chap: ['07', '事务与并发'], lead: 2.9, tail: 0.7,
       cues: [
         c('m1', '两个版本都在表里', 'X1'),
         c('m1b', '别人来读，该给哪一个？', 'X1'),
@@ -245,7 +245,7 @@
       ],
     },
     {
-      id: 'delete', chap: ['08', '删与回收'], lead: 3.3, tail: 0.7,
+      id: 'delete', chap: ['08', '删与回收'], lead: 2.9, tail: 0.7,
       cues: [
         c('d1', '后来，Alice 注销了账号', 'D1'),
         c('d2', 'DELETE 也不擦掉这一行', 'D1'),
@@ -285,7 +285,7 @@
       ],
     },
     {
-      id: 'crash', chap: ['09', '出错怎么办'], lead: 3.3, tail: 0.7,
+      id: 'crash', chap: ['09', '出错怎么办'], lead: 2.9, tail: 0.7,
       cues: [
         c('w1', '最后：提交过的修改，断电以后还在吗？', 'W8'),
         c('w2', '规矩是先写日志，叫 *WAL*', 'W1'),
@@ -315,7 +315,7 @@
       ],
     },
     {
-      id: 'five', chap: ['10', '五个问题'], lead: 3.3, tail: 0.8,
+      id: 'five', chap: ['10', '五个问题'], lead: 2.9, tail: 0.8,
       cues: [
         c('z1', '回头看，PostgreSQL 这样回答五个问题', null, { gap: 0.8 }),
         c('z2', '怎么放：行按到达顺序放进堆', 'T2'),
@@ -333,7 +333,7 @@
       ],
     },
     {
-      id: 'tradeoff', chap: ['11', '取舍'], lead: 3.3, tail: 0.8,
+      id: 'tradeoff', chap: ['11', '取舍'], lead: 2.9, tail: 0.8,
       cues: [
         c('t1', '同一张表、同样五个问题，两套答案', null, { gap: 0.8 }),
         c('t2', 'InnoDB 按主键找，一棵树走到底', 'T9 Q9'),

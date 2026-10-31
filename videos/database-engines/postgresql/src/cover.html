@@ -1,55 +1,106 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
 <meta charset="utf-8">
-<title>封面</title>
+<title>PostgreSQL 封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。kit/tools/covers.js 按 2 倍像素出图。
-     与正片同一套视觉：postgresql.org 特性区的蓝底 #336791、白描大象、Open Sans。底部约 15% 不放文字。 */
-  @font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wdth-wght.ttf"); font-weight: 300 800; font-stretch: 75% 100%; }
-  :root { --pg: #336791; --pg-lt: #699eca; --wash: #e0ecef; }
-  html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; }
-  .r43 { --W: 1600px; --H: 1200px; }
-  #stage { position: relative; background: var(--pg); color: #fff; overflow: hidden; }
-  .kicker { position: absolute; font: 600 52px/1.2 "Sans SC", "Open Sans"; color: var(--wash); white-space: nowrap; }
-  .title { position: absolute; font: 700 230px/1 "Open Sans"; letter-spacing: -.02em; white-space: nowrap; }
-  .sub { position: absolute; font: 700 104px/1.1 "Sans SC"; white-space: nowrap; }
-  .rule { position: absolute; height: 10px; background: var(--pg-lt); }
-  .tag { position: absolute; font: 600 44px/1 "Open Sans", "Sans SC"; color: var(--pg); background: #fff; padding: 14px 24px; white-space: nowrap; }
-  img { position: absolute; }
-  .r169 .kicker { left: 110px; top: 120px; }
-  .r169 .title { left: 100px; top: 210px; }
-  .r169 .rule { left: 110px; top: 470px; width: 540px; }
-  .r169 .sub { left: 110px; top: 520px; }
-  .r169 .tag { left: 110px; top: 690px; }
-  .r169 img { right: 90px; top: 400px; width: 440px; height: 454px; }
-  .r43 .kicker { left: 100px; top: 110px; }
-  .r43 .title { left: 90px; top: 560px; font-size: 220px; }
-  .r43 .rule { left: 100px; top: 810px; width: 480px; }
-  .r43 .sub { left: 100px; top: 850px; font-size: 100px; }
-  .r43 .tag { left: 640px; top: 878px; }
-  .r43 img { left: 100px; top: 200px; width: 330px; height: 340px; }
+/* 封面：WaterRun 2026-10-26 选定试听页 R2 的 A（「Cover A, Pg是蓝色的」）。
+   颜色只取 postgresql.org 官网样式表的官方配色：底色深蓝 #264d6d，「PostgreSQL」用深色主题的高亮蓝 #50b0f0（对比 3.7:1），
+   其余白字与 #cfe0ee；纸纹与网格（固定种子）、等轴立体的堆页与索引树、ctid；不放标志。
+   ?r=169 为 1920×1080，?r=43 为 1600×1200（重新排布）；底部 15% 不放文字。 */
+@font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wdth-wght.ttf"); font-weight: 300 800; font-stretch: 75% 100%; }
+:root { --pg: #336791; --dark: #264d6d; --navy: #193145; --sky: #699eca; --hi: #50b0f0; }
+html, body { margin: 0; background: var(--dark); }
+.cv { position: relative; overflow: hidden; background: var(--dark); font-family: "Open Sans", "Sans SC", sans-serif; }
+svg.full { position: absolute; left: 0; top: 0; }
+.part { position: absolute; font: 800 40px "Open Sans"; color: #fff; padding: 6px 22px; border: 4px solid #fff; letter-spacing: 2px; }
+.ver { position: absolute; font: 700 30px "Mono"; color: #fff; background: var(--navy); padding: 8px 18px; }
+.q { position: absolute; font: 700 46px "Sans SC"; color: #cfe0ee; }
+.t1 { position: absolute; font: 900 148px "Sans SC"; color: #fff; letter-spacing: 4px; white-space: nowrap; }
+.t2 { position: absolute; font: 800 168px "Open Sans"; letter-spacing: -2px; white-space: nowrap; color: var(--hi); }
+.facts { position: absolute; font: 600 34px "Sans SC"; color: #cfe0ee; line-height: 1.6; }
+.facts b { color: #fff; }
 </style>
 </head>
 <body>
-<div id="stage">
-  <img src="img/slonik-white.svg" alt="">
-  <div class="kicker">一个数据库引擎是如何实现的？</div>
-  <div class="title">PostgreSQL</div>
-  <div class="rule"></div>
-  <div class="sub">开源巅峰</div>
-  <div class="tag">堆 · MVCC · WAL</div>
-</div>
+<div class="cv" id="stage"></div>
 <script>
-  const q = new URLSearchParams(location.search);
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' zh';
-  const img = document.querySelector('img');
-  const loaded = img.complete ? Promise.resolve() : new Promise((r) => { img.onload = r; img.onerror = r; });
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([loaded, document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('700 40px "Open Sans"', sample)])
-    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+const NS = 'http://www.w3.org/2000/svg';
+const C30 = Math.cos(Math.PI / 6), S30 = 0.5;
+const R = new URLSearchParams(location.search).get('r') === '43' ? '43' : '169';
+// 两种版式：文字的位置、图形的锚点与缩放
+const LAY = {
+  169: { W: 1920, H: 1080, part: [96, 96], ver: [330, 102], q: [100, 210], t1: [92, 300, 148], t2: [92, 500, 168], facts: [100, 760], heap: [1330, 650], tree: [1240, 250], art: 1 },
+  43: { W: 1600, H: 1200, part: [80, 80], ver: [314, 86], q: [84, 190], t1: [76, 272, 140], t2: [76, 452, 156], facts: [84, 680], heap: [1130, 790], tree: [1290, 380], art: 0.85 },
+}[R];
+const TH = { t1side: '#193145', t2side: '#0f2130', face: ['#ffffff', '#cfe0ee', '#699eca'], back: ['#e7eae8', '#b9cfe2', '#8fb0cc'], edge: '#193145', shadow: '#0f2130' };
+function build() {
+  const L = LAY, cv = document.getElementById('stage');
+  cv.style.width = L.W + 'px'; cv.style.height = L.H + 'px';
+  cv.innerHTML = `
+  <svg class="full" width="${L.W}" height="${L.H}"><defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.22"/></feComponentTransfer></filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.5"/></pattern>
+    <filter id="paper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/><feComposite in="SourceGraphic" in2="g" operator="arithmetic" k1="0" k2="1" k3="0.10" k4="-0.05"/></filter>
+  </defs>
+  <rect width="${L.W}" height="${L.H}" fill="url(#grid)"/><rect width="${L.W}" height="${L.H}" filter="url(#grain)" opacity="0.55"/></svg>
+  <svg class="full" width="${L.W}" height="${L.H}"><g filter="url(#paper)"><g class="art"></g></g></svg>
+  <div class="part">PART 3</div>
+  <div class="ver">PostgreSQL 18</div>
+  <div class="q">一个数据库引擎是如何实现的？</div>
+  <div class="t1">学院派的正统</div>
+  <div class="t2">PostgreSQL</div>
+  <div class="facts">表是一个堆，<b>8 KB 一页</b><br>改一行，页里<b>多写一个新版本</b></div>`;
+  const pos = (sel, [x, y, fs]) => { const e = cv.querySelector(sel); e.style.left = x + 'px'; e.style.top = y + 'px'; if (fs) e.style.fontSize = fs + 'px'; return e; };
+  pos('.part', L.part); pos('.ver', L.ver); pos('.q', L.q); pos('.facts', L.facts);
+  const art = cv.querySelector('.art');
+  // 图形按版式缩放：以堆页的锚点为中心
+  art.setAttribute('transform', `translate(${L.heap[0]},${L.heap[1]}) scale(${L.art}) translate(${-L.heap[0]},${-L.heap[1]})`);
+  // 大字的立体侧面：逐像素往右下错开，不加模糊（字面保持清楚）
+  const deep = (el, depth, color) => { const sh = []; for (let i = 1; i <= depth; i++) sh.push(`${i}px ${i}px 0 ${color}`); sh.push(`${depth + 6}px ${depth + 10}px 14px rgba(13,26,36,.35)`); el.style.textShadow = sh.join(','); };
+  deep(pos('.t1', L.t1), 7, TH.t1side);
+  deep(pos('.t2', L.t2), 9, TH.t2side);
+  const P = (ox, oy) => (x, y, z) => [ox + (x - y) * C30, oy + (x + y) * S30 - z];
+  const poly = (pts, fill, stroke, sw = 2, extra = {}) => { const e = document.createElementNS(NS, 'polygon'); e.setAttribute('points', pts.map((p) => p.join(',')).join(' ')); e.setAttribute('fill', fill); if (stroke) { e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', sw); e.setAttribute('stroke-linejoin', 'round'); } for (const k in extra) e.setAttribute(k, extra[k]); art.appendChild(e); return e; };
+  const line = (a, b, stroke, sw, dash) => { const e = document.createElementNS(NS, 'line'); e.setAttribute('x1', a[0]); e.setAttribute('y1', a[1]); e.setAttribute('x2', b[0]); e.setAttribute('y2', b[1]); e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', sw); e.setAttribute('stroke-linecap', 'round'); if (dash) e.setAttribute('stroke-dasharray', dash); art.appendChild(e); };
+  const text = (x, y, s, size, fill, family = 'Mono') => { const e = document.createElementNS(NS, 'text'); e.setAttribute('x', x); e.setAttribute('y', y); e.setAttribute('fill', fill); e.setAttribute('font-size', size); e.setAttribute('font-weight', 700); e.setAttribute('font-family', family); e.textContent = s; art.appendChild(e); };
+  const box = (p, x, y, z, w, d, h, [top, right, left]) => {
+    const v = (a, b, c) => p(x + a, y + b, z + c);
+    poly([v(0, d, 0), v(w, d, 0), v(w, d, h), v(0, d, h)], left, TH.edge, 2);
+    poly([v(w, 0, 0), v(w, d, 0), v(w, d, h), v(w, 0, h)], right, TH.edge, 2);
+    poly([v(0, 0, h), v(w, 0, h), v(w, d, h), v(0, d, h)], top, TH.edge, 2);
+  };
+  // 地上的影子与一排堆页：页 0 在最前，后面的页沿 x 方向往右上排开
+  const p = P(L.heap[0], L.heap[1]), PW = 150, PD = 300, PH = 56, GAP = 30;
+  poly([p(-60, 330, -2), p(980, 330, -2), p(980, -40, -2), p(-60, -40, -2)], TH.shadow, null, 0, { opacity: 0.35 });
+  for (let i = 5; i >= 1; i--) box(p, i * (PW + GAP), 0, 0, PW, PD, PH, TH.back);
+  box(p, 0, 0, 0, PW, PD, PH, TH.face);
+  const rows = [{ y: 30, kind: 'live' }, { y: 70, kind: 'live' }, { y: 110, kind: 'dead' }, { y: 150, kind: 'live' }, { y: 190, kind: 'new' }, { y: 230, kind: 'live' }];
+  for (const r of rows) {
+    const col = r.kind === 'new' ? '#336791' : r.kind === 'dead' ? '#c9d0d6' : '#cfe0ee';
+    poly([p(14, r.y, PH), p(PW - 14, r.y, PH), p(PW - 14, r.y + 26, PH), p(14, r.y + 26, PH)], col, TH.edge, 1.5);
+    if (r.kind === 'dead') for (let k = 0; k < 6; k++) line(p(20 + k * 20, r.y + 2, PH), p(36 + k * 20, r.y + 24, PH), '#8a949c', 2);
+  }
+  const dPt = p(PW, 123, PH), nPt = p(PW, 203, PH), nTo = p(-10, 330, 0);
+  line([dPt[0] + 6, dPt[1]], [dPt[0] + 120, dPt[1] - 60], '#ffffff', 2.5);
+  text(dPt[0] + 128, dPt[1] - 66, 'xmax ≠ 0  旧版本', 30, '#ffffff', 'Sans SC');
+  line([nPt[0] - 70, nPt[1] + 20], [nTo[0] - 40, nTo[1] + 60], '#ffffff', 2.5);
+  text(nTo[0] - 200, nTo[1] + 104, '新版本', 30, '#ffffff', 'Sans SC');
+  const pl = p(0, PD, 0); text(pl[0] - 118, pl[1] + 14, '页 0', 28, '#cfe0ee', 'Sans SC');
+  // 上方的小索引树：根与三片叶子；一根虚线从叶子落到页 0 的新版本（ctid）
+  const pt = P(L.tree[0], L.tree[1]);
+  box(pt, 120, 0, 120, 140, 70, 26, TH.face);
+  [0, 190, 380].forEach((x) => box(pt, x, 150, 20, 110, 60, 22, TH.face));
+  const rootB = pt(190, 70, 120);
+  [0, 190, 380].forEach((x) => line(rootB, pt(x + 55, 150, 42), '#ffffff', 3));
+  const from = pt(55, 210, 20), to = p(PW / 2, 203, PH);
+  line(from, to, '#ffffff', 3.5, '10 8');
+  text((from[0] + to[0]) / 2 + 18, (from[1] + to[1]) / 2 + 10, 'ctid', 32, '#ffffff');
+  text(pt(120, 0, 160)[0] - 10, pt(120, 0, 160)[1] - 16, '索引', 28, '#cfe0ee', 'Sans SC');
+}
+build();
+document.fonts.ready.then(() => { build(); document.body.dataset.ready = '1'; });
 </script>
 </body>
 </html>

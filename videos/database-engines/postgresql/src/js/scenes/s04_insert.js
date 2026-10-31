@@ -9,38 +9,40 @@ scene('insert', ({ root, s, c0 }) => {
   // ── A：行一条条放进最后一页，满了接新页；Alice 落进第 23 页；三个索引各插一项 ──
   hdoc(A, '用户一个个注册', 72, 128);
   const tq = term(A, 72, 196, 1000, 2, { name: 'psql 会话' });
-  const SX = 90, SY = 340, PW = 37;
-  const ghost = h('div', 'abs', A); px(ghost, SX, SY, 47 * PW - 4, 120); css(ghost, { background: 'var(--wash)', border: '2px dashed var(--sky)' }); ghost.dataset.name = '空的文件';
+  const SX = 96, SY = 360, PW = 72;
+  const ghost = h('div', 'abs', A); px(ghost, SX, SY, 24 * PW - 6, 2 * 110 - 30); css(ghost, { background: 'var(--wash)', border: '2px dashed var(--sky)' }); ghost.dataset.name = '空的文件';
   wipe(ghost, T('i1') + 0.1, { dir: 'l', d: 0.6 });
-  const strip = heapStrip(A, SX, SY, { w: 33, gap: 4, h: 120, labels: [0, P] });
-  strip.pages.forEach((pg) => set(pg, 0, { opacity: 0 }));
+  // 堆：一张张页卡（与第二章同样的画法：页头、指针从左往右、行从页底往上）
+  const strip = heapGrid(A, SX, SY, { cols: 24, cw: 66, ch: 80, gx: 6, gy: 30 });
+  strip.pages.forEach((pg, i) => { set(pg, 0, { opacity: 0 }); set(pg.rows, 0, { scaleY: 0 }); set(pg.lp, 0, { scaleX: 0 }); if (![0, P].includes(i)) pg.lab.style.display = 'none'; });
   const t0 = T('i2'), t1 = Tend('i3'), nShow = AT.heap;           // 注册到第 2050 行时，堆有 24 页
   const pageAt = (t) => Math.min(nShow - 1, Math.floor(nShow * clamp((t - t0) / (t1 - t0))));
   for (let i = 0; i < nShow; i++) {
     const t = t0 + (t1 - t0) * i / nShow;
     set(strip.pages[i], t, { opacity: 1 });
-    fromTo(strip.pages[i].fill, t, { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: i === nShow - 1 ? 25 / D.heap.rows[i] : 1, duration: (t1 - t0) / nShow, ease: 'none' });
+    const kk = i === nShow - 1 ? 25 / D.heap.rows[i] : 1;
+    fromTo(strip.pages[i].rows, t, { scaleY: 0 }, { scaleY: kk, duration: (t1 - t0) / nShow, ease: 'none' }); fromTo(strip.pages[i].lp, t, { scaleX: 0 }, { scaleX: strip.pages[i].k * kk, duration: (t1 - t0) / nShow, ease: 'none' });
   }
   // 命令一条条执行，新行一条条落进当时的最后一页
   tq.type(t0 - 0.3, '<span class="k">INSERT INTO</span> users <span class="k">VALUES</span> (1, …);', 'postgres=#', 45);
   tq.clear(t0 + (t1 - t0) * 0.5 - 0.2); tq.type(t0 + (t1 - t0) * 0.5, '<span class="k">INSERT INTO</span> users <span class="k">VALUES</span> (1024, …);', 'postgres=#', 45);
-  for (let j = 0; j < 10; j++) { const t = t0 + (t1 - t0) * (j + 0.5) / 10; fly(A, '新行', [700, 260], [SX + pageAt(t + 0.4) * PW - 14, SY + 20], t, { cls: 'navy', fs: 22, d: 0.35, hold: 0 }); }
+  for (let j = 0; j < 10; j++) { const t = t0 + (t1 - t0) * (j + 0.5) / 10; fly(A, '新行', [700, 260], [strip.pos(pageAt(t + 0.4)).x, SY + 30], t, { cls: 'navy', fs: 22, d: 0.35, hold: 0 }); }
   const counter = h('div', 'cap', A, ''); px(counter, 1110, 236); css(counter, { fontSize: '30px', color: 'var(--ink)' });
   F((t) => { const k = clamp((t - t0) / (t1 - t0)); const row = Math.round(1 + k * 2048); counter.innerHTML = t < t0 - 0.05 ? '' : t >= T('i5') ? `第 <b>2050</b> 行 · 堆里 <b>${nShow}</b> 页` : `第 <b>${row}</b> 行 · 堆里 <b>${Math.max(1, Math.ceil(row / 88))}</b> 页`; });
   // 满了就在末尾接一页
   const tN = T('i3', '再接一页'), pN = pageAt(tN);
-  const plus = tagEl(A, '末尾 +1 页', SX + pN * PW - 40, SY - 52); css(plus, { fontSize: '24px' }); show(plus, tN, { y: 10 }); hide(plus, T('i4') - 0.2, { d: 0.25 }); sfx('pop', tN, { g: 0.5 });
+  const plus = tagEl(A, '末尾 +1 页', strip.pos(pN).x - 30, SY - 52); css(plus, { fontSize: '24px' }); show(plus, tN, { y: 10 }); hide(plus, T('i4') - 0.2, { d: 0.25 }); sfx('pop', tN, { g: 0.5 });
   // 那时表里 24 页
-  const br = h('div', 'abs', A); px(br, SX, SY - 16, nShow * PW - 4, 5); css(br, { background: 'var(--navy)' });
+  const br = h('div', 'abs', A); px(br, SX, SY - 16, nShow * PW - 6, 5); css(br, { background: 'var(--navy)' });
   const brl = capt(A, `那时表里 <b>${nShow}</b> 页（第 0–${nShow - 1} 页）`, SX, SY - 56); css(brl, { fontSize: '26px', color: 'var(--navy)' });
   fromTo(br, T('i4', '24'), { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.5 }); show(brl, T('i4', '24'), { y: 8 }); sfx('tick', T('i4', '24'));
   // Alice：那条 INSERT 敲出来，这一行落进最后一页（第 23 页）
   tq.clear(T('i4') - 0.3);
   tq.type(T('i4'), `<span class="k">INSERT INTO</span> users <span class="k">VALUES</span> (2050, 'Alice', 42);`, 'postgres=#', 45);
   const tA = T('i5', '23');
-  fly(A, '2050 Alice 42', [700, 260], [SX + P * PW - 90, SY + 30], tA - 0.6, { cls: 'navy', fs: 24, d: 0.55 });
-  classAt(strip.pages[P], 'hl', tA); sfx('thud', tA, { g: 0.6 });
-  const al = tagEl(A, `Alice → 第 ${P} 页第 ${LP} 项`, SX + P * PW - 150, SY + 160); css(al, { fontSize: '26px' }); slam(al, tA + 0.1, { from: 1.15 });
+  fly(A, '2050 Alice 42', [700, 260], [strip.pos(P).x - 120, SY + 20], tA - 0.6, { cls: 'navy', fs: 24, d: 0.55 });
+  to(strip.pages[P], tA, { borderColor: '#193145', borderWidth: '4px', duration: 0.15 }); sfx('thud', tA, { g: 0.6 });
+  const al = tagEl(A, `Alice → 第 ${P} 页第 ${LP} 项`, strip.pos(P).x - 240, SY + 112); css(al, { fontSize: '26px' }); slam(al, tA + 0.1, { from: 1.15 });
   // 三棵树（那时的样子）；三个键从 Alice 那一行分头飞进去
   const ov = overlay(A);
   const tT = T('i6') - 0.2;
@@ -54,7 +56,7 @@ scene('insert', ({ root, s, c0 }) => {
   const tnm = mk(700, 760, AT.idx_name - 2, '姓名树', `<b>姓名树</b>　${AT.idx_name - 2} 页叶子`);
   const tag = mk(1540, 300, AT.idx_age - 2, '年龄树', `<b>年龄树</b>　${AT.idx_age - 2} 页叶子`);
   sfx('pop', tT, { g: 0.5 });
-  const from = [SX + P * PW - 20, SY + 120];
+  const from = [strip.pos(P).x, SY + 80];
   fly(A, '42', from, [1540 + 150 - 20, 670], T('i6', '各插一项'), { cls: 'navy', fs: 26, d: 0.6 });
   // 2050 比已有的编号都大 → 主键树最右边的叶子
   const rk = tpk.leaves.length - 1;
@@ -75,7 +77,7 @@ scene('insert', ({ root, s, c0 }) => {
   const tS = T('i10');
   wipe(L1, tS - 0.4, { dir: 'l' }); show(full, tS - 0.4);
   to(fill1, tS - 0.1, { width: 502, duration: 0.7, ease: 'power1.in' });
-  const fl = capt(B, '满了', 600, 460); css(fl, { fontSize: '26px', color: 'var(--warn)', fontWeight: 700 }); show(fl, tS + 0.6, { y: 8 });
+  const fl = capt(B, '满了', 600, 460); css(fl, { fontSize: '26px', color: 'var(--warn)', fontWeight: 700 }); 
   // 一分为二：右半边搬到新的一页
   const Lb = h('div', 'page', B); px(Lb, 780, 500, 520, 120); Lb.dataset.name = '新的一页叶子';
   const half = h('div', 'abs', B); px(half, 200 + 6 + 251, 506, 251, 102); css(half, { background: 'var(--pg)' });
@@ -84,7 +86,7 @@ scene('insert', ({ root, s, c0 }) => {
   set(half, 0, { autoAlpha: 0 }); set(half, tSp, { autoAlpha: 1 });
   to(fill1, tSp, { width: 251, duration: 0.01 });
   to(half, tSp + 0.05, { x: 780 - 200 - 251, duration: 0.6, ease: 'power3.inOut' }); to(half, tSp + 0.7, { backgroundColor: '#cfe0ee', duration: 0.3 });
-  hide(fl, tSp, { d: 0.2 }); sfx('thud', tSp + 0.6, { g: 0.6 });
+  show(fl, tS + 0.6, { y: 8, d: 0.3 }); hide(fl, Math.max(tSp, tS + 1.0), { d: 0.2 }); sfx('thud', tSp + 0.6, { g: 0.6 });
   const rt = h('div', 'node', B, '根'); px(rt, 670, 300, 160); css(rt, { height: '52px', lineHeight: '47px', fontSize: '26px' });
   const e1 = path(ovB, 'M720,352 L460,500', 'dim', { w: 2.5, arrow: false }), e2 = path(ovB, 'M780,352 L1040,500', 'dim', { w: 2.5, arrow: false });
   const tR = T('i11', '根');
