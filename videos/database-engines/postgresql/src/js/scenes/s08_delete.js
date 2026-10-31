@@ -34,7 +34,7 @@ scene('delete', ({ root, s, c0 }) => {
   const stop = tagEl(A, '停：Bob 的快照还在', 520, 296, 'warn'); css(stop, { fontSize: '24px' }); show(stop, T('d9', '还不能') - 0.3, { y: 8 });
   const dead = tagEl(A, '已死，但还不能回收：Bob 的快照可能还要读', 72, 850, 'warn'); slam(dead, T('d9', '还不能'), { from: 1.12 }); sfx('error', T('d9', '还不能'), { g: 0.5 });
   const fA = focusRing(A);
-  fA.at(T('d3', 'xmax'), row).at(T('d4', '查不到'), adm).at(T('d4', '还在'), row).at(T('d5', 'Bob'), bob).at(T('d5', '开着'), [1040, 366, 800, 44]).at(T('d5b', 'Alice'), row).at(T('d6', '旧版本'), row).at(T('d7', '快照'), rule).at(T('d8', '做一次'), v1).at(T('d9', '已死'), dead).off(tB - 0.4);
+  fA.at(T('d3', 'xmax'), row).at(T('d4', '查不到'), adm).at(T('d4', '还在'), row).at(T('d5', 'Bob'), bob).at(T('d5', '开着'), [1040, 366, 800, 44]).at(T('d5b', 'Alice'), row).at(T('d6', '旧版本'), row).at(T('d7', '快照'), rule).at(T('d8', '做一次'), v1).at(T('d9', '还不能') + 0.1, dead).off(tB - 0.4);
 
   // ── B：Bob 结束后收走；Dave 住进来 ──
   hdoc(B, 'Bob 结束后，再做一次 VACUUM', 72, 128);

@@ -30,6 +30,14 @@ scene('page', ({ root, s, c0 }) => {
   const zh = h('div', 'abs', zoom); px(zh, 0, 0, 24 * Z, ZH - 6); css(zh, { background: 'var(--navy)' }); zh.dataset.name = '页头';
   const zhl = h('div', 'abs', zh, '页头'); px(zhl, 12, 38); css(zhl, { font: '700 26px "Sans SC"', color: '#fff' });
   slam(zh, T('p2', '页头'), { from: 1.4 }); sfx('thud', T('p2', '页头'), { g: 0.5 });
+  const hf = h('div', 'abs', A); px(hf, 120, 660, 1440, 170); hf.dataset.name = '页头的字段';
+  const hft = capt(hf, '<b>页头里的 24 字节</b>（手册《Database Page Layout》表 66.3）', 0, 0); css(hft, { fontSize: '24px', color: 'var(--navy)' });
+  [['pd_lsn', 8], ['checksum', 2], ['flags', 2], ['pd_lower', 2, G.lower], ['pd_upper', 2, G.upper], ['special', 2], ['版本', 2], ['prune_xid', 4]].reduce((x, [nm, nb, v], i) => {
+    const c = h('div', 'abs', hf); px(c, x, 44, nb * 60 - 4, 56); css(c, { background: i === 3 || i === 4 ? 'var(--pg)' : 'var(--navy)', color: '#fff', font: '600 23px var(--mono)', textAlign: 'center', lineHeight: '56px', whiteSpace: 'nowrap', overflow: 'hidden' }); c.textContent = nm;
+    const lb = h('div', 'abs', hf, `${nb} 字节` + (v != null ? `<br><b style="color:var(--pg)">${v}</b>` : '')); px(lb, x, 108); css(lb, { font: '500 23px var(--sans)', color: 'var(--ink2)', whiteSpace: 'nowrap', lineHeight: '1.3' });
+    show(c, T('p2', '页头') + 0.3 + i * 0.06, { y: 8, d: 0.25 }); show(lb, T('p2', '页头') + 0.4 + i * 0.06, { y: 0, d: 0.25 }); return x + nb * 60;
+  }, 0);
+  show(hft, T('p2', '页头') + 0.2, { y: 8 }); gone(hf, T('p3') - 0.3, 0.3);
   const t24 = capt(A, '24 字节', ZX, ZY + ZH + 8); css(t24, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 }); show(t24, T('p2', '24'));
   // 页头记着空闲区的两头：pd_lower、pd_upper
   const pdl = capt(A, `<b>pd_lower = ${G.lower}</b>`, ZX + G.lower * Z - 250, ZY + ZH + 8); const pdu = capt(A, `<b>pd_upper = ${G.upper}</b>`, ZX + ZW - 230, ZY - 44);

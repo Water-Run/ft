@@ -92,18 +92,24 @@ scene('insert', ({ root, s, c0 }) => {
   const tR = T('i11', '根');
   slam(rt, tR, { from: 1.4 }); draw(e1, tR + 0.1, 0.3); draw(e2, tR + 0.1, 0.3); sfx('pop', tR);
   const gr = D.growth.rootAtRow;
-  const rows = tableDoc(B, ['树', '长出根，是在插入第几行时'], [['姓名树', `第 ${gr.idx_name} 行`], ['主键树', `第 ${gr.users_pkey} 行`], ['年龄树', `第 ${gr.idx_age} 行`]], 1380, 300);
+  const rows = tableDoc(B, ['树', '长出根，是在插入第几行时'], [['姓名树', `第 ${gr.idx_name} 行`], ['主键树', `第 ${gr.users_pkey} 行`], ['年龄树', `第 ${gr.idx_age} 行`]], 1380, 190);
   css(rows, { fontSize: '24px' }); show(rows, T('i11') + 0.8, { x: 20 });
   // 编号一路递增：最右边那页满了就分裂，左边那页留在九成
-  [L1, Lb, fill1, half, rt, e1, e2, full].forEach((e) => to(e, T('i12') - 0.3, { opacity: 0.35, duration: 0.4 }));
-  const row9 = h('div', 'abs', B); px(row9, 120, 720, 1700, 140); row9.dataset.name = '主键树的叶子：最右边分裂';
+  [L1, Lb, fill1, half, rt, e1, e2, full].forEach((e) => gone(e, T('i12') - 0.4, 0.35));
+  const row9 = h('div', 'abs', B); px(row9, 120, 520, 1700, 140); row9.dataset.name = '主键树的叶子：最右边分裂';
   const LW = 260, leaves9 = [];
   for (let i = 0; i < 6; i++) {
     const lf = h('div', 'page', row9); px(lf, i * (LW + 20), 0, LW, 100);
     const f = h('div', 'abs', lf); px(f, 5, 5, i < 4 ? (LW - 10) * 0.9 : 0, 84); css(f, { background: 'var(--sky-lt)' });
     lf.f = f; leaves9.push(lf);
+    if (i < 4) { const n9i = h('div', 'abs', lf, '九成'); px(n9i, 90, 28); css(n9i, { font: '700 26px "Sans SC"', color: 'var(--pg-dk)' }); }
   }
   const tr9 = T('i12');
+  // 这排叶子属于主键树：上面一个根，连线到每一页；最右边分裂出新的一页时，根下多一条线
+  const rt9 = h('div', 'node', B, '主键树的根'); px(rt9, 700, 360, 300); css(rt9, { height: '52px', lineHeight: '47px', fontSize: '26px' });
+  show(rt9, tr9 - 0.3, { y: -10 });
+  const ov9 = overlay(B);
+  for (let i = 0; i < 6; i++) { const e9 = path(ov9, `M850,412 L${120 + i * (LW + 20) + LW / 2},520`, 'dim', { w: 2, arrow: false }); draw(e9, i < 5 ? tr9 - 0.2 + i * 0.08 : T('i12', '分裂'), 0.3); }
   leaves9.slice(0, 5).forEach((lf, i) => show(lf, tr9 - 0.2 + i * 0.1, { x: -20, d: 0.25 }));
   set(leaves9[5], 0, { autoAlpha: 0 });
   to(leaves9[4].f, tr9 + 0.6, { width: LW - 10, duration: 1.0, ease: 'none' });                 // 最右边那页装满
@@ -111,11 +117,11 @@ scene('insert', ({ root, s, c0 }) => {
   set(leaves9[5], tSplit, { autoAlpha: 1 }); to(leaves9[4].f, tSplit, { width: (LW - 10) * 0.9, duration: 0.4 });
   to(leaves9[5].f, tSplit, { width: (LW - 10) * 0.1, duration: 0.4 }); sfx('thud', tSplit, { g: 0.55 });
   const n9 = h('div', 'abs', leaves9[4], '九成满'); px(n9, 70, 28); css(n9, { font: '700 26px "Sans SC"', color: 'var(--pg-dk)' }); show(n9, T('i13', '九成'), { y: 8 });
-  const lt = tagEl(B, '左边那页', 120 + 4 * (LW + 20) + 60, 680, 'navy'); css(lt, { fontSize: '24px' }); show(lt, T('i13', '左边'), { y: 8 });
+  const lt = tagEl(B, '左边那页', 120 + 4 * (LW + 20) + 60, 470, 'navy'); css(lt, { fontSize: '24px' }); show(lt, T('i13', '左边'), { y: 8 });
   // 后来的编号都更大：只往最右边加，不挤回左边
   const tL = T('i14');
-  leaves9.slice(0, 5).forEach((lf) => to(lf, tL, { opacity: 0.7, duration: 0.4 }));
+  const r9 = focusRing(B); r9.at(T('i12', '分裂'), leaves9[4]).at(T('i13', '左边'), leaves9[4]).at(tL + 0.2, leaves9[5]).off(s.end - 0.4);
   to(leaves9[5].f, tL + 0.3, { width: (LW - 10) * 0.6, duration: Tend('i14') - tL, ease: 'none' });
-  [0, 1, 2].forEach((j) => fly(B, '更大的编号', [1500, 900], [120 + 5 * (LW + 20) + 40, 740], tL + 0.2 + j * 0.6, { cls: 'navy', fs: 22, d: 0.45 }));
-  const note9 = noteBox(B, '<b>填充因子默认 90</b>　B 树在最右边扩展时，叶子只装到九成', 120, 880, 900); show(note9, T('i13', '九成') + 0.2, { y: 10 });
+  [0, 1, 2].forEach((j) => fly(B, '更大的编号', [1500, 860], [120 + 5 * (LW + 20) + 40, 540], tL + 0.2 + j * 0.6, { cls: 'navy', fs: 22, d: 0.45 }));
+  const note9 = noteBox(B, '<b>填充因子默认 90</b>　B 树在最右边扩展时，叶子只装到九成', 120, 700, 900); show(note9, T('i13', '九成') + 0.2, { y: 10 });
 });

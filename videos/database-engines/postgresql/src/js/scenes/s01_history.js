@@ -7,7 +7,7 @@ scene('history', ({ root, s, c0 }) => {
 
   // ── A：年代线。左栏是人物与 Ingres 的旁注（画面自己交代，不等旁白）；上方的名字只有一个，跟着旁白平滑地变 ──
   hdoc(A, '从伯克利的研究项目，到今天的 PostgreSQL 18', 72, 128);
-  const Y = 760, X = (yr) => 160 + (yr - 1984) * 37;                // 1984–2027 映射到 160–1751
+  const Y = 800, X = (yr) => 160 + (yr - 1984) * 37;                // 1984–2027 映射到 160–1751
   const axis = h('div', 'axis', A); px(axis, 120, Y, 1680); css(axis, { height: '4px', background: 'var(--pg)' });
   fromTo(axis, c0 + 0.1, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.9, ease: 'power2.inOut' });
   const mk = h('div', 'abs', A); px(mk, X(1986) - 14, Y - 58, 28, 58); mk.dataset.name = '年代标记';
@@ -89,7 +89,7 @@ scene('history', ({ root, s, c0 }) => {
   // 2014：图灵奖，奖章飞进斯通布雷克的人物卡
   node(2014, '图灵奖<br>（2014 年度）', T('h10') - 0.5, false, -50);
   goto(2014, T('h10') - 0.5);
-  const medal = fly(A, '2014 年度图灵奖', [X(2014) - 90, Y + 140], [400, 208], T('h10', '授给'), { cls: 'warn', fs: 26, d: 0.9, stay: true });
+  const medal = fly(A, '2014 年度图灵奖', [X(2014) - 90, Y + 90], [400, 208], T('h10', '授给'), { cls: 'warn', fs: 26, d: 0.9, stay: true });
   sfx('chime', T('h10', '授给') + 1.0, { g: 0.6 });
 
   // ── B：SQL:2023 的核心部分 177 项；PostgreSQL 至少 170；各家公布的情况 ──
@@ -118,7 +118,7 @@ scene('history', ({ root, s, c0 }) => {
     ['SQL Server', '官方文档只覆盖到 2012 版'],
     ['MySQL 8.4', '只有总体说明，没有逐项清单'],
   ], 960, 500, { hl: [0] });
-  css(cmp, { fontSize: '24px' });
+  css(cmp, { fontSize: '24px' }); set(cmp, 0, { autoAlpha: 0 }); set(cmp, T('h15') + 0.35, { autoAlpha: 1 });
   show(cmpT, T('h15') + 0.3, { y: 10 });
   [...cmp.querySelectorAll('tr')].forEach((r, i) => show(r, T('h15') + 0.4 + i * 0.3, { x: 20, y: 0, d: 0.35 }));
   sfx('tick', T('h15') + 0.5, { g: 0.4 });

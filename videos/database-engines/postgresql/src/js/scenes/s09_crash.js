@@ -72,7 +72,7 @@ scene('crash', ({ root, s, c0 }) => {
   set(tBot, T('w12', '恢复'), { background: 'var(--sky-lt)', border: '3px solid var(--pg)' });
   keyed(tl1).at(T('w12', '恢复'), { html: '用日志里的整页写回：恢复' }); set(tl1, T('w12', '恢复'), { color: 'var(--navy)' }); sfx('chime', T('w12', '恢复'), { g: 0.6 });
   const fA = focusRing(A);
-  fA.at(T('w2', 'WAL'), walG).at(T('w3', '落盘'), tape).at(T('w4', '提交之前'), [72 + 4 * 222, 370, 4 * 222, 80]).at(T('w4', '内存'), mem).at(T('w6', '旧的'), dskP).at(T('w7', '晚些'), bufP).at(T('w8', '检查点'), cpG).at(T('w10', '整页'), big).at(T('w11', '断电'), dskP).at(T('w11', '一半'), torn).off(tB - 0.4);
+  fA.at(T('w2', 'WAL'), walG).at(T('w3', '落盘'), tape).at(T('w4', '提交之前'), [72 + 4 * 222, 370, 4 * 222, 80]).at(T('w4', '内存'), mem).at(T('w6', '旧的'), dskP).at(T('w7', '晚些'), bufP).at(T('w8', '检查点') + 0.2, cpG).at(T('w9', '之前'), [72, 370, 444, 110]).at(T('w10', '整页'), big).at(T('w11', '断电'), dskP).at(T('w11', '一半'), torn).off(tB - 0.4);
 
   // ── B：强行停机，再启动 ──
   hdoc(B, '试一次：强行停机', 72, 128);
@@ -118,5 +118,5 @@ scene('crash', ({ root, s, c0 }) => {
   hide(nv, T('w22') - 0.1, { d: 0.25 });
   const pgT = tagEl(B, 'PostgreSQL：不用撤', 1000, 820); show(pgT, T('w23'), { y: 8 }); sfx('thud', T('w23'), { g: 0.6 });
   const fB = focusRing(B);
-  fB.at(T('w16', '没有正常关闭'), logBox).at(T('w17', '重放'), rp).at(T('w18', '43'), res.querySelectorAll('tr')[1]).at(T('w19', '51'), res.querySelectorAll('tr')[2]).at(T('w19', '99'), sb).at(T('w19', '不见了'), res.querySelectorAll('tr')[2]).at(T('w20', '页里'), cv).at(T('w21b'), nv).at(T('w22', 'undo'), inn).at(T('w23', '不用撤'), pgT).at(T('w23b', '没提交'), cv).at(T('w23b', '看不见'), [1000, 760, 840, 100]).off(Tend('w23b') + 0.6);
+  fB.at(T('w16', '没有正常关闭'), logBox).at(T('w17', '重放'), rp).at(T('w18', '43'), res.querySelectorAll('tr')[1]).at(T('w19', '51'), res.querySelectorAll('tr')[2]).at(T('w19', '99'), sb).at(T('w19', '不见了'), res.querySelectorAll('tr')[2]).at(T('w20', '页里'), cv).at(T('w21b'), nv).at(T('w22'), inn).at(T('w23', '不用撤'), pgT).at(T('w23b', '没提交'), cv).at(T('w23b', '看不见'), [1000, 760, 840, 100]).off(Tend('w23b') + 0.6);
 });

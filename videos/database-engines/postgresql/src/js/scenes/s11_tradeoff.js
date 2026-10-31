@@ -33,7 +33,7 @@ scene('tradeoff', ({ root, s, c0 }) => {
   const gain = tagEl(A, '换来的', 290, 790, 'ok'); show(gain, T('t9'), { x: -10 }); sfx('chime', T('t10', '撤销'), { g: 0.6 });
 
   const fA = focusRing(A);
-  fA.at(T('t2', '一棵树'), EA[0]).at(T('t3', '索引'), EB[0]).at(T('t4', '名字'), EB[1]).at(T('t5', '原位改'), EA[2]).at(T('t6', '新版本'), EB[2]).at(T('t6', '每个索引'), EA[3]).at(T('t7', '清理'), EB[3])
+  fA.at(T('t2', '一棵树'), EA[0]).at(T('t3', '索引'), EB[0]).at(Math.max(T('t4', '名字'), T('t4') + 0.9), EB[1]).at(T('t5', '原位改'), EA[2]).at(T('t6', '新版本'), EB[2]).at(T('t6', '每个索引'), EA[3]).at(T('t7', '清理'), EB[3])
     .at(T('t8', '越积越多'), tail).at(T('t9', '读写'), EB[4]).at(T('t10', '撤销'), EB[4]).off(tB - 0.4);
   // ── B：四十年后；第二名是 SQLite ──
   hdoc(B, '2026 年开发者调查 · 勾选最多的数据库', 72, 128);
