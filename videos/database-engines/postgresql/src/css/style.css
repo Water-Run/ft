@@ -28,10 +28,6 @@ body { font-family: var(--sans); color: var(--ink); }
 .chlabel { position: absolute; right: 72px; top: 24px; font: 600 28px var(--sans); color: var(--hi); text-align: right; white-space: nowrap; }
 
 /* 章节卡：整屏 Pg 蓝 */
-.chap2 { position: absolute; left: 72px; top: 790px; display: flex; align-items: baseline; gap: 22px; background: var(--pg); color: #fff; padding: 14px 34px 16px 28px; box-shadow: 0 6px 24px rgba(25,49,69,.18); z-index: 6; }
-.chap2 .no { font: 800 64px var(--sans); color: rgba(255,255,255,.55); letter-spacing: -1px; }
-.chap2 .ti { font: 800 54px "Sans SC", sans-serif; }
-.chap2 .q { font: 600 28px "Sans SC", sans-serif; color: #e8f1f8; margin-left: 10px; }
 .chapter { position: absolute; left: 0; right: 0; top: 88px; bottom: 0; background: var(--pg); }
 .chapter .no { position: absolute; left: 160px; top: 162px; font: 800 220px var(--sans); color: #fff; opacity: .22; letter-spacing: -4px; }
 .chapter .ti { position: absolute; left: 170px; top: 412px; font: 800 100px "Sans SC", sans-serif; color: #fff; }

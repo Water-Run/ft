@@ -65,16 +65,18 @@ window.ENGINE = {
         k.o.style.opacity = v; k.d.style.opacity = 1 - v;   // 亮的那层盖上来时，暗的那层同时退掉（两层字不同时可见）
       }
     });
-    // 章节标题：不再整屏盖住画面，改成左下角一条标题，画面照常在动（WaterRun 看 r8：「你还是做PPT的思路, 而不是视频, 最直接的就是画面缺乏连续性」）
+    // 章节卡：整屏 Pg 蓝，从左刷入，停留，向右收走——与前两集一样整屏（WaterRun 看 r9 前：「每个幕的切换展示还是和前两期一样, 全屏的哈, 不是一个小块」）
     for (const s of L.scenes) {
       if (!s.chap) continue;
-      const card = h('div', 'chap2', hud, `<span class="no">${s.chap[0]}</span><span class="ti">${esc(s.chap[1])}</span><span class="q">${esc(CHAPTER_Q[s.id] || '')}</span>`);
-      const t0 = s.start + 0.1, t1 = s.start + s.lead + 0.2;
-      wipe(card, t0, { dir: 'l', d: 0.45 }); wipeOut(card, t1, { dir: 'l', d: 0.4 });
-      sfx('whoosh', t0, { g: 0.35 }); sfx('thud', t0 + 0.4, { g: 0.4 });
+      const card = h('div', 'chapter', hud,
+        `<div class="no">${s.chap[0]}</div><div class="ti">${esc(s.chap[1])}</div>` +
+        `<div class="q">${esc(CHAPTER_Q[s.id] || '')}</div><div class="ru"></div>`);
+      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.45;
+      wipe(card, t0, { dir: 'l', d: 0.4 }); wipeOut(card, t1, { dir: 'r', d: 0.4 });
+      sfx('whoosh', t0, { g: 0.45 }); sfx('thud', t0 + 0.36, { g: 0.55 });
     }
   },
-  // 场与场之间交叉淡变 0.7 秒（不硬切、不靠整屏色块遮）：前一场的最后一屏与后一场的第一屏按同样的位置摆放，淡变时像同一个画面在继续
+  // 场与场之间交叉淡变 0.7 秒：有章节卡的地方切换藏在章节卡后面；开场到第一章、片尾之间也不硬切
   after() {
     const XF = 0.7;
     L.scenes.forEach((s, i) => {

@@ -1,8 +1,10 @@
-// 09 出错怎么办：WAL 先落盘、数据页晚写（W1–W3）；检查点与整页写（W4、W5、W10）→ 强行停机后重放；没提交的版本本来就看不见（W7–W9）
+// 09 出错怎么办（第 3 稿：整章一个画面，强行停机的实验沿用前半段的日志带与两页）：WAL 先落盘、数据页晚写（W1–W3）；检查点与整页写（W4、W5、W10）→ 强行停机后重放；没提交的版本本来就看不见（W7–W9）
 scene('crash', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const tB = Tend('w12b') + 0.5;
-  const [A, B] = screens(world, [c0, tB, s.end]);
+  // 整章一个画面：后半段（强行停机的实验）叠在同一张画面上接着演，日志带、内存里的页、磁盘上的页都不换（WaterRun 看 r8：「画面缺乏连续性」）
+  const A = h('div', 'abs', world); px(A, 0, 0, 1920, 1080); tl.fromTo(A, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: true }, Math.max(0, c0 - 1.8));
+  const B = h('div', 'abs', world); px(B, 0, 0, 1920, 1080); tl.fromTo(B, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: true }, tB - 0.3);
   drift(world, s, [tB], -1);
   const W = D.wal;
 
@@ -102,53 +104,68 @@ scene('crash', ({ root, s, c0 }) => {
   fA.at(T('w2', 'WAL'), walG).at(T('w3', '落盘'), tape).at(T('w4', '提交之前'), [72 + 4 * 222, 370, 4 * 222, 80]).at(T('w4', '内存'), mem).at(T('w6', '旧的'), dskP).at(T('w7', '晚些'), bufP).at(T('w8', '检查点') + 0.2, cpG).at(T('w9', '之前'), [72, 370, 444, 110])
     .at(T('w10', '第一次改'), recEls[2]).at(T('w11', '断电'), dskP).at(T('w11', '一半'), torn).off(tI - 0.2);
 
-  // ── B：强行停机，再启动 ──
-  hdoc(B, '试一次：强行停机', 72, 128);
-  const tk = term(B, 72, 196, 900, 4, { fs: 23, lh: 36, name: 'psql 会话' });
-  const l1 = `<span class="p">carol=*&gt;</span> <span class="k">UPDATE</span> users <span class="k">SET</span> age = 99 <span class="k">WHERE</span> id = 2049;  <span class="d">-- 不提交</span>`;
-  const l2 = `<span class="p">alice=&gt;</span> <span class="k">UPDATE</span> users <span class="k">SET</span> age = 43 <span class="k">WHERE</span> id = 2050;  <span class="d">-- 提交</span>`;
-  const l3 = `<span class="er">$ pg_ctl stop -m immediate</span>  <span class="d">-- 强行停掉</span>`;
-  const body = (s) => s.replace(/^<span class="p">[^<]*<\/span> /, '');
-  tk.type(T('w13') - 0.2, body(l1), 'carol=*&gt;', 45);
-  tk.type(T('w14') - 0.1, body(l2), 'alice=&gt;', 45);
-  tk.print(T('w15', '停掉') - 0.1, l3);
-  const stL = tagEl(B, '停机前，表里的这两行', 1000, 190, 'navy'); css(stL, { fontSize: '28px' });
-  const sb = h('div', 'tup', B, 'Bob → 99　没提交'); px(sb, 1000, 250, 520); css(sb, { borderStyle: 'dashed', borderColor: 'var(--warn)' });
-  const sa = h('div', 'tup new', B, 'Alice → 43　已提交'); px(sa, 1000, 320, 520);
-  const off = tagEl(B, '强行停机', 1000, 380, 'warn'); css(off, { fontSize: '34px' }); slam(off, T('w15', '停掉'), { from: 1.2 });
-  show(stL, T('w13') + 0.2, { y: 8 }); show(sb, T('w13', '99'), { x: 20 }); show(sa, T('w14', '提交'), { x: 20 }); sfx('pop', T('w14', '提交'), { g: 0.4 });
-  sfx('blip', T('w13'), { g: 0.5 }); sfx('blip', T('w14'), { g: 0.5 }); sfx('error', T('w15', '停掉'), { g: 0.7 });
-  // 重启日志：逐行出现，旁边给中文释义
+  // ── B（同一个画面接着演）：强行停机的实验，用的就是上面那条日志带上的记录——Carol 改 Bob（不提交）、Alice 改成 43（提交）。
+  // 强行停机：内存里的页全丢，磁盘上的页还是旧的；重启：从检查点起沿日志带重放，内存里的页一行行回来；没提交的 99 也回来了，但谁都看不见（W7、W8）
+  const tB0 = tB - 0.3;
+  [walG, tapeL, torn, dwb, ovI, bufR, A.querySelector('.h2')].forEach((e) => gone(e, tB0, 0.4));
+  const headB = hdoc(B, '试一次：强行停机', 72, 128); set(headB, 0, { autoAlpha: 0 }); show(headB, tB0 + 0.2, { y: 8 });
+  const tk = term(B, 1000, 196, 848, 3, { fs: 22, lh: 34, name: 'psql 会话' });
+  tk.type(T('w13') - 0.2, '<span class="k">UPDATE</span> users <span class="k">SET</span> age = 99 <span class="k">WHERE</span> id = 2049;', 'carol=*&gt;', 45);
+  tk.type(T('w14') - 0.1, '<span class="k">UPDATE</span> users <span class="k">SET</span> age = 43 <span class="k">WHERE</span> id = 2050;', 'alice=&gt;', 45);
+  tk.print(T('w15', '停掉') - 0.1, '<span class="er">$ pg_ctl stop -m immediate</span>  <span class="d">-- 强行停掉</span>');
+  keyed(bufL).at(tB0, { html: '内存里的页' }); keyed(dskL).at(tB0, { html: '磁盘上（数据文件里）的页' });
+  // 日志带上的这几条：先是 Carol 改 Bob（不提交），再是 Alice 改成 43、提交
+  const recHi = (i, t) => fromTo(recEls[i], t, { boxShadow: 'inset 0 0 0 0px #e0a11b' }, { boxShadow: 'inset 0 0 0 6px #e0a11b', duration: 0.2 });
+  [2, 3].forEach((i) => recHi(i, T('w13', 'Carol') - 0.1)); [4, 5, 6, 7].forEach((i, k) => recHi(i, T('w14', '提交') - 0.4 + k * 0.1));
+  const mRow = (y, html, cls) => { const r = h('div', 'tup ' + cls, B, html); px(r, 88, y, 800); if (cls === 'ghost') css(r, { borderColor: 'var(--warn)', color: 'var(--warn)' }); return r; };
+  const mB = mRow(574, 'Bob → 99　（Carol 改的，没提交）', 'ghost'), mA = mRow(624, 'Alice → 43　（已提交）', 'new');
+  [mB, mA].forEach((e) => set(e, 0, { autoAlpha: 0 }));
+  tl.fromTo(mB, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T('w13', '99') - 0.1);
+  tl.fromTo(mA, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T('w14', '提交') - 0.1);
+  sfx('pop', T('w13', '99'), { g: 0.4 }); sfx('pop', T('w14', '提交'), { g: 0.4 });
+  // 强行停机：内存里的页一下全丢
+  const off = tagEl(B, '强行停机', 760, 470, 'warn'); css(off, { fontSize: '34px' }); set(off, 0, { autoAlpha: 0 }); slam(off, T('w15', '停掉'), { from: 1.3 }); sfx('error', T('w15', '停掉'), { g: 0.7 });
+  const tOff = T('w15', '停掉') + 0.15;
+  [mB, mA].forEach((e) => set(e, tOff, { autoAlpha: 0 }));
+  const lost = h('div', 'abs', B, '<div style="position:absolute;left:24px;top:38px;font:700 28px var(--sans);color:#4d565e">内存里的全丢了</div>'); px(lost, 72, 560, 840, 120);
+  css(lost, { background: 'repeating-linear-gradient(135deg,#eceff1 0 10px,#fff 10px 20px)', border: '3px dashed var(--grey)' }); lost.dataset.name = '内存里的页丢了';
+  set(lost, 0, { autoAlpha: 0 }); set(lost, tOff, { autoAlpha: 1 });
+  const keep = tagEl(B, '磁盘上的还在（还是旧的）', 1000, 690, 'navy'); css(keep, { fontSize: '24px' }); set(keep, 0, { autoAlpha: 0 }); show(keep, tOff + 0.3, { y: -6 });
+  hide(off, T('w16') + 0.4, { d: 0.25 });
+  // 重启日志：在下面逐行出现，旁边给中文释义
   const notes = ['上次运行被中断了', '没有正常关闭：自动恢复', '从这里开始重放日志', '重放完毕', '可以接受连接了'];
-  const logBox = h('div', 'abs', B); px(logBox, 72, 440, 1776, 300); logBox.dataset.name = '重启日志';
+  const logBox = h('div', 'abs', B); px(logBox, 72, 744, 1776, 186); logBox.dataset.name = '重启日志';
   const times = [T('w16'), T('w16', '没有正常关闭'), T('w17', '检查点'), T('w17', '重放'), Tend('w17')];
   W.recovery.forEach((ln, i) => {
     const txt = ln.replace(/^LOG:\s+/, '').replace(/ system usage:.*$/, '').replace(/; last known up at .*$/, '');
-    const r = h('div', 'abs', logBox, `<span class="mono" style="font:500 22px 'Mono';color:var(--ink)">${esc(txt)}</span>`); px(r, 0, i * 56, 1100);
-    const n = h('div', 'abs cap', logBox, notes[i]); px(n, 1140, i * 56); css(n, { color: 'var(--pg)', fontWeight: 700 });
+    const r = h('div', 'abs', logBox, `<span class="mono" style="font:500 22px var(--mono);color:var(--ink)">${esc(txt)}</span>`); px(r, 0, i * 36, 1100);
+    const n = h('div', 'abs cap', logBox, notes[i]); px(n, 1140, i * 36); css(n, { color: 'var(--pg)', fontWeight: 700, fontSize: '22px' });
     appear(r, times[i]); show(n, times[i] + 0.1, { x: -10 }); sfx('blip', times[i], { g: 0.35 });
   });
-  // 重放：从检查点起，把日志一条条再做一遍
-  const rp = h('div', 'abs', B); px(rp, 72, 724, 1100, 22); css(rp, { border: '2px solid var(--pg)' }); rp.dataset.name = '重放进度';
-  const walRef = h('div', 'abs', B); px(walRef, 72, 724, 1100, 22); css(walRef, { background: 'repeating-linear-gradient(90deg,var(--sky-lt) 0 60px,#fff 60px 64px)', border: '2px solid var(--pg)', transformOrigin: '0 0' }); walRef.dataset.name = '日志带';
-  const walRefL = capt(B, '<b>WAL</b>（停机前已落盘的日志）', 72, 686); css(walRefL, { fontSize: '24px' });
-  tl.fromTo(walRef, { autoAlpha: 1, y: 370 - 724, scaleX: 1776 / 1100, scaleY: 72 / 22 }, { y: 0, scaleX: 1, scaleY: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tB - 0.3); show(walRefL, tB + 0.4, { y: 6 });   // 上一段的日志带滑下来
-  [walRef, walRefL].forEach((e) => hide(e, T('w17', '检查点') - 0.15, { d: 0.2 }));   // 重放条接着在同一位置填满
-  const rpf = h('div', 'abs', rp); px(rpf, 0, 0, 0, 18); css(rpf, { background: 'var(--pg)' });
-  show(rp, T('w17', '检查点'), { y: 0 }); fromTo(rpf, T('w17', '检查点'), { width: 0 }, { width: 1096, duration: Tend('w17') - T('w17', '检查点'), ease: 'none' });
-  const rpl = capt(B, '从检查点起重放日志', 1190, 716); css(rpl, { fontSize: '24px', color: 'var(--pg)', fontWeight: 700 }); show(rpl, T('w17', '检查点'), { x: -10 });
-  [rp, rpl].forEach((e) => hide(e, T('w18') - 0.1, { d: 0.25 }));
-  // 结果
+  hide(logBox, T('w18') - 0.2, { d: 0.3 });
+  // 重放：从检查点起，沿着日志带扫过去；内存里的页一行行回来——没提交的 99 也回来了
+  const cpX = 72 + 2 * 222, endX = 72 + 8 * 222;
+  const sweep = h('div', 'abs', B); px(sweep, cpX, 366, 0, 88); css(sweep, { background: 'rgba(255,200,60,.35)', border: '3px solid #e0a11b' }); sweep.dataset.name = '重放';
+  const tR0 = T('w17', '检查点') - 0.1, tR1 = Math.max(tR0 + 1.2, Tend('w17'));
+  set(sweep, 0, { autoAlpha: 0 }); set(sweep, tR0, { autoAlpha: 1 }); fromTo(sweep, tR0, { width: 0 }, { width: endX - cpX, duration: tR1 - tR0, ease: 'none', immediateRender: false }); gone(sweep, T('w18') - 0.1, 0.3);
+  const rpl = tagEl(B, '从检查点起重放日志', cpX + 20, 300, ''); css(rpl, { fontSize: '24px' }); set(rpl, 0, { autoAlpha: 0 }); show(rpl, tR0, { y: 8 }); hide(rpl, T('w18') - 0.1, { d: 0.25 });
+  set(lost, T('w17', '重放') + 0.2, { autoAlpha: 0 });
+  const mB2 = mRow(574, 'Bob → 99　（Carol 改的）', 'ghost'), mA2 = mRow(624, 'Alice → 43', 'new');
+  [mB2, mA2].forEach((e) => set(e, 0, { autoAlpha: 0 }));
+  tl.fromTo(mB2, { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T('w17', '重放') + 0.2);
+  tl.fromTo(mA2, { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T('w17', '重放') + 0.6);
+  // 结果：提交过的都在；没提交的 99，查不到
   const A2 = W.after;
   const res = tableDoc(B, ['', '年龄', ''], [['Alice', String(A2.alice.age), '提交过的：在'], ['Bob', String(A2.bob.age), 'Carol 没提交的 99：不见了']], 72, 760, { mono: [1] });
-  css(res, { fontSize: '24px' });
+  css(res, { fontSize: '24px' }); set(res, 0, { autoAlpha: 0 });
   show(res, T('w18'), { y: 10 }); sfx('chime', T('w18', '都在'), { g: 0.6 }); classAt(res.querySelectorAll('tr')[2], 'hl', T('w19', '不见了'));
-  const cv = h('div', 'tup dead', B, 'Carol 写的版本还在页里：99'); px(cv, 1000, 760, 840); keyed(cv).at(T('w21', '没有提交'), { html: 'Carol 写的版本还在页里：99　事务没提交' }).at(T('w21', '已中止'), { html: 'Carol 写的版本还在页里：99　状态「已中止」' });
-  show(cv, T('w20', '页里'), { x: 20 }); sfx('pop', T('w20', '页里'), { g: 0.5 });
-  const nv = tagEl(B, '谁都看不见', 1000, 820, 'warn'); show(nv, T('w21b'), { y: 8 });
-  const inn = noteBox(B, '<b>InnoDB</b>　重启后要用 undo 把没提交的修改撤回去', 1000, 880, 840, 'grey'); show(inn, T('w22'), { y: 10 });
-  hide(nv, T('w22') - 0.1, { d: 0.25 });
-  const pgT = tagEl(B, 'PostgreSQL：不用撤', 1000, 820); show(pgT, T('w23'), { y: 8 }); sfx('thud', T('w23'), { g: 0.6 });
+  // 其实 99 那一版就在页里：事务已中止，谁都看不见
+  const inPg = tagEl(B, '其实 99 那一版就在页里', 88, 690, 'warn'); css(inPg, { fontSize: '24px' }); set(inPg, 0, { autoAlpha: 0 }); show(inPg, T('w20', '页里') - 0.1, { y: -6 }); sfx('pop', T('w20', '页里'), { g: 0.5 });
+  keyed(inPg).at(T('w21', '已中止') - 0.1, { html: '它的事务：已中止' }).at(T('w21b') - 0.1, { html: '谁都看不见' });
+  set(mB2, T('w21b') - 0.1, { opacity: 0.4 });
+  const inn = noteBox(B, '<b>InnoDB</b>　重启后要用 undo 把没提交的修改撤回去', 1000, 790, 840, 'grey'); show(inn, T('w22'), { y: 10 });
+  const pgT = tagEl(B, 'PostgreSQL：不用撤，没提交的本来就看不见', 1000, 870); css(pgT, { fontSize: '24px' }); show(pgT, T('w23'), { y: 8 }); sfx('thud', T('w23'), { g: 0.6 });
+  hide(keep, T('w22') - 0.2, { d: 0.25 });
   const fB = focusRing(B);
-  fB.at(T('w16', '没有正常关闭'), logBox).at(T('w17', '重放'), rp).at(T('w18', '43'), res.querySelectorAll('tr')[1]).at(T('w19', '51'), res.querySelectorAll('tr')[2]).at(T('w19', '99'), sb).at(T('w19', '不见了'), res.querySelectorAll('tr')[2]).at(T('w20', '页里'), cv).at(T('w21b'), nv).at(T('w22'), inn).at(T('w23', '不用撤'), pgT).at(T('w23b', '没提交'), cv).at(T('w23b', '看不见'), [1000, 760, 840, 100]).off(Tend('w23b') + 0.6);
+  fB.at(T('w16', '没有正常关闭'), logBox).at(T('w18', '43'), res.querySelectorAll('tr')[1]).at(T('w19', '51'), res.querySelectorAll('tr')[2]).at(T('w20', '页里'), mB2).off(T('w22') - 0.2);
 });

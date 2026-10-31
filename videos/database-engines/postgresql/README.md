@@ -6,7 +6,7 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 2026-10-31 预览 r9：按 WaterRun 看 r7 后要求的「完整大改」重做——文案第 3 稿（层层递进、先问题后名字、可见性图挪到 VACUUM 之后；指纹 `95f123f7…`，WaterRun 回答「你自己对抗审查」，制作方自查后配音），画面改成一章一个连续的画面（章节标题不再整屏、场间交叉淡变；第 23 页摊成字节表；事务号数轴上的「范围」贯穿第三到第八章），配乐各章对齐同一张节拍网格。改了什么见 [review/NOTES.md](review/NOTES.md)「r9 进行中」。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
+| 当前停在哪里 | 2026-10-31 预览 r9：按 WaterRun 看 r7 后要求的「完整大改」重做——文案第 3 稿（层层递进、先问题后名字、可见性图挪到 VACUUM 之后；指纹 `95f123f7…`，WaterRun 回答「你自己对抗审查」，制作方自查后配音），画面改成一章一个连续的画面（章节卡仍为整屏；第 23 页摊成字节表；事务号数轴上的「范围」贯穿第三到第八章），配乐各章对齐同一张节拍网格。改了什么见 [review/NOTES.md](review/NOTES.md)「r9 进行中」。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
 | 下一步，依赖什么 | WaterRun 看预览 r9；按意见改；正式渲染与交付检查 |
 | 等待策划者的事 | 看预览 r9（`out/zh/preview-r9.mp4`）。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
