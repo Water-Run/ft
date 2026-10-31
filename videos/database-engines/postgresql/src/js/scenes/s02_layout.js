@@ -125,8 +125,8 @@ scene('layout', ({ root, s, c0 }) => {
     const t = Tr[c.key], n = t.pages, tw = c.tw || (c.w / n), gap = c.tw ? 4 : 1;
     c.t = t; c.tw = tw;
     // 文件：一排页（第 0 页元数据，第 3 页根，其余是叶子）
-    const lab = tagEl(B, `${c.name} · ${c.how}`, c.x, FY + FH + 16, ci === 0 ? '' : 'navy'); css(lab, { fontSize: '26px' });
-    show(lab, T('l12', c.word), { y: 10 }); keyed(lab).at(T('l13', '文件') + ci * 0.1, { html: `${c.name} · ${FL[c.key].path} · ${n} 页` });
+    const lab = tagEl(B, `${c.name} · ${FL[c.key].path} · ${n} 页`, c.x, FY + FH + 16, ci === 0 ? '' : 'navy'); css(lab, { fontSize: '26px' });
+    show(lab, T('l13', '文件') + ci * 0.1, { y: 10 });
     const tiles = [];
     for (let k = 0; k < n; k++) {
       const g = h('div', 'abs', B); px(g, c.x + k * tw, FY, tw - gap, FH); css(g, { border: '1.5px dashed var(--sky)', background: '#fff' });
@@ -139,6 +139,18 @@ scene('layout', ({ root, s, c0 }) => {
     c.tiles = tiles; c.meta = meta;
   });
   sfx('tick', T('l13', '文件'), { g: 0.5 });
+  // 逻辑上：users 表的三列，每敲完一句，就在那一列挂上它的索引（主键自带，另两个是另外建的）；讲到「文件」时，每个索引落到自己的文件
+  const sch = h('div', 'abs', B); px(sch, 560, 360, 380); css(sch, { border: '3px solid var(--pg)', background: '#fff' }); sch.dataset.name = 'users 表';
+  const sh = h('div', '', sch, 'users'); css(sh, { background: 'var(--pg)', color: '#fff', font: '700 30px var(--mono)', padding: '8px 18px' });
+  const colRows = ['id', 'name', 'age'].map((c) => { const r = h('div', '', sch, c); css(r, { font: '500 30px var(--mono)', padding: '8px 18px', borderTop: '1.5px solid var(--line)', color: 'var(--ink)' }); return r; });
+  show(sch, T('l12') - 0.3, { y: 12 });
+  const att = COL.map((c, ci) => {
+    const a = tagEl(B, `${c.name} · ${c.how}`, 970, 418 + ci * 49, ci === 0 ? '' : 'navy'); css(a, { fontSize: '26px' });
+    slam(a, T('l12', c.word), { from: 1.25 }); sfx('tick', T('l12', c.word), { p: ci * 0.2 });
+    const ln = curve(ovB, [1180, 440 + ci * 49], [c.x + c.w / 2, FY], ci === 0 ? 'accent' : 'navy', { w: 3, bend: 600 }); arrowIn(ln, T('l13', '文件') + ci * 0.1, 0.5);
+    return [a, ln];
+  });
+  [sch, ...att.flat()].forEach((x) => gone(x, T('l13b') - 0.35, 0.3));
   gone(tdd.el, T('l13b') - 0.4);
   // 都是一棵 B 树：根页、叶子页从文件里飞起来，按键的顺序排成树；文件里留下原位，用细线连着
   const tFly = T('l13b') - 0.1;
@@ -182,72 +194,92 @@ scene('layout', ({ root, s, c0 }) => {
   // ── B2：叶子里存的是「键 → 行的地址」；按地址去堆里取行 ──
   hdoc(B2, '叶子里：键 → 行的地址', 72, 128);
   const [P2, L2] = [P, LP], pkK2 = Tr.users_pkey.keyInts;
-  const strip = heapStrip(B2, 90, 640, { w: 33, gap: 4, h: 110, labels: [0, P2, 46] });
-  const stripL = capt(B2, `<b>堆</b>（users 的文件）`, 90, 600); css(stripL, { fontSize: '26px' });
+  const strip = heapStrip(B2, 90, 690, { w: 33, gap: 4, h: 110, labels: [0, P2, 46] });
+  const stripL = capt(B2, `<b>堆</b>（users 的文件）`, 90, 650); css(stripL, { fontSize: '26px' });
   show(strip, T('l18') - 0.2, { y: 10 }); show(stripL, T('l18') - 0.2);
   const zoom = (x, y, title, items, t) => {
-    const b = h('div', 'abs', B2); px(b, x, y, 680); css(b, { border: '3px solid var(--pg)', background: '#fff' }); b.dataset.name = title;
-    const hd = h('div', '', b, title); css(hd, { background: 'var(--pg)', color: '#fff', font: '700 26px "Sans SC"', padding: '8px 18px' });
-    const rows = items.map((it) => { const r = h('div', '', b, it); css(r, { font: '600 28px var(--mono)', padding: '8px 18px', color: 'var(--navy)', borderTop: '1.5px solid var(--line)' }); return r; });
+    const b = h('div', 'abs', B2); px(b, x, y, 820); css(b, { border: '3px solid var(--pg)', background: '#fff' }); b.dataset.name = title;
+    const hd = h('div', '', b, title); css(hd, { background: 'var(--pg)', color: '#fff', font: '700 30px "Sans SC"', padding: '8px 20px' });
+    const rows = items.map((it) => { const r = h('div', '', b, it); css(r, { font: '600 34px var(--mono)', padding: '8px 20px', color: 'var(--navy)', borderTop: '1.5px solid var(--line)' }); return r; });
     wipe(b, t, { dir: 'l', d: 0.4 }); return { b, rows };
   };
-  const zp = zoom(90, 210, `主键树：${pkK2[Tr.users_pkey.aliceLeafPos]} 起的那页叶子`, [`2049 → (${P2},${L2 - 1})`, `2050 → (${P2},${L2})`, `2051 → (${P2},${L2 + 1})`], T('l18', '键') - 0.1);
+  const zp = zoom(72, 200, `主键树：${pkK2[Tr.users_pkey.aliceLeafPos]} 起的那页叶子`, [`2049 → (${P2},${L2 - 1})`, `2050 → (${P2},${L2})`, `2051 → (${P2},${L2 + 1})`], T('l18', '键') - 0.1);
   const tK = T('l19', '2050');
   set(zp.rows[1], tK, { backgroundColor: '#336791', color: '#fff' }); sfx('tick', tK, { p: -0.4 });
   const pageX = 90 + P2 * 37 + 16;
   const ovB2 = overlay(B2);
-  const a1 = curve(ovB2, [770, 330], [pageX, 640], 'warn', { w: 4, bend: 470 }); arrowIn(a1, T('l19', '23') - 0.2, 0.5);
+  const a1 = curve(ovB2, [892, 339], [pageX, 690], 'warn', { w: 4, bend: 520 }); arrowIn(a1, T('l19', '23') - 0.2, 0.5);
   classAt(strip.pages[P2], 'hl', T('l19', '23')); sfx('tick', T('l19', '23'));
-  const zn = zoom(1080, 210, '姓名树：最左边那页叶子', [`Alice → (${P2},${L2})`, 'User00001 → (0,1)', 'User00002 → (0,2)'], T('l20') - 0.3);
+  const zn = zoom(1028, 200, '姓名树：最左边那页叶子', [`Alice → (${P2},${L2})`, 'User00001 → (0,1)', 'User00002 → (0,2)'], T('l20') - 0.3);
   set(zn.rows[0], T('l20', 'Alice'), { backgroundColor: '#336791', color: '#fff' }); sfx('tick', T('l20', 'Alice'));
-  const a2 = curve(ovB2, [1080, 288], [pageX + 10, 640], 'warn', { w: 4, bend: 520 }); arrowIn(a2, T('l20', '这个地址') - 0.2, 0.5); sfx('tick', T('l20', '这个地址'));
-  const sameB = tagEl(B2, '两棵树，同一个地址', 800, 470, 'warn'); css(sameB, { fontSize: '28px' }); show(sameB, T('l20', '这个地址') + 0.2, { y: 8 });
-  // 按地址去堆里取行
-  fly(B2, `(${P2},${L2})`, [820, 520], [pageX - 50, 600], T('l20b', '地址') - 0.2, { cls: 'navy', fs: 26, d: 0.6 });
-  const got = h('div', 'tup new', B2, '取出：2050  Alice  42'); px(got, pageX - 190, 800, 400); css(got, { height: '52px', lineHeight: '48px', fontSize: '28px' });
-  show(got, T('l20b', '取行'), { y: -30, d: 0.5 }); sfx('pop', T('l20b', '取行'), { g: 0.6 });
-  const up = link(ovB2, [[pageX, 756], [pageX, 796]], 'navy'); arrowIn(up, T('l20b', '取行') - 0.1, 0.3);
+  const a2 = curve(ovB2, [1028, 281], [pageX + 10, 690], 'warn', { w: 4, bend: 560 }); arrowIn(a2, T('l20', '这个地址') - 0.2, 0.5); sfx('tick', T('l20', '这个地址'));
+  const sameB = tagEl(B2, '两棵树，同一个地址', 780, 470, 'warn'); css(sameB, { fontSize: '30px' }); show(sameB, T('l20', '这个地址') + 0.2, { y: 8 }); hide(sameB, T('l20b') - 0.1, { d: 0.25 });
+  // 按地址去堆里取行：地址落到第 23 页，这一页展开，第 26 个指针指向那一行，整行取出来
+  fly(B2, `(${P2},${L2})`, [900, 520], [pageX - 50, 650], T('l20b') - 0.1, { cls: 'navy', fs: 28, d: 0.6 });
+  const mp = h('div', 'page', B2); px(mp, 560, 450, 800, 170); mp.dataset.name = '第 23 页';
+  const mpl = h('div', 'abs', mp, `第 ${P2} 页`); px(mpl, 16, 10); css(mpl, { font: '700 26px "Sans SC"', color: 'var(--pg)' });
+  const mpp = h('div', 'node hl', mp, `指针 ${L2}`); px(mpp, 20, 80, 170); css(mpp, { height: '52px', lineHeight: '47px', fontSize: '26px' });
+  const mpr = h('div', 'tup', mp, '2050  Alice  42'); px(mpr, 420, 80, 360); css(mpr, { height: '52px', lineHeight: '48px', fontSize: '28px' });
+  const mpo = overlay(mp); const mpa = link(mpo, [[190, 106], [414, 106]], 'navy');
+  const tMp = T('l20b', '地址') + 0.2;
+  tl.fromTo(mp, { autoAlpha: 0, scaleY: 0.2, transformOrigin: `${pageX - 560}px 170px` }, { autoAlpha: 1, scaleY: 1, duration: 0.45, ease: 'power3.out', immediateRender: true }, tMp); sfx('whoosh', tMp, { g: 0.3 });
+  arrowIn(mpa, tMp + 0.5, 0.4);
+  keyed(mpr).at(T('l20b', '取行'), { html: '取出：2050  Alice  42' }); set(mpr, T('l20b', '取行'), { backgroundColor: '#336791', color: '#fff' }); sfx('pop', T('l20b', '取行'), { g: 0.6 });
 
-  // ── C：对照 InnoDB ──
+  // ── C：两种做法并排。左：InnoDB 的表就是主键树，叶子里是整行；按名字找要查两棵树。右：PostgreSQL 的整行在堆里，每个索引直接指向堆 ──
   hdoc(C, '两种做法', 72, 128);
   const ovC = overlay(C);
-  // 左：InnoDB（中性灰）：表就是主键树
-  const li = tagEl(C, 'InnoDB', 72, 196, 'grey'); css(li, { fontSize: '34px' });
-  const DG = { background: '#5f6a73', color: '#fff', borderColor: '#5f6a73', height: '56px', lineHeight: '51px', fontSize: '26px' };
-  const ir = h('div', 'node grey', C, '主键树的根'); px(ir, 280, 262, 300); css(ir, DG);
+  const GR = { background: '#5f6a73', color: '#fff', borderColor: '#5f6a73' };
+  // 左：InnoDB
+  const li = tagEl(C, 'InnoDB · 表就是主键树', 72, 196, 'grey'); css(li, { fontSize: '30px' });
+  show(li, T('l21') - 0.1, { x: -20 });
+  const ir = h('div', 'node grey', C, '主键树的根'); px(ir, 330, 290, 280); css(ir, { ...GR, height: '56px', lineHeight: '51px', fontSize: '26px' });
   const il = [];
-  for (let i = 0; i < 6; i++) { const e = h('div', 'node grey', C, '整行'); px(e, 90 + i * 128, 400, 112); il.push(e); path(ovC, `M430,310 L${146 + i * 128},400`, 'grey', { w: 2, arrow: false }); }
-  const inr = h('div', 'node grey', C, '姓名索引'); px(inr, 110, 596, 240); css(inr, DG);
-  const inl = h('div', 'node grey', C, 'Alice → 主键 2050'); px(inl, 90, 700, 340); css(inl, DG);
-  const whole = h('div', 'abs', C, '叶子里装着整行：编号 · 姓名 · 年龄'); px(whole, 90, 466, 752); css(whole, { background: '#5f6a73', color: '#fff', font: '700 26px "Sans SC"', padding: '10px 18px' });
-  const iarr = curve(ovC, [430, 728], [530, 440], 'grey', { bend: 600 });
-  const itxt = tagEl(C, '先拿到主键，再查一遍主键树', 470, 640, 'grey'); css(itxt, { fontSize: '28px' });
-  show(li, T('l21'), { x: -20 });
-  wipe(ir, T('l22') + 0.4, { dir: 'l' }); il.forEach((e, i) => show(e, T('l22', '主键树') + 0.1 + i * 0.05, { y: 10 }));
-  sfx('pop', T('l22b', '整行'), { g: 0.5, p: -0.4 });
-  wipe(whole, T('l22b', '整行'), { dir: 'l' }); const ex = tagEl(C, '例：2050 Alice 42 就在一页叶子里', 90, 530, 'grey'); css(ex, { fontSize: '24px' }); show(ex, T('l22b', '叶子') - 0.2, { y: 8 }); hide(ex, T('l23') - 0.1, { d: 0.2 });
-  wipe(inr, T('l23'), { dir: 'l' }); wipe(inl, T('l23b'), { dir: 'l' });
-  arrowIn(iarr, T('l23b', '主键树') - 0.3, 0.5); show(itxt, T('l23b', '主键树') - 0.3, { y: 8 });
-  // 先拿到主键 2050，再从主键树的根走到叶子
-  const pkTok = tagEl(C, '主键 2050', 300, 760, 'navy'); css(pkTok, { fontSize: '26px' });
-  const tTok = T('l23b', '主键');
-  set(pkTok, 0, { autoAlpha: 0 }); set(pkTok, tTok, { autoAlpha: 1 });
-  to(pkTok, tTok + 0.1, { x: 120, y: -490, duration: 0.6, ease: 'power2.inOut' }); to(pkTok, tTok + 0.9, { x: 90, y: -360, duration: 0.45, ease: 'power2.inOut' });
-  classAt(il[3], 'hl', tTok + 1.35); sfx('whoosh', tTok + 0.1, { g: 0.3 }); sfx('tick', tTok + 1.35);
-  to(pkTok, Tend('l23b') + 0.2, { autoAlpha: 0, duration: 0.3 });
-  // 右：PostgreSQL：堆与三个独立的索引
-  const lpg = tagEl(C, 'PostgreSQL', 1000, 196); css(lpg, { fontSize: '34px' });
-  const hp = h('div', 'abs', C); px(hp, 1000, 560, 840, 120); hp.dataset.name = '堆';
-  for (let i = 0; i < 20; i++) { const pg = h('div', 'pg-mini', hp); px(pg, i * 42, 0, 36, 120); }
-  const hpl = capt(C, '堆：整行都在这里', 1000, 690);
-  const idx = [['主键索引', 1010], ['姓名索引', 1290], ['年龄索引', 1570]].map(([n, x]) => { const e = h('div', 'node', C, n); px(e, x, 300, 240); return e; });
-  const parr = idx.map((e, i) => curve(ovC, [1130 + i * 280, 340], [1180 + i * 260, 560], 'accent', { bend: 450 }));
-  show(lpg, T('l24'), { x: 20 }); wipe(hp, T('l24') + 0.1, { dir: 'r' }); show(hpl, T('l24', '整行'), { y: 8 });
-  idx.forEach((e, i) => slam(e, T('l25', '每个索引') + i * 0.12, { from: 1.2 }));
-  parr.forEach((a, i) => arrowIn(a, T('l25', '地址') + i * 0.1, 0.4));
+  for (let i = 0; i < 6; i++) {
+    const lf = h('div', 'abs', C); px(lf, 90 + i * 132, 420, 120, 150); css(lf, { border: '2.5px solid #5f6a73', background: '#eef0f2' }); lf.dataset.name = '主键树的叶子';
+    for (let k = 0; k < 4; k++) { const r = h('div', 'abs', lf); px(r, 8, 12 + k * 32, 100, 22); css(r, { background: '#8a949c' }); }
+    il.push(lf); const e = path(ovC, `M470,346 L${150 + i * 132},420`, 'grey', { w: 2, arrow: false }); draw(e, T('l22', '表本身') + i * 0.12, 0.3);
+  }
+  wipe(ir, T('l22') + 0.1, { dir: 'l' }); il.forEach((x, i) => show(x, T('l22', '表本身') + i * 0.12, { y: 10 }));
+  sfx('pop', T('l22', '主键树'), { g: 0.5, p: -0.4 });
+  // 叶子里装着整行：第 4 页叶子展开，露出 Alice 那一行
+  const rowL = capt(C, '每格是一整行', 90, 580); css(rowL, { fontSize: '24px', color: '#4f5c67' }); show(rowL, T('l22b', '整行'), { y: -8 });
+  const bigRow = h('div', 'abs', C, '2050 · Alice · 42'); px(bigRow, 90 + 3 * 132 - 70, 430, 300, 56); css(bigRow, { ...GR, font: '700 28px var(--mono)', lineHeight: '56px', textAlign: 'center' });
+  tl.fromTo(bigRow, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'back.out(1.6)', immediateRender: true }, T('l22b', '叶子')); sfx('pop', T('l22b', '叶子'), { g: 0.5 });
+  hide(bigRow, T('l23') - 0.1, { d: 0.25 }); hide(rowL, T('l23') - 0.1, { d: 0.25 });
+  // 姓名索引：叶子里存的是主键
+  const inr = h('div', 'node grey', C, '姓名索引'); px(inr, 150, 650, 240); css(inr, { ...GR, height: '52px', lineHeight: '47px', fontSize: '26px' });
+  const inl = h('div', 'node grey', C, 'Alice → 主键 2050'); px(inl, 90, 760, 360); css(inl, { ...GR, height: '52px', lineHeight: '47px', fontSize: '26px' });
+  const ie = path(ovC, 'M270,702 L270,760', 'grey', { w: 2, arrow: false });
+  wipe(inr, T('l23') - 0.1, { dir: 'l' }); draw(ie, T('l23'), 0.3); wipe(inl, T('l23', '主键'), { dir: 'l' }); sfx('tick', T('l23', '主键'), { p: -0.3 });
+  // 按名字找：先拿到主键 2050，再从主键树的根走到叶子 —— 两棵树
+  const tok = tagEl(C, 'Alice', 120, 830, 'warn'); css(tok, { fontSize: '26px' });
+  const t0 = T('l23b') - 0.1;
+  set(tok, 0, { autoAlpha: 0 }); set(tok, t0, { autoAlpha: 1 });
+  keyed(tok).at(T('l23b', '主键') - 0.1, { html: '主键 2050' });
+  tl.fromTo(tok, { x: 0, y: 0 }, { x: 300, y: -560, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, T('l23b', '主键树') - 0.6);
+  tl.fromTo(tok, { x: 300, y: -560 }, { x: 330, y: -400, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, T('l23b', '主键树') + 0.2);
+  tl.fromTo(il[3], { borderColor: '#5f6a73' }, { borderColor: '#b8442f', duration: 0.2, immediateRender: false }, T('l23b', '主键树') + 0.7);
+  const two = tagEl(C, '按名字找：查了两棵树', 480, 760, 'grey'); css(two, { fontSize: '26px' }); show(two, T('l23b', '主键树') + 0.6, { x: -10 }); sfx('tick', T('l23b', '主键树') + 0.7);
+  hide(tok, T('l24') - 0.1, { d: 0.25 });
+  // 右：PostgreSQL —— 整行都在堆里，三个索引都直接指向堆
+  const lpg = tagEl(C, 'PostgreSQL · 堆 + 三个索引', 1000, 196); css(lpg, { fontSize: '30px' });
+  show(lpg, T('l24') - 0.1, { x: 20 });
+  const hp = h('div', 'abs', C); px(hp, 1000, 620, 840, 130); hp.dataset.name = '堆';
+  for (let i = 0; i < 20; i++) { const pg = h('div', 'pg-mini', hp); px(pg, i * 42, 0, 36, 130); const f = h('div', 'abs', pg); css(f, { left: '2px', right: '2px', bottom: '2px', height: '110px', background: 'repeating-linear-gradient(0deg,#cfe0ee 0 5px,#fff 5px 6px)' }); }
+  const hpl = capt(C, '堆：整行都在这里', 1000, 760); css(hpl, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 });
+  wipe(hp, T('l24') + 0.1, { dir: 'r' }); show(hpl, T('l24', '整行'), { y: 8 });
+  const target = [1000 + 11 * 42 + 18, 620];
+  const idx = [['主键索引', 1000], ['姓名索引', 1290], ['年龄索引', 1580]].map(([n, x], i) => {
+    const r = h('div', 'node', C, n); px(r, x, 300, 240); css(r, { height: '50px', lineHeight: '45px', fontSize: '26px' });
+    const lv = []; for (let k = 0; k < 3; k++) { const l = h('div', 'node leaf', C, ''); px(l, x + k * 84, 410, 72); lv.push(l); }
+    slam(r, T('l25', '每个索引') + i * 0.12, { from: 1.2 }); lv.forEach((l, k) => show(l, T('l25', '每个索引') + 0.1 + i * 0.12 + k * 0.04, { y: 8, d: 0.25 }));
+    const ar = curve(ovC, [x + 120, 452], target, 'accent', { bend: 540 }); arrowIn(ar, T('l25', '地址') + i * 0.12, 0.5);
+    return r;
+  });
   sfx('pop', T('l25', '地址'), { p: 0.4 });
-  idx.forEach((e, i) => fly(C, `(${P},${LP})`, [1110 + i * 280, 360], [1140 + i * 260, 520], T('l25', '地址') + 0.4 + i * 0.15, { cls: 'navy', fs: 22, d: 0.6 }));
-  const same = tagEl(C, '主键索引也一样', 1010, 380); show(same, T('l25', '主键索引'), { y: -8 }); sfx('tick', T('l25', '主键索引'), { p: 0.4 });
+  idx.forEach((e, i) => fly(C, `(${P},${LP})`, [1060 + i * 290, 470], [target[0] - 40, 560], T('l25', '地址') + 0.4 + i * 0.15, { cls: 'navy', fs: 22, d: 0.6 }));
+  const same = tagEl(C, '主键索引也一样', 1000, 520); css(same, { fontSize: '26px' }); show(same, T('l25', '主键索引'), { y: -8 }); sfx('tick', T('l25', '主键索引'), { p: 0.4 });
   const fC = focusRing(C);
-  fC.at(T('l24', '整行'), hp).at(T('l25', '每个索引'), [1010, 300, 800, 42]).at(T('l25', '主键索引'), idx[0]).off(Tend('l25') + 0.3);
+  fC.at(T('l24', '整行'), hp).at(T('l25', '每个索引'), [1000, 300, 820, 160]).at(T('l25', '主键索引'), idx[0]).off(Tend('l25') + 0.3);
 });

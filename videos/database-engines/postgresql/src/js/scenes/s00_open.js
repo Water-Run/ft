@@ -140,7 +140,8 @@ scene('open', ({ root, s }) => {
   inSide.forEach((e) => to(e, T('o14') - 0.3, { opacity: 0.35, duration: 0.4 }));
   // 另一条路：InnoDB 整体退出画面；PostgreSQL 一侧移到中间，上方大字打出它的做法；说完停一停，新版本的蓝块铺满整屏，变成片名卡
   const tW = T('o16') - 0.1;
-  [...inSide, vI, EI.head, EI.body].forEach((e) => tl.fromTo(e, { x: 0 }, { x: -260, autoAlpha: 0, duration: 0.7, ease: 'power2.in', immediateRender: false }, tW));
+  inSide.forEach((e) => tl.fromTo(e, { x: 0, autoAlpha: 0.35 }, { x: -260, autoAlpha: 0, duration: 0.7, ease: 'power2.in', immediateRender: false }, tW));
+  tl.fromTo(vI, { x: 0, autoAlpha: 1 }, { x: -260, autoAlpha: 0, duration: 0.7, ease: 'power2.in', immediateRender: false }, tW);
   gone(tm.el, tW, 0.4); sfx('whoosh', tW, { g: 0.4 });
   const pgMove = [EP.head, EP.body, P23.pg, P23.l, P46.pg, P46.l, prow, xm, vP, ovB];
   pgMove.forEach((e) => tl.fromTo(e, { x: 0 }, { x: -470, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, tW + 0.2));
