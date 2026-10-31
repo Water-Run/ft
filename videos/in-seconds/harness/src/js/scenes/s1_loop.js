@@ -18,7 +18,7 @@ scene('loop', ({ root, s, c0 }) => {
   // 每一圈：[发出（整段对话到模型）, 工具调用, Harness 执行, 结果交回]
   const W = [
     [T('w2') + 0.1, T('w2', '看'), T('w2', 'Harness'), T('w2', '放回')],
-    [T('w3') + 0.1, T('w3', '跑'), T('w3', '结果'), T('w3', '实际') + 0.3],
+    [T('w3') + 0.1, T('w3', '跑'), Tend('w3') + 0.15, T('w3b', '实际') + 0.3],
     [T('w4') + 0.1, T('w5', '要求'), T('w5', 'Harness'), Tend('w5')],
     [T('w6') + 0.1, T('w6', '跑'), T('w6', '测试') + 0.15, T('w6', '通过')],
     [T('w7') + 0.1],
@@ -153,43 +153,43 @@ scene('loop', ({ root, s, c0 }) => {
 
   // ── 环心（走一遍）：cart.py 与三件商品的价格 ──
   const cl = D.cart_before.split('\n').map(esc); cl[1] = '    ⋯';                // 第 2 行是说明文字，环心放不下，略去
-  const code = codeCard(world, 'cart.py', cl, cx - 230, cy - 152, 460, 24, 38);
+  const code = codeCard(world, tr('cart.py · 算购物车总价', 'cart.py · cart total'), cl, cx - 230, cy - 152, 460, 24, 36);
   wipe(code.card, tW + 0.2, { dir: 'l', d: 0.5 });
   const L3 = (html) => `<span class="ln">3</span>${html}`;
   keyed(code.ls[2]).at(T('w4', '这一') - 0.1, { html: L3('    return sum(prices<span class="hl">[1:]</span>)') })
     .at(W[2][2] - 0.2, { html: L3('    return sum(prices<span class="strike">[1:]</span>)') })
     .at(W[2][2] + 0.35, { html: L3(esc(D.cart_after.split('\n')[2])) });
   // 第 1 圈：Harness 读文件时，一条朱红的扫描线扫过代码
-  const scan = blk(code.card, 'bg-ac', 0, 66, 10, 38);
-  F((t) => { const k = clamp((t - W[0][2] + 0.2) / 0.9); scan.style.top = (66 + k * 76).toFixed(1) + 'px'; scan.style.visibility = k > 0 && k < 1 ? 'visible' : 'hidden'; });
+  const scan = blk(code.card, 'bg-ac', 0, 66, 10, 36);
+  F((t) => { const k = clamp((t - W[0][2] + 0.2) / 0.9); scan.style.top = (66 + k * 72).toFixed(1) + 'px'; scan.style.visibility = k > 0 && k < 1 ? 'visible' : 'hidden'; });
   // 三件商品：3、5、2
   const PX = (i) => cx - 170 + i * 120;
   const boxes = [3, 5, 2].map((v, i) => {
-    const b = h('div', 'abs price', world, String(v)); px(b, PX(i), cy + 52, 100, 90);
+    const b = h('div', 'abs price', world, String(v)); px(b, PX(i), cy + 44, 100, 86); b.style.lineHeight = '78px';
     b.dataset.name = tr(`第 ${i + 1} 件：${v}`, `item ${i + 1}: ${v}`);
-    const t0 = T('w3', String(v)) - 0.15;
+    const t0 = T('w3b', String(v)) - 0.15;
     wipe(b, t0, { dir: 'b', d: 0.3 }); sfx('pop', t0, { g: 0.45, p: -0.4 + i * 0.4 });
     return b;
   });
-  const tIn = T('w4', '第二件') - 0.15, tSkip = T('w4', '漏了') - 0.1, tFix = W[2][2] + 0.35;
+  const tIn = T('w4', '这一') + 0.25, tSkip = T('w4', '漏加') - 0.1, tFix = W[2][2] + 0.35;
   classAt(boxes[1], 'in', tIn); classAt(boxes[2], 'in', tIn);
   classAt(boxes[0], 'skip', tSkip, tFix); classAt(boxes[0], 'in', tFix);
   sfx('tick', tIn, { g: 0.6 }); sfx('thud', tSkip, { g: 0.5, p: -0.4 }); sfx('pop', tFix, { g: 0.6 });
   // 括号：括出被加起来的那几件。[1:] 从第二件起；改好之后括住三件
-  const brk = h('div', 'abs ubrk', world); px(brk, PX(1), cy + 150, 220, 16); brk.dataset.name = tr('加起来的', 'summed');
+  const brk = h('div', 'abs ubrk', world); px(brk, PX(1), cy + 136, 220, 16); brk.dataset.name = tr('加起来的', 'summed');
   F((t) => {
     const k = ease.io3(clamp((t - tFix) / 0.45)), x0 = lerp(PX(1), PX(0), k);
     css(brk, { left: x0.toFixed(1) + 'px', width: (PX(2) + 100 - x0).toFixed(1) + 'px', visibility: t >= tIn ? 'visible' : 'hidden' });
   });
   // 算式：应为 10 → 实际 7 → 原因 → 改好 → 通过
-  const sum = centered(world, 'paper', '', cx, cy + 180, 560); sum.style.font = '700 34px "Sans SC", Mono';
-  keyed(sum).at(T('w3', '应为') - 0.1, { html: `3 + 5 + 2 ${tr('应为', 'should be')} <b class="mono">10</b>` })
-    .at(T('w3', '实际') - 0.05, { html: `${tr('应为', 'expected')} 10 · ${tr('实际', 'got')} <b class="mono hl">7</b>` })
-    .at(tIn, { html: `<span class="mono ac">[1:]</span> ${tr('从第二件才开始加', 'starts at item 2')}` })
-    .at(tSkip, { html: `${tr('漏了第一件', 'item 1 skipped')}：5 + 2 = <b class="mono hl">7</b>` })
+  const sum = centered(world, 'paper', '', cx, cy + 160, 440); sum.style.font = '700 30px "Sans SC", Mono';
+  keyed(sum).at(T('w3b', '应为') - 0.1, { html: `${tr('总价', 'total')} 3 + 5 + 2 ${tr('应为', 'should be')} <b class="mono">10</b>` })
+    .at(T('w3b', '实际') - 0.05, { html: `${tr('应为', 'expected')} 10 · ${tr('实际', 'got')} <b class="mono hl">7</b>` })
+    .at(tIn, { html: `<span class="mono ac">[1:]</span> ${tr('从第二件开始加', 'starts at item 2')}` })
+    .at(tSkip, { html: `${tr('漏加第一件', 'item 1 skipped')}：5 + 2 = <b class="mono hl">7</b>` })
     .at(tFix, { html: `3 + 5 + 2 = <b class="mono">10</b>` })
     .at(T('w6', '通过') - 0.05, { html: `3 + 5 + 2 = <b class="mono">10</b> · <span class="pass">${tr('通过', 'PASS')}</span>` });
-  sfx('thud', T('w3', '实际') - 0.05, { g: 0.6 }); sfx('chime', T('w6', '通过') - 0.05, { g: 0.6 });
+  sfx('thud', T('w3b', '实际') - 0.05, { g: 0.6 }); sfx('chime', T('w6', '通过') - 0.05, { g: 0.6 });
 });
 
 // walk 一场的画面全部建在上面的 loop 里（同一个环上接着走五圈）；config.js 的 after() 不单独显示它

@@ -31,7 +31,7 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 
 | 号 | 陈述 | 依据（`research/lab/`） | 核查 |
 |---|---|---|---|
-| E1 | 演示项目：`cart.py` 的 `total` 写成 `return sum(prices[1:])`，会跳过第一个价格；`test_cart.py` 检查 `total([3, 5, 2])` 应为 10 | `demo/cart.py` 第 3 行；`demo/test_cart.py` | 2026-10-31，已核 |
+| E1 | 演示项目：`cart.py` 的 `total` 算「购物车里所有商品的总价」（函数说明原文），写成 `return sum(prices[1:])`，会跳过第一个价格；`test_cart.py` 检查 `total([3, 5, 2])` 应为 10 | `demo/cart.py` 第 2–3 行；`demo/test_cart.py` | 2026-10-31，已核 |
 | E2 | 第 1 次请求：2 条消息（system：「你是一个编程助手……当前项目里的文件：cart.py、test_cart.py……」；user：「测试没通过，帮我修好。」）＋ 3 个工具 `read_file`、`edit_file`、`run_tests`；请求体 1243 字节 | `out_01_harness_a.json` → `rounds[0].request`、`request_bytes`；文件清单由 `01_harness.py` 从目录读出后写进 system | 已核 |
 | E3 | 第 1 次响应：`finish_reason` 为 `tool_calls`，正文「我先看看这两个文件。」，两个工具调用 `read_file({"path": "cart.py"})`、`read_file({"path": "test_cart.py"})`；Harness 执行后把两个文件的内容作为 `tool` 消息放回 | `rounds[0].response.choices[0]`、`rounds[0].tool_results` | 已核 |
 | E4 | 第 2 次请求 5 条消息；模型调用 `run_tests({})`；结果「退出码 1 / 失败：total([3, 5, 2]) 应为 10，实际得到 7」 | `rounds[1]` | 已核 |
@@ -87,8 +87,8 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 |---|---|---|
 | w1 | 开头那次修测试一共转了五圈 | E8（5 次请求） |
 | w2 | 第一圈要看两个文件，Harness 读出来放回对话 | E3 |
-| w3 | 第二圈跑测试：应为 10，实际 7 | E4 |
-| w4–w5 | 第三圈找到原因：这一行从第二件才开始加（`prices[1:]`），漏了第一件；改掉这一行 | E1、E5 |
+| w3、w3b | 第二圈跑测试；测试算的是购物车总价，3 加 5 加 2 应为 10，实际 7 | E1、E4 |
+| w4–w5 | 第三圈找到原因：这一行（`prices[1:]`）漏加了第一件的 3；改掉这一行 | E1、E5（模型原话「`prices[1:]` 把第一件商品漏掉了（3+5+2=10，实际算成 5+2=7）」） |
 | w6 | 第四圈再跑：通过 | E6 |
 | w7 | 第五圈没有工具调用，循环停下 | E7、D4 |
 

@@ -69,7 +69,7 @@ function makeLoop(parent, o) {
   };
   let last = null;
   F((t) => {
-    const deg = angle(t), inLap = ((deg % 360) + 360) % 360, stopped = t >= stopAt, live = t >= from;
+    const deg = Math.round(angle(t) * 100) / 100, inLap = ((deg % 360) + 360) % 360, stopped = t >= stopAt, live = t >= from;   // 先取整到缓存键的精度，键相同则画面相同
     const act = live ? Math.floor(((inLap + 4) % 360) / 90) : -1;
     const key = deg.toFixed(2) + (stopped ? 's' : '') + act;
     if (key === last) return; last = key;
@@ -105,7 +105,7 @@ function makeConv(parent, o) {
   let last = null;
   F((t) => {
     const p = seen(t), rh = rowH(t), s = sentAt(t), nf = newFrom(t);
-    const key = p.map((v) => v.toFixed(2)).join() + rh.toFixed(1) + (s ? s[0] : '') + nf;
+    const key = p.map((v) => v.toFixed(2)).join() + rh.toFixed(1) + (s ? s[0] + ':' + prog(t, s[0], 0.5).toFixed(3) : '') + nf;   // 括号伸长的进度也要进缓存键
     if (key === last) return; last = key;
     let top = bottom;
     els.forEach((r, i) => {

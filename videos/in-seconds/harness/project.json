@@ -86,7 +86,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "build",
-  "next": "WaterRun 确认第 3 稿（审片页 out/audition/r02.html）；确认后合成新句、对齐画面，出第 2 版预览",
+  "next": "WaterRun 确认第 4 稿（相对第 3 稿只改 w3、w4）；确认后合成新句、对齐画面，出第 2 版预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
