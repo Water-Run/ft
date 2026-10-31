@@ -171,6 +171,9 @@ scene('update', ({ root, s, c0 }) => {
   show(hidx, t0 + 0.6, { x: -20 }); arrowIn(ia, t0 + 0.8, 0.3);
   slide(hnew, T('u21', '本页'), { x: 30 }); gone(hgap, T('u21', '本页') + 0.1, 0.3); sfx('pop', T('u21', '本页')); arrowIn(ja, T('u21', '指向它'), 0.4);
   const zero = tagEl(C, '索引：0 项新增', 72, PY + 86, 'ok'); show(zero, T('u21b', '不加'), { y: 8 }); sfx('tick', T('u21b', '不加'));
+  const carry = tagEl(C, '刚才：每改一行，索引 +3 项', 1440, 420, 'warn'); css(carry, { fontSize: '24px' }); carry.dataset.name = '带过来的结论';
+  tl.fromTo(carry, { x: 700 - 1440, y: 330 - 420, scale: 1.2 }, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tC - 0.3);
+  keyed(carry).at(T('u21b', '不加') + 0.2, { html: 'HOT：索引 +0 项' }); set(carry, T('u21b', '不加') + 0.2, { backgroundColor: '#2f6b26' }); hide(carry, T('u25') - 0.2, { d: 0.25 });
   to(hidx, T('u21b', '不加'), { boxShadow: '0 0 0 4px #2f6b26', duration: 0.3 });
   const jump = capt(C, '查询先到第 ' + hL + ' 项，再在页内跳到第 ' + hN + ' 项', 520, PY + 180); show(jump, T('u22', '跳过去'), { y: 8 });
   fly(C, '查询', [330, PY - 6], [560, PY - 14], T('u22') + 0.1, { cls: 'warn', fs: 24, d: 0.5, hold: 0.3 });

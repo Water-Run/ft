@@ -159,6 +159,9 @@ scene('page', ({ root, s, c0 }) => {
   const tSp = T('p12c', '空格') - 0.1;
   for (let i = 10; i < 55; i++) fromTo(dc[i], tSp + (i - 10) * 0.01, { backgroundColor: '#cfe0ee', color: '#193145' }, { backgroundColor: '#eef2f5', color: '#7c8790', duration: 0.2 });
   val(HY1, 20, '45 个空格：char(50) 补齐', tSp + 0.2, 'var(--ink2)');
+  // 讲行头的事务号时，下面那行数据（字节、字段名、读出来的值）退到 30%：同屏的字少一半，眼睛落在行头和数轴上
+  const dataEls = [...A.children].filter((e) => { if (e.tagName === 'svg') return false; const b = box(e, A); return b.y >= HY1 - 50 && b.y + b.h <= HY1 + CH + 120; });
+  dataEls.forEach((e) => tl.fromTo(e, { opacity: 1 }, { opacity: 0.3, duration: 0.4, immediateRender: false }, T('p13', '两个事务号') - 0.1));
   // 行头里最要紧的两个事务号：xmin、xmax
   const tX = T('p13', '两个事务号') - 0.1;
   for (let i = 8; i < 24; i++) fromTo(hc[i], tX, { opacity: 1 }, { opacity: 0.35, duration: 0.3 });
@@ -171,14 +174,14 @@ scene('page', ({ root, s, c0 }) => {
   // 行头里的三样，各一张卡：从它的字节处升起，停在行头右边
   const hCard = (name, a, x, t, lines) => {
     const c = h('div', 'abs', A); px(c, x, 196, 300, 150); css(c, { background: '#fff', border: '3px solid #b8442f', borderLeft: '10px solid #b8442f' }); c.dataset.name = name + ' 卡';
-    c.innerHTML = `<div style="position:absolute;left:16px;top:8px;font:800 30px var(--mono);color:#b8442f">${name}</div>` + lines.map((l, i) => `<div class="ln${i}" style="position:absolute;left:16px;top:${52 + i * 44}px;font:600 ${i ? 22 : 32}px 'Mono','Sans SC';color:var(--ink);white-space:nowrap">${l}</div>`).join('');
+    c.innerHTML = `<div style="position:absolute;left:16px;top:8px;font:800 30px var(--mono);color:#8f2f1e">${name}</div>` + lines.map((l, i) => `<div class="ln${i}" style="position:absolute;left:16px;top:${52 + i * 44}px;font:600 ${i ? 22 : 32}px 'Mono','Sans SC';color:var(--ink);white-space:nowrap">${l}</div>`).join('');
     const sx = HX + a * CW;
     tl.fromTo(c, { autoAlpha: 0, x: sx - x, y: HY0 - 196, scale: 0.35, transformOrigin: '0 0' }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.6, ease: 'power3.out', immediateRender: true }, t);
     return c;
   };
   const cXmin = hCard('xmin', 0, 880, T('p14', 'xmin') - 0.25, ['', '写入这个版本的事务']), cXmax = hCard('xmax', 4, 1200, T('p15', 'xmax') - 0.25, ['', '让这个版本作废的事务']);
   const v1 = cXmin.querySelector('.ln0'), v2 = cXmax.querySelector('.ln0');
-  keyed(v1).at(T('p14b', '2809') - 0.1, { html: '2809' }); keyed(v2).at(T('p15b', '0') - 0.1, { html: '0（还没有）' });
+  keyed(v1).at(T('p14b', '2809') - 0.1, { html: '2809' }); set(cXmin, T('p14b', '2809') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmin, T('p15') - 0.2, { backgroundColor: '#ffffff' }); set(cXmax, T('p15b', '0') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmax, T('p16') - 0.2, { backgroundColor: '#ffffff' }); keyed(v2).at(T('p15b', '0') - 0.1, { html: '0（还没有）' });
   tl.fromTo(v1, { scale: 1.4, transformOrigin: '0 50%' }, { scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, T('p14b', '2809') - 0.1);
   tl.fromTo(v2, { scale: 1.4, transformOrigin: '0 50%' }, { scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, T('p15b', '0') - 0.1);
   // 事务号的数轴：号一个比一个大；xmin 2809 是起点，xmax 为 0 就没有终点，范围一直延到右边
@@ -191,6 +194,10 @@ scene('page', ({ root, s, c0 }) => {
   const axL = capt(A, '事务号：每个改数据的事务领一个，一个比一个大 →', AX0, AXY + 16); css(axL, { fontSize: '24px' });
   const ticks = [[220, '1'], [360, '2'], [X2809, '2809'], [900, '…'], [1240, '…']].map(([x, t]) => { const k = h('div', 'abs', A); px(k, x - 1, AXY - 8, 3, 20); css(k, { background: 'var(--ink2)' }); const l = capt(A, t, x - 14, AXY - 48, 'cap mono'); css(l, { fontSize: '22px' }); return [k, l]; });
   const tAx = T('p13b') - 0.1;
+  // 「事务号」一张卡先弹出来，停在行头右边；讲 xmin 时，xmin 的卡正好升到这个位置
+  const xcd = h('div', 'abs', A); px(xcd, 880, 196, 300, 150); css(xcd, { background: '#fff', border: '3px solid var(--navy)', borderLeft: '10px solid var(--navy)' }); xcd.dataset.name = '事务号卡';
+  xcd.innerHTML = '<div style="position:absolute;left:16px;top:8px;font:800 30px var(--sans);color:var(--navy)">事务号</div><div style="position:absolute;left:16px;top:56px;font:600 22px var(--sans);color:var(--ink)">每个改数据的事务领一个</div><div style="position:absolute;left:16px;top:96px;font:600 22px var(--sans);color:var(--ink)">一个比一个大 →</div>';
+  set(xcd, 0, { autoAlpha: 0 }); slam(xcd, T('p13b', '领一个号') - 0.2, { from: 1.3 }); gone(xcd, T('p14', 'xmin') - 0.4, 0.2);
   tl.fromTo(axis, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'power2.inOut', immediateRender: true }, tAx); set(ah, 0, { autoAlpha: 0 }); show(ah, tAx + 0.8, { x: -10, d: 0.2 }); show(axL, tAx + 0.3, { y: -6 });
   ticks.forEach(([k, l], i) => { set(k, 0, { autoAlpha: 0 }); set(l, 0, { autoAlpha: 0 }); if (i === 2) return; show(k, tAx + 0.5 + i * 0.5, { y: 0, d: 0.2 }); slam(l, tAx + 0.55 + i * 0.5, { from: 1.6 }); });
   fly(A, '事务号', [HX + 4 * CW - 40, HY0 + CH + 6], [AX0 + 60, AXY - 60], T('p13b', '领一个号') - 0.5, { cls: 'navy', fs: 24, d: 0.7, sink: true });

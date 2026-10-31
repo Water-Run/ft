@@ -176,7 +176,8 @@ scene('mvcc', ({ root, s, c0 }) => {
   const cml = tagEl(C, 'Alice 提交', TX(0.5) - 70, 196, 'warn'); css(cml, { fontSize: '24px' });
   // 读已提交：每条语句一张新快照
   const LR = lane(yR, '读已提交（默认）', 'var(--pg)', '读已提交', '<b>读已提交</b>：每条语句开始时，都拿一张新快照', T('m21'));
-  show(cm, T('m22') - 0.1, { y: 0 }); show(cml, T('m22') - 0.1, { y: 8 });
+  show(cm, T('m21') + 0.3, { y: 0 });
+  tl.fromTo(cml, { autoAlpha: 1, x: 820 - (TX(0.5) - 70), y: 250 - 196, scale: 1.25 }, { x: 0, y: 0, scale: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tC - 0.3);   // 上一段的「4856 已提交」飞上来，成为两条时间线中间的分界
   snapAt(0.18, yR - 30, T('m22', '每条语句')); ev(0.18, yR + 60, 'SELECT → 42', 'navy', T('m22', '每条语句') + 0.3); seen(0.18, yR, 42, T('m22', '每条语句') + 0.6);
   snapAt(0.78, yR - 30, T('m22', '新快照')); ev(0.78, yR + 60, `SELECT → ${M.bobAfter}`, '', T('m22', '新快照') + 0.3); seen(0.78, yR, M.bobAfter, T('m22', '新快照') + 0.6);
   sfx('blip', T('m22', '新快照') + 0.3, { g: 0.5 });

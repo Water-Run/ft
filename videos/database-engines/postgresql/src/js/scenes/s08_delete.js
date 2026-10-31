@@ -119,6 +119,8 @@ scene('delete', ({ root, s, c0 }) => {
   const vStrip = heapStrip(V, 90, 660, { w: 33, gap: 4, h: 80, labels: [0, P, 46] });
   const vStripL = capt(V, '<b>堆</b>（users 的数据文件）', 90, 620); css(vStripL, { fontSize: '24px' });
   show(vStrip, tV + 0.1, { y: 10 }); show(vStripL, tV + 0.1);
+  const gh = h('div', 'page', V); px(gh, 72, 376, 900, 190); css(gh, { transformOrigin: '0 0' }); const ghL = h('div', 'abs', gh, `第 ${P} 页`); px(ghL, 16, 10); css(ghL, { font: '700 30px "Sans SC"', color: 'var(--pg)' });
+  tl.fromTo(gh, { autoAlpha: 1, x: 0, y: 0, scaleX: 1, scaleY: 1 }, { x: 90 + P * 37 - 72, y: 660 - 376, scaleX: 33 / 900, scaleY: 80 / 190, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tV - 0.3); gone(gh, tV + 0.5, 0.2);   // 上一段的第 23 页缩成这条堆里的一格
   // 可见性图：堆旁边的小文件，每页一格；VACUUM 扫过一页，页里的行对谁都看得见，就记上这一格
   const vm = h('div', 'abs', V); px(vm, 1180, 196, 690, 230); vm.dataset.name = '可见性图';
   const vmt = h('div', 'cap', vm, `<b>可见性图</b>　${D.files.users.node}_vm · 堆旁边的小文件`); px(vmt, 0, 0); css(vmt, { color: 'var(--pg)', fontSize: '24px' });
@@ -163,7 +165,8 @@ scene('delete', ({ root, s, c0 }) => {
   const pc = page23(C, 72, 260, `Alice 改完年龄后的第 ${P} 页`);
   const rowC = rowCells(pc.box, 'dead', [[866, '旧版本　2050  Alice  42']]);
   pc.gl.innerHTML = `空隙 <b>${U.freeBefore}</b> 字节`;
-  wipe(pc.box, T('d22') + 0.1, { dir: 'l' }); show(pc.cap, T('d22') + 0.1); show(rowC, T('d22') + 0.2, { y: 6 }); arrowIn(pc.ar, T('d22') + 0.4, 0.3); show(pc.gl, T('d22') + 0.3);
+  // 第 23 页从上一段那条堆的那一格里放大出来
+  css(pc.box, { transformOrigin: '0 0' }); tl.fromTo(pc.box, { autoAlpha: 1, x: 90 + P * 37 - 72, y: 660 - 260, scaleX: 33 / 900, scaleY: 80 / 190 }, { x: 0, y: 0, scaleX: 1, scaleY: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tC - 0.3); show(pc.cap, T('d22') + 0.1); show(rowC, T('d22') + 0.2, { y: 6 }); arrowIn(pc.ar, T('d22') + 0.4, 0.3); show(pc.gl, T('d22') + 0.3);
   const trd = term(C, 1040, 260, 800, 1, { fs: 23, lh: 34, name: '一次查询' });
   trd.type(T('d24', '查询') - 0.3, '<span class="k">SELECT</span> … <span class="k">WHERE</span> id = 2050;', 'postgres=#', 50);
   fly(C, '读到第 23 页', [1100, 320], [500, 300], T('d24', '第 23 页') - 0.2, { cls: 'navy', fs: 24, d: 0.6, hold: 0.3 });

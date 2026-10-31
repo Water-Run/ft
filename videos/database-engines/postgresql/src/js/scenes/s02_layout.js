@@ -280,7 +280,13 @@ scene('layout', ({ root, s, c0 }) => {
   hide(tok, T('l24') - 0.1, { d: 0.25 });
   // 右：PostgreSQL —— 刚才那张结构图缩在右半边：整行都在堆里，三个索引都直接指向堆
   const lpg = tagEl(A, 'PostgreSQL · 堆 + 三个索引', 1010, 196); css(lpg, { fontSize: '30px' }); show(lpg, T('l24') - 0.1, { x: 20 });
+  // 讲到 PostgreSQL 这边时，InnoDB 那半边一下退到 40%：眼睛移到右边
+  [li, ir, ...il, inr, inl, two].forEach((e) => set(e, T('l24') - 0.1, { opacity: 0.4 }));
   const [hx0, hy1] = S2(...M(GX - 12, GY + 3 * 146 + 24)), [hx1] = S2(...M(GX + GW + 12, 0));
+  // 「整行」：右边那块堆一下亮起——整行都在这里
+  const [bx0, by0] = S2(...M(GX - 12, GY - 12)), [bx1, by1] = S2(...M(GX + GW + 12, GY + 3 * 146 + 24));
+  const heapHi = h('div', 'abs', A); px(heapHi, bx0, by0, bx1 - bx0, by1 - by0); css(heapHi, { background: 'rgba(255,200,60,.4)', border: '4px solid #e0a11b' }); heapHi.dataset.name = '整行都在堆里';
+  set(heapHi, 0, { autoAlpha: 0 }); set(heapHi, T('l24', '整行') - 0.1, { autoAlpha: 1 }); set(heapHi, T('l25') + 0.3, { autoAlpha: 0 });
   const hpl = capt(A, '堆：整行都在这里', hx0, hy1 + 14); css(hpl, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 }); show(hpl, T('l24', '整行'), { y: 8 });
   const [q23x, q23y] = S2(p23x, p23y), ovR = overlay(A);
   const fromT = [pkx, lfx, aT.leafX[1]].map((x) => S2(x, LY + 46));

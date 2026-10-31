@@ -130,6 +130,10 @@ scene('crash', ({ root, s, c0 }) => {
   });
   // 重放：从检查点起，把日志一条条再做一遍
   const rp = h('div', 'abs', B); px(rp, 72, 724, 1100, 22); css(rp, { border: '2px solid var(--pg)' }); rp.dataset.name = '重放进度';
+  const walRef = h('div', 'abs', B); px(walRef, 72, 724, 1100, 22); css(walRef, { background: 'repeating-linear-gradient(90deg,var(--sky-lt) 0 60px,#fff 60px 64px)', border: '2px solid var(--pg)', transformOrigin: '0 0' }); walRef.dataset.name = '日志带';
+  const walRefL = capt(B, '<b>WAL</b>（停机前已落盘的日志）', 72, 686); css(walRefL, { fontSize: '24px' });
+  tl.fromTo(walRef, { autoAlpha: 1, y: 370 - 724, scaleX: 1776 / 1100, scaleY: 72 / 22 }, { y: 0, scaleX: 1, scaleY: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tB - 0.3); show(walRefL, tB + 0.4, { y: 6 });   // 上一段的日志带滑下来
+  [walRef, walRefL].forEach((e) => hide(e, T('w17', '检查点') - 0.15, { d: 0.2 }));   // 重放条接着在同一位置填满
   const rpf = h('div', 'abs', rp); px(rpf, 0, 0, 0, 18); css(rpf, { background: 'var(--pg)' });
   show(rp, T('w17', '检查点'), { y: 0 }); fromTo(rpf, T('w17', '检查点'), { width: 0 }, { width: 1096, duration: Tend('w17') - T('w17', '检查点'), ease: 'none' });
   const rpl = capt(B, '从检查点起重放日志', 1190, 716); css(rpl, { fontSize: '24px', color: 'var(--pg)', fontWeight: 700 }); show(rpl, T('w17', '检查点'), { x: -10 });
