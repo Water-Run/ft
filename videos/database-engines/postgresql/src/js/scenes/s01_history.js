@@ -97,7 +97,7 @@ scene('history', ({ root, s, c0 }) => {
   const grid = h('div', 'abs', B); px(grid, 96, 236, 780, 528); grid.dataset.name = '177 个格子';
   const cells = [];
   for (let i = 0; i < 177; i++) { const c = h('div', 'abs', grid); px(c, (i % 15) * 52, Math.floor(i / 15) * 44, 46, 38); css(c, { border: '2.5px solid var(--pg)', background: '#fff' }); cells.push(c); }
-  const tg = T('h12', '核心') - 0.2, tg1 = Tend('h12') - 0.3;
+  const tg = Math.min(T('h12', '核心') - 0.2, tB + 0.4), tg1 = Tend('h12') - 0.3;
   cells.forEach((c, i) => show(c, tg + (tg1 - tg) * Math.floor(i / 15) / 12 + (i % 15) * 0.01, { s: 0.6, d: 0.2 }));
   sfx('tick', tg, { g: 0.5 });
   // 170 格依次涂满，计数跟着走

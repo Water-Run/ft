@@ -233,6 +233,7 @@ scene('layout', ({ root, s, c0 }) => {
   // 左：InnoDB
   const li = tagEl(C, 'InnoDB · 表就是主键树', 72, 196, 'grey'); css(li, { fontSize: '30px' });
   show(li, T('l21') - 0.1, { x: -20 });
+  const tTree = Math.min(T('l22') + 0.1, T('l21') + 0.5);
   const ir = h('div', 'node grey', C, '主键树的根'); px(ir, 330, 290, 280); css(ir, { ...GR, height: '56px', lineHeight: '51px', fontSize: '26px' });
   const il = [];
   for (let i = 0; i < 6; i++) {
@@ -240,8 +241,8 @@ scene('layout', ({ root, s, c0 }) => {
     for (let k = 0; k < 4; k++) { const r = h('div', 'abs', lf); px(r, 8, 12 + k * 32, 100, 22); css(r, { background: '#8a949c' }); }
     il.push(lf); const e = path(ovC, `M470,346 L${150 + i * 132},420`, 'grey', { w: 2, arrow: false }); draw(e, T('l22', '表本身') + i * 0.12, 0.3);
   }
-  wipe(ir, T('l22') + 0.1, { dir: 'l' }); il.forEach((x, i) => show(x, T('l22', '表本身') + i * 0.12, { y: 10 }));
-  sfx('pop', T('l22', '主键树'), { g: 0.5, p: -0.4 });
+  wipe(ir, tTree, { dir: 'l' }); il.forEach((x, i) => show(x, T('l22', '表本身') + i * 0.12, { y: 10 }));
+  sfx('pop', tTree + 0.2, { g: 0.5, p: -0.4 });
   // 叶子里装着整行：第 4 页叶子展开，露出 Alice 那一行
   const rowL = capt(C, '每格是一整行', 90, 580); css(rowL, { fontSize: '24px', color: '#4f5c67' }); show(rowL, T('l22b', '整行'), { y: -8 });
   const bigRow = h('div', 'abs', C, '2050 · Alice · 42'); px(bigRow, 90 + 3 * 132 - 70, 430, 300, 56); css(bigRow, { ...GR, font: '700 28px var(--mono)', lineHeight: '56px', textAlign: 'center' });
