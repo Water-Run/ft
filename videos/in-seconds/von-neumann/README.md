@@ -6,9 +6,9 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 实现：按 WaterRun 对 r01 的意见大改，预览 r02（`out/zh/preview-r02.mp4`，960×540、30 帧，带声音）交 WaterRun 看 |
+| 当前停在哪里 | 实现：按 WaterRun 对 r02 的意见再改一版，预览 r03（`out/zh/preview-r03.mp4`，960×540、30 帧，带声音）交 WaterRun 看 |
 | 已有 | [FACTS](research/FACTS.md)（S1–S8）；第 3 稿已确认并配音（Yunyang + 老式处理）；四场场景重写、片尾 5 秒、配乐 A、音效；`scan.js`、`check.js` 通过 |
-| 下一步，依赖什么 | WaterRun 看 r02 的意见 → 改 → 正式渲染、封面、验收 |
+| 下一步，依赖什么 | WaterRun 看 r03 的意见 → 改 → 正式渲染、封面、验收 |
 | 本次会话的角色 | 制作方（Claude Opus 5.5，2026-10-31 起），从取证做到交付 |
 | 文案确认 | 第 3 稿已确认（2026-10-31，依据见 [NOTES](review/NOTES.md)）；第 2 稿此前确认过，已被第 3 稿取代 |
 

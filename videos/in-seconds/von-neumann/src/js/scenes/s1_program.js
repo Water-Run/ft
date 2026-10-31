@@ -46,10 +46,10 @@ scene('program', ({ root, s }) => {
   // b5：放大卡片：第 1 格「加 第8格」、第 8 格「5」，字一个一个换成 0 和 1，下面注明对应关系，然后停住
   const tCard = Q(T('b5')), tConv = Q(T('b5', '写成'));
   [zI, zD, labI, labD].forEach((e) => hide(e, tCard - 0.1, { d: 0.3 }));
-  const card = h('div', 'sheet', world); px(card, 600, 500, 480, 330); card.dataset.name = '放大的两格';
+  const card = h('div', 'sheet', world); px(card, 600, 470, 480, 380); card.dataset.name = '放大的两格';
   const cov = overlay(world);
-  const lk1 = path(cov, `M1104,${rowY(1) + 34} C900,${rowY(1) + 34} 1000,560 1080,560`, 'red', { w: 3, dashed: '8 8' });
-  const lk8 = path(cov, `M1104,${rowY(8) + 34} C1090,${rowY(8) + 34} 1090,720 1080,720`, 'red', { w: 3, dashed: '8 8' });
+  const lk1 = path(cov, `M1104,${rowY(1) + 34} C900,${rowY(1) + 34} 1000,530 1080,530`, 'red', { w: 3, dashed: '8 8' });
+  const lk8 = path(cov, `M1104,${rowY(8) + 34} C1090,${rowY(8) + 34} 1090,690 1080,690`, 'red', { w: 3, dashed: '8 8' });
   wipe(card, tCard, { dir: 'l', d: 0.45 }); arrowIn(lk1, tCard + 0.3, 0.45); arrowIn(lk8, tCard + 0.4, 0.45); sfx('pop', tCard, { g: 0.6 });
   const tag = (y, t) => { const e = txt(card, 'type', t, 24, y); e.style.fontSize = '24px'; return e; };
   tag(18, tr('第 1 格 · 指令', 'CELL 1 · INSTRUCTION')); tag(178, tr('第 8 格 · 数据', 'CELL 8 · DATA'));
@@ -65,7 +65,8 @@ scene('program', ({ root, s }) => {
   word(24, 56, tr('加', 'ADD'), '0001', 'var(--blue)', tConv);
   word(200, 56, tr('第8格', 'cell 8'), '1000', 'var(--blue)', tConv + 0.55);
   word(24, 216, '5', '0000 0101', 'var(--ochre)', tConv + 1.1);
-  const legend = txt(card, 'soft', tr('加 → 0001　　8 → 1000　　5 → 0101', 'ADD → 0001   8 → 1000   5 → 0101'), 24, 280); css(legend, { font: '600 26px "Mono"' });
+  const legend = h('div', 'abs soft', card, [tr('加', 'ADD') + ' → 0001', '8 → 1000', '5 → 0101'].map((x) => `<span style="font:600 26px 'Mono', 'Serif SC'">${x}</span>`).join(''));
+  px(legend, 24, 318, 432); css(legend, { display: 'flex', justifyContent: 'space-between', borderTop: '2px solid var(--ink22)', paddingTop: '8px' });
   hide0(legend); appear(legend, tConv + 1.7); sfx('tick', tConv + 1.7, { g: 0.5 });
   // 存储格里的这两行也闪一下红框：格子里存的就是这些 0 和 1
   [1, 8].forEach((r, k) => { const f = frameBox(world, 1104, rowY(r) + 2, 532, ROW.h - 4); hide0(f); appear(f, tConv + 0.55 * k + 0.3); vanish(f, tBack - 0.1); });

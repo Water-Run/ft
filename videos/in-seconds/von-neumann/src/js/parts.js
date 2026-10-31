@@ -133,7 +133,8 @@ function machine(world, st = {}) {
     if (st.r7) M.setRow(7, -1, st.r7[0], st.r7[1], 'd');
   }
   // 指针：红铅笔的三角，指在某一格左边
-  M.pc = h('div', 'abs', world, '<svg width="34" height="40" viewBox="0 0 34 40"><path d="M2,2 L32,20 L2,38 Z" fill="#b3311f"/></svg>'); M.pc.dataset.name = '指针';
+  // 指针：和红铅笔圈同一种笔触的线描箭头（不填色），指着控制器正在读的那一格
+  M.pc = h('div', 'abs', world, '<svg width="40" height="40" viewBox="0 0 40 40" style="overflow:visible"><path d="M2,21 C12,19 22,20 34,20 M22,8 L35,20 L22,32" fill="none" stroke="#b3311f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>'); M.pc.dataset.name = '指针';
   // 控制器里放取来的指令的槽
   M.slot = blk(world, '', G.slot.x - 8, G.slot.y - 8, 420, 64); css(M.slot, { border: '2px dashed var(--ink45)' }); M.slot.dataset.name = '指令槽';
   // 三步的小环：取（上）→ 拆（右下）→ 做（左下），顺时针
@@ -185,7 +186,12 @@ function machine(world, st = {}) {
 // 指针按 keys = [[t, 格号] …] 移动，每步用 min(0.35, 间隔 × 0.6) 秒走到；同时更新右上角的读数。from 之前不显示
 function pcTo(M, keys, from) {
   const K = [];
-  keys.forEach(([t, i], k) => { if (k) K.push([t - Math.min(0.35, (t - keys[k - 1][0]) * 0.6), 1062, rowY(keys[k - 1][1]) + 14]); K.push([t, 1062, rowY(i) + 14]); });
+  let lastRow = keys.find(([, i]) => i != null)[1];
+  keys.forEach(([t, i], k) => {
+    const row = i ?? lastRow, a = i == null ? 0 : 1;      // i 为 null：指针收起（右上角显示「—」）
+    if (k) { const [pt, pi] = keys[k - 1]; K.push([t - Math.min(0.35, (t - pt) * 0.6), 1062, rowY(pi ?? lastRow) + 14, { a: pi == null ? 0 : 1 }]); }
+    K.push([t, 1062, rowY(row) + 14, { a }]); lastRow = row;
+  });
   mover(M.pc, K, Infinity, from ?? keys[0][0]);
   keys.forEach(([t, i]) => pcAt(t, i));
 }

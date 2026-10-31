@@ -52,8 +52,9 @@ scene('open', ({ root, s }) => {
   const ringT = pencilRing(ov, CX - 120, CY - 120, 240, 240, Q(T('o2', '没')), 0.5); sfx('tick', Q(T('o2', '没')), { g: 0.6 });
   const qm = txt(world, 'ttl red', '?', CX - CS / 2 - 230, CY - 170); css(qm, { fontSize: '200px', lineHeight: '1' }); qm.dataset.name = '问号';
   slam(qm, Q(T('o2', '怎么')), { from: 1.5, d: 0.4 }); sfx('thud', Q(T('o2', '怎么')), { g: 0.7 });
-  const tOut = Q(Tend('o2') + 0.3);
-  cam.track(s.start, { x: 960, y: 484, z: 1 }, [[tIn, { x: 980, y: 600, z: 1.45 }, 1.0, { g: 0.4 }], [tOut, { x: 960, y: 484, z: 1 }, 0.8, { g: 0.4 }]]);
+  // 镜头推近后停在芯片上，直到芯片的方框展开成蓝图（见下）
+  const CZ = { x: 980, y: 600, z: 1.45 };
+  cam.track(s.start, { x: 960, y: 484, z: 1 }, [[tIn, CZ, 1.0, { g: 0.4 }]]);
   Object.assign(cam.st, { x: 960, y: 484, z: 1 });          // 轨迹里的 fromTo 构建时会先写入后段的起点；t=0 那一帧 tl.set 不生效，这里直接放回起点
 
   // ── 2. 一张蓝图（先描出线框），停顿，片名 ──
@@ -66,13 +67,19 @@ scene('open', ({ root, s }) => {
   const ttl = txt(card, 'ttl', tr('冯·诺伊曼<br>架构', 'von Neumann<br>Architecture'), 116, 268); css(ttl, { fontSize: '150px', lineHeight: '1.06' });
   const n128 = txt(card, 'mono red', String(TOTAL) + `<span style="font:900 64px 'Serif SC'"> ${tr('秒', 's')}</span>`, 124, 640); css(n128, { font: '700 150px "Mono"', lineHeight: '1' });
   [fig, ttl, n128].forEach((e) => { e.dataset.overlapOk = '1'; });
-  wipe(card, tCard, { dir: 'l', d: 0.5 }); sfx('whoosh', tCard - 0.05, { g: 0.5 });
+  // 芯片的方框（此刻在屏幕上的位置）展开成整张蓝图：芯片里装的就是这张图
+  const sx = (x) => (x - CZ.x) * CZ.z + 960, sy = (y) => (y - CZ.y) * CZ.z + 484;
+  const ins = `inset(${sy(CY - CS / 2).toFixed(0)}px ${(1920 - sx(CX + CS / 2)).toFixed(0)}px ${(VH - sy(CY + CS / 2)).toFixed(0)}px ${sx(CX - CS / 2).toFixed(0)}px)`;
+  tl.fromTo(card, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: true }, tCard);
+  tl.fromTo(card, { clipPath: ins }, { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.9, ease: 'power2.inOut', immediateRender: true }, tCard);
+  sfx('whoosh', tCard, { g: 0.5 });
+  cam.cut(tCard + 1.0, { x: 960, y: 484, z: 1 });
   appear(fig, tCard + 0.35);
-  sketch.forEach((p, k) => drawIn(p, tCard + 0.4 + k * 0.18, 0.5)); sfx('tick', tCard + 0.4, { g: 0.5, p: 0.5 }); sfx('tick', tCard + 0.76, { g: 0.5, p: 0.6 });
+  sketch.forEach((p, k) => drawIn(p, tCard + 0.15 + k * 0.18, 0.5)); sfx('tick', tCard + 0.15, { g: 0.5, p: 0.5 }); sfx('tick', tCard + 0.51, { g: 0.5, p: 0.6 });
   slam(ttl, tName, { from: 1.15, d: 0.45 }); sfx('thud', tName);
   slide(n128, tName + 0.3, { x: -60, d: 0.5 }); sfx('pop', tName + 0.3, { g: 0.6 });
   wipeOut(card, tCardOut, { dir: 'l', d: 0.45 });
-  vanish(chip, tCard + 0.6); vanish(ringT, tCard + 0.6); vanish(qm, tCard + 0.6);
+  hide(qm, tCard, { d: 0.3 }); vanish(chip, tCard + 1.0); vanish(ringT, tCard + 1.0);
 
   // ── 3. ENIAC：一道题的步骤靠接线；换一道题，拔了重插，日夜交替 ──
   const panel = h('div', 'sheet', world); px(panel, 230, 150, 1460, 650); panel.dataset.name = '接线板';
@@ -144,20 +151,24 @@ scene('open', ({ root, s }) => {
   const M = machine(world, {});
   const inner = [M.CC, M.CA, M.M, M.busLabel, M.slot, M.wheel, ...M.steps, M.ops, M.acc, M.expr, M.pc, ...M.rows.map((r) => r.el)];
   inner.forEach(hide0); M.bus.forEach(hide0);
-  const tCC = Q(T('a2', '控制器')), tCA = Q(T('a2', '运算器')), tM = Q(T('a2', '存储'));
+  const tCC = Q(T('a2b', '控制器')), tCA = Q(T('a2b', '运算器')), tM = Q(T('a2b', '存储'));
+  // 「核心是三样」：先画出三个虚线空框，停一下；讲到哪个，哪个框填实
+  const tThree = Q(T('a2', '三样'));
+  const ph = [G.CC, G.CA, G.M].map((g, k) => { const d = frameBox(world, g.x, g.y, g.w, g.h, 'var(--ink45)', 3); d.style.borderStyle = 'dashed'; hide0(d); wipe(d, tThree + k * 0.15, { dir: 't', d: 0.4 }); sfx('tick', tThree + k * 0.15, { g: 0.45, p: -0.4 + k * 0.4 }); return d; });
+  [tCC, tCA, tM].forEach((t, k) => vanish(ph[k], t + 0.5));
   wipe(M.CC, tCC, { dir: 'l', d: 0.5 }); sfx('thud', tCC, { g: 0.6, p: -0.4 });
   wipe(M.slot, tCC + 0.3, { dir: 'l', d: 0.4 });
-  const tWheel = Q(T('a2', '指挥'));
+  const tWheel = Q(T('a2b', '指挥'));
   appear(M.wheel, tWheel); M.steps.forEach((e, k) => slam(e, tWheel + k * 0.12, { from: 0.5, d: 0.3 })); [0, 1, 2].forEach((k) => sfx('pop', tWheel + k * 0.12, { g: 0.45, p: -0.1 }));
   wipe(M.CA, tCA, { dir: 'l', d: 0.5 }); sfx('thud', tCA, { g: 0.6, p: -0.4 });
-  M.ops.textContent = ''; appear(M.ops, Q(T('a2', '算数'))); typeText(M.ops, '+ − × ÷', Q(T('a2', '算数')), 14, { cursor: false, sfxGain: 0.4 });
-  slam(M.acc, Q(T('a2', '算数')) + 0.3, { from: 1.3, d: 0.35 });
+  M.ops.textContent = ''; appear(M.ops, Q(T('a2b', '算数'))); typeText(M.ops, '+ − × ÷', Q(T('a2b', '算数')), 14, { cursor: false, sfxGain: 0.4 });
+  slam(M.acc, Q(T('a2b', '算数')) + 0.3, { from: 1.3, d: 0.35 });
   wipe(M.M, tM, { dir: 'l', d: 0.5 }); sfx('thud', tM, { g: 0.6, p: 0.4 });
-  const tBus = Q(T('a2', '东西'));
+  const tBus = Q(T('a2b', '东西'));
   M.bus.forEach((p) => drawIn(p, tBus, 0.6)); appear(M.busLabel, tBus + 0.5); sfx('tick', tBus, { g: 0.5 });
   // 讲到的部件框一圈红线
   const hl = (g, t0, t1) => { const r = frameBox(world, g.x - 8, g.y - 8, g.w + 16, g.h + 16); hide0(r); appear(r, t0); vanish(r, t1); };
-  hl(G.CC, tCC, tCA - 0.05); hl(G.CA, tCA, tM - 0.05); hl(G.M, tM, Q(Tend('a2') + 0.3));
+  hl(G.CC, tCC, tCA - 0.05); hl(G.CA, tCA, tM - 0.05); hl(G.M, tM, Q(Tend('a2b') + 0.3));
 
   // ── 6. 关键一步：几根接线（步骤）被划掉，拉直变成蓝纸带，和赭色的数一起送进存储器 ──
   const tCab = Q(T('a3', '步骤')), tX = Q(T('a3', '接线')), tStore = Q(T('a3', '存进'));

@@ -18,6 +18,7 @@ scene('bottleneck', ({ root, s }) => {
   const tI = Q(T('d1', '指令')), tD = Q(T('d1', '数据')), tGo = Q(T('d1', '一次')), tCacheOn = Q(T('d6')), gap = 1.0, N = 16, LEN = 6, SL = 100;
   const qx = (slot) => 1114 + slot * SL, qy = laneY + 12;
   const dep = []; for (let k = 0; k < N; k++) dep.push(tGo + k * gap);
+  const depI = [];
   const arrivals = [];
   for (let k = 0; k < N; k++) {
     const isI = k % 2 === 0, row = isI ? (k / 2) % 4 + 1 : (k % 4 === 1 ? 8 : 9);
@@ -33,6 +34,7 @@ scene('bottleneck', ({ root, s }) => {
       K.push([tk, qx(0), qy, { s: 0.5 }], [tk + 0.3, 1060, laneY + 12, { s: 0.6 }], [tk + 0.7, 760, laneY + 12, { s: 0.6, e: (u) => u }], [tk + 1.0, dest[0], dest[1], { s: 0.8 }]);
       mover(tp, K, tk + 1.02);
       arrivals.push([tk + 1.0, isI]);
+      if (isI) depI.push([tk, row]);                     // 指针在这条指令离开它那一格时指过去
       sfx('tick', tk + 0.3, { g: 0.4, p: 0.2 });
     } else {                                               // 还没轮到的：缓存接上之后转进对应的缓存
       const tt = tCacheOn + 0.1 + (k % 5) * 0.08, cy = isI ? 330 : 540;
@@ -104,14 +106,14 @@ scene('bottleneck', ({ root, s }) => {
 
   // ── 常用的就近拿：控制器、运算器直接从旁边的缓存拿，通道清静了 ──
   const pk = [[s.start, 1]]; let pc = 1;
-  arrivals.filter(([, i]) => i).forEach(([t]) => { pc = pc % 4 + 1; pk.push([t, pc]); });
+  depI.forEach(([t, row]) => { if (row !== pc) pk.push([t, row]); pc = row; });
   for (let k = 0; k < 10; k++) {
     const isI = k % 2 === 0, tk = tFree - 0.2 + k * 0.4;
     if (tk + 0.35 > Q(T('d7', '换'))) break;
     const tp = tape(world, isI ? PROG.game[k % 4][0] : DATA[3][0], isI ? 'i' : 'd');
     const from = isI ? [790, 330] : [790, 540], dest = isI ? [G.slot.x, G.slot.y] : [G.accTape.x, G.accTape.y];
     mover(tp, [[tk, from[0], from[1], { s: 0.5, a: 0.4 }], [tk + 0.35, dest[0], dest[1], { s: 0.8 }]], tk + 0.36);
-    if (isI) { pc = pc % 4 + 1; pk.push([tk + 0.35, pc]); }
+    if (isI) { pc = pc % 4 + 1; pk.push([tk, pc]); }
     if (k % 2 === 0) sfx('tick', tk + 0.3, { g: 0.35, p: -0.3 });
   }
 
