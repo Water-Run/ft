@@ -19,7 +19,7 @@
 
 语言模型本身只接收文字、输出文字，不会执行任何操作（D1、D2）。要让它「读文件、跑测试、改代码」，需要外面一层程序：把环境说明、工具清单和任务一起发给模型；模型若回复一段约定格式的「工具调用」，就由这层程序真的去执行，把结果作为一条消息放回对话，再连同整段对话重新请求模型（D4、D5）；模型的回复里不再有工具调用时，循环结束（D4）。这层程序就是 Harness；LangChain 的说法是「Agent = Model + Harness」（D3）。
 
-一次完整操作见实验 E1–E8：5 次请求，6 次工具调用（读 2 个文件、跑测试、改 1 行、再跑测试），第 5 次回复没有工具调用，循环停下。每次请求都带着全部历史，消息数 3 → 6 → 8 → 10 → 12，`prompt_tokens` 489 → 1044（E8）。
+一次完整操作见实验 E1–E8：5 次请求，6 次工具调用（读 2 个文件、跑测试、改 1 行、再跑测试），第 5 次回复没有工具调用，循环停下。每次请求都带着全部历史，发出的消息数 2 → 5 → 7 → 9 → 11，`prompt_tokens` 489 → 1044（E8）。
 
 Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做什么、拦下不允许的调用（D7）。同一个模型换一套 Harness，评测分数会变（D8、D9）。
 
@@ -30,13 +30,13 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | 号 | 陈述 | 依据（`research/lab/`） | 核查 |
 |---|---|---|---|
 | E1 | 演示项目：`cart.py` 的 `total` 写成 `return sum(prices[1:])`，会跳过第一个价格；`test_cart.py` 检查 `total([3, 5, 2])` 应为 10 | `demo/cart.py` 第 3 行；`demo/test_cart.py` | 2026-10-31，已核 |
-| E2 | 第 1 次请求：3 条消息（system：「你是一个编程助手……当前项目里的文件：cart.py、test_cart.py……」；user：「测试没通过，帮我修好。」）＋ 3 个工具 `read_file`、`edit_file`、`run_tests`；请求体 1243 字节 | `out_01_harness_a.json` → `rounds[0].request`、`request_bytes`；文件清单由 `01_harness.py` 从目录读出后写进 system | 已核 |
+| E2 | 第 1 次请求：2 条消息（system：「你是一个编程助手……当前项目里的文件：cart.py、test_cart.py……」；user：「测试没通过，帮我修好。」）＋ 3 个工具 `read_file`、`edit_file`、`run_tests`；请求体 1243 字节 | `out_01_harness_a.json` → `rounds[0].request`、`request_bytes`；文件清单由 `01_harness.py` 从目录读出后写进 system | 已核 |
 | E3 | 第 1 次响应：`finish_reason` 为 `tool_calls`，正文「我先看看这两个文件。」，两个工具调用 `read_file({"path": "cart.py"})`、`read_file({"path": "test_cart.py"})`；Harness 执行后把两个文件的内容作为 `tool` 消息放回 | `rounds[0].response.choices[0]`、`rounds[0].tool_results` | 已核 |
-| E4 | 第 2 次请求 6 条消息；模型调用 `run_tests({})`；结果「退出码 1 / 失败：total([3, 5, 2]) 应为 10，实际得到 7」 | `rounds[1]` | 已核 |
-| E5 | 第 3 次请求 8 条消息；模型正文「问题确认了：`prices[1:]` 把第一件商品漏掉了（3+5+2=10，实际算成 5+2=7）。」，调用 `edit_file`，把 `    return sum(prices[1:])` 换成 `    return sum(prices)`；结果「已修改 cart.py」 | `rounds[2]` | 已核 |
-| E6 | 第 4 次请求 10 条消息；模型调用 `run_tests({})`；结果「退出码 0 / 通过：total([3, 5, 2]) = 10」 | `rounds[3]` | 已核 |
-| E7 | 第 5 次请求 12 条消息；响应 `finish_reason` 为 `stop`，没有工具调用，正文「测试通过了。我把 `cart.py` 里 `total` 的 `sum(prices[1:])` 改成 `sum(prices)`，因为原来的写法会跳过第一件商品的价格。」；循环结束后 Harness 自己再跑一遍测试，通过 | `rounds[4]`、`final_check`、`after` | 已核 |
-| E8 | 5 次请求的消息数 3、6、8、10、12；`prompt_tokens` 489、683、835、987、1044；请求体 1243、2133、2834、3402、3724 字节 | 各轮 `request.messages`、`response.usage`、`request_bytes` | 已核 |
+| E4 | 第 2 次请求 5 条消息；模型调用 `run_tests({})`；结果「退出码 1 / 失败：total([3, 5, 2]) 应为 10，实际得到 7」 | `rounds[1]` | 已核 |
+| E5 | 第 3 次请求 7 条消息；模型正文「问题确认了：`prices[1:]` 把第一件商品漏掉了（3+5+2=10，实际算成 5+2=7）。」，调用 `edit_file`，把 `    return sum(prices[1:])` 换成 `    return sum(prices)`；结果「已修改 cart.py」 | `rounds[2]` | 已核 |
+| E6 | 第 4 次请求 9 条消息；模型调用 `run_tests({})`；结果「退出码 0 / 通过：total([3, 5, 2]) = 10」 | `rounds[3]` | 已核 |
+| E7 | 第 5 次请求 11 条消息；响应 `finish_reason` 为 `stop`，没有工具调用，正文「测试通过了。我把 `cart.py` 里 `total` 的 `sum(prices[1:])` 改成 `sum(prices)`，因为原来的写法会跳过第一件商品的价格。」；循环结束后 Harness 自己再跑一遍测试，通过 | `rounds[4]`、`final_check`、`after` | 已核 |
+| E8 | 5 次请求发出的消息数 2、5、7、9、11；`prompt_tokens` 489、683、835、987、1044；请求体 1243、2133、2834、3402、3724 字节 | 各轮 `len(request.messages)`、`response.usage`、`request_bytes` | 已核（2026-10-31 更正，见「复核」） |
 | E9 | 第二次运行（`_b`）走的是同一条路（读两个文件 → 跑测试 → 改同一行 → 再跑 → 停），也是 5 次请求；`prompt_tokens` 489、683、775、915、972，与 `_a` 略有出入 | `out_01_harness_b.json` | 已核。片中数字只取 `_a` |
 | E10 | 这个 Harness 每次请求都发送全部消息；工具只能访问项目目录里的文件，越界时返回「只能访问项目目录里的文件」；工具出错时把错误作为结果交回模型 | `01_harness.py` 的 `main()` 循环、`make_tools()` 里的 `inside()` | 已核（读源码）。越界在本次运行中没有触发 |
 
@@ -64,7 +64,7 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | o2 | 读代码、跑测试、改掉一行，测试通过 | E3–E7 |
 | o3 | 模型本身不会动手，只会输出文字 | D1、D2 |
 | o5 | Harness 是包在模型外面的一层程序 | D3 |
-| o6 | 模型加上 Harness，才是 Agent | D3（LangChain 的公式，画面署名） |
+| o6 | Model + Harness，就是 Agent | D3（LangChain 的公式「Agent = Model + Harness」，画面署名） |
 
 ### ask
 
@@ -91,7 +91,7 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 | 句号 | 陈述 | 依据 |
 |---|---|---|
 | m1 | 模型不记事，每次重发整段对话 | D5、E8 |
-| m2 | 五次请求，对话从 3 条涨到 12 条 | E8 |
+| m2 | 五次请求，发出的对话从 2 条涨到 11 条 | E8 |
 | m3 | 太长时 Harness 把旧的部分压成摘要 | D6 |
 | m4 | 它管边界，比如只许碰项目里的文件 | E10、D7 |
 | m5 | 同一个模型，换一套 Harness，本事不一样 | D9、D8 |
@@ -113,4 +113,5 @@ Harness 还负责：对话太长时压缩旧内容（D6）；划定模型能做�
 
 ## 复核
 
-未做（成片后进行）。
+- 2026-10-31 制作方按选定方向做关键帧时，逐条数了 `out_01_harness_a.json` 各轮 `request.messages`：实际发出 2、5、7、9、11 条，不是此前记的 3、6、8、10、12。原因是 `01_harness.py` 在追加模型回复之后才数条数、写进 `.txt`，事实表照抄了 `.txt`。已更正 E2、E4–E8、m2 与第 22 行，脚本已修（见 `lab/README.md` 勘误）；`prompt_tokens` 与请求体字节数取自 JSON，不受影响。旁白 m2 随之改为「2 条涨到了 11 条」，须重新交校对确认。
+- 其余：未做（成片后进行）。

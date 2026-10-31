@@ -12,6 +12,18 @@
   "rates": {
     "zh": "+6%"
   },
+  "tts": {
+    "engine": {
+      "zh": "minimax"
+    },
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Crisp_Girl"
+    },
+    "speed": {
+      "zh": 1.15
+    }
+  },
   "asr_prompts": {
     "zh": "以下是普通话的讲解。"
   },
@@ -74,7 +86,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "WaterRun 校对文案，并在试听页 out/audition/index.html 里选定配音、配乐与视觉方向",
+  "next": "WaterRun 明确确认文案第 2 稿（o6、m2 已改）；确认后用配音 D 合成全片旁白，按「环为主、消息栈为辅」做有声代表段",
   "credits": {
     "planner": "WaterRun",
     "models": [

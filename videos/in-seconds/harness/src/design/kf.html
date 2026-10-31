@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>关键帧 · 150 秒了解 Agent 的手：Harness</title>
-<!-- 三个方向的关键帧（静态页）：A 对开页、B 消息栈、C 环。用 look.js --url "/design/kf.html?k=A2" --size 1920x1080 截图。
+<!-- 三个方向的关键帧（静态页）：A 对开页、B 消息栈、C 环；D 是 WaterRun 选定的「C 为主、B 为辅」（2026-10-31）。用 look.js --url "/design/kf.html?k=A2" --size 1920x1080 截图。
      数据取自 research/lab/out_01_harness_a.json（第 1–5 次请求）；正式场景改由 tools/gen_data.py 生成的 data.js 提供。 -->
 <link rel="stylesheet" href="/css/base.css">
 <style>
@@ -36,11 +36,11 @@ const K = new URLSearchParams(location.search).get('k') || 'A1';
 const TOTAL = 150, MAXTOK = 1100;
 // 第 1–5 次请求（out_01_harness_a.json）
 const REQ = [
-  { n: 1, msgs: 3,  tok: 489,  call: 'read_file ×2' },
-  { n: 2, msgs: 6,  tok: 683,  call: 'run_tests' },
-  { n: 3, msgs: 8,  tok: 835,  call: 'edit_file' },
-  { n: 4, msgs: 10, tok: 987,  call: 'run_tests' },
-  { n: 5, msgs: 12, tok: 1044, call: '' },
+  { n: 1, msgs: 2,  tok: 489,  call: 'read_file ×2' },   // msgs = 这次请求发出的条数（len(request.messages)）
+  { n: 2, msgs: 5,  tok: 683,  call: 'run_tests' },
+  { n: 3, msgs: 7,  tok: 835,  call: 'edit_file' },
+  { n: 4, msgs: 9,  tok: 987,  call: 'run_tests' },
+  { n: 5, msgs: 11, tok: 1044, call: '' },
 ];
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const q = (st) => st.replace(/"/g, "'");
@@ -171,7 +171,7 @@ F.B1 = () => {
 F.B2 = () => {
   let s = box(64, 120, 860, 120, 'bp', txt(32, 26, '模型', 'ink', 'font:900 64px "Sans SC"') + txt(240, 46, '第 4 次：整摞读一遍', 'dimp', 'font:500 32px "Sans SC"'));
   s += `<div class="a" style="left:476px;top:250px;width:0;height:0;border-bottom:30px solid var(--ac);border-left:18px solid transparent;border-right:18px solid transparent"></div>`;
-  s += stack(64, 930, 860, 10, 64, 8);
+  s += stack(64, 930, 860, 9, 64, 7);
   s += txt(1040, 140, '每次请求的长度', 'lab dim');
   REQ.slice(0, 4).forEach((r, i) => {
     const y = 220 + i * 120, w = r.tok / MAXTOK * 520;
@@ -193,7 +193,7 @@ F.B3 = () => {
     s += txt(x, 820, `第 ${r.n} 次`, 'paper', 'font:700 34px "Sans SC"');
     s += txt(x, 868, `${r.msgs} 条 · ${r.tok}`, 'mono dim', 'font:600 30px Mono');
   });
-  return s + hud(51, 1044, '问了五次，对话从 3 条涨到了 12 条', false);
+  return s + hud(51, 1044, '问了五次，发出的对话从 2 条涨到了 11 条', false);
 };
 
 // ───────── C 环：一圈 = 一次请求；指针走过四站：模型 → 工具调用 → Harness 执行 → 结果交回 ─────────
@@ -251,6 +251,85 @@ F.C3 = () => {
     s += txt(1520, y + 12, `${r.msgs} 条消息`, 'dim', 'font:500 30px "Sans SC"');
   });
   return s + hud(62, 1044, '这个来回的循环，就是 Harness 的核心', false);
+};
+
+// ───────── D 环为主、消息栈为辅：左边一圈 = 一次请求；右边是整段对话，每到「模型」一站整摞发出 ─────────
+const CONV = [
+  ['say', '说明', '文件：cart.py、test_cart.py'],
+  ['say', '你', '测试没通过，帮我修好。'],
+  ['call', '工具调用', 'read_file ×2'],
+  ['tool', '结果', 'cart.py 的内容'],
+  ['tool', '结果', 'test_cart.py 的内容'],
+  ['call', '工具调用', 'run_tests'],
+  ['tool', '结果', '失败：应为 10，实际 7'],
+  ['call', '工具调用', 'edit_file cart.py'],
+  ['tool', '结果', '已修改 cart.py'],
+  ['call', '工具调用', 'run_tests'],
+  ['tool', '结果', '通过'],
+];
+// 对话栈：从 yBottom 往上摞 n 条；newFrom 起是这一圈新添的（左侧朱红标记）；sent 条被括为「这次发出」
+function conv(x, yBottom, w, n, rowH, newFrom, sent) {
+  let s = '';
+  for (let i = 0; i < n; i++) {
+    const [k, role, t] = CONV[i], y = yBottom - (i + 1) * rowH, h = rowH - 8;
+    const bg = k === 'call' ? 'var(--ac)' : k === 'tool' ? 'var(--paper)' : 'transparent';
+    const fg = k === 'say' ? 'var(--paper)' : 'var(--ink)';
+    s += box(x, y, w, h, '', txt(18, h / 2 - 17, `<span style="font:500 26px 'Sans SC';${k === 'say' ? 'color:var(--dim);' : ''}display:inline-block;width:116px">${role}</span><span class="mono" style="font:600 28px Mono,'Sans SC'">${esc(t)}</span>`, '', `color:${fg}`),
+      `background:${bg};border:${k === 'say' ? '3px solid var(--paper)' : 'none'}`);
+    if (i >= newFrom) s += box(x + w + 16, y, 12, h, 'ba');
+  }
+  if (sent) {
+    const yTop = yBottom - sent * rowH;
+    s += box(x - 36, yTop, 6, sent * rowH - 8, 'bp') + box(x - 36, yTop, 22, 6, 'bp') + box(x - 36, yBottom - 14, 22, 6, 'bp');
+  }
+  return s;
+}
+function laps(x, y, cur) {
+  return txt(x, y + 10, '圈', 'dim', 'font:500 30px "Sans SC"') + REQ.map((r, i) => box(x + 56 + i * 68, y, 56, 56, r.n === cur ? 'ba' : '',
+    txt(0, 8, r.n, 'mono ' + (r.n === cur ? 'ink' : r.n < cur ? 'paper' : 'dim'), 'width:56px;text-align:center;font:800 32px Mono'),
+    r.n === cur ? '' : `border:3px solid ${r.n < cur ? 'var(--paper)' : 'var(--dim)'}`)).join('');
+}
+F.D1 = () => ring(600, 500, 290, 90, 1,
+  txt(600, 400, '模型回的', 'dim', 'font:700 32px "Sans SC";transform:translateX(-50%)') +
+  txt(600, 456, 'read_file', 'mono ac', 'font:800 60px Mono;transform:translateX(-50%)') +
+  txt(600, 540, 'cart.py · test_cart.py', 'mono paper', 'font:600 32px Mono;transform:translateX(-50%)')) +
+  laps(64, 136, 1) +
+  txt(1200, 520, '对话', 'lab dim') + txt(1320, 526, '第 1 次发出 2 条，外加工具清单', 'dim', 'font:500 28px "Sans SC"') +
+  box(1200, 588, 620, 64, '', txt(18, 15, `<span style="font:700 26px 'Sans SC';opacity:.62;display:inline-block;width:116px">工具清单</span><span class="mono" style="font:600 28px Mono">read · edit · run</span>`, 'dim'), 'border:3px dashed var(--dim)') +
+  conv(1200, 900, 620, 3, 76, 2, 2) +
+  hud(110, 489, '模型回的还是文字，格式特殊，叫工具调用', false);
+F.D2 = () => ring(600, 500, 290, 180, 2,
+  txt(600, 380, '第 2 圈', 'dim', 'font:700 30px "Sans SC";transform:translateX(-50%)') +
+  txt(600, 432, 'run_tests', 'mono paper', 'font:800 52px Mono;transform:translateX(-50%)') +
+  box(410, 520, 380, 120, 'bp', txt(190, 12, '应为 <b>10</b>', 'ink', 'font:700 36px "Sans SC";transform:translateX(-50%)') +
+    txt(190, 62, '实际 <b style="background:var(--ink);color:var(--ac);padding:0 12px">7</b>', 'ink', 'font:700 36px "Sans SC";transform:translateX(-50%)'))) +
+  laps(64, 136, 2) +
+  txt(1200, 310, '对话', 'lab dim') + txt(1320, 316, '第 2 次发出 5 条', 'dim', 'font:500 28px "Sans SC"') +
+  conv(1200, 900, 620, 7, 76, 5, 5) +
+  hud(84, 683, 'Harness 跑完：3 加 5 加 2 应为 10，实际是 7', false);
+F.D3 = () => {
+  let s = `<svg class="a" style="left:0;top:0" width="1920" height="968">`;
+  const cx = 420, cy = 520;
+  REQ.forEach((r, i) => {
+    const R = 90 + i * 54;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#ff4a1c" stroke-width="${i === 4 ? 10 : 6}"/>`;
+  });
+  s += `</svg>`;
+  s += txt(cx, cy - 26, '5 圈', 'paper', 'font:900 44px "Sans SC";transform:translateX(-50%)');
+  s += txt(64, 136, '每一圈发出的整段对话', 'lab dim') +
+    box(1100, 142, 28, 28, 'ba') + txt(1140, 136, '工具调用', 'paper', 'font:500 30px "Sans SC"') +
+    box(1310, 142, 28, 28, 'bp') + txt(1350, 136, '结果', 'paper', 'font:500 30px "Sans SC"') +
+    box(1460, 142, 28, 28, '', '', 'border:3px solid var(--paper)') + txt(1500, 136, '说明、你', 'paper', 'font:500 30px "Sans SC"');
+  REQ.forEach((r, i) => {
+    const x = 800 + i * 200, rowH = 52, h = rowH - 8;
+    for (let j = 0; j < r.msgs; j++) {
+      const k = CONV[j][0], y = 800 - (j + 1) * rowH;
+      s += box(x, y, 150, h, '', '', `background:${k === 'call' ? 'var(--ac)' : k === 'tool' ? 'var(--paper)' : 'transparent'};border:${k === 'say' ? '3px solid var(--paper)' : 'none'}`);
+    }
+    s += txt(x, 820, `第 ${r.n} 圈`, 'paper', 'font:700 32px "Sans SC"');
+    s += txt(x, 866, `${r.msgs} 条 · ${r.tok}`, i === 4 ? 'ac' : 'dim', 'font:700 30px "Sans SC"');
+  });
+  return s + hud(48, 1044, '问了五次，发出的对话从 2 条涨到了 11 条', false);
 };
 
 document.getElementById('stage').innerHTML = (F[K] || F.A1)();

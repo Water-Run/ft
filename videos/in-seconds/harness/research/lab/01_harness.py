@@ -87,6 +87,7 @@ def main():
         for n in range(1, MAX_ROUNDS + 1):
             body = {'model': MODEL, 'messages': messages, 'tools': TOOLS, 'temperature': 0}
             request_bytes = len(json.dumps(body, ensure_ascii=False).encode('utf-8'))
+            sent = len(messages)   # 先记下：body 和 messages 是同一个列表，下面追加回复后再数会多 1
             resp = post(body)
             choice = resp['choices'][0]
             msg = choice['message']
@@ -99,7 +100,7 @@ def main():
                 keep['tool_calls'] = msg['tool_calls']
             messages.append(keep)
             u = resp.get('usage', {})
-            lines.append(f'── 第 {n} 次请求：{len(body["messages"])} 条消息，{request_bytes} 字节；'
+            lines.append(f'── 第 {n} 次请求：{sent} 条消息，{request_bytes} 字节；'
                          f'prompt_tokens {u.get("prompt_tokens")}，completion_tokens {u.get("completion_tokens")}；finish_reason {choice.get("finish_reason")}')
             if msg.get('content'):
                 lines.append(f'[assistant] {msg["content"]}')
