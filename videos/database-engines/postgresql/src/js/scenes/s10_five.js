@@ -2,7 +2,7 @@
 // 讲到哪一问，结构图上回答它的那一部分动起来；最后五个问题都连到同一处：第 23 页里的两个版本（WaterRun 看 r7：「五个问题优化一下 更多结构 而不是PPT列表」）
 scene('five', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  drift(world, s, [], 1);
+  drift(world, s, [], 1, makeCamera(world));
   hdoc(world, 'PostgreSQL 的五个回答', 72, 128);
   const ov = overlay(world);
   const [P] = D.alice.ctid;
@@ -60,8 +60,8 @@ scene('five', ({ root, s, c0 }) => {
   // 「这样回答」时先浮出整张结构图的虚线轮廓（三棵树、堆、WAL），讲到哪一问，哪一块变成实的
   const ghost = (x, y, w, hh, bg) => { const g = h('div', 'abs', world); px(g, x, y, w, hh); css(g, { border: '2px dashed rgba(51,103,145,.45)', background: bg || 'none' }); g.dataset.name = '轮廓'; return g; };
   const gTrees = trees.map((t) => ghost(t.cx - 130, 214, 260, 100));
-  const gHeap = ghost(MX, HY, D.heap.pages * PW - 4, 70, 'repeating-linear-gradient(90deg,rgba(51,103,145,.22) 0 2px,transparent 2px 22px)');
-  const gWal = ghost(MX, 750, 11 * 94 - 8, 52, 'repeating-linear-gradient(90deg,rgba(51,103,145,.22) 0 2px,transparent 2px 94px)');
+  const gHeap = ghost(MX, HY, D.heap.pages * PW - 4, 70, 'repeating-linear-gradient(90deg,rgba(51,103,145,.22) 0 2px,transparent 2px 22px)');   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
+  const gWal = ghost(MX, 750, 11 * 94 - 8, 52, 'repeating-linear-gradient(90deg,rgba(51,103,145,.22) 0 2px,transparent 2px 94px)');   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const tG = T('z1', '这样回答') - 0.3;
   gTrees.forEach((g, i) => show(g, tG + i * 0.15, { y: -8, d: 0.35 })); show(gHeap, tG + 0.5, { x: -16, d: 0.5 }); show(gWal, tG + 0.9, { x: -16, d: 0.5 });
   sfx('whoosh', tG, { g: 0.3 });
@@ -92,7 +92,7 @@ scene('five', ({ root, s, c0 }) => {
   wipe(bub, T('z6') - 0.05, { dir: 't', d: 0.35 });
   [tupO, tupN, tupX].forEach((e) => set(e, 0, { autoAlpha: 0 }));
   show(tupO, T('z6'), { x: -10 }); show(tupN, T('z6', '新版本') - 0.1, { x: 20 }); sfx('pop', T('z6', '新版本'));
-  fromTo(tupO, T('z6', 'xmax'), { boxShadow: 'inset 0 0 0 0px #b8442f' }, { boxShadow: 'inset 0 0 0 4px #b8442f', duration: 0.25 });
+  fromTo(tupO, T('z6', 'xmax'), { boxShadow: 'inset 0 0 0 0px #b8442f' }, { boxShadow: 'inset 0 0 0 4px #b8442f', duration: 0.25 });   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
   const rec = tagEl(world, '没人要了 → 回收', BX + 110, BY + 100, 'grey'); css(rec, { fontSize: '22px' });
   show(rec, T('z7', '清理回收') - 0.2, { y: -6 }); show(fsm, T('z7', '回收') - 0.1, { x: 10 }); fromTo(fsm, T('z7', '回收'), { backgroundColor: '#fff' }, { backgroundColor: '#ffe7a6', duration: 0.25 });
   hide(rec, T('z8') - 0.2, { d: 0.25 });
@@ -119,7 +119,7 @@ scene('five', ({ root, s, c0 }) => {
   const core = h('div', 'abs', world); px(core, BX, 828, 620, 70); css(core, { background: 'var(--pg)' }); core.dataset.name = '同一个做法';
   const cl = h('div', 'abs', core, '改一行，就写一个新版本'); px(cl, 24, 12); css(cl, { font: '800 34px "Sans SC"', color: '#fff' });
   wipe(core, T('z13') - 0.1, { dir: 'l', d: 0.5 }); sfx('chime', T('z13', '新版本'), { g: 0.7 });
-  fromTo(tupN, T('z13', '新版本'), { boxShadow: '0 0 0 0px rgba(224,161,27,0)' }, { boxShadow: '0 0 0 6px rgba(224,161,27,1)', duration: 0.3 });
+  fromTo(tupN, T('z13', '新版本'), { boxShadow: '0 0 0 0px rgba(224,161,27,0)' }, { boxShadow: '0 0 0 6px rgba(224,161,27,1)', duration: 0.3 });   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
   const fz = focusRing(world);
   fz.at(T('z2') + 0.1, chips[0]).at(T('z4') + 0.1, chips[1]).at(T('z6') + 0.1, chips[2]).at(T('z8') + 0.1, chips[3]).at(T('z10') + 0.1, chips[4]).off(tz - 0.2);
 });

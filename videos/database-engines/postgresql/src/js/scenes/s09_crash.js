@@ -1,11 +1,11 @@
 // 09 出错怎么办（第 3 稿：整章一个画面，强行停机的实验沿用前半段的日志带与两页）：WAL 先落盘、数据页晚写（W1–W3）；检查点与整页写（W4、W5、W10）→ 强行停机后重放；没提交的版本本来就看不见（W7–W9）
 scene('crash', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const tB = Tend('w12b') + 0.5;
+  const tB = Tend('w12b') + 2.8;   // 双写缓冲区那张图到齐后停 1 秒，再收起换下半段
   // 整章一个画面：后半段（强行停机的实验）叠在同一张画面上接着演，日志带、内存里的页、磁盘上的页都不换（WaterRun 看 r8：「画面缺乏连续性」）
   const A = h('div', 'abs', world); px(A, 0, 0, 1920, 1080); tl.fromTo(A, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: true }, Math.max(0, c0 - 1.8));
   const B = h('div', 'abs', world); px(B, 0, 0, 1920, 1080); tl.fromTo(B, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: true }, tB - 0.3);
-  drift(world, s, [tB], -1);
+  drift(world, s, [tB], -1, makeCamera(world));
   const W = D.wal;
 
   // ── A：先写日志 ──
@@ -50,9 +50,19 @@ scene('crash', ({ root, s, c0 }) => {
   const dskR = h('div', 'tup grey', dskP, `Alice　xmax ${W.disk.alice_xmax}　（还是旧的）`); px(dskR, 16, 36, 800);
   wipe(bufP, T('w6') - 0.3, { dir: 'l' }); show(bufL, T('w6') - 0.3); show(bufR, T('w6') - 0.2);
   wipe(dskP, T('w6', '旧的') - 0.2, { dir: 'r' }); show(dskL, T('w6', '旧的') - 0.2); show(dskR, T('w6', '旧的'), { y: 8 }); sfx('tick', T('w6', '旧的'), { p: 0.4 });
-  const late = noteBox(A, '数据页晚些再写：提交只等日志落盘', 72, 700, 840); show(late, T('w7'), { y: 10 });
+  // 晚些再写：内存里的页晚些才写进数据文件，最晚到下一个检查点（W11）；这时来查，读的是内存里这一页，已经是新的（W3；查询先把页读进内存，Q2）
+  // （WaterRun 看 r9：「晚一些是什么时候写 这个时候查怎么办(日志有页没有) 画面要给出解释」）
+  const ovW = overlay(A);
+  const lateAr = link(ovW, [[918, 620], [994, 620]], 'navy', { dashed: true, w: 3.5 }); arrowIn(lateAr, T('w7', '晚些') - 0.2, 0.4);
+  const lateT = h('div', 'abs', A, '晚些'); px(lateT, 926, 576); css(lateT, { font: '700 22px "Sans SC"', color: 'var(--navy)' }); set(lateT, 0, { autoAlpha: 0 }); show(lateT, T('w7', '晚些'), { y: 6 });
+  const late = noteBox(A, '提交只等日志落盘；内存里的页<b>晚些</b>才写进数据文件，<br>最晚到<b>下一个检查点</b>', 72, 700, 840); show(late, T('w7', '晚些') + 0.1, { y: 10 });
+  const q9 = tagEl(A, '这时来查', 1000, 712, 'navy'); css(q9, { fontSize: '24px' }); set(q9, 0, { autoAlpha: 0 }); show(q9, T('w7', '晚些') + 0.5, { x: 16, y: 0 });
+  fly(A, '查', [1040, 716], [600, 600], T('w7', '晚些') + 0.7, { cls: 'navy', fs: 24, d: 0.6, sink: true }); sfx('whoosh', T('w7', '晚些') + 0.7, { g: 0.3 });
+  const q9b = h('div', 'abs', A, '读的是内存里这一页：已经是新的'); px(q9b, 1140, 716); css(q9b, { font: '700 24px "Sans SC"', color: 'var(--pg)', whiteSpace: 'nowrap' }); set(q9b, 0, { autoAlpha: 0 }); show(q9b, T('w7', '晚些') + 1.1, { x: -10, y: 0 });
+  tl.fromTo(bufP, { boxShadow: '0 0 0 0px rgba(224,161,27,0)' }, { boxShadow: '0 0 0 6px rgba(224,161,27,1)', duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T('w7', '晚些') + 1.2);   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
+  [q9, q9b].forEach((e) => gone(e, T('w8', '检查点') - 0.2, 0.25));
   // 检查点
-  const cpG = glossBox(A, '检查点', '<b>检查点</b>：保证在它之前的修改，<br>都已经写进了数据文件', 1000, 700, 840);
+  const cpG = glossBox(A, '检查点', '<b>检查点</b>：把内存里改过的页都写进数据文件<br>默认每 5 分钟一次（日志快攒到 1 GB 时也会提前做）', 1000, 700, 840);
   show(cpG, T('w8', '检查点') + 0.1, { x: 20 }); sfx('pop', T('w8', '检查点') + 0.1, { g: 0.5 });
   const cp = h('div', 'abs', A); px(cp, 72 + 2 * 222 - 16, 330, 8, 130); css(cp, { background: 'var(--navy)' }); cp.dataset.name = '检查点';
   const cpl = tagEl(A, '检查点', 72 + 2 * 222 - 120, 290, 'navy');
@@ -61,8 +71,8 @@ scene('crash', ({ root, s, c0 }) => {
   const cpb = h('div', 'abs', A); px(cpb, 72, 456, 2 * 222 - 10, 6); css(cpb, { background: 'var(--navy)' });
   const cpbl = capt(A, '这之前的修改：已在数据文件里', 72, 466); css(cpbl, { fontSize: '22px', color: 'var(--navy)', fontWeight: 700 });
   fromTo(cpb, T('w9', '写进') - 0.3, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.4 }); show(cpbl, T('w9', '写进') - 0.2, { y: 6 }); sfx('tick', T('w9', '写进'));
-  [cpb, cpbl].forEach((e) => hide(e, T('w10') - 0.2, { d: 0.25 }));
-  hide(late, T('w10') - 0.2, { d: 0.25 }); hide(cpG, T('w10') - 0.2, { d: 0.25 });
+  [cpb, cpbl].forEach((e) => hide(e, T('w11') - 0.3, { d: 0.25 }));
+  hide(late, T('w10') - 0.2, { d: 0.25 }); hide(cpG, T('w11') - 0.3, { d: 0.25 }); [lateAr, lateT].forEach((e) => gone(e, T('w10') - 0.2, 0.25));
   // 整页写：检查点后第一次改第 23 页，Carol 那条日志记录里带上这一页的原样——就是第三章那张页：页头、指针、行；
   // 中间那 72 字节的空隙不写（实测整页镜像 8120 = 8192 − 72，N3）。原先只是一条写着字节数的蓝条（WaterRun 看 r7：「日志里的整页体现和InnoDB双写缓冲区, 包括其他的关联概念」）
   const fpi1 = W.carolFpi[0][1], G3 = D.page23, kk = 840 / 8192, IY = 806;
@@ -71,7 +81,7 @@ scene('crash', ({ root, s, c0 }) => {
   const imgL = capt(A, `这条记录带着第 23 页的原样（${fpi1} 字节）`, 72, IY - 40); css(imgL, { fontSize: '24px', color: 'var(--navy)', fontWeight: 700 });
   const img = h('div', 'abs', A); px(img, 72, IY, 840, 64); css(img, { border: '4px solid #e0a11b', background: '#fff' }); img.dataset.name = '日志里的整页';
   const sg = (a, b, bg) => { const e = h('div', 'abs', img); px(e, a * kk, 0, Math.max(2, (b - a) * kk), 56); css(e, { background: bg }); return e; };
-  sg(0, 24, 'var(--navy)'); sg(24, G3.lower, 'var(--sky)'); sg(G3.upper, 8192, 'repeating-linear-gradient(90deg,var(--sky-lt) 0 6px,#fff 6px 7px)');
+  sg(0, 24, 'var(--navy)'); sg(24, G3.lower, 'var(--sky)'); sg(G3.upper, 8192, 'repeating-linear-gradient(90deg,var(--sky-lt) 0 6px,#fff 6px 7px)');   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const hole = h('div', 'abs', A, `中间的空隙 ${G3.upper - G3.lower} 字节：不写`); px(hole, 72 + G3.lower * kk - 10, IY + 72); css(hole, { font: '700 22px "Sans SC"', color: '#7d5500', whiteSpace: 'nowrap' });
   const holeT = h('div', 'abs', A); px(holeT, 72 + G3.lower * kk + 2, IY + 58, 3, 16); css(holeT, { background: '#7d5500' });
   const small = capt(A, '再改同一页：不再带整页', 560, IY + 72); css(small, { fontSize: '22px' });
@@ -80,11 +90,11 @@ scene('crash', ({ root, s, c0 }) => {
   // 写到一半的页：用日志里的整页恢复（整页从日志那张图飞过去，盖住写坏的下半页）
   const torn = h('div', 'abs', A); px(torn, 1000, 760, 840, 150); torn.dataset.name = '写了一半的页';
   const tTop = h('div', 'abs', torn); px(tTop, 0, 0, 840, 75); css(tTop, { background: 'var(--sky-lt)', border: '3px solid var(--pg)' });
-  const tBot = h('div', 'abs', torn); px(tBot, 0, 75, 840, 75); css(tBot, { background: 'repeating-linear-gradient(135deg,var(--warn-lt) 0 10px,#fff 10px 20px)', border: '3px dashed var(--warn)' });
+  const tBot = h('div', 'abs', torn); px(tBot, 0, 75, 840, 75); css(tBot, { background: 'repeating-linear-gradient(135deg,var(--warn-lt) 0 10px,#fff 10px 20px)', border: '3px dashed var(--warn)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const tl1 = h('div', 'abs', torn, '磁盘上的第 23 页只写了一半：坏了'); px(tl1, 20, 96); css(tl1, { font: '700 24px "Sans SC"', color: 'var(--warn)' });
-  wipe(torn, T('w11', '一半'), { dir: 'l' }); sfx('error', T('w11', '一半') + 0.2, { g: 0.5 });
-  const ghost = h('div', 'abs', A); px(ghost, 72, IY, 840, 64); css(ghost, { border: '4px solid #e0a11b', background: 'repeating-linear-gradient(90deg,var(--sky-lt) 0 6px,#fff 6px 7px)' });
-  const tRe = T('w12', '整页');
+  wipe(torn, T('w11', '断电'), { dir: 'l' }); sfx('error', T('w11', '断电') + 0.2, { g: 0.5 });
+  const ghost = h('div', 'abs', A); px(ghost, 72, IY, 840, 64); css(ghost, { border: '4px solid #e0a11b', background: 'repeating-linear-gradient(90deg,var(--sky-lt) 0 6px,#fff 6px 7px)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
+  const tRe = T('w12', '恢复') - 0.4;
   set(ghost, 0, { autoAlpha: 0 }); tl.fromTo(ghost, { autoAlpha: 1, x: 0, y: 0 }, { x: 928, y: 26, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tRe); gone(ghost, tRe + 0.7, 0.25);
   set(tBot, tRe + 0.6, { background: 'var(--sky-lt)', border: '3px solid var(--pg)' });
   keyed(tl1).at(tRe + 0.6, { html: '用日志里的整页写回：恢复' }); set(tl1, tRe + 0.6, { color: 'var(--navy)' }); sfx('chime', tRe + 0.6, { g: 0.6 });
@@ -92,14 +102,14 @@ scene('crash', ({ root, s, c0 }) => {
   const tI = T('w12b');
   [imgL, img, hole, holeT, small].forEach((e) => gone(e, tI - 0.3, 0.3));
   const dwb = h('div', 'abs', A); px(dwb, 72, 740, 880, 180); dwb.dataset.name = 'InnoDB 的双写缓冲区';
-  const innL = h('div', 'abs', dwb, '<b>InnoDB</b>：页先写进双写缓冲区，再写到数据文件里的原位'); px(innL, 0, 0); css(innL, { font: '600 24px "Sans SC"', color: 'var(--ink)', whiteSpace: 'nowrap' });
+  const innL = h('div', 'abs', dwb, '<b>InnoDB</b>：页先写进双写缓冲区，再写到原位'); px(innL, 0, 0); css(innL, { font: '600 24px "Sans SC"', color: 'var(--ink)', whiteSpace: 'nowrap' });
   const bx = (x, txt, bg) => { const e = h('div', 'abs', dwb, txt); px(e, x, 60, 230, 64); css(e, { background: bg, color: '#fff', font: '700 24px "Sans SC"', lineHeight: '64px', textAlign: 'center' }); return e; };
   const ib1 = bx(0, '内存里的页', '#5f6a73'), ib2 = bx(320, '① 双写缓冲区', '#4f5c67'), ib3 = bx(640, '② 原位', '#4f5c67');
   const ovI = overlay(A); const ia1 = link(ovI, [[72 + 236, 832], [72 + 314, 832]], 'grey'), ia2 = link(ovI, [[72 + 556, 832], [72 + 634, 832]], 'grey');
-  const innN = h('div', 'abs', dwb, '原位写坏了，就拿双写缓冲区里那份恢复'); px(innN, 0, 138); css(innN, { font: '500 22px "Sans SC"', color: 'var(--ink2)', whiteSpace: 'nowrap' });
+  const innN = h('div', 'abs', dwb, '原位写坏了，就用这份恢复'); px(innN, 0, 138); css(innN, { font: '500 22px "Sans SC"', color: 'var(--ink2)', whiteSpace: 'nowrap' });
   [innL, ib1, ib2, ib3, innN].forEach((e) => set(e, 0, { autoAlpha: 0 }));
-  show(innL, tI - 0.1, { y: 8 }); show(ib1, tI + 0.1, { x: -10 }); arrowIn(ia1, T('w12b', '双写') - 0.2, 0.3); show(ib2, T('w12b', '双写'), { x: -10 });
-  arrowIn(ia2, T('w12b', '双写') + 0.5, 0.3); show(ib3, T('w12b', '双写') + 0.7, { x: -10 }); show(innN, T('w12b', '双写') + 1.1, { y: 6 }); sfx('pop', T('w12b', '双写'), { g: 0.5 });
+  show(innL, tI - 0.1, { y: 8 }); show(ib1, tI + 0.1, { x: -10 }); arrowIn(ia1, T('w12b', '双写') - 0.3, 0.3); show(ib2, T('w12b', '双写') - 0.1, { x: -10 });
+  arrowIn(ia2, T('w12b', '双写') + 0.2, 0.3); show(ib3, T('w12b', '双写') + 0.35, { x: -10 }); show(innN, T('w12b', '双写') + 0.5, { y: 6 }); sfx('pop', T('w12b', '双写'), { g: 0.5 });
   const fA = focusRing(A);
   fA.at(T('w2', 'WAL'), walG).at(T('w3', '落盘'), tape).at(T('w4', '提交之前'), [72 + 4 * 222, 370, 4 * 222, 80]).at(T('w4', '内存'), mem).at(T('w6', '旧的'), dskP).at(T('w7', '晚些'), bufP).at(T('w8', '检查点') + 0.2, cpG).at(T('w9', '之前'), [72, 370, 444, 110])
     .at(T('w10', '第一次改'), recEls[2]).at(T('w11', '断电'), dskP).at(T('w11', '一半'), torn).off(tI - 0.2);
@@ -115,7 +125,7 @@ scene('crash', ({ root, s, c0 }) => {
   tk.print(T('w15', '停掉') - 0.1, '<span class="er">$ pg_ctl stop -m immediate</span>  <span class="d">-- 强行停掉</span>');
   keyed(bufL).at(tB0, { html: '内存里的页' }); keyed(dskL).at(tB0, { html: '磁盘上（数据文件里）的页' });
   // 日志带上的这几条：先是 Carol 改 Bob（不提交），再是 Alice 改成 43、提交
-  const recHi = (i, t) => fromTo(recEls[i], t, { boxShadow: 'inset 0 0 0 0px #e0a11b' }, { boxShadow: 'inset 0 0 0 6px #e0a11b', duration: 0.2 });
+  const recHi = (i, t) => fromTo(recEls[i], t, { boxShadow: 'inset 0 0 0 0px #e0a11b' }, { boxShadow: 'inset 0 0 0 6px #e0a11b', duration: 0.2 });   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
   [2, 3].forEach((i) => recHi(i, T('w13', 'Carol') - 0.1)); [4, 5, 6, 7].forEach((i, k) => recHi(i, T('w14', '提交') - 0.4 + k * 0.1));
   const mRow = (y, html, cls) => { const r = h('div', 'tup ' + cls, B, html); px(r, 88, y, 800); if (cls === 'ghost') css(r, { borderColor: 'var(--warn)', color: 'var(--warn)' }); return r; };
   const mB = mRow(574, 'Bob → 99　（Carol 改的，没提交）', 'ghost'), mA = mRow(624, 'Alice → 43　（已提交）', 'new');
@@ -128,7 +138,7 @@ scene('crash', ({ root, s, c0 }) => {
   const tOff = T('w15', '停掉') + 0.15;
   [mB, mA].forEach((e) => set(e, tOff, { autoAlpha: 0 }));
   const lost = h('div', 'abs', B, '<div style="position:absolute;left:24px;top:38px;font:700 28px var(--sans);color:#4d565e">内存里的全丢了</div>'); px(lost, 72, 560, 840, 120);
-  css(lost, { background: 'repeating-linear-gradient(135deg,#eceff1 0 10px,#fff 10px 20px)', border: '3px dashed var(--grey)' }); lost.dataset.name = '内存里的页丢了';
+  css(lost, { background: 'repeating-linear-gradient(135deg,#eceff1 0 10px,#fff 10px 20px)', border: '3px dashed var(--grey)' }); lost.dataset.name = '内存里的页丢了';   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   set(lost, 0, { autoAlpha: 0 }); set(lost, tOff, { autoAlpha: 1 });
   const keep = tagEl(B, '磁盘上的还在（还是旧的）', 1000, 690, 'navy'); css(keep, { fontSize: '24px' }); set(keep, 0, { autoAlpha: 0 }); show(keep, tOff + 0.3, { y: -6 });
   hide(off, T('w16') + 0.4, { d: 0.25 });

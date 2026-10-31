@@ -3,7 +3,7 @@ scene('open', ({ root, s }) => {
   const world = h('div', 'world', root);
   const tB = Tend('o8') + 0.5, tC = T('oT') - 0.1;
   const [A, B, C] = screens(world, [s.start, tB, tC, s.end]);
-  drift(world, s, [tB, tC], 1);
+  drift(world, s, [tB, tC], 1, makeCamera(world));
 
   // ── A：调查折线，随旁白一年年长出来（WaterRun：「这个可能折线图或者动态的两条条形图更直观」「开场就定半天观感很差」）──
   const t1 = T('o1');
@@ -71,7 +71,7 @@ scene('open', ({ root, s }) => {
   const engine = (x, w, name, bg) => {
     const head = h('div', 'abs', B); px(head, x, 390, w, 112); css(head, { background: bg });
     const nm = h('div', 'abs', head, name); px(nm, 30, 12); css(nm, { font: '800 40px "Open Sans","Sans SC"', color: '#fff' });
-    const checks = ['关系数据库', '支持事务'].map((t, i) => { const c = h('div', 'abs', head, `<b style="font-size:34px;margin-right:10px">✓</b>${t}`); px(c, 30 + i * 260, 64); css(c, { font: '700 28px "Sans SC"', color: '#fff' }); return c; });
+    const checks = ['关系数据库', '支持事务'].map((t, i) => { const c = h('div', 'abs', head, `<b style="display:inline-block;width:18px;height:18px;background:#fff;margin-right:14px;vertical-align:2px"></b>${t}`); px(c, 30 + i * 260, 64); css(c, { font: '700 28px "Sans SC"', color: '#fff' }); return c; });
     const body = h('div', 'abs', B); px(body, x, 502, w, 400); css(body, { background: '#fff', border: `3px solid ${bg}`, borderTop: 'none' });
     head.dataset.name = name; body.dataset.name = name + '里存这一行的地方';
     return { head, checks, body };

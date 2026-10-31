@@ -4,7 +4,7 @@
 // 最后一条事务号的数轴：xmin 是起点，xmax 是终点，xmax 为 0 就一直延续到右边（WaterRun：「xmin -> xmax隶属事务范围 xmax =0 -> 正无穷」）
 scene('page', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  drift(world, s, [], -1);
+  drift(world, s, [], -1, makeCamera(world));
   const G = D.page23, [P, LP] = D.alice.ctid;
   const A = h('div', 'abs', world); px(A, 0, 0, 1920, 1080);
   const head1 = hdoc(A, `第 ${P} 页：8192 个字节，一行 128 个`, 72, 128);
@@ -48,6 +48,8 @@ scene('page', ({ root, s, c0 }) => {
   show(p3L, T('p3b', '记着') - 0.1, { y: 8 }); hide(p3L, T('p5') - 0.2, { d: 0.25 }); gone(a1, T('p5') - 0.2, 0.25);
   bg.ptrs[0].forEach((e) => fromTo(e, T('p5') - 0.2, { backgroundColor: '#193145' }, { backgroundColor: '#699eca', duration: 0.2, immediateRender: false }));
   keyed(pL).at(T('p3c', '88'), { html: `项目指针 · 每个 4 字节 · <b>${G.lps} 个</b>` });
+  // 「88 个指针」：88 个指针一起变深，一下子看见有多少（第一个指针那时本就是深色）
+  bg.ptrs.forEach((s4, i) => { set(s4, T('p3c', '88') - 0.2, { backgroundColor: '#193145' }); if (i) set(s4, T('p3c', '88') + 0.9, { backgroundColor: '#699eca' }); });
   // 指针从前往后；行从页尾往前（一行行从右下角往回放）
   const arF = link(ov, [[GX + 30 * cw, GY + 3 * lh + 14], [GX + 80 * cw, GY + 3 * lh + 14]], 'accent'); arrowIn(arF, T('p5', '从前往后') - 0.2, 0.5);
   const arFL = capt(A, '指针从前往后 →', GX + 30 * cw, GY + 3 * lh + 22); css(arFL, { fontSize: '22px' }); arFL.classList.add('ko'); show(arFL, T('p5', '从前往后'), { y: 6 });
@@ -68,6 +70,9 @@ scene('page', ({ root, s, c0 }) => {
   const lo = bg.pos(G.lower), up = bg.pos(G.upper);
   const aLo = curve(ov, [GX + 13 * cw, GY + lh], [lo.x + 2, lo.y + 2], 'navy', { w: 3, bend: GY + 120 }), aUp = curve(ov, [GX + 15 * cw, GY + lh], [up.x - 2, up.y + lh - 2], 'navy', { w: 3, bend: GY + 150 });
   const tPd = T('p2b', '两个位置') - 0.1;
+  // 讲页头记着的两个位置时，指针和行退淡，只留页头与空闲空间（F29：暂时不讲的退淡）
+  const segAll = [...bg.ptrs.flat(), ...bg.rows.slice(1).flat()];
+  set(segAll, T('p2b', '两个位置') - 0.1, { opacity: 0.35 }); set(segAll, T('p6b') - 0.2, { opacity: 1 });
   show(fLo, tPd, { y: 0, d: 0.2 }); show(fUp, tPd + 0.15, { y: 0, d: 0.2 });
   arrowIn(aLo, T('p2b', '开始') - 0.2, 0.5); arrowIn(aUp, T('p2b', '结束') - 0.2, 0.5);
   const loL = capt(A, `<b>pd_lower = ${G.lower}</b>　从这里开始`, GX + 200, GY + 120); const upL = capt(A, `<b>pd_upper = ${G.upper}</b>　到这里结束`, GX + 200, GY + 156);
@@ -86,29 +91,36 @@ scene('page', ({ root, s, c0 }) => {
   const t26 = T('p7', '26') - 0.1;
   p26.forEach((e) => fromTo(e, t26, { backgroundColor: '#699eca' }, { backgroundColor: '#193145', duration: 0.2 }));
   const l26 = tagEl(A, `第 ${LP} 个指针`, pq.x - 60, pq.y - 74, 'navy'); css(l26, { fontSize: '22px' }); show(l26, t26, { y: 6 }); sfx('tick', t26);
-  const a26 = curve(ov, [pq.x + 2 * cw, pq.y + lh], [rq.x + 44 * cw, rq.y], 'navy', { w: 3.5, bend: GY + 380 }); arrowIn(a26, T('p7', '5904') - 0.4, 0.6);
-  rA.forEach((e) => fromTo(e, T('p7', '5904') - 0.1, { backgroundColor: '#cfe0ee' }, { backgroundColor: '#336791', duration: 0.25 }));
+  const a26 = curve(ov, [pq.x + 2 * cw, pq.y + lh], [rq.x + cw / 2, rq.y], 'navy', { w: 3.5, bend: GY + 380 }); arrowIn(a26, T('p7', '5904') - 0.4, 0.6);
+  // 起点：一道竖标落在第 5904 字节上；长度：说到 82 时，色条从起点往后长出 82 字节
+  const st0 = h('div', 'abs', A); px(st0, rq.x - 2, rq.y - 2 * lh, 4, 3 * lh); css(st0, { background: '#b8442f' }); st0.dataset.name = '起点';
+  const len = h('div', 'abs', A); px(len, rq.x, rq.y, cw * 2, lh - 2); css(len, { background: '#336791' }); len.dataset.name = 'Alice 这一行';
+  set(st0, 0, { autoAlpha: 0 }); tl.fromTo(st0, { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 1, scaleY: 1, duration: 0.25, immediateRender: false }, T('p7', '5904') - 0.1);
+  set(len, 0, { autoAlpha: 0 }); set(len, T('p7', '5904') - 0.1, { autoAlpha: 1 });
+  tl.fromTo(len, { width: cw * 2 }, { width: G.aliceLen * cw, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, T('p7b', '82') - 0.3);
+  rA.forEach((e) => fromTo(e, T('p7', '5904') - 0.1, { backgroundColor: '#cfe0ee' }, { backgroundColor: '#9dbbd6', duration: 0.25 }));
   const aL = tagEl(A, `Alice：第 ${G.aliceOff} 字节起`, rq.x, rq.y + 22, 'warn'); css(aL, { fontSize: '22px' }); show(aL, T('p7', '5904'), { y: -6 }); sfx('pop', T('p7', '5904'));
   keyed(aL).at(T('p7b', '82') - 0.1, { html: `Alice：第 ${G.aliceOff} 字节起，占 ${G.aliceLen} 字节` });
   // 地址记的是第几个指针：行在页里挪了，指针不动，箭头跟过去
   const adr = capt(A, `地址 (${P}, ${LP})：第 ${LP} 个指针，不是第 ${G.aliceOff} 字节`, GX + 560, GY + 64 * lh + 16); css(adr, { fontSize: '26px', color: 'var(--navy)', fontWeight: 700 }); show(adr, T('p8', '第几个指针') - 0.1, { y: -6 });
   const tMv = T('p9', '挪动') - 0.2, tBk = Tend('p10') + 0.2;
-  [...rA, aL].forEach((e) => { tl.fromTo(e, { x: 0, y: 0 }, { x: 30 * cw, y: -3 * lh, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tMv); tl.fromTo(e, { x: 30 * cw, y: -3 * lh }, { x: 0, y: 0, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tBk); });
-  const dA = `M${pq.x + 2 * cw},${pq.y + lh} C${pq.x + 2 * cw},${GY + 380} ${rq.x + 44 * cw},${GY + 380} ${rq.x + 44 * cw},${rq.y}`, dB = `M${pq.x + 2 * cw},${pq.y + lh} C${pq.x + 2 * cw},${GY + 380} ${rq.x + 74 * cw},${GY + 380} ${rq.x + 74 * cw},${rq.y - 3 * lh}`;
+  const MV = 5 * lh;   // 整行往下挪 5 行，列不变：挪到哪都还在页里
+  [...rA, len, st0, aL].forEach((e) => { tl.fromTo(e, { x: 0, y: 0 }, { x: 0, y: MV, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tMv); tl.fromTo(e, { x: 0, y: MV }, { x: 0, y: 0, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tBk); });
+  const dA = `M${pq.x + 2 * cw},${pq.y + lh} C${pq.x + 2 * cw},${GY + 380} ${rq.x + cw / 2},${GY + 380} ${rq.x + cw / 2},${rq.y}`, dB = `M${pq.x + 2 * cw},${pq.y + lh} C${pq.x + 2 * cw},${GY + 380} ${rq.x + cw / 2},${GY + 380} ${rq.x + cw / 2},${rq.y + MV}`;
   tl.fromTo(a26, { attr: { d: dA } }, { attr: { d: dB }, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tMv); tl.fromTo(a26, { attr: { d: dB } }, { attr: { d: dA }, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tBk);
   sfx('whoosh', tMv, { g: 0.35 });
   const stay = tagEl(A, '指针还在原处', pq.x - 140, pq.y - 74, 'ok'); css(stay, { fontSize: '22px' }); show(stay, T('p9', '指针不会'), { y: 6 }); hide(stay, tBk, { d: 0.25 });
   hide(l26, T('p9', '指针不会') - 0.1, { d: 0.2 }); show(l26, tBk + 0.1, { y: 0 });
-  const found = tagEl(A, '还是找得到', rq.x + 74 * cw - 60, rq.y - 3 * lh - 46, 'ok'); css(found, { fontSize: '22px' }); show(found, T('p10', '找得到'), { y: 6 }); hide(found, tBk, { d: 0.2 }); sfx('chime', T('p10', '找得到'), { g: 0.5 });
+  const found = tagEl(A, '还是找得到', rq.x + (G.aliceLen + 4) * cw, rq.y + MV - 14, 'ok'); css(found, { fontSize: '22px' }); show(found, T('p10', '找得到'), { y: 6 }); hide(found, tBk, { d: 0.2 }); sfx('chime', T('p10', '找得到'), { g: 0.5 });
   // ── Alice 这一行从表里升起来，摊成两行十六进制：上面行头 24 字节，下面数据 58 字节 ──
   const tUp = Tend('p10') + 0.9;
   [bg.el, frm].forEach((e) => gone(e, tUp, 0.5));   // 字节表整张收起：留一层淡影，它的细条会穿过上面的十六进制和标注
-  [l26, a26, adr, aL, gL, hL, pL, ruler, head1, off0, off1].forEach((e) => gone(e, tUp, 0.3));
+  [l26, a26, adr, aL, gL, hL, pL, ruler, head1, off0, off1, st0].forEach((e) => gone(e, tUp, 0.3)); gone(len, tUp, 0.2);
   const head2 = hdoc(A, `Alice 这一行：${G.aliceLen} 字节`, 72, 128); set(head2, 0, { autoAlpha: 0 }); tl.fromTo(head2, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, tUp + 0.3);
   const HX = 90, HY0 = 300, HY1 = 520, CW = 30, CH = 52;
-  const ghost = h('div', 'abs', A); px(ghost, rq.x, rq.y, 88 * cw, lh - 2); css(ghost, { background: 'var(--pg)', transformOrigin: '0 0' });
+  const ghost = h('div', 'abs', A); px(ghost, rq.x, rq.y, G.aliceLen * cw, lh - 2); css(ghost, { background: 'var(--pg)', transformOrigin: '0 0' });
   set(ghost, 0, { autoAlpha: 0 });
-  tl.fromTo(ghost, { autoAlpha: 1, x: 0, y: 0, scaleX: 1, scaleY: 1 }, { x: HX - rq.x, y: HY1 - rq.y, scaleX: (58 * CW) / (88 * cw), scaleY: CH / (lh - 2), duration: 0.8, ease: 'power3.inOut', immediateRender: false }, tUp);
+  tl.fromTo(ghost, { autoAlpha: 1, x: 0, y: 0, scaleX: 1, scaleY: 1 }, { x: HX - rq.x, y: HY1 - rq.y, scaleX: (58 * CW) / (G.aliceLen * cw), scaleY: CH / (lh - 2), duration: 0.8, ease: 'power3.inOut', immediateRender: false }, tUp);
   gone(ghost, tUp + 0.85, 0.25); sfx('whoosh', tUp, { g: 0.4 });
   const hh = G.headerHex.match(/../g), dh = G.dataHex.match(/../g);
   const byteCell = (x, y, hex, bgc, fg) => { const c = h('div', 'abs', A, hex); px(c, x, y, CW - 3, CH); css(c, { background: bgc, color: fg, font: '700 22px var(--mono)', lineHeight: CH + 'px', textAlign: 'center' }); return c; };
@@ -181,11 +193,14 @@ scene('page', ({ root, s, c0 }) => {
   };
   const cXmin = hCard('xmin', 0, 880, T('p14', 'xmin') - 0.25, ['', '写入这个版本的事务']), cXmax = hCard('xmax', 4, 1200, T('p15', 'xmax') - 0.25, ['', '让这个版本作废的事务']);
   const v1 = cXmin.querySelector('.ln0'), v2 = cXmax.querySelector('.ln0');
-  keyed(v1).at(T('p14b', '2809') - 0.1, { html: '2809' }); set(cXmin, T('p14b', '2809') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmin, T('p15') - 0.2, { backgroundColor: '#ffffff' }); set(cXmax, T('p15b', '0') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmax, T('p16') - 0.2, { backgroundColor: '#ffffff' }); keyed(v2).at(T('p15b', '0') - 0.1, { html: '0（还没有）' });
+  set(cXmin, T('p14', '事务号') - 0.1, { backgroundColor: '#ffd36b' });   // 讲到「事务号」：xmin 卡整张亮起（之后 2809 填进来时一直亮着，到讲 xmax 时变回白）
+  keyed(v1).at(T('p14b', '2809') - 0.1, { html: '2809' }); set(cXmax, T('p15', '作废') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmin, T('p14b', '2809') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmin, T('p15') - 0.2, { backgroundColor: '#ffffff' }); set(cXmax, T('p15b', '0') - 0.1, { backgroundColor: '#ffd36b' }); set(cXmax, T('p16') - 0.2, { backgroundColor: '#ffffff' }); keyed(v2).at(T('p15b', '0') - 0.1, { html: '0（还没有）' });
   tl.fromTo(v1, { scale: 1.4, transformOrigin: '0 50%' }, { scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, T('p14b', '2809') - 0.1);
   tl.fromTo(v2, { scale: 1.4, transformOrigin: '0 50%' }, { scale: 1, duration: 0.4, ease: 'back.out(2)', immediateRender: false }, T('p15b', '0') - 0.1);
   // 事务号的数轴：号一个比一个大；xmin 2809 是起点，xmax 为 0 就没有终点，范围一直延到右边
   const AXY = 820, AX0 = 120, AX1 = 1800, X2809 = 560;
+  // （AXY、AX0 在这一行才定义：用到它们的动作写在后面，避免暂时性死区）
+  fly(A, '事务号', [AX0 + 40, AXY + 10], [880 + 20, 160], T('p14', '事务号') - 0.5, { cls: 'navy', fs: 24, d: 0.7, sink: true }); sfx('whoosh', T('p14', '事务号') - 0.4, { g: 0.3 });   // 数轴上的「事务号」飞进 xmin 卡：xmin 就是这条轴上的一个号
   const endMk = h('div', 'abs', A); px(endMk, AX1 - 260, AXY - 52, 24, 24); css(endMk, { border: '4px dashed #b8442f', borderRadius: '50%' }); const endL = capt(A, 'xmax：终点（还没有）', AX1 - 230, AXY - 54); css(endL, { fontSize: '22px', color: '#b8442f' });
   [endMk, endL].forEach((e) => { set(e, 0, { autoAlpha: 0 }); show(e, T('p15', '作废') - 0.2, { y: -6 }); hide(e, T('p16') - 0.1, { d: 0.25 }); });
   fly(A, 'xmax = 0', [HX + 4 * CW, HY0 + CH + 10], [AX1 - 300, AXY - 56], T('p15b', '0') - 0.3, { cls: 'warn', fs: 24, d: 0.7, sink: true });   // xmax 的 0 落到终点标记上：终点还没有
@@ -208,7 +223,7 @@ scene('page', ({ root, s, c0 }) => {
   show(ticks[2][0], tMk, { y: 0, d: 0.2 }); show(ticks[2][1], tMk, { y: 0 }); css(ticks[2][1], { color: '#b8442f', fontWeight: 700 });
   // 范围：从 xmin 起，到 xmax 止；xmax 为 0，一直延到右边
   const band = h('div', 'abs', A); px(band, X2809, AXY - 92, AX1 - X2809, 40); band.dataset.name = '可见范围';
-  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 72%, rgba(51,103,145,.12) 100%)', overflow: 'hidden' });
+  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 72%, rgba(51,103,145,.12) 100%)', overflow: 'hidden' });   // lint-ok: 范围条右端渐隐，表示这一版的范围一直延续、没有尽头（第三章起的画法，WaterRun 看过）
   const bandT = h('div', 'abs', band, '这一版能被看见的范围'); px(bandT, 18, 0); css(bandT, { font: '700 24px "Sans SC"', color: '#fff', lineHeight: '40px', whiteSpace: 'nowrap' });
   const inf = h('div', 'abs', A, 'xmax = 0：没有尽头 → ∞'); px(inf, AX1 - 330, AXY - 132); css(inf, { font: '700 24px "Sans SC"', color: 'var(--pg-dk)', whiteSpace: 'nowrap' });
   const BW = AX1 - X2809;   // 长度用 width 动画，不用 scaleX（scaleX 会把条里的字一起压扁）
@@ -217,6 +232,7 @@ scene('page', ({ root, s, c0 }) => {
   set(bandT, 0, { autoAlpha: 0 }); slam(bandT, T('p16', '范围') - 0.2, { from: 1.3 }); set(inf, 0, { autoAlpha: 0 }); slam(inf, T('p16b', '没有尽头') - 0.2, { from: 1.35 });
   sfx('whoosh', T('p16b') + 0.1, { g: 0.3 });
   const infG = h('div', 'abs', A, '∞'); px(infG, AX1 + 14, AXY - 58); css(infG, { font: '800 64px "Open Sans"', color: 'var(--pg)' }); set(infG, 0, { autoAlpha: 0 }); slam(infG, T('p16b', '延续') - 0.2, { from: 1.6 });
+  [cXmin, cXmax].forEach((c) => { set(c, T('p16c') - 0.1, { backgroundColor: '#ffd36b' }); set(c, T('p17') - 0.3, { backgroundColor: '#ffffff' }); });
   const uses = tagEl(A, '改、删、并发：都看这两个数', HX + 18 * CW + 10, HY0 + CH + 40, 'navy'); css(uses, { fontSize: '22px' }); slam(uses, T('p16c', '离不开') - 0.2, { from: 1.3 }); hide(uses, T('p17') - 0.1, { d: 0.25 });
   // t_ctid：这一行最新版本的地址；没改过，指着自己
   const tCt = T('p17', 't_ctid') - 0.2;

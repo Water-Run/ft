@@ -4,7 +4,7 @@
 // 最后整张结构图缩到右半边，左边建起 InnoDB 的做法对照（T1–T9）
 scene('layout', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  drift(world, s, [], 1);
+  drift(world, s, [], 1, makeCamera(world));
   const [P, LP] = D.alice.ctid;
   const A = h('div', 'abs', world); px(A, 0, 0, 1920, 1080);
   const pgS = h('div', 'abs', A); px(pgS, 0, 0, 1920, 1080); css(pgS, { transformOrigin: '0 0' }); pgS.dataset.name = 'PostgreSQL 的结构';
@@ -84,7 +84,7 @@ scene('layout', ({ root, s, c0 }) => {
   const bh = h('div', 'abs', big, '页头'); px(bh, 0, 0, BW - 8, 34); css(bh, { background: 'var(--navy)', color: '#fff', font: '700 22px "Sans SC"', lineHeight: '34px', paddingLeft: '12px' });
   const lps = [], rws = [];
   for (let i = 0; i < 88; i++) { const c = h('div', 'abs', big); px(c, 12 + (i % 22) * 36, 44 + Math.floor(i / 22) * 24, 32, 20); css(c, { background: 'var(--sky)' }); lps.push(c); }
-  const gp = h('div', 'abs', big, '空隙'); px(gp, 12, 146, BW - 32, 40); css(gp, { background: 'repeating-linear-gradient(90deg,#fff 0 10px,#eef3f7 10px 12px)', font: '600 22px "Sans SC"', color: 'var(--mute)', lineHeight: '40px', textAlign: 'center' });
+  const gp = h('div', 'abs', big, '空隙'); px(gp, 12, 146, BW - 32, 40); css(gp, { background: 'repeating-linear-gradient(90deg,#fff 0 10px,#eef3f7 10px 12px)', font: '600 22px "Sans SC"', color: 'var(--mute)', lineHeight: '40px', textAlign: 'center' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   for (let k = 1; k <= 88; k++) { const j = 88 - k; const c = h('div', 'abs', big); px(c, 12 + (j % 22) * 36, 196 + Math.floor(j / 22) * 82, 32, 76); css(c, { background: 'var(--sky-lt)', border: '1.5px solid var(--pg)' }); rws[k] = c; }
   const lpsL = capt(big, '88 个指针', BW - 160, 2); css(lpsL, { color: '#fff', fontSize: '22px', lineHeight: '30px' });
   tl.fromTo(big, { autoAlpha: 0, x: pA.x - BX, y: pA.y - BY, scale: 0.13, transformOrigin: '0 0' }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.6, ease: 'power3.inOut', immediateRender: true }, tP + 0.2);
@@ -282,11 +282,15 @@ scene('layout', ({ root, s, c0 }) => {
   const lpg = tagEl(A, 'PostgreSQL · 堆 + 三个索引', 1010, 196); css(lpg, { fontSize: '30px' }); show(lpg, T('l24') - 0.1, { x: 20 });
   // 讲到 PostgreSQL 这边时，InnoDB 那半边一下退到 40%：眼睛移到右边
   [li, ir, ...il, inr, inl, two].forEach((e) => set(e, T('l24') - 0.1, { opacity: 0.4 }));
+  [li, ir, ...il, inr, inl, two].forEach((e) => tl.fromTo(e, { opacity: 0.4 }, { opacity: 0.15, duration: 0.45, immediateRender: false }, T('l25') - 0.1));   // 讲 PostgreSQL 的三条指向时，InnoDB 再退一档，视线落到右边
   const [hx0, hy1] = S2(...M(GX - 12, GY + 3 * 146 + 24)), [hx1] = S2(...M(GX + GW + 12, 0));
   // 「整行」：右边那块堆一下亮起——整行都在这里
   const [bx0, by0] = S2(...M(GX - 12, GY - 12)), [bx1, by1] = S2(...M(GX + GW + 12, GY + 3 * 146 + 24));
   const heapHi = h('div', 'abs', A); px(heapHi, bx0, by0, bx1 - bx0, by1 - by0); css(heapHi, { background: 'rgba(255,200,60,.4)', border: '4px solid #e0a11b' }); heapHi.dataset.name = '整行都在堆里';
-  set(heapHi, 0, { autoAlpha: 0 }); set(heapHi, T('l24', '整行') - 0.1, { autoAlpha: 1 }); set(heapHi, T('l25') + 0.3, { autoAlpha: 0 });
+  set(heapHi, 0, { autoAlpha: 0 }); set(heapHi, T('l24', '整行') - 0.1, { autoAlpha: 1 });
+  const [r0x, r0y] = S2(...M(c23.x, c23.y)), [r1x, r1y] = S2(...M(c23.x + c23.w, c23.y + c23.h));
+  tl.fromTo(heapHi, { left: bx0, top: by0, width: bx1 - bx0, height: by1 - by0 }, { left: r0x - 6, top: r0y - 6, width: r1x - r0x + 12, height: r1y - r0y + 12, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, T('l25') - 0.1);   // 收成第 23 页那一格：地址指的就是这里
+  set(heapHi, T('l25', '主键索引') + 0.8, { autoAlpha: 0 });
   const hpl = capt(A, '堆：整行都在这里', hx0, hy1 + 14); css(hpl, { fontSize: '26px', color: 'var(--pg)', fontWeight: 700 }); show(hpl, T('l24', '整行'), { y: 8 });
   const [q23x, q23y] = S2(p23x, p23y), ovR = overlay(A);
   const fromT = [pkx, lfx, aT.leafX[1]].map((x) => S2(x, LY + 46));
@@ -301,6 +305,6 @@ scene('layout', ({ root, s, c0 }) => {
   const tEnd = Tend('l25') + 0.4;
   const cW = h('div', 'abs', A); px(cW, 0, 0, 1920, 1080);
   [...A.children].forEach((e) => { if (e !== pgS && e !== cW) cW.appendChild(e); });
-  gone(cW, tEnd, 0.5);
+  gone(cW, Math.min(tEnd, T('l25', '主键索引') + 0.3), 0.5);   // 讲到「主键索引也一样」时 InnoDB 那半边收走，只留 PostgreSQL
   fromTo(pgS, tEnd + 0.1, { x: 1010, y: 300, scale: 0.44 }, { x: 0, y: 0, scale: 1, duration: 1.3, ease: 'power3.inOut', immediateRender: false }); sfx('whoosh', tEnd + 0.1, { g: 0.3 });
 });

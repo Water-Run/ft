@@ -1,9 +1,9 @@
 // 08 删与回收（第 3 稿：DELETE 后「范围到此为止」；可见性图从第五章挪来，接在 VACUUM 之后）：DELETE 只记 xmax（D1、D2）；Bob 的快照挡住 VACUUM（D3、D6）→ 收回、Dave 复用（D4、D5、D10、D12）→ 读取时清理、自动清理、长事务（U4、D9）→ 回绕与冻结（D7、D8、D11）
 scene('delete', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const tB = Tend('d9') + 0.5, tV = Tend('d20') + 0.5, tC = Tend('v8') + 0.5, tD = Tend('d28b') + 0.5;
+  const tB = Tend('d9') + 0.5, tV = Tend('d20') + 0.5, tC = Tend('v8') + 0.8, tD = Tend('d28b') + 0.5;
   const [A, B, V, C, Dd] = screens(world, [c0, tB, tV, tC, tD, s.end]);
-  drift(world, s, [tB, tV, tC, tD], 1);
+  drift(world, s, [tB, tV, tC, tD], 1, makeCamera(world));
   const E = D.delete, [P, LP] = D.alice.ctid;
   const vline = (arr, re) => esc(arr.find((l) => re.test(l)) || '');
   // 第 23 页的实物：页头、一排行指针（第 26 个高亮）、指针和行之间的空隙、页底的行。三屏都用它，讲的始终是同一个位置
@@ -13,7 +13,7 @@ scene('delete', ({ root, s, c0 }) => {
     const hd = h('div', 'abs', box, '页头'); px(hd, 0, 0, 894, 28); css(hd, { background: '#dfe9f2', font: '700 22px "Sans SC"', color: 'var(--navy)', lineHeight: '28px', paddingLeft: '12px' });
     const ptrs = ['1', '2', '…', '25', String(LP), '27', '…'].map((n, i) => { const c = h('div', 'abs', box, n); px(c, 14 + i * 70, 34, 64, 36); css(c, { border: '2px solid var(--pg)', background: i === 4 ? 'var(--pg)' : '#fff', color: i === 4 ? '#fff' : 'var(--navy)', font: '700 22px var(--mono)', lineHeight: '32px', textAlign: 'center' }); return c; });
     const pl = h('div', 'abs', box, '行指针'); px(pl, 14 + 7 * 70 + 8, 38); css(pl, { font: '700 22px "Sans SC"', color: 'var(--mute)' });
-    const gap = h('div', 'abs', box); px(gap, 14, 76, 866, 40); css(gap, { background: 'repeating-linear-gradient(135deg,#fff 0 7px,#e3edf5 7px 14px)', border: '2px dashed #9db6cc' }); gap.dataset.name = '空隙';
+    const gap = h('div', 'abs', box); px(gap, 14, 76, 866, 40); css(gap, { background: 'repeating-linear-gradient(135deg,#fff 0 7px,#e3edf5 7px 14px)', border: '2px dashed #9db6cc' }); gap.dataset.name = '空隙';   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
     const gl = h('div', 'abs', box, ''); px(gl, 540, 80); css(gl, { font: '700 24px "Sans SC"', color: 'var(--pg)', whiteSpace: 'nowrap' });
     const ax = x + 3 + 14 + 4 * 70 + 32, ar = link(overlay(p), [[ax, y + 73], [ax, y + 131]], 'accent');
     return { box, cap, p26: ptrs[4], gap, gl, ar, gapBox: (hh) => [x + 3 + 14, y + 3 + 76, 866, hh] };
@@ -23,7 +23,7 @@ scene('delete', ({ root, s, c0 }) => {
     const r = h('div', 'abs', box); px(r, 14, 130, 866, 44); r.dataset.name = '行'; let cx = 0;
     cells.forEach(([w, html, head]) => {
       const c = h('div', 'abs', r, html); px(c, cx, 0, w, 44); cx += w + 4;
-      css(c, { background: head ? 'var(--navy)' : { new: 'var(--pg)', dead: 'repeating-linear-gradient(135deg,#eceff1 0 8px,#dfe3e6 8px 16px)' }[cls] || 'var(--sky-lt)', color: head || cls === 'new' ? '#fff' : cls === 'dead' ? '#46505a' : 'var(--navy)', font: `600 ${head ? 22 : 24}px var(--mono)`, lineHeight: '44px', textAlign: 'center', whiteSpace: 'nowrap' });
+      css(c, { background: head ? 'var(--navy)' : { new: 'var(--pg)', dead: 'repeating-linear-gradient(135deg,#eceff1 0 8px,#dfe3e6 8px 16px)' }[cls] || 'var(--sky-lt)', color: head || cls === 'new' ? '#fff' : cls === 'dead' ? '#46505a' : 'var(--navy)', font: `600 ${head ? 22 : 24}px var(--mono)`, lineHeight: '44px', textAlign: 'center', whiteSpace: 'nowrap' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
     });
     return r;
   };
@@ -56,7 +56,7 @@ scene('delete', ({ root, s, c0 }) => {
   const swA = h('div', 'abs', pa.box); px(swA, 10, 30, 6, 44); css(swA, { background: 'var(--navy)' }); swA.dataset.name = '扫描线';
   const ts0 = T('d8') + 0.3, ts1 = Math.max(ts0 + 1, T('d9', '还不能') - 0.5);
   set(swA, 0, { autoAlpha: 0 }); set(swA, ts0, { autoAlpha: 1 }); tl.fromTo(swA, { x: 0 }, { x: 4 * 70 - 6, duration: ts1 - ts0, ease: 'power1.inOut', immediateRender: false }, ts0); sfx('whoosh', ts0, { g: 0.25 });
-  tl.fromTo(pa.p26, { boxShadow: '0 0 0 0px #b8442f' }, { boxShadow: '0 0 0 5px #b8442f', duration: 0.2, immediateRender: false }, ts1);
+  tl.fromTo(pa.p26, { boxShadow: '0 0 0 0px #b8442f' }, { boxShadow: '0 0 0 5px #b8442f', duration: 0.2, immediateRender: false }, ts1);   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
   const stop = tagEl(A, '停：Bob 的快照还在', 420, 330, 'warn'); css(stop, { fontSize: '24px' }); show(stop, ts1, { y: 8 });
   const dead = tagEl(A, '已死，但还不能回收：Bob 的快照可能还要读', 72, 868, 'warn'); slam(dead, T('d9', '还不能'), { from: 1.12 }); sfx('error', T('d9', '还不能'), { g: 0.5 });
   const fA = focusRing(A);
@@ -99,9 +99,9 @@ scene('delete', ({ root, s, c0 }) => {
   td.type(T('d16') - 0.1, `<span class="k">INSERT INTO</span> users <span class="k">VALUES</span> (2050, 'Dave', 35) <span class="k">RETURNING</span> ctid;`, 'dave=&gt;', 60);
   td.print(T('d18', '23'), `<span class="hi"> (${E.dave[0]},${E.dave[1]}) </span>`); sfx('blip', T('d18', '23'), { g: 0.5 });
   // 插入前先问空闲空间图：哪页放得下 → 第 23 页 → 第 26 个指针
-  fly(B, 'Dave：哪页放得下？', [300, 806], [300, 700], T('d17', '空闲空间图') - 0.4, { cls: 'navy', fs: 24, d: 0.55, hold: 0.4 });
+  const askD = fly(B, 'Dave：哪页放得下？', [300, 806], [880, 700], T('d17', '空闲空间图') - 0.4, { cls: 'navy', fs: 24, d: 0.55, stay: true }); gone(askD, T('d18') - 0.2, 0.25);   // 问题停在那里，直到「Dave」带着答案飞向第 23 页（原先先淡掉、隔一会儿在同一处再冒出来）
   const fsmHit = fsm.children[1]; to(fsmHit, T('d17', '放得下'), { backgroundColor: '#dbe8f3', duration: 0.25 });
-  fly(B, 'Dave', [300, 690], [72 + 3 + 14 + 4 * 70 - 10, 400 + 40], T('d18') - 0.2, { cls: 'navy', fs: 24, d: 0.5, sink: true });
+  fly(B, 'Dave', [880, 690], [72 + 3 + 14 + 4 * 70 - 10, 400 + 40], T('d18') - 0.2, { cls: 'navy', fs: 24, d: 0.5, sink: true });
   hide(fsmG, T('d16') - 0.1, { d: 0.25 });
   const drow = rowCells(pb.box, 'new', [[866, '2050  Dave  35']]);
   const td18 = T('d18', '26');
@@ -121,43 +121,65 @@ scene('delete', ({ root, s, c0 }) => {
   show(vStrip, tV + 0.1, { y: 10 }); show(vStripL, tV + 0.1);
   const gh = h('div', 'page', V); px(gh, 72, 376, 900, 190); css(gh, { transformOrigin: '0 0' }); const ghL = h('div', 'abs', gh, `第 ${P} 页`); px(ghL, 16, 10); css(ghL, { font: '700 30px "Sans SC"', color: 'var(--pg)' });
   tl.fromTo(gh, { autoAlpha: 1, x: 0, y: 0, scaleX: 1, scaleY: 1 }, { x: 90 + P * 37 - 72, y: 660 - 376, scaleX: 33 / 900, scaleY: 80 / 190, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, tV - 0.3); gone(gh, tV + 0.5, 0.2);   // 上一段的第 23 页缩成这条堆里的一格
-  // 可见性图：堆旁边的小文件，每页一格；VACUUM 扫过一页，页里的行对谁都看得见，就记上这一格
-  const vm = h('div', 'abs', V); px(vm, 1180, 196, 690, 230); vm.dataset.name = '可见性图';
-  const vmt = h('div', 'cap', vm, `<b>可见性图</b>　${D.files.users.node}_vm · 堆旁边的小文件`); px(vmt, 0, 0); css(vmt, { color: 'var(--pg)', fontSize: '24px' });
+  // 可见性图：堆旁边的小文件，每页一格；VACUUM 扫过一页，页里的行对谁都看得见，就记上这一格。标题放在格子下面：格子上方留给查询走的路
+  const VX = 720, VY = 330;
+  const vm = h('div', 'abs', V); px(vm, VX, VY, 672, 196); vm.dataset.name = '可见性图';
+  const vmt = h('div', 'cap', vm, `<b>可见性图</b>　${D.files.users.node}_vm · 堆旁边的小文件`); px(vmt, 0, 160); css(vmt, { color: 'var(--pg)', fontSize: '24px' });
   const bits = [];
-  for (let i = 0; i < D.heap.pages; i++) { const b = h('div', 'abs', vm); px(b, (i % 16) * 42, 50 + Math.floor(i / 16) * 52, 34, 40); css(b, { border: '2px solid var(--pg)', background: '#fff' }); bits.push(b); }
-  const bitN = capt(vm, `第 ${P} 页这一格`, (P % 16) * 42 - 40, 50 + Math.floor(P / 16) * 52 + 44); css(bitN, { fontSize: '22px', color: 'var(--navy)' }); set(bitN, 0, { autoAlpha: 0 });
+  for (let i = 0; i < D.heap.pages; i++) { const b = h('div', 'abs', vm); px(b, (i % 16) * 42, Math.floor(i / 16) * 52, 34, 40); css(b, { border: '2px solid var(--pg)', background: '#fff' }); bits.push(b); }
   wipe(vm, T('v2b', '可见性图') - 0.3, { dir: 'r' }); sfx('pop', T('v2b', '可见性图'), { g: 0.5 });
   const tb0 = T('v2', '看得见') - 0.2, tb1 = T('v2b', '记一笔') + 0.4;
   bits.forEach((b, i) => set(b, tb0 + (tb1 - tb0) * i / 47, { background: 'var(--pg)' })); sfx('tick', tb0, { p: 0.4 }); sfx('tick', tb1, { p: 0.6 });
   const scanV = h('div', 'abs', V); css(scanV, { border: '4px solid var(--warn)' }); scanV.dataset.name = 'VACUUM 扫过';
   F((t) => { const k = clamp((t - tb0) / (tb1 - tb0)), i = Math.min(46, Math.floor(k * 47)); px(scanV, 90 + i * 37 - 4, 656, 41, 88); scanV.style.opacity = t < tb0 || t > tb1 + 0.2 ? 0 : 1; });
-  const vmG = glossBox(V, '可见性图', '<b>可见性图</b>：每页一格。格子记上，表示这页的行对所有事务都看得见', 1180, 450, 690);
+  const vmG = glossBox(V, '可见性图', '<b>可见性图</b>：每页一格。格子记上，表示这页的行对所有事务都看得见', VX, VY + 206, 672);
   show(vmG, T('v2b', '记一笔') - 0.1, { y: 10 }); fromTo(vmt, T('v3', '小文件') - 0.2, { color: '#336791' }, { color: '#b8442f', duration: 0.2 });
-  // 有什么用：姓名索引的叶子里有名字，却没有行头
-  const PL = h('div', 'abs', V); px(PL, 90, 196, 560); css(PL, { border: '3px solid var(--pg)', background: '#fff' }); PL.dataset.name = '姓名树的叶子';
+  gone(vmG, T('v4', '没有行头') - 0.4, 0.3);   // 下面「行头在堆里」出来之前收起（会叠在一起）
+  // 有什么用：姓名树的叶子里有名字，却没有行头（行头在堆里）
+  const PL = h('div', 'abs', V); px(PL, 90, 196, 520); css(PL, { border: '3px solid var(--pg)', background: '#fff' }); PL.dataset.name = '姓名树的叶子';
   const plh = h('div', '', PL, '姓名树的叶子：名字 → 行的地址'); css(plh, { background: 'var(--pg)', color: '#fff', font: '700 24px "Sans SC"', padding: '6px 16px' });
   const plr = [[`Alice → (${P}, ${LP})`, true], ['User00001 → (0, 1)'], ['User00002 → (0, 2)']].map(([txt, hi]) => { const r = h('div', '', PL, txt); css(r, { font: '600 26px var(--mono)', padding: '6px 16px', borderTop: '1.5px solid var(--line)', color: hi ? '#fff' : 'var(--navy)', background: hi ? 'var(--pg)' : '#fff' }); return r; });
   wipe(PL, T('v4', '叶子') - 0.3, { dir: 'l', d: 0.4 });
-  const nameIn = tagEl(V, '名字就在这里', 670, 250, 'ok'); css(nameIn, { fontSize: '24px' }); show(nameIn, T('v4', '有名字') - 0.1, { x: -8 });
+  const nameIn = tagEl(V, '名字就在这里', 630, 236, 'ok'); css(nameIn, { fontSize: '24px' }); show(nameIn, T('v4', '有名字') - 0.1, { x: -8 });
   const noHead = tagEl(V, '行头在堆里', 90 + P * 37 - 50, 600, 'warn'); css(noHead, { fontSize: '24px' }); show(noHead, T('v4', '没有行头') - 0.1, { y: -8 });
-  [nameIn, noHead].forEach((e) => hide(e, T('v6') + 0.2, { d: 0.25 }));
-  // 只要名字：本来不必去堆；可要确认看得见，还得回堆看行头 —— VACUUM 之前实测回堆 1 次；页记了这一笔，之后 0 次
-  const tio = term(V, 90, 432, 1060, 4, { fs: 23, lh: 34, name: 'psql 会话' });
+  [nameIn, noHead].forEach((e) => hide(e, T('v5') - 0.1, { d: 0.25 }));
+  // 只查名字：答案就在叶子里，本来不必去堆
+  const tio = term(V, 90, 780, 1060, 4, { fs: 23, lh: 30, name: 'psql 会话' });
   const pickL = (arr) => arr.filter((l) => /Index Only Scan|Heap Fetches/.test(l)).map(planLine);
   const e3 = tio.type(T('v5') - 0.2, `<span class="k">SELECT</span> name <span class="k">FROM</span> users <span class="k">WHERE</span> name = 'Alice';`, 'postgres=#', 45);
+  const RB = h('div', 'abs', V, '结果：<b>Alice</b>'); px(RB, 1480, 214, 368, 76); RB.dataset.name = '查询结果';
+  css(RB, { border: '3px solid var(--pg)', background: '#fff', font: '600 30px "Sans SC"', color: 'var(--navy)', lineHeight: '70px', textAlign: 'center', boxSizing: 'border-box' });
+  set(RB, 0, { autoAlpha: 0 }); show(RB, T('v5', '名字') - 0.1, { x: 16, y: 0 });
+  const aD = link(ovV, [[614, 257], [1472, 257]], 'grey', { dashed: true }); arrowIn(aD, T('v5', '不必') - 0.3, 0.5);
+  const aDL = capt(V, '只要名字：答案就在叶子里', 860, 212); css(aDL, { fontSize: '24px', color: 'var(--ink2)' }); set(aDL, 0, { autoAlpha: 0 }); show(aDL, T('v5', '不必') - 0.2, { y: 6 });
+  // 可要确认这一行看得见，就得看行头：这一页要是还没记，只能回堆
+  const tH = T('v6', '确认') - 0.2;
+  tl.fromTo(aD, { opacity: 1 }, { opacity: 0.25, duration: 0.3, immediateRender: false }, tH);
+  tl.fromTo(vm, { opacity: 1 }, { opacity: 0.18, duration: 0.3, immediateRender: false }, tH);
+  const noBit = tagEl(V, '要是这一页还没记……', VX + 180, VY + 66, 'grey'); css(noBit, { fontSize: '24px' }); set(noBit, 0, { autoAlpha: 0 }); show(noBit, tH, { y: 8 }); gone(noBit, T('v7') - 0.3, 0.25);
+  const aH = curve(ovV, [400, 368], [957, 652], 'warn', { w: 3.5, bend: 624 }); arrowIn(aH, T('v6', '回堆') - 0.4, 0.5); sfx('whoosh', T('v6', '回堆') - 0.4, { g: 0.3 });
+  const hd = tagEl(V, `第 ${P} 页里的行头 → 看得见`, 1000, 590, 'warn'); css(hd, { fontSize: '24px' }); set(hd, 0, { autoAlpha: 0 }); show(hd, T('v6', '回堆') + 0.1, { y: 8 });
+  tl.fromTo(vStrip.pages[P], { boxShadow: '0 0 0 0px rgba(224,161,27,0)' }, { boxShadow: '0 0 0 5px rgba(224,161,27,1)', duration: 0.25, immediateRender: false }, T('v6', '回堆') - 0.1);   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
+  const aB = curve(ovV, [1500, 590], [1664, 296], 'warn', { w: 3.5, bend: 440 }); arrowIn(aB, T('v6', '行头') + 0.3, 0.45);
   pickL(D.ios.before_vacuum).forEach((l, i) => tio.print(Math.max(e3 + 0.1, T('v6', '回堆') - 0.3) + i * 0.15, `<span class="d">${l}</span>`)); sfx('blip', T('v6', '回堆'), { g: 0.5 });
-  const pq = [90 + P * 37 + 16, 656];
-  const toHeap = curve(ovV, [650, 236], pq, 'warn', { w: 3.5, bend: 420 }); arrowIn(toHeap, T('v6', '回堆') - 0.4, 0.5);
-  const hf1 = tagEl(V, 'VACUUM 之前：回堆 1 次（Heap Fetches: 1）', 90, 780, 'warn'); css(hf1, { fontSize: '24px' }); show(hf1, T('v6', '行头') - 0.1, { y: -6 });
-  gone(toHeap, T('v7') - 0.2, 0.25);
-  const bq = [1180 + (P % 16) * 42 + 17, 196 + 50 + Math.floor(P / 16) * 52];
-  fly(V, `(${P},${LP})`, [660, 236], [bq[0] - 50, bq[1] - 46], T('v7', '记了') - 0.6, { cls: 'navy', fs: 22, d: 0.6, sink: true });   // 地址飞到可见性图第 23 页那一格（不画连线，免得穿过文件名）
-  fromTo(bits[P], T('v7', '记了'), { backgroundColor: '#336791' }, { backgroundColor: '#e0a11b', duration: 0.2 });
+  // 页记了这一笔：查询先看第 23 页那一格，记了，就直接给出答案，不用回堆
+  const tK = T('v7', '记了') - 0.3;
+  tl.fromTo(vm, { opacity: 0.18 }, { opacity: 1, duration: 0.3, immediateRender: false }, tK - 0.3);
+  const bq = [VX + (P % 16) * 42 + 17, VY + Math.floor(P / 16) * 52];
+  fly(V, `第 ${P} 页？`, [620, 300], [bq[0] - 50, bq[1] - 40], tK - 0.5, { cls: 'navy', fs: 24, d: 0.55, sink: true });
+  fromTo(bits[P], tK + 0.15, { backgroundColor: '#336791' }, { backgroundColor: '#e0a11b', duration: 0.2 }); sfx('tick', tK + 0.15);
+  const okBit = tagEl(V, `第 ${P} 页记了：整页都看得见`, VX + 140, VY - 46, 'ok'); css(okBit, { fontSize: '24px' }); set(okBit, 0, { autoAlpha: 0 }); show(okBit, tK + 0.2, { y: 8 });
+  [aH, hd, aB].forEach((e) => tl.fromTo(e, { opacity: 1 }, { opacity: 0.2, duration: 0.3, immediateRender: false }, T('v7', '不用回堆') + 0.1));
+  tl.fromTo(vStrip.pages[P], { boxShadow: '0 0 0 5px rgba(224,161,27,1)' }, { boxShadow: '0 0 0 0px rgba(224,161,27,0)', duration: 0.25, immediateRender: false }, T('v7', '不用回堆') - 0.3);   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
+  const noGo = tagEl(V, '不用回堆', 90 + P * 37 - 190, 600, 'grey'); css(noGo, { fontSize: '24px' }); set(noGo, 0, { autoAlpha: 0 }); slam(noGo, T('v7', '不用回堆') - 0.1, { from: 1.3 }); sfx('pop', T('v7', '不用回堆'), { g: 0.5 });
+  tl.fromTo(aD, { opacity: 0.25 }, { opacity: 1, duration: 0.3, immediateRender: false }, T('v7', '不用回堆'));
+  tl.fromTo(RB, { scale: 1 }, { scale: 1.1, duration: 0.18, yoyo: true, repeat: 1, immediateRender: false }, T('v7', '不用回堆'));
+  // 实测：VACUUM 之前回堆 1 次，之后 0 次
   tio.print(T('v8', '之后') - 0.2, `<span class="ok">${esc(pickL(D.ios.after_vacuum).find((l) => /Heap Fetches/.test(l)).trim())}</span><span class="d">　（VACUUM 之后）</span>`);
-  const hf0 = tagEl(V, 'VACUUM 之后：一次都不用（Heap Fetches: 0）', 90, 830, 'ok'); css(hf0, { fontSize: '24px' }); show(hf0, T('v8', '一次都不用') - 0.2, { y: -6 }); sfx('chime', T('v8', '一次都不用'), { g: 0.6 });
+  const hf1 = tagEl(V, 'VACUUM 之前：回堆 1 次（Heap Fetches: 1）', 1180, 800, 'warn'); css(hf1, { fontSize: '24px' }); set(hf1, 0, { autoAlpha: 0 }); show(hf1, T('v8', '之前') - 0.1, { y: -6 });
+  const hf0 = tagEl(V, 'VACUUM 之后：一次都不用（Heap Fetches: 0）', 1180, 852, 'ok'); css(hf0, { fontSize: '24px' }); set(hf0, 0, { autoAlpha: 0 }); show(hf0, T('v8', '之后') - 0.1, { y: -6 }); sfx('chime', T('v8', '一次都不用'), { g: 0.6 });
   const fV = focusRing(V);
-  fV.at(T('v2b', '记一笔'), vm).at(T('v4', '有名字'), plr[0]).at(T('v6', '行头'), vStrip.pages[P]).at(T('v7', '记了'), bits[P]).off(tC - 0.4);
+  fV.at(T('v2b', '记一笔'), vm).at(T('v4', '有名字'), plr[0]).off(T('v5') - 0.2);
 
   // ── C：读取时清理；自动清理；长事务 ──
   hdoc(C, '不是每次都要等 VACUUM', 72, 128);
@@ -180,7 +202,7 @@ scene('delete', ({ root, s, c0 }) => {
   const auto = noteBox(C, '<b>自动清理</b>　默认开着：死行超过「50 + 表里行数的两成」就清一次', 72, 520, 1500); show(auto, T('d26'), { y: 10 }); sfx('tick', T('d26'));
   // 长事务挡住清理：时间轴上一条长长的事务，死行越积越多
   const axis = h('div', 'axis', C); px(axis, 120, 820, 1640);
-  const longTx = h('div', 'abs', C); px(longTx, 160, 680, 1500, 46); css(longTx, { background: 'repeating-linear-gradient(135deg,var(--warn-lt) 0 10px,#fff 10px 20px)', border: '3px solid var(--warn)' });
+  const longTx = h('div', 'abs', C); px(longTx, 160, 680, 1500, 46); css(longTx, { background: 'repeating-linear-gradient(135deg,var(--warn-lt) 0 10px,#fff 10px 20px)', border: '3px solid var(--warn)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const ltl = h('div', 'abs', longTx, '一个开了很久的事务'); px(ltl, 20, 4); css(ltl, { font: '700 24px "Sans SC"', color: 'var(--warn)' });
   show(axis, T('d28') - 0.2); fromTo(longTx, T('d28'), { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 1.6, ease: 'none' }); show(ltl, T('d28') + 0.3);
   const t0 = T('d28'), t1 = Tend('d28b');
@@ -193,7 +215,7 @@ scene('delete', ({ root, s, c0 }) => {
   hdoc(Dd, '事务号只有 32 位', 72, 128);
   const ring = h('div', 'abs', Dd); px(ring, 160, 230, 520, 520); css(ring, { border: '14px solid var(--sky-lt)', borderRadius: '50%', background: 'var(--wash)' }); ring.dataset.name = '事务号的圈';
   // 圈分两半（D13）：从「现在」往回约 20 亿个是过去（上半），往前约 20 亿个是未来（下半）
-  const halves = h('div', 'abs', Dd); px(halves, 174, 244, 492, 492); css(halves, { borderRadius: '50%', background: 'conic-gradient(rgba(51,103,145,0.20) 0deg 90deg, rgba(184,68,47,0.14) 90deg 270deg, rgba(51,103,145,0.20) 270deg 360deg)' }); halves.dataset.name = '过去与未来';
+  const halves = h('div', 'abs', Dd); px(halves, 174, 244, 492, 492); css(halves, { borderRadius: '50%', background: 'conic-gradient(rgba(51,103,145,0.20) 0deg 90deg, rgba(184,68,47,0.14) 90deg 270deg, rgba(51,103,145,0.20) 270deg 360deg)' }); halves.dataset.name = '过去与未来';   // lint-ok: conic-gradient 硬边分成两个平涂扇区（事务号一圈的两半），不是渐变
   const ovD = overlay(Dd);  const arc = path(ovD, 'M420,230 A260,260 0 1,1 419,230', 'accent', { w: 14, arrow: false });
   const n0 = capt(Dd, '0', 410, 196); const n42 = capt(Dd, '约 42 亿', 470, 196);
   const now = tagEl(Dd, '现在', 640, 470, 'navy');
@@ -219,7 +241,7 @@ scene('delete', ({ root, s, c0 }) => {
     dot.style.left = (420 + 253 * Math.sin(a) - 15) + 'px'; dot.style.top = (490 - 253 * Math.cos(a) - 15) + 'px';
     dot.style.opacity = on; dot.style.visibility = on > 0 ? 'visible' : 'hidden';
     dot.style.background = future && !frozen ? '#b8442f' : '#193145';
-    dot.style.boxShadow = frozen ? '0 0 0 5px #9db6cc' : 'none';
+    dot.style.boxShadow = frozen ? '0 0 0 5px #9db6cc' : 'none';   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
   });
   set(dotL, 0, { autoAlpha: 0 }); tl.fromTo(dotL, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T('d31')); gone(dotL, tm0 + 0.1, 0.2);
   const past = tagEl(Dd, '过去的事务，看起来像在未来', 150, 772, 'warn'); show(past, tm1 - 0.2, { y: 8 }); sfx('error', tm1 - 0.2, { g: 0.4 });

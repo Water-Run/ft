@@ -38,7 +38,7 @@ body { font-family: var(--sans); color: var(--ink); }
 
 /* 字幕：白底条，左侧 Pg 蓝竖线；术语 Pg 蓝 */
 #caption { bottom: 40px; height: 72px; }
-#caption span { font: 500 40px "Sans SC", sans-serif; color: var(--ink); background: rgba(255,255,255,.94); padding: 6px 22px 8px; border-left: 6px solid var(--pg); box-shadow: 0 1px 0 var(--line); }
+#caption span { font: 500 40px "Sans SC", sans-serif; color: var(--ink); background: rgba(255,255,255,.94); padding: 6px 22px 8px; border-left: 6px solid var(--pg); box-shadow: 0 1px 0 var(--line); }  /* lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影 */
 #caption em { font-style: normal; color: var(--pg); font-weight: 700; }
 
 /* 文档部件 */
@@ -72,7 +72,7 @@ table.doc tr.hl td { background: var(--hi); }
 .pg-mini.full { background: var(--wash); }
 .pg-mini.hl { background: var(--pg); }
 .tup { position: absolute; height: 40px; background: var(--sky-lt); border: 2px solid var(--pg); font: 600 22px var(--mono); color: var(--navy); line-height: 36px; padding: 0 10px; white-space: nowrap; overflow: hidden; }
-.tup.dead { background: repeating-linear-gradient(135deg, #eceff1 0 8px, #dfe3e6 8px 16px); border-color: var(--grey); color: #46505a; }
+.tup.dead { background: repeating-linear-gradient(135deg, #eceff1 0 8px, #dfe3e6 8px 16px); border-color: var(--grey); color: #46505a; }  /* lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变 */
 .tup.new { background: var(--pg); color: #fff; }
 .tup.grey { background: var(--grey-lt); border-color: var(--grey); color: #4d565e; }
 .tup.ghost { background: #fff; border-style: dashed; color: var(--pg); }
@@ -90,7 +90,7 @@ table.doc tr.hl td { background: var(--hi); }
 .hexcell.data { background: var(--sky-lt); }
 .hexcell.hl { background: var(--pg); color: #fff; }
 .axis { position: absolute; height: 3px; background: var(--ink2); }
-.gloss { position: absolute; border-left: 6px solid var(--pg); background: #fff; padding: 10px 18px; font: 500 24px var(--sans); line-height: 1.45; color: var(--ink); box-shadow: 0 2px 0 var(--line); }
+.gloss { position: absolute; border-left: 6px solid var(--pg); background: #fff; padding: 10px 18px; font: 500 24px var(--sans); line-height: 1.45; color: var(--ink); box-shadow: 0 2px 0 var(--line); }  /* lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影 */
 .gloss b { color: var(--pg); }
 .credits-box { position: absolute; }
 .psql, .psql * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }   /* => 不连写成箭头 */

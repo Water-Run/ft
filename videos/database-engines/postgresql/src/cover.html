@@ -58,7 +58,7 @@ function build() {
   // 图形按版式缩放：以堆页的锚点为中心
   art.setAttribute('transform', `translate(${L.heap[0]},${L.heap[1]}) scale(${L.art}) translate(${-L.heap[0]},${-L.heap[1]})`);
   // 大字的立体侧面：逐像素往右下错开，不加模糊（字面保持清楚）
-  const deep = (el, depth, color) => { const sh = []; for (let i = 1; i <= depth; i++) sh.push(`${i}px ${i}px 0 ${color}`); sh.push(`${depth + 6}px ${depth + 10}px 14px rgba(13,26,36,.35)`); el.style.textShadow = sh.join(','); };
+  const deep = (el, depth, color) => { const sh = []; for (let i = 1; i <= depth; i++) sh.push(`${i}px ${i}px 0 ${color}`); sh.push(`${depth + 6}px ${depth + 10}px 14px rgba(13,26,36,.35)`); el.style.textShadow = sh.join(','); };   // lint-ok: 封面按系列约定要立体：逐层文字阴影做出字的厚度，只用在封面
   deep(pos('.t1', L.t1), 7, TH.t1side);
   deep(pos('.t2', L.t2), 9, TH.t2side);
   const P = (ox, oy) => (x, y, z) => [ox + (x - y) * C30, oy + (x + y) * S30 - z];

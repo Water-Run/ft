@@ -1,179 +1,191 @@
 {
   "schema": 2,
-  "version": "2026-10-26.1",
+  "version": "2026-11-01.1",
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "主问题在 0:54（o16「同一件事，PostgreSQL 走的是另一条路」）提出；各章依次回答放（2:10 起）、找（7:33）、改（8:44）、并发（10:37）、删（12:37）、出错（15:12），16:51 起「五个问题」逐条回答，18:22 引出 SQLite。方法：通读第 3 稿与按章抽帧总览（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "同一个 Alice（2050 号，42 岁）从注册（6:26）、被找到（7:33）、改年龄（8:44）、并发读写（10:37，Bob、Carol）、注销与 Dave 复用位置（12:37）到崩溃实验（16:06）一路走完；第 23 页、第 26 个指针每次出现都由上一步指过来（第二章叶子按地址落回第 23 页，第三章指针箭头指到行首）。方法：按章抽帧总览、scan.js 逐句说完时刻的画面文字（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
     },
     "F03": {
       "rev": 1,
       "result": "pass",
-      "note": "比较固定 Pg 18.4 heap 与 MySQL 9.7 InnoDB，分清存储引擎和整套数据库；明确 RC/RR 默认差异。57.9% 为该题受访者使用比例；默认选择限定为可优先评估的候选。",
-      "evidence": "0:51 首次说明 PostgreSQL 是整套系统、InnoDB 是 MySQL 的存储引擎；2:53 一次交代 PostgreSQL 18.4；7:01 起说明两边默认隔离级别不同、比较要先对齐；调查口径在开场图下以来源署名给出。；zh 51.4–59s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 173.2–176.4s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "1:50 前后交代 PostgreSQL 18；InnoDB 的对照都在本片补齐前提：12:30 前后「InnoDB 默认的，是可重复读」对照本片的读已提交，删除对照 purge（13:44），崩溃对照双写缓冲区（16:00）。方法：逐句核对文案与画面（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "FACTS T30–T38；o4–o5a、m6a–m6c、b6、b17–b26"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "STYLE「全片统一的画面语言」：每个关键状态完整出现后稳定「1.5 秒 + 字数 ÷ 5 字/秒」；关键信息不压在旁白最后半秒；镜头推近不把要读的部分留在画外。分镜阶段写出各关键状态的预计稳定时长。",
+      "result": "open",
+      "note": "readable.js 全片逐 0.1 秒：976 段文字中 341 段低于「1.5 秒 + 字数 ÷ 5」。本轮新加的说明与 WaterRun 点名太快的双写缓冲区已延长或缩字（复查接近或达到下限）；其余多为随旁白逐步替换的标签、滚动计数与飞行中的小标签，未逐条改。制作方不能以正常速度连续观看全片，「看得懂」的判断留给策划者。",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "动作的前因后果只在抽帧总览与逐帧工具上核对过（scan.js 无 ZOOM；逐帧找一闪而过的脚本改掉两处真闪）；制作方能看图、不能连续看视频、不能直接听声音：画面靠 sheets.js 抽帧总览与逐帧工具，声音靠 Whisper 逐字时间与能量静音段，没有连续观看代表机制段，也没有与近期两部并排连续比较。",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pass",
-      "note": "tools/music.py：D 小调 72 拍，持续的低音铺底与厚弦乐垫贯穿全片（P27，以 MyISAM 的铺底分量为参照），机制章节加低沉的心跳脉冲与轻金属声，章首低频落点，崩溃停一拍，片尾动机落回 D；music_db −11、duck 7。音效只给关键动作，章节卡不配气流声。",
-      "evidence": "WaterRun 2026-10-19 观看试听最终主成片后确认「都没问题，登记交付」：配乐（持续铺底 + 机械脉冲）通过。；zh 0.6–43.8s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 374.8–433.8s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "result": "open",
+      "note": "audio.js 成片混音：整体 -18.7 LUFS、峰值 -0.9 dBFS，无削波；音效事件按动作登记。制作方能看图、不能连续看视频、不能直接听声音：画面靠 sheets.js 抽帧总览与逐帧工具，声音靠 Whisper 逐字时间与能量静音段，三种混音都没有试听。",
+      "evidence": "",
       "script_evidence": "tools/music.py；project.json audio；README「声音」"
     },
     "F07": {
       "rev": 1,
       "result": "pass",
-      "note": "新任务表只含合成数据；独立实例仅本机回环，日志与 initdb 输出落盘前脱敏，不采集现有服务或账号。网页只保存公开文本、URL 与哈希。",
-      "evidence": "画面只有合成的 users / notes / jobs / 预约数据与 psql 会话，没有本机路径、主机名或账号；按逐句总览图与成片检查。；zh 173.2–302.6s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "屏上的终端输出、日志与文件名都来自 research 实验产物（库名 users、数据目录内的相对文件名 16466 等），没有个人路径、用户名、主机名或地址；逐章抽帧核对（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "lab/08_compare.py clean()、out_08_compare.json；comparison-sources.json"
     },
     "F08": {
       "rev": 1,
       "result": "pass",
-      "note": "8–12 分钟上限不变；当前只记估算，确认后实测再排时间。不把索引计划、局部查询耗时和研究检查写成跨库性能胜负或成片验收。",
-      "evidence": "最终主成片实测：1920×1080、60 fps、688.08 秒；ffmpeg ebur128 实测成片音轨 I −15.7 LUFS、真峰值约 −1.4 dBFS；SHA-256 见 clips。；zh 0–688s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "README「交付」的时长、规格、响度均在最终 MP4 上用 ffprobe 与 finish.js 的响度测量读取后填写（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "project.json check.duration；NOTES 当前估算；FACTS T30–T38"
     },
     "F09": {
       "rev": 1,
       "result": "pass",
-      "note": "技术能力、框架/托管采用案例、调查使用率与工程选型推论分别记录；保留 MySQL 的 JSON/空间能力和 InnoDB 主键路径长处，不把功能组合直接说成反超的统计原因。",
-      "evidence": "比较章把调查比例、技术机制、采用案例与选型推论分开：「这些就是很多人选择它的理由」不说成比例上升的原因；保留 InnoDB 主键直达整行的长处与 MySQL 的 JSON / 空间能力；结尾说明代价与迁移前实测。；zh 544.4–637.3s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "review/NOTES.md 每轮先引 WaterRun 原话再逐条写处理；技术依据只引 research/FACTS.md 的编号，新补的 W11 写明来源与核对日期",
       "script_evidence": "FACTS S03/S04、T30–T38；b2–b5、b17、b19–b26"
     },
     "F10": {
       "rev": 1,
       "result": "pass",
-      "note": "系列关系仍贯穿布局、主键路径、版本和恢复；加强二级索引与隔离级别对照，再独立归纳；最后接 Firebird，不依赖前集编号。",
-      "evidence": "开场 0:35 说明前两集的 MyISAM、InnoDB 都是 MySQL 的存储引擎；之后只在必要处对照（主键路径、undo、redo），每处在本片补齐条件；结尾接下一集 Firebird。；zh 35–43.8s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 536–539s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 667–672.7s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "对 InnoDB 的每处引用都在本片说明前提（默认隔离级别、undo、purge、双写缓冲区）；事务、快照、事务号在本片第一次用时都有解释句（10:37 起）。方法：逐句检查文案（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "README 承接表；q10–q15、u11–u13、m6a–m6c、w2–w4、compare、z8–z9"
     },
     "F11": {
       "rev": 1,
       "result": "pass",
-      "note": "部分索引、JSONB/GIN、范围与排他约束在具体用途上解释；pgvector 对应向量相似度检索，PostGIS 对应空间操作。Django 只说教程建议，不能误说默认 Pg。",
-      "evidence": "外文名词均在出现处给中文作用：堆、项目指针、行头、快照、MVCC、HOT、VACUUM、预写日志 WAL、部分索引、JSONB / GIN；没有整段英文文献。；zh 173.2–238.9s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 374.8–425.8s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "外文材料旁都有中文：重启日志每行右侧中文释义（16:15 前后），串行化报错下方中文标签（12:27 前后），EXPLAIN 输出旁有中文说明。方法：逐章抽帧（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "b7–b22；FACTS T32–T36；STYLE 画面中文释义"
     },
     "F12": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "r10 重合成的句子（l15b、t5、w23、d6b、p17、u9）用 Whisper 逐字时间与能量静音段核对停顿位置；多音字按 SAY 表处理（行 háng/xíng、长 zhǎng、重放）。制作方不能用耳朵听，逐句人耳试听没有做。",
       "evidence": ""
     },
     "F13": {
       "rev": 1,
       "result": "pass",
-      "note": "老牌研究来路与现代扩展能力相接；开场给调查年份和比例，结尾前用真实框架/托管案例解释采用路径，主线仍是引擎实现。",
-      "evidence": "第 01 章 0:51–2:47 先交代 PostgreSQL 是什么、来历（关系模型、System R、Ingres、POSTGRES、对象关系、改名、图灵奖、SQL 标准），再进入机制。；zh 51.4–167.3s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "第一章（1:05 起）交代 1986 年伯克利的研究项目、Postgres95、1996 年定名与 SQL 标准符合度，再进入结构；方法：通读与抽帧（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "h6–h18、o4–o5a、compare；FACTS T36–T38"
     },
     "F14": {
       "rev": 1,
       "result": "pass",
-      "note": "名单和制作指令只在独立说明里，zCredit 为空字幕、14 秒 pause、credits:true、无 tts；署名保持 6.1Sol。",
-      "evidence": "片尾 11:14 起 14 秒静默 cue，只在画面列策划、事实测绘、文案、画面配乐与制作、配音和开源视频链接，旁白不读名单。；zh 674–688s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "片尾 18:35 起 SELECT * FROM credits; 只上画面、没有旁白（credits 为静默 cue）；名单取自 project.json；导出的校对稿没有制作指令（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "script.js zCredit；review/PRODUCTION.md"
     },
     "F15": {
       "rev": 1,
       "result": "pass",
-      "note": "画面不加「示意」「非市场份额」等说明小字；开场折线只留一行来源署名；旁白已删去口径句 o7；不展示的内容直接不展示。",
-      "evidence": "逐屏检查：画面没有「示意」「只列…」之类的说明小字；开场图只有一行来源署名；页结构的刻度与数字取自实测。；zh 0.6–43.8s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 173.2–238.9s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "逐屏的说明性小字只讲内容（结构名、数字、来源），没有制作者口吻的自我说明；本轮删去检查点注解里与旁白重复的一行",
       "script_evidence": "research/STYLE.md 参考来源与 o1–o6a 行；script.js 开场"
     },
     "F16": {
       "rev": 1,
       "result": "pass",
-      "note": "直接取 postgresql.org 样式表的颜色与 Open Sans、文档的标题装饰线、表格、提示框与 psql 会话；左上角常驻大象标志与章名，章节卡用特性区蓝底与白描大象。见 README「视觉系统」。",
-      "evidence": "任取帧：左上角常驻大象标志与 PostgreSQL 字标及章名；标题、表格、提示框、psql 均取自 postgresql.org 的样式；章节卡为官网特性区蓝底与白描大象。 2026-10-20 发布后 WaterRun 评价「设计风格还是很契合 Pg 的」（P30），本片继续作为 F16 的正面对照。；zh 10–20s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 400–410s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）；zh 600–610s（out/postgresql-zh-1080p60.mp4，SHA-256 fb201f9c6239…）",
+      "note": "",
+      "evidence": "配色取自 PostgreSQL 官网与文档的 Pg 蓝（#336791）与深蓝，等宽字体显示 psql 与 pageinspect 的真实输出；不放标志（系列约定）。方法：抽帧不看字幕可认出对象（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
       "script_evidence": "src/css/style.css 开头注释；src/js/config.js；README「视觉系统」"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "配音前用同一段代表句（隔离级别与快照）试听候选，留在 out/voice-preview/。WaterRun 依次否掉 News_Anchor（太老气）、female-yujie（太妩媚），要求严肃男声；改用 Chinese (Mandarin)_Male_Announcer、语速 1.1，与前两片音色不同。成片后由 WaterRun 连续试听开头、MVCC 难点段与章间。",
+      "result": "open",
+      "note": "音色沉稳高管、语速 1.1 由 WaterRun 在审片页试听后选定；制作方能看图、不能连续看视频、不能直接听声音：画面靠 sheets.js 抽帧总览与逐帧工具，声音靠 Whisper 逐字时间与能量静音段，成片后没有试听语气。",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "每章有一个常驻主画面（第二章堆与三棵树、第三章第 23 页字节表与事务号数轴、第七章三个会话 + 版本卡 + 数轴），在抽帧总览上逐章核对；制作方能看图、不能连续看视频、不能直接听声音：画面靠 sheets.js 抽帧总览与逐帧工具，声音靠 Whisper 逐字时间与能量静音段，没有连续观看每章判断理解效果。",
       "evidence": ""
     },
     "F19": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐帧脚本扫全片 30fps 的每一帧找「一闪而过」（0.03–1 秒内变样又变回），改掉第六章「查询」两次飞行与第八章 Dave 问题标签两处；动作前后另取 0.1 秒级帧组核对（第三章指针、第七章锁、第八章可见性图）（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
     },
     "F20": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "图形都承载对应关系：字节表按真实偏移、版本卡的 xmin/xmax、数轴上的可见范围、提交状态格摆在事务号位置上方；同一颜色不换义（琥珀为指认，红为进行中/锁，绿为已提交/可见）"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 PostgreSQL 自身（README「设计」），与 MyISAM、InnoDB 两集的字节表和配色不同；配乐为本片单独生成（tools/music.py）。本轮没有重做并排比较"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 全片 GLOSS 0 项：每个星号术语第一次说完时画面上有 data-gloss 注解（快照、读已提交、可见性图、检查点等）；新加的说明都挂在所指对象旁（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "讲机制的段落都改成对象在原地变化（第七章快照切开数轴、Carol 撞锁与等待条、提交格翻面）；制作方能看图、不能连续看视频、不能直接听声音：画面靠 sheets.js 抽帧总览与逐帧工具，声音靠 Whisper 逐字时间与能量静音段，没有关掉声音连续看全片判断。",
       "evidence": ""
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "scan.js 全片无 CUT、CAPZONE；MARGIN 提示两处保留（第三章 ∞ 距右缘 55px、第五章游标距左缘 58px，都不在正在讲的内容上）。没有以正常速度连续观看镜头动作。",
       "evidence": ""
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "sheets.js 按章抽帧通看过（空荡与挤满的帧已改：第七章重做、第八章可见性图重排）；制作方能看图、不能连续看视频、不能直接听声音：画面靠 sheets.js 抽帧总览与逐帧工具，声音靠 Whisper 逐字时间与能量静音段，没有关掉声音和字幕连续看。",
       "evidence": ""
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 3 稿由制作方主动重写（WaterRun 授权「你自己对抗审查」）；r10 改读法与停顿时通读相关章节，数字与画面一致（检查点注解删去重复句）"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "全片通看只做到抽帧总览与工具检查（README「交付」写明方式与发现）；制作方不能以观众身份连续看完视频，留给策划者。scan.js 的提示逐条有处理。",
       "evidence": ""
+    },
+    "F28": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "第 3 稿逐个名词按「问题 → 例子 → 名字」排列（事务号、xmin/xmax、可见范围、填充比例、HOT、快照、可见性图、检查点）；同名参数各章说法一致（索引填充比例 90、表 100 分开说）"
+    },
+    "F29": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "按章抽帧：第三章一张字节表到底；第七章前两段同一个画面（会话卡、提交状态、版本卡、数轴常驻）；第九章日志带与两页贯穿；章内换段都带一样东西过去（第六章两个版本飞成堆里两版本、第八章第 23 页缩进堆里一格）（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
     }
   },
   "history": [

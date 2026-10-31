@@ -8,7 +8,7 @@ scene('query', ({ root, s, c0 }) => {
   tl.fromTo(A, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, tB - 0.3);
   tl.fromTo(B, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: true }, tB - 0.3); tl.fromTo(B, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, tC - 0.3);
   tl.fromTo(C, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: true }, tC - 0.3);
-  drift(world, s, [], -1);
+  drift(world, s, [], -1, makeCamera(world));
   const [P, LP] = D.alice.ctid, Tn = D.trees.idx_name;
   const planLine = (l) => esc(l.replace(/\s*\(cost=[^)]*\)/, '').replace(/\s*\(actual[^)]*\)/, ''));
 
@@ -76,14 +76,14 @@ scene('query', ({ root, s, c0 }) => {
   const chk = h('div', 'abs', A); px(chk, 900, 806, 940, 160); chk.dataset.name = '可见性检查';
   const rk = h('div', 'abs', chk); px(rk, 0, 0, 5, 64); css(rk, { background: 'var(--navy)' });
   const band = h('div', 'abs', chk); px(band, 5, 10, 935, 44); band.dataset.name = '可见范围';
-  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 62%, rgba(51,103,145,.12) 100%)', overflow: 'hidden' });
-  const bl = h('div', 'abs', band, `xmin ${D.alice.xmin}`); px(bl, 16, 0); css(bl, { font: '700 24px var(--mono)', color: '#fff', lineHeight: '44px', whiteSpace: 'nowrap' });
+  css(band, { background: 'linear-gradient(90deg, var(--pg) 0%, var(--pg) 62%, rgba(51,103,145,.12) 100%)', overflow: 'hidden' });   // lint-ok: 范围条右端渐隐，表示这一版的范围一直延续、没有尽头（与第三章同一画法）
+  const bl = h('div', 'abs', band, `xmin ${D.alice.xmin}`); px(bl, 8, 0); css(bl, { font: '700 24px var(--mono)', color: '#fff', lineHeight: '44px', whiteSpace: 'nowrap', background: 'var(--pg)', padding: '0 8px' });   // 字自带与条同色的底：条是渐变，检查工具推断不出底色
   const br = h('div', 'abs', band, 'xmax 0：没有止点 →'); px(br, 650, 0); css(br, { font: '700 24px "Sans SC"', color: 'var(--pg-dk)', lineHeight: '44px', whiteSpace: 'nowrap' });
   const tXm = T('q8', 'xmin'), tXx = T('q8a', 'xmax');
   show(rk, tXm - 0.1, { y: 0, d: 0.2 });
   tl.fromTo(band, { autoAlpha: 1, width: 0 }, { width: 935 * 0.6, duration: 0.5, ease: 'power2.out', immediateRender: true }, tXm - 0.1);   // 长度用 width 动画，条里的字不被压扁
   tl.fromTo(band, { width: 935 * 0.6 }, { width: 935, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, tXx);
-  set(bl, 0, { autoAlpha: 0 }); show(bl, tXm, { y: 0, d: 0.25 }); keyed(bl).at(T('q8', '提交'), { html: `xmin ${D.alice.xmin} 已提交 ✓` });
+  set(bl, 0, { autoAlpha: 0 }); show(bl, tXm, { y: 0, d: 0.25 }); keyed(bl).at(T('q8', '提交'), { html: `xmin ${D.alice.xmin} 已提交` });
   set(br, 0, { autoAlpha: 0 }); show(br, tXx + 0.4, { x: -10, d: 0.3 });
   // 这次查询：一枚竖针落进范围里
   const pin = h('div', 'abs', chk); px(pin, 520, -30, 4, 96); css(pin, { background: 'var(--warn)' });
@@ -98,7 +98,7 @@ scene('query', ({ root, s, c0 }) => {
   slam(res, T('q8b', '看得见'), { from: 1.15 }); sfx('chime', T('q8b', '看得见'), { g: 0.7 }); hide(cur, T('q8b', '看得见'), { d: 0.25 });
   fly(A, 'Alice，42', [90 + 3 + 236 + 268 + 60, 800 + 3 + 46], [900 + 300, 806 + 76], T('q8b', 'Alice') - 0.6, { cls: 'ok', fs: 24, d: 0.5, sink: true });  A.appendChild(cur);                                                          // 游标压在页面之上
   // 一共三页
-  [['树根', '根'], ['叶子', '叶子'], ['堆页', `第 ${P} 页`]].forEach(([w, txt], i) => { keyed(reads[i]).at(T('q10', w), { html: '✓ ' + txt }); sfx('tick', T('q10', w), { g: 0.5, p: i * 0.2 }); });
+  [['树根', '根'], ['叶子', '叶子'], ['堆页', `第 ${P} 页`]].forEach(([w, txt], i) => { keyed(reads[i]).at(T('q10', w), { html: txt + ' 已读' }); sfx('tick', T('q10', w), { g: 0.5, p: i * 0.2 }); });
   keyed(readL).at(T('q10') - 0.3, { html: '一共读了' }).at(T('q10', '三页'), { html: '一共 3 页' }); sfx('pop', T('q10', '三页'));
 
   // ── B：一共多少人：顺序扫描 ──

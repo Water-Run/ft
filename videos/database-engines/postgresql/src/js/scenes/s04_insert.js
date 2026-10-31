@@ -3,7 +3,7 @@ scene('insert', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const tB = Tend('i9') + 0.5;
   const [A, B] = screens(world, [c0, tB, s.end]);
-  drift(world, s, [tB], 1);
+  drift(world, s, [tB], 1, makeCamera(world));
   const [P, LP] = D.alice.ctid, AT = D.growth.pagesAtAlice;
 
   // ── A：行一条条放进最后一页，满了接新页；Alice 落进第 23 页；三个索引各插一项 ──
@@ -144,7 +144,7 @@ scene('insert', ({ root, s, c0 }) => {
   const tW = T('i14b', '不装满'), tF = T('i14b', '装满的页'), tM = T('i14b', '改几行'), tQ = T('i14b', '分裂');
   const RW = FW * 0.1;
   const rooms = leaves9.slice(0, 5).map((lf, i) => {
-    const r = h('div', 'abs', lf); px(r, 5 + FW * 0.9, 5, RW, 84); css(r, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });
+    const r = h('div', 'abs', lf); px(r, 5 + FW * 0.9, 5, RW, 84); css(r, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 6px,#fff 6px 12px)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
     set(r, 0, { autoAlpha: 0 }); show(r, tW + i * 0.06, { y: 0, d: 0.3 }); return r;
   });
   const roomL = capt(B, '每页留着一成空位', 120, 640); css(roomL, { fontSize: '24px', color: '#7d5500', fontWeight: 700 }); show(roomL, tW + 0.2, { y: -6 });

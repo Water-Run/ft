@@ -3,7 +3,7 @@ scene('history', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const tB = Tend('h10') + 0.5, tC = Tend('h15') + 0.5;
   const [A, B, C] = screens(world, [c0, tB, tC, s.end]);
-  drift(world, s, [tB, tC], -1);
+  drift(world, s, [tB, tC], -1, makeCamera(world));
 
   // ── A：年代线。左栏是人物与 Ingres 的旁注（画面自己交代，不等旁白）；上方的名字只有一个，跟着旁白平滑地变 ──
   hdoc(A, '从伯克利的研究项目，到今天的 PostgreSQL 18', 72, 128);

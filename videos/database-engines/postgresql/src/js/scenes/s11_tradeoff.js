@@ -3,7 +3,7 @@ scene('tradeoff', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const tB = Tend('t10') + 0.5;
   const [A, B] = screens(world, [c0, tB, s.end]);
-  drift(world, s, [tB], -1);
+  drift(world, s, [tB], -1, makeCamera(world));
 
   // ── A：两套答案 ──
   hdoc(A, '同一张表，两套答案', 72, 128);

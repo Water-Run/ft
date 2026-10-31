@@ -24,8 +24,8 @@ function screens(world, marks, opts = {}) {
 }
 // 镜头：每屏只朝一个方向极慢横移（每秒不超过 1.2 像素、一屏合计不超过 24 像素），dir 按章交替。
 // 换屏时的回位与换屏同步、用 0.65 秒缓动做完（混在新内容升起的动作里）；原先 0.04 秒回位，那一下整屏跳动（WaterRun 看 r3b：「似乎是切画面就触发抖动」）
-function drift(world, s, marks, dir = 1) {
-  const cam = makeCamera(world);
+// 镜头由场景自己建好传进来（每个场景都有 makeCamera，check.camera），这里只排一条极慢的横移
+function drift(world, s, marks, dir = 1, cam = makeCamera(world)) {
   const pts = [s.start, ...marks.filter((m) => m > s.start + 0.8 && m < s.end - 0.8), s.end];
   const segs = [];
   let first = null;
@@ -188,7 +188,7 @@ function heapGrid(p, x, y, o = {}) {
     const hd = h('div', 'abs', pg); px(hd, 0, 0, cw - 4, 7); css(hd, { background: 'var(--navy)' });
     const lp = h('div', 'abs', pg); px(lp, 0, 7, cw - 4, 7); css(lp, { background: 'var(--sky)', transformOrigin: '0 50%' });
     const full = (ch - 4 - 16) * D.heap.rows[i] / 88;
-    const rows = h('div', 'abs', pg); css(rows, { left: '0px', right: '0px', bottom: '0px', height: full + 'px', background: 'repeating-linear-gradient(0deg,#cfe0ee 0 5px,#fff 5px 6px)', transformOrigin: '50% 100%' });
+    const rows = h('div', 'abs', pg); css(rows, { left: '0px', right: '0px', bottom: '0px', height: full + 'px', background: 'repeating-linear-gradient(0deg,#cfe0ee 0 5px,#fff 5px 6px)', transformOrigin: '50% 100%' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
     const lab = h('div', 'abs cap mono', el, String(i)); px(lab, cx + 2, cy + ch + 2); css(lab, { fontSize: '22px', color: 'var(--ink2)' });
     pg.lp = lp; pg.rows = rows; pg.lab = lab; pg.k = D.heap.rows[i] / 88; pages.push(pg);
   }
@@ -240,7 +240,7 @@ function byteGrid(p, x, y, o = {}) {
   const COLS = 128, cw = o.cw || 13, lh = o.lh || 10, G = D.page23;
   const el = h('div', 'abs', p); px(el, x, y, COLS * cw, 64 * lh); el.dataset.name = '第 23 页的 8192 字节';
   const bg = h('div', 'abs', el); px(bg, 0, 0, COLS * cw, 64 * lh);
-  css(bg, { background: `repeating-linear-gradient(0deg, transparent 0 ${lh - 2}px, #fff ${lh - 2}px ${lh}px), repeating-linear-gradient(90deg, #dde6ee 0 ${cw - 1}px, #fff ${cw - 1}px ${cw}px)` });
+  css(bg, { background: `repeating-linear-gradient(0deg, transparent 0 ${lh - 2}px, #fff ${lh - 2}px ${lh}px), repeating-linear-gradient(90deg, #dde6ee 0 ${cw - 1}px, #fff ${cw - 1}px ${cw}px)` });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const seg = (a, b, st, gapR = 0) => {
     const out = [];
     for (let q = a; q < b;) {
@@ -252,8 +252,8 @@ function byteGrid(p, x, y, o = {}) {
   };
   const head = seg(0, 24, { background: 'var(--navy)' });
   const ptrs = []; for (let i = 0; i < G.lps; i++) ptrs.push(seg(24 + i * 4, 28 + i * 4, { background: 'var(--sky)' }, 2));
-  const rows = [null]; for (let i = 1; i <= G.lps; i++) { const off = 8192 - 88 * i; rows.push(seg(off, off + 88, { background: 'var(--sky-lt)', boxShadow: 'inset 0 0 0 1px #9dbbd6' }, 2)); }
-  const gap = seg(G.lower, G.upper, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 4px,#fff 4px 8px)', outline: '2px solid #c98f00', outlineOffset: '-1px' });
+  const rows = [null]; for (let i = 1; i <= G.lps; i++) { const off = 8192 - 88 * i; rows.push(seg(off, off + 88, { background: 'var(--sky-lt)', boxShadow: 'inset 0 0 0 1px #9dbbd6' }, 2)); }   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
+  const gap = seg(G.lower, G.upper, { background: 'repeating-linear-gradient(135deg,#ffd36b 0 4px,#fff 4px 8px)', outline: '2px solid #c98f00', outlineOffset: '-1px' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const pos = (off) => ({ x: x + (off % COLS) * cw, y: y + Math.floor(off / COLS) * lh });
   return { el, head, ptrs, rows, gap, seg, pos, cw, lh, COLS };
 }

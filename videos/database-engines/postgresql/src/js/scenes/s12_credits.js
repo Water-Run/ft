@@ -3,7 +3,7 @@ scene('credits', ({ root, s }) => {
   const C = (window.PROJECT && window.PROJECT.credits) || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
   const world = h('div', 'world', root);
-  drift(world, s, [], 1);
+  drift(world, s, [], 1, makeCamera(world));
   const rows = [['策划', C.planner || '']];
   for (const m of [...(C.models || []), ...(C.services || [])]) for (const r of m.roles || []) rows.push([label(r), m.name]);
   rows.push(['许可', (window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later']);
