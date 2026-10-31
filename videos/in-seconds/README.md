@@ -66,7 +66,7 @@
 | 14 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
 | 15 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
 | 16 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
-| 17 | 150 秒了解 Agent 的手：Harness | zh | 制作中 | [`harness`](harness/) |
+| 17 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
 | 18 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
 | 19 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
 | 20 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
