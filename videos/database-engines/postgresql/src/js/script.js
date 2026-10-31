@@ -12,7 +12,7 @@
     {
       id: 'open', chap: null, lead: 0.8, tail: 0.5,
       cues: [
-        c('o1', '每年，Stack Overflow 都请开发者勾选', 'S1'),
+        c('o1', '每年，Stack Overflow 都请开发者勾选', 'S1', { gap: 0.05 }),   // 与 o2 连成一口气（WaterRun r2：「连贯一点, 不要停顿」）
         c('o2', '自己用过的数据库', 'S1', { gap: 0.7 }),
         c('o3', '2022 年，勾选 MySQL 的最多，约 47%', 'S1'),
         c('o4', 'PostgreSQL 紧随其后，约 44%', 'S1', { gap: 0.6 }),

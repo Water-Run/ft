@@ -6,9 +6,9 @@
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | 2026-10-27 预览 r1。文案第 2 稿已确认（含 o8 修改，指纹 `957aa044…`，见 [review/NOTES.md](review/NOTES.md)），按它配音（沉稳高管，全片 936.7 秒）；13 个场景按现行模板重写（`src/js/scenes/s00_open.js` … `s12_credits.js`，数据由 `tools/gen_data.py` 从 research/lab 的实测生成），`scan.js` 无错误，只有一项「同屏文字多」的提示（第三章 Alice 那一行的两张字节表）；配乐 `tools/music.py` 由 R3 小样扩成整片。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
-| 下一步，依赖什么 | WaterRun 看预览 r1，并定两处文案建议（NOTES「预览 r1 随附的文案建议」）；按意见改画面与配乐，确认过的文案改动重新配音；封面 `src/cover.html`（16:9、4:3）出图；正式渲染 |
-| 等待策划者的事 | 看预览 r1；q17 是否删去；d4 的字幕是否改成「可这一行还在页里」。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
+| 当前停在哪里 | 2026-10-31 预览 r3：按 WaterRun 对 r2 的意见（「整个视频过于PPT」）全片改造画面，每章一个会动的主画面，命令逐字敲出、请求与地址飞到要去的地方、名字连续变形；改了什么见 [review/NOTES.md](review/NOTES.md)「预览 r3」。文案仍是确认过的第 2 稿（指纹 `957aa044…`），配音沉稳高管，配乐 `tools/music.py`。取证：[FACTS](research/FACTS.md) 与 [research/lab/](research/lab/) |
+| 下一步，依赖什么 | WaterRun 看预览 r3；「PostgreSQL」的念法与「SQL:2023」中间的停顿要重新配音，MiniMax 余额不足（1008），恢复后先试读法再全片重配；封面 `src/cover.html`（16:9、4:3）出图；正式渲染 |
+| 等待策划者的事 | 看预览 r3；q17 是否删去；d4 的字幕是否改成「可这一行还在页里」；MiniMax 余额。试听页在 `out/audition/`（不入库），由 `tools/keyframes_shot.cjs`、`fugue_sketch.py`、`music_sketch.py`、`voice_audition.py`、`demo_mix.py`、`audition_build.py` 生成 |
 | 本次会话的角色 | **准备方 + 制作方**（Claude Opus 5.5）：取证、文案、视觉、场景、配乐 |
 | 未做的事 | 封面出图；正式渲染与交付检查 |
 
@@ -23,6 +23,8 @@
 - 2026-10-27，看过试听 R3：封面「Cover A, Pg是蓝色的」；配乐 R3「可以」；demo「声音好像有点太小」——demo 漏了成片的最后一步（finish.js 把整体响度提到 -16 LUFS），已补上重混；分轨实测旁白比配乐响 18.2 LU，InnoDB 一集成片是 16.9 LU，比例不动。
 - 2026-10-27，文案第 2 稿：「3427可以接受」「o8 而MySQL降至仅35% 其它基本不错了, 开始做preview吧」——按此确认第 2 稿（o8 照改），开始配音和做场景。
 - 2026-10-27，看过开场调查图的截图：「这个可能折线图或者动态的两条条形图更直观」——开场改成两条折线（MySQL、PostgreSQL，2022–2026），讲到反超时在交叉点画圈标出。
+- 2026-10-27，看过 preview-r1、r2：「太多就旁白走画面不跟着动引导视线的偷懒了」「也不要过度」「就前几分钟都偷懒成什么样完全没有继续的意义了, 整个视频过于PPT, 让他好好的全片自审改造一下」（逐条意见见 review/NOTES.md）——r3 全片改造画面。
+- 2026-10-31：「务必确保视频的可读性」「至少达到InnoDB的叙事水平, 看得懂, 跟得上」「目标: 完成下一版的Preview供我检查」。
 - 2026-10-26：「注意Firebird已经移除, 下一期是将小巧强大的SQLite. 如何在小巧的嵌入式实现强大的生产级关系数据库.」——片尾引出 SQLite，不再引出 Firebird。
 - 2026-10-26，标题：「开源巅峰这个标题可能不够好, 体现老牌又成新潮代替MySQL 正统SQL等的特点, 和我探讨新标题」「需要体现Pg的严肃性的」；从候选里定为「学院派的正统吧」。新标题：**学院派的正统：PostgreSQL**。片里要撑住它：伯克利 Ingres、POSTGRES 的学院出身与 Stonebraker 的图灵奖（学院派）；对 SQL 标准的高符合度、约束在库内强制执行、DDL 也能在事务里回滚（正统、严谨）；「老牌」与「在开发者调查里超过 MySQL」放在开场讲。不写「取代 MySQL」：调查是自报、可多选，不说明市场份额或迁移。
 - 2026-10-24（[P54](../../../docs/log/feedback.md#2026-10-24数据库引擎系列的重做与全系列计划)）：「另外落盘计划, 前几期要重做. MyISAM的叙事很好, 主要是美术风格不够契合MyISAM的问题. InnoDB, Pg的也还行吧, 但是显然比如B树都没有缺漏还是大的.」「重置版本包括Credit的更新完整.」

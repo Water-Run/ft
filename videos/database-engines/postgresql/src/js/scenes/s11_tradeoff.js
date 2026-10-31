@@ -24,10 +24,11 @@ scene('tradeoff', ({ root, s, c0 }) => {
     const kl = h('div', 'abs', A, k); px(kl, 72, y + 22); css(kl, { font: '800 30px "Sans SC"', color: 'var(--ink2)' });
     const ea = h('div', 'abs', A, a); px(ea, 290, y, 780, 96); css(ea, { background: a ? '#5f6a73' : 'transparent', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
     const eb = h('div', 'abs', A, b); px(eb, 1100, y, 748, 96); css(eb, { background: 'var(--pg)', font: '600 26px "Sans SC"', color: '#fff', padding: '28px 20px' });
-    show(kl, T(ca) - 0.1, { x: -10 }); if (a) wipe(ea, ca === 't2' ? T('t2', '一棵树') : T(ca), { dir: 'l', d: 0.4 }); wipe(eb, T(cb) + (cb === ca ? 0.5 : 0), { dir: 'r', d: 0.4 });
+    show(kl, T(ca) - 0.1, { x: -10 }); if (a) wipe(ea, ca === 't2' ? T('t2', '一棵树') : i === 3 ? T('t6', '每个索引') : T(ca), { dir: 'l', d: 0.4 }); wipe(eb, T(cb) + (cb === ca ? 0.5 : 0), { dir: 'r', d: 0.4 });
     sfx('tick', T(cb) + (cb === ca ? 0.5 : 0), { g: 0.5, p: 0.4 });
   });
-  const tail = noteBox(A, '清理跟不上，死行就越积越多', 1100, 880, 748, 'warn'); show(tail, T('t8'), { y: 10 });
+  const tail = tagEl(A, '清理跟不上：死行越积越多', 1100, 880, 'warn'); css(tail, { fontSize: '28px' }); show(tail, T('t8'), { y: 10 }); sfx('error', T('t8'), { g: 0.35 });
+  for (let k = 0; k < 4; k++) { const dr = h('div', 'tup dead', A, '死行'); px(dr, 1520 + k * 82, 884, 74); css(dr, { fontSize: '22px', textAlign: 'center' }); show(dr, T('t8', '越积越多') - 0.3 + k * 0.25, { y: -16, d: 0.3 }); }
   const gain = tagEl(A, '换来的', 290, 790, 'ok'); show(gain, T('t9'), { x: -10 }); sfx('chime', T('t10', '撤销'), { g: 0.6 });
 
   // ── B：四十年后；第二名是 SQLite ──

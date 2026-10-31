@@ -49,6 +49,11 @@ scene('crash', ({ root, s, c0 }) => {
   const cp = h('div', 'abs', A); px(cp, 72 + 2 * 222 - 16, 330, 8, 130); css(cp, { background: 'var(--navy)' }); cp.dataset.name = '检查点';
   const cpl = tagEl(A, '检查点', 72 + 2 * 222 - 120, 290, 'navy');
   show(cp, T('w9'), { y: -10 }); show(cpl, T('w9') + 0.1, { y: 8 }); sfx('tick', T('w9'));
+  // 检查点之前的那几条：它们的修改已经在数据文件里
+  const cpb = h('div', 'abs', A); px(cpb, 72, 456, 2 * 222 - 10, 6); css(cpb, { background: 'var(--navy)' });
+  const cpbl = capt(A, '这之前的修改：已在数据文件里', 72, 466); css(cpbl, { fontSize: '22px', color: 'var(--navy)', fontWeight: 700 });
+  fromTo(cpb, T('w9', '写进') - 0.3, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.4 }); show(cpbl, T('w9', '写进') - 0.2, { y: 6 }); sfx('tick', T('w9', '写进'));
+  [cpb, cpbl].forEach((e) => hide(e, T('w10') - 0.2, { d: 0.25 }));
   hide(late, T('w10') - 0.2, { d: 0.25 }); hide(cpG, T('w10') - 0.2, { d: 0.25 });
   // 整页写：检查点后第一次改这一页，日志里带上整页
   const fpi1 = W.carolFpi[0][1];
@@ -69,14 +74,14 @@ scene('crash', ({ root, s, c0 }) => {
 
   // ── B：强行停机，再启动 ──
   hdoc(B, '试一次：强行停机', 72, 128);
-  const q = psqlBox(B, '', 72, 196, 900); css(q, { fontSize: '23px', height: '210px' });
-  const kq = keyed(q);
+  const tk = term(B, 72, 196, 900, 4, { fs: 23, lh: 36, name: 'psql 会话' });
   const l1 = `<span class="p">carol=*&gt;</span> <span class="k">UPDATE</span> users <span class="k">SET</span> age = 99 <span class="k">WHERE</span> id = 2049;  <span class="d">-- 不提交</span>`;
   const l2 = `<span class="p">alice=&gt;</span> <span class="k">UPDATE</span> users <span class="k">SET</span> age = 43 <span class="k">WHERE</span> id = 2050;  <span class="d">-- 提交</span>`;
   const l3 = `<span class="er">$ pg_ctl stop -m immediate</span>  <span class="d">-- 强行停掉</span>`;
-  appear(q, T('w13') - 0.1);
-  const l1a = l1.replace(/  <span class="d">.*$/, '');
-  kq.at(T('w13'), { html: l1a }); kq.at(T('w13', '不提交'), { html: l1 }); kq.at(T('w14'), { html: l1 + '\n' + l2 }); kq.at(T('w15', '停掉'), { html: l1 + '\n' + l2 + '\n\n' + l3 });
+  const body = (s) => s.replace(/^<span class="p">[^<]*<\/span> /, '');
+  tk.type(T('w13') - 0.2, body(l1), 'carol=*&gt;', 45);
+  tk.type(T('w14') - 0.1, body(l2), 'alice=&gt;', 45);
+  tk.print(T('w15', '停掉') - 0.1, l3);
   const stL = capt(B, '停机前', 1000, 200);
   const sb = h('div', 'tup', B, 'Bob → 99　没提交'); px(sb, 1000, 250, 520); css(sb, { borderStyle: 'dashed', borderColor: 'var(--warn)' });
   const sa = h('div', 'tup new', B, 'Alice → 43　已提交'); px(sa, 1000, 320, 520);
@@ -93,6 +98,12 @@ scene('crash', ({ root, s, c0 }) => {
     const n = h('div', 'abs cap', logBox, notes[i]); px(n, 1140, i * 56); css(n, { color: 'var(--pg)', fontWeight: 700 });
     appear(r, times[i]); show(n, times[i] + 0.1, { x: -10 }); sfx('blip', times[i], { g: 0.35 });
   });
+  // 重放：从检查点起，把日志一条条再做一遍
+  const rp = h('div', 'abs', B); px(rp, 72, 724, 1100, 22); css(rp, { border: '2px solid var(--pg)' }); rp.dataset.name = '重放进度';
+  const rpf = h('div', 'abs', rp); px(rpf, 0, 0, 0, 18); css(rpf, { background: 'var(--pg)' });
+  show(rp, T('w17', '检查点'), { y: 0 }); fromTo(rpf, T('w17', '检查点'), { width: 0 }, { width: 1096, duration: Tend('w17') - T('w17', '检查点'), ease: 'none' });
+  const rpl = capt(B, '从检查点起重放日志', 1190, 716); css(rpl, { fontSize: '24px', color: 'var(--pg)', fontWeight: 700 }); show(rpl, T('w17', '检查点'), { x: -10 });
+  [rp, rpl].forEach((e) => hide(e, T('w18') - 0.1, { d: 0.25 }));
   // 结果
   const A2 = W.after;
   const res = tableDoc(B, ['', '年龄', ''], [['Alice', String(A2.alice.age), '提交过的：在'], ['Bob', String(A2.bob.age), 'Carol 没提交的 99：不见了']], 72, 760, { mono: [1] });

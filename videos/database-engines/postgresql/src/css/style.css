@@ -90,3 +90,4 @@ table.doc tr.hl td { background: var(--hi); }
 .gloss { position: absolute; border-left: 6px solid var(--pg); background: #fff; padding: 10px 18px; font: 500 24px var(--sans); line-height: 1.45; color: var(--ink); box-shadow: 0 2px 0 var(--line); }
 .gloss b { color: var(--pg); }
 .credits-box { position: absolute; }
+.psql, .psql * { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }   /* => 不连写成箭头 */

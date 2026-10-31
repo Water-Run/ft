@@ -47,6 +47,45 @@ function tableDoc(p, head, rows, x, y, opts = {}) {
   px(t, x, y);
   return t;
 }
+// ── psql 终端：命令逐字敲出（提示符先在），结果一行行滑入；clear 之后从第一行重新写 ──
+// 构建时按时间先后调用；返回的 type/print 各给出这一行写完的时刻
+function term(p, x, y, w, rows, o = {}) {
+  const lh = o.lh || 38, fs = o.fs || 25;
+  const el = h('div', 'psql', p); px(el, x, y, w); css(el, { height: lh * rows + 32 + 'px', padding: '0', overflow: 'hidden' });
+  el.dataset.name = o.name || 'psql';
+  let n = 0, live = [];
+  const line = (html) => { const d = h('div', 'abs', el, html); px(d, 24, 16 + n * lh); css(d, { font: `500 ${fs}px var(--mono)`, lineHeight: lh + 'px', whiteSpace: 'pre', color: 'var(--ink)', fontVariantLigatures: 'none', fontFeatureSettings: '"liga" 0, "calt" 0' }); n++; live.push(d); return d; };
+  return {
+    el,
+    type(t, cmd, prompt = 'postgres=#', cps = 32) {
+      const d = line(`<span class="p">${prompt}</span> `), sp = h('span', '', d);
+      set(d, 0, { autoAlpha: 0 }); set(d, t - 0.25, { autoAlpha: 1 });
+      const end = typeText(sp, cmd, t, cps, { cursorUntil: t + 0.01 + tokenize(cmd).filter((k) => k.ch).length / cps + 0.35, sfxGain: 0.5 });
+      return end;
+    },
+    print(t, html, o2 = {}) { const d = line(html); if (o2.cls) d.classList.add(o2.cls); show(d, t, { y: 12, d: 0.35 }); return d; },
+    clear(t) { live.forEach((d) => hide(d, t, { d: 0.2, y: -8 })); live = []; n = 0; },
+  };
+}
+// 一个「请求」从 a 飞到 b（屏内坐标），到了以后淡掉；返回元素
+function fly(p, html, a, b, t, o = {}) {
+  const e = h('div', 'tag ' + (o.cls || ''), p, html); px(e, a[0], a[1]); if (o.fs) css(e, { fontSize: o.fs + 'px' });
+  const d = o.d || 0.7;
+  set(e, 0, { autoAlpha: 0 });
+  tl.fromTo(e, { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 1, scale: 1, duration: 0.18, immediateRender: false }, t);
+  tl.to(e, { x: b[0] - a[0], y: b[1] - a[1], duration: d, ease: o.ease || 'power2.inOut' }, t + 0.15);
+  if (o.stay !== true) tl.to(e, { autoAlpha: 0, duration: 0.2 }, t + 0.15 + d + (o.hold || 0.05));
+  return e;
+}
+// 交叉淡变：同一处的文字换成新的（旧的淡出、新的淡入），不闪
+function morphText(p, x, y, cssObj, steps) {
+  const els = steps.map(([t, html], i) => { const e = h('div', 'abs', p, html); px(e, x, y); css(e, { whiteSpace: 'nowrap', ...cssObj }); set(e, 0, { autoAlpha: 0 }); return e; });
+  steps.forEach(([t], i) => {
+    tl.fromTo(els[i], { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, t);
+    if (i + 1 < steps.length) tl.to(els[i], { autoAlpha: 0, y: -14, duration: 0.3, ease: 'power2.in' }, steps[i + 1][0] - 0.05);
+  });
+  return els;
+}
 // 一条带箭头的线（SVG 叠加层上）
 function link(ov, pts, color = 'accent', o = {}) {
   const d = 'M' + pts.map((q) => q.join(',')).join(' L');

@@ -7,40 +7,57 @@ scene('update', ({ root, s, c0 }) => {
   const U = D.update.users, H = D.update.users_hot;
   const [oP, oL] = U.old, [nP, nL] = U.new;
 
-  // ── A：新版本写到哪里 ──
+  // ── A：新版本从旧版本复制出来，先试第 23 页、放不下，写到第 46 页；旧版本行头里改两处 ──
   hdoc(A, 'Alice 42 → 43', 72, 128);
-  const q = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">UPDATE</span> users <span class="k">SET</span> age = 43 <span class="k">WHERE</span> id = 2050;`, 72, 196, 1000);
-  css(q, { fontSize: '23px' }); appear(q, T('u1') + 0.2); sfx('blip', T('u1') + 0.3, { g: 0.5 });
-  const pgA = h('div', 'page', A); px(pgA, 120, 320, 720, 340); pgA.dataset.name = `第 ${oP} 页`;
-  const pgB = h('div', 'page', A); px(pgB, 1080, 320, 720, 340); pgB.dataset.name = `第 ${nP} 页`;
-  const la = capt(A, `<b>第 ${oP} 页</b>　88 行 · 空隙 ${U.freeBefore} 字节`, 120, 276);
-  const lb = capt(A, `<b>第 ${nP} 页</b>　${D.heap.rows[nP]} 行 · 还有空`, 1080, 276);
-  const gapA = h('div', 'abs', pgA); px(gapA, 6, 6, 702, 30); css(gapA, { background: 'repeating-linear-gradient(90deg,#fff 0 10px,#eef3f7 10px 12px)', border: '2px dashed var(--grey)' });
-  const gapAl = h('div', 'abs', gapA, `空隙 ${U.freeBefore} 字节`); px(gapAl, 520, 0); css(gapAl, { font: '700 22px "Sans SC"', color: 'var(--ink2)', lineHeight: '26px' });
-  for (let i = 0; i < 6; i++) { const r = h('div', 'tup', pgA, i === 4 ? '' : '…'); px(r, 20, 60 + i * 46, 680); if (i === 4) css(r, { opacity: 0 }); }
-  const oldv = h('div', 'tup', pgA, `第 ${oL} 项　2050  Alice  42`); px(oldv, 20, 60 + 4 * 46, 680);
-  for (let i = 0; i < 3; i++) { const r = h('div', 'tup', pgB, '…'); px(r, 20, 60 + i * 46, 680); }
-  const freeB = h('div', 'abs', pgB); px(freeB, 20, 200, 680, 120); css(freeB, { background: 'repeating-linear-gradient(90deg,#fff 0 10px,#eef3f7 10px 12px)' });
-  wipe(pgA, T('u2') - 0.3, { dir: 'l' }); show(la, T('u2') - 0.2); wipe(pgB, T('u2'), { dir: 'r' }); show(lb, T('u2') + 0.1);
-  // 新版本：先试第 23 页，放不下，去第 46 页
-  const nv = h('div', 'tup new', A, '2050  Alice  43'); px(nv, 880, 220, 300);
-  slam(nv, T('u3', '新版本'), { from: 1.15 }); sfx('pop', T('u3', '新版本'));
-  to(nv, T('u4'), { x: -600, y: 106, duration: 0.7, ease: 'power3.inOut' }); sfx('whoosh', T('u4'), { g: 0.35 });
-  const need = tagEl(A, '要 92 字节 > 72', 560, 380, 'warn'); show(need, T('u5b', '92'), { y: -8 }); sfx('error', T('u5b', '92') + 0.1, { g: 0.5 });
-  to(nv, T('u6', '别的页'), { x: 220, y: 300, duration: 0.8, ease: 'power3.inOut' }); sfx('whoosh', T('u6', '别的页'), { g: 0.4 });
-  hide(need, T('u6', '别的页'), { d: 0.25 });
-  const nvl = tagEl(A, `第 ${nP} 页第 ${nL} 项`, 1420, 560); show(nvl, T('u6b', '49'), { y: -8 }); sfx('tick', T('u6b', '49'), { p: 0.4 });
-  // 两个版本的行头
-  const tb = tableDoc(A, ['', 'xmin', 'xmax', 't_ctid'], [['旧版本', String(D.alice.xmin), '<span id="ux1">0</span>', `<span id="uc1">(${oP},${oL})</span>`], ['新版本', '<span id="un1">—</span>', '0', `(${nP},${nL})`]], 120, 710, { mono: [1, 2, 3] });
-  wipe(tb, T('u7'), { dir: 'l' });
-  const cell = (id) => tb.querySelector('#' + id);
-  keyed(cell('ux1')).at(T('u8', '事务号'), { html: `<b style="color:var(--warn)">${U.xid}</b>` }); sfx('tick', T('u8', '事务号'));
-  keyed(cell('uc1')).at(T('u9', '新版本'), { html: `<b style="color:var(--pg)">(${nP},${nL})</b>` }); sfx('tick', T('u9', '新版本'));
-  keyed(cell('un1')).at(T('u10', 'xmin'), { html: `<b style="color:var(--pg)">${U.xid}</b>` }); sfx('tick', T('u10', 'xmin'));
-  const ov = overlay(A); const ar = curve(ov, [840, 60 + 320 + 4 * 46 + 20], [1100, 640], 'navy', { bend: 560 });
-  arrowIn(ar, T('u9', 't_ctid'), 0.5);
-  classAt(oldv, 'dead', T('u11'));
-  const two = tagEl(A, '同一个 Alice，两个版本', 1180, 760); slam(two, T('u11', '两个版本'), { from: 1.15 }); sfx('thud', T('u11', '两个版本'), { g: 0.6 });
+  const tu = term(A, 72, 196, 1100, 2, { name: 'psql 会话' });
+  tu.type(T('u1') + 0.2, '<span class="k">UPDATE</span> users <span class="k">SET</span> age = 43 <span class="k">WHERE</span> id = 2050;', 'postgres=#', 40);
+  // 两页
+  const pgA = h('div', 'page', A); px(pgA, 72, 420, 860, 300); pgA.dataset.name = `第 ${oP} 页`;
+  const pgB = h('div', 'page', A); px(pgB, 988, 420, 860, 300); pgB.dataset.name = `第 ${nP} 页`;
+  const la = capt(A, `<b>第 ${oP} 页</b>　88 行 · 空隙 ${U.freeBefore} 字节`, 72, 384), lb = capt(A, `<b>第 ${nP} 页</b>　${D.heap.rows[nP]} 行 · 还有空`, 988, 384);
+  [la, lb].forEach((e) => css(e, { fontSize: '26px' }));
+  const gapA = h('div', 'abs', pgA); px(gapA, 6, 6, 842, 44); css(gapA, { background: 'repeating-linear-gradient(90deg,#fff 0 10px,#eef3f7 10px 12px)', border: '2px dashed var(--grey)' }); gapA.dataset.name = '空隙';
+  const gapAl = h('div', 'abs', gapA, `空隙 ${U.freeBefore} 字节`); px(gapAl, 600, 4); css(gapAl, { font: '700 26px "Sans SC"', color: 'var(--ink2)' });
+  for (let i = 0; i < 2; i++) { const r = h('div', 'tup', pgA, '…'); px(r, 20, 70 + i * 46, 820); }
+  for (let i = 0; i < 2; i++) { const r = h('div', 'tup', pgB, '…'); px(r, 20, 70 + i * 46, 820); }
+  wipe(pgA, T('u1') + 0.3, { dir: 'l' }); show(la, T('u1') + 0.4); wipe(pgB, T('u1') + 0.5, { dir: 'r' }); show(lb, T('u1') + 0.6);
+  // 一行版本 = 行头三格 + 数据
+  const ver = (x, y, v, cls = '') => {
+    const e = h('div', 'abs', A); px(e, x, y, 820, 52); e.dataset.name = '行版本';
+    const cell = (cx, w, html, head) => { const c = h('div', 'abs', e, html); px(c, cx, 0, w, 52); css(c, { background: head ? 'var(--navy)' : (cls === 'new' ? 'var(--pg)' : 'var(--sky-lt)'), color: head || cls === 'new' ? '#fff' : 'var(--navy)', font: `600 ${head ? 22 : 26}px var(--mono)`, lineHeight: '52px', textAlign: 'center', whiteSpace: 'nowrap' }); return c; };
+    return { e, xmin: cell(0, 170, v.xmin, true), xmax: cell(174, 150, v.xmax, true), ctid: cell(328, 210, v.ctid, true), data: cell(542, 278, v.data) };
+  };
+  const old = ver(92, 620, { xmin: `xmin ${D.alice.xmin}`, xmax: 'xmax 0', ctid: `t_ctid (${oP},${oL})`, data: '2050 Alice 42' });
+  show(old.e, T('u2') - 0.2, { y: 10 });
+  const oldL = tagEl(A, '旧版本', 92, 678, 'grey'); css(oldL, { fontSize: '24px' }); show(oldL, T('u2', '不覆盖'), { y: -8 });
+  // 新版本：从旧版本复制出来，年龄改成 43
+  const nv = ver(92, 620, { xmin: 'xmin —', xmax: 'xmax 0', ctid: 't_ctid —', data: '2050 Alice 42' }, 'new');
+  set(nv.e, 0, { autoAlpha: 0 }); set(nv.e, T('u3', '新版本') - 0.1, { autoAlpha: 1 });
+  to(nv.e, T('u3', '新版本'), { y: -304, duration: 0.7, ease: 'power3.out' }); sfx('whoosh', T('u3', '新版本'), { g: 0.35 });
+  keyed(nv.data).at(T('u3', '43'), { html: '2050 Alice <b>43</b>' }); sfx('tick', T('u3', '43'));
+  const nvL = tagEl(A, '新版本 · 连同指针要 92 字节', 940, 322); css(nvL, { fontSize: '24px' }); show(nvL, T('u3', '新版本') + 0.5, { x: -10 });
+  // 先试原来那一页：空隙只有 72 字节，放不下
+  to(nv.e, T('u4', '放不放得下') - 0.3, { y: -194, duration: 0.5, ease: 'power2.inOut' });
+  hide(gapAl, T('u4', '放不放得下') - 0.35, { d: 0.15 }); show(gapAl, T('u6', '别的页') + 0.5, { y: 0 });
+  to(gapA, T('u5', '72'), { boxShadow: 'inset 0 0 0 4px #b8442f', duration: 0.3 }); keyed(la).at(T('u5', '72'), { html: `<b>第 ${oP} 页</b>　88 行 · 空隙 <b style="color:var(--warn)">${U.freeBefore} 字节</b>` }); sfx('tick', T('u5', '72'));
+  keyed(nvL).at(T('u5b', '92'), { html: '要 92 字节 &gt; 72' }); set(nvL, T('u5b', '92'), { backgroundColor: '#b8442f' }); sfx('error', T('u5b', '92') + 0.1, { g: 0.5 });
+  to(nv.e, T('u5b', '92') + 0.2, { y: -310, duration: 0.3, ease: 'power2.out' });
+  // 只好写到别的页：第 46 页第 49 项
+  to(nv.e, T('u6', '别的页'), { x: 936, y: -34, duration: 0.8, ease: 'power3.inOut' }); sfx('whoosh', T('u6', '别的页'), { g: 0.4 });
+  hide(nvL, T('u6', '别的页'), { d: 0.25 });
+  keyed(nv.ctid).at(T('u6b', '49'), { html: `t_ctid (${nP},${nL})` });
+  const nvl = tagEl(A, `第 ${nP} 页第 ${nL} 项`, 1028, 646); css(nvl, { fontSize: '24px' }); show(nvl, T('u6b', '49'), { y: -8 }); sfx('tick', T('u6b', '49'), { p: 0.4 });
+  // 旧版本：数据不动，行头里改两处
+  const keep = tagEl(A, '数据不动', 92 + 560, 678, 'ok'); css(keep, { fontSize: '24px' }); show(keep, T('u7', '不动'), { y: -8 });
+  to(old.data, T('u7', '不动'), { boxShadow: 'inset 0 0 0 4px #2f6b26', duration: 0.3 });
+  [old.xmax, old.ctid].forEach((c, i) => to(c, T('u7b', '两处') + i * 0.15, { backgroundColor: '#336791', duration: 0.2 }));
+  keyed(old.xmax).at(T('u8', '事务号'), { html: `xmax <b>${U.xid}</b>` }); set(old.xmax, T('u8', '事务号'), { backgroundColor: '#b8442f' }); sfx('tick', T('u8', '事务号'));
+  keyed(old.ctid).at(T('u9', '新版本'), { html: `t_ctid (${nP},${nL})` }); sfx('tick', T('u9', '新版本'));
+  const ov = overlay(A); const ar = curve(ov, [92 + 328 + 105, 620], [1028 + 255, 586], 'navy', { bend: 500 }); arrowIn(ar, T('u9', '新版本') - 0.2, 0.6);
+  keyed(nv.xmin).at(T('u10', 'xmin'), { html: `xmin <b>${U.xid}</b>` }); set(nv.xmin, T('u10', 'xmin'), { backgroundColor: '#b8442f' }); sfx('tick', T('u10', 'xmin'));
+  // 同一个 Alice，两个版本
+  const two = tagEl(A, '同一个 Alice，两个版本', 760, 760); css(two, { fontSize: '30px' }); slam(two, T('u11', '两个版本'), { from: 1.15 }); sfx('thud', T('u11', '两个版本'), { g: 0.6 });
+  [oldL, keep].forEach((e) => hide(e, T('u11') - 0.1, { d: 0.2 }));
 
   // ── B：三个索引各加一项；对照 InnoDB ──
   hdoc(B, '三个索引，各插一项', 72, 128);
@@ -55,15 +72,16 @@ scene('update', ({ root, s, c0 }) => {
   const ix = U.index;
   const rs = [leafRow(72, 260, '主键树', ix.users_pkey), leafRow(700, 260, '姓名树', ix.idx_name), leafRow(1328, 260, '年龄树', ix.idx_age)];
   rs.forEach((r, i) => { wipe(r.box, T('u12') + i * 0.1, { dir: 'l' }); show(r.l, T('u12') + i * 0.1); show(r.e1, T('u12', '旧地址') + i * 0.08, { y: 8 }); });
-  rs.forEach((r, i) => { slide(r.e2, T('u13', '新地址') + i * 0.15, { y: 30 }); sfx('pop', T('u13', '新地址') + i * 0.15, { g: 0.5, p: -0.5 + i * 0.5 }); });
+  rs.forEach((r, i) => { fly(B, `(${nP},${nL})`, [900, 190], [72 + i * 628 + 300, 260 + 120], T('u13', '新地址') - 0.6 + i * 0.15, { cls: 'navy', fs: 24, d: 0.55 }); slide(r.e2, T('u13', '新地址') + i * 0.15, { y: 30 }); sfx('pop', T('u13', '新地址') + i * 0.15, { g: 0.5, p: -0.5 + i * 0.5 }); });
+  const src = tagEl(B, `新版本在 (${nP},${nL})`, 760, 180, 'navy'); css(src, { fontSize: '24px' }); show(src, T('u13') - 0.2, { y: -8 }); hide(src, T('u14b'), { d: 0.25 });
   const same = noteBox(B, '名字、编号都没变，可旧项指着旧地址：每个索引都得再插一项', 72, 530, 1200); show(same, T('u14b'), { y: 10 });
   // InnoDB
   const ib = h('div', 'abs', B); px(ib, 72, 640, 1776, 280); ib.dataset.name = 'InnoDB 的做法';
   const it = capt(ib, 'InnoDB', 0, 0); css(it, { fontSize: '30px', color: 'var(--mute)', fontWeight: 700 });
-  const irow = h('div', 'tup grey', ib, '主键树的叶子：2050  Alice  42 → 43（原位改）'); px(irow, 0, 52, 760);
+  const irow = h('div', 'tup grey', ib, '主键树的叶子：2050  Alice  42'); px(irow, 0, 52, 760); keyed(irow).at(T('u16', '原位改'), { html: '主键树的叶子：2050  Alice  <b>43</b>（原位改）' });
   const iundo = h('div', 'tup grey', ib, 'undo：旧值 42'); px(iundo, 0, 112, 360); css(iundo, { background: '#f1f3f5' });
   const iname = h('div', 'tup grey', ib, '姓名索引：Alice → 主键 2050（不用动）'); px(iname, 860, 52, 700);
-  show(it, T('u16')); show(irow, T('u16', '原位改'), { y: 8 }); slide(iundo, T('u16', 'undo'), { y: 20 }); sfx('pop', T('u16', 'undo'), { g: 0.5, p: -0.4 });
+  show(it, T('u16') - 0.2); show(irow, T('u16') - 0.1, { y: 8 }); slide(iundo, T('u16', 'undo'), { y: 20 }); sfx('pop', T('u16', 'undo'), { g: 0.5, p: -0.4 });
   show(iname, T('u17', '主键'), { x: 20 }); sfx('tick', T('u17b', '不用动'), { p: 0.3 });
   const ok = tagEl(ib, '主键没变，姓名索引就不用动', 860, 120, 'grey'); show(ok, T('u17b', '不用动'), { y: 8 });
 
@@ -88,15 +106,23 @@ scene('update', ({ root, s, c0 }) => {
   show(hidx, T('u21b'), { x: -20 }); arrowIn(ia, T('u21b') + 0.2, 0.3);
   const zero = tagEl(C, '索引：0 项新增', 72, 470, 'ok'); show(zero, T('u21b', '不加'), { y: 8 }); sfx('tick', T('u21b', '不加'));
   const jump = capt(C, '查询先到第 ' + hL + ' 项，再在页内跳到第 ' + hN + ' 项', 520, 560); show(jump, T('u22', '跳过去'), { y: 8 });
+  fly(C, '查询', [330, 360], [560, 344], T('u22') + 0.1, { cls: 'warn', fs: 24, d: 0.5, hold: 0.3 });
+  fly(C, '查询', [560, 344], [1010, 434], T('u22', '跳过去') - 0.3, { cls: 'warn', fs: 24, d: 0.5, hold: 0.4 });
   // 两次更新写的日志
   const walRows = (arr) => arr.map((w) => [w[0], w[1]]);
   const t1 = tableDoc(C, ['users（年龄有索引）', ''], walRows(U.wal), 72, 606, { mono: [0, 1] });
   const t2 = tableDoc(C, ['users_hot', ''], walRows(H.wal), 760, 606, { mono: [0, 1] });
   css(t1, { fontSize: '23px' }); css(t2, { fontSize: '23px' });
-  show(t1, T('u23'), { y: 10 }); show(t2, T('u24', 'HOT'), { y: 10 }); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
+  set(t1, 0, { autoAlpha: 0 }); set(t1, T('u23') + 0.2, { autoAlpha: 1 }); set(t2, 0, { autoAlpha: 0 }); set(t2, T('u24', 'HOT') - 0.4, { autoAlpha: 1 });
+  [...t1.querySelectorAll('tr')].forEach((r, i) => show(r, T('u23') + 0.2 + i * 0.3, { x: -10, y: 0, d: 0.3 }));
+  [...t2.querySelectorAll('tr')].forEach((r, i) => show(r, T('u24', 'HOT') - 0.4 + i * 0.3, { x: -10, y: 0, d: 0.3 })); sfx('blip', T('u24', 'HOT'), { g: 0.5 });
   const tlab = capt(C, '各写了哪些日志记录', 72, 566); show(tlab, T('u23'));
   // Alice 这次：两条都不满足
   const x1 = tagEl(C, '✗ 年龄有索引', 1220, 660, 'warn'), x2 = tagEl(C, `✗ 第 ${oP} 页满了`, 1220, 720, 'warn');
   slam(x1, T('u26', '年龄有索引'), { from: 1.2 }); slam(x2, T('u26', '满了'), { from: 1.2 }); sfx('error', T('u26', '年龄有索引'), { g: 0.5 }); sfx('error', T('u26', '满了'), { g: 0.5 });
-  const ff = noteBox(C, '<b>填充比例</b>　表默认 100（装满）；改小后，每页留出的空间给更新用', 1180, 790, 660); show(ff, T('u27'), { y: 10 });
+  const ff = noteBox(C, '<b>填充比例</b>　表默认 100（装满）；改小后，每页留出的空间给更新用', 1180, 780, 660); show(ff, T('u27'), { y: 10 });
+  const ffb = h('div', 'page', C); px(ffb, 1180, 884, 660, 56); ffb.dataset.name = '留一成空位的页';
+  const ffa = h('div', 'abs', ffb); px(ffa, 4, 4, 0, 42); css(ffa, { background: 'var(--sky-lt)' });
+  const ffr = h('div', 'abs', ffb, '留给更新'); px(ffr, 590, 4, 62, 42); css(ffr, { background: 'repeating-linear-gradient(135deg,#fff 0 6px,#dbe8f3 6px 12px)', font: '700 22px "Sans SC"', color: 'var(--navy)', lineHeight: '42px', whiteSpace: 'nowrap', overflow: 'visible', textAlign: 'right' });
+  wipe(ffb, T('u28') - 0.2, { dir: 'l', d: 0.3 }); to(ffa, T('u28'), { width: 584, duration: 0.8 }); show(ffr, T('u28', '改小'), { y: 0 });
 });

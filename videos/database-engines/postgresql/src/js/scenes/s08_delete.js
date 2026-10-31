@@ -9,8 +9,9 @@ scene('delete', ({ root, s, c0 }) => {
 
   // ── A：删除只记 xmax；VACUUM 被 Bob 挡住 ──
   hdoc(A, 'Alice 注销', 72, 128);
-  const q = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">DELETE FROM</span> users <span class="k">WHERE</span> id = 2050;\n<span class="d">DELETE 1</span>`, 72, 196, 900);
-  css(q, { fontSize: '23px' }); wipe(q, T('d1') + 0.2, { dir: 'l' }); sfx('blip', T('d1') + 0.4, { g: 0.5 });
+  const tdl = term(A, 72, 196, 900, 2, { fs: 23, lh: 34, name: 'psql 会话' });
+  const eD = tdl.type(T('d1') + 0.1, '<span class="k">DELETE FROM</span> users <span class="k">WHERE</span> id = 2050;', 'postgres=#', 40);
+  tdl.print(eD + 0.2, '<span class="d">DELETE 1</span>');
   const pg = h('div', 'page', A); px(pg, 72, 340, 900, 150); pg.dataset.name = `第 ${P} 页`;
   const pgl = capt(A, `第 ${P} 页`, 72, 300);
   const row = h('div', 'tup', pg, `第 ${LP} 项　2050  Alice  42　xmax <span id="dx">0</span>`); px(row, 20, 50, 850);
@@ -28,19 +29,24 @@ scene('delete', ({ root, s, c0 }) => {
   const vb = E.vacuum['vacuum while bob holds snapshot'];
   const v1 = psqlBox(A, `<span class="p">postgres=#</span> <span class="k">VACUUM</span> (VERBOSE) users;\n<span class="d">${vline(vb, /^tuples/)}\n${vline(vb, /^removable cutoff/)}</span>`, 72, 670, 1500);
   css(v1, { fontSize: '23px' }); wipe(v1, T('d8'), { dir: 'l' }); sfx('blip', T('d8') + 0.3, { g: 0.5 });
+  // VACUUM 到了这一行就停手：Bob 的快照还可能读它
+  const stop = tagEl(A, '停：Bob 的快照还在', 520, 296, 'warn'); css(stop, { fontSize: '24px' }); show(stop, T('d9', '还不能') - 0.3, { y: 8 });
   const dead = tagEl(A, '已死，但还不能回收：Bob 的快照可能还要读', 72, 850, 'warn'); slam(dead, T('d9', '还不能'), { from: 1.12 }); sfx('error', T('d9', '还不能'), { g: 0.5 });
 
   // ── B：Bob 结束后收走；Dave 住进来 ──
   hdoc(B, 'Bob 结束后，再做一次 VACUUM', 72, 128);
   const va = E.vacuum['vacuum after bob'];
-  const v2 = psqlBox(B, `<span class="p">postgres=#</span> <span class="k">VACUUM</span> (VERBOSE) users;\n<span class="d">${vline(va, /^tuples/)}\n${vline(va, /^index scan needed/)}</span>`, 72, 196, 1500);
-  css(v2, { fontSize: '23px' }); wipe(v2, T('d10'), { dir: 'l' }); sfx('blip', T('d10') + 0.3, { g: 0.5 });
+  const tv = term(B, 72, 196, 1500, 3, { fs: 23, lh: 34, name: 'psql 会话' });
+  const eV = tv.type(T('d10') - 0.2, '<span class="k">VACUUM</span> (VERBOSE) users;', 'postgres=#', 45);
+  tv.print(Math.max(eV + 0.1, T('d10b') - 0.3), `<span class="d">${vline(va, /^tuples/)}</span>`); tv.print(Math.max(eV + 0.2, T('d11')), `<span class="d">${vline(va, /^index scan needed/)}</span>`);
   const pg2 = h('div', 'page', B); px(pg2, 72, 380, 900, 150); pg2.dataset.name = `第 ${P} 页`;
   const pg2l = capt(B, `第 ${P} 页`, 72, 340);
   const row2 = h('div', 'tup dead', pg2, `第 ${LP} 项　2050  Alice  42　xmax ${E.xid}`); px(row2, 20, 50, 850);
   const empty = h('div', 'tup ghost', pg2, `第 ${LP} 项：空闲`); px(empty, 20, 50, 850);
   show(pg2, tB + 0.1); show(pg2l, tB + 0.1); show(row2, tB + 0.2);
-  hide(row2, T('d10b', '收走'), { d: 0.35 }); show(empty, T('d10b', '收走') + 0.3, { y: 6 }); sfx('pop', T('d10b', '收走'));
+  const sw2 = h('div', 'abs', B); px(sw2, 72, 386, 8, 140); css(sw2, { background: 'var(--navy)' }); sw2.dataset.name = '扫描线';
+  set(sw2, 0, { autoAlpha: 0 }); set(sw2, eV, { autoAlpha: 1 }); to(sw2, eV, { x: 890, duration: T('d10b', '收走') + 0.3 - eV, ease: 'none' }); hide(sw2, T('d10b', '收走') + 0.4, { d: 0.2 }); sfx('whoosh', eV, { g: 0.3 });
+  tl.to(row2, { autoAlpha: 0, scaleX: 0.2, transformOrigin: '0 50%', duration: 0.4, ease: 'power2.in' }, T('d10b', '收走')); show(empty, T('d10b', '收走') + 0.35, { y: 6 }); sfx('pop', T('d10b', '收走'));
   const idxs = [['主键树', '2050'], ['姓名树', 'Alice'], ['年龄树', '42']].map(([n, k], i) => {
     const e = h('div', 'tup', B, `${n}：${k} → (${P},${LP})`); px(e, 1040 + 0, 380 + i * 54, 760); return e;
   });
@@ -58,8 +64,13 @@ scene('delete', ({ root, s, c0 }) => {
   const fsmG = glossBox(B, '空闲空间图', '<b>空闲空间图</b>：堆旁边的小文件，记着每页还能放多少', 600, 690, 900);
   show(fsmG, T('d15', '空闲空间图') - 0.1, { y: 10 }); sfx('pop', T('d15', '空闲空间图'), { g: 0.5 });
   // Dave
-  const dv = psqlBox(B, `<span class="p">dave=&gt;</span> <span class="k">INSERT INTO</span> users <span class="k">VALUES</span> (2050, 'Dave', 35)\n         <span class="k">RETURNING</span> ctid;\n<span class="hi"> (${E.dave[0]},${E.dave[1]}) </span>`, 72, 790, 900);
-  css(dv, { fontSize: '23px' }); wipe(dv, T('d16'), { dir: 'l' }); sfx('blip', T('d18', '23'), { g: 0.5 });
+  const td = term(B, 72, 790, 1000, 2, { fs: 23, lh: 34, name: 'Dave 的会话' });
+  td.type(T('d16') - 0.1, `<span class="k">INSERT INTO</span> users <span class="k">VALUES</span> (2050, 'Dave', 35) <span class="k">RETURNING</span> ctid;`, 'dave=&gt;', 60);
+  td.print(T('d18', '23'), `<span class="hi"> (${E.dave[0]},${E.dave[1]}) </span>`); sfx('blip', T('d18', '23'), { g: 0.5 });
+  // 插入前先问空闲空间图：哪页放得下 → 第 23 页
+  fly(B, 'Dave：哪页放得下？', [500, 800], [900, 590], T('d17', '空闲空间图') - 0.4, { cls: 'navy', fs: 24, d: 0.55, hold: 0.4 });
+  const fsmHit = fsm.children[1]; to(fsmHit, T('d17', '放得下'), { backgroundColor: '#dbe8f3', duration: 0.25 });
+  fly(B, 'Dave', [900, 590], [600, 430], T('d18') - 0.2, { cls: 'navy', fs: 24, d: 0.5 });
   hide(fsmG, T('d16') - 0.1, { d: 0.25 });
   const drow = h('div', 'tup new', pg2, `第 ${E.dave[1]} 项　2050  Dave  35`); px(drow, 20, 50, 850);
   slide(drow, T('d18', '26'), { y: -30 }); hide(empty, T('d18', '26'), { d: 0.2 }); sfx('thud', T('d18', '26'), { g: 0.6 });
@@ -75,8 +86,9 @@ scene('delete', ({ root, s, c0 }) => {
   const lpd = h('div', 'tup ghost', pg3, `第 ${LP} 项：只剩指针，标为已死`); px(lpd, 20, 40, 850);
   const fr3 = capt(C, `空隙 <b>${U.freeBefore}</b> 字节`, 40, 120); pg3.appendChild(fr3); px(fr3, 20, 120);
   wipe(pg3, T('d22') + 0.1, { dir: 'l' }); show(pg3l, T('d22') + 0.1); show(oldv, T('d22') + 0.2, { y: 6 }); show(fr3, T('d22') + 0.3);
-  const reader = psqlBox(C, `<span class="p">postgres=#</span> <span class="k">SELECT</span> … <span class="k">WHERE</span> id = 2050;`, 1040, 260, 800); css(reader, { fontSize: '23px' });
-  show(reader, T('d24', '查询'), { x: 20 }); sfx('blip', T('d24', '查询'), { g: 0.4, p: 0.4 });
+  const trd = term(C, 1040, 260, 800, 1, { fs: 23, lh: 34, name: '一次查询' });
+  trd.type(T('d24', '查询') - 0.3, '<span class="k">SELECT</span> … <span class="k">WHERE</span> id = 2050;', 'postgres=#', 50);
+  fly(C, '读到第 23 页', [1100, 320], [500, 300], T('d24', '第 23 页') - 0.2, { cls: 'navy', fs: 24, d: 0.6, hold: 0.3 });
   const tp = T('d24b', '清掉');
   hide(oldv, tp, { d: 0.3 }); show(lpd, tp + 0.25, { y: 6 }); sfx('pop', tp);
   keyed(fr3).at(T('d24b', '160'), { html: `空隙 <b>${U.afterRead.free}</b> 字节` }); sfx('tick', T('d24b', '160'));
