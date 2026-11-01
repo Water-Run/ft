@@ -1,168 +1,180 @@
 {
   "schema": 2,
-  "version": "2026-10-26.1",
+  "version": "2026-11-01.1",
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:08 提出「设备那么多，靠什么找」，0:09 答「靠地址」；各段依次回答地址长什么样、怎样分网络、怎样送、两种特别的地址、为什么不够；1:27–1:31 收回「先看网络，再交给下一站」。按文案与 shots/sheets/zh-cue_01–03（每句说完）、zh-trans_01（换场与片尾）、zh-mid_01（动画中途）逐帧看过"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "一个例子贯穿：你的电脑 192.168.1.10/24 → 203.0.113.80；开场找设备、位视图、/24 比较、逐跳路由都用这一对地址（shots/sheets/zh-cue_01–03（每句说完）、zh-trans_01（换场与片尾）、zh-mid_01（动画中途）逐帧看过）"
     },
     "F03": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "IP、IPv4、/24、私有地址、IPv6 在第一次出现时都有画面注解（data-gloss 由 scan.js GLOSS 核对通过）；默认网关、网络前缀只作画面标签，旁白用「家里的路由器」「地址分两截」"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js：0:51–0:58 三张路由表各稳定约 2.1 秒（工具下限 4.1–4.9 秒），随数据包一站一站换表，选中的一行反白；文字读完需要更久，旁白节奏不允许每站停 4 秒。其余文字段（含 0–255 注解延长到约 10 秒、「在别的网络」结论框留到下一场）已过下限；移动中的数据包标签不计",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "运动都在解释关系：数据包从电脑飞向地址对上的设备、同网直送与交给路由器、逐跳、127.0.0.1 掉头、经路由器改写「发自」、最后 5 块依次填满（shots/sheets/zh-cue_01–03（每句说完）、zh-trans_01（换场与片尾）、zh-mid_01（动画中途）逐帧看过）"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "只看了 audio.js 的数值自检：配乐在旁白下约 −34 dB、旁白 −21 dB、无削波；配乐与音效的听感、是否压住旁白没有人耳试听",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "本片没有真实终端或界面截图；地址全部是文档示例地址或私有地址，实验只做本机环回",
       "evidence": ""
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "在封装后的 out/ipv4-zh-1080p60.mp4（第二次正式渲染）上测：时长 100.000 s，1920×1080，h264 60 fps + aac，12.4 MB，响度 −15.8 LUFS（ffmpeg ebur128），freezedetect（去掉字幕带，−52 dB，3 s）无静止段；与 README「交付」所记一致"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "本片不引用观众评论或反馈作证据；事实只来自 research/FACTS.md 的原始出处",
       "evidence": ""
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "不依赖其他集：从「打开网站」讲起，IP、IPv4 都在片中起名并解释"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "英文名称都给中文：Internet Protocol（互联网协议）、IANA（全球统一管理）、localhost（本机的名字）；RFC 791 首页原文作画面材料，旁边有中文的「第 4 版 · 1981 年 9 月」"
     },
     "F12": {
-      "rev": 2,
-      "result": "pending",
-      "note": "",
+      "rev": 3,
+      "result": "open",
+      "note": "asr.js 回听：19 句与文稿一致，差异为同音字（两截/两节、公网/工网、一站站/一战战）；「斜杠」被转成「斜纲」、「池」被转成「吃」，可能只是识别的声调误差，未经人耳确认",
       "evidence": ""
     },
     "F13": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "IPv4 先交代是什么（按地址送数据的规则）与来历（1981 年第 4 版、RFC 791，一直用到今天）；阿帕网按策划者意见删去"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾名单 1:32.5–1:40 无旁白（cue z1 静默）；文案里没有制作指令"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "旁白与画面没有制作者口吻的自我说明"
     },
     "F16": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自九十年代电脑与 IPv4 自己的材料：四格 IP 地址框、RFC 791 首页、IANA 的 256 块登记表；策划者选定的 B 方向（2026-11-01「风格B」）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 3 轮审片页放了 5 个音色的试听，策划者选定 03 云健（zh-CN-YunjianNeural）后才合成全片；语气未经制作方人耳确认"
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每段一个主画面：网络窗口（找设备）、位视图（地址与 /24）、网络路径（逐跳）、本机与内网公网（特殊地址）、地址空间与 IPv6（不够用）"
     },
     "F19": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh-trans_01、zh-mid_01 抽查换场外框与动画中途；中途帧里只有飞行中的数据包短暂压在别的设备上"
     },
     "F20": {
-      "rev": 2,
-      "result": "pending",
+      "rev": 3,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每个窗口与图形都对应一段解释；装饰性的只有窗口标题栏的关闭钮（九十年代窗口的身份标识）"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "配色、部件与配乐为本片重做：九十年代桌面；配乐按策划者选的「CRT 终端」小样重写为 100 秒；check.js 的雷同提示已消失"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面补了旁白没说的：0–255、默认网关、localhost、10.x 与 172.16–31.x、每块约 1678 万个、文档示例地址说明"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "讲机制的段落都是过程动画：逐位打出 32 位、按读音填地址框、24 位逐个描框计数、逐跳换表、改写「发自」、5 块依次填满、128 位一行行长出"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "镜头全片不动（窗口在原地开合），正在讲的内容始终完整在画内；scan.js 的 CUT、ZOOM 无报告"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "讲解对象带着真实内容在场：位视图一开始就是 192.168.1.10 的真实比特，路由器、地址、登记表都是实际数据；画面上的字不复述字幕"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方三轮主动改稿：按云健实测删去三句、压短开头与路由句；确认后只改停顿与定点"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方无法连续播放观看视频：以每句说完、换场、动画中途三组总览图逐帧审查，并以 scan.js、readable.js、preview.js 的像素静止检查补充；连续观看与听感须由策划者确认",
       "evidence": ""
+    },
+    "F28": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "每个新概念先问题、再例子、后起名：「靠什么找？靠地址」之后才说「这套规则叫 IP」；「地址分两截」在三行地址上演示后才给 /24；「要共用」接住上一句再讲 43 亿"
+    },
+    "F29": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "地址与网络两段共用同一版面，换场不动不闪；结论框从「网络与设备」带进「一站站送」；127.0.0.1 一段的本机窗口收窄后留在左边，内网窗口在右边打开；地址总数窗口打开地址空间、提示框再打开 IPv6"
     }
   },
   "history": []

@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
+      "status": "approved",
       "content_sha256": "2db510f6c3a9964605c2801fbba5cf0a5bd8675258b755dc18127d594a414f75",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-11-01T11:58:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-01 第 3 稿"
     }
   }
 }

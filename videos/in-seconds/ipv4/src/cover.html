@@ -6,74 +6,70 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 系列起点的封面版式，文字与纸色一侧的读数换成本集的；做完删掉这一行。
-     与正片同一套颜色与字体，单独排版：墨色一侧是主题词、秒数与片名，纸色一侧是取自正片的一个真实读数。
-     4:3 是重新排布（上墨下纸），不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
-  :root { --ink: #0c0d0f; --paper: #f2efe8; --ac: #ff4a1c; }
+     与正片同一套「九十年代桌面」：青色桌面上一个「关于 IPv4」窗口——点阵大字 IPv4、醒目的 100 秒、正片里的四格地址框与这个地址的 32 位。
+     4:3 是重新排布，不是裁切。底部约 15% 不放文字：投稿平台会在那里叠时长与标题。 */
+  @font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
+  :root { --teal: #008080; --silver: #C0C0C0; --white: #FFFFFF; --dgray: #808080; --black: #000000; --navy: #000080; }
   html, body, #stage { width: var(--W); height: var(--H); }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { background: var(--ink); color: var(--paper); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  #stage { background: var(--teal); overflow: hidden; font-family: "Sans SC"; }
   .abs { position: absolute; white-space: nowrap; }
-  .paper { background: var(--paper); }
-  .big { font: 900 440px "Inter"; letter-spacing: -.04em; line-height: 1; }
-  .tag { background: var(--ac); color: var(--ink); display: flex; align-items: baseline; padding: 6px 34px 16px; }
-  .tag b { font: 800 170px "Mono"; letter-spacing: -.03em; line-height: 1; }
-  .tag i { font: 900 96px "Inter", "Sans SC"; font-style: normal; margin-left: 18px; line-height: 1; }
-  .ttl { font: 900 76px "Inter", "Sans SC"; line-height: 1.16; letter-spacing: -.01em; }
-  .en .ttl { font-size: 80px; }
-  .kick { font: 700 40px "Inter", "Sans SC"; color: var(--ink); }
-  .code { font: 800 150px "Mono"; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
-  svg { position: absolute; overflow: visible; }
-  /* 16:9：左墨右纸 */
-  .r169 .paper { left: 1090px; top: 0; width: 830px; height: 1080px; }
-  .r169 .big { left: 84px; top: 52px; }
-  .r169 .tag { left: 100px; top: 492px; }
-  .r169 .ttl { left: 100px; top: 722px; }
-  .r169 .kick { left: 1150px; top: 64px; }
-  .r169 .code { left: 1212px; top: 716px; }
-  /* 4:3：上墨下纸 */
-  .r43 .paper { left: 0; top: 770px; width: 1600px; height: 430px; }
-  .r43 .big { left: 66px; top: 60px; font-size: 470px; }
-  .r43 .tag { left: 1090px; top: 120px; }
-  .r43 .tag b { font-size: 150px; }
-  .r43 .tag i { font-size: 84px; }
-  .r43 .ttl { left: 84px; top: 548px; font-size: 80px; }
-  .r43 .kick { left: 1090px; top: 388px; color: var(--paper); }
-  .r43 .code { left: 80px; top: 824px; font-size: 168px; }
+  .win { position: absolute; border: 5px solid; border-color: var(--white) var(--black) var(--black) var(--white); background: var(--silver); }
+  .win::after { content: ""; position: absolute; inset: 0; border: 4px solid; border-color: var(--silver) var(--dgray) var(--dgray) var(--silver); pointer-events: none; }
+  .tb { position: absolute; left: 9px; right: 9px; top: 9px; height: 76px; background: var(--navy); color: var(--white); font: 700 46px/76px "Sans SC"; padding-left: 24px; }
+  .x { position: absolute; right: 12px; top: 10px; width: 60px; height: 54px; background: var(--silver); border: 4px solid; border-color: var(--white) var(--black) var(--black) var(--white); color: var(--black); font: 700 40px/44px "Inter"; text-align: center; }
+  .ip { font: 400 440px/1 "Pixel"; color: var(--navy); }
+  .num { font: 400 360px/1 "Pixel"; color: var(--navy); }
+  .su { font: 900 140px/1 "Sans SC"; color: var(--black); }
+  .box { display: flex; align-items: center; gap: 8px; }
+  .box span.o { width: 156px; height: 104px; background: var(--white); border: 5px solid; border-color: var(--dgray) var(--white) var(--white) var(--dgray); font: 500 72px/94px "Inter"; text-align: center; }
+  .box span.d { font: 700 72px/1 "Inter"; }
+  .bits { display: flex; gap: 6px; }
+  .bits i { width: 36px; height: 52px; border: 4px solid; border-color: var(--dgray) var(--white) var(--white) var(--dgray); background: var(--white); }
+  .bits i.on { background: var(--navy); border-color: var(--navy); }
+  .bits i.g { margin-left: 20px; }
+  /* 16:9 */
+  .r169 .win { left: 60px; top: 50px; width: 1800px; height: 846px; }
+  .r169 .ip { left: 110px; top: 120px; }
+  .r169 .num { left: 920px; top: 150px; }
+  .r169 .su { left: 1360px; top: 300px; }
+  .r169 .box { left: 116px; top: 540px; }
+  .r169 .sub { left: 980px; top: 556px; font: 700 64px/1.3 "Sans SC"; color: var(--black); }
+  .r169 .bits { left: 116px; top: 730px; }
+  /* 4:3 */
+  .r43 .win { left: 50px; top: 50px; width: 1500px; height: 960px; }
+  .r43 .ip { left: 100px; top: 120px; font-size: 420px; }
+  .r43 .num { left: 100px; top: 480px; font-size: 300px; }
+  .r43 .su { left: 480px; top: 610px; font-size: 130px; }
+  .r43 .box { left: 106px; top: 790px; }
+  .r43 .bits { display: none; }
+  .r43 .sub { display: none; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="abs paper"></div>
-  <div class="abs big"></div>
-  <div class="abs tag"><b></b><i></i></div>
-  <div class="abs ttl"></div>
-  <div class="abs kick"></div>
-  <div class="abs code"></div>
+  <div class="win"><div class="tb"></div><div class="x">×</div></div>
+  <div class="abs ip">IPv4</div>
+  <div class="abs num">100</div>
+  <div class="abs su"></div>
+  <div class="abs box"></div>
+  <div class="abs bits"></div>
+  <div class="abs sub"></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
-  const TEXT = {
-    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
-    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
-  }[lang];
-  document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
-  document.querySelector('.tag i').textContent = TEXT.unit;
-  document.querySelector('.ttl').innerHTML = TEXT.title;
-  document.querySelector('.kick').textContent = TEXT.kick;
-  // 纸色一侧的图形。首集是 30 秒表盘（指针停在第 7 秒，走过的刻度是朱红）；换成本集仪表的静态样子
-  const NS = 'http://www.w3.org/2000/svg', INK = '#0c0d0f', AC = '#ff4a1c';
-  const [cx, cy, r] = wide ? [1505, 390, 262] : [1330, 986, 166], sec = 7;
-  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 10); s.setAttribute('height', 10); s.style.left = cx + 'px'; s.style.top = cy + 'px';
-  const line = (x1, y1, x2, y2, c, w) => { const e = document.createElementNS(NS, 'line'); for (const [k, v] of Object.entries({ x1, y1, x2, y2, stroke: c, 'stroke-width': w })) e.setAttribute(k, v); s.appendChild(e); };
-  for (let i = 0; i < 30; i++) { const a = i * Math.PI / 15, big = i % 5 === 0, r0 = r * (big ? 0.8 : 0.89); line(r0 * Math.sin(a), -r0 * Math.cos(a), r * Math.sin(a), -r * Math.cos(a), i >= 1 && i <= sec ? AC : INK, big ? r * 0.04 : r * 0.022); }
-  const a = sec * Math.PI / 15; line(-0.2 * r * Math.sin(a), 0.2 * r * Math.cos(a), 1.08 * r * Math.sin(a), -1.08 * r * Math.cos(a), AC, r * 0.034);
-  const hub = document.createElementNS(NS, 'rect'); for (const [k, v] of Object.entries({ x: -r * 0.05, y: -r * 0.05, width: r * 0.1, height: r * 0.1, fill: AC })) hub.setAttribute(k, v); s.appendChild(hub);
-  document.getElementById('stage').appendChild(s);
+  const TEXT = { zh: { tb: '关于 IPv4', su: '秒速通', sub: '互联网协议<br>第 4 版 · 1981' }, en: { tb: 'About IPv4', su: 'seconds', sub: 'Internet Protocol<br>version 4 · 1981' } }[lang] || { tb: '关于 IPv4', su: '秒速通', sub: '' };
+  document.querySelector('.tb').textContent = TEXT.tb;
+  document.querySelector('.su').textContent = TEXT.su;
+  document.querySelector('.sub').innerHTML = TEXT.sub;
+  const oct = [192, 168, 1, 10];
+  document.querySelector('.box').innerHTML = oct.map((v) => `<span class="o">${v}</span>`).join('<span class="d">.</span>');
+  const bits = oct.map((v) => v.toString(2).padStart(8, '0')).join('');
+  document.querySelector('.bits').innerHTML = [...bits].map((b, i) => `<i class="${b === '1' ? 'on' : ''}${i && i % 8 === 0 ? ' g' : ''}"></i>`).join('');
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('800 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('400 40px "Pixel"', sample), document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('500 40px "Inter"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

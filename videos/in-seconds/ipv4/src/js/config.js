@@ -1,71 +1,82 @@
-// 「XX 秒速通」系列的引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角留给本集的仪表）、换场。
-// TODO: 系列起点。右上角的仪表（window.HUD.right）与换场方式按本集的题目来做，做完删掉这一行；做法对照首集 two-factor-auth 的 config.js。
-document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
-window.PALETTE = { ink: '#0c0d0f', paper: '#f2efe8', ac: '#ff4a1c', dim: '#8a8782', dimp: '#6b6964' };
+// 本片的引擎配置：字体、颜色、节拍网格、常驻元素与换场。视觉系统见 css/style.css 开头的说明。
+// 常驻元素按系列约定：底部字幕带上沿是全片秒尺（这里是任务栏上的 100 格分段进度条，一秒一格），左上剩余秒数（最后 5 秒逐秒跳动），
+// 右上是本集的「仪表」：一个四格 IP 地址框，显示此刻正在讲的那个地址。
+document.documentElement.classList.add(LANG);
+window.PALETTE = { teal: '#008080', silver: '#C0C0C0', white: '#FFFFFF', dgray: '#808080', black: '#000000', navy: '#000080' };
 const C = window.PALETTE;
-const VH = 968;                                           // 字幕带以上的画幅高度；镜头以这块区域为画幅：makeCamera(world, 1920, VH)
-// 节拍网格：配乐 120 拍/分，一秒两拍。画面上的重音吸附到八分音符（0.25 秒）上，与配乐同拍
+const VH = 968;
+// 节拍网格：配乐 120 拍/分（tools/music.py），画面重音吸附到 0.25 秒
 const BEAT = 0.5;
-const Q = (t, g = 0.25) => Math.round(t / g + 1e-6) * g;          // 最近的格点
-const Qf = (t, g = 0.25) => Math.floor(t / g + 1e-6) * g;         // 不晚于 t 的格点：动作宁早勿晚
-// 常驻元素的字色跟着它底下的底色走：场景登记「某一侧在某段时间里压在纸色（'paper'）或朱红（'ac'）上」
-const HUDG = { L: [], R: [] };
-const hudGround = (side, t0, t1, g) => { HUDG[side].push([t0, t1, g]); };
-const WIPE = 0.5;                                         // 换场用时：一拍
+const Q = (t, g = 0.25) => Math.round(t / g + 1e-6) * g;
+const Qf = (t, g = 0.25) => Math.floor(t / g + 1e-6) * g;
+// 右上角地址框的内容表：场景登记「从某刻起显示某个标签与四段数字」；四段为空数组时清空
+const GAUGE = [];
+const gauge = (t, label, octs) => { GAUGE.push([t, label, octs]); };
+// 换场时的窗口放大外框：场景登记「某刻从哪个矩形放大到哪个矩形」，由常驻层画
+const ZOOMS = [];
+const zoomFx = (t, from, to, d = 0.3) => { ZOOMS.push({ t, from, to, d }); };
 
 window.ENGINE = {
   fonts: [['500 20px "Sans SC"', '字A'], ['700 20px "Sans SC"', '字A'], ['900 20px "Sans SC"', '字A'],
-    ['500 20px "Inter"', 'Aa0'], ['700 20px "Inter"', 'Aa0'], ['800 20px "Inter"', 'Aa0'], ['900 20px "Inter"', 'Aa0'],
-    ['500 20px "Mono"', 'A0'], ['700 20px "Mono"', 'A0'], ['800 20px "Mono"', 'A0']],
+    ['500 20px "Inter"', 'Aa0'], ['700 20px "Inter"', 'Aa0'], ['400 20px "Pixel"', 'A0']],
   sceneFade: false,
   chrome() {
     const hud = document.getElementById('hud');
-    // ── 字幕带与秒尺：一秒一格，走过的变成朱红；每 30 秒一道长刻度 ──
-    const band = h('div', 'band', hud);
-    const rs = svg('svg', { width: 1920, height: 40, viewBox: '0 0 1920 40' }, band);
-    const X = (s) => 8 + s * (1904 / TOTAL), ticks = [];
-    for (let i = 0; i <= TOTAL; i++) {
-      const big = i % 30 === 0, mid = i % 10 === 0, w = big ? 4 : 2;
-      ticks.push(svg('rect', { x: X(i) - w / 2, y: 0, width: w, height: big ? 24 : mid ? 15 : 8, fill: C.dim }, rs));
-    }
-    const head = svg('path', { d: 'M-7,34 L0,24 L7,34 Z', fill: C.ac }, rs);
-    let lastS = -2;
+    // ── 任务栏与分格秒尺：一秒一格，走过的变藏青 ──
+    const task = h('div', 'task', hud);
+    const ruler = h('div', 'ruler sunken', task);
+    const segs = [];
+    for (let i = 0; i < TOTAL; i++) segs.push(h('i', '', ruler));
+    let lastS = -1;
     F((t) => {
-      const s = Math.floor(t + 1e-6);
-      if (s !== lastS) { for (let i = 0; i <= TOTAL; i++) ticks[i].setAttribute('fill', i <= s ? C.ac : C.dim); lastS = s; }
-      head.setAttribute('transform', `translate(${X(clamp(t, 0, TOTAL)).toFixed(2)},0)`);
+      const s = clamp(Math.floor(t + 1e-6) + 1, 0, TOTAL);
+      if (s !== lastS) { segs.forEach((e, i) => { e.className = i < s ? 'done' : ''; }); lastS = s; }
     });
     // ── 左上：剩余秒数；最后五秒逐秒跳一下 ──
-    const left = h('div', 'hud-l', hud, `<span class="n"></span><span class="u">${tr('秒', 's')}</span>`), num = left.firstChild;
+    const left = h('div', 'hud-l sunken', hud, `<span class="n"></span><span class="u">${tr('秒', 's')}</span>`), num = left.firstChild;
     let lastN = null;
     F((t) => { const v = String(Math.max(0, Math.ceil(TOTAL - t - 1e-6))).padStart(3, '0'); if (v !== lastN) { num.textContent = v; lastN = v; } });
     for (let sec = TOTAL - 5; sec < TOTAL; sec++) {
-      fromTo(left, sec, { scale: 1 }, { keyframes: [{ scale: 1.28, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
+      fromTo(left, sec, { scale: 1 }, { keyframes: [{ scale: 1.2, duration: 0.1, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 50%', immediateRender: false });
       sfx('tick', sec, { g: 0.8, p: -0.6 });
     }
-    // ── 右上：本集的仪表放进这个容器（宽 300、高 72，右缘离画面 60px）──
-    const right = h('div', 'hud-r', hud);
-    window.HUD = { left, right };
-    const groundAt = (side, t) => { let g = 'ink'; for (const [a, b, v] of HUDG[side]) if (t >= a && t < b) g = v; return g; };
-    let gl = null, gr = null;
+    // ── 右上：四格 IP 地址框 ──
+    const right = h('div', 'hud-r raised', hud);
+    const lab = h('span', 'lab', right, '');
+    const octs = [0, 1, 2, 3].map((i) => { const o = h('span', 'oct sunken', right, ''); if (i < 3) h('span', 'dot', right, '.'); return o; });
+    let lastG = null;
     F((t) => {
-      const a = groundAt('L', t), b = groundAt('R', t);
-      if (a !== gl) { left.style.color = a === 'ink' ? C.paper : C.ink; gl = a; }
-      if (b !== gr) { right.style.color = b === 'ink' ? C.paper : C.ink; gr = b; }
+      let g = null; for (const e of GAUGE) if (t >= e[0]) g = e;
+      const key = g ? g[1] + '|' + g[2].join('.') : '';
+      if (key !== lastG) { lab.textContent = g ? g[1] : tr('地址', 'IP'); octs.forEach((o, i) => { o.textContent = g && g[2][i] != null ? g[2][i] : ''; }); lastG = key; }
+    });
+    window.HUD = { left, right };
+    // ── 窗口放大外框（两道，后一道晚 0.06 秒）──
+    const zl = h('div', 'abs', hud); px(zl, 0, 0, 1920, 1080);
+    const z1 = h('div', 'zoom', zl), z2 = h('div', 'zoom', zl);
+    const put = (el, z, k) => {
+      const a = z.from, b = z.to, e = ease.io3(clamp(k));
+      px(el, lerp(a[0], b[0], e), lerp(a[1], b[1], e), lerp(a[2], b[2], e), lerp(a[3], b[3], e));
+    };
+    F((t) => {
+      let on1 = false, on2 = false;
+      for (const z of ZOOMS) {
+        if (t >= z.t && t < z.t + z.d) { put(z1, z, (t - z.t) / z.d); on1 = true; }
+        if (t >= z.t + 0.06 && t < z.t + z.d + 0.06) { put(z2, z, (t - z.t - 0.06) / z.d); on2 = true; }
+      }
+      z1.style.display = on1 ? '' : 'none'; z2.style.display = on2 ? '' : 'none';
     });
   },
   after() {
-    // 场景的显隐与换场：缺省是新场景由左向右直刷，一拍刷完。本集有自己的换场母题时改这里。
-    const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
+    // 换场：新场景在「本场开始 + 0.3 秒」切进来（之前由放大外框从上一场的某个窗口放大到新场景的主窗口），旧场景留到那一刻
+    const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id));
+    const IN = 0.3;
     F((t) => {
       L.scenes.forEach((s, i) => {
-        const nx = L.scenes[i + 1], root = roots[i];
-        const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + WIPE);
-        root.style.display = vis ? '' : 'none';
-        const clip = vis && i > 0 && t < s.start + WIPE ? `inset(0px ${(1920 * (1 - ease.io3(clamp((t - s.start) / WIPE)))).toFixed(1)}px 0px 0px)` : 'none';
-        if (clip !== lastClip[i]) { root.style.clipPath = clip; lastClip[i] = clip; }
+        const nx = L.scenes[i + 1];
+        const a = i === 0 ? -1 : s.start + IN, b = nx ? nx.start + IN : 1e9;
+        roots[i].style.display = t >= a - 1e-6 && t < b ? '' : 'none';
       });
     });
-    for (const s of L.scenes.slice(1)) sfx('whoosh', s.start - 0.3, { g: 0.7 });
   },
 };
