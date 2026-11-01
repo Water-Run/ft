@@ -8,164 +8,105 @@
 <style>
   body, #stage { background: #ffffff; }
   svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-  .k { font-family: "Mono"; }
-  .zh { font-family: "Inter", "Sans SC"; }
 </style>
 </head>
 <body>
 <div id="stage"></div>
 <script src="../js/data.js"></script>
+<script src="docpage.js"></script>
 <script>
-// 封面候选（审片页里选一张，选定后落到 src/cover.html）：?c=1 一个文件、?c=2 两棵树、?c=3 一字节不差。16:9，1920×1080 设计、出图时放大。
-// 系列要求（数据库引擎系列说明「封面」）：有质感、立体、契合本集；集数标签、问句、大标题、一幅讲清要点的图、实测数据；
-// 立体不压字；主标题约为画面高度的五分之一；底部 15% 不放字。配色与字形取自本集正片（第 5 稿起：像一页 sqlite.org 文档）。
-// 立体用等轴投影手算（纯函数，无随机数）；纸面质感用固定种子的 feTurbulence。数字全部出自 research/FACTS.md：J01、I01、E05、J05。
+// 封面候选（审片页里选一张，选定后落到 src/cover.html）：?c=1 一个文件、?c=2 立体的铁路图、?c=3 热日志。16:9，1920×1080 设计、出图时放大。
+// 系列要求（数据库引擎系列说明「封面」）：有质感、立体、契合本集；集数标签、问句、大标题、一幅讲清要点的图、实测数据；立体不压字；
+// 主标题约为画面高度的五分之一；底部 15% 不放字。本集的视觉是「像一页 sqlite.org 文档」：封面也是一页文档——页头、菜单、黑色正文、深青标题、
+// 代码块里的实测数据；立体做在文档的「纸」上（纸堆、立起来的铁路图方框），线是黑色细线，强调只用文档的悬停麦色。数字出自 FACTS：J01、I01、E05、J05。
 const D = window.DATA, CV = +(new URLSearchParams(location.search).get('c') || 1);
-const C = { ink: '#1f1f1f', teal: '#044a64', blue: '#0482c4', visited: '#734559', wheat: '#f5deb3', codeLine: '#80a796', dim: '#5f6b70', red: '#aa3333', paper: '#ffffff' };
-const NS = 'http://www.w3.org/2000/svg';
-const svg = document.createElementNS(NS, 'svg'); document.getElementById('stage').appendChild(svg);
-function el(tag, a, p = svg) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
-function text(x, y, s, a = {}, p = svg) { const t = el('text', { x, y, fill: C.ink, ...a }, p); t.textContent = s; return t; }
-const shade = (hex, k) => { const n = parseInt(hex.slice(1), 16), f = (v) => Math.max(0, Math.min(255, Math.round(v * k))); return '#' + [n >> 16, (n >> 8) & 255, n & 255].map((v) => f(v).toString(16).padStart(2, '0')).join(''); };
+const { C, el, text, rich, chrome, codeblock, button, todo, rrLine, arrowHead, iso, poly, paperStack } = DOC;
+DOC.init(document.getElementById('stage'));
+const P = (x, y, z) => iso.P(x, y, z);
+const pts = (a) => a.map((q) => q.join(',')).join(' ');
 
-// 质感：纸纹（固定种子的噪声，极淡）与立体物下面的软影
-const defs = el('defs', {});
-const grain = el('filter', { id: 'grain', x: 0, y: 0, width: '100%', height: '100%' }, defs);
-el('feTurbulence', { type: 'fractalNoise', baseFrequency: 0.9, numOctaves: 2, seed: 7, result: 'n' }, grain);
-el('feColorMatrix', { type: 'matrix', values: '0 0 0 0 0.25  0 0 0 0 0.22  0 0 0 0 0.18  0 0 0 0.09 0' }, grain);
-const soft = el('filter', { id: 'soft', x: '-20%', y: '-20%', width: '140%', height: '140%' }, defs);
-el('feGaussianBlur', { stdDeviation: 18 }, soft);   // lint-ok: 封面按系列约定要立体，立体物下的软影只在封面用
-el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: '#fbfaf7' });
-el('rect', { x: 0, y: 0, width: 1920, height: 1080, filter: 'url(#grain)' });
-
-// 等轴投影：x 向右下、y 向左下、z 向上
-let O = [0, 0], S = 1;
-const P = (x, y, z) => [O[0] + (x - y) * 0.866 * S, O[1] + (x + y) * 0.5 * S - z * S];
-const poly = (pts, a, p = svg) => el('polygon', { points: pts.map((q) => q.join(',')).join(' '), ...a }, p);
-// 长方体：只画看得见的三面（顶、左前 y+d、右前 x+w）
-function cuboid(x, y, z, w, d, h, col, o = {}) {
-  const g = el('g', {}, o.p || svg), st = { stroke: o.stroke || shade(col, 0.6), 'stroke-width': o.sw != null ? o.sw : 1.2, 'stroke-linejoin': 'round' };
-  poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)], { fill: o.left || shade(col, 0.86), ...st }, g);
-  poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)], { fill: o.right || shade(col, 0.72), ...st }, g);
-  poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], { fill: o.top || col, ...st }, g);
-  return g;
+// 左栏：问句（黑色正文）、大标题（深青常规字重，字高约画面高度的五分之一）、副题、代码块里的实测数据
+function left(q1, q2, data) {
+  chrome(0);
+  text(60, 262, q1, { 'font-size': 50 });
+  text(60, 330, q2, { 'font-size': 50 });
+  text(44, 600, 'SQLite', { 'font-size': 280, fill: C.teal, 'letter-spacing': '-6' });
+  text(60, 680, '小而强大　·　一个数据库引擎是如何实现的？', { 'font-size': 34, fill: C.teal });
+  codeblock(60, 720, data, 28);
 }
-// 一叠纸：侧面画出一层层纸边
-function paperStack(x, y, z, w, d, h, layers, o = {}) {
-  const g = cuboid(x, y, z, w, d, h, o.top || '#ffffff', { left: '#f1efe9', right: '#e3e0d8', stroke: '#9a978f', sw: 1.5, p: o.p });
-  for (let i = 1; i < layers; i++) {
-    const zz = z + h * i / layers;
-    el('polyline', { points: [P(x, y + d, zz), P(x + w, y + d, zz), P(x + w, y, zz)].map((q) => q.join(',')).join(' '), fill: 'none', stroke: '#c9c5bb', 'stroke-width': 1 }, g);
-  }
-  return g;
+// 一块有厚度的方框（立起来的铁路图方框 / 抽出来的书签页）：顶、左前、右前三面，黑色细线
+function block(x, y, z, w, d, h, top = '#fff') {
+  const st = { stroke: C.ink, 'stroke-width': 1.8, 'stroke-linejoin': 'round' };
+  poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)], { fill: '#f0f0f0', ...st });
+  poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)], { fill: '#e0e0e0', ...st });
+  poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], { fill: top, ...st });
 }
-function shadow(cx, cy, rx, ry) { el('ellipse', { cx, cy, rx, ry, fill: '#044a64', opacity: 0.16, filter: 'url(#soft)' }); }
-
-// 左栏：文档页头式的集数标签（圆角深青菜单 + 亮蓝当前项）、问句、大标题、实测数据
-function frame(q1, q2, data) {
-  el('rect', { x: 120, y: 72, width: 760, height: 60, rx: 8, fill: C.teal });
-  el('rect', { x: 126, y: 78, width: 150, height: 48, rx: 8, fill: C.blue });
-  text(201, 112, 'PART 4', { class: 'zh', 'font-size': 28, 'font-weight': 600, fill: '#fff', 'text-anchor': 'middle' });
-  text(300, 112, '一个数据库引擎是如何实现的？', { class: 'zh', 'font-size': 28, 'font-weight': 400, fill: '#fff' });
-  text(120, 236, q1, { class: 'zh', 'font-size': 52, 'font-weight': 400, fill: C.ink });
-  text(120, 306, q2, { class: 'zh', 'font-size': 52, 'font-weight': 400, fill: C.ink });
-  text(108, 560, 'SQLite', { class: 'zh', 'font-size': 236, 'font-weight': 500, fill: C.teal, 'letter-spacing': '-4' });
-  el('rect', { x: 120, y: 604, width: 760, height: 2, fill: C.teal });   // 文档的 .xhr
-  text(120, 676, '小而强大', { class: 'zh', 'font-size': 56, 'font-weight': 400, fill: C.teal });
-  data.forEach((s, i) => text(120, 770 + i * 50, s, { class: 'k', 'font-size': 30, fill: C.dim }));
-}
-const fillOf = { u: C.teal, n: C.blue, a: C.codeLine, s: C.visited, t: C.visited, o: '#c9c9c9' };
 
 if (CV === 1) {
-  frame('一个库、一个文件，', '怎样装下一个完整的关系数据库？', ['main.db　553 页 × 1024 字节', '按名字找 Alice：只读了其中 7 页']);
-  // 553 页摆成 24 × 24 的顶面（每页一格，按归属上色），下面是一层层纸；Alice 读到的 7 页从格子里升起来
-  O = [1390, 300]; S = 0.66;
-  const N = 24, c = 26, gp = 4, W = N * (c + gp) + gp, H = 120;
-  shadow(1390, 300 + W * S + 40, 560, 70);
-  paperStack(0, 0, -H, W, W, H, 26);
-  const read = [1, 262, 281, 263, 2, 133, 130], owner = D.file.owner;
-  const cell = (p) => [gp + ((p - 1) % N) * (c + gp), gp + Math.floor((p - 1) / N) * (c + gp)];
-  for (let i = 0; i < N * N; i++) { const [x, y] = cell(i + 1); const col = i < owner.length ? fillOf[owner[i]] : '#f3f3f3'; if (!read.includes(i + 1)) poly([P(x, y, 0), P(x + c, y, 0), P(x + c, y + c, 0), P(x, y + c, 0)], { fill: col, stroke: 'none' }); }
-  // 升起的 7 页：按「先远后近」画，近的压住远的
-  const order = read.slice().sort((a, b) => { const [ax, ay] = cell(a), [bx, by] = cell(b); return (ax + ay) - (bx + by); });
-  for (const p of order) { const [x, y] = cell(p); cuboid(x, y, 0, c, c, 110, p === 263 || p === 130 ? C.blue : C.wheat, { stroke: C.teal, sw: 1.5 }); }
-  // 页号标签：相邻的两页合成一个标签；贴在升起的页上方，白底细框
-  const tags = [[[1, 2], 0], [[262, 263], 0], [[281], 0], [[130], -34], [[133], 30]];
-  for (const [ps, dx] of tags) {
-    const cs = ps.map(cell), x = cs.reduce((a, q) => a + q[0], 0) / cs.length, y = cs.reduce((a, q) => a + q[1], 0) / cs.length, [sx, sy] = P(x + c / 2, y + c / 2, 110);
-    const lab = text(sx + dx, sy - 24, ps.join(' · '), { class: 'k', 'font-size': 26, fill: C.teal, 'text-anchor': 'middle', 'font-weight': 600 });
-    const bb = lab.getBBox(); svg.insertBefore(el('rect', { x: bb.x - 7, y: bb.y - 3, width: bb.width + 14, height: bb.height + 6, rx: 4, fill: '#fff', stroke: C.teal, 'stroke-width': 1.2 }), lab);
-  }
-  text(1390, 300 + W * S + 130, '553 页里，读到的 7 页', { class: 'zh', 'font-size': 32, fill: C.teal, 'text-anchor': 'middle' });
+  left('一个库、一个文件，', '怎样装下一个完整的关系数据库？', ['main.db　553 页 × 1024 字节', '找 Alice 读到的页：1 262 281 263 2 133 130']);
+  // 553 页叠成一摞文档纸（第 1 页在最上面）；读到的 7 页像书签一样从右侧抽出来，页号写在灰色小按钮上
+  iso.set([1330, 560], 0.78);
+  const W = 400, Dp = 300, H = 300;
+  paperStack(0, 0, 0, W, Dp, H, 44);
+  const zOf = (p) => H * (1 - (p - 1) / 553) - 6;
+  const tabs = [[1, 30], [2, 170], [130, 40], [133, 175], [262, 35], [263, 170], [281, 100]];
+  tabs.sort((a, b) => zOf(b[0]) - zOf(a[0]) || a[1] - b[1]);
+  for (const [p, y0] of tabs) block(W, y0, zOf(p), 120, 90, 6, C.wheat);
+  // 页号：书签的高度按页码真实比例，挨得近的几页会挤在一起；页号用细引线引到右侧一列，从上到下排开，写在灰色小按钮上
+  const ends = tabs.map(([p, y0]) => { const [sx, sy] = P(W + 120, y0 + 45, zOf(p) + 6); return { p, sx, sy }; }).sort((a, b) => a.p - b.p);   // 按页码排：第 1 页在最上，和纸堆里的上下次序一致
+  let ly = -1e9;
+  for (const e of ends) { ly = Math.max(e.sy, ly + 46); el('polyline', { points: pts([[e.sx, e.sy], [e.sx + 24, e.sy], [1736, ly]]), fill: 'none', stroke: '#888', 'stroke-width': 1.2 }); button(1744, ly + 10, String(e.p), 26); }
+  rich(1080, 880, ['main.db：553 页叠起来，', ['读到的 7 页'], '抽了出来'], 28);
 }
 
 if (CV === 2) {
-  frame('按名字找 Alice，', '553 页里要读几页？', ['7 页：1 → 262 → 281 → 263', '　　　→ 2 → 133 → 130']);
-  // 两座三层的塔：左姓名索引（根 262 → 中层 14 页里的 281 → 叶层 228 页里的 263），右 users 表（根 2 → 中层 3 页里的 133 → 叶层 256 页里的 130）。
-  // 每层一块楼板，页按格子摆开；路线上的页升起、亮起，蓝线自上而下把三页串起来
-  S = 0.75;
-  const tower = (ox, oy, title, layers) => {
-    O = [ox, oy];
-    const cu = 15, gp = 3, Wp = 16 * (cu + gp) + gp, zs = [0, 170, 340];
-    shadow(ox, oy + Wp * S + 40, 300, 46);
-    const route = [];
-    layers.forEach(([cols, n, hot, lab, hotCol], li) => {
-      const cw = li === 0 ? cu : li === 1 ? 34 : 60, side = cols * (cw + gp) + gp, off = (Wp - side) / 2, z = zs[li];
-      cuboid(off, off, z - 8, side, side, 8, '#ffffff', { left: '#eeece6', right: '#e0ddd5', stroke: '#9a978f', sw: 1.2 });
-      for (let i = 0; i < n; i++) {
-        const x = off + gp + (i % cols) * (cw + gp), y = off + gp + Math.floor(i / cols) * (cw + gp);
-        if (i === hot) continue;
-        poly([P(x, y, z), P(x + cw, y, z), P(x + cw, y + cw, z), P(x, y + cw, z)], { fill: li === 0 ? C.teal : '#ffffff', stroke: C.teal, 'stroke-width': li === 0 ? 0 : 1.2 });
-      }
-      const x = off + gp + (hot % cols) * (cw + gp), y = off + gp + Math.floor(hot / cols) * (cw + gp), h = li === 0 ? 30 : 24;
-      cuboid(x, y, z, cw, cw, h, hotCol, { stroke: C.teal, sw: 1.5 });
-      route.push({ q: P(x + cw / 2, y + cw / 2, z + h), lab });
-    });
-    el('path', { d: 'M' + route.slice().reverse().map((r) => r.q.join(',')).join(' L'), fill: 'none', stroke: C.blue, 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
-    route.forEach(({ q, lab }) => { const t = text(q[0] + 26, q[1] - 10, lab, { class: 'k', 'font-size': 26, 'font-weight': 600, fill: C.teal }); const bb = t.getBBox(); svg.insertBefore(el('rect', { x: bb.x - 7, y: bb.y - 3, width: bb.width + 14, height: bb.height + 6, rx: 4, fill: '#fff', stroke: C.teal, 'stroke-width': 1.2 }), t); });
-    text(ox, oy + Wp * S + 80, title, { class: 'zh', 'font-size': 30, fill: C.teal, 'text-anchor': 'middle' });
-  };
-  // [每行几格, 页数, 路线上的那一格, 标签, 颜色]：叶层 16 列，中层 4 列 / 2 列，根 1 格
-  tower(1230, 480, '姓名索引', [[16, 228, 133, '263', C.blue], [4, 14, 13, '281', C.wheat], [1, 1, 0, '262', C.wheat]]);
-  tower(1640, 480, 'users 表', [[16, 256, 129, '130', C.blue], [2, 3, 1, '133', C.wheat], [1, 1, 0, '2', C.wheat]]);
-  // 第 1 页：文件头，先读它
-  O = [1000, 860]; S = 0.75;
-  cuboid(0, 0, 0, 60, 60, 24, C.visited, { stroke: shade(C.visited, 0.6), sw: 1.5 });
-  text(1060, 876, '先读第 1 页：文件头', { class: 'zh', 'font-size': 26, fill: C.visited });
+  left('按名字找 Alice，', '553 页里要读几页？', ['7 页：1 → 262 → 281 → 263', '　　 → 2 → 133 → 130']);
+  // 立体的铁路图：读页的路线铺在地面上，每一页是一个立起来的方框，页号印在顶面；姓名索引一组、users 表一组（浅灰分组框）
+  iso.set([1040, 330], 0.6);
+  const bw = 120, bd = 90, bh = 46, gap = 64;
+  const seq = [['1', '文件头'], ['262'], ['281'], ['263', 1], ['2'], ['133'], ['130', 1]];
+  const xs = []; let x = 70;
+  seq.forEach((s, i) => { if (i === 1 || i === 4) x += 60; xs.push(x); x += bw + gap; });
+  const end = x - gap + 40, ty = bd / 2;
+  // 分组框（地面上，浅灰）与组名
+  const grp = (i0, i1, name) => { const x0 = xs[i0] - 35, x1 = xs[i1] + bw + 35, y0 = -40, y1 = bd + 40; poly([P(x0, y0, 0), P(x1, y0, 0), P(x1, y1, 0), P(x0, y1, 0)], { fill: 'none', stroke: C.group, 'stroke-width': 2 }); const [lx, ly] = P(x0, y0, 0); text(lx + 8, ly - 12, name, { 'font-size': 24, 'font-style': 'italic', fill: '#888' }); };
+  grp(1, 3, '姓名索引'); grp(4, 6, 'users 表');
+  // 轨道：黑线，段间实心箭头（沿轨道方向）
+  const [s0x, s0y] = P(0, ty, 0); el('ellipse', { cx: s0x, cy: s0y, rx: 9, ry: 6, fill: '#fff', stroke: C.ink, 'stroke-width': 2 });
+  const seg = (a, b) => { const [ax, ay] = P(a, ty, 0), [bx, by] = P(b, ty, 0); rrLine(`M${ax},${ay} L${bx},${by}`, { sw: 2.2 }); const ang = Math.atan2(by - ay, bx - ax), s = 11; el('polygon', { points: pts([[bx, by], [bx - s * 1.5 * Math.cos(ang) + s * 0.7 * Math.sin(ang), by - s * 1.5 * Math.sin(ang) - s * 0.7 * Math.cos(ang)], [bx - s * 1.5 * Math.cos(ang) - s * 0.7 * Math.sin(ang), by - s * 1.5 * Math.sin(ang) + s * 0.7 * Math.cos(ang)]]), fill: C.ink }); };
+  seg(9, xs[0]); for (let i = 0; i < seq.length - 1; i++) seg(xs[i] + bw, xs[i + 1]); seg(xs[seq.length - 1] + bw, end);
+  const [ex, ey] = P(end, ty, 0); el('rect', { x: ex + 2, y: ey - 14, width: 4, height: 28, fill: C.ink }); el('rect', { x: ex + 12, y: ey - 14, width: 4, height: 28, fill: C.ink });
+  // 方框：从远到近画；页号印在顶面中心（正立，好读）
+  seq.forEach(([s, hot], i) => { block(xs[i], 0, 0, bw, bd, bh, hot === 1 ? C.wheat : '#fff'); const [cx, cy] = P(xs[i] + bw / 2, bd / 2, bh); text(cx, cy + 10, s, { 'font-family': 'Mono', 'font-size': 30, 'text-anchor': 'middle', fill: C.ink }); });
+  const [fx, fy] = P(xs[0] + bw / 2, bd, 0); text(fx - 30, fy + 40, '文件头', { 'font-size': 24, fill: C.dim, 'text-anchor': 'middle' });
+  rich(1080, 880, ['首次查询向文件读的页，', ['依次就这 7 页']], 28);
 }
 
 if (CV === 3) {
-  frame('改到一半，进程被强行终止，', '重新打开还对吗？', ['重开后：4096 行，Alice = 42', '整个文件恢复原来的 SHA-256']);
-  // 左：主文件（厚纸堆），有几页改了一半（麦色）；右：回滚日志（薄纸堆），存着这些页原来的样子（紫褐）；重开时从日志抄回去
-  S = 0.7;
-  O = [1250, 330];
-  const W = 420, H = 230;
-  shadow(1300, 330 + W * S + 10, 400, 60);
-  paperStack(0, 0, -H, W, W, H, 30);
-  const g = 14, c = (W - g * 9) / 8;
-  const changed = [[1, 2], [3, 1], [4, 5], [6, 3], [2, 6]];
-  for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) { const hit = changed.some(([a, b]) => a === i && b === j); const x = g + i * (c + g), y = g + j * (c + g); poly([P(x, y, 0), P(x + c, y, 0), P(x + c, y + c, 0), P(x, y + c, 0)], { fill: hit ? C.wheat : C.teal, stroke: hit ? C.red : 'none', 'stroke-width': hit ? 2 : 0 }); }
-  text(1250, 330 + (W + W) * 0.5 * S + 60, 'main.db', { class: 'k', 'font-size': 30, fill: C.teal, 'text-anchor': 'middle' });
-  O = [1660, 520];
-  const JW = 200, JH = 60;
-  shadow(1660, 520 + JW * S + 10, 200, 34);
-  paperStack(0, 0, -JH, JW, JW, JH, 8);
-  const jc = (JW - g * 4) / 3;
-  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { if (i * 3 + j > 5) continue; const x = g + i * (jc + g), y = g + j * (jc + g); poly([P(x, y, 0), P(x + jc, y, 0), P(x + jc, y + jc, 0), P(x, y + jc, 0)], { fill: C.visited }); }
-  text(1660, 520 + JW * S + 92, 'main.db-journal', { class: 'k', 'font-size': 28, fill: C.visited, 'text-anchor': 'middle' });
-  // 重开：从日志抄回原页（亮蓝弧线，箭头落在改了一半的那一格上）
-  O = [1250, 330];
-  const [hx, hy] = P(g + 4 * (c + g) + c / 2, g + 5 * (c + g) + c / 2, 0);
-  const [jx, jy] = (() => { O = [1660, 520]; const q = P(JW / 2, JW / 2, 0); O = [1250, 330]; return q; })();
-  el('path', { d: `M${jx},${jy - 6} C ${jx - 10},${jy - 230} ${hx + 120},${hy - 200} ${hx + 8},${hy - 22}`, fill: 'none', stroke: C.blue, 'stroke-width': 5, 'stroke-linecap': 'round' });
-  el('polygon', { points: `${hx},${hy - 4} ${hx - 10},${hy - 30} ${hx + 18},${hy - 22}`, fill: C.blue });
-  text(1440, 312, '重开：从日志抄回原页', { class: 'zh', 'font-size': 30, fill: C.blue, 'font-weight': 600 });
-  // 强行终止：红色标签，细线指向改了一半的几页
-  const [kx, ky] = P(g + 1 * (c + g) + c / 2, g + 2 * (c + g) + c / 2, 0);
-  el('line', { x1: 1060, y1: 254, x2: kx, y2: ky, stroke: C.red, 'stroke-width': 2.5 });
-  el('rect', { x: 960, y: 200, width: 200, height: 54, rx: 8, fill: C.red });
-  text(1060, 238, '强行终止', { class: 'zh', 'font-size': 30, fill: '#fff', 'text-anchor': 'middle', 'font-weight': 600 });
-  text(1180, 238, '改了一半的页', { class: 'zh', 'font-size': 26, fill: C.red });
+  left('改到一半，进程被强行终止，', '重新打开还对吗？', ['重开后：4096 行，Alice = 42', '整个文件的 SHA-256 与改之前相同']);
+  // 两摞文档纸：主文件（顶面一格一页，改了一半的几页是麦色）与回滚日志（存着这些页原来的样子，浅灰）；重开时沿黑线从日志抄回去
+  iso.set([1290, 420], 0.86);
+  const W = 380, H = 170, n = 6, g = 12, c = (W - g * (n + 1)) / n;
+  paperStack(0, 0, 0, W, W, H, 26);
+  const changed = [[1, 1], [3, 0], [4, 3], [2, 4], [5, 2]], cell = (i, j) => [g + i * (c + g), g + j * (c + g)];
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const hit = changed.some(([a, b]) => a === i && b === j), [x, y] = cell(i, j); poly([P(x, y, H), P(x + c, y, H), P(x + c, y + c, H), P(x, y + c, H)], { fill: hit ? C.wheat : '#fff', stroke: C.ink, 'stroke-width': hit ? 1.6 : 1 }); }
+  const [mx] = P(W / 2, W, 0), [, mb] = P(W, W, 0); text(mx, mb + 44, 'main.db', { 'font-family': 'Mono', 'font-size': 30, 'text-anchor': 'middle' });
+  // 回滚日志
+  iso.set([1700, 650], 0.86);
+  const JW = 170, JH = 54, jc = (JW - g * 4) / 3;
+  paperStack(0, 0, 0, JW, JW, JH, 8);
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { if (i * 3 + j > 4) continue; const x = g + i * (jc + g), y = g + j * (jc + g); poly([P(x, y, JH), P(x + jc, y, JH), P(x + jc, y + jc, JH), P(x, y + jc, JH)], { fill: '#dddddd', stroke: C.ink, 'stroke-width': 1 }); }
+  const [jx, jy] = P(JW / 2, JW / 2, JH), [jlx] = P(JW / 2, JW, 0), [, jb] = P(JW, JW, 0);
+  text(jlx, jb + 42, 'main.db-journal', { 'font-family': 'Mono', 'font-size': 28, 'text-anchor': 'middle' });
+  // 重开：从日志抄回原页（黑色铁路线 + 实心箭头，落在改了一半的那一格），说明画成链接
+  iso.set([1290, 420], 0.86);
+  const [hx, hy] = (() => { const [x, y] = cell(4, 3); return P(x + c / 2, y + c / 2, H); })();
+  rrLine(`M${jx},${jy - 4} C ${jx - 20},${jy - 250} ${hx + 140},${hy - 220} ${hx},${hy - 18}`, { sw: 2.4 }); arrowHead(hx, hy - 14, 'd', 9);
+  rich(1560, 400, [['重开：从日志抄回原页']], 30);
+  // 强行终止：文档 TODO 的红色斜体框，细红线指向改了一半的一页
+  const [kx, ky] = (() => { const [x, y] = cell(1, 1); return P(x + c / 2, y + c / 2, H); })();
+  el('line', { x1: 1080, y1: 236, x2: kx, y2: ky, stroke: C.todo, 'stroke-width': 1.6 });
+  todo(990, 226, '强行终止：改到一半', 28);
 }
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
 </script>

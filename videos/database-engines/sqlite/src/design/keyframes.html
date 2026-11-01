@@ -6,195 +6,118 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  body { background: var(--paper); }
-  #stage { background: var(--paper); }
+  body, #stage { background: #ffffff; }
   svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-  .k { font-family: "Mono"; font-weight: 400; }
-  .zh { font-family: "Inter", "Sans SC"; }
-  .la { font-family: "Inter"; }
 </style>
 </head>
 <body>
 <div id="stage"></div>
 <script src="../js/data.js"></script>
+<script src="docpage.js"></script>
 <script>
-// 关键帧：静态页面，?f=1 标题、?f=2 users 的 B+ 树、?f=3 姓名索引的 B 树与 Alice 的路线、?f=4 叶页 130。
-// 所有页号、子页数、计数取自 data.js（tools/gen_data.py 由实测生成）。
-// 第 5 稿的视觉方向（WaterRun 2026-11-01：「视觉风格也进一步优化, 更契合SQLite官方文档」）：整片像一页 sqlite.org 的文档。
-// 配色与字形取自 sqlite.org/sqlite.css（2026-11-01 读）：白纸；圆角 8px 的深青主菜单 #044a64、白字，子菜单亮蓝 #0482c4；
-// 标题常规字重、深青、带编号；代码块 #eee 底、1px #80a796 边；表头左对齐、下面一条 1px #444；已访问链接 #734559；悬停底色 wheat。
-// 不用标志的羽毛色（系列约定不放标志）。字体：文档用 Verdana，仓库不带，用 Inter + 思源黑体的常规字重。
+// 关键帧：静态页面，?f=1 片头、?f=2 users 的 B+ 树、?f=3 读了哪几页、?f=4 叶页 130。每一帧都像一页 sqlite.org 文档（零件见 docpage.js）。
+// 所有页号、计数、偏移取自 data.js（tools/gen_data.py 由实测生成）；文字依据 FACTS：G15、J01、I01、H03、H05、J02、J03。
 const D = window.DATA, F = +(new URLSearchParams(location.search).get('f') || 1);
-const root = document.getElementById("stage");
-const C = { ink: '#1f1f1f', teal: '#044a64', blue: '#0482c4', visited: '#734559', wheat: '#f5deb3', code: '#eeeeee', codeLine: '#80a796', rule: '#444444', dim: '#5f6b70', paper: '#ffffff', red: '#aa3333' };
-const NS = 'http://www.w3.org/2000/svg';
-const svg = document.createElementNS(NS, 'svg'); root.appendChild(svg);
-function el(tag, a, parent = svg) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; }
-function text(x, y, s, a = {}) { const t = el('text', { x, y, fill: C.ink, ...a }); t.textContent = s; return t; }
-// 压在连线上的标签：先垫一块纸色底，线从标签后面穿过
-function label(x, y, s, a) { const t = text(x, y, s, a), b = t.getBBox(), r = el('rect', { x: b.x - 10, y: b.y - 4, width: b.width + 20, height: b.height + 8, fill: C.paper }); svg.insertBefore(r, t); return t; }
-function behind(e) { svg.insertBefore(e, svg.firstChild); return e; }
-
-// 页头：左上引擎名与版本（系列约定：不放标志，用纯文字），右上官网标语（文档页头的斜体标语）；下面一条圆角深青主菜单，章节就是菜单项，当前章是亮蓝的子菜单色
-const CHAPS = [['01', '一个库'], ['02', '怎么放'], ['03', '怎么找'], ['04', '一页里'], ['05', '回滚日志'], ['06', 'WAL'], ['07', '删'], ['08', '五个问题']];
-function chrome(cur) {
-  text(120, 78, 'SQLite 3.54.1', { class: 'la', 'font-size': 34, 'font-weight': 500, fill: C.teal });
-  text(1800, 78, 'Small. Fast. Reliable. Choose any three.', { class: 'la', 'font-size': 24, 'font-style': 'italic', 'text-anchor': 'end', fill: C.ink });
-  el('rect', { x: 120, y: 100, width: 1680, height: 52, rx: 8, fill: C.teal });
-  const iw = 1680 / CHAPS.length;
-  CHAPS.forEach(([no, t], i) => {
-    const x = 120 + i * iw;
-    if (no === cur) el('rect', { x: x + 4, y: 104, width: iw - 8, height: 44, rx: 8, fill: C.blue });
-    text(x + iw / 2, 135, `${no} ${t}`, { class: 'zh', 'font-size': 24, 'font-weight': no === cur ? 600 : 400, 'text-anchor': 'middle', fill: '#ffffff' });
-  });
-}
-// 文档的标题：常规字重、深青、带编号
-function h1(no, s, sub) {
-  text(120, 248, `${+no}. ${s}`, { class: 'zh', 'font-size': 64, 'font-weight': 400, fill: C.teal });
-  if (sub) text(120, 300, sub, { class: 'zh', 'font-size': 32, 'font-weight': 400, fill: C.ink });
-}
-// 文档的代码块：灰底、细灰绿边、等宽字
-function codeblock(x, y, lines, fs = 30) {
-  const w = Math.max(...lines.map((s) => s.length)) * fs * 0.6 + 48, hh = lines.length * fs * 1.4 + 30;
-  el('rect', { x, y, width: w, height: hh, fill: C.code, stroke: C.codeLine, 'stroke-width': 1.5 });
-  lines.forEach((s, i) => text(x + 24, y + 15 + fs * 1.1 + i * fs * 1.4, s, { class: 'k', 'font-size': fs, fill: C.ink }));
-  return { w, h: hh };
-}
-// 页按归属上色：表用深青，姓名索引亮蓝，年龄索引灰绿，模式表与 notes 用已访问链接的紫褐，长文本续页浅灰
-const fillOf = { u: C.teal, n: C.blue, a: C.codeLine, s: C.visited, t: C.visited, o: '#c9c9c9' };
-
-// 文件：553 页排成 7 行 × 79 列，一页一格，按归属上色
-function fileGrid(x, y, cell, gap) {
-  const cols = 79, owner = D.file.owner;
-  for (let i = 0; i < owner.length; i++) {
-    const cx = x + (i % cols) * (cell + gap), cy = y + Math.floor(i / cols) * (cell + gap);
-    el('rect', { x: cx, y: cy, width: cell, height: cell, fill: fillOf[owner[i]] });
-  }
-  return { h: Math.ceil(owner.length / cols) * (cell + gap) - gap };
-}
+const { C, el, text, rich, chrome, pageTitle, h2, footer, sidebar, button, codeblock, table, rrBox, arrowHead, rrLine, rrStart, rrGroup } = DOC;
+DOC.init(document.getElementById('stage'));
 
 if (F === 1) {
-  chrome('');
-  text(120, 262, 'PART 4　一个数据库引擎是如何实现的？', { class: 'zh', 'font-size': 36, 'font-weight': 400, fill: C.teal });
-  text(112, 440, '小而强大：SQLite', { class: 'zh', 'font-size': 150, 'font-weight': 400, fill: C.teal, 'letter-spacing': '-2' });
-  el('rect', { x: 120, y: 482, width: 1680, height: 2, fill: C.teal });   // 文档里的横线 .xhr：深青 2px
-  text(120, 552, '一个库，一个文件：没有服务进程，程序自己读写磁盘上的数据库文件', { class: 'zh', 'font-size': 34, 'font-weight': 400 });
-  const g = fileGrid(120, 640, 17, 4.27);
-  text(120, 640 + g.h + 52, 'main.db　553 页 × 1024 字节', { class: 'k', 'font-size': 28, fill: C.dim });
-  const legend = [['u', 'users 表'], ['n', '姓名索引'], ['a', '年龄索引'], ['o', '长文本续页']];
-  let lx = 1800;
-  for (const [k, s] of legend.reverse()) { const w = s.length * 28 + 40; lx -= w + 28; el('rect', { x: lx, y: 640 + g.h + 30, width: 24, height: 24, fill: fillOf[k] }); text(lx + 36, 640 + g.h + 52, s, { class: 'zh', 'font-size': 28, 'font-weight': 400 }); }
+  chrome(0);
+  pageTitle('小而强大：SQLite', 290, 96);
+  text(960, 352, 'PART 4　·　一个数据库引擎是如何实现的？', { 'font-size': 34, 'text-anchor': 'middle' });
+  rich(60, 450, ['SQLite 是一个进程内的库，实现了一个', ['自包含'], '、', ['无服务器'], '、', ['零配置'], '、'], 32);
+  rich(60, 498, [['事务型'], '的 SQL 数据库引擎。'], 32);
+  rich(60, 566, ['本片用的版本：', ['3.54.1'], '（2026-10-16）。'], 32);
+  button(680, 566, '一个库'); button(820, 566, '一个文件');
+  DOC.h2(60, 650, '1. 一个文件', 40);
+  text(60, 700, 'main.db：553 页 × 1024 字节；按名字找 Alice，只读了其中 7 页。', { 'font-size': 30 });
+  // 553 页，一页一格：表的页白底、索引的页浅灰、读到的 7 页麦色（文档的悬停色）
+  const own = D.file.owner, read = [1, 262, 281, 263, 2, 133, 130], fill = { u: '#ffffff', n: '#dddddd', a: '#eeeeee', s: '#cfcfcf', t: '#cfcfcf', o: '#f6f6f6' };
+  for (let i = 0; i < own.length; i++) { const x = 60 + (i % 79) * 15, y = 730 + Math.floor(i / 79) * 15, hit = read.includes(i + 1); el('rect', { x, y, width: 13, height: 13, fill: hit ? C.wheat : fill[own[i]], stroke: hit ? C.teal : '#8a8a8a', 'stroke-width': hit ? 2 : 0.7 }); }
+  [['#ffffff', 'users 表'], ['#dddddd', '姓名索引'], ['#eeeeee', '年龄索引'], [C.wheat, '读到的页']].forEach(([f, s], i) => { const x = 60 + i * 230; el('rect', { x, y: 862, width: 22, height: 22, fill: f, stroke: '#8a8a8a', 'stroke-width': 1 }); text(x + 32, 881, s, { 'font-size': 26 }); });
+  sidebar(1340, 400, 520, '本集目录', ['1. 一个库，一个文件', '2. 怎么放', '3. 怎么找', '4. 一页里有什么', '5. 回滚日志', '6. WAL', '7. 删', '8. 五个问题'], 28);
+  footer('本页的数字取自实测：main.db，SQLite 3.54.1');
 }
 
 if (F === 2) {
-  chrome('02');
-  const U = D.users, by = Object.fromEntries(U.nodes.map((n) => [n.p, n]));
-  const r = by[U.root], mids = r.c.map((p) => by[p]);
-  const leaves = mids.flatMap((m) => m.c), X0 = 120, W = 1680, pitch = W / leaves.length;
-  const leafX = Object.fromEntries(leaves.map((p, i) => [p, X0 + i * pitch]));
-  h1('02', 'B+ 树', 'users 表：4096 行全在叶页里');
-  // 根页：K 个分界夹着 K+1 个子页指针
-  const keys = r.s, slot = 44, kw = 136, rw = slot * (keys.length + 1) + kw * keys.length, rx = 960 - rw / 2 + 300, ry = 214, rh = 76;
-  let cx = rx; const ptr = [];
-  for (let i = 0; i <= keys.length; i++) {
-    el('rect', { x: cx, y: ry, width: slot, height: rh, fill: C.paper, stroke: C.ink, 'stroke-width': 2 });
-    el('circle', { cx: cx + slot / 2, cy: ry + rh / 2, r: 6, fill: C.teal }); ptr.push(cx + slot / 2); cx += slot;
-    if (i < keys.length) { el('rect', { x: cx, y: ry, width: kw, height: rh, fill: i === 0 ? C.wheat : C.paper, stroke: C.ink, 'stroke-width': 2 }); text(cx + kw / 2, ry + 52, keys[i], { class: 'k', 'font-size': 40, 'text-anchor': 'middle', fill: C.ink }); cx += kw; }
+  chrome(2);
+  pageTitle('怎么放');
+  h2(60, 320, '2.1. B+ 树');
+  rich(60, 378, ['users 表是一棵 ', ['B+ 树'], '：4096 行全在叶页里；', ['内部页'], '只存分界和子页的页号。'], 32);
+  const U = D.users, by = Object.fromEntries(U.nodes.map((n) => [n.p, n])), r = by[U.root], mids = r.c.map((p) => by[p]);
+  const leaves = mids.flatMap((m) => m.c), X0 = 60, W = 1800, pitch = W / leaves.length, leafX = Object.fromEntries(leaves.map((p, i) => [p, X0 + i * pitch]));
+  // 根页画成一行格子：指针格夹着分界格（文档表格的黑线）
+  const slot = 40, kw = 120, rw = slot * (r.s.length + 1) + kw * r.s.length, rx = 960 - rw / 2, ry = 440, rh = 60, ptr = [];
+  let cx = rx;
+  for (let i = 0; i <= r.s.length; i++) {
+    el('rect', { x: cx, y: ry, width: slot, height: rh, fill: '#fff', stroke: C.ink, 'stroke-width': 2 }); el('circle', { cx: cx + slot / 2, cy: ry + rh / 2, r: 5, fill: C.ink }); ptr.push(cx + slot / 2); cx += slot;
+    if (i < r.s.length) { el('rect', { x: cx, y: ry, width: kw, height: rh, fill: i === 0 ? C.wheat : '#fff', stroke: C.ink, 'stroke-width': 2 }); text(cx + kw / 2, ry + 42, r.s[i], { 'font-family': 'Mono', 'font-size': 32, 'text-anchor': 'middle' }); cx += kw; }
   }
-  text(rx + rw + 24, ry + 50, '根页 2', { class: 'zh', 'font-size': 30, 'font-weight': 400, fill: C.teal });
-  // 第二层：3 个内部页，放在各自叶页范围的中点
-  const my = 470, mh = 64, mw = 250, mp = {};
+  text(rx + rw + 20, ry + 40, '根页 2', { 'font-size': 28 });
+  const my = 610, mh = 56, mw = 220, mp = {};
   mids.forEach((m, i) => {
-    const xs = m.c.map((p) => leafX[p]), mx = (xs[0] + xs[xs.length - 1] + pitch) / 2;
-    mp[m.p] = mx;
-    el('line', { x1: ptr[i], y1: ry + rh / 2, x2: mx, y2: my, stroke: C.teal, 'stroke-width': 2 });
-    el('rect', { x: mx - mw / 2, y: my, width: mw, height: mh, fill: C.paper, stroke: C.ink, 'stroke-width': 2 });
-    text(mx, my + 44, `第 ${m.p} 页`, { class: 'zh', 'font-size': 30, 'font-weight': 400, 'text-anchor': 'middle' });
-    label(mx, my + mh + 40, `${m.n} 个分界 · ${m.c.length} 个子页`, { class: 'zh', 'font-size': 28, 'font-weight': 400, 'text-anchor': 'middle', fill: C.dim });
+    const xs = m.c.map((p) => leafX[p]), mx = (xs[0] + xs[xs.length - 1] + pitch) / 2; mp[m.p] = mx;
+    rrLine(`M${ptr[i]},${ry + rh / 2} L${mx},${my}`, { sw: 1.5 });
+    el('rect', { x: mx - mw / 2, y: my, width: mw, height: mh, fill: '#fff', stroke: C.ink, 'stroke-width': 2 });
+    text(mx, my + 38, `第 ${m.p} 页`, { 'font-size': 28, 'text-anchor': 'middle' });
+    text(mx, my + mh + 34, `${m.n} 个分界 · ${m.c.length} 个子页`, { 'font-size': 24, 'text-anchor': 'middle', fill: C.dim });
   });
-  // 叶层：256 页，实心
-  const ly = 700, lh = 120;
-  for (const m of mids) for (const p of m.c) behind(el('line', { x1: mp[m.p], y1: my + mh, x2: leafX[p] + pitch / 2, y2: ly, stroke: C.teal, 'stroke-opacity': .25, 'stroke-width': 1 }));
-  for (const p of leaves) el('rect', { x: leafX[p] + 1, y: ly, width: pitch - 2.2, height: lh, fill: p === 99 ? C.blue : C.teal });
-  // 根页里的 1560 只是路标：完整的第 1560 行在叶页 99
+  const ly = 780, lh = 90;
+  for (const m of mids) for (const p of m.c) el('line', { x1: mp[m.p], y1: my + mh, x2: leafX[p] + pitch / 2, y2: ly, stroke: '#9a9a9a', 'stroke-width': 0.6 });
+  for (const p of leaves) el('rect', { x: leafX[p] + 0.6, y: ly, width: pitch - 1.2, height: lh, fill: p === 99 ? C.wheat : '#fff', stroke: p === 99 ? C.teal : C.ink, 'stroke-width': p === 99 ? 2 : 0.6 });
   const k0 = rx + slot + kw / 2;
-  behind(el('path', { d: `M${k0} ${ry + rh + 6} C ${k0} ${ry + 260}, ${leafX[99] + pitch / 2} ${ly - 200}, ${leafX[99] + pitch / 2} ${ly - 8}`, fill: 'none', stroke: C.blue, 'stroke-width': 3, 'stroke-dasharray': '10 8' }));
-  label(leafX[99] + pitch / 2 + 18, ly - 24, '叶页 99：第 1560 行', { class: 'zh', 'font-size': 30, 'font-weight': 500, fill: C.teal });
-  text(120, ly + lh + 56, '256 个叶页，都在第三层', { class: 'zh', 'font-size': 36, 'font-weight': 400 });
-  text(1800, ly + lh + 56, '内部页只存分界和子页页号', { class: 'zh', 'font-size': 36, 'font-weight': 400, 'text-anchor': 'end', fill: C.dim });
+  el('path', { d: `M${k0} ${ry + rh} C ${k0} ${ry + 220}, ${leafX[99] + pitch / 2} ${ly - 170}, ${leafX[99] + pitch / 2} ${ly - 6}`, fill: 'none', stroke: C.ink, 'stroke-width': 1.5, 'stroke-dasharray': '8 6' }); arrowHead(leafX[99] + pitch / 2, ly - 4, 'd', 7);
+  rich(leafX[99] + pitch / 2 + 16, ly - 20, [['叶页 99'], '：第 1560 行在这里'], 26);
+  text(60, ly + lh + 44, '256 个叶页，都在第三层。', { 'font-size': 28 });
 }
 
 if (F === 3) {
-  chrome('03');
-  const N = D.names, by = Object.fromEntries(N.nodes.map((n) => [n.p, n]));
-  const r = by[N.root], mids = r.c.map((p) => by[p]);
-  const leaves = mids.flatMap((m) => m.c), X0 = 120, W = 1680, pitch = W / leaves.length;
-  const leafX = Object.fromEntries(leaves.map((p, i) => [p, X0 + i * pitch]));
-  const route = D.route.index;
-  h1('03', 'B 树');
-  text(330, 248, '姓名索引：每一层都存着条目', { class: 'zh', 'font-size': 34, 'font-weight': 400, fill: C.dim });
-  codeblock(120, 274, ["SELECT * FROM users WHERE name = 'Alice';"], 24);   // 文档的代码块：放在根往下的连线上方，不让线穿过
-  // 一个页画成一条横格：每格一个条目（姓名 + 行号），内部页与叶页一样都是真正的条目；读到的页用麦色底、亮蓝边（文档的悬停色）
-  function node(x, y, w, h, n, hot) {
-    el('rect', { x, y, width: w, height: h, fill: hot ? C.wheat : C.paper, stroke: hot ? C.blue : C.ink, 'stroke-width': hot ? 3 : 2 });
-    const cw = w / n; for (let i = 1; i < n; i++) el('line', { x1: x + i * cw, y1: y + 6, x2: x + i * cw, y2: y + h - 6, stroke: C.ink, 'stroke-opacity': .45, 'stroke-width': 1.2 });
-  }
-  const rw = 560, rx = 960 - rw / 2 + 300, ry = 214, rh = 70;
-  node(rx, ry, rw, rh, r.n, true);
-  text(rx + rw + 24, ry + 48, '根页 262 · 13 条', { class: 'zh', 'font-size': 30, 'font-weight': 400, fill: C.teal });
-  const my = 500, mh = 44, mp = {};
-  mids.forEach((m, i) => {
-    const xs = m.c.map((p) => leafX[p]), x1 = xs[0], x2 = xs[xs.length - 1] + pitch, mw = Math.min(104, x2 - x1 - 10), mx = (x1 + x2) / 2;
-    mp[m.p] = mx; const hot = m.p === route[1];
-    el('line', { x1: rx + (i + 0.5) * rw / (r.n + 1), y1: ry + rh, x2: mx, y2: my, stroke: hot ? C.blue : C.teal, 'stroke-width': hot ? 4 : 1.5, 'stroke-opacity': hot ? 1 : .5 });
-    node(mx - mw / 2, my, mw, mh, m.n, hot);
-  });
-  label(mp[route[1]] + 70, my + mh + 40, '第 281 页 · 剩 306 条', { class: 'zh', 'font-size': 28, 'font-weight': 500, fill: C.teal });
-  const ly = 720, lh = 110;
-  for (const m of mids) for (const p of m.c) { const hot = p === route[2]; const ln = el('line', { x1: mp[m.p], y1: my + mh, x2: leafX[p] + pitch / 2, y2: ly, stroke: hot ? C.blue : C.teal, 'stroke-opacity': hot ? 1 : .2, 'stroke-width': hot ? 4 : 1 }); if (!hot) behind(ln); }
-  for (const p of leaves) el('rect', { x: leafX[p] + 1, y: ly, width: pitch - 2.2, height: lh, fill: p === route[2] ? C.blue : C.teal });
-  text(leafX[route[2]] + 4, ly + lh + 56, '叶页 263：Alice · 2050', { class: 'la', 'font-size': 36, 'font-weight': 500, fill: C.teal });
-  text(1800, ly + lh + 56, `叶页 ${D.counts.namesLeaf} 条 + 内部页 ${D.counts.namesInterior} 条 = 4096`, { class: 'zh', 'font-size': 36, 'font-weight': 400, 'text-anchor': 'end' });
+  chrome(3);
+  pageTitle('怎么找');
+  h2(60, 320, '3.1. 读了哪几页');
+  codeblock(60, 350, ["SELECT * FROM users WHERE name = 'Alice';"], 28);
+  // 铁路图：首次查询向文件读的页，依次 7 页（I01）；姓名索引一组、users 表一组（浅灰分组框，竖排灰色斜体名，同语法图）
+  const y = 560; rrStart(80, y);
+  const b1 = rrBox(130, y, '第 1 页', {}); rrLine(`M87,${y} L130,${y}`);
+  text(b1.x + b1.w / 2, y + 62, '文件头', { 'font-size': 24, fill: C.dim, 'text-anchor': 'middle' });
+  let x = b1.r + 70; rrLine(`M${b1.r},${y} L${x},${y}`); arrowHead(x, y);
+  const gx0 = x - 24, gn = [];
+  for (const [s, cap] of [['262', '根'], ['281', '中层'], ['263', '叶']]) { const b = rrBox(x, y, s, { mono: true, w: 130, fill: s === '263' ? C.wheat : '#fff' }); text(b.x + b.w / 2, y + 62, cap, { 'font-size': 24, fill: C.dim, 'text-anchor': 'middle' }); gn.push(b); x = b.r + 60; rrLine(`M${b.r},${y} L${x},${y}`); arrowHead(x, y); }
+  rrGroup(gx0, y - 70, x - gx0 - 30, 160, '姓名索引');
+  x += 70; rrLine(`M${x - 70},${y} L${x},${y}`); arrowHead(x, y);
+  const gx1 = x - 24;
+  for (const [s, cap] of [['2', '根'], ['133', '中层'], ['130', '叶']]) { const b = rrBox(x, y, s, { mono: true, w: 130, fill: s === '130' ? C.wheat : '#fff' }); text(b.x + b.w / 2, y + 62, cap, { 'font-size': 24, fill: C.dim, 'text-anchor': 'middle' }); x = b.r + 60; rrLine(`M${b.r},${y} L${x},${y}`); arrowHead(x, y); }
+  rrGroup(gx1, y - 70, x - gx1 - 30, 160, 'users 表');
+  rrLine(`M${x},${y} L${x + 40},${y}`); el('rect', { x: x + 40, y: y - 14, width: 4, height: 28, fill: C.ink }); el('rect', { x: x + 50, y: y - 14, width: 4, height: 28, fill: C.ink });
+  rich(60, 720, ['首次查询向文件读的页，依次就这 7 页：先在', ['姓名索引'], '里找到行号 2050，再到 ', ['users 表'], '里取整行。'], 30);
+  table(60, 800, [['', 200], ['姓名索引', 330], ['users 表', 330]], [['每层剩下', '4096 → 306 → 18', '4096 → 1521 → 17']], 28);
 }
+
 if (F === 4) {
-  chrome('04');
-  const P = D.page130, X0 = 120, W = 1680, k = W / D.file.pageSize, y = 340, h = 96;
-  h1('04', '叶页 130');
-  text(560, 248, '1024 字节，按真实比例', { class: 'zh', 'font-size': 34, 'font-weight': 400, fill: C.dim });
-  // 整页一条：页头、指针区、空地、从页尾往前排的行（按字节真实比例）
-  const bx = (o) => X0 + o * k;
-  el('rect', { x: bx(0), y, width: P.pointer_array[1] * k, height: h, fill: C.visited });
-  el('rect', { x: bx(P.pointer_array[1]), y, width: P.unallocated_bytes * k, height: h, fill: C.paper });
-  for (const c of P.cells) el('rect', { x: bx(c.off) + 1, y, width: c.bytes * k - 2, height: h, fill: c.rowid === 2050 ? C.blue : C.teal });
+  chrome(4);
+  pageTitle('一页里有什么');
+  h2(60, 320, '4.1. 叶页 130');
+  const P = D.page130;
+  table(60, 380, [['偏移', 160], ['大小', 160], ['内容', 900]], [
+    [['0', 0, 'Mono'], ['8', 0, 'Mono'], ['页头：标志 0x0d（表的叶页），17 个单元']],
+    [['8', 0, 'Mono'], [String(P.pointer_array[1] - 8), 0, 'Mono'], ['17 个单元指针，每个 2 字节，按行号排序']],
+    [[String(P.pointer_array[1]), 0, 'Mono'], [String(P.unallocated_bytes), 0, 'Mono'], ['未分配的空地']],
+    [[String(P.cell_content_start), 0, 'Mono'], [String(1024 - P.cell_content_start), 0, 'Mono'], ['单元内容区：从页尾往前放']],
+    [['489', 1, 'Mono'], ['13', 1, 'Mono'], ['Alice（行号 2050）的单元', 1]],
+  ], 28, 50);
+  // 整页按字节真实比例：黑细线分格；页头浅灰、指针区更浅、空地虚线；Alice 的单元麦色
+  const X0 = 60, W = 1800, k = W / 1024, y = 690, h = 64, bx = (o) => X0 + o * k;
+  el('rect', { x: bx(0), y, width: 8 * k, height: h, fill: '#dddddd' });
+  el('rect', { x: bx(8), y, width: (P.pointer_array[1] - 8) * k, height: h, fill: '#eeeeee' });
+  for (const c of P.cells) el('rect', { x: bx(c.off), y, width: c.bytes * k, height: h, fill: c.rowid === 2050 ? C.wheat : '#fff', stroke: C.ink, 'stroke-width': 0.8 });
+  el('rect', { x: bx(P.pointer_array[1]), y: y + 4, width: P.unallocated_bytes * k, height: h - 8, fill: 'none', stroke: C.ink, 'stroke-width': 1, 'stroke-dasharray': '5 4' });
   el('rect', { x: X0, y, width: W, height: h, fill: 'none', stroke: C.ink, 'stroke-width': 2 });
-  text(1800, y - 22, '行从页尾往前放', { class: 'zh', 'font-size': 28, 'font-weight': 400, 'text-anchor': 'end' });
-  for (const o of [489, 1024]) text(bx(o) + (o === 1024 ? 0 : 6), y + h + 38, o, { class: 'k', 'font-size': 28, 'text-anchor': o === 1024 ? 'end' : 'middle', fill: o === 489 ? C.teal : C.dim });
-  // 放大：开头 83 个字节
-  const iy = 540, ih = 84, iw = 620, ik = iw / P.cell_content_start, ix = (o) => X0 + o * ik;
-  el('path', { d: `M${bx(0)} ${y + h} L${ix(0)} ${iy} M${bx(P.cell_content_start)} ${y + h} L${ix(P.cell_content_start)} ${iy}`, stroke: C.ink, 'stroke-width': 1.5, 'stroke-opacity': .45, fill: 'none' });
-  el('rect', { x: ix(0), y: iy, width: 8 * ik, height: ih, fill: C.visited });
-  for (let i = 0; i < P.cell_count; i++) el('rect', { x: ix(8 + 2 * i) + 1, y: iy, width: 2 * ik - 2, height: ih, fill: i === 9 ? C.blue : C.teal, 'fill-opacity': i === 9 ? 1 : .75 });
-  el('rect', { x: ix(P.pointer_array[1]), y: iy, width: P.unallocated_bytes * ik, height: ih, fill: C.paper, stroke: C.ink, 'stroke-width': 1.5, 'stroke-dasharray': '7 6' });
-  el('rect', { x: ix(0), y: iy, width: iw, height: ih, fill: 'none', stroke: C.ink, 'stroke-width': 2 });
-  const brace = (o1, o2, s, col = C.ink) => { const x1 = ix(o1) + 4, x2 = ix(o2) - 4, yy = iy + ih + 16; el('path', { d: `M${x1} ${yy} L${x1} ${yy + 10} L${x2} ${yy + 10} L${x2} ${yy}`, stroke: col, 'stroke-width': 2, fill: 'none' }); text((x1 + x2) / 2, yy + 50, s, { class: 'zh', 'font-size': 28, 'font-weight': 400, 'text-anchor': 'middle', fill: col }); };
-  brace(0, 8, '页头 8'); brace(8, P.pointer_array[1], '17 个指针 × 2'); brace(P.pointer_array[1], P.cell_content_start, '空地 41', C.dim);
-  // 行号 2050 的指针写着 489
-  const px = ix(8 + 2 * 9) + ik;
-  behind(el('path', { d: `M${px} ${iy} C ${px} ${iy - 90}, ${bx(489) + 6} ${y + h + 120}, ${bx(489) + 6} ${y + h + 48}`, fill: 'none', stroke: C.blue, 'stroke-width': 3 }));
-  // 放大：Alice 的 13 个字节——画成文档里的表：表头左对齐、下面一条 1px 深灰线；内容那几格用麦色底
-  const hex = D.aliceCellHex.match(/../g), cw = 80, cy = 760, ch = 90, cx0 = 1800 - hex.length * cw;
-  el('path', { d: `M${bx(489)} ${y + h} L${cx0} ${cy} M${bx(489 + 13)} ${y + h} L${cx0 + hex.length * cw} ${cy}`, stroke: C.blue, 'stroke-width': 1.5, 'stroke-opacity': .6, fill: 'none' });
-  hex.forEach((v, i) => {
-    el('rect', { x: cx0 + i * cw, y: cy, width: cw, height: ch, fill: i >= 3 ? C.wheat : C.paper, stroke: C.ink, 'stroke-width': 1.5 });
-    text(cx0 + i * cw + cw / 2, cy + 58, v, { class: 'k', 'font-size': 36, 'text-anchor': 'middle' });
-  });
-  const groups = [[0, 1, '长度'], [1, 3, '行号 2050'], [3, 7, '类型'], [7, 12, 'Alice'], [12, 13, '42']];
-  el('rect', { x: cx0, y: cy + ch + 58, width: hex.length * cw, height: 1, fill: C.rule });
-  groups.forEach(([g1, g2, s2], gi) => {
-    const x1 = cx0 + g1 * cw + 6;
-    text(x1, cy + ch + 46, s2, { class: gi === 3 ? 'la' : 'zh', 'font-size': 28, 'font-weight': 600, fill: gi >= 3 ? C.teal : C.ink });
-  });
-  text(1800, cy - 24, '第 489 字节起，13 个字节', { class: 'zh', 'font-size': 28, 'font-weight': 400, fill: C.teal, 'text-anchor': 'end' });
+  [[0, 'start'], [489, 'middle'], [1024, 'end']].forEach(([o, a]) => text(bx(o), y + h + 32, String(o), { 'font-family': 'Mono', 'font-size': 24, 'text-anchor': a }));
+  // Alice 的 13 个字节：等宽十六进制，下面一行说明（文档表格的写法）
+  const hex = D.aliceCellHex.match(/../g), cw = 66, hx = 960 - hex.length * cw / 2, hy = 840;
+  hex.forEach((v, i) => { el('rect', { x: hx + i * cw, y: hy - 34, width: cw, height: 48, fill: i >= 3 ? C.wheat : '#fff', stroke: C.ink, 'stroke-width': 1.2 }); text(hx + i * cw + cw / 2, hy, v, { 'font-family': 'Mono', 'font-size': 28, 'text-anchor': 'middle' }); });
+  rrLine(`M${bx(489)},${y + h} L${hx},${hy - 34} M${bx(502)},${y + h} L${hx + hex.length * cw},${hy - 34}`, { sw: 1, stroke: '#888' });
+  [[0, 1, '长度'], [1, 3, '行号 2050'], [3, 7, '类型'], [7, 12, 'Alice'], [12, 13, '42']].forEach(([a, b, s]) => text(hx + a * cw + 4, hy + 44, s, { 'font-size': 22, fill: C.dim }));
 }
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
 </script>

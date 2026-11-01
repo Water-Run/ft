@@ -19,17 +19,17 @@ D = json.loads(dump); S, L = D['S'], D['L']
 V = json.load(open(os.path.join(A, 'voices', 'voices.json'), encoding='utf-8'))
 REV = max(glob.glob(os.path.join(VIDEO, 'review', 'script.zh.*.md')), key=os.path.getmtime)   # 最近导出的交审稿
 HASH = os.path.basename(REV).split('.')[2]
-DRAFT = '第 5 稿'
+DRAFT = '第 6 稿'
 MUSIC = [('a', 'A · 页的脉冲', '96 BPM，D 小调。每拍一记低音，八分音符上一声很轻的「读页」短响；每两小节换一次根音。最克制，像文件被一页页读到。'),
          ('b', 'B · 拨弦琶音', '88 BPM，A 小调。钢琴式拨弦的八分音符琶音，低音落在一、三拍。最有旋律感。'),
          ('c', 'C · 木琴固定音型', '104 BPM，E 小调。木琴式短音反复一个四音型，长低音与每小节一记闷鼓。最有推进感。')]
-KF = [('f1', '片头：像一页 sqlite.org 文档——页头的版本与斜体标语、圆角深青菜单（章节即菜单项）、常规字重的深青标题、553 页的文件（每页一格，按归属上色）'),
-      ('f2', '02 怎么放：users 的整棵 B+ 树，256 个叶页全画出；当前章是菜单里亮蓝的那一项'),
-      ('f3', '03 怎么找：文档式的灰底代码块写出查询；姓名索引的 B 树，读到的页麦色底、亮蓝边（文档的悬停色）'),
-      ('f4', '04 一页里有什么：叶页 130 按真实比例展开；页头用「已访问链接」的紫褐；Alice 的 13 字节画成文档里的表')]
-COVERS = [('c1', '1 · 一个文件：553 页叠成一块立体的文件，顶面每页一格按归属上色，找 Alice 读到的 7 页从格子里升起来'),
-          ('c2', '2 · 两棵树：姓名索引与 users 表各是一座三层的塔，蓝线自上而下串起读到的页（262 → 281 → 263，2 → 133 → 130），先读第 1 页文件头'),
-          ('c3', '3 · 一字节不差：主文件与回滚日志两叠纸，改到一半被强行终止；重开时从日志抄回原页，整个文件恢复原来的 SHA-256')]
+KF = [('f1', '片头：一页 sqlite.org 首页——页头的两行斜体标语、深青主菜单（章节即菜单项）、居中的页标题、术语画成链接、「本集目录」侧栏盒、553 页的文件（读到的 7 页是文档的悬停麦色）'),
+      ('f2', '02 怎么放：编号小节「2.1. B+ 树」；整棵树用文档的黑细线白框，根页画成一行表格，256 个叶页全画出'),
+      ('f3', '03 怎么找：文档代码块写出查询；读到的 7 页画成官网的语法铁路图（圆头框、实心箭头、浅灰分组框）；下面一张文档表格'),
+      ('f4', '04 一页里有什么：叶页 130 写成文件格式文档那样的「偏移 | 大小 | 内容」表；整页按字节真实比例；Alice 的 13 字节')]
+COVERS = [('c1', '1 · 一个文件：553 页叠成一摞文档纸（第 1 页在最上面），找 Alice 读到的 7 页像书签一样抽出来，页号写在官网的灰色小按钮上'),
+          ('c2', '2 · 立体的铁路图：读页路线画成铺在地面上的语法铁路图，每一页是一个有厚度的方框，页号印在顶面；姓名索引一组、users 表一组'),
+          ('c3', '3 · 热日志：主文件与回滚日志两摞纸；「强行终止」用官网 TODO 的红色斜体框；重开时沿黑线从日志抄回原页，整个文件的 SHA-256 与改之前相同')]
 e = html.escape
 
 def script_html():
@@ -45,9 +45,7 @@ def script_html():
 def vrow(v):
     return (f"<div class='row'><div class='nm'>{e(v['label'])}<small>{e(v['id'])} · 语速 {e(v['speed'])} · {v['d'] or 0:.1f} 秒</small></div>"
             f"<audio controls preload='none' src='{norm(v['file'], 'v-' + os.path.basename(v['file']))}'></audio></div>")
-new5 = [v for v in V['voices'] if v.get('batch') == 2]
-old4 = [v for v in V['voices'] if v.get('batch', 1) == 1 and not v.get('male')]
-voices = '\n'.join(vrow(v) for v in new5) + "\n<h3>上一批（供对照；原第 3 个「抒情」查明是男声，已去掉）</h3>\n" + '\n'.join(vrow(v) for v in old4)
+voices = '\n'.join(vrow(v) for v in V['voices'] if not v.get('male'))   # 全部普通话女声，只去掉前三期用过的；第一批误列的男声不上页
 music = '\n'.join(f"<div class='row'><div class='nm'>{e(t)}<small>{e(d)}</small></div><audio controls preload='none' src='{norm('music/' + k + '.mp3', 'm' + k + '.mp3')}'></audio></div>" for k, t, d in MUSIC)
 fig = lambda d, items: '\n'.join(f"<figure><img src='{d}/{k}.png' alt='{e(c)}'><figcaption>{e(c)}</figcaption></figure>" for k, c in items if os.path.exists(os.path.join(A, d, k + '.png')))
 kfs, covers = fig('kf', KF), fig('cover', COVERS)
@@ -70,11 +68,11 @@ figure {{ margin:16px 0; }} img {{ width:100%; border:1px solid var(--line); }} 
 <div class="note">一次选定：文案是否确认（或逐句意见）、配音选哪个、配乐选哪个方向、关键帧方向是否认可、封面选哪张。配音只是试听，全片合成要等文案确认。</div>
 <h2>要你决定的事</h2>
 <ol class="ask">
-<li>{DRAFT}能否确认配音？逐句意见按句号写即可（如「j12 改成……」）。这一稿只改了引子与第 01 章开头：从 MySQL、PostgreSQL 这类服务进程讲到嵌入式，不再用调查排名与「装得最多」。</li>
-<li>配音：新的 5 个女声（MiniMax）选一个，上一批的 4 个也可以选（本集 PART 4；上一集 PostgreSQL 是男声）。语速都对齐到约 4.4 字/秒，比的是音色。</li>
+<li>{DRAFT}能否确认配音？逐句意见按句号写即可（如「j12 改成……」）。和第 4 稿比：引子从 MySQL、PostgreSQL 这类服务进程讲到嵌入式（不再用调查排名与「装得最多」）；第 01 章开头加 SQLite 的来历（作者 Richard Hipp、军舰上的软件与 Informix 服务器、「为什么非要一个服务器」，据他本人访谈；起初是 Tcl 扩展；版本年表）；结尾先做全系列总结（MySQL、PostgreSQL、SQLite 都是事务型 OLTP，另一端是分析型 OLAP 与 ClickHouse），最后以公有领域与祝福收束。</li>
+<li>配音：MiniMax 全部普通话女声，只去掉前三期用过的（InnoDB 的成熟女性-beta；MyISAM、PostgreSQL 是男声），共 26 个，选一个。语速都对齐到约 4.4 字/秒，比的是音色。</li>
 <li>配乐：A、B、C 选一个方向（「简洁有力」）。</li>
-<li>关键帧：新方向「像一页 sqlite.org 文档」——配色与字形取自它的样式表（深青圆角菜单、亮蓝子菜单、常规字重的编号标题、灰底代码块、已访问链接的紫褐、悬停的麦色）；不放标志，不用标志的羽毛色。是否认可。</li>
-<li>封面：3 张预选（立体、有质感，同前三集；配色与正片同一套），选一张，或说要改哪里。</li>
+<li>关键帧：按 sqlite.org 实际页面重画——页头两行斜体标语、深青主菜单（白色小字菜单项）、居中页标题、编号小节、黑色正文、术语画成链接、侧栏盒、文档代码块与表格、语法铁路图；强调只用文档的悬停麦色；不放标志。是否认可。</li>
+<li>封面：3 张预选，也是一页文档，立体做在文档的「纸」上（纸堆、立起来的铁路图方框），选一张，或说要改哪里。</li>
 </ol>
 <h2>配音候选（同一段文字：第 4 稿的 o4、s14、s22、j9、w11、e12；比音色用，o4 的措辞已在第 5 稿改了）</h2>
 {voices}

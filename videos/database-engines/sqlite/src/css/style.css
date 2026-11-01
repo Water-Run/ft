@@ -1,10 +1,11 @@
-/* 本片的视觉系统（第 5 稿起）：整片像一页 sqlite.org 的文档（WaterRun 2026-11-01：「视觉风格也进一步优化, 更契合SQLite官方文档」）。
+/* 本片的视觉系统（第 5 稿起，第 6 稿按官网实际页面重做）：每一帧都像一页 sqlite.org 文档（WaterRun 2026-11-01：「视觉风格也进一步优化, 更契合SQLite官方文档」「风格还是不够契合啊…看看SQLite官网吧」）。
+   画法零件见 src/design/docpage.js：页头两行斜体标语、深青主菜单（白色小字菜单项）、居中页标题、编号小节、黑色正文、术语画成链接、侧栏盒、代码块、表格、语法铁路图（黑细线白框）。
    配色与字形取自 sqlite.org/sqlite.css（2026-11-01 读）：白纸；圆角 8px 的深青主菜单 #044a64、白字，子菜单亮蓝 #0482c4；
    标题常规字重、深青、带编号；代码块 #eee 底、1px #80a796 边；表头下一条 1px #444；已访问链接 #734559；悬停底色 wheat。
    不再用标志的羽毛色（系列约定不放标志）。文档用 Verdana，仓库不带，用 Inter + 思源黑体的常规字重。结构性样式在 base.css。 */
 :root {
   --paper: #ffffff;           /* 页面底色 */
-  --ink: #1f1f1f;             /* 正文与线框：文档正文是黑字 */
+  --ink: #000000;             /* 正文与线框：文档正文是黑字，图是黑细线 */
   --teal: #044a64;            /* 主菜单、标题、链接：章节条、常驻元素、页 */
   --blue: #0482c4;            /* 子菜单色：Alice 的路线、当前焦点。对白底 4.2:1，只用于线条、色块和 56px 以上的字 */
   --visited: #734559;         /* 已访问链接：已经读过的页、页头。对白底 7.7:1 */
@@ -33,11 +34,11 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .codeblock { position: absolute; background: var(--code); border: 1.5px solid var(--code-line); padding: 14px 24px; font-family: "Mono", "Sans SC"; white-space: pre; }
 .blue { color: var(--blue); }
 
-/* 页：全片唯一的基本图形。实心深青是有数据的叶页，空心带分界的是内部页，麦色底是此刻被读到的页，紫褐是读过的页（已访问） */
+/* 页：全片唯一的基本图形。像文档的图：黑细线白框；此刻被读到的页是悬停麦色，读过的页描已访问链接的紫褐边 */
 .pg { position: absolute; border: 2px solid var(--ink); background: var(--paper); }
-.pg.leaf { background: var(--teal); }
-.pg.hit { background: var(--wheat); border-color: var(--blue); }
-.pg.read { background: var(--visited); }
+.pg.leaf { border-width: 1px; }
+.pg.hit { background: var(--wheat); border-color: var(--teal); }
+.pg.read { border-color: var(--visited); }
 
 /* 章节卡（整屏，系列约定）：sqlite.org 主菜单的深青，标题常规字重；编号用子菜单的亮蓝圆角块 */
 .chapter { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: var(--teal); color: var(--paper); padding: 380px var(--M) 0; }
