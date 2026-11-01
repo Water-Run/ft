@@ -163,3 +163,16 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
 .mapdim { position: absolute; background: var(--dgray); }
 .b6 { position: absolute; background: var(--white); }
 .b6.n { background: var(--navy); border-color: var(--navy); color: var(--white); }
+
+/* 第 6 轮：版本来历的年份格、顶部年表 */
+.vnode { position: absolute; }
+.vnode .vy { position: absolute; left: 16px; top: 10px; font: 400 56px/1 "Pixel"; color: var(--navy); }
+.vnode .vc { position: absolute; left: 16px; top: 72px; font: 700 26px/1.2 "Sans SC"; white-space: nowrap; }
+.vnode .vs { position: absolute; left: 16px; top: 108px; font: 500 26px/1.2 "Sans SC"; white-space: nowrap; color: var(--black); }
+.vnode.hl { border-color: var(--navy); }
+.vnode.hl .vy, .vnode.hl .vc, .vnode.hl .vs { color: var(--white); }
+.vnode.mk { outline: 4px solid var(--black); outline-offset: 3px; }
+.yearbar { position: absolute; }
+.yearbar .yb { position: absolute; font: 400 34px/36px "Pixel"; text-align: center; color: var(--black); }
+.yearbar .yb.on { color: var(--black); }
+.yearbar .yb.hl { color: var(--white); }

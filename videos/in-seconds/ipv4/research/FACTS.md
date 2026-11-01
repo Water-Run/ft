@@ -105,6 +105,35 @@ IPv4 用四字节、共 32 位的地址标识网络接口；一台主机可以�
 
 画面上的示例地址：192.168.1.10、192.168.1.23（私有网段，RFC 1918）；192.0.2.x、203.0.113.x、198.51.100.7（文档示例网段，RFC 5737，见 route 段「示例地址」）。
 
+## 第 5 稿（改）句号对照与补证（第 6 轮，2026-11-01）
+
+第 5 稿（改）（内容 SHA-256 `7897ba32…`）又重排了句号。新补的两类事实：历史一段的「互联网的前身」「全面改用」，以及画面上的版本来历（策划者：「画面中做体现, 比如v4是第四个版本, 体现前三个版本的年份等」）。
+
+| 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
+|---|---|---|---|---|---|
+| h2 | 1983 年 1 月 1 日，阿帕网（旁白：互联网的前身）的主机协议整体从 NCP 换成 TCP/IP，所有主机同一天切换（旁白：全面改用它） | [Internet Society《A Brief History of the Internet》](https://www.internetsociety.org/internet/history-internet/brief-history-internet/)：「The original ARPANET grew into the Internet.」「the transition of the ARPANET host protocol from NCP to TCP/IP as of January 1, 1983. This was a "flag-day" style transition, requiring all hosts to convert simultaneously」 | [RFC 801](https://www.rfc-editor.org/rfc/rfc801.html)（1981 年 11 月）的 NCP/TCP 过渡计划 | 阿帕网 | 2026-11-01，已核查；「阿帕网」不进旁白（策划者：速通观众不认识） |
+| 画面（版本来历） | 1974 年 12 月，最初的 TCP 规范 RFC 675（「Specification of Internet Transmission Control Program」，「December 1974 Version」，原文未写版本号，画面不标 v1） | [RFC 675](https://www.rfc-editor.org/rfc/rfc675.txt) 首页 | IEN 2（1977-08-15）参考文献把 1977 年 3 月的规范称为「TCP version 2」 | — | 2026-11-01，已核查 |
+| 画面（版本来历） | TCP 第 2 版（1977 年 3 月）、TCP 第 3 版（1978 年 1 月） | [IEN 索引](https://history.rfc-editor.org/ien/ien-index.txt)：IEN 5「TCP Version 2 Specification」Mar-77；IEN 21「TCP 3 Specification」Jan-78 | IEN 2 参考文献「Specification of TCP version 2, March 1977」 | — | 2026-11-01，已核查（据索引条目，未逐份打开扫描件） |
+| 画面（版本来历） | 1977 年 8 月有人提议把 TCP 拆成两层：一个逐跳的网际协议与一个端到端的 TCP；1978 年 6 月拆开后的两份规范都编为第 4 版 | [IEN 2](https://history.rfc-editor.org/ien/ien2.txt)（Postel，1977-08-15）：「I suggest that a new distinct internetwork protocol is needed, and that TCP be used strictly as a host level end to end protocol.」 | IEN 索引：IEN 40「Specification of Internetwork Transmission Control Protocol - Version 4」、IEN 41「Internetwork Protocol Specification - Version 4」，均为 Jun-78；[RFC 760](https://www.rfc-editor.org/rfc/rfc760.txt)（1980 年 1 月）§3.1「This document describes version 4」 | IPv4 | 2026-11-01，已核查 |
+| 画面（版本来历） | IP 的版本号登记：0–1 保留，2–3 未分配，4 为 IP（RFC 791），6 为 IPv6 | [IANA IP Version Numbers](https://www.iana.org/assignments/version-numbers/version-numbers.xhtml)（2021-01-28 更新） | RFC 791 §3.1 Version 字段 | — | 2026-11-01，已核查；画面不说「IPv1–v3」 |
+
+| 第 5 稿（改）句号 | 依据 |
+|---|---|
+| o1、o2（203.0.113.80 这样的地址，四个数就能在网上找到一台电脑） | open 段 o1、o2；address 段 a2；route 段「示例地址」 |
+| o3（它叫 IPv4 地址，来自互联网协议 IP 的第四版） | open 段 o3、o4 |
+| h1（一九八一年 IPv4 定稿，地址定为三十二位） | open 段 o4；address 段 a1 |
+| h2（一九八三年互联网的前身全面改用它，一直用到今天） | 上表 h2；open 段 o4（2026 年仍在使用） |
+| a1、a2（三十二个零或一，每八位一组，写成四个零到二百五十五的数） | address 段 a1、a2、「画面」 |
+| p1、p2（两截；/24 表示前二十四位是网络） | prefix 段 p1、p2 |
+| r1–r4 | route 段 r1、r2、r3；prefix 段 p1、p2（到了目的网络按后一截交付） |
+| s1（127.0.0.1） | special 段 s1、「画面」（localhost） |
+| s2（192.168 开头是私有地址，各家内网都能用） | special 段 s2；「取证中发现」的完整私有网段（画面：还有 10.x、172.16–31.x） |
+| e1（三十二位总共约四十三亿个地址） | limit 段 e1 |
+| e2（九十年代就担心不够，一家人开始共用一个公网地址） | limit 段 e1（RFC 1631 1994 年、RFC 1918 1996 年的地址耗尽担忧）；special 段 s3（NAT/NAPT 共享外部地址）；画面「1994 年：提出地址转换」= RFC 1631 |
+| e3（2011 年地址池分完） | limit 段 e2、「画面」 |
+| z0、z3（收尾） | prefix 段、route 段 |
+| z2（地址不够的问题，留给了接班的 IPv6） | limit 段 e3（IPv6 设计为接班者，地址 128 位） |
+
 ## 取证中发现、没有进入成片的事实
 
 - RFC 1918 的完整私有网段为 `10.0.0.0/8`、`172.16.0.0/12`、`192.168.0.0/16`；初稿只口播策划者点名的 `192.168` 段，完整回显已留存。

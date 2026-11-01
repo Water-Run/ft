@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parents[2]
 WORK = ROOT / "out" / "audition" / "readthrough"
 OUT = ROOT / "out" / "audition" / "audio" / "readthrough-yunjian.mp3"
-VOICE, RATE = "zh-CN-YunjianNeural", "+6%"
+VOICE = "zh-CN-YunjianNeural"
+RATE = json.loads((ROOT / "project.json").read_text(encoding="utf-8"))["rates"]["zh"]   # 与正式配音同一语速
 FFMPEG = shutil.which("ffmpeg") or str(REPO / "assets" / "ffmpeg" / "bin" / "ffmpeg.exe")
 LAYOUT = r"""
 const S = require(process.argv[1]); const dur = process.argv[2] ? JSON.parse(require('fs').readFileSync(process.argv[2], 'utf8')) : null;

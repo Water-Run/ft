@@ -2,9 +2,9 @@
 # E 小调开放音程的铺底；限带方波的「数据」动机（像终端吐字，落点不均匀）；三点继电器节奏；细的同步脉冲；三角波低音。120 拍/分，一小节 2 秒。
 # 由 kit/tools/mix.py 调用（project.json 的 audio.music = "tools/music.py"）：compose(ctx) 返回 (2, N)，电平与旁白压低由 mix.py 处理。
 # 段落取自 ctx["scenes"]，不写死秒数：
-#   open    铺底 + 稀疏的数据音（引子）            address/prefix  数据动机铺满 + 低音
+#   open/history  铺底 + 稀疏的数据音（引子与来历）  address/prefix  数据动机铺满 + 低音
 #   route   加继电器与同步脉冲（一站站送）          special         同上，略收
-#   limit   前半撤掉节奏只留铺底与低音（地址不够了）；lift_cue（e5，IPv6）那一拍抬起，数据动机加倍；e6 之后收
+#   limit   撤掉节奏只留铺底与低音（地址不够了）     end  收尾回到路由段的节奏；lift_cue（z2，IPv6）那一拍抬起，z2 之后收
 #   outro   只留铺底，最后一个长音
 # 结果确定：随机数固定种子；同样的音只算一次（缓存）。制作者听不到声音：出片前看 audio.js 的数值自检，听感由人确认。
 import numpy as np
@@ -93,9 +93,9 @@ def compose(ctx):
         def inside(i):
             s = sc.get(i)
             return s and s["start"] <= t < s["end"]
-        if inside("open"):
+        if inside("open") or inside("history"):
             k = min(1.0, t / 12.0)
-            return dict(pad=0.9, data=0.35 + 0.35 * k, sparse=True, bass=0.0, relay=0.0, pulse=0.0)
+            return dict(pad=0.9, data=0.35 + 0.35 * k, sparse=True, bass=0.0 if inside("open") else 0.5, relay=0.0, pulse=0.0)
         if inside("address") or inside("prefix"):
             return dict(pad=0.85, data=0.8, sparse=False, bass=0.75, relay=0.0, pulse=0.0)
         if inside("route"):
@@ -103,11 +103,13 @@ def compose(ctx):
         if inside("special"):
             return dict(pad=0.8, data=0.75, sparse=False, bass=0.8, relay=0.8, pulse=0.8)
         if inside("limit"):
-            if lift is not None and t < lift:
-                return dict(pad=0.95, data=0.25, sparse=True, bass=0.7, relay=0.0, pulse=0.0)
-            last = cue.get("e6")
-            tail = last and t > last["end"]
-            return dict(pad=0.9, data=0.5 if tail else 1.0, sparse=bool(tail), bass=0.8, relay=0.0 if tail else 0.9, pulse=0.0 if tail else 1.1, double=not tail)
+            return dict(pad=0.95, data=0.25, sparse=True, bass=0.7, relay=0.0, pulse=0.0)
+        if inside("end"):
+            if lift is not None and t >= lift:
+                last = cue.get("z2")
+                tail = last and t > last["end"]
+                return dict(pad=0.9, data=0.5 if tail else 1.0, sparse=bool(tail), bass=0.8, relay=0.0 if tail else 0.9, pulse=0.0 if tail else 1.1, double=not tail)
+            return dict(pad=0.85, data=0.85, sparse=False, bass=0.85, relay=0.9, pulse=0.9)
         return dict(pad=0.8, data=0.0, sparse=True, bass=0.0, relay=0.0, pulse=0.0)
 
     total = ctx["total"]
