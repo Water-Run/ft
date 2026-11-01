@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"
   },
   "stage": "review",
-  "next": "重做版文案第 1 稿待 WaterRun 校对（review/NOTES.md）；确认后配音、做场景",
+  "next": "已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01 12:07，「数据库引擎」合集第 3 集）；登记交付与发布（stage、delivery、release、片单状态，再运行 catalog.js）要一起提交，而 videos/catalog.json、videos/README.md、videos/CREDITS.md 正被另一会话修改未提交，等它们空出来再做；发布信息先记在 README「交付」。按发布后冻结，只收集反馈",
   "credits": {
     "planner": "WaterRun",
     "models": [
