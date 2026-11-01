@@ -1,0 +1,22 @@
+python=3.14.3
+source=192.168.1.10
+source_octets=[192, 168, 1, 10]
+source_bits=11000000101010000000000100001010
+source_bit_length=32
+ipv4_address_count=4294967296
+prefix_length=24
+source_network=192.168.1.0/24
+destination_network=203.0.113.0/24
+same_network=False
+gateway=192.168.1.1
+gateway_in_source_network=True
+matching_routes=[('0.0.0.0/0', '198.51.100.1'), ('203.0.113.0/24', '198.51.100.2')]
+longest_prefix_match=203.0.113.0/24 next_hop=198.51.100.2
+private_range=10.0.0.0/8 first=10.0.0.0 last=10.255.255.255
+private_range=172.16.0.0/12 first=172.16.0.0 last=172.31.255.255
+private_range=192.168.0.0/16 first=192.168.0.0 last=192.168.255.255
+loopback_range=127.0.0.0/8 contains_127_0_0_1=True
+localhost_ipv4=['127.0.0.1']
+loopback_peer=127.0.0.1
+loopback_payload=IPv4 loopback
+all_assertions=passed

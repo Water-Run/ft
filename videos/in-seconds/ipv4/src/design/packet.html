@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>IPv4 关键帧：数据包穿行</title>
+<link rel="stylesheet" href="design.css">
+</head>
+<body>
+<div id="stage">
+  <section class="frame" data-frame="title">
+    <div class="hud"><span>FT / NETWORK CASSETTE</span><span class="live">LINK 01 · 32 BIT</span></div>
+    <div class="abs title-ip">IPv4</div>
+    <div class="abs title-cn">100 秒速通</div>
+    <div class="abs title-en">ADDRESS · PREFIX · NEXT HOP</div>
+    <div class="abs title-seconds"><b>100</b><span>秒，看懂数据的去向</span></div>
+    <div class="abs cassette corner">
+      <div class="abs cassette-label"><div class="big">ROUTE / 04</div><div class="small">IP NETWORK INTERFACE</div></div>
+      <div class="abs tape-windows"><div class="tape-window">192</div><div class="tape-window">168</div><div class="tape-window">1</div><div class="tape-window">10</div></div>
+      <div class="abs tape-lines"><span>SOURCE</span><span>/24</span><span>READY</span></div>
+    </div>
+    <div class="abs route-caption">ONE PACKET / <b>192.168.1.10 → 203.0.113.80</b></div>
+  </section>
+
+  <section class="frame" data-frame="dense">
+    <div class="hud"><span>ADDRESS DECODER / 01</span><span class="live">READ 32 BITS</span></div>
+    <div class="abs decoder-head"><div><div class="kicker">FOUR OCTETS</div><div class="section-title">四段十进制，三十二个比特</div></div><div class="section-sub">每段 8 位 / 0–255</div></div>
+    <div class="abs bit-labels"><div class="network">NETWORK / 前 24 位</div><div class="host">HOST / 后 8 位</div></div>
+    <div class="abs bit-field">
+      <div class="octet"><div class="octet-index">OCTET 01</div><div class="octet-num">192</div><div class="bits"><i class="bit one">1</i><i class="bit one">1</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i></div></div>
+      <div class="octet"><div class="octet-index">OCTET 02</div><div class="octet-num">168</div><div class="bits"><i class="bit one">1</i><i class="bit">0</i><i class="bit one">1</i><i class="bit">0</i><i class="bit one">1</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i></div></div>
+      <div class="octet"><div class="octet-index">OCTET 03</div><div class="octet-num">1</div><div class="bits"><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit one">1</i></div></div>
+      <div class="octet"><div class="octet-index">OCTET 04</div><div class="octet-num">10</div><div class="bits"><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit">0</i><i class="bit one">1</i><i class="bit">0</i><i class="bit one">1</i><i class="bit">0</i></div></div>
+    </div>
+    <div class="abs prefix-panel"><div class="slash">/24</div><div class="split"><div><b>24</b>NETWORK</div><div><b>8</b>HOST</div></div></div>
+    <div class="abs compare"><div class="compare-title">APPLY /24 TO SOURCE AND DESTINATION</div><div class="compare-row"><div class="compare-box"><div class="addr">192.168.1.10</div><div class="net">SOURCE NETWORK · 192.168.1.0/24</div></div><div class="compare-box hot"><div class="addr">203.0.113.80</div><div class="net">DIFFERENT · 203.0.113.0/24</div></div></div></div>
+  </section>
+
+  <section class="frame" data-frame="diagram">
+    <div class="hud"><span>ROUTE TRACER / 02</span><span class="live">NEXT HOP</span></div>
+    <div class="abs decoder-head"><div><div class="kicker">DIFFERENT NETWORK</div><div class="section-title">先交给网关，再逐站转发</div></div><div class="section-sub">192.168.1.0/24 → 203.0.113.0/24</div></div>
+    <div class="abs topology">
+      <svg class="topo-lines" viewBox="0 0 1780 350"><path d="M220 172 H1600" stroke="#8a8782" stroke-width="5" fill="none"/><path d="M620 172 H700" stroke="#ff4a1c" stroke-width="9" fill="none"/><path d="M1580 158 L1610 172 L1580 186 Z" fill="#f2efe8"/></svg>
+      <div class="node"><div class="kind">SOURCE</div><div class="addr">192.168.1.10</div></div>
+      <div class="node gateway r1"><div class="kind">DEFAULT GATEWAY</div><div class="addr">192.168.1.1</div></div>
+      <div class="node r2"><div class="kind">ROUTER</div><div class="addr">198.51.100.1</div></div>
+      <div class="node r3"><div class="kind">NEXT HOP</div><div class="addr">198.51.100.2</div></div>
+      <div class="node r4"><div class="kind">DESTINATION</div><div class="addr">203.0.113.80</div></div>
+      <div class="packet">IPv4 → 203.0.113.80</div>
+    </div>
+    <div class="abs route-table"><div class="rt-head">ROUTING TABLE / LONGEST PREFIX MATCH</div><div class="rt-row"><span>0.0.0.0/0</span><span>198.51.100.1</span></div><div class="rt-row selected"><span>203.0.113.0/24</span><span>198.51.100.2</span></div></div>
+    <div class="abs next-hop"><div class="why">两条都匹配，选择更具体的 /24</div><div class="result">NEXT → 198.51.100.2</div></div>
+    <div class="abs doc-note">203.0.113.0/24 与 198.51.100.0/24 为文档示例地址</div>
+  </section>
+
+  <svg class="scan" viewBox="0 0 1920 1080"><defs><pattern id="scan" width="8" height="6" patternUnits="userSpaceOnUse"><rect width="8" height="1" fill="#6b6964"/></pattern></defs><rect width="1920" height="1080" fill="url(#scan)"/></svg>
+</div>
+<script>
+  const frame = new URLSearchParams(location.search).get('f') || 'title';
+  document.querySelector(`[data-frame="${frame}"]`).classList.add('active');
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('400 40px "Pixel"', sample), document.fonts.load('700 40px "Mono"', sample), document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Inter"', sample)]).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

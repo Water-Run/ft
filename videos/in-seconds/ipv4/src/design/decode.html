@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>IPv4 关键帧：地址解码台</title>
+<link rel="stylesheet" href="design.css">
+</head>
+<body>
+<div id="stage">
+  <section class="frame" data-frame="title">
+    <div class="hud"><span>IPv4 / ADDRESS CONSOLE</span><span class="live">DECODER READY</span></div>
+    <div class="abs decode-title-band">IPv4</div>
+    <div class="abs decode-title-name">100 秒速通</div>
+    <div class="abs decode-title-sub">READ THE ADDRESS. CHOOSE THE EXIT.</div>
+    <div class="abs decode-reg"><div class="decode-octet">192</div><div class="decode-dot">.</div><div class="decode-octet">168</div><div class="decode-dot">.</div><div class="decode-octet">1</div><div class="decode-dot">.</div><div class="decode-octet">10</div></div>
+    <div class="abs decode-bottom"><div class="bits">11000000 10101000 00000001 00001010</div><div class="range">4 OCTETS / 0–255 EACH</div></div>
+  </section>
+
+  <section class="frame" data-frame="dense">
+    <div class="hud"><span>ADDRESS CONSOLE / REGISTER</span><span class="live">PREFIX /24</span></div>
+    <div class="abs decoder-head"><div><div class="kicker">ADDRESS + PREFIX</div><div class="section-title">地址给出接口，前缀划定网络</div></div><div class="section-sub">192.168.1.10/24</div></div>
+    <div class="abs register">
+      <div class="register-row"><div class="rn">DECIMAL</div><div class="rv">192.168.1.10<em>/24</em></div></div>
+      <div class="bits-row">11000000 10101000 00000001 00001010</div>
+      <div class="register-row"><div class="rn">NETWORK</div><div class="rv">192.168.1.0<em>/24</em></div></div>
+      <div class="register-row"><div class="rn">DIVISION</div><div class="rv">24 NETWORK + 8 HOST</div></div>
+    </div>
+    <div class="abs mask-control corner"><div class="mask-title">PREFIX LENGTH / BITS</div><div class="mask-value">/24</div><div class="mask-track"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="host"></i><i class="host"></i><i class="host"></i><i class="host"></i><i class="host"></i><i class="host"></i><i class="host"></i><i class="host"></i></div><div class="mask-legend"><span>24 NETWORK</span><span class="orange">8 HOST</span></div></div>
+    <div class="abs decode-note"><span>ADDRESS → 192.168.1.10</span><span>NETWORK → 192.168.1.0/24</span></div>
+  </section>
+
+  <section class="frame" data-frame="diagram">
+    <div class="hud"><span>EXIT SELECTOR / COMPARE</span><span class="live">3 DESTINATIONS</span></div>
+    <div class="abs decoder-head"><div><div class="kicker">SAME ADDRESS LOGIC</div><div class="section-title">目的地不同，出口不同</div></div><div class="section-sub">本机 / 同一网络 / 另一网络</div></div>
+    <div class="abs lanes">
+      <div class="lane"><div class="input"><div class="name">LOCALHOST</div><div class="value">127.0.0.1</div></div><div class="arrow">→</div><div class="output"><div class="decision">环回：数据不出本机</div><div class="detail">127.0.0.0/8 · LOOPBACK</div></div></div>
+      <div class="lane"><div class="input"><div class="name">SAME /24 NETWORK</div><div class="value">192.168.1.1</div></div><div class="arrow">→</div><div class="output"><div class="decision">同网：直接交付</div><div class="detail">192.168.1.0/24 · DIRECT</div></div></div>
+      <div class="lane hot"><div class="input"><div class="name">DIFFERENT /24 NETWORK</div><div class="value">203.0.113.80</div></div><div class="arrow">→</div><div class="output"><div class="decision">跨网：交给默认网关</div><div class="detail">VIA 192.168.1.1 · NEXT HOP</div></div></div>
+    </div>
+    <div class="abs private-strip"><span><b>192.168.0.0/16</b> · PRIVATE ADDRESS RANGE</span><span>203.0.113.80 · DOCUMENTATION ADDRESS</span></div>
+  </section>
+
+  <svg class="scan" viewBox="0 0 1920 1080"><defs><pattern id="scan" width="8" height="6" patternUnits="userSpaceOnUse"><rect width="8" height="1" fill="#6b6964"/></pattern></defs><rect width="1920" height="1080" fill="url(#scan)"/></svg>
+</div>
+<script>
+  const frame = new URLSearchParams(location.search).get('f') || 'title';
+  document.querySelector(`[data-frame="${frame}"]`).classList.add('active');
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('400 40px "Pixel"', sample), document.fonts.load('700 40px "Mono"', sample), document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Inter"', sample)]).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

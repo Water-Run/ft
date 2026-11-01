@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>IPv4 关键帧 A：DOS 蓝屏文本模式</title>
+<!-- 方向 A：九十年代 PC 文本模式。VGA 16 色里取蓝底、灰字、亮白、亮黄、青；双线窗框、实心黑影、底行状态条。
+     画面主体取自 IPv4 自己的原始材料：RFC 791 首页与 3.1 节的头部字段图（逐位刻度尺）、IANA 的 256 个 /8 登记表。 -->
+<style>
+@font-face { font-family: "Pixel"; src: url("/fonts/VT323.ttf"); }
+@font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+:root { --blue: #0000AA; --gray: #AAAAAA; --white: #FFFFFF; --yellow: #FFFF55; --cyan: #00AAAA; --black: #000000; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--blue); }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--blue); color: var(--gray); font-family: "Pixel", "Sans SC"; }
+sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
+.frame { display: none; position: absolute; inset: 0; }
+.frame.active { display: block; }
+.abs { position: absolute; }
+.zh { font-family: "Sans SC"; }
+.w { color: var(--white); } .y { color: var(--yellow); } .g { color: var(--gray); } .k { color: var(--black); }
+
+/* 顶行：左剩余秒数，中间是当前「文件」名＝本段，右边是 32 位寄存器（全片都在走的仪表） */
+.bar { left: 0; top: 0; width: 1920px; height: 60px; background: var(--gray); color: var(--black); display: flex; align-items: center; }
+.bar .left { height: 60px; padding: 0 22px 0 60px; background: var(--black); color: var(--yellow); display: flex; align-items: baseline; gap: 10px; padding-top: 6px; }
+.bar .left b { font: 400 52px/1 "Pixel"; }
+.bar .left span { font: 500 26px/1 "Sans SC"; color: var(--gray); }
+.bar .file { padding-left: 30px; font: 400 42px/1 "Pixel"; }
+.bar .file span { font: 500 28px/1 "Sans SC"; margin-left: 14px; }
+.reg { margin-left: auto; margin-right: 60px; display: flex; align-items: center; gap: 18px; }
+.reg .cells { display: flex; gap: 3px; align-items: flex-end; height: 30px; }
+.reg .cells i { width: 8px; height: 6px; background: var(--black); }
+.reg .cells i.on { height: 30px; }
+.reg .cells i.host { background: var(--blue); }
+.reg .cells i.sep { margin-left: 10px; }
+.reg .val { font: 400 42px/1 "Pixel"; min-width: 250px; text-align: right; }
+
+/* 底部字幕带：上沿是 100 格的秒尺，走过的格变黄 */
+.cap { left: 0; top: 968px; width: 1920px; height: 112px; background: var(--black); }
+.ruler { position: absolute; left: 60px; top: 8px; height: 16px; display: flex; gap: 3px; align-items: flex-end; }
+.ruler i { width: 14px; height: 4px; background: var(--gray); }
+.ruler i.done { height: 16px; background: var(--yellow); }
+.ruler i.ten { margin-right: 6px; }
+.cap .line { position: absolute; left: 0; right: 0; top: 40px; text-align: center; font: 500 44px/1.4 "Sans SC"; color: var(--white); }
+
+/* 双线窗框＋实心黑影 */
+.win { position: absolute; border: 9px double var(--white); background: var(--blue); }
+.win.hot { border-color: var(--yellow); }
+.win > .t { position: absolute; top: -26px; height: 40px; padding: 0 14px; background: var(--blue); font: 400 40px/40px "Pixel"; color: var(--white); white-space: nowrap; }
+.win > .t .zh { font-size: 28px; font-weight: 500; vertical-align: 2px; }
+.win.hot > .t { color: var(--yellow); }
+.shadow { position: absolute; background: var(--black); }
+pre { font: 400 46px/46px "Pixel"; white-space: pre; }
+
+/* ── 帧 1：开场的历史与片名 ── */
+.rfc-page { font-size: 46px; line-height: 50px; color: var(--white); }
+.title-ip { left: 1010px; top: 92px; font: 400 400px/1 "Pixel"; color: var(--yellow); letter-spacing: -6px; }
+.title-zh { left: 1024px; top: 470px; }
+.tl-line { position: absolute; height: 6px; background: var(--gray); top: 812px; }
+.tl-break { position: absolute; top: 790px; font: 400 56px/1 "Pixel"; color: var(--gray); }
+.tl-stop { position: absolute; top: 700px; }
+.tl-stop .year { font: 400 64px/1 "Pixel"; }
+.tl-stop .dot { position: absolute; top: 103px; left: 0; width: 30px; height: 30px; }
+.tl-stop .what { position: absolute; top: 150px; left: 0; white-space: nowrap; font: 500 32px/1.35 "Sans SC"; }
+
+/* ── 帧 2：头部图里的两个地址 ── */
+.hdr { left: 120px; top: 132px; }
+.hdr .dim { color: #AAAAAA; }
+.hdr .net { color: var(--white); }
+.hdr .host { color: var(--yellow); }
+.cut { position: absolute; width: 4px; background: var(--yellow); }
+.cut-label { position: absolute; font: 400 46px/1 "Pixel"; color: var(--yellow); }
+.rowlab { position: absolute; left: 1420px; white-space: nowrap; }
+.rowlab .n { font: 500 30px/1 "Sans SC"; color: var(--gray); }
+.rowlab .v { font: 400 56px/46px "Pixel"; margin-top: 4px; color: var(--white); }
+.rowlab .v em { font-style: normal; color: var(--yellow); }
+.verdict { left: 120px; top: 680px; display: flex; align-items: baseline; gap: 36px; }
+.verdict .a { font: 400 96px/1 "Pixel"; color: var(--white); }
+.verdict .ne { font: 500 84px/1 "Sans SC"; color: var(--yellow); }
+.verdict .zh { font-size: 34px; font-weight: 500; color: var(--gray); }
+.docnote { font: 500 26px/1 "Sans SC"; color: var(--gray); }
+
+/* ── 帧 3：路径与路由表 ── */
+.node { position: absolute; top: 170px; width: 300px; height: 168px; border: 5px solid var(--white); padding: 18px 20px; background: var(--blue); }
+.node .kind { font: 500 32px/1 "Sans SC"; color: var(--gray); }
+.node .addr { margin-top: 26px; font: 400 52px/1 "Pixel"; color: var(--white); }
+.node.gw { border-color: var(--yellow); }
+.node.gw .kind { color: var(--yellow); }
+.link { position: absolute; top: 250px; height: 6px; background: var(--gray); }
+.link.done { background: var(--yellow); height: 10px; top: 248px; }
+.packet { position: absolute; top: 112px; padding: 8px 14px 4px; background: var(--yellow); color: var(--black); font: 400 40px/1 "Pixel"; white-space: nowrap; }
+.branch { position: absolute; left: 216px; top: 338px; width: 6px; height: 150px; border-left: 6px dashed #AAAAAA; }
+.branch-label { position: absolute; left: 120px; top: 500px; font: 500 30px/1.4 "Sans SC"; color: var(--gray); white-space: nowrap; }
+.rt { font: 400 58px/1 "Pixel"; }
+.rt .row { display: flex; padding: 20px 24px 14px; }
+.rt .row span:first-child { width: 430px; }
+.rt .head { color: var(--gray); }
+.rt .head span { font: 500 30px/1 "Sans SC"; }
+.rt .sel { background: var(--cyan); color: var(--black); }
+.rt .plain { color: var(--white); }
+.why { font: 500 32px/1.5 "Sans SC"; color: var(--white); }
+.why b { color: var(--yellow); font-weight: 700; }
+
+/* ── 帧 4：256 个 /8 与 IPv6 ── */
+.grid { display: grid; grid-template-columns: repeat(16, 36px); gap: 6px; }
+.grid i { height: 36px; }
+.grid i.A { background: var(--white); }
+.grid i.R { border: 4px solid #AAAAAA; }
+.grid i.L { background: var(--yellow); }
+.axis { font: 400 32px/36px "Pixel"; color: var(--gray); text-align: right; }
+.legend { display: flex; gap: 34px; font: 500 28px/1 "Sans SC"; color: var(--white); white-space: nowrap; }
+.legend span { display: flex; align-items: center; gap: 12px; }
+.legend i { width: 26px; height: 26px; }
+.big-date { font: 400 150px/1 "Pixel"; color: var(--yellow); }
+.bits { display: grid; grid-template-columns: repeat(32, 20px); gap: 4px; }
+.bits i { height: 22px; }
+.bits.v4 i { background: var(--white); }
+.bits.v6 i { background: var(--yellow); }
+.bits-lab { font: 400 54px/1 "Pixel"; color: var(--white); white-space: nowrap; }
+.bits-lab .zh { font-size: 30px; font-weight: 500; color: var(--gray); margin-left: 16px; }
+.bmp canvas { display: block; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 帧 1 · 开场（o3 说完、片名落下）：RFC 791 的首页，1981 → 1983 → 今天 -->
+  <section class="frame" data-frame="title">
+    <div class="abs bar"><div class="left"><b>089</b><span>秒</span></div><div class="file">IPV4.TXT<span>开场</span></div>
+      <div class="reg"><div class="cells" data-bits="00000000000000000000000000000000"></div><div class="val">32 <span class="zh" style="font-size:30px;font-weight:500">位</span></div></div></div>
+
+    <div class="shadow" style="left:144px;top:158px;width:800px;height:520px"></div>
+    <div class="win" style="left:120px;top:134px;width:800px;height:520px">
+      <div class="t" style="left:250px">RFC791.TXT</div>
+<pre class="abs rfc-page" style="left:44px;top:46px">RFC:  791
+
+       INTERNET PROTOCOL
+
+    DARPA INTERNET PROGRAM
+    PROTOCOL SPECIFICATION
+
+        <span class="y">September 1981</span></pre>
+    </div>
+
+    <div class="abs title-ip">IPv4</div>
+    <div class="abs title-zh bmp" data-text="100 秒速通" data-base="22" data-k="5" data-color="#FFFFFF"></div>
+
+    <div class="tl-line" style="left:120px;width:780px"></div>
+    <div class="tl-break" style="left:918px">//</div>
+    <div class="tl-line" style="left:1000px;width:800px"></div>
+    <div class="tl-stop" style="left:120px"><div class="year y">1981.09</div><div class="dot" style="background:#FFFF55"></div><div class="what w">IPv4 的规范发布<br><span class="g">RFC 791</span></div></div>
+    <div class="tl-stop" style="left:540px"><div class="year w">1983.01.01</div><div class="dot" style="background:#FFFFFF"></div><div class="what w">阿帕网改用 TCP/IP<br><span class="g">ARPANET：NCP → TCP/IP</span></div></div>
+    <div class="abs zh" style="left:1000px;top:860px;font-size:30px;font-weight:500;color:#AAAAAA">四十多年</div>
+    <div class="tl-stop" style="left:1660px"><div class="year w">2026</div><div class="dot" style="background:#FFFFFF"></div><div class="what w">今天</div></div>
+
+    <div class="abs cap"><div class="ruler" data-done="11"></div><div class="line">今天，数据怎样靠它找到正确的设备？</div></div>
+  </section>
+
+  <!-- 帧 2 · 地址与前缀（p3）：RFC 791 头部图里，源与目的两行换成真实的 32 位 -->
+  <section class="frame" data-frame="dense">
+    <div class="abs bar"><div class="left"><b>065</b><span>秒</span></div><div class="file">IPV4.TXT<span>地址与前缀</span></div>
+      <div class="reg"><div class="cells" data-bits="11000000101010000000000100001010" data-prefix="24"></div><div class="val">192.168.1.10</div></div></div>
+
+    <div class="shadow" style="left:96px;top:120px;width:1752px;height:480px"></div>
+    <div class="win" style="left:72px;top:96px;width:1752px;height:480px">
+      <div class="t" style="left:40px">RFC 791 <span class="zh">· 3.1 头部格式（节选）</span></div>
+    </div>
+<pre class="abs hdr"><span class="dim">    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+   <span class="dim">|</span><span class="net">1 1 0 0 0 0 0 0|1 0 1 0 1 0 0 0|0 0 0 0 0 0 0 1</span><span class="dim">|</span><span class="host">0 0 0 0 1 0 1 0</span><span class="dim">|</span>
+<span class="dim">   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+   <span class="dim">|</span><span class="net">1 1 0 0 1 0 1 1|0 0 0 0 0 0 0 0|0 1 1 1 0 0 0 1</span><span class="dim">|</span><span class="host">0 1 0 1 0 0 0 0</span><span class="dim">|</span>
+<span class="dim">   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span></pre>
+    <!-- /24 的切线：第 24 位之前，col 51 -->
+    <div class="cut" style="left:1066px;top:180px;height:274px"></div>
+    <div class="cut-label" style="left:1080px;top:134px">/24</div>
+    <div class="abs zh" style="left:470px;top:478px;font-size:30px;font-weight:500;color:#FFFFFF">前 24 位：网络</div>
+    <div class="abs zh" style="left:1096px;top:478px;font-size:30px;font-weight:500;color:#FFFF55">后 8 位：接口</div>
+    <div class="rowlab" style="top:234px"><div class="n">源地址 · Source</div><div class="v">192.168.1.10<em>/24</em></div></div>
+    <div class="rowlab" style="top:326px"><div class="n">目的地址 · Destination</div><div class="v">203.0.113.80</div></div>
+
+    <div class="abs verdict"><span class="a">192.168.1</span><span class="ne">≠</span><span class="a">203.0.113</span><span class="zh">前 24 位不同：不在同一网络</span></div>
+    <div class="abs docnote" style="left:120px;top:840px">203.0.113.80 是文档专用的示例地址，不对应真实服务器</div>
+
+    <div class="abs cap"><div class="ruler" data-done="35"></div><div class="line">要去的 203.0.113.80，前二十四位不同。</div></div>
+  </section>
+
+  <!-- 帧 3 · 路由（r3）：同网直交的支路退淡；跨网走网关，路由器查表选更具体的一条 -->
+  <section class="frame" data-frame="diagram">
+    <div class="abs bar"><div class="left"><b>054</b><span>秒</span></div><div class="file">IPV4.TXT<span>路由</span></div>
+      <div class="reg"><div class="cells" data-bits="11001011000000000111000101010000" data-prefix="24"></div><div class="val">203.0.113.80</div></div></div>
+
+    <div class="link done" style="left:372px;width:60px"></div>
+    <div class="link done" style="left:732px;width:60px"></div>
+    <div class="link" style="left:1092px;width:60px"></div>
+    <div class="link" style="left:1452px;width:60px"></div>
+    <div class="node" style="left:72px"><div class="kind">本机</div><div class="addr">192.168.1.10</div></div>
+    <div class="node gw" style="left:432px"><div class="kind">默认网关</div><div class="addr">192.168.1.1</div></div>
+    <div class="node" style="left:792px"><div class="kind">路由器</div><div class="addr">198.51.100.1</div></div>
+    <div class="node" style="left:1152px"><div class="kind">路由器</div><div class="addr">198.51.100.2</div></div>
+    <div class="node" style="left:1512px"><div class="kind">目的地</div><div class="addr">203.0.113.80</div></div>
+    <div class="packet" style="left:800px">DST 203.0.113.80</div>
+    <div class="branch"></div>
+    <div class="branch-label">网络相同：直接送达<br>（这次不是）</div>
+
+    <div class="shadow" style="left:816px;top:494px;width:1008px;height:360px"></div>
+    <div class="win" style="left:792px;top:470px;width:1008px;height:360px">
+      <div class="t" style="left:30px">198.51.100.1 <span class="zh">的路由表</span></div>
+      <div class="abs rt" style="left:18px;top:40px;right:18px">
+        <div class="row head"><span>目的网络</span><span>下一站</span></div>
+        <div class="row plain"><span>0.0.0.0/0</span><span>198.51.100.9</span></div>
+        <div class="row sel"><span>203.0.113.0/24</span><span>198.51.100.2</span></div>
+      </div>
+    </div>
+    <div class="abs why" style="left:120px;top:680px;width:620px">两行都能匹配<br><b>/24 更长、更具体</b>，选它<br><span class="g" style="font-size:28px">下一站 198.51.100.2</span></div>
+    <div class="abs docnote" style="left:792px;top:890px">198.51.100.0/24 与 203.0.113.0/24 都是文档专用的示例地址</div>
+
+    <div class="abs cap"><div class="ruler" data-done="46"></div><div class="line">路由器查路由表，一站一站送到目的地。</div></div>
+  </section>
+
+  <!-- 帧 4 · 结尾（e4）：256 个 /8 全部用完，最后 5 块在 2011 年 2 月；IPv6 把位数加到 128 -->
+  <section class="frame" data-frame="ending">
+    <div class="abs bar"><div class="left"><b>015</b><span>秒</span></div><div class="file">IPV4.TXT<span>地址池</span></div>
+      <div class="reg"><div class="cells" data-bits="11111111111111111111111111111111"></div><div class="val">2<sup>32</sup> ≈ 43 <span class="zh" style="font-size:30px;font-weight:500">亿</span></div></div></div>
+
+    <div class="shadow" style="left:96px;top:120px;width:840px;height:820px"></div>
+    <div class="win" style="left:72px;top:96px;width:840px;height:820px">
+      <div class="t" style="left:30px">IANA <span class="zh">· IPv4 地址空间，256 个 /8</span></div>
+      <div class="abs axis" id="axis" style="left:14px;top:40px;width:62px"></div>
+      <div class="abs grid" id="grid" style="left:92px;top:40px"></div>
+      <div class="abs legend" style="left:92px;top:730px"><span><i style="background:#FFFFFF"></i>已分配 216</span><span><i style="border:4px solid #AAAAAA"></i>保留与特殊 35</span><span><i style="background:#FFFF55"></i>最后 5 块</span></div>
+    </div>
+
+    <div class="abs big-date" style="left:990px;top:100px">2011.02.03</div>
+    <div class="abs zh" style="left:996px;top:262px;font-size:44px;font-weight:700;color:#FFFFFF">IANA 的总地址池分完</div>
+    <div class="abs zh" style="left:996px;top:330px;font-size:30px;font-weight:500;color:#AAAAAA">最后 5 个 /8 平分给 5 个地区注册机构</div>
+
+    <div class="shadow" style="left:1016px;top:456px;width:832px;height:460px"></div>
+    <div class="win hot" style="left:992px;top:432px;width:832px;height:460px">
+      <div class="t" style="left:30px">IPv6 <span class="zh">· 接班者</span></div>
+      <div class="abs bits-lab" style="left:34px;top:44px">IPv4 32 <span class="zh" style="font-size:40px;margin:0;color:#FFFFFF">位</span><span class="zh">2<sup>32</sup> ≈ 43 亿个地址</span></div>
+      <div class="abs bits v4" style="left:34px;top:108px" data-n="32"></div>
+      <div class="abs bits-lab" style="left:34px;top:172px">IPv6 128 <span class="zh" style="font-size:40px;margin:0;color:#FFFFFF">位</span><span class="zh">2<sup>128</sup> 个地址</span></div>
+      <div class="abs bits v6" style="left:34px;top:236px" data-n="128"></div>
+      <div class="abs zh" style="left:34px;top:362px;font-size:28px;font-weight:500;color:#AAAAAA">一格是一位：位数是 4 倍，地址数是 2<sup>96</sup> 倍</div>
+    </div>
+
+    <div class="abs cap"><div class="ruler" data-done="85"></div><div class="line">接班的 IPv6，把地址加长到一百二十八位；</div></div>
+  </section>
+</div>
+<script>
+  // IANA 登记表的 256 个 /8（research/lab/out_20_iana_pool.txt 的 kinds）：A 已分配，R 保留与特殊，L 2011-02 的最后五块
+  const KINDS = 'RAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLAAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALAAAAALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR';
+  const grid = document.getElementById('grid');
+  grid.innerHTML = [...KINDS].map((k) => `<i class="${k}"></i>`).join('');
+  document.getElementById('axis').innerHTML = Array.from({ length: 16 }, (_, r) => `<div style="height:42px">${r * 16}</div>`).join('');
+  document.querySelectorAll('.cells').forEach((el) => {
+    const bits = el.dataset.bits, p = +(el.dataset.prefix || 0);
+    el.innerHTML = [...bits].map((b, i) => `<i class="${b === '1' ? 'on' : ''}${p && i >= p ? ' host' : ''}${i && i % 8 === 0 ? ' sep' : ''}"></i>`).join('');
+  });
+  document.querySelectorAll('.ruler').forEach((el) => {
+    const done = +el.dataset.done;
+    el.innerHTML = Array.from({ length: 100 }, (_, i) => `<i class="${i < done ? 'done' : ''}${i % 10 === 9 ? ' ten' : ''}"></i>`).join('');
+  });
+  document.querySelectorAll('.bits').forEach((el) => { el.innerHTML = '<i></i>'.repeat(+el.dataset.n); });
+
+  const frame = new URLSearchParams(location.search).get('f') || 'title';
+  document.querySelector(`[data-frame="${frame}"]`).classList.add('active');
+
+  // 点阵中文：用 Sans SC 在小字号下画一遍，按覆盖率取整成方块再放大，像九十年代的 16/24 点阵汉字库
+  function bitmap(el) {
+    const text = el.dataset.text, base = +el.dataset.base, k = +el.dataset.k, color = el.dataset.color;
+    const c = document.createElement('canvas'), x = c.getContext('2d');
+    x.font = `700 ${base}px "Sans SC"`;
+    const w = Math.ceil(x.measureText(text).width) + 2, h = Math.ceil(base * 1.25);
+    c.width = w; c.height = h;
+    x.font = `700 ${base}px "Sans SC"`; x.textBaseline = 'top'; x.fillStyle = '#000'; x.fillText(text, 1, 1);
+    const d = x.getImageData(0, 0, w, h).data, out = document.createElement('canvas');
+    out.width = w * k; out.height = h * k;
+    const o = out.getContext('2d'); o.fillStyle = color;
+    for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) if (d[(yy * w + xx) * 4 + 3] > 120) o.fillRect(xx * k, yy * k, k, k);
+    el.appendChild(out);
+  }
+  const sample = document.getElementById('stage').textContent + '100秒速通';
+  Promise.all([document.fonts.load('400 40px "Pixel"', sample), document.fonts.load('700 40px "Sans SC"', sample), document.fonts.load('500 40px "Sans SC"', sample)])
+    .then(() => document.fonts.ready)
+    .then(() => { document.querySelectorAll('.frame.active .bmp').forEach(bitmap); document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
