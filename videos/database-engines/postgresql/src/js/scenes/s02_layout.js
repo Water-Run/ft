@@ -15,11 +15,13 @@ scene('layout', ({ root, s, c0 }) => {
   const GX = 100, GY = 400, GW = 16 * 108 - 8;
   const tblChip = tagEl(A, 'users 表 · 4096 行', GX, GY + 30, 'navy'); css(tblChip, { fontSize: '34px', padding: '10px 26px' });
   show(tblChip, T('l1', '这张表') - 0.2, { y: 16 }); sfx('pop', T('l1', '这张表'), { g: 0.4 });
-  // 表慢慢沉到磁盘那一层（文件出现的位置），一直沉到文件出现前：不在 l1、l2 之间留一段只有终端打字的静止
-  fromTo(tblChip, T('l1', '磁盘'), { y: 0 }, { y: 70, duration: Math.max(0.6, T('l2', '文件') - 0.8 - T('l1', '磁盘')), ease: 'sine.inOut', immediateRender: false }); sfx('whoosh', T('l1', '磁盘'), { g: 0.3 });
+  // 表就停在文件将要出现的位置，不再慢慢下沉（WaterRun 看正式片：「那个 User 表一直飘来飘去」）
   const e0 = ta.type(T('l1', '磁盘') - 0.2, `<span class="k">SELECT</span> pg_relation_filepath('users');`, 'postgres=#', 45);
   const tRes = Math.max(e0 + 0.1, T('l2') + 0.1);
   ta.print(tRes, ' pg_relation_filepath'); ta.print(tRes + 0.12, ` <span class="hi">${D.files.users.path}</span>`); sfx('blip', tRes, { g: 0.5, p: -0.3 });
+  // 答案出来：终端的结果区整块标亮（叠加混合，字照样清楚）——这张表就是这个文件。也让 l1、l2 之间不再只剩终端打字的静止（标签原先的缓缓下沉已去掉）
+  const resHi = h('div', 'abs', A); px(resHi, 95, 254, 1076, 72); css(resHi, { background: '#ffd36b', mixBlendMode: 'multiply' }); resHi.dataset.name = '查询结果';
+  set(resHi, 0, { autoAlpha: 0 }); set(resHi, tRes + 0.15, { autoAlpha: 1 }); tl.fromTo(resHi, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, T('l2', '文件') + 0.4);
   // 结果里的路径落下来，变成一整条文件
   const tFile = T('l2', '文件');
   hide(tblChip, tFile - 0.7, { d: 0.25 });
@@ -109,6 +111,7 @@ scene('layout', ({ root, s, c0 }) => {
   const pl = capt(A, '第几页　　第几项', AX + 30, AY + 110); css(pl, { fontSize: '26px', color: 'var(--ink2)' }); show(pl, T('l10', '地址'), { y: -6 });
   const ctT = tagEl(A, 'ctid', AX, AY - 60, 'navy'); css(ctT, { fontSize: '32px' }); slam(ctT, T('l11', 'ctid'), { from: 1.3 }); sfx('thud', T('l11', 'ctid'), { g: 0.6 });
   const ctidG = glossBox(A, 'ctid', '<b>ctid</b>：一行的地址 =（页号, 页内第几项）', AX, AY + 170, 560);
+  show(ctidG, T('l11', 'ctid') + 0.2, { y: 8 });   // 讲到 ctid 才出现（漏了这一句时它从章首一直压在页卡上：WaterRun「那个 Ctid 的一直挡着」）
 
   // ── 堆缩到下方，留出上面给索引：第 23 页的放大收回到页卡，地址 (23,26) 跟着落到第 23 页旁边 ──
   const tS = Tend('l11') + 0.35;
@@ -172,7 +175,7 @@ scene('layout', ({ root, s, c0 }) => {
   fromTo(nT.fl, T('l13', '另外一个文件'), { color: '#4f5c67' }, { color: '#b8442f', duration: 0.2 }); gone(nT.fl, T('l13e') - 0.3, 0.25);
   // 叶子在原地展开：最左边那页叶子拉出一张「名字 | 行的地址」的表，放在树的左边
   const lf0 = nT.leaf(0), lfx = nT.leafX[0];
-  const panel = h('div', 'abs', pgS); px(panel, 72, 300, 560, 268); css(panel, { border: '3px solid var(--pg)', background: '#fff', transformOrigin: `560px ${LY + 23 - 300}px` }); panel.dataset.name = '姓名树最左边那页叶子';
+  const panel = h('div', 'abs', pgS); px(panel, 72, 300, 560);   // 高度随内容：写死 268 时最后一行「…」掉到框外 css(panel, { border: '3px solid var(--pg)', background: '#fff', transformOrigin: `560px ${LY + 23 - 300}px` }); panel.dataset.name = '姓名树最左边那页叶子';
   const ph = h('div', '', panel, '姓名树最左边那页叶子'); css(ph, { background: 'var(--pg)', color: '#fff', font: '700 26px "Sans SC"', padding: '6px 18px' });
   const cell = (r, html, w, f) => { const e = h('div', '', r, html); css(e, { width: w + 'px', font: f, padding: '5px 18px' }); return e; };
   const sh = h('div', '', panel); css(sh, { display: 'flex', background: 'var(--wash)', color: 'var(--ink2)' });
@@ -194,7 +197,14 @@ scene('layout', ({ root, s, c0 }) => {
   const tW1 = T('l13e', '从根') - 0.1;
   tl.fromTo(dot, { autoAlpha: 1, x: 0, y: 0 }, { x: lfx - (nT.rx + nT.rootW / 2), y: LY - RY + 2, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, tW1);
   gone(dot, T('l13e', '地址') + 0.1, 0.25);
-  const toHeap = curve(ovP, [632, 400], [p23x, p23y - 4], 'warn', { w: 4, bend: 640 }); arrowIn(toHeap, T('l13e', '堆里') - 0.3, 0.6);
+  // 拿到地址：叶子里 Alice 那一项的地址格亮起，地址从格子里飞到堆的第 23 页（WaterRun：「姓名索引拿到地址 没有体现拿到地址」）
+  const acB = box(prow[0].ac, pgS), tGot = T('l13e', '拿到') - 0.1;
+  // 亮起用一块叠在格子上的琥珀色块，不 set 格子本身的颜色：set 会在第一次播到时记下当时继承来的字色，倒回去时写回，跳播与顺播就不一样了
+  const acIn = box(prow[0].ac, panel), acHi = h('div', 'abs', panel, `(${P}, ${LP})`); px(acHi, acIn.x, acIn.y, acIn.w, acIn.h);
+  css(acHi, { background: '#ffd36b', color: '#193145', font: '600 30px var(--mono)', padding: '5px 18px', boxSizing: 'border-box', borderLeft: '1.5px solid var(--line)' });
+  set(acHi, 0, { autoAlpha: 0 }); set(acHi, tGot, { autoAlpha: 1 }); sfx('tick', tGot + 0.1, { g: 0.5 });
+  fly(pgS, `(${P}, ${LP})`, [acB.x + 14, acB.y + 2], [p23x - 52, p23y - 34], T('l13e', '地址') - 0.15, { cls: 'warn', fs: 28, d: 0.95, sink: true }); sfx('whoosh', T('l13e', '地址') - 0.1, { g: 0.3 });
+  const pnB = box(panel, pgS), toHeap = curve(ovP, [acB.x + 150, pnB.b + 2], [p23x, p23y - 4], 'warn', { w: 4, bend: (pnB.b + p23y) / 2 }); arrowIn(toHeap, T('l13e', '地址') - 0.1, 0.9);   // 箭头和飞过去的地址一起走到第 23 页；从表的底边、地址那一栏下方出发（从右边线出发会先贴着框边走一段）
   set(grid.pages[P], T('l13e', '取'), { backgroundColor: '#ffe7a6' }); sfx('pop', T('l13e', '取'), { g: 0.5 });
   const got = tagEl(pgS, '取出：2050  Alice  42', p23x + 60, p23y - 46, 'ok'); css(got, { fontSize: '22px' }); show(got, T('l13e', '这一行') - 0.1, { x: -8 }); pgTexts.push(got);
   [got, toHeap].forEach((e) => gone(e, T('l14') - 0.2, 0.3)); gone(panel, T('l14') - 0.2, 0.3); gone(pl0, T('l14') - 0.2, 0.3);
@@ -202,7 +212,8 @@ scene('layout', ({ root, s, c0 }) => {
   // 三个索引：主键树、年龄树也从各自的文件长出来
   const pT = grow('users_pkey', T('l14', '主键') - 0.1, T('l14b', 'B 树') - 0.3, '367 · 733 · …');
   const aT = grow('idx_age', T('l14', '年龄') - 0.1, T('l14b', 'B 树') - 0.15, '32 · 46 · 60 · 74');
-  [pT, nT, aT].forEach((tt) => [...tt.tiles, tt.fl].forEach((e) => { if (!tt.t.leaves.includes(tt.tiles.indexOf(e)) && e !== tt.root) gone(e, T('l15') - 0.2, 0.3); }));
+  // 文件那一排剩下的页卡和文件说明收起。第 0 页早在页飞起时收了、姓名索引的说明在 l13e 前收了：不再收一次（gone 写定从 1 起，重复收会先闪回来——WaterRun「一颗 B 树到主键树有闪烁」）
+  [pT, nT, aT].forEach((tt) => [...tt.tiles, tt.fl].forEach((e) => { if (!tt.t.leaves.includes(tt.tiles.indexOf(e)) && e !== tt.root && e !== tt.tiles[0] && !(tt === nT && e === tt.fl)) gone(e, T('l15') - 0.2, 0.3); }));
   // 逐棵报数：讲到哪棵，那一列框起来、写上「一个根 · 几页叶子」
   const colFrame = (tt, t0, t1) => { const f = h('div', 'abs', pgS); px(f, tt.c.x - 12, RY - 60, tt.c.w + 24, LY + 64 - RY + 60); css(f, { border: '3px solid var(--navy)' }); show(f, t0, { y: 0, d: 0.3 }); hide(f, t1, { d: 0.25 }); };
   [[pT, 'l15', '<b>主键树</b>：一个根 · 12 页叶子'], [nT, 'l15b', '<b>姓名树</b>：一个根 · 39 页叶子'], [aT, 'l16', '<b>年龄树</b>：一个根 · 5 页叶子']].forEach(([tt, cue, html], i, arr) => {
@@ -236,7 +247,9 @@ scene('layout', ({ root, s, c0 }) => {
   fromTo(grid.pages[P], T('l20b', '取行'), { backgroundColor: '#ffffff' }, { backgroundColor: '#ffe7a6', duration: 0.25 }); sfx('pop', T('l20b', '取行'), { g: 0.5 });
   // ── 两种做法：PostgreSQL 的整张结构图缩到右半边，左边建起 InnoDB 的做法 ──
   const tSh = T('l21') - 0.3;
-  pgTexts.forEach((e) => gone(e, tSh - 0.1, 0.25)); [pT, nT, aT].forEach((tt) => gone(tt.hd, tSh - 0.1, 0.25)); 
+  // 只收这时还在的字；之前已经收起的（ctid 标签、三个文件说明、「取出」、一项多大、42 岁那项）再收一次会先闪回来
+  const gonePrev = new Set([ctidTag, nT.fl, pT.fl, aT.fl, got, szB, post]);
+  new Set([...pgTexts, pT.hd, nT.hd, aT.hd]).forEach((e) => { if (!gonePrev.has(e)) gone(e, tSh - 0.1, 0.25); });
   toP.forEach((e) => gone(e, tSh - 0.1, 0.25));
   fromTo(pgS, tSh, { x: 0, y: 0, scale: 1 }, { x: 1010, y: 300, scale: 0.44, duration: 0.9, ease: 'power3.inOut', immediateRender: false }); sfx('whoosh', tSh, { g: 0.4 });
   const S2 = (x, y) => [1010 + 0.44 * x, 300 + 0.44 * y];
@@ -303,8 +316,13 @@ scene('layout', ({ root, s, c0 }) => {
   il.forEach((lf, i) => [...lf.children].forEach((r, k) => show(r, tFill0 + (tFill1 - tFill0) * (i * 4 + k) / 24, { y: 0, d: 0.15 })));
   // 章末：InnoDB 那半边淡去，PostgreSQL 的结构图放回整屏——下一章从堆里的第 23 页接着讲
   const tEnd = Tend('l25') + 0.4;
-  const cW = h('div', 'abs', A); px(cW, 0, 0, 1920, 1080);
-  [...A.children].forEach((e) => { if (e !== pgS && e !== cW) cW.appendChild(e); });
-  gone(cW, Math.min(tEnd, T('l25', '主键索引') + 0.3), 0.5);   // 讲到「主键索引也一样」时 InnoDB 那半边收走，只留 PostgreSQL
+  // 讲到「主键索引也一样」时只收 InnoDB 那半边；右边三条指向堆的箭头、「主键索引也一样」和标题留到结构图放回整屏之前
+  // （原先把 A 里除结构图外的东西全收进同一层一起收走，箭头刚画出就没了——WaterRun「动画怎么消失了」）
+  const inno = new Set([li, ir, ...il, rowL, bigRow, inr, inl, tok, two, ovC]);
+  const cW = h('div', 'abs', A); px(cW, 0, 0, 1920, 1080); cW.dataset.name = 'InnoDB 那半边';
+  const cR = h('div', 'abs', A); px(cR, 0, 0, 1920, 1080);
+  [...A.children].forEach((e) => { if (e !== pgS && e !== cW && e !== cR) (inno.has(e) ? cW : cR).appendChild(e); });
+  gone(cW, Math.min(tEnd - 0.6, T('l25', '主键索引') + 0.3), 0.5);
+  gone(cR, tEnd - 0.25, 0.3);
   fromTo(pgS, tEnd + 0.1, { x: 1010, y: 300, scale: 0.44 }, { x: 0, y: 0, scale: 1, duration: 1.3, ease: 'power3.inOut', immediateRender: false }); sfx('whoosh', tEnd + 0.1, { g: 0.3 });
 });

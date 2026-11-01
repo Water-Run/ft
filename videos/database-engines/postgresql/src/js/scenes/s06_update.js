@@ -66,7 +66,9 @@ scene('update', ({ root, s, c0 }) => {
   // 不写更新实验的事务号：第七章讲的是并发实验的 4856，两处数字不同会让人疑惑
   keyed(old.xmax).at(T('u8', '事务号'), { html: 'xmax <b>本次事务</b>' }); set(old.xmax, T('u8', '事务号'), { backgroundColor: '#b8442f' }); sfx('tick', T('u8', '事务号'));
   keyed(old.ctid).at(T('u9', '新版本'), { html: `t_ctid (${nP},${nL})` }); sfx('tick', T('u9', '新版本'));
-  const ov = overlay(A); const ar = curve(ov, [92 + 328 + 105, 620], [1028 + 255, 586], 'navy', { bend: 500 }); arrowIn(ar, T('u9', '新版本') - 0.2, 0.6);
+  // t_ctid 指向新版本那一行的开头。走「空隙」框和第一行之间那条 20 像素的空白横过去：弧线的顶会贴着两行「…」的分界线走一段，像表格线
+  const ov = overlay(A), AY0 = 483, ax0 = 92 + 328 + 105, ax1 = 1028 + 8;
+  const ar = path(ov, `M${ax0},620 L${ax0},${AY0 + 16} Q${ax0},${AY0} ${ax0 + 16},${AY0} L${ax1 - 16},${AY0} Q${ax1},${AY0} ${ax1},${AY0 + 16} L${ax1},586`, 'navy', { w: 3, arrow: true }); arrowIn(ar, T('u9', '新版本') - 0.2, 0.6);
   keyed(nv.xmin).at(T('u10', 'xmin'), { html: 'xmin <b>本次事务</b>' }); set(nv.xmin, T('u10', 'xmin'), { backgroundColor: '#b8442f' }); sfx('tick', T('u10', 'xmin'));
   // 视线框：跟着旁白指到正在讲的那一处
   const rA = focusRing(A);
@@ -152,7 +154,7 @@ scene('update', ({ root, s, c0 }) => {
   const ok1 = mk('users_hot', 72, 'ok'), ok2 = mk('users_hot', 620, 'ok');   // 绿底：满足；红底：不满足（本片不用 ✓ ✗ 符号）
   const x1 = mk('users：年龄有索引', 270, 'warn'), x2 = mk(`users：第 ${oP} 页满了`, 818, 'warn');
   show(ok1, T('u23', '年龄不建索引'), { y: 8 }); show(ok2, T('u23', '90'), { y: 8 }); sfx('tick', T('u23', '90'), { p: 0.3 });
-  slam(x1, T('u26', '年龄有索引'), { from: 1.2 }); slam(x2, T('u26', '满了'), { from: 1.2 }); sfx('error', T('u26', '年龄有索引'), { g: 0.5 }); sfx('error', T('u26', '满了'), { g: 0.5 });
+  slam(x1, T('u26', '年龄有索引'), { from: 1.2 }); slam(x2, T('u26', '第'), { from: 1.2 }); sfx('error', T('u26', '年龄有索引'), { g: 0.5 }); sfx('error', T('u26', '第'), { g: 0.5 });   // 念到「第 23 页」就出来（原先等到「满了」，WaterRun：「动画出来稍微慢了一丢丢」）
   // 页内：旧项 → 新项；索引只指旧项。页一开始就在：旧版本、留着的空位、指向旧版本的索引
   const [hP, hL] = H.old, [, hN] = H.new;
   const PY = 372;
@@ -211,7 +213,7 @@ scene('update', ({ root, s, c0 }) => {
   [lfL, lf, tpL, tp, tprL, ffN].forEach((e) => gone(e, T('u24') - 0.35, 0.3));
   const rC = focusRing(C);
   rC.at(T('u19', '一是'), cond1).at(T('u20', '二是'), cond2).at(T('u20', '原来那一页'), [980, PY + 92, 420, 56]).at(T('u21', '本页') + 0.4, [990, PY + 100, 400, 40]).at(T('u21b'), hidx)
-    .at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '满了'), x2).at(tLf, lf).at(tTb, tp)
+    .at(T('u25') - 0.2, [72, 200, 1068, 120]).at(T('u26', '年龄有索引'), x1).at(T('u26', '第'), x2).at(tLf, lf).at(tTb, tp)
     .at(T('u23', '换一张'), [520, PY - 40, 900, 210]).at(T('u24', 'HOT'), t2).at(T('u24', '一项都没加'), t2).off(s.end - 0.5);
   gone(jump, T('u24') - 0.35, 0.25);
 });

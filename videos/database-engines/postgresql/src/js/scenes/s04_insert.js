@@ -164,10 +164,13 @@ scene('insert', ({ root, s, c0 }) => {
   // 留了一成的页：多一项落进空位，不用分裂
   const tE = Tend('i14b') + 0.05, lx2 = 120 + 2 * (LW + 20);
   fly(B, '多一项', [lx2 + 40, 860], [lx2 + LW - 70, 540], tE, { cls: 'navy', fs: 22, d: 0.45, sink: true });
-  fromTo(leaves9[2].f, tE + 0.55, { width: FW * 0.9 }, { width: FW * 0.95, duration: 0.25 });
+  // 新进来的那一项单独用深色画在空位里，原来的九成不动，这页改写「九成＋一项」：不然这页看上去只是九成没画齐（WaterRun「九成和九成咋这么不平均」）
+  const ni = h('div', 'abs', leaves9[2]); px(ni, 5 + FW * 0.9, 5, RW / 2, 84); css(ni, { background: 'var(--pg)', transformOrigin: '0 50%' }); ni.dataset.name = '新进来的一项';
+  tl.fromTo(ni, { scaleX: 0 }, { scaleX: 1, duration: 0.25, immediateRender: true }, tE + 0.55);
   fromTo(rooms[2], tE + 0.55, { width: RW, x: 0 }, { width: RW / 2, x: RW / 2, duration: 0.25 });
+  keyed(leaves9[2].lab).at(tE + 0.6, { html: '九成＋一项' });
   hide(roomL, tE + 0.5, { d: 0.2 });
-  const okL = h('div', 'tag ok', B, '留了一成：放得下，不用分裂'); px(okL, 120, 640); css(okL, { fontSize: '24px' }); set(okL, 0, { autoAlpha: 0 }); show(okL, tE + 0.7, { y: -6 });
+  const okL = h('div', 'tag ok', B, '留了一成：放得下，不用分裂'); px(okL, lx2 - 20, 640); css(okL, { fontSize: '24px' }); set(okL, 0, { autoAlpha: 0 }); show(okL, tE + 0.7, { y: -6 });   // 标在这一页下面
   sfx('pop', tE + 0.6, { g: 0.5 });
   // 起名：一页装到几成就停，叫填充比例；索引默认 90
   const ffN = h('div', 'abs', B, '<b>填充比例</b>：一页装到几成就停　·　索引默认 <b>90</b>'); ffN.dataset.gloss = '填充比例'; px(ffN, 120, 440); css(ffN, { font: '500 30px "Sans SC"', color: 'var(--ink)', background: '#fff', padding: '6px 16px', borderLeft: '8px solid #e0a11b' });

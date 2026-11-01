@@ -133,7 +133,8 @@ scene('query', ({ root, s, c0 }) => {
   const PL = leafPage(1000, 200, 400, '姓名树的叶子页', [[`Alice → (${P},${LP})`, true], ['User00001-… → (0,1)'], ['User00002-… → (0,2)']], 'pg');
   wipe(PL.b, T('q16') - 0.1, { dir: 'l', d: 0.45 }); PL.rs.forEach((r, i) => show(r, T('q16', '地址') - 0.2 + i * 0.1, { x: -10, y: 0, d: 0.3 }));
   // 地址落回下面那条堆（第 23 页）：还得再去一趟
-  const pa2 = curve(ovC, [1400, 290], [pageX, 646], 'accent', { w: 3.5, bend: 520 }); arrowIn(pa2, T('q16', '堆') - 0.4, 0.5); sfx('tick', T('q16', '堆'), { p: 0.4 });
+  // 从叶子页的底边出发（原先从右边线出发、一开始竖直向下，沿着右框走了一段，露出框外——WaterRun「箭头右上角跑到框外一点点」）
+  const pb = box(PL.b, C), pa2 = curve(ovC, [pb.r - 110, pb.b + 2], [pageX, 646], 'accent', { w: 3.5, bend: (pb.b + 646) / 2 }); arrowIn(pa2, T('q16', '堆') - 0.4, 0.5); sfx('tick', T('q16', '堆'), { p: 0.4 });
   fly(C, `(${P},${LP})`, [1300, 300], [pageX - 40, 600], T('q16', '堆') - 0.4, { cls: 'navy', fs: 22, d: 0.5, sink: true });
   const again = tagEl(C, '还得再去一趟堆', pageX + 30, 590, 'warn'); css(again, { fontSize: '24px' }); show(again, T('q16', '再去') - 0.1, { x: -8 });
   const fC = focusRing(C);

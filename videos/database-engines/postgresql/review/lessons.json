@@ -6,19 +6,19 @@
       "rev": 2,
       "result": "pass",
       "note": "",
-      "evidence": "主问题在 0:54（o16「同一件事，PostgreSQL 走的是另一条路」）提出；各章依次回答放（2:10 起）、找（7:33）、改（8:44）、并发（10:37）、删（12:37）、出错（15:12），16:51 起「五个问题」逐条回答，18:22 引出 SQLite。方法：通读第 3 稿与按章抽帧总览（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
+      "evidence": "主问题在 0:54（o16「同一件事，PostgreSQL 走的是另一条路」）提出；各章依次回答放（2:10 起）、找（7:33）、改（8:44）、并发（10:37）、删（12:37）、出错（15:12），16:51 起「五个问题」逐条回答，18:22 引出 SQLite。方法：通读第 3 稿与按章抽帧总览（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）"
     },
     "F02": {
       "rev": 3,
       "result": "pass",
       "note": "",
-      "evidence": "同一个 Alice（2050 号，42 岁）从注册（6:26）、被找到（7:33）、改年龄（8:44）、并发读写（10:37，Bob、Carol）、注销与 Dave 复用位置（12:37）到崩溃实验（16:06）一路走完；第 23 页、第 26 个指针每次出现都由上一步指过来（第二章叶子按地址落回第 23 页，第三章指针箭头指到行首）。方法：按章抽帧总览、scan.js 逐句说完时刻的画面文字（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
+      "evidence": "同一个 Alice（2050 号，42 岁）从注册（6:26）、被找到（7:33）、改年龄（8:44）、并发读写（10:37，Bob、Carol）、注销与 Dave 复用位置（12:37）到崩溃实验（16:06）一路走完；第 23 页、第 26 个指针每次出现都由上一步指过来（第二章叶子按地址落回第 23 页，第三章指针箭头指到行首）。方法：按章抽帧总览、scan.js 逐句说完时刻的画面文字（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）"
     },
     "F03": {
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "1:50 前后交代 PostgreSQL 18；InnoDB 的对照都在本片补齐前提：12:30 前后「InnoDB 默认的，是可重复读」对照本片的读已提交，删除对照 purge（13:44），崩溃对照双写缓冲区（16:00）。方法：逐句核对文案与画面（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "1:50 前后交代 PostgreSQL 18；InnoDB 的对照都在本片补齐前提：12:30 前后「InnoDB 默认的，是可重复读」对照本片的读已提交，删除对照 purge（13:44），崩溃对照双写缓冲区（16:00）。方法：逐句核对文案与画面（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "FACTS T30–T38；o4–o5a、m6a–m6c、b6、b17–b26"
     },
     "F04": {
@@ -44,14 +44,14 @@
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "屏上的终端输出、日志与文件名都来自 research 实验产物（库名 users、数据目录内的相对文件名 16466 等），没有个人路径、用户名、主机名或地址；逐章抽帧核对（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "屏上的终端输出、日志与文件名都来自 research 实验产物（库名 users、数据目录内的相对文件名 16466 等），没有个人路径、用户名、主机名或地址；逐章抽帧核对（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "lab/08_compare.py clean()、out_08_compare.json；comparison-sources.json"
     },
     "F08": {
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "README「交付」的时长、规格、响度均在最终 MP4 上用 ffprobe 与 finish.js 的响度测量读取后填写（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "README「交付」的时长、规格、响度均在最终 MP4 上用 ffprobe 与 finish.js 的响度测量读取后填写（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "project.json check.duration；NOTES 当前估算；FACTS T30–T38"
     },
     "F09": {
@@ -65,14 +65,14 @@
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "对 InnoDB 的每处引用都在本片说明前提（默认隔离级别、undo、purge、双写缓冲区）；事务、快照、事务号在本片第一次用时都有解释句（10:37 起）。方法：逐句检查文案（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "对 InnoDB 的每处引用都在本片说明前提（默认隔离级别、undo、purge、双写缓冲区）；事务、快照、事务号在本片第一次用时都有解释句（10:37 起）。方法：逐句检查文案（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "README 承接表；q10–q15、u11–u13、m6a–m6c、w2–w4、compare、z8–z9"
     },
     "F11": {
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "外文材料旁都有中文：重启日志每行右侧中文释义（16:15 前后），串行化报错下方中文标签（12:27 前后），EXPLAIN 输出旁有中文说明。方法：逐章抽帧（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "外文材料旁都有中文：重启日志每行右侧中文释义（16:15 前后），串行化报错下方中文标签（12:27 前后），EXPLAIN 输出旁有中文说明。方法：逐章抽帧（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "b7–b22；FACTS T32–T36；STYLE 画面中文释义"
     },
     "F12": {
@@ -85,14 +85,14 @@
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "第一章（1:05 起）交代 1986 年伯克利的研究项目、Postgres95、1996 年定名与 SQL 标准符合度，再进入结构；方法：通读与抽帧（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "第一章（1:05 起）交代 1986 年伯克利的研究项目、Postgres95、1996 年定名与 SQL 标准符合度，再进入结构；方法：通读与抽帧（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "h6–h18、o4–o5a、compare；FACTS T36–T38"
     },
     "F14": {
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "片尾 18:35 起 SELECT * FROM credits; 只上画面、没有旁白（credits 为静默 cue）；名单取自 project.json；导出的校对稿没有制作指令（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "片尾 18:35 起 SELECT * FROM credits; 只上画面、没有旁白（credits 为静默 cue）；名单取自 project.json；导出的校对稿没有制作指令（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "script.js zCredit；review/PRODUCTION.md"
     },
     "F15": {
@@ -106,7 +106,7 @@
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "配色取自 PostgreSQL 官网与文档的 Pg 蓝（#336791）与深蓝，等宽字体显示 psql 与 pageinspect 的真实输出；不放标志（系列约定）。方法：抽帧不看字幕可认出对象（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）",
+      "evidence": "配色取自 PostgreSQL 官网与文档的 Pg 蓝（#336791）与深蓝，等宽字体显示 psql 与 pageinspect 的真实输出；不放标志（系列约定）。方法：抽帧不看字幕可认出对象（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）",
       "script_evidence": "src/css/style.css 开头注释；src/js/config.js；README「视觉系统」"
     },
     "F17": {
@@ -125,7 +125,7 @@
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "逐帧脚本扫全片 30fps 的每一帧找「一闪而过」（0.03–1 秒内变样又变回），改掉第六章「查询」两次飞行与第八章 Dave 问题标签两处；动作前后另取 0.1 秒级帧组核对（第三章指针、第七章锁、第八章可见性图）（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
+      "evidence": "逐帧脚本扫全片 30fps 的每一帧找「一闪而过」（0.03–1 秒内变样又变回），改掉第六章「查询」两次飞行与第八章 Dave 问题标签两处；动作前后另取 0.1 秒级帧组核对（第三章指针、第七章锁、第八章可见性图）（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）"
     },
     "F20": {
       "rev": 2,
@@ -143,7 +143,7 @@
       "rev": 2,
       "result": "pass",
       "note": "",
-      "evidence": "scan.js 全片 GLOSS 0 项：每个星号术语第一次说完时画面上有 data-gloss 注解（快照、读已提交、可见性图、检查点等）；新加的说明都挂在所指对象旁（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
+      "evidence": "scan.js 全片 GLOSS 0 项：每个星号术语第一次说完时画面上有 data-gloss 注解（快照、读已提交、可见性图、检查点等）；新加的说明都挂在所指对象旁（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）"
     },
     "F23": {
       "rev": 1,
@@ -185,7 +185,7 @@
       "rev": 1,
       "result": "pass",
       "note": "",
-      "evidence": "按章抽帧：第三章一张字节表到底；第七章前两段同一个画面（会话卡、提交状态、版本卡、数轴常驻）；第九章日志带与两页贯穿；章内换段都带一样东西过去（第六章两个版本飞成堆里两版本、第八章第 23 页缩进堆里一格）（out/postgresql-zh-1080p60.mp4，SHA-256 33958db3c5ea…）"
+      "evidence": "按章抽帧：第三章一张字节表到底；第七章前两段同一个画面（会话卡、提交状态、版本卡、数轴常驻）；第九章日志带与两页贯穿；章内换段都带一样东西过去（第六章两个版本飞成堆里两版本、第八章第 23 页缩进堆里一格）（out/postgresql-zh-1080p60.mp4，SHA-256 b8716f69b9be…）"
     }
   },
   "history": [

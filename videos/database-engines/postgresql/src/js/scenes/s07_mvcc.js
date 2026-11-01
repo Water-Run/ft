@@ -140,7 +140,8 @@ scene('mvcc', ({ root, s, c0 }) => {
   const snapG = glossBox(A, '快照', '<b>快照</b>：查询开始那一刻，记下哪些事务已经结束、哪些还没有', PX, PY.carol + 14, PW);
   set(snapG, 0, { autoAlpha: 0 }); show(snapG, T('m6', '快照') + 0.1, { y: 10 }); gone(snapG, T('m12') - 0.6, 0.3);
   fly(A, '快照', [PX + PW - 120, PY.bob + 20], [XB - 40, 700], T('m6', '快照'), { cls: 'navy', fs: 24, d: 0.7, sink: true }); sfx('whoosh', T('m6', '快照'), { g: 0.3 });
-  const snapT = h('div', 'abs', A, `<b>Bob 的快照</b>　<span class="mono" style="font-size:22px;color:var(--ink2)">${M.snapshot}</span>`); px(snapT, XB - 120, 690); css(snapT, { font: '500 24px "Sans SC"', color: 'var(--navy)', whiteSpace: 'nowrap' });
+  // 用一句话写快照记下了什么（原先写快照的原始格式「4856:4856:」，紧挨着 Bob，像是说 Bob 就是 4856——WaterRun「他就是4856为什么看得到4856」）
+  const snapT = h('div', 'abs', A, `<b>Bob 的快照</b>：Alice 的 ${X} 还没结束`); px(snapT, XB - 120, 690); css(snapT, { font: '500 24px "Sans SC"', color: 'var(--navy)', whiteSpace: 'nowrap' });
   const cut = h('div', 'abs', A); px(cut, XB - 3, 728, 6, 172); css(cut, { background: 'var(--warn)', transformOrigin: '50% 0' }); cut.dataset.name = '快照的分界';
   const hatch = h('div', 'abs', A); px(hatch, XB + 3, 758, AX1 - XB - 3, 128); css(hatch, { background: 'repeating-linear-gradient(135deg, rgba(95,106,115,.2) 0 8px, transparent 8px 16px)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲、未提交或作废，不是渐变
   const ldone = h('div', 'abs', A, '← 已经结束'); px(ldone, XB - 250, 728); css(ldone, { font: '700 22px "Sans SC"', color: 'var(--ok)', whiteSpace: 'nowrap' });
@@ -257,7 +258,7 @@ scene('mvcc', ({ root, s, c0 }) => {
   tl.fromTo(xc1, { rotationX: -90 }, { rotationX: 0, duration: 0.2, ease: 'power1.out', immediateRender: false }, tOk); sfx('chime', tOk + 0.1, { g: 0.6 });
   say(pa, 1, '<b style="color:var(--ok)">已提交</b>', tOk);
   gone(lk0, tOk, 0.2); set(vo.xmax, tOk, { backgroundColor: '#193145', boxShadow: 'inset 0 0 0 0px #f2c94c' }); set(vn.xmin, tOk, { backgroundColor: '#193145' });   // lint-ok: 0 模糊的外圈实色描边（box-shadow spread），用于原地指认，不是投影
-  [fkB, fb].forEach((e) => gone(e, tOk, 0.3));
+  [fkB, fb].forEach((e) => tl.fromTo(e, { autoAlpha: 0.45 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, tOk));   // 它们已退到 45%：从 45% 淡出（gone 写定从 1 起，会先亮一下）
   [fkA, fa].forEach((e) => tl.fromTo(e, { opacity: 0.45 }, { opacity: 1, duration: 0.25, immediateRender: false }, tOk));
   tl.fromTo(fkA, { scale: 1 }, { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1, transformOrigin: '0 50%', immediateRender: false }, tOk + 0.1);
   gone(wb, T('m19') - 0.2, 0.25);
@@ -347,5 +348,5 @@ scene('mvcc', ({ root, s, c0 }) => {
   const zh = tagEl(C, '无法串行化：并发修改了同一行（SQLSTATE 40001）', L0, yP + 276, 'warn'); css(zh, { fontSize: '26px' }); show(zh, T('m26'), { y: 8 });
   const inn = noteBox(C, '<b>InnoDB</b>　默认是可重复读', 72, 900, 640, 'grey'); show(inn, T('m27'), { y: 10 });
   const rC = focusRing(C);
-  rC.at(T('m21', '读已提交'), LR.hd).at(T('m23', '可重复读'), LP2.hd).at(T('m26', '无法串行化'), zh).at(T('m27', '可重复读'), LP2.hd).off(s.end - 0.6);
+  rC.at(T('m21', '读已提交'), LR.hd).at(T('m23', '可重复读'), LP2.hd).at(T('m26', '无法'), zh).at(T('m27', '可重复读'), LP2.hd).off(s.end - 0.6);
 });
