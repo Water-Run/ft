@@ -7,15 +7,38 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
   },
-  "stage": "review",
-  "next": "第 8 稿（2026-11-01，自审三轮后）待 WaterRun 审定与确认；已选定封面第 1 张、配音 female-chengshu（1.05）、配乐「页的脉冲」",
+  "stage": "preview",
+  "next": "预览 r1：第 9 稿已确认并配音（15:10），11 个场景已写完，自审后交 WaterRun 看",
   "credits": {
     "planner": "WaterRun",
     "models": [
-      { "name": "GPT-6.1 Sol", "roles": ["取证", "实测与结构测绘", "简报整理"] },
-      { "name": "Claude Opus 5.5", "roles": ["补充取证", "文案", "视觉设计"] }
+      {
+        "name": "GPT-6.1 Sol",
+        "roles": [
+          "取证",
+          "实测与结构测绘",
+          "简报整理"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "补充取证",
+          "文案",
+          "视觉设计",
+          "场景",
+          "配乐"
+        ]
+      }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "旁白合成"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "tts": {
@@ -43,13 +66,13 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4,
+    "mb": 1,
     "gpu": 1
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
-    "duck_db": 9,
+    "music": "tools/music.py",
+    "music_db": -15,
+    "duck_db": 8,
     "sfx_db": -8
   },
   "check": {

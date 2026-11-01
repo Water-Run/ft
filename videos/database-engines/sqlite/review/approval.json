@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "0414667abd9dc9e85050b8645c984d534051bdb23738b9a2423461cb44a7fd05",
+      "status": "approved",
+      "content_sha256": "720ef15e1468d1bd910c24a103bb1b8a991a6a2345af544ced8ea7040d78a0de",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-11-01T13:17:25+08:00",
+      "evidence": "review/NOTES.md「明确确认」：WaterRun 看第 8 稿后回复「先出Preview再迭代吧, 要提到TCL. 专门一句话将OLTP到OLAP.(动画T变成A, 包括画面解释) 源码祝福带源码.」；制作方只加了点名的 Tcl 两句（h10b、h10c）与 OLTP 到 OLAP 两句（e10b、e10c），即此内容哈希。WaterRun 没有逐句看过第 9 稿全文。 配音后 s15、s17、s27、w15、w17、d3、d6、z4 八句超过 6 秒，各在逗号、冒号或分号处拆成两条字幕（文字不变：s15c、s17b、s27b、w15b、w17b、d3b、d6b、z4b），哈希由 bf7cf7e4… 变为此值。"
     }
   }
 }

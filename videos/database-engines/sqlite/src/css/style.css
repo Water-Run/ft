@@ -12,7 +12,7 @@
   --wheat: #f5deb3;           /* 悬停底色：被选中、被读到的格子的底色；上面压黑字 */
   --code: #eeeeee;            /* 代码块底色 */
   --code-line: #80a796;       /* 代码块的边；也作年龄索引的页色 */
-  --red: #aa3333;             /* 文档里 TODO 的红：出错、作废 */
+  --red: #aa3333;             /* 文档里待办提示的红：出错、作废 */
   --dim: #5f6b70;             /* 注解。对白底 5.6:1 */
   --rule: #444444;            /* 表头下的细线 */
   --M: 120px;                 /* 版心边距 */
@@ -53,3 +53,35 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 /* 片尾名单 */
 .credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
 .credit-row { break-inside: avoid; margin-bottom: 30px; }
+
+/* ── 文档页的零件（src/js/parts.js、config.js 用） ── */
+body { font-family: "Inter", "Sans SC"; }
+.doc-head { pointer-events: none; z-index: 20; }
+.doc-brand { left: 60px; top: 40px; font: 400 44px "Inter", "Sans SC"; color: var(--teal); }
+.doc-tag { right: 60px; top: 30px; text-align: right; font: italic 400 25px/1.35 "Inter"; color: #1a1a1a; }
+.doc-menu { left: 60px; top: 110px; width: 1800px; height: 46px; background: var(--teal); border-radius: 6px; display: flex; align-items: center; padding: 0 26px; box-sizing: border-box; gap: 42px; }
+.doc-item { font: 400 25px "Inter", "Sans SC"; color: #fff; white-space: nowrap; }
+.doc-item.now { text-decoration: underline; text-underline-offset: 5px; }
+.doc-right { margin-left: auto; }
+.lnk { color: var(--teal); text-decoration: underline; text-underline-offset: 4px; }
+.gloss { border: 2.5px solid var(--teal); background: #fff; padding: 14px 22px; font-size: 28px; line-height: 1.45; color: #1a1a1a; white-space: normal; box-sizing: border-box; }
+.gloss b { font-weight: 700; color: #000; }
+.codeblock { color: #000; line-height: 1.4; }
+.btn { background: #dddddd; border: 2px solid #aaaaaa; border-radius: 5px; padding: 2px 14px; color: #000; white-space: nowrap; }
+.err { border: 1.5px solid var(--red); color: var(--red); font-style: italic; padding: 6px 18px; background: #fff; white-space: nowrap; }
+.dtable { color: #000; }
+.dtr { display: flex; padding: 6px 0; }
+.dth { font-weight: 700; border-bottom: 1.5px solid var(--rule); }
+.dtc { flex: none; padding-right: 16px; white-space: nowrap; box-sizing: border-box; }
+.pg { position: absolute; border: 1px solid #444; background: #fff; box-sizing: border-box; }
+.rr { border: 2px solid #000; background: #fff; border-radius: 999px; padding: 6px 22px; font-size: 28px; color: #000; white-space: nowrap; text-align: center; box-sizing: border-box; }
+.rr.sq { border-radius: 0; }
+.dlgT { background: #dddddd; border-bottom: 1.5px solid #aaaaaa; padding: 4px 14px; font: 600 24px "Inter"; }
+.dlgB { padding: 12px 16px 2px; font: 400 26px "Mono"; color: #000; }
+.dlgC { padding: 2px 16px 10px; font-size: 24px; color: #555; }
+.mb { border: 1px solid #444; padding: 0 5px; }
+/* 「当前在讲谁」的选中样式（parts.js 的 beats）：深青底白字像官网菜单里选中的那一格；框用浅青底加深青外框 */
+.bt { background-color: #044a64 !important; color: #ffffff !important; outline: 6px solid #044a64 !important; outline-offset: 0; }
+.bt * { color: #ffffff !important; }
+.bf { background-color: #d3e3ea !important; outline: 3px solid #044a64 !important; outline-offset: 3px; }
+.bl { outline: 3px solid #044a64 !important; outline-offset: 3px; }

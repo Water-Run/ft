@@ -2,34 +2,78 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>封面</title>
+<title>SQLite 封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
-  html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+     WaterRun 2026-11-01 在审片页选定第 1 张（src/design/covers.html?c=1）：一页 sqlite.org 文档——页头、菜单、黑色问句、深青大标题、代码块里的实测数据；
+     立体做在文档的「纸」上：553 页叠成一摞，找 Alice 读到的 7 页像书签一样抽出来，页号写在文档的灰色小按钮上。4:3 是重新排布，不是裁切。
+     缩到 360 像素宽仍读得清主标题；底部约 15% 不放文字。数字出自 FACTS：J01、I01。 */
+  html, body { margin: 0; background: #fff; }
+  #stage { position: relative; background: #fff; overflow: hidden; }
+  svg { position: absolute; left: 0; top: 0; }
 </style>
 </head>
 <body>
-<div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
-</div>
+<div id="stage"></div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
-    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+const q = new URLSearchParams(location.search), R43 = q.get('r') === '43';
+const W = R43 ? 1600 : 1920, H = R43 ? 1200 : 1080;
+const stage = document.getElementById('stage'); stage.style.width = W + 'px'; stage.style.height = H + 'px';
+const C = { ink: '#000000', body: '#1a1a1a', teal: '#044a64', wheat: '#f5deb3', code: '#eeeeee', codeLine: '#80a796', grey: '#dddddd', greyLine: '#aaaaaa' };
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', W); svg.setAttribute('height', H); stage.appendChild(svg);
+function el(tag, a) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; }
+function text(x, y, s, a = {}) { const t = el('text', { x, y, fill: C.body, 'font-family': 'Inter, "Sans SC"', 'font-weight': 400, ...a }); t.textContent = s; return t; }
+const textW = (s, fs) => [...s].reduce((a, ch) => a + (ch.charCodeAt(0) > 0x2e80 ? fs : fs * 0.6), 0);
+const pts = (a) => a.map((p) => p.join(',')).join(' ');
+function button(x, y, s, fs) { const w = textW(s, fs) + 28; el('rect', { x, y: y - fs - 6, width: w, height: fs + 16, rx: 5, fill: C.grey, stroke: C.greyLine, 'stroke-width': 2 }); text(x + w / 2, y + 2, s, { 'font-size': fs, 'text-anchor': 'middle', fill: C.ink }); }
+function codeblock(x, y, lines, fs) { const w = Math.max(...lines.map((s) => textW(s, fs))) + 44, hh = lines.length * fs * 1.4 + 26; el('rect', { x, y, width: w, height: hh, fill: C.code, stroke: C.codeLine, 'stroke-width': 1.5 }); lines.forEach((s, i) => text(x + 22, y + 13 + fs * 1.08 + i * fs * 1.4, s, { 'font-family': 'Mono, "Sans SC"', 'font-size': fs, fill: C.ink })); }
+// 等轴投影：x 向右下、y 向左下、z 向上
+let O = [0, 0], S = 1;
+const P = (x, y, z) => [O[0] + (x - y) * 0.866 * S, O[1] + (x + y) * 0.5 * S - z * S];
+const poly = (a, o) => el('polygon', { points: pts(a), ...o });
+function stack(w, d, hh, layers) {
+  const st = { stroke: C.ink, 'stroke-width': 1.6, 'stroke-linejoin': 'round' };
+  poly([P(0, d, 0), P(w, d, 0), P(w, d, hh), P(0, d, hh)], { fill: '#f4f4f4', ...st });
+  poly([P(w, 0, 0), P(w, d, 0), P(w, d, hh), P(w, 0, hh)], { fill: '#e6e6e6', ...st });
+  for (let i = 1; i < layers; i++) { const z = hh * i / layers; el('polyline', { points: pts([P(0, d, z), P(w, d, z), P(w, 0, z)]), fill: 'none', stroke: '#b4b4b4', 'stroke-width': 1 }); }
+  poly([P(0, 0, hh), P(w, 0, hh), P(w, d, hh), P(0, d, hh)], { fill: '#fff', ...st });
+}
+function block(x, y, z, w, d, hh, top) {
+  const st = { stroke: C.ink, 'stroke-width': 1.8, 'stroke-linejoin': 'round' };
+  poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + hh), P(x, y + d, z + hh)], { fill: '#f0f0f0', ...st });
+  poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + hh), P(x + w, y, z + hh)], { fill: '#e0e0e0', ...st });
+  poly([P(x, y, z + hh), P(x + w, y, z + hh), P(x + w, y + d, z + hh), P(x, y + d, z + hh)], { fill: top, ...st });
+}
+el('rect', { x: 0, y: 0, width: W, height: H, fill: '#fff' });
+// 页头与菜单（不放标志：左上纯文字）
+text(60, 82, 'SQLite 3.54.1', { 'font-size': 44, fill: C.teal });
+text(W - 60, 52, 'Small. Fast. Reliable.', { 'font-size': 26, 'font-style': 'italic', 'text-anchor': 'end' });
+text(W - 60, 86, 'Choose any three.', { 'font-size': 26, 'font-style': 'italic', 'text-anchor': 'end' });
+el('rect', { x: 60, y: 110, width: W - 120, height: 50, rx: 6, fill: C.teal });
+text(86, 144, '一个数据库引擎是如何实现的？', { 'font-size': 27, fill: '#fff' });
+text(W - 86, 144, 'PART 4', { 'font-size': 27, fill: '#fff', 'text-anchor': 'end' });
+// 问句、大标题、副题、实测数据
+text(60, 268, '一个库、一个文件，', { 'font-size': 52 });
+text(60, 338, '怎样装下一个完整的关系数据库？', { 'font-size': 52 });
+text(44, 610, 'SQLite', { 'font-size': 290, fill: C.teal, 'letter-spacing': '-6' });
+text(60, 690, '小而强大', { 'font-size': 44, fill: C.teal });
+codeblock(60, 730, ['main.db　553 页 × 1024 字节', '找 Alice 读到的页：1 262 281 263 2 133 130'], R43 ? 26 : 28);
+// 553 页叠成一摞（第 1 页在最上面），读到的 7 页像书签一样抽出来
+O = R43 ? [1120, 650] : [1330, 560]; S = R43 ? 0.6 : 0.78;
+const SW = 400, SD = 300, SH = 300;
+stack(SW, SD, SH, 44);
+const zOf = (p) => SH * (1 - (p - 1) / 553) - 6;
+const tabs = [[1, 30], [2, 170], [130, 40], [133, 175], [262, 35], [263, 170], [281, 100]];
+tabs.slice().sort((a, b) => zOf(b[0]) - zOf(a[0]) || a[1] - b[1]).forEach(([p, y0]) => block(SW, y0, zOf(p), 120, 90, 6, C.wheat));
+// 页号：按页码从上到下排在右侧一列，细引线连到书签
+const colX = R43 ? W - 145 : W - 176;
+const ends = tabs.map(([p, y0]) => { const [sx, sy] = P(SW + 120, y0 + 45, zOf(p) + 6); return { p, sx, sy }; }).sort((a, b) => a.p - b.p);
+let ly = -1e9;
+for (const e of ends) { ly = Math.max(e.sy, ly + 46); el('polyline', { points: pts([[e.sx, e.sy], [e.sx + 24, e.sy], [colX - 8, ly]]), fill: 'none', stroke: '#888', 'stroke-width': 1.2 }); button(colX, ly + 10, String(e.p), 26); }
+Promise.all([document.fonts.load('400 40px "Sans SC"', '字'), document.fonts.load('400 40px "Inter"', 'Aa'), document.fonts.load('400 40px "Mono"', 'A0')])
+  .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
 </html>
