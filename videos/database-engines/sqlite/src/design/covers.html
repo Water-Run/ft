@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>SQLite 封面候选</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  body, #stage { background: #ffffff; }
+  svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  .k { font-family: "Mono"; }
+  .zh { font-family: "Inter", "Sans SC"; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="../js/data.js"></script>
+<script>
+// 封面候选（审片页里选一张，选定后落到 src/cover.html）：?c=1 一个文件、?c=2 两棵树、?c=3 一字节不差。16:9，1920×1080 设计、出图时放大。
+// 系列要求（数据库引擎系列说明「封面」）：有质感、立体、契合本集；集数标签、问句、大标题、一幅讲清要点的图、实测数据；
+// 立体不压字；主标题约为画面高度的五分之一；底部 15% 不放字。配色与字形取自本集正片（第 5 稿起：像一页 sqlite.org 文档）。
+// 立体用等轴投影手算（纯函数，无随机数）；纸面质感用固定种子的 feTurbulence。数字全部出自 research/FACTS.md：J01、I01、E05、J05。
+const D = window.DATA, CV = +(new URLSearchParams(location.search).get('c') || 1);
+const C = { ink: '#1f1f1f', teal: '#044a64', blue: '#0482c4', visited: '#734559', wheat: '#f5deb3', codeLine: '#80a796', dim: '#5f6b70', red: '#aa3333', paper: '#ffffff' };
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.createElementNS(NS, 'svg'); document.getElementById('stage').appendChild(svg);
+function el(tag, a, p = svg) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
+function text(x, y, s, a = {}, p = svg) { const t = el('text', { x, y, fill: C.ink, ...a }, p); t.textContent = s; return t; }
+const shade = (hex, k) => { const n = parseInt(hex.slice(1), 16), f = (v) => Math.max(0, Math.min(255, Math.round(v * k))); return '#' + [n >> 16, (n >> 8) & 255, n & 255].map((v) => f(v).toString(16).padStart(2, '0')).join(''); };
+
+// 质感：纸纹（固定种子的噪声，极淡）与立体物下面的软影
+const defs = el('defs', {});
+const grain = el('filter', { id: 'grain', x: 0, y: 0, width: '100%', height: '100%' }, defs);
+el('feTurbulence', { type: 'fractalNoise', baseFrequency: 0.9, numOctaves: 2, seed: 7, result: 'n' }, grain);
+el('feColorMatrix', { type: 'matrix', values: '0 0 0 0 0.25  0 0 0 0 0.22  0 0 0 0 0.18  0 0 0 0.09 0' }, grain);
+const soft = el('filter', { id: 'soft', x: '-20%', y: '-20%', width: '140%', height: '140%' }, defs);
+el('feGaussianBlur', { stdDeviation: 18 }, soft);   // lint-ok: 封面按系列约定要立体，立体物下的软影只在封面用
+el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: '#fbfaf7' });
+el('rect', { x: 0, y: 0, width: 1920, height: 1080, filter: 'url(#grain)' });
+
+// 等轴投影：x 向右下、y 向左下、z 向上
+let O = [0, 0], S = 1;
+const P = (x, y, z) => [O[0] + (x - y) * 0.866 * S, O[1] + (x + y) * 0.5 * S - z * S];
+const poly = (pts, a, p = svg) => el('polygon', { points: pts.map((q) => q.join(',')).join(' '), ...a }, p);
+// 长方体：只画看得见的三面（顶、左前 y+d、右前 x+w）
+function cuboid(x, y, z, w, d, h, col, o = {}) {
+  const g = el('g', {}, o.p || svg), st = { stroke: o.stroke || shade(col, 0.6), 'stroke-width': o.sw != null ? o.sw : 1.2, 'stroke-linejoin': 'round' };
+  poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)], { fill: o.left || shade(col, 0.86), ...st }, g);
+  poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)], { fill: o.right || shade(col, 0.72), ...st }, g);
+  poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)], { fill: o.top || col, ...st }, g);
+  return g;
+}
+// 一叠纸：侧面画出一层层纸边
+function paperStack(x, y, z, w, d, h, layers, o = {}) {
+  const g = cuboid(x, y, z, w, d, h, o.top || '#ffffff', { left: '#f1efe9', right: '#e3e0d8', stroke: '#9a978f', sw: 1.5, p: o.p });
+  for (let i = 1; i < layers; i++) {
+    const zz = z + h * i / layers;
+    el('polyline', { points: [P(x, y + d, zz), P(x + w, y + d, zz), P(x + w, y, zz)].map((q) => q.join(',')).join(' '), fill: 'none', stroke: '#c9c5bb', 'stroke-width': 1 }, g);
+  }
+  return g;
+}
+function shadow(cx, cy, rx, ry) { el('ellipse', { cx, cy, rx, ry, fill: '#044a64', opacity: 0.16, filter: 'url(#soft)' }); }
+
+// 左栏：文档页头式的集数标签（圆角深青菜单 + 亮蓝当前项）、问句、大标题、实测数据
+function frame(q1, q2, data) {
+  el('rect', { x: 120, y: 72, width: 760, height: 60, rx: 8, fill: C.teal });
+  el('rect', { x: 126, y: 78, width: 150, height: 48, rx: 8, fill: C.blue });
+  text(201, 112, 'PART 4', { class: 'zh', 'font-size': 28, 'font-weight': 600, fill: '#fff', 'text-anchor': 'middle' });
+  text(300, 112, '一个数据库引擎是如何实现的？', { class: 'zh', 'font-size': 28, 'font-weight': 400, fill: '#fff' });
+  text(120, 236, q1, { class: 'zh', 'font-size': 52, 'font-weight': 400, fill: C.ink });
+  text(120, 306, q2, { class: 'zh', 'font-size': 52, 'font-weight': 400, fill: C.ink });
+  text(108, 560, 'SQLite', { class: 'zh', 'font-size': 236, 'font-weight': 500, fill: C.teal, 'letter-spacing': '-4' });
+  el('rect', { x: 120, y: 604, width: 760, height: 2, fill: C.teal });   // 文档的 .xhr
+  text(120, 676, '小而强大', { class: 'zh', 'font-size': 56, 'font-weight': 400, fill: C.teal });
+  data.forEach((s, i) => text(120, 770 + i * 50, s, { class: 'k', 'font-size': 30, fill: C.dim }));
+}
+const fillOf = { u: C.teal, n: C.blue, a: C.codeLine, s: C.visited, t: C.visited, o: '#c9c9c9' };
+
+if (CV === 1) {
+  frame('一个库、一个文件，', '怎样装下一个完整的关系数据库？', ['main.db　553 页 × 1024 字节', '按名字找 Alice：只读了其中 7 页']);
+  // 553 页摆成 24 × 24 的顶面（每页一格，按归属上色），下面是一层层纸；Alice 读到的 7 页从格子里升起来
+  O = [1390, 300]; S = 0.66;
+  const N = 24, c = 26, gp = 4, W = N * (c + gp) + gp, H = 120;
+  shadow(1390, 300 + W * S + 40, 560, 70);
+  paperStack(0, 0, -H, W, W, H, 26);
+  const read = [1, 262, 281, 263, 2, 133, 130], owner = D.file.owner;
+  const cell = (p) => [gp + ((p - 1) % N) * (c + gp), gp + Math.floor((p - 1) / N) * (c + gp)];
+  for (let i = 0; i < N * N; i++) { const [x, y] = cell(i + 1); const col = i < owner.length ? fillOf[owner[i]] : '#f3f3f3'; if (!read.includes(i + 1)) poly([P(x, y, 0), P(x + c, y, 0), P(x + c, y + c, 0), P(x, y + c, 0)], { fill: col, stroke: 'none' }); }
+  // 升起的 7 页：按「先远后近」画，近的压住远的
+  const order = read.slice().sort((a, b) => { const [ax, ay] = cell(a), [bx, by] = cell(b); return (ax + ay) - (bx + by); });
+  for (const p of order) { const [x, y] = cell(p); cuboid(x, y, 0, c, c, 110, p === 263 || p === 130 ? C.blue : C.wheat, { stroke: C.teal, sw: 1.5 }); }
+  // 页号标签：相邻的两页合成一个标签；贴在升起的页上方，白底细框
+  const tags = [[[1, 2], 0], [[262, 263], 0], [[281], 0], [[130], -34], [[133], 30]];
+  for (const [ps, dx] of tags) {
+    const cs = ps.map(cell), x = cs.reduce((a, q) => a + q[0], 0) / cs.length, y = cs.reduce((a, q) => a + q[1], 0) / cs.length, [sx, sy] = P(x + c / 2, y + c / 2, 110);
+    const lab = text(sx + dx, sy - 24, ps.join(' · '), { class: 'k', 'font-size': 26, fill: C.teal, 'text-anchor': 'middle', 'font-weight': 600 });
+    const bb = lab.getBBox(); svg.insertBefore(el('rect', { x: bb.x - 7, y: bb.y - 3, width: bb.width + 14, height: bb.height + 6, rx: 4, fill: '#fff', stroke: C.teal, 'stroke-width': 1.2 }), lab);
+  }
+  text(1390, 300 + W * S + 130, '553 页里，读到的 7 页', { class: 'zh', 'font-size': 32, fill: C.teal, 'text-anchor': 'middle' });
+}
+
+if (CV === 2) {
+  frame('按名字找 Alice，', '553 页里要读几页？', ['7 页：1 → 262 → 281 → 263', '　　　→ 2 → 133 → 130']);
+  // 两座三层的塔：左姓名索引（根 262 → 中层 14 页里的 281 → 叶层 228 页里的 263），右 users 表（根 2 → 中层 3 页里的 133 → 叶层 256 页里的 130）。
+  // 每层一块楼板，页按格子摆开；路线上的页升起、亮起，蓝线自上而下把三页串起来
+  S = 0.75;
+  const tower = (ox, oy, title, layers) => {
+    O = [ox, oy];
+    const cu = 15, gp = 3, Wp = 16 * (cu + gp) + gp, zs = [0, 170, 340];
+    shadow(ox, oy + Wp * S + 40, 300, 46);
+    const route = [];
+    layers.forEach(([cols, n, hot, lab, hotCol], li) => {
+      const cw = li === 0 ? cu : li === 1 ? 34 : 60, side = cols * (cw + gp) + gp, off = (Wp - side) / 2, z = zs[li];
+      cuboid(off, off, z - 8, side, side, 8, '#ffffff', { left: '#eeece6', right: '#e0ddd5', stroke: '#9a978f', sw: 1.2 });
+      for (let i = 0; i < n; i++) {
+        const x = off + gp + (i % cols) * (cw + gp), y = off + gp + Math.floor(i / cols) * (cw + gp);
+        if (i === hot) continue;
+        poly([P(x, y, z), P(x + cw, y, z), P(x + cw, y + cw, z), P(x, y + cw, z)], { fill: li === 0 ? C.teal : '#ffffff', stroke: C.teal, 'stroke-width': li === 0 ? 0 : 1.2 });
+      }
+      const x = off + gp + (hot % cols) * (cw + gp), y = off + gp + Math.floor(hot / cols) * (cw + gp), h = li === 0 ? 30 : 24;
+      cuboid(x, y, z, cw, cw, h, hotCol, { stroke: C.teal, sw: 1.5 });
+      route.push({ q: P(x + cw / 2, y + cw / 2, z + h), lab });
+    });
+    el('path', { d: 'M' + route.slice().reverse().map((r) => r.q.join(',')).join(' L'), fill: 'none', stroke: C.blue, 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    route.forEach(({ q, lab }) => { const t = text(q[0] + 26, q[1] - 10, lab, { class: 'k', 'font-size': 26, 'font-weight': 600, fill: C.teal }); const bb = t.getBBox(); svg.insertBefore(el('rect', { x: bb.x - 7, y: bb.y - 3, width: bb.width + 14, height: bb.height + 6, rx: 4, fill: '#fff', stroke: C.teal, 'stroke-width': 1.2 }), t); });
+    text(ox, oy + Wp * S + 80, title, { class: 'zh', 'font-size': 30, fill: C.teal, 'text-anchor': 'middle' });
+  };
+  // [每行几格, 页数, 路线上的那一格, 标签, 颜色]：叶层 16 列，中层 4 列 / 2 列，根 1 格
+  tower(1230, 480, '姓名索引', [[16, 228, 133, '263', C.blue], [4, 14, 13, '281', C.wheat], [1, 1, 0, '262', C.wheat]]);
+  tower(1640, 480, 'users 表', [[16, 256, 129, '130', C.blue], [2, 3, 1, '133', C.wheat], [1, 1, 0, '2', C.wheat]]);
+  // 第 1 页：文件头，先读它
+  O = [1000, 860]; S = 0.75;
+  cuboid(0, 0, 0, 60, 60, 24, C.visited, { stroke: shade(C.visited, 0.6), sw: 1.5 });
+  text(1060, 876, '先读第 1 页：文件头', { class: 'zh', 'font-size': 26, fill: C.visited });
+}
+
+if (CV === 3) {
+  frame('改到一半，进程被强行终止，', '重新打开还对吗？', ['重开后：4096 行，Alice = 42', '整个文件恢复原来的 SHA-256']);
+  // 左：主文件（厚纸堆），有几页改了一半（麦色）；右：回滚日志（薄纸堆），存着这些页原来的样子（紫褐）；重开时从日志抄回去
+  S = 0.7;
+  O = [1250, 330];
+  const W = 420, H = 230;
+  shadow(1300, 330 + W * S + 10, 400, 60);
+  paperStack(0, 0, -H, W, W, H, 30);
+  const g = 14, c = (W - g * 9) / 8;
+  const changed = [[1, 2], [3, 1], [4, 5], [6, 3], [2, 6]];
+  for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) { const hit = changed.some(([a, b]) => a === i && b === j); const x = g + i * (c + g), y = g + j * (c + g); poly([P(x, y, 0), P(x + c, y, 0), P(x + c, y + c, 0), P(x, y + c, 0)], { fill: hit ? C.wheat : C.teal, stroke: hit ? C.red : 'none', 'stroke-width': hit ? 2 : 0 }); }
+  text(1250, 330 + (W + W) * 0.5 * S + 60, 'main.db', { class: 'k', 'font-size': 30, fill: C.teal, 'text-anchor': 'middle' });
+  O = [1660, 520];
+  const JW = 200, JH = 60;
+  shadow(1660, 520 + JW * S + 10, 200, 34);
+  paperStack(0, 0, -JH, JW, JW, JH, 8);
+  const jc = (JW - g * 4) / 3;
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { if (i * 3 + j > 5) continue; const x = g + i * (jc + g), y = g + j * (jc + g); poly([P(x, y, 0), P(x + jc, y, 0), P(x + jc, y + jc, 0), P(x, y + jc, 0)], { fill: C.visited }); }
+  text(1660, 520 + JW * S + 92, 'main.db-journal', { class: 'k', 'font-size': 28, fill: C.visited, 'text-anchor': 'middle' });
+  // 重开：从日志抄回原页（亮蓝弧线，箭头落在改了一半的那一格上）
+  O = [1250, 330];
+  const [hx, hy] = P(g + 4 * (c + g) + c / 2, g + 5 * (c + g) + c / 2, 0);
+  const [jx, jy] = (() => { O = [1660, 520]; const q = P(JW / 2, JW / 2, 0); O = [1250, 330]; return q; })();
+  el('path', { d: `M${jx},${jy - 6} C ${jx - 10},${jy - 230} ${hx + 120},${hy - 200} ${hx + 8},${hy - 22}`, fill: 'none', stroke: C.blue, 'stroke-width': 5, 'stroke-linecap': 'round' });
+  el('polygon', { points: `${hx},${hy - 4} ${hx - 10},${hy - 30} ${hx + 18},${hy - 22}`, fill: C.blue });
+  text(1440, 312, '重开：从日志抄回原页', { class: 'zh', 'font-size': 30, fill: C.blue, 'font-weight': 600 });
+  // 强行终止：红色标签，细线指向改了一半的几页
+  const [kx, ky] = P(g + 1 * (c + g) + c / 2, g + 2 * (c + g) + c / 2, 0);
+  el('line', { x1: 1060, y1: 254, x2: kx, y2: ky, stroke: C.red, 'stroke-width': 2.5 });
+  el('rect', { x: 960, y: 200, width: 200, height: 54, rx: 8, fill: C.red });
+  text(1060, 238, '强行终止', { class: 'zh', 'font-size': 30, fill: '#fff', 'text-anchor': 'middle', 'font-weight': 600 });
+  text(1180, 238, '改了一半的页', { class: 'zh', 'font-size': 26, fill: C.red });
+}
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

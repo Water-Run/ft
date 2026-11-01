@@ -1,14 +1,19 @@
-/* 本片的视觉系统：取自 SQLite 自己的材料（research/MATERIALS.md）。
-   白纸底与深青导航条来自 sqlite.org 的样式表；深蓝与两种羽毛蓝来自官方标志 sqlite370_banner.svg。
-   深蓝是墨色，标志蓝只给「正在走的路」与焦点，浅羽毛蓝只作被选中页的底色。结构性样式在 base.css。 */
+/* 本片的视觉系统（第 5 稿起）：整片像一页 sqlite.org 的文档（WaterRun 2026-11-01：「视觉风格也进一步优化, 更契合SQLite官方文档」）。
+   配色与字形取自 sqlite.org/sqlite.css（2026-11-01 读）：白纸；圆角 8px 的深青主菜单 #044a64、白字，子菜单亮蓝 #0482c4；
+   标题常规字重、深青、带编号；代码块 #eee 底、1px #80a796 边；表头下一条 1px #444；已访问链接 #734559；悬停底色 wheat。
+   不再用标志的羽毛色（系列约定不放标志）。文档用 Verdana，仓库不带，用 Inter + 思源黑体的常规字重。结构性样式在 base.css。 */
 :root {
-  --paper: #ffffff;           /* sqlite.org 页面底色 */
-  --ink: #003b57;             /* 标志字标的深蓝：正文、线条、页 */
-  --teal: #044a64;            /* sqlite.org 导航条与标题色：章节条、常驻元素 */
-  --blue: #0f80cc;            /* 标志羽毛主色：Alice 的路线、当前焦点。对白底 4.2:1，只用于线条和 56px 以上的字 */
-  --sky: #97d9f6;             /* 标志羽毛浅端：被选中、被读到的页的底色；上面压深蓝字 7.7:1 */
-  --dim: #5b7685;             /* 深蓝减淡：注解。对白底 4.8:1 */
-  --rule: rgba(0, 59, 87, .16);
+  --paper: #ffffff;           /* 页面底色 */
+  --ink: #1f1f1f;             /* 正文与线框：文档正文是黑字 */
+  --teal: #044a64;            /* 主菜单、标题、链接：章节条、常驻元素、页 */
+  --blue: #0482c4;            /* 子菜单色：Alice 的路线、当前焦点。对白底 4.2:1，只用于线条、色块和 56px 以上的字 */
+  --visited: #734559;         /* 已访问链接：已经读过的页、页头。对白底 7.7:1 */
+  --wheat: #f5deb3;           /* 悬停底色：被选中、被读到的格子的底色；上面压黑字 */
+  --code: #eeeeee;            /* 代码块底色 */
+  --code-line: #80a796;       /* 代码块的边；也作年龄索引的页色 */
+  --red: #aa3333;             /* 文档里 TODO 的红：出错、作废 */
+  --dim: #5f6b70;             /* 注解。对白底 5.6:1 */
+  --rule: #444444;            /* 表头下的细线 */
   --M: 120px;                 /* 版心边距 */
 }
 body { font-family: "Inter", "Sans SC"; color: var(--ink); }
@@ -16,31 +21,33 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 /* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
    放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 3px; background: var(--ink); transform-origin: 0 50%; }
+.rule { position: absolute; height: 2px; background: var(--teal); transform-origin: 0 50%; }   /* 文档的 .xhr：深青 2px */
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 800; font-size: 180px; line-height: 1; letter-spacing: -.035em; }
-.d-2 { font-weight: 700; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-lead { font-weight: 600; font-size: 60px; line-height: 1.2; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
-.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
+/* 字号阶梯：像文档，标题常规字重、靠字号和深青区分层级。1080p 下正文 36px 起，注解不小于 28px */
+.d-1 { font-weight: 400; font-size: 150px; line-height: 1.05; letter-spacing: -.02em; color: var(--teal); }
+.d-2 { font-weight: 400; font-size: 64px; line-height: 1.1; color: var(--teal); }
+.t-lead { font-weight: 400; font-size: 48px; line-height: 1.25; }
+.t-body { font-weight: 400; font-size: 36px; line-height: 1.45; }
+.t-note { font-weight: 400; font-size: 28px; line-height: 1.4; color: var(--dim); }
+.mono { font-family: "Mono", "Sans SC"; font-weight: 400; white-space: pre; }
+.codeblock { position: absolute; background: var(--code); border: 1.5px solid var(--code-line); padding: 14px 24px; font-family: "Mono", "Sans SC"; white-space: pre; }
 .blue { color: var(--blue); }
 
-/* 页：全片唯一的基本图形。实心是有数据的叶页，空心带分界的是内部页，浅蓝底是此刻被读到的页 */
-.pg { position: absolute; border: 3px solid var(--ink); background: var(--paper); }
-.pg.leaf { background: var(--ink); }
-.pg.hit { background: var(--sky); }
+/* 页：全片唯一的基本图形。实心深青是有数据的叶页，空心带分界的是内部页，麦色底是此刻被读到的页，紫褐是读过的页（已访问） */
+.pg { position: absolute; border: 2px solid var(--ink); background: var(--paper); }
+.pg.leaf { background: var(--teal); }
+.pg.hit { background: var(--wheat); border-color: var(--blue); }
+.pg.read { background: var(--visited); }
 
-/* 章节条：sqlite.org 顶部导航条的深青横条 */
-.chapter { position: absolute; left: 0; right: 0; top: 380px; height: 320px; background: var(--teal); color: var(--paper); padding: 54px var(--M) 0; }
-.chapter .no { font: 600 64px "Inter"; color: var(--sky); }
-.chapter .ti { font-weight: 800; font-size: 130px; line-height: 1.05; margin-top: 4px; letter-spacing: -.02em; }
+/* 章节卡（整屏，系列约定）：sqlite.org 主菜单的深青，标题常规字重；编号用子菜单的亮蓝圆角块 */
+.chapter { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: var(--teal); color: var(--paper); padding: 380px var(--M) 0; }
+.chapter .no { display: inline-block; font: 400 56px "Inter"; background: var(--blue); border-radius: 8px; padding: 2px 22px; }
+.chapter .ti { font-weight: 400; font-size: 120px; line-height: 1.1; margin-top: 18px; }
 
 /* 字幕 */
 #caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-#caption em { font-style: normal; font-weight: 800; color: var(--teal); }
+#caption span { font-size: 40px; font-weight: 400; color: var(--ink); }
+#caption em { font-style: normal; font-weight: 600; color: var(--teal); }
 
 /* 片尾名单 */
 .credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
