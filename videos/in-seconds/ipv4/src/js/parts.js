@@ -103,3 +103,118 @@ function phoneIcon(parent, x, y, s = 1) {
   e.dataset.name = '手机';
   return e;
 }
+
+// ── 第 5 轮：网络图用的小工具 ──
+// 只在 [t0, t1) 内显示（用 display，与 GSAP 管的透明度互不干扰）
+function span(el, t0, t1 = Infinity) {
+  let last = null;
+  F((t) => { const on = t >= t0 - 1e-6 && t < t1; if (on !== last) { el.style.display = on ? '' : 'none'; last = on; } });
+  return el;
+}
+// 沿折线走：legs = [[t0, t1, [[x, y], …]], …]，每段在 [t0, t1] 内按路程匀速走完（两头缓动），段与段之间停在终点。
+// (x, y) 是元素中心；show/hide 之外不显示。位置只由 t 算出。
+function glide(el, legs, show, hide, w = 40, hh = 30) {
+  const LG = legs.map(([t0, t1, pts]) => {
+    const seg = []; let tot = 0;
+    for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); tot += d; }
+    return { t0, t1, pts, seg, tot };
+  });
+  const at = (lg, k) => {
+    let s = k * lg.tot;
+    for (let i = 0; i < lg.seg.length; i++) {
+      if (s <= lg.seg[i] || i === lg.seg.length - 1) { const f = lg.seg[i] ? clamp(s / lg.seg[i]) : 1; return [lerp(lg.pts[i][0], lg.pts[i + 1][0], f), lerp(lg.pts[i][1], lg.pts[i + 1][1], f)]; }
+      s -= lg.seg[i];
+    }
+    return lg.pts[lg.pts.length - 1];
+  };
+  let last = '';
+  F((t) => {
+    const vis = t >= show - 1e-6 && t < hide;
+    let p = LG[0].pts[0];
+    for (const lg of LG) {
+      if (t >= lg.t1) { p = lg.pts[lg.pts.length - 1]; continue; }
+      if (t > lg.t0) p = at(lg, ease.io3(clamp((t - lg.t0) / (lg.t1 - lg.t0))));
+      break;
+    }
+    const key = vis ? p[0].toFixed(1) + ',' + p[1].toFixed(1) : 'none';
+    if (key === last) return; last = key;
+    if (!vis) { el.style.display = 'none'; return; }
+    el.style.display = ''; el.style.left = (p[0] - w / 2).toFixed(1) + 'px'; el.style.top = (p[1] - hh / 2).toFixed(1) + 'px';
+  });
+  return el;
+}
+// 折线 → SVG 路径
+const pathD = (pts) => 'M ' + pts.map((p) => p[0] + ' ' + p[1]).join(' L ');
+// 走过的路亮起来：沿同一条折线描一道藏青粗线，从 t0 描到 t1，到 tOff 收掉
+function litPath(ov, pts, t0, t1, tOff = Infinity) {
+  const p = path(ov, pathD(pts), 'navy', { w: 8, arrow: false });
+  arrowIn(p, t0, Math.max(0.05, t1 - t0));
+  if (tOff < Infinity) vanish(p, tOff);
+  return p;
+}
+// 地址标签：前一截与后一截分开的两个 span（前一截可整体反白，后一截可单独标记）
+function addrLab(parent, net, host, cx, y, bounds) {
+  const e = h('div', 'alab', parent, `<span class="pre">${net}</span><span class="host">${host}</span>`);
+  const w = e.offsetWidth || (net.length + host.length) * 14;
+  let x = cx - w / 2;
+  if (bounds) x = clamp(x, bounds[0], bounds[1] - w);
+  px(e, Math.round(x), y);
+  return { el: e, pre: e.firstChild, host: e.lastChild, w, x };
+}
+// 居中放一段文字
+function ctxt(parent, cls, html, cx, y) { const e = txt(parent, cls, html, 0, y); px(e, Math.round(cx - e.offsetWidth / 2), y); return e; }
+// 大号四格地址：[203].[0].[113].[80]
+function bigAddr(parent, x, y, vals, o = {}) {
+  const e = h('div', 'ob', parent); px(e, x, y);
+  const cells = [], dots = [];
+  vals.forEach((v, i) => { cells.push(h('span', 'c sunken', e, String(v))); if (i < 3) dots.push(h('span', 'd', e, '.')); });
+  if (o.small) e.classList.add('sm');
+  return { el: e, cells, dots };
+}
+// 类名开关：同一元素的同一类名可以登记好几段时间窗，合在一个逐帧函数里算（分开登记的 classAt 在跳播时会互相抵消）
+const CLASS_WIN = new Map();
+function classOn(el, cls, t0, t1 = Infinity) {
+  let m = CLASS_WIN.get(el); if (!m) { m = {}; CLASS_WIN.set(el, m); }
+  if (!m[cls]) {
+    const wins = m[cls] = [];
+    let last = null;
+    F((t) => { const on = wins.some(([a, b]) => t >= a - 1e-6 && t < b); if (on !== last) { el.classList.toggle(cls, on); last = on; } });
+  }
+  m[cls].push([t0, t1]);
+  return el;
+}
+// 只动缩放的「跳一下」：逐帧算 CSS 的 scale 属性（不经 GSAP，跳播时不会停在起始缩放；也不碰 GSAP 管的 transform 与透明度）
+function pulse(el, t0, from = 1.12, d = 0.3) {
+  if (!el._pulses) {
+    const P = el._pulses = [];
+    let last = '';
+    F((t) => {
+      let sc = 1;
+      for (const [a, f, dd] of P) if (t >= a && t < a + dd) sc = 1 + (f - 1) * Math.pow(1 - (t - a) / dd, 3);
+      const v = sc === 1 ? '' : sc.toFixed(4);
+      if (v !== last) { el.style.scale = v; last = v; }
+    });
+  }
+  el._pulses.push([t0, from, d]);
+  return el;
+}
+// 在若干段时间里藏起来（例如被整窗口大的对话框盖住时，把底下的网络图层藏掉）
+function hideWin(el, t0, t1) {
+  if (!el._hide) {
+    const W = el._hide = [];
+    let last = null;
+    F((t) => { const off = W.some(([a, b]) => t >= a - 1e-6 && t < b); if (off !== last) { el.style.visibility = off ? 'hidden' : ''; last = off; } });
+  }
+  el._hide.push([t0, t1]);
+  return el;
+}
+// 只换内容、不碰类名的关键帧（util.js 的 keyed() 换内容时会把类名一并重置，和 classOn 加的类名冲突）
+function htmlAt(el, t0, html) {
+  if (!el._ht) {
+    const fr = el._ht = [], base = el.innerHTML;
+    let last = null;
+    F((t) => { let v = base; for (const [a, x] of fr) if (t >= a - 1e-6) v = x; if (v !== last) { if (el.innerHTML !== v) el.innerHTML = v; last = v; } });
+  }
+  el._ht.push([t0, html]); el._ht.sort((a, b) => a[0] - b[0]);
+  return el;
+}

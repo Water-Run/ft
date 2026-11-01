@@ -4,7 +4,7 @@
 # 段落取自 ctx["scenes"]，不写死秒数：
 #   open    铺底 + 稀疏的数据音（引子）            address/prefix  数据动机铺满 + 低音
 #   route   加继电器与同步脉冲（一站站送）          special         同上，略收
-#   limit   前半撤掉节奏只留铺底与低音（地址不够了）；lift_cue（e3，IPv6）那一拍抬起，数据动机加倍；e4 之后收
+#   limit   前半撤掉节奏只留铺底与低音（地址不够了）；lift_cue（e5，IPv6）那一拍抬起，数据动机加倍；e6 之后收
 #   outro   只留铺底，最后一个长音
 # 结果确定：随机数固定种子；同样的音只算一次（缓存）。制作者听不到声音：出片前看 audio.js 的数值自检，听感由人确认。
 import numpy as np
@@ -105,8 +105,8 @@ def compose(ctx):
         if inside("limit"):
             if lift is not None and t < lift:
                 return dict(pad=0.95, data=0.25, sparse=True, bass=0.7, relay=0.0, pulse=0.0)
-            e4 = cue.get("e4")
-            tail = e4 and t > e4["end"]
+            last = cue.get("e6")
+            tail = last and t > last["end"]
             return dict(pad=0.9, data=0.5 if tail else 1.0, sparse=bool(tail), bass=0.8, relay=0.0 if tail else 0.9, pulse=0.0 if tail else 1.1, double=not tail)
         return dict(pad=0.8, data=0.0, sparse=True, bass=0.0, relay=0.0, pulse=0.0)
 

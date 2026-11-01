@@ -121,3 +121,45 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
 .credits .crow { position: absolute; left: 40px; right: 40px; }
 .credits .ck { font: 500 28px/1.3 "Sans SC"; }
 .credits .cv { font: 700 44px/1.3 "Sans SC"; }
+
+/* ── 第 5 轮：全片常驻的网络图 ──
+   网络 = 一个带标题条的方框（标题条银灰，讲到时变藏青）；连线深灰，数据包走过的路描成藏青粗线；地址标签前一截与后一截分开，前一截可整体反白。 */
+.zone { position: absolute; border: 3px solid var(--dgray); background: var(--white); }
+.zone .zt { position: absolute; left: 0; right: 0; top: 0; height: 36px; background: var(--silver); border-bottom: 3px solid var(--dgray); font: 700 26px/34px "Sans SC"; padding-left: 12px; white-space: nowrap; }
+.zone .zt .zp { font: 400 32px/34px "Pixel"; margin-left: 16px; }
+.zone.on .zt { background: var(--navy); color: var(--white); }
+.alab { position: absolute; font: 400 30px/30px "Pixel"; white-space: nowrap; color: var(--black); }
+.alab span { padding: 0 1px; }
+.alab .host.out { color: var(--dgray); }
+.alab.sel { outline: 3px solid var(--black); outline-offset: 3px; }
+.name { position: absolute; font: 500 24px/1 "Sans SC"; white-space: nowrap; }
+.pk { position: absolute; width: 40px; height: 30px; background: var(--navy); border: 3px solid var(--white); outline: 3px solid var(--navy); }
+.pk.light { background: var(--white); border-color: var(--navy); outline: 3px solid var(--white); }
+.chip { position: absolute; padding: 4px 12px 3px; font: 700 26px/1.2 "Sans SC"; white-space: nowrap; background: var(--navy); color: var(--white); }
+.chip.w { background: var(--white); color: var(--black); border: 3px solid var(--black); }
+.chip .px { font-size: 32px; }
+.pc.sel .mon { outline: 3px solid var(--black); outline-offset: 4px; }
+.webbar { position: absolute; }
+.webbar .wl { position: absolute; left: 16px; top: 18px; font: 700 28px/1 "Sans SC"; }
+.webbar .bar { position: absolute; left: 90px; top: 12px; width: 440px; height: 42px; }
+.webbar .bar i { position: absolute; top: 3px; width: 23px; height: 30px; background: var(--navy); }
+.webbar .ws { position: absolute; left: 548px; top: 18px; font: 500 28px/1 "Sans SC"; white-space: nowrap; }
+.ob { position: absolute; display: flex; align-items: center; gap: 0; }
+.ob .c { width: 150px; height: 96px; font: 500 60px/88px "Inter"; text-align: center; }
+.ob .d { width: 40px; text-align: center; font: 700 60px/1 "Inter"; }
+.ob .d.on { color: var(--navy); }
+.ob .c.mark { outline: 4px solid var(--black); outline-offset: 3px; }
+.ob.sm .c { width: 104px; height: 60px; font: 500 40px/54px "Inter"; }
+.ob.sm .d { width: 26px; font: 700 40px/1 "Inter"; }
+.ilab { position: absolute; font: 700 34px/1 "Sans SC"; white-space: nowrap; }
+.inote { position: absolute; font: 500 30px/1.4 "Sans SC"; white-space: nowrap; }
+.inote .px { font-size: 36px; color: var(--navy); }
+.brk { position: absolute; border: 3px solid var(--black); border-top: none; height: 12px; }
+.tbl { position: absolute; }
+.tbl .th { position: absolute; left: 0; right: 0; top: 0; height: 38px; background: var(--navy); color: var(--white); font: 700 26px/38px "Sans SC"; padding-left: 14px; white-space: nowrap; }
+.tbl .tr { position: absolute; left: 6px; right: 6px; height: 44px; font: 500 28px/44px "Sans SC"; padding-left: 10px; white-space: nowrap; }
+.tbl .tr .px { font-size: 34px; margin-right: 14px; }
+.tbl .tr.dim { color: var(--black); }
+.mapdim { position: absolute; background: var(--dgray); }
+.b6 { position: absolute; background: var(--white); }
+.b6.n { background: var(--navy); border-color: var(--navy); color: var(--white); }

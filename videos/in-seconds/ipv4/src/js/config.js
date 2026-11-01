@@ -1,6 +1,6 @@
 // 本片的引擎配置：字体、颜色、节拍网格、常驻元素与换场。视觉系统见 css/style.css 开头的说明。
 // 常驻元素按系列约定：底部字幕带上沿是全片秒尺（这里是任务栏上的 100 格分段进度条，一秒一格），左上剩余秒数（最后 5 秒逐秒跳动），
-// 右上是本集的「仪表」：一个四格 IP 地址框，显示此刻正在讲的那个地址。
+// 右上是本集的「仪表」：一个四格 IP 地址框，显示数据包此刻「要去」的地址。
 document.documentElement.classList.add(LANG);
 window.PALETTE = { teal: '#008080', silver: '#C0C0C0', white: '#FFFFFF', dgray: '#808080', black: '#000000', navy: '#000080' };
 const C = window.PALETTE;
@@ -48,7 +48,7 @@ window.ENGINE = {
     F((t) => {
       let g = null; for (const e of GAUGE) if (t >= e[0]) g = e;
       const key = g ? g[1] + '|' + g[2].join('.') : '';
-      if (key !== lastG) { lab.textContent = g ? g[1] : tr('地址', 'IP'); octs.forEach((o, i) => { o.textContent = g && g[2][i] != null ? g[2][i] : ''; }); lastG = key; }
+      if (key !== lastG) { lab.textContent = g ? g[1] : tr('要去', 'To'); octs.forEach((o, i) => { o.textContent = g && g[2][i] != null ? g[2][i] : ''; }); lastG = key; }
     });
     window.HUD = { left, right };
     // ── 窗口放大外框（两道，后一道晚 0.06 秒）──
@@ -68,13 +68,14 @@ window.ENGINE = {
     });
   },
   after() {
-    // 换场：新场景在「本场开始 + 0.3 秒」切进来（之前由放大外框从上一场的某个窗口放大到新场景的主窗口），旧场景留到那一刻
+    // 全片一张网络图：开场（open）建好的图一直留到片尾名单；之后各场的根节点叠在它上面，只放临时的对话框。
+    // 片尾名单在「本场开始 + 0.3 秒」切进来（之前由放大外框从画面中央放大到名单窗口）。
     const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id));
-    const IN = 0.3;
+    const out = L.scenes.find((s) => s.id === 'outro');
+    const tOut = out ? out.start + 0.3 : 1e9;
     F((t) => {
       L.scenes.forEach((s, i) => {
-        const nx = L.scenes[i + 1];
-        const a = i === 0 ? -1 : s.start + IN, b = nx ? nx.start + IN : 1e9;
+        const a = s.id === 'outro' ? tOut : (i === 0 ? -1 : s.start), b = s.id === 'outro' ? 1e9 : tOut;
         roots[i].style.display = t >= a - 1e-6 && t < b ? '' : 'none';
       });
     });

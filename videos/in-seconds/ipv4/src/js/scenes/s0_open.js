@@ -1,143 +1,150 @@
-// 开场（o1–o4）：打开网站 → 数据要找远方那台电脑 → 设备一下子铺满，靠什么找 → 每台设备亮出地址，数据包写上目的地址，对上的那一台亮起，数据包飞过去
-// → 这套规则叫 IP（注解：全称与一句话的作用）→ 「关于 IPv4」对话框放大出来当片名卡：第 4 版、1981 年 9 月、RFC 791，一直用到今天。
-// 图里的设备地址全部取自文档专用的三个示例网段（192.0.2.0/24、198.51.100.0/24、203.0.113.0/24，RFC 5737），画面上注明。
+// 全片常驻的网络图与「地址」窗口（第 5 轮重做）。开场建好，之后各场都在这张图上演（config.js 的 after() 让它一直留到片尾名单）。
+// 布局：上面「网络」窗口——左边你家的网络（你的电脑、手机、家里的路由器，一条家里的网线），中间三台路由器排在一条主干线上，
+// 上方挂着另一个网络，右边远方的网络（6 台电脑挂在一条网线上）；下面「地址」窗口跟着旁白换内容；顶部中间一条网页加载条，数据包送到时走满。
+// 数据包只沿连线走、停在路由器上，不从别的设备上穿过（策划者看第一版成片：「线不要直接穿过去」）。
+// 地址取自文档示例网段 192.0.2.0/24、203.0.113.0/24、198.51.100.0/24（RFC 5737）与私有网段 192.168.0.0/16（RFC 1918），画面不出现真实地址。
+// 开场（o1–o2）：打开网站 → 数据包从你的电脑出来，远方一台电脑亮出 → 网上的电脑一下子铺满 → 数据包与下方的地址框打上问号。
+const M = {};
 scene('open', ({ root, s }) => {
   const world = h('div', 'world', root);
   makeCamera(world, 1920, VH);
-  const tWin = s.start + 0.05;
+  const LY = 440;
+  Object.assign(M, { world, LY });
 
-  // ── 网络窗口：左边你的电脑，右边一片设备 ──
-  const W = makeWin(world, 60, 120, 1800, 828, tr('网络', 'Network'), { sunken: true });
-  vanish(W.el, 0);
-  openWin(W, tWin, [180, 470, 160, 150], { sound: 'drive', g: 0.6 });
-  const pc = pcIcon(world, 150, 470, 1.4); vanish(pc, 0); appear(pc, tWin + 0.25);
-  const pcLab = txt(world, 't-b', tr('你的电脑', 'Your computer'), 150, 630); vanish(pcLab, 0); appear(pcLab, tWin + 0.25);
+  // ── 两个常驻窗口（网络图的全部内容放在 mapG 里：整窗口大的对话框盖住它时，可以把它整层藏掉）──
+  const mapG = h('div', 'abs', world);
+  M.mapG = mapG;
+  const MW = makeWin(mapG, 60, 112, 1800, 560, tr('网络', 'Network'), { sunken: true });
+  const IW = makeWin(world, 60, 690, 1800, 262, tr('地址', 'Address'), { sunken: true });
+  vanish(MW.el, 0); vanish(IW.el, 0);
+  openWin(MW, 0, [880, 420, 160, 120], { sound: 'drive', g: 0.6 });
+  openWin(IW, 0.15, [880, 700, 160, 120], { sfx: false });
+  const tIn = 0.25;
+  Object.assign(M, { MW, IW });
 
-  // 「打开网站」：一个小窗口，进度条随这句话走
+  // ── 网络方框（标题条可以变藏青、可以补上「前一截」）──
+  const zone = (parent, x, y, w, hh, title) => {
+    const z = h('div', 'zone', parent); px(z, x, y, w, hh);
+    const zt = h('div', 'zt', z, `<span class="zn">${title}</span><span class="zp"></span>`);
+    return { el: z, zt, name: zt.firstChild, pre: zt.lastChild, x, y, w, hh };
+  };
+  const gZHome = h('div', 'abs', mapG), gZFar = h('div', 'abs', mapG), gZDest = h('div', 'abs', mapG);
+  const HB = zone(gZHome, 90, 194, 410, 449, tr('你家的网络', 'Your home network'));
+  const OB = zone(gZFar, 560, 194, 480, 162, tr('另一个网络', 'Another network'));
+  const DB = zone(gZDest, 1300, 194, 536, 449, tr('远方的网络', 'A far network'));
+  appear(gZHome, tIn);
+  Object.assign(M, { HB, OB, DB });
+
+  // ── 连线（在图标下面）──
+  const ovHome = overlay(mapG), ovFar = overlay(mapG), ovLit = overlay(mapG);
+  const wire = (ov, pts) => path(ov, pathD(pts), 'dgray', { w: 5, arrow: false });
+  const P = {
+    pc: [198, 292], phone: [177, 504], busTop: [300, 292], busBot: [300, 504], busMid: [300, LY], hr: [420, LY],
+    r: [660, 940, 1220].map((x) => [x, LY]), dIn: [1300, LY], cols: [1395, 1565, 1735],
+  };
+  M.P = P; M.ovLit = ovLit;
+  [[P.pc, P.busTop], [P.phone, P.busBot], [P.busTop, P.busBot], [P.busMid, [360, LY]]].forEach((pts) => wire(ovHome, pts));
+  appear(ovHome, tIn);
+  const farWires = [
+    [[480, LY], [1735, LY]],                                    // 主干线：家里的路由器 → 路由器 1、2、3 → 远方网络里的网线
+    [[627, 338], [947, 338]], [[627, 320], [627, 338]], [[787, 320], [787, 338]], [[947, 320], [947, 338]], [[660, 338], [660, 421]],
+    ...P.cols.map((x) => [[x, 392], [x, LY]]), ...P.cols.map((x) => [[x, LY], [x, 488]]),
+  ].map((pts) => wire(ovFar, pts));
+
+  // ── 设备 ──
+  const gHome = h('div', 'abs', mapG), gTarget = h('div', 'abs', mapG), gFar = h('div', 'abs', mapG), gLab = h('div', 'abs', mapG);
+  const pc = pcIcon(gHome, 110, 250, 0.8);
+  const phone = phoneIcon(gHome, 132, 466, 0.8);
+  const hr = routerIcon(gHome, 360, LY - 54, 0.8);
+  txt(gHome, 'name', tr('你的电脑', 'Your computer'), 110, 378);
+  txt(gHome, 'name', tr('手机', 'Phone'), 110, 590);
+  ctxt(gHome, 'name', tr('路由器', 'Router'), 420, 468);
+  appear(gHome, tIn);
+  const R = P.r.map(([x]) => routerIcon(gFar, x - 60, LY - 54, 0.8));
+  R.forEach((r, i) => ctxt(gFar, 'name', tr('路由器 ', 'Router ') + (i + 1), P.r[i][0], 468));
+  const opc = [627, 787, 947].map((cx) => pcIcon(gFar, cx - 27.5, 268, 0.5));
+  // 远方网络：上排 3 台、下排 3 台，都挂在主干线延伸进来的网线上；目的地 203.0.113.80 在下排最右
+  const DH = { top: [20, 57, 131], bot: [41, 102, 80] };
+  const dpc = [];
+  P.cols.forEach((cx, i) => { dpc.push({ el: pcIcon(gFar, cx - 33, 330, 0.6), cx, row: 'top', host: DH.top[i] }); });
+  P.cols.forEach((cx, i) => { if (i < 2) dpc.push({ el: pcIcon(gFar, cx - 33, 488, 0.6), cx, row: 'bot', host: DH.bot[i] }); });
+  const target = pcIcon(gTarget, P.cols[2] - 33, 488, 0.6);
+  dpc.push({ el: target, cx: P.cols[2], row: 'bot', host: 80 });
+  Object.assign(M, { pc, phone, hr, R, target, dpc });
+
+  // ── 地址标签（a1 时打出）──
+  const lab = {};
+  lab.pc = addrLab(gLab, '192.168.1.', '10', 154, 342, [HB.x + 12, BUS_RIGHT(HB)]);
+  lab.phone = addrLab(gLab, '192.168.1.', '23', 154, 554, [HB.x + 12, BUS_RIGHT(HB)]);
+  lab.other = [7, 15, 33].map((hst, i) => addrLab(gLab, '192.0.2.', String(hst), [627, 787, 947][i], 238, [OB.x + 8, OB.x + OB.w - 8]));
+  lab.dest = dpc.map((d) => addrLab(gLab, '203.0.113.', String(d.host), d.cx, d.row === 'top' ? 298 : 558, [DB.x + 8, DB.x + DB.w - 8]));
+  lab.target = lab.dest[lab.dest.length - 1];
+  M.lab = lab;
+  const allLabs = [lab.pc, lab.phone, ...lab.other, ...lab.dest];
+  M.allLabs = allLabs;
+
+  // ── 顶部的网页加载条 ──
+  const web = h('div', 'webbar raised', world); px(web, 600, 24, 720, 72);
+  h('div', 'wl', web, tr('网页', 'Page'));
+  const bar = h('div', 'bar sunken', web);
+  const segs = []; for (let i = 0; i < 16; i++) { const e = h('i', '', bar); px(e, 3 + i * 27, 3); segs.push(e); }
+  const ws = h('div', 'ws', web, '');
+  M.web = { el: web, segs, ws };
+
+  // ── 地址窗口里的大号地址框：先是问号，a2 填上 203.0.113.80 ──
+  const ilab = txt(world, 'ilab', tr('要去', 'To'), 100, 812);
+  const big = bigAddr(world, 230, 778, ['', '', '', '']);
+  M.ilab = ilab; M.big = big;
+
+  // ── 数据包 ──
+  const pk = h('div', 'pk', mapG);
+  M.pk = pk;
+
+  // ═══ o1：打开网站 → 数据包出来 → 远方一台电脑 ═══
   const tSite = Q(T('o1', '网站'));
-  const B = makeWin(world, 110, 210, 470, 210, tr('网页', 'Web page'));
-  const bTxt = txt(B.body, 't-b', tr('正在打开网站……', 'Opening the site…'), 24, 22);
-  const bar = h('div', 'abs sunken', B.body); px(bar, 24, 82, 412, 44);
-  const bsegs = []; for (let i = 0; i < 16; i++) { const e = blk(bar, 'bg-navy', 3 + i * 25.4, 3, 22, 32); bsegs.push(e); vanish(e, 0); }
-  openWin(B, tSite - 0.15, [150, 470, 154, 146], { sound: 'pop', g: 0.6, p: -0.6 });
-  bsegs.forEach((e, i) => appear(e, tSite + 0.3 + i * 0.16));
+  slide(web, tSite - 0.1, { y: -30, d: 0.35 }); sfx('pop', tSite - 0.1, { g: 0.55, p: 0.1 });
+  segs.forEach((e, i) => { vanish(e, 0); if (i < 5) appear(e, tSite + 0.3 + i * 0.18); });
+  htmlAt(ws, tSite + 0.2, tr('打开中…', 'Loading…'));
 
-  // 数据包出发，停在半路
   const tData = Q(T('o1', '数据'));
-  const pk = packet(world, tr('请求', 'Request'));
-  const hold = 500, py = 520;
-  sfx('tick', tData, { g: 0.7, p: -0.5 });
+  // 数据包从电脑里出来，停在电脑与家里网线之间
+  M.pkRest = [244, 292];
+  sfx('tick', tData, { g: 0.7, p: -0.6 });
+  const tFar = Q(T('o1', '远方'));
+  slam(gTarget, tFar, { from: 1.5, d: 0.4 }); sfx('thud', tFar, { g: 0.75, p: 0.7 });
+  appear(gZDest, tFar);
+  css(gTarget, { transformOrigin: `${P.cols[2]}px 520px` });
 
-  // 远方的另一台：一台设备，上面一个问号，一条虚线
-  const COLS = 6, ROWS = 5, X0 = 820, Y0 = 250, DX = 170, DY = 136, tc = 5, tr_ = 2;
-  const target = pcIcon(world, X0 + tc * DX, Y0 + tr_ * DY, 0.6);
-  const tFar = Q(T('o1', '另'));
-  slam(target, tFar, { from: 1.4, d: 0.35 }); sfx('thud', tFar, { g: 0.8, p: 0.6 });
-  const q = txt(world, 'tag on', '?', X0 + tc * DX + 14, Y0 + tr_ * DY - 52); css(q, { fontSize: '44px' });
-  slam(q, tFar + 0.2, { from: 1.6, d: 0.3 });
-  const ov = overlay(world);
-  const dash = path(ov, `M ${hold + 210} ${py + 24} L ${X0 + tc * DX - 14} ${Y0 + tr_ * DY + 30}`, 'dgray', { w: 5, dashed: true, arrow: true });
-  vanish(dash, 0); arrowIn(dash, tFar + 0.1, 0.5);
+  // ═══ o2：网上的电脑那么多 → 去哪一台？ ═══
+  const tMany = Q(T('o2', '网上'));
+  appear(gZFar, tMany);
+  farWires.forEach((w_) => { vanish(w_, 0); arrowIn(w_, tMany + 0.05, 0.5); });
+  appear(ovFar, tMany);
+  appear(gFar, tMany);
+  R.forEach((r, i) => slam(r, tMany + 0.1 + i * 0.12, { from: 1.4, d: 0.35 }));
+  [...opc, ...dpc.slice(0, -1).map((d) => d.el)].forEach((e, i) => slam(e, tMany + 0.2 + i * 0.06, { from: 1.5, d: 0.3 }));
+  sfx('drive', tMany, { g: 0.55, p: 0.2 });
+  [0, 1, 2, 3, 4].forEach((i) => sfx('tick', tMany + 0.2 + i * 0.12, { g: 0.45, p: 0.4 }));
 
-  // 设备那么多：其余 29 台从右往左一列列铺开
-  const rng = seeded(1981);
-  const nets = ['192.0.2.', '198.51.100.', '203.0.113.'];
-  const devs = [], labs = [];
-  const tMany = Q(T('o2', '设备'));
-  for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) {
-    const isT = c === tc && r === tr_;
-    let addr = '203.0.113.80';
-    if (!isT) { do { addr = nets[Math.floor(rng() * 3)] + (2 + Math.floor(rng() * 250)); } while (addr === '203.0.113.80'); }
-    const x = X0 + c * DX, y = Y0 + r * DY;
-    const d = isT ? target : pcIcon(world, x, y, 0.6);
-    const lab = txt(world, 'tag px', addr, x - 42, y + 66); css(lab, { width: '150px', textAlign: 'center', padding: '2px 0 0' });
-    devs.push(d); labs.push({ lab, c, r, isT });
-    if (!isT) { const k = (COLS - 1 - c) * ROWS + r; slide(d, tMany + k * 0.03, { y: 30, d: 0.25 }); if (k % 5 === 0) sfx('tick', tMany + k * 0.03, { g: 0.45, p: 0.5 }); }
-  }
-  hide(q, tMany, { d: 0.15 }); hide(dash, tMany, { d: 0.15 });
-  keyed(pk).at(tMany + 0.3, { html: tr('请求 → ?', 'Request → ?') });
+  const tWhich = Q(T('o2', '哪'));
+  const q = h('div', 'chip', mapG, '?'); css(q, { fontSize: '34px', padding: '2px 12px 0' }); px(q, 226, 234);
+  slam(q, tWhich, { from: 1.8, d: 0.35 }); sfx('blip', tWhich, { g: 0.6, p: -0.5 });
+  M.q = q;
+  // 地址窗口：远方那台电脑出现时先摆出「要去」和四个空格，问到「哪一台」时填上问号
+  vanish(ilab, 0); vanish(big.el, 0);
+  appear(ilab, tFar); appear(big.el, tFar);
+  css(big.el, { transformOrigin: '0% 50%' });
+  big.cells.forEach((c, i) => { htmlAt(c, tWhich + i * 0.08, '?'); pulse(c, tWhich + i * 0.08, 1.3, 0.3); });
+  // 去哪一台：所有候选的电脑一起描上框，读到「靠地址」时放下
+  [...opc, ...dpc.map((d) => d.el)].forEach((e) => classOn(e, 'sel', tWhich, T('a1', '靠')));
+  gauge(tWhich, tr('要去', 'To'), ['?', '?', '?', '?']);
+  // 问句说完、答案出来之前，四个问号格反白一下：「要去」的地址还不知道
+  big.cells.forEach((c, i) => classOn(c, 'hl', Q(Tend('o2') + 0.9) + i * 0.06, T('a1', '靠')));
+  sfx('blip', Q(Tend('o2') + 0.9), { g: 0.45, p: 0.3 });
 
-  // 靠地址：每台设备亮出地址（一列列），数据包写上目的地址，对上的那一台亮起，数据包飞过去
-  const tAddr = Q(T('o2', '地址')) - 0.1;
-  labs.forEach(({ lab, c }) => { wipe(lab, tAddr + c * 0.05, { dir: 'l', d: 0.2 }); });
-  sfx('blip', tAddr, { g: 0.7, p: 0.3 }); sfx('blip', tAddr + 0.25, { g: 0.5, p: 0.6 });
-  const tDst = tAddr + 0.15;
-  keyed(pk).at(tDst, { html: tr('到 203.0.113.80', 'to 203.0.113.80') });
-  gauge(tDst, tr('目的', 'To'), [203, 0, 113, 80]);
-  const tLab = labs.find((l) => l.isT).lab;
-  const tMatch = Q(Tend('o2') + 0.05);
-  classAt(tLab, 'on', tMatch); sfx('pop', tMatch, { g: 0.8, p: 0.6 });
-  const tx = X0 + tc * DX, ty = Y0 + tr_ * DY;
-  const link = path(ov, `M ${hold + 260} ${py + 24} L ${tx - 10} ${ty + 80}`, 'navy', { w: 6, arrow: true });
-  vanish(link, 0); arrowIn(link, tMatch + 0.05, 0.4);
-  const tFly = tMatch + 0.5, tLand = tFly + 0.6;
-  moveAlong(pk, [[tData, 320, py], [tData + 0.7, hold, py], [tFly, hold, py], [tLand, tx - 60, ty + 6]], tData, tLand);
-  hide(link, tLand - 0.1, { d: 0.2 });
-  sfx('whoosh', tFly, { g: 0.5, p: 0.3 });
-  classAt(target, 'hot', tLand); sfx('chime', tLand, { g: 0.9, p: 0.6 });
-  keyed(bTxt).at(tLand, { html: tr('找到了：203.0.113.80', 'Found: 203.0.113.80') });
-  const docNote = txt(world, 'note', tr('图中地址都是文档专用的示例地址', 'All addresses shown are documentation examples'), 820, 902);
-  wipe(docNote, tAddr + 0.4, { dir: 'l', d: 0.3 });
-
-  // 这套规则叫 IP：注解框，数据包前面贴上 IP
-  const tRule = Q(T('o3', '规则'));
-  const G = h('div', 'abs sunken', world); px(G, 110, 690, 640, 236);
-  G.dataset.gloss = 'IP';
-  const gIP = txt(G, 'px navy', 'IP', 22, 6); gIP.style.fontSize = '96px';
-  txt(G, 'px', 'Internet Protocol', 150, 30).style.fontSize = '52px';
-  txt(G, 't-m', tr('互联网协议', 'Internet Protocol'), 150, 82);
-  txt(G, 'note', tr('给设备编地址，按地址把数据送到', 'Give devices addresses; deliver data by address'), 24, 160);
-  wipe(G, tRule, { dir: 't', d: 0.3 }); sfx('pop', tRule, { g: 0.7, p: -0.5 });
-  const tIP = Q(T('o3', 'I'));
-  to(gIP, tIP, { keyframes: [{ scale: 1.35, duration: 0.12, ease: 'power2.out' }, { scale: 1, duration: 0.3, ease: 'power2.inOut' }], transformOrigin: '0% 60%' });
-  sfx('tick', tIP, { g: 0.8, p: -0.5 });
-
-  // 片名卡：「关于 IPv4」对话框从注解框放大出来
-  const tAbout = Q(T('o4')) - 0.1;
-  // 对话框出现的那一刻，网络窗口连同里面的东西收起，桌面上只留两个对话框
-  [W.el, pc, pcLab, B.el, target, ...devs, ...labs.map((l) => l.lab), docNote, G, ov].forEach((e) => vanish(e, tAbout + 0.25));
-  const A = makeWin(world, 100, 150, 1000, 772, tr('关于 IPv4', 'About IPv4'));
-  vanish(A.el, 0);
-  openWin(A, tAbout, [110, 690, 640, 236], { sound: 'drive', g: 0.7 });
-  const big = txt(A.body, 't-big', 'IP', 36, 14);
-  const v4 = txt(A.body, 't-big', 'v4', 36 + 2 * 104, 14);
-  const tV = Q(T('o4', 'V'));
-  slam(v4, tV, { from: 1.5, d: 0.35 }); sfx('thud', tV, { g: 0.9, p: -0.3 });
-  void big;
-  const ttl = txt(A.body, 't-h', tr('100 秒速通', 'IPv4 in 100 s'), 520, 70);
-  const sub = txt(A.body, 't-b', tr('互联网协议 第 4 版', 'Internet Protocol, version 4'), 524, 176);
-  slam(ttl, tV + 0.25, { from: 1.3, d: 0.35 }); sfx('pop', tV + 0.25, { g: 0.7 });
-  wipe(sub, tV + 0.45, { dir: 'l', d: 0.3 });
-  blk(A.body, 'bg-dgray', 30, 290, 928, 3); blk(A.body, 'bg-white', 30, 293, 928, 3);
-  const list = h('div', 'abs sunken list', A.body); px(list, 30, 320, 928, 220);
-  const r1 = listRow(list, 'IP', tr('Internet Protocol · 互联网协议', 'Internet Protocol'));
-  const r2 = listRow(list, 'v4', tr('第 4 版 · 1981 年 9 月 · RFC 791', 'version 4 · September 1981 · RFC 791'));
-  const r3 = listRow(list, tr('今天', 'now'), tr('仍在使用', 'still in use'));
-  r3.firstChild.style.fontFamily = '"Sans SC"'; r3.firstChild.style.fontSize = '32px'; r3.firstChild.style.fontWeight = '700';
-  r2.dataset.gloss = 'IPv4';
-  void r1;
-  const t4 = Q(T('o4', '第四')), t81 = Q(T('o4', '一九八一年')), tNow = Q(T('o4', '今天'));
-  vanish(r2, 0); vanish(r3, 0);
-  appear(r2, t4); classAt(r2, 'sel', t81, tNow); sfx('tick', t4, { g: 0.6, p: -0.4 });
-  appear(r3, tNow); classAt(r3, 'sel', tNow); sfx('tick', tNow, { g: 0.7, p: -0.4 });
-  const ok = h('div', 'btn raised', A.body, tr('确定', 'OK')); px(ok, 780, 572, 170, 58);
-
-  // RFC 791 的首页
-  const R = makeWin(world, 1140, 140, 720, 560, 'RFC791.TXT', { idle: true, sunken: true });
-  vanish(R.el, 0);
-  openWin(R, t81 + 0.1, [130, 530, 920, 52], { sound: 'drive', g: 0.5, p: 0.5 });
-  const rfc = h('div', 'abs px', R.body, ['RFC:  791', '', '      INTERNET PROTOCOL', '', '   DARPA INTERNET PROGRAM', '   PROTOCOL SPECIFICATION', '', '       <span class="tag on" style="position:static;font-size:44px">September 1981</span>'].join('<br>'));
-  px(rfc, 24, 18); css(rfc, { fontSize: '44px', lineHeight: '52px', whiteSpace: 'pre' });
-
-  // 1981 → 今天：一年一格，从规范发布填到今天
-  const Y = makeWin(world, 1140, 730, 720, 200, tr('1981 → 今天', '1981 → today'), { idle: true });
-  vanish(Y.el, 0);
-  openWin(Y, t81 + 0.35, [1140, 140, 720, 560], { sound: 'pop', g: 0.4, p: 0.5 });
-  txt(Y.body, 'px navy', '1981', 24, 10).style.fontSize = '56px';
-  txt(Y.body, 'px navy', '2026', 600, 10).style.fontSize = '56px';
-  const ytrack = h('div', 'abs sunken', Y.body); px(ytrack, 24, 66, 660, 34);
-  const ys = []; for (let i = 0; i < 45; i++) { const e = blk(ytrack, 'bg-navy', 3 + i * 14.4, 3, 11, 22); vanish(e, 0); ys.push(e); }
-  const tYE = Q(Tend('o4') + 0.2);
-  ys.forEach((e, i) => appear(e, t81 + 0.7 + i * ((tYE - t81 - 0.7) / 45)));
-  const yl = txt(Y.body, 'note', tr('四十五年', '45 years'), 296, 14); vanish(yl, 0); appear(yl, tYE); sfx('tick', tYE, { g: 0.5, p: 0.5 });
+  // 数据包：o1 从电脑出来，停在一旁；之后的路程由各场登记（M.legs），最后在 route 场统一生成
+  M.legs = [[tData, tData + 0.5, [[154, 292], M.pkRest]]];
+  M.pkShow = tData;
 });
+// 你家方框里，家里的网线（x = 300）左边可以放标签的范围
+function BUS_RIGHT() { return 290; }
