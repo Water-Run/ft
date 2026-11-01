@@ -7,7 +7,7 @@
     "zh": "100 秒速通 IPv4"
   },
   "voices": {
-    "zh": "zh-CN-YunyangNeural"
+    "zh": "zh-CN-YunjianNeural"
   },
   "rates": {
     "zh": "+6%",
@@ -48,11 +48,12 @@
       "no_radius": true,
       "no_emoji": true,
       "palette": [
-        "0C0D0F",
-        "F2EFE8",
-        "FF4A1C",
-        "8A8782",
-        "6B6964"
+        "008080",
+        "C0C0C0",
+        "FFFFFF",
+        "808080",
+        "000000",
+        "000080"
       ],
       "fonts": [
         "Sans SC",
@@ -76,7 +77,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "第 2 轮审片页已交付；等待 WaterRun 确认 a8f41124 中文稿并点选视觉 A/B、音色与配乐，未确认前不合成全片或铺开场景；选定后按方向改 check.style.palette",
+  "next": "第 3 稿 2db510f6 与云健试读已进审片页；等待 WaterRun 确认文案，确认后全片配音（云健 +6%）、按选定的 B 方向与 CRT 终端配乐铺开场景",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -96,10 +97,10 @@
       {
         "name": "Claude Opus 5.5",
         "roles": [
-          "文案修订",
+          "文案重写",
           "补充取证",
           "视觉候选",
-          "配音候选",
+          "配音试听",
           "审片页"
         ]
       }

@@ -108,9 +108,9 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
 <body>
 <div id="stage">
 
-  <!-- 帧 1 · 开场（o3 说完、片名落下）：「关于」对话框里的两段历史，旁边是 RFC 791 的首页 -->
+  <!-- 帧 1 · 开场（o4 说完、片名落下）：「关于」对话框交代 IP 的名字、第四版与年份，旁边是 RFC 791 的首页 -->
   <section class="frame" data-frame="title">
-    <div class="abs secs sunken"><b>089</b><span>秒</span></div>
+    <div class="abs secs sunken"><b>081</b><span>秒</span></div>
     <div class="abs ipbox raised"><span class="lab">IP 地址</span><span class="oct sunken"></span><span class="dot">.</span><span class="oct sunken"></span><span class="dot">.</span><span class="oct sunken"></span><span class="dot">.</span><span class="oct sunken"></span></div>
 
     <div class="win raised idle" style="left:1100px;top:130px;width:760px;height:600px"><div class="in"></div>
@@ -133,28 +133,29 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
         <div class="abs" style="left:544px;top:200px;font:500 32px/1.4 'Sans SC';color:#000000">互联网协议 第 4 版</div>
         <div class="etch" style="left:40px;right:40px;top:300px"></div>
         <div class="abs sunken list" style="left:40px;right:40px;top:330px;height:200px">
-          <div class="sel"><span class="y">1981.09</span>IPv4 的规范 RFC 791 发布</div>
-          <div><span class="y">1983.01.01</span>阿帕网从 NCP 整体改用 TCP/IP</div>
+          <div><span class="y">IP</span>Internet Protocol · 互联网协议</div>
+          <div class="sel"><span class="y">v4</span>第 4 版 · 1981 年 9 月 · RFC 791</div>
+          <div><span class="y" style="font:700 32px/1 'Sans SC'">今天</span>仍在使用</div>
         </div>
-        <div class="abs note" style="left:40px;top:552px">ARPANET（阿帕网）：所有主机同一天切换（flag day）</div>
+        <div class="abs note" style="left:40px;top:552px">IP：给设备编地址、按地址把数据一站站送到的规则</div>
         <div class="btn raised" style="right:40px;bottom:30px"><div class="in"></div>确定</div>
       </div>
     </div>
 
-    <div class="abs task"><div class="ruler sunken" data-done="11"></div><div class="line">今天，数据怎样靠它找到正确的设备？</div></div>
+    <div class="abs task"><div class="ruler sunken" data-done="19"></div><div class="line">它的第四版定于一九八一年，叫 IPv4，一直用到今天。</div></div>
   </section>
 
   <!-- 帧 2 · 地址与前缀（p3）：属性框里填好的地址，位视图里前 24 位反白；对比目的地址后弹出结论 -->
   <section class="frame" data-frame="dense">
-    <div class="abs secs sunken"><b>065</b><span>秒</span></div>
+    <div class="abs secs sunken"><b>058</b><span>秒</span></div>
     <div class="abs ipbox raised"><span class="lab">IP 地址</span><span class="oct sunken">192</span><span class="dot">.</span><span class="oct sunken">168</span><span class="dot">.</span><span class="oct sunken">1</span><span class="dot">.</span><span class="oct sunken">10</span></div>
 
     <div class="win raised idle" style="left:80px;top:126px;width:760px;height:560px"><div class="in"></div>
       <div class="tb">TCP/IP 属性<span class="x raised">×</span></div>
       <div class="body">
         <div class="field" style="top:50px"><span class="name">IP 地址</span><span class="oct sunken">192</span><span class="dot">.</span><span class="oct sunken">168</span><span class="dot">.</span><span class="oct sunken">1</span><span class="dot">.</span><span class="oct sunken">10</span></div>
-        <div class="field dim" style="top:150px"><span class="name">子网掩码</span><span class="oct sunken">255</span><span class="dot">.</span><span class="oct sunken">255</span><span class="dot">.</span><span class="oct sunken">255</span><span class="dot">.</span><span class="oct sunken">0</span></div>
-        <div class="abs note" style="left:276px;top:222px">前 24 位全是 1，即 <b style="color:#000080">/24</b></div>
+        <div class="field" style="top:150px"><span class="name">前缀长度</span><span class="dot">/</span><span class="oct sunken">24</span></div>
+        <div class="abs note" style="left:276px;top:222px">前 24 位是网络，后 8 位是设备</div>
         <div class="field" style="top:290px"><span class="name">默认网关</span><span class="oct sunken">192</span><span class="dot">.</span><span class="oct sunken">168</span><span class="dot">.</span><span class="oct sunken">1</span><span class="dot">.</span><span class="oct sunken">1</span></div>
         <div class="btn raised" style="right:220px;bottom:28px"><div class="in"></div>确定</div>
         <div class="btn raised" style="right:30px;bottom:28px"><div class="in"></div>取消</div>
@@ -169,7 +170,8 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
         <div class="abs addr-lab" style="left:30px;top:206px"><span>目的地址</span>203.0.113.80</div>
         <div class="abs bitrow" id="dst" style="left:30px;top:274px" data-bits="11001011000000000111000101010000"></div>
         <div class="abs bitlab" style="left:30px;top:362px;color:#000080">■ 前 24 位：网络</div>
-        <div class="abs bitlab" style="left:740px;top:362px">□ 后 8 位：接口</div>
+        <div class="abs bitlab" style="left:740px;top:362px">□ 后 8 位：设备</div>
+        <div class="abs note" style="left:560px;top:432px">每 8 位一段，所以每段 0–255</div>
         <div class="abs" style="left:30px;top:420px;font:400 56px/1 'Pixel'">192.168.1 <span style="font:700 48px/1 'Sans SC';color:#000080">≠</span> 203.0.113</div>
       </div>
     </div>
@@ -177,18 +179,18 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
     <div class="win raised" style="left:420px;top:700px;width:1080px;height:236px"><div class="in"></div>
       <div class="tb">送往哪里<span class="x raised">×</span></div>
       <div class="body">
-        <div class="abs" style="left:34px;top:30px;font:700 36px/1.4 'Sans SC'">203.0.113.80 不在本网络：前 24 位不同。</div>
+        <div class="abs" style="left:34px;top:30px;font:700 36px/1.4 'Sans SC'">203.0.113.80 在别的网络：前 24 位不同。</div>
         <div class="abs note" style="left:34px;top:92px">203.0.113.80 是文档专用的示例地址，不对应真实服务器</div>
         <div class="btn raised" style="right:30px;top:40px"><div class="in"></div>确定</div>
       </div>
     </div>
 
-    <div class="abs task"><div class="ruler sunken" data-done="35"></div><div class="line">要去的 203.0.113.80，前二十四位不同。</div></div>
+    <div class="abs task"><div class="ruler sunken" data-done="42"></div><div class="line">假设要去 203.0.113.80，它在别的网络。</div></div>
   </section>
 
   <!-- 帧 3 · 路由（r3）：判断框选中「不同网络」，路径图上数据包到了第一台路由器，它的路由表里选中更长的一行 -->
   <section class="frame" data-frame="diagram">
-    <div class="abs secs sunken"><b>054</b><span>秒</span></div>
+    <div class="abs secs sunken"><b>045</b><span>秒</span></div>
     <div class="abs ipbox raised"><span class="lab">目的</span><span class="oct sunken">203</span><span class="dot">.</span><span class="oct sunken">0</span><span class="dot">.</span><span class="oct sunken">113</span><span class="dot">.</span><span class="oct sunken">80</span></div>
 
     <div class="win raised" style="left:60px;top:120px;width:1800px;height:400px"><div class="in"></div>
@@ -199,20 +201,21 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
         <div class="wire" style="left:960px;top:152px;width:60px"></div>
         <div class="wire" style="left:1290px;top:152px;width:60px"></div>
         <div class="node raised" style="left:30px;top:80px"><div class="k">本机</div><div class="a">192.168.1.10</div></div>
-        <div class="node raised gw" style="left:360px;top:80px"><div class="k">默认网关</div><div class="a">192.168.1.1</div></div>
+        <div class="node raised gw" style="left:360px;top:80px"><div class="k">家里的路由器</div><div class="a">192.168.1.1</div></div>
+        <div class="abs note" style="left:360px;top:236px">默认网关：本网的出口</div>
         <div class="node raised" style="left:690px;top:80px"><div class="k">路由器</div><div class="a">198.51.100.1</div></div>
         <div class="node raised" style="left:1020px;top:80px"><div class="k">路由器</div><div class="a">198.51.100.2</div></div>
         <div class="node raised" style="left:1350px;top:80px"><div class="k">目的地</div><div class="a">203.0.113.80</div></div>
         <div class="pkt" style="left:700px;top:24px">DST 203.0.113.80</div>
-        <div class="abs note" style="left:30px;top:260px">198.51.100.0/24 与 203.0.113.0/24 都是文档专用的示例地址</div>
+        <div class="abs note" style="left:700px;top:260px">198.51.100.x 与 203.0.113.x 为文档专用的示例地址</div>
       </div>
     </div>
 
     <div class="win raised idle" style="left:60px;top:548px;width:700px;height:390px"><div class="in"></div>
       <div class="tb">本机：送往哪里<span class="x raised">×</span></div>
       <div class="body">
-        <div class="abs check off" style="left:36px;top:40px"><span class="box sunken"></span>网络相同：直接送达</div>
-        <div class="abs check" style="left:36px;top:120px"><span class="box sunken">×</span><span>网络不同：交给默认网关<br><span class="px" style="font-size:44px;color:#000080">192.168.1.1</span></span></div>
+        <div class="abs check off" style="left:36px;top:40px"><span class="box sunken"></span>同一网络：直接送到</div>
+        <div class="abs check" style="left:36px;top:120px"><span class="box sunken">×</span><span>别的网络：交给家里的路由器<br><span class="px" style="font-size:44px;color:#000080">192.168.1.1</span></span></div>
       </div>
     </div>
 
@@ -224,10 +227,66 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
 <span style="color:#FFFFFF">两行都匹配，/24 更长，选它</span></div></div>
     </div>
 
-    <div class="abs task"><div class="ruler sunken" data-done="46"></div><div class="line">路由器查路由表，一站一站送到目的地。</div></div>
+    <div class="abs task"><div class="ruler sunken" data-done="55"></div><div class="line">一路上，每台路由器查表，一站站往下送。</div></div>
   </section>
 
-  <!-- 帧 4 · 结尾（e4）：地址空间整理图，256 格全满，最后 5 块描黑框；提示框报 2011 年见底；IPv6 的位数条 -->
+
+  <!-- 帧 4 · 特殊地址（s3）：本机窗口里 127.0.0.1 绕回自己，localhost 只作标签；两家内网都用 192.168.1.10，各自共用一个公网地址 -->
+  <section class="frame" data-frame="special">
+    <div class="abs secs sunken"><b>029</b><span>秒</span></div>
+    <div class="abs ipbox raised"><span class="lab">IP 地址</span><span class="oct sunken">192</span><span class="dot">.</span><span class="oct sunken">168</span><span class="dot">.</span><span class="oct sunken">1</span><span class="dot">.</span><span class="oct sunken">10</span></div>
+
+    <div class="win raised idle" style="left:60px;top:120px;width:700px;height:520px"><div class="in"></div>
+      <div class="tb">本机<span class="x raised">×</span></div>
+      <div class="body">
+        <div class="abs raised" style="left:40px;top:36px;width:250px;height:200px;padding:20px"><div style="font:500 30px/1 'Sans SC'">你的电脑</div><div class="px" style="margin-top:30px;font-size:46px">192.168.1.10</div></div>
+        <div class="abs" style="left:290px;top:80px;width:120px;height:130px;border:8px solid #000080;border-left:0"></div>
+        <div class="abs" style="left:290px;top:192px;width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-right:26px solid #000080"></div>
+        <div class="abs px" style="left:432px;top:96px;font-size:60px;color:#000080">127.0.0.1</div>
+        <div class="abs sunken" style="left:432px;top:168px;padding:6px 16px;font:400 40px/1 'Pixel'">localhost</div>
+        <div class="abs note" style="left:40px;top:290px;font-size:30px">发给 127.0.0.1 的数据不出本机</div>
+        <div class="abs note" style="left:40px;top:340px">127 开头的地址都绕回本机；localhost 是它的名字</div>
+      </div>
+    </div>
+
+    <div class="win raised idle" style="left:60px;top:666px;width:700px;height:272px"><div class="in"></div>
+      <div class="tb">私有地址<span class="x raised">×</span></div>
+      <div class="body sunken list" style="padding:12px 22px">
+        <div class="sel"><span class="y">192.168.x.x</span>家里、公司的内网都能用</div>
+        <div><span class="y">10.x.x.x</span>同样是私有地址</div>
+        <div><span class="y">172.16–31.x.x</span>同样是私有地址</div>
+      </div>
+    </div>
+
+    <div class="win raised" style="left:800px;top:120px;width:1060px;height:818px"><div class="in"></div>
+      <div class="tb">内网与公网<span class="x raised">×</span></div>
+      <div class="body sunken">
+        <div class="abs raised" style="left:30px;right:30px;top:20px;height:80px;display:flex;align-items:center;justify-content:center;font:700 34px/1 'Sans SC'">公网</div>
+        <div class="wire" style="left:257px;top:100px;width:6px;height:60px"></div>
+        <div class="wire" style="left:765px;top:100px;width:6px;height:60px"></div>
+        <div class="node raised gw" style="left:70px;top:160px;width:380px"><div class="k">你家的路由器 · 公网</div><div class="a">198.51.100.7</div></div>
+        <div class="node raised" style="left:578px;top:160px;width:380px"><div class="k">邻居家的路由器 · 公网</div><div class="a">198.51.100.23</div></div>
+        <div class="wire done" style="left:255px;top:310px;width:10px;height:50px"></div>
+        <div class="wire" style="left:765px;top:310px;width:6px;height:50px"></div>
+        <div class="abs" style="left:30px;top:360px;width:460px;height:280px;border:4px dashed #000080;padding:18px">
+          <div style="font:700 28px/1 'Sans SC';color:#000080">你家的内网</div>
+          <div class="px" style="margin-top:22px;font-size:46px;background:#000080;color:#FFFFFF;display:inline-block;padding:0 10px">电脑 192.168.1.10</div>
+          <div class="px" style="margin-top:14px;font-size:46px">手机 192.168.1.11</div>
+        </div>
+        <div class="abs" style="left:538px;top:360px;width:460px;height:280px;border:4px dashed #808080;padding:18px">
+          <div style="font:700 28px/1 'Sans SC'">邻居家的内网</div>
+          <div class="px" style="margin-top:22px;font-size:46px;background:#000080;color:#FFFFFF;display:inline-block;padding:0 10px">电脑 192.168.1.10</div>
+          <div class="px" style="margin-top:14px;font-size:46px">电视 192.168.1.20</div>
+        </div>
+        <div class="abs note" style="left:30px;top:654px">两家都有 192.168.1.10，互不冲突；上公网时，各自整个内网共用一个公网地址</div>
+        <div class="abs note" style="left:30px;top:692px">198.51.100.x 为文档专用的示例地址</div>
+      </div>
+    </div>
+
+    <div class="abs task"><div class="ruler sunken" data-done="71"></div><div class="line">上公网时，整个内网通常共用一个公网地址。</div></div>
+  </section>
+
+  <!-- 帧 5 · 结尾（e3）：地址空间整理图，256 格全满，最后 5 块描黑框；提示框报 2011 年见底；IPv6 的位数条 -->
   <section class="frame" data-frame="ending">
     <div class="abs secs sunken"><b>015</b><span>秒</span></div>
     <div class="abs ipbox raised"><span class="lab">IANA 剩余 /8</span><span class="oct sunken">0</span></div>
@@ -246,8 +305,8 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
       <div class="tb">IANA 总地址池<span class="x raised">×</span></div>
       <div class="body">
         <div class="abs" style="left:34px;top:24px;font:700 38px/1.4 'Sans SC'">地址池已空。</div>
-        <div class="abs note" style="left:34px;top:82px;font-size:30px">2011 年 2 月 3 日，最后 5 个 /8 平分给 5 个地区注册机构。</div>
-        <div class="abs prog sunken" style="left:34px;right:34px;top:150px" id="prog"></div>
+        <div class="abs note" style="left:34px;top:82px;font-size:30px">2011 年 2 月 3 日：全球统一管理的地址池（IANA）分完，最后 5 个 /8 平分给 5 个地区注册机构。</div>
+        <div class="abs prog sunken" style="left:34px;right:34px;top:178px" id="prog"></div>
         <div class="btn raised" style="right:34px;top:20px"><div class="in"></div>确定</div>
       </div>
     </div>
@@ -263,7 +322,7 @@ sup { font-size: .55em; vertical-align: .75em; line-height: 0; }
       </div>
     </div>
 
-    <div class="abs task"><div class="ruler sunken" data-done="85"></div><div class="line">接班的 IPv6，把地址加长到一百二十八位；</div></div>
+    <div class="abs task"><div class="ruler sunken" data-done="85"></div><div class="line">接班的 IPv6 有一百二十八位，</div></div>
   </section>
 </div>
 <script>
