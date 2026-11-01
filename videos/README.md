@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 18，制作中 5，计划中 178，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 202 部：已成片 19，制作中 5，计划中 177，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,6 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [100 秒速通 IPv4](in-seconds/ipv4/) | [XX 秒速通](in-seconds/README.md) | zh 1:40 | 2026-11-02 | [哔哩哔哩](https://www.bilibili.com/video/BV17rxa6REXU) | — | Kimi K3.1 Pro、Claude Opus 5.5 |
 | [150 秒了解 Agent 的手：Harness](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | zh 2:30 | 2026-10-31 | [哔哩哔哩](https://www.bilibili.com/video/BV1vbxy6HEym) | — | Claude Opus 5.5 |
 | [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | zh 2:08 | 2026-10-31 | [哔哩哔哩](https://www.bilibili.com/video/BV1Pxxr6oEjx) | — | Gemini 4 Argon、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/) | [数据库引擎](database-engines/README.md) | zh 15:50 | 2026-10-26 | [哔哩哔哩](https://www.bilibili.com/video/BV1x1nR6XETE) | — | Claude Opus 5.5 |
@@ -37,8 +38,8 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 重做版文案第 1 稿待 WaterRun 校对（review/NOTES.md）；确认后配音、做场景 | 待同步 | Claude Opus 5.5 |
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 审稿 | 排在系列第四部：PostgreSQL 重做版之后按全系列主线对齐第 3 稿（人物、六个问题、约 10 分钟）并重新交审 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01 12:07，「数据库引擎」合集第 3 集）；登记交付与发布（stage、delivery、release、片单状态，再运行 catalog.js）要一起提交，而 videos/catalog.json、videos/README.md、videos/CREDITS.md 正被另一会话修改未提交，等它们空出来再做；发布信息先记在 README「交付」。按发布后冻结，只收集反馈 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 预览 r1：第 9 稿已确认并配音（15:10），11 个场景已写完，自审后交 WaterRun 看 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 待同步 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
@@ -292,7 +293,7 @@
 | 29 | 150 秒速通 Git | zh | 计划中 | `git` |  |
 | 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
 | 31 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
-| 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
+| 32 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 
 ### 游戏物理学
 

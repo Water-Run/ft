@@ -76,8 +76,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "accept",
-  "next": "成片 out/ipv4-zh-1080p60.mp4 已交出，check.js --final 通过；等待 WaterRun 看片：同意后登记交付（片单状态改已成片），有意见按 review/NOTES.md 逐条改",
+  "stage": "released",
+  "next": "已发布（2026-11-02，哔哩哔哩 BV17rxa6REXU）；成片与制作源码冻结",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -114,5 +114,22 @@
   "review": {
     "required": true,
     "reviewer": "WaterRun"
-  }
+  },
+  "delivery": {
+    "date": "2026-11-02",
+    "duration": {
+      "zh": 100.0
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV17rxa6REXU",
+      "date": "2026-11-02",
+      "title": "100秒速通ipv4",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }

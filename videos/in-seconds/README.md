@@ -81,5 +81,5 @@
 | 29 | 150 秒速通 Git | zh | 计划中 | `git` |
 | 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](config-file-formats/) |
 | 31 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
-| 32 | 100 秒速通 IPv4 | zh | 计划中 | `ipv4` |
+| 32 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
 <!-- catalog:end -->
