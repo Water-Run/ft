@@ -8,7 +8,7 @@
     "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
   },
   "stage": "review",
-  "next": "第 6 稿（2026-11-01）与审片页（26 个 MiniMax 女声、3 个配乐小样、按 sqlite.org 实际页面重画的关键帧、3 张立体封面）待 WaterRun 审定与选择",
+  "next": "第 7 稿（2026-11-01）待 WaterRun 审定与确认；已选定封面第 1 张、配音 female-chengshu（1.05）、配乐「页的脉冲」",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -17,6 +17,16 @@
     ],
     "services": [],
     "repository": "https://github.com/Water-Run/ft"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "female-chengshu"
+    },
+    "speed": {
+      "zh": 1.05
+    }
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural"
