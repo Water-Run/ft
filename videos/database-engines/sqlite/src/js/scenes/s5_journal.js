@@ -6,7 +6,7 @@ scene('journal', ({ root, s, c0 }) => {
   const cam = makeCamera(world);
   const W = h('div', 'abs', world); px(W, 0, 0, 1920, 1080);
   const ov = overlay(W);
-  const title = pageTitle(W, '回滚日志'); show(title, c0 + 0.1, { y: 8 });
+  const title = pageTitle(W, '改年龄：要动不止一页'); show(title, c0 + 0.1, { y: 8 });
   const panel = (name, x, y, w, hh) => { const p = h('div', 'abs', W); px(p, x, y, w, hh); css(p, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = h('div', 'abs', p, name); px(n, 0, 0, w - 4, 40); css(n, { background: '#dddddd', borderBottom: '1.5px solid #aaa', fontFamily: 'Mono', fontSize: '24px', padding: '4px 14px', boxSizing: 'border-box' }); p.nameEl = n; return p; };
   const PAGES = DATA.wal.frames;                       // 改年龄要动的页：叶页 130 与年龄索引的 4 页
   const MAIN = panel('main.db', 120, 250, 600, 420);
@@ -33,10 +33,11 @@ scene('journal', ({ root, s, c0 }) => {
   jRows.forEach((r, i) => { set(r, 0, { autoAlpha: 0 }); tl.fromTo(r, { autoAlpha: 1, x: -1080 }, { x: 0, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tCp + 0.3 + i * 0.12); });
   const gJ = gloss(W, '回滚日志', '改之前的原页，原样抄在旁边；SQLite 默认就用它', 760, 690, 560); show(gJ, T('j5', '回滚日志'), { y: 8 }); sfx('pop', T('j5', '回滚日志'), { g: 0.4 });
   // j7：每页带着页号；日志开头记着原来的文件有 553 页
-  const jh = tx(JR, '日志头：原来 553 页', 330, 6, { fs: 22, color: K.teal }); show(jh, T('j7', '553'), { y: 6 });
+  const jh = tx(JR, '日志头：原来 553 页', 330, 6, { fs: 22, color: K.teal }); show(jh, T('j7', '原来'), { y: 6 });
   jRows.forEach((r, i) => set(r.firstChild, T('j7', '页号') + i * 0.06, { color: K.teal, fontWeight: 700 }));
+  jRows.forEach((r) => { r.dataset.beat = 'line'; });   // 选中只描外框：页号同时在变色，不能让 .bt 的白字盖过去（set 会记下白字）
   // j8：日志先写稳到磁盘，再动主文件
-  const sync = btn(JR, '已写稳到磁盘', 380, 380, 22); set(sync, 0, { autoAlpha: 0 }); slam(sync, T('j8', '写稳'), { from: 1.2 }); sfx('thud', T('j8', '写稳'), { g: 0.4 });
+  const sync = btn(JR, '已写到磁盘上', 380, 370, 24); set(sync, 0, { autoAlpha: 0 }); slam(sync, T('j8', '磁盘'), { from: 1.2 }); sfx('thud', T('j8', '磁盘'), { g: 0.4 });
   // j9：主文件写好，删掉日志：删掉的那一刻，就是提交
   mRows.forEach((r, i) => keyed(r.val).at(T('j9', '写好') + i * 0.1, { html: i === 0 ? 'Alice · <b>43</b>' : '年龄索引 · <b>43</b> 岁' }));
   sfx('tick', T('j9', '写好'), { g: 0.4 });
@@ -49,6 +50,11 @@ scene('journal', ({ root, s, c0 }) => {
   const tL = T('j10') - 0.2;
   gone(gC, tL, 0.3);
   const card = (name, x) => { const c = h('div', 'abs', W); px(c, x, 700, 520, 190); css(c, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = tx(c, name, 16, 8, { fs: 28, fw: 600 }); const l1 = tx(c, '', 16, 56, { fs: 24, mono: true }); const l2 = tx(c, '', 16, 100, { fs: 24 }); const lk = h('div', 'abs btn', c, ''); px(lk, 16, 140); lk.style.fontSize = '22px'; c.l1 = l1; c.l2 = l2; c.lk = lk; return c; };
+  const scope = docTable(W, [['', 210], ['一把锁管多大', 400]], [['MyISAM', '整张表'], ['InnoDB', '要改的那一行'], ['SQLite', '整个数据库文件']], 1200, 290, { fs: 32 });
+  scope.t.dataset.name = '锁的范围';
+  show(scope.hr, T('j10b') - 0.1, { y: 6 }); show(scope.rs[0], T('j10b', 'My ISAM'), { x: -10, y: 0 }); show(scope.rs[1], T('j10b', 'Inno D B'), { x: -10, y: 0 }); show(scope.rs[2], T('j10c'), { x: -10, y: 0 });
+  sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10b', 'Inno D B'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
+  gone(scope.t, T('j11', '共享锁') - 0.2, 0.3);
   const bob = card('Bob（读）', 120), ali = card('Alice（写）', 700), rdr = card('又来一个读者', 1280);
   wipe(bob, tL + 0.1, { dir: 'l', d: 0.35 });
   keyed(bob.l1).at(T('j11', '开始读') - 0.1, { html: 'sqlite> SELECT age …' });
@@ -106,8 +112,8 @@ scene('journal', ({ root, s, c0 }) => {
   mini.forEach((c) => dim(c, T('j26', '代价'), 0.3));   // 出错的例子讲完，主文件里的页退到背景
   show(cost.querySelector('.c1'), T('j26', '提交要等'), { y: 0 }); show(cost.querySelector('.c2'), T('j26b') - 0.1, { y: 0 });   // 释义跟着旁白分两段出来
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  beats([[T('j1'), chg], [T('j2'), MAIN.nameEl], [T('j2', '叶页'), mRows[0]], [T('j2', '年龄索引'), mRows.slice(1)], [T('j3'), mRows[0]], [T('j3', '断电'), mix], [T('j3', '混杂'), mRows.slice(1)], [T('j4'), gTx], [T('j4b', '全部生效'), mRows], [T('j4b', '从没发生过'), mRows[0]], [T('j6'), MAIN.nameEl], [T('j6', '抄进'), jRows], [T('j5'), JR.nameEl], [T('j7'), jh], [T('j8'), sync], [T('j9'), MAIN.nameEl],
-    [T('j10'), MAIN.nameEl], [T('j10', '有人在读'), bob], [T('j11'), bob.l1], [T('j11b'), bob.l2], [T('j12'), ali.l1], [T('j12b'), bob], [T('j12b', '写的'), ali], [T('j15'), ali.l1], [T('j15', '还没提交'), ali.l2], [T('j15b'), rdr.l1], [T('j13'), ali.lk], [T('j16'), ali.l1], [T('j17'), bob.l2], [T('j18'), rdr.l2], [T('j19'), ali.l2],
+  beats([[T('j1'), chg], [T('j2'), MAIN.nameEl], [T('j2', '叶页'), mRows[0]], [T('j2', '年龄索引'), mRows.slice(1)], [T('j3'), mRows[0]], [T('j3', '断电'), mix], [T('j3', '混杂'), mRows.slice(1)], [T('j4'), gTx], [T('j4b', '全部生效'), mRows], [T('j4b', '从没发生过'), mRows[0]], [T('j6'), MAIN.nameEl], [T('j6', '抄进'), jRows], [T('j5'), JR.nameEl], [T('j7', '页号'), jRows], [T('j7', '原来'), jh], [T('j8'), sync], [T('j9'), MAIN.nameEl],
+    [T('j7', '日志开头'), JR.nameEl], [T('j10'), MAIN.nameEl], [T('j10', '有人在读'), bob], [T('j10b'), scope.rs[0]], [T('j10b', 'Inno D B'), scope.rs[1]], [T('j10c'), scope.rs[2]], [T('j10c', '整个数据库文件'), MAIN], [T('j11'), bob.l1], [T('j11b'), bob.l2], [T('j12'), ali.l1], [T('j12b'), bob], [T('j12b', '写的'), ali], [T('j15'), ali.l1], [T('j15', '还没提交'), ali.l2], [T('j15b'), rdr.l1], [T('j13'), ali.lk], [T('j16'), ali.l1], [T('j17'), bob.l2], [T('j18'), rdr.l2], [T('j19'), ali.l2],
     [T('j20'), up], [T('j21'), JR2.nameEl], [T('j22'), up], [T('j22', '日志文件'), left], [T('j23'), MAIN.nameEl], [T('j23', '有没有'), JR2.nameEl], [T('j24'), jm], [T('j24', '主文件'), MAIN.nameEl], [T('j25', '一字节不差'), same], [T('j25', 'Alice'), a42], [T('j26', '都离开'), cost], [T('j26b'), MAIN.nameEl]], Tend('j26b'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('j12b', '照常能读'), { g: 0.3 });
@@ -115,5 +121,7 @@ scene('journal', ({ root, s, c0 }) => {
   sfx('pop', T('j15b', '42'), { g: 0.3 });
   sfx('tick', T('j13', '独占锁'), { g: 0.35 });
   sfx('tick', T('j20', '加一'), { g: 0.3 });
-  stay(cam, s, c0, 1);
+  [[T('j4') - 0.2, '事务：要么全部生效，要么像从没发生过'], [T('j6') - 0.2, '回滚日志：先把原页抄在旁边'], [T('j9') - 0.2, '删掉日志的那一刻：提交'], [T('j10') - 0.2, '这时有人在读'],
+   [T('j10b') - 0.2, '一把锁管多大'], [T('j11') - 0.2, '共享锁、保留锁、独占锁'], [T('j16') - 0.2, '提交被挡住：Bob 还没走'], [T('j20') - 0.2, '开头那一幕：改到一半被终止'], [T('j23') - 0.2, '重新打开：先看一眼有没有日志'], [T('j26') - 0.2, '回滚日志的代价']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
+  shots(cam, world, s, [[s.start, null, { rect: [110, 244, 1810, 896], pad: 0 }]]);   // 不缩小：缩到 1 倍以下，24 号字就小于 22
 });

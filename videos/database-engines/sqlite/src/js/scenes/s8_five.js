@@ -3,7 +3,7 @@ scene('five', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
   const W = h('div', 'abs', world); px(W, 0, 0, 1920, 1080);
-  const title = pageTitle(W, '五个问题'); show(title, c0 + 0.1, { y: 8 });
+  const title = pageTitle(W, 'SQLite 这样回答五个问题'); show(title, c0 + 0.1, { y: 8 });
   const Q = [
     ['怎么放', 'z2', [['一个文件', 'z2', '一个文件'], ['一样大的页', 'z2', '页'], ['表：B+ 树', 'z2b', 'B 加树'], ['索引：B 树', 'z2b', '索引是']]],
     ['怎么找', 'z3', [['从根页往下', 'z3', '根页'], ['一层层缩小范围', 'z3', '缩小'], ['索引给出行号', 'z3b', '行号'], ['到表里取整行', 'z3b', '取整行']]],
@@ -21,5 +21,5 @@ scene('five', ({ root, s, c0 }) => {
   });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   beats([...heads, ...chipEls], Tend('z7b'));
-  stay(cam, s, c0, -1);
+  shots(cam, world, s, [[s.start, null, { rect: [110, 255, 1720, 840], zmax: 1.3 }]]);
 });

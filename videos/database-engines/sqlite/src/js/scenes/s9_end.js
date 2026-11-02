@@ -63,7 +63,7 @@ scene('end', ({ root, s, c0 }) => {
   // ── e9–e10c：几十亿行算平均年龄：分析型 OLAP；从 OLTP 到 OLAP，只换了一个字母 ──
   const tA = T('e9') - 0.2;
   [rowNote, allT, ...dbs].forEach((e) => gone(e, tA, 0.3));
-  const avg = codeBlock(W, ['SELECT avg(age) FROM users;　-- 几十亿行'], 120, 250, { fs: 26 }); set(avg, 0, { autoAlpha: 0 }); show(avg, T('e9', '平均年龄') - 0.3, { y: 0, d: 0.3 });
+  const avg = codeBlock(W, ['SELECT avg(age) FROM users;　-- 几十亿行'], 120, 222, { fs: 26 }); set(avg, 0, { autoAlpha: 0 }); show(avg, T('e9', '平均年龄') - 0.3, { y: 0, d: 0.3 });   // 放在 222，不压表头
   const many = tx(W, '…… 几十亿行', 140, 640, { fs: 28, color: K.dim }); show(many, T('e9', '几十亿行'), { y: 8 });
   const tMorph = T('e10b', '一个字母');
   const Tl = L4[2], Al = h('div', 'abs', W, 'A'); px(Al, 1000 + 2 * 120, 300, 110, 140); css(Al, { border: `2.5px solid ${K.teal}`, color: K.teal, fontSize: '96px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: K.wheat, boxSizing: 'border-box' });
@@ -111,5 +111,11 @@ scene('end', ({ root, s, c0 }) => {
   sfx('tick', T('e11', '整个读进来'), { g: 0.3 });
   sfx('whoosh', T('e12', 'Click House') + 0.2, { g: 0.3 });
   sfx('tick', T('e13', '极小'), { g: 0.3 });
-  stay(cam, s, c0, 1);
+  // 镜头：一个库一个文件 → 公有领域与祝福 → OLTP 到 OLAP → ClickHouse
+  shots(cam, world, s, [
+    [s.start, null, { rect: [400, 280, 1500, 480], zmax: 1.4 }],
+    [T('e2') - 0.3, null, { rect: [110, 240, 1840, 790] }],
+    [T('e7') - 0.2, null, { rect: [110, 215, 1600, 770] }],
+    [T('e12') - 0.2, null, { rect: [110, 240, 1850, 900] }],
+  ]);
 });

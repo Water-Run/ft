@@ -44,6 +44,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .chapter { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: var(--teal); color: var(--paper); padding: 380px var(--M) 0; }
 .chapter .no { display: inline-block; font: 400 56px "Inter"; background: var(--blue); border-radius: 8px; padding: 2px 22px; }
 .chapter .ti { font-weight: 400; font-size: 120px; line-height: 1.1; margin-top: 18px; }
+.chapter .q { font-weight: 400; font-size: 52px; line-height: 1.3; margin-top: 40px; color: #d3e3ea; }
 
 /* 字幕 */
 #caption { bottom: 52px; height: 60px; z-index: 50; }
@@ -56,7 +57,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 
 /* ── 文档页的零件（src/js/parts.js、config.js 用） ── */
 body { font-family: "Inter", "Sans SC"; }
-.doc-head { pointer-events: none; z-index: 20; }
+.doc-head { pointer-events: none; z-index: 20; background: #ffffff; }   /* 白底：镜头推到上方的内容不从页头底下透出来 */
 .doc-brand { left: 60px; top: 40px; font: 400 44px "Inter", "Sans SC"; color: var(--teal); }
 .doc-tag { right: 60px; top: 30px; text-align: right; font: italic 400 25px/1.35 "Inter"; color: #1a1a1a; }
 .doc-menu { left: 60px; top: 110px; width: 1800px; height: 46px; background: var(--teal); border-radius: 6px; display: flex; align-items: center; padding: 0 26px; box-sizing: border-box; gap: 42px; }

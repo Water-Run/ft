@@ -29,7 +29,8 @@ function tx(p, html, x, y, o = {}) {
 }
 const lnk = (s) => `<span class="lnk">${s}</span>`;              // 文档的链接：深青带下划线
 // 页标题：居中、深青、常规字重（文档的页标题）
-function pageTitle(p, s, y = 180, fs = 56) { const e = tx(p, s, 0, y, { fs, color: K.teal, w: 1920, css: { textAlign: 'center' } }); e.dataset.name = '页标题'; return e; }
+// 页标题写这一段的要点（像前几集的页标题），放在镜头之外的固定层：镜头推拉时标题不动、不被放大
+function pageTitle(p, s, y = 180, fs = 48) { const w = p.closest && p.closest('.world'); const host = w ? w.parentNode : p; const e = tx(host, s, 0, y - 18, { fs, color: K.teal, w: 1920, css: { textAlign: 'center', background: '#ffffff', height: '86px', lineHeight: '86px' } }); e.dataset.name = '页标题'; return e; }   // 白底一条：镜头推移时，内容从标题下面经过，不压字
 // 小节标题：带编号、左对齐、深青
 function h2(p, s, x, y, fs = 40) { return tx(p, s, x, y, { fs, color: K.teal }); }
 // 注解框：文档的侧栏盒（2px 深青边），粗体名加一句话；data-gloss 供扫描核对术语的注解
@@ -81,6 +82,31 @@ function rrBox(p, s, x, y, o = {}) {
   if (o.fs) e.style.fontSize = Math.max(24, o.fs) + 'px';
   if (o.mono) e.style.fontFamily = '"Mono", "Sans SC"';
   return e;
+}
+
+// 镜头取景：每一段把这一段要看的元素放大到填满内容区（页标题之下、字幕之上），换段时镜头推过去。
+// 元素按构建时的版面位置量（不含补间位移）；o.rect 直接给世界坐标的范围 [x0, y0, x1, y1]；o.zmax 最大倍数（缺省 1.5）；o.pad 四周留白（像素）
+const VIEW = { x0: 80, x1: 1840, y0: 268, y1: 930 };
+function viewOf(els, world, o = {}) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (const e of [].concat(els || []).flat()) { if (!e) continue; const b = box(e, world); if (!b.w && !b.h) continue; x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.r); y1 = Math.max(y1, b.b); }
+  if (o.rect) [x0, y0, x1, y1] = o.rect;
+  const pad = o.pad != null ? o.pad : 30; x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
+  const z = Math.max(o.zmin || 0.75, Math.min(o.zmax || 1.5, (VIEW.x1 - VIEW.x0) / (x1 - x0), (VIEW.y1 - VIEW.y0) / (y1 - y0)));
+  return { x: (x0 + x1) / 2 - ((VIEW.x0 + VIEW.x1) / 2 - 960) / z, y: (y0 + y1) / 2 - ((VIEW.y0 + VIEW.y1) / 2 - 540) / z, z, r: 0 };
+}
+// keys: [[t, 元素或元素数组, o], …]：第一段在场景开始时就位（藏在章节卡后面），之后每段在 t 推过去（o.d 秒，缺省 1.2）
+// 每段停留时照场景指南第 3 节，只朝一个方向极慢横移（屏幕上每秒 1.5 像素、一段至多 30 像素），不缩放
+function shots(cam, world, s, keys) {
+  const vs = keys.map(([t, els, o = {}]) => [t, viewOf(els, world, o), o]);
+  const out = [];
+  vs.forEach(([t, v, o], i) => {
+    const d = i ? (o.d || 1.2) : 0, arrive = (i ? t : s.start) + d;
+    if (i) out.push([t, v, d, { g: o.g != null ? o.g : 0.3, sfx: o.sfx }]);
+    const next = i + 1 < vs.length ? vs[i + 1][0] : s.end, dur = next - arrive - 0.05;
+    if (dur > 1) out.push([arrive, { x: v.x + Math.min(30, dur * 1.5) / v.z }, dur, { ease: 'none', sfx: false }]);
+  });
+  cam.track(s.start, vs[0][1], out);
 }
 
 // 停在一屏上：只朝一个方向极慢横移（每秒不超过 2 像素，一屏合计不超过 40 像素），不缩放
