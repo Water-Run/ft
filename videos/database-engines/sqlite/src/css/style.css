@@ -84,5 +84,5 @@ body { font-family: "Inter", "Sans SC"; }
 /* 「当前在讲谁」的选中样式（parts.js 的 beats）：深青底白字像官网菜单里选中的那一格；框用浅青底加深青外框 */
 .bt { background-color: #044a64 !important; color: #ffffff !important; outline: 6px solid #044a64 !important; outline-offset: 0; }
 .bt * { color: #ffffff !important; }
-.bf { background-color: #d3e3ea !important; outline: 3px solid #044a64 !important; outline-offset: 3px; }
+.bf { background-color: #cfe1e9 !important; outline: 5px solid #044a64 !important; outline-offset: 3px; }
 .bl { outline: 3px solid #044a64 !important; outline-offset: 3px; }

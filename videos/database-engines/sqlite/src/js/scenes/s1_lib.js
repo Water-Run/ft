@@ -52,7 +52,7 @@ scene('lib', ({ root, s, c0 }) => {
   const qm = tx(W, '？', 830, Y + 126, { fs: 48, color: K.teal });   // 问号放在虚线上方，不被线穿过
   arrowIn(dir, T('h6b', '磁盘') - 0.2, 0.8); show(qm, T('h6b', '直接'), { y: 8 }); sfx('whoosh', T('h6b', '磁盘') - 0.2, { g: 0.3 });
   dim(srv, T('h6', '服务器'), 0.45);
-  const none = tx(W, '当时没有这样的 SQL 数据库', 900, Y + 214, { fs: 30, color: K.dim }); show(none, T('h7', '找了一圈') + 0.3, { y: 6 });
+  const none = tx(W, '当时没有这样的 SQL 数据库', 900, Y + 214, { fs: 30, color: K.dim }); show(none, T('h7', '没有') - 0.1, { y: 6 });
   gone(dlg, T('h7') - 0.1, 0.3);
   // h8：同事那句话（访谈原话与中文）
   const quote = h('div', 'abs', W, '“Richard, why don’t you just write one?”<br><span style="font-size:28px;color:#555">那你自己写一个</span>'); px(quote, 1180, 600, 680);
@@ -132,7 +132,7 @@ scene('lib', ({ root, s, c0 }) => {
   ]);
 
   // 「当前在讲谁」
-  beats([[T('h1', 'Richard'), who], [T('h2'), facts[0]], [T('h2', '军舰'), facts[1]], [T('h2', '写软件'), facts[2]], [T('h3'), shipL], [T('h3', '关'), vl], [T('h4', 'Informix'), srv], [T('h4', '服务器') + 0.2, disk], [T('h5', '弹出'), app], [T('h5', '连不上'), dlg], [T('h5', '数据库服务器'), srv], [T('h6'), app], [T('h7'), none], [T('h8'), quote], [T('h9'), memo], [T('h10'), memo], [T('h10b'), tcl], [T('h10c'), test],
-    [T('h11'), rel.rs[0]], [T('h11b'), rel.rs[1]], [T('h12'), rel.rs[2]], [T('l0'), want], [T('l0', '直接读磁盘'), disk], [T('l1'), p3], [T('l1b'), p4], [T('l1b', 'S Q Lite'), lib], [T('l4', '全部功能'), sizeL], [T('l4', '九百'), size],
+  beats([[T('h1', 'Richard'), who], [T('h2'), facts[0]], [T('h2', '军舰'), facts[1]], [T('h2', '写软件'), facts[2]], [T('h3'), shipL], [T('h3', '关'), vl], [T('h4', 'Informix'), srv], [T('h4', '服务器') + 0.2, disk], [T('h5', '弹出'), app], [T('h5', '连不上'), dlg], [T('h5', '数据库服务器'), srv], [T('h6'), app], [T('h6', '非要'), srv], [T('h6b', '磁盘'), disk], [T('h7', '找了一圈'), app], [T('h7', '没有'), qm], [T('h7', 'S Q L'), none], [T('h8'), quote], [T('h9'), memo], [T('h10'), memo], [T('h10', '自己写了') + 0.6, lib], [T('h10b', 'T C L'), tcl], [T('h10c'), app], [T('h10c', '测试'), test],
+    [T('h11'), rel.rs[0]], [T('h11b'), rel.rs[1]], [T('h11b', '今天'), rel.rs[1].children[2]], [T('h12'), rel.rs[2]], [T('l0'), want], [T('l0', '直接读磁盘'), disk], [T('l1'), p3], [T('l1b'), p4], [T('l1b', 'S Q Lite'), lib], [T('l4', '全部功能'), sizeL], [T('l4', '九百'), size],
     [T('l5'), sSrv], [T('l5', '经过它'), p1], [T('l5b'), p2], [T('l6'), lib], [T('l6', '一个文件'), fileN], [T('l10'), disk]], Tend('l10'));
 });

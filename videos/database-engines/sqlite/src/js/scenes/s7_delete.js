@@ -11,7 +11,7 @@ scene('delete', ({ root, s, c0 }) => {
   const del = codeBlock(W, ['DELETE FROM users WHERE id > 1024;'], X0, 250, { fs: 30 }); wipe(del, T('d1', '注销') - 0.2, { dir: 'l', d: 0.4 }); sfx('tick', T('d1', '注销'), { g: 0.4 });
   const aliceD = tx(W, 'Alice（2050）也在其中', X0 + 700, 258, { fs: 30, css: { background: K.wheat, padding: '2px 14px' } }); show(aliceD, T('d1', 'Alice'), { x: -10, y: 0 }); sfx('pop', T('d1', 'Alice'), { g: 0.35 });
   // 文件长条：用着的页（白）与空闲页（斜纹）
-  const frame = h('div', 'abs', W); px(frame, X0, Y, FULL, H); css(frame, { border: `2px solid ${K.ink}`, boxSizing: 'border-box' }); frame.dataset.name = 'main.db 的页';
+  const frame = h('div', 'abs', W); px(frame, X0, Y, FULL, H); css(frame, { border: `2px solid ${K.ink}`, boxSizing: 'border-box' }); frame.dataset.name = 'main.db 的页'; frame.dataset.beat = 'line';
   const used = h('div', 'abs', W); px(used, X0, Y, FULL, H); css(used, { background: '#ffffff', borderRight: `2px solid ${K.ink}`, boxSizing: 'border-box' });
   const free = h('div', 'abs', W); px(free, X0 + FULL, Y, 0, H); css(free, { background: 'repeating-linear-gradient(135deg,#f5deb3 0 8px,#ffffff 8px 16px)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲的页，不是渐变
   const lab = tx(W, '', X0, Y + H + 14, { fs: 28 });
@@ -48,7 +48,7 @@ scene('delete', ({ root, s, c0 }) => {
   tl.fromTo(pagesL, { x: 0 }, { x: -(FULL - R.vacuumed.page_count * k), duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
   sfx('whoosh', T('d7b', '283') - 0.2, { g: 0.35 });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  beats([[T('d1'), del], [T('d1', 'Alice'), aliceD], [T('d2'), lab], [T('d2', '553'), pagesL], [T('d3'), same], [T('d3', '默认'), av], [T('d4'), head], [T('d4', '空闲链'), gF], [T('d5'), ins], [T('d6'), lab], [T('d7'), vac], [T('d7b'), pagesL], [T('d7b', '一页不剩'), lab]], Tend('d7b'));
+  beats([[T('d1'), del], [T('d1', 'Alice'), aliceD], [T('d2'), lab], [T('d2', '553'), pagesL], [T('d3'), same], [T('d3', '默认'), av], [T('d3', '不会变小'), [frame, pagesL]], [T('d4'), head], [T('d4', '空闲链'), gF], [T('d5'), ins], [T('d6'), lab], [T('d7'), vac], [T('d7b'), pagesL], [T('d7b', '一页不剩'), lab]], Tend('d7b'));
   [[T('d4') - 0.2, '空出的页：串成一条空闲链'], [T('d5') - 0.2, '新用户注册：先用空闲页'], [T('d7') - 0.2, 'VACUUM：重写整个数据库文件']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 240, 1800, 820], zmax: 1.2 }]]);
 });

@@ -33,7 +33,7 @@ scene('journal', ({ root, s, c0 }) => {
   jRows.forEach((r, i) => { set(r, 0, { autoAlpha: 0 }); tl.fromTo(r, { autoAlpha: 1, x: -1080 }, { x: 0, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tCp + 0.3 + i * 0.12); });
   const gJ = gloss(W, '回滚日志', '改之前的原页，原样抄在旁边；SQLite 默认就用它', 760, 690, 560); show(gJ, T('j5', '回滚日志'), { y: 8 }); sfx('pop', T('j5', '回滚日志'), { g: 0.4 });
   // j7：每页带着页号；日志开头记着原来的文件有 553 页
-  const jh = tx(JR, '日志头：原来 553 页', 330, 6, { fs: 22, color: K.teal }); show(jh, T('j7', '原来'), { y: 6 });
+  const jh = tx(JR, '日志头：原来 553 页', 330, 6, { fs: 22, color: K.teal }); show(jh, T('j7b', '原来'), { y: 6 });
   jRows.forEach((r, i) => set(r.firstChild, T('j7', '页号') + i * 0.06, { color: K.teal, fontWeight: 700 }));
   jRows.forEach((r) => { r.dataset.beat = 'line'; });   // 选中只描外框：页号同时在变色，不能让 .bt 的白字盖过去（set 会记下白字）
   // j8：日志先写稳到磁盘，再动主文件
@@ -52,8 +52,8 @@ scene('journal', ({ root, s, c0 }) => {
   const card = (name, x) => { const c = h('div', 'abs', W); px(c, x, 700, 520, 190); css(c, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = tx(c, name, 16, 8, { fs: 28, fw: 600 }); const l1 = tx(c, '', 16, 56, { fs: 24, mono: true }); const l2 = tx(c, '', 16, 100, { fs: 24 }); const lk = h('div', 'abs btn', c, ''); px(lk, 16, 140); lk.style.fontSize = '22px'; c.l1 = l1; c.l2 = l2; c.lk = lk; return c; };
   const scope = docTable(W, [['', 210], ['一把锁管多大', 400]], [['MyISAM', '整张表'], ['InnoDB', '要改的那一行'], ['SQLite', '整个数据库文件']], 1200, 290, { fs: 32 });
   scope.t.dataset.name = '锁的范围';
-  show(scope.hr, T('j10b') - 0.1, { y: 6 }); show(scope.rs[0], T('j10b', 'My ISAM'), { x: -10, y: 0 }); show(scope.rs[1], T('j10b', 'Inno D B'), { x: -10, y: 0 }); show(scope.rs[2], T('j10c'), { x: -10, y: 0 });
-  sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10b', 'Inno D B'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
+  show(scope.hr, T('j10b') - 0.1, { y: 6 }); show(scope.rs[0], T('j10b', 'My ISAM'), { x: -10, y: 0 }); show(scope.rs[1], T('j10d'), { x: -10, y: 0 }); show(scope.rs[2], T('j10c'), { x: -10, y: 0 });
+  sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10d'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
   gone(scope.t, T('j11', '共享锁') - 0.2, 0.3);
   const bob = card('Bob（读）', 120), ali = card('Alice（写）', 700), rdr = card('又来一个读者', 1280);
   wipe(bob, tL + 0.1, { dir: 'l', d: 0.35 });
@@ -112,8 +112,8 @@ scene('journal', ({ root, s, c0 }) => {
   mini.forEach((c) => dim(c, T('j26', '代价'), 0.3));   // 出错的例子讲完，主文件里的页退到背景
   show(cost.querySelector('.c1'), T('j26', '提交要等'), { y: 0 }); show(cost.querySelector('.c2'), T('j26b') - 0.1, { y: 0 });   // 释义跟着旁白分两段出来
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  beats([[T('j1'), chg], [T('j2'), MAIN.nameEl], [T('j2', '叶页'), mRows[0]], [T('j2', '年龄索引'), mRows.slice(1)], [T('j3'), mRows[0]], [T('j3', '断电'), mix], [T('j3', '混杂'), mRows.slice(1)], [T('j4'), gTx], [T('j4b', '全部生效'), mRows], [T('j4b', '从没发生过'), mRows[0]], [T('j6'), MAIN.nameEl], [T('j6', '抄进'), jRows], [T('j5'), JR.nameEl], [T('j7', '页号'), jRows], [T('j7', '原来'), jh], [T('j8'), sync], [T('j9'), MAIN.nameEl],
-    [T('j7', '日志开头'), JR.nameEl], [T('j10'), MAIN.nameEl], [T('j10', '有人在读'), bob], [T('j10b'), scope.rs[0]], [T('j10b', 'Inno D B'), scope.rs[1]], [T('j10c'), scope.rs[2]], [T('j10c', '整个数据库文件'), MAIN], [T('j11'), bob.l1], [T('j11b'), bob.l2], [T('j12'), ali.l1], [T('j12b'), bob], [T('j12b', '写的'), ali], [T('j15'), ali.l1], [T('j15', '还没提交'), ali.l2], [T('j15b'), rdr.l1], [T('j13'), ali.lk], [T('j16'), ali.l1], [T('j17'), bob.l2], [T('j18'), rdr.l2], [T('j19'), ali.l2],
+  beats([[T('j1'), chg], [T('j2'), MAIN.nameEl], [T('j2', '叶页'), mRows[0]], [T('j2', '年龄索引'), mRows.slice(1)], [T('j3'), mRows[0]], [T('j3', '断电'), mix], [T('j3', '混杂'), mRows.slice(1)], [T('j4'), gTx], [T('j4b', '全部生效'), mRows], [T('j4b', '从没发生过'), mRows[0]], [T('j6'), MAIN.nameEl], [T('j6', '抄进'), jRows], [T('j5'), JR.nameEl], [T('j7', '页号'), jRows], [T('j7b', '原来'), jh], [T('j8'), sync], [T('j9'), MAIN.nameEl], [T('j9', '写好'), mRows], [T('j9', '删掉'), JR], [T('j9', '提交'), gC],
+    [T('j7b', '日志开头'), JR.nameEl], [T('j10'), MAIN.nameEl], [T('j10', '有人在读'), bob], [T('j10b'), scope.rs[0].children[0]], [T('j10b', '整张表'), scope.rs[0].children[1]], [T('j10d'), scope.rs[1].children[0]], [T('j10d', '要改的'), scope.rs[1].children[1]], [T('j10c'), scope.rs[2].children[0]], [T('j10c', '整个数据库文件'), scope.rs[2].children[1]], [T('j10c', '整个数据库文件'), MAIN], [T('j11'), bob.l1], [T('j11b'), bob.l2], [T('j12'), ali.l1], [T('j12b'), bob], [T('j12b', '写的'), ali], [T('j15'), ali.l1], [T('j15', '还没提交'), ali.l2], [T('j15b'), rdr.l1], [T('j13'), ali.lk], [T('j16'), ali.l1], [T('j16', '已锁'), ali], [T('j17'), bob], [T('j17', '独占锁'), ali.lk], [T('j18'), rdr.l2], [T('j19'), ali.l2],
     [T('j20'), up], [T('j21'), JR2.nameEl], [T('j22'), up], [T('j22', '日志文件'), left], [T('j23'), MAIN.nameEl], [T('j23', '有没有'), JR2.nameEl], [T('j24'), jm], [T('j24', '主文件'), MAIN.nameEl], [T('j25', '一字节不差'), same], [T('j25', 'Alice'), a42], [T('j26', '都离开'), cost], [T('j26b'), MAIN.nameEl]], Tend('j26b'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('j12b', '照常能读'), { g: 0.3 });

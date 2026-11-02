@@ -20,7 +20,7 @@ scene('find', ({ root, s, c0 }) => {
     mEls.forEach((e, i) => path(fs, `M${rx + (rw * (i + 0.5)) / mids.length},${RY + 50} L${e.mx},${MY}`, 'grey', { w: 1, arrow: false }));
     mids.forEach((m, j) => m.c.forEach((p) => path(fs, `M${mEls[j].mx},${MY + 44} L${lx[p] + pitch / 2},${LY}`, 'grey', { w: 0.5, arrow: false })));
     const lEls = Object.fromEntries(leaves.map((p) => [p, pageCell(W, lx[p] + 0.3, LY, Math.max(1, pitch - 0.6), 60, { bw: 0.5 })]));
-    const lab = tx(W, label, x0, LY + 72, { fs: 26 });
+    const lab = tx(W, label, x0, LY + 88, { fs: 26 });   // 让出叶页下面那条「剩下的范围」
     const all = [r, rl, ...mEls, fan, ...Object.values(lEls), lab];
     return { r, rl, mEls, fan, lEls, lab, lx, pitch, rx, rw, RY, MY, LY, all, mids, leaves,
       enter(t) { wipe(r, t, { dir: 't', d: 0.4 }); show(rl, t + 0.1, { x: -8, y: 0 }); mEls.forEach((e, i) => show(e, t + 0.2 + i * 0.02, { y: -8, d: 0.25 })); set(fan, 0, { autoAlpha: 0 }); show(fan, t + 0.3, { y: 0, d: 0.4 }); Object.values(lEls).forEach((e, i) => show(e, t + 0.35 + i * 0.003, { y: 8, d: 0.2 })); show(lab, t + 0.5, { y: 6 }); } };
@@ -39,7 +39,7 @@ scene('find', ({ root, s, c0 }) => {
   const tS0 = T('f2', '翻一遍'), tS1 = Tend('f2') - 0.2, n = U.leaves.length;
   const scan = h('div', 'abs', W); css(scan, { border: `3px solid ${K.red}`, boxSizing: 'border-box' }); scan.dataset.name = '一页页翻';
   F((t) => { const k = Math.max(0, Math.min(1, (t - tS0) / (tS1 - tS0))); const i = Math.min(n - 1, Math.floor(k * n)); const x = U.lx[U.leaves[i]]; px(scan, x - 3, U.LY - 4, U.pitch + 6, 68); scan.style.opacity = t < tS0 || t > tS1 + 0.5 ? 0 : 1; });
-  const cnt = tx(W, '', 1240, 740, { fs: 28, color: K.red });   // 让开左边 B 树的注解框
+  const cnt = tx(W, '', 1240, 770, { fs: 28, color: K.red });   // 让开左边 B 树的注解框
   F((t) => { const k = Math.max(0, Math.min(1, (t - tS0) / (tS1 - tS0))); cnt.innerHTML = t < tS0 ? '' : `读了 <b>${Math.round(k * DATA.trace.table_scan_distinct_pages)}</b> 页`; });
   sfx('tick', tS0, { g: 0.4 });
   const tIx = T('f2b') - 0.2;
@@ -48,14 +48,14 @@ scene('find', ({ root, s, c0 }) => {
   // ── f2b–s27：名字上另有一棵树：姓名索引；每一项是名字加行号；内部页上的分界本身就是一项（传统 B 树） ──
   const N = tree(DATA.names, 120, 780, '姓名索引');
   N.enter(tIx + 0.1); sfx('whoosh', tIx + 0.1, { g: 0.3 });
-  const ent = docTable(W, [['名字', 330], ['行号', 120]], [['Alice', '2050'], ['User00001-…', '1'], ['User00002-…', '2']], 120, 730, { fs: 24 });
+  const ent = docTable(W, [['名字', 330], ['行号', 120]], [['Alice', '2050'], ['User00001-…', '1'], ['User00002-…', '2']], 120, 756, { fs: 24 });
   ent.t.dataset.name = '叶页里的项';
   show(ent.hr, T('s24', '名字') - 0.1, { y: 6 }); ent.rs.forEach((r, i) => show(r, T('s24', '行号') + i * 0.12, { x: -10, y: 0 }));
   ent.rs[0].dataset.beat = 'text'; sfx('pop', T('s25', 'Alice'), { g: 0.4 });
   const sepE = tx(W, '根页的第一个分界：User00306-… · 306，就是一项', N.rx - 40, 334, { fs: 22, color: K.teal });
   show(sepE, T('s26', '分界'), { y: 8 }); set(N.r, T('s26', '分界'), { backgroundColor: K.wheat });
-  const gB = gloss(W, 'B 树', '内部页上的分界本身就是索引里的一项；表用的 B+ 树，整行只在叶页', 620, 730, 600); show(gB, T('s26b', 'B 树'), { x: 12, y: 0 }); sfx('pop', T('s26b', 'B 树'), { g: 0.4 });
-  const sum = tx(W, `叶页 ${DATA.counts.namesLeaf} 项 ＋ 内部页 ${DATA.counts.namesInterior} 项 <span class="eq">＝ 4096</span>`, 620, 860, { fs: 26 }); show(sum, T('s27', '3869'), { y: 6 });
+  const gB = gloss(W, 'B 树', '内部页上的分界本身就是索引里的一项；表用的 B+ 树，整行只在叶页', 620, 756, 600); show(gB, T('s26b', 'B 树'), { x: 12, y: 0 }); sfx('pop', T('s26b', 'B 树'), { g: 0.4 });
+  const sum = tx(W, `<span class="sa">叶页 ${DATA.counts.namesLeaf} 项</span> ＋ <span class="sb">内部页 ${DATA.counts.namesInterior} 项</span> <span class="eq">＝ 4096</span>`, 620, 860, { fs: 26 }); show(sum, T('s27', '3869'), { y: 6 });
 
   // ── f3–f7：从根页 262 往下：281（剩 306 项）→ 叶页 263（剩 18 项）→ Alice，2050 ──
   const tR = T('f3') - 0.2;
@@ -75,7 +75,7 @@ scene('find', ({ root, s, c0 }) => {
   N.mEls.forEach((e) => { if (e !== m281) dim(e, T('f5', '281'), 0.2); });
   sfx('tick', T('f5', '281'), { g: 0.4 }); sfx('tick', T('f6', '263'), { g: 0.4 });
   Object.values(N.lEls).forEach((e) => { e.dataset.beat = 'line'; });   // 「再走最左边」：281 下面的叶页一起描框，到 263 时只剩它
-  const hit = tx(W, 'Alice · 行号 <b>2050</b>', 120, 740, { fs: 30, color: K.teal, css: { background: K.wheat, padding: '2px 12px' } });
+  const hit = tx(W, 'Alice · 行号 <b>2050</b>', 120, 770, { fs: 40, color: K.teal, css: { background: K.wheat, padding: '2px 12px' } });
   set(hit, 0, { autoAlpha: 0 }); slam(hit, T('f7'), { from: 1.3 }); sfx('pop', T('f7', '2050'), { g: 0.5 });
   // ── f8–f11：拿着行号回到 users 表：根页 2 → 133 → 叶页 130 ──
   const hop = path(ov, `M380,760 C 700,860 1300,860 ${U.rx + 20},${U.RY + 50}`, 'teal', { w: 2.5, arrow: true, dashed: '8 6' });
@@ -89,12 +89,20 @@ scene('find', ({ root, s, c0 }) => {
   U.leaves.forEach((p) => { if (!keep2.has(p)) dim(U.lEls[p], T('f9', '中间'), 0.2); else if (p !== 130) dim(U.lEls[p], T('f10', '130'), 0.2); });
   U.mEls.forEach((e) => { if (e !== m133) dim(e, T('f9', '中间'), 0.2); });
   keep2.forEach((p) => { U.lEls[p].dataset.beat = 'line'; });
-  const row = tx(W, '<span>2050</span> · <span>Alice</span> · <span>42 岁</span>', 1020, 740, { fs: 30, css: { background: K.wheat, padding: '2px 12px' } });
+  const row = tx(W, '<span>2050</span> · <span>Alice</span> · <span>42 岁</span>', 1020, 770, { fs: 40, css: { background: K.wheat, padding: '2px 12px' } });
   set(row, 0, { autoAlpha: 0 }); slam(row, T('f11'), { from: 1.3 }); sfx('chime', T('f11', '42'), { g: 0.5 });
 
+  // 剩下的范围：叶页下面一条深青细条，长度按剩下的项数（H05）
+  const rbar = (x0, t0, steps) => { const b = h('div', 'abs', W); px(b, x0, 684, 780, 14); css(b, { background: K.teal, transformOrigin: '0 50%' }); set(b, 0, { autoAlpha: 0 }); show(b, t0, { y: 0, d: 0.3 });
+    let prev = 1; steps.forEach(([t, k]) => { tl.fromTo(b, { scaleX: prev }, { scaleX: k, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, t); prev = k; }); return b; };
+  const leafL = tx(W, '叶页 263：18 项', 300, 704, { fs: 30, color: K.teal }); show(leafL, T('f6', '263'), { y: 6 });
+  const sepU = tx(W, '1560 < 2050 < 3081', 1170, 336, { fs: 26, mono: true, color: K.teal }); show(sepU, T('f9', '2050'), { y: 6 });
+  const barN = rbar(120, T('f3', '262'), [[T('f5', '306'), 306 / 4096], [T('f6', '18'), 18 / 4096]]);
+  const barU = rbar(1020, T('f8', '行号') + 0.3, [[T('f10', '133'), 1521 / 4096], [T('f10', '130'), 17 / 4096]]);
+  const rgU = tx(W, '4096 项', 1020, 326, { fs: 30, mono: true }); show(rgU, T('f8', '行号') + 0.3, { y: 6 }); keyed(rgU).at(T('f10', '133'), { html: '→ 1521 项' }).at(T('f10', '130'), { html: '→ 17 项' });
   // ── f12–f13b：这次查询从文件读了 7 页：铁路图 ──
   const tRR = T('f12') - 0.2;
-  [rg, hop, hit, row].forEach((e) => gone(e, tRR, 0.3));   // 铁路图就在这一带：两个结果先收走，不和它挤在一起
+  [rg, hop, hit, row, barN, barU, rgU, leafL, sepU].forEach((e) => gone(e, tRR, 0.3));   // 铁路图就在这一带：两个结果先收走，不和它挤在一起
   const y = 800, read = DATA.trace.index_then_table, caps = ['登记', '根', '中层', '叶', '根', '中层', '叶'];
   const st = h('div', 'abs', W); px(st, 110, y - 8, 16, 16); css(st, { border: `2px solid ${K.ink}`, borderRadius: '50%', background: '#fff' });
   let x = 170; const boxes = [], segs = [];
@@ -131,9 +139,9 @@ scene('find', ({ root, s, c0 }) => {
   keyed(hdL).at(T('f15b') - 0.05, { html: '没被改过：直接用内存里的页' });
 
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  beats([[T('f1', '按名字'), qw], [T('f1', '要她的'), qc], [T('f1', '名字和年龄'), ans], [T('f2'), U.lab], [T('f2', '翻一遍') + 1.2, q], [T('f2b', '一棵树'), N.r], [T('f2b', '姓名索引'), N.lab], [T('s24'), Object.values(N.lEls)], [T('s24', '名字'), ent.hr], [T('s24', '行号'), ent.rs], [T('s25'), ent.rs[0]], [T('s25', '2050'), ent.rs[0].children[1]], [T('s26'), N.r], [T('s26', '分界'), sepE], [T('s26b'), gB], [T('s27', '3869'), sum], [T('s27', '内部页'), N.r], [T('s27b'), sum], [T('s27b', '4096'), sum.querySelector('.eq')],
-    [T('f3'), N.lab], [T('f4'), N.r], [T('f4', '最左边'), m281], [T('f5'), rg], [T('f5', '4096'), N.r], [T('f5', '306'), [...keep1].map((p) => N.lEls[p])], [T('f6'), rg], [T('f6', '最左边'), [...keep1].map((p) => N.lEls[p])], [T('f6', '263'), l263], [T('f6', '18') + 0.4, rg], [T('f7', 'Alice'), hit], [T('f7', '2050'), hit.querySelector('b')], [T('f8'), hit], [T('f8', '回到'), U.lab], [T('f9'), U.rl], [T('f9', '2050'), U.r], [T('f10'), m133], [T('f10', '分界'), [...keep2].map((p) => U.lEls[p])], [T('f11', '这一行'), row], [T('f11', '42'), row.children[2]],
-    [T('f12'), seven], [T('f12b'), q], [T('f13'), q2], [T('f13b', '4'), seven], [T('f14', '内存'), memT], [T('f15'), hd], [T('f15', '16'), hdL], [T('f15b'), hdL]], Tend('f15b'));
+  beats([[T('f1', '按名字'), qw], [T('f1', '要她的'), qc], [T('f1', '名字和年龄'), ans], [T('f2'), U.lab], [T('f2', '翻一遍') + 1.2, q], [T('f2b', '一棵树'), N.r], [T('f2b', '姓名索引'), N.lab], [T('s24'), Object.values(N.lEls)], [T('s24', '名字'), ent.hr], [T('s24', '行号'), ent.rs], [T('s25'), ent.rs[0]], [T('s25', '2050'), ent.rs[0].children[1]], [T('s26'), N.r], [T('s26', '分界'), sepE], [T('s26b'), gB], [T('s27', '3869'), sum.querySelector('.sa')], [T('s27', '227'), sum.querySelector('.sb')], [T('s27', '叶页'), Object.values(N.lEls)], [T('s27', '内部页'), [N.r, ...N.mEls]], [T('s27b'), [...Object.values(N.lEls), ...N.mEls, N.r]], [T('s27b', '4096'), sum.querySelector('.eq')],
+    [T('f3'), N.lab], [T('f4'), N.r], [T('f4', '最左边'), m281], [T('f5'), rg], [T('f5', '4096'), N.r], [T('f5', '306'), [...keep1].map((p) => N.lEls[p])], [T('f6'), rg], [T('f6', '最左边'), [...keep1].map((p) => N.lEls[p])], [T('f6', '263'), [l263, leafL]], [T('f6', '18') + 0.4, rg], [T('f7', 'Alice'), hit], [T('f7', '2050'), hit.querySelector('b')], [T('f8'), hit], [T('f8', '回到'), U.lab], [T('f9'), U.rl], [T('f9', '2050'), U.r], [T('f9', '两个分界'), sepU], [T('f10'), m133], [T('f10', '133'), rgU], [T('f10', '分界'), [...keep2].map((p) => U.lEls[p])], [T('f11', '这一行'), row], [T('f11', '42'), row.children[2]],
+    [T('f12'), seven], [T('f12b', '登记'), boxes[0]], [T('f12b', '索引'), boxes.slice(1, 4)], [T('f12b', '表三页'), boxes.slice(4, 7)], [T('f13'), q2], [T('f13', '索引里'), boxes.slice(0, 4)], [T('f13b'), q2], [T('f13b', '4'), seven], [T('f14'), boxes.slice(0, 4)], [T('f14', '内存'), memT], [T('f15'), hd], [T('f15', '16'), hdL], [T('f15b'), hdL]], Tend('f15b'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('f13', '只要'), { g: 0.3 });
   sfx('pop', T('f13b', '4'), { g: 0.35 });

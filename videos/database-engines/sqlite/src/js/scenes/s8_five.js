@@ -11,15 +11,15 @@ scene('five', ({ root, s, c0 }) => {
     ['怎么并发', 'z5', [['回滚日志：提交时独占整个文件', 'z5', '独占'], ['WAL：各看各的快照', 'z5b', '快照'], ['写的人只有一个', 'z6', '只能有一个']]],
     ['出错怎么办', 'z7', [['回滚日志：抄回原样', 'z7', '抄回去'], ['WAL：校验和对得上', 'z7b', '校验和'], ['带提交标记的帧才算', 'z7b', '提交标记']]],
   ];
-  const heads = [], chipEls = [];
+  const heads = [], chipEls = [], hqs = [], rows = [];
   Q.forEach(([q, cue, chips], i) => {
     const y = 270 + i * 128;
     const no = btn(W, String(i + 1), 120, y + 4, 30); set(no, 0, { autoAlpha: 0 }); slam(no, T('z1') + 0.2 + i * 0.15, { from: 1.2 });
-    const hq = h2(W, q, 200, y, 40); show(hq, T('z1') + 0.25 + i * 0.15, { x: -10, y: 0 }); sfx('pop', T(cue), { g: 0.35, p: -0.3 + i * 0.15 }); heads.push([T(cue), hq]);
+    const hq = h2(W, q, 200, y, 40); show(hq, T('z1') + 0.25 + i * 0.15, { x: -10, y: 0 }); sfx('pop', T(cue), { g: 0.35, p: -0.3 + i * 0.15 }); const rowG = [no, hq]; heads.push([T(cue), rowG]); hqs.push(hq); rows.push(rowG);
     let x = 520;
-    chips.forEach(([t, c, w], j) => { const b = btn(W, t, x, y + 6, 26); x += [...t].reduce((a, ch) => a + (ch.charCodeAt(0) > 0x2e80 ? 26 : 15.6), 0) + 58; set(b, 0, { autoAlpha: 0 }); slam(b, T(c, w), { from: 1.15 }); sfx('tick', T(c, w), { g: 0.25 }); chipEls.push([T(c, w), b]); });
+    chips.forEach(([t, c, w], j) => { const b = btn(W, t, x, y + 6, 26); x += [...t].reduce((a, ch) => a + (ch.charCodeAt(0) > 0x2e80 ? 26 : 15.6), 0) + 58; set(b, 0, { autoAlpha: 0 }); slam(b, T(c, w), { from: 1.15 }); sfx('tick', T(c, w), { g: 0.25 }); chipEls.push([T(c, w), b]); rowG.push(b); });
   });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  beats([...heads, ...chipEls], Tend('z7b'));
+  beats([[T('z1', '五个问题'), hqs], ...heads, [T('z4', '再改'), rows[2]], [T('z6'), rows[3]], ...chipEls], Tend('z7b'));
   shots(cam, world, s, [[s.start, null, { rect: [110, 255, 1720, 840], zmax: 1.3 }]]);
 });

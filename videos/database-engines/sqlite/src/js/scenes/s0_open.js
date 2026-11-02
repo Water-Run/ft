@@ -12,8 +12,10 @@ scene('open', ({ root, s, c0 }) => {
 
   // ── 上排：服务型（o1–o2b） ──
   const app1 = box('应用程序', 120, 320, 320, 120);
-  const srv = box('<div>MySQL · PostgreSQL</div><div style="font-size:30px;color:#044a64">服务进程</div>', 640, 300, 560, 160); css(srv, { flexDirection: 'column' });
-  const [sv1, sv2] = srv.children;
+  const srv = box('<div><span>MySQL</span> · <span>PostgreSQL</span></div><div style="font-size:30px;color:#044a64">服务进程</div>', 640, 300, 560, 160); css(srv, { flexDirection: 'column' });
+  const [sv1, sv2] = srv.children, [m1, m2] = sv1.children;
+  const eps = [btn(W, 'PART 1–2　MySQL（MyISAM、InnoDB）', 640, 478, 26), btn(W, 'PART 3　PostgreSQL', 1190, 478, 26)];   // 「前几期」：系列前三集
+  eps.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); slam(e, T('o1', '前几期') + 0.2 + i * 0.5, { from: 1.15 }); }); sfx('pop', T('o1', '前几期') + 0.2, { g: 0.35 });
   const tagS = tx(W, '服务型数据库', 640, 252, { fs: 30, color: K.teal });
   const files1 = stack(1400, 310, '数据文件');
   const net = line(ov, [[440, 380], [638, 380]], { dashed: '8 6' });
@@ -48,7 +50,7 @@ scene('open', ({ root, s, c0 }) => {
 
   // ── 还是那张用户表（o5–o5b）：两排收走，表从左边刷出来 ──
   const tT = T('o5') - 0.3;
-  const rowsA = [app1, srv, tagS, files1, netL, prog, progL, tagE, lib, directL, db];   // db 也收走（漏了它会一直压在表和文件图后面）
+  const rowsA = [app1, srv, tagS, files1, netL, prog, progL, tagE, lib, directL, db, ...eps];   // db 也收走（漏了它会一直压在表和文件图后面）
   rowsA.forEach((e) => gone(e, tT, 0.3)); [net, disk1, direct].forEach((e) => gone(e, tT, 0.3));
   const nm = (n) => `User${String(n).padStart(5, '0')}-…`, age = (n) => 18 + n % 63;
   const R = [[1, nm(1), age(1)], [2, nm(2), age(2)], ['⋮', '', ''], [2049, nm(2049), age(2049)], [2050, 'Alice', 42], [2051, nm(2051), age(2051)], ['⋮', '', ''], [4096, nm(4096), age(4096)]];
@@ -117,7 +119,7 @@ scene('open', ({ root, s, c0 }) => {
   ]);
 
   // 「当前在讲谁」
-  beats([[T('o1'), sv1], [T('o1b', '服务型'), tagS], [T('o2'), srv], [T('o2', '一直开着'), files1], [T('o2b'), app1], [T('o2b', '连上'), netL], [T('o2b', '结果'), app1],
+  beats([[T('o1', '前几期'), eps], [T('o1', 'My S Q L'), m1], [T('o1', 'Postgres'), m2], [T('o1b', '服务型'), tagS], [T('o2'), srv], [T('o2', '一直开着'), files1], [T('o2b'), app1], [T('o2b', '连上'), netL], [T('o2b', '结果'), app1],
     [T('o3'), tagE], [T('o3b', '库'), lib], [T('o3c'), progL], [T('o3c', '一个文件'), db],
     [T('o5'), tblL], [T('o5', '4096'), tbl.t], [T('o5b'), aliceRow], [T('o5c'), toDbL], [T('o5c', '一个文件'), db2], [T('o5c', '553'), fileL],
     [T('o4', '一个库'), fileL], [T('o4b'), legend], [T('o6'), g7], [T('o7'), up], [T('o7', '强行终止'), kill], [T('o8', '一字节不差'), sha], [T('o10', 'Alice'), alice]], T('oT') + 2.8);
