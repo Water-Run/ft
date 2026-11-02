@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "等策划者看第 1 稿与审片页：文案意见与确认，选音色、配乐与视觉方向",
+  "next": "第 2 稿：按策划者 11-03 意见重写文案（更吸引人），交审确认后用真诚青年配全片；视觉 B「草稿纸」、配乐 A「落字」已定",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -24,6 +24,16 @@
     ],
     "services": [],
     "repository": "https://github.com/Water-Run/ft"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Sincere_Adult"
+    },
+    "speed": {
+      "zh": 1.2
+    }
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural"
