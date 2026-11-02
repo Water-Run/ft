@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>CoT 关键帧</title>
+<!-- 三个视觉方向的关键帧（静帧），供审片页选择。?d=A|B|C&f=1|2|3
+     A「生成」：跟着一次生成走，token 一块块排出来；思考与回答用颜色分开。
+     B「草稿纸」：同一道题的三种问法并排比较，像摊在桌上的三张草稿。
+     C「剖面」：剖开模型看一个 token 怎样被算出来：层的堆叠、往回读的连线。
+     数字全部取自 research/lab/out_03_check.txt。 -->
+<style>
+@font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Serif SC"; src: url("/fonts/NotoSerifSC.ttf"); font-weight: 200 900; }
+@font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+@font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+html, body { margin: 0; padding: 0; }
+body { width: 1920px; height: 1080px; overflow: hidden; position: relative; font-family: "Inter", "Sans SC"; -webkit-font-smoothing: antialiased; }
+.abs { position: absolute; white-space: nowrap; }
+.mono { font-family: "Mono", "Sans SC"; }
+.grain { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; }
+.cap { position: absolute; left: 0; right: 0; bottom: 52px; height: 60px; display: flex; align-items: center; justify-content: center; font: 500 40px "Sans SC"; }
+svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+/* A 生成 */
+.A { background: #fbfbf8; color: #141418; }
+.A #bg { background: #fbfbf8; } .B #bg, .C #bg { background: #fff; }
+.A .dim { color: #6a6a73; }
+.A .think { color: #5a4fcf; }
+.A .chip { display: inline-block; border: 1.5px solid #d5d5dc; border-radius: 10px; padding: 6px 14px; margin-right: 10px; background: #fff; box-shadow: 0 1px 0 #e9e9ee, 0 6px 18px rgba(20,20,40,.05); }
+.A .chip.cur { border-color: #5a4fcf; }
+.A .bad { color: #b7791f; text-decoration: underline; text-decoration-color: #e0a100; text-decoration-thickness: 4px; text-underline-offset: 10px; }
+.A .lab { font: 500 28px "Sans SC"; color: #6a6a73; }
+
+/* B 草稿纸 */
+.B { background: #fff; color: #2b2b2b; }
+.B .dots { position: absolute; inset: 0; background-image: radial-gradient(circle, #d6d6cf 1.6px, transparent 1.8px); background-size: 36px 36px; background-position: 18px 18px; opacity: .9; }
+.B .card { position: absolute; background: #fffefb; border: 1px solid #e3e1d8; border-radius: 6px; box-shadow: 0 2px 0 #eeece4, 0 18px 40px rgba(60,50,20,.06); }
+.B .hl { background: linear-gradient(transparent 18%, rgba(246,196,69,.62) 18%, rgba(246,196,69,.62) 88%, transparent 88%); }
+.B .ok { color: #0b6e57; }
+.B .dim { color: #66665f; }
+.B .serif { font-family: "Serif SC"; }
+
+/* C 剖面 */
+.C { background: #fff; color: #101114; }
+.C .dim { color: #666873; }
+.C .tok { display: inline-block; padding: 6px 12px; margin-right: 8px; border-radius: 6px; background: #f4f3fb; color: #2d2a4a; }
+.C .tok.cur { background: #6e56cf; color: #fff; }
+.C .tok.src { background: #e3f6fa; color: #075e70; box-shadow: inset 0 0 0 1.5px #0aa5c2; }
+</style>
+</head>
+<body>
+<div id="stage" style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden"><div id="bg" style="position:absolute;inset:0"></div></div>
+<script>
+const ST = document.getElementById('stage');
+const q = new URLSearchParams(location.search), D = q.get('d') || 'A', F = +(q.get('f') || 1);
+document.body.className = D;
+const $ = (html, x, y, cls = '', style = '') => { const e = document.createElement('div'); e.className = 'abs ' + cls; e.innerHTML = html; e.style.cssText = `left:${x}px;top:${y}px;${style}`; ST.appendChild(e); return e; };
+const svg = (inner) => { const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('width', 1920); s.setAttribute('height', 1080); s.innerHTML = inner; ST.appendChild(s); return s; };
+const cap = (t) => { const e = document.createElement('div'); e.className = 'cap'; e.textContent = t; ST.appendChild(e); };
+const grain = (op, freq = 0.85, seed = 7) => { const g = document.createElement('div'); g.className = 'grain'; g.style.opacity = op;
+  g.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='480' height='480'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${freq}' numOctaves='2' seed='${seed}' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.32  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>`)}")`; ST.appendChild(g); };
+
+// 实验数据（out_03_check.txt）
+const ACC = { direct: [20, 16, 3, 0, 0], think: [20, 20, 20, 20, 19], after: [20, 14, 2, 0, 0] };
+
+function build() {
+if (D === 'A') {
+  if (F === 1) {
+    $('› 25992 × 92138 =', 160, 200, 'mono dim', 'font-size:38px');
+    $('CoT · Chain of Thought', 160, 330, 'mono think', 'font-size:30px;letter-spacing:.04em');
+    $('先思考，', 152, 400, '', 'font:800 168px "Sans SC";letter-spacing:-.02em');
+    $('再回答', 152, 600, '', 'font:800 168px "Sans SC";letter-spacing:-.02em');
+    $('', 680, 622, '', 'width:20px;height:150px;background:#5a4fcf');
+    $('<span class="think">思考</span>　写在回答前面的字', 1180, 470, 'lab', 'font-size:32px');
+    $('回答　写在最后', 1180, 530, 'lab', 'font-size:32px;color:#141418');
+    grain(0.045);
+  }
+  if (F === 2) {
+    $('只许说答案', 160, 150, 'lab');
+    $('<span class="chip">239</span><span class="chip">4<span class="bad">73</span></span><span class="chip">089</span><span class="chip">6</span>', 160, 200, 'mono', 'font-size:52px;font-weight:600');
+    $('4 tokens', 860, 222, 'mono dim', 'font-size:30px');
+    $('正确：2394<b style="color:#141418">85</b>0896', 1180, 222, 'mono dim', 'font-size:34px');
+    $('先写过程，再给答案', 160, 380, 'lab');
+    const steps = ['把 92138 拆成 92000 + 138', '25992 × 92000 = 2,391,264,000', '25992 × 138   = 3,586,896', '2,391,264,000 + 3,586,896', '              = 2,394,850,896'];
+    steps.forEach((s, i) => $(s, 200, 432 + i * 56, 'mono think', 'font-size:34px'));
+    svg(`<line x1="172" y1="440" x2="172" y2="704" stroke="#5a4fcf" stroke-width="3" stroke-linecap="round" opacity=".55"/>`);
+    $('答案：2394850896', 160, 740, 'mono', 'font-size:52px;font-weight:700');
+    $('321 tokens', 860, 760, 'mono dim', 'font-size:30px');
+    $('✓', 1180, 735, '', 'font:700 56px Inter;color:#5a4fcf');
+    cap('同一个模型，这次算对了');
+    grain(0.045);
+  }
+  if (F === 3) {
+    const left = 150, base = 760;
+    $('<span class="chip">答案</span><span class="chip">：</span><span class="chip">239</span><span class="chip cur">473</span>', left, base, 'mono', 'font-size:44px;font-weight:600');
+    const cx = 752, top = 300, n = 96, gap = 4.4;
+    let lines = '';
+    for (let i = 0; i < n; i++) lines += `<line x1="${cx - 120}" y1="${top + i * gap}" x2="${cx + 120}" y2="${top + i * gap}" stroke="${i % 8 === 0 ? '#b9b4ec' : '#e2e0f4'}" stroke-width="1.4"/>`;
+    const srcs = [235, 356, 512];
+    let fan = srcs.map(x => `<path d="M${x} ${base - 8} C ${x} ${base - 90}, ${cx - 40} ${top + n * gap + 60}, ${cx} ${top + n * gap + 6}" fill="none" stroke="#6a6a73" stroke-width="2" opacity=".7"/>`).join('');
+    svg(lines + fan + `<path d="M${cx} ${top - 10} L ${cx} ${top - 60} L ${cx + 300} ${top - 60}" fill="none" stroke="#5a4fcf" stroke-width="3"/><path d="M${cx + 300} ${top - 72} l 18 12 l -18 12 z" fill="#5a4fcf"/>
+      <path d="M${cx + 150} ${top} h 16 v ${n * gap} h -16" fill="none" stroke="#141418" stroke-width="2.5"/>`);
+    $('96 层', cx + 190, top + n * gap / 2 - 40, '', 'font:800 64px Inter');
+    $('GPT-3 175B', cx + 190, top + n * gap / 2 + 36, 'mono dim', 'font-size:28px');
+    $('<span class="chip" style="opacity:.45">089</span>', cx + 330, top - 96, 'mono', 'font-size:44px;font-weight:600');
+    $('读进前面所有的字', 240, 870, 'lab');
+    $('每写一块，都只经过这 96 层', 1240, 420, '', 'font:600 40px "Sans SC";white-space:normal;width:520px;line-height:1.4');
+    $('不管下一块是句号，还是乘法的结果', 1240, 540, 'lab', 'white-space:normal;width:520px');
+    cap('能用的，都只有这 96 层');
+    grain(0.045);
+  }
+}
+
+if (D === 'B') {
+  const dots = document.createElement('div'); dots.className = 'dots'; ST.appendChild(dots);
+  if (F === 1) {
+    $('CoT · Chain of Thought', 150, 260, 'mono dim', 'font-size:30px;letter-spacing:.05em');
+    $('<span class="hl">先思考</span>，', 140, 320, 'serif', 'font-size:150px;font-weight:700');
+    $('再回答', 140, 510, 'serif', 'font-size:150px;font-weight:700');
+    const c = $('', 1180, 210, 'card', 'width:560px;height:620px');
+    const rows = [['  25992', ''], ['× 92138', ''], ['', 'rule'], ['2391264000', ''], ['   3586896', ''], ['', 'rule'], ['2394850896', 'end']];
+    let y = 260;
+    rows.forEach(([t, k]) => { if (k === 'rule') { $('', 1250, y + 18, '', 'width:400px;height:2px;background:#2b2b2b'); y += 44; return; }
+      $(t, 1290, y, 'mono', `font-size:46px;${k === 'end' ? 'font-weight:700' : 'color:#5a5a55'}`); y += 70; });
+    $('', 1286, y - 6, '', 'width:290px;height:10px;background:rgba(246,196,69,.62)');
+    grain(0.05, 0.6, 11);
+  }
+  if (F === 2) {
+    const cols = [['只说答案', ['2394730896'], [[4, 6]], '✗'], ['先写过程，再答', ['92138 = 92000 + 138', '25992×92000', '  = 2391264000', '25992×138', '  = 3586896', '相加 = 2394850896', '答案：2394850896'], [], '✓'], ['先写答案，再写过程', ['答案：2394841296', '25992×92000', '  = 2391264000', '25992×138', '  = 3586896', '相加 = 2394841296'], [[7, 9]], '✗']];
+    cols.forEach(([h, lines, bad, mark], i) => {
+      const x = 120 + i * 580;
+      $('', x, 120, 'card', 'width:520px;height:560px');
+      $(h, x + 36, 150, 'serif', 'font-size:40px;font-weight:700');
+      $(mark, x + 450, 140, mark === '✓' ? 'ok' : 'dim', 'font:700 52px Inter');
+      lines.forEach((t, j) => { let html = t;
+        if (i === 0) html = '2394<span class="hl">73</span>0896';
+        if (i === 2 && j === 0) html = '答案：2394<span class="hl">84</span>1296';
+        if (i === 2 && j === 5) html = '相加 = 2394<span class="hl">84</span>1296';
+        $(html, x + 40, 236 + j * 58, 'mono', `font-size:${i === 0 ? 50 : 32}px;${j === lines.length - 1 && i === 1 ? 'font-weight:700' : ''}`); });
+    });
+    $('正确：2394850896', 160, 330, 'mono dim', 'font-size:30px');
+    // 底部：每种位数 20 题的正确数
+    const gx = 520, gy = 760;
+    $('三位到七位，各 20 题', 120, gy + 10, 'dim', 'font:500 28px "Sans SC"');
+    [['只说答案', ACC.direct, '#2b2b2b'], ['先写过程', ACC.think, '#0b6e57'], ['先写答案', ACC.after, '#7d5e10']].forEach(([n, a, col], r) => {
+      $(n, 120, gy + 56 + r * 44, '', 'font:500 28px "Sans SC"');
+      a.forEach((v, k) => { $('', gx + k * 270, gy + 66 + r * 44, '', `width:${v * 10}px;height:18px;background:${col};border-radius:3px`); $(String(v), gx + k * 270 + v * 10 + 10, gy + 56 + r * 44, 'mono', 'font-size:26px;color:' + col); });
+    });
+    [3, 4, 5, 6, 7].forEach((d, k) => $(d + ' 位', gx + k * 270, gy + 10, 'mono dim', 'font-size:26px'));
+    cap('五位数的二十道题，这样问只对了两道');
+    grain(0.05, 0.6, 11);
+  }
+  if (F === 3) {
+    $('一次写完', 160, 170, 'serif', 'font-size:44px;font-weight:700');
+    $('四块字的工夫', 160, 236, 'dim', 'font:500 28px "Sans SC"');
+    const slots = ['239', '473', '089', '6'];
+    slots.forEach((s, i) => { $('', 160 + i * 120, 300, 'card', 'width:104px;height:84px'); $(s, 178 + i * 120, 316, 'mono', 'font-size:40px'); });
+    $('写在纸上', 820, 170, 'serif', 'font-size:44px;font-weight:700');
+    $('一步一步，每一步都写下来', 820, 236, 'dim', 'font:500 28px "Sans SC"');
+    $('', 800, 290, 'card', 'width:980px;height:560px');
+    $('92138', 1200, 330, 'mono', 'font-size:48px;font-weight:700');
+    $('92000', 960, 470, 'mono', 'font-size:42px');
+    $('138', 1500, 470, 'mono', 'font-size:42px');
+    $('25992 × 92000<br>= 2391264000', 880, 590, 'mono', 'font-size:34px;line-height:1.35');
+    $('25992 × 138<br>= 3586896', 1440, 590, 'mono', 'font-size:34px;line-height:1.35');
+    $('2391264000 + 3586896 = <span class="hl">2394850896</span>', 940, 750, 'mono', 'font-size:40px;font-weight:600');
+    svg(`<g stroke="#2b2b2b" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <path d="M1240 392 Q 1150 430 1060 466"/><path d="M1300 392 Q 1420 430 1530 466"/>
+      <path d="M1030 528 L 1030 580"/><path d="M1550 528 L 1550 580"/>
+      <path d="M1060 690 Q 1120 715 1160 732"/><path d="M1530 690 Q 1470 715 1420 732"/></g>`);
+    cap('写出来的字，就是它的草稿纸');
+    grain(0.05, 0.6, 11);
+  }
+}
+
+if (D === 'C') {
+  const iso = (cx, cy, w, h) => { const a = w / 2, b = h / 2; return `${cx},${cy - b} ${cx + a},${cy} ${cx},${cy + b} ${cx - a},${cy}`; };
+  const stack = (cx, cy0, n, step, w, h, hi = -1) => { let s = ''; for (let i = 0; i < n; i++) { const y = cy0 - i * step; s += `<polygon points="${iso(cx, y, w, h)}" fill="${i === hi ? 'rgba(10,165,194,.16)' : 'rgba(110,86,207,.05)'}" stroke="${i === hi ? '#0aa5c2' : '#c9c0f0'}" stroke-width="1.4"/>`; } return s; };
+  if (F === 1) {
+    svg(`<defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#0aa5c2"/><stop offset="1" stop-color="#6e56cf"/></linearGradient></defs>` + stack(1360, 860, 16, 34, 560, 300) + `<line x1="1360" y1="900" x2="1360" y2="300" stroke="url(#g)" stroke-width="3"/><circle cx="1360" cy="900" r="8" fill="#0aa5c2"/><circle cx="1360" cy="300" r="8" fill="#6e56cf"/>`);
+    $('CoT · Chain of Thought', 150, 330, 'mono dim', 'font-size:30px;letter-spacing:.05em');
+    $('先思考，', 140, 390, '', 'font:800 150px "Sans SC";letter-spacing:-.02em');
+    $('再回答', 140, 570, '', 'font:800 150px "Sans SC";letter-spacing:-.02em');
+    grain(0.035, 0.9, 3);
+  }
+  if (F === 2) {
+    const toks = ['2391264000', '+', '3586896', '=', '2394', '850', '896'];
+    const row = $(toks.map((t, i) => `<span class="tok${i === 0 || i === 2 ? ' src' : ''}${i === 5 ? ' cur' : ''}">${t}</span>`).join(''), 150, 760, 'mono', 'font-size:40px;font-weight:600');
+    $('25992 × 92000 = 2391264000', 150, 520, 'mono dim', 'font-size:32px');
+    $('25992 × 138 = 3586896', 150, 590, 'mono dim', 'font-size:32px');
+    const r = row.getBoundingClientRect();
+    const spans = [...row.children].map(s => s.getBoundingClientRect());
+    const cur = spans[5], to = (b, h, wgt, col) => `<path d="M${cur.left + cur.width / 2} ${cur.top - 6} C ${cur.left + cur.width / 2} ${cur.top - h}, ${b.left + b.width / 2} ${b.top - h}, ${b.left + b.width / 2} ${b.top - 6}" fill="none" stroke="${col}" stroke-width="${wgt}" stroke-linecap="round"/>`;
+    svg(to(spans[0], 160, 5, '#0aa5c2') + to(spans[2], 110, 5, '#0aa5c2') + to(spans[4], 60, 2, '#c9c0f0'));
+    $('写到这一块时，往回读到的', 150, 870, 'dim', 'font:500 28px "Sans SC"');
+    // 右上：正确率随位数
+    const ox = 1180, oy = 160, W = 600, H = 320;
+    let p = `<line x1="${ox}" y1="${oy + H}" x2="${ox + W}" y2="${oy + H}" stroke="#101114" stroke-width="2"/>`;
+    const pts = (a) => a.map((v, k) => `${ox + 40 + k * 130},${oy + H - v / 20 * (H - 20)}`).join(' ');
+    p += `<polyline points="${pts(ACC.think)}" fill="none" stroke="#6e56cf" stroke-width="5"/><polyline points="${pts(ACC.direct)}" fill="none" stroke="#8a909a" stroke-width="5"/>`;
+    ACC.think.forEach((v, k) => p += `<circle cx="${ox + 40 + k * 130}" cy="${oy + H - v / 20 * (H - 20)}" r="7" fill="#6e56cf"/>`);
+    ACC.direct.forEach((v, k) => p += `<circle cx="${ox + 40 + k * 130}" cy="${oy + H - v / 20 * (H - 20)}" r="7" fill="#8a909a"/>`);
+    svg(p);
+    [3, 4, 5, 6, 7].forEach((d, k) => $(d + ' 位', ox + 18 + k * 130, oy + H + 14, 'mono dim', 'font-size:26px'));
+    $('先写过程', ox + 40, oy - 34, '', 'font:600 28px "Sans SC";color:#6e56cf');
+    $('只说答案', ox + 330, oy + 150, '', 'font:600 28px "Sans SC";color:#5f6470');
+    $('每种位数 20 题，答对的题数', ox, oy + H + 60, 'dim', 'font:500 28px "Sans SC"');
+    cap('写下的结果，后面每一块都读得到');
+    grain(0.035, 0.9, 3);
+  }
+  if (F === 3) {
+    svg(stack(760, 820, 24, 21, 620, 300, 23) + `<path d="M1110 820 h 18 v ${-23 * 21} h -18" fill="none" stroke="#101114" stroke-width="2.5"/>`);
+    $('<span class="tok">239</span>', 712, 880, 'mono', 'font-size:40px;font-weight:600');
+    $('<span class="tok cur">473</span>', 712, 260, 'mono', 'font-size:40px;font-weight:600');
+    $('固定的层数', 1160, 600, '', 'font:800 56px "Sans SC"');
+    $('GPT-3 175B：96 层', 1160, 680, 'mono dim', 'font-size:30px');
+    $('只说答案　 4 个 token', 1160, 350, 'mono', 'font-size:34px');
+    $('先写过程　321 个 token', 1160, 410, 'mono', 'font-size:34px;color:#6e56cf');
+    cap('只许说答案，就是要它用四块字的工夫，算完整道乘法');
+    grain(0.035, 0.9, 3);
+  }
+}
+}
+Promise.all(['600 40px Mono', '500 28px "Sans SC"', '800 150px "Sans SC"', '700 150px "Serif SC"', '700 52px Inter'].map(f => document.fonts.load(f, '先思考再回答0123')))
+  .then(build).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

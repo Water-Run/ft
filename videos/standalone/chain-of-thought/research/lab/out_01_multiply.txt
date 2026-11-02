@@ -1,0 +1,21 @@
+# 01 乘法实验汇总  model 请求 deepseek-chat，返回 ['deepseek-flash']
+# 每种位数 20 题，种子 2026，temperature 0
+位数	问法	正确	总数	回复 token 中位数
+3	direct	20	20	2
+3	think_first	20	20	111
+3	answer_first	20	20	50
+4	direct	16	20	3
+4	think_first	20	20	220
+4	answer_first	14	20	109
+5	direct	3	20	4
+5	think_first	20	20	297
+5	answer_first	2	20	136
+6	direct	0	20	4
+6	think_first	20	20	401
+6	answer_first	0	20	211
+7	direct	0	20	5
+7	think_first	19	20	520
+7	answer_first	0	20	285
+
+# 未解析出答案的回复：0
+# 因长度截断的回复：0

@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 19，制作中 5，计划中 177，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 202 部：已成片 19，制作中 6，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -43,6 +43,7 @@
 | [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 待同步 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
+| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 审稿 | 等策划者看第 1 稿与审片页：文案意见与确认，选音色、配乐与视觉方向 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
@@ -425,7 +426,7 @@
 | 29 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
 | 30 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
 | 31 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
-| 32 | CoT：先思考，再回答 | zh | 计划中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；5–7 分钟，富有哲学意味与质感。 |
+| 32 | CoT：先思考，再回答 | zh | 制作中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
 | 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
 | 34 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
 | 35 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |

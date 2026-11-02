@@ -225,7 +225,7 @@
     {"slug": "c-data-structures", "title": {"zh": "一个视频讲明白全部 C 数据结构", "en": "Every C Data Structure in One Video"}, "note": "2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针"},
     {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"},
     {"slug": "c", "title": {"zh": "C 生万物：C 语言"}, "note": "2026-10-26 由已取消的「编程语言」系列改为独立视频。"},
-    {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}, "status": "planned", "note": "2026-10-26 改为独立视频；5–7 分钟，富有哲学意味与质感。"},
+    {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}, "status": "in-progress", "note": "2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。"},
     {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "planned", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},
     {"slug": "keydb-valkey", "title": {"zh": "Redis 之外：KeyDB & Valkey"}, "note": "2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。"},
     {"slug": "quantization", "title": {"zh": "量化：让模型变小和代价"}, "note": "2026-10-26 从速通系列改为独立视频；片长待定。"}
