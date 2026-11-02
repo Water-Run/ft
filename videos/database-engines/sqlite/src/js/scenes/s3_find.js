@@ -55,7 +55,7 @@ scene('find', ({ root, s, c0 }) => {
   const sepE = tx(W, '根页的第一个分界：User00306-… · 306，就是一项', N.rx - 40, 334, { fs: 22, color: K.teal });
   show(sepE, T('s26', '分界'), { y: 8 }); set(N.r, T('s26', '分界'), { backgroundColor: K.wheat });
   const gB = gloss(W, 'B 树', '内部页上的分界本身就是索引里的一项；表用的 B+ 树，整行只在叶页', 620, 756, 600); show(gB, T('s26b', 'B 树'), { x: 12, y: 0 }); sfx('pop', T('s26b', 'B 树'), { g: 0.4 });
-  const sum = tx(W, `<span class="sa">叶页 ${DATA.counts.namesLeaf} 项</span> ＋ <span class="sb">内部页 ${DATA.counts.namesInterior} 项</span> <span class="eq">＝ 4096</span>`, 620, 860, { fs: 26 }); show(sum, T('s27', '3869'), { y: 6 });
+  const sum = tx(W, `<span class="sa">叶页 ${DATA.counts.namesLeaf} 项</span> ＋ <span class="sb">内部页 ${DATA.counts.namesInterior} 项</span> <span class="eq">＝ 4096</span>`, 620, 884, { fs: 26 }); show(sum, T('s27', '3869'), { y: 6 });
 
   // ── f3–f7：从根页 262 往下：281（剩 306 项）→ 叶页 263（剩 18 项）→ Alice，2050 ──
   const tR = T('f3') - 0.2;
@@ -96,7 +96,7 @@ scene('find', ({ root, s, c0 }) => {
   const rbar = (x0, t0, steps) => { const b = h('div', 'abs', W); px(b, x0, 684, 780, 14); css(b, { background: K.teal, transformOrigin: '0 50%' }); set(b, 0, { autoAlpha: 0 }); show(b, t0, { y: 0, d: 0.3 });
     let prev = 1; steps.forEach(([t, k]) => { tl.fromTo(b, { scaleX: prev }, { scaleX: k, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, t); prev = k; }); return b; };
   const leafL = tx(W, '叶页 263：18 项', 300, 704, { fs: 30, color: K.teal }); show(leafL, T('f6', '263'), { y: 6 });
-  const sepU = tx(W, '1560 < 2050 < 3081', 1170, 336, { fs: 26, mono: true, color: K.teal }); show(sepU, T('f9', '2050'), { y: 6 });
+  const sepU = tx(W, '1560 < 2050 < 3081', 1210, 336, { fs: 26, mono: true, color: K.teal }); show(sepU, T('f9', '2050'), { y: 6 });
   const barN = rbar(120, T('f3', '262'), [[T('f5', '306'), 306 / 4096], [T('f6', '18'), 18 / 4096]]);
   const barU = rbar(1020, T('f8', '行号') + 0.3, [[T('f10', '133'), 1521 / 4096], [T('f10', '130'), 17 / 4096]]);
   const rgU = tx(W, '4096 项', 1020, 326, { fs: 30, mono: true }); show(rgU, T('f8', '行号') + 0.3, { y: 6 }); keyed(rgU).at(T('f10', '133'), { html: '→ 1521 项' }).at(T('f10', '130'), { html: '→ 17 项' });
