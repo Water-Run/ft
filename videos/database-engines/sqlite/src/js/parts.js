@@ -109,6 +109,9 @@ function shots(cam, world, s, keys) {
   cam.track(s.start, vs[0][1], out);
 }
 
+// 区域：垫在内容底下的一块（选中时浅青底、深青外框），用来指「现在讲的是这一片」；默认看不见
+function zone(p, x, y, w, hh) { const z = h('div', 'abs', p); px(z, x, y, w, hh); p.insertBefore(z, p.firstChild); z.dataset.beat = 'fill'; z.dataset.name = '区域'; return z; }
+
 // 停在一屏上：只朝一个方向极慢横移（每秒不超过 2 像素，一屏合计不超过 40 像素），不缩放
 function stay(cam, s, c0, dir = 1) {
   const dur = Math.max(1, s.end - c0 - 0.3), dx = dir * Math.min(40, dur * 1.5);
@@ -123,7 +126,9 @@ function beats(list, end) {
   // 用 class 而不用 set：盖住元素自己被 set 过的底色、字色，移走后原来的值原样露出来。
   // 单个文字（含 span、b 的一行）用 .bt：深青底白字，向外扩 6px；含子 div 的框（或标了 data-beat="fill" 的）用 .bf：浅青底加深青外框；
   // 标了 data-beat="line" 的只描外框。一条可以是一组元素；连着讲同一个就一直亮着。
-  const items = list.map(([t, e]) => [t, (Array.isArray(e) ? e : [e]).filter(Boolean)]).filter(([t, g]) => g.length && isFinite(t)).sort((a, b) => a[0] - b[0]);
+  const all = list.map(([t, e, keep]) => [t, (Array.isArray(e) ? e : [e]).filter(Boolean), keep]).filter(([t, g]) => g.length && isFinite(t)).sort((a, b) => a[0] - b[0]);
+  const MIN = 1.0, items = [];
+  for (const it of all) if (!items.length || it[2] || it[0] - items[items.length - 1][0] >= MIN) items.push(it);   // 第三项为真的「必留」，不受最短停留的约束
   const spans = new Map();
   items.forEach(([t, g], i) => {
     const t2 = Math.max(t + 0.3, i + 1 < items.length ? items[i + 1][0] : end);

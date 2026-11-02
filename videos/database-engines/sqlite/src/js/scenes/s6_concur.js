@@ -1,11 +1,71 @@
-// 06 WAL：左 main.db 不动，右 main.db-wal 一帧帧追加；中间上方是内存里的目录（哪些页在 WAL 里）；下方是会话。
-// 事实：K04（帧：24 字节帧头 + 一整页，提交帧记提交后页数，校验和）、E01–E04（快照、写者只有一个、检查点被旧读者挡住）、K05（目录在共享内存，同一台机器）、05 的 5 帧。
-scene('wal', ({ root, s, c0 }) => {
+// 06 怎么并发（第 11 稿）：前一段是回滚日志模式的三把锁——一把锁管多大、Bob 读时 Alice 改、提交被挡、代价（K01、K02、G17）；
+// 后一段是 WAL：反过来追加帧、提交标记、读时先查对照表、快照、写者只有一个、检查点、代价（K04、K05、E01–E04）。
+scene('concur', ({ root, s, c0 }) => {
+  {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
   const W = h('div', 'abs', world); px(W, 0, 0, 1920, 1080);
   const ov = overlay(W);
-  const title = pageTitle(W, '能不能让读和写互不等待？'); show(title, c0 + 0.1, { y: 8 });
+  const title = pageTitle(W, '改年龄：要动不止一页'); show(title, c0 + 0.1, { y: 8 });
+  const panel = (name, x, y, w, hh) => { const p = h('div', 'abs', W); px(p, x, y, w, hh); css(p, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = h('div', 'abs', p, name); px(n, 0, 0, w - 4, 40); css(n, { background: '#dddddd', borderBottom: '1.5px solid #aaa', fontFamily: 'Mono', fontSize: '24px', padding: '4px 14px', boxSizing: 'border-box' }); p.nameEl = n; return p; };
+  const PAGES = DATA.wal.frames;                       // 改年龄要动的页：叶页 130 与年龄索引的 4 页
+  const MAIN = panel('main.db', 120, 250, 600, 420);
+  wipe(MAIN, c0 + 0.15, { dir: 'l', d: 0.45 });
+  const rowEl = (p, pg, i, val) => { const r = h('div', 'abs', p); px(r, 20, 56 + i * 68, 556, 56); css(r, { border: `1.5px solid ${K.ink}`, background: '#fff', fontSize: '24px', display: 'flex', alignItems: 'center', padding: '0 14px', gap: '20px', boxSizing: 'border-box' }); const a = h('span', '', r, `第 ${pg} 页`); a.style.fontFamily = 'Mono'; const b = h('span', '', r, val); r.val = b; return r; };
+  const mRows = PAGES.map((pg, i) => rowEl(MAIN, pg, i, pg === 130 ? 'Alice · 42' : '年龄索引 · 42 岁'));
+  mRows.forEach((r, i) => show(r, c0 + 0.4 + i * 0.08, { x: -10, y: 0, d: 0.3 }));
+  keyed(mRows[0].val).at(0, { html: 'Alice · 42' });
+  // ── j10–j19：有人在读：三把锁 ──
+  const tL = T('j10') - 0.2;
+  const card = (name, x) => { const c = h('div', 'abs', W); px(c, x, 700, 520, 190); css(c, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = tx(c, name, 16, 8, { fs: 28, fw: 600 }); const l1 = tx(c, '', 16, 56, { fs: 24, mono: true }); const l2 = tx(c, '', 16, 100, { fs: 24 }); const lk = h('div', 'abs btn', c, ''); px(lk, 16, 140); lk.style.fontSize = '22px'; c.l1 = l1; c.l2 = l2; c.lk = lk; return c; };
+  const scope = docTable(W, [['', 210], ['一把锁管多大', 400]], [['MyISAM', '整张表'], ['InnoDB', '要改的那一行'], ['SQLite', '整个数据库文件']], 1200, 290, { fs: 32 });
+  scope.t.dataset.name = '锁的范围';
+  show(scope.hr, T('j10b') - 0.1, { y: 6 }); show(scope.rs[0], T('j10b', 'My ISAM'), { x: -10, y: 0 }); show(scope.rs[1], T('j10d'), { x: -10, y: 0 }); show(scope.rs[2], T('j10c'), { x: -10, y: 0 });
+  sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10d'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
+  gone(scope.t, T('j11', '共享锁') - 0.2, 0.3);
+  const bob = card('Bob（读）', 120), ali = card('Alice（写）', 700), rdr = card('又来一个读者', 1280);
+  wipe(bob, tL + 0.1, { dir: 'l', d: 0.35 });
+  keyed(bob.l1).at(T('j11', '开始读') - 0.1, { html: 'sqlite> SELECT age …' });
+  keyed(bob.l2).at(T('j11', '42') - 0.1, { html: '看到 <b>42</b>' }).at(T('j19', '43') , { html: '结束' });
+  set(bob.lk, 0, { autoAlpha: 0 }); keyed(bob.lk).at(0, { html: '共享锁' }); slam(bob.lk, T('j11', '共享锁'), { from: 1.3 }); sfx('pop', T('j11', '共享锁'), { g: 0.4 });
+  const gS = gloss(W, '共享锁', '读的人拿；可以同时有很多', 1280, 250, 520, { terms: '共享锁' });
+  wipe(ali, T('j12') - 0.2, { dir: 'l', d: 0.35 });
+  keyed(ali.l1).at(T('j12') - 0.1, { html: 'sqlite> UPDATE … age = 43' }).at(T('j16', '提交'), { html: 'sqlite> COMMIT;' });
+  keyed(ali.l2).at(T('j15', '还没提交'), { html: '改成 43，还没提交' }).at(T('j16', '已锁') - 0.1, { html: '<span style="color:#aa3333">' + DATA.wal.lockedError + '</span>' }).at(T('j18', '排队'), { html: '排队等独占锁' }).at(T('j19', '提交成功'), { html: '提交成功' });
+  set(ali.lk, 0, { autoAlpha: 0 }); keyed(ali.lk).at(0, { html: '保留锁' }).at(T('j19', '提交成功'), { html: '独占锁 → 提交' }); slam(ali.lk, T('j12', '保留锁'), { from: 1.3 }); sfx('pop', T('j12', '保留锁'), { g: 0.4 });
+  const gR = gloss(W, '保留锁', '要写的人先拿；别人照常能读，写的只能有一个', 1280, 250, 520);
+  const gX = gloss(W, '独占锁', '动主文件时要拿；要等读的人都离开', 1280, 250, 520);
+  set(gS, 0, { autoAlpha: 0 }); show(gS, T('j11', '共享锁') + 0.1, { y: 6 }); gone(gS, T('j12', '保留锁') - 0.1, 0.2);
+  set(gR, 0, { autoAlpha: 0 }); show(gR, T('j12', '保留锁') + 0.1, { y: 6 }); gone(gR, T('j13', '独占锁') - 0.1, 0.2);
+  set(gX, 0, { autoAlpha: 0 }); show(gX, T('j13', '独占锁') + 0.1, { y: 6 });
+  keyed(mRows[0].val).at(T('j12') - 0.2, { html: 'Alice · 42' });
+  wipe(rdr, T('j15b', '读者') - 0.2, { dir: 'l', d: 0.35 });
+  keyed(rdr.l1).at(T('j15b', '读者'), { html: 'sqlite> SELECT age …' });
+  keyed(rdr.l2).at(T('j15b', '42'), { html: '照样看到 <b>42</b>' }).at(T('j18', '挡在外面'), { html: '<span style="color:#aa3333">' + DATA.wal.lockedError + '</span>' }).at(T('j19', '43'), { html: '看到 <b>43</b>' });
+  set(rdr.lk, 0, { autoAlpha: 0 }); keyed(rdr.lk).at(0, { html: '共享锁' }).at(T('j18', '挡在外面'), { html: '被挡在外面' }); slam(rdr.lk, T('j15b', '42'), { from: 1.2 });
+  set(bob, T('j17', 'Bob'), { borderColor: K.teal }); sfx('error', T('j16', '已锁'), { g: 0.5 }); sfx('error', T('j18', '挡在外面'), { g: 0.4 });
+  set(bob, T('j19', 'Bob 结束'), { opacity: 0.35 });
+  mRows.forEach((r, i) => keyed(r.val).at(T('j19', '43') + i * 0.05, { html: i === 0 ? 'Alice · <b>43</b>' : '年龄索引 · <b>43</b> 岁' })); sfx('chime', T('j19', '提交成功'), { g: 0.45 });
+
+  // j26–j26b：代价
+  const cost = gloss(W, '代价', '<span class="c1" style="opacity:0;visibility:hidden">提交要等读的人都离开</span><span class="c2" style="opacity:0;visibility:hidden">；提交时谁也不能读</span>', 1280, 430, 520, { terms: '代价' }); show(cost, T('j26', '代价'), { y: 8 });
+  show(cost.querySelector('.c1'), T('j26', '提交要等'), { y: 0 }); show(cost.querySelector('.c2'), T('j26b') - 0.1, { y: 0 });   // 释义跟着旁白分两段出来
+  gone(world, T('w0') - 0.35, 0.3); gone(title, T('w0') - 0.35, 0.25);
+  beats([[T('j10'), MAIN.nameEl], [T('j10', '有人在读'), bob], [T('j10b'), scope.rs[0].children[0]], [T('j10b', '整张表'), scope.rs[0].children[1]], [T('j10d'), scope.rs[1].children[0]], [T('j10d', '要改的'), scope.rs[1].children[1]], [T('j10c'), scope.rs[2].children[0]], [T('j10c', '整个数据库文件'), scope.rs[2].children[1]], [T('j10c', '整个数据库文件'), MAIN], [T('j11'), bob.l1], [T('j11b'), bob.l2], [T('j12'), ali.l1], [T('j12b'), bob], [T('j12b', '写的'), ali], [T('j15'), ali.l1], [T('j15', '还没提交'), ali.l2], [T('j15b'), rdr.l1], [T('j13'), ali.lk], [T('j16'), ali.l1], [T('j16', '已锁'), ali], [T('j17'), bob], [T('j17', '独占锁'), ali.lk], [T('j18'), rdr.l2], [T('j19'), ali.l2], [T('j26', '都离开'), cost], [T('j26b'), MAIN.nameEl], [T('j10d') + 0.25, [scope.t], 1], [T('j10c') + 1.78, [MAIN, scope.rs[2]], 1], [T('j11b') + 0.34, bob, 1], [T('j15') + 1.78, [ali, MAIN], 1], [T('j13') + 3.31, [ali, gX], 1], [T('j16') + 1.33, [ali, rdr], 1], [T('j19') + 1.75, [bob, ali, rdr], 1], [T('j26b') + 0.36, [MAIN, cost], 1], [T('j10b') + 2.93, MAIN, 1], [T('j11b') + 0.34, [MAIN, bob.lk], 1], [T('j19') + 3.48, [MAIN, ...mRows], 1]], Tend('j26b'));
+  [[T('j10') - 0.2, '这时有人在读'], [T('j10b') - 0.2, '一把锁管多大'], [T('j11') - 0.2, '共享锁、保留锁、独占锁'], [T('j16') - 0.2, '提交被挡住：Bob 还没走'], [T('j26') - 0.2, '回滚日志的代价']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
+  sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10d'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
+  sfx('tick', T('j12b', '照常能读'), { g: 0.3 });
+  sfx('tick', T('j15', '43'), { g: 0.3 });
+  sfx('pop', T('j15b', '42'), { g: 0.3 });
+  sfx('tick', T('j13', '独占锁'), { g: 0.35 });
+  shots(cam, world, s, [[s.start, null, { rect: [110, 244, 1810, 896], pad: 0 }]]);
+  }
+  {
+  const world = h('div', 'world', root);
+  const cam = makeCamera(world);
+  const W = h('div', 'abs', world); px(W, 0, 0, 1920, 1080);
+  const ov = overlay(W);
+  const title = pageTitle(W, '能不能让读和写互不等待？'); set(title, 0, { autoAlpha: 0 }); show(title, T('w0') - 0.2, { y: 8 });
   const panel = (name, x, y, w, hh) => { const p = h('div', 'abs', W); px(p, x, y, w, hh); css(p, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = h('div', 'abs', p, name); px(n, 0, 0, w - 4, 40); css(n, { background: '#dddddd', borderBottom: '1.5px solid #aaa', fontFamily: 'Mono', fontSize: '24px', padding: '4px 14px', boxSizing: 'border-box' }); p.nameEl = n; return p; };
   const FR = DATA.wal.frames;
   // w0：能不能让读和写互不等待？
@@ -31,13 +91,13 @@ scene('wal', ({ root, s, c0 }) => {
   frames.forEach((f, i) => keyed(f.hd).at(T('w6', '校验和') + i * 0.05, { html: i === 4 ? `第 ${FR[i]} 页 · 提交 · 校验和` : `第 ${FR[i]} 页 · 校验和` }));
   const bad = h('div', 'abs', WAL); px(bad, 20, 56 + 5 * 68, 516, 46); css(bad, { border: `1.5px dashed ${K.red}`, color: K.red, fontSize: '24px', display: 'flex', alignItems: 'center', paddingLeft: '12px', boxSizing: 'border-box' }); bad.innerHTML = '校验和对不上的帧：不算';
   set(bad, 0, { autoAlpha: 0 }); show(bad, T('w6b', '一律不算') - 0.2, { y: 6 }); sfx('error', T('w6b', '一律不算'), { g: 0.3 });
-  gone(gM, T('w6') - 0.1, 0.2);
+  gone(gM, T('w7') - 0.1, 0.2);
   const gK = gloss(W, '校验和', '按内容算出的一串数；内容坏了就对不上', 720, 690, 560, { terms: '校验和' }); set(gK, 0, { autoAlpha: 0 }); show(gK, T('w6', '校验和'), { y: 8 });
   // w7：提交之后，主文件里的 Alice 仍是 42
   set(mRow, T('w7', '42'), { backgroundColor: K.wheat }); const st42 = tx(MAIN, '提交之后，这里仍是 42', 20, 140, { fs: 22, color: K.teal });
-  gone(still, T('w7') - 0.1, 0.2); show(st42, T('w7', '42'), { y: 6 }); gone(bad, T('w7') - 0.1, 0.2);
+  gone(still, T('w7') - 0.1, 0.2); show(st42, T('w7', '42'), { y: 6 }); 
   // w8–w8b：读的时候先查 WAL；哪些页在 WAL 里，记在内存里的一份目录上
-  gone(gK, T('w8') - 0.1, 0.2);
+  
   const dir = h('div', 'abs', W); px(dir, 720, 268, 480, 150); css(dir, { border: `2px solid ${K.ink}`, background: K.wheat, padding: '8px 14px', boxSizing: 'border-box', whiteSpace: 'normal', lineHeight: 1.5 });   // 五项一行放不下：允许换行（r1 第 5 项被框切掉） dir.dataset.name = '内存里的对照表';   // 让开页标题
   dir.innerHTML = '<div style="font-size:22px;color:#044a64">内存里的对照表：哪一页在第几帧</div>' + FR.map((pg, i) => `<span style="display:inline-block;font-family:Mono;font-size:24px;margin-right:16px">${pg}→帧${i + 1}</span>`).join('');
   set(dir, 0, { autoAlpha: 0 }); wipe(dir, T('w8b', '内存') - 0.2, { dir: 't', d: 0.4 });   // 「记在内存里的一张对照表上」
@@ -79,7 +139,7 @@ scene('wal', ({ root, s, c0 }) => {
   const tX = T('w18') - 0.2;
   [cp, cpL, gC, ali].forEach((e) => gone(e, tX, 0.3)); goneFrom(bob, tX, 0.35);
   const host = h('div', 'abs', W); px(host, 120, 700, 1080, 200); css(host, { border: `2px dashed ${K.ink}`, boxSizing: 'border-box' });
-  const hostL = tx(host, '同一台机器', 16, 8, { fs: 24, color: K.dim });
+  const hostL = tx(host, '同一台机器', 16, 8, { fs: 24, color: '#444444' });
   const shm = h('div', 'abs', host, '共享内存：WAL 的对照表'); px(shm, 300, 60, 480, 70); css(shm, { border: `2px solid ${K.ink}`, background: K.wheat, fontSize: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }); shm.dataset.gloss = '共享内存';
   const procs = [0, 1, 2].map((i) => { const p = h('div', 'abs btn', host, `进程 ${i + 1}`); px(p, 40 + i * 340, 150); p.style.fontSize = '22px'; return p; });
   wipe(host, T('w18', '对照表') - 0.2, { dir: 'l', d: 0.45 }); sfx('whoosh', T('w18', '对照表') - 0.2, { g: 0.3 });   // 说到「这份目录」框就进来，「共享内存」时点亮它
@@ -87,7 +147,7 @@ scene('wal', ({ root, s, c0 }) => {
   set(other, 0, { autoAlpha: 0 }); show(other, T('w19', '同一台机器'), { x: 10, y: 0 });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   beats([[T('w0'), q], [T('w1'), MAIN.nameEl], [T('w1', '不动'), mRow], [T('w1b'), WAL.nameEl], [T('w2'), gW], [T('w3'), WAL.nameEl], [T('w3', '一整页'), gF], [T('w4', '43'), WAL.nameEl], [T('w4', '5'), n5], [T('w4b', '130'), frames[0]], [T('w4b', '4'), frames.slice(1)], [T('w5', '提交的那一帧'), frames[4]], [T('w5', '帧头'), frames.map((f) => f.hd)], [T('w5', '提交后'), frames[4]], [T('w5', '553'), frames[4].hd], [T('w5b'), gM], [T('w6'), frames.map((f) => f.hd)], [T('w6', '校验和'), gK], [T('w6b'), frames], [T('w6b', '一律不算'), bad], [T('w7'), MAIN.nameEl], [T('w7', 'Alice'), mRow], [T('w8'), MAIN.nameEl], [T('w8', 'W A L'), frames], [T('w8', '新版'), frames[0]], [T('w8', '主文件'), mRow], [T('w8b'), frames], [T('w8b', '对照表'), dir],
-    [T('w9'), bob.l2], [T('w10'), ali.l2], [T('w11'), bob.l2], [T('w11b'), snap], [T('w12'), fresh], [T('w13'), car.l2], [T('w14'), one], [T('w15'), cpL], [T('w15b'), gC], [T('w16'), bob.l2], [T('w16', '旧页'), mRow], [T('w16b', '没写回'), blocked], [T('w17'), bob.l2], [T('w17b'), mRow], [T('w18', '代价'), WAL.nameEl], [T('w18', '共享内存'), shm], [T('w18b'), host], [T('w18b', '进程'), procs], [T('w19'), other]], Tend('w19'));
+    [T('w9'), bob.l2], [T('w10'), ali.l2], [T('w11'), bob.l2], [T('w11b'), snap], [T('w12'), fresh], [T('w13'), car.l2], [T('w14'), one], [T('w15'), cpL], [T('w15b'), gC], [T('w16'), bob.l2], [T('w16', '旧页'), mRow], [T('w16b', '没写回'), blocked], [T('w17'), bob.l2], [T('w17b'), mRow], [T('w18', '代价'), WAL.nameEl], [T('w18', '共享内存'), shm], [T('w18b'), host], [T('w18b', '进程'), procs], [T('w19'), other], [T('w1') + 2.92, MAIN, 1], [T('w3') + 1.55, WAL, 1], [T('w5') + 5.32, [WAL, gM], 1], [T('w8') + 0.50, [MAIN, WAL], 1], [T('w8b') + 0.72, [dir, WAL], 1], [T('w11b') + 0.62, [snap, bob], 1], [T('w13') + 1.71, [car, one], 1], [T('w16') + 3.11, [MAIN, bob], 1], [T('w17') + 1.66, [MAIN, WAL], 1], [T('w18b') + 1.55, host, 1], [T('w19') + 2.93, [host, other], 1], [T('w1b') + 1.22, WAL, 1], [T('w5') + 5.32, frames, 1], [T('w10') + 4.13, ali, 1], [T('w18b') + 1.55, [shm, other], 1], [T('w19') + 4.50, [MAIN, WAL], 1], [T('w5b') + 1.24, [WAL, frames[4]], 1], [T('w19') + 0.79, [host, MAIN], 1]], Tend('w19'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('w7', '42'), { g: 0.35 });
   sfx('pop', T('w8', '先查'), { g: 0.3 });
@@ -96,4 +156,5 @@ scene('wal', ({ root, s, c0 }) => {
   [[T('w1') - 0.2, '主文件先不动：改过的页追加到 WAL'], [T('w3') - 0.2, '帧：24 字节帧头，加一整页'], [T('w7') - 0.2, '读的时候先查 WAL'], [T('w9') - 0.2, '同样的顺序，再试一次'], [T('w13') - 0.2, '写的人，仍然只能有一个'],
    [T('w15') - 0.2, '检查点：把新页写回主文件'], [T('w18') - 0.2, 'WAL 的代价']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1810, 900], pad: 0 }]]);
+  }
 });

@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "e51d019fed482a6370cccec73a010ff1ce5a3a4912784f45a1eb967bec55c404",
+      "content_sha256": "f19f029bdb4cefe7eb1deaf302909fcae04b473ed8cc903e4794ac4f47c33c3a",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-02T22:18:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 10 稿：WaterRun 看过第 10 稿的改动说明后回复「直接对抗好, 出预览 我看预览说」，同意以此稿配音出预览；未逐句看全文。 配音后 j7 超过 6 秒，在分号处拆成 j7、j7b（文字不变），哈希由 fbb87d35… 变为此值。 回听后 j10b 加停顿读法并在逗号处拆成 j10b、j10d（文字不变），哈希由 659e4f10… 变为此值。"
+      "confirmed_at": "2026-11-03T00:29:45+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 11 稿：WaterRun 看预览 r2c 逐条给出意见，并把会话目标设为「完成视频自我迭代, 出下一个值得我观看的Preview」；点名的改动照原话做，连带改动见交审说明；未逐句看全文。 配音后 e8 超过 6 秒，在冒号处拆成 e8、e8b（文字不变），哈希由 d4094971… 变为此值。"
     }
   }
 }

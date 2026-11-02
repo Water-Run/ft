@@ -77,6 +77,8 @@ scene('lib', ({ root, s, c0 }) => {
   const tcl = btn(W, 'Tcl 扩展', 620, Y + 128, 28); set(tcl, 0, { autoAlpha: 0 }); slam(tcl, T('h10b', 'T C L'), { from: 1.2 }); sfx('pop', T('h10b', 'T C L'), { g: 0.4 });
   const test = btn(W, '主要的测试：Tcl', 790, Y + 128, 28); set(test, 0, { autoAlpha: 0 }); slam(test, T('h10c', '测试'), { from: 1.2 }); sfx('pop', T('h10c', '测试'), { g: 0.4, p: 0.3 });
 
+  const tclN = tx(W, 'Tcl：一种编程语言', 620, Y + 186, { fs: 26, color: K.dim }); show(tclN, T('h10b', 'T C L') + 0.3, { y: 6 });
+  gone(tclN, T('l0') - 0.2, 0.3);
   // h11–h12：版本表（Release History）
   gone(memo, T('h11') - 0.3, 0.3);
   const rel = docTable(W, [['版本', 170], ['发布', 230], ['', 330]], [['1.0', '2000-08-17', ''], ['3.0.0', '2004-06-18', '今天的文件格式'], ['3.54.1', '2026-10-16', '本片用的版本']], 1110, 560, { fs: 30 });
@@ -98,41 +100,26 @@ scene('lib', ({ root, s, c0 }) => {
   tl.fromTo(size, { scaleX: 0, autoAlpha: 1 }, { scaleX: 1, duration: 0.6, ease: 'power2.out', immediateRender: true }, T('l4', '九百'));
   show(sizeL, T('l4', '全部功能') - 0.1, { y: 6 }); sfx('tick', T('l4', '九百'), { g: 0.4 });
 
-  // ── l5–l5b：服务进程也有它的好处：上方补一排服务型，几个程序都连到它 ──
-  const tS = T('l5') - 0.2;
-  gone(want, tS, 0.3);
-  const SY = 560;
-  const sApps = [0, 1, 2].map((i) => box('程序', 120, SY - 40 + i * 70, 200, 56, { fs: 26 }));
-  const sSrv = box('服务进程', 600, SY, 360, 110, { fs: 32 }), sF = box('数据文件', 1300, SY + 10, 240, 90, { fs: 28 });
-  const sLines = [0, 1, 2].map((i) => line(ov, [[320, SY - 12 + i * 70], [598, SY + 55]], { dashed: '8 6' })), s2 = line(ov, [[960, SY + 55], [1298, SY + 55]]);
-  sApps.forEach((e, i) => wipe(e, tS + 0.15 + i * 0.1, { dir: 'l', d: 0.35 })); wipe(sSrv, tS + 0.3, { dir: 'l', d: 0.4 }); wipe(sF, tS + 0.45, { dir: 'l', d: 0.4 });
-  sLines.forEach((l, i) => arrowIn(l, T('l5', '经过它') - 0.3 + i * 0.12, 0.4)); arrowIn(s2, tS + 0.6, 0.4); sfx('whoosh', tS, { g: 0.3 });
-  const p1 = tx(W, '・所有访问都经过它', 1000, SY + 128, { fs: 28 }), p2 = tx(W, '・锁能管得更细，多人同时用也更顺', 1000, SY + 168, { fs: 28 });
-  show(p1, T('l5', '经过它'), { x: 10, y: 0 }); show(p2, T('l5b', '更细'), { x: 10, y: 0 }); sfx('pop', T('l5', '经过它'), { g: 0.3 }); sfx('tick', T('l5b', '更细'), { g: 0.3 });
-  keyed(title).at(tS, { html: '服务进程：也有它的好处' });
-
   // ── l6–l10：SQLite 的全部数据，都在那一个文件里；从这个文件看起 ──
   const tF = T('l6') - 0.2;
-  [...sApps, sSrv, sF, p1, p2].forEach((e) => dim(e, tF, 0.25)); [...sLines, s2].forEach((e) => dim(e, tF, 0.25));
+  gone(want, tF, 0.3);
   tl.fromTo(disk, { scale: 1 }, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: '50% 50%', immediateRender: false }, T('l6', '一个文件'));
   const fileN = tx(W, '所有的表和索引', 1300, Y + 180, { fs: 30, color: K.teal }); show(fileN, T('l6', '一个文件') + 0.1, { y: 6 });
   keyed(title).at(tF, { html: 'SQLite 的全部数据：一个文件' });
   // l10：只留那个文件，镜头推过去（其余的先收走，免得在画面边上被切掉一半）
   const tL = T('l10') - 0.15;
-  [...sApps, sSrv, sF, p1, p2].forEach((e) => goneFrom(e, tL, 0.25)); [...sLines, s2].forEach((e) => goneFrom(e, tL, 0.25));
   [app, appL, lib, solid, p3, p4, size, sizeL].forEach((e) => gone(e, tL, 0.3));
 
-  // 镜头：来历 → 程序与服务器 → 版本 → 取舍 → 两种做法 → 那个文件
+  // 镜头：来历 → 程序与服务器 → 版本 → 取舍 → 那个文件
   shots(cam, world, s, [
     [s.start, null, { rect: [110, 280, 1800, 590] }],
     [T('h4') - 0.3, null, { rect: [110, 600, 1880, 1040] }],
     [T('l0') - 0.2, null, { rect: [110, 730, 1580, 1030], zmax: 1.25 }],
-    [T('l5') - 0.2, null, { rect: [110, 500, 1580, 1030] }],
     [T('l10'), null, { rect: [1080, 760, 1620, 1020], zmax: 1.45 }],
   ]);
 
   // 「当前在讲谁」
-  beats([[T('h1', 'Richard'), who], [T('h2'), facts[0]], [T('h2', '军舰'), facts[1]], [T('h2', '写软件'), facts[2]], [T('h3'), shipL], [T('h3', '关'), vl], [T('h4', 'Informix'), srv], [T('h4', '服务器') + 0.2, disk], [T('h5', '弹出'), app], [T('h5', '连不上'), dlg], [T('h5', '数据库服务器'), srv], [T('h6'), app], [T('h6', '非要'), srv], [T('h6b', '磁盘'), disk], [T('h7', '找了一圈'), app], [T('h7', '没有'), qm], [T('h7', 'S Q L'), none], [T('h8'), quote], [T('h9'), memo], [T('h10'), memo], [T('h10', '自己写了') + 0.6, lib], [T('h10b', 'T C L'), tcl], [T('h10c'), app], [T('h10c', '测试'), test],
+  beats([[T('h1', 'Richard'), who], [T('h2'), facts[0]], [T('h2', '军舰'), facts[1]], [T('h2', '写软件'), facts[2]], [T('h3'), shipL], [T('h3', '关'), vl], [T('h4', 'Informix'), srv], [T('h4', '服务器') + 0.2, disk], [T('h5', '弹出'), app], [T('h5', '连不上'), dlg], [T('h5', '数据库服务器'), srv], [T('h6'), app], [T('h6', '非要'), srv], [T('h6b', '磁盘'), disk], [T('h7', '找了一圈'), app], [T('h7', '没有'), qm], [T('h7', 'S Q L'), none], [T('h8'), quote], [T('h9'), memo], [T('h10'), memo], [T('h10', '自己写了') + 0.6, lib], [T('h10b', 'T C L'), [tcl, tclN]], [T('h10c'), app], [T('h10c', '测试'), test],
     [T('h11'), rel.rs[0]], [T('h11b'), rel.rs[1]], [T('h11b', '今天'), rel.rs[1].children[2]], [T('h12'), rel.rs[2]], [T('l0'), want], [T('l0', '直接读磁盘'), disk], [T('l1'), p3], [T('l1b'), p4], [T('l1b', 'S Q Lite'), lib], [T('l4', '全部功能'), sizeL], [T('l4', '九百'), size],
-    [T('l5'), sSrv], [T('l5', '经过它'), p1], [T('l5b'), p2], [T('l6'), lib], [T('l6', '一个文件'), fileN], [T('l10'), disk]], Tend('l10'));
+    [T('l6'), lib], [T('l6', '一个文件'), fileN], [T('l10'), disk], [T('h2') + 0.20, [who, whoL, ...facts], 1], [T('h8') + 1.80, [quote, app], 1], [T('h9') + 2.98, [memo, app], 1], [T('h11b') + 2.65, rel.t, 1], [T('h10') + 3.64, disk, 1], [T('h12') + 0.69, rel.t, 1], [T('h12') + 2.42, [app, lib, disk], 1], [T('h10b') + 1.70, [app, tcl, tclN], 1], [T('h10c') + 0.8, [disk, lib], 1], [T('h10c') + 3.3, [test, tclN, app], 1]], Tend('l10'));
 });

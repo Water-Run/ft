@@ -82,7 +82,7 @@ body { font-family: "Inter", "Sans SC"; }
 .dlgC { padding: 2px 16px 10px; font-size: 24px; color: #555; }
 .mb { border: 1px solid #444; padding: 0 5px; }
 /* 「当前在讲谁」的选中样式（parts.js 的 beats）：深青底白字像官网菜单里选中的那一格；框用浅青底加深青外框 */
-.bt { background-color: #044a64 !important; color: #ffffff !important; outline: 6px solid #044a64 !important; outline-offset: 0; }
-.bt * { color: #ffffff !important; }
+.bt { background-color: #bcd6e1 !important; color: #033a50 !important; outline: 6px solid #bcd6e1 !important; outline-offset: 0; }
+.bt * { color: #044a64 !important; }
 .bf { background-color: #cfe1e9 !important; outline: 5px solid #044a64 !important; outline-offset: 3px; }
 .bl { outline: 3px solid #044a64 !important; outline-offset: 3px; }

@@ -12,14 +12,14 @@ scene('open', ({ root, s, c0 }) => {
 
   // ── 上排：服务型（o1–o2b） ──
   const app1 = box('应用程序', 120, 320, 320, 120);
-  const srv = box('<div><span>MySQL</span> · <span>PostgreSQL</span></div><div style="font-size:30px;color:#044a64">服务进程</div>', 640, 300, 560, 160); css(srv, { flexDirection: 'column' });
+  const srv = box('<div><span>MySQL</span><span> · PostgreSQL</span></div><div style="font-size:30px;color:#044a64">服务进程</div>', 640, 300, 560, 160); css(srv, { flexDirection: 'column' });
   const [sv1, sv2] = srv.children, [m1, m2] = sv1.children;
-  const eps = [btn(W, 'PART 1–2　MySQL（MyISAM、InnoDB）', 640, 478, 26), btn(W, 'PART 3　PostgreSQL', 1190, 478, 26)];   // 「前几期」：系列前三集
-  eps.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); slam(e, T('o1', '前几期') + 0.2 + i * 0.5, { from: 1.15 }); }); sfx('pop', T('o1', '前几期') + 0.2, { g: 0.35 });
+  set(m1, 0, { autoAlpha: 0 }); show(m1, T('o1', 'My S Q L'), { y: 8 }); sfx('tick', T('o1', 'My S Q L'), { g: 0.4 });
+  set(m2, 0, { autoAlpha: 0 }); show(m2, T('o1', 'Postgres'), { y: 8 }); sfx('tick', T('o1', 'Postgres'), { g: 0.4, p: 0.3 });
   const tagS = tx(W, '服务型数据库', 640, 252, { fs: 30, color: K.teal });
   const files1 = stack(1400, 310, '数据文件');
   const net = line(ov, [[440, 380], [638, 380]], { dashed: '8 6' });
-  const netL = tx(W, '网络连接', 470, 330, { fs: 26, color: K.dim });
+  const netL = tx(W, '网络连接', 470, 330, { fs: 26, color: '#444444' });
   const disk1 = line(ov, [[1200, 380], [1398, 380]]);
   slam(srv, c0 + 0.15, { from: 1.15 }); sfx('thud', c0 + 0.15, { g: 0.5 });
   set(sv2, 0, { autoAlpha: 0 }); show(sv2, T('o2', '服务进程'), { y: 8 }); sfx('tick', T('o2', '服务进程'), { g: 0.4 });
@@ -34,6 +34,15 @@ scene('open', ({ root, s, c0 }) => {
   set(rs, 0, { autoAlpha: 0 }); tl.fromTo(rs, { autoAlpha: 1, x: 0 }, { x: -110, duration: 0.7, ease: 'power1.inOut', immediateRender: false }, T('o2b', '结果')); sfx('tick', T('o2b', '结果'), { g: 0.4, p: -0.3 });
   tl.fromTo(rs, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false }, T('o2b', '结果') + 0.8);
 
+  const appB = box('程序', 120, 210, 220, 70, { fs: 28 }), appC = box('程序', 120, 460, 220, 70, { fs: 28 });
+  const lnB = line(ov, [[340, 245], [638, 350]], { dashed: '8 6' }), lnC = line(ov, [[340, 495], [638, 410]], { dashed: '8 6' });
+  const lockL = tx(W, '锁管得更细：多人同时用也更顺', 640, 478, { fs: 28, color: K.teal });
+  wipe(appB, T('o2c', '多人') - 0.2, { dir: 'l', d: 0.35 }); wipe(appC, T('o2c', '多人'), { dir: 'l', d: 0.35 });
+  arrowIn(lnB, T('o2c', '多人'), 0.4); arrowIn(lnC, T('o2c', '多人') + 0.2, 0.4); show(lockL, T('o2c', '锁'), { y: 6 }); sfx('pop', T('o2c', '多人'), { g: 0.35 });
+  const tOne = T('o2d', '一个程序') - 0.1;
+  [appB, appC, lockL].forEach((e) => gone(e, tOne, 0.3)); [lnB, lnC].forEach((e) => gone(e, tOne, 0.3));
+  const heavy = errBox(W, '只给一个程序用：太重', 900, 478, 28); set(heavy, 0, { autoAlpha: 0 }); slam(heavy, T('o2d', '太重'), { from: 1.25 }); sfx('thud', T('o2d', '太重'), { g: 0.45 });
+
   // ── 下排：嵌入式（o3–o3c） ──
   const prog = box('', 120, 600, 1080, 220); prog.dataset.beat = 'fill';
   const progL = tx(W, '应用程序', 150, 614, { fs: 32 });
@@ -47,10 +56,11 @@ scene('open', ({ root, s, c0 }) => {
   tl.fromTo(lib, { x: 560 }, { x: 0, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, T('o3b', '编进')); sfx('whoosh', T('o3b', '编进'), { g: 0.3 });
   arrowIn(direct, T('o3c', '读写'), 0.5); show(directL, T('o3c', '读写') + 0.2, { y: 6 }); show(db, T('o3c', '一个文件'), { x: -12, y: 0 }); sfx('pop', T('o3c', '一个文件'), { g: 0.4 });
   keyed(title).at(T('o3') - 0.1, { html: '嵌入式数据库' });
+  keyed(title).at(T('o3d') - 0.1, { html: 'SQLite：一个嵌入式数据库' });
 
   // ── 还是那张用户表（o5–o5b）：两排收走，表从左边刷出来 ──
   const tT = T('o5') - 0.3;
-  const rowsA = [app1, srv, tagS, files1, netL, prog, progL, tagE, lib, directL, db, ...eps];   // db 也收走（漏了它会一直压在表和文件图后面）
+  const rowsA = [app1, srv, tagS, files1, netL, prog, progL, tagE, lib, directL, db, heavy];   // db 也收走（漏了它会一直压在表和文件图后面）
   rowsA.forEach((e) => gone(e, tT, 0.3)); [net, disk1, direct].forEach((e) => gone(e, tT, 0.3));
   const nm = (n) => `User${String(n).padStart(5, '0')}-…`, age = (n) => 18 + n % 63;
   const R = [[1, nm(1), age(1)], [2, nm(2), age(2)], ['⋮', '', ''], [2049, nm(2049), age(2049)], [2050, 'Alice', 42], [2051, nm(2051), age(2051)], ['⋮', '', ''], [4096, nm(4096), age(4096)]];
@@ -68,15 +78,17 @@ scene('open', ({ root, s, c0 }) => {
 
   // ── 一个文件，553 页（o5c 553 – o8）：每页一格，按归属上色 ──
   const tG = T('o5c', '553') - 0.2;
-  [tbl.t, tblL, db2, toDbL].forEach((e) => gone(e, tG, 0.3)); gone(toDb, tG, 0.3);
+  [tbl.t, tblL, toDbL].forEach((e) => gone(e, T('o5c', '一个文件') + 0.3, 0.4)); gone(toDb, T('o5c', '一个文件') + 0.3, 0.4);
+  gone(db2, tG + 0.7, 0.4);
   const G = fileGrid(W, 200, 330, 40, 34, 4);
-  G.cells.forEach((c, i) => show(c, tG + 0.25 + (i % 40) * 0.008 + Math.floor(i / 40) * 0.03, { y: 0, d: 0.2 }));
+  const FX = 1250 + 135, FY = 470 + 70;
+  G.cells.forEach((c, i) => { const q = G.pos(i + 1); tl.fromTo(c, { autoAlpha: 0, x: FX - q.x - 17, y: FY - q.y - 17, scale: 0.5 }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration: 0.9, ease: 'power3.inOut', immediateRender: true }, tG + 0.1 + i * 0.0026); });
+  sfx('whoosh', tG + 0.1, { g: 0.4 });
   const fileL = tx(W, 'main.db　553 页 · 一页 1024 字节', 200, 278, { fs: 30, mono: true });
   show(fileL, T('o5c', '553'), { y: 8 }); sfx('pop', T('o5c', '553'), { g: 0.4 });
   const legend = tx(W, `<span class="mb" style="background:${OWN.u}">　</span> users 表　<span class="mb" style="background:${OWN.n}">　</span> 姓名索引　<span class="mb" style="background:${OWN.a}">　</span> 年龄索引`, 1190, 280, { fs: 26, color: K.dim });   // 直接定位：show() 的位移会盖掉 CSS 的 translateX
   show(legend, T('o5c', '553') + 0.4, { y: 6 });
   keyed(title).at(tG + 0.1, { html: '一个文件，553 页' });
-  keyed(title).at(T('o4') - 0.1, { html: '一个库、一个文件，怎样装下一个关系数据库？' });
   // 找 Alice：读了其中 7 页
   const read = DATA.trace.index_then_table;
   read.forEach((pg, i) => set(G.cells[pg - 1], T('o6', '7') - 0.4 + i * 0.12, { backgroundColor: K.wheat, borderColor: K.teal, borderWidth: '3px' }));
@@ -100,27 +112,42 @@ scene('open', ({ root, s, c0 }) => {
   const sha = h('div', 'abs', W, '重新打开：整个文件的 <b>SHA-256</b> 与改之前相同'); px(sha, 200, 884); css(sha, { fontSize: '32px', color: K.body, background: K.wheat, padding: '4px 16px' }); sha.dataset.gloss = '一字节不差';
   set(sha, 0, { autoAlpha: 0 }); wipe(sha, T('o8', '一字节不差') - 0.2, { dir: 'l', d: 0.4 }); sfx('chime', T('o8', '一字节不差'), { g: 0.5 });
   keyed(title).at(tRe, { html: '重新打开：一字节不差' });
-  // 沿着 Alice：她这一行所在的叶页 130 先亮出来
-  const tA = T('o10') - 0.1;
-  gone(sha, tA, 0.3);
-  const p130 = G.pos(130);
-  const alice = tx(W, '2050 · Alice · 42 岁', 200, 884, { fs: 32, css: { background: K.wheat, padding: '4px 16px' } });
-  const toLeaf = line(ov, [[560, 884], [p130.x + 17, p130.y + 36]], { color: 'teal' });
-  show(alice, T('o10', 'Alice'), { x: 10, y: 0 }); arrowIn(toLeaf, T('o10', 'Alice') + 0.3, 0.6);
-  set(G.cells[129], T('o10', '一页页') , { backgroundColor: K.teal, borderColor: K.teal });
-  keyed(title).at(tA, { html: '沿着 Alice，把这个文件一页页翻开' });
+  // 主问题（o4、o4b）接封面页：553 格收进右边一摞纸，读到的 7 页像书签抽出来（封面第 1 张的构图）；左边问句、大字 SQLite、小而强大、PART 4
+  const tQ = T('o4') - 0.2;
+  [sha, fileL, legend].forEach((e) => gone(e, tQ, 0.3));
+  keyed(title).at(tQ, { html: '' });
+  const SX = 1220, SY = 340, SW = 400, SH = 470;
+  const stackEls = [];
+  for (let k = 6; k >= 0; k--) { const r = h('div', 'abs pg', W); px(r, SX + k * 12, SY - k * 12, SW, SH); r.style.borderWidth = '2px'; stackEls.push(r); }
+  stackEls.forEach((r, k) => { set(r, 0, { autoAlpha: 0 }); show(r, tQ + 0.6 + k * 0.06, { y: 0, s: 0.92, d: 0.5 }); });
+  G.cells.forEach((c, i) => tl.fromTo(c, { autoAlpha: 1, x: 0, y: 0, scale: 1 }, { autoAlpha: 0, x: SX + SW / 2 - G.pos(i + 1).x - 17, y: SY + SH / 2 - G.pos(i + 1).y - 17, scale: 0.3, duration: 0.8, ease: 'power3.in', immediateRender: false }, tQ + (i % 40) * 0.006 + Math.floor(i / 40) * 0.02));
+  sfx('whoosh', tQ, { g: 0.4 });
+  const marks = read.map((pg, i) => { const y = SY + 40 + i * 60; const tab = h('div', 'abs', W); px(tab, SX + SW + 70, y, 56, 30); css(tab, { background: K.wheat, border: `2px solid ${K.teal}`, boxSizing: 'border-box' });
+    const b = btn(W, String(pg), SX + SW + 140, y - 2, 24); return [tab, b]; });
+  marks.forEach(([tab, b], i) => { [tab, b].forEach((e) => { set(e, 0, { autoAlpha: 0 }); show(e, T('o4b', '关系数据库') + i * 0.12, { x: -16, y: 0, d: 0.4 }); }); });
+  const q1 = tx(W, '一个库、一个文件，', 150, 300, { fs: 52, color: K.ink }), q2 = tx(W, '怎样装下一个完整的关系数据库？', 150, 372, { fs: 52, color: K.ink });
+  show(q1, T('o4'), { y: 10 }); show(q2, T('o4b'), { y: 10 });
+  const big = tx(W, 'SQLite', 130, 470, { fs: 220, color: K.teal, lh: 1.0, css: { letterSpacing: '-4px' } });
+  const sub = tx(W, '小而强大', 150, 700, { fs: 48, color: K.teal });
+  const k1 = tx(W, '一个数据库引擎是如何实现的？', 150, 780, { fs: 34 });
+  const part = btn(W, 'PART 4', 150, 840, 30);
+  const tC = T('oT');
+  slam(big, tC, { from: 1.12 }); show(sub, tC + 0.5, { x: -20, y: 0 }); show(k1, tC + 0.9, { y: 8 }); show(part, tC + 1.4, { x: -16, y: 0 });
+  sfx('thud', tC, { g: 0.55 });
 
   // 镜头：上排 → 两排 → 用户表 → 文件
   shots(cam, world, s, [
-    [s.start, [app1, srv, tagS, files1], { rect: [110, 240, 1680, 470], zmax: 1.35 }],
-    [T('o3') - 0.35, null, { rect: [110, 240, 1680, 830], zmax: 1.2 }],
+    [s.start, null, { rect: [110, 200, 1680, 540], zmax: 1.35 }],
+    [T('o3') - 0.35, null, { rect: [110, 200, 1680, 840], zmax: 1.2 }],
     [tT, null, { rect: [140, 240, 1530, 900] }],
-    [tG, null, { rect: [190, 270, 1730, 950] }],
+    [tG + 0.2, null, { rect: [190, 270, 1730, 950], d: 1.4 }],
+    [tQ, null, { rect: [120, 280, 1820, 900] }],
   ]);
 
   // 「当前在讲谁」
-  beats([[T('o1', '前几期'), eps], [T('o1', 'My S Q L'), m1], [T('o1', 'Postgres'), m2], [T('o1b', '服务型'), tagS], [T('o2'), srv], [T('o2', '一直开着'), files1], [T('o2b'), app1], [T('o2b', '连上'), netL], [T('o2b', '结果'), app1],
-    [T('o3'), tagE], [T('o3b', '库'), lib], [T('o3c'), progL], [T('o3c', '一个文件'), db],
+  const zTop = zone(W, 610, 236, 620, 244), zNet = zone(W, 430, 300, 220, 140);
+  beats([[T('o1', 'My S Q L'), m1], [T('o1', 'Postgres'), m2], [T('o1b', '服务型'), tagS], [T('o2'), srv], [T('o2', '一直开着'), files1], [T('o2b'), app1], [T('o2b', '连上'), netL], [T('o2b', '结果'), app1], [T('o2c', '锁'), lockL], [T('o2c', '多人'), [appB, app1, appC]], [T('o2d', '一个程序'), app1], [T('o2d', '太重'), heavy],
+    [T('o3'), tagE], [T('o3b', '库'), lib], [T('o3c'), progL], [T('o3c', '一个文件'), db], [T('o3d', 'S Q Lite'), lib], [T('o3d', '嵌入式'), tagE],
     [T('o5'), tblL], [T('o5', '4096'), tbl.t], [T('o5b'), aliceRow], [T('o5c'), toDbL], [T('o5c', '一个文件'), db2], [T('o5c', '553'), fileL],
-    [T('o4', '一个库'), fileL], [T('o4b'), legend], [T('o6'), g7], [T('o7'), up], [T('o7', '强行终止'), kill], [T('o8', '一字节不差'), sha], [T('o10', 'Alice'), alice]], T('oT') + 2.8);
+    [T('o6'), g7], [T('o7'), up], [T('o7', '强行终止'), kill], [T('o8', '一字节不差'), sha], [T('o1') + 3.89, [srv, tagS], 1], [T('o2d') + 2.66, [srv, files1, app1], 1], [T('o1b') + 2.25, zTop, 1], [T('o2b') + 3.65, zNet, 1], [T('o1') + 0.45, srv, 1]], T('oT') + 2.8);
 });
