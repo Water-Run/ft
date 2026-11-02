@@ -11,7 +11,7 @@ scene('end', ({ root, s, c0 }) => {
   const prog = h('div', 'abs', W); px(prog, 420, 300, 640, 150); css(prog, { border: `2px solid ${K.ink}`, background: '#fff' });
   tx(prog, '应用程序', 20, 10, { fs: 24 });
   const lib = h('div', 'abs', prog, 'SQLite'); px(lib, 250, 50, 340, 70); css(lib, { border: `2px solid ${K.teal}`, background: K.wheat, color: K.teal, fontSize: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' });
-  const f = h('div', 'abs', W); px(f, 1260, 320, 220, 110); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', f); px(r, i * 10, i * 10, 190, 80); }
+  const f = h('div', 'abs', W); px(f, 1260, 320, 220, 140); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', f); px(r, i * 10, i * 10, 190, 80); }
   tx(f, 'main.db', 0, 96, { fs: 24, mono: true });
   const a = line(ov, [[1060, 375], [1258, 375]]);
   wipe(prog, t0, { dir: 'l', d: 0.4 }); show(f, T('e1', '一个文件') - 0.1, { x: -12, y: 0 }); arrowIn(a, T('e1', '一个文件'), 0.4);

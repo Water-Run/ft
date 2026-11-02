@@ -7,7 +7,7 @@ scene('open', ({ root, s, c0 }) => {
   const W = h('div', 'abs', world); px(W, 0, 0, 1920, 1080);
   const ov = overlay(W);
   const box = (html, x, y, w, hh, o = {}) => { const e = h('div', 'abs obox', W, html); px(e, x, y, w, hh); css(e, { border: `2px solid ${o.color || K.ink}`, background: o.fill || '#fff', fontSize: (o.fs || 34) + 'px', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', lineHeight: 1.3 }); return e; };
-  const stack = (x, y, name) => { const g = h('div', 'abs', W); px(g, x, y, 270, 140); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', g); px(r, i * 12, i * 12, 230, 100); } tx(g, name, 0, 122, { fs: 30, mono: true }); return g; };
+  const stack = (x, y, name) => { const g = h('div', 'abs', W); px(g, x, y, 270, 172); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', g); px(r, i * 12, i * 12, 230, 100); } tx(g, name, 0, 122, { fs: 30, mono: true }); return g; };
   const title = pageTitle(W, '服务型数据库'); show(title, c0 + 0.1, { y: 8 });
 
   // ── 上排：服务型（o1–o2b） ──

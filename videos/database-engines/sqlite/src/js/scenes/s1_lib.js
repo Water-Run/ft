@@ -34,8 +34,8 @@ scene('lib', ({ root, s, c0 }) => {
   const Y = 800;
   const app = box('应用程序', 120, Y, 320, 110); app.dataset.beat = 'fill';   // 后面会清空文字、名字改由叠在上面的 appL 显示：选中用浅青底
   const srv = box('Informix<br>数据库服务器', 640, Y - 10, 440, 130);
-  const disk = h('div', 'abs', W); px(disk, 1300, Y - 5, 270, 140); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', disk); px(r, i * 12, i * 12, 230, 100); }
-  const diskL = tx(disk, '管道与阀门的数据', 0, 122, { fs: 28, color: K.dim });
+  const disk = h('div', 'abs', W); px(disk, 1300, Y - 5, 270, 172); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', disk); px(r, i * 12, i * 12, 230, 100); }
+  const diskL = tx(disk, '管道与阀门的数据', 0, 122, { fs: 28, color: '#444444' });
   const a1 = line(ov, [[440, Y + 55], [638, Y + 55]]), a2 = line(ov, [[1080, Y + 55], [1298, Y + 55]]);
   wipe(app, T('h4') - 0.1, { dir: 'l', d: 0.4 }); slam(srv, T('h4', 'Informix'), { from: 1.15 }); arrowIn(a1, T('h4', 'Informix') + 0.2, 0.4); arrowIn(a2, T('h4', '服务器') + 0.1, 0.4); show(disk, T('h4', '服务器') + 0.2, { x: -12, y: 0 }); disk.dataset.beat = 'fill';   // 叠放的几页：浅青底，不在缝里露出深青
   sfx('thud', T('h4', 'Informix'), { g: 0.4 });
