@@ -88,3 +88,10 @@ body { font-family: "Inter", "Sans SC"; }
 .bf { background-color: #cfe1e9 !important; outline: 5px solid #044a64 !important; outline-offset: 3px; }
 .bl { outline: 3px solid #044a64 !important; outline-offset: 3px; }
 .bs { background-color: #dbe9ef !important; }   /* 区域：只铺一层浅色底，不画框 */
+
+/* 选中衬底（第 13 稿）：beats() 给对象标 data-hl，亮度写在 --hl（0–1，按时刻算出）；画在对象自己的底色之上、文字之下，平涂 */
+[data-hl]::before { content: ''; position: absolute; pointer-events: none; z-index: -1; box-sizing: border-box; opacity: var(--hl, 0); }
+[data-hl="text"]::before { left: -6px; top: -6px; right: -6px; bottom: -6px; background: #bcd6e1; }
+[data-hl="fill"]::before { left: 0; top: 0; right: 0; bottom: 0; background: #cfe1e9; }
+[data-hl="soft"]::before { left: 0; top: 0; right: 0; bottom: 0; background: #dbe9ef; }
+[data-hl="line"]::before { left: -6px; top: -6px; right: -6px; bottom: -6px; border: 3px solid #044a64; }

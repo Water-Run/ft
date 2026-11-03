@@ -29,8 +29,7 @@ scene('drop', ({ root, s, c0 }) => {
   // d3：4096 删到 1024，文件仍是 553 页
   seg(R.deleted.freelist_count, T('d2', '1024') - 0.1); sfx('whoosh', T('d2', '1024'), { g: 0.3 });
   const same = tx(W, '文件大小没变', X0 + FULL - 200, LABY, { fs: 28, color: K.teal }); show(same, T('d2', '553'), { y: 6 });
-  const av = codeBlock(W, ['PRAGMA auto_vacuum;　-- 默认 0（NONE）'], X0, AVY, { fs: 28 }); set(av, 0, { autoAlpha: 0 }); wipe(av, T('d3', '默认') - 0.1, { dir: 'l', d: 0.4 }); sfx('tick', T('d3', '默认'), { g: 0.35 });
-  gone(av, T('d4') - 0.2, 0.3); gone(aliceD, T('d3') - 0.2, 0.3);
+  gone(aliceD, T('d4') - 0.2, 0.3);
   // d4：空出的 394 页串成一条空闲链，链头记在文件头里
   const chain = []; for (let i = 0; i < 5; i++) { const b = pageCell(W, X0 + 640 + i * 150, CHY, 100, 70, { fill: K.wheat, bw: 2 }); chain.push(b); }
   const more = tx(W, `… 一共 ${R.deleted.freelist_count} 页`, X0 + 640 + 5 * 150, CHY + 20, { fs: 28 });
@@ -55,7 +54,7 @@ scene('drop', ({ root, s, c0 }) => {
   tl.fromTo(pagesL, { x: 0 }, { x: -(FULL - R.vacuumed.page_count * k), duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
   sfx('whoosh', T('d7b', '283') - 0.2, { g: 0.35 });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  beats([[T('d1'), del], [T('d1', 'Alice'), aliceD], [T('d2'), lab], [T('d2', '553'), pagesL], [T('d3'), same], [T('d3', '默认'), av], [T('d3', '不会变小'), [frame, pagesL]], [T('d4'), head], [T('d4', '空闲链'), gF], [T('d5'), ins], [T('d6'), lab], [T('d7'), vac], [T('d7b'), pagesL], [T('d7b', '一页不剩'), lab], [T('d1') + 5.45, [frame, del], 1], [T('d2') + 4.27, [frame, lab], 1], [T('d6') + 2.22, [frame, ins], 1], [T('d7b') + 4.20, [frame, pagesL, lab], 1], [T('d3') + 1.56, [frame, same], 1], [T('d7b') + 4.0, [vac, gV], 1]], Tend('d7b'));
+  beats([[T('d2'), used, 1], [T('d1'), del], [T('d1', 'Alice'), aliceD], [T('d2'), lab], [T('d2', '553'), pagesL], [T('d4'), head], [T('d4', '空闲链'), gF], [T('d5'), ins], [T('d6'), lab], [T('d7'), vac], [T('d7b'), pagesL], [T('d7b', '一页不剩'), lab], [T('d1') + 5.45, [frame, del], 1], [T('d2') + 4.27, [frame, lab], 1], [T('d6') + 2.22, [frame, ins], 1], [T('d7b') + 4.20, [frame, pagesL, lab], 1], [T('d7b') + 4.0, [vac, gV], 1]], Tend('d7b'));
   [[T('d4') - 0.2, '空出的页：串成一条空闲链'], [T('d5') - 0.2, '新用户注册：先用空闲页'], [T('d7') - 0.2, 'VACUUM：重写整个数据库文件']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 240, 1800, 880], zmax: 1.2 }]]);
 });

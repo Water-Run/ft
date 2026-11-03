@@ -102,7 +102,7 @@ function shots(cam, world, s, keys) {
   const vs = keys.map(([t, els, o = {}]) => [t, viewOf(els, world, o), o]);
   const out = [];
   vs.forEach(([t, v, o], i) => {
-    const d = i ? (o.d || 1.2) : 0, arrive = (i ? t : s.start) + d;
+    const d = i ? (o.d || 1.6) : 0, arrive = (i ? t : s.start) + d;
     if (i) out.push([t, v, d, { g: o.g != null ? o.g : 0.3, sfx: o.sfx }]);
     const next = i + 1 < vs.length ? vs[i + 1][0] : s.end, dur = next - arrive - 0.05;
     if (dur > 1) out.push([arrive, { x: v.x + Math.min(30, dur * 1.5) / v.z }, dur, { ease: 'none', sfx: false }]);
@@ -123,24 +123,37 @@ function stay(cam, s, c0, dir = 1) {
 // list = [[时刻, 元素], …]，按时刻排好；每个选中持续到下一项开始（最后一项到 end 为止）。原来的底色、字色在构建时取实际值写进行内样式，
 // 倒着跳时写回的就是同一个值（不靠 GSAP 第一次播到时去读继承来的颜色，那样会让顺播与跳播不一致）。
 function beats(list, end) {
-  // 「当前在讲谁」：每句讲到的对象挂上选中样式，讲到下一个就移过去。样式写在 style.css 的 .bt/.bf/.bl（!important），
-  // 用 class 而不用 set：盖住元素自己被 set 过的底色、字色，移走后原来的值原样露出来。
-  // 单个文字（含 span、b 的一行）用 .bt：深青底白字，向外扩 6px；含子 div 的框（或标了 data-beat="fill" 的）用 .bf：浅青底加深青外框；
-  // 标了 data-beat="line" 的只描外框。一条可以是一组元素；连着讲同一个就一直亮着。
+  // 「当前在讲谁」：每句讲到的对象浅浅亮起，讲到下一个就移过去（第 13 稿起）。
+  // 不再切换 class（瞬间开关读起来是闪烁）：每个对象的亮度按时刻算出来，开、关各用 0.35 秒淡入淡出；
+  // 着色是对象的 ::before 平涂浅色衬底（不用阴影，不加子节点），画在元素自己的底色之上、文字之下，不改它原来的底色和字色。
+  // 单个文字：浅青底向外扩 6px；含子 div 的框（或 data-beat="fill"）：浅青底；data-beat="line"：一圈细边；data-beat="soft"（区域）：更浅的底。
+  // 一条可以是一组元素；同一对象两次亮起间隔不到 0.8 秒就连成一次；相邻两项至少隔 1.5 秒（第三项为真的「必留」不受此限）。
   const all = list.map(([t, e, keep]) => [t, (Array.isArray(e) ? e : [e]).filter(Boolean), keep]).filter(([t, g]) => g.length && isFinite(t)).sort((a, b) => a[0] - b[0]);
-  const MIN = 1.0, items = [];
-  for (const it of all) if (!items.length || it[2] || it[0] - items[items.length - 1][0] >= MIN) items.push(it);   // 第三项为真的「必留」，不受最短停留的约束
+  const MIN = 1.5, GAP = 0.8, R = 0.35, items = [];
+  for (const it of all) if (!items.length || it[2] || it[0] - items[items.length - 1][0] >= MIN) items.push(it);
   const spans = new Map();
   items.forEach(([t, g], i) => {
-    const t2 = Math.max(t + 0.3, i + 1 < items.length ? items[i + 1][0] : end);
+    const t2 = Math.max(t + 0.6, i + 1 < items.length ? items[i + 1][0] : end);
     for (const e of g) {
       if (!spans.has(e)) spans.set(e, []);
       const a = spans.get(e), last = a[a.length - 1];
-      if (last && last[1] >= t - 1e-6) last[1] = Math.max(last[1], t2); else a.push([t, t2]);
+      if (last && last[1] >= t - GAP) last[1] = Math.max(last[1], t2); else a.push([t, t2]);
     }
   });
+  const clamp = (x) => Math.max(0, Math.min(1, x)), ease = (x) => x * x * (3 - 2 * x);
+  // 衬底：对象的 ::before 伪元素（style.css 的 [data-hl]），平涂浅色，在对象自己的底色之上、文字与带定位的子元素之下；亮度只改 --hl
+  const PEAK = { text: 1, fill: 0.9, soft: 1, line: 0.85 };
   for (const [e, a] of spans) {
-    const cls = { text: 'bt', fill: 'bf', line: 'bl', soft: 'bs' }[e.dataset.beat || (e.querySelector('div') ? 'fill' : 'text')];
-    F((t) => { const on = a.some(([t0, t1]) => t >= t0 && t < t1); if (e.classList.contains(cls) !== on) e.classList.toggle(cls, on); });   // 不缓存上一帧：keyed 换内容时会重写 class，每帧都按 t 对一遍
+    const kind = e.dataset.beat || (e.querySelector('div') ? 'fill' : 'text'), peak = PEAK[kind] || 1;
+    const cs = getComputedStyle(e);
+    if (cs.position === 'static') e.style.position = 'relative';
+    if (cs.zIndex === 'auto') e.style.zIndex = '0';
+    e.dataset.hl = PEAK[kind] ? kind : 'text';
+    F((t) => {
+      let k = 0;
+      for (const [t0, t1] of a) k = Math.max(k, Math.min(clamp((t - t0) / R), clamp((t1 - t) / R)));
+      const v = String(+(peak * ease(k)).toFixed(3));
+      if (e.style.getPropertyValue('--hl') !== v) e.style.setProperty('--hl', v);
+    });
   }
 }

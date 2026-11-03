@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "98cecc0252cd460a7d5c4d0e8edc35fb43654592011abfa82aa2de17d860bc1f",
+      "content_sha256": "fbc87698d4ad67ef5d8db3955fbe7e1631b601e25ebd1a6b3407a8e8a27d9541",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-03T11:20:02+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 12 稿：WaterRun 看预览 r3 后要求「包括叙事的文案和节奏」等自我对抗再迭代、「想想怎么\"讲故事\"」；改动只有交审说明列出的几句（删 s27、s27b、d6b，p5、p11、d4、w3 去掉念出的数字，k1 拆成 k1、k1b）与章节（d1–d7b 原句拆成第 08 章「怎么删」，五个问题顺延为第 09 章）；未逐句看全文。"
+      "confirmed_at": "2026-11-03T20:54:42+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 13 稿：o3c 照 WaterRun 原话「程序自己读写 -> 程序调用库, 自己读写」改；据「将故事 叙事也要优化 跟得上 同时冗长的地方也要处理好」删去 s2、s28、s28b、f13–f15b、j7、j7b、d3、w16b（只删不加）；未逐句看全文。"
     }
   }
 }

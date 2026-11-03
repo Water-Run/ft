@@ -67,8 +67,11 @@ scene('page', ({ root, s, c0 }) => {
   dim(tbl.t, T('p7', '13') + 0.2, 0.25, 1, 0.5);
   [ptrs, pL, toCell, hexL, ...hEls, ...gEls, idL, v489].forEach((e) => gone(e, tO, 0.3)); goneFrom(tbl.t, tO, 0.25);
   // p10：一行比一页还长
-  const big = h('div', 'abs', W, '一行'); px(big, X0, 466, 1780, 48); css(big, { background: K.wheat, border: `2px solid ${K.ink}`, fontSize: '26px', display: 'flex', alignItems: 'center', paddingLeft: '14px', boxSizing: 'border-box' }); set(big, 0, { autoAlpha: 0 }); wipe(big, T('p10', '太长') - 0.2, { dir: 'l', d: 0.7 });
-  const nofit = errBox(W, '一页放不下', 1380, 536, 26); set(nofit, 0, { autoAlpha: 0 }); slam(nofit, T('p10', '放不下'), { from: 1.3 }); sfx('error', T('p10', '放不下'), { g: 0.3 });
+  const big = h('div', 'abs', W, '一行'); px(big, X0, 466, SW, 48); css(big, { background: K.wheat, border: `2px solid ${K.ink}`, fontSize: '26px', display: 'flex', alignItems: 'center', paddingLeft: '14px', boxSizing: 'border-box' }); set(big, 0, { autoAlpha: 0 }); wipe(big, T('p10', '太长') - 0.2, { dir: 'l', d: 0.7 });
+  // 放不下：这一行先铺满整页宽，再续出一截红色虚框——装不下的那部分（接下一句的溢出页）
+  const nofit = h('div', 'abs', W, '……'); px(nofit, X0, 522, 760, 48); css(nofit, { background: '#fbeaea', border: `2px dashed ${K.red}`, fontSize: '26px', display: 'flex', alignItems: 'center', paddingLeft: '14px', boxSizing: 'border-box', color: K.red }); nofit.dataset.name = '装不下的部分';
+  set(nofit, 0, { autoAlpha: 0 }); wipe(nofit, T('p10', '放不下') - 0.2, { dir: 'l', d: 0.6 }); sfx('error', T('p10', '放不下'), { g: 0.3 });
+  tl.fromTo(big, { x: 0 }, { x: 6, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, T('p10', '放不下') + 0.3);
   [big, nofit].forEach((e) => gone(e, T('p11') - 0.2, 0.3));
   const NOTE = DATA.note;
   const lp = h('div', 'abs', W); px(lp, 120, 566, 300, 120); css(lp, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); lp.dataset.name = '叶页 542'; lp.dataset.beat = 'fill';   // 大框用浅青底，不整块涂深青

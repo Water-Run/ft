@@ -44,14 +44,7 @@ scene('store', ({ root, s, c0 }) => {
   const n1 = tx(W, '1', GX + 4, GY - 38, { fs: 20, mono: true }), n553 = tx(W, '553', G.pos(553).x + 30, G.pos(553).y - 6, { fs: 20, mono: true });
   show(n1, T('s1', '1') , { y: 6 }); show(n553, T('s1', '1') + 0.2, { y: 6 });
 
-  // s2：文件开头的 16 个字节；s3：一页 1024 字节，553 页
-  const mag = h('div', 'abs', W, DATA.magic.split('').map((ch) => `<span class="mb">${ch === ' ' ? '·' : ch}</span>`).join('') + '<span class="mb">\\0</span>'); px(mag, GX, GY + GH + 34);
-  css(mag, { display: 'flex', gap: '2px', fontFamily: 'Mono', fontSize: '26px' }); mag.dataset.name = '文件头 16 字节';
-  const mLine = line(ov, [[GX - 3, GY + 11], [GX - 26, GY + 11], [GX - 26, GY + GH + 56], [GX - 6, GY + GH + 56]], { w: 1.5 });   // 从第 1 页左边绕到文件图外面再下来，不穿过页格
-  const hexs = DATA.magic.split('').map((ch) => ch.charCodeAt(0).toString(16).padStart(2, '0')).concat(['00']);
-  const magHex = h('div', 'abs', W, hexs.map((x) => `<span class="mb">${x}</span>`).join('')); px(magHex, GX, GY + GH + 34); css(magHex, { display: 'flex', gap: '2px', fontFamily: 'Mono', fontSize: '26px' }); magHex.dataset.name = '文件头 16 字节（十六进制）';
-  set(magHex, 0, { autoAlpha: 0 }); wipe(magHex, T('s2', '16') - 0.1, { dir: 'l', d: 0.5 }); gone(magHex, T('s2', '一行字') - 0.15, 0.2);   // 先是 16 个字节，「是一行字」时换成读出来的字
-  set(mag, 0, { autoAlpha: 0 }); wipe(mag, T('s2', '一行字'), { dir: 'l', d: 0.5 }); arrowIn(mLine, T('s2', '16') - 0.2, 0.3); sfx('tick', T('s2', '16'), { g: 0.4 });
+  // s3：一页 1024 字节，553 页
   const sz = tx(W, '一页 1024 字节 · 553 页', GX, GY + GH + 90, { fs: 28 }); show(sz, T('s3', '1024'), { y: 6 });
   const gridHi = h('div', 'abs', W); px(gridHi, GX - 6, GY - 6, GW + 12, GH + 12); css(gridHi, { background: 'rgba(4, 74, 100, 0.16)', border: `3px solid ${K.teal}`, boxSizing: 'border-box' });
   set(gridHi, 0, { autoAlpha: 0 }); show(gridHi, T('s3', '553'), { y: 0, d: 0.3 }); gone(gridHi, T('s4', '归属'), 0.3);   // 「一共 553 页」：整个文件的页一起亮
@@ -66,7 +59,7 @@ scene('store', ({ root, s, c0 }) => {
   // s5–s6：第 1 页登记着每张表、每个索引从哪一页开始找
   const reg = docTable(W, [['第 1 页登记的', 300], ['从第几页开始', 230]], [['users 表', '2'], ['姓名索引', '262']], 1200, GY + 320, { fs: 28 });
   reg.t.dataset.name = '第 1 页的登记';
-  [mag, mLine, sz].forEach((e) => gone(e, T('s5') - 0.2, 0.3));
+  gone(sz, T('s5') - 0.2, 0.3);
   set(G.cells[0], T('s5'), { backgroundColor: K.wheat, borderColor: K.teal, borderWidth: '2.5px' });
   show(reg.hr, T('s5') + 0.1, { y: 6 }); show(reg.rs[0], T('s6'), { x: -10, y: 0 }); show(reg.rs[1], T('s6', '262'), { x: -10, y: 0 });
   [1, 261].forEach((i, k) => set(G.cells[i], T('s6', k ? '262' : '2'), { backgroundColor: K.wheat, borderColor: K.teal, borderWidth: '2.5px' }));
@@ -81,7 +74,6 @@ scene('store', ({ root, s, c0 }) => {
   keyed(title).at(T('s21') - 0.2, { html: '整行只放在叶页里：B+ 树' });
   keyed(title).at(T('x0') - 0.3, { html: '姓名索引：也是一棵树' });
   keyed(title).at(T('s26') - 0.2, { html: '分界本身就是一项：B 树' });
-  keyed(title).at(T('s28') - 0.2, { html: '页越大，树越矮' });
   // ── s7–s15b：从一张空表长出 B+ 树（本片这个文件的实测：17 行放满第 2 页，第 18 行来了就分裂） ──
   const tD = T('s7') - 0.2;
   [ix, ...lgs, reg.t].forEach((e) => gone(e, tD, 0.3));
@@ -101,14 +93,21 @@ scene('store', ({ root, s, c0 }) => {
   const r1L = tx(P2, '1', 14, 104, { fs: 24, mono: true }), r17L = tx(P2, '17', 10 + 16 * 25 - 4, 104, { fs: 24, mono: true });
   [r1L, r17L].forEach((e) => show(e, T('s9', '17'), { y: 6 }));
   rows.forEach((r, i) => show(r, T('s9', '17') - 0.3 + i * 0.07, { y: -14, d: 0.25 })); sfx('tick', T('s9', '17'), { g: 0.4 });
+  rows.forEach((r, i) => tl.fromTo(r, { y: 0 }, { y: -10, duration: 0.14, yoyo: true, repeat: 1, ease: 'power1.out', immediateRender: false }, T('s9', '按行号') + i * 0.05));
   const r18 = slot(W, 0); px(r18, 1230, 526, 22, 56); const r18L = tx(r18, '18', 28, 12, { fs: 24, mono: true }); set(r18, 0, { autoAlpha: 0 }); slide(r18, T('s10', '18'), { x: 120, y: 0 });
-  const full = errBox(W, '放不下', 1300, 530, 24); set(full, 0, { autoAlpha: 0 }); slam(full, T('s10', '放不下'), { from: 1.3 }); sfx('error', T('s10', '放不下'), { g: 0.45 });
+  // 放不下：第 18 行往第 2 页里挤，撞到满了的页边被弹回来；第 2 页晃一下、边框变红
+  const tFull = T('s10', '放不下') - 0.2;
+  tl.fromTo(r18, { x: 0 }, { x: -34, duration: 0.16, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, tFull);
+  tl.fromTo(P2, { x: 0 }, { x: 6, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, tFull + 0.15);
+  tl.fromTo(P2, { borderColor: '#000000' }, { borderColor: K.red, duration: 0.15, immediateRender: false }, tFull + 0.15);
+  tl.fromTo(P2, { borderColor: K.red }, { borderColor: '#000000', duration: 0.3, immediateRender: false }, T('s11') - 0.2);
+  sfx('error', tFull + 0.15, { g: 0.45 });
   // s11：17 行挪到新的第 3 页，新行放进第 4 页
   const tMv = T('s11') - 0.1;
   wipe(P3, tMv, { dir: 'l', d: 0.35 }); wipe(P4, tMv + 0.1, { dir: 'l', d: 0.35 });
   rows.forEach((r, i) => tl.fromTo(r, { x: 0, y: 0 }, { x: 380 - 745, y: 280, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tMv + 0.3 + i * 0.02));
   tl.fromTo(r18, { x: 0, y: 0 }, { x: 1100 - 1230, y: 280, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tMv + 0.5);
-  gone(full, tMv, 0.2); sfx('whoosh', tMv + 0.3, { g: 0.35 });
+  sfx('whoosh', tMv + 0.3, { g: 0.35 });
   // s12–s13：第 2 页只留一个分界 17：不超过 17 的去第 3 页，更大的去第 4 页
   const sep = h('div', 'abs', P2, '17'); px(sep, 190, 46, 70, 56); css(sep, { border: `2px solid ${K.ink}`, background: K.wheat, fontSize: '30px', fontFamily: 'Mono', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' });
   set(sep, 0, { autoAlpha: 0 }); slam(sep, T('s12', '17'), { from: 1.4 }); sfx('thud', T('s12', '17'), { g: 0.45 });
@@ -118,7 +117,7 @@ scene('store', ({ root, s, c0 }) => {
   // s14：内部页、叶页；s15：根页
   const gIn = gloss(W, '内部页', '只存分界和子页的页号', 1240, 480, 480); const gLf = gloss(W, '叶页', '存数据的页', 380, 900, 300);
   show(gIn, T('s14', '内部页'), { x: 12, y: 0 }); show(gLf, T('s14', '叶页'), { y: 8 }); sfx('pop', T('s14', '内部页'), { g: 0.35 });
-  gone(rid, T('s14') - 0.2, 0.3);
+  gone(rid, T('s10') - 0.5, 0.3);
   const gRt = gloss(W, '根页', '树最顶上的那一页；第 1 页登记的就是它', 120, 470, 560); show(gRt, T('s15c', '根页'), { x: -12, y: 0 }); sfx('pop', T('s15c', '根页'), { g: 0.35 });
   const regC = tx(W, '第 1 页登记：users 表 → 第 2 页', 160, 410, { fs: 24, color: K.teal }); set(regC, 0, { autoAlpha: 0 }); show(regC, T('s15b') - 0.1, { y: 6 });
   // 第 1 页登记的线：从细带上第 1 页的左边绕出来，不穿过页格
@@ -191,16 +190,12 @@ scene('store', ({ root, s, c0 }) => {
   const gBi = gloss(W, 'B 树', '内部页上的分界本身就是索引里的一项；表用的 B+ 树，整行只在叶页', 620, 756, 600); show(gBi, T('s26b', 'B 树'), { x: 12, y: 0 }); sfx('pop', T('s26b', 'B 树'), { g: 0.4 });
   const sum = tx(W, `<span class="sa">叶页 ${DATA.counts.namesLeaf} 项</span> ＋ <span class="sb">内部页 ${DATA.counts.namesInterior} 项</span> <span class="eq">＝ 4096</span>`, 620, 884, { fs: 26 }); show(sum, T('s26', '不再重复'), { y: 6 });
 
-  // s28–s28b：页越大，树越矮：默认一页 4096 字节，同样的数据只要两层
-  const alt = h('div', 'abs', W); px(alt, 1240, 800, 580, 60); css(alt, { border: `2px dashed ${K.ink}`, background: '#fff', fontSize: '26px', display: 'flex', alignItems: 'center', paddingLeft: '18px', boxSizing: 'border-box' });
-  alt.innerHTML = '一页 4096 字节：表树 62 页，<b>两层</b>';
-  set(alt, 0, { autoAlpha: 0 }); wipe(alt, T('s28b', '4096') - 0.1, { dir: 'l', d: 0.45 }); sfx('tick', T('s28b', '两层'), { g: 0.4 });
 
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  const zP2 = zone(W, 720, 450, 980, 200), zEnt = zone(W, 100, 736, 500, 200);
-  beats([[T('s0', '这个文件'), barL], [T('s1', '页') + 0.9, pg], [T('s2', '16') + 0.6, magHex], [T('s2', '一行字') + 0.5, [...mag.children].slice(0, 6)], [T('s2', 'format'), [...mag.children].slice(7, 15)], [T('s3'), sz], [T('s4', '260'), lgs[0]], [T('s4b', '索引'), ix], [T('s4b', '名字'), lgs[1]], [T('s4b', '年龄'), lgs[2]], [T('s5', '每张表'), reg.hr.children[0]], [T('s5', '从哪一页'), reg.hr.children[1]], [T('s6'), reg.rs[0]], [T('s6', '262'), reg.rs[1]],
-    [T('s7', 'Alice'), chip], [T('s7', '哪里'), ask], [T('s7', '空表'), P2], [T('s8', '整数主键'), pk], [T('s8', '拿它'), chip], [T('s8', '行号'), [rid, P2]], [T('s9'), P2], [T('s9', '按行号'), rows], [T('s10', '18'), full], [T('s11'), rows], [T('s11', '第 3 页'), P3], [T('s11', '第 4 页'), P4], [T('s12'), P2], [T('s12', '17'), sep], [T('s13'), P3], [T('s13', '更大'), P4], [T('s14'), gIn], [T('s14', '叶页'), gLf], [T('s15'), [P3, P4]], [T('s15', '最顶上'), P2], [T('s15', '第 2 页'), P2.firstElementChild], [T('s15c'), P2], [T('s15c', '根页'), gRt], [T('s15b', '登记'), regC], [T('s15b', '根页'), P2],
-    [T('s16', '4096'), ins], [T('s16', '三层'), rootL], [T('s17'), rootEl], [T('s18'), kids[1]], [T('s19'), bandL], [T('s20'), aL], [T('s21', '路标'), signL], [T('s22'), gB], [T('s22b'), cmp.rs[0]], [T('s23'), cmp.rs[1]], [T('s23b'), cmp.rs[2]], [T('x0'), UT.lab], [T('x0', '姓名索引'), N.lab], [T('x0', '多了一项'), aIdx], [T('s24'), Object.values(N.lEls)], [T('s24', '名字'), ent.hr], [T('s25', 'Alice'), ent.rs[0]], [T('s26'), N.r], [T('s26', '分界'), sepE], [T('s26b', 'B 树'), gBi], [T('s28'), alt], [T('s28b', '两层'), alt], [T('s7') + 2.18, [P2, chip, ask], 1], [T('s8') + 3.05, [pk, P2], 1], [T('s10') + 1.74, [P2, full], 1], [T('s17') + 3.50, [rootEl, ...midEls], 1], [T('s24') + 4.58, ent.t, 1], [T('s25') + 2.72, [ent.rs[0], N.r], 1], [T('s26') + 4.67, [N.r, ...N.mEls, sepE], 1], [T('s26b') + 1.6, [...N.mEls, N.r, sum], 1], [T('s28') + 1.59, [...N.mEls, ...UT.mEls, N.r, UT.r], 1], [T('s28b') + 3.16, [alt, UT.lab, N.lab], 1], [T('s7') + 2.18, zP2, 1], [T('x0') + 3.35, [...N.mEls, N.r], 1], [T('s25') + 2.72, zEnt, 1], [T('s17b') + 0.33, [...midEls, ...kids], 1]], Tend('s28b'));
+  const zP2 = zone(W, 720, 450, 980, 200), zEnt = zone(W, 100, 736, 500, 200), zTree = zone(W, 350, 466, 1220, 430);
+  beats([[T('s0', '这个文件'), barL], [T('s1', '页') + 0.9, pg], [T('s3'), sz], [T('s4', '260'), lgs[0]], [T('s4b', '索引'), ix], [T('s4b', '名字'), lgs[1]], [T('s4b', '年龄'), lgs[2]], [T('s5', '每张表'), reg.hr.children[0]], [T('s5', '从哪一页'), reg.hr.children[1]], [T('s6'), reg.rs[0]], [T('s6', '262'), reg.rs[1]],
+    [T('s7', 'Alice'), chip], [T('s7', '哪里'), ask], [T('s7', '空表'), P2], [T('s8', '整数主键'), pk], [T('s8', '拿它'), chip], [T('s8', '行号'), [rid, P2]], [T('s9'), P2], [T('s9', '按行号'), rows], [T('s11'), rows], [T('s11', '第 3 页'), P3], [T('s11', '第 4 页'), P4], [T('s12'), P2], [T('s12', '17'), sep], [T('s13'), P3], [T('s13', '更大'), P4], [T('s14'), gIn], [T('s14', '叶页'), gLf], [T('s15'), [P3, P4]], [T('s15', '最顶上'), P2], [T('s15', '第 2 页'), P2.firstElementChild], [T('s15c'), P2], [T('s15c', '根页'), gRt], [T('s15b', '登记'), regC], [T('s15b', '根页'), P2],
+    [T('s16', '4096'), ins], [T('s16', '三层'), rootL], [T('s17'), rootEl], [T('s18'), kids[1]], [T('s19'), bandL], [T('s20'), aL], [T('s21', '路标'), signL], [T('s22'), gB], [T('s22b'), cmp.rs[0]], [T('s23'), cmp.rs[1]], [T('s23b'), cmp.rs[2]], [T('x0'), UT.lab], [T('x0', '姓名索引'), N.lab], [T('x0', '多了一项'), aIdx], [T('s24'), Object.values(N.lEls)], [T('s24', '名字'), ent.hr], [T('s25', 'Alice'), ent.rs[0]], [T('s26'), N.r], [T('s26', '分界'), sepE], [T('s26b', 'B 树'), gBi], [T('s7') + 2.18, [P2, chip, ask], 1], [T('s9') + 3.0, P2, 1], [T('s12') + 0.2, zTree, 1], [T('s8') + 3.05, [pk, P2], 1], [T('s10') + 1.74, P2, 1], [T('s17') + 3.50, [rootEl, ...midEls], 1], [T('s24') + 4.58, ent.t, 1], [T('s25') + 2.72, [ent.rs[0], N.r], 1], [T('s26') + 4.67, [N.r, ...N.mEls, sepE], 1], [T('s26b') + 1.6, [...N.mEls, N.r, sum], 1], [T('s7') + 2.18, zP2, 1], [T('x0') + 3.35, [...N.mEls, N.r], 1], [T('s25') + 2.72, zEnt, 1], [T('s17b') + 0.33, [...midEls, ...kids], 1]], Tend('s26b'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('s3', '1024'), { g: 0.35 });
   sfx('pop', T('s4', '260'), { g: 0.3 });
@@ -215,6 +210,8 @@ scene('store', ({ root, s, c0 }) => {
   shots(cam, world, s, [
     [s.start, null, { rect: [110, 250, 1840, 780] }],
     [T('s7') - 0.2, null, { rect: [110, 390, 1840, 1010] }],
+    [T('s10') - 0.3, null, { rect: [700, 440, 1520, 640], zmax: 1.6, d: 1.3 }],
+    [T('s11') - 0.2, null, { rect: [110, 390, 1840, 1010], d: 1.3 }],
     [T('s16') - 0.2, null, { rect: [110, 360, 1850, 960] }],
   ]);
 });

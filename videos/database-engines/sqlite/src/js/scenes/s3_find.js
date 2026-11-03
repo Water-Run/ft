@@ -26,7 +26,7 @@ scene('find', ({ root, s, c0 }) => {
       enter(t) { wipe(r, t, { dir: 't', d: 0.4 }); show(rl, t + 0.1, { x: -8, y: 0 }); mEls.forEach((e, i) => show(e, t + 0.2 + i * 0.02, { y: -8, d: 0.25 })); set(fan, 0, { autoAlpha: 0 }); show(fan, t + 0.3, { y: 0, d: 0.4 }); Object.values(lEls).forEach((e, i) => show(e, t + 0.35 + i * 0.003, { y: 8, d: 0.2 })); show(lab, t + 0.5, { y: 6 }); } };
   }
   // 点亮一页：起点在构建时就渲染（immediateRender）。不这样做，GSAP 第一次播到才记下当时的计算样式；那一刻若挂着选中样式（.bt 的深青底），倒跳回去就写回深青
-  const hot = (e, t) => { tl.fromTo(e, { backgroundColor: '#ffffff', borderColor: e.style.borderColor || '#444444', borderWidth: e.style.borderWidth || '2px' }, { backgroundColor: K.wheat, borderColor: K.teal, borderWidth: '2.5px', duration: 0.01, immediateRender: true }, t); };
+  const hot = (e, t) => { tl.fromTo(e, { backgroundColor: '#ffffff', borderColor: e.style.borderColor || '#444444', borderWidth: e.style.borderWidth || '2px' }, { backgroundColor: K.wheat, borderColor: K.teal, borderWidth: '2.5px', duration: 0.3, immediateRender: true }, t); };
 
   // ── f1：查询 ──
   const q = codeBlock(W, [`SELECT <span class="qc">id, name, age</span> FROM users WHERE <span class="qw">name = 'Alice'</span>;`], 120, 262, { fs: 26 });
@@ -111,33 +111,15 @@ scene('find', ({ root, s, c0 }) => {
   boxes.forEach((b, i) => { show(b, T('f12', '7') - 0.3 + i * 0.1, { x: -10, y: 0, d: 0.3 }); show(b.cap, T('f12', '7') - 0.2 + i * 0.1, { y: 6, d: 0.3 }); arrowIn(segs[i], T('f12', '7') - 0.35 + i * 0.1, 0.2); });
   arrowIn(segs[7], T('f12', '7') + 0.4, 0.2); [g1, g2].forEach((g, i) => show(g, T('f12b', i ? '表' : '索引'), { y: 0 })); sfx('tick', T('f12', '7'), { g: 0.5 });
   const seven = tx(W, '读了 7 页', x + 40, y - 20, { fs: 32, color: K.teal }); show(seven, T('f12', '7'), { x: -10, y: 0 });
-  // f13–f13b：只要 id 和名字：索引里都有，不用再去 users 表：只读 4 页
-  const tCov = T('f13b', 'users') - 0.2;
-  [boxes[4], boxes[5], boxes[6], boxes[4].cap, boxes[5].cap, boxes[6].cap, g2, segs[5], segs[6]].forEach((e) => dim(e, tCov, 0.15));
-  keyed(seven).at(T('f13b', '4'), { html: '只读 4 页' });
-  const q2 = codeBlock(W, ["SELECT id, name FROM users WHERE name = 'Alice';"], 120, 262, { fs: 26 });
-  set(q2, 0, { autoAlpha: 0 }); gone(q, T('f13') - 0.1, 0.2); show(q2, T('f13') - 0.05, { y: 0, d: 0.3 });
-  // f14–f15：紧接着再查一次：只读文件头里的 16 个字节，确认文件没被改过，就用内存里的页
-  const tAg = T('f14') - 0.2;
-  const hd = h('div', 'abs', W); px(hd, 1060, 262, 740, 46); css(hd, { display: 'flex', border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); hd.dataset.name = '文件头';
-  for (let i = 0; i < 100; i += 4) { const c = h('div', '', hd); css(c, { width: '29.6px', borderLeft: i ? '1px solid #bbb' : 'none', background: i >= 24 && i < 40 ? K.wheat : '#fff' }); }
-  const memT = btn(W, '内存里还留着刚读过的 7 页', 1060, 262, 26); set(memT, 0, { autoAlpha: 0 }); slam(memT, T('f14', '内存'), { from: 1.2 }); sfx('pop', T('f14', '内存'), { g: 0.35 });
-  gone(memT, T('f15') - 0.25, 0.25);
-  const hdL = tx(W, '再查一次：文件读 0 页，只读文件头偏移 24 处的 16 个字节', 1060, 316, { fs: 24 });
-  set(hd, 0, { autoAlpha: 0 }); wipe(hd, T('f15') - 0.1, { dir: 'l', d: 0.4 }); show(hdL, T('f15', '16'), { y: 6 }); sfx('tick', T('f15', '16'), { g: 0.4 });
-  keyed(hdL).at(T('f15b') - 0.05, { html: '没被改过：直接用内存里的页' });
 
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   const zU = zone(W, 1000, 360, 820, 400), zN = zone(W, 100, 360, 820, 400), zHit = zone(W, 100, 750, 540, 80), zRow = zone(W, 1000, 750, 640, 80);
-  beats([[T('f1', '按名字'), qw], [T('f1', '要她的'), qc], [T('f1', '名字和年龄'), ans], [T('f2'), U.lab], [T('f2', '翻一遍') + 1.2, q], [T('f3'), N.lab], [T('f4'), N.r], [T('f4', '最左边'), m281], [T('f5'), rg], [T('f5', '4096'), N.r], [T('f5', '306'), [...keep1].map((p) => N.lEls[p])], [T('f6'), rg], [T('f6', '最左边'), [...keep1].map((p) => N.lEls[p])], [T('f6', '263'), [l263, leafL]], [T('f6', '18') + 0.4, rg], [T('f7', 'Alice'), hit], [T('f7', '2050'), hit.querySelector('b')], [T('f8'), hit], [T('f8', '回到'), U.lab], [T('f9'), U.rl], [T('f9', '2050'), U.r], [T('f9', '两个分界'), sepU], [T('f10'), m133], [T('f10', '133'), rgU], [T('f10', '分界'), [...keep2].map((p) => U.lEls[p])], [T('f11', '这一行'), row], [T('f11', '42'), row.children[2]], [T('f12'), seven], [T('f12b', '登记'), boxes[0]], [T('f12b', '索引'), boxes.slice(1, 4)], [T('f12b', '表三页'), boxes.slice(4, 7)], [T('f13'), q2], [T('f13', '索引里'), boxes.slice(0, 4)], [T('f13b'), q2], [T('f13b', '4'), seven], [T('f14'), boxes.slice(0, 4)], [T('f14', '内存'), memT], [T('f15'), hd], [T('f15', '16'), hdL], [T('f15b'), hdL], [T('f1') + 2.91, q, 1], [T('f2') + 2.01, [...U.mEls, U.r], 1], [T('f4') + 0.95, [...N.mEls, N.r], 1], [T('f5') + 1.78, [m281, rg, barN], 1], [T('f6') + 2.58, [barN, rg, m281], 1], [T('f7') + 2.77, [hit, l263, m281], 1], [T('f9') + 1.86, [U.r, rgU, barU], 1], [T('f11') + 4.50, [row, m133], 1], [T('f12') + 2.35, boxes, 1], [T('f13') + 1.87, [q2, ...boxes.slice(0, 4)], 1], [T('f15') + 3.23, [hd, hdL], 1], [T('f2') + 1.84, zU, 1], [T('f3') + 4.04, zN, 1], [T('f6') + 1.61, zN, 1], [T('f7') + 3.6, [qw, l263], 1], [T('f11') + 3.40, zRow, 1], [T('f5') + 4.44, zN, 1], [T('f15') + 1.70, zU, 1], [T('f6') + 1.07, [rg, m281, barN], 1]], Tend('f15b'));
+  beats([[T('f1', '按名字'), qw], [T('f1', '要她的'), qc], [T('f1', '名字和年龄'), ans], [T('f2'), U.lab], [T('f2', '翻一遍') + 1.2, q], [T('f3'), N.lab], [T('f4'), N.r], [T('f4', '最左边'), m281], [T('f5'), rg], [T('f5', '4096'), N.r], [T('f5', '306'), [...keep1].map((p) => N.lEls[p])], [T('f6'), rg], [T('f6', '最左边'), [...keep1].map((p) => N.lEls[p])], [T('f6', '263'), [l263, leafL]], [T('f6', '18') + 0.4, rg], [T('f7', 'Alice'), hit], [T('f7', '2050'), hit.querySelector('b')], [T('f8'), hit], [T('f8', '回到'), U.lab], [T('f9'), U.rl], [T('f9', '2050'), U.r], [T('f9', '两个分界'), sepU], [T('f10'), m133], [T('f10', '133'), rgU], [T('f10', '分界'), [...keep2].map((p) => U.lEls[p])], [T('f11', '这一行'), row], [T('f11', '42'), row.children[2]], [T('f12'), seven], [T('f12b', '登记'), boxes[0]], [T('f12b', '索引'), boxes.slice(1, 4)], [T('f12b', '表三页'), boxes.slice(4, 7)], [T('f1') + 2.91, q, 1], [T('f2') + 2.01, [...U.mEls, U.r], 1], [T('f4') + 0.95, [...N.mEls, N.r], 1], [T('f5') + 1.78, [m281, rg, barN], 1], [T('f6') + 2.58, [barN, rg, m281], 1], [T('f7') + 2.77, [hit, l263, m281], 1], [T('f9') + 1.86, [U.r, rgU, barU], 1], [T('f11') + 4.50, [row, m133], 1], [T('f12') + 2.35, boxes, 1], [T('f2') + 1.84, zU, 1], [T('f3') + 4.04, zN, 1], [T('f6') + 1.61, zN, 1], [T('f7') + 3.6, [qw, l263], 1], [T('f11') + 3.40, zRow, 1], [T('f5') + 4.44, zN, 1], [T('f6') + 1.07, [rg, m281, barN], 1]], Tend('f12b'));
   // 补音效（check.js 报的长空档）
-  sfx('tick', T('f13', '只要'), { g: 0.3 });
-  sfx('pop', T('f13b', '4'), { g: 0.35 });
   keyed(title).at(T('f2') - 0.2, { html: '没有索引：把整个表翻一遍' });
   keyed(title).at(T('f3') - 0.2, { html: '从姓名索引的根页 262 往下走' });
   keyed(title).at(T('f8') - 0.2, { html: '拿着行号 2050，回到 users 表' });
   keyed(title).at(T('f12') - 0.2, { html: '开头说的 7 页' });
-  keyed(title).at(T('f14') - 0.2, { html: '紧接着再查一次' });
   // 镜头：两棵树与底下的铁路图都在内容区里
   shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1840, 900] }]]);
 });

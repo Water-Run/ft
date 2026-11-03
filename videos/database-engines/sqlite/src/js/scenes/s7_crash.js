@@ -27,7 +27,12 @@ scene('crash', ({ root, s, c0 }) => {
   const spill = mini.slice(0, 24);
   spill.forEach((c, i) => set(c, T('j21', '写进了主文件') - 0.3 + i * 0.03, { backgroundColor: K.wheat }));
   const spL = tx(W, '还没提交，已经写进主文件的页', 120, 680, { fs: 22, color: K.teal }); set(spL, 0, { autoAlpha: 0 }); show(spL, T('j21', '写进了主文件'), { y: 6 });
-  const kill = errBox(W, '强行终止', 760, 712, 30); set(kill, 0, { autoAlpha: 0 }); slam(kill, T('j22', '强行终止'), { from: 1.3 }); sfx('error', T('j22', '强行终止'), { g: 0.6 });
+  // 强行终止：和开场同一个动作——这条 UPDATE 边框变红、抖几下、整块塌掉
+  const tK = T('j22', '强行终止');
+  set(up, tK, { borderColor: K.red });
+  tl.fromTo(up, { x: 0 }, { x: 9, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, tK);
+  tl.fromTo(up, { scaleY: 1, autoAlpha: 1 }, { scaleY: 0, autoAlpha: 0, duration: 0.35, ease: 'power3.in', immediateRender: false }, tK + 0.45);
+  sfx('error', tK, { g: 0.6 }); sfx('thud', tK + 0.6, { g: 0.3 });
   const left = tx(W, '日志文件留了下来', 1200, 680, { fs: 24, color: K.teal }); show(left, T('j22', '日志文件'), { y: 6 });
   // j23：每次开始读之前，SQLite 都先看一眼：旁边有没有日志
   const look = h('div', 'abs', W); px(look, 1194, 244, 612, 52); css(look, { border: `3px solid ${K.teal}` }); set(look, 0, { autoAlpha: 0 }); show(look, T('j23', '看一眼'), { y: 0, d: 0.3 });
@@ -37,7 +42,7 @@ scene('crash', ({ root, s, c0 }) => {
   spill.forEach((c, i) => set(c, T('j24', '抄回') + 0.3 + i * 0.02, { backgroundColor: '#ffffff' })); sfx('whoosh', T('j24', '抄回'), { g: 0.3 });
   const tD2 = T('j24', '删掉');
   [JR2, look, back].forEach((e) => gone(e, tD2, 0.3)); jm.forEach((c) => gone(c, tD2, 0.3)); gone(left, tD2, 0.3);
-  [up, kill, spL].forEach((e) => gone(e, T('j25') - 0.2, 0.3));
+  gone(spL, T('j25') - 0.2, 0.3);
   const same = tx(W, '整个文件的 SHA-256 与改之前相同', 120, 700, { fs: 30, css: { background: K.wheat, padding: '4px 16px' } });
   const a42 = tx(W, 'Alice 仍是 42', 120, 770, { fs: 30, css: { background: K.wheat, padding: '4px 16px' } }); set(a42, 0, { autoAlpha: 0 }); show(a42, T('j25', 'Alice'), { y: 6 }); sfx('tick', T('j25', 'Alice'), { g: 0.3 });
   set(same, 0, { autoAlpha: 0 }); wipe(same, T('j25', '一字节不差') - 0.2, { dir: 'l', d: 0.4 }); sfx('chime', T('j25', '一字节不差'), { g: 0.5 });
@@ -69,7 +74,7 @@ scene('crash', ({ root, s, c0 }) => {
     gone(gK, T('k2') - 0.2, 0.3);
     frames.forEach((f) => { f.dataset.beat = 'line'; });
     beats([[T('k1'), MAIN.nameEl], [T('k1', 'W A L'), WAL.nameEl], [T('k1', '追加'), frames], [T('k1b', '哪些帧'), ask], [T('w6', '校验和'), gK], [T('w6b'), bad], [T('k2'), frames], [T('k2', '提交标记'), frames[4].hd], [T('k2', '才算数'), okL], [T('k2') + 3.77, [WAL, okL], 1]], Tend('k2'));
-    shots(cam, world, s, [[s.start, null, { rect: [110, 244, 1810, 896], pad: 0 }], [T('k1') - 0.35, null, { rect: [110, 240, 1830, 880], pad: 0, d: 1.0 }]]);
+    shots(cam, world, s, [[s.start, null, { rect: [110, 244, 1810, 896], pad: 0 }], [T('k1') - 0.35, null, { rect: [110, 240, 1830, 880], pad: 0, d: 1.5 }]]);
   }
   }
 });
