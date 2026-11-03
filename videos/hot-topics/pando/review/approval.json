@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "f3402db682d63a513948fde0d449594b51f61d2d721e4dc9b313e02a13b31271",
+      "content_sha256": "2814571c69effefce1b272e3806e0a1c33020208204493e18888f1b81df65906",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-03T11:55:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-03 条：策划者看过审片页第 1 稿后原话「配音 冷淡学长 配乐 双色 开始实现视频」"
+      "confirmed_at": "2026-11-03T13:30:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 2 稿条：策划者看过预览 r1 后原话「叙事的文案和节奏都再优化一点…最后本片截至不用读出来和单独画面了, 直接和片尾字幕做一起就行. 直接出成片.」——删 w11 是原话要求；其余改动属授权自主定稿，不是逐句阅读确认"
     }
   }
 }

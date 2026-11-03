@@ -4,177 +4,177 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：开场 o8、o9 提出两问（为什么是这两家、为什么一家换一家留）；01–04 章推进；05 章 w2–w3 答第一问，w5、w5b 点名回答第二问，w6 给共同点。通读 script.js 与第 2 稿导出稿核对。"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：OpenAI 原文的例子（一个工程师 → 几个智能体 → 几次推送 → 每次推送引来几个测试任务拉取）贯穿 02 章，03、04 章都回到「推送、拉取」；新名词表见 review/NOTES.md「交审说明」。"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：Pando（o2「重新写过的 Git 服务器」）、Scion（a6）、Express（p8 注解）、Antique（结果卡注明是代码审查工具）第一次出现即交代；−80%、1/200、分钟→秒都在画面上写明比较对象（中位推送等待、原来的 Git 镜像设施、检出代码）。sheets.js 抽帧核对。"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js 量过两遍：章节卡稳定约 1.8 秒（下限 2.3）、01 章末「main 分支的历史就有近 100 GB」1.8 秒（下限 3.9）、04 章结构图重新亮起时的旧标签 1.4 秒仍不够；总长卡在策划者要的 4 分钟内，没再加时长。没有以正常速度连续看过全片（本会话只能看静帧）。",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "没有连续观看代表机制段；只按代码与静帧确认每个动作对应讲解（队伍前进、分支道、包流向、薄客户端与缓存），scan.js 没有报 ZOOM。",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "配乐与音效没有亲耳听过，只核对了数值（最终文件 I=-15.9 LUFS、TP=-1.1 dBFS，混音无削波）；听感交策划者。",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：终端画面只有 `$ git push`、`$ git fetch`；逐个检查 src、封面、片尾与记录文件，没有个人路径、主机名与内网地址（grep 与 sheets.js 抽帧）。"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片 out/pando-zh-1080p60.mp4：finish.js 在最终文件上测得 h264 1920×1080、60/1 帧、239.87 秒，AAC；响度 I=-15.9 LUFS、TP=-1.1 dBFS；README「交付」按这些数值填写。"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md 的每条意见写明来源（策划者原话与日期，或制作方自查）；事实只来自 research/FACTS.md 的两篇一手原文，未核的 Mononoke 争议没有进片。"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：独立的热点片，不引用其他集；「第 02 章」只指本片内部。"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：英文原话（04 章 a3、a13，05 章两张原话卡）每段都配中文一行；a3 原话停留 7.4 秒。"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "读法只用 tts_probe.js 与 asr.js（Whisper）筛过：Scion 改读「赛恩」、Git 改小写、「拖累」改「拖垒」、「为人设计」改「给人设计」；没有人耳逐句听，多音字清单没有逐条听。",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：01 章先讲 Git 是什么、怎么用（仓库、分支、合并、推送、拉取），开场交代「用了二十多年」。"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：片尾 5 秒只有画面没有人声（脚本 credits 为 pause）；导出的校对稿没有制作指令；截止时间按策划者要求写进名单。"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：画面小字都是内容注解（来源、换算、比较对象），没有制作者口吻的说明；sheets.js 抽帧核对。"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "标志取自四家官网（research/MATERIALS.md），03 章仿 OpenAI 的白底黑字方角、04 章仿 Anthropic 的米色衬线陶土橙；这一轮没有把成片与官方页面截图并排比对。",
       "evidence": ""
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "音色由策划者在审片页试听后选定（冷淡学长）；成片配音我没有亲耳听，语气交策划者。",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：每章主画面见 README「设计」（时间轴与两家、一个仓库、常驻的 Git 服务器、Pando 架构图、五台机器与三层缓存、两栏收束）；按 sheets.js 总览核对，没有连续观看。"
     },
     "F19": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "这一轮查出并修掉两处中间状态问题（04 章删除线残留、「一直连着服务器」从章首就挂着）；没有逐 0.1 秒取帧检查每个动作。",
       "evidence": ""
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：深色块始终是服务器，小方块是推送的包，蓝色是 AI 与智能体；同一形状同一颜色没有中途换义。"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：三套样式分别取自两家官网与本片的中性底，标志是本片才有的材料；与近期片子的纸色平涂不同（开场、05 章两家的半屏底色）。"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：scan.js 的 GLOSS 通过（仓库、分支、合并、推送、拉取、缓存都有 data-gloss 注解）；Express、对象存储、25 GB、100 GB 等都在画面注解里。"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：02 章的总队伍由 F() 按时间推进、拉取者逐个现打包；03 章分支道上的包连续移动、c 道撞车等待；04 章完整仓库缩成缓存、文件按需飞下。"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：镜头只在 02 章「整个公司」拉远一次，拉远时收起小字；scan.js 没有报 CUT、CAPZONE；sheets.js 在句末时刻抽帧核对。"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：r1 每句一帧的总览（66 帧）与本轮 35 帧抽看，没有空框等旁白的段落；04 章收尾那句原话移到画面中央。"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md「第 2 稿的改动」：制作方主动改 p6、w3、w5→w5、w5b、w6，改后通读 05 章，核对章节卡与画面（w5b 的「离线」锚点、05 章注解）。"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "只用静帧总览图（r1 66 帧、本轮 35 帧）与 look.js 看过全片，没有以观众身份连续看完有声成片。",
       "evidence": ""
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "新名词表见 review/NOTES.md：每个术语先有问题与例子，再在第一次出现的那句给名字；数字（2,500、30,000、600 PB、>99%）各章说法一致。"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片（2026-11-03，3:59.9）：02 章服务器全章常驻、03 章 Pando 架构图常驻、04 章五台机器常驻；章内换段时主对象留在原处，暂时不讲的部分先收或退到背景（04 章结果段）。"
     }
   },
   "history": []

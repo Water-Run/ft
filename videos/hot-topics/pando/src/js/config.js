@@ -1,6 +1,6 @@
 // 本片的引擎配置：字体、箭头颜色、常驻元素（章节卡、信息截止角标）、换场方式。
 // 三套样式：开场、01、02、05 章用中性浅灰（ft 蓝作强调）；03 章 OpenAI 段白底黑字、方角；04 章 Anthropic 段米色暖底、陶土橙、衬线标题、圆角。
-// 两家都只用文字名称，不放 logo；品牌字体是商业字体，用 Inter、思源黑体、思源宋体模仿气质。
+// 两家及 ChatGPT、Claude 用各自官网的标志（logos.js）；品牌字体是商业字体，用 Inter、思源黑体、思源宋体模仿气质。
 document.documentElement.classList.add(LANG);
 window.PALETTE = { ink: '#16181d', accent: '#1f5fd6', dim: '#8a8f98', red: '#b33a24', black: '#000000', clay: '#cc785c', slate: '#141413' };
 const CHAP_STYLE = { git: 'n', jam: 'n', oai: 'o', ant: 'a', why: 'n' };
@@ -14,9 +14,10 @@ window.ENGINE = {
     for (const s of L.scenes) {
       if (!s.chap) continue;
       const k = CHAP_STYLE[s.id] || 'n';
-      const card = h('div', 'chapter ch-' + k, hud, `<div class="no">${s.chap[0]}</div><div class="ti">${s.chap[1]}</div>`);
-      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.42;
-      wipe(card, t0, { dir: 'l', d: 0.38 }); wipeOut(card, t1, { dir: 'r', d: 0.38 });
+      const mark = k === 'o' ? LOGO.svg('openai', 56, '#000') : k === 'a' ? LOGO.svg('anthropic', 36, '#141413') : '';
+      const card = h('div', 'chapter ch-' + k, hud, `${mark ? `<div class="mark">${mark}</div>` : ''}<div class="no">${s.chap[0]}</div><div class="ti">${s.chap[1]}</div>`);
+      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.36;
+      wipe(card, t0, { dir: 'l', d: 0.3 }); wipeOut(card, t1, { dir: 'r', d: 0.3 });
       fromTo(card.querySelector('.ti'), t0, { scale: 1 }, { scale: 1.02, duration: t1 - t0, ease: 'none' });   // 停留时整张卡极慢推近一次，不超过 3%
       sfx('whoosh', t0 - 0.05, { g: 0.45 }); sfx('thud', t0 + 0.3, { g: 0.45 });
     }

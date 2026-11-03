@@ -8,8 +8,8 @@
   "titles": {
     "zh": "OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？"
   },
-  "stage": "preview",
-  "next": "策划者看 preview-r1；按意见迭代",
+  "stage": "accept",
+  "next": "策划者看正式片 out/pando-zh-1080p60.mp4；同意后登记交付与发布",
   "credits": {
     "planner": "WaterRun",
     "models": [

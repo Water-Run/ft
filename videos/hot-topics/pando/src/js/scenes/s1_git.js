@@ -66,12 +66,12 @@ scene('git', ({ root, s, c0 }) => {
   const bigA = h('div', 'abs', world); px(bigA, 160, 150, 760, 640);
   css(bigA, { border: '6px solid var(--ink)', borderRadius: '18px', background: '#fff', overflow: 'hidden' }); bigA.dataset.name = '巨型主仓库';
   for (let i = 0; i < 15; i++) { const r = h('div', 'abs', bigA); css(r, { left: '0', right: '0', top: (100 + i * 36) + 'px', height: '18px', background: '#e9e8e3' }); }
-  const bigAL = h('div', 'abs d-3 serif', world, 'Anthropic 主仓库'); px(bigAL, 200, 180);
+  const bigAL = brand(world, 'anthropic', 200, 182, 30, '主仓库', "700 56px 'Serif SC'", { color: '#141413', name: 'Anthropic 主仓库' });
   const big = h('div', 'abs', world); px(big, 1000, 150, 760, 640);
   css(big, { border: '6px solid var(--ink)', borderRadius: '18px', background: '#fff', overflow: 'hidden' });
   for (let i = 0; i < 15; i++) { const r = h('div', 'abs', big); css(r, { left: '0', right: '0', top: (100 + i * 36) + 'px', height: '18px', background: '#e9e8e3' }); }
   big.dataset.name = '巨型主仓库';
-  const bigL = h('div', 'abs d-3', world, 'OpenAI 主仓库'); px(bigL, 1040, 180);
+  const bigL = brand(world, 'openai', 1040, 180, 50, '主仓库', "700 56px 'Sans SC'", { color: '#000', name: 'OpenAI 主仓库' });
   const bigN = h('div', 'abs t-note', world, 'Anthropic：main 分支的历史<br>就有近 100 GB'); px(bigN, 200, 660); css(bigN, { whiteSpace: 'normal', width: '520px', color: 'var(--ink)' });
   hide([repo, rl, rg, files, mainLine, hist, bl, ml, pl, fl, me, mate, ...dots, ...bd], tBig - 0.6, { d: 0.4 });
   to(ov, tBig - 0.6, { opacity: 0, duration: 0.4 });
@@ -80,7 +80,7 @@ scene('git', ({ root, s, c0 }) => {
   fromTo(bigA, tBig - 0.15, { autoAlpha: 0, scale: 0.55, transformOrigin: '50% 30%' }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: 'power3.out', immediateRender: true });
   show(bigAL, tBig + 0.25, { y: 10 });
   sfx('thud', tBig + 0.2, { g: 0.6 });
-  show(bigL, tBig + 0.1, { y: 10 }); show(bigN, Tend('g6') - 0.4, { y: 10 });
+  show(bigL, tBig + 0.1, { y: 10 }); show(bigN, tBig + 0.5, { y: 10 });
 
   drift(cam, s, -1);
 });

@@ -1,5 +1,6 @@
 // 片尾名单。名字只取自 project.json 的 credits（docs/roles.md 第 5 节），这里不手写任何名字；check.js --final 核对画面上的名单与它一致。
 // 版式按本片的视觉系统重做；保留三样：策划、全部参与的模型与分工、「开源视频」与完整的仓库地址。名单不配旁白。
+// 本片另把信息截止时间写在名单最前（策划者：「本片截至不用读出来和单独画面了, 直接和片尾字幕做一起就行」）。
 scene('credits', ({ root, s }) => {
   const C = (window.PROJECT && window.PROJECT.credits) || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
@@ -7,7 +8,7 @@ scene('credits', ({ root, s }) => {
   const cam = makeCamera(world);
   const col = h('div', 'abs credits', world); px(col, 120, 180);
   const row = (k, v) => h('div', 'credit-row', col, `<span class="t-note">${esc(k)}</span><br><span class="t-body">${esc(v)}</span>`);
-  const rows = [row(tr('策划', 'Planning'), C.planner || '')];
+  const rows = [row(tr('本片信息截至', 'Information as of'), tr('北京时间 2026 年 11 月 3 日', 'November 3, 2026 (UTC+8)')), row(tr('策划', 'Planning'), C.planner || '')];
   for (const m of [...(C.models || []), ...(C.services || [])]) rows.push(row((m.roles || []).map(label).join(' · '), m.name));
   rows.push(row(tr('许可', 'License'), (window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later'));
   rows.push(row(tr('开源视频', 'Open-source video'), String(C.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')));

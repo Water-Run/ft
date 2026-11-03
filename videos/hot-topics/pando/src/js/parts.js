@@ -1,8 +1,27 @@
-// 本片的部件：场景底色、服务器、包、电脑（人、智能体、测试任务）、轻量的镜头停留。
+// 本片的部件：场景底色、两家的半屏底色、标志行、服务器、包、电脑（人、智能体、测试任务）、轻量的镜头停留。
 // 所有动作仍走引擎的登记函数，画面只由 t 决定。
 
 // 场景底色：n 中性 / o OpenAI / a Anthropic
 function sceneBg(root, k) { root.classList.add('bg-' + k); }
+
+// 开场与第 05 章：左半 Anthropic 的米色、右半 OpenAI 的纯白，铺在中性灰底上；返回 [左, 右]
+const HALF = { a: '#f0eee6', o: '#ffffff', base: '#e4e4e0' };
+function halves(root, world) {
+  root.style.background = HALF.base;
+  const L = h('div', 'abs', world); px(L, -80, -80, 1040, 1240); L.style.background = HALF.a; L.dataset.name = 'Anthropic 半屏';
+  const R = h('div', 'abs', world); px(R, 960, -80, 1040, 1240); R.style.background = HALF.o; R.dataset.name = 'OpenAI 半屏';
+  L.dataset.overlapOk = ''; R.dataset.overlapOk = '';
+  return [L, R];
+}
+
+// 标志行：标志（logos.js 的键）后面可跟一段文字。(x, y) 为左上角，o.center 为真时 x 是水平中心；hgt 为标志高度
+function brand(parent, key, x, y, hgt, text = '', font = '', o = {}) {
+  const e = h('div', 'abs', parent, LOGO.svg(key, hgt, o.color) + (text ? `<span style="font:${font};margin-left:${o.gap || 16}px">${text}</span>` : ''));
+  css(e, { display: 'flex', alignItems: 'center', color: o.color || 'currentColor' });
+  px(e, x, y); if (o.center) e.style.transform = 'translateX(-50%)';
+  e.dataset.name = o.name || key;
+  return e;
+}
 
 // 停留：整场朝一个方向极慢横移（一屏不超过 48 像素、每秒不超过 2 像素）；dir 为 1 向右、-1 向左
 function drift(cam, s, dir = 1, x0 = 960, y0 = 540) {

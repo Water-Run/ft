@@ -6,7 +6,7 @@ scene('oai', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
   const ov = overlay(world);
-  const hd = h('div', 'abs o-lab', world, 'OpenAI'); px(hd, 120, 84); hd.style.fontSize = '34px'; hd.style.fontWeight = '600';
+  const hd = brand(world, 'openai', 120, 86, 40, '', '', { color: '#000', name: 'OpenAI 标志' });
   show(hd, c0 + 0.05, { y: 10 });
   rule(world, 120, 140, 1680, c0 + 0.05, 'o-rule', 0.7);
 
@@ -77,7 +77,7 @@ scene('oai', ({ root, s, c0 }) => {
   const scanN = h('div', 'abs t-small', world, '同一刻？未必'); px(scanN, scanX - 90, 712); css(scanN, { color: '#000' });
   show(scanN, T('p5', '未必'), { y: 8 });
   const okN = h('div', 'abs t-small', world, '人和智能体只在乎自己那条分支的先后'); px(okN, 470, 752); css(okN, { color: '#6b6b6b' });
-  show(okN, T('p6', '并不在意') - 0.2, { y: 8 });
+  show(okN, T('p6') + 0.1, { y: 8 });
   to(sl, T('p7') - 0.3, { opacity: 0, duration: 0.3 }); hide([scanN, okN], T('p7') - 0.3, { d: 0.3 });
 
   // 包原样存好，原样发出
@@ -108,7 +108,8 @@ scene('oai', ({ root, s, c0 }) => {
   slam(hit, T('p9', '九成九'), { from: 1.2 }); sfx('thud', T('p9', '九成九') + 0.1, { g: 0.5 }); show(hitN, T('p9', '就地'), { y: 8 });
 
   // 结果：图下一行
-  hide([termN, storeL, sendN, cacheG, hitN], T('p10') - 0.5, { d: 0.3 });
+  hide(lanes.flat(), T('p8') - 0.3, { d: 0.3 });   // 分支道在「再治现算」之后已演完，讲缓存前收起，画面不挤
+  hide([termN, storeL, sendN, cacheG, hitN], T('p10') - 0.3, { d: 0.3 });
   rule(world, 120, 796, 1680, T('p10') - 0.3, 'o-rule', 0.5);
   const R = (x, big, small, t) => {
     const b = h('div', 'abs', world, big); px(b, x, 812); css(b, { font: '600 84px Inter', letterSpacing: '-.03em' });

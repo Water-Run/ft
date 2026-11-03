@@ -31,6 +31,9 @@ scene('jam', ({ root, s, c0 }) => {
   const agents = AY.map((y, i) => { const a = node(world, 560, y, '智能体', 'agent'); slide(a, tAg + i * 0.1, { x: -80, d: 0.4 }); return a; });
   const fan = AY.map((y, i) => line(ov, 290, 470, 490, y + 30, tAg - 0.2 + i * 0.08, 'dim', { w: 3, arrow: false, d: 0.3 }));
   sfx('pop', tAg); sfx('pop', tAg + 0.2, { g: 0.6 });
+  const tPar = T('j2', '并行');   // 并行干活：四个智能体的屏幕亮起
+  agents.forEach((a, i) => fromTo(a.querySelector('.ic'), tPar + 0.05 + i * 0.08, { backgroundColor: '#ffffff' }, { backgroundColor: '#1f5fd6', duration: 0.25, immediateRender: false }));
+  sfx('tick', tPar + 0.05, { g: 0.4 });
   // 每项改动一条分支：从智能体长向服务器的粗线，包沿着它推过去
   const tCh = T('j2', '改动');
   const brs = AY.map((y, i) => { const b = h('div', 'abs', world); px(b, 640, y + 24, SX - 60 - 640, 12); css(b, { background: '#7fa4f0', borderRadius: '6px', transformOrigin: '0 50%' }); b.dataset.name = '分支';
@@ -62,7 +65,10 @@ scene('jam', ({ root, s, c0 }) => {
   }
   const tJ4 = T('j4'), tJ4e = Tend('j4');
   show(crowd, tJ4 - 0.2, { d: 0.5 });
-  hide([jl, ...[eng, ...agents].map((n) => n.querySelector('.nm'))], tJ4 - 0.3, { d: 0.2 });   // 拉远时名字太小，先收起
+  hide([jl, ...[eng, ...agents].map((n) => n.querySelector('.nm'))], tJ4 - 0.3, { d: 0.2 });
+  const srvLab = srv.querySelector('.lab');
+  fromTo(srvLab, tJ4 - 0.3, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false });   // 拉远时服务器上的字太小，先收起，推回后再出
+  fromTo(srvLab, tJ4e + 0.7, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, immediateRender: false });   // 拉远时名字太小，先收起
 
   // ── B：两家的数字，服务器不动 ──
   const tB = T('j5');
@@ -70,8 +76,11 @@ scene('jam', ({ root, s, c0 }) => {
   hide(groupA, tJ4e + 0.05, { d: 0.35 });
   to(ov, tJ4e + 0.05, { opacity: 0, duration: 0.35 });
   hide(crowd, tJ4e + 0.1, { d: 0.5 });
-  const pA = h('div', 'abs serif', world, 'Anthropic'); px(pA, 140, 104); css(pA, { font: '700 46px "Serif SC"' });
-  const pAs = h('div', 'abs t-note', world, '每天合并的改动 · 每个点 100 次'); px(pAs, 420, 116);
+  const aCard = h('div', 'abs', world); px(aCard, 108, 92, 1044, 694); css(aCard, { background: '#fff', border: '2px solid #d6d4cd', borderRadius: '16px' });
+  aCard.dataset.name = 'Anthropic 的数字'; aCard.dataset.overlapOk = '';
+  wipe(aCard, T('j5', '五月') - 0.3, { dir: 'l', d: 0.45 });
+  const pA = brand(world, 'anthropic', 140, 120, 32, '', '', { color: '#141413', name: 'Anthropic 标志' });
+  const pAs = h('div', 'abs t-note', world, '每天合并的改动 · 每个点 100 次'); px(pAs, 452, 116);
   show(pA, tB - 0.1, { x: -14 }); show(pAs, tB + 0.1, { x: -10 });
   // 点阵：五月 25 个点，九月 300 个点
   const dots = (y0, n, t0, dur) => {
@@ -99,7 +108,7 @@ scene('jam', ({ root, s, c0 }) => {
   slam(eq3, T('j8', '六百'), { from: 1.15 }); sfx('thud', T('j8', '六百') + 0.1);
   show(eq3n, T('j8', '以上'), { y: 8 });
   // OpenAI：贴在服务器下方，服务器随之变红
-  const pO = h('div', 'abs', world, 'OpenAI'); px(pO, 1180, 612); css(pO, { font: '700 46px Inter' });
+  const pO = brand(world, 'openai', 1180, 616, 46, '', '', { color: '#000', name: 'OpenAI 标志' });
   const pOs = h('div', 'abs t-note', world, '2025 年底起'); px(pOs, 1370, 624);
   const o1 = h('div', 'abs t-body', world, '推送变慢 · 合并失败'); px(o1, 1180, 680);
   const o2 = h('div', 'abs', world, '可靠性 <span style="font:800 64px Inter">&lt; 90%</span>'); px(o2, 1180, 736); css(o2, { font: '700 40px "Sans SC"', color: 'var(--red)' });
@@ -112,8 +121,8 @@ scene('jam', ({ root, s, c0 }) => {
 
   // ── C：两条老规矩 ──
   const tC = T('j11');
-  const groupB = [pA, pAs, lMay, dMay, vMay, lSep, dSep, vSep, eq1, eq2, eq3, eq3n, pO, pOs, o1, o2];
-  hide(groupB, tC - 0.5, { d: 0.35 });
+  const groupB = [aCard, pA, pAs, lMay, dMay, vMay, lSep, dSep, vSep, eq1, eq2, eq3, eq3n, pO, pOs, o1, o2];
+  hide(groupB, tC - 0.15, { d: 0.35 });   // 「可靠性 < 90%」多留一会儿
   const qm = h('div', 'abs d-1', world, '？'); px(qm, SCX - 66, SY - 230); qm.style.color = 'var(--blue)';
   slam(qm, T('j11', '卡在哪'), { from: 1.4 }); sfx('pop', T('j11', '卡在哪'));
   fromTo(srv, T('j11', '卡在哪') + 0.1, { scale: 1 }, { scale: 1.16, duration: 0.4, ease: 'power3.out', immediateRender: false });   // 卡在这台服务器上

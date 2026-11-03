@@ -1,9 +1,11 @@
 // 开场：一条时间轴，左边 10 月 13 日 Anthropic、右边 11 月 2 日 OpenAI，两家的主仓库都指向中间的 Git。
 // 旁白先讲 OpenAI（右），再回到三周前的 Anthropic（左）；最后两条箭头标出「换掉」「留下」，片名留在下方。
+// 两家出场时各自的半屏铺上自家底色（右 OpenAI 纯白、左 Anthropic 米色），名字用各家的标志，代表作 ChatGPT、Claude 也用标志。
 scene('open', ({ root, s }) => {
   sceneBg(root, 'n');
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
+  const [halfL, halfR] = halves(root, world);
   const ov = overlay(world);
   const LX = 520, RX = 1400, TY = 236;
 
@@ -17,17 +19,23 @@ scene('open', ({ root, s }) => {
   const gap = h('div', 'abs t-note', world, '相隔 20 天'); px(gap, 960, TY + 20); gap.style.transform = 'translateX(-50%)';
 
   // 右：OpenAI 与 Pando
-  const nameR = h('div', 'abs d-2', world, 'OpenAI'); px(nameR, RX, 300); nameR.style.transform = 'translateX(-50%)'; nameR.style.fontFamily = 'Inter';
-  const madeR = h('div', 'abs t-note', world, '做出 ChatGPT'); px(madeR, RX, 400); madeR.style.transform = 'translateX(-50%)';
+  const nameR = brand(world, 'openai', RX, 304, 72, '', '', { center: true, color: '#000', name: 'OpenAI 标志' });
+  const made = (key, hgt, text) => brand(world, key, 0, 0, hgt, text, '600 34px Inter', { color: '#000', gap: 12 });
+  const madeR = h('div', 'abs', world); px(madeR, RX, 404); css(madeR, { display: 'flex', alignItems: 'center', transform: 'translateX(-50%)' }); madeR.dataset.name = '做出 ChatGPT';
+  h('span', 't-note', madeR, '做出'); const gR = made('blossom', 40, 'ChatGPT'); css(gR, { position: 'relative', left: 'auto', top: 'auto', marginLeft: '16px' });
+  madeR.appendChild(gR);
   const pando = server(world, RX - 200, 470, 400, 130, 'Pando', '新的 Git 服务器');
   // 左：Anthropic 与主仓库
-  const nameL = h('div', 'abs d-2 serif', world, 'Anthropic'); px(nameL, LX, 300); nameL.style.transform = 'translateX(-50%)'; nameL.style.fontWeight = '700';
-  const madeL = h('div', 'abs t-note', world, '做出 Claude'); px(madeL, LX, 400); madeL.style.transform = 'translateX(-50%)';
+  const nameL = brand(world, 'anthropic', LX, 318, 46, '', '', { center: true, color: '#141413', name: 'Anthropic 标志' });
+  const madeL = h('div', 'abs', world); px(madeL, LX, 404); css(madeL, { display: 'flex', alignItems: 'center', transform: 'translateX(-50%)' }); madeL.dataset.name = '做出 Claude';
+  h('span', 't-note', madeL, '做出'); const cL = brand(world, 'claude', 0, 0, 42, '', '', { color: '#141413', name: 'Claude 标志' }); css(cL, { position: 'relative', left: 'auto', top: 'auto', marginLeft: '16px' });
+  madeL.appendChild(cL);
   const repoL = server(world, LX - 200, 470, 400, 130, '主代码仓库', '');
   const tagGit = h('div', 'abs mono', repoL, 'Git'); css(tagGit, { position: 'relative', fontSize: '26px', opacity: 0.8, marginTop: '4px' });
   const tagScion = h('div', 'abs', world, 'Scion'); px(tagScion, LX - 40, 552); css(tagScion, { font: '700 26px Inter', color: 'var(--paper)' });
 
   const tR = T('o1'), tOpen = T('o1', 'OpenAI'), tPando = T('o1', 'Pando');
+  // 右半 OpenAI 的白底第一帧就在（片子从 OpenAI 的新闻讲起，开头不留空画面）；左半随 Anthropic 出场铺开
   appear(dR, tR); appear(dateR, tR); sfx('tick', tR, { g: 0.5 });
   slam(nameR, tOpen, { from: 1.15 }); sfx('thud', tOpen + 0.1, { g: 0.6 });
   wipe(pando, tPando, { dir: 'l', d: 0.45 }); sfx('pop', tPando);
@@ -35,6 +43,7 @@ scene('open', ({ root, s }) => {
   fromTo(pando.querySelector('.sub'), tSrv - 0.3, { autoAlpha: 0 }, { autoAlpha: 0.75, duration: 0.3, immediateRender: true });
 
   const tL = T('o3', '三周'), tAnt = T('o3', 'Anthropic');
+  wipe(halfL, tL - 0.25, { dir: 'l', d: 0.5 });
   appear(dL, tL); appear(dateL, tL); show(gap, tL + 0.1, { y: 10 }); sfx('tick', tL, { g: 0.5 });
   slam(nameL, tAnt, { from: 1.15 }); sfx('thud', tAnt + 0.1, { g: 0.6 });
   wipe(repoL, T('o4', '主代码'), { dir: 'r', d: 0.45 });

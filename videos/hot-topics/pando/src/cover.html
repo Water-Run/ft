@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。kit/tools/covers.js 按 2 倍像素出图。
-     版式：左半 OpenAI 段的白底黑字方角，右半 Anthropic 段的米色暖底、衬线、陶土橙；中间压一块 Git，上方是片名。两家只写文字名称，不放 logo。
+     版式：左半 OpenAI 段的白底黑字方角，右半 Anthropic 段的米色暖底、衬线、陶土橙；中间压一块 Git，上方是片名。
+     两家用各自官网的标志，下面一行是代表作 ChatGPT、Claude 的标志（js/logos.js，出处见 research/MATERIALS.md）。
      缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
   :root { --ink: #16181d; --ivory: #f0eee6; --clay: #9a4a2f; --slate: #141413; }
   html, body, #stage { width: var(--W); height: var(--H); }
@@ -20,10 +21,13 @@
   .title { position: absolute; left: var(--M); right: var(--M); top: 7%; text-align: center; font-weight: 800; font-size: var(--fs); line-height: 1.12; letter-spacing: -.02em; color: var(--ink); white-space: nowrap; }
   .title .q { display: block; }
   .title .k { font-size: .62em; font-weight: 700; display: block; margin-bottom: .18em; }
-  .co { position: absolute; top: 50%; font-size: var(--ts); line-height: 1; }
-  .co.o { left: var(--M); font: 600 var(--ts) "Inter"; color: #000; letter-spacing: -.03em; }
-  .co.a { right: var(--M); font: 700 var(--ts) "Serif SC"; color: var(--slate); }
-  .sub { position: absolute; top: calc(50% + var(--ts) * 1.42); font-size: 46px; font-weight: 700; }
+  .co { position: absolute; top: 49%; }
+  .co.o { left: var(--M); color: #000; }
+  .co.a { right: var(--M); top: calc(49% + 14px); color: var(--slate); }
+  .sub { position: absolute; top: calc(49% + var(--ts) * 1.3); font-size: 46px; font-weight: 700; }
+  .prod { position: absolute; top: calc(49% + var(--ts) * 2.2); display: flex; align-items: center; }
+  .prod.o { left: var(--M); color: #000; font: 600 40px "Inter"; } .prod.a { right: var(--M); color: var(--slate); }
+  .prod.o span { margin-left: 12px; }
   .sub.o { left: var(--M); font-family: "Inter"; color: #000; }
   .sub.a { right: var(--M); font-family: "Serif SC"; color: var(--clay); }
   .git { position: absolute; left: 50%; top: 60%; transform: translate(-50%, -50%); width: 300px; height: 150px; background: #fff; border: 8px solid var(--ink); border-radius: 18px; display: flex; align-items: center; justify-content: center; font: 800 96px "Inter"; color: var(--ink); }
@@ -33,13 +37,19 @@
 <div id="stage">
   <div class="band"></div><div class="half l"></div><div class="half r"></div>
   <div class="title"><span class="k">OpenAI 发布 Pando</span><span class="q">为什么 AI 巨头都在重造 Git？</span></div>
-  <div class="co o">OpenAI</div><div class="sub o">Pando · 留下 Git</div>
-  <div class="co a">Anthropic</div><div class="sub a">Scion · 换掉 Git</div>
+  <div class="co o" id="lo"></div><div class="sub o">Pando · 留下 Git</div><div class="prod o" id="po"></div>
+  <div class="co a" id="la"></div><div class="sub a">Scion · 换掉 Git</div><div class="prod a" id="pa"></div>
   <div class="git">Git</div>
 </div>
+<script src="js/logos.js"></script>
 <script>
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
   document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
+  const ts = q.get('r') === '43' ? 84 : 92;
+  document.getElementById('lo').innerHTML = LOGO.svg('openai', ts, '#000');
+  document.getElementById('la').innerHTML = LOGO.svg('anthropic', Math.round(ts * 0.6), '#141413');
+  document.getElementById('po').innerHTML = LOGO.svg('blossom', 46, '#000') + '<span>ChatGPT</span>';
+  document.getElementById('pa').innerHTML = LOGO.svg('claude', 48, '#141413');
   const sample = document.getElementById('stage').textContent;
   Promise.all([document.fonts.load('800 40px "Sans SC"', sample), document.fonts.load('700 40px "Inter"', sample), document.fonts.load('700 40px "Serif SC"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
