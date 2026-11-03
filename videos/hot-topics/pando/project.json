@@ -8,8 +8,8 @@
   "titles": {
     "zh": "OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？"
   },
-  "stage": "review",
-  "next": "策划者在审片页选配音、配乐并审第 1 稿；确认后全片配音",
+  "stage": "preview",
+  "next": "策划者看 preview-r1；按意见迭代",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -18,18 +18,21 @@
         "roles": [
           "取证",
           "文案",
-          "审片页"
+          "视觉与动画",
+          "配乐",
+          "封面"
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd（冷淡学长）",
+        "roles": [
+          "配音"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
-  },
-  "voices": {
-    "zh": "zh-CN-YunyangNeural"
-  },
-  "rates": {
-    "zh": "+0%"
   },
   "asr_prompts": {
     "zh": "以下是普通话的讲解。"
@@ -43,10 +46,10 @@
     "mb": 4
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
+    "music": "tools/music.py",
+    "music_db": -14,
     "duck_db": 9,
-    "sfx_db": -8
+    "sfx_db": -9
   },
   "check": {
     "caption_width": {
@@ -61,6 +64,16 @@
     "style": {
       "flat": true,
       "no_emoji": true
+    }
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "lengdan_xiongzhang"
+    },
+    "speed": {
+      "zh": 1.35
     }
   }
 }

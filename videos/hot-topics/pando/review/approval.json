@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
+      "status": "approved",
       "content_sha256": "f3402db682d63a513948fde0d449594b51f61d2d721e4dc9b313e02a13b31271",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-11-03T11:55:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-03 条：策划者看过审片页第 1 稿后原话「配音 冷淡学长 配乐 双色 开始实现视频」"
     }
   }
 }

@@ -3,7 +3,7 @@
 // - 字幕里 *词* 标出术语（字幕上显示为强调），只为加重语气的词不标；术语第一次出现的那句说完时，画面上要有 data-gloss="词" 的注解（scan.js 的 GLOSS）
 // - tts 缺省时由字幕按 SAY 表换成读法（字幕写正式拼写，读法只放在 SAY 表或 tts 字段）
 // - gap：该句结束到下一句开始的停顿（秒，缺省 0.3）；pause：无旁白的纯画面停顿（标题、转场）
-// - 片尾署名只上画面：['credits', null, { pause: 8, credits: true }]；不写入旁白正文，不设置 tts。名单由 scenes/s9_credits.js 从 project.json 读取。
+// - 片尾署名只上画面：['credits', null, { pause: 5, credits: true }]；不写入旁白正文，不设置 tts。名单由 scenes/s9_credits.js 从 project.json 读取。
 // - 每章一个 scene：chap [编号, 标题]（null 表示没有章节卡）、lead 章节卡时长、tail 章末留白
 // 语言：浏览器取 ?lang=，Node 取环境变量 VLANG；缺省为 zh。浏览器与 Node 共用本文件（工具读它排时间线）。
 // 翻译以中文为底本：先定中文，再译其他语言；各语言的句号一一对应，时间轴各自排布。
@@ -114,7 +114,7 @@
     {
       id: 'credits', chap: null, lead: 0.4, tail: 0.6,
       cues: [
-        ['credits', null, { pause: 8, credits: true }],   // 片尾名单：只上画面，不配旁白；名单取自 project.json 的 credits
+        ['credits', null, { pause: 5, credits: true }],   // 片尾名单：只上画面，不配旁白；名单取自 project.json 的 credits
       ],
     },
   ];
@@ -130,6 +130,9 @@
       [/1 PB/g, '一 P B'],
       [/(\d+|千|万) TB/g, '$1 T B'],
       [/25 GB/g, '二十五 G B'],
+      [/Scion/g, '赛恩'],          // 原样会读成「纱眼」一类（tts_probe 回听）
+      [/Git/g, 'git'],             // 大写时有几句被读成 get；小写回听为 Git
+      [/拖累/g, '拖垒'],           // 拖累读 lěi
     ],
   };
   const strip = (s) => s.replace(/\*/g, '');

@@ -1,37 +1,86 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统。三套样式按场景切换：
+   n 中性（开场、01、02、05 章）：浅灰纸色底、墨色字、ft 蓝强调，问题用砖红。
+   o OpenAI 段（03 章）：纯白底、纯黑字、方角、灰阶，Inter 为主，大留白。
+   a Anthropic 段（04 章）：米色暖底、深石板色字、陶土橙点缀、思源宋体标题、圆角。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --paper: #f2f1ee; --ink: #16181d; --blue: #1f5fd6; --dim: #5d626b; --red: #b33a24; --line: #c9c9c4;
+  --o-bg: #ffffff; --o-ink: #000000; --o-gray: #e6e6e6; --o-mid: #6b6b6b;
+  --a-bg: #f0eee6; --a-ink: #141413; --a-clay: #cc785c; --a-clay-ink: #9a4a2f; --a-tan: #e3dccb; --a-mid: #5e5d59;
+  --M: 120px;
 }
 body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 #bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
+.bg-n { background: var(--paper); } .bg-o { background: var(--o-bg); color: var(--o-ink); } .bg-a { background: var(--a-bg); color: var(--a-ink); }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
+/* 字号阶梯（1080p）：正文 38px 起，注解不小于 28px */
+.d-1 { font-weight: 800; font-size: 132px; line-height: 1; letter-spacing: -.03em; }
+.d-2 { font-weight: 800; font-size: 84px; line-height: 1.05; letter-spacing: -.02em; }
+.d-3 { font-weight: 700; font-size: 56px; line-height: 1.1; letter-spacing: -.01em; }
 .t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+.t-note { font-weight: 500; font-size: 30px; line-height: 1.35; color: var(--dim); }
+.t-small { font-weight: 500; font-size: 26px; line-height: 1.3; color: var(--dim); }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+.blue { color: var(--blue); } .red { color: var(--red); } .dim { color: var(--dim); }
+.serif { font-family: "Serif SC", serif; }
+.bg-a .t-note, .bg-a .t-small { color: var(--a-mid); }
+.bg-o .t-note, .bg-o .t-small { color: var(--o-mid); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 注解：贴着被解释的东西 */
+.gloss { white-space: normal; font-weight: 500; font-size: 28px; line-height: 1.4; color: var(--ink); background: #fff; border-left: 5px solid var(--blue); padding: 10px 16px; }
+
+/* 通用部件 */
+.srv { position: absolute; background: var(--ink); color: var(--paper); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; }
+.srv .lab { font-size: 34px; } .srv .sub { font-size: 24px; font-weight: 500; opacity: .75; margin-top: 4px; }
+.pk { position: absolute; width: 44px; height: 44px; border-radius: 6px; background: var(--blue); }
+.pk.gray { background: #9aa1ad; } .pk.red { background: var(--red); }
+.node { position: absolute; display: flex; flex-direction: column; align-items: center; font-size: 26px; font-weight: 600; color: var(--ink); }
+.node .ic { width: 84px; height: 60px; border-radius: 8px; border: 4px solid var(--ink); background: #fff; position: relative; }
+.node .ic::after { content: ""; position: absolute; left: 50%; bottom: -14px; width: 40px; height: 6px; margin-left: -20px; background: var(--ink); border-radius: 3px; }
+.node.agent .ic { border-color: var(--blue); } .node.agent .ic::after { background: var(--blue); }
+.node.job .ic { width: 56px; height: 40px; border-width: 3px; border-color: #7d828b; } .node.job .ic::after { display: none; }
+.node .nm { margin-top: 20px; }
+.chip { position: absolute; font-weight: 700; font-size: 30px; padding: 6px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); }
+.card { position: absolute; background: #fff; border-radius: 12px; padding: 26px 32px; white-space: normal; border: 2px solid var(--line); }
+.big-num { font-weight: 800; font-size: 120px; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.xmark { position: absolute; height: 8px; background: var(--red); border-radius: 4px; transform-origin: 0 50%; }
+
+/* OpenAI 段部件：方角、黑白灰 */
+.o-blk { position: absolute; background: var(--o-ink); }
+.o-blk.g { background: var(--o-gray); } .o-blk.m { background: var(--o-mid); }
+.o-lab { font-family: "Inter", "Sans SC"; font-weight: 500; color: var(--o-ink); }
+.o-rule { position: absolute; height: 2px; background: var(--o-ink); transform-origin: 0 50%; }
+.o-box { position: absolute; border: 3px solid var(--o-ink); background: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 32px; }
+.o-term { position: absolute; font-family: "Mono"; font-size: 30px; color: var(--o-ink); background: #f5f5f5; padding: 14px 22px; white-space: pre; }
+.bg-o .gloss { border-left-color: #000; background: #f5f5f5; }
+
+/* Anthropic 段部件：圆角、暖色 */
+.a-box { position: absolute; border-radius: 18px; background: var(--a-tan); color: var(--a-ink); display: flex; align-items: center; justify-content: center; font-family: "Serif SC"; font-weight: 600; }
+.a-box.clay { background: var(--a-clay-ink); color: #fff; }
+.a-ttl { font-family: "Serif SC"; font-weight: 600; color: var(--a-ink); }
+.a-pill { position: absolute; border-radius: 999px; background: var(--a-ink); color: var(--a-bg); font-family: "Serif SC"; font-weight: 600; font-size: 28px; padding: 6px 18px; }
+.bg-a .gloss { border-left-color: var(--a-clay); background: #faf9f5; font-family: "Serif SC"; }
+
+/* 章节卡：三套 */
+.chapter { position: absolute; inset: 0; padding: 330px var(--M) 0; }
+.chapter .ti { transform-origin: 0 50%; }
+.ch-n { background: var(--ink); color: var(--paper); }
+.ch-n .no { font: 500 60px "Mono"; color: #6f9bff; }
+.ch-n .ti { font-weight: 800; font-size: 140px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+.ch-o { background: #fff; color: #000; border-bottom: 2px solid #000; }
+.ch-o .no { font: 500 44px "Inter"; color: #6b6b6b; }
+.ch-o .ti { font: 500 140px/1.05 "Inter", "Sans SC"; letter-spacing: -.035em; margin-top: 22px; }
+.ch-a { background: var(--a-bg); color: var(--a-ink); }
+.ch-a .no { font: 600 52px "Serif SC"; color: var(--a-clay-ink); }
+.ch-a .ti { font: 600 132px/1.1 "Serif SC"; margin-top: 18px; }
+
+/* 信息截止角标 */
+.cutoff { position: absolute; right: 66px; top: 30px; font: 500 24px "Sans SC"; color: #5d626b; z-index: 40; }
 
 /* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
+#caption { bottom: 46px; height: 64px; z-index: 50; }
 #caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption em { font-style: normal; font-weight: 800; color: var(--blue); }
 
 /* 片尾名单 */
 .credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
