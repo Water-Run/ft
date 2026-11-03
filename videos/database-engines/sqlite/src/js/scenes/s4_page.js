@@ -32,8 +32,8 @@ scene('page', ({ root, s, c0 }) => {
   const grow1 = tx(W, '指针往后长 →', bx(8), Y - 40, { fs: 22, color: K.dim }), grow2 = tx(W, '← 行往前长', bx(700), Y - 40, { fs: 22, color: K.dim });
   show(grow1, T('p4', '指针往后长'), { y: 6 }); show(grow2, T('p4', '行往前长'), { y: 6 }); sfx('whoosh', T('p4', '页尾'), { g: 0.25 });
   // p5：中间剩下的 41 个字节，是空地
-  const sF = seg(P.pointer_array[1], P.unallocated_bytes, null, true); set(sF, 0, { autoAlpha: 0 }); show(sF, T('p5', '41'), { y: 0, d: 0.3 });
-  show(tbl.rs[3], T('p5', '41'), { x: -10, y: 0 });
+  const sF = seg(P.pointer_array[1], P.unallocated_bytes, null, true); set(sF, 0, { autoAlpha: 0 }); show(sF, T('p5', '空地'), { y: 0, d: 0.3 });
+  show(tbl.rs[3], T('p5', '空地'), { x: -10, y: 0 });
   [grow1, grow2].forEach((e) => gone(e, T('p6') - 0.2, 0.3));
 
   // p6：行号 2050 的指针写着 489
@@ -75,7 +75,7 @@ scene('page', ({ root, s, c0 }) => {
   const lpFill = h('div', 'abs', lp); px(lpFill, 10, 44, 280 * NOTE.local / 1024, 60); css(lpFill, { background: K.wheat });
   const lpL = tx(W, `只留开头 ${NOTE.local} 个字节`, 120, 650, { fs: 24 });
   const long = tx(W, `一段 ${NOTE.payload - 5} 个字符的文本（连同记录头 ${NOTE.payload} 字节）`, 120, 460, { fs: 26 });
-  show(long, T('p11', '一万两千'), { y: 6 }); wipe(lp, T('p11', '叶页'), { dir: 'l', d: 0.4 }); tl.fromTo(lpFill, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.5, immediateRender: true }, T('p11', '785')); show(lpL, T('p11', '785'), { y: 6 });
+  show(long, T('p11', '一万两千'), { y: 6 }); wipe(lp, T('p11', '叶页'), { dir: 'l', d: 0.4 }); tl.fromTo(lpFill, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.5, immediateRender: true }, T('p11', '一小段')); show(lpL, T('p11', '一小段'), { y: 6 });
   const chain = NOTE.chain.map((c, i) => { const e = h('div', 'abs', W, String(c.page)); px(e, 480 + i * 120, 550, 90, 60); css(e, { border: `2px solid ${K.ink}`, background: '#fff', fontFamily: 'Mono', fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }); return e; });
   const links = NOTE.chain.map((c, i) => line(ov, [[i ? 480 + i * 120 - 30 : 420, 580], [480 + i * 120, 580]], { w: 1.8 }));
   chain.forEach((e, i) => { show(e, T('p12', '溢出页') + i * 0.08, { x: -12, y: 0, d: 0.3 }); arrowIn(links[i], T('p12', '溢出页') - 0.05 + i * 0.08, 0.15); });
@@ -83,13 +83,13 @@ scene('page', ({ root, s, c0 }) => {
   const gO = gloss(W, '溢出页', '放不下的部分一页接一页；每页开头 4 个字节写着下一页的页号', 480, 680, 760); show(gO, T('p12', '溢出页') + 0.3, { y: 8 }); sfx('whoosh', T('p12', '溢出页'), { g: 0.3 });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   const zNote = zone(W, 100, 440, 1100, 240);
-  beats([[T('p1', '130'), [sL, strip]], [T('p1', 'Alice'), aRow], [T('p1', '怎么放'), strip], [T('p2'), tbl.rs[0]], [T('p2', '17'), tbl.hr], [T('p3'), tbl.rs[1]], [T('p3', '两个字节'), sP], [T('p3', '按行号'), tbl.rs[1].children[2]], [T('p4'), tbl.rs[2]], [T('p4', '行往前长'), [grow2, ...cellEls]], [T('p5'), tbl.rs[3]], [T('p6'), ptrs], [T('p6', '2050'), pEls[slot]], [T('p6', '489'), pL], [T('p7'), strip], [T('p7', '489'), t489], [T('p7', '13'), hEls], [T('p8', '长度'), hEls[0]], [T('p8', '行号'), [hEls[1], hEls[2]]], [T('p8', '内容'), hEls.slice(3)], [T('p8', '42'), hEls[12]], [T('p9'), idL], [T('p10', '放不下'), big], [T('p11', '一万两千'), long], [T('p11', '叶页'), lp], [T('p11', '785'), lpL], [(T('p11') + Tend('p11')) / 2 + 0.4, [lpFill, lpL]], [T('p12'), gO], [T('p2') + 1.17, [strip, tbl.rs[0]], 1], [T('p3') + 3.62, [tbl.t, strip], 1], [T('p8') + 4.33, hEls, 1], [T('p9') + 1.88, [idL, strip], 1], [T('p11') + 4.68, [lp, long], 1], [T('p11') + 4.68, zNote, 1]], Tend('p12'));
+  beats([[T('p1', '130'), [sL, strip]], [T('p1', 'Alice'), aRow], [T('p1', '怎么放'), strip], [T('p2'), tbl.rs[0]], [T('p2', '17'), tbl.hr], [T('p3'), tbl.rs[1]], [T('p3', '两个字节'), sP], [T('p3', '按行号'), tbl.rs[1].children[2]], [T('p4'), tbl.rs[2]], [T('p4', '行往前长'), [grow2, ...cellEls]], [T('p5'), tbl.rs[3]], [T('p6'), ptrs], [T('p6', '2050'), pEls[slot]], [T('p6', '489'), pL], [T('p7'), strip], [T('p7', '489'), t489], [T('p7', '13'), hEls], [T('p8', '长度'), hEls[0]], [T('p8', '行号'), [hEls[1], hEls[2]]], [T('p8', '内容'), hEls.slice(3)], [T('p8', '42'), hEls[12]], [T('p9'), idL], [T('p10', '放不下'), big], [T('p11', '一万两千'), long], [T('p11', '叶页'), lp], [T('p11', '一小段'), lpL], [(T('p11') + Tend('p11')) / 2 + 0.4, [lpFill, lpL]], [T('p12'), gO], [T('p2') + 1.17, [strip, tbl.rs[0]], 1], [T('p3') + 3.62, [tbl.t, strip], 1], [T('p8') + 4.33, hEls, 1], [T('p9') + 1.88, [idL, strip], 1], [T('p11') + 4.68, [lp, long], 1], [T('p11') + 4.68, zNote, 1]], Tend('p12'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('p7', '13'), { g: 0.35 });
   sfx('pop', T('p8', '内容'), { g: 0.3 });
   sfx('tick', T('p9', '行号'), { g: 0.3 });
   sfx('whoosh', T('p11', '一万两千'), { g: 0.25 });
-  sfx('tick', T('p11', '785'), { g: 0.3 });
+  sfx('tick', T('p11', '一小段'), { g: 0.3 });
   [[T('p6') - 0.2, 'Alice 这一行：13 个字节'], [T('p10') - 0.2, '一行太长：溢出页']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1840, 900] }]]);
 });

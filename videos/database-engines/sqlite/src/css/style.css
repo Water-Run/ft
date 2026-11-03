@@ -65,8 +65,9 @@ body { font-family: "Inter", "Sans SC"; }
 .doc-item.now { text-decoration: underline; text-underline-offset: 5px; }
 .doc-right { margin-left: auto; }
 .lnk { color: var(--teal); text-decoration: underline; text-underline-offset: 4px; }
-.gloss { border: 2.5px solid var(--teal); background: #fff; padding: 14px 22px; font-size: 28px; line-height: 1.45; color: #1a1a1a; white-space: normal; box-sizing: border-box; }
-.gloss b { font-weight: 700; color: #000; }
+.gloss { border-left: 5px solid var(--teal); background: #fff; padding: 4px 0 4px 18px; font-size: 26px; line-height: 1.45; color: #333333; white-space: normal; box-sizing: border-box; }   /* 图注：贴在对象旁边，左边一道深青竖线，不画方框 */
+.gloss b { font-weight: 700; color: var(--teal); }
+.band { pointer-events: none; z-index: 19; }
 .codeblock { color: #000; line-height: 1.4; }
 .btn { background: #dddddd; border: 2px solid #aaaaaa; border-radius: 5px; padding: 2px 14px; color: #000; white-space: nowrap; }
 .err { border: 1.5px solid var(--red); color: var(--red); font-style: italic; padding: 6px 18px; background: #fff; white-space: nowrap; }
@@ -86,3 +87,4 @@ body { font-family: "Inter", "Sans SC"; }
 .bt * { color: #044a64 !important; }
 .bf { background-color: #cfe1e9 !important; outline: 5px solid #044a64 !important; outline-offset: 3px; }
 .bl { outline: 3px solid #044a64 !important; outline-offset: 3px; }
+.bs { background-color: #dbe9ef !important; }   /* 区域：只铺一层浅色底，不画框 */

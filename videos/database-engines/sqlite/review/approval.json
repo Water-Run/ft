@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "f19f029bdb4cefe7eb1deaf302909fcae04b473ed8cc903e4794ac4f47c33c3a",
+      "content_sha256": "98cecc0252cd460a7d5c4d0e8edc35fb43654592011abfa82aa2de17d860bc1f",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-03T00:29:45+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 11 稿：WaterRun 看预览 r2c 逐条给出意见，并把会话目标设为「完成视频自我迭代, 出下一个值得我观看的Preview」；点名的改动照原话做，连带改动见交审说明；未逐句看全文。 配音后 e8 超过 6 秒，在冒号处拆成 e8、e8b（文字不变），哈希由 d4094971… 变为此值。"
+      "confirmed_at": "2026-11-03T11:20:02+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 12 稿：WaterRun 看预览 r3 后要求「包括叙事的文案和节奏」等自我对抗再迭代、「想想怎么\"讲故事\"」；改动只有交审说明列出的几句（删 s27、s27b、d6b，p5、p11、d4、w3 去掉念出的数字，k1 拆成 k1、k1b）与章节（d1–d7b 原句拆成第 08 章「怎么删」，五个问题顺延为第 09 章）；未逐句看全文。"
     }
   }
 }

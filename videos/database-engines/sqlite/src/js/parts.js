@@ -30,12 +30,13 @@ function tx(p, html, x, y, o = {}) {
 const lnk = (s) => `<span class="lnk">${s}</span>`;              // 文档的链接：深青带下划线
 // 页标题：居中、深青、常规字重（文档的页标题）
 // 页标题写这一段的要点（像前几集的页标题），放在镜头之外的固定层：镜头推拉时标题不动、不被放大
-function pageTitle(p, s, y = 180, fs = 48) { const w = p.closest && p.closest('.world'); const host = w ? w.parentNode : p; const e = tx(host, s, 0, y - 18, { fs, color: K.teal, w: 1920, css: { textAlign: 'center', background: '#ffffff', height: '86px', lineHeight: '86px' } }); e.dataset.name = '页标题'; return e; }   // 白底一条：镜头推移时，内容从标题下面经过，不压字
+// 第 12 稿起，页标题不再每段一换（像翻幻灯片）：整章只在页头下面挂一条本章的问题（config.js 的 chrome()）。场景里原有的 pageTitle 调用留着不显示
+function pageTitle(p, s) { const e = h('div', 'abs', p); e.style.display = 'none'; return e; }
 // 小节标题：带编号、左对齐、深青
 function h2(p, s, x, y, fs = 40) { return tx(p, s, x, y, { fs, color: K.teal }); }
-// 注解框：文档的侧栏盒（2px 深青边），粗体名加一句话；data-gloss 供扫描核对术语的注解
+// 图注：左边一道深青竖线，粗体名加一句话，不画方框；data-gloss 供扫描核对术语的注解
 function gloss(p, term, html, x, y, w = 560, o = {}) {
-  const e = h('div', 'abs gloss', p, `<b>${term}</b>　${html}`); px(e, x, y, w); e.dataset.gloss = o.terms || term; e.dataset.beat = 'fill'; return e;
+  const e = h('div', 'abs gloss', p, `<b>${term}</b>　${html}`); px(e, x, y, w); e.dataset.gloss = o.terms || term; return e;
 }
 // 代码块：#eee 底、1px 灰绿边、等宽字
 function codeBlock(p, lines, x, y, o = {}) {
@@ -109,8 +110,8 @@ function shots(cam, world, s, keys) {
   cam.track(s.start, vs[0][1], out);
 }
 
-// 区域：垫在内容底下的一块（选中时浅青底、深青外框），用来指「现在讲的是这一片」；默认看不见
-function zone(p, x, y, w, hh) { const z = h('div', 'abs', p); px(z, x, y, w, hh); p.insertBefore(z, p.firstChild); z.dataset.beat = 'fill'; z.dataset.name = '区域'; return z; }
+// 区域：垫在内容底下的一块（选中时只铺浅色底，不画框），用来指「现在讲的是这一片」；默认看不见
+function zone(p, x, y, w, hh) { const z = h('div', 'abs', p); px(z, x, y, w, hh); p.insertBefore(z, p.firstChild); z.dataset.beat = 'soft'; z.dataset.name = '区域'; return z; }
 
 // 停在一屏上：只朝一个方向极慢横移（每秒不超过 2 像素，一屏合计不超过 40 像素），不缩放
 function stay(cam, s, c0, dir = 1) {
@@ -139,7 +140,7 @@ function beats(list, end) {
     }
   });
   for (const [e, a] of spans) {
-    const cls = { text: 'bt', fill: 'bf', line: 'bl' }[e.dataset.beat || (e.querySelector('div') ? 'fill' : 'text')];
+    const cls = { text: 'bt', fill: 'bf', line: 'bl', soft: 'bs' }[e.dataset.beat || (e.querySelector('div') ? 'fill' : 'text')];
     F((t) => { const on = a.some(([t0, t1]) => t >= t0 && t < t1); if (e.classList.contains(cls) !== on) e.classList.toggle(cls, on); });   // 不缓存上一帧：keyed 换内容时会重写 class，每帧都按 t 对一遍
   }
 }

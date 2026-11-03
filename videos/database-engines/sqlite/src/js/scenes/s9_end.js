@@ -1,4 +1,4 @@
-// 收束（第 11 稿）：公有领域与作者的声明 → 源码开头（3.54.1 的 src/btree.c 第 1–9 行原文）→ 三句祝福升华：源码退到背景，中文大字一句句升起，原文在下，念完停一停
+// 收束（第 12 稿）：公有领域与作者的声明 → 源码开头（3.54.1 的 src/btree.c 第 1–9 行原文）→ 三句祝福就对着这段注释念：镜头推近整个代码块，念到哪句亮哪行，念完停一停
 // → 前几期与这一期都是事务型 OLTP、按行存 → 几十亿行里算平均年龄：分析型 OLAP；OLTP 的 T 翻成 A（T、A 的全称只上画面）
 // → 一行挨着一行换成一列挨着一列 → SQLite 极小（一个库、一个文件）→ ClickHouse 极大（几十亿、上万亿行）→ 从极小，到极大。
 // 事实：G04、G14、G15、G08、G06、G07。
@@ -9,9 +9,9 @@ scene('end', ({ root, s, c0 }) => {
   const ov = overlay(W);
 
   // e2–e2b：代码属于公有领域；每位作者都签了声明
-  const pd = h('div', 'abs', W, '<div style="font-size:26px;color:#044a64">SQLite Is Public Domain</div><div style="font-size:30px;margin-top:6px">代码与文档都献给公有领域：任何人都可以自由使用</div>'); px(pd, 120, 250); css(pd, { borderLeft: `6px solid ${K.teal}`, paddingLeft: '20px' });
+  const pd = h('div', 'abs', W, '<div style="font-size:34px;color:#044a64">SQLite Is Public Domain</div><div style="font-size:42px;margin-top:8px">代码与文档都献给公有领域：任何人都可以自由使用</div>'); px(pd, 120, 258); css(pd, { borderLeft: `6px solid ${K.teal}`, paddingLeft: '20px' });
   set(pd, 0, { autoAlpha: 0 }); wipe(pd, T('e2') - 0.1, { dir: 'l', d: 0.45 }); sfx('pop', T('e2'), { g: 0.4 });
-  const aff = h('div', 'abs', W, '<div style="font-size:24px">声明</div><div style="font-size:24px;color:#555;margin-top:6px">我把自己写的代码献给公有领域</div><div style="margin-top:14px;border-top:1.5px solid #000;width:240px;font-size:24px;color:#555">签名</div>'); px(aff, 1340, 230, 420, 170);
+  const aff = h('div', 'abs', W, '<div style="font-size:30px">声明</div><div style="font-size:28px;color:#555;margin-top:8px">我把自己写的代码献给公有领域</div><div style="margin-top:16px;border-top:1.5px solid #000;width:260px;font-size:26px;color:#555">签名</div>'); px(aff, 1310, 236, 470, 196);
   css(aff, { border: `2px solid ${K.ink}`, background: '#fff', padding: '14px 20px', boxSizing: 'border-box' }); aff.dataset.name = '作者的声明';
   set(aff, 0, { autoAlpha: 0 }); slam(aff, T('e2b'), { from: 1.15 }); sfx('thud', T('e2b'), { g: 0.4 });
   // e3：源码文件的开头没有版权声明，代替它的是一段祝福（src/btree.c 第 1–9 行原文）
@@ -20,17 +20,16 @@ scene('end', ({ root, s, c0 }) => {
   const code = codeBlock(W, SRC.map(esc), 120, 450, { fs: 24 }); code.dataset.name = '源码开头';
   const lines = [...code.children];
   show(fname, T('e3', '源码') - 0.2, { y: 6 }); set(code, 0, { autoAlpha: 0 }); wipe(code, T('e3', '源码'), { dir: 't', d: 0.5 }); sfx('whoosh', T('e3', '源码'), { g: 0.3 });
-  // e4–e6：三句祝福升华——源码与声明退到背景，中文大字居中一句句升起，下面是原文；念完停一停（e6 后 2.5 秒）
+  // e4–e6：三句祝福就在这段注释里——声明退场，镜头推近整个代码块；念到哪一句，那一行注释亮起、左边标一道深青竖线，其余几行压淡；念完停一停（e6 后 2.5 秒）
   const tB = T('e4') - 0.7;
-  [pd, aff, fname, code].forEach((e) => gone(e, tB, 0.8));
-  const ZH = ['愿你行善，不作恶', '愿你宽恕自己，也宽恕他人', '愿你自由分享，所取不多于所予'];
-  const EN = ['May you do good and not evil.', 'May you find forgiveness for yourself and forgive others.', 'May you share freely, never taking more than you give.'];
+  [pd, aff].forEach((e) => gone(e, tB, 0.6));
+  [0, 1, 2, 3, 4, 5, 9].forEach((i) => dim(lines[i], tB + 0.4, 0.35, 1, 0.8));
   const BC = ['e4', 'e5', 'e6'];
-  const bl = ZH.map((z, i) => { const g = h('div', 'abs', W); px(g, 0, 300 + i * 175, 1920); css(g, { textAlign: 'center', whiteSpace: 'normal' });
-    g.innerHTML = `<div style="font-size:66px;color:#044a64;letter-spacing:6px">${z}</div><div style="font-size:28px;color:#555555;font-style:italic;margin-top:12px">${EN[i]}</div>`;
-    set(g, 0, { autoAlpha: 0 }); show(g, T(BC[i]) - 0.2, { y: 30, d: 1.6, ease: 'power2.out' }); sfx('tick', T(BC[i]), { g: 0.3 }); return g; });
+  const cb = box(code, world);
+  const marks = [6, 7, 8].map((li, k) => { const b = box(lines[li], world); const m = h('div', 'abs', W); px(m, cb.x - 18, b.y + 4, 6, b.h - 8); css(m, { background: K.teal });
+    set(m, 0, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 1, scaleY: 1, duration: 0.5, ease: 'power2.out', immediateRender: false }, T(BC[k]) - 0.1); sfx('tick', T(BC[k]), { g: 0.3 }); return m; });
   const tO = T('e7') - 0.5;
-  bl.forEach((g) => gone(g, tO, 0.7));
+  [fname, code, ...marks].forEach((e) => gone(e, tO, 0.6));
 
   // e7–e8：前几期的 MySQL、PostgreSQL 和这一期的 SQLite，做的都是同一类工作：每次只读写几行，事务型 OLTP；都按行存
   const tbl = h('div', 'abs', W); px(tbl, 120, 300, 720, 400); tbl.dataset.name = '按行存的表';
@@ -91,13 +90,13 @@ scene('end', ({ root, s, c0 }) => {
 
   // 「当前在讲谁」
   const zPd = zone(W, 100, 236, 1000, 140);
-  beats([[T('e2', '公有领域'), pd.children[0]], [T('e2', '自由使用'), pd.children[1]], [T('e2b'), aff], [T('e3', '源码'), fname], [T('e3', '版权声明'), lines[3]], [T('e3', '祝福'), lines[4]],
+  beats([[T('e2', '公有领域'), pd.children[0]], [T('e2', '自由使用'), pd.children[1]], [T('e2b'), aff], [T('e3', '源码'), fname], [T('e3', '版权声明'), lines[3]], [T('e3', '祝福'), lines[4]], [T('e4'), lines[6], 1], [T('e5'), lines[7], 1], [T('e6'), lines[8], 1],
     [T('e7', 'My S Q L'), dbs[0]], [T('e7', 'Postgres'), dbs[1]], [T('e7', 'S Q Lite'), dbs[2]], [T('e8b', '几行'), rowEls], [T('e8b', '事务型'), exp], [T('e9', '几十亿行'), many], [T('e10', 'O L A P'), gA], [T('e10b', '一个字母'), exp],
     [T('e11', '一行'), rowEls], [T('e11', '一列'), cols], [T('e12', '极小'), fSL], [T('e12b', 'Click House'), ch], [T('e12b', '几十亿'), bigL], [T('e2') + 2.37, [pd], 1], [T('e2b') + 2.45, [aff, pd], 1], [T('e2') + 1.67, zPd, 1]], Tend('e12b'));
   // 镜头：声明与源码 → 祝福 → OLTP 到 OLAP、行到列 → 极小到极大
   shots(cam, world, s, [
     [s.start, null, { rect: [110, 240, 1840, 790] }],
-    [T('e4') - 0.7, null, { rect: [110, 260, 1810, 870], d: 1.6 }],
+    [T('e4') - 0.7, [fname, code], { pad: 24, zmax: 1.9, d: 1.8 }],
     [T('e7') - 0.5, null, { rect: [110, 215, 1600, 770], pad: 0 }],
     [T('e11') - 0.2, null, { rect: [110, 228, 1810, 896], pad: 0 }],
   ]);
