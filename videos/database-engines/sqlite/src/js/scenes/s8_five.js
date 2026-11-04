@@ -29,7 +29,7 @@ scene('five', ({ root, s, c0 }) => {
   [UTr, NTr].forEach((tr, k) => { tr.all.forEach((e, i) => show(e, c0 + 0.7 + k * 0.3 + i * 0.01, { y: 0, d: 0.3 })); tr.lines.forEach((l) => arrowIn(l, c0 + 0.8 + k * 0.3, 0.3)); });
   const JR = panel('main.db-journal', 1290, 270, 520, 250), WALp = panel('main.db-wal', 1290, 570, 520, 260);
   wipe(JR, c0 + 0.9, { dir: 'l', d: 0.45 }); wipe(WALp, c0 + 1.1, { dir: 'l', d: 0.45 });
-  const free = []; for (let i = 0; i < 5; i++) free.push(pageCell(W, 700 + i * 110, 866, 70, 44, { fill: K.wheat, bw: 1.5 }));
+  const free = []; for (let i = 0; i < 5; i++) { const c = pageCell(W, 700 + i * 110, 866, 70, 44, { fill: '#ffffff', bw: 1.5 }); c.style.borderStyle = 'dashed'; free.push(c); }   // 空闲页：白底虚线框，和第 08 章一样
   const fl = free.slice(0, 4).map((c, i) => line(ov, [[770 + i * 110, 888], [808 + i * 110, 888]], { w: 1.5 }));
   const freeL = tx(W, '空闲链', 590, 872, { fs: 26, color: K.dim });
   free.forEach((c, i) => show(c, c0 + 1.2 + i * 0.05, { y: 0, d: 0.3 })); fl.forEach((l, i) => arrowIn(l, c0 + 1.3 + i * 0.05, 0.2)); show(freeL, c0 + 1.4, { y: 0 });
@@ -60,13 +60,8 @@ scene('five', ({ root, s, c0 }) => {
   frs.forEach((f, i) => keyed(f).at(T('z7b', '校验和') + i * 0.1, { html: ['帧 1 · 第 130 页 · 校验和对得上', '帧 2 · 第 505 页 · 校验和对得上', '帧 5 · 提交 · 校验和对得上'][i] }));
   sfx('tick', T('z7b', '校验和'), { g: 0.35 });
 
-  // 「当前在讲谁」：左边当前那一问，和图上正在动的那一部分
-  frs.forEach((f) => { f.dataset.beat = 'line'; });
-  beats([[T('z1', '五个问题'), qEls],
-    [T('z2'), qEls[0]], [T('z2', '一个文件'), FILE.nameEl], [T('z2', '页'), pages], [T('z2b'), UTr.all], [T('z2b', '索引是'), NTr.all],
-    [T('z3'), qEls[1]], [T('z3', '根页'), NTr.r], [T('z3b', '行号'), NTr.lv[2]], [T('z3b', '取整行'), UTr.lv[12]],
-    [T('z4'), qEls[2]], [T('z4', '日志'), JR.nameEl], [T('z4b', '空闲链'), free],
-    [T('z5'), qEls[3]], [T('z5', '独占'), lockB], [T('z5b', '快照'), snap], [T('z6', '只能有一个'), one],
-    [T('z7'), qEls[4]], [T('z7', '抄回去'), backL], [T('z7b', '校验和'), frs], [T('z7b', '提交标记'), frs[2]]], Tend('z7b'));
+  // 两个焦点框：左边一个跟着当前这一问往下走；图上一个指这一问对应的部分（文件、两棵树、根页、空闲链、带提交标记的帧）
+  focus(W, [[T('z2'), qEls[0]], [T('z3'), qEls[1]], [T('z4'), qEls[2]], [T('z5'), qEls[3]], [T('z7'), qEls[4]]], Tend('z7b') + 0.6);
+  focus(W, [[T('z2', '一个文件'), FILE], [T('z2b'), UTr.all], [T('z2b', '索引是'), NTr.all, Tend('z2b')], [T('z3', '根页'), NTr.r, Tend('z3')], [T('z4b', '空闲链'), free, Tend('z4b')], [T('z7b', '提交标记'), frs[2], Tend('z7b')]], Tend('z7b'));
   shots(cam, world, s, [[s.start, null, { rect: [110, 256, 1830, 914], pad: 0 }]]);
 });

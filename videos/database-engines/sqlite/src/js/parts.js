@@ -3,10 +3,20 @@
 // 所有时刻由 T()/Tend() 推出；元素的显隐一条链接到底：一个元素只登记一次入场、一次退场（docs/reference/pitfalls.md「页面与场景」）。
 
 // ── 时刻：按词的时刻提前 0.3 秒、句首提前 0.12 秒（画面略早于话音）；找不到句号时报警告并返回片尾，避免负时刻让整条时间线平移 ──
+// 第 14 稿起：MiniMax 给的逐字时间里，标点后的第一个字常被标在停顿开头，比真正念到早 0.3–1 秒（用 Whisper 逐字对齐核过 o2c「多人」、h5「程序」「连不上」、l1「配置」）。
+// 这种字改到它后面那个字之前 0.05 秒；词的提前量从 0.3 秒减到 0.12 秒（WaterRun 看 r6：「安装 配置 管理的动画和旁白也有错位」）
+(function fixWords() {
+  const P = /^[，、：；。？！,.:;?!…]+$/;
+  for (const c of Object.values(L.cues)) {
+    const w = c.words; if (!w) continue;
+    // 按音频能量量过 o2c、l1、h5、s4b 的停顿：这种字真正起音的时刻≈它后面那个字的时间减 0.05 秒
+    for (let i = 1; i + 1 < w.length; i++) if (P.test(w[i - 1][2]) && w[i + 1][0] - w[i][0] > 0.15) { w[i][0] = +(w[i + 1][0] - 0.05).toFixed(3); w[i][1] = 0.05; }
+  }
+})();
 const _T0 = T;
 T = function (id, word, shift = 0) {
   if (!L.cues[id]) { console.warn('no cue', id); return L.total; }
-  return Math.max(0, _T0(id, word, 0) - (word ? 0.3 : 0.12)) + shift;
+  return Math.max(0, _T0(id, word, 0) - (word ? 0.12 : 0.12)) + shift;
 };
 // Tend 在引擎里是常量（不能改写）；场景只对存在的句号用它
 
@@ -111,6 +121,39 @@ function shots(cam, world, s, keys) {
   cam.track(s.start, vs[0][1], out);
 }
 
+// ── 焦点框（第 14 稿起取代 beats() 的染色）：全片只有这一种「看这里」——一个深青描边框，框住旁白此刻说的那一样东西（一组就框住它们的外接矩形）。
+// 换对象时从上一个滑到下一个；前后不连着时淡入淡出。不改任何对象的颜色（WaterRun 看 r6：「为什么色彩一直变来变去的看的眼花缭乱」）。
+// 只在画面上同时摆着好几样、观众要从中找到旁白说的那一样时才用；新出场的东西靠出场动作吸引视线，不再加框。
+// list = [[t, 元素或元素数组, 结束时刻?], …]：每项从 t 框到下一项开始（或给定的结束时刻，或 end）。位置每帧按当下的版面量，所以跟得上移动的对象。
+function focus(W, list, end, o = {}) {
+  const items = list.map(([t, e, t1]) => ({ t, els: [].concat(e).filter(Boolean), t1 })).filter((x) => x.els.length && isFinite(x.t)).sort((a, b) => a.t - b.t);
+  items.forEach((it, i) => { const nx = items[i + 1]; it.t1 = Math.min(it.t1 != null ? it.t1 : Infinity, nx ? nx.t : end); });
+  const fr = h('div', 'abs', W); css(fr, { border: `3px solid ${K.teal}`, boxSizing: 'border-box', pointerEvents: 'none', opacity: '0', left: '0px', top: '0px', width: '0px', height: '0px' }); fr.dataset.name = '焦点框';
+  const PAD = o.pad != null ? o.pad : 8, R = 0.4, FADE = 0.25, sc = W.closest('.scene');
+  const rectOf = (els) => {
+    const wr = W.getBoundingClientRect(), k = wr.width / 1920 || 1; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const e of els) { const r = e.getBoundingClientRect(); if (!r.width && !r.height) continue; x0 = Math.min(x0, (r.left - wr.left) / k); y0 = Math.min(y0, (r.top - wr.top) / k); x1 = Math.max(x1, (r.right - wr.left) / k); y1 = Math.max(y1, (r.bottom - wr.top) / k); }
+    return x1 > x0 ? [x0 - PAD, y0 - PAD, x1 + PAD, y1 + PAD] : null;
+  };
+  const clamp = (x) => Math.max(0, Math.min(1, x)), ease = (x) => x * x * (3 - 2 * x);
+  const put = (r, a) => { const v = r ? [Math.round(r[0]) + 'px', Math.round(r[1]) + 'px', Math.round(r[2] - r[0]) + 'px', Math.round(r[3] - r[1]) + 'px', String(+a.toFixed(3))] : ['0px', '0px', '0px', '0px', '0'];
+    const st = fr.style; if (st.left !== v[0]) st.left = v[0]; if (st.top !== v[1]) st.top = v[1]; if (st.width !== v[2]) st.width = v[2]; if (st.height !== v[3]) st.height = v[3]; if (st.opacity !== v[4]) st.opacity = v[4]; };
+  F((t) => {
+    let i = -1; for (let j = 0; j < items.length; j++) if (t >= items[j].t && t < items[j].t1 + FADE) i = j;
+    if (i < 0) return put(null, 0);
+    const it = items[i], pv = items[i - 1], joined = pv && pv.t1 >= it.t - 0.05, nx = items[i + 1], cont = nx && nx.t <= it.t1 + 0.05;
+    if (t >= it.t1 && cont) return;                                  // 交给下一项
+    const off = sc && sc.style.display === 'none'; if (off) sc.style.display = '';
+    let r = rectOf(it.els), a = 1;
+    if (joined && t - it.t < R) { const r0 = rectOf(pv.els), k = ease(clamp((t - it.t) / R)); if (r0 && r) r = r.map((v, n) => r0[n] + (v - r0[n]) * k); }
+    else if (!joined) a = clamp((t - it.t) / FADE);
+    if (t >= it.t1) a = Math.min(a, 1 - clamp((t - it.t1) / FADE));
+    if (off) sc.style.display = 'none';
+    put(r, a);
+  });
+  return fr;
+}
+
 // 区域：垫在内容底下的一块（选中时只铺浅色底，不画框），用来指「现在讲的是这一片」；默认看不见
 function zone(p, x, y, w, hh) { const z = h('div', 'abs', p); px(z, x, y, w, hh); p.insertBefore(z, p.firstChild); z.dataset.beat = 'soft'; z.dataset.name = '区域'; return z; }
 
@@ -120,68 +163,4 @@ function stay(cam, s, c0, dir = 1) {
   cam.track(s.start, { x: 960, y: 540, z: 1 }, [[c0 + 0.1, { x: 960 + dx }, dur, { ease: 'none', sfx: false }]]);
 }
 
-// ── 「当前在讲谁」：一句话开始时，它讲的那个对象换成文档主菜单的选中样式（深青底、白字），讲到下一个对象时选中移过去。
-// list = [[时刻, 元素], …]，按时刻排好；每个选中持续到下一项开始（最后一项到 end 为止）。原来的底色、字色在构建时取实际值写进行内样式，
-// 倒着跳时写回的就是同一个值（不靠 GSAP 第一次播到时去读继承来的颜色，那样会让顺播与跳播不一致）。
-function beats(list, end) {
-  // 「当前在讲谁」：每句讲到的对象浅浅亮起，讲到下一个就移过去（第 13 稿起）。
-  // 不再切换 class（瞬间开关读起来是闪烁）：每个对象的亮度按时刻算出来，开、关各用 0.35 秒淡入淡出；
-  // 着色是对象的 ::before 平涂浅色衬底（不用阴影，不加子节点），画在元素自己的底色之上、文字之下，不改它原来的底色和字色。
-  // 单个文字：浅青底向外扩 6px；含子 div 的框（或 data-beat="fill"）：浅青底；data-beat="line"：一圈细边；data-beat="soft"（区域）：更浅的底。
-  // 一条可以是一组元素；同一对象两次亮起间隔不到 0.8 秒就连成一次；相邻两项至少隔 1.5 秒（第三项为真的「必留」不受此限）。
-  // 图注（.gloss）与标了 data-nohl 的注释不亮：给注释铺底读起来像一个矩形框（WaterRun 看 r5b：「TCL注释不用底矩形框」）
-  const lit = (e) => e && !(e.classList && (e.classList.contains('gloss') || 'nohl' in e.dataset));
-  const all = list.map(([t, e, keep]) => [t, (Array.isArray(e) ? e : [e]).filter(lit), keep]).filter(([t, g]) => g.length && isFinite(t)).sort((a, b) => a[0] - b[0]);
-  const MIN = 1.5, GAP = 0.8, R = 0.35, items = [];
-  for (const it of all) if (!items.length || it[2] || it[0] - items[items.length - 1][0] >= MIN) items.push(it);
-  const spans = new Map();
-  items.forEach(([t, g], i) => {
-    const t2 = Math.max(t + 0.6, i + 1 < items.length ? items[i + 1][0] : end);
-    for (const e of g) {
-      if (!spans.has(e)) spans.set(e, []);
-      const a = spans.get(e), last = a[a.length - 1];
-      if (last && last[1] >= t - GAP) last[1] = Math.max(last[1], t2); else a.push([t, t2]);
-    }
-  });
-  const clamp = (x) => Math.max(0, Math.min(1, x)), ease = (x) => x * x * (3 - 2 * x);
-  // 衬底：对象的 ::before 伪元素（style.css 的 [data-hl]），平涂浅色，在对象自己的底色之上、文字与带定位的子元素之下；亮度只改 --hl
-  const PEAK = { text: 1, fill: 0.9, soft: 1, line: 0.85 };
-  for (const [e, a] of spans) {
-    const kind = e.dataset.beat || (e.querySelector('div') ? 'fill' : 'text'), peak = PEAK[kind] || 1;
-    const cs = getComputedStyle(e);
-    if (cs.position === 'static') e.style.position = 'relative';
-    if (cs.zIndex === 'auto') e.style.zIndex = '0';
-    e.dataset.hl = PEAK[kind] ? kind : 'text';
-    // 单个文字的衬底只包住文字本身：表格的格、图例这类盒子常比字宽，按盒子铺会长出一截、又在下一列前戛然而止（WaterRun 看 r5b：「溢出的细节Bug」）。
-    // 亮着的时候按当下的版面量出文字左右两端到盒子边的距离，写进 --hll / --hlr（版面是时刻的函数，跳播与顺播一致）
-    // 场景的显隐（engine.js 在所有场景建好后才注册的帧函数）比这里晚跑：跳播到这一刻时场景可能还是 display:none，先临时显示再量，量完放回原值，紧接着由引擎按时刻定下
-    const sc = e.closest('.scene');
-    const hug = (kind === 'text' || kind === 'fill') ? () => {
-      const off = sc && sc.style.display === 'none'; if (off) sc.style.display = '';
-      const b = e.getBoundingClientRect(), ow = e.offsetWidth, cs = getComputedStyle(e);
-      const boxy = (parseFloat(cs.borderLeftWidth) > 0 && cs.borderLeftStyle !== 'none') || !/^(transparent|rgba\(0, 0, 0, 0\))$/.test(cs.backgroundColor);   // 自己有底色或边框的（按钮、框、代码条）照旧铺满盒子
-      let c = null;
-      if (!boxy && b.width && ow) {
-        if (kind === 'text') { const rg = document.createRange(); rg.selectNodeContents(e); c = rg.getBoundingClientRect(); }
-        else {   // 整块（表格、一组）：只包住此刻看得见的子元素——还没出场的行也占着版面，按盒子铺会盖住一片空白
-          let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-          for (const ch of e.children) { const s2 = getComputedStyle(ch); if (s2.visibility === 'hidden' || s2.display === 'none' || +s2.opacity < 0.05) continue; const q = ch.getBoundingClientRect(); if (!q.width || !q.height) continue; x0 = Math.min(x0, q.left); y0 = Math.min(y0, q.top); x1 = Math.max(x1, q.right); y1 = Math.max(y1, q.bottom); }
-          if (x1 > x0) c = { left: x0, top: y0, right: x1, bottom: y1, width: x1 - x0 };
-        }
-      }
-      if (off) sc.style.display = 'none';
-      if (!b.width || !ow) return;
-      const k = b.width / ow, m = kind === 'text' ? 0 : 6;   // 文字的 6px 外扩写在 CSS 里；整块包住内容时在这里留 6px
-      let l = 0, r = 0, tp = 0, bt = 0;
-      if (c && c.width) { l = Math.round((c.left - b.left) / k) - m; r = Math.round((b.right - c.right) / k) - m; if (kind === 'fill') { tp = Math.round((c.top - b.top) / k) - m; bt = Math.round((b.bottom - c.bottom) / k) - m; } }
-      for (const [n, v] of [['--hll', l], ['--hlr', r], ['--hlt', tp], ['--hlb', bt]]) { const x = v + 'px'; if (e.style.getPropertyValue(n) !== x) e.style.setProperty(n, x); }
-    } : null;
-    F((t) => {
-      let k = 0;
-      for (const [t0, t1] of a) k = Math.max(k, Math.min(clamp((t - t0) / R), clamp((t1 - t) / R)));
-      const v = String(+(peak * ease(k)).toFixed(3));
-      if (hug && +v > 0) hug();
-      if (e.style.getPropertyValue('--hl') !== v) e.style.setProperty('--hl', v);
-    });
-  }
-}
+// 第 14 稿删去 beats()（「当前在讲谁」的自动染色）：改用上面的 focus() 焦点框，只在需要指出某一样时用

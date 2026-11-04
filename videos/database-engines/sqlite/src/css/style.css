@@ -89,9 +89,3 @@ body { font-family: "Inter", "Sans SC"; }
 .bl { outline: 3px solid #044a64 !important; outline-offset: 3px; }
 .bs { background-color: #dbe9ef !important; }   /* 区域：只铺一层浅色底，不画框 */
 
-/* 选中衬底（第 13 稿）：beats() 给对象标 data-hl，亮度写在 --hl（0–1，按时刻算出）；画在对象自己的底色之上、文字之下，平涂 */
-[data-hl]::before { content: ''; position: absolute; pointer-events: none; z-index: -1; box-sizing: border-box; opacity: var(--hl, 0); }
-[data-hl="text"]::before { left: calc(var(--hll, 0px) - 6px); top: -6px; right: calc(var(--hlr, 0px) - 6px); bottom: -6px; background: #bcd6e1; }   /* 左右只包住文字（--hll、--hlr 由 beats() 量出） */
-[data-hl="fill"]::before { left: var(--hll, 0px); top: var(--hlt, 0px); right: var(--hlr, 0px); bottom: var(--hlb, 0px); background: #cfe1e9; }   /* 没有底色和边框的整块：只包住看得见的子元素（beats() 量出） */
-[data-hl="soft"]::before { left: 0; top: 0; right: 0; bottom: 0; background: #dbe9ef; }
-[data-hl="line"]::before { left: -6px; top: -6px; right: -6px; bottom: -6px; border: 3px solid #044a64; }

@@ -40,6 +40,8 @@ scene('end', ({ root, s, c0 }) => {
   show(head, tO + 0.5, { y: 6 }); rowEls.forEach((e, i) => show(e, tO + 0.6 + i * 0.08, { x: -12, y: 0, d: 0.3 }));
   rowEls.forEach((e) => { e.dataset.beat = 'line'; });
   const dbs = ['MySQL', 'PostgreSQL', 'SQLite'].map((n, i) => { const b = btn(W, n, 1000 + i * 250, 540, 28); set(b, 0, { autoAlpha: 0 }); slam(b, T('e7', ['My S Q L', 'Postgres', 'S Q Lite'][i]), { from: 1.2 }); sfx('pop', T('e7', ['My S Q L', 'Postgres', 'S Q Lite'][i]), { g: 0.3, p: -0.2 + i * 0.2 }); return b; });
+  // 「做的都是同一类工作」：三个名字往中间靠成一组
+  dbs.forEach((b, i) => tl.fromTo(b, { x: 0 }, { x: [60, 0, -40][i], duration: 0.6, ease: 'power2.inOut', immediateRender: false }, T('e8', '同一类') - 0.1)); sfx('whoosh', T('e8', '同一类'), { g: 0.25 });
   set(rowEls[1], T('e8b', '几行'), { backgroundColor: K.wheat }); sfx('tick', T('e8b', '几行'), { g: 0.4 });
   const L4 = ['O', 'L', 'T', 'P'].map((c, i) => { const e = h('div', 'abs', W, c); px(e, 1000 + i * 120, 300, 110, 140); css(e, { border: `2.5px solid ${K.teal}`, color: K.teal, fontSize: '96px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', background: '#fff' }); return e; });
   L4.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); slam(e, T('e8b', 'O L T P') + i * 0.08, { from: 1.25 }); }); sfx('thud', T('e8b', 'O L T P'), { g: 0.5 });
@@ -53,17 +55,16 @@ scene('end', ({ root, s, c0 }) => {
   const avg = codeBlock(W, ['SELECT avg(age) FROM users;'], 120, 222, { fs: 26 }); set(avg, 0, { autoAlpha: 0 }); show(avg, T('e9', '平均年龄') - 0.3, { y: 0, d: 0.3 });
   const many = tx(W, '…… 几十亿行', 140, 640, { fs: 28, color: K.dim }); show(many, T('e9', '几十亿行'), { y: 8 });
   const tMorph = T('e10', 'O L A P') + 0.25;   // 念到 L、A 之间翻过去
-  const Tl = L4[2], Al = h('div', 'abs', W, 'A'); px(Al, 1000 + 2 * 120, 300, 110, 140); css(Al, { border: `2.5px solid ${K.teal}`, color: K.teal, fontSize: '96px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', background: K.wheat });
+  const Tl = L4[2], Al = h('div', 'abs', W, 'A'); px(Al, 1000 + 2 * 120, 300, 110, 140); css(Al, { border: `2.5px solid ${K.teal}`, color: K.teal, fontSize: '96px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', background: '#fff' });
   set(Al, 0, { autoAlpha: 0 });
   tl.fromTo(Tl, { rotationX: 0 }, { rotationX: 90, duration: 0.22, ease: 'power1.in', immediateRender: false }, tMorph - 0.22);
   set(Tl, tMorph, { autoAlpha: 0 }); set(Al, tMorph, { autoAlpha: 1 });
   tl.fromTo(Al, { rotationX: -90 }, { rotationX: 0, duration: 0.3, ease: 'power1.out', immediateRender: false }, tMorph); sfx('pop', tMorph, { g: 0.5 });
-  keyed(exp).at(tMorph + 0.1, { html: 'Online <b style="background:#f5deb3">Analytical</b> Processing　分析型' });
+  keyed(exp).at(tMorph + 0.1, { html: 'Online <b>Analytical</b> Processing　分析型' });
 
   // e11：一行挨着一行的存法，也要换成一列挨着一列——表的几行先亮，再在右边立起三列
   const tR = T('e11') - 0.2;
   [L4[0], L4[1], L4[3], Al, exp].forEach((e) => gone(e, tR, 0.4));
-  rowEls.forEach((e, i) => set(e, T('e11', '一行') + i * 0.1, { backgroundColor: '#f7e6c4' }));
   const colX = [1000, 1220, 1560], colW = [190, 310, 190], names = ['id', 'name', 'age'];
   const colV = [['2049', '2050', '2051', '2052', '…'], ['User02049-…', 'Alice', 'User02051-…', 'User02052-…', '…'], ['51', '42', '53', '54', '…']];
   const cols = names.map((n, j) => { const c = h('div', 'abs', W); px(c, colX[j], 520, colW[j], 330); css(c, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box', fontFamily: 'Mono', fontSize: '24px', padding: '8px 12px', transformOrigin: '50% 100%' });
@@ -88,11 +89,9 @@ scene('end', ({ root, s, c0 }) => {
   const small = tx(W, '极小', 140, 700, { fs: 56, color: K.teal }), big = tx(W, '极大', 1440, 236, { fs: 60, color: K.teal });   // 让出 ClickHouse 后面的 PART 5
   show(small, T('e13', '极小'), { y: 10, d: 0.9 }); show(big, T('e13', '极大'), { y: 10, d: 1.0 }); sfx('thud', T('e13', '极大'), { g: 0.5 });
 
-  // 「当前在讲谁」
-  const zPd = zone(W, 100, 236, 1000, 140);
-  beats([[T('e2', '公有领域'), pd.children[0]], [T('e2', '自由使用'), pd.children[1]], [T('e2b'), aff], [T('e3', '源码'), fname], [T('e3', '版权声明'), lines[3]], [T('e3', '祝福'), lines[4]], [T('e4'), lines[6], 1], [T('e5'), lines[7], 1], [T('e6'), lines[8], 1],
-    [T('e7', 'My S Q L'), dbs[0]], [T('e7', 'Postgres'), dbs[1]], [T('e7', 'S Q Lite'), dbs[2]], [T('e8b', '几行'), rowEls], [T('e8b', '事务型'), exp], [T('e9', '几十亿行'), many], [T('e10', 'O L A P') + 0.4, exp],
-    [T('e11', '一行'), rowEls], [T('e11', '一列'), cols], [T('e12', '极小'), fSL], [T('e12b', 'Click House'), ch], [T('e12b', '几十亿'), bigL], [T('e2') + 2.37, [pd], 1], [T('e2b') + 2.45, [aff, pd], 1], [T('e2') + 1.67, zPd, 1]], Tend('e12b'));
+  // 焦点框：源码注释里「没有版权声明」「一段祝福」那两行；三句祝福一句一句地框；「一行挨着一行」框住几行，「一列挨着一列」框住三列
+  focus(W, [[T('e3', '版权声明'), lines[3]], [T('e3', '祝福'), lines[4], Tend('e3')], [T('e4'), lines[6]], [T('e5'), lines[7]], [T('e6'), lines[8], Tend('e6') + 1.4],
+    [T('e11', '一行'), rowEls, T('e11', '一列') - 0.1], [T('e11', '一列'), cols, Tend('e11')]], Tend('e13'));
   // 镜头：声明与源码 → 祝福 → OLTP 到 OLAP、行到列 → 极小到极大
   shots(cam, world, s, [
     [s.start, null, { rect: [110, 240, 1840, 790] }],

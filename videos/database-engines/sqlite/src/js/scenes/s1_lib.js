@@ -26,7 +26,7 @@ scene('lib', ({ root, s, c0 }) => {
   const vl = [['关', 1240], ['关', 1480], ['开', 1700]].map(([t, x]) => tx(W, t, x - 16, 524, { fs: 32, color: t === '关' ? K.ink : K.teal }));
   show(shipL, T('h3') - 0.1, { y: 8 }); wipe(pipe, T('h2', '写软件'), { dir: 'l', d: 0.6 }); valves.forEach((v, i) => show(v, T('h2', '写软件') + 0.4 + i * 0.1, { y: -10 }));
   slam(crack, T('h3', '管道破了'), { from: 1.6 }); sfx('error', T('h3', '管道破了'), { g: 0.4 });
-  [valves[1], valves[2]].forEach((v, i) => set(v, T('h3', '关') + i * 0.15, { backgroundColor: K.ink })); set(valves[3], T('h3', '关') + 0.4, { backgroundColor: K.wheat });
+  [valves[1], valves[2]].forEach((v, i) => set(v, T('h3', '关') + i * 0.15, { backgroundColor: K.ink })); set(valves[3], T('h3', '关') + 0.4, { borderColor: K.teal });
   vl.forEach((e, i) => show(e, T('h3', '关') + i * 0.15, { y: 6 })); sfx('tick', T('h3', '关'), { g: 0.5 });
   const top = [who, whoL, ...facts, shipL, pipe, crack, ...valves, ...vl];
 
@@ -42,14 +42,14 @@ scene('lib', ({ root, s, c0 }) => {
   keyed(title).at(T('h4') - 0.3, { html: '数据在船上的 Informix 服务器里' });
   top.forEach((e) => gone(e, T('h4') - 0.3, 0.3));   // 镜头下移时一起收走
   const tStop = T('h5', '一停');
-  set(srv, tStop, { backgroundColor: '#555555', color: '#ffffff' }); sfx('error', tStop + 0.5, { g: 0.5 });   // 服务器停了：深灰底白字
+  set(srv, tStop, { backgroundColor: '#555555', color: '#ffffff' }); sfx('error', tStop + 0.1, { g: 0.5 });   // 服务器停了：深灰底白字
   // 连不上：程序到服务器的那条线从中间断开，两截变红、各自往下耷拉（WaterRun 看 r5b：「连不上服务器 线条应该断了」）
   const a1L = line(ov, [[500, Y + 55], [567, Y + 55]], { arrow: false, color: 'red', w: 3 }), a1R = line(ov, [[571, Y + 55], [638, Y + 55]], { arrow: false, color: 'red', w: 3 });
   [a1L, a1R].forEach((e) => set(e, 0, { autoAlpha: 0 }));
-  const tCut = T('h5', '连不上') - 0.25;
+  const tCut = tStop + 0.05;   // 服务器一停，线当场断开（WaterRun 看 r6：「断开的动画略慢」）
   tl.fromTo(a1, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.01, immediateRender: false }, tCut);
   [[a1L, '500 ' + (Y + 55), 16], [a1R, '638 ' + (Y + 55), -16]].forEach(([e, o, r]) => { tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, tCut);
-    tl.fromTo(e, { rotation: 0, svgOrigin: o }, { rotation: r, svgOrigin: o, duration: 0.7, ease: 'bounce.out', immediateRender: false }, tCut + 0.02); });
+    tl.fromTo(e, { rotation: 0, svgOrigin: o }, { rotation: r, svgOrigin: o, duration: 0.35, ease: 'power2.out', immediateRender: false }, tCut + 0.02); });
   sfx('thud', tCut, { g: 0.35, p: 0.4 });
   const dlg = h('div', 'abs', W, '<div class="dlgT">Error</div><div class="dlgB">Can’t connect to database server</div><div class="dlgC">连不上数据库服务器</div>'); px(dlg, 600, 588, 580, 146); dlg.dataset.name = '弹窗';
   css(dlg, { border: `2px solid ${K.ink}`, background: '#fff', fontSize: '28px' });
@@ -58,9 +58,19 @@ scene('lib', ({ root, s, c0 }) => {
   keyed(title).at(T('h6') - 0.2, { html: '为什么非要一个服务器？' });
   // 为什么不能直接从磁盘上读：一条虚线从程序直通磁盘
   const dir = line(ov, [[300, Y + 132], [300, Y + 222], [1590, Y + 222], [1590, Y + 136]], { dashed: '9 7' });   // 从文件名的右边进去，不穿过「管道与阀门的数据」
-  const qm = tx(W, '？', 830, Y + 154, { fs: 48, color: K.teal });   // 问号放在虚线上方，不被线穿过
-  arrowIn(dir, T('h6b', '磁盘') - 0.2, 0.8); show(qm, T('h6b', '直接'), { y: 8 }); sfx('whoosh', T('h6b', '磁盘') - 0.2, { g: 0.3 });
-  dim(srv, Tend('h5') + 0.3, 0.45);   // 连不上：服务器念完就压暗
+  const qm = tx(W, '？', 830, Y + 154, { fs: 56, color: K.teal });   // 问号最后停在虚线上方，不被线穿过
+  arrowIn(dir, T('h6b', '磁盘') - 0.2, 0.8); sfx('whoosh', T('h6b', '磁盘') - 0.2, { g: 0.3 });
+  set(qm, 0, { autoAlpha: 0 }); tl.fromTo(qm, { autoAlpha: 0, x: 400, y: -200, scale: 1.6 }, { autoAlpha: 1, x: 400, y: -200, scale: 1, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, T('h6', '为什么') - 0.05);
+  tl.fromTo(qm, { x: 400, y: -200 }, { x: 0, y: 0, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, T('h6b', '直接') - 0.2); sfx('pop', T('h6', '为什么'), { g: 0.35 });
+  // 「找了一圈」：一个放大镜圈沿着虚线走到磁盘、再走回来；「没有」：虚线闪红
+  const lens = h('div', 'abs', W); px(lens, 284, Y + 206, 32, 32); css(lens, { border: `4px solid ${K.teal}`, borderRadius: '50%', boxSizing: 'border-box', background: '#fff' }); set(lens, 0, { autoAlpha: 0 });
+  tl.fromTo(lens, { autoAlpha: 1, x: 0 }, { x: 1290, duration: 1.1, ease: 'power1.inOut', immediateRender: false }, T('h7', '找了') - 0.1);
+  tl.fromTo(lens, { x: 1290 }, { x: 0, duration: 0.9, ease: 'power1.inOut', immediateRender: false }, T('h7', '找了') + 1.05);
+  tl.fromTo(lens, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false }, T('h7', '找了') + 1.95); sfx('whoosh', T('h7', '找了'), { g: 0.25 });
+  tl.fromTo(dir, { stroke: '#000000' }, { stroke: K.red, duration: 0.15, immediateRender: false }, T('h7', '没有') - 0.05); tl.fromTo(dir, { stroke: K.red }, { stroke: '#000000', duration: 0.4, immediateRender: false }, T('h7', '没有') + 0.8);
+  // 连不上：服务器念完就压暗；问「为什么不能直接从磁盘上读」时再淡一层（绕开它）
+  dim(srv, Tend('h5') + 0.3, 0.45);
+  tl.fromTo(srv, { opacity: 0.45 }, { opacity: 0.15, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, T('h6b', '直接') - 0.1);
   const none = tx(W, '当时没有这样的 SQL 数据库', 900, Y + 232, { fs: 30, color: K.dim }); show(none, T('h7', '没有') - 0.1, { y: 6 });
   gone(dlg, T('h7') - 0.1, 0.3);
   // h8：同事那句话（访谈原话与中文）
@@ -73,7 +83,7 @@ scene('lib', ({ root, s, c0 }) => {
   set(memo, 0, { autoAlpha: 0 }); show(memo, T('h9', '政府') - 0.1, { y: 8 });
   keyed(title).at(T('h9') - 0.2, { html: '他就真的自己写了' });
   const tBuild = T('h10', '自己写了');
-  goneFrom(srv, tBuild - 0.3, 0.45); [a1L, a1R, a2, qm, none].forEach((e) => gone(e, tBuild - 0.3, 0.3)); gone(quote, tBuild - 0.3, 0.3);
+  goneFrom(srv, tBuild - 0.3, 0.15); [a1L, a1R, a2, qm, none].forEach((e) => gone(e, tBuild - 0.3, 0.3)); gone(quote, tBuild - 0.3, 0.3);
   tl.fromTo(app, { width: 380 }, { width: 980, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tBuild - 0.1);
   keyed(app).at(tBuild - 0.1, { html: '' });
   const appL = tx(W, '应用程序', 146, Y - 10, { fs: 34 }); set(appL, 0, { autoAlpha: 0 }); set(appL, tBuild + 0.3, { autoAlpha: 1 });
@@ -90,15 +100,24 @@ scene('lib', ({ root, s, c0 }) => {
   gone(tclN, T('l0') - 0.2, 0.3);
   // h11–h12：版本表（Release History）
   gone(memo, T('h11') - 0.3, 0.3);
-  const rel = docTable(W, [['版本', 170], ['发布', 230], ['', 330]], [['1.0', '2000-08-17', ''], ['3.0.0', '2004-06-18', '今天的文件格式'], ['3.54.1', '2026-10-16', '本片用的版本']], 1110, 520, { fs: 28 });
-  rel.t.dataset.name = '版本表';
-  show(rel.hr, T('h11') - 0.1, { y: 6 }); show(rel.rs[0], T('h11', '1.0'), { x: -10, y: 0 }); show(rel.rs[1], T('h11b', '3.0'), { x: -10, y: 0 }); show(rel.rs[2], T('h12', '3.54.1'), { x: -10, y: 0 });
+  // 版本：一条时间轴 2000 → 2026，一个深青点沿着它走——h10b 停在 2000（起初），「直到今天」滑到 2026，再按 1.0、3.0、3.54.1 一站一站停，每站弹出版本
+  const yr = (y) => 1120 + (y - 2000) * (680 / 26), AY = 600;
+  const axis = line(ov, [[1120, AY], [1810, AY]], { w: 2, arrow: false });
+  const yrs = [[2000, '2000'], [2004, '2004'], [2026, '2026']].map(([y, s]) => { const e = tx(W, s, yr(y) - 26, AY + 10, { fs: 22, mono: true, color: K.dim }); set(e, 0, { autoAlpha: 0 }); return e; });
+  const dot = h('div', 'abs', W); px(dot, yr(2000) - 11, AY - 11, 22, 22); css(dot, { background: K.teal, borderRadius: '50%' }); set(dot, 0, { autoAlpha: 0 });
+  const tag = (html, x, y, right) => { const e = tx(W, html, x, y, { fs: 24, css: { background: '#fff', border: `1.5px solid ${K.ink}`, padding: '2px 10px' } }); if (right) { e.style.left = 'auto'; e.style.right = (1920 - x) + 'px'; } set(e, 0, { autoAlpha: 0 }); return e; };
+  const v1 = tag('<b>1.0</b> · 2000-08-17', 1100, AY - 66), v3 = tag('<b>3.0</b> · 2004-06-18 · 今天的文件格式', 1200, AY + 44), v354 = tag('<b>3.54.1</b> · 2026-10-16 · 本片用的版本', 1820, AY - 66, true);
+  const tA = T('h10b', 'T C L') + 0.2;
+  arrowIn(axis, tA - 0.3, 0.5); yrs.forEach((e, i) => show(e, tA - 0.1 + i * 0.08, { y: 6, d: 0.3 })); show(dot, tA + 0.2, { y: 0, s: 0.3, d: 0.3 });
+  const hop = (t, from, to, d = 0.9) => { tl.fromTo(dot, { x: yr(from) - yr(2000) }, { x: yr(to) - yr(2000), duration: d, ease: 'power2.inOut', immediateRender: false }, t); sfx('whoosh', t, { g: 0.2 }); };
+  hop(T('h10c', '今天') - 0.15, 2000, 2026, 1.2); hop(T('h11') - 0.1, 2026, 2000.6); hop(T('h11b') - 0.1, 2000.6, 2004.5, 0.6); hop(T('h12') - 0.1, 2004.5, 2026, 1.0);
+  slam(v1, T('h11', '1.0'), { from: 1.2 }); slam(v3, T('h11b', '3.0'), { from: 1.2 }); slam(v354, T('h12', '3.54.1'), { from: 1.2 });
   sfx('tick', T('h11', '1.0'), { g: 0.4 }); sfx('tick', T('h11b', '3.0'), { g: 0.4 }); sfx('tick', T('h12', '3.54.1'), { g: 0.4 });
   keyed(title).at(T('h11') - 0.3, { html: '2000 年 1.0，本片用 3.54.1' });
 
   // ── l0–l4：这正是他想要的；不用安装配置；库很小 ──
   const tW = T('l0') - 0.2;
-  [rel.t, tcl, test].forEach((e) => gone(e, tW, 0.3));
+  [tcl, test, axis, ...yrs, dot, v1, v3, v354].forEach((e) => gone(e, tW, 0.3));
   const want = tx(W, '他想要的：不要服务器，直接读磁盘', 120, Y - 76, { fs: 34, color: K.teal });
   show(want, T('l0'), { x: 10, y: 0 }); sfx('pop', T('l0'), { g: 0.3 });
   keyed(title).at(tW, { html: '没有服务进程：好处' });
@@ -138,12 +157,12 @@ scene('lib', ({ root, s, c0 }) => {
     [s.start, null, { rect: [110, 280, 860, 640], zmax: 1.5 }],
     [T('h2', '写软件') - 0.3, null, { rect: [110, 280, 1800, 590], d: 1.4 }],
     [T('h4') - 0.3, null, { rect: [110, 510, 1880, 1070] }],
+    [T('h7', '找了') - 0.2, null, { rect: [110, 700, 1700, 1060], zmax: 1.3, d: 1.2 }],
+    [T('h8') - 0.3, null, { rect: [110, 510, 1880, 1070], d: 1.2 }],
     [T('l0') - 0.2, null, { rect: [110, 690, 1650, 1050], zmax: 1.25 }],
     [T('l10'), null, { rect: [1250, 740, 1680, 1050], zmax: 1.45 }],
   ]);
 
-  // 「当前在讲谁」
-  beats([[T('h1', 'Richard'), who], [T('h2'), facts[0]], [T('h2', '军舰'), facts[1]], [T('h2', '写软件'), facts[2]], [T('h3'), shipL], [T('h3', '关'), vl], [T('h4', 'Informix'), srv], [T('h4', '服务器') + 0.2, disk], [T('h5', '弹出'), app], [T('h5', '连不上'), dlg], [T('h6'), app], [T('h6b', '磁盘'), disk], [T('h7', '找了一圈'), app], [T('h7', '没有'), qm], [T('h7', 'S Q L'), none], [T('h8'), quote], [T('h9'), memo], [T('h10'), memo], [T('h10', '自己写了') + 0.6, lib], [T('h10b', 'T C L'), [tcl, tclN]], [T('h10c'), app], [T('h10c', '测试'), test],
-    [T('h11'), rel.rs[0]], [T('h11b'), rel.rs[1]], [T('h11b', '今天'), rel.rs[1].children[2]], [T('h12'), rel.rs[2]], [T('l0'), want], [T('l0', '直接读磁盘'), disk], [T('l1', '安装'), chips.map((c) => c[0])], [T('l1b'), app], [T('l1b', 'S Q Lite'), lib], [T('l4', '九百'), size],
-    [T('l6'), lib], [T('l6', '一个文件'), fileN], [T('l10'), disk], [T('h11') + 1.3, rel.t, 1], [T('h12') + 0.1, [lib, rel.t], 1], [T('h8') + 1.80, [quote, app], 1], [T('h9') + 2.98, [memo, app], 1], [T('h11b') + 2.65, rel.t, 1], [T('h10') + 3.64, disk, 1], [T('h12') + 0.69, rel.t, 1], [T('h12') + 2.42, [app, lib, disk], 1], [T('h10b') + 1.70, [app, tcl, tclN], 1], [T('h10c') + 0.8, [disk, lib], 1], [T('h10c') + 3.3, [test, tclN, app], 1]], Tend('l10'));
+  // 焦点框：「为什么非要一个服务器」框住服务器，「直接从磁盘上读」框住磁盘上的数据，「都在那一个文件里」框住那个文件
+  focus(W, [[T('h6', '服务器'), srv, Tend('h6')], [T('h6b', '磁盘'), disk, Tend('h6b') + 0.3], [T('l6', '一个文件'), disk, Tend('l6')]], Tend('l10'));
 });

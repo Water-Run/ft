@@ -29,8 +29,8 @@ scene('find', ({ root, s, c0 }) => {
   const hot = (e, t) => { tl.fromTo(e, { backgroundColor: '#ffffff', borderColor: e.style.borderColor || '#444444', borderWidth: e.style.borderWidth || '2px' }, { backgroundColor: K.wheat, borderColor: K.teal, borderWidth: '2.5px', duration: 0.3, immediateRender: true }, t); };
 
   // ── f1：查询 ──
-  const q = codeBlock(W, [`SELECT <span class="qc">id, name, age</span> FROM users WHERE <span class="qw">name = 'Alice'</span>;`], 120, 262, { fs: 26 });
-  const qc = q.querySelector('.qc'), qw = q.querySelector('.qw');
+  const q = codeBlock(W, [`SELECT <span class="qc">id, name, <span class="qa">age</span></span> FROM users WHERE <span class="qw">name = 'Alice'</span>;`], 120, 262, { fs: 26 });
+  const qc = q.querySelector('.qc'), qw = q.querySelector('.qw'), qa = q.querySelector('.qa');
   const ans = tx(W, '？ · Alice · ？ 岁', 120, 336, { fs: 28, css: { background: K.wheat, padding: '2px 12px' } }); set(ans, 0, { autoAlpha: 0 }); show(ans, T('f1', '要她的'), { y: 6 }); gone(ans, T('f2') - 0.2, 0.3);   // 要找的那一行：只知道名字   // 「按名字找」「要她的 id、名字和年龄」各点到一段
   wipe(q, T('f1') - 0.1, { dir: 'l', d: 0.5 }); sfx('tick', T('f1'), { g: 0.4 });
   // ── f2：没有索引：把 users 表整个翻一遍 ──
@@ -39,9 +39,13 @@ scene('find', ({ root, s, c0 }) => {
   const N = tree(DATA.names, 120, 780, '姓名索引');
   N.enter(c0 + 0.5);
   N.all.forEach((e) => dim(e, T('f2') - 0.2, 0.25)); N.all.forEach((e) => dim(e, T('f3') - 0.3, 1, 0.25));
-  const tS0 = T('f2', '翻一遍'), tS1 = Tend('f2') - 0.2, n = U.leaves.length;
+  const tS0 = T('f2', 'users') - 0.1, tS1 = Tend('f2') - 0.2, n = U.leaves.length;
   const scan = h('div', 'abs', W); css(scan, { border: `3px solid ${K.red}`, boxSizing: 'border-box' }); scan.dataset.name = '一页页翻';
   F((t) => { const k = Math.max(0, Math.min(1, (t - tS0) / (tS1 - tS0))); const i = Math.min(n - 1, Math.floor(k * n)); const x = U.lx[U.leaves[i]]; px(scan, x - 3, U.LY - 4, U.pitch + 6, 68); scan.style.opacity = t < tS0 || t > tS1 + 0.5 ? 0 : 1; });
+  // 读过的叶页一页页刷成麦色（读到的页全片都是麦色），扫完、换姓名索引那条路时退掉
+  const L0 = U.lx[U.leaves[0]], LW = U.lx[U.leaves[n - 1]] + U.pitch - L0, tOff = T('f3') - 0.3;
+  const rd = h('div', 'abs', W); px(rd, L0, U.LY, 0, 60); css(rd, { background: K.wheat, opacity: '0.75', pointerEvents: 'none' });
+  F((t) => { const k = t < tS0 ? 0 : Math.min(1, (t - tS0) / (tS1 - tS0)), a = t < tS0 ? 0 : t < tOff ? 0.75 : Math.max(0, 0.75 * (1 - (t - tOff) / 0.4)); const w = Math.round(k * LW) + 'px', o = String(+a.toFixed(3)); if (rd.style.width !== w) rd.style.width = w; if (rd.style.opacity !== o) rd.style.opacity = o; });
   const cnt = tx(W, '', 1240, 770, { fs: 28, color: K.red });   // 让开左边 B 树的注解框
   F((t) => { const k = Math.max(0, Math.min(1, (t - tS0) / (tS1 - tS0))); cnt.innerHTML = t < tS0 ? '' : `读了 <b>${Math.round(k * DATA.trace.table_scan_distinct_pages)}</b> 页`; });
   sfx('tick', tS0, { g: 0.4 });
@@ -113,8 +117,10 @@ scene('find', ({ root, s, c0 }) => {
   const seven = tx(W, '读了 7 页', x + 40, y - 20, { fs: 32, color: K.teal }); show(seven, T('f12', '7'), { x: -10, y: 0 });
 
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  const zU = zone(W, 1000, 360, 820, 400), zN = zone(W, 100, 360, 820, 400), zHit = zone(W, 100, 750, 540, 80), zRow = zone(W, 1000, 750, 640, 80);
-  beats([[T('f1', '按名字'), qw], [T('f1', '要她的'), qc], [T('f1', '名字和年龄'), ans], [T('f2'), U.lab], [T('f2', '翻一遍') + 1.2, q], [T('f3'), N.lab], [T('f4'), N.r], [T('f4', '最左边'), m281], [T('f5'), rg], [T('f5', '4096'), N.r], [T('f5', '306'), [...keep1].map((p) => N.lEls[p])], [T('f6'), rg], [T('f6', '最左边'), [...keep1].map((p) => N.lEls[p])], [T('f6', '263'), [l263, leafL]], [T('f6', '18') + 0.4, rg], [T('f7', 'Alice'), hit], [T('f7', '2050'), hit.querySelector('b')], [T('f8'), hit], [T('f8', '回到'), U.lab], [T('f9'), U.rl], [T('f9', '2050'), U.r], [T('f9', '两个分界'), sepU], [T('f10'), m133], [T('f10', '133'), rgU], [T('f10', '分界'), [...keep2].map((p) => U.lEls[p])], [T('f11', '这一行'), row], [T('f11', '42'), row.children[2]], [T('f12'), seven], [T('f12b', '登记'), boxes[0]], [T('f12b', '索引'), boxes.slice(1, 4)], [T('f12b', '表三页'), boxes.slice(4, 7)], [T('f1') + 2.91, q, 1], [T('f2') + 2.01, [...U.mEls, U.r], 1], [T('f4') + 0.95, [...N.mEls, N.r], 1], [T('f5') + 1.78, [m281, rg, barN], 1], [T('f6') + 2.58, [barN, rg, m281], 1], [T('f7') + 2.77, [hit, l263, m281], 1], [T('f9') + 1.86, [U.r, rgU, barU], 1], [T('f11') + 4.50, [row, m133], 1], [T('f12') + 2.35, boxes, 1], [T('f2') + 1.84, zU, 1], [T('f3') + 4.04, zN, 1], [T('f6') + 1.61, zN, 1], [T('f7') + 3.6, [qw, l263], 1], [T('f11') + 3.40, zRow, 1], [T('f5') + 4.44, zN, 1], [T('f6') + 1.07, [rg, m281, barN], 1]], Tend('f12b'));
+  // 焦点框：查询里先指条件、再指要的列；路线上指根页、计数、叶页 263、分界、第 133 页、年龄；最后 7 页按「登记、索引三页、表三页」分组指
+  focus(W, [[T('f1', '按名字'), qw], [T('f1', '要她的'), qc, Tend('f1')], [T('f3', '262'), N.r], [T('f4', '最左边'), m281, Tend('f4')], [T('f5', '4096'), rg], [T('f6', '263'), l263], [T('f6', '18'), rg, Tend('f6')],
+    [T('f8', '年龄'), qa, T('f8', '行号')], [T('f9', '分界'), sepU, Tend('f9')], [T('f10', '133'), m133], [T('f10', '130'), U.lEls[130], Tend('f10')], [T('f11', '42'), row.children[2], Tend('f11')],
+    [T('f12', '7'), boxes, Tend('f12')], [T('f12b', '登记'), boxes[0]], [T('f12b', '索引'), boxes.slice(1, 4)], [T('f12b', '表三页'), boxes.slice(4, 7)]], Tend('f12b'));
   // 补音效（check.js 报的长空档）
   keyed(title).at(T('f2') - 0.2, { html: '没有索引：把整个表翻一遍' });
   keyed(title).at(T('f3') - 0.2, { html: '从姓名索引的根页 262 往下走' });
