@@ -64,7 +64,8 @@ function pageCell(p, x, y, w, hh, o = {}) {
   return e;
 }
 // 文件：按归属给每页上色（表白、姓名索引浅灰、年龄索引更浅），排成网格
-const OWN = { u: '#ffffff', n: '#d9d9d9', a: '#eeeeee', s: '#cfcfcf', t: '#cfcfcf', o: '#f6f6f6' };
+// 页的归属：三份结构各用一种浅色（WaterRun 看 r5b：「颜色要区分」）——users 表浅绿、姓名索引浅蓝、年龄索引浅紫；第 1 页与 notes 表、溢出页用灰。选中（读到的页）仍是麦色加深青边
+const OWN = { u: '#d3e7c6', n: '#bfd9ea', a: '#e6cfe0', s: '#cfcfcf', t: '#d6d6d6', o: '#e9e9e9' };
 function fileGrid(p, x, y, cols, cell, gap) {
   const own = DATA.file.owner, cells = [];
   for (let i = 0; i < own.length; i++) cells.push(pageCell(p, x + (i % cols) * (cell + gap), y + Math.floor(i / cols) * (cell + gap), cell, cell, { fill: OWN[own[i]], bw: 0.8 }));
@@ -128,7 +129,9 @@ function beats(list, end) {
   // 着色是对象的 ::before 平涂浅色衬底（不用阴影，不加子节点），画在元素自己的底色之上、文字之下，不改它原来的底色和字色。
   // 单个文字：浅青底向外扩 6px；含子 div 的框（或 data-beat="fill"）：浅青底；data-beat="line"：一圈细边；data-beat="soft"（区域）：更浅的底。
   // 一条可以是一组元素；同一对象两次亮起间隔不到 0.8 秒就连成一次；相邻两项至少隔 1.5 秒（第三项为真的「必留」不受此限）。
-  const all = list.map(([t, e, keep]) => [t, (Array.isArray(e) ? e : [e]).filter(Boolean), keep]).filter(([t, g]) => g.length && isFinite(t)).sort((a, b) => a[0] - b[0]);
+  // 图注（.gloss）与标了 data-nohl 的注释不亮：给注释铺底读起来像一个矩形框（WaterRun 看 r5b：「TCL注释不用底矩形框」）
+  const lit = (e) => e && !(e.classList && (e.classList.contains('gloss') || 'nohl' in e.dataset));
+  const all = list.map(([t, e, keep]) => [t, (Array.isArray(e) ? e : [e]).filter(lit), keep]).filter(([t, g]) => g.length && isFinite(t)).sort((a, b) => a[0] - b[0]);
   const MIN = 1.5, GAP = 0.8, R = 0.35, items = [];
   for (const it of all) if (!items.length || it[2] || it[0] - items[items.length - 1][0] >= MIN) items.push(it);
   const spans = new Map();
@@ -149,10 +152,35 @@ function beats(list, end) {
     if (cs.position === 'static') e.style.position = 'relative';
     if (cs.zIndex === 'auto') e.style.zIndex = '0';
     e.dataset.hl = PEAK[kind] ? kind : 'text';
+    // 单个文字的衬底只包住文字本身：表格的格、图例这类盒子常比字宽，按盒子铺会长出一截、又在下一列前戛然而止（WaterRun 看 r5b：「溢出的细节Bug」）。
+    // 亮着的时候按当下的版面量出文字左右两端到盒子边的距离，写进 --hll / --hlr（版面是时刻的函数，跳播与顺播一致）
+    // 场景的显隐（engine.js 在所有场景建好后才注册的帧函数）比这里晚跑：跳播到这一刻时场景可能还是 display:none，先临时显示再量，量完放回原值，紧接着由引擎按时刻定下
+    const sc = e.closest('.scene');
+    const hug = (kind === 'text' || kind === 'fill') ? () => {
+      const off = sc && sc.style.display === 'none'; if (off) sc.style.display = '';
+      const b = e.getBoundingClientRect(), ow = e.offsetWidth, cs = getComputedStyle(e);
+      const boxy = (parseFloat(cs.borderLeftWidth) > 0 && cs.borderLeftStyle !== 'none') || !/^(transparent|rgba\(0, 0, 0, 0\))$/.test(cs.backgroundColor);   // 自己有底色或边框的（按钮、框、代码条）照旧铺满盒子
+      let c = null;
+      if (!boxy && b.width && ow) {
+        if (kind === 'text') { const rg = document.createRange(); rg.selectNodeContents(e); c = rg.getBoundingClientRect(); }
+        else {   // 整块（表格、一组）：只包住此刻看得见的子元素——还没出场的行也占着版面，按盒子铺会盖住一片空白
+          let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+          for (const ch of e.children) { const s2 = getComputedStyle(ch); if (s2.visibility === 'hidden' || s2.display === 'none' || +s2.opacity < 0.05) continue; const q = ch.getBoundingClientRect(); if (!q.width || !q.height) continue; x0 = Math.min(x0, q.left); y0 = Math.min(y0, q.top); x1 = Math.max(x1, q.right); y1 = Math.max(y1, q.bottom); }
+          if (x1 > x0) c = { left: x0, top: y0, right: x1, bottom: y1, width: x1 - x0 };
+        }
+      }
+      if (off) sc.style.display = 'none';
+      if (!b.width || !ow) return;
+      const k = b.width / ow, m = kind === 'text' ? 0 : 6;   // 文字的 6px 外扩写在 CSS 里；整块包住内容时在这里留 6px
+      let l = 0, r = 0, tp = 0, bt = 0;
+      if (c && c.width) { l = Math.round((c.left - b.left) / k) - m; r = Math.round((b.right - c.right) / k) - m; if (kind === 'fill') { tp = Math.round((c.top - b.top) / k) - m; bt = Math.round((b.bottom - c.bottom) / k) - m; } }
+      for (const [n, v] of [['--hll', l], ['--hlr', r], ['--hlt', tp], ['--hlb', bt]]) { const x = v + 'px'; if (e.style.getPropertyValue(n) !== x) e.style.setProperty(n, x); }
+    } : null;
     F((t) => {
       let k = 0;
       for (const [t0, t1] of a) k = Math.max(k, Math.min(clamp((t - t0) / R), clamp((t1 - t) / R)));
       const v = String(+(peak * ease(k)).toFixed(3));
+      if (hug && +v > 0) hug();
       if (e.style.getPropertyValue('--hl') !== v) e.style.setProperty('--hl', v);
     });
   }

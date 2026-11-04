@@ -21,7 +21,7 @@ scene('open', ({ root, s, c0 }) => {
   const net = line(ov, [[440, 380], [638, 380]], { dashed: '8 6' });
   const netL = tx(W, '网络连接', 470, 330, { fs: 26, color: '#444444' });
   const disk1 = line(ov, [[1200, 380], [1398, 380]]);
-  slam(srv, c0 + 0.15, { from: 1.15 }); sfx('thud', c0 + 0.15, { g: 0.5 });
+  slam(srv, T('o1') - 0.05, { from: 1.15 }); sfx('thud', T('o1') - 0.05, { g: 0.5 });
   set(sv2, 0, { autoAlpha: 0 }); show(sv2, T('o2', '服务进程'), { y: 8 }); sfx('tick', T('o2', '服务进程'), { g: 0.4 });
   show(tagS, T('o1b') + 0.1, { y: 8 });
   arrowIn(disk1, T('o2', '一直开着') - 0.1, 0.4); show(files1, T('o2', '一直开着'), { x: -12, y: 0 });
@@ -37,13 +37,30 @@ scene('open', ({ root, s, c0 }) => {
   set(rs, 0, { autoAlpha: 0 }); tl.fromTo(rs, { autoAlpha: 1, x: 0 }, { x: -110, duration: 0.7, ease: 'power1.inOut', immediateRender: false }, T('o2b', '结果')); sfx('tick', T('o2b', '结果'), { g: 0.4, p: -0.3 });
   tl.fromTo(rs, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false }, T('o2b', '结果') + 0.8);
 
+  // 好处（o2c）：锁管得更细——服务进程下面是表的几行，一把锁只扣住一行；多人同时用——念到「多人」才来两个程序，三条请求同时进来，各扣各的那一行，谁也不等谁
+  const rowsT = [0, 1, 2, 3].map((i) => { const r = h('div', 'abs', W); px(r, 700, 484 + i * 30, 440, 24); css(r, { border: `1.5px solid ${K.greyLine}`, background: '#fff', boxSizing: 'border-box' }); set(r, 0, { autoAlpha: 0 }); return r; });
+  const padlock = (y) => { const g = h('div', 'abs', W); px(g, 1150, y - 9, 22, 30); const sh = h('div', 'abs', g); px(sh, 4, 0, 14, 14); css(sh, { border: `3px solid ${K.teal}`, borderBottom: 'none', borderRadius: '8px 8px 0 0', boxSizing: 'border-box' });
+    const bd = h('div', 'abs', g); px(bd, 0, 12, 22, 17); css(bd, { background: K.teal }); set(g, 0, { autoAlpha: 0 }); return g; };
+  const locks = [1, 0, 3].map((i) => padlock(484 + i * 30));
+  const lockRow = [1, 0, 3];
+  rowsT.forEach((r, i) => show(r, T('o2c', '锁') - 0.35 + i * 0.06, { y: -8, d: 0.3 }));
+  const lockAt = (k, t) => { tl.fromTo(locks[k], { autoAlpha: 0, y: -26 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'bounce.out', immediateRender: false }, t); set(rowsT[lockRow[k]], t + 0.15, { backgroundColor: K.wheat, borderColor: K.teal }); sfx('tick', t + 0.15, { g: 0.35, p: 0.2 * k }); };
+  lockAt(0, T('o2c', '锁'));
   const appB = box('程序', 120, 210, 220, 70, { fs: 28 }), appC = box('程序', 120, 460, 220, 70, { fs: 28 });
   const lnB = line(ov, [[340, 245], [638, 350]], { dashed: '8 6' }), lnC = line(ov, [[340, 495], [638, 410]], { dashed: '8 6' });
-  const lockL = tx(W, '锁管得更细：多人同时用也更顺', 640, 478, { fs: 28, color: K.teal });
-  wipe(appB, T('o2c', '多人') - 0.2, { dir: 'l', d: 0.35 }); wipe(appC, T('o2c', '多人'), { dir: 'l', d: 0.35 });
-  arrowIn(lnB, T('o2c', '多人'), 0.4); arrowIn(lnC, T('o2c', '多人') + 0.2, 0.4); show(lockL, T('o2c', '锁'), { y: 6 }); sfx('pop', T('o2c', '多人'), { g: 0.35 });
+  const tMany = T('o2c', '人') - 0.25;   // 「多」的词时间落在逗号后的停顿里：按「人」往前推一点，画面和念到「多人」同时出来
+  wipe(appB, tMany, { dir: 'l', d: 0.35 }); wipe(appC, tMany + 0.12, { dir: 'l', d: 0.35 });
+  arrowIn(lnB, tMany + 0.1, 0.4); arrowIn(lnC, tMany + 0.2, 0.4); sfx('pop', tMany, { g: 0.35 });
+  // 三条 SQL 同时发出：沿各自的连线进服务进程；到了就各扣一行
+  const sqlChip = (x, y) => { const e = tx(W, 'SQL', x, y, { fs: 24, mono: true, css: { background: K.code, border: `1.5px solid ${K.codeLine}`, padding: '0 8px', opacity: 0, visibility: 'hidden' } }); set(e, 0, { autoAlpha: 0 }); return e; };
+  const tGo = T('o2c', '同时') - 0.05;
+  [[sqlChip(346, 228), 230, 88], [sqlChip(450, 362), 120, 0], [sqlChip(346, 470), 230, -70]].forEach(([e, dx, dy], i) => {
+    tl.fromTo(e, { autoAlpha: 1, x: 0, y: 0 }, { x: dx, y: dy, duration: 0.65, ease: 'power1.inOut', immediateRender: false }, tGo + i * 0.04);
+    tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.15, immediateRender: false }, tGo + 0.68 + i * 0.04); });
+  sfx('whoosh', tGo, { g: 0.3 });
+  lockAt(1, T('o2c', '更顺') - 0.15); lockAt(2, T('o2c', '更顺') + 0.05);
   const tOne = T('o2d', '一个程序') - 0.1;
-  [appB, appC, lockL].forEach((e) => gone(e, tOne, 0.3)); [lnB, lnC].forEach((e) => gone(e, tOne, 0.3));
+  [appB, appC, ...rowsT, ...locks].forEach((e) => gone(e, tOne, 0.3)); [lnB, lnC].forEach((e) => gone(e, tOne, 0.3));
   // 太重：服务型这一整排沉沉地掉到下半屏（带回弹），落地一声闷响，随后压暗；上半屏让给轻的嵌入式
   const tFall = T('o2d', '太重') - 0.15, DROP = 340;
   const rowS = [tagS, app1, srv, files1, netL], rowSv = [net, disk1];
@@ -166,7 +183,8 @@ scene('open', ({ root, s, c0 }) => {
   ]);
 
   // 「当前在讲谁」
-  beats([[T('o1b'), srv, 1], [T('o3c'), prog, 1], [T('o2'), srv], [T('o2', '一直开着'), files1], [T('o2b'), app1], [T('o2c', '多人'), [appB, app1, appC]], [T('o3c', '一个文件'), db],
+  const zS = zone(W, 620, 244, 600, 228);   // 「都属于服务型数据库」：亮的从框本身换成服务型这一片（标签和框）
+  beats([[T('o1', 'My S Q L'), srv, 1], [T('o1b'), zS, 1], [T('o3c'), prog, 1], [T('o2'), srv], [T('o2', '一直开着'), files1], [T('o2b'), app1], [T('o2c', '人') - 0.2, [appB, app1, appC]], [T('o3c', '一个文件'), db],
     [T('o5'), tblL], [T('o5', '4096'), tbl.t], [T('o5b'), aliceRow], [T('o5c'), toDbL], [T('o5c', '一个文件'), db2], [T('o5c', '553'), fileL],
-    [T('o6'), g7], [T('o7'), up], [T('o8', '一字节不差'), sha]], T('oT') + 2.8);
+    [T('o6'), g7], [T('o7'), up], [T('o8', '一字节不差'), sha]], T('oT') + 2.4);
 });

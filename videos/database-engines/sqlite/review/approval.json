@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "fbc87698d4ad67ef5d8db3955fbe7e1631b601e25ebd1a6b3407a8e8a27d9541",
+      "content_sha256": "3b34b422975f2f549632718b4dd29fd3f0371be74705cadf9fcfc3aeb1b43ce5",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-03T20:54:42+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 13 稿：o3c 照 WaterRun 原话「程序自己读写 -> 程序调用库, 自己读写」改；据「将故事 叙事也要优化 跟得上 同时冗长的地方也要处理好」删去 s2、s28、s28b、f13–f15b、j7、j7b、d3、w16b（只删不加）；未逐句看全文。"
+      "confirmed_at": "2026-11-04T12:44:29+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 14 稿：e12b 照 WaterRun 原话「另一端的ClickHouse改成而ClickHouse常常面对的时...」改；据「OLAP出来时动画直接切换(T变成A), 过渡的更快」删 e10b（只删不加）；未逐句看全文。"
     }
   }
 }

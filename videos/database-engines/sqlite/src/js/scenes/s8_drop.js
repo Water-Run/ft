@@ -56,5 +56,5 @@ scene('drop', ({ root, s, c0 }) => {
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   beats([[T('d2'), used, 1], [T('d1'), del], [T('d1', 'Alice'), aliceD], [T('d2'), lab], [T('d2', '553'), pagesL], [T('d4'), head], [T('d4', '空闲链'), gF], [T('d5'), ins], [T('d6'), lab], [T('d7'), vac], [T('d7b'), pagesL], [T('d7b', '一页不剩'), lab], [T('d1') + 5.45, [frame, del], 1], [T('d2') + 4.27, [frame, lab], 1], [T('d6') + 2.22, [frame, ins], 1], [T('d7b') + 4.20, [frame, pagesL, lab], 1], [T('d7b') + 4.0, [vac, gV], 1]], Tend('d7b'));
   [[T('d4') - 0.2, '空出的页：串成一条空闲链'], [T('d5') - 0.2, '新用户注册：先用空闲页'], [T('d7') - 0.2, 'VACUUM：重写整个数据库文件']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
-  shots(cam, world, s, [[s.start, null, { rect: [110, 240, 1800, 880], zmax: 1.2 }]]);
+  shots(cam, world, s, [[s.start, null, { rect: [110, 240, 1800, 880], zmax: 1.2 }], [T('d7b', '空闲') - 0.1, null, { rect: [110, 240, 1000, 780], zmax: 1.3, d: 1.5 }]]);
 });

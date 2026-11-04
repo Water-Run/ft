@@ -95,5 +95,5 @@ scene('page', ({ root, s, c0 }) => {
   sfx('whoosh', T('p11', '一万两千'), { g: 0.25 });
   sfx('tick', T('p11', '一小段'), { g: 0.3 });
   [[T('p6') - 0.2, 'Alice 这一行：13 个字节'], [T('p10') - 0.2, '一行太长：溢出页']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
-  shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1840, 900] }]]);
+  shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1840, 900] }], [T('p2') - 0.2, null, { rect: [110, 250, 1060, 720], d: 1.5 }], [T('p4') - 0.3, null, { rect: [110, 250, 1840, 900], d: 1.5 }]]);
 });
