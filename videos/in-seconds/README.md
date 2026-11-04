@@ -53,33 +53,28 @@
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的 | zh + en | 已成片 | [`two-factor-auth`](two-factor-auth/) |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠 | zh + en | 已成片 | [`lean4`](lean4/) |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh | 计划中 | `how-opus-animates` |
-| 4 | 150秒学会怎么打手枪 | zh + en | 制作中 | [`pistol-shooting`](pistol-shooting/) |
-| 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](dense-vs-moe/) |
-| 6 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |
-| 7 | 256 秒搞懂 SSH | zh | 已放弃 | [`ssh`](ssh/) |
-| 8 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |
-| 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |
-| 10 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
-| 12 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
-| 13 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |
-| 14 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
-| 15 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
-| 16 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
-| 17 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
-| 18 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
-| 19 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
-| 20 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
-| 21 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
-| 22 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh | 计划中 | [`scion`](scion/) |
-| 23 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
-| 24 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
-| 25 | 192 秒了解 Linux 权限机制 | zh | 计划中 | `linux-permissions` |
-| 26 | 192 秒了解 Windows 权限机制 | zh | 计划中 | `windows-permissions` |
-| 27 | 192 秒了解 Android 权限机制 | zh | 计划中 | `android-permissions` |
-| 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |
-| 29 | 150 秒速通 Git | zh | 计划中 | `git` |
-| 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](config-file-formats/) |
-| 31 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
-| 32 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
+| 4 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型 | zh + en | 已成片 | [`dense-vs-moe`](dense-vs-moe/) |
+| 5 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |
+| 6 | 256 秒搞懂 SSH | zh | 已放弃 | [`ssh`](ssh/) |
+| 7 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |
+| 8 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |
+| 9 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |
+| 10 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
+| 11 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
+| 12 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |
+| 13 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
+| 14 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
+| 15 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
+| 16 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
+| 17 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
+| 18 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
+| 19 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
+| 20 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
+| 21 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh | 计划中 | [`scion`](scion/) |
+| 22 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
+| 23 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
+| 24 | 150 秒速通 Git | zh | 计划中 | `git` |
+| 25 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](config-file-formats/) |
+| 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
+| 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
 <!-- catalog:end -->

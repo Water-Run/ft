@@ -56,8 +56,8 @@
   const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
   document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
   const TEXT = {
-    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: 'XX 秒速通', code: '000 000' },
-    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'In XX Seconds', code: '000 000' },
+    zh: { big: '主题', n: '60', unit: '秒', title: '片名的后半句，<br>分两行', kick: '独立片 · 旧基座占位', code: '000 000' },
+    en: { big: 'Topic', n: '60', unit: 's', title: 'The rest of the title,<br>in two lines', kick: 'Standalone · Placeholder', code: '000 000' },
   }[lang];
   document.querySelector('.big').textContent = TEXT.big; document.querySelector('.tag b').textContent = TEXT.n; document.querySelector('.code').textContent = TEXT.code;
   document.querySelector('.tag i').textContent = TEXT.unit;

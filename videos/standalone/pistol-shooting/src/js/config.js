@@ -1,5 +1,5 @@
-// 「XX 秒速通」系列的引擎配置：字体、颜色、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角留给本集的仪表）、换场。
-// TODO: 系列基座。右上角的仪表（window.HUD.right）与换场方式按本集的题目来做，做完删掉这一行；做法对照首集 two-factor-auth 的 config.js。
+// 从「XX 秒速通」迁来的旧基座：字体、颜色、节拍网格、常驻元素与换场均未按本片设计。
+// TODO: 用本片的 3D 视觉系统替换整套占位配置，不保留速通系列的秒尺与剩余秒数约束。
 document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
 window.PALETTE = { ink: '#0c0d0f', paper: '#f2efe8', ac: '#ff4a1c', dim: '#8a8782', dimp: '#6b6964' };
 const C = window.PALETTE;

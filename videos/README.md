@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 202 部：已成片 19，制作中 6，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 204 部：已成片 19，制作中 6，计划中 178，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -40,9 +40,9 @@
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01 12:07，「数据库引擎」合集第 3 集）；登记交付与发布（stage、delivery、release、片单状态，再运行 catalog.js）要一起提交，而 videos/catalog.json、videos/README.md、videos/CREDITS.md 正被另一会话修改未提交，等它们空出来再做；发布信息先记在 README「交付」。按发布后冻结，只收集反馈 | 最新 | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 预览 r1：第 9 稿已确认并配音（15:10），11 个场景已写完，自审后交 WaterRun 看 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
-| [150秒学会怎么打手枪](in-seconds/pistol-shooting/) | [XX 秒速通](in-seconds/README.md) | 取证 | 取证，然后写稿 | 待同步 | 未记录 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 待同步 | Gemini 4 Argon、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
+| [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
 | [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 审稿 | 等策划者看第 1 稿与审片页：文案意见与确认，选音色、配乐与视觉方向 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
@@ -266,35 +266,43 @@
 | 1 | 120 秒关于什么是 2FA，以及它是怎么工作的<br>2FA in 120 Seconds: What It Is and How It Works | zh + en | 已成片 | [`two-factor-auth`](in-seconds/two-factor-auth/) |  |
 | 2 | 200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠<br>Lean 4 in 200 Seconds: What Formal Proof Is and Why It Can Be Trusted | zh + en | 已成片 | [`lean4`](in-seconds/lean4/) |  |
 | 3 | 150 秒搞明白 Opus 5.5 是怎么做视频的 | zh | 计划中 | `how-opus-animates` |  |
-| 4 | 150秒学会怎么打手枪<br>How to Shoot a Pistol in 150 Seconds | zh + en | 制作中 | [`pistol-shooting`](in-seconds/pistol-shooting/) |  |
-| 5 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | [`dense-vs-moe`](in-seconds/dense-vs-moe/) |  |
-| 6 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |  |
-| 7 | 256 秒搞懂 SSH | zh | 已放弃 | [`ssh`](in-seconds/ssh/) | 2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布 |
-| 8 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |  |
-| 9 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |  |
-| 10 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |  |
-| 11 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](in-seconds/tmux/) |  |
-| 12 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |  |
-| 13 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |  |
-| 14 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |  |
-| 15 | 96 秒速通模型的各个参数<br>Model Parameters in 96 Seconds | zh | 计划中 | [`model-parameters`](in-seconds/model-parameters/) |  |
-| 16 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh | 计划中 | `virtual-machine-types` |  |
-| 17 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](in-seconds/harness/) | 2026-10-31 策划者改题：由《192 秒了解 LLM 的手：Harness 是什么，怎么工作的？》改为 150 秒、只做中文，回到首集 2FA 的瑞士风。 |
-| 18 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
-| 19 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
-| 20 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 已成片 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
-| 21 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh | 计划中 | [`ea211-family`](in-seconds/ea211-family/) |  |
-| 22 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh | 计划中 | [`scion`](in-seconds/scion/) |  |
-| 23 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
-| 24 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` | 2026-10-26 由已取消的「编程语言」系列移入；定长 256 秒。 |
-| 25 | 192 秒了解 Linux 权限机制 | zh | 计划中 | `linux-permissions` |  |
-| 26 | 192 秒了解 Windows 权限机制 | zh | 计划中 | `windows-permissions` |  |
-| 27 | 192 秒了解 Android 权限机制 | zh | 计划中 | `android-permissions` |  |
-| 28 | 192 秒了解 iOS 权限机制 | zh | 计划中 | `ios-permissions` |  |
-| 29 | 150 秒速通 Git | zh | 计划中 | `git` |  |
-| 30 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
-| 31 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
-| 32 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
+| 4 | 150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型<br>Dense and MoE LLMs in 150 Seconds: Dense Models and Mixture-of-Experts Models | zh + en | 已成片 | [`dense-vs-moe`](in-seconds/dense-vs-moe/) |  |
+| 5 | 150 秒明白不绑后排安全带的致命性 | zh | 计划中 | `rear-seatbelt` |  |
+| 6 | 256 秒搞懂 SSH | zh | 已放弃 | [`ssh`](in-seconds/ssh/) | 2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布 |
+| 7 | 150 秒关于 PowerShell 和 pwsh | zh | 计划中 | `powershell-pwsh` |  |
+| 8 | 150 秒有关终端模拟器（Pty）是什么，以及如何工作 | zh | 计划中 | `pty` |  |
+| 9 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |  |
+| 10 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](in-seconds/tmux/) |  |
+| 11 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |  |
+| 12 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |  |
+| 13 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |  |
+| 14 | 96 秒速通模型的各个参数<br>Model Parameters in 96 Seconds | zh | 计划中 | [`model-parameters`](in-seconds/model-parameters/) |  |
+| 15 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机<br>Virtual Machines in 192 Seconds: Type 1, Type 2, and Process Virtual Machines | zh | 计划中 | `virtual-machine-types` |  |
+| 16 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](in-seconds/harness/) | 2026-10-31 策划者改题：由《192 秒了解 LLM 的手：Harness 是什么，怎么工作的？》改为 150 秒、只做中文，回到首集 2FA 的瑞士风。 |
+| 17 | 200 秒了解 Web 登录机制：怎么验证你是你<br>Web Login in 200 Seconds: How a Site Checks That You Are You | zh + en | 已成片 | [`web-login`](in-seconds/web-login/) |  |
+| 18 | 120 秒速通 Harness 是如何压缩上下文的<br>How a Harness Compresses Context in 120 Seconds | zh | 计划中 | `context-compaction` | 2026-10-20 由「Harness」系列迁入：原《上下文压缩的方式》在本系列讲各框架的压缩方式，本集速通其中最核心的机制。120 秒为速通系列新增的时长档（首集 2FA 已是 120 秒） |
+| 19 | 96 秒了解 HTTP 状态码<br>HTTP Status Codes in 96 Seconds | zh + en | 已成片 | [`http-status-codes`](in-seconds/http-status-codes/) |  |
+| 20 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族<br>The EA211 Family in 150 Seconds: VW's Transverse Four-Cylinder Family | zh | 计划中 | [`ea211-family`](in-seconds/ea211-family/) |  |
+| 21 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git<br>Scion in 150 Seconds: What It Is and Why Anthropic Uses It Instead of Git | zh | 计划中 | [`scion`](in-seconds/scion/) |  |
+| 22 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
+| 23 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` | 2026-10-26 由已取消的「编程语言」系列移入；定长 256 秒。 |
+| 24 | 150 秒速通 Git | zh | 计划中 | `git` |  |
+| 25 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
+| 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
+| 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
+
+### 权限机制的设计
+
+[系列说明](permission-design/README.md)；英文名 The Design of Permission Systems。缺省语言：zh。
+
+| # | 标题 | 语言 | 状态 | 目录 | 备注 |
+|---|---|---|---|---|---|
+| 1 | Linux 权限机制的设计 | zh | 计划中 | `linux-permissions` | 2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。 |
+| 2 | Windows 权限机制的设计 | zh | 计划中 | `windows-permissions` | 2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。 |
+| 3 | macOS 权限机制的设计 | zh | 计划中 | `macos-permissions` |  |
+| 4 | Android 权限机制的设计 | zh | 计划中 | `android-permissions` | 2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。 |
+| 5 | iOS 权限机制的设计 | zh | 计划中 | `ios-permissions` | 2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。 |
+| 6 | iPadOS 权限机制的设计 | zh | 计划中 | `ipados-permissions` |  |
 
 ### 游戏物理学
 
@@ -402,31 +410,32 @@
 | 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | [`openclaw-opencode-v2`](standalone/openclaw-opencode-v2/) |  |
 | 6 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh | 计划中 | `local-qwen-dgx` |  |
 | 7 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | [`wsl`](standalone/wsl/) |  |
-| 8 | 枪械自动原理 | zh | 计划中 | `firearm-actions` |  |
-| 9 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh | 计划中 | `lcd-panels` |  |
-| 10 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 已成片 | [`garbage-collection`](standalone/garbage-collection/) |  |
-| 11 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快<br>One Less Horsepower, One Kilo Less: What Lightweighting Buys You | zh | 计划中 | [`lightweighting`](standalone/lightweighting/) |  |
-| 12 | SQL 数据库群观 | zh | 计划中 | `sql-survey` |  |
-| 13 | 中国汽油价格变迁史 | zh | 计划中 | `china-gasoline-prices` |  |
-| 14 | 向高度寻求减少冲突——立交系统 | zh | 计划中 | `interchanges` |  |
-| 15 | 轮胎物理学 | zh | 计划中 | `tire-physics` |  |
-| 16 | Svn，Git 和代码管理 | zh | 计划中 | `svn-git` |  |
-| 17 | 力大砖飞——今天的计算机到底快到什么速度？ | zh | 计划中 | `how-fast-are-computers` |  |
-| 18 | 怎么实现一个 AI 自动客服？ | zh | 计划中 | `ai-support` |  |
-| 19 | RDP：Windows 远程的优雅实现<br>RDP: The Elegant Implementation of Windows Remote Access | zh | 计划中 | [`rdp`](standalone/rdp/) |  |
-| 20 | 人均算力发展史 | zh | 计划中 | `compute-per-capita` |  |
-| 21 | 发射器：手拉，反吹，电手和汽水 | zh | 计划中 | `airsoft-mechanisms` |  |
-| 22 | ComputerUse 是怎么控制你的电脑的？ | zh | 计划中 | `computer-use` |  |
-| 23 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh | 计划中 | `car-manufacturing` |  |
-| 24 | Claude 是如何检测和封禁你的账号的 | zh | 计划中 | `claude-ban` |  |
-| 25 | CRBS，以及为什么在刹停时总让你点头 | zh | 计划中 | `crbs` |  |
-| 26 | 关于让车不点头的停下 | zh | 计划中 | `smooth-stop` |  |
-| 27 | Shell 群观 | zh | 计划中 | `shell-survey` |  |
-| 28 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh | 计划中 | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
-| 29 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
-| 30 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
-| 31 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
-| 32 | CoT：先思考，再回答 | zh | 制作中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
-| 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
-| 34 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
-| 35 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |
+| 8 | 怎么打手枪？<br>How to Shoot a Pistol | zh + en | 制作中 | [`pistol-shooting`](standalone/pistol-shooting/) | 2026-11-04 从「XX 秒速通」抽离为独立片；高级 3D，片长几分钟，详细介绍手枪射击，具体时长待定。 |
+| 9 | 枪械自动原理 | zh | 计划中 | `firearm-actions` |  |
+| 10 | 液晶显示器和面板，我们应该关心屏幕的什么和影响 | zh | 计划中 | `lcd-panels` |  |
+| 11 | 垃圾回收的艺术<br>The Art of Garbage Collection | zh + en | 已成片 | [`garbage-collection`](standalone/garbage-collection/) |  |
+| 12 | 宁少一马力，不多一公斤：一轻遮百丑，轻让你在哪里都快<br>One Less Horsepower, One Kilo Less: What Lightweighting Buys You | zh | 计划中 | [`lightweighting`](standalone/lightweighting/) |  |
+| 13 | SQL 数据库群观 | zh | 计划中 | `sql-survey` |  |
+| 14 | 中国汽油价格变迁史 | zh | 计划中 | `china-gasoline-prices` |  |
+| 15 | 向高度寻求减少冲突——立交系统 | zh | 计划中 | `interchanges` |  |
+| 16 | 轮胎物理学 | zh | 计划中 | `tire-physics` |  |
+| 17 | Svn，Git 和代码管理 | zh | 计划中 | `svn-git` |  |
+| 18 | 力大砖飞——今天的计算机到底快到什么速度？ | zh | 计划中 | `how-fast-are-computers` |  |
+| 19 | 怎么实现一个 AI 自动客服？ | zh | 计划中 | `ai-support` |  |
+| 20 | RDP：Windows 远程的优雅实现<br>RDP: The Elegant Implementation of Windows Remote Access | zh | 计划中 | [`rdp`](standalone/rdp/) |  |
+| 21 | 人均算力发展史 | zh | 计划中 | `compute-per-capita` |  |
+| 22 | 发射器：手拉，反吹，电手和汽水 | zh | 计划中 | `airsoft-mechanisms` |  |
+| 23 | ComputerUse 是怎么控制你的电脑的？ | zh | 计划中 | `computer-use` |  |
+| 24 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh | 计划中 | `car-manufacturing` |  |
+| 25 | Claude 是如何检测和封禁你的账号的 | zh | 计划中 | `claude-ban` |  |
+| 26 | CRBS，以及为什么在刹停时总让你点头 | zh | 计划中 | `crbs` |  |
+| 27 | 关于让车不点头的停下 | zh | 计划中 | `smooth-stop` |  |
+| 28 | Shell 群观 | zh | 计划中 | `shell-survey` |  |
+| 29 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh | 计划中 | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
+| 30 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
+| 31 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
+| 32 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
+| 33 | CoT：先思考，再回答 | zh | 制作中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
+| 34 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
+| 35 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
+| 36 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |

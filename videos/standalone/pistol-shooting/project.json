@@ -1,7 +1,7 @@
 {
   "slug": "pistol-shooting",
   "stage": "research",
-  "next": "取证，然后写稿",
+  "next": "按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案",
   "credits": {
     "planner": "WaterRun",
     "models": [],
@@ -13,8 +13,8 @@
     "en"
   ],
   "titles": {
-    "zh": "150秒学会怎么打手枪",
-    "en": "How to Shoot a Pistol in 150 Seconds"
+    "zh": "怎么打手枪？",
+    "en": "How to Shoot a Pistol"
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural",
@@ -46,10 +46,6 @@
     }
   },
   "check": {
-    "duration": [
-      149.9,
-      150.1
-    ],
     "caption_width": {
       "zh": 26,
       "en": 44
@@ -60,7 +56,7 @@
     "still_seconds": 2.5,
     "camera": true,
     "style": {
-      "flat": true,
+      "flat": false,
       "no_radius": true,
       "no_emoji": true,
       "palette": [

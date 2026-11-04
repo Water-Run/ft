@@ -1,4 +1,4 @@
-# 「XX 秒速通」系列的配乐：程序合成，120 拍/分，一秒两拍；每个 30 秒的时间步是 15 小节，段落交界落在换码的那一拍上。
+# 从「XX 秒速通」迁来的旧配乐基座，不是本片的配乐设计：程序合成，120 拍/分，一秒两拍；每个 30 秒的时间步是 15 小节，段落交界落在换码的那一拍上。
 # 由 kit/tools/mix.py 调用（project.json 的 audio.music 写成 "tools/music.py"）：compose(ctx) 返回 (2, N) 的数组，电平与旁白压低仍由 mix.py 统一处理。
 #   ctx: { sr, n, total, scenes: [{id, start, end}], cues: [{id, start, end}], audio: project.json 的 audio 段 }
 # 编排由场景的先后决定：第一场是引子，中间各场逐场加层，最后一个正片场景转为半拍并在结论处抬起，片尾只留铺底与秒针。

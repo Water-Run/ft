@@ -5,10 +5,10 @@
 // 语言：浏览器取 ?lang=，Node 取环境变量 VLANG；缺省为 zh。浏览器与 Node 共用本文件（工具读它排时间线）。
 // 翻译以中文为底本：先定中文，再译其他语言；各语言的句号一一对应，时间轴各自排布。
 //
-// 本系列（XX 秒速通）的时间线是定长的：片名里的秒数就是成片的时长，各语言相同。
+// 当前仍是从「XX 秒速通」迁来的 60 秒基座，不是本片的文案或定长要求。
 // - 场景的 at 是它开始的时刻（秒）。上一场的旁白说完之后，余下的时间留白到这一刻；说不完就是超出，记入 L.problems，总闸门不通过。
-// - TOTAL 是全片的时长，最后一场补齐到这一刻。
-// TODO: 骨架。把 TOTAL 改成本集标题里的秒数（project.json 的 check.duration 同步改），再按题目排场景与定点。
+// - TOTAL 是当前基座的时长，最后一场补齐到这一刻。
+// TODO: 按独立片的完整文案重排场景与时长，再在 project.json 设置 check.duration。
 (function (root) {
   const isBrowser = typeof window !== 'undefined';
   const LANG = (isBrowser ? new URLSearchParams(location.search).get('lang') : process.env.VLANG) || 'zh';

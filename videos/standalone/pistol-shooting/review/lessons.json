@@ -5,13 +5,13 @@
     "F01": {
       "rev": 1,
       "result": "pending",
-      "note": "150 秒只回答一次射击里发生了什么。开头给现象，中间走完同一次击发，结尾收回标题。",
+      "note": "用几分钟完整回答怎样打手枪，覆盖准备、握持、瞄准、扳机控制、击发、后坐与复位，不再受 150 秒限制。",
       "evidence": ""
     },
     "F02": {
       "rev": 1,
       "result": "pending",
-      "note": "同一次示意射击按现象、变化和原因分句。术语放在现象之后。现在还没有这组分句。",
+      "note": "同一次完整射击按准备、动作、变化和原因分句。术语放在现象之后，详细但不堆叠。现在还没有这组分句。",
       "evidence": ""
     },
     "F03": {
@@ -24,20 +24,20 @@
     "F04": {
       "rev": 1,
       "result": "pending",
-      "note": "本片没有章节卡。必要文字到位后至少停留 3 秒。片尾约 7.5 秒，无旁白。",
+      "note": "必要文字到位后至少停留 3 秒。片尾不配旁白，章节与片尾时长随独立片设计确定。",
       "evidence": ""
     },
     "F05": {
       "rev": 1,
       "result": "pending",
-      "note": "节奏和冲击要非常强，和边缘行者一样，并强调三维的体积、透视和景深。看到爽的同时能看清一次射击。不照搬角色和夜之城。现在仍是计时盘基座，三维还没做。",
+      "note": "用高级 3D 的体积、透视、景深与镜头运动解释完整射击过程，保留强节奏与冲击，不以效果遮蔽步骤。现在仍是旧计时盘基座，三维还没做。",
       "evidence": "",
-      "script_evidence": "README「视觉系统」；videos/series/in-seconds/README.md 的已定方向"
+      "script_evidence": "README「简报」与「视觉系统」"
     },
     "F06": {
       "rev": 1,
       "result": "pending",
-      "note": "节奏跟画面的冲击走。先保留 120 拍和秒针，重音只给击发，解释时留白。MiniMax M Plan 的语音合成可用时用它配音，密钥不入库。",
+      "note": "为本片重新设计配乐与音效，不沿用速通系列的 120 拍和秒针作为既定约束。MiniMax M Plan 可用时用它配音，密钥不入库。",
       "evidence": ""
     },
     "F07": {
@@ -50,9 +50,9 @@
     "F08": {
       "rev": 1,
       "result": "pending",
-      "note": "交付时核对 1920×1080、60 帧、150 秒、响度和峰值。check.duration 已是 149.9 到 150.1，脚本仍是 60 秒。",
+      "note": "交付时核对 1920×1080、60 帧、最终确定的几分钟片长、响度和峰值。旧 150 秒闸门已移除，具体时长确定后再设 check.duration。",
       "evidence": "",
-      "script_evidence": "project.json 的 check.duration；README 当前状态"
+      "script_evidence": "project.json 不再设旧 duration；README 当前状态"
     },
     "F09": {
       "rev": 1,
@@ -64,7 +64,7 @@
     "F10": {
       "rev": 1,
       "result": "pending",
-      "note": "不提上一集。观众不需要看过其他秒速通。",
+      "note": "本片是独立视频，不依赖任何系列或其他视频，必要背景在本片补齐。",
       "evidence": "",
       "script_evidence": "README F10 与核心问题"
     },
@@ -80,7 +80,7 @@
       "result": "pending",
       "note": "配音前列专名和数字读法。可用时用 MiniMax M Plan 试听，再决定音色。",
       "evidence": "",
-      "script_evidence": "README「读法」；project.json 的 voices 仍是系列占位"
+      "script_evidence": "README「读法」；project.json 的 voices 仍是旧基座占位"
     },
     "F13": {
       "rev": 1,
