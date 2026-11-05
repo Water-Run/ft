@@ -57,12 +57,14 @@ scene('drop', ({ root, s, c0 }) => {
   const swL = tx(W, '自动清理', X0 + 116, AY + 4, { fs: 30 });
   const swOff = tx(W, '默认关', X0 + 256, AY + 4, { fs: 30, color: K.teal });
   [sw, swL].forEach((e) => show(e, T('d6b', '自动清理') + 0.05, { y: 8 })); slam(swOff, T('d6b', '关着'), { from: 1.2 }); sfx('tick', T('d6b', '关着'), { g: 0.35 });
-  const fw = R.reused.freelist_count * k, hz = h('div', 'abs', W); px(hz, FR - fw, Y, fw, H - 2); hz.dataset.name = '空闲的页';
+  // 图注回答「关着岂不是越来越大」（WaterRun 看 r8：「自动清理默认关着.db不是越来越大不会变小了吗 图注中说明」「也就是默认情况下.db只会变大是吧, 在图注中说明」）：只增不减，但空出的页留给新数据（J06、D01、D02；前面刚演过再插 1024 行一页没长）
+  const gA = gloss(W, '自动清理', '默认关：文件只增不减，空出的页留给新数据用', X0 + 400, AY + 8, 900); show(gA, T('d6b', '关着') + 0.2, { x: -10, y: 0 });
+  const fw = R.reused.freelist_count * k, hz = h('div', 'abs', W); px(hz, FR - fw, Y + 10, fw, H - 22); hz.dataset.name = '空闲的页';   // 框只框长条本身，上边不压文件名条里的「553 页」
   const shr = line(ov, [[FR - 10, LABY + 24], [FR - fw + 10, LABY + 24]], { color: 'teal' }); arrowIn(shr, T('d6b', '变小') - 0.1, 0.5);
   gone(ins, T('d6b', 'vacuum') - 0.35, 0.3);
   const vac = codeBlock(W, ['VACUUM;'], X0, 250, { fs: 26 }); set(vac, 0, { autoAlpha: 0 }); wipe(vac, T('d6b', 'vacuum') - 0.15, { dir: 'l', d: 0.35 }); sfx('tick', T('d6b', 'vacuum'), { g: 0.4 });
   const gV = gloss(W, 'VACUUM', '重建数据库文件的命令', X0 + 260, 262, 700); show(gV, T('d6b', 'vacuum') + 0.1, { y: 8 });
-  [sw, swL, swOff, shr].forEach((e) => gone(e, T('d7') - 0.3, 0.45));
+  [sw, swL, swOff, shr, gA].forEach((e) => gone(e, T('d7') - 0.3, 0.45));
   // d7：读头扫过整个文件；用着的页一页页抄进临时文件（临时文件随写随长），扫到空闲页时临时文件不再长
   const VW = R.vacuumed.page_count * k, TY = AY + 10, tR = T('d7', '整个') - 0.1, dR = 2.1, uFr = (UW - fw) / UW, dU = dR * uFr;
   const TMP = panel('临时文件', X0, TY, 170, H + 40); TMP.dataset.name = '临时文件'; TMP.style.zIndex = '3'; set(TMP, 0, { autoAlpha: 0 }); show(TMP, T('d7') - 0.1, { y: 10 });
