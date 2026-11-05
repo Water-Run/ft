@@ -290,6 +290,7 @@
 | 25 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
+| 28 | 192秒速通RDP: Windows远程的优雅实现 | zh | 计划中 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒。 |
 
 ### 权限机制的设计
 
@@ -422,20 +423,19 @@
 | 17 | Svn，Git 和代码管理 | zh | 计划中 | `svn-git` |  |
 | 18 | 力大砖飞——今天的计算机到底快到什么速度？ | zh | 计划中 | `how-fast-are-computers` |  |
 | 19 | 怎么实现一个 AI 自动客服？ | zh | 计划中 | `ai-support` |  |
-| 20 | RDP：Windows 远程的优雅实现<br>RDP: The Elegant Implementation of Windows Remote Access | zh | 计划中 | [`rdp`](standalone/rdp/) |  |
-| 21 | 人均算力发展史 | zh | 计划中 | `compute-per-capita` |  |
-| 22 | 发射器：手拉，反吹，电手和汽水 | zh | 计划中 | `airsoft-mechanisms` |  |
-| 23 | ComputerUse 是怎么控制你的电脑的？ | zh | 计划中 | `computer-use` |  |
-| 24 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh | 计划中 | `car-manufacturing` |  |
-| 25 | Claude 是如何检测和封禁你的账号的 | zh | 计划中 | `claude-ban` |  |
-| 26 | CRBS，以及为什么在刹停时总让你点头 | zh | 计划中 | `crbs` |  |
-| 27 | 关于让车不点头的停下 | zh | 计划中 | `smooth-stop` |  |
-| 28 | Shell 群观 | zh | 计划中 | `shell-survey` |  |
-| 29 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh | 计划中 | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
-| 30 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
-| 31 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
-| 32 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
-| 33 | CoT：先思考，再回答 | zh | 制作中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
-| 34 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
-| 35 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
-| 36 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |
+| 20 | 人均算力发展史 | zh | 计划中 | `compute-per-capita` |  |
+| 21 | 发射器：手拉，反吹，电手和汽水 | zh | 计划中 | `airsoft-mechanisms` |  |
+| 22 | ComputerUse 是怎么控制你的电脑的？ | zh | 计划中 | `computer-use` |  |
+| 23 | 一卷钢卷的艺术之旅——现代汽车是如何制造出来的 | zh | 计划中 | `car-manufacturing` |  |
+| 24 | Claude 是如何检测和封禁你的账号的 | zh | 计划中 | `claude-ban` |  |
+| 25 | CRBS，以及为什么在刹停时总让你点头 | zh | 计划中 | `crbs` |  |
+| 26 | 关于让车不点头的停下 | zh | 计划中 | `smooth-stop` |  |
+| 27 | Shell 群观 | zh | 计划中 | `shell-survey` |  |
+| 28 | 代价很小的安卓 Linux 虚拟机：Termux 和 Proot<br>A Cheap Android Linux VM: Termux and Proot | zh | 计划中 | `termux-proot` | 2026-10-20 策划者新增。讲在安卓上以 Termux 加 proot 跑一套 Linux 环境的代价与做法：不用 root、不用 chroot 之外的容器、代价在哪。 |
+| 29 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
+| 30 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
+| 31 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
+| 32 | CoT：先思考，再回答 | zh | 制作中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
+| 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
+| 34 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
+| 35 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |

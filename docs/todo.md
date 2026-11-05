@@ -18,7 +18,7 @@
 ## 11W2
 
 1. 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse（`clickhouse`）
-2. [RDP：Windows 远程的优雅实现](../videos/standalone/rdp/README.md)（`rdp`）
+2. [192秒速通RDP: Windows远程的优雅实现](../videos/in-seconds/rdp/README.md)（`rdp`）
 3. [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](../videos/standalone/firebird/README.md)（`firebird`）
 4. Windows 权限机制的设计（「权限机制的设计」系列，`windows-permissions`）
 
