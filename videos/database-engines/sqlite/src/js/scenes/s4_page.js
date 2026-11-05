@@ -97,7 +97,7 @@ scene('page', ({ root, s, c0 }) => {
   const over = h('div', 'abs', W); px(over, 424, RY2 - 4, 1090, 52); css(over, { border: `2.5px dashed ${K.red}`, boxSizing: 'border-box' }); over.dataset.name = '装不下的部分';
   set(over, 0, { autoAlpha: 0 }); show(over, T('p10', '放不下') + 0.3, { y: 0, d: 0.3 }); sfx('error', T('p10', '放不下') + 0.3, { g: 0.3 });
   // 只留开头一小段：长条收成页里的那一截（页里最多放 785 字节，约页宽的四分之三）
-  tl.fromTo(bar, { width: 1380 }, { width: 290 * NOTE.local / 1024 + 14, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, T('p11', '一小段') - 0.2);
+  tl.fromTo(bar, { width: 1380, paddingLeft: 320 }, { width: 290 * NOTE.local / 1024 + 14, paddingLeft: 0, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, T('p11', '一小段') - 0.2);   // 内边距一起归零：否则宽度被 320 像素的内边距撑住，缩不进页里（WaterRun 看 r8：「这开头一小段跑到页外头了」）
   keyed(bar).at(T('p11', '一小段') - 0.25, { html: '' });
   const lpL = tx(W, `只留开头 ${NOTE.local} 个字节`, LPX, LPY + 128, { fs: 24 }); show(lpL, T('p11', '一小段'), { y: 6 });
   // 溢出页：外面那截切成 11 页，一页接一页

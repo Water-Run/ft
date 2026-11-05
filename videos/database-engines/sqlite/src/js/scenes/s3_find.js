@@ -82,8 +82,9 @@ scene('find', ({ root, s, c0 }) => {
   arrowIn(hop, T('f8', '行号') - 0.1, 0.8); sfx('whoosh', T('f8', '行号'), { g: 0.3 });
   goneFrom(cnt, T('f8') - 0.1, 0.3);   // 已压到 30%：从 30% 收起
   hot(U.r, T('f9', '根页 2')); const m133 = U.mEls.find((e) => e.p === 133);
-  const pt2 = path(ov, `M${U.rx + U.rw * 0.5},${U.RY + 50} L${m133.mx},${U.MY} M${m133.mx},${U.MY + 44} L${U.lx[130] + U.pitch / 2},${U.LY}`, 'teal', { w: 4, arrow: false });
-  arrowIn(pt2, T('f9', '中间') - 0.2, 0.9); hot(m133, T('f10', '133')); hot(U.lEls[130], T('f10', '130'));
+  // 路线分两段画（WaterRun 看 r8：「才走到中间下面那个线也亮了」）：f9「走中间」只画根页到第 133 页，f10「再按分界走到叶页 130」才画下一段
+  const pt2 = path(ov, `M${U.rx + U.rw * 0.5},${U.RY + 50} L${m133.mx},${U.MY}`, 'teal', { w: 4, arrow: false }), pt2b = path(ov, `M${m133.mx},${U.MY + 44} L${U.lx[130] + U.pitch / 2},${U.LY}`, 'teal', { w: 4, arrow: false });
+  arrowIn(pt2, T('f9', '中间') - 0.2, 0.7); arrowIn(pt2b, T('f10', '分界') - 0.1, 0.7); hot(m133, T('f10', '133')); hot(U.lEls[130], T('f10', '130'));
   sfx('tick', T('f9', '根页 2'), { g: 0.4 }); sfx('tick', T('f10', '133'), { g: 0.4 }); sfx('tick', T('f10', '130'), { g: 0.4 });
   const keep2 = new Set(U.mids.find((m) => m.p === 133).c);   // 走中间：另外两棵子树退下；到了 133，别的叶页也退下
   U.leaves.forEach((p) => { if (!keep2.has(p)) dim(U.lEls[p], T('f9', '中间'), 0.2); else if (p !== 130) dim(U.lEls[p], T('f10', '130'), 0.2); });
@@ -98,7 +99,7 @@ scene('find', ({ root, s, c0 }) => {
   // ── f12–f13b：这次查询从文件读了 7 页：铁路图 ──
   const tRR = T('f12') - 0.2;
   // 「开头说的 7 页」：两棵树和路上的标注都退场，七步路线图放大摆在中间（WaterRun 看 r7b：「七步指示位置优化」）
-  [hop, hit, row, sepU, n4096, n306, n18, u4096, u1521, u17, pth, pth2, pt2, ...U.all, ...N.all].forEach((e) => gone(e, tRR, 0.4));
+  [hop, hit, row, sepU, n4096, n306, n18, u4096, u1521, u17, pth, pth2, pt2, pt2b, ...U.all, ...N.all].forEach((e) => gone(e, tRR, 0.4));
   const y = 580, read = DATA.trace.index_then_table, caps = ['登记', '根', '中层', '叶', '根', '中层', '叶'];
   const st = h('div', 'abs', W); px(st, 110, y - 8, 16, 16); css(st, { border: `2px solid ${K.ink}`, borderRadius: '50%', background: '#fff' });
   let x = 170; const boxes = [], segs = [];

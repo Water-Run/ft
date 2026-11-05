@@ -136,15 +136,19 @@ scene('store', ({ root, s, c0 }) => {
   show(gIn, T('s14', '内部页'), { x: 12, y: 0 }); show(gLf, T('s14', '叶页'), { y: 8 }); sfx('pop', T('s14', '内部页'), { g: 0.35 });
   gone(rid, T('s9', '17') - 0.1, 0.3);   // 镜头在 s9 推近第 2 页之前收走（免得被画面边缘切掉）
   const gRt = gloss(W, '根页', '树最顶上的那一页', 1300, 548, 430); show(gRt, T('s15c', '根页'), { x: -12, y: 0 }); sfx('pop', T('s15c', '根页'), { g: 0.35 });
-  const regC = tx(W, '第 1 页登记：users 表 → 第 2 页', 160, 410, { fs: 24, color: K.teal }); set(regC, 0, { autoAlpha: 0 }); show(regC, T('s15b', '根页') + 0.5, { y: 6 });
-  // 第 1 页登记的线：从细带上第 1 页的左边绕出来，不穿过页格
-  // 登记那根虚线从标签右端直接连到第 2 页（原来从页带绕出画面左边，WaterRun 看 r7d：「指的溢出去了」）
-  const rLine = line(ov, [[552, 426], [700, 426], [745, 482]], { dashed: '7 6' }); arrowIn(rLine, T('s15b', '根页') + 0.6, 0.6);
-  set(G.cells[0], T('s15b'), { opacity: 1 }); set(G.cells[1], T('s15b') + 0.3, { opacity: 1 });   // 细带里第 1 页和第 2 页不再压淡（不改颜色）
+  // s15b（WaterRun 看 r8：「第一页动画来的慢 指的也比较莫名其妙」）：一开口镜头就拉回、细带里第 1 页那一格亮起（框住它）；
+  // 念到「登记」，第 1 页从细带里放大飞出来，成为一张小页「第 1 页：users 表的根页 → 第 2 页」，箭头从它直接指到第 2 页
+  tl.fromTo(G.cells[0], { opacity: 0.25 }, { opacity: 1, duration: 0.4, ease: 'power1.out', immediateRender: false }, T('s15b', '第 1 页') - 0.1);
+  tl.fromTo(G.cells[1], { opacity: 0.25 }, { opacity: 1, duration: 0.4, ease: 'power1.out', immediateRender: false }, T('s15b', '根页') - 0.1);   // 细带里第 1 页和第 2 页不再压淡（不改颜色）
+  const p1c = h('div', 'abs', W); px(p1c, SX, 440, 330, 84); css(p1c, { border: `2px solid ${K.ink}`, background: '#ffffff', boxSizing: 'border-box', transformOrigin: '0 0' }); p1c.dataset.name = '第 1 页';
+  tx(p1c, '第 1 页', 10, 4, { fs: 22, color: K.teal }); tx(p1c, 'users 表的根页 → 第 2 页', 10, 38, { fs: 24 });
+  set(p1c, 0, { autoAlpha: 0 }); tl.fromTo(p1c, { autoAlpha: 0, x: 0, y: SY - 440, scale: SC / 330 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'power2.out', immediateRender: false }, T('s15b', '登记') - 0.2); sfx('whoosh', T('s15b', '登记') - 0.2, { g: 0.3 });
+  const rA = line(ov, [[SX + 334, 482], [743, 522]]); arrowIn(rA, T('s15b', '登记') + 0.45, 0.5);
 
   // ── s16–s22b：插满 4096 行，users 表长成三层：整棵树 ──
   const tF = T('s16') - 0.2;
-  [P2, P3, P4, r18, lA, lB, la, lb, gIn, gLf, gRt, rLine, regC].forEach((e) => gone(e, tF, 0.3));
+  [P2, P3, P4, r18, lA, lB, la, lb, gRt, rA, p1c].forEach((e) => gone(e, tF, 0.3));
+  [gIn, gLf].forEach((e) => gone(e, T('s15b') - 0.6, 0.45));   // 讲完的两条图注在镜头拉回前收走（「叶页」那条在第 3、4 页下面，拉回后会被画面下边裁掉）
   const ins = codeBlock(W, ['INSERT INTO users …　× 4096'], 130, 470, { fs: 26 }); ins.dataset.beat = 'text'; set(ins, 0, { autoAlpha: 0 }); show(ins, T('s16') + 0.1, { y: 6 }); gone(ins, T('s17') - 0.2, 0.3);   // 「插满 4096 行」
   rows.forEach((r) => gone(r, tF, 0.3));
   const U = DATA.users, by = Object.fromEntries(U.nodes.map((n) => [n.p, n])), rt = by[U.root], mids = rt.c.map((p) => by[p]);
@@ -216,7 +220,7 @@ scene('store', ({ root, s, c0 }) => {
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   // 焦点框：画面上摆着好几样、旁白点名其中一样时才框——整张页图（553 页）、第 1 页、第 2 页、第 262 页；根页；根页上的两个分界；三个子页；姓名索引根页上的分界
   focus(W, [[T('s3', '553'), zGrid, T('s4')], [T('s8', '整数主键'), cId, Tend('s8') + 0.3], [T('s5'), G.cells[0]], [T('s6', '2'), G.cells[1]], [T('s6', '262'), G.cells[261], Tend('s6') + 0.3],
-    [T('s14', '叶页'), [P3, P4], Tend('s14')], [T('s15c', '根页'), P2, Tend('s15c')], [T('s17', '1560'), kEls[0]], [T('s17', '3081'), kEls[1], Tend('s17')], [T('s17b', '三个'), midEls, Tend('s17b') + 0.3], [T('s19', '同一层') - 0.2, leafEls, Tend('s19') + 0.3], [T('s21'), leafEls], [T('s21', '内部页'), kEls[0], T('s21', '路标') + 0.6], [T('s25', 'Alice') - 0.1, ent.rs[0], Tend('s25') + 0.3], [T('s26', '分界'), [N.r, sepE], Tend('s26')]], Tend('s26b'));
+    [T('s14', '叶页'), [P3, P4], Tend('s14')], [T('s15c', '根页'), P2, Tend('s15c')], [T('s15b', '第 1 页'), G.cells[0], T('s15b', '登记') - 0.2], [T('s15b', '根页'), P2, Tend('s15b')], [T('s17', '1560'), kEls[0]], [T('s17', '3081'), kEls[1], Tend('s17')], [T('s17b', '三个'), midEls, Tend('s17b') + 0.3], [T('s19', '同一层') - 0.2, leafEls, Tend('s19') + 0.3], [T('s21'), leafEls], [T('s21', '内部页'), kEls[0], T('s21', '路标') + 0.6], [T('s25', 'Alice') - 0.1, ent.rs[0], Tend('s25') + 0.3], [T('s26', '分界'), [N.r, sepE], Tend('s26')]], Tend('s26b'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('s3', '1024'), { g: 0.35 });
   sfx('pop', T('s4', '260'), { g: 0.3 });
@@ -235,7 +239,7 @@ scene('store', ({ root, s, c0 }) => {
     [T('s9', '17') + 0.1, null, { rect: [700, 440, 1520, 640], zmax: 1.6, d: 1.3 }],
     [T('s11') - 0.2, null, { rect: [110, 390, 1840, 1010], d: 1.3 }],
     [T('s12') - 0.1, null, { rect: [360, 450, 1740, 980], d: 1.5 }],
-    [T('s15b', '根页') - 0.4, null, { rect: [110, 390, 1840, 1010], d: 1.4 }],
+    [T('s15b') - 0.5, null, { rect: [110, 250, 1840, 860], d: 1.2 }],   // 一开口就拉回，细带里的第 1 页在画面里（下到第 3、4 页底为止，字号不缩小）
     [T('s16') - 0.2, null, { rect: [110, 360, 1850, 960] }],
     [T('x0', '多了一项') - 0.3, null, { rect: [10, 360, 1750, 960], d: 1.3 }],
     [T('s24') - 0.1, null, { rect: [10, 560, 1750, 960], d: 1.3 }],
