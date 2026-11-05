@@ -1,144 +1,180 @@
 {
   "schema": 2,
-  "version": "2026-10-24.1",
+  "version": "2026-11-01.1",
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "核心问题写在 README「简报」：一条 SQL 进入应用后，SQLite 怎样沿整棵树找到 Alice，再把一次修改可靠地保存下来。第 14–16 稿逐稿通读（review/NOTES.md 交审说明）；成片各章的问题条依次推进（放 → 找 → 一页之内 → 改 → 并发 → 出错 → 删），第 09 章逐条回答五个问题，收束转到 ClickHouse（策划者指定保留）。核对方式：关键帧总览（sheets.js）与成片抽帧总览。"
     },
     "F02": {
-      "rev": 2,
-      "result": "pending",
+      "rev": 3,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "Alice（行号 2050、42 岁）一行贯穿全片：第 02 章放进第 130 页、第 03 章页内 13 个字节、第 04 章按名字走 7 页、第 05 章改成 43、第 06–07 章锁与崩溃恢复、第 08 章注销与 VACUUM、第 09 章回答。整体先行：第 02 章先给 main.db 整个文件 553 页的归属图，再进页内；每个页号第一次出现时画面上有对应的页。核对方式：r7b–r8 每轮按章关键帧逐张看（sheets.js），新名词都有图注（check.js 的 GLOSS 检查通过）。"
     },
     "F03": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "比较都放在同一任务上：页内摆放与 PostgreSQL 的页对照（G21）；锁的范围按 PostgreSQL 多版本 → InnoDB 一行 → MyISAM 整张表 → SQLite 整个文件递进（G17、G22）；OLTP 与 OLAP 在同一张 users 表上对照。图注写含义（例：「空闲链　空出的页串成一条链」「溢出页　放不下的部分；每页开头写着下一页」）。核对方式：通读第 16 稿与对应关键帧。"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；check.js 全片扫描通过、预览 r8 无超过 3 秒的静止；策划者 WaterRun 看过预览 r1–r8（r8 看完说「没什么问题了」），r8 之后的改动见 review/NOTES.md「预览 r8」各行；制作方未做连续观看。",
       "evidence": ""
     },
     "F05": {
-      "rev": 1,
-      "result": "pending",
-      "note": "",
+      "rev": 3,
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；scan.js 的 ZOOM 检查通过（r8 之前出现过一次 p1 往复缩放，已改为平移）；策划者 WaterRun 看过预览 r1–r8（r8 看完说「没什么问题了」），r8 之后的改动见 review/NOTES.md「预览 r8」各行；制作方未做连续观看。",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；audio.js 数值：整体 -18.3 LUFS、峰值 -1.9 dBFS、305 个音效事件 7 种；策划者 WaterRun 看过预览 r1–r8（r8 看完说「没什么问题了」），r8 之后的改动见 review/NOTES.md「预览 r8」各行；配乐与音效的听感只经策划者试听预览。",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面内容只有本片实验库（users 表、main.db）与 SQLite 官方源码 src/btree.c 第 1–9 行；没有终端回显、个人目录、主机名或地址。核对方式：在场景源码中检索全部上屏字符串；成片抽帧总览；字幕文件检索。"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "成片的帧率、时长、响度与峰值取自 finish.js 与 check.js --final 对最终 MP4 的测量，并用 ffprobe 读最终文件核对，写进 README「交付」。"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md「意见与处理」逐条记策划者原话、稿本与预览轮次；README「简报」按日期引原话；制作方自查另列在交审说明里；文案中的事实都回到 research/FACTS.md 核对（新加的 G21、G22 转录自 PostgreSQL 一集 FACTS P2、X3 并注明出处）。"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "对其他集的引用只有三处，各自在本片说清：p4b「PostgreSQL 的页，也是这样摆的」（画面上画出对照的页）、j10p–j10b 锁的范围对照（画面上演出一行、一张表）、收束「前几期的 MySQL、PostgreSQL」（只用来引出 OLTP）；不要求观众记得前集。核对方式：逐句检查第 16 稿。"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "外文材料：src/btree.c 的注释原文——三句祝福念到哪句就高亮那句，旁白与字幕给出中文；「SQLite Is Public Domain」下面一行中文释义；ClickHouse、OLTP、OLAP 有中文全称与图注。右上角常驻的「Small. Fast. Reliable. Choose any three.」是官网标语，作身份标识，不需要读懂。核对方式：关键帧逐张看。"
     },
     "F12": {
-      "rev": 1,
-      "result": "pending",
-      "note": "",
+      "rev": 3,
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；重配的句子（p4、p4b、j10p、w6、d6b、d7）用 faster-whisper 回听筛查：p4 听成「掌」（zhǎng）、w6「校验和」后有停顿；多音字清单见导出稿。策划者在 r7d 指出过「是zhang不是chang」并在 r8 后没有再提读音问题；其余读音只经策划者试听。",
       "evidence": ""
     },
     "F13": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "开场先讲熟悉的服务器型数据库与它的负担；第 01 章交代来龙去脉：作者 Richard Hipp、2000 年前后给军舰写软件时 Informix 服务器一停就连不上，于是想不要服务器、直接读磁盘，自己写了一个；起初是 Tcl 的扩展，2000 年 8 月 1.0，2004 年 3.0 定下文件格式；再给本片路线（「下面就从这个文件看起」）。版本固定为 3.54.1（源码与实验同一版本）。核对方式：通读第 16 稿，看第 01 章关键帧。"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾名单是无旁白的静默 cue，署名只在画面上；文案中没有制作指令。核对方式：script-review.js 导出稿与 check.js --final 的署名与片尾名单检查。"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "在场景源码中检索全部上屏字符串，没有「示意」「本实验」「按源码构造」等制作者口吻的说明；数据来源只在画面上写版本与文件名（src/btree.c（SQLite 3.54.1））。"
     },
     "F16": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 sqlite.org：墨色 #003b57（标志字标）、导航条 #044a64、官网标语常驻右上角，白纸底与平涂直线，出处见 README「设计」与 research/MATERIALS.md；任取一帧可从顶栏与章节导航认出在讲 SQLite。核对方式：关键帧与 README 所列来源对照。"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；音色与语速由策划者在审片页选定（MiniMax 女声），之后各轮预览都由策划者试听；制作方没有试听。",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；每章的主画面（main.db 页图、两棵树、叶页 130 字节条、七步路线、锁的嵌套图、WAL 与主文件、文件长条、五问总图）由关键帧逐章核对；策划者 WaterRun 看过预览 r1–r8（r8 看完说「没什么问题了」），r8 之后的改动见 review/NOTES.md「预览 r8」各行；是否「看完记得住」要连续观看判断，制作方未做。",
       "evidence": ""
     },
     "F19": {
-      "rev": 1,
-      "result": "pending",
-      "note": "",
+      "rev": 2,
+      "result": "open",
+      "note": "已发布的成片（第一次正式渲染，SHA-256 16282170…）在 14:56–14:57 有三处逐帧跳变：「上万亿行」时列里的横线越滚越快，最后每帧约 31 像素，超过 28 像素的线距，会看成条纹倒转，并在最快时急停。预览是 30 fps，逐帧检查没有报出；成片 60 fps 的逐帧检查才查到。放慢的改法（共滚 336 像素、先快后慢，单段重渲复查 0 处）做过，但策划者已上传第一次渲染的成片，按发布后冻结撤回，未进入成片。其余中间帧核对：预览 r8 逐帧跳变检查只剩 0:27、1:43 两次一次性落地回弹；文字压框线检查（每 0.5 秒）0 处；check.js 全片扫描通过。",
       "evidence": ""
     },
     "F20": {
-      "rev": 2,
-      "result": "pending",
+      "rev": 3,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "颜色只表示身份（README「设计」的颜色表：麦色＝主角与这一路读到的页，浅绿/浅蓝/浅紫＝页的归属，浅红＝改到一半，红＝出错，白底虚线框＝空闲页），每样东西出场到退场颜色不变；「看这里」只用一个焦点框。核对方式：r7b 起逐场景重列图形与对应的解释，按关键帧逐张看。"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "check.js 的自成一体检查通过；视觉取自 sqlite.org（与 PostgreSQL、MyISAM 两集的配色与部件不同），配乐为本片单独生成。"
     },
     "F22": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每个新名词第一次出现时都有图注（check.js 的 GLOSS 检查通过），一组并列对象整组在场（例：第 09 章五个问题与总图同时在场，逐问推进）。核对方式：关键帧逐张看。"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；讲机制的段落都做成过程动画（行插进页、页分裂长出树、路线逐层画、原页抄进日志再抄回、帧追加进 WAL、读头扫过文件抄进临时文件），由关键帧逐段核对；关掉声音能否看懂要连续观看判断，制作方未做。",
       "evidence": ""
+    },
+    "F24": {
+      "rev": 1,
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；scan.js 的 CUT、CAPZONE、MARGIN 检查通过，r8 中与 r8 之后加的镜头移动（第 03 章开头平移、p11 推近、第 04 章 f6 沿路线下移、收束 e12 推近、第 02 章 s15b 拉回）都截帧核对过；策划者 WaterRun 看过预览 r1–r8（r8 看完说「没什么问题了」），r8 之后的改动见 review/NOTES.md「预览 r8」各行；镜头运动的观感要连续观看判断。",
+      "evidence": ""
+    },
+    "F25": {
+      "rev": 1,
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；用 sheets.js 按章看过关键帧（讲解对象带着真实内容在场：页号、行号、字节、帧号都来自实验）；关掉声音和字幕连续看，制作方未做。",
+      "evidence": ""
+    },
+    "F26": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "第 14–16 稿每次加句删句后通读整章（review/NOTES.md 交审说明）；制作方主动改过的例子：s22b、j26b 两句重复删去，d6b 补「什么时候要 VACUUM」，「五个问题」的个数与章节卡、总图一致。"
+    },
+    "F27": {
+      "rev": 1,
+      "result": "open",
+      "note": "制作方（Claude Opus 5.5）能看图、不能连续看视频、不能直接听声音，本条要求的连续观看或人耳试听由制作方做不了；交付前用成片抽帧总览通看全片（方式与发现写在 README「交付」）；以正常速度连续观看只有策划者做过（预览 r8）。",
+      "evidence": ""
+    },
+    "F28": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "新名词按「问题 → 例子 → 名字」进场，例：根页（树长高后最顶上仍是第 2 页 →「这一页叫根页」）、空闲链（注销后文件不变小、空出 394 页 → 串成空闲链）、溢出页（一行太长放不下 → 叶页只留开头一段 → 其余写进溢出页）；同一个数字各章一致（553 页、行号 2050、42→43）。核对方式：通读第 16 稿。"
+    },
+    "F29": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "每章有常驻主对象并在原地变化（第 02 章 main.db 页图收成细带、第 03 章叶页 130 字节条、第 08 章文件长条原地变化、收束同一张表原地从按行存换成按列存再移到右边拉长）；换段带一样东西过去。核对方式：r7b–r8 按章关键帧总览。"
     }
   },
   "history": [
@@ -175,6 +211,96 @@
     {
       "version": "2026-10-22.1",
       "id": "F20",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F02",
+      "item": {
+        "rev": 2,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F03",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F05",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F12",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F13",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F16",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F19",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F20",
+      "item": {
+        "rev": 2,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-10-24.1",
+      "id": "F22",
       "item": {
         "rev": 1,
         "result": "pending",
