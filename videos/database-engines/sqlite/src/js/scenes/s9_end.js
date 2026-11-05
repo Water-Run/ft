@@ -103,7 +103,7 @@ scene('end', ({ root, s, c0 }) => {
   tl.fromTo(tbl, { x: 0, y: 0, opacity: 0.35 }, { x: 860, y: 40, opacity: 1, duration: 0.9, ease: 'power2.inOut', immediateRender: false }, tG); sfx('whoosh', tG, { g: 0.3 });
   const st = cB.map((c, j) => { const e = h('div', 'abs', c); px(e, 0, 338, CW[j] - 4, 0); css(e, { backgroundImage: 'repeating-linear-gradient(180deg,#ffffff 0 26px,#6f6f6f 26px 28px)', backgroundPosition: '0px 0px' }); return e; });   // lint-ok: 两种平涂色硬边交替＝一行一行的横线，不是渐变
   cB.forEach((c, j) => tl.fromTo(c, { height: 346 }, { height: H2, duration: 0.7, ease: 'power3.out', immediateRender: false }, tL + j * 0.06));
-  st.forEach((e, j) => { tl.fromTo(e, { height: 0 }, { height: H2 - 346, duration: 0.7, ease: 'power3.out', immediateRender: false }, tL + j * 0.06); tl.fromTo(e, { backgroundPosition: '0px 0px' }, { backgroundPosition: '0px -336px', duration: tE - tL, ease: 'power1.inOut', immediateRender: false }, tL); });   // 最快每帧约 6.5 像素（60 fps），远小于 28 像素的线距：不会看成条纹倒转；先快后慢，不急停
+  st.forEach((e, j) => { tl.fromTo(e, { height: 0 }, { height: H2 - 346, duration: 0.7, ease: 'power3.out', immediateRender: false }, tL + j * 0.06); tl.fromTo(e, { backgroundPosition: '0px 0px' }, { backgroundPosition: '0px -1620px', duration: tE - tL, ease: 'power2.in', immediateRender: false }, tL); });
   sfx('riser', tL, { g: 0.35 });
   const bigL = tx(W, '几十亿行', 150, 430, { fs: 56, color: K.teal, css: { fontWeight: '700' } }); show(bigL, T('e12b', '几十亿'), { x: -12, y: 0 });
   keyed(bigL).at(T('e12b', '上万亿'), { html: '上万亿行' });
