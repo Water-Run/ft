@@ -7,8 +7,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"
   },
-  "stage": "preview",
-  "next": "预览 r1：第 9 稿已确认并配音（15:10），11 个场景已写完，自审后交 WaterRun 看",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 BV1RG4h6UEqQ，2026-11-06）；片单状态待共享片单文件空出后用 catalog.js 更新",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -89,5 +89,22 @@
       "flat": true,
       "no_emoji": true
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-05",
+    "duration": {
+      "zh": 912.845
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1RG4h6UEqQ",
+      "date": "2026-11-06",
+      "title": "一个数据库引擎是如何实现的？(4)——小而强大：SQLite",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }
