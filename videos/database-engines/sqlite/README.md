@@ -7,7 +7,7 @@
 | 项 | 记录 |
 |---|---|
 | 当前停在哪里 | 2026-11-06 已发布：哔哩哔哩 BV1RG4h6UEqQ（见「交付」的「发布」行）。发布后冻结：源码与已发布成片一致；横线问题记作已知问题 |
-| 下一步，依赖什么 | 共享片单文件空出后用 catalog.js 更新片单状态；收集观众反馈 |
+| 下一步，依赖什么 | 共享片单文件空出后，一次提交里改 project.json 的 stage/delivery/release 与片单状态并运行 catalog.js；收集观众反馈 |
 | 等待策划者的事 | 无（YouTube 是否上传未告知） |
 | 本次会话的角色 | **制作方**（Claude Opus 5.5）：2026-11-01 写第 4–6 稿，补 FACTS G08–G15，做配音候选（MiniMax 普通话女声 26 个）、配乐小样、按官网实际页面重做的关键帧与 3 张封面候选。此前：2026-10-24 补做实验 08–10 与官方来源、写第 1–3 稿、视觉系统与关键帧；2026-10-22 的取证与实测由准备方 GPT-6.1 Sol 完成 |
 | 未做的事 | 片单状态更新；连续观看与人耳试听只由策划者做过（见「交付」） |
@@ -153,7 +153,7 @@
 | Credit | 名单取自 `project.json` 的 credits：策划 WaterRun；GPT-6.1 Sol（取证、实测与结构测绘、简报整理）；Claude Opus 5.5（补充取证、文案、视觉设计、场景、配乐）；MiniMax speech-2.8-hd（旁白合成）；许可 GPL-3.0-or-later；仓库地址 github.com/Water-Run/ft。片尾在成片 15:03.9 起出现（无旁白），在已发布成片的总览帧（约 15:05、15:10）上逐行核对 12 行，与 project.json 一致 |
 | 开源交付 | 许可 GPL-3.0-or-later（仓库根目录）；源码即本目录，渲染所用版本为提交 `9685ba5`（`src/` 与当前一致）；外置材料只有 MiniMax 合成的旁白（不入库，按 `tts.js` 重做）；画面内容来自本片实验与 SQLite 官方源码 `src/btree.c` 开头注释（SQLite 属公有领域） |
 | 发布 | 哔哩哔哩 [BV1RG4h6UEqQ](https://www.bilibili.com/video/BV1RG4h6UEqQ)，2026-11-06 00:05:23（+08:00，取自视频页的 pubdate），UP 主 WaterRun，合集「数据库引擎」；平台标题「一个数据库引擎是如何实现的？(4)——小而强大：SQLite」（比 project.json 的标题多了集号「(4)」）。WaterRun 于 2026-11-06 发来链接；标题、时间、合集于同日在视频页核对。YouTube 未告知，未核。片尾「开源视频」指向的 github.com/Water-Run/ft 同日可公开访问（HTTP 200） |
-| 未做或未通过 | 连续观看与人耳试听（见上）；片单 `videos/catalog.json` 的状态与 `catalog.js`：共享片单文件此刻有别的会话未提交的改动，等空出后再更新 |
+| 未做或未通过 | 连续观看与人耳试听（见上）；发布登记的其余部分：`project.json` 的 `stage: released`、`delivery`（2026-11-05，zh 912.845 秒）、`release`（上一行的平台、链接、日期、标题）与片单 `videos/catalog.json` 的状态要在同一次提交里改（catalog.js --check 要求两边一致），而共享片单文件此刻有别的会话未提交的改动，等空出后再做，然后运行 `node kit/tools/catalog.js` |
 
 ## 设计
 
