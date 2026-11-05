@@ -17,17 +17,22 @@ scene('end', ({ root, s, c0 }) => {
   // e3：源码文件的开头没有版权声明，代替它的是一段祝福（src/btree.c 第 1–9 行原文）
   const SRC = ['/*', '** 2004 April 6', '**', '** The author disclaims copyright to this source code.  In place of', '** a legal notice, here is a blessing:', '**', '**    May you do good and not evil.', '**    May you find forgiveness for yourself and forgive others.', '**    May you share freely, never taking more than you give.', '**'];
   const fname = tx(W, 'src/btree.c　（SQLite 3.54.1）', 120, 410, { fs: 24, mono: true, color: K.dim });
-  // 三句祝福包成 span：念到哪句，那句英文原文铺上麦色的高亮（像荧光笔划过）并留着（WaterRun 看 r7d：「讲到祝福时代码的祝福要高亮」）
-  const code = codeBlock(W, SRC.map((l, i) => (i >= 6 && i <= 8 ? esc(l.slice(0, 7)) + `<span>${esc(l.slice(7))}</span>` : esc(l))), 120, 450, { fs: 24 }); code.dataset.name = '源码开头';
+  // 要念到的原文包成 span，念到时铺上麦色高亮（像荧光笔划过）并留着；高亮只盖原文本身，不盖行首的 ** 与空格
+  // （WaterRun 看 r7d：「讲到祝福时代码的祝福要高亮」；看 r8：「高亮有Bug哈 前面那个框的效果也有问题 直接用正确的高亮就行」——原来从第 7 个字符切，漏了 May 的 M；「没有版权声明」「一段祝福」两处也从焦点框改成高亮）
+  const HLS = { 3: ['The author disclaims copyright to this source code.', 'In place of'], 4: ['a legal notice, here is a blessing:'], 6: ['May you do good and not evil.'], 7: ['May you find forgiveness for yourself and forgive others.'], 8: ['May you share freely, never taking more than you give.'] };
+  const code = codeBlock(W, SRC.map((l, i) => (HLS[i] || []).reduce((a, sub) => a.replace(esc(sub), `<span>${esc(sub)}</span>`), esc(l))), 120, 450, { fs: 24 }); code.dataset.name = '源码开头';
   const lines = [...code.children];
+  const marker = (sp, t, d = 0.6) => { css(sp, { backgroundImage: `linear-gradient(${K.wheat}, ${K.wheat})`, backgroundRepeat: 'no-repeat', backgroundSize: '0% 100%' });   // lint-ok: 单色的 linear-gradient 只是可伸缩的麦色底（荧光笔），不是渐变
+    tl.fromTo(sp, { backgroundSize: '0% 100%' }, { backgroundSize: '100% 100%', duration: d, ease: 'power1.inOut', immediateRender: false }, t); return sp; };
+  const [cpy, inPl] = lines[3].querySelectorAll('span'), bls = lines[4].querySelector('span');
+  marker(cpy, T('e3', '版权声明') - 0.2, 0.7); marker(inPl, T('e3', '祝福') - 0.45, 0.2); marker(bls, T('e3', '祝福') - 0.25, 0.5); sfx('tick', T('e3', '版权声明'), { g: 0.3 }); sfx('tick', T('e3', '祝福'), { g: 0.3 });
   show(fname, T('e3', '源码') - 0.2, { y: 6 }); set(code, 0, { autoAlpha: 0 }); wipe(code, T('e3', '源码'), { dir: 't', d: 0.5 }); sfx('whoosh', T('e3', '源码'), { g: 0.3 });
   // e4–e6：三句祝福就在这段注释里——声明退场，镜头推近整个代码块；念到哪一句，那一句原文从左到右铺上麦色高亮并留着，其余几行压淡；念完停一停（e6 后 2.5 秒）
   const tB = T('e4') - 0.7;
   [pd, aff].forEach((e) => gone(e, tB, 0.6));
   [0, 1, 2, 3, 4, 5, 9].forEach((i) => dim(lines[i], tB + 0.4, 0.35, 1, 0.8));
   const BC = ['e4', 'e5', 'e6'];
-  const hl = [6, 7, 8].map((li, k) => { const sp = lines[li].querySelector('span'); css(sp, { backgroundImage: `linear-gradient(${K.wheat}, ${K.wheat})`, backgroundRepeat: 'no-repeat', backgroundSize: '0% 100%' });   // lint-ok: 单色的 linear-gradient 只是可伸缩的麦色底（荧光笔），不是渐变
-    tl.fromTo(sp, { backgroundSize: '0% 100%' }, { backgroundSize: '100% 100%', duration: 0.6, ease: 'power1.inOut', immediateRender: false }, T(BC[k]) - 0.1); sfx('tick', T(BC[k]), { g: 0.3 }); return sp; });
+  [6, 7, 8].forEach((li, k) => { marker(lines[li].querySelector('span'), T(BC[k]) - 0.1); sfx('tick', T(BC[k]), { g: 0.3 }); });
   const tO = T('e7') - 0.5;
   [fname, code].forEach((e) => gone(e, tO, 0.6));
 
@@ -107,9 +112,8 @@ scene('end', ({ root, s, c0 }) => {
   const small = tx(W, '极小', 140, 700, { fs: 56, color: K.teal }), big = tx(W, '极大', 1440, 236, { fs: 60, color: K.teal });   // 让出 ClickHouse 后面的 PART 5
   show(small, T('e13', '极小'), { y: 10, d: 0.9 }); show(big, T('e13', '极大'), { y: 10, d: 1.0 }); sfx('thud', T('e13', '极大'), { g: 0.5 });
 
-  // 焦点框：源码注释里「没有版权声明」「一段祝福」那两行（三句祝福由麦色高亮来指，不再加框）；「一行挨着一行」框住几行，「一列挨着一列」框住三列
-  focus(W, [[T('e3', '版权声明'), lines[3]], [T('e3', '祝福'), lines[4], Tend('e3')],
-    [T('e11', '一行'), rowEls, T('e11', '一列') - 0.1], [T('e11', '一列'), cB, Tend('e11')]], Tend('e13'), { pad: 2 });   // 代码行挨得近：框只外扩 2 像素，不压上下两行的字
+  // 焦点框：「一行挨着一行」框住几行，「一列挨着一列」框住三列（源码注释里要念的原文都由麦色高亮来指，不加框）
+  focus(W, [[T('e11', '一行'), rowEls, T('e11', '一列') - 0.1], [T('e11', '一列'), cB, Tend('e11')]], Tend('e13'));
   // 镜头：声明与源码 → 祝福 → OLTP 到 OLAP、行到列 → 极小到极大
   shots(cam, world, s, [
     [s.start, null, { rect: [110, 240, 1840, 790] }],
