@@ -19,11 +19,28 @@ scene('concur', ({ root, s, c0 }) => {
   // ── j10–j19：有人在读：三把锁 ──
   const tL = T('j10') - 0.2;
   const card = (name, x) => { const c = h('div', 'abs', W); px(c, x, 700, 520, 190); css(c, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); const n = tx(c, name, 16, 8, { fs: 28, fw: 600 }); const l1 = tx(c, '', 16, 56, { fs: 24, mono: true }); const l2 = tx(c, '', 16, 100, { fs: 24 }); const lk = h('div', 'abs btn', c, ''); px(lk, 16, 140); lk.style.fontSize = '22px'; c.l1 = l1; c.l2 = l2; c.lk = lk; return c; };
-  const scope = docTable(W, [['', 210], ['一把锁管多大', 400]], [['MyISAM', '整张表'], ['InnoDB', '要改的那一行'], ['SQLite', '整个数据库文件']], 1200, 290, { fs: 32 });
-  scope.t.dataset.name = '锁的范围';
-  show(scope.hr, T('j10b') - 0.1, { y: 6 }); show(scope.rs[0], T('j10b', 'My ISAM'), { x: -10, y: 0 }); show(scope.rs[1], T('j10d'), { x: -10, y: 0 }); show(scope.rs[2], T('j10c'), { x: -10, y: 0 });
-  sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10d'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
-  gone(scope.t, T('j11', '共享锁') - 0.2, 0.3);
+  // 一把锁管多大，按递进演出来（WaterRun 看 r7d：「Pg多版本 InnoDB一行 MyISAM一表 到SQLite整个库……动画上也体现这样的递进」）：
+  // 右边一个文件，里面是 users 表（几行）和两个索引；PostgreSQL：Alice 那一行出现第二个版本；InnoDB：锁框框住那一行；MyISAM：锁框长到整张表；SQLite：锁框长到整个文件
+  const fileB = h('div', 'abs', W); px(fileB, 790, 270, 1010, 440); css(fileB, { border: `2px solid ${K.greyLine}`, background: '#fff', boxSizing: 'border-box' });
+  tx(fileB, 'main.db：整个数据库文件', 16, 8, { fs: 22, color: K.dim });
+  const tblB = h('div', 'abs', W); px(tblB, 820, 320, 600, 320); css(tblB, { border: `1.5px solid ${K.ink}`, boxSizing: 'border-box' }); tx(tblB, 'users 表', 16, 6, { fs: 22 });
+  const RTX = ['2049 · User02049-… · 51', '2050 · Alice · 42', '2051 · User02051-… · 53', '2052 · User02052-… · 54'];
+  const lrows = RTX.map((t, i) => { const r = h('div', 'abs', W, t); px(r, 840, 364 + i * 62, 560, 48); css(r, { border: `1.5px solid ${K.greyLine}`, background: i === 1 ? K.wheat : '#fff', boxSizing: 'border-box', fontFamily: 'Mono', fontSize: '22px', paddingLeft: '12px', lineHeight: '44px', whiteSpace: 'nowrap' }); return r; });
+  const ixBox = h('div', 'abs', W); px(ixBox, 1450, 320, 320, 320); css(ixBox, { border: `1.5px solid ${K.ink}`, boxSizing: 'border-box' }); tx(ixBox, '两个索引', 16, 6, { fs: 22 });
+  const ix1 = h('div', 'abs', ixBox, '姓名索引'), ix2 = h('div', 'abs', ixBox, '年龄索引'); [ix1, ix2].forEach((e, i) => { px(e, 20, 56 + i * 126, 278, 100); css(e, { border: `1.5px solid ${K.greyLine}`, fontSize: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }); });
+  const v2 = h('div', 'abs', W, '43 · 新版本'); px(v2, 1150, 432, 230, 36); css(v2, { border: `2px dashed ${K.teal}`, background: '#fff', boxSizing: 'border-box', fontSize: '22px', paddingLeft: '10px', lineHeight: '32px', whiteSpace: 'nowrap' });
+  const lcap = tx(W, '', 840, 654, { fs: 24, color: K.teal });
+  const lkF = h('div', 'abs', W); css(lkF, { border: `3px solid ${K.teal}`, boxSizing: 'border-box', left: '834px', top: '420px', width: '572px', height: '60px' });
+  const lkI = h('div', 'abs', lkF); px(lkI, 0, -34, 22, 30); css(lkI, { left: 'auto', right: '-6px' }); { const sh = h('div', 'abs', lkI); px(sh, 4, 0, 14, 14); css(sh, { border: `3px solid ${K.teal}`, borderBottom: 'none', borderRadius: '8px 8px 0 0', boxSizing: 'border-box' }); const bd = h('div', 'abs', lkI); px(bd, 0, 12, 22, 17); css(bd, { background: K.teal }); }
+  const tD0 = T('j10p') - 0.3;
+  [fileB, tblB, ixBox].forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); wipe(e, tD0 + i * 0.15, { dir: 'l', d: 0.45 }); }); lrows.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); show(e, tD0 + 0.3 + i * 0.08, { x: -10, y: 0, d: 0.3 }); });
+  set(v2, 0, { autoAlpha: 0 }); tl.fromTo(v2, { autoAlpha: 0, x: -30, y: -10 }, { autoAlpha: 1, x: 0, y: 0, duration: 0.5, ease: 'power2.out', immediateRender: false }, T('j10p', '多版本') - 0.1); gone(v2, T('j10d') - 0.2, 0.45);
+  keyed(lcap).at(T('j10p', '多版本'), { html: 'PostgreSQL：两个版本，读的人看 42，写的人写 43' }).at(T('j10d', 'Inno D B'), { html: 'InnoDB：锁只扣住要改的那一行' }).at(T('j10b', '整张表') - 0.2, { html: 'MyISAM：一锁就是整张表' }).at(T('j10c', '整个数据库文件') - 0.2, { html: 'SQLite：锁住整个数据库文件' });
+  set(lkF, 0, { autoAlpha: 0 }); show(lkF, T('j10d', 'Inno D B') - 0.1, { y: 0, s: 1.05, d: 0.35 });
+  tl.fromTo(lkF, { left: 834, top: 420, width: 572, height: 60 }, { left: 814, top: 314, width: 612, height: 332, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, T('j10b', '整张表') - 0.3);
+  tl.fromTo(lkF, { left: 814, top: 314, width: 612, height: 332 }, { left: 784, top: 264, width: 1022, height: 452, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, T('j10c', '整个数据库文件') - 0.3);
+  sfx('tick', T('j10d', 'Inno D B'), { g: 0.35 }); sfx('whoosh', T('j10b', '整张表') - 0.3, { g: 0.3 }); sfx('whoosh', T('j10c', '整个数据库文件') - 0.3, { g: 0.35 });
+  [fileB, tblB, ixBox, ...lrows, lcap, lkF].forEach((e) => gone(e, T('j11', '共享锁') - 0.3, 0.45));
   const bob = card('Bob（读）', 120), ali = card('Alice（写）', 700), rdr = card('又来一个读者', 1280);
   wipe(bob, T('j10', '有人在读') - 0.1, { dir: 'l', d: 0.35 });
   keyed(bob.l1).at(T('j10', '有人在读'), { html: 'sqlite> SELECT age …' });
@@ -105,7 +122,7 @@ scene('concur', ({ root, s, c0 }) => {
   const still = tx(MAIN, '主文件先不动', 330, 6, { fs: 22, color: K.dim }); show(still, T('w1', '不动'), { y: 6 });
   const hold = h('div', 'abs', W); px(hold, 110, 240, 620, 440); css(hold, { border: `2px dashed ${K.teal}`, boxSizing: 'border-box' }); hold.dataset.name = '主文件不动';
   set(hold, 0, { autoAlpha: 0 }); wipe(hold, T('w1', '主文件') - 0.1, { dir: 'l', d: 0.6 }); sfx('tick', T('w1', '主文件'), { g: 0.3 });
-  gone(hold, T('w15', '写回') - 0.2, 0.3);
+  gone(hold, T('w3') - 0.2, 0.45);
   slide(WAL, T('w1b') - 0.1, { x: 520, y: 0, d: 0.7, ease: 'power3.out' }); sfx('whoosh', T('w1b') - 0.1, { g: 0.3 });
   // 「整页追加到另一个文件末尾」：一页从主文件里飞出来，落在 WAL（此刻还是空的）的末尾，也就是开头那一格
   const pgFly = tx(W, '改过的页', 470, 314, { fs: 22, css: { background: K.wheat, border: `1.5px solid ${K.teal}`, padding: '4px 12px', opacity: 0, visibility: 'hidden' } }); set(pgFly, 0, { autoAlpha: 0 });
@@ -138,15 +155,19 @@ scene('concur', ({ root, s, c0 }) => {
   gone(still, T('w7') - 0.1, 0.2); show(st42, T('w7', '42'), { y: 6 }); 
   // w8–w8b：读的时候先查 WAL；哪些页在 WAL 里，记在内存里的一份目录上
   
-  const dir = h('div', 'abs', W); px(dir, 750, 268, 480, 150); css(dir, { border: `2px solid ${K.ink}`, background: '#f2f2f2', padding: '8px 14px', boxSizing: 'border-box', whiteSpace: 'normal', lineHeight: 1.5 });   // 五项一行放不下：允许换行（r1 第 5 项被框切掉） dir.dataset.name = '内存里的对照表';   // 让开页标题
-  dir.innerHTML = '<div style="font-size:22px;color:#044a64">内存里的对照表：哪一页在第几帧</div>' + FR.map((pg, i) => `<span style="display:inline-block;font-family:Mono;font-size:24px;margin-right:16px">${pg}→帧${i + 1}</span>`).join('');
-  set(dir, 0, { autoAlpha: 0 }); wipe(dir, T('w8b', '内存') - 0.2, { dir: 't', d: 0.4 });   // 「记在内存里的一张对照表上」
-  const r1 = line(ov, [[960, 560], [1236, 400]]), r2 = line(ov, [[960, 560], [726, 420]], { dashed: '7 6' });
-  const rd = tx(W, '读', 940, 566, { fs: 26 }); show(rd, T('w8', '先查'), { y: 6 }); arrowIn(r1, T('w8', '新版'), 0.4); arrowIn(r2, T('w8', '主文件'), 0.4);
+  // 内存里的对照表（WaterRun 看 r7d：「内存对照表样式太简陋了」）：两块面板中间一张「页 → 帧」查找表，每一行和右边 WAL 里那一帧对齐，一根短箭头连过去
+  const dir = h('div', 'abs', W); px(dir, 760, 250, 440, 420); css(dir, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' });
+  const dirH = h('div', 'abs', dir, '内存里的对照表'); px(dirH, 0, 0, 436, 40); css(dirH, { background: '#dddddd', borderBottom: '1.5px solid #aaa', fontSize: '22px', paddingLeft: '14px', lineHeight: '38px', boxSizing: 'border-box' });
+  const dRows = FR.map((pg, i) => { const r = h('div', 'abs', dir, `第 ${pg} 页 → 帧 ${i + 1}`); px(r, 20, 56 + i * 68, 340, 56); css(r, { border: `1.5px solid ${K.ink}`, background: pg === 130 ? K.wheat : '#fff', fontFamily: 'Mono', fontSize: '24px', paddingLeft: '14px', lineHeight: '52px', boxSizing: 'border-box', whiteSpace: 'nowrap' }); return r; });
+  const dArr = FR.map((pg, i) => line(ov, [[1124, 278 + 56 + i * 68], [1258, 278 + 56 + i * 68]], { w: 1.8, color: 'teal' }));
+  set(dir, 0, { autoAlpha: 0 }); wipe(dir, T('w8b', '内存') - 0.2, { dir: 't', d: 0.4 }); dRows.forEach((r, i) => { set(r, 0, { autoAlpha: 0 }); show(r, T('w8b', '对照表') - 0.2 + i * 0.12, { x: -10, y: 0, d: 0.3 }); }); dArr.forEach((l, i) => arrowIn(l, T('w8b', '对照表') + i * 0.12, 0.25));
+  // 读的时候先查 WAL：「读」从两块面板下面绕过去，先指 WAL，没有的再指主文件（不穿过中间那张表）
+  const r1 = line(ov, [[1000, 720], [1300, 720], [1300, 676]]), r2 = line(ov, [[920, 720], [620, 720], [620, 676]], { dashed: '7 6' });
+  const rd = tx(W, '读', 944, 700, { fs: 30, color: K.teal }); show(rd, T('w8', '先查'), { y: 6 }); arrowIn(r1, T('w8', '新版'), 0.4); arrowIn(r2, T('w8', '主文件'), 0.4);
   // w9–w12：同样的顺序：Bob 先读 42；Alice 提交直接成功；Bob 仍是 42（快照）；之后的读者看到 43
   const tS = T('w9') - 0.2;
   [rd, r1, r2, st42].forEach((e) => gone(e, tS, 0.3));
-  dim(dir, tS, 0.3);   // 人物卡这一段不讲对照表：压淡，画面上同时可读的字少一些（check 的 DENSE 提示）
+  [dir, ...dArr].forEach((e) => dim(e, tS, 0.3));   // 人物卡这一段不讲对照表：压淡，画面上同时可读的字少一些（check 的 DENSE 提示）
   const card = (name, x) => { const c = h('div', 'abs', W); px(c, x, 700, 520, 190); css(c, { border: `2px solid ${K.ink}`, background: '#fff', boxSizing: 'border-box' }); tx(c, name, 16, 8, { fs: 28, fw: 600 }); c.l1 = tx(c, '', 16, 60, { fs: 24, mono: true }); c.l2 = tx(c, '', 16, 108, { fs: 26 }); return c; };
   const bob = card('Bob（读）', 120), ali = card('Alice（写）', 700), car = card('Carol（也要写）', 1280);
   wipe(bob, tS + 0.1, { dir: 'l', d: 0.35 });
@@ -155,9 +176,9 @@ scene('concur', ({ root, s, c0 }) => {
   wipe(ali, T('w10') - 0.2, { dir: 'l', d: 0.35 });
   keyed(ali.l1).at(T('w10') - 0.1, { html: 'sqlite> UPDATE …; COMMIT;' });
   keyed(ali.l2).at(T('w10', '直接成功'), { html: '提交：<b>直接成功</b>' }); sfx('chime', T('w10', '直接成功'), { g: 0.45 });
-  const snap = gloss(W, '快照', '读的人看的是自己开始时的那一版', 750, 430, 480); show(snap, T('w11b', '快照'), { x: 12, y: 0 }); sfx('pop', T('w11b', '快照'), { g: 0.4 });
-  const fresh = btn(W, '之后开始的读者：看到 43', 750, 566, 24); set(fresh, 0, { autoAlpha: 0 }); slam(fresh, T('w12', '43'), { from: 1.2 });
-  const both = tx(W, '读不挡写，写也不挡读', 750, 640, { fs: 26, color: K.teal }); show(both, T('w12', '读不挡写'), { y: 6 });
+  const snap = gloss(W, '快照', '读的人看的是自己开始时的那一版', 1280, 706, 520); show(snap, T('w11b', '快照'), { x: 12, y: 0 }); sfx('pop', T('w11b', '快照'), { g: 0.4 });
+  const fresh = btn(W, '之后开始的读者：看到 43', 1280, 786, 24); set(fresh, 0, { autoAlpha: 0 }); slam(fresh, T('w12', '43'), { from: 1.2 });
+  const both = tx(W, '读不挡写，写也不挡读', 1280, 846, { fs: 26, color: K.teal }); show(both, T('w12', '读不挡写'), { y: 6 });
   // w13–w14：Carol 这时也要写：数据库已锁；写的人仍然只能有一个
   gone(snap, T('w13') - 0.2, 0.3);
   wipe(car, T('w13', 'Carol') - 0.2, { dir: 'l', d: 0.35 });
@@ -170,7 +191,7 @@ scene('concur', ({ root, s, c0 }) => {
   [fresh, both].forEach((e) => gone(e, T('w13') - 0.2, 0.4));
   const cp = line(ov, [[1236, 460], [726, 460]], { w: 3 }); const cpL = tx(W, '写回主文件', 860, 420, { fs: 24 });
   arrowIn(cp, T('w15', '写回') - 0.2, 0.6); show(cpL, T('w15', '写回'), { y: 6 });
-  const gC = gloss(W, '检查点', '把 WAL 里的新页写回主文件', 750, 268, 480); set(gC, 0, { autoAlpha: 0 }); goneFrom(dir, T('w15b', '检查点') - 0.2, 0.3, 0.2); show(gC, T('w15b', '检查点'), { y: 8 }); sfx('pop', T('w15b', '检查点'), { g: 0.4 });
+  const gC = gloss(W, '检查点', '把 WAL 里的新页写回主文件', 750, 268, 480); set(gC, 0, { autoAlpha: 0 }); [dir, ...dArr].forEach((e) => goneFrom(e, T('w15') - 0.3, 0.3, 0.45)); show(gC, T('w15b', '检查点'), { y: 8 }); sfx('pop', T('w15b', '检查点'), { g: 0.4 });
   // 不能覆盖：写回的箭头变红，主文件边上落下一道挡板；Bob 结束后挡板收起
   const blocked = h('div', 'abs', W); px(blocked, 732, 410, 14, 110); css(blocked, { background: K.red, transformOrigin: '50% 0%' }); blocked.dataset.name = '挡板';
   set(blocked, 0, { autoAlpha: 0 }); tl.fromTo(blocked, { autoAlpha: 1, scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: 'bounce.out', immediateRender: false }, T('w16', '不能覆盖') - 0.1); sfx('error', T('w16', '不能覆盖'), { g: 0.4 });

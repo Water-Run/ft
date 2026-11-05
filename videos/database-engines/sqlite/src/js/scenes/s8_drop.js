@@ -46,22 +46,52 @@ scene('drop', ({ root, s, c0 }) => {
   const ins = codeBlock(W, ['INSERT INTO users …　-- 再插入 1024 行'], X0, 250, { fs: 26 }); set(ins, 0, { autoAlpha: 0 }); gone(del, T('d5') - 0.2, 0.2); show(ins, T('d5') - 0.1, { y: 0, d: 0.3 });
   set(chain[0], T('d5', '空闲页'), { backgroundColor: OWN.u }); set(chain[1], T('d5', '空闲页') + 0.15, { backgroundColor: OWN.u });   // 新用户住进去：变成 users 表的浅绿
   seg(R.reused.freelist_count, T('d6', '一页没长') - 0.2); sfx('tick', T('d6', '一页没长'), { g: 0.4 });
-  // d7–d7b：VACUUM 把整个库重写一遍：文件缩到 283 页，空闲页一页不剩
-  const tV = T('d7', 'vacuum') - 0.2;
-  [ins, gF, same, head, more, ...chain, ...cl].forEach((e) => gone(e, tV, 0.3));
-  const vac = codeBlock(W, ['VACUUM;'], X0, 250, { fs: 26 }); set(vac, 0, { autoAlpha: 0 }); show(vac, tV + 0.1, { y: 0, d: 0.3 });
-  const gV = gloss(W, 'VACUUM', '重写整个文件，去掉空闲页', X0, CHY, 760); show(gV, T('d7', 'vacuum'), { y: 8 });
-  tl.fromTo(frame, { width: FULL }, { width: R.vacuumed.page_count * k, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
-  tl.fromTo(MAIN.nameEl, { width: FULL - 4 }, { width: R.vacuumed.page_count * k - 4, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
-  tl.fromTo(used, { width: UW - R.reused.freelist_count * k }, { width: R.vacuumed.page_count * k - 4, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
-  tl.fromTo(free, { width: FULL - 4 }, { width: R.vacuumed.page_count * k - 4, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
-  tl.fromTo(pagesL, { x: 0 }, { x: -(FULL - R.vacuumed.page_count * k), duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
-  sfx('whoosh', T('d7b', '283') - 0.2, { g: 0.35 });
-  // 「重写一遍」：一道浅青从文件长条左边扫到右边（整个文件被重写），扫完退掉，接着缩小
-  const rw = h('div', 'abs', W); px(rw, X0 + 2, Y, 0, H - 2); css(rw, { background: '#cfe1e9', zIndex: '2', opacity: '0.85' }); set(rw, 0, { autoAlpha: 0 });
-  tl.fromTo(rw, { autoAlpha: 1, width: 0 }, { autoAlpha: 1, width: FULL - 4, duration: 1.0, ease: 'power1.inOut', immediateRender: false }, T('d7', '重写') - 0.2); gone(rw, T('d7', '重写') + 0.9, 0.45); sfx('whoosh', T('d7', '重写') - 0.2, { g: 0.3 });
-  // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
-  focus(W, [[T('d2', '553'), pagesL, Tend('d2')], [T('d4', '链头'), head, Tend('d4')], [T('d6', '一页没长'), pagesL, Tend('d6')], [T('d7b', '283'), pagesL, T('d7b', '空闲')]], Tend('d7b'));   // 焦点框：页数、链头
-  [[T('d4') - 0.2, '空出的页：串成一条空闲链'], [T('d5') - 0.2, '新用户注册：先用空闲页'], [T('d7') - 0.2, 'VACUUM：重写整个数据库文件']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
+  // d6b–d7b（第 16 稿；WaterRun 看 r7d：「VACUUM很突兀, 用户根本不知道什么时候会来 动画也奇怪」）
+  // 先交代什么时候会来：自动清理默认关着（J06），要变小得自己执行 VACUUM；
+  // 再演它怎么做（J06：复制到临时文件，再覆盖原文件）：读头从左扫到右，用着的页抄进下面的临时文件，空闲页不抄；临时文件升上去盖住原文件，文件缩到 283 页。
+  const tC = T('d6b') - 0.25;
+  [gF, same, head, more, ...chain, ...cl].forEach((e) => gone(e, tC, 0.45));
+  const AY = CHY - 40;
+  const sw = h('div', 'abs', W); px(sw, X0, AY, 96, 48); css(sw, { borderRadius: '24px', background: '#d6d6d6', border: `2px solid ${K.ink}`, boxSizing: 'border-box' });
+  const knob = h('div', 'abs', sw); px(knob, 4, 4, 36, 36); css(knob, { borderRadius: '50%', background: '#ffffff', border: `2px solid ${K.ink}`, boxSizing: 'border-box' });
+  const swL = tx(W, '自动清理', X0 + 116, AY + 4, { fs: 30 });
+  const swOff = tx(W, '默认关', X0 + 256, AY + 4, { fs: 30, color: K.teal });
+  [sw, swL].forEach((e) => show(e, T('d6b', '自动清理') + 0.05, { y: 8 })); slam(swOff, T('d6b', '关着'), { from: 1.2 }); sfx('tick', T('d6b', '关着'), { g: 0.35 });
+  const fw = R.reused.freelist_count * k, hz = h('div', 'abs', W); px(hz, FR - fw, Y, fw, H - 2); hz.dataset.name = '空闲的页';
+  const shr = line(ov, [[FR - 10, LABY + 24], [FR - fw + 10, LABY + 24]], { color: 'teal' }); arrowIn(shr, T('d6b', '变小') - 0.1, 0.5);
+  gone(ins, T('d6b', 'vacuum') - 0.35, 0.3);
+  const vac = codeBlock(W, ['VACUUM;'], X0, 250, { fs: 26 }); set(vac, 0, { autoAlpha: 0 }); wipe(vac, T('d6b', 'vacuum') - 0.15, { dir: 'l', d: 0.35 }); sfx('tick', T('d6b', 'vacuum'), { g: 0.4 });
+  const gV = gloss(W, 'VACUUM', '重建数据库文件的命令', X0 + 260, 262, 700); show(gV, T('d6b', 'vacuum') + 0.1, { y: 8 });
+  [sw, swL, swOff, shr].forEach((e) => gone(e, T('d7') - 0.3, 0.45));
+  // d7：读头扫过整个文件；用着的页一页页抄进临时文件（临时文件随写随长），扫到空闲页时临时文件不再长
+  const VW = R.vacuumed.page_count * k, TY = AY + 10, tR = T('d7', '整个') - 0.1, dR = 2.1, uFr = (UW - fw) / UW, dU = dR * uFr;
+  const TMP = panel('临时文件', X0, TY, 170, H + 40); TMP.dataset.name = '临时文件'; TMP.style.zIndex = '3'; set(TMP, 0, { autoAlpha: 0 }); show(TMP, T('d7') - 0.1, { y: 10 });
+  const tf = h('div', 'abs', W); px(tf, X0 + 2, TY + 40, 0, H - 2); css(tf, { background: '#ffffff', borderRight: `2px solid ${K.ink}`, boxSizing: 'border-box', zIndex: '4' }); set(tf, 0, { autoAlpha: 0 }); set(tf, tR, { autoAlpha: 1 });
+  const fillW = (t) => Math.round(Math.max(0, Math.min(1, (t - tR) / dU)) * (VW - 4));
+  F((t) => { const f = fillW(t), w = Math.max(170, f + 4); const a = w + 'px', b = (w - 4) + 'px', c = f + 'px'; if (TMP.style.width !== a) TMP.style.width = a; if (TMP.nameEl.style.width !== b) TMP.nameEl.style.width = b; if (tf.style.width !== c) tf.style.width = c; });
+  const rh = h('div', 'abs', W); px(rh, X0, Y - 12, 4, H + 22); css(rh, { background: K.teal, zIndex: '3' }); set(rh, 0, { autoAlpha: 0 });
+  show(rh, tR - 0.2, { y: 0, d: 0.2 }); tl.fromTo(rh, { left: X0 }, { left: FR, duration: dR, ease: 'none', immediateRender: false }, tR); gone(rh, tR + dR, 0.45); sfx('whoosh', tR, { g: 0.3 });
+  // 抄下去的页：四张小页从读头落进临时文件的末尾
+  for (let i = 0; i < 4; i++) {
+    const ti = tR + dU * (i + 0.5) / 4, x0 = X0 + (UW - fw) * (i + 0.5) / 4, x1 = X0 + 2 + fillW(ti + 0.4);
+    const pc = pageCell(W, x0 - 14, Y + H - 34, 28, 28, { fill: '#ffffff', bw: 2 }); pc.style.zIndex = '5'; set(pc, 0, { autoAlpha: 0 });
+    tl.fromTo(pc, { autoAlpha: 1, x: 0, y: 0 }, { x: x1 - x0 - 14, y: TY + 40 + 40 - (Y + H - 34), duration: 0.4, ease: 'power1.in', immediateRender: false }, ti);
+    tl.set(pc, { autoAlpha: 0 }, ti + 0.4);
+  }
+  const skip = tx(W, '空闲页不抄', X0 + VW + 40, TY + 76, { fs: 28, color: K.teal }); show(skip, tR + dU + 0.1, { x: -10, y: 0 });
+  // d7b：原文件里的内容退掉，临时文件升上去盖住它，文件框跟着缩到 283 页；落定后「临时文件」的名字淡去，露出 main.db
+  const tUp = T('d7b', '文件') - 0.15, dUp = 0.8, tLand = tUp + dUp;
+  gone(skip, tUp - 0.3, 0.3);
+  gone(used, tUp, 0.45); gone(free, tUp, 0.45);
+  tl.set(used, { width: VW - 4, autoAlpha: 1 }, tLand - 0.02);
+  tl.fromTo([TMP, tf], { y: 0 }, { y: Y - 40 - TY, duration: dUp, ease: 'power2.inOut', immediateRender: false }, tUp);
+  tl.fromTo(frame, { width: FULL }, { width: VW, duration: dUp, ease: 'power2.inOut', immediateRender: false }, tUp);
+  tl.fromTo(MAIN.nameEl, { width: FULL - 4 }, { width: VW - 4, duration: dUp, ease: 'power2.inOut', immediateRender: false }, tUp);
+  tl.fromTo(pagesL, { x: 0 }, { x: -(FULL - VW), duration: dUp, ease: 'power2.inOut', immediateRender: false }, tUp);
+  gone(TMP, tLand, 0.45); gone(tf, tLand, 0.45);
+  sfx('whoosh', tUp, { g: 0.35 }); sfx('thud', tLand, { g: 0.3 });
+  // 「当前在讲谁」：页数、链头、空闲的页、整个文件
+  focus(W, [[T('d2', '553'), pagesL, Tend('d2')], [T('d4', '链头'), head, Tend('d4')], [T('d6', '一页没长'), pagesL, Tend('d6')], [T('d6b', '变小'), hz, T('d6b', 'vacuum') - 0.3], [T('d7b', '283'), pagesL, T('d7b', '空闲') - 0.1], [T('d7b', '空闲'), MAIN, Tend('d7b')]], Tend('d7b'));
+  [[T('d4') - 0.2, '空出的页：串成一条空闲链'], [T('d5') - 0.2, '新用户注册：先用空闲页'], [T('d6b') - 0.2, 'VACUUM：把文件重写一遍']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 240, 1800, 880], zmax: 1.2 }], [T('d7b', '空闲') - 0.1, null, { rect: [110, 240, 1000, 780], zmax: 1.3, d: 1.5 }]]);
 });

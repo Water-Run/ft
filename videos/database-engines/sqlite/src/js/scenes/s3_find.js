@@ -69,7 +69,7 @@ scene('find', ({ root, s, c0 }) => {
   const keep1 = new Set(N.mids.find((m) => m.p === 281).c);
   // 「只剩 306 项」：281 以外的叶页从右往左一页页淡下去
   const outL = N.leaves.filter((p) => !keep1.has(p)), tO5 = T('f5', '306') - 0.2;
-  N.leaves.forEach((p) => { if (!keep1.has(p)) dim(N.lEls[p], tO5 + 1.8 * (1 - outL.indexOf(p) / outL.length), 0.2, 1, 0.4); else if (p !== 263) dim(N.lEls[p], T('f6', '18'), 0.2); });
+  N.leaves.forEach((p) => { if (!keep1.has(p)) dim(N.lEls[p], tO5 + 1.8 * (1 - outL.indexOf(p) / outL.length), 0.2, 1, 0.4); else if (p !== 263) dim(N.lEls[p], T('f6', '263') - 0.1, 0.2, 1, 0.45); });   // 到了叶页 263，旁边那些叶页就不走了：此刻压淡
   N.mEls.forEach((e) => { if (e !== m281) dim(e, T('f5', '281'), 0.2); });
   sfx('tick', T('f5', '281'), { g: 0.4 }); sfx('tick', T('f6', '263'), { g: 0.4 });
   Object.values(N.lEls).forEach((e) => { e.dataset.beat = 'line'; });   // 「再走最左边」：281 下面的叶页一起描框，到 263 时只剩它
@@ -135,5 +135,5 @@ scene('find', ({ root, s, c0 }) => {
   keyed(title).at(T('f8') - 0.2, { html: '拿着行号 2050，回到 users 表' });
   keyed(title).at(T('f12') - 0.2, { html: '开头说的 7 页' });
   // 镜头：两棵树与底下的铁路图都在内容区里
-  shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1840, 900] }]]);
+  shots(cam, world, s, [[s.start, null, { rect: [110, 250, 1840, 900] }], [T('f6', '最左边') - 0.2, null, { rect: [110, 330, 1840, 980], d: 1.2 }], [T('f8') - 0.2, null, { rect: [110, 250, 1840, 900], d: 1.2 }]]);   // 沿路线往下走到叶页时镜头跟着下移，回 users 表时移回
 });

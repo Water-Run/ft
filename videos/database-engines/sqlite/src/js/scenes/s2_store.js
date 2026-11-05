@@ -91,7 +91,7 @@ scene('store', ({ root, s, c0 }) => {
   const cId = h('div', '', chip, '2050'), cNm = h('div', '', chip, 'Alice'), cAg = h('div', '', chip, '42');
   [cId, cNm, cAg].forEach((c, i) => css(c, { padding: '4px 14px', borderLeft: i ? `1.5px solid ${K.ink}` : 'none', fontFamily: i === 1 ? 'inherit' : 'Mono', background: K.wheat }));
   set(chip, 0, { autoAlpha: 0 }); slam(chip, T('s7', 'Alice'), { from: 1.2 }); sfx('pop', T('s7', 'Alice'), { g: 0.35 });
-  tl.fromTo(cId, { y: 0 }, { y: -50, duration: 0.5, ease: 'back.out(1.6)', immediateRender: false }, T('s8', '行号') - 0.1); sfx('whoosh', T('s8', '行号'), { g: 0.3 });
+  tl.fromTo(cId, { y: 0 }, { y: -50, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, T('s8', '行号') - 0.1); sfx('whoosh', T('s8', '行号'), { g: 0.3 });
   const ridL = tx(W, '行号', 1340, 464, { fs: 24, color: K.teal }); set(ridL, 0, { autoAlpha: 0 }); show(ridL, T('s8', '行号') + 0.2, { x: 8, y: 0 });
   const ask = tx(W, '放哪一页？', 1240, 586, { fs: 26, color: K.teal }); show(ask, T('s7', '哪里'), { y: 6 });
   const pk = codeBlock(W, ['id INTEGER PRIMARY KEY'], 1240, 646, { fs: 24 }); pk.dataset.beat = 'text'; set(pk, 0, { autoAlpha: 0 }); show(pk, T('s8') - 0.1, { y: 6 });
@@ -138,7 +138,8 @@ scene('store', ({ root, s, c0 }) => {
   const gRt = gloss(W, '根页', '树最顶上的那一页', 1300, 548, 430); show(gRt, T('s15c', '根页'), { x: -12, y: 0 }); sfx('pop', T('s15c', '根页'), { g: 0.35 });
   const regC = tx(W, '第 1 页登记：users 表 → 第 2 页', 160, 410, { fs: 24, color: K.teal }); set(regC, 0, { autoAlpha: 0 }); show(regC, T('s15b', '根页') + 0.5, { y: 6 });
   // 第 1 页登记的线：从细带上第 1 页的左边绕出来，不穿过页格
-  const rLine = line(ov, [[SX - 2, SY + 9], [SX - 22, SY + 9], [SX - 22, 452], [705, 452], [745, 520]], { dashed: '7 6' }); arrowIn(rLine, T('s15b', '根页') + 0.6, 0.6);
+  // 登记那根虚线从标签右端直接连到第 2 页（原来从页带绕出画面左边，WaterRun 看 r7d：「指的溢出去了」）
+  const rLine = line(ov, [[552, 426], [700, 426], [745, 482]], { dashed: '7 6' }); arrowIn(rLine, T('s15b', '根页') + 0.6, 0.6);
   set(G.cells[0], T('s15b'), { opacity: 1 }); set(G.cells[1], T('s15b') + 0.3, { opacity: 1 });   // 细带里第 1 页和第 2 页不再压淡（不改颜色）
 
   // ── s16–s22b：插满 4096 行，users 表长成三层：整棵树 ──
@@ -181,7 +182,7 @@ scene('store', ({ root, s, c0 }) => {
   // s21：整行只放在叶页里；根页上的 1560 只是路标，完整的第 1560 行在叶页 99
   const k0 = rx + slotW + keyW / 2;
   const sign = path(ov, `M${k0},${RY + 60} C${k0},${RY + 220} ${leafX[99] + pitch / 2},${LY - 160} ${leafX[99] + pitch / 2},${LY - 4}`, 'teal', { w: 2, arrow: true, dashed: '8 6' });
-  arrowIn(sign, T('s21', '路标') - 0.3, 0.7);
+  arrowIn(sign, T('s21', '路标') - 0.1, 0.9);
   const signL = tx(W, '1560 只是路标：第 1560 行在叶页 99', 130, 566, { fs: 24, color: K.teal }); show(signL, T('s21', '路标'), { y: 6 });
   // s22–s22b：只在叶页存数据的树，叫 B+ 树
   const gB = gloss(W, 'B+ 树', 'SQLite 的每张表都是这样一棵树', 1240, 400, 600); show(gB, T('s22', 'B 加树'), { x: 12, y: 0 }); sfx('pop', T('s22', 'B 加树'), { g: 0.4 });
@@ -205,7 +206,7 @@ scene('store', ({ root, s, c0 }) => {
   const ent = docTable(W, [['名字', 330], ['行号', 120]], [['Alice', '2050'], ['User00001-…', '1'], ['User00002-…', '2']], 120, 756, { fs: 24 });
   ent.t.dataset.name = '叶页里的项';
   show(ent.hr, T('s24', '名字') - 0.1, { y: 6 }); ent.rs.forEach((r, i) => show(r, T('s24', '行号') + i * 0.12, { x: -10, y: 0 }));
-  ent.rs[0].dataset.beat = 'text'; sfx('pop', T('s25', 'Alice'), { g: 0.4 });
+  set(ent.rs[0], 0, { backgroundColor: 'rgba(245, 222, 179, 0)' }); set(ent.rs[0], T('s25', 'Alice') - 0.1, { backgroundColor: K.wheat }); sfx('pop', T('s25', 'Alice'), { g: 0.4 });
   const sepE = tx(W, '根页的第一个分界：User00306-… · 306，就是一项', N.rx - 40, 334, { fs: 22, color: K.teal });
   show(sepE, T('s26', '分界'), { y: 8 }); 
   const gBi = gloss(W, 'B 树', 'SQLite 的每个索引都是这样一棵树', 620, 756, 600); show(gBi, T('s26b', 'B 树'), { x: 12, y: 0 }); sfx('pop', T('s26b', 'B 树'), { g: 0.4 });
@@ -214,8 +215,8 @@ scene('store', ({ root, s, c0 }) => {
 
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   // 焦点框：画面上摆着好几样、旁白点名其中一样时才框——整张页图（553 页）、第 1 页、第 2 页、第 262 页；根页；根页上的两个分界；三个子页；姓名索引根页上的分界
-  focus(W, [[T('s3', '553'), zGrid, T('s4')], [T('s8', '整数主键'), cId, T('s8', '行号')], [T('s5'), G.cells[0]], [T('s6', '2'), G.cells[1]], [T('s6', '262'), G.cells[261], Tend('s6') + 0.3],
-    [T('s15c', '根页'), P2, Tend('s15c')], [T('s17', '1560'), kEls[0]], [T('s17', '3081'), kEls[1], Tend('s17')], [T('s17b', '三个'), midEls, Tend('s17b') + 0.3], [T('s19', '同一层') - 0.2, leafEls, Tend('s19') + 0.3], [T('s26', '分界'), [N.r, sepE], Tend('s26')]], Tend('s26b'));
+  focus(W, [[T('s3', '553'), zGrid, T('s4')], [T('s8', '整数主键'), cId, Tend('s8') + 0.3], [T('s5'), G.cells[0]], [T('s6', '2'), G.cells[1]], [T('s6', '262'), G.cells[261], Tend('s6') + 0.3],
+    [T('s14', '叶页'), [P3, P4], Tend('s14')], [T('s15c', '根页'), P2, Tend('s15c')], [T('s17', '1560'), kEls[0]], [T('s17', '3081'), kEls[1], Tend('s17')], [T('s17b', '三个'), midEls, Tend('s17b') + 0.3], [T('s19', '同一层') - 0.2, leafEls, Tend('s19') + 0.3], [T('s21'), leafEls], [T('s21', '内部页'), kEls[0], T('s21', '路标') + 0.6], [T('s25', 'Alice') - 0.1, ent.rs[0], Tend('s25') + 0.3], [T('s26', '分界'), [N.r, sepE], Tend('s26')]], Tend('s26b'));
   // 补音效（check.js 报的长空档）
   sfx('tick', T('s3', '1024'), { g: 0.35 });
   sfx('pop', T('s4', '260'), { g: 0.3 });
@@ -231,7 +232,6 @@ scene('store', ({ root, s, c0 }) => {
     [s.start, null, { rect: [110, 250, 1840, 840] }],
     [T('s7') - 0.2, null, { rect: [110, 390, 1840, 1010] }],
     [T('s7', '哪里') - 0.2, null, { rect: [700, 440, 1720, 790], zmax: 1.6, d: 1.3 }],
-    [T('s8', '行号') - 0.4, null, { rect: [1150, 440, 1730, 790], zmax: 1.7, d: 1.2 }],
     [T('s9', '17') + 0.1, null, { rect: [700, 440, 1520, 640], zmax: 1.6, d: 1.3 }],
     [T('s11') - 0.2, null, { rect: [110, 390, 1840, 1010], d: 1.3 }],
     [T('s12') - 0.1, null, { rect: [360, 450, 1740, 980], d: 1.5 }],

@@ -17,6 +17,13 @@ scene('change', ({ root, s, c0 }) => {
   // j1–j2：42 改成 43；要改的不止一页
   const chg = tx(W, '42 → 43', 760, 300, { fs: 30, color: K.teal }); show(chg, T('j1', '43'), { x: -10, y: 0 });
   sfx('tick', T('j2', '叶页'), { g: 0.4 }); sfx('tick', T('j2', '年龄索引'), { g: 0.35, p: 0.2 });
+  // 为什么年龄索引要改好几页：索引按年龄排好，Alice 那一项从「42」那一段搬到「43」那一段（WaterRun 看 r7d：「观众可能不理解为什么年龄索引有好几页」）
+  const ixA = tx(W, '42 · 行号 2050', 780, 380, { fs: 26, mono: true, css: { border: `1.5px solid ${K.ink}`, background: K.wheat, padding: '2px 12px' } }), ixB = tx(W, '43 · 行号 2050', 1110, 380, { fs: 26, mono: true, css: { border: `1.5px solid ${K.ink}`, background: K.wheat, padding: '2px 12px' } });
+  const ixAr = line(ov, [[1000, 400], [1100, 400]], { w: 2.5, color: 'teal' });
+  const ixL = tx(W, '年龄索引按年龄排好：这一项要搬到别处', 780, 436, { fs: 24, color: K.teal });
+  [ixA, ixB, ixL].forEach((e) => set(e, 0, { autoAlpha: 0 }));
+  show(ixA, T('j2', '年龄索引') - 0.1, { y: 6 }); arrowIn(ixAr, T('j2', '年龄索引') + 0.4, 0.4); show(ixB, T('j2', '年龄索引') + 0.6, { x: -10, y: 0 }); show(ixL, T('j2', '年龄索引') + 0.8, { y: 6 });
+  [ixA, ixB, ixL, ixAr].forEach((e) => gone(e, T('j4') - 0.3, 0.4));
   // j3：只写进去一部分就断电：新旧混杂
   const tCut = T('j3', '断电');
   keyed(mRows[0].val).at(T('j3', '一部分') , { html: 'Alice · <b>43</b>' }).at(T('j4b', '从没发生过'), { html: 'Alice · 42' });

@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "bd08066bd09b5585aa1b14c5f9abbe1a45f7aff0f518207b4f97f3ca50e90aeb",
+      "content_sha256": "97666ea2534912c775c7f423f6812607deb2d4a6740baa6fe6e7f0ded967a9dc",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-05T10:00:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 15 稿：据 WaterRun「有些前文讲过了就不用一直重复叙事了, 比如, B和B+树」「其它你可以发挥你的自主性」删 s22b、j26b（只删不加，不新配音）；未逐句看全文。"
+      "confirmed_at": "2026-11-05T14:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 16 稿：照 WaterRun 看 r7d 的逐条要求改——p4 读法（「是zhang不是chang」）、加 p4b（「这里不是和Pg很相似吗 要带一句吧」）、加 j10p 并调序（「Pg多版本 InnoDB一行 MyISAM一表 到SQLite整个库这样提到 台词里」）、w6 读法（「校验和 按内容 和和内容之间要有停顿」）、加 d6b 并改 d7（「VACUUM很突兀, 用户根本不知道什么时候会来」）；新句措辞由制作方拟，事实见 G21、G22、J06；未逐句看全文。"
     }
   }
 }

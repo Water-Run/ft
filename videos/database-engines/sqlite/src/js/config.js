@@ -26,9 +26,10 @@ window.ENGINE = {
       if (!s.chap || !Q[s.chap[0]]) return;
       const band = h('div', 'abs band', hud, Q[s.chap[0]]); px(band, 0, 162, 1920, 86);
       css(band, { textAlign: 'center', background: '#ffffff', fontSize: '46px', lineHeight: '86px', color: '#044a64', whiteSpace: 'nowrap' });
-      const nx = scs[i + 1], tOut = nx ? (nx.chap ? nx.start + 0.5 : nx.start + 0.1) : L.total;
-      set(band, 0, { autoAlpha: 0 }); wipe(band, s.start + s.lead - 0.35, { dir: 'l', d: 0.5 });
-      if (nx && nx.chap) set(band, tOut, { autoAlpha: 0 }); else tl.fromTo(band, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.4, immediateRender: false }, tOut);
+      // 每章开头不闪（WaterRun 看 r7d：「每一章节出来好像有小bug 闪烁」）：上一章的问题条在下一张章节卡进来之前就淡出，这一章的问题条等章节卡完全离开再淡入
+      const nx = scs[i + 1], tOut = nx ? nx.start - 0.35 : L.total;
+      set(band, 0, { autoAlpha: 0 }); tl.fromTo(band, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power1.out', immediateRender: false }, s.start + s.lead + 0.02);
+      tl.fromTo(band, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.35, ease: 'power1.inOut', immediateRender: false }, tOut);
     });
     for (const s of L.scenes) {
       if (!s.chap) continue;

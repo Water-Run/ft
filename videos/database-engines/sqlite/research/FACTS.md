@@ -158,6 +158,8 @@
 | G18 | 表的存放方式对照：SQLite 的普通表是按行号排好的 B+ 树（H03）；InnoDB 的表本身就是按主键排好的聚簇索引，叶子里是整行；PostgreSQL 的表是堆，行按到达顺序放，所有索引都是另外的二级索引 | SQLite：S09、H03。InnoDB：同仓库 InnoDB 一集 FACTS M1（“Each InnoDB table has a special index called the clustered index that stores row data.”）、M37（“these leaf nodes contain the actual table data”），MySQL 9.7 手册。PostgreSQL：同仓库 PostgreSQL 一集 FACTS T7（[18 手册 Index-Only Scans](https://www.postgresql.org/docs/18/indexes-index-only-scans.html)：“All indexes in PostgreSQL are secondary indexes … the table's main data area (which is called the table's heap)”）与 T2（行按插入顺序排） | 转录自两集已核的 FACTS，2026-11-02；只作一句对照 |
 | G19 | 删除实验删的是编号大于 1024 的行（`DELETE FROM users WHERE id>1024`），Alice（2050）在其中；4096 行剩 1024 行 | [04_reuse.py](lab/04_reuse.py) 第 12 行；D01 | 已核于脚本；第 10 稿 d1「编号 1024 以后的用户都注销了，Alice 也在其中」据此 |
 | G20 | Tcl（Tool Command Language）是一种动态编程语言 | [Tcl Developer Xchange 首页](https://www.tcl-lang.org/)：“Tcl (Tool Command Language) is a very powerful but easy to learn dynamic programming language,” | 官方说明，2026-11-03 制作方读；只用于画面图注「Tcl：Tool Command Language，一种动态编程语言」 |
+| G21 | PostgreSQL 的页也是指针在前、行在后：页头之后是项目指针，从前往后长；行版本从页尾往前长；中间是空隙 | 同仓库 PostgreSQL 一集 research/FACTS.md P2（[18 手册 Database Page Layout](https://www.postgresql.org/docs/18/storage-page-layout.html)） | 转录自该集已核的 FACTS，2026-11-05 制作方；只作 p4b 一句对照 |
+| G22 | PostgreSQL 用多版本：每条语句看到一份快照，读不挡写、写不挡读 | 同仓库 PostgreSQL 一集 research/FACTS.md X3（[18 手册 MVCC 介绍](https://www.postgresql.org/docs/18/mvcc-intro.html)：「reading never blocks writing and writing never blocks reading」） | 转录自该集已核的 FACTS，2026-11-05 制作方；只作 j10p 一句对照 |
 
 ## 已核与尚未核
 
