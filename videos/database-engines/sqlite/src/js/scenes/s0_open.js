@@ -34,14 +34,14 @@ scene('open', ({ root, s, c0 }) => {
   wipe(app1, T('o2b') - 0.1, { dir: 'l', d: 0.4 }); arrowIn(net, T('o2b', '连上') , 0.5); show(netL, T('o2b', '连上') + 0.2, { y: 6 });
   // 一条 SQL 发过去；服务进程到数据文件取一页再回来；结果送回程序
   const q = tx(W, 'SELECT …', 450, 392, { fs: 28, mono: true, css: { background: K.code, border: `1.5px solid ${K.codeLine}`, padding: '2px 12px', opacity: 0, visibility: 'hidden' } });
-  set(q, 0, { autoAlpha: 0 }); tl.fromTo(q, { autoAlpha: 1, x: 0 }, { x: 140, duration: 0.7, ease: 'power1.inOut', immediateRender: false }, T('o2b', 'SQL')); sfx('tick', T('o2b', 'SQL'), { g: 0.5 });
-  tl.fromTo(q, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false }, T('o2b', 'SQL') + 0.75);
+  set(q, 0, { autoAlpha: 0 }); tl.fromTo(q, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: 140, duration: 0.7, ease: 'power1.inOut', immediateRender: false }, T('o2b', 'SQL')); sfx('tick', T('o2b', 'SQL'), { g: 0.5 });
+  tl.fromTo(q, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, T('o2b', 'SQL') + 0.75);
   const token = (x, y) => { const e = h('div', 'abs', W); px(e, x, y, 30, 38); css(e, { background: K.wheat, border: `2px solid ${K.teal}`, boxSizing: 'border-box', opacity: 0, visibility: 'hidden' }); set(e, 0, { autoAlpha: 0 }); return e; };
-  const trip = (e, t, dx, d = 0.45) => { tl.fromTo(e, { autoAlpha: 1, x: 0 }, { x: dx, duration: d, ease: 'power1.inOut', immediateRender: false }, t); tl.fromTo(e, { x: dx }, { x: 0, duration: d, ease: 'power1.inOut', immediateRender: false }, t + d + 0.1); tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.15, immediateRender: false }, t + 2 * d + 0.1); };
+  const trip = (e, t, dx, d = 0.45) => { tl.fromTo(e, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: dx, duration: d, ease: 'power1.inOut', immediateRender: false }, t); tl.fromTo(e, { x: dx }, { x: 0, duration: d, ease: 'power1.inOut', immediateRender: false }, t + d + 0.1); tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, t + 2 * d + 0.1); };
   const pg1 = token(1210, 361); trip(pg1, T('o2b', 'SQL') + 0.8, 176); sfx('tick', T('o2b', 'SQL') + 1.25, { g: 0.3, p: 0.3 });
   const rs = tx(W, '结果', 560, 392, { fs: 28, css: { background: K.wheat, padding: '2px 12px', opacity: 0, visibility: 'hidden' } });
-  set(rs, 0, { autoAlpha: 0 }); tl.fromTo(rs, { autoAlpha: 1, x: 0 }, { x: -110, duration: 0.7, ease: 'power1.inOut', immediateRender: false }, T('o2b', '结果')); sfx('tick', T('o2b', '结果'), { g: 0.4, p: -0.3 });
-  tl.fromTo(rs, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false }, T('o2b', '结果') + 0.8);
+  set(rs, 0, { autoAlpha: 0 }); tl.fromTo(rs, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: -110, duration: 0.7, ease: 'power1.inOut', immediateRender: false }, T('o2b', '结果')); sfx('tick', T('o2b', '结果'), { g: 0.4, p: -0.3 });
+  tl.fromTo(rs, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, T('o2b', '结果') + 0.8);
 
   // 好处（o2c）：锁管得更细——服务进程下面是表的几行，一把锁只扣住一行；多人同时用——念到「多人」才来两个程序，三条请求同时进来，各扣各的那一行，谁也不等谁
   const rowsT = [0, 1, 2, 3].map((i) => { const r = h('div', 'abs', W, `${i + 1} · User0000${i + 1}-…`); px(r, 700, 482 + i * 34, 440, 30); css(r, { border: `1.5px solid ${K.greyLine}`, background: '#fff', boxSizing: 'border-box', fontFamily: 'Mono', fontSize: '22px', color: '#555555', paddingLeft: '10px', lineHeight: '26px' }); set(r, 0, { autoAlpha: 0 }); return r; });   // 表里的几行：写上行号，一看就是行
@@ -62,7 +62,7 @@ scene('open', ({ root, s, c0 }) => {
   const tGo = T('o2c', '同时') - 0.05;
   [[sqlChip(346, 228), 230, 88], [sqlChip(450, 362), 120, 0], [sqlChip(346, 470), 230, -70]].forEach(([e, dx, dy], i) => {
     tl.fromTo(e, { autoAlpha: 1, x: 0, y: 0 }, { x: dx, y: dy, duration: 0.65, ease: 'power1.inOut', immediateRender: false }, tGo + i * 0.04);
-    tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.15, immediateRender: false }, tGo + 0.68 + i * 0.04); });
+    tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, tGo + 0.68 + i * 0.04); });
   sfx('whoosh', tGo, { g: 0.3 });
   lockAt(1, T('o2c', '更顺') - 0.15); lockAt(2, T('o2c', '更顺') + 0.05);
   const tOne = T('o2d', '一个程序') - 0.1;
@@ -70,8 +70,9 @@ scene('open', ({ root, s, c0 }) => {
   // 太重：服务型这一整排沉沉地掉到下半屏（带回弹），落地一声闷响，随后压暗；上半屏让给轻的嵌入式
   const tFall = T('o2d', '太重') - 0.15, DROP = 340;
   const rowS = [tagS, app1, srv, files1, netL], rowSv = [net, disk1];
-  [...rowS, ...rowSv].forEach((e) => tl.fromTo(e, { y: 0 }, { y: DROP, duration: 1.1, ease: 'bounce.out', immediateRender: false }, tFall));
-  sfx('thud', tFall + 0.42, { g: 0.6 }); sfx('thud', tFall + 0.75, { g: 0.25, p: -0.3 });
+  // 重重落下、只回弹一次（bounce.out 落地时连弹三下、每下两帧，读起来像闪）
+  [...rowS, ...rowSv].forEach((e) => { tl.fromTo(e, { y: 0 }, { y: DROP, duration: 0.6, ease: 'power2.in', immediateRender: false }, tFall); tl.fromTo(e, { y: DROP }, { y: DROP - 26, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.out', immediateRender: false }, tFall + 0.6); });
+  sfx('thud', tFall + 0.6, { g: 0.6 }); sfx('thud', tFall + 0.96, { g: 0.22, p: -0.3 });
   rowS.forEach((e) => dim(e, T('o3') - 0.1, 0.35, 1, 0.5)); rowSv.forEach((e) => dim(e, T('o3') - 0.1, 0.35, 1, 0.5));
 
   // ── 上半屏：嵌入式（o3–o3d）：程序轻轻浮上来；库先只写「库」，念到 SQLite 才换成名字 ──
@@ -143,7 +144,7 @@ scene('open', ({ root, s, c0 }) => {
   const bar = h('div', 'abs', W); px(bar, 200, 944, 640, 10); css(bar, { background: K.teal, transformOrigin: '0 50%' }); set(bar, 0, { autoAlpha: 0 });
   tl.fromTo(bar, { autoAlpha: 1, scaleX: 0 }, { scaleX: 0.5, duration: Math.max(0.5, tKill - T('o7') - 0.4), ease: 'none', immediateRender: false }, T('o7') + 0.3);
   set(up, tKill, { borderColor: K.red }); set(bar, tKill, { backgroundColor: K.red });
-  tl.fromTo(up, { x: 0 }, { x: 9, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, tKill);
+  tl.fromTo(up, { x: 0 }, { x: 14, duration: 0.16, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, tKill);
   tl.fromTo(up, { scaleY: 1, autoAlpha: 1 }, { scaleY: 0, autoAlpha: 0, duration: 0.35, ease: 'power3.in', immediateRender: false }, tKill + 0.45);
   sfx('error', tKill, { g: 0.6 }); sfx('thud', tKill + 0.6, { g: 0.3 });
   gone(g7, T('o7') - 0.2, 0.3);

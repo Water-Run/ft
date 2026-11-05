@@ -30,7 +30,7 @@ scene('crash', ({ root, s, c0 }) => {
   // 强行终止：和开场同一个动作——这条 UPDATE 边框变红、抖几下、整块塌掉
   const tK = T('j22', '强行终止');
   set(up, tK, { borderColor: K.red });
-  tl.fromTo(up, { x: 0 }, { x: 9, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, tK);
+  tl.fromTo(up, { x: 0 }, { x: 14, duration: 0.16, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, tK);
   tl.fromTo(up, { scaleY: 1, autoAlpha: 1 }, { scaleY: 0, autoAlpha: 0, duration: 0.35, ease: 'power3.in', immediateRender: false }, tK + 0.45);
   sfx('error', tK, { g: 0.6 }); sfx('thud', tK + 0.6, { g: 0.3 });
   const left = tx(W, '日志文件留了下来', 1200, 680, { fs: 24, color: K.teal }); show(left, T('j22', '日志文件'), { y: 6 });
@@ -39,16 +39,26 @@ scene('crash', ({ root, s, c0 }) => {
   sfx('tick', T('j23', '看一眼'), { g: 0.4 });
   // j24：有，就把原样的页抄回主文件，再删掉日志
   const back = line(ov, [[1196, 460], [724, 460]], { w: 3 }); arrowIn(back, T('j24', '抄回') - 0.2, 0.6);
-  spill.forEach((c, i) => set(c, T('j24', '抄回') + 0.3 + i * 0.02, { backgroundColor: '#ffffff' })); sfx('whoosh', T('j24', '抄回'), { g: 0.3 });
+  // 日志里的原页真的飞回主文件：一格对一格落到浅红的页上，落下那一刻浅红退成白
+  const tB = T('j24', '抄回') - 0.1;
+  jm.forEach((c, i) => { tl.fromTo(c, { x: 0 }, { x: -1080, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, tB + i * 0.02); gone(c, tB + 0.7 + i * 0.02, 0.45); });
+  spill.forEach((c, i) => set(c, tB + 0.7 + i * 0.02, { backgroundColor: '#ffffff' })); sfx('whoosh', tB, { g: 0.3 });
   const tD2 = T('j24', '删掉');
-  [JR2, look, back].forEach((e) => gone(e, tD2, 0.3)); jm.forEach((c) => gone(c, tD2, 0.3)); gone(left, tD2, 0.3);
+  [JR2, look, back].forEach((e) => gone(e, tD2, 0.3)); gone(left, tD2, 0.3);
   gone(spL, T('j25') - 0.2, 0.3);
-  const same = tx(W, '整个文件的 SHA-256 与改之前相同', 120, 700, { fs: 30, css: { background: '#f2f2f2', padding: '4px 16px' } });
-  const a42 = tx(W, 'Alice 仍是 42', 120, 770, { fs: 30, css: { background: K.wheat, padding: '4px 16px' } }); set(a42, 0, { autoAlpha: 0 }); show(a42, T('j25', 'Alice'), { y: 6 }); sfx('tick', T('j25', 'Alice'), { g: 0.3 });
+  const same = tx(W, '整个文件的 SHA-256 与改之前相同', 120, 696, { fs: 30, css: { background: '#f2f2f2', padding: '4px 16px' } });
+  const a42 = tx(W, 'Alice 仍是 42', 720, 696, { fs: 30, css: { background: K.wheat, padding: '4px 16px' } }); set(a42, 0, { autoAlpha: 0 }); show(a42, T('j25', 'Alice'), { y: 6 }); sfx('tick', T('j25', 'Alice'), { g: 0.3 });
   set(same, 0, { autoAlpha: 0 }); wipe(same, T('j25', '一字节不差') - 0.2, { dir: 'l', d: 0.4 }); sfx('chime', T('j25', '一字节不差'), { g: 0.5 });
   // k1 起：同一个画面层。恢复那段的结果收走，main.db 留在左边（页都抄回了原样），WAL 从右边进来
   [same, a42].forEach((e) => gone(e, T('k1') - 0.35, 0.3));
-  focus(W, [[T('j23', '日志'), JR2, Tend('j23')]], Tend('j25'));   // 焦点框：「旁边有没有日志」指日志文件
+  // 重新打开时的三步：先看一眼有没有日志 → 有就把原页抄回主文件 → 删掉日志（和第 05 章的四步同一种画法）
+  const RY = 770, RX = [120, 700, 1280], RT = ['① 先看一眼：旁边有没有日志', '② 有：原页抄回主文件', '③ 删掉日志'];
+  const rst = RT.map((t, i) => rrBox(W, t, RX[i], RY, { w: 500, fs: 28 }));
+  const rArr = [0, 1].map((i) => line(ov, [[RX[i] + 504, RY + 26], [RX[i + 1] - 4, RY + 26]], { w: 2 }));
+  const tRs = [T('j23', '看一眼') - 0.1, T('j24', '抄回') - 0.2, T('j24', '删掉') - 0.1];
+  rst.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); show(e, tRs[i], { x: -12, y: 0, d: 0.4 }); if (i) arrowIn(rArr[i - 1], tRs[i] - 0.25, 0.3); });
+  [...rst, ...rArr].forEach((e) => gone(e, T('k1') - 0.35, 0.4));
+  focus(W, [[T('j23', '日志'), JR2, Tend('j23')], [tRs[1] + 0.2, rst[1]], [tRs[2] + 0.2, rst[2], Tend('j24') + 0.5]], Tend('j25'));
   [[T('j20') - 0.2, '开头那一幕：改到一半被终止'], [T('j23') - 0.2, '重新打开：先看一眼有没有日志']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   sfx('tick', T('j23', '看一眼'), { g: 0.4 });
   sfx('tick', T('j20', '加一'), { g: 0.3 });
@@ -64,7 +74,7 @@ scene('crash', ({ root, s, c0 }) => {
     frames.forEach((f, i) => { set(f, 0, { autoAlpha: 0 }); tl.fromTo(f, { autoAlpha: 1, x: -60 }, { x: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, T('k1', '追加') - 0.1 + i * 0.22); sfx('tick', T('k1', '追加') - 0.1 + i * 0.22, { g: 0.3 }); });
     frames.forEach((f, i) => keyed(f.hd).at(T('w6', '校验和') + i * 0.08, { html: `第 ${FR[i]} 页 · 校验和对得上` }));
     sfx('tick', T('w6', '校验和'), { g: 0.4 });
-    const gK = gloss(W, '校验和', '按内容算出的一串数；内容坏了就对不上', 980, 742, 820, { terms: '校验和' }); set(gK, 0, { autoAlpha: 0 }); show(gK, T('w6', '校验和') + 0.2, { y: 8 });
+    const gK = gloss(W, '校验和', '按内容算出的一串数', 980, 742, 820, { terms: '校验和' }); set(gK, 0, { autoAlpha: 0 }); show(gK, T('w6', '校验和') + 0.2, { y: 8 });
     const bad = h('div', 'abs', WAL); px(bad, 20, 56 + 5 * 68, 756, 50); css(bad, { border: `2px dashed ${K.red}`, color: K.red, fontSize: '24px', display: 'flex', alignItems: 'center', paddingLeft: '12px', boxSizing: 'border-box' }); bad.innerHTML = '第 6 帧 · 内容写坏了 · 校验和对不上';
     set(bad, 0, { autoAlpha: 0 }); show(bad, T('w6b', '坏了') - 0.1, { x: -16, y: 0 }); sfx('error', T('w6b', '对不上'), { g: 0.35 });
     tl.fromTo(bad, { opacity: 1 }, { opacity: 0.35, duration: 0.5, immediateRender: false }, T('w6b', '一律不算'));

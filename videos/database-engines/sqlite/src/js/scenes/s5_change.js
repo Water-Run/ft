@@ -40,19 +40,28 @@ scene('change', ({ root, s, c0 }) => {
   const jRows = PAGES.map((pg, i) => rowEl(JR, pg, i, pg === 130 ? 'Alice · 42' : '年龄索引 · 42 岁'));
   jRows[0].style.background = K.wheat;   // 抄进日志的第 130 页仍是 Alice 那一页
   jRows.forEach((r, i) => { set(r, 0, { autoAlpha: 0 }); tl.fromTo(r, { autoAlpha: 1, x: -1080 }, { x: 0, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tCp + 0.3 + i * 0.12); });
-  const gJ = gloss(W, '回滚日志', '改之前的原页，原样抄在旁边；SQLite 默认就用它', 760, 690, 560); show(gJ, T('j5', '回滚日志'), { y: 8 }); sfx('pop', T('j5', '回滚日志'), { g: 0.4 });
+  const gJ = gloss(W, '回滚日志', '改之前的原页，原样抄一份', 760, 690, 560); show(gJ, T('j5', '回滚日志'), { y: 8 }); sfx('pop', T('j5', '回滚日志'), { g: 0.4 });
   jRows.forEach((r) => { r.dataset.beat = 'line'; });   // 选中只描外框：页号同时在变色，不能让 .bt 的白字盖过去（set 会记下白字）
   // j8：日志先写稳到磁盘，再动主文件
   const sync = btn(JR, '已写到磁盘上', 380, 370, 24); set(sync, 0, { autoAlpha: 0 }); slam(sync, T('j8', '磁盘'), { from: 1.2 }); sfx('thud', T('j8', '磁盘'), { g: 0.4 });
   // j9：主文件写好，删掉日志：删掉的那一刻，就是提交
-  mRows.forEach((r, i) => keyed(r.val).at(T('j9', '写好') + i * 0.1, { html: i === 0 ? 'Alice · <b>43</b>' : '年龄索引 · <b>43</b> 岁' }));
+  mRows.forEach((r, i) => keyed(r.val).at(T('j9', '写好') - 0.05 + i * 0.125, { html: i === 0 ? 'Alice · <b>43</b>' : '年龄索引 · <b>43</b> 岁' }));
   sfx('tick', T('j9', '写好'), { g: 0.4 });
   const tDel = T('j9', '删掉');
   wipeOut(JR, tDel, { dir: 'r', d: 0.4 }); sfx('whoosh', tDel, { g: 0.35 });
-  const gC = gloss(W, '提交', '回滚日志删掉的那一刻，修改就算生效', 1200, 450, 560); show(gC, T('j9', '提交'), { x: 12, y: 0 }); sfx('chime', T('j9', '提交'), { g: 0.45 });
+  const gC = gloss(W, '提交', '修改从这一刻起算数', 1200, 450, 560); show(gC, T('j9', '提交'), { x: 12, y: 0 }); sfx('chime', T('j9', '提交'), { g: 0.45 });
   gone(gJ, tDel, 0.3);
 
-  focus(W, [[T('j2', '叶页'), mRows[0]], [T('j2', '年龄索引'), mRows.slice(1), Tend('j2') + 0.3]], Tend('j9'));   // 焦点框：「她所在的叶页」「年龄索引里的几页」
+  // 先写什么、再写什么：两个文件下面一排四步，念到哪一步出哪一步，焦点框跟着往右走（WaterRun 看 r7b：「回滚日志那边 缺乏视觉引导 比如写什么再写什么」）
+  const SY = 790, SX = [120, 560, 1000, 1440], STXT = ['① 原页抄进日志', '② 日志写到磁盘', '③ 改主文件', '④ 删掉日志：提交'];
+  const stps = STXT.map((t, i) => rrBox(W, t, SX[i], SY, { w: 330, fs: 28 }));
+  const sArr = [0, 1, 2].map((i) => line(ov, [[SX[i] + 334, SY + 26], [SX[i + 1] - 4, SY + 26]], { w: 2 }));
+  const tSt = [T('j6', '抄进') - 0.1, T('j8', '磁盘') - 0.1, T('j9', '写好') - 0.3, T('j9', '删掉') - 0.1];
+  stps.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); show(e, tSt[i], { x: -12, y: 0, d: 0.4 }); if (i) arrowIn(sArr[i - 1], tSt[i] - 0.25, 0.3); sfx('tick', tSt[i] + 0.1, { g: 0.3, p: 0.1 * i }); });
+  // ③ 改主文件：一支写入光标沿着要改的页往下走，走到哪页哪页变 43
+  const wc2 = h('div', 'abs', MAIN); px(wc2, 4, 56, 10, 56); css(wc2, { background: K.teal }); set(wc2, 0, { autoAlpha: 0 });
+  show(wc2, T('j9', '写好') - 0.35, { y: 0, d: 0.2 }); tl.fromTo(wc2, { y: 0 }, { y: 4 * 68, duration: 0.5, ease: 'none', immediateRender: false }, T('j9', '写好') - 0.1); gone(wc2, T('j9', '删掉') - 0.1, 0.3);
+  focus(W, [[T('j2', '叶页'), mRows[0]], [T('j2', '年龄索引'), mRows.slice(1), Tend('j2') + 0.3], [tSt[0] + 0.2, stps[0]], [tSt[1] + 0.2, stps[1]], [tSt[2] + 0.2, stps[2]], [tSt[3] + 0.2, stps[3], Tend('j9') + 0.6]], Tend('j9') + 0.6);   // 焦点框：「她所在的叶页」「年龄索引里的几页」
   [[T('j4') - 0.2, '事务：要么全部生效，要么像从没发生过'], [T('j6') - 0.2, '回滚日志：先把原页抄在旁边'], [T('j9') - 0.2, '删掉日志的那一刻：提交']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 244, 1200, 700], zmax: 1.3 }], [T('j6', '抄进') - 0.5, null, { rect: [110, 244, 1810, 896], pad: 0, d: 1.2 }]]);
   }

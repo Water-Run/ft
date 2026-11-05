@@ -17,15 +17,18 @@ scene('drop', ({ root, s, c0 }) => {
   // 文件长条：用着的页（白）与空闲页（斜纹）
   const frame = MAIN;
   const used = h('div', 'abs', W); px(used, X0 + 2, Y, FULL - 4, H - 2); css(used, { background: '#ffffff', borderRight: `2px solid ${K.ink}`, boxSizing: 'border-box' });
-  const free = h('div', 'abs', W); px(free, X0 + FULL - 2, Y, 0, H - 2); css(free, { background: 'repeating-linear-gradient(135deg,#dddddd 0 8px,#ffffff 8px 16px)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲的页，不是渐变
+  const free = h('div', 'abs', W); px(free, X0 + 2, Y, FULL - 4, H - 2); css(free, { background: 'repeating-linear-gradient(135deg,#dddddd 0 8px,#ffffff 8px 16px)' });   // lint-ok: 斜纹由两种平涂色交替组成（repeating-linear-gradient 硬边），表示空闲的页，不是渐变
   const lab = tx(W, '', X0, LABY, { fs: 28 });
   const pagesL = tx(W, '', X0 + FULL - 200, Y - 38, { fs: 26, mono: true });
   show(used, tM + 0.8, { y: 0, d: 0.3 });
+  set(free, 0, { autoAlpha: 0 }); set(free, tM + 1.15, { autoAlpha: 1 });
   show(lab, c0 + 0.7, { y: 6 }); show(pagesL, c0 + 0.7, { y: 6 });
   keyed(pagesL).at(tM + 0.8, { html: `${R.before.page_count} 页` }).at(T('d7b', '283'), { html: `${R.vacuumed.page_count} 页` });
   keyed(lab).at(tM + 0.8, { html: `${R.before.rows} 个用户 · 空闲 0 页` }).at(T('d2', '1024'), { html: `${R.deleted.rows} 个用户 · 空闲 <b>${R.deleted.freelist_count}</b> 页` }).at(T('d6', '一页没长'), { html: `${R.reused.rows} 个用户 · 空闲 <b>${R.reused.freelist_count}</b> 页` }).at(T('d7b', '一页不剩'), { html: `${R.vacuumed.rows} 个用户 · 空闲 0 页` });
   const UW = FULL - 4, FR = X0 + FULL - 2;
-  const seg = (fp, t) => { const w = fp * k; tl.fromTo(used, { width: used._w != null ? used._w : UW }, { width: UW - w, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, t); tl.fromTo(free, { left: FR - (free._w || 0), width: free._w || 0 }, { left: FR - w, width: w, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, t); used._w = UW - w; free._w = w; };
+  // 斜纹铺满整条、不动，白色的「用着的页」盖在上面、只改宽度（原来斜纹块的左边界在动，斜纹跟着爬，看着像闪）
+  W.appendChild(used); used.style.zIndex = '1';
+  const seg = (fp, t) => { const w = fp * k; tl.fromTo(used, { width: used._w != null ? used._w : UW }, { width: UW - w, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, t); used._w = UW - w; };
   // d3：4096 删到 1024，文件仍是 553 页
   // 注销的那一刻文件里就空出一片（斜纹）；d2 再报数
   seg(R.deleted.freelist_count, T('d1', '注销') + 0.5); sfx('whoosh', T('d1', '注销') + 0.5, { g: 0.3 });
@@ -38,7 +41,7 @@ scene('drop', ({ root, s, c0 }) => {
   const cl = [line(ov, [[X0 + 240, CHY + 36], [X0 + 636, CHY + 36]])].concat(chain.slice(0, 4).map((b, i) => line(ov, [[X0 + 740 + i * 150, CHY + 36], [X0 + 786 + i * 150, CHY + 36]])));
   set(head, 0, { autoAlpha: 0 }); slam(head, T('d4', '文件头'), { from: 1.2 });
   chain.forEach((b, i) => show(b, T('d4', '空闲链') - 0.2 + i * 0.08, { x: -10, y: 0, d: 0.3 })); cl.forEach((l, i) => arrowIn(l, T('d4', '空闲链') - 0.25 + i * 0.08, 0.2)); show(more, T('d4', '空闲链') + 0.5, { x: -10, y: 0 });
-  const gF = gloss(W, '空闲链', '空出的页一页指向下一页，串成一条链；链头记在文件头里', X0 + 640, GFY, 760); show(gF, T('d4', '空闲链'), { y: 8 }); sfx('pop', T('d4', '空闲链'), { g: 0.4 });
+  const gF = gloss(W, '空闲链', '空出的页串成一条链', X0 + 640, GFY, 760); show(gF, T('d4', '空闲链'), { y: 8 }); sfx('pop', T('d4', '空闲链'), { g: 0.4 });
   // d5–d6：再有新用户注册，先用空闲页；再插入 1024 行，文件一页没长，空闲页剩下 260
   const ins = codeBlock(W, ['INSERT INTO users …　-- 再插入 1024 行'], X0, 250, { fs: 26 }); set(ins, 0, { autoAlpha: 0 }); gone(del, T('d5') - 0.2, 0.2); show(ins, T('d5') - 0.1, { y: 0, d: 0.3 });
   set(chain[0], T('d5', '空闲页'), { backgroundColor: OWN.u }); set(chain[1], T('d5', '空闲页') + 0.15, { backgroundColor: OWN.u });   // 新用户住进去：变成 users 表的浅绿
@@ -47,13 +50,16 @@ scene('drop', ({ root, s, c0 }) => {
   const tV = T('d7', 'vacuum') - 0.2;
   [ins, gF, same, head, more, ...chain, ...cl].forEach((e) => gone(e, tV, 0.3));
   const vac = codeBlock(W, ['VACUUM;'], X0, 250, { fs: 26 }); set(vac, 0, { autoAlpha: 0 }); show(vac, tV + 0.1, { y: 0, d: 0.3 });
-  const gV = gloss(W, 'VACUUM', '把整个数据库复制到临时文件再覆盖回来，重建出最小的文件', X0, CHY, 760); show(gV, T('d7', 'vacuum'), { y: 8 });
+  const gV = gloss(W, 'VACUUM', '重写整个文件，去掉空闲页', X0, CHY, 760); show(gV, T('d7', 'vacuum'), { y: 8 });
   tl.fromTo(frame, { width: FULL }, { width: R.vacuumed.page_count * k, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
   tl.fromTo(MAIN.nameEl, { width: FULL - 4 }, { width: R.vacuumed.page_count * k - 4, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
   tl.fromTo(used, { width: UW - R.reused.freelist_count * k }, { width: R.vacuumed.page_count * k - 4, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
-  tl.fromTo(free, { left: FR - R.reused.freelist_count * k, width: R.reused.freelist_count * k }, { left: X0 + R.vacuumed.page_count * k - 2, width: 0, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
+  tl.fromTo(free, { width: FULL - 4 }, { width: R.vacuumed.page_count * k - 4, duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
   tl.fromTo(pagesL, { x: 0 }, { x: -(FULL - R.vacuumed.page_count * k), duration: 0.8, ease: 'power3.inOut', immediateRender: false }, T('d7b', '283') - 0.2);
   sfx('whoosh', T('d7b', '283') - 0.2, { g: 0.35 });
+  // 「重写一遍」：一道浅青从文件长条左边扫到右边（整个文件被重写），扫完退掉，接着缩小
+  const rw = h('div', 'abs', W); px(rw, X0 + 2, Y, 0, H - 2); css(rw, { background: '#cfe1e9', zIndex: '2', opacity: '0.85' }); set(rw, 0, { autoAlpha: 0 });
+  tl.fromTo(rw, { autoAlpha: 1, width: 0 }, { autoAlpha: 1, width: FULL - 4, duration: 1.0, ease: 'power1.inOut', immediateRender: false }, T('d7', '重写') - 0.2); gone(rw, T('d7', '重写') + 0.9, 0.45); sfx('whoosh', T('d7', '重写') - 0.2, { g: 0.3 });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   focus(W, [[T('d2', '553'), pagesL, Tend('d2')], [T('d4', '链头'), head, Tend('d4')], [T('d6', '一页没长'), pagesL, Tend('d6')], [T('d7b', '283'), pagesL, T('d7b', '空闲')]], Tend('d7b'));   // 焦点框：页数、链头
   [[T('d4') - 0.2, '空出的页：串成一条空闲链'], [T('d5') - 0.2, '新用户注册：先用空闲页'], [T('d7') - 0.2, 'VACUUM：重写整个数据库文件']].forEach(([t, x]) => keyed(title).at(t, { html: x }));

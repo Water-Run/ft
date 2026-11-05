@@ -54,7 +54,6 @@ scene('lib', ({ root, s, c0 }) => {
   const dlg = h('div', 'abs', W, '<div class="dlgT">Error</div><div class="dlgB">Can’t connect to database server</div><div class="dlgC">连不上数据库服务器</div>'); px(dlg, 600, 588, 580, 146); dlg.dataset.name = '弹窗';
   css(dlg, { border: `2px solid ${K.ink}`, background: '#fff', fontSize: '28px' });
   set(dlg, 0, { autoAlpha: 0 }); slam(dlg, T('h5', '弹出'), { from: 1.25 });
-  tl.fromTo(dlg, { x: 0 }, { x: 10, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, T('h5', '数据库') + 0.1);
   keyed(title).at(T('h6') - 0.2, { html: '为什么非要一个服务器？' });
   // 为什么不能直接从磁盘上读：一条虚线从程序直通磁盘
   const dir = line(ov, [[300, Y + 132], [300, Y + 222], [1590, Y + 222], [1590, Y + 136]], { dashed: '9 7' });   // 从文件名的右边进去，不穿过「管道与阀门的数据」
@@ -64,9 +63,9 @@ scene('lib', ({ root, s, c0 }) => {
   tl.fromTo(qm, { x: 400, y: -200 }, { x: 0, y: 0, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, T('h6b', '直接') - 0.2); sfx('pop', T('h6', '为什么'), { g: 0.35 });
   // 「找了一圈」：一个放大镜圈沿着虚线走到磁盘、再走回来；「没有」：虚线闪红
   const lens = h('div', 'abs', W); px(lens, 284, Y + 206, 32, 32); css(lens, { border: `4px solid ${K.teal}`, borderRadius: '50%', boxSizing: 'border-box', background: '#fff' }); set(lens, 0, { autoAlpha: 0 });
-  tl.fromTo(lens, { autoAlpha: 1, x: 0 }, { x: 1290, duration: 1.1, ease: 'power1.inOut', immediateRender: false }, T('h7', '找了') - 0.1);
+  tl.fromTo(lens, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: 1290, duration: 1.1, ease: 'power1.inOut', immediateRender: false }, T('h7', '找了') - 0.1);
   tl.fromTo(lens, { x: 1290 }, { x: 0, duration: 0.9, ease: 'power1.inOut', immediateRender: false }, T('h7', '找了') + 1.05);
-  tl.fromTo(lens, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.2, immediateRender: false }, T('h7', '找了') + 1.95); sfx('whoosh', T('h7', '找了'), { g: 0.25 });
+  tl.fromTo(lens, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, T('h7', '找了') + 1.95); sfx('whoosh', T('h7', '找了'), { g: 0.25 });
   tl.fromTo(dir, { stroke: '#000000' }, { stroke: K.red, duration: 0.15, immediateRender: false }, T('h7', '没有') - 0.05); tl.fromTo(dir, { stroke: K.red }, { stroke: '#000000', duration: 0.4, immediateRender: false }, T('h7', '没有') + 0.8);
   // 连不上：服务器念完就压暗；问「为什么不能直接从磁盘上读」时再淡一层（绕开它）
   dim(srv, Tend('h5') + 0.3, 0.45);
@@ -123,7 +122,7 @@ scene('lib', ({ root, s, c0 }) => {
   keyed(title).at(tW, { html: '没有服务进程：好处' });
   // 直接读磁盘：库里取一页到文件、再带回来（和开场的取页一样）
   const pgTok = () => { const e = h('div', 'abs', W); px(e, 1104, Y + 36, 30, 38); css(e, { background: K.wheat, border: `2px solid ${K.teal}`, boxSizing: 'border-box', opacity: 0, visibility: 'hidden' }); set(e, 0, { autoAlpha: 0 }); return e; };
-  const trip = (e, t, dx = 186, d = 0.45) => { tl.fromTo(e, { autoAlpha: 1, x: 0 }, { x: dx, duration: d, ease: 'power1.inOut', immediateRender: false }, t); tl.fromTo(e, { x: dx }, { x: 0, duration: d, ease: 'power1.inOut', immediateRender: false }, t + d + 0.1); tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.15, immediateRender: false }, t + 2 * d + 0.1); sfx('tick', t + d, { g: 0.3, p: 0.3 }); };
+  const trip = (e, t, dx = 186, d = 0.45) => { tl.fromTo(e, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, x: dx, duration: d, ease: 'power1.inOut', immediateRender: false }, t); tl.fromTo(e, { x: dx }, { x: 0, duration: d, ease: 'power1.inOut', immediateRender: false }, t + d + 0.1); tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, t + 2 * d + 0.1); sfx('tick', t + d, { g: 0.3, p: 0.3 }); };
   trip(pgTok(), T('l0', '直接读磁盘'));
   // l1：不用安装、配置、管理——念到哪个出哪块，随即被一道红线划掉
   const chips = [['安装', 140], ['配置', 300], ['管理', 460]].map(([t, x]) => { const c = btn(W, t, x, Y + 150, 30); const k = h('div', 'abs', W); px(k, x - 6, Y + 172, 104, 4); css(k, { background: K.red, transformOrigin: '0 50%' }); set(k, 0, { autoAlpha: 0 }); return [c, k]; });

@@ -23,9 +23,10 @@ T = function (id, word, shift = 0) {
 const K = { ink: '#000000', body: '#1a1a1a', teal: '#044a64', blue: '#0482c4', visited: '#734559', wheat: '#f5deb3', code: '#eeeeee', codeLine: '#80a796', rule: '#444444', grey: '#dddddd', greyLine: '#aaaaaa', group: '#c8c8c8', dim: '#666666', red: '#aa3333', paper: '#ffffff' };
 
 // 收走：写定起点（跳播时起点一致）。只对一个元素调用一次；已经收起或压暗的元素不要再交给它
-function gone(e, t, d = 0.3) { tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: d, immediateRender: false }, t); }
+// 退场至少 0.45 秒、缓入缓出（WaterRun 看 r7b：「部分动画闪烁, 尤其是退出时」——0.2–0.3 秒的淡出读起来像一闪）
+function gone(e, t, d = 0.3) { tl.fromTo(e, { autoAlpha: 1 }, { autoAlpha: 0, duration: Math.max(0.45, d), ease: 'power1.inOut', immediateRender: false }, t); }
 // 从压暗的状态收走：起点写成当时的不透明度（用 gone 会先闪回原样）
-function goneFrom(e, t, a, d = 0.3) { tl.fromTo(e, { autoAlpha: a }, { autoAlpha: 0, duration: d, immediateRender: false }, t); }
+function goneFrom(e, t, a, d = 0.3) { tl.fromTo(e, { autoAlpha: a }, { autoAlpha: 0, duration: Math.max(0.45, d), ease: 'power1.inOut', immediateRender: false }, t); }
 // 压暗与恢复：写明起止值
 function dim(e, t, a = 0.25, from = 1, d = 0.3) { tl.fromTo(e, { opacity: from }, { opacity: a, duration: d, immediateRender: false }, t); }
 
@@ -75,7 +76,7 @@ function pageCell(p, x, y, w, hh, o = {}) {
 }
 // 文件：按归属给每页上色（表白、姓名索引浅灰、年龄索引更浅），排成网格
 // 页的归属：三份结构各用一种浅色（WaterRun 看 r5b：「颜色要区分」）——users 表浅绿、姓名索引浅蓝、年龄索引浅紫；第 1 页与 notes 表、溢出页用灰。选中（读到的页）仍是麦色加深青边
-const OWN = { u: '#d3e7c6', n: '#bfd9ea', a: '#e6cfe0', s: '#cfcfcf', t: '#d6d6d6', o: '#e9e9e9' };
+const OWN = { u: '#d3e7c6', n: '#bfd9ea', a: '#e6cfe0', s: '#b9b9b9', t: '#e2e2e2', o: '#e2e2e2' };   // s：第 1 页（登记）深灰；t、o：另一张表（第 03 章的长文本）与它的溢出页，浅灰
 function fileGrid(p, x, y, cols, cell, gap) {
   const own = DATA.file.owner, cells = [];
   for (let i = 0; i < own.length; i++) cells.push(pageCell(p, x + (i % cols) * (cell + gap), y + Math.floor(i / cols) * (cell + gap), cell, cell, { fill: OWN[own[i]], bw: 0.8 }));
@@ -127,9 +128,9 @@ function shots(cam, world, s, keys) {
 // list = [[t, 元素或元素数组, 结束时刻?], …]：每项从 t 框到下一项开始（或给定的结束时刻，或 end）。位置每帧按当下的版面量，所以跟得上移动的对象。
 function focus(W, list, end, o = {}) {
   const items = list.map(([t, e, t1]) => ({ t, els: [].concat(e).filter(Boolean), t1 })).filter((x) => x.els.length && isFinite(x.t)).sort((a, b) => a.t - b.t);
-  items.forEach((it, i) => { const nx = items[i + 1]; it.t1 = Math.min(it.t1 != null ? it.t1 : Infinity, nx ? nx.t : end); });
+  items.forEach((it, i) => { const nx = items[i + 1]; it.t1 = Math.min(it.t1 != null ? it.t1 : Infinity, nx ? nx.t : end); if (nx && nx.t - it.t1 < 1.0) it.t1 = nx.t; });   // 前后两项隔不到 1 秒就直接滑过去，不先灭再亮
   const fr = h('div', 'abs', W); css(fr, { border: `3px solid ${K.teal}`, boxSizing: 'border-box', pointerEvents: 'none', opacity: '0', left: '0px', top: '0px', width: '0px', height: '0px' }); fr.dataset.name = '焦点框';
-  const PAD = o.pad != null ? o.pad : 8, R = 0.4, FADE = 0.25, sc = W.closest('.scene');
+  const PAD = o.pad != null ? o.pad : 8, R = 0.45, FADE = 0.4, sc = W.closest('.scene');
   const rectOf = (els) => {
     const wr = W.getBoundingClientRect(), k = wr.width / 1920 || 1; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     for (const e of els) { const r = e.getBoundingClientRect(); if (!r.width && !r.height) continue; x0 = Math.min(x0, (r.left - wr.left) / k); y0 = Math.min(y0, (r.top - wr.top) / k); x1 = Math.max(x1, (r.right - wr.left) / k); y1 = Math.max(y1, (r.bottom - wr.top) / k); }

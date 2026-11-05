@@ -34,8 +34,8 @@ scene('concur', ({ root, s, c0 }) => {
   keyed(ali.l1).at(T('j12') - 0.1, { html: 'sqlite> UPDATE … age = 43' }).at(T('j16', '提交'), { html: 'sqlite> COMMIT;' });
   keyed(ali.l2).at(T('j15', '还没提交'), { html: '改成 43，还没提交' }).at(T('j16', '已锁') - 0.1, { html: '<span style="color:#aa3333">' + DATA.wal.lockedError + '</span>' }).at(T('j18', '排队'), { html: '排队等独占锁' }).at(T('j19', '提交成功'), { html: '提交成功' });
   set(ali.lk, 0, { autoAlpha: 0 }); keyed(ali.lk).at(0, { html: '保留锁' }).at(T('j19', '提交成功'), { html: '独占锁 → 提交' }); slam(ali.lk, T('j12', '保留锁'), { from: 1.3 }); sfx('pop', T('j12', '保留锁'), { g: 0.4 });
-  const gR = gloss(W, '保留锁', '要写的人先拿；别人照常能读，写的只能有一个', 1280, 250, 520);
-  const gX = gloss(W, '独占锁', '动主文件时要拿；要等读的人都离开', 1280, 250, 520);
+  const gR = gloss(W, '保留锁', '要写的人先拿；只有一把', 1280, 250, 520);
+  const gX = gloss(W, '独占锁', '改主文件时要拿；读的人得先走', 1280, 250, 520);
   set(gS, 0, { autoAlpha: 0 }); show(gS, T('j11', '共享锁') + 0.1, { y: 6 }); gone(gS, T('j12', '保留锁') - 0.1, 0.2);
   set(gR, 0, { autoAlpha: 0 }); show(gR, T('j12', '保留锁') + 0.1, { y: 6 }); gone(gR, T('j13', '独占锁') - 0.1, 0.2);
   set(gX, 0, { autoAlpha: 0 }); show(gX, T('j13', '独占锁') + 0.1, { y: 6 });
@@ -65,7 +65,7 @@ scene('concur', ({ root, s, c0 }) => {
   const lkB = padlock(736, 'S'), lkA = padlock(792, 'R'), lkC = padlock(848, 'S'), lkC2 = padlock(848, 'S'), lkX1 = padlock(904, 'X'), lkX = padlock(904, 'X');
   drop(lkB, T('j11', '共享锁')); drop(lkA, T('j12', '保留锁')); drop(lkC, T('j15b', '42'));
   bounceOff(lkX1, T('j16', '已锁'));                                            // 独占锁落不下来：Bob 的共享锁还在
-  tl.fromTo(lkB, { scale: 1 }, { scale: 1.35, duration: 0.18, yoyo: true, repeat: 3, ease: 'power1.inOut', immediateRender: false }, T('j17', 'Bob'));
+  tl.fromTo(lkB, { scale: 1 }, { scale: 1.3, duration: 0.3, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, T('j17', 'Bob'));
   lift(lkC, T('j18') - 0.1); bounceOff(lkC2, T('j18', '挡在外面'));             // 后来的读者：共享锁也扣不上了
   lift(lkB, T('j19', 'Bob 结束'));
   drop(lkX, T('j19', '提交成功') - 0.35); lift(lkA, T('j19', '提交成功') - 0.2);
@@ -73,14 +73,14 @@ scene('concur', ({ root, s, c0 }) => {
   tl.fromTo(MAIN, { borderColor: K.teal }, { borderColor: '#000000', duration: 0.3, immediateRender: false }, T('j26') - 0.3);
   lift(lkX, T('j26') - 0.3);
   // j26–j26b：代价
-  const cost = gloss(W, '代价', '<span class="c1" style="opacity:0;visibility:hidden">提交要等读的人都离开</span><span class="c2" style="opacity:0;visibility:hidden">；提交时谁也不能读</span>', 1280, 430, 520, { terms: '代价' }); show(cost, T('j26', '代价'), { y: 8 });
-  show(cost.querySelector('.c1'), T('j26', '提交要等'), { y: 0 }); show(cost.querySelector('.c2'), T('j26b') - 0.1, { y: 0 });   // 释义跟着旁白分两段出来
+  const cost = gloss(W, '代价', '<span class="c1" style="opacity:0;visibility:hidden">提交要等读的人都离开</span>', 1280, 430, 520, { terms: '代价' }); show(cost, T('j26', '代价'), { y: 8 });
+  show(cost.querySelector('.c1'), T('j26', '提交要等'), { y: 0 });
   // w0：锁那段收走，main.db 和它的五页留在原处，接着讲 WAL；换一种做法从头再来，五页的值回到 42
   const tW0 = T('w0') - 0.35;
   [gX, cost, ali, rdr].forEach((e) => gone(e, tW0, 0.3)); goneFrom(bob, tW0, 0.35);
   mRows.forEach((r, i) => keyed(r.val).at(tW0 + 0.25 + i * 0.05, { html: i === 0 ? 'Alice · 42' : '年龄索引 · 42 岁' }));
   // 焦点框：「别人照常能读」指 Bob、「写的只能有一个」指 Alice；「Bob 还没走」指 Bob；「她已经在排队」指 Alice、「后来的读者」指第三张卡
-  focus(W, [[T('j12b', '照常能读'), bob], [T('j12b', '写的'), ali, Tend('j12b')], [T('j17', 'Bob'), bob, Tend('j17')], [T('j18', '排队'), ali], [T('j18', '读者'), rdr, Tend('j18')]], Tend('j26b'));
+  focus(W, [[T('j12b', '照常能读'), bob], [T('j12b', '写的'), ali, Tend('j12b')], [T('j17', 'Bob'), bob, Tend('j17')], [T('j18', '排队'), ali], [T('j18', '读者'), rdr, Tend('j18')]], Tend('j26'));
   [[T('j10') - 0.2, '这时有人在读'], [T('j10b') - 0.2, '一把锁管多大'], [T('j11') - 0.2, '共享锁、保留锁、独占锁'], [T('j16') - 0.2, '提交被挡住：Bob 还没走'], [T('j26') - 0.2, '回滚日志的代价']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   sfx('tick', T('j10b', 'My ISAM'), { g: 0.35 }); sfx('tick', T('j10d'), { g: 0.35 }); sfx('pop', T('j10c'), { g: 0.4 });
   sfx('tick', T('j12b', '照常能读'), { g: 0.3 });
@@ -112,7 +112,7 @@ scene('concur', ({ root, s, c0 }) => {
   tl.fromTo(pgFly, { autoAlpha: 1, x: 0, y: 0 }, { x: 800, y: 0, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, T('w1b', '追加') - 0.1); sfx('whoosh', T('w1b', '追加'), { g: 0.3, p: 0.3 });
   tl.fromTo(pgFly, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, T('w2', 'W A L') - 0.1);
   const endL = tx(W, '← 末尾', 1420, 318, { fs: 26, color: K.teal }); set(endL, 0, { autoAlpha: 0 }); show(endL, T('w1b', '末尾') - 0.1, { x: 10, y: 0 }); gone(endL, T('w2', 'W A L') - 0.1, 0.3);
-  const gW = gloss(W, 'WAL', '预写日志：改过的页整页追加在这个文件末尾，主文件先不动', 860, 300, 360); show(gW, T('w2', 'W A L'), { y: 8 }); sfx('pop', T('w2', 'W A L'), { g: 0.4 });
+  const gW = gloss(W, 'WAL', '预写日志：改过的页追加在末尾', 860, 300, 360); show(gW, T('w2', 'W A L'), { y: 8 }); sfx('pop', T('w2', 'W A L'), { g: 0.4 });
   // w3–w5b：一帧 = 24 字节帧头 + 一整页；Alice 改成 43，追加了 5 帧；最后一帧写着提交后 553 页：提交标记
   const frames = FR.map((pg, i) => { const f = h('div', 'abs', WAL); px(f, 20, 56 + i * 68, 516, 56); css(f, { display: 'flex', border: `1.5px solid ${K.ink}`, boxSizing: 'border-box', fontSize: '22px' }); const hd = h('div', '', f, `第 ${pg} 页`); css(hd, { width: '370px', background: '#e6e6e6', borderRight: `1.5px solid ${K.ink}`, display: 'flex', alignItems: 'center', paddingLeft: '10px', fontFamily: 'Mono', fontSize: '24px', whiteSpace: 'nowrap' }); const pb = h('div', '', f, pg === 130 ? 'Alice · <b>43</b>' : '年龄 · 43'); css(pb, { flex: '1', display: 'flex', alignItems: 'center', paddingLeft: '12px', background: pg === 130 ? K.wheat : 'transparent' }); f.hd = hd; return f; });   // 第 130 页（Alice 那一页）的新版：麦色
   const gF = gloss(W, '帧', '24 个字节的帧头，加一整页', 750, 690, 560);
@@ -126,13 +126,13 @@ scene('concur', ({ root, s, c0 }) => {
   frames.forEach((f, i) => { set(f, 0, { autoAlpha: 0 }); tl.fromTo(f, { autoAlpha: 1, x: -40 }, { x: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, T('w4b', '130') - 0.3 + i * 0.25); sfx('tick', T('w4b', '130') - 0.3 + i * 0.25, { g: 0.35 }); });
   const n5 = tx(WAL, '5 帧', 470, 6, { fs: 22, color: K.teal }); show(n5, T('w4', '5'), { y: 6 });
   keyed(frames[4].hd).at(T('w5', '553'), { html: `第 ${FR[4]} 页 · 提交后 553 页` }); frames.forEach((f) => { f.dataset.beat = 'line'; }); sfx('thud', T('w5', '553'), { g: 0.45 });   // 提交标记写在最后一帧的帧头里
-  const gM = gloss(W, '提交标记', '提交的那一帧，帧头里多记一个数：提交后文件共几页', 750, 690, 560); set(gM, 0, { autoAlpha: 0 }); show(gM, T('w5b', '提交标记'), { y: 8 }); gone(gF, T('w5b', '提交标记') - 0.1, 0.2);
+  const gM = gloss(W, '提交标记', '帧头里记着提交后的页数', 750, 690, 560); set(gM, 0, { autoAlpha: 0 }); show(gM, T('w5b', '提交标记'), { y: 8 }); gone(gF, T('w5b', '提交标记') - 0.1, 0.2);
   // w6–w6b：帧头还带着校验和：对不上的帧一律不算
   frames.forEach((f, i) => keyed(f.hd).at(T('w6', '校验和') + i * 0.05, { html: i === 4 ? `第 ${FR[i]} 页 · 提交 · 校验和` : `第 ${FR[i]} 页 · 校验和` }));
   const bad = h('div', 'abs', WAL); px(bad, 20, 56 + 5 * 68, 516, 46); css(bad, { border: `1.5px dashed ${K.red}`, color: K.red, fontSize: '24px', display: 'flex', alignItems: 'center', paddingLeft: '12px', boxSizing: 'border-box' }); bad.innerHTML = '校验和对不上的帧：不算';
   set(bad, 0, { autoAlpha: 0 }); show(bad, T('w6b', '一律不算') - 0.2, { y: 6 }); sfx('error', T('w6b', '一律不算'), { g: 0.3 });
   gone(gM, T('w7') - 0.1, 0.2);
-  const gK = gloss(W, '校验和', '按内容算出的一串数；内容坏了就对不上', 720, 690, 560, { terms: '校验和' }); set(gK, 0, { autoAlpha: 0 }); show(gK, T('w6', '校验和'), { y: 8 });
+  const gK = gloss(W, '校验和', '按内容算出的一串数', 720, 690, 560, { terms: '校验和' }); set(gK, 0, { autoAlpha: 0 }); show(gK, T('w6', '校验和'), { y: 8 });
   // w7：提交之后，主文件里的 Alice 仍是 42
   const st42 = tx(MAIN, '提交之后，仍是 42', 330, 6, { fs: 22, color: K.teal });
   gone(still, T('w7') - 0.1, 0.2); show(st42, T('w7', '42'), { y: 6 }); 
@@ -166,7 +166,8 @@ scene('concur', ({ root, s, c0 }) => {
   const one = tx(car, '写的人只能有一个', 16, 146, { fs: 26, color: K.red }); show(one, T('w14', '只能有一个'), { y: 6 });
   // w15–w17：检查点：新页写回主文件；Bob 还在用旧页，5 页一页也没写回；Bob 结束后完成，主文件变成 43，WAL 清空
   const tC = T('w15') - 0.2;
-  [fresh, both, one, car].forEach((e) => gone(e, tC, 0.3));
+  [one, car].forEach((e) => gone(e, tC, 0.3));
+  [fresh, both].forEach((e) => gone(e, T('w13') - 0.2, 0.4));
   const cp = line(ov, [[1236, 460], [726, 460]], { w: 3 }); const cpL = tx(W, '写回主文件', 860, 420, { fs: 24 });
   arrowIn(cp, T('w15', '写回') - 0.2, 0.6); show(cpL, T('w15', '写回'), { y: 6 });
   const gC = gloss(W, '检查点', '把 WAL 里的新页写回主文件', 750, 268, 480); set(gC, 0, { autoAlpha: 0 }); goneFrom(dir, T('w15b', '检查点') - 0.2, 0.3, 0.2); show(gC, T('w15b', '检查点'), { y: 8 }); sfx('pop', T('w15b', '检查点'), { g: 0.4 });
@@ -183,7 +184,7 @@ scene('concur', ({ root, s, c0 }) => {
   [cp, cpL, gC, ali].forEach((e) => gone(e, tX, 0.3)); goneFrom(bob, tX, 0.35);
   const host = h('div', 'abs', W); px(host, 120, 700, 1080, 200); css(host, { border: `2px dashed ${K.ink}`, boxSizing: 'border-box' });
   const hostL = tx(host, '同一台机器', 16, 8, { fs: 24, color: '#444444' });
-  const shm = h('div', 'abs', host, '共享内存：WAL 的对照表'); px(shm, 300, 60, 480, 70); css(shm, { border: `2px solid ${K.ink}`, background: '#f2f2f2', fontSize: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }); shm.dataset.gloss = '共享内存';
+  const shm = h('div', 'abs', host, '共享内存：WAL 的对照表'); px(shm, 300, 60, 480, 70); css(shm, { border: `2px solid ${K.teal}`, background: K.teal, color: '#ffffff', fontSize: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }); shm.dataset.gloss = '共享内存'; set(shm, 0, { autoAlpha: 0 }); slam(shm, T('w18', '共享内存') - 0.1, { from: 1.2 }); sfx('thud', T('w18', '共享内存'), { g: 0.35 });
   const procs = [0, 1, 2].map((i) => { const p = h('div', 'abs btn', host, `进程 ${i + 1}`); px(p, 40 + i * 340, 150); p.style.fontSize = '22px'; return p; });
   wipe(host, T('w18', '对照表') - 0.2, { dir: 'l', d: 0.45 }); sfx('whoosh', T('w18', '对照表') - 0.2, { g: 0.3 });   // 说到「这份目录」框就进来，「共享内存」时点亮它
   // 同一台机器上的三个进程各连一条线到共享内存；另一台机器上的进程 4 也伸一条线过来，到了机器的边界就被挡住、变红
@@ -193,7 +194,7 @@ scene('concur', ({ root, s, c0 }) => {
   pLines.forEach((l, i) => arrowIn(l, T('w18b', '进程') + i * 0.12, 0.35)); sfx('tick', T('w18b', '进程'), { g: 0.3 });
   const other = h('div', 'abs', W); px(other, 1260, 700, 440, 200); css(other, { border: `2px dashed ${K.ink}`, boxSizing: 'border-box' });
   tx(other, '另一台机器', 16, 8, { fs: 24, color: '#444444' }); const p4 = h('div', 'abs btn', other, '进程 4'); px(p4, 40, 150); p4.style.fontSize = '22px';
-  set(other, 0, { autoAlpha: 0 }); wipe(other, T('w19', '进程') - 0.1, { dir: 'r', d: 0.45 });
+  set(other, 0, { autoAlpha: 0 }); slide(other, T('w19') - 0.1, { x: 520, y: 0, d: 0.8, ease: 'power3.out' });
   const reach = line(ov, [[1298, 868], [1210, 868]], { w: 2.5 }); arrowIn(reach, T('w19', '进程') + 0.5, 0.5);
   const wall = h('div', 'abs', W); px(wall, 1196, 830, 10, 76); css(wall, { background: K.red, transformOrigin: '50% 0%' }); set(wall, 0, { autoAlpha: 0 });
   tl.fromTo(wall, { autoAlpha: 1, scaleY: 0 }, { scaleY: 1, duration: 0.3, ease: 'bounce.out', immediateRender: false }, T('w19', '同一台机器') - 0.1);
@@ -210,7 +211,7 @@ scene('concur', ({ root, s, c0 }) => {
    [T('w15') - 0.2, '检查点：把新页写回主文件'], [T('w18') - 0.2, 'WAL 的代价']].forEach(([t, x]) => keyed(title).at(t, { html: x }));
   shots(cam, world, s, [[s.start, null, { rect: [110, 244, 1810, 896], pad: 0 }], [T('w0') - 0.35, null, { rect: [110, 250, 1810, 900], pad: 0, d: 1.5 }],
     [T('w1', '主文件') - 0.3, null, { rect: [110, 240, 740, 690], zmax: 1.45, d: 1.2 }], [T('w1b', '追加') - 0.2, null, { rect: [1230, 240, 1810, 680], zmax: 1.45, d: 1.3 }], [T('w3') - 0.2, null, { rect: [110, 250, 1810, 900], pad: 0, d: 1.3 }],
-    [T('w18', '共享内存') - 0.3, null, { rect: [110, 690, 1720, 910], d: 1.3 }], [T('w18b', '进程') - 0.3, null, { rect: [10, 690, 1620, 910], d: 1.1 }], [T('w19', '同一台机器') - 0.4, null, { rect: [110, 690, 1720, 910], d: 1.1 }]]);
+    [T('w18', '共享内存') - 0.3, null, { rect: [110, 690, 1720, 910], d: 1.3 }], [T('w18b', '进程') - 0.3, null, { rect: [10, 690, 1620, 910], d: 1.1 }], [T('w19') - 0.1, null, { rect: [110, 690, 1720, 910], d: 1.1 }]]);
   }
   }
 });

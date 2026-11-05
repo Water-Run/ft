@@ -64,6 +64,8 @@ scene('end', ({ root, s, c0 }) => {
 
   // e11：一行挨着一行的存法，也要换成一列挨着一列——表的几行先亮，再在右边立起三列
   const tR = T('e11') - 0.2;
+  // 讲行与列时，上面那条平均年龄的查询已经讲完：收走，只留行和列的对比
+  gone(avg, tR, 0.4);
   [L4[0], L4[1], L4[3], Al, exp].forEach((e) => gone(e, tR, 0.4));
   const colX = [1000, 1220, 1560], colW = [190, 310, 190], names = ['id', 'name', 'age'];
   const colV = [['2049', '2050', '2051', '2052', '…'], ['User02049-…', 'Alice', 'User02051-…', 'User02052-…', '…'], ['51', '42', '53', '54', '…']];
@@ -75,7 +77,7 @@ scene('end', ({ root, s, c0 }) => {
 
   // e12–e12b：SQLite 把数据库做到了极小（一个小文件）；另一端的 ClickHouse，面对的是几十亿、上万亿行（三列一直往上长）
   const tS = T('e12') - 0.2;
-  [tbl, avg, many].forEach((e) => dim(e, tS, 0.25)); gone(rowNote, tS, 0.3);
+  [tbl, many].forEach((e) => dim(e, tS, 0.25)); gone(rowNote, tS, 0.3);
   const fS = h('div', 'abs', W); px(fS, 140, 790, 120, 90); for (let i = 2; i >= 0; i--) { const r = h('div', 'abs pg', fS); px(r, i * 8, i * 8, 100, 70); }
   const fSL = tx(W, 'SQLite：一个库，一个文件', 290, 810, { fs: 30, color: K.teal });
   show(fS, T('e12', '极小') - 0.1, { s: 0.6, y: 0 }); show(fSL, T('e12', '一个库'), { x: -10, y: 0 }); sfx('pop', T('e12', '极小'), { g: 0.4 });

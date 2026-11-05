@@ -33,12 +33,16 @@ scene('page', ({ root, s, c0 }) => {
   cellEls.forEach((e, i) => { set(e, 0, { autoAlpha: 0 }); show(e, tC0 + (tC1 - tC0) * i / (cellEls.length - 1), { x: 16, y: 0, d: 0.25 }); });
   show(tbl.rs[2], T('p4', '页尾'), { x: -10, y: 0 });
   gone(sL, T('p4') - 0.3, 0.3);
-  const grow1 = tx(W, '指针往后长 →', bx(8), Y - 40, { fs: 22, color: K.dim }), grow2 = tx(W, '← 行往前长', bx(700), Y - 40, { fs: 22, color: K.dim });
-  show(grow1, T('p4', '指针往后长'), { y: 6 }); show(grow2, T('p4', '行往前长'), { y: 6 }); sfx('whoosh', T('p4', '页尾'), { g: 0.25 });
+  // 「指针往后长，行往前长」：两支箭头各从自己那一头长出来——指针从页头往后，行从页尾往前（WaterRun 看 r7b：「指针 行往前长」要有动画）
+  const grow1 = tx(W, '指针往后长', bx(8), Y - 62, { fs: 24, color: K.teal }), grow2 = tx(W, '行往前长', bx(1024), Y - 62, { fs: 24, color: K.teal });
+  grow2.style.left = 'auto'; grow2.style.right = (1920 - bx(1024)) + 'px';
+  const ga1 = line(ov, [[bx(8), Y - 18], [bx(330), Y - 18]], { w: 3, color: 'teal' }), ga2 = line(ov, [[bx(1024), Y - 18], [bx(520), Y - 18]], { w: 3, color: 'teal' });
+  show(grow1, T('p4', '指针往后长') - 0.1, { y: 6 }); arrowIn(ga1, T('p4', '指针往后长'), 1.0); show(grow2, T('p4', '行往前长') - 0.1, { y: 6 }); arrowIn(ga2, T('p4', '行往前长'), 1.2);
+  sfx('whoosh', T('p4', '页尾'), { g: 0.25 }); sfx('whoosh', T('p4', '指针往后长'), { g: 0.2 }); sfx('whoosh', T('p4', '行往前长'), { g: 0.2, p: -0.2 });
   // p5：中间剩下的 41 个字节，是空地
   const sF = seg(P.pointer_array[1], P.unallocated_bytes, null, true); set(sF, 0, { autoAlpha: 0 }); show(sF, T('p5', '空地'), { y: 0, d: 0.3 });
   show(tbl.rs[3], T('p5', '空地'), { x: -10, y: 0 });
-  [grow1, grow2].forEach((e) => gone(e, T('p6') - 0.2, 0.3));
+  [grow1, grow2, ga1, ga2].forEach((e) => gone(e, T('p6') - 0.2, 0.3));
 
   // p6：行号 2050 的指针写着 489
   const slot = P.cells.findIndex((c) => c.rowid === 2050);
@@ -77,7 +81,7 @@ scene('page', ({ root, s, c0 }) => {
   set(nofit, 0, { autoAlpha: 0 }); wipe(nofit, T('p10', '放不下') - 0.2, { dir: 'l', d: 0.6 }); sfx('error', T('p10', '放不下'), { g: 0.3 });
   // 放不下：这一行往页里挤，撞上页的下边被弹回来，页晃一下（和第 02 章第 18 行撞第 2 页同一个动作）
   tl.fromTo(big, { y: 0 }, { y: -100, duration: 0.25, yoyo: true, repeat: 1, ease: 'power2.in', immediateRender: false }, T('p10', '放不下') - 0.4);
-  tl.fromTo(strip, { x: 0 }, { x: 7, duration: 0.05, yoyo: true, repeat: 5, ease: 'none', immediateRender: false }, T('p10', '放不下') - 0.15);
+  tl.fromTo(strip, { x: 0 }, { x: 10, duration: 0.16, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, T('p10', '放不下') - 0.15);
   // p11：装不下的那截先往下挪到溢出页那一排；整行收成一小段落进叶页 542（只留开头一小段）
   tl.fromTo(nofit, { x: 0, y: 0 }, { x: 360, y: 74, duration: 0.6, ease: 'power2.inOut', immediateRender: false }, T('p11', '叶页') - 0.4);
   tl.fromTo(big, { x: 0, y: 0, scaleX: 1, scaleY: 1 }, { x: 10, y: 144, scaleX: 214 / SW, scaleY: 1.25, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, T('p11', '一小段') - 0.35);
@@ -93,7 +97,7 @@ scene('page', ({ root, s, c0 }) => {
   const links = NOTE.chain.map((c, i) => line(ov, [[i ? 480 + i * 120 - 30 : 420, 626], [480 + i * 120, 626]], { w: 1.8 }));
   chain.forEach((e, i) => { show(e, T('p12', '溢出页') + i * 0.08, { x: -12, y: 0, d: 0.3 }); arrowIn(links[i], T('p12', '溢出页') - 0.05 + i * 0.08, 0.15); });
   const zero = tx(W, '最后一页写着下一页：0', 1380, 670, { fs: 22, color: K.dim }); show(zero, T('p12', '链') + 0.2, { y: 6 });
-  const gO = gloss(W, '溢出页', '放不下的部分一页接一页；每页开头 4 个字节写着下一页的页号', 480, 726, 760); show(gO, T('p12', '溢出页') + 0.3, { y: 8 }); sfx('whoosh', T('p12', '溢出页'), { g: 0.3 });
+  const gO = gloss(W, '溢出页', '放不下的部分；每页开头写着下一页', 480, 726, 760); show(gO, T('p12', '溢出页') + 0.3, { y: 8 }); sfx('whoosh', T('p12', '溢出页'), { g: 0.3 });
   // 「当前在讲谁」：每句讲到的对象换成选中样式（深青底白字），讲到下一个就移过去
   // 焦点框：页头那 8 个字节、指针数组、空地；2050 的指针；Alice 这一行的 13 个字节，再逐段指长度、行号、内容、42
   focus(W, [[T('p2', '8'), sH, Tend('p2')], [T('p3', '指针'), sP, Tend('p3')], [T('p5', '空地'), sF, Tend('p5')], [T('p6', '2050'), pEls[slot], Tend('p6')], [T('p7', '489'), aCell], [T('p7', '13'), hEls, Tend('p7')],

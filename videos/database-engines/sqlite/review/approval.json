@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "3b34b422975f2f549632718b4dd29fd3f0371be74705cadf9fcfc3aeb1b43ce5",
+      "content_sha256": "bd08066bd09b5585aa1b14c5f9abbe1a45f7aff0f518207b4f97f3ca50e90aeb",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-04T12:44:29+08:00",
-      "evidence": "review/NOTES.md「明确确认」第 14 稿：e12b 照 WaterRun 原话「另一端的ClickHouse改成而ClickHouse常常面对的时...」改；据「OLAP出来时动画直接切换(T变成A), 过渡的更快」删 e10b（只删不加）；未逐句看全文。"
+      "confirmed_at": "2026-11-05T10:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」第 15 稿：据 WaterRun「有些前文讲过了就不用一直重复叙事了, 比如, B和B+树」「其它你可以发挥你的自主性」删 s22b、j26b（只删不加，不新配音）；未逐句看全文。"
     }
   }
 }
