@@ -258,3 +258,102 @@ function rectOf(W, parent, toks, a, b, fn, cls = '', pad = 14) {
 
 // 章末的镜头：正俯视一片空白的纸。横格的位置与 chapterMark 的开场镜头一致（cy ≡ 92 mod 96，k = 1），所以章与章之间硬切看不出来
 function blankCam(x, y) { return { cx: x, cy: 92 + 96 * Math.round((y - 92) / 96), cz: 0, pitch: 0, yaw: 0, k: 1 }; }
+
+// ── 取景：按「这一镜必须看到的东西」算镜头 ──
+// 投影与 CSS 一致：先平移 -c，再 rotateZ(yaw)、rotateX(pitch)、缩放 k、平移 (sx, sy)；.view 的透视 2000px，原点 (960, 540)
+const PERSP = 2000, OX = 960, OY = 540;
+function proj(p, c) {
+  const r = Math.PI / 180, cy_ = Math.cos(c.yaw * r), sy_ = Math.sin(c.yaw * r), cp = Math.cos(c.pitch * r), sp = Math.sin(c.pitch * r);
+  const vx = p[0] - c.cx, vy = p[1] - c.cy, vz = (p[2] || 0) - c.cz;
+  const x1 = vx * cy_ - vy * sy_, y1 = vx * sy_ + vy * cy_;
+  const y2 = y1 * cp - vz * sp, z2 = y1 * sp + vz * cp;
+  const X = x1 * c.k + (c.sx || 960), Y = y2 * c.k + (c.sy || 540), Z = z2 * c.k;
+  const f = PERSP / (PERSP - Z);
+  return [OX + (X - OX) * f, OY + (Y - OY) * f, f];
+}
+// 取景对象：[x, y, z] 点；{ box: [x, y, w, d, h] } 以 (x, y) 为中心的立方体；{ el } 面向镜头的标签（W.board 建的）；{ pr: el, x, y } 印在纸上的字
+function fitCam(W, items, o = {}) {
+  const pitch = o.pitch != null ? o.pitch : 50, yaw = o.yaw || 0;
+  const S = o.safe || { l: 110, r: 1810, t: 90, b: 920 };
+  const pts = [], tags = [];
+  for (const it of items) {
+    if (Array.isArray(it)) pts.push(it);
+    else if (it.box) { const [x, y, w, d, hh] = it.box; for (const a of [-1, 1]) for (const b of [-1, 1]) for (const z of [0, hh]) pts.push([x + a * w / 2, y + b * d / 2, z]); }
+    else if (it.el && W.boards) {
+      const bd = W.boards.find((q) => q.el === it.el); if (!bd) continue;
+      const inner = it.el.firstElementChild || it.el, w = inner.offsetWidth, hh = inner.offsetHeight;
+      const m = /translate\((-?[\d.]+)%(?:,\s*(-?[\d.]+)%)?\)/.exec(inner.style.transform || '') || /translateX\((-?[\d.]+)%\)/.exec(inner.style.transform || '');
+      const tx = m ? +m[1] / 100 : 0, ty = m && m[2] ? +m[2] / 100 : 0;
+      tags.push({ p: [bd.x, bd.y, bd.z], u0: bd.dx + tx * w, v0: bd.dy + ty * hh, w, h: hh });
+      pts.push([bd.x, bd.y, bd.z]);
+    } else if (it.pr) {
+      const inner = it.pr.firstElementChild || it.pr, w = inner.offsetWidth, hh = inner.offsetHeight;
+      const m = /translate\((-?[\d.]+)%(?:,\s*(-?[\d.]+)%)?\)/.exec(inner.style.transform || '');
+      const tx = m ? +m[1] / 100 : 0, ty = m && m[2] ? +m[2] / 100 : 0;
+      const x0 = it.x + tx * w, y0 = it.y + ty * hh;
+      pts.push([x0, y0, 0], [x0 + w, y0, 0], [x0, y0 + hh, 0], [x0 + w, y0 + hh, 0]);
+    }
+  }
+  let c = { cx: 0, cy: 0, cz: 0, pitch, yaw, k: 1, sx: 960, sy: 540 };
+  const n = pts.length || 1;
+  c.cx = pts.reduce((a, p) => a + p[0], 0) / n; c.cy = pts.reduce((a, p) => a + p[1], 0) / n; c.cz = o.cz != null ? o.cz : pts.reduce((a, p) => a + (p[2] || 0), 0) / n;
+  const r = Math.PI / 180;
+  for (let it = 0; it < 24; it++) {
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const p of pts) { const [X, Y] = proj(p, c); x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y); }
+    for (const tg of tags) { const [X, Y, f] = proj(tg.p, c), s = c.k * f; x0 = Math.min(x0, X + tg.u0 * s); x1 = Math.max(x1, X + (tg.u0 + tg.w) * s); y0 = Math.min(y0, Y + tg.v0 * s); y1 = Math.max(y1, Y + (tg.v0 + tg.h) * s); }
+    const fk = Math.min((S.r - S.l) / Math.max(1, x1 - x0), (S.b - S.t) / Math.max(1, y1 - y0));
+    c.k = clamp(c.k * Math.pow(fk, 0.7), 0.12, o.kmax || 2.2);
+    // 把画面中心移到安全区中心：在镜头平面里挪目标点
+    const ex = ((x0 + x1) / 2 - (S.l + S.r) / 2) / c.k, ey = ((y0 + y1) / 2 - (S.t + S.b) / 2) / c.k;
+    const cyw = Math.cos(yaw * r), syw = Math.sin(yaw * r), cp = Math.cos(pitch * r), sp = Math.sin(pitch * r);
+    // 逆变换：屏幕 (ex, ey, 0) → 世界（先 Rx 的逆，再 Rz 的逆）
+    const ux = ex, uy = ey * cp, uz = -ey * sp;
+    c.cx += ux * cyw + uy * syw; c.cy += -ux * syw + uy * cyw; c.cz += uz;
+  }
+  const out = { cx: +c.cx.toFixed(1), cy: +c.cy.toFixed(1), cz: +c.cz.toFixed(1), pitch, yaw, k: +c.k.toFixed(3) };
+  return out;
+}
+
+// 方块的字随镜头换面：俯看时印在顶面，侧面平视时印在正面（两面的字由镜头俯仰决定透明度）
+function twoFace(W, b, txt, fs, extra) {
+  const span = h('span', 'tx2', b.fr, txt); span.style.fontSize = (fs || Math.round(b.h * 1.1)) + 'px';
+  b.fr.classList.add('ftxt');
+  const top = b.top.firstChild && b.top.firstChild.nodeType === 1 ? b.top.firstChild : null;
+  let last = '';
+  W.up((t, c) => {
+    const ex = extra ? clamp(extra(t)) : 1, a = clamp((70 - c.pitch) / 10) * ex, f = clamp((c.pitch - 64) / 10) * ex, key = a.toFixed(2) + f.toFixed(2);
+    if (key === last) return; last = key;
+    if (top) { top.style.opacity = a; top.style.visibility = a < 0.03 ? 'hidden' : ''; }
+    span.style.opacity = f; span.style.visibility = f < 0.03 ? 'hidden' : '';
+  });
+  return span;
+}
+
+// 纸上的一条走线：依次经过世界坐标里的点（印在纸面上，不从字上越过）；draw(t) 0–1 为画出的比例，op(t) 为透明度
+function trace(W, parent, pts, o = {}) {
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const x0 = Math.min(...xs) - 30, y0 = Math.min(...ys) - 30, w = Math.max(...xs) - x0 + 60, hh = Math.max(...ys) - y0 + 60;
+  const g = h('div', 'p3', parent); g.style.transform = `translate3d(${x0}px, ${y0}px, 0.9px)`;
+  const sv = svg('svg', { width: w, height: hh, viewBox: `0 0 ${w} ${hh}` }, g); css(sv, { position: 'absolute', left: 0, top: 0, overflow: 'visible' });
+  const d = pts.map((p, i) => (i ? 'L' : 'M') + (p[0] - x0).toFixed(1) + ' ' + (p[1] - y0).toFixed(1)).join(' ');
+  const path = svg('path', { d, fill: 'none', stroke: o.color || '#1c1c1c', 'stroke-width': o.w || 4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, sv);
+  const L = path.getTotalLength(); path.style.strokeDasharray = `${L.toFixed(1)} ${(L + 10).toFixed(1)}`;
+  const tip = svg('circle', { r: (o.w || 4) * 2.2, fill: o.color || '#1c1c1c' }, sv);
+  let last = '';
+  W.up((t) => {
+    const k = clamp(o.draw ? o.draw(t) : 1), op = clamp(o.op ? o.op(t) : 1), key = k.toFixed(3) + op.toFixed(3);
+    if (key === last) return; last = key;
+    path.style.strokeDashoffset = (L * (1 - k)).toFixed(1); path.style.opacity = (op * (k > 0 ? 1 : 0)).toFixed(3);
+    const pt = path.getPointAtLength(Math.max(0.01, L * k));
+    tip.setAttribute('cx', pt.x.toFixed(1)); tip.setAttribute('cy', pt.y.toFixed(1)); tip.setAttribute('opacity', (op * (k > 0.01 ? 1 : 0)).toFixed(3));
+  });
+  return path;
+}
+
+// 方块顶面描一圈墨线（与顶面对齐，不会和透视错位）
+function glow(W, b, fn, cls = '') {
+  const e = h('div', 'glow ' + cls, b.top);
+  fade(W, e, fn);
+  return e;
+}

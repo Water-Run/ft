@@ -150,3 +150,17 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 /* 越过上限的那几步：朱红描边 */
 .blk.cube.e .tp { box-shadow: inset 0 0 0 2.5px var(--err); }
 .blk.cube.e .fr, .blk.cube.e .sd, .blk.cube.e .bk { background: #ead6d1; box-shadow: inset 0 0 0 1px #c08a7d; }
+/* 正面的字（侧面平视时读这一面） */
+.blk .fr.ftxt { display: flex; align-items: center; justify-content: center; overflow: visible; }
+.blk .tx2 { font: 400 32px "Serif SC"; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.blk.err .tx2 { color: var(--err); }
+/* 对照图里的「过程」块：灰底灰字 */
+.blk.proc .tp { background: #f1f1f1; color: #5a5a5a; }
+.box3.dash { box-shadow: none; border: 3px dashed #a8a8a8; box-sizing: border-box; }
+/* 一百道里答对的：顶面涂深，正俯视也分得清对错 */
+.blk.cube.ok .tp { background: #4a4a4a; box-shadow: inset 0 0 0 1.5px #1c1c1c; }
+.blk.cube.ok .fr, .blk.cube.ok .sd, .blk.cube.ok .bk { background: #6a6a6a; box-shadow: inset 0 0 0 1px #2a2a2a; }
+.glow { position: absolute; inset: 0; box-shadow: inset 0 0 0 4px #1c1c1c; pointer-events: none; }
+.glow.e { box-shadow: inset 0 0 0 4px var(--err); }
+.seg.ww { height: 8px; margin-top: -4px; }
+.seg.e.ww { background: var(--err); }
