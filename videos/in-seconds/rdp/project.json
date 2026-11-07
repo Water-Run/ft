@@ -26,7 +26,7 @@
     "duck_db": 7,
     "sfx_db": -9,
     "score": {
-      "lift_cue": "a2"
+      "lift_cue": "e3"
     }
   },
   "check": {
@@ -75,7 +75,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "WaterRun 看本地审片页 out/audition/index.html：逐句意见与文案确认、配音 A–E、配乐 A–C、视觉 A–C 各选一个；确认后按选定音色逐句实测、改定点，再配全片",
+  "next": "WaterRun 看第 2 轮审片页 out/audition/index.html：第 2 稿逐句意见或明确确认；确认后用青年大学生配全片，按磁贴关键帧铺开场景",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -99,5 +99,15 @@
   "review": {
     "required": true,
     "reviewer": "WaterRun"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "male-qn-daxuesheng"
+    },
+    "speed": {
+      "zh": 1.2
+    }
   }
 }

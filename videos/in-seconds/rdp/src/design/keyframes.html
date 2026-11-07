@@ -213,7 +213,7 @@ body { font-family: "Inter", "Sans SC", sans-serif; -webkit-font-smoothing: anti
   <div class="tile" style="left:750px; top:260px; width:300px; height:300px; background:#007a00;"><div>Windows 自带</div><div class="n">mstsc</div></div>
   <div class="tile" style="left:120px; top:570px; width:300px; height:145px; background:#b23d18;"><div>端口</div><div class="n" style="font-size: 40px;">3389</div></div>
   <div class="tile" style="left:430px; top:570px; width:310px; height:145px; background:#603cba;"><div>诞生</div><div class="n" style="font-size: 40px;">1998</div></div>
-  <div class="tile" style="left:750px; top:570px; width:300px; height:145px; background:#00706e;"><div>命令，而不是画面</div></div>
+  <div class="tile" style="left:750px; top:570px; width:300px; height:145px; background:#00706e;"><div>传画法，不传录像</div></div>
   <div class="h" style="left:1150px; top:300px; font-size: 150px; font-weight:200;">192<span style="font-size: 60px; margin-left:12px; font-family:'Sans SC'; font-weight:300;">秒了解</span></div>
   <div class="h" style="left:1150px; top:480px; font-size: 150px; font-weight:600;">RDP</div>
   <div class="h" style="left:1156px; top:680px; font-size: 36px; font-weight:300; font-family:'Sans SC';">Windows 远程的优雅实现</div>
@@ -223,9 +223,9 @@ body { font-family: "Inter", "Sans SC", sans-serif; -webkit-font-smoothing: anti
 
 <!-- ───────── C2 最密：字节按面积成磁贴 ───────── -->
 <div class="k C" id="C2">
-  <div class="h" style="left:120px; top:80px; font-size: 54px;">同一处变化，传多少字节</div>
+  <div class="h" style="left:230px; top:30px; font-size: 54px;">同一处变化，传多少字节</div>
   <div class="lbl" style="left:400px; top:180px;">RDP 命令</div>
-  <div class="lbl" style="left:640px; top:180px;">当成视频（H.264 一帧）</div>
+  <div class="lbl" style="left:640px; top:180px;">录像的办法（H.264 一帧）</div>
   <!-- 磁贴边长 = √(字节数 × 11.659)，面积与字节数成正比 -->
   <div class="lbl" style="left:120px; top:264px; color:#fff;">填满一块颜色</div>
   <div class="tile" style="left:400px; top:277px; width:11px; height:11px; background:#1b64c4; padding:0;"></div>
@@ -240,12 +240,82 @@ body { font-family: "Inter", "Sans SC", sans-serif; -webkit-font-smoothing: anti
   <div class="lbl" style="left:120px; top:617px; color:#fff;">往下滚动</div>
   <div class="tile" style="left:400px; top:628px; width:13px; height:13px; background:#1b64c4; padding:0;"></div>
   <div class="lbl mono" style="left:425px; top:617px; color:#9fd0ff;">14 B</div>
-  <div class="tile" style="left:640px; top:485px; width:900px; height:300px; background:#5a5a5a;"><div style="font-size: 24px;">滚动一页 · H.264 一帧</div><div class="n" style="font-size: 96px; font-weight:200;">23 159 B</div></div>
+  <div class="tile" style="left:640px; top:485px; width:900px; height:300px; background:#5a5a5a;"><div style="font-size: 24px;">往下翻一页 · H.264 一帧</div><div class="n" style="font-size: 96px; font-weight:200;">23 159 B</div></div>
   <div class="lbl" style="left:120px; top:820px; width:600px; font-size: 24px; line-height:32px; color:#9a9a9a;">磁贴面积按字节数画</div>
-  <div class="gauge"><div style="font-size: 24px; color:#9a9a9a;">这一步 RDP / 视频</div><div class="mono" style="font-size: 40px; font-weight:300;">47 B / 667 B</div></div>
-  <div class="left">97</div>
-  <div class="cap">以后只报编号：一行 9 个字，47 个字节</div>
-  <div class="ruler"><i style="width:49.5%"></i></div>
+  <div class="gauge"><div style="font-size: 24px; color:#9a9a9a;">这一步 RDP / 录像</div><div class="mono" style="font-size: 40px; font-weight:300;">47 B / 667 B</div></div>
+  <div class="left">99</div>
+  <div class="cap">之后只说几号字写在哪，这一行九个字，四十七个字节</div>
+  <div class="ruler"><i style="width:48.2%"></i></div>
+</div>
+
+<div class="k C" id="C3">
+  <div class="h" style="left:230px; top:30px; font-size: 54px;">站的位置</div>
+  <div class="lbl" style="left:120px; top:190px; color:#fff; font-size: 30px;">屏幕外面 · ToDesk、UU 远程</div>
+  <div class="tile" style="left:120px; top:250px; width:420px; height:290px; background:#3a3a3a;"><div style="font-size: 24px; color:#cfcfcf;">那边的屏幕</div><div class="abs" style="left:24px; top:64px; width:372px; height:200px; background:#f2f2f2;"></div><div class="abs" style="left:44px; top:90px; width:250px; height:12px; background:#9a9a9a;"></div><div class="abs" style="left:44px; top:120px; width:310px; height:12px; background:#9a9a9a;"></div><div class="abs" style="left:44px; top:150px; width:200px; height:12px; background:#9a9a9a;"></div></div>
+  <div class="tile" style="left:560px; top:300px; width:110px; height:80px; background:#5a5a5a; text-align:center;">帧</div>
+  <div class="tile" style="left:680px; top:300px; width:110px; height:80px; background:#4a4a4a; text-align:center;">帧</div>
+  <div class="tile" style="left:800px; top:300px; width:90px; height:80px; background:#3a3a3a; text-align:center;">…</div>
+  <div class="lbl" style="left:560px; top:400px; width:340px; line-height:38px;">每秒截几十次屏<br>压成视频发过来</div>
+  <div class="lbl" style="left:120px; top:570px; color:#fff;">只认像素</div>
+  <div class="abs" style="left:955px; top:190px; width:2px; height:640px; background:#3a3a3a;"></div>
+  <div class="lbl" style="left:1010px; top:190px; color:#fff; font-size: 30px;">Windows 里面 · RDP</div>
+  <div class="tile" style="left:1010px; top:250px; width:500px; height:450px; background:#1b64c4;"><div style="font-size: 24px;">Windows 要画的</div><div class="tile" style="left:24px; top:70px; width:452px; height:100px; background:#b23d18;"><div>填色</div><div class="n mono" style="font-size: 30px;">1024×768</div></div><div class="tile" style="left:24px; top:184px; width:452px; height:100px; background:#603cba;"><div>写字</div><div class="n mono" style="font-size: 30px;">0–8 号字形</div></div><div class="tile" style="left:24px; top:298px; width:452px; height:100px; background:#00706e;"><div>搬移</div><div class="n mono" style="font-size: 30px;">417×241</div></div></div>
+  <svg class="abs" style="left:0; top:0;" width="1920" height="1080"><path d="M1520 475 L1600 475" stroke="#fff" stroke-width="4"/><path d="M1600 475 l-16 -10 v20 z" fill="#fff"/></svg>
+  <div class="tile" style="left:1610px; top:390px; width:200px; height:170px; background:#007a00;"><div>你的电脑</div><div class="n" style="font-size: 30px;">自己画</div></div>
+  <div class="lbl" style="left:1010px; top:720px; color:#fff;">在指令变成像素之前接过来</div>
+  <div class="gauge"><div style="font-size: 24px; color:#9a9a9a;">这一步 RDP / 录像</div><div class="mono" style="font-size: 40px; font-weight:300;">—</div></div>
+  <div class="left">135</div>
+  <div class="cap">RDP 站在 Windows 里面</div>
+  <div class="ruler"><i style="width:29.6%"></i></div>
+</div>
+
+<div class="k C" id="C4">
+  <div class="h" style="left:230px; top:30px; font-size: 54px;">你的电脑说了算</div>
+  <div class="lbl" style="left:120px; top:190px; color:#fff; font-size: 30px;">连上时报上去的</div>
+  <div class="tile" style="left:120px; top:250px; width:300px; height:130px; background:#1b64c4;"><div>屏幕</div><div class="n mono" style="font-size: 36px;">2560×1600</div></div>
+  <div class="tile" style="left:430px; top:250px; width:200px; height:130px; background:#603cba;"><div>缩放</div><div class="n mono" style="font-size: 36px;">200%</div></div>
+  <div class="tile" style="left:120px; top:390px; width:300px; height:130px; background:#b23d18;"><div>键盘布局</div><div class="n" style="font-size: 32px;">中文（简体）</div></div>
+  <div class="tile" style="left:430px; top:390px; width:200px; height:130px; background:#00706e;"><div>时区</div><div class="n mono" style="font-size: 36px;">UTC+8</div></div>
+  <svg class="abs" style="left:0; top:0;" width="1920" height="1080"><path d="M650 385 L740 385" stroke="#fff" stroke-width="4"/><path d="M740 385 l-16 -10 v20 z" fill="#fff"/></svg>
+  <div class="lbl" style="left:760px; top:190px; color:#fff; font-size: 30px;">RDP：照你的屏幕重新排</div>
+  <div class="tile" style="left:760px; top:250px; width:520px; height:325px; background:#2b2b2b; padding:0; box-shadow: inset 0 0 0 3px #1b64c4;"><div class="abs" style="left:30px; top:30px; width:300px; height:200px; background:#f2f2f2;"></div><div class="abs" style="left:50px; top:56px; width:200px; height:14px; background:#333;"></div><div class="abs" style="left:50px; top:84px; width:240px; height:14px; background:#333;"></div><div class="abs" style="left:50px; top:112px; width:170px; height:14px; background:#333;"></div><div class="abs" style="left:350px; top:30px; width:140px; height:120px; background:#1b64c4;"></div><div class="abs mono" style="left:16px; bottom:12px; font-size: 24px; color:#9fd0ff;">2560×1600 · 200%</div></div>
+  <div class="lbl" style="left:1320px; top:190px; color:#fff; font-size: 30px;">录像：整张缩放</div>
+  <div class="tile" style="left:1320px; top:250px; width:480px; height:325px; background:#2b2b2b; padding:0;"><div class="abs" style="left:40px; top:60px; width:400px; height:225px; background:#4a4a4a; box-shadow: inset 0 0 0 2px #8a8a8a;"></div><div class="abs" style="left:60px; top:80px; width:180px; height:120px; background:#bdbdbd;"></div><div class="abs" style="left:72px; top:96px; width:120px; height:8px; background:#666;"></div><div class="abs" style="left:72px; top:112px; width:140px; height:8px; background:#666;"></div><div class="abs" style="left:72px; top:128px; width:100px; height:8px; background:#666;"></div><div class="abs" style="left:16px; bottom:12px; font-size: 24px; color:#cfcfcf;">那块屏幕本来的样子</div></div>
+  <div class="tile" style="left:760px; top:600px; width:1040px; height:110px; background:#007a00;"><div>窗口拉大拉小</div><div class="n" style="font-size: 32px;">远程的分辨率跟着变（Windows 8.1 起）</div></div>
+  <div class="gauge"><div style="font-size: 24px; color:#9a9a9a;">示例：本机的设置</div></div>
+  <div class="left">70</div>
+  <div class="cap">那边的桌面，就照你的屏幕重新排好</div>
+  <div class="ruler"><i style="width:63.3%"></i></div>
+</div>
+
+<div class="k C" id="C5">
+  <div class="h" style="left:230px; top:30px; font-size: 54px;">绑得很深</div>
+  <div class="lbl" style="left:120px; top:190px; color:#fff; font-size: 30px;">RDP 能连进去的 Windows</div>
+  <div class="tile" style="left:120px; top:250px; width:250px; height:150px; background:#1b64c4;"><div>专业版</div><div class="n">✓</div></div>
+  <div class="tile" style="left:380px; top:250px; width:250px; height:150px; background:#1b64c4;"><div>企业版</div><div class="n">✓</div></div>
+  <div class="tile" style="left:120px; top:410px; width:250px; height:150px; background:#1b64c4;"><div>教育版</div><div class="n">✓</div></div>
+  <div class="tile" style="left:380px; top:410px; width:250px; height:150px; background:#1b64c4;"><div>Server</div><div class="n">✓</div></div>
+  <div class="tile" style="left:120px; top:570px; width:510px; height:150px; background:#3a3a3a; box-shadow: inset 0 0 0 3px #b23d18;"><div>家庭版</div><div class="n" style="font-size: 36px;">✗　只能去连别人</div></div>
+  <div class="abs" style="left:760px; top:190px; width:2px; height:560px; background:#3a3a3a;"></div>
+  <div class="lbl" style="left:820px; top:190px; color:#fff; font-size: 30px;">只认像素：哪个系统都能连</div>
+  <div class="lbl" style="left:820px; top:262px;">ToDesk</div>
+  <div class="tile" style="left:1000px; top:250px; width:120px; height:64px; background:#5a5a5a;">Win</div>
+  <div class="tile" style="left:1130px; top:250px; width:120px; height:64px; background:#5a5a5a;">Mac</div>
+  <div class="tile" style="left:1260px; top:250px; width:120px; height:64px; background:#5a5a5a;">Linux</div>
+  <div class="tile" style="left:1390px; top:250px; width:140px; height:64px; background:#5a5a5a;">Android</div>
+  <div class="tile" style="left:1540px; top:250px; width:100px; height:64px; background:#5a5a5a;">iOS</div>
+  <div class="tile" style="left:1650px; top:250px; width:100px; height:64px; background:#5a5a5a;">鸿蒙</div>
+  <div class="lbl" style="left:820px; top:346px;">UU 远程</div>
+  <div class="tile" style="left:1000px; top:334px; width:120px; height:64px; background:#5a5a5a;">Win</div>
+  <div class="tile" style="left:1130px; top:334px; width:130px; height:64px; background:#5a5a5a;">macOS</div>
+  <div class="tile" style="left:1270px; top:334px; width:100px; height:64px; background:#5a5a5a;">iOS</div>
+  <div class="tile" style="left:1380px; top:334px; width:140px; height:64px; background:#5a5a5a;">Android</div>
+  <div class="tile" style="left:1530px; top:334px; width:90px; height:64px; background:#5a5a5a;">TV</div>
+  <div class="tile" style="left:820px; top:450px; width:980px; height:130px; background:#603cba;"><div>RDP 懂的，是 Windows 的画法</div><div class="n" style="font-size: 32px;">整屏都在变的游戏、电影，交给视频编码（Windows 8 起）</div></div>
+  <div class="gauge"><div style="font-size: 24px; color:#9a9a9a;">各家官网的平台列表</div></div>
+  <div class="left">43</div>
+  <div class="cap">被连的那台电脑得是 Windows，家庭版还不行</div>
+  <div class="ruler"><i style="width:77.4%"></i></div>
 </div>
 
 </div>

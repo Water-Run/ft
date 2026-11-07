@@ -73,6 +73,9 @@ Windows 8 / Server 2012 起有了新的图形管线 MS-RDPEGFX 与 UDP 传输（
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
 | V1 | Parsec 的核心是视频串流：抓取原始桌面帧 → 编码 → 发送 → 解码 → 显示；编码用 H.264，并且只用显卡的硬件编解码 | Parsec 博客《The Technology Behind A Low Latency Cloud Gaming Service》（Chris Dickson，`https://parsec.app/blog/description-of-parsec-technology-b2738dcc3842`）：「At its core, Parsec is a high performance video streaming app.」及五步列表；「H.264 is really the only viable choice」「we always offload this video processing to special ASICs on your GPU」 | Sunshine README：「Self-hosted game stream host for Moonlight」，用 AMD/Intel/NVIDIA 显卡硬件编码；Moonlight-qt README：「H.264, HEVC, and AV1 codec support」 | 读于 2026-11-07 | 已核 |
+| V4 | ToDesk 官网以帧率、编解码描述画面传输：「画面从编码到解码全程无卡顿」「8K和360FPS，<3ms延迟，真彩模式」「4K原画画质，<0.04秒超低延时，4：4：4真彩无损」，并单列「远程游戏」场景 | ToDesk 官网首页 `https://www.todesk.com/`（2026-11-07 读取） | 第三方评测列出 ToDesk 可选 H.264/H.265/AV1 等编码（gitcode 横评，二手，只作印证） | 截至 2026-11-07 | 已核（官网用语）。「4:4:4」是视频色度采样的说法，「编码到解码」「FPS」表明画面以视频帧传输；未见 ToDesk 技术白皮书 |
+| V5 | UU 远程（网易）官网：「4K 144 帧随心玩」「超低延迟，丝滑畅玩 3A 大作」「高清高帧，无损还原 PC 画质」「真彩模式」；App Store 名称「UU远程-游戏串流/远程办公」，开发者广州网易计算机系统有限公司 | 网易 UU 远程官网 `https://uuyc.163.com/`（2026-11-07 读取）；App Store id1642306791 | 凤凰网科技报道（二手） | 截至 2026-11-07 | 已核（官网与商店用语）。「串流」「帧」表明以视频帧传输；未见技术白皮书 |
+| V6 | 策划者把 ToDesk、UU 远程归为「视频流远程」 | 2026-11-07 会话原话（README「简报」） | V4、V5 的官网用语一致 | — | 与 V4、V5 合读后采用；旁白说它们「把屏幕录成视频、一帧帧发过来」 |
 | V2 | 这类软件以游戏为主要目标；Parsec 文中以 60 FPS 为目标帧率，并说 20 ms 与 40 ms 的总延迟决定能不能玩 | Parsec 博客：「streaming PC games at extremely low latency and 60 FPS」「a 20 ms total latency vs. a 40 ms total latency can be the difference between awesome and unplayable」；「Parsec gives you full desktop access and works with any program, game or not.」 | Sunshine README「low-latency, cloud gaming server capabilities」 | 同上 | 已核 |
 | V3 | 视频方式工作在帧缓冲层面，因此适用于任何窗口系统与程序（VNC/RFB 的同类说法） | RFC 6143 第 1 节：「Because it works at the framebuffer level, it is applicable to all windowing systems and applications」 | V1「works with any program, game or not」 | RFC 6143（2011） | 已核（RFB 不是视频编码，只引用「帧缓冲层面因而通用」这一点） |
 | G1 | GDI 加速扩展通过编码「产生图像的绘图操作」而不是图像本身来降低带宽；例：不发填好的矩形的位图，而发「在 (X,Y) 画宽、高、颜色为…的矩形」，客户端执行指令得到结果 | [MS-RDPEGDI] 第 1.3.1 节（第 13 页） | Microsoft Learn MS-RDPEGDI 首页描述同义 | v20240423 | 已核 |
@@ -85,6 +88,23 @@ Windows 8 / Server 2012 起有了新的图形管线 MS-RDPEGFX 与 UDP 传输（
 | G7 | 字形缓存里存的是 1 位/像素的位图；规范样例：字母「d」宽 5、高 9 像素，位图 9 个字节 `08 08 08 78 88 88 88 88 78`；Cache Glyph 样例一条 68 字节，一次存入 L、g、O 三个字形（缓存号 49、50、51） | [MS-RDPEGDI] 第 2.2.2.2.1.2.5 节（aj 字段）、第 4.6.1 节、第 4.2.4 节 | — | v20240423 | 已核 |
 | L2 | 同样的变化交给 H.264（libx264 veryfast zerolatency CRF 23，yuv420p，1024×768）：打字后的一帧 667 字节；滚动三行后的一帧 23159 字节；整屏换成一种颜色的一帧 950 字节；画面不变的一帧 311 字节 | `lab/out_02_h264_frames.txt` | — | 本机，2026-11-07 | 已核。口径：实验画面是仿记事本的白底文字页，滚动是整页上移三行（比规范样例的 417×241 搬移大），H.264 那一帧同时包含露出来的新行；RDP 一侧滚动后露出的新行还要另发文字指令。比较只说「同一类变化，量级不同」，不说倍数 |
 | L3 | 彩色小字经 H.264 yuv420p 编码后变淡、发虚；红字区域平均每通道色差约 3，黑字约 0.45 | `lab/out_03_chroma_text.txt`；放大对照图 `_frames/03_pair.png`（不入库，可重做） | 微软 RDP 10 博客：「the color conversion process that happens as part of the compression … throws away some of the chrominance information, as represented in the 4:2:0 format」 | 本机，2026-11-07 | 已核 |
+
+### adapt：远程桌面适应你的电脑
+
+| 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
+|---|---|---|---|---|---|
+| A1 | 连接时客户端在 Client Core Data 里报上：请求的桌面宽、高（像素），当前键盘布局（输入法区域标识），桌面方向，桌面缩放比例（100%–500%）与设备缩放比例 | [MS-RDPBCGR] 第 2.2.1.3.2 节 TS_UD_CS_CORE：「desktopWidth … The requested desktop width in pixels」「keyboardLayout … The active input locale identifier」「desktopScaleFactor … The requested desktop scale factor」 | — | v20260309 | 2026-11-07 已核 |
+| A2 | 客户端在扩展信息包里报上自己的时区（clientTimeZone，RDP 5.0、5.1 服务器不读） | [MS-RDPBCGR] 第 2.2.1.11.1.1.1 节 clientTimeZone | — | v20260309 | 已核 |
+| A3 | 显示控制通道：会话中客户端可请求改变显示配置（加显示器、改分辨率），配置有效时服务器重设会话的显示；每台显示器可带缩放比例；适用产品从 Windows 8.1 / Server 2012 R2 起 | [MS-RDPEDISP] 第 1.3 节：「To request a display configuration change on the server (such as the addition of a monitor or a new resolution for an existing monitor), the client sends the DISPLAYCONTROL_MONITOR_LAYOUT_PDU」；第 2.2.2.2.1 节 DesktopScaleFactor；第 6 节产品列表。v20240423，sha256 `13763151c7fa57273e97ebda0dd244936bb2aba55ea08356017b081ccaac0079` | — | Windows 8.1 起 | 已核 |
+| A4 | 视频流远程抓取的是主机桌面本来的帧（主机的分辨率）；客户端窗口尺寸不同就要缩放显示 | V1（「Capture raw desktop frames」）、V3（帧缓冲层面）合读 | — | — | 推论，已核依据；旁白只说「尺寸对不上就整张缩放」，不说一定变糊。ToDesk 官网另有「虚拟屏」功能，成片不说视频流远程「做不到」适配 |
+
+### limit：深度绑定
+
+| 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
+|---|---|---|---|---|---|
+| D1 | 能被远程桌面连入的是 Windows 专业版、企业版、教育版与 Server；家庭版不能作主机，只能作客户端 | Microsoft Learn「Remote Desktop - Allow access to your PC」：「Windows Home editions can't serve as Remote Desktop hosts」（Last updated 2025-06-18） | Microsoft Support「How to use Remote Desktop」：被连的电脑须为 Pro；发起连接的一端可以是任何版本，甚至别的操作系统 | 截至 2026-11-07 | 已核 |
+| D2 | 经典绘图指令是照 Windows 的图形接口 GDI 设计的（规范名即「GDI Acceleration Extensions」，另有 GDI+ 缓存、NineGrid 位图）；做不成指令的区域改发位图 | [MS-RDPEGDI] 标题、第 1.3.1.1 节、第 1.3.1.2.1 节 | — | v20240423 | 已核 |
+| D3 | ToDesk 官网：「全平台覆盖 Win/Mac/Linux/Android/iOS/鸿蒙」；UU 远程官网列出 Windows、macOS、iOS、Android、TV | 两家官网（2026-11-07 读取） | V3：工作在帧缓冲层面因此适用于所有窗口系统 | 截至 2026-11-07 | 已核 |
 
 ### boundary：新管线与边界
 

@@ -1,0 +1,4 @@
+# 屏幕分辨率: 2560x1600
+# AppliedDPI: 192（缩放 200%）
+# 输入语言: zh-Hans-CN  0804:{81D4E9C9-1D3B-41BC-9E6C-4B40BF79E35E}{FA550B04-5AD7-411F-A5AC-CA038EC515D7}
+# 时区: China Standard Time  08:00:00

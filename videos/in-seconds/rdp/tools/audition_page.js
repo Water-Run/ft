@@ -1,105 +1,103 @@
-// 审片页：生成 out/audition/index.html（不入库）。先运行 tools/audition.py（配音）与 tools/music_demos.py（配乐），关键帧由 look.js --url 截到 shots/ 再复制到 out/audition/keyframes/。
+// 审片页：生成 out/audition/index.html（不入库）。
+// 第 2 轮（2026-11-07）：配音、配乐、视觉已选定（青年大学生、磁贴、磁贴），本页交第 2 稿文案、全片试读与磁贴关键帧。
+// 先运行：tools/audition.py <cues_full.json> <ffmpeg> <ffprobe> daxuesheng full（逐句合成）→ 排时间线写 out/audition/full/layout.json
+//        → tools/readthrough.py <ffmpeg> daxuesheng --music；关键帧由 look.js --url "/design/keyframes.html?k=C1" 截图后复制到 out/audition/keyframes/。
 // 用法（仓库根目录）：node videos/in-seconds/rdp/tools/audition_page.js
 const fs = require('fs'), path = require('path');
 const V = path.resolve(__dirname, '..');
 const s = require(path.join(V, 'src/js/script.js'));
-const rep = JSON.parse(fs.readFileSync(path.join(V, 'out/audition/voices/report.json'), 'utf8'));
-const cues = JSON.parse(fs.readFileSync(path.join(V, 'out/audition/cues.json'), 'utf8')).cues.map((c) => c[0]);
+const lay = JSON.parse(fs.readFileSync(path.join(V, 'out/audition/full/layout.json'), 'utf8'));
 const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const fmtCap = (t) => esc(t).replace(/\*([^*]+)\*/g, '<em>$1</em>');
-const SCENE = { open: '引子', what: '它是什么', history: '历史', video: '主线 · 把屏幕当视频', orders: '主线 · 发绘图命令', channels: '画面之外', limit: '边界', end: '收尾', outro: '片尾名单' };
-const L = s.layoutScript({});
-let script = '';
-let total = 0;
+const mmss = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+const SCENE = { open: '引子', history: '历史', stand: '本质区别：站的位置', bytes: '例子：同一个动作传多少', adapt: '优雅之处：照你的屏幕重新画', limit: '局限：和 Windows 绑得很深', end: '收尾', outro: '片尾名单' };
+const start = Object.fromEntries(lay.cues.map(([id, st]) => [id, st]));
+let script = '', n = 0, chars = 0;
 for (const sc of s.SCRIPT) {
-  const pin = L.scenes.find((x) => x.id === sc.id);
-  script += `<section class="sc"><h3>${SCENE[sc.id] || sc.id} <span class="at">定点 ${sc.at}s</span></h3><p>`;
+  const sp = lay.scenes.find((x) => x.id === sc.id);
+  script += `<section class="sc"><h3>${SCENE[sc.id] || sc.id} <span class="at">${mmss(sp.start)} – ${mmss(sp.end)}</span></h3><p>`;
   for (const c of sc.cues) {
     if (!c[1]) { script += `<span class="sil">［${c[2].credits ? '片尾名单，无旁白' : '片名卡，无旁白'}］</span> `; continue; }
-    total += 1;
-    script += `<span class="cue${cues.includes(c[0]) ? ' rep' : ''}"><sup>${c[0]}</sup>${fmtCap(c[1])}。</span> `;
+    n += 1; chars += s.strip(c[1]).replace(/[\s，。：；、「」？]/g, '').length;
+    script += `<span class="cue" title="${mmss(start[c[0]])}"><sup>${c[0]}</sup>${fmtCap(c[1])}。</span> `;
   }
   script += '</p></section>';
 }
-const voices = rep.map((r, i) => `
-  <div class="voice">
-    <div class="vh"><b>${String.fromCharCode(65 + i)}　${esc(r.name)}</b><span class="mono">${esc(r.id)} · MiniMax speech-2.8-hd · 语速 ${r.speed}</span></div>
-    <audio controls preload="none" src="voices/${r.slug}/demo.mp3"></audio>
-    <div class="vs">${r.error ? '合成失败' : `实测 ${r.cps} 字/秒 · 全片旁白约 ${Math.round(r.full_estimate)} 秒（可用 ${Math.round(r.budget)} 秒）${r.full_estimate > r.budget - 6 ? ' · <b>偏紧，需要删几句或提速</b>' : ''}`}</div>
-  </div>`).join('');
-const music = [
-  ['A', '开机', '76 拍 · 降 E 利底亚。长铺底 + FM 钟琴上行琶音 + 轻沙锤，后半加一点底鼓。温暖、开阔，像 NT / 2000 年代开机后的桌面。'],
-  ['B', 'Metro', '112 拍 · A 大调。切分的短促方波拨弦 + 干净的底鼓与拍手 + 低音，第 4 小节起加高处铺底。利落、扁平，像 Windows 8 / 10 的磁贴。'],
-  ['C', '九八', '100 拍 · F 大调。FM 电钢七和弦下行 + 行走低音 + 鼓机 + 方波小旋律。像 Win9x 时代示例 MIDI 的伴奏。'],
-].map(([k, n, d]) => `<div class="mus"><b>${k}　${n}</b><audio controls preload="none" src="music/${k}.wav"></audio><p>${d}</p></div>`).join('');
-const dirs = [
-  ['A', 'Fluent（Windows 11）', '并排比较两条路径', '亚克力窗口、柔和蓝色光晕、8 像素圆角。左右两台电脑的记事本常驻画面，中间两条道：上面是视频流（一帧帧整屏），下面是 RDP（一枚枚小命令）。每一步两条道同时走，右上角仪表记「这一步各传了多少字节」。讲法：同一个动作，两种传法并排看。'],
-  ['B', 'Classic（Windows 2000）', '追踪同一扇窗口', '灰色立体按钮、深蓝渐变标题栏、蓝色桌面。主角是你电脑上的那扇记事本：左边「线上的字节」窗口逐条收到 RDP 命令的真实字节（取自微软规范的样例），右边的窗口跟着一笔一笔画出来；字形缓存里能看到字母 d 的 9 个字节。讲法：盯住一扇窗口，看它怎么被命令拼出来。'],
-  ['C', 'Metro（Windows 8）', '把字节画成磁贴', '深色底、纯色方块、细字重的大字号。每一步变成一行：左边 RDP 命令、右边当成视频的一帧，磁贴面积严格按字节数画——RDP 的块小到只剩一个点，滚动那一帧占满半屏。讲法：用面积让差距一眼可见。'],
-].map(([k, n, m, d]) => `<div class="dir"><h3>${k}　${n} <span>讲法：${m}</span></h3><p>${d}</p><div class="pair"><a href="keyframes/${k}1.png"><img src="keyframes/${k}1.png" alt="${k} 标题"></a><a href="keyframes/${k}2.png"><img src="keyframes/${k}2.png" alt="${k} 主线"></a></div></div>`).join('');
+const speech = lay.cues.reduce((a, c) => a + c[2], 0);
+const KF = [
+  ['C1', '标题', '片名卡（o4 之后）。'],
+  ['C3', '站的位置', 'k5「RDP 站在 Windows 里面」：左边录像的办法只拿到像素，右边 RDP 拿到 Windows 要画的指令。'],
+  ['C2', '同一个动作传多少', 'x5：磁贴面积严格按字节数画；RDP 的块小到只剩一个点。'],
+  ['C4', '照你的屏幕重新排', 'a4：本机连上时会报上去的真实设置（2560×1600、200%、中文、UTC+8），右边对比录像的整张缩放。'],
+  ['C5', '绑得很深', 'b2：能被连的 Windows 版本 vs 两家视频流远程官网列出的平台。'],
+].map(([k, t, d]) => `<figure><a href="keyframes/${k}.png"><img src="keyframes/${k}.png" alt="${t}"></a><figcaption><b>${t}</b>　${d}</figcaption></figure>`).join('');
 
 const html = `<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RDP 审片页</title>
 <style>
-:root { --bg:#f3f3f3; --fg:#1b1b1b; --mute:#5f5f5f; --line:#d6d6d6; --acc:#005fb8; --card:#fff; }
+:root { --bg:#1d1d1d; --fg:#f2f2f2; --mute:#a8a8a8; --line:#3a3a3a; --acc:#3d8be0; --card:#262626; }
 * { box-sizing:border-box; }
-body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.75 "Segoe UI Variable Text","Segoe UI","Microsoft YaHei UI","Noto Sans SC",sans-serif; }
-header { background:#fff; border-bottom:1px solid var(--line); padding:28px 16px; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.8 "Segoe UI Variable Text","Segoe UI","Microsoft YaHei UI","Noto Sans SC",sans-serif; }
+header { background:#1b64c4; padding:28px 16px; }
 main, header > div { max-width:1080px; margin:0 auto; }
 main { padding:8px 16px 80px; }
-h1 { margin:0; font-size:28px; font-weight:600; } h1 small { font-weight:400; color:var(--mute); font-size:16px; margin-left:8px; }
-h2 { font-size:22px; font-weight:600; margin:44px 0 6px; padding-top:8px; }
+h1 { margin:0; font-size:30px; font-weight:300; } h1 small { font-weight:400; font-size:16px; margin-left:8px; opacity:.85; }
+h2 { font-size:24px; font-weight:300; margin:44px 0 6px; }
 .note { color:var(--mute); margin:4px 0 14px; }
-.card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:18px 22px; }
-.ask { background:#e8f1fb; border:1px solid #b9d4f1; border-radius:8px; padding:14px 20px; margin-top:16px; }
-.ask ol { margin:6px 0 0; padding-left:22px; }
-.sc h3 { font-size:16px; margin:16px 0 2px; color:var(--acc); } .sc .at { color:var(--mute); font-weight:400; font-size:13px; margin-left:6px; }
+header .note { color:#dce9f8; }
+.picked { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.picked span { background:rgba(255,255,255,.16); padding:4px 12px; font-size:15px; }
+.ask { background:#262626; border-left:4px solid #1b64c4; padding:12px 18px; margin-top:16px; color:var(--fg); }
+.ask ol { margin:4px 0 0; padding-left:22px; }
+.card { background:var(--card); padding:18px 22px; }
+.sc h3 { font-size:16px; margin:16px 0 2px; color:#7fb4ee; font-weight:600; } .sc .at { color:var(--mute); font-weight:400; font-size:13px; margin-left:6px; font-family:Consolas,monospace; }
 .sc p { margin:0; }
 .cue sup { color:#8a8a8a; font-size:11px; margin-right:2px; font-family:Consolas,monospace; }
-.cue.rep { background:linear-gradient(transparent 62%, #fff2b3 62%); }
-.cue em { font-style:normal; font-weight:600; }
+.cue em { font-style:normal; font-weight:600; color:#9fd0ff; }
 .sil { color:var(--mute); font-size:14px; }
-.voice, .mus { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px 18px; margin:10px 0; }
-.vh { display:flex; flex-wrap:wrap; gap:4px 14px; align-items:baseline; } .vh b { font-size:17px; }
-.mono { font-family:Consolas,"JetBrains Mono",monospace; font-size:13px; color:var(--mute); }
-audio { width:100%; margin:8px 0 2px; }
-.vs, .mus p { color:var(--mute); font-size:14px; margin:0; }
-.dir { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 18px; margin:14px 0; }
-.dir h3 { margin:0; font-size:18px; } .dir h3 span { font-weight:400; color:var(--acc); font-size:15px; margin-left:8px; }
-.dir p { margin:6px 0 10px; }
-.pair { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .pair img { width:100%; display:block; border:1px solid var(--line); border-radius:4px; }
-@media (max-width:700px) { .pair { grid-template-columns:1fr; } }
-ul.q li { margin:6px 0; }
+ul.ch li, ul.q li { margin:6px 0; }
+.player { background:var(--card); padding:14px 18px; margin:10px 0; }
+.player b { font-weight:600; } audio { width:100%; margin-top:8px; }
+figure { margin:14px 0; background:var(--card); padding:12px; } figure img { width:100%; display:block; }
+figcaption { color:var(--mute); font-size:14px; margin-top:8px; } figcaption b { color:var(--fg); }
+code { font-family:Consolas,monospace; font-size:14px; }
 </style></head><body>
-<header><div><h1>192秒了解RDP: Windows远程的优雅实现 <small>审片页 · 第 1 稿 · 2026-11-07</small></h1>
-<p class="note">文案尚未确认；下面的配音只是试听，全片配音等文案确认后再合成。关键帧是方向样张，数字都取自本片 <code>research/FACTS.md</code>。</p>
-<div class="ask"><b>请一次选定：</b><ol>
-<li>文案：方向是否成立，逐句意见（句号见上标）</li><li>配音：A–E 选一个</li><li>配乐：A 开机 / B Metro / C 九八 选一个</li><li>视觉：A Fluent / B Classic / C Metro 选一个（可混搭讲法与外观）</li></ol></div></div></header>
+<header><div><h1>192秒了解RDP: Windows远程的优雅实现 <small>审片页 · 第 2 轮 · 2026-11-07</small></h1>
+<p class="note">第 2 稿文案尚未确认；下面的全片试读只是试听，正式配音等文案确认后再合成。数字都取自本片 <code>research/FACTS.md</code>。</p>
+<div class="picked"><span>配音：青年大学生（已选）</span><span>配乐：磁贴 Metro（已选）</span><span>视觉：磁贴 Metro（已选）</span></div>
+<div class="ask"><b>这一轮请看：</b><ol><li>第 2 稿文案：叙事是否成立，逐句意见（句号见上标），或明确确认</li><li>全片试读：节奏、读音（可以对照文案听）</li><li>磁贴关键帧：方向对不对</li></ol></div></div></header>
 <main>
-<h2>1　文案（第 1 稿，全部为新句）</h2>
-<p class="note">共 ${total} 句旁白。核心问题：隔着网络操作另一台 Windows 电脑，画面是怎么传过来的？RDP 优雅在哪？黄色底的是配音试听用的代表句。片名只上画面，不念。</p>
+<h2>1　文案第 2 稿</h2>
+<p class="note">${n} 句旁白，约 ${chars} 字；青年大学生实测旁白共 ${speech.toFixed(0)} 秒，排进 192 秒后每场末尾留约 2.3 秒（片尾名单 7.5 秒不配旁白）。鼠标停在句子上可看它在试读里的时刻。</p>
 <div class="card">${script}</div>
 
-<h2>2　配音候选</h2>
-<p class="note">5 个都是近几部没用过的 MiniMax 音色，语速统一 1.2，读同一组 ${cues.length} 句代表句。按各自实测语速估算了全片能否放进 192 秒（片尾名单 7.5 秒不算）。</p>
-${voices}
+<h2>2　和第 1 稿相比改了什么</h2>
+<ul class="ch card">
+<li><b>主轴换成「站的位置」。</b>开头直接从你用过的 ToDesk、UU 远程说起：它们站在屏幕外面录像，只认像素；RDP 站在 Windows 里面，在指令变成像素之前接过来，交给你的电脑自己画。后面每一场都回到这个区别。</li>
+<li><b>优雅之处落在「适应你的电脑」。</b>连上时你的电脑报上屏幕大小、缩放比例、键盘布局、时区，那边的桌面照你的屏幕重新排；窗口拉大拉小，分辨率跟着变（Windows 8.1 起）。录像的办法只能录那块屏幕本来的样子，尺寸对不上就整张缩放。依据：微软规范 MS-RDPBCGR 的客户端核心数据、MS-RDPEDISP 显示控制通道。</li>
+<li><b>局限讲「深度绑定」。</b>被连的电脑得是 Windows，家庭版不行（微软官方文档）；它懂的只是 Windows 的画法，整屏都在变的游戏、电影说不过来，Windows 8 以后图片和视频也交给视频编码。反过来，视频流远程只认像素，哪个系统都能连，还拼帧率、能打游戏（两家官网）。</li>
+<li><b>去 AI 味。</b>删掉了冒号排比（「看画面，按键盘」「填色、搬移、缓存照旧」）、「优雅在于」「分毫不差」「各走各的」这类套话，改成口语的因果句；结尾不再喊口号，落回「照着你的屏幕重新画一遍」。</li>
+<li><b>删掉的：</b>「它是什么」单独一场（并进引子）、「网络会议标准」（对观众无用）、二十毫秒和四十毫秒、彩色小字发虚（时间留给「适应你的电脑」）。</li>
+</ul>
 
-<h2>3　配乐小样</h2>
-<p class="note">程序合成、旋律原创，各约 25 秒；三个方向都取 Windows 自己的年代感，不引用任何系统提示音。选定后为全片重写，段落落点对齐场景。</p>
-${music}
+<h2>3　全片试读（青年大学生）</h2>
+<p class="note">MiniMax <code>male-qn-daxuesheng</code>，语速 1.2，逐句合成后按时间线放进 192 秒。Whisper 回听 45 句，没有发现读错（只有「一帧→一针」「终端→中端」这类同音字的识别误差）。UU 读作两个字母 U；Hydra 读作「海德拉」。</p>
+<div class="player"><b>旁白 + 磁贴配乐（粗混）</b><audio controls preload="none" src="full/readthrough_music.mp3"></audio></div>
+<div class="player"><b>只有旁白</b><audio controls preload="none" src="full/readthrough.mp3"></audio></div>
+<p class="note">配乐是按本片场景写的全长版（<code>tools/music.py</code>，112 拍，A – F#m – D – E）：引子只有拨弦，历史加低音，「站的位置」起加鼓，「适应你的电脑」加高处铺底最满，「深度绑定」抽掉拍手，结论处抬起，片尾只留铺底。粗混只为听节奏，正式混音以后由 mix.py 做。我听不到声音，电平只按数值核对过。</p>
+<div class="player"><b>第 1 轮的磁贴小样（25 秒，供对照）</b><audio controls preload="none" src="music/B.wav"></audio></div>
 
-<h2>4　视觉方向</h2>
-<p class="note">按「契合 MS Windows」的要求，三个方向都取自 Windows 的视觉谱系，且讲法不同。每个方向两张：标题、信息最密的一刻（旁白 r6「以后只报编号：一行 9 个字，47 个字节」）。字体用仓库自带的 Inter / 思源黑体（Segoe UI 不随仓库发布），不用 Windows 徽标。点图看原尺寸。</p>
-${dirs}
+<h2>4　磁贴关键帧</h2>
+<p class="note">深色底、纯色磁贴、细字重大字号；左上剩余秒数、右上「这一步 RDP / 录像各传多少字节」、底部字幕带与秒尺按系列约定。字体用仓库自带的 Inter / 思源黑体，不用 Windows 徽标。点图看原尺寸。</p>
+${KF}
 
 <h2>5　待定问题</h2>
 <ul class="q card">
-<li><b>对比的口径。</b>RDP 一侧的字节数（10 / 47 / 14 / 字母 d 的 9 字节）取自微软协议规范的带注释样例；视频一侧（950 / 667 / 23159 字节）是本机用 H.264 按串流常用设置实测的同类变化，不是同一块屏幕。旁白只说量级，不说倍数。这样可以吗？</li>
-<li><b>经典做法与今天。</b>这些逐字节的绘图命令是 RDP 的经典做法；Windows 8 之后改了传画面的方式，规范没写今天还在多大程度上发这些命令。文案在「边界」一场说明：填色、搬移、缓存照旧，图像交给视频编码。</li>
-<li><b>「主流视频流远程」点谁的名。</b>有一手出处的是 Parsec（官方技术博客）和 Sunshine + Moonlight（项目说明），画面上可以出现这几个名字；向日葵、ToDesk 等没有读到技术原文，暂不点名。</li>
-<li><b>两处趣味细节</b>：项目代号 Hydra（九头蛇）、游戏串流「总延迟二十毫秒和四十毫秒，可能就是好玩和玩不了的差别」（Parsec 技术博客的说法）。嫌多可以删。</li>
-<li><b>不讲</b>：安全漏洞、登录认证细节、RemoteApp、授权费用、Citrix 的协议细节。</li>
+<li><b>ToDesk、UU 远程是「录像」的依据。</b>两家都没有公开技术白皮书；我用的是官网用语：ToDesk「画面从编码到解码」「8K 和 360FPS」「4:4:4 真彩」，UU 远程「4K 144 帧」、商店名「游戏串流」。旁白据此说它们「把屏幕录成视频，一帧帧发给你」。可以这样说吗？</li>
+<li><b>「尺寸对不上就整张缩放」。</b>这是录像办法的一般情况；ToDesk 官网另有「虚拟屏」功能，所以文案没说视频流远程「做不到」适配。</li>
+<li><b>字节数的口径不变。</b>RDP 一侧取自微软规范的样例，录像一侧是本机 H.264 实测的同类变化，旁白只说量级。</li>
+<li><b>Windows 8.1、Windows 8 这两个节点只上画面</b>，旁白只在「Windows 8 以后」处念一次。</li>
 </ul>
 </main></body></html>`;
 fs.writeFileSync(path.join(V, 'out/audition/index.html'), html);
-console.log('ok', total, 'cues');
+console.log('ok', n, 'cues', chars, 'chars');

@@ -20,7 +20,7 @@ import minimax_tts as mm
 
 CUES_JSON, FF, FP = sys.argv[1], sys.argv[2], sys.argv[3]
 os.environ['LVS_FFPROBE'] = FP
-OUT = os.path.join(HERE, '..', 'out', 'audition', 'voices')
+OUT = os.path.join(HERE, '..', 'out', 'audition', sys.argv[5] if len(sys.argv) > 5 else 'voices')   # 第 5 个参数：输出子目录（全片试读用 full）
 
 VOICES = [
     # (目录名, 引擎, 音色 id, 语速, 显示名)
@@ -67,7 +67,9 @@ for slug, engine, vid, speed, name in VOICES:
         p = os.path.join(d, f'{cid}.mp3')
         meta = p + '.json'
         if os.path.exists(meta):
-            durs[cid] = json.load(open(meta))['d']; continue
+            m = json.load(open(meta, encoding='utf-8'))
+            if m.get('text') == text:                       # 文字变了就重合成
+                durs[cid] = m['d']; continue
         for attempt in range(4):
             try:
                 if engine == 'minimax':
@@ -75,7 +77,7 @@ for slug, engine, vid, speed, name in VOICES:
                 else:
                     dd = edge_synth(text, vid, speed, p)
                 durs[cid] = dd
-                json.dump({'d': dd, 'text': text}, open(meta, 'w'))
+                json.dump({'d': dd, 'text': text}, open(meta, 'w', encoding='utf-8'), ensure_ascii=False)
                 break
             except Exception as e:
                 print(slug, cid, 'retry', attempt, e, flush=True)
