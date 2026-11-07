@@ -151,7 +151,7 @@
     {"slug": "config-file-formats", "series": "in-seconds", "title": {"zh": "150秒认识五大主流配置文件"}, "note": "范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 2026-10-28 出正式成片；策划者 2026-11-07 告知已发布，发布链接待登记。", "status": "delivered"},
     {"slug": "von-neumann", "title": {"zh": "128秒认识冯·诺伊曼架构"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。", "status": "delivered"},
     {"slug": "ipv4", "title": {"zh": "100 秒速通 IPv4"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。", "status": "delivered"},
-    {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒了解RDP: Windows远程的优雅实现"}, "status": "in-progress", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。"},
+    {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒了解RDP: Windows远程的优雅实现"}, "status": "delivered", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。"},
     {"slug": "linux-permissions", "series": "permission-design", "title": {"zh": "Linux 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "windows-permissions", "series": "permission-design", "title": {"zh": "Windows 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "macos-permissions", "series": "permission-design", "title": {"zh": "macOS 权限机制的设计"}},

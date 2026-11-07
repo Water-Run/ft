@@ -77,5 +77,5 @@
 | 25 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](config-file-formats/) |
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
-| 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 制作中 | [`rdp`](rdp/) |
+| 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
 <!-- catalog:end -->

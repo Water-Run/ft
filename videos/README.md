@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 206 部：已成片 22，制作中 7，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 206 部：已成片 23，制作中 6，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,6 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/) | [XX 秒速通](in-seconds/README.md) | zh 3:12 | 2026-11-07 | [哔哩哔哩](https://www.bilibili.com/video/BV1vt4j6GE11) | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | zh 15:13 | 2026-11-05 | [哔哩哔哩](https://www.bilibili.com/video/BV1RG4h6UEqQ) | — | GPT-6.1 Sol、Claude Opus 5.5 |
 | [100 秒速通 IPv4](in-seconds/ipv4/) | [XX 秒速通](in-seconds/README.md) | zh 1:40 | 2026-11-02 | [哔哩哔哩](https://www.bilibili.com/video/BV17rxa6REXU) | — | Kimi K3.1 Pro、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh 18:43 | 2026-11-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1msxp6yEai) | — | Claude Opus 5.5 |
@@ -42,10 +43,9 @@
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11 | 最新 | Claude Opus 5.5 |
-| [192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 看第 3 轮审片页 out/audition/index.html：第 2 稿修订版逐句意见或明确确认；确认后用青年大学生配全片，按磁贴关键帧铺开场景 | 最新 | Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 实现 | 实现：开场（o1–o15 与片名）作有声代表段，之后逐章铺开；封面已出 | 最新 | Claude Opus 5.5 |
+| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 预览迭代 | 策划者看第 1 轮预览草稿 out/zh/preview-r1-draft.mp4；按意见与静止检测一起改，再出 preview-r1 | 最新 | Claude Opus 5.5 |
 | [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/) | [热点](hot-topics/README.md) | 立项 | 写简报（受众、核心问题、解释路径与取舍），开始取证 | 待同步 | 未记录 |
 | [OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/) | [热点](hot-topics/README.md) | 验收 | 策划者看正式片 out/pando-zh-1080p60.mp4；同意后登记交付与发布 | 最新 | Claude Opus 5.5 |
 
@@ -294,7 +294,7 @@
 | 25 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 2026-10-28 出正式成片；策划者 2026-11-07 告知已发布，发布链接待登记。 |
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
-| 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 制作中 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
+| 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
 
 ### 权限机制的设计
 
