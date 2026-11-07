@@ -349,8 +349,8 @@ DEMOS = {'A': ('落字', demo_a), 'B': ('运算', demo_b), 'C': ('长句', demo_
 
 def compose(ctx):
     # 全片配乐：A「落字」（策划者 2026-11-03 选定）。毡音钢琴，76 拍/分，Am(add9)–Fmaj7–C/E–G6。
-    # 每章从和弦循环的开头起；疏密跟着叙事：开场与结尾一拍一个音，讲机制的第 02 章最密并在「草稿纸」处抬一次高声部，
-    # 第 03 章加铺底，第 05 章只留铺底与稀疏的音；片名与片尾各落一个完整的和弦。层的进出挂在句号上，不写死秒数。
+    # 每章从和弦循环的开头起；疏密跟着叙事：开场与结尾一拍一个音，讲机制的第 02 章最密并在「模型没有别的纸」处抬一次高声部，
+    # 第 04 章加铺底；片名与片尾各落一个完整的和弦。层的进出挂在句号上，不写死秒数。
     total = ctx['total']
     sc = {x['id']: x for x in ctx['scenes']}
     cue = {x['id']: x for x in ctx['cues']}
@@ -361,8 +361,9 @@ def compose(ctx):
     prog = [(57, [57, 60, 64, 71]), (53, [53, 57, 60, 64]), (48, [52, 55, 60, 62]), (55, [55, 59, 62, 64])]
     pattern = [0, 2, 1, 3, 2, 1, 3, 2]
     # 每场：(电平, 八分音符？, 低音？, 铺底？)
-    STYLE = {'open': (0.30, False, False, False), 'origin': (0.40, False, True, False), 'paper': (0.55, True, True, False),
-             'learn': (0.50, True, True, True), 'order': (0.42, False, True, False), 'faith': (0.36, False, False, True),
+    # 第 5 稿的场景：open、pass（01 一块字的工夫）、draft（02 草稿，最密）、order（03 先后）、learn（04 越写越长）、end
+    STYLE = {'open': (0.30, False, False, False), 'pass': (0.40, False, True, False), 'draft': (0.55, True, True, False),
+             'order': (0.42, False, True, False), 'learn': (0.50, True, True, True),
              'end': (0.32, False, True, False), 'credits': (0.0, False, False, False)}
 
     def chord(t, ch, vel, dur=4.5):
@@ -409,9 +410,9 @@ def compose(ctx):
             t1 = cue['oT']['start']
             chord(cue['oT']['start'] + 0.3, [45, 57, 64, 71], 0.42, 3.6)      # 片名
         run(t0, t1, style)
-    # 第 02 章「就是它的草稿纸」处抬一次高声部
-    if 'c19' in cue:
-        tl = cue['c19']['start']
+    # 第 02 章「模型没有别的纸，要打草稿，只能写进回答里」处抬一次高声部
+    if 'b3' in cue:
+        tl = cue['b3']['start']
         for j, mm in enumerate([76, 79, 77, 74, 76, 74, 72, 71]):
             sig = felt_piano(mm, beat * 1.8, 0.26)
             place(L, sig, tl + j * beat, 0.6)

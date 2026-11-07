@@ -129,3 +129,24 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 .col.tall .fr, .col.tall .bk { background: repeating-linear-gradient(to top, #2e2e2e 0, #2e2e2e 3px, transparent 3px, transparent var(--sg)), repeating-linear-gradient(to top, rgba(28, 28, 28, .26) 0, rgba(28, 28, 28, .26) 1.5px, #fbfbfb 1.5px, #fbfbfb 10px); }
 .col.tall .sd { background: repeating-linear-gradient(to top, #262626 0, #262626 3px, transparent 3px, transparent var(--sg)), repeating-linear-gradient(to top, rgba(28, 28, 28, .2) 0, rgba(28, 28, 28, .2) 1.5px, #ececec 1.5px, #ececec 10px); }
 .lbl.xl { font-size: 104px; line-height: 1.3; }
+.box3 { box-shadow: inset 0 0 0 3px #1c1c1c; border-radius: 6px; }
+.box3.g { box-shadow: inset 0 0 0 2.5px #9a9a9a; }
+.box3.e { box-shadow: inset 0 0 0 3px var(--err); }
+.seg.w { height: 4px; margin-top: -2px; }
+.seg.e.w { background: var(--err); }
+.chk2 { width: 18px; height: 34px; border: solid #6b6b6b; border-width: 0 4px 4px 0; transform: rotate(40deg); }
+.title-cot { font: 300 220px "Serif SC"; color: var(--ink); line-height: 1; letter-spacing: -.01em; }
+.title-zh { font: 500 76px "Serif SC"; color: #22252a; letter-spacing: .14em; }
+.slot { width: 52px; height: 3px; background: #b0b0b0; }
+.lbl.l { font-size: 64px; }
+.digits.m { font-size: 56px; letter-spacing: 0; }
+.chk2.big { width: 26px; height: 50px; border-width: 0 5px 5px 0; }
+.hand.s { font-size: 44px; color: #555; }
+/* 细纹立柱：每道淡纹是一块（一趟），柱子越高写得越多 */
+.col.fine .fr, .col.fine .bk { background: repeating-linear-gradient(to top, rgba(28, 28, 28, .2) 0, rgba(28, 28, 28, .2) 1px, #fbfbfb 1px, #fbfbfb var(--sg)); box-shadow: inset 0 0 0 1.5px rgba(28, 28, 28, .55); }
+.col.fine .sd { background: repeating-linear-gradient(to top, rgba(28, 28, 28, .18) 0, rgba(28, 28, 28, .18) 1px, #ebebeb 1px, #ebebeb var(--sg)); box-shadow: inset 0 0 0 1.5px rgba(28, 28, 28, .5); }
+/* 灰字在白纸和纸边上都要够深（实测对比度 ≥ 4.5） */
+.lbl .g, .lbl.g { color: #555; }
+/* 越过上限的那几步：朱红描边 */
+.blk.cube.e .tp { box-shadow: inset 0 0 0 2.5px var(--err); }
+.blk.cube.e .fr, .blk.cube.e .sd, .blk.cube.e .bk { background: #ead6d1; box-shadow: inset 0 0 0 1px #c08a7d; }

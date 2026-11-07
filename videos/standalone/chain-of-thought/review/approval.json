@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "ae9b5a716eb4cef0a008edf32b89edb3c6b4e55fb386901ea3de2bc04a2175b5",
+      "content_sha256": "d7a1d7f0c4b7c541fa26c311337492e2290480300912620e5be289704df99dcf",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-07T10:14:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：第 4 稿，会话原话「开始制作」"
+      "confirmed_at": "2026-11-07T22:55:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：第 5c 稿，会话原话「思想视频」「实现」「实现视频」；「定稿后的调整」：配音前只改字幕断句，沿用确认"
     }
   }
 }

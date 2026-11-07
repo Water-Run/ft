@@ -43,8 +43,10 @@ function makeWorld(root, cam0) {
   W.up = (fn) => W.ups.push(fn);
   let lastC = '';
   F((t) => {
-    const c = W.camAt(t);
-    const key = [c.cx, c.cy, c.cz, c.yaw, c.pitch, c.k, c.sx, c.sy].map((v) => v.toFixed(3)).join(',');
+    // 先取整再用：写进样式的值与比较用的键完全一致，镜头停住时不会留下上一帧的细微差别（否则画面依赖播放历史）
+    const c0 = W.camAt(t), c = {};
+    for (const k_ of ['cx', 'cy', 'cz', 'yaw', 'pitch', 'k', 'sx', 'sy']) c[k_] = +c0[k_].toFixed(3);
+    const key = [c.cx, c.cy, c.cz, c.yaw, c.pitch, c.k, c.sx, c.sy].join(',');
     if (key !== lastC) {
       lastC = key;
       stage.style.transform = `translate3d(${c.sx}px, ${c.sy}px, 0) scale3d(${c.k}, ${c.k}, ${c.k}) rotateX(${c.pitch}deg) rotateZ(${c.yaw}deg) translate3d(${-c.cx}px, ${-c.cy}px, ${-c.cz}px)`;
@@ -197,3 +199,62 @@ function column(W, parent, x, y, o = {}) {
   });
   return { g, w, d, sg };
 }
+
+// 一段写在纸上的回答：一串方块从 (x0, y0) 起从左往右排，超过 maxW 换行。
+// 字印在 <span class="tx"> 里（退远时可以单独淡去）。o.x1st：第一行从哪里起（前面留给题目）。
+// items：字符串＝一块字；数字 n＝看不清的一块（约 n 个字宽，顶面一道淡灰短线）；'\n'＝换行；{ t, cls } 或 { n, cls }＝带样式的一块
+function para(S, x0, y0, items, o = {}) {
+  const fs = o.fs || 36, lh = o.lh || 118, gap = o.gap || 10, maxW = o.maxW || 1600, d = o.d || 78, hh = o.h || 20;
+  const tw = (s) => [...s].reduce((a, ch) => a + (ch.charCodeAt(0) < 0x2e80 ? 0.6 : 1) * fs, 0);
+  const out = []; let x = o.x1st != null ? o.x1st : x0, line = 0;
+  for (const it of items) {
+    if (it === '\n') { x = x0; line++; continue; }
+    const ob = typeof it === 'object' ? it : (typeof it === 'number' ? { n: it } : { t: it });
+    const txt = ob.t != null ? ob.t.trim() : '';
+    const w = Math.round(ob.n != null ? ob.n * fs * 0.8 + 24 : Math.max(tw(txt) + 30, fs * 1.6));
+    if (x + w > x0 + maxW && x > x0) { x = x0; line++; }
+    const b = block(S, ob.n != null ? '' : `<span class="tx">${txt}</span>`, { w, d, h: hh, fs, cls: [ob.n != null ? 'dim' : '', ob.cls || ''].join(' ').trim() });
+    if (ob.n != null) { const bar = h('div', 'scrib', b.top); css(bar, { width: (w - 28) + 'px' }); }
+    out.push({ b, x: x + w / 2, x0: x, x1: x + w, y: y0 + line * lh, w, d, txt, i: out.length, line });
+    x += w + gap;
+  }
+  out.lines = line + 1;
+  return out;
+}
+
+// 一道立体的弧线：从 p0 拱到 p1（世界坐标），拱高 hgt；draw(t) 0–1 为画出的比例，op(t) 为透明度
+function arc3(W, parent, p0, p1, hgt, o = {}) {
+  const n = o.n || 32, segs = [];
+  for (let i = 0; i < n; i++) segs.push(seg(parent, o.cls || ''));
+  const P = (u) => [lerp(p0[0], p1[0], u), lerp(p0[1], p1[1], u), lerp(p0[2], p1[2], u) + 4 * hgt * u * (1 - u)];
+  segs.forEach((s, i) => s.set(P(i / n), P((i + 1) / n)));
+  let last = '';
+  W.up((t) => {
+    const k = clamp(o.draw ? o.draw(t) : 1), op = clamp(o.op ? o.op(t) : 1), m = k * n;
+    const key = m.toFixed(2) + '|' + op.toFixed(3);
+    if (key === last) return; last = key;
+    segs.forEach((s, i) => {
+      const v = clamp(m - i);
+      if (v > 0 && v < 1) s.set(P(i / n), P((i + v) / n)); else if (v >= 1) s.set(P(i / n), P((i + 1) / n));
+      s.e.style.opacity = v > 0 ? op.toFixed(3) : 0; s.e.style.visibility = v > 0 && op > 0.002 ? '' : 'hidden';
+    });
+  });
+  return segs;
+}
+
+// 印在纸上的一个框（圈出一组方块）：x、y 为左上角，w、d 为宽和深
+function rect(W, parent, x, y, w, d, fn, cls = '') {
+  const e = h('div', 'p3 box3 ' + cls, parent);
+  css(e, { width: w + 'px', height: d + 'px', transform: `translate3d(${x}px, ${y}px, 0.8px)` });
+  fade(W, e, fn);
+  return e;
+}
+
+// 一圈方块的外框（paragraph 里第 a 到第 b 块；同一行），留出 pad
+function rectOf(W, parent, toks, a, b, fn, cls = '', pad = 14) {
+  const A = toks[a], B = toks[b];
+  return rect(W, parent, A.x0 - pad, A.y - A.d / 2 - pad, B.x1 - A.x0 + 2 * pad, A.d + 2 * pad, fn, cls);
+}
+
+// 章末的镜头：正俯视一片空白的纸。横格的位置与 chapterMark 的开场镜头一致（cy ≡ 92 mod 96，k = 1），所以章与章之间硬切看不出来
+function blankCam(x, y) { return { cx: x, cy: 92 + 96 * Math.round((y - 92) / 96), cz: 0, pitch: 0, yaw: 0, k: 1 }; }

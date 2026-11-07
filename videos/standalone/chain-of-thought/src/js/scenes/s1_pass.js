@@ -49,10 +49,14 @@ scene('pass', ({ root, s, c0 }) => {
     place(W, b.g, (t) => ({ x: XS[i], y: YB, z: 70 * (1 - ramp(t, ta, 0.45, ease.out3)), o: ramp(t, ta, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)) }));
   });
   sfx('pop', T('a1', '一小块'), { g: 0.3 });
-  const gl = W.board('<div class="lbl"><b>token</b>　模型一次写出的一小块</div>', XS[3] + 110, YB, 40, 0, -10);
+  const slot0 = seg(S, 'w'); slot0.set([XS[0] - BW / 2, YB + BD / 2 + 8, 0.8], [XS[0] + BW / 2, YB + BD / 2 + 8, 0.8]);
+  fade(W, slot0.e, (t) => ramp(t, T('a4') + 0.1, 0.4) * (1 - ramp(t, T('a5', '最顶上'), 0.5)));
+  rect(W, S, QX - QW / 2 - 12, YB - BD / 2 - 12, QW + 24, BD + 24, (t) => ramp(t, T('a4', '题目') - 0.2, 0.4) * (1 - ramp(t, T('a5') - 0.2, 0.5)));
+  const gl = W.board('<div class="lbl"><b>token</b>　模型一次写出的一小块</div>', XS[0] - BW / 2, YB + BD / 2 + 30, 0, 0, 0);
   gl.dataset.gloss = 'token';
+  rect(W, S, XS[0] - BW / 2 - 12, YB - BD / 2 - 12, BW + 24, BD + 24, (t) => ramp(t, T('a1', 'token') - 0.3, 0.4) * (1 - ramp(t, T('a2', '四块') - 0.3, 0.4)));
   fade(W, gl, (t) => ramp(t, T('a1', 'token') - 0.1, 0.4) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
-  const four = W.board('<div class="lbl g">四块</div>', XS[3] + 110, YB, 40, 0, 36);
+  const four = W.board('<div class="lbl g">四块</div>', XS[3] + 110, YB, 40, 0, -20);
   fade(W, four, (t) => ramp(t, T('a2', '四块') - 0.1, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
 
   // ── 四摞：起来、从下往上算、到顶得出一块、落进空位 ──
@@ -60,11 +64,11 @@ scene('pass', ({ root, s, c0 }) => {
     { up: T('a3') + 0.1, a: T('a4', '最底下'), b: T('a5', '最顶上') + 0.2 },
     { up: T('a7') - 0.2, a: T('a7') + 0.3, b: Tend('a7') - 0.3 },
     { up: T('a8') - 0.1, a: T('a8') + 0.3, b: T('a8', '逗号') + 0.3 },
-    { up: T('a8', '逗号') - 0.2, a: T('a8', '逗号') + 0.3, b: T('a8', '工夫') },
+    { up: T('a8', '逗号') - 0.2, a: T('a8', '逗号') + 0.3, b: T('a8b', '工夫') },
   ];
   const inkOn = (t) => (t >= T('a11', '这四块') - 0.2 && t < Tend('a11') + 0.5 ? 1 : 0);
   plan.forEach((p, i) => ream(W, S, XS[i], YR, { w: BW, d: BD, gap: GAP, n: NP,
-    rise: (t) => ramp(t, p.up, 0.8, ease.out3), fill: (t) => ramp(t, p.a, p.b - p.a, (k) => k), ink: inkOn }));
+    rise: (t) => ramp(t, p.up, i === 0 ? 2.6 : 0.8, i === 0 ? ease.io3 : ease.out3), fill: (t) => ramp(t, p.a, p.b - p.a, (k) => k), ink: inkOn }));
   const outs = plan.map((p, i) => {
     const b = block(S, ANS[i], { w: BW, d: BD, h: 30, fs: 58, cls: i === 1 ? 'err' : '' });
     place(W, b.g, (t) => {
@@ -107,7 +111,7 @@ scene('pass', ({ root, s, c0 }) => {
 
   // ── 四摞一样高：顶上一条细线 ──
   const ceil = seg(S, 'g'); ceil.set([XS[0] - 90, YR, H + 3], [XS[3] + 90, YR, H + 3]);
-  fade(W, ceil.e, (t) => ramp(t, T('a8', '工夫') - 0.4, 0.5) * (1 - ramp(t, T('a9') + 0.2, 0.4)));
+  fade(W, ceil.e, (t) => ramp(t, T('a8b', '工夫') - 0.4, 0.5) * (1 - ramp(t, T('a9') + 0.2, 0.4)));
 
   // ── 只往上走、写成字才能接力：一条锯齿线——沿一摞往上，到顶落成字，再从下一摞底下往上 ──
   const relay = svg('path', { fill: 'none', stroke: '#1c1c1c', 'stroke-width': 3, 'stroke-linejoin': 'round' }, wl.s);
@@ -131,7 +135,7 @@ scene('pass', ({ root, s, c0 }) => {
   relay.style.strokeDasharray = `${relayLen.toFixed(1)} ${(relayLen + 10).toFixed(1)}`;
   const dot = svg('circle', { r: 9, fill: '#1c1c1c' }, wl.s);
   const relayK = (t) => (t < T('a10') ? cum[0] * ramp(t, T('a9') + 0.2, 1.6)
-    : (t < T('a11') ? lerp(cum[0], cum[1], ramp(t, T('a10', '写成字') - 0.9, 1.6)) : lerp(cum[1], 1, ramp(t, T('a11', '这四块') - 0.4, 2.6, (x) => x))));
+    : (t < T('a11') ? lerp(cum[0], cum[1], ramp(t, T('a10b', '写成字') - 0.9, 1.6)) : lerp(cum[1], 1, ramp(t, T('a11', '这四块') - 0.4, 2.6, (x) => x))));
   W.up((t) => {
     const k = relayK(t), op = ramp(t, T('a9'), 0.3) * (1 - ramp(t, T('a12') - 0.3, 0.5));
     relay.style.strokeDashoffset = (relayLen * (1 - k)).toFixed(1);
@@ -146,10 +150,10 @@ scene('pass', ({ root, s, c0 }) => {
     W.up((t) => { const k = relayK(t); const on = t >= T('a9') && t < T('a12') && k > cum[2 * i] + (cum[2 * i + 1] - cum[2 * i]) * 0.45 && k <= cum[2 * i + 1] + 0.01; if (on !== last) { b.g.classList.toggle('hot', on); last = on; } });
   });
   const up1 = W.board('<div class="lbl">只往上走</div>', XS[0] - BW / 2 - 20, YR, H * 0.5, -150, -20);
-  fade(W, up1, (t) => ramp(t, T('a9', '往上') - 0.2, 0.4) * (1 - ramp(t, T('a10', '写成字') - 0.4, 0.4)));
+  fade(W, up1, (t) => ramp(t, T('a9', '往上') - 0.2, 0.4) * (1 - ramp(t, T('a10b', '写成字') - 0.4, 0.4)));
   const wr = W.board('<div class="lbl">写成字，才接得上</div>', XS[0], YB + BD / 2, 0, -120, 30);
-  fade(W, wr, (t) => ramp(t, T('a10', '写成字') - 0.1, 0.4) * (1 - ramp(t, T('a11') + 0.4, 0.4)));
-  sfx('tick', T('a10', '写成字'), { g: 0.3 });
+  fade(W, wr, (t) => ramp(t, T('a10b', '写成字') - 0.1, 0.4) * (1 - ramp(t, T('a11') + 0.4, 0.4)));
+  sfx('tick', T('a10b', '写成字'), { g: 0.3 });
   const lb4 = W.board('<div class="lbl">四趟</div>', XS[3] + BW / 2 + 30, YR, H * 0.7, 0, -20);
   fade(W, lb4, (t) => ramp(t, T('a11', '这四块') - 0.2, 0.4) * (1 - ramp(t, T('a12') - 0.3, 0.4)));
 
@@ -194,10 +198,15 @@ scene('pass', ({ root, s, c0 }) => {
   const lim = seg(S, ''); lim.set([PX + 10 * DW, LY, 0.8], [PX + 10 * DW - 420, LY, 0.8]);
   const limA = seg(S, ''); limA.set([PX + 10 * DW - 420, LY - 12, 0.8], [PX + 10 * DW - 420, LY + 12, 0.8]);
   const limL = W.print('<div class="lbl g">这几趟能走的步数</div>', PX + 10 * DW - 420, LY + 18);
-  const chain = seg(S, 'e');
-  const chL = W.print('<div class="lbl">一步等一步的计算</div>', PX + 10 * DW - 420, LY - 80);
-  W.up((t) => { const k = ramp(t, T('a14', '题目越长') - 0.2, 3.0); chain.set([PX + 10 * DW, LY - 18, 0.8], [PX + 10 * DW - lerp(300, 900, k), LY - 18, 0.8]); });
-  [lim.e, limA.e, limL, chain.e, chL].forEach((e) => fade(W, e, (t) => ramp(t, T('a14') - 0.2, 0.4) * (1 - ramp(t, T('a15') - 0.2, 0.4))));
+  const chL = W.print('<div class="lbl">一步等一步的计算</div>', PX + 10 * DW - 420, LY - 140);
+  const chOff = (t) => 1 - ramp(t, T('a15') - 0.2, 0.4);
+  for (let i = 0; i < 20; i++) {
+    const over = i >= 10, b = block(S, '', { w: 34, d: 34, h: 18, cls: over ? 'cube e' : 'cube' });
+    const ta = i < 6 ? T('a14', '题目越长') - 0.2 + i * 0.32 : (i < 10 ? T('a14', '计算') - 0.4 + (i - 6) * 0.3 : T('a14b', '超出') - 0.4 + (i - 10) * 0.16);
+    place(W, b.g, (t) => ({ x: PX + 10 * DW - 21 - i * 42, y: LY - 22, z: 24 * (1 - ramp(t, ta, 0.25, ease.out3)), o: ramp(t, ta, 0.18) * chOff(t) }));
+    if (i % 2 === 0) sfx('tick', ta, { g: over ? 0.14 : 0.1 });
+  }
+  [lim.e, limA.e, limL, chL].forEach((e) => fade(W, e, (t) => ramp(t, T('a14') - 0.2, 0.4) * (1 - ramp(t, T('a15') - 0.2, 0.4))));
   // 错答案里错的那一块
   const wrong = W.board('<div class="lbl"><span class="err">473</span>　<span class="g">应为 485</span></div>', XS[1], YB + 60, 34, -80, 30);
   fade(W, wrong, (t) => ramp(t, T('a15', '中间') - 0.3, 0.4));
@@ -208,6 +217,7 @@ scene('pass', ({ root, s, c0 }) => {
   W.cam([
     [t0, { cx: CX + 380, cy: CY - 40, cz: 0, pitch: 0, yaw: 0, k: 1 }, 0.01],
     [t0 + 1.3, { cx: 120, cy: -20, cz: 60, pitch: 56, yaw: -8, k: 1.05 }, c0 - t0 - 0.9],
+    [null, { cx: 170, cy: -20, cz: 60, pitch: 57, yaw: -4, k: 1.05 }, Math.max(0.5, T('a2') - 0.2 - (c0 + 0.5)), (k) => k],
     [T('a2'), { cx: 190, cy: -10, cz: 50, pitch: 58, yaw: -4, k: 1.14 }, 2.0, (k) => smooth(k)],
     [T('a3'), { cx: 20, cy: -100, cz: 200, pitch: 72, yaw: -22, k: 1.1 }, 1.8],
     // 跟着算到的那一张往上走，到顶后跟着那一块落下来
@@ -215,18 +225,21 @@ scene('pass', ({ root, s, c0 }) => {
     [fill0.a + 0.85, { cz: H - 20 }, fill0.b - fill0.a - 0.75, (k) => smooth(k)],
     [fill0.b + 0.15, { cx: 20, cy: -50, cz: 80, pitch: 64, yaw: -12, k: 1.3 }, 1.1],
     // 「一趟」：绕到侧面，看清这一摞的层
-    [T('a6'), { cx: 40, cy: -110, cz: 250, pitch: 74, yaw: 28, k: 1.15 }, 2.6, (k) => smooth(k)],
-    [T('a7'), { cx: 110, cy: -110, cz: 250, pitch: 74, yaw: 20, k: 1.0 }, Math.max(1, Tend('a7') - T('a7')), (k) => smooth(k)],
+    [T('a6'), { cx: 40, cy: -110, cz: 250, pitch: 74, yaw: 28, k: 1.3 }, 2.6, (k) => smooth(k)],
+    [T('a7'), { cx: 110, cy: -110, cz: 250, pitch: 74, yaw: 20, k: 1.26 }, Math.max(1, Tend('a7') - T('a7')), (k) => smooth(k)],
     // 四摞：退远、放低，一样高
-    [T('a8'), { cx: 250, cy: -80, cz: 240, pitch: 78, yaw: 4, k: 0.9 }, 2.4],
+    [T('a8'), { cx: 220, cy: -80, cz: 200, pitch: 76, yaw: 4, k: 1.08 }, 2.4],
     [T('a9') - 0.2, { cx: 230, cy: -90, cz: 230, pitch: 70, yaw: -6, k: 0.98 }, 1.6],
     [null, { cx: 250, cy: -90, cz: 230, pitch: 70, yaw: -2, k: 0.96 }, Math.max(0.5, T('a12') - T('a9') - 2.2), (k) => k],
     // 乘积
     [T('a12') - 0.5, { cx: -20, cy: 420, cz: 30, pitch: 40, yaw: 0, k: 1.2 }, 1.6],
     [null, { cx: 0, cy: 450, cz: 30, pitch: 42, yaw: 2, k: 1.16 }, Math.max(0.5, T('a14') - T('a12') - 1.8), (k) => k],
     [T('a14') - 0.1, { cx: -40, cy: PY + 470, cz: 20, pitch: 38, yaw: 2, k: 1.4 }, 1.4],
-    [T('a15') - 0.4, { cx: 160, cy: 40, cz: 90, pitch: 58, yaw: -4, k: 1.0 }, 1.4],
-    [null, { cx: 170, cy: 40, cz: 90, pitch: 59, yaw: -6, k: 0.99 }, Math.max(0.5, s.end - T('a15') - 1.0), (k) => k],
+    [null, { cx: 30, cy: PY + 470, cz: 20, pitch: 38, yaw: 2, k: 1.4 }, Math.max(0.5, T('a15') - 0.5 - (T('a14') + 1.4)), (k) => k],
+    [T('a15') - 0.4, { cx: 160, cy: -30, cz: 170, pitch: 64, yaw: -4, k: 1.0 }, 1.4],
+    [null, { cx: 170, cy: -30, cz: 170, pitch: 65, yaw: -6, k: 0.99 }, Math.max(0.5, Tend('a15') + 0.5 - T('a15') - 1.1), (k) => k],
+    // 章末：抬成正俯视，看着一片空白的纸（和下一章开头的横格对齐，硬切看不出来）
+    [Tend('a15') + 0.6, blankCam(170, 1420), Math.max(0.8, s.end + 0.35 - Tend('a15') - 0.6)],
   ]);
-  sfx('whoosh', t0 + 1.3, { g: 0.3 }); sfx('whoosh', T('a3'), { g: 0.2 }); sfx('whoosh', T('a12') - 0.5, { g: 0.2 });
+  sfx('whoosh', t0 + 1.3, { g: 0.3 }); sfx('whoosh', T('a3'), { g: 0.2 }); sfx('whoosh', T('a12') - 0.5, { g: 0.2 }); sfx('whoosh', Tend('a15') + 0.6, { g: 0.18 });
 });

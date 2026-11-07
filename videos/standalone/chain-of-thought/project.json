@@ -8,8 +8,8 @@
   "titles": {
     "zh": "CoT：先思考，再回答"
   },
-  "stage": "review",
-  "next": "策划者看本地审片页 out/review-v5.html（第 5c 稿与立体关键帧）；文案确认后重新配音，做开场、03、04、结尾，出第 1 轮预览",
+  "stage": "preview",
+  "next": "策划者看第 5 稿第 1 轮预览 out/zh/preview-r2.mp4；据意见改一轮，没有大问题就出 1080p60 正式片",
   "credits": {
     "planner": "WaterRun",
     "models": [
