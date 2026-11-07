@@ -8,8 +8,8 @@
   "titles": {
     "zh": "CoT：先思考，再回答"
   },
-  "stage": "render",
-  "next": "正式渲染与封装（1080p60），再做交付前总闸门与成片自查",
+  "stage": "preview",
+  "next": "策划者看第 1 轮预览草稿 out/zh/preview-r1-draft.mp4；按意见与静止检测一起改，再出 preview-r1",
   "credits": {
     "planner": "WaterRun",
     "models": [

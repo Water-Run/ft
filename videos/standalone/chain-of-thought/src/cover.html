@@ -8,7 +8,8 @@
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；kit/tools/covers.js 按 2 倍像素出图。
      策划者 2026-11-07：「封面做一个更有质感, 高级, 冷淡的. 包括CoT 和 先思考, 再回答」。
      冷灰白底、细衬线、一张写着草稿的纸平静地斜放；不用暖色与装饰（docs/principles.md「形式服从内容与叙事，质感在背后承托」）。
-     纸上是本片实验里先写过程的那一次（research/lab，n5-03 think_first）。缩到 360 像素宽仍读得清主标题；底部约 15% 不放文字。 */
+     纸上是本片实验里先写过程的那一次（research/lab，n5-03 think_first），排成推理模型的输出：「思考」一段、「回答」一段，每行由一块块 token 拼成，
+     答案后停着光标——一眼看得出是大模型在写（策划者：「完全没有提醒出任何LLM的元素」）。缩到 360 像素宽仍读得清主标题；底部约 15% 不放文字。 */
   :root { --bg: #eef0f2; --ink: #15171a; --gray: #8a8f96; --line: #d5d9de; }
   html, body, #stage { width: var(--W); height: var(--H); margin: 0; }
   .r169 { --W: 1920px; --H: 1080px; }
@@ -22,18 +23,23 @@
   .shadow { position: absolute; background: rgba(28,38,52,.13); filter: blur(40px); }
   .ln { position: absolute; left: 70px; font: 400 40px "Serif SC"; color: #4a4f56; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .ln.ink { color: var(--ink); }
+  .tk { display: inline-block; border: 1.5px solid #c9ced5; border-radius: 8px; padding: 0 9px; margin-right: 7px; background: #f6f7f9; line-height: 1.32; }
+  .ink .tk { border-color: #9aa1a9; background: #fff; }
+  .sec { position: absolute; left: 70px; font: 500 30px "Serif SC"; color: #5a5f66; letter-spacing: .3em; }
+  .cur { display: inline-block; width: 5px; height: 58px; background: #15171a; vertical-align: -10px; margin-left: 4px; }
+  .sub { font: 400 var(--sub) "Serif SC"; letter-spacing: .1em; color: #52575e; margin-top: calc(var(--gap) * .55); white-space: nowrap; }
   .title { position: absolute; }
   .cot { font: 300 var(--cot) "Serif SC"; letter-spacing: -.01em; line-height: 1; color: var(--ink); }
   .rule { width: 132px; height: 2px; background: var(--ink); margin: var(--gap) 0 calc(var(--gap) * .9); }
   .zh { font: 500 var(--zh) "Serif SC"; letter-spacing: .14em; color: #22252a; white-space: nowrap; }
-  .r169 .title { left: 140px; top: 214px; --cot: 268px; --zh: 96px; --gap: 54px; }
-  .r43 .title { left: 120px; top: 150px; --cot: 250px; --zh: 92px; --gap: 48px; }
+  .r169 .title { left: 140px; top: 190px; --cot: 268px; --zh: 96px; --gap: 54px; --sub: 46px; }
+  .r43 .title { left: 120px; top: 130px; --cot: 250px; --zh: 92px; --gap: 48px; --sub: 44px; }
 </style>
 </head>
 <body>
 <div id="stage">
   <div class="view"><div class="world" id="W"></div></div>
-  <div class="title"><div class="cot">CoT</div><div class="rule"></div><div class="zh">先思考，再回答</div></div>
+  <div class="title"><div class="cot">CoT</div><div class="rule"></div><div class="zh">先思考，再回答</div><div class="sub">大模型的思维链</div></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search), r43 = q.get('r') === '43';
@@ -44,15 +50,19 @@
   const W = document.getElementById('W');
   const el = (cls, css, html = '') => { const e = document.createElement('div'); e.className = cls; e.style.cssText = css; e.innerHTML = html; W.appendChild(e); return e; };
   // 一张写着草稿的纸，平放在桌面上，镜头从斜上方看
-  const [x, y, rx, rz, k] = r43 ? [1240, 770, 50, -22, .78] : [1430, 560, 48, -22, 1];
+  const [x, y, rx, rz, k] = r43 ? [1300, 770, 50, -22, .78] : [1430, 560, 48, -22, 1];
   W.style.cssText = `left:${x}px; top:${y}px; transform: scale3d(${k},${k},${k}) rotateX(${rx}deg) rotateZ(${rz}deg);`;
   el('shadow', 'left:-420px; top:-520px; width:900px; height:1160px; transform: translate3d(40px, 50px, 0);');
   el('sheet', 'left:-450px; top:-560px; width:900px; height:1160px; transform: translate3d(26px, 22px, -2px) rotateZ(3deg); background:#f6f7f8;');
   const sh = el('sheet', 'left:-450px; top:-560px; width:900px; height:1160px;');
-  const lines = ['25992 × 92138', '92138 = 92000 + 138', '25992 × 92000 = 2,391,264,000', '25992 × 138 = 3,586,896', '2,391,264,000 + 3,586,896', '　= 2,394,850,896'];
-  sh.innerHTML = lines.map((t, i) => `<div class="ln${i === 5 ? ' ink' : ''}" style="top:${100 + i * 98}px">${t}</div>`).join('')
-    + `<div style="position:absolute;left:70px;top:706px;width:760px;height:1px;background:#c9ced4"></div>`
-    + `<div class="ln ink" style="top:742px;font-size:56px">2394850896</div>`;
+  // 推理模型的一次输出：思考一段，回答一段；每行按 token 拼块（数字三位一块，与本片实验里的切法一致）
+  const toks = (t) => t.match(/\d{1,3}|[^\d\s]+/g).map((x) => `<span class="tk">${x}</span>`).join('');
+  const lines = ['92138 = 92000 + 138', '25992 × 92000', '= 2,391,264,000', '25992 × 138 = 3,586,896', '= 2,394,850,896'];
+  sh.innerHTML = `<div class="sec" style="top:50px">思考</div>`
+    + lines.map((t, i) => `<div class="ln${i === 4 ? ' ink' : ''}" style="top:${116 + i * 104}px;font-size:36px">${toks(t)}</div>`).join('')
+    + `<div style="position:absolute;left:70px;top:676px;width:760px;height:1px;background:#c9ced4"></div>`
+    + `<div class="sec" style="top:700px">回答</div>`
+    + `<div class="ln ink" style="top:756px;font-size:54px">${toks('2394850896')}<span class="cur"></span></div>`;
   const sample = document.getElementById('stage').textContent;
   Promise.all([document.fonts.load('300 40px "Serif SC"', sample), document.fonts.load('500 40px "Serif SC"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
