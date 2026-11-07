@@ -32,9 +32,9 @@
     {"slug": "innodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "status": "delivered", "note": "重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档"},
     {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"}, "status": "in-progress", "note": "重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档"},
     {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "in-progress"},
-    {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse"}},
-    {"slug": "mongodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——不是 SQL：MongoDB"}},
-    {"slug": "redis", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——缓存：Redis"}, "note": "2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。"},
+    {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"}, "status": "in-progress"},
+    {"slug": "mongodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"}},
+    {"slug": "redis", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——内存里的键值对：Redis"}, "note": "2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。"},
     {"slug": "lua-philosophy", "series": "language-philosophy", "title": {"zh": "Lua 语言的设计哲学：一切皆表", "en": "The Design Philosophy of Lua: Everything Is a Table"}, "status": "planned"},
     {"slug": "python", "series": "language-philosophy", "title": {"zh": "Python 语言的设计哲学：一切皆对象"}},
     {"slug": "miniscript-philosophy", "series": "language-philosophy", "title": {"zh": "MiniScript 语言的设计哲学：小而可嵌入"}},
@@ -151,7 +151,7 @@
     {"slug": "config-file-formats", "series": "in-seconds", "title": {"zh": "150秒认识五大主流配置文件"}, "note": "范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。", "status": "in-progress"},
     {"slug": "von-neumann", "title": {"zh": "128秒认识冯·诺伊曼架构"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。", "status": "delivered"},
     {"slug": "ipv4", "title": {"zh": "100 秒速通 IPv4"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。", "status": "delivered"},
-    {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒速通RDP: Windows远程的优雅实现"}, "status": "planned", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒。"},
+    {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒了解RDP: Windows远程的优雅实现"}, "status": "in-progress", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。"},
     {"slug": "linux-permissions", "series": "permission-design", "title": {"zh": "Linux 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "windows-permissions", "series": "permission-design", "title": {"zh": "Windows 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "macos-permissions", "series": "permission-design", "title": {"zh": "macOS 权限机制的设计"}},
@@ -231,6 +231,7 @@
     {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}, "status": "in-progress", "note": "2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。"},
     {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "planned", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},
     {"slug": "keydb-valkey", "title": {"zh": "Redis 之外：KeyDB & Valkey"}, "note": "2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。"},
-    {"slug": "quantization", "title": {"zh": "量化：让模型变小和代价"}, "note": "2026-10-26 从速通系列改为独立视频；片长待定。"}
+    {"slug": "quantization", "title": {"zh": "量化：让模型变小和代价"}, "note": "2026-10-26 从速通系列改为独立视频；片长待定。"},
+    {"slug": "pando", "series": "hot-topics", "title": {"zh": "OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？"}, "status": "in-progress"}
   ]
 }

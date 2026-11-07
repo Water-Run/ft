@@ -17,21 +17,21 @@
 
 ## 11W2
 
-1. 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse（`clickhouse`）
+1. 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse（`clickhouse`）
 2. [192秒速通RDP: Windows远程的优雅实现](../videos/in-seconds/rdp/README.md)（`rdp`）
 3. [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](../videos/standalone/firebird/README.md)（`firebird`）
 4. Windows 权限机制的设计（「权限机制的设计」系列，`windows-permissions`）
 
 ## 11W3
 
-1. 一个数据库引擎是如何实现的？——不是 SQL：MongoDB（`mongodb`）
+1. 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger（`mongodb`）
 2. [一个生产级解释器的最小实现——Lua源码全解析](../videos/source-code/lua-source/README.md)（`lua-source`）
 3. Carbon Design（`carbon`）
 4. [开源 Harness 详解：CodeX](../videos/agent-harnesses/codex/README.md)（`codex`）
 
 ## 11W4
 
-1. 一个数据库引擎是如何实现的？——缓存：Redis（`redis`）
+1. 一个数据库引擎是如何实现的？——内存里的键值对：Redis（`redis`）
 2. Metro（`metro-design`）
 3. [PowerPC 时代的麦金塔](../videos/eras/powerpc-macintosh/README.md)（`powerpc-macintosh`）
 4. 150 秒速通 Git（`git`）

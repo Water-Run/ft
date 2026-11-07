@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 204 部：已成片 19，制作中 6，计划中 178，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 205 部：已成片 19，制作中 9，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -39,11 +39,14 @@
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01 12:07，「数据库引擎」合集第 3 集）；登记交付与发布（stage、delivery、release、片单状态，再运行 catalog.js）要一起提交，而 videos/catalog.json、videos/README.md、videos/CREDITS.md 正被另一会话修改未提交，等它们空出来再做；发布信息先记在 README「交付」。按发布后冻结，只收集反馈 | 最新 | Claude Opus 5.5 |
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 预览 r1：第 9 稿已确认并配音（15:10），11 个场景已写完，自审后交 WaterRun 看 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 已发布（哔哩哔哩 BV1RG4h6UEqQ，2026-11-06，见 README「交付」）；stage、delivery、release 与片单状态等共享片单文件空出后一次提交 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11 | 最新 | Claude Opus 5.5 |
 | [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 待同步 | Gemini 4 Argon、Claude Opus 5.5 |
+| [192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 看第 3 轮审片页 out/audition/index.html：第 2 稿修订版逐句意见或明确确认；确认后用青年大学生配全片，按磁贴关键帧铺开场景 | 最新 | Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 审稿 | 等策划者看第 1 稿与审片页：文案意见与确认，选音色、配乐与视觉方向 | 最新 | Claude Opus 5.5 |
+| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 审稿 | 第 4 稿（ae9b5a71，叙事以开头三次回答为主线）与冷静克制的立体版视觉 B 已交审（out/audition/index.html）；等意见或确认，确认后用真诚青年配全片 | 最新 | Claude Opus 5.5 |
+| [OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/) | [热点](hot-topics/README.md) | 验收 | 策划者看正式片 out/pando-zh-1080p60.mp4；同意后登记交付与发布 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
@@ -67,9 +70,9 @@
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档 |
 | 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 制作中 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
 | 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
-| 5 | 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse | zh | 计划中 | `clickhouse` |  |
-| 6 | 一个数据库引擎是如何实现的？——不是 SQL：MongoDB | zh | 计划中 | `mongodb` |  |
-| 7 | 一个数据库引擎是如何实现的？——缓存：Redis | zh | 计划中 | `redis` | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
+| 5 | 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse | zh | 制作中 | [`clickhouse`](database-engines/clickhouse/) |  |
+| 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 计划中 | `mongodb` |  |
+| 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 计划中 | `redis` | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
 
 ### 编程语言哲学
 
@@ -290,7 +293,7 @@
 | 25 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
-| 28 | 192秒速通RDP: Windows远程的优雅实现 | zh | 计划中 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒。 |
+| 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 制作中 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
 
 ### 权限机制的设计
 
@@ -372,6 +375,7 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](hot-topics/php2shell/) |  |
+| 2 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](hot-topics/pando/) |  |
 
 ### Office 底层原理
 

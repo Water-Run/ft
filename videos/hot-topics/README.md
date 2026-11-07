@@ -27,4 +27,5 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](php2shell/) |
+| 2 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](pando/) |
 <!-- catalog:end -->
