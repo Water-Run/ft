@@ -1,6 +1,6 @@
 # 系列
 
-系列是一组共享定位与少数约定的片子，例如「数据库引擎」「XX 秒速通」。每个系列在 `videos/` 下有一个目录：系列说明是 `videos/<系列>/README.md`，各集在 `videos/<系列>/<片>/`；独立的片子在 `videos/standalone/<片>/`，与各系列并列。属于哪个系列以片单 `videos/catalog.json` 条目的 `series` 字段为准，目录与它一致。
+系列是一组共享定位与少数约定的片子，例如「数据库引擎」「XX 秒速通」。每个系列在 `videos/` 下有一个目录：系列说明是 `videos/<系列>/README.md`，各集在 `videos/<系列>/<片>/`；独立的片子在 `videos/standalone/<片>/`，与各系列并列；独立片按一个高质量的特别系列对待，共同约定（缺省 3D 等）写在 [`videos/standalone/README.md`](../../videos/standalone/README.md)。属于哪个系列以片单 `videos/catalog.json` 条目的 `series` 字段为准，目录与它一致。
 
 ## 1. 系列共享什么，不共享什么
 

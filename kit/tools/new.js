@@ -77,7 +77,7 @@ const vars = {
   SLUG: slug, TITLE: entry.title.zh, TITLE_HTML: entry.title.zh.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'), PATH: relative,
   PLANNER: studio.planner, REVIEWER: studio.reviewer, REPOSITORY: studio.repository, REPOSITORY_DISPLAY: studio.repository.replace(/^https:\/\//, '').replace(/\/$/, ''),
   LESSONS_VERSION: rules.version, LESSONS_STATE_JSON: JSON.stringify(lessons.initial(rules), null, 2),
-  SERIES_LINE: series ? `系列：[${series.title.zh}](../README.md)。只遵守系列说明里写明的共同约定，其余按本片的对象设计。` : '独立视频。',
+  SERIES_LINE: series ? `系列：[${series.title.zh}](../README.md)。只遵守系列说明里写明的共同约定，其余按本片的对象设计。` : '独立视频：每部都是独立的高质量成片，遵守[独立片的共同约定](../README.md)（缺省 3D）。',
   LANGS_JSON: JSON.stringify(langs).replace(/,/g, ', '),
   TITLES_JSON: obj((l) => entry.title[l] || (l === 'zh' ? entry.title.zh : '')),
   VOICES_JSON: obj((l) => VOICES[l] || ''), RATES_JSON: obj(() => '+0%'), PROMPTS_JSON: obj((l) => PROMPTS[l] || ''),
@@ -134,6 +134,8 @@ delete project.production; delete project.feedback;
 Object.assign(project, { slug, languages: langs, layout: 2, license: 'GPL-3.0-or-later', stage: 'brief', next: '写简报（受众、核心问题、解释路径与取舍），开始取证' });
 project.credits = { planner: studio.planner, models: [], services: [], repository: studio.repository };
 project.review = { required: true, reviewer: studio.reviewer };
+// 独立片缺省 3D（videos/standalone/README.md）：立体与质感要用到投影、渐变与景深，不按平涂检查
+if (!series) project.check = { ...project.check, style: { ...((project.check || {}).style || {}), flat: false } };
 fs.writeFileSync(projectFile, JSON.stringify(project, null, 2) + '\n');
 if (!langs.includes('en')) console.log('提示：模板的脚本与场景是按中英双语写的；只做一种语言时，把 script.js 里的 { zh, en } 改成字符串即可。');
 
@@ -145,7 +147,7 @@ if (!scratch) {
   catalog.regenerate(catalog.load());
 }
 console.log(`已建立 ${relative}（语言：${langs.join(', ')}）${scratch ? '，练习目录不登记片单' : '并登记到片单'}。接下来：
-  1. 读 docs/roles.md 与 docs/process.md；在本片 README 写「简报」${series ? `\n     本片属于系列「${series.title.zh}」：读 videos/${series.slug}/README.md 的共同约定` : ''}
+  1. 读 docs/roles.md 与 docs/process.md；在本片 README 写「简报」${series ? `\n     本片属于系列「${series.title.zh}」：读 videos/${series.slug}/README.md 的共同约定` : '\n     独立片：读 videos/standalone/README.md 的共同约定（缺省 3D，每部都是独立的高质量成片）'}
   2. 取证写 research/FACTS.md；写 src/js/script.js，导出校对稿：node kit/tools/script-review.js ${relative} export
      交 ${studio.reviewer} 人工审查，依据真实确认填写 review/approval.json；确认后才能配音
   3. 每个阶段开工前：node kit/tools/lessons.js show --stage <阶段>`);

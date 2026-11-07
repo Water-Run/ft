@@ -22,7 +22,7 @@
 | 只做前期（准备方） | [角色与权限](roles.md) 第 3 节 → [取证](guides/research.md) → [文案与配音](guides/script.md) → [文案校对](guides/script-review.md) |
 | 判断成片是否合格 | [质量标准](standards.md) → [经验规则](lessons.md) → [验收](guides/acceptance.md) |
 | 发布、收集反馈、归档清理 | [发布与收尾](guides/release.md) |
-| 开一个系列或加一集 | [系列](guides/series.md) → `videos/<系列>/README.md` |
+| 开一个系列或加一集 | [系列](guides/series.md) → `videos/<系列>/README.md`；独立片看 [`videos/standalone/README.md`](../videos/standalone/README.md) |
 | 查看当前工作 | [周 TODO](todo.md)（安排）→ [片单](../videos/README.md)（阶段与下一步）→ 本片 README；署名查 [Credit 盘点](../videos/CREDITS.md)。旧排期只作历史背景 |
 | 做仓库维护 | [宗旨与原则](principles.md) → 本页「信息归属」「维护」→ 受影响的专题、模板与工具 |
 | 改工具、引擎或模板 | [仓库结构](reference/repository.md) → [工具](reference/tools.md) → [引擎](reference/engine.md) → [踩过的坑](reference/pitfalls.md) |

@@ -320,7 +320,10 @@ test('语言按「条目 ＞ 系列 ＞ 只做中文」继承；与系列相同�
   const f = fixture(t);
   const solo = f.run('new', 'solo', '--title', '独立的一部');
   assert.equal(solo.status, 0, solo.stderr);
-  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(f.root, 'videos/standalone/solo/project.json'))).languages, ['zh'], '没有系列也没写语言时只做中文');
+  const soloProject = JSON.parse(fs.readFileSync(path.join(f.root, 'videos/standalone/solo/project.json')));
+  assert.deepEqual(soloProject.languages, ['zh'], '没有系列也没写语言时只做中文');
+  assert.equal(soloProject.check.style.flat, false, '独立片缺省 3D，不按平涂检查');
+  assert.equal(soloProject.check.style.no_emoji, true, '其余风格规则照旧');
   const cat = f.catalog();
   cat.series.push({ slug: 'zh-only', title: { zh: '只做中文的系列' }, languages: ['zh'] });
   f.saveCatalog(cat);
