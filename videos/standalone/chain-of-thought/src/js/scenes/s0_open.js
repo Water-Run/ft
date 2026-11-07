@@ -1,7 +1,9 @@
 // 开场：同一个模型、同一道题的三次回答，摊成桌上的三张纸（主线，第 02、04 章与结尾都回到这里）。
 // 数字取自 research/lab（L1 n5-03）：只报答案 2394730896；先写过程的部分积与和；先写答案 2394841296。
 scene('open', ({ root, s, c0 }) => {
-  const { view, desk, rig } = makeDesk(root, { x: 2380, y: 880, rx: 26, rz: -2, k: 2.2 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { view, desk, rig } = makeDesk(world, { x: 2380, y: 880, rx: 26, rz: -2, k: 2.2 });
 
   // ── 三张纸 ──
   const S1 = sheet(desk, -900, -340, 560, 700), S2 = sheet(desk, -290, -340, 560, 700), S3 = sheet(desk, 320, -340, 620, 700, 30, 1);
@@ -94,11 +96,11 @@ scene('open', ({ root, s, c0 }) => {
   fromTo(grp.e1, tB, { left: '928px' }, { left: '988px', duration: 0.8, ease: 'power2.inOut' });
   const lab2 = margin(S2, '过程在前', 24, 166, 450, tB + 0.35, 600);
   margin(S3, '过程在后', 24, 244, 446, tB + 0.55, 590);
-  hide(lab2, T('o12') - 0.1, { y: 0, d: 0.3 });
+  hide(lab2, T('o12', '思维链') - 0.45, { y: 0, d: 0.3 });
 
   // 思维链：第二张纸
   const tCot = T('o12', '思维链');
-  [S1, S3].forEach((p) => to(p, T('o12') + 0.2, { opacity: 0.35, duration: 0.6 }));
+  [S1, S3].forEach((p) => to(p, T('o12', '思维链') - 0.6, { opacity: 0.35, duration: 0.6 }));
   const g = h('div', 'gloss', S2, '思维链（Chain of Thought，CoT）<br><span class="g">通向答案的一串中间推理步骤<br>Wei 等，2022</span>'); px(g, 44, 568); css(g, { fontSize: '27px', lineHeight: '1.45' });
   g.dataset.gloss = '思维链'; sfx('blip', tCot - 0.1, { g: 0.3 });
   show(g, tCot - 0.1, { y: 10, d: 0.5 });

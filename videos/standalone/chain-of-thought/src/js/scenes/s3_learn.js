@@ -3,7 +3,9 @@
 //   答对就给奖励（另有格式奖励），思考越写越长，训练中途写下「Wait, wait. Wait. That's an aha moment I can flag here.」（表 2）；
 //   L2：思考模式算开头那道题，先按 26000 − 8 算，再换成 25000 + 992 验算；每种位数 5 题，25 道全对，平均思考 token 93 → 550。
 scene('learn', ({ root, s, c0 }) => {
-  const { desk, rig, board } = makeDesk(root, { x: 1600, y: 540, rx: 26, rz: -2, k: 1.1 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { desk, rig, board } = makeDesk(world, { x: 1600, y: 540, rx: 26, rz: -2, k: 1.1 });
 
   // 桌上一条时间线
   const axis = h('div', 'hair l', desk); px(axis, -1120, 330, 4300, 2);
@@ -34,7 +36,7 @@ scene('learn', ({ root, s, c0 }) => {
   // ── B：2024 o1；2025 DeepSeek-R1 ──
   const O = sheet(desk, 80, -300, 500, 560);
   show(O, T('r3') - 0.2, { y: 0, d: 0.5 }); show(O.shadowEl, T('r3') - 0.2, { y: 0, d: 0.5, a: 0.7 });
-  header(O, 'OpenAI · 2024 年', 'o1 的一次回答', 500, T('r3', 'OpenAI'));
+  header(O, 'OpenAI · 2024 年', 'o1 的一次回答', 500, T('r3') + 0.1);
   year(80, '2024', T('r3') + 0.1);
   const thL = h('div', 'note', O, '思考'); px(thL, 44, 146); css(thL, { fontSize: '28px' });
   const th = greyLines(O, 44, 190, [400, 380, 410, 300, 390, 360, 240], 30, 10);
@@ -42,12 +44,12 @@ scene('learn', ({ root, s, c0 }) => {
   const an = greyLines(O, 44, 458, [320, 200], 30, 10);
   show(thL, T('r3', '思考') - 0.6, { y: 6, d: 0.3 });
   th.forEach((e, i) => fromTo(e, T('r3', '回答之前') + i * 0.11, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.3 }));
-  show(anL, T('r3', '一大段') + 0.3, { y: 6, d: 0.3 });
+  show(anL, T('r3', '一大段') - 0.3, { y: 6, d: 0.3 });
   an.forEach((e, i) => fromTo(e, T('r3', '一大段') + 0.4 + i * 0.1, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.3 }));
 
   const R = sheet(desk, 720, -340, 640, 640);
   show(R, T('r4') - 0.2, { y: 0, d: 0.5 }); show(R.shadowEl, T('r4') - 0.2, { y: 0, d: 0.5, a: 0.7 });
-  header(R, 'DeepSeek-AI · 2025 年 1 月', 'DeepSeek-R1 的训练方法', 640, T('r4', 'DeepSeek'));
+  header(R, 'DeepSeek-AI · 2025 年 1 月', 'DeepSeek-R1 的训练方法', 640, T('r4') + 0.1);
   year(720, '2025', T('r4') + 0.1);
   const zero = h('div', 'lab', R, '其中一个版本：R1-Zero'); px(zero, 44, 160); css(zero, { fontSize: '30px', fontWeight: 500 });
   show(zero, T('r5', '其中') - 0.1, { y: 6, d: 0.4 });
@@ -59,7 +61,7 @@ scene('learn', ({ root, s, c0 }) => {
   fromTo(HS, T('r5', '不给') - 0.6, { autoAlpha: 0, left: '1440px' }, { autoAlpha: 1, left: '1440px', duration: 0.4 });
   const cross = h('div', 'abs', hsTop); px(cross, 10, 186, 280, 3); css(cross, { background: '#a5402d', transform: 'rotate(-28deg)', transformOrigin: '50% 50%' });
   fromTo(cross, T('r5', '解题过程') - 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.out' });
-  to(HS, T('r5', '解题过程') + 0.3, { opacity: 0.45, duration: 0.5 });
+  to(HS, T('r5', '解题过程') + 0.3, { opacity: 0.7, duration: 0.5 });
   sfx('tick', T('r5', '解题过程'), { g: 0.35 });
   // 答对了，就给奖励
   const loop = ['作答', '判对错', '对了：奖励'].map((t, i) => { const e = h('div', 'ln', R, t); px(e, 44 + i * 190, 236); css(e, { fontSize: '28px' }); return e; });
@@ -88,7 +90,7 @@ scene('learn', ({ root, s, c0 }) => {
   show(zhq, T('r9', '顿悟') + 0.2, { y: 6, d: 0.45 });
   const ul = h('div', 'hair', Wq); px(ul, 44, 222, 330, 2); fromTo(ul, T('r10', '回头检查') - 0.4, { scaleX: 0 }, { scaleX: 1, duration: 0.5 });
   const chkN = h('div', 'gloss', Wq, '停下来，回头检查<br><span class="g">没有人示范过</span>'); px(chkN, 44, 420); css(chkN, { fontSize: '28px' });
-  show(chkN, T('r10', '回头检查') - 0.1, { y: 8, d: 0.45 }); sfx('blip', T('r10', '回头检查'), { g: 0.3 });
+  show(chkN, T('r10') + 0.2, { y: 8, d: 0.45 }); sfx('blip', T('r10') + 0.2, { g: 0.3 });
 
   // ── E：思考模式算开头那道题 ──
   const Th = sheet(desk, 3260, -320, 720, 640);
@@ -98,8 +100,8 @@ scene('learn', ({ root, s, c0 }) => {
   const v1 = stream(Th, '= 2,394,850,896', 44, 220, 36, T('r12', '算对') - 0.3, 30);
   const m2 = ln(Th, '换成 25000 + 992，再算一遍', 44, 320, 30, 'g'); show(m2, T('r12', '换了') - 0.1, { y: 6, d: 0.4 });
   const v2 = stream(Th, '= 2,394,850,896', 44, 370, 36, T('r12', '验算') - 0.4, 30);
-  const yes = h('div', 'chk', Th); px(yes, 420, 378); show(yes, T('r12', '验算') + 0.3, { y: 0, d: 0.3 });
-  const yesT = ln(Th, '对', 452, 374, 34); show(yesT, T('r12', '验算') + 0.35, { y: 6, d: 0.3 });
+  const yes = h('div', 'chk', Th); px(yes, 420, 378); show(yes, T('r12', '验算') - 0.1, { y: 0, d: 0.3 });
+  const yesT = ln(Th, '对', 452, 374, 34); show(yesT, T('r12', '验算') - 0.05, { y: 6, d: 0.3 });
   sfx('tick', T('r12', '验算') + 0.3, { g: 0.35 });
   [Th, Th.shadowEl, Wq, Wq.shadowEl].forEach((e) => to(e, T('r13') + 0.2, { opacity: 0.2, duration: 0.6 }));
 
@@ -130,10 +132,10 @@ scene('learn', ({ root, s, c0 }) => {
     [null, { x: -340 }, Math.max(0.5, T('r8') - T('r5') - 1.4), { ease: 'none' }],
     [T('r8') - 0.35, { x: -1870, y: 540, k: 1.05 }, 1.1],
     [null, { x: -1880 }, Math.max(0.5, T('r11') - T('r8') - 0.9), { ease: 'none' }],
-    [T('r11') - 0.35, { x: -2830, y: 540, k: 1.05 }, 1.1],
+    [T('r11') + 0.3, { x: -2830, y: 540, k: 1.05 }, 1.1],
     [null, { x: -2840 }, Math.max(0.5, T('r13') - T('r11') - 0.9), { ease: 'none' }],
-    [T('r13') - 0.3, { x: -3233, y: 1160, rx: 50, rz: -14, k: 0.85 }, 1.4],
+    [T('r13') + 0.3, { x: -3233, y: 1160, rx: 50, rz: -14, k: 0.85 }, 1.4],
     [null, { x: -3243 }, Math.max(0.5, s.end - T('r13') - 1.2), { ease: 'none' }],
   ]);
-  [T('r3') - 0.4, T('r4') - 0.35, T('r8') - 0.35, T('r11') - 0.35, T('r13') - 0.3].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
+  [T('r3') - 0.4, T('r4') - 0.35, T('r8') - 0.35, T('r11') + 0.3, T('r13') + 0.3].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
 });

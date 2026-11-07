@@ -2,8 +2,10 @@
 // 桌面的变换写成 rotateX(rx) rotateZ(rz)：先在桌面里转，再朝镜头倾斜，透视自然；标签用反向的旋转抵消，始终正对镜头。
 // rig.track 与引擎的 cam.track 同一写法：每段显式给出起点与终点，画面只由 t 决定。
 
-function makeDesk(root, start) {
-  const view = h('div', 'view', root);
+// 场景里先建画布与引擎镜头（scan.js 据它量缩放），把画布传进来。引擎镜头保持不动，镜头的运动由这里的 rig（桌面的位置、倾角与远近）
+// 完成，规则相同：站与站之间的推拉两秒内走完，停留时只朝一个方向极慢横移、不缩放（docs/guides/scenes.md 第 3 节）
+function makeDesk(world, start) {
+  const view = h('div', 'view', world);
   const desk = h('div', 'desk', view);
   const st = { x: 960, y: 540, rx: 30, rz: 0, k: 1, ...start };
   const apply = () => { desk.style.left = st.x + 'px'; desk.style.top = st.y + 'px'; desk.style.transform = `scale3d(${st.k}, ${st.k}, ${st.k}) rotateX(${st.rx}deg) rotateZ(${st.rz}deg)`; };

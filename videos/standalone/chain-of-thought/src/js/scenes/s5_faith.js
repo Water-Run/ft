@@ -4,7 +4,9 @@
 //   S10（Nisbett & Wilson，1977）：商店里四双一模一样的丝袜，最右边的被选中约为最左边的四倍；没人主动提位置，直接问几乎都否认，
 //     「usually with a worried glance at the interviewer」。论文只给了最右与最左的倍数，画面只比较这两双。
 scene('faith', ({ root, s, c0 }) => {
-  const { desk, rig, board } = makeDesk(root, { x: 1880, y: 560, rx: 26, rz: -2, k: 1.15 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { desk, rig, board } = makeDesk(world, { x: 1880, y: 560, rx: 26, rz: -2, k: 1.15 });
 
   // ── 第二次的纸：写在答案前面的那段思考 ──
   const S2 = sheet(desk, -1100, -340, 600, 700);
@@ -54,7 +56,7 @@ scene('faith', ({ root, s, c0 }) => {
     { label: 'DeepSeek R1', value: 39, max: 100, text: '39%' },
   ], 44, 802, 330, 56, 250);
   growRows(rowsA, [T('f6', '四分之一') - 0.4, T('f7', '不到') - 0.3]);
-  const aN = h('div', 'note', A, 'MMLU 与 GPQA 平均'); px(aN, 44, 922); css(aN, { fontSize: '22px', color: '#707070' }); show(aN, T('f7', '四成'), { y: 0, d: 0.4 });
+  const aN = h('div', 'note', A, 'MMLU 与 GPQA 平均'); px(aN, 44, 922); css(aN, { fontSize: '22px', color: '#707070' }); show(aN, T('f7') - 0.1, { y: 0, d: 0.4 });
 
   // ── 1977：商店里的丝袜 ──
   const Nw = sheet(desk, 720, -440, 900, 900);
@@ -88,9 +90,11 @@ scene('faith', ({ root, s, c0 }) => {
   const q1 = h('div', 'gloss', Nw, '问理由：没有一个人主动提到位置'); px(q1, 44, 690); css(q1, { fontSize: '28px' });
   const q2 = h('div', 'gloss', Nw, '直接问是不是位置：几乎所有人都说不是'); px(q2, 44, 746); css(q2, { fontSize: '28px' });
   show(q1, T('f12', '没有一个人') - 0.2, { y: 8, d: 0.45 }); show(q2, T('f13', '都说不是') - 0.4, { y: 8, d: 0.45 });
+  sfx('pop', T('f12', '没有一个人') - 0.2, { g: 0.25 }); sfx('pop', T('f13', '都说不是') - 0.4, { g: 0.25 });
   const en = ln(Nw, '“… usually with a worried glance at the interviewer …”', 44, 806, 24, 'g'); css(en, { fontStyle: 'italic' });
   const enZ = ln(Nw, '多半还会不放心地看调查员一眼', 44, 846, 26);
   show(en, T('f14', '瞟') - 0.3, { y: 6, d: 0.45 }); show(enZ, T('f14', '调查员') - 0.2, { y: 6, d: 0.45 });
+  sfx('tick', T('f14', '瞟') - 0.3, { g: 0.25 }); sfx('blip', T('f15', '疯了') - 0.3, { g: 0.2 });
 
   rig.track(s.start, { x: 1880, y: 560, k: 1.15 }, [
     [c0 + 0.1, { x: 1870 }, Math.max(0.5, T('f2') - c0 - 0.6), { ease: 'none' }],
@@ -98,10 +102,10 @@ scene('faith', ({ root, s, c0 }) => {
     [null, { x: 835 }, Math.max(0.5, T('f5') - T('f2') - 1.2), { ease: 'none' }],
     [T('f5') - 0.3, { x: 845, y: 330, k: 1.05 }, 1.0],
     [null, { x: 835 }, Math.max(0.5, T('f8') - T('f5') - 1.0), { ease: 'none' }],
-    [T('f8') - 0.45, { x: -190, y: 690, k: 1.0 }, 1.1],
+    [T('f8') + 0.2, { x: -190, y: 690, k: 1.0 }, 1.1],
     [null, { x: -200 }, Math.max(0.5, T('f11') - T('f8') - 1.2), { ease: 'none' }],
     [T('f11') - 0.4, { x: -190, y: 380, k: 1.0 }, 1.0],
     [null, { x: -200 }, Math.max(0.5, s.end - T('f11') - 0.9), { ease: 'none' }],
   ]);
-  [T('f2') - 0.45, T('f8') - 0.45].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
+  [T('f2') - 0.45, T('f8') + 0.2].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
 });

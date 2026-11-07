@@ -8,8 +8,8 @@
   "titles": {
     "zh": "CoT：先思考，再回答"
   },
-  "stage": "build",
-  "next": "实现：开场（o1–o15 与片名）作有声代表段，之后逐章铺开；封面已出",
+  "stage": "render",
+  "next": "正式渲染与封装（1080p60），再做交付前总闸门与成片自查",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -66,7 +66,9 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4
+    "mb": 4,
+    "gpu": 1,
+    "workers": 4
   },
   "audio": {
     "music": "tools/music.py",

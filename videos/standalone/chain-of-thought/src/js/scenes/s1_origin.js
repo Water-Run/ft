@@ -1,7 +1,9 @@
 // 01 一句话：两篇论文像印出来的纸摊在桌上。左边谷歌的思维链论文（S1，图 1 的例题，中文为翻译），右边「Let's think step by step」（S2）。
 // 数字：S1 表 2（PaLM 540B，GSM8K 17.9% → 56.9%）；S2 摘要（text-davinci-002，GSM8K 10.4% → 40.7%）。
 scene('origin', ({ root, s, c0 }) => {
-  const { desk, rig } = makeDesk(root, { x: 1500, y: 560, rx: 26, rz: -2, k: 1.1 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { desk, rig } = makeDesk(world, { x: 1500, y: 560, rx: 26, rz: -2, k: 1.1 });
   const W = 820, H = 960;
   const A = sheet(desk, -900, -470, W, H), B = sheet(desk, 40, -470, W, H);
   show(A, c0 + 0.1, { y: 0, d: 0.5 }); show(A.shadowEl, c0 + 0.1, { y: 0, d: 0.5, a: 0.7 });
@@ -82,12 +84,12 @@ scene('origin', ({ root, s, c0 }) => {
     [c0 + 0.1, { x: 1490 }, Math.max(0.5, Tend('h3') - c0 - 0.6), { ease: 'none' }],
     [Tend('h3') - 0.4, { y: 300 }, 1.0],                                   // 往下看：正确率
     [null, { x: 1482 }, Math.max(0.5, Tend('h4') - Tend('h3') - 0.65), { ease: 'none' }],
-    [Tend('h4') + 0.1, { x: 470, y: 560 }, 1.2],
+    [T('h5') + 0.4, { x: 470, y: 560 }, 1.2],
     [null, { x: 462 }, Math.max(0.5, Tend('h7') - Tend('h4') - 1.6), { ease: 'none' }],
     [Tend('h7') + 0.05, { y: 300 }, 1.0],
     [null, { x: 456 }, Math.max(0.5, Tend('h8') - Tend('h7') - 1.2), { ease: 'none' }],
     [Tend('h8') + 0.1, { x: 980, y: 545, k: 0.9 }, 1.3],
     [null, { x: 970 }, Math.max(0.5, s.end - Tend('h8') - 1.6), { ease: 'none' }],
   ]);
-  [Tend('h4') + 0.1, Tend('h8') + 0.1].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
+  [T('h5') + 0.4, Tend('h8') + 0.1].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
 });

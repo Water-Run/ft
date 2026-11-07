@@ -4,7 +4,9 @@
 //   C 人的草稿纸与模型的回答纸：先写过程那一次（L1 n5-03 think_first），两张纸叠到一起
 //   D 一串点的对照（S1 表 6，LaMDA 137B）与本片 100 道题（L1）
 scene('paper', ({ root, s, c0 }) => {
-  const { desk, rig, board } = makeDesk(root, { x: 1305, y: 520, rx: 26, rz: -2, k: 1.15 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { desk, rig, board } = makeDesk(world, { x: 1305, y: 520, rx: 26, rz: -2, k: 1.15 });
 
   // ── A：第一次的纸，答案拆成 4 块 ──
   const S1 = sheet(desk, -1000, -340, 560, 700);
@@ -151,7 +153,7 @@ scene('paper', ({ root, s, c0 }) => {
     show(tr_, t, { y: 0, d: 0.3 }); fromTo(b, t + 0.05, { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'power2.out' }); show(n, t + 0.45, { y: 0, d: 0.3 });
   });
   const sum = h('div', 'gloss', E, '只报答案：100 道对 39 道<br>先写过程：100 道对 99 道'); px(sum, 44, 616); css(sum, { fontSize: '28px' });
-  show(sum, T('c25', '只错') - 0.2, { y: 8, d: 0.45 }); sfx('tick', T('c25', '只错'), { g: 0.4 });
+  show(sum, T('c25') - 0.1, { y: 8, d: 0.45 }); sfx('tick', T('c25', '只错'), { g: 0.4 });
 
   // 镜头：A（看 token 与一摞）→ B → C → D → E
   rig.track(s.start, { x: 1305, y: 520, k: 1.15 }, [
@@ -164,8 +166,8 @@ scene('paper', ({ root, s, c0 }) => {
     [null, { x: -1310 }, Math.max(0.5, Tend('c19') - T('c13') - 1.2), { ease: 'none' }],
     [Tend('c19') + 0.15, { x: -2578, y: 520, k: 1.05 }, 1.2],
     [null, { x: -2588 }, Math.max(0.5, T('c23') - Tend('c19') - 1.6), { ease: 'none' }],
-    [T('c23') - 0.4, { x: -3270, y: 520, k: 1.0 }, 1.2],
+    [T('c23') + 0.3, { x: -3270, y: 520, k: 1.0 }, 1.2],
     [null, { x: -3280 }, Math.max(0.5, s.end - T('c23') - 0.8), { ease: 'none' }],
   ]);
-  [T('c4') - 0.4, Tend('c8') + 0.1, T('c13') - 0.3, Tend('c19') + 0.15, T('c23') - 0.4].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
+  [T('c4') - 0.4, Tend('c8') + 0.1, T('c13') - 0.3, Tend('c19') + 0.15, T('c23') + 0.3].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
 });

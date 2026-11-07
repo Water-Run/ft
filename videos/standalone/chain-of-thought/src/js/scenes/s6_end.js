@@ -1,7 +1,9 @@
 // 结尾：再看开头那三次回答（分好组的三张纸），镜头基本不动，讲到哪一张，就把另外两张压暗。
 // 数字：L1 先写过程 99/100、只报答案 39/100；L3 §3 只报答案 4 个 token；S9 的提示原文。
 scene('end', ({ root, s, c0 }) => {
-  const { desk, rig } = makeDesk(root, { x: 950, y: 470, rx: 26, rz: -2, k: 0.86 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { desk, rig } = makeDesk(world, { x: 950, y: 470, rx: 26, rz: -2, k: 0.86 });
 
   const S1 = sheet(desk, -1000, -340, 560, 700), S2 = sheet(desk, -270, -340, 560, 700), S3 = sheet(desk, 370, -340, 620, 700, 30, 1);
   const all = [S1, S2, S3];
@@ -26,12 +28,12 @@ scene('end', ({ root, s, c0 }) => {
     const lab = h('div', 'note', desk, txt); css(lab, { position: 'absolute', left: (x0 + x1) / 2 + 'px', top: '402px', fontSize: '36px', color: '#1c1c1c', transform: 'translateX(-50%)' });
     fromTo(l, t, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out' }); show(lab, t + 0.2, { y: 6, d: 0.4 });
   };
-  bracket(-1000, -440, '不写过程', c0 + 0.6);
+  bracket(-1000, -440, '不写过程', c0 + 0.6); sfx('whoosh', c0, { g: 0.2 });
   bracket(-270, 990, '写了过程', c0 + 0.7);
 
   // 讲到哪一张，另外两张压暗（每段首尾相接，不重叠）
-  const focus = (keep, t) => all.forEach((p) => to(p, t, { opacity: keep.includes(p) ? 1 : 0.3, duration: 0.45 }));
-  focus([S1], T('e2') - 0.1);
+  const focus = (keep, t) => { all.forEach((p) => to(p, t, { opacity: keep.includes(p) ? 1 : 0.3, duration: 0.45 })); sfx('tick', t, { g: 0.22 }); };
+  focus([S1], T('e2') + 0.4);
   show(n1, T('e2', '四块') - 0.2, { y: 6, d: 0.4 }); sfx('tick', T('e2', '四块'), { g: 0.3 });
   focus([S2], T('e3') - 0.1);
   const ok2 = h('div', 'chk', S2); px(ok2, 420, 506); show(ok2, T('e3', '算对') - 0.1, { y: 0, d: 0.3 });
@@ -39,10 +41,10 @@ scene('end', ({ root, s, c0 }) => {
   draw(arc, T('e4', '补的') - 0.6, 0.8); show(head, T('e4', '补的') + 0.15, { y: 0, d: 0.2 });
   focus([S1, S2, S3], Tend('e4') + 0.2);
   const stat = h('div', 'gloss', desk, '先写过程：100 道对 99 道<br>只报答案：100 道对 39 道'); px(stat, -270, 470); css(stat, { fontSize: '34px' });
-  show(stat, T('e5', '算得更对') - 0.4, { y: 8, d: 0.45 });
+  show(stat, T('e5') - 0.1, { y: 8, d: 0.45 }); sfx('pop', T('e5') - 0.1, { g: 0.25 });
   focus([S2], T('e6') - 0.1);
   const b2 = band(S2, 34, 154, 492, 300); show(b2, T('e6', '草稿') - 0.3, { y: 0, d: 0.5 });
-  hide(stat, T('e6') - 0.1, { y: 0, d: 0.3 });
+  hide(stat, T('e6', '草稿') - 0.3, { y: 0, d: 0.3 });
   focus([S3], T('e7') - 0.1);
   p3.forEach((e) => to(e, T('e7', '对不上') - 0.4, { color: '#707070', duration: 0.5 }));
   // 那条提示：起了作用，却没写进理由里

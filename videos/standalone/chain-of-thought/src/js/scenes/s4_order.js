@@ -1,7 +1,9 @@
 // 04 顺序：回到第三次。答案先写下，过程往往去凑它（L1 n5-03 answer_first；L3 §4：答错的 64 次里 38 次凑回第一行的错数）。
 // 对照：S1 表 6（LaMDA 137B，GSM8K：直接回答 6.5，答案后写过程 6.1）；本片五位数 20 道：只报答案 3、先写过程 20、先写答案 2。
 scene('order', ({ root, s, c0 }) => {
-  const { desk, rig, board } = makeDesk(root, { x: 1727, y: 560, rx: 26, rz: -2, k: 1.3 });
+  const world = h('div', 'world', root);
+  makeCamera(world);                              // 引擎镜头不动；运动由 rig 完成
+  const { desk, rig, board } = makeDesk(world, { x: 1727, y: 560, rx: 26, rz: -2, k: 1.3 });
 
   // ── 第三次的纸 ──
   const S3 = sheet(desk, -900, -350, 620, 700);
@@ -51,8 +53,8 @@ scene('order', ({ root, s, c0 }) => {
   const ov = inkLayer(desk, 1, 1);
   const bend = svg('path', { d: `M${TX0 + 11 * TG + 34} ${TYY - 6} C ${TX0 + 9 * TG} ${TYY - 170}, ${TX0 + 3 * TG} ${TYY - 170}, ${TX0 + 2 * TG + 34} ${TYY - 6}`, fill: 'none', stroke: '#a5402d', 'stroke-width': 2 }, ov);
   draw(bend, T('s4', '摆在') - 0.2, 0.9);
-  const stat = board('<div class="gloss" style="position:static">先写答案、答错的 64 次里<br>有 38 次，过程最后凑回了开头那个错数</div>', TX0, TYY + 160, 0);
-  show(stat, T('s4', '往往') - 0.15, { y: 8, d: 0.45 }); sfx('blip', T('s4', '往往'), { g: 0.3 });
+  const stat = board('<div class="gloss" style="position:static">答错的 64 次里<br>38 次凑回了开头的错数</div>', TX0, TYY + 160, 0);
+  show(stat, T('s4') + 0.1, { y: 8, d: 0.45 }); sfx('blip', T('s4') + 0.1, { g: 0.3 });
 
   // ── 对照：论文与本片 ──
   const P = sheet(desk, 1180, -360, 760, 760);
@@ -81,10 +83,10 @@ scene('order', ({ root, s, c0 }) => {
     [c0 + 0.1, { x: 1717 }, Math.max(0.5, T('s3') - c0 - 0.6), { ease: 'none' }],
     [T('s3') - 0.4, { x: 454, y: 560, k: 1.1 }, 1.1],
     [null, { x: 444 }, Math.max(0.5, T('s5') - T('s3') - 1.2), { ease: 'none' }],
-    [T('s5') - 0.45, { x: -420, y: 540, k: 1.05 }, 1.1],
+    [T('s5') + 0.9, { x: -420, y: 540, k: 1.05 }, 1.1],
     [null, { x: -430 }, Math.max(0.5, T('s7') - T('s5') - 0.9), { ease: 'none' }],
     [T('s7') - 0.4, { x: 1610, y: 540, k: 1.1 }, 1.3],
     [null, { x: 1600 }, Math.max(0.5, s.end - T('s7') - 1.0), { ease: 'none' }],
   ]);
-  [T('s3') - 0.4, T('s5') - 0.45, T('s7') - 0.4].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
+  [T('s3') - 0.4, T('s5') + 0.9, T('s7') - 0.4].forEach((t) => sfx('whoosh', t, { g: 0.22 }));
 });
