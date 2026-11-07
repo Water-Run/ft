@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>RDP 关键帧</title>
+<!-- 审片页用的关键帧：三个都属于 Windows 视觉谱系的方向，各一张标题、一张信息最密的画面。
+     ?k=A1|A2|B1|B2|C1|C2。静态页面，用 look.js --url "/design/keyframes.html?k=A2" --size 1920x1080 截图。
+     画面数字取自 research/FACTS.md：G4 10 字节、G6 47 字节、G5 14 字节、G7 字形「d」、L2 667 / 950 / 23159 字节。
+     字体只用仓库自带的 Inter、Noto Sans SC、JetBrains Mono（Segoe UI 不随仓库发布）；不用 Windows 徽标。 -->
+<style>
+@font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+@font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+body { font-family: "Inter", "Sans SC", sans-serif; -webkit-font-smoothing: antialiased; position: relative; }
+.abs { position: absolute; }
+.k { display: none; position: absolute; inset: 0; overflow: hidden; }
+.mono { font-family: "Mono", monospace; }
+
+/* ── 常驻元素（系列约定：底部字幕带与秒尺、左上剩余秒数、右上仪表） ── */
+.cap { position: absolute; left: 0; right: 0; bottom: 46px; height: 64px; display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 500; }
+.ruler { position: absolute; left: 120px; right: 120px; bottom: 30px; height: 4px; }
+.ruler i { position: absolute; left: 0; top: 0; bottom: 0; }
+.left { position: absolute; left: 60px; top: 44px; font-size: 40px; font-weight: 300; letter-spacing: 0.02em; }
+.left small { font-size: 24px; margin-left: 8px; }
+
+/* ═════════ A · Fluent（Windows 11）：并排比较两条路径 ═════════ */
+.A { background: radial-gradient(1200px 800px at 78% 30%, #4f8fe0 0%, rgba(79,143,224,0) 60%), radial-gradient(1000px 900px at 12% 85%, #2b5fb8 0%, rgba(43,95,184,0) 65%), linear-gradient(135deg, #0b2a5c, #163f86 55%, #0e2f6a); color: #fff; }
+.A .win { position: absolute; background: rgba(243,243,243,0.92); border-radius: 8px; box-shadow: 0 24px 60px rgba(0,0,30,0.45), 0 0 0 1px rgba(255,255,255,0.35); color: #1b1b1b; overflow: hidden; }
+.A .bar { height: 48px; display: flex; align-items: center; padding: 0 16px; font-size: 24px; color: #333; }
+.A .bar b { font-weight: 600; margin-left: 10px; }
+.A .ctl { margin-left: auto; display: flex; gap: 30px; }
+.A .ctl i { width: 12px; height: 12px; border: 1.5px solid #444; display: block; }
+.A .ctl i:first-child { height: 0; border-width: 1.5px 0 0; margin-top: 6px; }
+.A .ctl i:last-child { border: 0; position: relative; }
+.A .ctl i:last-child::before, .A .ctl i:last-child::after { content: ""; position: absolute; left: -2px; top: 5px; width: 16px; height: 1.5px; background: #444; transform: rotate(45deg); }
+.A .ctl i:last-child::after { transform: rotate(-45deg); }
+.A .doc { padding: 22px 28px; font-family: "Mono"; font-size: 24px; line-height: 34px; color: #222; }
+.A .lane { position: absolute; left: 690px; width: 540px; height: 190px; border-radius: 8px; background: rgba(255,255,255,0.10); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22); }
+.A .lane .t { position: absolute; left: 22px; top: 14px; font-size: 24px; font-weight: 600; letter-spacing: 0.04em; }
+.A .lane .s { position: absolute; left: 22px; bottom: 14px; font-size: 24px; opacity: 0.8; }
+.A .chip { position: absolute; border-radius: 6px; font-size: 24px; display: flex; align-items: center; justify-content: center; font-family: "Mono"; }
+.A .cap { color: #fff; text-shadow: 0 2px 10px rgba(0,0,40,0.5); }
+.A .ruler { background: rgba(255,255,255,0.25); } .A .ruler i { background: #9fd0ff; }
+.A .gauge { position: absolute; right: 60px; top: 40px; width: 360px; padding: 14px 18px; border-radius: 8px; background: rgba(255,255,255,0.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); font-size: 24px; }
+.A .gauge .row { display: flex; justify-content: space-between; margin-top: 6px; font-family: "Mono"; font-size: 24px; }
+
+/* ═════════ B · Classic（Windows 2000）：追踪同一扇窗口 ═════════ */
+.B { background: #3a6ea5; color: #000; font-family: "Sans SC", "Inter"; }
+.B .win { position: absolute; background: #d4d0c8; box-shadow: inset -1px -1px #404040, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #d4d0c8; padding: 4px; }
+.B .bar { height: 38px; background: linear-gradient(90deg, #0a246a, #a6caf0); color: #fff; font-weight: 700; font-size: 24px; display: flex; align-items: center; padding: 0 6px; }
+.B .bar .ctl { margin-left: auto; display: flex; gap: 2px; }
+.B .bar .ctl i { width: 28px; height: 26px; background: #d4d0c8; box-shadow: inset -1px -1px #404040, inset 1px 1px #fff; color: #000; font-style: normal; font-size: 24px; line-height: 20px; text-align: center; font-family: "Mono"; font-weight: 800; }
+.B .menu { font-size: 24px; padding: 4px 6px; display: flex; gap: 18px; }
+.B .well { background: #fff; box-shadow: inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #404040; }
+.B .cap { color: #000; font-family: "Sans SC"; }
+.B .capbar { position: absolute; left: 0; right: 0; bottom: 0; height: 130px; background: #d4d0c8; box-shadow: inset 0 1px #fff, inset 0 2px #d4d0c8; }
+.B .ruler { background: #808080; box-shadow: inset 1px 1px #404040; } .B .ruler i { background: #0a246a; }
+.B .left { color: #fff; font-family: "Mono"; font-weight: 500; }
+.B .gauge { position: absolute; right: 50px; top: 36px; width: 380px; }
+.B .hex { font-family: "Mono"; font-size: 24px; line-height: 30px; padding: 10px 14px; }
+.B .hex .hl { background: #0a246a; color: #fff; }
+.B .px { display: grid; gap: 2px; }
+.B .px i { width: 20px; height: 20px; background: #fff; box-shadow: inset 0 0 0 1px #c8c8c8; display: block; }
+.B .px i.on { background: #000; box-shadow: none; }
+
+/* ═════════ C · Metro（Windows 8）：字节当磁贴，按面积比 ═════════ */
+.C { background: #1b1b1b; color: #fff; }
+.C .h { position: absolute; font-weight: 200; letter-spacing: -0.01em; }
+.C .tile { position: absolute; color: #fff; padding: 14px 16px; font-size: 24px; overflow: hidden; }
+.C .tile .n { position: absolute; left: 16px; bottom: 12px; font-size: 44px; font-weight: 300; letter-spacing: -0.02em; }
+.C .lbl { position: absolute; font-size: 24px; font-weight: 300; color: #cfcfcf; }
+.C .cap { color: #fff; font-weight: 400; }
+.C .ruler { background: #3a3a3a; } .C .ruler i { background: #00706e; }
+.C .left { color: #fff; font-weight: 200; font-size: 48px; }
+.C .gauge { position: absolute; right: 60px; top: 40px; text-align: right; }
+</style>
+</head>
+<body>
+<div id="stage" style="position:absolute; inset:0; background:#000;">
+
+<!-- ───────── A1 标题 ───────── -->
+<div class="k A" id="A1">
+  <div class="win" style="left:250px; top:250px; width:880px; height:500px;">
+    <div class="bar"><span style="color:#005a9e">■</span><b>远程桌面连接</b><span class="ctl"><i></i><i></i><i></i></span></div>
+    <div style="padding:40px 48px;">
+      <div style="font-size: 24px; color:#555;">计算机</div>
+      <div style="margin-top:10px; height:52px; border-radius:6px; background:#fff; box-shadow: inset 0 -2px #0067c0, 0 0 0 1px #d0d0d0; font-size: 24px; display:flex; align-items:center; padding:0 18px;">公司的电脑</div>
+      <div style="margin-top:60px; font-size: 104px; font-weight:700; letter-spacing:-0.02em; color:#111;">192<span style="font-size: 50px; font-weight:500; margin-left:10px;">秒了解</span> RDP</div>
+      <div style="margin-top:6px; font-size: 34px; color:#333; font-family:'Sans SC';">Windows 远程的优雅实现</div>
+    </div>
+  </div>
+  <div class="abs" style="left:1210px; top:330px; width:480px; height:330px; border-radius:8px; background:rgba(255,255,255,0.10); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25);">
+    <div class="abs" style="left:28px; top:22px; font-size: 24px; opacity:.85;">画面 ↓</div>
+    <div class="abs" style="left:28px; bottom:22px; font-size: 24px; opacity:.85;">键盘鼠标 ↑</div>
+    <div class="abs mono" style="right:28px; top:22px; font-size: 24px; opacity:.85;">TCP 3389</div>
+    <svg class="abs" style="left:0; top:0;" width="480" height="330"><path d="M120 90 C 240 90, 240 165, 360 165" stroke="#9fd0ff" stroke-width="3" fill="none"/><path d="M360 200 C 240 200, 240 260, 120 260" stroke="#fff" stroke-width="3" fill="none" stroke-dasharray="8 8"/></svg>
+  </div>
+  <div class="left">192<small>秒</small></div>
+  <div class="ruler"><i style="width:0%"></i></div>
+</div>
+
+<!-- ───────── A2 最密：两条路径并排 ───────── -->
+<div class="k A" id="A2">
+  <div class="abs" style="left:110px; top:150px; font-size: 24px; opacity:.85;">你的电脑</div>
+  <div class="win" style="left:110px; top:190px; width:540px; height:560px;">
+    <div class="bar"><b>notes.txt - 记事本</b><span class="ctl"><i></i><i></i><i></i></span></div>
+    <div class="doc">Remote Desktop Protocol<br><br>The server sends drawing<br>orders instead of bitmaps.<br><span style="background:#cfe4fa; box-shadow: 0 0 0 2px #0067c0;">The client keeps</span><span style="opacity:.25">▍</span></div>
+  </div>
+  <div class="abs" style="left:1270px; top:150px; font-size: 24px; opacity:.85;">公司的电脑</div>
+  <div class="win" style="left:1270px; top:190px; width:540px; height:560px;">
+    <div class="bar"><b>notes.txt - 记事本</b><span class="ctl"><i></i><i></i><i></i></span></div>
+    <div class="doc">Remote Desktop Protocol<br><br>The server sends drawing<br>orders instead of bitmaps.<br>The client keeps▍</div>
+  </div>
+  <!-- 上：视频流 -->
+  <div class="lane" style="top:240px;">
+    <div class="t">视频流</div><div class="s">抓整屏 → 编码 → 发送 → 解码</div>
+    <div class="chip" style="left:150px; top:62px; width:120px; height:56px; background:rgba(255,255,255,0.85); color:#333;">帧</div>
+    <div class="chip" style="left:290px; top:62px; width:120px; height:56px; background:rgba(255,255,255,0.65); color:#333;">帧</div>
+    <div class="chip" style="left:430px; top:62px; width:90px; height:56px; background:rgba(255,255,255,0.45); color:#333;">…</div>
+  </div>
+  <!-- 下：RDP -->
+  <div class="lane" style="top:500px;">
+    <div class="t">RDP</div><div class="s">发绘图命令，你的电脑自己画</div>
+    <div class="chip" style="left:250px; top:72px; width:200px; height:44px; background:#9fd0ff; color:#06305e;">写字 · 47 B</div>
+  </div>
+  <svg class="abs" style="left:0; top:0;" width="1920" height="1080"><path d="M1270 595 L1230 595" stroke="#9fd0ff" stroke-width="3"/><path d="M690 595 L650 595" stroke="#9fd0ff" stroke-width="3"/><path d="M1270 335 L1230 335" stroke="rgba(255,255,255,.6)" stroke-width="3"/><path d="M690 335 L650 335" stroke="rgba(255,255,255,.6)" stroke-width="3"/></svg>
+  <div class="abs" style="left:690px; top:710px; width:540px; text-align:center; font-size: 24px; opacity:.85; font-family:'Sans SC';">字形 0–8 已在缓存里 · 只报编号</div>
+  <div class="gauge">这一步传了
+    <div class="row"><span>RDP</span><span>47 B</span></div>
+    <div class="row" style="opacity:.75"><span>视频</span><span>667 B</span></div>
+  </div>
+  <div class="left">97<small>秒</small></div>
+  <div class="cap">以后只报编号：一行 9 个字，47 个字节</div>
+  <div class="ruler"><i style="width:49.5%"></i></div>
+</div>
+
+<!-- ───────── B1 标题 ───────── -->
+<div class="k B" id="B1">
+  <div class="win" style="left:420px; top:220px; width:1080px; height:560px;">
+    <div class="bar">远程桌面连接<span class="ctl"><i>_</i><i>□</i><i>×</i></span></div>
+    <div style="display:flex; gap:40px; padding:40px 44px;">
+      <div class="well" style="width:300px; height:380px; display:flex; align-items:center; justify-content:center;">
+        <div style="text-align:center;">
+          <div style="width:180px; height:120px; margin:0 auto; background:#3a6ea5; box-shadow: inset 0 0 0 6px #d4d0c8, inset 0 0 0 7px #404040;"></div>
+          <div style="width:60px; height:28px; margin:0 auto; background:#d4d0c8; box-shadow: inset -1px -1px #404040, inset 1px 1px #fff;"></div>
+          <div style="width:140px; height:10px; margin:0 auto; background:#d4d0c8; box-shadow: inset -1px -1px #404040, inset 1px 1px #fff;"></div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size: 120px; font-weight:800; font-family:'Inter'; letter-spacing:-0.03em; line-height:1;">192<span style="font-size: 48px; font-weight:700; font-family:'Sans SC'; margin-left:12px;">秒了解</span></div>
+        <div style="font-size: 120px; font-weight:800; font-family:'Inter'; letter-spacing:-0.02em; line-height:1.1; color:#0a246a;">RDP</div>
+        <div style="margin-top:22px; font-size: 32px;">Windows 远程的优雅实现</div>
+        <div style="margin-top:40px; display:flex; gap:10px;">
+          <div class="win" style="position:relative; width:150px; height:44px; display:flex; align-items:center; justify-content:center; font-size: 24px; box-shadow: inset -1px -1px #000, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #d4d0c8, 0 0 0 1px #000;">连接(<u>N</u>)</div>
+          <div class="win" style="position:relative; width:150px; height:44px; display:flex; align-items:center; justify-content:center; font-size: 24px;">选项(<u>O</u>) &gt;&gt;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="capbar"></div>
+  <div class="left">192</div>
+  <div class="ruler"><i style="width:0%"></i></div>
+</div>
+
+<!-- ───────── B2 最密：一扇窗口 + 线上的字节 ───────── -->
+<div class="k B" id="B2">
+  <!-- 线上的字节：抓包窗口 -->
+  <div class="win" style="left:60px; top:120px; width:820px; height:760px;">
+    <div class="bar">线上的字节 —— RDP 发来的命令<span class="ctl"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="menu"><span>命令</span><span>字节</span><span>效果</span></div>
+    <div class="well hex" style="height:330px;">
+      <div style="color:#555">09 0a 3c 00 04 00 03 73 02 06</div>
+      <div style="color:#555; font-family:'Sans SC'; font-size: 24px; margin-bottom:8px;">填色 · 1024×768 · 10 B</div>
+      <div style="color:#555">03 37 00 10 00 03 07 03 31 00 …</div>
+      <div style="color:#555; font-family:'Sans SC'; font-size: 24px; margin-bottom:8px;">存字形 L g O → 缓存 49 50 51 · 68 B</div>
+      <div><span class="hl">09 13 ff 70 07 00 03 ff ff 00 74 3b</span></div>
+      <div><span class="hl">00 0e 00 71 00 42 00 7e 00 00 80 …</span></div>
+      <div style="font-family:'Sans SC'; font-size: 24px;">写一行字 · 字形 0–8 · 47 B</div>
+    </div>
+    <div style="display:flex; gap:20px; padding:16px 6px 0;">
+      <div>
+        <div style="font-size: 24px; margin-bottom:8px;">缓存里的字形「d」 5×9 · 9 B</div>
+        <div class="px" id="glyph" style="grid-template-columns: repeat(5, 20px);"></div>
+      </div>
+      <div class="mono" style="font-size: 24px; line-height:22px; padding-top:34px;">08<br>08<br>08<br>78<br>88<br>88<br>88<br>88<br>78</div>
+      <div style="font-size: 24px; padding-top:30px; line-height:30px; max-width:300px;">每个字形只传一次。<br>之后只报编号，<br>你的电脑照着画。</div>
+    </div>
+  </div>
+  <!-- 同一扇窗口：客户端上的记事本 -->
+  <div class="win" style="left:930px; top:120px; width:930px; height:760px;">
+    <div class="bar">notes.txt - 记事本（你的电脑上）<span class="ctl"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="menu"><span>文件(<u>F</u>)</span><span>编辑(<u>E</u>)</span><span>格式(<u>O</u>)</span><span>查看(<u>V</u>)</span><span>帮助(<u>H</u>)</span></div>
+    <div class="well mono" style="height:670px; padding:16px 20px; font-size: 24px; line-height:36px;">
+      Remote Desktop Protocol<br><br>The server sends drawing<br>orders instead of bitmaps.<br><span style="outline:2px dotted #0a246a; outline-offset:3px;">The client keeps</span>▍
+    </div>
+  </div>
+  <div class="capbar"></div>
+  <div class="left">97</div>
+  <div class="cap">以后只报编号：一行 9 个字，47 个字节</div>
+  <div class="ruler"><i style="width:49.5%"></i></div>
+  <div class="gauge win" style="padding:8px 12px; font-size: 24px;">
+    <div style="display:flex; justify-content:space-between;" class="mono"><span>这一步 RDP</span><span>47 B</span></div>
+    <div style="display:flex; justify-content:space-between; color:#404040;" class="mono"><span>视频</span><span>667 B</span></div>
+  </div>
+</div>
+
+<!-- ───────── C1 标题 ───────── -->
+<div class="k C" id="C1">
+  <div class="h" style="left:120px; top:120px; font-size: 64px;">开始</div>
+  <div class="tile" style="left:120px; top:260px; width:620px; height:300px; background:#1b64c4;"><div style="font-size: 24px;">远程桌面连接</div><div class="n" style="font-size: 170px; font-weight:600; bottom:6px;">RDP</div></div>
+  <div class="tile" style="left:750px; top:260px; width:300px; height:300px; background:#007a00;"><div>Windows 自带</div><div class="n">mstsc</div></div>
+  <div class="tile" style="left:120px; top:570px; width:300px; height:145px; background:#b23d18;"><div>端口</div><div class="n" style="font-size: 40px;">3389</div></div>
+  <div class="tile" style="left:430px; top:570px; width:310px; height:145px; background:#603cba;"><div>诞生</div><div class="n" style="font-size: 40px;">1998</div></div>
+  <div class="tile" style="left:750px; top:570px; width:300px; height:145px; background:#00706e;"><div>命令，而不是画面</div></div>
+  <div class="h" style="left:1150px; top:300px; font-size: 150px; font-weight:200;">192<span style="font-size: 60px; margin-left:12px; font-family:'Sans SC'; font-weight:300;">秒了解</span></div>
+  <div class="h" style="left:1150px; top:480px; font-size: 150px; font-weight:600;">RDP</div>
+  <div class="h" style="left:1156px; top:680px; font-size: 36px; font-weight:300; font-family:'Sans SC';">Windows 远程的优雅实现</div>
+  <div class="left">192</div>
+  <div class="ruler"><i style="width:0%"></i></div>
+</div>
+
+<!-- ───────── C2 最密：字节按面积成磁贴 ───────── -->
+<div class="k C" id="C2">
+  <div class="h" style="left:120px; top:80px; font-size: 54px;">同一处变化，传多少字节</div>
+  <div class="lbl" style="left:400px; top:180px;">RDP 命令</div>
+  <div class="lbl" style="left:640px; top:180px;">当成视频（H.264 一帧）</div>
+  <!-- 磁贴边长 = √(字节数 × 11.659)，面积与字节数成正比 -->
+  <div class="lbl" style="left:120px; top:264px; color:#fff;">填满一块颜色</div>
+  <div class="tile" style="left:400px; top:277px; width:11px; height:11px; background:#1b64c4; padding:0;"></div>
+  <div class="lbl mono" style="left:423px; top:264px; color:#9fd0ff;">10 B</div>
+  <div class="tile" style="left:640px; top:230px; width:105px; height:105px; background:#5a5a5a;"></div>
+  <div class="lbl mono" style="left:759px; top:264px;">950 B</div>
+  <div class="lbl" style="left:120px; top:391px; color:#fff;">写一行 9 个字</div>
+  <div class="tile" style="left:400px; top:398px; width:23px; height:23px; background:#1b64c4; padding:0;"></div>
+  <div class="lbl mono" style="left:435px; top:391px; color:#9fd0ff;">47 B</div>
+  <div class="tile" style="left:640px; top:365px; width:88px; height:88px; background:#5a5a5a;"></div>
+  <div class="lbl mono" style="left:742px; top:391px;">667 B</div>
+  <div class="lbl" style="left:120px; top:617px; color:#fff;">往下滚动</div>
+  <div class="tile" style="left:400px; top:628px; width:13px; height:13px; background:#1b64c4; padding:0;"></div>
+  <div class="lbl mono" style="left:425px; top:617px; color:#9fd0ff;">14 B</div>
+  <div class="tile" style="left:640px; top:485px; width:900px; height:300px; background:#5a5a5a;"><div style="font-size: 24px;">滚动一页 · H.264 一帧</div><div class="n" style="font-size: 96px; font-weight:200;">23 159 B</div></div>
+  <div class="lbl" style="left:120px; top:820px; width:600px; font-size: 24px; line-height:32px; color:#9a9a9a;">磁贴面积按字节数画</div>
+  <div class="gauge"><div style="font-size: 24px; color:#9a9a9a;">这一步 RDP / 视频</div><div class="mono" style="font-size: 40px; font-weight:300;">47 B / 667 B</div></div>
+  <div class="left">97</div>
+  <div class="cap">以后只报编号：一行 9 个字，47 个字节</div>
+  <div class="ruler"><i style="width:49.5%"></i></div>
+</div>
+
+</div>
+<script>
+// 字形「d」：规范 [MS-RDPEGDI] 4.6.1 的 1 bpp 位图，宽 5 像素，每行一个字节取高 5 位
+const D = [0x08, 0x08, 0x08, 0x78, 0x88, 0x88, 0x88, 0x88, 0x78];
+const g = document.getElementById('glyph');
+for (const row of D) for (let x = 0; x < 5; x++) { const i = document.createElement('i'); if (row & (0x80 >> x)) i.className = 'on'; g.appendChild(i); }
+const k = new URLSearchParams(location.search).get('k') || 'A2';
+document.getElementById(k).style.display = 'block';
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

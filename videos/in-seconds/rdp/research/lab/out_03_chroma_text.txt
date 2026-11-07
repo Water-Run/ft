@@ -1,0 +1,6 @@
+# 03 colored text through H.264 yuv420p (libx264 veryfast zerolatency crf 23)
+# canvas 320x96, NotoSansSC 14px; mean absolute RGB difference per row band
+red    R   3.02  G   2.69  B   2.84
+blue   R   1.39  G   1.36  B   3.76
+black  R   0.45  G   0.46  B   0.44
+# zoom pair (original | decoded), crop (8, 8, 88, 32), x8: _frames/03_pair.png

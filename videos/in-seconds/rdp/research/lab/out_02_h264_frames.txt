@@ -1,0 +1,7 @@
+# 02 H.264 frame sizes for the same screen change
+# ffmpeg version N-127021-ge0c94b2d1c-20260930; libx264 -preset veryfast -tune zerolatency -crf 23 -pix_fmt yuv420p -bf 0; 1024x768
+# case       rdp_order    rdp_bytes  h264_frame0(I)  h264_frame1(P)
+A_fill      OpaqueRect          10       1617 [K__]        950 [K__]
+B_type      FastIndex           47      51963 [K__]        667 [___]
+C_scroll    ScrBlt              13      51963 [K__]      23159 [___]
+D_same      (none)               0      51963 [K__]        311 [___]

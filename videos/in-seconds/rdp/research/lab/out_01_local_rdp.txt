@@ -1,0 +1,11 @@
+# OS: Microsoft Windows NT 10.0.26340.0
+# mstsc.exe ProductVersion: 10.0.26100.9949
+# RDP-Tcp PortNumber: 3389
+# fDenyTSConnections: 0
+# TermService: Running
+# mstsc.exe FileDescription: 远程桌面连接
+# qwinsta:
+ 会话名               用户名                 ID  状态   类型        设备 
+ services                                            0  断开                        
+>console                   user                     3  运行中                      
+ rdp-tcp                                         65536  侦听                        
