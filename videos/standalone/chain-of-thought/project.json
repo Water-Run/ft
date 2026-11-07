@@ -18,11 +18,27 @@
         "roles": [
           "取证",
           "实验",
-          "文案"
+          "文案",
+          "视觉设计",
+          "场景实现",
+          "配乐"
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音"
+        ]
+      },
+      {
+        "name": "Whisper small（faster-whisper）",
+        "roles": [
+          "读音回听"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "tts": {

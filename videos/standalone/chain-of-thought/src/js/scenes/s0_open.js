@@ -3,24 +3,6 @@
 scene('open', ({ root, s, c0 }) => {
   const { view, desk, rig } = makeDesk(root, { x: 2380, y: 880, rx: 26, rz: -2, k: 2.2 });
 
-  // 一行字分块写出来，像模型一次写一小块；返回写完的时刻
-  const stream = (parent, text, x, y, size, t, cps = 16, cls = '') => {
-    const e = ln(parent, '', x, y, size, cls);
-    appear(e, t);
-    const parts = text.match(/\d{1,3}|[^\d]{1,2}/g);
-    let tt = t;
-    for (const p of parts) { const sp = h('span', '', e, esc(p)); appear(sp, tt); tt += p.length / cps; }
-    return { e, end: tt };
-  };
-  const header = (sh, no, lab, w, t) => {
-    const a = h('div', 'no', sh, no); px(a, 44, 34);
-    const b = h('div', 'lab', sh, lab); px(b, 44, 70);
-    const r = h('div', 'hair', sh); px(r, 44, 128, w - 88, 2);
-    show(a, t, { y: 8, d: 0.4 }); show(b, t + 0.08, { y: 8, d: 0.45 });
-    fromTo(r, t + 0.15, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out' });
-    sfx('tick', t, { g: 0.35 });
-  };
-
   // ── 三张纸 ──
   const S1 = sheet(desk, -900, -340, 560, 700), S2 = sheet(desk, -290, -340, 560, 700), S3 = sheet(desk, 320, -340, 620, 700, 30, 1);
   [S1, S2, S3].forEach((p, i) => { show(p, c0 + 0.05 + i * 0.12, { y: 0, d: 0.5 }); show(p.shadowEl, c0 + 0.05 + i * 0.12, { y: 0, d: 0.5, a: p === S3 ? 1 : 0.7 }); });
@@ -57,10 +39,11 @@ scene('open', ({ root, s, c0 }) => {
   header(S2, '第二次', '先写过程，再给答案', 560, T('o5', '第二次'));
   let t2 = T('o5', '算式');
   const L2 = ['92138 = 92000 + 138', '25992 × 92000 = 2,391,264,000', '25992 × 138 = 3,586,896', '2,391,264,000 + 3,586,896', '　= 2,394,850,896'];
-  const rows2 = L2.map((txt, k) => { const r = stream(S2, txt, 44, 160 + k * 58, 26, t2, 26); t2 = r.end + 0.08; return r.e; });
+  const rows2 = L2.map((txt, k) => { const r = stream(S2, txt, 44, 160 + k * 58, 26, t2, 64); t2 = r.end + 0.05; return r.e; });   // 过程写得快，写完才给答案
   const r2 = h('div', 'hair l', S2); px(r2, 44, 478, 472, 1); fromTo(r2, T('o5', '答案') - 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.4 });
   const ans2 = ln(S2, '答案　<span class="u">2394850896</span>', 44, 500, 36);
-  show(ans2, T('o6', '算对') - 0.15, { y: 6, d: 0.45 });
+  show(ans2, Math.max(t2 + 0.15, T('o5', '再说')), { y: 6, d: 0.45 });
+  const chk2 = h('div', 'chk', S2); px(chk2, 420, 506); show(chk2, T('o6', '算对'), { y: 0, d: 0.3 });
   sfx('tick', T('o6', '算对'), { g: 0.4 });
 
   // 第三次：先写答案，再补过程
@@ -69,7 +52,7 @@ scene('open', ({ root, s, c0 }) => {
   show(first3, T('o7', '先写答案'), { y: 6, d: 0.45 });
   let t3 = T('o8', '拆分');
   const L3 = ['25992 × 92138', '= 25992 × (92000 + 138)', '= 25992 × 92000 + 25992 × 138', '= 2391264000 + 3586896'];
-  L3.forEach((txt, k) => { const r = stream(S3, txt, 44, 238 + k * 58, 27, t3, 28); t3 = r.end + 0.06; });
+  L3.forEach((txt, k) => { const r = stream(S3, txt, 44, 238 + k * 58, 27, t3, 60); t3 = r.end + 0.05; });
   const chk = h('div', 'chk', S3); px(chk, 520, 418); show(chk, T('o8', '没问题'), { y: 0, d: 0.3 });
   const last3 = ln(S3, '= <span class="n">2394841296</span>', 44, 470, 36);
   show(last3, T('o9', '加完'), { y: 6, d: 0.4 });
@@ -90,10 +73,27 @@ scene('open', ({ root, s, c0 }) => {
     const lab = h('div', 'note', sh, txt); px(lab, 44, ly); css(lab, { fontSize: '32px' }); show(lab, t + 0.2, { y: 6, d: 0.4 }); sfx('pop', t + 0.2, { g: 0.3 });
     return lab;
   };
-  const only1 = h('div', 'note', S1, '只有答案'); px(only1, 44, 430); css(only1, { fontSize: '32px' });
-  show(only1, T('o11', '写不写'), { y: 6, d: 0.4 }); sfx('pop', T('o11', '写不写'), { g: 0.3 });
-  const lab2 = margin(S2, '过程在前', 24, 166, 450, T('o11', '前还是后') - 0.25, 600);
-  margin(S3, '过程在后', 24, 244, 446, T('o11', '前还是后') + 0.1, 590);
+  // 先分两类：左边不写过程；中、右写了过程（左边那张移开，中右靠拢，桌面上各画一道括线）
+  const tA = T('o11', '写不写') - 0.25, tB = T('o11', '前还是后') - 0.3;
+  // 同一张纸挪两次：第二段 immediateRender 关掉，开始之前不生效（否则顺播与倒跳的画面不同）
+  const slideX = (p, from, to_, t, later = false) => { [[p, 0], [p.shadowEl, 18]].forEach(([e, o]) => tl.fromTo(e, { left: from + o + 'px' }, { left: to_ + o + 'px', duration: 0.8, ease: 'power2.inOut', immediateRender: !later }, t)); };
+  slideX(S1, -900, -1000, tA); slideX(S2, -290, -270, tA); slideX(S3, 320, 310, tA);
+  const bracket = (x0, x1, txt, t) => {
+    const ln_ = h('div', 'hair', desk); px(ln_, x0, 384, x1 - x0, 2); css(ln_, { background: '#707070' });
+    const e0 = h('div', 'abs', desk), e1 = h('div', 'abs', desk); px(e0, x0, 372, 2, 14); px(e1, x1 - 2, 372, 2, 14); [e0, e1].forEach((e) => css(e, { background: '#707070' }));
+    fromTo(ln_, t, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out' }); show(e0, t, { y: 0, d: 0.2 }); show(e1, t + 0.4, { y: 0, d: 0.2 });
+    const lab = h('div', 'note', desk, txt); css(lab, { position: 'absolute', left: (x0 + x1) / 2 + 'px', top: '402px', fontSize: '36px', color: '#1c1c1c', transform: 'translateX(-50%)' });
+    show(lab, t + 0.25, { y: 6, d: 0.45 }); sfx('pop', t + 0.25, { g: 0.3 });
+    return { ln_, e1 };
+  };
+  bracket(-1000, -440, '不写过程', tA + 0.6);
+  const grp = bracket(-270, 930, '写了过程', tA + 0.75);
+  // 再在「写了过程」里分开：过程在前、过程在后
+  slideX(S3, 310, 370, tB, true);
+  fromTo(grp.ln_, tB, { width: '1200px' }, { width: '1260px', duration: 0.8, ease: 'power2.inOut' });
+  fromTo(grp.e1, tB, { left: '928px' }, { left: '988px', duration: 0.8, ease: 'power2.inOut' });
+  const lab2 = margin(S2, '过程在前', 24, 166, 450, tB + 0.35, 600);
+  margin(S3, '过程在后', 24, 244, 446, tB + 0.55, 590);
   hide(lab2, T('o12') - 0.1, { y: 0, d: 0.3 });
 
   // 思维链：第二张纸
@@ -116,7 +116,7 @@ scene('open', ({ root, s, c0 }) => {
     [null, { x: 985 }, Math.max(0.5, Tend('o6') - Tend('o4') - 1.35), { ease: 'none' }],
     [Tend('o6') + 0.15, { x: 180, y: 520 }, 1.0],
     [null, { x: 165 }, Math.max(0.5, T('o10') - Tend('o6') - 1.6), { ease: 'none' }],
-    [T('o10') - 0.25, { x: 950, y: 500, k: 0.9 }, 1.2],
+    [T('o10') - 0.25, { x: 950, y: 470, k: 0.9 }, 1.2],
     [null, { x: 940 }, Math.max(0.5, T('o12') - T('o10') - 1.3), { ease: 'none' }],
     [T('o12') + 0.1, { x: 990, y: 470, k: 1.12 }, 1.2],
     [null, { x: 975 }, Math.max(0.5, T('oT') - T('o12') - 1.4), { ease: 'none' }],
