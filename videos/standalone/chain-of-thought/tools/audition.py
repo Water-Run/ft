@@ -196,23 +196,22 @@ audio{width:100%;margin-top:6px}.grid{display:grid;grid-template-columns:repeat(
 
 
 CHANGES2 = [
-    '开场：三种问法都在开场演出来，第三种（先写答案）的反转放在开场当钩子，第 03 章再拆开讲；最后抛出全片的大问题：对一台一个字接一个字往下写的机器，「思考」究竟是什么？',
-    '结构：「学会思考」移到「说出来的理由」之前。Anthropic 测的是训练过思考的模型，先讲这些模型从哪来，第 05 章才不会用到还没讲的东西；第 05 章也因此直接接上结尾。',
-    '结尾：照《垃圾回收的艺术》的做法，回到最初的问题正面作答（要多想，就要多写），再从模型升到人（草稿纸不一定是窗；这一点上它和我们也许没那么不同），最后一句落回片名。',
-    '旁白里的百分数改成「不到两成 → 将近六成」这样的说法，原数放在画面上；措辞加了画面感（一位不差、不偏不倚、有样学样、落笔就收不回来、只字不提），每句仍有出处。',
-    '删去：2023 年「示范题答案都排在 A」实验、理论证明两句、R1-Zero 的竞赛题正确率（都留在 FACTS 里作依据）；丝袜实验补全原文「好像自己听错了问题，或者遇上了疯子」。',
-    '开场点名 DeepSeek；第 04 章「交给 DeepSeek 的思考模式」与它呼应。',
+    '按「AI 味还是较重，不够自然」重写成口播的说法：去掉成语堆砌（有板有眼、不偏不倚、全军覆没……）、对仗金句、每章靠自问自答过渡和章末收一句道理的套路，「却」「其实」少用。',
+    '对抗审读两轮：一个只读稿子的审读代理专挑 AI 味，第一轮评 6 分（10 分为一眼 AI），改后第二轮评 4 分；它指出的指代不清、句式重复、结尾空泛都已改掉。',
+    '结尾不再念道理和片名：模型每写一块能算的有限，想多算只能多写；那几行「思考」就是草稿纸，开头那道题就是在这张纸上算对的；人也会打草稿，只是写下来的、说出口的都不一定是真正的原因；最后落在挑丝袜的那群人身上。',
+    '结构沿用第 2 稿：开场三种问法，「学会思考」在「说出来的理由」之前。第 03 章不再复述开场，压成两句；「强化学习」不再点名，全片新名词只剩思维链、token、层三个。',
+    '第 01 章「同一套题，一成到四成」改成「换一个模型、同一套题」，免得观众奇怪为什么起点从两成变成一成（两组实验用的不是同一个模型）。',
 ]
 OPEN2 = [
-    '片长：按真诚青年、语速 1.2 的实测语速（约 5.10 字/秒）估算，全片约 6:52，贴近 7 分钟。配音后如果超过 7 分钟，先收停顿，不删内容；还超就再删字。',
-    '第 05 章删去了 2023 年「示范题答案都排在 A」的实验，只留 Anthropic 2025 年的测试（模型）和 1977 年的丝袜实验（人）。这样够不够？',
-    '结尾的落点：「这一点上，它和我们，也许并没有那么不同」，然后落回「先思考，再回答」。升华到这一步是否合适？',
-    '视觉：视觉 B 改为立体版（见第二节）。实现时本片 project.json 的 check.style.flat 要改成 false（它禁止阴影、渐变和模糊，立体的纸张与玻璃层都要用到）。',
+    '结尾最后一句落在丝袜实验（「那些挑丝袜的人，谁也没说是因为位置」），不再念「先思考，再回答」，片名只在画面上出现。这样收可以吗？',
+    '第 04 章不再说「强化学习」这个词，只说「训练时不给它看人写的解题过程，答对了，就给奖励」。可以吗？',
+    '片长：按真诚青年实测语速估约 6:41。',
+    '视觉：立体版 B 已按「背景更白、更论文一点的质感、有一些 OpenAI 风格」改过（第二节）。实现时本片 project.json 的 check.style.flat 改成 false；之后新建的独立片 new.js 已缺省如此。',
 ]
 VISUAL3D = [
-    ('开场 o9', '三张草稿纸摊在点阵桌面上，第三张抬起：它的最后一步回到了第一行的错答案。镜头在三张纸之间推移，纸有纸纹和投影。'),
-    ('第 02 章 c7', '模型画成一摞层数固定的玻璃层，四块 token 各穿过一次，这就是「只许说答案」能用的全部计算。先写过程时，这一摞会被穿过三百多次。'),
-    ('第 04 章 r14', '思考模式写下的草稿按位数摞起来：每摞顶上是那一位数的一道真题，位数越多摞得越高（高度按平均思考 token）。'),
+    ('FIG. 1 · 开场 o9', '三张纸像论文里的子图 (a)(b)(c) 摊在白色桌面上，第三张抬起：它的最后一步加回了第一行的错数。衬线排版、细黑线，镜头在三张纸之间推移。'),
+    ('FIG. 2 · 第 02 章 c7', '模型画成一摞层数固定的玻璃层，带一点淡彩；四块 token 各穿过一次，这就是「只报答案」能用的全部计算。先写过程时，这一摞会被穿过三百多次。'),
+    ('FIG. 3 · 第 04 章 r14', '思考模式写下的草稿按位数摞起来：每摞顶上是那一位数的一道真题，位数越多摞得越高（高度按平均思考 token）。'),
 ]
 
 
@@ -235,7 +234,7 @@ def page2():
     mmss = lambda x: '%d:%02d' % (x // 60, round(x % 60))
     names = {'open': '开场', 'end': '结尾', 'credits': '片尾名单'}
     est = '\n'.join('%-10s %s – %s（%.0f 秒）' % ((s['chap'][0] + ' ' + s['chap'][1]) if s['chap'] else names.get(s['id'], s['id']), mmss(s['start']), mmss(s['end']), s['end'] - s['start']) for s in L['scenes']) + '\n合计 %s（%.2f 字/秒）' % (mmss(L['total']), rate)
-    P = ['<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>CoT：先思考，再回答 · 审片页（第 2 稿）</title><style>']
+    P = ['<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>CoT：先思考，再回答 · 审片页（第 3 稿）</title><style>']
     P.append('''body{margin:0;background:#f6f6f3;color:#18181b;font:17px/1.8 "Noto Sans SC","Microsoft YaHei",sans-serif}
 main{max-width:1180px;margin:0 auto;padding:48px 40px 120px}h1{font-size:34px;margin:0 0 6px}h2{font-size:24px;margin:56px 0 14px;padding-top:18px;border-top:1px solid #ddd}
 h3{font-size:19px;margin:28px 0 6px}.meta{color:#666;font-size:15px}.box{background:#fff;border:1px solid #e3e3df;border-radius:10px;padding:18px 22px;margin:12px 0}
@@ -244,10 +243,10 @@ h3{font-size:19px;margin:28px 0 6px}.meta{color:#666;font-size:15px}.box{backgro
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.grid img{width:100%;border:1px solid #ddd;border-radius:6px}.cap{font-size:14px;color:#555}
 audio{width:100%;margin-top:6px}''')
     P.append('</style></head><body><main>')
-    P.append('<h1>CoT：先思考，再回答 · 审片页（第 2 稿）</h1><div class="meta">2026-11-07 · 内容哈希 <code>%s</code> · 只有中文 · 估约 6:52（真诚青年、语速 1.2 的实测语速）</div>' % esc(cur[:16]))
-    P.append('<div class="box ask"><b>请看两样</b>：①第 2 稿文案：意见按句号说（例如「c7：……」），或明确确认这一稿；②视觉 B 的立体版关键帧。配音（真诚青年）与配乐（A「落字」）已在 11-03 选定，下面附上供回忆。确认之前不配全片。</div>')
-    P.append('<h2>本稿改了什么</h2><div class="box"><ul>%s</ul></div>' % ''.join('<li>%s</li>' % esc(x) for x in CHANGES2))
-    P.append('<h2>一、文案（第 2 稿）</h2>')
+    P.append('<h1>CoT：先思考，再回答 · 审片页（第 3 稿）</h1><div class="meta">2026-11-07 · 内容哈希 <code>%s</code> · 只有中文 · 估约 6:41（真诚青年、语速 1.2 的实测语速）</div>' % esc(cur[:16]))
+    P.append('<div class="box ask"><b>请看两样</b>：①第 3 稿文案：意见按句号说（例如「c7：……」），或明确确认这一稿；②视觉 B 的立体版关键帧。配音（真诚青年）与配乐（A「落字」）已在 11-03 选定，下面附上供回忆。确认之前不配全片。</div>')
+    P.append('<h2>本稿改了什么（相对第 2 稿）</h2><div class="box"><ul>%s</ul></div>' % ''.join('<li>%s</li>' % esc(x) for x in CHANGES2))
+    P.append('<h2>一、文案（第 3 稿）</h2>')
     for s in sc['SCRIPT']:
         head = ('<span class="chap">%s %s</span>' % (s['chap'][0], esc(s['chap'][1]))) if s['chap'] else ('<span class="chap">%s</span>' % {'open': '开场', 'end': '结尾', 'credits': '片尾'}.get(s['id'], s['id']))
         body = []
@@ -261,7 +260,7 @@ audio{width:100%;margin-top:6px}''')
     if est:
         P.append('<p class="meta">各章估时（按 5.10 字/秒加停顿与章节卡）：</p><pre>%s</pre>' % esc(est))
     P.append('<h3>待定的问题</h3><ol>' + ''.join('<li>%s</li>' % esc(x) for x in OPEN2) + '</ol>')
-    P.append('<h2>二、视觉 B「草稿纸」· 立体版</h2><p>按 11-07 的要求（「动画惊艳富有质感，可以有 3D 元素，而不是纯 2D」）重做的三张关键帧：保留 B 的白底、点阵纸、青绿与赭色，把纸、模型的层和草稿堆做成立体的。用 CSS 3D 搭建，镜头可以在其中推移。</p><div class="grid">%s</div>' % ''.join('<div><a href="keyframes/B3d%d.png" target="_blank"><img src="keyframes/B3d%d.png"></a><div class="cap"><b>%s</b>　%s</div></div>' % (i + 1, i + 1, esc(t), esc(d)) for i, (t, d) in enumerate(VISUAL3D)))
+    P.append('<h2>二、视觉 B「草稿纸」· 立体版</h2><p>按 11-07 的要求（「可以有 3D 元素，而不是纯 2D」「背景更白更论文一点的质感，有一些 OpenAI 风格」）做的三张关键帧：纯白底、浅点阵，纸面是论文式的衬线排版，主体下方一团淡彩光晕；纸、模型的层和草稿堆都是立体的。用 CSS 3D 搭建，镜头可以在其中推移。</p><div class="grid">%s</div>' % ''.join('<div><a href="keyframes/B3d%d.png" target="_blank"><img src="keyframes/B3d%d.png"></a><div class="cap"><b>%s</b>　%s</div></div>' % (i + 1, i + 1, esc(t), esc(d)) for i, (t, d) in enumerate(VISUAL3D)))
     P.append('<h3>对照：11-03 选定的平面版 B</h3><div class="grid">%s</div>' % ''.join('<a href="keyframes/B%s.png" target="_blank"><img src="keyframes/B%s.png"></a>' % (f, f) for f in '123'))
     P.append('<h2>三、已选定</h2><div class="box"><b>配音：真诚青年</b> <code>Chinese (Mandarin)_Sincere_Adult</code>，MiniMax speech-2.8-hd，语速 1.2（试听读的是第 1 稿的代表句）<audio controls preload="none" src="voices/Chinese_Mandarin__Sincere_Adult.mp3"></audio></div>')
     P.append('<div class="box"><b>配乐：A「落字」</b>　%s<audio controls preload="none" src="music/A.mp3"></audio></div>' % esc(MUSIC_NOTES['A'][1]))

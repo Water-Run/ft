@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "第 2 稿（174f711a）与立体版视觉 B 关键帧已交审（out/audition/index.html）；等意见或确认，确认后用真诚青年配全片",
+  "next": "第 3 稿（6d5388b1，两轮对抗审读去 AI 味）与白底论文质感的立体版视觉 B 已交审（out/audition/index.html）；等意见或确认，确认后用真诚青年配全片",
   "credits": {
     "planner": "WaterRun",
     "models": [

@@ -14,41 +14,45 @@
 @font-face { font-family: "Serif SC"; src: url("/fonts/NotoSerifSC.ttf"); font-weight: 200 900; }
 @font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
 @font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
-:root { --ink: #26261f; --dim: #6b6a62; --teal: #0b6e57; --teal2: #12a487; --ochre: #b7791f; --hl: rgba(246,196,69,.62); --paper: #fffdf8; }
+:root { --ink: #111214; --dim: #6e6f75; --teal: #0d7a5f; --teal2: #10a37f; --ochre: #a8681a; --hl: rgba(255,200,87,.55); --paper: #ffffff; }
 html, body { margin: 0; padding: 0; }
 body { width: 1920px; height: 1080px; overflow: hidden; position: relative; background: #fff; color: var(--ink); font-family: "Inter", "Sans SC"; -webkit-font-smoothing: antialiased; }
-#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: radial-gradient(ellipse at 50% 35%, #ffffff 0%, #fbfaf6 60%, #f3f1ea 100%); }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: #fff; }
 .view { position: absolute; inset: 0; perspective: 2600px; }
 .world { position: absolute; width: 0; height: 0; transform-style: preserve-3d; }
 .p3 { position: absolute; transform-style: preserve-3d; }
 .desk { position: absolute; width: 5200px; height: 4200px; left: -2600px; top: -2100px;
-  background-image: radial-gradient(circle, #d2d0c6 2px, transparent 2.4px); background-size: 44px 44px; background-position: 22px 22px; }
-.sheet { position: absolute; background: var(--paper); border-radius: 5px; box-shadow: 0 1px 0 #ebe7dc, 0 0 0 1px #ece8de; overflow: hidden; }
-.sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .6; background-image: var(--grain); }
-.shadow { position: absolute; border-radius: 8px; background: rgba(70,58,30,.16); filter: blur(26px); }
-.lab { font: 600 34px "Serif SC"; color: var(--dim); letter-spacing: .04em; }
-.ln { font: 500 27px "Mono", "Sans SC"; color: var(--ink); line-height: 1.9; white-space: nowrap; }
+  background-image: radial-gradient(circle, #e2e3e6 1.6px, transparent 2px); background-size: 48px 48px; background-position: 24px 24px; }
+.glow { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .55; background: radial-gradient(closest-side, rgba(172,214,255,.9), rgba(214,200,255,.6) 45%, rgba(255,222,200,.35) 75%, transparent); }
+.sheet { position: absolute; background: var(--paper); border-radius: 3px; box-shadow: 0 0 0 1px #e7e8ea; overflow: hidden; }
+.sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .22; background-image: var(--grain); }
+.shadow { position: absolute; border-radius: 8px; background: rgba(20,24,40,.10); filter: blur(30px); }
+.lab { font: 600 32px "Serif SC"; color: var(--ink); letter-spacing: .02em; }
+.lab i { font-style: normal; color: var(--dim); margin-right: 14px; font-weight: 500; }
+.ln { font: 500 27px "Serif SC"; color: var(--ink); line-height: 1.9; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .dim { color: var(--dim); }
 .ok { color: var(--teal); }
 .bad { background: linear-gradient(transparent 16%, var(--hl) 16%, var(--hl) 90%, transparent 90%); }
 .tick { display: inline-block; width: 14px; height: 26px; border: solid var(--teal); border-width: 0 5px 5px 0; transform: rotate(40deg) translate(-2px, -6px); margin-left: 18px; }
-.foot { position: absolute; left: 44px; bottom: 34px; font: 500 30px "Sans SC"; color: var(--dim); }
+.foot { position: absolute; left: 44px; bottom: 34px; font: 500 26px "Serif SC"; color: var(--dim); border-top: 1.5px solid #111214; padding-top: 10px; width: calc(100% - 88px); }
 .bb { position: absolute; white-space: nowrap; transform-origin: 0 100%; }
 .cap { position: absolute; left: 0; right: 0; bottom: 46px; height: 64px; display: flex; align-items: center; justify-content: center; font: 500 40px "Sans SC"; color: #1d1d18; text-shadow: 0 0 18px #fff, 0 0 8px #fff, 0 0 3px #fff; }
-.hud { position: absolute; left: 96px; top: 70px; font: 600 30px "Serif SC"; color: var(--dim); letter-spacing: .06em; }
-.hud b { color: var(--ink); font-weight: 700; }
+.hud { position: absolute; left: 96px; top: 64px; font: 500 28px "Serif SC"; color: var(--dim); }
+.hud .k { display: block; font: 600 22px Inter, "Sans SC"; letter-spacing: .16em; color: #9a9ba1; margin-bottom: 10px; }
+.hud b { color: var(--ink); font-weight: 700; margin-right: 18px; }
+.hud::after { content: ""; display: block; width: 72px; height: 2px; background: #111214; margin-top: 18px; }
 /* token 小方块：顶面 + 前面 + 右面 */
 .tile { position: absolute; transform-style: preserve-3d; }
 .tile .top, .tile .fr, .tile .rt { position: absolute; left: 0; top: 0; display: flex; align-items: center; justify-content: center; }
-.tile .top { font: 600 30px "Mono"; color: var(--ink); background: #fff; box-shadow: inset 0 0 0 2px #cfcabb; border-radius: 4px; }
-.tile .fr { background: #e7e2d4; transform-origin: 0 100%; }
-.tile .rt { background: #d8d2c1; transform-origin: 100% 0; }
+.tile .top { font: 600 30px "Serif SC"; color: var(--ink); background: #fff; box-shadow: inset 0 0 0 1.5px #c9cbd1; border-radius: 4px; }
+.tile .fr { background: #e9eaee; transform-origin: 0 100%; }
+.tile .rt { background: #dcdee4; transform-origin: 100% 0; }
 .tile.on .top { box-shadow: inset 0 0 0 3px var(--teal2); color: var(--teal); }
-.tile.bad .top { background: #fff3cf; box-shadow: inset 0 0 0 2px #e6b85a; }
+.tile.bad .top { background: #fff6dc; box-shadow: inset 0 0 0 2px #e9b44c; }
 /* 玻璃层 */
-.slab { position: absolute; border-radius: 6px; background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(214,238,232,.12)); box-shadow: inset 0 0 0 1.5px rgba(11,110,87,.26); }
+.slab { position: absolute; border-radius: 10px; background: linear-gradient(135deg, rgba(190,222,255,.16), rgba(222,208,255,.13) 55%, rgba(255,228,210,.12)); box-shadow: inset 0 0 0 1.2px rgba(17,18,20,.16); }
 .beam { position: absolute; transform-origin: 50% 100%; background: linear-gradient(to top, rgba(18,164,135,.15), rgba(18,164,135,.85) 10%, rgba(18,164,135,.85) 90%, rgba(18,164,135,.1)); }
-.ream { position: absolute; background: #fffdf8; box-shadow: 0 0 0 1px #d9d4c6; border-radius: 2px; }
+.ream { position: absolute; background: #fff; box-shadow: 0 0 0 1px #dfe0e4; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -73,18 +77,19 @@ const tile = (parent, txt, x, y, w, h, d, cls = '') => {
 el(W, 'desk');
 
 if (F === 1) {
-  const cam = world(960, 470, 34, -4, .9);
+  const cam = world(925, 470, 34, -4, .9);
+  el(W, 'glow', 'left:300px; top:-500px; width:1100px; height:1100px;');
   const S = [
-    { x: -880, y: -320, z: 0, r: -5, lab: '只许说答案' },
-    { x: -260, y: -350, z: 0, r: 1.5, lab: '先写过程，再给答案' },
-    { x: 360, y: -330, z: 150, r: 3, lab: '先写答案，再写过程', w: 640 },
+    { x: -880, y: -320, z: 0, r: -5, lab: '<i>(a)</i>只许说答案' },
+    { x: -260, y: -350, z: 0, r: 1.5, lab: '<i>(b)</i>先写过程，再给答案' },
+    { x: 360, y: -330, z: 150, r: 3, lab: '<i>(c)</i>先写答案，再写过程', w: 640 },
   ];
   S.forEach((s, i) => {
     const w = s.w || 560;
     el(W, 'shadow', `left:${s.x + 40}px; top:${s.y + 60}px; width:${w - 20}px; height:700px; transform: rotateZ(${s.r}deg); opacity:${s.z ? 1 : .55};`);
     const sh = el(W, 'sheet p3', `left:${s.x}px; top:${s.y}px; width:${w}px; height:720px; transform: translateZ(${s.z}px) rotateZ(${s.r}deg) rotateX(${s.z ? -8 : 0}deg);`);
     el(sh, 'lab', 'position:absolute; left:44px; top:38px;', s.lab);
-    el(sh, '', 'position:absolute; left:44px; top:92px; width:470px; height:2px; background:#e9e4d6;');
+    el(sh, '', 'position:absolute; left:44px; top:92px; width:calc(100% - 88px); height:1.5px; background:#111214;');
     if (i === 0) {
       el(sh, 'ln dim', 'position:absolute; left:44px; top:126px; font-size:32px;', '25992 × 92138 =');
       el(sh, 'ln', 'position:absolute; left:44px; top:196px; font-size:54px; letter-spacing:.02em;', '2394<span class="bad">73</span>0896');
@@ -106,12 +111,13 @@ if (F === 1) {
       el(sh, 'foot', 'color:#9a6418', '最后一步，回到了第一行');
     }
   });
-  el(ST, 'hud', '', '<b>25992 × 92138</b>　同一个模型 · 三种问法');
-  el(ST, 'cap', '', '最后一步相加，却不偏不倚，加成了第一行那个错答案');
+  el(ST, 'hud', '', '<span class="k">FIG. 1　开场</span><b>25992 × 92138</b>同一个模型的三种问法');
+  el(ST, 'cap', '', '最后一步加完，得出的正好是它一开始写的那个错数');
 }
 
 if (F === 2) {
   const cam = world(900, 640, 58, -32, .72);
+  el(W, 'glow', 'left:-700px; top:-650px; width:1400px; height:1300px;');
   // 桌上那张纸：四块 token
   el(W, 'shadow', 'left:-440px; top:-160px; width:880px; height:340px; opacity:.45;');
   el(W, 'sheet p3', 'left:-470px; top:-190px; width:940px; height:380px;');
@@ -124,12 +130,13 @@ if (F === 2) {
   xs.forEach((x, k) => el(W, 'beam', `left:${x + 60}px; top:${23 - H}px; width:20px; height:${H}px; transform: rotateX(-90deg); opacity:${k === 3 ? 1 : .55};`));
   board(cam, '<span style="font:700 64px Inter;color:#26261f">96</span><span style="font:600 40px \'Serif SC\';color:#6b6a62"> 层</span>', 500, 200, z0 + N * gap - 20);
   board(cam, '<span style="font:600 34px \'Serif SC\';color:#6b6a62">每一块，只经过这么多层</span>', 500, 200, z0 + N * gap - 130);
-  el(ST, 'hud', '', '<b>只许说答案</b>　4 块 × 96 层');
-  el(ST, 'cap', '', '只许说答案，等于逼它用四块字的工夫，算完整道乘法');
+  el(ST, 'hud', '', '<span class="k">FIG. 2　草稿纸</span><b>只报答案</b>4 块 × 96 层');
+  el(ST, 'cap', '', '只让它报答案，就等于要它在写这四块的时候');
 }
 
 if (F === 3) {
   const cam = world(930, 600, 56, -22, .74);
+  el(W, 'glow', 'left:100px; top:-600px; width:1200px; height:1100px; opacity:.4;');
   const D = [[3, 93.0, '221 × 427'], [4, 165.6, '7508 × 5120'], [5, 261.2, '25992 × 92138'], [6, 412.2, '903946 × 966305'], [7, 550.2, '1003589 × 8570388']];
   D.forEach(([n, tok, prob], k) => {
     // 每摞顶上是该位数的一道真题（L2：n3-00、n4-00、n5-03、n6-00、n7-00）；高度按平均思考 token，每 5 个一张
@@ -141,8 +148,8 @@ if (F === 3) {
     el(top, 'ln', `position:absolute; left:22px; top:262px; font-size:${prob.length > 13 ? 22 : 28}px;`, prob);
     board(cam, `<div style="text-align:center;width:300px"><div style="font:700 56px Inter;color:#26261f">${Math.round(tok)}</div><div style="font:600 30px 'Serif SC';color:#6b6a62">${n} 位数</div></div>`, x + 135, y + 120, topZ + 150, '', -150);
   });
-  el(ST, 'hud', '', '<b>DeepSeek 思考模式</b>　25 道全对 · 平均思考 token');
-  el(ST, 'cap', '', '那一百道里取二十五道，它全答对；位数越多，想得越久');
+  el(ST, 'hud', '', '<span class="k">FIG. 3　学会思考</span><b>DeepSeek 思考模式</b>25 道全对 · 平均思考 token');
+  el(ST, 'cap', '', '位数越多，它想得越久');
 }
 document.body.dataset.ready = '1';
 </script>
