@@ -1,38 +1,80 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统（视觉 B「草稿纸」立体版第 3 版，见 README「设计」与 src/design/keyframes3d.html）：
+   白纸、墨色与灰色；颜色只表达含义——只有「错」用一种朱红；衬线排版像印出来的论文；
+   立体只给本身有空间含义的东西（摊开的纸、固定层数的一摞、越摞越高的草稿），镜头平稳；
+   不用光晕、渐变色块、发光线条（docs/principles.md「形式服从内容与叙事，质感在背后承托」）。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --paper: #ffffff;
+  --ink: #1c1c1c;
+  --gray: #707070;
+  --light: #b4b4b4;
+  --line: #dadada;
+  --err: #a5402d;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
+body { font-family: "Serif SC", serif; color: var(--ink); }
 #bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
-.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+/* 立体：一张桌面（view 提供透视，desk 是旋转后的平面），纸、方块、层都放在 desk 上 */
+.view { position: absolute; inset: 0; perspective: 2800px; }
+.desk { position: absolute; width: 0; height: 0; transform-style: preserve-3d; }
+.p3 { position: absolute; transform-style: preserve-3d; }
+.sheet { position: absolute; background: #fff; box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+.sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18; background-image: var(--grain); }
+.shadow { position: absolute; background: rgba(0, 0, 0, .075); filter: blur(22px); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 纸上的字 */
+.no { font: 400 28px "Serif SC"; color: var(--gray); letter-spacing: .08em; }
+.lab { font: 600 32px "Serif SC"; color: var(--ink); }
+.hair { position: absolute; height: 1px; background: var(--ink); transform-origin: 0 50%; }
+.hair.l { background: var(--line); }
+.ln { position: absolute; font: 400 28px "Serif SC"; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.g { color: var(--gray); }
+.err { color: var(--err); }
+.u { border-bottom: 2px solid currentColor; padding-bottom: 2px; }
+.note { font: 400 30px "Serif SC"; color: var(--gray); white-space: nowrap; }
+.big { font: 400 50px "Serif SC"; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* 面向镜头的标签（抵消桌面的旋转） */
+.bb { position: absolute; white-space: nowrap; transform-origin: 0 100%; }
+
+/* token 方块 */
+.tile { position: absolute; transform-style: preserve-3d; }
+.tile .top, .tile .fr, .tile .rt { position: absolute; left: 0; top: 0; display: flex; align-items: center; justify-content: center; }
+.tile .top { font: 400 40px "Serif SC"; color: var(--ink); background: #fff; box-shadow: inset 0 0 0 1px #bdbdbd; }
+.tile .fr { background: #ececec; transform-origin: 0 100%; }
+.tile .rt { background: #e2e2e2; transform-origin: 100% 0; }
+
+/* 层：只画边线 */
+.plane { position: absolute; box-shadow: inset 0 0 0 1px rgba(28, 28, 28, .2); background: rgba(255, 255, 255, .06); }
+.path { position: absolute; transform-origin: 50% 100%; background: rgba(28, 28, 28, .75); }
+.ream { position: absolute; background: #fff; box-shadow: 0 0 0 1px #d4d4d4; }
+
+/* 注解：左侧一条细线，不加框 */
+.gloss { position: absolute; padding-left: 18px; border-left: 2px solid var(--ink); font: 400 30px "Serif SC"; color: var(--ink); line-height: 1.5; white-space: nowrap; }
+.gloss .g { font-size: 26px; }
+
+/* 片名卡与章节卡：安静的白卡 */
+.title-card { position: absolute; inset: 0; background: var(--paper); }
+.title-card .cot { position: absolute; left: 0; right: 0; top: 330px; text-align: center; font: 300 200px "Serif SC"; letter-spacing: -.01em; line-height: 1; }
+.title-card .rule { position: absolute; left: 894px; top: 584px; width: 132px; height: 2px; background: var(--ink); transform-origin: 50% 50%; }
+.title-card .zh { position: absolute; left: 0; right: 0; top: 626px; text-align: center; font: 500 64px "Serif SC"; letter-spacing: .14em; color: #22252a; }
+.chapter { position: absolute; inset: 0; background: var(--paper); }
+.chapter .no { position: absolute; left: 160px; top: 380px; font: 400 40px "Serif SC"; color: var(--gray); letter-spacing: .1em; }
+.chapter .rule { position: absolute; left: 160px; top: 446px; width: 96px; height: 2px; background: var(--ink); transform-origin: 0 50%; }
+.chapter .ti { position: absolute; left: 160px; top: 480px; font: 500 96px "Serif SC"; letter-spacing: .04em; }
 
 /* 字幕 */
 #caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption span { font: 500 40px "Sans SC"; color: #111; text-shadow: 0 0 14px #fff, 0 0 6px #fff, 0 0 2px #fff; }
+#caption em { font-style: normal; font-weight: 700; color: #111; }
 
 /* 片尾名单 */
 .credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
 .credit-row { break-inside: avoid; margin-bottom: 30px; }
+.credit-row .k { font: 400 28px "Serif SC"; color: var(--gray); }
+.credit-row .v { font: 400 38px "Serif SC"; color: var(--ink); }
+
+/* 铅笔勾：过程的一步核对过 */
+.chk { position: absolute; width: 12px; height: 24px; border: solid var(--gray); border-width: 0 2px 2px 0; transform: rotate(40deg); }
+.sheet > .no, .sheet > .lab, .sheet > .note { position: absolute; }
+.sheet > .note { color: #555; }

@@ -348,5 +348,82 @@ DEMOS = {'A': ('落字', demo_a), 'B': ('运算', demo_b), 'C': ('长句', demo_
 
 
 def compose(ctx):
-    # 选定方向之前只是占位：按选定方向铺满全片的写法，等策划者选定后再写（按章节进出）。
-    raise SystemExit('配乐方向尚未选定：先用 tools/audition.py music 出小样，选定后再写 compose()')
+    # 全片配乐：A「落字」（策划者 2026-11-03 选定）。毡音钢琴，76 拍/分，Am(add9)–Fmaj7–C/E–G6。
+    # 每章从和弦循环的开头起；疏密跟着叙事：开场与结尾一拍一个音，讲机制的第 02 章最密并在「草稿纸」处抬一次高声部，
+    # 第 03 章加铺底，第 05 章只留铺底与稀疏的音；片名与片尾各落一个完整的和弦。层的进出挂在句号上，不写死秒数。
+    total = ctx['total']
+    sc = {x['id']: x for x in ctx['scenes']}
+    cue = {x['id']: x for x in ctx['cues']}
+    bpm = 76.0
+    beat = 60 / bpm
+    n = int((total + 6) * SR)
+    L, R = np.zeros(n), np.zeros(n)
+    prog = [(57, [57, 60, 64, 71]), (53, [53, 57, 60, 64]), (48, [52, 55, 60, 62]), (55, [55, 59, 62, 64])]
+    pattern = [0, 2, 1, 3, 2, 1, 3, 2]
+    # 每场：(电平, 八分音符？, 低音？, 铺底？)
+    STYLE = {'open': (0.30, False, False, False), 'origin': (0.40, False, True, False), 'paper': (0.55, True, True, False),
+             'learn': (0.50, True, True, True), 'order': (0.42, False, True, False), 'faith': (0.36, False, False, True),
+             'end': (0.32, False, True, False), 'credits': (0.0, False, False, False)}
+
+    def chord(t, ch, vel, dur=4.5):
+        for m in ch:
+            s_ = felt_piano(m, dur, vel)
+            place(L, s_, t, 0.85)
+            place(R, s_, t, 0.85)
+
+    def run(t0, t1, style):
+        lv, eighth, bass, padon = style
+        t, bar = t0, 0
+        while t < t1 - beat:
+            root, ch = prog[bar % 4]
+            steps = pattern if eighth else pattern[::2]
+            step_len = beat / 2 if eighth else beat
+            for i, st in enumerate(steps):
+                tt = t + i * step_len
+                if tt >= t1 - 0.3:
+                    break
+                m = ch[st] + 12
+                v = 0.30 + 0.14 * lv + (0.05 if i % 4 == 0 else 0)
+                sig = felt_piano(m, step_len * 1.7, v)
+                pan = 0.5 + 0.25 * np.sin(m)
+                place(L, sig, tt, 1 - pan * 0.6)
+                place(R, sig, tt, 0.4 + pan * 0.6)
+            if bass and t + 0.5 < t1:
+                sig = felt_piano(root - 12, beat * 3.6, 0.40 * lv + 0.08)
+                place(L, sig, t, 0.9)
+                place(R, sig, t, 0.7)
+            if padon and t + 1.0 < t1:
+                pd = pad([x - 12 for x in ch], min(beat * 4, t1 - t), 0.09 * lv + 0.02, bright=650, seed=bar)
+                place(L, pd, t, 1.0)
+                place(R, pd, t, 1.0)
+            t += 4 * beat
+            bar += 1
+
+    for sid, style in STYLE.items():
+        if sid not in sc or style[0] == 0:
+            continue
+        s0 = sc[sid]
+        t0 = s0['start'] + (0.3 if sid == 'open' else 0.25)
+        t1 = s0['end']
+        if sid == 'open' and 'oT' in cue:
+            t1 = cue['oT']['start']
+            chord(cue['oT']['start'] + 0.3, [45, 57, 64, 71], 0.42, 3.6)      # 片名
+        run(t0, t1, style)
+    # 第 02 章「就是它的草稿纸」处抬一次高声部
+    if 'c19' in cue:
+        tl = cue['c19']['start']
+        for j, mm in enumerate([76, 79, 77, 74, 76, 74, 72, 71]):
+            sig = felt_piano(mm, beat * 1.8, 0.26)
+            place(L, sig, tl + j * beat, 0.6)
+            place(R, sig, tl + j * beat, 0.9)
+    # 片尾：一个完整的和弦慢慢消失
+    if 'credits' in sc:
+        chord(sc['credits']['start'] + 0.2, [45, 52, 57, 64, 71], 0.38, 6.0)
+    out = finish(L, R, total)
+    # 合成用 44.1 kHz；混音的采样率与长度以 ctx 为准，线性插值重采样到 ctx['n'] 个采样
+    sr, nn = ctx['sr'], ctx['n']
+    if sr == SR and out.shape[1] == nn:
+        return out
+    src = np.arange(out.shape[1]) / SR
+    dst = np.arange(nn) / sr
+    return np.vstack([np.interp(dst, src, out[0], right=0.0), np.interp(dst, src, out[1], right=0.0)])

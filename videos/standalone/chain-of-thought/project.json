@@ -8,8 +8,8 @@
   "titles": {
     "zh": "CoT：先思考，再回答"
   },
-  "stage": "review",
-  "next": "第 4 稿（ae9b5a71，叙事以开头三次回答为主线）与冷静克制的立体版视觉 B 已交审（out/audition/index.html）；等意见或确认，确认后用真诚青年配全片",
+  "stage": "build",
+  "next": "实现：开场（o1–o15 与片名）作有声代表段，之后逐章铺开；封面已出",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -53,9 +53,9 @@
     "mb": 4
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
-    "duck_db": 9,
+    "music": "tools/music.py",
+    "music_db": -14,
+    "duck_db": 8,
     "sfx_db": -8
   },
   "check": {
@@ -69,7 +69,7 @@
     "still_seconds": 3,
     "camera": true,
     "style": {
-      "flat": true,
+      "flat": false,
       "no_emoji": true
     }
   }

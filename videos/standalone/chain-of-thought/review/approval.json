@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
+      "status": "approved",
       "content_sha256": "ae9b5a716eb4cef0a008edf32b89edb3c6b4e55fb386901ea3de2bc04a2175b5",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-11-07T10:14:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：第 4 稿，会话原话「开始制作」"
     }
   }
 }
