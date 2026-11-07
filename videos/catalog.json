@@ -152,6 +152,7 @@
     {"slug": "von-neumann", "title": {"zh": "128秒认识冯·诺伊曼架构"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。", "status": "delivered"},
     {"slug": "ipv4", "title": {"zh": "100 秒速通 IPv4"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。", "status": "delivered"},
     {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒了解RDP: Windows远程的优雅实现"}, "status": "delivered", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。"},
+    {"slug": "github-collaboration", "series": "in-seconds", "title": {"zh": "192 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR"}, "status": "planned", "note": "2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 192 秒为工作值，开工前确认。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。"},
     {"slug": "linux-permissions", "series": "permission-design", "title": {"zh": "Linux 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "windows-permissions", "series": "permission-design", "title": {"zh": "Windows 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "macos-permissions", "series": "permission-design", "title": {"zh": "macOS 权限机制的设计"}},
