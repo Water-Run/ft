@@ -4,6 +4,7 @@
 scene('adapt', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
+  const head = txt(world, 'hdr', tr('你的电脑说了算', 'Your PC decides'), 230, 30); wipe(head, c0 + 0.05, { dir: 'l', d: 0.4 });
   const R = screen(world, 120, 170, 640, 380, tr('那边的电脑', 'The remote PC'));
   const Y = screen(world, 1160, 170, 640, 380, tr('你的电脑', 'Your PC'));
   wipe(R.el, c0 + 0.05, { dir: 'l', d: 0.45 }); wipe(Y.el, c0 + 0.15, { dir: 'r', d: 0.45 });
@@ -35,15 +36,15 @@ scene('adapt', ({ root, s, c0 }) => {
   ];
   // 连上的那一刻：一枚「连接」磁贴从你的电脑走到那边
   const tConn = Qf(T('a2', '那一刻'));
-  const conn = tile(world, 'rdp', 0, 0, 200, 80, '', tr('连上', 'Connect')); conn.lastChild.style.fontSize = '36px'; conn.style.opacity = '0';
+  const conn = tile(world, 'rdp', 0, 0, 200, 80, '', tr('连上', 'Connect')); conn.lastChild.style.fontSize = '36px'; conn.lastChild.style.left = '76px'; icon(conn, 'link', 14, 14, 50); conn.style.opacity = '0';
   fromTo(conn, tConn, { x: 1000, y: 380, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.15 }, { x: 560, duration: 0.9, ease: 'power2.inOut' }, { opacity: 0, duration: 0.25 }], immediateRender: false });
   sfx('whoosh', tConn, { g: 0.4 });
-  const repLab = txt(world, 't-s dim', tr('连上时报过去的', 'Sent when connecting'), 772, 150);
+  const repLab = txt(world, 't-s dim', tr('连上时报过去的', 'Sent when connecting'), 120, 690);
   wipe(repLab, facts[0][2] - 0.3, { dir: 'l', d: 0.3 });
   const reps = facts.map(([k, v, t0], i) => {
-    const e = tile(world, 'rdp', 772, 196 + i * 104, 200, 94, k, v); e.lastChild.style.fontSize = i === 2 ? '26px' : '30px';
-    // 从你的电脑那边飞过来，落进中间这一列
-    fromTo(e, t0, { x: 260, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out', immediateRender: false });
+    const e = tile(world, 'rdp', 120 + i * 425, 734, 405, 150, k, v); e.lastChild.style.fontSize = '48px'; icon(e, ['screen', 'zoom', 'keyboard', 'clock'][i], 405 - 86, 18, 64);
+    // 从你的电脑那边飞下来，落进下面这一排
+    fromTo(e, t0, { x: 1000 - i * 425, y: -420, scale: 0.5, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out', immediateRender: false });
     sfx('blip', t0, { g: 0.55, p: 0.4 - i * 0.2 });
     return e;
   });
@@ -81,10 +82,12 @@ scene('adapt', ({ root, s, c0 }) => {
   });
   show(win, tDrag - 0.3, { d: 0.3 }); show(winLab, tDrag - 0.3, { d: 0.3 }); hide(paperRing, tDrag - 0.3, { d: 0.3 });
   sfx('tick', tDrag, { g: 0.5 }); sfx('tick', tFollow + 0.2, { g: 0.5 });
-  const since = txt(world, 't-s dim', tr('Windows 8.1 起', 'Since Windows 8.1'), 120, 660);
+  const since = txt(world, 't-s dim', tr('Windows 8.1 起', 'Since Windows 8.1'), 520, 616);
   wipe(since, tFollow, { dir: 'l', d: 0.3 });
   // ── a6：录像的办法只能录屏幕本来的样子，尺寸不对就整张缩放 ──
   const tVid = Qf(T('a6', '录像')), tShrink = Qf(T('a6', '整张'));
+  // 下面这一排让位给录像的对比
+  [repLab, ...reps].forEach((e, i) => exit(e, tVid - 0.4 + i * 0.04, { y: 260, d: 0.45 }));
   const vb = h('div', 'abs', world); px(vb, 120, 712, 760, 230); vb.dataset.name = '录像：整张缩放';
   const vLab = txt(vb, 't-s dim', tr('录像：那块屏幕本来是 16:9', 'Video: the screen is 16:9'), 0, 0);
   const vWin = h('div', 'abs', vb); px(vWin, 0, 44, 300, 186); css(vWin, { outline: '3px dashed var(--you)', outlineOffset: '-3px' });
@@ -97,11 +100,10 @@ scene('adapt', ({ root, s, c0 }) => {
   // ── a7、a7b：复制的字、要打印的文档、放出来的声音，各有通道 ──
   const tCopy = Qf(T('a7', '复制')), tPrint = Qf(T('a7', '打印')), tSound = Qf(T('a7', '声音')), tCh = Qf(T('a7b', '通道'));
   exit(vb, tCopy - 0.35, { x: -900, d: 0.45 }); exit(since, tCopy - 0.35, { x: -900, d: 0.45 }); hide(winLab, tCopy - 0.35, { d: 0.3 });
-  [repLab, ...reps].forEach((e) => to(e, tCopy - 0.35, { opacity: 0.25, duration: 0.4 }));
   const lanes = [[tr('剪贴板', 'Clipboard'), tCopy], [tr('打印机', 'Printer'), tPrint], [tr('声音', 'Sound'), tSound]].map(([lab, t0], i) => {
     const y = 724 + i * 76;
-    const ln = blk(world, 'c-line', 260, y + 26, 1540, 6); wipe(ln, t0 - 0.1, { dir: 'l', d: 0.4 });
-    const lb = txt(world, 't-n', lab, 120, y + 8); wipe(lb, t0 - 0.1, { dir: 'l', d: 0.3 });
+    const ln = blk(world, 'c-line', 300, y + 26, 1500, 6); wipe(ln, t0 - 0.1, { dir: 'l', d: 0.4 });
+    const lb = txt(world, 't-n', lab, 170, y + 8); wipe(lb, t0 - 0.1, { dir: 'l', d: 0.3 }); const ic = icon(world, ['clip', 'printer', 'speaker'][i], 120, y + 6, 42, 'var(--rdpl)'); wipe(ic, t0 - 0.1, { dir: 'l', d: 0.3 });
     return { y, t0, ln, lb };
   });
   // 剪贴板里走的是字本身；打印走一张纸；声音走一段波形
@@ -115,10 +117,10 @@ scene('adapt', ({ root, s, c0 }) => {
     fromTo(e, t0, { x: 300, y, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.15 }, { x: 1640, duration: 1.6, ease: 'power1.inOut' }], immediateRender: false });
     sfx(i === 0 ? 'blip' : 'tick', t0, { g: 0.5, p: -0.4 + i * 0.4 });
   });
-  const gl = h('div', 'gloss', world, tr('通道：同一条连接里另开的数据线路，最多 31 条', 'Channel: a separate data line in the same connection, up to 31'));
+  const gl = h('div', 'gloss', world, tr('通道：连接里另开的数据线路', 'Channel: a separate data line in the connection'));
   px(gl, 980, 674, 820, 40); gl.dataset.gloss = tr('通道', 'channel');
   css(gl, { background: 'var(--bg)' });
-  wipe(gl, tCh, { dir: 'l', d: 0.4 }); sfx('pop', tCh, { g: 0.6 });
+  wipe(gl, Qf(T('a7b')), { dir: 'l', d: 0.4 }); sfx('pop', Qf(T('a7b')), { g: 0.6 });
   [tokCopy, tokPage, tokWave, winLab, resLab].forEach((e) => { e.dataset.overlapOk = '1'; });
   cam.track(s.start, { x: 952, y: 484, z: 1 }, [[s.start + 0.1, { x: 968 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }]]);
 });

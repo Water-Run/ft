@@ -126,7 +126,7 @@
       [/Hydra/g, '海德拉'],
       [/56K/g, '五十六 K'],
       [/ToDesk/g, 'To Desk'],
-      [/UU 远程/g, 'U U 远程'],
+      [/UU 远程/g, '优优远程'],
       [/RDP/g, 'R D P'],
       [/Windows XP/g, 'Windows X P'],
       [/一行/g, '一航'],

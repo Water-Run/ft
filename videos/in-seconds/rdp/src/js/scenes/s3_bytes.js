@@ -4,6 +4,7 @@
 scene('bytes', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
+  const head = txt(world, 'hdr', tr('同一个动作，传多少', 'Same action, how many bytes'), 230, 30); wipe(head, c0 + 0.05, { dir: 'l', d: 0.4 });
   const R = screen(world, 120, 170, 640, 380, tr('那边的电脑', 'The remote PC'));
   const Y = screen(world, 1160, 170, 640, 380, tr('你的电脑', 'Your PC'));
   wipe(R.el, c0 + 0.05, { dir: 'l', d: 0.45 }); wipe(Y.el, c0 + 0.15, { dir: 'r', d: 0.45 });
@@ -40,7 +41,7 @@ scene('bytes', ({ root, s, c0 }) => {
   const ring = h('div', 'abs', R.desk); px(ring, 16, 10 + TOP + 6 * LH - 34 + 34, 300, LH); css(ring, { outline: '3px dashed var(--dim)', outlineOffset: '2px' });
   show(ring, tChg, { d: 0.3 }); hide(ring, tPress + 0.6, { d: 0.3 });
   // 录像的办法：一枚录像磁贴先到位；说到「变了的那片」时其余部分压暗，只照亮变了的那一行
-  const recT = tile(world, 'vid', 800, 196, 200, 80, '', tr('录像', 'Video')); recT.lastChild.style.fontSize = '34px';
+  const recT = mtile(world, 'vid', 800, 196, 200, 80, {}); icon(recT, 'record', 14, 16, 48); h('div', 'abs', recT, tr('录像', 'Video')); css(recT.lastChild, { left: '74px', top: '18px', fontSize: '34px' });
   slide(recT, Qf(T('x2', '录像')), { x: -80, d: 0.4 }); sfx('pop', Qf(T('x2', '录像')), { g: 0.5 }); hide(recT, Qf(T('x3', 'R D P')), { d: 0.35 });
   // 压暗用四块深色围住那一行（中间留空，不盖住字）
   const veil = h('div', 'abs', R.desk); px(veil, 0, 0, 612, 352); veil.style.opacity = '0'; veil.dataset.name = '压暗';
@@ -52,6 +53,9 @@ scene('bytes', ({ root, s, c0 }) => {
   const drop = blk(world, 'c-vid', 0, 0, side(667), side(667)); drop.style.opacity = '0';
   fromTo(drop, tPress, { x: RX, y: ROWY(6), opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.1 }, { x: 400, y: 660, duration: 0.7, ease: 'power2.inOut' }, { opacity: 0, duration: 0.05 }], immediateRender: false });
   appear(vA, tPress + 0.82); sfx('thud', tPress + 0.8, { g: 0.5 });
+  const patch = h('div', 'abs', book); px(patch, 400, 740, 300, 54); patch.dataset.name = '被压过的那一片像素';
+  blk(patch, 'c-paper', 0, 0, 300, 54); const pt = txt(patch, 'mono', 'dumplings', 14, 10); css(pt, { fontSize: '26px', color: '#1b1b1b' }); const pv = blk(patch, 'c-vid', 0, 0, 300, 54); pv.style.opacity = '0.45';
+  wipe(patch, tPress + 0.9, { dir: 't', d: 0.35 });
   wipe(vAl, tNum, { dir: 'l', d: 0.3 }); sfx('pop', tNum, { g: 0.6 });
   // ── x3：每个字的样子，第一次出现时就存到你这边（字形缓存）──
   const tShelf = Qf(T('x3', '每个字')), tStore = Qf(T('x3', '样子'));
@@ -88,10 +92,10 @@ scene('bytes', ({ root, s, c0 }) => {
   F((t) => { const k = clamp((t - tNine) / 0.9, 0, 1); hex.style.color = k > 0 && k < 1 ? 'var(--rdpl)' : ''; });
   // ── x5：之后只说几号字写在哪：一行九个字，四十七字节 ──
   const tSay = Qf(T('x5', '几号')), tLine = Qf(T('x5', '一航')), t47 = Qf(T('x5', '四十七'));
-  hide(dPanel, tSay, { d: 0.35 });
-  const ordT = tile(world, 'glyph', 0, 0, 220, 70); h('div', 'abs', ordT, tr('写字 · 0–8 号', 'Text · glyphs 0–8')); css(ordT.lastChild, { left: '14px', top: '16px', fontSize: '28px' });
+  hide(dPanel, tSay + 0.3, { d: 0.35 });
+  const ordT = tile(world, 'glyph', 0, 0, 220, 70); icon(ordT, 'doc', 10, 14, 42); h('div', 'abs', ordT, tr('写字 · 0–8 号', 'Text · glyphs 0–8')); css(ordT.lastChild, { left: '58px', top: '16px', fontSize: '28px' });
   ordT.style.opacity = '0';
-  fromTo(ordT, tSay, { x: 770, y: 200, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.15 }, { x: 930, duration: 0.8, ease: 'power2.inOut' }, { opacity: 1, duration: 0.5 }, { opacity: 0, duration: 0.3 }], immediateRender: false });
+  fromTo(ordT, tSay, { x: 770, y: 200, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.15 }, { x: 930, duration: 0.8, ease: 'power2.inOut' }, { x: 120, y: 740, duration: 0.9, delay: 0.3, ease: 'power3.inOut' }], immediateRender: false });
   sfx('blip', tSay, { g: 0.6 });
   // 你这边：从格子里取字，排成那一行
   glyphs.forEach((g, i) => {
@@ -118,9 +122,9 @@ scene('bytes', ({ root, s, c0 }) => {
   appear(vBl, t23); countTo(vBl, 0, 23159, t23, 0.9, (v) => group3(Math.round(v)) + ' B');
   // ── x7：RDP 只说一句：把这块往上挪，十四个字节 ──
   const tMove = Qf(T('x7', '往上')), t14 = Qf(T('x7', '十四'));
-  const mv = tile(world, 'move', 0, 0, 200, 70); h('div', 'abs', mv, tr('搬移', 'Move')); css(mv.lastChild, { left: '14px', top: '16px', fontSize: '30px' });
+  const mv = tile(world, 'move', 0, 0, 200, 70); icon(mv, 'move', 10, 14, 42); h('div', 'abs', mv, tr('搬移 · 14 B', 'Move · 14 B')); css(mv.lastChild, { left: '58px', top: '16px', fontSize: '28px' });
   mv.style.opacity = '0';
-  fromTo(mv, tMove - 0.9, { x: 770, y: 200, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.12 }, { x: 950, duration: 0.75, ease: 'power2.inOut' }, { opacity: 0, duration: 0.25 }], immediateRender: false });
+  fromTo(mv, tMove - 0.9, { x: 770, y: 200, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.12 }, { x: 950, duration: 0.75, ease: 'power2.inOut' }, { x: 800, y: 740, duration: 0.8, delay: 0.25, ease: 'power3.inOut' }], immediateRender: false });
   sfx('blip', tMove - 0.9, { g: 0.6 });
   fromTo(yp.body, tMove, { y: 0 }, { y: -3 * LH, duration: 0.5, ease: 'power2.inOut', immediateRender: false }); sfx('tick', tMove, { g: 0.6 });
   const rB = blk(book, 'c-rdp', 800, 684, side(14), side(14)); rB.dataset.name = '14 字节';
@@ -137,7 +141,7 @@ scene('bytes', ({ root, s, c0 }) => {
   sfx('blip', tFill - 0.6, { g: 0.45 });
   // ── x9：远程桌面连接的选项里，卫星、56K 拨号都列着 ──
   const tOpt = Qf(T('x9', '选项')), tSat = Qf(T('x9', '卫星')), tModem = Qf(T('x9', '五十六'));
-  exit(book, tOpt - 0.2, { x: -1920, d: 0.6 }); exit(shelf, tOpt - 0.2, { x: -1920, d: 0.6 }); exit(shLab, tOpt - 0.2, { x: -1920, d: 0.6 });
+  exit(book, tOpt - 0.2, { x: -1920, d: 0.6 }); exit(ordT, tOpt - 0.2, { x: -1920, d: 0.6 }); exit(mv, tOpt - 0.2, { x: -1920, d: 0.6 }); exit(shelf, tOpt - 0.2, { x: -1920, d: 0.6 }); exit(shLab, tOpt - 0.2, { x: -1920, d: 0.6 });
   sfx('whoosh', tOpt - 0.25, { g: 0.5 });
   const optHead = txt(world, 't-s dim', tr('远程桌面连接 · 体验 · 连接速度', 'Remote Desktop Connection · Experience · Speed'), 120, 588);
   // 选项原文取自本机中文版 mstsc.exe.mui（lab/out_05）

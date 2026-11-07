@@ -3,7 +3,7 @@
 scene('stand', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
-  const head = txt(world, 't-3', tr('站的位置', 'Where it stands'), 230, 34);
+  const head = txt(world, 'hdr', tr('站的位置', 'Where it stands'), 230, 30);
   wipe(head, c0 + 0.05, { dir: 'l', d: 0.4 });
   // ── 两层：Windows（后）与屏幕（前）──
   const winL = tile(world, 'tile', 200, 170, 720, 440); winL.style.outline = '4px solid var(--rdp)'; winL.style.outlineOffset = '-4px';
@@ -14,7 +14,7 @@ scene('stand', ({ root, s, c0 }) => {
   tile(scr.desk, 'rdp', 510, 40, 150, 150); tile(scr.desk, 'you', 510, 210, 150, 150);
   wipe(winL, c0 + 0.1, { dir: 't', d: 0.45 }); wipe(scr.el, c0 + 0.25, { dir: 'l', d: 0.45 }); sfx('whoosh', c0 + 0.1, { g: 0.4 });
   // 你的电脑
-  const Y = screen(world, 1300, 300, 520, 330, tr('你的电脑', 'Your PC'));
+  const Y = monitor(world, 1300, 290, 520, 330, tr('你的电脑', 'Your PC'));
   wipe(Y.el, c0 + 0.35, { dir: 'r', d: 0.45 });
   // k1「站的位置」：两个位置先放上问号——一个在屏幕外，一个在 Windows 里
   const tPos = Qf(T('k1', '位置'));
@@ -23,8 +23,8 @@ scene('stand', ({ root, s, c0 }) => {
   sfx('pop', tPos, { g: 0.6 });
   // ── k2：ToDesk、UU 远程站在屏幕外面 ──
   const tOut = Qf(T('k2', 'To')), tOutside = Qf(T('k2', '外面'));
-  const rec = tile(world, 'vid', 1040, 360, 210, 110, tr('录像', 'Record'), 'ToDesk · UU', '');
-  rec.lastChild.style.fontSize = '30px';
+  const rec = mtile(world, 'vid', 1030, 350, 230, 130, { label: tr('录像', 'Video') });
+  logo(rec, 'todesk', 16, 14, 140); logo(rec, 'uu', 16, 50, 140); icon(rec, 'record', 170, 76, 44);
   slide(rec, tOut, { x: 120, d: 0.45 }); sfx('pop', tOut, { g: 0.7 }); hide(qOut, tOut, { d: 0.25 });
   const ov = overlay(world);
   // 「拍」的视线：从录像磁贴指向屏幕正面
@@ -41,7 +41,7 @@ scene('stand', ({ root, s, c0 }) => {
   for (let k = 0; k < 6; k++) fromTo(flash, tShot + k * 0.42, { opacity: 0 }, { keyframes: [{ opacity: 0.22, duration: 0.06 }, { opacity: 0, duration: 0.3 }], immediateRender: false });
   sfx('tick', tShot, { g: 0.6 });
   frameStream(world, tShot, tStop, { x: 1150, y: 500 }, { x: 1320, y: 560 }, { period: 0.42, travel: 0.8, w: 90, h: 56 });
-  const vGl = h('div', 'gloss', world, tr('视频：一张张整屏截图，压缩后连着发', 'Video: full-screen captures, compressed and streamed')); px(vGl, 1300, 640, 520, 40);
+  const vGl = h('div', 'gloss', world, tr('视频：一张张整屏截图，压缩后连着发', 'Video: full-screen captures, compressed and streamed')); px(vGl, 1300, 900, 520, 40);
   vGl.dataset.gloss = tr('视频', 'video'); wipe(vGl, tShot + 0.4, { dir: 'l', d: 0.4 });
   // 你这边：收到的是一张张画好的图（灰蒙蒙的拷贝）
   const ym = h('div', 'abs', Y.desk); px(ym, 0, 0, 492, 302); ym.dataset.name = '收到的画面';
@@ -66,7 +66,7 @@ scene('stand', ({ root, s, c0 }) => {
   to(scr.el, tStop - 0.1, { x: 160, y: 260, duration: 0.7, ease: 'power3.inOut' }); sfx('whoosh', tStop - 0.15, { g: 0.5 });
   [rec, outLab, mos, vGl, ...sight, pixLine].forEach((e) => to(e, tStop - 0.1, { opacity: 0.28, duration: 0.5 }));
   hide(ym, tStop, { d: 0.4 });
-  const rdp = tile(world, 'rdp', 720, 196, 180, 96, '', 'RDP'); rdp.lastChild.style.fontSize = '52px';
+  const rdp = tile(world, 'rdp', 720, 196, 180, 96, '', 'RDP'); rdp.lastChild.style.fontSize = '52px'; icon(rdp, 'bolt', 130, 10, 40);
   hide(qIn, tIn - 0.05, { d: 0.2 }); slam(rdp, tIn, { from: 1.3, d: 0.4 }); sfx('thud', tIn);
   const inLab = txt(world, 't-n rdpl', tr('Windows 里面', 'Inside Windows'), 560, 120);
   wipe(inLab, tIn + 0.15, { dir: 'l', d: 0.35 });
@@ -78,8 +78,9 @@ scene('stand', ({ root, s, c0 }) => {
     ['move', tr('搬移', 'Move'), '(510,40) ↑ 40', tOrd],
   ].map(([c, lab, arg, t0], i) => {
     const e = tile(world, c, 230, 230 + i * 92, 440, 80);
-    h('div', 'abs', e, lab); css(e.children[0], { left: '16px', top: '20px', fontSize: '30px' });
-    h('div', 'abs mono', e, arg); css(e.children[1], { left: '120px', top: '22px', fontSize: '28px' });
+    h('div', 'abs', e, lab); css(e.children[0], { left: '70px', top: '20px', fontSize: '30px' });
+    h('div', 'abs mono', e, arg); css(e.children[1], { left: '170px', top: '22px', fontSize: '26px' });
+    icon(e, ['fill', 'doc', 'move'][i], 14, 16, 46);
     slide(e, t0, { x: -60, d: 0.4 }); sfx('blip', t0, { g: 0.5, p: -0.3 });
     return e;
   });

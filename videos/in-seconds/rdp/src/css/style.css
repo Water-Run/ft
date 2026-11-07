@@ -91,3 +91,11 @@ body { font-family: "Inter", "Sans SC"; color: var(--fg); }
 .credits .credit-row { margin-bottom: 26px; }
 .credits .t-note { font-size: 28px; color: var(--dim); }
 .credits .t-body { font-size: 40px; font-weight: 300; }
+
+/* 磁贴里的大字与标签、图标、标志 */
+.mt-big { font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -.01em; color: #f2f2f2; white-space: nowrap; }
+.mt-lab { font-size: 26px; font-weight: 400; color: #f2f2f2; white-space: nowrap; }
+.ico svg { display: block; }
+.logo { object-fit: contain; }
+/* 每一场左上的大标题（开始屏的分组标题） */
+.hdr { position: absolute; font-weight: 200; font-size: 64px; line-height: 1; letter-spacing: -.01em; color: var(--fg); white-space: nowrap; }

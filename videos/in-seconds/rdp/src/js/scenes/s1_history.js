@@ -11,7 +11,8 @@ scene('history', ({ root, s, c0 }) => {
     ['line', tr('今天', 'Today'), tr('Windows 11 · mstsc', 'Windows 11 · mstsc')],
   ];
   const yt = years.map(([c, y, l], i) => { const e = tile(world, c, 120 + i * 430, 120, 410, 120, l, y); return e; });
-  yt.forEach((e, i) => slide(e, c0 + 0.05 + i * 0.1, { x: 80, d: 0.45 }));
+  turnAll(yt, c0 + 0.05, 0.09);
+  [['bolt', 0], ['server', 1], ['pc', 2], ['pc', 3]].forEach(([n, i]) => icon(yt[i], n, 410 - 66, 14, 50));
   sfx('pop', c0 + 0.05, { g: 0.5 });
   // h1：1998 这一格砸一下、点亮
   const t98 = Qf(T('h1', '一九九八'));
@@ -22,16 +23,17 @@ scene('history', ({ root, s, c0 }) => {
   // 「那时电脑贵」：一排灰色的电脑先占住下面的位置；到「便宜的终端」时换成小终端
   const tPc = Qf(T('h2', '电脑'));
   const pcs = [];
-  for (let i = 0; i < 9; i++) { const e = tile(world, 'vid', 150 + i * 180, 640, 160, 170, tr('电脑', 'PC')); e.dataset.name = '电脑'; pcs.push(e); slide(e, tPc + i * 0.05, { y: 60, d: 0.4 }); }
+  for (let i = 0; i < 9; i++) { const e = mtile(world, 'vid', 150 + i * 180, 640, 160, 170, { icon: 'pc', label: tr('电脑', 'PC'), iconSize: 72 }); e.dataset.name = '电脑'; pcs.push(e); }
+  turnAll(pcs, tPc, 0.05);
   sfx('thud', tPc, { g: 0.5 });
   // ── h2：一台服务器 → 分给很多人 ──
-  const srv = tile(world, 'tile', 760, 300, 400, 260, tr('服务器', 'Server'));
+  const srv = tile(world, 'tile', 700, 280, 520, 300, tr('服务器', 'Server')); icon(srv, 'server', 18, 232, 52);
   srv.style.outline = '4px solid var(--rdp)'; srv.style.outlineOffset = '-4px';
   const tSrv = Qf(T('h2', '一台服务器')), tMany = Qf(T('h2', '很多人'));
   slam(srv, tSrv, { from: 1.15, d: 0.4 }); sfx('thud', tSrv, { g: 0.8 });
   // 服务器里的九个桌面（会话）：小方格 3×3
   const sess = [];
-  for (let i = 0; i < 9; i++) { const e = blk(srv, 'c-rdp', 70 + (i % 3) * 92, 60 + Math.floor(i / 3) * 62, 80, 50); e.dataset.name = '桌面'; sess.push(e); }
+  for (let i = 0; i < 9; i++) { const e = blk(srv, 'c-line', 90 + (i % 3) * 112, 56 + Math.floor(i / 3) * 76, 100, 64); thumbFrame(e, 100, 64); e.dataset.name = '桌面'; sess.push(e); }
   sess.forEach((e, i) => show(e, tMany + i * 0.06, { s: 0.6, d: 0.3 }));
   sfx('pop', tMany, { g: 0.6 });
   // ── h3：每人一台便宜的终端；程序全在服务器上跑 ──
@@ -40,7 +42,7 @@ scene('history', ({ root, s, c0 }) => {
   for (let i = 0; i < 9; i++) {
     const x = 150 + i * 180, y = 690;
     const tm = h('div', 'abs', world); px(tm, x, y, 150, 120);
-    const sc0 = blk(tm, 'c-tile', 0, 0, 150, 96); blk(sc0, 'c-rdp', 10, 10, 130, 76);
+    const sc0 = blk(tm, 'c-tile', 0, 0, 150, 96); const scr0 = blk(sc0, 'c-you', 10, 10, 130, 76); thumbFrame(scr0, 130, 76);
     blk(tm, 'c-line', 55, 96, 40, 12); blk(tm, 'c-line', 30, 108, 90, 10);
     tm.dataset.name = '终端'; terms.push(tm);
   }
@@ -49,16 +51,16 @@ scene('history', ({ root, s, c0 }) => {
   terms.forEach((e, i) => slide(e, tTerm + i * 0.05, { y: 60, d: 0.4 }));
   wipe(tLab, tTerm + 0.3, { dir: 'l', d: 0.4 }); sfx('pop', tTerm, { g: 0.6 });
   // 程序：服务器里的几块磁贴，跑起来（在服务器里来回挪）
-  const apps = [['fill', 0], ['glyph', 1], ['move', 2]].map(([c, i]) => { const e = blk(srv, 'c-' + c, 342, 60 + i * 62, 50, 50); e.dataset.name = '程序'; return e; });
+  const apps = [['fill', 0], ['glyph', 1], ['move', 2]].map(([c, i]) => { const e = blk(srv, 'c-' + c, 440, 56 + i * 76, 60, 64); icon(e, ['fill', 'doc', 'move'][i], 12, 14, 36); e.dataset.name = '程序'; return e; });
   apps.forEach((e, i) => slide(e, tRun + i * 0.08, { x: 40, d: 0.35 }));
   sfx('blip', tRun, { g: 0.5 });
-  const appLab = txt(srv, 't-s', tr('程序', 'Programs'), 330, 12);
+  const appLab = txt(srv, 't-s', tr('程序', 'Programs'), 430, 12);
   wipe(appLab, tRun + 0.2, { dir: 'l', d: 0.4 });
   // ── h4：项目代号 Hydra，九头蛇：九条线从服务器连到九台终端 ──
   const tHy = Qf(T('h4', '海德拉')), tNine = Qf(T('h4', '九头蛇'));
-  const hy = txt(world, 't-2', 'Hydra', 330, 380); hy.dataset.name = 'Hydra';
+  const hy = txt(world, 't-1', 'Hydra', 150, 340); hy.dataset.name = 'Hydra';
   slam(hy, tHy, { from: 1.3, d: 0.4 }); sfx('thud', tHy);
-  const lines = terms.map((tm, i) => path(wires, `M ${960} ${560} L ${225 + i * 180} ${690}`, 'rdpl', { w: 3, arrow: false }));
+  const lines = terms.map((tm, i) => path(wires, `M ${960} ${580} L ${225 + i * 180} ${690}`, 'rdpl', { w: 3, arrow: false }));
   lines.forEach((p, i) => drawIn(p, tNine + i * 0.05, 0.45));
   sfx('tick', tNine, { g: 0.6 });
   // ── h5：2001 年，Windows XP 专业版也带上了它 ──
@@ -66,11 +68,11 @@ scene('history', ({ root, s, c0 }) => {
   const glow01 = blk(world, 'c-rdpl', 120 + 2 * 430, 240, 410, 8); glow01.style.background = 'var(--rdpl)';
   wipe(glow01, t01, { dir: 'l', d: 0.4 }); sfx('pop', t01, { g: 0.7 });
   fromTo(yt[2], t01, { backgroundColor: '#3a3a3a' }, { backgroundColor: C.rdp, duration: 0.4, immediateRender: false });
-  const xp = tile(world, 'rdp', 1300, 300, 500, 260, tr('Windows XP 专业版', 'Windows XP Professional'));
-  const sw = h('div', 'abs', xp); px(sw, 30, 150, 440, 70); css(sw, { background: 'var(--bg)' });
+  const xp = tile(world, 'rdp', 1300, 280, 520, 300, tr('Windows XP 专业版', 'Windows XP Professional')); icon(xp, 'pc', 430, 60, 64);
+  const sw = h('div', 'abs', xp); px(sw, 30, 190, 460, 70); css(sw, { background: 'var(--bg)' });
   const swl = txt(sw, 't-n', tr('远程桌面', 'Remote Desktop'), 20, 14);
   const knob = blk(sw, 'c-line', 330, 15, 90, 40); const dot = blk(knob, 'c-paper', 4, 4, 32, 32);
-  slide(xp, tXp - 0.2, { x: 120, d: 0.45 }); sfx('whoosh', tXp - 0.25, { g: 0.4 });
+  turnIn(xp, tXp - 0.2); sfx('whoosh', tXp - 0.25, { g: 0.4 });
   fromTo(knob, tXp + 0.5, { backgroundColor: '#3a3a3a' }, { backgroundColor: C.you, duration: 0.25, immediateRender: false }); fromTo(dot, tXp + 0.5, { x: 0 }, { x: 50, duration: 0.25, immediateRender: false }); sfx('tick', tXp + 0.5, { g: 0.8 });
   [swl, knob, dot].forEach((e) => { e.dataset.overlapOk = '1'; });
   cam.track(s.start, { x: 960, y: 484, z: 1 }, [[s.start + 0.1, { x: 976 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }]]);

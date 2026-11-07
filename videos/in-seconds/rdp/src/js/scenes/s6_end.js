@@ -5,7 +5,7 @@ scene('end', ({ root, s, c0 }) => {
   const cam = makeCamera(world, 1920, VH);
   // ── e1：录像的办法，看到的是结果 ──
   const tRes = Qf(T('e1', '结果'));
-  const L1 = txt(world, 't-n dim', tr('录像：结果', 'Video: the result'), 120, 300);
+  const L1 = txt(world, 't-n dim', tr('录像：结果', 'Video: the result'), 176, 300); const L1i = icon(world, 'record', 120, 296, 44, 'var(--dim)'); wipe(L1i, c0 + 0.05, { dir: 'l', d: 0.3 });
   const frame = h('div', 'abs', world); px(frame, 120, 350, 560, 350); frame.dataset.name = '录下来的结果';
   // 结果是一格一格的颜色：白纸、两块磁贴、几行字的灰
   for (let r = 0; r < 14; r++) for (let c = 0; c < 22; c++) {
@@ -20,14 +20,14 @@ scene('end', ({ root, s, c0 }) => {
   show(rRing, tRes, { d: 0.3 }); sfx('tick', tRes, { g: 0.5 });
   // ── e2：RDP 知道每一笔是怎么画上去的 ──
   const tKnow = Qf(T('e2', '每一笔'));
-  const L2 = txt(world, 't-n rdpl', tr('RDP：画法', 'RDP: how it was drawn'), 740, 300);
+  const L2 = txt(world, 't-n rdpl', tr('RDP：画法', 'RDP: how it was drawn'), 796, 300); const L2i = icon(world, 'bolt', 740, 296, 44, 'var(--rdpl)'); wipe(L2i, Qf(T('e2', 'R D P')), { dir: 'l', d: 0.3 });
   wipe(L2, Qf(T('e2', 'R D P')), { dir: 'l', d: 0.3 });
   const steps = [
     ['fill', tr('填色 · 白纸', 'Fill · paper')], ['glyph', tr('写字 · 第 1 行', 'Text · line 1')], ['glyph', tr('写字 · 第 2 行', 'Text · line 2')],
     ['fill', tr('填色 · 蓝色磁贴', 'Fill · blue tile')], ['fill', tr('填色 · 绿色磁贴', 'Fill · green tile')], ['glyph', tr('写字 · 第 3 行', 'Text · line 3')],
   ];
   const st = steps.map(([c, lab], i) => {
-    const e = tile(world, c, 740, 350 + i * 60, 380, 52); h('div', 'abs', e, lab); css(e.lastChild, { left: '14px', top: '8px', fontSize: '28px' });
+    const e = tile(world, c, 740, 350 + i * 60, 380, 52); icon(e, c === 'fill' ? 'fill' : 'doc', 10, 7, 38); h('div', 'abs', e, lab); css(e.lastChild, { left: '58px', top: '8px', fontSize: '28px' });
     slide(e, tKnow - 0.2 + i * 0.22, { x: -50, d: 0.3 }); return e;
   });
   sfx('blip', tKnow - 0.2, { g: 0.5 });
