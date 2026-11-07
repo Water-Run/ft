@@ -1,0 +1,183 @@
+
+==== 插入之前 ====
+
+:) SELECT name, part_type, rows FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
+
+   ┌─name───────┬─part_type─┬──────rows─┐
+1. │ all_1_90_3 │ Wide      │ 100000000 │ -- 100.00 million
+   └────────────┴───────────┴───────────┘
+
+
+==== 1. Dave 注册：一行同步插入（服务端日志开到 trace，只留与片段有关的行） ====
+
+:) INSERT INTO demo.users SETTINGS async_insert = 0 VALUES (100000001, 'Dave', 29)
+
+2026.11.07 01:40:02.160526 <Trace> demo.users (7fffbf89-115e-46ef-90f2-b2ed2c18df62): Trying to reserve 1.00 MiB using storage policy from min volume index 0
+2026.11.07 01:40:02.161149 <Debug> demo.users (7fffbf89-115e-46ef-90f2-b2ed2c18df62): Wrote block with 1 rows and deduplication blocks: , deduplication info: instance_id: 7025, sync, enabled, level SOURCE, rows/tokens 1/1, in block: rows/cols 1/3, tokens: 1:[-/source-id-empty/source-number-0::1], visited views: 1:[<empty>], retried view id: <empty>, original block id: <empty>
+2026.11.07 01:40:02.161206 <Trace> demo.users (7fffbf89-115e-46ef-90f2-b2ed2c18df62): Renaming temporary part tmp_insert_all_91_91_0 to all_91_91_0 with tid (1, 1, 00000000-0000-0000-0000-000000000000).
+
+:) SELECT name, part_type, rows, marks, bytes_on_disk FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
+
+   ┌─name────────┬─part_type─┬──────rows─┬─marks─┬─bytes_on_disk─┐
+1. │ all_1_90_3  │ Wide      │ 100000000 │ 12209 │     925296675 │ -- 925.30 million
+2. │ all_91_91_0 │ Compact   │         1 │     2 │           947 │
+   └─────────────┴───────────┴───────────┴───────┴───────────────┘
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_91_91_0/ && ls -l --time-style=+ | awk 'NR>1{print $5, $NF}'
+297 checksums.txt
+160 columns_substreams.txt
+75 columns.txt
+1 count.txt
+95 data.bin
+67 data.cmrk4
+10 default_compression_codec.txt
+1 metadata_version.txt
+42 primary.cidx
+395 serialization.json
+347 statistics.packed
+
+
+==== 2. 三个人各自同步插入：三个片段 ====
+
+:) DROP TABLE IF EXISTS demo.signup SYNC
+
+
+:) CREATE TABLE demo.signup (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id
+
+
+:) SYSTEM STOP MERGES demo.signup
+
+
+:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (9,'ivan',27)
+
+
+:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (10,'judy',31)
+
+
+:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (11,'mallory',45)
+
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name
+
+   ┌─name──────┬─rows─┐
+1. │ all_1_1_0 │    1 │
+2. │ all_2_2_0 │    1 │
+3. │ all_3_3_0 │    1 │
+   └───────────┴──────┘
+
+
+==== 2'. 三个人同时插入，用缺省的异步插入（async_insert = 1，wait_for_async_insert = 1） ====
+
+:) TRUNCATE TABLE demo.signup
+
+
+:) INSERT INTO demo.signup VALUES (9,'ivan',27)
+:) INSERT INTO demo.signup VALUES (10,'judy',31)
+:) INSERT INTO demo.signup VALUES (11,'mallory',45)
+（三个客户端同时发出）
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name
+
+   ┌─name──────┬─rows─┐
+1. │ all_4_4_0 │    3 │
+   └───────────┴──────┘
+
+:) SELECT * FROM demo.signup ORDER BY id
+
+   ┌─id─┬─name────┬─age─┐
+1. │  9 │ ivan    │  27 │
+2. │ 10 │ judy    │  31 │
+3. │ 11 │ mallory │  45 │
+   └────┴─────────┴─────┘
+
+:) SELECT database, table, format, status, rows FROM system.asynchronous_insert_log WHERE table = 'signup' ORDER BY event_time_microseconds
+
+   ┌─database─┬─table──┬─format─┬─status─┬─rows─┐
+1. │ demo     │ signup │ Values │ Ok     │    1 │
+2. │ demo     │ signup │ Values │ Ok     │    1 │
+3. │ demo     │ signup │ Values │ Ok     │    1 │
+   └──────────┴────────┴────────┴────────┴──────┘
+
+:) SELECT name, value FROM system.settings WHERE name IN ('async_insert_busy_timeout_min_ms','async_insert_busy_timeout_max_ms','async_insert_max_data_size','async_insert_use_adaptive_busy_timeout','wait_for_async_insert') ORDER BY name
+
+   ┌─name───────────────────────────────────┬─value────┐
+1. │ async_insert_busy_timeout_max_ms       │ 200      │
+2. │ async_insert_busy_timeout_min_ms       │ 50       │
+3. │ async_insert_max_data_size             │ 10485760 │
+4. │ async_insert_use_adaptive_busy_timeout │ 1        │
+5. │ wait_for_async_insert                  │ 1        │
+   └────────────────────────────────────────┴──────────┘
+
+
+==== 3. 后台合并：再插几行，等 20 秒，看小片段被并起来 ====
+
+:) SYSTEM START MERGES demo.signup
+
+
+:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (12,'niaj',22)
+
+
+:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (13,'olivia',38)
+
+
+:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (14,'peggy',50)
+
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name
+
+   ┌─name──────┬─rows─┐
+1. │ all_4_4_0 │    3 │
+2. │ all_5_5_0 │    1 │
+3. │ all_6_6_0 │    1 │
+4. │ all_7_7_0 │    1 │
+   └───────────┴──────┘
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name
+
+   ┌─name──────┬─rows─┐
+1. │ all_4_4_0 │    3 │
+2. │ all_5_5_0 │    1 │
+3. │ all_6_6_0 │    1 │
+4. │ all_7_7_0 │    1 │
+   └───────────┴──────┘
+
+:) SELECT event_type, part_name, merged_from, rows FROM system.part_log WHERE table_uuid = (SELECT uuid FROM system.tables WHERE database='demo' AND name='signup') ORDER BY event_time_microseconds
+
+    ┌─event_type─┬─part_name─┬─merged_from─┬─rows─┐
+ 1. │ NewPart    │ all_1_1_0 │ []          │    1 │
+ 2. │ NewPart    │ all_2_2_0 │ []          │    1 │
+ 3. │ NewPart    │ all_3_3_0 │ []          │    1 │
+ 4. │ NewPart    │ all_1_1_1 │ []          │    0 │
+ 5. │ NewPart    │ all_2_2_1 │ []          │    0 │
+ 6. │ NewPart    │ all_3_3_1 │ []          │    0 │
+ 7. │ RemovePart │ all_1_1_0 │ []          │    1 │
+ 8. │ RemovePart │ all_2_2_0 │ []          │    1 │
+ 9. │ RemovePart │ all_3_3_0 │ []          │    1 │
+10. │ NewPart    │ all_4_4_0 │ []          │    3 │
+11. │ NewPart    │ all_5_5_0 │ []          │    1 │
+12. │ NewPart    │ all_6_6_0 │ []          │    1 │
+13. │ NewPart    │ all_7_7_0 │ []          │    1 │
+    └────────────┴───────────┴─────────────┴──────┘
+
+:) SELECT name, active FROM system.parts WHERE database='demo' AND table='signup' ORDER BY name
+
+   ┌─name──────┬─active─┐
+1. │ all_1_1_1 │      0 │
+2. │ all_2_2_1 │      0 │
+3. │ all_3_3_1 │      0 │
+4. │ all_4_4_0 │      1 │
+5. │ all_5_5_0 │      1 │
+6. │ all_6_6_0 │      1 │
+7. │ all_7_7_0 │      1 │
+   └───────────┴────────┘
+
+
+==== demo.users 现在的片段（Dave 那一行的小片段会在之后被合并） ====
+
+:) SELECT name, part_type, rows FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
+
+   ┌─name────────┬─part_type─┬──────rows─┐
+1. │ all_1_90_3  │ Wide      │ 100000000 │ -- 100.00 million
+2. │ all_91_91_0 │ Compact   │         1 │
+   └─────────────┴───────────┴───────────┘
+

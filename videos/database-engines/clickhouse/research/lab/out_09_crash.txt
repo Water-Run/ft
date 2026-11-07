@@ -1,0 +1,136 @@
+
+==== 1. 写到一半强行终止 ====
+
+:) DROP TABLE IF EXISTS demo.crash SYNC
+
+
+:) CREATE TABLE demo.crash (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id
+
+
+:) SYSTEM STOP MERGES demo.crash
+
+
+:) INSERT INTO demo.crash SELECT number, if(number = 2050, 'Alice', concat('User', if(number < 100000, leftPad(toString(number), 5, '0'), toString(number)), '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), if(number = 2050, 42, 18 + number % 63) FROM numbers(1, 100000000)
+
+4 秒后：podman kill --signal KILL（向服务端进程发 SIGKILL）
+客户端收到：
+
+
+container running=false exitcode=137
+
+停机状态下的表目录（临时容器挂上同一个数据卷）：
+all_1_1_0 all_2_2_0 all_3_3_0 all_4_4_0 all_5_5_0 all_6_6_0 all_7_7_0 all_8_8_0 all_9_9_0 all_10_10_0 all_11_11_0 all_12_12_0 all_13_13_0 all_14_14_0 all_15_15_0 all_16_16_0 all_17_17_0 all_18_18_0 all_19_19_0 all_20_20_0 all_21_21_0 all_22_22_0 all_23_23_0 all_24_24_0 all_25_25_0 all_26_26_0 all_27_27_0 all_28_28_0 all_29_29_0 all_30_30_0 all_31_31_0 all_32_32_0 all_33_33_0 all_34_34_0 all_35_35_0 all_36_36_0 all_37_37_0 all_38_38_0 all_39_39_0 all_40_40_0 all_41_41_0 all_42_42_0 tmp_insert_all_43_43_0 tmp_insert_all_44_44_0 
+
+tmp_insert_all_43_43_0: age.bin age.cmrk2 checksums.txt columns_substreams.txt columns.txt count.txt default_compression_codec.txt id.bin id.cmrk2 metadata_version.txt name.bin name.cmrk2 name.size.bin name.size.cmrk2 primary.cidx serialization.json statistics.packed 
+tmp_insert_all_44_44_0: age.bin age.cmrk2 id.bin id.cmrk2 name.bin name.cmrk2 name.size.bin name.size.cmrk2 primary.cidx 
+
+
+==== 重启 ====
+
+:) SELECT count() AS parts, sum(rows) AS total_rows, min(rows) AS min_rows, max(rows) AS max_rows FROM system.parts WHERE database='demo' AND table='crash' AND active
+
+   ┌─parts─┬─total_rows─┬─min_rows─┬─max_rows─┐
+1. │    42 │   46702026 │  1111953 │  1111953 │ -- 1.11 million
+   └───────┴────────────┴──────────┴──────────┘
+
+:) SELECT count() FROM demo.crash
+
+   ┌──count()─┐
+1. │ 46702026 │ -- 46.70 million
+   └──────────┘
+
+:) SELECT max(id) - min(id) + 1 = count() AS contiguous, min(id), max(id) FROM demo.crash
+
+   ┌─contiguous─┬─min(id)─┬──max(id)─┐
+1. │          1 │       1 │ 46702026 │ -- 46.70 million
+   └────────────┴─────────┴──────────┘
+
+$ cd /var/lib/clickhouse/store/6f6/6f623d9d-1fe9-4f91-bef0-9a479a769aee && ls -d tmp_* 2>/dev/null | wc -l
+1
+
+$ grep -E 'Removing temporary directory|tmp_insert' /var/log/clickhouse-server/clickhouse-server.log | grep '6f623d9d-1fe9-4f91-bef0-9a479a769aee' | tail -5 | sed -E 's/ \[ [0-9]+ \] \{[^}]*\}//'
+2026.11.07 01:58:15.750867 <Trace> demo.crash (6f623d9d-1fe9-4f91-bef0-9a479a769aee): Renaming temporary part tmp_insert_all_40_40_0 to all_40_40_0 with tid (1, 1, 00000000-0000-0000-0000-000000000000).
+2026.11.07 01:58:15.843273 <Trace> demo.crash (6f623d9d-1fe9-4f91-bef0-9a479a769aee): Renaming temporary part tmp_insert_all_41_41_0 to all_41_41_0 with tid (1, 1, 00000000-0000-0000-0000-000000000000).
+2026.11.07 01:58:15.927517 <Trace> demo.crash (6f623d9d-1fe9-4f91-bef0-9a479a769aee): Renaming temporary part tmp_insert_all_42_42_0 to all_42_42_0 with tid (1, 1, 00000000-0000-0000-0000-000000000000).
+2026.11.07 01:58:17.401773 <Warning> demo.crash (6f623d9d-1fe9-4f91-bef0-9a479a769aee): Removing temporary directory /var/lib/clickhouse/store/6f6/6f623d9d-1fe9-4f91-bef0-9a479a769aee/tmp_insert_all_43_43_0/
+2026.11.07 01:58:17.402734 <Warning> demo.crash (6f623d9d-1fe9-4f91-bef0-9a479a769aee): Removing temporary directory /var/lib/clickhouse/store/6f6/6f623d9d-1fe9-4f91-bef0-9a479a769aee/tmp_insert_all_44_44_0/
+
+
+==== 2. 片段文件损坏 ====
+
+:) DROP TABLE IF EXISTS demo.broken SYNC
+
+
+:) CREATE TABLE demo.broken (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id SETTINGS min_bytes_for_wide_part = 0
+
+
+:) SYSTEM STOP MERGES demo.broken
+
+
+:) INSERT INTO demo.broken SETTINGS async_insert = 0 SELECT number, if(number = 2050, 'Alice', concat('User', if(number < 100000, leftPad(toString(number), 5, '0'), toString(number)), '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), if(number = 2050, 42, 18 + number % 63) FROM numbers(1, 100000)
+
+
+:) INSERT INTO demo.broken SETTINGS async_insert = 0 SELECT number, if(number = 2050, 'Alice', concat('User', if(number < 100000, leftPad(toString(number), 5, '0'), toString(number)), '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), if(number = 2050, 42, 18 + number % 63) FROM numbers(100001, 100000)
+
+
+:) INSERT INTO demo.broken SETTINGS async_insert = 0 SELECT number, if(number = 2050, 'Alice', concat('User', if(number < 100000, leftPad(toString(number), 5, '0'), toString(number)), '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')), if(number = 2050, 42, 18 + number % 63) FROM numbers(200001, 100000)
+
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='broken' AND active ORDER BY name
+
+   ┌─name──────┬───rows─┐
+1. │ all_1_1_0 │ 100000 │
+2. │ all_2_2_0 │ 100000 │
+3. │ all_3_3_0 │ 100000 │
+   └───────────┴────────┘
+
+停机后：all_1_1_0/age.bin 截短 1 字节；all_2_2_0/age.bin 第 40 个字节取反（大小不变）
+599 all_1_1_0/age.bin
+588 all_2_2_0/age.bin
+第 40 个字节：50 → 205
+598 all_1_1_0/age.bin
+588 all_2_2_0/age.bin
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='broken' AND active ORDER BY name
+
+   ┌─name──────┬───rows─┐
+1. │ all_2_2_0 │ 100000 │
+2. │ all_3_3_0 │ 100000 │
+   └───────────┴────────┘
+
+:) SELECT name, reason FROM system.detached_parts WHERE database='demo' AND table='broken'
+
+   ┌─name──────────────────────┬─reason──────────┐
+1. │ broken-on-start_all_1_1_0 │ broken-on-start │
+   └───────────────────────────┴─────────────────┘
+
+$ grep -E 'broken|Detaching' /var/log/clickhouse-server/clickhouse-server.log | grep 'db90a3ad-095e-4d67-a25f-431171632a29' | tail -3 | sed -E 's/ \[ [0-9]+ \] \{[^}]*\}//' | cut -c1-400
+2026.11.07 01:58:21.361328 <Trace> demo.broken (db90a3ad-095e-4d67-a25f-431171632a29) (MergerMutator): Split parts into 1 mergeable ranges using merge predicate
+2026.11.07 01:58:21.361333 <Trace> demo.broken (db90a3ad-095e-4d67-a25f-431171632a29): Didn't start merge: There is no need to merge parts according to merge selector algorithm
+2026.11.07 01:58:21.361504 <Debug> demo.broken (db90a3ad-095e-4d67-a25f-431171632a29): Refreshing statistics
+
+:) SELECT count() FROM demo.broken
+
+   ┌─count()─┐
+1. │  200000 │
+   └─────────┘
+
+:) SELECT sum(age) FROM demo.broken
+
+Received exception from server (version 26.8.34):
+Code: 40. DB::Exception: Received from localhost:9000. DB::Exception: Checksum doesn't match: corrupted data. Reference: 2c775342083d8abd3a804991cdfd8574. Actual: 57447ac879720958f5dd41409249f891. Size of compressed block: 339: While reading or decompressing /var/lib/clickhouse/store/db9/db90a3ad-095e-4d67-a25f-431171632a29/all_2_2_0/age.bin (position: 355, typename: DB::AsynchronousReadBufferFromFileWithDescriptorsCache, compressed data header: <uninitialized>): (while reading column age): (while reading from part /var/lib/clickhouse/store/db9/db90a3ad-095e-4d67-a25f-431171632a29/all_2_2_0/ in table demo.broken (db90a3ad-095e-4d67-a25f-431171632a29) located on disk default of type local, from mark 0 with max_rows_to_read = 65409): While reading part all_2_2_0: While executing MergeTreeSelect(pool: ReadPool, algorithm: Thread). (CHECKSUM_DOESNT_MATCH)
+(query: SELECT sum(age) FROM demo.broken)
+
+:) CHECK TABLE demo.broken SETTINGS check_query_single_value_result = 0
+
+   ┌─part_path─┬─is_passed─┬─message──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+1. │ all_3_3_0 │         1 │                                                                                                                                                                                                                                                      │
+2. │ all_2_2_0 │         0 │ Code: 40. DB::Exception: Checksum doesn't match: corrupted data. Reference: 2c775342083d8abd3a804991cdfd8574. Actual: 57447ac879720958f5dd41409249f891. Size of compressed block: 339. (CHECKSUM_DOESNT_MATCH) (version 26.8.34.13 (official build)) │
+   └───────────┴───────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+:) DROP TABLE demo.broken SYNC
+
+
+:) DROP TABLE demo.crash SYNC
+
+

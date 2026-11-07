@@ -1,0 +1,77 @@
+:) DROP TABLE IF EXISTS demo.profiles SYNC
+
+
+:) CREATE TABLE demo.profiles (id UInt32, doc JSON) ENGINE = MergeTree ORDER BY id SETTINGS min_bytes_for_wide_part = 0
+
+
+:) INSERT INTO demo.profiles SETTINGS async_insert = 0 VALUES
+   (2050, '{"name": "Alice", "age": 43, "city": "Paris", "tags": ["admin", "beta"]}'),
+   (2051, '{"name": "Bob", "age": 37, "city": "Berlin"}'),
+   (100000002, '{"name": "Carol", "age": 36, "pets": {"cat": "Tom"}}')
+
+
+$ cd /var/lib/clickhouse/store/422/4224ab1a-6985-467f-b938-cd6b993ef865/all_1_1_0/ && ls *.bin | sort
+doc.age.dynamic_structure.bin
+doc.age.Int64.bin
+doc.age.SharedVariant.bin
+doc.age.SharedVariant.size.bin
+doc.age.variant_discr.bin
+doc.city.dynamic_structure.bin
+doc.city.SharedVariant.bin
+doc.city.SharedVariant.size.bin
+doc.city.String.bin
+doc.city.String.size.bin
+doc.city.variant_discr.bin
+doc.name.dynamic_structure.bin
+doc.name.SharedVariant.bin
+doc.name.SharedVariant.size.bin
+doc.name.String.bin
+doc.name.String.size.bin
+doc.name.variant_discr.bin
+doc.object_shared_data.0%2Epaths.bin
+doc.object_shared_data.0%2Evalues.bin
+doc.object_shared_data.0.size0.bin
+doc.object_structure.bin
+doc.pets%2Ecat.dynamic_structure.bin
+doc.pets%2Ecat.SharedVariant.bin
+doc.pets%2Ecat.SharedVariant.size.bin
+doc.pets%2Ecat.String.bin
+doc.pets%2Ecat.String.size.bin
+doc.pets%2Ecat.variant_discr.bin
+doc.tags.Array%28Nullable%28String%29%29.bin
+doc.tags.Array%28Nullable%28String%29%29.null.bin
+doc.tags.Array%28Nullable%28String%29%29.size0.bin
+doc.tags.Array%28Nullable%28String%29%29.size.bin
+doc.tags.dynamic_structure.bin
+doc.tags.SharedVariant.bin
+doc.tags.SharedVariant.size.bin
+doc.tags.variant_discr.bin
+id.bin
+
+:) SELECT doc.name, doc.age FROM demo.profiles ORDER BY id
+
+   ┌─doc.name─┬─doc.age─┐
+1. │ Alice    │ 43      │
+2. │ Bob      │ 37      │
+3. │ Carol    │ 36      │
+   └──────────┴─────────┘
+
+:) SELECT doc FROM demo.profiles ORDER BY id
+
+   ┌─doc──────────────────────────────────────────────────────────────┐
+1. │ {"age":43,"city":"Paris","name":"Alice","tags":["admin","beta"]} │
+2. │ {"age":37,"city":"Berlin","name":"Bob"}                          │
+3. │ {"age":36,"name":"Carol","pets":{"cat":"Tom"}}                   │
+   └──────────────────────────────────────────────────────────────────┘
+
+:) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS q, read_rows, read_bytes, ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
+   FROM system.query_log WHERE type = 'QueryFinish' AND query_id IN ('json_path_1794016704', 'json_whole_1794016704') ORDER BY q
+
+   ┌─q──────────┬─read_rows─┬─read_bytes─┬─compressed_bytes_read─┐
+1. │ json_path  │         3 │         51 │                   188 │
+2. │ json_whole │         3 │        293 │                   885 │
+   └────────────┴───────────┴────────────┴───────────────────────┘
+
+:) DROP TABLE demo.profiles SYNC
+
+

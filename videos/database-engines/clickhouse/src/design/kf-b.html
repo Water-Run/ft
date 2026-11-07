@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 B · 立体·片段合并</title>
+<!-- 审片页的关键帧 B：黑底上的立体黄色片段（斜投影的方块：正面、顶面、侧面三种明度），带细颗粒质感；
+     片段像一块块压实的板，从左到右一轮轮合并，越并越厚。数据取自 research/lab/out_03_big.txt：
+     90 个初始片段（各 1,111,953 行）→ 15 个（6 个并一）→ 3 个 → all_1_90_3。厚度与行数成比例。只作方向示意。 -->
+<link rel="stylesheet" href="/css/base.css">
+<style>
+  :root { --y: #FAFF69; --y4: #EEF400; --y5: #9FA300; --k: #0A0A0A; --g3: #A0A0A0; --w: #F9F9F9; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: radial-gradient(1400px 900px at 60% 40%, #1F1F1C, var(--k)); color: var(--w); overflow: hidden; }
+  .grain { position: absolute; inset: 0; opacity: .16; mix-blend-mode: overlay; }
+  .tag { position: absolute; left: 96px; top: 72px; font: 600 22px/1 "Inter"; letter-spacing: .18em; color: var(--g3); }
+  .tag b { color: var(--y); margin-right: 18px; }
+  .h { position: absolute; left: 96px; top: 118px; font: 700 54px/1.1 "Sans SC"; }
+  .blk { position: absolute; }
+  .blk .f { position: absolute; left: 0; bottom: 0; background: var(--y); }
+  .blk .t { position: absolute; left: 0; background: var(--y4); transform-origin: 0 100%; }
+  .blk .s { position: absolute; bottom: 0; background: var(--y5); transform-origin: 0 100%; }
+  .blk.old .f { background: #77792f; } .blk.old .t { background: #8c8f37; } .blk.old .s { background: #4d4f1c; }
+  .lbl { position: absolute; font: 500 21px/1.45 "Mono"; color: var(--g3); white-space: nowrap; }
+  .lbl b { color: var(--y); font-weight: 600; }
+  .lbl .n { display: block; font: 800 44px/1.1 "Inter"; color: var(--w); }
+  .arrow { position: absolute; top: 600px; height: 2px; background: #606060; }
+  .arrow::after { content: ""; position: absolute; right: -2px; top: -7px; border: 8px solid transparent; border-left: 12px solid #606060; border-right: 0; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font: 500 40px/1 "Sans SC"; background: linear-gradient(transparent, rgba(0,0,0,.75)); }
+</style></head><body>
+<div id="bg" style="position:absolute;inset:0;background:#0A0A0A;z-index:-1"></div>
+<svg class="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div class="tag"><b>PART 5</b>03 · 片段与合并</div>
+<div class="h">九十个片段，并成一个</div>
+<div id="w"></div>
+<div class="arrow" style="left:470px;width:90px"></div>
+<div class="arrow" style="left:966px;width:40px"></div>
+<div class="arrow" style="left:1290px;width:90px"></div>
+<div class="lbl" style="left:110px;top:800px"><span class="n">90</span>level 0 · 每个 1,111,953 行<br>all_1_1_0 … all_90_90_0</div>
+<div class="lbl" style="left:590px;top:800px"><span class="n">15</span>level 1 · 6 个并一<br>all_1_6_1 · 6,671,718 行</div>
+<div class="lbl" style="left:1020px;top:800px"><span class="n">3</span>level 2 · 9 个并一<br>all_1_29_2 · all_30_58_2<br>all_59_90_2</div>
+<div class="lbl" style="left:1410px;top:800px"><span class="n" style="color:var(--y)">all_1_90_3</span>第 1–90 个写入块 · 3 轮合并<br>100,000,000 行 · 882.43 MiB</div>
+<div class="cap">六个并成一个，九个再并成一个，最后剩下三个</div>
+<script>
+  // 斜投影方块：左下角 (x, y)，正面宽 w、高 h，进深 d（顶面与侧面按 45° 斜着画）
+  const W = document.getElementById('w');
+  const blk = (x, y, w, h, d, old) => {
+    const k = d * 0.7;
+    W.insertAdjacentHTML('beforeend', `<div class="blk${old ? ' old' : ''}" style="left:${x}px;top:${y - h - k}px;width:${w + k}px;height:${h + k}px">
+      <div class="t" style="width:${w}px;height:${k}px;bottom:${h}px;transform:skewX(-45deg)"></div>
+      <div class="s" style="left:${w}px;width:${k}px;height:${h}px;transform:skewY(-45deg)"></div>
+      <div class="f" style="width:${w}px;height:${h}px"></div></div>`);
+  };
+  const ROW = 760;                       // 地面线
+  const H = (rows) => rows / 1e6 * 2.6;  // 每百万行 2.6 像素厚
+  // level 0：15 摞，每摞 6 块薄板（叠起来画，看得出一块块）
+  for (let g = 0; g < 15; g++) {
+    const cx = 110 + (g % 5) * 66, base = ROW - Math.floor(g / 5) * 0;
+    for (let k = 0; k < 6; k++) blk(cx + Math.floor(g / 5) * 14, base - Math.floor(g / 5) * 120 - k * (H(1111953) + 2), 46, H(1111953), 40, true);
+  }
+  // level 1：15 块
+  for (let g = 0; g < 15; g++) blk(590 + (g % 5) * 66 + Math.floor(g / 5) * 14, ROW - Math.floor(g / 5) * 120, 46, H(6671718), 40, true);
+  // level 2：3 块
+  [32246637, 32246637, 35506726].forEach((r, i) => blk(1020 + i * 86, ROW, 64, H(r), 60, true));
+  // level 3：一块
+  blk(1410, ROW, 220, H(1e8), 120, false);
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

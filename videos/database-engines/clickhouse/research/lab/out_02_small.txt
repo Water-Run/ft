@@ -1,0 +1,161 @@
+
+==== 建表 ====
+
+:) CREATE DATABASE IF NOT EXISTS demo
+
+
+:) DROP TABLE IF EXISTS demo.users8
+
+
+:) DROP TABLE IF EXISTS demo.users8w
+
+
+:) CREATE TABLE demo.users8w (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id SETTINGS min_bytes_for_wide_part = 0
+
+
+:) CREATE TABLE demo.users8 (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id
+
+
+
+==== 按打乱的顺序插入 8 行（同步插入，一条 INSERT） ====
+
+:) INSERT INTO demo.users8w SETTINGS async_insert = 0 VALUES (5,'erin',33),(2,'bob',25),(8,'heidi',36),(1,'alice',30),(7,'grace',28),(4,'dave',19),(6,'frank',52),(3,'carol',41)
+
+
+:) INSERT INTO demo.users8 SETTINGS async_insert = 0 VALUES (5,'erin',33),(2,'bob',25),(8,'heidi',36),(1,'alice',30),(7,'grace',28),(4,'dave',19),(6,'frank',52),(3,'carol',41)
+
+
+:) SELECT _part, _part_offset, id, name, age FROM demo.users8w ORDER BY _part_offset
+
+   ┌─_part─────┬─_part_offset─┬─id─┬─name──┬─age─┐
+1. │ all_1_1_0 │            0 │  1 │ alice │  30 │
+2. │ all_1_1_0 │            1 │  2 │ bob   │  25 │
+3. │ all_1_1_0 │            2 │  3 │ carol │  41 │
+4. │ all_1_1_0 │            3 │  4 │ dave  │  19 │
+5. │ all_1_1_0 │            4 │  5 │ erin  │  33 │
+6. │ all_1_1_0 │            5 │  6 │ frank │  52 │
+7. │ all_1_1_0 │            6 │  7 │ grace │  28 │
+8. │ all_1_1_0 │            7 │  8 │ heidi │  36 │
+   └───────────┴──────────────┴────┴───────┴─────┘
+
+:) SELECT table, name, part_type, rows, marks, bytes_on_disk, path FROM system.parts WHERE database = 'demo' AND active ORDER BY table
+
+   ┌─table───┬─name──────┬─part_type─┬─rows─┬─marks─┬─bytes_on_disk─┬─path──────────────────────────────────────────────────────────────────────────┐
+1. │ users8  │ all_1_1_0 │ Compact   │    8 │     2 │          1201 │ /var/lib/clickhouse/store/f2c/f2c56270-a047-4f4d-b826-b6483214cae9/all_1_1_0/ │
+2. │ users8w │ all_1_1_0 │ Wide      │    8 │     2 │          1354 │ /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ │
+   └─────────┴───────────┴───────────┴──────┴───────┴───────────────┴───────────────────────────────────────────────────────────────────────────────┘
+
+
+==== Wide 片段：每一列一个数据文件（.bin）和一个标记文件 ====
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && ls -l --time-style=+ | awk '{print $5, $NF}'
+ 68
+34 age.bin
+48 age.cmrk2
+552 checksums.txt
+160 columns_substreams.txt
+75 columns.txt
+1 count.txt
+10 default_compression_codec.txt
+59 id.bin
+47 id.cmrk2
+1 metadata_version.txt
+63 name.bin
+47 name.cmrk2
+57 name.size.bin
+47 name.size.cmrk2
+42 primary.cidx
+395 serialization.json
+514 statistics.packed
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && cat columns.txt; echo; cat count.txt; echo; cat default_compression_codec.txt; echo
+columns format version: 1
+3 columns:
+`id` UInt32
+`name` String
+`age` UInt8
+
+8
+CODEC(LZ4)
+
+
+==== age.bin 原样的字节：一个压缩块（16 字节校验和，1 字节方法，4 字节压缩后大小，4 字节原大小，然后是数据） ====
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && xxd age.bin
+00000000: fb01 45ef 6baa ac8b 7886 c875 7c0b 8279  ..E.k...x..u|..y
+00000010: 8212 0000 0008 0000 0080 1e19 2913 2134  ............).!4
+00000020: 1c24                                     .$
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && clickhouse compressor --decompress < age.bin | xxd
+00000000: 1e19 2913 2134 1c24                      ..).!4.$
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && clickhouse compressor --stat < age.bin
+CODEC(LZ4)	8	18
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && clickhouse compressor --decompress < id.bin | xxd
+00000000: 0100 0000 0200 0000 0300 0000 0400 0000  ................
+00000010: 0500 0000 0600 0000 0700 0000 0800 0000  ................
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && clickhouse compressor --decompress < name.bin | xxd
+00000000: 616c 6963 6562 6f62 6361 726f 6c64 6176  alicebobcaroldav
+00000010: 6565 7269 6e66 7261 6e6b 6772 6163 6568  eerinfrankgraceh
+00000020: 6569 6469                                eidi
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && clickhouse compressor --stat < name.bin
+CODEC(LZ4)	36	47
+
+
+==== 主键索引：每个颗粒一项，存的是该颗粒第一行的排序键（这里只有一个颗粒，外加结尾一项） ====
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && ls -l primary.cidx && clickhouse compressor --decompress < primary.cidx | xxd
+-rw-r-----. 1 clickhouse clickhouse 42 Nov  7 01:32 primary.cidx
+00000000: 0100 0000 0800 0000                      ........
+
+
+==== 标记：每个颗粒一项，指向压缩文件里的块偏移与块内偏移，外加行数 ====
+
+$ cd /var/lib/clickhouse/store/861/86105c95-f51b-4f35-8728-6e9e263abdd2/all_1_1_0/ && for f in id age name; do ls -l $f.cmrk2; clickhouse compressor --decompress < $f.cmrk2 | xxd; done
+-rw-r-----. 1 clickhouse clickhouse 47 Nov  7 01:32 id.cmrk2
+00000000: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+00000010: 0800 0000 0000 0000 0000 0000 0000 0000  ................
+00000020: 2000 0000 0000 0000 0000 0000 0000 0000   ...............
+-rw-r-----. 1 clickhouse clickhouse 48 Nov  7 01:32 age.cmrk2
+00000000: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+00000010: 0800 0000 0000 0000 0000 0000 0000 0000  ................
+00000020: 0800 0000 0000 0000 0000 0000 0000 0000  ................
+-rw-r-----. 1 clickhouse clickhouse 47 Nov  7 01:32 name.cmrk2
+00000000: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+00000010: 0800 0000 0000 0000 0000 0000 0000 0000  ................
+00000020: 2400 0000 0000 0000 0000 0000 0000 0000  $...............
+
+
+==== Compact 片段（缺省设置下的小片段）：所有列在一个 data.bin 里，按颗粒一列接一列 ====
+
+$ cd /var/lib/clickhouse/store/f2c/f2c56270-a047-4f4d-b826-b6483214cae9/all_1_1_0/ && ls -l --time-style=+ | awk '{print $5, $NF}'
+ 44
+299 checksums.txt
+160 columns_substreams.txt
+75 columns.txt
+1 count.txt
+182 data.bin
+67 data.cmrk4
+10 default_compression_codec.txt
+1 metadata_version.txt
+42 primary.cidx
+395 serialization.json
+514 statistics.packed
+
+$ cd /var/lib/clickhouse/store/f2c/f2c56270-a047-4f4d-b826-b6483214cae9/all_1_1_0/ && clickhouse compressor --decompress < data.bin | xxd
+00000000: 0100 0000 0200 0000 0300 0000 0400 0000  ................
+00000010: 0500 0000 0600 0000 0700 0000 0800 0000  ................
+00000020: 0500 0000 0000 0000 0300 0000 0000 0000  ................
+00000030: 0500 0000 0000 0000 0400 0000 0000 0000  ................
+00000040: 0400 0000 0000 0000 0500 0000 0000 0000  ................
+00000050: 0500 0000 0000 0000 0500 0000 0000 0000  ................
+00000060: 616c 6963 6562 6f62 6361 726f 6c64 6176  alicebobcaroldav
+00000070: 6565 7269 6e66 7261 6e6b 6772 6163 6568  eerinfrankgraceh
+00000080: 6569 6469 1e19 2913 2134 1c24            eidi..).!4.$
+
+$ cd /var/lib/clickhouse/store/f2c/f2c56270-a047-4f4d-b826-b6483214cae9/all_1_1_0/ && clickhouse compressor --decompress < data.cmrk3 | xxd
+bash: line 1: data.cmrk3: No such file or directory
+

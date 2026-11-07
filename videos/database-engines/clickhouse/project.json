@@ -1,0 +1,76 @@
+{
+  "slug": "clickhouse",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse"
+  },
+  "stage": "review",
+  "next": "等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "实测",
+          "文案",
+          "视觉设计",
+          "封面设计",
+          "配乐"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音试听"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>封面候选 C · 稀疏索引</title>
+<!-- 封面候选 C「稀疏索引」：黄底黑字。一亿行立成一整块黑色的长条，表面刻着颗粒的分隔，第 0 个颗粒（Alice 在里面）被抽出来、亮着。
+     数据：research/lab/out_04_queries.txt（12,209 个索引项，选中 1/12208 个颗粒）。 -->
+<link rel="stylesheet" href="/css/base.css">
+<style>
+  :root { --y: #FAFF69; --k: #151515; --w: #F9F9F9; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: var(--y); color: var(--k); overflow: hidden; }
+  .grain { position: absolute; inset: 0; opacity: .14; mix-blend-mode: multiply; }
+  .badge { position: absolute; left: 100px; top: 96px; background: var(--k); color: var(--y); font: 800 34px/1 "Inter"; letter-spacing: .12em; padding: 14px 22px; }
+  .q { position: absolute; left: 100px; top: 196px; font: 700 52px/1.2 "Sans SC"; }
+  .title { position: absolute; left: 92px; top: 290px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; }
+  .sub { position: absolute; left: 100px; top: 512px; font: 800 58px/1 "Sans SC"; }
+  .data { position: absolute; left: 100px; top: 640px; font: 700 34px/1.55 "Mono"; }
+  .data b { font-weight: 900; font-size: 54px; background: var(--k); color: var(--y); padding: 0 12px; }
+  .blk { position: absolute; } .blk .f, .blk .t, .blk .s { position: absolute; }
+  .blk .t { transform-origin: 0 100%; } .blk .s { transform-origin: 0 100%; bottom: 0; }
+  .lab { position: absolute; font: 800 32px/1.2 "Mono"; }
+</style></head><body>
+<div id="bg" style="position:absolute;inset:0;background:#FAFF69;z-index:-1"></div>
+<svg class="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div id="w"></div>
+<div class="badge">PART 5</div>
+<div class="q">一个数据库引擎是如何实现的？</div>
+<div class="title">ClickHouse</div>
+<div class="sub">OLAP 与列式存储</div>
+<div class="data"><b>12,209</b> 个索引项管一亿行<br>找 Alice：只读 1 / 12,208 个颗粒</div>
+<div class="lab" style="left:1170px;top:300px;text-align:right;width:200px">第 0 个颗粒<br>2050 Alice</div>
+<script>
+  const W = document.getElementById('w');
+  const blk = (x, y, w, h, d, c, extra) => {
+    const k = d * 0.62;
+    W.insertAdjacentHTML('beforeend', `<div class="blk" style="left:${x}px;top:${y - h - k}px;width:${w + k}px;height:${h + k}px;${extra || ''}">
+      <div class="t" style="width:${w}px;height:${k}px;bottom:${h}px;transform:skewX(-45deg);background:${c[1]}"></div>
+      <div class="s" style="left:${w}px;width:${k}px;height:${h}px;transform:skewY(-45deg);background:${c[2]}"></div>
+      <div class="f" style="left:0;bottom:0;width:${w}px;height:${h}px;background:${c[0]}"></div></div>`);
+  };
+  // 一亿行：一根很高的黑色长条，从下往上一层层是颗粒（画 40 道分隔示意，不是 12208 道）
+  const x = 1420, base = 990, H = 700, Wd = 200, D = 160;
+  blk(x, base, Wd, H, D, ['#1d1d1b', '#2e2e2a', '#0b0b0a']);
+  for (let i = 1; i < 40; i++) W.insertAdjacentHTML('beforeend', `<div style="position:absolute;left:${x}px;top:${base - i * H / 40}px;width:${Wd}px;height:2px;background:#3a3a34"></div>`);
+  // 第 0 个颗粒被抽出来（最上面一层，向左上方移出），亮着
+  blk(x - 250, base - H - 10, Wd, H / 40 * 2.2, D, ['#151515', '#FAFF69', '#444'], 'filter:drop-shadow(0 18px 18px rgba(0,0,0,.35))');
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

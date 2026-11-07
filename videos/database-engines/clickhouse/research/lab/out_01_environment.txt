@@ -1,0 +1,123 @@
+
+==== 镜像 ====
+
+image docker.io/clickhouse/clickhouse-server:26.8.34.13  digest sha256:ed334fbfae35c4f9fa328534821280b59d1c4677df8f3cf0e950cf7501a25bde
+
+
+==== 机器（宿主） ====
+
+PRETTY_NAME="Rocky Linux 10.2 (Red Quartz)"
+6.12.0-211.69.1.el10_2.x86_64 x86_64
+CPU(s): 8
+Model name: 12th Gen Intel(R) Core(TM) i3-12100F
+内存 15 GB
+
+
+==== 启动服务端（官方镜像的缺省配置，数据卷挂在 /var/lib/clickhouse） ====
+
+:) SELECT version() AS version, uptime() > 0 AS running
+
+   ┌─version────┬─running─┐
+1. │ 26.8.34.13 │       0 │
+   └────────────┴─────────┘
+
+$ ps -o pid,comm,args -p 1
+    PID COMMAND         COMMAND
+      1 clickhouse-serv clickhouse-server --config-file=/etc/clickhouse-server/config.xml
+
+$ ls /var/lib/clickhouse
+access
+data
+dynamic_user_defined_executable_functions
+flags
+format_schemas
+metadata
+metadata_dropped
+preprocessed_configs
+status
+store
+tmp
+user_files
+uuid
+
+
+==== MergeTree 表的缺省设置（system.merge_tree_settings） ====
+
+:) SELECT name, value, changed FROM system.merge_tree_settings
+   WHERE name IN ('index_granularity','index_granularity_bytes','min_bytes_for_wide_part','min_rows_for_wide_part',
+                  'old_parts_lifetime','fsync_after_insert','fsync_part_directory','compress_marks','compress_primary_key',
+                  'primary_key_compress_block_size','marks_compress_block_size','parts_to_delay_insert','parts_to_throw_insert',
+                  'max_bytes_to_merge_at_max_space_in_pool','enable_block_number_column','enable_block_offset_column',
+                  'temporary_directories_lifetime','max_suspicious_broken_parts')
+   ORDER BY name
+
+    ┌─name────────────────────────────────────┬─value────────┬─changed─┐
+ 1. │ compress_marks                          │ 1            │       0 │
+ 2. │ compress_primary_key                    │ 1            │       0 │
+ 3. │ enable_block_number_column              │ 0            │       0 │
+ 4. │ enable_block_offset_column              │ 0            │       0 │
+ 5. │ fsync_after_insert                      │ 0            │       0 │
+ 6. │ fsync_part_directory                    │ 0            │       0 │
+ 7. │ index_granularity                       │ 8192         │       0 │
+ 8. │ index_granularity_bytes                 │ 10485760     │       0 │
+ 9. │ marks_compress_block_size               │ 65536        │       0 │
+10. │ max_bytes_to_merge_at_max_space_in_pool │ 161061273600 │       0 │
+11. │ max_suspicious_broken_parts             │ 100          │       0 │
+12. │ min_bytes_for_wide_part                 │ 10485760     │       0 │
+13. │ min_rows_for_wide_part                  │ 0            │       0 │
+14. │ old_parts_lifetime                      │ 480          │       0 │
+15. │ parts_to_delay_insert                   │ 1000         │       0 │
+16. │ parts_to_throw_insert                   │ 3000         │       0 │
+17. │ primary_key_compress_block_size         │ 65536        │       0 │
+18. │ temporary_directories_lifetime          │ 86400        │       0 │
+    └─────────────────────────────────────────┴──────────────┴─────────┘
+
+
+==== 会话的缺省设置（system.settings） ====
+
+:) SELECT name, value, changed FROM system.settings
+   WHERE name IN ('max_insert_block_size','min_insert_block_size_rows','min_insert_block_size_bytes','max_block_size',
+                  'mutations_sync','lightweight_deletes_sync','lightweight_delete_mode','async_insert','optimize_move_to_prewhere',
+                  'max_threads','insert_deduplicate','allow_experimental_lightweight_update','implicit_transaction',
+                  'apply_mutations_on_fly','apply_patch_parts')
+   ORDER BY name
+
+    ┌─name──────────────────────────────────┬─value────────┬─changed─┐
+ 1. │ allow_experimental_lightweight_update │ 1            │       0 │
+ 2. │ apply_mutations_on_fly                │ 0            │       0 │
+ 3. │ apply_patch_parts                     │ 1            │       0 │
+ 4. │ async_insert                          │ 1            │       0 │
+ 5. │ implicit_transaction                  │ 0            │       0 │
+ 6. │ insert_deduplicate                    │ 1            │       0 │
+ 7. │ lightweight_delete_mode               │ alter_update │       0 │
+ 8. │ lightweight_deletes_sync              │ 2            │       0 │
+ 9. │ max_block_size                        │ 65409        │       0 │
+10. │ max_insert_block_size                 │ 1048449      │       0 │
+11. │ max_threads                           │ auto(8)      │       0 │
+12. │ min_insert_block_size_bytes           │ 268402944    │       0 │
+13. │ min_insert_block_size_rows            │ 1048449      │       0 │
+14. │ mutations_sync                        │ 0            │       0 │
+15. │ optimize_move_to_prewhere             │ 1            │       0 │
+    └───────────────────────────────────────┴──────────────┴─────────┘
+
+
+==== 服务端设置 ====
+
+:) SELECT name, value FROM system.server_settings WHERE name IN ('path','max_server_memory_usage','mark_cache_size','uncompressed_cache_size','allow_experimental_transactions') ORDER BY name
+
+   ┌─name────────────────────┬─value────────────────┐
+1. │ mark_cache_size         │ 4294967296           │
+2. │ max_server_memory_usage │ 7730941132           │
+3. │ path                    │ /var/lib/clickhouse/ │
+4. │ uncompressed_cache_size │ 4294967296           │
+   └─────────────────────────┴──────────────────────┘
+
+:) SELECT * FROM system.build_options WHERE name IN ('VERSION_DESCRIBE','VERSION_GITHASH','BUILD_TYPE','SYSTEM_PROCESSOR')
+
+   ┌─name─────────────┬─value────────────────────────────────────┐
+1. │ VERSION_DESCRIBE │ v26.8.34.13-lts                          │
+2. │ VERSION_GITHASH  │ e0cfed8d5e66d0e226afa2258a5956e3e22abff9 │
+3. │ BUILD_TYPE       │ RelWithDebInfo                           │
+4. │ SYSTEM_PROCESSOR │ x86_64                                   │
+   └──────────────────┴──────────────────────────────────────────┘
+

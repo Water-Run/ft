@@ -1,0 +1,251 @@
+
+==== 改之前 ====
+
+:) SELECT _part, id, name, age FROM demo.users WHERE id = 2050
+
+   ┌─_part──────┬───id─┬─name──┬─age─┐
+1. │ all_1_90_3 │ 2050 │ Alice │  42 │
+   └────────────┴──────┴───────┴─────┘
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
+
+   ┌─name────────┬──────rows─┐
+1. │ all_1_90_3  │ 100000000 │ -- 100.00 million
+2. │ all_91_91_0 │         1 │
+   └─────────────┴───────────┘
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && ls -li id.bin name.bin name.size.bin age.bin primary.cidx | awk '{print $1, $3, $6, $NF}'
+409792209 1 541710 age.bin
+409792203 1 401727207 id.bin
+409792207 1 519269749 name.bin
+409792205 1 3613357 name.size.bin
+409792202 1 31163 primary.cidx
+
+
+==== 1. 变更：ALTER TABLE … UPDATE（mutations_sync = 1，等它做完再返回） ====
+
+:) ALTER TABLE demo.users UPDATE age = 43 WHERE id = 2050
+
+0.383
+
+:) SELECT mutation_id, command, parts_to_do, is_done FROM system.mutations WHERE database='demo' AND table='users'
+
+   ┌─mutation_id─────┬─command───────────────────────────┬─parts_to_do─┬─is_done─┐
+1. │ mutation_92.txt │ (UPDATE age = 43 WHERE id = 2050) │           0 │       1 │
+   └─────────────────┴───────────────────────────────────┴─────────────┴─────────┘
+
+:) SELECT name, rows, data_version FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
+
+   ┌─name───────────┬──────rows─┬─data_version─┐
+1. │ all_1_90_3_92  │ 100000000 │           92 │
+2. │ all_91_91_0_92 │         1 │           92 │
+   └────────────────┴───────────┴──────────────┘
+
+旧片段 all_1_90_3 → 新片段 all_1_90_3_92
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3_92/ && ls -li id.bin name.bin name.size.bin age.bin primary.cidx | awk '{print $1, $3, $6, $NF}'
+811251330 1 541710 age.bin
+409792203 2 401727207 id.bin
+409792207 2 519269749 name.bin
+409792205 2 3613357 name.size.bin
+409792202 2 31163 primary.cidx
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && ls -li age.bin | awk '{print $1, $3, $6, $NF}'
+409792209 1 541710 age.bin
+
+:) SELECT _part, id, name, age FROM demo.users WHERE id = 2050
+
+   ┌─_part─────────┬───id─┬─name──┬─age─┐
+1. │ all_1_90_3_92 │ 2050 │ Alice │  43 │
+   └───────────────┴──────┴───────┴─────┘
+
+:) SELECT event_type, part_name, merged_from, rows, read_rows, formatReadableSize(bytes_uncompressed) AS uncompressed, duration_ms
+   FROM system.part_log WHERE table_uuid = (SELECT uuid FROM system.tables WHERE database='demo' AND name='users') AND event_type = 'MutatePart' ORDER BY event_time_microseconds
+
+   ┌─event_type─┬─part_name──────┬─merged_from─────┬──────rows─┬─read_rows─┬─uncompressed─┬─duration_ms─┐
+1. │ MutatePart │ all_91_91_0_92 │ ['all_91_91_0'] │         0 │         0 │ 169.00 B     │           2 │
+2. │ MutatePart │ all_1_90_3_92  │ ['all_1_90_3']  │ 100000000 │ 100000000 │ 6.14 GiB     │         377 │
+   └────────────┴────────────────┴─────────────────┴───────────┴───────────┴──────────────┴─────────────┘
+
+:) SELECT name, active FROM system.parts WHERE database='demo' AND table='users' ORDER BY min_block_number, name
+
+     ┌─name───────────┬─active─┐
+  1. │ all_1_1_0      │      0 │
+  2. │ all_1_29_2     │      0 │
+  3. │ all_1_6_1      │      0 │
+  4. │ all_1_90_3     │      0 │
+  5. │ all_1_90_3_92  │      1 │
+  6. │ all_2_2_0      │      0 │
+  7. │ all_3_3_0      │      0 │
+  8. │ all_4_4_0      │      0 │
+  9. │ all_5_5_0      │      0 │
+ 10. │ all_6_6_0      │      0 │
+ 11. │ all_7_12_1     │      0 │
+ 12. │ all_7_7_0      │      0 │
+ 13. │ all_8_8_0      │      0 │
+ 14. │ all_9_9_0      │      0 │
+ 15. │ all_10_10_0    │      0 │
+ 16. │ all_11_11_0    │      0 │
+ 17. │ all_12_12_0    │      0 │
+ 18. │ all_13_13_0    │      0 │
+ 19. │ all_13_18_1    │      0 │
+ 20. │ all_14_14_0    │      0 │
+ 21. │ all_15_15_0    │      0 │
+ 22. │ all_16_16_0    │      0 │
+ 23. │ all_17_17_0    │      0 │
+ 24. │ all_18_18_0    │      0 │
+ 25. │ all_19_19_0    │      0 │
+ 26. │ all_19_24_1    │      0 │
+ 27. │ all_20_20_0    │      0 │
+ 28. │ all_21_21_0    │      0 │
+ 29. │ all_22_22_0    │      0 │
+ 30. │ all_23_23_0    │      0 │
+ 31. │ all_24_24_0    │      0 │
+ 32. │ all_25_25_0    │      0 │
+ 33. │ all_26_26_0    │      0 │
+ 34. │ all_27_27_0    │      0 │
+ 35. │ all_28_28_0    │      0 │
+ 36. │ all_29_29_0    │      0 │
+ 37. │ all_30_30_0    │      0 │
+ 38. │ all_30_35_1    │      0 │
+ 39. │ all_30_58_2    │      0 │
+ 40. │ all_31_31_0    │      0 │
+ 41. │ all_32_32_0    │      0 │
+ 42. │ all_33_33_0    │      0 │
+ 43. │ all_34_34_0    │      0 │
+ 44. │ all_35_35_0    │      0 │
+ 45. │ all_36_36_0    │      0 │
+ 46. │ all_36_41_1    │      0 │
+ 47. │ all_37_37_0    │      0 │
+ 48. │ all_38_38_0    │      0 │
+ 49. │ all_39_39_0    │      0 │
+ 50. │ all_40_40_0    │      0 │
+ 51. │ all_41_41_0    │      0 │
+ 52. │ all_42_42_0    │      0 │
+ 53. │ all_42_47_1    │      0 │
+ 54. │ all_43_43_0    │      0 │
+ 55. │ all_44_44_0    │      0 │
+ 56. │ all_45_45_0    │      0 │
+ 57. │ all_46_46_0    │      0 │
+ 58. │ all_47_47_0    │      0 │
+ 59. │ all_48_48_0    │      0 │
+ 60. │ all_48_53_1    │      0 │
+ 61. │ all_49_49_0    │      0 │
+ 62. │ all_50_50_0    │      0 │
+ 63. │ all_51_51_0    │      0 │
+ 64. │ all_52_52_0    │      0 │
+ 65. │ all_53_53_0    │      0 │
+ 66. │ all_54_54_0    │      0 │
+ 67. │ all_55_55_0    │      0 │
+ 68. │ all_56_56_0    │      0 │
+ 69. │ all_57_57_0    │      0 │
+ 70. │ all_58_58_0    │      0 │
+ 71. │ all_59_59_0    │      0 │
+ 72. │ all_59_64_1    │      0 │
+ 73. │ all_59_90_2    │      0 │
+ 74. │ all_60_60_0    │      0 │
+ 75. │ all_61_61_0    │      0 │
+ 76. │ all_62_62_0    │      0 │
+ 77. │ all_63_63_0    │      0 │
+ 78. │ all_64_64_0    │      0 │
+ 79. │ all_65_65_0    │      0 │
+ 80. │ all_65_70_1    │      0 │
+ 81. │ all_66_66_0    │      0 │
+ 82. │ all_67_67_0    │      0 │
+ 83. │ all_68_68_0    │      0 │
+ 84. │ all_69_69_0    │      0 │
+ 85. │ all_70_70_0    │      0 │
+ 86. │ all_71_71_0    │      0 │
+ 87. │ all_71_76_1    │      0 │
+ 88. │ all_72_72_0    │      0 │
+ 89. │ all_73_73_0    │      0 │
+ 90. │ all_74_74_0    │      0 │
+ 91. │ all_75_75_0    │      0 │
+ 92. │ all_76_76_0    │      0 │
+ 93. │ all_77_77_0    │      0 │
+ 94. │ all_77_82_1    │      0 │
+ 95. │ all_78_78_0    │      0 │
+ 96. │ all_79_79_0    │      0 │
+ 97. │ all_80_80_0    │      0 │
+ 98. │ all_81_81_0    │      0 │
+ 99. │ all_82_82_0    │      0 │
+100. │ all_83_83_0    │      0 │
+101. │ all_83_87_1    │      0 │
+102. │ all_84_84_0    │      0 │
+103. │ all_85_85_0    │      0 │
+104. │ all_86_86_0    │      0 │
+105. │ all_87_87_0    │      0 │
+106. │ all_88_88_0    │      0 │
+107. │ all_89_89_0    │      0 │
+108. │ all_90_90_0    │      0 │
+109. │ all_91_91_0    │      0 │
+110. │ all_91_91_0_92 │      1 │
+     └─name───────────┴─active─┘
+
+
+==== 2. 轻量更新：在普通表上不可用 ====
+
+:) UPDATE demo.users SET age = 43 WHERE id = 2050
+
+Received exception from server (version 26.8.34):
+Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: Lightweight updates are not supported. Lightweight updates are supported only for tables with materialized _block_number column. Run 'MODIFY SETTING enable_block_number_column = 1' command to enable it. (NOT_IMPLEMENTED)
+(query: UPDATE demo.users SET age = 43 WHERE id = 2050)
+
+
+==== 2'. 轻量更新：另建一张开启块号列的同样的表 ====
+
+:) DROP TABLE IF EXISTS demo.users_lw SYNC
+
+
+:) CREATE TABLE demo.users_lw (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id SETTINGS enable_block_number_column = 1, enable_block_offset_column = 1
+
+
+:) INSERT INTO demo.users_lw SELECT id, name, if(id = 2050, 42, age) AS age FROM demo.users WHERE id <= 100000000
+
+13.037
+
+:) OPTIMIZE TABLE demo.users_lw FINAL
+
+8.308
+
+:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='users_lw' AND active
+
+   ┌─name───────┬──────rows─┐
+1. │ all_1_96_3 │ 100000000 │ -- 100.00 million
+   └────────────┴───────────┘
+
+:) UPDATE demo.users_lw SET age = 43 WHERE id = 2050
+
+0.095
+
+:) SELECT name, rows, part_type FROM system.parts WHERE database='demo' AND table='users_lw' AND active ORDER BY name
+
+   ┌─name──────────────────────────────────────────────────┬──────rows─┬─part_type─┐
+1. │ all_1_96_3                                            │ 100000000 │ Wide      │
+2. │ patch-37fe0ed270f8133edba599f500f15787-all_98_98_0_97 │         1 │ Compact   │
+   └───────────────────────────────────────────────────────┴───────────┴───────────┘
+
+$ cd /var/lib/clickhouse/store/8a8/8a893c7e-318c-4a20-a682-61b8bf46643c/patch-37fe0ed270f8133edba599f500f15787-all_98_98_0_97/ && ls -l --time-style=+ | awk 'NR>1{print $5, $NF}'
+360 checksums.txt
+360 columns_substreams.txt
+166 columns.txt
+1 count.txt
+263 data.bin
+82 data.cmrk4
+10 default_compression_codec.txt
+1 metadata_version.txt
+22 minmax__part.idx
+43 partition.dat
+53 primary.cidx
+605 serialization.json
+39 source_parts.dat
+
+:) SELECT id, name, age FROM demo.users_lw WHERE id = 2050
+
+   ┌───id─┬─name──┬─age─┐
+1. │ 2050 │ Alice │  43 │
+   └──────┴───────┴─────┘
+
+:) DROP TABLE demo.users_lw SYNC
+
+

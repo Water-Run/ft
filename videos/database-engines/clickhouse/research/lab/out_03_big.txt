@@ -1,0 +1,211 @@
+
+==== 建表 ====
+
+:) DROP TABLE IF EXISTS demo.users SYNC
+
+
+:) CREATE TABLE demo.users (id UInt32, name String, age UInt8) ENGINE = MergeTree ORDER BY id
+
+
+:) SHOW CREATE TABLE demo.users
+
+CREATE TABLE demo.users
+(
+    `id` UInt32,
+    `name` String,
+    `age` UInt8
+)
+ENGINE = MergeTree
+ORDER BY id
+SETTINGS index_granularity = 8192
+
+
+==== 写入一亿行（一条 INSERT … SELECT） ====
+
+:) INSERT INTO demo.users SELECT number AS id, if(number = 2050, 'Alice', concat('User', if(number < 100000, leftPad(toString(number), 5, '0'), toString(number)), '-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN')) AS name, if(number = 2050, 42, 18 + number % 63) AS age FROM numbers(1, 100000000)
+
+13.104
+
+写入用时（客户端计时）：15.1 秒
+
+:) SELECT count() AS active_parts, sum(rows) AS total_rows, min(rows) AS min_rows, max(rows) AS max_rows FROM system.parts WHERE database='demo' AND table='users' AND active
+
+   ┌─active_parts─┬─total_rows─┬─min_rows─┬─max_rows─┐
+1. │            3 │  100000000 │ 32246637 │ 35506726 │ -- 35.51 million
+   └──────────────┴────────────┴──────────┴──────────┘
+
+:) SELECT event_type, count() AS parts, sum(rows) AS rows FROM system.part_log WHERE database='demo' AND table='users' GROUP BY event_type ORDER BY event_type
+
+   ┌─event_type──────┬─parts─┬──────rows─┐
+1. │ NewPart         │   180 │ 200000000 │ -- 200.00 million
+2. │ MergeParts      │    33 │ 471240762 │ -- 471.24 million
+3. │ MergePartsStart │    33 │         0 │
+   └─────────────────┴───────┴───────────┘
+
+:) SELECT part_name, rows, round(duration_ms) AS ms FROM system.part_log WHERE database='demo' AND table='users' AND event_type='NewPart' ORDER BY event_time_microseconds LIMIT 5
+
+   ┌─part_name─┬────rows─┬─ms─┐
+1. │ all_1_1_0 │ 1111953 │ 45 │
+2. │ all_2_2_0 │ 1111953 │ 48 │
+3. │ all_3_3_0 │ 1111953 │ 54 │
+4. │ all_4_4_0 │ 1111953 │ 72 │
+5. │ all_5_5_0 │ 1111953 │ 54 │
+   └───────────┴─────────┴────┘
+
+
+==== 等后台合并：每 15 秒看一次活动片段，连续两次不变或 6 分钟为止 ====
+
+15 秒：活动片段 3，进行中的合并 0
+30 秒：活动片段 3，进行中的合并 0
+45 秒：活动片段 3，进行中的合并 0
+
+:) SELECT name, part_type, rows, marks, formatReadableSize(bytes_on_disk) AS size FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
+
+   ┌─name────────┬─part_type─┬─────rows─┬─marks─┬─size───────┐
+1. │ all_1_29_2  │ Wide      │ 32246637 │  3938 │ 284.56 MiB │
+2. │ all_30_58_2 │ Wide      │ 32246637 │  3938 │ 284.56 MiB │
+3. │ all_59_90_2 │ Wide      │ 35506726 │  4336 │ 313.33 MiB │
+   └─────────────┴───────────┴──────────┴───────┴────────────┘
+
+:) SELECT event_type, count() AS events FROM system.part_log WHERE database='demo' AND table='users' GROUP BY event_type ORDER BY event_type
+
+   ┌─event_type──────┬─events─┐
+1. │ NewPart         │    180 │
+2. │ MergeParts      │     33 │
+3. │ MergePartsStart │     33 │
+   └─────────────────┴────────┘
+
+:) SELECT part_name, length(merged_from) AS merged_from_parts, rows, round(duration_ms/1000, 1) AS seconds FROM system.part_log WHERE database='demo' AND table='users' AND event_type='MergeParts' ORDER BY event_time_microseconds
+
+    ┌─part_name───┬─merged_from_parts─┬──────rows─┬─seconds─┐
+ 1. │ all_1_6_1   │                 6 │   6671718 │     0.4 │
+ 2. │ all_7_12_1  │                 6 │   6671718 │     0.5 │
+ 3. │ all_13_18_1 │                 6 │   6671718 │     0.5 │
+ 4. │ all_19_24_1 │                 6 │   6671718 │     0.4 │
+ 5. │ all_30_35_1 │                 6 │   6671718 │     0.7 │
+ 6. │ all_36_41_1 │                 6 │   6671718 │     0.7 │
+ 7. │ all_1_29_2  │                 9 │  32246637 │     2.4 │
+ 8. │ all_42_47_1 │                 6 │   6671718 │     0.3 │
+ 9. │ all_48_53_1 │                 6 │   6671718 │     0.4 │
+10. │ all_59_64_1 │                 6 │   6671718 │     0.9 │
+11. │ all_65_70_1 │                 6 │   6671718 │     1.3 │
+12. │ all_30_58_2 │                 9 │  32246637 │     4.3 │
+13. │ all_71_76_1 │                 6 │   6671718 │       1 │
+14. │ all_77_82_1 │                 6 │   6671718 │     0.3 │
+15. │ all_83_87_1 │                 5 │   5559765 │     0.3 │
+16. │ all_59_90_2 │                 8 │  35506726 │     2.3 │
+17. │ all_1_90_3  │                 3 │ 100000000 │    10.2 │
+18. │ all_1_6_1   │                 6 │   6671718 │     0.4 │
+19. │ all_7_12_1  │                 6 │   6671718 │     0.3 │
+20. │ all_13_18_1 │                 6 │   6671718 │     0.4 │
+21. │ all_19_24_1 │                 6 │   6671718 │     0.3 │
+22. │ all_30_35_1 │                 6 │   6671718 │     0.6 │
+23. │ all_1_29_2  │                 9 │  32246637 │     1.9 │
+24. │ all_36_41_1 │                 6 │   6671718 │     0.4 │
+25. │ all_48_53_1 │                 6 │   6671718 │     0.4 │
+26. │ all_42_47_1 │                 6 │   6671718 │     1.2 │
+27. │ all_59_64_1 │                 6 │   6671718 │     0.8 │
+28. │ all_30_58_2 │                 9 │  32246637 │       2 │
+29. │ all_65_70_1 │                 6 │   6671718 │     0.4 │
+30. │ all_71_76_1 │                 6 │   6671718 │     1.1 │
+31. │ all_77_82_1 │                 6 │   6671718 │     0.3 │
+32. │ all_83_87_1 │                 5 │   5559765 │     0.4 │
+33. │ all_59_90_2 │                 8 │  35506726 │     1.6 │
+    └─────────────┴───────────────────┴───────────┴─────────┘
+
+:) SELECT name, active, remove_time FROM system.parts WHERE database='demo' AND table='users' AND NOT active ORDER BY modification_time LIMIT 5
+
+   ┌─name────────┬─active─┬─────────remove_time─┐
+1. │ all_1_1_0   │      0 │ 2026-11-07 01:35:34 │
+2. │ all_8_8_0   │      0 │ 2026-11-07 01:35:35 │
+3. │ all_11_11_0 │      0 │ 2026-11-07 01:35:35 │
+4. │ all_9_9_0   │      0 │ 2026-11-07 01:35:35 │
+5. │ all_7_7_0   │      0 │ 2026-11-07 01:35:35 │
+   └─────────────┴────────┴─────────────────────┘
+
+:) SELECT count() AS inactive_parts FROM system.parts WHERE database='demo' AND table='users' AND NOT active
+
+   ┌─inactive_parts─┐
+1. │            103 │
+   └────────────────┘
+
+
+==== 并成一个片段（OPTIMIZE FINAL） ====
+
+:) OPTIMIZE TABLE demo.users FINAL
+
+7.405
+
+:) SELECT name, part_type, rows, marks, formatReadableSize(bytes_on_disk) AS size, formatReadableSize(primary_key_bytes_in_memory) AS pk_in_memory, path FROM system.parts WHERE database='demo' AND table='users' AND active
+
+   ┌─name───────┬─part_type─┬──────rows─┬─marks─┬─size───────┬─pk_in_memory─┬─path───────────────────────────────────────────────────────────────────────────┐
+1. │ all_1_90_3 │ Wide      │ 100000000 │ 12209 │ 882.43 MiB │ 47.69 KiB    │ /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ │
+   └────────────┴───────────┴───────────┴───────┴────────────┴──────────────┴────────────────────────────────────────────────────────────────────────────────┘
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && ls -l --time-style=+ | awk '{print $5, $NF}'
+ 903652
+541710 age.bin
+14894 age.cmrk2
+601 checksums.txt
+160 columns_substreams.txt
+75 columns.txt
+9 count.txt
+10 default_compression_codec.txt
+401727207 id.bin
+32311 id.cmrk2
+1 metadata_version.txt
+519269749 name.bin
+35708 name.cmrk2
+3613357 name.size.bin
+22992 name.size.cmrk2
+31163 primary.cidx
+419 serialization.json
+7156 statistics.packed
+
+
+==== 各列的大小（压缩前后） ====
+
+:) SELECT name, type, formatReadableSize(data_uncompressed_bytes) AS uncompressed, formatReadableSize(data_compressed_bytes) AS compressed, data_uncompressed_bytes, data_compressed_bytes, round(data_uncompressed_bytes / data_compressed_bytes, 1) AS ratio FROM system.columns WHERE database='demo' AND table='users'
+
+   ┌─name─┬─type───┬─uncompressed─┬─compressed─┬─data_uncompressed_bytes─┬─data_compressed_bytes─┬─ratio─┐
+1. │ id   │ UInt32 │ 381.47 MiB   │ 383.12 MiB │               400000000 │             401727207 │     1 │
+2. │ name │ String │ 5.67 GiB     │ 498.66 MiB │              6088899959 │             522883106 │  11.6 │
+3. │ age  │ UInt8  │ 95.37 MiB    │ 529.01 KiB │               100000000 │                541710 │ 184.6 │
+   └──────┴────────┴──────────────┴────────────┴─────────────────────────┴───────────────────────┴───────┘
+
+:) SELECT column, substreams, formatReadableSize(column_data_uncompressed_bytes) AS uncompressed, formatReadableSize(column_data_compressed_bytes) AS compressed FROM system.parts_columns WHERE database='demo' AND table='users' AND active
+
+   ┌─column─┬─substreams───────────┬─uncompressed─┬─compressed─┐
+1. │ id     │ ['id']               │ 381.47 MiB   │ 383.12 MiB │
+2. │ name   │ ['name.size','name'] │ 5.67 GiB     │ 498.66 MiB │
+3. │ age    │ ['age']              │ 95.37 MiB    │ 529.01 KiB │
+   └────────┴──────────────────────┴──────────────┴────────────┘
+
+:) SELECT sum(data_uncompressed_bytes) AS table_uncompressed, sum(data_compressed_bytes) AS table_compressed, formatReadableSize(table_uncompressed), formatReadableSize(table_compressed) FROM system.columns WHERE database='demo' AND table='users'
+
+   ┌─table_uncompressed─┬─table_compressed─┬─formatReadab⋯compressed)─┬─formatReadab⋯compressed)─┐
+1. │         6588899959 │        925152023 │ 6.14 GiB                 │ 882.29 MiB               │
+   └────────────────────┴──────────────────┴──────────────────────────┴──────────────────────────┘
+
+
+==== Alice 与几位邻居 ====
+
+:) SELECT _part, _part_offset, id, name, age FROM demo.users WHERE id IN (1, 2, 2049, 2050, 2051, 8192, 8193, 100000000) ORDER BY id
+
+   ┌─_part──────┬─_part_offset─┬────────id─┬─name───────────────────────────────────────────────────┬─age─┐
+1. │ all_1_90_3 │            0 │         1 │ User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN     │  19 │
+2. │ all_1_90_3 │            1 │         2 │ User00002-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN     │  20 │
+3. │ all_1_90_3 │         2048 │      2049 │ User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN     │  51 │
+4. │ all_1_90_3 │         2049 │      2050 │ Alice                                                  │  42 │
+5. │ all_1_90_3 │         2050 │      2051 │ User02051-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN     │  53 │
+6. │ all_1_90_3 │         8191 │      8192 │ User08192-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN     │  20 │
+7. │ all_1_90_3 │         8192 │      8193 │ User08193-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN     │  21 │
+8. │ all_1_90_3 │     99999999 │ 100000000 │ User100000000-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN │  55 │
+   └────────────┴──────────────┴───────────┴────────────────────────────────────────────────────────┴─────┘
+
+:) SELECT count(), avg(age), min(id), max(id) FROM demo.users
+
+   ┌───count()─┬────avg(age)─┬─min(id)─┬───max(id)─┐
+1. │ 100000000 │ 48.99999546 │       1 │ 100000000 │ -- 100.00 million
+   └───────────┴─────────────┴─────────┴───────────┘
+

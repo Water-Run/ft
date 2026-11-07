@@ -1,0 +1,54 @@
+
+==== 这个版本的表引擎 ====
+
+:) SELECT count() AS engines, countIf(name LIKE '%MergeTree%') AS mergetree_family FROM system.table_engines
+
+   ┌─engines─┬─mergetree_family─┐
+1. │      84 │               16 │
+   └─────────┴──────────────────┘
+
+:) SELECT arrayStringConcat(groupArray(name), ', ') FROM (SELECT name FROM system.table_engines WHERE name LIKE '%MergeTree%' ORDER BY name)
+
+AggregatingMergeTree, CoalescingMergeTree, CollapsingMergeTree, GraphiteMergeTree, MergeTree, ReplacingMergeTree, ReplicatedAggregatingMergeTree, ReplicatedCoalescingMergeTree, ReplicatedCollapsingMergeTree, ReplicatedGraphiteMergeTree, ReplicatedMergeTree, ReplicatedReplacingMergeTree, ReplicatedSummingMergeTree, ReplicatedVersionedCollapsingMergeTree, SummingMergeTree, VersionedCollapsingMergeTree
+
+:) SELECT arrayStringConcat(groupArray(name), ', ') FROM (SELECT name FROM system.table_engines WHERE name NOT LIKE '%MergeTree%' ORDER BY name)
+
+Alias, ArrowFlight, AzureBlobStorage, AzureQueue, BigQuery, Buffer, COSN, DeltaLake, DeltaLakeAzure, DeltaLakeLocal, DeltaLakeS3, Dictionary, Distributed, EmbeddedRocksDB, Executable, ExecutablePool, File, FileLog, FuzzJSON, FuzzQuery, GCS, GenerateRandom, HDFS, Hive, Hudi, Iceberg, IcebergAzure, IcebergHDFS, IcebergLocal, IcebergS3, JDBC, Join, Kafka, KeeperMap, Log, Loop, MaterializedPostgreSQL, MaterializedView, Memory, Merge, MongoDB, MySQL, NATS, Null, ODBC, OSS, Paimon, PaimonAzure, PaimonHDFS, PaimonLocal, PaimonS3, PostgreSQL, QueryRunner, RabbitMQ, Redis, Remote, RemoteSecure, S3, S3Queue, SQLite, Set, StripeLog, TimeSeries, TinyLog, URL, View, WindowView, YTsaurus
+
+
+==== 不写 ENGINE 时 ====
+
+:) SELECT name, value, changed FROM system.settings WHERE name = 'default_table_engine'
+
+   ┌─name─────────────────┬─value─────┬─changed─┐
+1. │ default_table_engine │ MergeTree │       0 │
+   └──────────────────────┴───────────┴─────────┘
+
+:) DROP TABLE IF EXISTS demo.noengine SYNC
+
+
+:) CREATE TABLE demo.noengine (id UInt32, name String, age UInt8) ORDER BY id
+
+
+:) SELECT engine, engine_full FROM system.tables WHERE database = 'demo' AND name = 'noengine'
+
+   ┌─engine────┬─engine_full─────────────────────────────────────────────┐
+1. │ MergeTree │ MergeTree ORDER BY id SETTINGS index_granularity = 8192 │
+   └───────────┴─────────────────────────────────────────────────────────┘
+
+:) DROP TABLE demo.noengine SYNC
+
+
+
+==== ClickHouse 自己记日志的表 ====
+
+:) SELECT name, engine FROM system.tables WHERE database = 'system' AND name IN ('query_log', 'part_log', 'asynchronous_insert_log', 'trace_log', 'metric_log') ORDER BY name
+
+   ┌─name────────────────────┬─engine────┐
+1. │ asynchronous_insert_log │ MergeTree │
+2. │ metric_log              │ MergeTree │
+3. │ part_log                │ MergeTree │
+4. │ query_log               │ MergeTree │
+5. │ trace_log               │ MergeTree │
+   └─────────────────────────┴───────────┘
+

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 A · 黄黑·列文件</title>
+<!-- 审片页的关键帧 A：近黑底、唯一的黄色强调（取自官网 #FAFF69 / #151515），平面、等宽数据，像 clickhouse-client 的终端。
+     数据取自 research/lab/out_02_small.txt（8 行小表的 age.bin）。只作方向示意，不是成片场景。 -->
+<link rel="stylesheet" href="/css/base.css">
+<style>
+  :root { --y: #FAFF69; --y2: #EEF400; --k: #151515; --k2: #1F1F1C; --g1: #282828; --g2: #414141; --g3: #A0A0A0; --w: #F9F9F9; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: var(--k); color: var(--w); overflow: hidden; }
+  .stage { position: absolute; inset: 0; background:
+      linear-gradient(var(--g1) 1px, transparent 1px) 0 0 / 120px 120px,
+      linear-gradient(90deg, var(--g1) 1px, transparent 1px) 0 0 / 120px 120px; opacity: .45; }
+  .tag { position: absolute; left: 96px; top: 72px; font: 600 22px/1 "Inter"; letter-spacing: .18em; color: var(--g3); }
+  .tag b { color: var(--y); font-weight: 700; margin-right: 18px; }
+  .h { position: absolute; left: 96px; top: 118px; font: 700 54px/1.1 "Sans SC"; }
+  .sub { position: absolute; font: 500 24px/1 "Mono"; color: var(--g3); }
+  /* 左：一行挨一行 */
+  .rows { position: absolute; left: 96px; top: 300px; width: 620px; }
+  .row { display: flex; height: 50px; margin-bottom: 10px; font: 500 22px/50px "Mono"; }
+  .row span { padding: 0 14px; background: var(--k2); border: 1px solid var(--g2); color: var(--g3); }
+  .row .id { width: 60px; } .row .nm { width: 240px; } .row .ag { width: 70px; border-color: var(--y); color: var(--y); }
+  .row .sweep { width: 0; }
+  .rowlabel { position: absolute; left: 96px; top: 250px; font: 600 26px/1 "Sans SC"; color: var(--g3); }
+  .scan { position: absolute; left: 86px; top: 292px; width: 520px; height: 64px; border: 2px solid var(--g3); }
+  /* 右：每列一个文件 */
+  .files { position: absolute; left: 900px; top: 250px; display: flex; gap: 46px; align-items: flex-start; }
+  .file { width: 200px; }
+  .file .nm { font: 600 26px/1 "Mono"; color: var(--g3); margin-bottom: 18px; }
+  .file .col { border: 2px solid var(--g2); background: var(--k2); }
+  .cell { height: 60px; border-bottom: 1px solid var(--g1); font: 500 24px/60px "Mono"; padding: 0 16px; color: var(--g3); display: flex; justify-content: space-between; }
+  .cell:last-child { border-bottom: 0; }
+  .age .nm { color: var(--y); }
+  .age .col { border-color: var(--y); background: rgba(250, 255, 105, .06); box-shadow: 0 0 0 6px rgba(250,255,105,.08); }
+  .age .cell { color: var(--w); }
+  .age .cell i { font-style: normal; color: var(--y); }
+  .note { position: absolute; left: 1650px; top: 300px; width: 230px; font: 500 21px/1.6 "Mono"; color: var(--g3); border-left: 3px solid var(--y); padding-left: 20px; }
+  .note b { color: var(--y); font-weight: 600; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font: 500 40px/1 "Sans SC"; color: var(--w); background: linear-gradient(transparent, rgba(0,0,0,.6)); }
+</style></head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div>
+<div class="tag"><b>PART 5</b>02 · 一列挨一列</div>
+<div class="h">每一列，单独一个文件</div>
+<div class="rowlabel">一行挨一行（前几集的引擎）</div>
+<div class="rows" id="rows"></div>
+<div class="files">
+  <div class="file"><div class="nm">id.bin</div><div class="col" id="c-id"></div></div>
+  <div class="file"><div class="nm">name.bin</div><div class="col" id="c-nm"></div></div>
+  <div class="file age"><div class="nm">age.bin</div><div class="col" id="c-ag"></div></div>
+</div>
+<div class="note">all_1_1_0/age.bin<br><b>34 B</b> 压缩块<br>16 B 校验和<br>0x82 = LZ4<br>解压后 <b>8 B</b><br>一人一个字节</div>
+<div class="cap">年龄这一列的文件里，只有八个字节，一人一个</div>
+<script>
+  const R = [[1,'alice',30],[2,'bob',25],[3,'carol',41],[4,'dave',19],[5,'erin',33],[6,'frank',52],[7,'grace',28],[8,'heidi',36]];
+  const rows = document.getElementById('rows');
+  for (const [i, n, a] of R) rows.insertAdjacentHTML('beforeend', `<div class="row"><span class="id">${i}</span><span class="nm">${n}</span><span class="ag">${a}</span></div>`);
+  const put = (id, f) => { const el = document.getElementById(id); for (const r of R) el.insertAdjacentHTML('beforeend', `<div class="cell">${f(r)}</div>`); };
+  put('c-id', (r) => r[0]); put('c-nm', (r) => r[1]);
+  put('c-ag', (r) => `<i>${r[2].toString(16).padStart(2, '0')}</i><span>${r[2]}</span>`);
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

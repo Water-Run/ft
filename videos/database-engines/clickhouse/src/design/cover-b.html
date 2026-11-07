@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>封面候选 B · 片段合并</title>
+<!-- 封面候选 B「片段合并」：左边一摞摞薄板（写入时的 90 个片段），右边并成的一整块（all_1_90_3），立体、带颗粒质感。
+     数据：research/lab/out_03_big.txt。 -->
+<link rel="stylesheet" href="/css/base.css">
+<style>
+  :root { --y: #FAFF69; --k: #0E0E0D; --g3: #A0A0A0; --w: #F9F9F9; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: radial-gradient(1200px 900px at 70% 60%, #26261f, var(--k) 72%); color: var(--w); overflow: hidden; }
+  .grain { position: absolute; inset: 0; opacity: .2; mix-blend-mode: overlay; }
+  .badge { position: absolute; left: 100px; top: 96px; background: var(--y); color: var(--k); font: 800 34px/1 "Inter"; letter-spacing: .12em; padding: 14px 22px; }
+  .q { position: absolute; left: 100px; top: 196px; font: 700 52px/1.2 "Sans SC"; }
+  .title { position: absolute; left: 92px; top: 290px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; }
+  .sub { position: absolute; left: 100px; top: 512px; font: 700 58px/1 "Sans SC"; color: var(--y); }
+  .data { position: absolute; left: 100px; top: 640px; font: 600 34px/1.55 "Mono"; color: var(--g3); }
+  .data b { color: var(--y); font-weight: 800; font-size: 54px; }
+  .blk { position: absolute; } .blk .f, .blk .t, .blk .s { position: absolute; }
+  .blk .t { transform-origin: 0 100%; } .blk .s { transform-origin: 0 100%; bottom: 0; }
+  .lab { position: absolute; font: 700 30px/1 "Mono"; color: var(--g3); }
+</style></head><body>
+<div id="bg" style="position:absolute;inset:0;background:#0E0E0D;z-index:-1"></div>
+<svg class="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div id="w"></div>
+<div class="badge">PART 5</div>
+<div class="q">一个数据库引擎是如何实现的？</div>
+<div class="title">ClickHouse</div>
+<div class="sub">MergeTree：先写片段，再合并</div>
+<div class="data">一亿行，<b>90</b> 个片段 → <b>1</b><br>all_1_90_3 · 882 MiB</div>
+<div class="lab" style="left:1040px;top:930px">90 × all_n_n_0</div>
+<div class="lab" style="left:1460px;top:930px;color:#FAFF69">all_1_90_3</div>
+<script>
+  const W = document.getElementById('w');
+  const blk = (x, y, w, h, d, c, glow) => {
+    const k = d * 0.62;
+    W.insertAdjacentHTML('beforeend', `<div class="blk" style="left:${x}px;top:${y - h - k}px;width:${w + k}px;height:${h + k}px;${glow ? 'filter:drop-shadow(0 0 30px rgba(250,255,105,.45))' : ''}">
+      <div class="t" style="width:${w}px;height:${k}px;bottom:${h}px;transform:skewX(-45deg);background:${c[1]}"></div>
+      <div class="s" style="left:${w}px;width:${k}px;height:${h}px;transform:skewY(-45deg);background:${c[2]}"></div>
+      <div class="f" style="left:0;bottom:0;width:${w}px;height:${h}px;background:${c[0]}"></div></div>`);
+  };
+  const OLD = ['#7a7c30', '#8f923a', '#4e501d'], NEW = ['#FAFF69', '#FDFFA3', '#9FA300'];
+  // 左：6 摞 × 15 块薄板 = 90 个片段（每块厚度按 1,111,953 行，与右边一整块同一比例）
+  const per = 1111953 / 1e8 * 560;
+  for (let g = 0; g < 3; g++) for (let i = 0; i < 30; i++) blk(1040 + g * 110, 900 - i * (per + 2.4), 70, per, 70, OLD);
+  // 右：一整块，一亿行
+  blk(1450, 900, 220, 560, 200, NEW, true);
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

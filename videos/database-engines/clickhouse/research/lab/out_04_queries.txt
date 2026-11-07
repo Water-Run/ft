@@ -1,0 +1,304 @@
+:) SYSTEM DROP MARK CACHE
+
+
+:) SELECT name, rows, marks FROM system.parts WHERE database='demo' AND table='users' AND active
+
+   ┌─name───────┬──────rows─┬─marks─┐
+1. │ all_1_90_3 │ 100000000 │ 12209 │
+   └────────────┴───────────┴───────┘
+
+
+==== 1. 一亿人的平均年龄 ====
+
+:) SELECT avg(age) FROM demo.users SETTINGS use_query_condition_cache = 0
+
+   ┌────avg(age)─┐
+1. │ 48.99999546 │
+   └─────────────┘
+
+:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+            ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
+            ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'avg\_%' ORDER BY query_id
+
+   ┌─query_id─┬─ms─┬─read_rows─┬─read_bytes─┬─read──────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ avg_1    │ 10 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                556604 │
+2. │ avg_1    │ 10 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                577194 │
+3. │ avg_2    │  8 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
+4. │ avg_2    │  7 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
+5. │ avg_3    │ 10 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
+6. │ avg_3    │  7 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
+   └──────────┴────┴───────────┴────────────┴───────────┴───────┴───────┴───────────────┴───────────────────────┘
+
+
+==== 1'. 对照：读出整张表的所有列 ====
+
+:) SELECT * FROM demo.users SETTINGS use_query_condition_cache = 0
+
+（结果丢弃：客户端以 --format Null 运行）
+
+:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+            ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
+            ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'all\_%' ORDER BY query_id
+
+   ┌─query_id─┬───ms─┬─read_rows─┬─read_bytes─┬─read─────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ all_1    │ 1163 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925243034 │ -- 925.24 million
+2. │ all_1    │  651 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925243034 │ -- 925.24 million
+3. │ all_2    │  973 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925152023 │ -- 925.15 million
+4. │ all_2    │  610 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925152023 │ -- 925.15 million
+5. │ all_3    │  993 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925353030 │ -- 925.35 million
+6. │ all_3    │  516 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925152023 │ -- 925.15 million
+   └──────────┴──────┴───────────┴────────────┴──────────┴───────┴───────┴───────────────┴───────────────────────┘
+
+
+==== 2. 按主键找 Alice ====
+
+:) EXPLAIN indexes = 1 SELECT * FROM demo.users WHERE id = 2050
+
+    ┌─explain────────────────────────────────┐
+ 1. │ Output: id, name, age                  │
+ 2. │                                        │
+ 3. │ ReadFromMergeTree (demo.users)         │
+ 4. │    Read type: Default                  │
+ 5. │    Parts: 1 | Granules: 1              │
+ 6. │    Output: id, name, age               │
+ 7. │    Prewhere filter                     │
+ 8. │    Prewhere filter column:  id = 2050  │
+ 9. │    Indexes:                            │
+10. │      PrimaryKey                        │
+11. │        Keys:                           │
+12. │          id                            │
+13. │        Condition: (id in [2050, 2050]) │
+14. │        Parts: 1/1                      │
+15. │        Granules: 1/12208               │
+16. │        Search Algorithm: binary search │
+17. │      Ranges: 1                         │
+    └────────────────────────────────────────┘
+
+:) SELECT * FROM demo.users WHERE id = 2050 SETTINGS use_query_condition_cache = 0
+
+   ┌───id─┬─name──┬─age─┐
+1. │ 2050 │ Alice │  42 │
+   └──────┴───────┴─────┘
+
+:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+            ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
+            ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'pk\_%' ORDER BY query_id
+
+   ┌─query_id─┬─ms─┬─read_rows─┬─read_bytes─┬─read───────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ pk_1     │  2 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
+2. │ pk_2     │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
+3. │ pk_3     │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
+   └──────────┴────┴───────────┴────────────┴────────────┴───────┴───────┴───────────────┴───────────────────────┘
+
+
+==== 3. 按姓名找 Alice ====
+
+:) EXPLAIN indexes = 1 SELECT * FROM demo.users WHERE name = 'Alice'
+
+    ┌─explain────────────────────────────────────┐
+ 1. │ Output: id, name, age                      │
+ 2. │                                            │
+ 3. │ ReadFromMergeTree (demo.users)             │
+ 4. │    Read type: Default                      │
+ 5. │    Parts: 1 | Granules: 12208              │
+ 6. │    Output: name, id, age                   │
+ 7. │    Prewhere filter                         │
+ 8. │    Prewhere filter column:  name = 'Alice' │
+ 9. │    Indexes:                                │
+10. │      PrimaryKey                            │
+11. │        Condition: true                     │
+12. │        Parts: 1/1                          │
+13. │        Granules: 12208/12208               │
+14. │      Ranges: 1                             │
+    └────────────────────────────────────────────┘
+
+:) EXPLAIN actions = 1 SELECT * FROM demo.users WHERE name = 'Alice'
+
+Output: id, name, age
+
+ReadFromMergeTree (demo.users)
+   Read type: Default
+   Parts: 1 | Granules: 12208
+   Output: name, id, age
+   Prewhere filter
+   Prewhere filter column:  name = 'Alice'
+
+:) SELECT * FROM demo.users WHERE name = 'Alice' SETTINGS use_query_condition_cache = 0
+
+   ┌───id─┬─name──┬─age─┐
+1. │ 2050 │ Alice │  42 │
+   └──────┴───────┴─────┘
+
+:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+            ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
+            ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'name\_%' ORDER BY query_id
+
+   ┌─query_id─┬──ms─┬─read_rows─┬─read_bytes─┬─read─────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ name_1   │ 272 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
+2. │ name_2   │ 259 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
+3. │ name_3   │ 312 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
+   └──────────┴─────┴───────────┴────────────┴──────────┴───────┴───────┴───────────────┴───────────────────────┘
+
+
+==== 主键索引与标记：mergeTreeIndex 表函数列出每个颗粒的索引项与各列的标记 ====
+
+:) SELECT part_name, mark_number, rows_in_granule, id, id.mark, age.mark, name.mark
+   FROM mergeTreeIndex('demo', 'users', with_marks = true) ORDER BY mark_number LIMIT 4
+
+Row 1:
+──────
+part_name:       all_1_90_3
+mark_number:     0
+rows_in_granule: 8192
+id:              1
+id.mark:         {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 0
+}
+age.mark:        {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 0
+}
+name.mark:       {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 0
+}
+
+Row 2:
+──────
+part_name:       all_1_90_3
+mark_number:     1
+rows_in_granule: 8192
+id:              8193
+id.mark:         {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 32768
+}
+age.mark:        {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 8192
+}
+name.mark:       {
+  "offset_in_compressed_file": 42014,
+  "offset_in_decompressed_block": 0
+}
+
+Row 3:
+──────
+part_name:       all_1_90_3
+mark_number:     2
+rows_in_granule: 8192
+id:              16385
+id.mark:         {
+  "offset_in_compressed_file": 65787,
+  "offset_in_decompressed_block": 0
+}
+age.mark:        {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 16384
+}
+name.mark:       {
+  "offset_in_compressed_file": 84779,
+  "offset_in_decompressed_block": 0
+}
+
+Row 4:
+──────
+part_name:       all_1_90_3
+mark_number:     3
+rows_in_granule: 8192
+id:              24577
+id.mark:         {
+  "offset_in_compressed_file": 65787,
+  "offset_in_decompressed_block": 32768
+}
+age.mark:        {
+  "offset_in_compressed_file": 0,
+  "offset_in_decompressed_block": 24576
+}
+name.mark:       {
+  "offset_in_compressed_file": 127551,
+  "offset_in_decompressed_block": 0
+}
+
+:) SELECT part_name, mark_number, rows_in_granule, id, age.mark
+   FROM mergeTreeIndex('demo', 'users', with_marks = true) ORDER BY mark_number DESC LIMIT 3
+
+Row 1:
+──────
+part_name:       all_1_90_3
+mark_number:     12208
+rows_in_granule: 0
+id:              100000000 -- 100.00 million
+age.mark:        {
+  "offset_in_compressed_file": 541386,
+  "offset_in_decompressed_block": 57600
+}
+
+Row 2:
+──────
+part_name:       all_1_90_3
+mark_number:     12207
+rows_in_granule: 256
+id:              99999745 -- 100.00 million
+age.mark:        {
+  "offset_in_compressed_file": 541386,
+  "offset_in_decompressed_block": 57344
+}
+
+Row 3:
+──────
+part_name:       all_1_90_3
+mark_number:     12206
+rows_in_granule: 8192
+id:              99991553 -- 99.99 million
+age.mark:        {
+  "offset_in_compressed_file": 541386,
+  "offset_in_decompressed_block": 49152
+}
+
+:) SELECT count() AS index_entries, countIf(rows_in_granule = 8192) AS full_granules, sum(rows_in_granule) AS rows
+   FROM mergeTreeIndex('demo', 'users')
+
+   ┌─index_entries─┬─full_granules─┬──────rows─┐
+1. │         12209 │         12207 │ 100000000 │ -- 100.00 million
+   └───────────────┴───────────────┴───────────┘
+
+:) SELECT uniqExact(age.mark.offset_in_compressed_file) AS age_blocks, uniqExact(id.mark.offset_in_compressed_file) AS id_blocks,
+          uniqExact(name.mark.offset_in_compressed_file) AS name_blocks
+   FROM mergeTreeIndex('demo', 'users', with_marks = true)
+
+   ┌─age_blocks─┬─id_blocks─┬─name_blocks─┐
+1. │       1526 │      6104 │       12208 │
+   └────────────┴───────────┴─────────────┘
+
+
+==== 主键索引文件：解压后每项 4 字节（UInt32 的 id），12209 项 ====
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && ls -l primary.cidx && clickhouse compressor --decompress < primary.cidx | wc -c && clickhouse compressor --decompress < primary.cidx | od -A d -t u4 -w16 | head -3
+-rw-r-----. 1 clickhouse clickhouse 31163 Nov  7 01:36 primary.cidx
+48836
+0000000          1       8193      16385      24577
+0000016      32769      40961      49153      57345
+0000032      65537      73729      81921      90113
+
+
+==== age 的标记文件：解压后每个标记 24 字节（压缩块在文件里的偏移、块内偏移、颗粒行数） ====
+
+$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && clickhouse compressor --decompress < age.cmrk2 | od -A d -t u8 -w24 | head -10
+0000000                    0                    0                 8192
+0000024                    0                 8192                 8192
+0000048                    0                16384                 8192
+0000072                    0                24576                 8192
+0000096                    0                32768                 8192
+0000120                    0                40960                 8192
+0000144                    0                49152                 8192
+0000168                    0                57344                 8192
+0000192                  366                    0                 8192
+0000216                  366                 8192                 8192
+Code: 75. DB::ErrnoException: Cannot write to file (fd = 1): , errno: 32, strerror: Broken pipe. (CANNOT_WRITE_TO_FILE_DESCRIPTOR) (version 26.8.34.13 (official build))
+
