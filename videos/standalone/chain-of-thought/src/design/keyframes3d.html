@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>CoT 关键帧 · 草稿纸（立体）</title>
+<!-- 视觉 B「草稿纸」的立体版关键帧（静帧），供审片页比较。?f=1|2|3
+     策划者 2026-11-07：「动画惊艳富有质感, 可以有3D元素, 而不是纯2D」。
+     1 开场 o9：三张草稿纸摊在点阵桌面上，第三张抬起，最后一步回到第一行的错答案。
+     2 第 02 章 c7：模型是一摞固定层数的玻璃层，四块 token 各穿过一次，这就是「只许说答案」能用的全部计算。
+     3 第 04 章 r14：思考模式的草稿按位数摞起来，位数越多摞得越高。
+     用 CSS 3D（perspective、preserve-3d）搭建，不引第三方库；数字取自 research/lab 的回显与 out_03_check.txt。 -->
+<style>
+@font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Serif SC"; src: url("/fonts/NotoSerifSC.ttf"); font-weight: 200 900; }
+@font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+@font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+:root { --ink: #26261f; --dim: #6b6a62; --teal: #0b6e57; --teal2: #12a487; --ochre: #b7791f; --hl: rgba(246,196,69,.62); --paper: #fffdf8; }
+html, body { margin: 0; padding: 0; }
+body { width: 1920px; height: 1080px; overflow: hidden; position: relative; background: #fff; color: var(--ink); font-family: "Inter", "Sans SC"; -webkit-font-smoothing: antialiased; }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: radial-gradient(ellipse at 50% 35%, #ffffff 0%, #fbfaf6 60%, #f3f1ea 100%); }
+.view { position: absolute; inset: 0; perspective: 2600px; }
+.world { position: absolute; width: 0; height: 0; transform-style: preserve-3d; }
+.p3 { position: absolute; transform-style: preserve-3d; }
+.desk { position: absolute; width: 5200px; height: 4200px; left: -2600px; top: -2100px;
+  background-image: radial-gradient(circle, #d2d0c6 2px, transparent 2.4px); background-size: 44px 44px; background-position: 22px 22px; }
+.sheet { position: absolute; background: var(--paper); border-radius: 5px; box-shadow: 0 1px 0 #ebe7dc, 0 0 0 1px #ece8de; overflow: hidden; }
+.sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .6; background-image: var(--grain); }
+.shadow { position: absolute; border-radius: 8px; background: rgba(70,58,30,.16); filter: blur(26px); }
+.lab { font: 600 34px "Serif SC"; color: var(--dim); letter-spacing: .04em; }
+.ln { font: 500 27px "Mono", "Sans SC"; color: var(--ink); line-height: 1.9; white-space: nowrap; }
+.dim { color: var(--dim); }
+.ok { color: var(--teal); }
+.bad { background: linear-gradient(transparent 16%, var(--hl) 16%, var(--hl) 90%, transparent 90%); }
+.tick { display: inline-block; width: 14px; height: 26px; border: solid var(--teal); border-width: 0 5px 5px 0; transform: rotate(40deg) translate(-2px, -6px); margin-left: 18px; }
+.foot { position: absolute; left: 44px; bottom: 34px; font: 500 30px "Sans SC"; color: var(--dim); }
+.bb { position: absolute; white-space: nowrap; transform-origin: 0 100%; }
+.cap { position: absolute; left: 0; right: 0; bottom: 46px; height: 64px; display: flex; align-items: center; justify-content: center; font: 500 40px "Sans SC"; color: #1d1d18; text-shadow: 0 0 18px #fff, 0 0 8px #fff, 0 0 3px #fff; }
+.hud { position: absolute; left: 96px; top: 70px; font: 600 30px "Serif SC"; color: var(--dim); letter-spacing: .06em; }
+.hud b { color: var(--ink); font-weight: 700; }
+/* token 小方块：顶面 + 前面 + 右面 */
+.tile { position: absolute; transform-style: preserve-3d; }
+.tile .top, .tile .fr, .tile .rt { position: absolute; left: 0; top: 0; display: flex; align-items: center; justify-content: center; }
+.tile .top { font: 600 30px "Mono"; color: var(--ink); background: #fff; box-shadow: inset 0 0 0 2px #cfcabb; border-radius: 4px; }
+.tile .fr { background: #e7e2d4; transform-origin: 0 100%; }
+.tile .rt { background: #d8d2c1; transform-origin: 100% 0; }
+.tile.on .top { box-shadow: inset 0 0 0 3px var(--teal2); color: var(--teal); }
+.tile.bad .top { background: #fff3cf; box-shadow: inset 0 0 0 2px #e6b85a; }
+/* 玻璃层 */
+.slab { position: absolute; border-radius: 6px; background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(214,238,232,.12)); box-shadow: inset 0 0 0 1.5px rgba(11,110,87,.26); }
+.beam { position: absolute; transform-origin: 50% 100%; background: linear-gradient(to top, rgba(18,164,135,.15), rgba(18,164,135,.85) 10%, rgba(18,164,135,.85) 90%, rgba(18,164,135,.1)); }
+.ream { position: absolute; background: #fffdf8; box-shadow: 0 0 0 1px #d9d4c6; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="stage"><div class="view"><div class="world" id="W"></div></div></div>
+<script>
+const ST = document.getElementById('stage'), W = document.getElementById('W');
+const F = +(new URLSearchParams(location.search).get('f') || 1);
+// 纸张颗粒：固定种子的噪声
+const grain = (seed, freq) => `url("data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='360' height='360'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${freq}' numOctaves='3' seed='${seed}' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.38  0 0 0 0 0.3  0 0 0 0.16 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`)}")`;
+document.documentElement.style.setProperty('--grain', grain(7, 0.9));
+const el = (parent, cls, css = '', html = '') => { const e = document.createElement('div'); e.className = cls; e.style.cssText = css; e.innerHTML = html; parent.appendChild(e); return e; };
+const world = (x, y, rx, rz, k = 1) => { W.style.left = x + 'px'; W.style.top = y + 'px'; W.style.transform = `scale3d(${k}, ${k}, ${k}) rotateX(${rx}deg) rotateZ(${rz}deg)`; return { rx, rz }; };
+// 面向镜头的标签：抵消 world 的旋转
+const board = (cam, html, x, y, z, css = '', dx = 0) => el(W, 'bb', `transform: translate3d(${x}px, ${y}px, ${z}px) rotateZ(${-cam.rz}deg) rotateX(${-cam.rx}deg) translateX(${dx}px); ${css}`, html);
+const tile = (parent, txt, x, y, w, h, d, cls = '') => {
+  const t = el(parent, 'tile ' + cls, `left:${x}px; top:${y}px; width:${w}px; height:${h}px;`);
+  el(t, 'fr', `width:${w}px; height:${d}px; top:${h - d}px; transform: rotateX(-90deg);`);
+  el(t, 'rt', `width:${d}px; height:${h}px; left:${w - d}px; transform: rotateY(90deg);`);
+  el(t, 'top', `width:${w}px; height:${h}px; transform: translateZ(${d}px);`, txt);
+  return t;
+};
+el(W, 'desk');
+
+if (F === 1) {
+  const cam = world(960, 470, 34, -4, .9);
+  const S = [
+    { x: -880, y: -320, z: 0, r: -5, lab: '只许说答案' },
+    { x: -260, y: -350, z: 0, r: 1.5, lab: '先写过程，再给答案' },
+    { x: 360, y: -330, z: 150, r: 3, lab: '先写答案，再写过程', w: 640 },
+  ];
+  S.forEach((s, i) => {
+    const w = s.w || 560;
+    el(W, 'shadow', `left:${s.x + 40}px; top:${s.y + 60}px; width:${w - 20}px; height:700px; transform: rotateZ(${s.r}deg); opacity:${s.z ? 1 : .55};`);
+    const sh = el(W, 'sheet p3', `left:${s.x}px; top:${s.y}px; width:${w}px; height:720px; transform: translateZ(${s.z}px) rotateZ(${s.r}deg) rotateX(${s.z ? -8 : 0}deg);`);
+    el(sh, 'lab', 'position:absolute; left:44px; top:38px;', s.lab);
+    el(sh, '', 'position:absolute; left:44px; top:92px; width:470px; height:2px; background:#e9e4d6;');
+    if (i === 0) {
+      el(sh, 'ln dim', 'position:absolute; left:44px; top:126px; font-size:32px;', '25992 × 92138 =');
+      el(sh, 'ln', 'position:absolute; left:44px; top:196px; font-size:54px; letter-spacing:.02em;', '2394<span class="bad">73</span>0896');
+      el(sh, 'ln dim', 'position:absolute; left:44px; top:296px; font-size:28px;', '正确：2394<span class="ok">85</span>0896');
+      ['239', '473', '089', '6'].forEach((t, k) => tile(sh, t, 44 + k * 118, 430, 100, 74, 22, k === 1 ? 'bad' : ''));
+      el(sh, 'foot', '', '一共 4 块');
+    } else if (i === 1) {
+      const L = ['92138 = 92000 + 138', '25992 × 92000', '&nbsp;&nbsp;= 2,391,264,000', '25992 × 138', '&nbsp;&nbsp;= 3,586,896', '相加 = 2,394,850,896'];
+      L.forEach((t, k) => el(sh, 'ln', `position:absolute; left:44px; top:${116 + k * 62}px; font-size:30px;`, t));
+      el(sh, 'ln ok', 'position:absolute; left:44px; top:520px; font-size:40px;', '答案 2394850896<span class="tick"></span>');
+      el(sh, 'foot', '', '一共 321 块');
+    } else {
+      el(sh, 'ln', 'position:absolute; left:44px; top:118px; font-size:38px;', '答案：<span class="bad">2394841296</span>');
+      const L = ['25992 × 92138', '= 25992 × (92000 + 138)', '= 25992 × 92000 + 25992 × 138', '= 2391264000 + 3586896'];
+      L.forEach((t, k) => el(sh, 'ln', `position:absolute; left:40px; top:${206 + k * 60}px; font-size:30px;`, t + (k === 3 ? '<span class="tick"></span>' : '')));
+      el(sh, 'ln', 'position:absolute; left:44px; top:458px; font-size:38px;', '= <span class="bad">2394841296</span>');
+      const svg = el(sh, '', 'position:absolute; left:0; top:0; width:560px; height:720px;');
+      svg.innerHTML = `<svg width="640" height="720" style="position:absolute;left:0;top:0"><path d="M520 488 C 610 420, 615 220, 470 150" fill="none" stroke="#b7791f" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12"/><path d="M482 140 l -22 6 l 14 18" fill="none" stroke="#b7791f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      el(sh, 'foot', 'color:#9a6418', '最后一步，回到了第一行');
+    }
+  });
+  el(ST, 'hud', '', '<b>25992 × 92138</b>　同一个模型 · 三种问法');
+  el(ST, 'cap', '', '最后一步相加，却不偏不倚，加成了第一行那个错答案');
+}
+
+if (F === 2) {
+  const cam = world(900, 640, 58, -32, .72);
+  // 桌上那张纸：四块 token
+  el(W, 'shadow', 'left:-440px; top:-160px; width:880px; height:340px; opacity:.45;');
+  el(W, 'sheet p3', 'left:-470px; top:-190px; width:940px; height:380px;');
+  const xs = [-370, -175, 20, 215];
+  ['239', '473', '089', '6'].forEach((t, k) => tile(W, t, xs[k], -25, 140, 96, 28, k === 1 ? 'bad' : (k === 3 ? 'on' : '')).querySelector('.top').style.fontSize = '44px');
+  // 玻璃层：层数固定
+  const N = 32, gap = 13, z0 = 120, H = z0 + N * gap + 60;
+  for (let i = 0; i < N; i++) el(W, 'slab', `left:-480px; top:-200px; width:960px; height:400px; transform: translateZ(${z0 + i * gap}px); ${i === N - 1 ? 'box-shadow: inset 0 0 0 2.5px rgba(11,110,87,.45);' : ''}`);
+  // 每块 token 只穿过一次
+  xs.forEach((x, k) => el(W, 'beam', `left:${x + 60}px; top:${23 - H}px; width:20px; height:${H}px; transform: rotateX(-90deg); opacity:${k === 3 ? 1 : .55};`));
+  board(cam, '<span style="font:700 64px Inter;color:#26261f">96</span><span style="font:600 40px \'Serif SC\';color:#6b6a62"> 层</span>', 500, 200, z0 + N * gap - 20);
+  board(cam, '<span style="font:600 34px \'Serif SC\';color:#6b6a62">每一块，只经过这么多层</span>', 500, 200, z0 + N * gap - 130);
+  el(ST, 'hud', '', '<b>只许说答案</b>　4 块 × 96 层');
+  el(ST, 'cap', '', '只许说答案，等于逼它用四块字的工夫，算完整道乘法');
+}
+
+if (F === 3) {
+  const cam = world(930, 600, 56, -22, .74);
+  const D = [[3, 93.0, '221 × 427'], [4, 165.6, '7508 × 5120'], [5, 261.2, '25992 × 92138'], [6, 412.2, '903946 × 966305'], [7, 550.2, '1003589 × 8570388']];
+  D.forEach(([n, tok, prob], k) => {
+    // 每摞顶上是该位数的一道真题（L2：n3-00、n4-00、n5-03、n6-00、n7-00）；高度按平均思考 token，每 5 个一张
+    const x = -860 + k * 340, y = -150, sheets = Math.round(tok / 5), h = 3;
+    el(W, 'shadow', `left:${x + 20}px; top:${y + 30}px; width:250px; height:310px; opacity:.6;`);
+    for (let i = 0; i < sheets; i++) el(W, 'ream', `left:${x + ((i * 37) % 7) - 3}px; top:${y + ((i * 53) % 5) - 2}px; width:270px; height:330px; transform: translateZ(${i * h}px) rotateZ(${((i * 29) % 9 - 4) * .25}deg);`);
+    const topZ = sheets * h;
+    const top = el(W, 'sheet p3', `left:${x}px; top:${y}px; width:270px; height:330px; transform: translateZ(${topZ + 2}px);`);
+    el(top, 'ln', `position:absolute; left:22px; top:262px; font-size:${prob.length > 13 ? 22 : 28}px;`, prob);
+    board(cam, `<div style="text-align:center;width:300px"><div style="font:700 56px Inter;color:#26261f">${Math.round(tok)}</div><div style="font:600 30px 'Serif SC';color:#6b6a62">${n} 位数</div></div>`, x + 135, y + 120, topZ + 150, '', -150);
+  });
+  el(ST, 'hud', '', '<b>DeepSeek 思考模式</b>　25 道全对 · 平均思考 token');
+  el(ST, 'cap', '', '那一百道里取二十五道，它全答对；位数越多，想得越久');
+}
+document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

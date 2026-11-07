@@ -195,5 +195,80 @@ audio{width:100%;margin-top:6px}.grid{display:grid;grid-template-columns:repeat(
     print(os.path.join(au, 'index.html'))
 
 
+CHANGES2 = [
+    '开场：三种问法都在开场演出来，第三种（先写答案）的反转放在开场当钩子，第 03 章再拆开讲；最后抛出全片的大问题：对一台一个字接一个字往下写的机器，「思考」究竟是什么？',
+    '结构：「学会思考」移到「说出来的理由」之前。Anthropic 测的是训练过思考的模型，先讲这些模型从哪来，第 05 章才不会用到还没讲的东西；第 05 章也因此直接接上结尾。',
+    '结尾：照《垃圾回收的艺术》的做法，回到最初的问题正面作答（要多想，就要多写），再从模型升到人（草稿纸不一定是窗；这一点上它和我们也许没那么不同），最后一句落回片名。',
+    '旁白里的百分数改成「不到两成 → 将近六成」这样的说法，原数放在画面上；措辞加了画面感（一位不差、不偏不倚、有样学样、落笔就收不回来、只字不提），每句仍有出处。',
+    '删去：2023 年「示范题答案都排在 A」实验、理论证明两句、R1-Zero 的竞赛题正确率（都留在 FACTS 里作依据）；丝袜实验补全原文「好像自己听错了问题，或者遇上了疯子」。',
+    '开场点名 DeepSeek；第 04 章「交给 DeepSeek 的思考模式」与它呼应。',
+]
+OPEN2 = [
+    '片长：按真诚青年、语速 1.2 的实测语速（约 5.10 字/秒）估算，全片约 6:52，贴近 7 分钟。配音后如果超过 7 分钟，先收停顿，不删内容；还超就再删字。',
+    '第 05 章删去了 2023 年「示范题答案都排在 A」的实验，只留 Anthropic 2025 年的测试（模型）和 1977 年的丝袜实验（人）。这样够不够？',
+    '结尾的落点：「这一点上，它和我们，也许并没有那么不同」，然后落回「先思考，再回答」。升华到这一步是否合适？',
+    '视觉：视觉 B 改为立体版（见第二节）。实现时本片 project.json 的 check.style.flat 要改成 false（它禁止阴影、渐变和模糊，立体的纸张与玻璃层都要用到）。',
+]
+VISUAL3D = [
+    ('开场 o9', '三张草稿纸摊在点阵桌面上，第三张抬起：它的最后一步回到了第一行的错答案。镜头在三张纸之间推移，纸有纸纹和投影。'),
+    ('第 02 章 c7', '模型画成一摞层数固定的玻璃层，四块 token 各穿过一次，这就是「只许说答案」能用的全部计算。先写过程时，这一摞会被穿过三百多次。'),
+    ('第 04 章 r14', '思考模式写下的草稿按位数摞起来：每摞顶上是那一位数的一道真题，位数越多摞得越高（高度按平均思考 token）。'),
+]
+
+
+def page2():
+    import html, shutil
+    esc = html.escape
+    sc = script()
+    au = os.path.join(VIDEO, 'out', 'audition')
+    kf = os.path.join(au, 'keyframes')
+    os.makedirs(kf, exist_ok=True)
+    for f in '123':
+        shutil.copyfile(os.path.join(VIDEO, 'shots', 'page__design_keyframes3d_html_f_%s.png' % f), os.path.join(kf, 'B3d%s.png' % f))
+    exports = sorted((x for x in os.listdir(os.path.join(VIDEO, 'review')) if x.startswith('script.zh.')), key=lambda x: os.path.getmtime(os.path.join(VIDEO, 'review', x)))
+    cur = exports[-1].split('.')[2]
+    # 按选定音色的试听实测语速估算各章时长（与 estimate() 同一口径）
+    rate = next(v['rate'] for v in json.load(open(os.path.join(OUT, 'report.json'), encoding='utf-8')) if v['id'] == 'Chinese (Mandarin)_Sincere_Adult')
+    dur = {cid: {'d': 0.12 + chars(c['tts']) / rate, 'words': None} for cid, c in sc['cues'].items() if not c['silent']}
+    code = "const s=require(process.argv[1]);console.log(JSON.stringify(s.layoutScript(JSON.parse(process.argv[2]))))"
+    L = json.loads(subprocess.check_output(['node', '-e', code, os.path.join(VIDEO, 'src', 'js', 'script.js'), json.dumps(dur)], encoding='utf-8'))
+    mmss = lambda x: '%d:%02d' % (x // 60, round(x % 60))
+    names = {'open': '开场', 'end': '结尾', 'credits': '片尾名单'}
+    est = '\n'.join('%-10s %s – %s（%.0f 秒）' % ((s['chap'][0] + ' ' + s['chap'][1]) if s['chap'] else names.get(s['id'], s['id']), mmss(s['start']), mmss(s['end']), s['end'] - s['start']) for s in L['scenes']) + '\n合计 %s（%.2f 字/秒）' % (mmss(L['total']), rate)
+    P = ['<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><title>CoT：先思考，再回答 · 审片页（第 2 稿）</title><style>']
+    P.append('''body{margin:0;background:#f6f6f3;color:#18181b;font:17px/1.8 "Noto Sans SC","Microsoft YaHei",sans-serif}
+main{max-width:1180px;margin:0 auto;padding:48px 40px 120px}h1{font-size:34px;margin:0 0 6px}h2{font-size:24px;margin:56px 0 14px;padding-top:18px;border-top:1px solid #ddd}
+h3{font-size:19px;margin:28px 0 6px}.meta{color:#666;font-size:15px}.box{background:#fff;border:1px solid #e3e3df;border-radius:10px;padding:18px 22px;margin:12px 0}
+.cid{font:12px monospace;color:#9a9aa3;vertical-align:super;margin:0 2px 0 6px}.chap{font-weight:700;color:#0b6e57}
+.ask{background:#fffbe9;border-color:#f0dc9a}ol li,ul li{margin:6px 0}.sil{color:#9a9aa3}pre{font-size:13px;color:#555}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.grid img{width:100%;border:1px solid #ddd;border-radius:6px}.cap{font-size:14px;color:#555}
+audio{width:100%;margin-top:6px}''')
+    P.append('</style></head><body><main>')
+    P.append('<h1>CoT：先思考，再回答 · 审片页（第 2 稿）</h1><div class="meta">2026-11-07 · 内容哈希 <code>%s</code> · 只有中文 · 估约 6:52（真诚青年、语速 1.2 的实测语速）</div>' % esc(cur[:16]))
+    P.append('<div class="box ask"><b>请看两样</b>：①第 2 稿文案：意见按句号说（例如「c7：……」），或明确确认这一稿；②视觉 B 的立体版关键帧。配音（真诚青年）与配乐（A「落字」）已在 11-03 选定，下面附上供回忆。确认之前不配全片。</div>')
+    P.append('<h2>本稿改了什么</h2><div class="box"><ul>%s</ul></div>' % ''.join('<li>%s</li>' % esc(x) for x in CHANGES2))
+    P.append('<h2>一、文案（第 2 稿）</h2>')
+    for s in sc['SCRIPT']:
+        head = ('<span class="chap">%s %s</span>' % (s['chap'][0], esc(s['chap'][1]))) if s['chap'] else ('<span class="chap">%s</span>' % {'open': '开场', 'end': '结尾', 'credits': '片尾'}.get(s['id'], s['id']))
+        body = []
+        for cid, cap, o in s['cues']:
+            if cap is None:
+                body.append('<span class="sil">（%s：无旁白，%s 秒）</span>' % ('片名' if cid == 'oT' else '片尾名单', o.get('pause')))
+                continue
+            c = cap.replace('*', '')
+            body.append('<span class="cid">%s</span>%s%s' % (cid, esc(c), '' if c[-1] in '？！。' else '。'))
+        P.append('<div class="box">%s<p>%s</p></div>' % (head, ''.join(body)))
+    if est:
+        P.append('<p class="meta">各章估时（按 5.10 字/秒加停顿与章节卡）：</p><pre>%s</pre>' % esc(est))
+    P.append('<h3>待定的问题</h3><ol>' + ''.join('<li>%s</li>' % esc(x) for x in OPEN2) + '</ol>')
+    P.append('<h2>二、视觉 B「草稿纸」· 立体版</h2><p>按 11-07 的要求（「动画惊艳富有质感，可以有 3D 元素，而不是纯 2D」）重做的三张关键帧：保留 B 的白底、点阵纸、青绿与赭色，把纸、模型的层和草稿堆做成立体的。用 CSS 3D 搭建，镜头可以在其中推移。</p><div class="grid">%s</div>' % ''.join('<div><a href="keyframes/B3d%d.png" target="_blank"><img src="keyframes/B3d%d.png"></a><div class="cap"><b>%s</b>　%s</div></div>' % (i + 1, i + 1, esc(t), esc(d)) for i, (t, d) in enumerate(VISUAL3D)))
+    P.append('<h3>对照：11-03 选定的平面版 B</h3><div class="grid">%s</div>' % ''.join('<a href="keyframes/B%s.png" target="_blank"><img src="keyframes/B%s.png"></a>' % (f, f) for f in '123'))
+    P.append('<h2>三、已选定</h2><div class="box"><b>配音：真诚青年</b> <code>Chinese (Mandarin)_Sincere_Adult</code>，MiniMax speech-2.8-hd，语速 1.2（试听读的是第 1 稿的代表句）<audio controls preload="none" src="voices/Chinese_Mandarin__Sincere_Adult.mp3"></audio></div>')
+    P.append('<div class="box"><b>配乐：A「落字」</b>　%s<audio controls preload="none" src="music/A.mp3"></audio></div>' % esc(MUSIC_NOTES['A'][1]))
+    P.append('</main></body></html>')
+    open(os.path.join(au, 'index.html'), 'w', encoding='utf-8', newline='\n').write('\n'.join(P))
+    print(os.path.join(au, 'index.html'))
+
+
 if __name__ == '__main__':
-    {'voices': voices, 'estimate': estimate, 'music': music, 'page': page}[sys.argv[1] if len(sys.argv) > 1 else 'voices']()
+    {'voices': voices, 'estimate': estimate, 'music': music, 'page': page, 'page2': page2}[sys.argv[1] if len(sys.argv) > 1 else 'voices']()

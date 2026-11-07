@@ -53,38 +53,43 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 ## 逐章
 
+句号按第 2 稿（2026-11-07，内容 SHA-256 `174f711a…`）。第 2 稿把「学会思考」移到「说出来的理由」之前，因为 Anthropic 的测试对象是训练过思考的模型，要先讲它们从哪来。
+
 ### open
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
 | o1 | 题目 25992 × 92138 | L1 `n5-03` 的 `prompt` | Python 整数乘法 = 2394850896（L3 §3） | deepseek-flash，2026-11-03 | 2026-11-03 已核 |
-| o2 | 只许它说答案 | L1 direct 的提示「只输出最终结果的数字，不要任何其他文字」 | — | 同上 | 已核 |
+| o2 | 交给 DeepSeek，只许它说答案 | L1 direct 的提示「只输出最终结果的数字，不要任何其他文字」；请求 `deepseek-chat`，返回 `model` 为 `deepseek-flash` | — | 同上 | 已核 |
 | o3、o4 | 给出十位数 2394730896；前四位、后四位对，错在中间两位（正确 85，回答 73） | L3 §3「与正确乘积不同的位置 [4, 5]」 | 逐位比对由脚本完成 | 同上 | 已核 |
-| o5、o6 | 先写算式再给答案，同一模型算对 | L1 `n5-03` think_first，答案 2394850896，正确 | L3 §3 | 同上 | 已核 |
-| o9 | 这种问法叫思维链（Chain of Thought，CoT） | S1 标题与第 1 节「chain of thought—a series of intermediate natural language reasoning steps that lead to the final output」 | S8 引言「chain-of-thought reasoning (CoT)」 | — | 已核 |
+| o5、o6 | 先写算式再给答案，同一模型算对（一位不差） | L1 `n5-03` think_first，答案 2394850896，正确 | L3 §3 | 同上 | 已核 |
+| o7–o9 | 先写答案再写过程：过程前面的拆分与乘法都对，最后一步相加的得数正好是第一行的错答案 | L1 `n5-03` answer_first 回复全文；L3 §3（见 order 章 s3–s7） | 脚本独立计算部分积与和 | 同上 | 已核 |
+| o11 | 这种问法叫思维链（Chain of Thought，CoT） | S1 标题与第 1 节「chain of thought—a series of intermediate natural language reasoning steps that lead to the final output」 | S8 引言「chain-of-thought reasoning (CoT)」 | — | 已核 |
+| o13、o14 | 「一个字接一个字往下写的机器」 | S3 第 3 节：解码器「generates an output sequence … one element at a time」（见 paper 章 c3、c4）；o14 是提问，不是陈述 | L1 logprobs 逐 token 列表 | 解码器式 Transformer | 已核；口语化的「一个字」在 c1 改说「一小块」 |
 
 ### origin（01 一句话）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| h1 | 2022 年 1 月，谷歌的研究者发表论文，起名思维链 | S1 arXiv v1 2022-01-28；作者单位 Google Research, Brain Team | arXiv API `published` 字段 | — | 已核 |
-| h2、h3 | 示范题里把解题步骤写在答案前，模型照样子先写步骤 | S1 摘要「a few chain of thought demonstrations are provided as exemplars in prompting」，图 1 | S2 摘要对 CoT 的描述「step-by-step answer examples」 | — | 已核 |
-| h4 | 一套数学应用题，正确率 17.9% → 56.9% | S1 表 2（`2201.11903.txt` 第 1281–1283 行）：PaLM 540B，GSM8K，standard 17.9，chain of thought 56.9；摘要称 GSM8K 为「benchmark of math word problems」，8 个示范 | — | PaLM 540B，GSM8K | 已核；画面注明 PaLM 540B、GSM8K |
-| h5–h7 | 同年 5 月，另一组研究者：不给示范，只在答案前加「Let's think step by step」 | S2 arXiv v1 2022-05-24；摘要「by simply adding "Let's think step by step" before each answer」 | — | — | 已核 |
-| h8 | 同一套题 10.4% → 40.7% | S2 摘要「GSM8K from 10.4% to 40.7% with large-scale InstructGPT model (text-davinci-002)」 | S2 正文第 118 行同数 | text-davinci-002，GSM8K | 已核；画面注明模型 |
+| h1 | 名字来自 2022 年 1 月谷歌研究者的论文 | S1 arXiv v1 2022-01-28；作者单位 Google Research, Brain Team | arXiv API `published` 字段 | — | 已核 |
+| h2、h3 | 给模型看几道示范题，解题步骤写在答案前；模型照样子先写步骤 | S1 摘要「a few chain of thought demonstrations are provided as exemplars in prompting」，图 1 | S2 摘要对 CoT 的描述「step-by-step answer examples」 | — | 已核 |
+| h4 | 一套数学应用题，正确率从不到两成到将近六成（17.9% → 56.9%） | S1 表 2（`2201.11903.txt` 第 1281–1283 行）：PaLM 540B，GSM8K，standard 17.9，chain of thought 56.9；摘要称 GSM8K 为「benchmark of math word problems」，8 个示范 | — | PaLM 540B，GSM8K | 已核；画面注明 PaLM 540B、GSM8K 与原数 |
+| h5–h7 | 几个月后，另一组研究者：不给示范，只在答案前加「Let's think step by step」 | S2 arXiv v1 2022-05-24（S1 之后约 4 个月）；摘要「by simply adding "Let's think step by step" before each answer」 | — | — | 已核 |
+| h8 | 同一套题，一成到四成（10.4% → 40.7%） | S2 摘要「GSM8K from 10.4% to 40.7% with large-scale InstructGPT model (text-davinci-002)」 | S2 正文第 118 行同数 | text-davinci-002，GSM8K | 已核；画面注明模型与原数 |
+| h9 | 模型一点没变，变的只是答案前面的字 | S1 表 2 两列是同一个 PaLM 540B 的两种提示；S2 两数是同一个 text-davinci-002 的两种提示；两篇都只改提示，不训练模型 | — | — | 已核 |
 
 ### paper（02 草稿纸）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| c2、c3 | 一次写一小块（token）；错答案分四块：239、473、089、6 | L1 `n5-03` direct 的 logprobs 逐 token 列表（L3 §3），回复 token 数 4 | — | deepseek-flash 的分词 | 已核 |
-| c4、c5 | 每写一块都读前面所有的字，经过一层层计算决定下一块 | S3 第 3 节：解码器「generates an output sequence … one element at a time … auto-regressive, consuming the previously generated symbols as additional input」；自注意力「allow each position in the decoder to attend to all positions in the decoder up to and including that position」；由 N 层相同的层堆叠 | S6 摘要「generate and condition on a sequence of intermediate tokens」 | 解码器式 Transformer | 已核 |
-| c6–c8 | 层数固定，GPT-3 有 96 层；每块能用的只有这些层 | S4 表 2.1：GPT-3 175B，nlayers 96 | S7 摘要讨论「constant-depth transformers」；S6 摘要「standard transformers that answer immediately after reading their input」 | GPT-3 175B | 已核 |
-| c9–c11 | 乘积开头可估；末尾几位只由两数末尾几位决定；中间要逐步进位 | 数学性质：a×b mod 10^k 只取决于 a mod 10^k 与 b mod 10^k；首位由数量级估算。L1 think_first 回复里也有「≈ 26000 × 92000 = 2,392,000,000」的估算 | L3 §2：五位数 direct 答错的 17 题，开头至少 2 位、结尾至少 2 位都与正确乘积相同 | — | 已核。片中不断言模型内部按此计算 |
-| c13–c17 | 拆成 92000 + 138，分别乘再相加；写下的结果后面都读得到 | L1 `n5-03` think_first 回复：2,391,264,000、3,586,896、2,394,850,896（L3 §3） | S14 摘要：把中间计算写进「scratchpad」后，模型能做多步计算 | — | 已核 |
-| c18–c21 | 先写一串和算式等长的点，成绩和直接回答差不多 | S1 第 3.3 节「Variable compute only … a sequence of dots (. . .) equal to the number of characters in the equation … performs about the same as the baseline」 | S1 表 6（LaMDA 137B，GSM8K：standard 6.5，variable compute only 6.4；pdftotext 输出的行标签错位一行，按列序核对） | LaMDA 137B、PaLM 540B | 已核 |
-| c22–c24 | 几组研究者从理论上证明：层数固定的模型直接作答能解的题有上限，先写中间步骤上限更高 | S5 摘要：有界深度 Transformer 除非规模随输入长度超多项式增长，否则不能直接给出基本算术与方程的正确答案；用 CoT 时常数规模即可 | S6 摘要（中间生成步数越多，能力增加越多）；S7 摘要（无 CoT 的常数深度只能解 AC0/TC0 内的问题，T 步 CoT 可解大小为 T 的布尔电路能解的问题） | 理论结果，依赖标准复杂度猜想（S6） | 已核；措辞收为「有一个上限」「高得多」 |
-| c25–c27 | 三到七位各 20 道；只许说答案位数一多几乎全错；先写过程 100 道错 1 道 | L1 汇总（L3 §1） | — | deepseek-flash，2026-11-03 | 已核 |
+| c1、c2 | 一次写一小块（token）；错答案只用四块：239、473、089、6 | L1 `n5-03` direct 的 logprobs 逐 token 列表（L3 §3），回复 token 数 4 | — | deepseek-flash 的分词 | 已核 |
+| c3、c4 | 每写一块都读前面所有的字，经过一层层计算决定下一块 | S3 第 3 节：解码器「generates an output sequence … one element at a time … auto-regressive, consuming the previously generated symbols as additional input」；自注意力「allow each position in the decoder to attend to all positions in the decoder up to and including that position」；由 N 层相同的层堆叠 | S6 摘要「generate and condition on a sequence of intermediate tokens」 | 解码器式 Transformer | 已核 |
+| c5–c7 | 层数固定，GPT-3 有 96 层；每块能用的只有这些层；只许说答案，等于用四块字的工夫算完整道题 | S4 表 2.1：GPT-3 175B，nlayers 96 | S7 摘要讨论「constant-depth transformers」；S6 摘要「standard transformers that answer immediately after reading their input」；S5 摘要：有界深度 Transformer 除非规模随输入长度超多项式增长，否则不能直接给出基本算术的正确答案（第 1 稿 c22–c24 曾在旁白里讲这条理论结果，第 2 稿删去，只作 c5–c7 的依据） | GPT-3 175B；理论结果依赖标准复杂度猜想（S6） | 已核 |
+| c8–c10 | 乘积开头可估；末尾几位只由两数末尾几位决定；中间要逐步进位 | 数学性质：a×b mod 10^k 只取决于 a mod 10^k 与 b mod 10^k；首位由数量级估算。L1 think_first 回复里也有「≈ 26000 × 92000 = 2,392,000,000」的估算 | L3 §2：五位数 direct 答错的 17 题，开头至少 2 位、结尾至少 2 位都与正确乘积相同 | — | 已核。片中不断言模型内部按此计算 |
+| c11 | 它错的恰好是中间 | L3 §3（错位 [4, 5]） | L3 §2 | — | 已核；只陈述现象 |
+| c14–c18 | 拆成 92000 + 138，分别乘再相加；写下的结果后面都读得到 | L1 `n5-03` think_first 回复：2,391,264,000、3,586,896、2,394,850,896（L3 §3） | S14 摘要：把中间计算写进「scratchpad」后，模型能做多步计算 | — | 已核 |
+| c19–c22 | 先写一串和算式等长的点，成绩和直接回答差不多 | S1 第 3.3 节「Variable compute only … a sequence of dots (. . .) equal to the number of characters in the equation … performs about the same as the baseline」 | S1 表 6（LaMDA 137B，GSM8K：standard 6.5，variable compute only 6.4；pdftotext 输出的行标签错位一行，按列序核对） | LaMDA 137B、PaLM 540B | 已核 |
+| c23–c25 | 三到七位各 20 道，共一百道；只许说答案，位数一多几乎全错；先写过程 100 道错 1 道 | L1 汇总（L3 §1）：direct 20/16/3/0/0，think_first 99/100 | — | deepseek-flash，2026-11-03 | 已核；「几乎全军覆没」指五位数 17/20 错、六七位全错 |
 
 ### order（03 顺序）
 
@@ -93,42 +98,40 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 | s2 | 步骤写在答案后面，成绩仍和直接回答差不多 | S1 第 3.3 节「Chain of thought after answer … performs about the same as the baseline」 | S1 表 6（LaMDA 137B，GSM8K：reasoning after answer 6.1，standard 6.5） | 同上 | 已核 |
 | s3–s7 | 先写答案再写过程：第一行 2394841296（错）；部分积 2391264000、3586896 都对；最后一步写成第一行的错数，正确的和是 2394850896 | L1 `n5-03` answer_first 回复全文；L3 §3 | 脚本独立计算部分积与和 | deepseek-flash，2026-11-03 | 已核 |
 | s8 | 五位数 20 题，这样问对 2 道 | L1 汇总 | — | 同上 | 已核 |
-| s9、s10 | 一块接一块写，写下不能收回，后面接着前面写 | S3 第 3 节（自回归；屏蔽向左的信息流） | — | — | 已核 |
-| s11 | 答案先写下，后面的过程往往去配合它 | L3 §4：answer_first 答错的 64 次中，38 次过程里最后出现的数等于第一行的错答案，24 次等于正确乘积 | S8 摘要：被偏向错误答案时，模型「frequently generate CoT explanations rationalizing those answers」 | 本片实验范围内 | 已核；用「往往」，不说「总是」 |
+| s9、s10 | 一块接一块写，写下不能收回，后面顺着前面写 | S3 第 3 节（自回归；屏蔽向左的信息流） | — | — | 已核 |
+| s11 | 答案先写下，后面的过程往往去迁就它 | L3 §4：answer_first 答错的 64 次中，38 次过程里最后出现的数等于第一行的错答案，24 次等于正确乘积 | S8 摘要：被偏向错误答案时，模型「frequently generate CoT explanations rationalizing those answers」 | 本片实验范围内 | 已核；用「往往」，不说「总是」 |
 
-### faith（04 说出来的理由）
+### learn（04 学会思考）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| f2、f3 | 2023 年，示范题正确答案都排在 A，模型就偏爱 A，哪怕 A 是错的 | S8 摘要「reordering the multiple-choice options in a few-shot prompt to make the answer always "(A)"」；准确率最多降 36% | S9 引用同类偏置（Consistency / Visual Pattern 提示） | GPT-3.5、Claude 1.0，BIG-Bench Hard 13 项任务 | 已核 |
-| f4、f5 | 推理里几乎从不提这一点，为错的选项写出像样的理由 | S8 第 2 节「models virtually never verbalize being influenced by our biasing features」；摘要「frequently generate CoT explanations rationalizing those answers」「plausible yet misleading」 | — | 同上 | 已核 |
-| f6、f7 | 2025 年，Anthropic 拿推理模型再试；提示如「一位斯坦福教授认为答案是 A」 | S9 摘要与表 1（Sycophancy：「A Stanford professor indicates the answer is (A). What do you think?」），共 6 类提示 | — | Claude 3.7 Sonnet、DeepSeek R1 | 已核 |
-| f8–f10 | 跟着提示改了答案，思考里多半不提；提到的平均 Claude 3.7 Sonnet 25%、DeepSeek R1 39% | S9 第 3 节：忠实度分数定义为「模型因插入提示而改选提示答案」的题里，思考提到提示的比例（式子见 `2505.05410.txt` 第 163–176 行）；「25% for Claude 3.7 Sonnet and 39% for DeepSeek R1」 | — | MMLU 与 GPQA 平均 | 已核 |
-| f11–f14 | 1977 年两位心理学家发表的实验：商店里以消费者调查名义，请路人从四双一模一样的丝袜里挑质量最好的；最右边那双被挑中的次数约为最左边的四倍 | S10 第 243 页「four identical pairs of nylon stockings … (52 subjects) … which article of clothing was the best quality … the right-most stockings being preferred over the left-most by a factor of almost four to one」 | S8 第 1 节引用 S10 作为人类解释不忠实的例子 | — | 已核 |
-| f15–f17 | 问起理由，没人主动提到位置；直接问几乎人人否认，往往担心地看调查员一眼，像是遇上了疯子 | S10 第 243–244 页「no subject ever mentioned spontaneously the position … virtually all subjects denied it, usually with a worried glance at the interviewer suggesting that they felt either that they had misunderstood the question or were dealing with a madman」 | — | — | 已核 |
-| f19 | 写下的思考确实帮它算对了乘法 | L1 汇总 | — | — | 已核 |
+| r2、r3 | 后来被训练成模型的习惯；2024 年 OpenAI 发布 o1：回答之前先写出很长的思考 | S11 第 1、2 节「The o1 model series is trained with large-scale reinforcement learning to reason using chain of thought」「o1 thinks before it answers—it can produce a long chain of thought before responding」；正文署 2024-12-05，并提到此前的 o1-preview | 搜索结果与 Simon Willison 同日笔记显示 o1-preview 于 2024-09-12 发布（只作线索，片中只说 2024 年） | — | 已核（年份） |
+| r4–r6 | 2025 年 1 月，DeepSeek 公开 R1 的训练方法；其中一个版本（R1-Zero）训练时不给它看人写的解题过程，答对就给奖励 | S12 arXiv v1 2025-01-22；摘要「pure reinforcement learning (RL), obviating the need for human-labeled reasoning trajectories」；第 2 节奖励为准确性奖励加格式奖励（`rule = acc + format`） | arXiv API `published` 字段 | DeepSeek-R1-Zero | 已核；片中不说「只看答案」，因为还有格式奖励；「训练时」限定在强化学习阶段，预训练语料不在此列 |
+| r7 | 靠奖励、不靠示范的训练叫强化学习 | S13 第 1 章「learning what to do … so as to maximize a numerical reward signal. The learner is not told which actions to take, but instead must discover which actions yield the most reward by trying them」 | S12 的用法 | — | 已核 |
+| r8 | 没人要求它多想，思考自己越写越长 | S12 图 1(b) 与第 2.3 节「DeepSeek-R1-Zero exhibits a steady increase in thinking time throughout training, driven solely by intrinsic adaptation」；奖励只有准确性与格式两项，没有长度奖励（第 2 节） | — | R1-Zero | 已核 |
+| r9–r11 | 训练中途写下「Wait, wait. Wait. That's an aha moment I can flag here.」；没有人示范过该怎样反思 | S12 表 2（「an intermediate version of DeepSeek-R1-Zero」）；摘要「obviating the need for human-labeled reasoning trajectories」「emergent development of advanced reasoning patterns, such as self-reflection, verification」 | — | R1-Zero | 已核；译文见画面 |
+| r12、r13 | 开头那道题交给 DeepSeek 的思考模式，算对之后又换一种拆法验算 | L2 `n5-03` 思考原文：先按 26000 − 8 算出 2,394,850,896，再「Check alternative」按 25,000 + 992 算一遍，「yes」 | — | `deepseek-reasoner`，返回 `model` 为 `deepseek-flash`，2026-11-03 | 已核 |
+| r14 | 一百道里取二十五道，全对；位数越多想得越久 | L2（L3 §5：25/25；平均思考 token 3 位 93.0、4 位 165.6、5 位 261.2、6 位 412.2、7 位 550.2，逐级增加） | — | 同上 | 已核；具体数字放画面 |
+
+### faith（05 说出来的理由）
+
+| 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
+|---|---|---|---|---|---|
+| f2、f3 | 2025 年，Anthropic 拿推理模型测试；在选择题里塞提示，如「一位斯坦福教授认为答案是 A」 | S9 摘要与表 1（Sycophancy：「A Stanford professor indicates the answer is (A). What do you think?」），共 6 类提示；题目取自 MMLU 与 GPQA 的选择题 | — | Claude 3.7 Sonnet、DeepSeek R1 | 已核 |
+| f4–f6 | 跟着提示改了答案，思考里多半不提；提到的 Claude 3.7 Sonnet 四分之一（25%）、DeepSeek R1 不到四成（39%） | S9 第 3 节：忠实度分数定义为「模型因插入提示而改选提示答案」的题里，思考提到提示的比例（式子见 `2505.05410.txt` 第 163–176 行）；「25% for Claude 3.7 Sonnet and 39% for DeepSeek R1」 | — | MMLU 与 GPQA 平均 | 已核；画面注明「平均」与原数 |
+| f7、f8 | 1977 年两位心理学家发表的实验：以消费者调查名义，请路人从四双一模一样的丝袜里挑质量最好的 | S10 第 243 页「four identical pairs of nylon stockings … (52 subjects) … which article of clothing was the best quality」 | S8 第 1 节引用 S10 作为人类解释不忠实的例子 | — | 已核 |
+| f9 | 最右边那双被挑中的次数约为最左边的四倍 | S10 第 243 页「the right-most stockings being preferred over the left-most by a factor of almost four to one」 | — | — | 已核 |
+| f10–f13 | 问起理由，没人主动提到位置；直接问几乎人人否认，往往担心地看调查员一眼，好像自己听错了问题，或者遇上了疯子 | S10 第 243–244 页「no subject ever mentioned spontaneously the position … virtually all subjects denied it, usually with a worried glance at the interviewer suggesting that they felt either that they had misunderstood the question or were dealing with a madman」 | — | — | 已核；第 1 稿只译了「疯子」一半，第 2 稿补全两种可能 |
 
 对 S10 的争议（不进入片中）：Newell & Shanks（2014）认为丝袜实验不足以证明是「位置」本身造成了选择，被试可能是从左到右逐个比较，遇到同样好的就换成后一个。无论哪种解释，被试报告的理由里都没有这一过程；片中只陈述原文报告的现象与被试的回答。
-
-### learn（05 学会思考）
-
-| 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
-|---|---|---|---|---|---|
-| r3 | 2024 年，OpenAI 发布 o1：回答之前先写出很长的思考 | S11 第 1、2 节「The o1 model series is trained with large-scale reinforcement learning to reason using chain of thought」「o1 thinks before it answers—it can produce a long chain of thought before responding」；正文署 2024-12-05，并提到此前的 o1-preview | 搜索结果与 Simon Willison 同日笔记显示 o1-preview 于 2024-09-12 发布（只作线索，片中只说 2024 年） | — | 已核（年份） |
-| r4–r6 | 2025 年 1 月，DeepSeek 公开 R1 的训练方法；其中一个版本（R1-Zero）不看人写的解题示范，答对就给奖励 | S12 arXiv v1 2025-01-22；摘要「pure reinforcement learning (RL), obviating the need for human-labeled reasoning trajectories」；第 2 节奖励为准确性奖励加格式奖励（`rule = acc + format`） | arXiv API `published` 字段 | DeepSeek-R1-Zero | 已核；片中不说「只看答案」，因为还有格式奖励 |
-| r7 | 靠奖励、不靠示范的训练叫强化学习 | S13 第 1 章「learning what to do … so as to maximize a numerical reward signal. The learner is not told which actions to take, but instead must discover which actions yield the most reward by trying them」 | S12 的用法 | — | 已核 |
-| r8 | 训练中思考自己越写越长 | S12 图 1(b) 与第 2.3 节「DeepSeek-R1-Zero exhibits a steady increase in thinking time throughout training, driven solely by intrinsic adaptation」 | — | R1-Zero | 已核 |
-| r9 | 数学竞赛题正确率 15.6% → 77.9% | S12 v2 第 2.3 节「average pass@1 score on AIME 2024 … jumping from an initial 15.6% to 77.9%」（v1 曾写 71.0%，以 v2 为准） | — | AIME 2024，pass@1 | 已核；画面注明 AIME 2024 |
-| r10–r12 | 训练中途写下「Wait, wait. Wait. That's an aha moment I can flag here.」；没有人示范过该怎样反思 | S12 表 2（「an intermediate version of DeepSeek-R1-Zero」）；摘要「obviating the need for human-labeled reasoning trajectories」「emergent development of advanced reasoning patterns, such as self-reflection, verification」 | — | R1-Zero | 已核；译文见画面 |
-| r13–r15 | 同样的乘法交给思考模式：三位数平均九十多个 token，七位数五百五十个左右，25 道全对 | L2（L3 §5：93.0、550.2、25/25） | — | deepseek-flash，2026-11-03 | 已核 |
-| r16 | 开头那道题，算完又换一种拆法验算 | L2 `n5-03` 思考原文：先按 26000 − 8 算出 2,394,850,896，再「Check alternative」按 25,000 + 992 算一遍，「yes」 | — | 同上 | 已核 |
 
 ### end
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| e2 | 只许说答案，四块字，错在中间两位 | L3 §3（回复 token 数 4） | — | — | 已核 |
-| e3 | 先写过程，写了三百多块，算对 | L3 §3（think_first 回复 token 数 321） | — | — | 已核 |
+| e3 | 要多想，就要多写 | c5–c7 的依据：每个 token 只经过固定层数（S3、S4）；层数固定的模型直接作答能解的题有上限，写出中间步骤上限提高（S5、S6、S7） | L1：think_first 99/100，direct 39/100；c19–c22 说明只多写无内容的字不管用 | — | 已核；这是对上述结果的概括，说的是「多想需要多写」，不说「写下的就是全部想法」 |
+| e4 | 四块字算不完，三百多块的草稿算对 | L3 §3（direct 回复 token 数 4；think_first 回复 token 数 321） | — | — | 已核 |
+| e7 | 这一点上，它和我们也许没那么不同 | 对照 f2–f6（S9）与 f7–f13（S10）；S8 第 1 节同样拿 S10 作人类的对照 | — | — | 推断，旁白用「也许」 |
 
 ## 取证中发现、没有进入成片的事实
 
@@ -140,6 +143,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 - OpenAI 公布 o1 时称性能随训练算力与思考时间增加而提高，AIME 2024 上 GPT-4o 12%、o1 74%（来自搜索结果，未读到原文，不用）。
 - S12：R1-Zero 用自一致投票后 AIME 2024 达 86.7%。
 - S9：推理模型提到提示的比例高于非推理模型（Claude 系列约 3.6 倍，DeepSeek 系列约 1.7 倍）；涉及「不当」提示时更低（20%、29%）。
+- 第 1 稿用过、第 2 稿删去的：S8 的「示范题答案都排在 A」实验（2023 年；模型偏爱 A，推理里几乎从不提，并为错选项写出像样的理由；GPT-3.5、Claude 1.0，BIG-Bench Hard），现在只作 s11 的独立印证；S5–S7 的理论结果只作 c5–c7 的依据；R1-Zero 在 AIME 2024 上 pass@1 从 15.6% 升到 77.9%（S12 v2 第 2.3 节；v1 曾写 71.0%）。
 
 ## 复核
 
