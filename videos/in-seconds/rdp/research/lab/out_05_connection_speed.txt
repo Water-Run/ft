@@ -1,0 +1,15 @@
+# mstsc.exe.mui（zh-CN）里含 kbps / Mbps 的连接速度字符串
+  调制解调器(28.8 kbps)
+  调制解调器(56 kbps)
+  宽带(128 kbps - 1.5 Mbps)
+  LAN (10 Mbps 或更高)
+  低速宽带(256 kbps - 2 Mbps)
+  卫星(2 Mbps - 16 Mbps，高延迟)
+  高速宽带(2 Mbps - 10 Mbps)
+  WAN (10 Mbps 或更高速度，高延迟)
+
+# 传输时间 = 字节 × 8 ÷ 带宽
+调制解调器 56 kbps    H.264 往下翻一页那一帧（out_02 C_scroll）       23159 B     3308.43 ms
+调制解调器 56 kbps    RDP ScrBlt 搬移指令（MS-RDPEGDI 4.1.7）        14 B        2.00 ms
+卫星 下限 2 Mbps     H.264 往下翻一页那一帧（out_02 C_scroll）       23159 B       92.64 ms
+卫星 下限 2 Mbps     RDP ScrBlt 搬移指令（MS-RDPEGDI 4.1.7）        14 B        0.06 ms

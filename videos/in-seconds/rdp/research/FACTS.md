@@ -89,6 +89,9 @@ Windows 8 / Server 2012 起有了新的图形管线 MS-RDPEGFX 与 UDP 传输（
 | L2 | 同样的变化交给 H.264（libx264 veryfast zerolatency CRF 23，yuv420p，1024×768）：打字后的一帧 667 字节；滚动三行后的一帧 23159 字节；整屏换成一种颜色的一帧 950 字节；画面不变的一帧 311 字节 | `lab/out_02_h264_frames.txt` | — | 本机，2026-11-07 | 已核。口径：实验画面是仿记事本的白底文字页，滚动是整页上移三行（比规范样例的 417×241 搬移大），H.264 那一帧同时包含露出来的新行；RDP 一侧滚动后露出的新行还要另发文字指令。比较只说「同一类变化，量级不同」，不说倍数 |
 | L3 | 彩色小字经 H.264 yuv420p 编码后变淡、发虚；红字区域平均每通道色差约 3，黑字约 0.45 | `lab/out_03_chroma_text.txt`；放大对照图 `_frames/03_pair.png`（不入库，可重做） | 微软 RDP 10 博客：「the color conversion process that happens as part of the compression … throws away some of the chrominance information, as represented in the 4:2:0 format」 | 本机，2026-11-07 | 已核 |
 
+| P3 | 连接类型（客户端报给服务器）：Modem (56 Kbps)、Low-speed broadband (256 Kbps - 2 Mbps)、Satellite (2 Mbps - 16 Mbps with high latency)、High-speed broadband (2 Mbps - 10 Mbps)、WAN、LAN、自动检测 | [MS-RDPBCGR] 第 2.2.1.3.2 节 connectionType（CONNECTION_TYPE_MODEM 0x01 … CONNECTION_TYPE_AUTODETECT 0x07） | 实验：本机中文版 mstsc.exe.mui 里的选项原文「调制解调器(56 kbps)」「卫星(2 Mbps - 16 Mbps，高延迟)」等（`lab/out_05_connection_speed.txt`） | v20260309；本机 2026-11-07 | 已核 |
+| L4 | 按带宽算传输时间（字节 × 8 ÷ 带宽，不含延迟与开销）：56 kbps 上，实验 02 滚动那一帧（23159 字节）约 3.31 秒，RDP 搬移指令（14 字节）约 2.00 毫秒；卫星下限 2 Mbps 上分别约 92.6 毫秒与 0.06 毫秒 | `lab/out_05_connection_speed.txt`（由 L2、G5 算出） | — | 本机，2026-11-07 | 已核。口径：只是那一帧的纯传输时间；真实的视频流在慢网上会降码率、降画质，旁白说「刚才那一帧录像要传三秒多」，不说「视频流在拨号上用不了」 |
+
 ### adapt：远程桌面适应你的电脑
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
