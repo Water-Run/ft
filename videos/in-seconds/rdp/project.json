@@ -83,8 +83,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "accept",
-  "next": "WaterRun 看正式片 out/rdp-zh-1080p60.mp4（以观众身份通看、听配乐与音效，判断 README「交付」里记为 open 的两项）；同意后登记交付",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 BV1vt4j6GE11，2026-11-07 13:27）；按发布后冻结，只收集反馈",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -133,5 +133,22 @@
     "speed": {
       "zh": 1.2
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-07",
+    "duration": {
+      "zh": 192
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1vt4j6GE11",
+      "date": "2026-11-07",
+      "title": "192秒了解RDP: Windows远程的优雅实现",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }
