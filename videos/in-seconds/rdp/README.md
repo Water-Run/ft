@@ -8,6 +8,8 @@
 
 2026-11-07 实现：WaterRun 看过第 3 轮审片页后回复「可以 实现视频」，第 2 稿修订版确认（`review/NOTES.md`）。青年大学生配全片（旁白 158 秒），按实测重排定点；八个场景按磁贴设计写完，自对抗审查后出预览 r1（`out/zh/preview-r1.mp4`，半分辨率），交 WaterRun。停在预览迭代：等 r1 的意见。
 
+2026-11-07 r2 与正式片：按 WaterRun 对 r1 的意见（UU 读法、两家标志、样式简陋）与「自我对抗, 迭代几版本吧」做两轮自审，出 r2（`out/zh/preview-r2.mp4`），再修中间帧问题后渲染正式片。
+
 2026-11-07 第 3 轮：按策划者意见改 o3，并加一段极低带宽场景（x9–x11：选项里的卫星、56K 拨号；56K 上那一帧录像传三秒多，RDP 那句指令两毫秒），为此压了几处冗词；全片试读与审片页 `out/audition/index.html` 已更新，另加关键帧 C6。停在审稿：等第 2 稿修订版的逐句意见或明确确认；确认前不配全片、不铺开场景。
 
 标题按策划者 2026-11-07 原话改为「192秒了解RDP」（此前为「192秒速通RDP」）；`videos/catalog.json` 已改，片单派生文件待与共享文件一起重新生成（见「接续」）。
@@ -112,10 +114,44 @@
 | limit | Windows 与 RDP 被一道框箍住；能被连的版本；整屏都在变的画面把指令压垮；Windows 8 起的视频编码区域；两家视频流远程的平台与帧率 | — |
 | end | 录下来的结果 → 它的画法 → 你的屏幕照着画法重画 | — |
 
+r2 起的加工（WaterRun「目前样式和效果总体而言展示的简陋」）：磁贴按 Windows 8 开始屏的样子画——中间偏上一个单色线框图标、左下一行小标签（图标在 `src/js/parts.js` 的 `ICONS`）；成组的磁贴用开始屏的「旋转门」翻入（`turnIn`），片名卡上的小磁贴像动态磁贴一样翻一圈；显示器带支架；录像发出的每一帧画成那边桌面的缩略图；各场左上一个细字重的分组大标题。ToDesk 与网易 UU 远程用官网的横版标志（`src/img/`，出处见 `research/MATERIALS.md`），出现在引子、「站的位置」的录像磁贴、局限一场的平台与帧率磁贴。
+
 右上仪表只在有字节可比的步骤里出现：写一行字（47 B / 667 B）、往下翻一页（14 B / 23 159 B）、56K 拨号上传完（0.002 s / 3.31 s）。
 
 
 审片页的重建：`tools/audition.py <cues_full.json> <ffmpeg> <ffprobe> daxuesheng full`（逐句合成，只试听，不写 timing）→ 用 `layoutScript` 排时间线写 `out/audition/full/layout.json` → `tools/readthrough.py <ffmpeg> daxuesheng --music` → `look.js --url "/design/keyframes.html?k=C1"` 截图复制到 `out/audition/keyframes/` → `node videos/in-seconds/rdp/tools/audition_page.js`。第 1 轮的五个音色试听与三段小样由 `tools/audition.py`（不带第 5 个参数）与 `tools/music_demos.py` 生成。
+
+## 交付
+
+2026-11-07 正式片（待 WaterRun 看过并同意后登记交付）。
+
+**文件**（`out/`，在最终编码的文件上测）：
+
+| 文件 | 规格 |
+|---|---|
+| `rdp-zh-1080p60.mp4` | H.264 1920×1080，60/1 fps，11 520 帧，192.000 s；AAC 48 kHz 双声道；I −15.7 LUFS，LRA 3.2 LU，真峰 −1.3 dBFS；61 251 835 字节，sha256 `df848c86e4a12da5f7042183e7ed54b0eef1cd673b5750482b8d1138dfbf1de7` |
+| `rdp-zh-1080p60-voice-only.mp4`、`rdp-zh-1080p60-no-music.mp4` | 仅旁白版、无配乐版 |
+| `rdp-zh.srt` | 字幕（字幕已内嵌在画面里，srt 只是附属） |
+| `cover-zh-16x9.jpg`、`cover-zh-4x3.jpg` 及 2 倍 PNG | 封面 |
+
+**渲染**：`render.js --gpu 1 --encoder auto --workers 4`（NVENC），mb 8；`audio.js` → `finish.js` → `covers.js`。
+
+**自动闸门**：`check.js --final` 通过（2026-11-07；唯一提示为 DENSE，见「取舍」）；经验规则复核（`review/lessons.json`）27 条 pass，2 条 open：
+
+- F06 声音：制作者听不到声音，配乐与 116 个音效事件只核对了数值（整体 −15.7 LUFS，旁白下配乐约低 11 dB），听感交策划者。
+- F27 以观众身份通看：制作者不能以正常速度连续观看，只用总览图通看（见下），节奏与观感交策划者。
+
+**成片审查中改掉的**（详见 `review/NOTES.md`「预览与自查」）：r1 自审 14 类问题；r2 按 WaterRun 的意见加工（UU 读法、两家标志、Windows 8 磁贴样式与翻入动效、版面充实）并修掉家庭版磁贴字号、字节账磁贴未退场、片名卡静止、可读时长不足等；正式片前的中间帧与每 3 秒总览又修了分组大标题在换场时压过剩余秒数（第一次渲染后发现，改后重渲）。
+
+**看过、听过的范围**：画面——每句说完时的总览图 47 帧、换场与翻入中途 16 帧、每 3 秒一帧 64 帧（`shots/sheets/zh-e3_*.jpg`，不入库，可用 `sheets.js every 3` 重做），可疑处用 look.js 看原图；最终 MP4 上取片尾 189 s 一帧核对名单。声音——没有听；旁白读音用 Whisper 回听全片（asr.js）并对 x6、o1、k2、b6 单独复听；配乐与音效只有数值。60 fps 闪烁没有专门测（全片没有细密的重复条纹，最快的图案每帧移 4–7 像素、周期不小于 147 像素）。
+
+**Credit 核对**：名单所据——本片 README「状态」与 `review/NOTES.md` 的制作记录：全部取证、实验、文案、设计、场景、配乐、音效、审片页与成片由 Claude Opus 5.5 完成；旁白为 MiniMax speech-2.8-hd（male-qn-daxuesheng）；取证用了会话自带的 WebSearch、WebFetch（内部所用模型未披露）。最终 MP4 189 s 一帧核对：策划 WaterRun、Claude Opus 5.5 及分工、MiniMax、WebSearch/WebFetch、GPL-3.0-or-later、github.com/Water-Run/ft 均在画面上，与 `project.json` 一致。
+
+**开源交付**：GPL-3.0-or-later；源码在 `videos/in-seconds/rdp/`（本次提交）；外置材料为微软协议规范 PDF（`research/_src/`，不入库，FACTS 记下载地址与 sha256）；ToDesk 与网易 UU 远程的标志取自各自官网（`src/img/`，出处与 sha256 见 `research/MATERIALS.md`），是各自所有者的商标，不随 GPL 授出；字体为仓库自带的 OFL 字体。
+
+**取舍**：标题按策划者原话改为「192秒了解RDP」；文案三稿均按策划者意见改写；局限一场的「游戏画面」不用整块变色，改为连续滚动（避免频闪）；`scan.js` 的 DENSE 提示（86.5 s 同屏文字多，主要是两份记事本与九格字形缓存）保留，这一刻要同时看到两边与缓存。
+
+**未做或未通过**：片单派生文件（`videos/catalog.json` 改题与阶段、`videos/README.md` 等）待共享文件空出后与登记一起提交；其余无。
 
 ## 接续
 

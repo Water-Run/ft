@@ -3,7 +3,7 @@
 scene('limit', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
-  const head = txt(world, 'hdr', tr('绑得很深', 'Tied to Windows'), 230, 30); wipe(head, c0 + 0.05, { dir: 'l', d: 0.4 });
+  const head = txt(world, 'hdr', tr('绑得很深', 'Tied to Windows'), 230, 30); wipe(head, s.start + SLIDE + 0.05, { dir: 'l', d: 0.4 }); hide(head, s.end - 0.2, { d: 0.18 });
   // ── b1：它和 Windows 绑得很深 ──
   const tBind = Qf(T('b1', '绑'));
   const wTile = tile(world, 'tile', 120, 150, 300, 150, '', 'Windows'); wTile.style.outline = '4px solid var(--rdp)'; wTile.style.outlineOffset = '-4px';

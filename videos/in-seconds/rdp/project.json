@@ -83,8 +83,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "preview",
-  "next": "WaterRun 看预览 out/zh/preview-r1.mp4，意见逐条记进 review/NOTES.md；问题不多时直接出正式片（出片前先做 60 fps 细节闪烁检查）",
+  "stage": "accept",
+  "next": "WaterRun 看正式片 out/rdp-zh-1080p60.mp4（以观众身份通看、听配乐与音效，判断 README「交付」里记为 open 的两项）；同意后登记交付",
   "credits": {
     "planner": "WaterRun",
     "models": [

@@ -4,7 +4,7 @@ scene('stand', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
   const head = txt(world, 'hdr', tr('站的位置', 'Where it stands'), 230, 30);
-  wipe(head, c0 + 0.05, { dir: 'l', d: 0.4 });
+  wipe(head, s.start + SLIDE + 0.05, { dir: 'l', d: 0.4 }); hide(head, s.end - 0.2, { d: 0.18 });
   // ── 两层：Windows（后）与屏幕（前）──
   const winL = tile(world, 'tile', 200, 170, 720, 440); winL.style.outline = '4px solid var(--rdp)'; winL.style.outlineOffset = '-4px';
   const winLab = txt(winL, 't-n', 'Windows', 20, 12); winLab.dataset.name = 'Windows 层';

@@ -4,177 +4,177 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：开头 o1–o4 提出「同样是远程，传过来的东西不同」，stand 一场点明本质区别（站的位置），bytes、adapt、limit 各从字节、适应、局限回答同一问题，收尾 e1–e3 回到「看到结果 vs 知道画法」。按 sheets.js cue 总览逐场复述。"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 1:08–1:51：同一份记事本里打 dumplings 一行、再往下翻一页，两种办法各走一遍（像素压缩 vs 字形缓存＋编号、搬移指令），每步的字节数上屏。新名词只教 RDP、视频（录像）、指令、通道四个。"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh：比较双方同一任务、同一口径——字节账两步并排、56K 上的时间写明「刚才那一帧」与算法（条长按传输时间画）；Windows 8 / 8.1 起的边界在画面写明；ToDesk、UU 远程第一次出现即带官网标志与「录像」标签。"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "readable.js（zh 全片，步长 0.2 s）：剩下的未达下限项都是正在计数的数字（字节计数、56K 计时、窗口拉伸时的分辨率）与飞行中的令牌；片名副标题、字母 d 说明、「通道」注解已提前或缩短到达标。preview.js 静止检查无 ≥2.5 s 段。"
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh：帧流与指令磁贴在两台电脑之间真实移动；stand 一场屏幕让开露出 Windows 层；字形从那一行飞进缓存、再从缓存排进你这边；报过去的设置从你的电脑飞下；窗口拉伸时那边分辨率连续变化。换场用开始屏的横向滑入；没有与其他片子逐段并排比较。"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作者听不到声音：配乐（tools/music.py，按场景加减层、结论处抬起）与 116 个音效事件（8 种）只核对了数值——成片 −15.7 LUFS、真峰 −1.3 dBFS、旁白 −21 dB、旁白下配乐约低 11 dB。音效是否有存在感、配乐是否合适，交策划者听。",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 成片：唯一的本机数据是分辨率、缩放、输入语言与时区（lab/out_04），会话列表里的用户名在源头替换为 user 且未上屏；画面无路径、主机名、地址。"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "在最终编码的 out/rdp-zh-1080p60.mp4 上测：ffprobe 1920×1080、r_frame_rate 60/1、11520 帧、192.000 s、AAC 48 kHz 双声道；ebur128 I −15.7 LUFS、LRA 3.2 LU、真峰 −1.3 dBFS；与 README「交付」逐项一致。"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md 的意见表分「WaterRun」「制作方自审」两类，原话照录并注明轮次；FACTS 里官网用语、二手评测、推论分别标注。"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "本片不引用系列其他集；背景（RDP 是什么、1998 年的来历）在本片内交代。"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh：外文只有产品名与记事本里的英文示例句；RDP 第一次出现即有「RDP：Remote Desktop Protocol，远程桌面协议」注解；mstsc 旁标「远程桌面连接」；选项原文本身就是中文。"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "asr.js 回听全片 + 可疑句单独用 Whisper 带词时刻复听：x6「一页」被读成一个音已重合成；UU 两字母间停顿已改读「优优远程」重合成三条；年份按 SAY 表逐位读。"
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:19–0:38：先交代 1998 年为什么有它（一台服务器分给很多人用、便宜终端、代号 Hydra），再到 2001 年 XP 专业版自带，之后才讲机制。"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾 z1 为静默 cue（credits: true），script-review 导出无制作指令；成片片尾无旁白，名单取自 project.json。"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏核对：保留的说明只有「磁贴面积按字节数画」「条长按传输时间画」两条图例（读图必需）；无「示意」「本实验」类字样。"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 Windows 8 的磁贴设计语言（策划者选定）；ToDesk、网易 UU 远程用各自官网标志（research/MATERIALS.md 记出处与 sha256）；不用 Windows 徽标。"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "审片页给 5 个 MiniMax 候选（语速 1.2），策划者选「青年大学生」；全片试读交审后再合成全片。"
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 每章一个主画面：open 两台电脑；history 服务器与九台终端；stand 两层的那边电脑；bytes 两份记事本与字节账；adapt 变大的你的电脑；limit 被箍住的 Windows/RDP 与那边屏幕；end 结果→画法→重画。"
     },
     "F19": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "sheets.js at 取换场滑动中途、翻入中途共 16 帧逐格看；修掉分组大标题在滑动时压过剩余秒数、片名卡前后的显隐；圆头线帽露点已用 drawIn 处理。"
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "颜色只表身份（README「设计」表），全片不换义；字节磁贴严格按面积，56K 进度条严格按时间。"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "样式、配乐、封面、场景全部按本片重写（磁贴、112 拍 A 大调）；check.js 无与起点雷同的提示。"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面自带注解：字节数、分辨率、选项原文、平台列表、标志由画面给出，旁白不逐项念。"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "机制段都是过程：帧一帧帧飞、指令从 Windows 层接走再落到你这边画、字形进缓存再排成一行、页面滚动、进度条按真实时间长满。"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片镜头只做极慢单向横移（≤16 px），讲到的内容始终在画内；scan.js 无 CUT/CAPZONE 问题（「屏幕」标签伸进字幕条已移走）。"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "关掉声音看总览：每段都有对象在场（屏幕、记事本、服务器、磁贴）；画面上的字是数据与标签，不复述字幕；已删掉「自己画」「照你的屏幕，重画」两处复述字幕的字。"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作中主动改：x6 重合成、UU 读法、o4 你这边改为画出同一个桌面而非无关色块；改动记在 review/NOTES.md「定稿后的调整」，未改含义。"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作者不能以正常速度连续观看视频：通看方式是每句说完时的总览图（47 帧）、换场与翻入中途 16 帧、每 3 秒一帧的总览（见 README「交付」），可疑处用 look.js 看原图。以观众身份连续看一遍、判断节奏与观感，交策划者。",
       "evidence": ""
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "新概念按「问题→例子→名字」：视频（先说「把屏幕录成视频」再注解）、指令（先说 Windows 画窗口写字、再起名并注解）、通道（先列复制、打印、声音，再起名）。"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每场常驻对象：open、bytes、adapt 两台电脑；history 年份磁贴与服务器；stand 两层电脑；limit Windows/RDP 磁贴与那边屏幕；章内换段带对象过去（指令磁贴落进字节账、报过去的设置从你的电脑飞下、录像对比挤走设置一排）。"
     }
   },
   "history": []

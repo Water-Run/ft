@@ -4,7 +4,7 @@
 scene('bytes', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
-  const head = txt(world, 'hdr', tr('同一个动作，传多少', 'Same action, how many bytes'), 230, 30); wipe(head, c0 + 0.05, { dir: 'l', d: 0.4 });
+  const head = txt(world, 'hdr', tr('同一个动作，传多少', 'Same action, how many bytes'), 230, 30); wipe(head, s.start + SLIDE + 0.05, { dir: 'l', d: 0.4 }); hide(head, s.end - 0.2, { d: 0.18 });
   const R = screen(world, 120, 170, 640, 380, tr('那边的电脑', 'The remote PC'));
   const Y = screen(world, 1160, 170, 640, 380, tr('你的电脑', 'Your PC'));
   wipe(R.el, c0 + 0.05, { dir: 'l', d: 0.45 }); wipe(Y.el, c0 + 0.15, { dir: 'r', d: 0.45 });
