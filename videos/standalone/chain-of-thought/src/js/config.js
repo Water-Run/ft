@@ -8,21 +8,6 @@ window.ENGINE = {
   fonts: [['400 20px "Serif SC"', '字A0'], ['300 20px "Serif SC"', 'CoT'], ['500 20px "Serif SC"', '字A'], ['600 20px "Serif SC"', '字A'], ['500 20px "Sans SC"', '字A']],
   sceneFade: false,         // 硬切，那一刻由章节卡盖住
   sceneCut: 0.45,
-  chrome() {
-    const hud = document.getElementById('hud');
-    for (const s of L.scenes) {
-      if (!s.chap) continue;
-      const card = h('div', 'chapter', hud);
-      const no = h('div', 'no', card, s.chap[0]);
-      const rule = h('div', 'rule', card);
-      const ti = h('div', 'ti', card, s.chap[1]);
-      const t0 = s.start, t1 = s.start + s.lead - 0.4;
-      show(card, t0, { d: 0.3, y: 0 });
-      show(no, t0 + 0.25, { y: 10, d: 0.4 });
-      fromTo(rule, t0 + 0.35, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out' });
-      show(ti, t0 + 0.45, { y: 14, d: 0.5 });
-      hide(card, t1, { d: 0.35, y: 0 });
-      sfx('tick', t0 + 0.35, { g: 0.5 });
-    }
-  },
+  // 第 5 稿起，章名印在场景里的纸面上（镜头从正上方倾下来），不再用盖住全屏的白卡
+  chrome() {},
 };
