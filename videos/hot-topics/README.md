@@ -27,5 +27,6 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](php2shell/) |
-| 2 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](pando/) |
+| 2 | 两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷 | zh | 制作中 | [`cve-2026-98432`](cve-2026-98432/) |
+| 3 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](pando/) |
 <!-- catalog:end -->

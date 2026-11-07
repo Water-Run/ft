@@ -8,8 +8,23 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"
   },
-  "stage": "review",
-  "next": "已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01 12:07，「数据库引擎」合集第 3 集）；登记交付与发布（stage、delivery、release、片单状态，再运行 catalog.js）要一起提交，而 videos/catalog.json、videos/README.md、videos/CREDITS.md 正被另一会话修改未提交，等它们空出来再做；发布信息先记在 README「交付」。按发布后冻结，只收集反馈",
+  "stage": "released",
+  "delivery": {
+    "date": "2026-11-01",
+    "duration": {
+      "zh": 1122.595
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1msxp6yEai",
+      "date": "2026-11-01",
+      "title": "一个数据库引擎是如何实现的？(3)——学院派的正统：PostgreSQL",
+      "lang": "zh"
+    }
+  ],
+  "next": "已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01，「数据库引擎」合集第 3 集）；交付与发布的登记 2026-11-07 补上（stage、delivery、release 与片单状态）。YouTube 未核。按发布后冻结，只收集反馈",
   "credits": {
     "planner": "WaterRun",
     "models": [

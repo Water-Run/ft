@@ -74,7 +74,7 @@
 | 22 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
 | 23 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
 | 24 | 150 秒速通 Git | zh | 计划中 | `git` |
-| 25 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](config-file-formats/) |
+| 25 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](config-file-formats/) |
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
 | 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 制作中 | [`rdp`](rdp/) |

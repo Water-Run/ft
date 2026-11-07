@@ -254,8 +254,8 @@ WaterRun 2026-10-24（[P61](../../docs/log/feedback.md#2026-10-24各集的灵活
 |---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](myisam/) |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](innodb/) |
-| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 制作中 | [`postgresql`](postgresql/) |
-| 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](sqlite/) |
+| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 已成片 | [`postgresql`](postgresql/) |
+| 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 已成片 | [`sqlite`](sqlite/) |
 | 5 | 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse | zh | 制作中 | [`clickhouse`](clickhouse/) |
 | 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 计划中 | `mongodb` |
 | 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 计划中 | `redis` |

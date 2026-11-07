@@ -30,8 +30,8 @@
   "videos": [
     {"slug": "myisam", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——从 MyISAM 说起"}, "status": "delivered", "note": "新版 2026-10-24 发布；旧版 2026-10-01 发布，已归档"},
     {"slug": "innodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "status": "delivered", "note": "重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档"},
-    {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"}, "status": "in-progress", "note": "重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档"},
-    {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "in-progress"},
+    {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"}, "status": "delivered", "note": "重做版 2026-11-01 发布（哔哩哔哩 BV1msxp6yEai）；旧版 2026-10-19 发布，已归档"},
+    {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "delivered", "note": "2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ）"},
     {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"}, "status": "in-progress"},
     {"slug": "mongodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"}},
     {"slug": "redis", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——内存里的键值对：Redis"}, "note": "2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。"},
@@ -60,7 +60,7 @@
     {"slug": "spectrum", "series": "design-languages", "title": {"zh": "Spectrum", "en": "Spectrum"}, "status": "planned"},
     {"slug": "carbon", "series": "design-languages", "title": {"zh": "Carbon Design"}, "note": "IBM · Carbon Design System"},
     {"slug": "material-3", "series": "design-languages", "title": {"zh": "Material 3"}, "note": "Google · Material Design"},
-    {"slug": "fluent-2", "series": "design-languages", "title": {"zh": "Fluent 2"}, "note": "Microsoft · Fluent 2 Web"},
+    {"slug": "fluent-2", "series": "design-languages", "title": {"zh": "Fluent 2"}, "note": "Microsoft · Fluent 2 Web。2026-11-07 策划者在 11W4 周安排中称本集为「FluentDesign」。"},
     {"slug": "ant-design", "series": "design-languages", "title": {"zh": "Ant Design"}, "note": "Ant Group · 企业级中后台设计体系"},
     {"slug": "adwaita", "series": "design-languages", "title": {"zh": "Adwaita"}, "note": "GNOME · Human Interface"},
     {"slug": "primer", "series": "design-languages", "title": {"zh": "Primer"}, "note": "GitHub · Product UI"},
@@ -148,7 +148,7 @@
     {"slug": "how-ram-works", "series": "in-seconds", "title": {"zh": "128 秒了解内存是怎么工作的，以及它为什么这么快"}, "note": "2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。"},
     {"slug": "php", "series": "in-seconds", "title": {"zh": "256 秒搞懂 PHP 是如何呈现出一个网站的"}, "note": "2026-10-26 由已取消的「编程语言」系列移入；定长 256 秒。"},
     {"slug": "git", "series": "in-seconds", "title": {"zh": "150 秒速通 Git"}},
-    {"slug": "config-file-formats", "series": "in-seconds", "title": {"zh": "150秒认识五大主流配置文件"}, "note": "范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。", "status": "in-progress"},
+    {"slug": "config-file-formats", "series": "in-seconds", "title": {"zh": "150秒认识五大主流配置文件"}, "note": "范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 2026-10-28 出正式成片；策划者 2026-11-07 告知已发布，发布链接待登记。", "status": "delivered"},
     {"slug": "von-neumann", "title": {"zh": "128秒认识冯·诺伊曼架构"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。", "status": "delivered"},
     {"slug": "ipv4", "title": {"zh": "100 秒速通 IPv4"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。", "status": "delivered"},
     {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒了解RDP: Windows远程的优雅实现"}, "status": "in-progress", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。"},
@@ -189,7 +189,7 @@
     {"slug": "powerpoint-internals", "title": {"zh": "PowerPoint 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "word-internals", "title": {"zh": "Word 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "office-binary-formats", "title": {"zh": "回顾：传统 Office 二进制格式"}, "series": "office-internals"},
-    {"slug": "lua-source", "title": {"zh": "一个生产级解释器的最小实现——Lua源码全解析"}, "status": "planned", "note": "2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。", "series": "source-code"},
+    {"slug": "lua-source", "title": {"zh": "Lua源码全解析"}, "status": "planned", "note": "2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。", "series": "source-code"},
     {"slug": "pegasus", "series": "source-code", "title": {"zh": "Pegasus 源码全解析"}, "note": "对象：Lua 的 Web 框架 Pegasus。"},
     {"slug": "parsedown", "series": "source-code", "title": {"zh": "parsedown 源码全解析"}},
     {"slug": "tinydb", "series": "source-code", "title": {"zh": "tinydb 源码全解析"}},
@@ -232,6 +232,7 @@
     {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "planned", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},
     {"slug": "keydb-valkey", "title": {"zh": "Redis 之外：KeyDB & Valkey"}, "note": "2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。"},
     {"slug": "quantization", "title": {"zh": "量化：让模型变小和代价"}, "note": "2026-10-26 从速通系列改为独立视频；片长待定。"},
+    {"slug": "cve-2026-98432", "series": "hot-topics", "title": {"zh": "两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷"}, "status": "in-progress"},
     {"slug": "pando", "series": "hot-topics", "title": {"zh": "OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？"}, "status": "in-progress"}
   ]
 }

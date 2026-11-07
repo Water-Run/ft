@@ -72,8 +72,14 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "accept",
-  "next": "WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付",
+  "stage": "delivered",
+  "delivery": {
+    "date": "2026-10-28",
+    "duration": {
+      "zh": 150.0
+    }
+  },
+  "next": "成片已交付（2026-10-28 出片，实测 150.0 秒）；策划者 2026-11-07 告知本集已发布，发布链接与平台标题待回填（未核不猜链接）。补上 release 后按发布后冻结，只收集反馈",
   "credits": {
     "planner": "WaterRun",
     "models": [

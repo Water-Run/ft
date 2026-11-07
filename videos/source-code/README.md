@@ -27,7 +27,7 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | 一个生产级解释器的最小实现——Lua源码全解析 | zh | 计划中 | [`lua-source`](lua-source/) |
+| 1 | Lua源码全解析 | zh | 计划中 | [`lua-source`](lua-source/) |
 | 2 | Pegasus 源码全解析 | zh | 计划中 | `pegasus` |
 | 3 | parsedown 源码全解析 | zh | 计划中 | `parsedown` |
 | 4 | tinydb 源码全解析 | zh | 计划中 | `tinydb` |

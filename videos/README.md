@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 205 部：已成片 19，制作中 9，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 206 部：已成片 22，制作中 7，计划中 176，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,9 +12,12 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | zh 15:13 | 2026-11-05 | [哔哩哔哩](https://www.bilibili.com/video/BV1RG4h6UEqQ) | — | GPT-6.1 Sol、Claude Opus 5.5 |
 | [100 秒速通 IPv4](in-seconds/ipv4/) | [XX 秒速通](in-seconds/README.md) | zh 1:40 | 2026-11-02 | [哔哩哔哩](https://www.bilibili.com/video/BV17rxa6REXU) | — | Kimi K3.1 Pro、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | zh 18:43 | 2026-11-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1msxp6yEai) | — | Claude Opus 5.5 |
 | [150 秒了解 Agent 的手：Harness](in-seconds/harness/) | [XX 秒速通](in-seconds/README.md) | zh 2:30 | 2026-10-31 | [哔哩哔哩](https://www.bilibili.com/video/BV1vbxy6HEym) | — | Claude Opus 5.5 |
 | [128秒认识冯·诺伊曼架构](in-seconds/von-neumann/) | [XX 秒速通](in-seconds/README.md) | zh 2:08 | 2026-10-31 | [哔哩哔哩](https://www.bilibili.com/video/BV1Pxxr6oEjx) | — | Gemini 4 Argon、Claude Opus 5.5 |
+| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | zh 2:30 | 2026-10-28 | 未登记 | — | Gemini 4 Argon、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/) | [数据库引擎](database-engines/README.md) | zh 15:50 | 2026-10-26 | [哔哩哔哩](https://www.bilibili.com/video/BV1x1nR6XETE) | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/) | [数据库引擎](database-engines/README.md) | zh 9:38 | 2026-10-24 | [哔哩哔哩](https://www.bilibili.com/video/BV1PMHK6mEtm) | — | Claude Opus 5.5 |
 | [隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/) | [热点](hot-topics/README.md) | zh 5:00 | 2026-10-22 | [哔哩哔哩](https://www.bilibili.com/video/BV1GPn66sEh2) | — | Claude Opus 5.5 |
@@ -38,14 +41,12 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/) | [数据库引擎](database-engines/README.md) | 审稿 | 已发布（哔哩哔哩 BV1msxp6yEai，2026-11-01 12:07，「数据库引擎」合集第 3 集）；登记交付与发布（stage、delivery、release、片单状态，再运行 catalog.js）要一起提交，而 videos/catalog.json、videos/README.md、videos/CREDITS.md 正被另一会话修改未提交，等它们空出来再做；发布信息先记在 README「交付」。按发布后冻结，只收集反馈 | 最新 | Claude Opus 5.5 |
-| [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 已发布（哔哩哔哩 BV1RG4h6UEqQ，2026-11-06，见 README「交付」）；stage、delivery、release 与片单状态等共享片单文件空出后一次提交 | 最新 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11 | 最新 | Claude Opus 5.5 |
-| [150秒认识五大主流配置文件](in-seconds/config-file-formats/) | [XX 秒速通](in-seconds/README.md) | 验收 | WaterRun 看成片：以观众身份通看并确认 F27，同意后登记交付 | 待同步 | Gemini 4 Argon、Claude Opus 5.5 |
 | [192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/) | [XX 秒速通](in-seconds/README.md) | 审稿 | WaterRun 看第 3 轮审片页 out/audition/index.html：第 2 稿修订版逐句意见或明确确认；确认后用青年大学生配全片，按磁贴关键帧铺开场景 | 最新 | Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 审稿 | 第 4 稿（ae9b5a71，叙事以开头三次回答为主线）与冷静克制的立体版视觉 B 已交审（out/audition/index.html）；等意见或确认，确认后用真诚青年配全片 | 最新 | Claude Opus 5.5 |
+| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 实现 | 实现：开场（o1–o15 与片名）作有声代表段，之后逐章铺开；封面已出 | 最新 | Claude Opus 5.5 |
+| [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/) | [热点](hot-topics/README.md) | 立项 | 写简报（受众、核心问题、解释路径与取舍），开始取证 | 待同步 | 未记录 |
 | [OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/) | [热点](hot-topics/README.md) | 验收 | 策划者看正式片 out/pando-zh-1080p60.mp4；同意后登记交付与发布 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
@@ -68,8 +69,8 @@
 |---|---|---|---|---|---|
 | 1 | 一个数据库引擎是如何实现的？——从 MyISAM 说起 | zh | 已成片 | [`myisam`](database-engines/myisam/) | 新版 2026-10-24 发布；旧版 2026-10-01 发布，已归档 |
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档 |
-| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 制作中 | [`postgresql`](database-engines/postgresql/) | 重做中（2026-10-26 开工）；旧版 2026-10-19 发布，已归档 |
-| 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 制作中 | [`sqlite`](database-engines/sqlite/) |  |
+| 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做版 2026-11-01 发布（哔哩哔哩 BV1msxp6yEai）；旧版 2026-10-19 发布，已归档 |
+| 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 已成片 | [`sqlite`](database-engines/sqlite/) | 2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ） |
 | 5 | 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse | zh | 制作中 | [`clickhouse`](database-engines/clickhouse/) |  |
 | 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 计划中 | `mongodb` |  |
 | 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 计划中 | `redis` | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
@@ -126,7 +127,7 @@
 | 2 | Spectrum<br>Spectrum | zh | 计划中 | [`spectrum`](design-languages/spectrum/) |  |
 | 3 | Carbon Design | zh | 计划中 | `carbon` | IBM · Carbon Design System |
 | 4 | Material 3 | zh | 计划中 | `material-3` | Google · Material Design |
-| 5 | Fluent 2 | zh | 计划中 | `fluent-2` | Microsoft · Fluent 2 Web |
+| 5 | Fluent 2 | zh | 计划中 | `fluent-2` | Microsoft · Fluent 2 Web。2026-11-07 策划者在 11W4 周安排中称本集为「FluentDesign」。 |
 | 6 | Ant Design | zh | 计划中 | `ant-design` | Ant Group · 企业级中后台设计体系 |
 | 7 | Adwaita | zh | 计划中 | `adwaita` | GNOME · Human Interface |
 | 8 | Primer | zh | 计划中 | `primer` | GitHub · Product UI |
@@ -290,7 +291,7 @@
 | 22 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` | 2026-10-20 策划者要求由独立片移入「XX 秒速通」，定长 128 秒。 |
 | 23 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` | 2026-10-26 由已取消的「编程语言」系列移入；定长 256 秒。 |
 | 24 | 150 秒速通 Git | zh | 计划中 | `git` |  |
-| 25 | 150秒认识五大主流配置文件 | zh | 制作中 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 |
+| 25 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](in-seconds/config-file-formats/) | 范围：.ini、.xml、.json（含 .jsonl）、.yaml、.toml；JSON 与 JSONL 作为一组，合计五种。 2026-10-28 出正式成片；策划者 2026-11-07 告知已发布，发布链接待登记。 |
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 | 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 制作中 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
@@ -375,7 +376,8 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](hot-topics/php2shell/) |  |
-| 2 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](hot-topics/pando/) |  |
+| 2 | 两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷 | zh | 制作中 | [`cve-2026-98432`](hot-topics/cve-2026-98432/) |  |
+| 3 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](hot-topics/pando/) |  |
 
 ### Office 底层原理
 
@@ -395,7 +397,7 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | 一个生产级解释器的最小实现——Lua源码全解析 | zh | 计划中 | [`lua-source`](source-code/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 |
+| 1 | Lua源码全解析 | zh | 计划中 | [`lua-source`](source-code/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。 |
 | 2 | Pegasus 源码全解析 | zh | 计划中 | `pegasus` | 对象：Lua 的 Web 框架 Pegasus。 |
 | 3 | parsedown 源码全解析 | zh | 计划中 | `parsedown` |  |
 | 4 | tinydb 源码全解析 | zh | 计划中 | `tinydb` |  |
