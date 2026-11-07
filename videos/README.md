@@ -295,7 +295,7 @@
 | 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 | 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
-| 29 | 192 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](in-seconds/github-collaboration/) | 2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 192 秒为工作值，开工前确认。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。 |
+| 29 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](in-seconds/github-collaboration/) | 2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 150 秒（2026-11-07 策划者定：「定为150s吧」）。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。 |
 
 ### 权限机制的设计
 
