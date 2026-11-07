@@ -18,7 +18,8 @@
   },
   "render": {
     "fps": 60,
-    "mb": 8
+    "mb": 8,
+    "gpu": 1
   },
   "audio": {
     "music": "tools/music.py",
@@ -48,11 +49,19 @@
       "no_radius": true,
       "no_emoji": true,
       "palette": [
-        "0C0D0F",
-        "F2EFE8",
-        "FF4A1C",
-        "8A8782",
-        "6B6964"
+        "1B1B1B",
+        "2B2B2B",
+        "3A3A3A",
+        "4A4A4A",
+        "5A5A5A",
+        "A8A8A8",
+        "F2F2F2",
+        "1B64C4",
+        "9FD0FF",
+        "B23D18",
+        "603CBA",
+        "00706E",
+        "007A00"
       ],
       "fonts": [
         "Sans SC",
@@ -74,8 +83,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "review",
-  "next": "WaterRun 看第 3 轮审片页 out/audition/index.html：第 2 稿修订版逐句意见或明确确认；确认后用青年大学生配全片，按磁贴关键帧铺开场景",
+  "stage": "preview",
+  "next": "WaterRun 看预览 out/zh/preview-r1.mp4，意见逐条记进 review/NOTES.md；问题不多时直接出正式片（出片前先做 60 fps 细节闪烁检查）",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -85,15 +94,30 @@
           "简报",
           "取证",
           "实验",
-          "文案初稿",
-          "视觉候选",
-          "配音候选",
-          "配乐小样",
-          "审片页"
+          "文案",
+          "视觉设计",
+          "场景",
+          "配乐",
+          "音效",
+          "审片页",
+          "成片"
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd（音色 male-qn-daxuesheng）",
+        "roles": [
+          "旁白配音"
+        ]
+      },
+      {
+        "name": "制作会话自带的 WebSearch、WebFetch（内部所用模型未披露）",
+        "roles": [
+          "取证时查找与摘录原始来源"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "review": {

@@ -32,7 +32,7 @@
     },
     {
       // 历史：为什么会有它。年份上画面
-      id: 'history', at: 17.75, chap: null, lead: 0.2, tail: 0.2,
+      id: 'history', at: 19, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['h1', 'RDP 诞生在 1998 年', { gap: 0.3 }],
         ['h2', '那时电脑贵，微软想让一台服务器分给很多人用', { gap: 0.3 }],
@@ -43,7 +43,7 @@
     },
     {
       // 本质区别：站的位置
-      id: 'stand', at: 37.25, chap: null, lead: 0.2, tail: 0.2,
+      id: 'stand', at: 38.25, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['k1', '两种远程，最根本的区别，是站的位置', { gap: 0.5 }],
         ['k2', 'ToDesk、UU 远程站在屏幕外面', { gap: 0.2 }],
@@ -57,7 +57,7 @@
     },
     {
       // 例子：同一个动作，两边各传多少。字节数取自规范样例（FACTS G4–G7）与本机实验（L2）
-      id: 'bytes', at: 66.75, chap: null, lead: 0.2, tail: 0.2,
+      id: 'bytes', at: 68.5, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['x1', '比如在远程的记事本里打一行字', { gap: 0.3 }],
         ['x2', '录像的办法，把变了的那片像素压一遍，六百多字节', { gap: 0.5 }],
@@ -74,7 +74,7 @@
     },
     {
       // 优雅之处：远程桌面按你的电脑重新排
-      id: 'adapt', at: 111.25, chap: null, lead: 0.2, tail: 0.2,
+      id: 'adapt', at: 112, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['a1', '因为传的是画法，画在多大的纸上，由你这边说了算', { gap: 0.5 }],
         ['a2', '连上的那一刻，你的电脑会报上自己的屏幕大小、缩放比例', { gap: 0.2 }],
@@ -88,7 +88,7 @@
     },
     {
       // 局限：深度绑定
-      id: 'limit', at: 143.25, chap: null, lead: 0.2, tail: 0.2,
+      id: 'limit', at: 144.25, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['b1', '不过，这一切的前提，是它和 Windows 绑得很深', { gap: 0.4 }],
         ['b2', '被连的那台电脑得是 Windows，家庭版还不行', { gap: 0.3 }],

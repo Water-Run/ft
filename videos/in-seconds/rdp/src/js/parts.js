@@ -1,59 +1,82 @@
-// 系列共用的部件：小工具、斜线块、字节格、比特格、日历换算。与题目有关的部件（首集的验证码与 30 秒表盘）写在各集自己的 parts.js 里。
-// 所有部件的状态都只由 t 决定：用 F() 逐帧算，不存历史。
+// 本片的部件：磁贴、屏幕、记事本、帧流、字形位图、按面积画字节的磁贴。
+// 所有部件的状态都只由 t 决定：用 F() 逐帧算，或登记补间，不存历史。
 
 // ── 小工具 ──
 const txt = (parent, cls, html, x, y) => { const e = h('div', 'abs ' + cls, parent, html); px(e, x, y); return e; };
 const blk = (parent, cls, x, y, w, hh) => { const e = h('div', 'blk ' + cls, parent); px(e, x, y, w, hh); return e; };
-const backOut = (k) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
 const group3 = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+// MiniMax 的词时刻：逗号后的第一个字常被提前 0.3–1 秒标出；取词时用它后面那个字的时刻减 0.05 秒更稳（见 README「设计」）
+const W = (id, word, off = 0) => T(id, word, off);
 
-// ── 斜线块：不可信的一方（泄露的副本、假网站）。用 SVG 线条画，不用渐变 ──
-function hatch(parent, x, y, w, hh, color, gap = 18, sw = 5) {
-  const s = svg('svg', { class: 'abs', width: w, height: hh, viewBox: `0 0 ${w} ${hh}` }, parent); px(s, x, y);
-  for (let d = -hh; d < w; d += gap) svg('line', { x1: d, y1: hh, x2: d + hh, y2: 0, stroke: color, 'stroke-width': sw }, s);
-  s.dataset.name = 'hatch';
-  return s;
+// ── 磁贴：纯色方块，左上小标题，左下大字 ──
+function tile(parent, color, x, y, w, hh, title = '', big = '', bigCls = '') {
+  const e = h('div', 'tile c-' + color, parent); px(e, x, y, w, hh);
+  if (title) h('div', 'tl', e, title);
+  if (big) h('div', 'bn ' + bigCls, e, big);
+  return e;
 }
 
-// ── 字节格：一排（或几排）十六进制字节。返回各格元素 ──
-// o: { x, y, pitch, w, h, size, cols（每排几个）, rowGap, cls, idx（在上方标序号）, idxSize }
-function byteCells(parent, bytes, o) {
-  const cols = o.cols || bytes.length, out = [], idx = [];
-  bytes.forEach((b, i) => {
-    const cx = o.x + (i % cols) * o.pitch, cy = o.y + Math.floor(i / cols) * (o.rowGap || o.h);
-    const e = h('div', 'byte ' + (o.cls || ''), parent, b); px(e, cx, cy, o.w, o.h); css(e, { fontSize: o.size + 'px', lineHeight: o.h + 'px' });
-    out.push(e);
-    if (o.idx) { const n = h('div', 'idx', parent, String(i)); px(n, cx, cy - (o.idxSize || 28) * 1.5, o.w); n.style.fontSize = (o.idxSize || 28) + 'px'; idx.push(n); }
+// ── 屏幕：一块带边框的桌面；desk 是里面的画布 ──
+function screen(parent, x, y, w, hh, caption) {
+  const el = h('div', 'screen', parent); px(el, x, y, w, hh);
+  const desk = h('div', 'desk', el);
+  if (caption) h('div', 'cap', el, caption);
+  return { el, desk, x, y, w, h: hh };
+}
+
+// ── 记事本：白纸上若干行 Mono 字。返回 { el, lines[] } ──
+function notepad(parent, x, y, w, hh, title, lines, size = 26, lh = 40, top = 52) {
+  const el = h('div', 'pad', parent); px(el, x, y, w, hh);
+  h('div', 'bar', el, title);
+  const out = lines.map((s, i) => { const l = h('div', 'ln', el, esc(s)); css(l, { top: top + i * lh + 'px', fontSize: size + 'px', lineHeight: lh + 'px' }); return l; });
+  return { el, lines: out, lh, top, size };
+}
+
+// ── 帧流：录像的办法。从 a 点到 b 点，每隔 period 秒发出一帧灰色小方块，走 travel 秒。只在 [t0, t1) 里发帧 ──
+// 每一帧的位置都由 t 直接算出（发出时刻 = t0 + k × period）
+function frameStream(parent, t0, t1, a, b, o = {}) {
+  const period = o.period || 0.22, travel = o.travel || 1.1, fw = o.w || 76, fh = o.h || 48, n = Math.ceil(travel / period) + 2;
+  const pool = [];
+  for (let i = 0; i < n; i++) {
+    const e = h('div', 'blk ' + (o.cls || 'c-vid'), parent); px(e, 0, 0, fw, fh); e.style.opacity = '0'; e.dataset.name = '帧';
+    // 每一帧是一张缩小的截图：灰底上一块白纸
+    if (!o.plain) { const p = blk(e, 'c-paper', Math.round(fw * 0.1), Math.round(fh * 0.16), Math.round(fw * 0.55), Math.round(fh * 0.68)); p.style.opacity = '0.8'; }
+    pool.push(e);
+  }
+  F((t) => {
+    const kNow = Math.floor((t - t0) / period);
+    for (let i = 0; i < n; i++) {
+      const e = pool[i];
+      // 这个池位当前承载的帧号：kNow - j，j 从 0 到 n-1，按 i 取模固定分配
+      let k = kNow - (((kNow - i) % n) + n) % n;
+      const spawn = t0 + k * period, u = (t - spawn) / travel;
+      const on = k >= 0 && spawn < t1 && u >= 0 && u <= 1;
+      if (!on) { if (e.style.opacity !== '0') e.style.opacity = '0'; continue; }
+      const x = lerp(a.x, b.x, u), y = lerp(a.y, b.y, u) + (o.wave ? Math.sin(k * 1.7) * o.wave : 0);
+      e.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+      e.style.opacity = String(Math.min(1, u * 6, (1 - u) * 6).toFixed(3));
+    }
   });
-  out.idx = idx;
-  return out;
+  return pool;
 }
 
-// ── 比特格：实心 = 1，空心 = 0。每 8 个一组 ──
-function bitCells(parent, bits, o) {
-  const out = [];
-  [...bits].forEach((c, i) => {
-    const e = h('div', 'blk', parent); px(e, o.x + i * (o.s + o.gap) + Math.floor(i / 8) * (o.group || 0), o.y, o.s, o.s);
-    e.style.setProperty('--c', o.color);                                    // 颜色放在变量里：加上类名 hot 即变成朱红，不必换元素
-    css(e, c === '1' ? { background: 'var(--c)' } : { border: `${o.bw || 4}px solid var(--c)` });
-    e.dataset.name = 'bit' + c;
-    out.push(e);
-  });
-  return out;
+// ── 字形位图：规范 [MS-RDPEGDI] 4.6.1 的 1 bpp 位图，宽 w，每行一个字节取高 w 位 ──
+function glyphGrid(parent, x, y, cell, bytes, w = 5, gap = 3) {
+  const cells = [];
+  bytes.forEach((row, r) => { for (let c = 0; c < w; c++) { const e = h('div', 'px' + (row & (0x80 >> c) ? ' on' : ''), parent); px(e, x + c * (cell + gap), y + r * (cell + gap), cell, cell); cells.push(e); } });
+  return cells;
 }
 
-// ── 日历换算（纯算术，不取系统时间）：公历日期 ↔ 自 1970-01-01 起的天数 ──
-function daysFromCivil(y, m, d) {
-  y -= m <= 2 ? 1 : 0;
-  const era = Math.floor(y / 400), yoe = y - era * 400, doy = Math.floor((153 * (m + (m > 2 ? -3 : 9)) + 2) / 5) + d - 1, doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
-  return era * 146097 + doe - 719468;
+// ── 按面积画字节：边长 = √(字节数 × k)，面积与字节数成正比 ──
+const sideOf = (bytes, k) => Math.max(3, Math.round(Math.sqrt(bytes * k)));
+
+// ── 沿直线把一个元素从 a 搬到 b（用 x/y 变换，起止都写定，与播放历史无关）──
+function travel(e, t, d, a, b, ease0 = 'power2.inOut') {
+  fromTo(e, t, { x: a.x, y: a.y }, { x: b.x, y: b.y, duration: d, ease: ease0, immediateRender: false });
 }
-function civilFromDays(z) {
-  z += 719468;
-  const era = Math.floor(z / 146097), doe = z - era * 146097, yoe = Math.floor((doe - Math.floor(doe / 1460) + Math.floor(doe / 36524) - Math.floor(doe / 146096)) / 365);
-  const doy = doe - (365 * yoe + Math.floor(yoe / 4) - Math.floor(yoe / 100)), mp = Math.floor((5 * doy + 2) / 153), d = doy - Math.floor((153 * mp + 2) / 5) + 1, m = mp < 10 ? mp + 3 : mp - 9;
-  return { y: yoe + era * 400 + (m <= 2 ? 1 : 0), m, d };
+
+// ── 描线：描之前整条不可见（没描出来的路径，圆头线帽会留下一个点）──
+function drawIn(p, t, d = 0.6) {
+  tl.set(p, { opacity: 0 }, 0); tl.set(p, { opacity: 1 }, t);
+  draw(p, t, d);
 }
-const unixOf = (y, m = 1, d = 1) => daysFromCivil(y, m, d) * 86400;
-const two = (n) => String(n).padStart(2, '0');
-const clockOf = (u, withSec = true) => { const s = ((u % 86400) + 86400) % 86400; return two(Math.floor(s / 3600)) + ':' + two(Math.floor(s / 60) % 60) + (withSec ? ':' + two(Math.floor(s) % 60) : ''); };

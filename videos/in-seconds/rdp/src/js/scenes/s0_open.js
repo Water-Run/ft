@@ -1,28 +1,82 @@
-// 开场。TODO: 系列起点的示例场景，整个文件换成本集的内容。结构：现象或问题 → 片名卡（朱红整屏）→ 它是什么。
-scene('open', ({ root, s, c0 }) => {
+// 引子：你用过的 ToDesk、UU 远程——它们把屏幕录成视频一帧帧发过来；Windows 自带的远程桌面发的是画法。片名卡只上画面。
+// 常驻：左边「那边的电脑」、右边「你的电脑」两块屏幕；中间这条路上先走灰色的帧，再走三种颜色的指令。
+scene('open', ({ root, s }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
-  // 第一帧就要有东西：一道横线先画出来，主体随第一句落下
-  const rule = blk(world, 'bg-paper', 120, 300, 900, 8);
-  fromTo(rule, s.start + 0.05, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.6, ease: 'power3.inOut' }); sfx('whoosh', s.start + 0.05, { g: 0.5 });
-  const what = txt(world, 't-1', tr('现象', 'The hook'), 112, 330);
-  slam(what, Q(T('o1')), { from: 1.25, d: 0.35 }); sfx('thud', Q(T('o1')) + 0.1);
-  // 片名卡：朱红整屏，墨色字
-  const tCard = Qf(T('o2')), tOut = Q(Tend('o2') + 0.35);
-  const card = h('div', 'abs bg-ac ink', root); px(card, 0, 0, 1920, VH);
-  const big = txt(card, 't-0 ink', tr('主题', 'Topic'), 96, 150);
-  const n = txt(card, 'num ink', String(TOTAL), 1196, 170); n.style.fontSize = '290px';
-  const u = txt(card, 't-2 ink', tr('秒', 's'), 1196 + String(TOTAL).length * 174 + 16, 342);
-  [big, n, u].forEach((e) => { e.dataset.overlapOk = '1'; });
-  wipe(card, tCard, { dir: 'l', d: 0.4 }); sfx('whoosh', tCard - 0.1, { g: 0.8 });
-  slam(big, tCard + 0.35, { from: 1.3, d: 0.4 }); sfx('thud', tCard + 0.35);
-  slide(n, tCard + 0.2, { x: 120, d: 0.45 }); slide(u, tCard + 0.28, { x: 120, d: 0.45 }); sfx('pop', tCard + 0.2, { g: 0.6, p: 0.4 });
-  wipeOut(card, tOut, { dir: 'r', d: 0.4 }); sfx('whoosh', tOut, { g: 0.7 });
-  hudGround('L', tCard + 0.2, tOut + 0.3, 'ac'); hudGround('R', tCard + 0.3, tOut + 0.1, 'ac');
-  wipeOut(what, tCard + 0.4, { dir: 'l', d: 0.2 });
-  const is = txt(world, 't-2', tr('它是什么', 'What it is'), 116, 360);
-  wipe(is, Q(T('o3')), { dir: 'l', d: 0.4 }); sfx('pop', Q(T('o3')), { g: 0.7 });
-  // 停留：不缩放、不推近，只朝一个方向极慢横移（一屏合计不超过 48 像素、每秒不超过 2 像素；docs/guides/scenes.md 第 3 节）
-  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
-  cam.track(s.start, { x: 960 - dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
+  const R = screen(world, 120, 300, 660, 420, tr('那边的电脑', 'The remote PC'));
+  const Y = screen(world, 1140, 300, 660, 420, tr('你的电脑', 'Your PC'));
+  wipe(R.el, s.start + 0.05, { dir: 'l', d: 0.5 }); wipe(Y.el, s.start + 0.2, { dir: 'r', d: 0.5 }); sfx('whoosh', s.start + 0.05, { g: 0.4 });
+  // 那边的桌面：一扇记事本、两块磁贴
+  const rp = notepad(R.desk, 40, 40, 400, 300, 'notes.txt', ['Remote Desktop', 'Protocol', '', 'draw, not record'], 26, 40);
+  const rt1 = tile(R.desk, 'rdp', 470, 40, 130, 130); const rt2 = tile(R.desk, 'you', 470, 186, 130, 130);
+  [rp.el, rt1, rt2].forEach((e) => { e.dataset.name = '那边的桌面'; });
+  // 说到「别人的电脑」时，那边的桌面才亮起来；「连过」时两台电脑之间拉出一条线
+  const tOther = Qf(T('o1', '别人'));
+  wipe(rp.el, tOther, { dir: 't', d: 0.45 }); slide(rt1, tOther + 0.15, { y: 40, d: 0.35 }); slide(rt2, tOther + 0.25, { y: 40, d: 0.35 }); sfx('pop', tOther, { g: 0.5 });
+  const link = blk(world, 'c-line', 780, 500, 360, 6); wipe(link, Qf(T('o1', '连过')), { dir: 'l', d: 0.5 });
+  // ── o1：ToDesk、UU 远程（灰：录像的办法）──
+  const tdk = tile(world, 'vid', 800, 120, 150, 84, '', 'ToDesk'); tdk.firstChild.style.fontSize = '34px';
+  const uu = tile(world, 'vid', 970, 120, 150, 84, '', tr('UU 远程', 'UU Remote')); uu.firstChild.style.fontSize = '34px';
+  slam(tdk, Qf(T('o1', 'To')), { from: 1.25, d: 0.35 }); sfx('pop', Qf(T('o1', 'To')), { g: 0.7, p: -0.1 });
+  slam(uu, Qf(T('o1', 'U U')), { from: 1.25, d: 0.35 }); sfx('pop', Qf(T('o1', 'U U')), { g: 0.7, p: 0.1 });
+  // ── o2：把屏幕录成视频，一帧帧发过来 ──
+  const tRec = Qf(T('o2', '录成')), tStream = Qf(T('o2', '一帧')), tStop = Qf(T('o3', '远程桌面'));
+  const flash = blk(R.desk, 'c-paper', 0, 0, 632, 392); flash.style.opacity = '0';
+  fromTo(flash, tRec, { opacity: 0 }, { keyframes: [{ opacity: 0.55, duration: 0.08 }, { opacity: 0, duration: 0.5 }], immediateRender: false }); sfx('tick', tRec, { g: 0.8 });
+  frameStream(world, tStream - 0.6, tStop, { x: 770, y: 476 }, { x: 1060, y: 476 }, { period: 0.32, travel: 0.9, w: 96, h: 60 });
+  // 你这边：整张画面的拷贝（录下来的结果），第一帧到了才出现，换成 RDP 时收走
+  const mirror = h('div', 'abs', Y.desk); px(mirror, 0, 0, 632, 392);
+  const mp = notepad(mirror, 40, 40, 400, 300, 'notes.txt', ['Remote Desktop', 'Protocol', '', 'draw, not record'], 26, 40);
+  tile(mirror, 'rdp', 470, 40, 130, 130); tile(mirror, 'you', 470, 186, 130, 130);
+  mirror.dataset.name = '录下来的画面';
+  show(mirror, tStream + 0.3, { d: 0.4 });
+  const veil = blk(mirror, 'c-vid', 0, 0, 632, 392); veil.style.opacity = '0';      // 录像：整张都是像素，蒙一层灰
+  fromTo(veil, tStream + 0.5, { opacity: 0 }, { opacity: 0.35, duration: 0.6, immediateRender: false });
+  hide(mirror, tStop + 0.2, { d: 0.5 });
+  // ── o3：Windows 自带的远程桌面，有更优雅的做法 ──
+  to(tdk, tStop, { opacity: 0.35, duration: 0.5 }); to(uu, tStop, { opacity: 0.35, duration: 0.5 });
+  const mstsc = tile(world, 'rdp', 800, 560, 320, 120, tr('远程桌面连接', 'Remote Desktop Connection'), 'mstsc', 'mono');
+  slide(mstsc, tStop + 0.1, { y: 60, d: 0.5 }); sfx('pop', tStop + 0.1, { g: 0.8 });
+  // ── o4：它叫 RDP，发过来的是画法 ──
+  const tName = Qf(T('o4', 'R D P')), tWay = Qf(T('o4', '画法'));
+  const rdpBig = txt(world, 't-1 rdpl', 'RDP', 820, 690); rdpBig.dataset.name = 'RDP';
+  slam(rdpBig, tName, { from: 1.3, d: 0.4 }); sfx('thud', tName + 0.05);
+  const rdpGl = h('div', 'gloss', world, tr('RDP：Remote Desktop Protocol，远程桌面协议', 'RDP: Remote Desktop Protocol')); px(rdpGl, 1140, 760, 660, 40);
+  rdpGl.dataset.gloss = 'RDP'; wipe(rdpGl, tName + 0.3, { dir: 'l', d: 0.4 });
+  // 三种指令磁贴依次飞过去；到了之后，你这边自己画出对应的东西
+  const kinds = [['fill', tr('填色', 'Fill')], ['glyph', tr('写字', 'Text')], ['move', tr('搬移', 'Move')]];
+  const drawn = [];
+  kinds.forEach(([c, lab], i) => {
+    const t0 = Q(tWay - 0.9 + i * 0.45);
+    const e = tile(world, c, 0, 0, 120, 64, ''); h('div', 'abs', e, lab); css(e.lastChild, { left: '14px', top: '12px', fontSize: '30px' });
+    px(e, 0, 0); e.style.opacity = '0';
+    fromTo(e, t0, { x: 760, y: 450, opacity: 0 }, { keyframes: [{ opacity: 1, duration: 0.1 }, { x: 1080, duration: 0.8, ease: 'power2.inOut' }, { opacity: 0, duration: 0.2 }], immediateRender: false });
+    sfx('blip', t0, { g: 0.5, p: -0.3 + i * 0.3 });
+    drawn.push(t0 + 0.9);
+  });
+  // 你这边照着指令，把同一个桌面画出来：先填出白纸，再写字，最后把两块磁贴搬到位（清清楚楚，不是灰蒙蒙的拷贝）
+  const yp = notepad(Y.desk, 40, 40, 400, 300, 'notes.txt', ['Remote Desktop', 'Protocol', '', 'draw, not record'], 26, 40);
+  yp.lines.forEach((l) => { l.style.visibility = 'hidden'; });
+  yp.el.dataset.name = '你这边画出来的记事本';
+  wipe(yp.el, drawn[0], { dir: 't', d: 0.35 });
+  yp.lines.forEach((l, i) => { tl.set(l, { visibility: 'hidden' }, 0); tl.set(l, { visibility: 'visible' }, drawn[1] + i * 0.08); });
+  const yb1 = tile(Y.desk, 'rdp', 470, 40, 130, 130), yb2 = tile(Y.desk, 'you', 470, 186, 130, 130);
+  slide(yb1, drawn[2], { y: 60, d: 0.4 }); slide(yb2, drawn[2] + 0.1, { y: 60, d: 0.4 }); sfx('tick', drawn[2], { g: 0.5 });
+  // ── 片名卡：磁贴版的开始屏 ──
+  const tCard = Q(Tend('o4') + 0.15);
+  const card = h('div', 'abs', root); px(card, 0, 0, 1920, VH); card.style.background = 'var(--bg)';
+  const big = tile(card, 'rdp', 120, 200, 760, 420, tr('远程桌面协议', 'Remote Desktop Protocol'));
+  const bigT = txt(big, '', 'RDP', 30, 150); css(bigT, { font: '600 230px "Inter"', letterSpacing: '-.03em', lineHeight: '1' });
+  const tsec = txt(card, 't-1', `${TOTAL}<span class="t-3" style="margin-left:14px">${tr('秒了解', 's')}</span>`, 960, 230);
+  const tname = txt(card, '', 'RDP', 960, 400); css(tname, { font: '600 150px "Inter"', lineHeight: '1' });
+  const tsub = txt(card, 't-3', tr('Windows 远程的优雅实现', 'Windows remoting, done elegantly'), 966, 580);
+  const sm = [tile(card, 'you', 120, 630, 250, 120, tr('诞生', 'Born'), '1998'), tile(card, 'fill', 380, 630, 240, 120, tr('端口', 'Port'), '3389', 'mono'), tile(card, 'glyph', 630, 630, 250, 120, tr('传的是', 'Sends'), tr('画法', 'the drawing'))];
+  appear(card, tCard);
+  wipe(big, tCard, { dir: 'l', d: 0.4 }); sfx('whoosh', tCard - 0.05, { g: 0.7 });
+  sm.forEach((e, i) => slide(e, tCard + 0.25 + i * 0.12, { y: 50, d: 0.4 }));
+  slam(tsec, tCard + 0.3, { from: 1.2, d: 0.35 }); sfx('thud', tCard + 0.3);
+  wipe(tname, tCard + 0.45, { dir: 'l', d: 0.4 }); wipe(tsub, tCard + 0.6, { dir: 'l', d: 0.4 });
+  [card, big, bigT, tsec, tname, tsub, ...sm].forEach((e) => { e.dataset.overlapOk = '1'; });
+  // 停留：只朝一个方向极慢横移
+  cam.track(s.start, { x: 950, y: 484, z: 1 }, [[s.start + 0.1, { x: 970 }, s.end - s.start - 0.2, { ease: 'none', sfx: false }]]);
 });

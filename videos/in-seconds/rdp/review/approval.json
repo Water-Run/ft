@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
+      "status": "approved",
       "content_sha256": "9aa5faf0bc055ec622d39baafd2d5354b29e8bb328132b12d1ebdbf4c9748407",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-11-07T10:28:26+08:00",
+      "evidence": "review/NOTES.md「明确确认」：2026-11-07 WaterRun 看第 3 轮审片页后回复「可以 实现视频」"
     }
   }
 }
