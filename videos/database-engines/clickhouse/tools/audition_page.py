@@ -9,6 +9,7 @@ dump = subprocess.run(['node', '-e', 'const s=require(process.argv[1]);console.l
 SCRIPT = json.loads(dump)
 src = open(os.path.join(FILM, 'src', 'js', 'script.js'), encoding='utf-8').read()
 FACT = {m.group(1): m.group(2).strip() for m in re.finditer(r"\['([a-z]+\d+)',[^\n]*?//\s*([A-Z]\d{2}(?:[ ，、][A-Z]\d{2})*)", src)}
+TITLE = json.load(open(os.path.join(FILM, 'project.json'), encoding='utf-8'))['titles']['zh']
 voices = json.load(open(os.path.join(OUT, 'voices.json'), encoding='utf-8'))
 E = html.escape
 
@@ -73,7 +74,7 @@ figure{{margin:0 0 26px}} figure img{{width:100%;display:block;border:1px solid 
 .strip img{{width:100%;border:1px solid var(--line)}}
 .sample{{color:var(--g);font-size:14px}}
 </style></head><body><main>
-<h1>一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse</h1>
+<h1>{E(TITLE)}</h1>
 <div class="lead">PART 5 · 审片页 · 第 1 稿 · 2026-11-07 · 交审稿，尚未经人工确认 · 文案约 {total} 字，按字数估算约 11.8 分钟（系列给本集的预期约 12 分钟）</div>
 
 <div class="box"><b>请在这一页选定：</b><ol>

@@ -6,7 +6,7 @@
     "zh"
   ],
   "titles": {
-    "zh": "一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse"
+    "zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"
   },
   "stage": "review",
   "next": "等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11",

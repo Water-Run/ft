@@ -1,4 +1,4 @@
-# 一个数据库引擎是如何实现的？——OLAP与列式存储：ClickHouse
+# 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse
 
 数据库引擎系列第 5 集：ClickHouse 怎样存数据——它几乎只用 MergeTree 这一种表引擎，按列存进不再改动的片段、后台合并、用稀疏索引找数据。面向写过 SQL、没读过引擎源码的观众，约 12 分钟，只做中文。
 
@@ -29,7 +29,8 @@
   - 「考虑项目. 考虑开始ClickHouse的视频制作. ClickHouse的黄黑视觉风格很有特色.」（2026-11-07，开工）
   - 「实现到提供我本地HTML选择」「你的任务只要做到出HTML, 今天就到这里」「HTML里还包括立体的封面哈」（2026-11-07，本次会话的目标）
   - 「不用在WSL里, 我给你物理机器」（2026-11-07）：实验改在策划者提供的一台 Linux 物理机上做（Podman 跑官方镜像，不动机器上原有的 ClickHouse 服务；机器的地址、主机名与用户名不进任何文件）
-  - 「ClickHouse多引擎以及MergeTree理解比较困难, 好好想想. 另外, 思考标题要不ClickHouse(MergeTree), 毕竟是数据库引擎, 或者直接MergeTree之类的.」随后：「但是ClickHouse基本只有MergeTree, 和MySQL多引擎用不同, 好好思考怎么设计, 还是标题就ClickHouse, 视频中体现多个引擎和专注的MergeTree」（2026-11-07）：标题保持片单里的「OLAP与列式存储：ClickHouse」；片中第一章交代表引擎与 MySQL 的不同，再专注 MergeTree
+  - 「ClickHouse多引擎以及MergeTree理解比较困难, 好好想想. 另外, 思考标题要不ClickHouse(MergeTree), 毕竟是数据库引擎, 或者直接MergeTree之类的.」随后：「但是ClickHouse基本只有MergeTree, 和MySQL多引擎用不同, 好好思考怎么设计, 还是标题就ClickHouse, 视频中体现多个引擎和专注的MergeTree」（2026-11-07）：片中第一章交代表引擎与 MySQL 的不同，再专注 MergeTree
+  - 「标题改为: ClickHouse: OLAP的MergeTree和列式存储 吧」「MongoDB也改一个合适的标题」「Redis标题体现键值对」「和我探讨新标题」（2026-11-07，看过审片页后）：商量后定为「一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse」（与各集同一句式「特点：引擎名」，WaterRun 选定）；同时 MongoDB 改为「不是SQL：MongoDB的WiredTiger」（WaterRun 自拟），Redis 改为「内存里的键值对：Redis」，改在片单
 
 ## 设计
 
