@@ -67,7 +67,7 @@ scene('pass', ({ root, s, c0 }) => {
   ];
   const inkOn = (t) => (t >= T('a11', '四块') - 0.2 && t < Tend('a11') + 0.5 ? 1 : 0);
   plan.forEach((p, i) => ream(W, S, XS[i], YR, { w: BW, d: BD, gap: GAP, n: NP,
-    rise: (t) => ramp(t, p.up, i === 0 ? 2.6 : 0.8, i === 0 ? ease.io3 : ease.out3), fill: (t) => ramp(t, p.a, p.b - p.a, (k) => k), ink: inkOn }));
+    rise: (t) => ramp(t, p.up, i === 0 ? 2.6 : 0.8, i === 0 ? ease.io3 : ease.out3), fill: (t) => ramp(t, p.a, p.b - p.a, (k) => k), ink: inkOn, op: (t) => 1 - ramp(t, T('a15') - 0.7, 0.5) }));
   const outs = plan.map((p, i) => {
     const b = block(S, `<span class="tx">${ANS[i]}</span>`, { w: BW, d: BD, h: 30, fs: 58, cls: i === 1 ? 'err' : '' });
     twoFace(W, b, ANS[i], 34);
@@ -237,6 +237,10 @@ scene('pass', ({ root, s, c0 }) => {
   const wrong = W.board('<div class="lbl"><span class="err">473</span>　<span class="g">应为 485</span></div>', XS[1], YB + 60, 34, -80, 30);
   fade(W, wrong, (t) => ramp(t, T('a15', '中间') - 0.3, 0.4));
   sfx('tick', T('a15', '中间'), { g: 0.3 });
+  const late = W.board('<div class="lbl l">不是不会算，</div>', XS[0] - BW / 2, YB + 60, 34, 0, 100);
+  fade(W, late, (t) => ramp(t, T('a16', '不是') - 0.2, 0.4));
+  const late2 = W.board('<div class="lbl l">是来不及算</div>', XS[0] - BW / 2 + 380, YB + 60, 34, 0, 100);
+  fade(W, late2, (t) => ramp(t, T('a16', '来不及算') - 0.3, 0.4));
 
   // ── 镜头：按内容选镜头；停留时不动，只在换镜头时动 ──
   // token：斜俯看一行方块｜层与一趟：侧面立面看一摞（纸摞自己长、自己算，镜头不跟）｜四趟与接力：立面全景｜
@@ -247,7 +251,7 @@ scene('pass', ({ root, s, c0 }) => {
   const shOne = fitCam(W, [B(QX, YB, QW, BD, 30), B(XS[0], YB, BW, BD, 30), B(XS[0], YR, BW, BD, H + 20), { el: lb1 }, { el: lb2 }, { el: layer }, { el: ud }, { el: fx }], { pitch: 84 });
   const shFour = fitCam(W, [...row, ...XS.map((x) => B(x, YR, BW, BD, H + 20)), { el: up1 }, { el: wr }, { el: lb4 }], { pitch: 84 });
   const shPage = fitCam(W, [[PX - 160, PY - 130, 0], [BX0 + 940, PY - 130, 0], [PX - 160, LY + 150, 0], [BX0 + 940, LY + 150, 0]], { pitch: 8 });
-  const shErr = fitCam(W, [B(QX, YB, QW, BD, 30), ...XS.map((x) => B(x, YB, BW, BD, 30)), { el: wrong }], { pitch: 52, yaw: -4, kmax: 1.6 });
+  const shErr = fitCam(W, [B(QX, YB, QW, BD, 30), ...XS.map((x) => B(x, YB, BW, BD, 30)), { el: wrong }, { el: late }, { el: late2 }], { pitch: 52, yaw: -4, kmax: 1.6 });
   W.cam([
     [t0, { cx: CX + 380, cy: CY - 40, cz: 0, pitch: 0, yaw: 0, k: 1 }, 0.01],
     [t0 + 1.3, shTok, c0 - t0 - 0.9],
@@ -256,7 +260,7 @@ scene('pass', ({ root, s, c0 }) => {
     [T('a12') - 0.8, shPage, 1.5],
     [T('a15') - 0.6, shErr, 1.3],
     // 章末：抬成正俯视，看着一片空白的纸（和下一章开头的横格对齐，硬切看不出来）
-    [Tend('a15') + 0.6, blankCam(170, 1420), Math.max(0.8, s.end + 0.35 - Tend('a15') - 0.6)],
+    [Tend('a16') + 0.6, blankCam(170, 1420), Math.max(0.8, s.end + 0.35 - Tend('a16') - 0.6)],
   ]);
-  sfx('whoosh', t0 + 1.3, { g: 0.3 }); sfx('whoosh', T('a3') - 0.4, { g: 0.18 }); sfx('whoosh', T('a8') - 0.6, { g: 0.16 }); sfx('whoosh', T('a12') - 0.8, { g: 0.2 }); sfx('whoosh', T('a15') - 0.6, { g: 0.16 }); sfx('whoosh', Tend('a15') + 0.6, { g: 0.18 });
+  sfx('whoosh', t0 + 1.3, { g: 0.3 }); sfx('whoosh', T('a3') - 0.4, { g: 0.18 }); sfx('whoosh', T('a8') - 0.6, { g: 0.16 }); sfx('whoosh', T('a12') - 0.8, { g: 0.2 }); sfx('whoosh', T('a15') - 0.6, { g: 0.16 }); sfx('whoosh', Tend('a16') + 0.6, { g: 0.18 });
 });

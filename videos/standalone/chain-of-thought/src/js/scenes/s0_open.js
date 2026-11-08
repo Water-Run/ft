@@ -17,15 +17,15 @@ scene('open', ({ root, s }) => {
   const iv = (t, a, b) => ramp(t, a, 0.5) * (1 - ramp(t, b, 0.5));
   const TX = [
     (t) => Math.max(1 - ramp(t, T('o6') - 0.2, 0.5), ramp(t, T('o16') - 0.6, 0.6)),
-    (t) => iv(t, T('o6') - 0.6, T('o8') - 0.3),
-    (t) => iv(t, T('o8') - 0.6, T('o11') - 0.7),
+    (t) => iv(t, T('o6') - 0.6, T('o11') - 0.7),
+    () => 0,
   ];
   // 讲到哪一段，另外两段淡下去（F[0..2] 是三段各自的透明度系数）
   const win = (t, a, b) => ramp(t, a, 0.6) * (1 - ramp(t, b, 0.6));
   const F = [
     (t) => 1 - Math.max(0.97 * win(t, T('o6') - 0.6, T('o11') - 0.7), 0.97 * win(t, T('o12') - 0.4, T('o16') - 0.5)),
-    (t) => 1 - Math.max(0.97 * win(t, T('o8') - 0.6, T('o11') - 0.7), 0.8 * win(t, T('o15') - 0.3, s.end + 1)),
-    (t) => 1 - 0.8 * Math.max(win(t, T('o12') - 0.4, T('o15') - 0.5), win(t, T('o16') - 0.3, s.end + 1)),
+    (t) => 1 - 0.8 * win(t, T('o16') - 0.3, s.end + 1),
+    () => 0,
   ];
 
   const question = (y, ta, f, tx, parts) => {
@@ -49,7 +49,7 @@ scene('open', ({ root, s }) => {
   const margin = (txt, y, ta, f) => {
     const e = W.board(`<div class="lbl l" style="transform:translate(-100%,-50%)">${txt}</div>`, X0 - 50, y, 0, 0, 0); fade(W, e, (t) => ramp(t, ta, 0.5) * f(t) * (1 - overview(t)) * (1 - ramp(t, T('o16') - 0.7, 0.4)));
     const big = W.board(`<div class="lbl xl" style="transform:translate(-100%,-50%)">${txt}</div>`, X0 - 60, y, 0, 0, 0);
-    const i = bigM.length; fade(W, big, (t) => overview(t) * ramp(t, T('o11', '三次') - 0.1 + i * 0.45, 0.4) * (1 - ramp(t, T('o16') - 0.8, 0.3))); bigM.push(big);
+    const i = bigM.length; fade(W, big, (t) => overview(t) * ramp(t, T('o11') - 0.1 + i * 0.45, 0.4) * (1 - ramp(t, T('o16') - 0.8, 0.3))); bigM.push(big);
     return e;
   };
 
@@ -114,47 +114,15 @@ scene('open', ({ root, s }) => {
   fade(W, ck2, (t) => ramp(t, T('o7', '对') - 0.2, 0.3) * F[1](t));
   sfx('chime', T('o7', '对'), { g: 0.25 });
 
-  // ── 第三次：先写答案，再补过程；过程最后一步加回了开头那个数 ──
-  question(R3, T('o8') + 0.2, F[2], TX[2]);
-  const mg3 = margin('先写答案', R3, T('o8', '先写答案') - 0.2, F[2]);
-  const P3 = para(S, X0, R3, [
-    '答案', '：', '239', '484', '129', '6', '\n',
-    4, '\n',
-    '25992', '×', '92138', '\n',
-    '=', '25992', '×', '(', '92000', '+', '138', ')', '\n',
-    '=', '25992', '×', '92000', '+', '25992', '×', '138', '\n',
-    '=', '239', '126', '400', '0', '+', '358', '689', '6', '\n',
-    '=', '239', '484', '129', '6',
-  ], { fs: 42, lh: LH, maxW: MAXW, x1st: XT });
-  write(P3.slice(0, 6), T('o8', '先写答案') - 0.2, T('o8', '先写答案') + 0.6, F[2]);
-  write(P3.slice(6), T('o8', '再补过程') - 0.1, T('o9') + 0.6, F[2]);
-  textFade(P3, TX[2]);
-  const ans3 = P3.slice(2, 6), fin3 = P3.slice(-4);
-  const line3 = (n) => P3.filter((k) => k.line === n);
-  [[3, T('o9', '拆分')], [5, T('o9', '乘法')]].forEach(([n, ta]) => {
-    const L_ = line3(n), last = L_[L_.length - 1];
-    const ck = h('div', 'p3 chk2', S); ck.style.transform = `translate3d(${last.x1 + 34}px, ${last.y - 20}px, 1px) rotate(40deg)`;
-    fade(W, ck, (t) => ramp(t, ta - 0.1, 0.3) * F[2](t));
-    sfx('tick', ta, { g: 0.2 });
-  });
-  const ul = (toks, ta) => { const e = seg(S, 'e w'); e.set([toks[0].x0, toks[0].y + 50, 0.8], [toks[toks.length - 1].x1, toks[0].y + 50, 0.8]); fade(W, e.e, (t) => ramp(t, ta, 0.35) * F[2](t)); };
-  ul(fin3, T('o10', '加错了') - 0.1);
-  ul(ans3, T('o10', '开头') - 0.2);
-  const mr3 = Math.max(...P3.map((k) => k.x1)) + 70;
-  trace(W, S, [[fin3[3].x1 + 14, fin3[3].y], [mr3, fin3[3].y], [mr3, ans3[3].y], [ans3[3].x1 + 14, ans3[3].y]], { color: '#a5402d', w: 6,
-    draw: (t) => ramp(t, T('o10', '正好是') - 0.3, 1.3, ease.io3), op: F[2] });
-  sfx('tick', T('o10', '加错了'), { g: 0.3 });
-
   // ── 三次对照：在纸上另画一张对照图。每次回答是一行大块（题目、过程、答案），说到「过程写没写」「写在答案前还是后」时逐项标出 ──
   // 思维链与两个问题都在这张图上讲：不把三段原文缩成看不清的全景
-  const KX = X0 + 3100, KY = R2 + 260, KG = 340;
-  const kT = (i) => T('o11', '三次') - 0.1 + i * 0.4;
+  const KX = X0 + 3100, KY = R2 + 260 + 170, KG = 340;   // 两行：只报答案、先写过程
+  const kT = (i) => T('o11') - 0.1 + i * 0.4;
   const kOff = (t) => 1 - ramp(t, T('o16') - 0.7, 0.4);
   const kb = (txt, x, y, w, i, cls) => { const b = block(S, txt, { w, d: 120, h: 30, fs: 54, cls }); place(W, b.g, (t) => ({ x: x + w / 2, y, z: 40 * (1 - ramp(t, kT(i), 0.4, ease.out3)), o: ramp(t, kT(i), 0.3) * kOff(t) })); return { b, x0: x, x1: x + w, x: x + w / 2, y, w }; };
   const rowsK = [
     ['只报答案', [['题目', 240, ''], ['答案', 300, 'err']]],
     ['先写过程', [['题目', 240, ''], ['过程（三百多块）', 620, 'proc'], ['答案', 300, '']]],
-    ['先写答案', [['题目', 240, ''], ['答案', 300, 'err'], ['过程', 620, 'proc']]],
   ];
   const K = rowsK.map(([lab, parts], i) => {
     const y = KY + (i - 1) * KG; let x = KX;
@@ -166,15 +134,14 @@ scene('open', ({ root, s }) => {
   const kOK = h('div', 'p3 chk2 big', S); kOK.style.transform = `translate3d(${K[1].segs[2].x1 + 40}px, ${K[1].y - 26}px, 1px) rotate(40deg)`;
   fade(W, kOK, (t) => ramp(t, kT(1) + 0.3, 0.3) * kOff(t));
   // 过程写没写：第一行该有过程的地方是空的
-  const kGap = rect(W, S, K[0].segs[1].x1 + 24, K[0].y - 60, 620, 120, (t) => ramp(t, T('o11b', '写没写') - 0.4, 0.4) * kOff(t), 'dash');
+  const kGap = rect(W, S, K[0].segs[1].x1 + 24, K[0].y - 60, 620, 120, (t) => ramp(t, T('o11b', '有没有') - 0.4, 0.4) * kOff(t), 'dash');
   const kNo = W.board('<div class="lbl g" style="transform:translateX(-50%)">没写过程</div>', K[0].segs[1].x1 + 24 + 310, K[0].y, 0, 0, -22);
-  fade(W, kNo, (t) => ramp(t, T('o11b', '写没写') - 0.4, 0.4) * kOff(t));
+  fade(W, kNo, (t) => ramp(t, T('o11b', '有没有') - 0.4, 0.4) * kOff(t));
   // 写在答案前还是后：第二、三行标出「先」「后」
-  const order = [[K[1].segs[1], '先'], [K[1].segs[2], '后'], [K[2].segs[1], '先'], [K[2].segs[2], '后']].map(([o, w]) => {
-    const e = W.board(`<div class="lbl l g" style="transform:translate(-50%,-100%)">${w}</div>`, o.x, o.y - 60, 30, 0, -8);
-    fade(W, e, (t) => ramp(t, T('o11b', '前还是后') - 0.3, 0.4) * (1 - ramp(t, T('o12') - 0.3, 0.4))); return e;
-  });
-  sfx('tick', T('o11b', '写没写') - 0.4, { g: 0.2 }); sfx('tick', T('o11b', '前还是后') - 0.3, { g: 0.2 });
+  // 答案之前：第二行的过程标出「答案之前」
+  const before = W.board('<div class="lbl l g" style="transform:translate(-50%,-100%)">答案之前</div>', K[1].segs[1].x, K[1].y - 60, 30, 0, -8);
+  fade(W, before, (t) => ramp(t, T('o11b', '答案之前') - 0.3, 0.4) * (1 - ramp(t, T('o12') - 0.3, 0.4)));
+  sfx('tick', T('o11b', '答案之前') - 0.3, { g: 0.2 }); sfx('tick', T('o11b', '有没有') - 0.4, { g: 0.2 });
   // 思维链：第二行
   const kRow = (r, fn, cls) => rect(W, S, KX - 20, K[r].y - 80, K[r].segs[K[r].segs.length - 1].x1 - KX + 40, 160, fn, cls);
   kRow(1, (t) => ramp(t, T('o12', '思维链') - 0.3, 0.4) * (1 - ramp(t, T('o14') - 0.4, 0.4)), '');
@@ -191,13 +158,10 @@ scene('open', ({ root, s }) => {
   fade(W, g3, (t) => ramp(t, T('o13b', '谷歌') - 0.1, 0.4) * gOff(t));
   sfx('blip', T('o12', '思维链') - 0.1, { g: 0.2 }); sfx('tick', T('o13', 'Chain') - 0.1, { g: 0.14 }); sfx('tick', T('o13b', '谷歌') - 0.1, { g: 0.14 });
   // 两个问题：先问第二行，再问第三行（第三行的过程最后拱回答案）
-  const q1On = (t) => ramp(t, T('o14', '几行字') - 0.3, 0.4) * (1 - ramp(t, T('o15') - 0.2, 0.4));
-  const q2On = (t) => ramp(t, T('o15', '也写了') - 0.3, 0.4) * kOff(t);
-  kRow(1, q1On, ''); kRow(2, q2On, 'e');
+  const q1On = (t) => ramp(t, T('o14', '几行字') - 0.3, 0.4) * kOff(t);
+  kRow(1, q1On, '');
   const qa1 = W.board('<div class="lbl xl">？</div>', K[1].segs[2].x1 + 110, K[1].y, 40, 0, -70); fade(W, qa1, q1On);
-  const qa2 = W.board('<div class="lbl xl err">？</div>', K[2].segs[2].x1 + 120, K[2].y, 40, 0, -70); fade(W, qa2, q2On);
-  arc3(W, S, [K[2].segs[2].x1 - 60, K[2].y, 34], [K[2].segs[1].x, K[2].y, 34], 260, { cls: 'e w', n: 32, draw: (t) => ramp(t, T('o15', '不对') - 0.6, 0.9), op: kOff });
-  sfx('tick', T('o14', '几行字') - 0.3, { g: 0.18 }); sfx('tick', T('o15', '也写了') - 0.3, { g: 0.2 });
+  sfx('tick', T('o14', '几行字') - 0.3, { g: 0.18 });
 
   // ── 片名：印在纸上；镜头抬成正俯视。片名淡去后只剩一片纸，硬切到 01 的开头（同样的横格位置） ──
   const TC = blankCam(X0 + 900, -1640);
@@ -216,9 +180,7 @@ scene('open', ({ root, s }) => {
   const tok = (P, f) => P.filter(f).map((k) => B(k.x, k.y, k.w, k.d, 20));
   const sh1 = fitCam(W, [Q(R1), ...A1.map((o) => B(o.x, R1, 150, QD, 30)), [CX0, CY2 + 60, 0], [CX0 + 10 * DW + 260, CY2 + 60, 0], { el: mg1 }], { pitch: 46, yaw: -6 });
   const sh2 = fitCam(W, [Q(R2), ...tok(P2, () => true), { el: mg2 }, [ans2[3].x1 + 90, ans2[3].y, 0]], { pitch: 38 });
-  const sh3 = fitCam(W, [Q(R3), ...tok(P3, () => true), { el: mg3 }, [fin3[3].x1 + 60, fin3[3].y, 0]], { pitch: 38 });
-  const sh3arc = fitCam(W, [Q(R3), ...tok(P3, () => true), [mr3 + 50, R3 - 40, 0], [mr3 + 50, fin3[3].y + 50, 0], { el: mg3 }], { pitch: 40, yaw: -4 });
-  const card = [...K.flatMap((r) => r.segs.map((o) => B(o.x, o.y, o.w, 120, 30))), ...K.map((r) => ({ el: r.m })), { el: g1 }, { el: g2 }, { el: g3 }, { el: qa1 }, { el: qa2 }, { el: kNo }, ...order.map((e) => ({ el: e })), [K[2].segs[1].x, K[2].y, 300]];
+  const card = [...K.flatMap((r) => r.segs.map((o) => B(o.x, o.y, o.w, 120, 30))), ...K.map((r) => ({ el: r.m })), { el: g1 }, { el: g2 }, { el: g3 }, { el: qa1 }, { el: kNo }, { el: before }];
   const shCard = fitCam(W, card, { pitch: 30, yaw: -3 });
   const sh4 = fitCam(W, [Q(R1), ...A1.map((o) => B(o.x, R1, 150, QD, 30))], { pitch: 62, yaw: -10, kmax: 1.5 });
   const TOP = { cx: X0 + 380, cy: 92 + 96 * Math.round((R1 - 92) / 96), cz: 0, pitch: 0, yaw: 0, k: 1 };
@@ -226,11 +188,9 @@ scene('open', ({ root, s }) => {
     [0, TOP, 0.01],
     [0.6, sh1, 4.2, ease.io3],                         // 开场：从正俯视的纸面慢慢倾下来，看清这道题
     [T('o6') - 0.6, sh2, 1.3],
-    [T('o8') - 0.6, sh3, 1.3],
-    [T('o10') - 0.3, sh3arc, 1.3],
     [T('o11') - 0.7, shCard, 1.7],
     [T('o16') - 0.5, sh4, 1.6],
     [T('oT') - 1.1, TC, 1.9],
   ]);
-  sfx('whoosh', T('o6') - 0.5, { g: 0.18 }); sfx('whoosh', T('o8') - 0.4, { g: 0.18 }); sfx('whoosh', T('o16') - 0.3, { g: 0.2 }); sfx('whoosh', T('oT') - 1.1, { g: 0.25 });
+  sfx('whoosh', T('o6') - 0.5, { g: 0.18 }); sfx('whoosh', T('o16') - 0.3, { g: 0.2 }); sfx('whoosh', T('oT') - 1.1, { g: 0.25 });
 });

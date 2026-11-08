@@ -10,7 +10,7 @@ scene('learn', ({ root, s }) => {
   makeCamera(world);                               // 引擎镜头不动；立体镜头由 makeWorld 完成
   const W = makeWorld(world, { cx: 0, cy: 0, pitch: 0, yaw: 0, k: 1 });
   const S = W.stage;
-  const mk = chapterMark(W, s, '04', '越写越长', -1500, 900, T('r1') - 0.2);
+  const mk = chapterMark(W, s, '03', '越写越长', -1500, 900, T('r1') - 0.2);
   const X0 = -900, LH = 112;
   // 每讲完一段，这一段淡出去，免得留在后面几镜的背景里
   const VA = (t) => 1 - ramp(t, T('r5') - 0.3, 0.7), VB = (t) => 1 - ramp(t, T('r9') - 0.3, 0.7), VC = (t) => 1 - ramp(t, T('r11') - 0.3, 0.7);
@@ -84,15 +84,15 @@ scene('learn', ({ root, s }) => {
   const P2 = think(CY_, 22, T('r7b') - 0.6, T('r7b') + 0.1, VB2, T('r6', 'DeepSeek') + 0.4);
   const tg2 = tagL('R1-Zero　2025', CY_, T('r6', 'DeepSeek') - 0.2, VB2);
   const tgd = W.board('<div class="lbl g">论文：2025 年 1 月 22 日</div>', X0 - 50, CY_, 0, 0, 44); tgd.firstElementChild.style.transform = 'translateX(-100%)';
-  fade(W, tgd, (t) => ramp(t, T('r6', '训练方法') - 0.3, 0.4) * VB2(t));
+  fade(W, tgd, (t) => ramp(t, T('r6', '一个版本') - 0.3, 0.4) * VB2(t));
   // 人写的解题过程：浮现一下就被拿开（训练时不给它看）
   const HX = X0 + 160, HY = CY_ + 3 * LH + 60;   // 人写的过程放在这一行下面，镜头不必拉宽
   ['92138 = 92000 + 138', '25992 × 92000 = …', '25992 × 138 = …'].forEach((ln, i) => {
     const e = W.print(`<div class="hand s">${ln}</div>`, HX, HY + i * 76);
-    place(W, e, (t) => ({ x: HX + 260 * ramp(t, Tend('r7') - 0.4, 0.8), y: HY + i * 76, z: 0.6, o: ramp(t, T('r7') + 0.4 + i * 0.12, 0.4) * (1 - ramp(t, Tend('r7') - 0.4, 0.6)) }));
+    place(W, e, (t) => ({ x: HX + 260 * ramp(t, Tend('r6') + 0.2, 0.8), y: HY + i * 76, z: 0.6, o: ramp(t, T('r6', '训练时') - 0.2 + i * 0.12, 0.4) * (1 - ramp(t, Tend('r6') + 0.2, 0.6)) }));
   });
   const nh = W.board('<div class="lbl g">人写的解题过程</div>', HX, HY, 30, 0, -70);
-  fade(W, nh, (t) => ramp(t, T('r7') + 0.4, 0.4) * (1 - ramp(t, Tend('r7') - 0.4, 0.6)));
+  fade(W, nh, (t) => ramp(t, T('r6', '训练时') - 0.2, 0.4) * (1 - ramp(t, Tend('r6') + 0.2, 0.6)));
   const last2 = P2[P2.length - 1];
   const ck = h('div', 'p3 chk2 big', S); ck.style.transform = `translate3d(${last2.x1 + 40}px, ${last2.y - 26}px, 1px) rotate(40deg)`;
   fade(W, ck, (t) => ramp(t, T('r7b', '答对') - 0.1, 0.3) * VB2(t));
@@ -126,18 +126,20 @@ scene('learn', ({ root, s }) => {
     '26000', '×', '92138', '−', '8', '×', '92138', 2, '=', '2,394', ',850', ',896', '\n',
     'Check', 'alternative', ':', '25,000', '+', '992', 2, '\n',
     '25,000', '×', '92138', '+', '992', '×', '92138', 2, '=', '2,394', ',850', ',896', '\n',
-    'yes',
+    'yes', '\n',
+    '答案', '：', '239', '485', '089', '6',
   ], { fs: 44, lh: LH, maxW: 1800 });
-  const seg1 = PD.filter((k) => k.line <= 1), seg2 = PD.filter((k) => k.line >= 2);
+  const seg1 = PD.filter((k) => k.line <= 1), seg2 = PD.filter((k) => k.line >= 2 && k.line <= 4), segA = PD.filter((k) => k.line === 5);
   writeAll(seg1, T('r9', '思考模式') + 0.1, Tend('r9') + 0.2, VC);
-  writeAll(seg2, T('r10', '换个') - 0.2, T('r10', '再算') + 0.5, VC);
+  writeAll(seg2, T('r10') - 0.2, T('r10', '才报出') - 0.3, VC);
+  writeAll(segA, T('r10', '报出答案') - 0.2, T('r10', '报出答案') + 0.3, VC);
   const r1 = seg1.slice(-3), r2_ = PD.filter((k) => k.line === 3).slice(-3);
   const ulD = (toks, ta) => { const e = seg(S, 'w'); e.set([toks[0].x0, toks[0].y + 50, 0.8], [toks[toks.length - 1].x1, toks[0].y + 50, 0.8]); fade(W, e.e, (t) => ramp(t, ta, 0.35) * VC(t)); };
-  ulD(r1, T('r10', '算出') - 0.2); ulD(r2_, T('r10', '一遍') - 0.1);
-  arc3(W, S, [r2_[1].x, r2_[1].y - 30, 22], [r1[1].x, r1[1].y + 30, 22], 140, { n: 24, draw: (t) => ramp(t, T('r10', '一遍'), 0.7), op: VC });
-  const s1l = W.board('<div class="lbl g">先这样算</div>', r1[2].x1 + 40, r1[2].y, 30, 0, -26);
-  const s2l = W.board('<div class="lbl g">换一种拆法</div>', r2_[2].x1 + 40, r2_[2].y, 30, 0, -26);
-  fade(W, s1l, (t) => ramp(t, T('r9', '思考模式') + 0.2, 0.4) * VC(t)); fade(W, s2l, (t) => ramp(t, T('r10', '换个') - 0.2, 0.4) * VC(t));
+  segA.slice(2).forEach((k, i) => glow(W, k.b, (t) => ramp(t, T('r10', '算对') - 0.2 + i * 0.08, 0.25) * VC(t)));
+  sfx('chime', T('r10', '算对'), { g: 0.2 });
+  const s1l = W.board('<div class="lbl l g">思考：两百多块</div>', PD.filter((k) => k.line === 0).slice(-1)[0].x1 + 40, DY + LH, 30, 0, -26);
+  const s2l = W.board('<div class="lbl l">然后才是答案</div>', segA[segA.length - 1].x1 + 40, segA[0].y, 30, 0, -26);
+  fade(W, s1l, (t) => ramp(t, T('r10', '两百多块') - 0.3, 0.4) * VC(t)); fade(W, s2l, (t) => ramp(t, T('r10', '报出答案') - 0.2, 0.4) * VC(t));
 
   // ── 二十五道全对；五根柱子：三位到七位的平均思考块数 ──
   const GY = DY + 900, GX = X0 + 200, CWd = 72;
@@ -150,7 +152,7 @@ scene('learn', ({ root, s }) => {
   fade(W, g25, (t) => ramp(t, T('r11', '全对') - 0.2, 0.4));
   const colLabels = [];
   const AVG = [93, 166, 261, 412, 550], SG = 2.4, CX = GX + 700, CS = 230, CY2 = GY + 200;
-  const tg = [T('r12', '三位数') - 0.2, T('r12', '九十') - 0.6, T('r12', '九十') + 0.1, T('r12', '七位数') - 0.6, T('r12', '七位数') - 0.1];
+  const tg = [T('r12b', '三位数') - 0.2, T('r12b', '九十') - 0.6, T('r12b', '九十') + 0.1, T('r12b', '七位数') - 0.6, T('r12b', '七位数') - 0.1];
   const bumps = [0, 1, 2].map((j) => T('r13', '每一块') - 0.05 + j * 0.75);
   AVG.forEach((v, i) => {
     const extra = (t) => (i === 4 ? bumps.reduce((a, b) => a + (t >= b + 0.62 ? 1 : 0), 0) : 0);
