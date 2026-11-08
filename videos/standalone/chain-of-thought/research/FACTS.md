@@ -58,7 +58,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 ## 逐章
 
-句号按第 7 稿（2026-11-08；改动见各行与 `review/NOTES.md`「第 7 稿」）。此前：第 6d 稿（2026-11-08；与 6c 稿只差 a7：层数的例子按策划者意见由 GPT-3 的 96 层换成 Qwen3.8-27B 的 64 层，并因字幕宽度拆成 a7、a7b）；配音前因字幕宽度与每句时长拆开的句子加后缀 b（如 o11b），与原句同一条依据。第 6 稿的核心主旨：模型每写一块字只有固定的一趟计算，层数造好就定了；要算得远，只能把中间步骤写下来，一趟接一趟；它能想多远并没有定死，要看回答之前写下了多少步。起承转合：起（开场两次回答与一个问题）、承（01 一块字的工夫：来不及算；02 草稿：写下的步越多，能连着算的步就越多）、转（03 越写越长：没人要求，它自己学会多写）、合（结尾）。第 5 稿的「03 先后」整章与开场第三次回答删去，先答再想只在 02 章末用三句带过（b14–b16）。
+句号按第 8 稿（2026-11-08；第 7、8 稿按 Gemini 观众诘问两轮修改，改动见各行与 `review/NOTES.md`「第 7 稿」）。此前：第 6d 稿（2026-11-08；与 6c 稿只差 a7：层数的例子按策划者意见由 GPT-3 的 96 层换成 Qwen3.8-27B 的 64 层，并因字幕宽度拆成 a7、a7b）；配音前因字幕宽度与每句时长拆开的句子加后缀 b（如 o11b），与原句同一条依据。第 6 稿的核心主旨：模型每写一块字只有固定的一趟计算，层数造好就定了；要算得远，只能把中间步骤写下来，一趟接一趟；它能想多远并没有定死，要看回答之前写下了多少步。起承转合：起（开场两次回答与一个问题）、承（01 一块字的工夫：来不及算；02 草稿：写下的步越多，能连着算的步就越多）、转（03 越写越长：没人要求，它自己学会多写）、合（结尾）。第 5 稿的「03 先后」整章与开场第三次回答删去，先答再想只在 02 章末用三句带过（b14–b16）。
 
 ### open
 
@@ -68,7 +68,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 | o2 | 看一眼能估个大概：二十三亿多 | 数学：26000 × 92000 = 2,392,000,000，正确乘积 2,394,850,896，都是二十三亿多 | L1 think_first 回复里有「≈ 26000 × 92000 = 2,392,000,000」的估算 | — | 2026-11-07 已核 |
 | o3 | 关掉 DeepSeek 的思考模式，只许它报答案 | L1 direct 的提示「只输出最终结果的数字，不要任何其他文字」；请求 `deepseek-chat`（不思考的模式），返回 `model` 为 `deepseek-flash` | S19：思考模式可开可关（`thinking` 参数 enabled/disabled） | 同上 | 已核 |
 | o4、o5 | 十位数 2394730896；前四位、后四位对，错在中间两位（正确 85，回答 73） | L3 §3「与正确乘积不同的位置 [4, 5]」 | 逐位比对由脚本完成 | 同上 | 已核 |
-| o6、o7 | 先把计算过程写出来再说答案，同一模型算对 | L1 `n5-03` think_first（提示「先写计算过程，最后一行写答案」），答案 2394850896 | L3 §3 | 同上 | 已核 |
+| o6、o7 | 第二次还是关着思考模式，只在提问里让它先写计算过程；这回算对了 | L1 `n5-03` think_first：同样请求 `deepseek-chat`（不思考的模式），提示「计算 {a} × {b}。先一步一步写出计算过程，最后单独一行写「答案：」加最终结果。」，答案 2394850896 | L3 §3 | 同上 | 已核 |
 | （第 6 稿删去）o8–o10 | 先写答案再写过程：拆分与两次乘法都对；最后一步相加写成 2394841296（应为 2394850896），正是这一次第一行的答案（与只报答案的 2394730896 不是同一个数） | L1 `n5-03` answer_first 回复全文；L3 §3「过程最后一行 '= 2394841296'；正确的和应为 2394850896；最后一行等于第一行的答案：True」 | 脚本独立计算部分积与和 | 同上 | 已核；「加错了」指和写错 |
 | o11、o11b | 同一个模型、同一道题，差别只在答案之前有没有先写过程 | L1 的两种问法 direct 与 think_first，同一模型、temperature 0 | — | deepseek-flash，2026-11-03 | 已核 |
 | o12、o13、o13b | 这种做法叫思维链（Chain of Thought，CoT），出自谷歌 2022 年的论文 | S1 标题、第 1 节「chain of thought—a series of intermediate natural language reasoning steps that lead to the final output」；arXiv v1 2022-01-28；作者单位 Google Research, Brain Team | S8 引言「chain-of-thought reasoning (CoT)」 | — | 已核；o14–o16 是提问 |
@@ -77,16 +77,16 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| a1、a2 | 一次写一小块（token）；错答案只写了四块：239、473、089、6 | L1 `n5-03` direct 的 logprobs 逐 token 列表（L3 §3），回复 token 数 4 | — | deepseek-flash 的分词 | 已核 |
+| a1、a2 | 一次写一小块（token）；错答案是三位三位写的，一共四块：239、473、089、6 | L1 `n5-03` direct 的 logprobs 逐 token 列表（L3 §3），回复 token 数 4 | — | deepseek-flash 的分词 | 已核；「三位三位」只说这一个回答的切分 |
 | a3–a5b | 模型里是一层叠一层的计算；写一块之前读入题目，从最底层往上算，每一层接着下面一层算出的结果；算到最顶层，才定下这一块（第一块是 239） | S3 第 3 节：由 N 层相同的层堆叠；第 3.2.3 节「all of the keys, values and queries come from the same place, in this case, the output of the previous layer」；解码「one element at a time … auto-regressive」 | L3 §3（第一块 239） | 解码器式 Transformer | 已核 |
 | a3b | 画面上每一片代表一层 | 画面约定，不是事实陈述；纸摞画 96 张，与 a7 的 96 层一致 | — | — | 画面约定 |
 | a6 | 从底到顶算一遍，「我们叫它一趟」 | 本片的叫法，指产出一个 token 的一次逐层计算（S3） | — | — | 用语，不是事实陈述 |
-| a7、a8、a8b | 层数在模型造好时就定了，比如 GPT-3 是 96 层；下一块不论是一个标点还是乘积中间那几位，都只有这一趟 | S4 表 2.1：GPT-3 175B，nlayers 96；层数是结构参数，生成时不随内容变化（S3 第 3 节；S7 引言「the depth is a fixed number that depends on the architecture」） | S6 摘要「standard transformers that answer immediately after reading their input」 | GPT-3 175B 作例子：它是标准的解码器 Transformer，与 S5–S7 的理论前提一致。第 6d 稿曾按策划者意见换成 Qwen3.8-27B（S15，64 层），因其 48 层是 Gated DeltaNet（同一层内沿位置递推），不是 S5–S7 讨论的标准 Transformer，第 7 稿按策划者「如果Qwen例子不好, 还是GPT3」退回 GPT-3；实验测的 deepseek-flash 版本与层数无法核实 | 已核 |
+| a7、a7b、a8、a8b | 层数在模型造好时就定了，比如早几年的 GPT-3 是 96 层（S4 arXiv 2020-05）；下一块不论是一个标点还是乘积中间那几位，都只有这一趟 | S4 表 2.1：GPT-3 175B，nlayers 96；层数是结构参数，生成时不随内容变化（S3 第 3 节；S7 引言「the depth is a fixed number that depends on the architecture」） | S6 摘要「standard transformers that answer immediately after reading their input」 | GPT-3 175B 作例子：它是标准的解码器 Transformer，与 S5–S7 的理论前提一致。第 6d 稿曾按策划者意见换成 Qwen3.8-27B（S15，64 层），因其 48 层是 Gated DeltaNet（同一层内沿位置递推），不是 S5–S7 讨论的标准 Transformer，第 7 稿按策划者「如果Qwen例子不好, 还是GPT3」退回 GPT-3；实验测的 deepseek-flash 版本与层数无法核实 | 已核 |
 | a9 | 一趟里，算出来的东西只往上走 | S3 第 3.2.3 节：每层的输入是上一层的输出；解码器自注意力只看当前及之前的位置，「prevent leftward information flow」 | S7 引言：不写中间步骤时串行计算的步数以层数为上限 | — | 已核；后面的位置在每一层读得到前面位置同一层的结果，但不会把高层的结果送回低层 |
-| a10、a10b | 顶上得出的结果，要让下一趟从底下接着用，只能先写成字 | S3 第 3 节「consuming the previously generated symbols as additional input when generating the next」 | S6 摘要「generate and condition on a sequence of intermediate tokens」；S7 引言「with T intermediate steps, the number of serial computations possible is boosted to T」 | 解码器式 Transformer | 已核 |
-| a11、a11b | 只许报答案，写下的只有答案这四块；一共四趟，中间结果没处可写 | L3 §3（direct 回复 4 个 token：239、473、089、6，全是最终乘积的数字）；a10 的依据 | S7 引言 | — | 已核；只说写下的内容与趟数，不说这四趟彼此在接力进位 |
-| a12、a12b、a13 | 从左往右写乘积；开头几位估一估就差不多；末尾几位只看两个数的末尾就能算出；中间几位最难，要等右边的进位一位一位传过来 | 数学：2599 × 9214 = 23,947,186，开头四位 2394 与正确乘积 2,394,850,896 相同（开头几位由两数开头几位估出）；5992 × 2138 = 12,810,896，末四位 0896 与正确乘积相同（a×b mod 10^k 只取决于 a mod 10^k 与 b mod 10^k）；中间几位要把各部分乘积相加并承接右边的进位；高位先写见 L3 §3 的 token 顺序 239、473、089、6 | o2 的估算（26000 × 92000） | — | 已核；只讲乘法本身的难易，片中不断言模型内部按此计算（C2） |
-| a14、a14b | 理论上，题目越长，这种一步等一步的计算，迟早超出这几趟能走的步数 | S7 引言（不写中间步骤时，串行计算以层数为上限）；S5 摘要：有界深度 Transformer 除非规模随输入长度超多项式增长，否则不能直接给出基本算术的正确答案 | S6 摘要 | 理论结果依赖标准复杂度猜想（S6、S7） | 已核；旁白用「理论上」「迟早」 |
+| a10、a10b | 顶上算出的中间结果，要让下一趟从底下接着用，只能先写成字 | S3 第 3 节「consuming the previously generated symbols as additional input when generating the next」；第 3.2.3 节（每层的输入是上一层的输出） | S6 摘要「generate and condition on a sequence of intermediate tokens」；S7 引言 | — | 已核 |
+| a11、a11b | 只许报答案，写下的四块全是答案本身；中间结果一块也没写，每一块都只能靠自己那一趟 | L3 §3（direct 回复 4 个 token：239、473、089、6，全是最终乘积的数字）；a10 的依据 | S7 引言（不写中间步骤时，串行计算以层数为上限） | — | 已核；不说这四趟彼此接力 |
+| a12、a12b、a13、a13b、a13c | 从左往右写乘积；开头几位估一估就差不多；末尾几位只看两个数的末尾就能算出；中间几位最难，要把各部分乘出来的数加起来，还得等右边的进位一位一位传过来；这些都得在写中间那块的一趟里算完 | 数学：2599 × 9214 = 23,947,186，开头四位 2394 与正确乘积 2,394,850,896 相同（开头几位由两数开头几位估出）；5992 × 2138 = 12,810,896，末四位 0896 与正确乘积相同（a×b mod 10^k 只取决于 a mod 10^k 与 b mod 10^k）；中间几位要把各部分乘积相加并承接右边的进位；只报答案时中间那块（473）之前只写过 239（最终乘积的开头），没有写下任何中间结果，所以中间几位所需的计算只能在写 473 的那一趟里完成（a10、a11 的推论；S7）；高位先写见 L3 §3 的 token 顺序 239、473、089、6 | o2 的估算（26000 × 92000） | — | 已核；只讲乘法本身的难易，片中不断言模型内部按此计算（C2） |
+| a14、a14b | 理论上，题目越长，这种一步等一步的计算，迟早超出一趟能算完的步数 | S7 引言（不写中间步骤时，串行计算以层数为上限）；S5 摘要：有界深度 Transformer 除非规模随输入长度超多项式增长，否则不能直接给出基本算术的正确答案 | S6 | 理论结果 | 已核 |
 | a15 | 它错的，正是中间两位 | L3 §3（错位 [4, 5]，即第 5、6 位） | L3 §2：五位数 direct 答错的 17 题，开头至少 2 位、结尾至少 2 位都与正确乘积相同 | — | 已核；与 a12–a13 并列陈述，不表示因果 |
 | a16 | 只报答案，它多半不是不会算，是来不及算 | 推断：同一模型先写过程时 99/100 算对（L1），只报答案时可接力的只有写答案那几趟（a10、a11；S7：不写中间步骤时串行步数受层数限制） | — | — | 推断，旁白不说「一定」 |
 
@@ -101,23 +101,23 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 | b6–b8 | 每个中间结果写成字；下一趟从底下读到它接着算；一趟算不完的分给很多趟 | a10 的依据（S3）；S7 引言 | S14 | — | 已核 |
 | b8b | 写下的中间步骤越多，它能连着算下去的就越长 | S7 摘要与引言：写下 T 步思维链，常数深度的 Transformer 能完成的串行计算随 T 增长（不写时受层数限制） | S6 | 理论结果 | 已核；说的是上限，不说一定算对 |
 | b9、b9b–b11（b11：写的全是点，没有中间结果，下一趟没东西可接） | 谷歌那篇论文试过先输出一串和算式一样长的点，结果和直接回答差不多；每一块都是同一个点，什么也没接下去 | S1 第 3.3 节「Variable compute only … a sequence of dots (. . .) equal to the number of characters in the equation … performs about the same as the baseline」 | S1 表 6（LaMDA 137B，GSM8K：standard 6.5，variable compute only 6.4；pdftotext 输出的行标签错位一行，按列序核对） | LaMDA 137B、PaLM 540B；未专门训练的模型 | 已核；b11 只说写下的点本身不带上一步的结果，不说填充符号在任何训练下都无用 |
-| b12、b13、b13b | 一百道乘法（三到七位）；只报答案对 39 道，六位、七位数一道没对；先写过程对 99 道 | L1 汇总（L3 §1）：direct 39/100，按位数 20/16/3/0/0；think_first 99/100 | — | deepseek-flash，2026-11-03 | 已核 |
-| b14 | 把过程挪到答案后面，一百道只对三十六道 | L1 汇总（L3 §1）：answer_first 36/100（只报答案 39/100） | S1 第 3.3 节「Chain of thought after answer … performs about the same as the baseline」 | deepseek-flash，2026-11-03 | 已核 |
+| b12、b13、b13b | 一百道乘法，从三位乘三位到七位乘七位；只报答案对 39 道，六位、七位数一道没对；先写过程对 99 道 | L1：`01_multiply.py` 的 `problems()` 每题两个因数位数相同（3–7 位各 20 道）；汇总（L3 §1）direct 39/100，按位数 20/16/3/0/0；think_first 99/100 | — | deepseek-flash，2026-11-03 | 已核 |
+| b14、b14b | 我们又让它把过程挪到答案后面；同样一百道，只对了三十六道 | L1 汇总（L3 §1）：answer_first 36/100（只报答案 39/100），与 b12 同一批题 | S1 第 3.3 节「Chain of thought after answer … performs about the same as the baseline」 | deepseek-flash，2026-11-03 | 已核 |
 | b15 | 因为答案写下的时候，后面的过程还没写，接不上（第 7 稿起紧接 b14，解释只对三十六道） | S3 第 3.2.3 节（屏蔽向左的信息流：每个位置只读得到它前面的位置）；第 3 节（自回归） | — | 解码器式 Transformer | 已核 |
-| b16 | 而且错了的，过程多半顺着错数往回圆，有点像人的脑补 | L3 §4：answer_first 答错的 64 次中，38 次过程里最后出现的数等于第一行的错答案（59%），24 次等于正确乘积；人的一面取 S10 第 243–244 页（丝袜实验：人说出的理由常是事后按常识推出来的） | S8 摘要（被偏向错误答案时，模型常写出为其辩护的推理） | 本片实验；1977 年的心理学实验 | 已核；「多半」对应 38/64；「有点像」是类比，不说机制相同 |
+| b16、b16b | 而且错了的，过程算到最后，多半又凑回开头那个错数；有点像人的脑补 | L3 §4：answer_first 答错的 64 次中，38 次过程里最后出现的数等于第一行的错答案（59%），24 次等于正确乘积；人的一面取 S10 第 243–244 页（丝袜实验：人说出的理由常是事后按常识推出来的） | S8 摘要（被偏向错误答案时，模型常写出为其辩护的推理） | 本片实验；1977 年的心理学实验 | 已核；「多半」对应 38/64；「有点像」是类比，不说机制相同 |
 
 ### learn（03 越写越长）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| r1、r1b、r2 | 谷歌论文几个月后，有人发现在题目后面（答案前）加一句「Let's think step by step」，一套数学应用题的正确率从一成左右到四成 | S2 arXiv v1 2022-05-24（S1 之后约 4 个月）；摘要「by simply adding "Let's think step by step" before each answer」「GSM8K from 10.4% to 40.7% with large-scale InstructGPT model (text-davinci-002)」 | S2 正文第 118 行同数 | text-davinci-002，GSM8K | 已核；旁白读中文译文，画面给英文原句、模型与原数 |
+| r1、r1b、r1c、r2 | 谷歌那篇论文是在提问里先给几道写好步骤的例题；几个月后又有人发现，例题都不用给，只要在题目后面（答案前）加一句「Let's think step by step」，一套数学应用题的正确率从一成左右到四成 | S1 摘要「a few chain of thought demonstrations are provided as exemplars in prompting」；S2 arXiv v1 2022-05-24（S1 之后约 4 个月），摘要「step-by-step answer examples」（以往做法）、「by simply adding "Let's think step by step" before each answer」「without any hand-crafted few-shot examples」「GSM8K from 10.4% to 40.7%」 | — | text-davinci-002 | 已核 |
 | r3、r4 | 那时这只是写进提问里的一句话；后来不用人提醒，被练进了模型 | S2（只改提示，不训练模型）；S11 第 1、2 节「The o1 model series is trained with large-scale reinforcement learning to reason using chain of thought」 | S12 | — | 已核 |
 | r5 | 2024 年 OpenAI 发布 o1，回答之前先写一大段思考 | S11「o1 thinks before it answers—it can produce a long chain of thought before responding」；正文署 2024-12-05，并提到此前的 o1-preview | 搜索结果与 Simon Willison 同日笔记显示 o1-preview 于 2024-09-12 发布（只作线索，片中只说 2024 年） | — | 已核（年份） |
-| r6、r7b | DeepSeek R1 的一个版本（R1-Zero，2025 年 1 月公开，日期只上画面）训练时不给它看人写的解题过程，答对就给奖励 | S12 arXiv v1 2025-01-22；摘要「pure reinforcement learning (RL), obviating the need for human-labeled reasoning trajectories」；第 2 节奖励为准确性奖励加格式奖励（`rule = acc + format`） | arXiv API `published` 字段 | DeepSeek-R1-Zero | 已核；片中不说「只看答案」，因为还有格式奖励；「训练时」限定在强化学习阶段 |
+| r6、r7b | DeepSeek R1 的一个版本（R1-Zero，2025 年 1 月公开，日期只上画面）训练时不给它看人写的解题过程，只看答没答对、格式对不对来给奖励 | S12 arXiv v1 2025-01-22；摘要「pure reinforcement learning (RL), obviating the need for human-labeled reasoning trajectories」；第 2 节奖励为准确性奖励加格式奖励（`rule = acc + format`） | arXiv API `published` 字段 | DeepSeek-R1-Zero | 已核；片中不说「只看答案」，因为还有格式奖励；「训练时」限定在强化学习阶段 |
 | r8 | 没人要求它想得更长，思考却越写越长 | S12 图 1(b) 与第 2.3 节「DeepSeek-R1-Zero exhibits a steady increase in thinking time throughout training, driven solely by intrinsic adaptation」；奖励只有准确性与格式两项，没有长度奖励 | — | R1-Zero | 已核；训练模板要求先写思考再写答案，所以说「没人要求它想得更长」，不说「没人叫它想」 |
 | r8b | 今天，主流的大模型基本都带上了这种思考模式 | S16「Reasoning models use internal reasoning tokens before producing a response」，`gpt-5.5` 缺省 medium 推理强度；S17「When you use a thinking model, Gemini reasons internally before responding」「Gemini models engage in dynamic thinking by default」；S18「Claude thinks against that budget before it starts its final answer」；S19「before outputting the final answer, the model will first output a chain-of-thought reasoning」「Thinking mode is enabled by default」 | S15 模型卡（Qwen3.8 默认思考，可配置成不思考直接回答） | OpenAI、Google、Anthropic、DeepSeek、阿里四家以上 | 2026-11-08 已核；只说「带上了这种模式」，不说都默认开启、不列举型号 |
-| r9、r10 | 打开思考模式，再问开头那道题，不提醒它写过程；它自己先写了两百多块思考，才报出答案，算对了 | L2 提示「计算 {a} × {b}。最后单独一行写「答案：」加最终结果。」（不要求写过程）；`n5-03`：思考 220 个 token（L3 §3），最终答案 2394850896，正确 | — | `deepseek-reasoner`，返回 `model` 为 `deepseek-flash`，2026-11-03 | 已核 |
-| r11、r12、r12b | 每种位数各取五道，二十五道全对；位数越多写得越长；三位数平均写九十来块思考，七位数五百五十块 | L2（L3 §5：25/25；平均思考 token 3 位 93.0、4 位 165.6、5 位 261.2、6 位 412.2、7 位 550.2） | — | 同上 | 已核；五档数字放画面 |
+| r9、r10 | 打开思考模式，再问开头那道题，不提醒它写过程；它自己先写了一大段思考，才报出答案，算对了 | L2 提示「计算 {a} × {b}。最后单独一行写「答案：」加最终结果。」（不要求写过程）；`n5-03`：思考 220 个 token（L3 §3，画面标出），最终答案 2394850896，正确 | — | `deepseek-reasoner`，返回 `model` 为 `deepseek-flash`，2026-11-03 | 已核；旁白不报块数，免得与 b4 的三百多块（不同模式、不同提示）相比造成误会 |
+| r11、r12、r12b | 每种位数各取前五道，二十五道全对；位数越多写得越长；三位数平均写九十来块思考，七位数五百五十块 | L2（L3 §5：25/25；平均思考 token 3 位 93.0、4 位 165.6、5 位 261.2、6 位 412.2、7 位 550.2） | — | 同上 | 已核；五档数字放画面 |
 | r13 | 多写的每一块，都是多走的一趟 | a6 的定义（每产出一个 token 是一趟）；S3 | — | — | 按定义成立 |
 
 ### end

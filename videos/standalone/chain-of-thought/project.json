@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "第 7 稿与 Gemini 迭代中（out/gemini-reply-r2.md）；定稿后交策划者确认，再配音、改画面、出第 3 轮预览",
+  "next": "第 8 稿与 Gemini 第 3 轮（out/gemini-prompt-r3.md）；定稿后交策划者确认，再配音、改画面、出第 3 轮预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
