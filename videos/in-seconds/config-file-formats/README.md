@@ -9,7 +9,7 @@
 | 当前停在哪里 | 正式成片已出（`out/zh/config-file-formats-zh-1080p60.mp4`，实测 150.0 秒；另有无配乐、仅人声版与 SRT；封面 `out/cover-zh-*`，均不入库）。策划者 2026-11-07 告知本集已发布；发布链接与平台标题未回填（未核不猜链接），交付登记见 `project.json` |
 | 已落盘 | 取证（FACTS + `research/lab/formats.py` 实测）；第 2 稿经 WaterRun 确认；Edge 配音；五幕场景、片尾名单、配乐 |
 | 本次会话的角色 | 制作方（Claude Opus 5.5，2026-10-28）；维护者（2026-11-07 补交付与发布登记） |
-| 下一步 | 回填发布链接与平台标题（策划者 2026-11-07 告知已发布，未给链接）；收集观众反馈，写进 README「评价与复盘」 |
+| 下一步 | 已发布：哔哩哔哩 [BV1masX6tEui](https://www.bilibili.com/video/BV1masX6tEui)，2026-10-28 23:13。按发布后冻结，只收集反馈，写进 README「评价与复盘」 |
 | 文案确认 | 已确认（见 [review/NOTES.md](review/NOTES.md)「明确确认」） |
 | 自动检查 | `scan.js` 无错误（剩余提示为巨字有意出画/伸进字幕条、XML 段同屏文字偏多）；预演无超过 2.5 秒的静止段 |
 
@@ -49,7 +49,6 @@
 - 视觉规范与逐句画面：[src/design/README.md](src/design/README.md)。米色纸底、红黑平涂、最多再加一种颜色；一两条大斜线、逐字放大且可裁切的粗无衬线巨字、油墨纸纹；禁用渐变、阴影和 3D。
 - 事实核查任务：[research/FACTS.md](research/FACTS.md)。
 - 校对记录：[review/NOTES.md](review/NOTES.md)；全文由工具导出。
-- 周计划：[制作周 TODO](../../../docs/todo.md)。
 
 ## 设计与声音（制作方取舍）
 

@@ -8,8 +8,8 @@
   "titles": {
     "zh": "CoT：先思考，再回答"
   },
-  "stage": "review",
-  "next": "策划者看成片 out/chain-of-thought-zh-1080p60.mp4，确认后发布",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 BV1r6WH6ZEW7，2026-11-08 23:00）；按发布后冻结，只收集反馈",
   "credits": {
     "planner": "WaterRun",
     "models": [

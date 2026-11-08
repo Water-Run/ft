@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 207 部：已成片 23，制作中 6，计划中 177，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 207 部：已成片 25，制作中 4，计划中 177，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -35,6 +35,8 @@
 | [120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/) | [XX 秒速通](in-seconds/README.md) | zh 2:00、en 2:00 | 2026-10-06 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) | 9（2026-10-09） | Claude Opus 5.5 |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/) | — | zh 3:13 | 2026-10-01 | [哔哩哔哩](https://www.bilibili.com/video/BV1cEaB6tEjQ) | 8（2026-10-09） | Claude（型号未记录）、DeepSeek（型号未记录） |
+| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | zh | — | 未登记 | — | Claude Opus 5.5、Gemini 4 Argon |
+| [OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/) | [热点](hot-topics/README.md) | zh | — | 未登记 | — | Claude Opus 5.5 |
 
 ## 制作中
 
@@ -42,12 +44,10 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11 | 最新 | Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r1（out/zh/preview-r1.mp4，16:59）的意见：画面、配乐、读音；改后出 r2。正式片之前：把封面 A 做成 src/cover.html（16:9 与 4:3 两版），再跑 check.js 与验收。 | 最新 | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [CoT：先思考，再回答](standalone/chain-of-thought/) | — | 预览迭代 | 策划者看第 1 轮预览草稿 out/zh/preview-r1-draft.mp4；按意见与静止检测一起改，再出 preview-r1 | 最新 | Claude Opus 5.5 |
 | [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/) | [热点](hot-topics/README.md) | 立项 | 写简报（受众、核心问题、解释路径与取舍），开始取证 | 待同步 | 未记录 |
-| [OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/) | [热点](hot-topics/README.md) | 验收 | 策划者看正式片 out/pando-zh-1080p60.mp4；同意后登记交付与发布 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
@@ -378,7 +378,7 @@
 |---|---|---|---|---|---|
 | 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](hot-topics/php2shell/) |  |
 | 2 | 两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷 | zh | 制作中 | [`cve-2026-98432`](hot-topics/cve-2026-98432/) |  |
-| 3 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 制作中 | [`pando`](hot-topics/pando/) |  |
+| 3 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 已成片 | [`pando`](hot-topics/pando/) |  |
 
 ### Office 底层原理
 
@@ -442,7 +442,7 @@
 | 29 | 一个视频讲明白全部 C 数据结构<br>Every C Data Structure in One Video | zh | 计划中 | `c-data-structures` | 2026-10-20 策划者新增（原话「一个独立视频: 一个视频讲明白全部C数据结构」「面向计算机初学者」）。范围开工时先与策划者确认：按「数据结构（C 语言版）」的常见范围（数组、链表、栈、队列、哈希表、树、堆、图），还是 C 语言自带的构造（数组、结构体、联合、指针、枚举），或两者都讲。面向初学者：每种结构用同一个例子从内存里的样子讲起，不默认观众学过指针 |
 | 30 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
 | 31 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
-| 32 | CoT：先思考，再回答 | zh | 制作中 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
+| 32 | CoT：先思考，再回答 | zh | 已成片 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
 | 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 计划中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
 | 34 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
 | 35 | 量化：让模型变小和代价 | zh | 计划中 | [`quantization`](standalone/quantization/) | 2026-10-26 从速通系列改为独立视频；片长待定。 |
