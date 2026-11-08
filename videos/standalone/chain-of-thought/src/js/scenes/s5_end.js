@@ -5,7 +5,7 @@ scene('end', ({ root, s }) => {
   const world = h('div', 'world', root);
   makeCamera(world);
   const W = makeWorld(world, HOME);
-  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, d);
+  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, Math.max(d, 0.4));
   const A = W.sheet({ in: [s.start + 0.05, 'r', 1.0], out: [T('e6') - 0.55, 'l', 1.0], w: 5400, h: 1400, x: 1500, y: -30 });
   const NS = 8, GP = 430, SX = (i) => -1650 + i * GP, SY = -40, RW = 300, RD = 190, LAY = 70, SEP = 7, H = LAY * SEP, SL = 250;
   const tE3 = T('e3'), tFix = T('e3', '定了') - 0.42, tE4 = T('e4'), tNo = T('e4', '没有定死') - 0.2, tE5 = T('e5'), tB5 = T('e5', '回答之前') - 0.2, tMid = T('e5', '中间步骤') - 0.2, tE5e = Tend('e5');
@@ -48,15 +48,16 @@ scene('end', ({ root, s }) => {
   B.cursor(76 + 470, 110, 132, { t0: mid + 0.55 });
   sfx('chime', T('e7') + 0.1, { g: 0.2 });
 
+  B.wash(-720, -370, 720, -50, T('e6') + 0.2, T('e7') - 0.2);
   const box0 = ST[0].box, boxN = ST[NS - 1].box;
   const shOne = fitCam([box0, A.p(SX(0), SY, H + 150), A.p(SX(0) - 300, SL + 340), A.p(SX(0) + 900, SL + 340), A.p(SX(0) + 900, SY, H)], { pitch: 42, cz: A.Z + H * 0.34, kmax: 1.0 });
   const shAll = fitCam([box0, boxN, A.p(SX(0) - 240, SL + 450), A.p(SX(NS - 1) + 300, SL + 450)], { pitch: 26, cz: A.Z + H * 0.2 });
   W.cam([
-    [s.start, shOne, 0.9],
-    [tNo - 0.05, shAll, Math.max(2.5, tE5e + 0.3 - tNo), smooth],
-    [tB, B.home({ pitch: 8, cy: -60, k: 1.02 }), 1.2],
-    [T('e7') - 0.4, B.home({ pitch: 0, cy: -20, k: 1.0 }), 1.4],
-    [s.end - 0.95, HOME, 0.9],
+    [s.start + 0.05, shOne, 1.25, smooth],
+    // 强调规模：能想多远，镜头慢慢退开看长度
+    [tNo - 0.05, shAll, Math.max(2.8, tE5e + 0.3 - tNo), smooth],
+    [tB, B.home({ cy: -20 }), 1.25, smooth],
+    [s.end - 0.95, HOME, 0.9, smooth],
   ]);
   [s.start + 0.05, tB, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });

@@ -8,14 +8,14 @@ scene('draft', ({ root, s }) => {
   const W = makeWorld(world, HOME);
   const pulse = (ta, a = 30, d = 0.38) => (t) => a * Math.sin(Math.PI * clamp((t - ta) / d));
   const drop = (x, y, t, z = 200, d = 0.36) => [[t, x, y, z], [t + d * 1.45, x, y, 0]];
-  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, d);
+  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, Math.max(d, 0.4));
   const tOf = (c, w, e) => T(c, w) + (e || 0);
 
   // 章名一直留到说出「纸」，草稿纸递上来
-  const chap = chapterSheet(W, s, '02', '草稿', T('b1', '纸') - 0.75);
+  const chap = chapterSheet(W, s, '02', '草稿', T('b1') - 0.2);
 
   // ── 人的草稿纸：从下面递上来 ──
-  const tPaper = T('b1', '纸') - 0.75;
+  const tPaper = T('b1') - 0.2;
   const A = W.sheet({ w: 1500, h: 900, y: 10, in: [tPaper, 'b', 1.0], out: [T('b3', '打草稿') - 0.55, 'b', 0.9] });
   const tW = T('b2', '写下来') - 0.5, tN = T('b2', '下一步') - 0.15, tJ = T('b2', '接着算') - 0.1;
   A.text('草稿', -640, -350, { fs: 46, cls: 'sec', t0: tPaper + 0.8 });
@@ -140,8 +140,8 @@ scene('draft', ({ root, s }) => {
       if (c < list[r]) { const idx = list.slice(0, r).reduce((x, y) => x + y, 0) + c, n_ = list.reduce((x, y) => x + y, 0); G.bar(bx + c * PW, RY0 + r * RGAP, TW, TH, { t0: lerp(ta, tb, idx / Math.max(1, n_ - 1)), d: 0.08, color: INK, ease: linear, r: 3 }); }
     }
   };
-  grid(Bx[0], tL0, tL1 - tL0, D1, b13a, b13b); grid(Bx[1], b2a - 0.6, 0.55, D2, b2a, b2b);
-  G.count(Bx[0] + 380, -420, { from: 0, to: 100, t0: T('b12', '一百道') - 0.25, t1: T('b12', '一百道') + 0.55, fs: 130, cls: 'b', align: 'c', suffix: ' 道乘法', off: off(T('b13') - 0.2) });
+  grid(Bx[0], tL0, tL1 - tL0, D1, b13a, b13b); grid(Bx[1], tL0, tL1 - tL0, D2, b2a, b2b);
+  G.count(30, -420, { from: 0, to: 100, t0: T('b12', '一百道') - 0.25, t1: T('b12', '一百道') + 0.55, fs: 130, cls: 'b', align: 'c', suffix: ' 道乘法', off: off(T('b13') - 0.2) });
   G.text('只报答案', Bx[0], -320, { fs: 72, t0: T('b13') - 0.1 });
   G.count(Bx[0] + 760, -320, { from: 0, to: 39, t0: b13a, t1: b13b, fs: 118, cls: 'b', align: 'r', suffix: ' 道' });
   G.text('先写过程', Bx[1], -320, { fs: 72, t0: b2a - 0.5 });
@@ -215,11 +215,11 @@ scene('draft', ({ root, s }) => {
   const LY = [-360, -210, -90, 30], TX = -450;
   const tWr = T('b16', '错了的') - 0.2, tBk = T('b16', '凑回') - 0.3, tBa = T('b16', '错数') - 0.05;
   J.text('答案', TX - 30, LY[0], { fs: 78, cls: 'g', align: 'r', t0: tWr });
-  J.tok('2394841296', { keys: drop(TX + 310, LY[0], tWr + 0.05, 150, 0.3), t0: tWr + 0.05, w: 620, d: 118, h: 26, fs: 104, tint: [RED, (t) => ramp(t, tBa, 0.1)] });
+  J.tok('2394841296', { keys: drop(TX + 310, LY[0], tWr + 0.05, 150, 0.3), t0: tWr + 0.05, w: 620, d: 118, h: 26, fs: 104, tint: [RED, (t) => ramp(t, tBa - 0.1, 0.5)] });
   J.text('25992 × (92000 + 138)', TX, LY[1], { fs: 78, type: [tWr + 0.5, tBk - 0.8] });
   J.text('= 2391264000 + 3586896', TX, LY[2], { fs: 78, type: [tBk - 0.7, tBk] });
   J.text('=', TX, LY[3], { fs: 78, t0: tBk + 0.05 });
-  J.tok('2394841296', { keys: drop(TX + 370, LY[3], tBk + 0.1, 150, 0.3), t0: tBk + 0.1, w: 620, d: 118, h: 26, fs: 104, tint: [RED, (t) => ramp(t, tBa, 0.1)] });
+  J.tok('2394841296', { keys: drop(TX + 370, LY[3], tBk + 0.1, 150, 0.3), t0: tBk + 0.1, w: 620, d: 118, h: 26, fs: 104, tint: [RED, (t) => ramp(t, tBa - 0.1, 0.5)] });
   sfx('pop', tBk + 0.4, { g: 0.22 });
   J.arrow([[TX + 700, LY[3]], [TX + 950, LY[3]], [TX + 950, LY[0]], [TX + 700, LY[0]]], { t0: tBa, d: 0.7, w: 8, color: RED, head: 28 });
   J.text('真正的和是', TX, 180, { fs: 62, cls: 'g', t0: Tend('b16') - 0.25 });
@@ -227,32 +227,26 @@ scene('draft', ({ root, s }) => {
   J.text('有点像人的脑补', 0, 330, { fs: 118, cls: 'b', align: 'c', t0: T('b16b') + 0.05, d: 0.5 });
   sfx('error', tBa, { g: 0.12 });
 
+  // ── 正在讲的区域亮起 ──
+  P.wash(-840, -450, 640, -230, T('b5', '拆成') + 0.6, T('b5b') - 0.2);
+
   // ── 镜头 ──
   const stk = (i) => ST[i].box;
-  const shPair = fitCam([stk(0), stk(1), D.p(SX(0) - 150, SL + 240), D.p(SX(1) + 180, SL + 250)], { pitch: 38, cz: D.Z + H * 0.3, kmax: 1.18 });
   const shFour = fitCam([stk(0), stk(3), D.p(SX(0) - 150, SL + 230), D.p(SX(3) + 170, SL + 260)], { pitch: 36, cz: D.Z + H * 0.28 });
   const shAll = fitCam([stk(0), stk(NS - 1), D.p(SX(0) - 150, SL + 620), D.p(SX(NS - 1) + 220, SL + 620)], { pitch: 30, cz: D.Z + H * 0.2 });
   W.cam([
-    [s.start + 0.25, chap.home(), 1.35],
-    [s.start + 1.7, chap.home({ k: 1.05 }), Math.min(2.6, tPaper - s.start - 1.7), linear],
-    [tPaper, A.home({ pitch: 18, cy: 20, k: 1.02 }), 1.0],
-    [tR, R.home({ pitch: 22, cx: X0 + 340, cy: Y0 + 60, k: 1.5 }), 1.0],
-    [t4a + 0.8, R.home({ pitch: 12, cy: 10, k: 0.86 }), Math.max(1.6, t4b - t4a), smooth],
-    [tP, P.home({ cx: -145, cy: -320, pitch: 14, k: 1.25 }), 1.0],
-    [T('b5b') - 0.3, P.home({ pitch: 8, cy: 20, k: 1.0 }), 0.9],
-    [tD, shPair, 1.1],
-    [t8 - 0.5, shFour, 1.4],
-    [tB - 0.1, shAll, Math.max(2.4, tBe - 0.55 - tB), smooth],
-    [tG, G.home({ cx: -280, pitch: 16, cy: -90, k: 1.04 }), 1.1],
-    [b2a - 0.75, G.home({ pitch: 14, cy: -30, k: 0.97 }), 1.0],
-    [tH0, Q.home({ k: 1.02 }), 1.0],
-    [T('b9b') - 0.1, Q.home({ pitch: 14, cy: 0 }), 0.9],
-    [T('b11') - 0.3, Q.home({ pitch: 10, cy: 90, k: 1.02 }), 1.0],
-    [tI, I.home({ pitch: 18, cy: -70, k: 1.0 }), 1.0],
-    [T('b15') - 0.35, I.home({ pitch: 12, cy: -40, k: 1.05 }), 0.9],
-    [tJ0, J.home({ pitch: 12, cy: -60, k: 1.0 }), 1.0],
-    [T('b16b') - 0.1, J.home({ pitch: 4, cy: 0, k: 0.98 }), 0.9],
-    [s.end - 0.95, HOME, 0.9],
+    [s.start + 0.02, chap.home(), 1.35, smooth],
+    [tPaper, A.home(), 1.25, smooth],
+    [tR, R.home({ cy: -90, k: 0.96 }), 1.25, smooth],
+    [tP, P.home({ cy: -65 }), 1.25, smooth],
+    [tD, shFour, 1.25, smooth],
+    // 强调规模：一摞接一摞，镜头慢慢退开看长度
+    [tB - 0.1, shAll, Math.max(2.8, tBe - 0.55 - tB), smooth],
+    [tG, G.home({ cy: -30, k: 0.97 }), 1.25, smooth],
+    [tH0, Q.home({ cy: 75 }), 1.25, smooth],
+    [tI, I.home({ cy: -30 }), 1.25, smooth],
+    [tJ0, J.home({ cy: -20 }), 1.25, smooth],
+    [s.end - 0.95, HOME, 0.9, smooth],
   ]);
   [tR, tP, tD, tG, tH0, tI, tJ0, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });

@@ -8,7 +8,7 @@ scene('pass', ({ root, s }) => {
   const W = makeWorld(world, HOME);
   const pulse = (ta, a = 34, d = 0.38) => (t) => a * Math.sin(Math.PI * clamp((t - ta) / d));
   const drop = (x, y, t, z = 220, d = 0.42) => [[t, x, y, z], [t + d * 1.4, x, y, 0]];
-  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, d);
+  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, Math.max(d, 0.4));
   const ANS = ['239', '4<span class="e">73</span>', '089', '6'];
 
   // ── 纸 A：它写了四块 ──
@@ -17,9 +17,9 @@ scene('pass', ({ root, s }) => {
   const XA = [-510, -170, 170, 510];
   A.text('25992 × 92138 =', 0, -300, { fs: 96, align: 'c', t0: T('a1') - 0.5 });
   const t1 = T('a1', '一小块');
-  const tR = [t1 - 0.05, T('a2', '三位三位') - 0.1, T('a2', '三位三位') + 0.5, T('a2', '四块') - 0.35];
+  const tR = [t1 - 0.05, T('a2', '错答案') + 0.2, T('a2', '三位三位') + 0.1, T('a2', '四块') - 0.35];
   ANS.forEach((a, i) => { A.tok(a, { keys: drop(XA[i], 10, tR[i]), t0: tR[i], w: 300, d: 180, h: 30, fs: 124, bump: i === 1 ? pulse(T('a2', '错答案') - 0.1, 30) : undefined }); sfx('pop', tR[i], { g: 0.2 }); });
-  A.cursor(XA[0] - 148, 10, 120, { t0: T('a1') + 0.1, off: (t) => (t < tR[0] ? 1 : 0) });
+  A.cursor(XA[0] - 148, 10, 120, { t0: T('a1') + 0.1, off: off(tR[0] - 0.25, 0.3) });
   A.cursor(XA[3] + 174, 10, 120, { t0: tR[3] + 0.4 });
   A.line([[XA[0] - 150, 118], [XA[0] + 150, 118]], { t0: T('a1', 'token') - 0.2, d: 0.35, w: 5 });
   const gl = A.text('token', XA[0] - 150, 210, { fs: 104, cls: 'b', t0: T('a1', 'token') - 0.1 });
@@ -109,7 +109,7 @@ scene('pass', ({ root, s }) => {
   const nosee = B.text('下一趟看不到', -60, EQY, { fs: 90, cls: 'e', t0: tH + 0.2, off: off(T('a10b') - 0.25) });
   sfx('error', tH, { g: 0.16 });
   // 写成字：落到纸上，再滑到下一摞的底部
-  const tZ = T('a10b', '写成字') - 0.3, x1b = x1;
+  const tZ = T('a10b', '写成字') - 0.3, x1b = x1 + 30;
   B.tok('中间结果', { keys: [[tZ, x1b, EQY, 150], [tZ + 0.35, x1b, EQY, 0], [wr - 0.1, x1b, EQY, 0], [wr + 0.45, x1b, fr0 + 34, 0]], t0: tZ, w: 236, d: 96, h: 16, fs: 48, off: off(wr + 0.5, 0.25) });
   const zi = B.text('写成字，下一趟才接得上', x1b + 150, EQY, { fs: 66, cls: 'b', t0: tZ + 0.1, off: off(T('a11') - 0.15) });
   sfx('pop', tZ + 0.35, { g: 0.24 }); sfx('whoosh', wr - 0.1, { g: 0.1 });
@@ -148,8 +148,8 @@ scene('pass', ({ root, s }) => {
   C.rect(mx0, PY - 88, mx1, PY + 88, { t0: T('a13', '加起来') - 0.2, d: 0.55, w: 5, off: off(T('a13c') - 0.35, 0.35) });
   const lSum = C.text('各部分乘出来的数，都要加到这两位上', 0, RY0 + 4 * 62 + 96, { fs: 60, align: 'c', t0: T('a13', '加起来') + 0.2, off: off(T('a13c') - 0.35, 0.35) });
   // 进位：一粒点从最右一位起，一跳一跳到中间
-  const tCr = T('a13b', '进位') - 0.15, hop = 0.42, ks = [[tCr, xc[9], PY - 112, 0]];
-  for (let i = 0; i < 4; i++) { const ta = tCr + i * hop, x_ = xc[9 - i], xn = xc[8 - i]; ks.push([ta + hop * 0.5, (x_ + xn) / 2, PY - 112, 80], [ta + hop, xn, PY - 112, 0]); sfx('tick', ta + hop, { g: 0.14 }); }
+  const tCr = T('a13b', '进位') - 0.15, hop = 0.42, ks = [[tCr, xc[9], PY - 108, 0]];
+  for (let i = 0; i < 4; i++) { const ta = tCr + i * hop, x_ = xc[9 - i], xn = xc[8 - i]; ks.push([ta + hop * 0.5, (x_ + xn) / 2, PY - 108, 36], [ta + hop, xn, PY - 108, 0]); sfx('tick', ta + hop, { g: 0.14 }); }
   C.tok('', { keys: ks, t0: tCr - 0.1, w: 52, d: 52, h: 12, cls: 'cube dk', off: off(T('a13c') - 0.2, 0.3) });
   C.text('进位，一位一位传过来', xc[9] + 64, PY - 190, { fs: 58, cls: 'b', align: 'r', t0: tCr - 0.2, off: off(T('a13c') - 0.2, 0.3) });
   // 这些都得在写这一块的那一趟里算完
@@ -170,43 +170,32 @@ scene('pass', ({ root, s }) => {
   // 它错的，正是中间两位：就是这一行上红着的两位
   C.rect(mx0, PY - 92, mx1, PY + 92, { t0: T('a15', '中间') - 0.15, d: 0.7, color: RED, w: 6 });
   sfx('error', T('a15', '中间'), { g: 0.12 });
+  C.text('只报答案', 0, 90, { fs: 60, cls: 'g', align: 'c', t0: T('a16') + 0.1 });
   C.text('不是不会算，', 62, 190, { fs: 112, align: 'r', t0: T('a16', '不是') - 0.1, d: 0.5 });
   C.text('是来不及算', 62, 190, { fs: 112, cls: 'b', t0: T('a16', '来不及算') - 0.2, d: 0.55 });
 
+  // ── 正在讲的区域亮起 ──
+  A.wash(XA[0] - 190, -110, XA[3] + 190, 140, T('a1', 'token') - 0.4, T('a2', '四块') + 0.3);
+  B.wash(XS[0] - 210, fr0 + 10, XS[3] + 210, EQY + 240, T('a11') + 0.3, T('a11') + 2.0);
+  B.wash(XS[0] - 210, fr0 + 10, XS[3] + 210, EQY + 240, T('a11b') + 0.2, T('a12') - 1.3);
+  C.wash(xc[0] - 110, -470, xc[3] + 110, PY + 180, tOn1, tOn2);
+  C.wash(xc[6] - 110, -470, xc[9] + 110, PY + 180, tOn2, T('a13') - 0.3);
+  C.wash(xc[0] - 110, PY + 105, xc[9] + 110, RY0 + 4 * 62 + 45, T('a13b') - 0.2, T('a13c') - 0.3);
+  C.wash(xc[0] - 110, PY - 115, xc[9] + 110, PY + 115, T('a15') + 0.1, T('a16') - 0.1);
+
   // ── 镜头 ──
-  const shA = fitCam([A.p(-720, -380), A.p(720, 440)], { pitch: 24, kmax: 1.1 });
-  const shOne = fitCam([S0.box, B.p(x0 - 330, EQY + 40), B.p(xR + 800, SL + 110), B.p(xR + 800, SY, H * 0.8)], { pitch: 44, cz: B.Z + H * 0.36, kmax: 1.1 });
   const shFour = fitCam([...ST.map((q) => q.box), B.p(XS[0] - 560, EQY + 60), B.p(XS[3] + 160, EQY + 230)], { pitch: 42, cz: B.Z + H * 0.3 });
   const shCenter = fitCam([S0.box, B.p(x0 - 720, EQY + 40), B.p(x0 + 720, EQY + 40), B.p(x0, SY, H + 60)], { pitch: 44, cz: B.Z + H * 0.36, kmax: 1.1 });
-  const shTok = fitCam([B.p(XS[0] - 200, SL - 100), B.p(XS[3] + 200, EQY + 240)], { pitch: 26, cz: B.Z, kmax: 1.35 });
-  const shPair = fitCam([ST[0].box, ST[1].box, B.p(XS[0] - 500, SL + 60), B.p(XS[1] + 520, EQY + 60), B.p(XS[1] + 760, SY, H * 0.5)], { pitch: 42, cz: B.Z + H * 0.32, kmax: 1.25 });
   W.cam([
-    [s.start + 0.25, chap.home(), 1.35],
-    [s.start + 1.7, chap.home({ k: 1.05 }), Math.min(2.6, T('a1') - 1.0 - s.start - 1.7), linear],
-    [T('a1') - 1.0, shA, 1.0],
-    [T('a1', 'token') - 0.35, A.home({ cx: -130, cy: 40, pitch: 20, k: 1.02 }), 1.0],
-    [T('a2') - 0.2, shA, 1.0],
-    [T('a3') - 0.8, { ...shCenter, cz: shCenter.cz - H * 0.22, k: shCenter.k * 1.1 }, 0.9],
-    [T('a3') + 0.15, shCenter, 2.0],
-    [T('a4', '最底下') - 0.2, { ...shCenter, cz: shCenter.cz - H * 0.16, k: shCenter.k * 1.08 }, 1.0],
-    [T('a5'), { ...shCenter, cz: shCenter.cz + H * 0.16, k: shCenter.k * 1.08 }, Math.max(1.2, T('a5b', '最顶上') - T('a5')), linear],
-    [T('a5b', '最顶上') + 1.0, shCenter, 1.0],
-    [T('a6') - 0.2, { ...shCenter, cz: shCenter.cz - H * 0.2, k: shCenter.k * 1.1 }, 0.8],
-    [T('a6', '从底到顶') + 0.2, { ...shCenter, cz: shCenter.cz + H * 0.2, k: shCenter.k * 1.1 }, 1.15, linear],
-    [T('a7') - 0.1, shOne, 1.0],
-    [T('a8') - 0.75, shFour, 1.7],
-    [T('a9') - 0.5, shPair, 1.3],
-    [T('a11') - 0.5, shTok, 1.3],
-    [T('a11b') + 0.15, shFour, 1.1],
-    [T('a12') - 0.8, C.home({ cy: -200, pitch: 10, k: 1.16 }), 1.1],
-    [T('a12', '只看') - 0.35, C.home({ cx: -30, cy: -200, pitch: 10, k: 1.16 }), 0.9],
-    [T('a12b', '只看') - 0.45, C.home({ cx: 30, cy: -200, pitch: 10, k: 1.16 }), 1.0],
-    [T('a13') - 0.35, C.home({ cx: 0, cy: 30, pitch: 6, k: 1.0 }), 1.0],
-    [T('a13c', '四七三') - 0.5, C.home({ cx: 0, cy: PY + 90, pitch: 6, k: 1.18 }), 1.0],
-    [T('a14') - 0.5, C.home({ cy: 20, pitch: 8, k: 1.0 }), 1.2],
-    [T('a15') - 0.3, C.home({ cy: -140, pitch: 12, k: 1.18 }), 1.2],
-    [T('a16') - 0.3, C.home({ cy: 10, pitch: 8, k: 1.0 }), 1.2],
-    [s.end - 0.95, HOME, 0.9],
+    [s.start + 0.02, chap.home(), 1.35, smooth],
+    [T('a1') - 1.0, A.home({ cy: 36 }), 1.25, smooth],
+    [T('a3') - 0.8, shCenter, 1.25, smooth],
+    // 第一块之后才退开看四摞：每一块都是这样一趟
+    [T('a8') - 0.75, shFour, 2.0, smooth],
+    [T('a12') - 0.8, C.home({ cy: 0 }), 1.25, smooth],
+    // 强调：错的正是这两位
+    [T('a15') - 0.3, C.home({ cy: -20, k: 1.1 }), 1.6, smooth],
+    [s.end - 0.95, HOME, 0.9, smooth],
   ]);
   [T('a3') - 0.8, T('a12') - 0.8, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
   sfx('chime', T('a16', '来不及算'), { g: 0.16 });

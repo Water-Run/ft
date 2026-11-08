@@ -8,14 +8,15 @@ scene('learn', ({ root, s }) => {
   const W = makeWorld(world, HOME);
   const pulse = (ta, a = 30, d = 0.38) => (t) => a * Math.sin(Math.PI * clamp((t - ta) / d));
   const drop = (x, y, t, z = 200, d = 0.36) => [[t, x, y, z], [t + d * 1.45, x, y, 0]];
-  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, d);
+  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, Math.max(d, 0.4));
   const LGREY = '#b4bac2';
 
   // ── 例题：放上来，又被抽走 ──
   const A = W.sheet({ in: [s.start + 0.25, 'r', 1.1], out: [T('r2') - 0.75, 'l', 1.0] });
   const chap = chapterSheet(W, s, '03', '越写越长', T('r1') - 1.0);
   A.text('提问', -800, -430, { fs: 48, cls: 'sec', t0: T('r1') - 0.7 });
-  A.text('先给例题，再问新题', 800, -430, { fs: 56, cls: 'g', align: 'r', t0: Tend('r1') + 0.45 });
+  A.text('先给例题，再问新题', 800, -430, { fs: 56, cls: 'g', align: 'r', t0: Tend('r1') + 0.45, off: off(T('r1b') - 0.1) });
+  A.text('几个月后：例题都不用给', 800, -430, { fs: 56, cls: 'b', align: 'r', t0: T('r1b', '几个月后') + 0.2 });
   A.line([[-800, -384], [800, -384]], { t0: T('r1') - 0.7, d: 0.6, w: 4, color: GRAY });
   const tE = T('r1') + 1.7, tEo = T('r1b', '不用给') - 0.25, CX = [-540, 0, 540];
   CX.forEach((x, i) => {
@@ -92,8 +93,8 @@ scene('learn', ({ root, s }) => {
   E.text('训练时', -740, -180, { fs: 76, cls: 'g', t0: T('r6', '训练时') - 0.2 });
   const tCard = T('r6', '解题过程') - 0.75, tNoS = T('r6', '不看') - 0.1;
   const tOut = Tend('r6') + 0.15;
-  E.tok('人写的解题过程', { keys: [[tCard - 0.3, 1700, -40, 0], [tCard + 0.3, 0, -40, 0], [tOut, 0, -40, 0], [tOut + 0.7, 2200, -40, 300]], t0: tCard - 0.3, w: 980, d: 150, h: 26, fs: 88 });
-  const strike = E.tok('', { keys: [[tNoS, 0, -40, 48], [tOut, 0, -40, 48], [tOut + 0.7, 2200, -40, 348]], t0: tNoS, fadeIn: 0.1, w: 980, d: 150, h: 1, cls: 'ghost' });
+  E.tok('人写的解题过程', { keys: [[tCard - 0.3, 1700, -40, 0], [tCard + 0.3, 0, -40, 0], [tOut, 0, -40, 0], [tOut + 0.7, 2200, -40, 300]], t0: tCard - 0.3, w: 980, d: 150, h: 26, fs: 88, off: off(tOut + 0.45, 0.25) });
+  const strike = E.tok('', { keys: [[tNoS, 0, -40, 48], [tOut, 0, -40, 48], [tOut + 0.7, 2200, -40, 348]], t0: tNoS, fadeIn: 0.1, w: 980, d: 150, h: 1, cls: 'ghost', off: off(tOut + 0.45, 0.25) });
   strike.top.innerHTML = '<svg width="980" height="150" style="position:absolute;left:0;top:0"><path d="M20 12 L960 138 M960 12 L20 138" stroke="#a5402d" stroke-width="12" fill="none"/></svg>';
   sfx('error', tNoS + 0.05, { g: 0.12 }); sfx('whoosh', tOut, { g: 0.14 });
   const tOk = T('r7b', '答没答对') - 0.3, tFm = T('r7b', '格式') - 0.3, tRw = T('r7b', '奖励') - 0.25;
@@ -178,7 +179,7 @@ scene('learn', ({ root, s }) => {
   sfx('tick', tOn, { g: 0.28 });
   I.text('开', 470, -510, { fs: 66, cls: 'b', t0: tOn + 0.2 });
   I.text('25992 × 92138 =', 0, -340, { fs: 108, align: 'c', t0: T('r9', '开头') - 0.2 });
-  I.text('不提醒它写过程', 0, -230, { fs: 60, cls: 'g', align: 'c', t0: T('r9', '不提醒') - 0.2, off: off(T('r10', '一大段思考') - 0.75, 0.3) });
+  I.text('不提醒它写过程', 0, -230, { fs: 60, align: 'c', t0: T('r9', '不提醒') - 0.2, off: off(T('r10', '一大段思考') - 0.75, 0.3) });
   const tTh2 = T('r10', '一大段思考') - 0.4, tAns = T('r10', '才报出') + 0.05, TX = -880;
   const TL = ['25992 = 26000 - 8', '26000 × 92138 - 8 × 92138 = 2,394,850,896', 'Check: 25000 + 992', '25000 × 92138 + 992 × 92138 = 2,394,850,896'];
   I.text('思考', TX, -205, { fs: 46, cls: 'sec', t0: tTh2 - 0.1 });
@@ -232,41 +233,29 @@ scene('learn', ({ root, s }) => {
   }
   L.text('多写一块，多走一趟', 0, 430, { fs: 118, cls: 'b', align: 'c', t0: T('r13', '多走') + 0.2, d: 0.5 });
 
+  // ── 正在讲的区域亮起 ──
+  A.wash(-810, -370, 810, -20, T('r1') + 0.3, T('r1b') - 0.2);
+  C.wash(-890, -430, 50, 190, T('r3') + 0.6, T('r4') - 0.2);
+  D.wash(-1060, -610, 1060, -240, tTh - 0.2, Tend('r5') + 0.5);
+  D.wash(-1060, 80, 1060, 320, tO - 0.2, tO + 1.8);
+  I.wash(-900, -570, 900, -170, T('r9', '开头') - 0.2, T('r10') - 0.4);
+
   // ── 镜头 ──
   const shM = fitCam([Mdl.box, C.p(-880, -420), C.p(Sx + 300, Sy + 330)], { pitch: 32, cz: C.Z + H * 0.3, kmax: 1.0 });
   const shL = fitCam([...LST.map((q) => q.box), L.p(-1200, 460), L.p(1200, 460)], { pitch: 34, cz: L.Z + SLH * 0.3 });
   W.cam([
-    [s.start + 0.25, chap.home(), 1.35],
-    [s.start + 1.7, chap.home({ k: 1.05 }), Math.min(2.6, T('r1') - 1.0 - s.start - 1.7), linear],
-    [T('r1') - 1.0, A.home({ cy: -60, pitch: 14 }), 1.0],
-    [T('r1') + 1.5, A.home({ cy: -110, pitch: 14, k: 1.06 }), 1.0],
-    [T('r1b') - 0.2, A.home({ cy: -60, pitch: 14 }), 0.9],
-    [T('r1c') - 0.3, A.home({ cy: 40, pitch: 10, k: 0.98 }), 1.0],
-    [tB, C.home({ cx: -90, pitch: 16, k: 1.06 }), 1.0],
-    [tC, C.home({ cx: -440, cy: -110, pitch: 14, k: 1.3 }), 1.0],
-    [T('r4') + 0.1, shM, 1.2],
-    [tD, D.home({ cx: -400, cy: -500, pitch: 16, k: 1.2 }), 1.0],
-    [T('r5', '发布') + 0.2, D.home({ cx: -160, cy: -300, pitch: 16, k: 0.9 }), 1.0],
-    [tTh, D.home({ cx: 60, cy: -300, pitch: 16, k: 0.9 }), Math.max(0.9, tThE - tTh), linear],
-    [T('r5b') - 0.35, D.home({ cx: 30, cy: -80, pitch: 8, k: 0.84 }), 1.1],
-    [T('r5b', '同是') - 0.2, D.home({ cx: -100, cy: -90, pitch: 8, k: 0.92 }), 0.9],
-    [T('r5b', '只对') - 0.35, D.home({ cx: -60, cy: -100, pitch: 8, k: 0.96 }), 1.0],
-    [T('r5c') - 0.35, D.home({ cx: 30, cy: -80, pitch: 8, k: 0.84 }), 1.0],
-    [tE0, E.home({ cy: -130, pitch: 12, k: 0.96 }), 1.0],
-    [T('r7b') - 0.3, E.home({ cy: 70, pitch: 16, k: 1.02 }), 1.0],
-    [tF, F.home({ cx: -100, cy: -60, pitch: 12, k: 0.84 }), 1.0],
-    [T('r8c') - 0.3, F.home({ cx: 90, cy: -60, pitch: 8, k: 0.84 }), 1.0],
-    [T('r8d') - 0.3, F.home({ cx: 0, cy: -20, pitch: 10, k: 0.84 }), 1.0],
-    [tG0, G.home({ cy: -90, pitch: 12 }), 1.0],
-    [T('r8f') - 0.3, G.home({ cy: 40, pitch: 8 }), 0.9],
-    [tH, M.home({ pitch: 18, cy: -130, k: 1.05 }), 1.0],
-    [tSw + 0.6, M.home({ pitch: 12, cy: 0, k: 0.94 }), 1.5, smooth],
-    [tI, I.home({ pitch: 10, cy: -380, k: 1.16 }), 1.0],
-    [T('r10') - 0.3, I.home({ pitch: 8, cy: 20, k: 0.9 }), 1.2, smooth],
-    [tJ, J.home({ cx: -300, cy: -20, pitch: 14, k: 1.12 }), 1.0],
-    [T('r12') - 0.5, J.home({ cx: 30, cy: -20, pitch: 12, k: 1.0 }), 1.3],
-    [tL, shL, 1.0],
-    [s.end - 0.95, HOME, 0.9],
+    [s.start + 0.02, chap.home(), 1.35, smooth],
+    [T('r1') - 1.0, A.home({ cy: 0 }), 1.25, smooth],
+    [tB, shM, 1.25, smooth],
+    [tD, D.home({ cy: -80, k: 0.84 }), 1.25, smooth],
+    [tE0, E.home({ k: 0.96 }), 1.25, smooth],
+    [tF, F.home({ cy: -60, k: 0.84 }), 1.25, smooth],
+    [tG0, G.home({ cy: -40 }), 1.25, smooth],
+    [tH, M.home({ cy: -70 }), 1.25, smooth],
+    [tI, I.home({ cy: -10, k: 0.9 }), 1.25, smooth],
+    [tJ, J.home({ cx: 15, cy: -20 }), 1.25, smooth],
+    [tL, shL, 1.25, smooth],
+    [s.end - 0.95, HOME, 0.9, smooth],
   ]);
   [tB, tD, tE0, tF, tG0, tH, tI, tJ, tL, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });
