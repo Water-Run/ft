@@ -47,10 +47,10 @@ scene('draft', ({ root, s, c0 }) => {
   const stepOff = (t) => 1 - ramp(t, T('b6') - 0.6, 0.4);
   const rowEnd = (y) => Math.max(...rows.filter((r) => r.y === y).map((r) => r.x + r.w / 2));
   const st1 = W.board('<div class="lbl l g">拆开</div>', rowEnd(RY) + 40, RY, 20, 0, -34);
-  const st2 = W.board('<div class="lbl l g">分别乘</div>', rowEnd(RY + 140) + 40, RY + 210, 20, 0, -34);
-  const st3 = W.board('<div class="lbl l g">再相加</div>', rowEnd(RY + 420) + 40, RY + 420, 20, 0, -34);
+  const st2 = W.board('<div class="lbl l k">分别乘</div>', rowEnd(RY + 140) + 40, RY + 210, 20, 0, -34);
+  const st3 = W.board('<div class="lbl l k">再相加</div>', rowEnd(RY + 420) + 40, RY + 420, 20, 0, -34);
   fade(W, st1, (t) => ramp(t, T('b5', '拆成') - 0.2, 0.3) * stepOff(t));
-  const st1b = W.board('<div class="lbl l">92000 + 138</div>', rowEnd(RY) + 200, RY, 20, 0, -34); fade(W, st1b, (t) => ramp(t, T('b5', '加一百') - 0.2, 0.3) * stepOff(t)); fade(W, st2, (t) => ramp(t, T('b5b', '分别跟') - 0.2, 0.3) * stepOff(t)); fade(W, st3, (t) => ramp(t, T('b5b', '加起来') - 0.2, 0.3) * stepOff(t));
+  const st1b = W.board('<div class="lbl l k">92000 + 138</div>', rowEnd(RY) + 200, RY, 20, 0, -34); fade(W, st1b, (t) => ramp(t, T('b5', '加一百') - 0.2, 0.3) * stepOff(t)); fade(W, st2, (t) => ramp(t, T('b5b', '分别跟') - 0.2, 0.3) * stepOff(t)); fade(W, st3, (t) => ramp(t, T('b5b', '加起来') - 0.2, 0.3) * stepOff(t));
   sfx('tick', T('b5', '拆成') - 0.2, { g: 0.15 }); sfx('tick', T('b5b', '相乘') - 0.2, { g: 0.15 }); sfx('tick', T('b5b', '加起来') - 0.2, { g: 0.15 });
   // 后面还有很多：一行行写满（约三百块），最后一块是答案。讲「三百多块」时镜头退远看全，讲具体步骤时再回到前四行
   const MR = 12, MC = 22, MY0 = RY + 4 * 140, MLH = 110, many = [];
@@ -150,7 +150,9 @@ scene('draft', ({ root, s, c0 }) => {
   sfx('error', T('b11', '全是点') + 0.6, { g: 0.14 });
   const dq = W.board('<div class="lbl">多出来的每一趟，写下的都是同一个点</div>', DX + 760, DY + 60, 0, -330, 34);
   fade(W, dq, (t) => ramp(t, T('b11') - 0.2, 0.4));
-  const dno = W.board('<div class="lbl l err">摞不起来</div>', DX + 8 * 190 + 100, DY - 150, H * 0.6, 0, -30);
+  const dno = W.board('<div class="lbl l k err">摞不起来</div>', DX + 8 * 190 + 100, DY - 150, H * 0.6, 0, -30);
+  const dmid = W.board('<div class="lbl l k">没有中间结果</div>', DX + 8 * 190 + 100, DY - 150, H * 0.6, 0, -150);
+  fade(W, dmid, (t) => ramp(t, T('b11', '中间结果') - 0.2, 0.4));
   fade(W, dno, (t) => ramp(t, T('b11', '没东西可接') - 0.3, 0.4));
   const dsrc = W.board('<div class="lbl">谷歌 2022</div>', DX + 760, DY - 150, H + 40, -360, -168);
   fade(W, dsrc, (t) => ramp(t, T('b9b', '谷歌') - 0.2, 0.4));
@@ -184,10 +186,10 @@ scene('draft', ({ root, s, c0 }) => {
   // 六位、七位数一道没对：只报答案那一格的最后两行，一圈红框
   rect(W, S, GX - 40, GY + 3 * 100 - 40, 20 * CW + 14, 180, (t) => ramp(t, T('b13', '六位') - 0.2, 0.4) * gridOff(t), 'e');
   sfx('error', T('b13', '六位') - 0.2, { g: 0.1 });
-  const g67 = W.board('<div class="lbl l err" style="transform:translateX(-100%)">六位、七位：</div>', GX + 9.5 * CW, GY + 4 * 100 + 60, 0, 0, 10);
-  const g67b = W.board('<div class="lbl l err">一道没对</div>', GX + 9.5 * CW, GY + 4 * 100 + 60, 0, 0, 10);
+  const g67 = W.board('<div class="lbl l k err" style="transform:translateX(-100%)">六位、七位：</div>', GX + 9.5 * CW, GY + 4 * 100 + 60, 0, 0, 10);
+  const g67b = W.board('<div class="lbl l k err">一道没对</div>', GX + 9.5 * CW, GY + 4 * 100 + 60, 0, 0, 10);
   fade(W, g67, (t) => ramp(t, T('b13', '六位') - 0.2, 0.4) * gridOff(t)); fade(W, g67b, (t) => ramp(t, T('b13', '一道没对') - 0.2, 0.4) * gridOff(t));
-  ['三位', '四位', '五位', '六位', '七位'].forEach((d, r) => { const l = W.board(`<div class="lbl l" style="transform:translate(-100%,-50%)">${d}</div>`, GX - 90, GY + r * 100, 0, 0, 0); fade(W, l, (t) => ramp(t, T('b12') + 0.3, 0.4) * gridOff(t)); });
+  ['三位', '四位', '五位', '六位', '七位'].forEach((d, r) => { const l = W.board(`<div class="lbl k" style="transform:translate(-100%,-50%);font-size:54px;padding:0 18px 3px">${d}</div>`, GX - 90, GY + r * 100, 0, 0, 0); fade(W, l, (t) => ramp(t, lerp(T('b12', '三位') - 0.2, T('b12', '七位') - 0.2, r / 4), 0.3) * gridOff(t)); });
 
   // ── 先答后写（三句带过）：一行先写答案的回答——只对 36 道；错了的，过程多半顺着错数往回圆；因为答案写下时，后面的过程还没写，接不上 ──
   const VX = DX + 2900, VY = DY, VQW = 520;
@@ -198,14 +200,18 @@ scene('draft', ({ root, s, c0 }) => {
     { fs: 42, lh: 112, maxW: 1500, x1st: VX + VQW + 40 });
   const vAns = VP.slice(2, 6), vFin = VP.slice(-4);
   VP.forEach((k, j) => { const ta = j < 6 ? v0 + 0.3 + j * 0.05 : lerp(v0 + 0.8, T('b14') + 1.6, (j - 6) / (VP.length - 7)); place(W, k.b.g, (t) => ({ x: k.x, y: k.y, z: 24 * (1 - ramp(t, ta, 0.25, ease.out3)), o: ramp(t, ta, 0.18) })); if (j % 3 === 0) sfx('key', ta, { g: 0.12 }); });
-  const vl1 = W.board('<div class="lbl l">先写答案：一百道只对 36 道</div>', VX, VY, 30, 0, -140);
-  fade(W, vl1, (t) => ramp(t, T('b14b', '三十六') - 0.3, 0.4));
+  const vl1 = W.board('<div class="lbl l k">先写答案：一百道只对 36 道</div>', VX, VY, 30, 0, -140);
+  fade(W, vl1, (t) => ramp(t, T('b14b', '只对') - 0.3, 0.4));
+  const vl0 = W.board('<div class="lbl l k">过程挪到答案后面</div>', VX, VY, 30, 0, -260);
+  fade(W, vl0, (t) => ramp(t, T('b14', '挪到') - 0.2, 0.4));
   // 错了的，过程多半顺着错数往回圆：红线印在纸上，从最后一行的行尾沿右边空白回到答案
   const vmr = Math.max(...VP.map((k) => k.x1)) + 70;
   trace(W, S, [[vFin[3].x1 + 14, vFin[3].y], [vmr, vFin[3].y], [vmr, VY], [vAns[3].x1 + 14, VY]], { color: '#a5402d', w: 6, draw: (t) => ramp(t, T('b16') + 0.2, Math.max(1.0, T('b16', '凑回') + 0.4 - T('b16') - 0.2), ease.io3) });
-  const vl2 = W.board('<div class="lbl g">算到最后，又凑回错数</div>', vmr + 30, (VY + vFin[3].y) / 2, 20, 0, -20);
+  const vl2 = W.board('<div class="lbl k">算到最后，又凑回错数</div>', vmr + 30, (VY + vFin[3].y) / 2, 20, 0, -20);
   fade(W, vl2, (t) => ramp(t, T('b16', '凑回') - 0.2, 0.4));
-  const vl4 = W.board('<div class="lbl l err" style="transform:translateX(-50%)">错数</div>', (vFin[0].x + vFin[3].x) / 2, vFin[0].y + 50, 0, 0, 10);
+  const vl5 = W.board('<div class="lbl l k">答案写下时，过程还没写</div>', vmr + 30, (VY + vFin[3].y) / 2, 20, 0, -120);
+  fade(W, vl5, (t) => ramp(t, T('b15', '答案写下') - 0.1, 0.4) * (1 - ramp(t, T('b16') - 0.3, 0.3)));
+  const vl4 = W.board('<div class="lbl l k err" style="transform:translateX(-50%)">错数</div>', (vFin[0].x + vFin[3].x) / 2, vFin[0].y + 50, 0, 0, 10);
   fade(W, vl4, (t) => ramp(t, T('b16', '错数') - 0.4, 0.3));
   // 接不上：答案下面一道挡板，往下伸的箭头碰到挡板缩回
   const vwY = VY + 56, vax = vAns[1].x;
@@ -213,9 +219,13 @@ scene('draft', ({ root, s, c0 }) => {
   const vOn = (t) => ramp(t, T('b15') - 0.2, 0.3);
   fade(W, vstop.e, vOn);
   trace(W, S, [[vax, VY - 20], [vax, vwY - 16]], { color: '#6a6a6a', w: 11, draw: (t) => ramp(t, T('b15', '后面') - 0.2, 0.5) * (1 - ramp(t, T('b15', '接不上') + 0.3, 0.5)), op: vOn });
-  const vl3 = W.board('<div class="lbl l err" style="transform:translate(-100%,-100%)">接不上</div>', vAns[3].x1, VY - 50, 20, 0, 0);
+  const vl3 = W.board('<div class="lbl l k err" style="transform:translate(-100%,-100%)">接不上</div>', vAns[3].x1, VY - 50, 20, 0, 0);
   fade(W, vl3, (t) => ramp(t, T('b15', '接不上') - 0.2, 0.3));
-  sfx('tick', T('b14b', '三十六') - 0.3, { g: 0.18 }); sfx('error', T('b15', '接不上') - 0.1, { g: 0.12 });
+  sfx('tick', T('b14b', '三十六') - 0.3, { g: 0.18 });
+  // 错了的：开头那个错答案的四块填红；脑补：一枚标签
+  vAns.forEach((k, i) => inkTop(W, k.b, `<span class="tx">${k.txt}</span>`, (t) => ramp(t, T('b16', '错了的') - 0.3 + i * 0.06, 0.3), 'e'));
+  const nb = W.board('<div class="lbl l k">有点像人的脑补</div>', vmr + 30, (VY + vFin[3].y) / 2, 20, 0, 70);
+  fade(W, nb, (t) => ramp(t, T('b16b') - 0.2, 0.4)); sfx('error', T('b15', '接不上') - 0.1, { g: 0.12 });
 
   // ── 镜头：人的草稿正俯视｜模型的回答纸面斜看｜接力侧面立面｜摞起来立面全景，「接得越高」时镜头跟着塔一边升一边仰起来｜一串点立面｜一百道斜俯 ──
   const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
@@ -230,8 +240,8 @@ scene('draft', ({ root, s, c0 }) => {
   const shRise1 = { cx: SX - offX, cy: SY, cz: ZEND, pitch: 90, yaw: 0, k: KR };
   const dotItems = [];
   for (let i = 0; i < 9; i++) dotItems.push(B(DX + i * 190, DY, 150, 100, 24), B(DX + i * 190, DY - 150, 150, 100, H + 20));
-  const shDots = fitCam(W, [...dotItems, { el: dq }, { el: dsrc }, { el: dpt }, { el: dres }, { el: dlen }, { el: dno }], { pitch: 84 });
-  const shVig = fitCam(W, [B(VX + VQW / 2, VY, VQW, 90, 26), ...VP.map((k) => B(k.x, k.y, k.w, k.d, 20)), [vmr + 40, VY, 0], [vmr + 40, vFin[3].y, 0], { el: vl1 }, { el: vl2 }, { el: vl3 }, { el: vl4 }], { pitch: 40 });
+  const shDots = fitCam(W, [...dotItems, { el: dq }, { el: dsrc }, { el: dpt }, { el: dres }, { el: dlen }, { el: dno }, { el: dmid }], { pitch: 84 });
+  const shVig = fitCam(W, [B(VX + VQW / 2, VY, VQW, 90, 26), ...VP.map((k) => B(k.x, k.y, k.w, k.d, 20)), [vmr + 40, VY, 0], [vmr + 40, vFin[3].y, 0], { el: vl1 }, { el: vl2 }, { el: vl3 }, { el: vl4 }, { el: nb }, { el: vl0 }, { el: vl5 }], { pitch: 40 });
   const shGrid = fitCam(W, [B(GX + 9.5 * CW, GY + 200, 20 * CW, 500, 40), B(GX + 1500 + 9.5 * CW, GY + 200, 20 * CW, 500, 40), [GX - 300, GY + 200, 0], [GX + 9.5 * CW, GY - 170, 130], [GX + 1500 + 9.5 * CW, GY - 170, 130], { el: g67 }, { el: g67b }], { pitch: 18 });
   W.cam([
     [mk.t0, mk.cam, 0.01],

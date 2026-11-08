@@ -27,8 +27,8 @@ scene('learn', ({ root, s }) => {
   const EXW = 1250;
   const exs = [0, 1].map((j) => { const b = block(S, `<span class="g">例题 ${j + 1}：…………　写好的一步步　…………　答案</span>`, { w: EXW, d: 90, h: 22, fs: 38 });
     place(W, b.g, (t) => ({ x: X0 + EXW / 2, y: AY - 270 + j * 120, z: 24 * (1 - ramp(t, T('r1', '例题') - 0.3 + j * 0.25, 0.4, ease.out3)), o: exOn(j)(t) * VA(t) })); return b; });
-  const exl = W.board('<div class="lbl g">谷歌 2022：先给几道写好步骤的例题</div>', X0, AY - 400, 30, 0, -40);
-  fade(W, exl, (t) => exOn(0)(t) * VA(t));
+  const exl = W.board('<div class="lbl l k">谷歌 2022：先给几道写好步骤的例题</div>', X0, AY - 500, 30, 0, -40);
+  fade(W, exl, (t) => ramp(t, T('r1') + 0.5, 0.4) * (1 - ramp(t, T('r1b', '不用给') - 0.3, 0.5)) * VA(t));
   sfx('pop', T('r1', '例题') - 0.3, { g: 0.18 });
   const A_ = para(S, X0, AY, ['A：'], { fs: 44, d: 100, h: 30, x1st: X0 + 600 });
   drop(A_[0], T('r1') + 0.6, VA);
@@ -51,20 +51,20 @@ scene('learn', ({ root, s }) => {
   const BX = PH[4].x1 + 220, BY_ = AY + 240, PCT = 7, barsL = [], barLabels = [];   // 在这一行的右前方，立起来不挡字
   [[10.4, '直接回答', 0], [40.7, '加这一句', 1]].forEach(([v, lab, i]) => {
     const hh = v * PCT, ta = T('r2', i ? '四成' : '一成') - 0.4;
-    const b = block(S, '', { w: 130, d: 100, h: hh, cls: 'cube' });
-    place(W, b.g, (t) => ({ x: BX + i * 220, y: BY_, z: 0, o: ramp(t, ta, 0.3) * VA(t) * (1 - ramp(t, T('r4') - 0.6, 0.4)) }));
+    const b = block(S, '', { w: 130, d: 100, h: hh, cls: 'cube dk' });
+    place(W, b.g, (t) => ({ x: BX + i * 320, y: BY_, z: 0, o: ramp(t, ta, 0.3) * VA(t) * (1 - ramp(t, T('r4') - 0.6, 0.4)) }));
     barsL.push(b);
-    const v_ = W.board(`<div class="lbl l" style="transform:translateX(-50%)">${v}%</div>`, BX + i * 220, BY_, hh + 20, 0, -80);
-    const l_ = W.board(`<div class="lbl l" style="transform:translateX(-50%)">${lab}</div>`, BX + i * 220, BY_ + 60, 0, 0, 6);
+    const v_ = W.board(`<div class="lbl l" style="transform:translateX(-50%)">${v}%</div>`, BX + i * 320, BY_, hh + 20, 0, -135);
+    const l_ = W.board(`<div class="lbl l" style="transform:translateX(-50%)">${lab}</div>`, BX + i * 320, BY_ + 60, 0, 0, 6);
     fade(W, v_, (t) => ramp(t, ta + 0.2, 0.4) * VA(t) * (1 - ramp(t, T('r4') - 0.6, 0.4))); fade(W, l_, (t) => ramp(t, ta, 0.4) * VA(t) * (1 - ramp(t, T('r4') - 0.6, 0.4))); barLabels.push(v_, l_);
     sfx('tick', ta + 0.2, { g: 0.25 });
   });
-  const src = W.board('<div class="lbl g" style="transform:translateX(-50%)">GSM8K 数学应用题 · text-davinci-002</div>', BX + 110, BY_ + 60, 0, 0, 96);
+  const src = W.board('<div class="lbl g" style="transform:translateX(-50%)">GSM8K 数学应用题 · text-davinci-002</div>', BX + 160, BY_ + 60, 0, 0, 96);
   fade(W, src, (t) => ramp(t, T('r2', '应用题') - 0.2, 0.4) * VA(t) * (1 - ramp(t, T('r4') - 0.6, 0.4)));
   // 人写进提问里的一句话
   rectOf(W, S, PH, 0, 4, (t) => ramp(t, T('r3', '提问里') - 0.3, 0.4) * (1 - ramp(t, sinkAt - 0.2, 0.3)), 'g');
-  const hw = W.board('<div class="lbl l g">人写进提问里</div>', PH[0].x0, AY, 30, 0, 50);
-  fade(W, hw, (t) => ramp(t, T('r3', '提问里') - 0.2, 0.4) * (1 - ramp(t, sinkAt - 0.2, 0.3)));
+  const hw = W.board('<div class="lbl l k">人写进提问里</div>', PH[0].x0, AY, 30, 0, 50);
+  fade(W, hw, (t) => ramp(t, T('r3') + 0.2, 0.4) * (1 - ramp(t, sinkAt - 0.2, 0.3)));
   // 模型：一摞层；那几块字沉进去，层从下往上一张张变深
   ream(W, S, 360, -640, { w: 760, d: 300, n: 32, gap: 15, rise: (t) => ramp(t, T('r4') + 0.3, 0.8, ease.out3),
     fill: (t) => ramp(t, sinkAt + 1.0, 1.4, (k) => k), op: VA });
@@ -114,7 +114,7 @@ scene('learn', ({ root, s }) => {
   const NB = 16;
   for (let i = 0; i < NB; i++) {
     const hh = 30 + 560 * Math.pow(i / (NB - 1), 1.25) * (0.86 + 0.28 * rnd());
-    const b = block(S, '', { w: 70, d: 70, h: hh, cls: 'cube' });
+    const b = block(S, '', { w: 70, d: 70, h: hh, cls: 'cube dk' });
     const ta = T('r8') + 0.3 + i * 0.17;
     place(W, b.g, (t) => ({ x: X0 + 120 + i * 104, y: TY, z: 0, o: ramp(t, ta, 0.3) * VBt(t) }));
   }
@@ -127,12 +127,12 @@ scene('learn', ({ root, s }) => {
   sfx('riser', T('r8', '越写') - 1.4, { g: 0.12 });
   // 训练中的正确率（R1-Zero，AIME 2024）：第一根和最后一根上方标出
   const accOn = (t) => ramp(t, T('r8c', '一成半') - 0.3, 0.4) * VBt(t);
-  const acc0 = W.board('<div class="lbl l" style="transform:translateX(-50%)">正确率 15.6%</div>', X0 + 120, TY, 120, 0, -40);
-  const acc1 = W.board('<div class="lbl l" style="transform:translateX(-50%)">正确率 77.9%</div>', X0 + 120 + (NB - 1) * 104, TY, 680, 0, -40);
-  const accL = W.board('<div class="lbl g" style="transform:translateX(-50%)">数学竞赛题 AIME 2024</div>', X0 + 120 + (NB - 1) * 104, TY, 680, 0, -110);
+  const acc0 = W.board('<div class="lbl l k" style="transform:translateX(-50%)">正确率 15.6%</div>', X0 + 120, TY, 120, 0, -40);
+  const acc1 = W.board('<div class="lbl l k" style="transform:translateX(-50%)">正确率 77.9%</div>', X0 + 120 + (NB - 1) * 104, TY, 680, 0, -40);
+  const accL = W.board('<div class="lbl k" style="transform:translateX(-50%)">数学竞赛题 AIME 2024</div>', X0 + 120 + (NB - 1) * 104, TY, 680, 0, -110);
   fade(W, acc0, accOn); fade(W, accL, (t) => ramp(t, T('r8c') - 0.1, 0.4) * VBt(t)); fade(W, acc1, (t) => ramp(t, T('r8c', '将近八成') - 0.3, 0.4) * VBt(t));
   sfx('tick', T('r8c', '一成半') - 0.3, { g: 0.16 }); sfx('chime', T('r8c', '将近八成') - 0.3, { g: 0.16 });
-  const wt = W.board('<div class="lbl">「Wait, wait. Wait.」　等等，回头重想</div>', X0 + 120 + 6 * 104, TY, 820, 0, -40);
+  const wt = W.board('<div class="lbl l k">「Wait, wait. Wait.」　等等，回头重想</div>', X0 + 120 + 6 * 104, TY, 820, 0, -40);
   fade(W, wt, (t) => ramp(t, T('r8d', '等等') - 0.3, 0.4) * VBt(t));
   sfx('pop', T('r8d', '等等') - 0.3, { g: 0.2 });
   // AIME 2024 柱图：GPT-4o 9.3%、o1 79.2%；讲到 R1 公开发布时再立起 R1 79.8%
@@ -144,18 +144,18 @@ scene('learn', ({ root, s }) => {
   const aimeEls = [];
   AIME.forEach(([v, lab, ta, tn, tv], i) => {
     const hh = v * APCT, on = (t) => ramp(t, ta, 0.4) * chartOn(t), onN = (t) => ramp(t, tn, 0.4) * chartOn(t);
-    const b = block(S, '', { w: 130, d: 100, h: hh, cls: i === 1 || i === 2 ? 'cube' : 'cube no' });
+    const b = block(S, '', { w: 130, d: 100, h: hh, cls: 'cube dk' });
     place(W, b.g, (t) => ({ x: AX + i * 240, y: AYc, z: 0, o: on(t) }));
     const v_ = W.board(`<div class="lbl l" style="transform:translateX(-50%)">${v}%</div>`, AX + i * 240, AYc, hh + 20, 0, -80);
     const l_ = W.board(`<div class="lbl l" style="transform:translateX(-50%)">${lab}</div>`, AX + i * 240, AYc + 60, 0, 0, 6);
     fade(W, v_, (t) => ramp(t, tv, 0.4) * chartOn(t)); fade(W, l_, onN); aimeEls.push(v_, l_);
     sfx('tick', tv, { g: 0.22 });
   });
-  const at = W.board('<div class="lbl g" style="transform:translateX(-50%)">数学竞赛题 AIME 2024 · 正确率</div>', AX + 240, AYc + 60, 0, 0, 96);
+  const at = W.board('<div class="lbl k" style="transform:translateX(-50%)">数学竞赛题 AIME 2024 · 正确率</div>', AX + 240, AYc + 60, 0, 0, 96);
   fade(W, at, (t) => ramp(t, T('r5b', '竞赛题') - 0.2, 0.4) * chartOn(t));
-  const oai = W.board('<div class="lbl g" style="transform:translateX(-50%)">都是 OpenAI</div>', AX + 120, AYc + 60, 0, 0, 168);
+  const oai = W.board('<div class="lbl k" style="transform:translateX(-50%)">都是 OpenAI</div>', AX + 120, AYc + 60, 0, 0, 168);
   fade(W, oai, (t) => ramp(t, T('r5b', '同是') - 0.2, 0.4) * win2(t, 0, T('r6') - 0.3));
-  const rel = W.board('<div class="lbl">2025 年 1 月　公开发布</div>', AX + 480, AYc, 79.8 * APCT + 20, 0, -150);
+  const rel = W.board('<div class="lbl l k">2025 年 1 月　公开发布</div>', AX + 480, AYc, 79.8 * APCT + 20, 0, -150);
   fade(W, rel, (t) => ramp(t, T('r8e', '公开发布') - 0.3, 0.4) * chartOn(t));
   // 今天的主流大模型：几行「模型 → 思考 → 答案」，一行行出现
   const MY0 = AYc + 420;
@@ -166,7 +166,7 @@ scene('learn', ({ root, s }) => {
     P.forEach((k) => drop(k, T('r8b', '主流') - 0.3 + j * 0.22, mainOn(j))); mrows.push(...P);
     P.slice(1, -1).forEach((k) => glow(W, k.b, (t) => ramp(t, T('r8b', '思考模式') - 0.3 + j * 0.1, 0.3) * mainOn(j)(t)));
   }
-  const mainL = W.board('<div class="lbl">今天的主流大模型：回答之前，先写思考</div>', AX - 160, MY0, 30, 0, -80);
+  const mainL = W.board('<div class="lbl l k">今天的主流大模型：回答之前，先写思考</div>', AX - 160, MY0 - 110, 30, 0, -60);
   fade(W, mainL, (t) => ramp(t, T('r8b', '思考模式') - 0.3, 0.4) * mainOn(0)(t));
   sfx('riser', T('r8b') - 0.2, { g: 0.12 });
 
@@ -236,7 +236,7 @@ scene('learn', ({ root, s }) => {
   //    验算两遍（纸面）｜二十五道（斜俯）｜五根柱子（立面）｜多写一块＝多走一趟（升到最高那根的顶上） ──
   const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
   const phrase = [B(X0 + 280, AY, 560, 100, 30), ...A_.map((k) => B(k.x, k.y, k.w, 100, 30)), ...PH.map((k) => B(k.x, k.y, k.w, 100, 30))];
-  const bars = [B(BX, BY_, 130, 100, 10.4 * PCT + 120), B(BX + 220, BY_, 130, 100, 40.7 * PCT + 120)];
+  const bars = [B(BX, BY_, 130, 100, 10.4 * PCT + 120), B(BX + 320, BY_, 130, 100, 40.7 * PCT + 120)];
   const exBox = exs.map((b, j) => B(X0 + EXW / 2, AY - 270 + j * 120, EXW, 90, 22));
   const shAskNear = fitCam(W, [...phrase, ...exBox, { el: exl }, { el: cite }, { el: zh }], { pitch: 44, yaw: -4, kmax: 1.5 });
   const shAsk = fitCam(W, [...phrase, ...bars, ...barLabels.map((e) => ({ el: e })), { el: src }, { el: cite }, { el: zh }, { el: hw }], { pitch: 46, yaw: -4, kmax: 1.4 });

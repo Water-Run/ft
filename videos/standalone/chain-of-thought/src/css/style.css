@@ -164,3 +164,17 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 .glow.e { box-shadow: inset 0 0 0 4px var(--err); }
 .seg.ww { height: 8px; margin-top: -4px; }
 .seg.e.ww { background: var(--err); }
+/* 重点标注：深底白字（错误用红底）。每段停留里跟着旁白出现一处，画面才有足够分量的变化 */
+.lbl.k { background: #1c1c1c; color: #fafafa; padding: 6px 22px 10px; border-radius: 12px; }
+.lbl.k .g, .lbl.k.g { color: #c8c8c8; }
+.lbl.k .err { color: #ffb4a6; }
+.lbl.k b { color: #fff; }
+.lbl.k.err { background: var(--err); color: #fff; }
+/* 墨块：方块顶面填深、字反白（估出的两位、被点到的那几块） */
+.blk.inv .tp { background: #1c1c1c; color: #fafafa; box-shadow: none; }
+.blk.inv .tp .tx { color: #fafafa; }
+.inkv { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #1c1c1c; color: #fafafa; display: flex; align-items: center; justify-content: center; }
+.inkv.e { background: var(--err); }
+/* 深色柱：柱状图里的数据柱 */
+.blk.cube.dk .tp { background: #2e2e2e; box-shadow: inset 0 0 0 1.5px #111; }
+.blk.cube.dk .fr, .blk.cube.dk .sd, .blk.cube.dk .bk { background: #4a4a4a; box-shadow: inset 0 0 0 1px #222; }

@@ -357,3 +357,10 @@ function glow(W, b, fn, cls = '') {
   fade(W, e, fn);
   return e;
 }
+
+// 墨块：在方块的某一面（默认顶面）盖一层深底、反白的同样文字；fn(t) 为透明度。cls 'e' 为红底
+function inkTop(W, b, html, fn, cls = '', face) {
+  const e = h('div', 'inkv' + (cls ? ' ' + cls : ''), face || b.top, html);
+  fade(W, e, fn);
+  return e;
+}

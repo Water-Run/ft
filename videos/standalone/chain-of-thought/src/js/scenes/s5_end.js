@@ -49,8 +49,8 @@ scene('end', ({ root, s }) => {
     const ix = thinkT.filter((k) => k.line === ln).map((k) => k.i);
     rectOf(W, S, M, ix[0], ix[ix.length - 1], thinkOn, 'g');
   });
-  const tl = W.board('<div class="lbl l" style="transform:translateX(-100%)">思考</div>', MX - 40, MY + 62, 30, 0, -40);
-  const tl2 = W.board('<div class="lbl l" style="transform:translateX(-100%)">＝ 写下来</div>', MX - 40, MY + 62, 30, 0, 40);
+  const tl = W.board('<div class="lbl l k" style="transform:translateX(-100%)">思考</div>', MX - 40, MY + 62, 30, 0, -40);
+  const tl2 = W.board('<div class="lbl l k" style="transform:translateX(-100%)">＝ 写下来</div>', MX - 40, MY + 62, 30, 0, 40);
   fade(W, tl, thinkOn); fade(W, tl2, (t) => ramp(t, T('e6', '写下来') - 0.3, 0.4) * fadeOut(t));
   ansG.slice(2).forEach((k, i) => glow(W, k.b, (t) => ramp(t, T('e6', '写下来') + 0.5 + i * 0.08, 0.25) * fadeOut(t)));
   sfx('tick', T('e6', '思考') - 0.2, { g: 0.2 }); sfx('chime', T('e6', '写下来') + 0.5, { g: 0.18 });

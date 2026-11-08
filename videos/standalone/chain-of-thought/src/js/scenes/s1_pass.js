@@ -45,6 +45,7 @@ scene('pass', ({ root, s, c0 }) => {
   ANS.forEach((txt, i) => {
     const b = block(S, txt, { w: BW, d: BD, h: 30, fs: 58, cls: i === 1 ? 'err' : '' });
     glow(W, b, (t) => ramp(t, T('a2', '三位三位') - 0.1 + i * 0.22, 0.2) * (1 - ramp(t, T('a2', '四块') - 0.2, 0.3)));
+    if (i === 1) inkTop(W, b, txt, (t) => ramp(t, T('a2', '错答案') - 0.2, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)), 'e');
     const ta = T('a1', '一小块') + i * 0.2;
     place(W, b.g, (t) => ({ x: XS[i], y: YB, z: 70 * (1 - ramp(t, ta, 0.45, ease.out3)), o: ramp(t, ta, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)) }));
   });
@@ -52,11 +53,13 @@ scene('pass', ({ root, s, c0 }) => {
   const slot0 = seg(S, 'w'); slot0.set([XS[0] - BW / 2, YB + BD / 2 + 8, 0.8], [XS[0] + BW / 2, YB + BD / 2 + 8, 0.8]);
   fade(W, slot0.e, (t) => ramp(t, T('a4') + 0.1, 0.4) * (1 - ramp(t, T('a5b', '最顶上'), 0.5)));
   rect(W, S, QX - QW / 2 - 12, YB - BD / 2 - 12, QW + 24, BD + 24, (t) => ramp(t, T('a4', '题目') - 0.2, 0.4) * (1 - ramp(t, T('a5') - 0.2, 0.5)));
-  const gl = W.board('<div class="lbl"><b>token</b>　模型一次写出的一小块</div>', XS[0] - BW / 2, YB + BD / 2 + 30, 0, 0, 0);
+  const gl = W.board('<div class="lbl k"><b>token</b></div>', XS[0] - BW / 2, YB + BD / 2 + 30, 0, 0, 0);
+  const glD = W.board('<div class="lbl k">模型一次写出的一小块</div>', XS[0] - BW / 2 + 190, YB + BD / 2 + 30, 0, 0, 0);
   gl.dataset.gloss = 'token';
   rect(W, S, XS[0] - BW / 2 - 12, YB - BD / 2 - 12, BW + 24, BD + 24, (t) => ramp(t, T('a1', 'token') - 0.3, 0.4) * (1 - ramp(t, T('a2', '四块') - 0.3, 0.4)));
   fade(W, gl, (t) => ramp(t, T('a1', 'token') - 0.1, 0.4) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
-  const tri = W.board('<div class="lbl g" style="transform:translateX(-50%)">三位三位写</div>', (XS[0] + XS[3]) / 2, YB, 40, 0, -110);
+  fade(W, glD, (t) => ramp(t, T('a1', '一小块') - 0.1, 0.4) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
+  const tri = W.board('<div class="lbl l k" style="transform:translateX(-50%)">三位三位写</div>', (XS[0] + XS[3]) / 2, YB, 40, 0, -110);
   fade(W, tri, (t) => ramp(t, T('a2', '三位三位') - 0.2, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
   const four = W.board('<div class="lbl g">四块</div>', XS[3] + 110, YB, 40, 0, -20);
   fade(W, four, (t) => ramp(t, T('a2', '四块') - 0.1, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
@@ -107,27 +110,34 @@ scene('pass', ({ root, s, c0 }) => {
   const dimOp = (t) => ramp(t, T('a6', '一趟') - 0.5, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4));
   dims.forEach((d) => fade(W, d.e, dimOp));
   for (let i = 8; i < NP; i += 8) { const tk = seg(S, 'w'); tk.set([dimX, dimY, i * GAP], [dimX + 14, dimY, i * GAP]); const tt = lerp(T('a7b') - 0.1, T('a7b', '九十六') - 0.2, i / NP); fade(W, tk.e, (t) => ramp(t, tt, 0.25) * (1 - ramp(t, T('a8') - 0.2, 0.4))); }   // 层数：刻度一格格出现
-  const lb1 = W.board('<div class="lbl">一趟</div>', dimX + 16, dimY, H * 0.55, 0, -22);
+  const lb1 = W.board('<div class="lbl k">一趟</div>', dimX + 16, dimY, H * 0.55, 0, -22);
   fade(W, lb1, dimOp);
-  const ud = W.board('<div class="lbl g">从底到顶　↑</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 0);
+  const ud = W.board('<div class="lbl k">从底到顶　↑</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 0);
   ud.firstElementChild.style.transform = 'translateX(-100%)';
   fade(W, ud, (t) => ramp(t, T('a6', '从底到顶') - 0.2, 0.3) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
-  const fx = W.board('<div class="lbl g">层数固定</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 70);
+  const fx = W.board('<div class="lbl k">层数固定</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 70);
   fx.firstElementChild.style.transform = 'translateX(-100%)';
-  fade(W, fx, (t) => ramp(t, T('a7', '定了') - 0.2, 0.3) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
-  const lb2 = W.board('<div class="lbl g">GPT-3：96 层</div>', dimX + 16, dimY, H * 0.55, 0, 24);
-  fade(W, lb2, (t) => ramp(t, T('a7b', '九十六') - 0.3, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
+  fade(W, fx, (t) => ramp(t, T('a7', '层数') - 0.1, 0.3) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
+  const lb2 = W.board('<div class="lbl k">GPT-3：96 层</div>', dimX + 16, dimY, H * 0.55, 0, 40);
+  fade(W, lb2, (t) => ramp(t, T('a7b') + 0.15, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
 
   // ── 「画面上每一片，代表一层」：第 48 片的纸边描深，右边标「一层」 ──
   const LZ = 48 * GAP, lyOn = (t) => ramp(t, T('a3b', '每一片') - 0.2, 0.4) * (1 - ramp(t, T('a4', '最底下') - 0.4, 0.4));
   const lyE = seg(S, 'w'); lyE.set([XS[0] - BW / 2, YR + BD / 2 + 1, LZ], [XS[0] + BW / 2, YR + BD / 2 + 1, LZ]); fade(W, lyE.e, lyOn);
   const lyL = seg(S, ''); lyL.set([XS[0] + BW / 2 + 4, YR + BD / 2 + 1, LZ], [XS[0] + BW / 2 + 60, YR + BD / 2 + 1, LZ]); fade(W, lyL.e, lyOn);
-  const layer = W.board('<div class="lbl">一层</div>', XS[0] + BW / 2 + 70, YR + BD / 2, LZ, 0, -30); fade(W, layer, lyOn);
+  const layer = W.board('<div class="lbl k">一层</div>', XS[0] + BW / 2 + 70, YR + BD / 2, LZ, 0, -30); fade(W, layer, lyOn);
   sfx('tick', T('a3b', '每一片'), { g: 0.2 });
+  const rdq = W.board('<div class="lbl l k" style="transform:translateX(-50%)">读入题目</div>', QX, YB, 30, 0, -140);
+  fade(W, rdq, (t) => ramp(t, T('a4') + 0.2, 0.4) * (1 - ramp(t, T('a5b') - 0.2, 0.4)));
+  const nxt = W.board('<div class="lbl k">每层接着下面一层往上算</div>', XS[0] - BW / 2 - 30, YR, H * 0.82, 0, 0);
+  nxt.firstElementChild.style.transform = 'translateX(-100%)';
+  fade(W, nxt, (t) => ramp(t, T('a5', '接着') - 0.2, 0.4) * (1 - ramp(t, T('a6') - 0.3, 0.4)));
 
   // ── 四摞一样高：顶上一条细线 ──
   const ceil = seg(S, 'g'); ceil.set([XS[0] - 90, YR, H + 3], [XS[3] + 90, YR, H + 3]);
   fade(W, ceil.e, (t) => ramp(t, T('a8b', '工夫') - 0.4, 0.5) * (1 - ramp(t, T('a9') + 0.2, 0.4)));
+  const only = W.board('<div class="lbl l k" style="transform:translateX(-50%)">都只有这一趟</div>', (XS[0] + XS[3]) / 2, YR, H + 30, 0, -40);
+  fade(W, only, (t) => ramp(t, T('a8b', '一趟') - 0.3, 0.4) * (1 - ramp(t, T('a9') + 0.2, 0.4)));
 
   // ── 只往上走、写成字才能接力：一条锯齿线——沿一摞往上，到顶落成字，再从下一摞底下往上 ──
   const relay = svg('path', { fill: 'none', stroke: '#1c1c1c', 'stroke-width': 3, 'stroke-linejoin': 'round' }, wl.s);
@@ -151,6 +161,10 @@ scene('pass', ({ root, s, c0 }) => {
     direct.setAttribute('d', `M${wl.X(XS[0]) + 10} ${top + 10} L${(wl.X(XS[0]) + 10 + (wl.X(XS[1]) - 20 - wl.X(XS[0])) * k).toFixed(1)} ${(top + 10 + (bot - 20 - top) * k).toFixed(1)}`);
     direct.setAttribute('opacity', o.toFixed(3)); xmark.setAttribute('opacity', (o * ramp(t, T('a10') + 1.0, 0.2)).toFixed(3)); });
   sfx('error', T('a10', '接着用') - 0.1, { g: 0.12 });
+  const midR = W.board('<div class="lbl l k" style="transform:translateX(-50%)">中间结果</div>', XS[0], YR, H + 30, 0, -40);
+  fade(W, midR, (t) => ramp(t, T('a10', '中间结果') - 0.2, 0.4) * (1 - ramp(t, T('a10', '接着用') - 0.65, 0.3)));
+  const noPass = W.board('<div class="lbl l k err" style="transform:translateX(-50%)">传不下去</div>', (XS[0] + XS[1]) / 2, YR, H + 30, 0, -40);
+  fade(W, noPass, (t) => ramp(t, T('a10', '接着用') - 0.3, 0.4) * (1 - ramp(t, T('a10b') + 0.4, 0.4)));
   const relayLen = relay.getTotalLength();
   const probe = svg('path', { d: 'M0 0' }, wl.s);
   const cum = marks.slice(1).map((dd) => { probe.setAttribute('d', dd); return probe.getTotalLength() / relayLen; });
@@ -172,18 +186,18 @@ scene('pass', ({ root, s, c0 }) => {
     let last = null;
     W.up((t) => { const k = relayK(t); const on = t >= T('a9') && t < T('a11') - 0.2 && k > cum[2 * i] + (cum[2 * i + 1] - cum[2 * i]) * 0.45 && k <= cum[2 * i + 1] + 0.01; if (on !== last) { b.g.classList.toggle('hot', on); last = on; } });
   });
-  const up1 = W.board('<div class="lbl">只往上走</div>', XS[0] - BW / 2 - 20, YR, H * 0.5, -150, -20);
+  const up1 = W.board('<div class="lbl l k" style="transform:translateX(-100%)">只往上走</div>', XS[0] - BW / 2 - 20, YR, H * 0.5, 0, -20);
   fade(W, up1, (t) => ramp(t, T('a9', '往上') - 0.2, 0.4) * (1 - ramp(t, T('a10b', '写成字') - 0.4, 0.4)));
-  const wr = W.board('<div class="lbl">写成字，才接得上</div>', XS[0], YB + BD / 2, 0, -120, 30);
+  const wr = W.board('<div class="lbl l k">写成字，才接得上</div>', XS[0], YB + BD / 2, 0, -120, 30);
   fade(W, wr, (t) => ramp(t, T('a10b', '写成字') - 0.1, 0.4) * (1 - ramp(t, T('a11') + 0.4, 0.4)));
   sfx('tick', T('a10b', '写成字'), { g: 0.3 });
   // a11、a11b：四块全是答案本身；中间结果一块也没写；每一块只靠自己那一趟
   const r11Off = (t) => 1 - ramp(t, T('a12') - 0.3, 0.4);
-  const lb4 = W.board('<div class="lbl l">四块全是答案</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, -20);
+  const lb4 = W.board('<div class="lbl l k">四块全是答案</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, -20);
   fade(W, lb4, (t) => ramp(t, T('a11', '答案本身') - 0.3, 0.4) * r11Off(t));
-  const lb5 = W.board('<div class="lbl l g">中间结果：0 块</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, 70);
+  const lb5 = W.board('<div class="lbl l k">中间结果：0 块</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, 70);
   fade(W, lb5, (t) => ramp(t, T('a11b', '一块也没写') - 0.3, 0.4) * r11Off(t));
-  const lb6 = W.board('<div class="lbl l">每块只靠自己这一趟</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, 160);
+  const lb6 = W.board('<div class="lbl l k">每块只靠自己这一趟</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, 160);
   fade(W, lb6, (t) => ramp(t, T('a11b', '自己那一趟') - 0.3, 0.4) * r11Off(t));
   sfx('tick', T('a11', '答案本身') - 0.3, { g: 0.16 }); sfx('tick', T('a11b', '一块也没写') - 0.3, { g: 0.16 });
 
@@ -205,11 +219,13 @@ scene('pass', ({ root, s, c0 }) => {
   // 开头、末尾：数字下面各一道括线，标出只看哪两段
   const BRY = PY + 134;
   const hOn = (t) => ramp(t, T('a12', '开头几位') - 0.2, 0.4) * pOff(t), tOn = (t) => ramp(t, T('a12b', '末尾几位') - 0.2, 0.4) * pOff(t);
+  const digBand = (i0, i1, ta) => { const e = h('div', 'p3', S); css(e, { width: ((i1 - i0) * DW - 4) + 'px', height: '132px', background: '#c9c9c9', borderRadius: '8px', transform: `translate3d(${PX + i0 * DW + 2}px, ${PY - 8}px, 0.1px)` }); fade(W, e, (t) => ramp(t, ta, 0.4) * limOff(t)); return e; };
+  digBand(0, 4, T('a12', '差不多') - 0.3); digBand(6, 10, T('a12b', '算出') - 0.3);
   const brHead = seg(S, 'w'); brHead.set([PX + 6, BRY, 0.8], [PX + 4 * DW - 6, BRY, 0.8]); fade(W, brHead.e, hOn);
   const brTail = seg(S, 'w'); brTail.set([PX + 6 * DW + 6, BRY, 0.8], [PX + 10 * DW - 6, BRY, 0.8]); fade(W, brTail.e, tOn);
-  const hl = W.print('<div class="lbl">只看开头：2599 × 9214</div>', PX, PY + 156); fade(W, hl, (t) => ramp(t, T('a12', '只看') - 0.2, 0.4) * limOff(t));
+  const hl = W.print('<div class="lbl k">只看开头：2599 × 9214</div>', PX, PY + 156); fade(W, hl, (t) => ramp(t, T('a12', '只看') - 0.2, 0.4) * limOff(t));
   const hl2 = W.print('<div class="lbl g">→ 2394…</div>', PX + 500, PY + 156); fade(W, hl2, (t) => ramp(t, T('a12', '差不多') - 0.2, 0.4) * limOff(t));
-  const tl = W.print('<div class="lbl" style="transform:translateX(-100%)">只看末尾：5992 × 2138</div>', PX + 10 * DW - 210, PY + 226); fade(W, tl, (t) => ramp(t, T('a12b', '只看') - 0.2, 0.4) * limOff(t));
+  const tl = W.print('<div class="lbl k" style="transform:translateX(-100%)">只看末尾：5992 × 2138</div>', PX + 10 * DW - 210, PY + 226); fade(W, tl, (t) => ramp(t, T('a12b', '只看') - 0.2, 0.4) * limOff(t));
   const tl2 = W.print('<div class="lbl g" style="transform:translateX(-100%)">→ …0896</div>', PX + 10 * DW, PY + 226); fade(W, tl2, (t) => ramp(t, T('a12b', '算出') - 0.2, 0.4) * limOff(t));
   sfx('tick', T('a12', '开头几位') - 0.2, { g: 0.16 }); sfx('tick', T('a12b', '末尾几位') - 0.2, { g: 0.16 });
   // 中间两位：墨框；下面五行错开的灰条＝各部分乘出来的数，每一行都压在中间这两位上，一行行加进来
@@ -224,10 +240,10 @@ scene('pass', ({ root, s, c0 }) => {
   }
   const band = h('div', 'p3 box3 g', S); css(band, { width: (2 * DW + 16) + 'px', height: (5 * 30 + 26) + 'px', transform: `translate3d(${PX + 4 * DW - 8}px, ${PPY - 14}px, 0.8px)` });
   fade(W, band, (t) => ramp(t, T('a13', '加起来') - 0.3, 0.4) * pOff(t));
-  const ppl = W.print('<div class="lbl">各部分乘出来的数，都要加到中间这两位上</div>', PX, PPY + 168);
+  const ppl = W.print('<div class="lbl k">各部分乘出来的数，都要加到中间这两位上</div>', PX, PPY + 168);
   fade(W, ppl, (t) => ramp(t, T('a13', '加起来') - 0.3, 0.4) * pOff(t));
   // 进位：墨点从最右一位起，一跳一跳往左，跳到中间那两位；跳过的弧线留在数字上方
-  const lc = W.print('<div class="lbl" style="transform:translateX(-100%)">←　进位一位一位传过来</div>', PX + 10 * DW, PY - 96);
+  const lc = W.print('<div class="lbl k" style="transform:translateX(-100%)">←　进位一位一位传过来</div>', PX + 10 * DW, PY - 96);
   const cOn = (t) => ramp(t, T('a13b', '进位') - 0.3, 0.4) * limOff(t);
   fade(W, lc, cOn);
   const pl = h('div', 'p3', S); pl.style.transform = `translate3d(${PX}px, ${PY}px, 1px)`; fade(W, pl, limOff);
@@ -251,7 +267,7 @@ scene('pass', ({ root, s, c0 }) => {
   // 这些都得在写这一块的一趟里算完：框住第 4–6 位（正确的是 485，它写成了 473）
   const c3On = (t) => ramp(t, T('a13c', '四七三') - 0.3, 0.4) * pOff(t);
   rect(W, S, PX + 3 * DW - 10, PY - 10, 3 * DW + 20, 136, (t) => ramp(t, T('a13c', '四七三') - 0.3, 0.4) * limOff(t), '');
-  const c3l = W.print('<div class="lbl">这些都得在写这一块的那一趟里算完</div>', PX, PPY + 238); fade(W, c3l, c3On);
+  const c3l = W.print('<div class="lbl k">这些都得在写这一块的那一趟里算完</div>', PX, PPY + 238); fade(W, c3l, c3On);
   sfx('tick', T('a13c', '四七三') - 0.3, { g: 0.2 });
   // 理论上限：题目一长，一步等一步的链越拉越长，「一趟能算的步数」那道条不变（示意）
   const LY = PPY + 400, LIM = 420, BX0 = PX + 140;
@@ -272,13 +288,13 @@ scene('pass', ({ root, s, c0 }) => {
   [chL, limL].forEach((e) => fade(W, e, chOn));
   sfx('tick', T('a14', '题目越长'), { g: 0.14 }); sfx('error', T('a14b', '超出') - 0.1, { g: 0.12 });
   // 错答案里错的那一块
-  const wrong = W.board('<div class="lbl"><span class="err">473</span>　<span class="g">应为 485</span></div>', XS[1], YB + 60, 34, -80, 30);
+  const wrong = W.board('<div class="lbl k"><span class="err">473</span>　<span class="g">应为 485</span></div>', XS[1], YB + 60, 34, -80, 30);
   fade(W, wrong, (t) => ramp(t, T('a15', '中间') - 0.3, 0.4));
   sfx('tick', T('a15', '中间'), { g: 0.3 });
   rect(W, S, QX - QW / 2 - 14, YB - BD / 2 - 14, XS[3] + BW / 2 - QX + QW / 2 + 28, BD + 28, (t) => ramp(t, T('a16') - 0.1, 0.4) * (1 - ramp(t, T('a16', '不是') - 0.2, 0.4)), 'g');
-  const late = W.board('<div class="lbl l">不是不会算，</div>', XS[0] - BW / 2, YB + 60, 34, 0, 100);
+  const late = W.board('<div class="lbl l k">不是不会算，</div>', XS[0] - BW / 2, YB + 60, 34, 0, 100);
   fade(W, late, (t) => ramp(t, T('a16', '多半') - 0.2, 0.4));
-  const late2 = W.board('<div class="lbl l">是来不及算</div>', XS[0] - BW / 2 + 380, YB + 60, 34, 0, 100);
+  const late2 = W.board('<div class="lbl l k">是来不及算</div>', XS[0] - BW / 2 + 470, YB + 60, 34, 0, 100);
   fade(W, late2, (t) => ramp(t, T('a16', '来不及算') - 0.3, 0.4));
 
   // ── 镜头：按内容选镜头；停留时不动，只在换镜头时动 ──
@@ -286,9 +302,9 @@ scene('pass', ({ root, s, c0 }) => {
   // 乘积与进位：正俯视看纸上的算式｜它错的：斜俯近看那四块。取景由 fitCam 按这一镜要看到的东西算出，留安全边距、不压字幕条
   const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
   const row = [B(QX, YB, QW, BD, 30), ...XS.map((x) => B(x, YB, BW, BD, 30))];
-  const shTok = fitCam(W, [...row, { el: gl }, { el: four }, { el: tri }], { pitch: 50, yaw: -6 });
-  const shOne = fitCam(W, [B(QX, YB, QW, BD, 30), B(XS[0], YB, BW, BD, 30), B(XS[0], YR, BW, BD, H + 20), { el: lb1 }, { el: lb2 }, { el: layer }, { el: ud }, { el: fx }], { pitch: 84 });
-  const shFour = fitCam(W, [...row, ...XS.map((x) => B(x, YR, BW, BD, H + 20)), { el: up1 }, { el: wr }, { el: lb4 }, { el: lb5 }, { el: lb6 }], { pitch: 84 });
+  const shTok = fitCam(W, [...row, { el: gl }, { el: glD }, { el: four }, { el: tri }], { pitch: 50, yaw: -6 });
+  const shOne = fitCam(W, [B(QX, YB, QW, BD, 30), B(XS[0], YB, BW, BD, 30), B(XS[0], YR, BW, BD, H + 20), { el: lb1 }, { el: lb2 }, { el: layer }, { el: ud }, { el: fx }, { el: rdq }, { el: nxt }], { pitch: 84 });
+  const shFour = fitCam(W, [...row, ...XS.map((x) => B(x, YR, BW, BD, H + 20)), { el: up1 }, { el: wr }, { el: lb4 }, { el: lb5 }, { el: lb6 }, { el: only }, { el: noPass }, { el: midR }], { pitch: 84 });
   // 乘积页分两镜：先近看数字与几行部分积（a12–a13c），讲「题目越长」时退到下面的两道条
   const shPage = fitCam(W, [[PX - 120, PY - 130, 0], [PX + 10 * DW + 120, PY - 130, 0], [PX - 120, PPY + 290, 0], [PX + 10 * DW + 120, PPY + 290, 0], { el: lw }, { el: lc }, { el: ppl }, { el: c3l }, { el: hl }, { el: hl2 }, { el: tl }, { el: tl2 }], { pitch: 8 });
   const shLim = fitCam(W, [[PX - 160, PPY - 40, 0], [BX0 + 960, PPY - 40, 0], [PX - 160, LY + 150, 0], [BX0 + 960, LY + 150, 0], { el: chL }, { el: limL }, { el: chL2 }, { el: c3l }], { pitch: 8 });
