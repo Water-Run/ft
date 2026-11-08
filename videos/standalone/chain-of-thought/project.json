@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "暂停：策划者拿第 6d 稿去与 Gemini 对抗迭代；带回新稿后重新交审，或沿用 6d 修完画面出第 3 轮预览",
+  "next": "第 7 稿与 Gemini 迭代中（out/gemini-reply-r2.md）；定稿后交策划者确认，再配音、改画面、出第 3 轮预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
