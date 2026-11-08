@@ -1,0 +1,74 @@
+## 版本
+$ isql -q
+show version;
+--- out
+SQL> ISQL Version: WI-V5.0.4.1812 Firebird 5.0
+Server version:
+SQL>
+--- err
+Cannot get server version without database connection
+
+## 嵌入式：没有服务进程，直接建库、建表、写一行
+$ isql -q
+create database 'demo/shop.fdb' user 'SYSDBA';
+create table t (id int, name varchar(20));
+insert into t values (1, 'phoenix');
+commit;
+select * from t;
+quit;
+--- out
+SQL> SQL> SQL> SQL> SQL> 
+          ID NAME                 
+============ ==================== 
+           1 phoenix              
+
+SQL>
+
+## 初始化安全库（口令现场生成，不入回显）
+$ isql -q -user SYSDBA security5.fdb
+create or alter user SYSDBA password '<pw>';
+--- out
+Database: security5.fdb, User: SYSDBA
+SQL> SQL> SQL>
+
+## 启动服务（端口 3051，配置全用默认）
+## 服务端：同一个文件，走 TCP
+$ isql -q -user SYSDBA inet://127.0.0.1:3051/.../demo/shop.fdb
+Database: inet://127.0.0.1:3051/<fb>/demo/shop.fdb, User: SYSDBA
+SQL> 
+          ID NAME                 
+============ ==================== 
+           1 phoenix              
+
+SQL> 
+MON$REMOTE_PROTOCOL 
+=================== 
+TCPv4               
+
+SQL>
+
+
+## 服务已停：同一个文件，嵌入式仍能打开
+$ isql -q -user SYSDBA demo/shop.fdb
+select * from t;
+select mon$remote_protocol from mon$attachments where mon$attachment_id = current_connection;
+quit;
+--- out
+Database: demo/shop.fdb, User: SYSDBA
+SQL> 
+          ID NAME                 
+============ ==================== 
+           1 phoenix              
+
+SQL> 
+MON$REMOTE_PROTOCOL 
+=================== 
+<null>              
+
+SQL>
+
+## 体积（字节）
+firebird.exe 1160192
+fbclient.dll 2073088
+plugins/engine13.dll 8932352
+shop.fdb 1966080

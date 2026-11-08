@@ -1,0 +1,75 @@
+{
+  "slug": "firebird",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"
+  },
+  "stage": "review",
+  "next": "策划者在审片页选定配音、配乐、视觉方向与封面，并确认文案；确认后配全片",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "实验",
+          "文案",
+          "关键帧与封面方向",
+          "配乐小样"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音试听"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": false,
+      "no_emoji": true
+    }
+  }
+}

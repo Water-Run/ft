@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>Firebird 关键帧与封面</title>
+<link rel="stylesheet" href="/css/base.css">
+<style>
+@font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wght.ttf"); font-weight: 300 800; }
+:root { --paper:#fff; --side:#f8f8f7; --rule:#e7e7e9; --rule2:#dddddf; --desk:#e4e3df; --ink:#1c1c1c; --soft:#6f6f6f; --blue:#2156a5; --green:#54BC4B; --warn:#bf0000; --code:#f7f7f8; --gold:#FAAC19; --orange:#F68A21; --red:#EE2B24; }
+html, body { background: var(--desk); }
+#stage { position:absolute; left:0; top:0; width:1920px; height:1080px; overflow:hidden; }
+.ab { position:absolute; }
+.world { position:absolute; inset:0; perspective:2300px; perspective-origin:50% 28%; }
+.sheet, .d3 { position:absolute; transform-style:preserve-3d; }
+.sheet { background:var(--paper); }
+.open { font-family:"Open Sans","Sans SC"; }
+.toc { position:absolute; left:0; top:0; bottom:0; background:var(--side); border-right:2px solid var(--rule); font-family:"Open Sans","Serif SC"; color:var(--blue); }
+.toc h5 { font:600 34px "Open Sans","Sans SC"; color:var(--ink); margin-bottom:26px; }
+.toc div { position:relative; font-weight:500; margin:14px 0; white-space:nowrap; }
+.toc .on { font-weight:800; }
+.toc .on::before { content:""; position:absolute; left:-18px; top:4%; bottom:4%; width:6px; background:var(--green); }
+.h1 { font:600 96px/1.1 "Open Sans","Sans SC"; color:var(--ink); white-space:nowrap; }
+.h2 { font:600 72px/1.1 "Open Sans","Sans SC"; color:var(--ink); white-space:nowrap; }
+.by { font:400 30px "Open Sans","Serif SC"; color:var(--soft); white-space:nowrap; }
+.crumb { font:400 28px "Open Sans","Serif SC"; color:var(--soft); white-space:nowrap; }
+.crumb u { color:var(--blue); }
+.body { font:400 34px/1.5 "Serif SC"; color:#2b2b2b; }
+.line { height:2px; background:var(--rule2); }
+.cap { position:absolute; left:0; right:0; top:992px; text-align:center; font:500 42px "Sans SC"; color:var(--ink); }
+.cap.w { color:#fff; }
+.code { background:var(--code); border:2px solid #e0e0dc; font:400 29px/1.42 "Mono"; color:#2a2a2a; padding:26px 32px; white-space:pre; }
+.code b { color:var(--blue); font-weight:600; }
+.code i { color:#c2410c; font-style:normal; font-weight:600; }
+.shadow { position:absolute; background:rgba(40,30,20,.3); filter:blur(16px); }
+.lab { position:absolute; font:700 40px "Sans SC"; color:var(--ink); white-space:nowrap; }
+.lab.s { font-weight:500; font-size:30px; color:var(--soft); }
+.stamp { position:absolute; font:900 120px/1 "Sans SC"; white-space:nowrap; }
+.adm { display:flex; align-items:center; }
+.adm .ic { width:96px; height:96px; border-radius:50%; background:var(--warn); color:#fff; font:800 74px/96px "Open Sans"; text-align:center; box-shadow:2px 3px 6px rgba(0,0,0,.4); }
+.adm .bar { width:3px; height:128px; background:var(--rule2); margin:0 36px; }
+.ring { position:absolute; border-radius:50%; }
+</style></head><body><div id="stage"></div>
+<script>
+const k = new URLSearchParams(location.search).get('k') || 'a1', S = document.getElementById('stage');
+const CH = ['一间浴室', '圣诞节前', '六天', '一个账号', '一个名字', '两边都站'];
+const LOGO = '/img/firebird-logo.png', WORD = '/img/logo-firebird-black.png';
+const el = (html) => { const t = document.createElement('div'); t.innerHTML = html.trim(); return t.firstChild; };
+const add = (p, html) => { const e = el(html); p.appendChild(e); return e; };
+const lerp = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+const hex = (c) => c.startsWith('#') ? [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16)) : [0, 0, 0];
+function ext(n, c1, c2, dx = 1, dy = 1) {
+  const A = hex(c1), B = hex(c2), o = [];
+  for (let i = 1; i <= n; i++) o.push(`${(i * dx).toFixed(1)}px ${(i * dy).toFixed(1)}px 0 rgb(${lerp(A, B, i / n).join(',')})`);
+  return o.join(',');
+}
+function toc(p, on, w = 360, fs = 31) {
+  const t = add(p, `<div class="toc" style="width:${w}px;padding:44px 36px 0 40px;font-size:${fs}px"><h5>目录</h5></div>`);
+  CH.forEach((c, i) => add(t, `<div class="${i === on ? 'on' : ''}">${i + 1}. ${c}</div>`));
+  return t;
+}
+function box(p, x, y, z, w, d, h, top, front, side) {
+  const b = add(p, `<div class="d3" style="left:0;top:0;transform:translate3d(${x}px,${y}px,${z}px)"></div>`);
+  add(b, `<div class="ab" style="left:0;top:0;width:${w}px;height:${d}px;background:${top};transform:translateZ(${h}px)"></div>`);
+  add(b, `<div class="ab" style="left:0;top:0;width:${w}px;height:${h}px;background:${front};transform-origin:0 0;transform:translate3d(0,${d}px,${h}px) rotateX(-90deg)"></div>`);
+  add(b, `<div class="ab" style="left:0;top:0;width:${d}px;height:${h}px;background:${side};transform-origin:0 0;transform:translate3d(${w}px,0,${h}px) rotateZ(90deg) rotateX(-90deg)"></div>`);
+  return b;
+}
+const grey = (p, x, y, z, w, d, h, s = 0) => box(p, x, y, z, w, d, h, ['#f2f1ee', '#e4e3df'][s], ['#c9c7c1', '#b7b4ad'][s], ['#dad8d2', '#cbc8c1'][s]);
+const flame = (p, x, y, z, w, d, h) => box(p, x, y, z, w, d, h, '#FAAC19', 'linear-gradient(#F68A21,#EE2B24)', '#F68A21');
+function upright(p, html, x, y, tilt, origin = '50% 100%') {
+  return add(p, `<div class="ab" style="left:${x}px;top:${y}px;transform-origin:${origin};transform:rotateX(${-tilt}deg)">${html}</div>`);
+}
+const cat = `<svg width="110" height="86" viewBox="0 0 110 86"><path fill="#2a2a2a" d="M6 80 C2 56 14 40 34 36 L30 12 L46 26 C54 24 62 24 70 28 L88 12 L86 36 C100 46 106 62 104 80 Z"/></svg>`;
+function header(p, x, y, size) {
+  add(p, `<img class="ab" src="${LOGO}" style="left:${x}px;top:${y}px;width:${size}px;height:${size}px">`);
+  add(p, `<img class="ab" src="${WORD}" style="left:${x + size * 1.08}px;top:${y + size * 0.18}px;height:${size * 0.62}px;clip-path:inset(0 0 0 19%);margin-left:-${size * 0.62 * 649 / 120 * 0.19}px">`);
+}
+function world(tx, tz, sx = 0, sy = 0, w = 1700, h = 1500) {
+  const W = add(S, `<div class="world"></div>`);
+  return add(W, `<div class="sheet" style="left:${sx}px;top:${sy}px;width:${w}px;height:${h}px;transform:rotateX(${tx}deg) rotateZ(${tz}deg);box-shadow:0 70px 130px rgba(50,40,30,.28)"></div>`);
+}
+
+const B = {
+  a1() {
+    const s = world(46, -7, 130, -190, 1660, 1560);
+    toc(s, -1, 380, 36);
+    add(s, `<div class="ab crumb" style="left:440px;top:46px;font-size:36px"><u>Firebird Documentation Index</u> → 这只鸟的来历</div>`);
+    add(s, `<div class="ab h1" style="left:440px;top:720px;font-size:150px">小众的第三选择</div>`);
+    add(s, `<div class="ab line" style="left:440px;top:930px;width:1130px"></div>`);
+    add(s, `<div class="ab by" style="left:440px;top:954px;font-size:48px">既能做服务，又能嵌入式 · Firebird 5.0.4</div>`);
+    add(s, `<div class="shadow" style="left:560px;top:660px;width:860px;height:56px;border-radius:50%"></div>`);
+    const P = upright(s, `<div style="position:relative;width:1020px;height:400px;background:#fff;box-shadow:0 0 0 2px var(--rule2)"></div>`, 480, 280, 46).firstChild;
+    header(P, 70, 44, 310);
+    add(S, `<div class="cap">主人是一个数据库</div>`);
+  },
+  a2() {
+    const s = world(46, -6, 120, -170, 1700, 1430);
+    toc(s, 0);
+    add(s, `<div class="ab h2" style="left:430px;top:60px;font-size:92px">1. 一间浴室</div>`);
+    add(s, `<div class="ab by" style="left:432px;top:178px;font-size:38px">一九八四年 · 自家二楼的客房</div>`);
+    add(s, `<div class="ab line" style="left:430px;top:236px;width:1180px"></div>`);
+    const base = 620, X = 360;
+    add(s, `<div class="shadow" style="left:${660 + X}px;top:${base + 150}px;width:700px;height:110px"></div>`);
+    grey(s, 690 + X, base, 0, 150, 150, 200, 1); grey(s, 1130 + X, base, 0, 150, 150, 200, 1);
+    box(s, 660 + X, base - 20, 200, 650, 190, 26, '#d8a15f', '#a9713a', '#bb8249');
+    grey(s, 840 + X, base + 10, 226, 280, 130, 170);
+    add(s, `<div class="ab" style="left:0;top:0;width:244px;height:130px;background:#20252b;transform-origin:0 0;transform:translate3d(${858 + X}px,${base + 140.5}px,386px) rotateX(-90deg)"></div>`);
+    upright(s, cat, 950 + X, base + 86 - 86, 46).style.transform = `translate3d(0,0,396px) rotateX(-46deg)`;
+    grey(s, 620, base + 280, 0, 36, 36, 120); grey(s, 760, base + 280, 0, 36, 36, 120); grey(s, 620, base + 380, 0, 36, 36, 120); grey(s, 760, base + 380, 0, 36, 36, 120);
+    box(s, 600, base + 270, 120, 216, 180, 24, '#3e6f9e', '#2b5075', '#32608a');
+    add(s, `<div class="shadow" style="left:450px;top:556px;width:560px;height:40px;border-radius:50%"></div>`);
+    upright(s, `<div class="open" style="font-weight:800;font-size:146px;line-height:1;color:#1c1c1c;white-space:nowrap;text-shadow:${ext(14, '#FAAC19', '#EE2B24', .9, .9)}">$243.50</div>`, 430, 400, 46);
+    add(S, `<div class="cap">启动资金二百四十三块五美元</div>`);
+  },
+  a3() {
+    const s = world(40, -5, 70, -140, 1720, 1350);
+    toc(s, 5);
+    add(s, `<div class="ab h2" style="left:430px;top:50px;font-size:92px">6. 两边都站</div>`);
+    add(s, `<div class="ab line" style="left:430px;top:172px;width:1200px"></div>`);
+    add(s, `<div class="ab code" style="left:430px;top:210px;width:1240px;font-size:32px"><b>$ isql -q</b>  <i># 没开任何服务</i>
+SQL> create database 'demo/shop.fdb';
+SQL> insert into t values (1, 'phoenix');
+<b>$ isql inet://127.0.0.1:3051/.../demo/shop.fdb</b>
+           1 phoenix        <i># 同一个文件，同一行</i></div>`);
+    const y = 800;
+    add(s, `<div class="shadow" style="left:880px;top:${y + 196}px;width:330px;height:60px;border-radius:40%"></div>`);
+    flame(s, 900, y, 0, 290, 200, 130);
+    add(s, `<div class="ab" style="left:0;top:0;width:290px;font:800 54px/130px 'Mono';color:#fff;text-align:center;transform-origin:0 0;transform:translate3d(900px,${y + 200.5}px,130px) rotateX(-90deg)">shop.fdb</div>`);
+    grey(s, 470, y - 16, 0, 270, 230, 190, 1);
+    add(s, `<img class="ab" src="${LOGO}" style="left:0;top:0;width:130px;transform-origin:0 0;transform:translate3d(540px,${y + 40}px,191px)">`);
+    grey(s, 1340, y - 16, 0, 270, 230, 190, 1);
+    add(s, `<img class="ab" src="${LOGO}" style="left:0;top:0;width:130px;transform-origin:0 0;transform:translate3d(1410px,${y + 40}px,191px)">`);
+    add(s, `<div class="ab" style="left:752px;top:${y + 90}px;width:140px;height:12px;background:var(--orange)"></div>`);
+    add(s, `<div class="ab" style="left:1200px;top:${y + 90}px;width:130px;height:0;border-top:10px dashed var(--blue)"></div>`);
+    add(S, `<div class="ab lab" style="left:290px;top:862px;font-size:40px;background:#fff;padding:2px 14px">嵌入式 · 引擎在程序里</div>`);
+    add(S, `<div class="ab lab" style="left:1250px;top:862px;font-size:40px;background:#fff;padding:2px 14px">服务端 · 走网络</div>`);
+    add(S, `<div class="cap">同一个文件，从网络连上去，读出来还是这一行</div>`);
+  },
+  b1() {
+    S.style.background = '#efece6';
+    const W = add(S, `<div class="world" style="perspective:1700px"></div>`);
+    const R = add(W, `<div class="d3" style="left:80px;top:-40px;width:1160px;height:1160px;transform:rotateY(20deg) rotateX(6deg)"></div>`);
+    [['#FAAC19', 1160], ['#F68A21', 950], ['#EE2B24', 750], ['#fff', 570]].forEach(([c, d], i) => {
+      add(R, `<div class="ring" style="left:${580 - d / 2}px;top:${580 - d / 2}px;width:${d}px;height:${d}px;background:${c};box-shadow:12px 22px 34px rgba(60,20,0,.4);transform:translateZ(${i * 60}px)"></div>`);
+    });
+    add(R, `<img class="ab" src="${LOGO}" style="left:345px;top:345px;width:470px;transform:translateZ(250px)">`);
+    add(S, `<div class="ab" style="left:1000px;top:360px;width:980px;height:430px;background:#fff;box-shadow:-12px 26px 50px rgba(50,30,10,.4)"></div>`);
+    add(S, `<div class="ab h1" style="left:1060px;top:408px;font-size:118px">小众的第三选择</div>`);
+    add(S, `<div class="ab line" style="left:1060px;top:560px;width:800px"></div>`);
+    add(S, `<div class="ab by" style="left:1062px;top:580px;font-size:40px">既能做服务，又能嵌入式</div>`);
+    add(S, `<img class="ab" src="${WORD}" style="left:1040px;top:640px;height:112px;clip-path:inset(0 0 0 19%)">`);
+    add(S, `<div class="cap" style="left:0;right:0">主人是一个数据库</div>`);
+  },
+  b2() {
+    S.style.background = '#efece6';
+    const W = add(S, `<div class="world" style="perspective:1500px"></div>`);
+    const R = add(W, `<div class="d3" style="left:0;top:0;width:1920px;height:1080px;transform:rotateY(-10deg) rotateX(5deg)"></div>`);
+    const back = add(R, `<div class="ab" style="left:-60px;top:-60px;width:2040px;height:1200px;background:#fff;transform:translateZ(-260px);box-shadow:0 30px 60px rgba(50,30,10,.25)"></div>`);
+    add(back, `<div class="ab crumb" style="left:340px;top:70px;font-size:48px"><u>InterBase History</u> → 2000 年</div>`);
+    add(back, `<div class="ab" style="left:330px;top:120px;font:800 186px/1 'Open Sans';color:#1c1c1c;white-space:nowrap">2000.07.25</div>`);
+    add(R, `<div class="ab" style="left:120px;top:370px;width:740px;height:560px;background:#fff;box-shadow:16px 30px 56px rgba(50,30,10,.42);transform:translateZ(-30px) rotateZ(-4deg);padding:40px 50px"><div class="by" style="font-size:32px">新闻稿之一</div><div class="line" style="margin:18px 0 34px"></div><div style="font:900 132px/1.12 'Sans SC';color:#1c1c1c;white-space:nowrap">这条<br>产品线<br>不卖了</div></div>`);
+    add(R, `<div class="ab" style="left:960px;top:350px;width:800px;height:560px;background:#fff;box-shadow:18px 34px 60px rgba(50,30,10,.46);transform:translateZ(150px) rotateZ(3deg);padding:40px 50px"><div class="by" style="font-size:32px">新闻稿之二</div><div class="line" style="margin:18px 0 44px;background:var(--orange);height:6px"></div><div style="font:900 168px/1.12 'Sans SC';color:#EE2B24;white-space:nowrap">源码<br>放出来了</div></div>`);
+    add(S, `<div class="cap">七月二十五号，同一天两份新闻稿</div>`);
+  },
+  b3() {
+    S.style.background = '#efece6';
+    const W = add(S, `<div class="world" style="perspective:2100px;perspective-origin:50% 35%"></div>`);
+    const stack = (x, layers, title) => {
+      const R = add(W, `<div class="d3" style="left:${x}px;top:720px;width:700px;height:230px;transform:rotateX(62deg)"></div>`);
+      layers.forEach(([txt, bg, fg, z, logo]) => {
+        add(R, `<div class="ab" style="left:0;top:0;width:700px;height:230px;background:${bg};box-shadow:14px 30px 34px rgba(50,30,10,.34);transform:translateZ(${z}px);font:900 96px/230px 'Sans SC';color:${fg};text-align:center;white-space:nowrap">${logo ? `<img src="${LOGO}" style="height:150px;vertical-align:-38px;margin-right:20px">` : ''}${txt}</div>`);
+      });
+      add(S, `<div class="ab lab" style="left:${x + 20}px;top:44px;font-size:80px">${title}</div>`);
+    };
+    stack(90, [['shop.fdb', '#FAAC19', '#fff', 0], ['引擎', '#fff', '#1c1c1c', 180, 1], ['你的程序', '#2156a5', '#fff', 360]], '嵌入式');
+    stack(1100, [['shop.fdb', '#FAAC19', '#fff', 0], ['引擎', '#fff', '#1c1c1c', 138, 1], ['服务进程', '#d9d7d1', '#1c1c1c', 276], ['网络', '#f8f8f7', '#2156a5', 414], ['你的程序', '#2156a5', '#fff', 552]], '服务端');
+    add(S, `<div class="cap">同一个引擎，同一个文件</div>`);
+  },
+  c1() {
+    S.style.background = '#fff';
+    const W = add(S, `<div class="world" style="perspective:1500px;perspective-origin:30% 40%"></div>`);
+    const R = add(W, `<div class="d3" style="left:-40px;top:0;width:2000px;height:1080px;transform:rotateX(16deg) rotateY(-24deg) rotateZ(-5deg)"></div>`);
+    add(R, `<div class="ab open" style="left:260px;top:230px;font-weight:800;font-size:350px;line-height:1;color:#1a1a1a;white-space:nowrap;text-shadow:${ext(44, '#FAAC19', '#EE2B24', .95, 1)}">Firebird</div>`);
+    add(R, `<div class="ab" style="left:270px;top:670px;font:900 150px/1 'Sans SC';color:#1a1a1a;white-space:nowrap">小众的第三选择</div>`);
+    add(S, `<img class="ab" src="${LOGO}" style="left:1510px;top:640px;width:320px;filter:drop-shadow(8px 14px 14px rgba(70,20,0,.35))">`);
+    const t = toc(S, -1, 300, 26); t.style.background = 'none'; t.style.border = 'none'; t.style.padding = '60px 0 0 60px'; t.style.bottom = 'auto'; t.style.top = '20px';
+  },
+  c2() {
+    S.style.background = '#fff';
+    const W = add(S, `<div class="world" style="perspective:1400px;perspective-origin:50% 30%"></div>`);
+    const R = add(W, `<div class="d3" style="left:0;top:0;width:1920px;height:1080px;transform:rotateX(26deg) rotateZ(-7deg)"></div>`);
+    add(R, `<div class="ab by" style="left:140px;top:210px;font-size:44px;color:#555">用户名</div>`);
+    add(R, `<div class="ab" style="left:130px;top:250px;font:800 240px/1.1 'Mono';color:#141414;white-space:nowrap;text-shadow:${ext(26, '#F68A21', '#EE2B24', .8, 1.1)}">politically</div>`);
+    add(R, `<div class="ab by" style="left:560px;top:560px;font-size:44px;color:#555">密码</div>`);
+    add(R, `<div class="ab" style="left:550px;top:600px;font:800 240px/1.1 'Mono';color:#141414;white-space:nowrap;text-shadow:${ext(26, '#F68A21', '#EE2B24', .8, 1.1)}">correct</div>`);
+    add(S, `<div class="ab adm" style="left:90px;top:60px"><div class="ic">!</div><div class="bar"></div><div style="font:700 56px 'Sans SC';color:#222">写死在程序里的账号</div></div>`);
+    add(S, `<div class="cap">过去七年发布的版本，全带着它</div>`);
+  },
+  c3() {
+    S.style.background = '#fff';
+    const W = add(S, `<div class="world" style="perspective:1700px;perspective-origin:50% 45%"></div>`);
+    const R = add(W, `<div class="d3" style="left:0;top:0;width:1920px;height:1080px;transform:rotateX(6deg)"></div>`);
+    add(R, `<div class="ab" style="left:150px;top:120px;width:760px;height:700px;background:#141414;transform-origin:100% 50%;transform:rotateY(26deg);padding:60px 64px;color:#fff"><div style="font:900 170px/1 'Sans SC'">服务</div><div style="font:500 60px/1.5 'Open Sans';margin-top:60px">MySQL<br>PostgreSQL</div></div>`);
+    add(R, `<div class="ab" style="left:1010px;top:120px;width:760px;height:700px;background:#f8f8f7;transform-origin:0 50%;transform:rotateY(-26deg);padding:60px 64px;color:#141414;border:3px solid var(--rule2)"><div style="font:900 170px/1 'Sans SC';text-align:right">嵌入式</div><div style="font:500 60px/1.5 'Open Sans';margin-top:60px;text-align:right">SQLite</div></div>`);
+    add(S, `<img class="ab" src="${LOGO}" style="left:770px;top:210px;width:380px;filter:drop-shadow(0 18px 24px rgba(0,0,0,.5))">`);
+    add(S, `<img class="ab" src="${WORD}" style="left:700px;top:640px;height:96px;background:#fff;padding:14px 24px;clip-path:inset(0 0 0 19%)">`);
+    add(S, `<div class="cap">Firebird 两边都站</div>`);
+  },
+  v1() {
+    S.style.background = '#e4e3df';
+    const W = add(S, `<div class="world" style="perspective:2000px;perspective-origin:50% 22%"></div>`);
+    const s = add(W, `<div class="sheet" style="left:60px;top:-300px;width:1800px;height:1600px;transform:rotateX(50deg) rotateZ(-8deg);box-shadow:0 80px 140px rgba(50,40,30,.3)"></div>`);
+    toc(s, 5, 340, 42);
+    add(s, `<div class="ab" style="left:420px;top:760px;font:900 262px/1 'Sans SC';color:#1c1c1c;white-space:nowrap;text-shadow:${ext(18, '#FAAC19', '#EE2B24', .5, 1)}">第三选择</div>`);
+    add(s, `<div class="ab line" style="left:420px;top:1060px;width:1280px"></div>`);
+    add(s, `<div class="ab by" style="left:420px;top:1086px;font-size:64px;color:#444">既能做服务，又能嵌入式</div>`);
+    add(s, `<div class="shadow" style="left:640px;top:640px;width:900px;height:70px;border-radius:50%"></div>`);
+    const P = upright(s, `<div style="position:relative;width:1040px;height:420px;background:#fff;box-shadow:0 0 0 2px var(--rule2)"></div>`, 470, 280, 50).firstChild;
+    header(P, 50, 40, 330);
+  },
+  v2() {
+    S.style.background = '#efece6';
+    const W = add(S, `<div class="world" style="perspective:1700px"></div>`);
+    const R = add(W, `<div class="d3" style="left:-180px;top:-120px;width:1320px;height:1320px;transform:rotateY(24deg) rotateX(5deg)"></div>`);
+    [['#FAAC19', 1320], ['#F68A21', 1080], ['#EE2B24', 850], ['#fff', 640]].forEach(([c, d], i) => add(R, `<div class="ring" style="left:${660 - d / 2}px;top:${660 - d / 2}px;width:${d}px;height:${d}px;background:${c};box-shadow:14px 24px 38px rgba(60,20,0,.42);transform:translateZ(${i * 70}px)"></div>`));
+    add(R, `<img class="ab" src="${LOGO}" style="left:390px;top:390px;width:540px;transform:translateZ(290px)">`);
+    add(S, `<div class="ab" style="left:900px;top:90px;width:980px;height:700px;background:#fff;box-shadow:-14px 30px 56px rgba(50,30,10,.42);padding:50px 60px"><img src="${WORD}" style="height:150px;margin-left:-168px;clip-path:inset(0 0 0 19%)"><div style="font:900 190px/1.08 'Sans SC';color:#1c1c1c;margin-top:18px;white-space:nowrap">第三选择</div><div class="line" style="margin:26px 0"></div><div style="font:500 60px/1.3 'Sans SC';color:#444">既能做服务，又能嵌入式</div></div>`);
+  },
+  v3() {
+    S.style.background = '#fff';
+    const W = add(S, `<div class="world" style="perspective:1500px;perspective-origin:20% 40%"></div>`);
+    const R = add(W, `<div class="d3" style="left:-60px;top:-30px;width:2000px;height:1080px;transform:rotateX(16deg) rotateY(-22deg) rotateZ(-6deg)"></div>`);
+    add(R, `<div class="ab" style="left:170px;top:360px;font:900 330px/1 'Sans SC';color:#151515;white-space:nowrap;text-shadow:${ext(38, '#FAAC19', '#EE2B24', .95, 1.05)}">第三选择</div>`);
+    add(S, `<img class="ab" src="${LOGO}" style="left:70px;top:44px;width:300px;filter:drop-shadow(8px 14px 14px rgba(70,20,0,.35))">`);
+    add(S, `<img class="ab" src="${WORD}" style="left:430px;top:100px;height:130px;margin-left:-180px;clip-path:inset(0 0 0 19%)">`);
+    add(S, `<div class="ab" style="left:1340px;top:720px;font:700 62px/1.3 'Sans SC';color:#333;white-space:nowrap">既能做服务<br>又能嵌入式</div>`);
+  },
+};
+B[k]();
+Promise.all([document.fonts.load('600 40px "Open Sans"'), document.fonts.load('900 40px "Sans SC"'), document.fonts.load('400 40px "Serif SC"'), document.fonts.load('500 40px "Mono"'), ...[...document.images].map((i) => i.decode().catch(() => {}))]).then(() => { document.body.dataset.ready = '1'; });
+</script></body></html>

@@ -1,0 +1,7 @@
+取回 2026-11-08 https://db-engines.com/en/ranking/relational+dbms
+SHA-256 c9ecdfd38c444266474f6a5f37e95fd5120fc21a63ae03e23f6de83c6ddb03b0
+170 systems in ranking, November 2026
+MySQL: 本月第 2，得分 823.23
+PostgreSQL: 本月第 4，得分 689.69
+SQLite: 本月第 8，得分 94.68
+Firebird: 本月第 20，得分 18.45
