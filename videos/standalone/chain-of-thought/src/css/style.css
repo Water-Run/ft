@@ -269,3 +269,4 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 .sk .fl { background: repeating-linear-gradient(to top, #8f96a0 0, #8f96a0 1.5px, #d3d8de 1.5px, #d3d8de calc(var(--gp) * 2)); }
 .sk .sd .fl { background: #c3c9d0; }
 .pt.g { color: #5c6168; }
+.pt.sans { font-family: "Sans SC"; font-weight: 500; color: #15171a; }

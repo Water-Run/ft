@@ -58,17 +58,17 @@ scene('pass', ({ root, s }) => {
 
   // 题目读进去：一块方块滑到纸垛底部，被吃进去
   const tQ = T('a4', '题目') - 0.1, tQe = T('a4', '读进来') + 0.25;
-  B.tok('25992 × 92138 =', { keys: [[tQ, x0, EQY, 0], [tQe, x0, fr0 + 34, 0]], t0: tQ, w: 470, d: 84, h: 16, fs: 48, off: off(tQe + 0.02, 0.25) });
+  B.tok('25992 × 92138 =', { keys: [[tQ, x0, EQY, 0], [tQe, x0, fr0 + 48, 0]], t0: tQ, w: 470, d: 84, h: 16, fs: 48, off: off(tQe + 0.02, 0.25) });
   sfx('whoosh', tQ, { g: 0.12 });
 
   B.wtext('一层接一层往上算', x0 + RW / 2 + 36, fr0 + 3, H * 0.6, 62, (t) => win(t, T('a5') + 0.15, T('a5b') + 0.6, 0.35));
   // 落回纸上：算到顶，这一块从顶上落下来
   const land = (i, ta, d = 1.0) => {
     const x = XS[i];
-    B.tok(ANS[i], { keys: [[ta, x, SY, H + 30], [ta + d * 0.45, x, lerp(SY, SL, 0.45), H * 0.72], [ta + d, x, SL, 0]], t0: ta - 0.1, fadeIn: 0.12, w: 236, d: 136, h: 26, fs: 96, off: off(T('a12') - 1.0) });
+    B.tok(ANS[i], { keys: [[ta, x, SY, H + 30], [ta + d * 0.35, x, fr0 + 80, H + 30], [ta + d, x, SL, 0]], t0: ta - 0.1, fadeIn: 0.12, w: 236, d: 136, h: 26, fs: 96, off: off(T('a12') - 1.0) });
     sfx('pop', ta + d, { g: 0.22 });
   };
-  land(0, tTop, 1.05); land(1, tP - 0.02, 0.62); land(2, tJ - 0.02, 0.62); land(3, tB_ + 0.05, 0.62);
+  land(0, tTop, 1.2); land(1, tP - 0.02, 0.85); land(2, tJ - 0.02, 0.85); land(3, tB_ + 0.05, 0.85);
 
   // 一趟：一道竖线从底量到顶，一粒点跟着上去
   const xR = x0 + RW / 2 + 36, onL = (t) => 1 - ramp(t, tA8 - 0.75, 0.5), t6 = T('a6', '从底到顶') - 0.1;
@@ -110,7 +110,7 @@ scene('pass', ({ root, s }) => {
   sfx('error', tH, { g: 0.16 });
   // 写成字：落到纸上，再滑到下一摞的底部
   const tZ = T('a10b', '写成字') - 0.3, x1b = x1 + 30;
-  B.tok('中间结果', { keys: [[tZ, x1b, EQY, 150], [tZ + 0.35, x1b, EQY, 0], [wr - 0.1, x1b, EQY, 0], [wr + 0.45, x1b, fr0 + 34, 0]], t0: tZ, w: 236, d: 96, h: 16, fs: 48, off: off(wr + 0.5, 0.25) });
+  B.tok('中间结果', { keys: [[tZ, x1b, EQY, 150], [tZ + 0.35, x1b, EQY, 0], [wr - 0.1, x1b, EQY, 0], [wr + 0.45, x1b, fr0 + 56, 0]], t0: tZ, w: 236, d: 96, h: 16, fs: 48, off: off(wr + 0.5, 0.25) });
   const zi = B.text('写成字，下一趟才接得上', x1b + 150, EQY, { fs: 66, cls: 'b', t0: tZ + 0.1, off: off(T('a11') - 0.15) });
   sfx('pop', tZ + 0.35, { g: 0.24 }); sfx('whoosh', wr - 0.1, { g: 0.1 });
 

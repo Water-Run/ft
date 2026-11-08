@@ -97,34 +97,30 @@ scene('open', ({ root, s }) => {
   S3.text('差别只在这里', C2X + GAPW / 2, (R1 + R2) / 2, { fs: 46, cls: 'b', align: 'c', t0: T('o11b') + 0.4 });
   sfx('tick', tN, { g: 0.2 });
 
-  // ── 「思维链」：一张标题页 ──
-  const tG = T('o12', '思维链');
-  const S4 = W.sheet({ in: [T('o12', '思维链') - 1.0, 'r', 1.0], out: [T('o14') - 0.85, 'l', 0.95], w: 1500, h: 820 });
-  const g1 = S4.text('思维链', 0, -130, { fs: 150, cls: 'ti', align: 'c', t0: tG - 0.1, d: 0.5 });
+  // ── 思维链、问题、片名：同一张纸上依次淡入淡出，不换页 ──
+  const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, Math.max(d, 0.4));
+  const tG = T('o12', '思维链'), defOff = off(T('o14') - 0.55, 0.6), qOff = off(T('oT') - 0.45, 0.6);
+  const S4 = W.sheet({ in: [tG - 1.0, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], w: 1500, h: 860 });
+  const g1 = S4.text('思维链', 0, -130, { fs: 150, cls: 'ti', align: 'c', t0: tG - 0.1, d: 0.5, off: defOff });
   g1.el.dataset.gloss = '思维链';
-  S4.text('先写推理，', -324, 50, { fs: 72, cls: 'g', t0: tG + 0.35 });
-  S4.text('再给答案', 36, 50, { fs: 72, cls: 'g', t0: tG + 0.85 });
-  S4.line([[-160, 136], [160, 136]], { t0: tG + 0.5, d: 0.5, w: 3 });
-  S4.text('英文', -600, 214, { fs: 56, cls: 'g', t0: T('o13') - 0.1 });
-  S4.text('Chain of Thought', -60, 214, { fs: 84, align: 'c', t0: T('o13', 'Chain') - 0.1 });
-  S4.tok('CoT', { keys: drop(520, 214, Tend('o13') - 0.55, 180, 0.34), t0: Tend('o13') - 0.55, w: 220, d: 110, h: 22, fs: 76 });
-  S4.text('Google Research，2022 年 1 月', 0, 320, { fs: 60, cls: 'g', align: 'c', t0: T('o13b', '谷歌') - 0.1 });
+  S4.text('先写推理，', -324, 50, { fs: 72, cls: 'g', t0: tG + 0.35, off: defOff });
+  S4.text('再给答案', 36, 50, { fs: 72, cls: 'g', t0: tG + 0.85, off: defOff });
+  S4.line([[-160, 136], [160, 136]], { t0: tG + 0.5, d: 0.5, w: 3, off: defOff });
+  S4.text('英文', -600, 214, { fs: 56, cls: 'g', t0: T('o13') - 0.1, off: defOff });
+  S4.text('Chain of Thought', -60, 214, { fs: 84, align: 'c', t0: T('o13', 'Chain') - 0.1, off: defOff });
+  S4.tok('CoT', { keys: drop(520, 214, Tend('o13') - 0.55, 180, 0.34), t0: Tend('o13') - 0.55, w: 220, d: 110, h: 22, fs: 76, off: defOff });
+  S4.text('Google Research，2022 年 1 月', 0, 320, { fs: 60, cls: 'g', align: 'c', t0: T('o13b', '谷歌') - 0.1, off: defOff });
   sfx('whoosh', tG - 1.0, { g: 0.14 }); sfx('tick', tG, { g: 0.2 });
-
-  // ── 四、问题 ──
-  const S5 = W.sheet({ in: [T('o14') - 0.85, 'r', 1.0], out: [T('oT') - 0.75, 'l', 0.95] });
-  const dq = S5.text('多写几行字，为什么就算对了？', 0, -160, { fs: 108, cls: 'b', align: 'c', t0: T('o14') + 0.1, d: 0.5 });
-  S5.text('25992 × 92138', 0, -290, { fs: 60, cls: 'g', align: 'c', t0: Tend('o14') + 0.35 });
-  S5.text('先看它是怎么一块一块往下写的', 0, -20, { fs: 62, cls: 'g', align: 'c', t0: T('o16') + 0.05 });
+  // 问题
+  S4.text('多写几行字，为什么就算对了？', 0, -190, { fs: 108, cls: 'b', align: 'c', t0: T('o14') + 0.15, d: 0.6, off: qOff });
+  S4.text('25992 × 92138', 0, -310, { fs: 60, cls: 'g', align: 'c', t0: Tend('o14') + 0.35, off: qOff });
+  S4.text('先看它是怎么一块一块往下写的', 0, -50, { fs: 62, cls: 'g', align: 'c', t0: T('o16') + 0.05, off: qOff });
   const tB = T('o16', '一块一块');
-  const A4 = ['239', '473', '089', '6'].map((c, i) => S5.tok(c, { keys: drop(-510 + i * 340, 160, tB + i * 0.34, 170, 0.32), t0: tB + i * 0.34, w: 290, d: 170, h: 30, fs: 118, cls: i === 1 ? 'err' : '' }));
-  [0, 1, 2, 3].forEach((i) => sfx('pop', tB + i * 0.34, { g: 0.18 }));
-
-  // ── 片名 ──
-  const S6 = W.sheet({ in: [T('oT') - 0.75, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], w: 1500, h: 860 });
-  const tt1 = S6.text('CoT', 0, -130, { fs: 280, cls: 'lt', align: 'c', t0: T('oT') - 0.1, d: 0.6 });
-  S6.line([[-66, 62], [66, 62]], { t0: T('oT') + 0.25, d: 0.5, w: 2 });
-  const tt2 = S6.text('先思考，再回答', 0, 170, { fs: 96, cls: 'ti', align: 'c', t0: T('oT') + 0.45, d: 0.6 });
+  ['239', '473', '089', '6'].forEach((c, i) => { S4.tok(c, { keys: drop(-510 + i * 340, 150, tB + i * 0.34, 170, 0.32), t0: tB + i * 0.34, w: 290, d: 170, h: 30, fs: 118, cls: i === 1 ? 'err' : '', off: qOff }); sfx('pop', tB + i * 0.34, { g: 0.18 }); });
+  // 片名：同一张纸上淡出来
+  S4.text('CoT', 0, -130, { fs: 280, cls: 'lt', align: 'c', t0: T('oT') + 0.1, d: 0.7 });
+  S4.line([[-66, 62], [66, 62]], { t0: T('oT') + 0.4, d: 0.5, w: 2 });
+  S4.text('先思考，再回答', 0, 170, { fs: 96, cls: 'ti', align: 'c', t0: T('oT') + 0.6, d: 0.7 });
 
   // ── 正在讲的区域亮起 ──
   S1.wash(-820, EY - 120, 340, EY + 120, tCh - 0.3, tEq + 0.5);
@@ -132,7 +128,7 @@ scene('open', ({ root, s }) => {
   S1.wash(xs[0] - 110, CY_ - 90, xs[9] + 110, CY_ + 130, tEst - 0.2, T('o3') - 0.1);
   S4.wash(-700, 120, 700, 400, T('o13', 'Chain') - 0.3, T('o13b', '谷歌') - 0.2);
   S3.wash(LX - 30, R2 - BH - 30, C2X + GAPW + AW + 70, R2 + BH + 30, T('o11b', '有没有') - 0.1, T('o12') + 0.3);
-  S5.wash(-720, -350, 720, -60, T('o14') + 1.2, T('o16', '一块一块') - 0.3);
+  S4.wash(-720, -370, 720, -90, T('o14') + 1.2, T('o16', '一块一块') - 0.3);
 
   // ── 镜头 ──
   W.cam([
@@ -141,9 +137,7 @@ scene('open', ({ root, s }) => {
     [T('o5') - 0.3, S1.home({ cy: -20, k: 1.1 }), 1.6, smooth],
     [T('o6') - 0.6, S2.home({ cy: 30, k: 0.94 }), 1.25, smooth],
     [T('o11') - 0.8, S3.home({ k: 0.96 }), 1.25, smooth],
-    [T('o12', '思维链') - 1.0, S4.home({ cy: 60 }), 1.25, smooth],
-    [T('o14') - 0.85, S5.home({ cy: -40 }), 1.25, smooth],
-    [T('oT') - 0.75, S6.home(), 1.25, smooth],
+    [T('o12', '思维链') - 1.0, S4.home({ cy: 20 }), 1.25, smooth],
     [s.end - 0.95, HOME, 0.9, smooth],
   ]);
   [T('o6') - 0.6, T('o11') - 0.8, T('o14') - 0.85, T('oT') - 0.75].forEach((a) => sfx('whoosh', a, { g: 0.15 }));

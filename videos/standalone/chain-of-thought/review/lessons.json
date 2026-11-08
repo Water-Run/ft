@@ -4,176 +4,176 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 10 稿经策划者确认；全片围绕「多写几行字为什么就算对了」，开头提出、结尾落在「先思考，再回答」。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "25992 × 92138 这一道题从开场走到 r9–r10。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "token、一趟、思维链、CoT、o1、R1 第一次出现时都有旁白或画面交代。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "只做了每秒一帧的总览与逐帧跳变脚本，没有跑 readable.js；交策划者判断",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "机制段的动作已自查，但没有与近期两部片子并排比较",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方无法听声音；混音响度 -16 LUFS / -1.3 dBTP，主观听感未核",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面、字幕与封面不含路径和用户名。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）；字幕 srt 读文本核对"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "README「交付」按 build/finish.zh.json 与 ffprobe 读数填写：447.37 秒、26842 帧、1080p60、-16 LUFS / -1.3 dBTP"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md 每轮反馈写明策划者原话与处理结果"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "独立片，不属于系列，没有引用其他集",
       "evidence": ""
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "Let's think step by step 上方有中文「我们一步一步来想」；Wait 配「回头重想」；Chain of Thought 配思维链。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方无法听音轨；未做逐句人耳核对，交策划者判断",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "o1、R1 的年份、公司与做法由 r5–r8f 交代。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "credits cue 无旁白，名单取自 project.json，校对稿无制作指令"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏看小字，无制作者口吻说明。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "配色与排版取自本片封面；DeepSeek、ChatGPT 图形为官方或公有领域素材（research/MATERIALS.md）。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方无法听声音；MiniMax 配音由策划者此前在审片页选定，成片语气未核",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "01 章纸垛，02 章回答块与接力链，03 章按主题分页。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F19": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "只抽查了切换处 5 帧/秒和逐帧跳变脚本，没有逐动作 0.1 秒取帧",
       "evidence": ""
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "纸垛只表示层，条形表示数量，方块表示 token；未中途换义。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "画风按策划者要求对齐 r2 与封面；未与近期两部片子并排核对",
       "evidence": ""
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "并列对象成组在场（四块、四摞、两组一百道）。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "机制段都是连续过程：逐层算、落回、接力、进位。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 通过，每张纸固定广镜头。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每段都有讲解对象在场。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音），字幕仍在画面上，未单独关字幕看"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文案经 10 稿迭代，本轮未改字，只调句间停顿；script-review 哈希一致"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "README「交付」写明通看方式：每秒一帧总览图，未看视频、未听声音"
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "问题、例子、名称的顺序见 o1–o13、a1、a6。zh 预览 r8 全片每秒一帧总览图逐张看（Claude Opus 5.5，看图，未看视频、未听声音）"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "01 章主对象常驻；03 章 o1、R1、今天三段换了对象，未做到一章一个连续画面",
       "evidence": ""
     }
   },

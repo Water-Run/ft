@@ -6,7 +6,7 @@ scene('end', ({ root, s }) => {
   makeCamera(world);
   const W = makeWorld(world, HOME);
   const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, Math.max(d, 0.4));
-  const A = W.sheet({ in: [s.start + 0.05, 'r', 1.0], out: [T('e6') - 0.55, 'l', 1.0], w: 5400, h: 1400, x: 1500, y: -30 });
+  const A = W.sheet({ in: [s.start + 0.05, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], w: 5400, h: 2700, x: 1500, y: -30 });
   const NS = 8, GP = 430, SX = (i) => -1650 + i * GP, SY = -40, RW = 300, RD = 190, LAY = 70, SEP = 7, H = LAY * SEP, SL = 250;
   const tE3 = T('e3'), tFix = T('e3', '定了') - 0.42, tE4 = T('e4'), tNo = T('e4', '没有定死') - 0.2, tE5 = T('e5'), tB5 = T('e5', '回答之前') - 0.2, tMid = T('e5', '中间步骤') - 0.2, tE5e = Tend('e5');
   const start = [tE3 + 0.1];
@@ -25,39 +25,30 @@ scene('end', ({ root, s }) => {
   // 摞与摞之间：写下来的字
   for (let i = 0; i < NS - 1; i++) {
     const xa = (SX(i) + SX(i + 1)) / 2, ta = i === 0 ? tB5 : Math.max(tB5, start[i + 1] - 0.4), zt = H * 0.8;
-    A.tok(i === 0 ? '写下来' : '', { keys: i === 0 ? [[ta, xa, SL, 120], [ta + 0.32, xa, SL, 0]] : [[ta, SX(i), SY, H + 20], [ta + 0.36, xa, SL, 0]], t0: ta, fadeIn: 0.1, w: i === 0 ? 260 : 150, d: 96, h: 16, fs: 64, cls: i === 0 ? undefined : 'cube dk' });
+    A.tok(i === 0 ? '写下来' : '', { keys: i === 0 ? [[ta, xa, SL, 120], [ta + 0.32, xa, SL, 0]] : [[ta, SX(i), SY, H + 20], [ta + 0.25, SX(i), SY + RD / 2 + 60, H + 20], [ta + 0.75, xa, SL, 0]], t0: ta, fadeIn: 0.1, w: i === 0 ? 260 : 150, d: 96, h: 16, fs: 64, cls: i === 0 ? undefined : 'cube dk' });
     sfx('pop', ta + 0.34, { g: 0.12 });
   }
   A.arrow([[SX(0) - RW / 2, SL + 150], [SX(NS - 1) + RW / 2 + 40, SL + 150]], { t0: tNo, d: tE5e + 0.4 - tNo, w: 15, head: 60, ease: linear });
   A.text('能想多远，并没有定死', SX(0) - 150, SL + 270, { fs: 96, cls: 'b', t0: tNo + 0.05, d: 0.4, off: off(tMid - 0.3, 0.35) });
   A.text('能想多远，看写下了多少', SX(0) + 1520, SL + 340, { fs: 180, cls: 'b', align: 'c', t0: tMid + 0.1, d: 0.6, off: off(T('e6') - 0.2) });
 
-  // ── 最后一张纸：思考就是写下来；先思考，再回答 ──
-  const tB = T('e6') - 0.55;
-  const B = W.sheet({ in: [tB, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], w: 1640, h: 900 });
-  B.text('对它来说', 0, -300, { fs: 64, cls: 'g', align: 'c', t0: T('e6') + 0.05 });
-  const tThink = T('e6', '思考') - 0.2, tWr = T('e6', '写下来') - 0.25;
-  B.text('思考', -100, -160, { fs: 100, cls: 'ti', align: 'r', t0: tThink, d: 0.4 });
-  B.line([[-66, -176], [6, -176]], { t0: tWr - 0.3, d: 0.3, w: 5 });
-  B.line([[-66, -144], [6, -144]], { t0: tWr - 0.15, d: 0.3, w: 5 });
-  B.text('写下来', 40, -160, { fs: 100, cls: 'ti', t0: tWr, d: 0.5 });
-  const tSi = T('e7') + 0.05, mid = T('e7', '再回答') ? T('e7', '再回答') - 0.2 : T('e7') + 1;
-  B.text('先思考，', 76, 110, { fs: 132, cls: 'ti', align: 'r', t0: tSi, d: 0.55 });
-  B.text('再回答', 76, 110, { fs: 132, cls: 'ti', t0: mid, d: 0.55 });
-  B.bar(-66, 260, 132, 2, { t0: mid + 0.5, d: 0.8, color: INK, r: 0, flat: true });
-  B.cursor(76 + 470, 110, 132, { t0: mid + 0.55 });
+  // ── 同一张纸：思考就是写下来；先思考，再回答（字慢慢淡出来，不闪）──
+  const cxT = SX(0) + 1505;
+  A.text('思考，就是写下来', cxT, SL + 340, { fs: 200, cls: 'ti', align: 'c', t0: T('e6') + 0.1, d: 0.9 });
+  const mid = T('e7', '再回答') - 0.2;
+  A.text('先思考，', cxT + 171, SL + 700, { fs: 300, cls: 'ti', align: 'r', t0: T('e7') + 0.05, d: 0.8 });
+  A.text('再回答', cxT + 171, SL + 700, { fs: 300, cls: 'ti', t0: mid, d: 0.8 });
+  A.cursor(cxT + 171 + 1060, SL + 700, 300, { t0: mid + 0.7 });
   sfx('chime', T('e7') + 0.1, { g: 0.2 });
 
-  B.wash(-720, -370, 720, -50, T('e6') + 0.2, T('e7') - 0.2);
   const box0 = ST[0].box, boxN = ST[NS - 1].box;
   const shOne = fitCam([box0, A.p(SX(0), SY, H + 150), A.p(SX(0) - 300, SL + 340), A.p(SX(0) + 900, SL + 340), A.p(SX(0) + 900, SY, H)], { pitch: 42, cz: A.Z + H * 0.34, kmax: 1.0 });
-  const shAll = fitCam([box0, boxN, A.p(SX(0) - 240, SL + 450), A.p(SX(NS - 1) + 300, SL + 450)], { pitch: 26, cz: A.Z + H * 0.2 });
+  const shAll = fitCam([box0, boxN, A.p(SX(0) - 240, SL + 900), A.p(SX(NS - 1) + 300, SL + 900)], { pitch: 26, cz: A.Z + H * 0.2 });
   W.cam([
     [s.start + 0.05, shOne, 1.25, smooth],
     // 强调规模：能想多远，镜头慢慢退开看长度
     [tNo - 0.05, shAll, Math.max(2.8, tE5e + 0.3 - tNo), smooth],
-    [tB, B.home({ cy: -20 }), 1.25, smooth],
     [s.end - 0.95, HOME, 0.9, smooth],
   ]);
-  [s.start + 0.05, tB, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
+  [s.start + 0.05, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });

@@ -12,12 +12,12 @@ scene('learn', ({ root, s }) => {
   const LGREY = '#b4bac2';
 
   // ── 例题：放上来，又被抽走 ──
-  const A = W.sheet({ in: [s.start + 0.25, 'r', 1.1], out: [T('r2') - 0.75, 'l', 1.0] });
+  const A = W.sheet({ in: [s.start + 0.25, 'r', 1.1], out: [T('r5') - 0.8, 'l', 1.0] });
   const chap = chapterSheet(W, s, '03', '越写越长', T('r1') - 1.0);
-  A.text('提问', -800, -430, { fs: 48, cls: 'sec', t0: T('r1') - 0.7 });
+  A.text('提问', -800, -430, { fs: 48, cls: 'sec', t0: T('r1') - 0.7, off: off(T('r3') - 0.3, 0.5) });
   A.text('先给例题，再问新题', 800, -430, { fs: 56, cls: 'g', align: 'r', t0: Tend('r1') + 0.45, off: off(T('r1b') - 0.1) });
-  A.text('几个月后：例题都不用给', 800, -430, { fs: 56, cls: 'b', align: 'r', t0: T('r1b', '几个月后') + 0.2 });
-  A.line([[-800, -384], [800, -384]], { t0: T('r1') - 0.7, d: 0.6, w: 4, color: GRAY });
+  A.text('几个月后：例题都不用给', 800, -430, { fs: 56, cls: 'b', align: 'r', t0: T('r1b', '几个月后') + 0.2, off: off(T('r3') - 0.3, 0.5) });
+  A.line([[-800, -384], [800, -384]], { t0: T('r1') - 0.7, d: 0.6, w: 4, color: GRAY, off: off(T('r3') - 0.3, 0.5) });
   const tE = T('r1') + 1.7, tEo = T('r1b', '不用给') - 0.25, CX = [-540, 0, 540];
   CX.forEach((x, i) => {
     const ta = tE + i * 0.32, tb = tEo + i * 0.12;
@@ -25,35 +25,31 @@ scene('learn', ({ root, s }) => {
     sfx('pop', ta + 0.36, { g: 0.2 }); sfx('whoosh', tb, { g: 0.08 });
   });
   const tQ = T('r1') - 0.35;
-  A.tok('一道新题', { keys: drop(0, 110, tQ, 180, 0.36), t0: tQ, w: 1120, d: 112, h: 20, fs: 76 });
+  A.tok('一道新题', { keys: drop(0, 110, tQ, 180, 0.36), t0: tQ, w: 1120, d: 112, h: 20, fs: 76, off: off(T('r4') + 0.1, 0.5) });
   const tAdd = T('r1c', '加一句') - 0.3;
-  A.tok('「我们一步一步来想」', { keys: [[tAdd, 0, 260, 260], [tAdd + 0.42, 0, 260, 0]], t0: tAdd, w: 1120, d: 132, h: 26, fs: 92, bump: pulse(T('r1c', '一步一步') + 0.6, 20) });
-  A.text("Let's think step by step", 0, 382, { fs: 58, cls: 'g', align: 'c', t0: T('r1c', '一步一步') + 0.1 });
+  A.tok('「我们一步一步来想」', { keys: [[tAdd, 0, 260, 260], [tAdd + 0.42, 0, 260, 0]], t0: tAdd, w: 1120, d: 132, h: 26, fs: 92, bump: pulse(T('r1c', '一步一步') + 0.6, 20), off: off(T('r4', '练进') - 1.05, 0.4) });
+  A.text("Let's think step by step", 0, 382, { fs: 58, cls: 'g', align: 'c', t0: T('r1c', '一步一步') + 0.1, off: off(T('r3') - 0.3) });
   sfx('pop', tAdd + 0.42, { g: 0.28 });
 
-  // ── 这句话被练进模型 ──
-  const tC = T('r3') - 0.75;
-  const C = W.sheet({ in: [T('r2') - 0.75, 'r', 1.0], out: [T('r5') - 0.8, 'l', 1.0] });
-  // 就这一句，正确率翻了四倍；说到「人写的一句话」时，条形退下去，这句话回到纸上
-  const tB = T('r2') - 0.75, BX = -420, BS = 19, cOff = off(T('r3') - 0.3, 0.45);
-  C.text('一套数学应用题的正确率', 0, -340, { fs: 76, cls: 'g', align: 'c', t0: T('r2', '应用题') - 0.2, off: cOff });
+  // ── 同一张纸：这句话让正确率翻了四倍，又被练进模型 ──
+  const tC = T('r3') - 0.75, tB = T('r2') - 0.75, BX = -420, BS = 19, cOff = off(T('r3') - 0.3, 0.5);
+  A.text('一套数学应用题的正确率', 0, -340, { fs: 76, cls: 'g', align: 'c', t0: T('r2', '应用题') - 0.2, off: cOff });
   const t1 = T('r2', '一成') - 0.5, t4 = T('r2', '四成') - 0.5;
-  C.text('直接答', BX - 36, -130, { fs: 76, align: 'r', t0: t1 - 0.1, off: cOff });
-  C.bar(BX, -130, 10.4 * BS, 96, { t0: t1, d: 0.8, color: LGREY, off: cOff });
-  C.count(BX + 10.4 * BS + 30, -130, { follow: (t) => [-(1 - ramp(t, t1, 0.8, ease.out3)) * 10.4 * BS, 0], from: 0, to: 10.4, dec: 1, t0: t1, t1: t1 + 0.8, fs: 88, suffix: '%', off: cOff });
-  C.text('加了这句', BX - 36, 90, { fs: 76, cls: 'b', align: 'r', t0: t4 - 0.1, off: cOff });
-  C.bar(BX, 90, 40.7 * BS, 96, { t0: t4, d: 1.4, color: INK, off: cOff });
-  C.count(BX + 40.7 * BS + 30, 90, { follow: (t) => [-(1 - ramp(t, t4, 1.4, ease.out3)) * 40.7 * BS, 0], from: 10.4, to: 40.7, dec: 1, t0: t4, t1: t4 + 1.4, fs: 120, cls: 'b', suffix: '%', off: cOff });
+  A.text('直接答', BX - 36, -240, { fs: 76, align: 'r', t0: t1 - 0.1, off: cOff });
+  A.bar(BX, -240, 10.4 * BS, 96, { t0: t1, d: 0.8, color: LGREY, off: cOff });
+  A.count(BX + 10.4 * BS + 30, -240, { follow: (t) => [-(1 - ramp(t, t1, 0.8, ease.out3)) * 10.4 * BS, 0], from: 0, to: 10.4, dec: 1, t0: t1, t1: t1 + 0.8, fs: 88, suffix: '%', off: cOff });
+  A.text('加了这句', BX - 36, -90, { fs: 76, cls: 'b', align: 'r', t0: t4 - 0.1, off: cOff });
+  A.bar(BX, -90, 40.7 * BS, 96, { t0: t4, d: 1.4, color: INK, off: cOff });
+  A.count(BX + 40.7 * BS + 30, -90, { follow: (t) => [-(1 - ramp(t, t4, 1.4, ease.out3)) * 40.7 * BS, 0], from: 10.4, to: 40.7, dec: 1, t0: t4, t1: t4 + 1.4, fs: 120, cls: 'b', suffix: '%', off: cOff });
   for (let i = 0; i < 8; i++) sfx('key', lerp(t4, t4 + 1.4, i / 7), { g: 0.08 });
-  const Sx = 520, Sy = -30, N = 76, GP = 7, H = N * GP, tInto = T('r4', '练进') - 1.0, tFull = tInto + 1.25;
-  C.text('人写进提问里的一句话', -440, -370, { fs: 82, cls: 'b', align: 'c', t0: T('r3', '提问里') - 0.25 });
-  C.tok('「我们一步一步来想」', { keys: [[tC + 0.6, -440, -30, 0], [tInto, -440, -30, 0], [tInto + 0.8, Sx - 40, Sy + 138, 0]], t0: tC + 0.6, w: 800, d: 150, h: 26, fs: 72, off: off(tInto + 0.78, 0.22) });
-  C.text('人写的', -440, 100, { fs: 66, cls: 'g', align: 'c', t0: T('r3', '提问里') - 0.1, off: off(T('r4') + 0.3) });
-  const tNoP = T('r4') + 0.05;
-  C.line([[-560, 100], [-320, 100]], { t0: tNoP, d: 0.3, w: 7, color: RED, off: off(T('r4') + 0.75) });
-  C.text('不用人提醒', -440, 100, { fs: 70, cls: 'b', align: 'c', t0: T('r4') + 0.75, off: off(T('r5') - 0.9) });
-  const Mdl = C.stack(Sx, Sy, { w: 360, d: 210, n: N, gap: GP, rise: (t) => ramp(t, T('r4') + 0.25, 1.0, ease.io3), fill: (t) => ramp(t, tInto + 0.82, tFull - tInto, linear) }); sfx('riser', T('r4') + 0.25, { g: 0.1 });
-  C.text('模型', Sx, Sy + 262, { fs: 84, cls: 'b', align: 'c', t0: T('r4') + 0.9 });
+  const Sx = 520, Sy = -110, N = 60, GP = 7, H = N * GP, tInto = T('r4', '练进') - 1.0, tFull = tInto + 1.45;
+  A.text('人写进提问里的一句话', -320, -140, { fs: 82, cls: 'b', align: 'c', t0: T('r3', '提问里') - 0.25, off: off(T('r5') - 1.1) });
+  A.text('人写的', 0, 382, { fs: 66, cls: 'g', align: 'c', t0: T('r3', '提问里') - 0.1, off: off(T('r4') + 0.3) });
+  A.line([[-120, 382], [120, 382]], { t0: T('r4') + 0.05, d: 0.35, w: 7, color: RED, off: off(T('r4') + 0.75) });
+  A.text('不用人提醒', 0, 382, { fs: 70, cls: 'b', align: 'c', t0: T('r4') + 0.85, off: off(T('r5') - 1.1) });
+  A.tok('一步一步来想', { keys: [[tInto - 0.1, 0, 260, 0], [tInto + 0.95, Sx - 40, Sy + 105 + 56, 0]], t0: tInto - 0.1, w: 460, d: 100, h: 16, fs: 60, off: off(tInto + 0.95, 0.3) });
+  const Mdl = A.stack(Sx, Sy, { w: 340, d: 210, n: N, gap: GP, rise: (t) => ramp(t, T('r4') + 0.25, 1.1, ease.io3), fill: (t) => ramp(t, tInto + 1.0, tFull - tInto - 0.2, linear) }); sfx('riser', T('r4') + 0.25, { g: 0.1 });
+  A.text('模型', Sx + 260, Sy + 40, { fs: 84, cls: 'b', t0: T('r4') + 1.0, off: off(T('r5') - 1.1) });
   sfx('whoosh', tInto, { g: 0.12 }); sfx('chime', tFull, { g: 0.14 });
 
   // ── o1：回答之前先写一大段思考 ──
@@ -61,9 +57,9 @@ scene('learn', ({ root, s }) => {
   const D = W.sheet({ in: [tD, 'r', 1.0], out: [T('r6') - 0.75, 'l', 1.0], w: 2200, h: 1300 });
   D.text('2024', -950, -510, { fs: 150, cls: 'b', t0: T('r5') + 0.02 });
   const tRl = T('r5', '发布') - 0.3;
-  D.tok('o1', { keys: drop(-130, -510, tRl, 200), t0: tRl, w: 260, d: 130, h: 30, fs: 118 });
-  D.text('OpenAI', -310, -510, { fs: 72, cls: 'g', align: 'r', t0: tRl - 0.2 });
-  D.img('assets/chatgpt-logo.svg', 30, -510, 120, (t) => ramp(t, tRl + 0.1, 0.5));
+  D.tok('o1', { keys: drop(-30, -510, tRl, 200), t0: tRl, w: 260, d: 130, h: 30, fs: 118 });
+  D.img('assets/chatgpt-logo.svg', -570, -510, 100, (t) => ramp(t, tRl - 0.2, 0.5));
+  D.text('OpenAI', -456, -510, { fs: 72, cls: 'sans', t0: tRl - 0.2 });
   sfx('pop', tRl + 0.36, { g: 0.26 });
   const tTh = T('r5', '思考') - 0.25, tThE = Tend('r5') + 0.25, RTX = -950, RTN = 56;
   D.text('思考', RTX, -310, { fs: 70, cls: 'b', t0: tTh - 0.15 });
@@ -84,88 +80,76 @@ scene('learn', ({ root, s }) => {
   for (let i = 0; i < 8; i++) sfx('key', lerp(tO, tO + 1.15, i / 7), { g: 0.08 });
   sfx('chime', tO + 1.15, { g: 0.16 });
 
-  // ── R1：不看解题过程，只看答没答对 ──
+  // ── R1：一张纸讲到底——训练规则、越写越长、公开发布，同一张纸上淡入淡出 ──
   const tE0 = T('r6') - 0.75;
-  const E = W.sheet({ in: [tE0, 'r', 1.0], out: [T('r8') - 0.75, 'l', 1.0] });
-  const logoH = 112;
-  E.logo(-740, -370, logoH, (t) => ramp(t, T('r6', 'DeepSeek') - 0.3, 0.4));
-  E.text('R1 的一个版本', 60, -370, { fs: 86, cls: 'b', t0: T('r6', '一个版本') - 0.2 });
-  E.text('训练时', -740, -180, { fs: 76, cls: 'g', t0: T('r6', '训练时') - 0.2 });
-  const tCard = T('r6', '解题过程') - 0.75, tNoS = T('r6', '不看') - 0.1;
-  const tOut = Tend('r6') + 0.15;
-  E.tok('人写的解题过程', { keys: [[tCard - 0.3, 1700, -40, 0], [tCard + 0.3, 0, -40, 0], [tOut, 0, -40, 0], [tOut + 0.7, 2200, -40, 300]], t0: tCard - 0.3, w: 980, d: 150, h: 26, fs: 88, off: off(tOut + 0.45, 0.25) });
-  const strike = E.tok('', { keys: [[tNoS, 0, -40, 48], [tOut, 0, -40, 48], [tOut + 0.7, 2200, -40, 348]], t0: tNoS, fadeIn: 0.1, w: 980, d: 150, h: 1, cls: 'ghost', off: off(tOut + 0.45, 0.25) });
+  const E = W.sheet({ in: [tE0, 'r', 1.0], out: [T('r8b') - 0.75, 'l', 1.0], w: 2300, h: 1420 });
+  const eOff = off(T('r8') - 0.45, 0.6), fOff = off(T('r8e') - 0.45, 0.6);
+  E.logo(-960, -620, 112, (t) => ramp(t, T('r6', 'DeepSeek') - 0.3, 0.4));
+  E.text('R1 的一个版本', -360, -620, { fs: 86, cls: 'b', t0: T('r6', '一个版本') - 0.2 });
+  E.text('训练时', -960, -470, { fs: 76, cls: 'g', t0: T('r6', '训练时') - 0.2, off: eOff });
+  const tCard = T('r6', '解题过程') - 0.75, tNoS = T('r6', '不看') - 0.1, tOut = Tend('r6') + 0.15, yC = -280;
+  E.tok('人写的解题过程', { keys: [[tCard - 0.3, 1700, yC, 0], [tCard + 0.3, 0, yC, 0], [tOut, 0, yC, 0]], t0: tCard - 0.3, w: 980, d: 150, h: 26, fs: 88, off: off(tOut, 0.5) });
+  const strike = E.tok('', { keys: [[tNoS, 0, yC, 48]], t0: tNoS, fadeIn: 0.1, w: 980, d: 150, h: 1, cls: 'ghost', off: off(tOut, 0.5) });
   strike.top.innerHTML = '<svg width="980" height="150" style="position:absolute;left:0;top:0"><path d="M20 12 L960 138 M960 12 L20 138" stroke="#a5402d" stroke-width="12" fill="none"/></svg>';
-  sfx('error', tNoS + 0.05, { g: 0.12 }); sfx('whoosh', tOut, { g: 0.14 });
+  sfx('error', tNoS + 0.05, { g: 0.12 });
   const tOk = T('r7b', '答没答对') - 0.3, tFm = T('r7b', '格式') - 0.3, tRw = T('r7b', '奖励') - 0.25;
-  const tEnd2 = T('r8') - 0.9;
-  E.tok('答没答对', { keys: [[tOk, -440, 140, 200], [tOk + 0.34, -440, 140, 0], [tRw, -440, 140, 0]], t0: tOk, w: 480, d: 130, h: 22, fs: 80 });
-  E.tok('格式对不对', { keys: [[tFm, 440, 140, 200], [tFm + 0.34, 440, 140, 0], [tRw, 440, 140, 0]], t0: tFm, w: 520, d: 130, h: 22, fs: 80 });
-  E.arrow([[-440, 214], [-440, 370], [-176, 370]], { t0: tRw, d: 0.45, w: 7 });
-  E.arrow([[440, 214], [440, 370], [176, 370]], { t0: tRw, d: 0.45, w: 7 });
-  E.tok('奖励', { keys: drop(0, 370, tRw + 0.45, 220, 0.3), t0: tRw + 0.45, w: 320, d: 130, h: 36, fs: 104, bump: pulse(tRw + 0.8, 30) });
-  sfx('pop', tOk + 0.34, { g: 0.2 }); sfx('pop', tFm + 0.34, { g: 0.2 }); sfx('chime', tRw + 0.75, { g: 0.14 });
-
-  // ── 思考越写越长 ──
-  const tF = T('r8') - 0.75;
-  const F = W.sheet({ in: [tF, 'r', 1.0], out: [T('r8e') - 0.8, 'l', 1.0], w: 2300, h: 1420 });
-  F.text('没人要求它想得更长', 0, -610, { fs: 74, cls: 'g', align: 'c', t0: T('r8', '没人要求') - 0.2 });
-  const Lens = [160, 260, 390, 590, 860, 1240], Y0 = -440, RH = 70, RGAP = 98, Xa = -760;
+  E.tok('答没答对', { keys: [[tOk, -440, -100, 200], [tOk + 0.45, -440, -100, 0]], t0: tOk, w: 480, d: 130, h: 22, fs: 80, off: eOff });
+  E.tok('格式对不对', { keys: [[tFm, 440, -100, 200], [tFm + 0.45, 440, -100, 0]], t0: tFm, w: 520, d: 130, h: 22, fs: 80, off: eOff });
+  E.arrow([[-440, -26], [-440, 130], [-176, 130]], { t0: tRw, d: 0.6, w: 7, off: eOff });
+  E.arrow([[440, -26], [440, 130], [176, 130]], { t0: tRw, d: 0.6, w: 7, off: eOff });
+  E.tok('奖励', { keys: drop(0, 130, tRw + 0.55, 200, 0.34), t0: tRw + 0.55, w: 320, d: 130, h: 36, fs: 104, off: eOff });
+  sfx('pop', tOk + 0.45, { g: 0.2 }); sfx('pop', tFm + 0.45, { g: 0.2 }); sfx('chime', tRw + 0.95, { g: 0.14 });
+  // 思考越写越长
+  E.text('没人要求它想得更长', 0, -510, { fs: 74, cls: 'g', align: 'c', t0: T('r8', '没人要求') - 0.2, off: fOff });
+  const Lens = [160, 260, 390, 590, 860, 1240], Y0 = -370, RH = 70, RGAP = 98, Xa = -760;
   const tLn = T('r8', '想得更长') - 0.3, tLe = T('r8', '越写') + 1.1;
   Lens.forEach((ln, i) => {
     const ta = lerp(tLn, tLe, i / 5);
-    F.text('训练', Xa - 44, Y0 + i * RGAP, { fs: 52, cls: 'g', align: 'r', t0: ta - 0.2, off: i ? () => 0 : undefined });
-    F.bar(Xa, Y0 + i * RGAP, ln, RH, { t0: ta, d: 0.6, color: i === 5 ? INK : '#aeb4bc', ease: linear });
+    if (!i) E.text('训练', Xa - 44, Y0, { fs: 52, cls: 'g', align: 'r', t0: ta - 0.2, off: fOff });
+    E.bar(Xa, Y0 + i * RGAP, ln, RH, { t0: ta, d: 0.6, color: i === 5 ? INK : '#aeb4bc', ease: linear, off: fOff });
   });
-  F.arrow([[Xa - 56, Y0 + 40], [Xa - 56, Y0 + 5 * RGAP + 40]], { t0: tLn, d: tLe - tLn, w: 3, color: GRAY, head: 16 });
-  F.arrow([[Xa, Y0 - 56], [Xa + 1320, Y0 - 56]], { t0: tLn, d: 0.8, w: 3, color: GRAY, head: 16 });
-  F.text('思考长度', Xa + 1336, Y0 - 56, { fs: 50, cls: 'g', t0: tLn + 0.4 });
-  F.text('示意', Xa + 1240, Y0 + 5 * RGAP + 54, { fs: 46, cls: 'g', align: 'r', t0: tLe });
+  E.arrow([[Xa - 56, Y0 + 40], [Xa - 56, Y0 + 5 * RGAP + 40]], { t0: tLn, d: tLe - tLn, w: 3, color: GRAY, head: 16, off: fOff });
+  E.arrow([[Xa, Y0 - 56], [Xa + 1320, Y0 - 56]], { t0: tLn, d: 0.8, w: 3, color: GRAY, head: 16, off: fOff });
+  E.text('思考长度', Xa + 1336, Y0 - 56, { fs: 50, cls: 'g', t0: tLn + 0.4, off: fOff });
+  E.text('示意', Xa + 1240, Y0 + 5 * RGAP + 54, { fs: 46, cls: 'g', align: 'r', t0: tLe, off: fOff });
   for (let i = 0; i < 6; i++) sfx('key', lerp(tLn, tLe, i / 5) + 0.3, { g: 0.1 });
-  // 正确率
   const tC1 = T('r8c', '一成半') - 0.4, tC2 = T('r8c', '将近八成') - 0.4;
-  F.text('那套竞赛题的正确率', 720, -300, { fs: 56, cls: 'g', align: 'c', t0: tC1 - 0.2 });
-  F.count(720, -160, { from: 15.6, to: 77.9, dec: 1, t0: tC2 - 1.2, t1: tC2 + 0.5, fs: 184, cls: 'b', align: 'c', suffix: '%', });
-  F.text('训练中', 720, -24, { fs: 52, cls: 'g', align: 'c', t0: tC1 });
-  // 等等
+  E.text('那套竞赛题的正确率', 720, -230, { fs: 56, cls: 'g', align: 'c', t0: tC1 - 0.2, off: fOff });
+  E.count(720, -90, { from: 15.6, to: 77.9, dec: 1, t0: tC2 - 1.2, t1: tC2 + 0.5, fs: 184, cls: 'b', align: 'c', suffix: '%', off: fOff });
+  E.text('训练中', 720, 46, { fs: 52, cls: 'g', align: 'c', t0: tC1, off: fOff });
   const tWt = T('r8d', '等等') - 0.3, tBk = T('r8d', '回头') - 0.2, yW = Y0 + 5 * RGAP + RH + 90;
-  F.tok('Wait, wait. Wait.', { keys: drop(Xa + 980, yW, tWt, 200), t0: tWt, w: 620, d: 118, h: 26, fs: 76, bump: pulse(tWt + 0.5, 22) });
-  F.line([[Xa + 1000, Y0 + 5 * RGAP + 36], [Xa + 980, yW - 60]], { t0: tWt + 0.2, d: 0.3, w: 5 });
-  F.arrow([[Xa + 660, yW], [Xa + 200, yW], [Xa + 200, Y0 + 5 * RGAP + 44]], { t0: tBk, d: 0.8, w: 9, head: 30, color: RED });
-  F.text('回头重想', Xa + 220, yW + 66, { fs: 70, cls: 'e', t0: tBk + 0.45 });
+  E.tok('Wait, wait. Wait.', { keys: drop(Xa + 980, yW, tWt, 200), t0: tWt, w: 620, d: 118, h: 26, fs: 76, off: fOff });
+  E.line([[Xa + 1000, Y0 + 5 * RGAP + 36], [Xa + 980, yW - 60]], { t0: tWt + 0.2, d: 0.3, w: 5, off: fOff });
+  E.arrow([[Xa + 660, yW], [Xa + 200, yW], [Xa + 200, Y0 + 5 * RGAP + 44]], { t0: tBk, d: 0.8, w: 9, head: 30, color: RED, off: fOff });
+  E.text('回头重想', Xa + 220, yW + 66, { fs: 70, cls: 'e', t0: tBk + 0.45, off: fOff });
   sfx('pop', tWt + 0.36, { g: 0.24 }); sfx('whoosh', tBk, { g: 0.1 });
-
-  // ── 公开发布 ──
-  const tG0 = T('r8e') - 0.8;
-  const G = W.sheet({ in: [tG0, 'r', 1.0], out: [T('r8b') - 0.75, 'l', 1.0] });
-  G.text('2025 年 1 月', -780, -360, { fs: 100, t0: T('r8e') + 0.02 });
-  const tLg = T('r8e', 'DeepSeek') - 0.25, tSt = T('r8e', '发布了') - 0.25;
-  G.logo(-760, -160, 120, (t) => ramp(t, tLg, 0.4));
-  G.text('R1', 0, -160, { fs: 140, cls: 'b', t0: tLg + 0.3 });
-  G.rect(250, -252, 820, -68, { t0: tSt - 0.1, d: 0.45, w: 8, color: INK });
-  G.text('公开发布', 535, -160, { fs: 104, cls: 'b', align: 'c', t0: tSt + 0.15, d: 0.2, rise: 30 });
+  // 公开发布；和 o1 差不多
+  const tSt = T('r8e', '发布了') - 0.25;
+  E.text('2025 年 1 月', 20, -310, { fs: 120, align: 'r', t0: T('r8e') + 0.05 });
+  E.rect(70, -395, 470, -225, { t0: tSt - 0.1, d: 0.5, w: 7, color: INK });
+  E.text('公开发布', 270, -310, { fs: 100, cls: 'b', align: 'c', t0: tSt + 0.2, d: 0.5 });
   sfx('pop', tSt + 0.3, { g: 0.3 });
   const tF0 = T('r8f') - 0.2, BS3 = 13, BX3 = -400;
-  G.text('同一套竞赛题的正确率', 0, -10, { fs: 56, cls: 'g', align: 'c', t0: tF0 });
-  G.text('o1', BX3 - 36, 90, { fs: 88, align: 'r', t0: tF0 });
-  G.img('assets/chatgpt-logo.svg', BX3 - 36 - 100 - 26 - 80, 90, 80, (t) => ramp(t, tF0, 0.4));
-  G.bar(BX3, 90, 79.2 * BS3, 90, { t0: tF0, d: 0.75, color: LGREY });
-  G.count(BX3 + 79.2 * BS3 + 28, 90, { follow: (t) => [-(1 - ramp(t, tF0, 0.75, ease.out3)) * 79.2 * BS3, 0], from: 0, to: 79.2, dec: 1, t0: tF0, t1: tF0 + 0.75, fs: 88, suffix: '%' });
-  G.text('R1', BX3 - 36, 235, { fs: 88, cls: 'b', align: 'r', t0: tF0 });
-  G.logo(BX3 - 36 - 100 - 26 - 56 * 780 / 165, 235, 56, (t) => ramp(t, tF0, 0.4));
-  G.bar(BX3, 235, 79.8 * BS3, 90, { t0: tF0 + 0.1, d: 0.75, color: INK });
-  G.count(BX3 + 79.8 * BS3 + 28, 235, { follow: (t) => [-(1 - ramp(t, tF0 + 0.1, 0.75, ease.out3)) * 79.8 * BS3, 0], from: 0, to: 79.8, dec: 1, t0: tF0 + 0.1, t1: tF0 + 0.85, fs: 88, cls: 'b', suffix: '%' });
+  E.text('同一套竞赛题的正确率', 0, -110, { fs: 62, cls: 'g', align: 'c', t0: tF0 });
+  E.text('o1', BX3 - 36, 40, { fs: 88, align: 'r', t0: tF0 });
+  E.img('assets/chatgpt-logo.svg', BX3 - 36 - 100 - 26 - 84, 40, 84, (t) => ramp(t, tF0, 0.5));
+  E.bar(BX3, 40, 79.2 * BS3, 90, { t0: tF0, d: 0.9, color: LGREY });
+  E.count(BX3 + 79.2 * BS3 + 28, 40, { follow: (t) => [-(1 - ramp(t, tF0, 0.9, ease.out3)) * 79.2 * BS3, 0], from: 0, to: 79.2, dec: 1, t0: tF0, t1: tF0 + 0.9, fs: 88, suffix: '%' });
+  E.text('R1', BX3 - 36, 200, { fs: 88, cls: 'b', align: 'r', t0: tF0 });
+  E.logoMark(BX3 - 36 - 100 - 26 - 84 * 1.05, 200, 72, (t) => ramp(t, tF0, 0.5));
+  E.bar(BX3, 200, 79.8 * BS3, 90, { t0: tF0 + 0.1, d: 0.9, color: INK });
+  E.count(BX3 + 79.8 * BS3 + 28, 200, { follow: (t) => [-(1 - ramp(t, tF0 + 0.1, 0.9, ease.out3)) * 79.8 * BS3, 0], from: 0, to: 79.8, dec: 1, t0: tF0 + 0.1, t1: tF0 + 1.0, fs: 88, cls: 'b', suffix: '%' });
 
   // ── 今天：一个个开关拨开 ──
   const tH = T('r8b') - 0.75, tMn = T('r8b', '主流') - 0.3, tSw = T('r8b', '思考模式') - 0.5;
   const M = W.sheet({ in: [tH, 'r', 1.0], out: [T('r9') - 0.85, 'l', 1.0], h: 1100 });
   M.text('今天的主流大模型', 0, -430, { fs: 92, cls: 'b', align: 'c', t0: tMn });
   for (let j = 0; j < 5; j++) {
-    const y = -290 + j * 118, tSj = tSw + j * 0.32, ta = tMn + j * 0.14;
+    const y = -290 + j * 118, tSj = tSw + j * 0.2, ta = tMn + j * 0.14;
     M.text('思考模式', -720, y, { fs: 72, t0: ta });
     M.toggle(-370, y, { t0: ta, on: (t) => ramp(t, tSj, 0.28) });
-    M.bar(-200, y, 760, 62, { t0: tSj + 0.2, d: 0.65, color: '#aeb4bc', ease: linear });
-    M.tok('答案', { keys: drop(690, y, tSj + 0.82, 130, 0.28), t0: tSj + 0.82, w: 190, d: 92, h: 18, fs: 60 });
+    M.bar(-200, y, 760, 62, { t0: tSj + 0.2, d: 0.55, color: '#aeb4bc', ease: linear });
+    M.tok('答案', { keys: drop(690, y, tSj + 0.72, 130, 0.28), t0: tSj + 0.72, w: 190, d: 92, h: 18, fs: 60 });
     sfx('tick', tSj, { g: 0.2 });
   }
 
@@ -196,7 +180,8 @@ scene('learn', ({ root, s }) => {
 
   // ── 同一个实验的结果放在一张纸上：左边二十五道全对，右边位数越多写得越长 ──
   const tJ = T('r11') - 0.8;
-  const J = W.sheet({ in: [tJ, 'r', 1.0], out: [T('r13') - 0.75, 'l', 1.0], h: 1100 });
+  const J = W.sheet({ in: [tJ, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], h: 1100 });
+  const jOff = off(T('r13') - 0.5, 0.6);
   const DIG = ['三位', '四位', '五位', '六位', '七位'], GX = -680, GP2 = 112, GY = -280, tAq = T('r11') + 0.05, tOk2 = T('r11', '全对') - 1.35;
   J.text('每种位数取 5 道', GX - 46, -390, { fs: 50, cls: 'g', t0: tAq });
   DIG.forEach((d, r) => J.text(d, GX - 70, GY + r * GP2, { fs: 50, align: 'r', t0: tAq + r * 0.08 }));
@@ -209,53 +194,49 @@ scene('learn', ({ root, s }) => {
   J.count(GX + 224, GY + 5 * GP2 + 8, { from: 0, to: 25, t0: tOk2, t1: tOk2 + 24 * 0.052 + 0.1, fs: 100, cls: 'b', align: 'c', suffix: ' 道全对' });
   const VAL = [93, 166, 261, 412, 550], VX = (i) => 60 + i * 165, BASE = 270, SCL = 0.95, VW = 110;
   const tV = T('r12') + 0.05, tVe = Tend('r12') + 0.1;
-  J.text('平均的思考长度（块）', -30, -380, { fs: 54, cls: 'g', t0: tV });
-  J.line([[-40, BASE], [800, BASE]], { t0: tV, d: 0.6, w: 3, color: GRAY });
-  J.text('位数', 815, BASE, { fs: 50, cls: 'g', t0: tV + 0.3 });
+  J.text('平均的思考长度（块）', -30, -380, { fs: 54, cls: 'g', off: jOff, t0: tV });
+  J.line([[-40, BASE], [800, BASE]], { off: jOff, t0: tV, d: 0.6, w: 3, color: GRAY });
+  J.text('位数', 815, BASE, { fs: 50, cls: 'g', off: jOff, t0: tV + 0.3 });
   VAL.forEach((v, i) => {
     const ta = i === 0 ? T('r12b', '三位数') - 0.2 : (i === 4 ? T('r12b', '七位数') - 0.55 : lerp(tV, tVe, i / 3)), d = i === 4 ? 1.1 : 0.8;
-    J.bar(VX(i) - VW / 2, BASE, VW, v * SCL, { t0: ta, d, axis: 'y', color: i === 4 ? '#565c65' : (i === 0 ? '#6f757d' : '#b4bac2') });
-    J.count(VX(i), BASE - v * SCL - 48, { follow: (t) => [0, (1 - ramp(t, ta, d, ease.out3)) * v * SCL], from: 0, to: v, t0: ta, t1: ta + d, fs: i === 4 || i === 0 ? 84 : 70, cls: i === 4 || i === 0 ? 'b' : '', align: 'c' });
-    J.text(DIG[i], VX(i), BASE + 50, { fs: 52, align: 'c', t0: ta - 0.15 });
+    J.bar(VX(i) - VW / 2, BASE, VW, v * SCL, { off: jOff, t0: ta, d, axis: 'y', color: i === 4 ? '#565c65' : (i === 0 ? '#6f757d' : '#b4bac2') });
+    J.count(VX(i), BASE - v * SCL - 48, { follow: (t) => [0, (1 - ramp(t, ta, d, ease.out3)) * v * SCL], from: 0, to: v, off: jOff, t0: ta, t1: ta + d, fs: i === 4 || i === 0 ? 84 : 70, cls: i === 4 || i === 0 ? 'b' : '', align: 'c' });
+    J.text(DIG[i], VX(i), BASE + 50, { fs: 52, align: 'c', off: jOff, t0: ta - 0.15 });
     sfx('pop', ta + d, { g: 0.14 });
   });
 
-  // ── 每一块，一趟 ──
-  const tL = T('r13') - 0.75;
-  const L = W.sheet({ in: [tL, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], w: 2500, h: 1300 });
-  const LN = 8, LXs = (i) => -1050 + i * 300, SR = 240, SLH = 56 * 7, LT = T('r13', '每一块') - 0.3, LT2 = T('r13', '多走') + 0.3;
+  // ── 同一张纸：多写一块，多走一趟（右边的条形退下去，纸垛从每一块上立起来）──
+  const LN = 6, LXs = (i) => 90 + i * 150, LY = -30, SLH = 44 * 7, LT = T('r13', '每一块') - 0.2, LT2 = T('r13', '多走') + 0.4, tLt = T('r13') - 0.3;
   const LST = [];
   for (let i = 0; i < LN; i++) {
     const ta = lerp(LT, LT2, i / (LN - 1));
-    L.tok('', { keys: drop(LXs(i), 240, tL + 0.55 + i * 0.05, 120, 0.28), t0: tL + 0.55 + i * 0.05, w: 200, d: 92, h: 18, cls: 'cube' });
-    LST.push(L.stack(LXs(i), 40, { w: SR, d: 170, n: 56, gap: 7, rise: (t) => ramp(t, ta, 0.42, ease.out3), fill: (t) => ramp(t, ta + 0.2, 0.55, linear) }));
-    sfx('pop', ta + 0.42, { g: 0.12 });
+    J.tok('', { keys: drop(LXs(i), 170, tLt + i * 0.05, 100, 0.28), t0: tLt + i * 0.05, w: 120, d: 70, h: 14, cls: 'cube' });
+    LST.push(J.stack(LXs(i), LY, { w: 126, d: 100, n: 44, gap: 7, rise: (t) => ramp(t, ta, 0.55, ease.out3), fill: (t) => ramp(t, ta + 0.3, 0.6, linear) }));
+    sfx('pop', ta + 0.55, { g: 0.12 });
   }
-  L.text('多写一块，多走一趟', 0, 430, { fs: 118, cls: 'b', align: 'c', t0: T('r13', '多走') + 0.2, d: 0.5 });
+  J.text('多写一块，多走一趟', 465, 320, { fs: 90, cls: 'b', align: 'c', t0: T('r13', '多走') + 0.3, d: 0.6 });
 
   // ── 正在讲的区域亮起 ──
-  A.wash(-810, -370, 810, -20, T('r1') + 0.3, T('r1b') - 0.2);
-  C.wash(-890, -430, 50, 190, T('r3') + 0.6, T('r4') - 0.2);
+  A.wash(-810, -370, 810, -20, tE + 0.5, T('r1b') - 0.2);
   D.wash(-1060, -610, 1060, -240, tTh - 0.2, Tend('r5') + 0.5);
   D.wash(-1060, 80, 1060, 320, tO - 0.2, tO + 1.8);
   I.wash(-900, -570, 900, -170, T('r9', '开头') - 0.2, T('r10') - 0.4);
 
   // ── 镜头 ──
-  const shM = fitCam([Mdl.box, C.p(-880, -420), C.p(Sx + 300, Sy + 330)], { pitch: 32, cz: C.Z + H * 0.3, kmax: 1.0 });
-  const shL = fitCam([...LST.map((q) => q.box), L.p(-1200, 460), L.p(1200, 460)], { pitch: 34, cz: L.Z + SLH * 0.3 });
+  const shM = fitCam([Mdl.box, A.p(-900, -440), A.p(900, 430)], { pitch: 26, cz: A.Z + H * 0.25, kmax: 1.0 });
+  const shJ = fitCam([...LST.map((q) => q.box), J.p(-880, -400), J.p(860, 400)], { pitch: 22, cz: J.Z + SLH * 0.2, kmax: 1.0 });
   W.cam([
     [s.start + 0.02, chap.home(), 1.35, smooth],
-    [T('r1') - 1.0, A.home({ cy: 0 }), 1.25, smooth],
-    [tB, shM, 1.25, smooth],
+    [T('r1') - 1.0, A.home({ cy: 20 }), 1.25, smooth],
+    // 纸垛立起来，要看得出高度
+    [T('r4') + 0.1, shM, 1.4, smooth],
     [tD, D.home({ cy: -80, k: 0.84 }), 1.25, smooth],
-    [tE0, E.home({ k: 0.96 }), 1.25, smooth],
-    [tF, F.home({ cy: -60, k: 0.84 }), 1.25, smooth],
-    [tG0, G.home({ cy: -40 }), 1.25, smooth],
+    [tE0, E.home({ cy: -90, k: 0.84 }), 1.25, smooth],
     [tH, M.home({ cy: -70 }), 1.25, smooth],
     [tI, I.home({ cy: -10, k: 0.9 }), 1.25, smooth],
     [tJ, J.home({ cx: 15, cy: -20 }), 1.25, smooth],
-    [tL, shL, 1.25, smooth],
+    [T('r13') - 0.35, shJ, 1.4, smooth],
     [s.end - 0.95, HOME, 0.9, smooth],
   ]);
-  [tB, tD, tE0, tF, tG0, tH, tI, tJ, tL, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
+  [tD, tE0, tH, tI, tJ, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });
