@@ -9,7 +9,7 @@
     "zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"
   },
   "stage": "review",
-  "next": "策划者在审片页选定配音、配乐、视觉方向与封面，并确认文案；确认后配全片",
+  "next": "等校对者明确确认文案；确认后用嚣张小姐配全片，再按 A×B 融合方向做代表段与封面",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -70,6 +70,16 @@
     "style": {
       "flat": false,
       "no_emoji": true
+    }
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Arrogant_Miss"
+    },
+    "speed": {
+      "zh": 1.2
     }
   }
 }
