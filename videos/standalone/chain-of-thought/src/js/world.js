@@ -1,22 +1,22 @@
-// 本片的立体世界（第 5 稿起；替换第 4 稿那张斜放的桌面）
+// 本片的世界（第 10 稿起重做）：一张有纹理的稿纸，一支笔在上面写。
 //
-// 一整张无边的草稿纸是地面（横格线随镜头铺开，远处淡去）；模型写下的 token 是立在纸上的小方块；
-// 正在决定的那一块，上方立着一摞纸——每一张是一层，从下往上一张张算到顶，就是「一趟」；算到顶得出的那一块落回纸上。
-// 立体本身就是内容：高度 = 一趟里能连着算的层数；写下的字把上一趟的结果交给下一趟，于是一趟接一趟往上接。
-//
-// 镜头是一台绕目标点转动的真镜头：目标点 (cx, cy, cz)、方位 yaw（绕纸面的法线转）、俯仰 pitch（0 为正俯视，90 为平视）、远近 k。
-// 所有状态都由 t 算出：位置、亮暗、升起的程度都是 t 的函数（ramp / keyed3），不用补间回调，也不依赖播放历史。
+// 主轴是「在纸上写」：字、划线、圈注都是笔写在同一张扁平纸面（floor）上的墨迹，纸面只有一层，所以不会互相抢深度而闪烁。
+// 立体只用在有含义的地方：一摞层是实心的纸垛（高度＝一趟能连着算的层数），笔立在纸上并投下影子。
+// 镜头只有正向的俯仰（yaw 恒为 0）：写字时低头看纸，看高度时抬起来，换段落时沿着纸往前走。
+// 一切状态都由 t 算出（ramp / keyed3 / 笔的路径表），不用补间回调，也不依赖播放历史。
 
-const LINE_GAP = 96;                 // 纸上横格的间距
-const RULES = 34;                    // 镜头前后各铺几条横格
+const LINE_GAP = 96, TILE = 960, RULES = 30, PERSP = 3400, OX = 960, OY = 540;
+const INK = '#17191f', PENCIL = '#6b6e75', RED = '#b5321c';
 
 function ramp(t, t0, d, e) { return (e || ease.io3)(clamp((t - t0) / Math.max(1e-6, d))); }
 const smooth = (k) => k * k * (3 - 2 * k);
+const linear = (k) => k;
+const win = (t, a, b, d = 0.4) => ramp(t, a, d) * (1 - ramp(t, b, d));
 
-// 关键帧：keys = [[t, {分量}, d, ease]]，t 写 null 表示接在上一段之后 0.1 秒；每段从上一段的终点走到本段的终点
+// 关键帧：keys = [[t, {分量}, d, ease]]，t 写 null 表示接在上一段之后；每段从上一段的终点走到本段的终点
 function keyed3(s0, keys) {
   const segs = []; let cur = { ...s0 }, prevEnd = -Infinity;
-  for (const [t, v, d = 1.4, e] of keys) {
+  for (const [t, v, d = 1.6, e] of keys) {
     const tt = t == null ? prevEnd + 0.1 : t, next = { ...cur, ...v };
     segs.push({ t: tt, d, a: cur, b: next, e: e || ease.io3 }); cur = next; prevEnd = tt + d;
   }
@@ -31,336 +31,321 @@ function keyed3(s0, keys) {
   };
 }
 
-// 世界：root 里建透视层、舞台与地面。W.cam(keys) 设镜头轨迹；W.up(fn) 登记每帧更新（fn(t, cam)）
+// 纸的纹理：固定种子，生成一次；四边无缝，TILE 见方，随世界坐标铺开
+function paperTile() {
+  if (paperTile.url) return paperTile.url;
+  const c = document.createElement('canvas'); c.width = c.height = TILE;
+  const x = c.getContext('2d'), img = x.createImageData(TILE, TILE), r = seeded(7), P = 2 * Math.PI / TILE;
+  for (let j = 0; j < TILE; j++) for (let i = 0; i < TILE; i++) {
+    const m = Math.sin(i * P * 3 + j * P * 2) + 0.7 * Math.sin(i * P * 7 - j * P * 5 + 1.3) + 0.5 * Math.sin(i * P * 13 + j * P * 11 + 2.1);
+    const v = (r() - 0.5) * 9 + m * 1.5, o = (j * 4) * TILE + i * 4;
+    img.data[o] = 250 + v; img.data[o + 1] = 246 + v; img.data[o + 2] = 237 + v * 0.9; img.data[o + 3] = 255;
+  }
+  x.putImageData(img, 0, 0);
+  for (let n = 0; n < 1500; n++) {
+    const a = r() * TILE, b = r() * TILE, ang = r() * 6.283, L = 14 + r() * 46, bend = (r() - 0.5) * 16, dark = r() < 0.72;
+    x.strokeStyle = dark ? `rgba(118,100,70,${0.05 + r() * 0.07})` : `rgba(255,255,255,${0.2 + r() * 0.25})`; x.lineWidth = 0.6 + r() * 0.6;
+    for (const ox of [-TILE, 0, TILE]) for (const oy of [-TILE, 0, TILE]) {
+      x.beginPath(); x.moveTo(a + ox, b + oy);
+      x.quadraticCurveTo(a + ox + Math.cos(ang) * L / 2 - Math.sin(ang) * bend, b + oy + Math.sin(ang) * L / 2 + Math.cos(ang) * bend, a + ox + Math.cos(ang) * L, b + oy + Math.sin(ang) * L); x.stroke();
+    }
+  }
+  return (paperTile.url = c.toDataURL('image/png'));
+}
+
+// ── 笔画 ──
+// 把折线变成略带手抖的平滑路径（固定种子）；amp 为抖动幅度
+function roughD(pts, amp, seed) {
+  const r = seeded(seed), P = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1], L = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.round(L / 90));
+    for (let j = 0; j < n; j++) { const u = j / n, e = (i === 0 && j === 0) ? 0.3 : 1; P.push([lerp(a[0], b[0], u) + (r() - 0.5) * amp * e, lerp(a[1], b[1], u) + (r() - 0.5) * amp * e]); }
+  }
+  const z = pts[pts.length - 1]; P.push([z[0] + (r() - 0.5) * amp * 0.3, z[1] + (r() - 0.5) * amp * 0.3]);
+  let d = `M${P[0][0].toFixed(1)} ${P[0][1].toFixed(1)}`;
+  for (let i = 0; i < P.length - 1; i++) {
+    const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+    d += ` C${(p1[0] + (p2[0] - p0[0]) / 6).toFixed(1)} ${(p1[1] + (p2[1] - p0[1]) / 6).toFixed(1)} ${(p2[0] - (p3[0] - p1[0]) / 6).toFixed(1)} ${(p2[1] - (p3[1] - p1[1]) / 6).toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+  }
+  return d;
+}
+
+// ── 世界 ──
 function makeWorld(root, cam0) {
   const view = h('div', 'view', root);
   const stage = h('div', 'stage', view);
-  const base = { cx: 0, cy: 0, cz: 0, yaw: 0, pitch: 60, k: 1, sx: 960, sy: 540, ...cam0 };
-  const W = { view, stage, camAt: () => base, ups: [], boards: [] };
-  const rules = [];
-  for (let i = -RULES; i <= RULES; i++) rules.push(h('div', 'rule', stage));
+  const base = { cx: 0, cy: 0, cz: 0, pitch: 34, k: 1, sx: 960, sy: 540, ...cam0 };
+  const floor = h('div', 'floor', stage);
+  const ptex = h('div', 'ptex', floor); ptex.style.backgroundImage = `url(${paperTile()})`;
+  const rules = []; for (let i = -RULES; i <= RULES; i++) rules.push(h('div', 'rule', floor));
+  const shadowL = h('div', 'lay', floor);
+  const mk = () => { const s = svg('svg', { width: 1, height: 1 }, floor); css(s, { position: 'absolute', left: 0, top: 0, overflow: 'visible' }); return s; };
+  const under = mk();
+  const inkL = h('div', 'lay', floor);
+  const over = mk();
+  h('div', 'light', root);
+  const W = { view, stage, floor, shadowL, inkL, under, over, camAt: () => base, ups: [], strokes: [], seed: 11 };
   W.cam = (keys) => { W.camAt = keyed3(base, keys); };
   W.up = (fn) => W.ups.push(fn);
   let lastC = '';
   F((t) => {
-    // 先取整再用：写进样式的值与比较用的键完全一致，镜头停住时不会留下上一帧的细微差别（否则画面依赖播放历史）
     const c0 = W.camAt(t), c = {};
-    for (const k_ of ['cx', 'cy', 'cz', 'yaw', 'pitch', 'k', 'sx', 'sy']) c[k_] = +c0[k_].toFixed(3);
-    const key = [c.cx, c.cy, c.cz, c.yaw, c.pitch, c.k, c.sx, c.sy].join(',');
+    for (const k_ of ['cx', 'cy', 'cz', 'pitch', 'k', 'sx', 'sy']) c[k_] = +c0[k_].toFixed(3);
+    const key = [c.cx, c.cy, c.cz, c.pitch, c.k, c.sx, c.sy].join(',');
     if (key !== lastC) {
       lastC = key;
-      stage.style.transform = `translate3d(${c.sx}px, ${c.sy}px, 0) scale3d(${c.k}, ${c.k}, ${c.k}) rotateX(${c.pitch}deg) rotateZ(${c.yaw}deg) translate3d(${-c.cx}px, ${-c.cy}px, ${-c.cz}px)`;
-      // 横格：只铺镜头附近，越远越淡，看起来无边
+      stage.style.transform = `translate3d(${c.sx}px, ${c.sy}px, 0) scale3d(${c.k}, ${c.k}, ${c.k}) rotateX(${c.pitch}deg) translate3d(${-c.cx}px, ${-c.cy}px, ${-c.cz}px)`;
+      ptex.style.transform = `translate(${Math.round(c.cx / TILE) * TILE - 9 * TILE}px, ${Math.round(c.cy / TILE) * TILE - 9 * TILE}px)`;
       const j0 = Math.round(c.cy / LINE_GAP);
       rules.forEach((l, i) => {
         const j = j0 + i - RULES, dy = Math.abs(j * LINE_GAP - c.cy) / (RULES * LINE_GAP);
-        l.style.transform = `translate3d(${(c.cx - 7000).toFixed(1)}px, ${j * LINE_GAP}px, 0)`;
-        l.style.opacity = Math.max(0, 1 - dy * dy * 1.15).toFixed(3);
+        l.style.transform = `translate(${(c.cx - 8000).toFixed(1)}px, ${j * LINE_GAP}px)`;
+        l.style.opacity = Math.max(0, 1 - dy * dy * 1.1).toFixed(3);
       });
-      for (const b of W.boards) b.el.style.transform = `translate3d(${b.x}px, ${b.y}px, ${b.z}px) rotateZ(${-c.yaw}deg) rotateX(${-c.pitch}deg) translate(${b.dx}px, ${b.dy}px)`;
     }
     for (const u of W.ups) u(t, c);
   });
-  // 面向镜头的标签：(x, y, z) 是它在世界里的锚点；dx、dy 是相对锚点的屏幕偏移（-宽/2 即居中）
-  W.board = (html, x, y, z, dx = 0, dy = 0, cls = '') => {
-    const el = h('div', 'bb ' + cls, stage, html); const b = { el, x, y, z, dx, dy }; W.boards.push(b);
-    el.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`; return el;
+
+  // ── 写字 ── txt 逐字写出。x, y：起点与行中线；o: fs, cls('red'|'pencil'|'bold'), align('l'|'c'|'r'), t0, t1 或 seg:[[字数, t0, t1], …], off(t), pen(默认 true), hand(默认 true)
+  W.write = (txt, x, y, o = {}) => {
+    const fs = o.fs || 64, al = { l: 0, c: 0.5, r: 1 }[o.align || 'l'];
+    const el = h('div', 'ink ' + (o.cls || ''), inkL); el.style.fontSize = fs + 'px';
+    const r = seeded(W.seed += 7);
+    const chars = [...txt].map((ch) => { const sp = h('span', 'c', el); sp.textContent = ch; return sp; });
+    const w = el.offsetWidth, hh = Math.round(fs * 1.3), X0 = x - w * al;
+    css(el, { left: X0 + 'px', top: (y - hh / 2) + 'px', height: hh + 'px', lineHeight: hh + 'px' });
+    const live = chars.filter((sp) => sp.textContent.trim() !== '');
+    const n = live.length, ta = new Map();
+    if (o.seg) { let i = 0; for (const [c_, a, b] of o.seg) for (let j = 0; j < c_; j++, i++) if (live[i]) ta.set(live[i], lerp(a, b, c_ > 1 ? j / (c_ - 1) : 0)); }
+    else live.forEach((sp, i) => ta.set(sp, lerp(o.t0, o.t1 != null ? o.t1 : o.t0, n > 1 ? i / (n - 1) : 0)));
+    const info = chars.map((sp) => ({ sp, x0: X0 + sp.offsetLeft, x1: X0 + sp.offsetLeft + sp.offsetWidth, ta: ta.get(sp) }));
+    const hand = o.hand !== false;
+    info.forEach((c) => {
+      if (c.ta == null) return;
+      if (hand) c.sp.style.transform = `translateY(${((r() - 0.5) * fs * 0.035).toFixed(1)}px) rotate(${((r() - 0.5) * 2.2).toFixed(2)}deg)`;
+      const dens = hand ? 0.9 + r() * 0.1 : 1;
+      fade(W, c.sp, (t) => ramp(t, c.ta, 0.1, linear) * dens * (o.off ? o.off(t) : 1));
+    });
+    { const a = Math.min(...[...ta.values()]); let lv = null; W.up((t, c) => { const v = t >= a - 0.01 && (!o.off || o.off(t) > 0.002) && (y - c.cy) * Math.cos(c.pitch * Math.PI / 180) * c.k < 1000; if (v !== lv) { lv = v; el.style.visibility = v ? '' : 'hidden'; } }); }
+    const R = { el, chars: info, x0: X0, x1: X0 + w, y, fs, w, t0: Math.min(...[...ta.values()]), t1: Math.max(...[...ta.values()]),
+      span(a, b) { return [info[a].x0, info[b].x1]; }, pts: [[X0, y - hh / 2, 0], [X0 + w, y - hh / 2, 0], [X0, y + hh / 2, 0], [X0 + w, y + hh / 2, 0]] };
+    if (o.pen !== false) {
+      const L = info.filter((c) => c.ta != null), red = o.cls && o.cls.includes('red');
+      W.strokes.push({ t0: R.t0, t1: R.t1 + 0.06, red, at: (t) => {
+        let i = 0; while (i < L.length - 1 && L[i + 1].ta <= t) i++;
+        const c = L[i], nx = L[Math.min(i + 1, L.length - 1)], u = nx === c ? 1 : clamp((t - c.ta) / Math.max(0.02, nx.ta - c.ta));
+        return [lerp(c.x0, c.x1, Math.min(1, u * 1.2)), y + fs * 0.32 + Math.sin(u * 9.4) * fs * 0.13];
+      } });
+    }
+    return R;
   };
-  // 印在纸面上的字（随纸面倾斜，像写在纸上）
-  W.print = (html, x, y, cls = '') => { const el = h('div', 'pr ' + cls, stage, html); el.style.transform = `translate3d(${x}px, ${y}px, 0.6px)`; return el; };
+  // 给写好的字中的第 a–b 个字换色：fn(t) 0–1 为混合比例
+  W.tint = (R, a, b, color, fn) => {
+    const c0 = [...R.chars.slice(a, b + 1)];
+    let last = -1;
+    const hex = (s) => [1, 3, 5].map((i) => parseInt(s.substr(i, 2), 16)), A = hex(INK), B = hex(color);
+    W.up((t) => { const k = +clamp(fn(t)).toFixed(3); if (k === last) return; last = k; c0.forEach((c) => { c.sp.style.color = `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], k))).join(',')})`; }); });
+  };
+
+  // ── 笔画 ── pts 折线；o: t0, t1, color, w, amp, off(t), pen(默认 true), lay('over'|'under'), op
+  W.stroke = (pts, o = {}) => {
+    const col = o.color || INK, s = o.svg || ((o.lay === 'under') ? under : over);
+    const p = svg('path', { d: o.d || roughD(pts, o.amp != null ? o.amp : 3.2, W.seed += 13), fill: 'none', stroke: col, 'stroke-width': o.w || 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, s);
+    if (o.op) p.setAttribute('stroke-opacity', o.op);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = `${L.toFixed(1)} ${(L + 20).toFixed(1)}`;
+    const N = 80, table = []; for (let i = 0; i <= N; i++) { const q = p.getPointAtLength(L * i / N); table.push([q.x, q.y]); }
+    let last = '';
+    W.up((t) => {
+      const k = ramp(t, o.t0, o.t1 - o.t0, o.ease || smooth), op = o.off ? clamp(o.off(t)) : 1, key = k.toFixed(4) + '|' + op.toFixed(3);
+      if (key === last) return; last = key;
+      p.style.strokeDashoffset = (L * (1 - k)).toFixed(2); p.style.opacity = k > 0 ? op.toFixed(3) : 0; p.style.visibility = (k <= 0 || op < 0.002) ? 'hidden' : '';
+    });
+    if (o.pen !== false) W.strokes.push({ t0: o.t0, t1: o.t1, red: col === RED, at: (t) => { const k = ramp(t, o.t0, o.t1 - o.t0, o.ease || smooth) * N, i = Math.min(N - 1, Math.floor(k)), u = k - i; return [lerp(table[i][0], table[i + 1][0], u), lerp(table[i][1], table[i + 1][1], u)]; } });
+    return p;
+  };
+  // 立在纸上的竖直画布（面朝镜头）：画布坐标 [x, -z]
+  W.wall = (y) => { const g = h('div', 'p3', stage); g.style.transform = `translate3d(0px, ${y}px, 1px) rotateX(-90deg)`; const v = svg('svg', { width: 1, height: 1 }, g); css(v, { position: 'absolute', left: 0, top: 0, overflow: 'visible' }); return v; };
+  // 立在纸上的字（面朝镜头的竖直面）：x 为左端，z 为高度，fn(t) 透明度
+  W.wallText = (txt, x, y, z, fs, fn, cls = '') => { const e = h('div', 'ink ' + cls, stage); e.style.fontSize = fs + 'px'; e.style.transformOrigin = '0 0'; e.textContent = txt; e.style.transform = `translate3d(${x}px, ${y}px, ${z + fs * 0.65}px) rotateX(-90deg)`; fade(W, e, fn); return e; };
+  W.line = (x0, y0, x1, y1, o = {}) => W.stroke([[x0, y0], [x1, y1]], o);
+  W.under_ = (R, a, b, o = {}) => { const [x0, x1] = R.span(a, b), y = R.y + R.fs * 0.62; return W.line(x0, y, x1, y, o); };
+  // 手画的方框（首尾略微出头）
+  W.box = (x0, y0, x1, y1, o = {}) => W.stroke([[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0 - 2, y0 + 6]], { amp: 2.4, ...o });
+  // 手画的椭圆圈（多转一点，像随手圈的）
+  W.ring = (cx, cy, rx, ry, o = {}) => { const pts = []; for (let i = 0; i <= 30; i++) { const a = -1.9 + i / 30 * 6.283 * 1.08; pts.push([cx + Math.cos(a) * rx * (1 + i * 0.002), cy + Math.sin(a) * ry * (1 + i * 0.002)]); } return W.stroke(pts, { amp: 1.2, ...o }); };
+  W.check = (x, y, s, o = {}) => W.stroke([[x - s * 0.5, y], [x - s * 0.12, y + s * 0.42], [x + s * 0.6, y - s * 0.56]], { amp: 1, w: 7, ...o });
+  W.cross = (x, y, s, o = {}) => { const m = (o.t0 + o.t1) / 2, base = { amp: 1, w: 8, color: RED, ...o }; W.stroke([[x - s, y - s], [x + s, y + s]], { ...base, t1: m }); return W.stroke([[x + s, y - s], [x - s, y + s]], { ...base, t0: m + 0.03 }); };
+  W.arrow = (pts, o = {}) => {
+    const n = pts.length, a = pts[n - 2], b = pts[n - 1], ang = Math.atan2(b[1] - a[1], b[0] - a[0]), hs = o.head || 26, m = lerp(o.t0, o.t1, 0.82), base = { w: 5, ...o };
+    W.stroke(pts, { ...base, t1: m });
+    W.stroke([[b[0] + Math.cos(ang + 2.6) * hs, b[1] + Math.sin(ang + 2.6) * hs], b, [b[0] + Math.cos(ang - 2.6) * hs, b[1] + Math.sin(ang - 2.6) * hs]], { ...base, amp: 0.6, t0: m + 0.02 });
+  };
+  // 铅笔排线：在一块区域里来回涂
+  W.hatch = (x0, y0, x1, y1, o = {}) => {
+    const pts = [], gap = o.gap || 11, H_ = y1 - y0; let up = false;
+    for (let x = x0; x <= x1 + H_; x += gap) { const xa = Math.max(x0, x - H_), xb = Math.min(x1, x); const A = [xb, y0 + (x > x1 ? x - x1 : 0)], B = [xa, y0 + Math.min(H_, x - x0)]; pts.push(up ? A : B, up ? B : A); up = !up; }
+    return W.stroke(pts, { amp: 1.5, w: o.w || 13, color: o.color || '#8d8f96', op: o.op || 0.55, lay: 'under', ease: linear, ...o, d: undefined });
+  };
+  // 官方徽标印在纸上：h 为高度，fn(t) 透明度
+  W.logo = (x, y, hh, fn) => { const e = h('img', 'logo', inkL); e.src = 'assets/deepseek-logo.png'; css(e, { left: x + 'px', top: (y - hh / 2) + 'px', height: hh + 'px' }); fade(W, e, fn); return { el: e, pts: [[x, y - hh / 2, 0], [x + hh * 780 / 165, y + hh / 2, 0]] }; };
+
+  // ── 一支笔 ──
+  const penEl = h('div', 'pen', stage);
+  penEl.innerHTML = penSvg('#101116', '#3f434d', 'a') + `<div class="r">${penSvg('#6f1a0d', '#d0543b', 'b')}</div>`;
+  const penRed = penEl.querySelector('.r');
+  const shade = h('div', 'pshade', shadowL);
+  let sorted = null, lastP = '';
+  const restAt = (c) => [c.cx + 1450 / c.k, c.cy + 300 / (c.k * Math.cos(c.pitch * Math.PI / 180))];
+  W.up((t, c) => {
+    if (!sorted) sorted = W.strokes.slice().sort((a, b) => a.t0 - b.t0);
+    let i = -1; while (i + 1 < sorted.length && sorted[i + 1].t0 <= t) i++;
+    let p, z = 0, red = 0;
+    const cur = sorted[i], nx = sorted[i + 1];
+    const rest = restAt(c);
+    if (cur && t <= cur.t1) { p = cur.at(t); z = 1.5; red = cur.red ? 1 : 0; }
+    else {
+      const from = cur ? cur.at(cur.t1) : rest, tEnd = cur ? cur.t1 : -1e9, gap = nx ? nx.t0 - tEnd : Infinity;
+      const dNext = nx ? nx.at(nx.t0) : rest;
+      const rA = cur && cur.red ? 1 : 0, rB = nx && nx.red ? 1 : 0;
+      if (gap <= 2.2) { const u = ramp(t, tEnd, gap, ease.io3); p = [lerp(from[0], dNext[0], u), lerp(from[1], dNext[1], u)]; z = 1.5 + Math.sin(u * Math.PI) * Math.min(70, 26 + gap * 26); red = lerp(rA, rB, u); }
+      else {
+        const out = ramp(t, tEnd, 0.8, ease.io3), inn = nx ? ramp(t, nx.t0 - 0.8, 0.8, ease.io3) : 0;
+        const a = [lerp(from[0], rest[0], out), lerp(from[1], rest[1], out)];
+        p = [lerp(a[0], dNext[0], inn), lerp(a[1], dNext[1], inn)]; z = 1.5 + 90 * Math.sin(Math.min(1, out + inn) * Math.PI / 2) * (1 - inn) ** 0.5 + 40 * Math.sin(inn * Math.PI);
+        red = inn > 0 ? rB : rA;
+      }
+    }
+    const s = Math.pow(1 / Math.max(0.45, c.k), 0.6);
+    const key = [p[0].toFixed(1), p[1].toFixed(1), z.toFixed(1), c.pitch, s.toFixed(3), red.toFixed(2)].join('|');
+    if (key === lastP) return; lastP = key;
+    penEl.style.transform = `translate3d(${p[0].toFixed(1)}px, ${p[1].toFixed(1)}px, ${z.toFixed(1)}px) rotateX(${-c.pitch}deg) rotate(19deg) scale(${s.toFixed(3)})`;
+    penRed.style.opacity = red.toFixed(2);
+    const sOp = clamp(1 - z / 130);
+    shade.style.transform = `translate(${(p[0] + z * 0.5).toFixed(1)}px, ${(p[1] + z * 0.6).toFixed(1)}px) rotate(24deg) scaleX(${s.toFixed(3)})`;
+    shade.style.opacity = (0.75 * sOp).toFixed(3);
+  });
   return W;
 }
 
-// 每帧按 fn(t) 摆放一个元素：fn 返回 { x, y, z, o, s, rz }；只在变化时写样式
+// 一支钢笔（SVG），笔尖在 (32, 640)
+function penSvg(c0, c1, id) {
+  return `<svg width="64" height="640" viewBox="0 0 64 640"><defs>
+  <linearGradient id="pb${id}" x1="0" x2="1"><stop offset="0" stop-color="${c0}"/><stop offset=".28" stop-color="${c1}"/><stop offset=".55" stop-color="${c0}"/><stop offset="1" stop-color="${c0}"/></linearGradient>
+  <linearGradient id="pm${id}" x1="0" x2="1"><stop offset="0" stop-color="#8b8d92"/><stop offset=".35" stop-color="#f1f1ee"/><stop offset=".7" stop-color="#a5a7ab"/><stop offset="1" stop-color="#6d6f74"/></linearGradient></defs>
+  <path d="M32 640 L22 588 Q20 572 24 556 L40 556 Q44 572 42 588 Z" fill="url(#pm${id})"/><path d="M32 638 L32 590" stroke="#3a3b40" stroke-width="1.4"/><circle cx="32" cy="586" r="3" fill="#3a3b40"/>
+  <rect x="19" y="498" width="26" height="60" rx="3" fill="url(#pb${id})"/><rect x="16" y="486" width="32" height="14" rx="2" fill="url(#pm${id})"/>
+  <path d="M14 486 L14 44 Q14 8 32 6 Q50 8 50 44 L50 486 Z" fill="url(#pb${id})"/><rect x="14" y="150" width="36" height="7" fill="url(#pm${id})"/></svg>`;
+}
+
+// 每帧按 fn(t) 摆放一个元素：fn 返回 { x, y, z, o, s }；只在变化时写样式
 function place(W, el, fn) {
   let last = '';
   W.up((t) => {
     const s = fn(t), o = s.o == null ? 1 : s.o;
-    const tr = `translate3d(${(s.x || 0).toFixed(2)}px, ${(s.y || 0).toFixed(2)}px, ${(s.z || 0).toFixed(2)}px)` + (s.rz ? ` rotateZ(${s.rz.toFixed(2)}deg)` : '') + (s.s != null && s.s !== 1 ? ` scale3d(${s.s.toFixed(4)}, ${s.s.toFixed(4)}, ${s.s.toFixed(4)})` : '');
+    const tr = `translate3d(${(s.x || 0).toFixed(2)}px, ${(s.y || 0).toFixed(2)}px, ${(s.z || 0).toFixed(2)}px)` + (s.s != null && s.s !== 1 ? ` scale3d(${s.s.toFixed(4)}, ${s.s.toFixed(4)}, 1)` : '');
     const key = tr + '|' + o.toFixed(3);
     if (key === last) return; last = key;
     el.style.transform = tr; el.style.opacity = o.toFixed(3); el.style.visibility = o < 0.002 ? 'hidden' : '';
   });
 }
 
-// 方块（一个 token）：宽 w（沿 x）、深 d（沿 y）、高 hh；字印在顶面。返回的 g 以方块中心为原点
-function block(parent, txt, o = {}) {
-  const w = o.w || 120, d = o.d || 84, hh = o.h || 24;
-  const g = h('div', 'p3 blk' + (o.cls ? ' ' + o.cls : ''), parent);
-  const inner = h('div', 'p3', g); inner.style.transform = `translate3d(${-w / 2}px, ${-d / 2}px, 0)`;
-  const face = (cls, fw, fh, tr, html) => { const f = h('div', 'f ' + cls, inner, html); css(f, { width: fw + 'px', height: fh + 'px', transform: tr }); return f; };
-  face('sd', d, hh, `translate3d(0px, 0px, ${hh}px) rotateZ(90deg) rotateX(-90deg)`);
-  face('bk', w, hh, `translate3d(0px, 0px, ${hh}px) rotateX(-90deg)`);
-  face('sd', d, hh, `translate3d(${w}px, 0px, ${hh}px) rotateZ(90deg) rotateX(-90deg)`);
-  const fr = face('fr', w, hh, `translate3d(0px, ${d}px, ${hh}px) rotateX(-90deg)`);
-  const top = face('tp', w, d, `translate3d(0px, 0px, ${hh}px)`, txt);
-  if (o.fs) top.style.fontSize = o.fs + 'px';
-  return { g, top, fr, w, d, h: hh };
-}
-
-// 投在纸上的淡影
-function cast(parent, w, d) { const e = h('div', 'cast', parent); css(e, { left: -w / 2 + 'px', top: -d / 2 + 'px', width: w + 'px', height: d + 'px', transform: 'translateZ(0.4px)' }); return e; }
-
-// 一摞层（一趟）：n 张纸，间距 gap；rise(t) 0–1 为升起的程度，fill(t) 0–1 为算到了多高，z(t) 为整摞离纸面的高度
-function ream(W, parent, x, y, o = {}) {
-  const n = o.n || 96, w = o.w || 112, dd = o.d || w, gap = o.gap || 5;
-  const g = h('div', 'p3 ream', parent);
-  const sh = cast(g, w * 1.7, dd * 1.7);
-  const plates = [];
-  for (let i = 0; i < n; i++) { const p = h('div', 'plate', g); css(p, { left: -w / 2 + 'px', top: -dd / 2 + 'px', width: w + 'px', height: dd + 'px' }); plates.push(p); }
-  const R = { g, plates, n, w, d: dd, gap, H: n * gap, x, y, rise: o.rise || (() => 1), fill: o.fill || (() => 0), z: o.z || (() => 0), op: o.op || (() => 1), ink: o.ink || (() => 0), pos: o.pos || (() => [x, y]) };
-  const lastZ = new Array(n).fill(-1), lastS = new Array(n).fill(-1);
-  let lastG = '';
-  W.up((t) => {
-    const r = R.rise(t), f = R.fill(t), op = R.op(t), zz = R.z(t), ink = R.ink(t), [px_, py_] = R.pos(t);
-    const gk = `${px_.toFixed(2)}|${py_.toFixed(2)}|${zz.toFixed(2)}|${op.toFixed(3)}|${r > 0.001}`;
-    if (gk !== lastG) { lastG = gk; g.style.transform = `translate3d(${px_.toFixed(2)}px, ${py_.toFixed(2)}px, ${zz.toFixed(2)}px)`; g.style.opacity = op.toFixed(3); g.style.visibility = (op < 0.002 || r <= 0.001) ? 'hidden' : ''; }
-    if (op < 0.002 || r <= 0.001) return;
-    sh.style.opacity = (r * 0.9).toFixed(3);
-    const front = f * n;
-    for (let i = 0; i < n; i++) {
-      const z = +((i + 1) * gap * r).toFixed(2);
-      const st = ink > 0.5 ? 3 : (front - i >= 1 ? 2 : (front - i > 0 ? 1 : 0));
-      if (z !== lastZ[i]) { plates[i].style.transform = `translateZ(${z}px)`; lastZ[i] = z; }
-      if (st !== lastS[i]) { plates[i].className = 'plate' + ['', ' now', ' done', ' ink'][st]; lastS[i] = st; }
-    }
-  });
-  return R;
-}
-
-// 两点之间的一条细线（世界坐标）；返回 { e, set(p0, p1) }
-function seg(parent, cls = '') {
-  const e = h('div', 'seg ' + cls, parent);
-  return {
-    e,
-    set(a, b) {
-      const dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2];
-      const L = Math.hypot(dx, dy, dz), hz = Math.hypot(dx, dy);
-      const az = Math.atan2(dy, dx) * 180 / Math.PI, el = Math.atan2(dz, hz) * 180 / Math.PI;
-      e.style.width = L.toFixed(2) + 'px';
-      e.style.transform = `translate3d(${a[0].toFixed(2)}px, ${a[1].toFixed(2)}px, ${a[2].toFixed(2)}px) rotateZ(${az.toFixed(3)}deg) rotateY(${(-el).toFixed(3)}deg)`;
-    },
-  };
-}
-
-// 立在纸上的一块竖直画布（SVG），沿 x 方向，正面朝 +y；用来画读回去的弧线。
-// 画布坐标：X = 世界 x - x0，Y = top - 世界 z
-function wall(parent, x0, y, w, top) {
-  const g = h('div', 'p3', parent);
-  g.style.transform = `translate3d(${x0}px, ${y}px, ${top}px) rotateX(-90deg)`;
-  const s = svg('svg', { width: w, height: top + 40, viewBox: `0 0 ${w} ${top + 40}` }, g);
-  css(s, { position: 'absolute', left: 0, top: 0, overflow: 'visible' });
-  return { g, s, X: (x) => x - x0, Y: (z) => top - z };
-}
-
-// 只按 fn(t) 改透明度（标签、细线；不碰它们的变换）
+// 只按 fn(t) 改透明度
 function fade(W, el, fn) {
   let last = -1;
   W.up((t) => { const o = +clamp(fn(t)).toFixed(3); if (o === last) return; last = o; el.style.opacity = o; el.style.visibility = o < 0.002 ? 'hidden' : ''; });
 }
 
-// 章名印在纸面上（每章开头，镜头从它的正上方倾下来）；返回章名所在的位置，镜头的第一段由场景自己写
-function chapterMark(W, s, no, title, x, y, outAt) {
-  const t0 = s.start + 0.45;
-  const cn = W.print(no, x, y - 90, 'chap-no');
-  const ct = W.print(title, x, y, 'chap-ti');
-  const cr = seg(W.stage, ''); cr.set([x, y - 14, 0.6], [x + 130, y - 14, 0.6]);
-  const out = (t) => 1 - ramp(t, outAt, 0.8);
-  fade(W, cn, (t) => ramp(t, t0 + 0.1, 0.5) * out(t));
-  fade(W, cr.e, (t) => ramp(t, t0 + 0.25, 0.4) * out(t));
-  fade(W, ct, (t) => ramp(t, t0 + 0.35, 0.6) * out(t));
-  return { t0, cam: { cx: x + 380, cy: y - 40, cz: 0, pitch: 0, yaw: 0, k: 1 } };
-}
-
-// 一根立柱：很多趟压扁后摞在一起（每趟一段，段与段之间一道深色的接缝＝写下的那一块）。
-// seg 是每段的高度；n(t) 是 t 时刻摞了几段。四个侧面用重复的渐变画接缝，所以几百段也只有几个元素
-function column(W, parent, x, y, o = {}) {
-  const w = o.w || 150, d = o.d || 100, sg = o.seg || 12;
-  const g = h('div', 'p3 col', parent); g.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
-  g.style.setProperty('--sg', sg + 'px');
+// ── 纸垛：一摞层，实心，只有五个面（层线是面上的纹理，不会闪）──
+// x, y：底面中心；o: w, d, n, gap, rise(t) 0–1 升起, fill(t) 0–1 算到多高, op(t), base(t) 整摞离纸面的高度
+// 返回 { H, note(txt, frac, fn), pull(frac, fn) }
+function stack(W, x, y, o = {}) {
+  const w = o.w || 300, d = o.d || 190, n = o.n || 96, gap = o.gap || 7, H = n * gap;
+  const g = h('div', 'p3 sk', W.stage); g.style.setProperty('--gp', gap + 'px');
+  const mk = (cls, fw, tr) => { const f = h('div', 'f ' + cls, g); css(f, { width: fw + 'px', transformOrigin: '0 0' }); f.dataset.tr = tr; const fl = h('div', 'fl', f), nw = h('div', 'nw', f); return { f, fl, nw }; };
   const faces = [
-    ['fr', w, `translate3d(${-w / 2}px, ${d / 2}px, 0px) rotateX(-90deg)`],
-    ['bk', w, `translate3d(${-w / 2}px, ${-d / 2}px, 0px) rotateX(-90deg)`],
-    ['sd', d, `translate3d(${-w / 2}px, ${-d / 2}px, 0px) rotateZ(90deg) rotateX(-90deg)`],
-    ['sd', d, `translate3d(${w / 2}px, ${-d / 2}px, 0px) rotateZ(90deg) rotateX(-90deg)`],
-  ].map(([c, fw, tr]) => { const f = h('div', 'f ' + c, g); css(f, { width: fw + 'px', transformOrigin: '0 0' }); f.dataset.tr = tr; return f; });
+    mk('bk', w, `translate3d(${-w / 2}px, ${-d / 2}px, Zpx) rotateX(-90deg)`),
+    mk('sd', d, `translate3d(${-w / 2}px, ${-d / 2}px, Zpx) rotateZ(90deg) rotateX(-90deg)`),
+    mk('sd', d, `translate3d(${w / 2}px, ${-d / 2}px, Zpx) rotateZ(90deg) rotateX(-90deg)`),
+    mk('fr', w, `translate3d(${-w / 2}px, ${d / 2}px, Zpx) rotateX(-90deg)`),
+  ];
+  const fr = faces[3].f;
   const top = h('div', 'f tp', g); css(top, { width: w + 'px', height: d + 'px', left: -w / 2 + 'px', top: -d / 2 + 'px' });
-  const sh = cast(g, w * 1.7, d * 1.7);
-  let last = -1;
-  W.up((t) => {
-    const n = Math.max(0, (o.n || (() => 0))(t)), hh = +(n * sg).toFixed(2), op = (o.op || (() => 1))(t);
-    const key = hh * 1000 + op;
-    if (key === last) return; last = key;
-    // 侧面从 z = hh 往下画到 0（rotateX(-90deg) 把面的 y 轴转成向下的 z 轴）
-    faces.forEach((f) => { f.style.height = hh + 'px'; f.style.transform = f.dataset.tr.replace('0px) rotateX', `${hh}px) rotateX`).replace('0px) rotateZ', `${hh}px) rotateZ`); });
-    top.style.transform = `translateZ(${hh}px)`;
-    g.style.opacity = op; g.style.visibility = (op < 0.002 || hh <= 0) ? 'hidden' : '';
-    sh.style.opacity = Math.min(1, hh / 40);
-  });
-  return { g, w, d, sg };
-}
-
-// 一段写在纸上的回答：一串方块从 (x0, y0) 起从左往右排，超过 maxW 换行。
-// 字印在 <span class="tx"> 里（退远时可以单独淡去）。o.x1st：第一行从哪里起（前面留给题目）。
-// items：字符串＝一块字；数字 n＝看不清的一块（约 n 个字宽，顶面一道淡灰短线）；'\n'＝换行；{ t, cls } 或 { n, cls }＝带样式的一块
-function para(S, x0, y0, items, o = {}) {
-  const fs = o.fs || 36, lh = o.lh || 118, gap = o.gap || 10, maxW = o.maxW || 1600, d = o.d || 78, hh = o.h || 20;
-  const tw = (s) => [...s].reduce((a, ch) => a + (ch.charCodeAt(0) < 0x2e80 ? 0.6 : 1) * fs, 0);
-  const out = []; let x = o.x1st != null ? o.x1st : x0, line = 0;
-  for (const it of items) {
-    if (it === '\n') { x = x0; line++; continue; }
-    const ob = typeof it === 'object' ? it : (typeof it === 'number' ? { n: it } : { t: it });
-    const txt = ob.t != null ? ob.t.trim() : '';
-    const w = Math.round(ob.n != null ? ob.n * fs * 0.8 + 24 : Math.max(tw(txt) + 30, fs * 1.6));
-    if (x + w > x0 + maxW && x > x0) { x = x0; line++; }
-    const b = block(S, ob.n != null ? '' : `<span class="tx">${txt}</span>`, { w, d, h: hh, fs, cls: [ob.n != null ? 'dim' : '', ob.cls || ''].join(' ').trim() });
-    if (ob.n != null) { const bar = h('div', 'scrib', b.top); css(bar, { width: (w - 28) + 'px' }); }
-    out.push({ b, x: x + w / 2, x0: x, x1: x + w, y: y0 + line * lh, w, d, txt, i: out.length, line });
-    x += w + gap;
-  }
-  out.lines = line + 1;
-  return out;
-}
-
-// 一道立体的弧线：从 p0 拱到 p1（世界坐标），拱高 hgt；draw(t) 0–1 为画出的比例，op(t) 为透明度
-function arc3(W, parent, p0, p1, hgt, o = {}) {
-  const n = o.n || 32, segs = [];
-  for (let i = 0; i < n; i++) segs.push(seg(parent, o.cls || ''));
-  const P = (u) => [lerp(p0[0], p1[0], u), lerp(p0[1], p1[1], u), lerp(p0[2], p1[2], u) + 4 * hgt * u * (1 - u)];
-  segs.forEach((s, i) => s.set(P(i / n), P((i + 1) / n)));
+  const sh = h('div', 'skshade', W.shadowL); css(sh, { left: (x - w / 2) + 'px', top: (y - d / 2) + 'px', width: w + 'px', height: d + 'px' });
+  const rise = o.rise || (() => 1), fill = o.fill || (() => 0), op = o.op || (() => 1), base = o.base || (() => 0);
   let last = '';
   W.up((t) => {
-    const k = clamp(o.draw ? o.draw(t) : 1), op = clamp(o.op ? o.op(t) : 1), m = k * n;
-    const key = m.toFixed(2) + '|' + op.toFixed(3);
+    const r = clamp(rise(t)), hh = +(H * r).toFixed(1), fp = +(H * clamp(fill(t))).toFixed(1), a = +clamp(op(t)).toFixed(3), z0 = +(0.6 + base(t)).toFixed(1);
+    const key = [hh, fp, a, z0].join('|');
     if (key === last) return; last = key;
-    segs.forEach((s, i) => {
-      const v = clamp(m - i);
-      if (v > 0 && v < 1) s.set(P(i / n), P((i + v) / n)); else if (v >= 1) s.set(P(i / n), P((i + 1) / n));
-      s.e.style.opacity = v > 0 ? op.toFixed(3) : 0; s.e.style.visibility = v > 0 && op > 0.002 ? '' : 'hidden';
-    });
+    g.style.transform = `translate3d(${x}px, ${y}px, ${z0}px)`;
+    g.style.opacity = a; const vis = a < 0.002 || hh <= 0.5 ? 'hidden' : ''; g.style.visibility = vis;
+    faces.forEach(({ f, fl, nw }) => { f.style.height = hh + 'px'; f.style.transform = f.dataset.tr.replace('Z', hh); fl.style.height = Math.min(fp, hh) + 'px'; nw.style.bottom = Math.min(fp, hh) + 'px'; nw.style.opacity = fp > 0.5 && fp < H - 0.5 ? 1 : 0; });
+    top.style.transform = `translateZ(${hh}px)`;
+    sh.style.opacity = (a * Math.min(1, hh / 80)).toFixed(3);
+    const L = 1 + hh / (d * 1.5); sh.style.transform = `translate(${(hh * 0.06).toFixed(1)}px, ${(hh * 0.03).toFixed(1)}px) scale(${(1 + hh / (w * 8)).toFixed(3)}, ${L.toFixed(3)})`;
   });
-  return segs;
+  return { g, H, w, d, x, y, top, fr,
+    // 写在正面某一高度的字（算到这一层时亮起，一趟算完就消失：下一趟看不到）
+    lid(fn) { const e = h('div', 'lid', top); fade(W, e, fn); return e; },
+    note(txt, frac, fn, cls = '') { const e = h('div', 'sknote ' + cls, fr, txt); e.style.bottom = (H * frac) + 'px'; fade(W, e, fn); return e; },
+    topPt: [x, y + d / 2, H], basePt: [x, y + d / 2, 0],
+    box: { box: [x, y, w, d, H] } };
 }
 
-// 印在纸上的一个框（圈出一组方块）：x、y 为左上角，w、d 为宽和深
-function rect(W, parent, x, y, w, d, fn, cls = '') {
-  const e = h('div', 'p3 box3 ' + cls, parent);
-  css(e, { width: w + 'px', height: d + 'px', transform: `translate3d(${x}px, ${y}px, 0.8px)` });
-  fade(W, e, fn);
-  return e;
-}
-
-// 一圈方块的外框（paragraph 里第 a 到第 b 块；同一行），留出 pad
-function rectOf(W, parent, toks, a, b, fn, cls = '', pad = 14) {
-  const A = toks[a], B = toks[b];
-  return rect(W, parent, A.x0 - pad, A.y - A.d / 2 - pad, B.x1 - A.x0 + 2 * pad, A.d + 2 * pad, fn, cls);
-}
-
-// 章末的镜头：正俯视一片空白的纸。横格的位置与 chapterMark 的开场镜头一致（cy ≡ 92 mod 96，k = 1），所以章与章之间硬切看不出来
-function blankCam(x, y) { return { cx: x, cy: 92 + 96 * Math.round((y - 92) / 96), cz: 0, pitch: 0, yaw: 0, k: 1 }; }
-
-// ── 取景：按「这一镜必须看到的东西」算镜头 ──
-// 投影与 CSS 一致：先平移 -c，再 rotateZ(yaw)、rotateX(pitch)、缩放 k、平移 (sx, sy)；.view 的透视 2000px，原点 (960, 540)
-const PERSP = 2000, OX = 960, OY = 540;
-function proj(p, c) {
-  const r = Math.PI / 180, cy_ = Math.cos(c.yaw * r), sy_ = Math.sin(c.yaw * r), cp = Math.cos(c.pitch * r), sp = Math.sin(c.pitch * r);
-  const vx = p[0] - c.cx, vy = p[1] - c.cy, vz = (p[2] || 0) - c.cz;
-  const x1 = vx * cy_ - vy * sy_, y1 = vx * sy_ + vy * cy_;
-  const y2 = y1 * cp - vz * sp, z2 = y1 * sp + vz * cp;
-  const X = x1 * c.k + (c.sx || 960), Y = y2 * c.k + (c.sy || 540), Z = z2 * c.k;
-  const f = PERSP / (PERSP - Z);
-  return [OX + (X - OX) * f, OY + (Y - OY) * f, f];
-}
-// 取景对象：[x, y, z] 点；{ box: [x, y, w, d, h] } 以 (x, y) 为中心的立方体；{ el } 面向镜头的标签（W.board 建的）；{ pr: el, x, y } 印在纸上的字
-function fitCam(W, items, o = {}) {
-  const pitch = o.pitch != null ? o.pitch : 50, yaw = o.yaw || 0;
-  const S = o.safe || { l: 110, r: 1810, t: 90, b: 920 };
-  const pts = [], tags = [];
-  for (const it of items) {
-    if (Array.isArray(it)) pts.push(it);
-    else if (it.box) { const [x, y, w, d, hh] = it.box; for (const a of [-1, 1]) for (const b of [-1, 1]) for (const z of [0, hh]) pts.push([x + a * w / 2, y + b * d / 2, z]); }
-    else if (it.el && W.boards) {
-      const bd = W.boards.find((q) => q.el === it.el); if (!bd) continue;
-      const inner = it.el.firstElementChild || it.el, w = inner.offsetWidth, hh = inner.offsetHeight;
-      const m = /translate\((-?[\d.]+)%(?:,\s*(-?[\d.]+)%)?\)/.exec(inner.style.transform || '') || /translateX\((-?[\d.]+)%\)/.exec(inner.style.transform || '');
-      const tx = m ? +m[1] / 100 : 0, ty = m && m[2] ? +m[2] / 100 : 0;
-      tags.push({ p: [bd.x, bd.y, bd.z], u0: bd.dx + tx * w, v0: bd.dy + ty * hh, w, h: hh });
-      pts.push([bd.x, bd.y, bd.z]);
-    } else if (it.pr) {
-      const inner = it.pr.firstElementChild || it.pr, w = inner.offsetWidth, hh = inner.offsetHeight;
-      const m = /translate\((-?[\d.]+)%(?:,\s*(-?[\d.]+)%)?\)/.exec(inner.style.transform || '');
-      const tx = m ? +m[1] / 100 : 0, ty = m && m[2] ? +m[2] / 100 : 0;
-      const x0 = it.x + tx * w, y0 = it.y + ty * hh;
-      pts.push([x0, y0, 0], [x0 + w, y0, 0], [x0, y0 + hh, 0], [x0 + w, y0 + hh, 0]);
-    }
-  }
-  let c = { cx: 0, cy: 0, cz: 0, pitch, yaw, k: 1, sx: 960, sy: 540 };
-  const n = pts.length || 1;
-  c.cx = pts.reduce((a, p) => a + p[0], 0) / n; c.cy = pts.reduce((a, p) => a + p[1], 0) / n; c.cz = o.cz != null ? o.cz : pts.reduce((a, p) => a + (p[2] || 0), 0) / n;
-  const r = Math.PI / 180;
-  for (let it = 0; it < 24; it++) {
-    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
-    for (const p of pts) { const [X, Y] = proj(p, c); x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y); }
-    for (const tg of tags) { const [X, Y, f] = proj(tg.p, c), s = c.k * f; x0 = Math.min(x0, X + tg.u0 * s); x1 = Math.max(x1, X + (tg.u0 + tg.w) * s); y0 = Math.min(y0, Y + tg.v0 * s); y1 = Math.max(y1, Y + (tg.v0 + tg.h) * s); }
-    const fk = Math.min((S.r - S.l) / Math.max(1, x1 - x0), (S.b - S.t) / Math.max(1, y1 - y0));
-    c.k = clamp(c.k * Math.pow(fk, 0.7), 0.12, o.kmax || 2.2);
-    // 把画面中心移到安全区中心：在镜头平面里挪目标点
-    const ex = ((x0 + x1) / 2 - (S.l + S.r) / 2) / c.k, ey = ((y0 + y1) / 2 - (S.t + S.b) / 2) / c.k;
-    const cyw = Math.cos(yaw * r), syw = Math.sin(yaw * r), cp = Math.cos(pitch * r), sp = Math.sin(pitch * r);
-    // 逆变换：屏幕 (ex, ey, 0) → 世界（先 Rx 的逆，再 Rz 的逆）
-    const ux = ex, uy = ey * cp, uz = -ey * sp;
-    c.cx += ux * cyw + uy * syw; c.cy += -ux * syw + uy * cyw; c.cz += uz;
-  }
-  const out = { cx: +c.cx.toFixed(1), cy: +c.cy.toFixed(1), cz: +c.cz.toFixed(1), pitch, yaw, k: +c.k.toFixed(3) };
-  return out;
-}
-
-// 方块的字随镜头换面：俯看时印在顶面，侧面平视时印在正面（两面的字由镜头俯仰决定透明度）
-function twoFace(W, b, txt, fs, extra) {
-  const span = h('span', 'tx2', b.fr, txt); span.style.fontSize = (fs || Math.round(b.h * 1.1)) + 'px';
-  b.fr.classList.add('ftxt');
-  const top = b.top.firstChild && b.top.firstChild.nodeType === 1 ? b.top.firstChild : null;
+// 一道立着的细线（面向镜头）：从 (x, y, z0) 到 (x, y, z1)；用来标纸垛的高度
+function vbar(W, x, y, z0, z1, o = {}) {
+  const e = h('div', 'vbar', W.stage); css(e, { background: o.color || INK, width: (o.w || 4) + 'px', transformOrigin: '0 0' });
   let last = '';
   W.up((t, c) => {
-    const ex = extra ? clamp(extra(t)) : 1, a = clamp((70 - c.pitch) / 10) * ex, f = clamp((c.pitch - 64) / 10) * ex, key = a.toFixed(2) + f.toFixed(2);
+    const k = clamp(o.draw ? o.draw(t) : 1), a = clamp(o.op ? o.op(t) : 1), hh = (z1 - z0) * k, key = [hh.toFixed(1), a.toFixed(3), c.pitch].join('|');
     if (key === last) return; last = key;
-    if (top) { top.style.opacity = a; top.style.visibility = a < 0.03 ? 'hidden' : ''; }
-    span.style.opacity = f; span.style.visibility = f < 0.03 ? 'hidden' : '';
+    e.style.height = hh.toFixed(1) + 'px'; e.style.opacity = a; e.style.visibility = a < 0.002 || hh < 0.5 ? 'hidden' : '';
+    e.style.transform = `translate3d(${x}px, ${y}px, ${(z0 + hh + 0.8).toFixed(1)}px) rotateX(-90deg)`;
   });
-  return span;
-}
-
-// 纸上的一条走线：依次经过世界坐标里的点（印在纸面上，不从字上越过）；draw(t) 0–1 为画出的比例，op(t) 为透明度
-function trace(W, parent, pts, o = {}) {
-  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
-  const x0 = Math.min(...xs) - 30, y0 = Math.min(...ys) - 30, w = Math.max(...xs) - x0 + 60, hh = Math.max(...ys) - y0 + 60;
-  const g = h('div', 'p3', parent); g.style.transform = `translate3d(${x0}px, ${y0}px, 0.9px)`;
-  const sv = svg('svg', { width: w, height: hh, viewBox: `0 0 ${w} ${hh}` }, g); css(sv, { position: 'absolute', left: 0, top: 0, overflow: 'visible' });
-  const d = pts.map((p, i) => (i ? 'L' : 'M') + (p[0] - x0).toFixed(1) + ' ' + (p[1] - y0).toFixed(1)).join(' ');
-  const path = svg('path', { d, fill: 'none', stroke: o.color || '#1c1c1c', 'stroke-width': o.w || 4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, sv);
-  const L = path.getTotalLength(); path.style.strokeDasharray = `${L.toFixed(1)} ${(L + 10).toFixed(1)}`;
-  const tip = svg('circle', { r: (o.w || 4) * 2.2, fill: o.color || '#1c1c1c' }, sv);
-  let last = '';
-  W.up((t) => {
-    const k = clamp(o.draw ? o.draw(t) : 1), op = clamp(o.op ? o.op(t) : 1), key = k.toFixed(3) + op.toFixed(3);
-    if (key === last) return; last = key;
-    path.style.strokeDashoffset = (L * (1 - k)).toFixed(1); path.style.opacity = (op * (k > 0 ? 1 : 0)).toFixed(3);
-    const pt = path.getPointAtLength(Math.max(0.01, L * k));
-    tip.setAttribute('cx', pt.x.toFixed(1)); tip.setAttribute('cy', pt.y.toFixed(1)); tip.setAttribute('opacity', (op * (k > 0.01 ? 1 : 0)).toFixed(3));
-  });
-  return path;
-}
-
-// 方块顶面描一圈墨线（与顶面对齐，不会和透视错位）
-function glow(W, b, fn, cls = '') {
-  const e = h('div', 'glow ' + cls, b.top);
-  fade(W, e, fn);
   return e;
 }
 
-// 墨块：在方块的某一面（默认顶面）盖一层深底、反白的同样文字；fn(t) 为透明度。cls 'e' 为红底
-function inkTop(W, b, html, fn, cls = '', face) {
-  const e = h('div', 'inkv' + (cls ? ' ' + cls : ''), face || b.top, html);
-  fade(W, e, fn);
-  return e;
+// 章首：笔把章号和章名写在纸的正中，写完停留，镜头再往前走。n：纸上第几格（镜头 cy = 92 + 960n，与上一章末尾的空白纸对齐）
+function chapterHead(W, s, no, title, n, outAt) {
+  const t0 = s.start + 0.4, off = (t) => 1 - ramp(t, outAt, 0.6), cy = 92 + TILE * n;
+  const a = W.write(no, 0, cy - 150, { fs: 80, cls: 'pencil', align: 'c', t0, t1: t0 + 0.3, off });
+  const tc = [...title].length;
+  const b = W.write(title, 0, cy + 30, { fs: 176, cls: 'bold', align: 'c', t0: t0 + 0.5, t1: t0 + 0.5 + Math.min(1.15, tc * 0.2), off });
+  sfx('tick', t0 + 0.5, { g: 0.12 });
+  return { t0, a, b, cam: blankCam(0, cy) };
+}
+
+// 空白纸的镜头：章与章之间在这个姿态硬切，纸的纹理与横格都对得上
+const BLANK_PITCH = 30;
+function blankCam(x, y) { return { cx: Math.round(x / TILE) * TILE, cy: 92 + TILE * Math.round((y - 92) / TILE), cz: 0, pitch: BLANK_PITCH, k: 1 }; }
+
+// ── 投影与取景 ── 投影与 CSS 一致：平移 -c，rotateX(pitch)，缩放 k，平移 (sx, sy)；透视 3400，原点 (960, 540)
+function proj(p, c) {
+  const r = Math.PI / 180, cp = Math.cos(c.pitch * r), sp = Math.sin(c.pitch * r);
+  const vx = p[0] - c.cx, vy = p[1] - c.cy, vz = (p[2] || 0) - c.cz;
+  const y2 = vy * cp - vz * sp, z2 = vy * sp + vz * cp;
+  const X = vx * c.k + (c.sx || 960), Y = y2 * c.k + (c.sy || 540), Z = z2 * c.k, f = PERSP / (PERSP - Z);
+  return [OX + (X - OX) * f, OY + (Y - OY) * f, f];
+}
+// items：[x, y, z] 点 或 { box: [x, y, w, d, h] }；o: pitch, safe, kmax, cz
+function fitCam(W, items, o = {}) {
+  const pitch = o.pitch != null ? o.pitch : 36;
+  const S = o.safe || { l: 120, r: 1800, t: 96, b: 930 };
+  const pts = [];
+  for (const it of items.flat ? items.flat(0) : items) {
+    if (Array.isArray(it)) pts.push(it);
+    else if (it.box) { const [x, y, w, dd, hh] = it.box; for (const a of [-1, 1]) for (const b of [-1, 1]) for (const z of [0, hh]) pts.push([x + a * w / 2, y + b * dd / 2, z]); }
+    else if (it.pts) pts.push(...it.pts);
+  }
+  const c = { cx: 0, cy: 0, cz: 0, pitch, k: 1, sx: 960, sy: 540 }, n = pts.length || 1, r = Math.PI / 180;
+  c.cx = pts.reduce((a, p) => a + p[0], 0) / n; c.cy = pts.reduce((a, p) => a + p[1], 0) / n; c.cz = o.cz != null ? o.cz : 0;
+  for (let it = 0; it < 30; it++) {
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const p of pts) { const [X, Y] = proj(p, c); x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y); }
+    c.k = clamp(c.k * Math.pow(Math.min((S.r - S.l) / Math.max(1, x1 - x0), (S.b - S.t) / Math.max(1, y1 - y0)), 0.7), 0.12, o.kmax || 1.6);
+    const ex = ((x0 + x1) / 2 - (S.l + S.r) / 2) / c.k, ey = ((y0 + y1) / 2 - (S.t + S.b) / 2) / c.k, cp = Math.cos(pitch * r);
+    c.cx += ex; c.cy += ey / Math.max(0.25, cp);
+  }
+  return { cx: +c.cx.toFixed(1), cy: +c.cy.toFixed(1), cz: +c.cz.toFixed(1), pitch, k: +c.k.toFixed(3) };
 }

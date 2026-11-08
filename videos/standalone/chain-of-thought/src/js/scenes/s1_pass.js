@@ -1,324 +1,201 @@
-// 01 一块字的工夫：一块 token 是怎样写出来的。
-// 纸面上一行：题目、四个空位。每个空位后面立起一摞纸（一张代表一层；GPT-3 是 96 层，就画 96 张），
-// 从下往上一张张算到顶，算到顶得出的那一块落进空位——这就是一趟。一趟里的结果只往上走；要交给下一趟，只能写成字落回纸面。
-// 事实：L3 §3（错答案四块 239|473|089|6）；S3 §3（逐层堆叠、每层取上一层的输出、自回归、只看前面）；S4（GPT-3 96 层）；
-// S7（不写中间步骤时，一步接一步的计算受层数限制）；S5（题目变长，层数固定的模型直接作答有上限）；乘积开头几位由两数开头决定、末尾几位由两数末尾决定、中间几位要把各部分乘积相加并承接进位（数学，见 FACTS a12–a13c）。
-scene('pass', ({ root, s, c0 }) => {
+// 01 一块字的工夫。主画面：写每一块字之前立起一摞纸（一片一层，96 层）。墨从底下一层层往上染，染到顶，这一块字才定下来——这是一趟。
+// 这一趟里算出的中间结果（纸垛里亮起的短线）只往上走；一趟结束就没了，下一趟看不到；只有写到纸上的字，下一趟才读得到。
+// 镜头：先低头看纸上的四块字；抬起来看一摞纸的高度；退开看四摞；纸垛收回纸里，往前走，低头看乘积的每一位。
+// 事实：L3 §3（239|473|089|6）；S3 §3；S4（GPT-3 96 层）；S7；乘积各位的算术见 FACTS a12–a13c。片中不断言模型内部算的具体数字，纸垛里的短线只表示「中间结果」。
+scene('pass', ({ root, s }) => {
   const world = h('div', 'world', root);
-  makeCamera(world);                               // 引擎镜头不动；立体镜头由 makeWorld 完成
-  const W = makeWorld(world, { cx: 0, cy: 0, pitch: 0, yaw: 0, k: 1 });
-  const S = W.stage;
-  const XS = [-20, 160, 340, 520];                 // 四个空位的 x
-  const YB = 0, YR = -150;                         // 方块那一行、纸摞那一行的 y
-  const BW = 150, BD = 100;                        // 方块与纸摞的占地
-  const NP = 96, GAP = 5, H = NP * GAP;            // 画 96 张（一张一层），间距 5，高 480
-  const QX = -420, QW = 640;                       // 题目那一条
+  makeCamera(world);
+  const W = makeWorld(world, blankCam(0, 92 + TILE));
+  chapterHead(W, s, '01', '一块字的工夫', 1, T('a1') - 0.2);
+  const off = (a, d = 0.6) => (t) => 1 - ramp(t, a, d);
 
-  // ── 章名印在纸上：镜头从正上方开始，倾下来，滑到那一行 ──
-  const t0 = s.start + 0.45;
-  const CX = -1500, CY = 900;                     // 章名印在镜头前方的纸面上，离那一行和远处两行都远
-  const cn = W.print('01', CX, CY - 90, 'chap-no');
-  const ct = W.print('一块字的工夫', CX, CY, 'chap-ti');
-  const cr = seg(S, ''); cr.set([CX, CY - 14, 0.6], [CX + 130, CY - 14, 0.6]);
-  const chapOut = (t) => 1 - ramp(t, T('a2'), 0.8);
-  fade(W, cn, (t) => ramp(t, t0 + 0.1, 0.5) * chapOut(t));
-  fade(W, cr.e, (t) => ramp(t, t0 + 0.25, 0.4) * chapOut(t));
-  fade(W, ct, (t) => ramp(t, t0 + 0.35, 0.6) * chapOut(t));
-
-  // ── 远处：开头另外两次回答写下的那两行（淡），纸上不空 ──
-  const farRow = (y, lines, op) => {
-    lines.forEach((ln, li) => {
-      const chunks = ln.match(/.{1,3}/g); let x = -700;
-      chunks.forEach((c) => { const w = 34 * c.length + 30; const b = block(S, '', { w, d: 70, h: 18, cls: 'dim' }); const bar = h('div', 'scrib', b.top); css(bar, { width: (w - 34) + 'px' }); b.g.style.transform = `translate3d(${x + w / 2}px, ${y + li * 110}px, 0px)`; fade(W, b.g, (t) => op * (1 - ramp(t, T('a3') - 0.4, 0.6))); x += w + 10; });
-    });
-  };
-
-  // ── 题目与四个空位 ──
-  const q = block(S, '<span class="tx">25992 × 92138 =</span>', { w: QW, d: BD, h: 30, fs: 52 });
-  q.g.style.transform = `translate3d(${QX}px, ${YB}px, 0px)`;
-  twoFace(W, q, '25992 × 92138 =', 34);
-  cast(q.g, QW * 1.08, BD * 1.5);
-  XS.forEach((x) => { const e = seg(S, 'g'); e.set([x - BW / 2, YB + BD / 2 + 8, 0.6], [x + BW / 2, YB + BD / 2 + 8, 0.6]); fade(W, e.e, (t) => 0.8 * ramp(t, c0, 0.5)); });
-
-  // 开头的四块（复述）：a1 里依次落下，a3 前收走；下面再一块一块慢慢写
+  const XS = [-510, -170, 170, 510], SY = -250, RW = 300, RD = 190;   // 四块字的位置；纸垛立在字的后面
+  const BH = 92, EQY = 196;
   const ANS = ['239', '473', '089', '6'];
-  ANS.forEach((txt, i) => {
-    const b = block(S, txt, { w: BW, d: BD, h: 30, fs: 58, cls: i === 1 ? 'err' : '' });
-    glow(W, b, (t) => ramp(t, T('a2', '三位三位') - 0.1 + i * 0.22, 0.2) * (1 - ramp(t, T('a2', '四块') - 0.2, 0.3)));
-    if (i === 1) inkTop(W, b, txt, (t) => ramp(t, T('a2', '错答案') - 0.2, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)), 'e');
-    const ta = T('a1', '一小块') + i * 0.2;
-    place(W, b.g, (t) => ({ x: XS[i], y: YB, z: 70 * (1 - ramp(t, ta, 0.45, ease.out3)), o: ramp(t, ta, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)) }));
-  });
-  sfx('pop', T('a1', '一小块'), { g: 0.3 });
-  const slot0 = seg(S, 'w'); slot0.set([XS[0] - BW / 2, YB + BD / 2 + 8, 0.8], [XS[0] + BW / 2, YB + BD / 2 + 8, 0.8]);
-  fade(W, slot0.e, (t) => ramp(t, T('a4') + 0.1, 0.4) * (1 - ramp(t, T('a5b', '最顶上'), 0.5)));
-  rect(W, S, QX - QW / 2 - 12, YB - BD / 2 - 12, QW + 24, BD + 24, (t) => ramp(t, T('a4', '题目') - 0.2, 0.4) * (1 - ramp(t, T('a5') - 0.2, 0.5)));
-  const gl = W.board('<div class="lbl k"><b>token</b></div>', XS[0] - BW / 2, YB + BD / 2 + 30, 0, 0, 0);
-  const glD = W.board('<div class="lbl k">模型一次写出的一小块</div>', XS[0] - BW / 2 + 190, YB + BD / 2 + 30, 0, 0, 0);
-  gl.dataset.gloss = 'token';
-  rect(W, S, XS[0] - BW / 2 - 12, YB - BD / 2 - 12, BW + 24, BD + 24, (t) => ramp(t, T('a1', 'token') - 0.3, 0.4) * (1 - ramp(t, T('a2', '四块') - 0.3, 0.4)));
-  fade(W, gl, (t) => ramp(t, T('a1', 'token') - 0.1, 0.4) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
-  fade(W, glD, (t) => ramp(t, T('a1', '一小块') - 0.1, 0.4) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
-  const tri = W.board('<div class="lbl l k" style="transform:translateX(-50%)">三位三位写</div>', (XS[0] + XS[3]) / 2, YB, 40, 0, -110);
-  fade(W, tri, (t) => ramp(t, T('a2', '三位三位') - 0.2, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
-  const four = W.board('<div class="lbl g">四块</div>', XS[3] + 110, YB, 40, 0, -20);
-  fade(W, four, (t) => ramp(t, T('a2', '四块') - 0.1, 0.3) * (1 - ramp(t, T('a3') - 0.4, 0.4)));
+  const t1 = T('a1', '一小块');
 
-  // ── 四摞：起来、从下往上算、到顶得出一块、落进空位 ──
-  const plan = [
-    { up: T('a3') + 0.1, a: T('a4', '最底下'), b: T('a5b', '最顶上') + 0.2 },
-    { up: T('a8') - 0.1, a: T('a8') + 0.3, b: T('a8', '标点') },
-    { up: T('a8', '标点') - 0.3, a: T('a8', '标点'), b: T('a8', '几位') },
-    { up: T('a8', '几位') - 0.3, a: T('a8', '几位'), b: T('a8b') + 0.1 },
+  // ── 题目（一直在）──
+  const eq = W.write('25992 × 92138 =', XS[0], EQY, { fs: 92, align: 'c', t0: T('a1') - 0.2, t1: T('a1') + 0.55, off: off(T('a12') - 0.9) });
+
+  // ── 回顾：它写了四块 ──
+  const recapOff = off(T('a3') - 0.5);
+  const tR = [t1 - 0.05, T('a2', '三位三位') - 0.1, T('a2', '三位三位') + 0.5, T('a2', '四块') - 0.35];
+  ANS.forEach((a, i) => {
+    W.box(XS[i] - 118, -BH, XS[i] + 118, BH, { t0: tR[i] + 0.34, t1: tR[i] + 0.62, w: 4.5, off: recapOff });
+    const R = W.write(a, XS[i], 0, { fs: 112, align: 'c', t0: tR[i], t1: tR[i] + 0.3, off: recapOff });
+    if (i === 1) W.tint(R, 1, 2, RED, (t) => ramp(t, T('a2', '错答案') - 0.2, 0.4));
+    sfx('tick', tR[i] + 0.34, { g: 0.14 });
+  });
+  const gl = W.write('token', -60, EQY - 6, { fs: 100, cls: 'bold', t0: T('a1', 'token') - 0.1, t1: T('a1', 'token') + 0.4, off: recapOff });
+  gl.el.dataset.gloss = 'token';
+  const glD = W.write('模型一次写出的一小块', gl.x0, EQY + 116, { fs: 62, cls: 'pencil', t0: T('a1', 'token') + 0.45, t1: T('a1', 'token') + 1.1, off: recapOff });
+
+  // ── 四摞纸 ──
+  const passes = (list) => (t) => list.reduce((v, [a, b, dr]) => Math.max(v, ramp(t, a, b - a, linear) * (1 - ramp(t, dr, 0.8))), 0);
+  const sink = (t) => 1 - ramp(t, T('a12') - 0.95, 0.75);
+  const tA8 = T('a8'), tP = T('a8', '标点'), tJ = T('a8', '几位'), tB = T('a8b') + 0.15;
+  const tTop = T('a5b', '最顶上') + 0.2, tDrain = T('a9') - 0.55;
+  const t9a = T('a9') + 0.05, t9b = T('a9', '往上') + 0.25, tLost = T('a10', '接着用') + 0.2;
+  const t11b = T('a11b', '自己那一趟');
+  const wr = T('a10b', '写成字') + 0.75, wrEnd = T('a11') - 0.35;
+  const fillL = [
+    [[T('a4', '最底下'), tTop, tDrain], [t9a, t9b, tLost], [t11b - 0.1, t11b + 0.5, T('a12') - 1.3]],
+    [[tA8 + 0.35, tP - 0.05, tDrain], [wr, wrEnd, T('a11') - 0.1], [t11b + 0.15, t11b + 0.75, T('a12') - 1.3]],
+    [[tP + 0.55, tJ - 0.05, tDrain], [t11b + 0.4, t11b + 1.0, T('a12') - 1.3]],
+    [[tJ + 0.55, tB, tDrain], [t11b + 0.65, t11b + 1.25, T('a12') - 1.3]],
   ];
-  const inkOn = (t) => (t >= T('a11', '四块') - 0.2 && t < Tend('a11b') + 0.3 ? 1 : 0);
-  plan.forEach((p, i) => ream(W, S, XS[i], YR, { w: BW, d: BD, gap: GAP, n: NP,
-    rise: (t) => ramp(t, p.up, i === 0 ? 2.6 : 0.8, i === 0 ? ease.io3 : ease.out3), fill: (t) => ramp(t, p.a, p.b - p.a, (k) => k), ink: inkOn, op: (t) => 1 - ramp(t, T('a15') - 0.7, 0.5) }));
-  const outs = plan.map((p, i) => {
-    const b = block(S, `<span class="tx">${ANS[i]}</span>`, { w: BW, d: BD, h: 30, fs: 58, cls: i === 1 ? 'err' : '' });
-    twoFace(W, b, ANS[i], 34);
-    place(W, b.g, (t) => {
-      const k = ramp(t, p.b + 0.1, 0.7, ease.io3);
-      return { x: XS[i], y: lerp(YR, YB, k), z: lerp(H + 40, 0, k) + Math.sin(k * Math.PI) * 50, o: ramp(t, p.b - 0.1, 0.25) };
-    });
-    sfx('tick', p.b, { g: 0.3 }); sfx('pop', p.b + 1.1, { g: 0.22 });
-    return b;
+  const up0 = [T('a3') + 0.05, tA8 - 0.2, tP - 0.25, tJ - 0.25];
+  const ST = XS.map((x, i) => {
+    const fill = passes(fillL[i]);
+    const S = stack(W, x, SY, { w: RW, d: RD, n: 96, gap: 7, rise: (t) => ramp(t, up0[i], i ? 0.8 : 1.7, ease.io3) * sink(t), fill });
+    const r_ = seeded(40 + i);   // 中间结果：这一趟算出来的零散笔迹，算到哪层亮到哪层，一趟结束随墨退去
+    for (let j = 0; j < 22; j++) { const fr = 0.06 + r_() * 0.88, wd = 14 + r_() * 58, lf = 14 + r_() * (RW - wd - 28); S.note(`<i style="width:${wd.toFixed(0)}px;margin-left:${lf.toFixed(0)}px"></i>`, fr, (t) => clamp((fill(t) - fr) * 26)); }
+    return S;
   });
+  const H = ST[0].H, S0 = ST[0], x0 = XS[0], xR = x0 + RW / 2 + 42;
+  sfx('riser', T('a3') + 0.05, { g: 0.12 });
 
-  // ── 每一层都读前面：正在算的那一张，向题目和前面各摞的同一高度各连一道弧 ──
-  const wl = wall(S, -900, YR + BD / 2 + 2, 1700, H + 80);
-  const arcs = [0, 1, 2, 3].map(() => svg('path', { fill: 'none', stroke: '#1c1c1c', 'stroke-width': 1.6, opacity: 0 }, wl.s));
-  W.up((t) => {
-    let act = -1;
-    plan.forEach((p, i) => { if (t >= p.a && t < p.b) act = i; });
-    if (act < 0) { arcs.forEach((a) => a.setAttribute('opacity', 0)); return; }
-    const p = plan[act], f = clamp((t - p.a) / (p.b - p.a)), z = f * H;
-    const targets = [[QX + QW / 2 - 40, 0], ...XS.slice(0, act).map((x) => [x + BW / 2 - 8, Math.max(0, z - GAP)])];
-    arcs.forEach((a, j) => {
-      if (j >= targets.length) { a.setAttribute('opacity', 0); return; }
-      const x0 = wl.X(XS[act] - BW / 2 + 6), y0 = wl.Y(z), x1 = wl.X(targets[j][0]), y1 = wl.Y(targets[j][1]);
-      const lift = Math.min(110, Math.abs(x0 - x1) * 0.22);
-      a.setAttribute('d', `M${x0.toFixed(1)} ${y0.toFixed(1)} Q ${((x0 + x1) / 2).toFixed(1)} ${(Math.min(y0, y1) - lift).toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`);
-      a.setAttribute('opacity', (0.7 * Math.min(1, f * 10, (1 - f) * 10)).toFixed(3));
-    });
-  });
+  // 「每一片，代表一层」：抽出一片
+  const LZ = 48 * 7, pl = h('div', 'plate2', W.stage); css(pl, { left: -RW / 2 + 'px', top: -RD / 2 + 'px', width: RW + 'px', height: RD + 'px' });
+  const tPl = T('a3b', '每一片') - 0.2, tPb = T('a4') - 0.15;
+  place(W, pl, (t) => { const u = ramp(t, tPl, 0.75, ease.out3) * (1 - ramp(t, tPb, 0.7, ease.io3)); return { x: x0 + u * (RW + 60), y: SY, z: LZ + 1, o: clamp(u * 12) }; });
+  const onL = (t) => 1 - ramp(t, tA8 - 0.75, 0.5);
+  const lLayer = W.write('一片 ＝ 一层', x0 + RW + 60 - RW / 2, SY + 150, { fs: 124, cls: 'bold', t0: T('a3b', '每一片') + 0.1, t1: T('a3b', '一层') + 0.1, off: (t) => 1 - ramp(t, T('a4', '最底下') - 0.5, 0.5) });
 
-  // ── 「一趟」：第一摞右边一条带端点的竖线；「96 层」：刻度与标注 ──
-  const dimX = XS[0] + BW / 2 + 22, dimY = YR + BD / 2;
-  const dims = [seg(S, ''), seg(S, ''), seg(S, '')];
-  W.up((t) => dims[0].set([dimX, dimY, 0], [dimX, dimY, Math.max(1, H * ramp(t, T('a6', '一趟') - 0.6, 1.0))]));   // 「一趟」：括线从下往上画出来 dims[1].set([dimX - 10, dimY, 0], [dimX + 10, dimY, 0]); dims[2].set([dimX - 10, dimY, H], [dimX + 10, dimY, H]);
-  const dimOp = (t) => ramp(t, T('a6', '一趟') - 0.5, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4));
-  dims.forEach((d) => fade(W, d.e, dimOp));
-  for (let i = 8; i < NP; i += 8) { const tk = seg(S, 'w'); tk.set([dimX, dimY, i * GAP], [dimX + 14, dimY, i * GAP]); const tt = lerp(T('a7b') - 0.1, T('a7b', '九十六') - 0.2, i / NP); fade(W, tk.e, (t) => ramp(t, tt, 0.25) * (1 - ramp(t, T('a8') - 0.2, 0.4))); }   // 层数：刻度一格格出现
-  const lb1 = W.board('<div class="lbl k">一趟</div>', dimX + 16, dimY, H * 0.55, 0, -22);
-  fade(W, lb1, dimOp);
-  const ud = W.board('<div class="lbl k">从底到顶　↑</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 0);
-  ud.firstElementChild.style.transform = 'translateX(-100%)';
-  fade(W, ud, (t) => ramp(t, T('a6', '从底到顶') - 0.2, 0.3) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
-  const fx = W.board('<div class="lbl k">层数固定</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 70);
-  fx.firstElementChild.style.transform = 'translateX(-100%)';
-  fade(W, fx, (t) => ramp(t, T('a7', '层数') - 0.1, 0.3) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
-  const lb2 = W.board('<div class="lbl k">GPT-3：96 层</div>', dimX + 16, dimY, H * 0.55, 0, 40);
-  fade(W, lb2, (t) => ramp(t, T('a7b') + 0.15, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
+  // 题目读进来：一道箭头，绕开第一块字的位置，到纸垛的底
+  W.hatch(eq.x0 - 16, EQY - 62, eq.x1 + 16, EQY + 62, { t0: T('a4', '题目') - 0.1, t1: T('a4', '题目') + 0.75, gap: 20, w: 17, op: 0.5, off: off(T('a5b') - 0.2) });
+  const tRd = T('a4', '题目') - 0.2;
+  W.arrow([[x0 - 128, EQY - 66], [x0 - 136, 40], [x0 - 128, SY + RD / 2 + 6]], { t0: tRd, t1: tRd + 0.8, w: 6, off: off(T('a5b') - 0.3) });
+  // 算到顶：笔把这一块写到纸上
+  const tW0 = T('a5b', '写') - 0.05;
+  const put = (i, t0_) => {
+    W.box(XS[i] - 118, -BH, XS[i] + 118, BH, { t0: t0_, t1: t0_ + 0.22, w: 4.5, off: off(T('a12') - 0.9), pen: i === 0 });
+    const R = W.write(ANS[i], XS[i], 0, { fs: 112, align: 'c', t0: t0_ + 0.24, t1: t0_ + 0.5, off: off(T('a12') - 0.9), pen: i === 0 || i === 3 });
+    if (i === 1) W.tint(R, 1, 2, RED, (t) => ramp(t, t0_ + 0.3, 0.3));
+    sfx('pop', t0_ + 0.24, { g: 0.2 });
+  };
+  put(0, tW0); put(1, tP - 0.02); put(2, tJ - 0.02); put(3, tB + 0.02);
 
-  // ── 「画面上每一片，代表一层」：第 48 片的纸边描深，右边标「一层」 ──
-  const LZ = 48 * GAP, lyOn = (t) => ramp(t, T('a3b', '每一片') - 0.2, 0.4) * (1 - ramp(t, T('a4', '最底下') - 0.4, 0.4));
-  const lyE = seg(S, 'w'); lyE.set([XS[0] - BW / 2, YR + BD / 2 + 1, LZ], [XS[0] + BW / 2, YR + BD / 2 + 1, LZ]); fade(W, lyE.e, lyOn);
-  const lyL = seg(S, ''); lyL.set([XS[0] + BW / 2 + 4, YR + BD / 2 + 1, LZ], [XS[0] + BW / 2 + 60, YR + BD / 2 + 1, LZ]); fade(W, lyL.e, lyOn);
-  const layer = W.board('<div class="lbl k">一层</div>', XS[0] + BW / 2 + 70, YR + BD / 2, LZ, 0, -30); fade(W, layer, lyOn);
-  sfx('tick', T('a3b', '每一片'), { g: 0.2 });
-  const rdq = W.board('<div class="lbl l k" style="transform:translateX(-50%)">读入题目</div>', QX, YB, 30, 0, -140);
-  fade(W, rdq, (t) => ramp(t, T('a4') + 0.2, 0.4) * (1 - ramp(t, T('a5b') - 0.2, 0.4)));
-  const nxt = W.board('<div class="lbl k">每层接着下面一层往上算</div>', XS[0] - BW / 2 - 30, YR, H * 0.82, 0, 0);
-  nxt.firstElementChild.style.transform = 'translateX(-100%)';
-  fade(W, nxt, (t) => ramp(t, T('a5', '接着') - 0.2, 0.4) * (1 - ramp(t, T('a6') - 0.3, 0.4)));
+  // 「一趟」与「96 层」
+  const a6 = T('a6', '一趟') - 0.5;
+  vbar(W, xR - 14, SY + RD / 2, 0, H, { w: 6, draw: (t) => ramp(t, T('a6', '从底到顶') - 0.1, 1.2, ease.io3), op: onL });
+  const lUp = W.write('从底到顶', xR + 14, SY - 300, { fs: 112, cls: 'bold', t0: T('a6', '从底到顶') - 0.1, t1: T('a6', '从底到顶') + 0.5, off: onL });
+  S0.lid((t) => ramp(t, T('a7', '定了') - 0.35, 0.5) * onL(t));
+  const lPass = W.write('一趟', xR + 14, SY - 130, { fs: 150, cls: 'bold', t0: a6 + 0.35, t1: a6 + 0.85, off: onL });
+  const lFix = W.write('层数固定', xR + 14, SY + 50, { fs: 98, t0: T('a7', '层数') - 0.05, t1: T('a7', '定了') + 0.1, off: onL });
+  const lGpt = W.write('GPT-3：96 层', xR + 14, SY + 210, { fs: 98, t0: T('a7b') + 0.15, t1: T('a7b', '九十六') + 0.4, off: onL });
 
-  // ── 四摞一样高：顶上一条细线 ──
-  const ceil = seg(S, 'g'); ceil.set([XS[0] - 90, YR, H + 3], [XS[3] + 90, YR, H + 3]);
-  fade(W, ceil.e, (t) => ramp(t, T('a8b', '工夫') - 0.4, 0.5) * (1 - ramp(t, T('a9') + 0.2, 0.4)));
-  const only = W.board('<div class="lbl l k" style="transform:translateX(-50%)">都只有这一趟</div>', (XS[0] + XS[3]) / 2, YR, H + 30, 0, -40);
-  fade(W, only, (t) => ramp(t, T('a8b', '一趟') - 0.3, 0.4) * (1 - ramp(t, T('a9') + 0.2, 0.4)));
+  // 每一块都只有这一趟
+  const each = W.write('不管难易，每一块都只有这一趟', -60, EQY, { fs: 76, cls: 'pencil', t0: T('a8b', '一趟') - 0.35, t1: Tend('a8b') + 0.1, off: off(T('a9') + 0.2) });
 
-  // ── 只往上走、写成字才能接力：一条锯齿线——沿一摞往上，到顶落成字，再从下一摞底下往上 ──
-  const relay = svg('path', { fill: 'none', stroke: '#1c1c1c', 'stroke-width': 3, 'stroke-linejoin': 'round' }, wl.s);
-  // 锯齿线：沿第 i 摞中线往上 → 顶上拐进两摞之间的缝 → 沿缝落到纸面（落成字）→ 贴着纸面走到下一摞 → 再往上
-  const top = wl.Y(H + 18), bot = wl.Y(6), parts = [], marks = [0];
-  XS.forEach((x, i) => {
-    const X = wl.X(x), G = wl.X(x + 90);
-    parts.push(i === 0 ? `M${X} ${bot} L${X} ${top + 14}` : ` L${X} ${top + 14}`);
-    marks.push(parts.join(''));
-    if (i < 3) {
-      parts.push(` Q${X} ${top} ${X + 14} ${top} L${G - 14} ${top} Q${G} ${top} ${G} ${top + 14} L${G} ${bot - 14} Q${G} ${bot} ${G + 14} ${bot} L${wl.X(XS[i + 1]) - 14} ${bot} Q${wl.X(XS[i + 1])} ${bot} ${wl.X(XS[i + 1])} ${bot - 14}`);
-      marks.push(parts.join(''));
-    }
-  });
-  relay.setAttribute('d', parts.join(''));
-  const direct = svg('path', { d: `M${wl.X(XS[0]) + 10} ${top + 10} L${wl.X(XS[1]) - 10} ${bot - 10}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 3, 'stroke-dasharray': '10 10' }, wl.s);
-  const mx = (wl.X(XS[0]) + wl.X(XS[1])) / 2, my = (top + bot) / 2;
-  const xmark = svg('path', { d: `M${mx - 26} ${my - 26} L${mx + 26} ${my + 26} M${mx + 26} ${my - 26} L${mx - 26} ${my + 26}`, fill: 'none', stroke: '#a5402d', 'stroke-width': 5 }, wl.s);
-  const dL = direct.getTotalLength(); direct.style.strokeDasharray = `10 10`;
-  W.up((t) => { const o = ramp(t, T('a10') + 0.2, 0.3) * (1 - ramp(t, T('a10b') + 0.4, 0.4)), k = ramp(t, T('a10') + 0.2, 0.8, (x) => x);
-    direct.setAttribute('d', `M${wl.X(XS[0]) + 10} ${top + 10} L${(wl.X(XS[0]) + 10 + (wl.X(XS[1]) - 20 - wl.X(XS[0])) * k).toFixed(1)} ${(top + 10 + (bot - 20 - top) * k).toFixed(1)}`);
-    direct.setAttribute('opacity', o.toFixed(3)); xmark.setAttribute('opacity', (o * ramp(t, T('a10') + 1.0, 0.2)).toFixed(3)); });
-  sfx('error', T('a10', '接着用') - 0.1, { g: 0.12 });
-  const midR = W.board('<div class="lbl l k" style="transform:translateX(-50%)">中间结果</div>', XS[0], YR, H + 30, 0, -40);
-  fade(W, midR, (t) => ramp(t, T('a10', '中间结果') - 0.2, 0.4) * (1 - ramp(t, T('a10', '接着用') - 0.65, 0.3)));
-  const noPass = W.board('<div class="lbl l k err" style="transform:translateX(-50%)">传不下去</div>', (XS[0] + XS[1]) / 2, YR, H + 30, 0, -40);
-  fade(W, noPass, (t) => ramp(t, T('a10', '接着用') - 0.3, 0.4) * (1 - ramp(t, T('a10b') + 0.4, 0.4)));
-  const relayLen = relay.getTotalLength();
-  const probe = svg('path', { d: 'M0 0' }, wl.s);
-  const cum = marks.slice(1).map((dd) => { probe.setAttribute('d', dd); return probe.getTotalLength() / relayLen; });
-  probe.remove();
-  // cum：[第 1 摞顶, 落到第 2 摞底, 第 2 摞顶, 落到第 3 摞底, …]
-  relay.style.strokeDasharray = `${relayLen.toFixed(1)} ${(relayLen + 10).toFixed(1)}`;
-  const dot = svg('circle', { r: 9, fill: '#1c1c1c' }, wl.s);
-  const relayK = (t) => (t < T('a10') ? cum[0] * ramp(t, T('a9') + 0.2, 1.6) : lerp(cum[0], cum[1], ramp(t, T('a10b', '写成字') - 0.9, 1.6)));
-  W.up((t) => {
-    const k = relayK(t), op = ramp(t, T('a9'), 0.3) * (1 - ramp(t, T('a11') - 0.2, 0.5));
-    relay.style.strokeDashoffset = (relayLen * (1 - k)).toFixed(1);
-    relay.style.opacity = op.toFixed(3);
-    const pt = relay.getPointAtLength(Math.max(0.01, relayLen * k));
-    dot.setAttribute('cx', pt.x.toFixed(1)); dot.setAttribute('cy', pt.y.toFixed(1)); dot.setAttribute('opacity', (op * (k > 0.002 && k < 0.998 ? 1 : 0)).toFixed(3));
-  });
-  // 墨点贴着纸面走过的那一段，正好经过刚写下的那一块：那一块描一圈墨线
-  outs.forEach((b, i) => {
-    if (i > 2) return;
-    let last = null;
-    W.up((t) => { const k = relayK(t); const on = t >= T('a9') && t < T('a11') - 0.2 && k > cum[2 * i] + (cum[2 * i + 1] - cum[2 * i]) * 0.45 && k <= cum[2 * i + 1] + 0.01; if (on !== last) { b.g.classList.toggle('hot', on); last = on; } });
-  });
-  const up1 = W.board('<div class="lbl l k" style="transform:translateX(-100%)">只往上走</div>', XS[0] - BW / 2 - 20, YR, H * 0.5, 0, -20);
-  fade(W, up1, (t) => ramp(t, T('a9', '往上') - 0.2, 0.4) * (1 - ramp(t, T('a10b', '写成字') - 0.4, 0.4)));
-  const wr = W.board('<div class="lbl l k">写成字，才接得上</div>', XS[0], YB + BD / 2, 0, -120, 30);
-  fade(W, wr, (t) => ramp(t, T('a10b', '写成字') - 0.1, 0.4) * (1 - ramp(t, T('a11') + 0.4, 0.4)));
-  sfx('tick', T('a10b', '写成字'), { g: 0.3 });
-  // a11、a11b：四块全是答案本身；中间结果一块也没写；每一块只靠自己那一趟
-  const r11Off = (t) => 1 - ramp(t, T('a12') - 0.3, 0.4);
-  const lb4 = W.board('<div class="lbl l k">四块全是答案</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, -20);
-  fade(W, lb4, (t) => ramp(t, T('a11', '答案本身') - 0.3, 0.4) * r11Off(t));
-  const lb5 = W.board('<div class="lbl l k">中间结果：0 块</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, 70);
-  fade(W, lb5, (t) => ramp(t, T('a11b', '一块也没写') - 0.3, 0.4) * r11Off(t));
-  const lb6 = W.board('<div class="lbl l k">每块只靠自己这一趟</div>', XS[3] + BW / 2 + 30, YR, H * 0.78, 0, 160);
-  fade(W, lb6, (t) => ramp(t, T('a11b', '自己那一趟') - 0.3, 0.4) * r11Off(t));
-  sfx('tick', T('a11', '答案本身') - 0.3, { g: 0.16 }); sfx('tick', T('a11b', '一块也没写') - 0.3, { g: 0.16 });
+  // 只往上走（立在纸垛旁边的箭头）
+  const wf = W.wall(SY + RD / 2 + 3);
+  const upOff = off(T('a10') - 0.3);
+  const xU = x0 - RW / 2 - 40;
+  W.stroke([[xU, -10], [xU, -H + 30]], { svg: wf, t0: t9a, t1: t9b, w: 8, pen: false, off: upOff, amp: 2 });
+  W.stroke([[xU - 34, -H + 74], [xU, -H + 26], [xU + 34, -H + 74]], { svg: wf, t0: t9b, t1: t9b + 0.2, w: 8, pen: false, off: upOff, amp: 0.6 });
+  const onlyUp = W.wallText('只往上走', xU - 30 - 4 * 92, SY + RD / 2 + 3, H * 0.52, 92, (t) => ramp(t, T('a9', '往上') - 0.3, 0.45) * upOff(t), 'bold');
 
-  // ── 乘积：数字从左往右写出来。开头几位只看两数开头，末尾几位只看两数末尾（各一道括线）；
-  //    中间两位：几行错开的灰条（各部分乘出来的数）都压在这两位上，再加上从右边一位一位跳过来的进位；
-  //    这些都得在写那一块（239|473|089|6 的第二块）的一趟里算完 ──
-  const PY = 330, PX = -380, DW = 74;               // 每位数字一格；第 i 位占 [PX + i·DW, PX + (i+1)·DW]
-  const DIG = '2394850896'.split('');
-  const dg = DIG.map((c, i) => W.print(c, PX + i * DW, PY, 'digits big' + (i === 4 || i === 5 ? ' mid' : '')));
+  // 中间结果：下一趟看不到
+  const tM = T('a10', '中间结果') - 0.1, tC = T('a10', '接着用') - 0.45, arcOff = off(T('a10b') - 0.25);
+  const mL = W.write('中间结果', xU - 30, SY - 40, { fs: 110, align: 'r', cls: 'bold', t0: tM, t1: tM + 0.5, off: off(tLost + 0.1) });
+  W.hatch(mL.x0 - 14, SY - 40 - 66, mL.x1 + 14, SY - 40 + 66, { t0: tM - 0.5, t1: tM + 0.3, gap: 20, w: 16, op: 0.5, pen: false, off: off(tLost + 0.1) });
+  { const pts = []; for (let i = 0; i <= 30; i++) { const a = -1.7 + i / 30 * 6.283 * 1.05; pts.push([x0 + Math.cos(a) * RW * 0.42, -H * 0.42 + Math.sin(a) * H * 0.3]); } W.stroke(pts, { svg: wf, t0: tM + 0.05, t1: tM + 0.8, w: 10, color: '#f3ecd8', pen: false, amp: 1.2, off: off(tLost + 0.1) }); }
+  const X1 = XS[1], arc = []; for (let i = 0; i <= 20; i++) { const u = i / 20; arc.push([lerp(x0 + 60, X1 - 40, u), -(H + 30) + (H + 16) * u * u]); }
+  W.stroke(arc, { svg: wf, t0: tC, t1: tC + 0.65, w: 7, color: RED, pen: false, amp: 0.8, off: arcOff });
+  const xm = lerp(x0 + 60, X1 - 40, 0.62), zm = (H + 30) - (H + 16) * 0.62 * 0.62, xs = 30;
+  W.stroke([[xm - xs, -zm - xs], [xm + xs, -zm + xs]], { svg: wf, t0: tC + 0.65, t1: tC + 0.8, w: 10, color: RED, pen: false, amp: 0.5, off: arcOff });
+  W.stroke([[xm + xs, -zm - xs], [xm - xs, -zm + xs]], { svg: wf, t0: tC + 0.82, t1: tC + 0.97, w: 10, color: RED, pen: false, amp: 0.5, off: arcOff });
+  const nosee = W.write('下一趟看不到', -60, EQY, { fs: 84, cls: 'red', t0: tC + 0.5, t1: tC + 1.1, off: arcOff });
+  sfx('error', tC + 0.65, { g: 0.14 });
+  // 写成字，才接得上
+  const tZ = T('a10b', '写成字') - 0.3;
+  const wOff = off(T('a11') - 0.2);
+  const zi = W.write('中间结果，写成字', -60, EQY, { fs: 84, cls: 'bold', t0: tZ, t1: tZ + 0.75, off: wOff });
+  W.arrow([[X1 - 20, EQY - 60], [X1 - 146, 40], [X1 - 138, SY + RD / 2 + 6]], { t0: tZ + 0.82, t1: tZ + 1.3, w: 7, off: wOff });
+  sfx('tick', tZ, { g: 0.2 });
+
+  // 只许报答案：四块全是答案，中间结果 0 块
+  const tQ = T('a11', '答案本身') - 0.3, q0ff = off(T('a12') - 1.0);
+  W.line(XS[0] - 118, BH + 18, XS[3] + 118, BH + 18, { t0: tQ, t1: tQ + 0.6, w: 7, off: q0ff });
+  const ans4 = W.write('四块全是答案', -60, EQY, { fs: 84, cls: 'bold', t0: tQ + 0.25, t1: tQ + 0.85, off: q0ff });
+  const zero = W.write('中间结果：0 块', -60, EQY + 118, { fs: 84, cls: 'red', t0: T('a11b', '一块也没写') - 0.3, t1: T('a11b', '一块也没写') + 0.4, off: q0ff });
+  const self = W.write('每一块，只靠自己这一趟', -60, EQY + 236, { fs: 72, t0: t11b - 0.3, t1: t11b + 0.5, off: q0ff });
+
+  // ── 乘积的每一位 ──
+  const PY = -1700, F = 190, DIG = '2394850896';
+  const pOff = off(T('a14') - 0.7, 0.5);
   const tw = T('a12', '从左往右') - 0.3;
-  const pOff = (t) => 1 - ramp(t, T('a15') - 0.7, 0.5);   // 离开纸面那一镜时收走算式
-  const limOff = (t) => (1 - ramp(t, T('a14') - 0.6, 0.4)) * pOff(t);   // 退到下面两道条时，上面的数字与标注收走（会被画面上沿切到）
-  dg.forEach((e, i) => fade(W, e, (t) => ramp(t, tw + i * 0.14, 0.2) * limOff(t)));
-  dg.forEach((e, i) => sfx('key', tw + i * 0.14, { g: 0.25 }));
-  const wOn = (t) => ramp(t, tw, 0.5) * (1 - ramp(t, T('a13b') - 0.6, 0.4));
-  const ar1 = seg(S, ''); ar1.set([PX, PY - 30, 0.8], [PX + 10 * DW, PY - 30, 0.8]);
-  const lw = W.print('<div class="lbl">写　从左往右　→</div>', PX, PY - 96);
-  fade(W, ar1.e, wOn); fade(W, lw, wOn);
-  // 开头、末尾：数字下面各一道括线，标出只看哪两段
-  const BRY = PY + 134;
-  const hOn = (t) => ramp(t, T('a12', '开头几位') - 0.2, 0.4) * pOff(t), tOn = (t) => ramp(t, T('a12b', '末尾几位') - 0.2, 0.4) * pOff(t);
-  const digBand = (i0, i1, ta) => { const e = h('div', 'p3', S); css(e, { width: ((i1 - i0) * DW - 4) + 'px', height: '132px', background: '#c9c9c9', borderRadius: '8px', transform: `translate3d(${PX + i0 * DW + 2}px, ${PY - 8}px, 0.1px)` }); fade(W, e, (t) => ramp(t, ta, 0.4) * limOff(t)); return e; };
-  digBand(0, 4, T('a12', '差不多') - 0.3); digBand(6, 10, T('a12b', '算出') - 0.3);
-  const brHead = seg(S, 'w'); brHead.set([PX + 6, BRY, 0.8], [PX + 4 * DW - 6, BRY, 0.8]); fade(W, brHead.e, hOn);
-  const brTail = seg(S, 'w'); brTail.set([PX + 6 * DW + 6, BRY, 0.8], [PX + 10 * DW - 6, BRY, 0.8]); fade(W, brTail.e, tOn);
-  const hl = W.print('<div class="lbl k">只看开头：2599 × 9214</div>', PX, PY + 156); fade(W, hl, (t) => ramp(t, T('a12', '只看') - 0.2, 0.4) * limOff(t));
-  const hl2 = W.print('<div class="lbl g">→ 2394…</div>', PX + 500, PY + 156); fade(W, hl2, (t) => ramp(t, T('a12', '差不多') - 0.2, 0.4) * limOff(t));
-  const tl = W.print('<div class="lbl k" style="transform:translateX(-100%)">只看末尾：5992 × 2138</div>', PX + 10 * DW - 210, PY + 226); fade(W, tl, (t) => ramp(t, T('a12b', '只看') - 0.2, 0.4) * limOff(t));
-  const tl2 = W.print('<div class="lbl g" style="transform:translateX(-100%)">→ …0896</div>', PX + 10 * DW, PY + 226); fade(W, tl2, (t) => ramp(t, T('a12b', '算出') - 0.2, 0.4) * limOff(t));
-  sfx('tick', T('a12', '开头几位') - 0.2, { g: 0.16 }); sfx('tick', T('a12b', '末尾几位') - 0.2, { g: 0.16 });
-  // 中间两位：墨框；下面五行错开的灰条＝各部分乘出来的数，每一行都压在中间这两位上，一行行加进来
-  const box = h('div', 'p3 midbox', S); css(box, { width: (2 * DW + 16) + 'px', height: '128px', transform: `translate3d(${PX + 4 * DW - 8}px, ${PY - 6}px, 0.9px)` });
-  fade(W, box, (t) => ramp(t, T('a13') - 0.1, 0.4) * (1 - ramp(t, T('a13c') - 0.3, 0.4)) * pOff(t));
-  const PPY = PY + 300;
-  const ppT = (j) => T('a13', '各部分') - 0.2 + j * 0.22;
-  for (let j = 0; j < 5; j++) {
-    const e = h('div', 'p3', S); css(e, { width: (6 * DW - 8) + 'px', height: '16px', background: '#9a9a9a', borderRadius: '3px', transform: `translate3d(${PX + (4 - j) * DW + 4}px, ${PPY + j * 30}px, 0.7px)` });
-    fade(W, e, (t) => ramp(t, ppT(j), 0.25) * pOff(t));
-    sfx('key', ppT(j), { g: 0.14 });
+  const dg = W.write(DIG, 0, PY, { fs: F, align: 'c', t0: tw, t1: T('a12', '开头几位') - 0.15, off: pOff });
+  W.arrow([[dg.x0, PY - 164], [dg.x1, PY - 164]], { t0: tw, t1: T('a12', '开头几位') - 0.15, w: 5, color: PENCIL, pen: false, off: off(T('a13') - 0.3) });
+  W.write('写，从左往右', dg.x0, PY - 228, { fs: 66, cls: 'pencil', t0: tw, t1: tw + 0.5, pen: false, off: off(T('a13') - 0.3) });
+  const hband = (a, b, ta, d) => { const [x0_, x1_] = dg.span(a, b); W.hatch(x0_ + 6, PY - 112, x1_ - 6, PY + 112, { t0: ta, t1: ta + d, gap: 26, w: 20, op: 0.26, off: pOff }); return [x0_, x1_]; };
+  const [h0] = hband(0, 3, T('a12', '差不多') - 0.75, 0.8); const [, t1_] = hband(6, 9, T('a12b', '算出') - 0.75, 0.8);
+  const noteY = PY + 170;
+  const hN = W.write('只看开头：2599 × 9214', h0, noteY, { fs: 62, t0: T('a12', '只看') - 0.15, t1: T('a12', '只看') + 0.75, off: pOff });
+  const tN = W.write('只看末尾：5992 × 2138', t1_, noteY + 90, { fs: 62, align: 'r', t0: T('a12b', '只看') - 0.15, t1: T('a12b', '只看') + 0.75, off: pOff });
+  // 中间两位：各部分乘积一行行压上来
+  const [m0, m1] = dg.span(4, 5), DW = (dg.x1 - dg.x0) / 10;
+  const tH = T('a13', '最难') - 0.2;
+  W.ring((m0 + m1) / 2, PY, (m1 - m0) / 2 + 26, 126, { t0: tH, t1: tH + 0.65, w: 8, off: (t) => pOff(t) * (1 - ramp(t, T('a13c') - 0.3, 0.3)) });
+  const RY0 = noteY + 200, tPP = T('a13', '各部分') - 0.1;
+  for (let j = 0; j < 5; j++) { const xr = dg.x1 - j * DW, xl = xr - 6 * DW + 14, ty = RY0 + j * 48; W.line(xl, ty, xr - 14, ty, { t0: tPP + j * 0.24, t1: tPP + 0.2 + j * 0.24, w: 16, color: '#8d8f96', op: 0.8, pen: j === 0 || j === 4, amp: 1.2, off: pOff }); sfx('key', tPP + j * 0.24, { g: 0.14 }); }
+  W.box(m0 - 6, RY0 - 26, m1 + 6, RY0 + 4 * 48 + 26, { t0: T('a13', '加起来') - 0.25, t1: T('a13', '加起来') + 0.3, w: 6, off: pOff });
+  const lSum = W.write('各部分乘出来的数，都要加到这两位上', 0, RY0 + 4 * 48 + 82, { fs: 62, align: 'c', t0: T('a13', '加起来') + 0.05, t1: Tend('a13') + 0.5, pen: false, off: pOff });
+  // 进位：从最右一位起，一跳一跳过来
+  const tCr = T('a13b', '进位') - 0.15;
+  for (let i = 0; i < 4; i++) {
+    const xa = dg.x1 - (i + 0.5) * DW, xb = xa - DW, pts = [];
+    for (let k = 0; k <= 10; k++) { const u = k / 10; pts.push([lerp(xa, xb, u), PY - 136 - Math.sin(u * Math.PI) * 58]); }
+    W.stroke(pts, { t0: tCr + i * 0.44, t1: tCr + 0.34 + i * 0.44, w: 6, amp: 0.4, off: (t) => pOff(t) * (1 - ramp(t, T('a13c') - 0.3, 0.3)) });
+    sfx('tick', tCr + i * 0.44, { g: 0.12 });
   }
-  const band = h('div', 'p3 box3 g', S); css(band, { width: (2 * DW + 16) + 'px', height: (5 * 30 + 26) + 'px', transform: `translate3d(${PX + 4 * DW - 8}px, ${PPY - 14}px, 0.8px)` });
-  fade(W, band, (t) => ramp(t, T('a13', '加起来') - 0.3, 0.4) * pOff(t));
-  const ppl = W.print('<div class="lbl k">各部分乘出来的数，都要加到中间这两位上</div>', PX, PPY + 168);
-  fade(W, ppl, (t) => ramp(t, T('a13', '加起来') - 0.3, 0.4) * pOff(t));
-  // 进位：墨点从最右一位起，一跳一跳往左，跳到中间那两位；跳过的弧线留在数字上方
-  const lc = W.print('<div class="lbl k" style="transform:translateX(-100%)">←　进位一位一位传过来</div>', PX + 10 * DW, PY - 96);
-  const cOn = (t) => ramp(t, T('a13b', '进位') - 0.3, 0.4) * limOff(t);
-  fade(W, lc, cOn);
-  const pl = h('div', 'p3', S); pl.style.transform = `translate3d(${PX}px, ${PY}px, 1px)`; fade(W, pl, limOff);
-  const ps = svg('svg', { width: 10 * DW + 40, height: 80, viewBox: `0 -80 ${10 * DW + 40} 80` }, pl); css(ps, { position: 'absolute', left: 0, top: '-80px', overflow: 'visible' });
-  const NH = 5, hopT = (i) => T('a13b', '进位') - 0.1 + i * 0.36;
-  const hx = (i) => (9.5 - i) * DW;
-  const cdot = svg('circle', { r: 8, fill: '#1c1c1c' }, ps);
-  for (let i = 0; i < NH; i++) {
-    const xa = hx(i), xb = hx(i + 1);
-    const p = svg('path', { d: `M${xa} -16 Q ${(xa + xb) / 2} -56 ${xb} -16`, fill: 'none', stroke: i === NH - 1 ? '#1c1c1c' : '#8a8a8a', 'stroke-width': 2.4 }, ps);
-    p.style.strokeDasharray = 120;
-    W.up((t) => { const k = ramp(t, hopT(i), 0.32, (x) => x); p.style.strokeDashoffset = (120 * (1 - k)).toFixed(1); p.style.opacity = k > 0 ? 1 : 0; });
-    sfx('tick', hopT(i), { g: 0.12 });
-  }
-  W.up((t) => {
-    const u = clamp((t - hopT(0)) / 0.36, 0, NH); const i = Math.min(NH - 1, Math.floor(u)), f = u - i;
-    const xa = hx(i), xb = hx(i + 1), x = lerp(xa, xb, f), y = -16 - Math.sin(f * Math.PI) * 30;
-    cdot.setAttribute('cx', x.toFixed(1)); cdot.setAttribute('cy', y.toFixed(1));
-    cdot.setAttribute('opacity', (ramp(t, hopT(0) - 0.2, 0.2) * (1 - ramp(t, T('a13c') - 0.2, 0.3))).toFixed(3));
-  });
-  // 这些都得在写这一块的一趟里算完：框住第 4–6 位（正确的是 485，它写成了 473）
-  const c3On = (t) => ramp(t, T('a13c', '四七三') - 0.3, 0.4) * pOff(t);
-  rect(W, S, PX + 3 * DW - 10, PY - 10, 3 * DW + 20, 136, (t) => ramp(t, T('a13c', '四七三') - 0.3, 0.4) * limOff(t), '');
-  const c3l = W.print('<div class="lbl k">这些都得在写这一块的那一趟里算完</div>', PX, PPY + 238); fade(W, c3l, c3On);
-  sfx('tick', T('a13c', '四七三') - 0.3, { g: 0.2 });
-  // 理论上限：题目一长，一步等一步的链越拉越长，「一趟能算的步数」那道条不变（示意）
-  const LY = PPY + 400, LIM = 420, BX0 = PX + 140;
-  const chOn = (t) => ramp(t, T('a14') - 0.2, 0.4) * (1 - ramp(t, T('a15') - 0.3, 0.4));
-  const bar = (y, hh, bg) => { const e = h('div', 'p3', S); css(e, { height: hh + 'px', background: bg }); return e; };
-  const limB = bar(LY + 40, 26, '#b9b9b9'); css(limB, { width: LIM + 'px', transform: `translate3d(${BX0}px, ${LY + 40}px, 0.7px)` }); fade(W, limB, chOn);
-  const needB = bar(LY - 30, 26, '#1c1c1c'), overB = bar(LY - 30, 26, '#a5402d');
-  const needL = (t) => lerp(120, 400, ramp(t, T('a14', '题目越长') - 0.2, 2.0)) + 520 * ramp(t, T('a14b', '超出') - 0.3, 1.4);
-  W.up((t) => {
-    const L_ = needL(t), a = Math.min(L_, LIM), o = Math.max(0, L_ - LIM), op = chOn(t);
-    needB.style.width = a.toFixed(1) + 'px'; needB.style.transform = `translate3d(${BX0}px, ${LY - 30}px, 0.7px)`;
-    overB.style.width = o.toFixed(1) + 'px'; overB.style.transform = `translate3d(${(BX0 + LIM).toFixed(1)}px, ${LY - 30}px, 0.7px)`;
-    needB.style.opacity = op.toFixed(3); overB.style.opacity = (op * (o > 0.5 ? 1 : 0)).toFixed(3);
-  });
-  const chL = W.print('<div class="lbl" style="transform:translateX(-100%)">要走的</div>', BX0 - 30, LY - 46);
-  const limL = W.print('<div class="lbl g" style="transform:translateX(-100%)">一趟能走的</div>', BX0 - 30, LY + 24);
-  const chL2 = W.print('<div class="lbl s g">一步等一步的计算　｜　一趟的步数（示意）</div>', BX0, LY + 90); fade(W, chL2, chOn);
-  [chL, limL].forEach((e) => fade(W, e, chOn));
-  sfx('tick', T('a14', '题目越长'), { g: 0.14 }); sfx('error', T('a14b', '超出') - 0.1, { g: 0.12 });
-  // 错答案里错的那一块
-  const wrong = W.board('<div class="lbl k"><span class="err">473</span>　<span class="g">应为 485</span></div>', XS[1], YB + 60, 34, -80, 30);
-  fade(W, wrong, (t) => ramp(t, T('a15', '中间') - 0.3, 0.4));
-  sfx('tick', T('a15', '中间'), { g: 0.3 });
-  rect(W, S, QX - QW / 2 - 14, YB - BD / 2 - 14, XS[3] + BW / 2 - QX + QW / 2 + 28, BD + 28, (t) => ramp(t, T('a16') - 0.1, 0.4) * (1 - ramp(t, T('a16', '不是') - 0.2, 0.4)), 'g');
-  const late = W.board('<div class="lbl l k">不是不会算，</div>', XS[0] - BW / 2, YB + 60, 34, 0, 100);
-  fade(W, late, (t) => ramp(t, T('a16', '多半') - 0.2, 0.4));
-  const late2 = W.board('<div class="lbl l k">是来不及算</div>', XS[0] - BW / 2 + 470, YB + 60, 34, 0, 100);
-  fade(W, late2, (t) => ramp(t, T('a16', '来不及算') - 0.3, 0.4));
+  W.write('进位', dg.x1 - 2.5 * DW, PY - 272, { fs: 70, cls: 'bold', align: 'c', t0: tCr - 0.2, t1: tCr + 0.2, pen: false, off: (t) => pOff(t) * (1 - ramp(t, T('a13c') - 0.3, 0.3)) });
+  // 这些都得在写这一块的那一趟里算完
+  const tC3 = T('a13c', '四七三') - 0.3, [c0_, c1_] = dg.span(3, 5);
+  W.box(c0_ - 12, PY - 124, c1_ + 12, PY + 124, { t0: tC3, t1: tC3 + 0.65, w: 8, off: pOff });
+  const lOne = W.write('这些，都挤在写这一块的那一趟里', 0, PY - 272, { fs: 74, cls: 'bold', align: 'c', t0: tC3 + 0.5, t1: Tend('a13c') + 0.45, pen: false, off: pOff });
 
-  // ── 镜头：按内容选镜头；停留时不动，只在换镜头时动 ──
-  // token：斜俯看一行方块｜层与一趟：侧面立面看一摞（纸摞自己长、自己算，镜头不跟）｜四趟与接力：立面全景｜
-  // 乘积与进位：正俯视看纸上的算式｜它错的：斜俯近看那四块。取景由 fitCam 按这一镜要看到的东西算出，留安全边距、不压字幕条
-  const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
-  const row = [B(QX, YB, QW, BD, 30), ...XS.map((x) => B(x, YB, BW, BD, 30))];
-  const shTok = fitCam(W, [...row, { el: gl }, { el: glD }, { el: four }, { el: tri }], { pitch: 50, yaw: -6 });
-  const shOne = fitCam(W, [B(QX, YB, QW, BD, 30), B(XS[0], YB, BW, BD, 30), B(XS[0], YR, BW, BD, H + 20), { el: lb1 }, { el: lb2 }, { el: layer }, { el: ud }, { el: fx }, { el: rdq }, { el: nxt }], { pitch: 84 });
-  const shFour = fitCam(W, [...row, ...XS.map((x) => B(x, YR, BW, BD, H + 20)), { el: up1 }, { el: wr }, { el: lb4 }, { el: lb5 }, { el: lb6 }, { el: only }, { el: noPass }, { el: midR }], { pitch: 84 });
-  // 乘积页分两镜：先近看数字与几行部分积（a12–a13c），讲「题目越长」时退到下面的两道条
-  const shPage = fitCam(W, [[PX - 120, PY - 130, 0], [PX + 10 * DW + 120, PY - 130, 0], [PX - 120, PPY + 290, 0], [PX + 10 * DW + 120, PPY + 290, 0], { el: lw }, { el: lc }, { el: ppl }, { el: c3l }, { el: hl }, { el: hl2 }, { el: tl }, { el: tl2 }], { pitch: 8 });
-  const shLim = fitCam(W, [[PX - 160, PPY - 40, 0], [BX0 + 960, PPY - 40, 0], [PX - 160, LY + 150, 0], [BX0 + 960, LY + 150, 0], { el: chL }, { el: limL }, { el: chL2 }, { el: c3l }], { pitch: 8 });
-  const shErr = fitCam(W, [B(QX, YB, QW, BD, 30), ...XS.map((x) => B(x, YB, BW, BD, 30)), { el: wrong }, { el: late }, { el: late2 }], { pitch: 52, yaw: -4, kmax: 1.6 });
+  // ── 题目越长：要走的步数，超出一趟能走的 ──
+  const LY = -3050, BX0 = -560, LIM = 720;
+  const barOff = off(T('a15') - 0.7);
+  const lNeed = W.write('要走的', BX0 - 34, LY, { fs: 88, align: 'r', t0: T('a14') - 0.05, t1: T('a14') + 0.4, off: barOff });
+  const lCan = W.write('一趟能走的', BX0 - 34, LY + 172, { fs: 88, cls: 'pencil', align: 'r', t0: T('a14') + 0.5, t1: T('a14') + 1.0, off: barOff });
+  W.line(BX0, LY + 172, BX0 + LIM, LY + 172, { t0: T('a14') + 0.55, t1: T('a14') + 1.15, w: 44, color: '#a7a9ae', amp: 1, off: barOff });
+  const tGrow = T('a14', '题目越长') - 0.1;
+  W.line(BX0, LY, BX0 + LIM, LY, { t0: tGrow, t1: T('a14b', '超出') - 0.35, w: 44, amp: 1, ease: linear, off: barOff });
+  W.line(BX0 + LIM, LY, BX0 + LIM + 560, LY, { t0: T('a14b', '超出') - 0.3, t1: T('a14b', '超出') + 1.0, w: 44, color: RED, amp: 1, ease: linear, off: barOff });
+  W.write('示意', BX0 + LIM - 90, LY + 262, { fs: 56, cls: 'pencil', t0: T('a14') + 1.2, pen: false, off: barOff });
+  sfx('error', T('a14b', '超出') - 0.1, { g: 0.12 });
+
+  // ── 它错的，正是中间两位；不是不会算，是来不及算 ──
+  const EY = -4400;
+  const wrong = W.write('2394730896', 0, EY, { fs: 170, align: 'c', t0: T('a15') - 0.3, t1: T('a15', '中间') - 0.1 });
+  W.tint(wrong, 4, 5, RED, (t) => ramp(t, T('a15', '中间') - 0.15, 0.3));
+  const [w0, w1] = wrong.span(4, 5);
+  W.ring((w0 + w1) / 2, EY, (w1 - w0) / 2 + 26, 118, { t0: T('a15', '中间'), t1: T('a15', '中间') + 0.75, w: 8, color: RED });
+  sfx('error', T('a15', '中间'), { g: 0.12 });
+  const l1 = W.write('不是不会算，', -40, EY + 262, { fs: 112, align: 'r', t0: T('a16', '不是') - 0.1, t1: T('a16', '不是') + 0.75 });
+  const l2 = W.write('是来不及算', 0, EY + 262, { fs: 112, cls: 'bold', t0: T('a16', '来不及算') - 0.15, t1: Tend('a16') + 0.1 });
+
+  // ── 镜头 ──
+  const row = [[XS[0] - 150, -BH - 40, 0], [XS[3] + 150, BH + 40, 0]];
+  const shTok = fitCam(W, [...row, eq, gl, glD], { pitch: 34, kmax: 1.25 });
+  const shOne = fitCam(W, [S0.box, eq, lUp, lPass, lFix, lGpt, lLayer, [x0 - RW / 2 - 40, SY, 0], [x0 + RW * 1.7 + 60, SY, LZ]], { pitch: 46, cz: H * 0.42, kmax: 1.15 });
+  const shFour = fitCam(W, [...ST.map((q) => q.box), [xU - 30 - 4 * 110, SY, H * 0.52], eq, each, zi, self, zero, nosee], { pitch: 44, cz: H * 0.3 });
+  const shPage = fitCam(W, [dg, hN, tN, lSum, lOne, [dg.x0 - 40, PY - 300, 0]], { pitch: 26 });
+  const shLim = fitCam(W, [lNeed, lCan, [BX0 + LIM + 620, LY - 40, 0], [BX0, LY + 240, 0]], { pitch: 26, kmax: 1.25 });
+  const shErr = fitCam(W, [wrong, l1, l2, [0, EY - 150, 0]], { pitch: 26 });
   W.cam([
-    [t0, { cx: CX + 380, cy: CY - 40, cz: 0, pitch: 0, yaw: 0, k: 1 }, 0.01],
-    [t0 + 1.3, shTok, c0 - t0 - 0.9],
-    [T('a3') - 0.4, shOne, 1.4],
-    [T('a8') - 0.6, shFour, 1.3],
-    [T('a12') - 0.8, shPage, 1.5],
-    [T('a14') - 0.5, shLim, 1.2],
-    [T('a15') - 0.6, shErr, 1.3],
-    // 章末：抬成正俯视，看着一片空白的纸（和下一章开头的横格对齐，硬切看不出来）
-    [Tend('a16') + 0.6, blankCam(170, 1420), Math.max(0.8, s.end + 0.35 - Tend('a16') - 0.6)],
+    [T('a1') - 1.25, shTok, 2.0],
+    [T('a3') - 0.55, shOne, 2.3],
+    [T('a8') - 0.9, shFour, 1.9],
+    [T('a12') - 0.85, shPage, 2.2],
+    [T('a14') - 0.75, shLim, 1.9],
+    [T('a15') - 0.85, shErr, 1.9],
+    [Tend('a16') + 0.9, blankCam(0, -5760), Math.max(0.9, s.end + 0.35 - Tend('a16') - 0.9)],
   ]);
-  sfx('whoosh', t0 + 1.3, { g: 0.3 }); sfx('whoosh', T('a3') - 0.4, { g: 0.18 }); sfx('whoosh', T('a8') - 0.6, { g: 0.16 }); sfx('whoosh', T('a12') - 0.8, { g: 0.2 }); sfx('whoosh', T('a15') - 0.6, { g: 0.16 }); sfx('whoosh', Tend('a16') + 0.6, { g: 0.18 });
+  [T('a1') - 1.25, T('a8') - 0.9, T('a12') - 0.85, T('a14') - 0.75, T('a15') - 0.85].forEach((a) => sfx('whoosh', a, { g: 0.13 }));
+  sfx('riser', T('a3') - 0.5, { g: 0.1 });
+  sfx('chime', T('a16', '来不及算'), { g: 0.16 });
 });

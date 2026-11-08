@@ -3,7 +3,7 @@
    立体只给本身有空间含义的东西（摊开的纸、固定层数的一摞、越摞越高的草稿），镜头平稳；
    不用光晕、渐变色块、发光线条（docs/principles.md「形式服从内容与叙事，质感在背后承托」）。 */
 :root {
-  --paper: #ffffff;
+  --paper: #faf6ed;
   --ink: #1c1c1c;
   --gray: #707070;
   --light: #b4b4b4;
@@ -80,7 +80,7 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 .sheet > .note { color: #555; }
 
 /* ── 第 5 稿的立体世界（src/js/world.js）：无边的草稿纸、立在纸上的 token 方块、一层一张纸叠成的一趟 ── */
-.view { position: absolute; inset: 0; perspective: 2000px; perspective-origin: 960px 540px; overflow: hidden; }
+.view { position: absolute; inset: 0; perspective: 3400px; perspective-origin: 960px 540px; overflow: hidden; }
 .stage { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
 .rule { position: absolute; left: 0; top: 0; width: 14000px; height: 2px; margin-top: -1px; background: #e3e3e3; transform-origin: 0 0;
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 60%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 60%, transparent 100%); }
@@ -178,3 +178,37 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 /* 深色柱：柱状图里的数据柱 */
 .blk.cube.dk .tp { background: #2e2e2e; box-shadow: inset 0 0 0 1.5px #111; }
 .blk.cube.dk .fr, .blk.cube.dk .sd, .blk.cube.dk .bk { background: #4a4a4a; box-shadow: inset 0 0 0 1px #222; }
+
+/* ── 第 10 稿重做：有纹理的稿纸、一支笔 ── */
+.floor { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: flat; }
+.ptex { position: absolute; left: 0; top: 0; width: 17280px; height: 17280px; background-size: 960px 960px; }
+.floor .rule { position: absolute; left: 0; top: -1px; width: 16000px; height: 2px; background: #ccd5df; }
+.lay { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.ink { position: absolute; white-space: pre; font-family: "Serif SC"; font-weight: 500; color: #17191f; font-variant-numeric: tabular-nums; }
+.ink .c { display: inline-block; white-space: pre; }
+.ink.pencil { color: #62656c; font-weight: 400; }
+.ink.red { color: #b5321c; }
+.ink.bold { font-weight: 700; }
+.logo { position: absolute; }
+.light { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, #f7f2e7 0, #f7f2e7 92px, rgba(247, 242, 231, .94) 118px, rgba(247, 242, 231, 0) 196px), radial-gradient(ellipse 90% 90% at 42% 34%, rgba(255, 250, 235, 0) 45%, rgba(92, 72, 40, .11) 100%); }
+.pen { position: absolute; left: -32px; top: -640px; width: 64px; height: 640px; transform-origin: 32px 640px; }
+.pen svg { position: absolute; left: 0; top: 0; }
+.pen .r { position: absolute; inset: 0; opacity: 0; }
+.pshade { position: absolute; left: 0; top: -7px; width: 330px; height: 14px; border-radius: 7px; background: rgba(34, 26, 14, .3); filter: blur(8px); transform-origin: 0 50%; opacity: 0; }
+.sk { transform-style: preserve-3d; left: 0; top: 0; width: 0; height: 0; }
+.sk .f { position: absolute; left: 0; top: 0; overflow: hidden; }
+.sk .fr, .sk .bk { background: repeating-linear-gradient(to top, #988f7b 0, #988f7b 1.5px, #f6f1e4 1.5px, #f6f1e4 var(--gp)); }
+.sk .sd { background: repeating-linear-gradient(to top, #877e6b 0, #877e6b 1.5px, #e2dbca 1.5px, #e2dbca var(--gp)); }
+.sk .tp { background: #fcf9f2; box-shadow: inset 0 0 0 1.5px #c8c0ad; }
+.sk .fl { position: absolute; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(to top, rgba(206, 200, 184, .42) 0, rgba(206, 200, 184, .42) 1.5px, rgba(29, 36, 56, .93) 1.5px, rgba(29, 36, 56, .93) var(--gp)); }
+.sk .sd .fl { background: repeating-linear-gradient(to top, rgba(170, 164, 150, .4) 0, rgba(170, 164, 150, .4) 1.5px, rgba(18, 23, 38, .95) 1.5px, rgba(18, 23, 38, .95) var(--gp)); }
+.sk .nw { position: absolute; left: 0; right: 0; height: 5px; margin-bottom: -2px; background: #f4efe2; opacity: 0; }
+.sknote { position: absolute; left: 0; right: 0; text-align: left; font: 500 46px "Serif SC"; color: #fbf8f0; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.skshade { position: absolute; background: rgba(46, 34, 16, .34); filter: blur(20px); transform-origin: 50% 0; opacity: 0; }
+.vbar { position: absolute; left: 0; top: 0; }
+.lid { position: absolute; inset: 0; background: #1f2639; }
+.sknote i { display: inline-block; height: 4px; border-radius: 2px; background: #efe6cf; vertical-align: top; }
+.sheet2 { position: absolute; background: #fffaf0; box-shadow: 10px 16px 34px rgba(50, 35, 10, .24), inset 0 0 0 1px #dcd3bf; }
+.plate2 { position: absolute; background: #d9dfeb; box-shadow: inset 0 0 0 3px #1f2639, 0 0 30px rgba(40, 30, 15, .22); }
+.sk.seams .fl { background: repeating-linear-gradient(to top, rgba(240, 233, 214, .85) 0, rgba(240, 233, 214, .85) 5px, rgba(29, 36, 56, .95) 5px, rgba(29, 36, 56, .95) var(--gp)); }
+.sk.seams .sd .fl { background: repeating-linear-gradient(to top, rgba(200, 194, 176, .8) 0, rgba(200, 194, 176, .8) 5px, rgba(18, 23, 38, .96) 5px, rgba(18, 23, 38, .96) var(--gp)); }

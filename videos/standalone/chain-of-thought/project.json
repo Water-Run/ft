@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "策划者看第 3 轮预览 out/zh/preview-r3b.mp4；按意见迭代后出 1080p60 正式片",
+  "next": "策划者看第 4 轮预览 out/zh/preview-r4.mp4；通过后出 1080p60 正式片",
   "credits": {
     "planner": "WaterRun",
     "models": [

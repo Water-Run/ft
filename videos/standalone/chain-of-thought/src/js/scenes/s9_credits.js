@@ -3,6 +3,7 @@
 scene('credits', ({ root, s }) => {
   const C = (window.PROJECT && window.PROJECT.credits) || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
+  makeWorld(root, blankCam(0, 92));
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
   const title = h('div', 'abs', world, '<span style="font:300 64px \'Serif SC\'">CoT</span><span style="font:500 34px \'Serif SC\';letter-spacing:.12em;margin-left:28px;color:#22252a">先思考，再回答</span>');
