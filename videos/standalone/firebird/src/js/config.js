@@ -1,19 +1,42 @@
-// 本片的引擎配置：要预载的字体、箭头可用的颜色、常驻元素（章节卡）、换场方式。
-// TODO: 这里是能跑起来的最小实现。正式制作时按本片的视觉系统重做章节卡与换场（docs/guides/visual.md、docs/guides/scenes.md），做完删掉这一行。
-document.documentElement.classList.add(LANG);            // 样式表可按语言微调：.en #caption span { … }
-window.PALETTE = { ink: '#16181d', accent: '#d9480f', dim: '#8c8f96' };
+// 本片的引擎配置：常驻左栏目录、面包屑、换页。目录随章亮起绿色竖线，章与章之间是上一页揭起、露出下一页。
+document.documentElement.classList.add(LANG);
+window.PALETTE = { ink: '#1c1c1c', accent: '#EE2B24', dim: '#6f6f6f' };
+const CHAP_TOP = 190, CHAP_STEP = 62;
 window.ENGINE = {
-  fonts: [['500 20px "Sans SC"', '字A'], ['900 20px "Sans SC"', '字A'], ['500 20px "Inter"', 'Aa0'], ['800 20px "Inter"', 'Aa0'], ['500 20px "Mono"', 'A0']],
-  sceneFade: false,         // 不做整屏淡入淡出。没有 after() 时，引擎在每章开始后 sceneCut 秒硬切，那一刻由章节卡盖住画面
-  sceneCut: 0.45,
+  fonts: [['500 20px "Sans SC"', '字A'], ['900 20px "Sans SC"', '字A'], ['500 20px "Serif SC"', '字A'], ['800 20px "Serif SC"', '字A'], ['600 20px "Open Sans"', 'Aa0'], ['800 20px "Open Sans"', 'Aa0'], ['500 20px "Mono"', 'A0'], ['800 20px "Mono"', 'A0']],
+  sceneFade: false,
   chrome() {
     const hud = document.getElementById('hud');
-    for (const s of L.scenes) {
-      if (!s.chap) continue;
-      const card = h('div', 'chapter', hud, `<div class="no">${s.chap[0]}</div><div class="ti">${s.chap[1]}</div>`);
-      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.45;
-      wipe(card, t0, { dir: 'l', d: 0.4 }); wipeOut(card, t1, { dir: 'r', d: 0.4 });
-      sfx('whoosh', t0 - 0.05); sfx('thud', t0 + 0.32, { g: 0.6 });
-    }
+    const rail = h('div', 'rail', hud);
+    const logo = h('img', 'logo', rail); logo.src = '/img/firebird-logo.png';
+    h('div', 'tt', rail, '目录');
+    const chaps = L.scenes.filter((s) => s.chap);
+    const bar = h('div', 'bar', rail);
+    set(bar, 0, { y: CHAP_TOP + 6, autoAlpha: 0 });
+    chaps.forEach((s, i) => {
+      const it = h('div', 'it', rail, `${s.chap[0]}. ${s.chap[1]}`);
+      css(it, { top: (CHAP_TOP + i * CHAP_STEP) + 'px' });
+      const next = chaps[i + 1];
+      classAt(it, 'on', s.start, next ? next.start : Infinity);
+      const yy = CHAP_TOP + i * CHAP_STEP + 2;
+      if (i === 0) { set(bar, s.start, { y: yy, autoAlpha: 1 }); }
+      else to(bar, s.start + 0.05, { y: yy, duration: 0.42, ease: 'power3.inOut' });
+    });
+    const lastEnd = L.scenes.find((s) => s.id === 'end');
+    if (lastEnd) to(bar, lastEnd.start, { autoAlpha: 0, duration: 0.3 });
+    const crumb = h('div', 'crumb', hud, '<u>Firebird Documentation Index</u> → 这只鸟的来历');
+    set(crumb, 0, { autoAlpha: 1 });
+  },
+  after() {
+    L.scenes.forEach((s, i) => {
+      const r = document.getElementById('sc-' + s.id);
+      css(r, { zIndex: 100 - i });
+      if (i > 0) set(r, 0, { autoAlpha: 0 }), set(r, s.start - 0.02, { autoAlpha: 1 });
+      const nx = L.scenes[i + 1];
+      if (!nx) return;
+      to(r, nx.start, { rotationX: -46, y: -1240, z: 140, transformPerspective: 2200, transformOrigin: '60% 0%', duration: 0.62, ease: 'power2.in' });
+      set(r, nx.start + 0.64, { autoAlpha: 0 });
+      sfx('whoosh', nx.start, { g: 0.7, p: 0.2 });
+    });
   },
 };

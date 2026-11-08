@@ -1,38 +1,56 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 视觉系统：官方手册（白页、左栏目录、绿色当前项、编号标题、细线）与层叠纸页的融合。
+   颜色只有文档的灰白、链接蓝、警示红，以及标志的金橙红。 */
+@font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wght.ttf"); font-weight: 300 800; }
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --paper: #fff; --side: #f8f8f7; --rule: #e7e7e9; --rule2: #dddddf; --desk: #e6e4df;
+  --ink: #1c1c1c; --soft: #6f6f6f; --blue: #2156a5; --green: #54BC4B; --warn: #bf0000; --code: #f7f7f8;
+  --gold: #FAAC19; --orange: #F68A21; --red: #EE2B24;
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+body { font-family: "Sans SC"; color: var(--ink); }
+#bg { background: var(--desk); }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
-.mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+/* 左栏目录：官方手册的 Table of Contents */
+.rail { position: absolute; left: 0; top: 0; width: 300px; height: 1080px; background: var(--side); border-right: 2px solid var(--rule); z-index: 5; }
+.rail .logo { position: absolute; left: 30px; top: 30px; width: 76px; height: 76px; }
+.rail .tt { position: absolute; left: 30px; top: 132px; font: 600 32px "Open Sans", "Sans SC"; color: var(--ink); }
+.rail .it { position: absolute; left: 44px; font: 500 29px "Serif SC"; color: var(--blue); white-space: nowrap; }
+.rail .it.on { font-weight: 800; }
+.rail .bar { position: absolute; left: 26px; top: 0; width: 6px; height: 42px; background: var(--green); }
+.crumb { position: absolute; left: 350px; top: 16px; font: 400 28px "Open Sans", "Serif SC"; color: var(--soft); z-index: 5; white-space: nowrap; }
+.crumb u { color: var(--blue); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 一页手册 */
+.page { position: absolute; left: 300px; top: 0; width: 1620px; height: 1080px; background: var(--paper); overflow: hidden; }
+.dh { position: absolute; left: 50px; top: 62px; font: 600 74px/1.1 "Open Sans", "Sans SC"; color: var(--ink); white-space: nowrap; }
+.dr { position: absolute; left: 50px; top: 170px; width: 1520px; height: 2px; background: var(--rule2); transform-origin: 0 50%; }
+.persp { position: absolute; left: 0; top: 0; width: 1620px; height: 968px; }
+.plane { position: absolute; left: 0; top: 0; width: 1620px; height: 968px; transform-style: preserve-3d; }
+.sheet { position: absolute; background: #fff; box-shadow: 14px 26px 46px rgba(50, 30, 10, .4); }
+.by { font: 400 30px "Open Sans", "Serif SC"; color: var(--soft); white-space: nowrap; }
+.line { height: 2px; background: var(--rule2); }
+.big { font: 900 132px/1.12 "Sans SC"; white-space: nowrap; }
+.date { font: 800 186px/1 "Open Sans"; color: var(--ink); white-space: nowrap; }
 
-/* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+/* 撕页日历 */
+.leaf { position: absolute; left: 0; top: 0; width: 470px; height: 560px; background: #fff; box-shadow: 0 2px 0 var(--rule2), 8px 18px 30px rgba(50, 30, 10, .3); transform-origin: 50% 0; }
+.leaf .band { position: absolute; left: 0; top: 0; width: 470px; height: 90px; background: linear-gradient(90deg, var(--gold), var(--orange), var(--red)); font: 700 44px/90px "Sans SC"; color: #fff; text-align: center; }
+.leaf .day { position: absolute; left: 0; top: 118px; width: 470px; text-align: center; font: 800 300px/1 "Open Sans"; color: var(--ink); }
+.leaf .wk { position: absolute; left: 0; top: 448px; width: 470px; text-align: center; font: 500 40px "Sans SC"; color: var(--soft); }
 
-/* 片尾名单 */
-.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
-.credit-row { break-inside: avoid; margin-bottom: 30px; }
+/* 文件树与代码缩略 */
+.bar-l { position: absolute; height: 16px; background: #cfcdc7; }
+.card-h { font: 700 54px "Open Sans"; color: var(--blue); white-space: nowrap; }
+.login { font: 800 150px/1.15 "Mono"; color: #141414; white-space: nowrap; }
+.adm-ic { position: absolute; width: 96px; height: 96px; border-radius: 50%; background: var(--warn); color: #fff; font: 800 74px/96px "Open Sans"; text-align: center; box-shadow: 2px 3px 6px rgba(0, 0, 0, .4); }
+.ring { position: absolute; border-radius: 50%; box-shadow: 12px 22px 34px rgba(60, 20, 0, .4); }
+
+/* 场景的页是一层（内部用 z-index 叠放），左栏与字幕在它上面 */
+#scenes { z-index: 1; }
+#hud { z-index: 2; }
+#caption { left: 300px; z-index: 3; }
+#caption span { font: 500 42px "Sans SC"; color: var(--ink); }
+.credits { z-index: 2; }
+.credit-row { margin-bottom: 26px; }
+.t-body { font-weight: 500; font-size: 40px; line-height: 1.35; }
+.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--soft); }

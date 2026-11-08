@@ -8,8 +8,8 @@
   "titles": {
     "zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"
   },
-  "stage": "review",
-  "next": "等校对者明确确认文案；确认后用嚣张小姐配全片，再按 A×B 融合方向做代表段与封面",
+  "stage": "build",
+  "next": "策划者看代表段（2:09 前后三段）与封面，通过后铺开其余各章",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -28,7 +28,7 @@
       {
         "name": "MiniMax speech-2.8-hd",
         "roles": [
-          "配音试听"
+          "旁白合成"
         ]
       }
     ],
@@ -52,10 +52,10 @@
     "mb": 4
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
+    "music": "tools/music.py",
+    "music_db": -14,
     "duck_db": 9,
-    "sfx_db": -8
+    "sfx_db": -9
   },
   "check": {
     "caption_width": {

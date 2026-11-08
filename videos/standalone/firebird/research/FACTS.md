@@ -44,6 +44,12 @@ InterBase 源于 Jim Starkey 的多版本想法（H01–H02），1984 年在自�
 | H17 | 开源后 24 小时内有了源码树；社区不愿等公司，首个周末结束时在 SourceForge 建 Firebird 项目 | 官方历史页「Firebird records」 | Release History：两位澳大利亚开发者下载源码并在 SourceForge 建项目 | 已核 |
 | H18 | 2000 年 7 月 31 日 Firebird 项目诞生（距开源 6 天） | 官方历史页事件表 | Wikipedia「Within a week」 | 已核 |
 
+### 传闻（按策划者 2026-11-09 要求作为梗使用，旁白明说未证实）
+
+| 编号 | 陈述 | 原始出处与定位 | 独立印证 | 状态 |
+|---|---|---|---|---|
+| L01 | 坦克故事：某版 InterBase 用在美军 M1 坦克上，开炮的电涌使车载系统崩溃，InterBase 重启后总能恢复工作。发帖人自称「a bit of folklore, now」 | [firebird-support 2002-02 #8615](https://fb-list-archive.lawinegevaar.nl/firebird-support/2002/2/8615.html) | [firebird-support 2004-03 #39571](https://fb-list-archive.lawinegevaar.nl/firebird-support/2004/3/39571.html)（再次转述）；[Embarcadero InterBase 产品页](https://embarcadero.com/products/interbase/features/admin-free)「deployed in tanks, helicopters, and medical equipment」（厂商宣传，未提型号与电涌）。均非军方或当事人证据 | **传闻，未证实**；旁白 a16–a19 只作传闻讲，画面须标「传说」，不写型号之外的细节 |
+
 ### 后门
 
 | 编号 | 陈述 | 原始出处与定位 | 独立印证 | 状态 |
@@ -84,7 +90,6 @@ InterBase 源于 Jim Starkey 的多版本想法（H01–H02），1984 年在自�
 
 ## 取证中发现、没有进入成片的事实
 
-- **M1 坦克故事**：只找到 2002 年邮件列表里一位网友的转述（开炮电涌使车载电脑崩溃，InterBase 总能恢复），没有军方或当事人证据。不进成片。
 - 办公室靠电脑取暖，煤气公司以为他们偷气（Ann Harrison 回忆）；搬到干洗店楼上的故事；Sybase 同期成立。备用细节。
 - LibreOffice Base 提供 Firebird Embedded，但各资料对是否仍是实验功能说法不一，不用。
 - Firebird 1.0 发布于 2002 年；1.5 把代码从 C 改到 C++；3.0（2016）合并各运行形态的核心。

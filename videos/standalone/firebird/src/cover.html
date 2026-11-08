@@ -5,30 +5,55 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。标志色纸圈层层叠起，标题是压在上面的一页官方手册。 */
+  @font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wght.ttf"); font-weight: 300 800; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { background: #efece6; overflow: hidden; position: absolute; left: 0; top: 0; }
+  .w { position: absolute; inset: 0; perspective: 1700px; }
+  .d3 { position: absolute; transform-style: preserve-3d; }
+  .ring { position: absolute; border-radius: 50%; box-shadow: 14px 24px 38px rgba(60, 20, 0, .42); }
+  .sheet { position: absolute; background: #fff; box-shadow: -14px 30px 56px rgba(50, 30, 10, .42); }
+  .crumb { font: 400 30px "Open Sans", "Serif SC"; color: #6f6f6f; white-space: nowrap; }
+  .crumb u { color: #2156a5; }
+  .word { display: block; clip-path: inset(0 0 0 19%); }
+  .ti { position: relative; font: 900 208px/1.05 "Sans SC"; color: #1c1c1c; white-space: nowrap; }
+  .ti::before { content: ""; position: absolute; left: -32px; top: 8%; bottom: 8%; width: 12px; background: #54BC4B; }
+  .sub { font: 500 60px/1.3 "Sans SC"; color: #444; white-space: nowrap; }
+  .rule { height: 2px; background: #dddddf; margin: 26px 0 22px; }
 </style>
 </head>
 <body>
-<div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
-</div>
+<div id="stage"><div class="w"></div></div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  const q = new URLSearchParams(location.search), wide = q.get('r') !== '43';
+  document.documentElement.className = wide ? 'r169 zh' : 'r43 zh';
+  const W = document.querySelector('.w');
+  const LOGO = '/img/firebird-logo.png', WORD = '/img/logo-firebird-black.png';
+  const R = document.createElement('div'); R.className = 'd3'; W.appendChild(R);
+  const big = wide ? 1320 : 1180;
+  R.style.cssText = wide ? `left:-180px;top:-120px;width:${big}px;height:${big}px;transform:rotateY(24deg) rotateX(5deg)` : `left:-250px;top:-210px;width:${big}px;height:${big}px;transform:rotateY(22deg) rotateX(6deg)`;
+  [['#FAAC19', 1], ['#F68A21', .82], ['#EE2B24', .645], ['#fff', .485]].forEach(([c, k], i) => {
+    const d = big * k, e = document.createElement('div'); e.className = 'ring';
+    e.style.cssText = `left:${big / 2 - d / 2}px;top:${big / 2 - d / 2}px;width:${d}px;height:${d}px;background:${c};transform:translateZ(${i * 70}px)`;
+    R.appendChild(e);
+  });
+  const L = new Image(); L.src = LOGO; const ls = big * .41;
+  L.style.cssText = `position:absolute;left:${big / 2 - ls / 2}px;top:${big / 2 - ls / 2}px;width:${ls}px;height:${ls}px;transform:translateZ(290px)`;
+  R.appendChild(L);
+  const S = document.createElement('div'); S.className = 'sheet';
+  S.style.cssText = wide ? 'left:880px;top:80px;width:1000px;height:740px;padding:34px 72px;transform:rotate(-1.2deg)' : 'left:300px;top:560px;width:1240px;height:440px;padding:30px 70px;transform:rotate(-1.2deg)';
+  S.innerHTML = wide
+    ? `<div class="crumb"><u>Firebird Documentation Index</u> → 第三选择</div><img class="word" src="${WORD}" style="height:140px;margin:22px 0 10px -168px"><div class="ti">第三选择</div><div class="rule"></div><div class="sub">既能做服务，又能嵌入式</div>`
+    : `<div style="display:flex;align-items:center;gap:34px"><div class="ti" style="font-size:190px">第三选择</div></div><div class="rule"></div><div class="sub" style="font-size:56px">既能做服务，又能嵌入式</div>`;
+  document.getElementById('stage').appendChild(S);
+  if (!wide) {
+    const w2 = new Image(); w2.src = WORD; w2.className = 'word';
+    w2.style.cssText = 'position:absolute;left:640px;top:120px;height:170px;margin-left:-204px;background:#fff;padding:18px 34px 18px 0';
+    document.getElementById('stage').appendChild(w2);
+  }
+  Promise.all([document.fonts.load('900 40px "Sans SC"', '第三选择'), document.fonts.load('500 40px "Sans SC"', '既能做服务'), document.fonts.load('500 40px "Open Sans"', 'Firebird'), document.fonts.load('400 40px "Serif SC"', '第'), ...[...document.images].map((i) => i.decode().catch(() => {}))])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
