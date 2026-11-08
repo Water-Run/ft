@@ -12,8 +12,7 @@ scene('end', ({ root, s }) => {
   const start = [tE3 + 0.1];
   for (let i = 1; i < NS; i++) start.push(lerp(tNo + 0.05, tE5e - 0.4, (i - 1) / (NS - 2)));
   const ST = start.map((ta, i) => {
-    const R = A.stack(SX(i), SY, { w: RW, d: RD, n: LAY, gap: SEP, rise: (t) => ramp(t, i ? ta - 0.32 : ta, i ? 0.42 : 0.9, ease.out3), fill: (t) => ramp(t, ta + (i ? 0.06 : 0.75), 0.55, linear) });
-    R.marks(90 + i, 14); return R;
+    const R = A.stack(SX(i), SY, { w: RW, d: RD, n: LAY, gap: SEP, rise: (t) => ramp(t, i ? ta - 0.32 : ta, i ? 0.42 : 0.9, ease.out3), fill: (t) => ramp(t, ta + (i ? 0.06 : 0.75), 0.55, linear) }); return R;
   });
   sfx('riser', tE3 + 0.1, { g: 0.1 });
   ST[0].lid(tFix, () => 1); sfx('pop', T('e3', '定了'), { g: 0.34 });
@@ -30,37 +29,34 @@ scene('end', ({ root, s }) => {
     sfx('pop', ta + 0.34, { g: 0.12 });
   }
   A.arrow([[SX(0) - RW / 2, SL + 150], [SX(NS - 1) + RW / 2 + 40, SL + 150]], { t0: tNo, d: tE5e + 0.4 - tNo, w: 15, head: 60, ease: linear });
-  A.text('能想多远，并没有定死', SX(0) - 150, SL + 60, { fs: 96, cls: 'b', t0: tNo + 0.05, d: 0.4, off: off(tMid - 0.3, 0.35) });
+  A.text('能想多远，并没有定死', SX(0) - 150, SL + 270, { fs: 96, cls: 'b', t0: tNo + 0.05, d: 0.4, off: off(tMid - 0.3, 0.35) });
   A.text('能想多远，看写下了多少', SX(0) + 1520, SL + 340, { fs: 180, cls: 'b', align: 'c', t0: tMid + 0.1, d: 0.6, off: off(T('e6') - 0.2) });
 
-  // ── 思考就是写下来 ──
+  // ── 最后一张纸：思考就是写下来；先思考，再回答 ──
   const tB = T('e6') - 0.55;
-  const B = W.sheet({ in: [tB, 'b', 1.0], out: [T('e7') - 0.95, 't', 1.0], w: 1640, h: 860 });
-  B.text('对它来说', 0, -180, { fs: 82, cls: 'g', align: 'c', t0: T('e6') + 0.05 });
+  const B = W.sheet({ in: [tB, 'r', 1.0], out: [s.end - 0.95, 'l', 0.9], w: 1640, h: 900 });
+  B.text('对它来说', 0, -300, { fs: 64, cls: 'g', align: 'c', t0: T('e6') + 0.05 });
   const tThink = T('e6', '思考') - 0.2, tWr = T('e6', '写下来') - 0.25;
-  B.text('思考', -150, 60, { fs: 200, cls: 'b', align: 'r', t0: tThink, d: 0.35 });
-  B.line([[-120, 34], [20, 34]], { t0: tWr - 0.25, d: 0.25, w: 10 });
-  B.line([[-120, 90], [20, 90]], { t0: tWr - 0.1, d: 0.25, w: 10 });
-  B.text('写下来', 50, 60, { fs: 200, cls: 'b', t0: tWr, d: 0.4 });
-
-  // ── 片名 ──
-  const tC = T('e7') - 0.95;
-  const C = W.sheet({ in: [tC, 'r', 1.0], w: 1560, h: 880 });
+  B.text('思考', -100, -160, { fs: 100, cls: 'ti', align: 'r', t0: tThink, d: 0.4 });
+  B.line([[-66, -176], [6, -176]], { t0: tWr - 0.3, d: 0.3, w: 5 });
+  B.line([[-66, -144], [6, -144]], { t0: tWr - 0.15, d: 0.3, w: 5 });
+  B.text('写下来', 40, -160, { fs: 100, cls: 'ti', t0: tWr, d: 0.5 });
   const tSi = T('e7') + 0.05, mid = T('e7', '再回答') ? T('e7', '再回答') - 0.2 : T('e7') + 1;
-  C.text('先思考，', 95, 2, { fs: 190, cls: 'b', align: 'r', t0: tSi, d: 0.5 });
-  C.text('再回答', 95, 2, { fs: 190, cls: 'b', t0: mid, d: 0.5 });
-  C.bar(-480, 170, 960, 7, { t0: mid + 0.5, d: 3.0, color: INK, ease: linear, r: 0 });
+  B.text('先思考，', 76, 110, { fs: 132, cls: 'ti', align: 'r', t0: tSi, d: 0.55 });
+  B.text('再回答', 76, 110, { fs: 132, cls: 'ti', t0: mid, d: 0.55 });
+  B.bar(-66, 260, 132, 2, { t0: mid + 0.5, d: 0.8, color: INK, r: 0, flat: true });
+  B.cursor(76 + 470, 110, 132, { t0: mid + 0.55 });
   sfx('chime', T('e7') + 0.1, { g: 0.2 });
 
   const box0 = ST[0].box, boxN = ST[NS - 1].box;
-  const shOne = fitCam([box0, A.p(SX(0), SY, H + 150), A.p(SX(0) - 300, SL + 130), A.p(SX(0) + 900, SL + 130), A.p(SX(0) + 900, SY, H)], { pitch: 42, cz: A.Z + H * 0.34, kmax: 1.0 });
+  const shOne = fitCam([box0, A.p(SX(0), SY, H + 150), A.p(SX(0) - 300, SL + 340), A.p(SX(0) + 900, SL + 340), A.p(SX(0) + 900, SY, H)], { pitch: 42, cz: A.Z + H * 0.34, kmax: 1.0 });
   const shAll = fitCam([box0, boxN, A.p(SX(0) - 240, SL + 450), A.p(SX(NS - 1) + 300, SL + 450)], { pitch: 26, cz: A.Z + H * 0.2 });
   W.cam([
     [s.start, shOne, 0.9],
     [tNo - 0.05, shAll, Math.max(2.5, tE5e + 0.3 - tNo), smooth],
-    [tB, B.home({ pitch: 12, k: 1.02 }), 1.0],
-    [tC, C.home({ k: 1.0 }), 1.0],
-    [tC + 1.05, C.home({ k: 1.06 }), 2.9, linear],
+    [tB, B.home({ pitch: 8, cy: -60, k: 1.02 }), 1.2],
+    [T('e7') - 0.4, B.home({ pitch: 0, cy: -20, k: 1.0 }), 1.4],
+    [s.end - 0.95, HOME, 0.9],
   ]);
-  [s.start + 0.05, tB, tC].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
+  [s.start + 0.05, tB, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });

@@ -16,3 +16,5 @@ DeepSeek 徽标（`src/assets/deepseek-logo.png`，SHA-256 前 16 位 `3b84d62d2
 ## 策划者对视觉与声音的明确要求
 
 <!-- 原话与日期；没有就写「无」。 -->
+
+ChatGPT 图形（`src/assets/chatgpt-logo.svg`）：取自 Wikimedia Commons `File:ChatGPT_logo.svg`（页面标为 Public domain），2026-11-08 下载，去掉绿色底、改成黑白；按策划者要求，在片中 o1 处用于指明讲解对象，不暗示所有者认可或参与本片；商标权利属于所有者，不随本仓库的 GPL 许可授予。

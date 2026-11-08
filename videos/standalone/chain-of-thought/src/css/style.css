@@ -221,3 +221,50 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 .cardt small { display: block; font-size: 42px; color: #777; }
 .credit-row .k { color: #4f4f4f; }
 .blk.pl .tp { background: #b9b9b9; }
+
+/* 第 5 轮之后：画风回到 r2 与封面（cover.html）。白纸、冷灰底、发丝线、细衬线、浅色方块、细线纸垛；不用黑色大块。 */
+:root { --ink: #15171a; --gray: #666b72; --line: #d5d9de; }
+#bg { background: #eef0f2; }
+.desk2 { background-color: #eef0f2; background-image: linear-gradient(to bottom, #e4e7eb 2px, transparent 2px); background-size: 100% 96px; }
+.paper { background-color: #fdfdfe; background-image: linear-gradient(to bottom, #eff1f4 2px, transparent 2px); background-size: 100% 96px; box-shadow: 0 0 0 1px #d5d9de, 0 26px 70px rgba(28, 38, 52, .13); }
+.paper.under { background-color: #f6f7f8; background-image: none; box-shadow: 0 0 0 1px #d5d9de; transform: translate3d(16px, 14px, -2px); }
+.light { background: none; }
+.pt { color: #15171a; }
+.pt.g { color: #666b72; }
+.pt.b { font-weight: 500; color: #22252a; }
+.pt.ti { font-weight: 500; letter-spacing: .14em; color: #22252a; }
+.pt.lt { font-weight: 300; letter-spacing: -.01em; }
+.pt.sec { font-weight: 500; letter-spacing: .3em; color: #5a5f66; }
+.pt.e, .pt .e { color: #a5402d; }
+#caption span, #caption em { color: #15171a; }
+.blk .tp { background: #fff; border-radius: 7px; box-shadow: inset 0 0 0 1.5px #9aa1a9; color: #15171a; }
+.blk .fr { background: #e7eaee; box-shadow: none; }
+.blk .bk { background: #eef0f3; }
+.blk .sd { background: #dfe3e8; box-shadow: none; }
+.blk.soft .tp { background: #f6f7f9; box-shadow: inset 0 0 0 1.5px #c9ced5; color: #4a4f56; }
+.blk.cube .tp { background: #fff; box-shadow: inset 0 0 0 1.5px #b9bfc7; }
+.blk.cube .fr, .blk.cube .sd, .blk.cube .bk { background: #e7eaee; box-shadow: none; }
+.blk.cube.dk .tp { background: #6f757d; box-shadow: none; }
+.blk.cube.dk .fr, .blk.cube.dk .sd, .blk.cube.dk .bk { background: #8a8f96; }
+.blk.pl .tp { background: #e4e7eb; box-shadow: inset 0 0 0 2px #15171a; }
+.sk .fr, .sk .bk { background: repeating-linear-gradient(to top, #d3d7dc 0, #d3d7dc 1.4px, #fcfcfd 1.4px, #fcfcfd var(--gp)); box-shadow: inset 0 0 0 1px #c9ced5; }
+.sk .sd { background: repeating-linear-gradient(to top, #c8cdd3 0, #c8cdd3 1.4px, #eff1f4 1.4px, #eff1f4 var(--gp)); box-shadow: inset 0 0 0 1px #c9ced5; }
+.sk .tp { background: #fff; box-shadow: inset 0 0 0 1.5px #b9bfc7; }
+.sk .fl { background: repeating-linear-gradient(to top, rgba(21, 23, 26, .5) 0, rgba(21, 23, 26, .5) 1.4px, rgba(222, 226, 231, .96) 1.4px, rgba(222, 226, 231, .96) var(--gp)); }
+.sk .sd .fl { background: repeating-linear-gradient(to top, rgba(21, 23, 26, .46) 0, rgba(21, 23, 26, .46) 1.4px, rgba(208, 213, 219, .96) 1.4px, rgba(208, 213, 219, .96) var(--gp)); }
+.sk .nw { height: 3px; margin-bottom: -1px; background: #15171a; }
+.sknote i { height: 3px; border-radius: 1.5px; background: #4a4f56; }
+.dot { background: #15171a; }
+.scanl { background: #15171a; height: 3px; }
+.skshade { background: rgba(28, 38, 52, .10); }
+.lid3 { background: #fbfcfc; box-shadow: inset 0 0 0 3px #15171a; }
+.cur { position: absolute; background: #15171a; }
+
+/* 纸垛：细线、无黑块；侧面不画线，避免透视下起锯齿 */
+.sk .fr, .sk .bk { background: repeating-linear-gradient(to top, #dfe2e6 0, #dfe2e6 1.5px, #fcfcfd 1.5px, #fcfcfd calc(var(--gp) * 2)); box-shadow: inset 0 0 0 1px #c9ced5; }
+.sk .sd { background: #eef0f3; box-shadow: inset 0 0 0 1px #c9ced5; }
+.sk .fl { background: repeating-linear-gradient(to top, #aeb4bc 0, #aeb4bc 1.5px, #e3e6ea 1.5px, #e3e6ea calc(var(--gp) * 2)); }
+.sk .sd .fl { background: #d5d9de; }
+.logo.mono { filter: none; }
+.sk .fl { background: repeating-linear-gradient(to top, #8f96a0 0, #8f96a0 1.5px, #d3d8de 1.5px, #d3d8de calc(var(--gp) * 2)); }
+.sk .sd .fl { background: #c3c9d0; }

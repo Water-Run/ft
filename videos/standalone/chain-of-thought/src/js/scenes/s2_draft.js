@@ -7,27 +7,26 @@ scene('draft', ({ root, s }) => {
   makeCamera(world);
   const W = makeWorld(world, HOME);
   const pulse = (ta, a = 30, d = 0.38) => (t) => a * Math.sin(Math.PI * clamp((t - ta) / d));
-  const drop = (x, y, t, z = 200, d = 0.36) => [[t, x, y, z], [t + d, x, y, 0]];
+  const drop = (x, y, t, z = 200, d = 0.36) => [[t, x, y, z], [t + d * 1.45, x, y, 0]];
   const off = (a, d = 0.5) => (t) => 1 - ramp(t, a, d);
   const tOf = (c, w, e) => T(c, w) + (e || 0);
 
-  // ── 底纸：这道题 ──
-  const tPaper0 = T('b1', '纸') - 0.75;
-  const Z0 = W.sheet({ in: [s.start + 0.25, 'r', 1.1], out: [T('b3', '打草稿') - 0.55, 'l', 1.0] });
-  const chap = chapterSheet(W, s, '02', '草稿', T('b1') - 1.0);
-  Z0.text('25992 × 92138', 0, -30, { fs: 150, align: 'c', t0: T('b1') - 0.9, off: off(tPaper0 + 0.55, 0.3) });
+  // 章名一直留到说出「纸」，草稿纸递上来
+  const chap = chapterSheet(W, s, '02', '草稿', T('b1', '纸') - 0.75);
 
   // ── 人的草稿纸：从下面递上来 ──
   const tPaper = T('b1', '纸') - 0.75;
   const A = W.sheet({ w: 1500, h: 900, y: 10, in: [tPaper, 'b', 1.0], out: [T('b3', '打草稿') - 0.55, 'b', 0.9] });
   const tW = T('b2', '写下来') - 0.5, tN = T('b2', '下一步') - 0.15, tJ = T('b2', '接着算') - 0.1;
-  A.text('草稿', -640, -350, { fs: 58, cls: 'g', t0: tPaper + 0.8 });
+  A.text('草稿', -640, -350, { fs: 46, cls: 'sec', t0: tPaper + 0.8 });
   A.text('25992 × 92138', 640, -350, { fs: 58, cls: 'g', align: 'r', t0: tPaper + 1.6 });
   A.line([[-640, -304], [640, -304]], { t0: tPaper + 0.8, d: 0.5, w: 3, color: GRAY });
   A.text('25992 × 92000 =', 60, -190, { fs: 76, align: 'r', t0: T('b2') - 0.2 });
   A.text('25992 × 138 =', 60, -70, { fs: 76, align: 'r', t0: T('b2') + 0.3 });
   A.tok('2391264000', { keys: [[tW - 0.1, 330, -190, 150], [tW + 0.25, 330, -190, 0], [tN, 330, -190, 0], [tN + 0.5, -330, 130, 0]], t0: tW - 0.1, w: 470, d: 92, h: 14, fs: 72 });
   A.tok('3586896', { keys: [[tW + 0.25, 330, -70, 150], [tW + 0.6, 330, -70, 0], [tN + 0.15, 330, -70, 0], [tN + 0.65, 240, 130, 0]], t0: tW + 0.25, w: 360, d: 92, h: 14, fs: 72 });
+  A.text('2391264000', 330, -190, { fs: 66, align: 'c', t0: tN });
+  A.text('3586896', 330, -70, { fs: 66, align: 'c', t0: tN + 0.15 });
   A.text('+', -30, 128, { fs: 72, align: 'c', t0: tN + 0.5 });
   A.line([[-640, 216], [640, 216]], { t0: tJ, d: 0.4, w: 5 });
   A.text('=  2394850896', 0, 300, { fs: 92, cls: 'b', align: 'c', t0: Tend('b2') + 0.35 });
@@ -40,22 +39,23 @@ scene('draft', ({ root, s }) => {
 
   // ── 回答：三百多块 ──
   const tR = T('b3', '打草稿') - 0.55;
-  const R = W.sheet({ w: 2100, h: 1240, in: [tR, 't', 1.0], out: [T('b5') - 0.75, 'l', 1.0] });
-  R.text('回答', -880, -520, { fs: 92, cls: 'b', t0: tR + 0.7 });
+  const R = W.sheet({ w: 2100, h: 1240, in: [tR, 'r', 1.0], out: [T('b5') - 0.75, 'l', 1.0] });
+  R.text('回答', -880, -520, { fs: 60, cls: 'sec', t0: tR + 0.7 });
   R.line([[-880, -456], [880, -456]], { t0: tR + 0.7, d: 0.6, w: 5 });
   const CW = 54, CH = 44, X0 = -30 * CW / 2, Y0 = -370, N = 321;
   const t4a = T('b3', '回答里') - 0.25, t4b = T('b4', '三百多块') + 0.1;
-  for (let i = 0; i < N; i++) { const c = i % 30, r = Math.floor(i / 30), ta = lerp(t4a, t4b, Math.pow(i / (N - 1), 1.35)); R.bar(X0 + c * CW, Y0 + r * (CH + 8), CW - 8, CH, { t0: ta, d: 0.1, color: i < 8 ? INK : '#8f8f8f', ease: linear, r: 3 }); }
+  for (let i = 0; i < N; i++) { const c = i % 30, r = Math.floor(i / 30), ta = lerp(t4a, t4b, Math.pow(i / (N - 1), 1.35)); R.bar(X0 + c * CW, Y0 + r * (CH + 8), CW - 8, CH, { t0: ta, d: 0.1, color: '#aeb4bc', ease: linear, r: 3 }); }
   for (let i = 0; i < 14; i++) sfx('key', lerp(t4a, t4b, i / 13), { g: 0.07 });
-  R.text('先打草稿', X0, Y0 - 62, { fs: 52, cls: 'g', t0: t4a - 0.1 });
-  R.count(X0 + 30 * CW - 8, Y0 + 11 * 52 + 96, { from: 0, to: 321, t0: t4a, t1: t4b, fs: 128, cls: 'b', align: 'r', suffix: ' 块' });
+  R.text('先打草稿', X0, Y0 - 56, { fs: 42, cls: 'g', t0: t4a - 0.1 });
+  R.count(X0 + 880, -530, { from: 0, to: 321, t0: t4a, t1: t4b, fs: 84, cls: 'b', align: 'r', suffix: ' 块' });
   const ANS = ['239', '485', '089', '6'], tA = T('b4', '三百多块') + 0.3;
   R.text('答案', X0, Y0 + 11 * 52 + 96, { fs: 80, t0: tA });
+  R.cursor(X0 + 290 + 3 * 226 + 122, Y0 + 11 * 52 + 96, 92, { t0: tA + 0.9 });
   ANS.forEach((a, i) => { R.tok(a, { keys: drop(X0 + 290 + i * 226, Y0 + 11 * 52 + 96, tA + i * 0.12, 120), t0: tA + i * 0.12, w: 206, d: 104, h: 18, fs: 78 }); sfx('pop', tA + i * 0.12 + 0.3, { g: 0.16 }); });
 
   // ── 过程：92138 拆开 ──
   const tP = T('b5') - 0.75;
-  const P = W.sheet({ in: [tP, 'r', 1.0], out: [T('b6') - 0.7, 'b', 1.0] });
+  const P = W.sheet({ in: [tP, 'r', 1.0], out: [T('b6') - 0.7, 'l', 1.0] });
   const Ycut = T('b5', '拆成') - 0.1, tPlus = T('b5', '加一百') - 0.25;
   P.tok('92138', { keys: [[tP, 0, -340, 0], [Ycut + 0.3, 0, -340, 0]], t0: tP + 0.5, w: 390, d: 118, h: 26, fs: 112, off: off(Ycut + 0.3, 0.05) });
   const pR = [[-1, '92000'], [1, '138']];
@@ -84,7 +84,7 @@ scene('draft', ({ root, s }) => {
 
   // ── 接力：写成字，从下一摞底部接上 ──
   const tD = T('b6') - 0.7;
-  const D = W.sheet({ w: 5200, h: 1400, x: 1100, y: -40, in: [tD, 'b', 1.0], out: [T('b12') - 0.85, 'b', 1.0] });
+  const D = W.sheet({ w: 5200, h: 1400, x: 1100, y: -40, in: [tD, 'r', 1.0], out: [T('b12') - 0.85, 'l', 1.0] });
   const NS = 9, GAP = 400, SX = (i) => -1500 + i * GAP, SY = -60, RW = 270, RD = 180, LAY = 56, SEP = 7, SL = 205;
   const H = LAY * SEP, Wr = T('b6', '写成字'), Rd = T('b7', '读到') - 0.1, Up = T('b7', '往上') - 0.1;
   const t8 = T('b8'), t8a = T('b8', '很多趟') - 0.3, t8b = T('b8', '接起来') + 0.1;
@@ -98,8 +98,7 @@ scene('draft', ({ root, s }) => {
   ];
   for (let i = 4; i < NS; i++) { const a = lerp(tB + 0.15, tBe + 2.6, (i - 4) / (NS - 4)); span.push([a, a + 0.72]); }
   const ST = span.map((sp, i) => {
-    const R2 = D.stack(SX(i), SY, { w: RW, d: RD, n: LAY, gap: SEP, rise: (t) => ramp(t, sp[0] - 0.5, 0.5, ease.out3), fill: (t) => { const f0 = ramp(t, sp[0], sp[1] - sp[0], linear); if (i >= 4) return f0; return Math.max(f0 * (1 - ramp(t, sp[1] + 0.55, 0.55)), ramp(t, tB - 0.2 + i * 0.14, 0.55, linear)); } });
-    R2.marks(60 + i, 14); sfx('riser', sp[0] - 0.4, { g: 0.05 }); return R2;
+    const R2 = D.stack(SX(i), SY, { w: RW, d: RD, n: LAY, gap: SEP, rise: (t) => ramp(t, sp[0] - 0.5, 0.5, ease.out3), fill: (t) => { const f0 = ramp(t, sp[0], sp[1] - sp[0], linear); if (i >= 4) return f0; return Math.max(f0 * (1 - ramp(t, sp[1] + 0.55, 0.55)), ramp(t, tB - 0.2 + i * 0.14, 0.55, linear)); } }); sfx('riser', sp[0] - 0.4, { g: 0.05 }); return R2;
   });
   const fr0 = SY + RD / 2;
   // 中间结果：从顶上落到纸上，滑到下一摞底部
@@ -109,7 +108,7 @@ scene('draft', ({ root, s }) => {
   const tH = [Rd, t8 - 0.55, t8a + 0.35];
   CHIP.forEach((c, i) => {
     const ta = WRAP[i] - 0.05;
-    D.tok(c, { keys: chipKey(i, ta, tH[i]), t0: ta - 0.1, fadeIn: 0.12, w: 300, d: 98, h: 16, fs: 58, off: off(tH[i] + 0.56, 0.2) });
+    D.tok(c, { keys: chipKey(i, ta, tH[i]), t0: ta - 0.1, fadeIn: 0.12, w: 370, d: 98, h: 16, fs: 58, off: off(tH[i] + 0.56, 0.2) });
     D.text(c, (SX(i) + SX(i + 1)) / 2 - 20 - 150, SL + 92, { fs: 44, cls: 'g', t0: tH[i] + 0.3, off: off(tB - 0.5, 0.45) });
     sfx('pop', ta + 0.7, { g: 0.22 }); sfx('whoosh', tH[i], { g: 0.08 });
   });
@@ -123,12 +122,12 @@ scene('draft', ({ root, s }) => {
   }
   // 量一量连起来有多长
   const tLn = tB + 0.2;
-  D.arrow([[SX(0) - RW / 2, SL + 210], [SX(NS - 1) + RW / 2 + 40, SL + 210]], { t0: tLn, d: tBe + 3.2 - tLn, w: 14, head: 56, color: INK, ease: linear });
-  D.text('写下的中间步骤越多，连着算下去的就越长', SX(0) + 1600, SL + 370, { fs: 172, cls: 'b', align: 'c', t0: tBe - 0.45, d: 0.5 });
+  D.arrow([[SX(0) - RW / 2, SL + 210], [SX(NS - 1) + RW / 2 + 40, SL + 210]], { t0: tLn, d: tBe + 3.2 - tLn, w: 14, head: 56, color: INK, ease: linear, off: off(T('b12') - 1.2, 0.3) });
+  D.text('写下的中间步骤越多，连着算下去的就越长', SX(0) + 1600, SL + 370, { fs: 172, cls: 'b', align: 'c', t0: tBe - 0.45, d: 0.5, off: off(T('b12') - 1.2, 0.3) });
 
   // ── 一百道题 ──
   const tG = T('b12') - 0.85;
-  const G = W.sheet({ in: [tG, 'l', 1.0], out: [T('b9') - 0.75, 'r', 1.0], h: 1100 });
+  const G = W.sheet({ in: [tG, 'r', 1.0], out: [T('b9') - 0.75, 'l', 1.0], h: 1100 });
   const TW = 32, PW = 38, TH = 62, RY0 = -150, RGAP = 80, Bx = [-760, 60], DIG = ['三位', '四位', '五位', '六位', '七位'];
   const D1 = [20, 16, 3, 0, 0], D2 = [20, 20, 20, 20, 19];
   const tL0 = T('b12', '三位') - 0.3, tL1 = T('b12', '七位') + 0.35;
@@ -137,7 +136,7 @@ scene('draft', ({ root, s }) => {
   const grid = (bx, tGrey, dur, list, ta, tb) => {
     for (let r = 0; r < 5; r++) for (let c = 0; c < 20; c++) {
       const a = tGrey + (r * 20 + c) / 100 * dur;
-      G.bar(bx + c * PW, RY0 + r * RGAP, TW, TH, { t0: a, d: 0.08, color: '#dedede', ease: linear, r: 3 });
+      G.bar(bx + c * PW, RY0 + r * RGAP, TW, TH, { t0: a, d: 0.08, color: '#e3e6ea', ease: linear, r: 3 });
       if (c < list[r]) { const idx = list.slice(0, r).reduce((x, y) => x + y, 0) + c, n_ = list.reduce((x, y) => x + y, 0); G.bar(bx + c * PW, RY0 + r * RGAP, TW, TH, { t0: lerp(ta, tb, idx / Math.max(1, n_ - 1)), d: 0.08, color: INK, ease: linear, r: 3 }); }
     }
   };
@@ -155,7 +154,7 @@ scene('draft', ({ root, s }) => {
 
   // ── 写点别的：一串点 ──
   const tH0 = T('b9') - 0.75;
-  const Q = W.sheet({ in: [tH0, 't', 1.0], out: [T('b11') - 0.7, 'l', 1.0] });
+  const Q = W.sheet({ in: [tH0, 'r', 1.0], out: [T('b14') - 0.8, 'l', 1.0] });
   Q.text('多写点别的，行不行？', 0, 0, { fs: 138, cls: 'b', align: 'c', t0: T('b9') - 0.05, off: off(T('b9b') - 0.2, 0.35) });
   const LX0 = -620, LX1 = 620, tAl = T('b9b', '谷歌') - 0.1, tDot = T('b9b', '一串点') - 0.1, tSame = T('b9b', '一样长') - 0.15;
   Q.text('谷歌，2022', 0, -360, { fs: 64, cls: 'g', align: 'c', t0: tAl });
@@ -169,39 +168,37 @@ scene('draft', ({ root, s }) => {
   Q.line([[LX0, 208], [LX1, 208]], { t0: tSame + 0.25, d: 0.5, color: RED, w: 5 });
   Q.text('一样长', 0, 262, { fs: 70, cls: 'e', align: 'c', t0: tSame + 0.35, off: off(T('b10') - 0.2) });
   const tEq = T('b10') + 0.05;
-  Q.bar(LX0, 300, 760, 54, { t0: tEq + 0.1, d: 0.8, color: '#9b9b9b' });
-  Q.bar(LX0, 380, 770, 54, { t0: tEq + 0.1, d: 0.8, color: INK });
-  Q.text('直接回答', LX0 + 800, 300, { fs: 54, cls: 'g', t0: tEq + 0.7 });
-  Q.text('先输出一串点', LX0 + 800, 380, { fs: 54, t0: tEq + 0.7 });
+  Q.text('正确率（示意）', LX0, 244, { fs: 50, cls: 'g', t0: tEq + 0.1, off: off(T('b11') - 0.3, 0.4) });
+  Q.bar(LX0, 300, 760, 54, { t0: tEq + 0.1, d: 0.8, color: '#b4bac2', off: off(T('b11') - 0.3, 0.4) });
+  Q.bar(LX0, 380, 770, 54, { t0: tEq + 0.1, d: 0.8, color: INK, off: off(T('b11') - 0.3, 0.4) });
+  Q.text('直接回答', LX0 + 800, 300, { fs: 54, cls: 'g', t0: tEq + 0.7, off: off(T('b11') - 0.3, 0.4) });
+  Q.text('先输出一串点', LX0 + 800, 380, { fs: 54, t0: tEq + 0.7, off: off(T('b11') - 0.3, 0.4) });
 
-  // ── 没东西可接 ──
-  const tE = T('b11') - 0.7;
-  const E = W.sheet({ in: [tE, 'r', 1.0], out: [T('b14') - 0.8, 't', 1.0] });
-  const EX = [-420, 420], EY = -60, ER = 340, EH = 52 * 7;
-  const E0 = E.stack(EX[0], EY, { w: ER, d: 190, n: 52, gap: 7, rise: (t) => ramp(t, tE + 0.4, 0.6, ease.out3), fill: (t) => ramp(t, tE + 0.8, 0.9, linear) }); E0.marks(71, 16);
-  const E1 = E.stack(EX[1], EY, { w: ER, d: 190, n: 52, gap: 7, rise: (t) => ramp(t, tE + 0.4, 0.6, ease.out3) });
+  // ── 同一张纸：全是点，下一趟没东西可接 ──
   const tAl2 = T('b11', '全是点') - 0.3, tNo2 = T('b11', '没东西可接') - 0.25;
-  E.tok('. . . . . .', { keys: [[tAl2, EX[0], EY + 200, 0], [tNo2 - 0.25, EX[0], EY + 200, 0], [tNo2 + 0.5, EX[1] - 30, EY + 142, 0]], t0: tAl2, w: 420, d: 110, h: 16, fs: 90, off: off(tNo2 + 0.55, 0.2) });
-  E.text('写的全是点', EX[0], EY + 330, { fs: 70, align: 'c', t0: tAl2 + 0.1 });
-  E.text('没有中间结果', EX[0], EY + 420, { fs: 76, cls: 'b', align: 'c', t0: T('b11', '中间结果') - 0.15 });
-  E.text('下一趟没东西可接', EX[1], EY + 330, { fs: 86, cls: 'e', align: 'c', t0: tNo2 + 0.45 });
-  E.cross(EX[1], EY + 145, 34, { t0: tNo2 + 0.55 });
-  sfx('error', tNo2 + 0.55, { g: 0.14 });
+  Q.text('写的全是点，没有中间结果', LX0 + 24, 300, { fs: 62, t0: tAl2 + 0.1 });
+  Q.tok('. . . . . .', { keys: drop(-330, 396, tAl2 + 0.1, 150), t0: tAl2 + 0.1, w: 480, d: 104, h: 16, fs: 76 });
+  Q.tok('下一趟', { keys: drop(330, 396, T('b11', '中间结果') + 0.2, 150), t0: T('b11', '中间结果') + 0.2, w: 280, d: 104, h: 16, fs: 66 });
+  Q.arrow([[-70, 396], [170, 396]], { t0: tNo2 - 0.1, d: 0.5, w: 7, color: RED, head: 26 });
+  Q.cross(40, 396, 34, { t0: tNo2 + 0.45 });
+  Q.text('没东西可接', 500, 396, { fs: 70, cls: 'e', t0: tNo2 + 0.55 });
+  sfx('error', tNo2 + 0.45, { g: 0.14 });
 
   // ── 把过程挪到答案后面 ──
   const tI = T('b14') - 0.8;
-  const I = W.sheet({ in: [tI, 'b', 1.0], out: [T('b16') - 0.8, 'r', 1.0] });
+  const I = W.sheet({ in: [tI, 'r', 1.0], out: [T('b16') - 0.8, 'l', 1.0] });
   const tSw = T('b14', '挪到') - 0.1, xP = [-210, 240], xAl = [510, -520];
   I.tok('过程', { keys: [[tSw, xP[0], -240, 0], [tSw + 0.8, xP[1], -240, 0]], t0: tI + 0.7, w: 780, d: 130, h: 26, fs: 96, off: off(T('b15', '答案写下') - 0.25, 0.3) });
   I.tok('答案', { keys: [[tSw, xAl[0], -240, 0], [tSw + 0.4, 150, -240, 280], [tSw + 0.8, xAl[1], -240, 0]], t0: tI + 0.7, w: 300, d: 130, h: 26, fs: 96 });
   sfx('whoosh', tSw, { g: 0.12 }); sfx('pop', tSw + 0.8, { g: 0.22 });
   // 一百道的结果
+  I.text('一百道里对了几道', 0, -70, { fs: 56, cls: 'g', align: 'c', t0: T('b14b') - 0.15, off: off(T('b15') - 0.15) });
   const tB14 = T('b14b') - 0.15, BX = -290, BS = 11, Bo = off(T('b15') - 0.15);
-  [['只报答案', 39, '#9b9b9b', 'g'], ['先写过程', 99, '#9b9b9b', 'g'], ['过程放在答案后面', 36, INK, 'b']].forEach(([lb_, v, c, cl], j) => {
+  [['只报答案', 39, '#b4bac2', 'g'], ['先写过程', 99, '#b4bac2', 'g'], ['过程放在答案后面', 36, INK, 'b']].forEach(([lb_, v, c, cl], j) => {
     const y = 0 + j * 112, ta = j === 2 ? T('b14b', '只对') - 0.15 : tB14 + j * 0.3, d = j === 2 ? 0.9 : 0.55;
     I.text(lb_, BX - 34, y, { fs: j === 2 ? 66 : 58, cls: cl, align: 'r', t0: ta - 0.1, off: Bo });
     I.bar(BX, y, v * BS, 66, { t0: ta, d, color: c, off: Bo });
-    I.count(BX + v * BS + 24, y, { from: 0, to: v, t0: ta, t1: ta + d, fs: j === 2 ? 92 : 70, cls: cl, off: Bo });
+    I.count(BX + v * BS + 24, y, { follow: (t) => [-(1 - ramp(t, ta, d, ease.out3)) * v * BS, 0], from: 0, to: v, t0: ta, t1: ta + d, fs: j === 2 ? 92 : 70, cls: cl, off: Bo });
   });
   // 答案写下的时候，后面的过程还没写
   const tGh = T('b15', '答案写下') - 0.15, tNl = T('b15', '接不上') - 0.25;
@@ -234,16 +231,14 @@ scene('draft', ({ root, s }) => {
   const stk = (i) => ST[i].box;
   const shPair = fitCam([stk(0), stk(1), D.p(SX(0) - 150, SL + 240), D.p(SX(1) + 180, SL + 250)], { pitch: 38, cz: D.Z + H * 0.3, kmax: 1.18 });
   const shFour = fitCam([stk(0), stk(3), D.p(SX(0) - 150, SL + 230), D.p(SX(3) + 170, SL + 260)], { pitch: 36, cz: D.Z + H * 0.28 });
-  const shAll = fitCam([stk(0), stk(NS - 1), D.p(SX(0) - 150, SL + 450), D.p(SX(NS - 1) + 220, SL + 450)], { pitch: 30, cz: D.Z + H * 0.2 });
-  const shStack = fitCam([E0.box, E1.box, E.p(EX[0] - 300, EY + 470), E.p(EX[1] + 300, EY + 470)], { pitch: 30, cz: E.Z + EH * 0.25, kmax: 1.1 });
+  const shAll = fitCam([stk(0), stk(NS - 1), D.p(SX(0) - 150, SL + 620), D.p(SX(NS - 1) + 220, SL + 620)], { pitch: 30, cz: D.Z + H * 0.2 });
   W.cam([
-    [s.start, chap.home(), 0.01],
-    [s.start + 1.15, chap.home({ k: 1.07 }), Math.min(2.9, T('b1') - 1.0 - s.start - 1.15), linear],
-    [T('b1') - 1.0, Z0.home({ k: 1.0 }), 1.0],
+    [s.start + 0.25, chap.home(), 1.35],
+    [s.start + 1.7, chap.home({ k: 1.05 }), Math.min(2.6, tPaper - s.start - 1.7), linear],
     [tPaper, A.home({ pitch: 18, cy: 20, k: 1.02 }), 1.0],
     [tR, R.home({ pitch: 22, cx: X0 + 340, cy: Y0 + 60, k: 1.5 }), 1.0],
     [t4a + 0.8, R.home({ pitch: 12, cy: 10, k: 0.86 }), Math.max(1.6, t4b - t4a), smooth],
-    [tP, P.home({ pitch: 14, cy: -40, k: 1.0 }), 1.0],
+    [tP, P.home({ cx: -145, cy: -320, pitch: 14, k: 1.25 }), 1.0],
     [T('b5b') - 0.3, P.home({ pitch: 8, cy: 20, k: 1.0 }), 0.9],
     [tD, shPair, 1.1],
     [t8 - 0.5, shFour, 1.4],
@@ -252,11 +247,12 @@ scene('draft', ({ root, s }) => {
     [b2a - 0.75, G.home({ pitch: 14, cy: -30, k: 0.97 }), 1.0],
     [tH0, Q.home({ k: 1.02 }), 1.0],
     [T('b9b') - 0.1, Q.home({ pitch: 14, cy: 0 }), 0.9],
-    [tE, shStack, 1.0],
+    [T('b11') - 0.3, Q.home({ pitch: 10, cy: 90, k: 1.02 }), 1.0],
     [tI, I.home({ pitch: 18, cy: -70, k: 1.0 }), 1.0],
     [T('b15') - 0.35, I.home({ pitch: 12, cy: -40, k: 1.05 }), 0.9],
     [tJ0, J.home({ pitch: 12, cy: -60, k: 1.0 }), 1.0],
     [T('b16b') - 0.1, J.home({ pitch: 4, cy: 0, k: 0.98 }), 0.9],
+    [s.end - 0.95, HOME, 0.9],
   ]);
-  [tR, tP, tD, tG, tH0, tE, tI, tJ0, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
+  [tR, tP, tD, tG, tH0, tI, tJ0, s.end - 0.95].forEach((a) => sfx('whoosh', a, { g: 0.14 }));
 });
