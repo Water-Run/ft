@@ -5,7 +5,7 @@ scene('draft', ({ root, s, c0 }) => {
   makeCamera(world);                               // 引擎镜头不动；立体镜头由 makeWorld 完成
   const W = makeWorld(world, { cx: 0, cy: 0, pitch: 0, yaw: 0, k: 1 });
   const S = W.stage;
-  const NP = 48, GAP = 10, H = NP * GAP, BW = 150, BD = 100;
+  const NP = 64, GAP = 7.5, H = NP * GAP, BW = 150, BD = 100;   // 64 张一摞（一张一层），高 480
   const mk = chapterMark(W, s, '02', '草稿', -1500, 900, T('b1') + 0.6);
 
   // ── 人的草稿：印在纸上，一行一行写出来；每行的结果，下一行接着用 ──

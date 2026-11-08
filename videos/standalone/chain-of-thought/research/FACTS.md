@@ -28,6 +28,7 @@
 | S12 | DeepSeek-AI, *DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning*, arXiv:2501.12948（`b191b0a365a64b4a`） | v1 2025-01-22；核对 v2（2026-01-04） |
 | S13 | Sutton & Barto, *Reinforcement Learning: An Introduction*, 第 2 版，`http://incompleteideas.net/book/RLbook2020.pdf`（`2dd0d71d9ee883fb`） | 第 1 章第 1 页 |
 | S14 | Nye et al., *Show Your Work: Scratchpads for Intermediate Computation with Language Models*, arXiv:2112.00114（`4b32d3fed294bac2`） | v1 2021-11-30 |
+| S15 | Qwen 团队，Hugging Face 模型仓库 `Qwen/Qwen3.8-27B` 的 `config.json`（`191e0af232104ed8`）与模型卡 `README.md`（`7c24f46af1e0024e`），`https://huggingface.co/Qwen/Qwen3.8-27B/raw/main/<文件>` | 2026-11-08 下载 main 分支 |
 
 OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页抓取工具均返回 403，没有读到原文；o1 的事实只取 S11。
 
@@ -53,7 +54,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 ## 逐章
 
-句号按第 6c 稿（2026-11-08）；配音前因字幕宽度与每句时长拆开的句子加后缀 b（如 o11b），与原句同一条依据。第 6 稿的核心主旨：模型每写一块字只有固定的一趟计算，层数造好就定了；要算得远，只能把中间步骤写下来，一趟接一趟；它能想多远并没有定死，要看回答之前写下了多少步。起承转合：起（开场两次回答与一个问题）、承（01 一块字的工夫：来不及算；02 草稿：写下的步越多，能连着算的步就越多）、转（03 越写越长：没人要求，它自己学会多写）、合（结尾）。第 5 稿的「03 先后」整章与开场第三次回答删去，先答再想只在 02 章末用三句带过（b14–b16）。
+句号按第 6d 稿（2026-11-08；与 6c 稿只差 a7：层数的例子按策划者意见由 GPT-3 的 96 层换成 Qwen3.8-27B 的 64 层，并因字幕宽度拆成 a7、a7b）；配音前因字幕宽度与每句时长拆开的句子加后缀 b（如 o11b），与原句同一条依据。第 6 稿的核心主旨：模型每写一块字只有固定的一趟计算，层数造好就定了；要算得远，只能把中间步骤写下来，一趟接一趟；它能想多远并没有定死，要看回答之前写下了多少步。起承转合：起（开场两次回答与一个问题）、承（01 一块字的工夫：来不及算；02 草稿：写下的步越多，能连着算的步就越多）、转（03 越写越长：没人要求，它自己学会多写）、合（结尾）。第 5 稿的「03 先后」整章与开场第三次回答删去，先答再想只在 02 章末用三句带过（b14–b16）。
 
 ### open
 
@@ -74,9 +75,9 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 |---|---|---|---|---|---|
 | a1、a2 | 一次写一小块（token）；错答案只写了四块：239、473、089、6 | L1 `n5-03` direct 的 logprobs 逐 token 列表（L3 §3），回复 token 数 4 | — | deepseek-flash 的分词 | 已核 |
 | a3–a5 | 模型里是一层叠一层的计算；写一块之前读入题目，从最底层算到最顶层，才定下这一块（第一块是 239） | S3 第 3 节：由 N 层相同的层堆叠；第 3.2.3 节「all of the keys, values and queries come from the same place, in this case, the output of the previous layer」；解码「one element at a time … auto-regressive」 | L3 §3（第一块 239） | 解码器式 Transformer | 已核 |
-| a3b | 画面上每一片代表一层 | 画面约定，不是事实陈述 | — | — | 画面约定 |
+| a3b | 画面上每一片代表一层 | 画面约定，不是事实陈述；纸摞画 64 张，与 a7b 的 64 层一致 | — | — | 画面约定 |
 | a6 | 从底到顶算一遍，「我们叫它一趟」 | 本片的叫法，指产出一个 token 的一次逐层计算（S3） | — | — | 用语，不是事实陈述 |
-| a7、a8、a8b | 层数在模型造好时就定了，GPT-3 是 96 层；下一块不论难易，都只有这一趟 | S4 表 2.1：GPT-3 175B，nlayers 96；层数是结构参数，生成时不随内容变化（S3 第 3 节；S7 引言「the depth is a fixed number that depends on the architecture」） | S6 摘要「standard transformers that answer immediately after reading their input」 | GPT-3 175B 作例子；本片实验的 deepseek-flash 层数未公开，画面只标 GPT-3 | 已核 |
+| a7、a7b、a8、a8b | 层数在模型造好时就定了，比如 Qwen3.8-27B 是 64 层；下一块不论难易，都只有这一趟 | S15：`config.json` 的 `text_config.num_hidden_layers` 为 64；模型卡「Number of Layers: 64」「Hidden Layout: 16 × (3 × (Gated DeltaNet → FFN) → 1 × (Gated Attention → FFN))」；层数是结构参数，生成时不随内容变化（S3 第 3 节；S7 引言「the depth is a fixed number that depends on the architecture」） | S4 表 2.1（GPT-3 175B，nlayers 96，第 6c 稿以前用的例子）；S6 摘要「standard transformers that answer immediately after reading their input」 | 例子按策划者意见换成新一点的模型；64 层里 48 层是 Gated DeltaNet（线性注意力）、16 层是 Gated Attention，`mtp_num_hidden_layers` 为 1 的多 token 预测模块不在 64 层之内；本片实验的 deepseek-flash 层数未公开，画面只标 Qwen3.8-27B | 2026-11-08 已核 |
 | a9 | 一趟里，算出来的东西只往上走 | S3 第 3.2.3 节：每层的输入是上一层的输出；解码器自注意力只看当前及之前的位置，「prevent leftward information flow」 | S7 引言：不写中间步骤时串行计算的步数以层数为上限 | — | 已核；后面的位置在每一层读得到前面位置同一层的结果，但不会把高层的结果送回低层 |
 | a10、a10b | 顶上得出的结果，要让下一趟从底下接着用，只能先写成字 | S3 第 3 节「consuming the previously generated symbols as additional input when generating the next」 | S6 摘要「generate and condition on a sequence of intermediate tokens」；S7 引言「with T intermediate steps, the number of serial computations possible is boosted to T」 | 解码器式 Transformer | 已核 |
 | a11 | 只许报答案，能这样接力的，只有写这四块的那几趟 | L3 §3（direct 回复 4 个 token）；a10 的依据 | S7 引言 | — | 已核；只说串行接力的趟数，不说「全部计算」 |
@@ -118,7 +119,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| e3 | 它的层数，在造好的那一刻就定了 | a7 的依据（S4 表 2.1；层数是模型结构的一部分，训练与使用时不变） | S3 | — | 已核 |
+| e3 | 它的层数，在造好的那一刻就定了 | a7 的依据（S15；层数是模型结构的一部分，训练与使用时不变） | S3、S4 | — | 已核 |
 | e4、e5 | 它能想多远，并没有定死，要看回答之前写下了多少中间步骤 | 对 a10、b6–b8b、b9–b11 的概括：串行计算的上限随写下的中间步骤增长（S7），只写点不算（S1）；所以说「多少中间步骤」，不说「多少字」 | r12（思考长度随位数增长，L2） | — | 推断 |
 | e6 | 对它来说，先思考，就是先写下来 | 对全片的概括（b3–b8b、r13） | — | — | 推断 |
 
@@ -135,7 +136,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 - 第 1 稿用过、第 2 稿删去的：S8 的「示范题答案都排在 A」实验（2023 年；模型偏爱 A，推理里几乎从不提，并为错选项写出像样的理由；GPT-3.5、Claude 1.0，BIG-Bench Hard），现在只作 s11 的独立印证；S5–S7 的理论结果只作 c5–c7 的依据；R1-Zero 在 AIME 2024 上 pass@1 从 15.6% 升到 77.9%（S12 v2 第 2.3 节；v1 曾写 71.0%）。第 3 稿再删去「强化学习」的定义（S13 第 1 章，原 r7），旁白只说「答对了，就给奖励」。第 4 稿删去「光多写字没用」这种把一组对照说成普遍规律的说法，改为让实验自己说话（c20–c22）。
 
 - 第 5 稿删去第 4 稿的第 05 章「说出来的理由」：S9（Anthropic 2025，提示实验：Claude 3.7 Sonnet 25%、DeepSeek R1 39%，第 3 节）。S10（1977 年丝袜实验）在第 5d 稿作为 s9 的类比回到片中，只取一句。原因是策划者要求主线明确、「思想是核心. 简单, 有效.」，这一章是另一条线。S8 只留作 s8 的独立印证。同时删去 R1-Zero 训练中途的「aha moment」原句（S12 表 2）与 S1 的 17.9% → 56.9%（表 2，PaLM 540B）。
-- 观众审读提出、片中没有展开的限定：后面的位置在每一层都读得到前面位置同一层的中间结果（KV 缓存），所以「一趟」不是把全文从头重算；片中要点只是高层的结果回不到低层，除非写成字（a9、a10）。专门训练过的填充符号在部分任务上有用的研究不在本片出处之列，b11 只说本片引用的实验。
+- 观众审读提出、片中没有展开的限定：后面的位置在每一层都读得到前面位置同一层的中间结果（KV 缓存），所以「一趟」不是把全文从头重算；片中要点只是高层的结果回不到低层，除非写成字（a9、a10）。a7b 的例子 Qwen3.8-27B 是混合结构：Gated DeltaNet 层在同一层里把状态往后面的位置传，作用与 KV 缓存相当，也只在同一层内；按模型卡的 Hidden Layout，各层依次堆叠，所以「高层的结果回不到低层」同样成立（这是由结构推断，不是模型卡原话）。专门训练过的填充符号在部分任务上有用的研究不在本片出处之列，b11 只说本片引用的实验。
 
 ## 复核
 

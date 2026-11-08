@@ -1,7 +1,7 @@
 // 01 一块字的工夫：一块 token 是怎样写出来的。
-// 纸面上一行：题目、四个空位。每个空位后面立起一摞纸（一张代表一层；画成 48 张，标注 GPT-3 的 96 层），
+// 纸面上一行：题目、四个空位。每个空位后面立起一摞纸（一张代表一层；Qwen3.8-27B 是 64 层，就画 64 张），
 // 从下往上一张张算到顶，算到顶得出的那一块落进空位——这就是一趟。一趟里的结果只往上走；要交给下一趟，只能写成字落回纸面。
-// 事实：L3 §3（错答案四块 239|473|089|6）；S3 §3（逐层堆叠、每层取上一层的输出、自回归、只看前面）；S4 表 2.1（GPT-3 96 层）；
+// 事实：L3 §3（错答案四块 239|473|089|6）；S3 §3（逐层堆叠、每层取上一层的输出、自回归、只看前面）；S15（Qwen3.8-27B 64 层）；
 // S7（不写中间步骤时，一步接一步的计算受层数限制）；S5（题目变长，层数固定的模型直接作答有上限）；乘法的进位从低位往高位传（数学）。
 scene('pass', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
@@ -11,7 +11,7 @@ scene('pass', ({ root, s, c0 }) => {
   const XS = [-20, 160, 340, 520];                 // 四个空位的 x
   const YB = 0, YR = -150;                         // 方块那一行、纸摞那一行的 y
   const BW = 150, BD = 100;                        // 方块与纸摞的占地
-  const NP = 48, GAP = 10, H = NP * GAP;           // 画 48 张，间距 10，高 480
+  const NP = 64, GAP = 7.5, H = NP * GAP;          // 画 64 张（一张一层），间距 7.5，高 480
   const QX = -420, QW = 640;                       // 题目那一条
 
   // ── 章名印在纸上：镜头从正上方开始，倾下来，滑到那一行 ──
@@ -97,13 +97,13 @@ scene('pass', ({ root, s, c0 }) => {
     });
   });
 
-  // ── 「一趟」：第一摞右边一条带端点的竖线；「96 层」：刻度与标注 ──
+  // ── 「一趟」：第一摞右边一条带端点的竖线；「64 层」：刻度与标注 ──
   const dimX = XS[0] + BW / 2 + 22, dimY = YR + BD / 2;
   const dims = [seg(S, ''), seg(S, ''), seg(S, '')];
   W.up((t) => dims[0].set([dimX, dimY, 0], [dimX, dimY, Math.max(1, H * ramp(t, T('a6', '一趟') - 0.6, 1.0))]));   // 「一趟」：括线从下往上画出来 dims[1].set([dimX - 10, dimY, 0], [dimX + 10, dimY, 0]); dims[2].set([dimX - 10, dimY, H], [dimX + 10, dimY, H]);
   const dimOp = (t) => ramp(t, T('a6', '一趟') - 0.5, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4));
   dims.forEach((d) => fade(W, d.e, dimOp));
-  for (let i = 4; i < NP; i += 4) { const tk = seg(S, 'w'); tk.set([dimX, dimY, i * GAP], [dimX + 14, dimY, i * GAP]); const tt = lerp(T('a7') + 0.3, T('a7', '九十六') - 0.2, i / NP); fade(W, tk.e, (t) => ramp(t, tt, 0.25) * (1 - ramp(t, T('a8') - 0.2, 0.4))); }   // 层数：刻度一格格出现
+  for (let i = 4; i < NP; i += 4) { const tk = seg(S, 'w'); tk.set([dimX, dimY, i * GAP], [dimX + 14, dimY, i * GAP]); const tt = lerp(T('a7b') - 0.1, T('a7b', '六十四') - 0.2, i / NP); fade(W, tk.e, (t) => ramp(t, tt, 0.25) * (1 - ramp(t, T('a8') - 0.2, 0.4))); }   // 层数：刻度一格格出现
   const lb1 = W.board('<div class="lbl">一趟</div>', dimX + 16, dimY, H * 0.55, 0, -22);
   fade(W, lb1, dimOp);
   const ud = W.board('<div class="lbl g">从底到顶　↑</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 0);
@@ -112,11 +112,11 @@ scene('pass', ({ root, s, c0 }) => {
   const fx = W.board('<div class="lbl g">层数固定</div>', XS[0] - BW / 2 - 30, YR, H * 0.5, 0, 70);
   fx.firstElementChild.style.transform = 'translateX(-100%)';
   fade(W, fx, (t) => ramp(t, T('a7', '定了') - 0.2, 0.3) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
-  const lb2 = W.board('<div class="lbl g">GPT-3：96 层</div>', dimX + 16, dimY, H * 0.55, 0, 24);
-  fade(W, lb2, (t) => ramp(t, T('a7', '九十六') - 0.3, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
+  const lb2 = W.board('<div class="lbl g">Qwen3.8-27B：64 层</div>', dimX + 16, dimY, H * 0.55, 0, 24);
+  fade(W, lb2, (t) => ramp(t, T('a7b', '六十四') - 0.3, 0.4) * (1 - ramp(t, T('a8') - 0.2, 0.4)));
 
-  // ── 「画面上每一片，代表一层」：第 24 片的纸边描深，右边标「一层」 ──
-  const LZ = 24 * GAP, lyOn = (t) => ramp(t, T('a3b', '每一片') - 0.2, 0.4) * (1 - ramp(t, T('a4', '最底下') - 0.4, 0.4));
+  // ── 「画面上每一片，代表一层」：第 32 片的纸边描深，右边标「一层」 ──
+  const LZ = 32 * GAP, lyOn = (t) => ramp(t, T('a3b', '每一片') - 0.2, 0.4) * (1 - ramp(t, T('a4', '最底下') - 0.4, 0.4));
   const lyE = seg(S, 'w'); lyE.set([XS[0] - BW / 2, YR + BD / 2 + 1, LZ], [XS[0] + BW / 2, YR + BD / 2 + 1, LZ]); fade(W, lyE.e, lyOn);
   const lyL = seg(S, ''); lyL.set([XS[0] + BW / 2 + 4, YR + BD / 2 + 1, LZ], [XS[0] + BW / 2 + 60, YR + BD / 2 + 1, LZ]); fade(W, lyL.e, lyOn);
   const layer = W.board('<div class="lbl">一层</div>', XS[0] + BW / 2 + 70, YR + BD / 2, LZ, 0, -30); fade(W, layer, lyOn);

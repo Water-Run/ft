@@ -125,9 +125,9 @@ body { font-family: "Serif SC", serif; color: var(--ink); }
 .blk.cube .tp { background: #fff; box-shadow: inset 0 0 0 1.5px #1c1c1c; }
 .blk.cube .fr, .blk.cube .sd, .blk.cube .bk { background: #e9e9e9; box-shadow: inset 0 0 0 1px #9a9a9a; }
 .blk.cube.no .tp { background: #f4f4f4; box-shadow: inset 0 0 0 1px #c8c8c8; }
-/* 和摞起来的纸一样：每 10px 一道淡纸边，每趟之间一道深色接缝 */
-.col.tall .fr, .col.tall .bk { background: repeating-linear-gradient(to top, #2e2e2e 0, #2e2e2e 3px, transparent 3px, transparent var(--sg)), repeating-linear-gradient(to top, rgba(28, 28, 28, .26) 0, rgba(28, 28, 28, .26) 1.5px, #fbfbfb 1.5px, #fbfbfb 10px); }
-.col.tall .sd { background: repeating-linear-gradient(to top, #262626 0, #262626 3px, transparent 3px, transparent var(--sg)), repeating-linear-gradient(to top, rgba(28, 28, 28, .2) 0, rgba(28, 28, 28, .2) 1.5px, #ececec 1.5px, #ececec 10px); }
+/* 和摞起来的纸一样：每 7.5px 一道淡纸边（一层），每趟之间一道深色接缝 */
+.col.tall .fr, .col.tall .bk { background: repeating-linear-gradient(to top, #2e2e2e 0, #2e2e2e 3px, transparent 3px, transparent var(--sg)), repeating-linear-gradient(to top, rgba(28, 28, 28, .26) 0, rgba(28, 28, 28, .26) 1.5px, #fbfbfb 1.5px, #fbfbfb 7.5px); }
+.col.tall .sd { background: repeating-linear-gradient(to top, #262626 0, #262626 3px, transparent 3px, transparent var(--sg)), repeating-linear-gradient(to top, rgba(28, 28, 28, .2) 0, rgba(28, 28, 28, .2) 1.5px, #ececec 1.5px, #ececec 7.5px); }
 .lbl.xl { font-size: 104px; line-height: 1.3; }
 .box3 { box-shadow: inset 0 0 0 3px #1c1c1c; border-radius: 6px; }
 .box3.g { box-shadow: inset 0 0 0 2.5px #9a9a9a; }

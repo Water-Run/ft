@@ -11,7 +11,7 @@ scene('end', ({ root, s }) => {
   const W = makeWorld(world, { cx: 0, cy: 0, pitch: 0, yaw: 0, k: 1 });
   const S = W.stage;
   const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
-  const NP = 48, GAP = 10, H = NP * GAP, SEG = H + 6;
+  const NP = 64, GAP = 7.5, H = NP * GAP, SEG = H + 6;   // 64 张一摞（一张一层），高 480
   const fadeOut = (t) => 1 - ramp(t, T('eT') - 1.2, 0.5);
 
   // ── e3：一摞层，层数造好就定了 ──
