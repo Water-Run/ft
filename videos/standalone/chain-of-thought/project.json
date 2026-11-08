@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "第 8 稿与 Gemini 第 3 轮（out/gemini-prompt-r3.md）；定稿后交策划者确认，再配音、改画面、出第 3 轮预览",
+  "next": "策划者确认第 9 稿后：配音、改画面（96 张纸摞、01 章后半与 02、03 章新句）、出第 3 轮预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -22,6 +22,12 @@
           "视觉设计",
           "场景实现",
           "配乐"
+        ]
+      },
+      {
+        "name": "Gemini 4 Argon",
+        "roles": [
+          "文案诘问"
         ]
       }
     ],
