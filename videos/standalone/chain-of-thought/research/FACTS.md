@@ -58,7 +58,7 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 ## 逐章
 
-句号按第 9 稿（2026-11-08；第 7–9 稿按 Gemini 4 Argon 观众诘问三轮修改，改动见各行与 `review/NOTES.md`「第 7 稿」）。此前：第 6d 稿（2026-11-08；与 6c 稿只差 a7：层数的例子按策划者意见由 GPT-3 的 96 层换成 Qwen3.8-27B 的 64 层，并因字幕宽度拆成 a7、a7b）；配音前因字幕宽度与每句时长拆开的句子加后缀 b（如 o11b），与原句同一条依据。第 6 稿的核心主旨：模型每写一块字只有固定的一趟计算，层数造好就定了；要算得远，只能把中间步骤写下来，一趟接一趟；它能想多远并没有定死，要看回答之前写下了多少步。起承转合：起（开场两次回答与一个问题）、承（01 一块字的工夫：来不及算；02 草稿：写下的步越多，能连着算的步就越多）、转（03 越写越长：没人要求，它自己学会多写）、合（结尾）。第 5 稿的「03 先后」整章与开场第三次回答删去，先答再想只在 02 章末用三句带过（b14–b16）。
+句号按第 10 稿（2026-11-08；第 7–9 稿按 Gemini 4 Argon 观众诘问三轮修改，第 10 稿按策划者意见补 o1、R1 的分量并以片名收尾，改动见各行与 `review/NOTES.md`「第 7 稿」）。此前：第 6d 稿（2026-11-08；与 6c 稿只差 a7：层数的例子按策划者意见由 GPT-3 的 96 层换成 Qwen3.8-27B 的 64 层，并因字幕宽度拆成 a7、a7b）；配音前因字幕宽度与每句时长拆开的句子加后缀 b（如 o11b），与原句同一条依据。第 6 稿的核心主旨：模型每写一块字只有固定的一趟计算，层数造好就定了；要算得远，只能把中间步骤写下来，一趟接一趟；它能想多远并没有定死，要看回答之前写下了多少步。起承转合：起（开场两次回答与一个问题）、承（01 一块字的工夫：来不及算；02 草稿：写下的步越多，能连着算的步就越多）、转（03 越写越长：没人要求，它自己学会多写）、合（结尾）。第 5 稿的「03 先后」整章与开场第三次回答删去，先答再想只在 02 章末用三句带过（b14–b16）。
 
 ### open
 
@@ -113,8 +113,12 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 | r1、r1b、r1c、r2 | 谷歌那篇论文是在提问里先给几道写好步骤的例题；几个月后又有人发现，例题都不用给，只要在题目后面（答案前）加一句「Let's think step by step」，一套数学应用题的正确率从直接回答的一成左右到加了这句的四成 | S1 摘要「a few chain of thought demonstrations are provided as exemplars in prompting」；S2 arXiv v1 2022-05-24（S1 之后约 4 个月），摘要「step-by-step answer examples」（以往做法）、「by simply adding "Let's think step by step" before each answer」「without any hand-crafted few-shot examples」「GSM8K from 10.4% to 40.7%」；表 1：zero-shot 10.4、Zero-shot-CoT 40.7 | — | text-davinci-002 | 已核 |
 | r3、r4 | 那时这只是写进提问里的一句话；后来不用人提醒，被练进了模型 | S2（只改提示，不训练模型）；S11 第 1、2 节「The o1 model series is trained with large-scale reinforcement learning to reason using chain of thought」 | S12 | — | 已核 |
 | r5 | 2024 年 OpenAI 发布 o1，回答之前先写一大段思考 | S11「o1 thinks before it answers—it can produce a long chain of thought before responding」；正文署 2024-12-05，并提到此前的 o1-preview | 搜索结果与 Simon Willison 同日笔记显示 o1-preview 于 2024-09-12 发布（只作线索，片中只说 2024 年） | — | 已核（年份） |
+| r5b、r5c | 一套数学竞赛题，同是 OpenAI 的 GPT-4o 只对不到一成，o1 对了将近八成 | S12 表 8（AIME 2024，Pass@1）：GPT-4o-0513 9.3、OpenAI-o1-1217 79.2 | S12 第 2318 行附近「On math tasks, DeepSeek-R1 demonstrates performance on par with OpenAI-o1-1217」 | 数字由 DeepSeek 论文报告；o1 为 2024-12-17 版本 | 2026-11-08 已核 |
 | r6、r7b | DeepSeek R1 的一个版本（R1-Zero，2025 年 1 月公开，日期只上画面）训练时不给它看人写的解题过程，只看答没答对、格式对不对来给奖励 | S12 arXiv v1 2025-01-22；摘要「pure reinforcement learning (RL), obviating the need for human-labeled reasoning trajectories」；第 2 节奖励为准确性奖励加格式奖励（`rule = acc + format`） | arXiv API `published` 字段 | DeepSeek-R1-Zero | 已核；片中不说「只看答案」，因为还有格式奖励；「训练时」限定在强化学习阶段 |
 | r8 | 没人要求它想得更长，思考却越写越长 | S12 图 1(b) 与第 2.3 节「DeepSeek-R1-Zero exhibits a steady increase in thinking time throughout training, driven solely by intrinsic adaptation」；奖励只有准确性与格式两项，没有长度奖励 | — | R1-Zero | 已核；训练模板要求先写思考再写答案，所以说「没人要求它想得更长」，不说「没人叫它想」 |
+| r8c | 那套竞赛题，它在训练中从一成半练到了将近八成 | S12 第 2 节：「the average pass@1 score on AIME 2024 shows a significant increase, jumping from an initial 15.6% to 77.9%」（DeepSeek-R1-Zero，图 1(a)） | 同节：自一致投票后 86.7%，「significantly surpasses the average performance across all human competitors」（片中不用） | R1-Zero；arXiv v2 的数字（v1 为 71.0%） | 2026-11-08 已核 |
+| r8d | 思考里还冒出了一句「等等」，回头重想 | S12 表 2：R1-Zero 中间版本的「aha moment」，原文「Wait, wait. Wait. That's an aha moment I can flag here.」；「The model learns to rethink using an anthropomorphic tone」 | L2：19/25 的思考原文含 check 或 verify | — | 2026-11-08 已核 |
+| r8e、r8f | 2025 年 1 月，DeepSeek 公开发布了 R1；数学竞赛题上，它和 o1 差不多 | S12 arXiv v1 2025-01-22；引言「We release DeepSeek-R1 series models to the public」；表 8（AIME 2024）DeepSeek-R1 79.8、OpenAI-o1-1217 79.2；正文「On math tasks, DeepSeek-R1 demonstrates performance on par with OpenAI-o1-1217」 | — | — | 2026-11-08 已核 |
 | r8b | 今天，主流的大模型基本都带上了这种思考模式 | S16「Reasoning models use internal reasoning tokens before producing a response」，`gpt-5.5` 缺省 medium 推理强度；S17「When you use a thinking model, Gemini reasons internally before responding」「Gemini models engage in dynamic thinking by default」；S18「Claude thinks against that budget before it starts its final answer」；S19「before outputting the final answer, the model will first output a chain-of-thought reasoning」「Thinking mode is enabled by default」 | S15 模型卡（Qwen3.8 默认思考，可配置成不思考直接回答） | OpenAI、Google、Anthropic、DeepSeek、阿里四家以上 | 2026-11-08 已核；只说「带上了这种模式」，不说都默认开启、不列举型号 |
 | r9、r10 | 打开思考模式，再问开头那道题，不提醒它写过程；它自己先写了一大段思考，才报出答案，算对了 | L2 提示「计算 {a} × {b}。最后单独一行写「答案：」加最终结果。」（不要求写过程）；`n5-03`：思考 220 个 token（L3 §3，画面标出），最终答案 2394850896，正确 | — | `deepseek-reasoner`，返回 `model` 为 `deepseek-flash`，2026-11-03 | 已核；旁白不报块数，免得与 b4 的三百多块（不同模式、不同提示）相比造成误会 |
 | r11、r12、r12b | 每种位数各取前五道，二十五道全对；位数越多写得越长；三位数平均写九十来块思考，七位数五百五十块 | L2（L3 §5：25/25；平均思考 token 3 位 93.0、4 位 165.6、5 位 261.2、6 位 412.2、7 位 550.2） | — | 同上 | 已核；五档数字放画面 |
@@ -124,9 +128,9 @@ OpenAI 博文 *Learning to Reason with LLMs*（2024-09-12）用 curl 与网页�
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| e3 | 它的层数，在造好的那一刻就定了 | a7 的依据（S15；层数是模型结构的一部分，训练与使用时不变） | S3、S4 | — | 已核 |
+| e3 | 它的层数，在造好的那一刻就定了 | a7 的依据（S4；层数是模型结构的一部分，训练与使用时不变） | S3、S4 | — | 已核 |
 | e4、e5 | 它能想多远，并没有定死，要看回答之前写下了多少中间步骤 | 对 a10、b6–b8b、b9–b11 的概括：串行计算的上限随写下的中间步骤增长（S7），只写点不算（S1）；所以说「多少中间步骤」，不说「多少字」 | r12（思考长度随位数增长，L2） | — | 推断 |
-| e6 | 对它来说，先思考，就是先写下来 | 对全片的概括（b3–b8b、r13） | — | — | 推断 |
+| e6、e7 | 对它来说，思考就是写下来；先思考，再回答 | 对全片的概括（b3–b8b、r13）；e7 即片名 | — | — | 推断；e7 按策划者「最后一句话应该是 "先思考, 再回答"作为收尾」 |
 
 ## 取证中发现、没有进入成片的事实
 
