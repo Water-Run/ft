@@ -70,6 +70,9 @@ scene('open', ({ root, s }) => {
   [0, 1].forEach((i) => { const b = block(S, '', { w: 60, d: 76, h: 8, cls: 'cube no' }); place(W, b.g, (t) => ({ x: XT + 50 + i * SW, y: R1, z: 0, o: ramp(t, T('o2') + 0.2 + i * 0.12, 0.25) * (1 - ramp(t, T('o2', '二十三亿') - 0.15 + i * 0.14, 0.2)) })); });
   sfx('tick', T('o2', '二十三亿') - 0.15, { g: 0.2 });
   const mg1 = margin('只报答案', R1, T('o3') + 0.6, F[0]);
+  // 思考模式：关（两次都关着；03 章才打开）
+  const offTag = (y, ta, f) => { const e = W.board('<div class="lbl g" style="transform:translate(-100%,-50%)">思考模式：关</div>', X0 - 50, y, 0, 0, 66); fade(W, e, (t) => ramp(t, ta, 0.4) * f(t) * (1 - ramp(t, T('o16') - 0.7, 0.4))); return e; };
+  const off1 = offTag(R1, T('o3', '思考模式') - 0.2, F[0]);
   const A1 = ['239', '473', '089', '6'].map((txt, i) => {
     const b = block(S, `<span class="tx">${txt}</span>`, { w: 150, d: QD, h: 30, fs: 58, cls: i === 1 ? 'err' : '' });
     fade(W, b.top.firstChild, TX[0]);
@@ -96,7 +99,8 @@ scene('open', ({ root, s }) => {
 
   // ── 第二次：先写算式，最后写答案（原文 321 块，这里画出骨架） ──
   question(R2, T('o6') + 0.2, F[1], TX[1]);
-  const mg2 = margin('先写过程', R2, T('o6', '先把') - 0.2, F[1]);
+  const mg2 = margin('先写过程', R2, T('o6', '先写') - 0.2, F[1]);
+  const off2 = offTag(R2, T('o6', '还是关着') - 0.2, F[1]);
   const P2 = para(S, X0, R2, [
     4, '25992', '×', '92138', 2, '\n',
     4, '92138', '=', '92000', '+', '138', 3, '\n',
@@ -107,7 +111,7 @@ scene('open', ({ root, s }) => {
     3, '≈', '2,392', ',000', ',000', 4, '\n',
     '答案', '：', '239', '485', '089', '6',
   ], { fs: 42, lh: LH, maxW: MAXW, x1st: XT });
-  write(P2, T('o6', '算式') - 0.3, Tend('o6') + 0.1, F[1]);
+  write(P2, T('o6', '提问里') - 0.1, T('o7') + 0.4, F[1]);
   textFade(P2, TX[1]);
   const ans2 = P2.slice(-4);
   const ck2 = h('div', 'p3 chk2 big', S); ck2.style.transform = `translate3d(${ans2[3].x1 + 40}px, ${ans2[3].y - 26}px, 1px) rotate(40deg)`;
@@ -178,8 +182,8 @@ scene('open', ({ root, s }) => {
   const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
   const Q = (y) => B(X0 + QW / 2, y, QW, QD, 30);
   const tok = (P, f) => P.filter(f).map((k) => B(k.x, k.y, k.w, k.d, 20));
-  const sh1 = fitCam(W, [Q(R1), ...A1.map((o) => B(o.x, R1, 150, QD, 30)), [CX0, CY2 + 60, 0], [CX0 + 10 * DW + 260, CY2 + 60, 0], { el: mg1 }], { pitch: 46, yaw: -6 });
-  const sh2 = fitCam(W, [Q(R2), ...tok(P2, () => true), { el: mg2 }, [ans2[3].x1 + 90, ans2[3].y, 0]], { pitch: 38 });
+  const sh1 = fitCam(W, [Q(R1), ...A1.map((o) => B(o.x, R1, 150, QD, 30)), [CX0, CY2 + 60, 0], [CX0 + 10 * DW + 260, CY2 + 60, 0], { el: mg1 }, { el: off1 }], { pitch: 46, yaw: -6 });
+  const sh2 = fitCam(W, [Q(R2), ...tok(P2, () => true), { el: mg2 }, { el: off2 }, [ans2[3].x1 + 90, ans2[3].y, 0]], { pitch: 38 });
   const card = [...K.flatMap((r) => r.segs.map((o) => B(o.x, o.y, o.w, 120, 30))), ...K.map((r) => ({ el: r.m })), { el: g1 }, { el: g2 }, { el: g3 }, { el: qa1 }, { el: kNo }, { el: before }];
   const shCard = fitCam(W, card, { pitch: 30, yaw: -3 });
   const sh4 = fitCam(W, [Q(R1), ...A1.map((o) => B(o.x, R1, 150, QD, 30))], { pitch: 62, yaw: -10, kmax: 1.5 });

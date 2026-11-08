@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "4431ffb1ac9e5269a83d4bf1289c1deb9f1f6ec93311aa75ae794a77f907d8bc",
+      "content_sha256": "7d661e8722c40079858856aa1b92dc0b18731a11ec67ddacc43d692a885241ad",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-08T11:10:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：第 6d 稿，会话原话「层数例子可以用新一点的 比如Qwen 3.8 27B; 其它可以了」，改 a7 后回复「确认第 6 稿」"
+      "confirmed_at": "2026-11-08T12:45:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：第 10 稿，会话原话「确认第 10 稿」（此前对第 9 稿的意见「最后一句话应该是 \"先思考, 再回答\"作为收尾. o1, r1的巨大意义不够显现.」）"
     }
   }
 }

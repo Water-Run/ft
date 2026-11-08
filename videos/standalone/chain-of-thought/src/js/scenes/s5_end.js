@@ -2,7 +2,8 @@
 // e3 它的层数，在造好的那一刻就定了——一摞层，顶上一道「造好就定了」的线；
 // e4 可它能想多远，并没有定死——旁边一座塔越过这道线往上长；
 // e5 要看回答之前，它写下了多少中间步骤——前面几行字一块块写出来，每写一块，塔就高一截；
-// e6 对它来说，先思考，就是先写下来——框出写下的几行，标「先思考 ＝ 先写下来」，最后一行的答案亮起。静场，片名印在纸上。
+// e6 对它来说，思考就是写下来——框出写下的几行，标「思考 ＝ 写下来」，最后一行的答案亮起；
+// e7 先思考，再回答——镜头抬成正俯视，片名印在纸上，与这一句同时出现。
 // 镜头：e3、e4 只看一摞层和塔（塔往上长是这两句的动作）；e5 开始写字时退一次，把字收进来；片名正俯视。
 // 事实：S4、a7（层数固定）；S7（写下的中间步骤越多，能连着算下去的越长）；L3（先写过程三百多块）。
 scene('end', ({ root, s }) => {
@@ -12,7 +13,7 @@ scene('end', ({ root, s }) => {
   const S = W.stage;
   const B = (x, y, w, d, hh) => ({ box: [x, y, w, d, hh] });
   const NP = 64, GAP = 7.5, H = NP * GAP, SEG = H + 6;   // 64 张一摞（一张一层），高 480
-  const fadeOut = (t) => 1 - ramp(t, T('eT') - 1.2, 0.5);
+  const tOut = Tend('e6') + 0.3, fadeOut = (t) => 1 - ramp(t, tOut, 0.5);
 
   // ── e3：一摞层，层数造好就定了 ──
   const SX0 = -420, SY0 = -260, TXc = SX0 + 520;
@@ -32,7 +33,7 @@ scene('end', ({ root, s }) => {
   const NA = 6, ansG = M.slice(-NA), thinkT = M.slice(0, -NA);
   const tw = (i) => lerp(T('e5', '回答之前') - 0.2, T('e5', '中间步骤') + 0.6, i / (thinkT.length - 1));
   thinkT.forEach((k, i) => { const ta = tw(i); place(W, k.b.g, (t) => ({ x: k.x, y: k.y, z: 26 * (1 - ramp(t, ta, 0.25, ease.out3)), o: ramp(t, ta, 0.18) })); if (i % 2 === 0) sfx('key', ta, { g: 0.12 }); });
-  ansG.forEach((k, i) => { const ta = T('e6', '先写下来') + 0.1 + i * 0.06; place(W, k.b.g, (t) => ({ x: k.x, y: k.y, z: 26 * (1 - ramp(t, ta, 0.25, ease.out3)), o: ramp(t, ta, 0.18) })); });
+  ansG.forEach((k, i) => { const ta = T('e6', '写下来') + 0.1 + i * 0.06; place(W, k.b.g, (t) => ({ x: k.x, y: k.y, z: 26 * (1 - ramp(t, ta, 0.25, ease.out3)), o: ramp(t, ta, 0.18) })); });
 
   // ── e4、e5：塔越过「定了」那道线往上长；每写下一块，塔就高一截 ──
   const towerN = (t) => 1.2 * ramp(t, T('e4') + 0.2, 1.4, ease.io3) + thinkT.reduce((a, k, i) => a + 0.16 * ramp(t, tw(i), 0.2), 0);
@@ -43,20 +44,20 @@ scene('end', ({ root, s }) => {
   sfx('riser', T('e4') + 0.2, { g: 0.12 });
 
   // ── e6：框出写下的几行——先思考＝先写下来；最后一行的答案亮起 ──
-  const thinkOn = (t) => ramp(t, T('e6', '先思考') - 0.2, 0.4) * fadeOut(t);
+  const thinkOn = (t) => ramp(t, T('e6', '思考') - 0.2, 0.4) * fadeOut(t);
   [...new Set(thinkT.map((k) => k.line))].forEach((ln) => {
     const ix = thinkT.filter((k) => k.line === ln).map((k) => k.i);
     rectOf(W, S, M, ix[0], ix[ix.length - 1], thinkOn, 'g');
   });
-  const tl = W.board('<div class="lbl l" style="transform:translateX(-100%)">先思考</div>', MX - 40, MY + 62, 30, 0, -40);
-  const tl2 = W.board('<div class="lbl l" style="transform:translateX(-100%)">＝ 先写下来</div>', MX - 40, MY + 62, 30, 0, 40);
-  fade(W, tl, thinkOn); fade(W, tl2, (t) => ramp(t, T('e6', '先写下来') - 0.3, 0.4) * fadeOut(t));
-  ansG.slice(2).forEach((k, i) => glow(W, k.b, (t) => ramp(t, T('e6', '先写下来') + 0.5 + i * 0.08, 0.25) * fadeOut(t)));
-  sfx('tick', T('e6', '先思考') - 0.2, { g: 0.2 }); sfx('chime', T('e6', '先写下来') + 0.5, { g: 0.18 });
+  const tl = W.board('<div class="lbl l" style="transform:translateX(-100%)">思考</div>', MX - 40, MY + 62, 30, 0, -40);
+  const tl2 = W.board('<div class="lbl l" style="transform:translateX(-100%)">＝ 写下来</div>', MX - 40, MY + 62, 30, 0, 40);
+  fade(W, tl, thinkOn); fade(W, tl2, (t) => ramp(t, T('e6', '写下来') - 0.3, 0.4) * fadeOut(t));
+  ansG.slice(2).forEach((k, i) => glow(W, k.b, (t) => ramp(t, T('e6', '写下来') + 0.5 + i * 0.08, 0.25) * fadeOut(t)));
+  sfx('tick', T('e6', '思考') - 0.2, { g: 0.2 }); sfx('chime', T('e6', '写下来') + 0.5, { g: 0.18 });
 
   // ── 片名 ──
   const TC = blankCam(-200, 2000);
-  const tt = T('eT') - 0.2;
+  const tt = T('e7') - 0.15;
   const tc = W.print('<div class="title-cot" style="transform:translate(-50%,-50%)">CoT</div>', TC.cx, TC.cy - 70);
   const tz = W.print('<div class="title-zh" style="transform:translate(-50%,-50%)">先思考，再回答</div>', TC.cx, TC.cy + 120);
   fade(W, tc, (t) => ramp(t, tt, 0.9)); fade(W, tz, (t) => ramp(t, tt + 0.6, 0.9));
@@ -70,8 +71,8 @@ scene('end', ({ root, s }) => {
     [s.start, B0, 0.01],
     [T('e3') - 0.9, shTower, 1.6],
     [T('e5') - 0.5, shEnd, 1.4],
-    [T('eT') - 1.0, TC, 1.9],
-    [null, { ...TC, cy: TC.cy + 22 }, Math.max(0.5, s.end + 0.5 - T('eT') - 1.0), (k) => k],   // 片名停留：只朝一个方向极慢地移
+    [tOut, TC, 1.3],
+    [null, { ...TC, cy: TC.cy + 22 }, Math.max(0.5, s.end + 0.5 - tOut - 1.3), (k) => k],   // 片名停留：只朝一个方向极慢地移
   ]);
-  sfx('whoosh', T('e3') - 0.9, { g: 0.18 }); sfx('whoosh', T('eT') - 1.0, { g: 0.22 });
+  sfx('whoosh', T('e3') - 0.9, { g: 0.18 }); sfx('whoosh', tOut, { g: 0.22 });
 });
