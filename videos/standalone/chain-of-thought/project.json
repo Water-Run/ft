@@ -9,7 +9,7 @@
     "zh": "CoT：先思考，再回答"
   },
   "stage": "review",
-  "next": "策划者看第 5d 稿审片页 out/review-v6.html：确认 10 句改稿（确认后只重配这几句）与新的镜头语言；之后出第 2 轮有声预览",
+  "next": "策划者看第 6c 稿审片页 out/review-v7.html：核心主旨与起承转合；确认后改画面、配音，出有声预览",
   "credits": {
     "planner": "WaterRun",
     "models": [
