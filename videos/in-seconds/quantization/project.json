@@ -1,0 +1,98 @@
+{
+  "slug": "quantization",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "120 秒了解量化：让模型变小的方式和代价"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+6%",
+    "en": "+8%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 8
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -12,
+    "duck_db": 7,
+    "sfx_db": -9,
+    "score": {
+      "lift_cue": "a2"
+    }
+  },
+  "check": {
+    "duration": [
+      119.9,
+      120.1
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": [
+        "0C0D0F",
+        "F2EFE8",
+        "FF4A1C",
+        "8A8782",
+        "6B6964"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Inter",
+        "Mono"
+      ]
+    },
+    "pace": {
+      "en": {
+        "fast": 4
+      }
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    }
+  },
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "stage": "brief",
+  "next": "策划者确认 README「开工前请策划者确认」的几项后开始取证：先查量化的定义与位宽换算，再设计一个能算出来的小实验（research/lab/），事实只进 research/FACTS.md",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Sonnet 5.5",
+        "roles": [
+          "片单迁移",
+          "立项建骨架",
+          "简报"
+        ]
+      }
+    ],
+    "services": [],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  }
+}

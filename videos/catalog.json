@@ -153,6 +153,7 @@
     {"slug": "ipv4", "title": {"zh": "100 秒速通 IPv4"}, "series": "in-seconds", "note": "2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。", "status": "delivered"},
     {"slug": "rdp", "series": "in-seconds", "title": {"zh": "192秒了解RDP: Windows远程的优雅实现"}, "status": "delivered", "note": "2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。"},
     {"slug": "github-collaboration", "series": "in-seconds", "title": {"zh": "150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR"}, "status": "planned", "note": "2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 150 秒（2026-11-07 策划者定：「定为150s吧」）。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。"},
+    {"slug": "quantization", "series": "in-seconds", "title": {"zh": "120 秒了解量化：让模型变小的方式和代价"}, "status": "in-progress", "note": "2026-10-26 曾由速通改为独立视频；2026-11-09 策划者要求迁回「XX 秒速通」（原话「量化的视频迁移至速通. 标题: 120秒了解量化: 让模型变小的方式和代价」），定长 120 秒。"},
     {"slug": "linux-permissions", "series": "permission-design", "title": {"zh": "Linux 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "windows-permissions", "series": "permission-design", "title": {"zh": "Windows 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "macos-permissions", "series": "permission-design", "title": {"zh": "macOS 权限机制的设计"}},
@@ -230,9 +231,8 @@
     {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"},
     {"slug": "c", "title": {"zh": "C 生万物：C 语言"}, "note": "2026-10-26 由已取消的「编程语言」系列改为独立视频。"},
     {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}, "status": "delivered", "note": "2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。"},
-    {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "planned", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},
+    {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "in-progress", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},
     {"slug": "keydb-valkey", "title": {"zh": "Redis 之外：KeyDB & Valkey"}, "note": "2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。"},
-    {"slug": "quantization", "title": {"zh": "量化：让模型变小和代价"}, "note": "2026-10-26 从速通系列改为独立视频；片长待定。"},
     {"slug": "cve-2026-98432", "series": "hot-topics", "title": {"zh": "两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷"}, "status": "in-progress"},
     {"slug": "pando", "series": "hot-topics", "title": {"zh": "OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？"}, "status": "delivered"}
   ]

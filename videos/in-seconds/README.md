@@ -79,4 +79,5 @@
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
 | 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
 | 29 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](github-collaboration/) |
+| 30 | 120 秒了解量化：让模型变小的方式和代价 | zh | 制作中 | [`quantization`](quantization/) |
 <!-- catalog:end -->
