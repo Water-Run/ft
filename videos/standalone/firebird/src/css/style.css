@@ -62,3 +62,66 @@ body { font-family: "Sans SC"; color: var(--ink); }
 .credit-row { margin-bottom: 26px; }
 .t-body { font-weight: 500; font-size: 40px; line-height: 1.35; }
 .t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--soft); }
+
+/* 全片部件 */
+.d3 { position: absolute; transform-style: preserve-3d; }
+.br-bar { position: absolute; left: 0; top: 0; width: 100%; height: 74px; background: #e8e6e0; }
+.br-dot { position: absolute; top: 26px; width: 20px; height: 20px; border-radius: 50%; background: #b5b2ab; }
+.br-tab { position: absolute; left: 130px; top: 16px; width: 420px; height: 58px; background: #fff; }
+.br-t { position: absolute; left: 22px; top: 0; font: 600 34px/58px "Open Sans"; color: #1c1c1c; white-space: nowrap; }
+.br-addr { position: absolute; left: 50px; top: 96px; width: 72%; height: 40px; background: #f1efe9; }
+.plate-t { font: 800 44px/68px "Open Sans"; color: #c2410c; text-align: center; }
+.plate-b { position: absolute; left: 0; right: 0; top: 0; font: 800 84px/200px "Open Sans"; color: #1c1c1c; text-align: center; white-space: nowrap; }
+.peer { font: 700 54px/180px "Open Sans"; color: #1c1c1c; text-align: center; }
+.qmark { font: 800 300px/1 "Open Sans"; color: #1c1c1c; }
+.lab-s { font: 500 28px "Open Sans", "Sans SC"; color: #6f6f6f; white-space: nowrap; }
+.who-n { font: 700 42px "Open Sans"; color: #1c1c1c; text-align: center; margin-top: 14px; }
+.who-c { font: 600 32px "Open Sans"; color: #2156a5; text-align: center; margin-top: 6px; }
+.v-tag { font: 500 30px "Sans SC"; color: #6f6f6f; margin-right: 34px; }
+.v-row { font: 600 48px "Mono"; color: #1c1c1c; white-space: pre; }
+.flow-r, .flow-w { width: 26px; height: 26px; border-radius: 50%; }
+.flow-r { background: #2156a5; } .flow-w { background: #c2410c; }
+.money { font: 800 124px/1 "Open Sans"; color: #1c1c1c; white-space: nowrap; }
+.hair { width: 9px; height: 9px; border-radius: 50%; background: #2a2a2a; }
+.tm-blank { font: 800 62px/130px "Sans SC"; color: #85827a; text-align: center; }
+.tm-x { font: 900 120px/1 "Sans SC"; color: #6f6f6f; }
+.mon-t { position: absolute; left: 0; right: 0; top: 96px; text-align: center; font: 700 52px "Mono"; }
+.stamp { font: 900 150px/1 "Sans SC"; color: #2156a5; border: 10px solid #2156a5; padding: 14px 34px; white-space: nowrap; }
+.stamp-s { font: 800 56px/1 "Sans SC"; color: #2156a5; border: 5px solid #2156a5; padding: 8px 18px; white-space: nowrap; background: #fff; }
+.adm-mini { width: 76px; height: 76px; border-radius: 50%; background: var(--warn); color: #fff; font: 800 58px/76px "Open Sans"; text-align: center; }
+.v6 { position: absolute; left: 40px; top: 46px; font: 800 52px "Sans SC"; color: #1c1c1c; white-space: nowrap; }
+.v6-b { position: absolute; left: 260px; top: 58px; width: 700px; height: 34px; background: #ece9e3; }
+.v6-f { width: 100%; height: 100%; background: #2156a5; }
+.price-l { width: 620px; height: 6px; background: #2156a5; }
+.price-t { font: 600 34px "Open Sans", "Sans SC"; color: #2156a5; margin-top: 8px; white-space: nowrap; }
+.coin { width: 150px; height: 40px; border-radius: 50%; background: linear-gradient(#FAAC19, #F68A21); box-shadow: 0 5px 0 #c2730f; }
+.cover-t { font: 900 104px/186px "Sans SC"; color: #fff; text-align: center; letter-spacing: .3em; }
+.r-dot { width: 46px; height: 46px; border-radius: 50%; background: var(--warn); }
+.slab-t { font: 900 120px/1 "Sans SC"; color: #1c1c1c; white-space: nowrap; }
+.link-w { width: 250px; height: 6px; background: #fff; }
+.peer-w { font: 700 44px "Open Sans"; color: #fff; white-space: nowrap; }
+.peer-k { font: 700 44px "Open Sans"; color: #1c1c1c; white-space: nowrap; }
+.tl { font: 500 30px "Mono"; color: #2a2a2a; white-space: pre; }
+.tl b { color: #2156a5; font-weight: 700; } .tl i { color: #c2410c; font-style: normal; font-weight: 700; }
+.tl-mark { width: 360px; height: 48px; background: rgba(250, 172, 25, .4); }
+.fdb-t { font: 800 44px/170px "Mono"; color: #1c1c1c; text-align: center; }
+.box-l { text-align: center; font: 700 32px "Sans SC"; color: #1c1c1c; margin-top: 44px; white-space: nowrap; }
+.v-link { width: 8px; height: 180px; background: #F68A21; }
+.v-link.dash { background: repeating-linear-gradient(#2156a5 0 14px, transparent 14px 26px); }
+.sql-t { font: 700 40px/110px "Mono"; color: #2156a5; text-align: center; white-space: nowrap; }
+.free-t { font: 800 64px/200px "Open Sans"; color: #1c1c1c; text-align: center; white-space: nowrap; }
+.zero { font: 800 92px/1 "Open Sans"; color: #c2410c; }
+.bar-n { font: 700 54px "Open Sans"; color: #1c1c1c; white-space: nowrap; }
+.bar-r { font: 500 38px "Open Sans", "Sans SC"; color: #6f6f6f; white-space: nowrap; }
+.strike { width: 390px; height: 10px; background: #6f6f6f; }
+.rel-s { position: absolute; left: 0; right: 0; top: 118px; font: 500 38px "Open Sans", "Sans SC"; color: #6f6f6f; text-align: center; }
+.fin-c { text-align: center; margin-top: 22px; }
+.fin-l { font: 800 88px/1 "Open Sans"; color: #c2410c; white-space: nowrap; }
+.flow-y, .flow-b { width: 22px; height: 22px; border-radius: 50%; }
+.flow-y { background: #FAAC19; } .flow-b { background: #2156a5; }
+.slot { width: 300px; height: 66px; margin: 12px auto 0; border: 3px dashed #c9c7c1; }
+.boss-t { font: 800 30px/1.1 "Sans SC"; color: #1c1c1c; white-space: nowrap; }
+.bar-r-f { font: 800 42px "Open Sans", "Sans SC"; color: #c2410c; white-space: nowrap; }
+.blank4 { width: 440px; height: 370px; border: 5px dashed #c9c7c1; }
+.fin-g { font: 500 40px "Sans SC"; color: #6f6f6f; margin-left: 30px; }
+.big-bird { font: 800 170px/1 "Open Sans"; color: #c2410c; white-space: nowrap; text-shadow: 0 6px 0 rgba(0,0,0,.08); }

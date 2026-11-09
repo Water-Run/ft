@@ -12,7 +12,7 @@ window.ENGINE = {
     h('div', 'tt', rail, '目录');
     const chaps = L.scenes.filter((s) => s.chap);
     const bar = h('div', 'bar', rail);
-    set(bar, 0, { y: CHAP_TOP + 6, autoAlpha: 0 });
+    init(bar, { y: CHAP_TOP + 6, autoAlpha: 0 });
     chaps.forEach((s, i) => {
       const it = h('div', 'it', rail, `${s.chap[0]}. ${s.chap[1]}`);
       css(it, { top: (CHAP_TOP + i * CHAP_STEP) + 'px' });
@@ -29,7 +29,7 @@ window.ENGINE = {
     L.scenes.forEach((s, i) => {
       const r = document.getElementById('sc-' + s.id);
       css(r, { zIndex: 100 - i });
-      if (i > 0) set(r, 0, { autoAlpha: 0 }), set(r, s.start - 0.02, { autoAlpha: 1 });
+      if (i > 0) init(r, { autoAlpha: 0 }), set(r, s.start - 0.02, { autoAlpha: 1 });
       const nx = L.scenes[i + 1];
       if (!nx) return;
       to(r, nx.start, { rotationX: -46, y: -1240, z: 140, transformPerspective: 2200, transformOrigin: '60% 0%', duration: 0.62, ease: 'power2.in' });
