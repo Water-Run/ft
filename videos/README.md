@@ -390,7 +390,7 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | 回顾：传统 Office 二进制格式 | zh | 计划中 | `office-binary-formats` | 2026-11-09 策划者调整为第 1 集：简单讲，结尾引出 OpenXML。 |
-| 2 | OpenXML：一个 .docx 里到底有什么 | zh | 计划中 | `openxml` | 原题「引入 OpenXML」；第 1 集已引出，本集拆开文件包本身。 |
+| 2 | 引入 OpenXML | zh | 计划中 | `openxml` | 第 1 集结尾引出，本集拆开文件包本身。 |
 | 3 | Excel 的底层是什么样的？ | zh | 计划中 | `excel-internals` |  |
 | 4 | Word 的底层是什么样的？ | zh | 计划中 | `word-internals` |  |
 | 5 | PowerPoint 的底层是什么样的？ | zh | 计划中 | `powerpoint-internals` |  |

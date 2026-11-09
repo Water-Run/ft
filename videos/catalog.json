@@ -187,7 +187,7 @@
     {"slug": "xiang-ji-xuan-zhi", "series": "literary-animation", "title": {"zh": "项脊轩志", "en": "Record of the Xiangji Studio"}, "note": "2026-10-20 策划者新增。明代归有光的散文（含后来补写的两段），原文已在公有领域；英文版的译文来源待定。"},
     {"slug": "php2shell", "series": "hot-topics", "title": {"zh": "隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响"}, "status": "delivered"},
     {"slug": "office-binary-formats", "title": {"zh": "回顾：传统 Office 二进制格式"}, "series": "office-internals", "note": "2026-11-09 策划者调整为第 1 集：简单讲，结尾引出 OpenXML。"},
-    {"slug": "openxml", "title": {"zh": "OpenXML：一个 .docx 里到底有什么"}, "series": "office-internals", "note": "原题「引入 OpenXML」；第 1 集已引出，本集拆开文件包本身。"},
+    {"slug": "openxml", "title": {"zh": "引入 OpenXML"}, "series": "office-internals", "note": "第 1 集结尾引出，本集拆开文件包本身。"},
     {"slug": "excel-internals", "title": {"zh": "Excel 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "word-internals", "title": {"zh": "Word 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "powerpoint-internals", "title": {"zh": "PowerPoint 的底层是什么样的？"}, "series": "office-internals"},

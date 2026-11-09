@@ -42,7 +42,7 @@
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | 回顾：传统 Office 二进制格式 | zh | 计划中 | `office-binary-formats` |
-| 2 | OpenXML：一个 .docx 里到底有什么 | zh | 计划中 | `openxml` |
+| 2 | 引入 OpenXML | zh | 计划中 | `openxml` |
 | 3 | Excel 的底层是什么样的？ | zh | 计划中 | `excel-internals` |
 | 4 | Word 的底层是什么样的？ | zh | 计划中 | `word-internals` |
 | 5 | PowerPoint 的底层是什么样的？ | zh | 计划中 | `powerpoint-internals` |
