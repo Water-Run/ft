@@ -32,7 +32,7 @@
     {"slug": "innodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——事务性与现代化：InnoDB"}, "status": "delivered", "note": "重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档"},
     {"slug": "postgresql", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL"}, "status": "delivered", "note": "重做版 2026-11-01 发布（哔哩哔哩 BV1msxp6yEai）；旧版 2026-10-19 发布，已归档"},
     {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "delivered", "note": "2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ）"},
-    {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"}, "status": "in-progress"},
+    {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)"}, "status": "in-progress"},
     {"slug": "mongodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"}},
     {"slug": "redis", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——内存里的键值对：Redis"}, "note": "2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。"},
     {"slug": "lua-philosophy", "series": "language-philosophy", "title": {"zh": "Lua 语言的设计哲学：一切皆表", "en": "The Design Philosophy of Lua: Everything Is a Table"}, "status": "planned"},
