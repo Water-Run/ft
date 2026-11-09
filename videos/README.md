@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 207 部：已成片 25，制作中 5，计划中 175，已放弃 2。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 207 部：已成片 23，制作中 5，计划中 175，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -29,8 +29,6 @@
 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/) | — | zh 16:50 | 2026-10-19 | [哔哩哔哩](https://www.bilibili.com/video/BV1RNnJ6AELR) | — | GPT-6（型号未记录）、GPT-6 Astra、Claude Opus 5.5 |
 | [150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](in-seconds/dense-vs-moe/) | [XX 秒速通](in-seconds/README.md) | zh 2:30、en 2:30 | 2026-10-09 | [哔哩哔哩](https://www.bilibili.com/video/BV1gPpt69EsM)、[YouTube](https://www.youtube.com/watch?v=orNp9XxWvnc) | — | Claude Opus 5.5 |
 | [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](in-seconds/lean4/) | [XX 秒速通](in-seconds/README.md) | zh 3:20、en 3:20 | 2026-10-08 | [哔哩哔哩](https://www.bilibili.com/video/BV1PxHU6KE6G) | 3（2026-10-09） | Claude Opus 5.5、GPT-6（型号未记录） |
-| [OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](standalone/openclaw-opencode-v2/) | — | zh 9:34、en 9:48 | 2026-10-08 | [哔哩哔哩](https://www.bilibili.com/video/BV1UwHQ6EEVJ) | 4（2026-10-09） | Claude Opus 5.5 |
-| [OpenClaw, Hermes 和实现](standalone/openclaw-hermes/) | — | zh 8:35、en 9:30 | 2026-10-07 | [哔哩哔哩](https://www.bilibili.com/video/BV1DkHk6FEie)、[YouTube](https://www.youtube.com/watch?v=iULu-c3fAcI) | 4（2026-10-09） | Claude Sonnet 5.5、Claude Opus 5.5 |
 | [从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/) | — | zh 5:33、en 5:31 | 2026-10-07 | [哔哩哔哩](https://www.bilibili.com/video/BV17VH16mEsJ)、[YouTube](https://www.youtube.com/watch?v=CJdSoeKlXkk) | 6（2026-10-09） | Claude Opus 5.5 |
 | [120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/) | [XX 秒速通](in-seconds/README.md) | zh 2:00、en 2:00 | 2026-10-06 | [哔哩哔哩](https://www.bilibili.com/video/BV1whpF6aECJ)、[YouTube](https://www.youtube.com/watch?v=zD2afy1WBX0) | 9（2026-10-09） | Claude Opus 5.5 |
 | [luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/) | [开源项目](open-source-projects/README.md) | zh 7:55、en 7:57 | 2026-10-02 | [哔哩哔哩](https://www.bilibili.com/video/BV1x6a16sEZx)、[YouTube](https://www.youtube.com/watch?v=ctYfIRZeuYc) | 8（2026-10-09） | Claude Opus 5.5 |
@@ -57,6 +55,8 @@
 | 片 | 系列 | 停在 | 说明 |
 |---|---|---|---|
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布 |
+| [OpenClaw, Hermes 和实现](standalone/openclaw-hermes/) | — | 已发布 | 隐藏废弃（2026-11-09 策划者）：作为可理解性的反面示例。此前已发布，成片与记录冻结保留。 |
+| [OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](standalone/openclaw-opencode-v2/) | — | 已发布 | 隐藏废弃（2026-11-09 策划者）：作为可理解性的反面示例。此前已发布，成片与记录冻结保留。 |
 | [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/) | [热点](hot-topics/README.md) | 立项 | 安全审查放弃：2026-10-31 策划者决定不再制作；不交付、不发布 |
 
 ## 全部选题
@@ -389,11 +389,11 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | 引入 OpenXML | zh | 计划中 | `openxml` |  |
-| 2 | Excel 的底层是什么样的？ | zh | 计划中 | `excel-internals` |  |
-| 3 | PowerPoint 的底层是什么样的？ | zh | 计划中 | `powerpoint-internals` |  |
+| 1 | 回顾：传统 Office 二进制格式 | zh | 计划中 | `office-binary-formats` | 2026-11-09 策划者调整为第 1 集：简单讲，结尾引出 OpenXML。 |
+| 2 | OpenXML：一个 .docx 里到底有什么 | zh | 计划中 | `openxml` | 原题「引入 OpenXML」；第 1 集已引出，本集拆开文件包本身。 |
+| 3 | Excel 的底层是什么样的？ | zh | 计划中 | `excel-internals` |  |
 | 4 | Word 的底层是什么样的？ | zh | 计划中 | `word-internals` |  |
-| 5 | 回顾：传统 Office 二进制格式 | zh | 计划中 | `office-binary-formats` |  |
+| 5 | PowerPoint 的底层是什么样的？ | zh | 计划中 | `powerpoint-internals` |  |
 
 ### 源码全解析
 
@@ -402,23 +402,23 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | Lua源码全解析 | zh | 计划中 | [`lua-source`](source-code/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。 |
-| 2 | Pegasus 源码全解析 | zh | 计划中 | `pegasus` | 对象：Lua 的 Web 框架 Pegasus。 |
-| 3 | parsedown 源码全解析 | zh | 计划中 | `parsedown` |  |
-| 4 | tinydb 源码全解析 | zh | 计划中 | `tinydb` |  |
-| 5 | moonscript 源码全解析 | zh | 计划中 | `moonscript` |  |
-| 6 | luastatic 源码全解析 | zh | 计划中 | `luastatic` |  |
-| 7 | tokei 源码全解析 | zh | 计划中 | `tokei` |  |
-| 8 | ripgrep 源码全解析 | zh | 计划中 | `ripgrep` |  |
+| 2 | tokei 源码全解析 | zh | 计划中 | `tokei` |  |
+| 3 | ripgrep 源码全解析 | zh | 计划中 | `ripgrep` |  |
+| 4 | parsedown 源码全解析：简单的Markdown解析器 | zh | 计划中 | `parsedown` |  |
+| 5 | Pegasus 源码全解析 | zh | 计划中 | `pegasus` | 对象：Lua 的 Web 框架 Pegasus。 暂缓（2026-11-09 策划者）。 |
+| 6 | tinydb 源码全解析 | zh | 计划中 | `tinydb` | 暂缓（2026-11-09 策划者）。 |
+| 7 | moonscript 源码全解析 | zh | 计划中 | `moonscript` | 暂缓（2026-11-09 策划者）。 |
+| 8 | luastatic 源码全解析 | zh | 计划中 | `luastatic` | 暂缓（2026-11-09 策划者）。 |
 
 ### 独立视频
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | 古代来的 Shell：Windows 批处理（.bat） | zh | 已成片 | [`windows-batch`](standalone/windows-batch/) |  |
-| 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已成片 | [`openclaw-hermes`](standalone/openclaw-hermes/) |  |
+| 2 | OpenClaw, Hermes 和实现<br>OpenClaw, Hermes, and Their Implementation | zh + en | 已放弃 | [`openclaw-hermes`](standalone/openclaw-hermes/) | 隐藏废弃（2026-11-09 策划者）：作为可理解性的反面示例。此前已发布，成片与记录冻结保留。 |
 | 3 | 10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端<br>What Did an Early-2010s Shop Admin Look Like? Inside the OpenCart 1.5 Back End | zh | 已成片 | [`opencart-1-5-admin`](standalone/opencart-1-5-admin/) |  |
 | 4 | 道交法中的路权 | zh | 制作中 | [`traffic-law-right-of-way`](standalone/traffic-law-right-of-way/) |  |
-| 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已成片 | [`openclaw-opencode-v2`](standalone/openclaw-opencode-v2/) |  |
+| 5 | OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么<br>The v2 Overhauls of OpenClaw and OpenCode: What a Year of Agent Engineering Taught Us | zh + en | 已放弃 | [`openclaw-opencode-v2`](standalone/openclaw-opencode-v2/) | 隐藏废弃（2026-11-09 策划者）：作为可理解性的反面示例。此前已发布，成片与记录冻结保留。 |
 | 6 | 本地部署：一个 Qwen 3.8 27B 是怎么在 DGX Spark 上跑起来的？ | zh | 计划中 | `local-qwen-dgx` |  |
 | 7 | 从 WSL 1 到 WSL 2，再到「WSL 3」<br>From WSL 1 to WSL 2, Then “WSL 3” | zh + en | 已成片 | [`wsl`](standalone/wsl/) |  |
 | 8 | 怎么打手枪？<br>How to Shoot a Pistol | zh + en | 制作中 | [`pistol-shooting`](standalone/pistol-shooting/) | 2026-11-04 从「XX 秒速通」抽离为独立片；高级 3D，片长几分钟，详细介绍手枪射击，具体时长待定。 |

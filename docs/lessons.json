@@ -70,7 +70,8 @@
         "P50",
         "C10",
         "C11",
-        "P80"
+        "P80",
+        "P118"
       ],
       "cases": {
         "good": [
@@ -82,7 +83,9 @@
           "innodb",
           "postgresql",
           "firebird",
-          "web-login"
+          "web-login",
+          "openclaw-hermes",
+          "openclaw-opencode-v2"
         ]
       }
     },
