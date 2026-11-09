@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 207 部：已成片 25，制作中 6，计划中 175，已放弃 1。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 207 部：已成片 25，制作中 5，计划中 175，已放弃 2。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -44,12 +44,11 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 审稿 | 等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11 | 最新 | Claude Opus 5.5 |
-| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 立项 | 策划者确认 README「开工前请策划者确认」的几项后开始取证：先查量化的定义与位宽换算，再设计一个能算出来的小实验（research/lab/），事实只进 research/FACTS.md | 最新 | Claude Sonnet 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r1（out/zh/preview-r1.mp4，16:59）的意见：画面、配乐、读音；改后出 r2。正式片之前：把封面 A 做成 src/cover.html（16:9 与 4:3 两版），再跑 check.js 与验收。 | 最新 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 在审片页（out/audition/index.html）选音色、配乐、视觉方向并确认文案；确认后按选定音色实测，排定各场定点，全片配音 | 最新 | Claude Sonnet 5.5、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | 实现 | 策划者看代表段（2:09 前后三段）与封面，通过后铺开其余各章 | 最新 | Claude Opus 5.5 |
-| [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/) | [热点](hot-topics/README.md) | 立项 | 写简报（受众、核心问题、解释路径与取舍），开始取证 | 待同步 | 未记录 |
+| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | 预览迭代 | 策划者看全片预览 preview-r7（或更新轮次）后给意见 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
@@ -58,6 +57,7 @@
 | 片 | 系列 | 停在 | 说明 |
 |---|---|---|---|
 | [256 秒搞懂 SSH](in-seconds/ssh/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 2026-10-24 策划者决定不再制作；第一版中文成片未被接受，不交付、不发布 |
+| [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/) | [热点](hot-topics/README.md) | 立项 | 安全审查放弃：2026-10-31 策划者决定不再制作；不交付、不发布 |
 
 ## 全部选题
 
@@ -380,7 +380,7 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | 隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响 | zh | 已成片 | [`php2shell`](hot-topics/php2shell/) |  |
-| 2 | 两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷 | zh | 制作中 | [`cve-2026-98432`](hot-topics/cve-2026-98432/) |  |
+| 2 | 两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷 | zh | 已放弃 | [`cve-2026-98432`](hot-topics/cve-2026-98432/) | 安全审查放弃：2026-10-31 策划者决定不再制作；不交付、不发布 |
 | 3 | OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？ | zh | 已成片 | [`pando`](hot-topics/pando/) |  |
 
 ### Office 底层原理
