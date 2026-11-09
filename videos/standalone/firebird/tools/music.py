@@ -40,12 +40,19 @@ def compose(ctx):
             cache[key] = fn(rng_of(key))
         return cache[key]
 
-    def add(t, s, g=1.0, pan=0.0):
+    def add(t, s, g=1.0, pan=0.0, until=None):
         i = int(t * sr)
         if i >= n or i < 0:
             return
         l, r = np.cos((pan + 1) * np.pi / 4) * 1.414, np.sin((pan + 1) * np.pi / 4) * 1.414
         e = min(n, i + len(s))
+        if until is not None and int(until * sr) < e:
+            e = int(until * sr)
+            m = e - i
+            if m <= 0:
+                return
+            fade = np.minimum(1.0, (m - np.arange(m)) / (0.04 * sr))
+            s = s[:m] * fade
         x[i:e, 0] += s[:e - i] * g * l
         x[i:e, 1] += s[:e - i] * g * r
 
@@ -58,15 +65,22 @@ def compose(ctx):
                 return s['id']
         return scenes[-1]['id']
 
-    bars = int(n / sr / BAR) + 1
-    for b in range(bars):
-        t0 = b * BAR
-        lv = LV.get(scene_at(t0 + BAR / 2), LV['open'])
+    # 每章从自己的起点起拍，翻页就落在小节头；上一章多出的半小节被下一章切断
+    grid = []
+    for sc in scenes:
+        k = 0
+        while sc['start'] + k * BAR < sc['end']:
+            grid.append((sc['start'] + k * BAR, sc['id'], sc['end'], k))
+            k += 1
+    for t0, sid, send, b in grid:
+        lv = LV.get(sid, LV['open'])
         nm = ROOTS[b % 8]
         o1 = ms.oct_of(nm, 1) + 1
         f = ms.hz(nm, o1)
         for s in range(16):
             t = t0 + s * STEP
+            if t >= send:
+                break
             if lv['d']:
                 if s in (0, 6, 8, 14):
                     add(t, note(('k',), lambda r: ms.kick(r, .8)), .86 * lv['d'])
@@ -89,28 +103,36 @@ def compose(ctx):
                 tone = note(('g', nm, o3, semi), pluck)
                 t = t0 + i * STEP
                 pan = .35 if i % 2 else -.35
-                add(t, tone, .5 * lv['g'], pan)
-                add(t + STEP * 3, tone, .19 * lv['g'], -pan)
-                add(t + STEP * 6, tone, .08 * lv['g'], pan)
+                if t >= send:
+                    continue
+                add(t, tone, .5 * lv['g'], pan, send)
+                add(t + STEP * 3, tone, .19 * lv['g'], -pan, send)
+                add(t + STEP * 6, tone, .08 * lv['g'], pan, send)
         if lv['l'] and b % 2 == 0:
             o4 = ms.oct_of(nm, 4)
             cut = int(1200 + lv['cut'])
-            add(t0, note(('l', nm, o4, cut), lambda r: ms.lead(ms.hz(nm, o4), STEP * 30, wob=4.6, kind='saw', cut=cut, drive=2.2)), .5 * lv['l'])
+            add(t0, note(('l', nm, o4, cut), lambda r: ms.lead(ms.hz(nm, o4), STEP * 30, wob=4.6, kind='saw', cut=cut, drive=2.2)), .5 * lv['l'], 0.0, send)
         if lv['f']:
             o2 = ms.oct_of(nm, 2)
             def fuzz(r, nm=nm, o2=o2):
                 return ms.power(r, ms.hz(nm, o2), STEP * 15.5, drive=14)
             s1 = note(('f', nm, o2, 0), fuzz)
-            add(t0, s1, .42 * lv['f'], -.45)
-            add(t0 + .012, s1, .42 * lv['f'], .45)
+            add(t0, s1, .42 * lv['f'], -.45, send)
+            add(t0 + .012, s1, .42 * lv['f'], .45, send)
+
+    for sc in scenes[1:]:
+        if sc['id'] != 'credits':
+            add(sc['start'], note(('k',), lambda r: ms.kick(r, .8)), 1.0)
+            add(sc['start'], note(('cr', 'chap'), lambda r: ms.crash(r)), .34)
 
     # 关键字上的落点：吸附到最近的十六分音符
     def snap(t):
         return round(t / STEP) * STEP
 
+    SPOKEN = {'d2': 0.84, 'd3': 0.71}    # 读到英文词的实际时刻（按音频能量核对）
     for cid in ('d2', 'd3'):
         if cid in cues:
-            t = snap(cues[cid]['start'])
+            t = cues[cid]['start'] + SPOKEN[cid]
             s1 = note(('stab', cid), lambda r: ms.power(r, ms.hz('F', 2), STEP * 7, drive=15))
             add(t, s1, .8, -.4)
             add(t + .011, s1, .8, .4)
@@ -118,4 +140,7 @@ def compose(ctx):
     for cid in ('c4', 'e6', 'f5', 'g5'):
         if cid in cues:
             add(snap(cues[cid]['start']), note(('cr', cid), lambda r: ms.crash(r)), .55)
+    # 压住鼓点峰值，让配乐整体电平上来（混音按峰值归一）
+    ref = max(1e-6, float(np.percentile(np.abs(x), 99.5)))
+    x = np.tanh(x / ref * 1.3) / np.tanh(1.3)
     return x.T

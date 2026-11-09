@@ -41,7 +41,9 @@ InterBase 源于 Jim Starkey 的多版本想法（H01–H02），1984 年在自�
 | H14 | 产品经理 Bill Karwin 与负责美国以外销售的 Paul Beach 辞职；开发者组成 IBDI，愿出的钱「够买 InterBase 好几回」，但未能成交 | 官方历史页转载 Paul Reeves | — | 已核，单一转载，旁白按原文 |
 | H15 | 2000 年 1 月 3 日宣布开源，2 月 14 日宣布新公司管理 InterBase | 官方历史页事件表 | Wikipedia（early 2000 宣布） | 已核 |
 | H16 | 2000 年 7 月 25 日，同日两份新闻稿：终止出售谈判；InterBase 6.0 免费开源 | 官方历史页事件表（两条 July 25） | Wikipedia；官网 About（25 July 2000） | 已核 |
+| H16b | 两份新闻稿的原题：「Inprise/Borland Terminates Negotiations to Sell InterBase® Product Line」「Inprise/Borland Introduces InterBase 6.0 Now Free and Open Source on Linux®, Windows, and Solaris®」 | 官方历史页事件表（两条 July 25，标题原文） | — | 已核，画面用原题 |
 | H17 | 开源后 24 小时内有了源码树；社区不愿等公司，首个周末结束时在 SourceForge 建 Firebird 项目 | 官方历史页「Firebird records」 | Release History：两位澳大利亚开发者下载源码并在 SourceForge 建项目 | 已核 |
+| H19 | 源码树里有 `jrd`、`burp`、`alice` 目录：GitHub 仓库现存最早的提交（2001-05-23「First steps towards a C++ conversion」）已包含；画面取这三个名字示意 | GitHub API `commits?path=src/burp` 等，2026-11-09 | H08 | 已核；2000 年 7 月当天的目录清单未单独取证，画面不写文件数 |
 | H18 | 2000 年 7 月 31 日 Firebird 项目诞生（距开源 6 天） | 官方历史页事件表 | Wikipedia「Within a week」 | 已核 |
 
 ### 传闻（按策划者 2026-11-09 要求作为梗使用，旁白明说未证实）
@@ -57,6 +59,7 @@ InterBase 源于 Jim Starkey 的多版本想法（H01–H02），1984 年在自�
 | B01 | 用户名 politically、口令 correct 硬编码在程序中，用它们可访问任一 InterBase 数据库 | Schneier，[Back Door Security Threat in Interbase](https://www.schneier.com/essays/archives/2001/03/back_door_security_t.html)（2001-03） | [CERT VU#247371](https://kb.cert.org/vuls/id/247371)（内置后门账号）；CVE-2001-0008 | 已核，新闻层面 |
 | B02 | 过去七年发布的版本（4.x 至 6.01）都有 | Schneier | LWN「six odd years」；FreeBSD 通告写 1992 年引入，来源有分歧，旁白只用 Schneier「七年」 | 已核，分歧已记 |
 | B03 | 开源后约半年，由一位德国开发者发现 | Schneier「six months later by a German software developer」 | [LWN 2001-01-18](https://lwn.net/2001/0118/security.php3) 点名 Frank Schlottmann-Goedde；FreeBSD 通告归功 Firebird 项目 | 已核，旁白不点人名 |
+| B05 | 后门公开的时间在 2001 年 1 月，日历画面标「2001 年 1 月」 | [LWN 2001-01-18](https://lwn.net/2001/0118/security.php3)；[CERT VU#247371](https://kb.cert.org/vuls/id/247371)（2001-01） | 官方历史页 January 09, 2001 (IBPhoenix) InterBase Security Alert | 已核 |
 | B04 | Borland 与 Firebird 项目都发布了修复 | CERT VU#247371 | FreeBSD-SA-01:26 | 已核 |
 
 ### 名字

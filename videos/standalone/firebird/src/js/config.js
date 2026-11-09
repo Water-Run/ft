@@ -24,8 +24,6 @@ window.ENGINE = {
     });
     const lastEnd = L.scenes.find((s) => s.id === 'end');
     if (lastEnd) to(bar, lastEnd.start, { autoAlpha: 0, duration: 0.3 });
-    const crumb = h('div', 'crumb', hud, '<u>Firebird Documentation Index</u> → 这只鸟的来历');
-    set(crumb, 0, { autoAlpha: 1 });
   },
   after() {
     L.scenes.forEach((s, i) => {

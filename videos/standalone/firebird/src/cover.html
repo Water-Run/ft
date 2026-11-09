@@ -17,7 +17,7 @@
   .sheet { position: absolute; background: #fff; box-shadow: -14px 30px 56px rgba(50, 30, 10, .42); }
   .crumb { font: 400 30px "Open Sans", "Serif SC"; color: #6f6f6f; white-space: nowrap; }
   .crumb u { color: #2156a5; }
-  .word { display: block; clip-path: inset(0 0 0 19%); }
+  .word { display: block; }
   .ti { position: relative; font: 900 208px/1.05 "Sans SC"; color: #1c1c1c; white-space: nowrap; }
   .ti::before { content: ""; position: absolute; left: -32px; top: 8%; bottom: 8%; width: 12px; background: #54BC4B; }
   .sub { font: 500 60px/1.3 "Sans SC"; color: #444; white-space: nowrap; }
@@ -30,7 +30,7 @@
   const q = new URLSearchParams(location.search), wide = q.get('r') !== '43';
   document.documentElement.className = wide ? 'r169 zh' : 'r43 zh';
   const W = document.querySelector('.w');
-  const LOGO = '/img/firebird-logo.png', WORD = '/img/logo-firebird-black.png';
+  const LOGO = '/img/firebird-logo.png', WORD = '/img/firebird-word.png';
   const R = document.createElement('div'); R.className = 'd3'; W.appendChild(R);
   const big = wide ? 1320 : 1180;
   R.style.cssText = wide ? `left:-180px;top:-120px;width:${big}px;height:${big}px;transform:rotateY(24deg) rotateX(5deg)` : `left:-250px;top:-210px;width:${big}px;height:${big}px;transform:rotateY(22deg) rotateX(6deg)`;
@@ -45,12 +45,12 @@
   const S = document.createElement('div'); S.className = 'sheet';
   S.style.cssText = wide ? 'left:880px;top:80px;width:1000px;height:740px;padding:34px 72px;transform:rotate(-1.2deg)' : 'left:300px;top:560px;width:1240px;height:440px;padding:30px 70px;transform:rotate(-1.2deg)';
   S.innerHTML = wide
-    ? `<div class="crumb"><u>Firebird Documentation Index</u> → 第三选择</div><img class="word" src="${WORD}" style="height:140px;margin:22px 0 10px -168px"><div class="ti">第三选择</div><div class="rule"></div><div class="sub">既能做服务，又能嵌入式</div>`
+    ? `<div class="crumb"><u>Firebird 小传</u> → 小众的第三选择</div><img class="word" src="${WORD}" style="height:88px;margin:40px 0 34px 0"><div class="ti">第三选择</div><div class="rule"></div><div class="sub">既能做服务，又能嵌入式</div>`
     : `<div style="display:flex;align-items:center;gap:34px"><div class="ti" style="font-size:190px">第三选择</div></div><div class="rule"></div><div class="sub" style="font-size:56px">既能做服务，又能嵌入式</div>`;
   document.getElementById('stage').appendChild(S);
   if (!wide) {
     const w2 = new Image(); w2.src = WORD; w2.className = 'word';
-    w2.style.cssText = 'position:absolute;left:640px;top:120px;height:170px;margin-left:-204px;background:#fff;padding:18px 34px 18px 0';
+    w2.style.cssText = 'position:absolute;left:660px;top:140px;height:104px;box-sizing:content-box;background:#fff;padding:24px 40px';
     document.getElementById('stage').appendChild(w2);
   }
   Promise.all([document.fonts.load('900 40px "Sans SC"', '第三选择'), document.fonts.load('500 40px "Sans SC"', '既能做服务'), document.fonts.load('500 40px "Open Sans"', 'Firebird'), document.fonts.load('400 40px "Serif SC"', '第'), ...[...document.images].map((i) => i.decode().catch(() => {}))])
