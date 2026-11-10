@@ -8,8 +8,8 @@
   "titles": {
     "zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"
   },
-  "stage": "preview",
-  "next": "策划者看全片预览 preview-r10、试听配音与配乐后给意见",
+  "stage": "accept",
+  "next": "策划者看正式片，决定是否发布；发布后登记 release 并归档",
   "credits": {
     "planner": "WaterRun",
     "models": [

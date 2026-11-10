@@ -22,15 +22,17 @@ scene('shower', ({ root, s }) => {
   const bath = fbAbs(A, 640, -20, artBathroom(700));
   fbIn(bath, T('a2') - 0.1, { y: 70, scale: 0.96 }, { d: 0.45, ease: 'back.out(1.3)' });
   sfx('thud', T('a2') + 0.15, { g: 0.6, p: 0.3 });
-  const water = fbAbs(bath, 0, 0, '<svg width="700" height="658" viewBox="0 0 660 620"><g stroke="#4f86c6" stroke-width="4" stroke-linecap="round"></g></svg>');
-  const wg = water.querySelector('g'), wl = [];
-  for (let i = 0; i < 14; i++) { const l = svg('line', {}, wg); wl.push(l); }
+  const water = fbAbs(bath, 0, 0, '<svg width="700" height="658" viewBox="0 0 660 620"><g><g class="rp" fill="none" stroke="#4f86c6" stroke-width="2.5"></g><g class="dr" stroke="#4f86c6" stroke-width="4" stroke-linecap="round"></g></g></svg>');
+  const wg = water.querySelector('g'), wl = [], rp = [];
+  for (let i = 0; i < 16; i++) { const l = svg('line', {}, wg.querySelector('.dr')); wl.push(l); }
+  for (let i = 0; i < 2; i++) rp.push(svg('ellipse', {}, wg.querySelector('.rp')));
   const w0 = T('a2', '洗') - 0.1;
   F((t) => {
     const on = t > w0;
     wg.style.opacity = on ? 1 : 0;
     if (!on) return;
     waterLines(t - w0).forEach(([x1, y1, x2, y2], i) => { wl[i].setAttribute('x1', f1(x1)); wl[i].setAttribute('y1', f1(y1)); wl[i].setAttribute('x2', f1(x2)); wl[i].setAttribute('y2', f1(y2)); });
+    waterRipples(t - w0).forEach(([cx, cy, rx, ry, op], i) => { rp[i].setAttribute('cx', f1(cx)); rp[i].setAttribute('cy', f1(cy)); rp[i].setAttribute('rx', f1(rx)); rp[i].setAttribute('ry', f1(ry)); rp[i].setAttribute('opacity', op.toFixed(3)); });
   });
   sfx('whoosh', w0, { g: 0.25, p: 0.4 });
   const bulb = fbAbs(A, 318, 300, ART.bulb);
@@ -290,14 +292,14 @@ scene('shower', ({ root, s }) => {
   init(tank, { x: -1100 });
   to(tank, tRoll, { x: 0, duration: 1.0, ease: 'power2.out' });
   sfx('drive', tRoll, { g: 0.6, p: -0.4 });
-  const m1L = fbAbs(tankG, 0, 0, '<svg width="1620" height="900" viewBox="0 0 1620 900"><path d="M690 322 L600 432" stroke="#8e8c86" stroke-width="4"/><circle cx="600" cy="432" r="7" fill="#8e8c86"/></svg>');
-  fbIn(m1L, T('a17', 'M') - 0.05, { autoAlpha: 0 }, { d: 0.2 });
+  const m1L = fbAbs(tankG, 0, 0, '<svg width="1620" height="900" viewBox="0 0 1620 900"><path d="M690 322 L622 400" stroke="#8e8c86" stroke-width="4"/><circle cx="622" cy="400" r="7" fill="#8e8c86"/></svg>');
+  fbIn(m1L, T('a17', 'M') - 0.05, {}, { d: 0.2 });
   const m1 = fbAbs(tankG, 640, 250, fbTag('M1'));
   fbIn(m1, T('a17', 'M') - 0.05, { y: -20 }, { d: 0.25, ease: 'back.out(1.6)' });
   const tFire = T('a17', '开炮') - 0.06;
   to(tank, tFire, { x: -34, duration: 0.07, ease: 'power4.out' });
   to(tank, tFire + 0.08, { x: 0, duration: 0.5, ease: 'power2.inOut' });
-  const flash = fbAbs(tankG, 972, 375, '<svg width="220" height="220" viewBox="0 0 100 100"><path fill="#FAAC19" d="M50 0 L60 34 L92 14 L72 44 L100 50 L72 58 L90 86 L60 68 L50 100 L40 68 L10 86 L28 58 L0 50 L28 44 L8 14 L40 34 Z"/><circle cx="50" cy="50" r="18" fill="#EE2B24"/><circle cx="50" cy="50" r="9" fill="#fff6d8"/></svg>');
+  const flash = fbAbs(tankG, 980, 356, '<svg width="220" height="220" viewBox="0 0 100 100"><path fill="#FAAC19" d="M50 0 L60 34 L92 14 L72 44 L100 50 L72 58 L90 86 L60 68 L50 100 L40 68 L10 86 L28 58 L0 50 L28 44 L8 14 L40 34 Z"/><circle cx="50" cy="50" r="18" fill="#EE2B24"/><circle cx="50" cy="50" r="9" fill="#fff6d8"/></svg>');
   init(flash, { autoAlpha: 0, scale: 0.2 });
   to(flash, tFire, { autoAlpha: 1, scale: 1, duration: 0.08, ease: 'power4.out' });
   to(flash, tFire + 0.12, { autoAlpha: 0, scale: 1.3, duration: 0.26 });
@@ -307,7 +309,7 @@ scene('shower', ({ root, s }) => {
     const kk = (t - tFire - 0.05 - i * 0.07) / 1.4;
     if (kk < 0 || kk > 1) { e.style.opacity = 0; return; }
     e.style.opacity = (0.75 * (1 - kk)).toFixed(3);
-    e.style.transform = `translate(${f1(1046 + kk * (80 + i * 30))}px,${f1(430 - kk * (60 + i * 25))}px) scale(${(0.4 + kk * (1.2 + i * 0.2)).toFixed(3)})`;
+    e.style.transform = `translate(${f1(1054 + kk * (80 + i * 30))}px,${f1(411 - kk * (60 + i * 25))}px) scale(${(0.4 + kk * (1.2 + i * 0.2)).toFixed(3)})`;
   }));
   // 车载电脑：引出框（屏幕放大，状态一眼看得出）
   const crt = fbAbs(tankG, 1120, 20, artCrt(440));

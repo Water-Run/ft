@@ -5,16 +5,22 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。标志色纸圈层层叠起，标题是压在上面的一页官方手册。 */
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200。
+     深色舞台上放射的光芒，标志色纸圈层层托起火鸟标志；片里的故事物件（火狐改名、浴室、M1 坦克、InterBase 屏幕、开源那天的日历）四散飞出；
+     标题是压在最上面的一页手册，旁边两张卡片点明「服务」与「嵌入式」两边都能做。 */
   @font-face { font-family: "Open Sans"; src: url("/type/OpenSans-wght.ttf"); font-weight: 300 800; }
-  html, body, #stage { width: var(--W); height: var(--H); }
+  html, body, #stage { width: var(--W); height: var(--H); margin: 0; }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { background: #efece6; overflow: hidden; position: absolute; left: 0; top: 0; }
+  #stage { background: #1f1612; overflow: hidden; position: absolute; left: 0; top: 0; }
+  .lay { position: absolute; inset: 0; }
   .w { position: absolute; inset: 0; perspective: 1700px; }
   .d3 { position: absolute; transform-style: preserve-3d; }
-  .ring { position: absolute; border-radius: 50%; box-shadow: 14px 24px 38px rgba(60, 20, 0, .42); }
-  .sheet { position: absolute; background: #fff; box-shadow: -14px 30px 56px rgba(50, 30, 10, .42); }
+  .ring { position: absolute; border-radius: 50%; box-shadow: 10px 26px 44px rgba(0, 0, 0, .55); }
+  .it { position: absolute; transform-origin: 50% 50%; }
+  .card { position: absolute; background: #fff; border-radius: 6px; box-shadow: 0 28px 54px rgba(0, 0, 0, .55); }
+  .lift { filter: drop-shadow(0 22px 26px rgba(0, 0, 0, .55)); }
+  .sheet { position: absolute; background: #fff; box-shadow: -16px 32px 64px rgba(0, 0, 0, .6); }
   .crumb { font: 400 30px "Open Sans", "Serif SC"; color: #6f6f6f; white-space: nowrap; }
   .crumb u { color: #2156a5; }
   .word { display: block; }
@@ -22,38 +28,109 @@
   .ti::before { content: ""; position: absolute; left: -32px; top: 8%; bottom: 8%; width: 12px; background: #54BC4B; }
   .sub { font: 500 60px/1.3 "Sans SC"; color: #444; white-space: nowrap; }
   .rule { height: 2px; background: #dddddf; margin: 26px 0 22px; }
+  .stamp { position: absolute; font: 900 70px/1 "Sans SC"; color: #d8261e; border: 7px solid #d8261e; border-radius: 10px; padding: 10px 22px 14px; letter-spacing: 6px; background: rgba(255, 255, 255, .85); }
+  .lane { width: 400px; height: 250px; }
+  .lane .hd { position: absolute; left: 26px; top: 20px; display: flex; align-items: center; gap: 14px; font: 800 52px/1 "Sans SC"; color: #1c1c1c; white-space: nowrap; }
+  .lane .ck { width: 46px; height: 46px; }
+  .lane .bd { position: absolute; left: 26px; right: 26px; bottom: 22px; height: 140px; display: flex; align-items: center; justify-content: space-between; }
+  .lg { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  .cal { width: 176px; height: 210px; overflow: hidden; text-align: center; }
+  .cal .band { background: #F68A21; color: #fff; font: 700 26px/50px "Sans SC"; }
+  .cal .day { font: 900 104px/1.1 "Open Sans"; color: #1c1c1c; }
+  .cal .wk { font: 700 30px/1 "Sans SC"; color: #c2410c; }
+  .appw { width: 150px; height: 112px; background: #fff; border: 4px solid #3b3f4a; border-radius: 8px; overflow: hidden; position: relative; }
+  .appw .tb { height: 22px; background: #3b3f4a; display: flex; gap: 6px; align-items: center; padding-left: 8px; }
+  .appw .tb i { width: 9px; height: 9px; border-radius: 50%; background: #dcd8cf; display: block; }
+  .appw .eng { position: absolute; left: 18px; right: 18px; bottom: 16px; height: 50px; background: #fde8cf; border: 3px solid #F68A21; border-radius: 6px; font: 800 24px/44px "Sans SC"; color: #9a3412; text-align: center; }
+  .crt-t { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 700 30px/1.2 "Mono"; color: #7ee08a; }
+  .crt-t small { font: 500 20px/1.4 "Sans SC"; color: #7ee08a; }
 </style>
 </head>
 <body>
-<div id="stage"><div class="w"></div></div>
+<div id="stage"></div>
+<script src="js/art.js"></script>
 <script>
   const q = new URLSearchParams(location.search), wide = q.get('r') !== '43';
   document.documentElement.className = wide ? 'r169 zh' : 'r43 zh';
-  const W = document.querySelector('.w');
+  const ST = document.getElementById('stage');
+  const W = wide ? 1920 : 1600, H = wide ? 1080 : 1200;
+  const mk = (cls, parent, html = '') => { const e = document.createElement('div'); e.className = cls; e.innerHTML = html; parent.appendChild(e); return e; };
   const LOGO = '/img/firebird-logo.png', WORD = '/img/firebird-word.png';
-  const R = document.createElement('div'); R.className = 'd3'; W.appendChild(R);
-  const big = wide ? 1320 : 1180;
-  R.style.cssText = wide ? `left:-180px;top:-120px;width:${big}px;height:${big}px;transform:rotateY(24deg) rotateX(5deg)` : `left:-250px;top:-210px;width:${big}px;height:${big}px;transform:rotateY(22deg) rotateX(6deg)`;
-  [['#FAAC19', 1], ['#F68A21', .82], ['#EE2B24', .645], ['#fff', .485]].forEach(([c, k], i) => {
-    const d = big * k, e = document.createElement('div'); e.className = 'ring';
-    e.style.cssText = `left:${big / 2 - d / 2}px;top:${big / 2 - d / 2}px;width:${d}px;height:${d}px;background:${c};transform:translateZ(${i * 70}px)`;
-    R.appendChild(e);
-  });
-  const L = new Image(); L.src = LOGO; const ls = big * .41;
-  L.style.cssText = `position:absolute;left:${big / 2 - ls / 2}px;top:${big / 2 - ls / 2}px;width:${ls}px;height:${ls}px;transform:translateZ(290px)`;
-  R.appendChild(L);
-  const S = document.createElement('div'); S.className = 'sheet';
-  S.style.cssText = wide ? 'left:880px;top:80px;width:1000px;height:740px;padding:34px 72px;transform:rotate(-1.2deg)' : 'left:300px;top:560px;width:1240px;height:440px;padding:30px 70px;transform:rotate(-1.2deg)';
-  S.innerHTML = wide
-    ? `<div class="crumb"><u>Firebird 小传</u> → 小众的第三选择</div><img class="word" src="${WORD}" style="height:88px;margin:40px 0 34px 0"><div class="ti">第三选择</div><div class="rule"></div><div class="sub">既能做服务，又能嵌入式</div>`
-    : `<div style="display:flex;align-items:center;gap:34px"><div class="ti" style="font-size:190px">第三选择</div></div><div class="rule"></div><div class="sub" style="font-size:56px">既能做服务，又能嵌入式</div>`;
-  document.getElementById('stage').appendChild(S);
-  if (!wide) {
-    const w2 = new Image(); w2.src = WORD; w2.className = 'word';
-    w2.style.cssText = 'position:absolute;left:660px;top:140px;height:104px;box-sizing:content-box;background:#fff;padding:24px 40px';
-    document.getElementById('stage').appendChild(w2);
+  const C = wide ? [600, 540] : [540, 420], big = wide ? 940 : 800;
+
+  // 1 放射的光芒 + 中心的光晕
+  { let rays = ''; const N = 36, R = 2600;
+    for (let i = 0; i < N; i++) { const a0 = (i / N) * Math.PI * 2, a1 = a0 + Math.PI / N; rays += `<path d="M${C[0]} ${C[1]} L${f1(C[0] + Math.cos(a0) * R)} ${f1(C[1] + Math.sin(a0) * R)} L${f1(C[0] + Math.cos(a1) * R)} ${f1(C[1] + Math.sin(a1) * R)} Z" fill="#2d1e16"/>`; }
+    mk('lay', ST, `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${rays}</svg>`);
+    const g = mk('lay', ST); g.style.background = `radial-gradient(circle at ${C[0]}px ${C[1]}px, rgba(250,172,25,.55) 0, rgba(238,43,36,.28) ${big * 0.42}px, rgba(31,22,18,0) ${big * 0.8}px)`; }
+
+  // 2 纸圈与标志
+  { const w = mk('w', ST), R = mk('d3', w);
+    R.style.cssText = `left:${C[0] - big / 2}px;top:${C[1] - big / 2}px;width:${big}px;height:${big}px;transform:rotateY(18deg) rotateX(6deg)`;
+    [['#FAAC19', 1], ['#F68A21', .82], ['#EE2B24', .645], ['#fff', .485]].forEach(([c, k], i) => {
+      const d = big * k, e = mk('ring', R);
+      e.style.cssText = `left:${big / 2 - d / 2}px;top:${big / 2 - d / 2}px;width:${d}px;height:${d}px;background:${c};transform:translateZ(${i * 80}px)`;
+    });
+    const L = new Image(); L.src = LOGO; const ls = big * .41;
+    L.style.cssText = `position:absolute;left:${big / 2 - ls / 2}px;top:${big / 2 - ls / 2}px;width:${ls}px;height:${ls}px;transform:translateZ(330px)`;
+    R.appendChild(L); }
+
+  // 3 火星：沿光芒往外飞的菱形（固定种子）
+  { let seed = 20000725; const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    const pal = ['#FAAC19', '#F68A21', '#EE2B24', '#ffe7b0'];
+    let sp = '';
+    for (let i = 0; i < 90; i++) {
+      const a = rnd() * Math.PI * 2, r = big * 0.5 + rnd() * big * 0.75, s = 4 + rnd() * 12;
+      const x = C[0] + Math.cos(a) * r, y = C[1] + Math.sin(a) * r, deg = a * 180 / Math.PI;
+      sp += `<path transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(deg)})" d="M${f1(-s * 2.4)} 0 L0 ${f1(-s / 2)} L${f1(s * 1.2)} 0 L0 ${f1(s / 2)} Z" fill="${pal[i % 4]}" opacity="${(0.55 + rnd() * 0.45).toFixed(2)}"/>`;
+    }
+    mk('lay', ST, `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${sp}</svg>`); }
+
+  // 4 四散的故事物件
+  const fly = mk('w', ST);
+  const put = (x, y, html, tf, cls = 'it') => { const e = mk(cls, fly, html); e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.transform = tf; return e; };
+  const firefox = () => `<div class="card" style="position:relative;width:230px;height:230px"><img src="/img/logo-firefox.svg" style="position:absolute;left:25px;top:25px;width:180px;height:180px"><div class="stamp" style="font-size:44px;border-width:5px;padding:6px 14px 9px;right:-34px;bottom:-22px;transform:rotate(-12deg)">改名</div></div>`;
+  const crt = (w) => { const k = w / 300; return `<div style="position:relative;width:${w}px;height:${w * 0.86}px">${artCrt(w)}<div class="crt-t" style="left:${f1(34 * k)}px;top:${f1(32 * k)}px;width:${f1(232 * k)}px;height:${f1(164 * k)}px">InterBase<small>运行中</small></div></div>`; };
+  const cal = () => `<div class="card cal" style="position:relative"><div class="band">2000 年 7 月</div><div class="day">25</div><div class="wk">开源</div></div>`;
+  const tank = (w) => { const k = w / 1000; return `<div style="position:relative;width:${w * 1.06}px;height:${w * 0.42}px">${artTank(w)}<svg style="position:absolute;left:${f1(1050 * k - 70)}px;top:${f1(166 * k - 70)}px" width="140" height="140" viewBox="0 0 100 100"><path fill="#FAAC19" d="M50 0 L60 34 L92 14 L72 44 L100 50 L72 58 L90 86 L60 68 L50 100 L40 68 L10 86 L28 58 L0 50 L28 44 L8 14 L40 34 Z"/><circle cx="50" cy="50" r="18" fill="#EE2B24"/><circle cx="50" cy="50" r="9" fill="#fff6d8"/></svg></div>`; };
+  const check = '<svg class="ck" viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="#54BC4B"/><path d="M12 24 L20 32 L35 15" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const server = () => `<div class="card lane"><div class="hd">${check}服务</div><div class="bd"><div style="transform:scale(.6);transform-origin:0 100%;width:108px;height:138px;position:relative"><div style="position:absolute;left:0;bottom:0">${ART.server}</div></div><div class="lg"><img src="/img/logo-mysql.svg" style="height:62px"><img src="/img/logo-postgresql.svg" style="height:62px"></div></div></div>`;
+  const embed = () => `<div class="card lane"><div class="hd">${check}嵌入式</div><div class="bd"><div class="appw"><div class="tb"><i></i><i></i><i></i></div><div class="eng">引擎</div></div><div class="lg"><img src="/img/logo-sqlite.svg" style="height:88px"></div></div></div>`;
+
+  if (wide) {
+    put(70, 46, firefox(), 'rotateZ(-10deg) rotateY(14deg)');
+    put(10, 360, `<div class="lift">${artBathroom(260)}</div>`, 'rotateZ(-4deg)');
+    put(776, 28, cal(), 'rotateZ(9deg) rotateX(8deg)');
+    put(690, 790, `<div class="lift">${crt(230)}</div>`, 'rotateZ(6deg) rotateY(-12deg)');
+    put(30, 800, `<div class="lift">${tank(560)}</div>`, 'rotateZ(-3deg)');
+  } else {
+    put(30, 30, firefox(), 'rotateZ(-10deg) rotateY(14deg)');
+    put(0, 410, `<div class="lift">${artBathroom(210)}</div>`, 'rotateZ(-4deg)');
+    put(830, 14, cal(), 'rotateZ(9deg) rotateX(8deg)');
+    put(-10, 630, `<div class="lift">${tank(420)}</div>`, 'rotateZ(-3deg)');
   }
-  Promise.all([document.fonts.load('900 40px "Sans SC"', '第三选择'), document.fonts.load('500 40px "Sans SC"', '既能做服务'), document.fonts.load('500 40px "Open Sans"', 'Firebird'), document.fonts.load('400 40px "Serif SC"', '第'), ...[...document.images].map((i) => i.decode().catch(() => {}))])
+
+  // 5 标题页、印章与两张卡片
+  const S = mk('sheet', ST);
+  if (wide) {
+    S.style.cssText = 'left:972px;top:96px;width:888px;padding:34px 60px 40px 72px;transform:rotate(-1.2deg)';
+    S.innerHTML = `<div class="crumb"><u>Firebird 小传</u> → 小众的第三选择</div><img class="word" src="${WORD}" style="height:88px;margin:38px 0 30px 0"><div class="ti" style="font-size:186px">第三选择</div><div class="rule"></div><div class="sub">既能做服务，又能嵌入式</div>`;
+    mk('stamp', ST, '小众').style.cssText = 'left:1640px;top:60px;transform:rotate(12deg)';
+    put(1000, 760, server(), 'rotateZ(-4deg) rotateX(10deg)');
+    put(1450, 790, embed(), 'rotateZ(3deg) rotateX(10deg)');
+  } else {
+    S.style.cssText = 'left:200px;top:780px;width:1180px;padding:26px 70px 30px;transform:rotate(-1.2deg)';
+    S.innerHTML = `<div class="ti" style="font-size:172px">第三选择</div><div class="rule" style="margin:20px 0 16px"></div><div class="sub" style="font-size:58px">既能做服务，又能嵌入式</div>`;
+    mk('stamp', ST, '小众').style.cssText = 'left:1010px;top:850px;transform:rotate(12deg)';
+    const cr = mk('it', ST, `<div class="lift">${crt(220)}</div>`); cr.style.cssText = 'left:1290px;top:836px;transform:rotate(6deg)';
+    const w2 = new Image(); w2.src = WORD; w2.className = 'word';
+    w2.style.cssText = 'position:absolute;left:1010px;top:76px;height:64px;box-sizing:content-box;background:#fff;padding:22px 38px;box-shadow:0 24px 50px rgba(0,0,0,.55);transform:rotate(-3deg)';
+    ST.appendChild(w2);
+    put(1080, 226, server(), 'rotateZ(-4deg) rotateX(10deg)');
+    put(1130, 490, embed(), 'rotateZ(3deg) rotateX(10deg)');
+  }
+
+  Promise.all([document.fonts.load('900 40px "Sans SC"', '第三选择'), document.fonts.load('500 40px "Sans SC"', '既能做服务'), document.fonts.load('800 40px "Open Sans"', '25'), document.fonts.load('400 40px "Serif SC"', '第'), document.fonts.load('700 40px "Mono"', 'InterBase'), ...[...document.images].map((i) => i.decode().catch(() => {}))])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

@@ -89,8 +89,9 @@ function artCat(w = 170) {
 
 // ───── 等距小场景 ─────
 // 浴室：蓝瓷砖的步入式淋浴，窗外是树林（官方历史页 Ann Harrison 的回忆）
+const BATH_O = [330, 290], BATH_HEAD = [68, 150, 226];   // 喷头圆心（等距坐标）
 function artBathroom(w = 640) {
-  const o = [330, 290], W = 300, D = 300, H = 260;
+  const o = BATH_O, W = 300, D = 300, H = 260;
   let s = '';
   s += isoPoly(o, [[0, 0, 0], [W, 0, 0], [W, D, 0], [0, D, 0]], '#cfdcea');
   for (let i = 1; i < 6; i++) { s += isoLine(o, [i * 50, 0, 0], [i * 50, D, 0], '#b6c8dc', 2); s += isoLine(o, [0, i * 50, 0], [W, i * 50, 0], '#b6c8dc', 2); }
@@ -104,24 +105,38 @@ function artBathroom(w = 640) {
   s += tree(124, 112, 70, '#6fa35f') + tree(150, 112, 96, '#4f8a45') + tree(186, 112, 80, '#5e9a52') + tree(212, 112, 60, '#6fa35f');
   s += isoPoly(o, [[120, 0, 110], [250, 0, 110], [250, 0, 230], [120, 0, 230]], 'none', 'stroke="#f4f4f2" stroke-width="7"');
   s += isoLine(o, [185, 0, 110], [185, 0, 230], '#f4f4f2', 5);
-  // 花洒：从左墙伸出
-  s += isoLine(o, [0, 150, 236], [60, 150, 236], '#a9a6a0', 8);
-  s += isoPoly(o, [[50, 128, 226], [86, 128, 226], [86, 172, 226], [50, 172, 226]], '#8e8c86');
-  s += isoPoly(o, [[50, 128, 226], [86, 128, 226], [86, 128, 232], [50, 128, 232]], '#a9a6a0');
+  // 花洒：竖管贴着左墙，横臂伸出，圆形喷头朝下；地上有地漏（水从喷头正下方落下，见 waterLines）
+  const [hx, hy, hz] = BATH_HEAD;
+  s += isoPoly(o, [[0, hy - 12, 108], [0, hy + 12, 108], [0, hy + 12, 130], [0, hy - 12, 130]], '#a9a6a0');
+  s += isoLine(o, [2, hy, 119], [18, hy, 119], '#7d7b75', 8);
+  s += isoLine(o, [1, hy, 130], [1, hy, 242], '#bdbab3', 7);
+  s += isoLine(o, [1, hy, 242], [hx, hy, 242], '#bdbab3', 7);
+  s += isoLine(o, [hx, hy, 242], [hx, hy, hz + 2], '#bdbab3', 7);
+  const disc = (z, r, fill) => { const c = isoP(o, hx, hy, z); return `<ellipse cx="${f1(c[0])}" cy="${f1(c[1])}" rx="${f1(r * 1.2247)}" ry="${f1(r * 0.7071)}" fill="${fill}"/>`; };
+  { const c0 = isoP(o, hx, hy, hz), c1 = isoP(o, hx, hy, hz - 5), rx = 24 * 1.2247;
+    s += disc(hz - 5, 24, '#6f6d67') + `<rect x="${f1(c0[0] - rx)}" y="${f1(c0[1])}" width="${f1(rx * 2)}" height="${f1(c1[1] - c0[1])}" fill="#8e8c86"/>` + disc(hz, 24, '#c4c1ba') + disc(hz, 9, '#a9a6a0'); }
+  { const c = isoP(o, hx + 34, hy + 30, 0); s += `<ellipse cx="${f1(c[0])}" cy="${f1(c[1])}" rx="17" ry="9.8" fill="#9fb3c8"/><ellipse cx="${f1(c[0])}" cy="${f1(c[1])}" rx="11" ry="6.3" fill="#7f95ad"/>`; }
   // 毛巾杆与毛巾
   s += isoLine(o, [30, 0, 170], [100, 0, 170], '#d8d6cf', 5);
   s += isoPoly(o, [[40, 0, 170], [90, 0, 170], [90, 0, 104], [40, 0, 104]], '#F68A21');
   s += isoPoly(o, [[40, 0, 116], [90, 0, 116], [90, 0, 110], [40, 0, 110]], '#ffffff', 'opacity=".6"');
   return `<svg width="${w}" height="${w * 0.94}" viewBox="0 0 660 620">${s}</svg>`;
 }
-// 花洒的水：由时间直接算位置（返回 [x1,y1,x2,y2] 列表，场景里用 F() 写进一层 SVG）
-function waterLines(t, n = 14) {
-  const out = [];
+// 花洒的水：由时间直接算位置。水滴从喷头底面竖直落到地上，越往下散得越开
+// waterLines 返回 [x1,y1,x2,y2]（竖直线段），waterRipples 返回地上的水圈 [cx,cy,rx,ry,不透明度]
+function waterLines(t, n = 16) {
+  const [hx, hy, hz] = BATH_HEAD, out = [];
   for (let i = 0; i < n; i++) {
-    const ph = (t * 1.7 + i * 0.137) % 1, x = 352 + (i % 7) * 7 - 18 + ((i * 37) % 11), y = 370 + ph * 190;
-    out.push([x + ph * (i % 2 ? 5 : -5), y, x + ph * (i % 2 ? 5 : -5) + (i % 2 ? 1 : -1), y + 20]);
+    const ph = (t * 1.5 + i * 0.381966) % 1, a = i * 2.39996, r = (4 + ((i * 7) % 15)) * (1 + ph * 0.6);
+    const x = hx + Math.cos(a) * r, y = hy + Math.sin(a) * r, z = (hz - 8) * (1 - ph), zt = Math.min(hz - 8, z + 24);
+    const p1 = isoP(BATH_O, x, y, zt), p2 = isoP(BATH_O, x, y, z);
+    out.push([p1[0], p1[1], p2[0], p2[1]]);
   }
   return out;
+}
+function waterRipples(t) {
+  const c = isoP(BATH_O, BATH_HEAD[0], BATH_HEAD[1], 0);
+  return [0, 0.5].map((k) => { const f = (t * 1.1 + k) % 1, r = 12 + f * 30; return [c[0], c[1], r * 1.2247, r * 0.7071, 0.6 * (1 - f)]; });
 }
 // 房子：两层，二楼的窗可点亮
 function artHouse(w = 520) {
@@ -253,52 +268,92 @@ const flagDE = `<svg width="120" height="72" viewBox="0 0 5 3"><rect width="5" h
 function star(cx, cy, r, n = 7) { let d = ''; for (let i = 0; i < n * 2; i++) { const a = i * Math.PI / n - Math.PI / 2, rr = i % 2 ? r * 0.45 : r; d += (i ? 'L' : 'M') + f1(cx + Math.cos(a) * rr) + ' ' + f1(cy + Math.sin(a) * rr); } return d + 'Z'; }
 const flagAU = `<svg width="120" height="60" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><path d="M0 0 L30 15 M30 0 L0 15" stroke="#fff" stroke-width="3"/><path d="M0 0 L30 15 M30 0 L0 15" stroke="#C8102E" stroke-width="1.2"/><path d="M15 0 V15 M0 7.5 H30" stroke="#fff" stroke-width="5"/><path d="M15 0 V15 M0 7.5 H30" stroke="#C8102E" stroke-width="3"/><path fill="#fff" d="${star(15, 22.5, 3.6)} ${star(45, 24.5, 1.6)} ${star(39, 13.5, 1.6)} ${star(45, 5, 1.6)} ${star(51, 11.5, 1.6)} ${star(48, 17, 0.9, 5)}"/></svg>`;
 
-// ───── M1 坦克：斜视（侧面正对，顶面与远侧往右上退），和等距的场景一样看得到顶 ─────
-// 退深方向 D = (64, −38)：每个箱形部件画「近侧面 + 顶面 + 前斜面」，由远到近叠
+// ───── M1 坦克（M1A1 艾布拉姆斯）：斜视，侧面正对，顶面和车头往右上退 ─────
+// 认得出 M1 的几处：低矮的车体与很缓的前上装甲；扁长、前脸倒角的炮塔，炮塔后挂储物筐；
+// 长炮管中段有抽烟器、炮口上有校准镜；车长塔上架 12.7 毫米机枪，前面是炮长瞄准镜的方盒；
+// 侧裙板盖住负重轮上半截，前段下沿斜切；七个负重轮，主动轮在后、诱导轮在前。
 function artTank(w = 1000) {
-  const D = [64, -38];
-  const sh = (pts) => pts.map(([x, y]) => `${x + D[0]} ${y + D[1]}`).join(' L');
-  let wheels = '';
-  for (let i = 0; i < 7; i++) { const x = 214 + i * 88; wheels += `<circle cx="${x}" cy="356" r="31" fill="#4d4c45"/><circle cx="${x}" cy="356" r="21" fill="#6d6b61"/><circle cx="${x}" cy="356" r="7" fill="#3a3934"/>`; }
-  let tread = '';
-  for (let i = 0; i < 46; i++) tread += `<rect x="${130 + i * 15.4}" y="384" width="9" height="9" fill="#24231f"/>`;
-  let skirt = '';
-  for (let i = 1; i < 9; i++) skirt += `<path d="M${118 + i * 82} 276 V336" stroke="#a3906a" stroke-width="3"/>`;
-  let grille = '';
-  for (let i = 0; i < 7; i++) grille += `<path d="M${170 + i * 18} 222 L${206 + i * 18} 201" stroke="#c4b285" stroke-width="5"/>`;
-  const track = 'M150 300 H812 Q858 302 866 336 L842 386 Q836 396 818 396 H160 Q144 396 136 386 L104 336 Q114 302 150 300 Z';
+  const DX = 70, DY = -40;
+  const P = (pts, k) => pts.map(([x, y]) => [x + DX * k, y + DY * k]);
+  const pd = (pts) => 'M' + pts.map(([x, y]) => `${f1(x)} ${f1(y)}`).join(' L') + ' Z';
+  // 拉伸：pts 为顺时针的侧面轮廓，在宽度 k0..k1 之间拉出厚度；先画朝上、朝前的面，再盖上近侧面
+  const ext = (pts, k0, k1, base, extra = '') => {
+    const A = P(pts, k0), B = P(pts, k1);
+    let o = '';
+    for (let i = 0; i < A.length; i++) {
+      const j = (i + 1) % A.length, ex = A[j][0] - A[i][0], ey = A[j][1] - A[i][1], L = Math.hypot(ex, ey) || 1;
+      const nx = ey / L, ny = -ex / L;
+      if (nx * DX + ny * DY <= 0.01) continue;
+      o += `<path d="${pd([A[i], A[j], B[j], B[i]])}" fill="${shade(base, 0.3 * -ny - 0.16 * nx)}"/>`;
+    }
+    return o + `<path d="${pd(A)}" fill="${base}" ${extra}/>`;
+  };
+  const at = (x, y, k) => [x + DX * k, y + DY * k];
+  const line = (a, b2, c, sw) => `<path d="M${f1(a[0])} ${f1(a[1])} L${f1(b2[0])} ${f1(b2[1])}" stroke="${c}" stroke-width="${sw}" stroke-linecap="round"/>`;
+  const ell = (c, rx, ry, fill) => `<ellipse cx="${f1(c[0])}" cy="${f1(c[1])}" rx="${rx}" ry="${ry}" fill="${fill}"/>`;
+  let s = '';
+  // 履带：远侧（大半被车体挡住，车头下露出一角）
+  const track = [[138, 300], [850, 300], [880, 330], [852, 390], [836, 397], [166, 397], [150, 390], [116, 330]];
+  s += ext(track, 0.78, 1, '#34332e');
+  // 车体：后部平台、很缓的前上装甲、车头下斜面
+  const hull = [[112, 232], [640, 232], [918, 262], [884, 302], [140, 302], [112, 258]];
+  s += ext(hull, 0, 1, '#bba579');
+  for (let i = 0; i < 12; i++) s += line(at(132 + i * 13, 232, 0.16), at(132 + i * 13, 232, 0.84), '#9a8660', 4);   // 发动机舱格栅
+  s += ell(at(690, 237.6, 0.52), 20, 7, '#8f7c56');                                   // 驾驶员舱盖
+  // 炮塔后的储物筐
+  const rack = [[262, 158], [336, 158], [336, 214], [262, 214]];
+  s += ext(rack, 0.12, 0.88, '#9c8758');
+  for (let i = 1; i < 6; i++) s += line(at(262 + i * 12.3, 160, 0.12), at(262 + i * 12.3, 212, 0.12), '#7f6c46', 3);
+  s += line(at(264, 176, 0.12), at(334, 176, 0.12), '#7f6c46', 3) + line(at(264, 195, 0.12), at(334, 195, 0.12), '#7f6c46', 3);
+  // 炮塔：扁长，前脸倒角，底沿前端内收
+  const tur = [[334, 150], [742, 150], [806, 198], [790, 224], [350, 224], [330, 192]];
+  s += ext(tur, 0.08, 0.92, '#cbb689');
+  const T8 = (x, y) => at(x, y, 0.08);
+  s += `<path d="${pd([T8(342, 208), T8(799, 208), T8(790, 224), T8(350, 224)])}" fill="#b29c6e"/>`;   // 炮塔裙边
+  s += `<path d="${pd([T8(400, 166), T8(500, 166), T8(500, 200), T8(400, 200)])}" fill="#bea97b"/>`;    // 侧面储物箱
+  s += line(T8(400, 183), T8(500, 183), '#a8936a', 3);
+  for (let r = 0; r < 2; r++) for (let c = 0; c < 3; c++) {                                                   // 烟幕弹发射器
+    const q = T8(700 + c * 15, 172 + r * 13);
+    s += `<rect x="${f1(q[0])}" y="${f1(q[1])}" width="12" height="10" rx="3" fill="#6f6448"/>`;
+  }
+  // 炮塔顶：远侧的装填手舱盖与机枪、横风传感器、两根天线
+  s += ell(at(520, 150, 0.7), 22, 7, '#a8936a') + line(at(520, 142, 0.7), at(574, 141, 0.7), '#4a4a44', 4);
+  s += line(at(372, 150, 0.5), at(372, 112, 0.5), '#55534c', 3) + ell(at(372, 110, 0.5), 5, 5, '#55534c');
+  s += line(at(346, 150, 0.2), at(318, 30, 0.2), '#55534c', 3) + line(at(350, 150, 0.8), at(334, 56, 0.8), '#55534c', 3);
+  // 炮长瞄准镜的方盒（近侧前方）
+  s += ext([[652, 128], [694, 128], [710, 150], [652, 150]], 0.12, 0.3, '#b7a274');
+  { const g1 = at(696, 131, 0.12), g2 = at(707, 147, 0.12); s += `<path d="M${f1(g1[0])} ${f1(g1[1])} L${f1(g2[0])} ${f1(g2[1])}" stroke="#3f4a52" stroke-width="5"/>`; }
+  // 车长塔与 12.7 毫米机枪
+  { const c0 = at(590, 150, 0.3), top = c0[1] - 20;
+    s += ell(c0, 26, 9, '#9d8860') + `<rect x="${f1(c0[0] - 26)}" y="${f1(top)}" width="52" height="20" fill="#ae9869"/>` + ell([c0[0], top], 26, 9, '#cbb88d');
+    for (let i = 0; i < 4; i++) s += `<rect x="${f1(c0[0] - 20 + i * 11)}" y="${f1(top + 6)}" width="7" height="6" fill="#3f4a52"/>`;
+    s += `<rect x="${f1(c0[0] - 14)}" y="${f1(top - 16)}" width="26" height="11" rx="2" fill="#4a4a44"/>` + line([c0[0] + 10, top - 11], [c0[0] + 82, top - 13], '#3f3f3a', 5) + line([c0[0] - 2, top - 5], [c0[0] - 2, top + 2], '#4a4a44', 4); }
+  // 炮：防盾、隔热套箍、抽烟器、炮口校准镜
+  s += ext([[790, 146], [814, 146], [818, 182], [790, 182]], 0.4, 0.62, '#a8936a');
+  const GY = 166, G0 = 822, G1 = 1086;
+  s += `<path d="M${G0} ${GY - 9} L${G1} ${GY - 6.5} L${G1} ${GY + 6.5} L${G0} ${GY + 9} Z" fill="#b29c6e"/>`;
+  s += `<path d="M${G0} ${GY - 9} L${G1} ${GY - 6.5} L${G1} ${GY - 3} L${G0} ${GY - 4} Z" fill="#cdb98e"/>`;
+  [870, 912, 1006, 1046].forEach((x) => { s += `<rect x="${x}" y="${GY - 9}" width="4" height="18" fill="#94805a"/>`; });
+  s += `<rect x="936" y="${GY - 12.5}" width="48" height="25" rx="10" fill="#a8936a"/><rect x="936" y="${GY - 12.5}" width="48" height="8" rx="4" fill="#c2ad80"/>`;
+  s += `<rect x="${G1 - 12}" y="${GY - 8.5}" width="12" height="17" rx="2" fill="#94805a"/><rect x="${G1 - 30}" y="${GY - 15}" width="14" height="7" fill="#6f6448"/>`;
+  // 近侧履带、负重轮、主动轮（后）与诱导轮（前）
+  s += ext(track, 0, 0.2, '#33322d');
+  for (let i = 0; i < 46; i++) s += `<rect x="${f1(150 + i * 15.2)}" y="389" width="9" height="8" fill="#22211e"/>`;
+  { let teeth = ''; for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5; teeth += `<circle cx="${f1(146 + Math.cos(a) * 26)}" cy="${f1(330 + Math.sin(a) * 26)}" r="5" fill="#3a3934"/>`; }
+    s += teeth + `<circle cx="146" cy="330" r="24" fill="#4d4c45"/><circle cx="146" cy="330" r="10" fill="#2b2a26"/>`; }
+  s += `<circle cx="850" cy="334" r="24" fill="#4d4c45"/><circle cx="850" cy="334" r="15" fill="#5f5d55"/><circle cx="850" cy="334" r="6" fill="#2b2a26"/>`;
+  for (let i = 0; i < 7; i++) { const x = 212 + i * 90; s += `<circle cx="${x}" cy="358" r="31" fill="#4d4c45"/><circle cx="${x}" cy="358" r="21" fill="#6d6b61"/><circle cx="${x}" cy="358" r="7" fill="#3a3934"/>`; }
+  // 侧裙板：前段下沿斜切，前三块是加厚的装甲裙板
+  const skirt = [[118, 236], [868, 236], [902, 262], [860, 322], [132, 322], [118, 300]];
+  s += ext(skirt, -0.03, 0, '#c6b083');
+  const K = (x, y) => at(x, y, -0.03);
+  s += `<path d="${pd([K(640, 236), K(868, 236), K(902, 262), K(860, 322), K(640, 322)])}" fill="#bea87a"/>`;
+  s += `<path d="${pd([K(124, 310), K(869, 310), K(860, 322), K(132, 322)])}" fill="#a8936a"/>`;
+  for (let i = 1; i < 10; i++) s += line(K(118 + i * 76, 238), K(118 + i * 76, 320), '#a3906a', 3);
+  s += `<rect x="878" y="247" width="16" height="9" rx="2" fill="#f6efd8"/>`;                          // 车头灯
   return `<svg width="${w * 1.06}" height="${w * 0.42}" viewBox="0 0 1060 420">
-  <ellipse cx="530" cy="402" rx="480" ry="16" fill="rgba(40,30,20,.16)"/>
-  <path fill="#2a2925" transform="translate(${D[0]} ${D[1]})" d="${track}"/>
-  <path fill="#dccb9f" d="M128 230 L808 230 L902 262 L${sh([[902, 262], [808, 230], [128, 230]])} Z"/>
-  ${grille}
-  <path fill="#c8b386" d="M226 166 L306 166 L${sh([[306, 166], [226, 166]])} Z"/>
-  <path fill="#bba477" d="M232 166 H306 V224 H226 Z"/>
-  <g stroke="#8f7c56" stroke-width="3"><path d="M232 182 H306 M232 198 H306 M232 212 H306 M252 166 V224 M278 166 V224"/></g>
-  <path fill="#d9c79b" d="M300 178 L792 178 L${sh([[792, 178], [300, 178]])} Z"/>
-  <path fill="#b39d6f" d="M792 178 L${sh([[792, 178], [776, 228]])} L776 228 Z"/>
-  <path fill="#c0a97b" d="M300 178 H792 L776 228 H286 L270 200 Z"/>
-  <path fill="#ad9668" d="M270 200 L286 228 H776 L782 210 H276 Z"/>
-  <ellipse cx="470" cy="156" rx="30" ry="9" fill="#bfa97c"/>
-  <rect x="556" y="132" width="68" height="22" fill="#b39d6f"/><ellipse cx="590" cy="154" rx="34" ry="10" fill="#b39d6f"/><ellipse cx="590" cy="132" rx="34" ry="11" fill="#cdb98e"/>
-  <path d="M612 128 H702" stroke="#4a4a44" stroke-width="7" stroke-linecap="round"/>
-  <path d="M342 158 L304 40 M366 152 L352 62" stroke="#55534c" stroke-width="3"/>
-  <path fill="#cdb88d" d="M128 230 H808 L902 262 L872 274 H112 Z"/>
-  <rect x="868" y="258" width="16" height="8" fill="#f6efd8"/>
-  <path fill="#33322d" d="${track}"/>
-  ${tread}
-  <circle cx="142" cy="334" r="27" fill="#4d4c45"/><circle cx="142" cy="334" r="12" fill="#2b2a26"/>
-  <circle cx="836" cy="334" r="25" fill="#4d4c45"/><circle cx="836" cy="334" r="10" fill="#2b2a26"/>
-  ${wheels}
-  <path fill="#c3ad81" d="M112 270 H846 L872 302 L852 340 H124 L106 302 Z"/>
-  <path fill="#a8936a" d="M106 302 H872 L852 340 H124 Z"/>
-  ${skirt}
-  <circle cx="700" cy="204" r="9" fill="#55534c"/>
-  <rect x="818" y="164" width="36" height="42" rx="4" fill="#a38d61"/>
-  <rect x="852" y="176" width="70" height="16" fill="#a28c5f"/>
-  <rect x="920" y="172" width="40" height="24" rx="5" fill="#968155"/>
-  <rect x="958" y="179" width="74" height="12" fill="#a28c5f"/>
-  <rect x="1030" y="177" width="12" height="16" rx="2" fill="#7f6c46"/>
+  <ellipse cx="520" cy="404" rx="490" ry="15" fill="rgba(40,30,20,.16)"/>
+  <g transform="translate(-36 0)">${s}</g>
 </svg>`;
 }
 // 车载电脑的小屏（放在坦克旁的引出框里）

@@ -10,7 +10,7 @@
 |---|---|---|
 | Firebird | 5.0.4.1812 Windows x64 官方 zip，25,206,603 字节，SHA-256 `01e844fce4d5f53272a76205dbc3a1ba4b782ab8e8eadcd808cdbccd9ce13b72` | GitHub Release [v5.0.4](https://github.com/FirebirdSQL/firebird/releases/tag/v5.0.4)，2026-04-17 发布 |
 | 实验 | `lab/01_two_modes.py`，回显 `lab/out_01_two_modes.txt`；Windows 11，配置全缺省（只改端口 3051），口令现场生成未入库，路径已替换为 `<fb>` | 2026-11-08 |
-| 排名 | `lab/02_dbengines.py`，回显 `lab/out_02_dbengines.txt` | 2026-11-08 取回，2026 年 11 月榜 |
+| 排名 | `lab/02_dbengines.py`，回显 `lab/out_02_dbengines.txt` | 2026-11-08 取回，2026 年 11 月榜；2026-11-10 交付前重取，名次与得分不变 |
 
 ## 对象与解释路径
 
@@ -87,9 +87,9 @@ InterBase 源于 Jim Starkey 的多版本想法（H01–H02），1984 年在自�
 | E07 | MySQL、PostgreSQL 常规用法是客户端/服务端；SQLite 不设服务进程 | [PostgreSQL 18 §18.3](https://www.postgresql.org/docs/18/server-start.html)；[SQLite Serverless](https://sqlite.org/serverless.html)；[MySQL 手册 mysqld](https://dev.mysql.com/doc/refman/9.7/en/mysqld-server.html) | 旧版 FACTS C01–C02 | 已核；说的是常规用法，不称「只有 Firebird 能两种」 |
 | E08 | PostgreSQL 以 MVCC 实现并发控制 | [PostgreSQL 18 §13.1](https://www.postgresql.org/docs/18/mvcc-intro.html) | — | 已核 |
 | U01 | 官网案例：莫斯科第 31 医院分析系统、洗车行业收银系统、电信计费系统 XPertBilling | [Case Studies](https://firebirdsql.org/en/case-studies/) | — | 已核；官网展示的案例，不代表全部用户 |
-| U02 | DB-Engines 2026 年 11 月关系数据库榜（170 个系统）：MySQL 第 2、823.23；PostgreSQL 第 4、689.69；SQLite 第 8、94.68；Firebird 第 20、18.45。MySQL ÷ Firebird ≈ 44.6。得分为相对流行度，不是装机量或市场份额 | `lab/out_02_dbengines.txt` | — | 已取；交付前重取一次 |
+| U02 | DB-Engines 2026 年 11 月关系数据库榜（170 个系统）：MySQL 第 2、823.23；PostgreSQL 第 4、689.69；SQLite 第 8、94.68；Firebird 第 20、18.45。MySQL ÷ Firebird ≈ 44.6。得分为相对流行度，不是装机量或市场份额 | `lab/out_02_dbengines.txt` | — | 已取；2026-11-10 交付前重取，四项名次与得分均不变 |
 | U03 | 项目商业上独立，靠自愿资助 | About Firebird | — | 已核 |
-| U04 | 5.0 于 2024-01-11 发布；5.0.4 于 2026-04-17 发布；第 6 版路线图已公布，计划 2026 年发布，截至 2026-11-08 官方未发布 6.0 | [公告](https://firebirdsql.org/en/news/firebird-5-0-is-released/)；GitHub Releases；[路线图](https://www.firebirdsql.org/en/news/firebird-6-roadmap-is-published) | GitHub tags 无 v6 | 已核；交付前复查 |
+| U04 | 5.0 于 2024-01-11 发布；5.0.4 于 2026-04-17 发布；第 6 版路线图已公布，计划 2026 年发布，截至 2026-11-08 官方未发布 6.0；2026-11-10 交付前复查仍未发布（GitHub Releases 最新 v5.0.4） | [公告](https://firebirdsql.org/en/news/firebird-5-0-is-released/)；GitHub Releases；[路线图](https://www.firebirdsql.org/en/news/firebird-6-roadmap-is-published) | GitHub tags 无 v6 | 已核；2026-11-10 已复查 |
 
 ### 图注：观众多半已经忘了的公司与网站
 

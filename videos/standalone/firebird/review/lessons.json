@@ -4,176 +4,176 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片 0:00–4:20：核心问题「让火狐改了名的数据库是什么来头、今天能拿来做什么」写在 README「设计」。开场由火狐改名提问，第 1–5 章讲来头，第 6 章「两边都站」回答能做什么，结尾回到火狐与 MySQL/PostgreSQL/SQLite 之外的「第三选择」。方法：通读 script.js，并在 r8–r10 抽帧总览上逐章标出推进点"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 第 1 章 30–41 s：多版本只用一条记录走完「改一条记录→旧的留着→读的看旧、写的写新→不用等」；第 6 章（179–225 s）用同一个 shop.fdb 文件演示两条通道（引擎在程序里／经网络连服务器）。本片按简报只做入门介绍，底层一句带过。方法：r10 抽帧逐步核对输入、变化与结果"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 结尾 225–233 s：DB-Engines 比较的口径在画面写明「关系数据库榜 · 2026 年 11 月 · 流行度得分」，图注解释得分由网上提及、搜索、问答、招聘热度算出（FACTS G08），四个对象同榜同口径；「四十多倍」= 823.23 ÷ 18.45 ≈ 44.6（FACTS U02，2026-11-10 重取未变）。方法：逐个核对名称与比较第一次出现时的旁白和画面"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js（zh 全片，2026-11-10，正式成片的源码）报 38 处文字稳定时长低于「1.5 秒 + 字数 ÷ 5」。差得多的：Ashton-Tate 图注 1.9/4.7 s（89.7 s）、SourceForge 图注 0.9/3.5 s（128.4 s）、Mozilla 图注 3.6/5.3 s（162.0 s）、「四十多倍」1.1/2.3 s（232.3 s）、「重启中」0.6/2.1 s（79.7 s）、「拆分谈崩」0.6/2.3 s（110.4 s）；其余多数差 0.1–0.7 s；撕日历「开源第 N 天」与翻月份「2 月」等是一页页翻过的动画，不是要读的字。策划者看过 r10 后只要求两处换页各加 0.3、0.2 秒并「直接出正式片、不要引入新 Bug 返工」，本轮照做未再调整其余停留；全部明细见 README「交付」，是否再改由策划者决定",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：每个关键动作对应一件事：写的人（橙、铅笔）流进新版本、读的人（蓝、眼睛）从旧版本流出，两向分开（r7 意见 7）；商标检索的放大镜与印章；Groton 牌子翻成 InterBase；剪刀剪下业务条、谈崩又弹回；开源日历一页页撕；锁真的打开；信堆到 Mozilla 卡片一晃；Borland 松手、人群接住标志。方法：r8–r10 三轮独立审片抽帧与制作方逐段核对"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 主混音：配乐为本片单独写的 Motorik 电子摇滚（tools/music.py，动机取自 FIREBIRD 中的音名 F、E、B、D，有贯穿的低频铺底），策划者 2026-11-09 在审片页三首小样中选定 C；音效 262 个事件、9 种，按动作登记。策划者看了有声的 r8–r10 预览，意见里没有声音问题。制作方不能人耳试听，响度等数值见 README「交付」"
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片与封面：终端画面（第 6 章）只显示 shop.fdb 与 isql 的通用回显，场景源码中没有个人目录、主机名、地址或凭据（grep Users、/home、C:\\、localhost、192.168 无结果）；封面只用标志与本片画面元素"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "最终文件 out/firebird-zh-1080p60.mp4 上用 ffprobe 与 finish.js 实测：H.264 1920×1080、60/1 fps、视频 15632 帧 260.533 s、AAC 48 kHz 双声道 260.595 s、容器 260.595 s；响度 I = −15.6 LUFS、真峰值 −1.4 dBFS（finish.js 在最终 AAC 编码后的 MP4 上测）。渲染画面 15636 帧，封装的 -shortest 截去片尾署名最后 4 帧静止画面（0.067 s），已写进 README「交付」；文件名、哈希与 README 记录逐项对照"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md：策划者意见逐条原话记录并注日期（r7 八条及补充、r10 四条与封面），独立审片者注明为同型号子代理、只看抽帧，制作方判断与核实单列；事实类异议回到 FACTS（如 Firebird 6 状态、DB-Engines 重取）"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：独立片，不引用其他集；DEC、Ashton-Tate、Borland、Inprise、SourceForge、Mozilla 等观众可能忘了的公司都在画面上配了图注（策划者 2026-11-10 要求）。方法：逐句检查对外部对象的引用都有本片内的交代"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 第 2 章 111–118 s：两份新闻稿保留英文原题（FACTS H16b），每张下方用 100px 中文大字给出含义「不卖了」「开源了」，旁白同步说明；其余外文只有产品名与「FREE LIKE FREE BEER」（旁注「官网用语：像免费啤酒一样不要钱」）。方法：look.js 逐帧查看这两处"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 配音：专名读法清单在 script.js 的 SAY 表（SQLite、PostgreSQL→「Postgres Q L」、SourceForge→「Source Forge」等），断句用 tts 字段的逗号。Whisper 回听全片逐句无漏读；PostgreSQL 新旧读法各四句用英文模式单独转写对比（见 NOTES 第三轮）。PostgreSQL 读法按策划者 r7 意见 3 改过，策划者此后看了有声的 r10，意见里没有读音问题。制作方不能人耳试听，读音以策划者看片为准"
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:00–0:23：先从观众熟悉的火狐浏览器引入（二〇〇三年曾叫 Firebird），再说名字的主人是一个数据库、与熟悉的 MySQL/PostgreSQL/SQLite 并列，最后给路线「得从一间浴室说起」；年代（八十年代初、一九八四年）在第 1 章开头交代"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 片尾 254.7 s 起：credits cue 为无旁白的静默 cue（pause 5，credits: true），名单由 s9_credits.js 从 project.json 读取；script-review.js 校对稿无制作指令；check.js 文案确认通过"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：逐屏列出说明性小字，只有观众需要的内容（如「坊间流传的梗，未经证实」「官网用语：像免费啤酒一样不要钱」、公司图注）；源码 grep「示意」「按源」「默认」等制作者口吻用语无结果"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：画面取 Firebird 官方文档的版式（白页、左侧目录与绿色当前章标记、面包屑、编号标题、图注色 #7a2518）与官方火鸟标志；数据库、浏览器和公司一律用各自的正式标志（来源与许可见 research/MATERIALS.md）。方法：任取 r10 帧不看字幕可认出 Firebird 文档页"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "配音音色：策划者 2026-11-09 在本地审片页试听五个候选与代表段后选定 Arrogant_Miss（MiniMax speech-2.8-hd，语速 1.2），记录在 README「设计」；全片按实测时长排时间线。语气的人耳判断以策划者看有声预览为准，制作方不能人耳试听"
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 各章主画面：第 1 章浴室→「多版本」版本叠与读写流向→客房→InterBase→M1 坦克梗；第 2 章 Borland 收购与圣诞节前的裁员图；第 3 章开源后的源码树与六天日历、火鸟重生；第 4 章后门的登录卡与「七年」的版本；第 5 章浏览器标题 Phoenix→Firebird→Firefox；第 6 章服务与嵌入式两块底板和两条通道；结尾 DB-Engines 等距柱图。方法：r8–r10 独立审片逐章复述"
     },
     "F19": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：scan.js OVERLAP、CONTRAST 全部通过；r8–r10 审片中报出的中间帧问题（滚页、补间、「闭源」黑条半透明拖过、钱包与人群叠在一起）逐一取帧核实并修正；本轮改动的浴室 27.5–30.5 s 与坦克 75.8–79.8 s 按 1080p60 出细节片逐帧查来回跳的像素，水流无闪烁"
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：每个图形对应一件事（浴室=想通的地点，版本叠=多版本，硬币=买了好几回，剪刀=拆分业务，日历=六天，挂锁=后门，钱包与飞蛾=没钱，信=写信，柱图=流行度）；固定颜色语义：橙=写/Firebird，蓝=读，红=问题。方法：r10 逐屏列出并核对颜色没有中途换义"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉系统取自 Firebird 官方文档与标志色，配乐 Motorik 为本片单独写；check.js 的自成一体提示为通过（样式表、配乐脚本与其他片子不同）"
     },
     "F22": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：scan.js GLOSS 全部通过；新名词与观众忘了的公司第一次出现时都有图注（DEC、Ashton-Tate、Borland、Inprise、SourceForge、Mozilla、DB-Engines），并列的对象整组在场（开场三张数据库卡、结尾四个标志一排）。方法：关声音看 r10 抽帧"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 讲机制的两段：第 1 章多版本用写入流进新版本、读取从旧版本流出的连续动画；第 6 章两条通道上数据从程序（引擎在里面）或经网络流到同一个 shop.fdb。其余是历史叙事，用物件动作推进。方法：关声音看这两段能看出发生了什么"
     },
     "F24": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：每页一个静止的广角，镜头只在第 1 章推进二楼窗户时动一次（交代「办公室在家里二楼」）；章内换段为整页上滚。scan.js 无 CUT、CAPZONE 提示；r8–r10 审片按每句说完时刻核对正在讲的内容在画内"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：每段开始讲解对象即带实物在场（版本叠、终端回显、DB-Engines 得分与名次、新闻稿原题、日历日期），旁白讲到哪里点亮或推动哪里；画面上的字是数据、名称与图注，不复述字幕。方法：r8–r10 抽帧总览"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "script.js 与 review/NOTES.md：制作中主动改了读法（PostgreSQL、SourceForge）与停顿（tts 逗号、本轮 c2b、g2 的 gap），不改含义；数字与画面一致（「四十多倍」对 44.6 倍、「第二十」对 Firebird 第 20、「第六版的路线图」对 2026-11-10 复查仍未发布）；章节卡与旁白一致"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式成片：从最终 MP4 每 4 秒取一帧（65 帧）拼成两张总览图通看全片，字幕与画面同步、没有丢段；本轮改动处（29.2 s 浴室水流、77.32 s 开炮与 M1 引线）与片尾署名（258 s）取原尺寸帧看过；此前 r8 自审与 r8–r10 三轮独立审片按每 2 秒一帧总览逐段看过。scan.js 提示只有 129.5 s 的 DENSE（同屏 20 段，为撕日历的七页叠在一起，保留）。制作方不能以正常速度连续观看、不能试听，readable.js 的停留不足见 F04"
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 第 1 章：先说问题（改一条记录会挡住读的人），再在一条记录上演示，最后画面给名字「多版本」；第 6 章先问能拿来做什么，再演示两条通道，最后起名「服务」「嵌入式」。全片不出现 MVCC 等缩写；同一数字（四十多倍、第二十）前后一致"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "章内换段采用文档页整页上滚：页面框架、目录、章标题常驻，部分换段带物件过去（开场末尾露出下一章的浴室、Ashton-Tate 卡收进页首、InterBase 标志进入程序窗口、Firebird 标志落到两块底板接缝），但仍有几处换段是整屏内容全换、没有物件带过去（如第 2 章拆分谈崩→两份新闻稿、第 3 章 SourceForge→日历）。这是重置版选定的「官方文档翻页」形式，策划者看过 r10 后要求直接出正式片，未再改",
       "evidence": ""
     }
   },

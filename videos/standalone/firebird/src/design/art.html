@@ -21,6 +21,14 @@ if (q === '1') {
   put(560, 420, artDb(200, '<image href="/img/firebird-logo.png" x="40" y="80" width="120" height="120"/>'));
   put(780, 430, artCat(220));
 }
+if (q === '3') {
+  put(20, 40, artTank(1100));
+  put(1240, 0, artBathroom(660));
+  const wl = waterLines(0.4).map(([a, b, c, d]) => `<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="#4f86c6" stroke-width="4" stroke-linecap="round"/>`).join('');
+  const rp = waterRipples(0.4).map(([a, b, c, d, o]) => `<ellipse cx="${a}" cy="${b}" rx="${c}" ry="${d}" opacity="${o}" fill="none" stroke="#4f86c6" stroke-width="2.5"/>`).join('');
+  put(1240, 0, `<svg width="660" height="620" viewBox="0 0 660 620">${rp}${wl}</svg>`);
+  put(200, 560, artTank(600));
+}
 if (q === '2') {
   let x = 20, y = 20;
   for (const k of Object.keys(ART)) { put(x, y, ART[k]); x += 250; if (x > 1700) { x = 20; y += 260; } }
