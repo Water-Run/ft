@@ -48,7 +48,7 @@
 | [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md) | 审稿 | WaterRun | Claude Sonnet 5.5：片单迁移、立项建骨架、简报、观众诘问<br>Claude Opus 5.5：取证、实验、中文文案、配乐小样、关键帧、审片页 | 未登记 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 | [怎么打手枪？](standalone/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
-| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md) | 预览迭代 | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉与封面、场景、配乐、混音 | MiniMax speech-2.8-hd：旁白合成 |
+| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md) | 验收 | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉与封面、场景、配乐、混音 | MiniMax speech-2.8-hd：旁白合成 |
 | [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/README.md) | 已放弃 | WaterRun | 未登记 | 未登记 |
 
 ## 已发布视频
