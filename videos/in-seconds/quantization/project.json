@@ -44,17 +44,20 @@
     "still_seconds": 2.5,
     "camera": true,
     "style": {
-      "flat": true,
-      "no_radius": true,
+      "flat": false,
+      "no_radius": false,
       "no_emoji": true,
       "palette": [
-        "1B0E3F",
+        "0D0620",
+        "2A1466",
         "FFFFFF",
-        "7C3AED",
-        "CFC2FF",
-        "3C2785",
-        "FFD23F",
-        "120A2B"
+        "CDBDFF",
+        "1A0B5E",
+        "5B21D6",
+        "A855F7",
+        "E879F9",
+        "FFE3FF",
+        "FF6BB5"
       ],
       "fonts": [
         "Sans SC",
@@ -77,7 +80,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "音色（精英青年 beta）与配乐（B 刻度）已选定；WaterRun 对第二稿文案「还有意见」、紫色关键帧「要调整」，先收这两处的具体意见并改完，拿到文案的明确确认后再配音、实现",
+  "next": "音色（精英青年 beta）与配乐（B 刻度）已选定；文案第三稿与新关键帧已按 WaterRun 的两条意见改完，制作方先拿到文案与视觉的明确确认，再按实测排定各场定点、配音、实现",
   "credits": {
     "planner": "WaterRun",
     "models": [

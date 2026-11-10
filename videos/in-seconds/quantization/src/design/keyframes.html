@@ -4,81 +4,89 @@
 <script src="/js/data.js"></script>
 <style>
 html,body{margin:0;width:1920px;height:1080px;overflow:hidden}
-#stage{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;background:#1B0E3F;color:#fff;font-family:"Sans SC","Inter",sans-serif}
+#stage{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;color:#fff;font-family:"Sans SC","Inter",sans-serif;background:radial-gradient(1300px 760px at 32% 42%,#2A1466 0%,#0D0620 72%)}
 #stage div{position:absolute;box-sizing:border-box;white-space:nowrap;line-height:1}
 #stage svg{position:absolute;left:0;top:0}
-.m{font-family:"Mono","Sans SC"}
+.m{font-family:"Mono","Sans SC"}.n{font-family:"Inter","Sans SC";font-weight:300;letter-spacing:-1px}
 </style></head><body><div id="stage"></div>
 <script>
-// 紫色方向的三张关键帧：?f=1|2|3。数字全部来自 data.js（由 research/lab 生成）。
-// 主对象是「文件」这根横条：开头两根（55 GB、17 GB），中段钻进去看里面的数，结尾五根并排。
+// 关键帧三张：?f=1|2|3。数字全部来自 data.js（由 research/lab 生成）。
+// 设计从紫色出发：一个数的大小就是紫色的深浅（深靛 → 紫 → 粉白）。原版的色带是连续的，
+// 量化以后只剩几种紫：4 位 16 种，2 位 4 种，1 位 2 种。观众看到的「色带变粗」就是量化本身。
 const f = +new URLSearchParams(location.search).get('f') || 1, D = window.DATA, G = D.group, S = document.getElementById('stage');
-const C = { bg: '#1B0E3F', v: '#7C3AED', pale: '#3C2785', dim: '#CFC2FF', w: '#FFFFFF', hot: '#FFD23F', band: '#120A2B' };
+const STOPS = [[0, [26, 11, 94]], [0.35, [91, 33, 214]], [0.6, [168, 85, 247]], [0.82, [232, 121, 249]], [1, [255, 227, 255]]];
+const ramp = (u) => { u = Math.min(1, Math.max(0, u)); let i = 1; while (STOPS[i][0] < u) i++; const [a, ca] = STOPS[i - 1], [b, cb] = STOPS[i], t = (u - a) / (b - a || 1); return `rgb(${ca.map((c, k) => Math.round(c + (cb[k] - c) * t)).join(',')})`; };
+const smooth = (lo = 0, hi = 100) => `linear-gradient(90deg,${ramp(0)} 0%,` + STOPS.map(([u]) => `${ramp(u)} ${(lo + u * (hi - lo)).toFixed(2)}%`).join(',') + `,${ramp(1)} 100%)`;
+const bands = (n) => n > 16 ? smooth() : 'linear-gradient(90deg,' + Array.from({ length: n }, (_, k) => `${ramp(k / (n - 1))} ${(k / n * 100).toFixed(3)}% ${((k + 1) / n * 100).toFixed(3)}%`).join(',') + ')';
+const C = { dim: '#CDBDFF', w: '#FFFFFF', bad: '#FF6BB5', ink: '#1A0B5E', glow: '0 0 48px rgba(168,85,247,.55)' };
 const box = (x, y, w, h, css, html = '', cls = '') => S.insertAdjacentHTML('beforeend', `<div class="${cls}" style="left:${x}px;top:${y}px;${w != null ? `width:${w}px;` : ''}${h != null ? `height:${h}px;` : ''}${css}">${html}</div>`);
 const text = (x, y, size, html, css = '', cls = '') => box(x, y, null, null, `font-size:${size}px;${css}`, html, cls);
 const CAP = { 1: '可它还有个 17 GB 的版本，做题的分数几乎一样', 2: '先定 16 个值，每个数换成最近的那个', 3: '1 位的 6.2 GB，只对了一成，还不如瞎蒙' };
-const LEFT = { 1: 111, 2: 79, 3: 27 }, METER = { 1: ['17 GB', '每个数 ? 位'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'] };
+const LEFT = { 1: 109, 2: 77, 3: 25 }, METER = { 1: ['17 GB', 'Qwen3.8 27B'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'] };
 
 // 常驻元素：字幕带、秒尺、剩余秒数、右上仪表（位置按系列约定）
-text(60, 44, 44, LEFT[f], 'font-weight:800', 'm');
-box(1460, 40, 400, null, 'text-align:right', `<span class="m" style="font-size:46px;font-weight:800">${METER[f][0]}</span><br><span class="m" style="font-size:26px;line-height:1.5;color:${C.dim}">${METER[f][1]}</span>`);
-box(0, 968, 1920, 112, `background:${C.band};display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:600`, CAP[f]);
-box(0, 960, 1920, 8, `background:${C.pale}`);
-box(0, 960, 1920 * (120 - LEFT[f]) / 120, 8, `background:${C.v}`);
+text(60, 44, 44, LEFT[f], 'font-weight:500', 'm');
+box(1460, 40, 400, null, 'text-align:right', `<span class="n" style="font-size:50px">${METER[f][0]}</span><br><span class="m" style="font-size:26px;line-height:1.6;color:${C.dim}">${METER[f][1]}</span>`);
+box(0, 968, 1920, 112, 'background:rgba(8,3,20,.86);display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:500', CAP[f]);
+box(0, 962, 1920, 6, 'background:#2A1A55');
+box(0, 962, 1920 * (120 - LEFT[f]) / 120, 6, `background:${smooth()}`);
 
-if (f === 1) {                    // 开头：同一个模型的两个文件，一条 24 GB 的线
-  const x0 = 560, k = 16;         // 每 GB 16 像素
-  text(160, 176, 44, 'Qwen3.8 27B', 'font-weight:700', 'm');
-  text(160, 338, 104, '55 GB', 'font-weight:800', 'm'); text(164, 462, 34, '原版', `color:${C.dim}`);
-  text(160, 578, 104, '17 GB', 'font-weight:800', 'm'); text(164, 702, 34, '另一个版本', `color:${C.dim}`);
-  box(x0, 345, 24 * k, 110, `background:${C.v}`); box(x0 + 24 * k, 345, 31 * k, 110, `background:${C.pale}`);
-  text(x0 + 24 * k + 190, 383, 34, '装不下', `color:${C.dim}`);
-  box(x0, 585, 17 * k, 110, `background:${C.v}`);
-  box(x0 + 24 * k - 2, 290, 4, 450, `background:${C.hot}`);
-  box(x0 + 24 * k - 150, 236, 300, null, `text-align:center;font-size:34px;font-weight:700;color:${C.hot}`, '显卡 24 GB');
-  text(1540, 268, 30, '同一份卷子 · 答对', `color:${C.dim}`);
-  text(1540, 358, 84, '89.9%', 'font-weight:700', 'm'); text(1540, 598, 84, '90.4%', 'font-weight:700', 'm');
+if (f === 1) {                    // 开头：同一个模型的两个文件。原版的色带连续，小的那个只剩 16 种紫
+  const x0 = 160, k = 24, line = x0 + 24 * k;
+  text(160, 176, 44, 'Qwen3.8 27B', 'font-weight:600', 'm'); text(486, 188, 28, 'AI 模型', `color:${C.dim}`);
+  box(1360, 222, 400, null, `text-align:right;font-size:28px;color:${C.dim}`, '同一份卷子 · 答对');
+  [[55, '原版', '89.9%', 270, 65536], [17, '另一个版本', '90.4%', 560, 16]].forEach(([gb, name, score, y, n]) => {
+    text(156, y, 104, gb + ' GB', '', 'n'); text(480, y + 62, 32, name, `color:${C.dim}`);
+    box(1360, y + 8, 400, null, 'text-align:right;font-size:88px', score, 'n');
+    box(x0, y + 126, gb * k, 84, `border-radius:42px;background:${bands(n)};box-shadow:${C.glow}`);
+  });
+  box(line, 396 - 4, 31 * k + 4, 92, 'background:rgba(13,6,32,.66);border-radius:0 46px 46px 0');   // 24 GB 之外的部分压暗：装不下
+  box(line - 1.5, 372, 3, 440, `background:${C.w};box-shadow:0 0 18px rgba(255,255,255,.8)`);
+  box(line - 150, 826, 300, null, 'text-align:center;font-size:32px;font-weight:600', '显卡 24 GB');
 }
 
-if (f === 2) {                    // 中段：文件里真实的 32 个数，换成 16 个值里最近的一个
+if (f === 2) {                    // 中段：文件里真实的 32 个数，每个换成 16 种紫里最近的一种
   const X = (u) => 240 + (u + 8) * 96, same = new Set(G.sameCode), d = G.d;
   text(160, 178, 26, `取自文件 · ${G.tensor} · 第 ${G.index} 组 · 32 个数`, `color:${C.dim}`, 'm');
   // 一个数怎么存：16 位 → 4 位（位串由数值算出：BF16 是 32 位浮点数的高 16 位）
-  const v0 = G.values[2], fb = new Float32Array([v0]), bits16 = ((new Uint32Array(fb.buffer)[0] + 0x8000) >>> 16).toString(2).padStart(16, '0'), bits4 = G.codes[2].toString(2).padStart(4, '0');
-  text(160, 250, 48, v0.toFixed(6), 'font-weight:700', 'm');
-  [...bits16].forEach((b, i) => box(470 + i * 48, 240, 44, 60, `background:${C.pale};color:${C.dim};font-size:30px;display:flex;align-items:center;justify-content:center`, b, 'm'));
-  text(470, 312, 26, '16 位', `color:${C.dim}`);
-  text(1262, 250, 44, '→', `color:${C.dim}`);
-  [...bits4].forEach((b, i) => box(1330 + i * 48, 240, 44, 60, `background:${C.v};font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center`, b, 'm'));
-  text(1330, 312, 26, '4 位', `color:${C.dim}`);
-  text(1545, 252, 40, `第 ${G.codes[2]} 个`, `font-weight:700;color:${C.hot}`);
-  // 数轴：16 个值，间距 d
-  box(220, 699, 1480, 2, `background:${C.dim}`);
-  for (let c = 0; c < 16; c++) { box(X(c - 8) - 2, 684, 4, 32, `background:${C.w}`); box(X(c - 8) - 40, 728, 80, null, `text-align:center;font-size:28px;color:${c === 13 ? C.hot : C.dim}`, c, 'm'); }
-  box(X(5) - 120, 772, 240, null, `text-align:center;font-size:30px;font-weight:700;color:${C.hot}`, G.decoded[2].toFixed(6), 'm');
-  const stack = {}; let lines = '';
+  const v0 = G.values[2], c0 = G.codes[2], bits16 = ((new Uint32Array(new Float32Array([v0]).buffer)[0] + 0x8000) >>> 16).toString(2).padStart(16, '0'), bits4 = c0.toString(2).padStart(4, '0');
+  text(160, 246, 48, v0.toFixed(6), '', 'n');
+  [...bits16].forEach((b, i) => box(470 + i * 48, 236, 44, 60, `border:2px solid #6D4BD8;border-radius:10px;color:${C.dim};font-size:30px;display:flex;align-items:center;justify-content:center`, b, 'm'));
+  text(470, 308, 26, '16 位', `color:${C.dim}`);
+  text(1262, 246, 44, '→', `color:${C.dim}`);
+  [...bits4].forEach((b, i) => box(1330 + i * 48, 236, 44, 60, `background:${ramp(c0 / 15)};border-radius:10px;color:${C.ink};font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center`, b, 'm'));
+  text(1330, 308, 26, '4 位', `color:${C.dim}`);
+  text(1545, 248, 40, `第 ${c0} 个`, 'font-weight:600');
+  // 上：连续的色带，32 个数各在自己的位置；下：16 个值，16 种紫
+  box(144, 404, 1584, 70, `border-radius:35px;background:${smooth(96 / 1584 * 100, 1536 / 1584 * 100)};box-shadow:${C.glow}`);
+  for (let c = 0; c < 16; c++) {
+    box(X(c - 8) - 46, 640, 92, 70, `border-radius:14px;background:${ramp(c / 15)};${c === 13 ? `outline:3px solid ${C.w};outline-offset:4px;box-shadow:0 0 30px rgba(255,255,255,.55)` : ''}`);
+    box(X(c - 8) - 40, 728, 80, null, `text-align:center;font-size:26px;color:${c === 13 ? C.w : C.dim}`, c, 'm');
+  }
+  let lines = '';
   G.values.forEach((v, i) => {
-    const c = G.codes[i], n = stack[c] = (stack[c] || 0) + 1, col = same.has(i) ? C.hot : C.dim, fill = same.has(i) ? C.hot : C.v;
-    const ox = X(v / d), oy = 420 + (i % 4) * 24, tx = X(c - 8), ty = 672 - n * 26;
-    lines += `<line x1="${ox}" y1="${oy + 9}" x2="${tx}" y2="${ty}" stroke="${col}" stroke-width="${same.has(i) ? 3 : 1.5}" opacity="${same.has(i) ? 1 : 0.55}"/>`;
-    box(ox - 9, oy - 9, 18, 18, `border:3px solid ${col};border-radius:50%`);
-    box(tx - 11, ty, 22, 22, `background:${fill}`);
+    const hi = same.has(i), ox = X(v / d), oy = 419 + (i % 3) * 20, r = hi ? 12 : 9;
+    lines += `<line x1="${ox}" y1="${oy + r}" x2="${X(G.codes[i] - 8)}" y2="640" stroke="#fff" stroke-width="${hi ? 3 : 1.5}" opacity="${hi ? 1 : 0.32}"/>`;
+    box(ox - r, oy - r, 2 * r, 2 * r, `border:${hi ? 4 : 2.5}px solid ${C.w};border-radius:50%;${hi ? 'box-shadow:0 0 14px #fff' : 'opacity:.85'}`);
   });
   S.insertAdjacentHTML('afterbegin', `<svg width="1920" height="1080">${lines}</svg>`);
-  text(1730, 442, 28, '原来的数', `color:${C.dim}`); text(1730, 632, 28, '换成的值', `color:${C.dim}`);
+  box(1128, 358, 600, null, 'text-align:right;font-size:26px', [...same].map((i) => G.values[i]).sort().map((v) => v.toFixed(6)).join('&nbsp;&nbsp;'), 'm');
+  box(X(5) - 120, 768, 240, null, 'text-align:center;font-size:30px;font-weight:600', G.decoded[2].toFixed(6), 'm');
+  text(1744, 425, 28, '原来的数', `color:${C.dim}`); text(1744, 661, 28, '16 个值', `color:${C.dim}`);
 }
 
-if (f === 3) {                    // 结尾：五个版本，同一份卷子
-  const TIER = ['原版', '8 位', '4 位', '2 位', '1 位'], sx = 330, sk = 9, px = 1080, pk = 6.4, guess = px + 25 * pk;
-  text(sx, 184, 30, '体积', `color:${C.dim}`); text(px, 184, 30, '198 道选择题 · 答对', `color:${C.dim}`);
-  box(guess - 2, 232, 4, 628, `background:${C.hot}`);
-  box(guess - 120, 874, 240, null, `text-align:center;font-size:28px;font-weight:700;color:${C.hot}`, '瞎蒙 25%');
+if (f === 3) {                    // 结尾：五个版本并排。色带越短越粗，分数在右
+  const TIER = ['原版', '8 位', '4 位', '2 位', '1 位'], bx = 420, bk = 11.5, tx = 1180, tk = 3, guess = tx + 25 * tk;
+  text(bx, 140, 28, '体积', `color:${C.dim}`); text(tx, 140, 28, '198 道选择题 · 答对', `color:${C.dim}`);
+  box(guess - 1, 186, 0, 680, `border-left:2px dashed ${C.dim}`);
+  box(guess - 120, 880, 240, null, `text-align:center;font-size:26px;color:${C.dim}`, '瞎蒙 25%');
   D.files.forEach((r, i) => {
-    const y = 250 + i * 128, bad = r.score < 25, sw = r.score * pk;
-    text(120, y + 2, 46, TIER[i], 'font-weight:700'); text(120, y + 58, 24, r.name, `color:${C.dim}`, 'm');
-    box(sx, y + 4, r.gb * sk, 64, `background:${C.v}`); text(sx + r.gb * sk + 16, y + 16, 40, r.gb + ' GB', 'font-weight:700', 'm');
-    box(px, y + 4, sw, 64, `background:${bad ? C.hot : C.w}`);
-    text(Math.max(px + sw + 16, bad ? guess + 22 : 0), y + 16, 40, r.score.toFixed(1) + '%', `font-weight:700;color:${bad ? C.hot : C.w}`, 'm');
+    const y = 196 + i * 142, bad = r.score < 25, col = bad ? C.bad : C.w;
+    text(118, y, 60, r.gb + ' GB', '', 'n'); text(122, y + 72, 26, `${TIER[i]} · ${r.name}`, `color:${C.dim}`);
+    box(bx, y + 6, r.gb * bk, 60, `border-radius:30px;background:${bands(r.levels)};box-shadow:${C.glow}`);
+    box(tx, y + 33, r.score * tk, 6, `background:${col};border-radius:3px`);
+    box(tx + r.score * tk - 9, y + 27, 18, 18, `background:${col};border-radius:50%;box-shadow:0 0 16px ${col}`);
+    box(1500, y - 2, 300, null, `text-align:right;font-size:72px;color:${col}`, r.score.toFixed(1) + '%', 'n');
   });
 }
 document.body.dataset.ready = '1';
