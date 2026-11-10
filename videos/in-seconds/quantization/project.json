@@ -77,7 +77,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "音色（精英青年 beta）与配乐（B 刻度）已选定；制作方先向 WaterRun 要到第二稿文案与紫色方向的明确确认，再按实测排定各场定点、配音、实现",
+  "next": "音色（精英青年 beta）与配乐（B 刻度）已选定；WaterRun 对第二稿文案「还有意见」、紫色关键帧「要调整」，先收这两处的具体意见并改完，拿到文案的明确确认后再配音、实现",
   "credits": {
     "planner": "WaterRun",
     "models": [
