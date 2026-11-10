@@ -11,7 +11,7 @@ scene('xmas', ({ root, s }) => {
   const ash = fbCard(A, 80, 90, 520, 380, `<img src="/img/logo-ashton.svg" style="position:absolute;left:40px;top:34px;width:440px;height:61px"><div class="line" style="position:absolute;left:40px;right:40px;top:120px"></div><div class="abs" style="left:190px;top:136px">${fbDbPlain(140)}</div><div class="nm" style="position:absolute;left:0;right:0;top:318px">InterBase</div>`);
   fbIn(ash, T('b1', 'InterBase') - 0.2, { x: -120, rotationZ: -3 }, { ease: 'back.out(1.3)', d: 0.4 });
   sfx('pop', T('b1', 'InterBase'), { p: -0.5 });
-  const ashCap = fbCap(A, 84, 494, 'Ashton-Tate', '做 dBASE 数据库的软件公司，InterBase 当时归它', 560);
+  const ashCap = fbCap(A, 84, 494, 'Ashton-Tate', '做 dBASE 数据库的软件公司，InterBase 当时归它', 460);
   fbCapIn(ashCap, T('b1', '随') - 0.1);
   const bor = fbCard(A, 820, 70, 560, 560, `<img src="/img/logo-borland.svg" style="position:absolute;left:110px;top:40px;width:340px;height:97px"><div class="abs" style="left:50px;top:180px;width:460px;height:340px;border:4px dashed #d8d6cf"></div>`);
   fbIn(bor, T('b1', '收购') - 0.35, { x: 160, rotationZ: 3, z: 60 }, { ease: 'back.out(1.3)', d: 0.4 });
@@ -19,7 +19,7 @@ scene('xmas', ({ root, s }) => {
   // 收购：Ashton-Tate 整个装进 Borland
   const tBuy = T('b1', '归') - 0.3;
   to(ash, tBuy, { x: 760, y: 140, scale: 0.86, z: 40, duration: 0.5, ease: 'power3.inOut' });
-  fbOut(ashCap, tBuy);
+  to(ashCap, tBuy, { x: 230, y: -150, duration: 0.5, ease: 'power3.inOut' });
   sfx('thud', tBuy + 0.45, { g: 0.9, p: 0.4 });
   const borCap = fbCap(A, 824, 650, 'Borland', '美国软件公司，做 Turbo Pascal、Delphi 等编程工具', 600);
   fbCapIn(borCap, T('b1', 'Borland') - 0.05);
@@ -30,7 +30,7 @@ scene('xmas', ({ root, s }) => {
   to(bor, tHead, { x: -760, y: -60, scale: 0.42, duration: 0.55, ease: 'power3.inOut' });
   to(ash, tHead, { x: -162.4, y: -123, scale: 0.361, duration: 0.55, ease: 'power3.inOut' });
   to(borCap, tHead, { x: 390 - 824, y: 60 - 650, duration: 0.55, ease: 'power3.inOut' });
-  fbOut(y91, tHead);
+  fbOut(y91, tHead); fbOut(ashCap, tHead);
   to(ash.querySelector('.nm'), tHead, { autoAlpha: 0, duration: 0.2 });
 
   // ── B 一九九九年圣诞前：赚得不够，至少裁一半，第六版停了 ──
@@ -78,21 +78,22 @@ scene('xmas', ({ root, s }) => {
   fbIn(banner, T('b4', '买') - 0.2, { y: 60, rotationZ: -3 }, { d: 0.35, ease: 'back.out(1.6)' });
   sfx('pop', T('b4', '买'), { g: 0.7, p: -0.4 });
   // 价格线与硬币堆：越过一回、两回，还在往上摞
-  const BASE = 720, U = 200;
+  const BASE = 720, U = 200;   // 硬币一枚高 30，四枚多一点摞到一回的价格线
   const lines = [1, 2].map((n) => {
-    const l = fbAbs(C, 760, BASE - n * U, `<div style="width:620px;border-top:4px dashed ${n === 1 ? '#2156a5' : '#8ea6c0'}"></div><div class="${n === 1 ? 'lab-b' : 'lab-s'}" style="position:absolute;left:300px;top:-48px">${n === 1 ? 'InterBase 的价格' : '两倍'}</div>`);
+    const l = fbAbs(C, 760, BASE - n * U, `<div style="width:620px;border-top:4px dashed ${n === 1 ? '#2156a5' : '#8ea6c0'}"></div><div class="${n === 1 ? 'lab-b' : 'lab-s'}" style="position:absolute;left:380px;top:-48px">${n === 1 ? 'InterBase 的价格' : '两倍'}</div>`);
     return l;
   });
-  const tA = T('b4', '买') + 0.1, tB = T('b5', '好几回') + 0.2, NC = 26;
+  const tA = T('b4', '买') + 0.1, tB = T('b5', '好几回') + 0.2, NC = 13;
+  const coinBig = ART.coin.replace('width="90" height="60"', 'width="220" height="147"');
   for (let i = 0; i < NC; i++) {
-    const coin = fbAbs(C, 960 + ((i * 7) % 5) * 3, BASE - 52 - i * 21, ART.coin);
+    const coin = fbAbs(C, 880 + ((i * 7) % 5) * 5, BASE - 140 - i * 36, coinBig);
     const t = tA + (tB - tA) * i / NC;
     fbIn(coin, t, { y: -120 }, { d: 0.16, ease: 'power2.in' });
     if (i % 2 === 0) sfx('tick', t + 0.14, { g: 0.45, p: 0.2 });
-    if (i === 9) fbIn(lines[0], t, { scaleX: 0, transformOrigin: '0 50%' }, { d: 0.3 });
-    if (i === 19) fbIn(lines[1], t, { scaleX: 0, transformOrigin: '0 50%' }, { d: 0.3 });
+    if (i === 2) fbIn(lines[0], t, { scaleX: 0, transformOrigin: '0 50%' }, { d: 0.3 });
+    if (i === 7) fbIn(lines[1], t, { scaleX: 0, transformOrigin: '0 50%' }, { d: 0.3 });
   }
-  const many = fbAbs(C, 1120, BASE - 2 * U - 150, fbTag('好几回'));
+  const many = fbAbs(C, 1160, 120, fbTag('好几回'));
   fbIn(many, T('b5', '好几回') - 0.05, { scale: 1.5 }, { d: 0.25, ease: 'back.out(1.8)' });
   sfx('thud', T('b5', '好几回'), { g: 0.8, p: 0.4 });
 

@@ -100,6 +100,11 @@ scene('shower', ({ root, s }) => {
   const nowait = fbAbs(B, 1360, 470, `<div style="display:flex;align-items:center;gap:10px"><svg width="70" height="90" viewBox="0 0 120 170"><path d="M22 18 H98 C98 58 66 70 66 85 C66 100 98 112 98 152 H22 C22 112 54 100 54 85 C54 70 22 58 22 18 Z" fill="#e9f0f7" stroke="#8e98a4" stroke-width="6"/><path d="M8 160 L112 10" stroke="#bf0000" stroke-width="12" stroke-linecap="round"/></svg><span class="lab-b">不用等</span></div>`);
   fbIn(nowait, T('a4', '不用') - 0.05, { scale: 0.4 }, { d: 0.3, ease: 'back.out(2)' });
   sfx('tick', T('a4', '不用'), { g: 0.7, p: 0.5 });
+  // 同样的思路：这一套就叫多版本，底下铺一块浅橙色的板标出来
+  const mv = fbAbs(B, 270, 210, '<div style="width:690px;height:450px;background:rgba(250,172,25,.18);border:4px solid #F68A21"></div><div class="lab-o" style="position:absolute;left:18px;top:-50px">多版本</div>');
+  B.insertBefore(mv, B.firstChild);
+  fbIn(mv, T('a5', '思路') - 0.1, { scale: 0.92 }, { d: 0.16, ease: 'power3.out' });
+  sfx('tick', T('a5', '思路'), { g: 0.6 });
   // 同样的思路在 PostgreSQL 里也能见到
   const pgc = fbLogo(B, 30, 40, 'postgresql', 170);
   fbIn(pgc, T('a5', 'PostgreSQL') - 0.1, { x: -90, rotationZ: -3 }, { ease: 'back.out(1.4)' });
@@ -219,13 +224,23 @@ scene('shower', ({ root, s }) => {
   fbCapIn(grCap, T('a12b', 'Groton') + 0.1);
   // 电话：铃响，听筒拿起，那头念成 Rotten
   const phG = fbAbs(D, 860, 470, ''); css(phG, { width: '260px', height: '210px' });
+  const cord = fbAbs(phG, 0, 0, '<svg width="420" height="320" viewBox="0 0 420 320" style="overflow:visible"><path fill="none" stroke="#3a3a3a" stroke-width="4"/></svg>');
   const phone = fbAbs(phG, 0, 30, ART.phone);
-  const rcv = fbAbs(phG, -5, 35, ART.receiver);
+  const rcv = fbAbs(phG, -5, 40, ART.receiver);
   init(phG, { scale: 1.35, transformOrigin: '0 0' });
   fbIn(phG, T('a13') - 0.3, { y: 60 }, { d: 0.3, end: { scale: 1.35 } });
   const r0 = T('a13') - 0.1, rUp = T('a13', '电话') + 0.05;
   F((t) => { rcv.style.rotate = t > r0 && t < rUp ? (Math.sin((t - r0) * 50) * 6).toFixed(1) + 'deg' : '0deg'; });
   to(rcv, rUp, { y: -70, x: 30, rotationZ: -18, duration: 0.25, ease: 'power3.out' });
+  // 线圈：从底座左侧连到听筒左端，听筒拿起来时跟着拉长
+  const cp = cord.querySelector('path');
+  F(() => {
+    const x = +gsap.getProperty(rcv, 'x'), y = +gsap.getProperty(rcv, 'y'), r = (+gsap.getProperty(rcv, 'rotation')) * Math.PI / 180;
+    const lx = 30 - 100, ly = 44 - 35, bx = -5 + 100 + x + lx * Math.cos(r) - ly * Math.sin(r), by = 40 + 35 + y + lx * Math.sin(r) + ly * Math.cos(r);
+    const ax = 22, ay = 150, n = 9; let d = `M${ax} ${ay}`;
+    for (let i = 1; i <= n * 4; i++) { const k = i / (n * 4), px = ax + (bx - ax) * k, py = ay + (by - ay) * k + 30 * Math.sin(k * Math.PI), w = Math.sin(i * Math.PI / 2) * 9; d += ` L${f1(px - w)} ${f1(py)}`; }
+    cp.setAttribute('d', d);
+  });
   sfx('beep', r0, { g: 0.4, p: 0.4 });
   const bub = fbAbs(D, 880, 345, '“Rrrrotten Database Systems?”', 'bubble');
   css(bub, { position: 'absolute', fontSize: '36px' });
@@ -243,8 +258,8 @@ scene('shower', ({ root, s }) => {
   // ── E 一个不碍事的数据库：好装、几乎不用管、能放进程序里 ──
   const E = fbSec(pl);
   fbScroll(D, E, T('a14') - 0.4);
-  const ib = fbAbs(E, 720, 0, fbDbPlain(180));
-  const ibL = fbAbs(ib, 0, 112, '<div class="nm" style="width:180px;font-size:32px">InterBase</div>');
+  const ib = fbAbs(E, 700, -10, fbDbPlain(220));
+  const ibL = fbAbs(ib, 0, 138, '<div class="nm" style="width:220px;font-size:38px">InterBase</div>');
   fbDrop(ib, T('a14') - 0.05, -180);
   sfx('thud', T('a14') + 0.3, { g: 0.7 });
   const quiet = fbAbs(E, 930, 70, fbTag('不碍事'));
@@ -259,7 +274,7 @@ scene('shower', ({ root, s }) => {
   tile(600, `<div class="abs" style="left:120px;top:50px">${ART.gear}</div><div class="abs" style="left:270px;top:40px">${ART.zz}</div>`, '几乎不用管', T('a14', '几乎'));
   const t3 = tile(1100, `<div class="abs" style="left:50px;top:40px">${artApp(320, 210, '应用程序')}</div>`, '放进程序里', T('a15', '放进'));
   const tIn = T('a15', '应用') - 0.15;
-  to(ib, tIn, { x: 1100 + 50 + 160 - 810, y: 290 + 40 + 120 - 108, scale: 0.42, z: 80, duration: 0.5, ease: 'power3.inOut' });
+  to(ib, tIn, { x: 500, y: 338, scale: 0.36, z: 80, duration: 0.5, ease: 'power3.inOut' });
   sfx('thud', tIn + 0.45, { g: 0.8, p: 0.5 });
   fbOut(quiet, tIn); to(ibL, tIn, { autoAlpha: 0, duration: 0.15 });
 
@@ -267,20 +282,22 @@ scene('shower', ({ root, s }) => {
   const Fs = fbSec(pl);
   fbScroll(E, Fs, T('a16') - 0.4);
   const note = fbAbs(Fs, 60, 10, '<div class="adm"><div class="ic">!</div><div class="ln"></div><div class="tx">坊间流传的梗，未经证实</div></div>');
-  fbIn(note, T('a16', '流传') - 0.1, { x: -60 }, { d: 0.35 });
-  sfx('pop', T('a16', '流传'), { g: 0.6, p: -0.5 });
+  fbIn(note, T('a16') + 0.05, { x: -60 }, { d: 0.3 });
+  sfx('pop', T('a16') + 0.1, { g: 0.6, p: -0.5 });
   const tankG = h('div', 'sec', Fs);
   const tank = fbAbs(tankG, 40, 300, artTank(1000));
-  const tRoll = T('a17', '美军') - 0.1;
+  const tRoll = T('a17') - 0.15;
   init(tank, { x: -1100 });
   to(tank, tRoll, { x: 0, duration: 1.0, ease: 'power2.out' });
   sfx('drive', tRoll, { g: 0.6, p: -0.4 });
+  const m1L = fbAbs(tankG, 0, 0, '<svg width="1620" height="900" viewBox="0 0 1620 900"><path d="M690 322 L600 432" stroke="#8e8c86" stroke-width="4"/><circle cx="600" cy="432" r="7" fill="#8e8c86"/></svg>');
+  fbIn(m1L, T('a17', 'M') - 0.05, { autoAlpha: 0 }, { d: 0.2 });
   const m1 = fbAbs(tankG, 640, 250, fbTag('M1'));
   fbIn(m1, T('a17', 'M') - 0.05, { y: -20 }, { d: 0.25, ease: 'back.out(1.6)' });
   const tFire = T('a17', '开炮') - 0.06;
   to(tank, tFire, { x: -34, duration: 0.07, ease: 'power4.out' });
   to(tank, tFire + 0.08, { x: 0, duration: 0.5, ease: 'power2.inOut' });
-  const flash = fbAbs(tankG, 950, 384, '<svg width="220" height="220" viewBox="0 0 100 100"><path fill="#FAAC19" d="M50 0 L60 34 L92 14 L72 44 L100 50 L72 58 L90 86 L60 68 L50 100 L40 68 L10 86 L28 58 L0 50 L28 44 L8 14 L40 34 Z"/><circle cx="50" cy="50" r="18" fill="#EE2B24"/><circle cx="50" cy="50" r="9" fill="#fff6d8"/></svg>');
+  const flash = fbAbs(tankG, 972, 375, '<svg width="220" height="220" viewBox="0 0 100 100"><path fill="#FAAC19" d="M50 0 L60 34 L92 14 L72 44 L100 50 L72 58 L90 86 L60 68 L50 100 L40 68 L10 86 L28 58 L0 50 L28 44 L8 14 L40 34 Z"/><circle cx="50" cy="50" r="18" fill="#EE2B24"/><circle cx="50" cy="50" r="9" fill="#fff6d8"/></svg>');
   init(flash, { autoAlpha: 0, scale: 0.2 });
   to(flash, tFire, { autoAlpha: 1, scale: 1, duration: 0.08, ease: 'power4.out' });
   to(flash, tFire + 0.12, { autoAlpha: 0, scale: 1.3, duration: 0.26 });
@@ -290,7 +307,7 @@ scene('shower', ({ root, s }) => {
     const kk = (t - tFire - 0.05 - i * 0.07) / 1.4;
     if (kk < 0 || kk > 1) { e.style.opacity = 0; return; }
     e.style.opacity = (0.75 * (1 - kk)).toFixed(3);
-    e.style.transform = `translate(${f1(1010 + kk * (80 + i * 30))}px,${f1(430 - kk * (60 + i * 25))}px) scale(${(0.4 + kk * (1.2 + i * 0.2)).toFixed(3)})`;
+    e.style.transform = `translate(${f1(1046 + kk * (80 + i * 30))}px,${f1(430 - kk * (60 + i * 25))}px) scale(${(0.4 + kk * (1.2 + i * 0.2)).toFixed(3)})`;
   }));
   // 车载电脑：引出框（屏幕放大，状态一眼看得出）
   const crt = fbAbs(tankG, 1120, 20, artCrt(440));
@@ -324,7 +341,7 @@ scene('shower', ({ root, s }) => {
   const tLeg = T('a19', '传说') - 0.08;
   // 真假没有证据：一说到这里，整幅画就褪成旧照片的样子
   to(tankG, T('a19', '真假') - 0.05, { filter: 'grayscale(1) opacity(.55)', duration: 0.45 });
-  fbOut(m1, T('a19', '真假') - 0.05);
-  fbStamp(Fs, 640, 250, '没有证据', T('a19', '证据'), { rz: 6 });
+  fbOut(m1, T('a19', '真假') - 0.05); fbOut(m1L, T('a19', '真假') - 0.05);
+  fbStamp(Fs, 560, 236, '没有证据', T('a19', '证据'), { rz: 6 });
   fbStamp(Fs, 300, 120, '传说', tLeg, { rz: -10 });
 });

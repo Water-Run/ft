@@ -14,9 +14,9 @@ scene('open', ({ root, s }) => {
   const fx = fbAbs(br.body, 340, 80, '<img src="/img/logo-firefox.svg" style="width:300px;height:300px;display:block">');
   fbIn(fx, T('o1', '火') - 0.05, { scale: 0.5 }, { d: 0.4, ease: 'back.out(1.8)' });
   sfx('chime', T('o1', '火'), { g: 0.5, p: -0.3 });
-  // 倒回二〇〇三年：那时还没有这个标志，标题栏写的是 Firebird
-  to(fx, tRew, { scale: 0.2, autoAlpha: 0, rotationZ: -90, duration: 0.4, ease: 'power3.in' });
-  sfx('whoosh', tRew, { g: 0.5, p: -0.3 });
+  // 倒回二〇〇三年：日历翻回去；念到 Firebird 时，这个标志（那时还没有）转走，换成当时的名字
+  to(fx, tFire - 0.12, { scale: 0.2, autoAlpha: 0, rotationZ: -90, duration: 0.16, ease: 'power3.in' });
+  sfx('whoosh', tFire - 0.12, { g: 0.5, p: -0.3 });
   const mini = fbMini(g, 1110, 40, '二〇〇三年', '4 月');
   fbIn(mini, tRew, { scale: 1.5, y: -20 }, { ease: 'back.out(1.6)' });
   sfx('tick', tRew + 0.05, { p: 0.3 });
@@ -44,7 +44,7 @@ scene('open', ({ root, s }) => {
   fbIn(l1, t10, { y: 8 }); fbIn(l2, t10 + 0.85, { y: 8 }); fbIn(l3, t10 + 0.5, { y: 8 });
 
   // 名字早有主人：页面上的名字被揭下来，贴到一个数据库上
-  const db = fbAbs(g, 1180, 210, fbDbFire(250));
+  const db = fbAbs(g, 1150, 210, fbDbFire(250));
   fbDrop(db, T('o4', '主') - 0.12, -180);
   sfx('thud', T('o4', '主') + 0.25, { g: 0.8 });
   const tag = fbAbs(g, 470, 300, fbTag('Firebird'));
@@ -53,7 +53,7 @@ scene('open', ({ root, s }) => {
   init(tag, { autoAlpha: 0, z: 40 });
   to(name, tLift, { autoAlpha: 0, duration: 0.12 });
   to(tag, tLift, { autoAlpha: 1, z: 120, rotationZ: -4, duration: 0.18, ease: 'power2.out' });
-  to(tag, tLand - 0.55, { x: 700, y: 228, z: 60, rotationZ: 3, duration: 0.62, ease: 'power2.inOut' });
+  to(tag, tLand - 0.55, { x: 670, y: 228, z: 60, rotationZ: 3, duration: 0.62, ease: 'power2.inOut' });
   sfx('whoosh', tLand - 0.55, { g: 0.5, p: 0.4 });
   sfx('pop', tLand + 0.08, { g: 0.7, p: 0.5 });
 
@@ -78,16 +78,16 @@ scene('open', ({ root, s }) => {
   });
 
   // 这个让火狐改了名的 Firebird：火狐的标志指向它
-  const fxs = fbAbs(g, 1020, 40, '<img src="/img/logo-firefox.svg" style="width:110px;height:110px;display:block">');
+  const fxs = fbAbs(g, 990, 40, '<img src="/img/logo-firefox.svg" style="width:110px;height:110px;display:block">');
   fbIn(fxs, T('o6', '火') - 0.06, { scale: 0.3 }, { d: 0.16, ease: 'back.out(1.8)' });
-  const arr = fbAbs(g, 1120, 80, '<svg width="190" height="150" viewBox="0 0 190 150"><path d="M6 14 C80 4 140 30 160 108" fill="none" stroke="#6f6f6f" stroke-width="6" stroke-dasharray="14 10"/><path d="M144 98 L161 128 L176 94" fill="none" stroke="#6f6f6f" stroke-width="6" stroke-linejoin="round"/></svg>');
+  const arr = fbAbs(g, 1090, 80, '<svg width="190" height="150" viewBox="0 0 190 150"><path d="M6 14 C80 4 140 30 160 108" fill="none" stroke="#6f6f6f" stroke-width="6" stroke-dasharray="14 10"/><path d="M144 98 L161 128 L176 94" fill="none" stroke="#6f6f6f" stroke-width="6" stroke-linejoin="round"/></svg>');
   fbIn(arr, T('o6', '改') - 0.08, { scaleX: 0, transformOrigin: '0 0' }, { d: 0.3 });
-  const arrT = fbAbs(g, 1150, 34, '改了名', 'lab-s');
+  const arrT = fbAbs(g, 1120, 34, '改了名', 'lab-s');
   fbIn(arrT, T('o6', '改'), { y: 8 }, { d: 0.25 });
   // 你大概率没听说过：熟的三个退后，问号落在它旁边
   const tDim = T('o6', '你') - 0.05;
-  cards.forEach((c) => to(c, tDim, { opacity: 0.32, duration: 0.3 }));
-  const q = fbAbs(g, 1405, 230, '<div style="font:800 230px/1 Open Sans;color:#1c1c1c">?</div>');
+  cards.forEach((c) => to(c, tDim, { opacity: 0.7, duration: 0.3 }));
+  const q = fbAbs(g, 1420, 230, '<div style="font:800 230px/1 Open Sans;color:#1c1c1c">?</div>');
   fbIn(q, T('o6', '没') - 0.06, { scale: 1.8, y: -40 }, { ease: 'back.out(1.6)', d: 0.36 });
   sfx('thud', T('o6', '没'), { g: 0.8, p: 0.6 });
 
@@ -95,8 +95,8 @@ scene('open', ({ root, s }) => {
   const tStory = T('o7', '故') - 0.05;
   [...cards, fxs, arr, arrT, q].forEach((e) => fbOut(e, tStory, { duration: 0.3 }));
   const nextL = fbAbs(g, 300, 600, '<div class="link-n">下一章　<u>1. 一间浴室</u>　→</div>');
-  fbIn(nextL, T('o7', '浴') - 0.1, { x: 40 }, { d: 0.35 });
-  const shower = fbAbs(g, 400, 230, '<svg width="260" height="220" viewBox="0 0 260 220"><path d="M240 0 V40 Q240 64 212 64 H150" fill="none" stroke="#8e8c86" stroke-width="14" stroke-linecap="round"/><path fill="#a9a6a0" d="M76 64 h112 l22 36 h-156 z"/><g stroke="#2156a5" stroke-width="6" stroke-linecap="round"><path d="M80 120 l-12 48"/><path d="M118 120 l-6 62"/><path d="M154 120 l5 62"/><path d="M190 120 l12 48"/></g></svg>');
+  fbIn(nextL, T('o7', '故') + 0.2, { x: 40 }, { d: 0.3 });
+  const shower = fbAbs(g, 340, 150, artBathroom(380));   // 下一章的浴室先露一角
   fbDrop(shower, T('o7', '浴') - 0.05, -160);
   sfx('pop', T('o7', '浴') + 0.2, { g: 0.6, p: 0.4 });
 });

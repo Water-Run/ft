@@ -65,7 +65,8 @@ scene('door', ({ root, s }) => {
   const key = fbCard(B, 96, 384, 0, 0, '<div style="font:700 36px Mono;color:#1c1c1c;line-height:1.3">politically<br>correct</div>', { padding: '14px 26px' });
   fbIn(key, T('d5', '这两') - 0.1, { y: 30, rotationZ: -4 }, { d: 0.3, ease: 'back.out(1.6)' });
   const tOpen = T('d5', '就能') - 0.05;
-  to(lock.querySelector('[data-shackle]'), tOpen, { y: -26, duration: 0.18, ease: 'power4.out' });
+  set(lock.querySelector('[data-shackle]'), tOpen, { opacity: 0 }); set(lock.querySelector('[data-open]'), tOpen, { opacity: 1 });
+  to(lock, tOpen, { y: -10, duration: 0.08, yoyo: true, repeat: 1 });
   sfx('thud', tOpen, { g: 0.8, p: 0.5 });
   to(ppl, tOpen + 0.1, { x: 640, autoAlpha: 0, duration: 0.6, ease: 'power2.in' });
   to(key, tOpen + 0.1, { x: 640, autoAlpha: 0, duration: 0.6, ease: 'power2.in' });
@@ -79,8 +80,8 @@ scene('door', ({ root, s }) => {
     const lab = e.querySelector('.nm');
     to(lab, T('d7', '闭源') + 0.1, { autoAlpha: 0, duration: 0.02 }); to(lab, T('d7', '公开') - 0.03, { autoAlpha: 1, duration: 0.02 });
     const dot = fbAbs(e, 280, 22, '', 'r-dot');
-    fbIn(dot, T('d6', '全带') - 0.05 + i * 0.12, { scale: 2.4 }, { d: 0.15 });
-    sfx('tick', T('d6', '全带') + i * 0.12, { g: 0.8 });
+    fbIn(dot, T('d6', '全') - 0.05, { scale: 2.4 }, { d: 0.15 });
+    if (i === 0) sfx('thud', T('d6', '全'), { g: 0.8 });
     return e;
   });
   const span = fbAbs(B, 170, 640, '<svg width="1180" height="40" viewBox="0 0 1180 40"><path d="M4 4 V20 H1176 V4" fill="none" stroke="#6f6f6f" stroke-width="4"/></svg><div class="lab-s" style="text-align:center;width:1180px;margin-top:4px">过去七年</div>');
@@ -90,7 +91,7 @@ scene('door', ({ root, s }) => {
   init(cover, { autoAlpha: 0, x: -1300, z: 140 });
   to(cover, T('d7', '闭源') - 0.2, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power3.out' });
   sfx('whoosh', T('d7', '闭源') - 0.2, { g: 0.5 });
-  to(cover, T('d7', '公开') - 0.05, { y: -520, rotationX: -40, autoAlpha: 0, duration: 0.4, ease: 'power2.in' });
+  to(cover, T('d7', '公开') - 0.05, { x: 1400, autoAlpha: 0, duration: 0.4, ease: 'power2.in' });
   sfx('thud', T('d7', '公开') + 0.1);
   const mag = fbAbs(B, 0, 0, ART.magnifier);
   const m0 = T('d7', '翻') - 0.25, mE = Tend('d7') + 0.3;

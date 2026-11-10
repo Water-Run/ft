@@ -224,7 +224,7 @@ function artApp(w = 360, hh = 260, title = '') {
 
 // ───── 物件 ─────
 const ART = {
-  phone: `<svg width="190" height="150" viewBox="0 0 190 150"><ellipse cx="95" cy="140" rx="80" ry="8" fill="rgba(40,30,20,.15)"/><path fill="#5a5a5a" d="M28 128 L42 70 H148 L162 128 Z"/><path fill="#6e6e6e" d="M42 70 H148 L140 58 H50 Z"/><circle cx="95" cy="98" r="22" fill="#e8e6e0"/><circle cx="95" cy="98" r="8" fill="#5a5a5a"/><g fill="#5a5a5a">${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => { const a = -2.4 + i * 0.5; return `<circle cx="${f1(95 + Math.cos(a) * 15)}" cy="${f1(98 + Math.sin(a) * 15)}" r="2.6"/>`; }).join('')}</g></svg>`,
+  phone: `<svg width="190" height="150" viewBox="0 0 190 150"><ellipse cx="95" cy="140" rx="80" ry="8" fill="rgba(40,30,20,.15)"/><path fill="#5a5a5a" d="M28 128 L42 70 H148 L162 128 Z"/><path fill="#6e6e6e" d="M42 70 H148 L140 58 H50 Z"/><rect x="48" y="44" width="16" height="20" rx="4" fill="#444"/><rect x="126" y="44" width="16" height="20" rx="4" fill="#444"/><path d="M28 128 H162" stroke="#3f3f3f" stroke-width="5"/><circle cx="95" cy="98" r="22" fill="#e8e6e0"/><circle cx="95" cy="98" r="8" fill="#5a5a5a"/><g fill="#5a5a5a">${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => { const a = -2.4 + i * 0.5; return `<circle cx="${f1(95 + Math.cos(a) * 15)}" cy="${f1(98 + Math.sin(a) * 15)}" r="2.6"/>`; }).join('')}</g></svg>`,
   receiver: `<svg width="200" height="70" viewBox="0 0 200 70"><path fill="#3e3e3e" d="M8 34 C8 10 30 2 52 10 L62 20 H138 L148 10 C170 2 192 10 192 34 C192 54 176 64 156 60 L144 46 H56 L44 60 C24 64 8 54 8 34 Z"/><path fill="#555" d="M62 20 H138 L144 30 H56 Z"/><ellipse cx="36" cy="40" rx="20" ry="9" fill="#2b2b2b"/><ellipse cx="164" cy="40" rx="20" ry="9" fill="#2b2b2b"/></svg>`,
   wallet: `<svg width="190" height="150" viewBox="0 0 190 150"><path fill="#7a4e2c" d="M14 40 H164 C172 40 178 46 178 54 V128 C178 136 172 142 164 142 H22 C16 142 12 138 12 132 V48 Z"/><path fill="#8f5d36" d="M12 48 C12 36 20 28 32 28 H150 L156 40 H24 C18 40 14 44 12 48 Z"/><rect x="128" y="72" width="54" height="40" rx="10" fill="#a8713a"/><circle cx="148" cy="92" r="7" fill="#e3c38a"/><path d="M40 100 C60 92 80 92 100 100" stroke="#5e3b21" stroke-width="4" fill="none" stroke-dasharray="8 6"/></svg>`,
   moth: `<svg width="60" height="40" viewBox="0 0 60 40"><path fill="#b9b2a4" d="M30 20 C20 4 4 4 6 16 C8 26 20 26 30 20 Z M30 20 C40 4 56 4 54 16 C52 26 40 26 30 20 Z"/><rect x="28" y="12" width="4" height="18" rx="2" fill="#6f6a60"/></svg>`,
@@ -239,7 +239,7 @@ const ART = {
   coin: `<svg width="90" height="60" viewBox="0 0 90 60"><ellipse cx="45" cy="38" rx="40" ry="16" fill="#c27a12"/><rect x="5" y="26" width="80" height="12" fill="#c27a12"/><ellipse cx="45" cy="26" rx="40" ry="16" fill="#FAAC19"/><ellipse cx="45" cy="26" rx="28" ry="10" fill="none" stroke="#e3920f" stroke-width="3"/></svg>`,
   wrench: `<svg width="120" height="120" viewBox="0 0 100 100"><path fill="#8e98a4" d="M70 8 C58 6 48 16 50 28 L12 66 C6 72 6 82 12 88 C18 94 28 94 34 88 L72 50 C84 52 94 42 92 30 L80 42 L64 36 L58 20 Z"/><circle cx="22" cy="78" r="5" fill="#fff"/></svg>`,
   holly: `<svg width="120" height="80" viewBox="0 0 120 80"><path fill="#2f7a3a" d="M60 40 C46 30 30 34 14 22 C20 36 12 44 24 52 C34 44 48 48 60 40 Z M60 40 C74 30 90 34 106 22 C100 36 108 44 96 52 C86 44 72 48 60 40 Z"/><circle cx="54" cy="44" r="8" fill="#bf0000"/><circle cx="66" cy="46" r="8" fill="#d42020"/><circle cx="60" cy="34" r="8" fill="#bf0000"/></svg>`,
-  lock: `<svg width="170" height="210" viewBox="0 0 120 150"><path data-shackle="1" d="M32 70 V42 a28 28 0 0 1 56 0 V70" fill="none" stroke="#8e98a4" stroke-width="13"/><rect x="12" y="66" width="96" height="78" rx="12" fill="#e0a43a"/><rect x="12" y="66" width="96" height="16" rx="8" fill="#f0bd5c"/><circle cx="60" cy="100" r="10" fill="#7a5410"/><rect x="55" y="104" width="10" height="22" rx="4" fill="#7a5410"/></svg>`,
+  lock: `<svg width="170" height="210" viewBox="0 0 120 150"><path data-shackle="1" d="M32 72 V42 a28 28 0 0 1 56 0 V72" fill="none" stroke="#8e98a4" stroke-width="13" stroke-linecap="round"/><path data-open="1" d="M88 72 V26 a28 28 0 0 0 -56 0 V40" fill="none" stroke="#8e98a4" stroke-width="13" stroke-linecap="round" opacity="0"/><rect x="12" y="66" width="96" height="78" rx="12" fill="#e0a43a"/><rect x="12" y="66" width="96" height="16" rx="8" fill="#f0bd5c"/><circle cx="60" cy="100" r="10" fill="#7a5410"/><rect x="55" y="104" width="10" height="22" rx="4" fill="#7a5410"/></svg>`,
   server: `<svg width="180" height="230" viewBox="0 0 180 230"><ellipse cx="90" cy="222" rx="84" ry="8" fill="rgba(40,30,20,.15)"/><rect x="18" y="10" width="144" height="206" rx="10" fill="#3b3f4a"/>${[0, 1, 2, 3].map((i) => `<rect x="30" y="${24 + i * 48}" width="120" height="38" rx="5" fill="#4d5361"/><circle cx="134" cy="${43 + i * 48}" r="5" fill="#54BC4B"/><rect x="42" y="${38 + i * 48}" width="60" height="8" rx="3" fill="#6b7280"/>`).join('')}</svg>`,
   box: `<svg width="200" height="190" viewBox="0 0 200 190"><ellipse cx="100" cy="178" rx="90" ry="10" fill="rgba(40,30,20,.14)"/><path fill="#d8a15f" d="M14 60 L100 92 V178 L14 146 Z"/><path fill="#c08744" d="M186 60 L100 92 V178 L186 146 Z"/><path fill="#e6b97d" d="M14 60 L100 28 L186 60 L100 92 Z"/><path d="M57 44 L143 76" stroke="#f3d6a8" stroke-width="12"/></svg>`,
   gear: `<svg width="170" height="170" viewBox="0 0 100 100"><path fill="#8e98a4" d="${(() => { let d = ''; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; const p = (r, da) => `${f1(50 + Math.cos(a + da) * r)} ${f1(50 + Math.sin(a + da) * r)}`; d += (i ? 'L' : 'M') + p(34, -0.2) + ' L' + p(44, -0.14) + ' L' + p(44, 0.14) + ' L' + p(34, 0.2) + ' '; } return d + 'Z'; })()}"/><circle cx="50" cy="50" r="14" fill="#fff"/></svg>`,
@@ -253,17 +253,39 @@ const flagDE = `<svg width="120" height="72" viewBox="0 0 5 3"><rect width="5" h
 function star(cx, cy, r, n = 7) { let d = ''; for (let i = 0; i < n * 2; i++) { const a = i * Math.PI / n - Math.PI / 2, rr = i % 2 ? r * 0.45 : r; d += (i ? 'L' : 'M') + f1(cx + Math.cos(a) * rr) + ' ' + f1(cy + Math.sin(a) * rr); } return d + 'Z'; }
 const flagAU = `<svg width="120" height="60" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><path d="M0 0 L30 15 M30 0 L0 15" stroke="#fff" stroke-width="3"/><path d="M0 0 L30 15 M30 0 L0 15" stroke="#C8102E" stroke-width="1.2"/><path d="M15 0 V15 M0 7.5 H30" stroke="#fff" stroke-width="5"/><path d="M15 0 V15 M0 7.5 H30" stroke="#C8102E" stroke-width="3"/><path fill="#fff" d="${star(15, 22.5, 3.6)} ${star(45, 24.5, 1.6)} ${star(39, 13.5, 1.6)} ${star(45, 5, 1.6)} ${star(51, 11.5, 1.6)} ${star(48, 17, 0.9, 5)}"/></svg>`;
 
-// ───── M1 坦克：侧视，略带俯角 ─────
+// ───── M1 坦克：斜视（侧面正对，顶面与远侧往右上退），和等距的场景一样看得到顶 ─────
+// 退深方向 D = (64, −38)：每个箱形部件画「近侧面 + 顶面 + 前斜面」，由远到近叠
 function artTank(w = 1000) {
+  const D = [64, -38];
+  const sh = (pts) => pts.map(([x, y]) => `${x + D[0]} ${y + D[1]}`).join(' L');
   let wheels = '';
   for (let i = 0; i < 7; i++) { const x = 214 + i * 88; wheels += `<circle cx="${x}" cy="356" r="31" fill="#4d4c45"/><circle cx="${x}" cy="356" r="21" fill="#6d6b61"/><circle cx="${x}" cy="356" r="7" fill="#3a3934"/>`; }
   let tread = '';
   for (let i = 0; i < 46; i++) tread += `<rect x="${130 + i * 15.4}" y="384" width="9" height="9" fill="#24231f"/>`;
   let skirt = '';
   for (let i = 1; i < 9; i++) skirt += `<path d="M${118 + i * 82} 276 V336" stroke="#a3906a" stroke-width="3"/>`;
-  return `<svg width="${w}" height="${w * 0.42}" viewBox="0 0 1000 420">
-  <ellipse cx="490" cy="404" rx="440" ry="14" fill="rgba(40,30,20,.16)"/>
-  <path fill="#33322d" d="M150 300 H812 Q858 302 866 336 L842 386 Q836 396 818 396 H160 Q144 396 136 386 L104 336 Q114 302 150 300 Z"/>
+  let grille = '';
+  for (let i = 0; i < 7; i++) grille += `<path d="M${170 + i * 18} 222 L${206 + i * 18} 201" stroke="#c4b285" stroke-width="5"/>`;
+  const track = 'M150 300 H812 Q858 302 866 336 L842 386 Q836 396 818 396 H160 Q144 396 136 386 L104 336 Q114 302 150 300 Z';
+  return `<svg width="${w * 1.06}" height="${w * 0.42}" viewBox="0 0 1060 420">
+  <ellipse cx="530" cy="402" rx="480" ry="16" fill="rgba(40,30,20,.16)"/>
+  <path fill="#2a2925" transform="translate(${D[0]} ${D[1]})" d="${track}"/>
+  <path fill="#dccb9f" d="M128 230 L808 230 L902 262 L${sh([[902, 262], [808, 230], [128, 230]])} Z"/>
+  ${grille}
+  <path fill="#c8b386" d="M226 166 L306 166 L${sh([[306, 166], [226, 166]])} Z"/>
+  <path fill="#bba477" d="M232 166 H306 V224 H226 Z"/>
+  <g stroke="#8f7c56" stroke-width="3"><path d="M232 182 H306 M232 198 H306 M232 212 H306 M252 166 V224 M278 166 V224"/></g>
+  <path fill="#d9c79b" d="M300 178 L792 178 L${sh([[792, 178], [300, 178]])} Z"/>
+  <path fill="#b39d6f" d="M792 178 L${sh([[792, 178], [776, 228]])} L776 228 Z"/>
+  <path fill="#c0a97b" d="M300 178 H792 L776 228 H286 L270 200 Z"/>
+  <path fill="#ad9668" d="M270 200 L286 228 H776 L782 210 H276 Z"/>
+  <ellipse cx="470" cy="156" rx="30" ry="9" fill="#bfa97c"/>
+  <rect x="556" y="132" width="68" height="22" fill="#b39d6f"/><ellipse cx="590" cy="154" rx="34" ry="10" fill="#b39d6f"/><ellipse cx="590" cy="132" rx="34" ry="11" fill="#cdb98e"/>
+  <path d="M612 128 H702" stroke="#4a4a44" stroke-width="7" stroke-linecap="round"/>
+  <path d="M342 158 L304 40 M366 152 L352 62" stroke="#55534c" stroke-width="3"/>
+  <path fill="#cdb88d" d="M128 230 H808 L902 262 L872 274 H112 Z"/>
+  <rect x="868" y="258" width="16" height="8" fill="#f6efd8"/>
+  <path fill="#33322d" d="${track}"/>
   ${tread}
   <circle cx="142" cy="334" r="27" fill="#4d4c45"/><circle cx="142" cy="334" r="12" fill="#2b2a26"/>
   <circle cx="836" cy="334" r="25" fill="#4d4c45"/><circle cx="836" cy="334" r="10" fill="#2b2a26"/>
@@ -271,24 +293,12 @@ function artTank(w = 1000) {
   <path fill="#c3ad81" d="M112 270 H846 L872 302 L852 340 H124 L106 302 Z"/>
   <path fill="#a8936a" d="M106 302 H872 L852 340 H124 Z"/>
   ${skirt}
-  <path fill="#cdb88d" d="M128 230 H808 L902 262 L872 274 H112 Z"/>
-  <path fill="#dccb9f" d="M150 222 H800 L890 252 L808 230 H128 Z"/>
-  <rect x="868" y="258" width="16" height="8" fill="#f6efd8"/>
-  <path fill="#bba477" d="M232 166 H306 V224 H226 Z"/>
-  <g stroke="#8f7c56" stroke-width="3"><path d="M232 182 H306 M232 198 H306 M232 212 H306 M252 166 V224 M278 166 V224"/></g>
-  <path fill="#d9c79b" d="M312 142 H676 L792 178 H300 Z"/>
-  <path fill="#c0a97b" d="M300 178 H792 L776 228 H286 L270 200 Z"/>
-  <path fill="#ad9668" d="M270 200 L286 228 H776 L782 210 H276 Z"/>
-  <rect x="786" y="174" width="32" height="42" rx="4" fill="#a38d61"/>
-  <rect x="816" y="186" width="70" height="16" fill="#a28c5f"/>
-  <rect x="884" y="182" width="40" height="24" rx="5" fill="#968155"/>
-  <rect x="922" y="188" width="70" height="12" fill="#a28c5f"/>
-  <rect x="988" y="186" width="10" height="16" rx="2" fill="#7f6c46"/>
-  <path fill="#bfa97c" d="M510 142 V120 H590 V142 Z"/><rect x="520" y="110" width="60" height="12" rx="4" fill="#a8936a"/>
-  <path d="M574 112 H660" stroke="#4a4a44" stroke-width="7" stroke-linecap="round"/>
-  <ellipse cx="430" cy="146" rx="34" ry="7" fill="#a8936a"/>
-  <path d="M330 144 L292 30 M354 144 L338 54" stroke="#55534c" stroke-width="3"/>
-  <circle cx="700" cy="196" r="9" fill="#55534c"/>
+  <circle cx="700" cy="204" r="9" fill="#55534c"/>
+  <rect x="818" y="164" width="36" height="42" rx="4" fill="#a38d61"/>
+  <rect x="852" y="176" width="70" height="16" fill="#a28c5f"/>
+  <rect x="920" y="172" width="40" height="24" rx="5" fill="#968155"/>
+  <rect x="958" y="179" width="74" height="12" fill="#a28c5f"/>
+  <rect x="1030" y="177" width="12" height="16" rx="2" fill="#7f6c46"/>
 </svg>`;
 }
 // 车载电脑的小屏（放在坦克旁的引出框里）

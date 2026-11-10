@@ -84,8 +84,9 @@ scene('fork', ({ root, s }) => {
       sfx('tick', t + 0.04, { g: 0.55, p: -0.4 });
     }
   });
-  const d6 = fbAbs(B, 140, 620, fbTag('开源第六天'));
-  fbIn(d6, T('c3', '第六') - 0.08, { y: 20 }, { d: 0.3, ease: 'back.out(1.6)' });
+  const wk31 = cal.firstChild.querySelector('.wk');
+  to(wk31, T('c3', '第六') - 0.08, { color: '#c2410c', scale: 1.25, duration: 0.2, ease: 'back.out(2)' });
+  sfx('tick', T('c3', '第六'), { g: 0.6 });
   // 纸圈一层层立起，标志落在「名字」上
   const birth = T('c3', '名字') - 0.05;
   const rw = fbAbs(B, 730, 0, ''); css(rw, { width: '720px', height: '720px', transformStyle: 'preserve-3d' });
@@ -105,9 +106,9 @@ scene('fork', ({ root, s }) => {
   to(wm, T('c4') - 0.05, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power3.out' });
   sfx('pop', T('c4'), { p: 0.3 });
   // 烧完还能重生：整团火收成一粒灰，再炸开回来
-  const burn = T('c4', '烧') - 0.05, again = T('c4', '重') - 0.08;
+  const burn = T('c4', '烧') - 0.2, again = T('c4', '重') - 0.05;
   init(rw, { transformOrigin: '50% 50%' });
-  to(rw, burn, { scale: 0.1, filter: 'grayscale(1) brightness(0.55)', duration: Math.min(0.42, again - burn - 0.06), ease: 'power2.in' });
+  to(rw, burn, { scale: 0.1, filter: 'grayscale(1) brightness(0.55)', duration: Math.min(0.45, again - burn - 0.04), ease: 'power2.in' });
   to(rw, again, { scale: 1, filter: 'grayscale(0) brightness(1)', duration: 0.5, ease: 'back.out(1.7)' });
   sfx('whoosh', burn, { g: 0.5 }); sfx('thud', again + 0.05, { g: 0.9 }); sfx('chime', again + 0.12, { g: 0.8 });
   const sparks = [];

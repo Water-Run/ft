@@ -34,11 +34,11 @@ body { font-family: "Sans SC"; color: var(--ink); }
 .sheet { position: absolute; background: #fff; box-shadow: 10px 20px 36px rgba(50, 30, 10, .28), 0 0 0 1px rgba(0, 0, 0, .05); }
 
 /* 图注：手册插图下方的说明 */
-.figcap { font: 500 28px/1.4 "Serif SC"; color: var(--cap); white-space: normal; }
-.figcap b { font: 700 30px "Open Sans", "Sans SC"; color: var(--ink); margin-right: 14px; }
+.figcap { font: 500 32px/1.4 "Sans SC"; color: var(--cap); white-space: normal; }
+.figcap b { font: 700 34px "Open Sans", "Sans SC"; color: var(--ink); margin-right: 14px; }
 .logo-n { position: absolute; left: 0; right: 0; text-align: center; font: 700 38px "Open Sans"; color: var(--ink); white-space: nowrap; }
 .lab { font: 600 30px "Open Sans", "Sans SC"; color: var(--ink); white-space: nowrap; }
-.lab-s { font: 500 26px "Open Sans", "Sans SC"; color: var(--soft); white-space: nowrap; }
+.lab-s { font: 500 30px "Open Sans", "Sans SC"; color: #555; white-space: nowrap; }
 .lab-b { font: 700 34px "Open Sans", "Sans SC"; color: var(--blue); white-space: nowrap; }
 .lab-o { font: 700 34px "Open Sans", "Sans SC"; color: #c2410c; white-space: nowrap; }
 .nm { font: 700 34px "Open Sans"; color: var(--ink); text-align: center; white-space: nowrap; }
@@ -105,9 +105,9 @@ body { font-family: "Sans SC"; color: var(--ink); }
 .money { font: 800 120px/1 "Open Sans"; color: #1c1c1c; white-space: nowrap; }
 .reg { position: absolute; left: 0; right: 0; height: 74px; border-bottom: 2px solid var(--rule); }
 .sign { position: absolute; background: #6b4a2f; border: 10px solid #8a5f3c; box-shadow: 10px 20px 30px rgba(50, 30, 10, .35); font: 800 64px/1 "Open Sans"; color: #f6efd8; text-align: center; white-space: nowrap; backface-visibility: hidden; }
-.tl { font: 500 29px "Mono"; color: #2a2a2a; white-space: pre; }
+.tl { font: 500 27px "Mono"; color: #2a2a2a; white-space: pre; }
 .tl b { color: var(--blue); font-weight: 700; } .tl i { color: #c2410c; font-style: normal; font-weight: 700; }
-.tl-mark { width: 330px; height: 46px; background: rgba(250, 172, 25, .4); }
+.tl-mark { width: 400px; height: 46px; background: rgba(250, 172, 25, .4); }
 .sql-t { font: 700 40px "Mono"; color: var(--blue); white-space: nowrap; }
 .free-t { font: 800 66px "Open Sans"; color: #1c1c1c; white-space: nowrap; }
 .zero { font: 800 92px/1 "Open Sans"; color: #c2410c; background: #fff; border: 5px solid #c2410c; padding: 6px 26px 10px; box-shadow: 6px 12px 22px rgba(50, 30, 10, .3); white-space: nowrap; }

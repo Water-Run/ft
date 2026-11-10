@@ -5,9 +5,9 @@ scene('end', ({ root, s }) => {
 
   // ── A 真小众：柱高就是得分（FACTS U02，DB-Engines 2026 年 11 月关系数据库榜，线性比例）──
   const A = fbSec(pl, true);
-  const cap = fbCap(A, 70, 10, 'DB-Engines', '按网上提及、搜索、问答、招聘等热度给数据库打分的网站', 980);
+  const cap = fbCap(A, 70, 6, 'DB-Engines', '按网上提及、搜索、问答、招聘等热度给数据库打分的网站', 1400);
   fbCapIn(cap, T('g1b') - 0.05);
-  const src = fbAbs(A, 70, 62, '关系数据库榜 · 2026 年 11 月 · 流行度得分', 'lab-s');
+  const src = fbAbs(A, 70, 62, '关系数据库榜 · 2026 年 11 月 · 流行度得分', 'lab');
   fbIn(src, T('g1b', '榜') - 0.1, { y: 10 }, { d: 0.25 });
   const BASE = 600, K = 440 / 823.23;
   const data = [['mysql', 823.23, '第 2', 150, 'MySQL', 'g1b'], ['postgresql', 689.69, '第 4', 470, 'PostgreSQL', 'g1b'], ['sqlite', 94.68, '第 8', 790, 'SQLite', 'g1b'], ['firebird', 18.45, '第 20', 1110, 'Firebird', 'g2']];
@@ -46,9 +46,11 @@ scene('end', ({ root, s }) => {
   fbScroll(A, B, T('g3') - 0.4);
   const bld = fbAbs(B, 70, 60, ART.building);
   fbIn(bld, T('g3', '没有') - 0.15, { y: 60 }, { d: 0.35, ease: 'back.out(1.3)' });
-  const xx = fbAbs(B, 60, 110, '<svg width="260" height="260" viewBox="0 0 260 260"><path d="M30 30 L230 230 M230 30 L30 230" stroke="#bf0000" stroke-width="22" stroke-linecap="round"/></svg>');
-  fbIn(xx, T('g3', '大公司') - 0.05, { scale: 1.6 }, { d: 0.2, ease: 'power4.out' });
-  sfx('error', T('g3', '大公司'), { g: 0.6, p: -0.5 });
+  // 背后没有大公司：大楼褪成一道虚影
+  to(bld, T('g3', '大公司') - 0.05, { opacity: 0.35, filter: 'grayscale(1)', duration: 0.3 });
+  const noCo = fbAbs(B, 70, 380, '<div class="lab-o">背后没有大公司</div>');
+  fbIn(noCo, T('g3', '大公司'), { y: 14 }, { d: 0.22 });
+  sfx('thud', T('g3', '大公司'), { g: 0.6, p: -0.5 });
   const crowd = fbAbs(B, 400, 470, artCrowd(6, 96, -16, 3));
   fbIn(crowd, T('g3', '用它') - 0.15, { y: 120 }, { d: 0.4, ease: 'back.out(1.3)' });
   sfx('pop', T('g3', '用它'), { p: -0.2 });
@@ -95,7 +97,7 @@ scene('end', ({ root, s }) => {
   });
   const slot = fbAbs(C, 1140, 130, '<div style="width:400px;height:400px;border:5px dashed #c9c7c1"></div>');
   fbIn(slot, T('g6', '之外') - 0.1, { scale: 0.9 }, { d: 0.3 });
-  const fbc = fbLogo(C, 1180, 150, 'firebird', 260, { pad: 30 });
+  const fbc = fbLogo(C, 1180, 150, 'firebird', 260, { pad: 30, name: '' });
   fbIn(fbc, T('g6b', '选择') - 0.3, { y: -200, rotationZ: 5, z: 120 }, { ease: 'bounce.out', d: 0.5 });
   sfx('thud', T('g6b', '选择'), { g: 0.9 });
   fbOut(slot, T('g6b', '选择') - 0.1);

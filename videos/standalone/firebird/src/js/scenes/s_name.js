@@ -43,12 +43,12 @@ scene('name', ({ root, s }) => {
   sfx('thud', T('e4', 'Firebird') + 0.2, { g: 0.7, p: 0.5 });
   const ibp = fbAbs(g, 1240, 618, fbTag('IBPhoenix', 'blue'));
   fbIn(ibp, T('e4', '公司') - 0.1, { y: 20 }, { d: 0.3, ease: 'back.out(1.6)' });
-  const ibpL = fbAbs(g, 1240, 700, '赞助 Firebird 的公司', 'lab-s');
+  const ibpL = fbAbs(g, 1240, 700, '赞助 Firebird 的公司', 'lab');
   fbIn(ibpL, T('e4', '公司'), { y: 10 }, { d: 0.25 });
-  const wallet = fbAbs(g, 1060, 420, ART.wallet);
+  const wallet = fbAbs(g, 1010, 400, ART.wallet.replace('width="190" height="150"', 'width="260" height="205"'));
   fbIn(wallet, T('e4', '哭穷') - 0.12, { y: -60 }, { d: 0.42, ease: 'bounce.out' });
   sfx('thud', T('e4', '哭穷') + 0.2, { g: 0.6, p: 0.4 });
-  const moth = fbAbs(g, 1120, 430, ART.moth);
+  const moth = fbAbs(g, 1090, 410, ART.moth);
   const mo0 = T('e4', '打不起') - 0.1;
   init(moth, { autoAlpha: 0 });
   F((t) => { const k = clamp((t - mo0) / 1.2); moth.style.opacity = t > mo0 && k < 1 ? (1 - k * 0.6).toFixed(2) : 0; moth.style.transform = `translate(${f1(k * 60 + Math.sin(k * 20) * 14)}px,${f1(-k * 150)}px)`; });
@@ -75,8 +75,8 @@ scene('name', ({ root, s }) => {
   sfx('chime', tFox + 0.05);
   // Mozilla 的说法：品牌问答原文
   const tQ = T('e7') - 0.05;
-  [br.el, crowd, db, ibp, ibpL].forEach((e) => to(e, tQ, { opacity: 0.25, duration: 0.3 }));
-  g.querySelectorAll('.abs svg[width="130"]').forEach((m) => to(m.parentNode, tQ, { opacity: 0.25, duration: 0.3 }));
+  [br.el, crowd, db, ibp, ibpL, moz, y03].forEach((e) => fbOut(e, tQ, { duration: 0.25 }));
+  g.querySelectorAll('.abs svg[width="130"]').forEach((m) => fbOut(m.parentNode, tQ, { duration: 0.25 }));
   const q = fbCard(g, 230, 150, 1120, 420, `<img src="/img/logo-mozilla.svg" style="position:absolute;left:44px;top:32px;width:70px;height:53px"><div class="by" style="position:absolute;left:136px;top:40px">Mozilla Brand Name FAQ · Why change the name?</div><div class="line" style="position:absolute;left:44px;right:44px;top:104px"></div><div class="head" style="position:absolute;left:44px;right:44px;top:130px;font-size:52px;line-height:1.3">“…we wanted to be responsive to the <span class="hlq">concerns of fellow open source developers</span>.”</div><div class="lab-s" style="position:absolute;left:44px;top:350px;font-size:32px">想回应开源同行的关切</div>`);
   const hq = q.querySelector('.hlq'), zl = q.querySelector('.lab-s');
   init(zl, { autoAlpha: 0 }); to(zl, T('e7', '回应') - 0.1, { autoAlpha: 1, duration: 0.3 });
