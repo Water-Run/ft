@@ -8,8 +8,7 @@
   "titles": {
     "zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"
   },
-  "stage": "accept",
-  "next": "策划者看正式片，决定是否发布；发布后登记 release 并归档",
+  "stage": "released",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -83,5 +82,22 @@
     "speed": {
       "zh": 1.2
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-10",
+    "duration": {
+      "zh": 260.6
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1b1W36yEHu",
+      "date": "2026-11-10",
+      "title": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }
