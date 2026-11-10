@@ -13,3 +13,25 @@
 | 官方部件 | 左栏 Table of Contents（当前项左侧有绿色竖线）；面包屑「Firebird Documentation Index → …」；编号标题「1. About this guide」；标题下细线与灰色作者行；带红色圆形叹号的提示框，右侧竖线分隔 | Quick Start Guide 截图 | 2026-11-08 |
 | 官方用语 | FREE LIKE A BIRD / FREE LIKE FREE BEER；The true open-source relational database | [About Firebird](https://firebirdsql.org/en/about-firebird/)、首页 | 2026-11-08 |
 | 真实终端回显 | `research/lab/out_01_two_modes.txt` | 本片实验 | 2026-11-08 |
+
+## 其他产品与公司的标志（2026-11-10 起，按策划者要求「Logo为主, 文字为辅」）
+
+这些标志只用于指明画面上说的是哪一家，不暗示认可或参与本片；权利属于各自所有者（见 docs/reference/third-party.md「商标」）。文件按原样使用；Windows、Apple、Firefox、SQLite 四个文件原本缺 `viewBox`，补上后才能按尺寸缩放，图形未改。
+
+| 标志 | 文件 | 出处 | 页面标注的许可 | 取得日期 |
+|---|---|---|---|---|
+| MySQL | `src/img/logo-mysql.svg` | [en.wikipedia File:MySQL_logo.svg](https://en.wikipedia.org/wiki/File:MySQL_logo.svg) | 非自由商标图形，按标识用途使用 | 2026-11-10 |
+| PostgreSQL（大象） | `src/img/logo-postgresql.svg` | [Commons File:Postgresql_elephant.svg](https://commons.wikimedia.org/wiki/File:Postgresql_elephant.svg) | BSD | 2026-11-10 |
+| SQLite | `src/img/logo-sqlite.svg` | [Commons File:SQLite370.svg](https://commons.wikimedia.org/wiki/File:SQLite370.svg) | 公有领域 | 2026-11-10 |
+| Firefox | `src/img/logo-firefox.svg` | [Commons File:Firefox_logo,_2019.svg](https://commons.wikimedia.org/wiki/File:Firefox_logo,_2019.svg) | MPL 2.0（商标另受 Mozilla 商标政策约束） | 2026-11-10 |
+| Mozilla（恐龙头，2003 年前后使用） | `src/img/logo-mozilla.svg` | [Commons File:Mozilla_dinosaur_head_logo.svg](https://commons.wikimedia.org/wiki/File:Mozilla_dinosaur_head_logo.svg) | CC BY 3.0，署名：原作 Mozilla，矢量化 Hilst；发布说明里须照写 | 2026-11-10 |
+| DEC（digital，1987 版） | `src/img/logo-dec.svg` | [Commons File:Digital_Equipment_Corporation_1987_logo.svg](https://commons.wikimedia.org/wiki/File:Digital_Equipment_Corporation_1987_logo.svg) | 公有领域 | 2026-11-10 |
+| Borland | `src/img/logo-borland.svg` | [Commons File:Borland_logo.svg](https://commons.wikimedia.org/wiki/File:Borland_logo.svg) | 公有领域 | 2026-11-10 |
+| Ashton-Tate | `src/img/logo-ashton.svg` | [Commons File:Ashton-Tate_logo.svg](https://commons.wikimedia.org/wiki/File:Ashton-Tate_logo.svg) | 公有领域 | 2026-11-10 |
+| SourceForge | `src/img/logo-sourceforge.svg` | [Commons File:SourceForge_logo_transparent.svg](https://commons.wikimedia.org/wiki/File:SourceForge_logo_transparent.svg) | 公有领域 | 2026-11-10 |
+| Windows | `src/img/logo-windows.svg` | [Commons File:Windows_logo_-_2012.svg](https://commons.wikimedia.org/wiki/File:Windows_logo_-_2012.svg) | 公有领域 | 2026-11-10 |
+| Linux（Tux） | `src/img/logo-linux.svg` | [Commons File:Tux.svg](https://commons.wikimedia.org/wiki/File:Tux.svg) | 署名：Larry Ewing（lewing@isc.tamu.edu）与 The GIMP；矢量 Simon Budig、Garrett LeSage；发布说明里须照写 | 2026-11-10 |
+| macOS（Apple 标志） | `src/img/logo-apple.svg` | [Commons File:Apple_logo_black.svg](https://commons.wikimedia.org/wiki/File:Apple_logo_black.svg) | 公有领域 | 2026-11-10 |
+
+插画（人物、猫、浴室、房子、客房、坦克、物件）由制作方在 `src/js/art.js` 里用 SVG 画成，不取自外部图片。
+

@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/style.css">
+<style>
+body{margin:0} #stage{position:relative;width:1920px;height:1080px;background:#fff;overflow:hidden}
+.c{position:absolute}
+</style></head><body><div id="stage"></div>
+<script src="/js/art.js"></script>
+<script>
+const S = document.getElementById('stage');
+const put = (x, y, html, sc = 1) => { const d = document.createElement('div'); d.className = 'c'; d.style.left = x + 'px'; d.style.top = y + 'px'; d.style.transform = `scale(${sc})`; d.style.transformOrigin = '0 0'; d.innerHTML = html; S.appendChild(d); return d; };
+const q = new URLSearchParams(location.search).get('p') || '1';
+if (q === '1') {
+  put(0, 0, artBathroom(560));
+  put(560, 0, artHouse(400));
+  const room = put(960, 0, artRoom(1100), 0.85);
+  ['cabL', 'cabR', 'door', 'chair', 'pc'].forEach((k) => { const d = document.createElement('div'); d.innerHTML = artRoomPiece(k); room.appendChild(d.firstChild); });
+  put(1500, 120, artCat(170), 0.8);
+  put(0, 420, ['jim', 'p2', 'p3', 'boss', 'fixer', 'dev'].map((k) => artHuman({ ...PEOPLE[k], w: 90 })).join(''));
+  put(0, 640, artTank(900));
+  put(940, 760, artCrowd(9, 60));
+  put(560, 420, artDb(200, '<image href="/img/firebird-logo.png" x="40" y="80" width="120" height="120"/>'));
+  put(780, 430, artCat(220));
+}
+if (q === '2') {
+  let x = 20, y = 20;
+  for (const k of Object.keys(ART)) { put(x, y, ART[k]); x += 250; if (x > 1700) { x = 20; y += 260; } }
+  put(x, y, flagDE); put(x + 140, y, flagAU); put(20, 820, artCrt(240)); put(300, 820, artApp(360, 220, '你的程序'));
+}
+document.body.dataset.ready = '1';
+</script></body></html>

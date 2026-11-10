@@ -144,7 +144,7 @@
 
   const SAY = {
     zh: [
-      [/PostgreSQL/g, 'Postgre S Q L'],
+      [/PostgreSQL/g, 'Postgres Q L'],
       [/SQLite/g, 'S Q Lite'],
       [/MySQL/g, 'My S Q L'],
       [/InterBase/g, 'Inter Base'],

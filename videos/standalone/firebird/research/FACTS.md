@@ -91,6 +91,21 @@ InterBase 源于 Jim Starkey 的多版本想法（H01–H02），1984 年在自�
 | U03 | 项目商业上独立，靠自愿资助 | About Firebird | — | 已核 |
 | U04 | 5.0 于 2024-01-11 发布；5.0.4 于 2026-04-17 发布；第 6 版路线图已公布，计划 2026 年发布，截至 2026-11-08 官方未发布 6.0 | [公告](https://firebirdsql.org/en/news/firebird-5-0-is-released/)；GitHub Releases；[路线图](https://www.firebirdsql.org/en/news/firebird-6-roadmap-is-published) | GitHub tags 无 v6 | 已核；交付前复查 |
 
+### 图注：观众多半已经忘了的公司与网站
+
+2026-11-10 策划者要求：「包括dec等,而且这种观众基本都忘记了的公司, 还要给简单的图注」。图注只说一句「这是谁」，取自下列出处（制作方：Claude Opus 5.5，2026-11-10 读取）。
+
+| 编号 | 陈述 | 原始出处与定位 | 独立印证 | 状态（2026-11-10） |
+|---|---|---|---|---|
+| G01 | DEC（Digital Equipment Corporation，商标 Digital）是六十到九十年代美国计算机业的大公司，以小型机（PDP、VAX）闻名；1998 年 6 月被康柏（Compaq）收购 | [Wikipedia: Digital Equipment Corporation](https://en.wikipedia.org/wiki/Digital_Equipment_Corporation) 导言与「Compaq」段 | H01、H04（Starkey 在 DEC 工作近十年） | 已核；图注「美国电脑公司，以小型机闻名，1998 年并入康柏」 |
+| G02 | Ashton-Tate 是开发 dBASE 的美国软件公司，曾与微软、Lotus 并称三大软件公司，1991 年卖给 Borland；InterBase 当时归它，随收购一起到了 Borland | [Wikipedia: Ashton-Tate](https://en.wikipedia.org/wiki/Ashton-Tate)；官方历史页「When Borland bought Ashton-Tate in October, 1991, they got also the InterBase with it」 | H11 | 已核；收购月份两处不一（官方历史页 10 月、Wikipedia 9 月），日历画面只写「一九九一年 · 秋」 |
+| G03 | Borland 是 1983 年成立的美国软件公司，主业是编程与部署工具，第一个产品 Turbo Pascal，1995 年推出 Delphi | [Wikipedia: Borland](https://en.wikipedia.org/wiki/Borland)「Borland International, Inc. era」段 | 官方历史页提到 Delphi 与 InterBase 的集成 | 已核；图注「美国软件公司，做 Turbo Pascal、Delphi 等编程工具」 |
+| G04 | Inprise 是 Borland 1998 年 4 月起用的公司名，2000 年 11 月宣布改回 Borland | 同上「Inprise Corporation era」段 | H16b 新闻稿署名「Inprise/Borland」 | 已核；图注「就是 Borland：1998 年起用的名字，2000 年底改回」 |
+| G05 | SourceForge 是托管开源项目的网站（源码仓库、缺陷跟踪、下载镜像等） | [Wikipedia: SourceForge](https://en.wikipedia.org/wiki/SourceForge) 导言 | H17 | 已核；图注只说「托管开源项目的网站」，不称当年最大 |
+| G06 | Mozilla 是网景（Netscape）成员 1998 年发起的自由软件社区，产品有火狐浏览器 | [Wikipedia: Mozilla](https://en.wikipedia.org/wiki/Mozilla) 导言 | N01–N05 | 已核 |
+| G07 | Groton 是美国马萨诸塞州的小镇；Starkey 想到多版本的那间淋浴房在 Groton 的家中 | 官方历史页 Ann Harrison 的回忆「the blue-tiled walk-in shower at … Groton, Massachusetts」 | [Wikipedia: Groton, Massachusetts](https://en.wikipedia.org/wiki/Groton,_Massachusetts) | 已核；图注不写门牌地址 |
+| G08 | DB-Engines 按网站提及次数（Google、Bing）、Google Trends 搜索热度、Stack Overflow 等问答站的讨论、招聘信息与 LinkedIn 档案中的提及等，给数据库算流行度得分 | [DB-Engines Ranking: Method](https://db-engines.com/en/ranking_definition) | U02 | 已核；图注「按网上提及、搜索、问答、招聘等热度给数据库打分的网站」 |
+
 ## 取证中发现、没有进入成片的事实
 
 - 办公室靠电脑取暖，煤气公司以为他们偷气（Ann Harrison 回忆）；搬到干洗店楼上的故事；Sybase 同期成立。备用细节。
