@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-已登记制作项目 32 部，已登记发布 25 部，其余 7 部；另有 175 个计划选题（可仅保留简报），见[片单](README.md)。
+已登记制作项目 32 部，已登记发布 26 部，其余 6 部；另有 175 个计划选题（可仅保留简报），见[片单](README.md)。
 
 此处核对结构化署名记录，未逐部观看成片；字段齐全不代表最终验收通过。模型名按原记录列出，不合并简称或猜测版本；一片可有多个模型，参与片数不能相加当成总片数。服务另列。
 
@@ -23,7 +23,7 @@
 
 | 原记录模型名 | 已发布 | 未发布 | 参与片目 |
 |---|---|---|---|
-| Claude Opus 5.5 | 24 | 5 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/README.md)、[一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/README.md)、[一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/README.md)、[一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md)、[一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/README.md)、[120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/README.md)、[200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](in-seconds/lean4/README.md)、[150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](in-seconds/dense-vs-moe/README.md)、[256 秒搞懂 SSH](in-seconds/ssh/README.md)、[128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[150 秒了解 Agent 的手：Harness](in-seconds/harness/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md)、[128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md)、[100 秒速通 IPv4](in-seconds/ipv4/README.md)、[192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/README.md)、[120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md)、[luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/README.md)、[隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md)、[10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](standalone/openclaw-opencode-v2/README.md)、[从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md)、[CoT：先思考，再回答](standalone/chain-of-thought/README.md)、[既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md)、[OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/README.md) |
+| Claude Opus 5.5 | 25 | 4 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/README.md)、[一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/README.md)、[一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/README.md)、[一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md)、[一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/README.md)、[120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/README.md)、[200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](in-seconds/lean4/README.md)、[150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](in-seconds/dense-vs-moe/README.md)、[256 秒搞懂 SSH](in-seconds/ssh/README.md)、[128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[150 秒了解 Agent 的手：Harness](in-seconds/harness/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md)、[128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md)、[100 秒速通 IPv4](in-seconds/ipv4/README.md)、[192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/README.md)、[120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md)、[luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/README.md)、[隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md)、[10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](standalone/openclaw-opencode-v2/README.md)、[从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md)、[CoT：先思考，再回答](standalone/chain-of-thought/README.md)、[既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md)、[OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/README.md) |
 | Gemini 4 Argon | 5 | 2 | [256 秒搞懂 SSH](in-seconds/ssh/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md)、[128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md)、[CoT：先思考，再回答](standalone/chain-of-thought/README.md) |
 | Claude Sonnet 5.5 | 1 | 2 | [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/README.md)、[120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md) |
 | DeepSeek V4.1 Flash 1017 | 3 | 0 | [128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
@@ -48,7 +48,6 @@
 | [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md) | 审稿 | WaterRun | Claude Sonnet 5.5：片单迁移、立项建骨架、简报、观众诘问<br>Claude Opus 5.5：取证、实验、中文文案、配乐小样、关键帧、审片页 | 未登记 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 | [怎么打手枪？](standalone/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
-| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md) | 验收 | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉与封面、场景、配乐、混音 | MiniMax speech-2.8-hd：旁白合成 |
 | [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/README.md) | 已放弃 | WaterRun | 未登记 | 未登记 |
 
 ## 已发布视频
@@ -79,6 +78,7 @@
 | [从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/README.md) | 已发布（冻结） | WaterRun | Claude Opus 5.5：取证、文案、翻译、视觉、场景、审查 | Microsoft Edge 在线语音（模型未披露）：旁白合成 |
 | [垃圾回收的艺术](standalone/garbage-collection/README.md) | 已发布（冻结） | WaterRun | DeepSeek V4.1 Flash 1017：事实测绘、实验、叙事测绘<br>Claude Fable 5.1：原始文献复核、补充实验<br>Gemini 4 Argon：第 8 稿文案<br>MiniMax M3.1 Flash：第 8 稿落盘与核对、交接<br>Claude Opus 5.5：配音、视觉、场景、配乐、英文译稿、封面、成片与审查 | MiniMax speech-2.8-hd：旁白合成 |
 | [CoT：先思考，再回答](standalone/chain-of-thought/README.md) | 已发布（冻结） | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉设计、场景实现、配乐<br>Gemini 4 Argon：文案诘问 | MiniMax speech-2.8-hd：配音<br>Whisper small（faster-whisper）：读音回听 |
+| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md) | 已发布（冻结） | WaterRun | Claude Opus 5.5：取证、实验、文案、视觉与封面、场景、配乐、混音 | MiniMax speech-2.8-hd：旁白合成 |
 | [OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/README.md) | 已发布（冻结） | WaterRun | Claude Opus 5.5：取证、文案、视觉与动画、配乐、封面 | MiniMax speech-2.8-hd（冷淡学长）：配音 |
 
 ## 整理与取舍

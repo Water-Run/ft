@@ -231,7 +231,7 @@
     {"slug": "miniscript-design", "title": {"zh": "MiniScript：最简单的编程语言：语法设计和实现", "en": "MiniScript, the Simplest Programming Language: Syntax Design and Implementation"}, "note": "2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法"},
     {"slug": "c", "title": {"zh": "C 生万物：C 语言"}, "note": "2026-10-26 由已取消的「编程语言」系列改为独立视频。"},
     {"slug": "chain-of-thought", "title": {"zh": "CoT：先思考，再回答"}, "status": "delivered", "note": "2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。"},
-    {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "in-progress", "note": "旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。"},
+    {"slug": "firebird", "title": {"zh": "既能做服务又能嵌入式，数据库小众的第三选择：Firebird"}, "status": "delivered", "note": "重置版 2026-11-10 发布（哔哩哔哩 BV1b1W36yEHu）；旧版已发布并归档。"},
     {"slug": "keydb-valkey", "title": {"zh": "Redis 之外：KeyDB & Valkey"}, "note": "2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。"},
     {"slug": "cve-2026-98432", "series": "hot-topics", "title": {"zh": "两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷"}, "status": "abandoned", "note": "安全审查放弃：2026-10-31 策划者决定不再制作；不交付、不发布"},
     {"slug": "pando", "series": "hot-topics", "title": {"zh": "OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？"}, "status": "delivered"}

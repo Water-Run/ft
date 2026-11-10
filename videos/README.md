@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 207 部：已成片 23，制作中 5，计划中 175，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 207 部：已成片 24，制作中 4，计划中 175，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,6 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | zh 4:21 | 2026-11-10 | [哔哩哔哩](https://www.bilibili.com/video/BV1b1W36yEHu) | — | Claude Opus 5.5 |
 | [192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/) | [XX 秒速通](in-seconds/README.md) | zh 3:12 | 2026-11-07 | [哔哩哔哩](https://www.bilibili.com/video/BV1vt4j6GE11) | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | zh 15:13 | 2026-11-05 | [哔哩哔哩](https://www.bilibili.com/video/BV1RG4h6UEqQ) | — | GPT-6.1 Sol、Claude Opus 5.5 |
 | [100 秒速通 IPv4](in-seconds/ipv4/) | [XX 秒速通](in-seconds/README.md) | zh 1:40 | 2026-11-02 | [哔哩哔哩](https://www.bilibili.com/video/BV17rxa6REXU) | — | Kimi K3.1 Pro、Claude Opus 5.5 |
@@ -38,15 +39,14 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-01.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-10.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r1（out/zh/preview-r1.mp4，16:59）的意见：画面、配乐、读音；改后出 r2。正式片之前：把封面 A 做成 src/cover.html（16:9 与 4:3 两版），再跑 check.js 与验收。 | 最新 | Claude Opus 5.5、Claude Sonnet 5.5 |
-| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 在审片页（out/audition/index.html）选音色、配乐、视觉方向并确认文案；确认后按选定音色实测，排定各场定点，全片配音 | 最新 | Claude Sonnet 5.5、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r1（out/zh/preview-r1.mp4，16:59）的意见：画面、配乐、读音；改后出 r2。正式片之前：把封面 A 做成 src/cover.html（16:9 与 4:3 两版），再跑 check.js 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 在审片页（out/audition/index.html）选音色、配乐、视觉方向并确认文案；确认后按选定音色实测，排定各场定点，全片配音 | 待同步 | Claude Sonnet 5.5、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | 验收 | 策划者看正式片，决定是否发布；发布后登记 release 并归档 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
@@ -446,5 +446,5 @@
 | 30 | MiniScript：最简单的编程语言：语法设计和实现<br>MiniScript, the Simplest Programming Language: Syntax Design and Implementation | zh | 计划中 | `miniscript-design` | 2026-10-20 策划者新增（原话「再加一个: MiniScript: 最简单的编程语言: 语法设计和实现」）；片单已有「编程语言」系列的「编程语言——MiniScript」，策划者选择两条都留、本片另开为独立片。分工：系列那一集讲 MiniScript 这门语言，本片专讲它的语法设计取舍与解释器怎么实现。开工时先确认对象是现有的 MiniScript（Joe Strout 设计，miniscript.org）；「最简单」的说法要有出处，或在片中写成限定的说法 |
 | 31 | C 生万物：C 语言 | zh | 计划中 | `c` | 2026-10-26 由已取消的「编程语言」系列改为独立视频。 |
 | 32 | CoT：先思考，再回答 | zh | 已成片 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
-| 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 制作中 | [`firebird`](standalone/firebird/) | 旧版已发布并归档；2026-10-26 改为 5–7 分钟独立片，围绕服务端与嵌入式两种用法重新策划。 |
+| 33 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 已成片 | [`firebird`](standalone/firebird/) | 重置版 2026-11-10 发布（哔哩哔哩 BV1b1W36yEHu）；旧版已发布并归档。 |
 | 34 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
