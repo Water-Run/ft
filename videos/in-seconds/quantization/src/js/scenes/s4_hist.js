@@ -17,15 +17,15 @@
     appear(y1, T('h1') + 2.3);
     const src = el(world, 160, 404, 820, 52, { background: '#A855F7', color: '#0D0620', borderRadius: '26px', textAlign: 'center', lineHeight: '52px', font: '700 30px/52px "Sans SC", "Inter"' }, 'llama.cpp 的第一个提交 · Georgi Gerganov');
     appear(src, T('h1') + 1.8);
-    const mac = el(world, 1060, 230, 620, 380, { border: '6px solid #FFFFFF', borderRadius: '28px' });
+    const mac = el(world, 1240, 230, 540, 380, { border: '6px solid #FFFFFF', borderRadius: '28px' });
     appear(mac, T('h1') + 0.6);
-    const macLab = el(world, 1060, 640, 620, 44, { textAlign: 'center' }, 'MacBook', 'lbl');
+    const macLab = el(world, 1240, 640, 540, 44, { textAlign: 'center' }, 'MacBook', 'lbl');
     appear(macLab, T('h1') + 0.6);
 
     // h2：他就是这样压到 4 位的：屏幕里是 16 段色带
-    const screen = el(world, 1094, 264, 552, 312, { background: bands(16), borderRadius: '14px' });
+    const screen = el(world, 1274, 264, 472, 312, { background: bands(16), borderRadius: '14px' });
     appear(screen, T('h2')); sfx('pop', T('h2'), { g: 0.7 });
-    const four = el(world, 1060, 706, 620, 44, { textAlign: 'center' }, '4 位 · 16 段', 'lbl');
+    const four = el(world, 1240, 706, 540, 44, { textAlign: 'center' }, '4 位 · 16 段', 'lbl');
     wipe(four, T('h2') + 0.5, { dir: 'l', d: 0.4 });
 
     // h3：说明里的原话（英文原文），译文，以及「三四十个词」的样子：前 30 个实，之后渐渐变淡

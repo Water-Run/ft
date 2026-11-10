@@ -69,7 +69,7 @@
     appear(lowLab, T('t7') + 0.3); rowEls.push(lowLab);
 
     // t8：想久了，反而降到 10.4%：指向圆点的一句话
-    const back = el(world, xOfScore(25) + 22, lowY + 66, 560, 40, {}, '想久了，常常交白卷', 'lbl');
+    const back = el(world, xOfScore(25) + 22, 812, 560, 40, {}, '想久了，常常交白卷', 'lbl');
     back.style.color = '#FFE3FF';
     wipe(back, T('t8'), { dir: 'l', d: 0.4 }); rowEls.push(back);
 
@@ -87,10 +87,8 @@
     set(hl, T('t7'), { height: 176 });
     set(hl, T('t8'), { height: 130 });
     set(hl, T('t8') + 1.2, { height: 176 });
-    const realBits = el(world, 1420, ROW(4) + 104, 380, 48, {}, '实际平均约 1.8 位', 'hit');
-    appear(realBits, T('t6') + 1.3); rowEls.push(realBits);
-    const agree = el(world, 1420, ROW(4) + 142, 380, 48, {}, `与原版逐词一致 ${files[4].agree}%`, 'hit');
-    appear(agree, T('t8') + 1.6); rowEls.push(agree);
+    const info = el(world, 120, 884, 1000, 40, {}, `1 位档实际平均约 1.8 位，与原版逐词一致 ${files[4].agree}%`, 'lbl');
+    appear(info, T('t6') + 1.3); rowEls.push(info);
     sfx('blip', T('t7') + 0.3, { g: 0.4 }); sfx('blip', T('t8'), { g: 0.4 });
 
     // t9：89 个多步编程任务：4 位与原版做对的数一样多（约 63 个）。换成两行小方格
