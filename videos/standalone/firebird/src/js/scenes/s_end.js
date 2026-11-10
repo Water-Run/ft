@@ -119,7 +119,7 @@ scene('end', ({ root, s }) => {
   sfx('whoosh', tFly, { g: 0.45, p: 0.3 }); sfx('chime', tFly + 0.75, { g: 0.8, p: 0.5 });
   const rings = fbAbs(C, 1010, 0, ''); css(rings, { width: '660px', height: '660px' });
   C.insertBefore(rings, C.firstChild);
-  [['#FAAC19', 540], ['#F68A21', 440], ['#EE2B24', 350]].forEach(([c, d], i) => {
+  [['#FAAC19', 470], ['#F68A21', 390], ['#EE2B24', 315]].forEach(([c, d], i) => {
     const r = h('div', 'ring', rings); css(r, { left: 330 - d / 2 + 'px', top: 340 - d / 2 + 'px', width: d + 'px', height: d + 'px', background: c });
     const tr = tFly + 0.7 + i * 0.12;
     fbIn(r, tr, { scale: 0.5 }, { d: 0.26, ease: 'back.out(1.6)' });

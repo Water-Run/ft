@@ -136,5 +136,5 @@ body { font-family: "Sans SC"; color: var(--ink); }
 #caption span { font: 500 42px "Sans SC"; color: var(--ink); }
 .credits { z-index: 2; }
 .credit-row { margin-bottom: 26px; }
-.t-body { font-weight: 500; font-size: 40px; line-height: 1.35; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--soft); }
+.t-body { font-weight: 500; font-size: 44px; line-height: 1.35; }
+.t-note { font-weight: 500; font-size: 32px; line-height: 1.35; color: #555; }

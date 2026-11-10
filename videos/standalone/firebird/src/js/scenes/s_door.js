@@ -91,7 +91,8 @@ scene('door', ({ root, s }) => {
   init(cover, { autoAlpha: 0, x: -1300, z: 140 });
   to(cover, T('d7', '闭源') - 0.2, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power3.out' });
   sfx('whoosh', T('d7', '闭源') - 0.2, { g: 0.5 });
-  to(cover, T('d7', '公开') - 0.05, { x: 1400, autoAlpha: 0, duration: 0.4, ease: 'power2.in' });
+  to(cover, T('d7', '公开') - 0.05, { x: 1500, duration: 0.32, ease: 'power3.in' });
+  set(cover, T('d7', '公开') + 0.3, { autoAlpha: 0 });
   sfx('thud', T('d7', '公开') + 0.1);
   const mag = fbAbs(B, 0, 0, ART.magnifier);
   const m0 = T('d7', '翻') - 0.25, mE = Tend('d7') + 0.3;

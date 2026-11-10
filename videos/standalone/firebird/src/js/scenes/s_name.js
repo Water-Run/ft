@@ -23,7 +23,7 @@ scene('name', ({ root, s }) => {
   const moz = fbLogo(g, 1030, 30, 'mozilla', 190, { pad: 26 });
   fbIn(moz, T('e2', 'Mozilla') - 0.12, { y: -60, rotationZ: 3 }, { ease: 'back.out(1.5)', d: 0.38 });
   sfx('pop', T('e2', 'Mozilla'), { p: 0.4 });
-  const mozCap = fbCap(g, 1034, 300, 'Mozilla', '网景（Netscape）的人 1998 年发起的开源社区，做浏览器', 480);
+  const mozCap = fbCap(g, 1034, 300, 'Mozilla', '网景（Netscape）的人 1998 年发起的开源社区，做浏览器', 540);
   fbCapIn(mozCap, T('e2', '浏览器') - 0.1);
   // 撞了商标，要换名字
   const phx = fbAbs(br.body, 0, 110, '<div class="hl-big" style="text-align:center;width:900px;color:#8e8c86">Phoenix</div>');
@@ -55,9 +55,9 @@ scene('name', ({ root, s }) => {
   sfx('whoosh', mo0, { g: 0.25, p: 0.4 });
   // 发动大家，一封一封给 Mozilla 写信
   const tMail = T('e5', '发动') - 0.1;
-  fbOut(wallet, tMail);
+  fbOut(wallet, tMail - 0.3);
   const crowd = fbAbs(g, 990, 470, artCrowd(3, 84, -14, 2));
-  fbIn(crowd, tMail, { x: 160 }, { d: 0.2 });
+  fbIn(crowd, tMail + 0.05, { x: 160 }, { d: 0.2 });
   const mt0 = T('e5', '一封') - 0.05, mt1 = T('e5', '写信') + 0.1;
   for (let i = 0; i < 12; i++) {
     const m = fbAbs(g, 1060 + (i % 3) * 40, 520, ART.envelope);
@@ -67,6 +67,11 @@ scene('name', ({ root, s }) => {
     to(m, t + 0.06, { x: -10 - (i % 3) * 40 + (i % 4) * 26 - 30, y: -186 + (i % 3) * 14 - i * 3, rotationZ: -14 + (i % 5) * 7, duration: 0.26, ease: 'power3.out' });
     if (i % 2 === 0) sfx('tick', t + 0.45, { g: 0.5, p: 0.4 });
   }
+  // 信堆到 Mozilla：卡片被撞得一晃，底色闪一下
+  const tHit = T('e5', 'Mozilla') - 0.05;
+  to(moz, tHit, { x: -22, backgroundColor: '#ffd9d2', duration: 0.1, ease: 'power3.out' });
+  to(moz, tHit + 0.1, { x: 0, backgroundColor: '#ffffff', duration: 0.45, ease: 'power2.out' });
+  sfx('thud', tHit, { g: 0.6, p: 0.5 });
   // 二〇〇四年二月改名 Firefox
   to(name, T('e6', '改名') - 0.1, { y: 260, rotationZ: 8, autoAlpha: 0, duration: 0.32, ease: 'power2.in' });
   sfx('whoosh', T('e6', '改名') - 0.1, { g: 0.5, p: -0.3 });
