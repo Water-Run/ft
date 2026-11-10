@@ -26,7 +26,7 @@
       ],
     },
     {
-      id: 'what', at: 17.5, chap: null, lead: 0.2, tail: 0.2,
+      id: 'what', at: null, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['a1', '模型文件里装的全是数，一共 278 亿个', { gap: 0.35 }],
         ['a3', '原版每个数占 16 位，就是 16 个 0 或 1', { gap: 0.35 }],
@@ -34,7 +34,7 @@
       ],
     },
     {
-      id: 'how', at: 27.2, chap: null, lead: 0.2, tail: 0.2,
+      id: 'how', at: null, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['b1', '这是文件里的 32 个数', { gap: 0.35 }],
         ['b2', '数不能删，那就让每个数少占几位', { gap: 0.4 }],
@@ -45,7 +45,7 @@
       ],
     },
     {
-      id: 'cost', at: 43.8, chap: null, lead: 0.2, tail: 0.2,
+      id: 'cost', at: null, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['c1', '可这四个数，原本各不相同', { gap: 0.3 }],
         ['c2', '现在换成了同一个值，一模一样', { gap: 0.5 }],
@@ -56,7 +56,7 @@
       ],
     },
     {
-      id: 'hist', at: 60.7, chap: null, lead: 0.2, tail: 0.2,
+      id: 'hist', at: null, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['h1', '2023 年，有个程序员想在 MacBook 上跑大模型', { gap: 0.3 }],
         ['h2', '他就是这样压到 4 位的', { gap: 0.3 }],
@@ -64,7 +64,7 @@
       ],
     },
     {
-      id: 'test', at: 71.7, chap: null, lead: 0.2, tail: 0.2,
+      id: 'test', at: null, chap: null, lead: 0.2, tail: 0.2,
       cues: [
         ['t1', '三年后，有人拿 Qwen3.8 27B 的五个版本做题', { gap: 0.3 }],
         ['t2', '198 道选择题，四选一', { gap: 0.45 }],
@@ -78,7 +78,7 @@
       ],
     },
     {
-      id: 'close', at: 100.2, chap: null, lead: 0.2, tail: 0.1,
+      id: 'close', at: null, chap: null, lead: 0.2, tail: 0.1,
       cues: [
         ['z1', '原版叫 BF16，量化过的叫 Q8、Q4，还有 NVFP4', { gap: 0.35 }],
         ['z2', '数字大致就是每个数占几位', { gap: 0.5 }],

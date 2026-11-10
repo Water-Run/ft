@@ -57,7 +57,8 @@
         "A855F7",
         "E879F9",
         "FFE3FF",
-        "FF6BB5"
+        "FF6BB5",
+        "8A7BB5"
       ],
       "fonts": [
         "Sans SC",
@@ -79,8 +80,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "review",
-  "next": "文案第五稿与视觉方向已由 WaterRun 确认（2026-11-10），音色精英青年 beta、配乐 B 刻度；制作方按 README「交接」配音、实测排定点、按四张关键帧实现",
+  "stage": "preview",
+  "next": "策划者看预览 out/zh/preview-r1.mp4：意见记进 review/NOTES.md 的预览一节，逐条回应后出 r2；同意后出正式片（audio → render → finish → covers → check --final）",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -110,13 +111,21 @@
           "关键帧",
           "审片页"
         ]
+      },
+      {
+        "name": "Claude Haiku 5.5",
+        "roles": [
+          "实现",
+          "配乐",
+          "配音合成"
+        ]
       }
     ],
     "services": [
       {
         "name": "MiniMax speech-2.8-hd",
         "roles": [
-          "配音试听"
+          "配音"
         ]
       }
     ],
