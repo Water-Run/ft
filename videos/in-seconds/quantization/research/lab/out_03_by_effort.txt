@@ -1,0 +1,72 @@
+页面里的图：
+   top-1 token agreement with BF16 vs model size
+   GPQA Diamond accuracy vs model size, by reasoning effort
+   IFBench strict accuracy vs model size, by reasoning effort
+   Terminal-Bench 2.1 pass rate vs model size
+   agent turns and output tokens vs BF16 on the same solved tasks, per quantization and benchmark
+   GPQA Diamond accuracy vs reasoning effort
+   Modal spend treemap, $2971 total: benchmark, then quantization
+   output token price vs single-request speed, per quantization and GPU
+
+== 图二的文字（坐标，内容）
+  x=48.0 y=400.0  0%
+  x=48.0 y=325.6  20%
+  x=48.0 y=251.2  40%
+  x=48.0 y=176.8  60%
+  x=48.0 y=102.39999999999998  80%
+  x=48.0 y=28.0  100%
+  x=128.33333333333331 y=412.0  low
+  x=273.0 y=412.0  medium
+  x=417.6666666666667 y=412.0  xhigh
+  x=273.0 y=434.0  reasoning effort (xhigh is the model default)
+  x=14.0 y=210.0  GPQA Diamond score
+  x=496.0 y=63.71199999999999  Q4_K_M
+  x=496.0 y=77.71199999999999  reported by Qwen
+  x=496.0 y=91.71199999999999  UD-Q2_K_XL
+  x=496.0 y=298.44399999999996  UD-IQ1_M
+  x=496.0 y=312.44399999999996  random guess
+  x=496.0 y=361.312  UD-IQ1_S
+
+== 图二的点：横坐标（推理强度） → 各档分数
+  x= 128.3  Q4_K_M  81.7%  UD-IQ1_M  35.9%  UD-IQ1_S  15.7%  UD-Q2_K_XL  81.3%
+  x= 273.0  Q4_K_M  83.3%  UD-IQ1_M  39.2%  UD-IQ1_S  16.9%  UD-Q2_K_XL  79.8%
+  x= 417.7  Q4_K_M  90.4%  UD-IQ1_M  27.3%  UD-IQ1_S  10.4%  UD-Q2_K_XL  85.4%
+
+== 图一的文字
+  x=48.0 y=420.0  70%
+  x=48.0 y=355.0  75%
+  x=48.0 y=290.0  80%
+  x=48.0 y=225.0  85%
+  x=48.0 y=160.0  90%
+  x=48.0 y=95.0  95%
+  x=48.0 y=30.0  100%
+  x=73.20388654803958 y=432.0  10
+  x=238.58919435052448 y=432.0  20
+  x=335.3333975852041 y=432.0  30
+  x=457.2166792162232 y=432.0  50 GB
+  x=284.0 y=454.0  model size on disk
+  x=14.0 y=221.0  GPQA Diamond score
+  x=518.0 y=161.2999999999999  xhigh (default)
+  x=518.0 y=175.2999999999999  reported by Qwen
+  x=518.0 y=206.79999999999993  low
+  x=518.0 y=247.10000000000002  medium
+  x=89.34727819294622 y=153.6274907262752  UD-Q2_K_XL
+  x=199.81208620877769 y=100.02465863851916  Q4_K_M
+  x=327.2444682551662 y=106.282420646927  Q8_0
+  x=478.65272180705387 y=105.23556864734672  BF16
+== 图一的点：颜色（推理强度） → 横坐标（文件大小）与分数
+  #2a78d6  x=89:85.4%  x=200:90.4%  x=327:89.8%  x=479:89.9%
+  #1baf7a  x=89:79.8%  x=200:83.3%  x=327:81.3%  x=479:83.3%
+  #eda100  x=89:81.3%  x=200:81.7%  x=327:82.3%  x=479:86.4%
+
+== 正文原句（含关键词）
+  - Yet the 17 GB Q4_K_M matches the full model on a popular agentic coding benchmark, Terminal-Bench 2.1.
+  - At 1 bit, the model performs around random chance on GPQA Diamond, and longer reasoning makes it worse.
+  - Measuring token prediction differences (KL-divergence, top-1 predictions) is easy, but it does not tell us whether the model gets worse at solving tasks.
+  - Download as PNG So, I focus on directly measuring results on popular benchmarks - GPQA Diamond , instruction-following IFBench , programming Terminal-Bench 2.1 .
+  - Unsloth replaced the v2 files on 19 August 2026 , so the exact files used for most tests are no longer available.
+  - I run each at three reasoning efforts: low , medium , and the default xhigh .
+  - Agentic coding and Terminal-Bench 2.1 How does it work for programming?
+  - Terminal-Bench 2.1 is a standard agentic benchmark, with 89 tasks.
+  - And longer reasoning makes it worse: at xhigh , scores drop below low , as the model more often reasons until the token budget runs out and returns an empty answer.
+  - We tested Qwen3.6 27B quantizations by Unsloth on Hugging Face, with pelicans on bikes, gears, Terminal-Bench 2.1, and AIME-120.

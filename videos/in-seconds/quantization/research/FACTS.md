@@ -49,6 +49,7 @@
 |---|---|---|---|---|---|
 | C1 | llama.cpp 的首个提交 2023-03-10，作者 Georgi Gerganov | GitHub 提交 `26c084662903ddaca19bef982831bfb0856e8257`，消息 “Initial release” | 首个 README 提交 `775328064e` 同日 | — | 已核 |
 | C2 | 最早的 README 写明目标是用 4 位量化在 MacBook 上运行模型；“This was hacked in an evening - I have no idea if it works correctly.”；“typically degrades significanlty after ~30-40 tokens” | README 提交 `18ebda34d67c05f4f5584a9209e7efb949f5fd56`（原文） | C1 | — | 已核 |
+| C3 | 同一份 README 还写：只测了 7B 模型，生成的文字开头通顺，但通常在约 30 到 40 个词元之后明显变差。原文：“So far, I've tested just the 7B model and the generated text starts coherently, but typically degrades significanlty after ~30-40 tokens.” | README 提交 `18ebda34d67c05f4f5584a9209e7efb949f5fd56` 第 17 行（2026-11-10 经 GitHub 接口重读原文） | C2 | 作者没有说变差的原因；文案只转述他写了什么，不说成量化造成 | 已核 |
 
 ### D. 名词
 
@@ -77,10 +78,24 @@
 | E9 | GPQA Diamond 共 198 题；89.9% = 178/198，90.4% = 179/198，所以 Q4_K_M 比 BF16「只多对了一道题」 | Hugging Face 数据集 `fingertap/GPQA-Diamond`，`datasets-server` 的 test 划分 198 行（2026-11-09） | ISTA-DASLab 卡的分数同样落在 n/198 上（89.39 = 177/198，86.87 = 172/198，84.85 = 168/198） | 只对这次评测成立 | 已核 |
 | E10 | NVFP4 的速度是 BF16 的两倍半：38.6 ÷ 14.6 = 2.64 | E7 | — | 仅 DGX Spark、vLLM，英伟达版（混合 FP8）。画面标明机器与版本 | 已核 |
 
+### E（续）. 话越长，差别越大吗（2026-11-10 补）
+
+数据来自同一篇 Quesma 评测，脚本 `lab/03_by_effort.py`，回显 `lab/out_03_by_effort.txt`；逐词一致率与编程任务在 `lab/out_02_public_numbers.txt`。
+
+| 编号 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、截至日期 | 状态 |
+|---|---|---|---|---|---|
+| E11 | 同一份卷子按推理强度分三档（low、medium、xhigh，xhigh 是缺省）。少想（low）与多想（xhigh）的分数：BF16 86.4 → 89.9；Q8_0 82.3 → 89.8；Q4_K_M 81.7 → 90.4；UD-Q2_K_XL 81.3 → 85.4；UD-IQ1_S 15.7 → 10.4（medium 16.9）；UD-IQ1_M 35.9 → 27.3 | Quesma 图一（按颜色分推理强度）与图二（“GPQA Diamond accuracy vs reasoning effort”），`out_03` | 两张图里 Q4_K_M、UD-Q2_K_XL 的三档数值互相对得上 | 该文。1 位的两个文件多想都更差；其余各档多想更好。medium 并不都在两者之间，文案只比 low 与 xhigh | 已核 |
+| E12 | 1 位档多想反而更差的原因，原文：“longer reasoning makes it worse: at xhigh, scores drop below low, as the model more often reasons until the token budget runs out and returns an empty answer.” | Quesma 正文，`out_03` 末尾 | E11 | 该文 | 已核 |
+| E13 | 与原版逐词一致的比例（同一位置选出的第一个词相同）：Q8_0 98.7%，Q4_K_M 94.8%，UD-Q2_K_XL 87.3%，UD-IQ1_S 74.2%。即 4 位档每 100 个词约有 5 个和原版选得不一样 | Quesma 图 “top-1 token agreement with BF16 vs model size”，`out_02` | Hack-Log 测 Q8_0 与 BF16 逐词一致 98.9% | 该文。原文同时提醒：逐词差别不等于任务做得更差（“it does not tell us whether the model gets worse at solving tasks”） | 已核 |
+| E14 | 「话越长，和原版不一样的词越多」是 E13 的算术推论：每 100 个词约 5 个，1000 个词约 50 个 | E13 | — | 只说「不一样的地方更多」，不说「错得更多」 | 推论 |
+| E15 | Terminal-Bench 2.1 是 89 个要多轮操作的编程任务；Q4_K_M 与 BF16 都做成约 63 个（70.8%），UD-Q2_K_XL 约 57 个（64.0%）。原文：“the 17 GB Q4_K_M matches the full model on a popular agentic coding benchmark”“a standard agentic benchmark, with 89 tasks” | Quesma 图三与正文，`out_02`、`out_03` | 同一批做成的任务上，UD-Q2_K_XL 的轮数与 BF16 相当，多写约四分之一的词（原文 “takes as many turns as BF16 but writes about a quarter more tokens”） | 该文。个数由百分比反算，画面写「约」或只写百分比 | 已核 |
+| E16 | 量化的损伤不是线性的，原文：“first there is no measurable change, then a small decline, and finally a collapse.” | Quesma 正文 “The 1-bit cliff” 一节 | E1–E5 的分数走势 | 该文 | 已核 |
+
+**对策划者「短期任务区别少、长程累计误差大」的核对结果**：有出处的是三件事。其一，每个词都有小偏差，话越长不一样的地方越多（E13、E14）。其二，2023 年最早的 4 位实现，作者自己写开头通顺、三四十个词后明显变差（C3）。其三，今天的 1 位档想得越久越差（E11、E12）。**没有出处、且与数据相反的**是「4 位在长任务上明显变差」：89 个多步编程任务上 4 位与原版持平（E15）；少想时各档与原版的差距也并不比多想时小（E11）。文案按有出处的部分写。
+
 ## 取证中发现、没有进入成片的事实
 
-- Terminal-Bench 2.1：Q4_K_M 与 BF16 同为 70.8%，UD-Q2_K_XL 64.0%（`out_02`）。
-- 与 BF16 逐词一致率：Q8_0 98.7%，Q4_K_M 94.8%，UD-Q2_K_XL 87.3%，UD-IQ1_M 77.6%，UD-IQ1_S 74.2%（`out_02`）。逐词不同不等于答错。
+- UD-IQ1_M 与 BF16 的逐词一致率 77.6%（`out_02`）。
 - Unsloth 自称 UD-IQ1_S「保留约 72% top-1%」，Quesma 指出剩下的 28% 决定了成败。
 - 量化有训练后量化与量化感知训练之分；KV 缓存也能量化，本片只讲权重。
 - 2017 年 Jacob 等人的整数推理量化（arXiv 1712.05877），面向手机；本片历史段只留一个节点。

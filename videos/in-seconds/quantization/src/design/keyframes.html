@@ -21,8 +21,8 @@ const bands = (n) => n > 16 ? smooth() : 'linear-gradient(90deg,' + Array.from({
 const C = { dim: '#CDBDFF', w: '#FFFFFF', bad: '#FF6BB5', ink: '#1A0B5E', glow: '0 0 48px rgba(168,85,247,.55)' };
 const box = (x, y, w, h, css, html = '', cls = '') => S.insertAdjacentHTML('beforeend', `<div class="${cls}" style="left:${x}px;top:${y}px;${w != null ? `width:${w}px;` : ''}${h != null ? `height:${h}px;` : ''}${css}">${html}</div>`);
 const text = (x, y, size, html, css = '', cls = '') => box(x, y, null, null, `font-size:${size}px;${css}`, html, cls);
-const CAP = { 1: '可它还有个 17 GB 的版本，做题的分数几乎一样', 2: '先定 16 个值，每个数换成最近的那个', 3: '1 位的 6.2 GB，只对了一成，还不如瞎蒙' };
-const LEFT = { 1: 109, 2: 77, 3: 25 }, METER = { 1: ['17 GB', 'Qwen3.8 27B'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'] };
+const CAP = { 1: '可它还有个 17 GB 的版本，做题的分数几乎一样', 2: '先定 16 个值，每个数换成最近的那个', 3: '让它少想一点，反而能对一成半', 4: '4 位的每说 100 个词，约有 5 个和原版不一样' };
+const LEFT = { 1: 109, 2: 82, 3: 29, 4: 67 }, METER = { 1: ['17 GB', 'Qwen3.8 27B'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'], 4: ['17 GB', '每个数 4 位'] };
 
 // 常驻元素：字幕带、秒尺、剩余秒数、右上仪表（位置按系列约定）
 text(60, 44, 44, LEFT[f], 'font-weight:500', 'm');
@@ -76,18 +76,33 @@ if (f === 2) {                    // 中段：文件里真实的 32 个数，每
 }
 
 if (f === 3) {                    // 结尾：五个版本并排。色带越短越粗，分数在右
-  const TIER = ['原版', '8 位', '4 位', '2 位', '1 位'], bx = 420, bk = 11.5, tx = 1180, tk = 3, guess = tx + 25 * tk;
-  text(bx, 140, 28, '体积', `color:${C.dim}`); text(tx, 140, 28, '198 道选择题 · 答对', `color:${C.dim}`);
+  const TIER = ['原版', '8 位', '4 位', '2 位', '1 位'], bx = 420, bk = 11.5, tx = 1120, tk = 3.6, guess = tx + 25 * tk;
+  // 每行一条线：竖线是少想（low）时的分数，圆点是多想（xhigh，缺省）时的分数。1 位那行圆点在竖线左边：想得久反而更差
+  text(bx, 140, 28, '体积', `color:${C.dim}`); text(tx, 140, 28, '198 道选择题 · 答对　　│ 少想　● 多想', `color:${C.dim}`);
   box(guess - 1, 186, 0, 680, `border-left:2px dashed ${C.dim}`);
   box(guess - 120, 880, 240, null, `text-align:center;font-size:26px;color:${C.dim}`, '瞎蒙 25%');
   D.files.forEach((r, i) => {
     const y = 196 + i * 142, bad = r.score < 25, col = bad ? C.bad : C.w;
     text(118, y, 60, r.gb + ' GB', '', 'n'); text(122, y + 72, 26, `${TIER[i]} · ${r.name}`, `color:${C.dim}`);
     box(bx, y + 6, r.gb * bk, 60, `border-radius:30px;background:${bands(r.levels)};box-shadow:${C.glow}`);
-    box(tx, y + 33, r.score * tk, 6, `background:${col};border-radius:3px`);
+    box(tx, y + 33, Math.max(r.score, r.low) * tk, 6, `background:${col};border-radius:3px`);
+    box(tx + r.low * tk - 1.5, y + 20, 3, 32, `background:${col}`);
     box(tx + r.score * tk - 9, y + 27, 18, 18, `background:${col};border-radius:50%;box-shadow:0 0 16px ${col}`);
     box(1500, y - 2, 300, null, `text-align:right;font-size:72px;color:${col}`, r.score.toFixed(1) + '%', 'n');
   });
+}
+if (f === 4) {                    // 精度下降落到嘴上：同样说 100 个词，4 位的有约 5 个和原版选得不一样
+  const q4 = D.files.find((r) => r.id === 'q4'), diff = Math.round(100 - q4.agree), x0 = 160, pitch = 16;
+  const lit = new Set(Array.from({ length: diff }, (_, k) => Math.floor((k + 0.5) * 100 / diff)));
+  text(160, 178, 26, `同一段话 · 同一个位置 · 各自选的下一个词（一致 ${q4.agree}%）`, `color:${C.dim}`, 'm');
+  text(160, 286, 32, '原版', `color:${C.dim}`); text(160, 496, 32, '4 位 · ' + q4.name, `color:${C.dim}`);
+  for (let i = 0; i < 100; i++) {
+    box(x0 + i * pitch, 340, 10, 64, `border-radius:5px;background:${ramp(0.6)}`);
+    if (lit.has(i)) box(x0 + i * pitch - 1, 540, 12, 84, `border-radius:6px;background:${C.w};box-shadow:0 0 18px #fff`);
+    else box(x0 + i * pitch, 550, 10, 64, `border-radius:5px;background:${ramp(0.6)}`);
+  }
+  text(156, 700, 120, diff, '', 'n'); text(250, 742, 56, '/ 100', `color:${C.dim}`, 'n');
+  text(440, 756, 36, '个词和原版不一样', `color:${C.dim}`);
 }
 document.body.dataset.ready = '1';
 </script></body></html>

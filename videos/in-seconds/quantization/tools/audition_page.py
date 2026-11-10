@@ -21,11 +21,11 @@ D = json.loads(subprocess.run(["node", "-e", js, os.path.join(ROOT, "src", "js",
 V = json.load(open(os.path.join(OUT, "voices.json"), encoding="utf-8"))
 budget = 112.5 - D["fixed"]
 os.makedirs(os.path.join(OUT, "kf"), exist_ok=True)
-for f in (1, 2, 3):
+for f in (1, 2, 3, 4):
     shutil.copy(os.path.join(ROOT, "shots", f"page__design_keyframes_html_f_{f}.png"), os.path.join(OUT, "kf", f"p{f}.png"))
 
 e = html.escape
-SCENE = {"open": "引子", "what": "文件里是什么", "how": "怎么变小", "cost": "丢了什么", "hist": "历史", "test": "五个版本做同一份卷子", "close": "名字与收尾"}
+SCENE = {"open": "引子", "what": "文件里是什么", "how": "怎么变小", "cost": "丢了什么", "hist": "历史", "test": "五个版本做同一份卷子，再让它们多想、多做几步", "close": "名字与收尾"}
 text = ""
 table = ""
 for sc in D["scenes"]:
@@ -53,7 +53,8 @@ music = "".join(f'<div class="card"><div class="h"><b>{e(n)}</b></div><audio con
 KF = [
     (1, "开头：原版的色带是连续的，17 GB 的只剩 16 种紫"),
     (2, "中段：32 个真实的数，落到 16 块紫里最近的一块"),
-    (3, "结尾：五个版本并排，越短越粗，分数在右"),
+    (4, "精度下降落到词上：100 个词里 5 个和原版不一样"),
+    (3, "结尾：五个版本并排；竖线是少想的分数，圆点是多想的"),
 ]
 kf = '<div class="grid">' + "".join(f'<a href="kf/p{f}.png" target="_blank"><img loading="lazy" src="kf/p{f}.png" alt="{e(n)}"><span class="meta">{e(n)}</span></a>' for f, n in KF) + "</div>"
 
@@ -65,11 +66,11 @@ page = f"""<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name
 main{{max-width:1120px;margin:0 auto;padding:40px 24px 90px}}h1{{font-size:30px;margin:0 0 4px}}h2{{font-size:22px;margin:48px 0 14px;padding-top:18px;border-top:1px solid var(--line)}}h3{{font-size:17px;margin:20px 0 6px}}
 .meta{{color:var(--dim);font-size:14px}}.s sup{{color:var(--dim);font-size:11px;margin-right:2px;font-family:ui-monospace,monospace}}
 .read p{{font-size:18px;margin:4px 0}}.card{{background:var(--card);border:1px solid var(--line);padding:14px 16px;margin:10px 0}}.h{{display:flex;gap:10px;align-items:center;margin-bottom:6px}}.tag{{font-size:12px;border:1px solid var(--line);padding:0 7px;color:var(--dim)}}
-audio{{width:100%;height:38px}}code{{font-size:12px;color:var(--dim)}}.grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}}.grid a{{text-decoration:none}}.grid img{{width:100%;display:block;border:1px solid var(--line)}}
+audio{{width:100%;height:38px}}code{{font-size:12px;color:var(--dim)}}.grid{{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}}.grid a{{text-decoration:none}}.grid img{{width:100%;display:block;border:1px solid var(--line)}}
 @media (max-width:760px){{.grid{{grid-template-columns:1fr}}}}table{{width:100%;border-collapse:collapse;font-size:14px}}td{{border-bottom:1px solid var(--line);padding:5px 8px;vertical-align:top}}td.m{{font-family:ui-monospace,monospace;color:var(--dim);white-space:nowrap}}td.r{{color:var(--dim)}}
 .ask{{background:var(--card);border-left:4px solid var(--acc);padding:12px 18px}}.ask li{{margin:3px 0}}details{{margin-top:14px}}summary{{cursor:pointer;color:var(--acc)}}
 </style></head><body><main>
-<h1>120 秒了解量化：让模型变小的方式和代价</h1><div class="meta">审片页 · 第三稿 · 2026-11-10 · 片长 120 秒，仅中文</div>
+<h1>120 秒了解量化：让模型变小的方式和代价</h1><div class="meta">审片页 · 第四稿 · 2026-11-10 · 片长 120 秒，仅中文</div>
 <h2 style="border:0;margin-top:26px">需要你选的</h2>
 <div class="ask"><ol><li><b>文案</b>：通过，或者给意见（按句号说就行）。确认之后才配全片。</li><li><b>配音</b>：已选「精英青年 beta」。</li><li><b>配乐</b>：已选 B「刻度」。</li><li><b>视觉</b>：重做的这一版行不行。</li></ol></div>
 
@@ -81,6 +82,9 @@ audio{{width:100%;height:38px}}code{{font-size:12px;color:var(--dim)}}.grid{{dis
 <ul>
 <li><b>模型名回到旁白</b>：开场白用你给的「这，是一个 Qwen3.8 27B」，接「一个 AI 模型，文件有 55 GB」；做题那一句也直接叫它的名字。</li>
 <li><b>视觉重做</b>：见下面的关键帧。</li>
+<li><b>精度下降与长程</b>：先核了事实，再写。进旁白的有三件有出处的事：4 位的每说 100 个词约有 5 个和原版不一样，话越长岔开的地方越多（c4、c5）；2023 年那位程序员自己写的「开头通顺，三四十个词以后明显变差」（h3）；1 位的想得越久越差，少想能对一成半，想久了常常想到字数用完交白卷（t7、t8）。</li>
+<li><b>有一处没照字面写</b>：「长任务误差大」对 4 位不成立。同一篇评测里，4 位的做 89 个多步编程任务和原版打平（都约 63 个），所以 t9 照实说打平。垮的是压得狠的档位。你要是手里有 4 位在长任务上变差的出处，给我我再加。</li>
+<li>为了腾时间，「一个晚上写完」「不知道它对不对」移到了画面上；这一稿只余 4 秒左右的停顿，偏紧。</li>
 </ul>
 <h3>和 Opus 那稿比</h3>
 <ul>
@@ -90,14 +94,14 @@ audio{{width:100%;height:38px}}code{{font-size:12px;color:var(--dim)}}.grid{{dis
 <li>「8 位的、4 位的、1 位的」跟的是评测原文的叫法；1 位那个文件实际平均约 1.8 位，所以结尾说「大致」。</li>
 </ul>
 
-<h2>配音（同一组代表句）</h2><p class="meta">这是试听，不是全片配音。下面第一条是选定的音色读新的开场白和做题那一句，请留意 Qwen 的读法；其余五条读的还是上一稿的句子。</p><div class="card"><div class="h"><b>精英青年 beta · 新开场白</b></div><audio controls preload="none" src="voice-chosen.mp3"></audio></div>{voices}
+<h2>配音（同一组代表句）</h2><p class="meta">这是试听，不是全片配音。下面第一条是选定的音色读新的开场白和做题那一句，请留意 Qwen 的读法；其余五条读的还是第二稿的句子；c4、c5、h3、t7–t9 这几句新话还没有试听。</p><div class="card"><div class="h"><b>精英青年 beta · 新开场白</b></div><audio controls preload="none" src="voice-chosen.mp3"></audio></div>{voices}
 
 <h2>配乐小样（各 60 秒）</h2><p class="meta">上一轮做的三条，原样保留。我听不到声音，听感由你判断；都不合适就说想要的方向。</p>{music}
 
 <h2>视觉（重做，点开看大图）</h2><p class="meta">这一版从紫色本身出发：一个数的大小就是紫色的深浅，从深靛到粉白。原版的色带是连续的；量化以后只剩几种紫，4 位 16 种、2 位 4 种、1 位 2 种，色带变粗就是量化本身。色带就是模型文件，全片是它在变。强调只用白光，没有别的颜色，除了 1 位那行垮掉的分数。图上的数字全部来自实验数据。</p>{kf}
 
 <h2>自查记录</h2>
-<ul class="meta"><li>事实：沿用 FACTS.md，逐句对过编号；这一稿没有新增事实。</li><li>文案：第二稿做过一轮独立审读（只看稿子，分外行观众和挑剔编辑两个身份），按意见改了 o3、b2、b4、b5、c2、历史段的衔接和结尾；AI 味评 3/10。记录在 review/NOTES.md。</li><li>长度：五个音色按 1.25 倍速实测都放得下，各场定点等选定音色后按实测重排。</li><li>关键帧：三张都看过，版面检查无问题。</li><li>没做的：配音与配乐没有人耳听过；画面只是静帧，没有动画。</li></ul>
+<ul class="meta"><li>事实：逐句对过 FACTS.md 的编号；第四稿新增 C3、E11–E16，数据由 lab/03_by_effort.py 从评测页抽出，2023 年的原句从 GitHub 重读。</li><li>文案：第二稿做过一轮独立审读（只看稿子，分外行观众和挑剔编辑两个身份），按意见改了 o3、b2、b4、b5、c2、历史段的衔接和结尾；AI 味评 3/10。记录在 review/NOTES.md。</li><li>长度：五个音色按 1.25 倍速实测都放得下，各场定点等选定音色后按实测重排。</li><li>关键帧：四张都看过，版面检查无问题。</li><li>没做的：配音与配乐没有人耳听过；画面只是静帧，没有动画。</li></ul>
 </main></body></html>"""
 open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(page)
 print("写出", os.path.join("out", "audition", "index.html"))
