@@ -46,7 +46,7 @@
 | [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等 WaterRun 在审片页（out/audition/index.html）选音色、配乐、视觉方向并确认文案；确认后按选定音色实测，排定各场定点，全片配音 | 最新 | Claude Sonnet 5.5、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | 预览迭代 | 策划者看全片预览 preview-r7（或更新轮次）后给意见 | 最新 | Claude Opus 5.5 |
+| [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | 预览迭代 | 策划者看重置版全片预览 preview-r8 后给意见 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
