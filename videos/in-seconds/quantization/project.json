@@ -77,7 +77,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "等 WaterRun 在审片页（out/audition/index.html）确认第二稿文案并选音色、配乐、视觉；确认后由制作方按选定音色实测、排定各场定点，再配音与实现",
+  "next": "音色（精英青年 beta）与配乐（B 刻度）已选定；制作方先向 WaterRun 要到第二稿文案与紫色方向的明确确认，再按实测排定各场定点、配音、实现",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -109,11 +109,28 @@
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音试听"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "review": {
     "required": true,
     "reviewer": "WaterRun"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "male-qn-jingying-jingpin"
+    },
+    "speed": {
+      "zh": 1.25
+    }
   }
 }
