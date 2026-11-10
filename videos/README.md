@@ -44,7 +44,7 @@
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r1（out/zh/preview-r1.mp4，16:59）的意见：画面、配乐、读音；改后出 r2。正式片之前：把封面 A 做成 src/cover.html（16:9 与 4:3 两版），再跑 check.js 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
-| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 音色（精英青年 beta）与配乐（B 刻度）已选定；文案第四稿与新关键帧已按 WaterRun 的三条意见改完，制作方先拿到文案与视觉的明确确认，再按实测排定各场定点、配音、实现 | 待同步 | Claude Sonnet 5.5、Claude Opus 5.5、Claude Fable 5.2 |
+| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 音色（精英青年 beta）与配乐（B 刻度）已选定；文案第五稿与四张关键帧已按 WaterRun 的四条意见改完，制作方先拿到文案与视觉的明确确认，再按实测排定各场定点、配音、实现 | 待同步 | Claude Sonnet 5.5、Claude Opus 5.5、Claude Fable 5.2 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
 
