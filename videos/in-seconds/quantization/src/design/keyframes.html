@@ -21,8 +21,8 @@ const bands = (n) => n > 16 ? smooth() : 'linear-gradient(90deg,' + Array.from({
 const C = { dim: '#CDBDFF', w: '#FFFFFF', bad: '#FF6BB5', ink: '#1A0B5E', glow: '0 0 48px rgba(168,85,247,.55)' };
 const box = (x, y, w, h, css, html = '', cls = '') => S.insertAdjacentHTML('beforeend', `<div class="${cls}" style="left:${x}px;top:${y}px;${w != null ? `width:${w}px;` : ''}${h != null ? `height:${h}px;` : ''}${css}">${html}</div>`);
 const text = (x, y, size, html, css = '', cls = '') => box(x, y, null, null, `font-size:${size}px;${css}`, html, cls);
-const CAP = { 1: '可它还有个 17 GB 的版本，做题的分数几乎一样', 2: '先定 16 个值，每个数换成最近的那个', 3: '让它少想一点，反而能对一成半', 4: '4 位的每说 100 个词，约有 5 个和原版不一样' };
-const LEFT = { 1: 109, 2: 82, 3: 29, 4: 67 }, METER = { 1: ['17 GB', 'Qwen3.8 27B'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'], 4: ['17 GB', '每个数 4 位'] };
+const CAP = { 1: '可它还有个 17 GB 的版本，做题的分数几乎一样', 2: '先定 16 个值，每个数换成最近的那个', 3: '让它少想一点，反而能对一成半', 4: '前面岔开一点，后面就可能越走越偏' };
+const LEFT = { 1: 109, 2: 83, 3: 28, 4: 62 }, METER = { 1: ['17 GB', 'Qwen3.8 27B'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'], 4: ['17 GB', '每个数 4 位'] };
 
 // 常驻元素：字幕带、秒尺、剩余秒数、右上仪表（位置按系列约定）
 text(60, 44, 44, LEFT[f], 'font-weight:500', 'm');
@@ -95,14 +95,27 @@ if (f === 4) {                    // 精度下降落到嘴上：同样说 100 �
   const q4 = D.files.find((r) => r.id === 'q4'), diff = Math.round(100 - q4.agree), x0 = 160, pitch = 16;
   const lit = new Set(Array.from({ length: diff }, (_, k) => Math.floor((k + 0.5) * 100 / diff)));
   text(160, 178, 26, `同一段话 · 同一个位置 · 各自选的下一个词（一致 ${q4.agree}%）`, `color:${C.dim}`, 'm');
-  text(160, 286, 32, '原版', `color:${C.dim}`); text(160, 496, 32, '4 位 · ' + q4.name, `color:${C.dim}`);
+  text(160, 250, 32, '原版', `color:${C.dim}`); text(160, 410, 32, '4 位 · ' + q4.name, `color:${C.dim}`);
+  box(1154, 398, 600, null, 'text-align:right', `<span class="n" style="font-size:52px">${diff} / 100</span><span style="font-size:28px;color:${C.dim}">　个词和原版不一样</span>`);
   for (let i = 0; i < 100; i++) {
-    box(x0 + i * pitch, 340, 10, 64, `border-radius:5px;background:${ramp(0.6)}`);
-    if (lit.has(i)) box(x0 + i * pitch - 1, 540, 12, 84, `border-radius:6px;background:${C.w};box-shadow:0 0 18px #fff`);
-    else box(x0 + i * pitch, 550, 10, 64, `border-radius:5px;background:${ramp(0.6)}`);
+    box(x0 + i * pitch, 296, 10, 64, `border-radius:5px;background:${ramp(0.6)}`);
+    if (lit.has(i)) box(x0 + i * pitch - 1, 446, 12, 84, `border-radius:6px;background:${C.w};box-shadow:0 0 18px #fff`);
+    else box(x0 + i * pitch, 456, 10, 64, `border-radius:5px;background:${ramp(0.6)}`);
   }
-  text(156, 700, 120, diff, '', 'n'); text(250, 742, 56, '/ 100', `color:${C.dim}`, 'n');
-  text(440, 756, 36, '个词和原版不一样', `color:${C.dim}`);
+  // 越走越偏：两条路从同一点出发，每遇到一个不一样的词，量化那条就再偏一点。只画走向，不标数（偏多少没有测过）
+  const y0 = 640, xs = [...lit].sort((a, b) => a - b).map((i) => x0 + i * pitch + 5), end = x0 + 99 * pitch + 10;
+  let y = y0, px = xs[0], d = `M${x0},${y0} L${px},${y0}`, guides = '', dots = '';
+  xs.forEach((x, k) => {
+    if (k) { y += (x - px) * 0.04 * k; d += ` L${x},${y.toFixed(1)}`; px = x; }
+    guides += `<line x1="${x}" y1="536" x2="${x}" y2="${y.toFixed(1)}" stroke="#fff" stroke-width="1.5" opacity=".35"/>`;
+    dots += `<circle cx="${x}" cy="${y.toFixed(1)}" r="7" fill="#fff"/>`;
+  });
+  y += (end - px) * 0.04 * xs.length; d += ` L${end},${y.toFixed(1)}`;
+  S.insertAdjacentHTML('afterbegin', `<svg width="1920" height="1080"><defs><filter id="g" x="-10%" y="-200%" width="120%" height="500%"><feGaussianBlur stdDeviation="7"/></filter></defs>${guides}
+    <path d="M${x0},${y0} L${end},${y0}" stroke="${ramp(0.6)}" stroke-width="16" stroke-linecap="round" fill="none" filter="url(#g)" opacity=".7"/>
+    <path d="M${x0},${y0} L${end},${y0}" stroke="${ramp(0.6)}" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="${d}" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>${dots}</svg>`);
+  text(end - 56, y0 - 52, 28, '原版', `color:${C.dim}`); text(end - 56, y + 26, 28, '4 位', '');
 }
 document.body.dataset.ready = '1';
 </script></body></html>

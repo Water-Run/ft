@@ -88,10 +88,11 @@
 | E12 | 1 位档多想反而更差的原因，原文：“longer reasoning makes it worse: at xhigh, scores drop below low, as the model more often reasons until the token budget runs out and returns an empty answer.” | Quesma 正文，`out_03` 末尾 | E11 | 该文 | 已核 |
 | E13 | 与原版逐词一致的比例（同一位置选出的第一个词相同）：Q8_0 98.7%，Q4_K_M 94.8%，UD-Q2_K_XL 87.3%，UD-IQ1_S 74.2%。即 4 位档每 100 个词约有 5 个和原版选得不一样 | Quesma 图 “top-1 token agreement with BF16 vs model size”，`out_02` | Hack-Log 测 Q8_0 与 BF16 逐词一致 98.9% | 该文。原文同时提醒：逐词差别不等于任务做得更差（“it does not tell us whether the model gets worse at solving tasks”） | 已核 |
 | E14 | 「话越长，和原版不一样的词越多」是 E13 的算术推论：每 100 个词约 5 个，1000 个词约 50 个 | E13 | — | 只说「不一样的地方更多」，不说「错得更多」 | 推论 |
+| E17 | 这类模型一次生成一个词元，每个新词元只依据它前面已有的词元。原文：“Causal language modeling predicts the next token in a sequence of tokens, and the model can only attend to tokens on the left.” 所以前面的词一旦和原版不同，后面的词就是接着不同的前文写的 | Hugging Face Transformers 文档 [Causal language modeling](https://huggingface.co/docs/transformers/tasks/language_modeling)（2026-11-10 读取） | C3 的现象（开头通顺、三四十个词元后变差）；E12（1 位档想得越久越差） | 「越走越偏」是机制上的可能，偏多少没有测量；4 位档在多步任务上并未变差（E15）。旁白用「可能」，画面只画走向不标数 | 已核（后半句为推论） |
 | E15 | Terminal-Bench 2.1 是 89 个要多轮操作的编程任务；Q4_K_M 与 BF16 都做成约 63 个（70.8%），UD-Q2_K_XL 约 57 个（64.0%）。原文：“the 17 GB Q4_K_M matches the full model on a popular agentic coding benchmark”“a standard agentic benchmark, with 89 tasks” | Quesma 图三与正文，`out_02`、`out_03` | 同一批做成的任务上，UD-Q2_K_XL 的轮数与 BF16 相当，多写约四分之一的词（原文 “takes as many turns as BF16 but writes about a quarter more tokens”） | 该文。个数由百分比反算，画面写「约」或只写百分比 | 已核 |
 | E16 | 量化的损伤不是线性的，原文：“first there is no measurable change, then a small decline, and finally a collapse.” | Quesma 正文 “The 1-bit cliff” 一节 | E1–E5 的分数走势 | 该文 | 已核 |
 
-**对策划者「短期任务区别少、长程累计误差大」的核对结果**：有出处的是三件事。其一，每个词都有小偏差，话越长不一样的地方越多（E13、E14）。其二，2023 年最早的 4 位实现，作者自己写开头通顺、三四十个词后明显变差（C3）。其三，今天的 1 位档想得越久越差（E11、E12）。**没有出处、且与数据相反的**是「4 位在长任务上明显变差」：89 个多步编程任务上 4 位与原版持平（E15）；少想时各档与原版的差距也并不比多想时小（E11）。文案按有出处的部分写。
+**对策划者「短期任务区别少、长程累计误差大」的核对结果**：有出处的是四件事。其一，每个词都有小偏差，话越长不一样的地方越多（E13、E14）。其二，2023 年最早的 4 位实现，作者自己写开头通顺、三四十个词后明显变差（C3）。其三，今天的 1 位档想得越久越差（E11、E12）。其四，机制上模型逐词生成、只看前文，前面岔开后面就接着岔开的前文写（E17）。**没有出处、且与数据相反的**是「4 位在长任务上明显变差」：89 个多步编程任务上 4 位与原版持平（E15）；少想时各档与原版的差距也并不比多想时小（E11）。文案按有出处的部分写。
 
 ## 取证中发现、没有进入成片的事实
 
