@@ -1,0 +1,66 @@
+== 官方权重的参数量
+createdAt 2026-08-05T08:22:59.000Z {'BF16': 27781427952}
+total × 2 字节 = 55.56 GB
+
+== safetensors 仓库总量（十进制 GB）
+   55.56  Qwen/Qwen3.8-27B
+   30.87  Qwen/Qwen3.8-27B-FP8
+   21.92  nvidia/Qwen3.8-27B-NVFP4
+   23.42  unsloth/Qwen3.8-27B-NVFP4
+   21.02  cyankiwi/Qwen3.8-27B-AWQ-INT4
+   16.05  lmstudio-community/Qwen3.8-27B-MLX-4bit
+
+== unsloth/Qwen3.8-27B-GGUF 的文件（十进制 GB）
+  49.986  BF16/Qwen3.8-27B-BF16-00001-of-00002.gguf
+  31.458  Qwen3.8-27B-UD-Q8_K_XL.gguf
+  29.047  Qwen3.8-27B-Q8_0.gguf
+  28.046  Qwen3.8-27B-UD-Q8_K_L.gguf
+  25.299  Qwen3.8-27B-UD-Q6_K_XL.gguf
+  24.194  Qwen3.8-27B-UD-Q6_K_L.gguf
+  23.088  Qwen3.8-27B-UD-Q6_K_M.gguf
+  21.984  Qwen3.8-27B-UD-Q6_K.gguf
+  20.877  Qwen3.8-27B-UD-Q5_K_XL.gguf
+  19.772  Qwen3.8-27B-UD-Q5_K_M.gguf
+  18.666  Qwen3.8-27B-UD-Q5_K_S.gguf
+  17.559  Qwen3.8-27B-UD-Q4_K_XL.gguf
+  17.541  Qwen3.8-27B-Q4_1.gguf
+  16.464  Qwen3.8-27B-UD-Q4_K_M.gguf
+  16.056  Qwen3.8-27B-Q4_0.gguf
+  15.358  Qwen3.8-27B-UD-Q4_K_S.gguf
+  14.253  Qwen3.8-27B-UD-IQ4_XS.gguf
+  13.146  Qwen3.8-27B-UD-Q3_K_XL.gguf
+  12.041  Qwen3.8-27B-UD-IQ3_S.gguf
+  10.935  Qwen3.8-27B-UD-IQ3_XXS.gguf
+   9.829  Qwen3.8-27B-UD-Q2_K_XL.gguf
+   8.372  Qwen3.8-27B-UD-IQ2_S.gguf
+   7.266  Qwen3.8-27B-UD-IQ2_XXS.gguf
+   6.729  Qwen3.8-27B-UD-IQ1_M.gguf
+   6.192  Qwen3.8-27B-UD-IQ1_S.gguf
+   4.672  BF16/Qwen3.8-27B-BF16-00002-of-00002.gguf
+   1.370  MTP/mtp-Qwen3.8-27B-Q4_0.gguf
+   0.931  mmproj-BF16.gguf
+   0.928  mmproj-F16.gguf
+   0.014  imatrix_unsloth.gguf
+
+== Quesma 评测的分数（由 SVG 坐标反算）
+GPQA Diamond, xhigh（缺省推理强度）:
+  UD-Q2_K_XL     85.4%
+  Q4_K_M         90.4%
+  Q8_0           89.8%
+  BF16           89.9%
+GPQA Diamond, xhigh（第二张图，含 1 位档）:
+  UD-IQ1_S       10.4%
+  UD-IQ1_M       27.3%
+  UD-Q2_K_XL     85.4%
+  Q4_K_M         90.4%
+Terminal-Bench 2.1（89 题）:
+  x=  97.6   64.0%  约 57/89
+  x= 208.9   70.8%  约 63/89
+  x= 489.9   70.8%  约 63/89
+与 BF16 逐词一致率:
+  UD-IQ1_S       74.2%
+  UD-IQ1_M       77.6%
+  UD-Q2_K_XL     87.3%
+  Q4_K_M         94.8%
+  Q8_0           98.7%
+  BF16          100.0%

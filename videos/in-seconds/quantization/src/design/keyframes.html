@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>量化 · 关键帧</title>
+<link rel="stylesheet" href="/css/base.css">
+<script src="/js/data.js"></script>
+<style>
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden}
+#stage{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;background:#1B0E3F;color:#fff;font-family:"Sans SC","Inter",sans-serif}
+#stage div{position:absolute;box-sizing:border-box;white-space:nowrap;line-height:1}
+#stage svg{position:absolute;left:0;top:0}
+.m{font-family:"Mono","Sans SC"}
+</style></head><body><div id="stage"></div>
+<script>
+// 紫色方向的三张关键帧：?f=1|2|3。数字全部来自 data.js（由 research/lab 生成）。
+// 主对象是「文件」这根横条：开头两根（55 GB、17 GB），中段钻进去看里面的数，结尾五根并排。
+const f = +new URLSearchParams(location.search).get('f') || 1, D = window.DATA, G = D.group, S = document.getElementById('stage');
+const C = { bg: '#1B0E3F', v: '#7C3AED', pale: '#3C2785', dim: '#CFC2FF', w: '#FFFFFF', hot: '#FFD23F', band: '#120A2B' };
+const box = (x, y, w, h, css, html = '', cls = '') => S.insertAdjacentHTML('beforeend', `<div class="${cls}" style="left:${x}px;top:${y}px;${w != null ? `width:${w}px;` : ''}${h != null ? `height:${h}px;` : ''}${css}">${html}</div>`);
+const text = (x, y, size, html, css = '', cls = '') => box(x, y, null, null, `font-size:${size}px;${css}`, html, cls);
+const CAP = { 1: '可它还有个 17 GB 的版本，做题的分数几乎一样', 2: '先定 16 个值，每个数换成最近的那个', 3: '1 位的 6.2 GB，只对了一成，还不如瞎蒙' };
+const LEFT = { 1: 111, 2: 79, 3: 27 }, METER = { 1: ['17 GB', '每个数 ? 位'], 2: ['4 位', '每个数 16 → 4'], 3: ['6.2 GB', '每个数 1 位'] };
+
+// 常驻元素：字幕带、秒尺、剩余秒数、右上仪表（位置按系列约定）
+text(60, 44, 44, LEFT[f], 'font-weight:800', 'm');
+box(1460, 40, 400, null, 'text-align:right', `<span class="m" style="font-size:46px;font-weight:800">${METER[f][0]}</span><br><span class="m" style="font-size:26px;line-height:1.5;color:${C.dim}">${METER[f][1]}</span>`);
+box(0, 968, 1920, 112, `background:${C.band};display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:600`, CAP[f]);
+box(0, 960, 1920, 8, `background:${C.pale}`);
+box(0, 960, 1920 * (120 - LEFT[f]) / 120, 8, `background:${C.v}`);
+
+if (f === 1) {                    // 开头：同一个模型的两个文件，一条 24 GB 的线
+  const x0 = 560, k = 16;         // 每 GB 16 像素
+  text(160, 176, 44, 'Qwen3.8 27B', 'font-weight:700', 'm');
+  text(160, 338, 104, '55 GB', 'font-weight:800', 'm'); text(164, 462, 34, '原版', `color:${C.dim}`);
+  text(160, 578, 104, '17 GB', 'font-weight:800', 'm'); text(164, 702, 34, '另一个版本', `color:${C.dim}`);
+  box(x0, 345, 24 * k, 110, `background:${C.v}`); box(x0 + 24 * k, 345, 31 * k, 110, `background:${C.pale}`);
+  text(x0 + 24 * k + 190, 383, 34, '装不下', `color:${C.dim}`);
+  box(x0, 585, 17 * k, 110, `background:${C.v}`);
+  box(x0 + 24 * k - 2, 290, 4, 450, `background:${C.hot}`);
+  box(x0 + 24 * k - 150, 236, 300, null, `text-align:center;font-size:34px;font-weight:700;color:${C.hot}`, '显卡 24 GB');
+  text(1540, 268, 30, '同一份卷子 · 答对', `color:${C.dim}`);
+  text(1540, 358, 84, '89.9%', 'font-weight:700', 'm'); text(1540, 598, 84, '90.4%', 'font-weight:700', 'm');
+}
+
+if (f === 2) {                    // 中段：文件里真实的 32 个数，换成 16 个值里最近的一个
+  const X = (u) => 240 + (u + 8) * 96, same = new Set(G.sameCode), d = G.d;
+  text(160, 178, 26, `取自文件 · ${G.tensor} · 第 ${G.index} 组 · 32 个数`, `color:${C.dim}`, 'm');
+  // 一个数怎么存：16 位 → 4 位（位串由数值算出：BF16 是 32 位浮点数的高 16 位）
+  const v0 = G.values[2], fb = new Float32Array([v0]), bits16 = ((new Uint32Array(fb.buffer)[0] + 0x8000) >>> 16).toString(2).padStart(16, '0'), bits4 = G.codes[2].toString(2).padStart(4, '0');
+  text(160, 250, 48, v0.toFixed(6), 'font-weight:700', 'm');
+  [...bits16].forEach((b, i) => box(470 + i * 48, 240, 44, 60, `background:${C.pale};color:${C.dim};font-size:30px;display:flex;align-items:center;justify-content:center`, b, 'm'));
+  text(470, 312, 26, '16 位', `color:${C.dim}`);
+  text(1262, 250, 44, '→', `color:${C.dim}`);
+  [...bits4].forEach((b, i) => box(1330 + i * 48, 240, 44, 60, `background:${C.v};font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center`, b, 'm'));
+  text(1330, 312, 26, '4 位', `color:${C.dim}`);
+  text(1545, 252, 40, `第 ${G.codes[2]} 个`, `font-weight:700;color:${C.hot}`);
+  // 数轴：16 个值，间距 d
+  box(220, 699, 1480, 2, `background:${C.dim}`);
+  for (let c = 0; c < 16; c++) { box(X(c - 8) - 2, 684, 4, 32, `background:${C.w}`); box(X(c - 8) - 40, 728, 80, null, `text-align:center;font-size:28px;color:${c === 13 ? C.hot : C.dim}`, c, 'm'); }
+  box(X(5) - 120, 772, 240, null, `text-align:center;font-size:30px;font-weight:700;color:${C.hot}`, G.decoded[2].toFixed(6), 'm');
+  const stack = {}; let lines = '';
+  G.values.forEach((v, i) => {
+    const c = G.codes[i], n = stack[c] = (stack[c] || 0) + 1, col = same.has(i) ? C.hot : C.dim, fill = same.has(i) ? C.hot : C.v;
+    const ox = X(v / d), oy = 420 + (i % 4) * 24, tx = X(c - 8), ty = 672 - n * 26;
+    lines += `<line x1="${ox}" y1="${oy + 9}" x2="${tx}" y2="${ty}" stroke="${col}" stroke-width="${same.has(i) ? 3 : 1.5}" opacity="${same.has(i) ? 1 : 0.55}"/>`;
+    box(ox - 9, oy - 9, 18, 18, `border:3px solid ${col};border-radius:50%`);
+    box(tx - 11, ty, 22, 22, `background:${fill}`);
+  });
+  S.insertAdjacentHTML('afterbegin', `<svg width="1920" height="1080">${lines}</svg>`);
+  text(1730, 442, 28, '原来的数', `color:${C.dim}`); text(1730, 632, 28, '换成的值', `color:${C.dim}`);
+}
+
+if (f === 3) {                    // 结尾：五个版本，同一份卷子
+  const TIER = ['原版', '8 位', '4 位', '2 位', '1 位'], sx = 330, sk = 9, px = 1080, pk = 6.4, guess = px + 25 * pk;
+  text(sx, 184, 30, '体积', `color:${C.dim}`); text(px, 184, 30, '198 道选择题 · 答对', `color:${C.dim}`);
+  box(guess - 2, 232, 4, 628, `background:${C.hot}`);
+  box(guess - 120, 874, 240, null, `text-align:center;font-size:28px;font-weight:700;color:${C.hot}`, '瞎蒙 25%');
+  D.files.forEach((r, i) => {
+    const y = 250 + i * 128, bad = r.score < 25, sw = r.score * pk;
+    text(120, y + 2, 46, TIER[i], 'font-weight:700'); text(120, y + 58, 24, r.name, `color:${C.dim}`, 'm');
+    box(sx, y + 4, r.gb * sk, 64, `background:${C.v}`); text(sx + r.gb * sk + 16, y + 16, 40, r.gb + ' GB', 'font-weight:700', 'm');
+    box(px, y + 4, sw, 64, `background:${bad ? C.hot : C.w}`);
+    text(Math.max(px + sw + 16, bad ? guess + 22 : 0), y + 16, 40, r.score.toFixed(1) + '%', `font-weight:700;color:${bad ? C.hot : C.w}`, 'm');
+  });
+}
+document.body.dataset.ready = '1';
+</script></body></html>

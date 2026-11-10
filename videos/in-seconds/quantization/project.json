@@ -48,11 +48,13 @@
       "no_radius": true,
       "no_emoji": true,
       "palette": [
-        "0C0D0F",
-        "F2EFE8",
-        "FF4A1C",
-        "8A8782",
-        "6B6964"
+        "1B0E3F",
+        "FFFFFF",
+        "7C3AED",
+        "CFC2FF",
+        "3C2785",
+        "FFD23F",
+        "120A2B"
       ],
       "fonts": [
         "Sans SC",
@@ -74,8 +76,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "brief",
-  "next": "策划者确认 README「开工前请策划者确认」的几项后开始取证：先查量化的定义与位宽换算，再设计一个能算出来的小实验（research/lab/），事实只进 research/FACTS.md",
+  "stage": "review",
+  "next": "等 WaterRun 在审片页（out/audition/index.html）确认第二稿文案并选音色、配乐、视觉；确认后由制作方按选定音色实测、排定各场定点，再配音与实现",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -84,7 +86,26 @@
         "roles": [
           "片单迁移",
           "立项建骨架",
-          "简报"
+          "简报",
+          "观众诘问"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "实验",
+          "数据生成",
+          "配乐小样"
+        ]
+      },
+      {
+        "name": "Claude Fable 5.2",
+        "roles": [
+          "中文文案",
+          "独立审读",
+          "关键帧",
+          "审片页"
         ]
       }
     ],
