@@ -66,6 +66,10 @@ node kit/tools/new.js <片> --series <系列>          # 系列里的一集；�
 
 之后的步骤见[快速入门](docs/getting-started.md)与[制作周期](docs/process.md)。独立 fork 时，在 `kit/studio.json` 填写自己的策划、校对者与源码仓库。
 
+## 友链
+
+- [LINUX DO](https://linux.do/) — 技术交流社区
+
 ## 许可
 
 版权所有 © 2026 WaterRun。以 GNU 通用公共许可证第 3 版或（由使用者选择的）任何更新的版本发布，全文见 [LICENSE](LICENSE)。本仓库不提供任何担保。
