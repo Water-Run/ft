@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "3b1ed90529ddfa9404a3c25a36afebfd7a0dc540d5b11b235d5632e0faf40d71",
+      "content_sha256": "bf4abaecabc94f233710c259f566924cf11c58656dbbabe5b99ff65de5b04b41",
       "reviewer": "WaterRun",
       "confirmed_at": "2026-11-14T00:00:00.000Z",
-      "evidence": "2026-11-14 会话：WaterRun 看过全文（逐句列出）后，在「确认这版新文案吗」的提问中选择「确认新文案」；交审稿 review/script.zh.3b1ed905.md"
+      "evidence": "2026-11-14 会话：WaterRun 看 r3 后的意见原话「01:41 还有NVFP4 后面加一个 等等」，按原话在 z1 末尾加「等等」，其余文字与 2026-11-14 已确认稿（3b1ed905）相同；交审稿 review/script.zh.bf4abaec.md"
     }
   }
 }

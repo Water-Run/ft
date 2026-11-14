@@ -209,12 +209,18 @@
     slam(pct, T('b7', '三成') - 0.2, { from: 1.25, d: 0.4 }); sfx('thud', T('b7', '三成') - 0.2, { g: 0.7 });
     const pctL = el(world, 1360, 850, 420, 40, { textAlign: 'right' }, 'Q4_0 的做法', 'mlbl-s');
     appear(pctL, T('b7', '三成') + 0.3);
+    // 说完停一拍时，「原来」那条里超出「现在」长度的部分压暗：这就是省下的地方（FACTS B3：省 71.9%）
+    const saved = el(world, BX + w2, 720, BW - w2, 44, { background: 'var(--ink)', opacity: 0.72, borderRadius: '0 8px 8px 0' });
+    const savedL = el(world, BX + w2 + 20, 726, 400, 34, { color: 'var(--paper)', fontSize: '28px' }, '省下 72%', 'lbl');
+    set([saved, savedL], 0, { autoAlpha: 0 }); set(saved, Tend('b7') + 0.15, { autoAlpha: 0.72 }); set(savedL, Tend('b7') + 0.25, { autoAlpha: 1 });
+    sfx('tick', Tend('b7') + 0.15, { g: 0.5 });
 
     // ════ cost ════
     const tC = S.cost.start;
     const SAME = G.sameCode;            // [2, 3, 14, 23]
     // 收走算账的条，数轴下方的排法退淡
-    [bar1, bar1L, bar2, bar2L, bar2N, pct, pctL].forEach((e) => exit(e, tC - 0.1, { y: 16, d: 0.3 }));
+    [bar1, bar1L, bar2, bar2L, bar2N, pct, pctL, savedL].forEach((e) => exit(e, tC - 0.1, { y: 16, d: 0.3 }));
+    fromTo(saved, tC - 0.1, { opacity: 0.72, y: 0 }, { opacity: 0, y: 16, duration: 0.3, ease: 'power2.in', immediateRender: false });
     fromTo(pats, tC - 0.1, { opacity: 0.35 }, { opacity: 0, duration: 0.3, immediateRender: false });
     // 上方那一行里，四个数的格子框出来
     const tC1 = T('c1') - 0.05;
@@ -296,9 +302,9 @@
     appear(avg, T('c3', '偏了') - 0.1);
 
     // c3b → c6：落到说话上。数轴与那一行收到上方，两行词进来
-    const tW = T('c3b') - 0.1;
-    fromTo([axis, v16, ...ticks, ...dots], tW, { opacity: 0.25 }, { opacity: 0, duration: 0.35, immediateRender: false });
-    fromTo([...errs, avg, keep, ...codeCells, panel], tW, { opacity: 1 }, { opacity: 0, duration: 0.35, immediateRender: false });
+    const tW = T('c3b') - 0.35;   // c3 说完先停一拍（gap 1.2 秒），再慢慢收起偏差图、两行词从左边铺进来
+    fromTo([axis, v16, ...ticks, ...dots], tW, { opacity: 0.25 }, { opacity: 0, duration: 0.5, immediateRender: false });
+    fromTo([...errs, avg, keep, ...codeCells, panel], tW, { opacity: 1 }, { opacity: 0, duration: 0.5, immediateRender: false });
     sfx('whoosh', tW, { g: 0.5 });
     const TX = 330, TP = 15, TW = 12, Y1 = 360, Y2 = 460, DIFF = [9, 28, 47, 66, 85];
     const lab1 = el(world, 120, Y1 - 2, 200, 50, {}, '原版', 'hit'), lab2 = el(world, 120, Y2 - 2, 200, 50, {}, '4 位的', 'hit');
@@ -308,7 +314,7 @@
     for (let i = 0; i < 100; i++) {
       const a = el(world, TX + i * TP, Y1, TW, 56, { background: tokCol(i) }, '', 'tok');
       const b = el(world, TX + i * TP, Y2, TW, 56, { background: tokCol(i) }, '', 'tok');
-      fromTo([a, b], tW + 0.3 + i * 0.008, { autoAlpha: 0, scaleY: 0.2 }, { autoAlpha: 1, scaleY: 1, duration: 0.25 });
+      fromTo([a, b], tW + 0.45 + i * 0.01, { autoAlpha: 0, scaleY: 0.2 }, { autoAlpha: 1, scaleY: 1, duration: 0.3 });
       toks1.push(a); toks2.push(b);
     }
     sfx('key', tW + 0.3, { g: 0.45 }); sfx('key', tW + 0.6, { g: 0.4 }); sfx('key', tW + 0.9, { g: 0.35 });
@@ -350,45 +356,58 @@
     exit(tokL, tC5, { d: 0.2 });
     sfx('riser', tC5, { g: 0.35 });
     fromTo([lab1, ...toks1], tC5, { opacity: 1 }, { opacity: 0.3, duration: 0.08, immediateRender: false });   // 原版那一行退后，跟着 4 位那一行走
-    // c6：两条线从同一点出发。原版是直的；4 位的那条每遇到一个不一样的词就再拐一点，越走越偏（示意，不标偏了多少）
-    const tC6 = T('c6') - 0.1, d6 = Tend('c6') - tC6 + 0.4;
-    const PY0 = 620, sv = svg('svg', { class: 'abs', width: 1920, height: 968, viewBox: '0 0 1920 968' }, world); px(sv, 0, 0);
-    const xs = [TX, ...DIFF.map((i) => TX + i * TP + TW / 2), TX + 100 * TP];
+    // c6：两条线从同一点出发。原版是直的；4 位的那条每遇到一个不一样的词就再拐一点，越拐越陡，越走越偏（示意，不标数）。
+    // 累积误差要看得见：两条线之间的那块随笔头一起铺开（越往后越宽），每个拐点处画一根竖条量出此刻差了多远，竖条一根比一根长
+    const tC6 = T('c6') - 0.1, d6 = Tend('c6') - tC6 + 0.6;
+    const PY0 = 580, XE = TX + 100 * TP, sv = svg('svg', { class: 'abs', width: 1920, height: 968, viewBox: '0 0 1920 968' }, world); px(sv, 0, 0);
+    const xs = [TX, ...DIFF.map((i) => TX + i * TP + TW / 2), XE];
     let y = PY0, ang = 0;
     const pts = [[xs[0], y]];
-    for (let k = 1; k < xs.length; k++) { y += Math.tan(ang) * (xs[k] - xs[k - 1]); pts.push([xs[k], y]); ang += 0.04 + k * 0.01; }
-    const p0 = svg('path', { d: `M${TX},${PY0} L${TX + 100 * TP},${PY0}`, fill: 'none', stroke: '#8A7BB5', 'stroke-width': 8, 'stroke-linecap': 'round' }, sv);
-    const p1 = svg('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L'), fill: 'none', stroke: '#FFFFFF', 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, sv);
-    // 两条线的笔头：一个白点沿 4 位的线走，一个淡紫点沿原版的线走，横向同步
-    const hd1 = el(world, 0, 0, 26, 26, { background: 'var(--paper)' }, '', 'dot'), hd0 = el(world, 0, 0, 22, 22, { background: 'var(--dimp)' }, '', 'dot');
+    for (let k = 1; k < xs.length; k++) { y += Math.tan(ang) * (xs[k] - xs[k - 1]); pts.push([xs[k], y]); ang += 0.03 + k * 0.02; }
     const yAt = (x) => { for (let k = 1; k < pts.length; k++) if (x <= pts[k][0]) return lerp(pts[k - 1][1], pts[k][1], (x - pts[k - 1][0]) / (pts[k][0] - pts[k - 1][0])); return pts[pts.length - 1][1]; };
+    const penX = (t) => TX + clamp((t - tC6) / d6) * 100 * TP, passT = (x) => tC6 + d6 * (x - TX) / (100 * TP);
+    // 两条线之间的那块：多边形，用一个随笔头变宽的裁剪矩形铺开
+    const defs = svg('defs', {}, sv), cp = svg('clipPath', { id: 'qz-wedge' }, defs), cr = svg('rect', { x: TX, y: 0, width: 0, height: 968 }, cp);
+    svg('polygon', { points: pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + ` ${XE},${PY0} ${TX},${PY0}`, fill: '#5B21D6', opacity: 0.45, 'clip-path': 'url(#qz-wedge)' }, sv);
+    const p0 = svg('path', { d: `M${TX},${PY0} L${XE},${PY0}`, fill: 'none', stroke: '#8A7BB5', 'stroke-width': 8, 'stroke-linecap': 'round' }, sv);
+    const p1 = svg('path', { d: 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L'), fill: 'none', stroke: '#FFFFFF', 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, sv);
+    // 两条线的笔头：白点沿 4 位的线走，淡紫点沿原版的线走，横向同步
+    const hd1 = el(world, 0, 0, 26, 26, { background: 'var(--paper)' }, '', 'dot'), hd0 = el(world, 0, 0, 22, 22, { background: 'var(--dimp)' }, '', 'dot');
     let lastH = null;
     F((t) => {
-      const on = t >= tC6 && t < tTest - 0.1, k = clamp((t - tC6) / d6), x = TX + k * 100 * TP, key = on ? x.toFixed(1) : 'off';
+      const on = t >= tC6 && t < tTest - 0.1, x = penX(t), key = on ? x.toFixed(1) : 'off';
       if (key === lastH) return; lastH = key;
       hd1.style.display = hd0.style.display = on ? '' : 'none';
+      cr.setAttribute('width', on ? (x - TX).toFixed(1) : '0');
       if (on) { px(hd1, x - 13, yAt(x) - 13); px(hd0, x - 11, PY0 - 11); }
     });
     set(sv, 0, { autoAlpha: 0 }); set(sv, tC6, { autoAlpha: 1 });   // 描线之前整层藏着：圆头线帽在未描的路径末端会留下一个点
     draw(p0, tC6, d6, { ease: 'none' }); draw(p1, tC6, d6, { ease: 'none' });
-    // 每个拐点画一道细的竖虚线，连到上面那个不一样的词
+    // 每个拐点：一道细的竖虚线连到上面那个不一样的词；一个白点；一根竖条量出此刻两条线差了多远
     const guides = DIFF.map((i, k) => {
-      const x = TX + i * TP + TW / 2, g = el(world, x - 1, Y2 + 76, 3, pts[k + 1][1] - Y2 - 76, { background: 'repeating-linear-gradient(180deg,#CDBDFF 0 8px,transparent 8px 16px)' });
-      appear(g, tC6 + d6 * (x - TX) / (100 * TP));
+      const x = TX + i * TP + TW / 2, g = el(world, x - 1, Y2 + 76, 3, Math.max(4, PY0 - Y2 - 90), { background: 'repeating-linear-gradient(180deg,#CDBDFF 0 8px,transparent 8px 16px)' });
+      appear(g, passT(x));
       return g;
     });
-    const yL = (x) => { for (let k = 1; k < pts.length; k++) if (x <= pts[k][0]) return lerp(pts[k - 1][1], pts[k][1], (x - pts[k - 1][0]) / (pts[k][0] - pts[k - 1][0])); return pts[pts.length - 1][1]; };
-    const e0 = el(world, 1100, PY0 - 52, 200, 44, { textAlign: 'right' }, '原版', 'lbl');
-    const e1 = el(world, 1000, yL(1300) + 20, 300, 44, { textAlign: 'right' }, '4 位的 · 示意', 'lbl');
-    const bends = pts.slice(1, -1).map((p) => { const d = el(world, p[0] - 9, p[1] - 9, 18, 18, { background: 'var(--paper)' }, '', 'dot'); appear(d, tC6 + d6 * (p[0] - TX) / (100 * TP)); return d; });
-    appear(e0, tC6 + d6 - 0.2); appear(e1, tC6 + d6 - 0.1);
+    const bends = pts.slice(1, -1).map((p) => { const d = el(world, p[0] - 9, p[1] - 9, 18, 18, { background: 'var(--paper)' }, '', 'dot'); appear(d, passT(p[0])); return d; });
+    const gaps = pts.slice(2).map((p) => {
+      const b = el(world, p[0] - 3, PY0, 6, p[1] - PY0, { background: 'var(--paper)', transformOrigin: '50% 0%' });
+      fromTo(b, passT(p[0]), { autoAlpha: 0, scaleY: 0 }, { autoAlpha: 1, scaleY: 1, duration: 0.25, ease: 'power2.out' });
+      sfx('tick', passT(p[0]), { g: 0.45 });
+      return b;
+    });
+    const e0 = el(world, XE - 200, PY0 - 52, 200, 44, { textAlign: 'right' }, '原版', 'lbl');
+    const e1 = el(world, 1000, yAt(1300) + 22, 300, 44, { textAlign: 'right' }, '4 位的', 'lbl');
+    const yEnd = pts[pts.length - 1][1];
+    const acc = el(world, 1330, 802, 340, 44, {}, '差距越积越大 · 示意', 'lbl');   // 放在第 4、5 根竖条之间、线的下方，不压线也不压竖条
+    appear(e0, tC6 + 0.4); appear(e1, passT(1300)); appear(acc, tC6 + d6 + 0.05);
     const st = el(world, TX - 18, PY0 - 18, 36, 36, { background: 'var(--paper)' }, '', 'dot');
     appear(st, tC6);
     sfx('riser', tC6, { g: 0.4 }); sfx('chime', tC6 + d6, { g: 0.5 });
 
     // 切到成绩之前收走
     fromTo([lab1, ...toks1], tTest - 0.45, { opacity: 0.3 }, { opacity: 0, duration: 0.35, immediateRender: false });
-    const outAll = [lab2, ...toks2, ...diffEls.flat(), n5, n5L, chain, head, sv, ...guides, e0, e1, st, hd0, hd1, sweep, ...bends];
+    const outAll = [lab2, ...toks2, ...diffEls.flat(), n5, n5L, chain, head, sv, ...guides, e0, e1, acc, st, hd0, hd1, sweep, ...bends, ...gaps];
     fromTo(outAll, tTest - 0.45, { opacity: 1 }, { opacity: 0, duration: 0.35, immediateRender: false });
     sfx('whoosh', tTest - 0.4, { g: 0.5 });
   });

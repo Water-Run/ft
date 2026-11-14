@@ -81,16 +81,19 @@
     fromTo([...leftA, ...leftB], T('o4') + 0.2, { opacity: 1 }, { opacity: 0.22, duration: 0.5, immediateRender: false });
     // 片名落下后，17 GB 那一排（量化过的）重新亮起：片名讲的「让模型变小的办法」就是它
     fromTo(leftB, tQ + 0.55, { opacity: 0.22 }, { opacity: 1, duration: 0.1, immediateRender: false }); sfx('blip', tQ + 0.55, { g: 0.5 });
-    const ta = el(world, 1000, 300, 820, 50, {}, '120 秒了解量化', 'title-a');
-    const tb = el(world, 996, 380, 860, 250, { whiteSpace: 'normal' }, '让模型变小的<br>方式和代价', 'title-b');
-    const gl = el(world, 1000, 650, 820, 50, { fontSize: '34px' }, '量化 · Quantization', 'mlbl');
-    gl.dataset.gloss = '量化';
+    // 片名卡：「120 秒了解」小字在上，「量化」两个字最大，副题在下；片名只上画面（策划者 r3：「开场封面 量化 两个字太小」）
+    const ta = el(world, 1004, 214, 820, 50, {}, '120 秒了解', 'title-a');
+    const tq = el(world, 984, 270, 860, 280, { font: '900 260px/1 "Sans SC"', letterSpacing: '-6px' }, '量化');
+    tq.dataset.gloss = '量化';
+    const tb = el(world, 1000, 572, 860, 80, { font: '800 64px/1.1 "Sans SC"', color: 'var(--paper)' }, '让模型变小的方式和代价');
+    const gl = el(world, 1004, 676, 820, 50, { fontSize: '34px' }, 'Quantization', 'mlbl');
     const tT = T('o4', '变小') - 0.1;
-    wipe(ta, T('o4') + 0.35, { dir: 'l', d: 0.4 });
-    slam(tb, tT, { from: 1.08, d: 0.4 }); sfx('riser', tT - 0.9, { g: 0.5 }); sfx('thud', tT, { g: 0.9 });
-    slide(gl, tQ - 0.05, { y: 20, d: 0.45 }); sfx('blip', tQ, { g: 0.5 });
+    wipe(ta, T('o4') + 0.3, { dir: 'l', d: 0.4 });
+    wipe(tb, tT, { dir: 'l', d: 0.45 }); sfx('riser', tQ - 0.9, { g: 0.5 }); sfx('tick', tT, { g: 0.6 });
+    slam(tq, tQ - 0.05, { from: 1.25, d: 0.45 }); sfx('thud', tQ - 0.05, { g: 0.9 });
+    appear(gl, tQ + 0.35);
     // 切到历史之前，整页朝左收走，切点上画面已经空了，不会出现「片名之后又回到原画面」
-    [ta, tb, gl].forEach((e, i) => wipeOut(e, tH - 0.45 + i * 0.05, { dir: 'l', d: 0.35 }));
+    [ta, tq, tb, gl].forEach((e, i) => wipeOut(e, tH - 0.45 + i * 0.04, { dir: 'l', d: 0.35 }));
     fromTo(leftA, tH - 0.45, { opacity: 0.22 }, { opacity: 0, duration: 0.3, immediateRender: false });
     fromTo(leftB, tH - 0.45, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false });
     sfx('whoosh', tH - 0.4, { g: 0.6 });

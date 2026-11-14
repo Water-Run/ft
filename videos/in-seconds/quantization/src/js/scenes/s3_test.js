@@ -201,7 +201,7 @@
     slide(G.root, T('z3', '十七') + 0.2, { x: 340, d: 0.6, ease: 'power3.out' }); sfx('whoosh', T('z3', '十七') + 0.1, { g: 0.5 });
 
     // z4：17 块砖飞进 24 个槽，还空着 7 个；左边换成这个文件的小结——开头那个问题的答案
-    const tZ4 = T('z4', '装得下') - 0.6;
+    const tZ4 = T('z4') + 0.05, tFit = T('z4', '装得下') - 0.15;   // 「24 GB 的显卡」时砖往里飞，「装得下」时读数与小结出来
     B.forEach((e, i) => fromTo(e, tZ4 + i * 0.035, { x: 0, y: 0 }, { x: G.slots[i].x - e._x, y: G.slots[i].y - e._y, duration: 0.55, ease: 'power2.inOut', immediateRender: false }));
     sfx('blip', tZ4 + 0.3, { g: 0.5 }); sfx('pop', tZ4 + 0.55 + 16 * 0.035, { g: 0.7 });
     fade([r2.name, r2.fn, r2.gb], tZ4, 1, 0, 0.3);
@@ -209,13 +209,13 @@
     const sum2 = el(world, 124, 470, 700, 44, {}, '4 位的 · Q4_K_M', 'mlbl');
     const sum3 = el(world, 120, 560, 700, 70, {}, '答对 ' + files[2].score.toFixed(1) + '%', 'mid');
     const sum4 = el(world, 124, 646, 700, 40, {}, '原版 55 GB · 答对 ' + files[0].score.toFixed(1) + '%', 'lbl-s');
-    const tSum = tZ4 + 0.9;
+    const tSum = tFit;
     wipe(sum1, tSum, { dir: 'l', d: 0.4 }); slide(sum2, tSum + 0.15, { x: -30, d: 0.4 }); wipe(sum3, tSum + 0.35, { dir: 'l', d: 0.4 }); appear(sum4, tSum + 0.6);
     const fit = el(G.root, 286, 30, 450, 60, { textAlign: 'right' }, '17 / 24 GB', 'mid');
-    appear(fit, tZ4 + 0.6 + 16 * 0.035);
-    sfx('chime', tZ4 + 0.7 + 16 * 0.035, { g: 0.6 });
+    appear(fit, tFit);
+    sfx('chime', tFit, { g: 0.6 });
     // 装进去了，就能跑：显卡下方一行词一个个冒出来（示意，词用中性的灰紫），一直到片尾名单之前
-    const tRun = tZ4 + 1.1 + 16 * 0.035, tEnd = S.outro.start;
+    const tRun = tFit + 0.5, tEnd = S.outro.start;
     const runL = el(world, 1000, 790, 400, 36, {}, '能跑了 · 示意', 'lbl-s');
     appear(runL, tRun);
     const NR = 40, run = [];
