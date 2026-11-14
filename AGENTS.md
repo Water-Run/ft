@@ -41,4 +41,4 @@
 
 ## 提交
 
-一个会话只写自己负责的视频目录；提交用路径限定的形式 `git commit -m "…" -- videos/<系列>/<片>/`，不用 `git add -A`、`git commit -a`。共享文件只在策划交代了维护任务时改，单独提交，并运行 `npm test`、`npm run check:repo`。
+一个会话只写自己负责的视频目录；提交用路径限定的形式 `git commit -m "…" -- videos/<系列>/<片>/`，不用 `git add -A`、`git commit -a`。共享文件只在策划交代了维护任务时改，单独提交，并运行 `npm test`、`npm run check:repo`。例外：登记本片的交付或发布时，由登记的会话同步片单（本片条目的 `status` 与 `catalog.js` 的生成物），和本片的 `project.json` 放进同一个提交，见[发布与收尾](docs/guides/release.md#登记时同步片单)。

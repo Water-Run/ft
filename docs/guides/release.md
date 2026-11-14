@@ -16,7 +16,7 @@ flowchart LR
 
 1. 验收完成（[验收](acceptance.md)），README 的「交付」写好，交给策划者看成片。
    同时按[开源交付清单](../reference/third-party.md#对应源码与发布材料)核对可编辑材料、GPL、参与者选定的署名、实际分工和对应版本的源码地址。第三方制作执行相同要求；只收到 MP4 不算完成交付。
-2. 策划者看过并明确同意之后才登记交付：片单里本片的 `status` 改为 `delivered`，`project.json` 的 `stage` 改为 `delivered`，填 `delivery`（日期与各语言最终文件的实测时长），运行 `node kit/tools/catalog.js`。没有回复不算同意。
+2. 策划者看过并明确同意之后才登记交付：`project.json` 的 `stage` 改为 `delivered`，填 `delivery`（日期与各语言最终文件的实测时长），并[同步片单](#登记时同步片单)。没有回复不算同意；策划者没有另写意见、直接发布了，交付与发布一起登记。
 3. 交付前清掉不用的源码草稿、未接入的设计试验和调试内容；这一步在最后一次正式渲染之前做，渲染后再删 `src/` 里的文件会让成片过期。
 
 ## 2. 发布与回填
@@ -28,7 +28,18 @@ flowchart LR
 - `project.json` 的 `release`：每个平台一条，`platform`、`url`、`date`，以及平台上的标题、语言（取自频道的公开页面，不凭记忆写）。`stage` 改为 `released`。
 - 打开片尾「开源视频」指向的仓库地址，确认可以公开访问。
 - 各语言是否都上了同一个平台、标题与简介怎么写，有差异如实记在 README。
-- 运行 `node kit/tools/catalog.js`，片单索引随之更新。
+- [同步片单](#登记时同步片单)。
+
+### 登记时同步片单
+
+登记交付或发布的会话当场同步片单，不留给维护者，也不算越权改共享文件（策划者 2026-11-14 定）。片单落后于本片记录时，`catalog.js --check` 报错，仓库检查对所有人失败。
+
+1. 开工先看 `git status`：`videos/catalog.json`、`videos/README.md`、`videos/CREDITS.md`、本系列的 `videos/<系列>/README.md` 有别人未提交的改动时，先与那个会话或策划者协调，不覆盖、不顺手提交。
+2. 在 `videos/catalog.json` 里只改本片条目：`status` 改为 `delivered`（发布后也是 `delivered`，「已发布」由 `project.json` 的 `stage` 与 `release` 区分）。
+3. 运行 `node kit/tools/catalog.js`，再跑 `node kit/tools/catalog.js --check`、`npm test`、`npm run check:repo`。生成物里带出别的片子已提交的变化（对方没有重新生成索引）是正常的；别的片子 `project.json` 有未提交改动时，生成物会把它带进来，先协调。
+4. 本片目录与片单文件放进同一个路径限定的提交：`git commit -m "…" -- videos/<系列>/<片>/ videos/catalog.json videos/README.md videos/CREDITS.md videos/<系列>/README.md`（独立视频没有系列说明，去掉最后一项），然后推送。
+
+片单一时空不出来，发布信息先记在本片 README，写明片单未同步；空出来后立即补上，不留到下一次维护。
 
 未核实的平台写「未核」，不猜链接。仓库里没有回填的投稿可能已经存在，以平台上的实际链接为准。
 

@@ -62,7 +62,7 @@
 | 成片 | `render` | 成片、字幕、封面 | [工具](reference/tools.md) |
 | 验收 | `accept` | `review/lessons.json`、README 的「交付」 | [验收](guides/acceptance.md) |
 | 交付 | `delivered` | 片单状态改为已成片 | [发布与收尾](guides/release.md) |
-| 发布与复盘 | `released` | `project.json` 的 `release` 与 `reception` | [发布与收尾](guides/release.md) |
+| 发布与复盘 | `released` | `project.json` 的 `release` 与 `reception`，片单同步 | [发布与收尾](guides/release.md) |
 
 设计、实现与声音通常交错进行，`stage` 记当前的重心即可。
 
