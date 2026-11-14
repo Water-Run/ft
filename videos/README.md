@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 207 部：已成片 24，制作中 4，计划中 175，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 207 部：已成片 25，制作中 3，计划中 175，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,6 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | zh 2:00 | 2026-11-14 | [哔哩哔哩](https://www.bilibili.com/video/BV1zvsG6PEfx) | — | Claude Sonnet 5.5、Claude Opus 5.5、Claude Fable 5.2、Claude Haiku 5.5、Qwen-4-Max-Preview |
 | [既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/) | — | zh 4:21 | 2026-11-10 | [哔哩哔哩](https://www.bilibili.com/video/BV1b1W36yEHu) | — | Claude Opus 5.5 |
 | [192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/) | [XX 秒速通](in-seconds/README.md) | zh 3:12 | 2026-11-07 | [哔哩哔哩](https://www.bilibili.com/video/BV1vt4j6GE11) | — | Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/) | [数据库引擎](database-engines/README.md) | zh 15:13 | 2026-11-05 | [哔哩哔哩](https://www.bilibili.com/video/BV1RG4h6UEqQ) | — | GPT-6.1 Sol、Claude Opus 5.5 |
@@ -43,8 +44,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r1（out/zh/preview-r1.mp4，16:59）的意见：画面、配乐、读音；改后出 r2。正式片之前：把封面 A 做成 src/cover.html（16:9 与 4:3 两版），再跑 check.js 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
-| [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | 预览迭代 | 策划者看预览 out/zh/preview-r1.mp4：意见记进 review/NOTES.md 的预览一节，逐条回应后出 r2；同意后出正式片（audio → render → finish → covers → check --final） | 待同步 | Claude Sonnet 5.5、Claude Opus 5.5、Claude Fable 5.2、Claude Haiku 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r3（out/zh/preview-r3.mp4，17:41）的意见；问题不多就直接正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 Carol 变更 5 ms 的原因与 FACTS U04；check.js --final 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
 
@@ -298,7 +298,7 @@
 | 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 | 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
 | 29 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](in-seconds/github-collaboration/) | 2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 150 秒（2026-11-07 策划者定：「定为150s吧」）。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。 |
-| 30 | 120 秒了解量化：让模型变小的方式和代价 | zh | 制作中 | [`quantization`](in-seconds/quantization/) | 2026-10-26 曾由速通改为独立视频；2026-11-09 策划者要求迁回「XX 秒速通」（原话「量化的视频迁移至速通. 标题: 120秒了解量化: 让模型变小的方式和代价」），定长 120 秒。 |
+| 30 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](in-seconds/quantization/) | 2026-10-26 曾由速通改为独立视频；2026-11-09 策划者要求迁回「XX 秒速通」（原话「量化的视频迁移至速通. 标题: 120秒了解量化: 让模型变小的方式和代价」），定长 120 秒。 |
 
 ### 权限机制的设计
 
