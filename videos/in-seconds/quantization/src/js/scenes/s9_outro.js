@@ -5,7 +5,7 @@ scene('outro', ({ root, s }) => {
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
-  const col = h('div', 'abs credits', world); px(col, 160, 120);
+  const col = h('div', 'abs credits', world); px(col, 160, 110);
   const row = (k, v) => h('div', 'credit-row', col, `<span class="t-note">${esc(k)}</span><span class="t-body">${esc(v)}</span>`);
   const rows = [row(tr('策划', 'Planning'), C.planner || '')];
   for (const m of [...(C.models || []), ...(C.services || [])]) rows.push(row((m.roles || []).map(label).join(' · '), m.name));

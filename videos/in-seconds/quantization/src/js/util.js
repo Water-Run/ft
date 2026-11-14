@@ -68,10 +68,10 @@ function wipe(e, t, o = {}) {
   tl.fromTo(e, { clipPath: from }, { clipPath: 'inset(-30% -2% -30% -2%)', duration: o.d || 0.6, ease: o.ease || 'power3.inOut', immediateRender: true }, t);
   return e;
 }
-// 擦除式退场：朝 dir 一侧收走
+// 擦除式退场：朝 dir 一侧收走。起点显式给出（缺省是 wipe 的停驻裁剪区），不依赖播放历史。
 function wipeOut(e, t, o = {}) {
   const to_ = { l: 'inset(0% 100% 0% 0%)', r: 'inset(0% 0% 0% 100%)', t: 'inset(0% 0% 100% 0%)', b: 'inset(100% 0% 0% 0%)' }[o.dir || 'r'];
-  tl.to(e, { clipPath: to_, duration: o.d || 0.45, ease: o.ease || 'power3.in' }, t);
+  tl.fromTo(e, { clipPath: o.fromClip || 'inset(-30% -2% -30% -2%)' }, { clipPath: to_, duration: o.d || 0.45, ease: o.ease || 'power3.in', immediateRender: false }, t);
   tl.set(e, { autoAlpha: 0 }, t + (o.d || 0.45));
 }
 // 砸入：从放大状态落到位，带过冲。用于大字、大数字、章节号
@@ -84,9 +84,9 @@ function slide(e, t, o = {}) {
   tl.fromTo(e, { autoAlpha: 0, x: o.x || 0, y: o.y || 0 }, { autoAlpha: 1, x: 0, y: 0, duration: o.d || 0.6, ease: o.ease || 'back.out(1.4)', immediateRender: true }, t);
   return e;
 }
-// 滑出退场：o.x / o.y 为去向的偏移
+// 滑出退场：o.x / o.y 为去向的偏移。显式起点，不用 overwrite（理由见 engine.js 的 hide）。
 function exit(e, t, o = {}) {
-  tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y || 0, duration: o.d || 0.4, ease: o.ease || 'power2.in', overwrite: 'auto' }, t);
+  tl.fromTo(e, { autoAlpha: o.from != null ? o.from : 1, x: 0, y: 0 }, { autoAlpha: 0, x: o.x || 0, y: o.y || 0, duration: o.d || 0.4, ease: o.ease || 'power2.in', immediateRender: false }, t);
 }
 // 瞬间出现 / 消失（终端里新输出的一行、换内容）
 const appear = (e, t) => tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: true }, t);

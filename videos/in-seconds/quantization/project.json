@@ -81,7 +81,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "preview",
-  "next": "策划者看预览 out/zh/preview-r1.mp4：意见记进 review/NOTES.md 的预览一节，逐条回应后出 r2；同意后出正式片（audio → render → finish → covers → check --final）",
+  "next": "r2 预览已出（out/zh/preview-r2.mp4，960×540/15fps 代理、有声）。等策划者看 r2 意见，逐条记进 review/NOTES.md 并回应；新配音人耳回听（Qwen 读法、多音字清单）。同意后出正式片：render.js（60fps）→ finish.js → covers.js → check.js --final。",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -118,6 +118,15 @@
           "实现",
           "配乐",
           "配音合成"
+        ]
+      },
+      {
+        "name": "Qwen-4-Max-Preview",
+        "roles": [
+          "全面返修",
+          "闪烁与过渡修复",
+          "视觉重制",
+          "文案修改"
         ]
       }
     ],

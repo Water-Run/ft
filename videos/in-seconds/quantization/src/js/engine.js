@@ -81,8 +81,12 @@ function show(e, t, o = {}) {
   tl.fromTo(e, from, to_, t);
   return e;
 }
+// 退场用显式起点的 fromTo：tl.to() 在「第一次渲染」时才记起点，顺播记到的是前一段补间走到一半的值，
+// 并行渲染各段从段首直接跳入时记到的却是终点，两条轨迹不同 → 各段画面不一致（闪烁）。显式起点 + 不用
+// overwrite:'auto'（它按播放历史杀补间），同一 t 无论怎样 seek 都得到同一帧。o.from 给非全透明的起点。
 function hide(e, t, o = {}) {
-  tl.to(e, { autoAlpha: 0, y: o.y != null ? o.y : -14, x: o.x || 0, duration: o.d || 0.5, ease: o.ease || 'power2.in', stagger: o.stagger || 0, overwrite: 'auto' }, t);
+  const from = { autoAlpha: o.from != null ? o.from : 1, y: 0, x: 0, ...(o.fromVars || {}) };
+  tl.fromTo(e, from, { autoAlpha: 0, y: o.y != null ? o.y : -14, x: o.x || 0, duration: o.d || 0.5, ease: o.ease || 'power2.in', stagger: o.stagger || 0, immediateRender: false }, t);
 }
 const to = (e, t, vars) => tl.to(e, vars, t);
 const set = (e, t, vars) => tl.set(e, vars, t);
