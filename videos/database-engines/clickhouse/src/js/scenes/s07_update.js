@@ -19,7 +19,7 @@ scene('update', ({ root, s, c0 }) => {
   // ── B 文件不改：一次变更，每个片段生成一个新版本 ──
   appear(gB, T('u2') - 0.1);
   mk(gB, 'lab', 100, 180, null, null, '原来的片段'); const nl = mk(gB, 'lab y', 1180, 180, null, null, '新版本'); vanish(nl, 0); appear(nl, T('u3', '新版本') - 0.1);
-  const o1 = foldAt(gB, 100, 220, 660, 200, 'all_1_90_3', ''); const o2 = foldAt(gB, 100, 450, 660, 200, 'all_91_91_0', ''); const o2n = mk(o2, 'abs t-note', 360, 12, null, null, 'Dave 那一行'); css(o2n, { fontSize: '22px' });
+  const o1 = foldAt(gB, 100, 220, 660, 200, 'all_1_90_3', ''); const o2 = foldAt(gB, 100, 450, 660, 200, 'all_91_91_0', ''); const o2n = mk(o2, 't-note', 360, 12, null, null, 'Dave 那一行'); css(o2n, { fontSize: '22px' });
   [o1, o2].forEach((f, k) => { wipe(f, T('u2') - 0.1 + k * 0.3, { dir: 'l', d: 0.5 }); ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(f, i, t)); });
   const lock = mk(gB, 'badge', 100, 670, null, null, '写好的文件，从来不改'); css(lock, { fontSize: '30px' }); slam(lock, T('u2', '不改'), { from: 1.2 }); sfx('thud', T('u2', '不改') + 0.1, { g: 0.6 });
   const tm = termAt(gB, 100, 732, 1720, 156); tm.line(1, '<span class="out">Ok.</span>', T('u3', '新版本') + 0.3, {}); tm.line(2, '<span class="out">0 rows in set. Elapsed: 0.556 sec.</span>', T('u3', '新版本') + 0.3, {}); vanish(tm.el, 0); appear(tm.el, T('u2b') - 0.1);
@@ -50,7 +50,7 @@ scene('update', ({ root, s, c0 }) => {
   const c1 = mk(gC, 'h1', 100, 790, null, null, '改 1 个字节'); css(c1, { fontSize: '60px' }); vanish(c1, 0); appear(c1, T('u4b', '一个字节'));
   const c2 = mk(gC, 'h1 y', 640, 790, null, null, '→ 重写 100,000,000 个'); css(c2, { fontSize: '60px' }); wipe(c2, T('u4b', '一亿个') - 0.2, { dir: 'l', d: 0.6 }); sfx('thud', T('u4b', '一亿个'), { g: 0.6 });
   [0, 1].forEach((k) => {
-    const ln = mk(gC, 'abs', 550, FY[k] + 32, 500, 4); css(ln, { background: 'var(--w)' }); wipe(ln, T('u5', '不复制') + k * 0.25, { dir: 'l', d: 0.5 }); classAt(lc[k], 'y', T('u5', '不复制') + k * 0.25); classAt(rc[k], 'y', T('u5', '不复制') + k * 0.25);
+    const ln = mk(gC, '', 550, FY[k] + 32, 500, 4); css(ln, { background: 'var(--w)' }); wipe(ln, T('u5', '不复制') + k * 0.25, { dir: 'l', d: 0.5 }); classAt(lc[k], 'y', T('u5', '不复制') + k * 0.25); classAt(rc[k], 'y', T('u5', '不复制') + k * 0.25);
     const lb = mk(gC, 'lab y', 640, FY[k] - 10, null, null, '同一份文件'); css(lb, { fontSize: '24px' }); vanish(lb, 0); appear(lb, T('u5b', '同一份文件') + k * 0.2); sfx('tick', T('u5b', '同一份文件') + k * 0.2, { g: 0.5 });
   });
   const g2 = glossAt(gC, 100, 880, 1720, '硬链接', '<b>硬链接</b>　同一份文件，在两个文件夹里各有一个名字'); show(g2, T('u5') + 0.3, { y: 12, d: 0.35 });

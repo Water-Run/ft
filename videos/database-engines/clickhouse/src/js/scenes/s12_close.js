@@ -35,6 +35,12 @@ scene('close', ({ root, s, c0 }) => {
     const bd = mk(gB, 'badge', 1500, y + 28, null, null, b); css(bd, { fontSize: '28px', letterSpacing: '0.04em' }); vanish(bd, 0); appear(bd, T(id) + 0.6);
     sfx('thud', T(id) + 0.1, { g: 0.5 });
     classAt(row, 'y', T(id), T(id) + 1.0);
+    // 每一条配一个小示意：整列重写 / 读整整一个颗粒 / 一次一个小片段 / 事务打不开
+    const t1 = T(id) + 0.3, at1 = (e, t) => { vanish(e, 0); appear(e, t); return e; };
+    if (i === 0) for (let k = 0; k < 8; k++) { const c = at1(mk(gB, 'cs13', 1330 + k * 20, y + 32, 16, 44, ''), t1); classAt(c, 'fy', t1 + 0.2 + k * 0.08); }
+    if (i === 1) for (let k = 0; k < 6; k++) { const c = at1(mk(gB, 'gran', 1330 + k * 26, y + 30, 22, 48, ''), t1 + k * 0.04); if (k === 2) classAt(c, 'on', t1 + 0.5); }
+    if (i === 2) for (let k = 0; k < 8; k++) at1(mk(gB, 'fold', 1330 + (k % 4) * 30, y + 26 + Math.floor(k / 4) * 30, 24, 24, ''), t1 + k * 0.1);
+    if (i === 3) { const m = at1(mk(gB, 'mono', 1330, y + 38, null, null, ':) BEGIN'), t1); css(m, { fontSize: '24px', color: 'var(--g3)' }); classAt(m, 'strike', t1 + 0.6); }
   });
   drift(cam, s, -1);
 });

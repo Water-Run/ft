@@ -7,7 +7,7 @@ scene('merge', ({ root, s, c0 }) => {
   // ── A 九百个一行的片段：求一次平均年龄要十几毫秒 ──
   appear(gA, c0 + 0.05);
   tableTag(gA, '表 <b>demo.many</b> · 900 行', c0 + 0.1);
-  const gridEl = mk(gA, 'abs', 100, 190, 1080, 480); const sq = [];
+  const gridEl = mk(gA, '', 100, 190, 1080, 480); const sq = [];
   for (let i = 0; i < 900; i++) { const e = h('div', 'sq', gridEl); css(e, { left: (i % 45) * 24 + 'px', top: Math.floor(i / 45) * 24 + 'px', width: '18px', height: '18px' }); sq.push(e); }
   wipe(gridEl, T('m2', '一行一行') - 0.1, { dir: 'l', d: 1.6 });
   const n900 = mk(gA, 'big y', 1420, 180, null, null, '0'); css(n900, { fontSize: '150px' }); appear(n900, T('m2', '一行一行') - 0.1); countTo(n900, 0, 900, T('m2', '一行一行') - 0.1, Math.max(1.6, T('m2b', '九百个') - T('m2', '一行一行')));
@@ -86,7 +86,7 @@ scene('merge', ({ root, s, c0 }) => {
   const arrS = mk(gD, 'lab y', 100, 560, null, null, '每一摞：编号由小到大'); show(arrS, T('m7b', '排好') - 0.2, { y: 12 }); vanish(arrS, T('m8') + 0.4);
   STACKS.forEach((st, si) => st.forEach((r) => { flashT[r[0]] = T('m7b', '交错') + (r[0] - 1) * 0.2; }));
   const tHead = T('m8b', '最上面') - 0.1;
-  const WIN = [0, 1, 2].map((si) => [[tCD + 0.2 + si * 0.7, tCD + 0.8 + si * 0.7], [T('m7b') + 0.2 + si * 0.9, T('m7b') + 0.8 + si * 0.9], [T('m8a', '每一摞') + si * 0.5, T('m8a', '每一摞') + si * 0.5 + 0.5], [T('m8d') + 0.3 + si * 0.9, T('m8d') + 0.3 + si * 0.9 + 0.8], [T('m10', '三个') + si * 0.35, T('m10', '三个') + si * 0.35 + 0.5], [T('m9b', '一到三'), T('m9b', '末尾的一') - 0.1]]);
+  const WIN = [0, 1, 2].map((si) => [[tCD + 0.2 + si * 0.7, tCD + 0.8 + si * 0.7], [T('m7b') + 0.2 + si * 0.9, T('m7b') + 0.8 + si * 0.9], [T('m8a', '每一摞') + si * 0.5, T('m8a', '每一摞') + si * 0.5 + 0.5], [T('m8d', '一趟') + 0.1 + si * 0.4, T('m8d', '一趟') + 0.1 + si * 0.4 + 0.5], [T('m10', '三个') + si * 0.35, T('m10', '三个') + si * 0.35 + 0.5], [T('m9b', '一到三'), T('m9b', '末尾的一') - 0.1]]);
   F((t) => {
     cards.forEach((lst, si) => { let hs = false; const sf = WIN[si].some(([a, b]) => t >= a && t < b); lst.forEach((c) => {
       const taken = t >= stepT[c.id - 1], flash = t >= flashT[c.id] && t < flashT[c.id] + 0.3;
@@ -96,14 +96,14 @@ scene('merge', ({ root, s, c0 }) => {
   });
   const arrM = mk(gD, 'h1 y', 1270, 520, null, null, '→'); css(arrM, { fontSize: '90px' }); vanish(arrM, 0); appear(arrM, T('m8', '并成一摞') - 0.2);
   const outT = mk(gD, 'fn', 1370, 200, null, null, '新的一摞'); vanish(outT, 0); appear(outT, T('m8') - 0.1); keyed(outT).at(T('m9'), { cls: 'abs fn y' }).at(T('m9', 'all'), { html: 'all_1_3_1', cls: 'abs fn y' });
-  const outBox = mk(gD, 'abs', 1360, 262, 470, 660); css(outBox, { border: '2px dashed var(--g2)', background: '#151515' }); vanish(outBox, 0); appear(outBox, T('m8') - 0.1);
+  const outBox = mk(gD, '', 1360, 262, 470, 660); css(outBox, { border: '2px dashed var(--g2)', background: '#151515' }); vanish(outBox, 0); appear(outBox, T('m8') - 0.1);
   F((t) => { outBox.style.borderColor = t >= T('m9') ? '#FAFF69' : '#414141'; });
   warm(outBox, T('m8'), T('m8c', '一号'), '#151515', '#33332A');
   const outCells = P8.map((r, i) => { const rw = rowAt(gD, 1380, 275 + i * 76, r, CWS, 64); vanish(rw.row, 0); appear(rw.row, stepT[i]); sfx('pop', stepT[i], { g: 0.35 }); return rw; });
   const OW = outCells.map((rw, i) => [[stepT[i], stepT[i] + 0.55], [T('m9', '排好序') + i * 0.1, T('m9', '排好序') + i * 0.1 + 0.4], [T('m10b', '一趟') - 0.5 + i * 0.12, T('m10b', '一趟') - 0.5 + i * 0.12 + 0.3]]);
   F((t) => { outCells.forEach((rw, i) => { const on = OW[i].some(([a, b]) => t >= a && t < b); rw.c.forEach((c) => c.classList.toggle('on', on)); }); });
   // m8a：每一摞就是一个片段（依次描一下）
-  [0, 1, 2].forEach((si) => { const o = mk(gD, 'abs', SX[si] - 10, 264, 350, 3 * 76 + 6); css(o, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(o, 0); appear(o, T('m8a', '每一摞') + si * 0.5); vanish(o, T('m8a', '每一摞') + si * 0.5 + 0.55); });
+  [0, 1, 2].forEach((si) => { const o = mk(gD, '', SX[si] - 10, 264, 350, 3 * 76 + 6); css(o, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(o, 0); appear(o, T('m8a', '每一摞') + si * 0.5); vanish(o, T('m8a', '每一摞') + si * 0.5 + 0.55); });
   // m9：名字
   const bk = mk(gD, 'fn', 100, 690, null, null, ''); css(bk, { fontSize: '68px' }); vanish(bk, 0); appear(bk, T('m9', 'all'));
   h('span', 'dim', bk, 'all_'); const sp1 = h('span', '', bk, '1_3'); h('span', 'dim', bk, '_'); const sp2 = h('span', '', bk, '1');
@@ -119,7 +119,7 @@ scene('merge', ({ root, s, c0 }) => {
   appear(gE, T('m11') - 0.1);
   tableTag(gE, '表 <b>demo.many</b> · 900 行', T('m11') - 0.1);
   const LX0 = 220, LP = 90, LW = 80, NH = 52, Y1 = [650, 510, 370, 230];
-  const tr = mk(gE, 'abs', 0, 0, 1920, 1080); tl.set(tr, { transformOrigin: '1025px 466px' }, 0);
+  const tr = mk(gE, '', 0, 0, 1920, 1080); tl.set(tr, { transformOrigin: '1025px 466px' }, 0);
   const lines = svg('svg', { viewBox: '0 0 1920 1080', width: 1920, height: 1080 }, tr); css(lines, { position: 'absolute', left: '0px', top: '0px' });
   const NODES = [];
   const counts = [18, 6, 2, 1];

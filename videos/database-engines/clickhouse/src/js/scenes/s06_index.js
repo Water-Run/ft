@@ -78,7 +78,7 @@ scene('index', ({ root, s, c0 }) => {
   const z0 = mk(gD, 'tag o', 960, 470, null, null, '最前面的颗粒'); css(z0, { fontSize: '64px' }); slam(z0, T('i6b', '最前面'), { from: 1.2 }); sfx('thud', T('i6b', '最前面') + 0.1, { g: 0.5 }); keyed(z0).at(T('i6b', '第零个'), { html: '第 0 个颗粒' });
   classAt(idx2[0], 'y', T('i6b', '第零个'));
   const hb = mk(gD, 'bar', 100, 700, 1720, 56); css(hb, { background: 'var(--g2)' }); vanish(hb, 0); appear(hb, T('i6c') - 0.1);
-  const hl_ = mk(gD, 'abs', 100, 694, 1720, 68); css(hl_, { border: '4px solid var(--y)' }); vanish(hl_, 0); appear(hl_, T('i6c', '每次'));
+  const hl_ = mk(gD, '', 100, 694, 1720, 68); css(hl_, { border: '4px solid var(--y)' }); vanish(hl_, 0); appear(hl_, T('i6c', '每次'));
   mk(gD, 'lab', 100, 650, null, null, '12,209 项'); gD.lastChild.style.opacity = 0; const lab12 = gD.lastChild; appear(lab12, T('i6c') - 0.1);
   const h0 = T('i6c', '每次'), h1_ = T('i6d', '二分') + 0.2;
   const hn = mk(gD, 'big y', 100, 790, null, null, '0'); css(hn, { fontSize: '100px' }); appear(hn, h0);
@@ -98,11 +98,11 @@ scene('index', ({ root, s, c0 }) => {
   const q7 = segs.map((sg) => { const q = mk(gE, 'h1 y', 340 + 34, sg.y - 4, null, null, '?'); vanish(q, 0); appear(q, Math.max(T('i7', '什么位置'), tDE + 0.4)); vanish(q, T('i7b') + 0.1); return q; });
   segs.forEach((sg) => classAt(sg.cs[0], 'y', tDE + 0.3, T('i7b')));
   // 标记：每个颗粒在列文件里的起点，画成一排黄色竖线
-  segs.forEach((sg, k) => { for (let i = 0; i < 12; i++) { const tk = mk(gE, 'abs', 340 + i * 124 - 5, sg.y - 10, 8, 74); css(tk, { background: 'var(--y)' }); vanish(tk, 0); appear(tk, T('i7b', '标记') + 0.3 + k * 0.8); } });
+  segs.forEach((sg, k) => { for (let i = 0; i < 12; i++) { const tk = mk(gE, '', 340 + i * 124 - 5, sg.y - 10, 8, 74); css(tk, { background: 'var(--y)' }); vanish(tk, 0); appear(tk, T('i7b', '标记') + 0.3 + k * 0.8); } });
   segs.forEach((sg) => sg.cs.forEach((c, i) => { if (i > 0) classAt(c, 'dead', T('i8b', '挑出') - 0.2); }));
   const g3 = glossAt(gE, 100, 730, 1700, '标记', '<b>标记</b>　每列一个标记文件：记着每个颗粒在列文件里从哪里开始'); show(g3, T('i7b') - 0.1, { y: 14, d: 0.35 });
   segs.forEach((sg, k) => { const mk_ = mk(gE, 'fn y', 340 + 10, sg.y + 70, null, null, ['id.cmrk2', 'name.cmrk2', 'age.cmrk2'][k]); css(mk_, { fontSize: '22px' }); vanish(mk_, 0); appear(mk_, T('i7b', '标记') + 0.3 + k * 0.25); });
-  segs.forEach((sg, k) => { const w_ = [T('i8', '编号'), T('i8', '姓名'), T('i8', '年龄')][k]; const tq = T('i7', '什么位置'); classWins(sg.cs[0], 'on', [[Math.max(tDE + 0.4, tq - 1.2) + k * 0.25, Math.max(tDE + 0.4, tq - 1.2) + k * 0.25 + 0.7], [Math.min(w_, T('i8') + k * 0.25), 1e9]]); sfx('tick', w_, { g: 0.5 }); });
+  segs.forEach((sg, k) => { const w_ = [T('i8', '编号'), T('i8', '姓名'), T('i8', '年龄')][k]; const tq = T('i7', '什么位置'); classWins(sg.cs[0], 'on', [[Math.max(tDE + 0.4, tq - 1.2) + k * 0.25, Math.max(tDE + 0.4, tq - 1.2) + k * 0.25 + 0.7], [w_ - 0.1, 1e9]]); sfx('tick', w_, { g: 0.5 }); classAt(sg.lb, 'y', T('i8', '三个文件') + k * 0.12); });
   const rd = rowAt(gE, 340, 800, ['2050', 'Alice', '42'], [210, 310, 150], 76, 'lg y'); vanish(rd.row, 0); appear(rd.row, T('i8b') + 0.6); sfx('chime', T('i8b', '挑出') + 0.1, { g: 0.6 });
   const rd0 = mk(gE, 'lab y', 340, 682, null, null, '每个文件，各读出第 0 个颗粒'); show(rd0, T('i8b', '读出'), { y: 10 });
   const rdl = mk(gE, 'lab y', 100, 816, null, null, '从 8192 行里挑出她'); vanish(rdl, 0); appear(rdl, T('i8b') + 0.6);

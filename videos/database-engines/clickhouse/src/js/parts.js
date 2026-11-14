@@ -38,7 +38,7 @@ const P8 = [[1, 'alice', 30], [2, 'bob', 25], [3, 'carol', 41], [4, 'dave', 19],
 const hex2 = (n) => n.toString(16).padStart(2, '0');
 // 一行三格（编号、姓名、年龄）：rowAt(父元素, x, y, [id, name, age], 各格宽度)，返回 { row, c: [三格] }
 function rowAt(parent, x, y, r, ws = [90, 250, 120], hh = 54, cls = '') {
-  const row = mk(parent, 'abs', x, y, ws[0] + ws[1] + ws[2] - 4, hh);
+  const row = mk(parent, '', x, y, ws[0] + ws[1] + ws[2] - 4, hh);
   const c = [];
   let cx = 0;
   r.forEach((v, i) => { c.push(cellAt(row, cx, 0, ws[i], hh, '<span>' + v + '</span>', cls)); cx += ws[i] - 2; });
@@ -97,3 +97,64 @@ const PR = '<span class="pr">:) </span>', PR2 = '<span class="pr">:-] </span>';
 // 一亿行表里的一段：2048–2052 号（Alice 是 2050 号），姓名的长尾巴在格子里省略
 const SL5 = [2048, 2049, 2050, 2051, 2052];
 const NMS = (n) => (n === 2050 ? 'Alice' : 'User0' + n + '…');
+
+// 五个引擎各自的存放结构（FACTS S07、S08；示意，不画真实字节）。画在 parent（一个 320×380 的容器）里，坐标相对容器左上角。
+// 都装 demo.users8 的 8 个人（插入顺序 5 2 8 1 7 4 6 3）。kind：0 MyISAM、1 InnoDB、2 PostgreSQL、3 SQLite、4 ClickHouse。o.labels = false 时不画文字（开场的小卡片里缩小用）。
+// 返回 { rows, cols }：rows 是行存结构里每一行的条带（按画的顺序），cols 是 ClickHouse 三个列文件里的格子。
+function engineStruct(parent, kind, t0, o = {}) {
+  const L = o.labels !== false, ov = overlay(parent);
+  const at = (e, t) => { vanish(e, 0); appear(e, t); return e; };
+  const lbl = (x, y, text, t, cls = 't-note') => { if (!L) return null; const e = mk(parent, cls, x, y, null, null, text); css(e, { fontSize: '22px' }); show(e, t, { y: 10, d: 0.35 }); return e; };
+  const node = (x, y, w, hh, t, cls = '') => at(mk(parent, 'nd ' + cls, x, y, w, hh, ''), t);
+  const rowS = (x, y, w, t) => at(mk(parent, 'rs', x, y, w, 18, '<i style="width:16%"></i><i style="width:60%"></i><i style="width:24%"></i>'), t);
+  const link = (x1, y1, x2, y2, t, color = 'dim', dashed) => at(path(ov, `M ${x1} ${y1} L ${x2} ${y2}`, color, { w: 2.5, arrow: false, dashed }), t);
+  const rows = [], cols = [];
+  if (kind === 0) {           // MyISAM：索引一个文件（B 树），数据一个文件（一行接一行）
+    lbl(0, 0, 'users.MYI · 索引（B 树）', t0 + 0.1);
+    node(110, 38, 100, 26, t0 + 0.2); node(20, 94, 100, 26, t0 + 0.35); node(200, 94, 100, 26, t0 + 0.35);
+    link(160, 64, 70, 94, t0 + 0.35); link(160, 64, 250, 94, t0 + 0.35);
+    for (let k = 0; k < 8; k++) rows.push(rowS(0, 164 + k * 25, 320, t0 + 0.5 + k * 0.06));
+    link(70, 120, 40, 189, t0 + 1.2, 'accent', '5 6'); link(250, 120, 200, 289, t0 + 1.3, 'accent', '5 6');
+    lbl(0, 376, 'users.MYD · 一行接一行', t0 + 0.6);
+  } else if (kind === 1) {    // InnoDB：表就是按主键排好的 B+ 树，叶子里是整行
+    lbl(0, 0, 'users.ibd · 按主键排好的 B+ 树', t0 + 0.1);
+    node(110, 38, 100, 26, t0 + 0.2);
+    [0, 1, 2].forEach((k) => {
+      const lx = k * 110; node(lx, 102, 100, 236, t0 + 0.35 + k * 0.1); link(160, 64, lx + 50, 102, t0 + 0.35 + k * 0.1);
+      for (let r = 0; r < [3, 3, 2][k]; r++) rows.push(rowS(lx + 6, 114 + r * 31, 88, t0 + 0.6 + k * 0.1 + r * 0.04));
+    });
+    lbl(0, 376, '叶子页里是整行', t0 + 1.0);
+  } else if (kind === 2) {    // PostgreSQL：堆按到达顺序放；索引另一个文件，叶子里是键 + 行地址
+    lbl(0, 0, '堆 · 8 KB 的页，按到达顺序', t0 + 0.1);
+    [[5, 2, 8, 1], [7, 4, 6, 3]].forEach((ids, k) => {
+      node(0, 34 + k * 122, 320, 110, t0 + 0.2 + k * 0.15);
+      ids.forEach((id, r) => {
+        const y = 46 + k * 122 + r * 24; rows.push(rowS(52, y, 256, t0 + 0.4 + k * 0.15 + r * 0.06));
+        if (L) { const n = at(mk(parent, 'mono', 12, y - 4, null, null, String(id)), t0 + 0.4 + k * 0.15 + r * 0.06); css(n, { fontSize: '22px', color: 'var(--g3)' }); }
+      });
+    });
+    lbl(60, 284, '索引：键 + 行地址', t0 + 0.8);
+    node(110, 316, 100, 22, t0 + 0.9); node(20, 356, 100, 22, t0 + 1.0); node(200, 356, 100, 22, t0 + 1.0);
+    link(160, 338, 70, 356, t0 + 1.0); link(160, 338, 250, 356, t0 + 1.0);
+    link(28, 356, 48, 81, t0 + 1.3, 'accent', '5 6'); link(292, 356, 312, 177, t0 + 1.4, 'accent', '5 6');
+  } else if (kind === 3) {    // SQLite：整个库一个文件；表是按行号排好的 B+ 树
+    lbl(0, 0, 'main.db · 整个库一个文件', t0 + 0.1);
+    const f = mk(parent, '', 0, 34, 320, 340); css(f, { border: '2px dashed var(--g3)' }); vanish(f, 0); wipe(f, t0 + 0.15, { dir: 't', d: 0.4 });
+    lbl(14, 44, '表 · 按行号排好的 B+ 树', t0 + 0.3);
+    node(110, 84, 100, 26, t0 + 0.4);
+    [0, 1, 2].forEach((k) => {
+      const lx = 12 + k * 102; node(lx, 144, 92, 200, t0 + 0.55 + k * 0.1); link(160, 110, lx + 46, 144, t0 + 0.55 + k * 0.1);
+      for (let r = 0; r < [3, 3, 2][k]; r++) rows.push(rowS(lx + 6, 156 + r * 30, 80, t0 + 0.75 + k * 0.1 + r * 0.04));
+    });
+    lbl(0, 382, '叶页里是整条记录', t0 + 1.1);
+  } else {                    // ClickHouse：片段是一个文件夹，每一列一个文件
+    const fo = foldAt(parent, 0, 34, 320, 340, L ? 'all_1_1_0 · 片段' : '', 'y'); css(fo.nm, { fontSize: '22px' }); vanish(fo, 0); wipe(fo, t0, { dir: 'l', d: 0.4 });
+    ['id.bin', 'name.bin', 'age.bin'].forEach((c, k) => {   // 和第 03 章一样：每个列文件是一条横条，一个人一格
+      const cy = 76 + k * 94;
+      lbl(16, cy, c, t0 + 0.3 + k * 0.15);
+      cols.push([]); for (let r = 0; r < 8; r++) cols[k].push(at(mk(parent, 'cseg k' + k, 16 + r * 36, cy + 32, 32, 30, ''), t0 + 0.45 + k * 0.15 + r * 0.03));
+    });
+    lbl(0, 382, '每一列一个 .bin 文件', t0 + 1.0, 'lab y');
+  }
+  return { rows, cols };
+}

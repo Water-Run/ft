@@ -33,7 +33,7 @@ scene('engine', ({ root, s, c0 }) => {
 
   // ── B 84 种表引擎的格子 ──
   appear(B, tB);
-  const hdr = mk(B, 'h1', 60, 130, null, null, '26.8 的表引擎'); wipe(hdr, tB + 0.05, { dir: 'l', d: 0.5 });
+  const hdr = mk(B, 'h1', 100, 130, null, null, '26.8 的表引擎'); wipe(hdr, tB + 0.05, { dir: 'l', d: 0.5 });
   const n84 = mk(B, 'big y', 1380, 100, null, null, '0'); css(n84, { fontSize: '150px' }); appear(n84, T('e3', '八十四') - 0.05); countTo(n84, 0, 84, T('e3', '八十四') - 0.05, 0.9);
   const all = ENGINES.mt.map((n) => [n, 1]).concat(ENGINES.other.map((n) => [n, 0]));
   const tiles = [];
@@ -44,7 +44,7 @@ scene('engine', ({ root, s, c0 }) => {
   });
   sfx('riser', T('e3', '八十四') - 1.0, { g: 0.5 }); sfx('thud', T('e3', '八十四') + 0.9, { g: 0.6 });
   const lbl = (name, t, y_) => { const idx = all.findIndex((a) => a[0] === name); const tp = tiles[idx]; const p = mk(B, 'pill y', 130, 886, 300, 56, name); css(p, { left: Math.max(60, Math.min(1560, X0 + (idx % 12) * (TW + GX) - 80)) + 'px' }); appear(p, t); vanish(p, t + 2.4); classAt(tp.e, 'on', t, t + 2.4); sfx('pop', t, { g: 0.5 });
-    const cx = X0 + (idx % 12) * (TW + GX) + TW / 2, cb = Y0 + Math.floor(idx / 12) * (TH + GY) + TH; const ln = mk(B, 'abs', cx - 1, cb, 3, 886 - cb); css(ln, { background: 'var(--y)' }); vanish(ln, 0); appear(ln, t); vanish(ln, t + 2.4);
+    const cx = X0 + (idx % 12) * (TW + GX) + TW / 2, cb = Y0 + Math.floor(idx / 12) * (TH + GY) + TH; const ln = mk(B, '', cx - 1, cb, 3, 886 - cb); css(ln, { background: 'var(--y)' }); vanish(ln, 0); appear(ln, t); vanish(ln, t + 2.4);
     css(p, { left: Math.max(60, Math.min(1560, cx - 150)) + 'px' }); };
   const mtl = mk(B, 'pill y', 1180, 886, 640, 56, 'MergeTree 家族 16 种'); css(mtl, { left: '60px' }); appear(mtl, T('e4b') - 0.1); vanish(mtl, T('e4b', '分到') - 0.1);
   lbl('Distributed', T('e4b', '分到'), 0); lbl('MySQL', T('e4c', 'My S Q L'), 0); lbl('Kafka', T('e4c', 'Kafka'), 0);
@@ -60,14 +60,14 @@ scene('engine', ({ root, s, c0 }) => {
 
   // ── C 建表时不写引擎，给你的就是它 ──
   appear(C, tC);
-  const t2 = termAt(C, 60, 200, 1500, 372);
+  const t2 = termAt(C, 100, 200, 1500, 372);
   const tOut = Math.max(T('e6', '给你的'), tC + 2.0);
   t2.line(0, '<span class="pr">:) </span>CREATE TABLE demo.noengine (id UInt32, name String, age UInt8) ORDER BY id;', tC + 0.05, { type: 80, cursor: false });
   t2.line(1, '<span class="out">Ok.</span>', tC + 1.05, {}); t2.line(2, '<span class="out">0 rows in set.</span>', tC + 1.05, {});
   t2.line(3, '<span class="pr">:) </span>SELECT engine FROM system.tables WHERE name = \'noengine\';', tC + 1.2, { type: 80, cursorUntil: tOut + 0.5 });
   printAt(t2, 4, pretty([{ name: 'engine', values: ['MergeTree'] }]), tOut); t2.line(7, '<span class="out">1 row in set.</span>', tOut, {});
-  const dm = mk(C, 'h2 y', 60, 610, null, null, '不写 ENGINE，缺省就是 MergeTree'); show(dm, tOut + 0.3, { y: 16 }); sfx('chime', tOut + 0.05, { g: 0.6 });
-  const dm2 = noteAt(C, 60, 690, '它自己的日志表 query_log、part_log\n也都是 MergeTree'); show(dm2, tOut + 0.4, { y: 16 });
+  const dm = mk(C, 'h2 y', 100, 610, null, null, '不写 ENGINE，缺省就是 MergeTree'); show(dm, tOut + 0.3, { y: 16 }); sfx('chime', tOut + 0.05, { g: 0.6 });
+  const dm2 = noteAt(C, 100, 690, '它自己的日志表 query_log、part_log\n也都是 MergeTree'); show(dm2, tOut + 0.4, { y: 16 });
   vanish(C, T('e8') - 0.2);
 
   // ── D MergeTree = Merge + Tree ──

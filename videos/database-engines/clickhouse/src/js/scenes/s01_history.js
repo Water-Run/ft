@@ -10,16 +10,16 @@ scene('history', ({ root, s, c0 }) => {
 
   // ══ 时间轴（全章常驻） ══
   const AX = 868, X = (yr) => 520 + (yr - 2009) * 70, XNOW = 1760;
-  const axis = mk(world, 'abs', 520, AX, XNOW - 520, 4); css(axis, { background: 'var(--g2)' }); wipe(axis, c0 + 0.1, { dir: 'l', d: 0.8 });
+  const axis = mk(world, '', 520, AX, XNOW - 520, 4); css(axis, { background: 'var(--g2)' }); wipe(axis, c0 + 0.1, { dir: 'l', d: 0.8 });
   const ticks = [[2009, '2009'], [2014, '2014'], [2016, '2016']].map(([yr, lab]) => {
     const tk = mk(world, 'tick', X(yr) - 1, AX - 10, 2, 24); css(tk, { width: '4px', left: (X(yr) - 2) + 'px' });
     const tx = mk(world, 'mono dim', X(yr) - 60, AX + 22, 120, null, lab); css(tx, { fontSize: '26px', textAlign: 'center' });
     appear(tk, c0 + 0.4); appear(tx, c0 + 0.4); return { tk, tx };
   });
-  const nowTk = mk(world, 'tick', XNOW - 2, AX - 10, 4, 24); const nowTx = mk(world, 'mono dim', XNOW - 100, AX + 22, 200, null, '今天 · 26.8'); css(nowTx, { fontSize: '26px', textAlign: 'center' });
+  const nowTk = mk(world, 'tick', XNOW - 2, AX - 10, 4, 24); const nowTx = mk(world, 'mono dim', XNOW - 180, AX + 22, 200, null, '今天 · 26.8'); css(nowTx, { fontSize: '26px', textAlign: 'right' });
   appear(nowTk, c0 + 0.4); appear(nowTx, c0 + 0.4);
   // 游标：一个黄色方块，在讲到的年份之间移动
-  const head = mk(world, 'abs', 0, AX - 12, 28, 28); css(head, { background: 'var(--y)' }); vanish(head, 0);
+  const head = mk(world, '', 0, AX - 12, 28, 28); css(head, { background: 'var(--y)' }); vanish(head, 0);
   const tY09 = T('h7', '二〇〇九年'), tY14 = T('h9a', '二〇一四年'), tY16 = T('h10', '二〇一六年'), tNow = T('h10c', '十三万亿');
   const HP = [[tY09, X(2009)], [tY14, X(2014)], [tY16, X(2016)], [tNow, XNOW]];
   appear(head, tY09 - 0.6);
@@ -29,7 +29,7 @@ scene('history', ({ root, s, c0 }) => {
     head.style.left = (x - 14) + 'px';
   });
   // 时间轴上方的事件标注（讲到才出现，之后留着）
-  const ev = (x, text, t, cls = '') => { const e = mk(world, 'abs lab ' + cls, x - 160, AX - 62, 320, null, text); css(e, { textAlign: 'center', fontSize: '24px' }); fadeIn(e, t); return e; };
+  const ev = (x, text, t, cls = '') => { const e = mk(world, 'lab ' + cls, x - 160, AX - 62, 320, null, text); css(e, { textAlign: 'center', fontSize: '24px' }); fadeIn(e, t); return e; };
   ev(X(2009), 'OLAPServer', T('h7b', 'OLAPServer'));
   ev(X(2014), '约 120 亿次 / 天', T('h9a', '一百二十亿'));
   ev(X(2016), '开源', T('h10', '开源'), 'y');
@@ -42,17 +42,19 @@ scene('history', ({ root, s, c0 }) => {
   mk(LOG, 't-note', 22, 56, null, null, '每一次浏览、点击，记一条');
   slide(LOG, c0 + 0.15, { x: -60 });
   const RH = 46, NR = 11;
-  const clip = mk(LOG, 'abs', 18, 106, 424, NR * RH); css(clip, { overflow: 'hidden' });
+  const clip = mk(LOG, '', 18, 106, 424, NR * RH); css(clip, { overflow: 'hidden' });
   const pool = []; for (let i = 0; i <= NR; i++) pool.push(mk(clip, 'cell sm', 0, i * RH, 424, RH - 6, ''));
   const tLog = c0 + 0.3;
   const RATE = [[tLog, 1.3], [T('h9a', '一百二十亿'), 7], [T('h9b'), 2.2]];
   const posAt = (t) => { let p = NR + 1; for (let i = 0; i < RATE.length; i++) { const [a, r] = RATE[i]; const b = i + 1 < RATE.length ? RATE[i + 1][0] : Infinity; if (t <= a) break; p += (Math.min(t, b) - a) * r; } return p; };
   const recOf = (k) => ({ page: 'ABC'[k % 3], reg: 1 + ((k * 2) % 4) + (k % 5 === 4 ? 1 : 0), user: 1000 + ((k * 37) % 900) });
   const tHit0 = T('h2c', '某个地方'), tHit1 = T('h4');
+  let picked = null;
+  const tLive0 = T('h8b', '所有报表') - 0.1, tLive1 = T('h9b') - 0.3;
   let lastKey = '';
   F((t) => {
-    const p = posAt(t), first = Math.floor(p), fr = p - first, hit = t >= tHit0 && t < tHit1;
-    const key = first + ':' + Math.round(fr * RH) + ':' + hit;
+    const p = posAt(t), first = Math.floor(p), fr = p - first, hit = t >= tHit0 && t < tHit1, live = t >= tLive0 + 0.4 && t < tLive1;
+    const key = first + ':' + Math.round(fr * RH) + ':' + hit + ':' + (t >= tLive0 + 0.4 && t < tLive1);
     if (key === lastKey) return; lastKey = key;
     pool.forEach((c, i) => {
       const k = first - NR + i, r = recOf(k);                            // 新的一条从下面进来，旧的往上走
@@ -60,8 +62,11 @@ scene('history', ({ root, s, c0 }) => {
       c.style.visibility = k >= 0 ? 'visible' : 'hidden';
       const html = `<span>浏览 · 页面 ${r.page} · 地区 ${r.reg}</span><span>${r.user}</span>`;
       if (c._h !== html) { c.innerHTML = html; c._h = html; }
-      c.classList.toggle('y', hit && r.page === 'A' && r.reg === 3);
+      c.classList.toggle('y', (hit && r.page === 'A' && r.reg === 3) || (live && r.page === 'A'));
     });
+    // 报表框里：现场挑出来的最近三条（页面 A），跟着左边的流更新
+    if (picked) { const got = []; if (live) for (let k = first - 1; k >= 0 && got.length < 3; k--) if (recOf(k).page === 'A') got.push(k);
+      picked.forEach((c, j) => { const k = got[j]; c.style.visibility = k != null ? 'visible' : 'hidden'; const r = k != null ? recOf(k) : null; const html = r ? `<span>浏览 · 页面 A · 地区 ${r.reg}</span><span>${r.user}</span>` : ''; if (c._h !== html) { c.innerHTML = html; c._h = html; } }); }
   });
   const logArrow = path(ov, 'M 572 596 L 1222 596', 'accent', { w: 4 });   // 原始记录 → 报表（现场算）
   vanish(logArrow, 0);
@@ -72,11 +77,11 @@ scene('history', ({ root, s, c0 }) => {
   const yx = mk(world, 'tile', 640, 140, 520, 190); mk(yx, 'nm', 28, 24, null, null, 'Yandex');
   slide(yx, T('h1b', 'Yandex') - 0.15, { y: -40 }); sfx('pop', T('h1b', 'Yandex'), { g: 0.6 });
   [['搜索', T('h1b', '搜索')], ['电商', T('h1b', '电商')], ['广告', T('h1b', '广告')]].forEach(([n, t2], k) => { const p = mk(yx, 'pill', 28 + k * 150, 100, 130, 56, n); slam(p, t2 - 0.08, { from: 1.15 }); sfx('tick', t2, { g: 0.4 }); });
-  const link = mk(world, 'abs', 700, 330, 4, 40); css(link, { background: 'var(--g2)' }); wipe(link, T('h1c', 'Metrica') - 0.2, { dir: 't', d: 0.3 });
+  const link = mk(world, '', 700, 330, 4, 40); css(link, { background: 'var(--g2)' }); wipe(link, T('h1c', 'Metrica') - 0.2, { dir: 't', d: 0.3 });
   const mx = mk(world, 'tile', 640, 370, 520, 190); mk(mx, 'nm', 28, 24, null, null, 'Metrica'); mk(mx, 'sb', 28, 84, null, null, 'Yandex 的网站统计服务');
   slide(mx, T('h1c', 'Metrica') - 0.1, { y: 40 }); sfx('pop', T('h1c', 'Metrica'), { g: 0.6 });
   classAt(mx, 'y', T('h1c', 'Metrica') + 0.2, T('h4') - 0.3);
-  const mxN = mk(mx, 'abs lab y', 28, 128, null, null, '全球第二大的网站统计平台'); css(mxN, { fontSize: '26px' }); fadeIn(mxN, T('h1d', '第二大') - 0.2);
+  const mxN = mk(mx, 'lab y', 28, 128, null, null, '全球第二大的网站统计平台'); css(mxN, { fontSize: '26px' }); fadeIn(mxN, T('h1d', '第二大') - 0.2);
   for (const e of [yx, link, mx]) hide(e, T('h4') - 0.3, { y: -10, d: 0.35 });
 
   // 报表面板（一直留到二〇一六年那一段）
@@ -109,7 +114,7 @@ scene('history', ({ root, s, c0 }) => {
   const rpRows = [['页面 A', 'N'], ['页面 B', 'N'], ['页面 C', 'N']].map((r, i) => { const rw = rowAt(RP, 24, 76 + i * 62, r, [300, 230], 54); vanish(rw.row, 0); appear(rw.row, T('h4b', '直接取') + 0.1 + i * 0.15); return rw; });
   for (const e of [cA, cB]) hide(e, T('h4') - 0.25, { y: -8, d: 0.3 });
   // 数据小了很多：两根长短不同的条（示意，不是实测比例）
-  const BZ = mk(world, 'abs', 640, 650, 1180, 160); vanish(BZ, 0); appear(BZ, T('h4c') - 0.1);
+  const BZ = mk(world, '', 640, 650, 1180, 160); vanish(BZ, 0); appear(BZ, T('h4c') - 0.1);
   const bL1 = mk(BZ, 'lab', 0, 0, null, null, '原始记录'); const bRaw = mk(BZ, 'bar w', 300, 4, 860, 32);
   const bL2 = mk(BZ, 'lab y', 0, 60, null, null, '汇总之后'); const bSum = mk(BZ, 'bar y', 300, 64, 126, 32);
   const bTag = mk(BZ, 't-note', 300, 110, null, null, '示意'); void bL1; void bL2;
@@ -128,6 +133,11 @@ scene('history', ({ root, s, c0 }) => {
   classAt(want, 'ghost', T('h6b', '做不到') - 0.05, T('h8b', '不汇总'));
   const noW = mk(RP, 'lab y', 340, 382, null, null, '没有现成的汇总'); fadeIn(noW, T('h6b', '做不到') - 0.05);
   keyed(noW).at(T('h8b', '不汇总'), { html: '从原始数据现场算' });
+  const uA = mk(RP, 'pill y', 24, 76, null, null, '条件：页面 A');
+  const uL = mk(RP, 'lab', 24, 150, null, null, '左边流过的记录，符合的现场挑出来');
+  slam(uA, tLive0, { from: 1.15 }); fadeIn(uL, tLive0 + 0.3); sfx('pop', tLive0, { g: 0.45 });
+  for (const e of [uA, uL]) hide(e, tLive1, { y: -8, d: 0.3 });
+  picked = [0, 1, 2].map((j) => { const c = mk(RP, 'cell sm y', 24, 196 + j * 50, 530, 42, ''); c.style.visibility = 'hidden'; return c; });
   // 比如网址：汇总条几乎和原始记录一样长
   const tU = T('h6d', '网址');
   const urlL = mk(BZ, 'lab', 0, 120, null, null, ''); void urlL;
@@ -153,7 +163,7 @@ scene('history', ({ root, s, c0 }) => {
   // 「新数据加不进去」：箭头变成虚线；「每天重写」：面板从左到右刷一遍
   const a3d = path(ov, 'M 572 650 L 624 650', 'dim', { w: 4, dashed: '6 8', arrow: false }); vanish(a3d, 0);
   set(a3, T('h7c', '新数据') + 0.3, { autoAlpha: 0 }); set(a3d, T('h7c', '新数据') + 0.3, { autoAlpha: 1 });
-  const rew = mk(OS, 'abs', 0, 0, 520, 300); css(rew, { background: 'rgba(250,255,105,.14)', transformOrigin: '0 50%' }); vanish(rew, 0); OS.insertBefore(rew, OS.firstChild);
+  const rew = mk(OS, '', 0, 0, 520, 300); css(rew, { background: 'rgba(250,255,105,.14)', transformOrigin: '0 50%' }); vanish(rew, 0); OS.insertBefore(rew, OS.firstChild);
   tl.fromTo(rew, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'none', immediateRender: false }, T('h7d', '每天'));
   set(rew, T('h7d', '每天') + 1.15, { autoAlpha: 0 });
 
@@ -162,11 +172,14 @@ scene('history', ({ root, s, c0 }) => {
   keyed(osN).at(tG, { html: '<span class="y">ClickHouse</span>' });
   keyed(osS).at(tG, { html: '最初的目标：去掉这些限制' }).at(T('h10b', '通用') - 0.05, { html: '<span class="y">后来：通用的分析型数据库</span>' });
   classAt(OS, 'y', tG);
-  const GOAL = [['所有报表，直接从原始数据算', T('h8b', '不汇总')], ['什么类型的数据都能存', T('h8c', '类型')], ['新数据随时能加', T('h8c', '新数据')]];
+  // 原地替换时要一一对应：只认数字 → 什么类型都能存；新数据加不进去 → 新数据随时能加；每天整个重写 → 划掉。「不汇总」回应的是前面汇总的代价，单独一行
+  const GOAL = [['<span>什么类型的数据都能存</span><span>目标</span>', T('h8c', '类型')], ['<span>新数据随时能加</span><span>目标</span>', T('h8c', '新数据')], ['<span style="text-decoration:line-through;color:var(--g4)">每天整个重写一遍</span><span>去掉</span>', T('h8c', '新数据') + 0.35]];
   lims.forEach((c, i) => {
-    keyed(c).at(GOAL[i][1] - 0.05, { html: '<span>' + GOAL[i][0] + '</span><span>目标</span>', cls: 'cell y' });
+    keyed(c).at(tG + 0.3 + i * 0.15, { html: '<span>' + LIM[i][0] + '</span><span>要去掉</span>' }).at(GOAL[i][1] - 0.05, { html: GOAL[i][0], cls: 'cell y' });
     sfx('pop', GOAL[i][1], { g: 0.55, p: 0.3 });
   });
+  const noSum = mk(world, 'pill y', 640, 420, null, null, '不汇总：所有报表，直接从原始数据算'); css(noSum, { fontSize: '26px' }); slam(noSum, T('h8b', '不汇总'), { from: 1.15 }); sfx('pop', T('h8b', '不汇总'), { g: 0.55, p: 0.3 });
+  hide(noSum, T('h9b') - 0.3, { y: -8, d: 0.3 });
   set(a3d, T('h8c', '新数据'), { autoAlpha: 0 }); set(a3, T('h8c', '新数据'), { autoAlpha: 1 });
   // 不汇总：汇总面板退场，报表直接从 ClickHouse 来
   hide(SM, T('h8b', '不汇总'), { y: -10, d: 0.4 }); hide(a1, T('h8b', '不汇总'), { y: 0, d: 0.3 }); hide(a2, T('h8b', '不汇总'), { y: 0, d: 0.3 });
@@ -197,7 +210,7 @@ scene('history', ({ root, s, c0 }) => {
   for (const e of [LOG, RP, OS]) hide(e, tE, { y: -12, d: 0.4 });
   for (const p of [a3, a4]) hide(p, tE, { y: 0, d: 0.3 });
   // 时间轴左端补一段虚线：「更早」，没有具体年份
-  const early = mk(world, 'abs', 100, AX + 1, 400, 2); css(early, { borderTop: '3px dashed var(--g3)' }); wipe(early, T('h11') - 0.1, { dir: 'r', d: 0.6 });
+  const early = mk(world, '', 100, AX + 1, 400, 2); css(early, { borderTop: '3px dashed var(--g3)' }); wipe(early, T('h11') - 0.1, { dir: 'r', d: 0.6 });
   const earlyTx = mk(world, 'mono dim', 200, AX + 22, 200, null, '更早'); css(earlyTx, { fontSize: '26px', textAlign: 'center' }); appear(earlyTx, T('h11') + 0.2);
   // 三个年代的盒子，各自用一条细线落到时间轴上
   const ERA = (x, w, title, names, foot, t0, x0, cls = '', yEnd = AX, hh = 440) => {
@@ -205,7 +218,7 @@ scene('history', ({ root, s, c0 }) => {
     const tt = mk(b, 'badge', 24, 18, null, null, title); css(tt, { fontSize: '26px', padding: '8px 14px' });
     const cells = names.map((n, i) => { const c = mk(b, 'cell w', 24, 76 + i * 66, w - 48, 56, '<span>' + n + '</span>'); wipe(c, t0 + 0.3 + i * 0.55, { dir: 'l', d: 0.3 }); classAt(c, 'on', t0 + 0.3 + i * 0.55, t0 + 0.75 + i * 0.55); return c; });
     wipe(b, t0, { dir: 'b', d: 0.5 });
-    const ln = mk(world, 'abs', x0 - 1, 180 + hh, 3, yEnd - 180 - hh); css(ln, { background: cls ? 'var(--y)' : 'var(--g2)' }); wipe(ln, t0 + 0.2, { dir: 't', d: 0.4 });
+    const ln = mk(world, '', x0 - 1, 180 + hh, 3, yEnd - 180 - hh); css(ln, { background: cls ? 'var(--y)' : 'var(--g2)' }); wipe(ln, t0 + 0.2, { dir: 't', d: 0.4 });
     return { b, cells, ln, foot };
   };
   const E1 = ERA(100, 400, '更早的', ['Teradata', 'Vertica', 'Sybase IQ', 'Greenplum'], null, T('h11') + 0.1, 300, '', AX, 520);
@@ -213,7 +226,7 @@ scene('history', ({ root, s, c0 }) => {
   void f1;
   const E2 = ERA(560, 380, '二〇一〇年代初 · 云上', ['Snowflake', 'BigQuery', 'Redshift'], null, T('h11d') - 0.1, 700, '', AX - 8);
   const e2n = mk(E2.b, 'note', 24, 290, null, null, '云数据仓库 · DBaaS\n分析的成本与复杂度\n大大降了下来'); fadeIn(e2n, T('h11d', '云上') + 0.8);
-  const cloudBr = mk(world, 'abs', X(2010), AX - 6, X(2013) - X(2010), 14); css(cloudBr, { borderTop: '3px solid var(--g3)', borderLeft: '3px solid var(--g3)', borderRight: '3px solid var(--g3)' }); wipe(cloudBr, T('h11d') + 0.2, { dir: 'l', d: 0.4 });
+  const cloudBr = mk(world, '', X(2010), AX - 6, X(2013) - X(2010), 14); css(cloudBr, { borderTop: '3px solid var(--g3)', borderLeft: '3px solid var(--g3)', borderRight: '3px solid var(--g3)' }); wipe(cloudBr, T('h11d') + 0.2, { dir: 'l', d: 0.4 });
   const E3 = ERA(1000, 520, 'ClickHouse', [], null, T('h11f', '另一条路') - 0.2, X(2016), 'y', AX - 66);
   const e3a = mk(E3.b, 'h2 y', 24, 90, null, null, '开源'); fadeIn(e3a, T('h11f', '开源') - 0.1);
   const e3b = mk(E3.b, 'h2', 24, 160, null, null, '一个程序就能跑'); fadeIn(e3b, T('h11f', '一个程序') - 0.3);
@@ -226,11 +239,11 @@ scene('history', ({ root, s, c0 }) => {
   hide(cloudBr, tBack, { y: 0, d: 0.3 });
   const g8 = mk(world, 'huge y', 640, 190, null, null, '8 ms'); css(g8, { fontSize: '280px' }); slam(g8, T('h12', '开头'), { from: 1.25 }); sfx('thud', T('h12', '开头') + 0.1, { g: 0.6 });
   const gq = mk(world, 'h1', 640, 500, null, null, '它是怎么存数据的？'); fadeIn(gq, T('h12b') - 0.1);
-  const eng = mk(world, 'abs term', 640, 620, 1000, 130);
+  const eng = mk(world, 'term', 640, 620, 1000, 130);
   eng.innerHTML = '<span class="pr">:) </span>CREATE TABLE users (…)\n<span class="pr">:-] </span><b>ENGINE</b> = …';
   wipe(eng, T('h12b', '建表') - 0.2, { dir: 'l', d: 0.5 }); sfx('pop', T('h12b', '一个词'), { g: 0.5 });
   for (const e of [g8, gq]) classAt(e, 'fade45', Tend('h12b') + 0.2);
-  const engHi = mk(world, 'abs', 725, 676, 113, 50); css(engHi, { border: '4px solid var(--y)' }); vanish(engHi, 0); wipe(engHi, T('h12b', '一个词') - 0.05, { dir: 'l', d: 0.3 });
+  const engHi = mk(world, '', 725, 676, 113, 50); css(engHi, { border: '4px solid var(--y)' }); vanish(engHi, 0); wipe(engHi, T('h12b', '一个词') - 0.05, { dir: 'l', d: 0.3 });
 
   drift(cam, s, -1);
 });

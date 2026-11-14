@@ -60,6 +60,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .cell.w { color: var(--w); }
 .cell.done { color: var(--g4); border-color: var(--k3); background: var(--k); text-decoration: line-through; }
 .cell.ghost { border-style: dashed; border-color: var(--g2); color: var(--g4); background: var(--k); }
+.cell.ghost.on { border-style: solid; border-color: var(--y); color: var(--k); background: var(--y); font-weight: 700; }
 .cell.dead { color: var(--g4); border-color: var(--k3); background: var(--k); }
 .pill { position: absolute; display: inline-flex; align-items: center; padding: 0 20px; height: 56px; border: 2px solid var(--g2); font: 600 28px/1 "Sans SC"; color: var(--g3); background: var(--k2); }
 .pill.y { border-color: var(--y); color: var(--y); }
@@ -123,6 +124,8 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .gran.y { border-color: var(--y); }
 .gran.y i.f { background: var(--y); }
 .fold .it.dead { color: var(--g4); text-decoration: line-through; }
+.fold .it.inact { color: var(--g4); }
+.fold .it.inact::after { content: '　不活动，仍在磁盘'; font: 600 22px/1 "Sans SC"; color: var(--g3); }
 .sq-l.y span { color: var(--k) !important; }
 .t-body { font: 600 40px/1.25 "Inter", "Sans SC"; color: var(--w); }
 .credit-row .t-note { font: 500 28px/1.4 "Mono", "Sans SC"; color: var(--g3); }
@@ -146,6 +149,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .credits-list .t-body { font-size: 40px; }
 .frame-d { pointer-events: none; }
 .fade45 { opacity: .45 !important; }
+.dim55 { opacity: .55 !important; }   /* 讲过的一行退后一步，仍读得清 */
 .ttag.flash { background: var(--y); color: var(--k); border-color: var(--y); }
 .ttag.flash b { color: var(--k); }
 /* 终端：等宽字体不连字（!=、-> 照原样显示）；结果表的表头加粗 */
@@ -164,3 +168,22 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .ctab .nm { color: var(--w); font-weight: 700; font-size: 34px; }
 .ctab .foot { grid-column: 1 / -1; padding: 22px 0 0 0; font: 500 28px/1 "Mono"; }
 .gone { opacity: 0 !important; }
+/* 第 13 章：各引擎的结构示意（节点框、一行记录、列文件里的格子） */
+.nd { border: 2px solid var(--g3); background: var(--k2); }
+.rs { display: flex; gap: 3px; height: 18px; }
+.rs i { display: block; height: 18px; background: #4A4A43; }
+.rs i:nth-child(2) { background: #5E5E55; }
+.rs i:nth-child(3) { background: #73736A; }
+/* ClickHouse 的列文件：每格只有一列的那一段，颜色与行条里同一列的那段相同 */
+.cseg { background: #4A4A43; }
+.cseg.k1 { background: #5E5E55; }
+.cseg.k2 { background: #73736A; }
+.cseg.hl { background: var(--y); }
+.cs13 { border: 2px solid var(--g2); background: var(--k2); }
+.cell.w.on { color: var(--k); }
+/* 第 11 章的小结构图 */
+.cs13.fy { background: var(--y); border-color: var(--y); }
+.cs13 .b01 { display: block; text-align: center; font: 700 22px/36px "Mono"; color: var(--w); }
+.cs13.fy .b01 { color: var(--k); }
+.gran.on { background: var(--y); border-color: var(--y); }
+.rs.hl i { background: var(--y); }

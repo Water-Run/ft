@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"
   },
   "stage": "preview",
-  "next": "等 WaterRun 对预览 r3（out/zh/preview-r3.mp4，17:41）的意见；问题不多就直接正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 Carol 变更 5 ms 的原因与 FACTS U04；check.js --final 与验收。",
+  "next": "等 WaterRun 对预览 r5（out/zh/preview-r5.mp4，17:41）的意见；问题不多就直接正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 NOTES「预览与自查」r4–r5 行列出的事实；check.js --final 与验收。",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -24,7 +24,7 @@
           "配乐",
           "文案修订",
           "读法修正",
-          "场景修订（预览 r2–r3）",
+          "场景修订（预览 r2–r5）",
           "成片级自查"
         ]
       },

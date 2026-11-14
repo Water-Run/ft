@@ -10,15 +10,15 @@ scene('concur', ({ root, s, c0 }) => {
   const XA = (sec) => 200 + 400 * sec;
 
   appear(gA, c0 + 0.05);
-  const lane = mk(gA, 'panel', 80, 118, 1800, 474); vanish(lane, 0); appear(lane, c0 + 0.1); warm(lane, c0 + 0.2, T('b2'));
+  const lane = mk(gA, 'panel', 80, 118, 1800, 474); vanish(lane, 0); appear(lane, c0 + 0.1);
   [0, 1, 2, 3].forEach((k) => { const tk = mk(gA, 'fn', XA(k) - 18, 128, null, null, k + ' s'); css(tk, { fontSize: '22px' }); appear(tk, c0 + 0.2); const ln = mk(gA, 'tick', XA(k), 230, null, 366); css(ln, { background: 'var(--k3)' }); appear(ln, c0 + 0.2); });
   // Bob
   const bl = mk(gA, 'lab y', 100, 188, null, null, 'Bob：把一亿个名字，一个个算一遍（只用一个线程）'); css(bl, { fontSize: '26px' }); wipe(bl, c0 + 0.2, { dir: 'l', d: 0.6 });
   const bGhost = mk(gA, 'bar', XA(0), 232, 1280, 56); css(bGhost, { background: 'var(--k2)', border: '2px dashed var(--g2)' }); wipe(bGhost, T('b1') + 0.1, { dir: 'l', d: 0.8 });
   const bBar = mk(gA, 'bar y', XA(0), 232, 1, 56); vanish(bBar, 0);
   F((t) => { const k = tau(t); bBar.style.width = Math.max(1, 400 * k) + 'px'; bBar.style.visibility = t >= P[0][0] ? 'visible' : 'hidden'; bBar.style.opacity = t >= P[0][0] ? 1 : 0; });
-  warm(bGhost, T('b1'), T('b2'), '#1F1F1C', '#414141');
-  const bq = mk(gA, 'mono', 1000, 440, null, null, 'SELECT count(), avg(age) FROM users\n WHERE NOT ignore(sipHash128(name))\n SETTINGS max_threads = 1'); css(bq, { fontSize: '24px', color: 'var(--g3)', lineHeight: '1.45' }); vanish(bq, 0); show(bq, T('b1') + 0.6, { y: 8 }); vanish(bq, T('b4') - 0.3);
+  ['SELECT count(), avg(age) FROM users', ' WHERE NOT ignore(sipHash128(name))', ' SETTINGS max_threads = 1'].forEach((ln, k) => { const e = mk(gA, 'mono', 1000, 420 + k * 40, null, null, ln); css(e, { fontSize: '28px', color: 'var(--g3)' }); vanish(e, 0); wipe(e, T('b1') + 0.3 + k * 1.0, { dir: 'l', d: 0.9 }); vanish(e, T('b4') - 0.3); });
+  const nm1 = mk(gA, 'pill on', 200, 330, null, null, '一亿个名字，逐个算一遍'); css(nm1, { fontSize: '34px', height: '68px' }); slam(nm1, T('b1', '一亿个名字') - 0.1, { from: 1.15 }); sfx('thud', T('b1', '一亿个名字'), { g: 0.45 }); hide(nm1, T('b3') - 0.3, { y: -8, d: 0.3 });
   const thr = mk(gA, 'badge', 1000, 330, null, null, '只用一个线程'); css(thr, { fontSize: '36px' }); slam(thr, T('b1b', '一个线程'), { from: 1.25 }); vanish(thr, T('b3', '一秒后') - 0.2); sfx('thud', T('b1b', '一个线程') + 0.1, { g: 0.5 });
   const b32 = mk(gA, 'big y', XA(3.2) + 20, 218, null, null, '3.2 s'); css(b32, { fontSize: '80px' }); show(b32, T('b1b', '三秒多'), { y: 12 }); sfx('thud', T('b1b', '三秒多') + 0.1, { g: 0.5 });
   // 快照
@@ -32,7 +32,7 @@ scene('concur', ({ root, s, c0 }) => {
   const R2 = fileAt(rp, 1, 'all_94_94_0　← Carol 的新片段', 'y'); vanish(R2, 0); appear(R2, T('b3', '新片段')); sfx('pop', T('b3', '新片段'), { g: 0.5 });
   const R3 = fileAt(rp, 2, 'all_1_91_4_95　← 新版本', 'y'), R4 = fileAt(rp, 3, 'all_94_94_0_95　← 新版本', 'y');
   [R3, R4].forEach((e, i) => { vanish(e, 0); appear(e, T('b4', '新版本') + i * 0.25); sfx('pop', T('b4', '新版本') + i * 0.25, { g: 0.4 }); });
-  [R0, R2].forEach((e) => classAt(e, 'dead', T('b4', '新版本') + 0.9));
+  [R0, R2].forEach((e) => classAt(e, 'inact', T('b4', '新版本') + 0.9));
   // Carol：注册、改年龄
   const cl1 = mk(gA, 'lab', 100, 300, null, null, 'Carol：注册（写入）'); css(cl1, { fontSize: '26px' }); vanish(cl1, 0); appear(cl1, T('b3') - 0.1);
   const c1 = mk(gA, 'bar y', XA(1), 342, 14, 56); wipe(c1, T('b3', '新片段') - 0.2, { dir: 'l', d: 0.2 }); const c1l = mk(gA, 'big y', XA(1) + 34, 330, null, null, '4 ms'); css(c1l, { fontSize: '64px' }); show(c1l, T('b3', '几毫秒'), { y: 10 });

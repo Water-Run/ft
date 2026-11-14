@@ -4,41 +4,43 @@
 scene('open', ({ root, s }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
-  const grp = () => { const g = mk(world, 'abs', 0, 0, 1920, 1080); vanish(g, 0); return g; };
+  const grp = () => { const g = mk(world, '', 0, 0, 1920, 1080); vanish(g, 0); return g; };
   const gA = grp(), gB = grp(), gC = grp(), gT = grp();
 
   // ══ A：前面四期，一个人一行 ══
   const tA = s.start + 0.3, tB = T('o6') - 0.35;
   appear(gA, tA);
   // 四张小表先摆在画面中间，讲到「一个人一行地存」时整排上移，给下面的数据带让位
-  const tilesBox = mk(gA, 'abs', 0, 0, 1920, 1080);
-  tl.fromTo(tilesBox, { y: 200 }, { y: 0, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, T('o2', '一个人一行') - 0.5);
+  const tilesBox = mk(gA, '', 0, 0, 1920, 1080);
+  tl.fromTo(tilesBox, { y: 170 }, { y: 0, duration: 0.8, ease: 'power3.inOut', immediateRender: true }, T('o2', '一个人一行') - 0.5);
   ['PART 1', 'PART 2', 'PART 3', 'PART 4'].forEach((p, k) => { const b = mk(tilesBox, 'badge', 100 + k * 440, 44, null, null, p); css(b, { fontSize: '28px', padding: '10px 18px' }); wipe(b, T('o1') + 0.1 + k * 0.35, { dir: 'l', d: 0.3 }); sfx('tick', T('o1') + 0.1 + k * 0.35, { g: 0.4 }); });
   const lab1 = mk(tilesBox, 'lab', 1000, 10, null, null, ''); void lab1;
-  const ENG = [['MyISAM', 'MySQL 的引擎', T('o1', 'MyISAM')], ['InnoDB', 'MySQL 的引擎', T('o1', 'InnoDB')], ['PostgreSQL', '', T('o1b', 'PostgreSQL')], ['SQLite', '', T('o1b', 'SQLite')]];
+  const ENG = [['MyISAM', 'MySQL 的引擎', T('o1', 'MyISAM'), '索引、数据各一个文件'], ['InnoDB', 'MySQL 的引擎', T('o1', 'InnoDB'), '按主键排好的 B+ 树'], ['PostgreSQL', '', T('o1b', 'PostgreSQL'), '堆，加另一个文件的索引'], ['SQLite', '', T('o1b', 'SQLite'), '一个文件里的 B+ 树']];
   const tiles = [], tRows = [];
-  ENG.forEach(([nm, sub, tt], i) => {
-    const tile = mk(tilesBox, 'tile', 100 + i * 440, 112, 400, 300); tiles.push(tile);
+  ENG.forEach(([nm, sub, tt, how], i) => {
+    const tile = mk(tilesBox, 'tile', 100 + i * 440, 112, 400, 360); tiles.push(tile);
     mk(tile, 'nm', 28, 24, null, null, nm);
     if (sub) mk(tile, 'sb', 28, 82, null, null, sub);
-    const rs = [1, 2, 3].map((n, k) => rowAt(tile, 28, 140 + k * 50, [String(n), NM(n), String(AG(n))], [64, 196, 64], 42, 'sm'));
-    tRows.push(rs);
+    // 各自的存法：缩小的结构示意（与第 13 章同一套画法，不带文字）
+    const w = mk(tile, '', 112, 112, 320, 380); css(w, { transform: 'scale(0.55)', transformOrigin: '0 0' });
+    const hw = mk(tile, 't-note', 28, 322, null, null, how); css(hw, { fontSize: '22px' });
+    tRows.push(engineStruct(w, i, tt + 0.1, { labels: false }).rows);
     slide(tile, tt - 0.1, { y: i % 2 ? 40 : -40 }); sfx('pop', tt, { g: 0.7, p: -0.6 + i * 0.4 });
   });
-  // 「各不相同」：四张小表依次提亮；「一个人一行」：每张表的第一行亮成黄框
+  // 「各不相同」：四张卡片依次提亮；「一个人一行」：每个结构里都有一行亮起（存法不同，都是整行放在一起）
   const tDiff = T('o2', '各不相同'), tOne = T('o2', '一个人一行');
   tiles.forEach((tile, i) => warm(tile, tDiff - 0.2 + i * 0.35, tDiff + 0.9 + i * 0.35));
-  tRows.forEach((rs, i) => { for (const c of rs[0].c) classAt(c, 'y', tOne + i * 0.1, T('o3')); });
+  tRows.forEach((rs, i) => classAt(rs[[3, 0, 3, 0][i]], 'hl', tOne + i * 0.1, T('o3')));
 
   // 一条数据带：磁盘上一个人接一个人地放（编号、姓名、年龄挨在一起）
-  const lab2 = mk(gA, 'lab', 100, 466, null, null, '在文件里：一个人一行，挨着放'); appear(lab2, tOne);
-  const WS = [86, 236, 72], RW = WS[0] + WS[1] + WS[2] - 4;
-  const rec = (x, n) => rowAt(gA, x, 520, U(n), WS, 60);
+  const lab2 = mk(gA, 'lab', 100, 526, null, null, '在文件里：一个人一行，挨着放'); appear(lab2, tOne);
+  const WS = [104, 218, 72], RW = WS[0] + WS[1] + WS[2] - 4;
+  const rec = (x, n) => rowAt(gA, x, 580, U(n), WS, 60);
   const rA = rec(100, 1), rB = rec(100 + RW + 18, 2), rC = rec(100 + 2 * (RW + 18), 3);
-  const dots1 = mk(gA, 'lab', 100 + 3 * (RW + 18) + 6, 532, null, null, '…');
-  const XA = 1340, rAl = rec(XA, 2050);
-  const dots2 = mk(gA, 'lab', XA + RW + 16, 532, null, null, '…');
-  const hdr = ['编号', '姓名', '年龄'].map((t, k) => mk(gA, 't-note', 100 + [0, WS[0] - 2, WS[0] + WS[1] - 4][k] + 14, 590, null, null, t));
+  const dots1 = mk(gA, 'lab', 100 + 3 * (RW + 18) + 6, 592, null, null, '…');
+  const XA = 1380, rAl = rec(XA, 2050);
+  const dots2 = mk(gA, 'lab', XA + RW + 16, 592, null, null, '…');
+  const hdr = ['编号', '姓名', '年龄'].map((t, k) => mk(gA, 't-note', 100 + [0, WS[0] - 2, WS[0] + WS[1] - 4][k] + 14, 650, null, null, t));
   wipe(rA.row, tOne + 0.2, { dir: 'l', d: 0.5 }); sfx('tick', tOne + 0.3, { g: 0.5 });
   [['编号', 0], ['姓名', 1], ['年龄', 2]].forEach(([w, k]) => { const tw = T('o2b', w); appear(hdr[k], tw - 0.05); classAt(rA.c[k], 'on', tw - 0.05, tw + 0.85); });
   const tNext = T('o2b', '再下一个人');
@@ -46,8 +48,8 @@ scene('open', ({ root, s }) => {
   appear(dots1, tNext + 1.0);
 
   // 它们的活儿：找到 Alice 改年龄，Alice 注销。这个终端一直带到下一屏（同一个终端，换一个问题）
-  const tmBox = mk(world, 'abs', 0, 0, 1920, 1080);
-  const tm = termAt(tmBox, 100, 660, 1120, 132);
+  const tmBox = mk(world, '', 0, 0, 1920, 1080);
+  const tm = termAt(tmBox, 100, 720, 1120, 132);
   show(tm.el, T('o3b', '找到') - 0.35, { y: 20, d: 0.3 });
   const tUp = T('o3b', '找到'), tDel = T('o3b', '注销');
   tm.line(0, '<span class="pr">mysql&gt; </span>UPDATE users SET age = 43 WHERE id = 2050;', tUp, { type: 36, cursorUntil: tDel - 0.3 });
@@ -59,16 +61,16 @@ scene('open', ({ root, s }) => {
   for (const c of rAl.c) classAt(c, 'done', tDel + 0.6);
   sfx('blip', T('o3b', '年龄') + 0.35); sfx('tick', tDel + 0.6, { g: 0.6 });
   // 一次只碰一个人：Alice 那一格上方的黄色括线
-  const brk = mk(gA, 'abs', XA, 500, RW, 8); css(brk, { borderTop: '4px solid var(--y)', borderLeft: '4px solid var(--y)', borderRight: '4px solid var(--y)' });
-  const brkL = mk(gA, 'lab y', XA, 452, null, null, '一次只碰一个人');
+  const brk = mk(gA, '', XA, 560, RW, 8); css(brk, { borderTop: '4px solid var(--y)', borderLeft: '4px solid var(--y)', borderRight: '4px solid var(--y)' });
+  const brkL = mk(gA, 'lab y', XA, 512, null, null, '一次只碰一个人');
   wipe(brk, T('o4', '一个人') - 0.2, { dir: 'l', d: 0.35 }); appear(brkL, T('o4', '一个人') - 0.1);
-  const fastT = mk(gA, 'pill y', 1290, 660, null, null, '要快'); css(fastT, { fontSize: '40px', height: '72px' });
-  const safeT = mk(gA, 'pill y', 1480, 660, null, null, '还要不出错'); css(safeT, { fontSize: '40px', height: '72px' });
+  const fastT = mk(gA, 'pill y', 1290, 720, null, null, '要快'); css(fastT, { fontSize: '40px', height: '72px' });
+  const safeT = mk(gA, 'pill y', 1480, 720, null, null, '还要不出错'); css(safeT, { fontSize: '40px', height: '72px' });
   slam(fastT, T('o4', '要快'), { from: 1.2 }); slam(safeT, T('o4', '不出错') - 0.2, { from: 1.2 });
   sfx('thud', T('o4', '要快') + 0.1, { g: 0.45 }); sfx('thud', T('o4', '不出错'), { g: 0.45 });
-  const oltp = mk(gA, 'tag', 1290, 770, null, null, 'OLTP'); css(oltp, { fontSize: '88px' });
+  const oltp = mk(gA, 'tag', 1290, 820, null, null, 'OLTP'); css(oltp, { fontSize: '88px' });
   slam(oltp, T('o4b', 'OLTP'), { from: 1.3 }); sfx('thud', T('o4b', 'OLTP') + 0.1);
-  const glT = glossAt(gA, 100, 834, 1120, 'OLTP', '<b>OLTP</b>　联机事务处理：一次只读写少数几行，要快，还要不出错');
+  const glT = glossAt(gA, 100, 884, 1120, 'OLTP', '<b>OLTP</b>　联机事务处理：一次只读写少数几行，要快，还要不出错');
   show(glT, T('o4b') - 0.2, { y: 16, d: 0.35 });
   // 「可要是问的，不是哪一个人呢？」：括线收走，数据带上每一个人都亮起
   exit(brk, T('o5') - 0.1, { y: -10 }); exit(brkL, T('o5') - 0.1, { y: -10 });
@@ -78,7 +80,7 @@ scene('open', ({ root, s }) => {
   hide(gA, tB, { y: 0, d: 0.35 });
 
   // ══ B：一亿行的表（之后一直留着） ══
-  const tbl = mk(world, 'abs', 0, 0, 1920, 1080); vanish(tbl, 0); appear(tbl, tB + 0.15);
+  const tbl = mk(world, '', 0, 0, 1920, 1080); vanish(tbl, 0); appear(tbl, tB + 0.15);
   const IDS = [1, 2, 3, 4, 5, 6, 7, null, 2049, 2050, 2051, null, 99999998, 99999999, 100000000];
   const MW = [180, 280, 80], MX = 100, MY = 176, MH = 44, RX = 706;
   const hd = rowAt(tbl, MX, MY - 54, ['编号', '姓名', '年龄'], MW, 44, 'sm'); for (const c of hd.c) css(c, { background: 'transparent', borderColor: 'transparent', color: 'var(--g3)' });
@@ -94,7 +96,7 @@ scene('open', ({ root, s }) => {
   const alice = real.find((r) => r.n === 2050);
 
   // 右侧：一亿个用户，平均年龄？
-  const gR1 = mk(gB, 'abs', 0, 0, 1920, 1080);
+  const gR1 = mk(gB, '', 0, 0, 1920, 1080);
   appear(gB, tB);
   const counter = mk(gR1, 'big y', RX - 6, 150, null, null, '0'); css(counter, { fontSize: '128px' });
   countTo(counter, 0, 100000000, T('o6', '一亿') + 0.1, 1.5); appear(counter, T('o6', '一亿'));
@@ -110,7 +112,7 @@ scene('open', ({ root, s }) => {
   for (const r of tm.rows) vanish(r, tB + 0.7);
   dimTo(tm.el, tB + 0.7, 0.35, 1, 0.3);
   classAt(tmBox, 'gone', tB + 0.2, T('o8') - 0.35);   // 挪到右边的途中收起，交给 ClickHouse 时再出来
-  tl.fromTo(tmBox, { x: 0, y: 0 }, { x: 600, y: -120, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tB);
+  tl.fromTo(tmBox, { x: 0, y: 0 }, { x: 600, y: -180, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tB);
   tl.fromTo(tm.el, { width: 1120, height: 132 }, { width: 640, height: 268, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tB);
   tm.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('o8') - 0.1, { type: 40, cursorUntil: T('o8', '不到') });
   printAt(tm, 1, pretty([{ name: 'avg(age)', values: ['48.99999546'], right: true }]), T('o8', '十毫秒') - 0.15);
@@ -122,14 +124,14 @@ scene('open', ({ root, s }) => {
   const nt = noteAt(gB, 1386, 770, '热缓存 · 一亿行 · 本机\n30 次连跑：7–9 毫秒'); show(nt, T('o8', '十毫秒') + 0.5, { y: 14, d: 0.4 }); classAt(nt, 'fade45', T('o10') - 0.1); classAt(tm.el, 'fade45', T('o10') - 0.1);
   // 这几毫秒里读了哪些数据？右上的一组让位给问题
   hide(gR1, T('o9') - 0.25, { y: -10, d: 0.3 });
-  const rq = mk(gB, 'abs h1 y', RX, 170, null, null, '读了哪些数据？'); css(rq, { fontSize: '80px' });
+  const rq = mk(gB, 'h1 y', RX, 170, null, null, '读了哪些数据？'); css(rq, { fontSize: '80px' });
   wipe(rq, T('o9', '读了') - 0.1, { dir: 'l', d: 0.45 }); sfx('pop', T('o9', '读了'));
   for (const r of real) for (const c of r.c) classAt(c, 'ghost', T('o9', '读了') + 0.2, T('o10'));
   // 行存：整行整行地读
   const rl = mk(gB, 'lab', RX, 300, null, null, '交给一行一行存的数据库：'); appear(rl, T('o10') + 0.1);
   const rn = noteAt(gB, RX, 350, '一行的几项挨在一起\n要年龄，也得读整行'); show(rn, T('o10') + 1.2, { y: 14, d: 0.35 });
   const sA = T('o10b') + 0.1, sB = T('o10b', '一个个') + 0.6;
-  const scan = mk(tbl, 'abs', MX - 10, MY - 6, MW[0] + MW[1] + MW[2] + 14, MH + 12); css(scan, { border: '4px solid var(--y)' }); vanish(scan, 0);
+  const scan = mk(tbl, '', MX - 10, MY - 6, MW[0] + MW[1] + MW[2] + 14, MH + 12); css(scan, { border: '4px solid var(--y)' }); vanish(scan, 0);
   set(scan, sA, { autoAlpha: 1 }); set(scan, T('o11') - 0.2, { autoAlpha: 0 });
   F((t) => {
     const k = clamp((t - sA) / Math.max(0.6, sB - sA)), on = t >= sA && t < T('o11') - 0.2;
@@ -149,7 +151,7 @@ scene('open', ({ root, s }) => {
   for (const c of alice.c.slice(0, 2)) classAt(c, 'on', tOl, tMany - 0.2);
   const la = mk(gC, 'h2 y', RX, 230, null, null, '一次看很多人：年龄这一列，从头到尾'); wipe(la, tMany - 0.1, { dir: 'l', d: 0.5 });
   real.forEach((r, i) => classWins(r.c[2], 'on', r === alice ? [[tOl, tMany - 0.2], [tMany + i * 0.07, T('oT') - 0.1]] : [[tMany + i * 0.07, T('oT') - 0.1]]));
-  const colBox = mk(tbl, 'abs', MX + MW[0] + MW[1] - 4 - 10, MY - 8, MW[2] + 20, IDS.length * MH + 14); css(colBox, { border: '4px solid var(--y)' });
+  const colBox = mk(tbl, '', MX + MW[0] + MW[1] - 4 - 10, MY - 8, MW[2] + 20, IDS.length * MH + 14); css(colBox, { border: '4px solid var(--y)' });
   vanish(colBox, 0); wipe(colBox, tMany + 0.2, { dir: 't', d: 0.9 }); vanish(colBox, T('oT') - 0.1);
   const chips = [['报表', T('o11b', '报表')], ['统计', T('o11b', '统计')]].map(([t, tt], k) => { const p = mk(gC, 'pill', RX + k * 170, 320, null, null, t); slam(p, tt - 0.1, { from: 1.15 }); sfx('pop', tt, { g: 0.5 }); return p; });
   void chips;

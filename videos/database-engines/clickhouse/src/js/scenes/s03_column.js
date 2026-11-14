@@ -63,17 +63,17 @@ scene('column', ({ root, s, c0 }) => {
   const sf = mk(C, 'frame-d', FX - 14, 266, 8 * (CW - 2) + 30, 352, ''); vanish(sf, 0); wipe(sf, T('c4c', '八个人') - 0.1, { dir: 'l', d: 0.5 }); vanish(sf, T('c5') + 0.2);
   strips.forEach((st, k) => st.cells.forEach((c, i) => classAt(c, 'w', T('c4c', '八个人') + k * 0.6 + i * 0.08, T('c5'))));
   const n4 = noteAt(C, 710, 790, '小片段默认几列合放在一个文件里\n这里为了看清，也每列一个文件'); show(n4, T('c4c') - 0.1, { y: 14 }); vanish(n4, T('c7') - 0.2);
-  // c5：年龄这一列，只有八个字节，一人一个——十进制换成真实的字节（十六进制）
+  // c5：年龄这一列，只有八个字节，一人一个——十进制换成真实的字节（十六进制）；标注收走时换回十进制，后面「第三个值 = carol」对得上 41
   const ageCells = strips[2].cells;
   classAt(strips[2].lbl, 'y', T('c5') + 0.1, T('c6'));
   ageCells.forEach((c, i) => classAt(c, 'y', T('c5') + 0.1 + i * 0.05, T('c5', '八个字节') + i * 0.1));
-  strips[2].cells.forEach((c, i) => { classAt(c, 'on', T('c5', '八个字节') + i * 0.1, T('c5', '一人一个') + 0.9); keyed(c.firstChild).at(T('c5', '八个字节') + i * 0.1, { html: hex2(P8[i][2]) }); sfx('tick', T('c5', '八个字节') + i * 0.1, { g: 0.3 }); });
+  strips[2].cells.forEach((c, i) => { classAt(c, 'on', T('c5', '八个字节') + i * 0.1, T('c5', '一人一个') + 0.9); keyed(c.firstChild).at(T('c5', '八个字节') + i * 0.1, { html: hex2(P8[i][2]) }).at(T('c7') - 0.2, { html: String(P8[i][2]) }); sfx('tick', T('c5', '八个字节') + i * 0.1, { g: 0.3 }); });
   const lbAge = mk(C, 'lab y', 710, 640, null, null, 'age.bin 解压后：8 个字节（十六进制，30 = 1e）'); show(lbAge, T('c5', '八个字节') + 0.3, { y: 12 }); vanish(lbAge, T('c7') - 0.2);
   // c6：编号、姓名在另一个文件
   colHi(0, T('c6', '编号'), T('c6', '姓名')); colHi(1, T('c6', '姓名'), Tend('c6', 0.3));
   // c7：第三个值属于同一个人
   const tThird = T('c7b', '第三个');
-  const lineUp = mk(C, 'abs', FX + 2 * (CW - 2) - 8, 268, CW + 14, 342); css(lineUp, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(lineUp, 0); appear(lineUp, tThird); vanish(lineUp, Tend('c7b', 0.4));
+  const lineUp = mk(C, '', FX + 2 * (CW - 2) - 8, 268, CW + 14, 342); css(lineUp, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(lineUp, 0); appear(lineUp, tThird); vanish(lineUp, Tend('c7b', 0.4));
   tbl2[2].c.forEach((c) => classAt(c, 'on', tThird, Tend('c7b', 0.4)));
   const lb7 = mk(C, 'lab y', 710, 690, null, null, '三个文件，靠顺序对上：第三个值 = carol'); show(lb7, T('c7', '靠顺序'), { y: 12 }); vanish(lb7, T('c8') - 0.2);
   // c8：排序键
@@ -123,7 +123,7 @@ scene('column', ({ root, s, c0 }) => {
   const demoB = mk(E, 'badge', 470, 748, null, null, '演示数据'); css(demoB, { fontSize: '28px', padding: '10px 16px' }); slam(demoB, T('c13b', '演示数据') - 0.1, { from: 1.2 }); vanish(demoB, T('c14') - 1.5);
   const cav2 = noteAt(E, 900, 660, '真实数据，没这么夸张'); show(cav2, T('c13b', '真实数据') - 0.2, { y: 10 });
   // c14：求平均年龄，只读这五百多 K（这一小条描上黄框）
-  const hl = mk(E, 'abs', 92, 744, 26, 68); css(hl, { border: '4px solid var(--y)' }); vanish(hl, 0); appear(hl, T('c14') - 1.4);
+  const hl = mk(E, '', 92, 744, 26, 68); css(hl, { border: '4px solid var(--y)' }); vanish(hl, 0); appear(hl, T('c14') - 1.4);
   const pt = mk(E, 'lab y', 470, 758, null, null, '← 求平均年龄，只读这一小条'); show(pt, T('c14') - 1.4, { x: -16, y: 0 });
   vanish(E, T('c15') - 0.1);
 

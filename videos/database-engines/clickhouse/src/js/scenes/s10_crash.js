@@ -73,11 +73,18 @@ scene('crash', ({ root, s, c0 }) => {
   const a1 = mk(gD, 'h1 y', 580, 330, null, null, '→'); css(a1, { fontSize: '70px' }); vanish(a1, 0); appear(a1, T('r6', '写完') + 0.1);
   const a2 = mk(gD, 'h1', 1240, 330, null, null, '→'); css(a2, { fontSize: '70px', color: 'var(--g4)' }); vanish(a2, 0); appear(a2, T('r6', '不要求立刻') - 0.2);
   const q2 = mk(gD, 'badge', 1140, 470, null, null, '默认不要求立刻写'); css(q2, { fontSize: '30px' }); slam(q2, T('r6', '不要求立刻'), { from: 1.2 });
-  const stay = mk(gD, 'lab y', 660, 470, null, null, '↑ 新片段还停在这里'); show(stay, T('r6b', '缓存里') - 0.4, { y: 10 });
-  const cut = mk(gD, 'huge y', 660, 560, null, null, '断电'); css(cut, { fontSize: '200px' }); slam(cut, T('r7', '断电') - 0.1, { from: 1.25 }); sfx('thud', T('r7', '断电'), { g: 0.8 });
-  classAt(nd[1], 'ghost', T('r7', '没了')); classAt(nd[0], 'done', T('r7', '没了'));
-  keyed(nd[2].firstChild).at(T('r7b', '丢失') - 0.1, { html: '磁盘：没有最新的片段' }); classAt(nd[2], 'y', T('r7b', '丢失') - 0.1);
-  const lost = mk(gD, 'h1', 100, 820, null, null, '最新的片段，可能丢失或损坏'); css(lost, { fontSize: '60px' }); wipe(lost, T('r7b') - 0.2, { dir: 'l', d: 0.6 });
+  const stay = mk(gD, 'lab y', 660, 470, null, null, '↑ 新片段还停在这里'); show(stay, Math.min(T('r6b', '缓存里') - 0.4, T('r7', '断电') - 3.4), { y: 10 });
+  const cut = mk(gD, 'huge y', 100, 600, null, null, '断电'); css(cut, { fontSize: '150px' }); slam(cut, T('r7', '断电') - 0.1, { from: 1.25 }); sfx('thud', T('r7', '断电'), { g: 0.8 });
+  classAt(nd[1], 'ghost', T('r7', '没了')); classAt(nd[0], 'done', T('r7', '没了')); vanish(stay, T('r7', '断电') - 0.05);
+  keyed(nd[2].firstChild).at(T('r7b', '丢失') - 0.35, { html: '磁盘：最新片段不全' }); classAt(nd[2], 'y', T('r7b', '丢失') - 0.35);
+  // 磁盘上：最新的片段要么整个没有（丢失），要么只写了一部分（损坏）
+  [['丢失：整个没有', [0, 0, 0]], ['损坏：只写了一部分', [4, 2, 0]]].forEach(([lb, ns], j) => {
+    const tt = T('r7b', '丢失') - 0.35 + j * 0.08, X = 560 + j * 660, f = foldAt(gD, X, 580, 600, 230, '最新的片段', 'ghost y'); vanish(f, 0); appear(f, tt);
+    ns.forEach((n, k) => { for (let r = 0; r < 4; r++) { const c = mk(gD, r < n ? 'cseg k' + k : '', X + 24 + k * 190, 640 + r * 40, 170, 28, ''); if (r >= n) css(c, { border: '2px dashed var(--g2)' }); vanish(c, 0); appear(c, tt + 0.1 + r * 0.04 + k * 0.06); } });
+    const l = mk(gD, 'lab y', X, 826, null, null, lb); vanish(l, 0); appear(l, tt);
+  });
+  const blk = mk(gD, '', -120, -120, 2160, 1320), tCut = T('r7', '断电') - 0.05; css(blk, { background: '#000', opacity: 0, visibility: 'hidden' });
+  F((t) => { const a = t < tCut ? 0 : t < tCut + 0.25 ? 0.88 : t < tCut + 0.75 ? 0.88 * (1 - (t - tCut - 0.25) / 0.5) : 0; blk.style.opacity = a; blk.style.visibility = a > 0 ? 'visible' : 'hidden'; });
   const tDE = T('r8') + 1.6;
   vanish(gD, tDE);
 
