@@ -12,9 +12,9 @@
 
 :) INSERT INTO demo.users SETTINGS async_insert = 0 VALUES (100000001, 'Dave', 29)
 
-2026.11.07 01:40:02.160526 <Trace> demo.users (7fffbf89-115e-46ef-90f2-b2ed2c18df62): Trying to reserve 1.00 MiB using storage policy from min volume index 0
-2026.11.07 01:40:02.161149 <Debug> demo.users (7fffbf89-115e-46ef-90f2-b2ed2c18df62): Wrote block with 1 rows and deduplication blocks: , deduplication info: instance_id: 7025, sync, enabled, level SOURCE, rows/tokens 1/1, in block: rows/cols 1/3, tokens: 1:[-/source-id-empty/source-number-0::1], visited views: 1:[<empty>], retried view id: <empty>, original block id: <empty>
-2026.11.07 01:40:02.161206 <Trace> demo.users (7fffbf89-115e-46ef-90f2-b2ed2c18df62): Renaming temporary part tmp_insert_all_91_91_0 to all_91_91_0 with tid (1, 1, 00000000-0000-0000-0000-000000000000).
+2026.11.07 17:18:03.502389 <Trace> demo.users (743e529a-a9a0-4882-b46e-be824f21b949): Trying to reserve 1.00 MiB using storage policy from min volume index 0
+2026.11.07 17:18:03.503288 <Debug> demo.users (743e529a-a9a0-4882-b46e-be824f21b949): Wrote block with 1 rows and deduplication blocks: , deduplication info: instance_id: 3309, sync, enabled, level SOURCE, rows/tokens 1/1, in block: rows/cols 1/3, tokens: 1:[-/source-id-empty/source-number-0::1], visited views: 1:[<empty>], retried view id: <empty>, original block id: <empty>
+2026.11.07 17:18:03.503378 <Trace> demo.users (743e529a-a9a0-4882-b46e-be824f21b949): Renaming temporary part tmp_insert_all_91_91_0 to all_91_91_0 with tid (1, 1, 00000000-0000-0000-0000-000000000000).
 
 :) SELECT name, part_type, rows, marks, bytes_on_disk FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
 
@@ -23,7 +23,7 @@
 2. │ all_91_91_0 │ Compact   │         1 │     2 │           947 │
    └─────────────┴───────────┴───────────┴───────┴───────────────┘
 
-$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_91_91_0/ && ls -l --time-style=+ | awk 'NR>1{print $5, $NF}'
+$ cd /var/lib/clickhouse/store/743/743e529a-a9a0-4882-b46e-be824f21b949/all_91_91_0/ && ls -l --time-style=+ | awk 'NR>1{print $5, $NF}'
 297 checksums.txt
 160 columns_substreams.txt
 75 columns.txt
@@ -109,70 +109,7 @@ $ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_91_9
    └────────────────────────────────────────┴──────────┘
 
 
-==== 3. 后台合并：再插几行，等 20 秒，看小片段被并起来 ====
-
-:) SYSTEM START MERGES demo.signup
-
-
-:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (12,'niaj',22)
-
-
-:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (13,'olivia',38)
-
-
-:) INSERT INTO demo.signup SETTINGS async_insert = 0 VALUES (14,'peggy',50)
-
-
-:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name
-
-   ┌─name──────┬─rows─┐
-1. │ all_4_4_0 │    3 │
-2. │ all_5_5_0 │    1 │
-3. │ all_6_6_0 │    1 │
-4. │ all_7_7_0 │    1 │
-   └───────────┴──────┘
-
-:) SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name
-
-   ┌─name──────┬─rows─┐
-1. │ all_4_4_0 │    3 │
-2. │ all_5_5_0 │    1 │
-3. │ all_6_6_0 │    1 │
-4. │ all_7_7_0 │    1 │
-   └───────────┴──────┘
-
-:) SELECT event_type, part_name, merged_from, rows FROM system.part_log WHERE table_uuid = (SELECT uuid FROM system.tables WHERE database='demo' AND name='signup') ORDER BY event_time_microseconds
-
-    ┌─event_type─┬─part_name─┬─merged_from─┬─rows─┐
- 1. │ NewPart    │ all_1_1_0 │ []          │    1 │
- 2. │ NewPart    │ all_2_2_0 │ []          │    1 │
- 3. │ NewPart    │ all_3_3_0 │ []          │    1 │
- 4. │ NewPart    │ all_1_1_1 │ []          │    0 │
- 5. │ NewPart    │ all_2_2_1 │ []          │    0 │
- 6. │ NewPart    │ all_3_3_1 │ []          │    0 │
- 7. │ RemovePart │ all_1_1_0 │ []          │    1 │
- 8. │ RemovePart │ all_2_2_0 │ []          │    1 │
- 9. │ RemovePart │ all_3_3_0 │ []          │    1 │
-10. │ NewPart    │ all_4_4_0 │ []          │    3 │
-11. │ NewPart    │ all_5_5_0 │ []          │    1 │
-12. │ NewPart    │ all_6_6_0 │ []          │    1 │
-13. │ NewPart    │ all_7_7_0 │ []          │    1 │
-    └────────────┴───────────┴─────────────┴──────┘
-
-:) SELECT name, active FROM system.parts WHERE database='demo' AND table='signup' ORDER BY name
-
-   ┌─name──────┬─active─┐
-1. │ all_1_1_1 │      0 │
-2. │ all_2_2_1 │      0 │
-3. │ all_3_3_1 │      0 │
-4. │ all_4_4_0 │      1 │
-5. │ all_5_5_0 │      1 │
-6. │ all_6_6_0 │      1 │
-7. │ all_7_7_0 │      1 │
-   └───────────┴────────┘
-
-
-==== demo.users 现在的片段（Dave 那一行的小片段会在之后被合并） ====
+==== demo.users 现在的片段 ====
 
 :) SELECT name, part_type, rows FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
 

@@ -2,11 +2,11 @@
   "schema": 1,
   "languages": {
     "zh": {
-      "status": "pending",
-      "content_sha256": "319266ee4089ebcac1f9de5d4615a26c9e57fecf3ac92ec21d62a2ab3922acd8",
+      "status": "approved",
+      "content_sha256": "4249bc0e57821da76449cf4d9b1a3dca8487aeb45a77d930afc05be0ddf6529d",
       "reviewer": "WaterRun",
-      "confirmed_at": "",
-      "evidence": ""
+      "confirmed_at": "2026-11-08T08:04:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：2026-11-08 WaterRun 看过第 4 稿审片页后在会话里说「可以, 出Preview吧」"
     }
   }
 }

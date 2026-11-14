@@ -3,15 +3,14 @@
 
 :) SELECT name, rows, refcount FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
 
-   ┌─name───────────┬──────rows─┬─refcount─┐
-1. │ all_1_91_4_95  │ 100000000 │        3 │
-2. │ all_94_94_0_95 │         1 │        3 │
-   └────────────────┴───────────┴──────────┘
+   ┌─name──────────┬──────rows─┬─refcount─┐
+1. │ all_1_91_4_93 │ 100000000 │        1 │
+   └───────────────┴───────────┴──────────┘
 
 :) SELECT count() FROM demo.users
 
    ┌───count()─┐
-1. │ 100000001 │ -- 100.00 million
+1. │ 100000000 │ -- 100.00 million
    └───────────┘
 
 
@@ -21,11 +20,10 @@ Bob   :) SELECT count() AS users, round(avg(age), 6) AS avg_age FROM demo.users 
 Carol :) INSERT INTO demo.users SETTINGS async_insert = 0 VALUES (100000002, 'Carol', 35)
 :) SELECT name, active, rows, refcount FROM system.parts WHERE database='demo' AND table='users' AND active ORDER BY min_block_number
 
-   ┌─name───────────┬─active─┬──────rows─┬─refcount─┐
-1. │ all_1_91_4_95  │      1 │ 100000000 │        5 │
-2. │ all_94_94_0_95 │      1 │         1 │        4 │
-3. │ all_96_96_0    │      1 │         1 │        1 │
-   └────────────────┴────────┴───────────┴──────────┘
+   ┌─name──────────┬─active─┬──────rows─┬─refcount─┐
+1. │ all_1_91_4_93 │      1 │ 100000000 │        5 │
+2. │ all_94_94_0   │      1 │         1 │        1 │
+   └───────────────┴────────┴───────────┴──────────┘
 
 Carol :) ALTER TABLE demo.users UPDATE age = 36 WHERE id = 100000002 SETTINGS mutations_sync = 1
 
@@ -33,23 +31,20 @@ Bob 还在读的时候，被替换下来的旧片段：
 :) SELECT name, active, refcount FROM system.parts WHERE database='demo' AND table='users' AND modification_time > now() - 600 OR (database='demo' AND table='users' AND active) ORDER BY min_block_number, name
 
    ┌─name───────────┬─active─┬─refcount─┐
-1. │ all_1_91_4_95  │      0 │        5 │
-2. │ all_1_91_4_97  │      1 │        1 │
+1. │ all_1_91_4_93  │      0 │        5 │
+2. │ all_1_91_4_95  │      1 │        1 │
 3. │ all_94_94_0    │      0 │        1 │
-4. │ all_94_94_0_95 │      0 │        4 │
-5. │ all_94_94_0_97 │      1 │        1 │
-6. │ all_96_96_0    │      0 │        1 │
-7. │ all_96_96_0_97 │      1 │        1 │
+4. │ all_94_94_0_95 │      1 │        1 │
    └────────────────┴────────┴──────────┘
 
-:) SELECT query_id, round(elapsed, 2) AS elapsed_s, read_rows FROM system.processes WHERE query_id = 'bob_1794016683'
+:) SELECT query_id, round(elapsed, 2) AS elapsed_s, read_rows FROM system.processes WHERE query_id = 'bob_1794072484'
 
    ┌─query_id───────┬─elapsed_s─┬─read_rows─┐
-1. │ bob_1794016683 │      2.43 │  75513856 │ -- 75.51 million
+1. │ bob_1794072484 │      2.46 │  75776000 │ -- 75.78 million
    └────────────────┴───────────┴───────────┘
 
 Bob 的结果：
-100000001	48.999995
+100000000	48.999995
 
 
 ==== Bob 读完之后 ====
@@ -57,24 +52,23 @@ Bob 的结果：
 :) SELECT name, active, refcount FROM system.parts WHERE database='demo' AND table='users' AND (active OR refcount > 1) ORDER BY min_block_number, name
 
    ┌─name───────────┬─active─┬─refcount─┐
-1. │ all_1_91_4_97  │      1 │        1 │
-2. │ all_94_94_0_97 │      1 │        1 │
-3. │ all_96_96_0_97 │      1 │        1 │
+1. │ all_1_91_4_95  │      1 │        1 │
+2. │ all_94_94_0_95 │      1 │        1 │
    └────────────────┴────────┴──────────┘
 
 :) SELECT count() AS users, round(avg(age), 6) AS avg_age FROM demo.users WHERE NOT ignore(sipHash128(name)) SETTINGS max_threads = 1
 
    ┌─────users─┬───avg_age─┐
-1. │ 100000002 │ 48.999995 │
+1. │ 100000001 │ 48.999995 │
    └───────────┴───────────┘
 
 :) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS who, query_start_time_microseconds AS started, event_time_microseconds AS finished, query_duration_ms AS ms
-   FROM system.query_log WHERE type = 'QueryFinish' AND query_id IN ('bob_1794016683', 'carol_insert_1794016683', 'carol_update_1794016683') ORDER BY started
+   FROM system.query_log WHERE type = 'QueryFinish' AND query_id IN ('bob_1794072484', 'carol_insert_1794072484', 'carol_update_1794072484') ORDER BY started
 
    ┌─who──────────┬────────────────────started─┬───────────────────finished─┬───ms─┐
-1. │ bob          │ 2026-11-07 01:58:04.220380 │ 2026-11-07 01:58:07.422994 │ 3202 │
-2. │ carol_insert │ 2026-11-07 01:58:05.226386 │ 2026-11-07 01:58:05.228660 │    2 │
-3. │ carol_update │ 2026-11-07 01:58:06.414702 │ 2026-11-07 01:58:06.454571 │   39 │
+1. │ bob          │ 2026-11-07 17:28:05.035493 │ 2026-11-07 17:28:08.257191 │ 3221 │
+2. │ carol_insert │ 2026-11-07 17:28:06.043304 │ 2026-11-07 17:28:06.047071 │    4 │
+3. │ carol_update │ 2026-11-07 17:28:07.273157 │ 2026-11-07 17:28:07.278853 │    5 │
    └──────────────┴────────────────────────────┴────────────────────────────┴──────┘
 
 

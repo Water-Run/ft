@@ -1,46 +1,58 @@
 <!doctype html>
 <html lang="zh"><head><meta charset="utf-8"><title>封面候选 C · 稀疏索引</title>
-<!-- 封面候选 C「稀疏索引」：黄底黑字。一亿行立成一整块黑色的长条，表面刻着颗粒的分隔，第 0 个颗粒（Alice 在里面）被抽出来、亮着。
-     数据：research/lab/out_04_queries.txt（12,209 个索引项，选中 1/12208 个颗粒）。 -->
+<!-- 封面候选 C「稀疏索引」（第 2 稿）：黄底黑字的海报。一亿行立成一根黑色的长柱，柱身刻着颗粒的分隔（画 40 道示意，不是 12208 道），
+     最上面的一层——第 0 个颗粒，Alice 在里面——被抽出来悬在半空。数据：research/lab/out_04_queries.txt（12,209 个索引项；找 Alice 只读 1/12,208 个颗粒）。
+     版面守封面约定：底部约 15% 不放字。 -->
 <link rel="stylesheet" href="/css/base.css">
 <style>
   :root { --y: #FAFF69; --k: #151515; --w: #F9F9F9; }
   html, body { margin: 0; width: 1920px; height: 1080px; background: var(--y); color: var(--k); overflow: hidden; }
-  .grain { position: absolute; inset: 0; opacity: .14; mix-blend-mode: multiply; }
+  #bg { position: absolute; inset: 0; background: radial-gradient(1300px 950px at 70% 45%, #FDFF9A 0%, #FAFF69 48%, #E6EB4A 100%); }
+  .grain { position: absolute; inset: 0; opacity: .16; mix-blend-mode: multiply; }
+  #s3 { position: absolute; left: 0; top: 0; }
   .badge { position: absolute; left: 100px; top: 96px; background: var(--k); color: var(--y); font: 800 34px/1 "Inter"; letter-spacing: .12em; padding: 14px 22px; }
-  .q { position: absolute; left: 100px; top: 196px; font: 700 52px/1.2 "Sans SC"; }
-  .title { position: absolute; left: 92px; top: 290px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; }
-  .sub { position: absolute; left: 100px; top: 512px; font: 800 58px/1 "Sans SC"; }
+  .q { position: absolute; left: 100px; top: 192px; font: 700 56px/1.2 "Sans SC"; }
+  .title { position: absolute; left: 92px; top: 286px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; }
+  .sub { position: absolute; left: 100px; top: 506px; font: 800 62px/1 "Sans SC"; }
   .data { position: absolute; left: 100px; top: 640px; font: 700 34px/1.55 "Mono"; }
-  .data b { font-weight: 900; font-size: 54px; background: var(--k); color: var(--y); padding: 0 12px; }
-  .blk { position: absolute; } .blk .f, .blk .t, .blk .s { position: absolute; }
-  .blk .t { transform-origin: 0 100%; } .blk .s { transform-origin: 0 100%; bottom: 0; }
-  .lab { position: absolute; font: 800 32px/1.2 "Mono"; }
+  .data b { font-weight: 900; font-size: 56px; background: var(--k); color: var(--y); padding: 0 12px; }
+  .lab { position: absolute; font: 800 32px/1.25 "Mono"; color: var(--k); white-space: nowrap; }
+  .lab i { font-style: normal; font-weight: 700; font-size: 28px; opacity: .75; }
 </style></head><body>
-<div id="bg" style="position:absolute;inset:0;background:#FAFF69;z-index:-1"></div>
+<div id="bg"></div>
+<svg id="s3" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
 <svg class="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
-<div id="w"></div>
 <div class="badge">PART 5</div>
 <div class="q">一个数据库引擎是如何实现的？</div>
 <div class="title">ClickHouse</div>
 <div class="sub">OLAP的MergeTree和列式存储</div>
 <div class="data"><b>12,209</b> 个索引项管一亿行<br>找 Alice：只读 1 / 12,208 个颗粒</div>
-<div class="lab" style="left:1170px;top:300px;text-align:right;width:200px">第 0 个颗粒<br>2050 Alice</div>
+<div id="labs"></div>
+<script src="/design/cover3d.js"></script>
 <script>
-  const W = document.getElementById('w');
-  const blk = (x, y, w, h, d, c, extra) => {
-    const k = d * 0.62;
-    W.insertAdjacentHTML('beforeend', `<div class="blk" style="left:${x}px;top:${y - h - k}px;width:${w + k}px;height:${h + k}px;${extra || ''}">
-      <div class="t" style="width:${w}px;height:${k}px;bottom:${h}px;transform:skewX(-45deg);background:${c[1]}"></div>
-      <div class="s" style="left:${w}px;width:${k}px;height:${h}px;transform:skewY(-45deg);background:${c[2]}"></div>
-      <div class="f" style="left:0;bottom:0;width:${w}px;height:${h}px;background:${c[0]}"></div></div>`);
-  };
-  // 一亿行：一根很高的黑色长条，从下往上一层层是颗粒（画 40 道分隔示意，不是 12208 道）
-  const x = 1420, base = 990, H = 700, Wd = 200, D = 160;
-  blk(x, base, Wd, H, D, ['#1d1d1b', '#2e2e2a', '#0b0b0a']);
-  for (let i = 1; i < 40; i++) W.insertAdjacentHTML('beforeend', `<div style="position:absolute;left:${x}px;top:${base - i * H / 40}px;width:${Wd}px;height:2px;background:#3a3a34"></div>`);
-  // 第 0 个颗粒被抽出来（最上面一层，向左上方移出），亮着
-  blk(x - 250, base - H - 10, Wd, H / 40 * 2.2, D, ['#151515', '#FAFF69', '#444'], 'filter:drop-shadow(0 18px 18px rgba(0,0,0,.35))');
+  const svg = document.getElementById('s3');
+  const S = C3.Scene(svg, { W: 1920, H: 1080, cx: 1500, cy: 800, f: 1950, D: 2300, yaw: 27, pitch: 10, light: [0.55, 0.82, -0.4] });
+  // 地面：黑色细网格 + 柱子的接触阴影
+  const gm = S.el('radialGradient', { id: 'gfade', gradientUnits: 'userSpaceOnUse', cx: 1500, cy: 800, r: 620 }, S.defs);
+  S.el('stop', { offset: 0, 'stop-color': '#fff', 'stop-opacity': .9 }, gm); S.el('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, gm);
+  const mk = S.el('mask', { id: 'gmask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1920, height: 1080 }, S.defs);
+  S.el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: 'url(#gfade)' }, mk);
+  S.grid({ x0: -1400, x1: 1400, z0: -500, z1: 1500, gs: 150, color: 'rgba(21,21,21,.16)', w: 1.2, fadeMask: 'gmask' });
+  S.pool(40, 90, 330, 330, '#151515', .42);
+
+  const BX = -130, BW = 290, BD = 240, BH = 620, N = 40;
+  const bar = { c: '#262624', side: '#0c0c0b', top: '#4a4a44', tex: 'v', texAlpha: .6, rows: N, rowColor: 'rgba(250,255,105,.20)', rowW: 1.5, seed: 6 };
+  S.box(BX, 0, 0, BW, BH, BD, bar);
+  // 第 0 个颗粒：从柱顶抽出来，悬在半空，亮着，下面落一道软阴影
+  const SH = BH / N * 3, SX = BX - 55, SY = BH + 105, SZ = -15;
+  const slice = { c: '#FFFFF0', side: '#D9DB9A', top: '#FFFFFF', emissive: true, flat: false, tex: 'n', texAlpha: .12, filter: 'drop-shadow(0 26px 22px rgba(21,21,21,.42))', seed: 2 };
+  S.box(SX, SY, SZ, BW, SH, BD, slice);
+
+  // 引线：从被抽出的颗粒指到标签
+  const a = S.proj(SX, SY + SH / 2, SZ), tipX = a[0] - 56, tipY = a[1] - 6;
+  const L = document.getElementById('labs');
+  L.insertAdjacentHTML('beforeend', `<div class="lab" style="right:${1920 - (tipX - 18)}px;top:${tipY - 34}px;text-align:right">第 0 个颗粒<br><i>2050 Alice 在这里</i></div>`);
+  S.el('line', { x1: tipX - 12, y1: tipY, x2: a[0] - 2, y2: a[1], stroke: '#151515', 'stroke-width': 3, 'stroke-linecap': 'round' }, S.layer.top);
 </script>
 <script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
 </body></html>

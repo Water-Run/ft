@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 D3 · 稀疏索引</title>
+<!-- 视觉稿 D 的帧 3（第 06 章「稀疏索引」）：一个片段里的颗粒（每 8192 行一个，画前 7 个，后面是省略）、每个颗粒第一行的编号组成的稀疏索引、
+     2050 去比索引项落进第 0 个颗粒、三个列文件里的标记把颗粒对到文件里的位置。数据取自 research/lab/out_04_queries.txt（Q02–Q05）。只作方向示意。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-d.css">
+<style>
+  .gr { position: absolute; top: 410px; width: 214px; height: 96px; box-sizing: border-box; border: 1px solid var(--g2); background: var(--k2); padding: 12px 14px; font: 500 20px/1.5 "Mono"; color: var(--g3); }
+  .gr b { display: block; color: var(--w); font-weight: 600; font-size: 22px; }
+  .gr.y { border: 2px solid var(--y); background: rgba(250,255,105,.09); color: var(--y); } .gr.y b { color: var(--y); }
+  .ix { position: absolute; top: 272px; width: 214px; height: 66px; box-sizing: border-box; border: 1px solid var(--g2); background: #1b1b19; font: 700 25px/66px "Mono"; color: var(--g3); text-align: center; }
+  .ix.y { border: 2px solid var(--y); color: var(--y); background: rgba(250,255,105,.09); }
+  .ln { position: absolute; width: 2px; background: var(--g2); }
+  .ln.y { background: var(--y); }
+  .f { position: absolute; left: 60px; height: 44px; width: 1480px; box-sizing: border-box; border: 1px solid var(--g2); background: var(--k2); }
+  .f .nm { position: absolute; left: 14px; top: 13px; font: 600 20px/1 "Mono"; color: var(--g3); }
+  .f.y { border-color: var(--y); } .f.y .nm { color: var(--y); }
+  .f i { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--g2); }
+  .f.y i { background: var(--y); opacity: .55; }
+  .f i.s { background: var(--y); opacity: 1; width: 4px; }
+</style>
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div>
+<div class="id"><i></i>ClickHouse <span>26.8 LTS</span></div>
+<div class="ch"><b>PART 5</b>06 · 稀疏索引</div><div class="rule"></div>
+<div class="h">每八千一百九十二行，记一项</div>
+<div class="lab" style="left:60px;top:232px">primary.cidx：每个颗粒第一行的编号（共 12,209 项，47.69 KiB，整个在内存里）</div>
+<div class="lab" style="left:60px;top:520px">颗粒：一个片段按每 8192 行切成一段，是读数据的最小单位（共 12,208 个）</div>
+<div id="g"></div>
+<div class="note" style="left:60px;top:566px;width:900px">找 id = 2050：<b>比 1 大，比 8193 小</b> → 第 0 个颗粒<br>每次看中间一项砍掉一半，12,209 项十几次就够（二分）</div>
+<div class="lab" style="left:60px;top:690px">标记：每一列一个文件，记着每个颗粒在列文件里从哪里开始</div>
+<div id="f"></div>
+<div class="cap">二〇五〇比第一项的一大，比第二项的八一九三小，她就在第零个颗粒里</div>
+<script>
+  const IDX = [1, 8193, 16385, 24577, 32769, 40961, 49153], X0 = 60, W = 214, G = 22;
+  let h = '';
+  IDX.forEach((v, k) => { const x = X0 + k * (W + G); const y = k === 0;
+    h += `<div class="ix ${y ? 'y' : ''}" style="left:${x}px">${v}</div>`;
+    h += `<div class="ln ${y ? 'y' : ''}" style="left:${x + W / 2}px;top:338px;height:72px"></div>`;
+    h += `<div class="gr ${y ? 'y' : ''}" style="left:${x}px"><b>颗粒 ${k}</b>${y ? '含 2050 Alice' : '8192 行'}</div>`; });
+  h += `<div class="lab" style="left:${X0 + 7 * (W + G) + 6}px;top:440px;font-size:34px">……</div>`;
+  document.getElementById('g').innerHTML = h;
+  // 三个列文件的标记：每个颗粒一条竖线，第 0 个亮
+  const FILES = [['id.bin + id.cmrk2', 6104], ['name.bin + name.cmrk2', 12208], ['age.bin + age.cmrk2', 1526]];
+  document.getElementById('f').innerHTML = FILES.map(([nm, n], k) => {
+    const top = 740 + k * 58, y = nm.startsWith('age');
+    let ticks = ''; for (let i = 0; i < 30; i++) ticks += `<i class="${i === 0 ? 's' : ''}" style="left:${330 + i * 36}px"></i>`;
+    return `<div class="f ${y ? 'y' : ''}" style="top:${top}px"><div class="nm">${nm}</div>${ticks}</div>`; }).join('');
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

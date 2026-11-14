@@ -1,38 +1,150 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统：平面，近黑底，官网的黄做唯一强调，等宽的终端与文档部件。
+   参照前四集的做法：各取自己引擎官方材料的样子、左上角常驻引擎身份标识、整套结构按真实比例画出来、注解贴在被解释的东西旁边；
+   立体只在封面。颜色只表示身份：黄 = 此刻在讲的东西；白与灰 = 其余；虚线 = 还没有 / 已经不在。
+   结构性样式在 base.css。平涂：不用阴影、渐变、模糊（check.style.flat）。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --k: #151515;        /* 底色（官网的近黑） */
+  --k2: #1F1F1C;       /* 面板 */
+  --k3: #282828;       /* 网格线、细分隔 */
+  --g2: #414141;       /* 边框 */
+  --g3: #B4B4B4;       /* 次要文字（在提亮的面板 #3C3C2A 上仍 ≥ 4.5） */
+  --g4: #8C8C82;       /* 已退场、被划掉（对比度 ≥ 4.5） */
+  --w: #F9F9F9;        /* 主要文字 */
+  --y: #FAFF69;        /* 官网的黄：焦点 */
+  --M: 60px;           /* 版心边距 */
 }
-body { font-family: "Inter", "Sans SC"; color: var(--ink); }
-#bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
+body { font-family: "Inter", "Sans SC"; color: var(--w); }
+#bg { background: var(--k); }
+#bg svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
-
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+.y { color: var(--y); }
+.dim { color: var(--g3); }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 常驻：左上角引擎身份、右上角章名、一条黄线 */
+.idtag { position: absolute; left: 60px; top: 38px; display: flex; align-items: center; gap: 14px; font: 700 28px/1 "Inter"; z-index: 30; }
+.idtag i { width: 24px; height: 24px; background: var(--y); display: inline-block; }
+.idtag span { font-weight: 500; color: var(--g3); font-size: 24px; }
+.chlab { position: absolute; right: 60px; top: 40px; font: 600 24px/1 "Inter"; letter-spacing: .12em; color: var(--g3); z-index: 30; }
+.chlab b { color: var(--y); margin-right: 14px; font-weight: 700; }
+.hrule { position: absolute; left: 60px; right: 60px; top: 92px; height: 2px; background: var(--y); z-index: 30; transform-origin: 0 50%; }
 
-/* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
+/* 章节卡：整屏的黄 */
+.chapter { position: absolute; inset: 0; background: var(--y); color: var(--k); padding: 250px 100px 0; z-index: 40; }
+.chapter .no { font: 800 64px/1 "Mono"; letter-spacing: .04em; }
+.chapter .ti { font-weight: 900; font-size: 168px; line-height: 1.05; margin-top: 22px; letter-spacing: -.02em; }
+.chapter .ask { font-weight: 700; font-size: 56px; line-height: 1.3; margin-top: 54px; }
+.chapter .part { position: absolute; right: 100px; top: 70px; font: 800 36px/1 "Inter"; letter-spacing: .16em; }
+
+/* 标题与说明 */
+.h1 { font-weight: 800; font-size: 56px; line-height: 1.15; letter-spacing: -.01em; }
+.h2 { font-weight: 700; font-size: 38px; line-height: 1.3; }
+.lab { font-weight: 600; font-size: 28px; line-height: 1.2; color: var(--g3); }
+.lab.y { color: var(--y); }
+.t-note { font-weight: 500; font-size: 26px; line-height: 1.5; color: var(--g3); }
+.big { font-weight: 900; font-size: 200px; line-height: 1; letter-spacing: -.03em; }
+.huge { font-weight: 900; font-size: 260px; line-height: 1; letter-spacing: -.04em; }
+
+/* 注解：贴着被解释的东西，黄色竖线在左 */
+.note { position: absolute; font: 500 26px/1.6 "Mono", "Sans SC"; color: var(--g3); border-left: 4px solid var(--y); padding-left: 20px; white-space: pre; }
+.note b { color: var(--y); font-weight: 700; }
+.gloss { position: absolute; font: 500 26px/1.55 "Sans SC"; color: var(--g3); border-left: 4px solid var(--y); padding-left: 20px; white-space: normal; }
+.gloss b { color: var(--y); font-weight: 700; }
+
+/* 单元格、面板 */
+.panel { position: absolute; background: var(--k2); border: 2px solid var(--g2); }
+.panel.y { border-color: var(--y); }
+.cell { position: absolute; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; background: var(--k2); border: 2px solid var(--g2); font: 500 28px/1 "Mono"; color: var(--g3); overflow: hidden; }
+.cell.y { border-color: var(--y); color: var(--y); background: var(--k2); }
+.cell.on { background: var(--y); border-color: var(--y); color: var(--k); font-weight: 700; }
+.cell.w { color: var(--w); }
+.cell.done { color: var(--g4); border-color: var(--k3); background: var(--k); text-decoration: line-through; }
+.cell.ghost { border-style: dashed; border-color: var(--g2); color: var(--g4); background: var(--k); }
+.cell.dead { color: var(--g4); border-color: var(--k3); background: var(--k); }
+.pill { position: absolute; display: inline-flex; align-items: center; padding: 0 20px; height: 56px; border: 2px solid var(--g2); font: 600 28px/1 "Sans SC"; color: var(--g3); background: var(--k2); }
+.pill.y { border-color: var(--y); color: var(--y); }
+.pill.on { background: var(--y); border-color: var(--y); color: var(--k); font-weight: 800; }
+.tick { position: absolute; width: 2px; background: var(--g2); }
+.tick.y { background: var(--y); }
+.bar { position: absolute; height: 40px; background: var(--g2); }
+.bar.y { background: var(--y); }
+.bar.w { background: var(--w); }
+
+/* 终端 */
+.term { position: absolute; background: var(--k2); border: 2px solid var(--g2); font: 500 28px/1.5 "Mono"; color: var(--g3); white-space: pre; padding: 16px 22px 14px; overflow: hidden; }
+.term .pr { color: var(--y); }
+.term .out { color: var(--w); }
+.term .cur { color: var(--y); }
+.term b { color: var(--y); font-weight: 700; }
+
+/* 字幕：实底色条，压住下面的内容 */
+#caption { bottom: 40px; height: 76px; z-index: 50; }
+#caption span { font-size: 42px; font-weight: 500; color: var(--w); background: var(--k); padding: 6px 28px; }
 .en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+#caption em { font-style: normal; font-weight: 800; color: var(--y); }
 
 /* 片尾名单 */
-.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
-.credit-row { break-inside: avoid; margin-bottom: 30px; }
+.credits { white-space: normal; }
+.credit-row { margin-bottom: 14px; font: 500 30px/1.4 "Mono"; color: var(--g3); }
+.credit-row b { color: var(--w); font-weight: 600; }
+
+/* 小一号的单元格、标签 */
+.cell.sm { font-size: 24px; padding: 0 10px; }
+.tile { position: absolute; background: var(--k2); border: 2px solid var(--g2); }
+.tile .nm { position: absolute; left: 28px; top: 24px; font: 800 44px/1 "Inter"; color: var(--w); }
+.tile .sb { position: absolute; left: 28px; top: 84px; font: 500 26px/1 "Sans SC"; color: var(--g3); }
+.tag { position: absolute; display: inline-flex; align-items: center; justify-content: center; font: 900 96px/1 "Inter"; letter-spacing: -.02em; padding: 12px 36px; background: var(--y); color: var(--k); }
+.tag.o { background: var(--k); color: var(--y); border: 4px solid var(--y); }
+.q { font-weight: 900; font-size: 56px; line-height: 1.25; }
+.badge { position: absolute; display: inline-block; padding: 12px 22px; background: var(--y); color: var(--k); font: 800 34px/1 "Inter"; letter-spacing: .12em; }
+.strike { text-decoration: line-through; color: var(--g4); }
+
+.pill.ghost { border-style: dashed; color: var(--g4); background: var(--k); }
+.term .mono.y { color: var(--y); }
+.term .mono.d { color: var(--g4); }
+.cell.lg { font-size: 34px; padding: 0 20px; }
+.fn { font: 500 28px/1 "Mono"; color: var(--g3); white-space: pre; }
+.fn.y { color: var(--y); }
+.fold { position: absolute; background: var(--k2); border: 2px solid var(--g2); }
+.fold.y { border-color: var(--y); }
+.fold.ghost { border-style: dashed; background: var(--k); }
+.fold.on { background: var(--y); border-color: var(--y); }
+.fold .nm { position: absolute; left: 18px; top: 12px; font: 600 26px/1 "Mono"; color: var(--g3); white-space: pre; }
+.fold.y .nm { color: var(--y); }
+.fold .it { position: absolute; left: 18px; font: 500 24px/1 "Mono"; color: var(--g3); white-space: pre; }
+.fold .it.y { color: var(--y); }
+.sq { position: absolute; width: 22px; height: 22px; border: 2px solid var(--g2); background: var(--k2); }
+.sq.y { background: var(--y); border-color: var(--y); }
+.sq-l { position: absolute; border: 2px solid var(--g2); background: var(--k2); }
+.sq-l.y { background: var(--y); border-color: var(--y); }
+.gran { position: absolute; border: 2px solid var(--g2); background: var(--k2); }
+.gran i { position: absolute; left: 12px; right: 12px; height: 8px; background: var(--g2); }
+.gran i.f { background: var(--g3); }
+.gran.y { border-color: var(--y); }
+.gran.y i.f { background: var(--y); }
+.fold .it.dead { color: var(--g4); text-decoration: line-through; }
+.sq-l.y span { color: var(--k) !important; }
+.t-body { font: 600 40px/1.25 "Inter", "Sans SC"; color: var(--w); }
+.credit-row .t-note { font: 500 28px/1.4 "Mono", "Sans SC"; color: var(--g3); }
+
+/* 章节卡底部的全片进度：一章一个方块 */
+.chapter .csq { position: absolute; top: 820px; width: 40px; height: 40px; border: 3px solid var(--k); }
+.chapter .csq.done { background: var(--k); }
+.chapter .csq.cur { background: var(--k); outline: 6px solid var(--k); outline-offset: 4px; }
+.chapter .ccnt { position: absolute; top: 796px; left: 860px; font: 800 52px/1 "Mono"; color: var(--y); background: var(--k); padding: 14px 30px; }
+.sq-l.hi { outline: 3px solid var(--w); outline-offset: 2px; }
+.frame-d { position: absolute; border: 3px dashed var(--y); }
+/* 表名标签：右上角，章名下面 */
+.ttag { position: absolute; font: 600 22px/1 "Mono"; color: var(--g3); border: 2px solid var(--g2); padding: 5px 12px; white-space: nowrap; }
+.ttag b { color: var(--w); font-weight: 700; }
+.dimq { color: #8C8C82 !important; }
+.credit-row .t-body { font-size: 46px; }
+.credits-list { position: absolute; display: flex; flex-direction: column; gap: 18px; white-space: normal; }
+.credits-list .credit-row { position: relative; margin: 0; }
+.credits-list { gap: 12px; }
+.credits-list .t-note { font-size: 26px; }
+.credits-list .t-body { font-size: 40px; }
+.frame-d { pointer-events: none; }
+.fade45 { opacity: .45 !important; }
+.ttag.flash { background: var(--y); color: var(--k); border-color: var(--y); }
+.ttag.flash b { color: var(--k); }

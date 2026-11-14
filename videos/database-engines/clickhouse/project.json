@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"
   },
-  "stage": "review",
-  "next": "等 WaterRun 在本地审片页（out/audition/index.html）选定配音、配乐、视觉方向与封面，并对第 1 稿提意见；文案确认前从空数据卷完整重跑 research/lab 01–11",
+  "stage": "preview",
+  "next": "等 WaterRun 对预览 r2（out/zh/preview-r2.mp4，17:38）的意见：画面、配乐、读音；文案里人名重复与 Dave 的编号待定。正式片之前：scan.js 对章节卡的静止误报待维护者定；核读音；covers.js 出封面；check.js --final 与验收。",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -21,7 +21,25 @@
           "文案",
           "视觉设计",
           "封面设计",
-          "配乐"
+          "配乐",
+          "场景修订（预览 r2）",
+          "成片级自查"
+        ]
+      },
+      {
+        "name": "Claude Sonnet 5.5",
+        "roles": [
+          "文案修订",
+          "文案对抗审查",
+          "补充实测（合并）",
+          "关键帧",
+          "配乐小样",
+          "封面设计",
+          "审片页",
+          "配音合成",
+          "场景实现",
+          "配乐与混音",
+          "预览 r1"
         ]
       }
     ],
@@ -29,11 +47,21 @@
       {
         "name": "MiniMax speech-2.8-hd",
         "roles": [
-          "配音试听"
+          "配音"
         ]
       }
     ],
     "repository": "https://github.com/Water-Run/ft"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Gentle_Youth"
+    },
+    "speed": {
+      "zh": 1.18
+    }
   },
   "voices": {
     "zh": "zh-CN-YunyangNeural"
@@ -53,8 +81,8 @@
     "mb": 4
   },
   "audio": {
-    "music": "pulse",
-    "music_db": -21,
+    "music": "tools/music.py",
+    "music_db": -17,
     "duck_db": 9,
     "sfx_db": -8
   },

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 AB1 · 列文件（平面 + 立体）</title>
+<!-- AB 融合的关键帧 1（第 02 章「一列挨一列」）：左边是平面的 8 行小表（前几集的做法，一行挨一行）；右边把三个列文件立成有厚度的板，
+     age.bin 的边缘发黄光。数据取自 research/lab/out_02_small.txt。只作方向示意，不是成片场景。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-ab.css"><script src="/design/kf-ab.js"></script>
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div><div class="glow"></div>
+<div class="tag"><b>PART 5</b>02 · 一列挨一列</div>
+<div class="h">每一列，单独一个文件</div>
+<div class="label" style="left:96px;top:250px">一行挨一行（传统的数据库）</div>
+<div class="rows" id="rows" style="left:96px;top:300px;width:620px"></div>
+<div class="scene"><div class="world" id="w" style="transform:translate3d(1290px,560px,0) rotateX(-9deg) rotateY(-27deg)"></div></div>
+<div class="note" style="left:1130px;top:96px;width:700px">all_1_1_0/age.bin · <b>34 B</b> 压缩块 · 16 B 校验和<br>0x82 = LZ4 · 解压后 <b>8 B</b> · 一人一个字节</div>
+<div class="cap">年龄这一列的文件里，只有八个字节，一人一个</div>
+<script>
+  const R = [[1,'alice',30],[2,'bob',25],[3,'carol',41],[4,'dave',19],[5,'erin',33],[6,'frank',52],[7,'grace',28],[8,'heidi',36]];
+  const rows = document.getElementById('rows');
+  for (const [i, n, a] of R) rows.insertAdjacentHTML('beforeend', `<div class="row"><span class="id">${i}</span><span class="nm">${n}</span><span class="ag">${a}</span></div>`);
+  const cells = (f) => R.map((r) => `<div class="cellc">${f(r)}</div>`).join('');
+  const file = (nm, body) => `<div class="fname">${nm}</div>${body}`;
+  const W = document.getElementById('w');
+  floor(W, -330);
+  const H = 560, Wd = 210, D = 60, gap = 70;
+  W.insertAdjacentHTML('beforeend', box({ x: -(Wd + gap), y: 0, z: 0, w: Wd, h: H, d: D, front: file('id.bin', cells((r) => r[0])) }));
+  W.insertAdjacentHTML('beforeend', box({ x: 0, y: 0, z: 0, w: Wd, h: H, d: D, front: file('name.bin', cells((r) => r[1])) }));
+  W.insertAdjacentHTML('beforeend', box({ x: Wd + gap, y: 0, z: 0, w: Wd, h: H, d: D, cls: 'lit', front: file('age.bin', cells((r) => `<i>${r[2].toString(16).padStart(2, '0')}</i><span>${r[2]}</span>`)) }));
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

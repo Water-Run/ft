@@ -1,47 +1,66 @@
 <!doctype html>
 <html lang="zh"><head><meta charset="utf-8"><title>封面候选 B · 片段合并</title>
-<!-- 封面候选 B「片段合并」：左边一摞摞薄板（写入时的 90 个片段），右边并成的一整块（all_1_90_3），立体、带颗粒质感。
-     数据：research/lab/out_03_big.txt。 -->
+<!-- 封面候选 B「片段合并」（第 2 稿）：左边三摞薄板，一共 90 块——写入时的 90 个片段；右边并成一整块 all_1_90_3，通体发光、没有接缝。
+     数据：研究/lab/out_03_big.txt（一亿行、90 个片段、OPTIMIZE 后 all_1_90_3、882 MiB）。板的数量是实数（3 × 30 = 90），体积与行数不按比例。
+     版面守封面约定：底部约 15% 不放字。 -->
 <link rel="stylesheet" href="/css/base.css">
 <style>
-  :root { --y: #FAFF69; --k: #0E0E0D; --g3: #A0A0A0; --w: #F9F9F9; }
-  html, body { margin: 0; width: 1920px; height: 1080px; background: radial-gradient(1200px 900px at 70% 60%, #26261f, var(--k) 72%); color: var(--w); overflow: hidden; }
-  .grain { position: absolute; inset: 0; opacity: .2; mix-blend-mode: overlay; }
+  :root { --y: #FAFF69; --k: #121212; --g3: #A0A0A0; --w: #F9F9F9; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: var(--k); color: var(--w); overflow: hidden; }
+  #bg { position: absolute; inset: 0; background: radial-gradient(1250px 900px at 74% 52%, #2b2b25 0%, #181816 52%, #0f0f0e 100%); }
+  .grain { position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay; }
+  #s3 { position: absolute; left: 0; top: 0; }
   .badge { position: absolute; left: 100px; top: 96px; background: var(--y); color: var(--k); font: 800 34px/1 "Inter"; letter-spacing: .12em; padding: 14px 22px; }
-  .q { position: absolute; left: 100px; top: 196px; font: 700 52px/1.2 "Sans SC"; }
-  .title { position: absolute; left: 92px; top: 290px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; }
-  .sub { position: absolute; left: 100px; top: 512px; font: 700 58px/1 "Sans SC"; color: var(--y); }
+  .q { position: absolute; left: 100px; top: 192px; font: 700 56px/1.2 "Sans SC"; color: var(--w); }
+  .title { position: absolute; left: 92px; top: 286px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; color: var(--w); }
+  .sub { position: absolute; left: 100px; top: 506px; font: 700 62px/1 "Sans SC"; color: var(--y); }
   .data { position: absolute; left: 100px; top: 640px; font: 600 34px/1.55 "Mono"; color: var(--g3); }
-  .data b { color: var(--y); font-weight: 800; font-size: 54px; }
-  .blk { position: absolute; } .blk .f, .blk .t, .blk .s { position: absolute; }
-  .blk .t { transform-origin: 0 100%; } .blk .s { transform-origin: 0 100%; bottom: 0; }
-  .lab { position: absolute; font: 700 30px/1 "Mono"; color: var(--g3); }
+  .data b { color: var(--y); font-weight: 800; font-size: 56px; }
+  .lab { position: absolute; width: 300px; text-align: center; font: 700 30px/1.2 "Mono"; color: var(--g3); }
+  .lab span { display: inline-block; background: rgba(18,18,18,.82); padding: 4px 14px 6px; border-radius: 3px; }
+  .lab.y { color: var(--y); }
 </style></head><body>
-<div id="bg" style="position:absolute;inset:0;background:#0E0E0D;z-index:-1"></div>
+<div id="bg"></div>
+<svg id="s3" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
 <svg class="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
-<div id="w"></div>
 <div class="badge">PART 5</div>
 <div class="q">一个数据库引擎是如何实现的？</div>
 <div class="title">ClickHouse</div>
 <div class="sub">OLAP的MergeTree和列式存储</div>
 <div class="data">一亿行，<b>90</b> 个片段 → <b>1</b><br>all_1_90_3 · 882 MiB</div>
-<div class="lab" style="left:1040px;top:930px">90 × all_n_n_0</div>
-<div class="lab" style="left:1460px;top:930px;color:#FAFF69">all_1_90_3</div>
+<div id="labs"></div>
+<script src="/design/cover3d.js"></script>
 <script>
-  const W = document.getElementById('w');
-  const blk = (x, y, w, h, d, c, glow) => {
-    const k = d * 0.62;
-    W.insertAdjacentHTML('beforeend', `<div class="blk" style="left:${x}px;top:${y - h - k}px;width:${w + k}px;height:${h + k}px;${glow ? 'filter:drop-shadow(0 0 30px rgba(250,255,105,.45))' : ''}">
-      <div class="t" style="width:${w}px;height:${k}px;bottom:${h}px;transform:skewX(-45deg);background:${c[1]}"></div>
-      <div class="s" style="left:${w}px;width:${k}px;height:${h}px;transform:skewY(-45deg);background:${c[2]}"></div>
-      <div class="f" style="left:0;bottom:0;width:${w}px;height:${h}px;background:${c[0]}"></div></div>`);
-  };
-  const OLD = ['#7a7c30', '#8f923a', '#4e501d'], NEW = ['#FAFF69', '#FDFFA3', '#9FA300'];
-  // 左：6 摞 × 15 块薄板 = 90 个片段（每块厚度按 1,111,953 行，与右边一整块同一比例）
-  const per = 1111953 / 1e8 * 560;
-  for (let g = 0; g < 3; g++) for (let i = 0; i < 30; i++) blk(1040 + g * 110, 900 - i * (per + 2.4), 70, per, 70, OLD);
-  // 右：一整块，一亿行
-  blk(1450, 900, 220, 560, 200, NEW, true);
+  const svg = document.getElementById('s3');
+  const S = C3.Scene(svg, { W: 1920, H: 1080, cx: 1480, cy: 770, f: 1950, D: 2300, yaw: 27, pitch: 10, light: [0.55, 0.82, -0.4] });
+  const gm = S.el('radialGradient', { id: 'gfade', gradientUnits: 'userSpaceOnUse', cx: 1450, cy: 780, r: 640 }, S.defs);
+  S.el('stop', { offset: 0, 'stop-color': '#fff', 'stop-opacity': .9 }, gm); S.el('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, gm);
+  const mk = S.el('mask', { id: 'gmask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1920, height: 1080 }, S.defs);
+  S.el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: 'url(#gfade)' }, mk);
+  S.grid({ x0: -1400, x1: 1400, z0: -500, z1: 1500, gs: 150, color: 'rgba(250,255,105,.10)', w: 1.2, fadeMask: 'gmask' });
+  S.pool(130, 60, 520, 440, '#FAFF69', .24);
+
+  // 右：并成的一整块（离镜头近、最亮）
+  const BX = 20, BW = 250, BD = 220, BH = 650;
+  const NEW = { c: '#FAFF69', side: '#C9CF1A', top: '#FFFFC4', emissive: true, tex: 'v', texAlpha: .22, glow: 'rgba(250,255,105,.5)', glowR: 36, seed: 8 };
+  // 左：三摞，每摞 30 块薄板（共 90 块）
+  const SW = 96, SD = 112, T = 7, GAPP = 3.4, XS = [-520, -395, -270];
+  const OLD = { c: '#74772a', top: '#9a9e3a', side: '#4a4c18', flat: true, edgeA: .35 };
+  // 倒影（每摞一整块代替）与实体：先远后近 —— 偏航为正，x 越大越近
+  const rp = (x) => S.proj(x, 0, 0)[1];
+  for (const x of XS) S.reflect(x, 0, 0, SW, 30 * (T + GAPP), SD, { c: '#5f6120', flat: true }, [rp(x) - 6, rp(x) + 140, .14]);
+  S.reflect(BX, 0, 0, BW, BH, BD, NEW, [rp(BX) - 6, rp(BX) + 190, .30]);
+  for (const x of XS) for (let i = 0; i < 30; i++) S.box(x, i * (T + GAPP), 0, SW, T, SD, OLD);
+  S.box(BX, 0, 0, BW, BH, BD, NEW);
+
+  // 合并的方向：片段摞与整块之间，三个向右的人字形（渐强）
+  const cp = (a, b) => { const A = S.proj(a, 0, 40), B = S.proj(b, 0, 40); return [(A[0] + B[0]) / 2, S.proj(0, 190, 40)[1]]; };
+  const [mx, my] = cp(-174, 20);
+  [0, 1, 2].forEach((k) => S.el('polyline', { points: `${mx - 62 + k * 40},${my - 34} ${mx - 36 + k * 40},${my} ${mx - 62 + k * 40},${my + 34}`, fill: 'none', stroke: 'rgba(250,255,105,' + (0.35 + k * 0.3) + ')', 'stroke-width': 11, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, S.layer.top));
+
+  const L = document.getElementById('labs');
+  const lab = (x, w, txt, cls) => { const p = S.proj(x + w / 2, 0, 0); L.insertAdjacentHTML('beforeend', `<div class="lab ${cls || ''}" style="left:${p[0] - 150}px;top:${p[1] + 28}px"><span>${txt}</span></div>`); };
+  lab(XS[1], SW, '90 × all_n_n_0'); lab(BX, BW, 'all_1_90_3', 'y');
 </script>
 <script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
 </body></html>

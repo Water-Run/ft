@@ -1,51 +1,62 @@
 <!doctype html>
 <html lang="zh"><head><meta charset="utf-8"><title>封面候选 A · 只读一列</title>
-<!-- 封面候选 A「只读一列」：一亿行的表立成三块等宽的列（宽度不表示大小），只有 age 那一列亮着——求平均年龄只读它；
-     大小只用文字给出。数据：research/lab/out_03_big.txt、out_04_queries.txt。 -->
+<!-- 封面候选 A「只读一列」（第 2 稿）：一张表立成三根黑色的列（id、name、age），只有 age 通体发光——求平均年龄只读它。
+     三根列等宽（宽度不表示大小），大小只用文字标在列脚：id 383 MiB、name 499 MiB、age 529 KiB（压缩后，research/lab/out_03_big.txt）；
+     「不到十毫秒」是热缓存下连跑 30 次的实测，最短 7、中位数 8、最长 9 毫秒（out_13_timing.txt）。版面守封面约定：底部约 15% 不放字。 -->
 <link rel="stylesheet" href="/css/base.css">
 <style>
-  :root { --y: #FAFF69; --y4: #EEF400; --y5: #9FA300; --k: #121212; --g1: #2a2a28; --g2: #3a3a36; --g3: #A0A0A0; --w: #F9F9F9; }
-  html, body { margin: 0; width: 1920px; height: 1080px; background: radial-gradient(1300px 1000px at 72% 55%, #24241f, var(--k) 70%); color: var(--w); overflow: hidden; }
-  .grain { position: absolute; inset: 0; opacity: .2; mix-blend-mode: overlay; }
+  :root { --y: #FAFF69; --k: #121212; --g3: #A0A0A0; --w: #F9F9F9; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: var(--k); color: var(--w); overflow: hidden; }
+  #bg { position: absolute; inset: 0; background: radial-gradient(1250px 900px at 74% 52%, #2b2b25 0%, #181816 52%, #0f0f0e 100%); }
+  .grain { position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay; }
+  #s3 { position: absolute; left: 0; top: 0; }
   .badge { position: absolute; left: 100px; top: 96px; background: var(--y); color: var(--k); font: 800 34px/1 "Inter"; letter-spacing: .12em; padding: 14px 22px; }
-  .q { position: absolute; left: 100px; top: 196px; font: 700 52px/1.2 "Sans SC"; color: var(--w); }
-  .title { position: absolute; left: 92px; top: 290px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; color: var(--w); }
-  .sub { position: absolute; left: 100px; top: 512px; font: 700 58px/1 "Sans SC"; color: var(--y); }
+  .q { position: absolute; left: 100px; top: 192px; font: 700 56px/1.2 "Sans SC"; color: var(--w); }
+  .title { position: absolute; left: 92px; top: 286px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; color: var(--w); }
+  .sub { position: absolute; left: 100px; top: 506px; font: 700 62px/1 "Sans SC"; color: var(--y); }
   .data { position: absolute; left: 100px; top: 640px; font: 600 34px/1.55 "Mono"; color: var(--g3); }
-  .data b { color: var(--y); font-weight: 800; font-size: 54px; }
+  .data b { color: var(--y); font-weight: 800; font-size: 56px; }
   .data .w { color: var(--w); }
-  .blk { position: absolute; }
-  .blk .f, .blk .t, .blk .s { position: absolute; }
-  .blk .t { transform-origin: 0 100%; } .blk .s { transform-origin: 0 100%; bottom: 0; }
-  .lab { position: absolute; font: 700 34px/1 "Mono"; color: var(--g3); }
-  .lab.y { color: var(--y); }
+  .lab { position: absolute; width: 260px; text-align: center; font: 700 34px/1.2 "Mono"; color: var(--g3); }
+  .lab i { display: block; font-style: normal; font-weight: 600; font-size: 28px; color: #7d7d74; margin-top: 6px; }
+  .lab.y { color: var(--y); } .lab.y i { color: var(--y); font-weight: 800; }
+  .lab span { display: inline-block; background: rgba(18,18,18,.82); padding: 4px 14px 6px; border-radius: 3px; }
 </style></head><body>
-<div id="bg" style="position:absolute;inset:0;background:#121212;z-index:-1"></div>
+<div id="bg"></div>
+<svg id="s3" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
 <svg class="grain" width="1920" height="1080"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="5"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
-<div id="w"></div>
 <div class="badge">PART 5</div>
 <div class="q">一个数据库引擎是如何实现的？</div>
 <div class="title">ClickHouse</div>
 <div class="sub">OLAP的MergeTree和列式存储</div>
-<div class="data">一亿行求平均，只读一列<br><b>529 KiB</b> <span class="w">/ 882 MiB</span> · <b>7 ms</b></div>
-<div class="lab" style="left:1222px;top:930px">id</div>
-<div class="lab" style="left:1395px;top:930px">name</div>
-<div class="lab y" style="left:1590px;top:930px">age</div>
+<div class="data">一亿行求平均，只读一列<br><b>&lt; 10 ms</b> <span class="w">· 热缓存</span></div>
+<div id="labs"></div>
+<script src="/design/cover3d.js"></script>
 <script>
-  // 斜投影方块：左下角 (x, y)，正面宽 w、高 h，进深 d；c = [正面, 顶面, 侧面]
-  const W = document.getElementById('w');
-  const blk = (x, y, w, h, d, c, glow) => {
-    const k = d * 0.62;
-    W.insertAdjacentHTML('beforeend', `<div class="blk" style="left:${x}px;top:${y - h - k}px;width:${w + k}px;height:${h + k}px;${glow ? 'filter:drop-shadow(0 0 28px rgba(250,255,105,.55))' : ''}">
-      <div class="t" style="width:${w}px;height:${k}px;bottom:${h}px;transform:skewX(-45deg);background:${c[1]}"></div>
-      <div class="s" style="left:${w}px;width:${k}px;height:${h}px;transform:skewY(-45deg);background:${c[2]}"></div>
-      <div class="f" style="left:0;bottom:0;width:${w}px;height:${h}px;background:${c[0]}"></div></div>`);
-  };
-  const GREY = ['#30302c', '#46463f', '#1f1f1c'];
-  const base = 900, H = 600, D = 170;
-  blk(1190, base, 100, H, D, GREY);    // id
-  blk(1380, base, 100, H, D, GREY);    // name
-  blk(1570, base, 100, H, D, ['#FAFF69', '#FDFFA3', '#9FA300'], true);   // age：三列等宽，只表示「只读这一列」，不表示大小
+  const svg = document.getElementById('s3');
+  const S = C3.Scene(svg, { W: 1920, H: 1080, cx: 1485, cy: 770, f: 1950, D: 2300, yaw: 27, pitch: 10, light: [0.55, 0.82, -0.4] });
+  // 地面网格与渐隐
+  const gm = S.el('radialGradient', { id: 'gfade', gradientUnits: 'userSpaceOnUse', cx: 1500, cy: 780, r: 620 }, S.defs);
+  S.el('stop', { offset: 0, 'stop-color': '#fff', 'stop-opacity': .9 }, gm); S.el('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, gm);
+  const mk = S.el('mask', { id: 'gmask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 1920, height: 1080 }, S.defs);
+  S.el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: 'url(#gfade)' }, mk);
+  S.grid({ x0: -1400, x1: 1400, z0: -500, z1: 1500, gs: 150, color: 'rgba(250,255,105,.10)', w: 1.2, fadeMask: 'gmask' });
+  S.pool(300, 60, 520, 460, '#FAFF69', .30);
+
+  const BW = 180, BD = 190, BH = 730, GAP = 90;
+  const X = [-BW * 1.5 - GAP, -BW / 2, BW * 0.5 + GAP];       // 三根列的左缘
+  const dark = { c: '#3a3a35', tex: 'v', texAlpha: .55, rows: 36, rowColor: 'rgba(0,0,0,.22)', rowW: 1.2, seed: 4 };
+  const lit = { c: '#FAFF69', side: '#C9CF1A', top: '#FFFFC4', emissive: true, tex: 'v', texAlpha: .22, rows: 36, rowColor: 'rgba(18,18,0,.18)', rowW: 1.2, glow: 'rgba(250,255,105,.55)', glowR: 36, seed: 8 };
+  const floor = S.proj(0, 0, 0)[1] + 150;
+  const mats = [dark, dark, lit];
+  // 先画倒影，再按从远到近的顺序画实体（偏航为正：x 越大越近，所以从左到右画）
+  for (let i = 0; i <= 2; i++) S.reflect(X[i], 0, 0, BW, BH, BD, mats[i], [S.proj(X[i], 0, 0)[1] - 6, S.proj(X[i], 0, 0)[1] + 190, i === 2 ? .30 : .12]);
+  for (let i = 0; i <= 2; i++) S.box(X[i], 0, 0, BW, BH, BD, mats[i]);
+
+  // 列脚的标签
+  const L = document.getElementById('labs');
+  const lab = (i, name, size, cls) => { const p = S.proj(X[i] + BW / 2, 0, 0); L.insertAdjacentHTML('beforeend', `<div class="lab ${cls || ''}" style="left:${p[0] - 130}px;top:${p[1] + 26}px"><span>${name}<i>${size}</i></span></div>`); };
+  lab(0, 'id', '383 MiB'); lab(1, 'name', '499 MiB'); lab(2, 'age', '529 KiB', 'y');
 </script>
 <script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
 </body></html>

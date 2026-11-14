@@ -1,0 +1,29 @@
+/* 关键帧 D：平面、近黑底、官网的黄做唯一强调、等宽的终端与文档部件——参照前几集的做法（各取自己引擎官方材料的样子，
+   常驻引擎身份标识、整套结构按真实比例画出来、注解贴在被解释的东西旁边），不为立体而立体。立体只在封面用。
+   只作方向示意，不是成片场景。 */
+:root { --y: #FAFF69; --y2: #EEF400; --k: #151515; --k2: #1F1F1C; --g1: #282828; --g2: #414141; --g3: #A0A0A0; --g4: #6d6d64; --w: #F9F9F9; }
+html, body { margin: 0; width: 1920px; height: 1080px; background: var(--k); color: var(--w); overflow: hidden; }
+.stage { position: absolute; inset: 0; background:
+    linear-gradient(var(--g1) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, var(--g1) 1px, transparent 1px) 0 0 / 120px 120px; opacity: .4; }
+.id { position: absolute; left: 60px; top: 38px; display: flex; align-items: center; gap: 14px; font: 700 26px/1 "Inter"; }
+.id i { width: 22px; height: 22px; background: var(--y); display: inline-block; }
+.id span { font-weight: 500; color: var(--g3); font-size: 22px; }
+.ch { position: absolute; right: 60px; top: 40px; font: 600 22px/1 "Inter"; letter-spacing: .12em; color: var(--g3); }
+.ch b { color: var(--y); margin-right: 14px; }
+.rule { position: absolute; left: 60px; right: 60px; top: 92px; height: 2px; background: var(--y); opacity: .85; }
+.h { position: absolute; left: 60px; top: 122px; font: 700 52px/1.15 "Sans SC"; }
+.cap { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font: 500 40px/1 "Sans SC"; color: var(--w); background: linear-gradient(transparent, rgba(0,0,0,.6)); }
+.lab { position: absolute; font: 600 24px/1 "Sans SC"; color: var(--g3); }
+.mono { font-family: "Mono"; }
+.note { position: absolute; font: 500 21px/1.65 "Mono"; color: var(--g3); border-left: 3px solid var(--y); padding-left: 18px; }
+.note b { color: var(--y); font-weight: 600; }
+/* 单元格 */
+.cell { display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; height: 54px; padding: 0 16px; border: 1px solid var(--g2); background: var(--k2); font: 500 23px/1 "Mono"; color: var(--g3); margin-bottom: -1px; }
+.cell.y { border-color: var(--y); color: var(--y); background: rgba(250,255,105,.07); }
+.cell.on { border-color: var(--y); background: var(--y); color: #151515; font-weight: 700; }
+.cell.done { color: var(--g4); text-decoration: line-through; border-color: #333; background: transparent; }
+.cell.ghost { border-style: dashed; color: var(--g4); background: transparent; }
+.col { position: absolute; }
+.col .t { font: 600 24px/1 "Mono"; color: var(--g3); margin-bottom: 14px; }
+.col.hl .t { color: var(--y); }

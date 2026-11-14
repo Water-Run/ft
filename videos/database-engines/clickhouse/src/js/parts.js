@@ -1,0 +1,81 @@
+// 本片的部件与数据（平面，近黑底，黄色是焦点）。数字全部来自 research/lab/out_*.txt 的实测回显，出处见 research/FACTS.md。
+// 场景文件只管「什么时刻出现什么」，版面与小部件都在这里。
+
+// 新建一个绝对定位的块：mk(父元素, 类名, x, y, w, h, html)
+const mk = (parent, cls, x, y, w, hh, html) => { const e = h('div', 'abs ' + cls, parent, html); px(e, x, y, w, hh); return e; };
+const cellAt = (parent, x, y, w, hh, html, cls = '') => mk(parent, 'cell ' + cls, x, y, w, hh, html);
+const noteAt = (parent, x, y, html, cls = 'note') => mk(parent, cls, x, y, null, null, html);
+// 注解（术语第一次出现的那句说完时必须在场）：glossAt(父元素, x, y, w, 术语, html)
+function glossAt(parent, x, y, w, term, html) {
+  const g = mk(parent, 'gloss', x, y, w, null, html);
+  g.dataset.gloss = term;
+  return g;
+}
+// 终端：一个面板，里面的行逐行出现。termAt(父元素, x, y, w, h) → { el, line(i, html, t, o) }
+function termAt(parent, x, y, w, hh) {
+  const el = mk(parent, 'term', x, y, w, hh);
+  const api = {
+    el, rows: [],
+    // 第 i 行（从 0 数起）。o.type：每秒字数，用打字机；否则整行瞬间出现（输出）。返回这一行出现完毕的时刻
+    line(i, html, t, o = {}) {
+      const d = h('div', 'mono', el, ''); css(d, { position: 'absolute', left: '22px', top: (14 + i * 42) + 'px', whiteSpace: 'pre' });
+      api.rows[i] = d;
+      if (o.type) { d.innerHTML = ''; return typeText(d, html, t, o.type, { cursor: o.cursor !== false, cursorUntil: o.cursorUntil }); }
+      d.innerHTML = html; appear(d, t); return t;
+    },
+  };
+  return api;
+}
+// 镜头在一屏上的极慢横移：dir = 1 向右，-1 向左（一章之内同向，相邻两章反向）；总幅度不超过 48 像素
+function drift(cam, s, dir = 1) {
+  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
+  cam.track(s.start, { x: 960 - dir * dx / 2, y: 540, z: 1 }, [[s.start + 0.1, { x: 960 + dir * dx / 2 }, hold, { ease: 'none', sfx: false }]]);
+}
+// 一个元素在 [t0, t1) 期间加上类名
+const during = (el, cls, t0, t1) => classAt(el, cls, t0, t1);
+// 八个人的小表（本系列共用；id、姓名、年龄与实验里的 demo 小表一致）
+const P8 = [[1, 'alice', 30], [2, 'bob', 25], [3, 'carol', 41], [4, 'dave', 19], [5, 'erin', 33], [6, 'frank', 52], [7, 'grace', 28], [8, 'heidi', 36]];
+const hex2 = (n) => n.toString(16).padStart(2, '0');
+// 一行三格（编号、姓名、年龄）：rowAt(父元素, x, y, [id, name, age], 各格宽度)，返回 { row, c: [三格] }
+function rowAt(parent, x, y, r, ws = [90, 250, 120], hh = 54, cls = '') {
+  const row = mk(parent, 'abs', x, y, ws[0] + ws[1] + ws[2] - 4, hh);
+  const c = [];
+  let cx = 0;
+  r.forEach((v, i) => { c.push(cellAt(row, cx, 0, ws[i], hh, '<span>' + v + '</span>', cls)); cx += ws[i] - 2; });
+  return { row, c };
+}
+// 一排单元格：stripAt(父元素, x, y, 值数组, 单元格宽, 高, 类名) → 单元格数组（相邻两格共用 2 像素边框）
+function stripAt(parent, x, y, vals, cw, hh = 56, cls = '') {
+  return vals.map((v, i) => cellAt(parent, x + i * (cw - 2), y, cw, hh, '<span>' + v + '</span>', cls));
+}
+// 一个小的整页分组：满屏、初始不可见（场景里用 appear/vanish 切换）
+function groupAt(parent) { const g = mk(parent, '', 0, 0, 1920, 1080); vanish(g, 0); return g; }
+// 文件夹（片段）：foldAt(父元素, x, y, w, h, 名字, 类名)；名字在左上角（mono），.y 黄框，.ghost 虚线（还没有 / 临时）
+function foldAt(parent, x, y, w, hh, name, cls = '') {
+  const f = mk(parent, 'fold ' + cls, x, y, w, hh);
+  const nm = h('div', 'nm', f, name);
+  f.nm = nm;
+  return f;
+}
+// 文件夹里的一行文件名：fileAt(文件夹, 第几行, 文字, 类名)
+function fileAt(fold, i, text, cls = '') { const e = h('div', 'it ' + cls, fold, text); css(e, { top: (58 + i * 40) + 'px' }); return e; }
+// 面板「亮起再回落」：旁白讲到它的这段时间，它的底色慢慢提亮一格再回到原样（「这一块正在被讲」）。面积大，静止检查里算作画面在变。
+// base 必须是这个面板原本的底色（panel / fold / term / tile 是 #1F1F1C，ghost 的 fold 是 #151515）；不要用在会被 .on 填成黄色的格子上。
+function warm(el, t0, t1, base = '#1F1F1C', hi = '#3C3C2A') {
+  const n = Math.max(1, Math.round((t1 - t0) / 2.4)), d = (t1 - t0) / n / 2;
+  for (let k = 0; k < n; k++) {
+    const a = t0 + k * 2 * d;
+    tl.fromTo(el, { backgroundColor: base }, { backgroundColor: hi, duration: d, ease: 'none', immediateRender: false }, a);
+    tl.to(el, { backgroundColor: base, duration: d, ease: 'none' }, a + d);
+  }
+}
+// 一亿行演示表的真实内容（research/lab/03_big.sh 的生成式）：编号 n 的姓名是 User0000n-…（后半截固定的字母串画面上省略），年龄 18 + n % 63；Alice 是 2050 号、42 岁
+const NM = (n) => (n === 2050 ? 'Alice' : 'User' + (n < 100000 ? String(n).padStart(5, '0') : String(n)) + '-…');
+const AG = (n) => (n === 2050 ? 42 : 18 + (n % 63));
+const U = (n) => [String(n), NM(n), String(AG(n))];
+// 不透明度从 a 渐变到 b（不在构建时生效，不与入场的 fromTo 抢同一个起点）
+const dimTo = (el, t, a, b, d = 0.6) => tl.fromTo(el, { opacity: a }, { opacity: b, duration: d, ease: 'power1.inOut', immediateRender: false }, t);
+// 同一个元素、同一个类名在几段时间里加上：只用一个记忆，避免两处 classAt 抢同一个类名（顺着播与直接跳不一样）
+function classWins(e, cls, wins) { let last = null; F((t) => { const on = wins.some(([a, b]) => t >= a && t < b); if (on !== last) { e.classList.toggle(cls, on); last = on; } }); }
+// 画面右上角的表名标签：这一段演示用的是哪一张表（实验里的真实表名，research/lab/*.sh）
+function tableTag(parent, text, t0, t1) { const e = mk(parent, 'ttag', 0, 99, null, null, text); css(e, { left: 'auto', right: '86px' }); vanish(e, 0); appear(e, t0); classAt(e, 'flash', t0, t0 + 1.2); if (t1 != null) vanish(e, t1); return e; }

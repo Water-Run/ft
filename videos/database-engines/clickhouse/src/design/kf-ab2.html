@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 AB2 · 合并（平面 + 立体）</title>
+<!-- AB 融合的关键帧 2（第 04 章「合并」）：左边是平面的 part_log 终端面板；右边三个小片段（板的厚度按行数 3、3、2）并成一个 all_1_3_1（8 行，通体黄）。
+     数据取自 research/lab/out_12_merge.txt §1。只作方向示意，不是成片场景。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-ab.css"><script src="/design/kf-ab.js"></script>
+<style>
+  .term { position: absolute; left: 96px; top: 300px; width: 700px; background: var(--k2); border: 1px solid var(--g2); font: 500 22px/1 "Mono"; }
+  .term .bar { padding: 14px 20px; border-bottom: 1px solid var(--g2); color: var(--g3); font-size: 20px; }
+  .term .r { display: grid; grid-template-columns: 170px 160px 60px 1fr; padding: 15px 20px; border-bottom: 1px solid var(--g1); color: var(--g3); }
+  .term .r:last-child { border-bottom: 0; }
+  .term .hd { color: #6d6d64; font-size: 19px; }
+  .term .m { background: rgba(250,255,105,.09); color: var(--w); } .term .m b { color: var(--y); font-weight: 700; }
+  .q { position: absolute; left: 96px; top: 700px; font: 500 24px/1.7 "Mono"; color: var(--g3); }
+  .q b { color: var(--y); font-weight: 700; }
+</style>
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div><div class="glow"></div>
+<div class="tag"><b>PART 5</b>04 · 合并</div>
+<div class="h">把三摞排好的卡片，并成一摞</div>
+<div class="label" style="left:96px;top:250px">system.part_log</div>
+<div class="term">
+  <div class="bar">:) SELECT event_type, part_name, rows, merged_from FROM system.part_log …</div>
+  <div class="r hd"><span>event_type</span><span>part_name</span><span>rows</span><span>merged_from</span></div>
+  <div class="r"><span>NewPart</span><span>all_1_1_0</span><span>3</span><span></span></div>
+  <div class="r"><span>NewPart</span><span>all_2_2_0</span><span>3</span><span></span></div>
+  <div class="r"><span>NewPart</span><span>all_3_3_0</span><span>2</span><span></span></div>
+  <div class="r m"><span><b>MergeParts</b></span><span><b>all_1_3_1</b></span><span>8</span><span>[all_1_1_0, all_2_2_0, all_3_3_0]</span></div>
+</div>
+<div class="q">查询 id = 5 要看的片段：<b>Parts 3/3</b> → <b>1/1</b></div>
+<div class="scene"><div class="world" id="w" style="transform:translate3d(1400px,800px,0) rotateX(-9deg) rotateY(-27deg)"></div></div>
+<div class="cap">每次，只看三摞最上面的那一张，拿下编号最小的</div>
+<script>
+  const P = [['all_1_1_0', [[2, 'bob'], [5, 'erin'], [8, 'heidi']]], ['all_2_2_0', [[1, 'alice'], [4, 'dave'], [7, 'grace']]], ['all_3_3_0', [[3, 'carol'], [6, 'frank']]]];
+  const ALL = [[1, 'alice'], [2, 'bob'], [3, 'carol'], [4, 'dave'], [5, 'erin'], [6, 'frank'], [7, 'grace'], [8, 'heidi']];
+  const cells = (L) => L.map(([i, n]) => `<div class="cellc"><span>${i}</span><span>${n}</span></div>`).join('');
+  const plate = (nm, L) => `<div class="fname" style="font-size:22px">${nm}</div>${cells(L)}`;
+  const W = document.getElementById('w');
+  floor(W, 0);
+  const Wd = 200, T = 14;                                     // 板的厚度 = 行数 × 14
+  const XS = [-470, -260, -50];
+  P.forEach(([nm, L], k) => { const h = 62 + L.length * 60; W.insertAdjacentHTML('beforeend', box({ x: XS[k], y: h / 2, z: 0, w: Wd, h, d: L.length * T, cls: 'old', front: plate(nm, L) })); });
+  const h = 62 + 8 * 60;
+  W.insertAdjacentHTML('beforeend', box({ x: 270, y: h / 2, z: -40, w: Wd, h, d: 8 * T, cls: 'hot', front: plate('all_1_3_1', ALL) }));
+  // 合并的方向：地面上三个向右的人字形
+  [0, 1, 2].forEach((k) => W.insertAdjacentHTML('beforeend', `<div style="position:absolute;left:${60 + k * 50}px;top:-6px;width:0;height:0;transform:translate3d(0,0,0) rotateX(90deg);font:900 90px/1 'Inter';color:rgba(250,255,105,${0.3 + k * 0.3})">›</div>`));
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

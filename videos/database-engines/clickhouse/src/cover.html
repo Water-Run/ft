@@ -3,32 +3,78 @@
 <head>
 <meta charset="utf-8">
 <title>封面</title>
+<!-- 投稿封面：策划者 2026-11-08 选定的候选 A「只读一列」（src/design/cover-a.html）。?r=169 → 1920×1080，?r=43 → 1600×1200；kit/tools/covers.js 按 2 倍像素出图。
+     一张表立成三根黑色的列（id、name、age），只有 age 通体发光——求平均年龄只读它。三根列等宽（宽度不表示大小），大小只用文字标在列脚：
+     id 383 MiB、name 499 MiB、age 529 KiB（压缩后，research/lab/out_03_big.txt）；「不到十毫秒」是热缓存下连跑 30 次的实测，最短 7、中位数 8、最长 9 毫秒（out_13_timing.txt）。
+     系列封面约定：PART 5、问句、大标题、立体图、实测数据；底部约 15% 不放字；不放产品标志。 -->
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
-  html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  :root { --y: #FAFF69; --k: #121212; --g3: #A0A0A0; --w: #F9F9F9; }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  html, body { margin: 0; width: var(--W); height: var(--H); background: var(--k); color: var(--w); overflow: hidden; }
+  #stage { position: relative; width: var(--W); height: var(--H); overflow: hidden; }
+  #bg { position: absolute; inset: 0; background: #181816; }   /* 平涂底色；质感来自颗粒层与立体列的光 */
+  .grain { position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay; }
+  #s3 { position: absolute; left: 0; top: 0; }
+  .badge { position: absolute; left: 100px; top: 96px; background: var(--y); color: var(--k); font: 800 34px/1 "Inter"; letter-spacing: .12em; padding: 14px 22px; }
+  .q { position: absolute; left: 100px; top: 192px; font: 700 56px/1.2 "Sans SC"; color: var(--w); }
+  .title { position: absolute; left: 92px; top: 286px; font: 900 196px/1 "Inter"; letter-spacing: -.035em; color: var(--w); }
+  .sub { position: absolute; left: 100px; top: 506px; font: 700 62px/1 "Sans SC"; color: var(--y); }
+  .data { position: absolute; left: 100px; top: 640px; font: 600 34px/1.55 "Mono"; color: var(--g3); }
+  .data b { color: var(--y); font-weight: 800; font-size: 56px; }
+  .data .w { color: var(--w); }
+  .r43 .badge { left: 90px; top: 80px; }
+  .r43 .q { left: 90px; top: 170px; font-size: 52px; }
+  .r43 .title { left: 82px; top: 252px; font-size: 176px; }
+  .r43 .sub { left: 90px; top: 452px; font-size: 56px; }
+  .r43 .data { left: 90px; top: 560px; font-size: 32px; }
+  .lab { position: absolute; width: 260px; text-align: center; font: 700 34px/1.2 "Mono"; color: var(--g3); }
+  .lab i { display: block; font-style: normal; font-weight: 600; font-size: 28px; color: #7d7d74; margin-top: 6px; }
+  .lab.y { color: var(--y); } .lab.y i { color: var(--y); font-weight: 800; }
+  .lab span { display: inline-block; background: rgba(18,18,18,.82); padding: 4px 14px 6px; border-radius: 3px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
+  <div id="bg"></div>
+  <svg id="s3"></svg>
+  <svg class="grain" id="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="5"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+  <div class="badge">PART 5</div>
+  <div class="q">一个数据库引擎是如何实现的？</div>
+  <div class="title">ClickHouse</div>
+  <div class="sub">OLAP的MergeTree和列式存储</div>
+  <div class="data">一亿行求平均，只读一列<br><b>&lt; 10 ms</b> <span class="w">· 热缓存</span></div>
+  <div id="labs"></div>
 </div>
+<script src="design/cover3d.js"></script>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  const q = new URLSearchParams(location.search), r43 = q.get('r') === '43';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + (q.get('lang') || 'zh');
+  const W = r43 ? 1600 : 1920, H = r43 ? 1200 : 1080;
+  const svg = document.getElementById('s3');
+  for (const e of [svg, document.getElementById('grain')]) { e.setAttribute('width', W); e.setAttribute('height', H); e.setAttribute('viewBox', `0 0 ${W} ${H}`); }
+  // 4:3 的立体图挪到右下，留出上方的标题；列脚标签仍在底部 15% 之上
+  const P = r43 ? { cx: 1215, cy: 860, f: 1420, gx: 1220, gy: 880, gr: 520 } : { cx: 1485, cy: 770, f: 1950, gx: 1500, gy: 780, gr: 620 };
+  const S = C3.Scene(svg, { W, H, cx: P.cx, cy: P.cy, f: P.f, D: 2300, yaw: 27, pitch: 10, light: [0.55, 0.82, -0.4] });
+  const gm = S.el('radialGradient', { id: 'gfade', gradientUnits: 'userSpaceOnUse', cx: P.gx, cy: P.gy, r: P.gr }, S.defs);
+  S.el('stop', { offset: 0, 'stop-color': '#fff', 'stop-opacity': .9 }, gm); S.el('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, gm);
+  const mk = S.el('mask', { id: 'gmask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: W, height: H }, S.defs);
+  S.el('rect', { x: 0, y: 0, width: W, height: H, fill: 'url(#gfade)' }, mk);
+  S.grid({ x0: -1400, x1: 1400, z0: -500, z1: 1500, gs: 150, color: 'rgba(250,255,105,.10)', w: 1.2, fadeMask: 'gmask' });
+  S.pool(300, 60, 520, 460, '#FAFF69', .30);
+  const BW = 180, BD = 190, BH = 730, GAP = 90;
+  const X = [-BW * 1.5 - GAP, -BW / 2, BW * 0.5 + GAP];
+  const dark = { c: '#3a3a35', tex: 'v', texAlpha: .55, rows: 36, rowColor: 'rgba(0,0,0,.22)', rowW: 1.2, seed: 4 };
+  const lit = { c: '#FAFF69', side: '#C9CF1A', top: '#FFFFC4', emissive: true, tex: 'v', texAlpha: .22, rows: 36, rowColor: 'rgba(18,18,0,.18)', rowW: 1.2, glow: 'rgba(250,255,105,.55)', glowR: 36, seed: 8 };
+  const mats = [dark, dark, lit];
+  for (let i = 0; i <= 2; i++) S.reflect(X[i], 0, 0, BW, BH, BD, mats[i], [S.proj(X[i], 0, 0)[1] - 6, S.proj(X[i], 0, 0)[1] + 190, i === 2 ? .30 : .12]);
+  for (let i = 0; i <= 2; i++) S.box(X[i], 0, 0, BW, BH, BD, mats[i]);
+  const L = document.getElementById('labs');
+  const lab = (i, name, size, cls) => { const p = S.proj(X[i] + BW / 2, 0, 0); L.insertAdjacentHTML('beforeend', `<div class="lab ${cls || ''}" style="left:${p[0] - 130}px;top:${p[1] + 26}px"><span>${name}<i>${size}</i></span></div>`); };
+  lab(0, 'id', '383 MiB'); lab(1, 'name', '499 MiB'); lab(2, 'age', '529 KiB', 'y');
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('600 40px "Mono"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

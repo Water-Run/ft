@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 D2 · 合并</title>
+<!-- 视觉稿 D 的帧 2（第 05 章「合并」）：三个片段（八个人分三批到，每个内部按编号排好）并成一个。画的是归并走到一半：1、2、3 号已经拿下，
+     各摞最上面剩下的是 5、4、6，最小的 4 号（dave）是下一张。右边是 part_log 的真实回显。数据取自 research/lab/out_12_merge.txt §1。只作方向示意。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-d.css">
+<style>
+  .stack { position: absolute; top: 330px; width: 250px; }
+  .stack .t { font: 600 23px/1 "Mono"; color: var(--g3); margin-bottom: 12px; }
+  .stack .cell { height: 52px; }
+  .out { position: absolute; left: 1010px; top: 330px; width: 280px; }
+  .out .t { font: 700 24px/1 "Mono"; color: var(--y); margin-bottom: 12px; }
+  .arrow { position: absolute; font: 900 70px/1 "Inter"; color: var(--y); }
+  .term { position: absolute; left: 1380px; top: 330px; width: 480px; background: var(--k2); border: 1px solid var(--g2); font: 500 19px/1 "Mono"; color: var(--g3); }
+  .term .bar { padding: 12px 16px; border-bottom: 1px solid var(--g2); color: var(--g4); font-size: 17px; line-height: 1.4; }
+  .term .r { display: grid; grid-template-columns: 132px 112px 40px 1fr; padding: 11px 16px; font-size: 18px; border-bottom: 1px solid var(--g1); }
+  .term .r:last-child { border-bottom: 0; }
+  .term .m { background: rgba(250,255,105,.09); color: var(--w); } .term .m b { color: var(--y); }
+</style>
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div>
+<div class="id"><i></i>ClickHouse <span>26.8 LTS</span></div>
+<div class="ch"><b>PART 5</b>05 · 合并</div><div class="rule"></div>
+<div class="h">把三摞排好的卡片，并成一摞</div>
+<div class="lab" style="left:60px;top:240px">三个片段，每个里面都按编号排好</div>
+<div id="stacks"></div>
+<div class="out" id="out"></div>
+<div class="arrow" style="left:880px;top:430px">›</div>
+<div class="term">
+  <div class="bar">:) SELECT event_type, part_name, rows, merged_from<br>&nbsp;&nbsp;&nbsp;FROM system.part_log …</div>
+  <div class="r"><span>NewPart</span><span>all_1_1_0</span><span>3</span><span></span></div>
+  <div class="r"><span>NewPart</span><span>all_2_2_0</span><span>3</span><span></span></div>
+  <div class="r"><span>NewPart</span><span>all_3_3_0</span><span>2</span><span></span></div>
+  <div class="r m"><span><b>MergeParts</b></span><span><b>all_1_3_1</b></span><span>8</span><span>3 个并成 1 个</span></div>
+</div>
+<div class="note" style="left:1380px;top:640px;width:430px">查 id = 5 要看的片段<br><b>Parts 3/3</b> → <b>1/1</b></div>
+<div class="cap">每次，只看三摞最上面的那一张，拿下编号最小的</div>
+<script>
+  const P = [['all_1_1_0', [[2,'bob'],[5,'erin'],[8,'heidi']]], ['all_2_2_0', [[1,'alice'],[4,'dave'],[7,'grace']]], ['all_3_3_0', [[3,'carol'],[6,'frank']]]];
+  const taken = new Set([1, 2, 3]), next = 4;
+  document.getElementById('stacks').innerHTML = P.map(([nm, L], k) => `<div class="stack" style="left:${60 + k * 280}px"><div class="t">${nm}</div>${L.map(([i, n]) => `<div class="cell ${taken.has(i) ? 'done' : i === next ? 'on' : ''}"><span>${i}</span><span>${n}</span></div>`).join('')}</div>`).join('');
+  const OUT = [[1,'alice'],[2,'bob'],[3,'carol']];
+  document.getElementById('out').innerHTML = `<div class="t">all_1_3_1</div>` + OUT.map(([i, n]) => `<div class="cell y"><span>${i}</span><span>${n}</span></div>`).join('') + `<div class="cell ghost"><span>4</span><span>？</span></div>` + [5,6,7,8].map((i) => `<div class="cell ghost"><span>${i}</span><span></span></div>`).join('');
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

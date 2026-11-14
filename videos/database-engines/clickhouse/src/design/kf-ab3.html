@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 AB3 · 稀疏索引（平面 + 立体）</title>
+<!-- AB 融合的关键帧 3（第 05 章「稀疏索引」）：左边是平面的二分过程（拿 2050 去比索引项）；右边把稀疏索引立成一摞颗粒板，
+     每块板的正面就是一项索引（颗粒号、第一行的编号），第 0 个颗粒（2050 Alice 在里面）被抽出来、发黄光。
+     数据取自 research/lab/out_04_queries.txt（Q02–Q04）。只作方向示意，不是成片场景。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-ab.css"><script src="/design/kf-ab.js"></script>
+<style>
+  .steps { position: absolute; left: 96px; top: 300px; width: 760px; font: 500 26px/1 "Mono"; }
+  .st { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border: 1px solid var(--g2); background: var(--k2); margin-bottom: 14px; color: var(--g3); }
+  .st b { color: var(--y); font-weight: 700; }
+  .st.on { border-color: var(--y); background: rgba(250,255,105,.07); color: var(--w); box-shadow: 0 0 0 6px rgba(250,255,105,.07); }
+  .res { position: absolute; left: 96px; top: 700px; font: 500 24px/1.7 "Mono"; color: var(--g3); }
+  .res b { color: var(--y); font-weight: 700; }
+  .ix { display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 22px; font: 600 25px/1 "Mono"; color: var(--g3); }
+  .lit .ix { color: var(--w); } .lit .ix b { color: var(--y); }
+  .hot .ix { color: #151515; } .hot .ix b { color: #151515; }
+</style>
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div><div class="glow"></div>
+<div class="tag"><b>PART 5</b>05 · 稀疏索引</div>
+<div class="h">每八千一百九十二行，记一项</div>
+<div class="label" style="left:96px;top:250px">找 id = 2050：拿它去比索引项</div>
+<div class="steps">
+  <div class="st"><span>第 0 项　第一行的编号</span><b>1</b></div>
+  <div class="st on"><span>2050 ≥ 1</span><b>✓</b></div>
+  <div class="st"><span>第 1 项　第一行的编号</span><b>8193</b></div>
+  <div class="st on"><span>2050 &lt; 8193</span><b>✓</b></div>
+</div>
+<div class="res">→ 她在 <b>第 0 个颗粒</b>：读 8192 行，1–2 毫秒<br>12,209 项索引，47.69 KiB，整个放在内存里</div>
+<div class="label" style="left:700px;top:252px;width:450px;text-align:right;color:var(--y);font:700 28px/1 'Mono'">2050 Alice 在这里 →</div>
+<div class="scene"><div class="world" id="w" style="transform:translate3d(1380px,820px,0) rotateX(-9deg) rotateY(-27deg)"></div></div>
+<div class="cap">二〇五〇比第一项的一大，比第二项的八一九三小，她就在第零个颗粒里</div>
+<script>
+  const W = document.getElementById('w');
+  floor(W, 0);
+  const IDX = [1, 8193, 16385, 24577, 32769, 40961, 49153];
+  const Wd = 380, h = 66, d = 190, gap = 8;
+  IDX.forEach((v, k) => { if (k === 0) return; W.insertAdjacentHTML('beforeend', box({ x: 0, y: (k - 1) * (h + gap) + h / 2, z: 0, w: Wd, h, d, front: `<div class="ix"><span>颗粒 ${k}</span><b>${v.toLocaleString('en-US').replace(/,/g, '')}</b></div>` })); });
+  // 第 0 个颗粒：抽出来，浮在最上面、靠近镜头，亮着
+  W.insertAdjacentHTML('beforeend', box({ x: -70, y: 6 * (h + gap) + h / 2 + 50, z: -170, w: Wd, h: h + 10, d, cls: 'hot', front: `<div class="ix"><span>颗粒 0</span><b>1</b></div>` }));
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

@@ -1,0 +1,52 @@
+/* 关键帧 AB 融合：总体是 A 的平面（近黑底、细网格、等宽数据、黄色是唯一的强调），
+   只在「片段、列文件」这些主角身上用 B 的立体——把平面的数据面板贴到有厚度的板上，边缘（顶面与侧面）发黄光。
+   用真正的 CSS 3D（HTML 面，文字照常渲染），不是画出来的假立体。只作方向示意，不是成片场景。 */
+:root { --y: #FAFF69; --y2: #EEF400; --y5: #9FA300; --k: #151515; --k2: #1F1F1C; --g1: #282828; --g2: #414141; --g3: #A0A0A0; --w: #F9F9F9; }
+html, body { margin: 0; width: 1920px; height: 1080px; background: var(--k); color: var(--w); overflow: hidden; }
+.stage { position: absolute; inset: 0; background:
+    linear-gradient(var(--g1) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, var(--g1) 1px, transparent 1px) 0 0 / 120px 120px; opacity: .45; }
+.glow { position: absolute; inset: 0; background: radial-gradient(900px 620px at 72% 62%, rgba(250,255,105,.10), transparent 70%); }
+.tag { position: absolute; left: 96px; top: 72px; font: 600 22px/1 "Inter"; letter-spacing: .18em; color: var(--g3); }
+.tag b { color: var(--y); font-weight: 700; margin-right: 18px; }
+.h { position: absolute; left: 96px; top: 118px; font: 700 54px/1.1 "Sans SC"; }
+.cap { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font: 500 40px/1 "Sans SC"; color: var(--w); background: linear-gradient(transparent, rgba(0,0,0,.6)); }
+.label { position: absolute; font: 600 26px/1 "Sans SC"; color: var(--g3); }
+.mono { font-family: "Mono"; }
+.note { position: absolute; width: 330px; font: 500 21px/1.6 "Mono"; color: var(--g3); border-left: 3px solid var(--y); padding-left: 20px; }
+.note b { color: var(--y); font-weight: 600; }
+/* 平面表 */
+.rows { position: absolute; }
+.row { display: flex; height: 50px; margin-bottom: 10px; font: 500 22px/50px "Mono"; }
+.row span { padding: 0 14px; background: var(--k2); border: 1px solid var(--g2); color: var(--g3); }
+.row .id { width: 60px; } .row .nm { width: 240px; } .row .ag { width: 70px; border-color: var(--y); color: var(--y); }
+/* 3D 场景 */
+.scene { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; perspective: 2600px; perspective-origin: 62% 38%; }
+.world { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+.floor { position: absolute; width: 3600px; height: 3600px; margin-left: -1800px; margin-top: -1800px; transform-style: flat;
+    background: linear-gradient(rgba(250,255,105,.13) 2px, transparent 2px) 0 0 / 150px 150px, linear-gradient(90deg, rgba(250,255,105,.13) 2px, transparent 2px) 0 0 / 150px 150px;
+    -webkit-mask-image: radial-gradient(closest-side, #000 0%, transparent 100%); mask-image: radial-gradient(closest-side, #000 0%, transparent 100%); }
+.b { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
+.b .f { position: absolute; box-sizing: border-box; backface-visibility: hidden; }
+.b .front { background: #1d1d1a; border: 2px solid #3a3a35; }
+.b .right { background: linear-gradient(90deg, #35352f, #24241f); }
+.b .left { background: linear-gradient(90deg, #24241f, #35352f); }
+.b .top { background: #4a4a42; }
+.b .back { background: #121210; }
+.b.lit .front { background: #1b1c0d; border-color: var(--y); box-shadow: inset 0 0 40px rgba(250,255,105,.10); }
+.b.lit .right { background: linear-gradient(90deg, #E7EC4F, #9FA300); }
+.b.lit .left { background: linear-gradient(90deg, #9FA300, #E7EC4F); }
+.b.lit .top { background: #FFFFB0; }
+.b.hot .front { background: var(--y); border-color: var(--y); color: #151515; }
+.b.hot .right { background: linear-gradient(90deg, #C9CF1A, #8A8E0E); }
+.b.hot .top { background: #FFFFC4; }
+.b.old .front { background: #272719; border-color: #6a6c2a; }
+.b.old .right { background: linear-gradient(90deg, #6a6c2a, #3c3d14); }
+.b.old .top { background: #8a8d3a; }
+.b.old .left { background: linear-gradient(90deg, #3c3d14, #6a6c2a); }
+.cellc { height: 60px; border-bottom: 1px solid var(--g1); font: 500 24px/60px "Mono"; padding: 0 16px; color: var(--g3); display: flex; justify-content: space-between; box-sizing: border-box; }
+.cellc:last-child { border-bottom: 0; }
+.fname { font: 600 26px/1 "Mono"; color: var(--g3); padding: 14px 16px 12px; border-bottom: 2px solid #3a3a35; }
+.lit .fname { color: var(--y); border-color: var(--y); }
+.lit .cellc { color: var(--w); } .lit .cellc i { font-style: normal; color: var(--y); }
+.hot .fname { color: #151515; border-color: #151515; } .hot .cellc { color: #151515; border-color: rgba(21,21,21,.25); font-weight: 700; }

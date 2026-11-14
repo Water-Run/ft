@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 D1 · 列文件</title>
+<!-- 视觉稿 D 的帧 1（第 03 章「一列挨一列」）：左边一行挨一行的 8 行小表（传统的数据库），右边三个列文件，age.bin 是焦点。数据取自 research/lab/out_02_small.txt。只作方向示意。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-d.css">
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div>
+<div class="id"><i></i>ClickHouse <span>26.8 LTS</span></div>
+<div class="ch"><b>PART 5</b>03 · 一列挨一列</div><div class="rule"></div>
+<div class="h">每一列，单独一个文件</div>
+<div class="lab" style="left:60px;top:230px">一行挨一行（传统的数据库）</div>
+<div id="rows" style="position:absolute;left:60px;top:272px;width:560px"></div>
+<div class="lab" style="left:760px;top:230px">一列挨一列（MergeTree）</div>
+<div id="cols"></div>
+<div class="note" style="left:1560px;top:300px;width:300px">all_1_1_0/age.bin<br><b>34 B</b> 压缩块<br>16 B 校验和<br>0x82 = LZ4<br>解压后 <b>8 B</b><br>一人一个字节</div>
+<div class="cap">年龄这一列的文件里，只有八个字节，一人一个</div>
+<script>
+  const R = [[1,'alice',30],[2,'bob',25],[3,'carol',41],[4,'dave',19],[5,'erin',33],[6,'frank',52],[7,'grace',28],[8,'heidi',36]];
+  const rows = document.getElementById('rows');
+  rows.insertAdjacentHTML('beforeend', R.map(([i, n, a]) => `<div style="display:flex"><div class="cell" style="width:80px">${i}</div><div class="cell" style="width:340px">${n}</div><div class="cell y" style="width:140px">${a}</div></div>`).join(''));
+  const col = (x, name, f, cls) => `<div class="col ${cls || ''}" style="left:${x}px;top:272px;width:230px"><div class="t">${name}</div>${R.map((r) => `<div class="cell ${cls === 'hl' ? 'y' : ''}">${f(r)}</div>`).join('')}</div>`;
+  document.getElementById('cols').innerHTML =
+    col(760, 'id.bin', (r) => `<span>${r[0]}</span>`) + col(1020, 'name.bin', (r) => `<span>${r[1]}</span>`) +
+    col(1280, 'age.bin', (r) => `<span>${r[2].toString(16).padStart(2, '0')}</span><span>${r[2]}</span>`, 'hl');
+</script>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

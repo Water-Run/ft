@@ -5,7 +5,11 @@
 #   B「列」    100 拍/分，D 多利亚。八个金属槌音各占一个固定的十六分音符位置，像八列数据，一列一列加进来，再一列一列退出；冷、准、克制。
 #   C「合并」  88 拍/分，A 小调落到 C 大调。三条旋律线各奏同一个动机的片段、彼此错开，越来越整齐，最高处合成一条齐奏，一声低沉的重击；
 #              讲 MergeTree 的合并，史诗感收着用。
-# 用法：python videos/database-engines/clickhouse/tools/music_sketch.py   → 本片 out/audition/music-A.mp3 等（不入库）
+#   BC「列→合并」（策划者 2026-11-08 选定的方向：「小样 B 和 C 的有机融合」）96 拍/分，D 多利亚落到 D 小。
+#              B 的八个金属槌音一小节加一列、各占固定位置（列文件）；中段进 C 的三条旋律线，先错开；然后八个槌音的位置与三条线一起
+#              向小节头收拢（合并）；最高处八个音叠成一个和弦、一声低沉的重击（八列并成一个片段）；收束回到单音。
+#              B、C 的音阶同属 C 大调的白键，所以叠在一起不打架。
+# 用法：python videos/database-engines/clickhouse/tools/music_sketch.py [A B C BC]   → 本片 out/audition/music-A.mp3 等（不入库）；缺省全出
 import os, subprocess, wave
 import numpy as np
 
@@ -159,4 +163,53 @@ def music_c():
     tr.add(18 * bar, boom(4.0), 0.45)
     finish(tr, 'music-C', bars * bar + 2.0)
 
-music_a(); music_b(); music_c()
+# ── BC「列→合并」 ──
+def music_bc():
+    bpm = 96; b = 60 / bpm; bar = 4 * b; bars = 27; tr = Track(bars * bar)
+    cols = [(62, 0), (69, 3), (65, 6), (72, 8), (67, 10), (74, 13), (60, 14), (77, 5)]       # 八列：音高与在一小节里的十六分音符位置（同 B）
+    motif = [(0, 69, 1), (1, 72, 0.5), (1.5, 71, 0.5), (2, 69, 1), (3, 76, 1)]              # 同 C
+    chords = [(38, [53, 57, 60]), (36, [55, 60, 64]), (45, [55, 60, 64]), (43, [55, 60, 62])]   # Dm7 → C → Am7 → Gsus
+    contour = []
+    for k in range(bars):
+        t0 = k * bar
+        root, ups = chords[k % 4] if k < 22 else (38, [53, 57, 60])
+        if k < 24:
+            tr.add(t0, tone(hz(root), bar, SAW(8, 1.2)) * adsr(int(bar * SR), 0.25, 0.3, 0.7, 0.5), 0.09 if k < 8 else 0.12)
+            if k >= 4:
+                for m in ups: tr.add(t0, tone(hz(m), bar * 1.1, SAW(6, 1.6)) * adsr(int(bar * 1.1 * SR), 0.5, 0.3, 0.7, 0.6), 0.03 + 0.025 * (k >= 12), rng.uniform(-0.5, 0.5))
+        else:
+            tr.add(t0, tone(hz(38), bar * 1.2, SAW(8, 1.2)) * adsr(int(bar * 1.2 * SR), 0.3, 0.3, 0.7, 0.8), 0.09)
+        # 八列的槌音：一小节加一列；汇合期（k 16–21）各自的位置向小节头收拢
+        active = min(8, k + 1) if k < 22 else (2 if k < 25 else 1)
+        conv = min(1.0, max(0.0, (k - 15) / 6)) if k < 22 else 1.0
+        for i, (m, pos) in enumerate(cols[:active]):
+            at = t0 + (pos * (1 - conv)) * b / 4
+            for rep in ((0, 1) if i < 4 and k < 22 else (0,)):
+                tr.add(at + rep * bar / 2, tone(hz(m), 1.2, BELL, decay=0.9), 0.11, -0.7 + 1.4 * i / 7)
+        for s16 in range(16):
+            if k < 22: tr.add(t0 + s16 * b / 4, hat(0.02, 0.5), 0.12 if s16 % 4 else 0.2, -0.2)
+        if 9 <= k < 22:                                                                     # 低音脉冲（同 B）
+            for q in range(4): tr.add(t0 + q * b, tone(hz(root - 12 if root > 36 else 26), b * 0.8, [(1, 1), (2, 0.4)]) * adsr(int(b * 0.8 * SR), 0.01, 0.2, 0.5, 0.2), 0.26)
+        # 三条旋律线（同 C）：先错开，越往后越齐，最后齐奏
+        if 8 <= k < 22:
+            stage = 0 if k < 12 else 1 if k < 16 else 2
+            lines = [(12, ODD(5), 0.07, 0.4, 0.0), (0, ODD(9), 0.08, -0.4, 0.004), (-12, SAW(9, 1.1), 0.09, 0.0, 0.003)]
+            for li, (oct_, parts, g, pan, vib) in enumerate(lines):
+                if stage == 0 and li == 2: continue
+                off = [0.0, 1.5, 2.5][li] * (1 - stage / 2) if stage < 2 else 0.0
+                frag = motif if stage == 2 else motif[li % 2::2] if stage == 0 else motif[:3 + li % 2]
+                for beat, m, ln in frag:
+                    at = t0 + ((beat + off) % 4) * b
+                    tr.add(at, tone(hz(m + oct_), ln * b * 1.05, parts, vib=vib) * adsr(int(ln * b * 1.05 * SR), 0.03, 0.15, 0.75, 0.2), g * (1.25 if stage == 2 else 1), pan)
+        if k == 16: tr.add(t0, boom(2.5), 0.16)
+        if k == 22:                                                                         # 八个音叠成一个和弦：八列并成一个
+            tr.add(t0, boom(4.0), 0.6)
+            for i, (m, _) in enumerate(cols): tr.add(t0, tone(hz(m), 2.2 * bar, ODD(7)) * adsr(int(2.2 * bar * SR), 0.04, 0.4, 0.55, 1.2), 0.07, -0.6 + 1.2 * i / 7)
+        contour.append(float(np.sqrt(np.mean(tr.L[int(t0 * SR):int((t0 + bar) * SR)] ** 2))))
+    print('每小节能量（应在 k=22 附近最高，之后回落）：', ' '.join('%.2f' % (c / max(contour)) for c in contour))
+    finish(tr, 'music-BC', bars * bar + 1.5)
+
+import sys
+_want = sys.argv[1:] or ['A', 'B', 'C', 'BC']
+for _n, _f in (('A', music_a), ('B', music_b), ('C', music_c), ('BC', music_bc)):
+    if _n in _want: _f()

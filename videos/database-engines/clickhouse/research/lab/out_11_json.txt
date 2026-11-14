@@ -10,7 +10,7 @@
    (100000002, '{"name": "Carol", "age": 36, "pets": {"cat": "Tom"}}')
 
 
-$ cd /var/lib/clickhouse/store/422/4224ab1a-6985-467f-b938-cd6b993ef865/all_1_1_0/ && ls *.bin | sort
+$ cd /var/lib/clickhouse/store/ce7/ce76f2c5-f252-4a88-b417-4114524a70cd/all_1_1_0/ && ls *.bin | sort
 doc.age.dynamic_structure.bin
 doc.age.Int64.bin
 doc.age.SharedVariant.bin
@@ -65,7 +65,7 @@ id.bin
    └──────────────────────────────────────────────────────────────────┘
 
 :) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS q, read_rows, read_bytes, ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
-   FROM system.query_log WHERE type = 'QueryFinish' AND query_id IN ('json_path_1794016704', 'json_whole_1794016704') ORDER BY q
+   FROM system.query_log WHERE type = 'QueryFinish' AND query_id IN ('json_path_1794072504', 'json_whole_1794072504') ORDER BY q
 
    ┌─q──────────┬─read_rows─┬─read_bytes─┬─compressed_bytes_read─┐
 1. │ json_path  │         3 │         51 │                   188 │

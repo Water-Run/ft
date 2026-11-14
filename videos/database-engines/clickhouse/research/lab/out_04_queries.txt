@@ -16,19 +16,16 @@
 1. │ 48.99999546 │
    └─────────────┘
 
-:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+:) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS run, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
             ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
             ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
-     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'avg\_%' ORDER BY query_id
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'avg\_%\_1794071853' ORDER BY query_id
 
-   ┌─query_id─┬─ms─┬─read_rows─┬─read_bytes─┬─read──────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
-1. │ avg_1    │ 10 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                556604 │
-2. │ avg_1    │ 10 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                577194 │
-3. │ avg_2    │  8 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
-4. │ avg_2    │  7 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
-5. │ avg_3    │ 10 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
-6. │ avg_3    │  7 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                541710 │
-   └──────────┴────┴───────────┴────────────┴───────────┴───────┴───────┴───────────────┴───────────────────────┘
+   ┌─run───┬──ms─┬─read_rows─┬─read_bytes─┬─read──────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ avg_1 │   8 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                560154 │
+2. │ avg_2 │   9 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                574015 │
+3. │ avg_3 │ 110 │ 100000000 │  100000000 │ 95.37 MiB │     1 │ 12208 │     100000000 │                560880 │
+   └───────┴─────┴───────────┴────────────┴───────────┴───────┴───────┴───────────────┴───────────────────────┘
 
 
 ==== 1'. 对照：读出整张表的所有列 ====
@@ -37,19 +34,16 @@
 
 （结果丢弃：客户端以 --format Null 运行）
 
-:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+:) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS run, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
             ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
             ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
-     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'all\_%' ORDER BY query_id
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'all\_%\_1794071853' ORDER BY query_id
 
-   ┌─query_id─┬───ms─┬─read_rows─┬─read_bytes─┬─read─────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
-1. │ all_1    │ 1163 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925243034 │ -- 925.24 million
-2. │ all_1    │  651 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925243034 │ -- 925.24 million
-3. │ all_2    │  973 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925152023 │ -- 925.15 million
-4. │ all_2    │  610 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925152023 │ -- 925.15 million
-5. │ all_3    │  993 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925353030 │ -- 925.35 million
-6. │ all_3    │  516 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925152023 │ -- 925.15 million
-   └──────────┴──────┴───────────┴────────────┴──────────┴───────┴───────┴───────────────┴───────────────────────┘
+   ┌─run───┬──ms─┬─read_rows─┬─read_bytes─┬─read─────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ all_1 │ 641 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925971658 │ -- 925.97 million
+2. │ all_2 │ 638 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             925417429 │ -- 925.42 million
+3. │ all_3 │ 530 │ 100000000 │ 6088899959 │ 5.67 GiB │     1 │ 12208 │     100000000 │             927735649 │ -- 927.74 million
+   └───────┴─────┴───────────┴────────────┴──────────┴───────┴───────┴───────────────┴───────────────────────┘
 
 
 ==== 2. 按主键找 Alice ====
@@ -82,16 +76,16 @@
 1. │ 2050 │ Alice │  42 │
    └──────┴───────┴─────┘
 
-:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+:) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS run, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
             ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
             ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
-     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'pk\_%' ORDER BY query_id
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'pk\_%\_1794071853' ORDER BY query_id
 
-   ┌─query_id─┬─ms─┬─read_rows─┬─read_bytes─┬─read───────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
-1. │ pk_1     │  2 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
-2. │ pk_2     │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
-3. │ pk_3     │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
-   └──────────┴────┴───────────┴────────────┴────────────┴───────┴───────┴───────────────┴───────────────────────┘
+   ┌─run──┬─ms─┬─read_rows─┬─read_bytes─┬─read───────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ pk_1 │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
+2. │ pk_2 │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
+3. │ pk_3 │  1 │      8192 │     143423 │ 140.06 KiB │     1 │     1 │          8192 │                108475 │
+   └──────┴────┴───────────┴────────────┴────────────┴───────┴───────┴───────────────┴───────────────────────┘
 
 
 ==== 3. 按姓名找 Alice ====
@@ -132,16 +126,16 @@ ReadFromMergeTree (demo.users)
 1. │ 2050 │ Alice │  42 │
    └──────┴───────┴─────┘
 
-:) SELECT query_id, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
+:) SELECT replaceRegexpOne(query_id, '_[0-9]+$', '') AS run, query_duration_ms AS ms, read_rows, read_bytes, formatReadableSize(read_bytes) AS read,
             ProfileEvents['SelectedParts'] AS parts, ProfileEvents['SelectedMarks'] AS marks, ProfileEvents['SelectedRows'] AS selected_rows,
             ProfileEvents['ReadCompressedBytes'] AS compressed_bytes_read
-     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'name\_%' ORDER BY query_id
+     FROM system.query_log WHERE type = 'QueryFinish' AND query_id LIKE 'name\_%\_1794071853' ORDER BY query_id
 
-   ┌─query_id─┬──ms─┬─read_rows─┬─read_bytes─┬─read─────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
-1. │ name_1   │ 272 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
-2. │ name_2   │ 259 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
-3. │ name_3   │ 312 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
-   └──────────┴─────┴───────────┴────────────┴──────────┴───────┴───────┴───────────────┴───────────────────────┘
+   ┌─run────┬──ms─┬─read_rows─┬─read_bytes─┬─read─────┬─parts─┬─marks─┬─selected_rows─┬─compressed_bytes_read─┐
+1. │ name_1 │ 246 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
+2. │ name_2 │ 224 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
+3. │ name_3 │ 224 │ 100000000 │ 5588910209 │ 5.21 GiB │     1 │ 12208 │     100000000 │             522949259 │ -- 522.95 million
+   └────────┴─────┴───────────┴────────────┴──────────┴───────┴───────┴───────────────┴───────────────────────┘
 
 
 ==== 主键索引与标记：mergeTreeIndex 表函数列出每个颗粒的索引项与各列的标记 ====
@@ -279,17 +273,18 @@ age.mark:        {
 
 ==== 主键索引文件：解压后每项 4 字节（UInt32 的 id），12209 项 ====
 
-$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && ls -l primary.cidx && clickhouse compressor --decompress < primary.cidx | wc -c && clickhouse compressor --decompress < primary.cidx | od -A d -t u4 -w16 | head -3
--rw-r-----. 1 clickhouse clickhouse 31163 Nov  7 01:36 primary.cidx
+$ cd /var/lib/clickhouse/store/743/743e529a-a9a0-4882-b46e-be824f21b949/all_1_90_3/ && ls -l primary.cidx && clickhouse compressor --decompress < primary.cidx | wc -c && clickhouse compressor --decompress < primary.cidx | od -A d -t u4 -w16 | head -3
+-rw-r-----. 1 clickhouse clickhouse 31163 Nov  7 17:17 primary.cidx
 48836
 0000000          1       8193      16385      24577
 0000016      32769      40961      49153      57345
 0000032      65537      73729      81921      90113
+Code: 75. DB::ErrnoException: Cannot write to file (fd = 1): , errno: 32, strerror: Broken pipe. (CANNOT_WRITE_TO_FILE_DESCRIPTOR) (version 26.8.34.13 (official build))
 
 
 ==== age 的标记文件：解压后每个标记 24 字节（压缩块在文件里的偏移、块内偏移、颗粒行数） ====
 
-$ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90_3/ && clickhouse compressor --decompress < age.cmrk2 | od -A d -t u8 -w24 | head -10
+$ cd /var/lib/clickhouse/store/743/743e529a-a9a0-4882-b46e-be824f21b949/all_1_90_3/ && clickhouse compressor --decompress < age.cmrk2 2>/dev/null | od -A d -t u8 -w24 | head -10
 0000000                    0                    0                 8192
 0000024                    0                 8192                 8192
 0000048                    0                16384                 8192
@@ -300,5 +295,4 @@ $ cd /var/lib/clickhouse/store/7ff/7fffbf89-115e-46ef-90f2-b2ed2c18df62/all_1_90
 0000168                    0                57344                 8192
 0000192                  366                    0                 8192
 0000216                  366                 8192                 8192
-Code: 75. DB::ErrnoException: Cannot write to file (fd = 1): , errno: 32, strerror: Broken pipe. (CANNOT_WRITE_TO_FILE_DESCRIPTOR) (version 26.8.34.13 (official build))
 

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><title>关键帧 D4 · 来历</title>
+<!-- 视觉稿 D 的帧 4（第 01 章「来历」）：上面是 Yandex.Metrica 的时间线（汇总系统 Metrage → 2009 年起 OLAPServer → ClickHouse 起步、2014 年的量、2016 年开源 → 今天），
+     下面是分析型数据库的年代（早期装在自家机房 → 二〇一〇年代初的云数据仓库）。出处：research/FACTS.md 的 H01–H09。只作方向示意。 -->
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/design/kf-d.css">
+<style>
+  .axis { position: absolute; left: 60px; right: 60px; top: 520px; height: 4px; background: var(--g2); }
+  .node { position: absolute; top: 505px; width: 30px; height: 30px; margin-left: -15px; box-sizing: border-box; border: 3px solid var(--g3); background: var(--k); border-radius: 0; }
+  .node.y { border-color: var(--y); background: var(--y); }
+  .yr { position: absolute; top: 548px; width: 300px; margin-left: -150px; text-align: center; font: 700 30px/1 "Mono"; color: var(--w); }
+  .yr.y { color: var(--y); }
+  .tx { position: absolute; width: 300px; margin-left: -150px; text-align: center; font: 500 22px/1.55 "Sans SC"; color: var(--g3); }
+  .tx.up { bottom: 600px; } .tx.dn { top: 598px; }
+  .tx b { color: var(--w); font-weight: 600; }
+  .bar { position: absolute; height: 54px; line-height: 54px; box-sizing: border-box; padding: 0 18px; font: 600 24px/54px "Sans SC"; border: 1px solid var(--g2); background: var(--k2); color: var(--g3); }
+  .bar.y { border-color: var(--y); color: var(--y); background: rgba(250,255,105,.08); }
+  .era { position: absolute; top: 820px; height: 96px; box-sizing: border-box; padding: 14px 22px; border: 1px solid var(--g2); background: var(--k2); font: 500 22px/1.6 "Sans SC"; color: var(--g3); }
+  .era b { color: var(--w); font-weight: 600; font-family: "Mono"; }
+  .era.y { border-color: var(--y); } .era.y b { color: var(--y); }
+</style>
+</head><body>
+<div id="bg" style="position:absolute;inset:0;background:#151515;z-index:-1"></div>
+<div class="stage"></div>
+<div class="id"><i></i>ClickHouse <span>26.8 LTS</span></div>
+<div class="ch"><b>PART 5</b>01 · 来历</div><div class="rule"></div>
+<div class="h">为一个具体的活儿造的：网站统计</div>
+<div class="lab" style="left:60px;top:236px">Yandex.Metrica：用户自己划分人群、自己选条件，现场生成报表</div>
+<div class="bar" style="left:60px;top:300px;width:500px">Metrage：先汇总，再存汇总的结果</div>
+<div class="bar y" style="left:600px;top:300px;width:740px">2009 起 OLAPServer：存原始数据，只认数字，每天重写</div>
+<div class="bar y" style="left:1360px;top:300px;width:500px">ClickHouse：去掉这些限制</div>
+<div class="axis"></div>
+<div class="node" style="left:640px"></div><div class="yr" style="left:640px">2009</div>
+<div class="tx dn" style="left:640px"><b>OLAPServer</b> 用上</div>
+<div class="node" style="left:1020px"></div><div class="yr" style="left:1020px">2014.4</div>
+<div class="tx dn" style="left:1020px">一天约 <b>120 亿</b>次<br>浏览和点击</div>
+<div class="node y" style="left:1400px"></div><div class="yr y" style="left:1400px">2016</div>
+<div class="tx dn" style="left:1400px"><b>开源</b></div>
+<div class="node y" style="left:1780px"></div><div class="yr y" style="left:1780px">今天</div>
+<div class="tx dn" style="left:1780px">13 万亿+ 条记录<br><span style="color:#6d6d64;font-size:18px">（官方文档）</span></div>
+<div class="lab" style="left:60px;top:780px">分析型数据库的年代</div>
+<div class="era" style="left:60px;width:900px"><b>Sybase IQ · Teradata · Vertica · Greenplum</b><br>装在自家机房，靠昂贵的批量导入</div>
+<div class="era" style="left:1000px;width:520px"><b>二〇一〇年代初</b>，云上出现<br><b>Snowflake · BigQuery · Redshift</b></div>
+<div class="era y" style="left:1560px;width:300px"><b>ClickHouse</b><br>开源，一个程序就能跑</div>
+<div class="cap">用户在等着看结果，所以是现场算，要算得极快</div>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });</script>
+</body></html>

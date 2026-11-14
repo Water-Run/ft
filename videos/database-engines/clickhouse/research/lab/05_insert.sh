@@ -31,7 +31,14 @@ q "SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' 
 section "2'. 三个人同时插入，用缺省的异步插入（async_insert = 1，wait_for_async_insert = 1）"
 q "TRUNCATE TABLE demo.signup"
 printf ':) %s\n:) %s\n:) %s\n（三个客户端同时发出）\n\n' "INSERT INTO demo.signup VALUES (9,'ivan',27)" "INSERT INTO demo.signup VALUES (10,'judy',31)" "INSERT INTO demo.signup VALUES (11,'mallory',45)"
-ch -q "INSERT INTO demo.signup VALUES (9,'ivan',27)" & ch -q "INSERT INTO demo.signup VALUES (10,'judy',31)" & ch -q "INSERT INTO demo.signup VALUES (11,'mallory',45)" & wait
+# 三个客户端在容器里一起启动（逐个 podman exec 的启动误差比异步插入的等待窗口还大，第二次完整重跑时三条被分成了 1 + 2 两个片段）
+inct "cat > /tmp/async3.sh <<'EOS'
+clickhouse-client -q \"INSERT INTO demo.signup VALUES (9,'ivan',27)\" &
+clickhouse-client -q \"INSERT INTO demo.signup VALUES (10,'judy',31)\" &
+clickhouse-client -q \"INSERT INTO demo.signup VALUES (11,'mallory',45)\" &
+wait
+EOS
+bash /tmp/async3.sh"
 q "SELECT name, rows FROM system.parts WHERE database='demo' AND table='signup' AND active ORDER BY name"
 q "SELECT * FROM demo.signup ORDER BY id"
 flush_logs
