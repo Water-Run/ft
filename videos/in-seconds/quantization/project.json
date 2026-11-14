@@ -80,8 +80,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "accept",
-  "next": "正式片已出（out/quantization-zh-1080p60.mp4，另有无配乐、仅旁白、字幕与两种封面），check.js --final 通过。等策划者看成片：同意后登记交付（片单状态由维护者同步）；open 项见 README「交付」（F04 次要注解停留偏短、F06/F12 未经人耳、c3 一处措辞），如需修改须重渲。",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 BV1zvsG6PEfx，2026-11-14 14:50）；按发布后冻结，只收集反馈",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -157,5 +157,22 @@
     "speed": {
       "zh": 1.25
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-14",
+    "duration": {
+      "zh": 120
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1zvsG6PEfx",
+      "date": "2026-11-14",
+      "title": "120 秒了解量化：让模型变小的方式和代价",
+      "languages": [
+        "zh"
+      ]
+    }
+  ]
 }
