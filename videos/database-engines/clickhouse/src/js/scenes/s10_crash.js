@@ -10,14 +10,14 @@ scene('crash', ({ root, s, c0 }) => {
   mk(gA, 'lab', 140, 226, null, null, '很多数据库');
   const l1 = mk(gA, 'cell w', 140, 300, 360, 72, '<span>① 先记日志</span>'); vanish(l1, 0); appear(l1, T('r1', '日志'));
   const l2 = mk(gA, 'cell', 560, 300, 330, 72, '<span>② 再改数据</span>'); vanish(l2, 0); appear(l2, T('r1', '日志') + 0.8);
-  [['InnoDB 的 redo 日志', 'InnoDB'], ['SQLite 的 WAL', 'SQLite'], ['PostgreSQL 的 WAL', 'Postgre']].forEach(([t, w], i) => {
+  [['InnoDB 的 redo 日志', 'InnoDB'], ['SQLite 的 WAL 模式', 'SQLite'], ['PostgreSQL 的 WAL', 'Postgre']].forEach(([t, w], i) => {
     const p = mk(gA, 'pill', 140, 430 + i * 90, 700, 66, t); css(p, { fontSize: '28px' }); vanish(p, 0); appear(p, T('r1') + 0.2 + i * 0.5); sfx('tick', T('r1') + 0.2 + i * 0.5, { g: 0.4 });
   });
   const lr = mk(gA, 'lab y', 1040, 226, null, null, 'MergeTree'); vanish(lr, 0); appear(lr, T('r1b') - 0.1);
   const d1 = mk(gA, 'cell y', 1040, 300, 740, 72, '<span>直接把数据写到磁盘上</span>'); vanish(d1, 0); appear(d1, T('r1b', '直接'));
-  const d2 = mk(gA, 'cell ghost lg', 1040, 430, 740, 72, '<span>tmp_insert_all_44_44_0</span>'); vanish(d2, 0); appear(d2, T('r1c', '先写临时')); css(d2, { fontSize: '30px' });
+  const d2 = mk(gA, 'cell ghost lg', 1040, 430, 740, 72, '<span>tmp_insert_all_91_91_0</span>'); vanish(d2, 0); appear(d2, T('r1c', '先写临时')); css(d2, { fontSize: '30px' });
   const d3 = mk(gA, 'h1 y', 1040, 530, null, null, '↓ 写完，改名'); css(d3, { fontSize: '48px' }); vanish(d3, 0); appear(d3, T('r1c', '再改名') - 0.2);
-  const d4 = mk(gA, 'cell y', 1040, 620, 740, 72, '<span>all_44_44_0</span>'); vanish(d4, 0); appear(d4, T('r1c', '再改名')); css(d4, { fontSize: '30px' }); sfx('chime', T('r1c', '再改名') + 0.1, { g: 0.5 });
+  const d4 = mk(gA, 'cell y', 1040, 620, 740, 72, '<span>all_91_91_0</span>'); vanish(d4, 0); appear(d4, T('r1c', '再改名')); css(d4, { fontSize: '30px' }); sfx('chime', T('r1c', '再改名') + 0.1, { g: 0.5 });
   warm(pl, T('r1'), T('r1b')); warm(pr, T('r1b'), T('r2') - 0.3);
   const tAB = T('r2') + 0.6;
   vanish(gA, tAB);
@@ -91,6 +91,7 @@ scene('crash', ({ root, s, c0 }) => {
   const back = mk(gE, 'h1 y', 100, 560, null, null, '把旧片段放回来'); css(back, { fontSize: '90px' }); wipe(back, T('r8b', '放回来'), { dir: 'l', d: 0.7 }); sfx('chime', T('r8b', '放回来') + 0.3, { g: 0.6 });
   const bn = noteAt(gE, 100, 720, '第一个原因：可能还有人在读（第 08 章）'); css(bn, { fontSize: '28px' }); show(bn, tDE + 0.3, { y: 10 });
   old.forEach((f, i) => warm(f, tDE + 0.6 + i * 0.4, tDE + 1.6 + i * 0.4, '#151515', '#33332A')); warm(nw, tDE + 0.8, T('r8b', '坏了'));
+  classAt(nw, 'fade45', Tend('r8b') + 0.2);   // 坏掉的新片段被丢开
   const tEF = T('r9') + 1.8;
   vanish(gE, tEF);
 
@@ -104,14 +105,14 @@ scene('crash', ({ root, s, c0 }) => {
   const c9b = mk(gF, 'h1 y', 1000, 330, null, null, '校验和 ≠ 原来的'); css(c9b, { fontSize: '64px' }); wipe(c9b, T('r9c', '对不上') - 0.3, { dir: 'l', d: 0.6 }); sfx('thud', T('r9c', '对不上') + 0.1, { g: 0.5 });
   const c9n = noteAt(gF, 1000, 430, '（示意）'); css(c9n, { fontSize: '24px' }); appear(c9n, T('r9c') - 0.1);
   warm(ck, T('r9'), T('r10') - 0.3);
-  const mv = foldAt(gF, 100, 680, 480, 150, 'all_1_1_0', ''); vanish(mv, 0); appear(mv, T('r10') - 0.1);
-  const dt = foldAt(gF, 1000, 680, 820, 150, 'detached/broken-on-start_all_1_1_0', 'ghost'); vanish(dt, 0); appear(dt, T('r10', '挪到一边'));
+  const mv = foldAt(gF, 100, 720, 480, 150, 'all_1_1_0', ''); vanish(mv, 0); appear(mv, T('r10') - 0.1);
+  const dt = foldAt(gF, 1000, 720, 820, 150, 'detached/broken-on-start_all_1_1_0', 'ghost'); vanish(dt, 0); appear(dt, T('r10', '挪到一边'));
   tl.fromTo(mv, { x: 0 }, { x: 0, duration: 0.01 }, 0);
   to(mv, T('r10', '挪到一边'), { x: 900, duration: 0.8, ease: 'power3.inOut' }); sfx('whoosh', T('r10', '挪到一边'), { g: 0.5 });
   vanish(mv, T('r10', '挪到一边') + 0.85);
-  const sz = mk(gF, 'lab y', 100, 850, null, null, '大小不对 → 启动时挪到一边'); show(sz, T('r10', '大小不对'), { y: 10 });
-  const er = termAt(gF, 1000, 560, 820, 90); vanish(er.el, 0); appear(er.el, T('r10b', '校验失败') - 0.6);
-  er.line(0, '<span class="out">Checksum doesn\'t match: corrupted data</span>', T('r10b', '校验失败'), {});
+  const sz = mk(gF, 'lab y', 100, 892, null, null, '大小不对 → 启动时挪到一边'); show(sz, T('r10', '大小不对'), { y: 10 });
+  const er = termAt(gF, 1000, 560, 820, 132); vanish(er.el, 0); appear(er.el, T('r10b', '校验失败') - 0.6);
+  er.line(0, '<span class="err">Code: 40. DB::Exception:</span>', T('r10b', '校验失败'), {}); er.line(1, '<span class="err">Checksum doesn\'t match: corrupted data.</span>', T('r10b', '校验失败'), {});
   const stp = mk(gF, 'badge', 1000, 488, null, null, '报错停下'); css(stp, { fontSize: '40px' }); slam(stp, T('r10b', '报错停下'), { from: 1.25 }); sfx('thud', T('r10b', '报错停下') + 0.1, { g: 0.6 });
   drift(cam, s, -1);
 });

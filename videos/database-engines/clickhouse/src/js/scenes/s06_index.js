@@ -58,7 +58,7 @@ scene('index', ({ root, s, c0 }) => {
   const idxC = IDS.map((id, i) => { const c = cellAt(gC, 100 + i * 144, 530, 134, 64, '<span>' + fmt(id) + '</span>', 'y sm'); vanish(c, 0); appear(c, T('i3c', '第一行') + i * 0.14 + 0.1); return c; });
   const n12 = mk(gC, 'big y', 100, 650, null, null, '0'); css(n12, { fontSize: '120px' }); appear(n12, T('i4')); countTo(n12, 0, 12209, T('i4'), 1.0);
   const u12 = mk(gC, 'h2', 600, 700, null, null, '项'); appear(u12, T('i4'));
-  const u12n = mk(gC, 't-note', 600, 756, null, null, '颗粒 12,208 个，索引多出结尾一项'); css(u12n, { fontSize: '22px' }); appear(u12n, T('i4') + 0.6); vanish(u12n, T('i5', '稀疏索引') - 0.1);
+  const u12n = mk(gC, 'lab', 600, 756, null, null, '颗粒 12,208 个，索引多出结尾一项'); css(u12n, { fontSize: '26px' }); appear(u12n, T('i4') + 0.6); vanish(u12n, T('i5', '稀疏索引') - 0.1);
   const n47 = mk(gC, 'big y', 820, 650, null, null, '47.69 KiB'); css(n47, { fontSize: '120px' }); show(n47, T('i4', '四十几'), { y: 14 }); sfx('chime', T('i4', '四十几') + 0.1, { g: 0.5 });
   vanish(n12, T('i5', '稀疏索引') - 0.1); vanish(u12, T('i5', '稀疏索引') - 0.1); vanish(n47, T('i5', '稀疏索引') - 0.1);
   const g2 = glossAt(gC, 100, 810, 1700, '稀疏索引', '<b>稀疏索引</b>　一个颗粒一项，小到能整个放进内存'); show(g2, T('i5', '稀疏索引') - 0.1, { y: 14, d: 0.35 }); sfx('thud', T('i5', '稀疏索引') + 0.05, { g: 0.5 });
@@ -102,7 +102,7 @@ scene('index', ({ root, s, c0 }) => {
   segs.forEach((sg) => sg.cs.forEach((c, i) => { if (i > 0) classAt(c, 'dead', T('i8b', '挑出') - 0.2); }));
   const g3 = glossAt(gE, 100, 730, 1700, '标记', '<b>标记</b>　每列一个标记文件：记着每个颗粒在列文件里从哪里开始'); show(g3, T('i7b') - 0.1, { y: 14, d: 0.35 });
   segs.forEach((sg, k) => { const mk_ = mk(gE, 'fn y', 340 + 10, sg.y + 70, null, null, ['id.cmrk2', 'name.cmrk2', 'age.cmrk2'][k]); css(mk_, { fontSize: '22px' }); vanish(mk_, 0); appear(mk_, T('i7b', '标记') + 0.3 + k * 0.25); });
-  segs.forEach((sg, k) => { const w_ = [T('i8', '编号'), T('i8', '姓名'), T('i8', '年龄')][k]; classAt(sg.cs[0], 'on', Math.min(w_, T('i8') + k * 0.25), 1e9); sfx('tick', w_, { g: 0.5 }); });
+  segs.forEach((sg, k) => { const w_ = [T('i8', '编号'), T('i8', '姓名'), T('i8', '年龄')][k]; const tq = T('i7', '什么位置'); classWins(sg.cs[0], 'on', [[Math.max(tDE + 0.4, tq - 1.2) + k * 0.25, Math.max(tDE + 0.4, tq - 1.2) + k * 0.25 + 0.7], [Math.min(w_, T('i8') + k * 0.25), 1e9]]); sfx('tick', w_, { g: 0.5 }); });
   const rd = rowAt(gE, 340, 800, ['2050', 'Alice', '42'], [210, 310, 150], 76, 'lg y'); vanish(rd.row, 0); appear(rd.row, T('i8b') + 0.6); sfx('chime', T('i8b', '挑出') + 0.1, { g: 0.6 });
   const rd0 = mk(gE, 'lab y', 340, 682, null, null, '每个文件，各读出第 0 个颗粒'); show(rd0, T('i8b', '读出'), { y: 10 });
   const rdl = mk(gE, 'lab y', 100, 816, null, null, '从 8192 行里挑出她'); vanish(rdl, 0); appear(rdl, T('i8b') + 0.6);

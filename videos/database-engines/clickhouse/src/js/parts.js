@@ -79,3 +79,21 @@ const dimTo = (el, t, a, b, d = 0.6) => tl.fromTo(el, { opacity: a }, { opacity:
 function classWins(e, cls, wins) { let last = null; F((t) => { const on = wins.some(([a, b]) => t >= a && t < b); if (on !== last) { e.classList.toggle(cls, on); last = on; } }); }
 // 画面右上角的表名标签：这一段演示用的是哪一张表（实验里的真实表名，research/lab/*.sh）
 function tableTag(parent, text, t0, t1) { const e = mk(parent, 'ttag', 0, 99, null, null, text); css(e, { left: 'auto', right: '86px' }); vanish(e, 0); appear(e, t0); classAt(e, 'flash', t0, t0 + 1.2); if (t1 != null) vanish(e, t1); return e; }
+// clickhouse-client 的 PrettyCompact 结果表：pretty([{ name, values, right }]) → 若干行字符串（表头一行、每行数据前面带行号「1. 」、表尾一行）
+// 字符串列左对齐、表头名靠左；数字列右对齐、表头名靠右（与实验回显 research/lab/out_*.txt 的样子一致）
+function pretty(cols) {
+  const n = cols[0].values.length, pad = String(n).length + 2;
+  const w = cols.map((c) => Math.max(c.name.length, ...c.values.map((v) => String(v).length)) + 2);
+  const sp = ' '.repeat(pad);
+  const head = sp + '┌' + cols.map((c, k) => (c.right ? '─'.repeat(w[k] - c.name.length - 1) + '<b>' + c.name + '</b>─' : '─<b>' + c.name + '</b>' + '─'.repeat(w[k] - c.name.length - 1))).join('┬') + '┐';
+  const rows = [];
+  for (let i = 0; i < n; i++) rows.push((String(i + 1) + '.').padEnd(pad, ' ') + '│' + cols.map((c, k) => { const v = String(c.values[i]); return ' ' + (c.right ? v.padStart(w[k] - 2) : v.padEnd(w[k] - 2)) + ' '; }).join('│') + '│');
+  const foot = sp + '└' + w.map((x) => '─'.repeat(x)).join('┴') + '┘';
+  return [head, ...rows, foot];
+}
+// 在终端 tm 的第 i0 行起，时刻 t 一次打出若干行（客户端拿到结果后整块打印）
+function printAt(tm, i0, lines, t, cls = 'out') { lines.forEach((l, k) => tm.line(i0 + k, '<span class="' + cls + '">' + l + '</span>', t, {})); sfx('tick', t, { g: 0.35 }); }
+const PR = '<span class="pr">:) </span>', PR2 = '<span class="pr">:-] </span>';
+// 一亿行表里的一段：2048–2052 号（Alice 是 2050 号），姓名的长尾巴在格子里省略
+const SL5 = [2048, 2049, 2050, 2051, 2052];
+const NMS = (n) => (n === 2050 ? 'Alice' : 'User0' + n + '…');

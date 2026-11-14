@@ -6,7 +6,8 @@ scene('update', ({ root, s, c0 }) => {
 
   // ── A Alice 过生日 ──
   appear(gA, c0 + 0.05);
-  tableTag(world, '表 <b>demo.users</b> · 一亿行', c0 + 0.1, s.end);
+  tableTag(world, '表 <b>demo.users</b> · 一亿行', c0 + 0.1, T('u7', '轻量更新') - 0.1);
+  tableTag(world, '表 <b>demo.users_lw</b>', T('u7', '轻量更新') - 0.1, s.end);
   mk(gA, 'lab y', 100, 180, null, null, '要改的人');
   const al = rowAt(gA, 100, 240, ['2050', 'Alice', '42'], [210, 310, 150], 90, 'lg y'); slide(al.row, T('u1', '四十二') - 0.4, { x: -80 });
   keyed(al.c[2].firstChild).at(T('u1', '四十三'), { html: '43' }); classAt(al.c[2], 'on', T('u1', '四十三'), T('u1', '四十三') + 1.2); sfx('pop', T('u1', '四十二'), { g: 0.5 }); sfx('chime', T('u1', '四十三') + 0.1, { g: 0.6 });
@@ -18,19 +19,19 @@ scene('update', ({ root, s, c0 }) => {
   // ── B 文件不改：一次变更，每个片段生成一个新版本 ──
   appear(gB, T('u2') - 0.1);
   mk(gB, 'lab', 100, 180, null, null, '原来的片段'); const nl = mk(gB, 'lab y', 1180, 180, null, null, '新版本'); vanish(nl, 0); appear(nl, T('u3', '新版本') - 0.1);
-  const o1 = foldAt(gB, 100, 230, 660, 230, 'all_1_90_3', ''); const o2 = foldAt(gB, 100, 500, 660, 230, 'all_91_91_0', ''); const o2n = mk(o2, 'abs t-note', 360, 12, null, null, 'Dave 那一行'); css(o2n, { fontSize: '22px' });
+  const o1 = foldAt(gB, 100, 220, 660, 200, 'all_1_90_3', ''); const o2 = foldAt(gB, 100, 450, 660, 200, 'all_91_91_0', ''); const o2n = mk(o2, 'abs t-note', 360, 12, null, null, 'Dave 那一行'); css(o2n, { fontSize: '22px' });
   [o1, o2].forEach((f, k) => { wipe(f, T('u2') - 0.1 + k * 0.3, { dir: 'l', d: 0.5 }); ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(f, i, t)); });
-  const lock = mk(gB, 'badge', 100, 750, null, null, '写好的文件，从来不改'); css(lock, { fontSize: '30px' }); slam(lock, T('u2', '不改'), { from: 1.2 }); sfx('thud', T('u2', '不改') + 0.1, { g: 0.6 });
-  const tm = termAt(gB, 100, 800, 1720, 86); vanish(tm.el, 0); appear(tm.el, T('u2b') - 0.1);
+  const lock = mk(gB, 'badge', 100, 670, null, null, '写好的文件，从来不改'); css(lock, { fontSize: '30px' }); slam(lock, T('u2', '不改'), { from: 1.2 }); sfx('thud', T('u2', '不改') + 0.1, { g: 0.6 });
+  const tm = termAt(gB, 100, 732, 1720, 156); tm.line(1, '<span class="out">Ok.</span>', T('u3', '新版本') + 0.3, {}); tm.line(2, '<span class="out">0 rows in set. Elapsed: 0.556 sec.</span>', T('u3', '新版本') + 0.3, {}); vanish(tm.el, 0); appear(tm.el, T('u2b') - 0.1);
   tm.line(0, '<span class="pr">:) </span>ALTER TABLE users UPDATE age = 43 WHERE id = 2050;', T('u2b') - 0.05, { type: 40, cursorUntil: T('u2b', '变更') + 1.5 });
-  const g1 = glossAt(gB, 100, 895, 1720, '变更', '<b>变更</b>（mutation）　改数据的后台任务：每个片段做出一个新版本'); show(g1, T('u2b', '变更') - 0.1, { y: 12, d: 0.35 });
-  const n1 = foldAt(gB, 1180, 230, 640, 230, '', 'y'); const n2 = foldAt(gB, 1180, 500, 640, 230, '', 'y');
+  const g1 = glossAt(gB, 100, 898, 1720, '变更', '<b>变更</b>（mutation）　改数据的后台任务：每个片段做出一个新版本'); show(g1, T('u2b', '变更') - 0.1, { y: 12, d: 0.35 });
+  const n1 = foldAt(gB, 1180, 220, 640, 200, '', 'y'); const n2 = foldAt(gB, 1180, 450, 640, 200, '', 'y');
   [[n1, 'all_1_90_3'], [n2, 'all_91_91_0']].forEach(([f, nm], k) => {
     f.nm.innerHTML = nm + '<span class="y">_92</span>'; wipe(f, T('u3', '新版本') + k * 0.4, { dir: 'l', d: 0.5 }); sfx('pop', T('u3', '新版本') + k * 0.4, { g: 0.5 });
     ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(f, i, t));
   });
-  const ar = [mk(gB, 'h1 y', 830, 300, null, null, '→'), mk(gB, 'h1 y', 830, 570, null, null, '→')]; ar.forEach((a, k) => { css(a, { fontSize: '90px' }); vanish(a, 0); appear(a, T('u3', '新版本') + k * 0.4 + 0.1); });
-  const m92 = noteAt(gB, 1180, 745, '第 92 号变更：名字后面多了 _92'); css(m92, { fontSize: '24px' }); show(m92, T('u3b') - 0.4, { y: 10 });
+  const ar = [mk(gB, 'h1 y', 830, 280, null, null, '→'), mk(gB, 'h1 y', 830, 510, null, null, '→')]; ar.forEach((a, k) => { css(a, { fontSize: '90px' }); vanish(a, 0); appear(a, T('u3', '新版本') + k * 0.4 + 0.1); });
+  const m92 = noteAt(gB, 1180, 672, '第 92 号变更：名字后面多了 _92'); css(m92, { fontSize: '24px' }); show(m92, T('u3b') - 0.4, { y: 10 });
   const tBC = T('u4') + 0.4;
   vanish(gB, tBC);
 

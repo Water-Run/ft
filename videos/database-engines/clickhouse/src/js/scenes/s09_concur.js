@@ -65,7 +65,7 @@ scene('concur', ({ root, s, c0 }) => {
   appear(gC, tBC);
   const tm = termAt(gC, 100, 230, 1720, 200);
   tm.line(0, '<span class="pr">:) </span>BEGIN TRANSACTION;', T('b9', '事务') - 0.1, { type: 22, cursorUntil: T('b9', '默认') });
-  tm.line(1, '<span class="out">DB::Exception: Transactions are not supported</span>', T('b9', '默认'), {});
+  tm.line(1, '<span class="err">Code: 48. DB::Exception: Transactions are not supported. (NOT_IMPLEMENTED)</span>', T('b9', '默认'), {});
   sfx('thud', T('b9', '默认') + 0.05, { g: 0.5 });
   const tn = mk(gC, 'h1', 100, 520, null, null, '几条语句一起成败：得用事务'); css(tn, { fontSize: '72px' }); wipe(tn, T('b9', '一起成败') - 0.4, { dir: 'l', d: 0.7 });
   const tn2 = mk(gC, 'h1 y', 100, 650, null, null, '这个版本，默认没有打开'); css(tn2, { fontSize: '72px' }); wipe(tn2, T('b9', '默认') - 0.3, { dir: 'l', d: 0.6 });

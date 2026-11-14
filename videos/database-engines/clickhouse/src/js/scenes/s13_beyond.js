@@ -51,7 +51,7 @@ scene('beyond', ({ root, s, c0 }) => {
   // ── C 天生不整齐的 JSON 文档 ──
   appear(gC, tBC);
   const D1 = '{\n  "name": "alice",\n  "age": 30,\n  "city": "Rome"\n}';
-  const D2 = '{\n  "name": "bob",\n  "age": 25,\n  "tags": ["x", "y", "z"],\n  "pets": {\n    "cat": "tom",\n    "dog": "rex"\n  },\n  "phone": "…",\n  "…": "三十项"\n}';
+  const D2 = '{\n  "name": "bob",\n  "age": 25,\n  "tags": ["x", "y", "z"],\n  "pets": {\n    "cat": "tom",\n    "dog": "rex"\n  },\n  "phone": "…",\n  …\n}';
   const d1 = mk(gC, 'panel', 100, 230, 760, 330); const d1t = mk(d1, 'mono', 28, 22, null, null, D1); css(d1t, { fontSize: '30px', lineHeight: '1.5' });
   const d2 = mk(gC, 'panel', 960, 230, 860, 640); const d2t = mk(d2, 'mono', 28, 22, null, null, D2); css(d2t, { fontSize: '30px', lineHeight: '1.5' });
   wipe(d1, tBC, { dir: 'l', d: 0.45 }); wipe(d2, T('s5b', '这个人有三项') + 0.6, { dir: 'l', d: 0.5 });
@@ -84,7 +84,7 @@ scene('beyond', ({ root, s, c0 }) => {
   const mg = mk(gE, 'tag', 900, 330, null, null, 'MongoDB'); css(mg, { fontSize: '140px' }); slam(mg, T('s8', 'Mongo D B'), { from: 1.25 }); sfx('thud', T('s8', 'Mongo D B') + 0.1, { g: 0.7 });
   const g2 = glossAt(gE, 900, 560, 920, 'MongoDB', '<b>MongoDB</b>　文档数据库：存的是灵活的、类似 JSON 的文档'); show(g2, T('s8', 'Mongo D B') + 0.5, { y: 12 }); g2.dataset.gloss = 'MongoDB';
   const tmm = termAt(gE, 900, 700, 920, 150); vanish(tmm.el, 0); appear(tmm.el, T('s8b', '问法') - 0.3);
-  tmm.line(0, '<span class="pr">&gt; </span>db.users.find({ name: "alice" })', T('s8b', '问法') - 0.2, { type: 30, cursorUntil: T('s8b', 'S Q L') });
+  tmm.line(0, '<span class="pr">test&gt; </span>db.users.find({ name: "alice" })', T('s8b', '问法') - 0.2, { type: 30, cursorUntil: T('s8b', 'S Q L') });
   const nosql = mk(gE, 'huge y', 100, 780, null, null, '不再是 SQL'); css(nosql, { fontSize: '90px' }); wipe(nosql, T('s8b', 'S Q L') - 0.9, { dir: 'l', d: 0.8 }); sfx('thud', T('s8b', 'S Q L') - 0.5, { g: 0.6 });
   drift(cam, s, 1);
 });

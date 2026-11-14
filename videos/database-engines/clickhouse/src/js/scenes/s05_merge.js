@@ -7,19 +7,20 @@ scene('merge', ({ root, s, c0 }) => {
   // ── A 九百个一行的片段：求一次平均年龄要十几毫秒 ──
   appear(gA, c0 + 0.05);
   tableTag(gA, '表 <b>demo.many</b> · 900 行', c0 + 0.1);
-  const gridEl = mk(gA, 'abs', 100, 190, 1260, 560); const sq = [];
-  for (let i = 0; i < 900; i++) { const e = h('div', 'sq', gridEl); css(e, { left: (i % 45) * 28 + 'px', top: Math.floor(i / 45) * 28 + 'px' }); sq.push(e); }
+  const gridEl = mk(gA, 'abs', 100, 190, 1080, 480); const sq = [];
+  for (let i = 0; i < 900; i++) { const e = h('div', 'sq', gridEl); css(e, { left: (i % 45) * 24 + 'px', top: Math.floor(i / 45) * 24 + 'px', width: '18px', height: '18px' }); sq.push(e); }
   wipe(gridEl, T('m2', '一行一行') - 0.1, { dir: 'l', d: 1.6 });
   const n900 = mk(gA, 'big y', 1420, 180, null, null, '0'); css(n900, { fontSize: '150px' }); appear(n900, T('m2', '一行一行') - 0.1); countTo(n900, 0, 900, T('m2', '一行一行') - 0.1, Math.max(1.6, T('m2b', '九百个') - T('m2', '一行一行')));
   mk(gA, 'lab', 1420, 340, null, null, '个片段');
-  const tmA = termAt(gA, 100, 790, 1260, 150); vanish(tmA.el, 0); appear(tmA.el, T('m3') - 0.1);
+  const tmA = termAt(gA, 100, 690, 1080, 268); vanish(tmA.el, 0); appear(tmA.el, T('m3') - 0.1);
   tmA.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM demo.many;', T('m3') - 0.05, { type: 38, cursorUntil: T('m3', '十几毫秒') });
-  tmA.line(1, '<span class="out">16  12  13  39  12  ms</span>  <span class="dim">（五次）</span>', T('m3', '十几毫秒'), {});
-  const t13 = mk(gA, 'huge y', 1420, 400, null, null, '13 ms'); css(t13, { fontSize: '130px' }); slam(t13, T('m3', '十几毫秒'), { from: 1.2 }); sfx('thud', T('m3', '十几毫秒') + 0.1, { g: 0.6 });
-  const tl13 = mk(gA, 'lab', 1420, 545, null, null, '900 行 · 900 个片段'); appear(tl13, T('m3', '十几毫秒') + 0.2);
+  printAt(tmA, 1, pretty([{ name: 'avg(age)', values: ['48.57'], right: true }]), T('m3', '十几毫秒') - 0.1);
+  tmA.line(4, '<span class="out">1 row in set. Elapsed: 0.011 sec.</span>', T('m3', '十几毫秒') - 0.1, {});
+  const t13 = mk(gA, 'huge y', 1420, 400, null, null, '11 ms'); css(t13, { fontSize: '130px' }); slam(t13, T('m3', '十几毫秒'), { from: 1.2 }); sfx('thud', T('m3', '十几毫秒') + 0.1, { g: 0.6 });
+  const tl13 = mk(gA, 'lab', 1420, 545, null, null, '五次：15 11 11 32 11'); appear(tl13, T('m3', '十几毫秒') + 0.2);
   const t8 = mk(gA, 'lab y', 1420, 610, null, null, '开头那一亿行：8 ms'); css(t8, { fontSize: '26px' }); show(t8, T('m3a', '差不多'), { y: 12 });
   const t1 = mk(gA, 'huge', 1420, 680, null, null, '1 ms'); css(t1, { fontSize: '130px' }); slam(t1, T('m3b', '一毫秒'), { from: 1.2 }); sfx('chime', T('m3b', '一毫秒') + 0.1, { g: 0.6 });
-  const tl1 = mk(gA, 'lab', 1420, 825, null, null, '并成 1 个片段之后'); appear(tl1, T('m3b', '并成') + 0.1);
+  const tl1 = mk(gA, 'lab', 1420, 825, null, null, '并成一个片段后：五次都是 1'); appear(tl1, T('m3b', '并成') + 0.1);
   const sw0 = T('m4', '每一个') - 0.2, sw1 = Tend('m4', 0.3);
   F((t) => { const k = clamp((t - sw0) / Math.max(0.5, sw1 - sw0)) * 900; for (let i = 0; i < 900; i++) { const on = t >= sw0 && i < k; if (sq[i]._on !== on) { sq[i]._on = on; sq[i].classList.toggle('y', on); } } });
   const lsw = mk(gA, 'lab y', 1420, 870, null, null, '← 每个片段都翻一遍'); show(lsw, T('m4') - 0.1, { y: 12 });
@@ -39,10 +40,14 @@ scene('merge', ({ root, s, c0 }) => {
   const z0 = mk(gB, 'fn', X0, 335, null, null, '0'); css(z0, { fontSize: '24px' }); appear(z0, tAB);
   const pa = mk(gB, 'fn', X0 + 1000 * PX - 130, 590, null, null, 'parts_to_delay_insert'); css(pa, { fontSize: '24px' }); show(pa, T('m5b', '一千'), { y: 10 });
   const pb = mk(gB, 'fn', X0 + 3000 * PX - 420, 590, null, null, 'parts_to_throw_insert'); css(pb, { fontSize: '24px' }); show(pb, T('m5b', '三千'), { y: 10 });
-  const tmB = termAt(gB, 100, 700, 1700, 100); vanish(tmB.el, 0); appear(tmB.el, T('m5b', '三千'));
-  tmB.line(0, '<span class="pr">!! </span><span class="out">Too many parts (N). </span><span class="slow">Merges are processing significantly slower than inserts</span>', T('m5b', '三千') + 0.2, {});
-  const slowEl = tmB.rows[0].querySelector('.slow'); classAt(slowEl, 'y', T('m5c', '没有') - 0.2);
-  const slowN = mk(gB, 'h2 y', 100, 830, null, null, '后台合并，跟不上插入'); show(slowN, T('m5c') - 0.1, { y: 12 });
+  const tmB = termAt(gB, 100, 690, 1720, 182); vanish(tmB.el, 0); appear(tmB.el, T('m5b', '三千'));
+  tmB.line(0, '<span class="err">Code: 252. DB::Exception: Too many parts (20 with average size of 458.00 B)</span>', T('m5b', '三千') + 0.2, {});
+  tmB.line(1, '<span class="err">in table \'demo.few (…)\'. </span><span class="slow">Merges are processing significantly slower than inserts.</span>', T('m5b', '三千') + 0.2, {});
+  tmB.line(2, '<span class="err">(TOO_MANY_PARTS)</span>', T('m5b', '三千') + 0.2, {});
+  const slowEl = tmB.rows[1].querySelector('.slow');
+  const fewN = mk(gB, 'pill on', 1000, 880, null, null, '实验：上限调成 20，第 21 次插入就报错'); css(fewN, { fontSize: '28px', height: '60px' }); slam(fewN, T('m5b', '三千') + 0.5, { from: 1.1 });
+  tableTag(gB, '表 <b>demo.few</b>', T('m5b', '三千') + 0.2); classAt(slowEl, 'y', T('m5c', '没有') - 0.2);
+  const slowN = mk(gB, 'h2 y', 100, 884, null, null, '后台合并，跟不上插入'); show(slowN, T('m5c') - 0.1, { y: 12 });
   const tBC = T('m6') + 0.5;
   vanish(gB, tBC);
 
@@ -161,15 +166,15 @@ scene('merge', ({ root, s, c0 }) => {
   // ── F 一亿人的九十个片段，并成一个 ──
   appear(gF, tEF);
   tableTag(gF, '表 <b>demo.users</b> · 一亿行', tEF);
-  const tmF = termAt(gF, 100, 170, 1060, 90); vanish(tmF.el, 0); appear(tmF.el, tEF);
+  const tmF = termAt(gF, 100, 170, 1060, 174); tmF.line(1, '<span class="out">Ok.</span>', Tend('m13b') - 0.2, {}); tmF.line(2, '<span class="out">0 rows in set. Elapsed: 10.549 sec.</span>', Tend('m13b') - 0.2, {}); vanish(tmF.el, 0); appear(tmF.el, tEF);
   tmF.line(0, '<span class="pr">:) </span>OPTIMIZE TABLE users FINAL;', T('m13', '并成') - 0.1, { type: 36, cursorUntil: T('m13', 'all') });
   const g90 = [];
-  for (let i = 0; i < 90; i++) { const e = mk(gF, 'sq-l', 100 + (i % 15) * 60, 310 + Math.floor(i / 15) * 60, 50, 50); vanish(e, 0); appear(e, tEF + i * 0.015); g90.push(e); }
-  const big90 = foldAt(gF, 1100, 310, 700, 350, 'all_1_90_3', 'y'); ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(big90, i, t)); wipe(big90, T('m13', 'all'), { dir: 'l', d: 0.6 }); sfx('chime', T('m13', 'all') + 0.3, { g: 0.6 });
+  for (let i = 0; i < 90; i++) { const e = mk(gF, 'sq-l', 100 + (i % 15) * 60, 370 + Math.floor(i / 15) * 60, 50, 50); vanish(e, 0); appear(e, tEF + i * 0.015); g90.push(e); }
+  const big90 = foldAt(gF, 1100, 370, 700, 350, 'all_1_90_3', 'y'); ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(big90, i, t)); wipe(big90, T('m13', 'all'), { dir: 'l', d: 0.6 }); sfx('chime', T('m13', 'all') + 0.3, { g: 0.6 });
   g90.forEach((e, i) => { classAt(e, 'y', T('m13', '并成') + i * 0.012, T('m13', 'all') + 0.1); vanish(e, T('m13', 'all') + 0.25); });
-  const sec10 = mk(gF, 'huge y', 100, 720, null, null, '0.0 s'); css(sec10, { fontSize: '170px' }); appear(sec10, T('m13b') - 0.05); countTo(sec10, 0, 10.5, T('m13b') - 0.05, Tend('m13b') - T('m13b') - 0.2, (v) => v.toFixed(1) + ' s');
-  const l10 = mk(gF, 'h2', 760, 790, null, null, '把一亿行重新写了一遍'); show(l10, T('m13b', '重新'), { y: 12 });
-  const tFG = T('m14') + 0.4;
+  const sec10 = mk(gF, 'huge y', 100, 760, null, null, '0.0 s'); css(sec10, { fontSize: '150px' }); appear(sec10, T('m13b') - 0.05); countTo(sec10, 0, 10.5, T('m13b') - 0.05, Tend('m13b') - T('m13b') - 0.2, (v) => v.toFixed(1) + ' s');
+  const l10 = mk(gF, 'h2', 760, 820, null, null, '把一亿行重新写了一遍'); show(l10, T('m13b', '重新'), { y: 12 });
+  const tFG = T('m14') + 1.8;
   vanish(gF, tFG);
 
   // ── G MergeTree 家族 ──
@@ -186,6 +191,7 @@ scene('merge', ({ root, s, c0 }) => {
   // ── H 一亿人排得整整齐齐，在一个片段里 ──
   appear(gH, tGH);
   tableTag(gH, '表 <b>demo.users</b> · 一亿行', tGH);
+  const dvH = noteAt(gH, 100, 868, 'Dave 后来那一行，另在 all_91_91_0 里'); css(dvH, { fontSize: '26px' }); show(dvH, tGH + 1.2, { y: 8 });
   const lh = mk(gH, 'lab y', 100, 170, null, null, 'all_1_90_3 · 一亿行 · 三个列文件（压缩后）'); wipe(lh, tGH, { dir: 'l', d: 0.5 });
   [['id.bin', 383.12, '383 MiB'], ['name.bin', 498.66, '499 MiB'], ['age.bin', 0.529, '529 KiB']].forEach(([nm, v, lab], i) => {
     const y = 270 + i * 190, w = Math.max(8, 1300 * v / 498.66);

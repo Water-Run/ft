@@ -7,12 +7,13 @@ scene('engine', ({ root, s, c0 }) => {
 
   // ── A 建表的最后写上 ENGINE；MySQL 也要挑 ──
   appear(A, c0 + 0.05);
-  const tm = termAt(A, 100, 190, 1100, 270);
+  const tm = termAt(A, 100, 190, 1100, 290);
   const tE = T('e1', '引擎') - 0.1;
   tm.line(0, '<span class="pr">:) </span>CREATE TABLE users', c0 + 0.15, { type: 40, cursor: false });
-  tm.line(1, '    (id UInt32, name String, age UInt8)', c0 + 0.9, { type: 46, cursor: false });
-  tm.line(2, 'ENGINE = MergeTree', c0 + 1.6, { type: 30, cursor: false });
-  tm.line(3, 'ORDER BY id;', c0 + 2.3, { type: 30, cursorUntil: c0 + 3.2 });
+  tm.line(1, PR2 + '(id UInt32, name String, age UInt8)', c0 + 0.9, { type: 46, cursor: false });
+  tm.line(2, PR2 + 'ENGINE = MergeTree', c0 + 1.6, { type: 30, cursor: false });
+  tm.line(3, PR2 + 'ORDER BY id;', c0 + 2.3, { type: 30, cursorUntil: c0 + 3.0 });
+  tm.line(4, '<span class="out">Ok.</span>', c0 + 3.1, {}); tm.line(5, '<span class="out">0 rows in set.</span>', c0 + 3.1, {});
   classAt(tm.rows[2], 'y', T('e1', 'engine'), T('e2') + 0.2);
   const lab1 = mk(A, 'lab y', 100, 140, null, null, 'ClickHouse'); appear(lab1, c0 + 0.1);
   const g1 = glossAt(A, 1260, 230, 560, '表引擎', '<b>表引擎</b>　每张表自己的 ENGINE：决定这张表的数据怎样存、存在哪里，怎样读写'); show(g1, T('e1', '表引擎') - 0.1, { y: 16, d: 0.35 });
@@ -23,7 +24,7 @@ scene('engine', ({ root, s, c0 }) => {
   my.line(0, '<span class="pr">mysql&gt; </span>CREATE TABLE t (…)', T('e2', 'MySQL'), { type: 34, cursor: false });
   const eng = my.line(1, '', T('e2'), {});
   const engEl = my.rows[1]; css(engEl, { left: '22px' });
-  keyed(engEl).at(T('e2', 'MyISAM'), { html: 'ENGINE = <span class="y">MyISAM</span>;' }).at(T('e2', 'InnoDB'), { html: 'ENGINE = <span class="y">InnoDB</span>;' });
+  keyed(engEl).at(T('e2', 'MyISAM'), { html: '<span class="pr">    -&gt; </span>ENGINE = <span class="y">MyISAM</span>;' }).at(T('e2', 'InnoDB'), { html: '<span class="pr">    -&gt; </span>ENGINE = <span class="y">InnoDB</span>;' });
   sfx('tick', T('e2', 'MyISAM'), { g: 0.5 }); sfx('tick', T('e2', 'InnoDB'), { g: 0.5 });
   const mn = noteAt(A, 1260, 600, '存表的两种做法\n要你挑一个'); show(mn, T('e2', 'InnoDB') - 0.2, { y: 14 });
   warm(tm.el, T('e1'), T('e2')); warm(my.el, T('e2'), T('e3') - 0.2);
@@ -58,14 +59,15 @@ scene('engine', ({ root, s, c0 }) => {
   vanish(B, tC);
 
   // ── C 建表时不写引擎，给你的就是它 ──
-  appear(C, tC); css(C, { top: '90px' });
-  const t2 = termAt(C, 60, 230, 1500, 270);
-  const tOut = Math.max(T('e6', '给你的'), tC + 1.9);
+  appear(C, tC);
+  const t2 = termAt(C, 60, 200, 1500, 372);
+  const tOut = Math.max(T('e6', '给你的'), tC + 2.0);
   t2.line(0, '<span class="pr">:) </span>CREATE TABLE demo.noengine (id UInt32, name String, age UInt8) ORDER BY id;', tC + 0.05, { type: 80, cursor: false });
-  t2.line(1, '<span class="pr">:) </span>SELECT engine FROM system.tables WHERE name = \'noengine\';', tC + 1.1, { type: 80, cursorUntil: tOut + 0.5 });
-  t2.line(2, '<span class="out">MergeTree</span>', tOut, {});
-  const dm = mk(C, 'h2 y', 60, 560, null, null, '不写 ENGINE，缺省就是 MergeTree'); show(dm, tOut + 0.3, { y: 16 }); sfx('chime', tOut + 0.05, { g: 0.6 });
-  const dm2 = noteAt(C, 60, 640, '它自己的日志表 query_log、part_log\n也都是 MergeTree'); show(dm2, tOut + 0.4, { y: 16 });
+  t2.line(1, '<span class="out">Ok.</span>', tC + 1.05, {}); t2.line(2, '<span class="out">0 rows in set.</span>', tC + 1.05, {});
+  t2.line(3, '<span class="pr">:) </span>SELECT engine FROM system.tables WHERE name = \'noengine\';', tC + 1.2, { type: 80, cursorUntil: tOut + 0.5 });
+  printAt(t2, 4, pretty([{ name: 'engine', values: ['MergeTree'] }]), tOut); t2.line(7, '<span class="out">1 row in set.</span>', tOut, {});
+  const dm = mk(C, 'h2 y', 60, 610, null, null, '不写 ENGINE，缺省就是 MergeTree'); show(dm, tOut + 0.3, { y: 16 }); sfx('chime', tOut + 0.05, { g: 0.6 });
+  const dm2 = noteAt(C, 60, 690, '它自己的日志表 query_log、part_log\n也都是 MergeTree'); show(dm2, tOut + 0.4, { y: 16 });
   vanish(C, T('e8') - 0.2);
 
   // ── D MergeTree = Merge + Tree ──

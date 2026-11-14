@@ -227,10 +227,10 @@ scene('history', ({ root, s, c0 }) => {
   const g8 = mk(world, 'huge y', 640, 190, null, null, '8 ms'); css(g8, { fontSize: '280px' }); slam(g8, T('h12', '开头'), { from: 1.25 }); sfx('thud', T('h12', '开头') + 0.1, { g: 0.6 });
   const gq = mk(world, 'h1', 640, 500, null, null, '它是怎么存数据的？'); fadeIn(gq, T('h12b') - 0.1);
   const eng = mk(world, 'abs term', 640, 620, 1000, 130);
-  eng.innerHTML = '<span class="pr">:) </span>CREATE TABLE users (…)\n   <b>ENGINE</b> = …';
+  eng.innerHTML = '<span class="pr">:) </span>CREATE TABLE users (…)\n<span class="pr">:-] </span><b>ENGINE</b> = …';
   wipe(eng, T('h12b', '建表') - 0.2, { dir: 'l', d: 0.5 }); sfx('pop', T('h12b', '一个词'), { g: 0.5 });
   for (const e of [g8, gq]) classAt(e, 'fade45', Tend('h12b') + 0.2);
-  const engHi = mk(world, 'abs', 708, 676, 113, 50); css(engHi, { border: '4px solid var(--y)' }); vanish(engHi, 0); wipe(engHi, T('h12b', '一个词') - 0.05, { dir: 'l', d: 0.3 });
+  const engHi = mk(world, 'abs', 725, 676, 113, 50); css(engHi, { border: '4px solid var(--y)' }); vanish(engHi, 0); wipe(engHi, T('h12b', '一个词') - 0.05, { dir: 'l', d: 0.3 });
 
   drift(cam, s, -1);
 });

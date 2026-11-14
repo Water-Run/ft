@@ -131,28 +131,30 @@ scene('column', ({ root, s, c0 }) => {
   const H = groupAt(world); appear(H, T('c15') - 0.1);
   tableTag(H, '表 <b>demo.users</b> · 一亿行', T('c15') - 0.1);
   const lH = mk(H, 'lab', 100, 180, null, null, '一亿行 · 求平均年龄'); appear(lH, T('c15') - 0.1);
-  const tm = termAt(H, 100, 240, 1060, 160); vanish(tm.el, 0); appear(tm.el, T('c15') - 0.1);
+  const tm = termAt(H, 100, 240, 1060, 268); vanish(tm.el, 0); appear(tm.el, T('c15') - 0.1);
   tm.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('c15') - 0.05, { type: 38, cursorUntil: T('c15', '几毫秒') + 0.2 });
-  tm.line(1, '<span class="out">48.99999546</span>', T('c15', '几毫秒'), {});
+  printAt(tm, 1, pretty([{ name: 'avg(age)', values: ['48.99999546'], right: true }]), T('c15', '几毫秒') - 0.1);
+  tm.line(4, '<span class="out">1 row in set. Elapsed: 0.008 sec.</span>', T('c15', '几毫秒') - 0.1, {});
   const ms = mk(H, 'huge y', 1230, 220, null, null, '8 ms'); css(ms, { fontSize: '230px' }); slam(ms, T('c15', '几毫秒'), { from: 1.3 }); sfx('chime', T('c15', '几毫秒') + 0.1);
   const steps = [['读 529 KiB', '读下来'], ['解压', '解压'], ['一亿个数求平均', '求平均']];
   steps.forEach(([nm, w], i) => {
-    const p = mk(H, 'pill', 100 + i * 560, 520, i === 2 ? 640 : 520, 76, '<span>' + nm + '</span>'); css(p, { fontSize: '32px' }); show(p, T('c15', w) - 0.1, { y: 16 }); sfx('tick', T('c15', w), { g: 0.5 });
+    const p = mk(H, 'pill', 100 + i * 560, 560, i === 2 ? 640 : 520, 76, '<span>' + nm + '</span>'); css(p, { fontSize: '32px' }); show(p, T('c15', w) - 0.1, { y: 16 }); sfx('tick', T('c15', w), { g: 0.5 });
     classWins(p, 'on', i === 0 ? [[T('c15', w), T('c15', w) + 0.9], [T('c15b') - 0.2, T('c16') - 0.1]] : [[T('c15', w), T('c15', w) + 0.9]]);
     if (i === 0) keyed(p.firstChild).at(T('c15b') - 0.2, { html: '从内存缓存读 529 KiB' });
   });
-  const hot = noteAt(H, 100, 700, '30 次连跑：7–9 毫秒'); show(hot, T('c15') + 1.0, { y: 14 });
+  const hot = noteAt(H, 100, 700, '30 次连跑：7–9 毫秒（热缓存）'); show(hot, T('c15') + 1.0, { y: 14 });
   const hotP = mk(H, 'pill on', 100, 780, null, null, '热缓存：数据已在内存里'); css(hotP, { fontSize: '30px', height: '64px' }); slam(hotP, T('c15b') - 0.3, { from: 1.1 }); sfx('pop', T('c15b', '内存缓存'), { g: 0.5 });
   vanish(H, T('c16') - 0.1);
 
   // ── 新来一个人呢？ ──
   const Q = groupAt(world); appear(Q, T('c16') - 0.1);
-  tableTag(Q, '表 <b>demo.users8</b> · 8 行', T('c16') - 0.1);
-  const files3 = FILES.map(([nm, vals, y], k) => { const l = mk(Q, 'fn', 710, y + 22, null, null, nm); const cs = stripAt(Q, FX, y, vals, CW, 76); wipe(l, T('c16') + k * 0.4, { dir: 'l', d: 0.4 }); cs.forEach((c, i) => wipe(c, T('c16') + k * 0.4 + i * 0.03, { dir: 'l', d: 0.3 })); classAt(l, 'y', T('c16', '对齐'), T('c16b') - 0.1); return { l, cs }; });
+  tableTag(Q, '表 <b>demo.users</b> · 一亿行', T('c16') - 0.1);
+  const FQ = [['id.bin', SL5, 280], ['name.bin', SL5.map(NMS), 400], ['age.bin', SL5.map(AG), 520]];
+  const files3 = FQ.map(([nm, vals, y], k) => { const l = mk(Q, 'fn', 470, y + 22, null, null, nm); const cs = stripAt(Q, 640, y, vals, 190, 76, 'sm'); wipe(l, T('c16') + k * 0.4, { dir: 'l', d: 0.4 }); cs.forEach((c, i) => wipe(c, T('c16') + k * 0.4 + i * 0.03, { dir: 'l', d: 0.3 })); classAt(l, 'y', T('c16', '对齐'), T('c16b') - 0.1); return { l, cs }; });
   files3.forEach(({ cs }) => cs.forEach((c) => classAt(c, 'y', T('c16', '对齐'), T('c16b') - 0.1)));
-  const lq = mk(Q, 'lab', 710, 190, null, null, '整张表：按编号排好，各列对齐'); appear(lq, T('c16') - 0.1);
-  const bq = mk(Q, 'huge y', 120, 330, null, null, '？'); css(bq, { fontSize: '420px' }); slam(bq, T('c16b', '新来') + 0.3, { from: 1.3 }); sfx('thud', T('c16b', '新来') + 0.4, { g: 0.6 });
-  const ln = mk(Q, 'lab y', 710, 670, null, null, '新来的人'); appear(ln, T('c16b', '新来') - 0.1);
-  const nw = rowAt(Q, FX, 650, ['?', '?', '?'], [CW, CW, CW], 76, 'ghost'); slide(nw.row, T('c16b', '新来') - 0.1, { x: -120 }); sfx('pop', T('c16b', '新来'));
+  const lq = mk(Q, 'lab', 640, 190, null, null, '整张表（这里画 2048–2052 号）：按编号排好，各列对齐'); appear(lq, T('c16') - 0.1);
+  const bq = mk(Q, 'huge y', 70, 350, null, null, '？'); css(bq, { fontSize: '330px' }); slam(bq, T('c16b', '新来') + 0.3, { from: 1.3 }); sfx('thud', T('c16b', '新来') + 0.4, { g: 0.6 });
+  const ln = mk(Q, 'lab y', 640, 608, null, null, '新来的人'); appear(ln, T('c16b', '新来') - 0.1);
+  const nw = rowAt(Q, 640, 648, ['?', '?', '?'], [190, 190, 190], 76, 'ghost'); slide(nw.row, T('c16b', '新来') - 0.1, { x: -120 }); sfx('pop', T('c16b', '新来'));
   drift(cam, s, -1);
 });

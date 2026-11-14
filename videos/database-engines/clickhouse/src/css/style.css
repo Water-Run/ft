@@ -148,3 +148,19 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .fade45 { opacity: .45 !important; }
 .ttag.flash { background: var(--y); color: var(--k); border-color: var(--y); }
 .ttag.flash b { color: var(--k); }
+/* 终端：等宽字体不连字（!=、-> 照原样显示）；结果表的表头加粗 */
+.term, .mono, .fn { font-variant-ligatures: none; }
+.term .out b { color: var(--w); font-weight: 700; }
+.term .err { color: var(--w); }
+/* 片尾：clickhouse-client 的结果表（PrettyCompact 的样子：表头嵌在上框线里，行号在框外，行之间不画线） */
+.ctab { position: absolute; display: grid; grid-template-columns: 60px 1fr 520px; white-space: normal; font: 500 28px/1.45 "Mono", "Sans SC"; color: var(--g3); }
+.ctab > div { padding: 6px 18px; }
+.ctab .rn { color: var(--g4); text-align: right; padding-right: 10px; }
+.ctab .c2 { border-left: 2px solid var(--g3); }
+.ctab .c3 { border-left: 2px solid var(--g3); border-right: 2px solid var(--g3); }
+.ctab .hd { border-top: 2px solid var(--g3); height: 24px; padding-top: 0; }
+.ctab .hd span { position: relative; top: -19px; background: var(--k2); padding: 0 8px; margin-left: -6px; color: var(--w); font-weight: 700; }
+.ctab .last { border-bottom: 2px solid var(--g3); padding-bottom: 12px; }
+.ctab .nm { color: var(--w); font-weight: 700; font-size: 34px; }
+.ctab .foot { grid-column: 1 / -1; padding: 22px 0 0 0; font: 500 28px/1 "Mono"; }
+.gone { opacity: 0 !important; }

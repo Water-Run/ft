@@ -48,10 +48,10 @@ scene('open', ({ root, s }) => {
   // 它们的活儿：找到 Alice 改年龄，Alice 注销。这个终端一直带到下一屏（同一个终端，换一个问题）
   const tmBox = mk(world, 'abs', 0, 0, 1920, 1080);
   const tm = termAt(tmBox, 100, 660, 1120, 132);
-  show(tm.el, T('o3'), { y: 20, d: 0.4 });
+  show(tm.el, T('o3b', '找到') - 0.35, { y: 20, d: 0.3 });
   const tUp = T('o3b', '找到'), tDel = T('o3b', '注销');
-  tm.line(0, '<span class="pr">:) </span>UPDATE users SET age = 43 WHERE id = 2050;', tUp, { type: 36, cursorUntil: tDel - 0.3 });
-  tm.line(1, '<span class="pr">:) </span>DELETE FROM users WHERE id = 2050;', tDel - 0.2, { type: 36, cursorUntil: T('o4') });
+  tm.line(0, '<span class="pr">mysql&gt; </span>UPDATE users SET age = 43 WHERE id = 2050;', tUp, { type: 36, cursorUntil: tDel - 0.3 });
+  tm.line(1, '<span class="pr">mysql&gt; </span>DELETE FROM users WHERE id = 2050;', tDel - 0.2, { type: 36, cursorUntil: T('o4') });
   slide(rAl.row, tUp - 0.15, { x: 60 }); appear(dots2, tUp);
   for (const c of rAl.c) classAt(c, 'y', tUp, tDel + 0.6);
   classAt(rAl.c[2], 'on', T('o3b', '年龄') - 0.1, T('o3b', '年龄') + 0.9);
@@ -78,16 +78,16 @@ scene('open', ({ root, s }) => {
   hide(gA, tB, { y: 0, d: 0.35 });
 
   // ══ B：一亿行的表（之后一直留着） ══
-  const tbl = mk(world, 'abs', 0, 0, 1920, 1080); vanish(tbl, 0); appear(tbl, tB + 0.35);
+  const tbl = mk(world, 'abs', 0, 0, 1920, 1080); vanish(tbl, 0); appear(tbl, tB + 0.15);
   const IDS = [1, 2, 3, 4, 5, 6, 7, null, 2049, 2050, 2051, null, 99999998, 99999999, 100000000];
   const MW = [180, 280, 80], MX = 100, MY = 176, MH = 44, RX = 706;
   const hd = rowAt(tbl, MX, MY - 54, ['编号', '姓名', '年龄'], MW, 44, 'sm'); for (const c of hd.c) css(c, { background: 'transparent', borderColor: 'transparent', color: 'var(--g3)' });
   const mrows = [];
   IDS.forEach((n, i) => {
     const y = MY + i * MH;
-    if (n == null) { const d = mk(tbl, 't-note', MX + 14, y + 4, null, null, '⋮'); mrows.push({ dots: d, y }); wipe(d, tB + 0.4 + i * 0.05, { dir: 't', d: 0.3 }); return; }
+    if (n == null) { const d = mk(tbl, 't-note', MX + 14, y + 4, null, null, '⋮'); mrows.push({ dots: d, y }); wipe(d, tB + 0.2 + i * 0.05, { dir: 't', d: 0.3 }); return; }
     const r = rowAt(tbl, MX, y, U(n), MW, MH + 2, 'sm'); mrows.push({ ...r, n, y });
-    wipe(r.row, tB + 0.4 + i * 0.05, { dir: 'l', d: 0.35 });
+    wipe(r.row, tB + 0.2 + i * 0.05, { dir: 'l', d: 0.35 });
   });
   const real = mrows.filter((r) => r.c);
   const cnt = mk(tbl, 'lab', MX, MY + IDS.length * MH + 14, null, null, '共 100,000,000 行'); appear(cnt, T('o6', '一亿'));
@@ -103,22 +103,23 @@ scene('open', ({ root, s }) => {
   const fm = mk(gR1, 'mono y', RX, 430, null, null, ''); css(fm, { fontSize: '52px' });
   typeText(fm, 'Σ age ÷ 100,000,000', T('o7', '加起来'), 24, { cursor: false });
   // 「所有人的年龄」：年龄这一格从上到下依次亮起
-  const tAll = T('o7', '所有人');
+  const tAll = T('o7') + 0.2;
   real.forEach((r, i) => classAt(r.c[2], 'y', tAll + i * 0.08, T('o8') + 0.2));
   // 交给 ClickHouse：终端、结果、不到十毫秒
   // 上一屏的终端挪到右边（旧的两行先暗着留下），讲到交给 ClickHouse 时清掉，打新的问题
   for (const r of tm.rows) vanish(r, tB + 0.7);
   dimTo(tm.el, tB + 0.7, 0.35, 1, 0.3);
-  const idle = h('div', 'mono', tm.el, ''); css(idle, { position: 'absolute', left: '22px', top: '14px', whiteSpace: 'pre' }); vanish(idle, 0); appear(idle, tB + 0.75); vanish(idle, T('o8') - 0.1);
-  typeText(idle, '<span class="pr">:) </span>', tB + 0.75, 60, { sfx: false, cursorUntil: T('o8') - 0.1 });
+  classAt(tmBox, 'gone', tB + 0.2, T('o8') - 0.35);   // 挪到右边的途中收起，交给 ClickHouse 时再出来
   tl.fromTo(tmBox, { x: 0, y: 0 }, { x: 600, y: -120, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tB);
+  tl.fromTo(tm.el, { width: 1120, height: 132 }, { width: 640, height: 268, duration: 0.7, ease: 'power3.inOut', immediateRender: false }, tB);
   tm.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('o8') - 0.1, { type: 40, cursorUntil: T('o8', '不到') });
-  tm.line(1, '<span class="out">48.99999546</span>', T('o8', '十毫秒') - 0.1, {});
+  printAt(tm, 1, pretty([{ name: 'avg(age)', values: ['48.99999546'], right: true }]), T('o8', '十毫秒') - 0.15);
+  tm.line(4, '<span class="out">1 row in set. Elapsed: 0.008 sec.</span>', T('o8', '十毫秒') - 0.15, {});
   hide(tm.el, T('o11') - 0.3, { y: 0, d: 0.3 });
-  const ms = mk(gB, 'huge y', 690, 700, null, null, '8 ms'); css(ms, { fontSize: '200px' });
+  const ms = mk(gB, 'huge y', 1380, 560, null, null, '8 ms'); css(ms, { fontSize: '180px' });
   slam(ms, T('o8', '十毫秒'), { from: 1.3 }); sfx('chime', T('o8', '十毫秒') + 0.1);
   classAt(ms, 'fade45', T('o10') - 0.1);
-  const nt = noteAt(gB, 1240, 730, '热缓存 · 一亿行 · 本机\n30 次连跑：7–9 毫秒'); show(nt, T('o8', '十毫秒') + 0.5, { y: 14, d: 0.4 }); classAt(nt, 'fade45', T('o10') - 0.1); classAt(tm.el, 'fade45', T('o10') - 0.1);
+  const nt = noteAt(gB, 1386, 770, '热缓存 · 一亿行 · 本机\n30 次连跑：7–9 毫秒'); show(nt, T('o8', '十毫秒') + 0.5, { y: 14, d: 0.4 }); classAt(nt, 'fade45', T('o10') - 0.1); classAt(tm.el, 'fade45', T('o10') - 0.1);
   // 这几毫秒里读了哪些数据？右上的一组让位给问题
   hide(gR1, T('o9') - 0.25, { y: -10, d: 0.3 });
   const rq = mk(gB, 'abs h1 y', RX, 170, null, null, '读了哪些数据？'); css(rq, { fontSize: '80px' });
@@ -126,7 +127,7 @@ scene('open', ({ root, s }) => {
   for (const r of real) for (const c of r.c) classAt(c, 'ghost', T('o9', '读了') + 0.2, T('o10'));
   // 行存：整行整行地读
   const rl = mk(gB, 'lab', RX, 300, null, null, '交给一行一行存的数据库：'); appear(rl, T('o10') + 0.1);
-  const rn = noteAt(gB, RX, 350, '一行的几项挨在一起\n要年龄，也得读整行'); show(rn, T('o10b') - 0.1, { y: 14, d: 0.35 });
+  const rn = noteAt(gB, RX, 350, '一行的几项挨在一起\n要年龄，也得读整行'); show(rn, T('o10') + 1.2, { y: 14, d: 0.35 });
   const sA = T('o10b') + 0.1, sB = T('o10b', '一个个') + 0.6;
   const scan = mk(tbl, 'abs', MX - 10, MY - 6, MW[0] + MW[1] + MW[2] + 14, MH + 12); css(scan, { border: '4px solid var(--y)' }); vanish(scan, 0);
   set(scan, sA, { autoAlpha: 1 }); set(scan, T('o11') - 0.2, { autoAlpha: 0 });

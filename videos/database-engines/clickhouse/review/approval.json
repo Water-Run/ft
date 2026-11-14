@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "4249bc0e57821da76449cf4d9b1a3dca8487aeb45a77d930afc05be0ddf6529d",
+      "content_sha256": "ba9a567b032797f6c1ba46941e159b653efec9c757f6a0e506d0fb4b3eacc791",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-08T08:04:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：2026-11-08 WaterRun 看过第 4 稿审片页后在会话里说「可以, 出Preview吧」"
+      "confirmed_at": "2026-11-14T13:12:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：2026-11-14 会话里 WaterRun 看过改动全文（m8c 去掉人名；第 11、12 章章节卡补问句）后选「都按建议改」；其余文字是 2026-11-08 已确认的第 4 稿"
     }
   }
 }

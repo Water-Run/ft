@@ -8,13 +8,13 @@ scene('delete', ({ root, s, c0 }) => {
   appear(gA, c0 + 0.05);
   const al = rowAt(gA, 100, 190, ['2050', 'Alice', '43'], [210, 310, 150], 90, 'lg'); wipe(al.row, c0 + 0.1, { dir: 'l', d: 0.5 });
   al.c.forEach((c) => classAt(c, 'done', T('d1', '注销') + 0.6)); classAt(al.c[1], 'y', T('d1', '注销'), T('d1', '注销') + 0.6);
-  const tm = termAt(gA, 100, 310, 1160, 86); tm.line(0, '<span class="pr">:) </span>DELETE FROM users WHERE id = 2050;', T('d1', '注销') - 0.4, { type: 36, cursorUntil: T('d2') });
+  const tm = termAt(gA, 100, 306, 840, 170); tm.line(1, '<span class="out">Ok.</span>', T('d2') - 0.2, {}); tm.line(2, '<span class="out">0 rows in set. Elapsed: 1.918 sec.</span>', T('d2') - 0.2, {}); tm.line(0, '<span class="pr">:) </span>DELETE FROM users WHERE id = 2050;', T('d1', '注销') - 0.4, { type: 36, cursorUntil: T('d2') });
   vanish(tm.el, 0); appear(tm.el, T('d1', '注销') - 0.45);
   tableTag(gA, '表 <b>demo.users</b> · 一亿行', c0 + 0.1);
-  const fo = foldAt(gA, 100, 440, 780, 330, 'all_1_90_3_92', ''); wipe(fo, T('d2') - 0.1, { dir: 'l', d: 0.5 });
+  const fo = foldAt(gA, 100, 492, 780, 320, 'all_1_90_3_92', ''); wipe(fo, T('d2') - 0.1, { dir: 'l', d: 0.5 });
   keyed(fo.nm).at(T('d2b', 'row exists'), { html: 'all_1_90_3<span class="y">_93</span>　← 第 93 号变更' });
   ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(fo, i, t));
-  const lk = mk(gA, 'badge', 100, 800, null, null, '原来的文件，不动'); css(lk, { fontSize: '30px' }); slam(lk, T('d2', '不动'), { from: 1.2 }); sfx('thud', T('d2', '不动') + 0.1, { g: 0.6 });
+  const lk = mk(gA, 'badge', 100, 838, null, null, '原来的文件，不动'); css(lk, { fontSize: '30px' }); slam(lk, T('d2', '不动'), { from: 1.2 }); sfx('thud', T('d2', '不动') + 0.1, { g: 0.6 });
   const hid = fileAt(fo, 3, '_row_exists.bin', 'y'); vanish(hid, 0); appear(hid, T('d2b', 'row exists')); sfx('pop', T('d2b', 'row exists'), { g: 0.5 });
   classAt(fo, 'y', T('d2b', 'row exists'));
   const ex = mk(gA, 'lab y', 960, 440, null, null, '_row_exists：每人一个字节'); vanish(ex, 0); appear(ex, T('d2b', 'row exists'));
@@ -26,7 +26,7 @@ scene('delete', ({ root, s, c0 }) => {
   // d3：她写成 0，其他人是 1，其余的列照样是硬链接
   keyed(ex1[AI].firstChild).at(T('d3', '写成零'), { html: '0' }); classAt(ex1[AI], 'on', T('d3', '写成零'), T('d3', '都是一') - 0.1); classAt(ex1[AI], 'dead', T('d3', '都是一') - 0.1);
   ex1.filter((c, i) => i !== AI).forEach((c, i) => classAt(c, 'y', T('d3', '都是一') + i * 0.08, T('d4') - 0.2));
-  ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => { const lb = mk(gA, 'lab y', 500, 440 + 58 + i * 40 - 4, null, null, '= 旧文件（硬链接）'); css(lb, { fontSize: '22px' }); vanish(lb, 0); appear(lb, T('d3', '硬链接') + i * 0.2); });
+  ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => { const lb = mk(gA, 'lab y', 500, 492 + 58 + i * 40 - 4, null, null, '= 旧文件（硬链接）'); css(lb, { fontSize: '22px' }); vanish(lb, 0); appear(lb, T('d3', '硬链接') + i * 0.2); });
   // d4：查询自动跳过她
   const sk0 = T('d4', '跳过') - 1.0, sk1 = Tend('d4');
   F((t) => { const k = clamp((t - sk0) / Math.max(0.4, sk1 - sk0)) * 8; ex1.forEach((c, i) => { if (i !== AI) c.classList.toggle('on', t >= sk0 && i < k + 0.5 && t < sk1 + 0.3); }); });
@@ -47,11 +47,11 @@ scene('delete', ({ root, s, c0 }) => {
   ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(fb, i, t));
   const ng = mk(gC, 'h2 y', 1060, 600, null, null, '新片段里，没有 Alice'); show(ng, T('d5b', '不再有她'), { y: 12 }); sfx('thud', T('d5b', '不再有她') + 0.1, { g: 0.5 });
   const ng2 = mk(gC, 'h2', 1060, 660, null, null, '隐藏的那一列，也不用了'); show(ng2, T('d5b', '隐藏'), { y: 12 });
-  const tm2 = termAt(gC, 100, 760, 1100, 86); vanish(tm2.el, 0); appear(tm2.el, T('d5c') - 0.1);
+  const tm2 = termAt(gC, 100, 760, 1100, 170); tm2.line(1, '<span class="out">Ok.</span>', T('d5c', '手动') + 0.8, {}); tm2.line(2, '<span class="out">0 rows in set. Elapsed: 8.490 sec.</span>', T('d5c', '手动') + 0.8, {}); vanish(tm2.el, 0); appear(tm2.el, T('d5c') - 0.1);
   tm2.line(0, '<span class="pr">:) </span>OPTIMIZE TABLE users FINAL;', T('d5c', '手动') - 0.3, { type: 34, cursorUntil: T('d5c', '手动') + 1.5 });
   const nt = noteAt(gC, 1260, 770, '实验里就是\n手动催的'); show(nt, T('d5c') - 0.1, { y: 12 });
   warm(fa, T('d5'), T('d5b')); warm(fb, T('d5b'), T('d6') - 0.3);
-  const tCD = T('d6') + 1.0;
+  const tCD = T('d6') + 1.6;
   vanish(gC, tCD);
 
   // ── D 旧片段留八分钟 ──
