@@ -47,7 +47,8 @@ async function scan(lang) {
   for (const f of frames) {
     const c = content(f);
     if (!c.length && !bigHud(f)) { if (emptyFrom == null) emptyFrom = f.t; } else flushEmpty(f.t);
-    const sig = signature(c);
+    // 整屏的章节卡、转场色块盖着画面时，它就是这一刻的内容：卡上的变化（问句刷出、进度标记）也算变化；卡一动不动照样报静止
+    const sig = signature(bigHud(f) ? c.concat(f.items.filter((x) => x.scene === 'hud')) : c);
     if (sig === lastSig) { if (stillFrom == null) stillFrom = f.t - STEP; } else flushStill(f.t);
     lastSig = sig;
   }
