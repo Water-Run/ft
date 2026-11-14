@@ -1,5 +1,6 @@
 // 「XX 秒速通」系列的引擎配置，本片：字体、节拍网格、常驻元素（字幕带与秒尺、剩余秒数、右上角的仪表）、换场。
-// 视觉母题是「色带」：紫色的深浅就是一个数的大小（见 quant.js）。换场时一条色带扫过画面，新场景跟在它后面露出来。
+// 视觉母题是「色阶」：紫色的深浅就是一个数的大小（见 quant.js）。全片分四个连续的画面（引子、历史、机制、成绩），
+// 机制画面跨 what/how/cost 三场、成绩画面跨 test/close 两场，场与场之间对象不换、不刷屏（经验规则 F29）。
 document.documentElement.classList.add(LANG);            // 样式表可按语言微调
 window.PALETTE = { ink: '#0D0620', paper: '#FFFFFF', ac: '#A855F7', dim: '#CDBDFF', dimp: '#8A7BB5' };
 const C = window.PALETTE;
@@ -48,19 +49,14 @@ window.ENGINE = {
     window.HUD = { left, right };
     const groundAt = (side, t) => { let g = 'ink'; for (const [a, b, v] of HUDG[side]) if (t >= a && t < b) g = v; return g; };
     let gl = null, gr = null, lastM = null;
+    // 仪表只走一条线：每个数占几位（讲到「位」之前先显示本片的例子）。不重复主画面上已经大字写着的数；片尾名单时收起
     const SCHEDULE = [
-      [0, '27B', 'Qwen3.8 · 一个模型'],
-      [T('o1b'), '55 GB', '原版文件'],
-      [T('o3'), '17 GB', '另一个版本'],
-      [T('a1'), '278 亿', '数的个数'],
-      [T('a3'), '16 位', '每个数占的'],
-      [T('a4'), '55 GB', '加起来'],
-      [T('b2'), '4 位', '每个数 16 → 4'],
-      [T('b7'), '28%', '这 32 个数占原来的'],
-      [T('c1'), '4 位', '每个数占的'],
-      [T('h1'), '2023', 'llama.cpp'],
-      [T('t1'), '5 个', '版本 · 同一份卷子'],
-      [T('z1'), '17 GB', '4 位 · 装得下 24 GB'],
+      [0, 'Qwen3.8 27B', '本片的例子'],
+      [T('a3', '十六位'), '16 位', '每个数占的 · 原版'],
+      [T('b4'), '4 位', '每个数占的 · 量化后'],
+      [T('t1'), '16 → 1 位', '五个版本'],
+      [T('z3'), '4 位', '每个数占的 · 17 GB'],
+      [L.scenes.find((x) => x.id === 'outro').start, '', ''],
     ];
     const meterAt = (t) => { let m = SCHEDULE[0]; for (const row of SCHEDULE) if (t >= row[0] - 1e-6) m = row; return m; };
     F((t) => {
@@ -68,30 +64,17 @@ window.ENGINE = {
       if (a !== gl) { left.style.color = a === 'ink' ? C.paper : C.ink; gl = a; }
       if (b !== gr) { right.style.color = b === 'ink' ? C.paper : C.ink; gr = b; }
       const m = meterAt(t), key = m[1] + '|' + m[2];
-      if (key !== lastM) { right.innerHTML = `<span class="n">${m[1]}</span><span class="m">${m[2]}</span>`; lastM = key; }
+      if (key !== lastM) { right.innerHTML = m[1] ? `<span class="n">${m[1]}</span><span class="m">${m[2]}</span>` : ''; lastM = key; }
     });
   },
   after() {
-    // 场景的显隐与换场：新场景从左向右露出来，前面一条色带扫过（母题：色带）。
-    // 旧场景在新场景完全盖住后才隐藏，切换那一刻新场景已不透明，不会闪一下空背景。
-    const roots = L.scenes.map((s) => document.getElementById('sc-' + s.id)), lastClip = roots.map(() => null);
-    const hud = document.getElementById('hud');
-    const sweep = h('div', 'sweep', hud);
-    css(sweep, { position: 'absolute', top: '0px', width: '48px', height: VH + 'px', display: 'none', background: QZ.grad() });
-    F((t) => {
-      L.scenes.forEach((s, i) => {
-        const nx = L.scenes[i + 1], root = roots[i];
-        const vis = t >= s.start - 1e-6 && (!nx || t < nx.start + WIPE);
-        root.style.display = vis ? '' : 'none';
-        const wiping = vis && i > 0 && t < s.start + WIPE;
-        const k = wiping ? ease.io3(clamp((t - s.start) / WIPE)) : 1;
-        const clip = wiping ? `inset(0px ${(1920 * (1 - k)).toFixed(1)}px 0px 0px)` : 'none';
-        if (clip !== lastClip[i]) { root.style.clipPath = clip; lastClip[i] = clip; }
-      });
-      const sw = L.scenes.slice(1).find((s) => t >= s.start - 1e-6 && t < s.start + WIPE);
-      if (sw) { sweep.style.display = 'block'; sweep.style.left = (1920 * ease.io3(clamp((t - sw.start) / WIPE)) - 24).toFixed(1) + 'px'; }
-      else sweep.style.display = 'none';
-    });
-    for (const s of L.scenes.slice(1)) sfx('whoosh', s.start - 0.3, { g: 0.7 });
+    // 四个连续的画面：画面的根节点是它第一场的根，跨到后面几场仍然显示；后面几场的根是空的。
+    // 画面之间硬切：上一个画面在切之前已经把自己的东西收走（各场景文件里写），下一个画面从切的那一刻起自己入场。
+    const GROUPS = [['open'], ['hist'], ['what', 'how', 'cost'], ['test', 'close'], ['outro']];
+    const byId = Object.fromEntries(L.scenes.map((s) => [s.id, s]));
+    const spans = GROUPS.map((g, i) => ({ root: document.getElementById('sc-' + g[0]), a: byId[g[0]].start, b: i + 1 < GROUPS.length ? byId[GROUPS[i + 1][0]].start : Infinity }));
+    for (const s of L.scenes) if (!GROUPS.some((g) => g[0] === s.id)) document.getElementById('sc-' + s.id).style.display = 'none';
+    const last = spans.map(() => null);
+    F((t) => spans.forEach((sp, i) => { const v = t >= sp.a - 1e-6 && t < sp.b - 1e-6; if (v !== last[i]) { sp.root.style.display = v ? '' : 'none'; last[i] = v; } }));
   },
 };

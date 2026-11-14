@@ -1,12 +1,15 @@
-/* 本片的视觉系统「色带」：近黑的紫底，一种强调色（亮紫），数据用紫色的深浅表示大小，白色只给强调与字。
-   - 紫色的深浅 = 数的大小：深靛（最小）→ 紫 → 粉白（最大）。量化后色带只剩几段：4 位 16 段，2 位 4 段，1 位 2 段。
-   - 白色：线、圈、字与分数。粉色 #FF6BB5 只给垮掉的那一行（1 位档的分数），别处不用。
-   - 字：数字用 Inter（细体，大而轻）与 Mono（路径、文件名），中文用 Sans SC。
-   - 层级：数据对象（色带、格子、点）自己发光以外的强调一律不用；说明文字是 plain 的 dim 字，不装进胶囊；
-     只有少数真正的结论（装不下 / 装得下了）用实心块。圆角只给色带与格子，标签用小圆角，不做胶囊。
-   - 背景是平的近黑紫，不用渐变光斑、不用暗角噪点（standards.md 审美·要避开的）。 */
+/* 本片的视觉系统「色阶」（2026-11-14 重做）：
+   - 紫色的深浅 = 一个数的大小：深靛（最小）→ 紫 → 粉白（最大），色标在 quant.js 的 STOPS。
+   - 模型文件 = 一块块「数据砖」，一块代表 1 GB，砖面是一片紫色的数。原版的深浅是连续的；量化以后只剩几种紫，
+     砖面出现一圈圈色阶（4 位 16 种，2 位 4 种，1 位 2 种）。看到色阶，就是看到量化。
+   - 显卡 = 一块有 24 个槽位的板卡，一个槽放一块砖。装不装得下，数格子就知道。
+   - 白色只给强调：选区、刻线、读数。粉色 #FF6BB5 只给垮掉的 1 位档。
+   - 字：数字用 Inter（细体，大而轻），文件名与原文用 Mono，中文用 Sans SC。说明文字是 plain 的 dim 字，不装胶囊。
+   - 背景是平的近黑紫；不用渐变光斑、暗角、外发光（standards.md 审美·要避开的）。 */
 :root {
   --ink: #0D0620;
+  --ink2: #1A0B5E;
+  --line: #2A1466;
   --paper: #FFFFFF;
   --ac: #A855F7;
   --dim: #CDBDFF;
@@ -18,40 +21,46 @@
 body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 #bg { background: var(--ink); }
 .scene { overflow: hidden; }
-/* world 是场景的大画布，画幅是字幕带以上的 1920×968 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; }
 
-/* 文字层级：说明是 plain 的字，不装胶囊 */
-.lbl { font: 500 30px/1.35 "Sans SC", "Inter"; color: var(--dim); }
-.lbl-m { font: 500 28px/1.35 "Mono", "Sans SC"; color: var(--dimp); }
-.hit { font: 700 40px/1.25 "Sans SC", "Inter"; color: var(--paper); }
-.gloss { font: 500 34px/1.4 "Sans SC", "Inter"; color: var(--dim); }
-.src { font: 500 28px/1.3 "Mono", "Sans SC"; color: var(--dimp); }
-.big { font: 300 104px/1 "Inter", "Sans SC"; letter-spacing: -2px; }
-.num { font: 300 88px/1 "Inter", "Sans SC"; letter-spacing: -2px; }
-.cap-big { font: 900 104px/1.1 "Sans SC", "Inter"; letter-spacing: -2px; }
-.cap-mid { font: 700 44px/1.35 "Sans SC", "Inter"; }
-
-/* 少数实心强调块：小圆角，不做胶囊。白底墨字给结论，紫底墨字给正向结论 */
-.pill { background: var(--paper); color: var(--ink); border-radius: 12px; font: 700 36px/1 "Sans SC", "Inter"; text-align: center; }
-.pill-ac { background: var(--ac); color: var(--ink); border-radius: 12px; font: 700 36px/1 "Sans SC", "Inter"; text-align: center; }
-/* 版本名标签：白底墨字，小圆角 */
-.tag { background: var(--paper); color: var(--ink); border-radius: 12px; font: 700 52px/1 "Mono", "Sans SC"; text-align: center; }
+/* 文字层级 */
+.h1 { font: 600 72px/1 "Mono", "Sans SC"; letter-spacing: -1px; color: var(--paper); }
+.big { font: 300 120px/1 "Inter", "Sans SC"; letter-spacing: -3px; color: var(--paper); }
+.num { font: 300 84px/1 "Inter", "Sans SC"; letter-spacing: -2px; color: var(--paper); }
+.mid { font: 300 56px/1 "Inter", "Sans SC"; letter-spacing: -1px; color: var(--paper); }
+.hit { font: 700 44px/1.2 "Sans SC", "Inter"; color: var(--paper); }
+.say { font: 500 38px/1.3 "Sans SC", "Inter"; color: var(--paper); }
+.lbl { font: 500 32px/1.3 "Sans SC", "Inter"; color: var(--dim); }
+.lbl-s { font: 500 28px/1.3 "Sans SC", "Inter"; color: var(--dimp); }
+.mlbl { font: 500 30px/1.3 "Mono", "Sans SC"; color: var(--dim); }
+.mlbl-s { font: 500 28px/1.3 "Mono", "Sans SC"; color: var(--dimp); }
+.quote { font: 500 32px/1.45 "Mono", "Sans SC"; color: var(--dim); white-space: normal; }
+.zh-q { font: 500 40px/1.45 "Sans SC", "Inter"; color: var(--paper); white-space: normal; }
 
 /* 数据对象 */
-.blk { position: absolute; }
-.cell { position: absolute; border-radius: 8px; }
-.cell-on { background: var(--paper); }
-.cell-off { border: 3px solid var(--ac); }
-.dot { position: absolute; border-radius: 50%; border: 3px solid var(--paper); box-sizing: border-box; }
-.dot-hot { border-width: 5px; }
-.band-obj { border-radius: 42px; }
+.tile { position: absolute; border-radius: 6px; overflow: hidden; }
+.tile img, .strip img { display: block; width: 100%; height: 100%; }
+.slot { position: absolute; border-radius: 6px; background: var(--ink); }
+.bitc { position: absolute; border-radius: 8px; }
+.bit1 { background: var(--paper); }
+.bit0 { border: 4px solid var(--dimp); }
+.dot { position: absolute; border-radius: 50%; }
+.ghost { position: absolute; border-radius: 50%; border: 4px solid var(--paper); }
+.tok { position: absolute; border-radius: 4px; }
+.strip { position: absolute; border-radius: 6px; overflow: hidden; }
 
-/* 片名卡：整屏亮紫，墨字 */
-.card { position: absolute; background: var(--ac); color: var(--ink); }
+/* 名字标签：Mono 粗体，白色描边、透明底；讲到「数字就是位数」时整块翻成深紫，数字加下划线 */
+.tag { position: absolute; border: 4px solid var(--paper); color: var(--paper); border-radius: 10px; font: 800 52px/1 "Mono", "Sans SC"; padding: 12px 20px; }
+.tag b { color: inherit; font-weight: 800; }
+.tag.lit { background: #5B21D6; border-color: #5B21D6; }
+.tag.lit b { text-decoration: underline; text-decoration-thickness: 5px; text-underline-offset: 8px; }
 
-/* 片尾名单：行距收紧，使全部参与方（含返修模型）落在字幕条之上 */
+/* 片名卡 */
+.title-a { font: 500 44px/1 "Sans SC", "Inter"; color: var(--dim); }
+.title-b { font: 900 112px/1.08 "Sans SC", "Inter"; letter-spacing: -3px; color: var(--paper); }
+
+/* 片尾名单 */
 .credits { font-family: "Sans SC", "Inter"; }
 .credit-row { position: relative; margin: 0 0 8px; white-space: nowrap; }
 .credit-row .t-note { display: block; font: 500 26px/1.3 "Sans SC"; color: var(--dim); }
@@ -63,11 +72,10 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 .hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
 .hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
 .hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1500px; top: 36px; width: 360px; height: 90px; text-align: right; }
+.hud-r { position: absolute; left: 1420px; top: 36px; width: 440px; height: 90px; text-align: right; }
 .hud-r .n { display: block; font: 300 50px/1 "Inter", "Sans SC"; letter-spacing: -1px; }
 .hud-r .m { display: block; font: 500 26px/1.6 "Mono", "Sans SC"; opacity: .85; }
 
-/* 字幕：压在字幕带上，位于秒尺下方，互不重叠 */
 #caption { bottom: 16px; height: 56px; z-index: 50; }
 #caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
 #caption em { font-style: normal; font-weight: 800; color: var(--ac); }

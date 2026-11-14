@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "83b2bfdf2ec6e533dfb41204edd5020b9138c04a571cd4e32ecdf775b41330c5",
+      "content_sha256": "3b1ed90529ddfa9404a3c25a36afebfd7a0dc540d5b11b235d5632e0faf40d71",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-12T01:19:09.663Z",
-      "evidence": "2026-11-12 会话：WaterRun 审阅返修审览页（新文案+新设计）后明确选择「确认新文案，出 r2 预览」；交审稿 review/script.zh.83b2bfdf.md"
+      "confirmed_at": "2026-11-14T00:00:00.000Z",
+      "evidence": "2026-11-14 会话：WaterRun 看过全文（逐句列出）后，在「确认这版新文案吗」的提问中选择「确认新文案」；交审稿 review/script.zh.3b1ed905.md"
     }
   }
 }

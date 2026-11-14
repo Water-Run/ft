@@ -1,86 +1,98 @@
-// 开场：现象（同一个模型的两个文件）→ 片名卡。片名卡盖上来之后不再退回原画面，而是停住，直接过渡到下一场。
-// 色带的画法与 src/design/keyframes.html 的第一张一致：原版是连续的紫，17 GB 的只剩 16 段；24 GB 的白线是显卡。
+// 引子：同一个模型的两个文件，一块显卡。55 块砖（原版，每块 1 GB）先占满画面；显卡进来时文件收到左边，
+// 前 24 块飞进 24 个槽，剩下 31 块进不去。17 块砖的版本（砖面只剩 16 种紫）分数几乎一样。
+// o4 点题：显卡退场，右半边成为片名卡；片名只上画面。片名卡不再退回原画面，整页收走后切到历史。
 (function () {
-  const { el, grad, bands } = QZ;
+  const { el, tiles, gpu, files } = QZ;
   scene('open', ({ root, s }) => {
     const world = h('div', 'world', root);
-    makeCamera(world, 1920, VH);
+    makeCamera(world, 1920, VH);   // 镜头不动：文件与显卡在原地变化
+    const tH = L.scenes.find((x) => x.id === 'hist').start;
 
-    // 第一个元素在 0.05 秒就出现：一条色带线从左刷到右
-    const rule = el(world, 160, 120, 1600, 6, { background: grad(), transformOrigin: '0 50%' });
-    wipe(rule, 0.05, { dir: 'l', d: 0.6 });
+    // ── 原版：一个容器里放「55 GB」与 55 块砖（11 × 5，砖 72、间距 84）。开场时它居中占满画面 ──
+    const P0 = 84, SZ = 72, X0 = 503, Y0 = 236;
+    const fa = el(world, X0, Y0, 920, 560, { zIndex: 6, transformOrigin: '0 0' });   // 容器有变换就自成层叠上下文：给它 zIndex，飞出去的砖才压得住显卡
+    fa.dataset.name = '原版文件';
+    const A = tiles(fa, 55, { x: 0, y: 150, cols: 11, pitch: P0, size: SZ, levels: 65536, seed: 1 });
+    // 砖先以暗的样子铺满（文件在那儿），o1b 数到多少 GB，就亮起多少块：一块就是 1 GB
+    A.forEach((e, i) => { const col = i % 11, row = Math.floor(i / 11); fromTo(e, 0.05 + col * 0.06 + row * 0.03, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 0.3, scale: 1, duration: 0.45, ease: 'back.out(2)' }); });
+    sfx('tick', 0.05, { g: 0.5 }); sfx('tick', 0.45, { g: 0.4 }); sfx('tick', 0.85, { g: 0.35 });
+    const gbA = el(fa, -4, 0, 360, 120, {}, '0 GB', 'big');
+    const tC0 = T('o1b') + 0.15, tC1 = T('o1b', '五十五') + 0.25, dC = tC1 - tC0;
+    wipe(gbA, tC0, { dir: 'l', d: 0.3 });
+    countTo(gbA, 0, 55, tC0, dC, (v) => Math.round(v) + ' GB');
+    A.forEach((e, i) => { const k = 1 - Math.pow(1 - (i + 1) / 55, 1 / 5); fromTo(e, tC0 + dC * k - 0.05, { opacity: 0.3 }, { opacity: 1, duration: 0.12, immediateRender: false }); });   // countTo 用 out5 缓动：第 i 块在读数到 i+1 时亮
+    sfx('blip', tC0 + 0.1, { g: 0.45 }); sfx('blip', T('o1b', '五十五'), { g: 0.6 });
+    // 图例放在容器里，跟着文件一起收到左边；字号按缩小后仍有 29px 定
+    const legA = el(fa, 0, 150 + 5 * P0 + 10, 900, 60, { fontSize: '44px' }, '55 块，每块 1 GB', 'lbl');
+    appear(legA, tC0 + 0.2);
 
-    // 名字：o1
-    const name = el(world, 160, 168, 620, 60, { font: '600 44px/1 "Mono", "Sans SC"' }, 'Qwen3.8 27B');
-    wipe(name, T('o1'), { dir: 'l', d: 0.5 }); sfx('thud', T('o1'), { g: 0.7 });
-    const ai = el(world, 486, 184, 260, 44, {}, 'AI 模型', 'lbl');
-    appear(ai, T('o1') + 1.0);
+    // 显卡进来之前，文件从居中收到左边、缩成 2/3（砖 48、间距 56），给显卡让位
+    const s2 = 56 / P0, X1 = 120, Y1 = 214, tMove = T('o2') - 0.35;
+    fromTo(legA, T('o3') - 0.1, { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false });   // 17 GB 那一排进来之前收走，给它让位
+    fromTo(fa, tMove, { x: 0, y: 0, scale: 1 }, { x: X1 - X0, y: Y1 - Y0, scale: s2, duration: 0.6, ease: 'power3.inOut' });
 
-    // 原版：55 GB，连续的色带（o1b）。数字直接数上去，不先摆一个幽灵数
-    const big55 = el(world, 156, 262, 320, 110, {}, '0 GB', 'big');
-    wipe(big55, T('o1b'), { dir: 'l', d: 0.5 });
-    countTo(big55, 0, 55, T('o1b'), 1.6, (v) => Math.round(v) + ' GB');
-    const lab55 = el(world, 480, 330, 200, 44, {}, '原版', 'lbl');
-    wipe(lab55, T('o1b'), { dir: 'l', d: 0.4 });
-    // 色带就是模型文件这个对象，开场白念名字时它已在场（F25），不必等到 o1b
-    const bar55 = el(world, 160, 396, 1320, 84, { background: grad() }, '', 'band-obj');
-    wipe(bar55, T('o1') + 0.8, { dir: 'l', d: 0.7 }); sfx('whoosh', T('o1') + 0.8, { g: 0.5 });
-    const two = el(world, 160, 500, 760, 56, {}, '同一个模型，两个文件', 'hit');
-    appear(two, T('o1b') + 1.2);
+    const name = el(world, 120, 124, 900, 80, {}, 'Qwen3.8 27B', 'h1');
+    wipe(name, T('o1', 'Qwen'), { dir: 'l', d: 0.5 }); sfx('thud', T('o1', 'Qwen'), { g: 0.6 });
 
-    // 显卡 24 GB：白线（o2）。线右边的色带压暗，表示装不下
-    const line = el(world, 735, 372, 3, 440, { background: '#FFFFFF' });
-    wipe(line, T('o2') - 0.4, { dir: 't', d: 0.45 }); sfx('tick', T('o2') - 0.4, { g: 0.8 });
-    const gpu = el(world, 585, 826, 320, 48, { textAlign: 'center', font: '600 32px/1 "Sans SC", "Inter"' }, '显卡 0 GB');
-    wipe(gpu, T('o2') - 0.2, { dir: 'l', d: 0.4 });
-    countTo(gpu, 0, 24, T('o2') + 0.2, 1.4, (v) => '显卡 ' + Math.round(v) + ' GB');
-    const dim = el(world, 738, 396, 742, 84, { background: 'rgba(13,6,32,0.72)', borderRadius: '0 42px 42px 0' });
-    appear(dim, T('o2') + 0.4);
-    const under = el(world, 1010, 406, 220, 64, { lineHeight: '64px' }, '装不下', 'pill');
-    appear(under, T('o2', '装'));
-    const mine = el(world, 700, 736, 260, 44, { textAlign: 'center' }, '我的电脑', 'lbl');
-    appear(mine, T('o2') + 0.9);
+    // ── o2：显卡从右边进来，24 个槽；前 24 块砖飞进去，剩下 31 块进不去 ──
+    const G = gpu(world, 1000, 300);
+    slide(G.root, T('o2') - 0.1, { x: 340, d: 0.7, ease: 'power3.out' }); sfx('whoosh', T('o2') - 0.3, { g: 0.6 });
+    const tFly = T('o2', '显卡') + 0.05;
+    A.slice(0, 24).forEach((e, i) => {
+      // 容器缩放之后，砖在画面上的位置 = 容器位置 + 缩放 × 砖在容器里的位置；位移写在容器的坐标里
+      const dx = (G.slots[i].x - X1) / s2 - e._x, dy = (G.slots[i].y - Y1) / s2 - e._y, t0 = tFly + i * 0.03;
+      fromTo(e, t0, { x: 0, y: 0 }, { x: dx, y: dy, duration: 0.55, ease: 'power2.inOut', immediateRender: false });
+      // 不退回：显卡满着，一直到 o4 显卡带着这 24 块一起退场
+      fromTo(e, T('o4') - 0.05, { x: dx, opacity: 1 }, { x: dx + 300 / s2, opacity: 0, duration: 0.5, ease: 'power2.in', immediateRender: false });
+    });
+    sfx('blip', tFly + 0.3, { g: 0.5 }); sfx('pop', tFly + 0.55 + 23 * 0.03, { g: 0.6 });
+    const tNo = Math.max(T('o2', '装不下'), tFly + 23 * 0.03 + 0.65);   // 24 个槽全满之后，剩下的才「进不去」
+    A.slice(24).forEach((e, i) => {
+      fromTo(e, tNo + (i % 11) * 0.01, { x: 0 }, { keyframes: [{ x: -12, duration: 0.07 }, { x: 11, duration: 0.08 }, { x: -8, duration: 0.08 }, { x: 5, duration: 0.08 }, { x: 0, duration: 0.1 }], immediateRender: false });
+      fromTo(e, tNo + 0.3, { opacity: 1 }, { opacity: 0.35, duration: 0.3, immediateRender: false });   // 计数时已亮到 1；之后一直暗着：它们没装进去
+    });
+    sfx('thud', tNo, { g: 0.8 });
+    const short = el(G.root, 286, 30, 450, 60, { textAlign: 'right' }, '还差 31 GB', 'mid');
+    appear(short, tNo + 0.1);
 
-    // 同一份卷子（o3）：两个版本的分数
-    const hdr = el(world, 1260, 222, 500, 44, { textAlign: 'right' }, '同一份卷子 · 答对', 'lbl');
-    wipe(hdr, T('o3'), { dir: 'l', d: 0.4 });
-    const s55 = el(world, 1260, 258, 500, 110, { textAlign: 'right' }, '89.9%', 'num');
-    wipe(s55, T('o3'), { dir: 'l', d: 0.4 });
+    // ── o3：另一个版本，17 块砖，砖面只剩 16 种紫（色阶看得见）；两个分数 ──
+    const tB = T('o3', '十七') - 0.15;
+    const gbB = el(world, 116, 650, 360, 90, {}, '0 GB', 'num');
+    wipe(gbB, tB, { dir: 'l', d: 0.3 });
+    countTo(gbB, 0, 17, tB, 0.7, (v) => Math.round(v) + ' GB');
+    const B = tiles(world, 17, { x: 120, y: 754, cols: 11, pitch: 56, size: 48, levels: 16, seed: 2 });
+    B.forEach((e, i) => fromTo(e, tB + 0.1 + i * 0.035, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }));
+    sfx('pop', tB + 0.1, { g: 0.5, p: -0.3 });
+    const legB = el(world, 420, 674, 320, 44, {}, '另一个版本', 'lbl');
+    slide(legB, tB + 0.4, { x: -30, d: 0.45 });
+    const tS = T('o3', '分数') - 0.1;
+    const scA = el(world, 488, 212, 240, 90, { textAlign: 'right' }, files[0].score.toFixed(1) + '%', 'num');
+    const scB = el(world, 488, 650, 240, 90, { textAlign: 'right' }, files[2].score.toFixed(1) + '%', 'num');
+    const okA = el(world, 744, 252, 200, 40, {}, '做题答对', 'lbl-s'), okB = el(world, 744, 690, 200, 40, {}, '做题答对', 'lbl-s');
+    wipe(scA, tS, { dir: 'r', d: 0.35 }); wipe(scB, tS + 0.25, { dir: 'r', d: 0.35 });
+    appear(okA, tS + 0.3); appear(okB, tS + 0.55);
+    sfx('tick', tS, { g: 0.7 }); sfx('tick', tS + 0.25, { g: 0.7 });
+    exit(legB, tS + 0.2, { x: -10, d: 0.2 });
 
-    // 17 GB：16 段的色带（o3）
-    const big17 = el(world, 156, 552, 320, 110, {}, '0 GB', 'big');
-    wipe(big17, T('o3'), { dir: 'l', d: 0.5 });
-    countTo(big17, 0, 17, T('o3'), 1.2, (v) => Math.round(v) + ' GB');
-    const lab17 = el(world, 480, 620, 300, 44, {}, '另一个版本', 'lbl');
-    wipe(lab17, T('o3'), { dir: 'l', d: 0.4 });
-    const bar17 = el(world, 160, 686, 408, 84, { background: bands(16) }, '', 'band-obj');
-    appear(bar17, T('o3') + 1.4); sfx('pop', T('o3') + 1.4, { g: 0.6, p: -0.3 });
-    const s17 = el(world, 1260, 548, 500, 110, { textAlign: 'right' }, '90.4%', 'num');
-    wipe(s17, T('o3') + 1.8, { dir: 'l', d: 0.4 });
-    const gap = el(world, 980, 664, 500, 40, { textAlign: 'right' }, '相差 0.5 分 · 多对 1 题，正常波动', 'lbl-m');
-    appear(gap, T('o3') + 2.2);
-
-    // 片名卡（o4）：整屏亮紫从左盖上来；盖满后收起原画面且不再退回（修复「出现封面后又回到原来」），
-    // 卡停住直到下一场把它接走。卡上的字在盖满之后才出现，避免与原画面文字叠在一起。
-    const card = el(root, 0, 0, 1920, VH, {}, '', 'card');
-    const tCard = T('o4'), tFull = tCard + 0.4;
-    wipe(card, tCard, { dir: 'l', d: 0.4 }); sfx('whoosh', tCard - 0.1, { g: 0.8 });
-    vanish(world, tFull);
-    hudGround('L', tFull, s.end, 'ac'); hudGround('R', tFull, s.end, 'ac');
-    const cardTop = el(card, 160, 200, 1200, 50, { font: '500 36px/1 "Mono", "Sans SC"', color: 'var(--ink)' }, '120 秒了解量化');
-    appear(cardTop, tFull + 0.05);
-    const cardBig = el(card, 160, 290, 1600, 130, { color: 'var(--ink)' }, '让模型变小的方式和代价', 'cap-big');
-    slam(cardBig, tFull + 0.1, { from: 1.12, d: 0.35 }); sfx('thud', tFull + 0.1, { g: 0.8 });
-    const note = el(card, 160, 470, 1600, 60, { color: 'var(--ink)' }, '量化：把每个数改用更少的位来存，换得体积变小', 'gloss');
-    note.dataset.gloss = '量化';
-    appear(note, Tend('o4', -0.4));
-    // 带一样东西过去（F29）：卡底这条色带从连续变成 16 段，正是全片要讲的事；下一场从这条带接上
-    const fbar = el(card, 160, 600, 1600, 72, { background: grad() }, '', 'band-obj');
-    appear(fbar, tFull + 0.1);
-    const gradCss = grad(), bandsCss = bands(16);
-    let lastBg = null;
-    F((t) => { const want = t >= tCard + 1.3 ? bandsCss : gradCss; if (want !== lastBg) { fbar.style.background = want; lastBg = want; } });
-    const flab = el(card, 160, 692, 1600, 44, { color: 'var(--ink)' }, '55 GB 连续 → 17 GB 只剩 16 种紫', 'lbl');
-    appear(flab, tCard + 1.3); sfx('tick', tCard + 1.3, { g: 0.6 });
+    // ── o4：显卡退场，右半边成为片名卡（片名只上画面） ──
+    const tQ = T('o4', '量化');
+    exit(G.root, T('o4') - 0.05, { x: 300, d: 0.5 });
+    const leftA = [name, fa, scA, okA], leftB = [scB, okB, gbB, ...B];
+    fromTo([...leftA, ...leftB], T('o4') + 0.2, { opacity: 1 }, { opacity: 0.22, duration: 0.5, immediateRender: false });
+    // 片名落下后，17 GB 那一排（量化过的）重新亮起：片名讲的「让模型变小的办法」就是它
+    fromTo(leftB, tQ + 0.55, { opacity: 0.22 }, { opacity: 1, duration: 0.1, immediateRender: false }); sfx('blip', tQ + 0.55, { g: 0.5 });
+    const ta = el(world, 1000, 300, 820, 50, {}, '120 秒了解量化', 'title-a');
+    const tb = el(world, 996, 380, 860, 250, { whiteSpace: 'normal' }, '让模型变小的<br>方式和代价', 'title-b');
+    const gl = el(world, 1000, 650, 820, 50, { fontSize: '34px' }, '量化 · Quantization', 'mlbl');
+    gl.dataset.gloss = '量化';
+    const tT = T('o4', '变小') - 0.1;
+    wipe(ta, T('o4') + 0.35, { dir: 'l', d: 0.4 });
+    slam(tb, tT, { from: 1.08, d: 0.4 }); sfx('riser', tT - 0.9, { g: 0.5 }); sfx('thud', tT, { g: 0.9 });
+    slide(gl, tQ - 0.05, { y: 20, d: 0.45 }); sfx('blip', tQ, { g: 0.5 });
+    // 切到历史之前，整页朝左收走，切点上画面已经空了，不会出现「片名之后又回到原画面」
+    [ta, tb, gl].forEach((e, i) => wipeOut(e, tH - 0.45 + i * 0.05, { dir: 'l', d: 0.35 }));
+    fromTo(leftA, tH - 0.45, { opacity: 0.22 }, { opacity: 0, duration: 0.3, immediateRender: false });
+    fromTo(leftB, tH - 0.45, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false });
+    sfx('whoosh', tH - 0.4, { g: 0.6 });
   });
 })();

@@ -11,7 +11,7 @@ scene('outro', ({ root, s }) => {
   for (const m of [...(C.models || []), ...(C.services || [])]) rows.push(row((m.roles || []).map(label).join(' · '), m.name));
   rows.push(row(tr('许可', 'License'), (window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later'));
   rows.push(row(tr('开源视频', 'Open-source video'), String(C.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')));
-  rows.forEach((r, i) => slide(r, s.start + 0.2 + i * 0.12, { y: 30 }));
+  rows.forEach((r, i) => slide(r, s.start + 0.02 + i * 0.08, { y: 30 }));
   const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);   // 停留：只朝一个方向极慢横移，不缩放
   cam.track(s.start, { x: 960 - dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
 });

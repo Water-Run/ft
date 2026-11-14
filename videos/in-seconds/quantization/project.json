@@ -81,7 +81,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "preview",
-  "next": "r2 预览已出（out/zh/preview-r2.mp4，960×540/15fps 代理、有声）。等策划者看 r2 意见，逐条记进 review/NOTES.md 并回应；新配音人耳回听（Qwen 读法、多音字清单）。同意后出正式片：render.js（60fps）→ finish.js → covers.js → check.js --final。",
+  "next": "r3 预览已出（out/zh/preview-r3.mp4，960×540/30fps、有声）：画面整体重做、叙事调整、新文案 2026-11-14 已确认并重配音。等策划者看 r3 的意见，逐条记进 review/NOTES.md 并回应；新配音人耳回听（多音字清单）。同意后：封面按新视觉重做 → render.js（60fps，--gpu 1 --workers 4）→ finish.js → covers.js → check.js --final。",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -100,7 +100,11 @@
           "取证",
           "实验",
           "数据生成",
-          "配乐小样"
+          "配乐小样",
+          "叙事与文案修改",
+          "视觉重做",
+          "场景实现",
+          "配音合成"
         ]
       },
       {
