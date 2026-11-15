@@ -62,22 +62,19 @@
 | 10 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
 | 11 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
 | 12 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |
-| 13 | 96 秒讲清框架：它们替你做了哪些事 | zh | 计划中 | `frameworks` |
-| 14 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
-| 15 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
-| 16 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
-| 17 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
-| 18 | 120 秒速通 Harness 是如何压缩上下文的 | zh | 计划中 | `context-compaction` |
-| 19 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
-| 20 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
-| 21 | 150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git | zh | 计划中 | [`scion`](scion/) |
-| 22 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
-| 23 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
-| 24 | 150 秒速通 Git | zh | 计划中 | `git` |
-| 25 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](config-file-formats/) |
-| 26 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
-| 27 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
-| 28 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
-| 29 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](github-collaboration/) |
-| 30 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
+| 13 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
+| 14 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
+| 15 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
+| 16 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
+| 17 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
+| 18 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
+| 19 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
+| 20 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
+| 21 | 150 秒速通 Git | zh | 计划中 | `git` |
+| 22 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](config-file-formats/) |
+| 23 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
+| 24 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
+| 25 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
+| 26 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](github-collaboration/) |
+| 27 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
 <!-- catalog:end -->

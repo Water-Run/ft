@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-已登记制作项目 32 部，已登记发布 27 部，其余 5 部；另有 175 个计划选题（可仅保留简报），见[片单](README.md)。
+已登记制作项目 32 部，已登记发布 27 部，其余 5 部；另有 173 个计划选题（可仅保留简报），见[片单](README.md)。
 
 此处核对结构化署名记录，未逐部观看成片；字段齐全不代表最终验收通过。模型名按原记录列出，不合并简称或猜测版本；一片可有多个模型，参与片数不能相加当成总片数。服务另列。
 
@@ -46,7 +46,7 @@
 
 | 片 | 阶段 | 策划 | 模型与分工 | 服务与分工 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/README.md) | 预览迭代 | WaterRun | Claude Opus 5.5：取证、实测、文案、视觉设计、封面设计、配乐、文案修订、读法修正、场景修订（预览 r2–r3）、成片级自查<br>Claude Sonnet 5.5：文案修订、文案对抗审查、补充实测（合并）、关键帧、配乐小样、封面设计、审片页、配音合成、场景实现、配乐与混音、预览 r1 | MiniMax speech-2.8-hd：配音 |
+| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/README.md) | 预览迭代 | WaterRun | Claude Opus 5.5：取证、实测、文案、视觉设计、封面设计、配乐、文案修订、读法修正、场景修订（预览 r2–r5）、成片级自查<br>Claude Sonnet 5.5：文案修订、文案对抗审查、补充实测（合并）、关键帧、配乐小样、封面设计、审片页、配音合成、场景实现、配乐与混音、预览 r1 | MiniMax speech-2.8-hd：配音 |
 | [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 已放弃 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐初稿、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿<br>Claude Opus 5.5：分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 | [怎么打手枪？](standalone/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
