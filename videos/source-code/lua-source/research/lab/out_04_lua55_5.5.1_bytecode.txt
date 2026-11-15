@@ -1,0 +1,377 @@
+
+main <04_lua55.lua:0,0> (216 instructions at <address>)
+0+ params, 22 slots, 1 upvalue, 17 locals, 43 constants, 4 functions
+	1	[1]	VARARGPREP	0
+	2	[7]	CLOSURE  	0 0	; <address>
+	3	[8]	MOVE     	1 0
+	4	[8]	LOADK    	2 0	; "implicit-global"
+	5	[8]	LOADK    	3 1	; "x = 1"
+	6	[8]	LOADTRUE 	4
+	7	[8]	CALL     	1 4 2	; 3 in 1 out
+	8	[8]	CALL     	1 1 1	; 0 in 0 out
+	9	[9]	MOVE     	1 0
+	10	[9]	LOADK    	2 2	; "declared-global"
+	11	[9]	LOADK    	3 3	; "global x; x = 1"
+	12	[9]	LOADTRUE 	4
+	13	[9]	CALL     	1 4 2	; 3 in 1 out
+	14	[9]	CALL     	1 1 1	; 0 in 0 out
+	15	[10]	MOVE     	1 0
+	16	[10]	LOADK    	2 4	; "undeclared-name"
+	17	[10]	LOADK    	3 5	; "global x; y = 1"
+	18	[10]	LOADFALSE	4
+	19	[10]	CALL     	1 4 1	; 3 in 0 out
+	20	[11]	MOVE     	1 0
+	21	[11]	LOADK    	2 6	; "readonly-global"
+	22	[11]	LOADK    	3 7	; "global<const> *; x = 1"
+	23	[11]	LOADFALSE	4
+	24	[11]	CALL     	1 4 1	; 3 in 0 out
+	25	[12]	MOVE     	1 0
+	26	[12]	LOADK    	2 8	; "readonly-for"
+	27	[12]	LOADK    	3 9	; "for i = 1, 3 do i = 2 end"
+	28	[12]	LOADFALSE	4
+	29	[12]	CALL     	1 4 1	; 3 in 0 out
+	30	[13]	NEWTABLE 	1 1 0	; 0
+	31	[13]	EXTRAARG 	0
+	32	[13]	SETFIELD 	1 10 11k	; "x" 9
+	33	[14]	GETTABUP 	2 0 12	; _ENV "assert"
+	34	[14]	GETTABUP 	3 0 13	; _ENV "load"
+	35	[14]	LOADK    	4 14	; "global x; return x"
+	36	[14]	LOADK    	5 15	; "declaration-only"
+	37	[14]	LOADK    	6 16	; "t"
+	38	[14]	MOVE     	7 1
+	39	[14]	CALL     	3 5 2	; 4 in 1 out
+	40	[14]	CALL     	3 1 2	; 0 in 1 out
+	41	[14]	EQI      	3 9 1
+	42	[14]	JMP      	1	; to 44
+	43	[14]	LFALSESKIP	3
+	44	[14]	LOADTRUE 	3
+	45	[14]	CALL     	2 2 1	; 1 in 0 out
+	46	[15]	GETTABUP 	2 0 12	; _ENV "assert"
+	47	[15]	GETTABUP 	3 0 13	; _ENV "load"
+	48	[15]	LOADK    	4 17	; "global x = 10"
+	49	[15]	LOADK    	5 18	; "duplicate-initialization"
+	50	[15]	LOADK    	6 16	; "t"
+	51	[15]	MOVE     	7 1
+	52	[15]	CALL     	3 5 0	; 4 in all out
+	53	[15]	CALL     	2 0 2	; all in 1 out
+	54	[16]	GETTABUP 	3 0 19	; _ENV "pcall"
+	55	[16]	MOVE     	4 2
+	56	[16]	CALL     	3 2 2	; 1 in 1 out
+	57	[17]	GETTABUP 	4 0 12	; _ENV "assert"
+	58	[17]	NOT      	5 3
+	59	[17]	CALL     	4 2 1	; 1 in 0 out
+	60	[18]	GETTABUP 	4 0 12	; _ENV "assert"
+	61	[18]	GETTABUP 	5 0 13	; _ENV "load"
+	62	[18]	LOADK    	6 20	; "global x <const>; _ENV.x = 12; return x"
+	63	[18]	LOADK    	7 21	; "syntactic-only"
+	64	[18]	LOADK    	8 16	; "t"
+	65	[18]	MOVE     	9 1
+	66	[18]	CALL     	5 5 2	; 4 in 1 out
+	67	[18]	CALL     	5 1 2	; 0 in 1 out
+	68	[18]	EQI      	5 12 1
+	69	[18]	JMP      	1	; to 71
+	70	[18]	LFALSESKIP	5
+	71	[18]	LOADTRUE 	5
+	72	[18]	CALL     	4 2 1	; 1 in 0 out
+	73	[19]	GETTABUP 	4 0 22	; _ENV "print"
+	74	[19]	LOADK    	5 23	; "global-semantics"
+	75	[19]	LOADK    	6 24	; "declaration-preserves-value"
+	76	[19]	LOADK    	7 25	; "duplicate-init-errors"
+	77	[19]	LOADK    	8 26	; "ENV-bypasses-const"
+	78	[19]	CALL     	4 5 1	; 4 in 0 out
+	79	[23]	CLOSURE  	4 1	; <address>
+	80	[24]	MOVE     	5 4
+	81	[24]	LOADI    	6 10
+	82	[24]	LOADNIL  	7 0	; 1 out
+	83	[24]	LOADI    	8 30
+	84	[24]	CALL     	5 4 5	; 3 in 4 out
+	85	[25]	GETTABUP 	9 0 12	; _ENV "assert"
+	86	[25]	EQI      	5 3 0
+	87	[25]	JMP      	6	; to 94
+	88	[25]	EQI      	6 10 0
+	89	[25]	JMP      	4	; to 94
+	90	[25]	EQK      	7 27 0	; nil
+	91	[25]	JMP      	2	; to 94
+	92	[25]	EQI      	8 30 1
+	93	[25]	JMP      	1	; to 95
+	94	[25]	LFALSESKIP	10
+	95	[25]	LOADTRUE 	10
+	96	[25]	CALL     	9 2 1	; 1 in 0 out
+	97	[26]	CLOSURE  	9 2	; <address>
+	98	[27]	MOVE     	10 9
+	99	[27]	LOADI    	11 10
+	100	[27]	LOADNIL  	12 0	; 1 out
+	101	[27]	LOADI    	13 30
+	102	[27]	CALL     	10 4 2	; 3 in 1 out
+	103	[28]	GETTABUP 	11 0 12	; _ENV "assert"
+	104	[28]	GETTABUP 	12 0 28	; _ENV "type"
+	105	[28]	MOVE     	13 10
+	106	[28]	CALL     	12 2 2	; 1 in 1 out
+	107	[28]	EQK      	12 29 0	; "table"
+	108	[28]	JMP      	6	; to 115
+	109	[28]	GETFIELD 	12 10 30	; "n"
+	110	[28]	EQI      	12 3 0
+	111	[28]	JMP      	3	; to 115
+	112	[28]	GETI     	12 10 3
+	113	[28]	EQI      	12 30 1
+	114	[28]	JMP      	1	; to 116
+	115	[28]	LFALSESKIP	12
+	116	[28]	LOADTRUE 	12
+	117	[28]	CALL     	11 2 1	; 1 in 0 out
+	118	[32]	CLOSURE  	11 3	; <address>
+	119	[33]	GETTABUP 	12 0 12	; _ENV "assert"
+	120	[33]	MOVE     	13 11
+	121	[33]	LOADI    	14 10
+	122	[33]	CALL     	13 2 2	; 1 in 1 out
+	123	[33]	EQI      	13 99 1
+	124	[33]	JMP      	1	; to 126
+	125	[33]	LFALSESKIP	13
+	126	[33]	LOADTRUE 	13
+	127	[33]	CALL     	12 2 1	; 1 in 0 out
+	128	[34]	GETTABUP 	12 0 22	; _ENV "print"
+	129	[34]	LOADK    	13 31	; "named-varargs"
+	130	[34]	MOVE     	14 5
+	131	[34]	MOVE     	15 6
+	132	[34]	GETTABUP 	16 0 32	; _ENV "tostring"
+	133	[34]	MOVE     	17 7
+	134	[34]	CALL     	16 2 2	; 1 in 1 out
+	135	[34]	MOVE     	17 8
+	136	[34]	GETTABUP 	18 0 28	; _ENV "type"
+	137	[34]	MOVE     	19 10
+	138	[34]	CALL     	18 2 2	; 1 in 1 out
+	139	[34]	MOVE     	19 11
+	140	[34]	LOADI    	20 10
+	141	[34]	CALL     	19 2 0	; 1 in all out
+	142	[34]	CALL     	12 0 1	; all in 0 out
+	143	[36]	GETTABUP 	12 0 29	; _ENV "table"
+	144	[36]	GETFIELD 	12 12 33	; "create"
+	145	[36]	LOADI    	13 1000
+	146	[36]	LOADI    	14 20
+	147	[36]	CALL     	12 3 2	; 2 in 1 out
+	148	[37]	GETTABUP 	13 0 12	; _ENV "assert"
+	149	[37]	GETTABUP 	14 0 28	; _ENV "type"
+	150	[37]	MOVE     	15 12
+	151	[37]	CALL     	14 2 2	; 1 in 1 out
+	152	[37]	EQK      	14 29 0	; "table"
+	153	[37]	JMP      	8	; to 162
+	154	[37]	LEN      	14 12
+	155	[37]	EQI      	14 0 0
+	156	[37]	JMP      	5	; to 162
+	157	[37]	GETTABUP 	14 0 34	; _ENV "next"
+	158	[37]	MOVE     	15 12
+	159	[37]	CALL     	14 2 2	; 1 in 1 out
+	160	[37]	EQK      	14 27 1	; nil
+	161	[37]	JMP      	1	; to 163
+	162	[37]	LFALSESKIP	14
+	163	[37]	LOADTRUE 	14
+	164	[37]	CALL     	13 2 1	; 1 in 0 out
+	165	[38]	GETTABUP 	13 0 22	; _ENV "print"
+	166	[38]	LOADK    	14 35	; "table.create"
+	167	[38]	LEN      	15 12
+	168	[38]	GETTABUP 	16 0 34	; _ENV "next"
+	169	[38]	MOVE     	17 12
+	170	[38]	CALL     	16 2 2	; 1 in 1 out
+	171	[38]	EQK      	16 27 1	; nil
+	172	[38]	JMP      	1	; to 174
+	173	[38]	LFALSESKIP	16
+	174	[38]	LOADTRUE 	16
+	175	[38]	CALL     	13 4 1	; 3 in 0 out
+	176	[39]	GETTABUP 	13 0 36	; _ENV "utf8"
+	177	[39]	GETFIELD 	13 13 37	; "offset"
+	178	[39]	LOADK    	14 38	; "\195\169"
+	179	[39]	LOADI    	15 1
+	180	[39]	CALL     	13 3 3	; 2 in 2 out
+	181	[40]	GETTABUP 	15 0 12	; _ENV "assert"
+	182	[40]	EQI      	13 1 0
+	183	[40]	JMP      	2	; to 186
+	184	[40]	EQI      	14 2 1
+	185	[40]	JMP      	1	; to 187
+	186	[40]	LFALSESKIP	16
+	187	[40]	LOADTRUE 	16
+	188	[40]	CALL     	15 2 1	; 1 in 0 out
+	189	[41]	GETTABUP 	15 0 22	; _ENV "print"
+	190	[41]	LOADK    	16 39	; "utf8.offset"
+	191	[41]	MOVE     	17 13
+	192	[41]	MOVE     	18 14
+	193	[41]	CALL     	15 4 1	; 3 in 0 out
+	194	[42]	GETTABUP 	15 0 19	; _ENV "pcall"
+	195	[42]	GETTABUP 	16 0 40	; _ENV "error"
+	196	[42]	LOADNIL  	17 0	; 1 out
+	197	[42]	CALL     	15 3 3	; 2 in 2 out
+	198	[43]	GETTABUP 	17 0 12	; _ENV "assert"
+	199	[43]	TEST     	15 1
+	200	[43]	JMP      	5	; to 206
+	201	[43]	GETTABUP 	18 0 28	; _ENV "type"
+	202	[43]	MOVE     	19 16
+	203	[43]	CALL     	18 2 2	; 1 in 1 out
+	204	[43]	EQK      	18 41 1	; "string"
+	205	[43]	JMP      	1	; to 207
+	206	[43]	LFALSESKIP	18
+	207	[43]	LOADTRUE 	18
+	208	[43]	CALL     	17 2 1	; 1 in 0 out
+	209	[44]	GETTABUP 	17 0 22	; _ENV "print"
+	210	[44]	LOADK    	18 42	; "error-nil"
+	211	[44]	MOVE     	19 15
+	212	[44]	GETTABUP 	20 0 28	; _ENV "type"
+	213	[44]	MOVE     	21 16
+	214	[44]	CALL     	20 2 0	; 1 in all out
+	215	[44]	CALL     	17 0 1	; all in 0 out
+	216	[44]	RETURN   	17 1 1	; 0 out
+constants (43) for <address>:
+	0	S	"implicit-global"
+	1	S	"x = 1"
+	2	S	"declared-global"
+	3	S	"global x; x = 1"
+	4	S	"undeclared-name"
+	5	S	"global x; y = 1"
+	6	S	"readonly-global"
+	7	S	"global<const> *; x = 1"
+	8	S	"readonly-for"
+	9	S	"for i = 1, 3 do i = 2 end"
+	10	S	"x"
+	11	I	9
+	12	S	"assert"
+	13	S	"load"
+	14	S	"global x; return x"
+	15	S	"declaration-only"
+	16	S	"t"
+	17	S	"global x = 10"
+	18	S	"duplicate-initialization"
+	19	S	"pcall"
+	20	S	"global x <const>; _ENV.x = 12; return x"
+	21	S	"syntactic-only"
+	22	S	"print"
+	23	S	"global-semantics"
+	24	S	"declaration-preserves-value"
+	25	S	"duplicate-init-errors"
+	26	S	"ENV-bypasses-const"
+	27	N	nil
+	28	S	"type"
+	29	S	"table"
+	30	S	"n"
+	31	S	"named-varargs"
+	32	S	"tostring"
+	33	S	"create"
+	34	S	"next"
+	35	S	"table.create"
+	36	S	"utf8"
+	37	S	"offset"
+	38	S	"\195\169"
+	39	S	"utf8.offset"
+	40	S	"error"
+	41	S	"string"
+	42	S	"error-nil"
+locals (17) for <address>:
+	0	check_load	3	217
+	1	env	33	217
+	2	init	54	217
+	3	ok	57	217
+	4	indexed	80	217
+	5	n	85	217
+	6	a	85	217
+	7	b	85	217
+	8	c	85	217
+	9	escaped	98	217
+	10	actual	103	217
+	11	changed	119	217
+	12	capacity	148	217
+	13	first	181	217
+	14	last	181	217
+	15	ok2	198	217
+	16	err2	198	217
+upvalues (1) for <address>:
+	0	_ENV	1	0
+
+function <04_lua55.lua:2,7> (31 instructions at <address>)
+3 params, 9 slots, 1 upvalue, 5 locals, 8 constants, 0 functions
+	1	[3]	GETTABUP 	3 0 0	; _ENV "load"
+	2	[3]	MOVE     	4 1
+	3	[3]	MOVE     	5 0
+	4	[3]	LOADK    	6 1	; "t"
+	5	[3]	NEWTABLE 	7 0 0	; 0
+	6	[3]	EXTRAARG 	0
+	7	[3]	CALL     	3 5 3	; 4 in 2 out
+	8	[4]	GETTABUP 	5 0 2	; _ENV "assert"
+	9	[4]	EQK      	3 3 0	; nil
+	10	[4]	JMP      	1	; to 12
+	11	[4]	LFALSESKIP	6
+	12	[4]	LOADTRUE 	6
+	13	[4]	EQ       	6 2 1
+	14	[4]	JMP      	1	; to 16
+	15	[4]	LFALSESKIP	6
+	16	[4]	LOADTRUE 	6
+	17	[4]	GETTABUP 	7 0 4	; _ENV "tostring"
+	18	[4]	MOVE     	8 4
+	19	[4]	CALL     	7 2 0	; 1 in all out
+	20	[4]	CALL     	5 0 1	; all in 0 out
+	21	[5]	GETTABUP 	5 0 5	; _ENV "print"
+	22	[5]	MOVE     	6 0
+	23	[5]	TEST     	3 0
+	24	[5]	JMP      	3	; to 28
+	25	[5]	LOADK    	7 6	; "compiled"
+	26	[5]	TEST     	7 1
+	27	[5]	JMP      	1	; to 29
+	28	[5]	LOADK    	7 7	; "rejected"
+	29	[5]	CALL     	5 3 1	; 2 in 0 out
+	30	[6]	RETURN1  	3
+	31	[7]	RETURN0  	
+constants (8) for <address>:
+	0	S	"load"
+	1	S	"t"
+	2	S	"assert"
+	3	N	nil
+	4	S	"tostring"
+	5	S	"print"
+	6	S	"compiled"
+	7	S	"rejected"
+locals (5) for <address>:
+	0	label	1	32
+	1	text	1	32
+	2	expected	1	32
+	3	fn	8	32
+	4	err	8	32
+upvalues (1) for <address>:
+	0	_ENV	0	0
+
+function <04_lua55.lua:21,23> (11 instructions at <address>)
+0+ params, 5 slots, 0 upvalues, 1 local, 1 constant, 0 functions
+	1	[21]	VARARGPREP	0
+	2	[22]	LOADK    	1 0	; "n"
+	3	[22]	GETVARG  	1 0 1
+	4	[22]	LOADI    	2 1
+	5	[22]	GETVARG  	2 0 2
+	6	[22]	LOADI    	3 2
+	7	[22]	GETVARG  	3 0 3
+	8	[22]	LOADI    	4 3
+	9	[22]	GETVARG  	4 0 4
+	10	[22]	RETURN   	1 5 1	; 4 out
+	11	[23]	RETURN   	1 1 1	; 0 out
+constants (1) for <address>:
+	0	S	"n"
+locals (1) for <address>:
+	0	args	2	12
+upvalues (0) for <address>:
+
+function <04_lua55.lua:26,26> (3 instructions at <address>)
+0+ params, 2 slots, 0 upvalues, 1 local, 0 constants, 0 functions
+	1	[26]	VARARGPREP	0
+	2	[26]	RETURN1  	0
+	3	[26]	RETURN0  	
+constants (0) for <address>:
+locals (1) for <address>:
+	0	args	2	4
+upvalues (0) for <address>:
+
+function <04_lua55.lua:29,32> (6 instructions at <address>)
+0+ params, 2 slots, 0 upvalues, 1 local, 1 constant, 0 functions
+	1	[29]	VARARGPREP	0
+	2	[30]	LOADI    	1 1
+	3	[30]	SETTABLE 	0 1 0k	; 99
+	4	[31]	VARARG   	1 0 0k	; all out
+	5	[31]	RETURN   	1 0 0	; all out
+	6	[32]	RETURN0  	
+constants (1) for <address>:
+	0	I	99
+locals (1) for <address>:
+	0	args	2	7
+upvalues (0) for <address>:

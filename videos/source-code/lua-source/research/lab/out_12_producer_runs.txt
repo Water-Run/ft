@@ -1,0 +1,257 @@
+Production probes, 2026-11-15; same Windows x64 / MinGW GCC environment as 07.
+Old compilers built only to list bytecode; their interpreters were not run.
+$ gcc -std=gnu89 -O2 -w -I ../../../research/_src/lua-4.0.1/include -I ../../../research/_src/lua-4.0.1/src -c ../../../research/_src/lua-4.0.1/src/lapi.c ../../../research/_src/lua-4.0.1/src/lcode.c ../../../research/_src/lua-4.0.1/src/ldebug.c ../../../research/_src/lua-4.0.1/src/ldo.c ../../../research/_src/lua-4.0.1/src/lfunc.c ../../../research/_src/lua-4.0.1/src/lgc.c ../../../research/_src/lua-4.0.1/src/llex.c ../../../research/_src/lua-4.0.1/src/lmem.c ../../../research/_src/lua-4.0.1/src/lobject.c ../../../research/_src/lua-4.0.1/src/lparser.c ../../../research/_src/lua-4.0.1/src/lstate.c ../../../research/_src/lua-4.0.1/src/lstring.c ../../../research/_src/lua-4.0.1/src/ltable.c ../../../research/_src/lua-4.0.1/src/ltm.c ../../../research/_src/lua-4.0.1/src/lundump.c ../../../research/_src/lua-4.0.1/src/lvm.c ../../../research/_src/lua-4.0.1/src/lzio.c
+exit=0
+$ ar rcs libcore.a lapi.o lcode.o ldebug.o ldo.o lfunc.o lgc.o llex.o lmem.o lobject.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o
+exit=0
+$ gcc -std=gnu89 -O2 -w -I ../../../research/_src/lua-4.0.1/include -I ../../../research/_src/lua-4.0.1/src -I ../../../research/_src/lua-4.0.1/src/luac ../../../research/_src/lua-4.0.1/src/luac/dump.c ../../../research/_src/lua-4.0.1/src/luac/luac.c ../../../research/_src/lua-4.0.1/src/luac/opt.c ../../../research/_src/lua-4.0.1/src/luac/print.c ../../../research/_src/lua-4.0.1/src/luac/stubs.c libcore.a -lm -o luac.exe
+exit=0
+$ gcc -std=gnu89 -O2 -w -I ../../../research/_src/lua-5.0.3/include -I ../../../research/_src/lua-5.0.3/src -c ../../../research/_src/lua-5.0.3/src/lapi.c ../../../research/_src/lua-5.0.3/src/lcode.c ../../../research/_src/lua-5.0.3/src/ldebug.c ../../../research/_src/lua-5.0.3/src/ldo.c ../../../research/_src/lua-5.0.3/src/ldump.c ../../../research/_src/lua-5.0.3/src/lfunc.c ../../../research/_src/lua-5.0.3/src/lgc.c ../../../research/_src/lua-5.0.3/src/llex.c ../../../research/_src/lua-5.0.3/src/lmem.c ../../../research/_src/lua-5.0.3/src/lobject.c ../../../research/_src/lua-5.0.3/src/lopcodes.c ../../../research/_src/lua-5.0.3/src/lparser.c ../../../research/_src/lua-5.0.3/src/lstate.c ../../../research/_src/lua-5.0.3/src/lstring.c ../../../research/_src/lua-5.0.3/src/ltable.c ../../../research/_src/lua-5.0.3/src/ltm.c ../../../research/_src/lua-5.0.3/src/lundump.c ../../../research/_src/lua-5.0.3/src/lvm.c ../../../research/_src/lua-5.0.3/src/lzio.c
+exit=0
+$ ar rcs libcore.a lapi.o lcode.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o
+exit=0
+$ gcc -std=gnu89 -O2 -w -I ../../../research/_src/lua-5.0.3/include -I ../../../research/_src/lua-5.0.3/src -DLUA_OPNAMES -c ../../../research/_src/lua-5.0.3/src/lopcodes.c -o lopcodes_names.o
+exit=0
+$ gcc -std=gnu89 -O2 -w -I ../../../research/_src/lua-5.0.3/include -I ../../../research/_src/lua-5.0.3/src -I ../../../research/_src/lua-5.0.3/src/luac ../../../research/_src/lua-5.0.3/src/luac/luac.c ../../../research/_src/lua-5.0.3/src/luac/print.c lopcodes_names.o ../../../research/_src/lua-5.0.3/src/lib/lauxlib.c libcore.a -lm -o luac.exe
+exit=0
+$ gcc -std=gnu99 -O2 -Wall -DLUA_USE_APICHECK -I ../../../research/_src/lua-5.5.1/src ../../../research/lab/11_internals.c liblua.a -lm -o internals.exe
+exit=0
+
+[11_internals.c on 5.5.1; cwd=research/lab]
+$ ../../build/research/5.5.1/internals.exe
+Lua 5.5.1
+LUA_COMPAT_GLOBAL=1 LUAI_MAXSHORTLEN=40 TM_N=25 sizeof Instruction=4
+__GNUC__=16 (lvm.c selects LUA_USE_JUMPTABLE=1)
+[host] stack items before loading=0
+[proto] main sizep=4 factory sizep=1 inner upvalues=1
+[upvaldesc] inner[0] name=state instack=1 idx=1
+[code] factory make_counter lines 2-8, 7 instructions, maxstack=4
+  pc=1 word=0x00010093 op=19 NEWTABLE mode=ivABC A=1 k=0 B=1 C=0 Bx=2
+  pc=2 word=0x00000054 op=84 EXTRAARG mode=iAx A=0 k=0 B=0 C=0 Bx=0
+  pc=3 word=0x00000092 op=18 SETFIELD mode=iABC A=1 k=0 B=0 C=0 Bx=0
+  pc=4 word=0x0000014F op=79 CLOSURE mode=iABx A=2 k=0 B=0 C=0 Bx=0
+  pc=5 word=0x00010180 op=0 MOVE mode=iABC A=3 k=0 B=1 C=0 Bx=2
+  pc=6 word=0x00038146 op=70 RETURN mode=iABC A=2 k=1 B=3 C=0 Bx=7
+  pc=7 word=0x00018146 op=70 RETURN mode=iABC A=2 k=1 B=1 C=0 Bx=3
+[code] inner closure lines 4-7, 7 instructions, maxstack=2
+  pc=1 word=0x0000008B op=11 GETTABUP mode=iABC A=1 k=0 B=0 C=0 Bx=0
+  pc=2 word=0x000100A2 op=34 ADD mode=iABC A=1 k=0 B=1 C=0 Bx=2
+  pc=3 word=0x060000AE op=46 MMBIN mode=iABC A=1 k=0 B=0 C=6 Bx=3072
+  pc=4 word=0x0100000F op=15 SETTABUP mode=iABC A=0 k=0 B=0 C=1 Bx=512
+  pc=5 word=0x0000008B op=11 GETTABUP mode=iABC A=1 k=0 B=0 C=0 Bx=0
+  pc=6 word=0x000200C8 op=72 RETURN1 mode=iABC A=1 k=0 B=2 C=0 Bx=4
+  pc=7 word=0x000100C7 op=71 RETURN0 mode=iABC A=1 k=0 B=1 C=0 Bx=2
+[stack] inner closure, about to run pc=1 (GETTABUP)
+  CallInfo chain length=3 (current first)
+  ci Lua func=slot 8 base=slot 9 frame-end=slot 11 proto lines 4-7
+  ci Lua func=slot 2 base=slot 3 frame-end=slot 17 proto lines 0-0
+  ci base_ci (host C level) func=slot 0
+  slot 2 main function = Lua closure (proto lines 0-0)
+  slot 3 main R0 = Lua closure (proto lines 2-8)
+  slot 4 main R1 = Lua closure (proto lines 4-7)
+  slot 5 main R2 = table
+  slot 6 main R3 = light C function
+  slot 7 main R4 = string "counter"
+  slot 8 callee function = Lua closure (proto lines 4-7)
+  slot 9 inner R0 = integer 2
+  upvalue[0] closed=1 open-list-empty=1 value=table
+[stack] inner closure, about to run pc=6 (RETURN1)
+  CallInfo chain length=3 (current first)
+  ci Lua func=slot 8 base=slot 9 frame-end=slot 11 proto lines 4-7
+  ci Lua func=slot 2 base=slot 3 frame-end=slot 17 proto lines 0-0
+  ci base_ci (host C level) func=slot 0
+  slot 2 main function = Lua closure (proto lines 0-0)
+  slot 3 main R0 = Lua closure (proto lines 2-8)
+  slot 4 main R1 = Lua closure (proto lines 4-7)
+  slot 5 main R2 = table
+  slot 6 main R3 = light C function
+  slot 7 main R4 = string "counter"
+  slot 8 callee function = Lua closure (proto lines 4-7)
+  slot 9 inner R0 = integer 2
+  slot 10 inner R1 = integer 42
+  upvalue[0] closed=1 open-list-empty=1 value=table
+counter	42	45
+yield	true	45	suspended
+return	true	46	dead
+protected	false	counter-error
+[trace] inner closure, times each pc ran over the whole program: pc1=3 pc2=3 pc3=0 pc4=3 pc5=3 pc6=3 pc7=0
+[string] short "label" twice same-object=1 short=1
+[string] 41-byte string twice same-object=0 short=0
+[string] reserved "while" extra=23 (index 22 in reserved list)
+[string] "global" extra=0
+[hash] after inserting 3 asize=0 nodes=8
+  node 0 empty next=0
+  node 1 empty next=0
+  node 2 empty next=0
+  node 3 key=3 main=3 next=0
+  node 4 empty next=0
+  node 5 empty next=0
+  node 6 empty next=0
+  node 7 empty next=0
+[hash] after inserting 10 asize=0 nodes=8
+  node 0 empty next=0
+  node 1 empty next=0
+  node 2 empty next=0
+  node 3 key=3 main=3 next=4
+  node 4 empty next=0
+  node 5 empty next=0
+  node 6 empty next=0
+  node 7 key=10 main=3 next=0
+[hash] after inserting 0 asize=0 nodes=8
+  node 0 key=0 main=0 next=0
+  node 1 empty next=0
+  node 2 empty next=0
+  node 3 key=3 main=3 next=4
+  node 4 empty next=0
+  node 5 empty next=0
+  node 6 empty next=0
+  node 7 key=10 main=3 next=0
+[hash] after inserting 7 asize=0 nodes=8
+  node 0 key=0 main=0 next=6
+  node 1 empty next=0
+  node 2 empty next=0
+  node 3 key=3 main=3 next=4
+  node 4 empty next=0
+  node 5 empty next=0
+  node 6 key=7 main=0 next=0
+  node 7 key=10 main=3 next=0
+[hash] after inserting 6 asize=0 nodes=8
+  node 0 key=0 main=0 next=5
+  node 1 empty next=0
+  node 2 empty next=0
+  node 3 key=3 main=3 next=4
+  node 4 empty next=0
+  node 5 key=7 main=0 next=0
+  node 6 key=6 main=6 next=0
+  node 7 key=10 main=3 next=0
+[hash] after inserting 1, 2, 4 (table full) asize=0 nodes=8
+  node 0 key=0 main=0 next=5
+  node 1 key=1 main=1 next=0
+  node 2 key=2 main=2 next=0
+  node 3 key=3 main=3 next=4
+  node 4 key=4 main=4 next=0
+  node 5 key=7 main=0 next=0
+  node 6 key=6 main=6 next=0
+  node 7 key=10 main=3 next=0
+[hash] after inserting 5 (no free node: rehash) asize=16 nodes=1
+  array keys present: 1 2 3 4 5 6 7 10
+  node 0 key=0 main=0 next=0
+[state] asize=0 nodes=1 lsizenode=0
+exit=0
+
+[12_probes.lua on 5.5.1; cwd=research/lab]
+$ ../../build/research/5.5.1/lua.exe 12_probes.lua
+global-as-name	7
+lua-recursion	100000
+recursion-through-pcall deepest	198
+recursion-through-pcall error	C stack overflow
+table.create(8) length	0	nil
+independent-counters	42	40	42
+exit=0
+
+[13_language.lua on 5.5.1: language-level behaviour; cwd=research/lab]
+$ ../../build/research/5.5.1/lua.exe 13_language.lua
+function-as-value	7
+generator	1	2	3
+coroutine-states	suspended	running	suspended	dead
+values-exchanged	11	42
+metamethod-add	11	22	calls	1
+plain-tables-add	false
+error-table	false	7
+table-mixed	10	20	30	x	3
+gc-finalizer	finalized
+exit=0
+
+[same snippet, every compiler; cwd=research/lab]
+$ ../../build/research/4.0.1/luac.exe -l -p snippets/add.lua
+
+main <0:@snippets/add.lua> (8 instructions/32 bytes at <address>)
+0 params, 5 stacks, 3 locals, 0 strings, 0 numbers, 0 functions, 3 lines
+     1	[1]	PUSHINT    	1
+     2	[1]	PUSHINT    	2
+     3	[1]	PUSHINT    	3
+     4	[2]	GETLOCAL   	1	; b
+     5	[2]	GETLOCAL   	2	; c
+     6	[2]	ADD        	
+     7	[2]	SETLOCAL   	0	; a
+     8	[2]	END
+exit=0
+$ ../../build/research/5.0.3/luac.exe -l -p snippets/add.lua
+
+main <snippets/add.lua:0> (5 instructions, 20 bytes at <address>)
+0 params, 3 stacks, 0 upvalues, 3 locals, 3 constants, 0 functions
+	1	[1]	LOADK    	0 0	; 1
+	2	[1]	LOADK    	1 1	; 2
+	3	[1]	LOADK    	2 2	; 3
+	4	[2]	ADD      	0 1 2
+	5	[2]	RETURN   	0 1 0
+exit=0
+$ ../../build/research/5.1.5/luac.exe -l -p snippets/add.lua
+
+main <snippets/add.lua:0,0> (5 instructions, 20 bytes at <address>)
+0+ params, 3 slots, 0 upvalues, 3 locals, 3 constants, 0 functions
+	1	[1]	LOADK    	0 -1	; 1
+	2	[1]	LOADK    	1 -2	; 2
+	3	[1]	LOADK    	2 -3	; 3
+	4	[2]	ADD      	0 1 2
+	5	[2]	RETURN   	0 1
+exit=0
+$ ../../build/research/5.2.4/luac.exe -l -p snippets/add.lua
+
+main <snippets/add.lua:0,0> (5 instructions at <address>)
+0+ params, 3 slots, 1 upvalue, 3 locals, 3 constants, 0 functions
+	1	[1]	LOADK    	0 -1	; 1
+	2	[1]	LOADK    	1 -2	; 2
+	3	[1]	LOADK    	2 -3	; 3
+	4	[2]	ADD      	0 1 2
+	5	[2]	RETURN   	0 1
+exit=0
+$ ../../build/research/5.3.6/luac.exe -l -p snippets/add.lua
+
+main <snippets/add.lua:0,0> (5 instructions at <address>)
+0+ params, 3 slots, 1 upvalue, 3 locals, 3 constants, 0 functions
+	1	[1]	LOADK    	0 -1	; 1
+	2	[1]	LOADK    	1 -2	; 2
+	3	[1]	LOADK    	2 -3	; 3
+	4	[2]	ADD      	0 1 2
+	5	[2]	RETURN   	0 1
+exit=0
+$ ../../build/research/5.4.9/luac.exe -l -p snippets/add.lua
+
+main <snippets/add.lua:0,0> (7 instructions at <address>)
+0+ params, 3 slots, 1 upvalue, 3 locals, 0 constants, 0 functions
+	1	[1]	VARARGPREP	0
+	2	[1]	LOADI    	0 1
+	3	[1]	LOADI    	1 2
+	4	[1]	LOADI    	2 3
+	5	[2]	ADD      	0 1 2
+	6	[2]	MMBIN    	1 2 6	; __add
+	7	[2]	RETURN   	3 1 1	; 0 out
+exit=0
+$ ../../build/research/5.5.1/luac.exe -l -p snippets/add.lua
+
+main <snippets/add.lua:0,0> (7 instructions at <address>)
+0+ params, 3 slots, 1 upvalue, 3 locals, 0 constants, 0 functions
+	1	[1]	VARARGPREP	0
+	2	[1]	LOADI    	0 1
+	3	[1]	LOADI    	1 2
+	4	[1]	LOADI    	2 3
+	5	[2]	ADD      	0 1 2
+	6	[2]	MMBIN    	1 2 6	; __add
+	7	[2]	RETURN   	3 1 1	; 0 out
+exit=0
+
+[constant folding and immediate operands, 5.5.1]
+$ ../../build/research/5.5.1/luac.exe -l -p snippets/fold.lua
+
+main <snippets/fold.lua:0,0> (8 instructions at <address>)
+0+ params, 4 slots, 1 upvalue, 4 locals, 0 constants, 0 functions
+	1	[1]	VARARGPREP	0
+	2	[1]	VARARG   	0 0 2	; 1 out
+	3	[2]	LOADI    	1 6
+	4	[3]	ADDI     	2 0 1
+	5	[3]	MMBINI   	0 1 6 0	; __add
+	6	[4]	ADD      	3 0 1
+	7	[4]	MMBIN    	0 1 6	; __add
+	8	[4]	RETURN   	4 1 1	; 0 out
+exit=0

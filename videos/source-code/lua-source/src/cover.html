@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言（本片只有中文）。kit/tools/covers.js 按 2 倍像素出图。
+     单独设计，不用视频截帧。视觉系统同正片（README「设计」）：lua.org 的白页与 #000080 标题、官方标志（tools/gen_logo.py 按官方 PostScript 生成）、
+     斜二测的两层核心源码。缩到 360 像素宽仍读得清主标题；底部约 15% 不放文字。 */
+  :root { --navy: #000080; --hl: #D0D0FF; --dim: #5A5A5A; }
+  html, body, #stage { width: var(--W); height: var(--H); margin: 0; }
+  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 228px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 196px; }
+  #stage { position: relative; background: #fff; color: #000; font-family: "Inter", "Sans SC"; overflow: hidden; font-variant-ligatures: none; }
+  .logo { position: absolute; left: var(--M); top: 84px; width: 190px; height: 190px; }
+  .kicker { position: absolute; left: calc(var(--M) + 230px); top: 150px; font: 400 46px "Inter", "Sans SC"; color: var(--dim); white-space: nowrap; }
+  .title { position: absolute; left: var(--M); top: 300px; font-weight: 500; font-size: var(--fs); line-height: 1; letter-spacing: -.01em; color: var(--navy); white-space: nowrap; }
+  .r43 .title { top: 330px; }
+  svg { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <img class="logo" src="img/lua-logo.svg" alt="Lua">
+  <div class="kicker"></div>
+  <div class="title"></div>
+  <svg id="map"></svg>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', r43 = q.get('r') === '43';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  const TEXT = { zh: { kicker: 'Lua 5.5.1　34 个 C 文件　32202 行', title: 'Lua源码全解析' } }[lang] || { kicker: 'Lua 5.5.1', title: 'Lua源码全解析' };
+  document.querySelector('.kicker').textContent = TEXT.kicker;
+  document.querySelector('.title').textContent = TEXT.title;
+  // 两层核心源码：读入、编译、执行（上）与执行时的数据（下）。统一用标志的蓝；淡紫在本片只表示「正在讲的那一处」，封面不用
+  const W = r43 ? 1600 : 1920, H = r43 ? 1200 : 1080;
+  const svg = document.getElementById('map');
+  svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const NS = 'http://www.w3.org/2000/svg';
+  const add = (tag, attrs, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text) e.textContent = text; svg.appendChild(e); return e; };
+  const k = 0.6, cx = Math.cos(Math.PI / 6) * k, sy = Math.sin(Math.PI / 6) * k;
+  const P = (x, y, z, ox, oy) => [ox + x + y * cx, oy - z - y * sy];
+  const poly = (pts, fill, stroke) => add('polygon', { points: pts.map((p) => p.join(',')).join(' '), fill, stroke, 'stroke-width': 1.5, 'stroke-linejoin': 'round' });
+  function slab(ox, oy, w, d, h, on) {
+    const A = (a, b, c) => P(a, b, c, ox, oy);
+    const [front, top, side] = on ? ['#D0D0FF', '#B8B8F0', '#9E9EE0'] : ['#000080', '#4040A0', '#000060'];
+    poly([A(0, 0, h), A(w, 0, h), A(w, d, h), A(0, d, h)], top, '#000080');
+    poly([A(w, 0, 0), A(w, d, 0), A(w, d, h), A(w, 0, h)], side, '#000080');
+    poly([A(0, 0, 0), A(w, 0, 0), A(w, 0, h), A(0, 0, h)], front, '#000080');
+    return A(w / 2, 0, h / 2);
+  }
+  const rows = [['lzio', 'llex', 'lparser', 'lcode', 'lvm', 'ldo'], ['lobject', 'lstring', 'ltable', 'ltm', 'lfunc', 'lgc', 'lstate', 'lmem']];
+  const lit = new Set();
+  const SW = r43 ? 156 : 186, G = 10, SH = 84, SD = 70;
+  const x0 = r43 ? 100 : 120, y0 = r43 ? 760 : 700;
+  const centers = {};
+  rows.forEach((files, r) => files.forEach((name, i) => {
+    const [mx, my] = slab(x0 + i * (SW + G), y0 + r * 128, SW, SD, SH, lit.has(name));
+    centers[name] = [mx, my];
+    add('text', { x: mx, y: my + 12, 'text-anchor': 'middle', 'font-family': 'Mono', 'font-size': r43 ? 30 : 34, fill: lit.has(name) ? '#000080' : '#ffffff' }, name);
+  }));
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('500 40px "Sans SC"', sample), document.fonts.load('500 40px "Inter"', sample), document.fonts.load('400 30px "Mono"', 'lzio')])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

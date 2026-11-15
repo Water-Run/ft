@@ -1,0 +1,54 @@
+/* 关键帧共用的视觉系统草案（选定方向后并入 src/css/style.css）。
+   颜色全部取自 lua.org 的 lua.css 与标志程序（research/FACTS.md P03、P04）：
+   --navy  标题、链接与标志的蓝 #000080：Lua 一侧的东西（Lua 源码、Lua 的值、Lua 函数、堆对象）
+   --ink   正文黑 #000000：C 一侧的东西（C 源码、C 栈、宿主）
+   --hl    链接悬停底色 #D0D0FF：此刻正在讲的那一处（选区）
+   --red   激活链接的红 #FF0000：只表示控制流（pc、跳转、抛出）
+   --rule  边框灰 #CCCCCC；--sheet 页底灰 #F8F8F8；--orbit 标志环绕线 50% 灰（只用于「循环」）
+   图形语言：方格 = 一个值格（TValue）；圆盘 = 一个堆对象；虚线环 = 循环；红线 = 控制流。 */
+:root {
+  --page: #FFFFFF; --sheet: #F8F8F8; --navy: #000080; --ink: #000000; --hl: #D0D0FF; --red: #FF0000;
+  --rule: #CCCCCC; --orbit: #808080; --dim: #5A5A5A;
+  --M: 120px;
+}
+html, body { margin: 0; background: #fff; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--page); color: var(--ink);
+  font-family: "Inter", "Sans SC"; }
+.abs { position: absolute; }
+/* 常驻：左上角标志 + 章节 + 当前源文件 */
+.hud { position: absolute; left: 56px; top: 34px; display: flex; align-items: center; gap: 22px; }
+.hud img { width: 64px; height: 64px; }
+.hud .ch { font: 400 32px "Inter", "Sans SC"; color: var(--navy); }
+.hud .ch b { font-weight: 400; margin-right: 14px; }
+.hud .file { font: 500 28px "Mono"; color: var(--dim); }
+/* 标题：lua.org 的 h1/h2 是常规字重的蓝字，h2 前有 ❖ */
+.h1 { font: 400 132px/1.1 "Inter", "Sans SC"; color: var(--navy); letter-spacing: -0.01em; }
+.h2 { font: 400 60px/1.2 "Inter", "Sans SC"; color: var(--navy); }
+.h2::before { content: "\2756"; padding-right: 0.45em; font-size: 0.7em; vertical-align: 0.12em; }
+.body { font: 400 38px/1.45 "Inter", "Sans SC"; }
+.note { font: 400 28px/1.4 "Inter", "Sans SC"; color: var(--dim); }
+.mono { font-family: "Mono", "Sans SC"; white-space: pre; }
+/* 代码：Lua 源码蓝字压在页底灰上；C 源码黑字压白底，行号灰 */
+.code { font: 400 30px/1.5 "Mono", "Sans SC"; white-space: pre; }
+.code .ln { color: #707070; display: inline-block; width: 2.9em; text-align: right; margin-right: 1.1em; }
+.code .row { display: block; padding: 0 16px 0 0; }
+.code .row.hl { background: var(--hl); }
+.lua { color: var(--navy); }
+.cside { color: var(--ink); }
+.sheet { background: var(--sheet); }
+/* 值格与对象 */
+.cell { position: absolute; border: 2px solid var(--ink); background: #fff; display: flex; align-items: center; justify-content: center;
+  font: 500 32px "Mono"; color: var(--navy); box-sizing: border-box; }
+.cell.hl { background: var(--hl); }
+.cell.empty { border-color: var(--rule); color: #707070; }
+.slotno { position: absolute; font: 400 28px "Mono"; color: #707070; }
+.disc { position: absolute; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center;
+  font: 500 30px "Inter", "Sans SC"; text-align: center; line-height: 1.15; }
+.tag { font: 500 28px "Mono"; color: var(--navy); }
+.red { color: var(--red); }
+/* 字幕（与成片相同的位置：画面底部 968–1080） */
+.caption { position: absolute; left: 0; right: 0; bottom: 52px; text-align: center; font: 500 40px "Sans SC", "Inter"; color: var(--ink); }
+.caption b { font-weight: 700; color: var(--navy); }
+svg.over { position: absolute; z-index: 10; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+/* 源码照原样显示：关闭等宽字体的连字（font 简写会重置 font-variant，所以这里统一强制） */
+#stage, #stage * { font-variant-ligatures: none !important; font-feature-settings: "liga" 0, "calt" 0 !important; }

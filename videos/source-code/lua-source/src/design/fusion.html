@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>融合方案 · 关键帧</title>
+<link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="design.css"></head>
+<body><div id="stage"></div>
+<script src="kit.js"></script>
+<script>
+// 融合方案：按内容选形式（说明在 fusion.json）。
+//   A 的 Lua 形象：白页、蓝色常规字重标题、❖、官方标志常驻；真实源码摘录，正在讲的行用淡紫。
+//   B 的立体：栈、调用帧、表的节点、字节布局、源码地图——有空间关系或状态变化的东西做成有厚度的实物（斜二测，行保持水平）。
+//   C 的对照：一行源码、它产生的指令、处理指令的代码、它改动的格子，并排放置，用细线连起来。
+const f = D.F;
+const NAVY = '#000080', LAV = '#D0D0FF', NTOP = '#4040A0', NSIDE = '#000060';
+// 右上角的小地图：五层源码，当前章节涉及的文件点亮（只作方位提示，不需要读）
+function minimap(lit) {
+  const rows = [['lua.c', 'luac.c', 'lauxlib', 'lbaselib', 'lstrlib', 'ltablib', '…'], ['lapi'],
+    ['lzio', 'llex', 'lparser', 'lcode', 'lvm', 'ldo'], ['lobject', 'lstring', 'ltable', 'ltm', 'lfunc', 'lgc', 'lstate', 'lmem'],
+    ['ldebug', 'ldump', 'lundump', 'lctype', 'lopcodes']];
+  const P = D.obl(0, 0), W = 26, G = 3;
+  rows.forEach((files, r) => {
+    const Q = (x, y, z) => { const [a, b] = P(x, y, z); return [a + 1560, b + 60 + r * 20]; };
+    files.forEach((name, i) => {
+      const w = r === 1 ? 8 * (W + G) - G : W, on = lit.includes(name);
+      const core = r >= 2;
+      D.obox(Q, i * (W + G), 0, 0, w, 14, 10, on ? LAV : (core ? NAVY : '#fff'), on ? '#B8B8F0' : (core ? NTOP : '#EEE'), on ? '#9E9EE0' : (core ? NSIDE : '#CCC'), on ? NAVY : (core ? NAVY : '#999'));
+    });
+  });
+}
+function cyl(cx, cy, rx, h, label) {
+  const ry = rx * 0.32;
+  D.path(`M ${cx - rx} ${cy} L ${cx - rx} ${cy + h} A ${rx} ${ry} 0 0 0 ${cx + rx} ${cy + h} L ${cx + rx} ${cy} Z`, NAVY, 2, { fill: NSIDE });
+  D.path(`M ${cx - rx} ${cy} A ${rx} ${ry} 0 1 0 ${cx + rx} ${cy} A ${rx} ${ry} 0 1 0 ${cx - rx} ${cy}`, NAVY, 2, { fill: NTOP });
+  if (label) D.text(cx, cy + h / 2 + 16, label, 30, '#fff', 'middle', 'Sans SC');
+}
+const note = (x, y, t, w) => { const e = D.at(D.el('div', 'abs note', null, t), x, y); if (w) { e.style.width = w + 'px'; e.style.whiteSpace = 'normal'; } return e; };
+
+if (f === 1) {   // 片名：A 的标志与标题 + B 的源码地图
+  const logo = D.at(D.el('img', 'abs'), 120, 96, 270, 270); logo.src = '/img/lua-logo.svg';
+  D.at(D.el('div', 'abs h1', null, 'Lua源码全解析'), 440, 120).style.fontSize = '120px';
+  D.at(D.el('div', 'abs body', null, 'Lua 5.5.1　34 个 C 文件　27 个头文件　32202 行'), 446, 286);
+  const P = D.obl(0, 0), W = 150, G = 10;
+  const rows = [
+    ['宿主与标准库', ['lua.c', 'luac.c', 'lauxlib', 'lbaselib', 'lstrlib', 'ltablib', '…'], 'host'],
+    ['C API', ['lapi'], 'api'],
+    ['读入、编译、执行', ['lzio', 'llex', 'lparser', 'lcode', 'lvm', 'ldo'], 'core'],
+    ['执行时的数据', ['lobject', 'lstring', 'ltable', 'ltm', 'lfunc', 'lgc', 'lstate', 'lmem'], 'core'],
+    ['调试、预编译、指令表', ['ldebug', 'ldump', 'lundump', 'lctype', 'lopcodes'], 'core'],
+  ];
+  rows.forEach(([label, files, kind], r) => {
+    const y0 = 500 + r * 104, x0 = 540;
+    const Q = (x, y, z) => { const [a, b] = P(x, y, z); return [a + x0, b + y0]; };
+    files.forEach((name, i) => {
+      const w = kind === 'api' ? 7 * (W + G) - G : W, x = i * (W + G);
+      const st = kind === 'core' ? [NAVY, NTOP, NSIDE, NAVY, '#fff'] : kind === 'api' ? ['#fff', '#E4E4F2', '#C4C4DE', NAVY, NAVY] : ['#fff', '#EDEDED', '#CFCFCF', '#000', '#000'];
+      const [cx, cy] = D.obox(Q, x, 0, 0, w, 60, 56, st[0], st[1], st[2], st[3]);
+      D.text(cx, cy + 10, name, 28, st[4], 'middle', 'Mono');
+    });
+    D.text(x0 - 26, y0 - 18, label, 30, '#000', 'end', 'Sans SC');
+  });
+}
+if (f === 2) {   // 章节卡：A 的标题样式 + 小地图标出本章文件
+  note(120, 120, '第二部分　从文本到执行');
+  D.at(D.el('div', 'abs', null, '06'), 112, 220).style.cssText += 'font:300 300px/1 Inter;color:#000080';
+  D.at(D.el('div', 'abs h2', null, '边读边生成'), 120, 560).style.fontSize = '96px';
+  D.at(D.el('div', 'abs body', null, '记号怎样变成指令'), 124, 700).style.color = '#5A5A5A';
+  // 大一号的地图，本章的 lparser、lcode 点亮
+  const P = D.obl(0, 0), W = 120, G = 8;
+  const rows = [['lzio', 'llex', 'lparser', 'lcode', 'lvm', 'ldo'], ['lobject', 'lstring', 'ltable', 'ltm', 'lfunc', 'lgc', 'lstate', 'lmem']];
+  rows.forEach((files, r) => {
+    const Q = (x, y, z) => { const [a, b] = P(x, y, z); return [a + 820, b + 300 + r * 100]; };
+    files.forEach((name, i) => {
+      const on = name === 'lparser' || name === 'lcode';
+      const [cx, cy] = D.obox(Q, i * (W + G), 0, 0, W, 50, 50, on ? LAV : NAVY, on ? '#B8B8F0' : NTOP, on ? '#9E9EE0' : NSIDE, NAVY);
+      D.text(cx, cy + 9, name, 24, on ? NAVY : '#fff', 'middle', 'Mono');
+    });
+  });
+  note(820, 520, '本章：lparser.c 分析语法，lcode.c 生成指令', 900);
+}
+if (f === 3) {   // 一个值：B 的字节立体 + A 的源码摘录 + 标签位的拆解
+  D.hud('<b>04</b>一个值', 'lobject.h'); minimap(['lobject']);
+  note(120, 140, 'lobject.h　第 49–57、65–69 行');
+  D.code(120, 186, [[49, 'typedef union Value {'], [50, '  struct GCObject *gc;'], [51, '  void *p;'], [52, '  lua_CFunction f;'], [53, '  lua_Integer i;', true], [54, '  lua_Number n;'], [57, '} Value;'],
+    [null, ''], [65, '#define TValuefields  Value value_; lu_byte tt_'], [67, 'typedef struct TValue {'], [68, '  TValuefields;'], [69, '} TValue;']], 'cside', 760).style.cssText += 'font-size:26px;line-height:1.4';
+  // 16 个字节：8 个内容字节（整数 40 的小端存储）、1 个标签、7 个空隙
+  const P = D.obl(960, 400), S = 56;
+  const bytes = ['28', '00', '00', '00', '00', '00', '00', '00'];
+  for (let i = 0; i < 16; i++) {
+    const x = i * S;
+    if (i < 8) { const [cx, cy] = D.obox(P, x, 0, 0, 50, 40, 50, NAVY, NTOP, NSIDE, NAVY); D.text(cx, cy + 9, bytes[i], 24, '#fff', 'middle', 'Mono'); }
+    else if (i === 8) { const [cx, cy] = D.obox(P, x, 0, 0, 50, 40, 50, LAV, '#B8B8F0', '#9E9EE0', NAVY); D.text(cx, cy + 9, '03', 24, NAVY, 'middle', 'Mono'); }
+    else { D.obox(P, x, 0, 0, 50, 40, 50, 'none', 'none', 'none', '#BBBBBB'); }
+  }
+  const brace = (a, b, y, t) => { const x1 = 960 + a * S, x2 = 960 + b * S - 6; D.path(`M ${x1} ${y} L ${x1} ${y + 12} L ${x2} ${y + 12} L ${x2} ${y}`, '#000', 2); D.text((x1 + x2) / 2, y + 48, t, 28, '#000', 'middle', 'Sans SC'); };
+  brace(0, 8, 470, 'Value：整数 40');
+  brace(8, 9, 470, '');
+  D.text(960 + 8.5 * S - 3, 518, 'tt_', 28, NAVY, 'middle', 'Mono');
+  brace(9, 16, 470, '对齐空隙 7 字节');
+  // 标签字节的 8 位
+  note(960, 600, '标签 tt_ = 3：整数');
+  const bits = ['0', '0', '0', '0', '0', '0', '1', '1'];
+  bits.forEach((b, i) => D.at(D.el('div', 'cell' + (i >= 4 ? ' hl' : ''), null, b), 960 + i * 64, 650, 58, 58));
+  const grp = (a, b, t) => { const x1 = 960 + a * 64, x2 = 960 + b * 64 - 6; D.path(`M ${x1} 718 L ${x1} 728 L ${x2} 728 L ${x2} 718`, '#000', 2); D.text((x1 + x2) / 2, 764, t, 28, '#000', 'middle', 'Sans SC'); };
+  grp(4, 8, '第 0–3 位：数字');
+  grp(2, 4, '变体：整数');
+  grp(1, 2, '');
+  D.text(960 + 1.5 * 64 - 3, 806, '回收', 28, '#000', 'middle', 'Sans SC');
+  D.caption('计数器里的整数 40，就是一个标签为整数、内容为 40 的 TValue');
+}
+if (f === 4) {   // 编译一行源码：C 的三栏对照，A 的版式
+  D.hud('<b>06</b>边读边生成', 'lparser.c · lcode.c'); minimap(['lparser', 'lcode']);
+  D.code(120, 140, [[5, 'state.value = state.value + delta']], 'lua sheet', 760).style.cssText += 'font-size:32px';
+  const X1 = 120, X2 = 460, X3 = 1180, Y = 260, H = 66;
+  note(X1, Y - 46, '记号'); note(X2, Y - 46, '编译器此刻记下的'); note(X3, Y - 46, '生成的指令');
+  const rows = [
+    ['state', '名字：在外层找到，记为上值 0', ''], ['.', '', ''], ['value', 'expdesc：上值 0 所指表的 value 字段', ''],
+    ['=', '左边是赋值目标，先放在一边', ''], ['state . value', 'expdesc：同上', ''], ['+', '左操作数必须进寄存器', '1  GETTABUP 1 0 0'],
+    ['delta', '已在 0 号寄存器，不生成指令', ''], ['（行尾）', '两边就位：加法；再回到左边赋值', '2  ADD      1 1 0\n3  MMBIN    1 0 6\n4  SETTABUP 0 0 1'],
+  ];
+  let y = Y;
+  rows.forEach(([tok, what, ins], i) => {
+    const hl = i === 5;
+    const t = D.at(D.el('div', 'abs mono', null, tok), X1, y); t.style.cssText += `font-size:30px;color:${NAVY};` + (hl ? 'background:#D0D0FF;' : '');
+    if (what) note(X2, y + 2, what, 680);
+    if (ins) {
+      const c = D.at(D.el('div', 'abs mono', null, ins.replace(/\n/g, '<br>')), X3, y); c.style.cssText += `font-size:30px;line-height:1.36;color:${NAVY};` + (hl ? 'background:#D0D0FF;' : '');
+      D.path(`M ${X2 + 600} ${y + 20} L ${X3 - 20} ${y + 20}`, NAVY, 2, { arrow: 'navy' });
+    }
+    y += i === 7 ? 0 : H;
+  });
+  D.caption('编译器这才生成第一条指令 GETTABUP');
+}
+if (f === 5) {   // 调用：B 的栈与调用帧 + C 的指令到格子的对应 + A 的源码摘录
+  D.hud('<b>09</b>调用', 'lvm.c · ldo.c'); minimap(['lvm', 'ldo']);
+  note(120, 140, '主函数的指令（节选）');
+  D.code(120, 186, [[15, 'MOVE     5 1'], [16, 'LOADI    6 2'], [17, 'CALL     5 2 2', true]], 'lua', 420).style.cssText += 'font-size:28px;line-height:1.4';
+  note(640, 140, 'lvm.c　第 1735–1739 行');
+  D.code(640, 186, [[1735, 'if ((newci = luaD_precall(L, ra, nresults)) == NULL)'], [1736, '  updatetrap(ci);'], [1737, 'else {', true], [1738, '  ci = newci;', true], [1739, '  goto startfunc;', true]], 'cside', 1000).style.cssText += 'font-size:26px;line-height:1.4';
+  const P = D.obl(250, 700), S = 150;
+  const vals = { 8: '', 9: '2' };
+  const centers = {};
+  for (let s = 2; s <= 10; s++) {
+    const x = (s - 2) * S, on = s in vals, hl = s === 8 || s === 9;
+    const [cx, cy] = D.obox(P, x, 0, 0, 136, 60, 80, hl ? LAV : '#fff', on ? '#EFEFEF' : '#F8F8F8', on ? '#D2D2D2' : '#E8E8E8', on ? '#000' : '#C8C8C8');
+    centers[s] = [cx, cy];
+    if (vals[s]) D.text(cx, cy + 12, vals[s], 36, NAVY, 'middle', 'Mono');
+    else if (on) D.path(`M ${cx} ${cy} L ${cx} ${cy - 1}`, NAVY, 3, { dot: true });
+    D.text(cx, cy + 78, String(s), 28, '#707070', 'middle', 'Mono');
+  }
+  D.text(centers[8][0], centers[8][1] - 70, '函数', 28, '#000', 'middle', 'Sans SC');
+  D.text(centers[9][0], centers[9][1] - 70, '参数', 28, '#000', 'middle', 'Sans SC');
+  // CALL 5 2 2 → 主函数的 5 号寄存器 = 第 8 格
+  D.path(`M 250 318 C 250 470, ${centers[8][0]} 430, ${centers[8][0]} ${centers[8][1] - 100}`, NAVY, 2, { arrow: 'navy', dot: true });
+  const L3 = centers[3][0] - 68, L9 = centers[9][0] - 68, R10 = centers[10][0] + 68;
+  D.path(`M ${L3} 806 L ${R10 + 130} 806`, '#000', 4, { arrow: 'ink' });
+  D.text(L3, 844, '主函数的帧：第 3 格起', 28, '#000', 'start', 'Sans SC');
+  D.path(`M ${L9} 866 L ${R10} 866`, '#000', 4);
+  D.text(L9 - 20, 904, '新帧：0 号寄存器 = 第 9 格', 28, '#000', 'end', 'Sans SC');
+  // 右侧：CallInfo 链
+  const Q = D.obl(1600, 0);
+  ['内层函数', '主函数', '宿主'].forEach((t, i) => {
+    const [cx, cy] = D.obox((x, y, z) => { const [a, b] = Q(x, y, z); return [a, b + 470 + i * 84]; }, 0, 0, 0, 220, 40, 60, i === 0 ? LAV : '#fff', '#EFEFEF', '#D2D2D2', '#000');
+    D.text(cx, cy + 10, t, 28, '#000', 'middle', 'Sans SC');
+  });
+  note(1600, 410, 'CallInfo 链');
+  D.caption('换句话说，调用方的两个格子，直接成了被调用方的函数和参数');
+}
+if (f === 6) {   // 表：B 的节点 + A 的源码 + C 的行到节点
+  D.hud('<b>11</b>表', 'ltable.c'); minimap(['ltable']);
+  note(120, 140, 'ltable.c　insertkey，第 868–874 行');
+  D.code(120, 186, [[868, 'othern = mainpositionfromnode(t, mp);'], [869, 'if (othern != mp) {', true], [871, '  while (othern + gnext(othern) != mp)'], [872, '    othern += gnext(othern);'],
+    [873, '  gnext(othern) = cast_int(f - othern);', true], [874, '  *f = *mp;', true]], 'cside', 900).style.cssText += 'font-size:28px;line-height:1.36';
+  const P = D.obl(180, 720), S = 190;
+  const nodes = [['0', 5], ['', 0], ['', 0], ['3', 4], ['', 0], ['7', 0], ['6', 0], ['10', 0]];
+  const c = [];
+  nodes.forEach(([k, nx], i) => {
+    const hl = i === 0 || i === 5 || i === 6;
+    const [cx, cy] = D.obox(P, i * S, 0, 0, 170, 70, 110, hl ? LAV : '#fff', k ? '#EFEFEF' : '#F8F8F8', k ? '#D2D2D2' : '#E6E6E6', k ? '#000' : '#BBBBBB');
+    c.push([cx, cy]);
+    if (k) D.text(cx, cy + 14, k, 44, NAVY, 'middle', 'Mono');
+    D.text(cx, cy + 96, String(i) + ' 号', 28, '#707070', 'middle', 'Sans SC');
+  });
+  // 873 → 0 号的 next；874 → 7 搬到 5 号
+  D.path(`M 1020 368 C 1100 368, ${c[0][0] + 40} 520, ${c[0][0] + 10} ${c[0][1] - 70}`, NAVY, 2, { arrow: 'navy' });
+  D.path(`M 1020 404 C 1300 404, ${c[5][0] + 30} 520, ${c[5][0] + 10} ${c[5][1] - 70}`, NAVY, 2, { arrow: 'navy' });
+  D.text(1040, 376, '0 号的 next 改为 +5', 28, '#000', 'start', 'Sans SC');
+  D.text(1320, 412, '7 搬到空位 5 号', 28, '#000', 'start', 'Sans SC');
+  D.path(`M ${c[0][0]} ${c[0][1] + 160} C ${c[0][0]} ${c[0][1] + 300}, ${c[5][0]} ${c[5][1] + 300}, ${c[5][0]} ${c[5][1] + 164}`, NAVY, 3, { arrow: 'navy', dot: true });
+  D.caption('于是 7 被挪到下一个空节点 5 号，0 号的 next 随之改为 5');
+}
+if (f === 7) {   // 协程：A 的 Lua 代码与结果（语言层面）+ B 的两份 lua_State 与 C 栈
+  D.hud('<b>14</b>协程', 'ldo.c · lcorolib.c'); minimap(['ldo', 'lstate']);
+  note(120, 140, '语言层面：一个生成器');
+  D.code(120, 186, [[null, 'local gen = coroutine.wrap(function()'], [null, '  for i = 1, 3 do'], [null, '    coroutine.yield(i)', true], [null, '  end'], [null, 'end)'], [null, 'print(gen(), gen(), gen())']], 'lua sheet', 700).style.cssText += 'font-size:28px;line-height:1.4';
+  note(120, 470, '输出');
+  D.at(D.el('div', 'abs mono', null, '1\t2\t3'), 120, 512).style.cssText += 'font-size:32px;tab-size:3';
+  // 右：两份 lua_State（各自的栈），下面共用 global_State
+  const col = (x0, title, slots, hl) => {
+    const P = D.obl(x0, 0);
+    slots.forEach((t, i) => {
+      const Q = (x, y, z) => { const [a, b] = P(x, y, z); return [a, b + 740 - i * 92]; };
+      const [cx, cy] = D.obox(Q, 0, 0, 0, 300, 56, 76, i === hl ? LAV : '#fff', '#EFEFEF', '#D2D2D2', '#000');
+      D.text(cx, cy + 10, t, 28, NAVY, 'middle', 'Sans SC');
+    });
+    D.text(x0 + 150, 740 - slots.length * 92 - 30, title, 30, '#000', 'middle', 'Sans SC');
+  };
+  col(860, '主线程的 lua_State', ['主函数', 'resume（C）'], 1);
+  col(1360, '协程的 lua_State', ['协程体', 'yield（C）'], 0);
+  const G = D.obl(860, 0);
+  const [gx, gy] = D.obox((x, y, z) => { const [a, b] = G(x, y, z); return [a, b + 860]; }, 0, 0, 0, 800, 60, 60, NAVY, NTOP, NSIDE, NAVY);
+  D.text(gx, gy + 10, 'global_State：全局表、字符串表、回收器', 28, '#fff', 'middle', 'Sans SC');
+  // yield 时 longjmp 回到 resume：红线只表示控制流
+  D.path('M 1360 610 C 1290 600, 1240 600, 1196 610', '#FF0000', 4, { arrow: 'red' });
+  D.at(D.el('div', 'abs', null, 'longjmp'), 1214, 650).style.cssText += 'font:500 28px Mono;color:#000';
+  D.caption('但协程自己的栈和 CallInfo 链原样保留');
+}
+D.ready();
+</script></body></html>

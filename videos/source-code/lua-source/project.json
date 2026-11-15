@@ -1,0 +1,86 @@
+{
+  "slug": "lua-source",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "Lua源码全解析"
+  },
+  "stage": "review",
+  "next": "暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用已选音色 Warm_Bestie 合成全片（实测响度，混音按 rms 对齐），做有声代表段，用 covers.js 出封面",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "GPT-6.1 Sol",
+        "roles": [
+          "源码测绘",
+          "取证"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "分集拟定",
+          "补充取证",
+          "文案",
+          "视觉设计",
+          "配乐"
+        ]
+      }
+    ],
+    "services": [],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "style": "rio",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    }
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Warm_Bestie"
+    },
+    "speed": {
+      "zh": 1.0
+    }
+  }
+}

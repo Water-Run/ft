@@ -1,0 +1,6 @@
+PASS 7 archive checksums; 420 extracted source/header/Makefile/manual files identical to archives
+PASS all 61 source/header hashes, line counts, build grouping and prose module coverage
+PASS 89 unique research IDs (including 8 open items) and local document links
+PASS 46 exact subprocess captures; expected cross-version rejection; observed dimensions and capacities
+PASS bytecode listing raw hashes and address normalization
+PASS no absolute personal/workspace paths in candidate evidence files; no shared files written

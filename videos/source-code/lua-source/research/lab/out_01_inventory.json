@@ -1,0 +1,7045 @@
+{
+  "checked_on": "2026-11-15",
+  "version": "5.5.1",
+  "archive_manifest": "out_00_sources.json",
+  "count_method": "All src/*.c and src/*.h; physical splitlines including comments and blanks; no doc, Makefile or external dependency",
+  "groups": {
+    "CORE": [
+      "lapi.c",
+      "lcode.c",
+      "lctype.c",
+      "ldebug.c",
+      "ldo.c",
+      "ldump.c",
+      "lfunc.c",
+      "lgc.c",
+      "llex.c",
+      "lmem.c",
+      "lobject.c",
+      "lopcodes.c",
+      "lparser.c",
+      "lstate.c",
+      "lstring.c",
+      "ltable.c",
+      "ltm.c",
+      "lundump.c",
+      "lvm.c",
+      "lzio.c"
+    ],
+    "LIB": [
+      "lauxlib.c",
+      "lbaselib.c",
+      "lcorolib.c",
+      "ldblib.c",
+      "liolib.c",
+      "lmathlib.c",
+      "loadlib.c",
+      "loslib.c",
+      "lstrlib.c",
+      "ltablib.c",
+      "lutf8lib.c",
+      "linit.c"
+    ],
+    "LUA": [
+      "lua.c"
+    ],
+    "LUAC": [
+      "luac.c"
+    ]
+  },
+  "files": [
+    {
+      "file": "lapi.c",
+      "bytes": 36925,
+      "lines": 1479,
+      "sha256": "d744084bfec5049f6eaa509f4f353886a8c4fa8c8ef875d9f5bd3783caa46e09",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lapi.h",
+      "bytes": 1635,
+      "lines": 65,
+      "sha256": "f3780df32449b84c4b8c4e2f8ac780d45b50c190b4965c329842d5f216ad4dcb",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lauxlib.c",
+      "bytes": 36295,
+      "lines": 1215,
+      "sha256": "12479bc0ada905452185278dc681d72eb865e1fc247a0143227c210bc3f9dd78",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lauxlib.h",
+      "bytes": 8644,
+      "lines": 271,
+      "sha256": "007608c5e2abd231a9f61dc6cf4080ff6d4b54c845aa87b08162b5c778960443",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lbaselib.c",
+      "bytes": 15443,
+      "lines": 552,
+      "sha256": "c86efd0ab819c08a4d253d2071ba6ef58bd63d0d1a8b8b383c3bc6b661167028",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lcode.c",
+      "bytes": 57163,
+      "lines": 1970,
+      "sha256": "9ad73605143555e094f00bd87b0dadb3002c440e7ed743bdd09637e73466cbb6",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lcode.h",
+      "bytes": 3901,
+      "lines": 105,
+      "sha256": "c5804ed0ce52cd2034cda9fcca256cc56333ec9954023b233da5a0ea533ce2e6",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lcorolib.c",
+      "bytes": 5270,
+      "lines": 225,
+      "sha256": "14ab32084fafe825b6dca8c2d69fbbfd68e6a5c442acf4b18cc78f9dc15a820a",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lctype.c",
+      "bytes": 2461,
+      "lines": 64,
+      "sha256": "2b8e4894b6cff2afc111c1c996de4b78b4db2cf0c83d485d396806baa9e5b28b",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lctype.h",
+      "bytes": 2115,
+      "lines": 101,
+      "sha256": "c800311872ecba642f6d013b290eda83ba6cd8df8061e25cdca1dd4adcbed8b5",
+      "makefile_group": "header"
+    },
+    {
+      "file": "ldblib.c",
+      "bytes": 13217,
+      "lines": 477,
+      "sha256": "af19f54caa086a202d017a46233d7ee20c3709ae1a30548ac0ebcff5ef3023a9",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "ldebug.c",
+      "bytes": 30026,
+      "lines": 979,
+      "sha256": "a15af90335bee18c4c4b04195bf20c7f2481b8b3af88f7ade4d92be3f3584b74",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "ldebug.h",
+      "bytes": 2283,
+      "lines": 65,
+      "sha256": "29e0a057ea98a7921d30d32b12ff82b4988848ee5a1163e8e3dd702583b5d2d2",
+      "makefile_group": "header"
+    },
+    {
+      "file": "ldo.c",
+      "bytes": 40717,
+      "lines": 1192,
+      "sha256": "6dd1265ccbc686073580a49de19e7fb5af80133d5decee104fc012dbfaaab3b8",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "ldo.h",
+      "bytes": 3650,
+      "lines": 99,
+      "sha256": "4bb9b8353327a71bae9c5c59f00eea17beb6e11b8325df75af23dda89ae26725",
+      "makefile_group": "header"
+    },
+    {
+      "file": "ldump.c",
+      "bytes": 7900,
+      "lines": 307,
+      "sha256": "8571aa21018d50033e32ad2ee28ecf28db303125d472a8fdf6bb9bc57335d978",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lfunc.c",
+      "bytes": 9153,
+      "lines": 314,
+      "sha256": "033d3511a16e3c0947a69c12d47f54a7d48acf41060355e72779f6459c7f75f3",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lfunc.h",
+      "bytes": 1699,
+      "lines": 65,
+      "sha256": "cfa1e9c22b0bb68098fbee66ed266de25f62d033bba9668d4618b9ee667c673e",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lgc.c",
+      "bytes": 57890,
+      "lines": 1804,
+      "sha256": "fdbeb7246deebb353fc0d462a9712a7e34983b37340be4877c621535e3b1baa3",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lgc.h",
+      "bytes": 9007,
+      "lines": 268,
+      "sha256": "cfc9ab1a6e1419793f1a2bcfc78b095781c024564dd6b6b5100a95015d507b7d",
+      "makefile_group": "header"
+    },
+    {
+      "file": "linit.c",
+      "bytes": 1529,
+      "lines": 63,
+      "sha256": "76225baba77ef9abfc8e06919cb83e34b7c6f65292a200bffa95513782984696",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "liolib.c",
+      "bytes": 22402,
+      "lines": 841,
+      "sha256": "7e941581f34a8443e4ffbe690e9ee68332c7431a3a27e1d35b2312437459241c",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "ljumptab.h",
+      "bytes": 1694,
+      "lines": 114,
+      "sha256": "8acb9bb44752da9bb9e9923fc890416574ac2763b6631baccbdc8b1817133413",
+      "makefile_group": "header"
+    },
+    {
+      "file": "llex.c",
+      "bytes": 17843,
+      "lines": 604,
+      "sha256": "f24fe0ca1cd3c1050c8b229c26a4d31b4abd21bf3b352234efb6b0d7059e1c56",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "llex.h",
+      "bytes": 2535,
+      "lines": 93,
+      "sha256": "b40436d5a40165a4f7a4bd7a89dbac542fd6213a3a0c094646f4184b41eed36c",
+      "makefile_group": "header"
+    },
+    {
+      "file": "llimits.h",
+      "bytes": 9814,
+      "lines": 357,
+      "sha256": "c01c714288789cccda925195260460e506bc81506bacfa3f30a3bf159fa48576",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lmathlib.c",
+      "bytes": 19049,
+      "lines": 765,
+      "sha256": "27336bfd629d7472dc6e0807a805483e2c8e30828257465e4f466559de7f6e4b",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lmem.c",
+      "bytes": 6245,
+      "lines": 215,
+      "sha256": "7a63908f22ac826f3eb6826bd106d4eed40a7df749da8a87c06713e980fad099",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lmem.h",
+      "bytes": 3435,
+      "lines": 96,
+      "sha256": "02656822c7d11b096ebcf718e061a57b108f7bf80ec4eaa4094191d6e30809af",
+      "makefile_group": "header"
+    },
+    {
+      "file": "loadlib.c",
+      "bytes": 22899,
+      "lines": 748,
+      "sha256": "234e1f3495fe86344ad9e3014b05f4f5a7b9e57370062c01c6b415add7efd9e9",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lobject.c",
+      "bytes": 24091,
+      "lines": 718,
+      "sha256": "c5bb25d52e84294289b34ed20f1004fa6ed9bf9a5012ccb81c67eba43163a48b",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lobject.h",
+      "bytes": 24519,
+      "lines": 865,
+      "sha256": "c38f2c001065e03b238f1d8f814346bfa00a54183720604f1b2d42bce08b305f",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lopcodes.c",
+      "bytes": 4805,
+      "lines": 131,
+      "sha256": "fc4036555d17e68bbf4d49de9e0762c0da42886ad7caed10cc9862ed7926ba18",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lopcodes.h",
+      "bytes": 14193,
+      "lines": 444,
+      "sha256": "46e41e9cadc08527139b3bda14f321d3e2c196eb6aedabfe4fdf21b2ee5f201d",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lopnames.h",
+      "bytes": 1169,
+      "lines": 105,
+      "sha256": "1e6c0113507fbcae4255281cce5bf32b589be49fd90d4a3dd3c31d15bb68d0eb",
+      "makefile_group": "header"
+    },
+    {
+      "file": "loslib.c",
+      "bytes": 11861,
+      "lines": 432,
+      "sha256": "3ed70ea013b0c7a5a758db435f76fe5a99e87f07ea02ed19b2012fb728f8aa13",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lparser.c",
+      "bytes": 65674,
+      "lines": 2193,
+      "sha256": "918436a59eb67e22e08cc0aede69926a9af9ee106c97ce6bd9568b05c728a8c6",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lparser.h",
+      "bytes": 7118,
+      "lines": 197,
+      "sha256": "0e39ceb3cef13bc8d2d5843f9d0da59289261288dd459ed53ede8441b4ff080b",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lprefix.h",
+      "bytes": 828,
+      "lines": 45,
+      "sha256": "626785d4eda75e9435f0ac21a780ae3b11f8b27dc36934e637a5c2305f906531",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lstate.c",
+      "bytes": 11248,
+      "lines": 425,
+      "sha256": "19335bd0c9c3ea691cf0cbadcae4b40c08116aa8477bf661c7fa951e5874af1e",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lstate.h",
+      "bytes": 15983,
+      "lines": 451,
+      "sha256": "62ec82249a387c48dadccbdc39b28fd50b3e25462aaa2564c9eb32d1060ca8f0",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lstring.c",
+      "bytes": 9726,
+      "lines": 353,
+      "sha256": "440700ccb68929ae30339b0837c5e8063e53760a6ce65dca281d9d8e8ffde559",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lstring.h",
+      "bytes": 2100,
+      "lines": 73,
+      "sha256": "11174f9fb1a140afb2bad7b44471add3d143eb4fa6f249614fd5958211831f9b",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lstrlib.c",
+      "bytes": 58316,
+      "lines": 1900,
+      "sha256": "a8de67c6e3dfb773fdc0a599f887f559864a7061c1e633ec48a4e093fbd5dd72",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "ltable.c",
+      "bytes": 43200,
+      "lines": 1355,
+      "sha256": "a271ba45de53d05c7b47cf8ad86628f2c35c85e920c9d29f6c7e133c5b7664f2",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "ltable.h",
+      "bytes": 6449,
+      "lines": 184,
+      "sha256": "d7d9b827572f379f13d928ec805b8f11b9a93762b8a258cf7aacb14f1e208f4b",
+      "makefile_group": "header"
+    },
+    {
+      "file": "ltablib.c",
+      "bytes": 13295,
+      "lines": 429,
+      "sha256": "4bde576ca5012b03161d4bf38b4d8fc2aab1bbed1993eb6e629620f1f5eb0f4c",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "ltm.c",
+      "bytes": 11398,
+      "lines": 364,
+      "sha256": "86e85bbb147f63fbbc67dc451f401fe4bb9b7ecc8c05e003f664dfe9717d860b",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "ltm.h",
+      "bytes": 3058,
+      "lines": 105,
+      "sha256": "f4d164a3b22632bbf2ef27e20f89d5a808ccafc9e69d861d81a65c159e5ce341",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lua.c",
+      "bytes": 23870,
+      "lines": 794,
+      "sha256": "17ce8e73dd3586b84076ceaad9d638887723a1c60945c6ee086d723a6e61453f",
+      "makefile_group": "LUA"
+    },
+    {
+      "file": "lua.h",
+      "bytes": 16674,
+      "lines": 547,
+      "sha256": "5e00319e803893f4310b1206394c80b82f03f42609b40ceb306d92a6740d828e",
+      "makefile_group": "header"
+    },
+    {
+      "file": "luac.c",
+      "bytes": 15412,
+      "lines": 733,
+      "sha256": "53df5c02cfe8f6f347d02a355e3c3a5378998b1e2999fda40fcd0f80ea33dbd6",
+      "makefile_group": "LUAC"
+    },
+    {
+      "file": "luaconf.h",
+      "bytes": 20345,
+      "lines": 756,
+      "sha256": "1e617ae6f206d701018941b64ed61851da4ffc3573a0f96b73ebe64e340bfb5d",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lualib.h",
+      "bytes": 1593,
+      "lines": 65,
+      "sha256": "ca847f045256db26a03a654c60ca4db567fc63a54679bba4233114f0c3d532d1",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lundump.c",
+      "bytes": 10916,
+      "lines": 421,
+      "sha256": "4567fbd6689304ae675337805ddb5d13ecda6df0323655bf498978da1a93862c",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lundump.h",
+      "bytes": 904,
+      "lines": 40,
+      "sha256": "7b752cdfbb9d3f476209615b265bb58e51184e5577da7cc02caa449a441912d3",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lutf8lib.c",
+      "bytes": 8583,
+      "lines": 294,
+      "sha256": "7c44f0b2a6ce5f54991baa1bcb643bf563e2dcd7a59be0cd0b0eefe0936ea04a",
+      "makefile_group": "LIB"
+    },
+    {
+      "file": "lvm.c",
+      "bytes": 61743,
+      "lines": 1978,
+      "sha256": "632ca1fc6400301e3b11195d4830e948e6b4a50b6262187307eb8afe1f769c22",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lvm.h",
+      "bytes": 4067,
+      "lines": 136,
+      "sha256": "9a8f5f3189ee4835a0e12bca3023315fa373c161a77812ce92cdea90a92d4a17",
+      "makefile_group": "header"
+    },
+    {
+      "file": "lzio.c",
+      "bytes": 1809,
+      "lines": 89,
+      "sha256": "9495c7396d04a857e4e6ae917a72ab6906855d30f7dc851527a87cc16d01fcc1",
+      "makefile_group": "CORE"
+    },
+    {
+      "file": "lzio.h",
+      "bytes": 1503,
+      "lines": 67,
+      "sha256": "e9be4389ffa2936e462bc39e11de0341c5b14a99ee83f7f5e1683c52c9c2d675",
+      "makefile_group": "header"
+    }
+  ],
+  "additional_files": [
+    {
+      "file": "Makefile",
+      "bytes": 7843,
+      "lines": 232,
+      "sha256": "62b711161aad85046ee6e7d8860e0f38023f56c46a06cbc13871859ae7a25876"
+    },
+    {
+      "file": "lua.hpp",
+      "bytes": 218,
+      "lines": 10,
+      "sha256": "6623b8596b2689d85734a233596c591b34e814fccd4776da0a20f5b8d3e23ee7"
+    }
+  ],
+  "totals": {
+    "c_files": 34,
+    "h_files": 27,
+    "physical_lines": 32202,
+    "opcodes": 85
+  },
+  "definitions": [
+    {
+      "file": "lapi.c",
+      "symbol": "index2value",
+      "line": 58
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "index2stack",
+      "line": 93
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_checkstack",
+      "line": 109
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_xmove",
+      "line": 126
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_atpanic",
+      "line": 142
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_version",
+      "line": 152
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_absindex",
+      "line": 167
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_gettop",
+      "line": 174
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_settop",
+      "line": 179
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_closeslot",
+      "line": 206
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "reverse",
+      "line": 224
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rotate",
+      "line": 238
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_copy",
+      "line": 253
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushvalue",
+      "line": 268
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_type",
+      "line": 282
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_typename",
+      "line": 288
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_iscfunction",
+      "line": 295
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_isinteger",
+      "line": 301
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_isnumber",
+      "line": 307
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_isstring",
+      "line": 314
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_isuserdata",
+      "line": 320
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawequal",
+      "line": 326
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_arith",
+      "line": 333
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_compare",
+      "line": 349
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_numbertocstring",
+      "line": 369
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_stringtonumber",
+      "line": 381
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_tonumberx",
+      "line": 389
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_tointegerx",
+      "line": 399
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_toboolean",
+      "line": 409
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_tolstring",
+      "line": 415
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawlen",
+      "line": 437
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_tocfunction",
+      "line": 455
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "touserdata",
+      "line": 464
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_touserdata",
+      "line": 473
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_tothread",
+      "line": 479
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_topointer",
+      "line": 492
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushnil",
+      "line": 514
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushnumber",
+      "line": 522
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushinteger",
+      "line": 530
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushlstring",
+      "line": 543
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushexternalstring",
+      "line": 555
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushstring",
+      "line": 570
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushvfstring",
+      "line": 587
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushfstring",
+      "line": 598
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushcclosure",
+      "line": 609
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushboolean",
+      "line": 636
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushlightuserdata",
+      "line": 647
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pushthread",
+      "line": 655
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "auxgetstr",
+      "line": 670
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "getGlobalTable",
+      "line": 691
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_getglobal",
+      "line": 699
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_gettable",
+      "line": 707
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_getfield",
+      "line": 721
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_geti",
+      "line": 727
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "finishrawget",
+      "line": 744
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "gettable",
+      "line": 753
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawget",
+      "line": 760
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawgeti",
+      "line": 772
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawgetp",
+      "line": 782
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_createtable",
+      "line": 792
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_getmetatable",
+      "line": 805
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_getiuservalue",
+      "line": 832
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "auxsetstr",
+      "line": 859
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setglobal",
+      "line": 878
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_settable",
+      "line": 886
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setfield",
+      "line": 902
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_seti",
+      "line": 908
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "aux_rawset",
+      "line": 927
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawset",
+      "line": 940
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawsetp",
+      "line": 945
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_rawseti",
+      "line": 952
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setmetatable",
+      "line": 964
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setiuservalue",
+      "line": 1004
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_callk",
+      "line": 1037
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "f_call",
+      "line": 1069
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_pcallk",
+      "line": 1076
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_load",
+      "line": 1120
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_dump",
+      "line": 1149
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_status",
+      "line": 1163
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_gc",
+      "line": 1171
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_error",
+      "line": 1258
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_next",
+      "line": 1273
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_toclose",
+      "line": 1289
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_concat",
+      "line": 1300
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_len",
+      "line": 1315
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_getallocf",
+      "line": 1325
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setallocf",
+      "line": 1335
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setwarnf",
+      "line": 1343
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_warning",
+      "line": 1351
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_newuserdatauv",
+      "line": 1359
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "aux_upvalue",
+      "line": 1373
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_getupvalue",
+      "line": 1400
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_setupvalue",
+      "line": 1414
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "getupvalref",
+      "line": 1433
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_upvalueid",
+      "line": 1447
+    },
+    {
+      "file": "lapi.c",
+      "symbol": "lua_upvaluejoin",
+      "line": 1469
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "findfield",
+      "line": 47
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "pushglobalfuncname",
+      "line": 74
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "pushfuncname",
+      "line": 96
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "lastlevel",
+      "line": 112
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_traceback",
+      "line": 127
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_argerror",
+      "line": 171
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_typeerror",
+      "line": 197
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "tag_error",
+      "line": 211
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_where",
+      "line": 220
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_error",
+      "line": 238
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_fileresult",
+      "line": 249
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_execresult",
+      "line": 291
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_newmetatable",
+      "line": 317
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_setmetatable",
+      "line": 330
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_testudata",
+      "line": 336
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checkudata",
+      "line": 351
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checkoption",
+      "line": 366
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checkstack",
+      "line": 386
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checktype",
+      "line": 396
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checkany",
+      "line": 402
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checklstring",
+      "line": 408
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_optlstring",
+      "line": 415
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checknumber",
+      "line": 426
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_optnumber",
+      "line": 435
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "interror",
+      "line": 440
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checkinteger",
+      "line": 448
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_optinteger",
+      "line": 458
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "resizebox",
+      "line": 484
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "boxgc",
+      "line": 503
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "getBoxMT",
+      "line": 519
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "newbox",
+      "line": 530
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "newbuffsize",
+      "line": 559
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "prepbuffsize",
+      "line": 577
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_prepbuffsize",
+      "line": 605
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_addlstring",
+      "line": 610
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_addstring",
+      "line": 619
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_pushresult",
+      "line": 624
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_pushresultsize",
+      "line": 648
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_addvalue",
+      "line": 663
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_buffinit",
+      "line": 674
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_buffinitsize",
+      "line": 683
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_ref",
+      "line": 702
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_unref",
+      "line": 729
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "getF",
+      "line": 756
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "errfile",
+      "line": 774
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "skipBOM",
+      "line": 792
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "skipcomment",
+      "line": 808
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_loadfilex",
+      "line": 821
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "getS",
+      "line": 870
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_loadbufferx",
+      "line": 880
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_loadstring",
+      "line": 889
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_getmetafield",
+      "line": 897
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_callmeta",
+      "line": 913
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_len",
+      "line": 923
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_tolstring",
+      "line": 935
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_setfuncs",
+      "line": 978
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_getsubtable",
+      "line": 999
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_requiref",
+      "line": 1019
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_addgsub",
+      "line": 1039
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_gsub",
+      "line": 1052
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_alloc",
+      "line": 1062
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "panic",
+      "line": 1077
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "checkcontrol",
+      "line": 1102
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "warnfoff",
+      "line": 1115
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "warnfcont",
+      "line": 1124
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "warnfon",
+      "line": 1136
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luai_makeseed",
+      "line": 1168
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_makeseed",
+      "line": 1187
+    },
+    {
+      "file": "lauxlib.c",
+      "symbol": "luaL_checkversion_",
+      "line": 1207
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_print",
+      "line": 25
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_warn",
+      "line": 46
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "b_str2int",
+      "line": 61
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_tonumber",
+      "line": 83
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_error",
+      "line": 116
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_getmetatable",
+      "line": 128
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_setmetatable",
+      "line": 139
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_rawequal",
+      "line": 151
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_rawlen",
+      "line": 159
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_rawget",
+      "line": 168
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_rawset",
+      "line": 176
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "pushmode",
+      "line": 186
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_collectgarbage",
+      "line": 201
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_type",
+      "line": 260
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_next",
+      "line": 268
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "pairscont",
+      "line": 280
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_pairs",
+      "line": 285
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "ipairsaux",
+      "line": 304
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_ipairs",
+      "line": 316
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "load_aux",
+      "line": 325
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "getMode",
+      "line": 342
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_loadfile",
+      "line": 352
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "generic_reader",
+      "line": 371
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_load",
+      "line": 390
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "dofilecont",
+      "line": 412
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_dofile",
+      "line": 418
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_assert",
+      "line": 428
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_select",
+      "line": 441
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "finishpcall",
+      "line": 464
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_pcall",
+      "line": 475
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_xpcall",
+      "line": 490
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaB_tostring",
+      "line": 502
+    },
+    {
+      "file": "lbaselib.c",
+      "symbol": "luaopen_base",
+      "line": 540
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_semerror",
+      "line": 43
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "tonumeral",
+      "line": 57
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "const2val",
+      "line": 75
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_exp2const",
+      "line": 85
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "previousinstruction",
+      "line": 117
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_nil",
+      "line": 132
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "getjump",
+      "line": 155
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "fixjump",
+      "line": 168
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_concat",
+      "line": 182
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_jump",
+      "line": 200
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_ret",
+      "line": 208
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "condjump",
+      "line": 224
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_getlabel",
+      "line": 234
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "getjumpcontrol",
+      "line": 245
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "patchtestreg",
+      "line": 261
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "removevalues",
+      "line": 279
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "patchlistaux",
+      "line": 290
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_patchlist",
+      "line": 308
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_patchtohere",
+      "line": 314
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "savelineinfo",
+      "line": 331
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "removelastlineinfo",
+      "line": 355
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "removelastinstruction",
+      "line": 374
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_code",
+      "line": 384
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_codeABCk",
+      "line": 399
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_codevABCk",
+      "line": 407
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_codeABx",
+      "line": 418
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeAsBx",
+      "line": 428
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codesJ",
+      "line": 439
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeextraarg",
+      "line": 450
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_codek",
+      "line": 461
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_checkstack",
+      "line": 476
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_reserveregs",
+      "line": 488
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "freereg",
+      "line": 499
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "freeregs",
+      "line": 510
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "freeexp",
+      "line": 525
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "freeexps",
+      "line": 535
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "addk",
+      "line": 545
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "k2proto",
+      "line": 565
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "stringK",
+      "line": 589
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_intK",
+      "line": 599
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_numberK",
+      "line": 617
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "boolF",
+      "line": 645
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "boolT",
+      "line": 655
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "nilK",
+      "line": 665
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "fitsC",
+      "line": 679
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "fitsBx",
+      "line": 687
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_int",
+      "line": 692
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_float",
+      "line": 700
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_codecheckglobal",
+      "line": 715
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "const2exp",
+      "line": 728
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_setreturns",
+      "line": 757
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "str2K",
+      "line": 774
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_setoneret",
+      "line": 792
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_vapar2local",
+      "line": 808
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_dischargevars",
+      "line": 819
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "discharge2reg",
+      "line": 882
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "discharge2anyreg",
+      "line": 937
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "code_loadbool",
+      "line": 945
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "need_value",
+      "line": 955
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "exp2reg",
+      "line": 971
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_exp2nextreg",
+      "line": 999
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_exp2anyreg",
+      "line": 1011
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_exp2anyregup",
+      "line": 1033
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_exp2val",
+      "line": 1043
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_exp2K",
+      "line": 1055
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "exp2RK",
+      "line": 1085
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeABRK",
+      "line": 1095
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_storevar",
+      "line": 1105
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "negatecondition",
+      "line": 1146
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "jumponcond",
+      "line": 1160
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_goiftrue",
+      "line": 1178
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_goiffalse",
+      "line": 1205
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codenot",
+      "line": 1231
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "isKstr",
+      "line": 1265
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "isKint",
+      "line": 1273
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "isCint",
+      "line": 1282
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "isSCint",
+      "line": 1291
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "isSCnumber",
+      "line": 1300
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_self",
+      "line": 1321
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "fillidxk",
+      "line": 1345
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_indexed",
+      "line": 1357
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "validop",
+      "line": 1400
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "constfolding",
+      "line": 1419
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "binopr2op",
+      "line": 1443
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "unopr2op",
+      "line": 1454
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "binopr2TM",
+      "line": 1463
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeunexpval",
+      "line": 1474
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "finishbinexpval",
+      "line": 1489
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codebinexpval",
+      "line": 1507
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codebini",
+      "line": 1522
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codebinK",
+      "line": 1534
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "finishbinexpneg",
+      "line": 1546
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "swapexps",
+      "line": 1565
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codebinNoK",
+      "line": 1573
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codearith",
+      "line": 1585
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codecommutative",
+      "line": 1599
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codebitwise",
+      "line": 1617
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeorder",
+      "line": 1635
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeeq",
+      "line": 1667
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_prefix",
+      "line": 1698
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_infix",
+      "line": 1719
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "codeconcat",
+      "line": 1768
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_posfix",
+      "line": 1788
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_fixline",
+      "line": 1869
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_settablesize",
+      "line": 1875
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_setlist",
+      "line": 1893
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "finaltarget",
+      "line": 1912
+    },
+    {
+      "file": "lcode.c",
+      "symbol": "luaK_finish",
+      "line": 1930
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "getco",
+      "line": 22
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "auxresume",
+      "line": 33
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_coresume",
+      "line": 57
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_auxwrap",
+      "line": 74
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_cocreate",
+      "line": 96
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_cowrap",
+      "line": 106
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_yield",
+      "line": 113
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "auxstatus",
+      "line": 128
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_costatus",
+      "line": 150
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "getoptco",
+      "line": 157
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_yieldable",
+      "line": 162
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_corunning",
+      "line": 169
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaB_close",
+      "line": 176
+    },
+    {
+      "file": "lcorolib.c",
+      "symbol": "luaopen_coroutine",
+      "line": 221
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "checkstack",
+      "line": 36
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_getregistry",
+      "line": 42
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_getmetatable",
+      "line": 48
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_setmetatable",
+      "line": 57
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_getuservalue",
+      "line": 66
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_setuservalue",
+      "line": 78
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "getthread",
+      "line": 95
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "settabss",
+      "line": 112
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "settabsi",
+      "line": 117
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "settabsb",
+      "line": 122
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "treatstackoption",
+      "line": 135
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_getinfo",
+      "line": 150
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_getlocal",
+      "line": 206
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_setlocal",
+      "line": 237
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "auxupvalue",
+      "line": 261
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_getupvalue",
+      "line": 273
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_setupvalue",
+      "line": 278
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "checkupval",
+      "line": 288
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_upvalueid",
+      "line": 301
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_upvaluejoin",
+      "line": 311
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "hookf",
+      "line": 326
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "makemask",
+      "line": 345
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "unmakemask",
+      "line": 358
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_sethook",
+      "line": 368
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_gethook",
+      "line": 398
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_debug",
+      "line": 423
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "db_traceback",
+      "line": 438
+    },
+    {
+      "file": "ldblib.c",
+      "symbol": "luaopen_debug",
+      "line": 473
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "currentpc",
+      "line": 43
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "getbaseline",
+      "line": 62
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_getfuncline",
+      "line": 85
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "getcurrentline",
+      "line": 100
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "settraps",
+      "line": 116
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_sethook",
+      "line": 133
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_gethook",
+      "line": 147
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_gethookmask",
+      "line": 152
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_gethookcount",
+      "line": 157
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_getstack",
+      "line": 162
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "upvalname",
+      "line": 179
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "findvararg",
+      "line": 186
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_findlocal",
+      "line": 198
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_getlocal",
+      "line": 222
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_setlocal",
+      "line": 244
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "funcinfo",
+      "line": 259
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "nextline",
+      "line": 284
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "collectvalidlines",
+      "line": 292
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "getfuncname",
+      "line": 323
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "auxgetinfo",
+      "line": 331
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "lua_getinfo",
+      "line": 395
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "filterpc",
+      "line": 433
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "findsetreg",
+      "line": 443
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "kname",
+      "line": 492
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "basicgetobjname",
+      "line": 505
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "rname",
+      "line": 539
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "isEnv",
+      "line": 550
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "getobjname",
+      "line": 569
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "funcnamefromcode",
+      "line": 615
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "funcnamefromcall",
+      "line": 659
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "instack",
+      "line": 685
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "getupvalname",
+      "line": 701
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "formatvarinfo",
+      "line": 715
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "varinfo",
+      "line": 727
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "typeerror",
+      "line": 746
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_typeerror",
+      "line": 757
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_callerror",
+      "line": 767
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_forerror",
+      "line": 776
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_concaterror",
+      "line": 782
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_opinterror",
+      "line": 788
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_tointerror",
+      "line": 799
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_ordererror",
+      "line": 807
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_errnnil",
+      "line": 817
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_addinfo",
+      "line": 826
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_errormsg",
+      "line": 840
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_runerror",
+      "line": 857
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "changedline",
+      "line": 881
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_tracecall",
+      "line": 910
+    },
+    {
+      "file": "ldebug.c",
+      "symbol": "luaG_traceexec",
+      "line": 936
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "LUAI_TRY",
+      "line": 81
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_seterrorobj",
+      "line": 112
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_throw",
+      "line": 125
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_throwbaselevel",
+      "line": 150
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_rawrunprotected",
+      "line": 160
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_errerr",
+      "line": 215
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_checkminstack",
+      "line": 228
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "relstack",
+      "line": 260
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "correctstack",
+      "line": 277
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "relstack",
+      "line": 299
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "correctstack",
+      "line": 305
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_reallocstack",
+      "line": 330
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_growstack",
+      "line": 361
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "stackinuse",
+      "line": 395
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_shrinkstack",
+      "line": 419
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_hook",
+      "line": 441
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_hookcall",
+      "line": 478
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "rethook",
+      "line": 496
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "tryfuncTM",
+      "line": 525
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "genmoveresults",
+      "line": 542
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "moveresults",
+      "line": 563
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_poscall",
+      "line": 607
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "prepCallInfo",
+      "line": 630
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "precallC",
+      "line": 644
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_pretailcall",
+      "line": 671
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_precall",
+      "line": 717
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "ccall",
+      "line": 759
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_call",
+      "line": 777
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_callnoyield",
+      "line": 785
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "finishpcallk",
+      "line": 806
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "finishCcall",
+      "line": 839
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "unroll",
+      "line": 868
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "findpcall",
+      "line": 886
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "resume_error",
+      "line": 901
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "resume",
+      "line": 918
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "precover",
+      "line": 957
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "lua_resume",
+      "line": 968
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "lua_isyieldable",
+      "line": 1003
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "lua_yieldk",
+      "line": 1008
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "closepaux",
+      "line": 1051
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_closeprotected",
+      "line": 1061
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_pcall",
+      "line": 1083
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "checkmode",
+      "line": 1116
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "f_parser",
+      "line": 1129
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_anchorobj",
+      "line": 1164
+    },
+    {
+      "file": "ldo.c",
+      "symbol": "luaD_protectedparser",
+      "line": 1173
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpBlock",
+      "line": 52
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpAlign",
+      "line": 66
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpByte",
+      "line": 80
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpVarint",
+      "line": 95
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpSize",
+      "line": 105
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpInt",
+      "line": 110
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpNumber",
+      "line": 116
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpInteger",
+      "line": 127
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpString",
+      "line": 143
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpCode",
+      "line": 171
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpConstants",
+      "line": 181
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpProtos",
+      "line": 207
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpUpvalues",
+      "line": 216
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpDebug",
+      "line": 227
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpFunction",
+      "line": 254
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "dumpHeader",
+      "line": 273
+    },
+    {
+      "file": "ldump.c",
+      "symbol": "luaU_dump",
+      "line": 288
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_newCclosure",
+      "line": 27
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_newLclosure",
+      "line": 35
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_initupvals",
+      "line": 48
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "newupval",
+      "line": 65
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_findupval",
+      "line": 87
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "callclosemethod",
+      "line": 107
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "checkclosemth",
+      "line": 127
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "prepcallclosemth",
+      "line": 145
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_newtbcupval",
+      "line": 172
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_unlinkupval",
+      "line": 186
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_closeupval",
+      "line": 197
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "poptbclist",
+      "line": 216
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_close",
+      "line": 230
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_newproto",
+      "line": 243
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_protosize",
+      "line": 270
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_freeproto",
+      "line": 285
+    },
+    {
+      "file": "lfunc.c",
+      "symbol": "luaF_getlocalname",
+      "line": 303
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "objsize",
+      "line": 113
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "getgclist",
+      "line": 163
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "linkgclist_",
+      "line": 186
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "clearkey",
+      "line": 209
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "iscleared",
+      "line": 223
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_barrier_",
+      "line": 246
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_barrierback_",
+      "line": 268
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_fix",
+      "line": 282
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_newobjdt",
+      "line": 297
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_newobj",
+      "line": 312
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "reallymarkobject",
+      "line": 339
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "markmt",
+      "line": 378
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "markbeingfnz",
+      "line": 388
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "remarkupvals",
+      "line": 406
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "cleargraylists",
+      "line": 429
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "restartcollection",
+      "line": 440
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "genlink",
+      "line": 470
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traverseweakvalue",
+      "line": 487
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traversearray",
+      "line": 514
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traverseephemeron",
+      "line": 541
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traversestrongtable",
+      "line": 576
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "getmode",
+      "line": 595
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traversetable",
+      "line": 608
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traverseudata",
+      "line": 631
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traverseproto",
+      "line": 646
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traverseCclosure",
+      "line": 661
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traverseLclosure",
+      "line": 672
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "traversethread",
+      "line": 695
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "propagatemark",
+      "line": 727
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "propagateall",
+      "line": 743
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "convergeephemerons",
+      "line": 755
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "clearbykeys",
+      "line": 789
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "clearbyvalues",
+      "line": 808
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "freeupval",
+      "line": 829
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "freeobj",
+      "line": 836
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "sweeplist",
+      "line": 892
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "sweeptolive",
+      "line": 915
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "checkSizes",
+      "line": 935
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "udata2finalize",
+      "line": 947
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "dothecall",
+      "line": 962
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "GCTM",
+      "line": 968
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "callallpendingfinalizers",
+      "line": 999
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "findlast",
+      "line": 1009
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "separatetobefnz",
+      "line": 1023
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "checkpointer",
+      "line": 1046
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "correctpointers",
+      "line": 1056
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_checkfinalizer",
+      "line": 1068
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "setpause",
+      "line": 1122
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "sweep2old",
+      "line": 1136
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "sweepgen",
+      "line": 1172
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "correctgraylist",
+      "line": 1227
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "correctgraylists",
+      "line": 1260
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "markold",
+      "line": 1276
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "finishgencycle",
+      "line": 1292
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "minor2inc",
+      "line": 1306
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "checkminormajor",
+      "line": 1323
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "youngcollection",
+      "line": 1335
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "atomic2gen",
+      "line": 1389
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "setminordebt",
+      "line": 1417
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "entergen",
+      "line": 1428
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_changemode",
+      "line": 1440
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "fullgen",
+      "line": 1458
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "checkmajorminor",
+      "line": 1471
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "entersweep",
+      "line": 1504
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "deletelist",
+      "line": 1516
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_freeallobjects",
+      "line": 1529
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "atomic",
+      "line": 1543
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "sweepstep",
+      "line": 1588
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "singlestep",
+      "line": 1617
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_runtilstate",
+      "line": 1694
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "incstep",
+      "line": 1710
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_step",
+      "line": 1740
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "fullinc",
+      "line": 1770
+    },
+    {
+      "file": "lgc.c",
+      "symbol": "luaC_fullgc",
+      "line": 1786
+    },
+    {
+      "file": "linit.c",
+      "symbol": "luaL_openselectedlibs",
+      "line": 46
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "l_checkmode",
+      "line": 39
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_type",
+      "line": 162
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_tostring",
+      "line": 176
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "tofile",
+      "line": 186
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "newprefile",
+      "line": 200
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "aux_close",
+      "line": 213
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_close",
+      "line": 221
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_close",
+      "line": 227
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_gc",
+      "line": 234
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_fclose",
+      "line": 245
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "newfile",
+      "line": 252
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "opencheck",
+      "line": 260
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_open",
+      "line": 268
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_pclose",
+      "line": 283
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_popen",
+      "line": 290
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_tmpfile",
+      "line": 302
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "getiofile",
+      "line": 310
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "g_iofile",
+      "line": 320
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_input",
+      "line": 337
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_output",
+      "line": 342
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "aux_lines",
+      "line": 365
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_lines",
+      "line": 376
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_lines",
+      "line": 388
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "nextc",
+      "line": 440
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "test2",
+      "line": 456
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "readdigits",
+      "line": 466
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "read_number",
+      "line": 479
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "test_eof",
+      "line": 513
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "read_line",
+      "line": 521
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "read_all",
+      "line": 542
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "read_chars",
+      "line": 555
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "g_read",
+      "line": 568
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_read",
+      "line": 619
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_read",
+      "line": 624
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_readline",
+      "line": 632
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "g_write",
+      "line": 663
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_write",
+      "line": 690
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_write",
+      "line": 695
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_seek",
+      "line": 702
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_setvbuf",
+      "line": 722
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "aux_flush",
+      "line": 735
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "f_flush",
+      "line": 741
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_flush",
+      "line": 746
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "createmeta",
+      "line": 797
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "io_noclose",
+      "line": 810
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "createstdfile",
+      "line": 819
+    },
+    {
+      "file": "liolib.c",
+      "symbol": "luaopen_io",
+      "line": 832
+    },
+    {
+      "file": "llex.c",
+      "symbol": "save",
+      "line": 62
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_init",
+      "line": 75
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_token2str",
+      "line": 87
+    },
+    {
+      "file": "llex.c",
+      "symbol": "txtToken",
+      "line": 104
+    },
+    {
+      "file": "llex.c",
+      "symbol": "lexerror",
+      "line": 116
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_syntaxerror",
+      "line": 124
+    },
+    {
+      "file": "llex.c",
+      "symbol": "anchorstr",
+      "line": 135
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_newstring",
+      "line": 156
+    },
+    {
+      "file": "llex.c",
+      "symbol": "inclinenumber",
+      "line": 165
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_setinput",
+      "line": 176
+    },
+    {
+      "file": "llex.c",
+      "symbol": "check_next1",
+      "line": 208
+    },
+    {
+      "file": "llex.c",
+      "symbol": "check_next2",
+      "line": 221
+    },
+    {
+      "file": "llex.c",
+      "symbol": "read_numeral",
+      "line": 244
+    },
+    {
+      "file": "llex.c",
+      "symbol": "skip_sep",
+      "line": 282
+    },
+    {
+      "file": "llex.c",
+      "symbol": "read_long_string",
+      "line": 297
+    },
+    {
+      "file": "llex.c",
+      "symbol": "esccheck",
+      "line": 336
+    },
+    {
+      "file": "llex.c",
+      "symbol": "gethexa",
+      "line": 345
+    },
+    {
+      "file": "llex.c",
+      "symbol": "readhexaesc",
+      "line": 352
+    },
+    {
+      "file": "llex.c",
+      "symbol": "readutf8esc",
+      "line": 365
+    },
+    {
+      "file": "llex.c",
+      "symbol": "utf8esc",
+      "line": 383
+    },
+    {
+      "file": "llex.c",
+      "symbol": "readdecesc",
+      "line": 391
+    },
+    {
+      "file": "llex.c",
+      "symbol": "read_string",
+      "line": 404
+    },
+    {
+      "file": "llex.c",
+      "symbol": "llex",
+      "line": 467
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_next",
+      "line": 588
+    },
+    {
+      "file": "llex.c",
+      "symbol": "luaX_lookahead",
+      "line": 599
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_abs",
+      "line": 30
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_sin",
+      "line": 42
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_cos",
+      "line": 48
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_tan",
+      "line": 54
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_asin",
+      "line": 60
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_acos",
+      "line": 66
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_atan",
+      "line": 72
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_toint",
+      "line": 80
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "pushnumint",
+      "line": 93
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_floor",
+      "line": 102
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_ceil",
+      "line": 113
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_fmod",
+      "line": 124
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_modf",
+      "line": 146
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_sqrt",
+      "line": 163
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_ult",
+      "line": 169
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_log",
+      "line": 177
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_exp",
+      "line": 199
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_deg",
+      "line": 205
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_rad",
+      "line": 211
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_frexp",
+      "line": 217
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_ldexp",
+      "line": 226
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_min",
+      "line": 234
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_max",
+      "line": 248
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_type",
+      "line": 262
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "rotl",
+      "line": 344
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "nextrand",
+      "line": 348
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "I2d",
+      "line": 379
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "packI",
+      "line": 421
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "Ishl",
+      "line": 429
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "Ixor",
+      "line": 435
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "Iadd",
+      "line": 441
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "times5",
+      "line": 449
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "times9",
+      "line": 454
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "rotl",
+      "line": 459
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "rotl1",
+      "line": 466
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "nextrand",
+      "line": 476
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "I2d",
+      "line": 506
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "I2d",
+      "line": 529
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "I2UInt",
+      "line": 539
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "Int2I",
+      "line": 544
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "project",
+      "line": 569
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_random",
+      "line": 582
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "setseed",
+      "line": 617
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_randomseed",
+      "line": 631
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "setrandfunc",
+      "line": 657
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_cosh",
+      "line": 674
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_sinh",
+      "line": 679
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_tanh",
+      "line": 684
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_pow",
+      "line": 689
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "math_log10",
+      "line": 696
+    },
+    {
+      "file": "lmathlib.c",
+      "symbol": "luaopen_math",
+      "line": 752
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "firsttry",
+      "line": 69
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_growaux_",
+      "line": 97
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_shrinkvector_",
+      "line": 128
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_toobig",
+      "line": 142
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_free_",
+      "line": 150
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "tryagain",
+      "line": 162
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_realloc_",
+      "line": 176
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_saferealloc_",
+      "line": 192
+    },
+    {
+      "file": "lmem.c",
+      "symbol": "luaM_malloc_",
+      "line": 201
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_unloadlib",
+      "line": 104
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_load",
+      "line": 109
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_sym",
+      "line": 117
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "setprogdir",
+      "line": 153
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "pusherror",
+      "line": 170
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_unloadlib",
+      "line": 180
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_load",
+      "line": 185
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_sym",
+      "line": 193
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_unloadlib",
+      "line": 216
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_load",
+      "line": 221
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lsys_sym",
+      "line": 228
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "noenv",
+      "line": 261
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "setpath",
+      "line": 274
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "checkclib",
+      "line": 322
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "freelib",
+      "line": 336
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "createlibstr",
+      "line": 347
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "addtoclib",
+      "line": 359
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "lookforfunc",
+      "line": 384
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "ll_loadlib",
+      "line": 405
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "readable",
+      "line": 428
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "getnextfilename",
+      "line": 441
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "pusherrornotfound",
+      "line": 465
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "searchpath",
+      "line": 475
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "ll_searchpath",
+      "line": 502
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "findfile",
+      "line": 516
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "checkload",
+      "line": 528
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "searcher_Lua",
+      "line": 539
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "loadfunc",
+      "line": 556
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "searcher_C",
+      "line": 574
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "searcher_Croot",
+      "line": 582
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "searcher_preload",
+      "line": 604
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "findloader",
+      "line": 618
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "ll_require",
+      "line": 650
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "createsearcherstable",
+      "line": 703
+    },
+    {
+      "file": "loadlib.c",
+      "symbol": "luaopen_package",
+      "line": 724
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_ceillog2",
+      "line": 37
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_codeparam",
+      "line": 62
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_applyparam",
+      "line": 89
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "intarith",
+      "line": 115
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "numarith",
+      "line": 135
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_rawarith",
+      "line": 151
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_arith",
+      "line": 188
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_hexavalue",
+      "line": 197
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "isneg",
+      "line": 204
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "lua_strx2number",
+      "line": 228
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "l_str2dloc",
+      "line": 291
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "l_str2d",
+      "line": 314
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "l_str2int",
+      "line": 339
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_str2num",
+      "line": 371
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_utf8esc",
+      "line": 386
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "tostringbuffFloat",
+      "line": 427
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_tostringbuff",
+      "line": 449
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_tostring",
+      "line": 464
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "initbuff",
+      "line": 500
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "pushbuff",
+      "line": 513
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "clearbuff",
+      "line": 536
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "addstr2buff",
+      "line": 549
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "addnum2buff",
+      "line": 585
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_pushvfstring",
+      "line": 596
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_pushfstring",
+      "line": 662
+    },
+    {
+      "file": "lobject.c",
+      "symbol": "luaO_chunkid",
+      "line": 682
+    },
+    {
+      "file": "lopcodes.c",
+      "symbol": "luaP_isIT",
+      "line": 120
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_execute",
+      "line": 143
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_remove",
+      "line": 157
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_rename",
+      "line": 164
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_tmpname",
+      "line": 172
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_getenv",
+      "line": 183
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_clock",
+      "line": 189
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "setfield",
+      "line": 212
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "setboolfield",
+      "line": 222
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "setallfields",
+      "line": 233
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "getboolfield",
+      "line": 246
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "getfield",
+      "line": 254
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "checkoption",
+      "line": 275
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "l_checktime",
+      "line": 294
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_date",
+      "line": 305
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_time",
+      "line": 348
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_difftime",
+      "line": 374
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_setlocale",
+      "line": 384
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "os_exit",
+      "line": 396
+    },
+    {
+      "file": "loslib.c",
+      "symbol": "luaopen_os",
+      "line": 428
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "error_expected",
+      "line": 68
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "errorlimit",
+      "line": 74
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "luaY_checklimit",
+      "line": 87
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "testnext",
+      "line": 95
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "check",
+      "line": 107
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "checknext",
+      "line": 116
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "check_match",
+      "line": 130
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "str_checkname",
+      "line": 143
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "init_exp",
+      "line": 152
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "codestring",
+      "line": 159
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "codename",
+      "line": 166
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "registerlocalvar",
+      "line": 175
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "new_varkind",
+      "line": 194
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "new_localvar",
+      "line": 211
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "getlocalvardesc",
+      "line": 226
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "reglevel",
+      "line": 236
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "luaY_nvarstack",
+      "line": 250
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "localdebuginfo",
+      "line": 258
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "init_var",
+      "line": 273
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "check_readonly",
+      "line": 286
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "adjustlocalvars",
+      "line": 328
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "removevars",
+      "line": 346
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "searchupvalue",
+      "line": 360
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "allocupvalue",
+      "line": 370
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "newupvalue",
+      "line": 382
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "searchvar",
+      "line": 414
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "markupval",
+      "line": 451
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "marktobeclosed",
+      "line": 463
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "singlevaraux",
+      "line": 476
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "buildglobal",
+      "line": 502
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "buildvar",
+      "line": 520
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "singlevar",
+      "line": 538
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "adjust_assign",
+      "line": 547
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "jumpscopeerror",
+      "line": 580
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "closegoto",
+      "line": 597
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "findlabel",
+      "line": 626
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "newlabelentry",
+      "line": 640
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "newgotoentry",
+      "line": 663
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "createlabel",
+      "line": 678
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "solvegotos",
+      "line": 696
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "enterblock",
+      "line": 720
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "undefgoto",
+      "line": 737
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "leaveblock",
+      "line": 745
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "addprototype",
+      "line": 768
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "codeclosure",
+      "line": 792
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "open_func",
+      "line": 799
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "close_func",
+      "line": 829
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "block_follow",
+      "line": 866
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "statlist",
+      "line": 877
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "fieldsel",
+      "line": 889
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "yindex",
+      "line": 900
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "recfield",
+      "line": 938
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "closelistfield",
+      "line": 957
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "lastlistfield",
+      "line": 969
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "listfield",
+      "line": 985
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "field",
+      "line": 992
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "maxtostore",
+      "line": 1019
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "constructor",
+      "line": 1030
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "setvararg",
+      "line": 1061
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "parlist",
+      "line": 1067
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "body",
+      "line": 1105
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "explist",
+      "line": 1127
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "funcargs",
+      "line": 1140
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "primaryexp",
+      "line": 1198
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "suffixedexp",
+      "line": 1220
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "simpleexp",
+      "line": 1257
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "getunopr",
+      "line": 1312
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "getbinopr",
+      "line": 1323
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "subexpr",
+      "line": 1377
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "expr",
+      "line": 1407
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "block",
+      "line": 1422
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "check_conflict",
+      "line": 1448
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "storevartop",
+      "line": 1487
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "restassign",
+      "line": 1501
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "cond",
+      "line": 1531
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "gotostat",
+      "line": 1541
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "breakstat",
+      "line": 1550
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "checkrepeated",
+      "line": 1568
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "labelstat",
+      "line": 1576
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "whilestat",
+      "line": 1586
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "repeatstat",
+      "line": 1605
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "exp1",
+      "line": 1635
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "fixforjump",
+      "line": 1648
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "forbody",
+      "line": 1662
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "fornum",
+      "line": 1688
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "forlist",
+      "line": 1710
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "forstat",
+      "line": 1737
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "test_then_block",
+      "line": 1755
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "ifstat",
+      "line": 1770
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "localfunc",
+      "line": 1784
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "getvarattribute",
+      "line": 1796
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "checktoclose",
+      "line": 1813
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "localstat",
+      "line": 1821
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "getglobalattribute",
+      "line": 1865
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "checkglobal",
+      "line": 1879
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "initglobal",
+      "line": 1897
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "globalnames",
+      "line": 1918
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "globalstat",
+      "line": 1934
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "globalfunc",
+      "line": 1950
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "globalstatfunc",
+      "line": 1965
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "funcname",
+      "line": 1975
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "funcstat",
+      "line": 1989
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "exprstat",
+      "line": 2002
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "retstat",
+      "line": 2020
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "statement",
+      "line": 2052
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "mainfunc",
+      "line": 2153
+    },
+    {
+      "file": "lparser.c",
+      "symbol": "luaY_parser",
+      "line": 2171
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_setdebt",
+      "line": 61
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_extendCI",
+      "line": 71
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "freeCI",
+      "line": 93
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_shrinkCI",
+      "line": 109
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_checkcstack",
+      "line": 136
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_incCstack",
+      "line": 144
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "resetCI",
+      "line": 151
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "stack_init",
+      "line": 163
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "freestack",
+      "line": 177
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "init_registry",
+      "line": 191
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "f_luaopen",
+      "line": 212
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "preinit_thread",
+      "line": 230
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_threadsize",
+      "line": 251
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "close_state",
+      "line": 260
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "lua_newthread",
+      "line": 278
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_freethread",
+      "line": 305
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_resetthread",
+      "line": 315
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "lua_closethread",
+      "line": 329
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "lua_newstate",
+      "line": 341
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "lua_close",
+      "line": 396
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_warning",
+      "line": 403
+    },
+    {
+      "file": "lstate.c",
+      "symbol": "luaE_warnerror",
+      "line": 413
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_eqstr",
+      "line": 44
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_hash",
+      "line": 53
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_hashlongstr",
+      "line": 61
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "tablerehash",
+      "line": 72
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_resize",
+      "line": 95
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_clearcache",
+      "line": 120
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_init",
+      "line": 133
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_sizelngstr",
+      "line": 149
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "createstrobj",
+      "line": 167
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_createlngstrobj",
+      "line": 179
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_remove",
+      "line": 190
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "growstrtab",
+      "line": 200
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "internshrstr",
+      "line": 214
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_newlstr",
+      "line": 249
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_new",
+      "line": 269
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_newudata",
+      "line": 286
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "f_newext",
+      "line": 311
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_newextlstr",
+      "line": 318
+    },
+    {
+      "file": "lstring.c",
+      "symbol": "luaS_normstr",
+      "line": 344
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_len",
+      "line": 40
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "posrelatI",
+      "line": 56
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "getendpos",
+      "line": 72
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_sub",
+      "line": 85
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_reverse",
+      "line": 97
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_lower",
+      "line": 109
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_upper",
+      "line": 122
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_rep",
+      "line": 139
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_byte",
+      "line": 166
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_char",
+      "line": 184
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "writer",
+      "line": 211
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_dump",
+      "line": 227
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "tonum",
+      "line": 259
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "trymt",
+      "line": 279
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith",
+      "line": 290
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_add",
+      "line": 299
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_sub",
+      "line": 303
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_mul",
+      "line": 307
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_mod",
+      "line": 311
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_pow",
+      "line": 315
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_div",
+      "line": 319
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_idiv",
+      "line": 323
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "arith_unm",
+      "line": 327
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "check_capture",
+      "line": 388
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "capture_to_close",
+      "line": 397
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "classend",
+      "line": 405
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "match_class",
+      "line": 429
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "matchbracketclass",
+      "line": 449
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "singlematch",
+      "line": 472
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "matchbalance",
+      "line": 488
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "max_expand",
+      "line": 508
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "min_expand",
+      "line": 523
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "start_capture",
+      "line": 536
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "end_capture",
+      "line": 550
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "match_capture",
+      "line": 561
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "match",
+      "line": 572
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "lmemfind",
+      "line": 675
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "get_onecapture",
+      "line": 704
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "push_onecapture",
+      "line": 728
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "push_captures",
+      "line": 738
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "nospecials",
+      "line": 749
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "prepstate",
+      "line": 763
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "reprepstate",
+      "line": 776
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_find_aux",
+      "line": 782
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_find",
+      "line": 828
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_match",
+      "line": 833
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "gmatch_aux",
+      "line": 847
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "gmatch",
+      "line": 863
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "add_s",
+      "line": 880
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "add_value",
+      "line": 915
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_gsub",
+      "line": 951
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "adddigit",
+      "line": 1026
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "num2straux",
+      "line": 1034
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "lua_number2strx",
+      "line": 1066
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "addquoted",
+      "line": 1132
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "quotefloat",
+      "line": 1161
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "addliteral",
+      "line": 1185
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "get2digits",
+      "line": 1220
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "checkformat",
+      "line": 1235
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "getformat",
+      "line": 1255
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "addlenmod",
+      "line": 1273
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_format",
+      "line": 1283
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "digit",
+      "line": 1457
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "getnum",
+      "line": 1459
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "getnumlimit",
+      "line": 1476
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "initheader",
+      "line": 1488
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "getoption",
+      "line": 1498
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "getdetails",
+      "line": 1551
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "packint",
+      "line": 1584
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "copywithendian",
+      "line": 1605
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_pack",
+      "line": 1617
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_packsize",
+      "line": 1723
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "unpackint",
+      "line": 1752
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "str_unpack",
+      "line": 1778
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "createmetatable",
+      "line": 1878
+    },
+    {
+      "file": "lstrlib.c",
+      "symbol": "luaopen_string",
+      "line": 1895
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "hashint",
+      "line": 145
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "l_hashfloat",
+      "line": 168
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "mainpositionTV",
+      "line": 188
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "mainpositionfromnode",
+      "line": 226
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "equalkey",
+      "line": 252
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "getgeneric",
+      "line": 291
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "checkrange",
+      "line": 310
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "keyinarray",
+      "line": 333
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "findindex",
+      "line": 343
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_next",
+      "line": 361
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "sizehash",
+      "line": 388
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "freehash",
+      "line": 393
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "computesizes",
+      "line": 446
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "countint",
+      "line": 470
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "arraykeyisempty",
+      "line": 479
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "numusearray",
+      "line": 488
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "numusehash",
+      "line": 521
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "concretesize",
+      "line": 544
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "resizearray",
+      "line": 563
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "setnodevector",
+      "line": 602
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "reinserthash",
+      "line": 637
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "exchangehashpart",
+      "line": 658
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "reinsertOldSlice",
+      "line": 675
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "clearNewSlice",
+      "line": 693
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_resize",
+      "line": 715
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_resizearray",
+      "line": 750
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "rehash",
+      "line": 761
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_new",
+      "line": 798
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_size",
+      "line": 810
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_free",
+      "line": 821
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "getfreepos",
+      "line": 828
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "insertkey",
+      "line": 858
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "newcheckedkey",
+      "line": 901
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_newkey",
+      "line": 913
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "getintfromhash",
+      "line": 928
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "hashkeyisempty",
+      "line": 944
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "finishnodeget",
+      "line": 950
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_getint",
+      "line": 958
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_Hgetshortstr",
+      "line": 974
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_getshortstr",
+      "line": 990
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "Hgetlongstr",
+      "line": 995
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "Hgetstr",
+      "line": 1003
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_getstr",
+      "line": 1011
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_get",
+      "line": 1019
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "retpsetcode",
+      "line": 1048
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "finishnodeset",
+      "line": 1056
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "rawfinishnodeset",
+      "line": 1066
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_psetint",
+      "line": 1076
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "psetint",
+      "line": 1082
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_psetshortstr",
+      "line": 1097
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_psetstr",
+      "line": 1123
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_pset",
+      "line": 1131
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_finishset",
+      "line": 1153
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_set",
+      "line": 1195
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_setint",
+      "line": 1206
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "hash_search",
+      "line": 1239
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "binsearch",
+      "line": 1271
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "newhint",
+      "line": 1283
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_getn",
+      "line": 1301
+    },
+    {
+      "file": "ltable.c",
+      "symbol": "luaH_mainposition",
+      "line": 1351
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "checkfield",
+      "line": 37
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "checktab",
+      "line": 47
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tcreate",
+      "line": 64
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tinsert",
+      "line": 74
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tremove",
+      "line": 104
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tmove",
+      "line": 128
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "addfield",
+      "line": 160
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tconcat",
+      "line": 169
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tpack",
+      "line": 194
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "tunpack",
+      "line": 207
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "set2",
+      "line": 264
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "sort_comp",
+      "line": 274
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "partition",
+      "line": 297
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "choosePivot",
+      "line": 333
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "auxsort",
+      "line": 344
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "sort",
+      "line": 397
+    },
+    {
+      "file": "ltablib.c",
+      "symbol": "luaopen_table",
+      "line": 425
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_init",
+      "line": 38
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_gettm",
+      "line": 60
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_gettmbyobj",
+      "line": 71
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_objtypename",
+      "line": 91
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_callTM",
+      "line": 103
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_callTMres",
+      "line": 119
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "callbinTM",
+      "line": 138
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_trybinTM",
+      "line": 150
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_tryconcatTM",
+      "line": 173
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_trybinassocTM",
+      "line": 180
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_trybiniTM",
+      "line": 189
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_callorderTM",
+      "line": 200
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_callorderiTM",
+      "line": 210
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "createvarargtab",
+      "line": 231
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "buildhiddenargs",
+      "line": 255
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_adjustvarargs",
+      "line": 272
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_getvararg",
+      "line": 292
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "getnumargs",
+      "line": 321
+    },
+    {
+      "file": "ltm.c",
+      "symbol": "luaT_getvarargs",
+      "line": 338
+    },
+    {
+      "file": "lua.c",
+      "symbol": "setsignal",
+      "line": 52
+    },
+    {
+      "file": "lua.c",
+      "symbol": "lstop",
+      "line": 70
+    },
+    {
+      "file": "lua.c",
+      "symbol": "laction",
+      "line": 83
+    },
+    {
+      "file": "lua.c",
+      "symbol": "print_usage",
+      "line": 90
+    },
+    {
+      "file": "lua.c",
+      "symbol": "l_message",
+      "line": 117
+    },
+    {
+      "file": "lua.c",
+      "symbol": "report",
+      "line": 127
+    },
+    {
+      "file": "lua.c",
+      "symbol": "msghandler",
+      "line": 142
+    },
+    {
+      "file": "lua.c",
+      "symbol": "docall",
+      "line": 161
+    },
+    {
+      "file": "lua.c",
+      "symbol": "print_version",
+      "line": 175
+    },
+    {
+      "file": "lua.c",
+      "symbol": "createargtable",
+      "line": 191
+    },
+    {
+      "file": "lua.c",
+      "symbol": "dochunk",
+      "line": 203
+    },
+    {
+      "file": "lua.c",
+      "symbol": "dofile",
+      "line": 209
+    },
+    {
+      "file": "lua.c",
+      "symbol": "dostring",
+      "line": 214
+    },
+    {
+      "file": "lua.c",
+      "symbol": "dolibrary",
+      "line": 224
+    },
+    {
+      "file": "lua.c",
+      "symbol": "pushargs",
+      "line": 251
+    },
+    {
+      "file": "lua.c",
+      "symbol": "handle_script",
+      "line": 264
+    },
+    {
+      "file": "lua.c",
+      "symbol": "collectargs",
+      "line": 293
+    },
+    {
+      "file": "lua.c",
+      "symbol": "runargs",
+      "line": 356
+    },
+    {
+      "file": "lua.c",
+      "symbol": "no_getenv",
+      "line": 386
+    },
+    {
+      "file": "lua.c",
+      "symbol": "handle_luainit",
+      "line": 392
+    },
+    {
+      "file": "lua.c",
+      "symbol": "lua_readline",
+      "line": 485
+    },
+    {
+      "file": "lua.c",
+      "symbol": "lua_saveline",
+      "line": 496
+    },
+    {
+      "file": "lua.c",
+      "symbol": "lua_freeline",
+      "line": 503
+    },
+    {
+      "file": "lua.c",
+      "symbol": "lua_initreadline",
+      "line": 515
+    },
+    {
+      "file": "lua.c",
+      "symbol": "get_prompt",
+      "line": 554
+    },
+    {
+      "file": "lua.c",
+      "symbol": "incomplete",
+      "line": 574
+    },
+    {
+      "file": "lua.c",
+      "symbol": "pushline",
+      "line": 588
+    },
+    {
+      "file": "lua.c",
+      "symbol": "addreturn",
+      "line": 609
+    },
+    {
+      "file": "lua.c",
+      "symbol": "checklocal",
+      "line": 621
+    },
+    {
+      "file": "lua.c",
+      "symbol": "multiline",
+      "line": 638
+    },
+    {
+      "file": "lua.c",
+      "symbol": "loadline",
+      "line": 661
+    },
+    {
+      "file": "lua.c",
+      "symbol": "l_print",
+      "line": 681
+    },
+    {
+      "file": "lua.c",
+      "symbol": "doREPL",
+      "line": 698
+    },
+    {
+      "file": "lua.c",
+      "symbol": "pmain",
+      "line": 731
+    },
+    {
+      "file": "lua.c",
+      "symbol": "main",
+      "line": 777
+    },
+    {
+      "file": "luac.c",
+      "symbol": "fatal",
+      "line": 43
+    },
+    {
+      "file": "luac.c",
+      "symbol": "cannot",
+      "line": 49
+    },
+    {
+      "file": "luac.c",
+      "symbol": "usage",
+      "line": 55
+    },
+    {
+      "file": "luac.c",
+      "symbol": "doargs",
+      "line": 77
+    },
+    {
+      "file": "luac.c",
+      "symbol": "reader",
+      "line": 127
+    },
+    {
+      "file": "luac.c",
+      "symbol": "combine",
+      "line": 144
+    },
+    {
+      "file": "luac.c",
+      "symbol": "writer",
+      "line": 163
+    },
+    {
+      "file": "luac.c",
+      "symbol": "pmain",
+      "line": 169
+    },
+    {
+      "file": "luac.c",
+      "symbol": "main",
+      "line": 197
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintString",
+      "line": 221
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintType",
+      "line": 266
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintConstant",
+      "line": 295
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintCode",
+      "line": 335
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintHeader",
+      "line": 678
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintDebug",
+      "line": 698
+    },
+    {
+      "file": "luac.c",
+      "symbol": "PrintFunction",
+      "line": 726
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "error",
+      "line": 45
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadBlock",
+      "line": 57
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadAlign",
+      "line": 64
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "getaddr_",
+      "line": 76
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadByte",
+      "line": 88
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadVarint",
+      "line": 97
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadSize",
+      "line": 111
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadInt",
+      "line": 116
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadNumber",
+      "line": 122
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadInteger",
+      "line": 129
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadString",
+      "line": 145
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadCode",
+      "line": 187
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadConstants",
+      "line": 205
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadProtos",
+      "line": 247
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadUpvalues",
+      "line": 268
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadDebug",
+      "line": 283
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "loadFunction",
+      "line": 326
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "checkliteral",
+      "line": 344
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "numerror",
+      "line": 353
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "checknumsize",
+      "line": 359
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "checknumformat",
+      "line": 365
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "checkHeader",
+      "line": 377
+    },
+    {
+      "file": "lundump.c",
+      "symbol": "luaU_undump",
+      "line": 395
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "u_posrelat",
+      "line": 38
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "utf8_decode",
+      "line": 52
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "utflen",
+      "line": 90
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "codepoint",
+      "line": 120
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "pushutfchar",
+      "line": 149
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "utfchar",
+      "line": 159
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "byteoffset",
+      "line": 181
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "iter_aux",
+      "line": 231
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "iter_auxstrict",
+      "line": 252
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "iter_auxlax",
+      "line": 256
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "iter_codes",
+      "line": 261
+    },
+    {
+      "file": "lutf8lib.c",
+      "symbol": "luaopen_utf8",
+      "line": 288
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "l_strton",
+      "line": 91
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_tonumber_",
+      "line": 108
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_flttointeger",
+      "line": 126
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_tointegerns",
+      "line": 142
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_tointeger",
+      "line": 157
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "forlimit",
+      "line": 181
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "forprep",
+      "line": 214
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "floatforloop",
+      "line": 273
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_finishget",
+      "line": 291
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_finishset",
+      "line": 334
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "l_strcmp",
+      "line": 397
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "LTintfloat",
+      "line": 432
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "LEintfloat",
+      "line": 449
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "LTfloatint",
+      "line": 466
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "LEfloatint",
+      "line": 483
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "LTnum",
+      "line": 499
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "LEnum",
+      "line": 521
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "lessthanothers",
+      "line": 543
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_lessthan",
+      "line": 555
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "lessequalothers",
+      "line": 565
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_lessequal",
+      "line": 577
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_equalobj",
+      "line": 588
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "copy2buff",
+      "line": 674
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_concat",
+      "line": 690
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_objlen",
+      "line": 737
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_idiv",
+      "line": 772
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_mod",
+      "line": 792
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_modf",
+      "line": 810
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_shiftl",
+      "line": 824
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "pushclosure",
+      "line": 840
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_finishOp",
+      "line": 861
+    },
+    {
+      "file": "lvm.c",
+      "symbol": "luaV_execute",
+      "line": 1204
+    },
+    {
+      "file": "lzio.c",
+      "symbol": "luaZ_fill",
+      "line": 24
+    },
+    {
+      "file": "lzio.c",
+      "symbol": "luaZ_init",
+      "line": 39
+    },
+    {
+      "file": "lzio.c",
+      "symbol": "checkbuffer",
+      "line": 50
+    },
+    {
+      "file": "lzio.c",
+      "symbol": "luaZ_read",
+      "line": 63
+    },
+    {
+      "file": "lzio.c",
+      "symbol": "luaZ_getaddr",
+      "line": 79
+    }
+  ],
+  "header_types": [
+    {
+      "file": "lauxlib.h",
+      "symbol": "luaL_Reg",
+      "line": 38
+    },
+    {
+      "file": "lauxlib.h",
+      "symbol": "luaL_Stream",
+      "line": 239
+    },
+    {
+      "file": "llex.h",
+      "symbol": "Token",
+      "line": 56
+    },
+    {
+      "file": "llex.h",
+      "symbol": "LexState",
+      "line": 64
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Value",
+      "line": 49
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "TValue",
+      "line": 67
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "StackValue",
+      "line": 148
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "GCObject",
+      "line": 306
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "TString",
+      "line": 406
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "UValue",
+      "line": 482
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Udata",
+      "line": 492
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Udata0",
+      "line": 511
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Upvaldesc",
+      "line": 549
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "LocVar",
+      "line": 561
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "AbsLineInfo",
+      "line": 578
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Proto",
+      "line": 603
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "UpVal",
+      "line": 680
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "CClosure",
+      "line": 700
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "LClosure",
+      "line": 707
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Closure",
+      "line": 714
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Node",
+      "line": 752
+    },
+    {
+      "file": "lobject.h",
+      "symbol": "Table",
+      "line": 777
+    },
+    {
+      "file": "lparser.h",
+      "symbol": "expdesc",
+      "line": 78
+    },
+    {
+      "file": "lparser.h",
+      "symbol": "Vardesc",
+      "line": 118
+    },
+    {
+      "file": "lparser.h",
+      "symbol": "Labeldesc",
+      "line": 132
+    },
+    {
+      "file": "lparser.h",
+      "symbol": "Labellist",
+      "line": 142
+    },
+    {
+      "file": "lparser.h",
+      "symbol": "Dyndata",
+      "line": 150
+    },
+    {
+      "file": "lparser.h",
+      "symbol": "FuncState",
+      "line": 166
+    },
+    {
+      "file": "lstate.h",
+      "symbol": "stringtable",
+      "line": 167
+    },
+    {
+      "file": "lstate.h",
+      "symbol": "LX",
+      "line": 318
+    },
+    {
+      "file": "lstate.h",
+      "symbol": "global_State",
+      "line": 327
+    },
+    {
+      "file": "lzio.h",
+      "symbol": "Mbuffer",
+      "line": 23
+    }
+  ],
+  "opcode_index": [
+    {
+      "name": "MOVE",
+      "line": 235
+    },
+    {
+      "name": "LOADI",
+      "line": 236
+    },
+    {
+      "name": "LOADF",
+      "line": 237
+    },
+    {
+      "name": "LOADK",
+      "line": 238
+    },
+    {
+      "name": "LOADKX",
+      "line": 239
+    },
+    {
+      "name": "LOADFALSE",
+      "line": 240
+    },
+    {
+      "name": "LFALSESKIP",
+      "line": 241
+    },
+    {
+      "name": "LOADTRUE",
+      "line": 242
+    },
+    {
+      "name": "LOADNIL",
+      "line": 243
+    },
+    {
+      "name": "GETUPVAL",
+      "line": 244
+    },
+    {
+      "name": "SETUPVAL",
+      "line": 245
+    },
+    {
+      "name": "GETTABUP",
+      "line": 247
+    },
+    {
+      "name": "GETTABLE",
+      "line": 248
+    },
+    {
+      "name": "GETI",
+      "line": 249
+    },
+    {
+      "name": "GETFIELD",
+      "line": 250
+    },
+    {
+      "name": "SETTABUP",
+      "line": 252
+    },
+    {
+      "name": "SETTABLE",
+      "line": 253
+    },
+    {
+      "name": "SETI",
+      "line": 254
+    },
+    {
+      "name": "SETFIELD",
+      "line": 255
+    },
+    {
+      "name": "NEWTABLE",
+      "line": 257
+    },
+    {
+      "name": "SELF",
+      "line": 259
+    },
+    {
+      "name": "ADDI",
+      "line": 261
+    },
+    {
+      "name": "ADDK",
+      "line": 263
+    },
+    {
+      "name": "SUBK",
+      "line": 264
+    },
+    {
+      "name": "MULK",
+      "line": 265
+    },
+    {
+      "name": "MODK",
+      "line": 266
+    },
+    {
+      "name": "POWK",
+      "line": 267
+    },
+    {
+      "name": "DIVK",
+      "line": 268
+    },
+    {
+      "name": "IDIVK",
+      "line": 269
+    },
+    {
+      "name": "BANDK",
+      "line": 271
+    },
+    {
+      "name": "BORK",
+      "line": 272
+    },
+    {
+      "name": "BXORK",
+      "line": 273
+    },
+    {
+      "name": "SHLI",
+      "line": 275
+    },
+    {
+      "name": "SHRI",
+      "line": 276
+    },
+    {
+      "name": "ADD",
+      "line": 278
+    },
+    {
+      "name": "SUB",
+      "line": 279
+    },
+    {
+      "name": "MUL",
+      "line": 280
+    },
+    {
+      "name": "MOD",
+      "line": 281
+    },
+    {
+      "name": "POW",
+      "line": 282
+    },
+    {
+      "name": "DIV",
+      "line": 283
+    },
+    {
+      "name": "IDIV",
+      "line": 284
+    },
+    {
+      "name": "BAND",
+      "line": 286
+    },
+    {
+      "name": "BOR",
+      "line": 287
+    },
+    {
+      "name": "BXOR",
+      "line": 288
+    },
+    {
+      "name": "SHL",
+      "line": 289
+    },
+    {
+      "name": "SHR",
+      "line": 290
+    },
+    {
+      "name": "MMBIN",
+      "line": 292
+    },
+    {
+      "name": "MMBINI",
+      "line": 293
+    },
+    {
+      "name": "MMBINK",
+      "line": 294
+    },
+    {
+      "name": "UNM",
+      "line": 296
+    },
+    {
+      "name": "BNOT",
+      "line": 297
+    },
+    {
+      "name": "NOT",
+      "line": 298
+    },
+    {
+      "name": "LEN",
+      "line": 299
+    },
+    {
+      "name": "CONCAT",
+      "line": 301
+    },
+    {
+      "name": "CLOSE",
+      "line": 303
+    },
+    {
+      "name": "TBC",
+      "line": 304
+    },
+    {
+      "name": "JMP",
+      "line": 305
+    },
+    {
+      "name": "EQ",
+      "line": 306
+    },
+    {
+      "name": "LT",
+      "line": 307
+    },
+    {
+      "name": "LE",
+      "line": 308
+    },
+    {
+      "name": "EQK",
+      "line": 310
+    },
+    {
+      "name": "EQI",
+      "line": 311
+    },
+    {
+      "name": "LTI",
+      "line": 312
+    },
+    {
+      "name": "LEI",
+      "line": 313
+    },
+    {
+      "name": "GTI",
+      "line": 314
+    },
+    {
+      "name": "GEI",
+      "line": 315
+    },
+    {
+      "name": "TEST",
+      "line": 317
+    },
+    {
+      "name": "TESTSET",
+      "line": 318
+    },
+    {
+      "name": "CALL",
+      "line": 320
+    },
+    {
+      "name": "TAILCALL",
+      "line": 321
+    },
+    {
+      "name": "RETURN",
+      "line": 323
+    },
+    {
+      "name": "RETURN0",
+      "line": 324
+    },
+    {
+      "name": "RETURN1",
+      "line": 325
+    },
+    {
+      "name": "FORLOOP",
+      "line": 327
+    },
+    {
+      "name": "FORPREP",
+      "line": 328
+    },
+    {
+      "name": "TFORPREP",
+      "line": 331
+    },
+    {
+      "name": "TFORCALL",
+      "line": 332
+    },
+    {
+      "name": "TFORLOOP",
+      "line": 333
+    },
+    {
+      "name": "SETLIST",
+      "line": 335
+    },
+    {
+      "name": "CLOSURE",
+      "line": 337
+    },
+    {
+      "name": "VARARG",
+      "line": 339
+    },
+    {
+      "name": "GETVARG",
+      "line": 341
+    },
+    {
+      "name": "ERRNNIL",
+      "line": 343
+    },
+    {
+      "name": "VARARGPREP",
+      "line": 345
+    },
+    {
+      "name": "EXTRAARG",
+      "line": 347
+    }
+  ]
+}

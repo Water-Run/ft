@@ -1,0 +1,186 @@
+
+main <02_counter.lua:0,0> (74 instructions at <address>)
+0+ params, 14 slots, 1 upvalue, 10 locals, 13 constants, 4 functions
+	1	[1]	VARARGPREP	0
+	2	[8]	CLOSURE  	0 0	; <address>
+	3	[10]	MOVE     	1 0
+	4	[10]	LOADI    	2 40
+	5	[10]	CALL     	1 2 3	; 1 in 2 out
+	6	[11]	GETTABUP 	3 0 0	; _ENV "setmetatable"
+	7	[11]	MOVE     	4 2
+	8	[11]	NEWTABLE 	5 1 0	; 0
+	9	[11]	EXTRAARG 	0
+	10	[14]	CLOSURE  	6 1	; <address>
+	11	[14]	SETFIELD 	5 1 6	; "__index"
+	12	[11]	CALL     	3 3 1	; 2 in 0 out
+	13	[16]	GETTABUP 	3 0 2	; _ENV "print"
+	14	[16]	GETFIELD 	4 2 3	; "label"
+	15	[16]	MOVE     	5 1
+	16	[16]	LOADI    	6 2
+	17	[16]	CALL     	5 2 2	; 1 in 1 out
+	18	[16]	MOVE     	6 1
+	19	[16]	LOADI    	7 3
+	20	[16]	CALL     	6 2 0	; 1 in all out
+	21	[16]	CALL     	3 0 1	; all in 0 out
+	22	[18]	GETTABUP 	3 0 4	; _ENV "coroutine"
+	23	[18]	GETFIELD 	3 3 5	; "create"
+	24	[21]	CLOSURE  	4 2	; <address>
+	25	[18]	CALL     	3 2 2	; 1 in 1 out
+	26	[22]	GETTABUP 	4 0 4	; _ENV "coroutine"
+	27	[22]	GETFIELD 	4 4 6	; "resume"
+	28	[22]	MOVE     	5 3
+	29	[22]	CALL     	4 2 3	; 1 in 2 out
+	30	[23]	GETTABUP 	6 0 2	; _ENV "print"
+	31	[23]	LOADK    	7 7	; "yield"
+	32	[23]	MOVE     	8 4
+	33	[23]	MOVE     	9 5
+	34	[23]	GETTABUP 	10 0 4	; _ENV "coroutine"
+	35	[23]	GETFIELD 	10 10 8	; "status"
+	36	[23]	MOVE     	11 3
+	37	[23]	CALL     	10 2 0	; 1 in all out
+	38	[23]	CALL     	6 0 1	; all in 0 out
+	39	[24]	GETTABUP 	6 0 4	; _ENV "coroutine"
+	40	[24]	GETFIELD 	6 6 6	; "resume"
+	41	[24]	MOVE     	7 3
+	42	[24]	CALL     	6 2 3	; 1 in 2 out
+	43	[25]	GETTABUP 	8 0 2	; _ENV "print"
+	44	[25]	LOADK    	9 9	; "return"
+	45	[25]	MOVE     	10 6
+	46	[25]	MOVE     	11 7
+	47	[25]	GETTABUP 	12 0 4	; _ENV "coroutine"
+	48	[25]	GETFIELD 	12 12 8	; "status"
+	49	[25]	MOVE     	13 3
+	50	[25]	CALL     	12 2 0	; 1 in all out
+	51	[25]	CALL     	8 0 1	; all in 0 out
+	52	[26]	GETTABUP 	8 0 10	; _ENV "pcall"
+	53	[26]	CLOSURE  	9 3	; <address>
+	54	[26]	CALL     	8 2 3	; 1 in 2 out
+	55	[27]	GETTABUP 	10 0 2	; _ENV "print"
+	56	[27]	LOADK    	11 11	; "protected"
+	57	[27]	MOVE     	12 8
+	58	[27]	MOVE     	13 9
+	59	[27]	CALL     	10 4 1	; 3 in 0 out
+	60	[28]	GETTABUP 	10 0 12	; _ENV "assert"
+	61	[28]	EQI      	5 45 0
+	62	[28]	JMP      	8	; to 71
+	63	[28]	EQI      	7 46 0
+	64	[28]	JMP      	6	; to 71
+	65	[28]	TESTSET  	11 4 0
+	66	[28]	JMP      	6	; to 73
+	67	[28]	TESTSET  	11 6 0
+	68	[28]	JMP      	4	; to 73
+	69	[28]	NOT      	11 8
+	70	[28]	JMP      	2	; to 73
+	71	[28]	LFALSESKIP	11
+	72	[28]	LOADTRUE 	11
+	73	[28]	CALL     	10 2 1	; 1 in 0 out
+	74	[28]	RETURN   	10 1 1k	; 0 out
+constants (13) for <address>:
+	0	S	"setmetatable"
+	1	S	"__index"
+	2	S	"print"
+	3	S	"label"
+	4	S	"coroutine"
+	5	S	"create"
+	6	S	"resume"
+	7	S	"yield"
+	8	S	"status"
+	9	S	"return"
+	10	S	"pcall"
+	11	S	"protected"
+	12	S	"assert"
+locals (10) for <address>:
+	0	make_counter	3	75
+	1	next_value	6	75
+	2	state	6	75
+	3	co	26	75
+	4	ok1	30	75
+	5	first	30	75
+	6	ok2	43	75
+	7	last	43	75
+	8	ok3	55	75
+	9	err	55	75
+upvalues (1) for <address>:
+	0	_ENV	1	0
+
+function <02_counter.lua:2,8> (7 instructions at <address>)
+1 param, 4 slots, 0 upvalues, 2 locals, 1 constant, 1 function
+	1	[3]	NEWTABLE 	1 1 0	; 0
+	2	[3]	EXTRAARG 	0
+	3	[3]	SETFIELD 	1 0 0	; "value"
+	4	[7]	CLOSURE  	2 0	; <address>
+	5	[7]	MOVE     	3 1
+	6	[7]	RETURN   	2 3 0k	; 2 out
+	7	[8]	RETURN   	2 1 0k	; 0 out
+constants (1) for <address>:
+	0	S	"value"
+locals (2) for <address>:
+	0	start	1	8
+	1	state	4	8
+upvalues (0) for <address>:
+
+function <02_counter.lua:4,7> (7 instructions at <address>)
+1 param, 2 slots, 1 upvalue, 1 local, 1 constant, 0 functions
+	1	[5]	GETTABUP 	1 0 0	; state "value"
+	2	[5]	ADD      	1 1 0
+	3	[5]	MMBIN    	1 0 6	; __add
+	4	[5]	SETTABUP 	0 0 1	; state "value"
+	5	[6]	GETTABUP 	1 0 0	; state "value"
+	6	[6]	RETURN1  	1
+	7	[7]	RETURN0  	
+constants (1) for <address>:
+	0	S	"value"
+locals (1) for <address>:
+	0	delta	1	8
+upvalues (1) for <address>:
+	0	state	1	1
+
+function <02_counter.lua:12,14> (5 instructions at <address>)
+2 params, 3 slots, 0 upvalues, 2 locals, 2 constants, 0 functions
+	1	[13]	EQK      	1 0 0	; "label"
+	2	[13]	JMP      	2	; to 5
+	3	[13]	LOADK    	2 1	; "counter"
+	4	[13]	RETURN1  	2
+	5	[14]	RETURN0  	
+constants (2) for <address>:
+	0	S	"label"
+	1	S	"counter"
+locals (2) for <address>:
+	0	_	1	6
+	1	key	1	6
+upvalues (0) for <address>:
+
+function <02_counter.lua:18,21> (9 instructions at <address>)
+0 params, 2 slots, 3 upvalues, 0 locals, 3 constants, 0 functions
+	1	[19]	GETTABUP 	0 0 0	; _ENV "coroutine"
+	2	[19]	GETFIELD 	0 0 1	; "yield"
+	3	[19]	GETTABUP 	1 1 2	; state "value"
+	4	[19]	CALL     	0 2 1	; 1 in 0 out
+	5	[20]	GETUPVAL 	0 2	; next_value
+	6	[20]	LOADI    	1 1
+	7	[20]	TAILCALL 	0 2 0	; 1 in
+	8	[20]	RETURN   	0 0 0	; all out
+	9	[21]	RETURN0  	
+constants (3) for <address>:
+	0	S	"coroutine"
+	1	S	"yield"
+	2	S	"value"
+locals (0) for <address>:
+upvalues (3) for <address>:
+	0	_ENV	0	0
+	1	state	1	2
+	2	next_value	1	1
+
+function <02_counter.lua:26,26> (5 instructions at <address>)
+0 params, 3 slots, 1 upvalue, 0 locals, 2 constants, 0 functions
+	1	[26]	GETTABUP 	0 0 0	; _ENV "error"
+	2	[26]	LOADK    	1 1	; "counter-error"
+	3	[26]	LOADI    	2 0
+	4	[26]	CALL     	0 3 1	; 2 in 0 out
+	5	[26]	RETURN0  	
+constants (2) for <address>:
+	0	S	"error"
+	1	S	"counter-error"
+locals (0) for <address>:
+upvalues (1) for <address>:
+	0	_ENV	0	0

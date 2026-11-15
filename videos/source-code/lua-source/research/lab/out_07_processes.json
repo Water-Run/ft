@@ -1,0 +1,920 @@
+{
+  "description": "Exact subprocess streams encoded as base64; no newline conversion. luac listing raw hashes are in out_07_build_and_run.txt.",
+  "processes": [
+    {
+      "argv": [
+        "gcc",
+        "--version"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "Z2NjIChNaW5HVy1XNjQgeDg2XzY0LXVjcnQtcG9zaXgtc2VoLCBidWlsdCBieSBCcmVjaHQgU2FuZGVycywgcjMpIDE2LjIuMA0KQ29weXJpZ2h0IChDKSAyMDI2IEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbiwgSW5jLg0KVGhpcyBpcyBmcmVlIHNvZnR3YXJlOyBzZWUgdGhlIHNvdXJjZSBmb3IgY29weWluZyBjb25kaXRpb25zLiAgVGhlcmUgaXMgTk8NCndhcnJhbnR5OyBub3QgZXZlbiBmb3IgTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLg0KDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.5.1/src",
+        "-c",
+        "../../../research/_src/lua-5.5.1/src/lapi.c",
+        "../../../research/_src/lua-5.5.1/src/lcode.c",
+        "../../../research/_src/lua-5.5.1/src/lctype.c",
+        "../../../research/_src/lua-5.5.1/src/ldebug.c",
+        "../../../research/_src/lua-5.5.1/src/ldo.c",
+        "../../../research/_src/lua-5.5.1/src/ldump.c",
+        "../../../research/_src/lua-5.5.1/src/lfunc.c",
+        "../../../research/_src/lua-5.5.1/src/lgc.c",
+        "../../../research/_src/lua-5.5.1/src/llex.c",
+        "../../../research/_src/lua-5.5.1/src/lmem.c",
+        "../../../research/_src/lua-5.5.1/src/lobject.c",
+        "../../../research/_src/lua-5.5.1/src/lopcodes.c",
+        "../../../research/_src/lua-5.5.1/src/lparser.c",
+        "../../../research/_src/lua-5.5.1/src/lstate.c",
+        "../../../research/_src/lua-5.5.1/src/lstring.c",
+        "../../../research/_src/lua-5.5.1/src/ltable.c",
+        "../../../research/_src/lua-5.5.1/src/ltm.c",
+        "../../../research/_src/lua-5.5.1/src/lundump.c",
+        "../../../research/_src/lua-5.5.1/src/lvm.c",
+        "../../../research/_src/lua-5.5.1/src/lzio.c",
+        "../../../research/_src/lua-5.5.1/src/lauxlib.c",
+        "../../../research/_src/lua-5.5.1/src/lbaselib.c",
+        "../../../research/_src/lua-5.5.1/src/lcorolib.c",
+        "../../../research/_src/lua-5.5.1/src/ldblib.c",
+        "../../../research/_src/lua-5.5.1/src/liolib.c",
+        "../../../research/_src/lua-5.5.1/src/lmathlib.c",
+        "../../../research/_src/lua-5.5.1/src/loadlib.c",
+        "../../../research/_src/lua-5.5.1/src/loslib.c",
+        "../../../research/_src/lua-5.5.1/src/lstrlib.c",
+        "../../../research/_src/lua-5.5.1/src/ltablib.c",
+        "../../../research/_src/lua-5.5.1/src/lutf8lib.c",
+        "../../../research/_src/lua-5.5.1/src/linit.c"
+      ],
+      "cwd_from_video": "build/research/5.5.1",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcs",
+        "liblua.a",
+        "lapi.o",
+        "lcode.o",
+        "lctype.o",
+        "ldebug.o",
+        "ldo.o",
+        "ldump.o",
+        "lfunc.o",
+        "lgc.o",
+        "llex.o",
+        "lmem.o",
+        "lobject.o",
+        "lopcodes.o",
+        "lparser.o",
+        "lstate.o",
+        "lstring.o",
+        "ltable.o",
+        "ltm.o",
+        "lundump.o",
+        "lvm.o",
+        "lzio.o",
+        "lauxlib.o",
+        "lbaselib.o",
+        "lcorolib.o",
+        "ldblib.o",
+        "liolib.o",
+        "lmathlib.o",
+        "loadlib.o",
+        "loslib.o",
+        "lstrlib.o",
+        "ltablib.o",
+        "lutf8lib.o",
+        "linit.o"
+      ],
+      "cwd_from_video": "build/research/5.5.1",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.5.1/src",
+        "../../../research/_src/lua-5.5.1/src/lua.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "lua.exe"
+      ],
+      "cwd_from_video": "build/research/5.5.1",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.5.1/src",
+        "../../../research/_src/lua-5.5.1/src/luac.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "luac.exe"
+      ],
+      "cwd_from_video": "build/research/5.5.1",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.5.1/src",
+        "../../../research/lab/06_c_api.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "c_api.exe"
+      ],
+      "cwd_from_video": "build/research/5.5.1",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.4.9/src",
+        "-c",
+        "../../../research/_src/lua-5.4.9/src/lapi.c",
+        "../../../research/_src/lua-5.4.9/src/lcode.c",
+        "../../../research/_src/lua-5.4.9/src/lctype.c",
+        "../../../research/_src/lua-5.4.9/src/ldebug.c",
+        "../../../research/_src/lua-5.4.9/src/ldo.c",
+        "../../../research/_src/lua-5.4.9/src/ldump.c",
+        "../../../research/_src/lua-5.4.9/src/lfunc.c",
+        "../../../research/_src/lua-5.4.9/src/lgc.c",
+        "../../../research/_src/lua-5.4.9/src/llex.c",
+        "../../../research/_src/lua-5.4.9/src/lmem.c",
+        "../../../research/_src/lua-5.4.9/src/lobject.c",
+        "../../../research/_src/lua-5.4.9/src/lopcodes.c",
+        "../../../research/_src/lua-5.4.9/src/lparser.c",
+        "../../../research/_src/lua-5.4.9/src/lstate.c",
+        "../../../research/_src/lua-5.4.9/src/lstring.c",
+        "../../../research/_src/lua-5.4.9/src/ltable.c",
+        "../../../research/_src/lua-5.4.9/src/ltm.c",
+        "../../../research/_src/lua-5.4.9/src/lundump.c",
+        "../../../research/_src/lua-5.4.9/src/lvm.c",
+        "../../../research/_src/lua-5.4.9/src/lzio.c",
+        "../../../research/_src/lua-5.4.9/src/lauxlib.c",
+        "../../../research/_src/lua-5.4.9/src/lbaselib.c",
+        "../../../research/_src/lua-5.4.9/src/lcorolib.c",
+        "../../../research/_src/lua-5.4.9/src/ldblib.c",
+        "../../../research/_src/lua-5.4.9/src/liolib.c",
+        "../../../research/_src/lua-5.4.9/src/lmathlib.c",
+        "../../../research/_src/lua-5.4.9/src/loadlib.c",
+        "../../../research/_src/lua-5.4.9/src/loslib.c",
+        "../../../research/_src/lua-5.4.9/src/lstrlib.c",
+        "../../../research/_src/lua-5.4.9/src/ltablib.c",
+        "../../../research/_src/lua-5.4.9/src/lutf8lib.c",
+        "../../../research/_src/lua-5.4.9/src/linit.c"
+      ],
+      "cwd_from_video": "build/research/5.4.9",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcs",
+        "liblua.a",
+        "lapi.o",
+        "lcode.o",
+        "lctype.o",
+        "ldebug.o",
+        "ldo.o",
+        "ldump.o",
+        "lfunc.o",
+        "lgc.o",
+        "llex.o",
+        "lmem.o",
+        "lobject.o",
+        "lopcodes.o",
+        "lparser.o",
+        "lstate.o",
+        "lstring.o",
+        "ltable.o",
+        "ltm.o",
+        "lundump.o",
+        "lvm.o",
+        "lzio.o",
+        "lauxlib.o",
+        "lbaselib.o",
+        "lcorolib.o",
+        "ldblib.o",
+        "liolib.o",
+        "lmathlib.o",
+        "loadlib.o",
+        "loslib.o",
+        "lstrlib.o",
+        "ltablib.o",
+        "lutf8lib.o",
+        "linit.o"
+      ],
+      "cwd_from_video": "build/research/5.4.9",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.4.9/src",
+        "../../../research/_src/lua-5.4.9/src/lua.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "lua.exe"
+      ],
+      "cwd_from_video": "build/research/5.4.9",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.4.9/src",
+        "../../../research/_src/lua-5.4.9/src/luac.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "luac.exe"
+      ],
+      "cwd_from_video": "build/research/5.4.9",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.4.9/src",
+        "../../../research/lab/06_c_api.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "c_api.exe"
+      ],
+      "cwd_from_video": "build/research/5.4.9",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.3.6/src",
+        "-c",
+        "../../../research/_src/lua-5.3.6/src/lapi.c",
+        "../../../research/_src/lua-5.3.6/src/lcode.c",
+        "../../../research/_src/lua-5.3.6/src/lctype.c",
+        "../../../research/_src/lua-5.3.6/src/ldebug.c",
+        "../../../research/_src/lua-5.3.6/src/ldo.c",
+        "../../../research/_src/lua-5.3.6/src/ldump.c",
+        "../../../research/_src/lua-5.3.6/src/lfunc.c",
+        "../../../research/_src/lua-5.3.6/src/lgc.c",
+        "../../../research/_src/lua-5.3.6/src/llex.c",
+        "../../../research/_src/lua-5.3.6/src/lmem.c",
+        "../../../research/_src/lua-5.3.6/src/lobject.c",
+        "../../../research/_src/lua-5.3.6/src/lopcodes.c",
+        "../../../research/_src/lua-5.3.6/src/lparser.c",
+        "../../../research/_src/lua-5.3.6/src/lstate.c",
+        "../../../research/_src/lua-5.3.6/src/lstring.c",
+        "../../../research/_src/lua-5.3.6/src/ltable.c",
+        "../../../research/_src/lua-5.3.6/src/ltm.c",
+        "../../../research/_src/lua-5.3.6/src/lundump.c",
+        "../../../research/_src/lua-5.3.6/src/lvm.c",
+        "../../../research/_src/lua-5.3.6/src/lzio.c",
+        "../../../research/_src/lua-5.3.6/src/lauxlib.c",
+        "../../../research/_src/lua-5.3.6/src/lbaselib.c",
+        "../../../research/_src/lua-5.3.6/src/lbitlib.c",
+        "../../../research/_src/lua-5.3.6/src/lcorolib.c",
+        "../../../research/_src/lua-5.3.6/src/ldblib.c",
+        "../../../research/_src/lua-5.3.6/src/liolib.c",
+        "../../../research/_src/lua-5.3.6/src/lmathlib.c",
+        "../../../research/_src/lua-5.3.6/src/loslib.c",
+        "../../../research/_src/lua-5.3.6/src/lstrlib.c",
+        "../../../research/_src/lua-5.3.6/src/ltablib.c",
+        "../../../research/_src/lua-5.3.6/src/lutf8lib.c",
+        "../../../research/_src/lua-5.3.6/src/loadlib.c",
+        "../../../research/_src/lua-5.3.6/src/linit.c"
+      ],
+      "cwd_from_video": "build/research/5.3.6",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcs",
+        "liblua.a",
+        "lapi.o",
+        "lcode.o",
+        "lctype.o",
+        "ldebug.o",
+        "ldo.o",
+        "ldump.o",
+        "lfunc.o",
+        "lgc.o",
+        "llex.o",
+        "lmem.o",
+        "lobject.o",
+        "lopcodes.o",
+        "lparser.o",
+        "lstate.o",
+        "lstring.o",
+        "ltable.o",
+        "ltm.o",
+        "lundump.o",
+        "lvm.o",
+        "lzio.o",
+        "lauxlib.o",
+        "lbaselib.o",
+        "lbitlib.o",
+        "lcorolib.o",
+        "ldblib.o",
+        "liolib.o",
+        "lmathlib.o",
+        "loslib.o",
+        "lstrlib.o",
+        "ltablib.o",
+        "lutf8lib.o",
+        "loadlib.o",
+        "linit.o"
+      ],
+      "cwd_from_video": "build/research/5.3.6",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.3.6/src",
+        "../../../research/_src/lua-5.3.6/src/lua.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "lua.exe"
+      ],
+      "cwd_from_video": "build/research/5.3.6",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.3.6/src",
+        "../../../research/_src/lua-5.3.6/src/luac.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "luac.exe"
+      ],
+      "cwd_from_video": "build/research/5.3.6",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.2.4/src",
+        "-c",
+        "../../../research/_src/lua-5.2.4/src/lapi.c",
+        "../../../research/_src/lua-5.2.4/src/lcode.c",
+        "../../../research/_src/lua-5.2.4/src/lctype.c",
+        "../../../research/_src/lua-5.2.4/src/ldebug.c",
+        "../../../research/_src/lua-5.2.4/src/ldo.c",
+        "../../../research/_src/lua-5.2.4/src/ldump.c",
+        "../../../research/_src/lua-5.2.4/src/lfunc.c",
+        "../../../research/_src/lua-5.2.4/src/lgc.c",
+        "../../../research/_src/lua-5.2.4/src/llex.c",
+        "../../../research/_src/lua-5.2.4/src/lmem.c",
+        "../../../research/_src/lua-5.2.4/src/lobject.c",
+        "../../../research/_src/lua-5.2.4/src/lopcodes.c",
+        "../../../research/_src/lua-5.2.4/src/lparser.c",
+        "../../../research/_src/lua-5.2.4/src/lstate.c",
+        "../../../research/_src/lua-5.2.4/src/lstring.c",
+        "../../../research/_src/lua-5.2.4/src/ltable.c",
+        "../../../research/_src/lua-5.2.4/src/ltm.c",
+        "../../../research/_src/lua-5.2.4/src/lundump.c",
+        "../../../research/_src/lua-5.2.4/src/lvm.c",
+        "../../../research/_src/lua-5.2.4/src/lzio.c",
+        "../../../research/_src/lua-5.2.4/src/lauxlib.c",
+        "../../../research/_src/lua-5.2.4/src/lbaselib.c",
+        "../../../research/_src/lua-5.2.4/src/lbitlib.c",
+        "../../../research/_src/lua-5.2.4/src/lcorolib.c",
+        "../../../research/_src/lua-5.2.4/src/ldblib.c",
+        "../../../research/_src/lua-5.2.4/src/liolib.c",
+        "../../../research/_src/lua-5.2.4/src/lmathlib.c",
+        "../../../research/_src/lua-5.2.4/src/loslib.c",
+        "../../../research/_src/lua-5.2.4/src/lstrlib.c",
+        "../../../research/_src/lua-5.2.4/src/ltablib.c",
+        "../../../research/_src/lua-5.2.4/src/loadlib.c",
+        "../../../research/_src/lua-5.2.4/src/linit.c"
+      ],
+      "cwd_from_video": "build/research/5.2.4",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcs",
+        "liblua.a",
+        "lapi.o",
+        "lcode.o",
+        "lctype.o",
+        "ldebug.o",
+        "ldo.o",
+        "ldump.o",
+        "lfunc.o",
+        "lgc.o",
+        "llex.o",
+        "lmem.o",
+        "lobject.o",
+        "lopcodes.o",
+        "lparser.o",
+        "lstate.o",
+        "lstring.o",
+        "ltable.o",
+        "ltm.o",
+        "lundump.o",
+        "lvm.o",
+        "lzio.o",
+        "lauxlib.o",
+        "lbaselib.o",
+        "lbitlib.o",
+        "lcorolib.o",
+        "ldblib.o",
+        "liolib.o",
+        "lmathlib.o",
+        "loslib.o",
+        "lstrlib.o",
+        "ltablib.o",
+        "loadlib.o",
+        "linit.o"
+      ],
+      "cwd_from_video": "build/research/5.2.4",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.2.4/src",
+        "../../../research/_src/lua-5.2.4/src/lua.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "lua.exe"
+      ],
+      "cwd_from_video": "build/research/5.2.4",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.2.4/src",
+        "../../../research/_src/lua-5.2.4/src/luac.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "luac.exe"
+      ],
+      "cwd_from_video": "build/research/5.2.4",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.1.5/src",
+        "-c",
+        "../../../research/_src/lua-5.1.5/src/lapi.c",
+        "../../../research/_src/lua-5.1.5/src/lcode.c",
+        "../../../research/_src/lua-5.1.5/src/ldebug.c",
+        "../../../research/_src/lua-5.1.5/src/ldo.c",
+        "../../../research/_src/lua-5.1.5/src/ldump.c",
+        "../../../research/_src/lua-5.1.5/src/lfunc.c",
+        "../../../research/_src/lua-5.1.5/src/lgc.c",
+        "../../../research/_src/lua-5.1.5/src/llex.c",
+        "../../../research/_src/lua-5.1.5/src/lmem.c",
+        "../../../research/_src/lua-5.1.5/src/lobject.c",
+        "../../../research/_src/lua-5.1.5/src/lopcodes.c",
+        "../../../research/_src/lua-5.1.5/src/lparser.c",
+        "../../../research/_src/lua-5.1.5/src/lstate.c",
+        "../../../research/_src/lua-5.1.5/src/lstring.c",
+        "../../../research/_src/lua-5.1.5/src/ltable.c",
+        "../../../research/_src/lua-5.1.5/src/ltm.c",
+        "../../../research/_src/lua-5.1.5/src/lundump.c",
+        "../../../research/_src/lua-5.1.5/src/lvm.c",
+        "../../../research/_src/lua-5.1.5/src/lzio.c",
+        "../../../research/_src/lua-5.1.5/src/lauxlib.c",
+        "../../../research/_src/lua-5.1.5/src/lbaselib.c",
+        "../../../research/_src/lua-5.1.5/src/ldblib.c",
+        "../../../research/_src/lua-5.1.5/src/liolib.c",
+        "../../../research/_src/lua-5.1.5/src/lmathlib.c",
+        "../../../research/_src/lua-5.1.5/src/loslib.c",
+        "../../../research/_src/lua-5.1.5/src/ltablib.c",
+        "../../../research/_src/lua-5.1.5/src/lstrlib.c",
+        "../../../research/_src/lua-5.1.5/src/loadlib.c",
+        "../../../research/_src/lua-5.1.5/src/linit.c"
+      ],
+      "cwd_from_video": "build/research/5.1.5",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcs",
+        "liblua.a",
+        "lapi.o",
+        "lcode.o",
+        "ldebug.o",
+        "ldo.o",
+        "ldump.o",
+        "lfunc.o",
+        "lgc.o",
+        "llex.o",
+        "lmem.o",
+        "lobject.o",
+        "lopcodes.o",
+        "lparser.o",
+        "lstate.o",
+        "lstring.o",
+        "ltable.o",
+        "ltm.o",
+        "lundump.o",
+        "lvm.o",
+        "lzio.o",
+        "lauxlib.o",
+        "lbaselib.o",
+        "ldblib.o",
+        "liolib.o",
+        "lmathlib.o",
+        "loslib.o",
+        "ltablib.o",
+        "lstrlib.o",
+        "loadlib.o",
+        "linit.o"
+      ],
+      "cwd_from_video": "build/research/5.1.5",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.1.5/src",
+        "../../../research/_src/lua-5.1.5/src/lua.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "lua.exe"
+      ],
+      "cwd_from_video": "build/research/5.1.5",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "gcc",
+        "-std=gnu99",
+        "-O2",
+        "-DLUA_USE_APICHECK",
+        "-I",
+        "../../../research/_src/lua-5.1.5/src",
+        "../../../research/_src/lua-5.1.5/src/luac.c",
+        "../../../research/_src/lua-5.1.5/src/print.c",
+        "liblua.a",
+        "-lm",
+        "-o",
+        "luac.exe"
+      ],
+      "cwd_from_video": "build/research/5.1.5",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "-v"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuNS4xICBDb3B5cmlnaHQgKEMpIDE5OTQtMjAyNiBMdWEub3JnLCBQVUMtUmlvDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "02_counter.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "Y291bnRlcgk0Mgk0NQ0KeWllbGQJdHJ1ZQk0NQlzdXNwZW5kZWQNCnJldHVybgl0cnVlCTQ2CWRlYWQNCnByb3RlY3RlZAlmYWxzZQljb3VudGVyLWVycm9yDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "05_versions.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuNQ0KZ2xvYmFsLWRlY2xhcmF0aW9uCXRydWUNCm5hbWVkLXZhcmFyZwl0cnVlDQpiaXR3aXNlLWZsb29yCXRydWUNCmNvbnN0LWxvY2FsCXRydWUNCmNsb3NlLWxvY2FsCXRydWUNCmZvci1hc3NpZ25tZW50CWZhbHNlDQplbnZpcm9ubWVudC1hcGkJbmlsCW5pbA0KaW50ZWdlci1zdWJ0eXBlCWludGVnZXINCnRhYmxlLmNyZWF0ZQlmdW5jdGlvbg0KbmlsLWVycm9yLW9iamVjdAlmYWxzZQlzdHJpbmcNCg==",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "03_runtime.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "bnVtYmVycwlpbnRlZ2VyCWZsb2F0CTIJMQ0KYnl0ZXMJMwkwDQp0YWJsZQlzYW1lCXNwYXJzZQlzaGFyZWQNCnVwdmFsdWUJMQkxCTIJMg0KbWV0YW1ldGhvZAkxCTEJMgkzCTQNCmVycm9yLW9iamVjdAlmYWxzZQl0cnVlDQp5aWVsZGFibGUtcGNhbGwJdHJ1ZQlpbnNpZGUtcGNhbGwJdHJ1ZQl0cnVlCXJlc3VtZWQNCmNsb3NlCW5vcm1hbDpuaWwJZXJyb3I6c2VudGluZWwNCmdjCWluY3JlbWVudGFsCWN5Y2xlLWNvbGxlY3RlZAllcGhlbWVyb24tY2xlYXJlZA0KZ2MJZ2VuZXJhdGlvbmFsCWN5Y2xlLWNvbGxlY3RlZAllcGhlbWVyb24tY2xlYXJlZA0KdGFpbGNhbGwJMTAwMDAwDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/c_api.exe"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuNS4xDQpzaXplb2YgVmFsdWU9OCBUVmFsdWU9MTYgTm9kZT0yNCBUYWJsZT00OCBVcFZhbD00MCBDYWxsSW5mbz02NA0Kc2l6ZW9mIGx1YV9JbnRlZ2VyPTggbHVhX051bWJlcj04IEluc3RydWN0aW9uPTQNCk5VTV9PUENPREVTPTg1DQpob3N0LWJlZm9yZSB0b3A9MA0KaG9zdC1sb2FkZWQgdG9wPTEgdHlwZT1mdW5jdGlvbg0KYy1lbnRyeSB0b3A9MiBhcmcxPTE5IGFyZzI9MjMNCmhvc3QtcmVzdWx0IHRvcD0xIHZhbHVlPTQyDQphcnJheSBjYXBhY2l0eT0xMDI0IGFsbG9jYXRlZF9wYXlsb2FkX2Zvcm11bGE9OTIyMCBlbXB0eV9sZW5ndGg9MA0KdGFibGUtcGx1cy1hcnJheSBvYnNlcnZlZF9nY19ieXRlc19kZWx0YT05MjY4IGZvcm11bGFfdG90YWw9OTI2OA0Kc3BhcnNlLWtleXMgMSw0LDggYXJyYXlfY2FwYWNpdHk9OA0KaG9zdC1wcm90ZWN0ZWQgcnVudGltZS1lcnJvcj0xIHRvcD0xIG1lc3NhZ2U9Qy1jYXVnaHQNCg==",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "04_lua55.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "aW1wbGljaXQtZ2xvYmFsCWNvbXBpbGVkDQpkZWNsYXJlZC1nbG9iYWwJY29tcGlsZWQNCnVuZGVjbGFyZWQtbmFtZQlyZWplY3RlZA0KcmVhZG9ubHktZ2xvYmFsCXJlamVjdGVkDQpyZWFkb25seS1mb3IJcmVqZWN0ZWQNCmdsb2JhbC1zZW1hbnRpY3MJZGVjbGFyYXRpb24tcHJlc2VydmVzLXZhbHVlCWR1cGxpY2F0ZS1pbml0LWVycm9ycwlFTlYtYnlwYXNzZXMtY29uc3QNCm5hbWVkLXZhcmFyZ3MJMwkxMAluaWwJMzAJdGFibGUJOTkNCnRhYmxlLmNyZWF0ZQkwCXRydWUNCnV0Zjgub2Zmc2V0CTEJMg0KZXJyb3ItbmlsCWZhbHNlCXN0cmluZw0K",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "08_known_bugs.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "NS41LjEtMiBOYU4tbG9vcC1pdGVyYXRpb25zCTExDQo1LjUuMS0zIG5lZ2F0aXZlLXplcm8tcHJlc2VydmVkCWZhbHNlDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.4.9/lua.exe",
+        "-v"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuNC45ICBDb3B5cmlnaHQgKEMpIDE5OTQtMjAyNiBMdWEub3JnLCBQVUMtUmlvDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.4.9/lua.exe",
+        "02_counter.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "Y291bnRlcgk0Mgk0NQ0KeWllbGQJdHJ1ZQk0NQlzdXNwZW5kZWQNCnJldHVybgl0cnVlCTQ2CWRlYWQNCnByb3RlY3RlZAlmYWxzZQljb3VudGVyLWVycm9yDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.4.9/lua.exe",
+        "05_versions.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuNA0KZ2xvYmFsLWRlY2xhcmF0aW9uCWZhbHNlDQpuYW1lZC12YXJhcmcJZmFsc2UNCmJpdHdpc2UtZmxvb3IJdHJ1ZQ0KY29uc3QtbG9jYWwJdHJ1ZQ0KY2xvc2UtbG9jYWwJdHJ1ZQ0KZm9yLWFzc2lnbm1lbnQJdHJ1ZQ0KZW52aXJvbm1lbnQtYXBpCW5pbAluaWwNCmludGVnZXItc3VidHlwZQlpbnRlZ2VyDQp0YWJsZS5jcmVhdGUJbmlsDQpuaWwtZXJyb3Itb2JqZWN0CWZhbHNlCW5pbA0K",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.4.9/lua.exe",
+        "03_runtime.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "bnVtYmVycwlpbnRlZ2VyCWZsb2F0CTIJMQ0KYnl0ZXMJMwkwDQp0YWJsZQlzYW1lCXNwYXJzZQlzaGFyZWQNCnVwdmFsdWUJMQkxCTIJMg0KbWV0YW1ldGhvZAkxCTEJMgkzCTQNCmVycm9yLW9iamVjdAlmYWxzZQl0cnVlDQp5aWVsZGFibGUtcGNhbGwJdHJ1ZQlpbnNpZGUtcGNhbGwJdHJ1ZQl0cnVlCXJlc3VtZWQNCmNsb3NlCW5vcm1hbDpuaWwJZXJyb3I6c2VudGluZWwNCmdjCWluY3JlbWVudGFsCWN5Y2xlLWNvbGxlY3RlZAllcGhlbWVyb24tY2xlYXJlZA0KZ2MJZ2VuZXJhdGlvbmFsCWN5Y2xlLWNvbGxlY3RlZAllcGhlbWVyb24tY2xlYXJlZA0KdGFpbGNhbGwJMTAwMDAwDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.4.9/c_api.exe"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuNC45DQpzaXplb2YgVmFsdWU9OCBUVmFsdWU9MTYgTm9kZT0yNCBUYWJsZT01NiBVcFZhbD00MCBDYWxsSW5mbz02NA0Kc2l6ZW9mIGx1YV9JbnRlZ2VyPTggbHVhX051bWJlcj04IEluc3RydWN0aW9uPTQNCk5VTV9PUENPREVTPTgzDQpob3N0LWJlZm9yZSB0b3A9MA0KaG9zdC1sb2FkZWQgdG9wPTEgdHlwZT1mdW5jdGlvbg0KYy1lbnRyeSB0b3A9MiBhcmcxPTE5IGFyZzI9MjMNCmhvc3QtcmVzdWx0IHRvcD0xIHZhbHVlPTQyDQphcnJheSBjYXBhY2l0eT0xMDI0IGFsbG9jYXRlZF9wYXlsb2FkX2Zvcm11bGE9MTYzODQgZW1wdHlfbGVuZ3RoPTANCnRhYmxlLXBsdXMtYXJyYXkgb2JzZXJ2ZWRfZ2NfYnl0ZXNfZGVsdGE9MTY0NDAgZm9ybXVsYV90b3RhbD0xNjQ0MA0Kc3BhcnNlLWtleXMgMSw0LDggYXJyYXlfY2FwYWNpdHk9MQ0KaG9zdC1wcm90ZWN0ZWQgcnVudGltZS1lcnJvcj0xIHRvcD0xIG1lc3NhZ2U9Qy1jYXVnaHQNCg==",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.3.6/lua.exe",
+        "-v"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuMy42ICBDb3B5cmlnaHQgKEMpIDE5OTQtMjAyMCBMdWEub3JnLCBQVUMtUmlvDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.3.6/lua.exe",
+        "02_counter.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "Y291bnRlcgk0Mgk0NQ0KeWllbGQJdHJ1ZQk0NQlzdXNwZW5kZWQNCnJldHVybgl0cnVlCTQ2CWRlYWQNCnByb3RlY3RlZAlmYWxzZQljb3VudGVyLWVycm9yDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.3.6/lua.exe",
+        "05_versions.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuMw0KZ2xvYmFsLWRlY2xhcmF0aW9uCWZhbHNlDQpuYW1lZC12YXJhcmcJZmFsc2UNCmJpdHdpc2UtZmxvb3IJdHJ1ZQ0KY29uc3QtbG9jYWwJZmFsc2UNCmNsb3NlLWxvY2FsCWZhbHNlDQpmb3ItYXNzaWdubWVudAl0cnVlDQplbnZpcm9ubWVudC1hcGkJbmlsCW5pbA0KaW50ZWdlci1zdWJ0eXBlCWludGVnZXINCnRhYmxlLmNyZWF0ZQluaWwNCm5pbC1lcnJvci1vYmplY3QJZmFsc2UJbmlsDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.2.4/lua.exe",
+        "-v"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuMi40ICBDb3B5cmlnaHQgKEMpIDE5OTQtMjAxNSBMdWEub3JnLCBQVUMtUmlvDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.2.4/lua.exe",
+        "02_counter.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "Y291bnRlcgk0Mgk0NQ0KeWllbGQJdHJ1ZQk0NQlzdXNwZW5kZWQNCnJldHVybgl0cnVlCTQ2CWRlYWQNCnByb3RlY3RlZAlmYWxzZQljb3VudGVyLWVycm9yDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.2.4/lua.exe",
+        "05_versions.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuMg0KZ2xvYmFsLWRlY2xhcmF0aW9uCWZhbHNlDQpuYW1lZC12YXJhcmcJZmFsc2UNCmJpdHdpc2UtZmxvb3IJZmFsc2UNCmNvbnN0LWxvY2FsCWZhbHNlDQpjbG9zZS1sb2NhbAlmYWxzZQ0KZm9yLWFzc2lnbm1lbnQJdHJ1ZQ0KZW52aXJvbm1lbnQtYXBpCW5pbAluaWwNCmludGVnZXItc3VidHlwZQlhYnNlbnQNCnRhYmxlLmNyZWF0ZQluaWwNCm5pbC1lcnJvci1vYmplY3QJZmFsc2UJbmlsDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.1.5/lua.exe",
+        "-v"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": "THVhIDUuMS41ICBDb3B5cmlnaHQgKEMpIDE5OTQtMjAxMiBMdWEub3JnLCBQVUMtUmlvDQo="
+    },
+    {
+      "argv": [
+        "../../build/research/5.1.5/lua.exe",
+        "02_counter.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "Y291bnRlcgk0Mgk0NQ0KeWllbGQJdHJ1ZQk0NQlzdXNwZW5kZWQNCnJldHVybgl0cnVlCTQ2CWRlYWQNCnByb3RlY3RlZAlmYWxzZQljb3VudGVyLWVycm9yDQo=",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.1.5/lua.exe",
+        "05_versions.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "THVhIDUuMQ0KZ2xvYmFsLWRlY2xhcmF0aW9uCWZhbHNlDQpuYW1lZC12YXJhcmcJZmFsc2UNCmJpdHdpc2UtZmxvb3IJZmFsc2UNCmNvbnN0LWxvY2FsCWZhbHNlDQpjbG9zZS1sb2NhbAlmYWxzZQ0KZm9yLWFzc2lnbm1lbnQJdHJ1ZQ0KZW52aXJvbm1lbnQtYXBpCWZ1bmN0aW9uCWZ1bmN0aW9uDQppbnRlZ2VyLXN1YnR5cGUJYWJzZW50DQp0YWJsZS5jcmVhdGUJbmlsDQpuaWwtZXJyb3Itb2JqZWN0CWZhbHNlCW5pbA0K",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.4.9/luac.exe",
+        "-o",
+        "../../build/research/5.4.9/counter.luac",
+        "02_counter.lua"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 0,
+      "stdout_base64": "",
+      "stderr_base64": ""
+    },
+    {
+      "argv": [
+        "../../build/research/5.5.1/lua.exe",
+        "../../build/research/5.4.9/counter.luac"
+      ],
+      "cwd_from_video": "research/lab",
+      "exit": 1,
+      "stdout_base64": "",
+      "stderr_base64": "Li4vLi4vYnVpbGQvcmVzZWFyY2gvNS41LjEvbHVhLmV4ZTogLi4vLi4vYnVpbGQvcmVzZWFyY2gvNS40LjkvY291bnRlci5sdWFjOiBiYWQgYmluYXJ5IGZvcm1hdCAodmVyc2lvbiBtaXNtYXRjaCkNCg=="
+    }
+  ]
+}

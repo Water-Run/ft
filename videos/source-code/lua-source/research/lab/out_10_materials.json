@@ -1,0 +1,68 @@
+{
+ "checked_on": "2026-11-15",
+ "items": [
+  {
+   "id": "logo-page",
+   "url": "https://www.lua.org/images/",
+   "file": "_src/materials/lua-images.html",
+   "bytes": 2611,
+   "sha256": "5ddeeb665d656b41aa5623f4d0fc79bce401d0954f4b88ef62affc4583de761f"
+  },
+  {
+   "id": "logo-nolabel-ps",
+   "url": "https://www.lua.org/images/lua-logo-nolabel.ps",
+   "file": "_src/materials/lua-logo-nolabel.ps",
+   "bytes": 2923,
+   "sha256": "7f3eb58572950a6f6d1bc26617baa8c6354a8e76fffe400584048109961726e1"
+  },
+  {
+   "id": "logo-gif-128",
+   "url": "https://www.lua.org/images/lua-logo.gif",
+   "file": "_src/materials/lua-logo.gif",
+   "bytes": 4232,
+   "sha256": "9c3a3208ef05e12110f9b7b491cef676e650e4ebf3d36c4414268666bcc95d8a"
+  },
+  {
+   "id": "site-css",
+   "url": "https://www.lua.org/lua.css",
+   "file": "_src/materials/lua.css",
+   "bytes": 2247,
+   "sha256": "73e7e5fa61afec5f04f5e43ad5c8348620abc41b8e4671631300b5defe3f2826"
+  },
+  {
+   "id": "manual-css",
+   "url": "https://www.lua.org/manual/manual.css",
+   "file": "_src/materials/manual.css",
+   "bytes": 292,
+   "sha256": "e31c59b690844c22af987625fd54c9c8f13d1ce9dc2f0f0250315d1df760369e"
+  },
+  {
+   "id": "about-page",
+   "url": "https://www.lua.org/about.html",
+   "file": "_src/materials/about.html",
+   "bytes": 8919,
+   "sha256": "7d7c3c9fefda3a9eac0b91706c9cf1ac036d33f4aabac6cb2e72424605fcd940"
+  },
+  {
+   "id": "home-page",
+   "url": "https://www.lua.org/home.html",
+   "file": "_src/materials/home.html",
+   "bytes": 2036,
+   "sha256": "3c3349db4ef816de230e9887f10c53e909aadbc8b8bb50d2b958a3bb7ac68428"
+  },
+  {
+   "id": "font-texgyreheros",
+   "url": "https://mirrors.ctan.org/fonts/tex-gyre/opentype/texgyreheros-regular.otf",
+   "file": "_src/materials/texgyreheros-regular.otf",
+   "bytes": 133600,
+   "sha256": "6ae1a09d5a940367b7aaaa91ee8bd8a2c333bfe193e7096e23f931357d62081f"
+  },
+  {
+   "id": "font-license",
+   "url": "https://mirrors.ctan.org/fonts/tex-gyre/doc/GUST-FONT-LICENSE.txt",
+   "file": "_src/materials/GUST-FONT-LICENSE.txt",
+   "bytes": 1456,
+   "sha256": "2bd69affc3da00715116f713f57eab9707e96daf3562ad0215987b15b9c16f73"
+  }
+ ]
+}
