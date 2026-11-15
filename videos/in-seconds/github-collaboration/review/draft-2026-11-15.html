@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>草案 · 150 秒速通 GitHub 协作 —— 文案与视觉方向（供大改）</title>
+<style>
+/* Primer light 令牌（来源见 research/MATERIALS.md，primer/primitives@47736486 / @11.10.0）*/
+:root{
+  --fg-default:#1f2328; --fg-muted:#59636e; --fg-accent:#0969da;
+  --fg-success:#1a7f37; --fg-attention:#9a6700; --fg-danger:#d1242f; --fg-done:#8250df;
+  --bg-default:#ffffff; --bg-muted:#f6f8fa; --bg-accent-muted:#ddf4ff;
+  --bg-success-muted:#dafbe1; --bg-attention-muted:#fff8c5; --bg-danger-muted:#ffebe9; --bg-done-muted:#fbefff;
+  --bg-success-emphasis:#1f883d; --bg-danger-emphasis:#cf222e; --bg-attention-emphasis:#9a6700;
+  --bg-done-emphasis:#8250df; --bg-neutral-emphasis:#59636e; --bg-accent-emphasis:#0969da;
+  --border-default:#d1d9e0; --border-muted:#d1d9e0b3;
+  --underline-active:#fd8c73;
+  --diff-add-line:#dafbe1; --diff-add-word:#aceebb; --diff-del-line:#ffebe9; --diff-del-word:#ffcecb;
+  --font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans","Microsoft YaHei",Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --radius:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-ui);font-size:14px;line-height:1.5;color:var(--fg-default);background:var(--bg-default)}
+a{color:var(--fg-accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,.mono{font-family:var(--font-mono);font-size:12px}
+svg.icon{width:16px;height:16px;fill:currentColor;vertical-align:text-bottom;flex:none}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.gh-header{background:var(--bg-default);border-bottom:1px solid var(--border-default);position:sticky;top:0;z-index:50}
+.gh-header .wrap{display:flex;align-items:center;gap:16px;height:62px}
+.gh-logo{color:var(--fg-default);display:flex;align-items:center}
+.gh-logo svg{width:32px;height:32px}
+.gh-crumb{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.gh-crumb .sep{color:var(--fg-muted);font-weight:400}
+.gh-search{flex:1;max-width:320px;margin-left:8px}
+.gh-search .box{display:flex;align-items:center;gap:8px;border:1px solid var(--border-default);border-radius:var(--radius);padding:5px 10px;color:var(--fg-muted);font-size:13px;background:var(--bg-default)}
+.gh-search .kbd{margin-left:auto;border:1px solid var(--border-default);border-radius:4px;padding:0 5px;font-size:11px;font-family:var(--font-mono)}
+.gh-nav{margin-left:auto;display:flex;align-items:center;gap:16px;font-size:13px;font-weight:600}
+.gh-nav .avatar{width:24px;height:24px;border-radius:50%;background:var(--bg-done-emphasis);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+@media(max-width:900px){.gh-search,.gh-nav .navlink{display:none}}
+.repo-nav{border-bottom:1px solid var(--border-default);background:var(--bg-default)}
+.repo-nav .wrap{display:flex;gap:4px;overflow-x:auto}
+.repo-tab{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:14px;color:var(--fg-default);border-bottom:2px solid transparent;white-space:nowrap}
+.repo-tab:hover{border-bottom-color:var(--border-default);text-decoration:none}
+.repo-tab.active{font-weight:600;border-bottom-color:var(--underline-active)}
+.repo-tab .count{background:var(--bg-muted);border:1px solid var(--border-muted);border-radius:2em;padding:0 7px;font-size:12px;color:var(--fg-muted)}
+.pr-head{padding:24px 0 0}
+.pr-title{font-size:26px;font-weight:400;line-height:1.3;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.pr-title .num{color:var(--fg-muted);font-weight:300}
+.state{display:inline-flex;align-items:center;gap:6px;border-radius:2em;padding:4px 12px;font-size:13px;font-weight:600;color:#fff}
+.state.draft{background:var(--bg-neutral-emphasis)}
+.state.open{background:var(--bg-success-emphasis)}
+.state.merged{background:var(--bg-done-emphasis)}
+.pr-meta{margin-top:10px;color:var(--fg-muted);font-size:13px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.branch{display:inline-flex;align-items:center;gap:6px;background:var(--bg-accent-muted);color:var(--fg-accent);border-radius:2em;padding:2px 10px;font-family:var(--font-mono);font-size:12px}
+.branch svg{width:14px;height:14px}
+.flash{border:1px solid;border-radius:var(--radius);padding:12px 16px;margin:16px 0;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.flash.warn{background:var(--bg-attention-muted);border-color:#d4a72c66}
+.flash.info{background:var(--bg-accent-muted);border-color:#54aeff66}
+.flash.success{background:var(--bg-success-muted);border-color:#4ac26b66}
+.flash b{font-weight:600}
+.sec-nav{position:sticky;top:62px;z-index:40;background:var(--bg-default);border-bottom:1px solid var(--border-default);margin-top:16px}
+.sec-nav .wrap{display:flex;gap:2px;overflow-x:auto}
+.sec-tab{display:flex;align-items:center;gap:7px;padding:10px 14px;font-size:14px;color:var(--fg-default);border-bottom:2px solid transparent;white-space:nowrap}
+.sec-tab:hover{text-decoration:none;border-bottom-color:var(--border-default)}
+.sec-tab.active{font-weight:600;border-bottom-color:var(--underline-active)}
+.sec-tab .count{background:var(--bg-muted);border:1px solid var(--border-muted);border-radius:2em;padding:0 7px;font-size:12px;color:var(--fg-muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:32px;padding:24px 0 48px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.sidebar{order:-1}}
+section.block{margin-bottom:40px;scroll-margin-top:130px}
+.block>h2{font-size:20px;font-weight:600;padding-bottom:8px;border-bottom:1px solid var(--border-default);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.block>h2 .anchor{color:var(--fg-muted);font-weight:400;font-size:14px}
+.comment{border:1px solid var(--border-default);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+.comment .head{background:var(--bg-muted);border-bottom:1px solid var(--border-default);padding:8px 16px;font-size:13px;color:var(--fg-muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.comment .head b{color:var(--fg-default);font-weight:600}
+.comment .body{padding:16px}
+.comment .body p{margin-bottom:10px}
+.comment .body p:last-child{margin-bottom:0}
+.comment.review-changes .head{background:var(--bg-attention-muted)}
+.badge{display:inline-flex;align-items:center;gap:4px;border-radius:2em;padding:1px 9px;font-size:12px;font-weight:600;border:1px solid transparent}
+.badge.green{background:var(--bg-success-muted);color:var(--fg-success);border-color:#4ac26b66}
+.badge.yellow{background:var(--bg-attention-muted);color:var(--fg-attention);border-color:#d4a72c66}
+.badge.gray{background:var(--bg-muted);color:var(--fg-muted);border-color:var(--border-default)}
+.badge.red{background:var(--bg-danger-muted);color:var(--fg-danger);border-color:#ff818266}
+.tasklist{list-style:none}
+.tasklist li{display:flex;gap:9px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--border-muted)}
+.tasklist li:last-child{border-bottom:none}
+.tasklist .cb{width:15px;height:15px;border:1px solid var(--border-default);border-radius:3px;background:var(--bg-default);flex:none;margin-top:3px}
+.sidebar .side-sec{border-bottom:1px solid var(--border-default);padding:14px 0}
+.sidebar .side-sec:first-child{padding-top:0}
+.sidebar h3{font-size:12px;font-weight:600;color:var(--fg-muted);margin-bottom:9px}
+.reviewer{display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0}
+.reviewer .avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex:none}
+.reviewer .st{margin-left:auto;color:var(--fg-muted);font-size:12px}
+.labels{display:flex;flex-wrap:wrap;gap:6px}
+.label{border-radius:2em;padding:2px 10px;font-size:12px;font-weight:600;border:1px solid transparent}
+.label.gray{background:var(--bg-muted);color:var(--fg-muted);border-color:var(--border-default)}
+.label.blue{background:var(--bg-accent-muted);color:var(--fg-accent)}
+.label.yellow{background:var(--bg-attention-muted);color:var(--fg-attention)}
+.label.purple{background:var(--bg-done-muted);color:var(--fg-done)}
+.kv{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;gap:10px}
+.kv .k{color:var(--fg-muted)}
+.filelist{list-style:none;font-size:13px}
+.filelist li{padding:3px 0;display:flex;gap:7px;align-items:center}
+details.factgroup{border:1px solid var(--border-default);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+details.factgroup summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg-muted);font-weight:600;font-size:14px}
+details.factgroup summary::-webkit-details-marker{display:none}
+details.factgroup summary .chev{transition:transform .15s;color:var(--fg-muted)}
+details.factgroup[open] summary .chev{transform:rotate(90deg)}
+details.factgroup summary .n{margin-left:auto;font-weight:400;color:var(--fg-muted);font-size:12px}
+.factbody{padding:6px 16px 14px}
+table.facts{width:100%;border-collapse:collapse;font-size:13px}
+table.facts th{background:var(--bg-muted);text-align:left;font-weight:600}
+table.facts th,table.facts td{border:1px solid var(--border-default);padding:7px 10px;vertical-align:top}
+table.facts td.id{white-space:nowrap;font-family:var(--font-mono);font-size:12px;color:var(--fg-muted)}
+table.facts .q{color:var(--fg-muted);font-size:12px}
+.src{font-size:12px;color:var(--fg-muted);word-break:break-all}
+.table-scroll{overflow-x:auto}
+.script-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:16px}
+.segmented{display:inline-flex;border:1px solid var(--border-default);border-radius:var(--radius);overflow:hidden}
+.segmented button{border:none;background:var(--bg-default);padding:6px 14px;font-size:13px;font-family:var(--font-ui);color:var(--fg-default);cursor:pointer}
+.segmented button+button{border-left:1px solid var(--border-default)}
+.segmented button.active{background:var(--bg-accent-muted);color:var(--fg-accent);font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-default);border-radius:var(--radius);background:var(--bg-muted);padding:5px 14px;font-size:13px;font-weight:600;font-family:var(--font-ui);color:var(--fg-default);cursor:pointer}
+.btn:hover{background:#eef1f4}
+.script-stats{margin-left:auto;font-size:12px;color:var(--fg-muted);display:flex;gap:14px;flex-wrap:wrap}
+.script-stats b{color:var(--fg-default)}
+.scene-card{border:1px solid var(--border-default);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}
+.scene-hunk{background:var(--bg-accent-muted);color:var(--fg-muted);font-family:var(--font-mono);font-size:12px;padding:6px 14px;border-bottom:1px solid var(--border-default);display:flex;gap:10px;flex-wrap:wrap}
+.scene-hunk b{color:var(--fg-accent);font-weight:600}
+.scene-body{padding:14px 16px}
+.prose p{margin-bottom:9px;font-size:15px;line-height:1.75}
+.prose p:last-child{margin-bottom:0}
+.prose .t{color:var(--fg-muted);font-family:var(--font-mono);font-size:11px;margin-right:8px}
+table.cues{width:100%;border-collapse:collapse;font-size:13px}
+table.cues th{background:var(--bg-muted);text-align:left;font-weight:600;white-space:nowrap}
+table.cues th,table.cues td{border:1px solid var(--border-default);padding:6px 10px;vertical-align:top}
+table.cues td.cid{font-family:var(--font-mono);font-size:12px;color:var(--fg-muted);white-space:nowrap}
+table.cues td.tm{font-family:var(--font-mono);font-size:12px;white-space:nowrap;color:var(--fg-muted)}
+table.cues tr.pause td{background:var(--bg-muted);color:var(--fg-muted)}
+table.cues .vis{color:var(--fg-muted);font-size:12px}
+.pending{border-left:3px solid var(--bg-attention-emphasis);background:var(--bg-attention-muted);border-radius:0 var(--radius) var(--radius) 0;padding:10px 14px;margin-bottom:10px;font-size:13px}
+.pending b{display:block;margin-bottom:2px}
+.kf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:20px}
+@media(max-width:560px){.kf-grid{grid-template-columns:1fr}}
+.kf-card{border:1px solid var(--border-default);border-radius:var(--radius);overflow:hidden;background:var(--bg-default)}
+.kf-frame{aspect-ratio:16/9;overflow:hidden;position:relative;background:var(--bg-muted);cursor:zoom-in;border-bottom:1px solid var(--border-default)}
+.kf-stage{width:1280px;height:720px;transform-origin:0 0;position:absolute;top:0;left:0;background:var(--bg-default);font-family:var(--font-ui);color:var(--fg-default);overflow:hidden;display:flex;flex-direction:column}
+.kf-cap{padding:10px 14px;font-size:13px}
+.kf-cap b{font-weight:600}
+.kf-cap .ref{color:var(--fg-muted);font-size:12px;font-family:var(--font-mono)}
+.kf-cap p{color:var(--fg-muted);font-size:12px;margin-top:3px}
+.kf-pad{padding:44px 56px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.kf-repohead{display:flex;align-items:center;gap:10px;font-size:26px}
+.kf-repohead .nm{color:var(--fg-accent);font-weight:600}
+.kf-repohead .sl{color:var(--fg-muted)}
+.kf-pill{border:1px solid var(--border-default);border-radius:2em;padding:2px 12px;font-size:15px;color:var(--fg-muted);font-weight:500}
+.kf-flash{border:1px solid #ff818266;background:var(--bg-danger-muted);border-radius:8px;padding:16px 20px;font-size:19px;margin-top:26px;display:flex;gap:12px;align-items:flex-start}
+.kf-note{color:var(--fg-muted);font-size:16px;margin-top:14px}
+.kf-cards{display:flex;align-items:center;gap:34px;margin-top:34px}
+.kf-repocard{flex:1;border:1px solid var(--border-default);border-radius:10px;padding:24px 26px;background:var(--bg-default)}
+.kf-repocard .t{display:flex;align-items:center;gap:9px;font-size:22px;color:var(--fg-accent);font-weight:600}
+.kf-repocard .sub{color:var(--fg-muted);font-size:15px;margin-top:8px}
+.kf-repocard .tags{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+.kf-tag{background:var(--bg-accent-muted);color:var(--fg-accent);border-radius:2em;padding:3px 12px;font-size:14px}
+.kf-arrow{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--fg-muted);font-size:15px;flex:none}
+.kf-arrow svg{width:40px;height:40px;fill:var(--fg-muted)}
+.kf-branchbar{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.kf-branchbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border-default);border-radius:8px;background:var(--bg-muted);padding:8px 16px;font-size:17px;font-weight:600}
+.kf-diff{border:1px solid var(--border-default);border-radius:10px;overflow:hidden}
+.kf-diff .fh{background:var(--bg-muted);border-bottom:1px solid var(--border-default);padding:10px 18px;font-family:var(--font-mono);font-size:16px;display:flex;gap:12px;align-items:center}
+.kf-diff .ln{font-family:var(--font-mono);font-size:17px;padding:7px 18px;display:flex;gap:16px;white-space:pre}
+.kf-diff .ln .no{color:var(--fg-muted);width:34px;text-align:right;flex:none}
+.kf-diff .ln.del{background:var(--diff-del-line)}
+.kf-diff .ln.add{background:var(--diff-add-line)}
+.kf-diff .ln.del .w{background:var(--diff-del-word);border-radius:3px}
+.kf-diff .ln.add .w{background:var(--diff-add-word);border-radius:3px}
+.kf-prhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.kf-prtitle{font-size:27px;font-weight:600}
+.kf-prnum{color:var(--fg-muted);font-weight:300;font-size:27px}
+.kf-tabs{display:flex;gap:26px;border-bottom:1px solid var(--border-default);margin:20px 0 0;font-size:17px}
+.kf-tabs span{padding:9px 2px;color:var(--fg-muted)}
+.kf-tabs span.on{color:var(--fg-default);font-weight:600;border-bottom:2px solid var(--underline-active)}
+.kf-review{display:flex;align-items:center;gap:12px;margin-top:24px;font-size:18px}
+.kf-review .ok{color:var(--fg-success);display:flex;align-items:center;gap:7px;font-weight:600}
+.kf-mergebox{border:1px solid var(--border-default);border-radius:10px;margin-top:22px;padding:20px 22px;display:flex;align-items:center;gap:18px}
+.kf-mergebox .txt{font-size:17px}
+.kf-mergebox .txt small{display:block;color:var(--fg-muted);font-size:14px;margin-top:3px}
+.kf-btn-green{margin-left:auto;background:var(--bg-success-emphasis);color:#fff;border-radius:8px;padding:9px 20px;font-size:17px;font-weight:600;flex:none}
+.kf-draftchip{display:inline-flex;align-items:center;gap:8px;background:var(--bg-neutral-emphasis);color:#fff;border-radius:2em;padding:4px 14px;font-size:15px;font-weight:600}
+.kf-list{border:1px solid var(--border-default);border-radius:10px;overflow:hidden;margin-top:24px}
+.kf-row{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--border-default);font-size:19px}
+.kf-row:last-child{border-bottom:none}
+.kf-row .no{color:var(--fg-muted);font-family:var(--font-mono);font-size:17px;width:52px;flex:none}
+.kf-row .st{margin-left:auto;font-size:14px;color:var(--fg-muted)}
+.kf-ic-green{fill:var(--fg-success)} .kf-ic-purple{fill:var(--fg-done)}
+.kf-cols{display:flex;gap:40px;margin-top:26px}
+.kf-cols .col{flex:1}
+.kf-h3{font-size:18px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.kf-url{font-family:var(--font-mono);font-size:15px;background:var(--bg-muted);border:1px solid var(--border-default);border-radius:8px;padding:10px 14px;margin-bottom:10px;color:var(--fg-muted)}
+.kf-url b{color:var(--fg-accent);font-weight:600}
+.kf-concl{margin-top:40px;display:flex;flex-direction:column;gap:26px}
+.kf-concl .row{display:flex;align-items:center;gap:22px;font-size:25px}
+.kf-concl .row .ic{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.kf-concl .row .ic svg{width:28px;height:28px;fill:#fff}
+.kf-concl .row b{font-weight:600}
+.kf-concl .row .why{color:var(--fg-muted);font-size:19px;margin-left:auto}
+.kf-watermark{position:absolute;right:20px;bottom:14px;font-size:13px;color:var(--fg-muted);opacity:.75;font-family:var(--font-mono)}
+.diffcard{border:1px solid var(--border-default);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
+.diffcard .fh{background:var(--bg-muted);border-bottom:1px solid var(--border-default);padding:8px 14px;font-family:var(--font-mono);font-size:12px;display:flex;gap:10px;align-items:center}
+.diffcard .ln{font-family:var(--font-mono);font-size:12px;padding:5px 14px;white-space:pre-wrap;word-break:break-all;display:flex;gap:10px}
+.diffcard .ln .sg{flex:none;width:12px}
+.diffcard .ln.del{background:var(--diff-del-line)}
+.diffcard .ln.add{background:var(--diff-add-line)}
+.diffcard .ln.ctx{color:var(--fg-muted)}
+.handoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.handoff-grid{grid-template-columns:1fr}}
+.hcard{border:1px solid var(--border-default);border-radius:var(--radius);padding:14px 16px}
+.hcard h4{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.hcard ul{list-style:none;font-size:13px}
+.hcard li{padding:4px 0 4px 18px;position:relative}
+.hcard li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--fg-muted)}
+.gh-footer{border-top:1px solid var(--border-default);padding:28px 0 40px;color:var(--fg-muted);font-size:12px}
+.gh-footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.gh-footer .links{display:flex;gap:16px;flex-wrap:wrap}
+.modal{position:fixed;inset:0;background:#1f2328cc;z-index:100;display:none;align-items:center;justify-content:center;padding:24px}
+.modal.show{display:flex}
+.modal .inner{max-width:96vw;max-height:92vh;display:flex;flex-direction:column;gap:10px}
+.modal .mframe{aspect-ratio:16/9;width:min(1200px,92vw);overflow:hidden;position:relative;border-radius:10px;background:#fff}
+.modal .mcap{color:#fff;font-size:13px;text-align:center}
+.modal .close{position:absolute;top:16px;right:20px;color:#fff;background:#1f2328;border:1px solid #59636e;border-radius:6px;padding:5px 12px;font-size:13px;cursor:pointer;z-index:101}
+.hidden{display:none!important}
+::selection{background:var(--bg-accent-muted)}
+</style>
+</head>
+<body>
+<!-- SVG 图标（Octicon 风格示意；正式制作按 MATERIALS.md 用官方素材）-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mark" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol>
+  <symbol id="i-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 16 16"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 16 16"><path d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"/></symbol>
+  <symbol id="i-pr" viewBox="0 0 16 16"><path d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z"/></symbol>
+  <symbol id="i-merge" viewBox="0 0 16 16"><path d="M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218ZM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm8.5-4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM5 3.25a.75.75 0 1 0 0 .005V3.25Z"/></symbol>
+  <symbol id="i-issue" viewBox="0 0 16 16"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 16 16"><path d="M4 4a4 4 0 0 1 8 0v2h.25c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 12.25 15h-8.5A1.75 1.75 0 0 1 2 13.25v-5.5C2 6.784 2.784 6 3.75 6H4Zm8.25 3.5h-8.5a.25.25 0 0 0-.25.25v5.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25ZM10.5 6V4a2.5 2.5 0 1 0-5 0v2Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"/></symbol>
+  <symbol id="i-comment" viewBox="0 0 16 16"><path d="M1 2.75C1 1.784 1.784 1 2.75 1h10.5c.966 0 1.75.784 1.75 1.75v7.5A1.75 1.75 0 0 1 13.25 12H9.06l-2.573 2.573A1.458 1.458 0 0 1 4 13.543V12H2.75A1.75 1.75 0 0 1 1 10.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h4.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 16 16"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 16 16"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 16 16"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 16 16"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></symbol>
+  <symbol id="i-code" viewBox="0 0 16 16"><path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm4.879-2.773 4.264 2.559a.25.25 0 0 1 0 .428l-4.264 2.559A.25.25 0 0 1 6 10.559V5.442a.25.25 0 0 1 .379-.215Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 16 16"><path d="M7.467.133a1.748 1.748 0 0 1 1.066 0l5.25 1.68A1.75 1.75 0 0 1 15 3.48V7c0 1.566-.32 3.182-1.303 4.682-.983 1.498-2.585 2.813-5.032 3.855a1.697 1.697 0 0 1-1.33 0c-2.447-1.042-4.049-2.357-5.032-3.855C1.32 10.182 1 8.566 1 7V3.48a1.75 1.75 0 0 1 1.217-1.667Zm.61 1.429a.25.25 0 0 0-.153 0l-5.25 1.68a.25.25 0 0 0-.174.238V7c0 1.358.275 2.666 1.057 3.86.784 1.194 2.121 2.34 4.366 3.297a.196.196 0 0 0 .154 0c2.245-.956 3.582-2.104 4.366-3.298C13.225 9.666 13.5 8.36 13.5 7V3.48a.251.251 0 0 0-.174-.237Z"/></symbol>
+  <symbol id="i-graph" viewBox="0 0 16 16"><path d="M1.5 1.75V13.5h13.75a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-5.25 5.25a.75.75 0 0 1-1.06 0L7 7.06 4.28 9.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0L10 7.94l4.72-4.72a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 16 16"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 16 16"><path d="M8.22 2.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l2.97-2.97H1.75a.75.75 0 0 1 0-1.5h9.44L8.22 4.03a.75.75 0 0 1 0-1.06Z"/></symbol>
+</svg>
+
+<header class="gh-header">
+  <div class="wrap">
+    <span class="gh-logo"><svg class="icon"><use href="#i-mark"/></svg></span>
+    <span class="gh-crumb">Water-Run<span class="sep">/</span>ft<span class="badge gray" style="font-weight:500">Public</span></span>
+    <div class="gh-search"><div class="box"><svg class="icon" style="width:14px;height:14px"><use href="#i-search"/></svg>输入 <span class="mono">/</span> 搜索<span class="kbd">/</span></div></div>
+    <nav class="gh-nav"><span class="navlink">Pull requests</span><span class="navlink">Issues</span><span class="avatar">W</span></nav>
+  </div>
+</header>
+
+<nav class="repo-nav">
+  <div class="wrap">
+    <a class="repo-tab" href="#overview-sec"><svg class="icon"><use href="#i-code"/></svg>Code</a>
+    <a class="repo-tab" href="#facts"><svg class="icon"><use href="#i-issue"/></svg>Issues<span class="count">0</span></a>
+    <a class="repo-tab active" href="#overview-sec"><svg class="icon"><use href="#i-pr"/></svg>Pull requests<span class="count">1</span></a>
+    <a class="repo-tab" href="#keyframes"><svg class="icon"><use href="#i-play"/></svg>Actions</a>
+    <a class="repo-tab" href="#handoff"><svg class="icon"><use href="#i-book"/></svg>Wiki</a>
+    <a class="repo-tab" href="#facts"><svg class="icon"><use href="#i-shield"/></svg>Security</a>
+    <a class="repo-tab" href="#catalog"><svg class="icon"><use href="#i-graph"/></svg>Insights</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="pr-head" id="overview">
+    <h1 class="pr-title">草案：150 秒速通 GitHub 协作 —— 文案与视觉方向<span class="num">#1</span><span class="state draft"><svg class="icon" style="width:14px;height:14px"><use href="#i-pr"/></svg>Draft</span></h1>
+    <div class="pr-meta">
+      <span><b style="color:var(--fg-default)">WaterRun</b> 策划 · <b style="color:var(--fg-default)">Qwen 4 Max Preview</b> 准备（事实与文案草稿）· 2026-11-15</span>
+      <span class="branch"><svg class="icon"><use href="#i-branch"/></svg>draft/github-collaboration</span>
+      <svg class="icon" style="color:var(--fg-muted)"><use href="#i-arrow-right"/></svg>
+      <span class="branch"><svg class="icon"><use href="#i-branch"/></svg>main</span>
+      <span>· 供 <b style="color:var(--fg-default)">Opus</b> 大改</span>
+    </div>
+    <div class="flash warn">
+      <svg class="icon" style="color:var(--fg-attention);margin-top:2px"><use href="#i-alert"/></svg>
+      <div><b>这是草案，不是正式审片页。</b>文案未经校对确认、未配音、未选配乐；关键帧是静态示意，不是成片画面。事实以本片 <code>research/FACTS.md</code> 为准；本页任何表述与事实表冲突时，以事实表为准。正式审片页（含配音候选与配乐小样）在制作阶段按 <code>docs/process.md</code> 另出。</div>
+    </div>
+  </div>
+</div>
+
+<nav class="sec-nav" id="secnav">
+  <div class="wrap">
+    <a class="sec-tab active" href="#overview-sec" data-sec="overview-sec"><svg class="icon"><use href="#i-comment"/></svg>概览</a>
+    <a class="sec-tab" href="#facts" data-sec="facts"><svg class="icon"><use href="#i-check"/></svg>事实准备<span class="count">9 组</span></a>
+    <a class="sec-tab" href="#script" data-sec="script"><svg class="icon"><use href="#i-file"/></svg>文案草案<span class="count" id="cuecount">24 句</span></a>
+    <a class="sec-tab" href="#keyframes" data-sec="keyframes"><svg class="icon"><use href="#i-play"/></svg>关键帧<span class="count">6</span></a>
+    <a class="sec-tab" href="#catalog" data-sec="catalog"><svg class="icon"><use href="#i-fork"/></svg>片单变更<span class="count">3</span></a>
+    <a class="sec-tab" href="#handoff" data-sec="handoff"><svg class="icon"><use href="#i-branch"/></svg>交接说明</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="layout">
+    <main>
+      <section class="block" id="overview-sec">
+        <div class="comment">
+          <div class="head"><b>Qwen 4 Max Preview</b> commented 2026-11-15 · 准备方草稿 <span class="badge gray">草案</span></div>
+          <div class="body">
+            <p><b>核心问题：</b>我没有权限改别人的项目，为什么还能给它提改动？</p>
+            <p><b>一句话答案：</b>没有写权限，就 Fork 出自己的副本；开分支把这次改动和主线隔开；再用 PR 请原仓库的维护者审了决定要不要并入。</p>
+            <p><b>贯穿例子：</b>给 GitHub 官方练习仓库 <code>octocat/Spoon-Knife</code> 的 README 改一个错别字（<code>eatting → eating</code>），从「推不上去」走到「合并进主线」。错别字是虚构演示，不是该仓库真实内容（见待定问题③）。</p>
+            <p style="margin-top:14px"><b>本草稿包含</b></p>
+            <ul class="tasklist">
+              <li><span class="cb"></span>事实准备：9 组事实、逐条出处与核查状态（官方文档原文 ＋ 公开仓库只读实测），见「事实准备」与 <code>research/FACTS.md</code></li>
+              <li><span class="cb"></span>文案草案：150 秒定长时间线、24 句旁白，连贯阅读与逐句表两种视图</li>
+              <li><span class="cb"></span>视觉方向：策划者指定「非常 GitHub 的设计风格」；6 张关键帧示意，色值/字体全部取自 Primer 官方令牌</li>
+              <li><span class="cb"></span>片单变更：今日三项维护的 diff 记录</li>
+            </ul>
+            <p style="margin-top:14px"><b>本草稿不包含</b>（后续阶段）</p>
+            <ul class="tasklist">
+              <li><span class="cb"></span>配音候选（5 个）与配乐小样（3 个）——正式审片页阶段，文案确认前不配音</li>
+              <li><span class="cb"></span>一次性测试账号上的全流程动手实验（Fork→分支→PR→合并）——制作方执行，见 FACTS「待做」</li>
+              <li><span class="cb"></span>场景实现、秒尺/剩余秒数/仪表等常驻元素——制作方按系列起点搭建</li>
+            </ul>
+            <p style="margin-top:14px"><b>大改时请检查</b></p>
+            <ul class="tasklist">
+              <li><span class="cb"></span>每句旁白是否回答片名的问题；新名词是否只有 Fork、分支、PR、Issue 四个</li>
+              <li><span class="cb"></span>编号段现占约 22 秒，简报建议约 15 秒——删还是留，见「待定问题」</li>
+              <li><span class="cb"></span>所有事实陈述能否在 <code>research/FACTS.md</code> 找到对应条目；改含义的文案须重新校对</li>
+              <li><span class="cb"></span>定长 150 秒：靠删内容腾时间，不压留白（系列约定 F04）</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section class="block" id="facts">
+        <h2><svg class="icon"><use href="#i-check"/></svg>事实准备 <span class="anchor">· 全文见 research/FACTS.md</span></h2>
+        <div class="flash success">
+          <svg class="icon" style="color:var(--fg-success);margin-top:2px"><use href="#i-check"/></svg>
+          <div>取证日期 2026-11-15。来源：GitHub 官方文档原文（docs.github.com，当日读取）＋ 公开仓库 <code>nodejs/node</code> 及其 fork 的<b>只读</b>实测（<code>research/lab/01_numbering.sh</code>）。未创建任何内容、未使用真实项目与内部仓库。Primer 令牌取自 <code>primer/primitives@47736486</code>（<code>lab/02_primer_tokens.sh</code>）。</div>
+        </div>
+        <div class="comment" style="margin-bottom:16px">
+          <div class="head"><b>编号实测</b> · nodejs/node · 2026-11-15 <span class="badge green">已核</span></div>
+          <div class="body">
+            <p style="margin-bottom:12px">同一仓库里 Issue 与 PR <b>共用一套递增编号</b>；<code>/issues/N</code> 与 <code>/pull/N</code> 互相跳转；删除的空号不回收（67390/67387/67381 → 404）；转移的号永久指向新位置（67464 → nodejs/help#5185）；PR 编号属于目标仓库；fork 另有独立编号（LiviaMedeiros/node 的 PR #1–#4，上游已 6.7 万号段）。</p>
+            <div class="kf-list" style="margin-top:0">
+              <div class="kf-row"><svg class="icon kf-ic-green" style="width:18px;height:18px"><use href="#i-pr"/></svg><span class="no">#67474</span>[v26.x] deps: update temporal_rs to 0.2.4<span class="st">PR · head: Renegade334/node（fork）</span></div>
+              <div class="kf-row"><svg class="icon kf-ic-green" style="width:18px;height:18px"><use href="#i-issue"/></svg><span class="no">#67469</span>عمان<span class="st">Issue</span></div>
+              <div class="kf-row"><svg class="icon kf-ic-green" style="width:18px;height:18px"><use href="#i-pr"/></svg><span class="no">#67468</span>src: warn when heap would exceed pointer compression limit<span class="st">PR</span></div>
+              <div class="kf-row" style="color:var(--fg-muted)"><svg class="icon" style="width:18px;height:18px;fill:var(--fg-muted)"><use href="#i-x"/></svg><span class="no">#67464</span>（空号：已转移到 nodejs/help#5185，旧号永久跳转）<span class="st">不回收</span></div>
+            </div>
+            <p class="src" style="margin-top:10px">回显：research/lab/out_01_numbering.txt §2–§8 · REST 文档原句：“GitHub's REST API considers every pull request an issue, but not every issue is a pull request.”</p>
+          </div>
+        </div>
+        <details class="factgroup" open>
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F1 · Fork：没有写权限时的自己的副本<span class="n">7 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F1.1</td><td>Fork 是从上游仓库复制出来的仓库，有自己的设置与权限，仍与上游连接</td><td class="q">“Forks are repositories that start as copies of another repository, called the upstream repository.” <span class="src">docs.github.com/en/pull-requests/reference/forks</span></td></tr>
+            <tr><td class="id">F1.2</td><td>Fork 是独立仓库，不是分支；可有自己的分支、Issue 与 PR 等</td><td class="q">“A branch is part of one repository. A fork is a separate repository with its own settings and collaboration space.”</td></tr>
+            <tr><td class="id">F1.3</td><td>往自己 Fork 推代码不需要上游许可</td><td class="q">“You do not need permission from the upstream repository to push to a fork you created.” <span class="src">…/reference/pull-requests</span></td></tr>
+            <tr><td class="id">F1.4</td><td>有读权限即可 Fork（所有者允许时）</td><td class="q">“anyone can fork an existing ("upstream") repository if they have read access…”</td></tr>
+            <tr><td class="id">F1.5</td><td>Fork 让人在不影响上游的前提下提议改动</td><td class="q">“Forking a repository lets you propose changes to a project without affecting the upstream repository.” <span class="src">…/how-tos/work-with-forks/fork-a-repo</span></td></tr>
+            <tr><td class="id">F1.6</td><td>没有写权限时推不上去（Desktop 会自动建 Fork）</td><td class="q">“if you clone a repository that you do not have write access to, and then attempt to push … a fork will be created for you.” <span class="badge yellow">网页端回显待实测</span></td></tr>
+            <tr><td class="id">F1.7</td><td>边界：网络内共享 Git 数据，「独立」指设置/权限/协作空间，不是对象级完全隔离</td><td class="q">“Repositories in the network share Git data…” <span class="badge red">文案不得说「完全隔离」</span></td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F2 · 分支：与主线隔开的工作线<span class="n">4 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F2.1</td><td>开分支＝开辟不影响默认分支的工作空间</td><td class="q">“By creating a branch, you create a space to work without affecting the default branch.” <span class="src">docs.github.com/en/get-started/using-github/github-flow</span></td></tr>
+            <tr><td class="id">F2.2</td><td>合并前改动不进默认分支；改错可撤回</td><td class="q">“Your changes will not end up on the default branch until you merge your branch.”</td></tr>
+            <tr><td class="id">F2.3</td><td>有写权限的团队可不 Fork，直接在原仓库开主题分支</td><td class="q">“collaborators have push access to a single shared repository and create topic branches…”</td></tr>
+            <tr><td class="id">F2.4</td><td>分支名短而达意（画面标签用）</td><td class="q">“For example, increase-test-timeout or add-code-of-conduct.”</td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F3 · PR：请求合并的申请页<span class="n">7 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F3.1</td><td>PR 是把改动并入项目的提议，合并前讨论与审查</td><td class="q">“Pull requests are proposals to merge code changes into a project.”</td></tr>
+            <tr><td class="id">F3.2</td><td>顺序：分支上提交并推送 → 创建 PR 请求反馈</td><td class="q">“Commit and push your changes to your branch.” → “Create a pull request to ask collaborators for feedback on your changes.”</td></tr>
+            <tr><td class="id">F3.3</td><td>PR 页有自动检查与合并状态（阻塞项、缺少批准）</td><td class="q">“The Checks tab shows automated tests, builds, and other validations.”</td></tr>
+            <tr><td class="id">F3.4</td><td>审查后继续提交，PR 自动更新</td><td class="q">“Your pull request will update automatically.”</td></tr>
+            <tr><td class="id">F3.5</td><td>批准后合并，改动出现在默认分支</td><td class="q">“Once your pull request is approved, merge your pull request.”</td></tr>
+            <tr><td class="id">F3.6</td><td>合并需要写权限：提议者不一定能自己合并</td><td class="q">“To merge pull requests, you must have write permissions in the repository.” <span class="src">…/reference/pull-request-merges</span></td></tr>
+            <tr><td class="id">F3.7</td><td>合并后删分支；PR 与提交历史不删，可恢复/回退</td><td class="q">“Your pull request and commit history will not be deleted.” <span class="badge gray">本集不展开</span></td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F4 · 草稿 PR<span class="n">2 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F4.1</td><td>草稿 PR 不能合并，不自动请求 code owner 审查</td><td class="q">“Draft pull requests cannot be merged, and code owners are not automatically requested to review them.”</td></tr>
+            <tr><td class="id">F4.2</td><td>准备好后标记 ready for review；可随时转回草稿</td><td class="q">“you can mark your draft pull request as ready for review … at any time.”</td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F5 · Issue：说清「要解决什么」<span class="n">1 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F5.1</td><td>Issue 建在仓库里，计划、讨论、跟踪工作（bug、想法等）</td><td class="q">“You can create issues in your repository to plan, discuss, and track work.” <span class="src">…/learning-about-issues/about-issues</span></td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F6 · 编号：属于仓库，共用且不回收<span class="n">7 条 · 文档＋实测</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据</th></tr>
+            <tr><td class="id">F6.1</td><td>每个 PR 都是 Issue，反之不然；Issues 接口返回两者</td><td class="q">REST 文档 Note 原句（见上方实测卡）<span class="src">docs.github.com/en/rest/issues/issues</span></td></tr>
+            <tr><td class="id">F6.2</td><td>共用一套递增编号（Issue 与 PR 交错）</td><td class="q">实测 out_01 §2：67479 PR / 67469 Issue / 67468 PR…</td></tr>
+            <tr><td class="id">F6.3</td><td>/issues/N 与 /pull/N 互相 302 跳转</td><td class="q">实测 out_01 §8：issues/67474→pull/67474；pull/67469→issues/67469</td></tr>
+            <tr><td class="id">F6.4</td><td>删除的空号不回收，新内容向大号增长</td><td class="q">实测 out_01 §2b/§6：67390/67387/67381 → 404 <span class="badge yellow">实测 404 与文档 410 不一致，成片不展示状态码</span></td></tr>
+            <tr><td class="id">F6.5</td><td>转移的号永久指向新位置</td><td class="q">实测 out_01 §5：67464 → nodejs/help#5185；文档：“returns a 301 Moved Permanently … if … transferred”</td></tr>
+            <tr><td class="id">F6.6</td><td>PR 编号属于目标仓库（base），不属于 head</td><td class="q">实测 out_01 §3：#67472–67474 base=nodejs/node，head=三个 fork</td></tr>
+            <tr><td class="id">F6.7</td><td>Fork 有独立编号序列</td><td class="q">实测 out_01 §7：fork 内 PR #1–#4；文档：“Each fork can have its own … Issues and pull requests”</td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F7 · 关联关键词：Closes 与 Refs<span class="n">4 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F7.1</td><td>关闭关键词共 9 个：close/closes/closed/fix/fixes/fixed/resolve/resolves/resolved</td><td class="q">穷举列表＋示例 “Closes #10” <span class="src">…/using-issues/linking-a-pull-request-to-an-issue</span></td></tr>
+            <tr><td class="id">F7.2</td><td>仅合并进默认分支时自动关闭；目标非默认分支则关键词被忽略</td><td class="q">“When you merge a linked pull request into the default branch … its linked issue is automatically closed.”</td></tr>
+            <tr><td class="id">F7.3</td><td>Refs 不是关键词，只是写法约定；引用效果来自 #N 本身</td><td class="q">F7.1 列表不含 Refs；“references to issues and pull requests are automatically converted to shortened links”（#26 即成链接）</td></tr>
+            <tr><td class="id">F7.4</td><td>可手动关联（最多 10 个）；关键词关联须改描述解除</td><td class="q">“You can manually link up to ten issues to each pull request.” <span class="badge gray">本集不展开</span></td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F8 · 合并方式与分支保护（边界用）<span class="n">2 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F8.1</td><td>三种合并：merge commit / squash / rebase；本集只说「合并」</td><td class="q">“all commits … added … in a merge commit” / “squashed into a single commit” / “added onto the base branch individually”</td></tr>
+            <tr><td class="id">F8.2</td><td>受保护分支可要求批准评审数与必需检查通过</td><td class="q">“require that all pull requests receive a specific number of approving reviews…” / “all required status checks must pass…”</td></tr>
+          </table></div>
+        </details>
+        <details class="factgroup">
+          <summary><svg class="icon chev"><use href="#i-chev"/></svg>F9 · 画面标签：origin 与 upstream<span class="n">1 条 · 官方文档</span></summary>
+          <div class="factbody table-scroll"><table class="facts">
+            <tr><th style="width:52px">#</th><th>陈述</th><th style="width:46%">依据（原文摘录）</th></tr>
+            <tr><td class="id">F9.1</td><td>自己 Fork 的远端名 origin，上游远端名 upstream（只作画面标签）</td><td class="q">“You should see the URL for your fork as origin and the URL for the upstream repository as upstream.”</td></tr>
+          </table></div>
+        </details>
+        <p class="src" style="margin-top:12px">待做：一次性测试账号全流程写实验（Fork→分支→PR→评审→合并）；网页端无写权限推送被拒回显。详见 FACTS.md「待核实 / 待做」。未进入成片的事实（fork 默认关 Issue、网络共享 Git 数据的安全含义等）另列于 FACTS.md。</p>
+      </section>
+      <section class="block" id="script">
+        <h2><svg class="icon"><use href="#i-file"/></svg>文案草案 <span class="anchor">· 150 秒定长 · 估时未配音</span></h2>
+        <div class="script-toolbar">
+          <div class="segmented" role="tablist">
+            <button id="view-prose" class="active" type="button">连贯阅读</button>
+            <button id="view-table" type="button">逐句表</button>
+          </div>
+          <button class="btn" id="copy-script" type="button"><svg class="icon" style="width:14px;height:14px"><use href="#i-copy"/></svg>复制全文</button>
+          <div class="script-stats" id="script-stats"></div>
+        </div>
+        <div id="script-prose"></div>
+        <div id="script-table" class="hidden"></div>
+        <h3 style="font-size:15px;font-weight:600;margin:22px 0 12px">待定问题（大改时决定）</h3>
+        <div class="pending"><b>① 编号段时长：约 22 秒 vs 简报建议约 15 秒</b>编号共用与不回收是本集的「原来如此」，但 150 秒下偏紧。可删 c3（编号属于仓库）并入画面，或删 c5（Refs）留给画面标签。删内容腾时间，不压留白（F04）。</div>
+        <div class="pending"><b>② 开场「推不上去」的回显</b>目前只有官方文档描述（F1.6），真实 403 回显待一次性账号实验取。关键帧 KF1 的报错文字是示意，不是实测回显——成片若用真实回显，替换并补取证。</div>
+        <div class="pending"><b>③ 例子仓库 Spoon-Knife</b>它是 GitHub 官方 Fork 练习仓库（官方文档用它演示），README 内容简单；「错别字 eatting→eating」是虚构演示改动，不是该仓库真实内容。是否改用完全虚构的仓库名，避免观众误以为真有其事，大改时定。</div>
+        <div class="pending"><b>④ Refs 的措辞</b>现稿「Refs 只是引用约定，不会关闭」依据 F7.3（官方关键词穷举列表不含 Refs）。若认为负证据不够硬，可改为只讲 Closes，Refs 留画面。</div>
+      </section>
+
+      <section class="block" id="keyframes">
+        <h2><svg class="icon"><use href="#i-play"/></svg>关键帧 <span class="anchor">· GitHub 风格示意 · 点击放大</span></h2>
+        <div class="flash info">
+          <svg class="icon" style="color:var(--fg-accent);margin-top:2px"><use href="#i-alert"/></svg>
+          <div>策划者 2026-11-15 指定「非常 GitHub 的设计风格」。下列关键帧用 Primer 官方令牌（色值、字体栈见 <code>research/MATERIALS.md</code>）临摹 GitHub 界面，<b>只是方向示意</b>：正式视觉系统、常驻元素（秒尺/剩余秒数/仪表）与动效由制作方按系列约定建立。图标为 Octicon 风格手绘示意，正式制作用官方素材。</div>
+        </div>
+        <div class="kf-grid" id="kf-grid"></div>
+      </section>
+
+      <section class="block" id="catalog">
+        <h2><svg class="icon"><use href="#i-fork"/></svg>片单变更 <span class="anchor">· 2026-11-15 策划者指示 · 已提交 0a16d50（未推送）</span></h2>
+        <div class="diffcard">
+          <div class="fh"><svg class="icon" style="width:14px;height:14px"><use href="#i-file"/></svg>videos/catalog.json<span class="badge gray" style="margin-left:auto">维护提交</span></div>
+          <div class="ln del"><span class="sg">-</span>{"slug": "frameworks", "series": "in-seconds", "title": {"zh": "96 秒讲清框架：它们替你做了哪些事"}}</div>
+          <div class="ln add"><span class="sg">+</span>{"slug": "frameworks", "title": {"zh": "主流大模型框架简述"}, "note": "2026-11-15 策划者改为独立片…"}　← 移入独立片</div>
+          <div class="ln del"><span class="sg">-</span>{"slug": "context-compaction", "series": "in-seconds", "title": {"zh": "120 秒速通 Harness 是如何压缩上下文的", …}}</div>
+          <div class="ln del"><span class="sg">-</span>{"slug": "scion", "series": "in-seconds", "title": {"zh": "150 秒了解 Scion 是什么？Anthropic 为什么用它来代替 Git", …}}</div>
+          <div class="ln ctx"><span class="sg"></span>scion 目录（仅含 README）一并移除，原文保留在 git 历史；索引、Credit 盘点、速通分集表已重新生成</div>
+        </div>
+        <p class="src">验证：npm test 42 项通过；repo-check 在 HEAD＋本次改动的干净检出上通过。主工作区另有 lua-source 会话未入库的 project.json，其片单状态同步归该会话，本次未代为改动。</p>
+      </section>
+      <section class="block" id="handoff">
+        <h2><svg class="icon"><use href="#i-branch"/></svg>交接说明 <span class="anchor">· 给 Opus</span></h2>
+        <div class="comment review-changes">
+          <div class="head"><b>Qwen 4 Max Preview</b> requested changes · 2026-11-15 <span class="badge yellow">待大改</span></div>
+          <div class="body">
+            <p>这份草稿把「事实」和「讲法」先立住，视觉只给方向。<b>请大改文案与叙事</b>：现在 24 句是准备方按系列结构写的初稿，节奏、钩子、措辞都应按独立审片标准重写；事实边界以下列文件为准，不要凭记忆补充。</p>
+          </div>
+        </div>
+        <div class="handoff-grid">
+          <div class="hcard">
+            <h4><svg class="icon" style="color:var(--fg-success)"><use href="#i-check"/></svg>已完成</h4>
+            <ul>
+              <li>片单维护（三项，已提交 <code>0a16d50</code>，未推送）</li>
+              <li><code>research/FACTS.md</code>：9 组事实逐条出处＋核查状态</li>
+              <li><code>research/MATERIALS.md</code>：Primer 令牌、字体、标志规范</li>
+              <li><code>research/lab/01_numbering.sh</code>＋回显：编号只读实测</li>
+              <li><code>research/lab/02_primer_tokens.sh</code>＋回显：令牌取证</li>
+              <li>文案草案（本页，24 句估时时间线）与 6 张关键帧示意</li>
+            </ul>
+          </div>
+          <div class="hcard">
+            <h4><svg class="icon" style="color:var(--fg-attention)"><use href="#i-alert"/></svg>未完成 / 依赖</h4>
+            <ul>
+              <li>全流程写实验：需一次性测试账号（不用真实项目/账号）</li>
+              <li>开场 403 回显：随写实验取</li>
+              <li><code>new.js github-collaboration</code> 建制作骨架（制作方开工时）</li>
+              <li>配音候选 5 个、配乐小样 3 个：正式审片页阶段</li>
+              <li>文案确认（第一道闸门）前不配音、不铺开场景</li>
+            </ul>
+          </div>
+          <div class="hcard">
+            <h4><svg class="icon"><use href="#i-lock"/></svg>硬约束</h4>
+            <ul>
+              <li>定长 150 秒；<code>check.duration</code> [149.9, 150.1]</li>
+              <li>只做中文；新名词 ≤ 4（Fork/分支/PR/Issue）</li>
+              <li>事实只来自本片 FACTS.md；改含义须重新校对</li>
+              <li>结构：现象→片名卡→是什么→怎么工作→边界→结论→片尾约 7.5s 无旁白</li>
+              <li>常驻元素：秒尺、剩余秒数、右上仪表（系列约定）</li>
+              <li>视觉：策划者指定 GitHub 风格；令牌用 MATERIALS.md 的官方值</li>
+              <li>标志按 brand.github.com 规范原样使用，不暗示认可</li>
+            </ul>
+          </div>
+          <div class="hcard">
+            <h4><svg class="icon"><use href="#i-file"/></svg>文件地图</h4>
+            <ul>
+              <li><code>README.md</code> — 简报、策划者原话、取舍表、分工</li>
+              <li><code>research/FACTS.md</code> — 事实唯一来源</li>
+              <li><code>research/MATERIALS.md</code> — 视觉材料唯一来源</li>
+              <li><code>research/lab/</code> — 实验脚本与回显</li>
+              <li><code>review/draft-2026-11-15.html</code> — 本页（草案）</li>
+              <li><code>videos/in-seconds/README.md</code> — 系列共同约定</li>
+              <li><code>kit/starters/in-seconds/</code> — 系列起点骨架</li>
+            </ul>
+          </div>
+        </div>
+        <div class="comment" style="margin-top:16px">
+          <div class="head"><b>自对抗审查记录</b>（交出前，process.md 第 2 节）</div>
+          <div class="body" style="font-size:13px">
+            <p><b>已查：</b>文案逐句对照 FACTS（无出处句已标待定）；时间线由页内脚本从同一份数据计算，总长恰为 150.0s（含片尾 7.5s 无旁白）；新名词计数 4；色值/字体逐项对 primer/primitives 源文件核实；回显脱敏（去 Cookie、无个人路径/内网信息）；片单变更与 git 提交一致；本页经无头 Chrome 实测：渲染无控制台错误、连贯/逐句切换、关键帧放大与 Esc 关闭、复制全文、1440 与 480 两种视口无横向溢出、深滚动吸顶正常。</p>
+            <p><b>未查（如实说明）：</b>未合成任何语音，估时按每秒约 5 字推算，不是实测；未做配乐；关键帧是静态 HTML 示意，未渲染成视频帧；图标为手绘近似，个别路径可能与官方 Octicon 有细微差异；本页未在无 JS 环境测试。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="sidebar">
+      <div class="side-sec">
+        <h3>Reviewers</h3>
+        <div class="reviewer"><span class="avatar" style="background:var(--bg-done-emphasis)">O</span>Opus 5.5<span class="st">待大改</span></div>
+        <div class="reviewer"><span class="avatar" style="background:var(--bg-accent-emphasis)">W</span>WaterRun<span class="st">策划审查</span></div>
+      </div>
+      <div class="side-sec">
+        <h3>Labels</h3>
+        <div class="labels">
+          <span class="label gray">草案 draft</span>
+          <span class="label blue">XX 秒速通</span>
+          <span class="label yellow">待大改</span>
+          <span class="label purple">GitHub 风格</span>
+        </div>
+      </div>
+      <div class="side-sec">
+        <h3>详情</h3>
+        <div class="kv"><span class="k">系列</span><span>XX 秒速通 #27</span></div>
+        <div class="kv"><span class="k">时长</span><span>150 秒（定长）</span></div>
+        <div class="kv"><span class="k">语言</span><span>中文</span></div>
+        <div class="kv"><span class="k">新名词</span><span>Fork · 分支 · PR · Issue</span></div>
+        <div class="kv"><span class="k">阶段</span><span>取证＋文案草稿</span></div>
+        <div class="kv"><span class="k">片单状态</span><span>计划中</span></div>
+      </div>
+      <div class="side-sec">
+        <h3>本片文件</h3>
+        <ul class="filelist">
+          <li><svg class="icon" style="width:14px;height:14px;color:var(--fg-muted)"><use href="#i-file"/></svg><a href="../README.md">README.md</a></li>
+          <li><svg class="icon" style="width:14px;height:14px;color:var(--fg-muted)"><use href="#i-file"/></svg><a href="../research/FACTS.md">research/FACTS.md</a></li>
+          <li><svg class="icon" style="width:14px;height:14px;color:var(--fg-muted)"><use href="#i-file"/></svg><a href="../research/MATERIALS.md">research/MATERIALS.md</a></li>
+          <li><svg class="icon" style="width:14px;height:14px;color:var(--fg-muted)"><use href="#i-file"/></svg><a href="../research/lab/out_01_numbering.txt">lab/out_01_numbering.txt</a></li>
+          <li><svg class="icon" style="width:14px;height:14px;color:var(--fg-muted)"><use href="#i-file"/></svg><a href="../research/lab/out_02_primer_tokens.txt">lab/out_02_primer_tokens.txt</a></li>
+        </ul>
+      </div>
+      <div class="side-sec" style="border-bottom:none">
+        <h3>Development</h3>
+        <p style="font-size:13px;color:var(--fg-muted)">关联 Issue：无（策划者直接立项）<br>相邻选题：《150 秒速通 Git》讲本机版本管理，本集讲平台协作。</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<footer class="gh-footer">
+  <div class="wrap">
+    <div>
+      <b style="color:var(--fg-default)">草案 · 预览专用</b> — 不构成文案确认、配音授权或验收结论。<br>
+      策划 WaterRun · 准备 Qwen 4 Max Preview · 2026-11-15 · 事实来源：GitHub 官方文档（当日读取）与公开仓库只读实测 · 视觉令牌：primer/primitives@47736486（MIT）
+    </div>
+    <div class="links">
+      <a href="../README.md">本片 README</a>
+      <a href="../research/FACTS.md">FACTS</a>
+      <a href="../research/MATERIALS.md">MATERIALS</a>
+      <a href="https://github.com/Water-Run/ft">Water-Run/ft</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="kf-modal">
+  <button class="close" id="kf-close" type="button">✕ 关闭（Esc）</button>
+  <div class="inner">
+    <div class="mframe" id="kf-mframe"></div>
+    <div class="mcap" id="kf-mcap"></div>
+  </div>
+</div>
+
+<script>
+/* 文案草案数据（唯一来源：两种视图都由它渲染）。
+   est 为估时秒数（约 5 字/秒，含标点），未配音；gap 为句后停顿；tail 为场末留白。
+   正式时间线以 TTS 实测为准（src/js/script.js，制作方建立）。 */
+const SCRIPT = [
+  { id:'open', title:'开场 · 现象', lead:0.8, cues:[
+    { id:'o1', text:'想给别人的项目改一个错别字。', est:3.0, gap:0.4, vis:'光标停在 README 的错别字上（示意）' },
+    { id:'o2', text:'点推送，被拒了——你没有这个仓库的写权限。', est:4.5, gap:0.5, vis:'推送被拒：红色提示「没有写权限」（回显待实测）' },
+    { id:'oT', pause:5.0, vis:'片名卡：150 秒速通 GitHub 协作' },
+  ]},
+  { id:'what', title:'它是什么', lead:0.8, tail:0.8, cues:[
+    { id:'a1', text:'GitHub 是托管代码的平台。没有权限，怎么给别人的项目提改动？', est:6.4, gap:0.5, vis:'GitHub 仓库页全景（示意）' },
+    { id:'a2', text:'答案是三步：Fork 一份副本，开分支隔开，再用 PR 请求审查。', est:6.0, gap:0.5, vis:'三步路线：Fork → 分支 → PR' },
+    { id:'a3', text:'Fork，就是把原仓库完整复制一份，放到你自己名下。', est:5.2, gap:0.4, vis:'Fork：原仓库复制出副本（KF2）' },
+    { id:'a4', text:'这份副本归你，往里推代码不用问任何人；原仓库不受影响。', est:5.6, gap:0.6, vis:'副本归你：权限徽章对比' },
+  ]},
+  { id:'how', title:'它怎么工作（重头）', lead:0.8, tail:0.8, cues:[
+    { id:'b1', text:'拿官方练习仓库 Spoon-Knife 举例：Fork 后，它到了你名下。', est:6.4, gap:0.5, vis:'Spoon-Knife 仓库卡出现在你名下' },
+    { id:'b2', text:'在副本里开一条分支，就叫 fix-typo。', est:3.9, gap:0.4, vis:'分支下拉：新建 fix-typo（KF3）' },
+    { id:'b3', text:'分支，是和主线隔开的工作线。在上面怎么改，都不影响主线。', est:5.8, gap:0.5, vis:'主线与分支两条线，改动只在分支上' },
+    { id:'b4', text:'改好那个错别字，提交，推送到你自己的副本。', est:4.3, gap:0.5, vis:'提交并推送到副本（一句话带过，不演示命令）' },
+    { id:'b5', text:'然后，向原仓库发起一个 Pull Request，简称 PR。', est:5.4, gap:0.5, vis:'PR 创建页：base 原仓库 ← head 你的分支' },
+    { id:'b6', text:'注意：PR 不是「把代码加进去」，它是一个申请页。', est:5.0, gap:0.4, vis:'PR 申请页全貌（KF4）' },
+    { id:'b7', text:'改动早就在分支里了。维护者在申请页上看到的，是你改了哪几行。', est:6.2, gap:0.5, vis:'diff 逐行：-eatting +eating' },
+    { id:'b8', text:'他可以留意见，机器也会跑自动检查。', est:3.5, gap:0.5, vis:'审查评论 ＋ 自动检查 ✓' },
+    { id:'b9', text:'还没准备好？先开成草稿 PR：给人看，但不能合并。', est:5.0, gap:0.5, vis:'Draft 灰色徽章：不能合并' },
+    { id:'b10', text:'维护者批准、检查通过，点合并——改动这才进入原仓库主线。', est:5.8, gap:0.6, vis:'批准＋检查通过 → 绿色 Merge → 紫色 merged' },
+  ]},
+  { id:'numbers', title:'编号：原来如此', lead:0.8, tail:0.6, cues:[
+    { id:'c1', text:'「要解决什么」，写在 Issue 里。', est:3.3, gap:0.4, vis:'Issue 页：#12 README 有错别字（KF5）' },
+    { id:'c2', text:'Issue 和 PR 共用一套编号，挨着往下排。', est:4.1, gap:0.4, vis:'列表：#12 Issue 与 #13 PR 挨着' },
+    { id:'c3', text:'编号属于仓库，用过的不回收。', est:3.0, gap:0.5, vis:'空号不回收（实测 67390→404 示意）' },
+    { id:'c4', text:'写 Closes #12，合并时自动关掉那个 Issue。', est:4.8, gap:0.4, vis:'PR 描述 Closes #12 → 合并后 Issue 关闭' },
+    { id:'c5', text:'Refs 只是引用约定，不会关闭。', est:3.0, gap:0.6, vis:'Refs #12 只生成引用，不关闭' },
+  ]},
+  { id:'boundary', title:'边界或比较', lead:0.8, tail:0.6, cues:[
+    { id:'d1', text:'如果你有写权限呢？不用 Fork：直接在原仓库开分支，照样提 PR。', est:6.6, gap:0.5, vis:'共享仓库模型：原仓库内开分支（对比图）' },
+  ]},
+  { id:'conclusion', title:'一句结论', lead:0.8, tail:1.3, cues:[
+    { id:'e1', text:'没有权限，Fork 副本；要隔开，开分支；要被审，提 PR。', est:5.6, gap:0.6, vis:'三行结论（KF6）' },
+    { id:'e2', text:'提改动，只需一份副本；并不并，维护者决定。', est:4.4, gap:0.6, vis:'副本与维护者决定权（示意）' },
+  ]},
+  { id:'credits', title:'片尾名单（无旁白）', lead:0, cues:[
+    { id:'cr', pause:7.5, vis:'片尾名单：策划 WaterRun · 制作（待定）· 事实来源 GitHub 官方文档' },
+  ]},
+];
+/* 时间线：每场 at 由前一场结束推出 */
+let TOTAL = 0;
+(function(){
+  let t = 0;
+  for (const s of SCRIPT){
+    s.at = t;
+    let d = s.lead || 0;
+    for (const c of s.cues){ d += c.pause != null ? c.pause : (c.est + (c.gap||0)); }
+    d += s.tail || 0;
+    s.dur = d; t += d;
+  }
+  TOTAL = t;
+})();
+const fmt = t => { const m = Math.floor(t/60), s = (t%60); return m + ':' + (s<10?'0':'') + s.toFixed(1); };
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function renderProse(){
+  const el = document.getElementById('script-prose');
+  el.innerHTML = SCRIPT.map(s=>{
+    const spoken = s.cues.filter(c=>c.text);
+    const body = spoken.length
+      ? '<div class="prose">' + spoken.map(c=>'<p><span class="t">'+c.id+'</span>'+esc(c.text)+'</p>').join('') + '</div>'
+      : '<div class="prose"><p style="color:var(--fg-muted)">（无旁白 · 片尾名单）</p></div>';
+    return '<div class="scene-card"><div class="scene-hunk"><b>@@ '+s.id+' @@</b><span>'+s.title+'</span><span>'+fmt(s.at)+' – '+fmt(s.at+s.dur)+'</span><span>'+s.dur.toFixed(1)+'s</span></div><div class="scene-body">'+body+'</div></div>';
+  }).join('');
+}
+function renderTable(){
+  const el = document.getElementById('script-table');
+  let html = '';
+  for (const s of SCRIPT){
+    let t = s.at + (s.lead||0);
+    let rows = '';
+    for (const c of s.cues){
+      if (c.pause != null){
+        rows += '<tr class="pause"><td class="cid">'+c.id+'</td><td class="tm">'+fmt(t)+' +'+c.pause.toFixed(1)+'s</td><td>（纯画面停顿）</td><td>—</td><td class="vis">'+c.vis+'</td></tr>';
+        t += c.pause;
+      } else {
+        const w = [...c.text].reduce((n,ch)=>n+(/[\u2e80-\u9fff\uff00-\uffef]/.test(ch)?1:0.5),0);
+        rows += '<tr><td class="cid">'+c.id+'</td><td class="tm">'+fmt(t)+' +'+c.est.toFixed(1)+'s</td><td>'+esc(c.text)+'</td><td class="tm">'+w.toFixed(1)+' 字宽</td><td class="vis">'+c.vis+'</td></tr>';
+        t += c.est + (c.gap||0);
+      }
+    }
+    html += '<div class="scene-card"><div class="scene-hunk"><b>@@ '+s.id+' @@</b><span>'+s.title+'</span><span>'+fmt(s.at)+' – '+fmt(s.at+s.dur)+'</span></div><div class="table-scroll"><table class="cues"><tr><th>句号</th><th>时刻</th><th>字幕</th><th>宽度</th><th>画面</th></tr>'+rows+'</table></div></div>';
+  }
+  el.innerHTML = html;
+}
+function renderStats(){
+  const spoken = SCRIPT.flatMap(s=>s.cues).filter(c=>c.text);
+  const chars = spoken.reduce((n,c)=>n+[...c.text].length,0);
+  const speech = spoken.reduce((n,c)=>n+c.est,0);
+  document.getElementById('script-stats').innerHTML =
+    '<span>旁白 <b>'+spoken.length+'</b> 句</span><span>约 <b>'+chars+'</b> 字</span><span>语音 <b>'+speech.toFixed(1)+'s</b></span><span>全片 <b>'+fmt(TOTAL)+'</b> / 2:30.0</span>';
+  document.getElementById('cuecount').textContent = spoken.length + ' 句';
+}
+renderProse(); renderTable(); renderStats();
+
+const vp = document.getElementById('view-prose'), vt = document.getElementById('view-table');
+vp.addEventListener('click', ()=>{ vp.classList.add('active'); vt.classList.remove('active'); document.getElementById('script-prose').classList.remove('hidden'); document.getElementById('script-table').classList.add('hidden'); });
+vt.addEventListener('click', ()=>{ vt.classList.add('active'); vp.classList.remove('active'); document.getElementById('script-table').classList.remove('hidden'); document.getElementById('script-prose').classList.add('hidden'); });
+
+document.getElementById('copy-script').addEventListener('click', async function(){
+  const txt = SCRIPT.map(s=>{
+    const lines = s.cues.filter(c=>c.text).map(c=>c.text);
+    return '【'+s.title+' '+fmt(s.at)+'–'+fmt(s.at+s.dur)+'】\n' + (lines.length?lines.join('\n'):'（无旁白）');
+  }).join('\n\n') + '\n\n（草案估时，未配音；全片 '+fmt(TOTAL)+' / 150s）';
+  const btn = this;
+  try { await navigator.clipboard.writeText(txt); btn.textContent='已复制 ✓'; }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); btn.textContent='已复制 ✓'; }catch(_){ btn.textContent='复制失败，请手选'; }
+    ta.remove();
+  }
+  setTimeout(()=>{ btn.innerHTML='<svg class="icon" style="width:14px;height:14px"><use href="#i-copy"/></svg>复制全文'; },1600);
+});
+/* 关键帧：1280×720 设计，缩放适配卡片；点击放大 */
+const KF = [
+  { id:'kf1', title:'KF1 · 开场：推不上去', ref:'o1–o2', note:'现象先行：想改一个错别字，推送被拒。报错文字为示意，真实回显待一次性账号实验（FACTS 待做）。', html:
+    '<div class="kf-pad">'+
+      '<div class="kf-repohead"><svg class="icon" style="width:26px;height:26px;fill:var(--fg-muted)"><use href="#i-repo"/></svg><span class="nm">octocat</span><span class="sl">/</span><span class="nm">Spoon-Knife</span><span class="kf-pill">Public</span></div>'+
+      '<div class="kf-note">README.md · 第 3 行 · “A spoon is a tool for <b style="color:var(--fg-danger)">eatting</b> soup.”</div>'+
+      '<div class="kf-flash"><svg class="icon" style="width:22px;height:22px;fill:var(--fg-danger);margin-top:2px"><use href="#i-lock"/></svg><div><b>推送被拒</b><div class="mono" style="margin-top:6px;color:var(--fg-danger);font-size:16px">remote: Permission to octocat/Spoon-Knife.git denied.</div><div style="margin-top:8px;color:var(--fg-muted);font-size:16px">你没有这个仓库的写权限 —— 怎么办？</div></div></div>'+
+      '<div class="kf-watermark">示意 · 回显待实测</div>'+
+    '</div>' },
+  { id:'kf2', title:'KF2 · Fork：自己的副本', ref:'a3–a4 / b1', note:'Fork 是另一个仓库，不是分支：设置、权限、协作空间都归你；原仓库不受影响（F1.1–F1.5）。', html:
+    '<div class="kf-pad">'+
+      '<div class="kf-repohead" style="font-size:22px"><svg class="icon" style="width:22px;height:22px;fill:var(--fg-muted)"><use href="#i-fork"/></svg><b>Fork 一份副本</b></div>'+
+      '<div class="kf-cards">'+
+        '<div class="kf-repocard"><div class="t"><svg class="icon" style="width:20px;height:20px;fill:var(--fg-muted)"><use href="#i-repo"/></svg>octocat/Spoon-Knife</div><div class="sub">原仓库 · 维护者的项目</div><div class="tags"><span class="kf-pill" style="font-size:14px">你：只读</span></div></div>'+
+        '<div class="kf-arrow"><svg class="icon"><use href="#i-fork"/></svg>Fork</div>'+
+        '<div class="kf-repocard" style="border-color:var(--fg-accent)"><div class="t"><svg class="icon" style="width:20px;height:20px;fill:var(--fg-muted)"><use href="#i-repo"/></svg>you/Spoon-Knife</div><div class="sub">forked from octocat/Spoon-Knife</div><div class="tags"><span class="kf-tag">完整副本</span><span class="kf-tag">归你</span><span class="kf-tag">随便推</span></div></div>'+
+      '</div>'+
+      '<div class="kf-note" style="margin-top:30px">往自己的副本推代码，不用问任何人（F1.3）；原仓库不受影响（F1.5）。</div>'+
+    '</div>' },
+  { id:'kf3', title:'KF3 · 分支与 diff', ref:'b2–b4 / b7', note:'分支 fix-typo 与主线隔开；改动是真实 diff 配色（Primer diffBlob 令牌）。提交/推送一句话带过，不演示命令。', html:
+    '<div class="kf-pad">'+
+      '<div class="kf-branchbar"><span class="kf-branchbtn"><svg class="icon" style="width:18px;height:18px;fill:var(--fg-muted)"><use href="#i-branch"/></svg>fix-typo ▾</span><span style="color:var(--fg-muted);font-size:16px">you/Spoon-Knife · 与主线隔开的工作线</span></div>'+
+      '<div class="kf-diff">'+
+        '<div class="fh"><svg class="icon" style="width:16px;height:16px;fill:var(--fg-muted)"><use href="#i-file"/></svg>README.md<span style="margin-left:auto;color:var(--fg-success)">+1</span><span style="color:var(--fg-danger)">−1</span></div>'+
+        '<div class="ln del"><span class="no">3</span><span>- A spoon is a tool for <span class="w">eatting</span> soup.</span></div>'+
+        '<div class="ln add"><span class="no">3</span><span>+ A spoon is a tool for <span class="w">eating</span> soup.</span></div>'+
+      '</div>'+
+      '<div class="kf-note" style="margin-top:26px">改好 → 提交 → 推送到<b>你自己的副本</b>。主线此时毫无变化（F2.2）。</div>'+
+    '</div>' },
+  { id:'kf4', title:'KF4 · PR：申请页', ref:'b5–b10', note:'PR 是请求合并的申请页：改动早在分支里；维护者审查、机器检查，批准后才合并。右上小卡是草稿 PR（F4）。', html:
+    '<div class="kf-pad" style="padding-top:36px">'+
+      '<div class="kf-prhead"><span class="kf-prtitle">Fix typo in README</span><span class="kf-prnum">#13</span><span class="state open" style="font-size:15px;padding:4px 14px"><svg class="icon" style="width:15px;height:15px"><use href="#i-pr"/></svg>Open</span><span class="kf-draftchip" style="margin-left:auto"><svg class="icon" style="width:14px;height:14px"><use href="#i-pr"/></svg>Draft 变体：不能合并</span></div>'+
+      '<div style="color:var(--fg-muted);font-size:16px;margin-top:8px">you:fix-typo → octocat:main · 改动已在分支里，这里是申请页</div>'+
+      '<div class="kf-tabs"><span class="on">Conversation</span><span>Commits 1</span><span>Checks ✓</span><span>Files changed 1</span></div>'+
+      '<div class="kf-review"><svg class="icon" style="width:20px;height:20px;fill:var(--fg-success)"><use href="#i-check"/></svg><span class="ok">maintainer approved</span><span style="color:var(--fg-muted)">· 自动检查全部通过</span></div>'+
+      '<div class="kf-mergebox"><svg class="icon" style="width:26px;height:26px;fill:var(--fg-done)"><use href="#i-merge"/></svg><div class="txt">合并后，改动进入原仓库主线<small>合并需要写权限 —— 由维护者决定（F3.6）</small></div><span class="kf-btn-green">Merge pull request</span></div>'+
+    '</div>' },
+  { id:'kf5', title:'KF5 · 编号：原来如此', ref:'c1–c5', note:'Issue 与 PR 共用一套编号、属于仓库、不回收；/issues/N 与 /pull/N 互跳；Closes 自动关闭，Refs 只是约定（F6/F7，含实测）。', html:
+    '<div class="kf-pad" style="padding-top:36px">'+
+      '<div class="kf-repohead" style="font-size:22px"><svg class="icon" style="width:22px;height:22px;fill:var(--fg-muted)"><use href="#i-issue"/></svg><b>同一套编号 · 属于仓库 · 不回收</b></div>'+
+      '<div class="kf-cols">'+
+        '<div class="col">'+
+          '<div class="kf-list" style="margin-top:14px">'+
+            '<div class="kf-row"><svg class="icon kf-ic-green" style="width:20px;height:20px"><use href="#i-pr"/></svg><span class="no">#13</span>Fix typo in README<span class="st">PR · open</span></div>'+
+            '<div class="kf-row"><svg class="icon kf-ic-green" style="width:20px;height:20px"><use href="#i-issue"/></svg><span class="no">#12</span>README 有错别字<span class="st">Issue · open</span></div>'+
+            '<div class="kf-row"><svg class="icon kf-ic-purple" style="width:20px;height:20px"><use href="#i-merge"/></svg><span class="no">#11</span>Add license<span class="st">PR · merged</span></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="col">'+
+          '<div class="kf-h3" style="margin-top:14px">网址互跳（实测）</div>'+
+          '<div class="kf-url">/issues/<b>13</b> → /pull/<b>13</b></div>'+
+          '<div class="kf-url">/pull/<b>12</b> → /issues/<b>12</b></div>'+
+          '<div class="kf-h3" style="margin-top:18px">合并时</div>'+
+          '<div class="kf-url"><b>Closes #12</b> → 自动关闭 Issue</div>'+
+          '<div class="kf-url"><b>Refs #12</b> → 只是引用，不关闭</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>' },
+  { id:'kf6', title:'KF6 · 结论', ref:'e1–e2', note:'回到开场的问题作答：三个机制各解决一件事；结尾落在「提改动的门槛」与「维护者的决定权」。', html:
+    '<div class="kf-pad">'+
+      '<div class="kf-repohead" style="font-size:24px"><b>没有权限，也能提改动</b></div>'+
+      '<div class="kf-concl">'+
+        '<div class="row"><span class="ic" style="background:var(--bg-accent-emphasis)"><svg class="icon"><use href="#i-fork"/></svg></span><b>Fork 副本</b><span class="why">解决「没有权限」</span></div>'+
+        '<div class="row"><span class="ic" style="background:var(--bg-success-emphasis)"><svg class="icon"><use href="#i-branch"/></svg></span><b>开分支</b><span class="why">解决「要隔开」</span></div>'+
+        '<div class="row"><span class="ic" style="background:var(--bg-done-emphasis)"><svg class="icon"><use href="#i-pr"/></svg></span><b>提 PR</b><span class="why">解决「要被审」</span></div>'+
+      '</div>'+
+      '<div class="kf-note" style="margin-top:36px;font-size:18px">提改动，只需一份自己的副本；并不并，维护者决定。</div>'+
+    '</div>' },
+];
+const grid = document.getElementById('kf-grid');
+grid.innerHTML = KF.map((k,i)=>
+  '<div class="kf-card"><div class="kf-frame" data-kf="'+i+'"><div class="kf-stage">'+k.html+'</div></div>'+
+  '<div class="kf-cap"><b>'+k.title+'</b> <span class="ref">'+k.ref+'</span><p>'+k.note+'</p></div></div>'
+).join('');
+function scaleKFs(){
+  document.querySelectorAll('.kf-frame').forEach(f=>{
+    const s = f.clientWidth/1280;
+    f.querySelector('.kf-stage').style.transform = 'scale('+s+')';
+  });
+  const mf = document.getElementById('kf-mframe');
+  const st = mf.querySelector('.kf-stage');
+  if (st) st.style.transform = 'scale('+(mf.clientWidth/1280)+')';
+}
+window.addEventListener('resize', scaleKFs);
+scaleKFs();
+
+const modal = document.getElementById('kf-modal');
+grid.addEventListener('click', e=>{
+  const f = e.target.closest('.kf-frame'); if (!f) return;
+  const k = KF[+f.dataset.kf];
+  document.getElementById('kf-mframe').innerHTML = '<div class="kf-stage">'+k.html+'</div>';
+  document.getElementById('kf-mcap').textContent = k.title+' · '+k.ref+' —— '+k.note;
+  modal.classList.add('show');
+  scaleKFs();
+});
+function closeModal(){ modal.classList.remove('show'); }
+document.getElementById('kf-close').addEventListener('click', closeModal);
+modal.addEventListener('click', e=>{ if (e.target===modal) closeModal(); });
+document.addEventListener('keydown', e=>{ if (e.key==='Escape') closeModal(); });
+
+/* 章节 scrollspy */
+const secs = ['overview-sec','facts','script','keyframes','catalog','handoff'].map(id=>document.getElementById(id));
+const tabs = [...document.querySelectorAll('.sec-tab')];
+const spy = new IntersectionObserver(entries=>{
+  for (const en of entries){
+    if (en.isIntersecting){
+      tabs.forEach(t=>t.classList.toggle('active', t.dataset.sec===en.target.id));
+    }
+  }
+},{ rootMargin:'-140px 0px -60% 0px', threshold:0 });
+secs.forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>

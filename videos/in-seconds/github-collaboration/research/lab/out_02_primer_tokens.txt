@@ -1,0 +1,52 @@
+# 02_primer_tokens.sh 的回显快照
+# 取证时间：2026-11-15（UTC+8），Windows 本机。
+# 实际取法：gh api repos/primer/primitives/contents/...（main 当时指向 47736486bf67b2a14ba1ada61fa0f57af29bb875）
+# 与 unpkg 的 @primer/primitives@11.10.0 编译产物；脚本重跑时固定同一提交号，内容等价。
+# 色值均为 light（浅色）主题；GitHub 网页默认浅色。
+
+== 1. 功能色（light 主题编译产物，@primer/primitives@11.10.0）==
+--fgColor-default: #1f2328;        /** Default text color for primary content and headings */
+--fgColor-muted: #59636e;          /** Muted text for secondary content and less important information */
+--fgColor-accent: #0969da;         /** Accent text for links and interactive elements */
+--fgColor-success: #1a7f37;        /** Success text for positive feedback and completed states */
+--fgColor-open: var(--fgColor-success); /** Text color for open state indicators (issues, PRs) */
+--fgColor-attention: #9a6700;      /** Attention text for warnings and caution states */
+--fgColor-danger: #d1242f;         /** Danger text for errors and destructive actions */
+--fgColor-closed: var(--fgColor-danger); /** Text color for closed state indicators (issues, PRs) */
+--fgColor-done: #8250df;           /** Text color for completed/done state indicators */
+--bgColor-default: #ffffff;        /** Default background color for pages and main content areas */
+--bgColor-muted: #f6f8fa;          /** Muted background for secondary content areas and subtle grouping */
+--bgColor-accent-muted: #ddf4ff;   /** Subtle accent background for informational or selected elements */
+--bgColor-success-muted: #dafbe1;  /** Subtle success background for positive feedback and completed states */
+--bgColor-attention-muted: #fff8c5; /** Subtle attention background for warnings and caution states */
+--bgColor-danger-muted: #ffebe9;   /** Muted danger background for error states and destructive action contexts */
+--bgColor-done-muted: #fbefff;     /** Subtle background for completed/done state indicators */
+--borderColor-default: #d1d9e0;    /** Default border color for most UI elements */
+--borderColor-muted: #d1d9e0b3;    /** Subtle border for secondary elements and light separators */
+--borderColor-accent-emphasis: #0969da; /** Strong accent border for selected or focused elements */
+--borderColor-success-emphasis: #1a7f37; /** Strong success border for prominent positive elements */
+--borderColor-done-emphasis: #8250df; /** Strong border for completed/done state badges */
+
+== 2. 字体栈（源令牌 font-stack.json5）==
+fontStack.system / sansSerif / sansSerifDisplay:
+  'Mona Sans VF', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans Backtick Fix', 'Noto Sans', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'
+fontStack.monospace:
+  ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace
+
+== 3. diff 行/词背景（源令牌 diffBlob.json5 的 $value 引用）==
+diffBlob.additionLine.bgColor = {bgColor.success.muted}   → #dafbe1
+diffBlob.additionWord.bgColor = {base.color.green.1}      → #aceebb
+diffBlob.additionNum.bgColor  = {base.color.green.1}      → #aceebb
+diffBlob.deletionLine.bgColor = {bgColor.danger.muted}    → #ffebe9
+diffBlob.deletionWord.bgColor = {base.color.red.1}        → #ffcecb
+（行内文字色均为 {fgColor.default} = #1f2328。）
+
+== 4. 基础色阶 green.0/1 与 red.0/1（源令牌 base/color/light/light.json5）==
+green.0 hex: '#dafbe1'
+green.1 hex: '#aceebb'
+red.0   hex: '#ffebe9'
+red.1   hex: '#ffcecb'
+
+== 5. Mona Sans / Hubot Sans 许可（GitHub API）==
+{ "license": "OFL-1.1", "name": "mona-sans" }
+{ "license": "OFL-1.1", "name": "hubot-sans" }

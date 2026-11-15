@@ -1,0 +1,113 @@
+# 01_numbering.sh 的回显快照
+# 取证时间：2026-11-15 约 10:18–10:24（UTC+8），Windows 本机经 cmd.exe 逐条执行同名命令
+#（部分探测用 & 并行，输出按命令归组，内容与串行一致）。
+# 脱敏：curl 回显只保留状态行、Date、Location；Set-Cookie 等会话头已去除。
+# 本机经系统代理访问 github.com，最终响应来自 github.com（Server: github.com）。
+# nodejs/node 活跃，重跑时最新编号会变大；固定号探测（67474 等）为历史条目，编号不变。
+
+== 1. ft 仓库基本信息与空列表（本仓库无 Issue/PR，改用 nodejs/node 取证）==
+$ gh api repos/Water-Run/ft --jq '{fork: .fork, default_branch: .default_branch, has_issues: .has_issues}'
+{
+  "default_branch": "main",
+  "fork": false,
+  "has_issues": true
+}
+$ gh api 'repos/Water-Run/ft/issues?state=all&per_page=100' --jq '.[] | {number, is_pr: (.pull_request != null), title}'
+（空输出：0 条）
+$ gh api 'repos/Water-Run/ft/pulls?state=all&per_page=100' --jq '.[] | {number, state, head: .head.repo.full_name, base: .base.repo.full_name}'
+（空输出：0 条）
+
+== 2. issues 端点同时返回 Issue 与 PR（同一仓库共用一套编号）==
+$ gh api 'repos/nodejs/node/issues?state=all&per_page=20' --jq '.[] | {number, is_pr: (.pull_request != null), title}'
+{ "is_pr": true,  "number": 67479, "title": "deps: patch V8 to 15.6.75.60" }
+{ "is_pr": true,  "number": 67478, "title": "tools: update nixpkgs-unstable to 2074cc672349f14240fb7ea90d509e0b643" }
+{ "is_pr": true,  "number": 67477, "title": "deps: update googletest to e882c36410197464e3429546e6a7d5e217bde51e" }
+{ "is_pr": true,  "number": 67476, "title": "deps: update libffi to 3.8.1" }
+{ "is_pr": true,  "number": 67475, "title": "deps: update zlib to 1.4-ec453dc" }
+{ "is_pr": true,  "number": 67474, "title": "[v26.x] deps: update temporal_rs to 0.2.4" }
+{ "is_pr": true,  "number": 67473, "title": "lib: prefer change-by-copy array methods over prior copy" }
+{ "is_pr": true,  "number": 67472, "title": "crypto: make backend requirements explicit" }
+{ "is_pr": true,  "number": 67471, "title": "doc: introduce suites section in test runner documentation" }
+{ "is_pr": true,  "number": 67470, "title": "http2: add callback to informational header methods" }
+{ "is_pr": false, "number": 67469, "title": "عمان" }
+{ "is_pr": true,  "number": 67468, "title": "src: warn when heap would exceed pointer compression limit" }
+{ "is_pr": false, "number": 67467, "title": "SIGILL on a valid instruction in Wasm code called from a worker thread (v26.6.0, macOS arm64)" }
+{ "is_pr": true,  "number": 67466, "title": "tools: lint crypto backend alternatives" }
+{ "is_pr": false, "number": 67465, "title": "ChildProcess.kill() after spawn() ENOENT passes an uninitialized pid to kill(2): can be 0 and SIGKILL the caller's own process group (present in v25.9.0, fixed in v24.22.x)" }
+{ "is_pr": true,  "number": 67463, "title": "doc: fix typo in releases.md" }
+{ "is_pr": false, "number": 67462, "title": "Specification Comliance Misses" }
+{ "is_pr": true,  "number": 67461, "title": "doc,test: deprecate `util.TextDecoder` and `util.TextEncoder`" }
+{ "is_pr": true,  "number": 67460, "title": "[v24.x] tools: update macOS runner" }
+{ "is_pr": true,  "number": 67459, "title": "build: use Highway EMU128 on riscv64" }
+（注：67464 不在列表中，见第 5 节；列表按编号降序，Issue 与 PR 交错。）
+
+== 2b. 最近 100 条的编号范围与空号 ==
+$ gh api 'repos/nodejs/node/issues?state=all&per_page=100' --jq '[.[].number] | {max: .[0], min: .[-1], count: length}'
+{ "count": 100, "max": 67479, "min": 67373 }
+$ gh api 'repos/nodejs/node/issues?state=all&per_page=100' --jq '[.[].number] | . as $n | [range(.[0]; .[-1]; -1)] | map(select(. as $x | $n | index($x) | not))'
+[ 67464, 67390, 67389, 67387, 67385, 67384, 67381 ]
+（注：67479−67373+1=107 个号位，实存 100 条，7 个空号。）
+
+== 3. PR 的编号属于 base（目标）仓库，head 可以是 fork ==
+$ gh api 'repos/nodejs/node/pulls?state=all&per_page=8' --jq '.[] | {number, state, head: .head.repo.full_name, base: .base.repo.full_name}'
+{ "base": "nodejs/node", "head": "nodejs/node",        "number": 67479, "state": "open" }
+{ "base": "nodejs/node", "head": "nodejs/node",        "number": 67478, "state": "open" }
+{ "base": "nodejs/node", "head": "nodejs/node",        "number": 67477, "state": "open" }
+{ "base": "nodejs/node", "head": "nodejs/node",        "number": 67476, "state": "open" }
+{ "base": "nodejs/node", "head": "nodejs/node",        "number": 67475, "state": "open" }
+{ "base": "nodejs/node", "head": "Renegade334/node",   "number": 67474, "state": "open" }
+{ "base": "nodejs/node", "head": "LiviaMedeiros/node", "number": 67473, "state": "open" }
+{ "base": "nodejs/node", "head": "panva/node",         "number": 67472, "state": "open" }
+
+== 4. 用 issues 端点取 PR 号 67474：返回带 pull_request 字段的同一对象 ==
+$ gh api repos/nodejs/node/issues/67474 --jq '{number, title, pull_request_keys: (.pull_request | keys), state}'
+{
+  "number": 67474,
+  "pull_request_keys": [ "diff_url", "html_url", "merged_at", "patch_url", "url" ],
+  "state": "open",
+  "title": "[v26.x] deps: update temporal_rs to 0.2.4"
+}
+
+== 5. 空号 67464：转移到 nodejs/help#5185，旧号永久指向转移后的 Issue ==
+$ gh api repos/nodejs/node/issues/67464 --jq '{number, html_url, repository_url, state}'
+{
+  "html_url": "https://github.com/nodejs/help/issues/5185",
+  "number": 5185,
+  "repository_url": "https://api.github.com/repos/nodejs/help",
+  "state": "open"
+}
+（注：请求的是 nodejs/node 的 67464，API 跟随转移重定向，返回 nodejs/help 的 5185。）
+
+== 6. 空号 67390/67387/67381：404，删除后编号不回收 ==
+$ gh api repos/nodejs/node/issues/67390 --jq '{number, html_url}'
+{ "message": "Not Found", "documentation_url": "https://docs.github.com/rest/issues/issues#get-an-issue", "status": "404" }
+gh: Not Found (HTTP 404)
+$ gh api repos/nodejs/node/issues/67387 --jq '{number, html_url}'
+{ "message": "Not Found", "documentation_url": "https://docs.github.com/rest/issues/issues#get-an-issue", "status": "404" }
+gh: Not Found (HTTP 404)
+$ gh api repos/nodejs/node/issues/67381 --jq '{number, html_url}'
+{ "message": "Not Found", "documentation_url": "https://docs.github.com/rest/issues/issues#get-an-issue", "status": "404" }
+gh: Not Found (HTTP 404)
+（注：三个空号两侧的编号都存在且新内容继续向大号增长，空号未被重新分配。）
+
+== 7. fork 有自己的编号序列（LiviaMedeiros/node 的 PR #1–#4，上游已是 6.7 万号段）==
+$ gh api repos/LiviaMedeiros/node --jq '{full_name, fork, has_issues, open_issues_count}'
+{ "fork": true, "full_name": "LiviaMedeiros/node", "has_issues": false, "open_issues_count": 1 }
+$ gh api 'repos/LiviaMedeiros/node/issues?state=all&per_page=10' --jq '.[] | {number, is_pr: (.pull_request != null), title, html_url}'
+{ "html_url": "https://github.com/LiviaMedeiros/node/pull/4", "is_pr": true, "number": 4, "title": "doc: change something" }
+{ "html_url": "https://github.com/LiviaMedeiros/node/pull/3", "is_pr": true, "number": 3, "title": "..." }
+{ "html_url": "https://github.com/LiviaMedeiros/node/pull/2", "is_pr": true, "number": 2, "title": "..." }
+{ "html_url": "https://github.com/LiviaMedeiros/node/pull/1", "is_pr": true, "number": 1, "title": "ESLint rule 'node-core/func-name-matching'" }
+（另查两个 fork：panva/node 与 Renegade334/node 均 fork=true、has_issues=false；
+ LiviaMedeiros/node 的 open_issues_count=1 计入的是 PR，其 Issue 功能同样关闭。）
+
+== 8. /issues/N 与 /pull/N 互相跳转（只保留状态行、Date、Location；会话 Cookie 不入库）==
+$ curl -sI https://github.com/nodejs/node/issues/67474 | grep -Ei '^(HTTP/|Location:|Date:)'
+HTTP/1.1 302 Found
+Date: Sun, 15 Nov 2026 02:21:01 GMT
+Location: https://github.com/nodejs/node/pull/67474
+$ curl -sI https://github.com/nodejs/node/pull/67469 | grep -Ei '^(HTTP/|Location:|Date:)'
+HTTP/1.1 302 Found
+Date: Sun, 15 Nov 2026 02:20:45 GMT
+Location: https://github.com/nodejs/node/issues/67469
+（注：67474 是 PR，/issues/67474 跳到 /pull/67474；67469 是 Issue，/pull/67469 跳到 /issues/67469。）
