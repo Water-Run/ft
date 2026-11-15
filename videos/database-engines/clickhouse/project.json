@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"
   },
-  "stage": "preview",
-  "next": "WaterRun 看预览 r10（out/zh/preview-r10.mp4，17:54）的重点处，没问题就出正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree、Yandex）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 NOTES「预览与自查」r4–r5 行列出的事实；check.js --final 与验收。",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 2026-11-16）。等 WaterRun 的评分与反馈，记进 README「评价与复盘」与 docs/log/feedback.md。",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -103,5 +103,20 @@
       "flat": true,
       "no_emoji": true
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-16",
+    "duration": {
+      "zh": 1075.597
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1iwsW6xEvx",
+      "date": "2026-11-16",
+      "title": "一个数据库引擎是如何实现的？(5)——OLAP的MergeTree和列式存储：ClickHouse",
+      "lang": "zh"
+    }
+  ]
 }
