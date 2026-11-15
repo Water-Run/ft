@@ -114,12 +114,14 @@ function engineStruct(parent, kind, t0, o = {}) {
   const link = (x1, y1, x2, y2, t, color = 'dim', arrow = false) => at(path(ov, `M ${x1} ${y1} L ${x2} ${y2}`, color, { w: 3, arrow }), t);
   const rows = [], cols = [];
   if (kind === 0) {            // MyISAM：两个文件。上面索引（B 树），下面数据一行接一行；索引指到数据文件里的那一行
-    file(0, 34, 320, 112, t0 + 0.1); lbl(12, 40, 'users.MYI · 索引', t0 + 0.15);
+    lbl(0, 0, '两个文件：索引、数据分开', t0 + 0.1);
+    file(0, 34, 320, 112, t0 + 0.1); lbl(12, 40, 'users.MYI', t0 + 0.15);
     node(130, 72, 60, 22, t0 + 0.2); node(60, 112, 60, 22, t0 + 0.3); node(200, 112, 60, 22, t0 + 0.3);
     link(160, 94, 90, 112, t0 + 0.3); link(160, 94, 230, 112, t0 + 0.3);
-    file(0, 166, 320, 208, t0 + 0.35); lbl(12, 172, 'users.MYD · 一行接一行', t0 + 0.4);
+    file(0, 166, 320, 208, t0 + 0.35); lbl(12, 172, 'users.MYD', t0 + 0.4);
     for (let k = 0; k < 8; k++) rows.push(rowS(14, 206 + k * 20, 292, t0 + 0.45 + k * 0.05));
     link(90, 134, 60, 206 + 3 * 20 + 2, t0 + 1.0, 'accent', true);
+    lbl(0, 376, '索引指到数据文件里的那一行', t0 + 1.1);
   } else if (kind === 1) {     // InnoDB：表本身就是按主键排好的 B+ 树，叶子里就是整行
     lbl(0, 0, 'users.ibd · 表就是一棵 B+ 树', t0 + 0.1);
     node(110, 42, 100, 28, t0 + 0.2);
@@ -151,15 +153,16 @@ function engineStruct(parent, kind, t0, o = {}) {
       const lx = 14 + k * 100; node(lx, 140, 92, 178, t0 + 0.55 + k * 0.1); link(160, 100, lx + 46, 140, t0 + 0.55 + k * 0.1);
       for (let r = 0; r < n; r++) rows.push(rowS(lx + 8, 160 + r * 50, 76, t0 + 0.75 + k * 0.1 + r * 0.05, true));
     });
-    lbl(0, 382, '表也在这个文件里', t0 + 1.1);
+    lbl(0, 376, '表也在这个文件里', t0 + 1.1);
   } else {                     // ClickHouse：片段是一个文件夹，里面一列一个文件，每格一个人
-    const fo = foldAt(parent, 0, 34, 320, 340, L ? 'all_1_1_0 · 片段' : '', 'y'); css(fo.nm, { fontSize: '22px' }); vanish(fo, 0); wipe(fo, t0, { dir: 'l', d: 0.4 });
+    lbl(0, 0, 'all_1_1_0 · 片段是一个文件夹', t0 + 0.1);
+    const fo = foldAt(parent, 0, 34, 320, 340, '', 'y'); vanish(fo, 0); wipe(fo, t0, { dir: 'l', d: 0.4 });
     ['id.bin', 'name.bin', 'age.bin'].forEach((c, k) => {
-      const fy = 80 + k * 96;
+      const fy = 52 + k * 104;
       file(12, fy, 296, 84, t0 + 0.25 + k * 0.15); lbl(22, fy + 6, c, t0 + 0.3 + k * 0.15);
       cols.push([]); for (let r = 0; r < 8; r++) cols[k].push(at(mk(parent, 'cseg k' + k, 22 + r * 35, fy + 44, 31, 28, ''), t0 + 0.45 + k * 0.15 + r * 0.03));
     });
-    lbl(0, 382, '一列一个 .bin 文件', t0 + 1.0, 'lab y');
+    lbl(0, 376, '一列一个 .bin 文件', t0 + 1.0);
   }
   return { rows, cols };
 }

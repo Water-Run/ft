@@ -59,16 +59,16 @@ scene('column', ({ root, s, c0 }) => {
   // 一列一个文件：对应的表列也亮一下
   const colHi = (k, t0, t1) => { classAt(tb2.c[k], 'y', t0, t1); tbl2.forEach((r) => classAt(r.c[k], 'y', t0, t1)); strips[k].cells.forEach((c) => classAt(c, 'y', t0, t1)); classAt(strips[k].lbl, 'y', t0, t1); };
   colHi(0, T('c4', '每一列'), T('c4', '每一列') + 0.9); colHi(1, T('c4', '每一列') + 0.35, T('c4', '每一列') + 1.25); colHi(2, T('c4', '每一列') + 0.7, T('c4', '每一列') + 1.6);
+  [tb2].concat(tbl2).forEach((r) => classAt(r.row, 'dim55', T('c4b') - 0.2, T('c7') - 0.2));
   const g1 = glossAt(C, 710, 690, 1150, '列式存储', '<b>列式存储</b>　一张表的每一列，单独存成一个文件'); show(g1, T('c4b', '列式存储') - 0.1, { y: 14, d: 0.35 }); vanish(g1, T('c7') - 0.2);
-  const sf = mk(C, 'frame-d', FX - 14, 266, 8 * (CW - 2) + 30, 352, ''); vanish(sf, 0); wipe(sf, T('c4c', '八个人') - 0.1, { dir: 'l', d: 0.5 }); vanish(sf, T('c5') + 0.2);
-  strips.forEach((st, k) => st.cells.forEach((c, i) => classAt(c, 'w', T('c4c', '八个人') + k * 0.6 + i * 0.08, T('c5'))));
-  const n4 = noteAt(C, 710, 790, '小片段默认几列合放在一个文件里\n这里为了看清，也每列一个文件'); show(n4, T('c4c') - 0.1, { y: 14 }); vanish(n4, T('c7') - 0.2);
+  const sf = mk(C, 'frame-d', FX - 14, 266, 8 * (CW - 2) + 30, 352, ''); vanish(sf, 0); wipe(sf, T('c4c') - 0.1, { dir: 'l', d: 0.5 }); vanish(sf, T('c5') + 0.2);
+  strips.forEach((st, k) => st.cells.forEach((c, i) => classAt(c, 'w', T('c4c') + 0.2 + k * 0.6 + i * 0.08, T('c5'))));
   // c5：年龄这一列，只有八个字节，一人一个——十进制换成真实的字节（十六进制）；标注收走时换回十进制，后面「第三个值 = carol」对得上 41
   const ageCells = strips[2].cells;
   classAt(strips[2].lbl, 'y', T('c5') + 0.1, T('c6'));
   ageCells.forEach((c, i) => classAt(c, 'y', T('c5') + 0.1 + i * 0.05, T('c5', '八个字节') + i * 0.1));
-  strips[2].cells.forEach((c, i) => { classAt(c, 'on', T('c5', '八个字节') + i * 0.1, T('c5', '一人一个') + 0.9); keyed(c.firstChild).at(T('c5', '八个字节') + i * 0.1, { html: hex2(P8[i][2]) }).at(T('c7') - 0.2, { html: String(P8[i][2]) }); sfx('tick', T('c5', '八个字节') + i * 0.1, { g: 0.3 }); });
-  const lbAge = mk(C, 'lab y', 710, 640, null, null, 'age.bin 解压后：8 个字节（十六进制，30 = 1e）'); show(lbAge, T('c5', '八个字节') + 0.3, { y: 12 }); vanish(lbAge, T('c7') - 0.2);
+  strips[2].cells.forEach((c, i) => { classAt(c, 'on', T('c5', '八个字节') + i * 0.1, T('c5', '一人一个') + 0.9); const b1 = mk(C, 't-note', FX + i * (CW - 2) + 26, 600, null, null, '1 字节'); css(b1, { fontSize: '22px' }); vanish(b1, 0); appear(b1, T('c5', '八个字节') + i * 0.1); vanish(b1, T('c6') + 0.2); sfx('tick', T('c5', '八个字节') + i * 0.1, { g: 0.3 }); });
+  const lbAge = mk(C, 'lab y', 710, 640, null, null, 'age.bin 解压后：8 个字节，一人一个'); show(lbAge, T('c5', '八个字节') + 0.3, { y: 12 }); vanish(lbAge, T('c7') - 0.2);
   // c6：编号、姓名在另一个文件
   colHi(0, T('c6', '编号'), T('c6', '姓名')); colHi(1, T('c6', '姓名'), Tend('c6', 0.3));
   // c7：第三个值属于同一个人
@@ -142,10 +142,9 @@ scene('column', ({ root, s, c0 }) => {
   steps.forEach(([nm, w], i) => {
     const p = mk(H, 'pill', 100 + i * 560, 560, i === 2 ? 640 : 520, 76, '<span>' + nm + '</span>'); css(p, { fontSize: '32px' }); show(p, T('c15', w) - 0.1, { y: 16 }); sfx('tick', T('c15', w), { g: 0.5 });
     classWins(p, 'on', i === 0 ? [[T('c15', w), T('c15', w) + 0.9], [T('c15b') - 0.2, T('c16') - 0.1]] : [[T('c15', w), T('c15', w) + 0.9]]);
-    if (i === 0) keyed(p.firstChild).at(T('c15b') - 0.2, { html: '从内存缓存读 529 KiB' });
+    if (i === 0) keyed(p.firstChild).at(T('c15b') - 0.7, { html: '从内存缓存读 529 KiB' });
   });
-  const hot = noteAt(H, 100, 700, '30 次连跑：7–9 毫秒（热缓存）'); show(hot, T('c15') + 1.0, { y: 14 });
-  const hotP = mk(H, 'pill on', 100, 780, null, null, '热缓存：数据已在内存里'); css(hotP, { fontSize: '30px', height: '64px' }); slam(hotP, T('c15b') - 0.3, { from: 1.1 }); sfx('pop', T('c15b', '内存缓存'), { g: 0.5 });
+  const hotP = mk(H, 'pill on', 100, 780, null, null, '热缓存：数据已在内存里'); css(hotP, { fontSize: '30px', height: '64px' }); slam(hotP, T('c15b') - 0.8, { from: 1.1 }); sfx('pop', T('c15b', '内存缓存'), { g: 0.5 });
   vanish(H, T('c16') - 0.1);
 
   // ── 新来一个人呢？ ──

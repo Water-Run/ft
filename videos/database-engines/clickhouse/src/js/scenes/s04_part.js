@@ -69,20 +69,18 @@ scene('part', ({ root, s, c0 }) => {
   // 写进新文件夹：先是临时名字（虚线框），写完改名（黄框）
   const tNew = T('p3b', '新文件夹'), tRen = T('p4', '改成');
   keyed(f3n).at(tNew - 0.1, { html: 'tmp_insert_all_91_91_0', cls: 'abs fn' }).at(tRen, { html: 'all_91_91_0', cls: 'abs fn y' });
-  const n91 = mk(f3in, 'lab y', 22, 62, null, null, '91 号：这张表前面已经写过 90 次（下面讲到）'); css(n91, { fontSize: '24px' }); vanish(n91, 0); show(n91, tRen + 0.3, { y: 6 });
   classAt(f3, 'ghost', 0, tRen); classAt(f3, 'y', tRen);
   const fill = mk(f3in, '', 0, 0, 800, 570); css(fill, { background: 'rgba(250,255,105,.10)', transformOrigin: '0 50%' }); vanish(fill, 0); f3in.insertBefore(fill, f3in.firstChild);
   tl.fromTo(fill, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: Math.max(0.8, tRen - tNew - 0.4), ease: 'none', immediateRender: false }, tNew);
   set(fill, tRen, { autoAlpha: 0 });
   sfx('pop', tNew, { g: 0.6 }); sfx('chime', tRen + 0.2, { g: 0.6 });
   const g1 = glossAt(B, 100, 550, 860, '片段', '<b>片段</b>（part）　一次插入写成的一个文件夹：里面是各列的文件，写好后不再改'); show(g1, T('p3b', '片段') - 0.1, { y: 14, d: 0.35 });
-  const tg = mk(B, 'tag o', 100, 668, null, null, '一次插入 = 一个片段'); css(tg, { fontSize: '60px' }); slam(tg, T('p3c'), { from: 1.2 }); sfx('thud', T('p3c') + 0.1, { g: 0.6 });
+  const tg = mk(B, 'tag o', 100, 668, null, null, '一次插入，至少一个片段'); css(tg, { fontSize: '60px' }); slam(tg, T('p3c'), { from: 1.2 }); sfx('thud', T('p3c') + 0.1, { g: 0.6 });
   // 临时名字：文件夹名字上的提示与服务端日志
   const tmpL = mk(B, 'lab', FX3, FY3 + 586, null, null, '写的时候：临时名字'); appear(tmpL, T('p4') - 0.1);
   keyed(tmpL).at(tRen, { html: '<span class="y">写完：改成正式的名字</span>' });
-  const logN = mk(f3in, 'note', 22, 274, null, null, '服务端日志：\nRenaming temporary part\n  tmp_insert_all_91_91_0 to all_91_91_0'); css(logN, { fontSize: '24px' }); show(logN, tRen + 0.2, { y: 12 });
   // 只有一行，也是一整个文件夹：1 行 · 11 个文件 · 947 字节
-  [['1', '行'], ['11', '个文件'], ['947', '字节']].forEach(([n, u], i) => {
+  [['1', '行']].forEach(([n, u], i) => {
     const t0 = T('p5') + i * 0.3;
     const nm = mk(f3in, 'big y', 22 + i * 260, 404, null, null, n); css(nm, { fontSize: '120px' }); slam(nm, t0, { from: 1.2 }); sfx('thud', t0 + 0.05, { g: 0.45 });
     const ul = mk(f3in, 'lab', 26 + i * 260, 528, null, null, u); show(ul, t0 + 0.2, { y: 10 });

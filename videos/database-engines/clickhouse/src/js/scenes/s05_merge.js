@@ -17,13 +17,13 @@ scene('merge', ({ root, s, c0 }) => {
   printAt(tmA, 1, pretty([{ name: 'avg(age)', values: ['48.57'], right: true }]), T('m3', '十几毫秒') - 0.1);
   tmA.line(4, '<span class="out">1 row in set. Elapsed: 0.011 sec.</span>', T('m3', '十几毫秒') - 0.1, {});
   const t13 = mk(gA, 'huge y', 1420, 400, null, null, '11 ms'); css(t13, { fontSize: '130px' }); slam(t13, T('m3', '十几毫秒'), { from: 1.2 }); sfx('thud', T('m3', '十几毫秒') + 0.1, { g: 0.6 });
-  const tl13 = mk(gA, 'lab', 1420, 545, null, null, '五次：15 11 11 32 11'); appear(tl13, T('m3', '十几毫秒') + 0.2);
   const t8 = mk(gA, 'lab y', 1420, 610, null, null, '开头那一亿行：8 ms'); css(t8, { fontSize: '26px' }); show(t8, T('m3a', '差不多'), { y: 12 });
   const t1 = mk(gA, 'huge', 1420, 680, null, null, '1 ms'); css(t1, { fontSize: '130px' }); slam(t1, T('m3b', '一毫秒'), { from: 1.2 }); sfx('chime', T('m3b', '一毫秒') + 0.1, { g: 0.6 });
-  const tl1 = mk(gA, 'lab', 1420, 825, null, null, '并成一个片段后：五次都是 1'); appear(tl1, T('m3b', '并成') + 0.1);
   const sw0 = T('m4', '每一个') - 0.2, sw1 = Tend('m4', 0.3);
   F((t) => { const k = clamp((t - sw0) / Math.max(0.5, sw1 - sw0)) * 900; for (let i = 0; i < 900; i++) { const on = t >= sw0 && i < k; if (sq[i]._on !== on) { sq[i]._on = on; sq[i].classList.toggle('y', on); } } });
   const lsw = mk(gA, 'lab y', 1420, 870, null, null, '← 每个片段都翻一遍'); show(lsw, T('m4') - 0.1, { y: 12 });
+  // 翻到第几个：九百个片段一个个亮，旁边数着
+  const cntA = mk(gA, 'mono', 1420, 916, null, null, ''); css(cntA, { fontSize: '26px', color: 'var(--g3)' }); F((t) => { const k = Math.round(clamp((t - sw0) / Math.max(0.5, sw1 - sw0)) * 900); const html = t >= sw0 ? '翻过 ' + k + ' / 900 个片段' : ''; if (cntA._h !== html) { cntA._h = html; cntA.textContent = html; } });
   const tAB = T('m5') + 0.5;
   vanish(gA, tAB);
 
@@ -38,8 +38,6 @@ scene('merge', ({ root, s, c0 }) => {
   const nm1 = mk(gB, 'big y', X0 + 1000 * PX - 130, 480, null, null, '1000'); css(nm1, { fontSize: '90px' }); slam(nm1, T('m5b', '一千'), { from: 1.2 });
   const nm2 = mk(gB, 'big y', X0 + 3000 * PX - 260, 480, null, null, '3000'); css(nm2, { fontSize: '90px' }); slam(nm2, T('m5b', '三千'), { from: 1.2 }); sfx('thud', T('m5b', '三千') + 0.1, { g: 0.6 });
   const z0 = mk(gB, 'fn', X0, 335, null, null, '0'); css(z0, { fontSize: '24px' }); appear(z0, tAB);
-  const pa = mk(gB, 'fn', X0 + 1000 * PX - 130, 590, null, null, 'parts_to_delay_insert'); css(pa, { fontSize: '24px' }); show(pa, T('m5b', '一千'), { y: 10 });
-  const pb = mk(gB, 'fn', X0 + 3000 * PX - 420, 590, null, null, 'parts_to_throw_insert'); css(pb, { fontSize: '24px' }); show(pb, T('m5b', '三千'), { y: 10 });
   const tmB = termAt(gB, 100, 690, 1720, 182); vanish(tmB.el, 0); appear(tmB.el, T('m5b', '三千'));
   tmB.line(0, '<span class="err">Code: 252. DB::Exception: Too many parts (20 with average size of 458.00 B)</span>', T('m5b', '三千') + 0.2, {});
   tmB.line(1, '<span class="err">in table \'demo.few (…)\'. </span><span class="slow">Merges are processing significantly slower than inserts.</span>', T('m5b', '三千') + 0.2, {});
@@ -86,7 +84,7 @@ scene('merge', ({ root, s, c0 }) => {
   const arrS = mk(gD, 'lab y', 100, 560, null, null, '每一摞：编号由小到大'); show(arrS, T('m7b', '排好') - 0.2, { y: 12 }); vanish(arrS, T('m8') + 0.4);
   STACKS.forEach((st, si) => st.forEach((r) => { flashT[r[0]] = T('m7b', '交错') + (r[0] - 1) * 0.2; }));
   const tHead = T('m8b', '最上面') - 0.1;
-  const WIN = [0, 1, 2].map((si) => [[tCD + 0.2 + si * 0.7, tCD + 0.8 + si * 0.7], [T('m7b') + 0.2 + si * 0.9, T('m7b') + 0.8 + si * 0.9], [T('m8a', '每一摞') + si * 0.5, T('m8a', '每一摞') + si * 0.5 + 0.5], [T('m8d', '一趟') + 0.1 + si * 0.4, T('m8d', '一趟') + 0.1 + si * 0.4 + 0.5], [T('m10', '三个') + si * 0.35, T('m10', '三个') + si * 0.35 + 0.5], [T('m9b', '一到三'), T('m9b', '末尾的一') - 0.1]]);
+  const WIN = [0, 1, 2].map((si) => [[tCD + 0.2 + si * 0.7, tCD + 0.8 + si * 0.7], [T('m7b') + 0.2 + si * 0.9, T('m7b') + 0.8 + si * 0.9], [T('m8a', '每一摞') + si * 0.5, T('m8a', '每一摞') + si * 0.5 + 0.5], [T('m8d', '一趟') + 0.1 + si * 0.4, T('m8d', '一趟') + 0.1 + si * 0.4 + 0.5], [T('m10', '三个') + si * 0.35, T('m10', '三个') + si * 0.35 + 0.5]]);
   F((t) => {
     cards.forEach((lst, si) => { let hs = false; const sf = WIN[si].some(([a, b]) => t >= a && t < b); lst.forEach((c) => {
       const taken = t >= stepT[c.id - 1], flash = t >= flashT[c.id] && t < flashT[c.id] + 0.3;
@@ -107,9 +105,6 @@ scene('merge', ({ root, s, c0 }) => {
   // m9：名字
   const bk = mk(gD, 'fn', 100, 690, null, null, ''); css(bk, { fontSize: '68px' }); vanish(bk, 0); appear(bk, T('m9', 'all'));
   h('span', 'dim', bk, 'all_'); const sp1 = h('span', '', bk, '1_3'); h('span', 'dim', bk, '_'); const sp2 = h('span', '', bk, '1');
-  classAt(sp1, 'y', T('m9b', '一到三'), T('m9b', '末尾的一') - 0.05); classAt(sp2, 'y', T('m9b', '末尾的一'));
-  const bn_ = mk(gD, 'lab', 100, 790, null, null, ''); vanish(bn_, 0); appear(bn_, T('m9b', '一到三')); keyed(bn_).at(T('m9b', '一到三'), { html: '1_3：并进来的三次写入' });
-  const bn2 = mk(gD, 'lab', 100, 830, null, null, '末尾的 1：并过 1 次'); show(bn2, T('m9b', '末尾的一') - 0.1, { y: 8 });
   // m10：旧的先标成不活动
   [0, 1, 2].forEach((si) => { const b = mk(gD, 'badge', SX[si], 560, null, null, '不活动'); css(b, { fontSize: '30px' }); show(b, T('m10', '不活动') + si * 0.2, { y: 10 }); sfx('tick', T('m10', '不活动') + si * 0.2, { g: 0.5 }); });
   const q1 = mk(gD, 'lab y', 1380, 900, null, null, '查询：只看新的这一摞'); show(q1, T('m10b') - 0.1, { y: 12 });
@@ -145,7 +140,7 @@ scene('merge', ({ root, s, c0 }) => {
   keyed(cap).at(T('m11d', '一百五十'), { html: '上限约 150 GB（压缩后）' }).at(T('m11e', '只剩'), { html: '只剩一个' });
   // m12：从最下面一层层往上
   const W1 = (a, d = 0.6) => [a, a + d];
-  const LWIN = [0, 1, 2, 3].map((lv) => [W1(T('m11c', '每并一层') + lv * 0.8, 0.7), W1(T('m12', '往上') - 1.4 + lv * 0.5, 0.45), W1(T('m12d') + lv * 0.5, 0.45)].concat(lv === 0 ? [W1(T('m11') + 0.1), W1(T('m11b', '九百个'))] : lv === 1 ? [W1(T('m11', '再并')), W1(T('m11b', '一组一组'))] : lv === 2 ? [W1(T('m11b', '再并') - 0.6, 0.7)] : []).concat(lv < 3 ? [W1(T('m11d') + 0.2 + lv * 0.9, 0.6)] : []));
+  const LWIN = [0, 1, 2, 3].map((lv) => [W1(T('m11c', '每并一层') + lv * 0.8, 0.7), W1(T('m12', '往上') - 1.4 + lv * 0.5, 0.45), W1(T('m12d') + lv * 0.5, 0.45), W1(T('m12c', '这么来的') + lv * 0.35, 0.45)].concat(lv === 0 ? [W1(T('m11') + 0.1), W1(T('m11b', '九百个'))] : lv === 1 ? [W1(T('m11', '再并')), W1(T('m11b', '一组一组'))] : lv === 2 ? [W1(T('m11b', '再并') - 0.6, 0.7)] : []).concat(lv < 3 ? [W1(T('m11d') + 0.2 + lv * 0.9, 0.6)] : []));
   F((t) => { NODES.forEach((n) => { if (n.lv < 3) n.el.classList.toggle('on', LWIN[n.lv].some(([a, b]) => t >= a && t < b)); }); });
   NODES.filter((n) => n.lv < 3).forEach((n) => classAt(n.el, 'dead', T('m11e', '只剩') - 0.1, T('m12') - 0.2));   // 只剩一个：下面各层退暗，下一句再亮回来讲来历
   const rootN2 = NODES[NODES.length - 1].el; classWins(rootN2, 'on', [[T('m11e') + 0.2, T('m12') - 0.2], [T('m12', '往上') + 0.6, T('m12b') - 0.2]]);
@@ -166,31 +161,19 @@ scene('merge', ({ root, s, c0 }) => {
   // ── F 一亿人的九十个片段，并成一个 ──
   appear(gF, tEF);
   tableTag(gF, '表 <b>demo.users</b> · 一亿行', tEF);
-  const tmF = termAt(gF, 100, 170, 1060, 174); tmF.line(1, '<span class="out">Ok.</span>', Tend('m13b') - 0.2, {}); tmF.line(2, '<span class="out">0 rows in set. Elapsed: 10.549 sec.</span>', Tend('m13b') - 0.2, {}); vanish(tmF.el, 0); appear(tmF.el, tEF);
+  const tmF = termAt(gF, 100, 170, 1060, 174); tmF.line(1, '<span class="out">Ok.</span>', T('m13b', '用了'), {}); tmF.line(2, '<span class="out">0 rows in set. Elapsed: 10.549 sec.</span>', T('m13b', '用了'), {}); vanish(tmF.el, 0); appear(tmF.el, tEF);
   tmF.line(0, '<span class="pr">:) </span>OPTIMIZE TABLE users FINAL;', T('m13', '并成') - 0.1, { type: 36, cursorUntil: T('m13', 'all') });
   const g90 = [];
   for (let i = 0; i < 90; i++) { const e = mk(gF, 'sq-l', 100 + (i % 15) * 60, 370 + Math.floor(i / 15) * 60, 50, 50); vanish(e, 0); appear(e, tEF + i * 0.015); g90.push(e); }
   const big90 = foldAt(gF, 1100, 370, 700, 350, 'all_1_90_3', 'y'); ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(big90, i, t)); wipe(big90, T('m13', 'all'), { dir: 'l', d: 0.6 }); sfx('chime', T('m13', 'all') + 0.3, { g: 0.6 });
   g90.forEach((e, i) => { classAt(e, 'y', T('m13', '并成') + i * 0.012, T('m13', 'all') + 0.1); vanish(e, T('m13', 'all') + 0.25); });
-  const sec10 = mk(gF, 'huge y', 100, 760, null, null, '0.0 s'); css(sec10, { fontSize: '150px' }); appear(sec10, T('m13b') - 0.05); countTo(sec10, 0, 10.5, T('m13b') - 0.05, Tend('m13b') - T('m13b') - 0.2, (v) => v.toFixed(1) + ' s');
-  const tFG = T('m14') + 1.8;
-  vanish(gF, tFG);
-
-  // ── G MergeTree 家族 ──
-  appear(gG, tFG);
-  const fam = ['MergeTree', 'ReplacingMergeTree', 'SummingMergeTree', 'AggregatingMergeTree', 'CollapsingMergeTree', 'VersionedCollapsingMergeTree', 'CoalescingMergeTree', 'GraphiteMergeTree'];
-  const pf0 = mk(gG, 'lab', 100, 180, null, null, 'MergeTree 家族（还有各自的 Replicated 版本，一共 16 种）'); appear(pf0, tFG);
-  fam.forEach((nm, i) => { const p = mk(gG, 'pill' + (i === 0 ? ' y' : ''), 100 + (i % 2) * 880, 250 + Math.floor(i / 2) * 84, 840, 68, nm); css(p, { fontSize: '30px' }); show(p, tFG + 0.2 + i * 0.3, { y: 14 }); sfx('tick', tFG + 0.2 + i * 0.3, { g: 0.3 }); if (i === 1 || i === 2) classAt(p, 'on', T('m14b') + 0.8 + (i - 1) * 0.6, T('m16')); });
-  const dif = mk(gG, 'h1 y', 100, 640, null, null, '区别只在一处：合并的时候'); css(dif, { fontSize: '56px' }); wipe(dif, T('m14b') - 0.1, { dir: 'l', d: 0.6 });
-  const dif2 = mk(gG, 'h2', 100, 730, null, null, '排序键相同的几行，怎么处理'); wipe(dif2, T('m14b') + 0.4, { dir: 'l', d: 0.6 });
-  const e1 = noteAt(gG, 100, 810, 'ReplacingMergeTree　相同的只留一行\nSummingMergeTree　相同的数值相加'); css(e1, { fontSize: '26px' }); show(e1, T('m14b') + 0.8, { y: 14 });
-  const tGH = T('m16') + 0.8;
-  hide(gG, T('m16') - 0.1, { y: -12, d: 0.8 });
+  const sec10 = mk(gF, 'huge y', 100, 760, null, null, '0.0 s'); css(sec10, { fontSize: '150px' }); appear(sec10, T('m13b') - 0.05); countTo(sec10, 0, 10.5, T('m13b') - 0.05, T('m13b', '用了') - T('m13b'), (v) => v.toFixed(1) + ' s');
+  const tGH = T('m16') - 0.05;
+  vanish(gF, tGH);
 
   // ── H 一亿人排得整整齐齐，在一个片段里 ──
   appear(gH, tGH);
   tableTag(gH, '表 <b>demo.users</b> · 一亿行', tGH);
-  const dvH = noteAt(gH, 100, 868, 'Dave 后来那一行，另在 all_91_91_0 里'); css(dvH, { fontSize: '26px' }); show(dvH, tGH + 1.2, { y: 8 });
   const lh = mk(gH, 'lab y', 100, 170, null, null, 'all_1_90_3 · 一亿行 · 三个列文件（压缩后）'); wipe(lh, tGH, { dir: 'l', d: 0.5 });
   [['id.bin', 383.12, '383 MiB'], ['name.bin', 498.66, '499 MiB'], ['age.bin', 0.529, '529 KiB']].forEach(([nm, v, lab], i) => {
     const y = 270 + i * 190, w = Math.max(8, 1300 * v / 498.66);

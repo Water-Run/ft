@@ -36,28 +36,31 @@ scene('beyond', ({ root, s, c0 }) => {
   appear(gB, tAB);
   const ENG = [['MyISAM', tAB + 0.1], ['InnoDB', tAB + 0.5], ['PostgreSQL', tAB + 0.9], ['SQLite', tAB + 1.3], ['ClickHouse', Math.max(T('s2', '五期') + 0.2, tAB + 1.7)]];
   const COLX = (i) => 100 + i * 346;
-  const heads = [];
+  const ovB = overlay(gB), TW = [110, 300, 110], TX = 960 - (TW[0] + TW[1] + TW[2] - 4) / 2, TY = 704, tT0 = T('s3', '一张表') - 0.2, tHe = T('s5') + 0.6;
   ENG.forEach(([nm, t0], i) => {
     const X = COLX(i);
     const title = mk(gB, 'h2' + (i === 4 ? ' y' : ''), X, 168, null, null, nm); css(title, { fontSize: '34px' }); wipe(title, t0, { dir: 'l', d: 0.4 }); sfx('pop', t0, { g: 0.45 });
     const w = mk(gB, '', X, 228, 320, 410); const st = engineStruct(w, i, t0);
-    // 摆出来的样子：同一张表（编号、姓名、年龄）
-    const tT = T('s3', '一张表') - 0.2 + i * 0.12;
-    const hd = rowAt(gB, X + 7, 660, ['编号', '姓名', '年龄'], [80, 150, 80], 38, 'sm w'); vanish(hd.row, 0); wipe(hd.row, tT, { dir: 'l', d: 0.3 });
-    const tRw = [[1, 'alice', 30], [2, 'bob', 25], [3, 'carol', 41]].map((r, k) => { const rw = rowAt(gB, X + 7, 696 + k * 36, r, [80, 150, 80], 38, 'sm'); vanish(rw.row, 0); wipe(rw.row, tT + 0.1 + k * 0.06, { dir: 'l', d: 0.3 }); return rw; });
+    // 摆出来的样子：都指向同一张表（编号、姓名、年龄）
+    const ar = path(ovB, `M ${X + 160} 646 L ${TX + 50 + i * ((TW[0] + TW[1] + TW[2] - 104) / 4)} ${TY - 6}`, 'accent', { w: 3, arrow: true }); vanish(ar, 0); arrowIn(ar, tT0 + i * 0.1, 0.5);
     // 1 号 alice 在各自结构里的位置：按到达顺序存的（MyISAM 的 MYD、PostgreSQL 的堆）是第 4 个；按键排好的（InnoDB、SQLite）在最前；ClickHouse 是三个列文件里各一格
-    const tH = T('s3', '各不相同') + i * 0.15, tHe = T('s5') + 0.6;
+    const tH = T('s3', '各不相同') + i * 0.15;
     const mine = i === 4 ? st.cols.map((c) => c[0]) : [st.rows[[3, 0, 3, 0][i]]];
-    mine.forEach((e) => classAt(e, 'hl', tH, tHe)); tRw[0].c.forEach((c) => classAt(c, 'y', tT + 0.5, tHe));
-    heads.push(hd);
-    const arr = mk(gB, 'h2 y', X + 272, 616, null, null, '↓'); css(arr, { fontSize: '34px' }); vanish(arr, 0); appear(arr, tT - 0.1);
+    mine.forEach((e) => classAt(e, 'hl', tH, tHe));
   });
   sfx('whoosh', T('s3', '一张表') - 0.2, { g: 0.4 });
   tableTag(gB, '表 <b>demo.users8</b> · 前三行', T('s3', '一张表') - 0.2);
-  // 每一行的项都一样：五张表的表头一起亮
-  heads.forEach((hd, i) => hd.c.forEach((c) => classAt(c, 'on', T('s3c') - 0.1 + i * 0.05, T('s5') + 0.6)));
+  const hdB = rowAt(gB, TX, TY, ['编号', '姓名', '年龄'], TW, 46, 'w'); vanish(hdB.row, 0); wipe(hdB.row, tT0 + 0.5, { dir: 'l', d: 0.35 });
+  const tRw = [[1, 'alice', 30], [2, 'bob', 25], [3, 'carol', 41]].map((r, k) => { const rw = rowAt(gB, TX, TY + 46 + k * 46, r, TW, 46); vanish(rw.row, 0); wipe(rw.row, tT0 + 0.6 + k * 0.08, { dir: 'l', d: 0.35 }); return rw; });
+  tRw[0].c.forEach((c) => classAt(c, 'y', tT0 + 1.0, tHe));
+  // 每一行的项都一样：表头亮
+  hdB.c.forEach((c) => classAt(c, 'on', T('s3c') - 0.1, tHe));
+  // 转场用：一个黄框从一处挪到另一处、变成下一样东西，眼睛跟着走，不整页切换
+  const morph = (a, b, t, d = 0.6) => { const e = mk(world, '', a[0], a[1], a[2], a[3]); css(e, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(e, 0); appear(e, t); tl.fromTo(e, { left: a[0], top: a[1], width: a[2], height: a[3] }, { left: b[0], top: b[1], width: b[2], height: b[3], duration: d, ease: 'power3.inOut', immediateRender: false }, t); vanish(e, t + d + 0.08); return e; };
   const tBC = T('s5') + 0.9;
   hide(gB, tBC, { y: 0, d: 0.3 });
+  // 表 → 文档：表里 alice 那一行放大成 alice 的 JSON 文档
+  morph([TX, TY + 46, TW[0] + TW[1] + TW[2] - 4, 46], [100, 230, 760, 330], tBC - 0.25);
 
   // ── C 天生不整齐的 JSON 文档 ──
   appear(gC, tBC);
@@ -65,17 +68,18 @@ scene('beyond', ({ root, s, c0 }) => {
   const D2 = '{\n  "name": "bob",\n  "age": 25,\n  "tags": ["x", "y", "z"],\n  "pets": {\n    "cat": "tom",\n    "dog": "rex"\n  },\n  "phone": "…",\n  …\n}';
   const d1 = mk(gC, 'panel', 100, 230, 760, 330); const d1t = mk(d1, 'mono', 28, 22, null, null, D1); css(d1t, { fontSize: '30px', lineHeight: '1.5' });
   const d2 = mk(gC, 'panel', 960, 230, 860, 640); const d2t = mk(d2, 'mono', 28, 22, null, null, D2); css(d2t, { fontSize: '30px', lineHeight: '1.5' });
-  wipe(d1, tBC, { dir: 'l', d: 0.45 }); wipe(d2, T('s5b', '这个人有三项') + 0.6, { dir: 'l', d: 0.5 });
+  wipe(d1, tBC + 0.3, { dir: 'l', d: 0.45 }); wipe(d2, T('s5b', '这个人有三项') + 0.6, { dir: 'l', d: 0.5 });
   const l1 = mk(gC, 'lab y', 100, 590, null, null, '这个人有三项'); show(l1, T('s5b', '三项'), { y: 12 }); const l2 = mk(gC, 'lab y', 960, 890, null, null, '那个人有三十项'); show(l2, T('s5b', '三十项'), { y: 12 });
   const nest = mk(gC, '', 972, 424, 836, 194); css(nest, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(nest, 0); appear(nest, T('s5c') - 0.1);
   const nl = mk(gC, 'badge', 1500, 632, null, null, '套着别的文档'); css(nl, { fontSize: '28px' }); show(nl, T('s5c') - 0.1, { y: 10 }); sfx('pop', T('s5c', '套着'), { g: 0.5 });
   const jj = mk(gC, 'tag o', 100, 700, null, null, 'JSON'); css(jj, { fontSize: '80px' }); slam(jj, T('s5b', 'Jason') - 0.3, { from: 1.2 });
   const tCD = T('s6') + 0.5;
   vanish(gC, tCD);
+  morph([960, 230, 860, 640], [100, 230, 640, 560], tCD - 0.35);
 
   // ── D ClickHouse：拆成列 ──
   appear(gD, tCD);
-  const dd = mk(gD, 'panel', 100, 230, 640, 560); const ddt = mk(dd, 'mono', 24, 20, null, null, D2); css(ddt, { fontSize: '26px', lineHeight: '1.5' }); wipe(dd, tCD, { dir: 'l', d: 0.4 });
+  const dd = mk(gD, 'panel', 100, 230, 640, 560); const ddt = mk(dd, 'mono', 24, 20, null, null, D2); css(ddt, { fontSize: '26px', lineHeight: '1.5' }); wipe(dd, tCD + 0.2, { dir: 'l', d: 0.4 });
   const COLS = ['doc.name', 'doc.age', 'doc.pets.cat', 'doc.pets.dog', 'doc.tags', '…'];
   const cf = COLS.map((nm, i) => { const c = mk(gD, 'cell lg', 900, 230 + i * 90, 560, 74, '<span>' + nm + '</span>'); css(c, { fontSize: '30px' }); vanish(c, 0); appear(c, T('s6b', '每一个字段') + i * 0.18); sfx('tick', T('s6b', '每一个字段') + i * 0.18, { g: 0.3 }); return c; });
   const ar = mk(gD, 'h1 y', 760, 460, null, null, '→'); css(ar, { fontSize: '90px' }); appear(ar, Math.max(T('s6', '拆成列'), tCD + 0.3));
@@ -86,17 +90,21 @@ scene('beyond', ({ root, s, c0 }) => {
   cf.forEach((c, i) => classAt(c, 'y', T('s6c', '要整份') + i * 0.12));
   const q2 = mk(gD, 'badge', 1500, 560, null, null, '得拼回来'); css(q2, { fontSize: '30px' }); show(q2, T('s6c', '要整份') + 0.1, { y: 10 }); sfx('thud', T('s6c', '要整份') + 0.2, { g: 0.5 });
   const q2n = mk(gD, 'mono', 1500, 626, null, null, '读出整份\n885 字节'); css(q2n, { fontSize: '24px', color: 'var(--g3)', lineHeight: '1.4' }); show(q2n, T('s6c', '要整份') + 0.3, { y: 8 });
+  COLS.forEach((nm, i) => morph([900, 230 + i * 90, 560, 74], [124, 270 + i * 64, 560, 44], T('s6c', '重新拼') - 0.25 + i * 0.07, 0.5)); sfx('whoosh', T('s6c', '重新拼') - 0.2, { g: 0.4 });
   const q3n = noteAt(gD, 100, 820, '字节：3 行的演示表 demo.profiles 实测'); css(q3n, { fontSize: '24px' }); show(q3n, T('s6b') + 0.4, { y: 8 });
   const tDE = T('s7') + 0.4;
   vanish(gD, tDE);
+  morph([100, 230, 640, 560], [100, 300, 700, 330], tDE - 0.3);
 
   // ── E 整份文档原样存：MongoDB ──
   appear(gE, tDE);
-  const ds = mk(gE, 'panel y', 100, 300, 700, 330); const dst = mk(ds, 'mono', 28, 20, null, null, D1); css(dst, { fontSize: '30px', lineHeight: '1.5' }); wipe(ds, tDE + 0.6, { dir: 'l', d: 0.5 }); warm(ds, tDE + 1.2, T('s8') - 0.2);
+  const ds = mk(gE, 'panel y', 100, 300, 700, 330); const dst = mk(ds, 'mono', 28, 20, null, null, D1); css(dst, { fontSize: '30px', lineHeight: '1.5' }); wipe(ds, tDE + 0.3, { dir: 'l', d: 0.5 }); warm(ds, tDE + 1.2, T('s8') - 0.2);
   // 一份文档一块，长短各不相同：alice 那块是上面这份
+  morph([100, 300, 700, 330], [100, 716, 252, 56], T('s7b', '原样') + 0.05, 0.6);
   const BW = [[260, 'alice 的整份文档'], [130, 'bob'], [270, 'carol'], [90, '…']], blks = []; let bx = 100;
-  BW.forEach(([w, nm], k) => { const b = mk(gE, 'cell' + (k === 0 ? ' on' : ''), bx, 716, w - 8, 56, '<span>' + nm + '</span>'); css(b, { fontSize: '22px' }); vanish(b, 0); wipe(b, T('s7b', '原样') + 0.3 + k * 0.12, { dir: 'l', d: 0.3 }); blks.push(b); bx += w; });
+  BW.forEach(([w, nm], k) => { const b = mk(gE, 'cell' + (k === 0 ? ' on' : ''), bx, 716, w - 8, 56, '<span>' + nm + '</span>'); css(b, { fontSize: '22px' }); vanish(b, 0); wipe(b, T('s7b', '原样') + 0.6 + k * 0.12, { dir: 'l', d: 0.3 }); blks.push(b); bx += w; });
   const bl = noteAt(gE, 100, 782, '一份文档存成一整块 BSON（JSON 的二进制形式），各块长短不同'); css(bl, { fontSize: '24px' }); show(bl, T('s7b', '原样') + 0.6, { y: 8 });
+  const p6 = mk(gE, 'badge', 900, 258, null, null, 'PART 6'); css(p6, { fontSize: '28px', padding: '10px 18px' }); vanish(p6, 0); wipe(p6, T('s8', 'Mongo D B') - 0.25, { dir: 'l', d: 0.3 }); sfx('tick', T('s8', 'Mongo D B') - 0.2, { g: 0.4 });
   const mg = mk(gE, 'tag', 900, 330, null, null, 'MongoDB'); css(mg, { fontSize: '140px' }); slam(mg, T('s8', 'Mongo D B'), { from: 1.25 }); sfx('thud', T('s8', 'Mongo D B') + 0.1, { g: 0.7 });
   const g2 = glossAt(gE, 900, 560, 920, 'MongoDB', '<b>MongoDB</b>　文档数据库：存的是灵活的、类似 JSON 的文档'); show(g2, T('s8', 'Mongo D B') + 0.5, { y: 12 }); g2.dataset.gloss = 'MongoDB';
   const tmm = termAt(gE, 900, 690, 920, 100); vanish(tmm.el, 0); appear(tmm.el, T('s8b', '问法') - 0.3);
