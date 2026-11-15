@@ -44,7 +44,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r9（out/zh/preview-r9.mp4，17:41）的意见；问题不多就直接正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree、Yandex）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 NOTES「预览与自查」r4–r5 行列出的事实；check.js --final 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | WaterRun 看预览 r10（out/zh/preview-r10.mp4，17:54）的重点处，没问题就出正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree、Yandex）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 NOTES「预览与自查」r4–r5 行列出的事实；check.js --final 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用已选音色 Warm_Bestie 合成全片（实测响度，混音按 rms 对齐），做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
@@ -74,7 +74,7 @@
 | 2 | 一个数据库引擎是如何实现的？——事务性与现代化：InnoDB | zh | 已成片 | [`innodb`](database-engines/innodb/) | 重做版 2026-10-26 发布；旧版 2026-10-18 发布，已归档 |
 | 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做版 2026-11-01 发布（哔哩哔哩 BV1msxp6yEai）；旧版 2026-10-19 发布，已归档 |
 | 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 已成片 | [`sqlite`](database-engines/sqlite/) | 2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ） |
-| 5 | 一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree) | zh | 制作中 | [`clickhouse`](database-engines/clickhouse/) |  |
+| 5 | 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse | zh | 制作中 | [`clickhouse`](database-engines/clickhouse/) |  |
 | 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 计划中 | `mongodb` |  |
 | 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 计划中 | `redis` | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
 
