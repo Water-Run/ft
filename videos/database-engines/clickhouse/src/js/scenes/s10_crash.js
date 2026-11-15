@@ -16,10 +16,10 @@ scene('crash', ({ root, s, c0 }) => {
   const lr = mk(gA, 'lab y', 1040, 226, null, null, 'MergeTree'); vanish(lr, 0); appear(lr, T('r1b') - 0.1);
   const d1 = mk(gA, 'cell y', 1040, 300, 740, 72, '<span>直接把数据写到磁盘上</span>'); vanish(d1, 0); appear(d1, T('r1b', '直接'));
   const d2 = mk(gA, 'cell ghost lg', 1040, 430, 740, 72, '<span>tmp_insert_all_91_91_0</span>'); vanish(d2, 0); appear(d2, T('r1c', '先写临时')); css(d2, { fontSize: '30px' });
-  const d3 = mk(gA, 'h1 y', 1040, 530, null, null, '↓ 写完，改名'); css(d3, { fontSize: '48px' }); vanish(d3, 0); appear(d3, T('r1c', '再改名') - 0.2);
-  const d4 = mk(gA, 'cell y', 1040, 620, 740, 72, '<span>all_91_91_0</span>'); vanish(d4, 0); appear(d4, T('r1c', '再改名')); css(d4, { fontSize: '30px' }); sfx('chime', T('r1c', '再改名') + 0.1, { g: 0.5 });
+  const d3 = mk(gA, 'h1 y', 1040, 530, null, null, '↓ 写完，改名'); css(d3, { fontSize: '48px' }); vanish(d3, 0); appear(d3, T('r1c', '再改名') - 0.6);
+  const d4 = mk(gA, 'cell y', 1040, 620, 740, 72, '<span>all_91_91_0</span>'); vanish(d4, 0); appear(d4, T('r1c', '再改名') - 0.4); css(d4, { fontSize: '30px' }); sfx('chime', T('r1c', '再改名') - 0.3, { g: 0.5 });
   warm(pl, T('r1'), T('r1b')); warm(pr, T('r1b'), T('r2') - 0.3);
-  const tAB = T('r2') + 0.6;
+  const tAB = T('r2') + 1.0;
   vanish(gA, tAB);
 
   // ── B 写一亿行，第四秒强行杀掉 ──
@@ -116,12 +116,13 @@ scene('crash', ({ root, s, c0 }) => {
   const c9b = mk(gF, 'h1 y', 1000, 330, null, null, '校验和 ≠ 原来的'); css(c9b, { fontSize: '64px' }); wipe(c9b, T('r9c', '对不上') - 0.3, { dir: 'l', d: 0.6 }); sfx('thud', T('r9c', '对不上') + 0.1, { g: 0.5 });
   const c9n = noteAt(gF, 1000, 430, '（示意）'); css(c9n, { fontSize: '24px' }); appear(c9n, T('r9c') - 0.1);
   warm(ck, T('r9'), T('r10') - 0.3);
-  const mv = foldAt(gF, 100, 720, 480, 150, 'all_1_1_0', ''); vanish(mv, 0); appear(mv, T('r10') - 0.1);
-  const dt = foldAt(gF, 1000, 720, 820, 150, 'detached/broken-on-start_all_1_1_0', 'ghost'); vanish(dt, 0); appear(dt, T('r10', '挪到一边'));
-  tl.fromTo(mv, { x: 0 }, { x: 0, duration: 0.01 }, 0);
-  to(mv, T('r10', '挪到一边'), { x: 900, duration: 0.8, ease: 'power3.inOut' }); sfx('whoosh', T('r10', '挪到一边'), { g: 0.5 });
-  vanish(mv, T('r10', '挪到一边') + 0.85);
-  const sz = mk(gF, 'lab y', 100, 892, null, null, '大小不对 → 启动时挪到一边'); show(sz, T('r10', '大小不对'), { y: 10 });
+  // 大小不对的片段：启动时整个挪进 detached（移过去的路上淡掉，不和目标文件夹的名字叠在一起）
+  const mv = foldAt(gF, 100, 720, 480, 150, 'all_1_1_0', ''); const tMv = T('r10', '挪到一边');
+  motion(mv, [[0, { a: 0, x: 0 }], [T('r10') - 0.1, { a: 0 }], [T('r10') - 0.08, { a: 1 }], [tMv, { x: 0 }], [tMv + 0.3, { x: 420, a: 1 }], [tMv + 0.75, { x: 900, a: 0 }]], ease.io3);
+  const dt = foldAt(gF, 1000, 720, 820, 150, 'detached/broken-on-start_all_1_1_0', 'ghost'); vanish(dt, 0); appear(dt, tMv); classAt(dt, 'y', tMv + 0.7, tMv + 1.6);
+  sfx('whoosh', tMv, { g: 0.5 });
+  const sz = mk(gF, 'lab y', 100, 892, null, null, '大小不对'); show(sz, T('r10', '大小不对'), { y: 10 }); hide(sz, tMv, { y: 0, d: 0.3 });
+  const sz2 = mk(gF, 'lab y', 1000, 892, null, null, '启动时挪到一边'); vanish(sz2, 0); show(sz2, tMv + 0.6, { y: 10 });
   const er = termAt(gF, 1000, 560, 820, 132); vanish(er.el, 0); appear(er.el, T('r10b', '校验失败') - 0.6);
   er.line(0, '<span class="err">Code: 40. DB::Exception:</span>', T('r10b', '校验失败'), {}); er.line(1, '<span class="err">Checksum doesn\'t match: corrupted data.</span>', T('r10b', '校验失败'), {});
   const stp = ico(gF, 'cross', 1740, 470, 76, 'y', 4); vanish(stp, 0); slam(stp, T('r10b', '报错停下'), { from: 1.6 }); sfx('thud', T('r10b', '报错停下') + 0.1, { g: 0.6 });

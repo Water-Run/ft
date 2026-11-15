@@ -118,7 +118,7 @@ scene('part', ({ root, s, c0 }) => {
   const bigF = foldAt(K, 100, 250, 1200, 520, '新片段 · 一次插入', 'y'); wipe(bigF, T('p6b', '成批') - 0.05, { dir: 'l', d: 0.5 });
   const bn = mk(K, 'big y', 150, 360, null, null, '20,000'); css(bn, { fontSize: '200px' }); slam(bn, T('p6b', '两万行') - 0.2, { from: 1.2 });
   const bu = mk(K, 'h1', 150, 580, null, null, '行'); show(bu, T('p6b', '两万行') - 0.4, { y: 12 }); sfx('thud', T('p6b', '两万行'), { g: 0.6 });
-  for (let r = 0; r < 26; r++) { const ln = mk(K, '', 820, 300 + r * 17, 440, 9); css(ln, { background: '#5E5E55' }); vanish(ln, 0); appear(ln, T('p6b', '成批') + 0.1 + r * 0.025); }
+  for (let r = 0; r < 26; r++) { const ln = mk(K, '', 880, 300 + r * 17, 380, 9); css(ln, { background: '#5E5E55' }); vanish(ln, 0); appear(ln, T('p6b', '成批') + 0.1 + r * 0.025); }
   const bnote = noteAt(K, 150, 690, '官方文档的建议'); css(bnote, { fontSize: '24px' }); show(bnote, T('p6b', '两万行') - 0.2, { y: 12 });
   const tKG = T('p6c') + 1.2;
   vanish(K, tKG);

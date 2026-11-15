@@ -10,8 +10,8 @@ scene('concur', ({ root, s, c0 }) => {
   const XA = (sec) => 200 + 400 * sec;
 
   appear(gA, c0 + 0.05);
-  const lane = mk(gA, 'panel', 80, 118, 1800, 474); vanish(lane, 0); appear(lane, c0 + 0.1);
-  [0, 1, 2, 3].forEach((k) => { const tk = mk(gA, 'fn', XA(k) - 18, 128, null, null, k + ' s'); css(tk, { fontSize: '22px' }); appear(tk, c0 + 0.2); const ln = mk(gA, 'tick', XA(k), 230, null, 366); css(ln, { background: 'var(--k3)' }); appear(ln, c0 + 0.2); });
+  const lane = mk(gA, 'panel', 80, 142, 1800, 450); vanish(lane, 0); appear(lane, c0 + 0.1);
+  [0, 1, 2, 3].forEach((k) => { const tk = mk(gA, 'fn', XA(k) - 18, 152, null, null, k + ' s'); css(tk, { fontSize: '22px' }); appear(tk, c0 + 0.2); const ln = mk(gA, 'tick', XA(k), 230, null, 366); css(ln, { background: 'var(--k3)' }); appear(ln, c0 + 0.2); });
   // Bob
   const bl = mk(gA, 'lab y', 100, 188, null, null, icoSvg('person', 30, 3.4) + '<span style="margin-left:10px">Bob 的慢查询</span>'); css(bl, { fontSize: '26px', display: 'flex', alignItems: 'center' }); wipe(bl, c0 + 0.2, { dir: 'l', d: 0.6 });
   const bGhost = mk(gA, 'bar', XA(0), 232, 1280, 56); css(bGhost, { background: 'var(--k2)', border: '2px dashed var(--g2)' }); wipe(bGhost, T('b1') + 0.1, { dir: 'l', d: 0.8 });
@@ -47,8 +47,8 @@ scene('concur', ({ root, s, c0 }) => {
   const m2 = mk(gA, 'tick y', XA(2), 230, null, 366); vanish(m2, 0); appear(m2, T('b4', '又过一秒'));
   // Bob 不知道：仍读旧片段
   const ovA = overlay(gA);
-  const ub = path(ovA, `M ${XA(2.3)} 290 C ${XA(2.3)} 520 640 560 560 660`, 'accent', { w: 4, dashed: '10 10' }); vanish(ub, 0); arrowIn(ub, T('b5', '旧片段') - 0.3, 0.6);
-  const ubI = ico(gA, 'search', 570, 640, 52, 'y', 3.6); vanish(ubI, 0); appear(ubI, T('b5', '旧片段'));
+  const ub = path(ovA, `M ${XA(2.6)} 290 L ${XA(2.6)} 540 Q ${XA(2.6)} 570 ${XA(2.6) - 30} 570 L 880 570 Q 860 570 860 590`, 'accent', { w: 4, dashed: '10 10' });   // 绕开「5 ms」，从两块面板上方走，落进 Bob 的快照 vanish(ub, 0); arrowIn(ub, T('b5', '旧片段') - 0.3, 0.6);
+  const ubI = ico(gA, 'search', 770, 626, 52, 'y', 3.6); vanish(ubI, 0); appear(ubI, T('b5', '旧片段'));
   classAt(R0, 'y', T('b5b', '还被他用着') - 0.2, T('b6') - 0.1);
   const ppl = (x, t, withC, lab) => {
     const l = mk(gA, 'lab', x, 908, null, null, lab); css(l, { fontSize: '24px' }); vanish(l, 0); appear(l, t);
@@ -79,8 +79,8 @@ scene('concur', ({ root, s, c0 }) => {
   sfx('thud', T('b9', '默认') + 0.05, { g: 0.5 });
   const tg = T('b9', '一起成败') - 0.4, grp = mk(gC, '', 100, 500, 1060, 200); css(grp, { border: '3px dashed var(--y)' }); vanish(grp, 0); wipe(grp, tg, { dir: 'l', d: 0.5 });
   ['INSERT INTO orders VALUES (…);', 'UPDATE users SET … WHERE id = 3;'].forEach((ln, k) => { const e = mk(gC, 'mono', 140, 540 + k * 70, null, null, ln); css(e, { fontSize: '36px' }); vanish(e, 0); wipe(e, tg + 0.3 + k * 0.4, { dir: 'l', d: 0.5 }); });
-  const br = mk(gC, 'h1 y', 1180, 470, null, null, '}'); css(br, { fontSize: '220px', fontWeight: '300' }); vanish(br, 0); appear(br, tg + 1.0);
-  const brl = mk(gC, 'tag', 1300, 560, null, null, '一个事务'); css(brl, { fontSize: '56px' }); slam(brl, tg + 1.1, { from: 1.2 }); sfx('pop', tg + 1.1, { g: 0.5 });
-  for (const e of [grp, br, brl]) classAt(e, 'fade45', T('b9', '默认') + 0.1);
+  const br = mk(gC, 'h1 y', 1180, 470, null, null, '}'); css(br, { fontSize: '220px', fontWeight: '300' }); vanish(br, 0); appear(br, tg + 0.6);
+  const brl = mk(gC, 'tag', 1300, 560, null, null, '一个事务'); css(brl, { fontSize: '56px' }); slam(brl, tg + 0.7, { from: 1.2 }); sfx('pop', tg + 0.7, { g: 0.5 });
+  for (const e of [grp, br, brl]) classAt(e, 'fade45', T('b9', '默认') + 0.5);
   drift(cam, s, 1);
 });

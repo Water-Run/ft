@@ -31,7 +31,7 @@ scene('merge', ({ root, s, c0 }) => {
   const X0 = 100, PX = 1600 / 3000;
   const bar1 = mk(gB, 'bar', X0, 380, 1000 * PX, 48); css(bar1, { background: 'var(--g2)' }); wipe(bar1, tAB, { dir: 'l', d: 0.6 });
   const bar2 = mk(gB, 'bar y', X0 + 1000 * PX, 380, 2000 * PX, 48); wipe(bar2, T('m5', '放慢'), { dir: 'l', d: 0.8 });
-  const tk1 = mk(gB, 'tick y', X0 + 1000 * PX - 1, 330, null, 140); const tk2 = mk(gB, 'tick y', X0 + 3000 * PX - 1, 330, null, 140); appear(tk1, T('m5', '放慢')); appear(tk2, T('m5', '拒绝'));
+  const tk1 = mk(gB, 'tick y', X0 + 1000 * PX - 1, 330, null, 100); const tk2 = mk(gB, 'tick y', X0 + 3000 * PX - 1, 330, null, 100); appear(tk1, T('m5', '放慢')); appear(tk2, T('m5', '拒绝'));
   const pl1 = mk(gB, 'pill y', X0 + 1000 * PX - 160, 250, 320, 64, icoSvg('hourglass', 34, 3.4) + '<span style="margin-left:10px">先放慢插入</span>'); show(pl1, T('m5', '放慢'), { y: 14 }); sfx('pop', T('m5', '放慢'), { g: 0.5 });
   const pl2 = mk(gB, 'pill on', X0 + 3000 * PX - 400, 250, 400, 64, icoSvg('cross', 34, 4) + '<span style="margin-left:10px">再直接拒绝（报错）</span>'); show(pl2, T('m5', '拒绝'), { y: 14 }); sfx('pop', T('m5', '拒绝'), { g: 0.5 });
   const nm1 = mk(gB, 'big y', X0 + 1000 * PX - 130, 480, null, null, '1000'); css(nm1, { fontSize: '90px' }); slam(nm1, T('m5b', '一千'), { from: 1.2 });
@@ -64,8 +64,8 @@ scene('merge', ({ root, s, c0 }) => {
   mA.forEach((e, i) => motion(e, [[0, { x: 0, y: 0 }], [tMg, { x: 0, y: 0 }], [tMg + 0.6, { x: 180 - 120 * i, y: 140 }]]));
   for (const e of mA) classAt(e, 'gone', tMg + 0.62);
   const mBig = mk(gC, 'sq-l y', 1050, 480, 460, 80); vanish(mBig, 0); slam(mBig, tMg + 0.6, { from: 1.15 }); sfx('thud', tMg + 0.62, { g: 0.6 });
-  const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　几个小片段 → 一个大片段'); show(g6, T('m6c') - 0.2, { y: 14, d: 0.35 });
-  const tag6 = mk(gC, 'tag', 1450, 740, null, null, '合并'); slam(tag6, T('m6c', '合并'), { from: 1.3 }); sfx('thud', T('m6c', '合并') + 0.1, { g: 0.6 });
+  const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　几个小片段 → 一个大片段'); show(g6, T('m6c') - 0.5, { y: 14, d: 0.35 });
+  sfx('thud', T('m6c', '合并') + 0.1, { g: 0.6 });
   warm(pf, tBC + 0.4, T('m6b')); warm(pb_, T('m6b'), T('m7') - 0.2);
   const tCD = T('m7') + 0.6;
   vanish(gC, tCD);
@@ -134,11 +134,14 @@ scene('merge', ({ root, s, c0 }) => {
   }
   const pathOf = (n) => { const p = svg('path', { d: '', fill: 'none', stroke: '#A0A0A0', 'stroke-width': 2 }, lines); const par = NODES.find((m) => m.lv === n.lv + 1 && m.k === Math.floor(n.k / 3)); p.setAttribute('d', `M${par.cx},${Y1[par.lv] + NH} L${par.cx},${(Y1[par.lv] + NH + Y1[n.lv]) / 2} L${n.cx},${(Y1[par.lv] + NH + Y1[n.lv]) / 2} L${n.cx},${Y1[n.lv]}`); p.style.opacity = 0; n.path = p; return p; };
   NODES.filter((n) => n.lv < 3).forEach((n) => pathOf(n));
-  const showNode = (n, t) => { appear(n.el, t); if (n.path) tl.fromTo(n.path, { opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: true }, t + 0.1); };
+  const tNode = new Map();
+  const showNode = (n, t) => { appear(n.el, t); tNode.set(n, t); };
   NODES.filter((n) => n.lv === 0).forEach((n, i) => showNode(n, T('m11') + i * 0.04));
   NODES.filter((n) => n.lv === 1).forEach((n, i) => { showNode(n, T('m11', '再并') + i * 0.14); sfx('pop', T('m11', '再并') + i * 0.14, { g: 0.35 }); });
   NODES.filter((n) => n.lv === 2).forEach((n, i) => { showNode(n, T('m11b', '再并') - 0.6 + i * 0.25); sfx('pop', T('m11b', '再并') - 0.6 + i * 0.25, { g: 0.45 }); });
   NODES.filter((n) => n.lv === 3).forEach((n) => { showNode(n, T('m11b', '再并') + 0.05); sfx('thud', T('m11b', '再并') + 0.15, { g: 0.6 }); });
+  // 连线：两头的方块都出现了才画（上一层还没并出来时，不留一根悬空的线）
+  NODES.filter((n) => n.path).forEach((n) => { const par = NODES.find((m) => m.lv === n.lv + 1 && m.k === Math.floor(n.k / 3)); tl.fromTo(n.path, { opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: true }, Math.max(tNode.get(n), tNode.get(par)) + 0.1); });
   const lvLab = [0, 1, 2, 3].map((lv) => { const e = mk(gE, 'big', 100, Y1[lv] - 6, null, null, String(lv)); css(e, { fontSize: '64px', color: 'var(--g3)' }); vanish(e, 0); appear(e, T('m11c', '每并一层') + lv * 0.4); return e; });
   const lvT = mk(gE, 'lab', 100, 170, null, null, '层'); css(lvT, { fontSize: '24px' }); appear(lvT, T('m11c', '每并一层'));
   const rootL = mk(gE, 'fn y', 560, Y1[3] - 50, null, null, 'all_1_900_3'); css(rootL, { fontSize: '40px' }); vanish(rootL, 0); appear(rootL, T('m11c', 'all'));
@@ -156,7 +159,7 @@ scene('merge', ({ root, s, c0 }) => {
   tl.fromTo(tr, { scaleY: 1 }, { scaleY: -1, duration: FD, ease: 'power2.inOut', immediateRender: false }, tF);   // 上下翻过来（不旋转：旋转时两端会扫进字幕条）
   [rootL, cap, l900, lvT, ...lvLab].forEach((e) => { vanish(e, tF - 0.05); });
   const lvLab2 = [0, 1, 2, 3].map((lv) => { const e = mk(gE, 'big', 100, 932 - (Y1[lv] + NH) - 6, null, null, String(lv)); css(e, { fontSize: '64px', color: 'var(--g3)' }); vanish(e, 0); appear(e, tF + FD + 0.05); return e; });
-  const rootL2 = mk(gE, 'fn y', 560, 932 - (Y1[3] + NH) + 8, null, null, 'all_1_900_3 ← 树根'); css(rootL2, { fontSize: '40px' }); vanish(rootL2, 0); appear(rootL2, tF + FD + 0.05);
+  const rootL2 = mk(gE, 'fn y', 560, 932 - (Y1[3] + NH) + 2, null, null, 'all_1_900_3 ← 树根'); css(rootL2, { fontSize: '40px', lineHeight: '48px' }); vanish(rootL2, 0); appear(rootL2, tF + FD + 0.05);
   const l9002 = mk(gE, 'lab', 220, 932 - (Y1[0] + NH) - 56, null, null, '树梢：900 个小片段'); css(l9002, { fontSize: '24px' }); vanish(l9002, 0); appear(l9002, tF + FD + 0.05);
   sfx('whoosh', tF, { g: 0.6 });
   const mt = mk(gE, 'h1', 100, 790, null, null, 'MergeTree  =  合并（Merge）+ 树（Tree）'); css(mt, { fontSize: '52px' }); wipe(mt, T('m12c', 'MergeTree') - 0.1, { dir: 'l', d: 0.7 });

@@ -7,7 +7,9 @@ scene('delete', ({ root, s, c0 }) => {
   // ── A Alice 注销；_row_exists ──
   appear(gA, c0 + 0.05);
   const al = rowAt(gA, 100, 190, ['2050', 'Alice', '43'], [210, 310, 150], 90, 'lg'); wipe(al.row, c0 + 0.1, { dir: 'l', d: 0.5 });
-  al.c.forEach((c) => classAt(c, 'done', T('d1', '注销') + 0.6)); classAt(al.c[1], 'y', T('d1', '注销'), T('d1', '注销') + 0.6);
+  // 要删的人：讲到「注销」时整行描黄（不划删除线：文件里她其实还在，后面靠 _row_exists 标成 0）
+  const alL = mk(gA, 'lab y', 100, 150, null, null, '要删的人'); appear(alL, c0 + 0.1);
+  al.c.forEach((c) => classAt(c, 'y', T('d1', '注销')));
   const tm = termAt(gA, 100, 306, 840, 170); tm.line(1, '<span class="out">Ok.</span>', T('d2') - 0.2, {}); tm.line(2, '<span class="out">0 rows in set. Elapsed: 1.918 sec.</span>', T('d2') - 0.2, {}); tm.line(0, '<span class="pr">:) </span>DELETE FROM users WHERE id = 2050;', T('d1', '注销') - 0.4, { type: 36, cursorUntil: T('d2') });
   vanish(tm.el, 0); appear(tm.el, T('d1', '注销') - 0.45);
   tableTag(gA, '表 <b>demo.users</b> · 一亿行', c0 + 0.1);

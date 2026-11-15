@@ -55,6 +55,9 @@ function arrowIn(p, t, d = 0.8) {
   if (p.getAttribute('stroke-dasharray')) { tl.fromTo(p, { autoAlpha: 0 }, { autoAlpha: 1, duration: d * 0.6, immediateRender: true }, t); return p; }
   p.style.strokeDasharray = len + ' ' + len;
   tl.fromTo(p, { strokeDashoffset: len, autoAlpha: 0 }, { strokeDashoffset: 0, autoAlpha: 1, duration: d, ease: 'power2.inOut', immediateRender: true }, t);
+  // 箭头尖等线描到头才出现（否则描线途中，尖已经悬在终点）
+  const me = p.getAttribute('marker-end');
+  if (me) { let last = null; F((tt) => { const on = tt >= t + d * 0.9; if (on !== last) { if (on) p.setAttribute('marker-end', me); else p.removeAttribute('marker-end'); last = on; } }); }
   return p;
 }
 

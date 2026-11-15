@@ -54,8 +54,8 @@ scene('index', ({ root, s, c0 }) => {
   const dots = mk(gC, 'big', 100 + 12 * 144 - 10, 280, null, null, '…'); css(dots, { fontSize: '60px', color: 'var(--g3)' });
   const tLift = T('i3b2') - 0.1;
   const liftG = granAt(gC, 100 + 4 * 144, 250, 130, 110, ''); classAt(liftG, 'on', 0);
-  motion(liftG, [[0, { a: 0, y: 0 }], [tLift, { a: 0, y: 0 }], [tLift + 0.05, { a: 1 }], [tLift + 0.5, { y: -40, s: 1.12 }], [T('i3c') + 0.2, { y: -40, s: 1.12, a: 1 }], [T('i3c') + 0.5, { y: 0, s: 1, a: 0 }]]);
-  const mu = mk(gC, 'lab y', 100 + 4 * 144, 390, null, null, '要读，就读一整块'); vanish(mu, 0); appear(mu, tLift + 0.45); vanish(mu, T('i3c') + 0.4);
+  motion(liftG, [[0, { a: 0, y: 0 }], [tLift, { a: 0, y: 0 }], [tLift + 0.05, { a: 1 }], [tLift + 0.5, { y: -22, s: 1.08 }], [T('i3c') + 0.2, { y: -22, s: 1.08, a: 1 }], [T('i3c') + 0.5, { y: 0, s: 1, a: 0 }]]);
+  const mu = mk(gC, 'lab y', 100 + 4 * 144, 390, null, null, '要读，就读一整块'); vanish(mu, 0); appear(mu, tLift + 0.45); vanish(mu, T('i3c') + 0.8);
   sfx('whoosh', tLift, { g: 0.4 });
   const e8 = mk(gC, 'lab y', 100, 380, null, null, '↑ 8192 行 = 1 个颗粒'); show(e8, T('i3b', '八千'), { y: 10 }); 
   const g1 = glossAt(gC, 100, 880, 1700, '颗粒', '<b>颗粒</b>（granule）　按编号排好后，每连着的 8192 行为一组；读数据、查索引，都以它为最小单位'); show(g1, T('i3b', '颗粒') - 0.1, { y: 14, d: 0.35 }); vanish(g1, T('i5') - 0.2);
@@ -105,7 +105,7 @@ scene('index', ({ root, s, c0 }) => {
   const g3 = glossAt(gE, 100, 730, 1700, '标记', '<b>标记</b>　每列一个标记文件：记着每个颗粒在列文件里从哪里开始'); show(g3, T('i7b') - 0.1, { y: 14, d: 0.35 });
   segs.forEach((sg, k) => { const mk_ = mk(gE, 'fn y', 340 + 10, sg.y + 70, null, null, ['id.cmrk2', 'name.cmrk2', 'age.cmrk2'][k]); css(mk_, { fontSize: '22px' }); vanish(mk_, 0); appear(mk_, T('i7b', '标记') + 0.3 + k * 0.25); });
   segs.forEach((sg, k) => { const w_ = [T('i8', '编号'), T('i8', '姓名'), T('i8', '年龄')][k]; const tq = T('i7', '什么位置'); classWins(sg.cs[0], 'on', [[Math.max(tDE + 0.4, tq - 1.2) + k * 0.25, Math.max(tDE + 0.4, tq - 1.2) + k * 0.25 + 0.7], [w_ - 0.1, 1e9]]); sfx('tick', w_, { g: 0.5 }); classAt(sg.lb, 'y', T('i8', '三个文件') + k * 0.12); });
-  const rd = rowAt(gE, 340, 800, ['2050', 'Alice', '42'], [210, 310, 150], 76, 'lg y'); vanish(rd.row, 0); appear(rd.row, T('i8b') + 0.6); sfx('chime', T('i8b', '挑出') + 0.1, { g: 0.6 });
+  const rd = rowAt(gE, 420, 800, ['2050', 'Alice', '42'], [210, 310, 150], 76, 'lg y'); vanish(rd.row, 0); appear(rd.row, T('i8b') + 0.6); sfx('chime', T('i8b', '挑出') + 0.1, { g: 0.6 });
   const rdl = mk(gE, 'lab y', 100, 816, null, null, '从 8192 行里挑出她'); vanish(rdl, 0); appear(rdl, T('i8b') + 0.6);
   const tE9 = T('i9') + 1.0;
   vanish(gE, tE9);

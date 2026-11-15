@@ -45,31 +45,32 @@ scene('history', ({ root, s, c0 }) => {
   });
 
   // ══ 左上：一个网站，访客在点；左下：每点一下，多一条访问记录 ══
-  const W = winAt(world, 100, 140, 460, 270, '一个网站');
+  const W = winAt(world, 100, 140, 496, 270, '一个网站');
   slide(W.el, c0 + 0.15, { x: -60 });
   const pg = W.body;
-  [[16, 14, 424, 28], [16, 58, 260, 16], [16, 86, 300, 16], [16, 114, 220, 16], [296, 58, 144, 150], [16, 150, 260, 58]].forEach(([x, y, w, hh], i) => { const b = mk(pg, '', x, y, w, hh); css(b, { background: i === 0 || i === 4 ? '#2E2E29' : '#262622' }); });
-  const LOG = mk(world, 'panel', 100, 430, 460, 372);
+  [[16, 14, 460, 28], [16, 58, 280, 16], [16, 86, 320, 16], [16, 114, 240, 16], [316, 58, 160, 150], [16, 150, 280, 58]].forEach(([x, y, w, hh], i) => { const b = mk(pg, '', x, y, w, hh); css(b, { background: i === 0 || i === 4 ? '#2E2E29' : '#262622' }); });
+  const LOG = mk(world, 'panel', 100, 430, 496, 336);
   slide(LOG, c0 + 0.3, { x: -60 });
   const RH = 46, NR = 9;
-  const clip = mk(LOG, '', 10, 10, 436, 348); css(clip, { overflow: 'hidden' });
-  const pool = []; for (let i = 0; i < NR; i++) pool.push(mk(clip, 'rec', 0, 0, 436, RH - 6, ''));
+  const clip = mk(LOG, '', 10, 10, 472, 316); css(clip, { overflow: 'hidden' });   // 正好放下 7 行：只有新的一条滑进来的那一下，最下面一行才被裁半截
+  const pool = []; for (let i = 0; i < NR; i++) pool.push(mk(clip, 'rec', 0, 0, 472, RH - 6, ''));
   const tLog = c0 + 0.5;
   const RATE = [[tLog, 1.2], [T('h9a', '一百二十亿') - 0.2, 9], [T('h9b') + 0.2, 2]];
   const posAt = (t) => { let p = 0; for (let i = 0; i < RATE.length; i++) { const [a, r] = RATE[i]; const b = i + 1 < RATE.length ? RATE[i + 1][0] : Infinity; if (t <= a) break; p += (Math.min(t, b) - a) * r; } return p; };
-  const PGS = ['/news', '/shop', '/search', '/about', '/news'], CTY = ['莫斯科', '喀山', '索契', '圣彼得堡', '喀山'];
+  const PGS = ['/news', '/shop', '/search', '/about', '/news'], CTY = ['莫斯科', '喀山', '索契', '萨马拉', '喀山'];
   const recOf = (k) => {
     const forced = k % 4 === 1;
     const page = forced ? '/news' : PGS[(k * 3 + 2) % 5], city = forced ? '喀山' : CTY[(k * 7 + 3) % 5];
     const uid = forced ? 2000 + ((k >> 2) % 5) * 13 : 1000 + ((k * k * 7 + k * 3) % 41) * 17;
-    const ts = 36000 + k * 3;
-    return { page, city, uid, url: page + '/' + (100 + ((k * 263) % 900)), time: pad2((ts / 3600) | 0) + ':' + pad2(((ts / 60) | 0) % 60) + ':' + pad2(ts % 60) };
+    const ts = 36000 + k * 37;
+    return { page, city, uid, url: page + '/' + (100 + ((k * 263) % 900)), time: pad2((ts / 3600) | 0) + ':' + pad2(((ts / 60) | 0) % 60) };
   };
   const isHit = (r) => r.page === '/news' && r.city === '喀山';
   const tHit0 = T('h2c', '某个页面') + 0.2, tHit1 = T('h4') - 0.2;
   const tUrl0 = T('h6d', '网址') - 0.1, tUrl1 = T('h7') + 0.3;
   // 点击：最近三次点击各留一个扩散的圈；光标停在最新一次点击处
-  const SPOT = (k) => [40 + ((k * 151) % 380), 20 + ((k * 89) % 190)];
+  const SPOT = (k) => [40 + ((k * 151) % 380), 20 + ((k * 89) % 160)];
+  css(pg, { overflow: 'hidden' });
   const rings = [0, 1, 2].map(() => { const r = mk(pg, '', 0, 0, 10, 10); css(r, { border: '3px solid var(--y)', borderRadius: '50%' }); r.style.visibility = 'hidden'; return r; });
   const curI = ico(pg, 'cursor', 0, 0, 34, 'w', 3.4); curI.style.visibility = 'hidden';
   let lastKey = '';
@@ -77,16 +78,18 @@ scene('history', ({ root, s, c0 }) => {
     const p = posAt(t), first = Math.floor(p), fr = p - first, live = t >= tLog;
     const key = first + ':' + Math.round(fr * 40) + ':' + (t >= tHit0 && t < tHit1) + ':' + (t >= tUrl0 && t < tUrl1);
     if (key === lastKey) return; lastKey = key;
+    const fast = t >= RATE[1][0] && t < RATE[2][0];
+    const e = fast ? fr : ease.out3(clamp(fr / 0.3));          // 点一下，这一条马上进来（和点击的圈同时）
     pool.forEach((c, i) => {
-      const k = first - 1 - i, y = (p - 1 - k) * RH;            // 新的一条从上面进来，旧的往下走
+      const k = first - i, y = (i - 1 + e) * RH;                 // 新的一条从上面进来，旧的往下走
       if (!live || k < 0) { c.style.visibility = 'hidden'; return; }
       c.style.visibility = 'visible'; c.style.top = y.toFixed(1) + 'px';
       const r = recOf(k), url = t >= tUrl0 && t < tUrl1;
-      const html = icoTxt('pin', r.city) + icoTxt('doc', url ? r.url : r.page) + icoTxt('clock', r.time) + `<span class="it2 uid">${icoSvg('person', 20, 3.6)}<span>${r.uid}</span></span>`;
+      const col = (ic, tx, w) => icoTxt(ic, tx).replace('class="it2"', `class="it2" style="width:${w}px"`);
+      const html = col('pin', r.city, 100) + (url ? col('doc', r.url, 190) : col('doc', r.page, 124) + col('clock', r.time, 96)) + `<span class="it2 uid">${icoSvg('person', 20, 3.6)}<span>${r.uid}</span></span>`;
       if (c._h !== html) { c.innerHTML = html; c._h = html; }
       c.classList.toggle('y', t >= tHit0 && t < tHit1 && isHit(r));
     });
-    const fast = t >= RATE[1][0] && t < RATE[2][0];
     rings.forEach((r, j) => {
       const k = first - j, age = j + fr;
       if (!live || k < 0 || age > 2.2 || (fast && j > 0)) { r.style.visibility = 'hidden'; return; }
@@ -96,15 +99,14 @@ scene('history', ({ root, s, c0 }) => {
     const [cx, cy] = SPOT(first); curI.style.visibility = live && !fast ? 'visible' : 'hidden'; curI.style.left = (cx - 6) + 'px'; curI.style.top = (cy - 4) + 'px';
   });
   const fieldsT = T('h1', '网站统计') + 0.3;   // 记录里的四项：地点、页面、时间、谁（图标代替列名）
-  const fHi = mk(LOG, '', 6, 6, 444, 44); css(fHi, { border: '3px solid var(--y)' }); vanish(fHi, 0); appear(fHi, fieldsT); vanish(fHi, fieldsT + 1.6);
+  const fHi = mk(LOG, '', 6, 6, 480, 44); css(fHi, { border: '3px solid var(--y)' }); vanish(fHi, 0); appear(fHi, fieldsT); vanish(fHi, fieldsT + 1.6);
 
   // ══ 右：报表窗口（先叫「网站统计」，讲到 Metrica 时换名） ══
   const D = winAt(world, 1250, 170, 570, 470, '网站统计');
   slide(D.el, T('h1', '网站统计') - 0.2, { x: 60 });
-  keyed(D.ti).at(T('h1c', 'Metrica') - 0.1, { html: 'Metrica' }).at(T('h1d', '第二大') - 0.1, { html: 'Metrica · 全球第二大的网站统计平台' }).at(T('h2c') - 0.2, { html: 'Metrica · 报表' });
+  keyed(D.ti).at(T('h1c', 'Metrica') - 0.1, { html: 'Metrica' }).at(T('h1d', '第二大') - 0.1, { html: `<span class="it2">${icoSvg('medal', 28, 3.2)}<span>Metrica · 全球第二大的网站统计平台</span></span>` }).at(T('h2c') - 0.2, { html: 'Metrica · 报表' });
   classAt(D.el, 'y', T('h1c', 'Metrica') - 0.1, T('h2') + 0.2);
-  const medal = ico(D.el, 'medal', 516, -4, 46, 'y', 3.4); vanish(medal, 0); slam(medal, T('h1d', '第二大') - 0.1, { from: 1.6 }); sfx('pop', T('h1d', '第二大'), { g: 0.5 });
-  hide(medal, T('h2') - 0.2, { y: -6, d: 0.3 });
+  sfx('pop', T('h1d', '第二大'), { g: 0.5 });
   const DB = D.body;
   const grp = (t0, t1) => { const g = mk(DB, '', 0, 0, 566, 426); vanish(g, 0); appear(g, t0); if (t1 != null) vanish(g, t1); return g; };
   // 页面访问量的柱子：按记录流现场数出来（三根柱子随记录涨）
@@ -124,7 +126,7 @@ scene('history', ({ root, s, c0 }) => {
       bs.forEach((b, i) => { const hh = Math.round(20 + 280 * cnt[i] / mx); b.style.height = hh + 'px'; b.style.top = (340 - hh) + 'px'; });
     });
   };
-  const gBars = grp(T('h1', '网站统计') + 0.2, T('h2c', '多少') - 0.1);
+  const gBars = grp(T('h1', '网站统计') + 0.2, T('h2c', '页面') + 0.2);
   barsLive(gBars, T('h1', '网站统计'));
   // 记录 → 报表：现场算
   const aLive = path(ov, 'M 572 640 L 1236 640', 'accent', { w: 4 }); vanish(aLive, 0);
@@ -145,21 +147,21 @@ scene('history', ({ root, s, c0 }) => {
   motion(dCur, [[0, { x: 150, y: 220, a: 0 }], [T('h2', '划分') - 0.5, { a: 0 }], [T('h2', '划分') - 0.45, { a: 1 }], [T('h2', '划分') + 0.1, { x: 150, y: 70 }], [T('h2', '选条件') - 0.45, { x: 300, y: 220 }], [T('h2', '选条件') + 0.1, { x: 300, y: 70 }], [T('h2b'), { x: 300, y: 70, a: 1 }], [T('h2b') + 0.3, { a: 0 }]]);
   for (const c of [cA, cB]) classAt(c, 'on', T('h2c', c === cA ? '某个地方' : '某个页面') - 0.05, T('h4') - 0.3);
   // 有多少个不同的人：符合条件的记录在左边亮起，同一个人只算一次
-  const gWho = grp(T('h2c', '多少') - 0.1, T('h4') - 0.3);
+  const gWho = grp(T('h2c', '页面') + 0.2, T('h4') - 0.3);
   const who = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => ico(gWho, 'person', 30 + i * 64, 120, 60, 'y', 3.2));
-  const visN = mk(gWho, 'lab', 30, 220, null, null, ''); const whoN = mk(gWho, 'big y', 30, 270, null, null, ''); css(whoN, { fontSize: '110px' });
+  const visN = mk(gWho, 'lab', 30, 220, null, null, ''); const visS = mk(gWho, 'lab', 200, 220, null, null, '同一个人只算一次：'); void visS; const whoN = mk(gWho, 'big y', 30, 270, null, null, ''); css(whoN, { fontSize: '110px' });
   let lastW = '';
   F((t) => {
     const p = Math.floor(posAt(Math.min(t, T('h2c', '多少')))), u = new Set(); let n = 0;   // 报表是那一刻现场算的：数到那一刻为止
     for (let k = 0; k < p; k++) { const r = recOf(k); if (isHit(r)) { n++; u.add(r.uid); } }
     const key = n + ':' + u.size; if (key === lastW) return; lastW = key;
     who.forEach((w, i) => { w.style.visibility = i < u.size ? 'visible' : 'hidden'; });
-    visN.innerHTML = `${n} 次访问，同一个人只算一次：`; whoN.innerHTML = `${u.size} <span style="font-size:56px">人</span>`;
+    visN.innerHTML = `${n} 次访问`; whoN.innerHTML = `${u.size} <span style="font-size:56px">人</span>`;
   });
   sfx('thud', T('h2c', '多少') + 0.1, { g: 0.5 });
 
   // ══ 中：Yandex 的搜索页（俄罗斯最大的搜索引擎，1997 年上线，总部在莫斯科）与几项服务 ══
-  const YF = mk(world, 'yfr', 604, 128, 1236, 690); const yfl = mk(YF, 'yl', 0, 0, null, null, 'Yandex'); void yfl;
+  const YF = mk(world, 'yfr', 624, 128, 1216, 690); const yfl = mk(YF, 'yl', 0, 0, null, null, 'Yandex'); void yfl;
   vanish(YF, 0); wipe(YF, T('h1b', 'Yandex') - 0.3, { dir: 'l', d: 0.6 });
   const YS = winAt(world, 650, 170, 540, 220, 'yandex.ru');
   slide(YS.el, T('h1b', 'Yandex') - 0.15, { y: -40 }); sfx('pop', T('h1b', 'Yandex'), { g: 0.6 });
@@ -170,9 +172,8 @@ scene('history', ({ root, s, c0 }) => {
   const sBtn = mk(YS.body, 'chip on', 398, 50, 112, 64, 'Найти'); css(sBtn, { height: '64px', fontSize: '26px', justifyContent: 'center' });
   classAt(sBtn, 'y', T('h1b', '最大') - 0.05, T('h1b', '最大') + 0.25);
   const sNote = mk(YS.body, 't-note', 28, 128, null, null, '俄罗斯最大的搜索引擎'); css(sNote, { fontSize: '24px' }); fadeIn(sNote, T('h1b', '俄罗斯') - 0.1);
-  const pinM = ico(world, 'pin', 1120, 120, 64, 'y', 3.4); const pinL = mk(world, 'lab y', 1060, 196, 120, null, '莫斯科'); css(pinL, { textAlign: 'center', fontSize: '26px' });
-  motion(pinM, [[0, { y: -80, a: 0 }], [T('h1b2', '莫斯科') - 0.35, { y: -80, a: 0 }], [T('h1b2', '莫斯科') - 0.34, { a: 1 }], [T('h1b2', '莫斯科'), { y: 0 }], [T('h2') - 0.4, { y: 0, a: 1 }], [T('h2') - 0.1, { y: -12, a: 0 }]], ease.out3);
-  at(pinL, T('h1b2', '莫斯科') + 0.05); sfx('tick', T('h1b2', '莫斯科'), { g: 0.5 });
+  const pinL = mk(YS.body, 'lab y', 310, 122, null, null, icoTxt('pin', '总部 莫斯科', 30)); css(pinL, { fontSize: '26px' }); vanish(pinL, 0); show(pinL, T('h1b2', '莫斯科') - 0.3, { y: -24, d: 0.35 }); sfx('tick', T('h1b2', '莫斯科'), { g: 0.5 });
+  const pinM = pinL;
   // 它的几项服务；其中的统计服务就是 Metrica（一条线连到右边的报表窗口）
   const SV = [['search', '搜索'], ['cart', '电商'], ['ad', '广告'], ['chart', 'Metrica']];
   const tSv = T('h1b2') + 0.9, tMx = T('h1c', 'Metrica');
@@ -193,18 +194,19 @@ scene('history', ({ root, s, c0 }) => {
   const fun = path(ov, 'M 700 196 L 1100 196 L 930 318 L 870 318 Z', 'line', { w: 4, arrow: false }); css(fun, { fill: 'rgba(250,255,105,.06)' });
   vanish(fun, 0); arrowIn(fun, tSum - 0.3, 0.6);
   const funL = mk(world, 'h2', 840, 210, 120, null, 'Σ'); css(funL, { textAlign: 'center', fontSize: '52px' }); at(funL, tSum);
-  const P_in = [[572, 600], [640, 600], [640, 226], [720, 226]];
-  const aIn = path(ov, 'M 572 600 C 640 600 640 226 712 226', 'line', { w: 4 }); vanish(aIn, 0); arrowIn(aIn, tSum - 0.2, 0.5);
+  const P_in = [[608, 600], [664, 600], [664, 226], [720, 226]];
+  const aIn = path(ov, 'M 608 600 C 664 600 664 226 712 226', 'line', { w: 4 }); vanish(aIn, 0); arrowIn(aIn, tSum - 0.2, 0.5);
   flow(P_in, 6, tSum, T('h6d', '网址') - 0.4, 1.3);
   flow([[900, 230], [900, 260], [900, 300], [900, 352]], 3, tSum + 0.6, T('h6d', '网址') - 0.4, 0.9, 12);
   // 汇总表：每个页面、每天的访问量（数是示意，用条的长短表示）
   const SM = mk(world, 'panel', 724, 356, 352, 236); at(SM, tSum + 0.3);
   const smHead = mk(SM, '', 14, 10, 320, 34, icoTxt('doc', '页面', 22) + '<span style="margin:0 10px">×</span>' + icoTxt('calendar', '天', 22)); css(smHead, { font: '600 22px/34px "Sans SC"', color: 'var(--g3)' });
+  const smLabs = [];
   const SMR = [['/news', 1, 0.8], ['/shop', 1, 0.45], ['/search', 1, 0.62], ['/news', 2, 0.7]];
   const smBars = SMR.map(([pn, d, v], i) => {
     const l = mk(SM, 'mono', 14, 54 + i * 44, 200, null, pn + ' 第' + d + '天'); css(l, { fontSize: '22px', color: 'var(--w)' });
     const b = mk(SM, 'bar y', 200, 58 + i * 44, 130 * v, 22); wipe(b, tSum + 0.6 + i * 0.25, { dir: 'l', d: 0.8 });
-    appear(l, tSum + 0.5 + i * 0.25); return b;
+    appear(l, tSum + 0.5 + i * 0.25); smLabs.push(l); return b;
   });
   void smBars;
   // 用户来看时直接取：小表 → 报表
@@ -220,9 +222,9 @@ scene('history', ({ root, s, c0 }) => {
   sfx('blip', tTake);
   // 数据小了很多：原始记录的一大摞，压成一小块（示意）
   const tSmall = T('h4c', '小了');
-  const ghost = mk(world, '', 100, 430, 460, 372); css(ghost, { border: '4px solid var(--w)', background: 'rgba(249,249,249,.06)' }); vanish(ghost, 0);
+  const ghost = mk(world, '', 100, 430, 496, 336); css(ghost, { border: '4px solid var(--w)', background: 'rgba(249,249,249,.06)' }); vanish(ghost, 0);
   set(ghost, T('h4c') - 0.1, { autoAlpha: 1 });
-  tl.fromTo(ghost, { left: 100, top: 430, width: 460, height: 372 }, { left: 724, top: 356, width: 352, height: 236, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, T('h4c') + 0.1);
+  tl.fromTo(ghost, { left: 100, top: 430, width: 496, height: 336 }, { left: 724, top: 356, width: 352, height: 236, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, T('h4c') + 0.1);
   tl.fromTo(ghost, { scale: 1 }, { scale: 0.3, duration: 0.6, ease: 'power3.in', immediateRender: false, transformOrigin: '50% 50%' }, tSmall - 0.1);
   set(ghost, tSmall + 0.55, { autoAlpha: 0 });
   const smallT = mk(world, 't-note', 724, 600, null, null, '示意：一大摞记录，汇总成一小张表'); css(smallT, { fontSize: '24px' }); fadeIn(smallT, tSmall + 0.2); hide(smallT, T('h5', '大多数') - 0.2, { y: 0, d: 0.3 });
@@ -251,7 +253,7 @@ scene('history', ({ root, s, c0 }) => {
 
   // ══ 汇总的代价：报表得事先想到；自己组合条件，小表里没有；按网址汇总几乎压不小 ══
   const tPre = T('h6b', '事先');
-  keyed(smHead).at(tPre - 0.1, { html: icoTxt('doc', '页面', 22) + '×' + icoTxt('calendar', '天', 22) + '<span style="margin-left:18px"></span>' + icoTxt('pin', '地区', 22) + '×' + icoTxt('calendar', '天', 22) });
+  keyed(smHead).at(tPre - 0.1, { html: icoTxt('doc', '页面', 22) + '×天<span style="margin-left:22px"></span>' + icoTxt('pin', '地区', 22) + '×天' });
   classAt(smHead, 'y', tPre - 0.1, T('h6b', '组合') - 0.2);
   const gCombo = grp(tPre - 0.1, T('h7') - 0.2);
   const combo = mk(gCombo, 'chip y', 30, 120, null, null, icoTxt('pin', '喀山', 22) + '＋' + icoTxt('doc', '/news', 22) + '＋' + icoTxt('clock', '晚上', 22));
@@ -267,15 +269,15 @@ scene('history', ({ root, s, c0 }) => {
   const tU = T('h6d', '网址'), tU2 = T('h6d', '汇总完');
   keyed(smHead).at(tU - 0.1, { html: icoTxt('doc', '网址', 22) + '×' + icoTxt('calendar', '天', 22) });
   for (const b of smBars) vanish(b, tU - 0.1);
-  const urlRows = [];
-  for (let i = 0; i < 4; i++) {
-    const l = mk(SM, 'mono', 14, 54 + i * 44, 200, null, ''); css(l, { fontSize: '22px', color: 'var(--w)' });
-    const n1 = mk(SM, 'mono y', 290, 54 + i * 44, 40, null, '1'); css(n1, { fontSize: '22px' });
-    vanish(l, 0); vanish(n1, 0); appear(l, tU + 0.2 + i * 0.3); appear(n1, tU + 0.2 + i * 0.3); urlRows.push(l);
-  }
-  // 表头之下的几行跟着进来的网址换：每一个都不同
-  F((t) => { if (t < tU) return; const p = Math.floor(posAt(t)); urlRows.forEach((l, i) => { const v = recOf(Math.max(0, p - 1 - i)).url + ' 第1天'; if (l._v !== v) { l.textContent = v; l._v = v; } }); });
-  for (const l of urlRows) for (const sib of [l]) vanish(sib, T('h7') - 0.2);
+  for (const l of smLabs) vanish(l, tU - 0.1);
+  // 按网址分：几乎每个网址都不一样，每一行的数都是 1
+  ['/news/843', '/shop/954', '/search/580', '/news/317'].forEach((u, i) => {
+    const t0 = tU + 0.2 + i * 0.3;
+    const l = mk(SM, 'mono', 14, 54 + i * 44, 160, null, u); css(l, { fontSize: '22px', color: 'var(--w)' });
+    const d = mk(SM, 'mono dim', 184, 54 + i * 44, 80, null, '第1天'); css(d, { fontSize: '22px' });
+    const n1 = mk(SM, 'mono y', 300, 54 + i * 44, 40, null, '1'); css(n1, { fontSize: '22px' });
+    for (const e of [l, d, n1]) { vanish(e, 0); appear(e, t0); vanish(e, T('h7') - 0.2); }
+  });
   // 两根条：原始记录、汇总之后（示意；按网址时，汇总后不到原来的一半）
   const BZ = mk(world, '', 650, 640, 560, 150); vanish(BZ, 0); appear(BZ, tU - 0.1);
   ico(BZ, 'log', 0, 0, 40, '', 3.2); const bRaw = mk(BZ, 'bar w', 60, 6, 480, 30);
@@ -315,8 +317,8 @@ scene('history', ({ root, s, c0 }) => {
   };
   F((t) => { const n = fillAt(t); stripes.forEach((st, i) => { const v = i < Math.floor(n + 1e-6) ? 'visible' : 'hidden'; if (st.style.visibility !== v) st.style.visibility = v; }); });
   F((t) => { const ck = t >= T('h8', '最初'); stripes.forEach((st) => { const c = ck ? '#73736A' : '#5E5E55'; if (st.style.background !== c) st.style.background = c; }); });
-  const aOS = path(ov, 'M 572 600 C 660 600 690 330 790 330', 'line', { w: 4 }); vanish(aOS, 0); arrowIn(aOS, tIn0 - 0.2, 0.5);
-  const P_os = [[572, 600], [660, 600], [690, 330], [800, 340]];
+  const aOS = path(ov, 'M 608 600 C 720 600 910 220 910 368', 'line', { w: 4 }); vanish(aOS, 0); arrowIn(aOS, tIn0 - 0.2, 0.5);
+  const P_os = [[608, 600], [720, 600], [910, 220], [910, 372]];
   flow(P_os, 5, tIn0, tLock - 0.3, 1.1);
   flow(P_os, 5, tRw + 0.7, T('h9b') + 1, 1.0);
   // 它好用：报表从筒里现场来
@@ -336,7 +338,7 @@ scene('history', ({ root, s, c0 }) => {
   };
   chipFly('1037', tNum - 0.5, false); chipFly(icoTxt('pin', '喀山', 22), tNum - 0.1, true, 'chip w'); chipFly('2004', tNum + 0.3, false); chipFly(icoTxt('doc', '/news', 22), T('h7c', '数字') + 0.1, true, 'chip w');
   sfx('thud', tNum + 0.45, { g: 0.4 }); sfx('thud', T('h7c', '数字') + 0.65, { g: 0.4 });
-  const lim1 = mk(world, 'chip on', CX - 6, CY - 64, null, null, '只收 123'); css(lim1, { fontSize: '24px' }); vanish(lim1, 0); slam(lim1, tNum + 0.4, { from: 1.4 });
+  const lim1 = mk(world, 'chip on', CX + CW + 24, CY + 186, null, null, '只收 123'); css(lim1, { fontSize: '24px' }); vanish(lim1, 0); slam(lim1, tNum + 0.4, { from: 1.4 });
   // 新数据加不进去：一把锁落在筒口，后来的记录在旁边排队
   const lock = ico(world, 'lock', CX + CW / 2 - 34, CY - 70, 68, 'w', 3.4);
   const qs = [0, 1, 2, 3, 4].map((i) => { const q = mk(world, 'rec', 640, 760 - i * 30, 92, 24, ''); q.style.visibility = 'hidden'; return q; });
@@ -344,7 +346,7 @@ scene('history', ({ root, s, c0 }) => {
   sfx('thud', tLock, { g: 0.55 });
   // 每天整个重写一遍：月亮升起，筒里清空、重新写满（排队的那些这时才进去）
   const moon2 = ico(world, 'moon', CX + CW + 30, CY - 40, 60, 'w', 3.2); vanish(moon2, 0); show(moon2, tRw - 0.3, { y: -20, d: 0.4 }); hide(moon2, tRw + 1.7, { y: -10, d: 0.3 });
-  const lim3 = mk(world, 'chip on', CX + CW - 120, CY - 64, null, null, '每夜重写'); css(lim3, { fontSize: '24px' }); vanish(lim3, 0); slam(lim3, tRw + 0.1, { from: 1.4 });
+  const lim3 = mk(world, 'chip on', CX + CW + 24, CY + 250, null, null, '每夜重写'); css(lim3, { fontSize: '24px' }); vanish(lim3, 0); slam(lim3, tRw + 0.1, { from: 1.4 });
   const sweep = mk(cyl, '', 0, 0, CW, CH); css(sweep, { background: 'rgba(250,255,105,.16)', transformOrigin: '50% 0' }); vanish(sweep, 0);
   tl.fromTo(sweep, { autoAlpha: 1, scaleY: 0 }, { scaleY: 1, duration: 1.4, ease: 'none', immediateRender: false }, tRw);
   set(sweep, tRw + 1.45, { autoAlpha: 0 });
@@ -376,11 +378,11 @@ scene('history', ({ root, s, c0 }) => {
 
   // ══ 二〇一四年：一天约一百二十亿次；一次查询几百毫秒扫过几百万行；用户在等 ══
   const tBig = T('h9a', '一百二十亿');
-  const bigN = mk(world, 'big y', 650, 166, null, null, '约 120 亿'); css(bigN, { fontSize: '96px' }); slam(bigN, tBig - 0.1, { from: 1.15 }); sfx('thud', tBig, { g: 0.5 });
-  const bigI = ico(world, 'clock', 1110, 176, 80, 'w', 3.2);
+  const bigN = mk(world, 'big y', 650, 192, null, null, '约 120 亿'); css(bigN, { fontSize: '96px' }); slam(bigN, tBig - 0.1, { from: 1.15 }); sfx('thud', tBig, { g: 0.5 });
+  const bigI = ico(world, 'clock', 1110, 202, 80, 'w', 3.2);
   vanish(bigI, 0); appear(bigI, tBig);
   tl.fromTo(bigI.firstChild, { rotation: 0 }, { rotation: 360, duration: 2.4, ease: 'none', immediateRender: false, transformOrigin: '50% 50%' }, tBig);
-  const bigL = mk(world, 'lab', 656, 278, null, null, '次浏览和点击 / 天　（2014 年 4 月）'); appear(bigL, tBig + 0.2);
+  const bigL = mk(world, 'lab', 656, 304, null, null, '次浏览和点击 / 天　（2014 年 4 月）'); appear(bigL, tBig + 0.2);
   hide(bigN, tY16 - 0.4, { y: -10, d: 0.35 }); hide(bigL, tY16 - 0.4, { y: -10, d: 0.35 }); hide(bigI, tY16 - 0.4, { y: -10, d: 0.35 });
   // 报表窗口里：秒表几百毫秒，一摞几百万行被扫过
   const gQ = grp(T('h9b') - 0.3, tY16 - 0.4);
@@ -413,7 +415,7 @@ scene('history', ({ root, s, c0 }) => {
   hide(code, T('h10a') - 0.2, { y: -10, d: 0.3 });
   // 二〇二一年：Yandex 的框收到只剩 Metrica，ClickHouse 留在框外，换上自己的框
   const tSplit = T('h10a', '分出来') - 0.3;
-  tl.fromTo(YF, { left: 604, width: 1236 }, { left: 1210, width: 630, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, tSplit);
+  tl.fromTo(YF, { left: 624, width: 1216 }, { left: 1210, width: 630, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, tSplit);
   sfx('whoosh', tSplit, { g: 0.5 });
   const CHF = mk(world, 'yfr', CX - 40, CY - 110, CW + 80, CH + 150); css(CHF, { borderStyle: 'solid', borderColor: 'var(--y)' });
   const chl = mk(CHF, 'yl', 0, 0, null, null, ''); css(chl, { color: 'var(--y)' }); chl.innerHTML = icoSvg('building', 26, 3.4) + ' ClickHouse, Inc.'; css(chl, { display: 'flex', alignItems: 'center', gap: '10px' });
@@ -423,7 +425,7 @@ scene('history', ({ root, s, c0 }) => {
   USE.forEach(([ic, y], i) => {
     const t0 = T('h10b', '通用') - 0.2 + i * 0.12;
     const b = ico(world, ic, 300, y - 40, 72, 'w', 3.2); slide(b, t0, { x: -30 });
-    const a = path(ov, `M 384 ${y - 4} C 520 ${y - 4} 600 ${CY + 150} ${CX - 8} ${CY + 150}`, 'line', { w: 3 }); vanish(a, 0); arrowIn(a, t0 + 0.1, 0.5);
+    const a = path(ov, `M 372 ${y - 4} C 520 ${y - 4} 600 ${CY + 150} ${CX - 8} ${CY + 150}`, 'line', { w: 3 }); vanish(a, 0); arrowIn(a, t0 + 0.1, 0.5);
     hide(b, T('h11') - 0.3, { y: -10, d: 0.35 }); hide(a, T('h11') - 0.3, { y: 0, d: 0.3 });
   });
   sfx('tick', T('h10b', '通用'), { g: 0.4 });
@@ -448,13 +450,15 @@ scene('history', ({ root, s, c0 }) => {
   };
   const E1 = ERA(100, 440, '更早的', ['Teradata', 'Vertica', 'Sybase IQ', 'Greenplum'], T('h11') + 0.1, 148);
   // 又贵：价签；装在自家机房：一栋楼里的机柜；批量导入：卡车一车一车地送
-  const bld = ico(E1.b, 'building', 60, 210, 150, 'w', 2.4); vanish(bld, 0); appear(bld, T('h11b', '机房') - 0.2);
-  [[95, 250], [125, 250], [95, 284], [125, 284], [95, 318]].forEach(([x, y], k) => { const lt = mk(E1.b, '', x, y, 22, 20); css(lt, { background: 'var(--y)' }); vanish(lt, 0); appear(lt, T('h11b', '机房') + 0.1 + k * 0.12); });
-  const price = mk(E1.b, 'tag', 230, 230, null, null, icoSvg('tag', 48, 4) + '<span style="margin-left:8px">¥¥</span>'); css(price, { fontSize: '40px', padding: '10px 18px', color: 'var(--k)' }); vanish(price, 0); slam(price, T('h11b', '又贵') - 0.1, { from: 1.4 }); sfx('tick', T('h11b', '又贵'), { g: 0.5 });
-  const truck = ico(E1.b, 'truck', 0, 420, 100, 'w', 3); const tTr = T('h11c', '批量') - 0.6;
-  motion(truck, [[0, { a: 0, x: -40 }], [tTr, { a: 0, x: -40 }], [tTr + 0.1, { a: 1 }], [tTr + 1.2, { x: 140 }], [tTr + 1.6, { x: 140 }], [tTr + 2.6, { x: -40, a: 0 }]], ease.io3);
-  const boxes = [0, 1, 2, 3, 4, 5].map((i) => { const bx = mk(E1.b, '', 250 + (i % 3) * 52, 470 + Math.floor(i / 3) * 52, 44, 44); css(bx, { background: 'var(--y)' }); vanish(bx, 0); appear(bx, tTr + 1.2 + i * 0.12); return bx; });
-  void boxes; sfx('whoosh', tTr + 0.2, { g: 0.35 });
+  // 三行「图标 + 一句话」；讲到哪一项，那一行整条亮起（焦点跟着旁白走），讲下一项时移过去
+  const E1R = [['tag', '贵', T('h11b', '又贵')], ['building', '装在自家机房', T('h11b', '机房')], ['truck', '数据批量导入', T('h11c', '批量')]];
+  E1R.forEach(([ic, tx, t0], i) => {
+    const rb = mk(E1.b, 'chip', 24, 240 + i * 112, 392, 92, icoSvg(ic, 56, 3) + `<span style="margin-left:18px">${tx}</span>`);
+    css(rb, { height: '92px', fontSize: '32px', padding: '0 22px' }); vanish(rb, 0); show(rb, t0 - 0.15, { x: -16, d: 0.35 });
+    const tNext = i + 1 < E1R.length ? E1R[i + 1][2] - 0.15 : T('h11d') - 0.2;
+    classAt(rb, 'on', t0 - 0.15, tNext);
+    sfx('tick', t0, { g: 0.4 });
+  });
   const E2 = ERA(600, 480, '二〇一〇年代初 · 云上', ['Snowflake', 'BigQuery', 'Redshift'], T('h11d') - 0.1, 902, '', AX - 8);
   const cld = ico(E2.b, 'cloud', 110, 230, 260, 'w', 2); vanish(cld, 0); wipe(cld, T('h11d', '云上') - 0.2, { dir: 'b', d: 0.5 });
   [0, 1, 2].forEach((i) => { const d = ico(E2.b, 'db', 160 + i * 56, 360, 48, 'y', 3.4); vanish(d, 0); appear(d, T('h11d', '云上') + 0.2 + i * 0.12); });

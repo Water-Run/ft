@@ -108,7 +108,7 @@ scene('beyond', ({ root, s, c0 }) => {
   const g2 = glossAt(gE, 900, 560, 920, 'MongoDB', '<b>MongoDB</b>　文档数据库：存的是灵活的、类似 JSON 的文档'); show(g2, T('s8', 'Mongo D B') + 0.5, { y: 12 }); g2.dataset.gloss = 'MongoDB';
   const tmm = termAt(gE, 900, 690, 920, 100); vanish(tmm.el, 0); appear(tmm.el, T('s8b', '问法') - 0.3);
   tmm.line(0, '<span class="pr">test&gt; </span>db.users.find({ name: "alice" })', T('s8b', '问法') - 0.2, { type: 30, cursorUntil: T('s8b', 'S Q L') });
-  const nosql = mk(gE, 'tag o', 900, 812, null, null, 'SQL'); css(nosql, { fontSize: '72px', padding: '4px 26px' }); vanish(nosql, 0); slam(nosql, T('s8b', 'S Q L') - 0.6, { from: 1.3 });
-  const noX = ico(gE, 'cross', 920, 800, 110, 'w', 4.5); vanish(noX, 0); slam(noX, T('s8b', 'S Q L') - 0.3, { from: 1.8 }); sfx('thud', T('s8b', 'S Q L') - 0.25, { g: 0.6 }); classAt(nosql, 'fade45', T('s8b', 'S Q L') - 0.3);
+  const nosql = mk(gE, 'tag o', 1000, 812, null, null, 'SQL'); css(nosql, { fontSize: '72px', padding: '4px 26px' }); vanish(nosql, 0); slam(nosql, T('s8b', 'S Q L') - 0.6, { from: 1.3 });
+  const noX = ico(gE, 'cross', 900, 818, 80, 'y', 4.5); vanish(noX, 0); slam(noX, T('s8b', 'S Q L') - 0.3, { from: 1.8 }); sfx('thud', T('s8b', 'S Q L') - 0.25, { g: 0.6 }); classAt(nosql, 'fade45', T('s8b', 'S Q L') - 0.3);
   drift(cam, s, 1);
 });

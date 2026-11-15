@@ -52,34 +52,39 @@ scene('engine', ({ root, s, c0 }) => {
     tiles.push({ e, n, mt }); wipe(e, tB + 0.2 + (i % 12) * 0.04 + Math.floor(i / 12) * 0.09, { dir: 'l', d: 0.3 });
   });
   sfx('riser', T('e3', '八十四') - 1.0, { g: 0.5 }); sfx('thud', T('e3', '八十四') + 0.9, { g: 0.6 });
-  const lbl = (name, t, extra = '') => { const idx = all.findIndex((a) => a[0] === name); const tp = tiles[idx]; const p = mk(B, 'pill y', 130, 886, null, 56, name + extra); css(p, { gap: '10px' }); css(p, { left: Math.max(60, Math.min(1560, X0 + (idx % 12) * (TW + GX) - 80)) + 'px' }); appear(p, t); vanish(p, t + 2.4); classAt(tp.e, 'on', t, t + 2.4); sfx('pop', t, { g: 0.5 });
-    const cx = X0 + (idx % 12) * (TW + GX) + TW / 2, cb = Y0 + Math.floor(idx / 12) * (TH + GY) + TH; const ln = mk(B, '', cx - 1, cb, 3, 886 - cb); css(ln, { background: 'var(--y)' }); vanish(ln, 0); appear(ln, t); vanish(ln, t + 2.4);
+  const lbl = (name, t, extra = '') => { const idx = all.findIndex((a) => a[0] === name); const tp = tiles[idx]; const p = mk(B, 'pill y', 130, 886, null, 56, name + extra); css(p, { gap: '10px' }); css(p, { left: Math.max(60, Math.min(1560, X0 + (idx % 12) * (TW + GX) - 80)) + 'px' }); const tEnd = Math.min(t + 3.0, T('e5') - 0.1); appear(p, t); vanish(p, tEnd); classAt(tp.e, 'on', t, tEnd); sfx('pop', t, { g: 0.5 });
+    const cx = X0 + (idx % 12) * (TW + GX) + TW / 2, cb = Y0 + Math.floor(idx / 12) * (TH + GY) + TH; const ln = mk(B, '', cx - 1, cb, 3, 886 - cb); css(ln, { background: 'var(--y)' }); vanish(ln, 0); appear(ln, t); vanish(ln, tEnd);
     css(p, { left: Math.max(60, Math.min(1380, cx - 150)) + 'px' }); };
-  const mtl = mk(B, 'pill y', 1180, 886, 640, 56, 'MergeTree 家族 16 种'); css(mtl, { left: '60px' }); appear(mtl, T('e4b') - 0.1); vanish(mtl, T('e4b', '分到') - 0.1);
+  const mtl = mk(B, 'pill y', 1180, 886, null, 56, 'MergeTree 家族 16 种'); css(mtl, { left: '60px' }); appear(mtl, T('e4b') - 0.1); vanish(mtl, T('e4b', '分到') - 0.1);
   const SV3 = ' →' + [0, 1, 2].map(() => icoSvg('server', 30, 3.4)).join('');
   lbl('Distributed', T('e4b', '分到'), SV3); lbl('MySQL', T('e4c', 'My S Q L'), ' →' + icoSvg('db', 30, 3.4) + '<span style="font-size:22px">数据在那边</span>'); lbl('Kafka', T('e4c', 'Kafka'), ' →' + icoSvg('log', 30, 3.4) + '<span style="font-size:22px">数据在那边</span>');
   // 真正存数据的几乎都是 MergeTree：别的淡下去
   const tOnly = T('e5');
-  tiles.filter((x) => !x.mt).forEach((x) => to(x.e, tOnly, { opacity: 0.16, duration: 0.5 }));
-  const big = mk(B, 'tag', 360, 400, null, null, 'MergeTree'); slam(big, T('e5b', 'Merge Tree'), { from: 1.3 }); sfx('thud', T('e5b', 'Merge Tree') + 0.1);
-  const g2 = glossAt(B, 360, 560, 1200, 'MergeTree', '<b>MergeTree</b>　存数据的主力；名字带 MergeTree 的共 16 种'); show(g2, T('e5') + 0.3, { y: 14 });
+  tiles.filter((x) => !x.mt).forEach((x, i) => tl.to(x.e, { autoAlpha: 0, scale: 0.6, duration: 0.35, ease: 'power2.in' }, tOnly + (i % 12) * 0.02 + Math.floor(i / 12) * 0.05));
+  const big = mk(B, 'tag', X0, 470, null, null, 'MergeTree'); css(big, { fontSize: '64px' }); vanish(big, 0); slam(big, T('e5b', 'Merge Tree'), { from: 1.3 }); sfx('thud', T('e5b', 'Merge Tree') + 0.1);
+  const g2 = glossAt(B, X0, 620, 1100, 'MergeTree', '<b>MergeTree</b>　留下的这 16 种，都是 MergeTree 的变体'); show(g2, T('e5') + 0.4, { y: 14 });
   const skipN = ['Distributed', 'MySQL', 'Kafka'], sa = tB + 1.0, sb = T('e4b') - 0.1;
-  tiles.forEach((x) => { if (x.mt) classAt(x.e, 'on', T('e4b') - 0.1, T('e4b', '分到') - 0.1); });
-  const tC = T('e6') + 0.6;
+  const onA = T('e4b') - 0.1, onB = T('e4b', '分到') - 0.1, onC = T('e5b', 'Merge Tree') - 0.1;
+  tiles.forEach((x) => { if (x.mt) F((t) => x.e.classList.toggle('on', (t >= onA && t < onB) || t >= onC)); });
+  const tC = T('e6') - 0.1;
   vanish(B, tC);
 
   // ── C 建表时不写引擎，给你的就是它 ──
   appear(C, tC);
   const t2 = termAt(C, 100, 200, 1500, 372);
-  const tOut = Math.max(T('e6', '给你的'), tC + 2.0);
-  t2.line(0, '<span class="pr">:) </span>CREATE TABLE demo.noengine (id UInt32, name String, age UInt8) ORDER BY id;', tC + 0.05, { type: 80, cursor: false });
-  t2.line(1, '<span class="out">Ok.</span>', tC + 1.05, {}); t2.line(2, '<span class="out">0 rows in set.</span>', tC + 1.05, {});
-  t2.line(3, '<span class="pr">:) </span>SELECT engine FROM system.tables WHERE name = \'noengine\';', tC + 1.2, { type: 80, cursorUntil: tOut + 0.5 });
+  const tOut = Math.max(T('e6', '给你的'), tC + 1.5);
+  t2.line(0, '<span class="pr">:) </span>CREATE TABLE demo.noengine (id UInt32, name String, age UInt8) ORDER BY id;', tC + 0.05, { type: 170, cursor: false });
+  t2.line(1, '<span class="out">Ok.</span>', tC + 0.6, {}); t2.line(2, '<span class="out">0 rows in set.</span>', tC + 0.6, {});
+  t2.line(3, '<span class="pr">:) </span>SELECT engine FROM system.tables WHERE name = \'noengine\';', tC + 0.7, { type: 170, cursorUntil: tOut });
   printAt(t2, 4, pretty([{ name: 'engine', values: ['MergeTree'] }]), tOut); t2.line(7, '<span class="out">1 row in set.</span>', tOut, {});
   sfx('chime', tOut + 0.05, { g: 0.6 });
-  const outHi = mk(C, '', 108, 200 + 14 + 5 * 42 - 6, 240, 52); css(outHi, { border: '4px solid var(--y)' }); vanish(outHi, 0); wipe(outHi, tOut + 0.2, { dir: 'l', d: 0.3 });
-  const noE = mk(C, '', 100, 200 + 14 - 4, 1500, 50); void noE;
-  const mtT = mk(C, 'tag', 100, 640, null, null, 'MergeTree'); css(mtT, { fontSize: '72px' }); vanish(mtT, 0); slam(mtT, tOut + 0.4, { from: 1.2 });
+  const outV = t2.rows[5].querySelector('.out'); F((t) => { const c = t >= tOut + 0.2 ? 'var(--y)' : ''; if (outV.style.color !== c) outV.style.color = c; });
+  // 看 MergeTree 就够了：它的几个部分，就是后面几章
+  const mtT = mk(C, 'tag', 100, 640, null, null, 'MergeTree'); css(mtT, { fontSize: '56px' }); vanish(mtT, 0); slam(mtT, T('e7') + 0.1, { from: 1.2 });
+  [['03', '一列挨一列'], ['04', '片段'], ['05', '合并'], ['06', '稀疏索引'], ['07', '改'], ['08', '删'], ['09', '同时读写'], ['10', '出错怎么办']].forEach(([no, ti], i) => {
+    const c = mk(C, 'chip', 100 + (i % 4) * 380, 770 + Math.floor(i / 4) * 64, 360, 50, `<span class="mono dim" style="position:static;margin-right:12px">${no}</span>${ti}`); css(c, { fontSize: '26px' });
+    vanish(c, 0); show(c, T('e7') + 0.5 + i * 0.1, { y: 12, d: 0.3 });
+  });
   vanish(C, T('e8') - 0.2);
 
   // ── D MergeTree = Merge + Tree ──

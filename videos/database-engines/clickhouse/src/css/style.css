@@ -58,7 +58,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .cell.y { border-color: var(--y); color: var(--y); background: var(--k2); }
 .cell.on { background: var(--y); border-color: var(--y); color: var(--k); font-weight: 700; }
 .cell.w { color: var(--w); }
-.cell.done { color: var(--g4); border-color: var(--k3); background: var(--k); text-decoration: line-through; }
+.cell.done { color: transparent; border: 2px dashed var(--g2); background: transparent; }
 .cell.ghost { border-style: dashed; border-color: var(--g2); color: var(--g4); background: var(--k); }
 .cell.ghost.on { border-style: solid; border-color: var(--y); color: var(--k); background: var(--y); font-weight: 700; }
 .cell.dead { color: var(--g4); border-color: var(--k3); background: var(--k); }
