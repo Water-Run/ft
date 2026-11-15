@@ -188,7 +188,7 @@
     {"slug": "excel-internals", "title": {"zh": "Excel 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "word-internals", "title": {"zh": "Word 的底层是什么样的？"}, "series": "office-internals"},
     {"slug": "powerpoint-internals", "title": {"zh": "PowerPoint 的底层是什么样的？"}, "series": "office-internals"},
-    {"slug": "lua-source", "title": {"zh": "Lua源码全解析"}, "status": "planned", "note": "2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。", "series": "source-code"},
+    {"slug": "lua-source", "title": {"zh": "Lua源码全解析"}, "status": "in-progress", "note": "2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。", "series": "source-code"},
     {"slug": "tokei", "series": "source-code", "title": {"zh": "tokei 源码全解析"}},
     {"slug": "ripgrep", "series": "source-code", "title": {"zh": "ripgrep 源码全解析"}},
     {"slug": "parsedown", "series": "source-code", "title": {"zh": "parsedown 源码全解析：简单的Markdown解析器"}},

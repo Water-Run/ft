@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 205 部：已成片 25，制作中 3，计划中 173，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 205 部：已成片 25，制作中 4，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -40,11 +40,12 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-10.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-16.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r5（out/zh/preview-r5.mp4，17:41）的意见；问题不多就直接正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 NOTES「预览与自查」r4–r5 行列出的事实；check.js --final 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [一个数据库引擎是如何实现的？——OLAP和列式存储: ClickHouse(MergeTree)](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 对预览 r9（out/zh/preview-r9.mp4，17:41）的意见；问题不多就直接正式片。正式片之前：核读音（「行」、all_1_3_1、Metrica、Merge Tree、Yandex）；lessons sync 后复核 F19/F22/F24；covers.js 出封面；准备方核 NOTES「预览与自查」r4–r5 行列出的事实；check.js --final 与验收。 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用已选音色 Warm_Bestie 合成全片（实测响度，混音按 rms 对齐），做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
 
@@ -398,7 +399,7 @@
 
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
-| 1 | Lua源码全解析 | zh | 计划中 | [`lua-source`](source-code/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。 |
+| 1 | Lua源码全解析 | zh | 制作中 | [`lua-source`](source-code/lua-source/) | 2026-10-26 由「Lua 源码解析」14 集计划合并为一部独立视频；原主题收拢到本片简报。 2026-10-27 归入「源码全解析」系列。 2026-11-07 策划者改题：片名直接用「Lua源码全解析」，去掉「一个生产级解释器的最小实现」的前缀。 |
 | 2 | tokei 源码全解析 | zh | 计划中 | `tokei` |  |
 | 3 | ripgrep 源码全解析 | zh | 计划中 | `ripgrep` |  |
 | 4 | parsedown 源码全解析：简单的Markdown解析器 | zh | 计划中 | `parsedown` |  |

@@ -37,7 +37,7 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | Lua源码全解析 | zh | 计划中 | [`lua-source`](lua-source/) |
+| 1 | Lua源码全解析 | zh | 制作中 | [`lua-source`](lua-source/) |
 | 2 | tokei 源码全解析 | zh | 计划中 | `tokei` |
 | 3 | ripgrep 源码全解析 | zh | 计划中 | `ripgrep` |
 | 4 | parsedown 源码全解析：简单的Markdown解析器 | zh | 计划中 | `parsedown` |
