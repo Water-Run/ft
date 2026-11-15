@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "ba9a567b032797f6c1ba46941e159b653efec9c757f6a0e506d0fb4b3eacc791",
+      "content_sha256": "39dd59b368400a92be889d95b02df6e3b8b375437d02c7e3e0a77b0418a0b399",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-14T13:12:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：2026-11-14 会话里 WaterRun 看过改动全文（m8c 去掉人名；第 11、12 章章节卡补问句）后选「都按建议改」；其余文字是 2026-11-08 已确认的第 4 稿"
+      "confirmed_at": "2026-11-15T10:40:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：2026-11-15 会话里 WaterRun 看过 7 句旁白与第 12 章章节卡问句的改前改后全文（按 OLAP 讲优势与取舍）后选「按这版改」；其余文字沿用 2026-11-14 与 2026-11-08 的确认；确认后因字幕一行限 26 个字宽，f3b、t3b、t3d 各在分号处拆成两句（f3c、t3b2、t3e），字词未改"
     }
   }
 }

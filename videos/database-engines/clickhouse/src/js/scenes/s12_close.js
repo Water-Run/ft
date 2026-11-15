@@ -16,31 +16,31 @@ scene('close', ({ root, s, c0 }) => {
   const ms = mk(gA, 'huge y', 720, 440, null, null, '< 10 ms'); css(ms, { fontSize: '200px' }); slam(ms, T('t2', '不到十毫秒'), { from: 1.2 }); sfx('chime', T('t2', '不到十毫秒') + 0.1, { g: 0.6 });
   const ml = mk(gA, 'lab', 720, 680, null, null, '一亿人的平均年龄'); appear(ml, T('t2') + 0.2);
   const sv = mk(gA, 'tag o', 720, 760, null, null, '整张表 约 1/7'); css(sv, { fontSize: '80px' }); slam(sv, T('t2b', '七分之一'), { from: 1.2 }); sfx('thud', T('t2b', '七分之一') + 0.1, { g: 0.6 });
-  const sn = mk(gA, 'lab', 720, 880, null, null, '（演示数据上的压缩结果）'); css(sn, { fontSize: '24px' }); appear(sn, T('t2b', '七分之一') - 0.2);
+  const sn = mk(gA, 'lab', 720, 880, null, null, '（演示数据上的压缩结果）'); css(sn, { fontSize: '24px' }); appear(sn, T('t2b', '七分之一') - 0.4);
   const tAB = T('t3') + 1.0;
   vanish(gA, tAB);
 
-  // ── B 得到的，与放弃的 ──
+  // ── B 换来的，与代价放在哪（代价都落在分析不常碰的地方）──
   appear(gB, tAB);
   const pa = mk(gB, 'panel y', 100, 200, 640, 620), pb = mk(gB, 'panel', 800, 200, 1020, 620); wipe(pa, tAB, { dir: 'l', d: 0.4 }); wipe(pb, tAB + 0.1, { dir: 'l', d: 0.4 });
-  mk(gB, 'lab y', 140, 224, null, null, '换来的'); mk(gB, 'lab', 840, 224, null, null, '放弃的');
+  mk(gB, 'lab y', 140, 224, null, null, '换来的'); mk(gB, 'lab', 840, 224, null, null, '代价，都放在分析不常碰的地方');
   const g1 = mk(gB, 'big y', 140, 300, null, null, '< 10 ms'); css(g1, { fontSize: '110px' }); appear(g1, tAB + 0.2);
   const g1l = mk(gB, 'h2', 140, 440, null, null, '一亿人求平均年龄'); appear(g1l, tAB + 0.2);
   const g2 = mk(gB, 'big y', 140, 540, null, null, '约 1/7'); css(g2, { fontSize: '110px' }); appear(g2, tAB + 0.4);
   const g2l = mk(gB, 'h2', 140, 680, null, null, '整张表占的地方'); appear(g2l, tAB + 0.4);
-  const LOSE = [['t3a', '改一个字节，要重写一整列', '表越大越慢'], ['t3b', '找一个人，要读一个颗粒', '八千多行'], ['t3c', '一次只插几行，太浪费', '得成批地写'], ['t3d', '要几条语句一起成败', '事务默认没有']];
+  const LOSE = [['t3a', '改一行：重写一整列', '历史数据不常改', '分析'], ['t3b', '找一个人：读一个颗粒', '要快的是扫一大片', '', 't3b2'], ['t3c', '得成批地写', '零散的，异步插入攒批', '零散'], ['t3d', '多语句事务：默认没有', '那是 OLTP 的日常', '', 't3e']];
   LOSE.forEach(([id, a, b], i) => {
     const y = 290 + i * 128;
-    const row = mk(gB, 'cell lg', 840, y, 940, 108, '<span>' + a + '</span>'); css(row, { fontSize: '36px' }); wipe(row, T(id) - 0.05, { dir: 'l', d: 0.5 });
-    const bd = mk(gB, 'badge', 1500, y + 28, null, null, b); css(bd, { fontSize: '28px', letterSpacing: '0.04em' }); vanish(bd, 0); appear(bd, T(id) + 0.6);
+    const row = mk(gB, 'cell lg', 840, y, 940, 108, '<span>' + a + '</span>'); css(row, { fontSize: '32px' }); wipe(row, T(id) - 0.05, { dir: 'l', d: 0.5 });
+    const bd = mk(gB, 'badge', 1420, y + 30, null, null, b); css(bd, { fontSize: '26px' }); vanish(bd, 0); const tw = LOSE[i][4] ? T(LOSE[i][4]) : T(id, LOSE[i][3]); appear(bd, tw - 0.1); sfx('pop', tw, { g: 0.4 });
     sfx('thud', T(id) + 0.1, { g: 0.5 });
     classAt(row, 'y', T(id), T(id) + 1.0);
     // 每一条配一个小示意：整列重写 / 读整整一个颗粒 / 一次一个小片段 / 事务打不开
     const t1 = T(id) + 0.3, at1 = (e, t) => { vanish(e, 0); appear(e, t); return e; };
-    if (i === 0) for (let k = 0; k < 8; k++) { const c = at1(mk(gB, 'cs13', 1330 + k * 20, y + 32, 16, 44, ''), t1); classAt(c, 'fy', t1 + 0.2 + k * 0.08); }
-    if (i === 1) for (let k = 0; k < 6; k++) { const c = at1(mk(gB, 'gran', 1330 + k * 26, y + 30, 22, 48, ''), t1 + k * 0.04); if (k === 2) classAt(c, 'on', t1 + 0.5); }
-    if (i === 2) for (let k = 0; k < 8; k++) at1(mk(gB, 'fold', 1330 + (k % 4) * 30, y + 26 + Math.floor(k / 4) * 30, 24, 24, ''), t1 + k * 0.1);
-    if (i === 3) { const m = at1(mk(gB, 'mono', 1330, y + 38, null, null, ':) BEGIN'), t1); css(m, { fontSize: '24px', color: 'var(--g3)' }); classAt(m, 'strike', t1 + 0.6); }
+    if (i === 0) for (let k = 0; k < 8; k++) { const c = at1(mk(gB, 'cs13', 1240 + k * 20, y + 32, 16, 44, ''), t1); classAt(c, 'fy', t1 + 0.2 + k * 0.08); }
+    if (i === 1) for (let k = 0; k < 6; k++) { const c = at1(mk(gB, 'gran', 1240 + k * 26, y + 30, 22, 48, ''), t1 + k * 0.04); if (k === 2) classAt(c, 'on', t1 + 0.5); }
+    if (i === 2) for (let k = 0; k < 8; k++) at1(mk(gB, 'fold', 1240 + (k % 4) * 30, y + 26 + Math.floor(k / 4) * 30, 24, 24, ''), t1 + k * 0.1);
+    if (i === 3) { const m = at1(mk(gB, 'mono', 1240, y + 38, null, null, ':) BEGIN'), t1); css(m, { fontSize: '24px', color: 'var(--g3)' }); classAt(m, 'strike', t1 + 0.6); }
   });
   drift(cam, s, -1);
 });

@@ -77,6 +77,5 @@ scene('engine', ({ root, s, c0 }) => {
   slam(w1, T('e8', 'Merge Tree') - 0.1, { from: 1.15 }); slam(w2, T('e8', 'Merge Tree') + 0.3, { from: 1.15 }); sfx('thud', T('e8', 'Merge Tree') + 0.05, { g: 0.7 });
   const z1 = mk(D, 'h1', 130, 640, null, null, '合并'), z2 = mk(D, 'h1 y', 1040, 640, null, null, '树'); css(z1, { fontSize: '88px' }); css(z2, { fontSize: '88px' });
   wipe(z1, T('e8', '合并树'), { dir: 'l', d: 0.5 }); wipe(z2, T('e8', '合并树') + 0.3, { dir: 'l', d: 0.5 });
-  const q8 = mk(D, 'q', 130, 800, null, null, '为什么叫这个名字？'); wipe(q8, T('e8b'), { dir: 'l', d: 0.6 });
   drift(cam, s, 1);
 });

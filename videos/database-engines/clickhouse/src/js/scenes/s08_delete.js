@@ -46,7 +46,6 @@ scene('delete', ({ root, s, c0 }) => {
   const fbn = mk(fb, 't-note', 18, 250, null, null, '连同 Dave 那个片段，一起并成了一个'); css(fbn, { fontSize: '22px' });
   ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(fb, i, t));
   const ng = mk(gC, 'h2 y', 1060, 600, null, null, '新片段里，没有 Alice'); show(ng, T('d5b', '不再有她'), { y: 12 }); sfx('thud', T('d5b', '不再有她') + 0.1, { g: 0.5 });
-  const ng2 = mk(gC, 'h2', 1060, 660, null, null, '隐藏的那一列，也不用了'); show(ng2, T('d5b', '隐藏'), { y: 12 });
   const tm2 = termAt(gC, 100, 760, 1100, 170); tm2.line(1, '<span class="out">Ok.</span>', T('d5c', '手动') + 0.8, {}); tm2.line(2, '<span class="out">0 rows in set. Elapsed: 8.490 sec.</span>', T('d5c', '手动') + 0.8, {}); vanish(tm2.el, 0); appear(tm2.el, T('d5c') - 0.1);
   tm2.line(0, '<span class="pr">:) </span>OPTIMIZE TABLE users FINAL;', T('d5c', '手动') - 0.3, { type: 34, cursorUntil: T('d5c', '手动') + 1.5 });
   const nt = noteAt(gC, 1260, 770, '实验里就是\n手动催的'); show(nt, T('d5c') - 0.1, { y: 12 });

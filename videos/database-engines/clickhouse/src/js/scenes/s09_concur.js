@@ -45,9 +45,6 @@ scene('concur', ({ root, s, c0 }) => {
   const ch1 = mk(gA, 'pill', 100, 900, 800, 52, 'Bob 这次算出的人数：不含 Carol'); css(ch1, { fontSize: '28px' }); show(ch1, T('b6', '没有') - 0.2, { y: 10 });
   const ch2 = mk(gA, 'pill y', 1000, 900, 820, 52, '下一次再查：有了 Carol'); css(ch2, { fontSize: '28px' }); show(ch2, T('b6', '下一次'), { y: 10 }); sfx('chime', T('b6', '下一次') + 0.1, { g: 0.5 });
   vanish(ub, T('b6') - 0.1);
-  // b7：写入不挡着读取（压在两个面板上方的横幅）
-  
-  const t7 = mk(gA, 'tag', 1010, 524, null, null, '写入不挡着读取：谁也不用等谁'); css(t7, { fontSize: '32px', padding: '8px 20px' }); slam(t7, T('b7') - 0.1, { from: 1.2 }); sfx('thud', T('b7'), { g: 0.6 });
   const tAB = T('b8') + 1.0;
   vanish(gA, tAB);
 
@@ -67,7 +64,10 @@ scene('concur', ({ root, s, c0 }) => {
   tm.line(0, '<span class="pr">:) </span>BEGIN TRANSACTION;', T('b9', '事务') - 0.1, { type: 22, cursorUntil: T('b9', '默认') });
   tm.line(1, '<span class="err">Code: 48. DB::Exception: Transactions are not supported. (NOT_IMPLEMENTED)</span>', T('b9', '默认'), {});
   sfx('thud', T('b9', '默认') + 0.05, { g: 0.5 });
-  const tn = mk(gC, 'h1', 100, 520, null, null, '几条语句一起成败：得用事务'); css(tn, { fontSize: '72px' }); wipe(tn, T('b9', '一起成败') - 0.4, { dir: 'l', d: 0.7 });
-  const tn2 = mk(gC, 'h1 y', 100, 650, null, null, '这个版本，默认没有打开'); css(tn2, { fontSize: '72px' }); wipe(tn2, T('b9', '默认') - 0.3, { dir: 'l', d: 0.6 });
+  const tg = T('b9', '一起成败') - 0.4, grp = mk(gC, '', 100, 500, 1060, 200); css(grp, { border: '3px dashed var(--y)' }); vanish(grp, 0); wipe(grp, tg, { dir: 'l', d: 0.5 });
+  ['INSERT INTO orders VALUES (…);', 'UPDATE users SET … WHERE id = 3;'].forEach((ln, k) => { const e = mk(gC, 'mono', 140, 540 + k * 70, null, null, ln); css(e, { fontSize: '36px' }); vanish(e, 0); wipe(e, tg + 0.3 + k * 0.4, { dir: 'l', d: 0.5 }); });
+  const br = mk(gC, 'h1 y', 1180, 470, null, null, '}'); css(br, { fontSize: '220px', fontWeight: '300' }); vanish(br, 0); appear(br, tg + 1.0);
+  const brl = mk(gC, 'tag', 1300, 560, null, null, '一个事务'); css(brl, { fontSize: '56px' }); slam(brl, tg + 1.1, { from: 1.2 }); sfx('pop', tg + 1.1, { g: 0.5 });
+  for (const e of [grp, br, brl]) classAt(e, 'fade45', T('b9', '默认') + 0.1);
   drift(cam, s, 1);
 });

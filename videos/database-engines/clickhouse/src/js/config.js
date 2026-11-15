@@ -23,9 +23,9 @@ window.ENGINE = {
     for (const s of chaps) {
       const ask = (SCRIPT.find((x) => x.id === s.id) || {}).ask;
       const card = h('div', 'chapter', hud, `<div class="part">PART 5</div><div class="no">${s.chap[0]}</div><div class="ti">${s.chap[1]}</div>${ask ? `<div class="ask">${esc(ask)}</div>` : ''}`);
-      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.45;
+      const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.3;
       wipe(card, t0, { dir: 'l', d: 0.4 }); wipeOut(card, t1, { dir: 'r', d: 0.4 });
-      const askEl = card.querySelector('.ask'); if (askEl) wipe(askEl, t0 + 0.4, { dir: 'l', d: 0.4 });
+      const askEl = card.querySelector('.ask'); if (askEl) wipe(askEl, t0 + 0.2, { dir: 'l', d: 0.4 });
       const idx = chaps.indexOf(s);
       chaps.forEach((c2, k) => {
         const sq = h('div', 'csq' + (k < idx ? ' done' : ''), card, ''); css(sq, { left: (100 + k * 56) + 'px' });

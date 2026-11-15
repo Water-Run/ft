@@ -20,10 +20,9 @@ scene('open', ({ root, s }) => {
   ENG.forEach(([nm, sub, tt, how], i) => {
     const tile = mk(tilesBox, 'tile', 100 + i * 440, 112, 400, 360); tiles.push(tile);
     mk(tile, 'nm', 28, 24, null, null, nm);
-    if (sub) mk(tile, 'sb', 28, 82, null, null, sub);
     // 各自的存法：缩小的结构示意（与第 13 章同一套画法，不带文字）
-    const w = mk(tile, '', 112, 112, 320, 380); css(w, { transform: 'scale(0.55)', transformOrigin: '0 0' });
-    const hw = mk(tile, 't-note', 28, 322, null, null, how); css(hw, { fontSize: '22px' });
+    const hw = mk(tile, 't-note', 28, 80, null, null, how); css(hw, { fontSize: '24px' });   // 一句话说出这个引擎存法的特点
+    const w = mk(tile, '', 96, 118, 320, 380); css(w, { transform: 'scale(0.63)', transformOrigin: '0 0' });
     tRows.push(engineStruct(w, i, tt + 0.1, { labels: false }).rows);
     slide(tile, tt - 0.1, { y: i % 2 ? 40 : -40 }); sfx('pop', tt, { g: 0.7, p: -0.6 + i * 0.4 });
   });
@@ -42,7 +41,8 @@ scene('open', ({ root, s }) => {
   const dots2 = mk(gA, 'lab', XA + RW + 16, 592, null, null, '…');
   const hdr = ['编号', '姓名', '年龄'].map((t, k) => mk(gA, 't-note', 100 + [0, WS[0] - 2, WS[0] + WS[1] - 4][k] + 14, 650, null, null, t));
   wipe(rA.row, tOne + 0.2, { dir: 'l', d: 0.5 }); sfx('tick', tOne + 0.3, { g: 0.5 });
-  [['编号', 0], ['姓名', 1], ['年龄', 2]].forEach(([w, k]) => { const tw = T('o2b', w); appear(hdr[k], tw - 0.05); classAt(rA.c[k], 'on', tw - 0.05, tw + 0.85); });
+  const tWs = ['编号', '姓名', '年龄'].map((w) => T('o2b', w) - 0.05);
+  tWs.forEach((tw, k) => { appear(hdr[k], tw); classAt(rA.c[k], 'on', tw, k < 2 ? tWs[k + 1] : tw + 0.8); });
   const tNext = T('o2b', '再下一个人');
   [rB, rC].forEach((r, k) => { wipe(r.row, tNext + k * 0.45, { dir: 'l', d: 0.4 }); sfx('tick', tNext + k * 0.45, { g: 0.5 }); });
   appear(dots1, tNext + 1.0);
@@ -62,18 +62,17 @@ scene('open', ({ root, s }) => {
   sfx('blip', T('o3b', '年龄') + 0.35); sfx('tick', tDel + 0.6, { g: 0.6 });
   // 一次只碰一个人：Alice 那一格上方的黄色括线
   const brk = mk(gA, '', XA, 560, RW, 8); css(brk, { borderTop: '4px solid var(--y)', borderLeft: '4px solid var(--y)', borderRight: '4px solid var(--y)' });
-  const brkL = mk(gA, 'lab y', XA, 512, null, null, '一次只碰一个人');
-  wipe(brk, T('o4', '一个人') - 0.2, { dir: 'l', d: 0.35 }); appear(brkL, T('o4', '一个人') - 0.1);
+  wipe(brk, T('o4', '一个人') - 0.2, { dir: 'l', d: 0.35 });
   const fastT = mk(gA, 'pill y', 1290, 720, null, null, '要快'); css(fastT, { fontSize: '40px', height: '72px' });
   const safeT = mk(gA, 'pill y', 1480, 720, null, null, '还要不出错'); css(safeT, { fontSize: '40px', height: '72px' });
   slam(fastT, T('o4', '要快'), { from: 1.2 }); slam(safeT, T('o4', '不出错') - 0.2, { from: 1.2 });
   sfx('thud', T('o4', '要快') + 0.1, { g: 0.45 }); sfx('thud', T('o4', '不出错'), { g: 0.45 });
   const oltp = mk(gA, 'tag', 1290, 820, null, null, 'OLTP'); css(oltp, { fontSize: '88px' });
   slam(oltp, T('o4b', 'OLTP'), { from: 1.3 }); sfx('thud', T('o4b', 'OLTP') + 0.1);
-  const glT = glossAt(gA, 100, 884, 1120, 'OLTP', '<b>OLTP</b>　联机事务处理：一次只读写少数几行，要快，还要不出错');
+  const glT = glossAt(gA, 100, 884, 1120, 'OLTP', '<b>OLTP</b>　联机事务处理：一次只读写少数几行');
   show(glT, T('o4b') - 0.2, { y: 16, d: 0.35 });
   // 「可要是问的，不是哪一个人呢？」：括线收走，数据带上每一个人都亮起
-  exit(brk, T('o5') - 0.1, { y: -10 }); exit(brkL, T('o5') - 0.1, { y: -10 });
+  exit(brk, T('o5') - 0.1, { y: -10 });
   [rA, rB, rC].forEach((r, k) => { for (const c of r.c) classAt(c, 'w', T('o5', '哪一个') + k * 0.2); });
   for (const tile of tiles) dimTo(tile, T('o5'), 1, 0.35);
   dimTo(tm.el, T('o5'), 1, 0.35);
@@ -124,8 +123,7 @@ scene('open', ({ root, s }) => {
   const nt = noteAt(gB, 1386, 770, '热缓存 · 一亿行 · 本机\n30 次连跑：7–9 毫秒'); show(nt, T('o8', '十毫秒') + 0.5, { y: 14, d: 0.4 }); classAt(nt, 'fade45', T('o10') - 0.1); classAt(tm.el, 'fade45', T('o10') - 0.1);
   // 这几毫秒里读了哪些数据？右上的一组让位给问题
   hide(gR1, T('o9') - 0.25, { y: -10, d: 0.3 });
-  const rq = mk(gB, 'h1 y', RX, 170, null, null, '读了哪些数据？'); css(rq, { fontSize: '80px' });
-  wipe(rq, T('o9', '读了') - 0.1, { dir: 'l', d: 0.45 }); sfx('pop', T('o9', '读了'));
+  sfx('pop', T('o9', '读了'));
   for (const r of real) for (const c of r.c) classAt(c, 'ghost', T('o9', '读了') + 0.2, T('o10'));
   // 行存：整行整行地读
   const rl = mk(gB, 'lab', RX, 300, null, null, '交给一行一行存的数据库：'); appear(rl, T('o10') + 0.1);
@@ -158,9 +156,9 @@ scene('open', ({ root, s }) => {
   const olap = mk(gC, 'tag', RX, 430, null, null, 'OLAP'); css(olap, { fontSize: '88px' }); slam(olap, T('o12', 'OLAP'), { from: 1.3 }); sfx('thud', T('o12', 'OLAP') + 0.1);
   const glA = glossAt(gC, RX, 580, 1000, 'OLAP', '<b>OLAP</b>　联机分析处理：一次扫过很多行，做报表、做统计');
   show(glA, T('o12') - 0.2, { y: 14, d: 0.35 });
-  const q1 = mk(gC, 'h1', RX, 720, null, null, '它是怎么做到的？'); const q2 = mk(gC, 'h1 y', RX, 800, null, null, '为此，又放弃了什么？');
-  wipe(q1, T('o13', '怎么') - 0.1, { dir: 'l', d: 0.5 }); wipe(q2, T('o13', '放弃') - 0.1, { dir: 'l', d: 0.5 });
-  sfx('thud', T('o13', '怎么') + 0.2, { g: 0.5 }); sfx('thud', T('o13', '放弃') + 0.2, { g: 0.5 });
+  const q1 = mk(gC, 'h1', RX, 720, null, null, '它是怎么做到的？'); const q2 = mk(gC, 'h1 y', RX, 800, null, null, '代价放在了哪里？');
+  wipe(q1, T('o13', '怎么') - 0.1, { dir: 'l', d: 0.5 }); wipe(q2, T('o13', '代价') - 0.1, { dir: 'l', d: 0.5 });
+  sfx('thud', T('o13', '怎么') + 0.2, { g: 0.5 }); sfx('thud', T('o13', '代价') + 0.2, { g: 0.5 });
   hide(gC, T('oT') + 1.5, { y: 0, d: 0.3 }); hide(tbl, T('oT') + 1.5, { y: 0, d: 0.3 });
 
   // ══ 片名 ══

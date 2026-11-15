@@ -29,7 +29,6 @@ scene('beyond', ({ root, s, c0 }) => {
   tmq.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('s1b') - 0.05, { type: 34, cursorUntil: T('s1b', 'S Q L') + 1.0 });
   const sql = mk(gA, 'tag', 1200, 640, null, null, 'SQL'); slam(sql, T('s1b', 'S Q L'), { from: 1.3 }); sfx('thud', T('s1b', 'S Q L') + 0.1, { g: 0.5 });
   const g1 = glossAt(gA, 100, 780, 1720, 'SQL', '<b>SQL</b>　用 SELECT、INSERT 这样的语句操作表'); show(g1, T('s1b', 'S Q L') - 0.1, { y: 12, d: 0.35 });
-  const pre = mk(gA, 'h1 y', 100, 880, null, null, '前提：数据得是一张表的样子'); css(pre, { fontSize: '56px' }); wipe(pre, T('s1c') - 0.1, { dir: 'l', d: 0.6 });
   const tAB = T('s2') + 0.6;
   vanish(gA, tAB);
 
@@ -93,9 +92,7 @@ scene('beyond', ({ root, s, c0 }) => {
 
   // ── E 整份文档原样存：MongoDB ──
   appear(gE, tDE);
-  const q = mk(gE, 'h1', 100, 200, null, null, '应用每次要的，都是一整份文档'); css(q, { fontSize: '56px' }); wipe(q, tDE, { dir: 'l', d: 0.6 });
   const ds = mk(gE, 'panel y', 100, 300, 700, 330); const dst = mk(ds, 'mono', 28, 20, null, null, D1); css(dst, { fontSize: '30px', lineHeight: '1.5' }); wipe(ds, tDE + 0.6, { dir: 'l', d: 0.5 }); warm(ds, tDE + 1.2, T('s8') - 0.2);
-  const ke = mk(gE, 'h2 y', 100, 650, null, null, '整份文档，原样存起来'); show(ke, T('s7b', '原样'), { y: 12 });
   // 一份文档一块，长短各不相同：alice 那块是上面这份
   const BW = [[260, 'alice 的整份文档'], [130, 'bob'], [270, 'carol'], [90, '…']], blks = []; let bx = 100;
   BW.forEach(([w, nm], k) => { const b = mk(gE, 'cell' + (k === 0 ? ' on' : ''), bx, 716, w - 8, 56, '<span>' + nm + '</span>'); css(b, { fontSize: '22px' }); vanish(b, 0); wipe(b, T('s7b', '原样') + 0.3 + k * 0.12, { dir: 'l', d: 0.3 }); blks.push(b); bx += w; });

@@ -173,7 +173,6 @@ scene('merge', ({ root, s, c0 }) => {
   const big90 = foldAt(gF, 1100, 370, 700, 350, 'all_1_90_3', 'y'); ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(big90, i, t)); wipe(big90, T('m13', 'all'), { dir: 'l', d: 0.6 }); sfx('chime', T('m13', 'all') + 0.3, { g: 0.6 });
   g90.forEach((e, i) => { classAt(e, 'y', T('m13', '并成') + i * 0.012, T('m13', 'all') + 0.1); vanish(e, T('m13', 'all') + 0.25); });
   const sec10 = mk(gF, 'huge y', 100, 760, null, null, '0.0 s'); css(sec10, { fontSize: '150px' }); appear(sec10, T('m13b') - 0.05); countTo(sec10, 0, 10.5, T('m13b') - 0.05, Tend('m13b') - T('m13b') - 0.2, (v) => v.toFixed(1) + ' s');
-  const l10 = mk(gF, 'h2', 760, 820, null, null, '把一亿行重新写了一遍'); show(l10, T('m13b', '重新'), { y: 12 });
   const tFG = T('m14') + 1.8;
   vanish(gF, tFG);
 

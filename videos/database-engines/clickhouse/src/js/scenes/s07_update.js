@@ -65,7 +65,9 @@ scene('update', ({ root, s, c0 }) => {
   const l2 = mk(gD, 'lab y', 100, 450, null, null, '改一次年龄（一次变更）'); appear(l2, T('u6b', '半秒') - 0.5);
   const r2 = mk(gD, 'bar y', 100, 510, 1500, 56); wipe(r2, T('u6b', '半秒') - 0.4, { dir: 'l', d: 1.2 });
   const t2 = mk(gD, 'big y', 100, 590, null, null, '半秒上下'); css(t2, { fontSize: '120px' }); show(t2, T('u6b', '半秒'), { y: 14 }); sfx('thud', T('u6b', '半秒') + 0.1, { g: 0.5 });
-  const t3 = mk(gD, 'tag', 760, 640, null, null, '慢了几十倍'); css(t3, { fontSize: '90px' }); slam(t3, T('u6b', '几十倍'), { from: 1.25 }); sfx('thud', T('u6b', '几十倍') + 0.1, { g: 0.6 });
+  // 「慢了几十倍」：短条在长条上从头量过去，量了几十个才到头（两根条的长短就是比例）
+  const tR = T('u6b', '几十倍') - 0.3, nR = 68; for (let k = 0; k < nR; k++) { const e = mk(gD, 'bar w', 100 + k * 22, 516, 20, 44); css(e, { background: k % 2 ? '#8C8C82' : '#F9F9F9' }); vanish(e, 0); appear(e, tR + k * 0.02); }
+  sfx('riser', tR, { g: 0.35 });
   const tDE = T('u7') + 1.0;
   vanish(gD, tDE);
 

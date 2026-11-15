@@ -63,7 +63,8 @@ scene('index', ({ root, s, c0 }) => {
   vanish(n12, T('i5', '稀疏索引') - 0.1); vanish(u12, T('i5', '稀疏索引') - 0.1); vanish(n47, T('i5', '稀疏索引') - 0.1);
   const g2 = glossAt(gC, 100, 810, 1700, '稀疏索引', '<b>稀疏索引</b>　一个颗粒一项，小到能整个放进内存'); show(g2, T('i5', '稀疏索引') - 0.1, { y: 14, d: 0.35 }); sfx('thud', T('i5', '稀疏索引') + 0.05, { g: 0.5 });
   const t5 = mk(gC, 'tag', 100, 690, null, null, '稀疏索引'); css(t5, { fontSize: '80px' }); vanish(t5, 0); appear(t5, T('i5', '稀疏索引')); vanish(t5, T('i5b', '只找出') - 0.1);
-  const n5 = mk(gC, 'h1 y', 100, 690, null, null, '只找出她在哪个颗粒里'); css(n5, { fontSize: '56px' }); wipe(n5, T('i5b', '只找出'), { dir: 'l', d: 0.6 });
+  // 「只找出她在哪个颗粒里」：第 0 个颗粒和它那一项索引一起亮（不是某一行）
+  classAt(gr[0], 'on', T('i5b', '只找出') - 0.1, T('i6') + 0.4); classAt(idxC[0], 'on', T('i5b', '颗粒') - 0.05, T('i6') + 0.4); sfx('pop', T('i5b', '只找出'), { g: 0.4 });
   const tCD = T('i6') + 0.4;
   vanish(gC, tCD);
 
@@ -151,11 +152,10 @@ scene('index', ({ root, s, c0 }) => {
   vanish(gG, tGK);
   const gK = groupAt(world); appear(gK, tGK);
   const ob = mk(gK, 'tag', 100, 240, null, null, 'ORDER BY id'); css(ob, { fontSize: '80px' }); slam(ob, T('i13b', '排序键'), { from: 1.25 }); sfx('thud', T('i13b', '排序键') + 0.1, { g: 0.5 });
-  const obh = mk(gK, 'h1', 100, 440, null, null, '照最常用的查询条件来选'); css(obh, { fontSize: '72px' }); wipe(obh, T('i13b', '最常用') - 0.6, { dir: 'l', d: 0.6 });
-  const obn = mk(gK, 'pill', 100, 600, null, null, '常按编号找人 → 按编号排'); css(obn, { fontSize: '32px', height: '68px' }); slam(obn, T('i13b') + 0.3, { from: 1.1 });
-  const obn2 = mk(gK, 'pill', 100, 690, null, null, '常按姓名找人 → 按姓名排'); css(obn2, { fontSize: '32px', height: '68px' }); slam(obn2, T('i13b') + 1.3, { from: 1.1 });
+  const obn = mk(gK, 'pill', 100, 430, null, null, '常按编号找人 → 按编号排'); css(obn, { fontSize: '32px', height: '68px' }); slam(obn, T('i13b') + 0.3, { from: 1.1 });
+  const obn2 = mk(gK, 'pill', 100, 520, null, null, '常按姓名找人 → 按姓名排'); css(obn2, { fontSize: '32px', height: '68px' }); slam(obn2, T('i13b') + 1.3, { from: 1.1 });
   classAt(obn, 'on', T('i14') - 0.2); sfx('pop', T('i13b') + 0.4, { g: 0.4 }); sfx('pop', T('i13b') + 1.4, { g: 0.4 });
-  const obn3 = mk(gK, 'lab y', 760, 614, null, null, '← 这张表'); vanish(obn3, 0); appear(obn3, T('i14') - 0.2);
+  const obn3 = mk(gK, 'lab y', 760, 444, null, null, '← 这张表'); vanish(obn3, 0); appear(obn3, T('i14') - 0.2);
   const tKH = T('i14') + 1.6;
   vanish(gK, tKH);
 

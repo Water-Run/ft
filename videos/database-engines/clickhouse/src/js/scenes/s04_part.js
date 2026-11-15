@@ -105,9 +105,8 @@ scene('part', ({ root, s, c0 }) => {
     const m = foldAt(K, 100 + (i % 10) * 176, 250 + Math.floor(i / 10) * 120, 160, 100, 'all_' + (91 + i), '');
     css(m.nm, { fontSize: '22px', left: '14px', top: '14px' }); vanish(m, 0); appear(m, i === 0 ? tBK + 0.85 : Math.max(T('p6', '一行') + 0.1 + i * ((Tend('p6') - T('p6', '一行') - 0.3) / 40), tBK + 0.9)); if (i === 0) classAt(m, 'y', tBK + 0.85); mini.push(m);
   }
-  const wf = mk(K, 'h2 y', 100, 760, null, null, '每插一行，建一个文件夹'); appear(wf, T('p6', '每次'));
   mini.forEach((m, j) => { if (j) sfx('tick', Math.max(T('p6', '一行') + 0.1 + j * ((Tend('p6') - T('p6', '一行') - 0.3) / 40), tBK + 0.9), { g: 0.15 }); });
-  mini.forEach((m) => vanish(m, T('p6b', '成批'))); vanish(wf, T('p6b', '成批'));
+  mini.forEach((m) => vanish(m, T('p6b', '成批')));
   const bigF = foldAt(K, 100, 250, 1200, 520, '新片段 · 一次插入', 'y'); wipe(bigF, T('p6b', '成批') - 0.05, { dir: 'l', d: 0.5 });
   const bn = mk(K, 'big y', 150, 360, null, null, '20,000'); css(bn, { fontSize: '200px' }); slam(bn, T('p6b', '两万行') - 0.2, { from: 1.2 });
   const bu = mk(K, 'h1', 150, 600, null, null, '行，一次写进一个片段'); show(bu, T('p6b', '两万行') - 0.4, { y: 12 }); sfx('thud', T('p6b', '两万行'), { g: 0.6 });

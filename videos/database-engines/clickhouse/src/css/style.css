@@ -187,3 +187,4 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .cs13.fy .b01 { color: var(--k); }
 .gran.on { background: var(--y); border-color: var(--y); }
 .rs.hl i { background: var(--y); }
+.rs.b22, .rs.b22 i { height: 22px; }

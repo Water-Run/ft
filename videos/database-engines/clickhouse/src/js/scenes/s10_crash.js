@@ -54,7 +54,6 @@ scene('crash', ({ root, s, c0 }) => {
     const e = mk(gC, 'sq-l' + (i < 43 ? ' y' : ''), 100 + (i % 22) * 80, 320 + Math.floor(i / 22) * 80, 66, 60); css(e, { borderStyle: i === 43 ? 'dashed' : 'solid' }); appear(e, tBC); SQ2.push(e);
   }
   vanish(SQ2[43], Math.max(T('r4', '清掉') + 0.8, tBC + 0.8)); sfx('whoosh', Math.max(T('r4', '清掉') + 0.8, tBC + 0.8), { g: 0.4 });
-  const t4 = mk(gC, 'h1', 100, 480, null, null, '表里只有完整的片段，没有半个'); css(t4, { fontSize: '60px' }); wipe(t4, T('r4b') - 0.1, { dir: 'l', d: 0.7 });
   const bar = mk(gC, 'bar', 100, 640, 1720, 56); css(bar, { background: 'var(--g2)' }); wipe(bar, T('r5') - 0.1, { dir: 'l', d: 0.6 });
   const part = mk(gC, 'bar y', 100, 640, 1720 * 0.478, 56); wipe(part, T('r5') + 0.3, { dir: 'l', d: 0.8 });
   SQ2.slice(0, 43).forEach((e, i) => classAt(e, 'hi', T('r5b', '四十三') + i * 0.03, T('r6') + 0.4));
@@ -95,7 +94,7 @@ scene('crash', ({ root, s, c0 }) => {
   const bad = mk(gE, 'badge', 1140, 450, null, null, '启动时发现：新片段坏了'); css(bad, { fontSize: '32px' }); slam(bad, T('r8b', '坏了'), { from: 1.2 }); sfx('thud', T('r8b', '坏了') + 0.1, { g: 0.6 });
   classAt(nw, 'ghost', T('r8b', '坏了')); classAt(nw, 'y', 0, T('r8b', '坏了'));
   old.forEach((f, i) => { classAt(f, 'y', T('r8b', '放回来') + i * 0.2); classAt(f, 'ghost', 0, T('r8b', '放回来') + i * 0.2); });
-  const back = mk(gE, 'h1 y', 100, 560, null, null, '把旧片段放回来'); css(back, { fontSize: '90px' }); wipe(back, T('r8b', '放回来'), { dir: 'l', d: 0.7 }); sfx('chime', T('r8b', '放回来') + 0.3, { g: 0.6 });
+  sfx('chime', T('r8b', '放回来') + 0.3, { g: 0.6 });
   const bn = noteAt(gE, 100, 720, '第一个原因：可能还有人在读（第 08 章）'); css(bn, { fontSize: '28px' }); show(bn, tDE + 0.3, { y: 10 });
   old.forEach((f, i) => warm(f, tDE + 0.6 + i * 0.4, tDE + 1.6 + i * 0.4, '#151515', '#33332A')); warm(nw, tDE + 0.8, T('r8b', '坏了'));
   classAt(nw, 'fade45', Tend('r8b') + 0.2);   // 坏掉的新片段被丢开

@@ -77,6 +77,8 @@ scene('column', ({ root, s, c0 }) => {
   tbl2[2].c.forEach((c) => classAt(c, 'on', tThird, Tend('c7b', 0.4)));
   const lb7 = mk(C, 'lab y', 710, 690, null, null, '三个文件，靠顺序对上：第三个值 = carol'); show(lb7, T('c7', '靠顺序'), { y: 12 }); vanish(lb7, T('c8') - 0.2);
   // c8：排序键
+  // 「这里是编号」：编号那条文件整条亮起（排序键就是它）
+  strips[0].cells.forEach((c, i) => classAt(c, 'on', T('c8', '编号') - 0.1 + i * 0.04, T('c9') + 0.3));
   const ob = mk(C, 'mono y', 710, 680, null, null, 'ORDER BY id'); css(ob, { fontSize: '40px' }); appear(ob, T('c8', '排序键')); vanish(ob, T('c10') - 0.2);
   const g2 = glossAt(C, 710, 770, 1150, '排序键', '<b>排序键</b>　建表时用 ORDER BY 指定：各行在文件里按它排好先后'); show(g2, T('c8', '排序键') - 0.1, { y: 14, d: 0.35 });
   // c9：乱序插入，落到文件里已经排好
