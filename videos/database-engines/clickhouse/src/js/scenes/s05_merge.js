@@ -21,7 +21,6 @@ scene('merge', ({ root, s, c0 }) => {
   const t1 = mk(gA, 'huge', 1420, 680, null, null, '1 ms'); css(t1, { fontSize: '130px' }); slam(t1, T('m3b', '一毫秒'), { from: 1.2 }); sfx('chime', T('m3b', '一毫秒') + 0.1, { g: 0.6 });
   const sw0 = T('m4', '每一个') - 0.2, sw1 = Tend('m4', 0.3);
   F((t) => { const k = clamp((t - sw0) / Math.max(0.5, sw1 - sw0)) * 900; for (let i = 0; i < 900; i++) { const on = t >= sw0 && i < k; if (sq[i]._on !== on) { sq[i]._on = on; sq[i].classList.toggle('y', on); } } });
-  const lsw = mk(gA, 'lab y', 1420, 870, null, null, '← 每个片段都翻一遍'); show(lsw, T('m4') - 0.1, { y: 12 });
   // 翻到第几个：九百个片段一个个亮，旁边数着
   const cntA = mk(gA, 'mono', 1420, 916, null, null, ''); css(cntA, { fontSize: '26px', color: 'var(--g3)' }); F((t) => { const k = Math.round(clamp((t - sw0) / Math.max(0.5, sw1 - sw0)) * 900); const html = t >= sw0 ? '翻过 ' + k + ' / 900 个片段' : ''; if (cntA._h !== html) { cntA._h = html; cntA.textContent = html; } });
   const tAB = T('m5') + 0.5;
@@ -33,8 +32,8 @@ scene('merge', ({ root, s, c0 }) => {
   const bar1 = mk(gB, 'bar', X0, 380, 1000 * PX, 48); css(bar1, { background: 'var(--g2)' }); wipe(bar1, tAB, { dir: 'l', d: 0.6 });
   const bar2 = mk(gB, 'bar y', X0 + 1000 * PX, 380, 2000 * PX, 48); wipe(bar2, T('m5', '放慢'), { dir: 'l', d: 0.8 });
   const tk1 = mk(gB, 'tick y', X0 + 1000 * PX - 1, 330, null, 140); const tk2 = mk(gB, 'tick y', X0 + 3000 * PX - 1, 330, null, 140); appear(tk1, T('m5', '放慢')); appear(tk2, T('m5', '拒绝'));
-  const pl1 = mk(gB, 'pill y', X0 + 1000 * PX - 160, 250, 320, 64, '先放慢插入'); show(pl1, T('m5', '放慢'), { y: 14 }); sfx('pop', T('m5', '放慢'), { g: 0.5 });
-  const pl2 = mk(gB, 'pill on', X0 + 3000 * PX - 400, 250, 400, 64, '再直接拒绝（报错）'); show(pl2, T('m5', '拒绝'), { y: 14 }); sfx('pop', T('m5', '拒绝'), { g: 0.5 });
+  const pl1 = mk(gB, 'pill y', X0 + 1000 * PX - 160, 250, 320, 64, icoSvg('hourglass', 34, 3.4) + '<span style="margin-left:10px">先放慢插入</span>'); show(pl1, T('m5', '放慢'), { y: 14 }); sfx('pop', T('m5', '放慢'), { g: 0.5 });
+  const pl2 = mk(gB, 'pill on', X0 + 3000 * PX - 400, 250, 400, 64, icoSvg('cross', 34, 4) + '<span style="margin-left:10px">再直接拒绝（报错）</span>'); show(pl2, T('m5', '拒绝'), { y: 14 }); sfx('pop', T('m5', '拒绝'), { g: 0.5 });
   const nm1 = mk(gB, 'big y', X0 + 1000 * PX - 130, 480, null, null, '1000'); css(nm1, { fontSize: '90px' }); slam(nm1, T('m5b', '一千'), { from: 1.2 });
   const nm2 = mk(gB, 'big y', X0 + 3000 * PX - 260, 480, null, null, '3000'); css(nm2, { fontSize: '90px' }); slam(nm2, T('m5b', '三千'), { from: 1.2 }); sfx('thud', T('m5b', '三千') + 0.1, { g: 0.6 });
   const z0 = mk(gB, 'fn', X0, 335, null, null, '0'); css(z0, { fontSize: '24px' }); appear(z0, tAB);
@@ -45,19 +44,26 @@ scene('merge', ({ root, s, c0 }) => {
   const slowEl = tmB.rows[1].querySelector('.slow');
   const fewN = mk(gB, 'pill on', 1000, 880, null, null, '实验：上限调成 20，第 21 次插入就报错'); css(fewN, { fontSize: '28px', height: '60px' }); slam(fewN, T('m5b', '三千') + 0.5, { from: 1.1 });
   tableTag(gB, '表 <b>demo.few</b>', T('m5b', '三千') + 0.2); classAt(slowEl, 'y', T('m5c', '没有') - 0.2);
-  const slowN = mk(gB, 'h2 y', 100, 884, null, null, '后台合并，跟不上插入'); show(slowN, T('m5c') - 0.1, { y: 12 });
+  const tRace = T('m5c') - 0.2;
+  [['doc', '插入', 1, 'w'], ['server', '合并', 0.35, 'y']].forEach(([ic, nm, sp, cl], k) => {
+    const y = 590 + k * 50; const i = ico(gB, ic, 100, y, 40, cl, 3.2); const l = mk(gB, 'lab', 152, y + 4, null, null, nm); css(l, { fontSize: '26px' });
+    const b = mk(gB, 'bar ' + (k ? 'y' : 'w'), 240, y + 8, 1200 * sp, 26); css(b, { transformOrigin: '0 50%' });
+    for (const e of [i, l]) { vanish(e, 0); appear(e, tRace); }
+    vanish(b, 0); tl.fromTo(b, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: 'none', immediateRender: false }, tRace + 0.1);
+  });
   const tBC = T('m6') + 0.5;
   vanish(gB, tBC);
 
   // ── C 写入只管写，整理交给后台：合并 ──
   appear(gC, tBC);
   const pf = mk(gC, 'panel', 100, 220, 800, 440); const pb_ = mk(gC, 'panel y', 1020, 220, 800, 440); wipe(pf, tBC, { dir: 'l', d: 0.4 }); appear(pb_, T('m6b', '后台') - 0.3);
-  mk(gC, 'lab', 130, 245, null, null, '写入'); const lb_ = mk(gC, 'lab y', 1050, 245, null, null, '后台'); appear(lb_, T('m6b', '后台') - 0.3);
+  mk(gC, 'lab', 130, 245, null, null, '写入'); const lb_ = mk(gC, 'lab y', 1050, 245, null, null, icoSvg('server', 30, 3.4) + ' 后台'); css(lb_, { display: 'flex', alignItems: 'center', gap: '8px' }); appear(lb_, T('m6b', '后台') - 0.3);
   for (let i = 0; i < 12; i++) { const e = mk(gC, 'sq-l', 130 + (i % 6) * 120, 330 + Math.floor(i / 6) * 110, 100, 80); vanish(e, 0); appear(e, tBC + 0.2 + i * 0.28); sfx('tick', tBC + 0.2 + i * 0.28, { g: 0.25 }); }
-  const wn = mk(gC, 'h2', 130, 590, null, null, '只管写新的片段'); show(wn, T('m6b', '写入') - 0.1, { y: 12 });
   const mA = [0, 1, 2, 3].map((i) => { const e = mk(gC, 'sq-l', 1050 + i * 120, 340, 100, 80); vanish(e, 0); appear(e, T('m6b', '后台') - 0.1 + i * 0.1); return e; });
-  const mBig = mk(gC, 'sq-l y', 1050, 480, 460, 80); wipe(mBig, T('m6c', '并成'), { dir: 'l', d: 0.6 }); sfx('thud', T('m6c', '并成') + 0.3, { g: 0.6 });
-  const wm = mk(gC, 'h2 y', 1050, 590, null, null, '把小的并成大的'); show(wm, T('m6c', '并成'), { y: 12 });
+  const tMg = T('m6c', '并成') - 0.3;
+  mA.forEach((e, i) => motion(e, [[0, { x: 0, y: 0 }], [tMg, { x: 0, y: 0 }], [tMg + 0.6, { x: 180 - 120 * i, y: 140 }]]));
+  for (const e of mA) classAt(e, 'gone', tMg + 0.62);
+  const mBig = mk(gC, 'sq-l y', 1050, 480, 460, 80); vanish(mBig, 0); slam(mBig, tMg + 0.6, { from: 1.15 }); sfx('thud', tMg + 0.62, { g: 0.6 });
   const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　几个小片段 → 一个大片段'); show(g6, T('m6c') - 0.2, { y: 14, d: 0.35 });
   const tag6 = mk(gC, 'tag', 1450, 740, null, null, '合并'); slam(tag6, T('m6c', '合并'), { from: 1.3 }); sfx('thud', T('m6c', '合并') + 0.1, { g: 0.6 });
   warm(pf, tBC + 0.4, T('m6b')); warm(pb_, T('m6b'), T('m7') - 0.2);
@@ -107,7 +113,8 @@ scene('merge', ({ root, s, c0 }) => {
   h('span', 'dim', bk, 'all_'); const sp1 = h('span', '', bk, '1_3'); h('span', 'dim', bk, '_'); const sp2 = h('span', '', bk, '1');
   // m10：旧的先标成不活动
   [0, 1, 2].forEach((si) => { const b = mk(gD, 'badge', SX[si], 560, null, null, '不活动'); css(b, { fontSize: '30px' }); show(b, T('m10', '不活动') + si * 0.2, { y: 10 }); sfx('tick', T('m10', '不活动') + si * 0.2, { g: 0.5 }); });
-  const q1 = mk(gD, 'lab y', 1380, 900, null, null, '查询：只看新的这一摞'); show(q1, T('m10b') - 0.1, { y: 12 });
+  const qI = ico(gD, 'search', 1300, 270, 56, 'y', 3.6); const tQ = T('m10b', '一趟') - 0.5;
+  motion(qI, [[0, { a: 0, y: 0 }], [T('m10b') - 0.1, { a: 0, y: 0 }], [T('m10b'), { a: 1 }], [tQ, { y: 0 }], [tQ + 1.0, { y: 7 * 76 }], [Tend('m10b', 0.4), { y: 7 * 76, a: 1 }], [Tend('m10b', 0.6), { a: 0 }]], (k) => k);
   vanish(gD, T('m11') - 0.1);
 
   // ── E 一层层并成一棵树 ──

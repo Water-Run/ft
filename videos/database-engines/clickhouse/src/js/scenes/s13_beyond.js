@@ -24,7 +24,7 @@ scene('beyond', ({ root, s, c0 }) => {
     tl.set(e, { width: 160 }, tF + 0.001);
   });
   sfx('whoosh', tF, { g: 0.6 });
-  const lt = mk(gA, 'lab y', 1200, 220, null, null, '翻了个面，还是一张表'); wipe(lt, T('s1', '还是一张表') - 0.2, { dir: 'l', d: 0.6 });
+  const lt = mk(gA, '', X0 - 14, Y0 - 14, 5 * 170 + 18, 3 * RH + 20); css(lt, { border: '4px solid var(--y)' }); vanish(lt, 0); wipe(lt, T('s1', '还是一张表') - 0.1, { dir: 'l', d: 0.5 }); vanish(lt, T('s1b'));
   const tmq = termAt(gA, 100, 640, 1000, 90); vanish(tmq.el, 0); appear(tmq.el, T('s1b') - 0.1);
   tmq.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('s1b') - 0.05, { type: 34, cursorUntil: T('s1b', 'S Q L') + 1.0 });
   const sql = mk(gA, 'tag', 1200, 640, null, null, 'SQL'); slam(sql, T('s1b', 'S Q L'), { from: 1.3 }); sfx('thud', T('s1b', 'S Q L') + 0.1, { g: 0.5 });
@@ -69,9 +69,9 @@ scene('beyond', ({ root, s, c0 }) => {
   const d1 = mk(gC, 'panel', 100, 230, 760, 330); const d1t = mk(d1, 'mono', 28, 22, null, null, D1); css(d1t, { fontSize: '30px', lineHeight: '1.5' });
   const d2 = mk(gC, 'panel', 960, 230, 860, 640); const d2t = mk(d2, 'mono', 28, 22, null, null, D2); css(d2t, { fontSize: '30px', lineHeight: '1.5' });
   wipe(d1, tBC + 0.3, { dir: 'l', d: 0.45 }); wipe(d2, T('s5b', '这个人有三项') + 0.6, { dir: 'l', d: 0.5 });
-  const l1 = mk(gC, 'lab y', 100, 590, null, null, '这个人有三项'); show(l1, T('s5b', '三项'), { y: 12 }); const l2 = mk(gC, 'lab y', 960, 890, null, null, '那个人有三十项'); show(l2, T('s5b', '三十项'), { y: 12 });
+  const l1 = mk(gC, 'tag o', 100, 590, null, null, '3 项'); css(l1, { fontSize: '48px', padding: '6px 20px' }); vanish(l1, 0); slam(l1, T('s5b', '三项'), { from: 1.4 }); const l2 = mk(gC, 'tag o', 960, 884, null, null, '30 项'); css(l2, { fontSize: '48px', padding: '6px 20px' }); vanish(l2, 0); slam(l2, T('s5b', '三十项'), { from: 1.4 });
   const nest = mk(gC, '', 972, 424, 836, 194); css(nest, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(nest, 0); appear(nest, T('s5c') - 0.1);
-  const nl = mk(gC, 'badge', 1500, 632, null, null, '套着别的文档'); css(nl, { fontSize: '28px' }); show(nl, T('s5c') - 0.1, { y: 10 }); sfx('pop', T('s5c', '套着'), { g: 0.5 });
+  sfx('pop', T('s5c', '套着'), { g: 0.5 });
   const jj = mk(gC, 'tag o', 100, 700, null, null, 'JSON'); css(jj, { fontSize: '80px' }); slam(jj, T('s5b', 'Jason') - 0.3, { from: 1.2 });
   const tCD = T('s6') + 0.5;
   vanish(gC, tCD);
@@ -83,12 +83,11 @@ scene('beyond', ({ root, s, c0 }) => {
   const COLS = ['doc.name', 'doc.age', 'doc.pets.cat', 'doc.pets.dog', 'doc.tags', '…'];
   const cf = COLS.map((nm, i) => { const c = mk(gD, 'cell lg', 900, 230 + i * 90, 560, 74, '<span>' + nm + '</span>'); css(c, { fontSize: '30px' }); vanish(c, 0); appear(c, T('s6b', '每一个字段') + i * 0.18); sfx('tick', T('s6b', '每一个字段') + i * 0.18, { g: 0.3 }); return c; });
   const ar = mk(gD, 'h1 y', 760, 460, null, null, '→'); css(ar, { fontSize: '90px' }); appear(ar, Math.max(T('s6', '拆成列'), tCD + 0.3));
-  const lcol = mk(gD, 'lab y', 900, 190, null, null, '每个字段，一个自己的列'); appear(lcol, T('s6b'));
   classAt(cf[1], 'on', T('s6c', '读一个字段'), T('s6c', '要整份') - 0.1);
-  const q1 = mk(gD, 'badge', 1500, 250, null, null, '很快'); css(q1, { fontSize: '30px' }); show(q1, T('s6c', '读一个字段') + 0.2, { y: 10 });
+  const q1 = ico(gD, 'bolt', 1500, 236, 64, 'y', 3.4); vanish(q1, 0); slam(q1, T('s6c', '读一个字段') + 0.2, { from: 1.6 });
   const q1n = mk(gD, 'mono', 1500, 316, null, null, '按路径读\n188 字节'); css(q1n, { fontSize: '24px', color: 'var(--g3)', lineHeight: '1.4' }); show(q1n, T('s6c', '读一个字段') + 0.4, { y: 8 });
   cf.forEach((c, i) => classAt(c, 'y', T('s6c', '要整份') + i * 0.12));
-  const q2 = mk(gD, 'badge', 1500, 560, null, null, '得拼回来'); css(q2, { fontSize: '30px' }); show(q2, T('s6c', '要整份') + 0.1, { y: 10 }); sfx('thud', T('s6c', '要整份') + 0.2, { g: 0.5 });
+  const q2 = ico(gD, 'hourglass', 1500, 546, 64, 'w', 3.4); vanish(q2, 0); slam(q2, T('s6c', '要整份') + 0.1, { from: 1.6 }); sfx('thud', T('s6c', '要整份') + 0.2, { g: 0.5 });
   const q2n = mk(gD, 'mono', 1500, 626, null, null, '读出整份\n885 字节'); css(q2n, { fontSize: '24px', color: 'var(--g3)', lineHeight: '1.4' }); show(q2n, T('s6c', '要整份') + 0.3, { y: 8 });
   COLS.forEach((nm, i) => morph([900, 230 + i * 90, 560, 74], [124, 270 + i * 64, 560, 44], T('s6c', '重新拼') - 0.25 + i * 0.07, 0.5)); sfx('whoosh', T('s6c', '重新拼') - 0.2, { g: 0.4 });
   const q3n = noteAt(gD, 100, 820, '字节：3 行的演示表 demo.profiles 实测'); css(q3n, { fontSize: '24px' }); show(q3n, T('s6b') + 0.4, { y: 8 });
@@ -109,6 +108,7 @@ scene('beyond', ({ root, s, c0 }) => {
   const g2 = glossAt(gE, 900, 560, 920, 'MongoDB', '<b>MongoDB</b>　文档数据库：存的是灵活的、类似 JSON 的文档'); show(g2, T('s8', 'Mongo D B') + 0.5, { y: 12 }); g2.dataset.gloss = 'MongoDB';
   const tmm = termAt(gE, 900, 690, 920, 100); vanish(tmm.el, 0); appear(tmm.el, T('s8b', '问法') - 0.3);
   tmm.line(0, '<span class="pr">test&gt; </span>db.users.find({ name: "alice" })', T('s8b', '问法') - 0.2, { type: 30, cursorUntil: T('s8b', 'S Q L') });
-  const nosql = mk(gE, 'huge y', 900, 812, null, null, '不再是 SQL'); css(nosql, { fontSize: '90px' }); wipe(nosql, T('s8b', 'S Q L') - 0.9, { dir: 'l', d: 0.8 }); sfx('thud', T('s8b', 'S Q L') - 0.5, { g: 0.6 });
+  const nosql = mk(gE, 'tag o', 900, 812, null, null, 'SQL'); css(nosql, { fontSize: '72px', padding: '4px 26px' }); vanish(nosql, 0); slam(nosql, T('s8b', 'S Q L') - 0.6, { from: 1.3 });
+  const noX = ico(gE, 'cross', 920, 800, 110, 'w', 4.5); vanish(noX, 0); slam(noX, T('s8b', 'S Q L') - 0.3, { from: 1.8 }); sfx('thud', T('s8b', 'S Q L') - 0.25, { g: 0.6 }); classAt(nosql, 'fade45', T('s8b', 'S Q L') - 0.3);
   drift(cam, s, 1);
 });

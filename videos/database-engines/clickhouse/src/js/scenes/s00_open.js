@@ -4,6 +4,8 @@
 scene('open', ({ root, s }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
+  const at0 = (e, t) => { vanish(e, 0); appear(e, t); return e; };
+  const fadeIn0 = (e, t) => show(e, t, { y: 12, d: 0.4 });
   const grp = () => { const g = mk(world, '', 0, 0, 1920, 1080); vanish(g, 0); return g; };
   const gA = grp(), gB = grp(), gC = grp(), gT = grp();
 
@@ -63,16 +65,19 @@ scene('open', ({ root, s }) => {
   // 一次只碰一个人：Alice 那一格上方的黄色括线
   const brk = mk(gA, '', XA, 560, RW, 8); css(brk, { borderTop: '4px solid var(--y)', borderLeft: '4px solid var(--y)', borderRight: '4px solid var(--y)' });
   wipe(brk, T('o4', '一个人') - 0.2, { dir: 'l', d: 0.35 });
-  const fastT = mk(gA, 'pill y', 1290, 720, null, null, '要快'); css(fastT, { fontSize: '40px', height: '72px' });
-  const safeT = mk(gA, 'pill y', 1480, 720, null, null, '还要不出错'); css(safeT, { fontSize: '40px', height: '72px' });
-  slam(fastT, T('o4', '要快'), { from: 1.2 }); slam(safeT, T('o4', '不出错') - 0.2, { from: 1.2 });
+  const oneU = ico(gA, 'person', XA + RW / 2 - 30, 470, 60, 'y', 3.2); vanish(oneU, 0); show(oneU, T('o4', '一个人') - 0.2, { y: -14, d: 0.35 });
+  const fastI = ico(gA, 'bolt', 1300, 712, 84, 'y', 3.4), fastL = mk(gA, 'lab y', 1396, 736, null, null, '快');
+  const safeI = ico(gA, 'check', 1520, 712, 84, 'y', 4), safeL = mk(gA, 'lab y', 1616, 736, null, null, '不出错');
+  vanish(fastI, 0); vanish(safeI, 0); slam(fastI, T('o4', '要快') - 0.05, { from: 1.6 }); slam(safeI, T('o4', '不出错') - 0.15, { from: 1.6 });
+  at0(fastL, T('o4', '要快') + 0.1); at0(safeL, T('o4', '不出错'));
   sfx('thud', T('o4', '要快') + 0.1, { g: 0.45 }); sfx('thud', T('o4', '不出错'), { g: 0.45 });
-  const oltp = mk(gA, 'tag', 1290, 820, null, null, 'OLTP'); css(oltp, { fontSize: '88px' });
-  slam(oltp, T('o4b', 'OLTP'), { from: 1.3 }); sfx('thud', T('o4b', 'OLTP') + 0.1);
-  const glT = glossAt(gA, 100, 884, 1120, 'OLTP', '<b>OLTP</b>　联机事务处理：一次只读写少数几行');
+  const oltp = mk(gA, 'tag', 1240, 812, null, null, '事务型数据库'); css(oltp, { fontSize: '60px', padding: '12px 30px' });
+  const oltpE = mk(gA, 'tag o', 1690, 822, null, null, 'OLTP'); css(oltpE, { fontSize: '40px', padding: '10px 18px' });
+  slam(oltp, T('o4b', '事务型') - 0.05, { from: 1.25 }); sfx('thud', T('o4b', '事务型') + 0.05); wipe(oltpE, T('o4b', '数据库') + 0.1, { dir: 'l', d: 0.3 });
+  const glT = glossAt(gA, 100, 884, 1120, '事务型数据库', '<b>OLTP</b>（Online Transactional Processing）联机事务处理：一次只读写少数几行');
   show(glT, T('o4b') - 0.2, { y: 16, d: 0.35 });
   // 「可要是问的，不是哪一个人呢？」：括线收走，数据带上每一个人都亮起
-  exit(brk, T('o5') - 0.1, { y: -10 });
+  exit(brk, T('o5') - 0.1, { y: -10 }); hide(oneU, T('o5') - 0.1, { y: -10, d: 0.3 });
   [rA, rB, rC].forEach((r, k) => { for (const c of r.c) classAt(c, 'w', T('o5', '哪一个') + k * 0.2); });
   for (const tile of tiles) dimTo(tile, T('o5'), 1, 0.35);
   dimTo(tm.el, T('o5'), 1, 0.35);
@@ -99,10 +104,16 @@ scene('open', ({ root, s }) => {
   appear(gB, tB);
   const counter = mk(gR1, 'big y', RX - 6, 150, null, null, '0'); css(counter, { fontSize: '128px' });
   countTo(counter, 0, 100000000, T('o6', '一亿') + 0.1, 1.5); appear(counter, T('o6', '一亿'));
-  const unit = mk(gR1, 't-note', RX, 290, null, null, '个用户，每人一个年龄'); appear(unit, T('o6', '一亿') + 0.3);
-  const avgQ = mk(gR1, 'h2', RX, 350, null, null, '平均年龄是多少？'); show(avgQ, T('o6', '平均') - 0.1, { y: 16, d: 0.4 });
-  const fm = mk(gR1, 'mono y', RX, 430, null, null, ''); css(fm, { fontSize: '52px' });
+  const crowd = [];
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 30; c++) { const k = r * 30 + c; const p = ico(gR1, 'person', RX + c * 36, 296 + r * 38, 30, '', 3.6); vanish(p, 0); appear(p, T('o6', '一亿') + 0.1 + ((k * 37) % 90) / 90 * 1.3); crowd.push([p, c]); }
+  const boss = ico(gR1, 'person', RX, 418, 84, 'w', 3); vanish(boss, 0); show(boss, T('o6', '老板') - 0.2, { y: 14, d: 0.35 });
+  const bub = mk(gR1, '', RX + 110, 418, 980, 96); css(bub, { border: '3px solid var(--w)', background: 'var(--k2)' }); vanish(bub, 0); wipe(bub, T('o6', '老板') + 0.1, { dir: 'l', d: 0.4 });
+  const avgQ = mk(bub, 'h2', 30, 18, null, null, '平均年龄是多少？'); vanish(avgQ, 0); appear(avgQ, T('o6', '平均') - 0.1);
+  const fm = mk(bub, 'mono y', 30, 14, null, null, ''); css(fm, { fontSize: '52px' });
+  vanish(avgQ, T('o7', '加起来') - 0.05);
   typeText(fm, 'Σ age ÷ 100,000,000', T('o7', '加起来'), 24, { cursor: false });
+  // 所有人的年龄：这一片小人从左到右亮起来（和表里的年龄一格格亮起同时）
+  crowd.forEach(([p, c]) => classAt(p, 'y', T('o7') + 0.2 + c * 0.04, T('o8') + 0.2));
   // 「所有人的年龄」：年龄这一格从上到下依次亮起
   const tAll = T('o7') + 0.2;
   real.forEach((r, i) => classAt(r.c[2], 'y', tAll + i * 0.08, T('o8') + 0.2));
@@ -126,8 +137,10 @@ scene('open', ({ root, s }) => {
   sfx('pop', T('o9', '读了'));
   for (const r of real) for (const c of r.c) classAt(c, 'ghost', T('o9', '读了') + 0.2, T('o10'));
   // 行存：整行整行地读
-  const rl = mk(gB, 'lab', RX, 300, null, null, '交给一行一行存的数据库：'); appear(rl, T('o10') + 0.1);
-  const rn = noteAt(gB, RX, 350, '一行的几项挨在一起\n要年龄，也得读整行'); show(rn, T('o10') + 1.2, { y: 14, d: 0.35 });
+  const rsBox = mk(gB, 'tile', RX, 160, 300, 330); slide(rsBox, T('o10') - 0.1, { x: 40 });
+  mk(rsBox, 'nm', 24, 18, null, null, 'InnoDB'); const rsT = mk(rsBox, 't-note', 24, 70, null, null, '一行的几项挨在一起'); css(rsT, { fontSize: '22px' });
+  const rsW = mk(rsBox, '', 40, 112, 320, 380); css(rsW, { transform: 'scale(0.6)', transformOrigin: '0 0' });
+  const rsRows = engineStruct(rsW, 1, T('o10') + 0.1, { labels: false }).rows;
   const sA = T('o10b') + 0.1, sB = T('o10b', '一个个') + 0.6;
   const scan = mk(tbl, '', MX - 10, MY - 6, MW[0] + MW[1] + MW[2] + 14, MH + 12); css(scan, { border: '4px solid var(--y)' }); vanish(scan, 0);
   set(scan, sA, { autoAlpha: 1 }); set(scan, T('o11') - 0.2, { autoAlpha: 0 });
@@ -137,28 +150,34 @@ scene('open', ({ root, s }) => {
     scan.style.top = (real[last].y - 6) + 'px';
     real.forEach((r, i) => { const lit = on && i <= last; for (const c of r.c) c.classList.toggle('w', lit); });
   });
-  const readCnt = mk(gB, 'lab y', RX, 460, null, null, ''); appear(readCnt, sA);
-  F((t) => { const k = clamp((t - sA) / Math.max(0.6, sB - sA)); readCnt.textContent = '已读 ' + Math.round(k * 100000000).toLocaleString('en-US') + ' 行 · 每行三项都读'; });
+  rsRows.forEach((r, i) => classAt(r, 'hl', sA + (sB - sA) * i / rsRows.length, T('o11') - 0.2));
+  const readCnt = mk(gB, 'lab y', RX + 330, 200, null, null, ''); appear(readCnt, sA);
+  const readSub = mk(gB, 'lab', RX + 330, 246, null, null, '每行的编号、姓名、年龄都读'); appear(readSub, sA);
+  F((t) => { const k = clamp((t - sA) / Math.max(0.6, sB - sA)); readCnt.textContent = '已读 ' + Math.round(k * 100000000).toLocaleString('en-US') + ' 行'; });
   hide(gB, T('o11') - 0.3, { y: 0, d: 0.3 });
 
   // ══ C：同一张表，换一类问题 ══
   appear(gC, T('o11') - 0.3);
   const tOl = T('o11') + 0.1, tMany = T('o11', '很多');
-  const lt = mk(gC, 'lab', RX, 170, null, null, 'OLTP：一次一个人'); appear(lt, tOl);
   const chB = mk(gC, 'badge', 1500, 160, null, null, 'ClickHouse'); wipe(chB, T('o11', '另一类') - 0.1, { dir: 'l', d: 0.4 }); sfx('pop', T('o11', '另一类'), { g: 0.5 });
   for (const c of alice.c.slice(0, 2)) classAt(c, 'on', tOl, tMany - 0.2);
-  const la = mk(gC, 'h2 y', RX, 230, null, null, '一次看很多人：年龄这一列，从头到尾'); wipe(la, tMany - 0.1, { dir: 'l', d: 0.5 });
+  const many = ico(gC, 'person', RX, 190, 64, 'y', 3.2); const many2 = ico(gC, 'person', RX + 46, 190, 64, 'y', 3.2); const many3 = ico(gC, 'person', RX + 92, 190, 64, 'y', 3.2);
+  [many, many2, many3].forEach((e, k) => { vanish(e, 0); show(e, tMany - 0.1 + k * 0.1, { y: 12, d: 0.3 }); });
+  const manyL = mk(gC, 'lab y', RX + 180, 206, null, null, '很多人 · 只要年龄这一列'); fadeIn0(manyL, tMany + 0.2);
   real.forEach((r, i) => classWins(r.c[2], 'on', r === alice ? [[tOl, tMany - 0.2], [tMany + i * 0.07, T('oT') - 0.1]] : [[tMany + i * 0.07, T('oT') - 0.1]]));
   const colBox = mk(tbl, '', MX + MW[0] + MW[1] - 4 - 10, MY - 8, MW[2] + 20, IDS.length * MH + 14); css(colBox, { border: '4px solid var(--y)' });
   vanish(colBox, 0); wipe(colBox, tMany + 0.2, { dir: 't', d: 0.9 }); vanish(colBox, T('oT') - 0.1);
-  const chips = [['报表', T('o11b', '报表')], ['统计', T('o11b', '统计')]].map(([t, tt], k) => { const p = mk(gC, 'pill', RX + k * 170, 320, null, null, t); slam(p, tt - 0.1, { from: 1.15 }); sfx('pop', tt, { g: 0.5 }); return p; });
-  void chips;
-  const olap = mk(gC, 'tag', RX, 430, null, null, 'OLAP'); css(olap, { fontSize: '88px' }); slam(olap, T('o12', 'OLAP'), { from: 1.3 }); sfx('thud', T('o12', 'OLAP') + 0.1);
-  const glA = glossAt(gC, RX, 580, 1000, 'OLAP', '<b>OLAP</b>　联机分析处理：一次扫过很多行，做报表、做统计');
+  [['doc', '报表', T('o11b', '报表')], ['chart', '统计', T('o11b', '统计')]].forEach(([ic, t, tt], k) => {
+    const b = mk(gC, 'tile', RX + k * 190, 290, 170, 120); const i = ico(b, ic, 18, 22, 72, 'w', 3); void i;
+    const l = mk(b, 'lab', 96, 42, null, null, t); void l; slide(b, tt - 0.15, { y: 20 }); sfx('pop', tt, { g: 0.5 });
+  });
+  const olap = mk(gC, 'tag', RX, 450, null, null, '分析型数据库'); css(olap, { fontSize: '72px', padding: '12px 32px' }); slam(olap, T('o12', '分析型') - 0.05, { from: 1.25 }); sfx('thud', T('o12', '分析型') + 0.05);
+  const olapE = mk(gC, 'tag o', RX + 560, 460, null, null, 'OLAP'); css(olapE, { fontSize: '48px', padding: '10px 20px' }); wipe(olapE, T('o12', '数据库') + 0.1, { dir: 'l', d: 0.3 });
+  const glA = glossAt(gC, RX, 590, 1080, '分析型数据库', '<b>OLAP</b>（Online Analytical Processing）联机分析处理：一次扫很多行，只看其中几列');
   show(glA, T('o12') - 0.2, { y: 14, d: 0.35 });
   const q1 = mk(gC, 'h1', RX, 720, null, null, '它是怎么做到的？'); const q2 = mk(gC, 'h1 y', RX, 800, null, null, '代价放在了哪里？');
-  wipe(q1, T('o13', '怎么') - 0.1, { dir: 'l', d: 0.5 }); wipe(q2, T('o13', '代价') - 0.1, { dir: 'l', d: 0.5 });
-  sfx('thud', T('o13', '怎么') + 0.2, { g: 0.5 }); sfx('thud', T('o13', '代价') + 0.2, { g: 0.5 });
+  wipe(q1, T('o13', '怎么') - 0.1, { dir: 'l', d: 0.5 }); wipe(q2, T('o13', '放在') - 0.35, { dir: 'l', d: 0.5 });
+  sfx('thud', T('o13', '怎么') + 0.2, { g: 0.5 }); sfx('thud', T('o13', '放在') - 0.15, { g: 0.5 });
   hide(gC, T('oT') + 1.5, { y: 0, d: 0.3 }); hide(tbl, T('oT') + 1.5, { y: 0, d: 0.3 });
 
   // ══ 片名 ══

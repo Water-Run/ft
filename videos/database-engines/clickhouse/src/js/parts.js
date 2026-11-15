@@ -166,3 +166,79 @@ function engineStruct(parent, kind, t0, o = {}) {
   }
   return { rows, cols };
 }
+
+// ── 简笔图标：48×48 的线稿，线条取 currentColor（类名 y 黄、w 白、k 黑，缺省灰）。ico(父元素, 名字, x, y, 边长, 类名, 线宽) ──
+const ICON = {
+  person: '<circle cx="24" cy="14" r="8"/><path d="M8 44C8 33 15 28 24 28S40 33 40 44"/>',
+  pin: '<path d="M24 45S9 30 9 19a15 15 0 0 1 30 0c0 11-15 26-15 26z"/><circle cx="24" cy="19" r="5"/>',
+  clock: '<circle cx="24" cy="24" r="19"/><path d="M24 12v12l8 5"/>',
+  moon: '<path d="M32 5a20 20 0 1 0 11 29A16 16 0 0 1 32 5z"/>',
+  sun: '<circle cx="24" cy="24" r="8"/><path d="M24 4v5M24 39v5M4 24h5M39 24h5M10 10l3.5 3.5M34.5 34.5L38 38M38 10l-3.5 3.5M13.5 34.5L10 38"/>',
+  server: '<rect x="7" y="5" width="34" height="11" rx="2"/><rect x="7" y="19" width="34" height="11" rx="2"/><rect x="7" y="33" width="34" height="11" rx="2"/><path d="M13 10.5h5M13 24.5h5M13 38.5h5"/>',
+  doc: '<path d="M11 4h18l8 8v32H11z"/><path d="M29 4v8h8M17 23h14M17 30h14M17 37h9"/>',
+  cursor: '<path d="M13 5v32l8-7.5L26.5 42l5-2-5.5-12.5H37z"/>',
+  search: '<circle cx="20" cy="20" r="13"/><path d="M30 30l13 13"/>',
+  cart: '<path d="M3 7h6l5 24h24l5-18H11"/><circle cx="17" cy="39" r="3"/><circle cx="35" cy="39" r="3"/>',
+  ad: '<path d="M6 19v10h7l20 10V9L13 19z"/><path d="M13 29l3 12h5l-2-10M39 18c3 2 3 10 0 12"/>',
+  chart: '<path d="M5 43h38"/><rect x="9" y="27" width="7" height="16"/><rect x="21" y="17" width="7" height="26"/><rect x="33" y="8" width="7" height="35"/>',
+  tag: '<path d="M5 25L23 7h18v18L23 43z"/><circle cx="33" cy="15" r="3"/>',
+  building: '<path d="M4 44h40M8 44V8h22v36M30 18h10v26"/><path d="M14 15h3M21 15h3M14 23h3M21 23h3M14 31h3M21 31h3M34 26h2M34 33h2"/>',
+  cloud: '<path d="M14 38a9 9 0 0 1-2-17.8A12 12 0 0 1 35 16a10 10 0 0 1 1 22z"/>',
+  truck: '<path d="M3 12h26v22H3zM29 20h9l7 7v7H29"/><circle cx="11" cy="37" r="4"/><circle cx="37" cy="37" r="4"/>',
+  lock: '<rect x="9" y="21" width="30" height="22" rx="3"/><path d="M15 21v-6a9 9 0 0 1 18 0v6"/>',
+  unlock: '<rect x="9" y="21" width="30" height="22" rx="3"/><path d="M15 21v-6a9 9 0 0 1 17-4"/>',
+  bolt: '<path d="M27 3L9 27h13l-3 18 20-26H26z"/>',
+  hourglass: '<path d="M12 4h24M12 44h24M14 4c0 13 10 16 10 20s-10 7-10 20M34 4c0 13-10 16-10 20s10 7 10 20"/>',
+  globe: '<circle cx="24" cy="24" r="19"/><ellipse cx="24" cy="24" rx="8" ry="19"/><path d="M5 24h38M8 14h32M8 34h32"/>',
+  code: '<path d="M15 13L5 24l10 11M33 13l10 11-10 11M28 8l-8 32"/>',
+  laptop: '<rect x="9" y="8" width="30" height="22" rx="2"/><path d="M3 38h42l-4-8H7z"/>',
+  check: '<path d="M8 25l11 11 21-24"/>',
+  cross: '<path d="M11 11l26 26M37 11L11 37"/>',
+  db: '<ellipse cx="24" cy="10" rx="16" ry="5"/><path d="M8 10v28a16 5 0 0 0 32 0V10M8 24a16 5 0 0 0 32 0"/>',
+  bubble: '<path d="M5 8h38v24H20l-9 9v-9H5z"/>',
+  box: '<path d="M24 4l19 9v22l-19 9-19-9V13z"/><path d="M5 13l19 9 19-9M24 22v22"/>',
+  stopwatch: '<circle cx="24" cy="27" r="17"/><path d="M24 27V16M19 4h10M24 4v6M37 13l3-3"/>',
+  phone: '<rect x="13" y="4" width="22" height="40" rx="3"/><path d="M21 38h6"/>',
+  log: '<path d="M8 6h32v36H8z"/><path d="M14 14h20M14 21h20M14 28h20M14 35h12"/>',
+  medal: '<circle cx="24" cy="30" r="13"/><path d="M16 19L10 4h9l5 10 5-10h9l-6 15"/>',
+  power: '<path d="M15 12a16 16 0 1 0 18 0M24 4v18"/>',
+  key: '<circle cx="15" cy="24" r="9"/><path d="M24 24h20M38 24v8M44 24v6"/>',
+  calendar: '<rect x="5" y="9" width="38" height="34" rx="3"/><path d="M5 18h38M15 4v9M33 4v9"/>',
+};
+const icoSvg = (name, size, sw = 3) => `<svg viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
+function ico(parent, name, x, y, size = 64, cls = '', sw = 3) { return mk(parent, 'ico ' + cls, x, y, size, size, icoSvg(name, size, sw)); }
+// 行内的「图标 + 文字」：一条记录里的地点、页面、时间
+const icoTxt = (name, text, size = 22) => `<span class="it2">${icoSvg(name, size, 3.6)}<span>${text}</span></span>`;
+// 浏览器 / 应用窗口：winAt(父元素, x, y, w, h, 标题) → { el, body, ti }（标题栏 40 像素，body 是下面的内容区）
+function winAt(parent, x, y, w, hh, title = '', cls = '') {
+  const el = mk(parent, 'win ' + cls, x, y, w, hh);
+  const bar = mk(el, 'wbar', 0, 0, w - 4, 40, '<i></i><i></i><i></i>');
+  const ti = mk(bar, 'wti', 84, 0, w - 110, 38, title);
+  const body = mk(el, '', 0, 40, w - 4, hh - 44);
+  return { el, bar, ti, body };
+}
+// 关键帧运动：motion(元素, [[t, { x, y, s, r, a }], …])。x、y 是相对原位的位移，s 缩放，r 旋转（度），a 不透明度；
+// 某一帧没写的分量沿用上一帧；相邻两帧之间按 ez 缓动。被它驱动的元素不再用 GSAP 的位移、缩放、显隐
+function motion(e, keys, ez = ease.io3) {
+  const D = { x: 0, y: 0, s: 1, r: 0, a: 1 };
+  let prev = { ...D };
+  const K = keys.map(([t, v]) => { prev = { ...prev, ...v }; return [t, prev]; });
+  const useA = keys.some(([, v]) => 'a' in v);          // 没写 a 的不碰显隐（留给 wipe、appear 等）
+  let last = '';
+  F((t) => {
+    let v = K[0][1];
+    if (t >= K[K.length - 1][0]) v = K[K.length - 1][1];
+    else for (let i = 0; i < K.length - 1; i++) {
+      const [t0, a] = K[i], [t1, b] = K[i + 1];
+      if (t >= t0 && t < t1) { const k = (b._lin ? (x) => x : ez)(clamp((t - t0) / Math.max(1e-6, t1 - t0))); v = {}; for (const p in D) v[p] = a[p] + (b[p] - a[p]) * k; break; }
+    }
+    const key = [v.x, v.y, v.s, v.r, v.a].map((n) => Math.round(n * 100)).join(',');
+    if (key === last) return; last = key;
+    e.style.transform = `translate(${v.x.toFixed(1)}px, ${v.y.toFixed(1)}px) scale(${v.s.toFixed(3)}) rotate(${v.r.toFixed(1)}deg)`;
+    if (!useA) return;
+    e.style.opacity = String(Math.round(v.a * 100) / 100);
+    e.style.visibility = v.a <= 0.01 ? 'hidden' : 'visible';
+  });
+  return e;
+}
+const pad2 = (n) => String(n).padStart(2, '0');

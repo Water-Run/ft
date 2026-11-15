@@ -188,3 +188,33 @@ body { font-family: "Inter", "Sans SC"; color: var(--w); }
 .gran.on { background: var(--y); border-color: var(--y); }
 .rs.hl i { background: var(--y); }
 .rs.b22, .rs.b22 i { height: 22px; }
+/* 简笔图标、带图标的字段、窗口 */
+.ico { color: var(--g3); }
+.ico.y { color: var(--y); }
+.ico.w { color: var(--w); }
+.ico.k { color: var(--k); }
+.ico svg { display: block; overflow: visible; }
+.it2 { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; }
+.it2 svg { flex: none; }
+.win { position: absolute; background: var(--k2); border: 2px solid var(--g2); }
+.win.y { border-color: var(--y); }
+.wbar { border-bottom: 2px solid var(--g2); }
+.wbar i { position: absolute; top: 14px; width: 12px; height: 12px; border: 2px solid var(--g2); }
+.wbar i:nth-child(1) { left: 16px; } .wbar i:nth-child(2) { left: 36px; } .wbar i:nth-child(3) { left: 56px; }
+.wti { font: 600 22px/38px "Mono", "Sans SC"; color: var(--g3); white-space: nowrap; overflow: hidden; }
+.win.y .wti { color: var(--y); }
+.rec { position: absolute; display: flex; align-items: center; padding: 0 12px; background: var(--k2); border: 2px solid var(--g2); font: 500 22px/1 "Mono", "Sans SC"; color: var(--g3); white-space: nowrap; overflow: hidden; }
+.rec.y { border-color: var(--y); color: var(--y); }
+.rec.w { color: var(--w); }
+.chip { position: absolute; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; height: 40px; background: var(--k2); border: 2px solid var(--g3); font: 600 22px/1 "Mono", "Sans SC"; color: var(--w); white-space: nowrap; }
+.chip.y { border-color: var(--y); color: var(--y); }
+.chip.on { background: var(--y); border-color: var(--y); color: var(--k); }
+.chip.d { border-style: dashed; color: var(--g4); border-color: var(--g2); }
+.yfr { position: absolute; border: 3px dashed var(--g3); }
+.yfr .yl { position: absolute; left: 18px; top: -18px; padding: 0 12px; background: var(--k); font: 800 28px/36px "Inter"; color: var(--w); }
+.sky { position: absolute; }
+.fdot { position: absolute; background: var(--y); }
+.rec .uid { margin-left: auto; margin-right: 0; }
+.kon { background: var(--y) !important; }
+.swon { border-color: var(--y) !important; }
+.tile.y { border-color: var(--y); }

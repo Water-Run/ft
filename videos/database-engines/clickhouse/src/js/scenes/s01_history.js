@@ -1,241 +1,473 @@
-// 第 01 章 来历：为网站统计造的 → 先汇总的办法与局限 → OLAPServer → ClickHouse 的初衷 → 2014 年的量、2016 年开源 → 更早的分析型数据库与云 → 回到开头那几毫秒。
-// 出处：官方文档 history.md、VLDB 2024 论文（research/FACTS.md 的 H01–H10）。
-// 一个连续的画面：左边一直在流进来的「原始访问记录」，右边是 Metrica 的报表，中间换着放「汇总」「OLAPServer」「ClickHouse」；
-// 底下一条按真实年份比例画的时间轴，讲到哪一年，黄色的游标走到哪一年。没有年份的说法（更早的分析型数据库）只放在时间轴左端的虚线段上。
+// 第 01 章 来历（r8 重画：把事情演出来，少用字）。
+// 一个连续的舞台：左上一个网站，访客点一下，左下就多一条访问记录（地点、页面、时间、谁）；右边是 Metrica 的报表窗口；
+// 中间依次换：Yandex 的搜索页与几项服务 → 汇总（漏斗；夜里在后台算）→ OLAPServer（只认数字、新数据进不去、每夜重写）→ ClickHouse（三个限制被一个个打掉）。
+// 虚线框是 Yandex：二〇二一年 ClickHouse 从框里分出来。底下一条时间轴从 1997 年画起，黄色游标走到讲到的年份。
+// 出处：research/FACTS.md 的 H01–H15。记录内容是示意（地点、页面、时间都是编的样子），不是实测。
 scene('history', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
   const ov = overlay(world);
+  const at = (e, t) => { vanish(e, 0); appear(e, t); return e; };
   const fadeIn = (e, t, d = 0.45) => show(e, t, { y: 14, d });
+  const bz = (P, u) => { const m = 1 - u, [a, b, c, d] = P; return [m * m * m * a[0] + 3 * m * m * u * b[0] + 3 * m * u * u * c[0] + u * u * u * d[0], m * m * m * a[1] + 3 * m * m * u * b[1] + 3 * m * u * u * c[1] + u * u * u * d[1]]; };
+  // 一串小方块沿曲线流动（数据在走）：从 t0 起一个接一个出发，t1 之后不再出发，已出发的走完
+  const flow = (P, n, t0, t1, per = 1.4, size = 14, cls = '') => {
+    const ds = []; for (let i = 0; i < n; i++) { const d = mk(world, 'fdot ' + cls, 0, 0, size, size); d.style.visibility = 'hidden'; ds.push(d); }
+    F((t) => ds.forEach((d, i) => {
+      const u0 = (t - t0) / per - i / n; let vis = u0 >= 0;
+      const c = Math.floor(u0), st = t0 + (c + i / n) * per; if (st > t1) vis = false;
+      if (!vis) { if (d.style.visibility !== 'hidden') d.style.visibility = 'hidden'; return; }
+      const [x, y] = bz(P, u0 - c); d.style.visibility = 'visible'; d.style.left = (x - size / 2).toFixed(1) + 'px'; d.style.top = (y - size / 2).toFixed(1) + 'px';
+    }));
+    return ds;
+  };
 
-  // ══ 时间轴（全章常驻） ══
-  const AX = 868, X = (yr) => 520 + (yr - 2009) * 70, XNOW = 1760;
-  const axis = mk(world, '', 520, AX, XNOW - 520, 4); css(axis, { background: 'var(--g2)' }); wipe(axis, c0 + 0.1, { dir: 'l', d: 0.8 });
-  const ticks = [[2009, '2009'], [2014, '2014'], [2016, '2016']].map(([yr, lab]) => {
-    const tk = mk(world, 'tick', X(yr) - 1, AX - 10, 2, 24); css(tk, { width: '4px', left: (X(yr) - 2) + 'px' });
-    const tx = mk(world, 'mono dim', X(yr) - 60, AX + 22, 120, null, lab); css(tx, { fontSize: '26px', textAlign: 'center' });
-    appear(tk, c0 + 0.4); appear(tx, c0 + 0.4); return { tk, tx };
+  // ══ 时间轴：1997 → 今天（全章常驻） ══
+  const AX = 868, X = (yr) => 200 + (yr - 1997) * 52, XNOW = 1760;
+  const axis = mk(world, '', 200, AX, XNOW - 200, 4); css(axis, { background: 'var(--g2)' }); wipe(axis, c0 + 0.1, { dir: 'l', d: 0.8 });
+  const tY97 = T('h1b2', '一九九七'), tY09 = T('h7', '二〇〇九'), tY14 = T('h9a', '二〇一四'), tY16 = T('h10', '二〇一六'), tY21 = T('h10a', '二〇二一'), tNow = T('h10c', '十三万亿');
+  const YRS = [[1997, tY97], [2009, tY09], [2014, tY14], [2016, tY16], [2021, tY21]];
+  YRS.forEach(([yr, ty]) => {
+    const tk = mk(world, 'tick', X(yr) - 2, AX - 10, 4, 24); appear(tk, c0 + 0.4);
+    const tx = mk(world, 'mono dim', X(yr) - 60, AX + 22, 120, null, String(yr)); css(tx, { fontSize: '26px', textAlign: 'center' }); appear(tx, c0 + 0.4); classAt(tx, 'y', ty - 0.3);
   });
-  const nowTk = mk(world, 'tick', XNOW - 2, AX - 10, 4, 24); const nowTx = mk(world, 'mono dim', XNOW - 180, AX + 22, 200, null, '今天 · 26.8'); css(nowTx, { fontSize: '26px', textAlign: 'right' });
-  appear(nowTk, c0 + 0.4); appear(nowTx, c0 + 0.4);
-  // 游标：一个黄色方块，在讲到的年份之间移动
-  const head = mk(world, '', 0, AX - 12, 28, 28); css(head, { background: 'var(--y)' }); vanish(head, 0);
-  const tY09 = T('h7', '二〇〇九年'), tY14 = T('h9a', '二〇一四年'), tY16 = T('h10', '二〇一六年'), tNow = T('h10c', '十三万亿');
-  const HP = [[tY09, X(2009)], [tY14, X(2014)], [tY16, X(2016)], [tNow, XNOW]];
-  appear(head, tY09 - 0.6);
+  const nowTk = mk(world, 'tick', XNOW - 2, AX - 10, 4, 24); appear(nowTk, c0 + 0.4);
+  const nowTx = mk(world, 'mono dim', XNOW - 180, AX + 22, 200, null, '今天 · 26.8'); css(nowTx, { fontSize: '26px', textAlign: 'right' }); appear(nowTx, c0 + 0.4); classAt(nowTx, 'y', tNow - 0.3);
+  // 游标与它头上的一句：讲到哪一年，游标走到哪一年
+  const HP = [[tY97, X(1997)], [tY09, X(2009)], [tY14, X(2014)], [tY16, X(2016)], [tY21, X(2021)], [tNow, XNOW]];
+  const head = mk(world, '', 0, AX - 12, 28, 28); css(head, { background: 'var(--y)' }); vanish(head, 0); appear(head, tY97 - 0.6);
+  const hl = mk(world, 'lab y', 0, AX - 46, 360, null, ''); css(hl, { fontSize: '24px', textAlign: 'center' }); vanish(hl, 0); appear(hl, tY97 - 0.3);
+  keyed(hl).at(tY97 - 0.3, { html: 'Yandex 搜索上线' }).at(tY09 - 0.3, { html: 'OLAPServer' }).at(tY14 - 0.3, { html: '一天约 120 亿次' }).at(tY16 - 0.3, { html: '开源' }).at(tY21 - 0.3, { html: '独立成公司' }).at(tNow - 0.3, { html: '13 万亿+ 条记录' });
   F((t) => {
-    let x = X(2009);
-    for (let i = 0; i < HP.length; i++) { const [ti, xi] = HP[i]; if (t >= ti - 0.6) { const k = ease.io3(clamp((t - (ti - 0.6)) / 0.6)); const xp = i ? HP[i - 1][1] : X(2009); x = xp + (xi - xp) * k; } }
-    head.style.left = (x - 14) + 'px';
+    let x = X(1997);
+    for (let i = 0; i < HP.length; i++) { const [ti, xi] = HP[i]; if (t >= ti - 0.6) { const k = ease.io3(clamp((t - (ti - 0.6)) / 0.6)); const xp = i ? HP[i - 1][1] : X(1997); x = xp + (xi - xp) * k; } }
+    head.style.left = (x - 14) + 'px'; hl.style.left = clamp(x - 180, 100, 1460) + 'px';
   });
-  // 时间轴上方的事件标注（讲到才出现，之后留着）
-  const ev = (x, text, t, cls = '') => { const e = mk(world, 'lab ' + cls, x - 160, AX - 62, 320, null, text); css(e, { textAlign: 'center', fontSize: '24px' }); fadeIn(e, t); return e; };
-  ev(X(2009), 'OLAPServer', T('h7b', 'OLAPServer'));
-  ev(X(2014), '约 120 亿次 / 天', T('h9a', '一百二十亿'));
-  ev(X(2016), '开源', T('h10', '开源'), 'y');
-  ev(XNOW - 40, '13 万亿+ 条记录', T('h10c', '十三万亿'));
-  classAt(ticks[0].tx, 'y', tY09); classAt(ticks[1].tx, 'y', tY14); classAt(ticks[2].tx, 'y', tY16); classAt(nowTx, 'y', tNow);
 
-  // ══ 左：原始访问记录，一条一条流进来（一直在流；二〇一四年那段流得更快） ══
-  const LOG = mk(world, 'panel', 100, 140, 460, 640);
-  mk(LOG, 'lab', 22, 18, null, null, '原始访问记录');
-  mk(LOG, 't-note', 22, 56, null, null, '每一次浏览、点击，记一条');
-  slide(LOG, c0 + 0.15, { x: -60 });
-  const RH = 46, NR = 11;
-  const clip = mk(LOG, '', 18, 106, 424, NR * RH); css(clip, { overflow: 'hidden' });
-  const pool = []; for (let i = 0; i <= NR; i++) pool.push(mk(clip, 'cell sm', 0, i * RH, 424, RH - 6, ''));
-  const tLog = c0 + 0.3;
-  const RATE = [[tLog, 1.3], [T('h9a', '一百二十亿'), 7], [T('h9b'), 2.2]];
-  const posAt = (t) => { let p = NR + 1; for (let i = 0; i < RATE.length; i++) { const [a, r] = RATE[i]; const b = i + 1 < RATE.length ? RATE[i + 1][0] : Infinity; if (t <= a) break; p += (Math.min(t, b) - a) * r; } return p; };
-  const recOf = (k) => ({ page: 'ABC'[k % 3], reg: 1 + ((k * 2) % 4) + (k % 5 === 4 ? 1 : 0), user: 1000 + ((k * 37) % 900) });
-  const PG = { A: '/news', B: '/shop', C: '/search' }, REG = ['', '莫斯科', '圣彼得堡', '喀山', '索契'];   // 示意记录：页面路径与城市
-  const tHit0 = T('h2c', '某个地方'), tHit1 = T('h4');
-  let picked = null;
-  const tLive0 = T('h8b', '所有报表') - 0.1, tLive1 = T('h9b') - 0.3;
+  // ══ 左上：一个网站，访客在点；左下：每点一下，多一条访问记录 ══
+  const W = winAt(world, 100, 140, 460, 270, '一个网站');
+  slide(W.el, c0 + 0.15, { x: -60 });
+  const pg = W.body;
+  [[16, 14, 424, 28], [16, 58, 260, 16], [16, 86, 300, 16], [16, 114, 220, 16], [296, 58, 144, 150], [16, 150, 260, 58]].forEach(([x, y, w, hh], i) => { const b = mk(pg, '', x, y, w, hh); css(b, { background: i === 0 || i === 4 ? '#2E2E29' : '#262622' }); });
+  const LOG = mk(world, 'panel', 100, 430, 460, 372);
+  slide(LOG, c0 + 0.3, { x: -60 });
+  const RH = 46, NR = 9;
+  const clip = mk(LOG, '', 10, 10, 436, 348); css(clip, { overflow: 'hidden' });
+  const pool = []; for (let i = 0; i < NR; i++) pool.push(mk(clip, 'rec', 0, 0, 436, RH - 6, ''));
+  const tLog = c0 + 0.5;
+  const RATE = [[tLog, 1.2], [T('h9a', '一百二十亿') - 0.2, 9], [T('h9b') + 0.2, 2]];
+  const posAt = (t) => { let p = 0; for (let i = 0; i < RATE.length; i++) { const [a, r] = RATE[i]; const b = i + 1 < RATE.length ? RATE[i + 1][0] : Infinity; if (t <= a) break; p += (Math.min(t, b) - a) * r; } return p; };
+  const PGS = ['/news', '/shop', '/search', '/about', '/news'], CTY = ['莫斯科', '喀山', '索契', '圣彼得堡', '喀山'];
+  const recOf = (k) => {
+    const forced = k % 4 === 1;
+    const page = forced ? '/news' : PGS[(k * 3 + 2) % 5], city = forced ? '喀山' : CTY[(k * 7 + 3) % 5];
+    const uid = forced ? 2000 + ((k >> 2) % 5) * 13 : 1000 + ((k * k * 7 + k * 3) % 41) * 17;
+    const ts = 36000 + k * 3;
+    return { page, city, uid, url: page + '/' + (100 + ((k * 263) % 900)), time: pad2((ts / 3600) | 0) + ':' + pad2(((ts / 60) | 0) % 60) + ':' + pad2(ts % 60) };
+  };
+  const isHit = (r) => r.page === '/news' && r.city === '喀山';
+  const tHit0 = T('h2c', '某个页面') + 0.2, tHit1 = T('h4') - 0.2;
+  const tUrl0 = T('h6d', '网址') - 0.1, tUrl1 = T('h7') + 0.3;
+  // 点击：最近三次点击各留一个扩散的圈；光标停在最新一次点击处
+  const SPOT = (k) => [40 + ((k * 151) % 380), 20 + ((k * 89) % 190)];
+  const rings = [0, 1, 2].map(() => { const r = mk(pg, '', 0, 0, 10, 10); css(r, { border: '3px solid var(--y)', borderRadius: '50%' }); r.style.visibility = 'hidden'; return r; });
+  const curI = ico(pg, 'cursor', 0, 0, 34, 'w', 3.4); curI.style.visibility = 'hidden';
   let lastKey = '';
   F((t) => {
-    const p = posAt(t), first = Math.floor(p), fr = p - first, hit = t >= tHit0 && t < tHit1, live = t >= tLive0 + 0.4 && t < tLive1;
-    const key = first + ':' + Math.round(fr * RH) + ':' + hit + ':' + (t >= tLive0 + 0.4 && t < tLive1);
+    const p = posAt(t), first = Math.floor(p), fr = p - first, live = t >= tLog;
+    const key = first + ':' + Math.round(fr * 40) + ':' + (t >= tHit0 && t < tHit1) + ':' + (t >= tUrl0 && t < tUrl1);
     if (key === lastKey) return; lastKey = key;
     pool.forEach((c, i) => {
-      const k = first - NR + i, r = recOf(k);                            // 新的一条从下面进来，旧的往上走
-      c.style.top = Math.round((i - fr) * RH) + 'px';
-      c.style.visibility = k >= 0 ? 'visible' : 'hidden';
-      const html = `<span>浏览 · ${PG[r.page]} · ${REG[r.reg]}</span><span>${r.user}</span>`;
+      const k = first - 1 - i, y = (p - 1 - k) * RH;            // 新的一条从上面进来，旧的往下走
+      if (!live || k < 0) { c.style.visibility = 'hidden'; return; }
+      c.style.visibility = 'visible'; c.style.top = y.toFixed(1) + 'px';
+      const r = recOf(k), url = t >= tUrl0 && t < tUrl1;
+      const html = icoTxt('pin', r.city) + icoTxt('doc', url ? r.url : r.page) + icoTxt('clock', r.time) + `<span class="it2 uid">${icoSvg('person', 20, 3.6)}<span>${r.uid}</span></span>`;
       if (c._h !== html) { c.innerHTML = html; c._h = html; }
-      c.classList.toggle('y', (hit && r.page === 'A' && r.reg === 3) || (live && r.page === 'A'));
+      c.classList.toggle('y', t >= tHit0 && t < tHit1 && isHit(r));
     });
-    // 报表框里：现场挑出来的最近三条（看过 /news），跟着左边的流更新
-    if (picked) { const got = []; if (live) for (let k = first - 1; k >= 0 && got.length < 3; k--) if (recOf(k).page === 'A') got.push(k);
-      picked.forEach((c, j) => { const k = got[j]; c.style.visibility = k != null ? 'visible' : 'hidden'; const r = k != null ? recOf(k) : null; const html = r ? `<span>浏览 · /news · ${REG[r.reg]}</span><span>${r.user}</span>` : ''; if (c._h !== html) { c.innerHTML = html; c._h = html; } }); }
+    const fast = t >= RATE[1][0] && t < RATE[2][0];
+    rings.forEach((r, j) => {
+      const k = first - j, age = j + fr;
+      if (!live || k < 0 || age > 2.2 || (fast && j > 0)) { r.style.visibility = 'hidden'; return; }
+      const [sx, sy] = SPOT(k), rad = 8 + age * 22;
+      r.style.visibility = 'visible'; r.style.left = (sx - rad) + 'px'; r.style.top = (sy - rad) + 'px'; r.style.width = r.style.height = (2 * rad) + 'px'; r.style.opacity = String(Math.max(0, 1 - age / 2.2).toFixed(2));
+    });
+    const [cx, cy] = SPOT(first); curI.style.visibility = live && !fast ? 'visible' : 'hidden'; curI.style.left = (cx - 6) + 'px'; curI.style.top = (cy - 4) + 'px';
   });
-  const logArrow = path(ov, 'M 572 596 L 1222 596', 'accent', { w: 4 });   // 原始记录 → 报表（现场算）
-  vanish(logArrow, 0);
+  const fieldsT = T('h1', '网站统计') + 0.3;   // 记录里的四项：地点、页面、时间、谁（图标代替列名）
+  const fHi = mk(LOG, '', 6, 6, 444, 44); css(fHi, { border: '3px solid var(--y)' }); vanish(fHi, 0); appear(fHi, fieldsT); vanish(fHi, fieldsT + 1.6);
 
-  // ══ 一：Yandex · Metrica · 现场生成报表 ══
-  const ws = mk(world, 'h1', 640, 170, null, null, '网站统计'); const ws2 = mk(world, 't-note', 644, 250, null, null, '每一次浏览、点击都记下来'); fadeIn(ws, T('h1') + 0.2); fadeIn(ws2, T('h1') + 0.5);
-  hide(ws, T('h1b', 'Yandex') - 0.4, { y: -8, d: 0.25 }); hide(ws2, T('h1b', 'Yandex') - 0.4, { y: -8, d: 0.25 });
-  const yx = mk(world, 'tile', 640, 140, 520, 190); mk(yx, 'nm', 28, 24, null, null, 'Yandex');
-  slide(yx, T('h1b', 'Yandex') - 0.15, { y: -40 }); sfx('pop', T('h1b', 'Yandex'), { g: 0.6 });
-  const gY = glossAt(world, 1240, 170, 580, 'Yandex', '<b>Yandex</b>　造出 ClickHouse 的公司；它的搜索、电商、广告等服务里，有几十个 ClickHouse 部署（官方文档）'); show(gY, T('h1b', 'Yandex') + 0.4, { y: 14, d: 0.35 }); hide(gY, T('h2') - 0.5, { y: -8, d: 0.3 });
-  [['搜索', T('h1b', '搜索')], ['电商', T('h1b', '电商')], ['广告', T('h1b', '广告')]].forEach(([n, t2], k) => { const p = mk(yx, 'pill', 28 + k * 150, 100, 130, 56, n); slam(p, t2 - 0.08, { from: 1.15 }); sfx('tick', t2, { g: 0.4 }); });
-  const link = mk(world, '', 700, 330, 4, 40); css(link, { background: 'var(--g2)' }); wipe(link, T('h1c', 'Metrica') - 0.2, { dir: 't', d: 0.3 });
-  const mx = mk(world, 'tile', 640, 370, 520, 190); mk(mx, 'nm', 28, 24, null, null, 'Metrica'); mk(mx, 'sb', 28, 84, null, null, 'Yandex 的网站统计服务');
-  slide(mx, T('h1c', 'Metrica') - 0.1, { y: 40 }); sfx('pop', T('h1c', 'Metrica'), { g: 0.6 });
-  classAt(mx, 'y', T('h1c', 'Metrica') + 0.2, T('h4') - 0.3);
-  const mxN = mk(mx, 'lab y', 28, 128, null, null, '全球第二大的网站统计平台'); css(mxN, { fontSize: '26px' }); fadeIn(mxN, T('h1d', '第二大') - 0.2);
-  for (const e of [yx, link, mx]) hide(e, T('h4') - 0.3, { y: -10, d: 0.35 });
-
-  // 报表面板（一直留到二〇一六年那一段）
-  const RP = mk(world, 'panel', 1240, 140, 580, 480);
-  mk(RP, 'lab', 24, 18, null, null, 'Metrica 的报表');
-  slide(RP, T('h2') - 0.2, { x: 60 });
-  const cA = mk(RP, 'pill', 24, 76, null, null, '来自：喀山'), cB = mk(RP, 'pill', 250, 76, null, null, '看过：/news');
-  slam(cA, T('h2', '划分') - 0.1, { from: 1.15 }); slam(cB, T('h2', '选条件') - 0.1, { from: 1.15 });
-  sfx('pop', T('h2', '划分'), { g: 0.5 }); sfx('pop', T('h2', '选条件'), { g: 0.5 });
-  classAt(cA, 'y', T('h2c', '某个地方'), T('h4')); classAt(cB, 'y', T('h2c', '某个页面'), T('h4'));
-  const rL = mk(RP, 'lab', 24, 168, null, null, '不同的人有多少？');
-  const rQ = mk(RP, 'huge y', 24, 210, null, null, '?'); css(rQ, { fontSize: '170px' });
-  fadeIn(rL, T('h2c') - 0.1); slam(rQ, T('h2c', '多少'), { from: 1.3 }); sfx('thud', T('h2c', '多少') + 0.1, { g: 0.55 });
-  const live = mk(RP, 'pill on', 24, 400, null, null, '现场生成'); slam(live, T('h2b', '现场') - 0.05, { from: 1.2 });
-  arrowIn(logArrow, T('h2b', '现场') - 0.2, 0.7); sfx('whoosh', T('h2b', '现场') - 0.2, { g: 0.4 });
-  for (const e of [rL, rQ, live]) hide(e, T('h4') - 0.25, { y: -8, d: 0.3 });
-
-  // ══ 二：先汇总，再存汇总的结果 ══
-  const tSum = T('h4', '先汇总');
-  const SM = mk(world, 'panel', 640, 140, 520, 330);
-  mk(SM, 'lab', 22, 18, null, null, '汇总：每个页面、每天的访问量');
-  wipe(SM, tSum - 0.2, { dir: 'l', d: 0.5 });
-  const smRows = [['/news', '第 1 天', 'N'], ['/shop', '第 1 天', 'N'], ['/search', '第 1 天', 'N'], ['/news', '第 2 天', 'N']];
-  const smR = smRows.map((r, i) => { const rw = rowAt(SM, 22, 70 + i * 62, r, [170, 200, 110], 54, 'w'); wipe(rw.row, tSum + 0.3 + i * 0.2, { dir: 'l', d: 0.35 }); classAt(rw.c[2], 'on', T('h4b', '提前算好') + i * 0.25, T('h4b', '直接取') + 0.6); return rw; });
-  const a1 = path(ov, 'M 572 230 L 624 230', 'accent', { w: 4 }), a2 = path(ov, 'M 1172 230 L 1222 230', 'accent', { w: 4 });
-  vanish(a1, 0); vanish(a2, 0);
-  arrowIn(a1, tSum, 0.4); arrowIn(a2, T('h4b', '直接取') - 0.2, 0.4);
-  set(logArrow, T('h4') - 0.2, { autoAlpha: 0 });
-  // 报表改从汇总里直接取
-  const rpRows = [['/news', 'N'], ['/shop', 'N'], ['/search', 'N']].map((r, i) => { const rw = rowAt(RP, 24, 76 + i * 62, r, [300, 230], 54); vanish(rw.row, 0); appear(rw.row, T('h4b', '直接取') + 0.1 + i * 0.15); return rw; });
-  for (const e of [cA, cB]) hide(e, T('h4') - 0.25, { y: -8, d: 0.3 });
-  // 数据小了很多：两根长短不同的条（示意，不是实测比例）
-  const BZ = mk(world, '', 640, 650, 1180, 160); vanish(BZ, 0); appear(BZ, T('h4c') - 0.1);
-  const bL1 = mk(BZ, 'lab', 0, 0, null, null, '原始记录'); const bRaw = mk(BZ, 'bar w', 300, 4, 860, 32);
-  const bL2 = mk(BZ, 'lab y', 0, 60, null, null, '汇总之后'); const bSum = mk(BZ, 'bar y', 300, 64, 126, 32);
-  const bTag = mk(BZ, 't-note', 300, 110, null, null, '示意'); void bL1; void bL2;
-  wipe(bRaw, T('h4c') - 0.05, { dir: 'l', d: 0.6 }); wipe(bSum, T('h4c', '小了') - 0.1, { dir: 'l', d: 0.5 }); sfx('tick', T('h4c', '小了'), { g: 0.5 });
-  const bg = mk(world, 'pill', 640, 490, null, null, '后台做 · 不赶时间'); slam(bg, T('h4c', '后台') - 0.05, { from: 1.15 }); sfx('pop', T('h4c', '后台'), { g: 0.5 });
-  const most = mk(RP, 'note', 24, 300, null, null, '大多数报表\n靠这样的汇总'); fadeIn(most, T('h5', '大多数') - 0.1);
-  warm(SM, T('h5'), T('h6') - 0.1);
-
-  // ══ 三：汇总的代价 ══
-  const tC = T('h6b', '事先');
-  for (const r of rpRows) dimTo(r.row, tC - 0.3, 1, 0.25, 0.4);
-  hide(most, tC - 0.3, { y: 0, d: 0.3 });
-  const ok1 = mk(RP, 'pill', 24, 290, null, null, '页面 × 日期'), ok2 = mk(RP, 'pill', 230, 290, null, null, '地区 × 日期');
-  const want = mk(RP, 'pill y', 24, 370, null, null, '用户自己组合的条件');
-  slam(ok1, tC, { from: 1.1 }); slam(ok2, tC + 0.3, { from: 1.1 }); slam(want, T('h6b', '组合') - 0.1, { from: 1.15 });
-  classAt(want, 'ghost', T('h6b', '做不到') - 0.05, T('h8b', '不汇总'));
-  const noW = mk(RP, 'lab y', 340, 382, null, null, '没有现成的汇总'); fadeIn(noW, T('h6b', '做不到') - 0.05);
-  keyed(noW).at(T('h8b', '不汇总'), { html: '从原始数据现场算' });
-  const uA = mk(RP, 'pill y', 24, 76, null, null, '条件：看过 /news');
-  const uL = mk(RP, 'lab', 24, 150, null, null, '左边流过的记录，符合的现场挑出来');
-  slam(uA, tLive0, { from: 1.15 }); fadeIn(uL, tLive0 + 0.3); sfx('pop', tLive0, { g: 0.45 });
-  for (const e of [uA, uL]) hide(e, tLive1, { y: -8, d: 0.3 });
-  picked = [0, 1, 2].map((j) => { const c = mk(RP, 'cell sm y', 24, 196 + j * 50, 530, 42, ''); c.style.visibility = 'hidden'; return c; });
-  // 比如网址：汇总条几乎和原始记录一样长
-  const tU = T('h6d', '网址');
-  const urlL = mk(BZ, 'lab', 0, 120, null, null, ''); void urlL;
-  keyed(bL1).at(tU, { html: '原始记录（按网址）' }); keyed(bL2).at(tU, { html: '按网址汇总之后' });
-  tl.fromTo(bSum, { width: 126 }, { width: 630, duration: 1.0, ease: 'power2.inOut', immediateRender: false }, T('h6d', '汇总完'));
-  keyed(bTag).at(T('h6d', '汇总完') + 0.4, { html: '不到两倍（官方文档）' });
-  sfx('whoosh', T('h6d', '汇总完'), { g: 0.4 });
-  hide(BZ, T('h7') + 0.2, { y: 0, d: 0.3 }); hide(bg, T('h7') + 0.2, { y: 0, d: 0.3 });
-  for (const e of [ok1, ok2]) hide(e, T('h8') - 0.3, { y: 0, d: 0.3 });
-  for (const e of [want, noW]) hide(e, T('h9', '用户') - 0.35, { y: 0, d: 0.3 });
-  for (const r of rpRows) hide(r.row, T('h8') - 0.3, { y: 0, d: 0.3 });
-
-  // ══ 四：二〇〇九年起，OLAPServer ══
-  const tO = T('h7b', 'OLAPServer');
-  dimTo(SM, T('h7') - 0.2, 1, 0.35, 0.5);
-  const OS = mk(world, 'panel', 640, 500, 520, 300);
-  const osN = mk(OS, 'nm', 22, 18, null, null, 'OLAPServer'); css(osN, { position: 'absolute', font: '800 44px "Inter"' });
-  const osS = mk(OS, 't-note', 22, 76, null, null, '存没汇总过的原始数据');
-  wipe(OS, T('h7', '分析库') - 0.2, { dir: 'l', d: 0.5 }); sfx('pop', T('h7', '分析库'), { g: 0.5 });
-  const a3 = path(ov, 'M 572 650 L 624 650', 'accent', { w: 4 }); vanish(a3, 0); arrowIn(a3, tO - 0.1, 0.4);
-  const LIM = [['只认数字', T('h7c', '只认')], ['新数据加不进去', T('h7c', '新数据')], ['每天整个重写一遍', T('h7d', '每天')]];
-  const lims = LIM.map(([t, tt], i) => { const c = mk(OS, 'cell', 22, 126 + i * 56, 476, 48, '<span>' + t + '</span><span>限制</span>'); css(c, { fontSize: '26px' }); slide(c, tt - 0.1, { x: -30 }); sfx('tick', tt, { g: 0.5 }); return c; });
-  // 「新数据加不进去」：箭头变成虚线；「每天重写」：面板从左到右刷一遍
-  const a3d = path(ov, 'M 572 650 L 624 650', 'dim', { w: 4, dashed: '6 8', arrow: false }); vanish(a3d, 0);
-  set(a3, T('h7c', '新数据') + 0.3, { autoAlpha: 0 }); set(a3d, T('h7c', '新数据') + 0.3, { autoAlpha: 1 });
-  const rew = mk(OS, '', 0, 0, 520, 300); css(rew, { background: 'rgba(250,255,105,.14)', transformOrigin: '0 50%' }); vanish(rew, 0); OS.insertBefore(rew, OS.firstChild);
-  tl.fromTo(rew, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'none', immediateRender: false }, T('h7d', '每天'));
-  set(rew, T('h7d', '每天') + 1.15, { autoAlpha: 0 });
-
-  // ══ 五：ClickHouse 最初的目标：去掉这些限制 ══
-  const tG = T('h8', '最初');
-  keyed(osN).at(tG, { html: '<span class="y">ClickHouse</span>' });
-  keyed(osS).at(tG, { html: '最初的目标：去掉这些限制' }).at(T('h10b', '通用') - 0.05, { html: '<span class="y">后来：通用的分析型数据库</span>' });
-  classAt(OS, 'y', tG);
-  // 原地替换时要一一对应：只认数字 → 什么类型都能存；新数据加不进去 → 新数据随时能加；每天整个重写 → 划掉。「不汇总」回应的是前面汇总的代价，单独一行
-  const GOAL = [['<span>什么类型的数据都能存</span><span>目标</span>', T('h8c', '类型')], ['<span>新数据随时能加</span><span>目标</span>', T('h8c', '新数据')], ['<span style="text-decoration:line-through;color:var(--g4)">每天整个重写一遍</span><span>去掉</span>', T('h8c', '新数据') + 0.35]];
-  lims.forEach((c, i) => {
-    keyed(c).at(tG + 0.3 + i * 0.15, { html: '<span>' + LIM[i][0] + '</span><span>要去掉</span>' }).at(GOAL[i][1] - 0.05, { html: GOAL[i][0], cls: 'cell y' });
-    sfx('pop', GOAL[i][1], { g: 0.55, p: 0.3 });
-  });
-  const noSum = mk(world, 'pill y', 640, 420, null, null, '不汇总：所有报表，直接从原始数据算'); css(noSum, { fontSize: '26px' }); slam(noSum, T('h8b', '不汇总'), { from: 1.15 }); sfx('pop', T('h8b', '不汇总'), { g: 0.55, p: 0.3 });
-  hide(noSum, T('h9b') - 0.3, { y: -8, d: 0.3 });
-  set(a3d, T('h8c', '新数据'), { autoAlpha: 0 }); set(a3, T('h8c', '新数据'), { autoAlpha: 1 });
-  // 不汇总：汇总面板退场，报表直接从 ClickHouse 来
-  hide(SM, T('h8b', '不汇总'), { y: -10, d: 0.4 }); hide(a1, T('h8b', '不汇总'), { y: 0, d: 0.3 }); hide(a2, T('h8b', '不汇总'), { y: 0, d: 0.3 });
-  const a4 = path(ov, 'M 1172 650 C 1206 650 1206 560 1222 500', 'accent', { w: 4 }); vanish(a4, 0); arrowIn(a4, T('h8b', '直接') - 0.1, 0.5);
-
-  // ══ 六：二〇一四年：现场算，要算得极快 ══
-  // 中间上方：二〇一四年一天的量；后面换成今天库里的记录数
-  const bigN = mk(world, 'big y', 640, 150, null, null, '约 120 亿'); css(bigN, { fontSize: '104px' }); slam(bigN, T('h9a', '一百二十亿') - 0.1, { from: 1.15 }); sfx('thud', T('h9a', '一百二十亿'), { g: 0.5 });
-  const bigL = mk(world, 'lab', 646, 272, null, null, '次浏览和点击 / 天 · 二〇一四年四月'); appear(bigL, T('h9a', '一百二十亿') + 0.2);
-  keyed(bigN).at(T('h10c') - 0.1, { html: '13 万亿+' }); keyed(bigL).at(T('h10c') - 0.1, { html: 'Metrica 库里的记录（官方文档）' });
-  hide(bigN, T('h11') - 0.3, { y: -10, d: 0.4 }); hide(bigL, T('h11') - 0.3, { y: -10, d: 0.4 });
-  const pq = mk(RP, 'lab', 24, 76, null, null, '一次查询'); fadeIn(pq, T('h9b', '一次查询') - 0.1);
-  const pv = mk(RP, 'h1 y', 24, 116, null, null, '几百毫秒'); fadeIn(pv, T('h9b', '几百毫秒') - 0.1);
-  const pr = mk(RP, 'h2', 24, 196, null, null, '扫过几百万行'); fadeIn(pr, T('h9b', '几百万行') - 0.1);
-  // 用户在等：一条进度条走到头
-  const wl = mk(RP, 'lab', 24, 290, null, null, '用户在等着看结果'); fadeIn(wl, T('h9', '用户') - 0.1);
-  const wb0 = mk(RP, 'bar', 24, 340, 530, 24); const wb = mk(RP, 'bar y', 24, 340, 530, 24); css(wb, { transformOrigin: '0 50%' });
-  vanish(wb0, 0); appear(wb0, T('h9', '用户')); vanish(wb, 0);
-  tl.fromTo(wb, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'power2.out', immediateRender: false }, T('h9', '现场'));
-  const fast = mk(RP, 'tag', 24, 386, null, null, '极快'); css(fast, { fontSize: '60px', padding: '8px 26px' });
-  slam(fast, T('h9', '极快'), { from: 1.3 }); sfx('thud', T('h9', '极快') + 0.1, { g: 0.6 });
-
-  // ══ 七：二〇一六年开源 → 通用的分析型数据库 → 今天 ══
-  sfx('pop', T('h10b', '通用'), { g: 0.5 });
-
-  // ══ 八：分析型数据库，也不是 ClickHouse 才有 ══
-  const tE = T('h11') - 0.3;
-  for (const e of [LOG, RP, OS]) hide(e, tE, { y: -12, d: 0.4 });
-  for (const p of [a3, a4]) hide(p, tE, { y: 0, d: 0.3 });
-  // 时间轴左端补一段虚线：「更早」，没有具体年份
-  const early = mk(world, '', 100, AX + 1, 400, 2); css(early, { borderTop: '3px dashed var(--g3)' }); wipe(early, T('h11') - 0.1, { dir: 'r', d: 0.6 });
-  const earlyTx = mk(world, 'mono dim', 200, AX + 22, 200, null, '更早'); css(earlyTx, { fontSize: '26px', textAlign: 'center' }); appear(earlyTx, T('h11') + 0.2);
-  // 三个年代的盒子，各自用一条细线落到时间轴上
-  const ERA = (x, w, title, names, foot, t0, x0, cls = '', yEnd = AX, hh = 440) => {
-    const b = mk(world, 'panel ' + cls, x, 180, w, hh);
-    const tt = mk(b, 'badge', 24, 18, null, null, title); css(tt, { fontSize: '26px', padding: '8px 14px' });
-    const cells = names.map((n, i) => { const c = mk(b, 'cell w', 24, 76 + i * 66, w - 48, 56, '<span>' + n + '</span>'); wipe(c, t0 + 0.3 + i * 0.55, { dir: 'l', d: 0.3 }); classAt(c, 'on', t0 + 0.3 + i * 0.55, t0 + 0.75 + i * 0.55); return c; });
-    wipe(b, t0, { dir: 'b', d: 0.5 });
-    const ln = mk(world, '', x0 - 1, 180 + hh, 3, yEnd - 180 - hh); css(ln, { background: cls ? 'var(--y)' : 'var(--g2)' }); wipe(ln, t0 + 0.2, { dir: 't', d: 0.4 });
-    return { b, cells, ln, foot };
+  // ══ 右：报表窗口（先叫「网站统计」，讲到 Metrica 时换名） ══
+  const D = winAt(world, 1250, 170, 570, 470, '网站统计');
+  slide(D.el, T('h1', '网站统计') - 0.2, { x: 60 });
+  keyed(D.ti).at(T('h1c', 'Metrica') - 0.1, { html: 'Metrica' }).at(T('h1d', '第二大') - 0.1, { html: 'Metrica · 全球第二大的网站统计平台' }).at(T('h2c') - 0.2, { html: 'Metrica · 报表' });
+  classAt(D.el, 'y', T('h1c', 'Metrica') - 0.1, T('h2') + 0.2);
+  const medal = ico(D.el, 'medal', 516, -4, 46, 'y', 3.4); vanish(medal, 0); slam(medal, T('h1d', '第二大') - 0.1, { from: 1.6 }); sfx('pop', T('h1d', '第二大'), { g: 0.5 });
+  hide(medal, T('h2') - 0.2, { y: -6, d: 0.3 });
+  const DB = D.body;
+  const grp = (t0, t1) => { const g = mk(DB, '', 0, 0, 566, 426); vanish(g, 0); appear(g, t0); if (t1 != null) vanish(g, t1); return g; };
+  // 页面访问量的柱子：按记录流现场数出来（三根柱子随记录涨）
+  const barsLive = (g, t0) => {
+    const PG3 = ['/news', '/shop', '/search'], bs = [];
+    PG3.forEach((pn, i) => {
+      const b = mk(g, 'bar w', 70 + i * 160, 0, 110, 10); b.style.top = '340px';
+      const l = mk(g, 'mono dim', 60 + i * 160, 356, 130, null, pn); css(l, { fontSize: '24px', textAlign: 'center' });
+      bs.push(b);
+    });
+    let last = '';
+    F((t) => {
+      const p = Math.floor(posAt(Math.max(t, t0))), cnt = [0, 0, 0];
+      for (let k = Math.max(0, p - 60); k < p; k++) { const j = PG3.indexOf(recOf(k).page); if (j >= 0) cnt[j]++; }
+      const mx = Math.max(6, ...cnt), key = cnt.join(',');
+      if (key === last) return; last = key;
+      bs.forEach((b, i) => { const hh = Math.round(20 + 280 * cnt[i] / mx); b.style.height = hh + 'px'; b.style.top = (340 - hh) + 'px'; });
+    });
   };
-  const E1 = ERA(100, 400, '更早的', ['Teradata', 'Vertica', 'Sybase IQ', 'Greenplum'], null, T('h11') + 0.1, 300, '', AX, 520);
-  const f1 = [['贵', T('h11b', '又贵')], ['装在自家机房', T('h11b', '机房')], ['数据批量导入', T('h11c', '批量')]].map(([t2, tt], k) => { const p = mk(E1.b, 'pill on', 24, 346 + k * 54, null, null, t2); css(p, { height: '48px', fontSize: '26px' }); slam(p, tt - 0.1, { from: 1.15 }); sfx('tick', tt, { g: 0.5 }); return p; });
-  void f1;
-  const E2 = ERA(560, 380, '二〇一〇年代初 · 云上', ['Snowflake', 'BigQuery', 'Redshift'], null, T('h11d') - 0.1, 700, '', AX - 8);
-  const e2n = mk(E2.b, 'note', 24, 290, null, null, '云数据仓库 · DBaaS\n分析的成本与复杂度\n大大降了下来'); fadeIn(e2n, T('h11d', '云上') + 0.8);
+  const gBars = grp(T('h1', '网站统计') + 0.2, T('h2c', '多少') - 0.1);
+  barsLive(gBars, T('h1', '网站统计'));
+  // 记录 → 报表：现场算
+  const aLive = path(ov, 'M 572 640 L 1236 640', 'accent', { w: 4 }); vanish(aLive, 0);
+  const tLiveA = T('h2b', '现场') - 0.25;
+  arrowIn(aLive, tLiveA, 0.6); sfx('whoosh', tLiveA, { g: 0.4 });
+  const boltA = ico(world, 'bolt', 880, 576, 56, 'y', 3.4); vanish(boltA, 0); slam(boltA, T('h2b', '现场'), { from: 1.6 });
+  const flA = flow([[572, 640], [800, 640], [1000, 640], [1236, 640]], 5, tLiveA + 0.4, T('h4') - 0.6, 1.0);
+  void flA;
+  for (const e of [aLive, boltA]) hide(e, T('h4') - 0.3, { y: 0, d: 0.3 });
+  // 自己划分人群、自己选条件：上面一条筛选栏，两个条件拖进去
+  const fb = mk(DB, '', 16, 12, 534, 52); css(fb, { border: '2px dashed var(--g2)' }); vanish(fb, 0); wipe(fb, T('h2', '划分') - 0.2, { dir: 'l', d: 0.4 });
+  const fI = ico(DB, 'search', 28, 22, 32, '', 3.4); vanish(fI, 0); appear(fI, T('h2', '划分')); vanish(fI, T('h4') - 0.1); vanish(fb, T('h4') - 0.1);
+  const cA = mk(DB, 'chip y', 76, 18, null, null, icoTxt('pin', '喀山', 22)), cB = mk(DB, 'chip y', 236, 18, null, null, icoTxt('doc', '/news', 22));
+  const tFb1 = T('h4') - 0.3;
+  const dragIn = (c, t) => { motion(c, [[0, { y: 150, a: 0 }], [t - 0.45, { y: 150, a: 0 }], [t - 0.44, { y: 150, a: 1 }], [t, { y: 0 }], [tFb1, { y: 0, a: 1 }], [tFb1 + 0.25, { y: -10, a: 0 }]]); sfx('pop', t, { g: 0.5 }); };
+  dragIn(cA, T('h2', '划分') + 0.1); dragIn(cB, T('h2', '选条件') + 0.1);
+  const dCur = ico(DB, 'cursor', 0, 0, 34, 'w', 3.4);
+  motion(dCur, [[0, { x: 150, y: 220, a: 0 }], [T('h2', '划分') - 0.5, { a: 0 }], [T('h2', '划分') - 0.45, { a: 1 }], [T('h2', '划分') + 0.1, { x: 150, y: 70 }], [T('h2', '选条件') - 0.45, { x: 300, y: 220 }], [T('h2', '选条件') + 0.1, { x: 300, y: 70 }], [T('h2b'), { x: 300, y: 70, a: 1 }], [T('h2b') + 0.3, { a: 0 }]]);
+  for (const c of [cA, cB]) classAt(c, 'on', T('h2c', c === cA ? '某个地方' : '某个页面') - 0.05, T('h4') - 0.3);
+  // 有多少个不同的人：符合条件的记录在左边亮起，同一个人只算一次
+  const gWho = grp(T('h2c', '多少') - 0.1, T('h4') - 0.3);
+  const who = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => ico(gWho, 'person', 30 + i * 64, 120, 60, 'y', 3.2));
+  const visN = mk(gWho, 'lab', 30, 220, null, null, ''); const whoN = mk(gWho, 'big y', 30, 270, null, null, ''); css(whoN, { fontSize: '110px' });
+  let lastW = '';
+  F((t) => {
+    const p = Math.floor(posAt(Math.min(t, T('h2c', '多少')))), u = new Set(); let n = 0;   // 报表是那一刻现场算的：数到那一刻为止
+    for (let k = 0; k < p; k++) { const r = recOf(k); if (isHit(r)) { n++; u.add(r.uid); } }
+    const key = n + ':' + u.size; if (key === lastW) return; lastW = key;
+    who.forEach((w, i) => { w.style.visibility = i < u.size ? 'visible' : 'hidden'; });
+    visN.innerHTML = `${n} 次访问，同一个人只算一次：`; whoN.innerHTML = `${u.size} <span style="font-size:56px">人</span>`;
+  });
+  sfx('thud', T('h2c', '多少') + 0.1, { g: 0.5 });
+
+  // ══ 中：Yandex 的搜索页（俄罗斯最大的搜索引擎，1997 年上线，总部在莫斯科）与几项服务 ══
+  const YF = mk(world, 'yfr', 604, 128, 1236, 690); const yfl = mk(YF, 'yl', 0, 0, null, null, 'Yandex'); void yfl;
+  vanish(YF, 0); wipe(YF, T('h1b', 'Yandex') - 0.3, { dir: 'l', d: 0.6 });
+  const YS = winAt(world, 650, 170, 540, 220, 'yandex.ru');
+  slide(YS.el, T('h1b', 'Yandex') - 0.15, { y: -40 }); sfx('pop', T('h1b', 'Yandex'), { g: 0.6 });
+  const sbox = mk(YS.body, '', 28, 50, 360, 64); css(sbox, { border: '3px solid var(--y)' });
+  const sI = ico(sbox, 'search', 14, 12, 36, 'y', 3.4); void sI;
+  const sTx = mk(sbox, 'mono', 64, 14, 280, null, ''); css(sTx, { fontSize: '28px', color: 'var(--w)' });
+  typeText(sTx, 'погода', T('h1b', '搜索引擎') - 0.3, 12, { cursor: false, sfxGain: 0.4 });
+  const sBtn = mk(YS.body, 'chip on', 398, 50, 112, 64, 'Найти'); css(sBtn, { height: '64px', fontSize: '26px', justifyContent: 'center' });
+  classAt(sBtn, 'y', T('h1b', '最大') - 0.05, T('h1b', '最大') + 0.25);
+  const sNote = mk(YS.body, 't-note', 28, 128, null, null, '俄罗斯最大的搜索引擎'); css(sNote, { fontSize: '24px' }); fadeIn(sNote, T('h1b', '俄罗斯') - 0.1);
+  const pinM = ico(world, 'pin', 1120, 120, 64, 'y', 3.4); const pinL = mk(world, 'lab y', 1060, 196, 120, null, '莫斯科'); css(pinL, { textAlign: 'center', fontSize: '26px' });
+  motion(pinM, [[0, { y: -80, a: 0 }], [T('h1b2', '莫斯科') - 0.35, { y: -80, a: 0 }], [T('h1b2', '莫斯科') - 0.34, { a: 1 }], [T('h1b2', '莫斯科'), { y: 0 }], [T('h2') - 0.4, { y: 0, a: 1 }], [T('h2') - 0.1, { y: -12, a: 0 }]], ease.out3);
+  at(pinL, T('h1b2', '莫斯科') + 0.05); sfx('tick', T('h1b2', '莫斯科'), { g: 0.5 });
+  // 它的几项服务；其中的统计服务就是 Metrica（一条线连到右边的报表窗口）
+  const SV = [['search', '搜索'], ['cart', '电商'], ['ad', '广告'], ['chart', 'Metrica']];
+  const tSv = T('h1b2') + 0.9, tMx = T('h1c', 'Metrica');
+  const svs = SV.map(([ic, nm], i) => {
+    const b = mk(world, 'tile', 650 + i * 138, 430, 124, 124); ico(b, ic, 32, 14, 56, i === 3 ? 'y' : '', 3.2);
+    const l = mk(b, 'lab', 0, 80, 120, null, nm); css(l, { fontSize: i === 3 ? '22px' : '24px', textAlign: 'center' });
+    slide(b, tSv + i * 0.12, { y: 24 }); sfx('tick', tSv + i * 0.12, { g: 0.35 });
+    if (i === 3) classAt(b, 'y', tMx - 0.15);
+    return b;
+  });
+  const aMx = path(ov, 'M 1188 492 C 1220 492 1220 420 1244 420', 'accent', { w: 4 }); vanish(aMx, 0); arrowIn(aMx, tMx - 0.1, 0.5);
+  const tYout = T('h2') - 0.4;
+  for (const e of [YS.el, pinM, pinL, ...svs]) if (e !== pinM) hide(e, tYout, { y: -12, d: 0.35 });
+  hide(aMx, tYout, { y: 0, d: 0.3 });
+
+  // ══ 先汇总，再存汇总的结果：记录流进漏斗，出来一张小表；报表从小表里直接取 ══
+  const tSum = T('h4', '先汇总');
+  const fun = path(ov, 'M 700 196 L 1100 196 L 930 318 L 870 318 Z', 'line', { w: 4, arrow: false }); css(fun, { fill: 'rgba(250,255,105,.06)' });
+  vanish(fun, 0); arrowIn(fun, tSum - 0.3, 0.6);
+  const funL = mk(world, 'h2', 840, 210, 120, null, 'Σ'); css(funL, { textAlign: 'center', fontSize: '52px' }); at(funL, tSum);
+  const P_in = [[572, 600], [640, 600], [640, 226], [720, 226]];
+  const aIn = path(ov, 'M 572 600 C 640 600 640 226 712 226', 'line', { w: 4 }); vanish(aIn, 0); arrowIn(aIn, tSum - 0.2, 0.5);
+  flow(P_in, 6, tSum, T('h6d', '网址') - 0.4, 1.3);
+  flow([[900, 230], [900, 260], [900, 300], [900, 352]], 3, tSum + 0.6, T('h6d', '网址') - 0.4, 0.9, 12);
+  // 汇总表：每个页面、每天的访问量（数是示意，用条的长短表示）
+  const SM = mk(world, 'panel', 724, 356, 352, 236); at(SM, tSum + 0.3);
+  const smHead = mk(SM, '', 14, 10, 320, 34, icoTxt('doc', '页面', 22) + '<span style="margin:0 10px">×</span>' + icoTxt('calendar', '天', 22)); css(smHead, { font: '600 22px/34px "Sans SC"', color: 'var(--g3)' });
+  const SMR = [['/news', 1, 0.8], ['/shop', 1, 0.45], ['/search', 1, 0.62], ['/news', 2, 0.7]];
+  const smBars = SMR.map(([pn, d, v], i) => {
+    const l = mk(SM, 'mono', 14, 54 + i * 44, 200, null, pn + ' 第' + d + '天'); css(l, { fontSize: '22px', color: 'var(--w)' });
+    const b = mk(SM, 'bar y', 200, 58 + i * 44, 130 * v, 22); wipe(b, tSum + 0.6 + i * 0.25, { dir: 'l', d: 0.8 });
+    appear(l, tSum + 0.5 + i * 0.25); return b;
+  });
+  void smBars;
+  // 用户来看时直接取：小表 → 报表
+  const tTake = T('h4b', '直接取');
+  const aTake = path(ov, 'M 1084 470 L 1236 470', 'accent', { w: 4 }); vanish(aTake, 0); arrowIn(aTake, tTake - 0.25, 0.35);
+  const gSumB = grp(T('h4') - 0.3, T('h5', '大多数') - 0.1);
+  const sBars = [['/news', 0.8], ['/shop', 0.45], ['/search', 0.62]].map(([pn, v], i) => {
+    const b = mk(gSumB, 'bar y', 70 + i * 160, 340 - 280 * v, 110, 280 * v); vanish(b, 0); appear(b, tTake + i * 0.06);
+    const l = mk(gSumB, 'mono dim', 60 + i * 160, 356, 130, null, pn); css(l, { fontSize: '24px', textAlign: 'center' }); return b;
+  });
+  void sBars;
+  const sumCal = mk(gSumB, 'lab', 30, 20, null, null, icoTxt('calendar', '第 1 天', 26)); appear(sumCal, tTake);
+  sfx('blip', tTake);
+  // 数据小了很多：原始记录的一大摞，压成一小块（示意）
+  const tSmall = T('h4c', '小了');
+  const ghost = mk(world, '', 100, 430, 460, 372); css(ghost, { border: '4px solid var(--w)', background: 'rgba(249,249,249,.06)' }); vanish(ghost, 0);
+  set(ghost, T('h4c') - 0.1, { autoAlpha: 1 });
+  tl.fromTo(ghost, { left: 100, top: 430, width: 460, height: 372 }, { left: 724, top: 356, width: 352, height: 236, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, T('h4c') + 0.1);
+  tl.fromTo(ghost, { scale: 1 }, { scale: 0.3, duration: 0.6, ease: 'power3.in', immediateRender: false, transformOrigin: '50% 50%' }, tSmall - 0.1);
+  set(ghost, tSmall + 0.55, { autoAlpha: 0 });
+  const smallT = mk(world, 't-note', 724, 600, null, null, '示意：一大摞记录，汇总成一小张表'); css(smallT, { fontSize: '24px' }); fadeIn(smallT, tSmall + 0.2); hide(smallT, T('h5', '大多数') - 0.2, { y: 0, d: 0.3 });
+  sfx('whoosh', T('h4c') + 0.1, { g: 0.4 });
+  // 活儿大半在后台、不赶时间的时候做：天黑了，报表窗口没人看（暗下去），漏斗旁边的服务器慢慢算
+  const tNight = T('h4c', '后台') - 0.2, tDay = T('h5') + 0.2;
+  const sun = ico(world, 'sun', 1116, 176, 64, 'y', 3.2), moon = ico(world, 'moon', 1116, 176, 60, 'w', 3.2);
+  motion(sun, [[0, { a: 0, y: 30 }], [tSum - 0.1, { a: 0, y: 30 }], [tSum + 0.3, { a: 1, y: 0 }], [tNight, { a: 1, y: 0 }], [tNight + 0.6, { a: 0, y: 40 }], [tDay, { a: 0, y: 40 }], [tDay + 0.6, { a: 1, y: 0 }], [T('h6b', '事先'), { a: 1 }], [T('h6b', '事先') + 0.3, { a: 0 }]]);
+  motion(moon, [[0, { a: 0, y: -30 }], [tNight + 0.2, { a: 0, y: -30 }], [tNight + 0.8, { a: 1, y: 0 }], [tDay - 0.2, { a: 1, y: 0 }], [tDay + 0.3, { a: 0, y: -30 }]]);
+  const srv = ico(world, 'server', 1116, 250, 64, 'w', 3); vanish(srv, 0); appear(srv, tNight + 0.3); vanish(srv, tDay + 0.3);
+  const led = mk(world, '', 1130, 262, 10, 10); css(led, { background: 'var(--y)' }); led.style.visibility = 'hidden';
+  F((t) => { const on = t >= tNight + 0.3 && t < tDay + 0.3; led.style.visibility = on && Math.floor(t * 3) % 2 === 0 ? 'visible' : 'hidden'; });
+  const slowB0 = mk(world, 'bar', 1100, 330, 100, 14), slowB = mk(world, 'bar y', 1100, 330, 100, 14); css(slowB, { transformOrigin: '0 50%' });
+  vanish(slowB0, 0); appear(slowB0, tNight + 0.3); vanish(slowB0, tDay + 0.3); vanish(slowB, 0);
+  tl.fromTo(slowB, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: tDay - tNight - 0.3, ease: 'none', immediateRender: false }, tNight + 0.3); set(slowB, tDay + 0.3, { autoAlpha: 0 });
+  dimTo(D.el, tNight + 0.2, 1, 0.3, 0.5); dimTo(D.el, tDay, 0.3, 1, 0.4);
+  // 大多数报表靠这样的汇总：报表窗口里一排小报表，大半都连着汇总表
+  const gMany = grp(T('h5', '大多数') - 0.1, T('h6b', '事先') - 0.1);
+  [0, 1, 2, 3, 4, 5].forEach((i) => {
+    const x = 24 + (i % 3) * 180, y = 24 + Math.floor(i / 3) * 196, on = i !== 4;
+    const b = mk(gMany, 'tile' + (on ? ' y' : ''), x, y, 160, 176); ico(b, 'chart', 44, 34, 72, on ? 'y' : '', 3.2);
+    const l = mk(b, 'mono', 0, 124, 156, null, on ? 'Σ 汇总' : '……'); css(l, { fontSize: '22px', textAlign: 'center', color: on ? 'var(--y)' : 'var(--g4)' });
+    wipe(b, T('h5', '大多数') + i * 0.1, { dir: 't', d: 0.3 });
+  });
+  sfx('tick', T('h5', '大多数'), { g: 0.5 });
+
+  // ══ 汇总的代价：报表得事先想到；自己组合条件，小表里没有；按网址汇总几乎压不小 ══
+  const tPre = T('h6b', '事先');
+  keyed(smHead).at(tPre - 0.1, { html: icoTxt('doc', '页面', 22) + '×' + icoTxt('calendar', '天', 22) + '<span style="margin-left:18px"></span>' + icoTxt('pin', '地区', 22) + '×' + icoTxt('calendar', '天', 22) });
+  classAt(smHead, 'y', tPre - 0.1, T('h6b', '组合') - 0.2);
+  const gCombo = grp(tPre - 0.1, T('h7') - 0.2);
+  const combo = mk(gCombo, 'chip y', 30, 120, null, null, icoTxt('pin', '喀山', 22) + '＋' + icoTxt('doc', '/news', 22) + '＋' + icoTxt('clock', '晚上', 22));
+  css(combo, { height: '56px', fontSize: '24px' }); vanish(combo, 0); slam(combo, T('h6b', '组合') - 0.15, { from: 1.2 }); sfx('pop', T('h6b', '组合'), { g: 0.5 });
+  // 请求顺着箭头去小表，小表里没有这一种，弹回来
+  const ask = mk(world, 'fdot', 0, 0, 18, 18); css(ask, { left: '1230px', top: '461px' });
+  const tAsk = T('h6b', '组合') + 0.4, tNo = T('h6b', '做不到');
+  motion(ask, [[0, { a: 0 }], [tAsk, { a: 0, x: 0 }], [tAsk + 0.02, { a: 1 }], [tNo - 0.25, { x: -140 }], [tNo + 0.3, { x: 0, y: -20 }], [tNo + 0.5, { a: 0 }]]);
+  const xNo = ico(gCombo, 'cross', 230, 210, 110, 'w', 3.6); vanish(xNo, 0); slam(xNo, tNo, { from: 1.5 }); sfx('thud', tNo + 0.05, { g: 0.55 });
+  classAt(combo, 'd', tNo + 0.1);
+  hide(xNo, T('h6d', '网址') - 0.2, { y: 0, d: 0.3 }); hide(combo, T('h6d', '网址') - 0.2, { y: 0, d: 0.3 });
+  // 按网址：几乎每个都不一样，汇总表一行只有 1，跟原始记录差不多大
+  const tU = T('h6d', '网址'), tU2 = T('h6d', '汇总完');
+  keyed(smHead).at(tU - 0.1, { html: icoTxt('doc', '网址', 22) + '×' + icoTxt('calendar', '天', 22) });
+  for (const b of smBars) vanish(b, tU - 0.1);
+  const urlRows = [];
+  for (let i = 0; i < 4; i++) {
+    const l = mk(SM, 'mono', 14, 54 + i * 44, 200, null, ''); css(l, { fontSize: '22px', color: 'var(--w)' });
+    const n1 = mk(SM, 'mono y', 290, 54 + i * 44, 40, null, '1'); css(n1, { fontSize: '22px' });
+    vanish(l, 0); vanish(n1, 0); appear(l, tU + 0.2 + i * 0.3); appear(n1, tU + 0.2 + i * 0.3); urlRows.push(l);
+  }
+  // 表头之下的几行跟着进来的网址换：每一个都不同
+  F((t) => { if (t < tU) return; const p = Math.floor(posAt(t)); urlRows.forEach((l, i) => { const v = recOf(Math.max(0, p - 1 - i)).url + ' 第1天'; if (l._v !== v) { l.textContent = v; l._v = v; } }); });
+  for (const l of urlRows) for (const sib of [l]) vanish(sib, T('h7') - 0.2);
+  // 两根条：原始记录、汇总之后（示意；按网址时，汇总后不到原来的一半）
+  const BZ = mk(world, '', 650, 640, 560, 150); vanish(BZ, 0); appear(BZ, tU - 0.1);
+  ico(BZ, 'log', 0, 0, 40, '', 3.2); const bRaw = mk(BZ, 'bar w', 60, 6, 480, 30);
+  ico(BZ, 'chart', 0, 56, 40, 'y', 3.2); const bSum = mk(BZ, 'bar y', 60, 62, 60, 30);
+  const bTag = mk(BZ, 't-note', 60, 106, null, null, '示意'); css(bTag, { fontSize: '24px' });
+  wipe(bRaw, tU, { dir: 'l', d: 0.5 }); wipe(bSum, tU + 0.2, { dir: 'l', d: 0.4 });
+  tl.fromTo(bSum, { width: 60 }, { width: 300, duration: 1.0, ease: 'power2.inOut', immediateRender: false }, tU2);
+  keyed(bTag).at(tU2 + 0.3, { html: '按网址汇总：减不到一半（官方文档）' });
+  sfx('whoosh', tU2, { g: 0.4 });
+  // 收起汇总这一套，给 OLAPServer 让位（漏斗退后留着，讲到「不汇总」时撤走）
+  const tO0 = T('h7') - 0.3;
+  for (const e of [SM, aTake]) hide(e, tO0, { y: 0, d: 0.35 }); hide(BZ, T('h7', '分析库') - 0.5, { y: 0, d: 0.35 });
+  hide(aIn, tO0, { y: 0, d: 0.3 });
+  dimTo(fun, tO0, 1, 0.3, 0.4); dimTo(funL, tO0, 1, 0.3, 0.4);
+
+  // ══ 二〇〇九年起：OLAPServer，存没汇总过的原始数据 ══
+  const CX = 760, CY = 380, CW = 300, CH = 300;
+  const cyl = mk(world, '', CX, CY, CW, CH);
+  cyl.innerHTML = `<svg viewBox="0 0 ${CW} ${CH}" width="${CW}" height="${CH}" style="overflow:visible"><path d="M2 24 V${CH - 24} A148 22 0 0 0 ${CW - 2} ${CH - 24} V24" fill="#1F1F1C" stroke="currentColor" stroke-width="4"/><ellipse cx="${CW / 2}" cy="24" rx="${CW / 2 - 2}" ry="22" fill="#1F1F1C" stroke="currentColor" stroke-width="4"/></svg>`;
+  css(cyl, { color: 'var(--g3)' });
+  const tOS = T('h7', '分析库');
+  wipe(cyl, tOS - 0.2, { dir: 't', d: 0.5 }); sfx('pop', tOS, { g: 0.5 });
+  const cylN = mk(cyl, 'mono', 0, 56, CW, null, 'OLAPServer'); css(cylN, { fontSize: '34px', fontWeight: '700', color: 'var(--w)', textAlign: 'center' });
+  classAt(cyl, 'y', T('h8', '最初'));
+  keyed(cylN).at(T('h8', '最初'), { html: '<span class="y">ClickHouse</span>' });
+  // 筒里的记录：一行一条，按时间涨；锁上时不涨；夜里整个清空重写；ClickHouse 之后随时涨
+  const tIn0 = T('h7b', '原始数据') - 0.2, tLock = T('h7c', '新数据') + 0.1, tRw = T('h7d', '每天'), tFree = T('h8c', '新数据');
+  const stripes = []; for (let i = 0; i < 11; i++) { const st = mk(cyl, '', 34, CH - 50 - i * 14, CW - 68, 9); css(st, { background: '#5E5E55' }); st.style.visibility = 'hidden'; stripes.push(st); }
+  const fillAt = (t) => {
+    if (t < tIn0) return 0;
+    if (t < tLock) return Math.min(7, (t - tIn0) * 1.4);
+    if (t < tRw) return 7;
+    if (t < tRw + 0.7) return 7 * (1 - (t - tRw) / 0.7);
+    if (t < tRw + 1.5) return 11 * (t - tRw - 0.7) / 0.8;
+    if (t < tFree) return 11;
+    return 11;
+  };
+  F((t) => { const n = fillAt(t); stripes.forEach((st, i) => { const v = i < Math.floor(n + 1e-6) ? 'visible' : 'hidden'; if (st.style.visibility !== v) st.style.visibility = v; }); });
+  F((t) => { const ck = t >= T('h8', '最初'); stripes.forEach((st) => { const c = ck ? '#73736A' : '#5E5E55'; if (st.style.background !== c) st.style.background = c; }); });
+  const aOS = path(ov, 'M 572 600 C 660 600 690 330 790 330', 'line', { w: 4 }); vanish(aOS, 0); arrowIn(aOS, tIn0 - 0.2, 0.5);
+  const P_os = [[572, 600], [660, 600], [690, 330], [800, 340]];
+  flow(P_os, 5, tIn0, tLock - 0.3, 1.1);
+  flow(P_os, 5, tRw + 0.7, T('h9b') + 1, 1.0);
+  // 它好用：报表从筒里现场来
+  const aRep = path(ov, 'M 1068 500 L 1236 500', 'accent', { w: 4 }); vanish(aRep, 0); arrowIn(aRep, T('h7c', '好用') - 0.2, 0.4);
+  const gOk = grp(T('h7c', '好用') - 0.2, T('h8b', '不汇总') - 0.1);
+  barsLive(gOk, T('h7c'));
+  const okI = ico(gOk, 'check', 470, 20, 64, 'y', 4); vanish(okI, 0); slam(okI, T('h7c', '好用'), { from: 1.5 }); sfx('blip', T('h7c', '好用'));
+  // 只认数字：数字进去，文字弹开
+  const tNum = T('h7c', '只认');
+  const chipFly = (txt, t0, bounce, cls = 'chip') => {
+    const c = mk(world, cls, 600, 560, null, null, txt); css(c, { height: '44px' });
+    const k = bounce
+      ? [[0, { a: 0 }], [t0, { a: 0, x: 0, y: 0 }], [t0 + 0.02, { a: 1 }], [t0 + 0.55, { x: 220, y: -290, r: 0 }], [t0 + 0.9, { x: 320, y: -360, r: 30 }], [t0 + 1.5, { x: 420, y: 100, r: 80, a: 0 }]]
+      : [[0, { a: 0 }], [t0, { a: 0, x: 0, y: 0, s: 1 }], [t0 + 0.02, { a: 1 }], [t0 + 0.55, { x: 220, y: -290 }], [t0 + 0.85, { x: 230, y: -220, s: 0.3, a: 0 }]];
+    motion(c, k);
+    return c;
+  };
+  chipFly('1037', tNum - 0.5, false); chipFly(icoTxt('pin', '喀山', 22), tNum - 0.1, true, 'chip w'); chipFly('2004', tNum + 0.3, false); chipFly(icoTxt('doc', '/news', 22), T('h7c', '数字') + 0.1, true, 'chip w');
+  sfx('thud', tNum + 0.45, { g: 0.4 }); sfx('thud', T('h7c', '数字') + 0.65, { g: 0.4 });
+  const lim1 = mk(world, 'chip on', CX - 6, CY - 64, null, null, '只收 123'); css(lim1, { fontSize: '24px' }); vanish(lim1, 0); slam(lim1, tNum + 0.4, { from: 1.4 });
+  // 新数据加不进去：一把锁落在筒口，后来的记录在旁边排队
+  const lock = ico(world, 'lock', CX + CW / 2 - 34, CY - 70, 68, 'w', 3.4);
+  const qs = [0, 1, 2, 3, 4].map((i) => { const q = mk(world, 'rec', 640, 760 - i * 30, 92, 24, ''); q.style.visibility = 'hidden'; return q; });
+  F((t) => { const n = t >= tLock && t < tRw + 1.1 ? Math.min(5, Math.floor((t - tLock) * 2.2) + 1) - (t >= tRw + 0.7 ? Math.floor((t - tRw - 0.7) * 12) : 0) : 0; qs.forEach((q, i) => { const v = i < n ? 'visible' : 'hidden'; if (q.style.visibility !== v) q.style.visibility = v; }); });
+  sfx('thud', tLock, { g: 0.55 });
+  // 每天整个重写一遍：月亮升起，筒里清空、重新写满（排队的那些这时才进去）
+  const moon2 = ico(world, 'moon', CX + CW + 30, CY - 40, 60, 'w', 3.2); vanish(moon2, 0); show(moon2, tRw - 0.3, { y: -20, d: 0.4 }); hide(moon2, tRw + 1.7, { y: -10, d: 0.3 });
+  const lim3 = mk(world, 'chip on', CX + CW - 120, CY - 64, null, null, '每夜重写'); css(lim3, { fontSize: '24px' }); vanish(lim3, 0); slam(lim3, tRw + 0.1, { from: 1.4 });
+  const sweep = mk(cyl, '', 0, 0, CW, CH); css(sweep, { background: 'rgba(250,255,105,.16)', transformOrigin: '50% 0' }); vanish(sweep, 0);
+  tl.fromTo(sweep, { autoAlpha: 1, scaleY: 0 }, { scaleY: 1, duration: 1.4, ease: 'none', immediateRender: false }, tRw);
+  set(sweep, tRw + 1.45, { autoAlpha: 0 });
+  sfx('whoosh', tRw, { g: 0.45 });
+
+  // ══ ClickHouse 最初的目标：把这三个限制打掉 ══
+  const tG = T('h8', '去掉');
+  motion(lock, [[0, { a: 0, y: -60 }], [tLock - 0.3, { a: 0, y: -60 }], [tLock - 0.28, { a: 1 }], [tLock, { y: 0 }], [tG + 0.15, { y: 0, r: 0, s: 1 }], [tG + 0.35, { y: -30, s: 1.25, r: -15 }], [tG + 1.2, { y: 420, r: -120, s: 1, a: 0 }]]);
+  // 弹掉：先一顿、放大，再翻着落下去
+  const knock = (e, t) => { tl.to(e, { scale: 1.25, duration: 0.15, ease: 'power2.out' }, t); tl.to(e, { y: 420, rotation: 110, autoAlpha: 0, duration: 0.9, ease: 'power2.in' }, t + 0.18); sfx('pop', t, { g: 0.55, p: 0.3 }); };
+  knock(lim1, tG); knock(lim3, tG + 0.4); sfx('pop', tG + 0.2, { g: 0.55, p: 0.3 });
+  sfx('thud', tG + 1.1, { g: 0.4 });
+  // 不汇总：漏斗撤走，所有报表都连到 ClickHouse
+  const tNS = T('h8b', '不汇总');
+  hide(fun, tNS, { y: -20, d: 0.4 }); hide(funL, tNS, { y: -20, d: 0.4 });
+  const gAll = grp(tNS - 0.1, T('h9b') - 0.3);
+  [0, 1, 2, 3, 4, 5].forEach((i) => {
+    const x = 24 + (i % 3) * 180, y = 24 + Math.floor(i / 3) * 196;
+    const b = mk(gAll, 'tile y', x, y, 160, 176); ico(b, 'chart', 44, 34, 72, 'y', 3.2);
+    const l = mk(b, 'mono y', 0, 124, 156, null, '原始数据'); css(l, { fontSize: '22px', textAlign: 'center' });
+    wipe(b, T('h8b', '所有报表') + i * 0.08, { dir: 't', d: 0.3 });
+  });
+  sfx('tick', T('h8b', '所有报表'), { g: 0.5 });
+  // 什么类型都能存、新数据随时能加：文字也进去了，旁边不再排队
+  chipFly(icoTxt('pin', '喀山', 22), T('h8c', '类型') - 0.4, false, 'chip y'); chipFly(icoTxt('doc', '/news', 22), T('h8c', '类型'), false, 'chip y');
+  const okT = ico(world, 'check', CX + CW + 20, CY + 40, 60, 'y', 4); vanish(okT, 0); slam(okT, T('h8c', '类型') + 0.4, { from: 1.5 }); sfx('blip', T('h8c', '类型') + 0.4);
+  const okN = ico(world, 'check', CX + CW + 20, CY + 120, 60, 'y', 4); vanish(okN, 0); slam(okN, T('h8c', '随时') , { from: 1.5 }); sfx('blip', T('h8c', '随时'));
+  for (const e of [okT, okN]) hide(e, T('h9a') - 0.2, { y: 0, d: 0.3 });
+
+  // ══ 二〇一四年：一天约一百二十亿次；一次查询几百毫秒扫过几百万行；用户在等 ══
+  const tBig = T('h9a', '一百二十亿');
+  const bigN = mk(world, 'big y', 650, 166, null, null, '约 120 亿'); css(bigN, { fontSize: '96px' }); slam(bigN, tBig - 0.1, { from: 1.15 }); sfx('thud', tBig, { g: 0.5 });
+  const bigI = ico(world, 'clock', 1110, 176, 80, 'w', 3.2);
+  vanish(bigI, 0); appear(bigI, tBig);
+  tl.fromTo(bigI.firstChild, { rotation: 0 }, { rotation: 360, duration: 2.4, ease: 'none', immediateRender: false, transformOrigin: '50% 50%' }, tBig);
+  const bigL = mk(world, 'lab', 656, 278, null, null, '次浏览和点击 / 天　（2014 年 4 月）'); appear(bigL, tBig + 0.2);
+  hide(bigN, tY16 - 0.4, { y: -10, d: 0.35 }); hide(bigL, tY16 - 0.4, { y: -10, d: 0.35 }); hide(bigI, tY16 - 0.4, { y: -10, d: 0.35 });
+  // 报表窗口里：秒表几百毫秒，一摞几百万行被扫过
+  const gQ = grp(T('h9b') - 0.3, tY16 - 0.4);
+  const sw = ico(gQ, 'stopwatch', 30, 40, 150, 'w', 2.6);
+  const hand = mk(gQ, '', 104, 104, 4, 50); css(hand, { background: 'var(--y)', transformOrigin: '50% 100%' }); vanish(hand, 0); appear(hand, T('h9b', '几百毫秒') - 0.3);
+  tl.fromTo(hand, { rotation: 0 }, { rotation: 110, duration: 0.7, ease: 'power2.out', immediateRender: false }, T('h9b', '几百毫秒') - 0.3);
+  const swL = mk(gQ, 'h2 y', 30, 210, null, null, '几百毫秒'); fadeIn(swL, T('h9b', '几百毫秒') - 0.1);
+  void sw;
+  const stack = mk(gQ, '', 300, 30, 240, 360); const lines = [];
+  for (let i = 0; i < 24; i++) { const l = mk(stack, '', 0, i * 15, 240, 9); css(l, { background: '#4A4A43' }); lines.push(l); }
+  const stLab = mk(gQ, 'lab', 300, 396, null, null, '几百万行'); css(stLab, { top: '392px' }); fadeIn(stLab, T('h9b', '几百万行') - 0.1);
+  const tScan = T('h9b', '扫过') - 0.1;
+  F((t) => { const k = clamp((t - tScan) / 0.8); const n = Math.floor(k * 24); lines.forEach((l, i) => { const c = t >= tScan && i < n ? '#FAFF69' : '#4A4A43'; if (l._c !== c) { l.style.background = c; l._c = c; } }); });
+  // 用户在等：沙漏翻转；算得极快：闪电
+  const usr = ico(world, 'person', 1150, 660, 76, 'w', 3.2); vanish(usr, 0); show(usr, T('h9', '用户') - 0.2, { y: 16, d: 0.35 });
+  const hg = ico(world, 'hourglass', 1232, 668, 60, '', 3.2); vanish(hg, 0); appear(hg, T('h9', '等着') - 0.1);
+  tl.fromTo(hg.firstChild, { rotation: 0 }, { rotation: 180, duration: 0.5, ease: 'power2.inOut', immediateRender: false, transformOrigin: '50% 50%' }, T('h9', '等着') + 0.2);
+  vanish(hg, T('h9', '极快') - 0.05);
+  const bolt = ico(world, 'bolt', 1226, 660, 76, 'y', 3.4); vanish(bolt, 0); slam(bolt, T('h9', '极快') - 0.05, { from: 1.6 }); sfx('thud', T('h9', '极快') + 0.05, { g: 0.6 });
+  for (const e of [usr, bolt]) hide(e, tY16 - 0.4, { y: 0, d: 0.3 });
+
+  // ══ 二〇一六年开源 → 二〇二一年从 Yandex 分出来 → 通用的分析型数据库 → 今天 ══
+  const tOpen = T('h10', '开源');
+  hide(W.el, tY16 - 0.5, { x: -40, y: 0, d: 0.4 }); hide(LOG, tY16 - 0.5, { x: -40, y: 0, d: 0.4 }); hide(aOS, tY16 - 0.5, { y: 0, d: 0.3 });
+  const code = ico(world, 'code', CX + CW / 2 - 44, 170, 88, 'y', 3.6); vanish(code, 0); slam(code, tOpen - 0.15, { from: 1.5 }); sfx('chime', tOpen, { g: 0.4 });
+  // 源码复制出去：一台台电脑亮起来
+  const pcs = [0, 1, 2, 3, 4, 5].map((i) => { const p = ico(world, 'laptop', 140 + (i % 3) * 140, 240 + Math.floor(i / 3) * 150, 84, 'w', 3); vanish(p, 0); slide(p, tOpen + 0.3 + i * 0.12, { x: 30 }); sfx('tick', tOpen + 0.3 + i * 0.12, { g: 0.3 }); return p; });
+  flow([[CX + 10, 220], [700, 200], [560, 260], [400, 300]], 6, tOpen + 0.2, T('h10a') - 0.3, 0.9, 12);
+  for (const p of pcs) hide(p, T('h10b') - 0.2, { y: 0, d: 0.3 });
+  hide(code, T('h10a') - 0.2, { y: -10, d: 0.3 });
+  // 二〇二一年：Yandex 的框收到只剩 Metrica，ClickHouse 留在框外，换上自己的框
+  const tSplit = T('h10a', '分出来') - 0.3;
+  tl.fromTo(YF, { left: 604, width: 1236 }, { left: 1210, width: 630, duration: 0.9, ease: 'power3.inOut', immediateRender: false }, tSplit);
+  sfx('whoosh', tSplit, { g: 0.5 });
+  const CHF = mk(world, 'yfr', CX - 40, CY - 110, CW + 80, CH + 150); css(CHF, { borderStyle: 'solid', borderColor: 'var(--y)' });
+  const chl = mk(CHF, 'yl', 0, 0, null, null, ''); css(chl, { color: 'var(--y)' }); chl.innerHTML = icoSvg('building', 26, 3.4) + ' ClickHouse, Inc.'; css(chl, { display: 'flex', alignItems: 'center', gap: '10px' });
+  vanish(CHF, 0); wipe(CHF, T('h10a', '独立') - 0.2, { dir: 'l', d: 0.5 }); sfx('pop', T('h10a', '独立'), { g: 0.55 });
+  // 通用：别的各种活儿也接到它身上
+  const USE = [['cart', 260], ['phone', 400], ['server', 540], ['chart', 680]];
+  USE.forEach(([ic, y], i) => {
+    const t0 = T('h10b', '通用') - 0.2 + i * 0.12;
+    const b = ico(world, ic, 300, y - 40, 72, 'w', 3.2); slide(b, t0, { x: -30 });
+    const a = path(ov, `M 384 ${y - 4} C 520 ${y - 4} 600 ${CY + 150} ${CX - 8} ${CY + 150}`, 'line', { w: 3 }); vanish(a, 0); arrowIn(a, t0 + 0.1, 0.5);
+    hide(b, T('h11') - 0.3, { y: -10, d: 0.35 }); hide(a, T('h11') - 0.3, { y: 0, d: 0.3 });
+  });
+  sfx('tick', T('h10b', '通用'), { g: 0.4 });
+  // 今天：Metrica 的库里十三万亿条以上
+  const gNow = grp(T('h10c') - 0.2, null);
+  const nowN = mk(gNow, 'big y', 30, 110, null, null, '13 万亿+'); css(nowN, { fontSize: '104px' }); slam(nowN, T('h10c', '十三万亿') - 0.1, { from: 1.15 }); sfx('thud', T('h10c', '十三万亿'), { g: 0.5 });
+  const nowL = mk(gNow, 'lab', 34, 240, null, null, 'Metrica 库里的记录'); appear(nowL, T('h10c', '十三万亿') + 0.2);
+  vanish(gAll, T('h10c') - 0.2);
+
+  // ══ 分析型数据库，也不是 ClickHouse 才有：三个年代，各画一幅 ══
+  const tE = T('h11') - 0.3;
+  for (const e of [D.el, YF, CHF, cyl, aRep]) hide(e, tE, { y: -12, d: 0.4 });
+  const early = mk(world, '', 100, AX + 1, 96, 2); css(early, { borderTop: '3px dashed var(--g3)' }); wipe(early, T('h11') - 0.1, { dir: 'r', d: 0.5 });
+  const earlyTx = mk(world, 'mono dim', 60, AX + 22, 140, null, '更早'); css(earlyTx, { fontSize: '26px', textAlign: 'center' }); appear(earlyTx, T('h11') + 0.2);
+  const ERA = (x, w, title, names, t0, x0, cls = '', yEnd = AX) => {
+    const b = mk(world, 'panel ' + cls, x, 150, w, 640);
+    const tt = mk(b, 'badge', 24, 18, null, null, title); css(tt, { fontSize: '26px', padding: '8px 14px' });
+    names.forEach((n, i) => { const c = mk(b, 'chip', 24 + (i % 2) * ((w - 60) / 2 + 12), 84 + Math.floor(i / 2) * 54, (w - 60) / 2, 44, n); css(c, { justifyContent: 'center', fontSize: '22px' }); wipe(c, t0 + 0.3 + i * 0.25, { dir: 'l', d: 0.3 }); classAt(c, 'on', t0 + 0.9 + i * 0.6, t0 + 0.9 + names.length * 0.6 + 0.4); });
+    wipe(b, t0, { dir: 'b', d: 0.5 });
+    const ln = mk(world, '', x0 - 1, 790, 3, yEnd - 790); css(ln, { background: cls ? 'var(--y)' : 'var(--g2)' }); wipe(ln, t0 + 0.2, { dir: 't', d: 0.4 });
+    return { b, ln };
+  };
+  const E1 = ERA(100, 440, '更早的', ['Teradata', 'Vertica', 'Sybase IQ', 'Greenplum'], T('h11') + 0.1, 148);
+  // 又贵：价签；装在自家机房：一栋楼里的机柜；批量导入：卡车一车一车地送
+  const bld = ico(E1.b, 'building', 60, 210, 150, 'w', 2.4); vanish(bld, 0); appear(bld, T('h11b', '机房') - 0.2);
+  [[95, 250], [125, 250], [95, 284], [125, 284], [95, 318]].forEach(([x, y], k) => { const lt = mk(E1.b, '', x, y, 22, 20); css(lt, { background: 'var(--y)' }); vanish(lt, 0); appear(lt, T('h11b', '机房') + 0.1 + k * 0.12); });
+  const price = mk(E1.b, 'tag', 230, 230, null, null, icoSvg('tag', 48, 4) + '<span style="margin-left:8px">¥¥</span>'); css(price, { fontSize: '40px', padding: '10px 18px', color: 'var(--k)' }); vanish(price, 0); slam(price, T('h11b', '又贵') - 0.1, { from: 1.4 }); sfx('tick', T('h11b', '又贵'), { g: 0.5 });
+  const truck = ico(E1.b, 'truck', 0, 420, 100, 'w', 3); const tTr = T('h11c', '批量') - 0.6;
+  motion(truck, [[0, { a: 0, x: -40 }], [tTr, { a: 0, x: -40 }], [tTr + 0.1, { a: 1 }], [tTr + 1.2, { x: 140 }], [tTr + 1.6, { x: 140 }], [tTr + 2.6, { x: -40, a: 0 }]], ease.io3);
+  const boxes = [0, 1, 2, 3, 4, 5].map((i) => { const bx = mk(E1.b, '', 250 + (i % 3) * 52, 470 + Math.floor(i / 3) * 52, 44, 44); css(bx, { background: 'var(--y)' }); vanish(bx, 0); appear(bx, tTr + 1.2 + i * 0.12); return bx; });
+  void boxes; sfx('whoosh', tTr + 0.2, { g: 0.35 });
+  const E2 = ERA(600, 480, '二〇一〇年代初 · 云上', ['Snowflake', 'BigQuery', 'Redshift'], T('h11d') - 0.1, 902, '', AX - 8);
+  const cld = ico(E2.b, 'cloud', 110, 230, 260, 'w', 2); vanish(cld, 0); wipe(cld, T('h11d', '云上') - 0.2, { dir: 'b', d: 0.5 });
+  [0, 1, 2].forEach((i) => { const d = ico(E2.b, 'db', 160 + i * 56, 360, 48, 'y', 3.4); vanish(d, 0); appear(d, T('h11d', '云上') + 0.2 + i * 0.12); });
   const cloudBr = mk(world, '', X(2010), AX - 6, X(2013) - X(2010), 14); css(cloudBr, { borderTop: '3px solid var(--g3)', borderLeft: '3px solid var(--g3)', borderRight: '3px solid var(--g3)' }); wipe(cloudBr, T('h11d') + 0.2, { dir: 'l', d: 0.4 });
-  const E3 = ERA(1000, 520, 'ClickHouse', [], null, T('h11f', '另一条路') - 0.2, X(2016), 'y', AX - 66);
-  const e3a = mk(E3.b, 'h2 y', 24, 90, null, null, '开源'); fadeIn(e3a, T('h11f', '开源') - 0.1);
-  const e3b = mk(E3.b, 'h2', 24, 160, null, null, '一个程序就能跑'); fadeIn(e3b, T('h11f', '一个程序') - 0.3);
-  const e3c = mk(E3.b, 'note', 24, 250, null, null, '建表、查询\n一个程序全包'); fadeIn(e3c, T('h11f', '开源') + 0.3);
+  const E3 = ERA(1140, 680, 'ClickHouse', [], T('h11f', '另一条路') - 0.2, X(2016), 'y', AX - 12);
+  const e3a = ico(E3.b, 'code', 60, 110, 120, 'y', 3); vanish(e3a, 0); slam(e3a, T('h11f', '开源') - 0.1, { from: 1.4 });
+  const e3aL = mk(E3.b, 'h2 y', 60, 250, null, null, '开源'); fadeIn(e3aL, T('h11f', '开源'));
+  const lap = ico(E3.b, 'laptop', 330, 90, 300, 'w', 1.8); vanish(lap, 0); wipe(lap, T('h11f', '一个程序') - 0.4, { dir: 'b', d: 0.5 });
+  const one = mk(E3.b, 'tile y', 444, 160, 76, 76); css(one, { background: 'var(--y)' }); vanish(one, 0); slam(one, T('h11f', '一个程序'), { from: 1.6 });
+  const oneL = mk(E3.b, 'h2', 330, 400, null, null, '一个程序就能跑'); fadeIn(oneL, T('h11f', '一个程序') - 0.3);
   sfx('chime', T('h11f', '开源'), { g: 0.4 });
 
-  // ══ 九：回到开头那几毫秒 ══
+  // ══ 回到开头那几毫秒 ══
   const tBack = T('h12') + 0.1;
   for (const E of [E1, E2, E3]) { hide(E.b, tBack, { y: -12, d: 0.4 }); hide(E.ln, tBack, { y: 0, d: 0.3 }); }
   hide(cloudBr, tBack, { y: 0, d: 0.3 });

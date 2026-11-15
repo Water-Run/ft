@@ -14,7 +14,7 @@ scene('delete', ({ root, s, c0 }) => {
   const fo = foldAt(gA, 100, 492, 780, 320, 'all_1_90_3_92', ''); wipe(fo, T('d2') - 0.1, { dir: 'l', d: 0.5 });
   keyed(fo.nm).at(T('d2b', 'row exists'), { html: 'all_1_90_3<span class="y">_93</span>　← 第 93 号变更' });
   ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(fo, i, t));
-  const lk = mk(gA, 'badge', 100, 838, null, null, '原来的文件，不动'); css(lk, { fontSize: '30px' }); slam(lk, T('d2', '不动'), { from: 1.2 }); sfx('thud', T('d2', '不动') + 0.1, { g: 0.6 });
+  const lk = ico(gA, 'lock', 800, 506, 64, 'y', 3.4); vanish(lk, 0); slam(lk, T('d2', '不动') - 0.05, { from: 1.8 }); sfx('thud', T('d2', '不动') + 0.1, { g: 0.6 });
   const hid = fileAt(fo, 3, '_row_exists.bin', 'y'); vanish(hid, 0); appear(hid, T('d2b', 'row exists')); sfx('pop', T('d2b', 'row exists'), { g: 0.5 });
   classAt(fo, 'y', T('d2b', 'row exists'));
   const ex = mk(gA, 'lab y', 960, 440, null, null, '_row_exists：每人一个字节'); vanish(ex, 0); appear(ex, T('d2b', 'row exists'));
@@ -30,8 +30,11 @@ scene('delete', ({ root, s, c0 }) => {
   // d4：查询自动跳过她
   const sk0 = T('d4', '跳过') - 1.0, sk1 = Tend('d4');
   F((t) => { const k = clamp((t - sk0) / Math.max(0.4, sk1 - sk0)) * 8; ex1.forEach((c, i) => { if (i !== AI) c.classList.toggle('on', t >= sk0 && i < k + 0.5 && t < sk1 + 0.3); }); });
-  const skb = mk(gA, 'badge', 960, 660, null, null, '查询：自动跳过她'); css(skb, { fontSize: '32px' }); slam(skb, T('d4') - 0.1, { from: 1.2 }); sfx('thud', T('d4', '跳过') + 0.1, { g: 0.5 });
-  const skn = noteAt(gA, 960, 740, '总数少了 1 个'); css(skn, { fontSize: '26px' }); show(skn, T('d4') + 0.3, { y: 10 });
+  const skI = ico(gA, 'search', 980, 676, 60, 'y', 3.6); const sx = (k) => k * 108, step = (sk1 - sk0) / 8;
+  const KS = [[0, { a: 0, x: 0, y: 0 }], [sk0 - 0.1, { a: 0, x: 0, y: 0 }], [sk0, { a: 1 }]];
+  for (let k = 1; k < 8; k++) { const t = sk0 + k * step; KS.push([t, { x: sx(k), y: k === AI ? -90 : 0 }]); }
+  KS.push([sk1 + 0.3, { x: sx(7), y: 0, a: 1 }], [sk1 + 0.6, { a: 0 }]);
+  motion(skI, KS); sfx('whoosh', sk0 + AI * step - 0.1, { g: 0.4 });
   warm(fo, T('d2'), T('d2b'));
   const tAC = T('d5') + 0.6;
   vanish(gA, tAC);
@@ -43,12 +46,17 @@ scene('delete', ({ root, s, c0 }) => {
   ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(fa, i, t)); fileAt(fa, 3, '_row_exists.bin', 'y');
   const mg = mk(gC, 'h1 y', 880, 340, null, null, '合并 →'); css(mg, { fontSize: '56px' }); wipe(mg, T('d5', '合并'), { dir: 'l', d: 0.5 }); sfx('whoosh', T('d5', '合并'), { g: 0.5 });
   const fb = foldAt(gC, 1060, 230, 760, 330, 'all_1_91_4_93', 'y'); wipe(fb, T('d5b') - 0.1, { dir: 'l', d: 0.5 }); sfx('chime', T('d5b') + 0.1, { g: 0.5 });
-  const fbn = mk(fb, 't-note', 18, 250, null, null, '连同 Dave 那个片段，一起并成了一个'); css(fbn, { fontSize: '22px' });
+  const fbn = mk(fb, 't-note', 18, 296, null, null, '连同 Dave 那个片段，一起并成了一个'); css(fbn, { fontSize: '22px' });
   ['id.bin', 'name.bin', 'age.bin'].forEach((t, i) => fileAt(fb, i, t));
-  const ng = mk(gC, 'h2 y', 1060, 600, null, null, '新片段里，没有 Alice'); show(ng, T('d5b', '不再有她'), { y: 12 }); sfx('thud', T('d5b', '不再有她') + 0.1, { g: 0.5 });
+  const ID4 = [2048, 2049, 2050, 2051, 2052];
+  const sa = ID4.map((n, i) => { const c = cellAt(gC, 120 + i * 140, 456, 132, 56, '<span>' + n + '</span>', n === 2050 ? 'dead sm' : 'sm'); vanish(c, 0); appear(c, tAC + 0.3 + i * 0.05); return c; });
+  void sa;
+  const tGone = T('d5b', '不再有她');
+  const sb = ID4.map((n, i) => { const c = cellAt(gC, 1080 + i * 140, 456, 132, 56, '<span>' + n + '</span>', n === 2050 ? 'dead sm' : 'y sm'); vanish(c, 0); appear(c, T('d5b') + i * 0.05);
+    if (n === 2050) hide(c, tGone + 0.2, { y: 0, d: 0.5 }); motion(c, n === 2050 ? [[0, { y: 0, r: 0 }], [tGone - 0.2, { y: 0, r: 0 }], [tGone + 0.7, { y: 260, r: 40 }]] : [[0, { x: 0 }], [tGone + 0.3, { x: 0 }], [tGone + 0.8, { x: i > 2 ? -140 : 0 }]]); return c; });
+  void sb; sfx('thud', tGone + 0.3, { g: 0.5 });
   const tm2 = termAt(gC, 100, 760, 1100, 170); tm2.line(1, '<span class="out">Ok.</span>', T('d5c', '手动') + 0.8, {}); tm2.line(2, '<span class="out">0 rows in set. Elapsed: 8.490 sec.</span>', T('d5c', '手动') + 0.8, {}); vanish(tm2.el, 0); appear(tm2.el, T('d5c') - 0.1);
   tm2.line(0, '<span class="pr">:) </span>OPTIMIZE TABLE users FINAL;', T('d5c', '手动') - 0.3, { type: 34, cursorUntil: T('d5c', '手动') + 1.5 });
-  const nt = noteAt(gC, 1260, 770, '实验里就是\n手动催的'); show(nt, T('d5c') - 0.1, { y: 12 });
   warm(fa, T('d5'), T('d5b')); warm(fb, T('d5b'), T('d6') - 0.3);
   const tCD = T('d6') + 1.6;
   vanish(gC, tCD);
@@ -67,6 +75,8 @@ scene('delete', ({ root, s, c0 }) => {
   const e8n = noteAt(gD, 100, 750, '默认至少留 480 秒（实测约 8 分半）才从磁盘上删除'); css(e8n, { fontSize: '26px' }); show(e8n, T('d6b', '八分钟') + 0.3, { y: 12 });
   const rdq = termAt(gD, 940, 500, 880, 90); vanish(rdq.el, 0); appear(rdq.el, T('d7', '还有人在读') - 0.6);
   rdq.line(0, '<span class="pr">:) </span>SELECT …  <span class="dim">（还在读）</span>', T('d7', '还有人在读') - 0.5, { type: 30, cursorUntil: T('d7', '还有人在读') + 1.5 });
-  const rdl = mk(gD, 'lab y', 100, 830, null, null, '旧片段先留着：可能还有人在读'); show(rdl, T('d7') + 0.1, { y: 12 });
+  const rdP = ico(gD, 'person', 420, 516, 70, 'w', 3); vanish(rdP, 0); show(rdP, T('d7', '还有人在读') - 0.7, { y: 12, d: 0.35 });
+  const ovD = overlay(gD); const rdA = path(ovD, 'M 500 540 C 560 540 560 470 560 452', 'accent', { w: 4 }); vanish(rdA, 0); arrowIn(rdA, T('d7', '还有人在读') - 0.4, 0.6);
+  const eye = ico(gD, 'search', 580, 400, 56, 'y', 3.6); vanish(eye, 0); appear(eye, T('d7', '还有人在读') - 0.1);
   drift(cam, s, -1);
 });

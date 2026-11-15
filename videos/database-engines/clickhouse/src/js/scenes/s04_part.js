@@ -23,8 +23,11 @@ scene('part', ({ root, s, c0 }) => {
   const lq = mk(A, 'lab', FX, 190, null, null, '已经排好序、压缩好的列文件'); appear(lq, c0 + 0.3);
   const tIns = T('p1', '该在的位置'), STEP = CW - 2;
   // 「编号不一定最大」：7 号比已有的 8 号小，得插进 5 和 8 中间
-  const tBig = T('p1', '不一定最大'); nw.c.forEach((c) => classAt(c, 'y', tBig - 0.1, tIns + 0.5)); hide(nw.row, tIns + 0.5, { y: -30, d: 0.35 }); hide(ln, tIns + 0.5, { y: -30, d: 0.35 });
-  const lt = mk(A, 'pill y', FX, 704, null, null, '7 号比 8 号小：得插在 5 和 8 中间'); css(lt, { fontSize: '26px', height: '52px' }); show(lt, tBig, { y: 10 }); sfx('pop', tBig, { g: 0.4 });
+  const tBig = T('p1', '不一定最大'); nw.c.forEach((c) => classAt(c, 'y', tBig - 0.1, tIns + 0.5)); hide(ln, tIns + 0.1, { y: -30, d: 0.35 });
+  const lt = mk(A, 'mono y', FX + 2 * (CW - 2) + 20, 214, null, null, '5 &lt; 7 &lt; 8'); css(lt, { fontSize: '30px' }); show(lt, tBig, { y: 10 }); sfx('pop', tBig, { g: 0.4 });
+  const WSX = [0, WS[0] - 2, WS[0] + WS[1] - 4];
+  nw.c.forEach((c, k) => motion(c, [[0, { x: 0, y: 0 }], [tIns - 0.05, { x: 0, y: 0 }], [tIns + 0.45 + k * 0.08, { x: 2 * (CW - 2) - WSX[k], y: FILES[k][2] - 616 }]]));
+  vanish(nw.row, tIns + 0.75);
   strips.forEach(({ cs }, k) => {
     cs.forEach((c, i) => { if (i >= 2) tl.fromTo(c, { x: 0 }, { x: STEP, duration: 0.6, ease: 'power3.inOut', immediateRender: false }, tIns + k * 0.08); });
     const g = mk(A, 'cell ghost sm', FX + 2 * STEP, FILES[k][2], CW, 76, '<span>' + NEW[k] + '</span>'); appear(g, tIns + k * 0.08 + 0.2); classAt(g, 'on', tIns + k * 0.08 + 0.3, Tend('p1b', 0.4));
@@ -34,7 +37,11 @@ scene('part', ({ root, s, c0 }) => {
   F((t) => { strips[0].cs.forEach((c, i) => c.classList.toggle('on', t >= sw0 + i * 0.28 && t < sw0 + (i + 1) * 0.28 && t < tIns)); });
   const tRe = T('p1b', '每一列');
   strips.forEach(({ l, cs }, k) => { classAt(l, 'y', tRe + k * 0.3, Tend('p1b', 0.4)); cs.forEach((c, i) => classAt(c, 'y', tRe + k * 0.3 + i * 0.06, Tend('p1b', 0.4))); sfx('tick', tRe + k * 0.3, { g: 0.5 }); });
-  const rw = mk(A, 'badge', 1290, 626, null, null, '三个文件都得重写'); slam(rw, T('p1b', '每一列') - 0.1, { from: 1.2 }); sfx('thud', T('p1b', '每一列'), { g: 0.6 });
+  strips.forEach(({ cs }, k) => { const sw = mk(A, '', FX - 6, FILES[k][2] - 6, 4 * (CW - 2) + 14, 88); css(sw, { background: 'rgba(250,255,105,.22)', transformOrigin: '0 50%' }); vanish(sw, 0);
+    tl.fromTo(sw, { autoAlpha: 1, scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: 'none', immediateRender: false }, tRe + k * 0.3); set(sw, tRe + k * 0.3 + 0.65, { autoAlpha: 0 }); });
+  const rwI = ico(A, 'doc', 1460, 320, 96, 'y', 3); const rwX = mk(A, 'big y', 1570, 318, null, null, '×3'); css(rwX, { fontSize: '96px' });
+  vanish(rwI, 0); vanish(rwX, 0); slam(rwI, T('p1b', '每一列') - 0.1, { from: 1.4 }); slam(rwX, T('p1b', '每一列') + 0.5, { from: 1.4 }); sfx('thud', T('p1b', '每一列') + 0.5, { g: 0.6 });
+  const rwL = mk(A, 'lab y', 1460, 440, null, null, '全部重写'); vanish(rwL, 0); appear(rwL, T('p1b', '每一列') + 0.5);
   const tAB = T('p2', '写好') - 0.3;
   vanish(A, tAB);
 
@@ -44,7 +51,7 @@ scene('part', ({ root, s, c0 }) => {
   tableTag(B, '表 <b>demo.users</b> · 一亿行', tAB);
   const f1 = foldAt(B, 100, 250, 800, 290, 'all_1_1_0', ''); wipe(f1, tAB + 0.05, { dir: 'l', d: 0.5 });
   ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(f1, i, t));
-  const lock = mk(B, 'badge', 100, 570, null, null, '写好之后，不再改动'); slam(lock, T('p2', '一律不改'), { from: 1.2 }); sfx('thud', T('p2', '一律不改') + 0.1, { g: 0.6 });
+  const lock = mk(B, 'tag', 760, 230, 130, 130, icoSvg('lock', 88, 4)); css(lock, { padding: '0', color: 'var(--k)' }); vanish(lock, 0); slam(lock, T('p2', '一律不改') - 0.05, { from: 1.6 }); sfx('thud', T('p2', '一律不改') + 0.1, { g: 0.6 });
   classAt(f1, 'y', T('p2', '一律不改'), T('p2b') - 0.2);
   // 新片段：一个文件夹（一直留到下一段）
   const FX3 = 1020, FY3 = 320;
@@ -54,7 +61,6 @@ scene('part', ({ root, s, c0 }) => {
   const f3n = mk(f3in, 'fn', 22, 18, null, null, '新的片段'); css(f3n, { fontSize: '30px' });
   const f3f = ['id.bin', 'name.bin', 'age.bin', '…'].map((t, i) => { const e = fileAt(f3in, i, t); css(e, { top: (104 + i * 40) + 'px' }); return e; });
   sfx('pop', T('p2b', '另写'), { g: 0.6 });
-  const nl = mk(B, 'lab y', FX3, FY3 + 586, null, null, '新来的数据：另写一份新的'); show(nl, T('p2b', '另写') - 0.1, { y: 12 }); vanish(nl, T('p3b') - 0.2);
   // Dave 注册：终端、这一行、三步
   const tBC = T('p3') - 0.1;
   hide(f1, tBC, { y: 0, d: 0.3 }); hide(lock, tBC, { y: 0, d: 0.3 });
@@ -63,9 +69,12 @@ scene('part', ({ root, s, c0 }) => {
   tm.line(0, '<span class="pr">:) </span>INSERT INTO users VALUES (100000001, \'Dave\', 29);', T('p3') - 0.05, { type: 44, cursorUntil: T('p3', '排好序') });
   tm.line(1, '<span class="out">Ok.</span>', T('p3', '排好序'), {}); tm.line(2, '<span class="out">1 row in set.</span>', T('p3', '排好序'), {});
   const dv = rowAt(B, 100, 330, ['100000001', 'Dave', '29'], [270, 220, 130], 68, 'lg'); slide(dv.row, T('p3', '这一行') - 0.1, { y: 40 }); for (const c of dv.c) classAt(c, 'y', T('p3', '这一行'));
-  [['排好序', '排序'], ['拆成列', '拆成列'], ['压缩', '压缩']].forEach(([w, nm], i) => {
-    const p = mk(B, 'pill', 100 + i * 300, 440, 270, 68, nm); css(p, { fontSize: '32px' }); show(p, T('p3', w) - 0.1, { y: 16 }); classAt(p, 'on', T('p3', w), T('p3', w) + 0.8); classAt(p, 'y', T('p3', w) + 0.8); sfx('tick', T('p3', w), { g: 0.5 });
-  });
+  const tSp = T('p3', '拆成列'), tZp = T('p3', '压缩'), tIn = T('p3b', '新文件夹');
+  const DX = [0, 268, 486];
+  dv.c.forEach((c, k) => motion(c, [[0, { x: 0, y: 0, s: 1 }], [tSp - 0.1, { x: 0, y: 0, s: 1 }], [tSp + 0.4, { x: 40 * k, y: 0 }], [tZp - 0.05, { s: 1 }], [tZp + 0.3, { s: 0.7 }], [tIn - 0.1, { x: 40 * k, y: 0, s: 0.7 }], [tIn + 0.5 + k * 0.08, { x: FX3 + 20 - 100 - DX[k], y: FY3 + 104 + k * 40 - 330 - 12, s: 0.4 }]]));
+  dv.c.forEach((c) => classAt(c, 'on', tZp, tIn + 0.6)); vanish(dv.row, tIn + 0.8);
+  [['排序', '排好序'], ['拆成列', '拆成列'], ['压缩', '压缩']].forEach(([nm, w], i) => { const p = mk(B, 'mono', 100 + i * 220, 430, null, null, (i ? '→ ' : '') + nm); css(p, { fontSize: '26px', color: 'var(--g3)' }); vanish(p, 0); appear(p, T('p3', w) - 0.05); classAt(p, 'y', T('p3', w) - 0.05, T('p3', w) + 0.8); sfx('tick', T('p3', w), { g: 0.5 }); });
+  sfx('whoosh', tIn, { g: 0.45 });
   // 写进新文件夹：先是临时名字（虚线框），写完改名（黄框）
   const tNew = T('p3b', '新文件夹'), tRen = T('p4', '改成');
   keyed(f3n).at(tNew - 0.1, { html: 'tmp_insert_all_91_91_0', cls: 'abs fn' }).at(tRen, { html: 'all_91_91_0', cls: 'abs fn y' });
@@ -75,7 +84,9 @@ scene('part', ({ root, s, c0 }) => {
   set(fill, tRen, { autoAlpha: 0 });
   sfx('pop', tNew, { g: 0.6 }); sfx('chime', tRen + 0.2, { g: 0.6 });
   const g1 = glossAt(B, 100, 550, 860, '片段', '<b>片段</b>（part）　一次插入写成的一个文件夹：里面是各列的文件，写好后不再改'); show(g1, T('p3b', '片段') - 0.1, { y: 14, d: 0.35 });
-  const tg = mk(B, 'tag o', 100, 668, null, null, '一次插入，至少一个片段'); css(tg, { fontSize: '60px' }); slam(tg, T('p3c'), { from: 1.2 }); sfx('thud', T('p3c') + 0.1, { g: 0.6 });
+  const ovB = overlay(B); const a1 = path(ovB, `M 1180 214 C 1300 214 1300 330 ${FX3 + 60} ${FY3 - 6}`, 'accent', { w: 4 }); vanish(a1, 0); arrowIn(a1, T('p3c') - 0.1, 0.5);
+  const tg = mk(B, 'tag o', 100, 668, null, null, '1 次插入 → 至少 1 个片段'); css(tg, { fontSize: '52px' }); slam(tg, T('p3c', '至少'), { from: 1.2 }); sfx('thud', T('p3c', '至少') + 0.1, { g: 0.6 });
+  hide(a1, T('p4') - 0.1, { y: 0, d: 0.3 });
   // 临时名字：文件夹名字上的提示与服务端日志
   const tmpL = mk(B, 'lab', FX3, FY3 + 586, null, null, '写的时候：临时名字'); appear(tmpL, T('p4') - 0.1);
   keyed(tmpL).at(tRen, { html: '<span class="y">写完：改成正式的名字</span>' });
@@ -85,8 +96,7 @@ scene('part', ({ root, s, c0 }) => {
     const nm = mk(f3in, 'big y', 22 + i * 260, 404, null, null, n); css(nm, { fontSize: '120px' }); slam(nm, t0, { from: 1.2 }); sfx('thud', t0 + 0.05, { g: 0.45 });
     const ul = mk(f3in, 'lab', 26 + i * 260, 528, null, null, u); show(ul, t0 + 0.2, { y: 10 });
   });
-  const only = mk(B, 'lab y', 100, 824, null, null, '只有 Dave 一行');
-  const dvN = noteAt(B, 100, 868, 'Dave 的编号正好最大，也不往旧文件后面接：照样另写一个片段'); css(dvN, { fontSize: '24px' }); show(dvN, T('p3c') - 0.1, { y: 8 }); show(only, T('p5') - 0.1, { y: 10 });
+
   const tBK = T('p6') + 0.5;
   hide(B, tBK, { y: 0, d: 0.3 });
   // 这个文件夹缩成下一段的第一个小文件夹
@@ -107,7 +117,8 @@ scene('part', ({ root, s, c0 }) => {
   mini.forEach((m) => vanish(m, T('p6b', '成批')));
   const bigF = foldAt(K, 100, 250, 1200, 520, '新片段 · 一次插入', 'y'); wipe(bigF, T('p6b', '成批') - 0.05, { dir: 'l', d: 0.5 });
   const bn = mk(K, 'big y', 150, 360, null, null, '20,000'); css(bn, { fontSize: '200px' }); slam(bn, T('p6b', '两万行') - 0.2, { from: 1.2 });
-  const bu = mk(K, 'h1', 150, 600, null, null, '行，一次写进一个片段'); show(bu, T('p6b', '两万行') - 0.4, { y: 12 }); sfx('thud', T('p6b', '两万行'), { g: 0.6 });
+  const bu = mk(K, 'h1', 150, 580, null, null, '行'); show(bu, T('p6b', '两万行') - 0.4, { y: 12 }); sfx('thud', T('p6b', '两万行'), { g: 0.6 });
+  for (let r = 0; r < 26; r++) { const ln = mk(K, '', 820, 300 + r * 17, 440, 9); css(ln, { background: '#5E5E55' }); vanish(ln, 0); appear(ln, T('p6b', '成批') + 0.1 + r * 0.025); }
   const bnote = noteAt(K, 150, 690, '官方文档的建议'); css(bnote, { fontSize: '24px' }); show(bnote, T('p6b', '两万行') - 0.2, { y: 12 });
   const tKG = T('p6c') + 1.2;
   vanish(K, tKG);
@@ -145,7 +156,6 @@ scene('part', ({ root, s, c0 }) => {
   }
   const lg = mk(H, 'lab y', 100, 860, null, null, '90 个片段 · 每个 1,111,953 行（最后一个少一些）'); appear(lg, T('p8b', '九十个'));
   sfx('riser', T('p8b', '每一百一十多万行') - 0.6, { g: 0.4 }); sfx('thud', T('p8b', '九十个') + 0.05, { g: 0.6 });
-  const l9 = mk(H, 'h1', 1100, 852, null, null, '每个文件夹里：各自排好序'); css(l9, { fontSize: '44px' }); show(l9, T('p9') - 0.05, { y: 12 });
   const sA = T('p9b', '九十个') - 0.2, sB = Tend('p9b', 0.2);
   F((t) => { const k = clamp((t - sA) / Math.max(0.5, sB - sA)) * 90; grid.forEach((m, i) => m.classList.toggle('y', t >= sA && i < k)); });
   vanish(sec, T('p9b') - 0.1);

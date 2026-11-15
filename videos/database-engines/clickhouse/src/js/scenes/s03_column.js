@@ -37,7 +37,8 @@ scene('column', ({ root, s, c0 }) => {
   const sA = T('c3', '读过去'), sB = T('c3', '姓名') + 0.2;
   F((t) => { const k = clamp((t - sA) / Math.max(0.5, sB - sA)) * 8; blocks.forEach((b, i) => { const on = t >= sA && i < k + 0.5; b.c[0].classList.toggle('w', on); b.c[1].classList.toggle('w', on); b.c[2].classList.toggle('y', on); }); });
   blocks.forEach((b) => { classAt(b.c[0], 'dead', T('c4') - 0.1); classAt(b.c[1], 'dead', T('c4') - 0.1); });
-  const rdn = noteAt(A, 800, 590,'只要年龄，\n连编号、姓名也一起读了'); show(rdn, T('c3', '读过去') - 0.6, { y: 14 });
+  const rdn = mk(A, 'lab', 800, 560, null, null, ''); css(rdn, { fontSize: '30px' }); vanish(rdn, 0); appear(rdn, sA);
+  F((t) => { const n = Math.min(8, Math.round(clamp((t - sA) / Math.max(0.5, sB - sA)) * 8)); const v = `读了 <span class="y">${n * 3}</span> 项，用到的只有 <span class="y">${n}</span> 项（年龄）`; if (rdn._v !== v) { rdn.innerHTML = v; rdn._v = v; } });
   const tAC = T('c4', '每一列') - 0.4;
   vanish(A, tAC);
 
@@ -68,14 +69,13 @@ scene('column', ({ root, s, c0 }) => {
   classAt(strips[2].lbl, 'y', T('c5') + 0.1, T('c6'));
   ageCells.forEach((c, i) => classAt(c, 'y', T('c5') + 0.1 + i * 0.05, T('c5', '八个字节') + i * 0.1));
   strips[2].cells.forEach((c, i) => { classAt(c, 'on', T('c5', '八个字节') + i * 0.1, T('c5', '一人一个') + 0.9); const b1 = mk(C, 't-note', FX + i * (CW - 2) + 26, 600, null, null, '1 字节'); css(b1, { fontSize: '22px' }); vanish(b1, 0); appear(b1, T('c5', '八个字节') + i * 0.1); vanish(b1, T('c6') + 0.2); sfx('tick', T('c5', '八个字节') + i * 0.1, { g: 0.3 }); });
-  const lbAge = mk(C, 'lab y', 710, 640, null, null, 'age.bin 解压后：8 个字节，一人一个'); show(lbAge, T('c5', '八个字节') + 0.3, { y: 12 }); vanish(lbAge, T('c7') - 0.2);
   // c6：编号、姓名在另一个文件
   colHi(0, T('c6', '编号'), T('c6', '姓名')); colHi(1, T('c6', '姓名'), Tend('c6', 0.3));
   // c7：第三个值属于同一个人
   const tThird = T('c7b', '第三个');
   const lineUp = mk(C, '', FX + 2 * (CW - 2) - 8, 268, CW + 14, 342); css(lineUp, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(lineUp, 0); appear(lineUp, tThird); vanish(lineUp, Tend('c7b', 0.4));
   tbl2[2].c.forEach((c) => classAt(c, 'on', tThird, Tend('c7b', 0.4)));
-  const lb7 = mk(C, 'lab y', 710, 690, null, null, '三个文件，靠顺序对上：第三个值 = carol'); show(lb7, T('c7', '靠顺序'), { y: 12 }); vanish(lb7, T('c8') - 0.2);
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach((i) => { const n = mk(C, 'mono', FX + i * (CW - 2), 232, CW, null, '第 ' + (i + 1) + ' 个'); css(n, { fontSize: '22px', textAlign: 'center', color: i === 2 ? 'var(--y)' : 'var(--g3)' }); vanish(n, 0); appear(n, T('c7', '靠顺序') + i * 0.05); vanish(n, T('c8') - 0.2); });
   // c8：排序键
   // 「这里是编号」：编号那条文件整条亮起（排序键就是它）
   strips[0].cells.forEach((c, i) => classAt(c, 'on', T('c8', '编号') - 0.1 + i * 0.04, T('c9') + 0.3));
@@ -85,7 +85,10 @@ scene('column', ({ root, s, c0 }) => {
   const ordered = [5, 2, 8, 1, 7, 4, 6, 3];
   const lo = mk(C, 'lab', 710, 190, null, null, '插入顺序'); appear(lo, T('c9', '乱序') - 0.2);
   const insCells = stripAt(C, FX, 176, ordered, CW, 68, 'w'); insCells.forEach((c, i) => wipe(c, T('c9', '乱序') - 0.2 + i * 0.07, { dir: 'l', d: 0.3 }));
-  strips[0].cells.forEach((c, i) => classAt(c, 'on', T('c9', '排好') + i * 0.08, Tend('c9', 0.8)));
+  const tSort = T('c9', '排好') - 0.6;
+  insCells.forEach((c, i) => { const v = ordered[i], dx = (v - 1 - i) * (CW - 2), dy = 280 - 176; motion(c, [[0, { x: 0, y: 0 }], [tSort, { x: 0, y: 0 }], [tSort + 0.8, { x: dx, y: dy }]]); classAt(c, 'gone', tSort + 0.85); });
+  sfx('whoosh', tSort, { g: 0.45 });
+  strips[0].cells.forEach((c, i) => classAt(c, 'on', tSort + 0.8, Tend('c9', 0.8)));
   sfx('chime', T('c9', '排好') + 0.2, { g: 0.5 });
   vanish(C, T('c10') - 0.1);
 
@@ -94,11 +97,18 @@ scene('column', ({ root, s, c0 }) => {
   const lD = mk(D, 'lab y', 100, 180, null, null, 'age 这一列：同一种类型的值挨在一起'); wipe(lD, T('c10') - 0.1, { dir: 'l', d: 0.5 });
   const ages = [30, 25, 41, 19, 33, 52, 28, 36, 30, 25, 41, 19, 33, 52, 28, 36];
   const row16 = stripAt(D, 100, 250, ages, 108, 76); row16.forEach((c, i) => wipe(c, T('c10') + i * 0.05, { dir: 'l', d: 0.3 }));
-  const sh = mk(D, 'lab', 100, 350, null, null, '（示意：一亿个年龄，就这样一个挨一个）'); appear(sh, T('c10', '容易压缩') - 0.6);
-  const lz = mk(D, 'pill y', 100, 450, 260, 64, 'LZ4 压缩'); show(lz, T('c10', '容易压缩'), { y: 12 }); sfx('pop', T('c10', '容易压缩'), { g: 0.5 });
-  const small = mk(D, 'bar y', 100, 560, 420, 76); wipe(small, T('c10', '容易压缩') + 0.5, { dir: 'l', d: 0.6 });
-  const sl = mk(D, 'lab', 560, 582, null, null, '压缩后：占的地方少得多'); appear(sl, T('c10', '容易压缩') + 0.9);
-  const sv = mk(D, 'tag', 100, 720, null, null, '省空间'); slam(sv, T('c10b', '省空间'), { from: 1.3 }); sfx('thud', T('c10b', '省空间') + 0.1);
+  const tZ = T('c10', '容易压缩') - 0.2, ZW = 16 * 106 + 2;
+  const rowBox = mk(D, '', 100, 250, ZW, 76); for (const c of row16) rowBox.appendChild(c);
+  row16.forEach((c, i) => { c.style.left = (i * 106) + 'px'; c.style.top = '0px'; });
+  const plL = mk(D, '', 70, 230, 22, 116), plR = mk(D, '', 100 + ZW + 8, 230, 22, 116); for (const pl of [plL, plR]) css(pl, { background: 'var(--w)' });
+  motion(plL, [[0, { a: 0 }], [tZ - 0.3, { a: 0 }], [tZ - 0.2, { a: 1 }], [tZ + 0.9, { x: 0 }]]);
+  motion(plR, [[0, { a: 0 }], [tZ - 0.3, { a: 0 }], [tZ - 0.2, { a: 1 }], [tZ + 0.2, { x: 0 }], [tZ + 0.9, { x: -(ZW - 400) - 8 }]]);
+  tl.fromTo(rowBox, { scaleX: 1 }, { scaleX: 400 / ZW, duration: 0.7, ease: 'power2.inOut', immediateRender: false, transformOrigin: '0 50%' }, tZ + 0.2);
+  sfx('thud', tZ + 0.9, { g: 0.55 });
+  const lz = mk(D, 'tag', 100, 250, 400, 76, 'LZ4'); css(lz, { fontSize: '44px', padding: '0' }); vanish(lz, 0); appear(lz, tZ + 0.95); vanish(rowBox, tZ + 0.95);
+  for (const pl of [plL, plR]) vanish(pl, tZ + 1.3);
+  const zl = mk(D, 'lab', 540, 270, null, null, '压缩后：一长条，挤成一小块'); vanish(zl, 0); show(zl, tZ + 1.1, { x: -16, y: 0 });
+  const sv = mk(D, 'tag', 100, 420, null, null, '省空间'); slam(sv, T('c10b', '省空间'), { from: 1.3 }); sfx('thud', T('c10b', '省空间') + 0.1);
   const tDE = T('c12') + 0.6;
   vanish(D, tDE);
 
@@ -138,13 +148,22 @@ scene('column', ({ root, s, c0 }) => {
   printAt(tm, 1, pretty([{ name: 'avg(age)', values: ['48.99999546'], right: true }]), T('c15', '几毫秒') - 0.1);
   tm.line(4, '<span class="out">1 row in set. Elapsed: 0.008 sec.</span>', T('c15', '几毫秒') - 0.1, {});
   const ms = mk(H, 'huge y', 1230, 220, null, null, '8 ms'); css(ms, { fontSize: '230px' }); slam(ms, T('c15', '几毫秒'), { from: 1.3 }); sfx('chime', T('c15', '几毫秒') + 0.1);
-  const steps = [['读 529 KiB', '读下来'], ['解压', '解压'], ['一亿个数求平均', '求平均']];
-  steps.forEach(([nm, w], i) => {
-    const p = mk(H, 'pill', 100 + i * 560, 560, i === 2 ? 640 : 520, 76, '<span>' + nm + '</span>'); css(p, { fontSize: '32px' }); show(p, T('c15', w) - 0.1, { y: 16 }); sfx('tick', T('c15', w), { g: 0.5 });
-    classWins(p, 'on', i === 0 ? [[T('c15', w), T('c15', w) + 0.9], [T('c15b') - 0.2, T('c16') - 0.1]] : [[T('c15', w), T('c15', w) + 0.9]]);
-    if (i === 0) keyed(p.firstChild).at(T('c15b') - 0.7, { html: '从内存缓存读 529 KiB' });
-  });
-  const hotP = mk(H, 'pill on', 100, 780, null, null, '热缓存：数据已在内存里'); css(hotP, { fontSize: '30px', height: '64px' }); slam(hotP, T('c15b') - 0.8, { from: 1.1 }); sfx('pop', T('c15b', '内存缓存'), { g: 0.5 });
+  const tR = T('c15', '读下来'), tU = T('c15', '解压'), tAv = T('c15', '求平均');
+  const mem = mk(H, 'tile', 100, 580, 260, 200); const memI = ico(mem, 'server', 24, 22, 64, '', 3); void memI;
+  const memL = mk(mem, 'lab', 100, 36, null, null, '内存'); void memL; show(mem, tR - 0.4, { y: 14, d: 0.35 });
+  classAt(mem, 'y', T('c15b', '内存缓存') - 0.2, T('c16') - 0.1);
+  const memN = mk(mem, 't-note', 24, 130, null, null, '已经缓存着 age.bin'); css(memN, { fontSize: '22px' }); vanish(memN, 0); appear(memN, T('c15b') - 0.4);
+  const blk = mk(H, 'cell on', 140, 690, 180, 56, '<span>529 KiB</span>'); css(blk, { justifyContent: 'center', fontSize: '26px' });
+  motion(blk, [[0, { a: 0 }], [tR - 0.3, { a: 0, x: 0 }], [tR - 0.25, { a: 1 }], [tR + 0.6, { x: 380 }], [tU + 0.2, { x: 380, a: 1 }], [tU + 0.25, { a: 0 }]]);
+  sfx('whoosh', tR, { g: 0.4 });
+  const unz = stripAt(H, 520, 690, [30, 25, 41, 19, 33, 52, 28, 36, '…'], 76, 56, 'sm');
+  unz.forEach((c, i) => { vanish(c, 0); wipe(c, tU + 0.2 + i * 0.05, { dir: 'l', d: 0.25 }); });
+  sfx('pop', tU + 0.2, { g: 0.5 });
+  const sig = mk(H, 'tile', 1260, 640, 300, 150); const sigL = mk(sig, 'h1', 26, 30, null, null, 'Σ ÷'); css(sigL, { fontSize: '64px' }); show(sig, tAv - 0.4, { y: 14, d: 0.35 });
+  const res = mk(sig, 'mono y', 150, 56, null, null, ''); css(res, { fontSize: '30px' });
+  unz.slice(0, 8).forEach((c, i) => { const ghost = mk(H, 'cell y sm', 520 + i * 74, 690, 76, 56, '<span>' + [30, 25, 41, 19, 33, 52, 28, 36][i] + '</span>'); motion(ghost, [[0, { a: 0 }], [tAv + i * 0.08, { a: 0, x: 0, y: 0 }], [tAv + i * 0.08 + 0.02, { a: 1 }], [tAv + i * 0.08 + 0.5, { x: 1290 - (520 + i * 74), y: 0, s: 0.4, a: 0 }]]); });
+  keyed(res).at(tAv + 1.1, { html: '48.99…' });
+  sfx('chime', tAv + 1.1, { g: 0.4 });
   vanish(H, T('c16') - 0.1);
 
   // ── 新来一个人呢？ ──

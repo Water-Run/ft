@@ -13,13 +13,18 @@ scene('concur', ({ root, s, c0 }) => {
   const lane = mk(gA, 'panel', 80, 118, 1800, 474); vanish(lane, 0); appear(lane, c0 + 0.1);
   [0, 1, 2, 3].forEach((k) => { const tk = mk(gA, 'fn', XA(k) - 18, 128, null, null, k + ' s'); css(tk, { fontSize: '22px' }); appear(tk, c0 + 0.2); const ln = mk(gA, 'tick', XA(k), 230, null, 366); css(ln, { background: 'var(--k3)' }); appear(ln, c0 + 0.2); });
   // Bob
-  const bl = mk(gA, 'lab y', 100, 188, null, null, 'Bob：把一亿个名字，一个个算一遍（只用一个线程）'); css(bl, { fontSize: '26px' }); wipe(bl, c0 + 0.2, { dir: 'l', d: 0.6 });
+  const bl = mk(gA, 'lab y', 100, 188, null, null, icoSvg('person', 30, 3.4) + '<span style="margin-left:10px">Bob 的慢查询</span>'); css(bl, { fontSize: '26px', display: 'flex', alignItems: 'center' }); wipe(bl, c0 + 0.2, { dir: 'l', d: 0.6 });
   const bGhost = mk(gA, 'bar', XA(0), 232, 1280, 56); css(bGhost, { background: 'var(--k2)', border: '2px dashed var(--g2)' }); wipe(bGhost, T('b1') + 0.1, { dir: 'l', d: 0.8 });
   const bBar = mk(gA, 'bar y', XA(0), 232, 1, 56); vanish(bBar, 0);
   F((t) => { const k = tau(t); bBar.style.width = Math.max(1, 400 * k) + 'px'; bBar.style.visibility = t >= P[0][0] ? 'visible' : 'hidden'; bBar.style.opacity = t >= P[0][0] ? 1 : 0; });
-  ['SELECT count(), avg(age) FROM users', ' WHERE NOT ignore(sipHash128(name))', ' SETTINGS max_threads = 1'].forEach((ln, k) => { const e = mk(gA, 'mono', 1000, 420 + k * 40, null, null, ln); css(e, { fontSize: '28px', color: 'var(--g3)' }); vanish(e, 0); wipe(e, T('b1') + 0.3 + k * 1.0, { dir: 'l', d: 0.9 }); vanish(e, T('b4') - 0.3); });
-  const nm1 = mk(gA, 'pill on', 200, 330, null, null, '一亿个名字，逐个算一遍'); css(nm1, { fontSize: '34px', height: '68px' }); slam(nm1, T('b1', '一亿个名字') - 0.1, { from: 1.15 }); sfx('thud', T('b1', '一亿个名字'), { g: 0.45 }); hide(nm1, T('b3') - 0.3, { y: -8, d: 0.3 });
-  const thr = mk(gA, 'badge', 1000, 330, null, null, '只用一个线程'); css(thr, { fontSize: '36px' }); slam(thr, T('b1b', '一个线程'), { from: 1.25 }); vanish(thr, T('b3', '一秒后') - 0.2); sfx('thud', T('b1b', '一个线程') + 0.1, { g: 0.5 });
+  ['SELECT count(), avg(age) FROM users', ' WHERE NOT ignore(sipHash128(name))', ' SETTINGS max_threads = 1'].forEach((ln, k) => { const e = mk(gA, 'mono', 1000, 420 + k * 40, null, null, ln); css(e, { fontSize: '28px', color: 'var(--g3)' }); vanish(e, 0); wipe(e, T('b1') + 0.3 + k * 1.0, { dir: 'l', d: 0.9 }); vanish(e, T('b4') - 0.3); if (k === 2) classAt(e, 'y', T('b1b', '一个线程') - 0.2); if (k === 1) classAt(e, 'y', T('b1', '一个个') - 0.2, T('b1b') - 0.1); });
+  // 一亿个名字一个个过：名字从右边流进 Bob 的条（一条道，一个接一个）
+  const NMQ = ['User00001-…', 'User00002-…', 'User00003-…', 'User00004-…'];
+  const nmq = NMQ.map((n) => { const c = mk(gA, 'chip', 0, 330, null, null, n); css(c, { fontSize: '22px', height: '40px' }); c.style.visibility = 'hidden'; return c; });
+  const q0 = T('b1', '一亿个名字') - 0.2, q1 = T('b3') - 0.3;
+  F((t) => nmq.forEach((c, i) => { const ph = ((t - q0) * 0.45 + 1 - i / 4) % 1; const on = t >= q0 + i * 0.55 && t < q1; c.style.visibility = on ? 'visible' : 'hidden'; if (on) c.style.left = (1100 - ph * 900).toFixed(1) + 'px'; }));
+  sfx('thud', T('b1', '一亿个名字'), { g: 0.45 });
+  sfx('thud', T('b1b', '一个线程') + 0.1, { g: 0.5 });
   const b32 = mk(gA, 'big y', XA(3.2) + 20, 218, null, null, '3.2 s'); css(b32, { fontSize: '80px' }); show(b32, T('b1b', '三秒多'), { y: 12 }); sfx('thud', T('b1b', '三秒多') + 0.1, { g: 0.5 });
   // 快照
   const lp = foldAt(gA, 100, 596, 800, 290, 'Bob 的快照（查询开始那一刻）', 'y'); vanish(lp, 0); appear(lp, T('b2b', '快照') - 0.6);
@@ -41,10 +46,18 @@ scene('concur', ({ root, s, c0 }) => {
   const c2 = mk(gA, 'bar y', XA(2), 462, 14, 56); wipe(c2, T('b4', '新版本') - 0.4, { dir: 'l', d: 0.2 }); const c2l = mk(gA, 'big y', XA(2) + 34, 450, null, null, '5 ms'); css(c2l, { fontSize: '64px' }); show(c2l, T('b4', '新版本') - 0.3, { y: 10 });
   const m2 = mk(gA, 'tick y', XA(2), 230, null, 366); vanish(m2, 0); appear(m2, T('b4', '又过一秒'));
   // Bob 不知道：仍读旧片段
-  const ub = mk(gA, 'badge', 1440, 604, null, null, '旧片段还被他用着'); css(ub, { fontSize: '22px', padding: '6px 12px' }); show(ub, T('b5', '旧片段') - 0.2, { y: 10 });
-  const ch1 = mk(gA, 'pill', 100, 900, 800, 52, 'Bob 这次算出的人数：不含 Carol'); css(ch1, { fontSize: '28px' }); show(ch1, T('b6', '没有') - 0.2, { y: 10 });
-  const ch2 = mk(gA, 'pill y', 1000, 900, 820, 52, '下一次再查：有了 Carol'); css(ch2, { fontSize: '28px' }); show(ch2, T('b6', '下一次'), { y: 10 }); sfx('chime', T('b6', '下一次') + 0.1, { g: 0.5 });
-  vanish(ub, T('b6') - 0.1);
+  const ovA = overlay(gA);
+  const ub = path(ovA, `M ${XA(2.3)} 290 C ${XA(2.3)} 520 640 560 560 660`, 'accent', { w: 4, dashed: '10 10' }); vanish(ub, 0); arrowIn(ub, T('b5', '旧片段') - 0.3, 0.6);
+  const ubI = ico(gA, 'search', 570, 640, 52, 'y', 3.6); vanish(ubI, 0); appear(ubI, T('b5', '旧片段'));
+  classAt(R0, 'y', T('b5b', '还被他用着') - 0.2, T('b6') - 0.1);
+  const ppl = (x, t, withC, lab) => {
+    const l = mk(gA, 'lab', x, 908, null, null, lab); css(l, { fontSize: '24px' }); vanish(l, 0); appear(l, t);
+    for (let i = 0; i < 6; i++) { const pI = ico(gA, 'person', x + 130 + i * 52, 896, 46, 'w', 3.4); vanish(pI, 0); appear(pI, t + i * 0.04); }
+    const cI = ico(gA, 'person', x + 130 + 6 * 52, 896, 46, withC ? 'y' : '', 3.4); vanish(cI, 0); appear(cI, t + 0.3); if (!withC) css(cI, { opacity: 0.35 });
+    const cL = mk(gA, withC ? 'lab y' : 'lab', x + 130 + 7 * 52 + 6, 908, null, null, withC ? '有 Carol' : '没有 Carol'); css(cL, { fontSize: '24px' }); vanish(cL, 0); appear(cL, t + 0.35);
+  };
+  ppl(100, T('b6', '没有') - 0.2, false, '这一次'); ppl(1000, T('b6', '下一次'), true, '下一次'); sfx('chime', T('b6', '下一次') + 0.1, { g: 0.5 });
+  hide(ub, T('b6') - 0.1, { y: 0, d: 0.3 }); hide(ubI, T('b6') - 0.1, { y: 0, d: 0.3 }); vanish(g1, T('b6') - 0.3);
   const tAB = T('b8') + 1.0;
   vanish(gA, tAB);
 
@@ -52,9 +65,9 @@ scene('concur', ({ root, s, c0 }) => {
   appear(gB, tAB);
   const f1 = foldAt(gB, 100, 230, 760, 340, 'all_94_94_0', 'y'); wipe(f1, tAB, { dir: 'l', d: 0.4 }); ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(f1, i, t));
   const f2 = foldAt(gB, 1060, 230, 760, 340, 'tmp_insert_…', 'ghost'); appear(f2, Math.max(T('b8', '不出现') - 0.6, tAB + 0.3)); ['id.bin', 'name.bin'].forEach((t, i) => fileAt(f2, i, t));
-  const ok = mk(gB, 'tag', 100, 620, null, null, '整个出现'); css(ok, { fontSize: '72px' }); slam(ok, Math.max(T('b8', '整个出现'), tAB + 0.2), { from: 1.2 }); sfx('thud', Math.max(T('b8', '整个出现'), tAB + 0.2) + 0.1, { g: 0.5 });
-  const no = mk(gB, 'tag o', 1060, 620, null, null, '不出现'); css(no, { fontSize: '72px' }); slam(no, T('b8', '不出现'), { from: 1.2 }); sfx('thud', T('b8', '不出现') + 0.1, { g: 0.5 });
-  const sn = mk(gB, 'lab', 1060, 740, null, null, '写到一半的，别人看不见'); appear(sn, Math.max(T('b8', '不出现') - 0.3, tAB + 0.4));
+  const ok = ico(gB, 'check', 380, 600, 120, 'y', 4); const okL = mk(gB, 'lab y', 520, 640, null, null, '看得见'); vanish(okL, 0); appear(okL, Math.max(T('b8', '整个出现'), tAB + 0.2) + 0.1); slam(ok, Math.max(T('b8', '整个出现'), tAB + 0.2), { from: 1.2 }); sfx('thud', Math.max(T('b8', '整个出现'), tAB + 0.2) + 0.1, { g: 0.5 });
+  const no = ico(gB, 'cross', 1340, 600, 120, 'w', 4); const noL = mk(gB, 'lab', 1480, 640, null, null, '看不见'); vanish(noL, 0); appear(noL, T('b8', '不出现') + 0.1); slam(no, T('b8', '不出现'), { from: 1.2 }); sfx('thud', T('b8', '不出现') + 0.1, { g: 0.5 });
+  const sn = mk(gB, 'lab', 1060, 760, null, null, '写到一半的片段'); appear(sn, Math.max(T('b8', '不出现') - 0.3, tAB + 0.4));
   const tBC = T('b9') + 1.6;
   vanish(gB, tBC);
 
