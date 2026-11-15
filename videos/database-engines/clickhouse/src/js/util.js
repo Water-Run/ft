@@ -92,8 +92,10 @@ function exit(e, t, o = {}) {
   tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y || 0, duration: o.d || 0.4, ease: o.ease || 'power2.in', overwrite: 'auto' }, t);
 }
 // 瞬间出现 / 消失（终端里新输出的一行、换内容）
-const appear = (e, t) => tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: true }, t);
-const vanish = (e, t) => tl.set(e, { autoAlpha: 0 }, t);
+// 出现、消失都带一小段淡入淡出（WaterRun 2026-11-16：「动画缺乏过渡」「快速切换的老毛病」）；开场时的初始隐藏仍是瞬时的
+const FADE = 0.22;
+const appear = (e, t) => tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: FADE, ease: 'power1.out', immediateRender: true }, t);
+const vanish = (e, t) => (t <= 0.05 ? tl.set(e, { autoAlpha: 0 }, t) : tl.to(e, { autoAlpha: 0, duration: FADE, ease: 'power1.in' }, t));
 
 // ── 把画好的 canvas 换成 <img> ──
 // 渲染时 canvas 层在场景显隐切换之后会丢瓦片，图片是普通的绘制内容，不会。载入是异步的：承诺放进 window.PENDING，

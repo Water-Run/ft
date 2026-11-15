@@ -53,15 +53,17 @@ scene('five', ({ root, s, c0 }) => {
     classAt(gr[0], 'y', t + 0.2, tb); const one = txt(MX + 14, y + 88, '找 2050 号：只读 1 个颗粒', t + 0.2, 'lab y'); vanish(one, tb);
     gr.forEach((e, k) => classAt(e, 'on', tb + 0.2 + k * 0.06, T('f4') - 0.2)); txt(MX + 14, y + 88, '按姓名找：12208 个颗粒全要读', tb + 0.3, 'lab'); }
   // ③ 改和删：变更生成新版本 all_1_90_3_92，只有 age.bin 是新写的，其余硬链接（U01、U02）；轻量删除多一列 _row_exists（D02）
-  cur = 2; H = HOST[2]; { const y = Y0 + 2 * PITCH, t = T('f4') + 0.4, td = T('f4b') - 0.1;
+  cur = 2; H = HOST[2]; { const y = Y0 + 2 * PITCH, t = T('f4a') + 0.2, td = T('f4b') - 0.1;
     const fa = foldAt(H, MX + 14, y + 6, 200, 112, 'all_1_90_3', ''); css(fa.nm, { fontSize: FS, left: '10px', top: '8px' }); at(fa, t);
     ['id.bin', 'name.bin', 'age.bin'].forEach((f, r) => fileIn(fa, r, f));
     txt(MX + 226, y + 46, '→', t + 0.4, 'lab y');
     const fb = foldAt(H, MX + 260, y + 6, 226, 112, 'all_1_90_3_92', 'y'); css(fb.nm, { fontSize: FS, left: '10px', top: '8px' }); at(fb, t + 0.5);
     const nb = ['id.bin', 'name.bin', 'age.bin'].map((f, r) => fileIn(fb, r, f, r === 2 ? 'y' : ''));
-    const tw = T('f4', '重写') - 0.1; css(nb[2], { fontWeight: '700' }); warm(fb, tw, tw + 1.2);
+    const tw = T('f4a', '重写') - 0.1; css(nb[2], { fontWeight: '700' }); warm(fb, tw, tw + 1.2);
     txt(MX + 512, y + 6, '_row_exists', td, 'mono y');
-    [1, 1, 1, 0, 1, 1].forEach((v, k) => { const c = box(MX + 512 + k * 36, y + 40, 32, 38, 'cs13' + (v ? ' fy' : ''), td + 0.2 + k * 0.05); c.innerHTML = '<span class="b01">' + v + '</span>'; });
+    // 先全是 1；讲到「删除标记」时，她那一格才变成 0
+    const tFlip = T('f4b', '删除标记') + 0.15;
+    [1, 1, 1, 0, 1, 1].forEach((v, k) => { const c = box(MX + 512 + k * 36, y + 40, 32, 38, 'cs13 fy', td + 0.2 + k * 0.05); c.innerHTML = '<span class="b01">1</span>'; if (!v) { keyed(c).at(tFlip, { html: '<span class="b01">0</span>', cls: 'abs cs13' }); tl.fromTo(c, { scale: 1 }, { scale: 1.3, duration: 0.15, immediateRender: false }, tFlip); tl.to(c, { scale: 1, duration: 0.3 }, tFlip + 0.15); } });
     txt(MX + 512, y + 88, '清理留给合并', T('f4b', '清理') - 0.1, 'lab'); }
   // ④ 并发：Bob 的快照里只有 all_1_91_4_93；Carol 写入只添一个新片段 all_94_94_0，4 毫秒；Bob 的查询照样 3.2 秒读完（B01，第 09 章）
   cur = 3; H = HOST[3]; { const y = Y0 + 3 * PITCH, t = T('f5') + 0.4, tw = T('f5', '写入') - 0.1, tn = T('f5', '互不等待') - 0.1;

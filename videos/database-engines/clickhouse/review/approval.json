@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "f72a69840a3d4cf7b16062948dcbbbe995210eccda9396cfdaa6a5574f3a2851",
+      "content_sha256": "ac5c990095db6f688d1b7a70318da9918d0451536c87b42892ccf34e4cc8bfcf",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-15T16:30:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：2026-11-15 会话里 WaterRun 看过 r7 后改稿的全文（o4b、o12、h1b 改写，新加 h1b2、h10a，t3e 改写），答「你自主决策, 进行优化. OLAP(Online Analytical Processing), 使用括号. 还是型不是性, 我没你了解, 是笔误」，按此用「事务型」「分析型」；其余文字沿用此前的确认"
+      "confirmed_at": "2026-11-16T10:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：2026-11-16 会话里 WaterRun 看过 r9 后口述了 h10b、c13a、p6c、b9、f1 的改法；制作方把这几句连同补写的 u7、u7a、u7b，改写的 m12b，以及只改读法与字幕的几处放进一个问题，WaterRun 选「可以，按这样配音」；其余文字沿用此前的确认；确认后 c13a、u7、u7a、b9 四句超过字幕一行宽，各在逗号处拆成两句（字句不变）"
     }
   }
 }

@@ -25,7 +25,7 @@ scene('update', ({ root, s, c0 }) => {
   sfx('thud', T('u2', '不改') + 0.1, { g: 0.6 });
   const tm = termAt(gB, 100, 732, 1720, 156); tm.line(1, '<span class="out">Ok.</span>', T('u3', '新版本') + 0.3, {}); tm.line(2, '<span class="out">0 rows in set. Elapsed: 0.556 sec.</span>', T('u3', '新版本') + 0.3, {}); vanish(tm.el, 0); appear(tm.el, T('u2b') - 0.1);
   tm.line(0, '<span class="pr">:) </span>ALTER TABLE users UPDATE age = 43 WHERE id = 2050;', T('u2b') - 0.05, { type: 40, cursorUntil: T('u2b', '变更') + 1.5 });
-  const g1 = glossAt(gB, 100, 898, 1720, '变更', '<b>变更</b>（mutation）　改数据的后台任务：每个片段做出一个新版本'); show(g1, T('u2b', '变更') - 0.1, { y: 12, d: 0.35 });
+  const g1 = glossAt(gB, 100, 898, 1720, '变更', '<b>变更</b>（mutation）　后台任务：给每个片段做一个新版本，只重写改到的列'); show(g1, T('u2b', '变更') - 0.1, { y: 12, d: 0.35 });
   const n1 = foldAt(gB, 1180, 220, 640, 200, '', 'y'); const n2 = foldAt(gB, 1180, 450, 640, 200, '', 'y');
   [[n1, 'all_1_90_3'], [n2, 'all_91_91_0']].forEach(([f, nm], k) => {
     f.nm.innerHTML = nm + '<span class="y">_92</span>'; wipe(f, T('u3', '新版本') + k * 0.4, { dir: 'l', d: 0.5 }); sfx('pop', T('u3', '新版本') + k * 0.4, { g: 0.5 });
@@ -58,7 +58,7 @@ scene('update', ({ root, s, c0 }) => {
     const ln = mk(gC, '', 550, FY[k] + 32, 500, 4); css(ln, { background: 'var(--w)' }); wipe(ln, T('u5', '不复制') + k * 0.25, { dir: 'l', d: 0.5 }); classAt(lc[k], 'y', T('u5', '不复制') + k * 0.25); classAt(rc[k], 'y', T('u5', '不复制') + k * 0.25);
     const lb = mk(gC, 'lab y', 640, FY[k] - 10, null, null, '同一份文件'); css(lb, { fontSize: '24px' }); vanish(lb, 0); appear(lb, T('u5b', '同一份文件') + k * 0.2); sfx('tick', T('u5b', '同一份文件') + k * 0.2, { g: 0.5 });
   });
-  const g2 = glossAt(gC, 100, 880, 1720, '硬链接', '<b>硬链接</b>　同一份文件，在两个文件夹里各有一个名字'); show(g2, T('u5') + 0.3, { y: 12, d: 0.35 });
+  const g2 = glossAt(gC, 100, 880, 1720, '硬链接', '<b>硬链接</b>　磁盘上同一份文件，在两个文件夹里各有一个名字：新版本不用再复制一份'); show(g2, T('u5') + 0.3, { y: 12, d: 0.35 });
   const tCD = T('u6') + 0.5;
   vanish(gC, tCD);
 
@@ -82,10 +82,28 @@ scene('update', ({ root, s, c0 }) => {
   mk(gE, 'lab', 140, 250, null, null, '变更'); mk(gE, 'big', 140, 320, null, null, '95.37 MiB'); gE.lastChild.style.fontSize = '120px';
   const lwA = mk(gE, 'bar y', 140, 520, 760, 40); wipe(lwA, tDE + 0.3, { dir: 'l', d: 0.8 }); const lwAL = mk(gE, 'lab', 140, 580, null, null, '整列的年龄，重写一遍'); appear(lwAL, tDE + 0.6);
   const lb2 = mk(gE, 'lab y', 1020, 250, null, null, '轻量更新'); vanish(lb2, 0); appear(lb2, T('u7', '轻量更新') - 0.1);
-  const gn = mk(gE, 'big y', 1020, 320, null, null, '1 行'); css(gn, { fontSize: '120px' }); slam(gn, T('u7', '小补丁'), { from: 1.2 }); sfx('chime', T('u7', '小补丁') + 0.1, { g: 0.6 });
-  const lwB = mk(gE, 'bar y', 1020, 520, 14, 40); vanish(lwB, 0); appear(lwB, T('u7', '小补丁') + 0.2); const gu = ico(gE, 'doc', 1050, 506, 64, 'y', 3); vanish(gu, 0); slam(gu, T('u7', '小补丁') + 0.2, { from: 1.5 });
-  const gp = mk(gE, 'fn y', 1020, 610, null, null, 'patch-…-all_98_98_0_97（demo.users_lw 表）'); css(gp, { fontSize: '24px' }); show(gp, T('u7', '小补丁') + 0.5, { y: 10 });
-  const st = mk(gE, 'pill y', 100, 760, 920, 72, 'enable_block_number_column'); css(st, { fontSize: '34px' }); show(st, T('u7b', '先开设置') - 0.3, { y: 14 }); sfx('pop', T('u7b', '先开设置'), { g: 0.5 });
+  // 轻量更新：年龄列的一小段；改了的那一行写成一块补丁；查询时叠上去读；合并时才真正并进去
+  const AG = [50, 51, 42, 53, 54], CW7 = 130, SX7 = 1040, SY7 = 360, tP = T('u7d', '补丁') - 0.1;
+  const idL = AG.map((_, i) => { const e = mk(gE, 'mono', SX7 + i * (CW7 + 6), SY7 - 34, CW7, null, String(2048 + i)); css(e, { fontSize: '22px', textAlign: 'center', color: i === 2 ? 'var(--y)' : 'var(--g3)' }); vanish(e, 0); appear(e, tDE + 0.3 + i * 0.05); return e; });
+  const agC = AG.map((v, i) => { const c = cellAt(gE, SX7 + i * (CW7 + 6), SY7, CW7, 64, '<span>' + v + '</span>', ''); vanish(c, 0); appear(c, tDE + 0.3 + i * 0.05); return c; });
+  const agL = mk(gE, 'fn', SX7, SY7 + 76, null, null, 'age.bin（原来的片段，不动）'); css(agL, { fontSize: '22px' }); vanish(agL, 0); appear(agL, tDE + 0.6);
+  const XA7 = SX7 + 2 * (CW7 + 6);
+  const patchC = cellAt(gE, XA7, SY7 + 150, CW7, 64, '<span>43</span>', 'on'); const patchL = mk(gE, 'fn y', XA7 + CW7 + 20, SY7 + 166, null, null, '补丁片段：只有这 1 行'); css(patchL, { fontSize: '24px' });
+  const tRd = T('u7a', '叠上去') - 0.3, tMg = Math.max(T('u7a2', '合并') - 0.1, tRd + 2.4);
+  motion(patchC, [[0, { a: 0, y: -40 }], [tP, { a: 0, y: -40 }], [tP + 0.05, { a: 1 }], [tP + 0.45, { y: 0 }], [tRd + 0.45, { y: 0 }], [tRd + 0.8, { y: -150 }], [tRd + 1.9, { y: -150 }], [tRd + 2.2, { y: 0 }], [tMg, { y: 0, s: 1, a: 1 }], [tMg + 0.45, { y: -150, s: 1, a: 1 }], [tMg + 0.9, { y: -150, s: 0.6, a: 0 }]], ease.io3);
+  vanish(patchL, 0); show(patchL, tP + 0.4, { x: -12, y: 0, d: 0.35 }); keyed(patchL).at(tMg + 0.6, { html: '补丁并进去了，随后删掉', cls: 'abs fn dim' });
+  sfx('pop', tP + 0.4, { g: 0.5 });
+  // 查询读这一列：放大镜扫过，读到她那一格时补丁正叠在上面，读出来的就是 43
+  const q7 = ico(gE, 'search', 0, 0, 48, 'y', 3.6);
+  motion(q7, [[0, { a: 0, x: SX7 - 60, y: SY7 + 8 }], [tRd, { a: 0, x: SX7 - 60 }], [tRd + 0.15, { a: 1 }], [tRd + 1.9, { x: SX7 + 5 * (CW7 + 6), a: 1 }], [tRd + 2.2, { a: 0 }]], (k) => k);
+  const rdL = mk(gE, 'lab y', SX7, SY7 + 230, null, null, '查询读到的：43'); css(rdL, { fontSize: '26px' }); vanish(rdL, 0); show(rdL, tRd + 0.8, { y: 10, d: 0.3 }); vanish(rdL, tMg + 0.3);
+  // 合并：补丁真正并进片段，原来那一格变成 43
+  keyed(agC[2].firstChild).at(tMg + 0.5, { html: '43' });
+  flashClone(agC[2], tMg + 0.45, 1.0, 0.7, 'on', '<span>43</span>');
+  keyed(agL).at(tMg + 0.5, { html: '合并后的新片段：age.bin 里就是 43', cls: 'abs fn y' });
+  sfx('chime', tMg + 0.5, { g: 0.5 });
+  const gLw = glossAt(gE, 100, 700, 1720, '轻量更新', '<b>轻量更新</b>　只把改了的那几行写成补丁片段，不重写整列'); show(gLw, T('u7', '轻量更新') + 0.2, { y: 12, d: 0.35 });
+  const st = mk(gE, 'pill y', 100, 760, 920, 72, 'enable_block_number_column'); css(st, { fontSize: '34px' }); show(st, T('u7b', '设置') - 0.5, { y: 14 }); sfx('pop', T('u7b', '设置') - 0.2, { g: 0.5 });
   const sw = mk(gE, '', 1060, 774, 96, 44); css(sw, { border: '3px solid var(--g3)', background: 'var(--k2)' }); vanish(sw, 0); show(sw, T('u7b') - 0.7, { y: 14 });
   const knob = mk(sw, '', 4, 4, 30, 30); css(knob, { background: 'var(--g3)' });
   tl.fromTo(knob, { x: 0 }, { x: 52, duration: 0.3, ease: 'power2.inOut', immediateRender: false }, T('u7b', '开'));

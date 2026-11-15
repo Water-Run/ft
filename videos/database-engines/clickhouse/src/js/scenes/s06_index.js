@@ -11,17 +11,17 @@ scene('index', ({ root, s, c0 }) => {
   // ── A 一亿行里找 2050 ──
   appear(gA, c0 + 0.05);
   tableTag(world, '表 <b>demo.users</b> · 一亿行', c0 + 0.1, s.end);
-  const al = rowAt(gA, 100, 220, ['2050', 'Alice', '42'], [210, 310, 150], 90, 'lg y'); slide(al.row, T('i1', '二〇五〇') - 0.3, { x: -80 }); sfx('pop', T('i1', '二〇五〇'), { g: 0.6 });
+  const al = rowAt(gA, 100, 220, ['2050', 'Alice', '42'], [210, 310, 150], 90, 'lg y'); slide(al.row, T('i1', '2050') - 0.3, { x: -80 }); sfx('pop', T('i1', '2050'), { g: 0.6 });
   mk(gA, 'lab y', 100, 180, null, null, '要找的人');
   const whole = mk(gA, 'bar', 100, 470, 1720, 72); css(whole, { background: 'var(--g2)' }); wipe(whole, T('i1b') - 0.1, { dir: 'l', d: 0.8 });
   mk(gA, 'lab', 100, 420, null, null, '整张表 · 一亿行');
   const rdd = mk(gA, 'bar y', 100, 470, 1720, 72); const sA = T('i1b', '从头'), sB = Tend('i1b', 0.2);
   F((t) => { const k = clamp((t - sA) / Math.max(0.5, sB - sA)); rdd.style.clipPath = 'inset(0 ' + (100 - k * 100) + '% 0 0)'; rdd.style.visibility = t >= sA ? 'visible' : 'hidden'; });
   const cnt = mk(gA, 'big y', 100, 620, null, null, '已读 0 行'); css(cnt, { fontSize: '120px' }); appear(cnt, sA); countTo(cnt, 0, 100000000, sA, sB - sA, (v) => '已读 ' + fmt(Math.round(v / 100000) * 100000) + ' 行');
-  vanish(gA, T('i2') - 0.1);
+  hide(gA, T('i2') - 0.1, { y: -20, d: 0.35 });
 
   // ── B 传统的索引：B 树，每一行一项 ──
-  appear(gB, T('i2') - 0.1);
+  show(gB, T('i2') - 0.1 + 0.32, { y: 20, d: 0.45 });
   const sv = svg('svg', { viewBox: '0 0 1920 1080', width: 1920, height: 1080 }, gB); css(sv, { position: 'absolute', left: '0px', top: '0px' });
   const line = (x1, y1, x2, y2, t, col = '#A0A0A0') => { const p = svg('path', { d: 'M' + x1 + ',' + y1 + ' L' + x1 + ',' + (y1 + y2) / 2 + ' L' + x2 + ',' + (y1 + y2) / 2 + ' L' + x2 + ',' + y2, fill: 'none', stroke: col, 'stroke-width': 2 }, sv); p.style.opacity = 0; tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.01, immediateRender: true }, t); return p; };
   const bt = mk(gB, 'tag o', 100, 180, null, null, '传统索引：B 树'); css(bt, { fontSize: '56px' }); wipe(bt, T('i2') - 0.1, { dir: 'l', d: 0.6 });
@@ -45,10 +45,10 @@ scene('index', ({ root, s, c0 }) => {
   sfx('pop', tNw + 0.4, { g: 0.5 });
   [rootN, L2[1], leaves[4]].forEach((e, i) => classAt(e, 'on', T('i2c', '要改') + i * 0.3, T('i2c', '要改') + i * 0.3 + 0.6));
   const tBC = T('i3') + 1.2;
-  vanish(gB, tBC);
+  hide(gB, tBC, { y: -20, d: 0.35 });
 
   // ── C 颗粒与稀疏索引 ──
-  appear(gC, tBC);
+  show(gC, tBC + 0.32, { y: 20, d: 0.45 });
   mk(gC, 'lab', 100, 180, null, null, 'id 这一列：已按编号排好，每 8192 行一个颗粒');
   const gr = IDS.map((id, i) => { const g = granAt(gC, 100 + i * 144, 250, 130, 110, ''); vanish(g, 0); appear(g, T('i3', '就不必') + i * 0.06); return g; });
   const dots = mk(gC, 'big', 100 + 12 * 144 - 10, 280, null, null, '…'); css(dots, { fontSize: '60px', color: 'var(--g3)' });
@@ -67,15 +67,15 @@ scene('index', ({ root, s, c0 }) => {
   const u12 = mk(gC, 'h2', 600, 700, null, null, '项'); appear(u12, T('i4'));
   const n47 = mk(gC, 'big y', 820, 650, null, null, '47.69 KiB'); css(n47, { fontSize: '120px' }); show(n47, T('i4', '四十几'), { y: 14 }); sfx('chime', T('i4', '四十几') + 0.1, { g: 0.5 });
   vanish(n12, T('i5', '稀疏索引') - 0.1); vanish(u12, T('i5', '稀疏索引') - 0.1); vanish(n47, T('i5', '稀疏索引') - 0.1);
-  const g2 = glossAt(gC, 100, 810, 1700, '稀疏索引', '<b>稀疏索引</b>　一个颗粒一项，小到能整个放进内存'); show(g2, T('i5', '稀疏索引') - 0.1, { y: 14, d: 0.35 }); sfx('thud', T('i5', '稀疏索引') + 0.05, { g: 0.5 });
+  const g2 = glossAt(gC, 100, 810, 1700, '稀疏索引', '<b>稀疏索引</b>　不是每行一项，而是每个颗粒（8192 行）只记第一行的编号；所以小到能放进内存'); show(g2, T('i5') + 0.2, { y: 14, d: 0.35 }); sfx('thud', T('i5', '稀疏索引') + 0.05, { g: 0.5 });
   const t5 = mk(gC, 'tag', 100, 690, null, null, '稀疏索引'); css(t5, { fontSize: '80px' }); vanish(t5, 0); appear(t5, T('i5', '稀疏索引')); vanish(t5, T('i5b', '只找出') - 0.1);
   // 「只找出她在哪个颗粒里」：第 0 个颗粒和它那一项索引一起亮（不是某一行）
   classAt(gr[0], 'on', T('i5b', '只找出') - 0.1, T('i6') + 0.4); classAt(idxC[0], 'on', T('i5b', '颗粒') - 0.05, T('i6') + 0.4); sfx('pop', T('i5b', '只找出'), { g: 0.4 });
   const tCD = T('i6') + 0.4;
-  vanish(gC, tCD);
+  hide(gC, tCD, { y: -20, d: 0.35 });
 
   // ── D 拿 2050 去比索引项 ──
-  appear(gD, tCD);
+  show(gD, tCD + 0.32, { y: 20, d: 0.45 });
   const qc = mk(gD, 'tag', 100, 190, null, null, '2050'); slam(qc, tCD + 0.05, { from: 1.2 }); sfx('pop', tCD + 0.1, { g: 0.5 });
   const qv = mk(gD, 'cell on sm', 100 + 120, 440, 74, 44, '<span>2050</span>'); css(qv, { justifyContent: 'center', padding: '0' });
   motion(qv, [[0, { a: 0, x: -120 }], [T('i6a', '最前面') - 0.3, { a: 0, x: -120 }], [T('i6a', '最前面') - 0.25, { a: 1 }], [T('i6a', '最前面') + 0.2, { x: -40 }], [T('i6a', '下一项') + 0.3, { x: 40 }], [T('i6b', '最前面'), { x: 0, y: 0 }]]);
@@ -87,10 +87,10 @@ scene('index', ({ root, s, c0 }) => {
   const z0 = mk(gD, 'tag o', 960, 470, null, null, '最前面的颗粒（第 0 个）'); css(z0, { fontSize: '64px' }); slam(z0, T('i6b', '最前面'), { from: 1.2 }); sfx('thud', T('i6b', '最前面') + 0.1, { g: 0.5 });
   classAt(idx2[0], 'y', T('i6b', '第零个'));
   const tDE = T('i7') + 0.5;
-  vanish(gD, tDE);
+  hide(gD, tDE, { y: -20, d: 0.35 });
 
   // ── E 标记文件、读出一个颗粒 ──
-  appear(gE, tDE);
+  show(gE, tDE + 0.32, { y: 20, d: 0.45 });
   const FIL = [['id.bin', 300], ['name.bin', 440], ['age.bin', 580]];
   const segs = FIL.map(([nm, y], k) => {
     const lb = mk(gE, 'fn', 100, y + 14, null, null, nm); const cs = [];
@@ -108,10 +108,10 @@ scene('index', ({ root, s, c0 }) => {
   const rd = rowAt(gE, 420, 800, ['2050', 'Alice', '42'], [210, 310, 150], 76, 'lg y'); vanish(rd.row, 0); appear(rd.row, T('i8b') + 0.6); sfx('chime', T('i8b', '挑出') + 0.1, { g: 0.6 });
   const rdl = mk(gE, 'lab y', 100, 816, null, null, '从 8192 行里挑出她'); vanish(rdl, 0); appear(rdl, T('i8b') + 0.6);
   const tE9 = T('i9') + 1.0;
-  vanish(gE, tE9);
+  hide(gE, tE9, { y: -20, d: 0.35 });
 
   // ── i9 一万两千多个颗粒只读了一个 ──
-  const gI9 = groupAt(world); appear(gI9, tE9);
+  const gI9 = groupAt(world); show(gI9, tE9 + 0.32, { y: 20, d: 0.45 });
   mk(gI9, 'lab', 100, 190, null, null, '12,208 个颗粒');
   const bar9 = mk(gI9, 'bar', 100, 250, 1720, 80); css(bar9, { background: 'var(--g2)' }); wipe(bar9, tE9, { dir: 'l', d: 0.6 });
   const rd1 = mk(gI9, 'bar y', 100, 250, 8, 80); appear(rd1, Math.max(T('i9', '只读了一个'), tE9 + 0.5));
@@ -119,26 +119,26 @@ scene('index', ({ root, s, c0 }) => {
   const t12 = mk(gI9, 'huge y', 100, 470, null, null, '1 / 12,208'); css(t12, { fontSize: '200px' }); slam(t12, T('i9', '只读了一个'), { from: 1.2 }); sfx('thud', T('i9', '只读了一个') + 0.1, { g: 0.6 });
   const t2ms = mk(gI9, 'big', 100, 720, null, null, '1–2 ms'); css(t2ms, { fontSize: '140px' }); show(t2ms, T('i9', '一两毫秒'), { y: 14 }); sfx('chime', T('i9', '一两毫秒') + 0.1, { g: 0.5 });
   const t9F = T('i10') + 0.4;
-  vanish(gI9, t9F);
+  hide(gI9, t9F, { y: -20, d: 0.35 });
 
   // ── F 代价与换来的 ──
-  appear(gF, t9F);
+  show(gF, t9F + 0.32, { y: 20, d: 0.45 });
   const pa = mk(gF, 'panel', 100, 230, 840, 520), pb = mk(gF, 'panel y', 980, 230, 840, 520); wipe(pa, t9F, { dir: 'l', d: 0.4 }); appear(pb, T('i10b', '换来'));
   mk(gF, 'lab', 140, 260, null, null, '代价');
   const cost = mk(gF, 'big', 140, 330, null, null, '8192'); css(cost, { fontSize: '200px' }); slam(cost, t9F + 0.2, { from: 1.2 }); sfx('thud', t9F + 0.3, { g: 0.6 });
   const cu = mk(gF, 'h2', 140, 540, null, null, '行'); show(cu, t9F + 0.5, { y: 12 });
-  for (let r = 0; r < 24; r++) { const ln = mk(gF, '', 660, 270 + r * 19, 240, 11); css(ln, { background: r === 9 ? 'var(--y)' : '#5E5E55' }); vanish(ln, 0); appear(ln, t9F + 0.3 + r * 0.02); }
-  const one = mk(gF, 'lab y', 660, 720 - 26, null, null, '要的只有一行'); vanish(one, 0); appear(one, t9F + 1.0);
+  for (let r = 0; r < 24; r++) { const ln = mk(gF, '', 660, 270 + r * 17, 240, 11); css(ln, { background: r === 23 ? 'var(--y)' : '#5E5E55' }); vanish(ln, 0); appear(ln, t9F + 0.3 + r * 0.02); }
+  const one = mk(gF, 'lab y', 660, 686, null, null, '↑ 要的只有这一行'); vanish(one, 0); appear(one, t9F + 1.0);
   const lb2 = mk(gF, 'lab y', 1020, 260, null, null, '换来'); appear(lb2, T('i10b', '换来'));
   const gain = mk(gF, 'big y', 1020, 330, null, null, '47.69 KiB'); css(gain, { fontSize: '120px' }); slam(gain, T('i10b', '索引小'), { from: 1.2 }); sfx('chime', T('i10b', '索引小') + 0.1, { g: 0.5 });
   const memB = mk(gF, 'tile', 1020, 500, 760, 200); vanish(memB, 0); show(memB, T('i10b', '内存') - 0.4, { y: 12, d: 0.35 });
   ico(memB, 'server', 24, 50, 96, 'w', 2.6); const mL = mk(memB, 'h2', 140, 30, null, null, '内存'); void mL;
   const idxBlk = mk(memB, 'cell on', 140, 110, 220, 56, '<span>整个索引</span>'); css(idxBlk, { justifyContent: 'center' }); vanish(idxBlk, 0); slam(idxBlk, T('i10b', '内存') + 0.1, { from: 1.4 }); sfx('pop', T('i10b', '内存') + 0.1, { g: 0.5 });
   const tFG = T('i11') + 0.5;
-  vanish(gF, tFG);
+  hide(gF, tFG, { y: -20, d: 0.35 });
 
   // ── G 按姓名找，索引帮不上 ──
-  appear(gG, tFG);
+  show(gG, tFG + 0.32, { y: 20, d: 0.45 });
   const qn = mk(gG, 'tag', 100, 190, null, null, "name = 'Alice'"); css(qn, { fontSize: '64px' }); slam(qn, T('i11', '姓名'), { from: 1.2 });
   const gr2 = IDS.map((id, i) => { const g = granAt(gG, 100 + i * 144, 360, 130, 110, ''); vanish(g, 0); appear(g, tFG + i * 0.04); return g; });
   mk(gG, 'lab', 100, 320, null, null, '12,208 个颗粒（数据不按姓名排）');
@@ -154,8 +154,8 @@ scene('index', ({ root, s, c0 }) => {
   const m2 = mk(gG, 'big y', 900, 830, null, null, '1–2 ms'); css(m2, { fontSize: '90px' }); show(m2, T('i13a', '一两毫秒'), { y: 12 });
   const m2l = mk(gG, 'lab', 100, 856, null, null, '按编号找：只读 1 个颗粒'); appear(m2l, T('i13a'));
   const tGK = T('i13b') + 0.3;
-  vanish(gG, tGK);
-  const gK = groupAt(world); appear(gK, tGK);
+  hide(gG, tGK, { y: -20, d: 0.35 });
+  const gK = groupAt(world); show(gK, tGK + 0.32, { y: 20, d: 0.45 });
   const ob = mk(gK, 'tag', 100, 240, null, null, 'ORDER BY id'); css(ob, { fontSize: '80px' }); slam(ob, T('i13b', '排序键'), { from: 1.25 }); sfx('thud', T('i13b', '排序键') + 0.1, { g: 0.5 });
   const obn = mk(gK, 'pill', 100, 430, null, null, icoSvg('search', 30, 3.6) + '<span style="margin:0 12px">常按编号找</span>→<span style="margin-left:12px">ORDER BY id</span>'); css(obn, { fontSize: '32px', height: '68px' }); slam(obn, T('i13b') + 0.3, { from: 1.1 });
   const obn2 = mk(gK, 'pill', 100, 520, null, null, icoSvg('search', 30, 3.6) + '<span style="margin:0 12px">常按姓名找</span>→<span style="margin-left:12px">ORDER BY name</span>'); css(obn2, { fontSize: '32px', height: '68px' }); slam(obn2, T('i13b') + 1.3, { from: 1.1 });
@@ -163,10 +163,10 @@ scene('index', ({ root, s, c0 }) => {
   sfx('pop', T('i13b') + 0.4, { g: 0.4 }); sfx('pop', T('i13b') + 1.4, { g: 0.4 });
   const obn3 = mk(gK, 'lab y', 820, 444, null, null, '← 这张表'); vanish(obn3, 0); appear(obn3, T('i14') - 0.7);
   const tKH = T('i14') + 1.6;
-  vanish(gK, tKH);
+  hide(gK, tKH, { y: -20, d: 0.35 });
 
   // ── H 平均年龄根本用不着索引 ──
-  appear(gH, tKH);
+  show(gH, tKH + 0.32, { y: 20, d: 0.45 });
   mk(gH, 'lab y', 100, 180, null, null, 'SELECT avg(age) FROM users');
   [['id.bin', 280, 0], ['name.bin', 420, 0], ['age.bin', 560, 1]].forEach(([nm, y, on], i) => {
     const l = mk(gH, 'fn' + (on ? ' y' : ''), 100, y, null, null, nm); wipe(l, tKH + i * 0.2, { dir: 'l', d: 0.4 });

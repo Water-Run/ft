@@ -126,7 +126,8 @@ scene('history', ({ root, s, c0 }) => {
       bs.forEach((b, i) => { const hh = Math.round(20 + 280 * cnt[i] / mx); b.style.height = hh + 'px'; b.style.top = (340 - hh) + 'px'; });
     });
   };
-  const gBars = grp(T('h1', '网站统计') + 0.2, T('h2c', '页面') + 0.2);
+  const tWho = T('h2c', '某个地方') + 0.3;
+  const gBars = grp(T('h1', '网站统计') + 0.2, null); hide(gBars, tWho - 0.1, { y: 30, d: 0.4 });
   barsLive(gBars, T('h1', '网站统计'));
   // 记录 → 报表：现场算
   const aLive = path(ov, 'M 572 640 L 1236 640', 'accent', { w: 4 }); vanish(aLive, 0);
@@ -147,7 +148,7 @@ scene('history', ({ root, s, c0 }) => {
   motion(dCur, [[0, { x: 150, y: 220, a: 0 }], [T('h2', '划分') - 0.5, { a: 0 }], [T('h2', '划分') - 0.45, { a: 1 }], [T('h2', '划分') + 0.1, { x: 150, y: 70 }], [T('h2', '选条件') - 0.45, { x: 300, y: 220 }], [T('h2', '选条件') + 0.1, { x: 300, y: 70 }], [T('h2b'), { x: 300, y: 70, a: 1 }], [T('h2b') + 0.3, { a: 0 }]]);
   for (const c of [cA, cB]) classAt(c, 'on', T('h2c', c === cA ? '某个地方' : '某个页面') - 0.05, T('h4') - 0.3);
   // 有多少个不同的人：符合条件的记录在左边亮起，同一个人只算一次
-  const gWho = grp(T('h2c', '页面') + 0.2, T('h4') - 0.3);
+  const gWho = grp(tWho + 0.25, null); hide(gWho, T('h4') - 0.4, { y: -16, d: 0.35 });
   const who = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => ico(gWho, 'person', 30 + i * 64, 120, 60, 'y', 3.2));
   const visN = mk(gWho, 'lab', 30, 220, null, null, ''); const visS = mk(gWho, 'lab', 200, 220, null, null, '同一个人只算一次：'); void visS; const whoN = mk(gWho, 'big y', 30, 270, null, null, ''); css(whoN, { fontSize: '110px' });
   let lastW = '';
@@ -184,7 +185,7 @@ scene('history', ({ root, s, c0 }) => {
     if (i === 3) classAt(b, 'y', tMx - 0.15);
     return b;
   });
-  const aMx = path(ov, 'M 1188 492 C 1220 492 1220 420 1244 420', 'accent', { w: 4 }); vanish(aMx, 0); arrowIn(aMx, tMx - 0.1, 0.5);
+  const aMx = path(ov, 'M 1194 492 L 1242 492', 'accent', { w: 4 }); vanish(aMx, 0); arrowIn(aMx, tMx - 0.1, 0.5);
   const tYout = T('h2') - 0.4;
   for (const e of [YS.el, pinM, pinL, ...svs]) if (e !== pinM) hide(e, tYout, { y: -12, d: 0.35 });
   hide(aMx, tYout, { y: 0, d: 0.3 });
@@ -317,8 +318,8 @@ scene('history', ({ root, s, c0 }) => {
   };
   F((t) => { const n = fillAt(t); stripes.forEach((st, i) => { const v = i < Math.floor(n + 1e-6) ? 'visible' : 'hidden'; if (st.style.visibility !== v) st.style.visibility = v; }); });
   F((t) => { const ck = t >= T('h8', '最初'); stripes.forEach((st) => { const c = ck ? '#73736A' : '#5E5E55'; if (st.style.background !== c) st.style.background = c; }); });
-  const aOS = path(ov, 'M 608 600 C 720 600 910 220 910 368', 'line', { w: 4 }); vanish(aOS, 0); arrowIn(aOS, tIn0 - 0.2, 0.5);
-  const P_os = [[608, 600], [720, 600], [910, 220], [910, 372]];
+  const aOS = path(ov, 'M 608 600 C 700 600 760 350 864 372', 'line', { w: 4 }); vanish(aOS, 0); arrowIn(aOS, tIn0 - 0.2, 0.5);
+  const P_os = [[608, 600], [700, 600], [760, 350], [868, 374]];
   flow(P_os, 5, tIn0, tLock - 0.3, 1.1);
   flow(P_os, 5, tRw + 0.7, T('h9b') + 1, 1.0);
   // 它好用：报表从筒里现场来
@@ -437,13 +438,14 @@ scene('history', ({ root, s, c0 }) => {
 
   // ══ 分析型数据库，也不是 ClickHouse 才有：三个年代，各画一幅 ══
   const tE = T('h11') - 0.3;
-  for (const e of [D.el, YF, CHF, cyl, aRep]) hide(e, tE, { y: -12, d: 0.4 });
+  for (const e of [YF, CHF, cyl, aRep]) hide(e, tE, { y: -12, d: 0.4 });
+  hide(D.el, T('h11') + 1.0, { y: -12, d: 0.4 });   // 报表窗口在右边，跟左边的「更早的」面板不冲突，多留一会儿让「13 万亿+」读完
   const early = mk(world, '', 100, AX + 1, 96, 2); css(early, { borderTop: '3px dashed var(--g3)' }); wipe(early, T('h11') - 0.1, { dir: 'r', d: 0.5 });
   const earlyTx = mk(world, 'mono dim', 60, AX + 22, 140, null, '更早'); css(earlyTx, { fontSize: '26px', textAlign: 'center' }); appear(earlyTx, T('h11') + 0.2);
   const ERA = (x, w, title, names, t0, x0, cls = '', yEnd = AX) => {
     const b = mk(world, 'panel ' + cls, x, 150, w, 640);
     const tt = mk(b, 'badge', 24, 18, null, null, title); css(tt, { fontSize: '26px', padding: '8px 14px' });
-    names.forEach((n, i) => { const c = mk(b, 'chip', 24 + (i % 2) * ((w - 60) / 2 + 12), 84 + Math.floor(i / 2) * 54, (w - 60) / 2, 44, n); css(c, { justifyContent: 'center', fontSize: '22px' }); wipe(c, t0 + 0.3 + i * 0.25, { dir: 'l', d: 0.3 }); classAt(c, 'on', t0 + 0.9 + i * 0.6, t0 + 0.9 + names.length * 0.6 + 0.4); });
+    names.forEach((n, i) => { const c = mk(b, 'chip', 24 + (i % 2) * ((w - 60) / 2 + 12), 84 + Math.floor(i / 2) * 54, (w - 60) / 2, 44, n); css(c, { justifyContent: 'center', fontSize: '22px' }); wipe(c, t0 + 0.3 + i * 0.25, { dir: 'l', d: 0.3 }); const a = t0 + 0.9 + i * 0.6; flashClone(c, a, t0 + 0.9 + names.length * 0.6 + 0.4 - a, 0.6); });
     wipe(b, t0, { dir: 'b', d: 0.5 });
     const ln = mk(world, '', x0 - 1, 790, 3, yEnd - 790); css(ln, { background: cls ? 'var(--y)' : 'var(--g2)' }); wipe(ln, t0 + 0.2, { dir: 't', d: 0.4 });
     return { b, ln };
@@ -456,7 +458,7 @@ scene('history', ({ root, s, c0 }) => {
     const rb = mk(E1.b, 'chip', 24, 240 + i * 112, 392, 92, icoSvg(ic, 56, 3) + `<span style="margin-left:18px">${tx}</span>`);
     css(rb, { height: '92px', fontSize: '32px', padding: '0 22px' }); vanish(rb, 0); show(rb, t0 - 0.15, { x: -16, d: 0.35 });
     const tNext = i + 1 < E1R.length ? E1R[i + 1][2] - 0.15 : T('h11d') - 0.2;
-    classAt(rb, 'on', t0 - 0.15, tNext);
+    flashClone(rb, t0 + 0.2, Math.max(0.4, tNext - t0 - 0.2), 0.5);
     sfx('tick', t0, { g: 0.4 });
   });
   const E2 = ERA(600, 480, '二〇一〇年代初 · 云上', ['Snowflake', 'BigQuery', 'Redshift'], T('h11d') - 0.1, 902, '', AX - 8);

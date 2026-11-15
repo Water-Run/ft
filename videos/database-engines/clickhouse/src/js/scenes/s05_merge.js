@@ -31,7 +31,7 @@ scene('merge', ({ root, s, c0 }) => {
   const X0 = 100, PX = 1600 / 3000;
   const bar1 = mk(gB, 'bar', X0, 380, 1000 * PX, 48); css(bar1, { background: 'var(--g2)' }); wipe(bar1, tAB, { dir: 'l', d: 0.6 });
   const bar2 = mk(gB, 'bar y', X0 + 1000 * PX, 380, 2000 * PX, 48); wipe(bar2, T('m5', '放慢'), { dir: 'l', d: 0.8 });
-  const tk1 = mk(gB, 'tick y', X0 + 1000 * PX - 1, 330, null, 100); const tk2 = mk(gB, 'tick y', X0 + 3000 * PX - 1, 330, null, 100); appear(tk1, T('m5', '放慢')); appear(tk2, T('m5', '拒绝'));
+  const tk1 = mk(gB, 'tick y', X0 + 1000 * PX - 1, 318, null, 60); const tk2 = mk(gB, 'tick y', X0 + 3000 * PX - 1, 318, null, 60); appear(tk1, T('m5', '放慢')); appear(tk2, T('m5', '拒绝'));
   const pl1 = mk(gB, 'pill y', X0 + 1000 * PX - 160, 250, 320, 64, icoSvg('hourglass', 34, 3.4) + '<span style="margin-left:10px">先放慢插入</span>'); show(pl1, T('m5', '放慢'), { y: 14 }); sfx('pop', T('m5', '放慢'), { g: 0.5 });
   const pl2 = mk(gB, 'pill on', X0 + 3000 * PX - 400, 250, 400, 64, icoSvg('cross', 34, 4) + '<span style="margin-left:10px">再直接拒绝（报错）</span>'); show(pl2, T('m5', '拒绝'), { y: 14 }); sfx('pop', T('m5', '拒绝'), { g: 0.5 });
   const nm1 = mk(gB, 'big y', X0 + 1000 * PX - 130, 480, null, null, '1000'); css(nm1, { fontSize: '90px' }); slam(nm1, T('m5b', '一千'), { from: 1.2 });
@@ -64,7 +64,7 @@ scene('merge', ({ root, s, c0 }) => {
   mA.forEach((e, i) => motion(e, [[0, { x: 0, y: 0 }], [tMg, { x: 0, y: 0 }], [tMg + 0.6, { x: 180 - 120 * i, y: 140 }]]));
   for (const e of mA) classAt(e, 'gone', tMg + 0.62);
   const mBig = mk(gC, 'sq-l y', 1050, 480, 460, 80); vanish(mBig, 0); slam(mBig, tMg + 0.6, { from: 1.15 }); sfx('thud', tMg + 0.62, { g: 0.6 });
-  const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　几个小片段 → 一个大片段'); show(g6, T('m6c') - 0.5, { y: 14, d: 0.35 });
+  const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　后台把几个小片段归并成一个大片段'); show(g6, T('m6b', '后台') + 0.2, { y: 14, d: 0.35 });
   sfx('thud', T('m6c', '合并') + 0.1, { g: 0.6 });
   warm(pf, tBC + 0.4, T('m6b')); warm(pb_, T('m6b'), T('m7') - 0.2);
   const tCD = T('m7') + 0.6;
@@ -107,12 +107,13 @@ scene('merge', ({ root, s, c0 }) => {
   const OW = outCells.map((rw, i) => [[stepT[i], stepT[i] + 0.55], [T('m9', '排好序') + i * 0.1, T('m9', '排好序') + i * 0.1 + 0.4], [T('m10b', '一趟') - 0.5 + i * 0.12, T('m10b', '一趟') - 0.5 + i * 0.12 + 0.3]]);
   F((t) => { outCells.forEach((rw, i) => { const on = OW[i].some(([a, b]) => t >= a && t < b); rw.c.forEach((c) => c.classList.toggle('on', on)); }); });
   // m8a：每一摞就是一个片段（依次描一下）
-  [0, 1, 2].forEach((si) => { const o = mk(gD, '', SX[si] - 10, 264, 350, 3 * 76 + 6); css(o, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(o, 0); appear(o, T('m8a', '每一摞') + si * 0.5); vanish(o, T('m8a', '每一摞') + si * 0.5 + 0.55); });
+  [0, 1, 2].forEach((si) => { const o = mk(gD, '', SX[si] - 10, 264, 350, STACKS[si].length * 76 + 6); css(o, { border: '4px solid var(--y)', pointerEvents: 'none' }); vanish(o, 0); appear(o, T('m8a', '每一摞') + si * 0.5); vanish(o, T('m8a', '每一摞') + si * 0.5 + 0.55); });
   // m9：名字
   const bk = mk(gD, 'fn', 100, 690, null, null, ''); css(bk, { fontSize: '68px' }); vanish(bk, 0); appear(bk, T('m9', 'all'));
   h('span', 'dim', bk, 'all_'); const sp1 = h('span', '', bk, '1_3'); h('span', 'dim', bk, '_'); const sp2 = h('span', '', bk, '1');
   // m10：旧的先标成不活动
   [0, 1, 2].forEach((si) => { const b = mk(gD, 'badge', SX[si], 560, null, null, '不活动'); css(b, { fontSize: '30px' }); show(b, T('m10', '不活动') + si * 0.2, { y: 10 }); sfx('tick', T('m10', '不活动') + si * 0.2, { g: 0.5 }); });
+  const gIn = glossAt(gD, 100, 800, 1200, '不活动', '<b>不活动</b>　合并后的旧片段：查询不再读它，过一阵才从磁盘删掉'); show(gIn, T('m10') + 0.2, { y: 12, d: 0.35 });
   const qI = ico(gD, 'search', 1300, 270, 56, 'y', 3.6); const tQ = T('m10b', '一趟') - 0.5;
   motion(qI, [[0, { a: 0, y: 0 }], [T('m10b') - 0.1, { a: 0, y: 0 }], [T('m10b'), { a: 1 }], [tQ, { y: 0 }], [tQ + 1.0, { y: 7 * 76 }], [Tend('m10b', 0.4), { y: 7 * 76, a: 1 }], [Tend('m10b', 0.6), { a: 0 }]], (k) => k);
   vanish(gD, T('m11') - 0.1);
@@ -153,18 +154,17 @@ scene('merge', ({ root, s, c0 }) => {
   const LWIN = [0, 1, 2, 3].map((lv) => [W1(T('m11c', '每并一层') + lv * 0.8, 0.7), W1(T('m12', '往上') - 1.4 + lv * 0.5, 0.45), W1(T('m12d') + lv * 0.5, 0.45), W1(T('m12c', '这么来的') + lv * 0.35, 0.45)].concat(lv === 0 ? [W1(T('m11') + 0.1), W1(T('m11b', '九百个'))] : lv === 1 ? [W1(T('m11', '再并')), W1(T('m11b', '一组一组'))] : lv === 2 ? [W1(T('m11b', '再并') - 0.6, 0.7)] : []).concat(lv < 3 ? [W1(T('m11d') + 0.2 + lv * 0.9, 0.6)] : []));
   F((t) => { NODES.forEach((n) => { if (n.lv < 3) n.el.classList.toggle('on', LWIN[n.lv].some(([a, b]) => t >= a && t < b)); }); });
   NODES.filter((n) => n.lv < 3).forEach((n) => classAt(n.el, 'dead', T('m11e', '只剩') - 0.1, T('m12') - 0.2));   // 只剩一个：下面各层退暗，下一句再亮回来讲来历
-  const rootN2 = NODES[NODES.length - 1].el; classWins(rootN2, 'on', [[T('m11e') + 0.2, T('m12') - 0.2], [T('m12', '往上') + 0.6, T('m12b') - 0.2]]);
-  // m12b：倒过来看（整体转 180 度；文字另外淡出再回来）
-  const tF = T('m12b', '倒过来'), FD = 1.5;
-  tl.fromTo(tr, { scaleY: 1 }, { scaleY: -1, duration: FD, ease: 'power2.inOut', immediateRender: false }, tF);   // 上下翻过来（不旋转：旋转时两端会扫进字幕条）
-  [rootL, cap, l900, lvT, ...lvLab].forEach((e) => { vanish(e, tF - 0.05); });
-  const lvLab2 = [0, 1, 2, 3].map((lv) => { const e = mk(gE, 'big', 100, 932 - (Y1[lv] + NH) - 6, null, null, String(lv)); css(e, { fontSize: '64px', color: 'var(--g3)' }); vanish(e, 0); appear(e, tF + FD + 0.05); return e; });
-  const rootL2 = mk(gE, 'fn y', 560, 932 - (Y1[3] + NH) + 2, null, null, 'all_1_900_3 ← 树根'); css(rootL2, { fontSize: '40px', lineHeight: '48px' }); vanish(rootL2, 0); appear(rootL2, tF + FD + 0.05);
-  const l9002 = mk(gE, 'lab', 220, 932 - (Y1[0] + NH) - 56, null, null, '树梢：900 个小片段'); css(l9002, { fontSize: '24px' }); vanish(l9002, 0); appear(l9002, tF + FD + 0.05);
-  sfx('whoosh', tF, { g: 0.6 });
+  const NAME_LV = { 1: (k) => `all_${k * 150 + 1}_${(k + 1) * 150}_<span class="y">1</span>`, 2: (k) => `all_${k * 450 + 1}_${(k + 1) * 450}_<span class="y">2</span>` };
+  NODES.filter((n) => n.lv === 1 || n.lv === 2).forEach((n) => { const w = (n.lv === 1 ? 3 : 9) * LP - 10; const l = mk(n.el, 'mono', 0, 13, w, null, NAME_LV[n.lv](n.k)); css(l, { fontSize: '22px', textAlign: 'center' }); vanish(l, 0); appear(l, T('m11c', '每并一层') + (n.lv - 1) * 0.8 + 0.2); });
+  const rootN2 = NODES[NODES.length - 1].el; classWins(rootN2, 'on', [[T('m11e') + 0.2, T('m12') - 0.2], [T('m12', '往上') + 0.6, T('m12b') - 0.2], [T('m12b') + 0.1, T('m12c') - 0.2]]);
+  // m12b：这样看，就像一棵树——树根在上（all_1_900_3），往下一层层分开；不再翻过来
+  const rootTag = mk(gE, 'lab y', 1000, Y1[3] - 44, null, null, '← 树根'); css(rootTag, { fontSize: '26px' }); vanish(rootTag, 0); show(rootTag, T('m12b', '一棵树') - 0.2, { x: -12, y: 0, d: 0.35 }); sfx('pop', T('m12b', '一棵树') - 0.2, { g: 0.45 });
+  sfx('tick', T('m11c', '每并一层') + 0.2, { g: 0.4 }); sfx('tick', T('m11c', '每并一层') + 1.0, { g: 0.4 }); sfx('whoosh', T('m12c', 'MergeTree') - 0.1, { g: 0.35 });
+  vanish(cap, T('m12b') - 0.2);
   const mt = mk(gE, 'h1', 100, 790, null, null, 'MergeTree  =  合并（Merge）+ 树（Tree）'); css(mt, { fontSize: '52px' }); wipe(mt, T('m12c', 'MergeTree') - 0.1, { dir: 'l', d: 0.7 });
   const lsm = mk(gE, 'tag o', 1260, 780, null, null, 'LSM 树 · 1996'); css(lsm, { fontSize: '56px' }); slam(lsm, T('m12e', 'LSM'), { from: 1.25 }); sfx('thud', T('m12e', 'LSM') + 0.1, { g: 0.5 });
-  const src = mk(gE, 'lab', 100, 880, null, null, '出处：ClickHouse 官方文档'); css(src, { fontSize: '24px' }); appear(src, T('m12c', '官方文档'));
+  const gLsm = glossAt(gE, 100, 900, 1720, 'LSM 树', '<b>LSM 树</b>（Log-Structured Merge-Tree）　先写成排好序的小段，再一层层合并'); show(gLsm, T('m12e') + 0.3, { y: 12, d: 0.35 });
+  const src = mk(gE, 'lab', 100, 852, null, null, '出处：ClickHouse 官方文档'); css(src, { fontSize: '24px' }); appear(src, T('m12c', '官方文档'));
   const tEF = T('m13') + 0.3;
   vanish(gE, tEF);
 
@@ -174,9 +174,11 @@ scene('merge', ({ root, s, c0 }) => {
   const tmF = termAt(gF, 100, 170, 1060, 174); tmF.line(1, '<span class="out">Ok.</span>', T('m13b', '用了'), {}); tmF.line(2, '<span class="out">0 rows in set. Elapsed: 10.549 sec.</span>', T('m13b', '用了'), {}); vanish(tmF.el, 0); appear(tmF.el, tEF);
   tmF.line(0, '<span class="pr">:) </span>OPTIMIZE TABLE users FINAL;', T('m13', '并成') - 0.1, { type: 36, cursorUntil: T('m13', 'all') });
   const g90 = [];
-  for (let i = 0; i < 90; i++) { const e = mk(gF, 'sq-l', 100 + (i % 15) * 60, 370 + Math.floor(i / 15) * 60, 50, 50); vanish(e, 0); appear(e, tEF + i * 0.015); g90.push(e); }
+  const tGo = T('m13', 'all') - 0.35;
+  for (let i = 0; i < 90; i++) { const x = 100 + (i % 15) * 60, y = 370 + Math.floor(i / 15) * 60, e = mk(gF, 'sq-l', x, y, 50, 50); const t1 = tEF + i * 0.015, t2 = tGo + i * 0.008;
+    motion(e, [[0, { a: 0, x: 0, y: 0, s: 1 }], [t1, { a: 0 }], [t1 + 0.2, { a: 1 }], [t2, { x: 0, y: 0, s: 1, a: 1 }], [t2 + 0.6, { x: 1450 - x - 25, y: 545 - y - 25, s: 0.3, a: 0 }]], ease.io3); g90.push(e); }
   const big90 = foldAt(gF, 1100, 370, 700, 350, 'all_1_90_3', 'y'); ['id.bin', 'name.bin', 'age.bin', '…'].forEach((t, i) => fileAt(big90, i, t)); wipe(big90, T('m13', 'all'), { dir: 'l', d: 0.6 }); sfx('chime', T('m13', 'all') + 0.3, { g: 0.6 });
-  g90.forEach((e, i) => { classAt(e, 'y', T('m13', '并成') + i * 0.012, T('m13', 'all') + 0.1); vanish(e, T('m13', 'all') + 0.25); });
+  g90.forEach((e, i) => classAt(e, 'y', T('m13', '并成') + i * 0.012));
   const sec10 = mk(gF, 'huge y', 100, 760, null, null, '0.0 s'); css(sec10, { fontSize: '150px' }); appear(sec10, T('m13b') - 0.05); countTo(sec10, 0, 10.5, T('m13b') - 0.05, T('m13b', '用了') - T('m13b'), (v) => v.toFixed(1) + ' s');
   const tGH = T('m16') - 0.05;
   vanish(gF, tGH);

@@ -15,9 +15,10 @@ scene('column', ({ root, s, c0 }) => {
   const tRow = T('c1b', '一行'), tCol = T('c1b', '一列'), tName = T('c1b', '姓名'), tAge = T('c1b', '年龄');
   const lr = mk(A, 'lab y', 740, 250 + 2 * 78 + 18, null, null, '一行 = 一个人'); show(lr, tRow, { x: -16, y: 0 }); vanish(lr, Tend('c1b', 0.5));
   const colSet = (k, t0, t1) => { classAt(hd.c[k], 'y', t0, t1); };
-  const colWin = [[tCol, tName], [tName, tAge], [tAge, Tend('c1b', 0.5)]];
+  const tId = T('c1b', '编号') - 0.15, tNm = tName - 0.15, tAg = tAge - 0.15;
+  const colWin = [[tId, tNm], [tNm, tAg], [tAg, Tend('c1b', 0.5)]];
   F((t) => tbl.forEach((r, ri) => r.c.forEach((c, ci) => c.classList.toggle('on', (ri === 2 && t >= tRow && t < tCol - 0.1) || (t >= colWin[ci][0] && t < colWin[ci][1])))));
-  colSet(0, tCol, tName); colSet(1, tName, tAge); colSet(2, tAge, Tend('c1b', 0.5));
+  colSet(0, tId, tNm); colSet(1, tNm, tAg); colSet(2, tAg, Tend('c1b', 0.5));
   const lc = mk(A, 'lab y', 740, 180, null, null, '一列 = 一项'); show(lc, tCol, { x: -16, y: 0 }); vanish(lc, Tend('c1b', 0.5));
   sfx('tick', tRow, { g: 0.5 }); sfx('tick', tCol, { g: 0.5 }); sfx('tick', tName, { g: 0.4 }); sfx('tick', tAge, { g: 0.4 });
 
@@ -39,7 +40,14 @@ scene('column', ({ root, s, c0 }) => {
   blocks.forEach((b) => { classAt(b.c[0], 'dead', T('c4') - 0.1); classAt(b.c[1], 'dead', T('c4') - 0.1); });
   const rdn = mk(A, 'lab', 800, 560, null, null, ''); css(rdn, { fontSize: '30px' }); vanish(rdn, 0); appear(rdn, sA);
   F((t) => { const n = Math.min(8, Math.round(clamp((t - sA) / Math.max(0.5, sB - sA)) * 8)); const v = `读了 <span class="y">${n * 3}</span> 项，用到的只有 <span class="y">${n}</span> 项（年龄）`; if (rdn._v !== v) { rdn.innerHTML = v; rdn._v = v; } });
-  const tAC = T('c4', '每一列') - 0.4;
+  const tFly = T('c4', '反过来') - 0.1, OFF = [0, 68, 236], FYS = [280, 400, 520];
+  for (const e of [rsP, lb, rdn]) hide(e, tFly, { y: 0, d: 0.35 });
+  blocks.forEach((b, i) => b.c.forEach((c, k) => {
+    const sx = 800 + (i % 3) * 366 + OFF[k], sy = 250 + Math.floor(i / 3) * 96, tx = 870 + i * 122, ty = FYS[k], t0 = tFly + k * 0.12 + i * 0.03;
+    motion(c, [[0, { x: 0, y: 0 }], [t0, { x: 0, y: 0 }], [t0 + 0.8, { x: tx - sx, y: ty - sy }]], ease.io3);
+  }));
+  sfx('whoosh', tFly, { g: 0.5 });
+  const tAC = tFly + 1.25;
   vanish(A, tAC);
 
   // ── C 每一列一个文件（左边的表与上一段同一个位置、同一个样子，换段时不动）──
@@ -53,15 +61,15 @@ scene('column', ({ root, s, c0 }) => {
     const lbl = mk(C, 'fn', 710, y + 22, null, null, nm);
     const cells = stripAt(C, FX, y, vals, CW, 76);
     const t0 = T('c4', '每一列') + k * 0.35;
-    wipe(lbl, t0, { dir: 'l', d: 0.4 }); cells.forEach((c, i) => wipe(c, t0 + i * 0.04, { dir: 'l', d: 0.35 }));
-    sfx('tick', t0, { g: 0.5 });
+    wipe(lbl, tAC - 0.1 + k * 0.12, { dir: 'l', d: 0.4 }); cells.forEach((c) => { vanish(c, 0); appear(c, tAC - 0.15); });
+    void t0;
     return { lbl, cells };
   });
   // 一列一个文件：对应的表列也亮一下
   const colHi = (k, t0, t1) => { classAt(tb2.c[k], 'y', t0, t1); tbl2.forEach((r) => classAt(r.c[k], 'y', t0, t1)); strips[k].cells.forEach((c) => classAt(c, 'y', t0, t1)); classAt(strips[k].lbl, 'y', t0, t1); };
   colHi(0, T('c4', '每一列'), T('c4', '每一列') + 0.9); colHi(1, T('c4', '每一列') + 0.35, T('c4', '每一列') + 1.25); colHi(2, T('c4', '每一列') + 0.7, T('c4', '每一列') + 1.6);
   [tb2].concat(tbl2).forEach((r) => classAt(r.row, 'dim55', T('c4b') - 0.2, T('c7') - 0.2));
-  const g1 = glossAt(C, 710, 690, 1150, '列式存储', '<b>列式存储</b>　一张表的每一列，单独存成一个文件'); show(g1, T('c4b', '列式存储') - 0.1, { y: 14, d: 0.35 }); vanish(g1, T('c7') - 0.2);
+  const g1 = glossAt(C, 710, 690, 1150, '列式存储', '<b>列式存储</b>　按列存放：同一列的值挨在一起，一列一个文件；查询用到哪几列，就只读那几列'); show(g1, T('c4b', '列式存储') - 0.1, { y: 14, d: 0.35 }); vanish(g1, T('c7') - 0.2);
   const sf = mk(C, 'frame-d', FX - 14, 266, 8 * (CW - 2) + 30, 352, ''); vanish(sf, 0); wipe(sf, T('c4c') - 0.1, { dir: 'l', d: 0.5 }); vanish(sf, T('c5') + 0.2);
   strips.forEach((st, k) => st.cells.forEach((c, i) => classAt(c, 'w', T('c4c') + 0.2 + k * 0.6 + i * 0.08, T('c5'))));
   // c5：年龄这一列，只有八个字节，一人一个——十进制换成真实的字节（十六进制）；标注收走时换回十进制，后面「第三个值 = carol」对得上 41
@@ -108,6 +116,7 @@ scene('column', ({ root, s, c0 }) => {
   const lz = mk(D, 'tag', 100, 250, 400, 76, 'LZ4'); css(lz, { fontSize: '44px', padding: '0' }); vanish(lz, 0); appear(lz, tZ + 0.95); vanish(rowBox, tZ + 0.95);
   for (const pl of [plL, plR]) vanish(pl, tZ + 1.3);
   const zl = mk(D, 'lab', 540, 270, null, null, '压缩后：一长条，挤成一小块'); vanish(zl, 0); show(zl, tZ + 1.1, { x: -16, y: 0 });
+  const gz = glossAt(D, 100, 560, 1300, 'LZ4', '<b>LZ4</b>　一种压缩算法，ClickHouse 默认用它压列文件'); show(gz, tZ + 0.95, { y: 12, d: 0.35 });
   const sv = mk(D, 'tag', 100, 420, null, null, '省空间'); slam(sv, T('c10b', '省空间'), { from: 1.3 }); sfx('thud', T('c10b', '省空间') + 0.1);
   const tDE = T('c12') + 0.6;
   vanish(D, tDE);
@@ -127,13 +136,12 @@ scene('column', ({ root, s, c0 }) => {
   const lF1 = mk(E, 'lab', 100, 500, null, null, 'age 这一列 · 一人一个字节 · 原本'); appear(lF1, tEG);
   const af1 = mk(E, 'bar', 100, 538, 1700, 52); css(af1, { background: 'var(--g2)' }); wipe(af1, tEG + 0.1, { dir: 'l', d: 0.9 });
   const m1 = mk(E, 'big', 100, 604, null, null, '95.37 MiB'); css(m1, { fontSize: '92px' }); show(m1, Math.max(tEG + 1.4, T('c13', '九十五兆') - 0.2), { y: 10 });
-  const perB = mk(E, 'badge', 900, 612, null, null, '1 字节 × 1 亿人'); css(perB, { fontSize: '30px', padding: '10px 18px' }); slam(perB, Math.max(tEG + 0.6, T('c13', '一人一个字节') - 0.1), { from: 1.2 }); vanish(perB, T('c13b') - 0.2);
-  const lF2 = mk(E, 'lab y', 100, 714, null, null, '压缩后'); appear(lF2, T('c13a') - 0.1);
-  const af2 = mk(E, 'bar y', 100, 752, 10, 52); wipe(af2, T('c13a') - 0.05, { dir: 'l', d: 0.3 });
-  const m2 = mk(E, 'big y', 140, 740, null, null, '529 KiB'); css(m2, { fontSize: '72px' }); show(m2, T('c13a', '五百多') - 0.3, { y: 10 }); sfx('chime', T('c13a', '五百多'), { g: 0.5 });
-  const cav = noteAt(E, 900, 600, '演示数据：年龄只有几十种取值，压得格外狠'); show(cav, T('c13b') - 0.1, { y: 10 });
-  const demoB = mk(E, 'badge', 470, 748, null, null, '演示数据'); css(demoB, { fontSize: '28px', padding: '10px 16px' }); slam(demoB, T('c13b', '演示数据') - 0.1, { from: 1.2 }); vanish(demoB, T('c14') - 1.5);
-  const cav2 = noteAt(E, 900, 660, '真实数据，没这么夸张'); show(cav2, T('c13b', '真实数据') - 0.2, { y: 10 });
+  const perB = mk(E, 'badge', 900, 612, null, null, '1 字节 × 1 亿人'); css(perB, { fontSize: '30px', padding: '10px 18px' }); slam(perB, Math.max(tEG + 0.6, T('c13', '一人一个字节') - 0.1), { from: 1.2 }); vanish(perB, T('c13a') - 0.2);
+  const lF2 = mk(E, 'lab y', 100, 714, null, null, '压缩后'); appear(lF2, T('c13a2') - 0.1);
+  const af2 = mk(E, 'bar y', 100, 752, 10, 52); wipe(af2, T('c13a2') - 0.05, { dir: 'l', d: 0.3 });
+  const m2 = mk(E, 'big y', 140, 740, null, null, '529 KiB'); css(m2, { fontSize: '72px' }); show(m2, T('c13a2', '五百多') - 0.3, { y: 10 }); sfx('chime', T('c13a2', '五百多'), { g: 0.5 });
+  const cav = noteAt(E, 900, 600, '演示数据：年龄只有几十种取值，压得格外狠'); show(cav, T('c13a') + 0.2, { y: 10 });
+  const demoB = mk(E, 'badge', 1000, 748, null, null, '演示数据'); css(demoB, { fontSize: '28px', padding: '10px 16px' }); slam(demoB, T('c13a2', '演示数据') - 0.1, { from: 1.2 }); vanish(demoB, T('c14') + 1.0);
   // c14：求平均年龄，只读这五百多 K（这一小条描上黄框）
   const hl = mk(E, '', 92, 744, 26, 68); css(hl, { border: '4px solid var(--y)' }); vanish(hl, 0); appear(hl, T('c14') - 1.4);
   const pt = mk(E, 'lab y', 470, 758, null, null, '← 求平均年龄，只读这一小条'); show(pt, T('c14') - 1.4, { x: -16, y: 0 });

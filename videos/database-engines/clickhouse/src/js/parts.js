@@ -61,13 +61,11 @@ function foldAt(parent, x, y, w, hh, name, cls = '') {
 function fileAt(fold, i, text, cls = '') { const e = h('div', 'it ' + cls, fold, text); css(e, { top: (58 + i * 40) + 'px' }); return e; }
 // 面板「亮起再回落」：旁白讲到它的这段时间，它的底色慢慢提亮一格再回到原样（「这一块正在被讲」）。面积大，静止检查里算作画面在变。
 // base 必须是这个面板原本的底色（panel / fold / term / tile 是 #1F1F1C，ghost 的 fold 是 #151515）；不要用在会被 .on 填成黄色的格子上。
+// 讲到它时提亮一次、讲完慢慢退回（不再一明一暗地循环：WaterRun 2026-11-16「到处闪烁」）
 function warm(el, t0, t1, base = '#1F1F1C', hi = '#3C3C2A') {
-  const n = Math.max(1, Math.round((t1 - t0) / 2.4)), d = (t1 - t0) / n / 2;
-  for (let k = 0; k < n; k++) {
-    const a = t0 + k * 2 * d;
-    tl.fromTo(el, { backgroundColor: base }, { backgroundColor: hi, duration: d, ease: 'none', immediateRender: false }, a);
-    tl.to(el, { backgroundColor: base, duration: d, ease: 'none' }, a + d);
-  }
+  const up = Math.min(0.5, (t1 - t0) / 3), down = Math.min(0.6, (t1 - t0) / 3);
+  tl.fromTo(el, { backgroundColor: base }, { backgroundColor: hi, duration: up, ease: 'power1.out', immediateRender: false }, t0);
+  tl.to(el, { backgroundColor: base, duration: down, ease: 'power1.inOut' }, t1 - down);
 }
 // 一亿行演示表的真实内容（research/lab/03_big.sh 的生成式）：编号 n 的姓名是 User0000n-…（后半截固定的字母串画面上省略），年龄 18 + n % 63；Alice 是 2050 号、42 岁
 const NM = (n) => (n === 2050 ? 'Alice' : 'User' + (n < 100000 ? String(n).padStart(5, '0') : String(n)) + '-…');
@@ -242,3 +240,14 @@ function motion(e, keys, ez = ease.io3) {
   return e;
 }
 const pad2 = (n) => String(n).padStart(2, '0');
+
+// 亮一下再慢慢退：在元素上叠一个加了 cls 的复制品，t 起淡入，t + hold 起用 d 秒淡出（原元素的类不动，避免「啪」地灭掉）。
+// 只用于此刻不在动的元素；html 给定时，复制品显示这段内容（例如格子里的数刚改过）
+function flashClone(e, t, hold = 0.6, d = 0.6, cls = 'on', html = null) {
+  const c = e.cloneNode(true); e.parentNode.insertBefore(c, e.nextSibling); c.classList.add(cls); if (html != null) c.innerHTML = html;
+  c.style.clipPath = 'none'; c.style.transform = 'none'; c.style.translate = 'none'; c.style.rotate = 'none'; c.style.scale = 'none';
+  tl.set(c, { autoAlpha: 0 }, 0);
+  tl.fromTo(c, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15, ease: 'power1.out', immediateRender: false }, t);
+  tl.to(c, { autoAlpha: 0, duration: d, ease: 'power1.inOut' }, t + hold);
+  return c;
+}

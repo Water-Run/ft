@@ -52,19 +52,19 @@ scene('engine', ({ root, s, c0 }) => {
     tiles.push({ e, n, mt }); wipe(e, tB + 0.2 + (i % 12) * 0.04 + Math.floor(i / 12) * 0.09, { dir: 'l', d: 0.3 });
   });
   sfx('riser', T('e3', '八十四') - 1.0, { g: 0.5 }); sfx('thud', T('e3', '八十四') + 0.9, { g: 0.6 });
-  const lbl = (name, t, extra = '') => { const idx = all.findIndex((a) => a[0] === name); const tp = tiles[idx]; const p = mk(B, 'pill y', 130, 886, null, 56, name + extra); css(p, { gap: '10px' }); css(p, { left: Math.max(60, Math.min(1560, X0 + (idx % 12) * (TW + GX) - 80)) + 'px' }); const tEnd = Math.min(t + 3.0, T('e5') - 0.1); appear(p, t); vanish(p, tEnd); classAt(tp.e, 'on', t, tEnd); sfx('pop', t, { g: 0.5 });
+  const lbl = (name, t, extra = '') => { const idx = all.findIndex((a) => a[0] === name); const tp = tiles[idx]; const p = mk(B, 'pill y', 130, 886, null, 56, name + extra); css(p, { gap: '10px' }); css(p, { left: Math.max(60, Math.min(1560, X0 + (idx % 12) * (TW + GX) - 80)) + 'px' }); const tEnd = T('e5') - 0.1; /* 三个标签都留到「真正存数据的」那一句（位置不冲突，不必先撤） */ appear(p, t); vanish(p, tEnd); classAt(tp.e, 'on', t, tEnd); sfx('pop', t, { g: 0.5 });
     const cx = X0 + (idx % 12) * (TW + GX) + TW / 2, cb = Y0 + Math.floor(idx / 12) * (TH + GY) + TH; const ln = mk(B, '', cx - 1, cb, 3, 886 - cb); css(ln, { background: 'var(--y)' }); vanish(ln, 0); appear(ln, t); vanish(ln, tEnd);
     css(p, { left: Math.max(60, Math.min(1380, cx - 150)) + 'px' }); };
-  const mtl = mk(B, 'pill y', 1180, 886, null, 56, 'MergeTree 家族 16 种'); css(mtl, { left: '60px' }); appear(mtl, T('e4b') - 0.1); vanish(mtl, T('e4b', '分到') - 0.1);
+  const mtl = mk(B, 'pill y', 1180, 886, null, 56, 'MergeTree 家族 16 种'); css(mtl, { left: '60px' }); appear(mtl, T('e4b') - 0.1); vanish(mtl, T('e4b', '帮着') - 0.1);
   const SV3 = ' →' + [0, 1, 2].map(() => icoSvg('server', 30, 3.4)).join('');
-  lbl('Distributed', T('e4b', '分到'), SV3); lbl('MySQL', T('e4c', 'My S Q L'), ' →' + icoSvg('db', 30, 3.4) + '<span style="font-size:22px">数据在那边</span>'); lbl('Kafka', T('e4c', 'Kafka'), ' →' + icoSvg('log', 30, 3.4) + '<span style="font-size:22px">数据在那边</span>');
+  lbl('Distributed', T('e4b', '帮着'), SV3); lbl('MySQL', T('e4c', 'My S Q L'), ' →' + icoSvg('db', 30, 3.4) + '<span style="font-size:22px;margin-left:16px">数据在那边</span>'); lbl('Kafka', T('e4c', 'Kafka'), ' →' + icoSvg('log', 30, 3.4) + '<span style="font-size:22px;margin-left:16px">数据在那边</span>');
   // 真正存数据的几乎都是 MergeTree：别的淡下去
   const tOnly = T('e5');
   tiles.filter((x) => !x.mt).forEach((x, i) => tl.to(x.e, { autoAlpha: 0, scale: 0.6, duration: 0.35, ease: 'power2.in' }, tOnly + (i % 12) * 0.02 + Math.floor(i / 12) * 0.05));
   const big = mk(B, 'tag', X0, 470, null, null, 'MergeTree'); css(big, { fontSize: '64px' }); vanish(big, 0); slam(big, T('e5b', 'Merge Tree'), { from: 1.3 }); sfx('thud', T('e5b', 'Merge Tree') + 0.1);
-  const g2 = glossAt(B, X0, 620, 1100, 'MergeTree', '<b>MergeTree</b>　留下的这 16 种，都是 MergeTree 的变体'); show(g2, T('e5') + 0.4, { y: 14 });
+  const g2 = glossAt(B, X0, 620, 1100, 'MergeTree', '<b>MergeTree</b>　ClickHouse 把数据存进自己磁盘、拿来分析的表引擎；留下的这 16 种都是它的变体'); show(g2, T('e5') + 0.4, { y: 14 });
   const skipN = ['Distributed', 'MySQL', 'Kafka'], sa = tB + 1.0, sb = T('e4b') - 0.1;
-  const onA = T('e4b') - 0.1, onB = T('e4b', '分到') - 0.1, onC = T('e5b', 'Merge Tree') - 0.1;
+  const onA = T('e4b') - 0.1, onB = T('e4b', '帮着') - 0.1, onC = T('e5b', 'Merge Tree') - 0.1;
   tiles.forEach((x) => { if (x.mt) F((t) => x.e.classList.toggle('on', (t >= onA && t < onB) || t >= onC)); });
   const tC = T('e6') - 0.1;
   vanish(B, tC);

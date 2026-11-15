@@ -28,7 +28,7 @@ scene('beyond', ({ root, s, c0 }) => {
   const tmq = termAt(gA, 100, 640, 1000, 90); vanish(tmq.el, 0); appear(tmq.el, T('s1b') - 0.1);
   tmq.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('s1b') - 0.05, { type: 34, cursorUntil: T('s1b', 'S Q L') + 1.0 });
   const sql = mk(gA, 'tag', 1200, 640, null, null, 'SQL'); slam(sql, T('s1b', 'S Q L'), { from: 1.3 }); sfx('thud', T('s1b', 'S Q L') + 0.1, { g: 0.5 });
-  const g1 = glossAt(gA, 100, 780, 1720, 'SQL', '<b>SQL</b>　用 SELECT、INSERT 这样的语句操作表'); show(g1, T('s1b', 'S Q L') - 0.1, { y: 12, d: 0.35 });
+  const g1 = glossAt(gA, 100, 780, 1720, 'SQL', '<b>SQL</b>　数据库的查询语言：数据摆成表，用 CREATE TABLE 建表、INSERT 写入、SELECT 查询'); show(g1, T('s1b') + 0.1, { y: 12, d: 0.35 });
   const tAB = T('s2') + 0.6;
   vanish(gA, tAB);
 
@@ -81,7 +81,8 @@ scene('beyond', ({ root, s, c0 }) => {
   appear(gD, tCD);
   const dd = mk(gD, 'panel', 100, 230, 640, 560); const ddt = mk(dd, 'mono', 24, 20, null, null, D2); css(ddt, { fontSize: '26px', lineHeight: '1.5' }); wipe(dd, tCD + 0.2, { dir: 'l', d: 0.4 });
   const COLS = ['doc.name', 'doc.age', 'doc.pets.cat', 'doc.pets.dog', 'doc.tags', '…'];
-  const cf = COLS.map((nm, i) => { const c = mk(gD, 'cell lg', 900, 230 + i * 90, 560, 74, '<span>' + nm + '</span>'); css(c, { fontSize: '30px' }); vanish(c, 0); appear(c, T('s6b', '每一个字段') + i * 0.18); sfx('tick', T('s6b', '每一个字段') + i * 0.18, { g: 0.3 }); return c; });
+  const LINE = [1, 2, 5, 6, 3, 9];   // 各字段在左边文档里的第几行（26px、行高 1.5）
+  const cf = COLS.map((nm, i) => { const tf = T('s6b', '每一个字段') - 0.3 + i * 0.22; morph([116, 246 + LINE[i] * 39, 440, 42], [900, 230 + i * 90, 560, 74], tf, 0.55); const c = mk(gD, 'cell lg', 900, 230 + i * 90, 560, 74, '<span>' + nm + '</span>'); css(c, { fontSize: '30px' }); vanish(c, 0); appear(c, tf + 0.5); sfx('tick', tf + 0.5, { g: 0.3 }); return c; });
   const ar = mk(gD, 'h1 y', 760, 460, null, null, '→'); css(ar, { fontSize: '90px' }); appear(ar, Math.max(T('s6', '拆成列'), tCD + 0.3));
   classAt(cf[1], 'on', T('s6c', '读一个字段'), T('s6c', '要整份') - 0.1);
   const q1 = ico(gD, 'bolt', 1500, 236, 64, 'y', 3.4); vanish(q1, 0); slam(q1, T('s6c', '读一个字段') + 0.2, { from: 1.6 });

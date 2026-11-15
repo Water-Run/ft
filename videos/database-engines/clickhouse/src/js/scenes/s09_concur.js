@@ -11,7 +11,7 @@ scene('concur', ({ root, s, c0 }) => {
 
   appear(gA, c0 + 0.05);
   const lane = mk(gA, 'panel', 80, 142, 1800, 450); vanish(lane, 0); appear(lane, c0 + 0.1);
-  [0, 1, 2, 3].forEach((k) => { const tk = mk(gA, 'fn', XA(k) - 18, 152, null, null, k + ' s'); css(tk, { fontSize: '22px' }); appear(tk, c0 + 0.2); const ln = mk(gA, 'tick', XA(k), 230, null, 366); css(ln, { background: 'var(--k3)' }); appear(ln, c0 + 0.2); });
+  [0, 1, 2, 3].forEach((k) => { const tk = mk(gA, 'fn', XA(k) - 18, 152, null, null, k + ' s'); css(tk, { fontSize: '22px' }); appear(tk, c0 + 0.2); const ln = mk(gA, 'tick', XA(k), 186, null, 36); /* 只在刻度上画一小段，不穿过下面的条与标记 */ css(ln, { background: 'var(--k3)' }); appear(ln, c0 + 0.2); });
   // Bob
   const bl = mk(gA, 'lab y', 100, 188, null, null, icoSvg('person', 30, 3.4) + '<span style="margin-left:10px">Bob 的慢查询</span>'); css(bl, { fontSize: '26px', display: 'flex', alignItems: 'center' }); wipe(bl, c0 + 0.2, { dir: 'l', d: 0.6 });
   const bGhost = mk(gA, 'bar', XA(0), 232, 1280, 56); css(bGhost, { background: 'var(--k2)', border: '2px dashed var(--g2)' }); wipe(bGhost, T('b1') + 0.1, { dir: 'l', d: 0.8 });
@@ -30,7 +30,7 @@ scene('concur', ({ root, s, c0 }) => {
   const lp = foldAt(gA, 100, 596, 800, 290, 'Bob 的快照（查询开始那一刻）', 'y'); vanish(lp, 0); appear(lp, T('b2b', '快照') - 0.6);
   tableTag(gA, '表 <b>demo.users</b> · 一亿行', c0 + 0.1);
   const SN = [fileAt(lp, 0, 'all_1_91_4_93', 'y')]; SN.forEach((e, i) => { vanish(e, 0); appear(e, T('b2b', '快照') - 0.4 + i * 0.25); sfx('tick', T('b2b', '快照') - 0.4 + i * 0.25, { g: 0.4 }); });
-  const g1 = glossAt(gA, 100, 900, 1720, '快照', '<b>快照</b>　查询开始那一刻，活动片段的清单'); show(g1, T('b2b') + 0.2, { y: 10, d: 0.35 }); vanish(g1, T('b5b') - 0.1);
+  const g1 = glossAt(gA, 100, 900, 1720, '快照', '<b>快照</b>　查询开始那一刻所有活动片段的清单；这次查询从头到尾只读清单里的片段'); show(g1, T('b2b') + 0.2, { y: 10, d: 0.35 }); vanish(g1, T('b5b') - 0.1);
   // 磁盘上现在的片段
   const rp = foldAt(gA, 1000, 596, 820, 290, '磁盘上现在的片段', ''); wipe(rp, T('b2') - 0.2, { dir: 'l', d: 0.5 });
   const R0 = fileAt(rp, 0, 'all_1_91_4_93', ''), R1 = R0;
@@ -41,14 +41,15 @@ scene('concur', ({ root, s, c0 }) => {
   // Carol：注册、改年龄
   const cl1 = mk(gA, 'lab', 100, 300, null, null, 'Carol：注册（写入）'); css(cl1, { fontSize: '26px' }); vanish(cl1, 0); appear(cl1, T('b3') - 0.1);
   const c1 = mk(gA, 'bar y', XA(1), 342, 14, 56); wipe(c1, T('b3', '新片段') - 0.2, { dir: 'l', d: 0.2 }); const c1l = mk(gA, 'big y', XA(1) + 34, 330, null, null, '4 ms'); css(c1l, { fontSize: '64px' }); show(c1l, T('b3', '几毫秒'), { y: 10 });
-  const m1 = mk(gA, 'tick y', XA(1), 230, null, 366); vanish(m1, 0); appear(m1, T('b3', '一秒后'));
+  const m1 = mk(gA, 'tick y', XA(1), 296, null, 46);   /* 从 Bob 的条下沿连到 Carol 这次写入为止 */ void 0; vanish(m1, 0); appear(m1, T('b3', '一秒后'));
   const cl2 = mk(gA, 'lab', 100, 420, null, null, 'Carol：改自己的年龄（变更）'); css(cl2, { fontSize: '26px' }); vanish(cl2, 0); appear(cl2, T('b4') - 0.1);
   const c2 = mk(gA, 'bar y', XA(2), 462, 14, 56); wipe(c2, T('b4', '新版本') - 0.4, { dir: 'l', d: 0.2 }); const c2l = mk(gA, 'big y', XA(2) + 34, 450, null, null, '5 ms'); css(c2l, { fontSize: '64px' }); show(c2l, T('b4', '新版本') - 0.3, { y: 10 });
-  const m2 = mk(gA, 'tick y', XA(2), 230, null, 366); vanish(m2, 0); appear(m2, T('b4', '又过一秒'));
+  const m2 = mk(gA, 'tick y', XA(2), 296, null, 166); vanish(m2, 0); appear(m2, T('b4', '又过一秒'));
   // Bob 不知道：仍读旧片段
   const ovA = overlay(gA);
-  const ub = path(ovA, `M ${XA(2.6)} 290 L ${XA(2.6)} 540 Q ${XA(2.6)} 570 ${XA(2.6) - 30} 570 L 880 570 Q 860 570 860 590`, 'accent', { w: 4, dashed: '10 10' });   // 绕开「5 ms」，从两块面板上方走，落进 Bob 的快照 vanish(ub, 0); arrowIn(ub, T('b5', '旧片段') - 0.3, 0.6);
-  const ubI = ico(gA, 'search', 770, 626, 52, 'y', 3.6); vanish(ubI, 0); appear(ubI, T('b5', '旧片段'));
+  // Bob 的条上直直落到他的快照（这一竖条左右都空着，不穿过任何字）
+  const ub = path(ovA, 'M 880 294 L 880 588', 'accent', { w: 4, dashed: '10 10' }); vanish(ub, 0); arrowIn(ub, T('b5', '旧片段') - 0.3, 0.6);
+  const ubI = ico(gA, 'search', 816, 608, 52, 'y', 3.6); vanish(ubI, 0); appear(ubI, T('b5', '旧片段'));
   classAt(R0, 'y', T('b5b', '还被他用着') - 0.2, T('b6') - 0.1);
   const ppl = (x, t, withC, lab) => {
     const l = mk(gA, 'lab', x, 908, null, null, lab); css(l, { fontSize: '24px' }); vanish(l, 0); appear(l, t);
@@ -74,13 +75,14 @@ scene('concur', ({ root, s, c0 }) => {
   // ── C 事务：默认没有 ──
   appear(gC, tBC);
   const tm = termAt(gC, 100, 230, 1720, 200);
-  tm.line(0, '<span class="pr">:) </span>BEGIN TRANSACTION;', T('b9', '事务') - 0.1, { type: 22, cursorUntil: T('b9', '默认') });
-  tm.line(1, '<span class="err">Code: 48. DB::Exception: Transactions are not supported. (NOT_IMPLEMENTED)</span>', T('b9', '默认'), {});
-  sfx('thud', T('b9', '默认') + 0.05, { g: 0.5 });
+  tm.line(0, '<span class="pr">:) </span>BEGIN TRANSACTION;', T('b9', '事务') - 0.1, { type: 22, cursorUntil: T('b9b', '默认') });
+  tm.line(1, '<span class="err">Code: 48. DB::Exception: Transactions are not supported. (NOT_IMPLEMENTED)</span>', T('b9b', '默认'), {});
+  const gTx = glossAt(gC, 100, 760, 1720, '事务', '<b>事务</b>　几条语句要么全成、要么全不成。ClickHouse 默认只保证一条 INSERT 写进一张表的一个分区时整体成败；多语句事务（BEGIN … COMMIT）还是实验功能，要改服务器配置才能用，也只支持不复制的 MergeTree 表'); show(gTx, T('b9b', '默认') + 0.4, { y: 12, d: 0.35 });
+  sfx('thud', T('b9b', '默认') + 0.05, { g: 0.5 });
   const tg = T('b9', '一起成败') - 0.4, grp = mk(gC, '', 100, 500, 1060, 200); css(grp, { border: '3px dashed var(--y)' }); vanish(grp, 0); wipe(grp, tg, { dir: 'l', d: 0.5 });
   ['INSERT INTO orders VALUES (…);', 'UPDATE users SET … WHERE id = 3;'].forEach((ln, k) => { const e = mk(gC, 'mono', 140, 540 + k * 70, null, null, ln); css(e, { fontSize: '36px' }); vanish(e, 0); wipe(e, tg + 0.3 + k * 0.4, { dir: 'l', d: 0.5 }); });
   const br = mk(gC, 'h1 y', 1180, 470, null, null, '}'); css(br, { fontSize: '220px', fontWeight: '300' }); vanish(br, 0); appear(br, tg + 0.6);
   const brl = mk(gC, 'tag', 1300, 560, null, null, '一个事务'); css(brl, { fontSize: '56px' }); slam(brl, tg + 0.7, { from: 1.2 }); sfx('pop', tg + 0.7, { g: 0.5 });
-  for (const e of [grp, br, brl]) classAt(e, 'fade45', T('b9', '默认') + 0.5);
+  for (const e of [grp, br, brl]) classAt(e, 'fade45', T('b9b', '默认') + 0.5);
   drift(cam, s, 1);
 });

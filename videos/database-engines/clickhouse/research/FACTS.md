@@ -71,6 +71,7 @@ MergeTree 是 ClickHouse 存数据的表引擎（E01–E06）。一张 MergeTree
 | E04 | 不写 `ENGINE` 时缺省用 MergeTree；ClickHouse 自己的 `query_log`、`part_log` 等日志表也是 MergeTree | out_10 `default_table_engine = MergeTree`、`noengine` 表的 `engine_full`、system 表的 engine | `Core/Settings.cpp:4881`；`Core/SettingsChangesHistory.cpp:1163` | 26.8 | 已核 |
 | E05 | MergeTree 家族的各个引擎区别在合并时怎样合并输入片段里的行，例如聚合或替换；ReplacingMergeTree 去掉排序键相同的重复行，SummingMergeTree 把排序键相同的行合成一行、数值列相加 | AO 第 72 行 | `replacingmergetree.mdx` 第 11 行；`summingmergetree.mdx` 第 11 行 | — | 已核 |
 | E06 | MergeTree 基于 LSM 树（O'Neil 等，1996）的思路：表分成按主键排好序的片段，后台持续合并；与 LSM 树不同，ClickHouse 不把片段分层，所有片段同等对待 | AO 第 72、98 行，参考文献 [58][60] | clickhouse-docs `docs/managing-data/core-concepts/merges.mdx` 第 23 行 | — | 已核。片中不说「名字取自 LSM 树」（没有找到这样的原话）。第 2 稿起旁白不再提 LSM 树（观众不需要这个名字，也与后文无关）；名字的由来改用 M01 |
+| E09 | LSM 树的全称是 Log-Structured Merge-Tree（日志结构合并树），O'Neil 等 1996 年提出：新数据先写成一段段排好序的小块，再一层层合并成大块 | `academic_overview.mdx` 第 417、419 行参考文献 [58][60]：「The log-structured Merge-Tree (LSM-tree)」；E06 | — | — | 已核（第 05 章注解） |
 | E07 | 稀疏主键索引不像 B 树那样定位单行，而是在索引项上二分，找出成组的行 | clickhouse-docs `docs/guides/best-practices/sparse-primary-indexes.md` 第 160 行 | out_04 `EXPLAIN`：`Search Algorithm: binary search`；片段里没有 B 树结构的文件（out_03 文件清单） | — | 已核 |
 | E08 | 表引擎决定：数据怎样、存在哪里，往哪里写、从哪里读；支持哪些查询；并发访问；是否用索引；能否多线程执行；数据复制参数。MergeTree 家族的共同点是「快速写入数据，之后由后台处理」 | `research/_src/ch/docs/reference/engines/table-engines/index.mdx` 前 20 行：「The table engine (type of table) determines: How and where data is stored, where to write it to, and where to read it from. …」「The property shared by these engines is quick data insertion with subsequent background data processing.」 | AO 第 72 行 | 26.8 文档（tag v26.8.34.13-lts） | 已核（旁白 e1b） |
 
@@ -95,6 +96,8 @@ MergeTree 是 ClickHouse 存数据的表引擎（E01–E06）。一张 MergeTree
 | P04 | 异步插入在 26.8 缺省开启（26.2 起），`wait_for_async_insert = 1`；三个客户端在容器里一起启动、各插一行，写成 1 个 3 行的片段 `all_4_4_0`，各自同步插入则是 3 个片段（第一次重跑时三个客户端逐个 `podman exec` 启动，启动误差超过等待窗口，被分成 1 + 2 两个片段，所以脚本改成在容器里一起启动） | out_05；out_01 `async_insert 1` | `Core/Settings.cpp:7206`；`Core/SettingsChangesHistory.cpp:430`（26.2 段）`:437` | 26.2 起；能不能合成一个片段取决于几个插入到达的时间差（等待窗口 50–200 毫秒，自适应） | 已核 |
 | P05 | 一亿行一条 `INSERT … SELECT`：客户端计时 25.5 秒（服务端计时 20.8 秒；第一次实验时是 15.1 秒，之后两次重跑都是 25–27 秒，与机器上别的负载有关；旁白说「二十几秒」），写成 90 个片段，每个 1,111,953 行（最后一个较少） | out_03 | out_03 `part_log` NewPart 90 个，合计 100,000,000 行 | 本机；用时随机器负载变化，片段数与每片行数不变 | 已核 |
 | P09 | 同步插入时，每条 INSERT 建一个新片段；为了减少合并的负担，鼓励客户端成批插入，例如一次两万行；需要实时分析时可用异步插入：服务端把来自多个 INSERT 的行缓冲起来，缓冲超过大小阈值或超时才建一个新片段 | AO 第 90 行（3.1 节）：「clients are encouraged to insert tuples in bulk, e.g. 20,000 rows at once」「creates a new part only after the buffer size exceeds a configurable threshold or a timeout expires」 | P04 | 例子是文献里的举例，不是本机测的 | 已核（旁白 p6b「比如一次两万行」） |
+| P10 | 异步插入什么时候写：插入先进内存缓冲，满足其一就写下去——缓冲到 `async_insert_max_data_size`（缺省 100 MiB），或等满一段时间；24.2 起这段时间按来数据的快慢在 50 毫秒（`async_insert_busy_timeout_min_ms`）到 200 毫秒（`async_insert_busy_timeout_max_ms`）之间自动调；每次写下去至少建一个片段 | `research/_src/docs/docs/best-practices/_snippets/_async_inserts.md` 第 10、18–24、46–48、54 行 | P04（实测三个客户端写成一个片段）；P09 | 26.8 缺省 | 已核（第 04 章注解；自适应的细节片中只说「按来数据的快慢自动调」） |
+| P11 | 一亿行写成 90 个片段：前 89 个各 1,111,953 行，89 × 1,111,953 = 98,963,817，剩下的 1,036,183 行是第 90 个 | P05 的数（out_03 `part_log` NewPart 90 个、合计 100,000,000 行，前几个各 1,111,953 行）推算 | — | 本机 | 已核（第 04 章注解） |
 | P06 | 为了让片段数少，后台合并把小片段并成大片段；片段都按主键排好序，合并用 k 路归并排序 | AO 第 88 行 | out_03 `part_log` MergeParts | — | 已核 |
 | P07 | 写入期间的合并：6 个并成 1 个（`all_1_6_1` 等），再 9 个并成 1 个（`all_1_29_2`），最后剩 3 个片段（三次运行都是这样）；`OPTIMIZE TABLE … FINAL` 并成一个 `all_1_90_3`，用时 10.5 秒（另两次是 10.3、7.3 秒，把一亿行重新写了一遍，旁白 m13b「用了十秒多」） | out_03 | — | 本机；用时随机器负载变化 | 已核 |
 | P08 | 片段名 `分区_最小块号_最大块号_层级[_变更号]`；没有分区时分区名为 `all`；层级随每次合并加一 | `Storages/MergeTree/MergeTreePartInfo.cpp:210–235` | clickhouse-docs `docs/managing-data/core-concepts/parts.md`；out_03 的名字序列 | — | 已核 |
@@ -125,6 +128,7 @@ MergeTree 是 ClickHouse 存数据的表引擎（E01–E06）。一张 MergeTree
 | U02 | 新版本里 `age.bin` 是新文件（inode 变了、链接数 1）；`id.bin`、`name.bin`、`name.size.bin`、`primary.cidx` 与旧片段同一个 inode，链接数 2（硬链接） | out_06 `ls -li` | `Storages/MergeTree/MutateTask.cpp:1563–1564` | — | 已核 |
 | U03 | 这次变更读了片段的 1 亿行，用时 454 毫秒（`part_log`；另两次是 377 毫秒） | out_06 `part_log` MutatePart | — | 本机 | 已核 |
 | U04 | 轻量更新 `UPDATE … SET`：普通表上报错，要表开启 `enable_block_number_column` 等；开启后 0.095 秒（对照变更的 0.383 秒），写成一个 1 行的补丁片段 `patch-…` | out_06 §2 | `Core/Settings.cpp`（`allow_experimental_lightweight_update` 缺省 1） | 26.8 | 已核（旁白 u7「能缓解，但要先开设置」） |
+| U05 | 轻量更新的做法：补丁片段只含改到的列与行，不重写整列；查询时把补丁叠上去读，不用等合并；之后的合并与变更才把改动真正并进片段，所有活动片段都并进去以后补丁片段自动删除；要表开启 `_block_number`、`_block_offset` 两列（`enable_block_number_column`、`enable_block_offset_column`）；只用于 MergeTree 家族，适合改少量行（约一成以内） | ClickHouse 文档 Lightweight UPDATE（https://clickhouse.com/docs/sql-reference/statements/update ，读于 2026-11-16）：「Patch parts are a special kind of data part that contains only the updated columns and rows」「Queries do not need to wait for a merge to read the updated values」「subsequent merges and mutations incorporate the updated values into the data parts」「patch parts are automatically removed once all active parts have the patches materialized」 | out_06 §2：开启后写成 1 行的补丁片段 `patch-…-all_98_98_0_97`（U04） | 26.8 | 已核（旁白 u7–u7b、第 07 章注解） |
 
 ### 删
 
@@ -146,6 +150,7 @@ MergeTree 是 ClickHouse 存数据的表引擎（E01–E06）。一张 MergeTree
 | B03 | Bob 读的时候，被变更替换的旧片段 `active = 0`、refcount 5，仍在 | out_08 | AO 第 88 行（refcount 降到零才删） | — | 已核 |
 | B04 | 查询开始时取当时活动片段的集合；写入不阻塞读取，没有行锁 | AO（并发一节，第 149 行起「neither of which block parallel inserts」） | out_08 | — | 已核（快照的源码定位待补：`MergeTreeData::getSnapshot`） |
 | B05 | 多语句事务：缺省配置下 `BEGIN TRANSACTION` 报 `Transactions are not supported` | out_08 | — | 26.8 缺省配置 | 已核 |
+| B06 | ClickHouse 的事务支持：缺省只保证一条 INSERT 写进一张 MergeTree 表的一个分区时整体成功或整体被拒（行打包成一个块插入）；多语句事务（BEGIN … COMMIT）是实验功能，要在服务器配置里加 `allow_experimental_transactions` 并部署 ClickHouse Keeper 或 ZooKeeper，只支持非复制的 MergeTree 表 | ClickHouse 文档 Transactional (ACID) support（https://clickhouse.com/docs/guides/developer/transactional ，读于 2026-11-16）：「This is transactional (ACID) if the inserted rows are packed and inserted as a single block」「This is an experimental feature, and changes should be expected」「Non-Replicated MergeTree table engine only」 | B05：缺省配置下 `BEGIN TRANSACTION` 报 `Transactions are not supported`（out_08） | 26.8 | 已核（第 09 章注解） |
 
 ### 出错
 

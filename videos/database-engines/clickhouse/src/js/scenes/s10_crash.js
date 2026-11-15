@@ -79,6 +79,9 @@ scene('crash', ({ root, s, c0 }) => {
   const stay = mk(gD, 'lab y', 660, 470, null, null, '↑ 新片段还停在这里'); show(stay, Math.min(T('r6b', '缓存里') - 0.4, T('r7', '断电') - 3.4), { y: 10 });
   const cut = ico(gD, 'power', 160, 620, 150, 'y', 4); vanish(cut, 0); slam(cut, T('r7', '断电') - 0.1, { from: 1.8 }); sfx('thud', T('r7', '断电'), { g: 0.8 });
   classAt(nd[1], 'ghost', T('r7', '没了')); classAt(nd[0], 'done', T('r7', '没了')); vanish(stay, T('r7', '断电') - 0.05);
+  // 断电：缓存里的东西没了，往磁盘去的箭头、转着的沙漏、「不急着写」也一起撤掉；缓存那一格写明清空
+  for (const e of [a1, a2, q2, q2L]) vanish(e, T('r7', '断电') + 0.1);
+  keyed(nd[1].firstChild).at(T('r7', '没了') - 0.05, { html: '操作系统缓存：清空了' });
   keyed(nd[2].firstChild).at(T('r7b', '丢失') - 0.35, { html: '磁盘：最新片段不全' }); classAt(nd[2], 'y', T('r7b', '丢失') - 0.35);
   // 磁盘上：最新的片段要么整个没有（丢失），要么只写了一部分（损坏）
   [['丢失：整个没有', [0, 0, 0]], ['损坏：只写了一部分', [4, 2, 0]]].forEach(([lb, ns], j) => {
@@ -112,6 +115,12 @@ scene('crash', ({ root, s, c0 }) => {
   const ck = foldAt(gF, 100, 200, 800, 360, 'all_2_2_0 / checksums.txt', 'y'); wipe(ck, tEF, { dir: 'l', d: 0.4 });
   ['id.bin　　大小　校验和', 'name.bin　大小　校验和', 'age.bin　　大小　校验和', '…'].forEach((t, i) => { const e = fileAt(ck, i, t, ''); vanish(e, 0); appear(e, Math.max(T('r9', '大小') - 0.2, tEF + 0.3) + i * 0.25); });
   const g1 = glossAt(gF, 100, 600, 800, '校验和', '<b>校验和</b>　按文件内容算出来的一个数；内容一变，这个数就对不上'); show(g1, T('r9b', '校验和') - 0.1, { y: 10, d: 0.35 });
+  // 「按内容算出来的数」：文件内容 → 算 → 一个数（校验和）；下一句「内容变了」时让位
+  const tH = T('r9b', '内容') - 0.2;
+  const hIn = mk(gF, 'cell lg', 1000, 236, 320, 72, '<span>age.bin 的内容</span>'); css(hIn, { fontSize: '28px' }); vanish(hIn, 0); show(hIn, tH, { x: -16, y: 0, d: 0.35 });
+  const hAr = mk(gF, 'h1 y', 1340, 236, null, null, '→'); css(hAr, { fontSize: '60px' }); vanish(hAr, 0); appear(hAr, tH + 0.4);
+  const hOut = mk(gF, 'tag', 1430, 236, 360, 72, '一个数：校验和'); css(hOut, { fontSize: '30px', justifyContent: 'center' }); vanish(hOut, 0); slam(hOut, T('r9b', '校验和') - 0.25, { from: 1.3 }); sfx('pop', T('r9b', '校验和') - 0.2, { g: 0.5 });
+  for (const e of [hIn, hAr, hOut]) hide(e, T('r9c') - 0.35, { y: -10, d: 0.3 });
   const c9 = mk(gF, 'h1', 1000, 230, null, null, '内容 1e → 1f'); css(c9, { fontSize: '64px' }); wipe(c9, T('r9c') - 0.1, { dir: 'l', d: 0.6 });
   const c9b = mk(gF, 'h1 y', 1000, 330, null, null, '校验和 ≠ 原来的'); css(c9b, { fontSize: '64px' }); wipe(c9b, T('r9c', '对不上') - 0.3, { dir: 'l', d: 0.6 }); sfx('thud', T('r9c', '对不上') + 0.1, { g: 0.5 });
   const c9n = noteAt(gF, 1000, 430, '（示意）'); css(c9n, { fontSize: '24px' }); appear(c9n, T('r9c') - 0.1);

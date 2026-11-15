@@ -84,10 +84,9 @@ scene('part', ({ root, s, c0 }) => {
   set(fill, tRen, { autoAlpha: 0 });
   sfx('pop', tNew, { g: 0.6 }); sfx('chime', tRen + 0.2, { g: 0.6 });
   const g1 = glossAt(B, 100, 550, 860, '片段', '<b>片段</b>（part）　一次插入写成的一个文件夹：里面是各列的文件，写好后不再改'); show(g1, T('p3b', '片段') - 0.1, { y: 14, d: 0.35 });
-  const ovB = overlay(B); const a1 = path(ovB, `M 1180 214 C 1300 214 1300 330 ${FX3 + 60} ${FY3 - 6}`, 'accent', { w: 4 }); vanish(a1, 0); arrowIn(a1, T('p3c') - 0.1, 0.5);
   const tg = mk(B, 'tag o', 100, 668, null, null, '1 次插入 → 至少 1 个片段'); css(tg, { fontSize: '52px' }); slam(tg, T('p3c', '至少'), { from: 1.2 }); sfx('thud', T('p3c', '至少') + 0.1, { g: 0.6 });
-  hide(a1, T('p4') - 0.1, { y: 0, d: 0.3 });
   // 临时名字：文件夹名字上的提示与服务端日志
+  const tmpBox = mk(f3in, '', 12, 8, 430, 56); css(tmpBox, { border: '3px solid var(--y)' }); vanish(tmpBox, 0); wipe(tmpBox, T('p4', '临时名字') - 0.15, { dir: 'l', d: 0.35 }); vanish(tmpBox, tRen + 0.8);
   const tmpL = mk(B, 'lab', FX3, FY3 + 586, null, null, '写的时候：临时名字'); appear(tmpL, T('p4') - 0.1);
   keyed(tmpL).at(tRen, { html: '<span class="y">写完：改成正式的名字</span>' });
   // 只有一行，也是一整个文件夹：1 行 · 11 个文件 · 947 字节
@@ -127,7 +126,7 @@ scene('part', ({ root, s, c0 }) => {
   appear(G, tKG);
   tableTag(G, '表 <b>demo.signup</b>', tKG);
   const dk = mk(G, 'tag o', 100, 270, null, null, '默认开着'); css(dk, { fontSize: '64px' }); slam(dk, T('p6c', '默认开着'), { from: 1.25 }); vanish(dk, T('p7', 'Judy')); sfx('thud', T('p6c', '默认开着') + 0.1, { g: 0.5 });
-  const g2 = glossAt(G, 100, 190, 1700, '异步插入', '<b>异步插入</b>　服务端先攒几次插入，再一起写成一个片段'); show(g2, T('p6c', '异步插入') - 0.1, { y: 14, d: 0.35 });
+  const g2 = glossAt(G, 100, 190, 1700, '异步插入', '<b>异步插入</b>　插入先进内存缓冲，攒到 100 MiB 或等满 50–200 毫秒，先到哪个就写成一个片段'); show(g2, T('p6c', '异步插入') - 0.1, { y: 14, d: 0.35 });
   const bufB = foldAt(G, 760, 330, 500, 320, '缓冲', 'ghost'); appear(bufB, T('p6c') + 0.2); warm(bufB, T('p6c') + 0.4, T('p7') + 1.0, '#151515', '#33332A'); classAt(bufB, 'y', T('p7b', '攒'), T('p7b', '合成') + 0.5);
   const chips = [['9', 'ivan', '27'], ['10', 'judy', '31'], ['11', 'mallory', '45']];
   chips.forEach((r, i) => {
@@ -154,7 +153,9 @@ scene('part', ({ root, s, c0 }) => {
     const m = mk(H, 'fold', GX0 + (i % 15) * (GW + 8), GY0 + Math.floor(i / 15) * (GH + 8), GW, GH); vanish(m, 0);
     appear(m, T('p8b', '每一百一十多万行') - 0.1 + i * 0.03); grid.push(m);
   }
-  const lg = mk(H, 'lab y', 100, 860, null, null, '90 个片段 · 每个 1,111,953 行（最后一个少一些）'); appear(lg, T('p8b', '九十个'));
+  const lg = mk(H, 'lab y', 100, 846, null, null, '90 个片段 · 每个 1,111,953 行（最后一个少一些）'); appear(lg, T('p8b', '九十个'));
+  const lg2 = mk(H, 't-note', 100, 896, null, null, '一亿行按块切：每块 1,111,953 行，切满 89 块，剩下的 1,036,183 行成了第 90 块'); css(lg2, { fontSize: '24px' }); vanish(lg2, 0); show(lg2, T('p8b', '九十个') + 0.6, { y: 10 });
+  flashClone(grid[89], T('p8b', '九十个') + 0.6, 1.8, 0.6, 'y');
   sfx('riser', T('p8b', '每一百一十多万行') - 0.6, { g: 0.4 }); sfx('thud', T('p8b', '九十个') + 0.05, { g: 0.6 });
   const sA = T('p9b', '九十个') - 0.2, sB = Tend('p9b', 0.2);
   F((t) => { const k = clamp((t - sA) / Math.max(0.5, sB - sA)) * 90; grid.forEach((m, i) => m.classList.toggle('y', t >= sA && i < k)); });
