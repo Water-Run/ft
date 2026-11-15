@@ -80,7 +80,8 @@
   },
   "render": {
     "fps": 60,
-    "mb": 4
+    "mb": 1,
+    "gpu": 1
   },
   "audio": {
     "music": "tools/music.py",

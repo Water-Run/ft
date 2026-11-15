@@ -1,180 +1,186 @@
 {
   "schema": 2,
-  "version": "2026-11-01.1",
+  "version": "2026-11-16.1",
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "主问题「为 OLAP 而做的引擎怎样存数据、代价在哪」：开场 0:00–1:15 提出（OLTP 与 OLAP、8 ms 怎么做到、代价放在哪），第 03–10 章逐层回答，第 11 章五个问题、第 12 章取舍收束，第 13 章转到 SQL 之外；方法：通读 script.js，看预览 r10 每 5 秒一帧的总览"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "一组例子贯穿：八个人的 demo.users8 与一亿行的 demo.users（Alice 2050 号）从列文件、片段、合并、索引一直用到改删、并发、出错；新名词各有注解（scan.js GLOSS 0 错误）；方法：逐章 2.5–3 秒一帧拼图"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "名称第一次出现处画面有注解，比较带限定（演示数据压得格外狠、单次实测耗时、官方文档说）；方法：scan.js GLOSS、逐句对照 FACTS"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "readable.js 逐章量过，注解改短或提前、句后加停顿；余下差 0.1–0.6 秒的几处与跑动中的计数器列在 NOTES；连续观看：WaterRun 看完 r9 全片、r10 重点处，提出的停留问题已改"
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "机制段都是同一对象原地变化：行存格子飞成列文件、片段文件夹、合并树、颗粒与索引、补丁片段叠上去读；scan.js 无 ZOOM 报；方法：r10 总览与过渡中途抽帧"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方不能听；音效覆盖 check.js 通过（约 400 个事件、7 种），听感未核。WaterRun 对 r9、r10 的意见里没有提音效与配乐（是否逐段听过不清楚）",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "源码与画面里没有本机路径、用户名、内网地址（搜过 src/），实验画面只出现容器内路径 /var/lib/clickhouse/…；方法：grep 与逐屏总览"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "ffprobe 读 out/clickhouse-zh-1080p60.mp4：H.264 1920×1080 60fps + AAC，1075.597 秒，64536 帧（render.js 逐段校验），262,127,264 字节；finish.js 测响度 I −15.9 LUFS、TP −1.3 dBTP；与 README「交付」逐项一致"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "NOTES「意见与处理」每条有原话、日期与看到哪里；技术异议（OLTP 全称 Transactional 与 Transaction）有核查结论"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "引用前四期的地方（开场四张卡片、第 13 章五个结构）都在画面上重新画出各自的存法，没看过前集也跟得上"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "英文报错与 ClickHouse 输出旁有中文旁白或注解；俄文只作 yandex.ru 搜索页的界面示意，旁边有中文「俄罗斯最大的搜索引擎」"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方不能听。asr.js 回听改动的句子：状语「地」识别为「的」、f4 在「删」后断开、新补的句子识别正确；「补丁」被识别为「补并」、「取值…字段」被识别为「曲直…自断」，按识别误差记下，人耳未核",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 01 章交代 Yandex（俄罗斯最大的搜索引擎、1997、莫斯科）、Metrica、2009 OLAPServer、2014、2016 开源、2021 分拆，时间轴贯穿"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "校对稿没有制作指令；片尾 credits 只上画面，script 里不设 tts"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作者口吻的小字在 r6–r9 删过；保留的「示意」「演示数据」「出处」属于必要限定"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "终端按 clickhouse-client 的样子做（:) 与 :-] 提示符、PrettyCompact 结果表、实验原文报错）；结构图取自各引擎的存放结构（FACTS S07、S08）；黄黑配色沿用本系列前几集（README「设计」：平面为主，参照前几集）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方不能听语气；配音按审片页选定的「温润青年」，语速 1.18",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每章一个主画面：列文件、片段文件夹、合并树、颗粒与索引、两个文件夹与硬链接、片段与 _row_exists、Bob 的时间轴与快照、写入路径与缓存、五问表、四张代价卡片、一张表翻面与文档"
     },
     "F19": {
-      "rev": 2,
-      "result": "pending",
+      "rev": 3,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "细节检查脚本每 0.25 秒一帧查边框穿字、溢出、叠字、箭头与连线悬空，全片多轮；过渡中途 16 帧拼图；修掉压边框、溢出、叠字、连线早于端点、箭头尖先到等"
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "去掉过度的装饰图形（2000 年代面板的灯块、方块），图形都指得出对应的内容；同一形状同一颜色不换义（黄 = 正在讲的那一样）"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "和 SQLite、Firebird 并排看：本集用 ClickHouse 终端与黄黑配色、列与片段的主对象，配乐 B×C 是本集自己的小样"
     },
     "F22": {
-      "rev": 2,
-      "result": "pending",
+      "rev": 3,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片新名词第一次出现处都有注解，注解改成通用定义（OLTP/OLAP、列式存储、稀疏索引、快照、硬链接、SQL 等）；scan.js GLOSS 0 错误"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "讲机制的段落都是随时间推进的过程（行变列、合并、补丁叠上去读、字段飞成列），不是文字面板依次出现"
     },
     "F24": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 没有 CUT、CAPZONE 错误；镜头只做极慢的横移，没有缩放往复"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "复述字幕的大字在 r6–r9 删掉；关掉声音也看得出每段在讲的对象；方法：总览图通看"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方主动改过文案：r6 减认知负载（删句、改句）、拆句与读音、注解重写；每次改动后通读整章并经确认（NOTES「明确确认」）"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "正式片每 10 秒一帧拼成总览从头看到尾（2026-11-16）；预览 r10 每 5 秒一帧、改动处逐章 2.5–3 秒一帧看过；scan.js 的提示逐条处理（DENSE 一条保留，理由见 README「交付」）"
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "新名词按「问题→例子→起名」依次出现：列式存储（先看行存读年龄的浪费，再看列文件，再起名）、片段、合并、颗粒、稀疏索引、变更、硬链接、快照、校验和"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每章一个常驻对象，章内换段带一样东西过去（行存格子飞成列文件、Dave 那一行飞进新文件夹、九十块飞进合并后的片段）"
+    },
+    "F30": {
+      "rev": 1,
+      "result": "pass",
+      "note": "",
+      "evidence": "出现与消失统一带淡入淡出（util.js 的 appear、vanish）、高亮用叠一层再淡出（flashClone）、warm 不再循环、换段先退后进、断电后残余一起撤；方法：过渡中途抽帧与总览"
     }
   },
   "history": []
