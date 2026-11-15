@@ -61,6 +61,8 @@ scene('part', ({ root, s, c0 }) => {
   const f3n = mk(f3in, 'fn', 22, 18, null, null, '新的片段'); css(f3n, { fontSize: '30px' });
   const f3f = ['id.bin', 'name.bin', 'age.bin', '…'].map((t, i) => { const e = fileAt(f3in, i, t); css(e, { top: (104 + i * 40) + 'px' }); return e; });
   sfx('pop', T('p2b', '另写'), { g: 0.6 });
+  const nd4 = mk(B, 'tag', 300, 640, null, null, '新数据'); css(nd4, { fontSize: '32px' }); const tNd = T('p2b') + 0.05, tDrop = T('p2b', '另写') + 0.1;
+  motion(nd4, [[0, { a: 0, x: -80, y: 0, s: 1 }], [tNd, { a: 0, x: -80 }], [tNd + 0.35, { a: 1, x: 0 }], [tDrop, { x: 0, y: 0, s: 1, a: 1 }], [tDrop + 0.6, { x: FX3 + 200 - 300, y: FY3 + 260 - 640, s: 0.6, a: 0 }]], ease.io3);
   // Dave 注册：终端、这一行、三步
   const tBC = T('p3') - 0.1;
   hide(f1, tBC, { y: 0, d: 0.3 }); hide(lock, tBC, { y: 0, d: 0.3 });

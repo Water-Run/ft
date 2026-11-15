@@ -30,7 +30,7 @@ scene('concur', ({ root, s, c0 }) => {
   const lp = foldAt(gA, 100, 596, 800, 290, 'Bob 的快照（查询开始那一刻）', 'y'); vanish(lp, 0); appear(lp, T('b2b', '快照') - 0.6);
   tableTag(gA, '表 <b>demo.users</b> · 一亿行', c0 + 0.1);
   const SN = [fileAt(lp, 0, 'all_1_91_4_93', 'y')]; SN.forEach((e, i) => { vanish(e, 0); appear(e, T('b2b', '快照') - 0.4 + i * 0.25); sfx('tick', T('b2b', '快照') - 0.4 + i * 0.25, { g: 0.4 }); });
-  const g1 = glossAt(gA, 100, 900, 1720, '快照', '<b>快照</b>　查询开始那一刻所有活动片段的清单；这次查询从头到尾只读清单里的片段'); show(g1, T('b2b') + 0.2, { y: 10, d: 0.35 }); vanish(g1, T('b5b') - 0.1);
+  const g1 = glossAt(gA, 100, 900, 1720, '快照', '<b>快照</b>　数据在某一时刻的样子：查询照着它读，之后的改动看不见'); show(g1, T('b2b') + 0.2, { y: 10, d: 0.35 }); vanish(g1, T('b5b') - 0.1);
   // 磁盘上现在的片段
   const rp = foldAt(gA, 1000, 596, 820, 290, '磁盘上现在的片段', ''); wipe(rp, T('b2') - 0.2, { dir: 'l', d: 0.5 });
   const R0 = fileAt(rp, 0, 'all_1_91_4_93', ''), R1 = R0;

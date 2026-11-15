@@ -64,7 +64,7 @@ scene('merge', ({ root, s, c0 }) => {
   mA.forEach((e, i) => motion(e, [[0, { x: 0, y: 0 }], [tMg, { x: 0, y: 0 }], [tMg + 0.6, { x: 180 - 120 * i, y: 140 }]]));
   for (const e of mA) classAt(e, 'gone', tMg + 0.62);
   const mBig = mk(gC, 'sq-l y', 1050, 480, 460, 80); vanish(mBig, 0); slam(mBig, tMg + 0.6, { from: 1.15 }); sfx('thud', tMg + 0.62, { g: 0.6 });
-  const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　后台把几个小片段归并成一个大片段'); show(g6, T('m6b', '后台') + 0.2, { y: 14, d: 0.35 });
+  const g6 = glossAt(gC, 100, 720, 1300, '合并', '<b>合并</b>（merge）　后台把几个小片段归并成一个大片段'); show(g6, T('m6b') + 0.1, { y: 14, d: 0.35 });
   sfx('thud', T('m6c', '合并') + 0.1, { g: 0.6 });
   warm(pf, tBC + 0.4, T('m6b')); warm(pb_, T('m6b'), T('m7') - 0.2);
   const tCD = T('m7') + 0.6;
@@ -87,6 +87,7 @@ scene('merge', ({ root, s, c0 }) => {
     });
     cards.push(lst);
   });
+  cards.forEach((lst, si) => lst.forEach((c) => c.cells.forEach((e) => flashClone(e, T('m8', '三摞') + si * 0.3, 0.5, 0.5, 'on'))));
   const arrS = mk(gD, 'lab y', 100, 560, null, null, '每一摞：编号由小到大'); show(arrS, T('m7b', '排好') - 0.2, { y: 12 }); vanish(arrS, T('m8') + 0.4);
   STACKS.forEach((st, si) => st.forEach((r) => { flashT[r[0]] = T('m7b', '交错') + (r[0] - 1) * 0.2; }));
   const tHead = T('m8b', '最上面') - 0.1;
@@ -113,7 +114,7 @@ scene('merge', ({ root, s, c0 }) => {
   h('span', 'dim', bk, 'all_'); const sp1 = h('span', '', bk, '1_3'); h('span', 'dim', bk, '_'); const sp2 = h('span', '', bk, '1');
   // m10：旧的先标成不活动
   [0, 1, 2].forEach((si) => { const b = mk(gD, 'badge', SX[si], 560, null, null, '不活动'); css(b, { fontSize: '30px' }); show(b, T('m10', '不活动') + si * 0.2, { y: 10 }); sfx('tick', T('m10', '不活动') + si * 0.2, { g: 0.5 }); });
-  const gIn = glossAt(gD, 100, 800, 1200, '不活动', '<b>不活动</b>　合并后的旧片段：查询不再读它，过一阵才从磁盘删掉'); show(gIn, T('m10') + 0.2, { y: 12, d: 0.35 });
+  const gIn = glossAt(gD, 100, 800, 1200, '不活动', '<b>不活动</b>　数据已经全部并进新片段的旧片段：查询不再读它，过一阵才删'); show(gIn, T('m10') + 0.2, { y: 12, d: 0.35 });
   const qI = ico(gD, 'search', 1300, 270, 56, 'y', 3.6); const tQ = T('m10b', '一趟') - 0.5;
   motion(qI, [[0, { a: 0, y: 0 }], [T('m10b') - 0.1, { a: 0, y: 0 }], [T('m10b'), { a: 1 }], [tQ, { y: 0 }], [tQ + 1.0, { y: 7 * 76 }], [Tend('m10b', 0.4), { y: 7 * 76, a: 1 }], [Tend('m10b', 0.6), { a: 0 }]], (k) => k);
   vanish(gD, T('m11') - 0.1);
@@ -163,7 +164,7 @@ scene('merge', ({ root, s, c0 }) => {
   vanish(cap, T('m12b') - 0.2);
   const mt = mk(gE, 'h1', 100, 790, null, null, 'MergeTree  =  合并（Merge）+ 树（Tree）'); css(mt, { fontSize: '52px' }); wipe(mt, T('m12c', 'MergeTree') - 0.1, { dir: 'l', d: 0.7 });
   const lsm = mk(gE, 'tag o', 1260, 780, null, null, 'LSM 树 · 1996'); css(lsm, { fontSize: '56px' }); slam(lsm, T('m12e', 'LSM'), { from: 1.25 }); sfx('thud', T('m12e', 'LSM') + 0.1, { g: 0.5 });
-  const gLsm = glossAt(gE, 100, 900, 1720, 'LSM 树', '<b>LSM 树</b>（Log-Structured Merge-Tree）　先写成排好序的小段，再一层层合并'); show(gLsm, T('m12e') + 0.3, { y: 12, d: 0.35 });
+  const gLsm = glossAt(gE, 100, 900, 1720, 'LSM 树', '<b>LSM 树</b>（Log-Structured Merge-Tree）　新数据先写成排好序的小段，后台再一层层合并'); show(gLsm, T('m12e') + 0.3, { y: 12, d: 0.35 });
   const src = mk(gE, 'lab', 100, 852, null, null, '出处：ClickHouse 官方文档'); css(src, { fontSize: '24px' }); appear(src, T('m12c', '官方文档'));
   const tEF = T('m13') + 0.3;
   vanish(gE, tEF);

@@ -77,6 +77,8 @@ scene('crash', ({ root, s, c0 }) => {
   const q2L = mk(gD, 'lab', 1330, 474, null, null, '不急着写'); vanish(q2L, 0); appear(q2L, T('r6', '不要求立刻') + 0.1);
   tl.fromTo(q2.firstChild, { rotation: 0 }, { rotation: 180, duration: 0.6, ease: 'power2.inOut', immediateRender: false, transformOrigin: '50% 50%' }, T('r6b') - 0.2);
   const stay = mk(gD, 'lab y', 660, 470, null, null, '↑ 新片段还停在这里'); show(stay, Math.min(T('r6b', '缓存里') - 0.4, T('r7', '断电') - 3.4), { y: 10 });
+  const blk6 = mk(gD, '', 315, 404, 30, 30); css(blk6, { background: 'var(--y)' }); const tW6 = T('r6', '写完') - 0.1, tN6 = T('r6', '不要求立刻') + 0.2, tC6 = T('r7', '断电') - 0.05;
+  motion(blk6, [[0, { a: 0, x: 0 }], [tW6, { a: 0, x: 0 }], [tW6 + 0.1, { a: 1 }], [tW6 + 0.7, { x: 610 }], [tN6, { x: 610 }], [tN6 + 0.5, { x: 820 }], [tN6 + 1.1, { x: 610 }], [tC6, { x: 610, a: 1 }], [tC6 + 0.25, { a: 0 }]], ease.io3);
   const cut = ico(gD, 'power', 160, 620, 150, 'y', 4); vanish(cut, 0); slam(cut, T('r7', '断电') - 0.1, { from: 1.8 }); sfx('thud', T('r7', '断电'), { g: 0.8 });
   classAt(nd[1], 'ghost', T('r7', '没了')); classAt(nd[0], 'done', T('r7', '没了')); vanish(stay, T('r7', '断电') - 0.05);
   // 断电：缓存里的东西没了，往磁盘去的箭头、转着的沙漏、「不急着写」也一起撤掉；缓存那一格写明清空

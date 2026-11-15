@@ -28,7 +28,7 @@ scene('beyond', ({ root, s, c0 }) => {
   const tmq = termAt(gA, 100, 640, 1000, 90); vanish(tmq.el, 0); appear(tmq.el, T('s1b') - 0.1);
   tmq.line(0, '<span class="pr">:) </span>SELECT avg(age) FROM users;', T('s1b') - 0.05, { type: 34, cursorUntil: T('s1b', 'S Q L') + 1.0 });
   const sql = mk(gA, 'tag', 1200, 640, null, null, 'SQL'); slam(sql, T('s1b', 'S Q L'), { from: 1.3 }); sfx('thud', T('s1b', 'S Q L') + 0.1, { g: 0.5 });
-  const g1 = glossAt(gA, 100, 780, 1720, 'SQL', '<b>SQL</b>　数据库的查询语言：数据摆成表，用 CREATE TABLE 建表、INSERT 写入、SELECT 查询'); show(g1, T('s1b') + 0.1, { y: 12, d: 0.35 });
+  const g1 = glossAt(gA, 100, 780, 1720, 'SQL', '<b>SQL</b>　关系数据库的标准查询语言：数据按表组织，用 CREATE TABLE 建表、INSERT 写入、SELECT 查询'); show(g1, T('s1b'), { y: 12, d: 0.35 });
   const tAB = T('s2') + 0.6;
   vanish(gA, tAB);
 
@@ -99,6 +99,7 @@ scene('beyond', ({ root, s, c0 }) => {
   // ── E 整份文档原样存：MongoDB ──
   appear(gE, tDE);
   const ds = mk(gE, 'panel y', 100, 300, 700, 330); const dst = mk(ds, 'mono', 28, 20, null, null, D1); css(dst, { fontSize: '30px', lineHeight: '1.5' }); wipe(ds, tDE + 0.3, { dir: 'l', d: 0.5 }); warm(ds, tDE + 1.2, T('s8') - 0.2);
+  const dsHi = mk(gE, '', 100, 300, 700, 330); css(dsHi, { background: 'rgba(250,255,105,.18)', pointerEvents: 'none' }); vanish(dsHi, 0); wipe(dsHi, T('s7', '一整份') - 0.1, { dir: 'l', d: 0.5 }); vanish(dsHi, T('s7b', '原样') + 0.1);
   // 一份文档一块，长短各不相同：alice 那块是上面这份
   morph([100, 300, 700, 330], [100, 716, 252, 56], T('s7b', '原样') + 0.05, 0.6);
   const BW = [[260, 'alice 的整份文档'], [130, 'bob'], [270, 'carol'], [90, '…']], blks = []; let bx = 100;

@@ -40,15 +40,17 @@ scene('column', ({ root, s, c0 }) => {
   blocks.forEach((b) => { classAt(b.c[0], 'dead', T('c4') - 0.1); classAt(b.c[1], 'dead', T('c4') - 0.1); });
   const rdn = mk(A, 'lab', 800, 560, null, null, ''); css(rdn, { fontSize: '30px' }); vanish(rdn, 0); appear(rdn, sA);
   F((t) => { const n = Math.min(8, Math.round(clamp((t - sA) / Math.max(0.5, sB - sA)) * 8)); const v = `读了 <span class="y">${n * 3}</span> 项，用到的只有 <span class="y">${n}</span> 项（年龄）`; if (rdn._v !== v) { rdn.innerHTML = v; rdn._v = v; } });
-  const tFly = T('c4', '反过来') - 0.1, OFF = [0, 68, 236], FYS = [280, 400, 520];
+  const tFly = T('c4', '反过来') - 0.1, OFF = [0, 68, 236], FYS = [280, 400, 520], LAND = [[], [], []];
   for (const e of [rsP, lb, rdn]) hide(e, tFly, { y: 0, d: 0.35 });
   blocks.forEach((b, i) => b.c.forEach((c, k) => {
     const sx = 800 + (i % 3) * 366 + OFF[k], sy = 250 + Math.floor(i / 3) * 96, tx = 870 + i * 122, ty = FYS[k], t0 = tFly + k * 0.12 + i * 0.03;
     motion(c, [[0, { x: 0, y: 0 }], [t0, { x: 0, y: 0 }], [t0 + 0.8, { x: tx - sx, y: ty - sy }]], ease.io3);
+    tl.fromTo(c, { width: BW[k] }, { width: 124, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, t0);
+    LAND[k][i] = t0 + 0.8;
   }));
   sfx('whoosh', tFly, { g: 0.5 });
   const tAC = tFly + 1.25;
-  vanish(A, tAC);
+  vanish(A, tAC + 0.15);
 
   // ── C 每一列一个文件（左边的表与上一段同一个位置、同一个样子，换段时不动）──
   appear(C, tAC);
@@ -61,7 +63,7 @@ scene('column', ({ root, s, c0 }) => {
     const lbl = mk(C, 'fn', 710, y + 22, null, null, nm);
     const cells = stripAt(C, FX, y, vals, CW, 76);
     const t0 = T('c4', '每一列') + k * 0.35;
-    wipe(lbl, tAC - 0.1 + k * 0.12, { dir: 'l', d: 0.4 }); cells.forEach((c) => { vanish(c, 0); appear(c, tAC - 0.15); });
+    wipe(lbl, tAC - 0.1 + k * 0.12, { dir: 'l', d: 0.4 }); cells.forEach((c, i) => { vanish(c, 0); appear(c, LAND[k][i] - 0.05); });
     void t0;
     return { lbl, cells };
   });
@@ -69,9 +71,13 @@ scene('column', ({ root, s, c0 }) => {
   const colHi = (k, t0, t1) => { classAt(tb2.c[k], 'y', t0, t1); tbl2.forEach((r) => classAt(r.c[k], 'y', t0, t1)); strips[k].cells.forEach((c) => classAt(c, 'y', t0, t1)); classAt(strips[k].lbl, 'y', t0, t1); };
   colHi(0, T('c4', '每一列'), T('c4', '每一列') + 0.9); colHi(1, T('c4', '每一列') + 0.35, T('c4', '每一列') + 1.25); colHi(2, T('c4', '每一列') + 0.7, T('c4', '每一列') + 1.6);
   [tb2].concat(tbl2).forEach((r) => classAt(r.row, 'dim55', T('c4b') - 0.2, T('c7') - 0.2));
-  const g1 = glossAt(C, 710, 690, 1150, '列式存储', '<b>列式存储</b>　按列存放：同一列的值挨在一起，一列一个文件；查询用到哪几列，就只读那几列'); show(g1, T('c4b', '列式存储') - 0.1, { y: 14, d: 0.35 }); vanish(g1, T('c7') - 0.2);
+  // 「列式存储」：三个列文件依次亮一下（一列一个文件）
+  strips.forEach((st, k) => { const tk = T('c4b', '列式存储') + 0.5 + k * 0.45; flashClone(st.lbl, tk, 0.6, 0.4, 'y'); st.cells.forEach((c) => flashClone(c, tk, 0.6, 0.4, 'y')); });
+  const g1 = glossAt(C, 710, 690, 1150, '列式存储', '<b>列式存储</b>　数据按列而不是按行存放：同一列的值连续存在一起，查询只需读用到的那几列'); show(g1, T('c4b', '列式存储') - 0.1, { y: 14, d: 0.35 }); vanish(g1, T('c7') - 0.2);
   const sf = mk(C, 'frame-d', FX - 14, 266, 8 * (CW - 2) + 30, 352, ''); vanish(sf, 0); wipe(sf, T('c4c') - 0.1, { dir: 'l', d: 0.5 }); vanish(sf, T('c5') + 0.2);
   strips.forEach((st, k) => st.cells.forEach((c, i) => classAt(c, 'w', T('c4c') + 0.2 + k * 0.6 + i * 0.08, T('c5'))));
+  // 「我们特意也这样放」：小表本来所有列合在一个文件里（FACTS C05），演示特意一列一个
+  const spN = mk(C, 't-note', 710, 634, null, null, '小表本来所有列放在一个文件里；演示特意一列一个'); css(spN, { fontSize: '24px' }); vanish(spN, 0); show(spN, T('c4c', '特意') - 0.2, { y: 10, d: 0.35 }); vanish(spN, T('c6'));
   // c5：年龄这一列，只有八个字节，一人一个——十进制换成真实的字节（十六进制）；标注收走时换回十进制，后面「第三个值 = carol」对得上 41
   const ageCells = strips[2].cells;
   classAt(strips[2].lbl, 'y', T('c5') + 0.1, T('c6'));

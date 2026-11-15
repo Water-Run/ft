@@ -195,8 +195,8 @@ scene('history', ({ root, s, c0 }) => {
   const fun = path(ov, 'M 700 196 L 1100 196 L 930 318 L 870 318 Z', 'line', { w: 4, arrow: false }); css(fun, { fill: 'rgba(250,255,105,.06)' });
   vanish(fun, 0); arrowIn(fun, tSum - 0.3, 0.6);
   const funL = mk(world, 'h2', 840, 210, 120, null, 'Σ'); css(funL, { textAlign: 'center', fontSize: '52px' }); at(funL, tSum);
-  const P_in = [[608, 600], [664, 600], [664, 226], [720, 226]];
-  const aIn = path(ov, 'M 608 600 C 664 600 664 226 712 226', 'line', { w: 4 }); vanish(aIn, 0); arrowIn(aIn, tSum - 0.2, 0.5);
+  const P_in = [[608, 600], [700, 600], [640, 236], [728, 236]];
+  const aIn = path(ov, 'M 608 600 C 700 600 640 236 728 236', 'line', { w: 4 }); vanish(aIn, 0); arrowIn(aIn, tSum - 0.2, 0.5);
   flow(P_in, 6, tSum, T('h6d', '网址') - 0.4, 1.3);
   flow([[900, 230], [900, 260], [900, 300], [900, 352]], 3, tSum + 0.6, T('h6d', '网址') - 0.4, 0.9, 12);
   // 汇总表：每个页面、每天的访问量（数是示意，用条的长短表示）
@@ -236,7 +236,7 @@ scene('history', ({ root, s, c0 }) => {
   motion(sun, [[0, { a: 0, y: 30 }], [tSum - 0.1, { a: 0, y: 30 }], [tSum + 0.3, { a: 1, y: 0 }], [tNight, { a: 1, y: 0 }], [tNight + 0.6, { a: 0, y: 40 }], [tDay, { a: 0, y: 40 }], [tDay + 0.6, { a: 1, y: 0 }], [T('h6b', '事先'), { a: 1 }], [T('h6b', '事先') + 0.3, { a: 0 }]]);
   motion(moon, [[0, { a: 0, y: -30 }], [tNight + 0.2, { a: 0, y: -30 }], [tNight + 0.8, { a: 1, y: 0 }], [tDay - 0.2, { a: 1, y: 0 }], [tDay + 0.3, { a: 0, y: -30 }]]);
   const srv = ico(world, 'server', 1116, 250, 64, 'w', 3); vanish(srv, 0); appear(srv, tNight + 0.3); vanish(srv, tDay + 0.3);
-  const led = mk(world, '', 1130, 262, 10, 10); css(led, { background: 'var(--y)' }); led.style.visibility = 'hidden';
+  const led = mk(world, '', 1131, 265, 6, 5); css(led, { background: 'var(--y)' }); led.style.visibility = 'hidden';
   F((t) => { const on = t >= tNight + 0.3 && t < tDay + 0.3; led.style.visibility = on && Math.floor(t * 3) % 2 === 0 ? 'visible' : 'hidden'; });
   const slowB0 = mk(world, 'bar', 1100, 330, 100, 14), slowB = mk(world, 'bar y', 1100, 330, 100, 14); css(slowB, { transformOrigin: '0 50%' });
   vanish(slowB0, 0); appear(slowB0, tNight + 0.3); vanish(slowB0, tDay + 0.3); vanish(slowB, 0);

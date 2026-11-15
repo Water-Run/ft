@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "ac5c990095db6f688d1b7a70318da9918d0451536c87b42892ccf34e4cc8bfcf",
+      "content_sha256": "7e972a8929b0995d7e37f4a05a064e1c85a4b343bf7375971f20bcbe932bd247",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-16T10:00:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」：2026-11-16 会话里 WaterRun 看过 r9 后口述了 h10b、c13a、p6c、b9、f1 的改法；制作方把这几句连同补写的 u7、u7a、u7b，改写的 m12b，以及只改读法与字幕的几处放进一个问题，WaterRun 选「可以，按这样配音」；其余文字沿用此前的确认；确认后 c13a、u7、u7a、b9 四句超过字幕一行宽，各在逗号处拆成两句（字句不变）"
+      "confirmed_at": "2026-11-16T12:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」：2026-11-16 会话里 WaterRun 看过 r9 后口述了 h10b、c13a、p6c、b9、f1 的改法；制作方把这几句连同补写的 u7、u7a、u7b，改写的 m12b，以及只改读法与字幕的几处放进一个问题，WaterRun 选「可以，按这样配音」；其余文字沿用此前的确认；确认后 c13a、u7、u7a、b9 四句超过字幕一行宽，各在逗号处拆成两句（字句不变）；2026-11-16 看过 r10 后 WaterRun 要求「10:52 挑出它不是她」，i8b「再从八千多行里挑出她」按原话改为「挑出它」（读音相同）"
     }
   }
 }

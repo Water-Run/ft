@@ -58,7 +58,7 @@ scene('update', ({ root, s, c0 }) => {
     const ln = mk(gC, '', 550, FY[k] + 32, 500, 4); css(ln, { background: 'var(--w)' }); wipe(ln, T('u5', '不复制') + k * 0.25, { dir: 'l', d: 0.5 }); classAt(lc[k], 'y', T('u5', '不复制') + k * 0.25); classAt(rc[k], 'y', T('u5', '不复制') + k * 0.25);
     const lb = mk(gC, 'lab y', 640, FY[k] - 10, null, null, '同一份文件'); css(lb, { fontSize: '24px' }); vanish(lb, 0); appear(lb, T('u5b', '同一份文件') + k * 0.2); sfx('tick', T('u5b', '同一份文件') + k * 0.2, { g: 0.5 });
   });
-  const g2 = glossAt(gC, 100, 880, 1720, '硬链接', '<b>硬链接</b>　磁盘上同一份文件，在两个文件夹里各有一个名字：新版本不用再复制一份'); show(g2, T('u5') + 0.3, { y: 12, d: 0.35 });
+  const g2 = glossAt(gC, 100, 880, 1720, '硬链接', '<b>硬链接</b>　文件系统里给同一份文件再起一个名字：几个名字指着磁盘上同一份数据'); show(g2, T('u5') + 0.3, { y: 12, d: 0.35 });
   const tCD = T('u6') + 0.5;
   vanish(gC, tCD);
 
@@ -88,7 +88,7 @@ scene('update', ({ root, s, c0 }) => {
   const agC = AG.map((v, i) => { const c = cellAt(gE, SX7 + i * (CW7 + 6), SY7, CW7, 64, '<span>' + v + '</span>', ''); vanish(c, 0); appear(c, tDE + 0.3 + i * 0.05); return c; });
   const agL = mk(gE, 'fn', SX7, SY7 + 76, null, null, 'age.bin（原来的片段，不动）'); css(agL, { fontSize: '22px' }); vanish(agL, 0); appear(agL, tDE + 0.6);
   const XA7 = SX7 + 2 * (CW7 + 6);
-  const patchC = cellAt(gE, XA7, SY7 + 150, CW7, 64, '<span>43</span>', 'on'); const patchL = mk(gE, 'fn y', XA7 + CW7 + 20, SY7 + 166, null, null, '补丁片段：只有这 1 行'); css(patchL, { fontSize: '24px' });
+  const patchC = cellAt(gE, XA7, SY7 + 150, CW7, 64, '<span>43</span>', 'on'); patchC.setAttribute('data-overlap-ok', ''); /* 补丁要叠到她那一格上 */ const patchL = mk(gE, 'fn y', XA7 + CW7 + 20, SY7 + 166, null, null, '补丁片段：只有这 1 行'); css(patchL, { fontSize: '24px' });
   const tRd = T('u7a', '叠上去') - 0.3, tMg = Math.max(T('u7a2', '合并') - 0.1, tRd + 2.4);
   motion(patchC, [[0, { a: 0, y: -40 }], [tP, { a: 0, y: -40 }], [tP + 0.05, { a: 1 }], [tP + 0.45, { y: 0 }], [tRd + 0.45, { y: 0 }], [tRd + 0.8, { y: -150 }], [tRd + 1.9, { y: -150 }], [tRd + 2.2, { y: 0 }], [tMg, { y: 0, s: 1, a: 1 }], [tMg + 0.45, { y: -150, s: 1, a: 1 }], [tMg + 0.9, { y: -150, s: 0.6, a: 0 }]], ease.io3);
   vanish(patchL, 0); show(patchL, tP + 0.4, { x: -12, y: 0, d: 0.35 }); keyed(patchL).at(tMg + 0.6, { html: '补丁并进去了，随后删掉', cls: 'abs fn dim' });
@@ -96,7 +96,7 @@ scene('update', ({ root, s, c0 }) => {
   // 查询读这一列：放大镜扫过，读到她那一格时补丁正叠在上面，读出来的就是 43
   const q7 = ico(gE, 'search', 0, 0, 48, 'y', 3.6);
   motion(q7, [[0, { a: 0, x: SX7 - 60, y: SY7 + 8 }], [tRd, { a: 0, x: SX7 - 60 }], [tRd + 0.15, { a: 1 }], [tRd + 1.9, { x: SX7 + 5 * (CW7 + 6), a: 1 }], [tRd + 2.2, { a: 0 }]], (k) => k);
-  const rdL = mk(gE, 'lab y', SX7, SY7 + 230, null, null, '查询读到的：43'); css(rdL, { fontSize: '26px' }); vanish(rdL, 0); show(rdL, tRd + 0.8, { y: 10, d: 0.3 }); vanish(rdL, tMg + 0.3);
+  const rdL = mk(gE, 'lab y', SX7, SY7 + 230, null, null, '查询读到的：43'); css(rdL, { fontSize: '26px' }); vanish(rdL, 0); show(rdL, tRd + 0.55, { y: 10, d: 0.3 }); vanish(rdL, tMg + 0.6);
   // 合并：补丁真正并进片段，原来那一格变成 43
   keyed(agC[2].firstChild).at(tMg + 0.5, { html: '43' });
   flashClone(agC[2], tMg + 0.45, 1.0, 0.7, 'on', '<span>43</span>');

@@ -245,6 +245,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 // 只用于此刻不在动的元素；html 给定时，复制品显示这段内容（例如格子里的数刚改过）
 function flashClone(e, t, hold = 0.6, d = 0.6, cls = 'on', html = null) {
   const c = e.cloneNode(true); e.parentNode.insertBefore(c, e.nextSibling); c.classList.add(cls); if (html != null) c.innerHTML = html;
+  c.setAttribute('data-overlap-ok', '');   // 复制品就叠在原件上，是有意的
   c.style.clipPath = 'none'; c.style.transform = 'none'; c.style.translate = 'none'; c.style.rotate = 'none'; c.style.scale = 'none';
   tl.set(c, { autoAlpha: 0 }, 0);
   tl.fromTo(c, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15, ease: 'power1.out', immediateRender: false }, t);

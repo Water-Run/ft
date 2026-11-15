@@ -82,8 +82,8 @@ scene('open', ({ root, s }) => {
   const oltp = mk(gA, 'tag', 1240, 812, null, null, '事务型数据库'); css(oltp, { fontSize: '60px', padding: '12px 30px' });
   const oltpE = mk(gA, 'tag o', 1690, 822, null, null, 'OLTP'); css(oltpE, { fontSize: '40px', padding: '10px 18px' });
   slam(oltp, T('o4b', '事务型') - 0.05, { from: 1.25 }); sfx('thud', T('o4b', '事务型') + 0.05); wipe(oltpE, T('o4b', '数据库') + 0.1, { dir: 'l', d: 0.3 });
-  const glT = glossAt(gA, 100, 884, 1120, '事务型数据库', '<b>OLTP</b>（Online Transactional Processing，联机事务处理）：一笔笔小事务，每次只碰几行');
-  show(glT, T('o4b') - 0.2, { y: 16, d: 0.35 });
+  const glT = glossAt(gA, 100, 884, 1120, '事务型数据库', '<b>OLTP</b>（Online Transactional Processing，联机事务处理）　事务型数据库的工作方式：源源不断的小事务，每次读写几行，要快、不出错');
+  show(glT, T('o4') + 0.3, { y: 16, d: 0.35 });   /* 讲「要快，还要不出错」时就出来，o4b 说出名字时已在屏上 */
   // 「可要是问的，不是哪一个人呢？」：括线收走，数据带上每一个人都亮起
   exit(brk, T('o5') - 0.1, { y: -10 }); hide(oneU, T('o5') - 0.1, { y: -10, d: 0.3 });
   [rA, rB, rC].forEach((r, k) => { for (const c of r.c) classAt(c, 'w', T('o5', '哪一个') + k * 0.2); });
@@ -181,8 +181,8 @@ scene('open', ({ root, s }) => {
   });
   const olap = mk(gC, 'tag', RX, 450, null, null, '分析型数据库'); css(olap, { fontSize: '72px', padding: '12px 32px' }); slam(olap, T('o12', '分析型') - 0.05, { from: 1.25 }); sfx('thud', T('o12', '分析型') + 0.05);
   const olapE = mk(gC, 'tag o', RX + 560, 460, null, null, 'OLAP'); css(olapE, { fontSize: '48px', padding: '10px 20px' }); wipe(olapE, T('o12', '数据库') + 0.1, { dir: 'l', d: 0.3 });
-  const glA = glossAt(gC, RX, 590, 1080, '分析型数据库', '<b>OLAP</b>（Online Analytical Processing，联机分析处理）：拿大量历史数据做报表，一次扫很多行，只看其中几列');
-  show(glA, T('o12') - 0.2, { y: 14, d: 0.35 });
+  const glA = glossAt(gC, RX, 590, 1080, '分析型数据库', '<b>OLAP</b>（Online Analytical Processing，联机分析处理）　分析型数据库的工作方式：拿大量历史数据做报表，一次扫很多行、只看几列');
+  show(glA, T('o11b') - 0.1, { y: 14, d: 0.35 });
   const q1 = mk(gC, 'h1', RX, 720, null, null, '它是怎么做到的？'); const q2 = mk(gC, 'h1 y', RX, 800, null, null, '代价放在了哪里？');
   wipe(q1, T('o13', '怎么') - 0.1, { dir: 'l', d: 0.5 }); wipe(q2, T('o13', '放在') - 0.35, { dir: 'l', d: 0.5 });
   sfx('thud', T('o13', '怎么') + 0.2, { g: 0.5 }); sfx('thud', T('o13', '放在') - 0.15, { g: 0.5 });

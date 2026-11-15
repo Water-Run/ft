@@ -67,9 +67,10 @@ scene('index', ({ root, s, c0 }) => {
   const u12 = mk(gC, 'h2', 600, 700, null, null, '项'); appear(u12, T('i4'));
   const n47 = mk(gC, 'big y', 820, 650, null, null, '47.69 KiB'); css(n47, { fontSize: '120px' }); show(n47, T('i4', '四十几'), { y: 14 }); sfx('chime', T('i4', '四十几') + 0.1, { g: 0.5 });
   vanish(n12, T('i5', '稀疏索引') - 0.1); vanish(u12, T('i5', '稀疏索引') - 0.1); vanish(n47, T('i5', '稀疏索引') - 0.1);
-  const g2 = glossAt(gC, 100, 810, 1700, '稀疏索引', '<b>稀疏索引</b>　不是每行一项，而是每个颗粒（8192 行）只记第一行的编号；所以小到能放进内存'); show(g2, T('i5') + 0.2, { y: 14, d: 0.35 }); sfx('thud', T('i5', '稀疏索引') + 0.05, { g: 0.5 });
+  const g2 = glossAt(gC, 100, 810, 1700, '稀疏索引', '<b>稀疏索引</b>　只给每一组行（而不是每一行）建一项的索引：先找到那一组，再到组里找'); show(g2, T('i5', '这叫') - 0.6, { y: 14, d: 0.35 }); sfx('thud', T('i5', '稀疏索引') + 0.05, { g: 0.5 });
   const t5 = mk(gC, 'tag', 100, 690, null, null, '稀疏索引'); css(t5, { fontSize: '80px' }); vanish(t5, 0); appear(t5, T('i5', '稀疏索引')); vanish(t5, T('i5b', '只找出') - 0.1);
   // 「只找出她在哪个颗粒里」：第 0 个颗粒和它那一项索引一起亮（不是某一行）
+  idxC.forEach((c, k) => flashClone(c, T('i5b') + 0.15 + k * 0.05, 0.4, 0.4, 'on'));   /* 不像 B 树那样指到某一行：索引项一项对一组 */
   classAt(gr[0], 'on', T('i5b', '只找出') - 0.1, T('i6') + 0.4); classAt(idxC[0], 'on', T('i5b', '颗粒') - 0.05, T('i6') + 0.4); sfx('pop', T('i5b', '只找出'), { g: 0.4 });
   const tCD = T('i6') + 0.4;
   hide(gC, tCD, { y: -20, d: 0.35 });
@@ -106,7 +107,7 @@ scene('index', ({ root, s, c0 }) => {
   segs.forEach((sg, k) => { const mk_ = mk(gE, 'fn y', 340 + 10, sg.y + 70, null, null, ['id.cmrk2', 'name.cmrk2', 'age.cmrk2'][k]); css(mk_, { fontSize: '22px' }); vanish(mk_, 0); appear(mk_, T('i7b', '标记') + 0.3 + k * 0.25); });
   segs.forEach((sg, k) => { const w_ = [T('i8', '编号'), T('i8', '姓名'), T('i8', '年龄')][k]; const tq = T('i7', '什么位置'); classWins(sg.cs[0], 'on', [[Math.max(tDE + 0.4, tq - 1.2) + k * 0.25, Math.max(tDE + 0.4, tq - 1.2) + k * 0.25 + 0.7], [w_ - 0.1, 1e9]]); sfx('tick', w_, { g: 0.5 }); classAt(sg.lb, 'y', T('i8', '三个文件') + k * 0.12); });
   const rd = rowAt(gE, 420, 800, ['2050', 'Alice', '42'], [210, 310, 150], 76, 'lg y'); vanish(rd.row, 0); appear(rd.row, T('i8b') + 0.6); sfx('chime', T('i8b', '挑出') + 0.1, { g: 0.6 });
-  const rdl = mk(gE, 'lab y', 100, 816, null, null, '从 8192 行里挑出她'); vanish(rdl, 0); appear(rdl, T('i8b') + 0.6);
+  const rdl = mk(gE, 'lab y', 100, 816, null, null, '从 8192 行里挑出它'); vanish(rdl, 0); appear(rdl, T('i8b') + 0.6);
   const tE9 = T('i9') + 1.0;
   hide(gE, tE9, { y: -20, d: 0.35 });
 

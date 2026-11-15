@@ -57,7 +57,7 @@ scene('engine', ({ root, s, c0 }) => {
     css(p, { left: Math.max(60, Math.min(1380, cx - 150)) + 'px' }); };
   const mtl = mk(B, 'pill y', 1180, 886, null, 56, 'MergeTree 家族 16 种'); css(mtl, { left: '60px' }); appear(mtl, T('e4b') - 0.1); vanish(mtl, T('e4b', '帮着') - 0.1);
   const SV3 = ' →' + [0, 1, 2].map(() => icoSvg('server', 30, 3.4)).join('');
-  lbl('Distributed', T('e4b', '帮着'), SV3); lbl('MySQL', T('e4c', 'My S Q L'), ' →' + icoSvg('db', 30, 3.4) + '<span style="font-size:22px;margin-left:16px">数据在那边</span>'); lbl('Kafka', T('e4c', 'Kafka'), ' →' + icoSvg('log', 30, 3.4) + '<span style="font-size:22px;margin-left:16px">数据在那边</span>');
+  lbl('Distributed', T('e4b', '帮着'), SV3); lbl('MySQL', T('e4c', 'My S Q L'), ' →' + icoSvg('db', 30, 3.4) + '<span style="display:inline-block;width:2px;height:26px;background:currentColor;opacity:.45;margin:0 16px"></span><span style="font-size:22px">数据在那边</span>'); lbl('Kafka', T('e4c', 'Kafka'), ' →' + icoSvg('log', 30, 3.4) + '<span style="display:inline-block;width:2px;height:26px;background:currentColor;opacity:.45;margin:0 16px"></span><span style="font-size:22px">数据在那边</span>');
   // 真正存数据的几乎都是 MergeTree：别的淡下去
   const tOnly = T('e5');
   tiles.filter((x) => !x.mt).forEach((x, i) => tl.to(x.e, { autoAlpha: 0, scale: 0.6, duration: 0.35, ease: 'power2.in' }, tOnly + (i % 12) * 0.02 + Math.floor(i / 12) * 0.05));
