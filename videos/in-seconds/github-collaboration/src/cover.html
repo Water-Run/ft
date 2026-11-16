@@ -83,7 +83,7 @@
   document.querySelector('.ic-merge').outerHTML = oct('git-merge', wide ? 64 : 54, '#ffffff');
   const sample = document.getElementById('stage').textContent;
   Promise.all(['900 40px "Sans SC"', '800 40px "Sans SC"', '700 40px "Sans SC"', '900 40px "Inter"', '800 40px "Inter"', '800 40px "Mono"', '700 40px "Mono"'].map((f) => document.fonts.load(f, sample)))
-    .then(() => document.fonts.ready).then(() => requestAnimationFrame(() => { document.body.dataset.ready = '1'; }));
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>
 </html>

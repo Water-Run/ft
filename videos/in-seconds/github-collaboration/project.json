@@ -91,8 +91,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "review",
-  "next": "等校对者对文案稿 886ca44b（例子已换成 age > 18 应为 >=）的明确确认；确认后用 Warm_Girl（1.2）全片配音，做 15–30 秒有声代表段（A 为主、C 的时间线与编号簿），covers.js 出正式封面",
+  "stage": "preview",
+  "next": "等策划者看预览 r1（out/zh/preview-r1.mp4）的意见；之后按意见改，再出下一轮或正式片",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -108,13 +108,20 @@
         "roles": [
           "补充取证",
           "文案",
-          "配音试听",
-          "配乐小样",
-          "视觉方向与关键帧"
+          "配音",
+          "视觉与动画",
+          "配乐与音效"
         ]
       }
     ],
-    "services": [],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd（音色 Chinese (Mandarin)_Warm_Girl）",
+        "roles": [
+          "旁白配音"
+        ]
+      }
+    ],
     "repository": "https://github.com/Water-Run/ft"
   },
   "review": {

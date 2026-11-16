@@ -1,59 +1,55 @@
-// 系列共用的部件：小工具、斜线块、字节格、比特格、日历换算。与题目有关的部件（首集的验证码与 30 秒表盘）写在各集自己的 parts.js 里。
-// 所有部件的状态都只由 t 决定：用 F() 逐帧算，不存历史。
+// 本片的部件：GitHub 界面的几样东西（仓库名、状态胶囊、注解框、指针、描框、代码行）。图标来自 src/design/octicons.js（Octicons，MIT）。
+// 所有部件的状态都只由 t 决定：位置与显隐都登记到时间线上，不存历史。
 
 // ── 小工具 ──
-const txt = (parent, cls, html, x, y) => { const e = h('div', 'abs ' + cls, parent, html); px(e, x, y); return e; };
-const blk = (parent, cls, x, y, w, hh) => { const e = h('div', 'blk ' + cls, parent); px(e, x, y, w, hh); return e; };
-const backOut = (k) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
-const group3 = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const el = (parent, cls, html, x, y, w, hh) => { const e = h('div', 'abs ' + (cls || ''), parent, html); px(e, x, y, w, hh); return e; };
+const fadeIn = (e, t, o = {}) => show(e, t, { y: o.y != null ? o.y : 16, x: o.x || 0, d: o.d || 0.4, s: o.s });
+const fadeOut = (e, t, o = {}) => hide(e, t, { y: o.y != null ? o.y : -10, x: o.x || 0, d: o.d || 0.35 });
+// 已在场的元素换成另一种样子：叠一层新样子淡入，旧的淡出（不让类名一下切过去，F30）
+const swapFade = (a, b, t, d = 0.3) => { fromTo(a, t, { autoAlpha: 1 }, { autoAlpha: 0, duration: d, ease: 'power1.inOut', immediateRender: false }); fromTo(b, t, { autoAlpha: 0 }, { autoAlpha: 1, duration: d, ease: 'power1.inOut' }); };
 
-// ── 斜线块：不可信的一方（泄露的副本、假网站）。用 SVG 线条画，不用渐变 ──
-function hatch(parent, x, y, w, hh, color, gap = 18, sw = 5) {
-  const s = svg('svg', { class: 'abs', width: w, height: hh, viewBox: `0 0 ${w} ${hh}` }, parent); px(s, x, y);
-  for (let d = -hh; d < w; d += gap) svg('line', { x1: d, y1: hh, x2: d + hh, y2: 0, stroke: color, 'stroke-width': sw }, s);
-  s.dataset.name = 'hatch';
-  return s;
-}
+// ── GitHub 的几样部件（html 字符串） ──
+const st = (kind, icon, text, size = 28) => `<span class="state ${kind}">${oct(icon, size, kind === 'idle' ? C.muted : '#fff')}${text}</span>`;
+const repoName = (owner, name, o = {}) => `<span class="row" style="gap:${o.gap || 14}px;font-size:${o.size || 34}px">${oct(o.icon || 'repo', (o.size || 34) * 0.85, C.muted)}<span style="color:var(--accent)">${owner}</span><span class="k">/</span><b style="color:var(--accent);font-weight:700">${name}</b>${o.pub === false ? '' : `<span class="pill" style="font-size:24px;margin-left:6px">Public</span>`}</span>`;
+const av = (who, size = 48) => { const m = { 'WaterRun': ['av-mei', 'W'], '你': ['av-you', '你'], '路人甲': ['av-pass', '路'] }[who]; return `<span class="avatar ${m[0]}" style="width:${size}px;height:${size}px;font-size:${Math.max(24, Math.round(size / 2))}px">${m[1]}</span>`; };
+const codeLn = (no, html, cls = '', sg = null) => `<div class="ln ${cls}"><span class="no">${no}</span>${sg != null ? `<span class="sg">${sg}</span>` : ''}${html}</div>`;
+const GT = '&gt;', GE = '&gt;=';
 
-// ── 字节格：一排（或几排）十六进制字节。返回各格元素 ──
-// o: { x, y, pitch, w, h, size, cols（每排几个）, rowGap, cls, idx（在上方标序号）, idxSize }
-function byteCells(parent, bytes, o) {
-  const cols = o.cols || bytes.length, out = [], idx = [];
-  bytes.forEach((b, i) => {
-    const cx = o.x + (i % cols) * o.pitch, cy = o.y + Math.floor(i / cols) * (o.rowGap || o.h);
-    const e = h('div', 'byte ' + (o.cls || ''), parent, b); px(e, cx, cy, o.w, o.h); css(e, { fontSize: o.size + 'px', lineHeight: o.h + 'px' });
-    out.push(e);
-    if (o.idx) { const n = h('div', 'idx', parent, String(i)); px(n, cx, cy - (o.idxSize || 28) * 1.5, o.w); n.style.fontSize = (o.idxSize || 28) + 'px'; idx.push(n); }
-  });
-  out.idx = idx;
-  return out;
+// ── 注解框：深色提示框带一个尖角；dir 是尖角朝哪边（up：框在对象下方，尖角朝上） ──
+function gloss(parent, html, x, y, dir = 'up', term) {
+  const e = el(parent, 'gloss ' + dir, html + '<span class="tip"></span>', x, y);
+  if (term) e.dataset.gloss = term;
+  return e;
 }
+// ── 描框：圈出某一块（构建期量好它的位置） ──
+function ring(parent, b, cls = '', pad = 8) { const e = el(parent, 'ring ' + cls, '', b.x - pad, b.y - pad, b.w + pad * 2, b.h + pad * 2); e.dataset.name = '描框'; e.dataset.overlapOk = '1'; return e; }
 
-// ── 比特格：实心 = 1，空心 = 0。每 8 个一组 ──
-function bitCells(parent, bits, o) {
-  const out = [];
-  [...bits].forEach((c, i) => {
-    const e = h('div', 'blk', parent); px(e, o.x + i * (o.s + o.gap) + Math.floor(i / 8) * (o.group || 0), o.y, o.s, o.s);
-    e.style.setProperty('--c', o.color);                                    // 颜色放在变量里：加上类名 hot 即变成朱红，不必换元素
-    css(e, c === '1' ? { background: 'var(--c)' } : { border: `${o.bw || 4}px solid var(--c)` });
-    e.dataset.name = 'bit' + c;
-    out.push(e);
-  });
-  return out;
+// ── 指针：一个鼠标箭头。轨迹每段显式给出起止（与镜头同理），点击时缩一下 ──
+function pointer(parent) {
+  const e = el(parent, '', '<svg width="46" height="56" viewBox="0 0 23 28"><path d="M1.5,1.5 L1.5,22 L7,17 L10.6,25.5 L14.2,24 L10.6,15.6 L17.8,15.6 Z" fill="#1f2328" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/></svg>', 0, 0);
+  e.dataset.name = '指针'; e.dataset.overlapOk = '1'; e.style.zIndex = 40;
+  return e;
 }
-
-// ── 日历换算（纯算术，不取系统时间）：公历日期 ↔ 自 1970-01-01 起的天数 ──
-function daysFromCivil(y, m, d) {
-  y -= m <= 2 ? 1 : 0;
-  const era = Math.floor(y / 400), yoe = y - era * 400, doy = Math.floor((153 * (m + (m > 2 ? -3 : 9)) + 2) / 5) + d - 1, doe = yoe * 365 + Math.floor(yoe / 4) - Math.floor(yoe / 100) + doy;
-  return era * 146097 + doe - 719468;
+// keys: [[t, x, y, d]]：第一项是出现的位置与时刻；之后每项从上一项的位置移到 (x, y)，用时 d
+function pointerPath(p, keys, tOut) {
+  let [t0, x0, y0] = keys[0];
+  fromTo(p, t0, { autoAlpha: 0, left: x0 + 30, top: y0 + 40 }, { autoAlpha: 1, left: x0, top: y0, duration: 0.45, ease: 'power3.out' });
+  for (const [t, x, y, d = 0.6] of keys.slice(1)) { fromTo(p, t, { left: x0, top: y0 }, { left: x, top: y, duration: d, ease: 'power3.inOut', immediateRender: false }); x0 = x; y0 = y; }
+  if (tOut != null) fromTo(p, tOut, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false });
 }
-function civilFromDays(z) {
-  z += 719468;
-  const era = Math.floor(z / 146097), doe = z - era * 146097, yoe = Math.floor((doe - Math.floor(doe / 1460) + Math.floor(doe / 36524) - Math.floor(doe / 146096)) / 365);
-  const doy = doe - (365 * yoe + Math.floor(yoe / 4) - Math.floor(yoe / 100)), mp = Math.floor((5 * doy + 2) / 153), d = doy - Math.floor((153 * mp + 2) / 5) + 1, m = mp < 10 ? mp + 3 : mp - 9;
-  return { y: yoe + era * 400 + (m <= 2 ? 1 : 0), m, d };
+const clickAt = (p, t, target) => {
+  fromTo(p, t, { scale: 1 }, { keyframes: [{ scale: 0.82, duration: 0.08 }, { scale: 1, duration: 0.18 }], transformOrigin: '0 0', immediateRender: false });
+  if (target) fromTo(target, t, { scale: 1 }, { keyframes: [{ scale: 0.95, duration: 0.08 }, { scale: 1, duration: 0.2 }], immediateRender: false });
+  sfx('tick', t, { g: 1.1 });
+};
+// 在某个元素上原地点亮一层黄色（正在指认的那一处），过一会儿慢慢退回
+function markOn(parent, b, t, t1, pad = 4) {
+  const m = el(parent, '', '', b.x - pad, b.y - pad, b.w + pad * 2, b.h + pad * 2);
+  css(m, { border: '3px solid ' + C.attention, borderRadius: '8px' });
+  m.dataset.overlapOk = '1'; m.dataset.name = '指认框';
+  fromTo(m, t, { autoAlpha: 0, scale: 1.25 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' });
+  if (t1 != null) fromTo(m, t1, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, immediateRender: false });
+  return m;
 }
-const unixOf = (y, m = 1, d = 1) => daysFromCivil(y, m, d) * 86400;
-const two = (n) => String(n).padStart(2, '0');
-const clockOf = (u, withSec = true) => { const s = ((u % 86400) + 86400) % 86400; return two(Math.floor(s / 3600)) + ':' + two(Math.floor(s / 60) % 60) + (withSec ? ':' + two(Math.floor(s) % 60) : ''); };
+// 两个元素之间拉一条线（构建期量位置）
+const midR = (b) => [b.r, b.cy], midL = (b) => [b.x, b.cy], midB = (b) => [b.cx, b.b], midT = (b) => [b.cx, b.y];
