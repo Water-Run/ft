@@ -9,7 +9,7 @@
     "zh": "Lua源码全解析"
   },
   "stage": "review",
-  "next": "暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用已选音色 Warm_Bestie 合成全片（实测响度，混音按 rms 对齐），做有声代表段，用 covers.js 出封面",
+  "next": "暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用 Harness 一期的音色 Crisp_Girl（语速 1.15，2026-11-16 策划者改定）合成全片，实测响度，做有声代表段，用 covers.js 出封面",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -77,10 +77,10 @@
     "engine": "minimax",
     "model": "speech-2.8-hd",
     "voice": {
-      "zh": "Chinese (Mandarin)_Warm_Bestie"
+      "zh": "Chinese (Mandarin)_Crisp_Girl"
     },
     "speed": {
-      "zh": 1.0
+      "zh": 1.15
     }
   }
 }
