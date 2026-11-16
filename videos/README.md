@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 206 部：已成片 26，制作中 4，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 206 部：已成片 26，制作中 5，计划中 171，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -46,6 +46,7 @@
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 审稿 | 视觉按策划者要求重做：参考 MongoDB 官方的浅色主题，以 B（文件地图）为主、结合 A（三棵树）与 C（真实字节与回显），出融合方向的关键帧；同时等 WaterRun 审定第 1 稿文案与 5 个待定问题。确认后用 Gentle_Senior（1.15）全片配音，配乐按 C「档案」写 tools/music.py | 最新 | Claude Opus 5.5 |
+| [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 等校对者对文案稿 886ca44b（例子已换成 age > 18 应为 >=）的明确确认；确认后用 Warm_Girl（1.2）全片配音，做 15–30 秒有声代表段（A 为主、C 的时间线与编号簿），covers.js 出正式封面 | 最新 | Qwen 4 Max Preview、Claude Opus 5.5 |
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用 Harness 一期的音色 Crisp_Girl（语速 1.15，2026-11-16 策划者改定）合成全片，实测响度，做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
@@ -296,7 +297,7 @@
 | 23 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](in-seconds/von-neumann/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 128 秒。 |
 | 24 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](in-seconds/ipv4/) | 2026-10-26 由独立视频移入「XX 秒速通」，定长 100 秒。 |
 | 25 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
-| 26 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 计划中 | [`github-collaboration`](in-seconds/github-collaboration/) | 2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 150 秒（2026-11-07 策划者定：「定为150s吧」）。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。 |
+| 26 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 制作中 | [`github-collaboration`](in-seconds/github-collaboration/) | 2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 150 秒（2026-11-07 策划者定：「定为150s吧」）。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。 |
 | 27 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](in-seconds/quantization/) | 2026-10-26 曾由速通改为独立视频；2026-11-09 策划者要求迁回「XX 秒速通」（原话「量化的视频迁移至速通. 标题: 120秒了解量化: 让模型变小的方式和代价」），定长 120 秒。 |
 
 ### 权限机制的设计
