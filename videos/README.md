@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 205 部：已成片 26，制作中 3，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 206 部：已成片 26，制作中 4，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -45,7 +45,8 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用已选音色 Warm_Bestie 合成全片（实测响度，混音按 rms 对齐），做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 审稿 | 视觉按策划者要求重做：参考 MongoDB 官方的浅色主题，以 B（文件地图）为主、结合 A（三棵树）与 C（真实字节与回显），出融合方向的关键帧；同时等 WaterRun 审定第 1 稿文案与 5 个待定问题。确认后用 Gentle_Senior（1.15）全片配音，配乐按 C「档案」写 tools/music.py | 最新 | Claude Opus 5.5 |
+| [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用 Harness 一期的音色 Crisp_Girl（语速 1.15，2026-11-16 策划者改定）合成全片，实测响度，做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
 
@@ -75,7 +76,7 @@
 | 3 | 一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL | zh | 已成片 | [`postgresql`](database-engines/postgresql/) | 重做版 2026-11-01 发布（哔哩哔哩 BV1msxp6yEai）；旧版 2026-10-19 发布，已归档 |
 | 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 已成片 | [`sqlite`](database-engines/sqlite/) | 2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ） |
 | 5 | 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse | zh | 已成片 | [`clickhouse`](database-engines/clickhouse/) |  |
-| 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 计划中 | `mongodb` |  |
+| 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 制作中 | [`mongodb`](database-engines/mongodb/) |  |
 | 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 计划中 | `redis` | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
 
 ### 编程语言哲学
@@ -447,3 +448,4 @@
 | 33 | CoT：先思考，再回答 | zh | 已成片 | [`chain-of-thought`](standalone/chain-of-thought/) | 2026-10-26 改为独立视频；2026-11-03 策划者定为 6–7 分钟，富有质感、文案出色，视觉契合大模型、简洁、白底。 |
 | 34 | 既能做服务又能嵌入式，数据库小众的第三选择：Firebird | zh | 已成片 | [`firebird`](standalone/firebird/) | 重置版 2026-11-10 发布（哔哩哔哩 BV1b1W36yEHu）；旧版已发布并归档。 |
 | 35 | Redis 之外：KeyDB & Valkey | zh | 计划中 | [`keydb-valkey`](standalone/keydb-valkey/) | 2026-10-26 从 Redis 合集选题拆出，独立视频，目标 3–4 分钟；策划者确认使用 Valkey 拼写。 |
+| 36 | 没有银弹——半个世纪前人月神话与今天的软件工程迷思 | zh | 计划中 | `no-silver-bullet` | 2026-11-16 策划者新增（原话「独立片增加: 没有银弹--半个世纪前人月神话与今天的软件工程迷思」，标题里的「--」按片单写法记为破折号「——」）。 |
