@@ -10,13 +10,15 @@
 4. 维护者在 PR 页上看改动、留意见、跑自动检查；批准后合并，改动才进原仓库主线（F3、F8）。
 5. 还没准备好就先开**草稿 PR**（F4）；**Issue** 是说清「要解决什么」的地方，与 PR 共用同一套编号（F5、F6）；`Closes #N` 在合并进默认分支时自动关 Issue，`Refs #N` 只是引用约定（F7）。
 
+分界：分支、提交、推送是 Git 的；Fork、PR、Issue 是 GitHub 网站提供的协作功能，不是 Git 的一部分，换个平台叫法会变（F10）。
+
 关键关系：Fork 解决「没有权限」，分支解决「要隔开」，PR 解决「要被审」。编号属于仓库而不属于人：同一仓库里 Issue 与 PR 共用一套递增编号，不回收；Fork 另有自己的一套。
 
 依据：GitHub 官方文档（2026-11-15 读取，见各条链接）＋公开仓库只读实测（`lab/01_numbering.sh` ↔ `out_01_numbering.txt`）。未解决：一次性测试账号上的全流程动手实验未做（见「待做」）。
 
 ## 取证日期、对象与版本
 
-- 取证日期：2026-11-15（UTC+8）。
+- 取证日期：2026-11-15（UTC+8），准备方（Qwen 4 Max Preview）；2026-11-16 制作方（Claude Opus 5.5）补 F10–F12（Git 与 GitHub 的分界、写权限、编号第二来源）。
 - 对象：GitHub.com 托管平台的协作功能（Fork、分支、PR、Issue、编号、关联关键词、合并与分支保护）。
 - 版本：GitHub 为持续上线的服务，文档页无版本号与更新日期，一律记录读取日期 2026-11-15；REST API 行为以当日实测为准。Primer 设计令牌版本见 `MATERIALS.md`。
 - 文档站当日已改版：旧路径多已重定向到新路径，下表引用最终地址。
@@ -27,6 +29,7 @@
 |---|---|
 | 官方文档引文（F1–F9 各条） | 本机经 web_fetch 读取 docs.github.com 的 text/markdown 原文，2026-11-15；引文为页面原句 |
 | 编号实测（F6 各条） | Windows 本机（win32），gh CLI 已登录（只读调用），curl 经系统代理访问 github.com；对象为公开仓库 nodejs/node 及其 fork，未创建任何内容；回显见 `lab/out_01_numbering.txt` |
+| F10–F12 补证（2026-11-16） | 本机 curl 读取 git-scm.com（*Pro Git* 第 6 章、git-request-pull 手册）、docs.github.com 文章正文接口（英文与中文）、gitlab.com 上 gitlab-org/gitlab 的文档源文件；原文存 `research/_src/`（不入库） |
 | Primer 令牌（MATERIALS.md） | gh API 读 primer/primitives 源文件（提交 47736486bf67b2a14ba1ada61fa0f57af29bb875）与 unpkg 的 @primer/primitives@11.10.0 编译产物；见 `lab/out_02_primer_tokens.txt` |
 
 实测未用真实项目、真实账号或内部仓库的内容；nodejs/node 与 LiviaMedeiros/node 均为公开仓库。回显中的会话 Cookie 已去除。
@@ -110,6 +113,37 @@
 | # | 陈述 | 依据 | 状态 |
 |---|---|---|---|
 | F9.1 | 同步 Fork 的常规配置里，自己 Fork 的远端名叫 `origin`，上游仓库的远端名叫 `upstream` | 《Fork a repository》§Configuring Git to sync your fork with the upstream repository 原句：“You should see the URL for your fork as `origin` and the URL for the upstream repository as `upstream`.” | 已核（官方文档）；只作画面标签，不进旁白 |
+
+## F10 Git 与 GitHub 的分界：Fork、PR、Issue 是平台功能，不是 Git 的一部分
+
+2026-11-16 制作方（Claude Opus 5.5）按策划者要求补证（原话见 README「简报」）。原文存于 `research/_src/`（不入库），读取日期 2026-11-16（UTC+8）。
+
+| # | 陈述 | 依据 | 状态 |
+|---|---|---|---|
+| F10.1 | GitHub 是托管 Git 仓库的网站，不是 Git 开源项目的直接组成部分 | Git 官方站点上的 *Pro Git*（第 2 版）第 6 章开头原句：“GitHub is the single largest host for Git repositories, and is the central point of collaboration for millions of developers and projects.” “So while it’s not a direct part of the Git open source project, there’s a good chance that you’ll want or need to interact with GitHub at some point while using Git professionally.” <https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration> | 已核（Git 官方书） |
+| F10.2 | Issue、PR、代码审查是 GitHub 在托管 Git 仓库之外提供的工具 | GitHub 文档《About Git》§How GitHub works 原句：“GitHub hosts Git repositories and provides developers with tools to ship better code through command line features, issues (threaded discussions), pull requests, code review, …” <https://docs.github.com/en/get-started/using-git/about-git> | 已核（官方文档） |
+| F10.3 | 提交与分支是 Git 的概念；Git 的常用命令是 init、clone、add、commit、status、branch、merge、pull、push | 同上 §About repositories 原句：“The file history appears as snapshots in time called commits. The commits can be organized into multiple lines of development called branches.” §Basic Git commands 列出上述九个命令 | 已核（官方文档）；画面可列命令名，旁白不教命令 |
+| F10.4 | Fork 由 GitHub 完成：在网站上复制一份完全属于你的项目，放在你的名下，你可以往里推送 | *Pro Git* §6.2 Forking Projects 原句：“If you want to contribute to an existing project to which you don’t have push access, you can “fork” the project. When you “fork” a project, GitHub will make a copy of the project that is entirely yours; it lives in your namespace, and you can push to it.” <https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project> | 已核（Git 官方书） |
+| F10.5 | 同样的协作在 GitHub 之外也可以靠邮件来回；GitHub 把它换成了网页工具 | 同上 §The GitHub Flow 原句：“This is basically the Integration Manager workflow covered in Integration-Manager Workflow, but instead of using email to communicate and review changes, teams use GitHub’s web based tools.” | 已核（Git 官方书）；本集不展开邮件流程 |
+| F10.6 | Git 自带的 `git request-pull` 只是生成一段文字：请上游项目把你的改动拉进去，打印到标准输出 | Git 官方手册 git-request-pull 原句：“git-request-pull - Generates a summary of pending changes” “Generate a request asking your upstream project to pull changes into their tree. The request, printed to the standard output, begins with the branch description, summarizes the changes, and indicates from where they can be pulled.” <https://git-scm.com/docs/git-request-pull> | 已核（Git 官方手册）；用于解释 Pull Request 的字面意思「请对方拉取」 |
+| F10.7 | 别的平台有同样的做法，名字不同：GitLab 也有 Fork，从 Fork 向上游发起的叫 merge request（合并请求）；有写权限就不必 Fork，用分支即可 | GitLab 文档 forking_workflow 原句：“A fork is a personal copy of another project, created in the namespace of your choice.” “You can create merge requests from your fork to target the upstream project.” “If you have write access to the original project, you don't need a fork. Instead, use branches to manage your work.” <https://docs.gitlab.com/user/project/repository/forking_workflow/>；源文件 gitlab-org/gitlab `doc/user/project/repository/forking_workflow.md`（master，2026-11-16 读取，当日 HEAD `8ed359a28397215f58a5fb0883e536ba5df4308c`） | 已核（GitLab 官方文档）；GitLab 的仓库同样是 Git 仓库：文档《Repository》原句 “Your repository is a component of your GitLab project. You store your code in your repository, and track changes to it with version control.”，其中 repository 链到 *Pro Git*《Getting a Git Repository》，提交一节写明 “use `git commit`”（`doc/user/project/repository/_index.md`，同日读取） |
+| F10.8 | GitHub 中文文档把 pull request 译作「拉取请求」，称它是 GitHub 的核心协作功能；中文文档对 fork 的译法不统一（同一页出现「叉子」「分支」「派生」） | GitHub 中文文档《拉取请求》原句：“拉取请求是将代码更改合并到项目中的建议。 拉取请求是 GitHub 的核心 **协作功能**”；《叉子》页原句：“分支存储库最初作为另一个存储库的副本，称为上游存储库。”“当您在 GitHub 上查看某个派生仓库时……” <https://docs.github.com/zh/pull-requests/reference/pull-requests>、<https://docs.github.com/zh/pull-requests/reference/forks> | 已核（官方中文文档）；旁白沿用英文 Fork，避免与「分支」混淆 |
+
+## F11 写权限：谁能直接改一个仓库
+
+| # | 陈述 | 依据 | 状态 |
+|---|---|---|---|
+| F11.1 | 个人账号的仓库只有一个所有者，拥有完全控制；被邀请的协作者可以读取并推送（写入） | GitHub 文档《Permission levels for a personal account repository》原句：“Repositories owned by personal accounts have a single owner who has full control of the repository.” “Collaborators on a personal repository can pull (read) the contents of the repository and push (write) changes to the repository.” <https://docs.github.com/en/account-and-profile/reference/permission-levels-for-a-personal-account-repository>（读取 2026-11-16） | 已核（官方文档） |
+| F11.2 | 组织仓库的角色里，Read 只能查看与讨论，推送要 Write 及以上：「Push to (write)」一行 Read、Triage、Moderate 为 ✗，Write、Maintain、Admin 为 ✓ | GitHub 文档《Repository roles for an organization》原句：“Read: Recommended for non-code contributors who want to view or discuss your project” “Write: Recommended for contributors who actively push to your project”；权限表「Push to (write) the person or team's assigned repositories」一行 <https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization>（读取 2026-11-16） | 已核（官方文档） |
+| F11.3 | GitHub 把对上游仓库有推送权限的人称为维护者（maintainers） | GitHub 文档《Allowing changes to a pull request branch created from a fork》原句：“the author can give maintainers of the upstream repository—that is, anyone with push access to the upstream repository—permission to commit to the compare branch.” <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/allowing-changes-to-a-pull-request-branch-created-from-a-fork>（读取 2026-11-16） | 已核（官方文档）；旁白「维护者」即此义 |
+
+## F12 编号的第二个来源
+
+| # | 陈述 | 依据 | 状态 |
+|---|---|---|---|
+| F12.1 | PR 与 Issue 都有编号，编号在项目内唯一：不会同时有 PR #3 和 Issue #3；`#编号` 即可引用 | *Pro Git* §6.2 References 原句：“All Pull Requests and Issues are assigned numbers and they are unique within the project. For example, you can’t have Pull Request #3 and Issue #3. If you want to reference any Pull Request or Issue from any other one, you can simply put #<num> in any comment or description.” | 已核（Git 官方书，与 F6.1–F6.3 互证） |
+| F12.2 | PR 页的「Files changed」给出这条分支合并后会带来的全部差异；GitHub 会检查能否干净合并，并在服务器上提供合并按钮 | *Pro Git* §6.2 原句：“if you click on the “Files Changed” tab on this Pull Request, you’ll get the “unified” diff — that is, the total aggregate difference that would be introduced to your main branch if this topic branch was merged in.” “GitHub checks to see if the Pull Request merges cleanly and provides a button to do the merge for you on the server.” | 已核（Git 官方书） |
+| F12.3 | 维护者可以针对某一行代码留评论 | *Pro Git* §6.2 Iterating on a Pull Request 图 92 题注：“Comment on a specific line of code in a Pull Request” | 已核（Git 官方书） |
 
 ## 未进入成片的事实（备日后更新）
 

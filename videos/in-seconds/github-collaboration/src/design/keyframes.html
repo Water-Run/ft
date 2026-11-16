@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>关键帧 · 150 秒速通 GitHub 协作</title>
+<!-- 审片用的静态关键帧：?d=A|B|C&f=1|2|3。三个方向比较的是解释方法，不是配色：
+     A「跟着一个 PR 走」：真实界面临摹，镜头在同一张 GitHub 页面里推进；
+     B「一条改动的旅程」：深色主题的网络图，一个提交点在仓库与分支之间移动；
+     C「一个编号的生平」：GitHub 的时间线部件，事件随时间往下累积，编号条记着仓库的号。
+     色值取自 Primer（research/MATERIALS.md），图标取自 Octicons（MIT），字体为仓库自带的 Inter、Noto Sans SC、JetBrains Mono。
+     画面文字与数字均为本片虚构例子「阿梅 / 活动报名」（README「设计」），字幕取自 src/js/script.js 的句子。 -->
+<style>
+@font-face { font-family: "Sans SC"; src: url("/fonts/NotoSansSC.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Inter"; src: url("/fonts/Inter.ttf"); font-weight: 100 900; }
+@font-face { font-family: "Mono"; src: url("/fonts/JetBrainsMono.ttf"); font-weight: 100 800; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+body { font-family: "Inter", "Sans SC", sans-serif; -webkit-font-smoothing: antialiased; font-feature-settings: "liga" 0, "calt" 0; }
+.light { --fg: #1f2328; --muted: #59636e; --accent: #0969da; --success: #1a7f37; --done: #8250df; --danger: #d1242f; --attention: #9a6700;
+  --bg: #ffffff; --bgm: #f6f8fa; --accm: #ddf4ff; --sucm: #dafbe1; --donem: #fbefff; --dangm: #ffebe9; --attm: #fff8c5;
+  --sucE: #1f883d; --doneE: #8250df; --neuE: #59636e; --emph: #25292e; --bd: #d1d9e0; --bdm: #d1d9e0b3; --ul: #fd8c73;
+  --addL: #dafbe1; --addW: #aceebb; --delL: #ffebe9; --delW: #ffcecb; --band: #f6f8fa; }
+.dark { --fg: #f0f6fc; --muted: #9198a1; --accent: #4493f8; --success: #3fb950; --done: #ab7df8; --danger: #f85149; --attention: #d29922;
+  --bg: #0d1117; --bgm: #151b23; --accm: #388bfd1a; --sucm: #2ea04326; --donem: #ab7df826; --dangm: #f8514926; --attm: #bb800926;
+  --sucE: #238636; --doneE: #8957e5; --neuE: #656c76; --emph: #3d444d; --bd: #3d444d; --bdm: #3d444db3; --ul: #f78166; --band: #010409; }
+#stage { position: relative; width: 1920px; height: 1080px; background: var(--bg); color: var(--fg); overflow: hidden; }
+.abs { position: absolute; }
+.mono { font-family: "Mono", "Sans SC", monospace; }
+.oct { display: inline-block; vertical-align: -0.14em; flex: none; }
+/* 常驻元素：字幕带（968–1080）与秒尺、左上剩余秒数、右上仪表 */
+#band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--band); border-top: 1px solid var(--bd); }
+#band .cap { position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 40px; font-weight: 500; letter-spacing: 0.01em; }
+#band .cap em { font-style: normal; color: var(--accent); font-weight: 700; }
+#ruler { position: absolute; left: 0; top: 0; }
+#hudL { position: absolute; left: 60px; top: 44px; display: flex; align-items: baseline; gap: 8px; color: var(--muted); }
+#hudL .n { font-family: "Mono"; font-size: 44px; font-weight: 700; color: var(--fg); letter-spacing: 0.02em; }
+#hudL .u { font-size: 24px; }
+#hudR { position: absolute; right: 60px; top: 40px; width: 300px; height: 72px; display: flex; align-items: center; justify-content: flex-end; }
+.state { display: inline-flex; align-items: center; gap: 12px; border-radius: 999px; padding: 12px 24px; font-size: 28px; font-weight: 600; color: #fff; white-space: nowrap; }
+.state.open { background: var(--sucE); } .state.merged { background: var(--doneE); } .state.draft { background: var(--neuE); } .state.idle { background: transparent; color: var(--muted); border: 2px dashed var(--bd); }
+/* Primer 部件（按 1.85 倍放大，GitHub 网页 14px 正文 → 26px） */
+.box { border: 1px solid var(--bd); border-radius: 12px; background: var(--bg); overflow: hidden; }
+.boxh { background: var(--bgm); border-bottom: 1px solid var(--bd); padding: 16px 24px; font-size: 26px; display: flex; align-items: center; gap: 14px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; font-family: "Mono"; font-size: 24px; color: var(--accent); background: var(--accm); border-radius: 10px; padding: 4px 12px; white-space: nowrap; }
+.pill { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--bd); border-radius: 999px; padding: 6px 18px; font-size: 24px; color: var(--muted); font-weight: 500; }
+.btn { display: inline-flex; align-items: center; gap: 12px; border: 1px solid var(--bd); background: var(--bgm); border-radius: 12px; padding: 12px 24px; font-size: 26px; font-weight: 600; white-space: nowrap; }
+.btn.green { background: var(--sucE); color: #fff; border-color: transparent; }
+.count { background: var(--bgm); border: 1px solid var(--bdm); border-radius: 999px; padding: 0 12px; font-size: 22px; color: var(--muted); }
+.tabs { display: flex; gap: 40px; border-bottom: 1px solid var(--bd); font-size: 26px; }
+.tabs span { display: inline-flex; align-items: center; gap: 12px; padding: 14px 4px; color: var(--muted); }
+.tabs span.on { color: var(--fg); font-weight: 600; box-shadow: inset 0 -4px 0 var(--ul); }
+.ln { display: flex; font-family: "Mono", "Sans SC"; font-size: 26px; line-height: 52px; white-space: pre; }
+.ln .no { width: 80px; text-align: right; padding-right: 20px; color: var(--muted); flex: none; }
+.ln .sg { width: 40px; flex: none; text-align: center; }
+.ln.del { background: var(--delL); } .ln.add { background: var(--addL); }
+.ln.del .w { background: var(--delW); border-radius: 4px; } .ln.add .w { background: var(--addW); border-radius: 4px; }
+.gloss { position: absolute; background: var(--emph); color: #fff; font-size: 24px; font-weight: 500; border-radius: 10px; padding: 10px 18px; white-space: nowrap; }
+.gloss b { color: #fff; font-weight: 700; }
+.gloss::after { content: ""; position: absolute; width: 16px; height: 16px; background: var(--emph); transform: rotate(45deg); }
+.gloss.up::after { left: 28px; top: -7px; } .gloss.down::after { left: 28px; bottom: -7px; } .gloss.left::after { left: -7px; top: calc(50% - 8px); }
+.avatar { width: 48px; height: 48px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: 700; flex: none; }
+.title-xl { font-size: 104px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.12; }
+.title-sub { font-size: 48px; font-weight: 500; color: var(--muted); }
+.k { color: var(--muted); }
+svg text { font-family: "Inter", "Sans SC", sans-serif; }
+</style>
+<script src="octicons.js"></script>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const P = new URLSearchParams(location.search), D = P.get('d') || 'A', FR = +(P.get('f') || 1);
+const stage = document.getElementById('stage');
+stage.className = D === 'B' ? 'dark' : 'light';
+const css = (n) => getComputedStyle(stage).getPropertyValue('--' + n).trim();
+const add = (html, x, y, extra = '') => { const e = document.createElement('div'); e.className = 'abs'; e.style.cssText = `left:${x}px;top:${y}px;${extra}`; e.innerHTML = html; stage.appendChild(e); return e; };
+const TOTAL = 150;
+
+// 常驻元素：每帧给出所在时刻（秒）与字幕
+function chrome(t, cap, meter) {
+  const band = add('', 0, 968); band.id = 'band'; band.className = '';
+  const X = (s) => 8 + s * (1904 / TOTAL);
+  let ticks = '';
+  for (let i = 0; i <= TOTAL; i++) {
+    const big = i % 30 === 0, mid = i % 10 === 0, w = big ? 4 : 2;
+    ticks += `<rect x="${(X(i) - w / 2).toFixed(1)}" y="0" width="${w}" height="${big ? 22 : mid ? 14 : 7}" fill="${i <= t ? css('success') : css('bd')}"/>`;
+  }
+  band.innerHTML = `<svg id="ruler" width="1920" height="30">${ticks}<path d="M${X(t) - 8},30 L${X(t)},19 L${X(t) + 8},30 Z" fill="${css('success')}"/></svg><div class="cap">${cap}</div>`;
+  const l = document.createElement('div'); l.id = 'hudL'; l.innerHTML = `<span class="n">${String(Math.ceil(TOTAL - t)).padStart(3, '0')}</span><span class="u">秒</span>`; stage.appendChild(l);
+  const r = document.createElement('div'); r.id = 'hudR'; r.innerHTML = meter; stage.appendChild(r);
+}
+const st = (kind, icon, text) => `<span class="state ${kind}">${oct(icon, 28, kind === 'idle' ? css('muted') : '#fff')}${text}</span>`;
+const repoHead = (owner, name, x, y, size = 40, extra = '') => add(`<div style="display:flex;align-items:center;gap:16px;font-size:${size}px">${oct('repo', size * 0.8, css('muted'))}<span style="color:var(--accent)">${owner}</span><span class="k">/</span><b style="color:var(--accent);font-weight:700">${name}</b><span class="pill" style="font-size:24px">Public</span>${extra}</div>`, x, y);
+
+/* ───────── 方向 A：跟着一个 PR 走（真实界面临摹，浅色） ───────── */
+function A1() {
+  // 片名卡：背后是那一行写错的代码，片名压在它上面
+  const readme = add(`<div class="box" style="width:900px">
+      <div class="boxh">${oct('file', 26, css('muted'))}<b class="mono" style="font-size:26px">src/signup.js</b></div>
+      <div style="padding:14px 0">
+        <div class="ln" style="font-size:30px;line-height:62px"><span class="no">12</span><span class="k">// 年满 18 岁才能报名</span></div>
+        <div class="ln" style="font-size:30px;line-height:62px"><span class="no">13</span>if (age <span style="background:var(--attm);outline:3px solid var(--attention);border-radius:6px;padding:0 6px;margin:0 6px">&gt;</span> 18) {</div>
+        <div class="ln" style="font-size:30px;line-height:62px"><span class="no">14</span>  signUp(user);</div>
+        <div class="ln" style="font-size:30px;line-height:62px"><span class="no">15</span>}</div></div></div>`, 960, 250);
+  readme.style.opacity = 0.9;
+  repoHead('阿梅', '活动报名', 960, 168, 34);
+  add(`<div class="title-xl">150 秒速通<br>GitHub 协作</div>`, 120, 250);
+  add(`<div class="title-sub">为什么要 Fork、开分支、再提 PR</div>`, 124, 540);
+  add(`<div style="display:flex;align-items:center;gap:22px;font-size:30px">
+      <span class="btn">${oct('repo-forked', 28)}Fork</span>${oct('arrow-right', 28, css('muted'))}
+      <span class="btn">${oct('git-branch', 28)}fix-age</span>${oct('arrow-right', 28, css('muted'))}
+      <span class="btn green">${oct('git-pull-request', 28, '#fff')}Pull request</span></div>`, 124, 660);
+  chrome(10.5, '但在 GitHub 上，你照样能提改动。怎么做到的？', st('idle', 'dot-fill', '改动：还没开始'));
+}
+function A2() {
+  // 信息最密：PR 申请页。旁白 b10 说「写明从哪条分支、合到哪里、改了哪一行」，三处注解各指一块
+  add(`<div style="font-size:52px;font-weight:600">年龄判断改成大于等于 <span style="color:var(--muted);font-weight:300">#13</span></div>`, 120, 132);
+  add(`<div style="display:flex;align-items:center;gap:18px;font-size:28px;color:var(--muted)">
+      ${st('open', 'git-pull-request', 'Open').replace('state open', 'state open" style="font-size:26px;padding:8px 20px')}
+      <span><b style="color:var(--fg)">你</b> 想把 1 个提交合并进</span><span class="chip" id="base">阿梅:main</span><span>来自</span><span class="chip" id="head">你:fix-age</span></div>`, 120, 214);
+  add(`<div class="tabs" style="width:1680px"><span>${oct('comment', 26)}Conversation <span class="count">2</span></span><span>${oct('git-commit', 26)}Commits <span class="count">1</span></span><span>${oct('check', 26)}Checks <span class="count">1</span></span><span class="on">${oct('file', 26)}Files changed <span class="count">1</span></span></div>`, 120, 340);
+  add(`<div class="box" style="width:1120px">
+      <div class="boxh"><span class="mono">src/signup.js</span><span style="margin-left:auto;font-size:24px"><span style="color:var(--success)">+1</span> <span style="color:var(--danger)">−1</span></span></div>
+      <div class="ln"><span class="no">12</span><span class="sg"> </span><span class="k">// 年满 18 岁才能报名</span></div>
+      <div class="ln del" id="dl"><span class="no">13</span><span class="sg">−</span>if (age <span class="w">&gt;</span> 18) {</div>
+      <div class="ln add"><span class="no">13</span><span class="sg">+</span>if (age <span class="w">&gt;=</span> 18) {</div>
+      <div class="ln"><span class="no">14</span><span class="sg"> </span>  signUp(user);</div>
+      <div style="border-top:1px solid var(--bd);padding:18px 24px;display:flex;gap:16px;align-items:flex-start;background:var(--bg)">
+        <span class="avatar" style="background:#bf3989">梅</span>
+        <div style="font-size:26px"><b>阿梅</b> <span class="k">在第 13 行</span><div style="margin-top:6px">对，满 18 岁当天就该能报名。</div></div></div>
+    </div>`, 120, 440);
+  add(`<div class="box" style="width:520px">
+      <div style="padding:22px 26px;display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--bd)">${oct('check-circle-fill', 34, css('success'))}<div style="font-size:26px"><b>阿梅 批准了改动</b></div></div>
+      <div style="padding:22px 26px;display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--bd)">${oct('check-circle-fill', 34, css('success'))}<div style="font-size:26px"><b>1 项检查通过</b></div></div>
+      <div style="padding:22px 26px"><span class="btn green" style="width:100%;justify-content:center">${oct('git-merge', 28, '#fff')}Merge pull request</span>
+        <div class="k" style="font-size:24px;margin-top:12px;text-align:center">只有维护者能点</div></div></div>`, 1280, 440);
+  // 注解：指向 base、head 与改动的那一行（成片里带 data-gloss）
+  const r = (id) => document.getElementById(id).getBoundingClientRect();
+  const b = r('base'), h = r('head'), dl = r('dl');
+  add(`<div class="gloss up" style="position:relative">合到哪里</div>`, b.left - 6, b.bottom + 18);
+  add(`<div class="gloss up" style="position:relative">从哪条分支</div>`, h.left - 6, h.bottom + 18);
+  add(`<div class="gloss left" style="position:relative">改了哪一行</div>`, 1000, dl.top + 2);
+  chrome(80.5, '写明从哪条分支、合到哪里、改了哪一行。', st('open', 'git-pull-request', 'Open #13'));
+}
+function A3() {
+  // 图解：Fork。左原仓库（你只读），右你的副本（forked from），同一页内容。Fork 按钮在标题行右侧（与 GitHub 仓库页一致），箭头从它水平走到副本
+  add(`<div class="box" style="width:720px;height:560px">
+      <div style="padding:26px 30px 0;display:flex;align-items:center;gap:14px;font-size:34px">${oct('repo', 30, css('muted'))}<span style="color:var(--accent)">阿梅</span><span class="k">/</span><b style="color:var(--accent)">活动报名</b>
+        <span class="btn" id="forkbtn" style="margin-left:auto;outline:4px solid var(--accent);outline-offset:3px">${oct('repo-forked', 28)}Fork <span class="count">1</span></span></div>
+      <div style="margin:46px 30px 26px" class="box"><div class="boxh" style="font-size:24px">${oct('file', 24, css('muted'))}src / signup.js</div><div style="padding:14px 24px;font-size:28px;line-height:52px" class="mono"><div class="k">// 年满 18 岁才能报名</div><div>if (age &gt; 18) {</div></div></div>
+      <div style="margin:0 30px;display:flex;gap:12px;align-items:center;font-size:26px;color:var(--muted)">${oct('lock', 26, css('muted'))}你的权限：只能看</div></div>`, 120, 190);
+  add(`<div class="box" style="width:720px;height:560px;border:3px solid var(--success)">
+      <div style="padding:26px 30px 0"><div style="display:flex;align-items:center;gap:14px;font-size:34px">${oct('repo-forked', 30, css('muted'))}<span style="color:var(--accent)">你</span><span class="k">/</span><b style="color:var(--accent)">活动报名</b></div>
+      <div style="margin-top:10px;font-size:24px;color:var(--muted)">forked from <span style="color:var(--accent)">阿梅/活动报名</span></div></div>
+      <div style="margin:26px 30px 26px" class="box"><div class="boxh" style="font-size:24px">${oct('file', 24, css('muted'))}src / signup.js</div><div style="padding:14px 24px;font-size:28px;line-height:52px" class="mono"><div class="k">// 年满 18 岁才能报名</div><div>if (age &gt; 18) {</div></div></div>
+      <div style="margin:0 30px;display:flex;gap:12px;align-items:center;font-size:26px;color:var(--success);font-weight:600">${oct('check', 26, css('success'))}你的权限：随便改</div></div>`, 1080, 190);
+  const f = document.getElementById('forkbtn').getBoundingClientRect(), y = f.top + f.height / 2;
+  add(`<svg width="1920" height="968" style="overflow:visible"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${css('accent')}"/></marker></defs>
+      <path d="M${f.right + 8},${y} L1072,${y}" stroke="${css('accent')}" stroke-width="5" fill="none" marker-end="url(#ah)"/></svg>`, 0, 0);
+  add(`<div class="gloss up" style="position:relative;white-space:normal;width:190px;text-align:center">复制一份<br>放到你名下</div>`, 865, y + 30);
+  chrome(33.5, 'GitHub 把仓库复制一份到你名下，这份副本随你改。', st('idle', 'repo-forked', '改动：还没开始'));
+}
+
+/* ───────── 方向 B：一条改动的旅程（网络图，深色） ───────── */
+function B1() {
+  const g = css('bd'), m = css('muted');
+  let s = `<svg width="1920" height="968">`;
+  const dots = (y, xs, col) => xs.map((x) => `<circle cx="${x}" cy="${y}" r="11" fill="${col}"/>`).join('');
+  s += `<line x1="0" y1="700" x2="1920" y2="700" stroke="${g}" stroke-width="6"/>` + dots(700, [140, 320, 500, 680, 860], m);
+  s += `<path d="M860,700 C980,700 1000,820 1120,820 L1920,820" stroke="${css('success')}" stroke-width="6" fill="none" opacity="0.9"/>` + `<circle cx="1300" cy="820" r="14" fill="${css('success')}"/>`;
+  s += `<path d="M1300,820 C1480,820 1500,700 1680,700" stroke="${css('done')}" stroke-width="6" fill="none" stroke-dasharray="14 12"/><circle cx="1680" cy="700" r="16" fill="${css('done')}"/>`;
+  s += `<text x="140" y="664" font-size="26" fill="${m}">main</text><text x="1140" y="872" font-size="26" fill="${css('success')}" font-family="Mono">fix-age</text></svg>`;
+  add(s, 0, 0);
+  add(`<div class="title-xl" style="color:var(--fg)">150 秒速通 GitHub 协作</div>`, 120, 220);
+  add(`<div class="title-sub">为什么要 Fork、开分支、再提 PR</div>`, 124, 360);
+  chrome(10.5, '但在 GitHub 上，你照样能提改动。怎么做到的？', `<svg width="300" height="72"><line x1="20" y1="36" x2="280" y2="36" stroke="${css('bd')}" stroke-width="4"/><circle cx="40" cy="36" r="9" fill="${css('muted')}"/><text x="280" y="22" text-anchor="end" font-size="24" fill="${css('muted')}">改动还没出发</text></svg>`);
+}
+function B2() {
+  const g = css('bd'), m = css('muted'), su = css('success'), dn = css('done'), ac = css('accent');
+  // 两个仓库各一条带；上带是原仓库（维护者可写），下带是你的副本
+  add(`<div style="width:1680px;height:300px;border:1px solid var(--bd);border-radius:16px;background:var(--bgm)"></div>`, 120, 150);
+  add(`<div style="width:1680px;height:380px;border:2px solid ${su};border-radius:16px;background:var(--bgm)"></div>`, 120, 540);
+  add(`<div style="display:flex;align-items:center;gap:14px;font-size:32px">${oct('repo', 30, m)}<span style="color:var(--accent)">阿梅 / 活动报名</span><span class="pill">${oct('lock', 22, m)}只有维护者能改</span></div>`, 150, 172);
+  add(`<div style="display:flex;align-items:center;gap:14px;font-size:32px">${oct('repo-forked', 30, m)}<span style="color:var(--accent)">你 / 活动报名</span><span class="pill" style="color:${su};border-color:${su}">${oct('check', 22, su)}你能改</span></div>`, 150, 562);
+  let s = `<svg width="1920" height="968"><defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${su}"/></marker></defs>`;
+  const D = (x, y, c, r = 11) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" stroke="${css('bg')}" stroke-width="4"/>`;
+  s += `<line x1="180" y1="320" x2="1740" y2="320" stroke="${g}" stroke-width="6"/>`;
+  [240, 420, 600].forEach((x) => { s += D(x, 320, m); });
+  s += `<line x1="1400" y1="270" x2="1400" y2="302" stroke="${g}" stroke-width="2" stroke-dasharray="4 6"/>`;
+  s += `<text x="180" y="290" font-size="26" fill="${m}" font-family="Mono">main</text>`;
+  // 副本的 main：从原仓库复制过来（虚线表示同一批提交）
+  s += `<line x1="180" y1="700" x2="900" y2="700" stroke="${g}" stroke-width="6"/>`;
+  [240, 420, 600].forEach((x) => { s += `<line x1="${x}" y1="332" x2="${x}" y2="688" stroke="${g}" stroke-width="2" stroke-dasharray="6 8"/>` + D(x, 700, m); });
+  s += `<text x="660" y="690" font-size="26" fill="${m}" font-family="Mono">main</text>`;
+  // 分支 fix-age 与那一个提交
+  s += `<path d="M600,700 C700,700 720,830 820,830 L1080,830" stroke="${su}" stroke-width="6" fill="none"/>` + D(980, 830, su, 16);
+  s += `<text x="640" y="880" font-size="26" fill="${su}" font-family="Mono">fix-age</text>`;
+  // PR：从分支指回原仓库 main
+  s += `<path d="M996,816 C1100,700 1200,420 1360,336" stroke="${su}" stroke-width="5" fill="none" marker-end="url(#ah2)"/>`;
+  s += D(1380, 320, dn, 16).replace(dn, css('bg')).replace('stroke-width="4"', `stroke-width="5" stroke-dasharray="6 6" style="stroke:${dn}"`);
+  s += `</svg>`;
+  add(s, 0, 0);
+  add(`<div class="box" style="padding:14px 20px;font-size:26px;display:flex;flex-direction:column;gap:10px;width:430px"><div style="display:flex;align-items:center;gap:12px"><span class="state open" style="font-size:24px;padding:6px 14px">${oct('git-pull-request', 22, '#fff')}Open</span><b>#13 改成大于等于</b></div><div class="k" style="font-size:24px;display:flex;gap:10px;align-items:center">${oct('comment', 22, m)}逐行意见　${oct('check', 22, su)}检查通过</div></div>`, 1300, 600);
+  add(`<div class="box" style="padding:14px 20px;font-size:26px;width:380px"><div style="display:flex;align-items:center;gap:12px">${oct('issue-opened', 26, su)}<b>#12</b> 刚满 18 岁报不上名</div></div>`, 1400, 210);
+  add(`<div class="mono" style="font-size:24px;color:var(--muted)">Closes #12</div>`, 1500, 350);
+  add(`<div class="gloss left" style="position:relative">一个提交：&gt; 改成 &gt;=</div>`, 1018, 808);
+  chrome(84.5, '维护者能逐行提意见，也能让机器跑检查。', `<svg width="300" height="72"><line x1="20" y1="44" x2="280" y2="44" stroke="${g}" stroke-width="4"/><circle cx="40" cy="44" r="7" fill="${m}"/><circle cx="130" cy="44" r="7" fill="${m}"/><circle cx="210" cy="44" r="11" fill="${su}"/><circle cx="270" cy="44" r="7" fill="none" stroke="${dn}" stroke-width="3"/><text x="280" y="22" text-anchor="end" font-size="24" fill="${su}">在 PR #13 等审</text></svg>`);
+}
+function B3() {
+  // 图解：两层。下层是 Git（每个平台都一样），上层是网站自己的功能；GitHub 与 GitLab 只差上层的叫法
+  const layer = (title, items, w, col) => `<div style="width:${w}px;border:2px solid ${col};border-radius:16px;padding:22px 28px;background:var(--bgm)"><div style="font-size:30px;font-weight:700;color:${col};margin-bottom:16px">${title}</div><div style="display:flex;gap:14px;flex-wrap:wrap">${items}</div></div>`;
+  const it = (icon, t) => `<span class="btn" style="font-size:26px">${oct(icon, 26)}${t}</span>`;
+  const cmd = (t) => `<span class="chip" style="font-size:26px;color:var(--fg);background:var(--bg);border:1px solid var(--bd)">${t}</span>`;
+  add(layer('GitHub 网站上的功能', it('repo-forked', 'Fork') + it('git-pull-request', 'Pull Request') + it('issue-opened', 'Issue') + it('dot-fill', '#13 编号'), 1000, css('accent')), 120, 150);
+  add(layer('GitLab', it('repo-forked', 'Fork') + it('git-pull-request', '合并请求') + it('issue-opened', 'Issue'), 600, css('muted')), 1200, 150);
+  add(layer('Git：装在电脑上的工具，记下每一次修改', cmd('commit 提交') + cmd('branch 分支') + cmd('merge 合并') + cmd('push 推送') + cmd('clone') , 1680, css('success')), 120, 560);
+  add(`<svg width="1920" height="968">${[620, 1500].map((x) => `<path d="M${x},${x < 1000 ? 410 : 386} L${x},540" stroke="${css('bd')}" stroke-width="4" stroke-dasharray="10 10"/>`).join('')}<text x="660" y="490" font-size="26" fill="${css('muted')}">放在 Git 之上</text><text x="1540" y="490" font-size="26" fill="${css('muted')}">换个网站，叫法也变</text></svg>`, 0, 0);
+  chrome(22.5, 'Fork、PR、Issue 都是网站的功能，不属于 Git；', `<svg width="300" height="72"><line x1="20" y1="36" x2="280" y2="36" stroke="${css('bd')}" stroke-width="4"/><circle cx="40" cy="36" r="9" fill="${css('muted')}"/><text x="280" y="22" text-anchor="end" font-size="24" fill="${css('muted')}">改动还没出发</text></svg>`);
+}
+
+/* ───────── 方向 C：一个编号的生平（时间线部件，浅色） ───────── */
+const tl = (icon, col, html, on = false) => `<div style="display:flex;gap:22px;align-items:center;position:relative;padding:12px 0">
+  <span style="width:56px;height:56px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:${on ? col : 'var(--bgm)'};border:2px solid ${on ? col : 'var(--bd)'};flex:none;z-index:1">${oct(icon, 28, on ? '#fff' : col)}</span>
+  <div style="font-size:28px;${on ? 'font-weight:600' : ''}">${html}</div></div>`;
+function C1() {
+  add(`<div class="title-xl">150 秒速通<br>GitHub 协作</div>`, 120, 250);
+  add(`<div class="title-sub">为什么要 Fork、开分支、再提 PR</div>`, 124, 540);
+  add(`<div style="position:relative;width:740px"><div style="position:absolute;left:27px;top:40px;bottom:-200px;width:3px;background:var(--bd)"></div>
+     ${tl('issue-opened', css('success'), '<b>#12</b> 刚满 18 岁报不上名<div class="k" style="font-size:24px">路人甲 报了一个 Issue</div>', true)}
+     <div style="opacity:.45">${tl('repo-forked', css('muted'), '<span class="k">接下来……</span>')}</div></div>`, 1060, 260);
+  chrome(10.5, '但在 GitHub 上，你照样能提改动。怎么做到的？', `<div style="text-align:right;line-height:1.1"><div style="font-size:24px;color:var(--muted)">仓库的下一个号</div><div class="mono" style="font-size:40px;font-weight:700">#13</div></div>`);
+}
+function C2() {
+  add(`<div style="font-size:40px;font-weight:600">年龄判断改成大于等于 <span style="color:var(--muted);font-weight:300">#13</span></div>`, 120, 128);
+  add(`<div style="position:relative;width:1080px"><div style="position:absolute;left:27px;top:30px;bottom:30px;width:3px;background:var(--bd)"></div>
+     ${tl('repo-forked', css('muted'), '<b>你</b> fork 了 阿梅/活动报名')}
+     ${tl('git-branch', css('muted'), '<b>你</b> 新建分支 <span class="chip">fix-age</span>')}
+     ${tl('git-commit', css('muted'), '<b>你</b> 提交 “年龄判断改成 &gt;=” <span class="mono k" style="font-size:24px">3f9a2c1</span>')}
+     ${tl('git-pull-request-draft', css('muted'), '<b>你</b> 开了草稿 <span class="state draft" style="font-size:24px;padding:4px 14px">Draft</span> <span class="k" style="font-size:24px">还不能合并</span>')}
+     ${tl('comment', css('muted'), '<b>阿梅</b> 在第 13 行留言：改得对')}
+     ${tl('check', css('success'), '1 项检查通过')}
+     ${tl('git-merge', css('done'), '<b>阿梅</b> 把 <span class="chip">你:fix-age</span> 合并进 <span class="chip">main</span>', true)}
+     ${tl('issue-closed', css('done'), '<b>#12</b> 随 #13 合并自动关闭')}</div>`, 120, 200);
+  add(`<div class="box" style="width:560px"><div class="boxh"><b>阿梅 / 活动报名 的编号</b></div>
+     <div style="padding:10px 24px;font-size:26px;line-height:58px">
+       <div class="k">${oct('git-pull-request', 24, css('done'))} #10 加了手机号校验</div>
+       <div class="k">${oct('issue-closed', 24, css('done'))} #11 按钮在手机上错位</div>
+       <div>${oct('issue-opened', 24, css('success'))} <b>#12</b> 刚满 18 岁报不上名</div>
+       <div style="background:var(--donem);margin:0 -24px;padding:0 24px">${oct('git-merge', 24, css('done'))} <b>#13</b> 改成大于等于 · 你的 PR</div>
+       <div class="k" style="border-top:1px dashed var(--bd)">下一个：#14</div></div></div>`, 1240, 200);
+  chrome(104.5, '维护者一点合并，改动才进原仓库的主线。', st('merged', 'git-merge', 'Merged #13'));
+}
+function C3() {
+  // 图解：编号是仓库的一条序列。Issue 与 PR 交错，空号不补；副本另起一套
+  const tiles = [['i', 1], ['p', 2], ['i', 3], ['p', 4], ['p', 5], ['i', 6], [null, 7], ['p', 8], ['i', 9], ['p', 10], ['i', 11], ['i', 12], ['p', 13]];
+  let row = '';
+  tiles.forEach(([k, n]) => {
+    const col = k === 'p' ? css('done') : k === 'i' ? css('success') : css('bd');
+    const me = n === 13, isn = n === 12;
+    row += `<div style="width:104px;height:150px;border-radius:14px;border:${me || isn ? 4 : 2}px solid ${col};background:${k ? 'var(--bg)' : 'var(--bgm)'};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+      ${k ? oct(k === 'p' ? 'git-pull-request' : 'issue-opened', 36, col) : `<span style="font-size:24px;color:var(--muted)">空号</span>`}
+      <span class="mono" style="font-size:28px;font-weight:700;color:${k ? 'var(--fg)' : 'var(--muted)'}">#${n}</span></div>`;
+  });
+  add(`<div style="font-size:30px;display:flex;align-items:center;gap:14px">${oct('repo', 30, css('muted'))}<span style="color:var(--accent)">阿梅 / 活动报名</span><span class="k">· 一套编号，Issue 和 PR 共用</span></div>`, 120, 170);
+  add(`<div style="display:flex;gap:12px">${row}<div style="width:104px;height:150px;border-radius:14px;border:2px dashed var(--bd);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700" class="mono k">#14</div></div>`, 120, 240);
+  add(`<div style="display:flex;gap:36px;font-size:26px;color:var(--muted)"><span>${oct('issue-opened', 26, css('success'))} Issue</span><span>${oct('git-pull-request', 26, css('done'))} PR</span><span>删掉的号空着，不再分配</span></div>`, 120, 418);
+  add(`<div class="gloss up" style="position:relative">#12 报的错，#13 修好它</div>`, 1392, 412);
+  add(`<div style="font-size:30px;display:flex;align-items:center;gap:14px">${oct('repo-forked', 30, css('muted'))}<span style="color:var(--accent)">你 / 活动报名</span><span class="k">· 另一个仓库，另一套编号</span></div>`, 120, 600);
+  add(`<div style="display:flex;gap:12px"><div style="width:104px;height:150px;border-radius:14px;border:2px dashed var(--bd);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700" class="mono k">#1</div></div>`, 120, 670);
+  add(`<div class="box" style="font-size:28px;width:760px"><div class="boxh" style="font-size:24px">${oct('git-pull-request', 24, css('done'))}#13 的说明里写</div><div style="padding:16px 26px;line-height:52px"><span class="mono">Closes #12</span><span class="k">　合并时，#12 自动关闭</span><br><span class="mono">#12</span><span class="k">　只是提一下，不会关</span></div></div>`, 1040, 600);
+  chrome(118.5, '编号属于仓库，按先后排，用过就不回收。', `<div style="text-align:right;line-height:1.1"><div style="font-size:24px;color:var(--muted)">仓库的下一个号</div><div class="mono" style="font-size:40px;font-weight:700">#14</div></div>`);
+}
+
+const FN = { A1, A2, A3, B1, B2, B3, C1, C2, C3 };
+Promise.all(['500 20px "Sans SC"', '700 20px "Sans SC"', '500 20px "Inter"', '700 20px "Inter"', '500 20px "Mono"'].map((f) => document.fonts.load(f, '字A0')))
+  .then(() => { (FN[D + FR] || A1)(); return document.fonts.ready; })
+  .then(() => requestAnimationFrame(() => requestAnimationFrame(() => { document.body.dataset.ready = '1'; })));
+</script>
+</body>
+</html>

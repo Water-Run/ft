@@ -84,3 +84,35 @@
 ## 6. 声音材料
 
 GitHub 品牌无官方音效/音乐素材可取；本片配乐按系列约定为本集原创（制作方负责），不采样 GitHub 产品音效。
+## 7. Octicons 图标（2026-11-16 制作方补）
+
+来源：npm 包 `@primer/octicons@19.42.0` 的 `build/svg/*-16.svg`（unpkg 读取，2026-11-16）；源仓库 <https://github.com/primer/octicons>。
+许可：MIT License, Copyright (c) 2026 GitHub Inc.（包内 LICENSE 原文）。
+
+取用的 23 个（16px）：`repo`、`repo-forked`、`git-branch`、`git-pull-request`、`git-pull-request-draft`、`git-merge`、`git-commit`、`issue-opened`、`issue-closed`、`check`、`check-circle-fill`、`x-circle-fill`、`comment`、`lock`、`person`、`eye`、`star`、`book`、`code`、`file`、`play`、`dot-fill`、`arrow-right`。
+只抽出 `path` 的 `d` 属性放进 `src/design/octicons.js`，不改形；原文件存 `research/_src/octicons/`（不入库，可按上述版本重取）。
+
+## 8. Primer 深色主题（2026-11-16 制作方补）
+
+来源：`@primer/primitives@11.10.0` 的 `dist/css/functional/themes/dark.css`（unpkg 读取，2026-11-16）；许可同第 1 节。
+
+| 令牌 | 色值 |
+|---|---|
+| `--fgColor-default` | `#f0f6fc` |
+| `--fgColor-muted` | `#9198a1` |
+| `--fgColor-accent` | `#4493f8` |
+| `--fgColor-success` | `#3fb950` |
+| `--fgColor-done` | `#ab7df8` |
+| `--fgColor-danger` | `#f85149` |
+| `--fgColor-attention` | `#d29922` |
+| `--bgColor-default` | `#0d1117` |
+| `--bgColor-muted` | `#151b23` |
+| `--bgColor-inset` | `#010409` |
+| `--bgColor-success-emphasis` | `#238636` |
+| `--bgColor-done-emphasis` | `#8957e5` |
+| `--bgColor-neutral-emphasis` | `#656c76` |
+| `--borderColor-default` | `#3d444d` |
+
+浅色主题另补：`--bgColor-success-emphasis` `#1f883d`、`--bgColor-done-emphasis` `#8250df`、`--bgColor-neutral-emphasis` `#59636e`、`--bgColor-emphasis` `#25292e`、`--underlineNav-borderColor-active` `#fd8c73`（同一版本的 light.css）。
+
+浅色主题的 diff 文字色：`--prettylights-syntax-markup-deleted-text` `#82071e`、`--prettylights-syntax-markup-inserted-text` `#116329`（同一份 light.css，2026-11-16 读取；封面上的 diff 字色用它们）。

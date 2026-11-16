@@ -1,0 +1,134 @@
+{
+  "slug": "github-collaboration",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+6%",
+    "en": "+8%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 8
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -12,
+    "duck_db": 7,
+    "sfx_db": -9,
+    "score": {
+      "lift_cue": "e1"
+    }
+  },
+  "check": {
+    "duration": [
+      149.9,
+      150.1
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": false,
+      "no_emoji": true,
+      "palette": [
+        "1F2328",
+        "59636E",
+        "0969DA",
+        "1A7F37",
+        "1F883D",
+        "8250DF",
+        "D1242F",
+        "9A6700",
+        "FFFFFF",
+        "F6F8FA",
+        "D1D9E0",
+        "DDF4FF",
+        "DAFBE1",
+        "FFEBE9",
+        "FFF8C5",
+        "FBEFFF",
+        "25292E",
+        "ACEEBB",
+        "FFCECB",
+        "FD8C73",
+        "82071E",
+        "116329"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Inter",
+        "Mono"
+      ]
+    },
+    "pace": {
+      "en": {
+        "fast": 4
+      }
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    }
+  },
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "stage": "review",
+  "next": "等校对者对文案稿 886ca44b（例子已换成 age > 18 应为 >=）的明确确认；确认后用 Warm_Girl（1.2）全片配音，做 15–30 秒有声代表段（A 为主、C 的时间线与编号簿），covers.js 出正式封面",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Qwen 4 Max Preview",
+        "roles": [
+          "取证",
+          "文案草稿"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "补充取证",
+          "文案",
+          "配音试听",
+          "配乐小样",
+          "视觉方向与关键帧"
+        ]
+      }
+    ],
+    "services": [],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "tts": {
+    "engine": "minimax",
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Warm_Girl"
+    },
+    "speed": {
+      "zh": 1.2
+    }
+  }
+}

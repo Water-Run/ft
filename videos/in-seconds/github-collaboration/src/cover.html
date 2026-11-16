@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面 · 150 秒速通 GitHub 协作</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；kit/tools/covers.js 按 2 倍像素出图（须文案确认之后）。
+     与正片同一套语汇（方向 A：GitHub 网页本身，Primer 浅色令牌，见 research/MATERIALS.md）：
+     左边是秒数与片名，右边是全片那一处改动——一行代码的 diff「age > 18 → age >= 18」和一颗绿色的合并按钮：别人的项目，你的改动，等维护者按下去。
+     背后一个巨大的 Pull Request 图标（Octicons，MIT）把画面撑满。底部约 15% 不放文字。4:3 是重新排布。 */
+  :root { --fg: #1f2328; --muted: #59636e; --accent: #0969da; --sucE: #1f883d; --done: #8250df; --bg: #ffffff; --bgm: #f6f8fa; --bd: #d1d9e0;
+    --addL: #dafbe1; --addW: #aceebb; --delL: #ffebe9; --delW: #ffcecb; --emph: #25292e; }
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--bg); color: var(--fg); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  .abs { position: absolute; white-space: nowrap; }
+  .oct { display: block; }
+  /* 背景：巨大的 PR 图标，极浅的绿 */
+  .bgicon { color: var(--addL); }
+  /* 秒数：GitHub 的状态胶囊（Open 的绿） */
+  .pill { display: flex; align-items: center; gap: 22px; background: var(--sucE); color: #fff; border-radius: 999px; padding: 10px 44px 14px 34px; }
+  .pill b { font: 800 112px "Mono"; letter-spacing: -.04em; line-height: 1; }
+  .pill i { font: 900 88px "Sans SC"; font-style: normal; line-height: 1; letter-spacing: .02em; }
+  .ttl { font-weight: 900; line-height: .98; letter-spacing: -.035em; }
+  .ttl .gh { font-family: "Inter"; }
+  .ttl .zh { font-family: "Sans SC"; letter-spacing: .01em; }
+  .hook { font: 800 64px "Sans SC"; line-height: 1.25; }
+  .hook em { font-style: normal; color: var(--sucE); }
+  /* diff 卡与合并按钮：正片里 PR 页的部件，放大 */
+  .card { background: var(--bg); border: 3px solid var(--bd); border-radius: 20px; overflow: hidden; }
+  .card .h { background: var(--bgm); border-bottom: 3px solid var(--bd); display: flex; align-items: center; gap: 16px; padding: 18px 30px; font: 600 34px "Sans SC"; color: var(--muted); }
+  .card .h .n { margin-left: auto; font: 700 34px "Mono"; }
+  .ln { display: flex; align-items: center; font: 700 70px "Mono"; line-height: 1; padding: 30px 30px; gap: 22px; white-space: pre; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }   /* >= 不连成 ≥：观众要看见两个字符 */
+  .ln .sg { font: 800 64px "Mono"; width: 44px; text-align: center; flex: none; }
+  .ln.del { background: var(--delL); color: #82071e; } .ln.add { background: var(--addL); color: #116329; }
+  .ln .w { border-radius: 12px; padding: 6px 8px; margin: -6px -2px; }
+  .ln.del .w { background: var(--delW); } .ln.add .w { background: var(--addW); }
+  .merge { display: flex; align-items: center; justify-content: center; gap: 26px; background: var(--sucE); color: #fff; border-radius: 20px; font: 800 64px "Inter"; padding: 30px 0; }
+  .cursor { position: absolute; }
+  /* 16:9 */
+  .r169 .bgicon { left: 1060px; top: -150px; }
+  .r169 .pill { left: 96px; top: 82px; }
+  .r169 .ttl { left: 90px; top: 252px; font-size: 236px; }
+  .r169 .hook { left: 100px; top: 738px; }
+  .r169 .card { left: 1070px; top: 120px; width: 760px; }
+  .r169 .merge { left: 1070px; top: 640px; width: 760px; }
+  .r169 .cursor { left: 1782px; top: 742px; }
+  /* 4:3：秒数与标题在上，diff 与按钮在下 */
+  .r43 .bgicon { left: 820px; top: -170px; }
+  .r43 .pill { left: 80px; top: 70px; }
+  .r43 .pill b { font-size: 100px; } .r43 .pill i { font-size: 78px; }
+  .r43 .ttl { left: 74px; top: 220px; font-size: 220px; }
+  .r43 .hook { left: 84px; top: 690px; font-size: 56px; }
+  .r43 .card { left: 860px; top: 690px; width: 660px; }
+  .r43 .ln { font-size: 58px; padding: 24px 26px; } .r43 .ln .sg { font-size: 54px; }
+  .r43 .card .h { font-size: 30px; padding: 14px 26px; } .r43 .card .h .n { font-size: 30px; }
+  .r43 .merge { left: 84px; top: 860px; width: 700px; font-size: 54px; padding: 24px 0; }
+  .r43 .cursor { left: 726px; top: 916px; }
+</style>
+<script src="design/octicons.js"></script>
+</head>
+<body>
+<div id="stage">
+  <div class="abs bgicon"></div>
+  <div class="abs pill"><b>150</b><i>秒速通</i></div>
+  <div class="abs ttl"><span class="gh">GitHub</span><br><span class="zh">协作</span></div>
+  <div class="abs hook">别人的项目，<br><em>没权限</em>也能提改动？</div>
+  <div class="abs card">
+    <div class="h"><span class="ic-file"></span><span style="font-family:'Mono'">signup.js</span><span class="n"><span style="color:#1a7f37">+1</span> <span style="color:#d1242f">−1</span></span></div>
+    <div class="ln del"><span class="sg">−</span><span>if (age <span class="w">&gt;</span> 18)</span></div>
+    <div class="ln add"><span class="sg">+</span><span>if (age <span class="w">&gt;=</span> 18)</span></div>
+  </div>
+  <div class="abs merge"><span class="ic-merge"></span>Merge pull request</div>
+  <svg class="cursor" width="120" height="150" viewBox="0 0 24 30"><path d="M2 2 L2 24 L8 18.5 L12 27 L16 25.2 L12 17 L20 17 Z" fill="#1f2328" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', wide = q.get('r') !== '43';
+  document.documentElement.className = (wide ? 'r169' : 'r43') + ' ' + lang;
+  document.querySelector('.bgicon').innerHTML = oct('git-pull-request', wide ? 1380 : 1200, 'currentColor');
+  document.querySelector('.ic-file').outerHTML = oct('file', wide ? 34 : 30, '#59636e');
+  document.querySelector('.ic-merge').outerHTML = oct('git-merge', wide ? 64 : 54, '#ffffff');
+  const sample = document.getElementById('stage').textContent;
+  Promise.all(['900 40px "Sans SC"', '800 40px "Sans SC"', '700 40px "Sans SC"', '900 40px "Inter"', '800 40px "Inter"', '800 40px "Mono"', '700 40px "Mono"'].map((f) => document.fonts.load(f, sample)))
+    .then(() => document.fonts.ready).then(() => requestAnimationFrame(() => { document.body.dataset.ready = '1'; }));
+</script>
+</body>
+</html>
