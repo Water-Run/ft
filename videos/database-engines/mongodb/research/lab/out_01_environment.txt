@@ -1,0 +1,78 @@
+
+==== 系统 ====
+
+$ uname -srm; . /etc/os-release; echo "$PRETTY_NAME"; gcc --version | head -1; cmake --version | head -1
+Linux 6.18.58.1-microsoft-standard-WSL2 x86_64
+Ubuntu 24.04.4 LTS
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+cmake version 3.28.3
+
+
+==== MongoDB 9.0.8（官方 ubuntu2404 构建） ====
+
+$ sha256sum mongodb-linux-x86_64-ubuntu2404-9.0.8.tgz
+834da9b0eb7cd5dcd95f69a56f3a249505307e12026f7b0951d5e502dde4b26a  mongodb-linux-x86_64-ubuntu2404-9.0.8.tgz
+
+官方 current.json 给出的 SHA-256：834da9b0eb7cd5dcd95f69a56f3a249505307e12026f7b0951d5e502dde4b26a
+
+$ mongod --version
+db version v9.0.8
+Build Info: {
+    "version": "9.0.8",
+    "gitVersion": "115a0fe2dcd8edd5bacd4557bd2e741a8e080665",
+    "openSSLVersion": "OpenSSL 3.0.13 30 Jan 2024",
+    "modules": [],
+    "allocator": "tcmalloc-google",
+    "javascriptEngine": "mozjs-wasm",
+    "environment": {
+        "distmod": "ubuntu2404",
+        "distarch": "x86_64",
+        "target_arch": "x86_64"
+    }
+}
+
+
+==== mongosh 2.14.2 ====
+
+$ sha256sum mongosh-2.14.2-linux-x64.tgz
+1523e16da7c6902333b681bf65d83bbef59bff558c46ac5636371d13beb4de53  mongosh-2.14.2-linux-x64.tgz
+
+$ mongosh --version
+2.14.2
+
+
+==== 源码：mongodb/mongo 标签 r9.0.8（只取存储引擎相关的目录） ====
+
+$ git -C src log -1 --format="%H %cd" --date=iso-strict
+ace0d09a96a9186dbcdc4570a66fc702666aae65 2026-11-11T01:03:28+00:00
+
+$ cat src/src/third_party/wiredtiger/import.data
+{
+    "vendor": "wiredtiger",
+    "github": "wiredtiger/wiredtiger",
+    "branch": "mongodb-9.0",
+    "commit": "0e87e9f8b7baffe01b2c027ab03983c112e112c7"
+}
+
+
+==== WiredTiger 源码：wiredtiger/wiredtiger 的同一提交（MongoDB 自带的副本按 Bazel 构建，没有 CMakeLists.txt） ====
+
+$ git -C wtsrc log -1 --format="%H %cd" --date=iso-strict
+0e87e9f8b7baffe01b2c027ab03983c112e112c7 2026-10-07T02:45:09+00:00
+
+$ diff -rq wtsrc/src src/src/third_party/wiredtiger/src && echo "src/ 目录与 MongoDB 自带的副本逐文件相同"
+Only in wtsrc/src/utilities: CMakeLists.txt
+
+
+==== snappy（只解包，不安装） ====
+
+$ ls snappy-deb
+libsnappy-dev_1.1.10-1build1_amd64.deb
+libsnappy1v5_1.1.10-1build1_amd64.deb
+
+
+==== 编译 wt ====
+
+$ wt -V
+WiredTiger 12.0.0: (November 15, 2024)
+

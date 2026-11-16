@@ -1,0 +1,20 @@
+lab> db.people.insertMany([{ name: "Alice", age: 42 }, { name: "Erin", email: "erin@example.com", tags: ["db", "go"] }, { name: "Frank", address: { city: "Lisbon" } }]).insertedIds
+{
+  '0': ObjectId('6afaa2840839e5a0ccfeae21'),
+  '1': ObjectId('6afaa2840839e5a0ccfeae22'),
+  '2': ObjectId('6afaa2840839e5a0ccfeae23')
+}
+
+lab> db.people.find({}, { _id: 0 }).toArray()
+[
+  { name: 'Alice', age: 42 },
+  { name: 'Erin', email: 'erin@example.com', tags: [ 'db', 'go' ] },
+  { name: 'Frank', address: { city: 'Lisbon' } }
+]
+
+lab> db.getCollectionInfos({ name: "people" })[0].options
+{}
+
+lab> db.people.find({}, { _id: 0 }).toArray().map(d => [d.name, bsonsize(d)])
+[ [ 'Alice', 30 ], [ 'Erin', 79 ], [ 'Frank', 52 ] ]
+

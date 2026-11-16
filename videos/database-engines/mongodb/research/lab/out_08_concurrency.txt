@@ -1,0 +1,66 @@
+
+==== 单机的 mongod 不支持多文档事务 ====
+
+lab> db.runCommand({ insert: "users", documents: [{ name: "Bob" }], lsid: { id: UUID() }, txnNumber: NumberLong("1"), startTransaction: true, autocommit: false })
+MongoServerError: Transaction numbers are only allowed on a replica set member or mongos
+
+
+==== 改成单节点副本集 ====
+
+
+==== Bob 开一个快照读的事务，读 Alice；Alice 改年龄并提交；Bob 再读 ====
+
+lab> const bob = db.getMongo().startSession(); const B = bob.getDatabase("lab").users;
+bob.startTransaction({ readConcern: { level: "snapshot" } });
+print("Bob 第一次读：", B.findOne({ name: "Alice" }).age);
+print("Alice 改年龄：", db.users.updateOne({ name: "Alice" }, { $set: { age: 43 } }).modifiedCount, "份");
+print("Bob 在同一个事务里再读：", B.findOne({ name: "Alice" }).age);
+print("事务外此刻读：", db.users.findOne({ name: "Alice" }).age);
+bob.commitTransaction(); bob.endSession();
+print("Bob 结束事务后再读：", db.users.findOne({ name: "Alice" }).age)
+Bob 第一次读： 42
+Alice 改年龄： 1 份
+Bob 在同一个事务里再读： 42
+事务外此刻读： 43
+Bob 结束事务后再读： 43
+
+
+==== Alice 在一个事务里改年龄，还没提交；Carol 也在事务里改同一份文档 ====
+
+lab> const a = db.getMongo().startSession(), c = db.getMongo().startSession();
+a.startTransaction(); a.getDatabase("lab").users.updateOne({ name: "Alice" }, { $set: { age: 44 } });
+c.startTransaction();
+try { c.getDatabase("lab").users.updateOne({ name: "Alice" }, { $set: { age: 45 } }); print("Carol 成功"); }
+catch (e) { print({ "Carol 的错误": e.codeName, "错误标签": e.errorLabels }); }
+try { c.abortTransaction(); } catch (e) {}
+a.commitTransaction();
+print("Alice 提交之后：", db.users.findOne({ name: "Alice" }).age);
+c.startTransaction(); c.getDatabase("lab").users.updateOne({ name: "Alice" }, { $set: { age: 45 } }); c.commitTransaction();
+print("Carol 重做一遍事务：", db.users.findOne({ name: "Alice" }).age)
+{
+  'Carol 的错误': 'WriteConflict',
+  '错误标签': [ 'TransientTransactionError' ]
+}
+Alice 提交之后： 44
+Carol 重做一遍事务： 45
+
+
+==== Alice 的事务没提交时，Carol 不用事务直接改：服务端自己重试，等 Alice 提交 ====
+
+lab> db.setProfilingLevel(2).ok
+1
+
+lab> const t0 = Date.now(); const r = db.users.updateOne({ name: "Alice" }, { $inc: { age: 1 } });
+print({ "Carol 修改了": r.modifiedCount, "等了约（毫秒）": Math.round((Date.now() - t0) / 100) * 100 })
+[Alice 的事务在 1.5 秒后提交]
+{ 'Carol 修改了': 1, '等了约（毫秒）': 1100 }
+
+lab> const p = db.system.profile.find({ op: "update", "command.u.$inc": { $exists: true } }).sort({ ts: -1 }).limit(1).next(); print({ writeConflicts: p.writeConflicts, nModified: p.nModified })
+{ writeConflicts: Long('123'), nModified: 1 }
+
+lab> db.setProfilingLevel(0).was
+2
+
+lab> db.users.findOne({ name: "Alice" }, { _id: 0 })
+{ name: 'Alice', age: 47 }
+

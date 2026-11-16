@@ -1,0 +1,102 @@
+
+==== 修改之前：集合文件里各页的位置（正常关闭时做完一次检查点） ====
+
+$ wt verify -d dump_address file:collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt, ckpt_name: WiredTigerCheckpoint.1
+Root:
+	> addr: [0: 86016-90112, 4096, 2240293769]
+[NoAddr] -/-,-/- row-store internal write_gen: 6
+address:[0: 4096-28672, 24576, 1993512884], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 28672-53248, 24576, 844150095], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 3
+address:[0: 53248-65536, 12288, 3905144216], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 65536-86016, 20480, 3255480018], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 5
+
+$ ls -l db/collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt | awk '{print $5}'
+98304
+
+
+==== 改年龄（打开操作记录，看这次修改的细节） ====
+
+lab> db.setProfilingLevel(2).ok
+1
+
+lab> db.users.updateOne({ name: "Alice" }, { $set: { age: 43 } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+lab> const p = db.system.profile.find({ op: "update" }).sort({ ts: -1 }).limit(1).next(); print({ keysExamined: p.keysExamined, docsExamined: p.docsExamined, nMatched: p.nMatched, nModified: p.nModified, keysInserted: p.keysInserted ?? 0, keysDeleted: p.keysDeleted ?? 0, writeConflicts: p.writeConflicts ?? 0, locks: p.locks, planSummary: p.planSummary })
+{
+  keysExamined: 1,
+  docsExamined: 1,
+  nMatched: 1,
+  nModified: 1,
+  keysInserted: 0,
+  keysDeleted: 0,
+  writeConflicts: 0,
+  locks: {
+    Global: { acquireCount: { w: Long('1') } },
+    Database: { acquireCount: { w: Long('1') } },
+    Collection: { acquireCount: { w: Long('1') } }
+  },
+  planSummary: 'IXSCAN { name: 1 }'
+}
+
+lab> db.setProfilingLevel(0).was
+2
+
+lab> db.users.find({ name: "Alice" }).showRecordId().toArray()
+[
+  {
+    _id: ObjectId('6afa9e96d24f43d58c686225'),
+    name: 'Alice',
+    age: 43,
+    '$recordId': Long('2050')
+  }
+]
+
+
+==== 改完、检查点之前：集合文件的大小没有变（改动还在缓存里） ====
+
+$ ls -l db/collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt | awk '{print $5}'
+98304
+
+lab> db.users.stats().wiredTiger.cache["tracked dirty bytes in the cache"]
+149958
+
+
+==== 做一次检查点（fsync 命令），再看各页的位置 ====
+
+lab> db.adminCommand({ fsync: 1 }).ok
+1
+
+lab> db.users.stats().wiredTiger["block-manager"]["file bytes available for reuse"]
+36864
+
+$ wt verify -d dump_address file:collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt, ckpt_name: WiredTigerCheckpoint.2
+Root:
+	> addr: [0: 122880-126976, 4096, 3219687707]
+[NoAddr] -/-,-/- row-store internal write_gen: 21
+address:[0: 4096-28672, 24576, 1993512884], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 98304-122880, 24576, 4154238942], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 20
+address:[0: 53248-65536, 12288, 3905144216], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 65536-86016, 20480, 3255480018], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 5
+
+$ ls -l db/collection-73192a16-f909-464c-bed7-0aa67dc9fc7e.wt | awk '{print $5}'
+135168
+
+
+==== 检查点里 Alice 那一项 ====
+
+（共 4096 项）
+→ 第 2050 项
+    键 c7c2
+    值 2f000000075f6964006afa9e96d24f43d58c686225026e616d650006000000416c6963650010616765002b00000000
+

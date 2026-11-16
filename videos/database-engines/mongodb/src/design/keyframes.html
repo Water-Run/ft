@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  /* 视觉方向的关键帧（审片用的静帧，不是场景代码）。?d=A|B|C 选方向，?f=1|2|3 选画面。
+     颜色取自 research/MATERIALS.md：品牌主色 #00ED64 #00684A #023430 #001E2B，LeafyGreen 灰阶与浅绿。数字取自 research/FACTS.md。 */
+  :root { --spring: #00ED64; --forest: #00684A; --ever: #023430; --slate: #001E2B; --g1: #00A35C; --mint: #71F6BA; --mint2: #C0FAE6; --mint3: #E3FCF7;
+          --gd4: #112733; --gd3: #1C2D38; --gd2: #3D4F58; --gd1: #5C6C75; --gb: #889397; --gl1: #C1C7C6; --gl2: #E8EDEB; --gl3: #F9FBFA; --blue: #016BF8; --yellow: #FFC010; }
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+  .abs { position: absolute; }
+  .mono { font-family: "Mono"; }
+  .inter { font-family: "Inter", "Sans SC"; }
+  svg text { font-family: "Mono"; }
+  .cap { position: absolute; left: 0; right: 0; top: 968px; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #fff; background: linear-gradient(#001E2B00, #001E2Bcc 40%); }
+  .tag { font: 600 26px "Inter"; letter-spacing: .12em; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const q = new URLSearchParams(location.search), D = q.get('d') || 'A', F = +(q.get('f') || 1);
+const stage = document.getElementById('stage');
+const css = getComputedStyle(document.documentElement), C = (n) => css.getPropertyValue('--' + n).trim();
+const el = (tag, cls, parent, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; (parent || stage).appendChild(e); return e; };
+const at = (e, x, y, st = {}) => { Object.assign(e.style, { position: 'absolute', left: x + 'px', top: y + 'px' }, st); return e; };
+const NS = 'http://www.w3.org/2000/svg';
+const svg = (w = 1920, h = 1080) => { const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', w); s.setAttribute('height', h); s.style.position = 'absolute'; s.style.left = 0; s.style.top = 0; stage.appendChild(s); return s; };
+const sv = (s, tag, a, text) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); if (text != null) e.textContent = text; s.appendChild(e); return e; };
+const caption = (t) => el('div', 'cap', stage, t);
+
+// 实测数据（FACTS B03 B06 B07 A04 D04 F05 H04 H06）
+const TREES = [
+  { name: '集合 users', file: 'collection-….wt', key: 'RecordId → 整份 BSON', leaves: [1224, 1224, 675, 973], hit: 1, seps: ['1225', '2449', '3124'] },
+  { name: '_id 索引', file: 'index-….wt', key: 'ObjectId → RecordId', leaves: [1772, 921, 1403], hit: null },
+  { name: '姓名索引 name_1', file: 'index-….wt', key: '姓名 + RecordId', leaves: [296, 294, 294, 287, 288, 289, 288, 289, 289, 289, 286, 288, 288, 287, 44], hit: 0 },
+];
+const BSON = [
+  ['2f000000', '总长 47', 'len'], ['07', '类型 ObjectId', 'type'], ['5f696400', '_id', 'name'], ['6afa6ca26f27506cfb0a4e81', 'ObjectId · 12 字节', 'val'],
+  ['02', '类型 字符串', 'type'], ['6e616d6500', 'name', 'name'], ['06000000', '长度 6', 'len'], ['416c69636500', 'Alice', 'val'],
+  ['10', '类型 int32', 'type'], ['61676500', 'age', 'name'], ['2a000000', '42', 'val'], ['00', '结束', 'len'],
+];
+
+function titleBlock(dark, x = 120, y = 150) {
+  const ink = dark ? '#fff' : C('slate'), sub = dark ? C('mint') : C('forest');
+  at(el('div', 'tag', stage, 'PART 6'), x, y, { color: dark ? C('spring') : C('forest') });
+  at(el('div', '', stage, '一个数据库引擎是如何实现的？'), x, y + 60, { font: '500 46px "Sans SC"', color: sub });
+  at(el('div', '', stage, '不是 SQL'), x, y + 130, { font: '900 150px "Sans SC"', color: ink, letterSpacing: '-.01em' });
+  at(el('div', '', stage, 'MongoDB 的 WiredTiger'), x, y + 310, { font: '800 80px "Inter", "Sans SC"', color: dark ? C('spring') : C('forest') });
+}
+
+// ── 方向 A：跟随一份文档走三棵树（深色常青底，Alice 的路径是唯一的亮绿） ──
+function A() {
+  document.body.style.background = C('slate'); stage.style.background = `radial-gradient(1400px 900px at 70% 30%, ${C('ever')}, ${C('slate')})`;
+  if (F === 1) {
+    titleBlock(true);
+    // 文档卡与 47 字节条
+    const card = at(el('div', 'mono', stage, `{<br>&nbsp;&nbsp;<span style="color:${C('gb')}">_id:</span> ObjectId('6afa…4e81'),<br>&nbsp;&nbsp;<span style="color:${C('gb')}">name:</span> <span style="color:${C('spring')}">'Alice'</span>,<br>&nbsp;&nbsp;<span style="color:${C('gb')}">age:</span> 42<br>}`), 1150, 270,
+      { font: '400 30px "Mono"', lineHeight: '50px', color: '#fff', padding: '30px 40px', whiteSpace: 'nowrap', border: `2px solid ${C('forest')}`, borderRadius: '14px', background: '#00241f', boxShadow: `0 30px 80px #000a, 0 0 0 8px #00ED6412` });
+    const s = svg(); let x = 1150; const w = 620 / 47;
+    BSON.forEach(([hex, , k]) => { const n = hex.length / 2; sv(s, 'rect', { x, y: 640, width: n * w - 2, height: 46, rx: 3, fill: k === 'name' ? C('spring') : k === 'val' ? C('forest') : C('gd2') }); x += n * w; });
+    at(el('div', 'mono', stage, '47 字节 · 亮绿的 13 字节是字段名'), 1150, 702, { font: '400 26px "Mono"', color: C('mint') });
+    return;
+  }
+  if (F === 2) {
+    const s = svg();
+    const cols = [{ x: 90, w: 520 }, { x: 680, w: 440 }, { x: 1190, w: 640 }];
+    TREES.forEach((t, i) => {
+      const { x, w } = cols[i], rootY = 250, leafY = 520, n = t.leaves.length, lw = Math.min(110, (w - (n - 1) * 8) / n);
+      at(el('div', '', stage, t.name), x, 120, { font: '700 40px "Sans SC"', color: '#fff' });
+      at(el('div', 'mono', stage, t.file + '　' + t.key), x, 176, { font: '400 22px "Mono"', color: C('gb') });
+      const rw = t.seps ? 300 : 160, rx = x + w / 2 - rw / 2;
+      sv(s, 'rect', { x: rx, y: rootY, width: rw, height: 64, rx: 8, fill: '#00241f', stroke: C('forest'), 'stroke-width': 2 });
+      sv(s, 'text', { x: rx + rw / 2, y: rootY + 42, 'text-anchor': 'middle', fill: C('mint2'), 'font-size': 24 }, t.seps ? t.seps.join(' · ') : '根页');
+      const span = n * lw + (n - 1) * 8, x0 = x + (w - span) / 2;
+      t.leaves.forEach((k, j) => {
+        const lx = x0 + j * (lw + 8), hit = t.hit === j;
+        sv(s, 'path', { d: `M${rx + rw / 2},${rootY + 64} C${rx + rw / 2},${rootY + 150} ${lx + lw / 2},${leafY - 90} ${lx + lw / 2},${leafY}`, stroke: hit ? C('spring') : C('gd2'), 'stroke-width': hit ? 4 : 2, fill: 'none' });
+        const hgt = 40 + k / 1772 * 200;
+        sv(s, 'rect', { x: lx, y: leafY, width: lw, height: hgt, rx: 6, fill: hit ? C('forest') : C('gd4'), stroke: hit ? C('spring') : C('gd2'), 'stroke-width': hit ? 3 : 1.5 });
+        if (lw > 60) sv(s, 'text', { x: lx + lw / 2, y: leafY + 30, 'text-anchor': 'middle', fill: hit ? '#fff' : C('gb'), 'font-size': 20 }, k);
+      });
+      if (i === 2) at(el('div', 'mono', stage, '第 1 项 → Alice · 2050'), x0, leafY + 260, { font: '500 26px "Mono"', color: C('spring') });
+      if (i === 0) at(el('div', 'mono', stage, '叶页 1225–2448 → 2050 → 47 字节'), x0, leafY + 260, { font: '500 26px "Mono"', color: C('spring') });
+    });
+    // 从姓名索引回到集合树的那一条路
+    sv(s, 'path', { d: 'M1300,830 C1150,930 500,930 330,830', stroke: C('spring'), 'stroke-width': 3, 'stroke-dasharray': '10 8', fill: 'none' });
+    sv(s, 'text', { x: 815, y: 950, 'text-anchor': 'middle', fill: C('mint'), 'font-size': 26 }, '拿着 RecordId 2050 回到集合树');
+    at(el('div', 'mono', stage, 'IXSCAN → FETCH　看过 1 个索引键 · 1 份文档'), 1190, 60, { font: '500 24px "Mono"', color: C('mint2'), padding: '8px 16px', background: '#00ED6418', borderRadius: '6px' });
+    caption('拿着 2050，回到集合树');
+    return;
+  }
+  // F3：更新链与快照
+  const s = svg();
+  at(el('div', '', stage, '集合树 · 第 2 个叶页（内存里）'), 140, 120, { font: '700 40px "Sans SC"', color: '#fff' });
+  const keys = [2048, 2049, 2050, 2051, 2052];
+  keys.forEach((k, i) => {
+    const y = 220 + i * 120, me = k === 2050;
+    sv(s, 'rect', { x: 140, y, width: 520, height: 92, rx: 10, fill: me ? C('ever') : C('gd4'), stroke: me ? C('spring') : C('gd2'), 'stroke-width': me ? 3 : 1.5 });
+    sv(s, 'text', { x: 170, y: y + 58, fill: me ? '#fff' : C('gb'), 'font-size': 30 }, k + (me ? '  Alice · age 42' : '  User0' + k + '…'));
+  });
+  const y = 220 + 2 * 120 + 46;
+  [['43', 'Alice 提交', C('spring'), '#00241f'], ['42', '旧版本', C('gl1'), C('gd4')]].forEach(([v, l, st, bg], i) => {
+    const x = 800 + i * 330;
+    sv(s, 'rect', { x, y: y - 60, width: 260, height: 120, rx: 14, fill: bg, stroke: st, 'stroke-width': 3 });
+    sv(s, 'text', { x: x + 130, y: y + 8, 'text-anchor': 'middle', fill: '#fff', 'font-size': 54, 'font-weight': 700 }, 'age ' + v);
+    sv(s, 'text', { x: x + 130, y: y + 100, 'text-anchor': 'middle', fill: C('gb'), 'font-size': 24 }, l);
+  });
+  sv(s, 'path', { d: `M660,${y} L800,${y}`, stroke: C('spring'), 'stroke-width': 4, 'marker-end': '' });
+  sv(s, 'path', { d: `M1060,${y} L1130,${y}`, stroke: C('gl1'), 'stroke-width': 3 });
+  at(el('div', '', stage, '更新链'), 990, y - 140, { font: '700 34px "Sans SC"', color: C('spring') });
+  // Bob 的快照
+  sv(s, 'path', { d: `M1260,${y + 180} L1260,${y + 120}`, stroke: C('mint'), 'stroke-width': 3, 'stroke-dasharray': '8 6', fill: 'none' });
+  at(el('div', '', stage, 'Bob 的快照：只看事务开始前已提交的版本 → 42'), 1000, y + 190, { font: '500 30px "Sans SC"', color: C('mint') });
+  at(el('div', '', stage, '事务外此刻读到 → 43'), 800, y + 250, { font: '500 30px "Sans SC"', color: C('gl1') });
+  caption('Bob 在同一个事务里再读：还是 42');
+}
+
+// ── 方向 B：文件地图（浅底；集合文件按真实偏移画成一条，按时间往下排） ──
+function B() {
+  document.body.style.background = C('gl3'); stage.style.background = C('gl3');
+  if (F === 1) {
+    titleBlock(false);
+    const s = svg(); const scale = 640 / 135168, x0 = 1160;
+    const rows = [[[0, 4096, 'd'], [4096, 28672, 'l'], [28672, 53248, 'h'], [53248, 65536, 'l'], [65536, 86016, 'l'], [86016, 90112, 'r']],
+                  [[0, 4096, 'd'], [4096, 28672, 'l'], [28672, 53248, 'f'], [53248, 65536, 'l'], [65536, 86016, 'l'], [86016, 90112, 'f'], [98304, 122880, 'h'], [122880, 126976, 'r']]];
+    rows.forEach((r, i) => r.forEach(([a, b, k]) => sv(s, 'rect', { x: x0 + a * scale, y: 300 + i * 120, width: (b - a) * scale - 3, height: 70, rx: 4,
+      fill: { d: C('gl1'), l: C('forest'), h: C('spring'), r: C('ever'), f: 'none' }[k], stroke: k === 'f' ? C('gb') : 'none', 'stroke-dasharray': '6 5', 'stroke-width': 2 })));
+    at(el('div', 'mono', stage, '检查点 1　96 KB'), x0, 255, { font: '500 24px "Mono"', color: C('gd2') });
+    at(el('div', 'mono', stage, '检查点 2　132 KB　（Alice 那一页搬到末尾）'), x0, 375, { font: '500 24px "Mono"', color: C('gd2') });
+    return;
+  }
+  if (F === 2) {
+    const s = svg(); const W = 1680, x0 = 120, scale = W / 135168;
+    at(el('div', '', stage, 'collection-….wt　按文件里的真实偏移（4 KB 一格）'), x0, 90, { font: '700 36px "Sans SC"', color: C('slate') });
+    for (let off = 0; off <= 135168; off += 4096) sv(s, 'line', { x1: x0 + off * scale, y1: 170, x2: x0 + off * scale, y2: 860, stroke: C('gl2'), 'stroke-width': 1 });
+    const rows = [
+      ['写完 4096 人，检查点之后', [[0, 4096, 'd'], [4096, 28672, 'l', '1–1224'], [28672, 53248, 'h', '1225–2448'], [53248, 65536, 'l', '2449–'], [65536, 86016, 'l', '3124–'], [86016, 90112, 'r', '根']], '96 KB'],
+      ['Alice 改年龄，检查点之后', [[0, 4096, 'd'], [4096, 28672, 'l'], [28672, 53248, 'f', '空出'], [53248, 65536, 'l'], [65536, 86016, 'l'], [86016, 90112, 'f'], [98304, 122880, 'h', '新的 1225–2448'], [122880, 126976, 'r', '根']], '132 KB'],
+      ['Alice 注销、Dave 注册，检查点之后', [[0, 4096, 'd'], [4096, 28672, 'l'], [28672, 49152, 'n', 'Dave 这一页'], [53248, 65536, 'l'], [98304, 122880, 'h', '1225–2448（没有 2050）'], [65536, 69632, 'r', '根']], '120 KB'],
+    ];
+    rows.forEach(([label, blocks, size], i) => {
+      const y = 200 + i * 230;
+      at(el('div', '', stage, label), x0, y - 8, { font: '600 28px "Sans SC"', color: C('gd2') });
+      at(el('div', 'mono', stage, size), x0 + W - 120, y - 8, { font: '600 28px "Mono"', color: C('forest') });
+      blocks.forEach(([a, b, k, t]) => {
+        sv(s, 'rect', { x: x0 + a * scale, y: y + 40, width: (b - a) * scale - 3, height: 110, rx: 6,
+          fill: { d: C('gl1'), l: C('mint3'), h: C('spring'), r: C('ever'), f: '#ffffff', n: C('blue') }[k], stroke: k === 'f' ? C('gb') : k === 'l' ? C('mint') : 'none', 'stroke-width': 2, 'stroke-dasharray': k === 'f' ? '8 6' : '' });
+        if (t) sv(s, 'text', { x: x0 + a * scale + 12, y: y + 104, fill: k === 'h' || k === 'l' || k === 'f' ? C('slate') : '#fff', 'font-size': 22 }, t);
+      });
+    });
+    sv(s, 'path', { d: `M${x0 + 47000 * scale},${470 + 110} C${x0 + 47000 * scale},${640} ${x0 + 45000 * scale},${640} ${x0 + 45000 * scale},${700 + 40}`, stroke: C('blue'), 'stroke-width': 3, fill: 'none', 'stroke-dasharray': '8 6' });
+    caption('检查点要给这一页找地方，用上的正是 Alice 那一页原来的位置');
+    return;
+  }
+  // F3：日志时间线与强制结束
+  const s = svg(); const x0 = 160, x1 = 1760, t0 = 0, t1 = 600;   // 毫秒
+  const X = (t) => x0 + (t - t0) / (t1 - t0) * (x1 - x0);
+  at(el('div', '', stage, '日志每 100 毫秒落盘一次'), x0, 100, { font: '700 40px "Sans SC"', color: C('slate') });
+  sv(s, 'line', { x1: x0, y1: 420, x2: x1, y2: 420, stroke: C('slate'), 'stroke-width': 3 });
+  for (let t = 0; t <= 600; t += 100) { sv(s, 'line', { x1: X(t), y1: 380, x2: X(t), y2: 460, stroke: C('forest'), 'stroke-width': 4 }); sv(s, 'text', { x: X(t), y: 500, 'text-anchor': 'middle', fill: C('gd2'), 'font-size': 24 }, t + ' ms'); }
+  const kill = 340;
+  sv(s, 'line', { x1: X(kill), y1: 220, x2: X(kill), y2: 880, stroke: '#DB3030', 'stroke-width': 4, 'stroke-dasharray': '12 8' });
+  sv(s, 'text', { x: X(kill) + 14, y: 250, fill: '#DB3030', 'font-size': 30, 'font-family': 'Sans SC' }, 'kill -9');
+  [[120, '缺省写法', '已落盘 → 留下', C('forest')], [310, '缺省写法', '还在内存 → 丢了', C('gb')], [250, 'j: true', '确认前已落盘 → 留下', C('spring')]].forEach(([t, a, b, c], i) => {
+    const y = 600 + i * 90;
+    sv(s, 'circle', { cx: X(t), cy: 420, r: 14, fill: c });
+    sv(s, 'path', { d: `M${X(t)},434 L${X(t)},${y - 20}`, stroke: c, 'stroke-width': 2 });
+    sv(s, 'text', { x: X(t) - 16, y, 'text-anchor': 'end', fill: C('slate'), 'font-size': 28, 'font-family': 'Sans SC' }, a + '：' + b);
+  });
+  at(el('div', '', stage, '实测：写完立刻结束，各 5 次 → 缺省 0～1 次留下，j: true 5 次，缺省等 0.3 秒 5 次'), x0, 900 - 20, { font: '500 26px "Sans SC"', color: C('gd2') });
+  caption('会丢的，只是确认之后、落盘之前的那一小段');
+}
+
+// ── 方向 C：证据优先（mongosh 终端与真实字节在前，图形做注解） ──
+function Cdir() {
+  document.body.style.background = C('gd4'); stage.style.background = C('gd4');
+  const term = (x, y, w, h, lines) => {
+    const t = at(el('div', 'mono', stage), x, y, { width: w + 'px', height: h + 'px', background: C('slate'), borderRadius: '12px', border: `1px solid ${C('gd2')}`, padding: '64px 36px 30px', font: '400 30px/46px "Mono"', color: C('gl2'), boxShadow: '0 30px 70px #0008' });
+    at(el('div', '', t, '<span style="color:#DB3030">●</span> <span style="color:#FFC010">●</span> <span style="color:#00A35C">●</span>&nbsp;&nbsp;终端'), 24, 16, { font: '400 22px "Mono"', color: C('gb') });
+    el('div', '', t, lines); return t;
+  };
+  if (F === 1) {
+    titleBlock(true, 120, 140);
+    term(1040, 560, 760, 300, `<span style="color:${C('spring')}">lab&gt;</span> db.users.findOne({ name: "Alice" })<br>{ _id: ObjectId('6afa…4e81'),<br>&nbsp;&nbsp;name: <span style="color:${C('mint')}">'Alice'</span>, age: 42 }`);
+    return;
+  }
+  if (F === 2) {
+    at(el('div', '', stage, 'Alice 的 47 个字节，从集合文件里原样取出'), 120, 80, { font: '700 40px "Sans SC"', color: '#fff' });
+    let x = 120, y = 220; const cw = 54;
+    BSON.forEach(([hex, label, k]) => {
+      const bytes = hex.match(/../g), w = bytes.length * cw;
+      if (x + w > 1800) { x = 120; y += 300; }
+      const col = { len: C('gd2'), type: C('gd1'), name: C('spring'), val: C('forest') }[k];
+      bytes.forEach((b, i) => at(el('div', 'mono', stage, b), x + i * cw, y, { width: cw - 6 + 'px', height: '70px', lineHeight: '70px', textAlign: 'center', font: '500 26px "Mono"', borderRadius: '6px', background: col, color: k === 'name' ? C('slate') : '#fff' }));
+      at(el('div', '', stage, label), x, y + (k === 'type' ? 128 : 86), { font: '500 26px "Sans SC"', color: k === 'name' ? C('spring') : C('gl1'), whiteSpace: 'nowrap' });
+      x += w + 18;
+    });
+    at(el('div', '', stage, '亮绿：字段名，共 13 字节　·　每一份文档都带着它们'), 120, 840, { font: '600 30px "Sans SC"', color: C('spring') });
+    caption('其中 13 个字节，是字段名自己');
+    return;
+  }
+  // F3：一次插入写三棵树（日志记录）
+  term(120, 120, 1000, 600, `<span style="color:${C('gb')}">$ wt printlog -u -x　（崩溃后的日志）</span><br>lsn [1, 140032]&nbsp;&nbsp;事务 64<br>&nbsp;&nbsp;row_put&nbsp;文件号 <span style="color:${C('spring')}">88</span>&nbsp;键 cfc1<br>&nbsp;&nbsp;&nbsp;&nbsp;name=Dave, age=19（46 字节）<br>&nbsp;&nbsp;row_put&nbsp;文件号 <span style="color:${C('mint')}">96</span>&nbsp;键 646a…a604<br>&nbsp;&nbsp;row_put&nbsp;文件号 <span style="color:${C('mint2')}">104</span>&nbsp;键 3c446176…8009`);
+  const s = svg();
+  [['88', '集合 users', '4097 → Dave 的文档', C('spring')], ['96', '_id 索引', 'ObjectId → 4097', C('mint')], ['104', '姓名索引', 'Dave + 4097', C('mint2')]].forEach(([id, n, d, c], i) => {
+    const y = 200 + i * 180;
+    sv(s, 'rect', { x: 1240, y, width: 560, height: 140, rx: 12, fill: C('slate'), stroke: c, 'stroke-width': 3 });
+    sv(s, 'text', { x: 1270, y: y + 56, fill: '#fff', 'font-size': 34, 'font-family': 'Sans SC', 'font-weight': 700 }, n);
+    sv(s, 'text', { x: 1270, y: y + 106, fill: C('gb'), 'font-size': 24 }, '文件号 ' + id + ' · ' + d);
+    sv(s, 'path', { d: `M1120,${300 + i * 92} C1180,${300 + i * 92} 1180,${y + 70} 1240,${y + 70}`, stroke: c, 'stroke-width': 3, fill: 'none' });
+  });
+  caption('一笔是 Dave：三棵树三次写入，同一个事务');
+}
+
+({ A, B, C: Cdir })[D]();
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

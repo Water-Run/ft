@@ -1,0 +1,195 @@
+
+==== 写入之前的数据目录 ====
+
+$ ls db
+WiredTiger
+WiredTiger.lock
+WiredTiger.turtle
+WiredTiger.wt
+WiredTigerHS.wt
+_mdb_catalog.wt
+_tmp
+collection-3fec11b5-c0f0-49dd-8bc0-abdb37b972e6.wt
+collection-655acadc-f10c-4c2b-8419-e4517b74aa0a.wt
+collection-e365debf-9940-4392-a3f2-8c756a26c506.wt
+diagnostic.data
+index-2a21e61f-9941-4852-8934-daee8cd48659.wt
+index-30d9203a-0312-4929-836d-aaa474312e54.wt
+index-7d9da355-c60d-4634-8253-41e85545a964.wt
+index-cca151a8-6d61-4728-959b-cc2c27e7ba05.wt
+journal
+mongod.lock
+sizeStorer.wt
+storage.bson
+
+
+==== 写入 4096 个用户（不写 _id，由驱动生成） ====
+
+lab> 
+const docs = [];
+for (let i = 1; i <= 4096; i++) {
+  docs.push(i === 2050
+    ? { name: "Alice", age: 42 }
+    : { name: "User" + String(i).padStart(5, "0") + "-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN", age: 18 + i % 63 });
+}
+db.users.insertMany(docs).insertedIds.length
+
+lab> db.users.createIndex({ name: 1 })
+name_1
+
+lab> db.users.countDocuments()
+4096
+
+
+==== Alice 的文档、字段类型与 BSON 大小 ====
+
+lab> db.users.findOne({ name: "Alice" })
+{ _id: ObjectId('6afa9e875b27ce1a481bcdd3'), name: 'Alice', age: 42 }
+
+lab> db.users.aggregate([{ $match: { name: "Alice" } }, { $project: { _id: { $type: "$_id" }, name: { $type: "$name" }, age: { $type: "$age" } } }]).toArray()
+[ { _id: 'objectId', name: 'string', age: 'int' } ]
+
+lab> bsonsize(db.users.findOne({ name: "Alice" }))
+47
+
+lab> bsonsize(db.users.findOne({ name: "User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN" }))
+92
+
+
+==== RecordId：存储引擎给每份文档的内部编号 ====
+
+lab> db.users.find({}, { name: 1 }).showRecordId().limit(3).toArray()
+[
+  {
+    _id: ObjectId('6afa9e875b27ce1a481bc5d2'),
+    name: 'User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN',
+    '$recordId': Long('1')
+  },
+  {
+    _id: ObjectId('6afa9e875b27ce1a481bc5d3'),
+    name: 'User00002-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN',
+    '$recordId': Long('2')
+  },
+  {
+    _id: ObjectId('6afa9e875b27ce1a481bc5d4'),
+    name: 'User00003-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN',
+    '$recordId': Long('3')
+  }
+]
+
+lab> db.users.find({ name: "Alice" }).showRecordId().toArray()
+[
+  {
+    _id: ObjectId('6afa9e875b27ce1a481bcdd3'),
+    name: 'Alice',
+    age: 42,
+    '$recordId': Long('2050')
+  }
+]
+
+lab> db.users.find({}, { name: 1 }).sort({ $natural: -1 }).showRecordId().limit(1).toArray()
+[
+  {
+    _id: ObjectId('6afa9e875b27ce1a481bd5d1'),
+    name: 'User04096-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN',
+    '$recordId': Long('4096')
+  }
+]
+
+
+==== 集合与索引各对应数据目录里的哪个文件 ====
+
+lab> const s = db.users.stats({ indexDetails: true }); print({ collection: s.wiredTiger.uri, indexes: Object.fromEntries(Object.entries(s.indexDetails).map(([k, v]) => [k, v.uri])) })
+{
+  collection: 'statistics:table:collection-ccaa694c-b471-4fa1-8dcc-de387676341d',
+  indexes: {
+    _id_: 'statistics:table:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9',
+    name_1: 'statistics:table:index-adff13f3-6276-48b9-9226-080f2cfaeed7'
+  }
+}
+
+lab> db.adminCommand({ listDatabases: 1 }).databases.map(d => d.name)
+[ 'admin', 'config', 'lab', 'local' ]
+
+$ ls -l db | awk '{print $5, $9}' | column -t
+50      WiredTiger
+21      WiredTiger.lock
+1278    WiredTiger.turtle
+4096    WiredTiger.wt
+4096    WiredTigerHS.wt
+4096    _mdb_catalog.wt
+4096    _tmp
+4096    collection-3fec11b5-c0f0-49dd-8bc0-abdb37b972e6.wt
+4096    collection-655acadc-f10c-4c2b-8419-e4517b74aa0a.wt
+4096    collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt
+4096    collection-e365debf-9940-4392-a3f2-8c756a26c506.wt
+4096    diagnostic.data
+4096    index-2a21e61f-9941-4852-8934-daee8cd48659.wt
+4096    index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt
+4096    index-30d9203a-0312-4929-836d-aaa474312e54.wt
+4096    index-7d9da355-c60d-4634-8253-41e85545a964.wt
+249856  index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt
+4096    index-cca151a8-6d61-4728-959b-cc2c27e7ba05.wt
+4096    journal
+4       mongod.lock
+4096    sizeStorer.wt
+114     storage.bson
+
+$ ls -l db/journal | awk 'NR>1{print $5, $9}'
+104857600 WiredTigerLog.0000000001
+104857600 WiredTigerPreplog.0000000001
+
+
+==== 集合文件与索引文件的建表配置（creationString） ====
+
+lab> print(db.users.stats().wiredTiger.creationString)
+access_pattern_hint=none,allocation_size=4KB,app_metadata=(formatVersion=1),assert=(commit_timestamp=none,durable_timestamp=none,read_timestamp=none,write_timestamp=off),block_allocation=best,block_compressor=snappy,block_manager=default,cache_resident=false,checksum=on,colgroups=,collator=,columns=,dictionary=0,disaggregated=(page_log=,storage_tier=none),encryption=(keyid=,name=),exclusive=false,extractor=,format=btree,huffman_key=,huffman_value=,ignore_in_memory_cache_size=false,immutable=false,import=(compare_timestamp=oldest_timestamp,enabled=false,file_metadata=,metadata_file=,panic_corrupt=true,repair=false),in_memory=false,ingest=,internal_item_max=0,internal_key_max=0,internal_key_truncate=true,internal_page_max=4KB,key_format=q,key_gap=10,leaf_item_max=0,leaf_key_max=0,leaf_page_max=32KB,leaf_value_max=64MB,log=(enabled=true),lsm=(auto_throttle=,bloom=,bloom_bit_count=,bloom_config=,bloom_hash_count=,bloom_oldest=,chunk_count_limit=,chunk_max=,chunk_size=,merge_custom=(prefix=,start_generation=,suffix=),merge_max=,merge_min=),memory_page_image_max=0,memory_page_max=10M,os_cache_dirty_max=0,os_cache_max=0,prefix_compression=false,prefix_compression_min=4,source=,split_deepen_min_child=0,split_deepen_per_child=0,split_pct=90,stable=,tiered_storage=(auth_token=,bucket=,bucket_prefix=,cache_directory=,local_retention=300,name=,object_target_size=0),type=file,value_format=u,verbose=[],write_timestamp_usage=none
+
+lab> print(db.users.stats({ indexDetails: true }).indexDetails.name_1.creationString)
+access_pattern_hint=none,allocation_size=4KB,app_metadata=(formatVersion=8),assert=(commit_timestamp=none,durable_timestamp=none,read_timestamp=none,write_timestamp=off),block_allocation=best,block_compressor=,block_manager=default,cache_resident=false,checksum=on,colgroups=,collator=,columns=,dictionary=0,disaggregated=(page_log=,storage_tier=none),encryption=(keyid=,name=),exclusive=false,extractor=,format=btree,huffman_key=,huffman_value=,ignore_in_memory_cache_size=false,immutable=false,import=(compare_timestamp=oldest_timestamp,enabled=false,file_metadata=,metadata_file=,panic_corrupt=true,repair=false),in_memory=false,ingest=,internal_item_max=0,internal_key_max=0,internal_key_truncate=true,internal_page_max=16k,key_format=u,key_gap=10,leaf_item_max=0,leaf_key_max=0,leaf_page_max=16k,leaf_value_max=0,log=(enabled=true),lsm=(auto_throttle=,bloom=,bloom_bit_count=,bloom_config=,bloom_hash_count=,bloom_oldest=,chunk_count_limit=,chunk_max=,chunk_size=,merge_custom=(prefix=,start_generation=,suffix=),merge_max=,merge_min=),memory_page_image_max=0,memory_page_max=5MB,os_cache_dirty_max=0,os_cache_max=0,prefix_compression=true,prefix_compression_min=4,source=,split_deepen_min_child=0,split_deepen_per_child=0,split_pct=90,stable=,tiered_storage=(auth_token=,bucket=,bucket_prefix=,cache_directory=,local_retention=300,name=,object_target_size=0),type=file,value_format=u,verbose=[],write_timestamp_usage=none
+
+
+==== 写入之后、检查点之前：WiredTiger 统计（缓存里） ====
+
+lab> const w = db.users.stats().wiredTiger; print({ "集合在缓存里的字节": w.cache["bytes currently in the cache"], "集合文件的字节": w["block-manager"]["file size in bytes"] })
+{ '集合在缓存里的字节': 835550, '集合文件的字节': 4096 }
+
+
+==== 等一次检查点（缺省每 60 秒），或者正常关闭 ====
+
+$ ls -l db | awk '{print $5, $9}' | column -t
+50      WiredTiger
+21      WiredTiger.lock
+1603    WiredTiger.turtle
+57344   WiredTiger.wt
+4096    WiredTigerHS.wt
+20480   _mdb_catalog.wt
+4096    _tmp
+20480   collection-3fec11b5-c0f0-49dd-8bc0-abdb37b972e6.wt
+20480   collection-655acadc-f10c-4c2b-8419-e4517b74aa0a.wt
+98304   collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt
+4096    collection-e365debf-9940-4392-a3f2-8c756a26c506.wt
+4096    diagnostic.data
+4096    index-2a21e61f-9941-4852-8934-daee8cd48659.wt
+57344   index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt
+20480   index-30d9203a-0312-4929-836d-aaa474312e54.wt
+20480   index-7d9da355-c60d-4634-8253-41e85545a964.wt
+249856  index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt
+4096    index-cca151a8-6d61-4728-959b-cc2c27e7ba05.wt
+4096    journal
+0       mongod.lock
+20480   sizeStorer.wt
+114     storage.bson
+
+
+==== mongod 打开 WiredTiger 时用的配置（日志里的 wiredtiger_open 一行） ====
+
+$ grep -m1 -o '"config":"create,cache_size[^"]*"' db.log
+"config":"create,cache_size=9414M,session_max=16000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,remove=true,path=journal,compressor=snappy),builtin_extension_config=(zstd=(compression_level=6)),file_manager=(close_idle_time=600,close_scan_interval=10,close_handle_minimum=2000),statistics_log=(wait=0),json_output=(error,message),verbose=[recovery_progress:1,checkpoint_progress:1,compact_progress:1,live_restore_progress:1,backup:0,checkpoint:0,checkpoint_cleanup:0,compact:0,disaggregated_storage:0,eviction:0,fileops:0,history_store:0,live_restore:0,recovery:0,rts:0,salvage:0,tiered:0,timestamp:0,transaction:0,verify:0,log:0],prefetch=(available=true,default=false),"
+
+
+==== 缺省的检查点间隔与日志落盘间隔 ====
+
+lab> db.adminCommand({ getParameter: 1, syncdelay: 1, journalCommitInterval: 1 })
+{ journalCommitInterval: 100, syncdelay: 60, ok: 1 }
+

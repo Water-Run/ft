@@ -1,0 +1,129 @@
+lab> db.users.stats().wiredTiger["block-manager"]["file bytes available for reuse"]
+0
+
+
+==== 删除之前 ====
+
+$ wt verify -d dump_address file:collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt, ckpt_name: WiredTigerCheckpoint.1
+Root:
+	> addr: [0: 86016-90112, 4096, 2357522424]
+[NoAddr] -/-,-/- row-store internal write_gen: 6
+address:[0: 4096-28672, 24576, 1701403511], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 28672-53248, 24576, 1443013711], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 3
+address:[0: 53248-65536, 12288, 2914009409], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 65536-86016, 20480, 4195685285], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 5
+
+
+==== 删掉 Alice ====
+
+lab> db.setProfilingLevel(2).ok
+1
+
+lab> db.users.deleteOne({ name: "Alice" })
+{ acknowledged: true, deletedCount: 1 }
+
+lab> const p = db.system.profile.find({ op: "remove" }).sort({ ts: -1 }).limit(1).next(); print({ keysExamined: p.keysExamined, docsExamined: p.docsExamined, ndeleted: p.ndeleted, keysDeleted: p.keysDeleted, planSummary: p.planSummary })
+{
+  keysExamined: 1,
+  docsExamined: 1,
+  ndeleted: 1,
+  keysDeleted: 2,
+  planSummary: 'IXSCAN { name: 1 }'
+}
+
+lab> db.setProfilingLevel(0).was
+2
+
+lab> db.users.countDocuments()
+4095
+
+lab> db.users.find({ name: "Alice" }).toArray()
+[]
+
+
+==== 检查点之后：集合树里各页的位置，以及空出来的区段 ====
+
+lab> db.adminCommand({ fsync: 1 }).ok
+1
+
+lab> db.users.stats().wiredTiger["block-manager"]["file bytes available for reuse"]
+36864
+
+$ wt verify -d dump_address file:collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt, ckpt_name: WiredTigerCheckpoint.2
+Root:
+	> addr: [0: 122880-126976, 4096, 769659858]
+[NoAddr] -/-,-/- row-store internal write_gen: 21
+address:[0: 4096-28672, 24576, 1701403511], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 98304-122880, 24576, 900705800], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 20
+address:[0: 53248-65536, 12288, 2914009409], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 65536-86016, 20480, 4195685285], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 5
+
+$ ls -l db/collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt | awk '{print $5}'
+135168
+
+键 2049、2050、2051（c7c1、c7c2、c7c3）在不在：
+2
+c7c1
+c7c3
+
+
+==== Dave 注册 ====
+
+lab> db.users.insertOne({ name: "Dave", age: 19 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('6afa9ea44f1c5d1481417217')
+}
+
+lab> db.users.find({ name: "Dave" }).showRecordId().toArray()
+[
+  {
+    _id: ObjectId('6afa9ea44f1c5d1481417217'),
+    name: 'Dave',
+    age: 19,
+    '$recordId': Long('4097')
+  }
+]
+
+lab> db.adminCommand({ fsync: 1 }).ok
+1
+
+lab> db.users.stats().wiredTiger["block-manager"]["file bytes available for reuse"]
+36864
+
+
+==== Dave 写进去之后：各页的位置与空闲区段 ====
+
+$ wt verify -d dump_address file:collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt, ckpt_name: WiredTigerCheckpoint.4
+Root:
+	> addr: [0: 65536-69632, 4096, 3704907333]
+[NoAddr] -/-,-/- row-store internal write_gen: 32
+address:[0: 4096-28672, 24576, 1701403511], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 98304-122880, 24576, 900705800], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 20
+address:[0: 53248-65536, 12288, 2914009409], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 28672-49152, 20480, 3251566604], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 29
+
+$ ls -l db/collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt | awk '{print $5}'
+122880
+
+
+==== 文件不会自己变小：compact 才把空闲区段还给文件系统 ====
+
+lab> db.users.stats().wiredTiger["block-manager"]["file bytes available for reuse"]
+24576
+
+lab> db.runCommand({ compact: "users" })
+{ bytesFreed: 0, ok: 1 }
+
+lab> db.users.stats().wiredTiger["block-manager"]["file bytes available for reuse"]
+24576
+
+$ ls -l db/collection-e5ea3d7c-5a6c-47b8-b782-336454bcab9a.wt | awk '{print $5}'
+122880
+

@@ -1,0 +1,71 @@
+
+==== 没有姓名索引：find({ name: "Alice" }) ====
+
+lab> db.users.find({ name: "Alice" })
+[
+  { _id: ObjectId('6afa9e92b140a05347a5e4ea'), name: 'Alice', age: 42 }
+]
+
+lab> const e = db.users.find({ name: "Alice" }).explain("executionStats"); const st = e.executionStats;
+const plan = (s) => s ? [s.stage].concat(plan(s.inputStage)) : [];
+print({ "计划": plan(e.queryPlanner.winningPlan.queryPlan || e.queryPlanner.winningPlan).join(" ← "), "返回": st.nReturned, "看过的索引键": st.totalKeysExamined, "看过的文档": st.totalDocsExamined })
+{ '计划': 'COLLSCAN', '返回': 1, '看过的索引键': 0, '看过的文档': 4096 }
+
+
+==== 建姓名索引之后 ====
+
+lab> db.users.createIndex({ name: 1 })
+name_1
+
+lab> const e = db.users.find({ name: "Alice" }).explain("executionStats"); const st = e.executionStats;
+const plan = (s) => s ? [s.stage].concat(plan(s.inputStage)) : [];
+print({ "计划": plan(e.queryPlanner.winningPlan.queryPlan || e.queryPlanner.winningPlan).join(" ← "), "返回": st.nReturned, "看过的索引键": st.totalKeysExamined, "看过的文档": st.totalDocsExamined })
+{ '计划': 'FETCH ← IXSCAN', '返回': 1, '看过的索引键': 1, '看过的文档': 1 }
+
+lab> db.users.find({ name: "Alice" }).explain("executionStats").queryPlanner.winningPlan
+{
+  isCached: false,
+  stage: 'FETCH',
+  nss: 'lab.users',
+  inputStage: {
+    stage: 'IXSCAN',
+    nss: 'lab.users',
+    keyPattern: { name: 1 },
+    indexName: 'name_1',
+    isMultiKey: false,
+    multiKeyPaths: { name: [] },
+    isUnique: false,
+    isSparse: false,
+    isPartial: false,
+    indexVersion: 2,
+    direction: 'forward',
+    indexBounds: { name: [ '["Alice", "Alice"]' ] }
+  }
+}
+
+
+==== 按 _id 找：_id 索引是建集合时自带的 ====
+
+lab> db.users.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+
+lab> const id = db.users.findOne({ name: "Alice" })._id; const st = db.users.find({ _id: id }).explain("executionStats").executionStats; print({ "看过的索引键": st.totalKeysExamined, "看过的文档": st.totalDocsExamined, "阶段": st.executionStages.stage })
+{ '看过的索引键': 1, '看过的文档': 1, '阶段': 'EXPRESS_IXSCAN' }
+
+
+==== 按年龄找：age 没有索引，又回到集合扫描 ====
+
+lab> const st = db.users.find({ age: 42 }).explain("executionStats").executionStats; print({ "返回": st.nReturned, "看过的文档": st.totalDocsExamined })
+{ '返回': 66, '看过的文档': 4096 }
+
+
+==== 查询本身也是一份文档：mongosh 的 find() 发给服务端的是 find 命令 ====
+
+lab> db.runCommand({ find: "users", filter: { name: "Alice" } }).cursor.firstBatch
+[
+  { _id: ObjectId('6afa9e92b140a05347a5e4ea'), name: 'Alice', age: 42 }
+]
+

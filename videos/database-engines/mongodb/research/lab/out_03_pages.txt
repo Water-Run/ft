@@ -1,0 +1,191 @@
+
+==== 集合 users（collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt）：树形 ====
+
+$ wt verify -d dump_tree_shape file:collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt
+0  INTERNAL  type: WT_PAGE_ROW_LEAF  entries: 4  mem_footprint: 979
+0.0  LEAF  type: UNKNOWN  keys: 1224  keys_size: 2385  values_size: 112608  total_size: 118705  mem_footprint: 128729
+0.1  LEAF  type: UNKNOWN  keys: 1224  keys_size: 2448  values_size: 112563  total_size: 118722  mem_footprint: 128746
+0.2  LEAF  type: UNKNOWN  keys: 675  keys_size: 1350  values_size: 62100  total_size: 65515  mem_footprint: 71147
+0.3  LEAF  type: UNKNOWN  keys: 973  keys_size: 1946  values_size: 89516  total_size: 94421  mem_footprint: 102437
+0  =  children: 4  keys: 4096  keys_size: 8129  values_size: 376787  total_size: 397363
+
+
+==== 集合 users：每一页在文件里的位置（偏移-结束, 长度, 校验和） ====
+
+$ wt verify -d dump_address file:collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt, ckpt_name: WiredTigerCheckpoint.1
+Root:
+	> addr: [0: 86016-90112, 4096, 1823218944]
+[NoAddr] -/-,-/- row-store internal write_gen: 6
+address:[0: 4096-28672, 24576, 1255537916], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 28672-53248, 24576, 4209015758], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 3
+address:[0: 53248-65536, 12288, 2462608995], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 65536-86016, 20480, 954934164], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 5
+
+
+==== _id 索引（index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt）：树形 ====
+
+$ wt verify -d dump_tree_shape file:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt
+0  INTERNAL  type: WT_PAGE_ROW_LEAF  entries: 3  mem_footprint: 828
+0.0  LEAF  type: UNKNOWN  keys: 1755  keys_size: 5196  values_size: 4242  total_size: 14741  mem_footprint: 29013
+0.1  LEAF  type: UNKNOWN  keys: 913  keys_size: 2668  values_size: 2739  total_size: 8185  mem_footprint: 15721
+0.2  LEAF  type: UNKNOWN  keys: 1428  keys_size: 3901  values_size: 4284  total_size: 12507  mem_footprint: 24163
+0  =  children: 3  keys: 4096  keys_size: 11765  values_size: 11265  total_size: 35433
+
+
+==== _id 索引：每一页在文件里的位置（偏移-结束, 长度, 校验和） ====
+
+$ wt verify -d dump_address file:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt, ckpt_name: WiredTigerCheckpoint.1
+Root:
+	> addr: [0: 45056-49152, 4096, 564081772]
+[NoAddr] -/-,-/- row-store internal write_gen: 5
+address:[0: 4096-20480, 16384, 2075541950], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 20480-28672, 8192, 1991517560], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 3
+address:[0: 28672-45056, 16384, 2090284325], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+
+
+==== 姓名索引 name_1（index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt）：树形 ====
+
+$ wt verify -d dump_tree_shape file:index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt
+0  INTERNAL  type: WT_PAGE_ROW_LEAF  entries: 15  mem_footprint: 2992
+0.0  LEAF  type: UNKNOWN  keys: 296  keys_size: 14072  values_size: 0  total_size: 14702  mem_footprint: 17302
+0.1  LEAF  type: UNKNOWN  keys: 294  keys_size: 14113  values_size: 0  total_size: 14740  mem_footprint: 17324
+0.2  LEAF  type: UNKNOWN  keys: 294  keys_size: 14101  values_size: 0  total_size: 14728  mem_footprint: 17312
+0.3  LEAF  type: UNKNOWN  keys: 287  keys_size: 14081  values_size: 0  total_size: 14694  mem_footprint: 17222
+0.4  LEAF  type: UNKNOWN  keys: 288  keys_size: 14083  values_size: 0  total_size: 14698  mem_footprint: 17234
+0.5  LEAF  type: UNKNOWN  keys: 289  keys_size: 14128  values_size: 0  total_size: 14745  mem_footprint: 17289
+0.6  LEAF  type: UNKNOWN  keys: 288  keys_size: 14103  values_size: 0  total_size: 14718  mem_footprint: 17254
+0.7  LEAF  type: UNKNOWN  keys: 289  keys_size: 14103  values_size: 0  total_size: 14720  mem_footprint: 17264
+0.8  LEAF  type: UNKNOWN  keys: 289  keys_size: 14092  values_size: 0  total_size: 14709  mem_footprint: 17253
+0.9  LEAF  type: UNKNOWN  keys: 289  keys_size: 14080  values_size: 0  total_size: 14697  mem_footprint: 17241
+0.10  LEAF  type: UNKNOWN  keys: 286  keys_size: 14111  values_size: 0  total_size: 14722  mem_footprint: 17242
+0.11  LEAF  type: UNKNOWN  keys: 288  keys_size: 14101  values_size: 0  total_size: 14716  mem_footprint: 17252
+0.12  LEAF  type: UNKNOWN  keys: 288  keys_size: 14097  values_size: 0  total_size: 14712  mem_footprint: 17248
+0.13  LEAF  type: UNKNOWN  keys: 287  keys_size: 14087  values_size: 0  total_size: 14700  mem_footprint: 17228
+0.14  LEAF  type: UNKNOWN  keys: 44  keys_size: 2114  values_size: 0  total_size: 2241  mem_footprint: 2825
+0  =  children: 15  keys: 4096  keys_size: 199466  values_size: 0  total_size: 208242
+
+
+==== 姓名索引 name_1：每一页在文件里的位置（偏移-结束, 长度, 校验和） ====
+
+$ wt verify -d dump_address file:index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+file:index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt, ckpt_name: WiredTigerCheckpoint.1
+Root:
+	> addr: [0: 237568-241664, 4096, 1945617581]
+[NoAddr] -/-,-/- row-store internal write_gen: 17
+address:[0: 4096-20480, 16384, 2620273306], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 2
+address:[0: 20480-36864, 16384, 360440353], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 3
+address:[0: 36864-53248, 16384, 1619794341], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 4
+address:[0: 53248-69632, 16384, 4056632053], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 5
+address:[0: 69632-86016, 16384, 1109737962], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 6
+address:[0: 86016-102400, 16384, 3766525017], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 7
+address:[0: 102400-118784, 16384, 625123107], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 8
+address:[0: 118784-135168, 16384, 1814138745], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 9
+address:[0: 135168-151552, 16384, 485282403], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 10
+address:[0: 151552-167936, 16384, 2303792378], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 11
+address:[0: 167936-184320, 16384, 1493766882], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 12
+address:[0: 184320-200704, 16384, 4063274655], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 13
+address:[0: 200704-217088, 16384, 633795530], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 14
+address:[0: 217088-233472, 16384, 2689680466], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 15
+address:[0: 233472-237568, 4096, 3052938474], time-window: newest_durable: (0, 0)/(0, 0) | oldest_start: (0, 0)/0 | newest_stop: (4294967295, 4294967295)/18446744073709551605 row-store leaf write_gen: 16
+
+
+==== 集合 users：各页的键（RecordId） ====
+
+$ wt verify -k -d dump_pages file:collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt   （只列页头与每页第一个、最后一个键）
+第 0 页 内部页：磁盘映像解压后 91 字节，4 项；分界键 \00、1225、2449、3124
+第 1 页 叶页：磁盘映像解压后 118705 字节，1224 项；键 1 … 1224（共 1224 个键）
+第 2 页 叶页：磁盘映像解压后 118722 字节，1224 项；键 1225 … 2448（共 1224 个键）
+第 3 页 叶页：磁盘映像解压后 65515 字节，675 项；键 2449 … 3123（共 675 个键）
+第 4 页 叶页：磁盘映像解压后 94421 字节，973 项；键 3124 … 4096（共 973 个键）
+
+
+==== 集合 users：Alice 那一项（键 = RecordId，按 WiredTiger 的整数打包；值 = 整份 BSON） ====
+
+（共 4096 项）
+  第 2049 项
+    键 c7c1
+    值 5c000000075f6964006afa9e875b27ce1a481bcdd2026e616d6500330000005573657230323034392d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e0010616765003300000000
+→ 第 2050 项
+    键 c7c2
+    值 2f000000075f6964006afa9e875b27ce1a481bcdd3026e616d650006000000416c6963650010616765002a00000000
+  第 2051 项
+    键 c7c3
+    值 5c000000075f6964006afa9e875b27ce1a481bcdd4026e616d6500330000005573657230323035312d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e0010616765003500000000
+
+
+==== 姓名索引：Alice 那一项（键 = 姓名的 KeyString + RecordId，值 = 类型位） ====
+
+（共 4096 项）
+→ 第 1 项
+    键 3c416c6963650004204011
+    值 （空）
+  第 2 项
+    键 3c5573657230303030312d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e00040008
+    值 （空）
+  第 3 项
+    键 3c5573657230303030322d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e00040010
+    值 （空）
+  第 4 项
+    键 3c5573657230303030332d6162636465666768696a6b6c6d6e6f707172737475767778797a4142434445464748494a4b4c4d4e00040018
+    值 （空）
+
+
+==== _id 索引：Alice 那一项（键 = ObjectId 的 KeyString，值 = RecordId + 类型位） ====
+
+（共 4096 项）
+  第 2049 项
+    键 646afa9e875b27ce1a481bcdd204
+    值 204009
+→ 第 2050 项
+    键 646afa9e875b27ce1a481bcdd304
+    值 204011
+  第 2051 项
+    键 646afa9e875b27ce1a481bcdd404
+    值 204019
+
+
+==== 数据目录里的其他文件 ====
+
+$ wt list
+colgroup:_mdb_catalog
+colgroup:collection-3fec11b5-c0f0-49dd-8bc0-abdb37b972e6
+colgroup:collection-655acadc-f10c-4c2b-8419-e4517b74aa0a
+colgroup:collection-ccaa694c-b471-4fa1-8dcc-de387676341d
+colgroup:collection-e365debf-9940-4392-a3f2-8c756a26c506
+colgroup:index-2a21e61f-9941-4852-8934-daee8cd48659
+colgroup:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9
+colgroup:index-30d9203a-0312-4929-836d-aaa474312e54
+colgroup:index-7d9da355-c60d-4634-8253-41e85545a964
+colgroup:index-adff13f3-6276-48b9-9226-080f2cfaeed7
+colgroup:index-cca151a8-6d61-4728-959b-cc2c27e7ba05
+colgroup:sizeStorer
+file:_mdb_catalog.wt
+file:collection-3fec11b5-c0f0-49dd-8bc0-abdb37b972e6.wt
+file:collection-655acadc-f10c-4c2b-8419-e4517b74aa0a.wt
+file:collection-ccaa694c-b471-4fa1-8dcc-de387676341d.wt
+file:collection-e365debf-9940-4392-a3f2-8c756a26c506.wt
+file:index-2a21e61f-9941-4852-8934-daee8cd48659.wt
+file:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9.wt
+file:index-30d9203a-0312-4929-836d-aaa474312e54.wt
+file:index-7d9da355-c60d-4634-8253-41e85545a964.wt
+file:index-adff13f3-6276-48b9-9226-080f2cfaeed7.wt
+file:index-cca151a8-6d61-4728-959b-cc2c27e7ba05.wt
+file:sizeStorer.wt
+table:_mdb_catalog
+table:collection-3fec11b5-c0f0-49dd-8bc0-abdb37b972e6
+table:collection-655acadc-f10c-4c2b-8419-e4517b74aa0a
+table:collection-ccaa694c-b471-4fa1-8dcc-de387676341d
+table:collection-e365debf-9940-4392-a3f2-8c756a26c506
+table:index-2a21e61f-9941-4852-8934-daee8cd48659
+table:index-2f328dfc-85b7-4b1c-b342-c3270c2b5ed9
+table:index-30d9203a-0312-4929-836d-aaa474312e54
+table:index-7d9da355-c60d-4634-8253-41e85545a964
+table:index-adff13f3-6276-48b9-9226-080f2cfaeed7
+table:index-cca151a8-6d61-4728-959b-cc2c27e7ba05
+table:sizeStorer
+

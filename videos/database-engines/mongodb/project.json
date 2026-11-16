@@ -1,0 +1,100 @@
+{
+  "slug": "mongodb",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"
+  },
+  "stage": "review",
+  "next": "视觉按策划者要求重做：参考 MongoDB 官方的浅色主题，以 B（文件地图）为主、结合 A（三棵树）与 C（真实字节与回显），出融合方向的关键帧；同时等 WaterRun 审定第 1 稿文案与 5 个待定问题。确认后用 Gentle_Senior（1.15）全片配音，配乐按 C「档案」写 tools/music.py",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "实验",
+          "文案",
+          "配音试听",
+          "配乐小样",
+          "视觉设计"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音试听"
+        ]
+      },
+      {
+        "name": "Whisper small",
+        "roles": [
+          "读音回听"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍 MongoDB 的存储引擎 WiredTiger：文档、BSON、RecordId、B 树、索引、检查点、日志、快照、写冲突。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 1
+  },
+  "audio": {
+    "music": "none",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    },
+    "duration": {
+      "zh": [
+        600,
+        840
+      ]
+    }
+  },
+  "tts": {
+    "engine": {
+      "zh": "minimax"
+    },
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Gentle_Senior"
+    },
+    "speed": {
+      "zh": 1.15
+    }
+  }
+}

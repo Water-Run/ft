@@ -1,0 +1,61 @@
+
+==== 缺省参数：检查点间隔 syncdelay（秒）、日志落盘间隔 journalCommitInterval（毫秒） ====
+
+lab> db.adminCommand({ getParameter: 1, syncdelay: 1, journalCommitInterval: 1 })
+{ journalCommitInterval: 100, syncdelay: 60, ok: 1 }
+
+
+==== 先做一次检查点：此刻磁盘上的树里 Alice 是 42 岁 ====
+
+lab> db.adminCommand({ fsync: 1 }).ok
+1
+
+
+==== 检查点之后：Alice 改年龄（j: true，等日志落盘才确认），Dave 注册（缺省写法，确认时不等日志落盘），然后强制结束 mongod ====
+
+lab> db.users.updateOne({ name: "Alice" }, { $set: { age: 43 } }, { writeConcern: { j: true } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+lab> db.users.insertOne({ name: "Dave", age: 19 })
+{
+  acknowledged: true,
+  insertedId: ObjectId('6afaa047bcbc0a2412ac541e')
+}
+
+$ kill -9 <mongod 的进程号>
+已强制结束
+
+
+==== 崩溃后磁盘上的日志：最后一个检查点之后记下了什么 ====
+
+最后一个检查点记录：lsn [1, 139776]，检查点从 lsn [1, 136704] 起
+  lsn [1, 139904]  事务 63  row_put  文件号 88  键 c7c2  name=Alice, age=43（整份文档 47 字节）
+  lsn [1, 140032]  事务 64  row_put  文件号 88  键 cfc1  name=Dave, age=19（整份文档 46 字节）
+  lsn [1, 140032]  事务 64  row_put  文件号 96  键 646afaa047bcbc0a2412ac541e04  值 3 字节
+  lsn [1, 140032]  事务 64  row_put  文件号 104  键 3c446176650004208009  值 0 字节
+之后共 4 次对用户数据的写入
+集合文件 collection-e57ea09a-cb7e-435b-9f9b-89f369c2b8c0.wt 的文件号：88
+
+
+==== 重启：从检查点起重放日志 ====
+
+"msg":"recovery was completed successfully and took 0ms, including 0ms for the log replay, 0ms for the rollback to stable, and 0ms for the checkpoint."
+
+lab> db.users.find({ name: { $in: ["Alice", "Dave"] } }, { _id: 0 }).toArray()
+[ { name: 'Alice', age: 43 }, { name: 'Dave', age: 19 } ]
+
+lab> db.users.countDocuments()
+4097
+
+
+==== 重复：每种写法各写 5 次，写完立刻强制结束，重启后看还在不在 ====
+
+缺省，立刻结束：5 次里重启后还在 1 次
+j: true，立刻结束：5 次里重启后还在 5 次
+缺省，等 0.3 秒再结束：5 次里重启后还在 5 次
