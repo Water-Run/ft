@@ -49,7 +49,7 @@ scene('what', ({ root, s, c0 }) => {
 
   // ── a3 Fork、PR、Issue：网站的功能（蓝框） ──
   const tA3 = T('a3');
-  fadeOut(gGit, tA3 - 0.3); fadeOut(gHub, tA3 - 0.3);
+  fadeOut(gGit, tA3 + 0.5); fadeOut(gHub, tA3 + 0.5);   // 与 a3 的描框不在同一处，多留一会儿读完（F04）
   const fb = box(btns.querySelector('.fork'), world);
   const rFork = ring(world, fb, '', 8);
   const ib = box(tabs.querySelector('.iss'), world), pb = box(tabs.querySelector('.prs'), world);
@@ -82,7 +82,7 @@ scene('what', ({ root, s, c0 }) => {
 
   // ── a6 其他人改不了，但有三步 ──
   fromTo(yrow, T('a6', '其他人') - 0.1, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power3.out' }); sfx('thud', T('a6', '其他人') - 0.1, { g: 0.5 });
-  fadeOut(gRepo, T('a6', '三步') - 0.4);
+  fadeOut(gRepo, Tend('a6') - 0.3);
   const steps = el(world, 'row', `<span class="btn">${oct('repo-forked', 28)}Fork</span>${oct('arrow-right', 30, C.muted)}
       <span class="btn">${oct('git-branch', 28)}开分支</span>${oct('arrow-right', 30, C.muted)}
       <span class="btn green">${oct('git-pull-request', 28, '#fff')}提 PR</span>`, 120, 790);

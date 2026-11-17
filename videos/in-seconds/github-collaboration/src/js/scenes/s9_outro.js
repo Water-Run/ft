@@ -1,5 +1,5 @@
 // 片尾名单。名字只取自 project.json 的 credits（docs/roles.md 第 5 节），这里不手写任何名字；check.js --final 核对画面上的名单与它一致。名单不配旁白。
-// 版式：左边是全片走过的三步，右边是一张 Primer 的「名单」框。
+// 版式：左边是全片走过的几步（到合并为止），右边是一张 Primer 的「名单」框。全长 4 秒（策划者 2026-11-17「字幕表3-5s即可」）。
 scene('outro', ({ root, s }) => {
   const P = window.PROJECT || {}, C0 = P.credits || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
@@ -8,7 +8,7 @@ scene('outro', ({ root, s }) => {
   const t0 = s.start + 0.3;
 
   const steps = el(world, '', `<div class="title-xl" style="font-size:88px">GitHub 协作</div>
-      <div class="row" style="gap:20px;margin-top:40px;font-size:30px"><span class="btn">${oct('repo-forked', 28)}Fork</span>${oct('arrow-right', 30, C.muted)}<span class="btn">${oct('git-branch', 28)}分支</span>${oct('arrow-right', 30, C.muted)}<span class="btn green">${oct('git-pull-request', 28, '#fff')}PR</span></div>`, 120, 220);
+      <div class="row" style="gap:20px;margin-top:40px;font-size:30px"><span class="btn">${oct('repo-forked', 28)}Fork</span>${oct('arrow-right', 30, C.muted)}<span class="btn">${oct('git-branch', 28)}分支</span>${oct('arrow-right', 30, C.muted)}<span class="btn green">${oct('git-pull-request', 28, '#fff')}PR</span>${oct('arrow-right', 30, C.muted)}<span class="btn purple">${oct('git-merge', 28, '#fff')}合并</span></div>`, 120, 220);
   fadeIn(steps, t0, { y: 20, d: 0.5 }); sfx('thud', t0, { g: 0.6, p: -0.3 });
 
   const rows = [[tr('策划', 'Planning'), C0.planner || '']];

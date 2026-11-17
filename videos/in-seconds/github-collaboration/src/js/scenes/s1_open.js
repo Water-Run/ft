@@ -55,7 +55,7 @@ scene('open', ({ root, s, c0 }) => {
   markOn(world, box(owner, world), Q(T('o3', '别人')), Tend('o3') + 0.6, 6);
   fromTo(lockp, T('o3', '没有权限') - 0.1, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: 'power3.out' });
   sfx('thud', T('o3', '没有权限') - 0.1, { g: 0.6 });
-  fadeOut(g1, T('o3') + 0.2);
+  fadeOut(g1, Tend('o3') + 0.3);   // 留够读完（F04）
 
   // ── 但在 GitHub 上照样能提改动：三步先露个面 ──
   const steps = el(world, 'row', `<span class="btn">${oct('repo-forked', 28)}Fork</span>${oct('arrow-right', 30, C.muted)}
@@ -66,12 +66,12 @@ scene('open', ({ root, s, c0 }) => {
   sfx('pop', Q(T('o4', '提改动')), { g: 0.6 }); sfx('pop', Q(T('o4', '提改动')) + 0.48, { g: 0.5, p: 0.3 });
 
   // ── 片名卡：报名表让位，片名落在左半边 ──
-  const tT = Q(T('oT'));
+  const tT = Q(T('o4', '怎')) - 0.1;   // 片名卡落在「怎么做到的？」这一问上，副标题停够读完（F04）
   fadeOut(form, tT - 0.35, { x: -30, y: 0 });
   const title = el(world, 'title-xl', '150 秒速通<br>GitHub 协作', 120, 240);
   const sub = el(world, 'title-sub', '为什么要 Fork、开分支、再提 PR', 124, 520);
   slam(title, tT, { from: 1.12, d: 0.45 }); sfx('thud', tT);
-  fadeIn(sub, tT + 0.3, { y: 14 }); sfx('tick', tT + 0.3, { g: 0.6 });
+  fadeIn(sub, tT + 0.15, { y: 14 }); sfx('tick', tT + 0.15, { g: 0.6 });
 
   hudState(s.start + 0.3, st('idle', 'dot-fill', '改动：还没开始'));
 

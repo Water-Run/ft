@@ -65,18 +65,18 @@ scene('numbers', ({ root, s, c0 }) => {
   const tIt = Q(T('c3', '12号')) - 0.1;
   markOn(world, box(tiles[11], world), tIt, Tend('c4') - 0.2, 6);
   markOn(world, box(iss, world), tIt + 0.1, Tend('c3') + 0.3, 4);
-  fadeOut(gIss, T('c3') + 0.1);
+  fadeOut(gIss, T('c4') + 0.3);   // 多留到 c4，读完（F04）
   sfx('tick', tIt, { g: 0.7 });
 
   // ── c4 编号属于仓库，按先后排，用过不回收 ──
   const tSeq = Q(T('c4', '先后')) - 0.2;
   tiles.forEach((e, i) => fromTo(e, tSeq + i * 0.07, { y: 0 }, { keyframes: [{ y: -12, duration: 0.12, ease: 'power2.out' }, { y: 0, duration: 0.2, ease: 'power2.in' }], immediateRender: false }));
   for (let i = 0; i < 13; i += 3) sfx('tick', tSeq + i * 0.07, { g: 0.5, p: -0.6 + i * 0.1 });
-  const tGap = Q(T('c4', '不回收')) - 0.15;
+  const tGap = Q(T('c4', '用过')) - 0.15;
   markOn(world, box(tiles[6], world), tGap, Tend('c4') + 1.2, 6);
   const gGap = gloss(world, '#7 删掉了：号空着，不再分配', TX(6) - 4, TY + 168, 'up');
   fadeIn(gGap, tGap + 0.1, { y: 10 }); sfx('pop', tGap, { g: 0.6 });
-  fadeOut(gGap, T('c5') + 0.6);
+  fadeOut(gGap, T('c5', '合') - 0.2);
   hudState(Q(T('c4', '属于')), `<div class="meter-n"><div style="font-size:24px;color:var(--muted)">仓库的下一个号</div><div class="mono" style="font-size:40px;font-weight:700">#14</div></div>`);
 
   // ── c5 Closes #12：合并时 #12 自动关闭 ──
@@ -104,8 +104,8 @@ scene('numbers', ({ root, s, c0 }) => {
         <span class="row" style="margin-left:auto;gap:10px;font-size:26px;color:var(--success)">${oct('issue-opened', 26, C.success)}合并后 #12 仍是 Open</span></div>`, 120, 712, 820);
   const tRef = Q(T('c6')) - 0.2;
   fadeIn(ref, tRef, { y: 16 }); sfx('blip', tRef, { g: 0.6, p: -0.5 });
-  const gRef = gloss(world, '写成 <span class="mono">Refs #12</span> 也一样：Refs 不是关闭用的词', 140, 872, 'up');
-  fadeIn(gRef, Q(T('c6', '提一下')), { y: 10 }); sfx('tick', Q(T('c6', '提一下')), { g: 0.6 });
+  const gRef = gloss(world, '写 <span class="mono">Refs #12</span> 也不会关', 140, 872, 'up');
+  fadeIn(gRef, tRef + 0.35, { y: 10 }); sfx('tick', tRef + 0.35, { g: 0.6 });
 
   const hold = s.end - s.start, dx = Math.min(30, 1.3 * hold);
   cam.track(s.start, { x: 960, y: 484, z: 1 }, [[s.start + 0.05, { x: 960 + dx }, hold, { ease: 'none', sfx: false }]]);

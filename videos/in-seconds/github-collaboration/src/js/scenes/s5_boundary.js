@@ -1,4 +1,4 @@
-// 边界或比较：有写权限的人不用 Fork，直接在原仓库开分支、提 PR；换个平台叫法也变（GitLab 叫合并请求），底下记录修改的始终是 Git。
+// 边界或比较：有写权限的人不用 Fork，直接在原仓库开分支、提 PR；换个平台叫法也变（GitLab 叫 Merge Request：英文原名就不同，不是翻译的差别），底下记录修改的始终是 Git。
 // 前半：两条路并排——没有写权限的你（四步）与有写权限的人（少了 Fork 这一步）。后半：分层图——上层是各网站的功能，下层是 Git。
 scene('boundary', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
@@ -38,35 +38,47 @@ scene('boundary', ({ root, s, c0 }) => {
   const tNoF = Q(T('d1', 'Fork')) - 0.15;
   fadeIn(rn[1], tNoF, { x: 16, y: 0 }); sfx('tick', tNoF, { g: 0.7, p: 0.5 });
   markOn(world, box(ln[1], world), tNoF, Tend('d2') + 0.2, 6);
-  const tBr = Q(T('d2', '开分支')) - 0.2;
+  const tBr = Q(T('d2')) - 0.1;
   arrowIn(ra[0], tBr - 0.1, 0.45); fadeIn(rn[2], tBr + 0.2, { x: 16, y: 0 }); sfx('pop', tBr + 0.2, { g: 0.6, p: 0.5 });
-  const tP = Q(T('d2', '提')) - 0.1;
+  const tP = Q(T('d2')) + 0.5;
   arrowIn(ra[1], tP - 0.1, 0.3); fadeIn(rn[3], tP + 0.1, { x: 16, y: 0 }); sfx('pop', tP + 0.1, { g: 0.6, p: 0.6 });
 
   // ── 换段：两条路往上收走，分层图从下面升起来（两边的「提 PR」变成上层的 Pull Request） ──
-  const tL = T('d3') - 0.45;
+  const tL = T('d3') + 0.15;   // 两条路多留到 d3 开头，读完（F04）
   [L1, R1, ...ln, ...rn].forEach((e, i) => fadeOut(e, tL + (i % 5) * 0.03, { y: -24, d: 0.35 }));
   [...la, ...ra].forEach((p) => fromTo(p, tL, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }));
   sfx('whoosh', tL, { g: 0.5 });
   const item = (icon, t, col = C.fg) => `<span class="btn">${oct(icon, 26, col)}${t}</span>`;
-  const layer = (x, y, w, col, title, items) => {
-    const e = el(world, '', `<div style="font-size:30px;font-weight:700;color:${col};margin-bottom:18px">${title}</div><div class="row" style="gap:16px;flex-wrap:wrap">${items}</div>`, x, y, w);
+  const layer = (x, y, w, col, title, items, foot = '') => {
+    const e = el(world, '', `<div style="font-size:30px;font-weight:700;color:${col};margin-bottom:18px">${title}</div><div class="row" style="gap:16px;flex-wrap:wrap">${items}</div>${foot}`, x, y, w);
     css(e, { border: `3px solid ${col}`, borderRadius: '16px', padding: '24px 28px', background: '#f6f8fa', whiteSpace: 'normal' });
     return e;
   };
-  const hub = layer(120, 170, 1000, C.accent, 'GitHub 网站上的功能', item('repo-forked', 'Fork') + `<span class="btn pr">${oct('git-pull-request', 26, C.success)}Pull Request</span>` + item('issue-opened', 'Issue', C.success));
-  const lab = layer(1180, 170, 620, C.muted, 'GitLab 网站上的功能', item('repo-forked', 'Fork') + `<span class="btn mr">${oct('git-pull-request', 26, C.success)}合并请求</span>` + item('issue-opened', 'Issue', C.success));
-  const git = layer(120, 560, 1680, C.success, 'Git：记下每一次修改', ['commit 提交', 'branch 分支', 'merge 合并', 'push 推送'].map((t) => `<span class="chip" style="font-size:28px;color:var(--fg);background:#ffffff;border:2px solid var(--bd);padding:6px 16px">${t}</span>`).join(''));
-  const tHub = Q(T('d3')) - 0.1;
+  // 两边都写英文原名；d4 时各自下面出一行字面意思：一个是「拉取」，一个是「合并」——原名就不同，不是中文翻译的差别（F10.7、F10.8）
+  const foot = (html) => `<div class="lit" style="margin-top:20px;font-size:28px;color:var(--fg);white-space:nowrap">${html}</div>`;
+  const hub = layer(120, 180, 820, C.accent, 'GitHub 网站上的功能', item('repo-forked', 'Fork') + `<span class="btn pr">${oct('git-pull-request', 26, C.success)}Pull Request</span>` + item('issue-opened', 'Issue', C.success),
+    foot(`<span class="mono" style="color:var(--accent);margin:0 12px 0 6px">pull</span> 拉取<span class="k"> · 中文文档译作</span>“拉取请求”`));
+  const lab = layer(1000, 180, 800, C.muted, 'GitLab 网站上的功能', item('repo-forked', 'Fork') + `<span class="btn mr">${oct('git-pull-request', 26, C.success)}Merge Request</span>` + item('issue-opened', 'Issue', C.success),
+    foot(`<span class="mono" style="color:var(--accent);margin:0 12px 0 6px">merge</span> 合并<span class="k"> · 直译</span>“合并请求”`));
+  const git = layer(120, 600, 1680, C.success, 'Git：记下每一次修改', ['commit 提交', 'branch 分支', 'merge 合并', 'push 推送'].map((t) => `<span class="chip" style="font-size:28px;color:var(--fg);background:#ffffff;border:2px solid var(--bd);padding:6px 16px">${t}</span>`).join(''));
+  const tHub = Q(T('d3')) + 0.5;
   fadeIn(hub, tHub, { y: 30, d: 0.5 }); sfx('pop', tHub, { g: 0.6, p: -0.4 });
   const tLab = Q(T('d3', 'GitLab')) - 0.2;
   fadeIn(lab, tLab, { x: 30, y: 0, d: 0.45 }); sfx('pop', tLab, { g: 0.6, p: 0.5 });
-  const tMR = Q(T('d3', '合并请求')) - 0.15;
-  markOn(world, box(hub.querySelector('.pr'), world), tMR, Tend('d3') + 0.5, 6);
-  markOn(world, box(lab.querySelector('.mr'), world), tMR + 0.1, Tend('d3') + 0.5, 6);
+  const tMR = Q(T('d3', 'Merge')) - 0.15;
+  const lits = [hub, lab].map((e) => e.querySelector('.lit'));
+  lits.forEach((e) => vanish(e, 0));
+  const tLit = Q(T('d4')) - 0.1;
+  lits.forEach((e, i) => fadeIn(e, tLit + i * 0.35, { y: 10, d: 0.4 }));
+  sfx('pop', tLit, { g: 0.5, p: -0.3 }); sfx('pop', tLit + 0.35, { g: 0.5, p: 0.5 });
+  const tOrig = Q(T('d4', '不是')) - 0.1;
+  lits.forEach((e) => markOn(world, box(e.querySelector('.mono'), world), tOrig, Tend('d5') + 0.3, 7));
+  sfx('tick', tOrig, { g: 0.6 });
+  markOn(world, box(hub.querySelector('.pr'), world), tMR, Tend('d4') + 0.3, 6);
+  markOn(world, box(lab.querySelector('.mr'), world), tMR + 0.1, Tend('d4') + 0.3, 6);
   sfx('tick', tMR, { g: 0.7 });
   // 下层：Git 从下面升起来，两条虚线把上层接到它身上
-  const tGit = Q(T('d4')) - 0.3;
+  const tGit = Q(T('d5')) - 0.3;
   fadeIn(git, tGit, { y: 40, d: 0.55 }); sfx('thud', tGit + 0.3, { g: 0.6 });
   const hb = box(hub, world), lb = box(lab, world), gb = box(git, world);
   const d1 = path(ov, `M${hb.cx},${hb.b + 8} V${gb.y - 10}`, 'muted', { w: 4, dashed: '10 10', arrow: false });
@@ -74,8 +86,8 @@ scene('boundary', ({ root, s, c0 }) => {
   arrowIn(d1, tGit + 0.35, 0.4); arrowIn(d2, tGit + 0.45, 0.4);
   const note = el(world, 'k', '都建在 Git 上', hb.cx + 24, hb.b + 70); css(note, { fontSize: '28px' });
   fadeIn(note, tGit + 0.5, { x: -10, y: 0 });
-  fromTo(git, Q(T('d4', '始终')), { borderWidth: '3px' }, { keyframes: [{ borderWidth: '7px', duration: 0.18 }, { borderWidth: '4px', duration: 0.4 }], immediateRender: false });
-  sfx('chime', Q(T('d4', '始终')), { g: 0.5 });
+  fromTo(git, Q(T('d5', '始终')), { borderWidth: '3px' }, { keyframes: [{ borderWidth: '7px', duration: 0.18 }, { borderWidth: '4px', duration: 0.4 }], immediateRender: false });
+  sfx('chime', Q(T('d5', '始终')), { g: 0.5 });
 
   hudState(s.start + 0.2, st('merged', 'git-merge', 'Merged #13'));
   const hold = s.end - s.start, dx = Math.min(24, 1.5 * hold);

@@ -112,7 +112,8 @@ def compose(ctx):
             for i in range(4): put(shaker(), t0 + i * B + E, 0.8 if i % 2 else 0.5, pan=0.3, send=0.1)
 
     # ── 两支旋律：按全片的八分音符计数 ──
-    end_lines = t_out + BAR
+    tail = total - t_out                               # 片尾名单的长度（r2 起 4 秒）
+    end_lines = t_out + min(BAR, tail * 0.4)
     k = 0
     while k * E < end_lines:
         t = k * E; bar = int(t // BAR); i = k % 8
@@ -137,7 +138,7 @@ def compose(ctx):
     put(bell(hz(86)), t_title, 0.45, send=0.6)
     put(bell(hz(86)), t_merge, 0.55, send=0.6); put(bell(hz(81)), t_merge + B, 0.3, send=0.6)
     put(bell(hz(86)), t_lift, 0.45, send=0.6)
-    t_end = snap(t_out + 2 * BAR)
+    t_end = snap(t_out + min(2 * BAR, tail * 0.4))      # 最后一个和弦：名单短时提前落下，留出余音
     if t_end < total - 0.5:
         put(marimba(hz(74), 2.5), t_end, 0.5, send=0.4); put(vibes(hz(62), 3.0), t_end, 0.45, send=0.4)
         put(pad([hz(n) for n in [50, 57, 62, 66, 69]], total - t_end + 0.5), t_end, 0.5, send=0.6)

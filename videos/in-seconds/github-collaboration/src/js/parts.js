@@ -6,7 +6,8 @@ const el = (parent, cls, html, x, y, w, hh) => { const e = h('div', 'abs ' + (cl
 const fadeIn = (e, t, o = {}) => show(e, t, { y: o.y != null ? o.y : 16, x: o.x || 0, d: o.d || 0.4, s: o.s });
 const fadeOut = (e, t, o = {}) => hide(e, t, { y: o.y != null ? o.y : -10, x: o.x || 0, d: o.d || 0.35 });
 // 已在场的元素换成另一种样子：叠一层新样子淡入，旧的淡出（不让类名一下切过去，F30）
-const swapFade = (a, b, t, d = 0.3) => { fromTo(a, t, { autoAlpha: 1 }, { autoAlpha: 0, duration: d, ease: 'power1.inOut', immediateRender: false }); fromTo(b, t, { autoAlpha: 0 }, { autoAlpha: 1, duration: d, ease: 'power1.inOut' }); };
+// 旧的先淡出一半，新的再接着淡入：两种字不在同一处叠着出现（r2：Merge pull request 与 Merged 叠字）
+const swapFade = (a, b, t, d = 0.3) => { fromTo(a, t, { autoAlpha: 1 }, { autoAlpha: 0, duration: d * 0.6, ease: 'power1.in', immediateRender: false }); fromTo(b, t + d * 0.45, { autoAlpha: 0 }, { autoAlpha: 1, duration: d * 0.6, ease: 'power1.out' }); };
 
 // ── GitHub 的几样部件（html 字符串） ──
 const st = (kind, icon, text, size = 28) => `<span class="state ${kind}">${oct(icon, size, kind === 'idle' ? C.muted : '#fff')}${text}</span>`;

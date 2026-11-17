@@ -92,6 +92,12 @@ scene('how', ({ root, s, c0 }) => {
   const stbox = meta.querySelector('.stbox'), openPill = stbox.firstChild;
   const mergedPill = h('span', '', stbox, st('merged', 'git-merge', 'Merged', 26)); css(mergedPill, { position: 'absolute', left: 0, top: 0 }); stbox.style.width = mergedPill.offsetWidth + 'px';   // 留出 Merged 的宽度，换样子时后面的字不动
   const base = meta.querySelector('.base'), head = meta.querySelector('.head'), ask = meta.querySelector('.ask');
+  // 合并之后页头换成「已合并进」（GitHub 合并后的页头不再是「想把」）；两种说法叠在同一处，宽度取较宽的那个，后面的分支标签不动
+  const ask0 = h('span', '', ask, ask.innerHTML); ask.childNodes[0] && [...ask.childNodes].slice(0, -1).forEach((n) => n.remove());
+  const ask1 = h('span', '', ask, `<b style="color:var(--fg)">你</b>的 1 个提交已合并进`);
+  css(ask, { position: 'relative', display: 'inline-block' }); css(ask1, { position: 'absolute', left: 0, top: 0, whiteSpace: 'nowrap' });
+  ask.style.width = Math.max(ask0.offsetWidth, ask1.offsetWidth) + 'px';
+  vanish(ask1, 0);
   // 时间线（左栏）
   const rail = el(world, 'tlrail', '', 146, 360, 4, 0);
   const ev = (y, icon, html, w = 920) => { const ic = el(world, 'tlicon', icon, 120, y); const b = el(world, '', html, 200, y, w); return [ic, b]; };
@@ -139,8 +145,14 @@ scene('how', ({ root, s, c0 }) => {
   [...meta.children].filter((e) => e !== base && e !== head).forEach((e, i) => fadeIn(e, tFly + 0.5 + i * 0.06, { y: 10, d: 0.35 }));
   const tE1 = Q(T('b7', 'Pull')) + 0.2;   // 时间线的第一条：你发起了它
   fadeIn(E1[0], tE1); slide(E1[1], tE1, { x: -90, d: 0.45, ease: 'power3.out' }); fromTo(rail, tE1, { height: 0 }, { height: 130, duration: 0.5 });
-  const tMb = Q(T('b8', '维护者')) - 0.2;   // 合并框在讲到「请维护者」时进来：拉不拉，在它手里
+  const tMb = Q(T('b8', '请')) - 0.1;   // 合并框在讲到「请你拉取」时进来：被请的是维护者，拉不拉在它手里
   slide(mbox, tMb, { x: 110, d: 0.45, ease: 'power3.out' }); sfx('pop', tMb, { g: 0.5, p: 0.6 });
+  // 「请维护者」：注解从左边指着合并按钮——拉不拉，按钮在维护者手里（F3.6）；b10 的改动行进来之前让开
+  const gWho = gloss(world, '合并按钮在维护者 <b>WaterRun</b> 手里', 0, 532, 'right');
+  gWho.style.left = (1180 - 22 - gWho.offsetWidth) + 'px';
+  const tWho = Q(T('b8', '维')) - 0.1;
+  fadeIn(gWho, tWho, { x: 14, y: 0 }); sfx('tick', tWho, { g: 0.6, p: 0.5 });
+  fadeOut(gWho, Q(T('b10')) - 0.55);
   sfx('pop', tPR + 0.35, { g: 0.6 });
   hudState(Q(T('b7', 'Pull')), st('open', 'git-pull-request', 'Open #13'));
 
@@ -148,27 +160,30 @@ scene('how', ({ root, s, c0 }) => {
   const tb = box(title, world);
   // b7 先说它是什么（一页合并申请），b8 讲到「请你拉取」时换成字面意思
   const gPR0 = gloss(world, '<b>Pull Request</b>：请对方合并你的改动', tb.r + 30, 136, 'left', 'Pull Request');
-  const gPR = gloss(world, '<b>Pull Request</b> = pull 拉取 + request 请求', tb.r + 30, 136, 'left', 'Pull Request');
-  fadeIn(gPR0, Q(T('b7', 'Pull')) + 0.5, { x: -14, y: 0 }); sfx('tick', Q(T('b7', 'Pull')) + 0.5, { g: 0.7 });
-  vanish(gPR, 0); const tSw = Q(T('b8', '意思'));
-  fromTo(gPR0, tSw, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -26, duration: 0.25, immediateRender: false }); fromTo(gPR, tSw, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power3.out' }); sfx('tick', Q(T('b8', '意思')), { g: 0.6 });
+  const gPR = gloss(world, '<b>Pull Request</b> = <span class="pl">pull 拉取</span> + request 请求', tb.r + 30, 136, 'left', 'Pull Request');
+  // r2：只留一个注解（字面意思），从 b7 一直留到 b10 讲完；原来 b8 时换掉的那一个只停了 1.7 秒（F04）
+  vanish(gPR0, 0); const tSw = Q(T('b7', 'Pull')) + 0.5;
+  fromTo(gPR, tSw, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power3.out' }); sfx('tick', tSw, { g: 0.6 });
+  // b8「请你拉取」：注解里的 pull 拉取 点亮
+  const tPl = Q(T('b8', '请')) - 0.1;
+  markOn(world, box(gPR.querySelector('.pl'), world), tPl, T('b10') - 0.2, 4); sfx('tick', tPl, { g: 0.5, p: 0.3 });
   // 「请维护者把改动拉过去」：一道弧线从你的分支拉到原仓库的 main
   const ov2 = overlay(world);
   const hb0 = box(head, world), bb0 = box(base, world);
   const pull = path(ov2, `M${hb0.cx},${hb0.y - 4} C${hb0.cx - 40},${hb0.y - 22} ${bb0.cx + 40},${bb0.y - 22} ${bb0.cx + 6},${bb0.y - 6}`, 'accent', { w: 4 });
-  const tPull = Q(T('b8', '拉过去')) - 0.3;
+  const tPull = Q(T('b8', '请')) + 0.1;   // 讲到「请你拉取」就画：从你的分支拉到原仓库的 main
   arrowIn(pull, tPull, 0.6); sfx('whoosh', tPull, { g: 0.35, p: -0.3 });
   fromTo(pull, T('b10') - 0.2, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false });
   // ── b9 一页申请：「想把 1 个提交合并进」这句就是申请 ──
   markOn(world, box(ask, world), Q(T('b9', '申请')) - 0.2, T('b10') + 0.2, 6);
   // 「不是直接改进去」：合并按钮在维护者手里
   // 「不是直接改进去」：原仓库的 main 这时还没变——第 13 行还是 >（右下角一张卡，草稿出来之前让开；合并之后同一位置换成 >=）
-  const tNot = Q(T('b9', '直接')) - 0.25;
+  const tNot = Q(T('b8', '过')) - 0.25;   // 「把改动拉过去」：拉到哪——原仓库的 main，这时还没变
   const mainOld = el(world, 'box', `<div class="boxh">${repoName('WaterRun', '活动报名', { size: 26, pub: false })}<span class="chip">main</span><span class="pill" style="margin-left:auto">${oct('lock', 24, C.muted)}还没变</span></div>
       <div style="padding:6px 0">${codeLn(13, `if (age ${GT} 18) {`)}</div>`, 1180, 690, 620);
   slide(mainOld, tNot, { y: 90, d: 0.45, ease: 'power3.out' }); sfx('tick', tNot, { g: 0.6, p: 0.6 });
   const gMain = gloss(world, '<b>main</b>：要等维护者合并才会变', 1180, 690 + mainOld.offsetHeight + 16, 'up');
-  fadeIn(gMain, tNot + 0.35, { y: 12 });
+  fadeIn(gMain, Q(T('b9', '直接')) - 0.1, { y: 12 });
   fadeOut(gMain, T('b11') + 0.1);
   fromTo(mainOld, T('b12') - 0.1, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 70, duration: 0.35, ease: 'power2.in', immediateRender: false });
   sfx('tick', Q(T('b9', '申请')) - 0.2, { g: 0.6 });
@@ -182,11 +197,11 @@ scene('how', ({ root, s, c0 }) => {
   fadeIn(E2[0], tDiff); slide(E2[1], tDiff + 0.05, { x: -90, d: 0.45, ease: 'power3.out' }); to(rail, tDiff, { height: 340, duration: 0.5 });
   sfx('blip', tDiff, { g: 0.6 });
   const dlb = box(E2[1].querySelector('.dl'), world);
-  const gLine = gloss(world, '改了哪一行', 1130, dlb.y + 26, 'left');
-  gLine.style.left = (box(E2[1], world).r + 18) + 'px';
+  // 注解放在删除行里、代码右边（原来在框外，压住了右栏的合并框）
+  const gLine = gloss(world, '改了哪一行', 700, dlb.y + 5, 'left');
   fadeIn(gLine, Q(T('b10', '改了')), { x: -12, y: 0 }); sfx('pop', Q(T('b10', '改了')), { g: 0.6, p: -0.2 });
   // 讲完 b10，三处注解收起，让位给审查
-  [gHead, gBase, gLine, gPR].forEach((e, i) => fadeOut(e, T('b11') + 0.1 + i * 0.05));
+  [gHead, gBase, gPR].forEach((e, i) => fadeOut(e, T('b11') + 0.1 + i * 0.05)); fadeOut(gLine, T('b12'));
 
   // ── b11 逐行提意见、机器跑检查 ──
   const tCm = Q(T('b11', '逐航')) - 0.1, tCk = Q(T('b11', '检查')) - 0.1;
@@ -195,25 +210,49 @@ scene('how', ({ root, s, c0 }) => {
   swapFade(ck0, ck1, tCk, 0.3); sfx('chime', tCk + 0.1, { g: 0.45, p: 0.5 });
   swapFade(rv0, rv1, tCm + 0.4, 0.3); sfx('tick', tCm + 0.4, { g: 0.6, p: 0.5 });
   // ── b12 草稿：能看，不能合并 ──
-  const tDr = Q(T('b12', '草稿')) - 0.25;
+  const tDr = Q(T('b12')) + 0.1;   // 草稿卡在 b12 一开口就进来，注解才停得够久（F04）
   slide(draft, tDr, { y: 90, d: 0.45, ease: 'power3.out' }); sfx('blip', tDr, { g: 0.6, p: 0.6 });
   const tNo = Q(T('b12', '不能合并')) - 0.15;
   const offBtn = draft.querySelector('.btn.off'), ob = box(offBtn, world);
+  // 「不能合并」：草稿卡上灰色的合并按钮换成红色的「不能合并」（F4.1）
+  const noBtn = h('span', 'btn', offBtn.parentNode, `${oct('x-circle-fill', 28, '#ffffff')}不能合并`);
+  offBtn.parentNode.style.position = 'relative';
+  css(noBtn, { position: 'absolute', left: offBtn.offsetLeft + 'px', top: offBtn.offsetTop + 'px', width: offBtn.offsetWidth + 'px', boxSizing: 'border-box', justifyContent: 'center', background: C.danger, borderColor: C.danger, color: '#ffffff' });
+  vanish(noBtn, 0);
   markOn(world, ob, tNo, T('b13') - 0.2, 6);
   // 维护者的指针先去点草稿的合并按钮：按不动，按钮晃一下
   fromTo(offBtn, tNo + 0.45, { x: 0 }, { keyframes: [{ x: -12, duration: 0.06 }, { x: 10, duration: 0.07 }, { x: -6, duration: 0.07 }, { x: 0, duration: 0.06 }], immediateRender: false });
   sfx('error', tNo + 0.45, { g: 0.45, p: 0.6 });
-  const gDr = gloss(world, '标成 <b>Ready for review</b> 之后才能合并', ob.x, ob.b + 18, 'up');
-  fadeIn(gDr, tNo + 0.5, { y: 12 }); fadeOut(gDr, T('b13') - 0.2, { y: 10 });
-  fromTo(draft, T('b13') - 0.15, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 70, duration: 0.35, ease: 'power2.in', immediateRender: false });
+  swapFade(offBtn, noBtn, tNo - 0.35, 0.3);
+  const gDr = gloss(world, '<b>Ready for review</b> 之后才能合并', ob.x, ob.b + 18, 'up');
+  fadeIn(gDr, tDr + 0.25, { y: 12 }); fadeOut(gDr, Q(T('b13')) - 0.05, { y: 10 });
+  fromTo(draft, Q(T('b13')) + 0.4, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 70, duration: 0.35, ease: 'power2.in', immediateRender: false });
   // ── b13 维护者一点合并 ──
   const mgb = box(mg, world);
   const ptr2 = pointer(world);
   const tMg = Q(T('b13', '合并'));
-  pointerPath(ptr2, [[tNo - 0.2, ob.x + ob.w * 0.8, ob.y + ob.h * 0.7], [tMg - 0.6, mgb.x + mgb.w * 0.8, mgb.y + mgb.h * 0.7, 0.5]], s.end - 0.3);
+  // b14：合并后 GitHub 给出 Delete branch；分支删掉，PR #13 留着（F3.7）。条子放在 main 卡下面
+  const delBar = el(world, 'box', `<div class="row" style="gap:14px;padding:12px 20px;font-size:26px;height:72px;box-sizing:border-box">${oct('git-branch', 26, C.muted)}<span class="chip">你:fix-age</span><span class="k">可以删掉了</span><span class="btn db" style="margin-left:auto;padding:6px 16px;font-size:24px">Delete branch</span></div>`, 1180, 852, 620);
+  const delRow = delBar.firstChild, db = delBar.querySelector('.db');
+  const delRow2 = h('div', 'row', delBar, `${oct('git-branch', 26, C.muted)}<span class="chip" style="text-decoration:line-through;color:var(--muted);background:var(--bgm)">你:fix-age</span><span class="k">已删除</span><span class="btn" style="margin-left:auto;padding:6px 16px;font-size:24px">Restore branch</span>`);
+  css(delRow2, { position: 'absolute', left: 0, top: 0, right: 0, height: '72px', gap: '14px', padding: '12px 20px', fontSize: '26px', boxSizing: 'border-box', background: '#ffffff' });
+  vanish(delRow2, 0);
+  const tDelIn = Q(T('b13', '主线')) + 0.3, tDel = Q(T('b14', '删掉')) + 0.1;
+  slide(delBar, tDelIn, { y: 60, d: 0.45, ease: 'power3.out' }); sfx('pop', tDelIn, { g: 0.5, p: 0.6 });
+  const dbb = box(db, world);
+  clickAt(ptr2, tDel, db);
+  swapFade(delRow, delRow2, tDel + 0.15, 0.3); sfx('whoosh', tDel + 0.15, { g: 0.35, p: 0.5 });
+  // 「PR 一直留着」：标题的 #13 点亮，注解在原来 Pull Request 注解的位置
+  const tKeep = Q(T('b14', 'PR')) - 0.15;
+  const numEl = title.querySelector('.num');
+  if (numEl) markOn(world, box(numEl, world), tKeep, s.end - 0.2, 4);
+  const gKeep = gloss(world, '<b>#13</b> 和提交记录一直留着', tb.r + 30, 136, 'left');
+  const tKeepG = Q(T('b14')) + 0.3;
+  fadeIn(gKeep, tKeepG, { x: -14, y: 0 }); sfx('tick', tKeepG, { g: 0.6 });
+  pointerPath(ptr2, [[tNo - 0.2, ob.x + ob.w * 0.8, ob.y + ob.h * 0.7], [tMg - 0.6, mgb.x + mgb.w * 0.8, mgb.y + mgb.h * 0.7, 0.5], [tDel - 0.6, dbb.x + dbb.w * 0.8, dbb.y + dbb.h * 0.7, 0.5]], s.end - 0.3);
   clickAt(ptr2, tNo + 0.4);
   clickAt(ptr2, tMg, mg);
-  swapFade(mg, mg1, tMg + 0.12, 0.25); swapFade(openPill, mergedPill, tMg + 0.2, 0.3);
+  swapFade(mg, mg1, tMg + 0.12, 0.25); swapFade(openPill, mergedPill, tMg + 0.2, 0.3); swapFade(ask0, ask1, tMg + 0.25, 0.3);
   fadeIn(E4[0], tMg + 0.25); slide(E4[1], tMg + 0.3, { x: -90, d: 0.45, ease: 'power3.out' }); to(rail, tMg + 0.25, { height: 545, duration: 0.4 });
   sfx('thud', tMg + 0.12, { g: 0.7 }); sfx('chime', tMg + 0.35);
   hudState(tMg + 0.3, st('merged', 'git-merge', 'Merged #13'));
