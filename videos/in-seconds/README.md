@@ -61,20 +61,22 @@
 | 9 | 200 秒，关于轮胎胎宽和抓地力 | zh | 计划中 | `tire-width` |
 | 10 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
 | 11 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
-| 12 | 256 秒有关现代密码学 | zh | 计划中 | `modern-crypto` |
-| 13 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
-| 14 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
-| 15 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
-| 16 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
-| 17 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
-| 18 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
-| 19 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
-| 20 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
-| 21 | 150 秒速通 Git | zh | 计划中 | `git` |
-| 22 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](config-file-formats/) |
-| 23 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
-| 24 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
-| 25 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
-| 26 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 制作中 | [`github-collaboration`](github-collaboration/) |
-| 27 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
+| 12 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
+| 13 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
+| 14 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
+| 15 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
+| 16 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
+| 17 | 150 秒认识 EA211 的全家桶：大众的横置四缸家族 | zh | 计划中 | [`ea211-family`](ea211-family/) |
+| 18 | 128 秒了解内存是怎么工作的，以及它为什么这么快 | zh | 计划中 | `how-ram-works` |
+| 19 | 256 秒搞懂 PHP 是如何呈现出一个网站的 | zh | 计划中 | `php` |
+| 20 | 150 秒速通 Git | zh | 计划中 | `git` |
+| 21 | 150秒认识五大主流配置文件 | zh | 已成片 | [`config-file-formats`](config-file-formats/) |
+| 22 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
+| 23 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
+| 24 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
+| 25 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 制作中 | [`github-collaboration`](github-collaboration/) |
+| 26 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
+| 27 | 96秒了解TTFT(首Token延迟) | zh | 计划中 | `ttft` |
+| 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |
+| 29 | 192秒速通现代密码学 | zh | 计划中 | `modern-crypto` |
 <!-- catalog:end -->

@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-已登记制作项目 35 部，已登记发布 28 部，其余 7 部；另有 171 个计划选题（可仅保留简报），见[片单](README.md)。
+已登记制作项目 35 部，已登记发布 28 部，其余 7 部；另有 173 个计划选题（可仅保留简报），见[片单](README.md)。
 
 此处核对结构化署名记录，未逐部观看成片；字段齐全不代表最终验收通过。模型名按原记录列出，不合并简称或猜测版本；一片可有多个模型，参与片数不能相加当成总片数。服务另列。
 
@@ -49,7 +49,7 @@
 |---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/README.md) | 审稿 | WaterRun | Claude Opus 5.5：取证、实验、文案、配音试听、配乐小样、视觉设计 | MiniMax speech-2.8-hd：配音试听<br>Whisper small：读音回听 |
 | [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 已放弃 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐初稿、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿<br>Claude Opus 5.5：分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host |
-| [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/README.md) | 审稿 | WaterRun | Qwen 4 Max Preview：取证、文案草稿<br>Claude Opus 5.5：补充取证、文案、配音试听、配乐小样、视觉方向与关键帧 | 未登记 |
+| [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/README.md) | 预览迭代 | WaterRun | Qwen 4 Max Preview：取证、文案草稿<br>Claude Opus 5.5：补充取证、文案、配音、视觉与动画、配乐与音效 | MiniMax speech-2.8-hd（音色 Chinese (Mandarin)_Warm_Girl）：旁白配音 |
 | [Lua源码全解析](source-code/lua-source/README.md) | 审稿 | WaterRun | GPT-6.1 Sol：源码测绘、取证<br>Claude Opus 5.5：分集拟定、补充取证、文案、视觉设计、配乐 | 未登记 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 | [怎么打手枪？](standalone/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
