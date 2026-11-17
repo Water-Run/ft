@@ -79,4 +79,5 @@
 | 27 | 96秒了解TTFT(首Token延迟) | zh | 计划中 | `ttft` |
 | 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |
 | 29 | 192秒速通现代密码学 | zh | 计划中 | `modern-crypto` |
+| 30 | 100秒搞明白SVN: 中心化的代码管理 | zh | 计划中 | `svn` |
 <!-- catalog:end -->
