@@ -174,7 +174,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
   "rates":       { "zh": "+5%", "en": "+6%" },
   "asr_prompts": { "zh": "以下是普通话的讲解，介绍……", "en": "A narration about …" },
   "review": { "required": true, "reviewer": "WaterRun" },
-  "render": { "fps": 60, "mb": 8 },
+  "render": { "fps": 60, "mb": 4 },
   "audio":  { "music": "score", "music_db": -13, "duck_db": 8, "sfx_db": -8, "score": { … } },
   "check":  { … }
 }
@@ -196,7 +196,7 @@ node kit/tools/look.js <视频> --url "/cover.html?r=169&lang=zh" --size 1920x10
 | `delivery` | 交付后填写：`date`，以及各语言最终文件的 `duration`（秒，实测） |
 | `release` | 发布后填写，每个平台一条：`platform`、`url`、`date`，可加 `title`、`lang` |
 | `reception` | 策划者的评价：`date`、`score`（满分 10，可空）、`by`、`ref`（反馈记录里的 P 编号或复盘文档） |
-| `render` | `fps`（60）、`mb` 运动模糊的子帧数（1 为不开）、`shutter` 快门开角（0.5）、`crf`（15）、`encoder` / `cq` / `workers`（见第 1 节「硬件编码」）、`gpu`（WebGL 场景设 1；有可用显卡时普通场景也可设 1，见第 1 节「用显卡出帧」）、`scale` 交付分辨率的倍数（1 为 1920×1080，2 为 3840×2160） |
+| `render` | `fps`（60）、`mb` 运动模糊的子帧数（1 为不开；模板与系列起点缺省 4，各系列可另定）、`shutter` 快门开角（0.5）、`crf`（15）、`encoder` / `cq` / `workers`（见第 1 节「硬件编码」）、`gpu`（WebGL 场景设 1；有可用显卡时普通场景也可设 1，见第 1 节「用显卡出帧」）、`scale` 交付分辨率的倍数（1 为 1920×1080，2 为 3840×2160） |
 | `audio` | 见 [sound.md](../guides/sound.md) 第 4 节 |
 | `check` | 见下 |
 
