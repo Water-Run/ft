@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "6f838caf5b83a2845ac3aeb2ea0a051223a8458dee8e7b1b59e8b155b21923a7",
+      "content_sha256": "d691b8078a78c849a18ddc1b47d97cfd6bc8b6ce099a80c687503e5eb66f49ab",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-17T09:20:00+08:00",
-      "evidence": "review/NOTES.md#confirm-zh-6f838caf"
+      "confirmed_at": "2026-11-17T15:14:00+08:00",
+      "evidence": "review/NOTES.md#confirm-zh-d691b807"
     }
   }
 }

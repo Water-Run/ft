@@ -1,4 +1,4 @@
-// 边界或比较：有写权限的人不用 Fork，直接在原仓库开分支、提 PR；换个平台叫法也变（GitLab 叫 Merge Request：英文原名就不同，不是翻译的差别），底下记录修改的始终是 Git。
+// 边界或比较：有写权限的人不用 Fork，直接在原仓库开分支、提 PR；换个平台叫法也变（GitLab 叫 Merge Request），做的事一样，底下记录修改的始终是 Git。
 // 前半：两条路并排——没有写权限的你（四步）与有写权限的人（少了 Fork 这一步）。后半：分层图——上层是各网站的功能，下层是 Git。
 scene('boundary', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
@@ -54,7 +54,7 @@ scene('boundary', ({ root, s, c0 }) => {
     css(e, { border: `3px solid ${col}`, borderRadius: '16px', padding: '24px 28px', background: '#f6f8fa', whiteSpace: 'normal' });
     return e;
   };
-  // 两边都写英文原名；d4 时各自下面出一行字面意思：一个是「拉取」，一个是「合并」——原名就不同，不是中文翻译的差别（F10.7、F10.8）
+  // 两边都写英文原名；d4 时各自下面出一行字面意思：一个是「拉取」，一个是「合并」——名字不同（F10.7、F10.8）
   const foot = (html) => `<div class="lit" style="margin-top:20px;font-size:28px;color:var(--fg);white-space:nowrap">${html}</div>`;
   const hub = layer(120, 180, 820, C.accent, 'GitHub 网站上的功能', item('repo-forked', 'Fork') + `<span class="btn pr">${oct('git-pull-request', 26, C.success)}Pull Request</span>` + item('issue-opened', 'Issue', C.success),
     foot(`<span class="mono" style="color:var(--accent);margin:0 12px 0 6px">pull</span> 拉取<span class="k"> · 中文文档译作</span>“拉取请求”`));
@@ -71,9 +71,14 @@ scene('boundary', ({ root, s, c0 }) => {
   const tLit = Q(T('d4')) - 0.1;
   lits.forEach((e, i) => fadeIn(e, tLit + i * 0.35, { y: 10, d: 0.4 }));
   sfx('pop', tLit, { g: 0.5, p: -0.3 }); sfx('pop', tLit + 0.35, { g: 0.5, p: 0.5 });
-  const tOrig = Q(T('d4', '不是')) - 0.1;
-  lits.forEach((e) => markOn(world, box(e.querySelector('.mono'), world), tOrig, Tend('d5') + 0.3, 7));
-  sfx('tick', tOrig, { g: 0.6 });
+  // d4「做的事一样」：两张卡的 Pull Request 与 Merge Request 之间出一个等号——名字不同，做的是同一件事（F10.7、F3.1）
+  const pb = box(hub.querySelector('.pr'), world), hb0 = box(hub, world), lb0 = box(lab, world);
+  const eq = el(world, '', '=', 0, 0);
+  css(eq, { fontSize: '56px', fontWeight: 700, color: C.accent, lineHeight: 1 });
+  eq.style.left = ((hb0.r + lb0.x) / 2 - eq.offsetWidth / 2) + 'px'; eq.style.top = (pb.cy - eq.offsetHeight / 2) + 'px';
+  const tEq = Q(T('d4', '一样')) - 0.1;
+  fromTo(eq, tEq, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' });
+  sfx('tick', tEq, { g: 0.6 });
   markOn(world, box(hub.querySelector('.pr'), world), tMR, Tend('d4') + 0.3, 6);
   markOn(world, box(lab.querySelector('.mr'), world), tMR + 0.1, Tend('d4') + 0.3, 6);
   sfx('tick', tMR, { g: 0.7 });

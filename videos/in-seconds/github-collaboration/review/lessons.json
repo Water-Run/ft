@@ -4,183 +4,183 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文案通读（稿本 d691b807）：o3–o4 提出「没有权限，怎么提改动」，what/how/numbers/boundary 各推进一步，e2–e4 用三步回答；WaterRun 看过 r1、r2 全片"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "一个例子 if (age > 18) 从 o1 的报不上名走到 b5 改成 >=、b13 合并进 main、e1 报名成功；新名词与解释句列在 review/NOTES.md 术语表；PR 编号 #13 由 c1–c4 的编号簿演出来历"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "Git / GitHub 在 a1–a2 第一次出现即交代；GitLab 比较 d3–d4 同一任务（从 Fork 向上游请求合并，F10.7）；有写权限的边界 d1–d2；sheets.js 全片总览核对画面编号注明属于谁（WaterRun / 活动报名 的编号）"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "readable.js：r2 全片 0 段不足，正式片前改动段 78–131 秒 0 段不足（2026-11-17）；WaterRun 连续看过 r1、r2，r2 的停留意见（b14 动画时机）已改"
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "镜头每场只做一次单向极慢横移（源码 cam.track：每场 ≤ 30 像素、每秒 ≤ 2 像素，不推近），scan.js 无 ZOOM 提示；sheets.js every 3 全片通看：Fork→分支→PR→合并各步都是同一组对象的状态变化"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方不能听；check.js 音效覆盖通过（123 个事件、7 种）、audio.js 数值自检通过，听感未核。WaterRun 对 r1、r2 的意见里没有提音效与配乐",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "画面是重绘的虚构仓库界面（WaterRun / 活动报名），没有终端回显、真实截图或个人路径；sheets.js 全片总览逐张看过，片尾只有公开仓库地址",
       "evidence": ""
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "finish.js 与 ffprobe 读最终 out/github-collaboration-zh-1080p60.mp4（2026-11-17）：h264 1920×1080、60/1 帧、150.000 秒、I=-15.6 LUFS、TP=-1.4 dBFS，与 README「交付」一致"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md「意见与处理」逐条记策划者原话与日期，制作方的处理与自查分列在「预览与自查」；d4 的确认依据写明「新句由制作方拟定，校对者没有逐句过目」"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片不引用其他集；Git、GitHub、仓库、维护者、Fork、分支、PR、Issue 都在本片交代（NOTES 术语表）"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "Pull Request 注「pull 拉取 + request 请求」，Merge Request 注「merge 合并 · 直译“合并请求”」，Fork 注「把整个仓库复制一份，放到你名下」；Merge pull request / Delete branch / Ready for review 等按钮名旁有中文注解或同时刻的旁白（「只有维护者能点」「可以删掉」「…之后才能合并」）"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "制作方不能听。asr.js 回听：e2 的 Fork 曾被听成 Folk、Issue 听成「医术」、「叫法」听成「教法」、d4「做的事」听成「做的是」，按同音识别误差记下；「行」读 háng 已在 SAY 表改写。人耳未核",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "对象不是陌生或历史对象：开场直接从报名表的 bug 情境引入，GitHub 是观众熟悉的网站；本片不讲 GitHub 的历史",
       "evidence": ""
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾 z1 为静默 cue（credits: true），check.js 文案校对通过；sheets.js 147.5 秒一帧名单完整可读"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "sheets.js 全片总览逐屏看过画面小字，没有说明制作取舍的话；r2 已删去的「英文原名…不是翻译的差别」一类说明本轮按策划者要求从旁白换掉"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "界面按 GitHub Primer 的令牌与部件重绘（project.json check.style.palette 全为 Primer 色值，Octicons 图标，状态胶囊 Open / Merged / Draft）；README 简报与「设计」记来源（research/MATERIALS.md）；任取一帧可认出是 GitHub 页面"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "音色「温暖少女」由 WaterRun 在审片页试听后选定（2026-11-16）；成片语气制作方无法听核",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "各章主画面：开场的报名表与 signup.js；what 的仓库页；how 的三行「改动在哪儿」图与 PR 页；numbers 的编号簿；boundary 的两条路与分层图；close 的三步卡片（sheets.js every 3 全片通看）"
     },
     "F19": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "look.js 逐看改过的 b12、b14、d4 的动作中途与说完时；b12 两颗按钮改为同一格子叠放，消除错位；scan.js 错误 0；r2 的 swapFade 先出后进全片沿用"
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "sheets.js 全片总览：每个图形对应一个对象（仓库、分支、提交行、PR 页、合并框、编号格）；绿色 = 已通过 / 可合并，紫色 = 已合并，红色 = 不能合并，全片不换义"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 GitHub Primer、配乐按审片页小样 B 为本片写（tools/music.py）；check.js 没有报与起点模板或其他片子相同"
     },
     "F22": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js GLOSS 无缺注解；新名词第一次出现时有 data-gloss 注解（Git、GitHub、仓库、维护者、Fork、分支、Pull Request、Issue）；PR 页各部件成组在场，只推进被讲的那一处"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "how 一章：同一处 >= 从分支随 PR 合进 main，合并框的检查、审批、合并按钮随时间变化；numbers 一章编号簿逐号累积；sheets.js 通看"
     },
     "F24": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "镜头不推近，每场只做 ≤ 30 像素的单向横移（源码 cam.track）；scan.js 无 CUT、CAPZONE 错误；sheets.js 通看正在讲的内容都在字幕条之上"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "每段开始时讲解对象（signup.js、仓库页、PR 页、编号簿）带内容在场；画面上的字是代码、按钮名与注解，不复述字幕（本轮删去条子上与字幕重复的「可以删掉了」）；sheets.js 全片通看"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "本轮按策划者意见换 d4 后通读 boundary 一章：d3「叫法也变」→ d4「做的事一样」→ d5「始终是 Git」前后衔接；r2 制作方主动加 b14、e1（NOTES 第 3 轮）"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "2026-11-17 用 sheets.js every 3 把正式片源码全片 50 帧（6 张总览）从头看到尾，改动处 look.js 看原图；scan.js 提示仅 DENSE 一条（换场淡变那几帧，保留）；没有看连续视频，WaterRun 看过 r1、r2"
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "NOTES 术语表：每个术语的引出问题、例子与起名句依次出现（如 o3「你没有权限改」→ b1–b2 Fork 演示 → 注解给名）；Pull Request 先演「请维护者拉过去」再给字面意思"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "how 一章：前半三行「改动在哪儿」图的提交说明与两颗分支标签飞上 PR 页成为标题与 base/head；boundary 两边的「提 PR」变成分层图上层；close 回到开头的 signup.js 与报名表"
     },
     "F30": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "出现与消失均用 fadeIn / fadeOut / slide / swapFade（0.25–0.5 秒）；本轮改动的按钮换样子、条子进场、等号出现都有过渡（look.js 看中途帧）"
     }
   },
   "history": []

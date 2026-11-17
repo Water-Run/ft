@@ -91,8 +91,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "preview",
-  "next": "等策划者看预览 r2（out/zh/preview-r2.mp4）的意见，并补看 r2 新句 b14、d3–d5、e1；之后按意见改，再出下一轮或正式片",
+  "stage": "accept",
+  "next": "策划者投稿后回告平台与链接，登记交付与发布（project.json 的 delivery、release），同步片单",
   "credits": {
     "planner": "WaterRun",
     "models": [

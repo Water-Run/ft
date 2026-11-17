@@ -213,18 +213,22 @@ scene('how', ({ root, s, c0 }) => {
   const tDr = Q(T('b12')) + 0.1;   // 草稿卡在 b12 一开口就进来，注解才停得够久（F04）
   slide(draft, tDr, { y: 90, d: 0.45, ease: 'power3.out' }); sfx('blip', tDr, { g: 0.6, p: 0.6 });
   const tNo = Q(T('b12', '不能合并')) - 0.15;
-  const offBtn = draft.querySelector('.btn.off'), ob = box(offBtn, world);
-  // 「不能合并」：草稿卡上灰色的合并按钮换成红色的「不能合并」（F4.1）
+  const offBtn = draft.querySelector('.btn.off');
+  // 「不能合并」：草稿卡上灰色的合并按钮换成红色的「不能合并」（F4.1）。两颗按钮叠在同一个格子里，大小与位置完全一致
+  // （r2 用 offsetTop 绝对定位，红按钮比灰按钮低了几像素，伸出指认框、压到提示上）
   const noBtn = h('span', 'btn', offBtn.parentNode, `${oct('x-circle-fill', 28, '#ffffff')}不能合并`);
-  offBtn.parentNode.style.position = 'relative';
-  css(noBtn, { position: 'absolute', left: offBtn.offsetLeft + 'px', top: offBtn.offsetTop + 'px', width: offBtn.offsetWidth + 'px', boxSizing: 'border-box', justifyContent: 'center', background: C.danger, borderColor: C.danger, color: '#ffffff' });
+  css(offBtn.parentNode, { display: 'grid' });
+  css(offBtn, { gridArea: '1 / 1' });
+  css(noBtn, { gridArea: '1 / 1', width: '100%', boxSizing: 'border-box', justifyContent: 'center', background: C.danger, borderColor: C.danger, color: '#ffffff' });
   vanish(noBtn, 0);
+  const ob = box(offBtn, world), drb = box(draft, world);
   markOn(world, ob, tNo, T('b13') - 0.2, 6);
   // 维护者的指针先去点草稿的合并按钮：按不动，按钮晃一下
-  fromTo(offBtn, tNo + 0.45, { x: 0 }, { keyframes: [{ x: -12, duration: 0.06 }, { x: 10, duration: 0.07 }, { x: -6, duration: 0.07 }, { x: 0, duration: 0.06 }], immediateRender: false });
+  fromTo(noBtn, tNo + 0.45, { x: 0 }, { keyframes: [{ x: -12, duration: 0.06 }, { x: 10, duration: 0.07 }, { x: -6, duration: 0.07 }, { x: 0, duration: 0.06 }], immediateRender: false });
   sfx('error', tNo + 0.45, { g: 0.45, p: 0.6 });
   swapFade(offBtn, noBtn, tNo - 0.35, 0.3);
-  const gDr = gloss(world, '<b>Ready for review</b> 之后才能合并', ob.x, ob.b + 18, 'up');
+  // 提示放在草稿卡下面，不压卡片的下边框；卡片滑到九成时出来（与卡片底边留 16 像素，滑动途中也不相压）
+  const gDr = gloss(world, '<b>Ready for review</b> 之后才能合并', ob.x, drb.b + 16, 'up');
   fadeIn(gDr, tDr + 0.25, { y: 12 }); fadeOut(gDr, Q(T('b13')) - 0.05, { y: 10 });
   fromTo(draft, Q(T('b13')) + 0.4, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: 70, duration: 0.35, ease: 'power2.in', immediateRender: false });
   // ── b13 维护者一点合并 ──
@@ -232,12 +236,14 @@ scene('how', ({ root, s, c0 }) => {
   const ptr2 = pointer(world);
   const tMg = Q(T('b13', '合并'));
   // b14：合并后 GitHub 给出 Delete branch；分支删掉，PR #13 留着（F3.7）。条子放在 main 卡下面
-  const delBar = el(world, 'box', `<div class="row" style="gap:14px;padding:12px 20px;font-size:26px;height:72px;box-sizing:border-box">${oct('git-branch', 26, C.muted)}<span class="chip">你:fix-age</span><span class="k">可以删掉了</span><span class="btn db" style="margin-left:auto;padding:6px 16px;font-size:24px">Delete branch</span></div>`, 1180, 852, 620);
+  const delBar = el(world, 'box', `<div class="row" style="gap:14px;padding:12px 20px;font-size:26px;height:72px;box-sizing:border-box">${oct('git-branch', 26, C.muted)}<span class="chip">你:fix-age</span><span class="btn db" style="margin-left:auto;padding:6px 16px;font-size:24px">Delete branch</span></div>`, 1180, 852, 620);
   const delRow = delBar.firstChild, db = delBar.querySelector('.db');
   const delRow2 = h('div', 'row', delBar, `${oct('git-branch', 26, C.muted)}<span class="chip" style="text-decoration:line-through;color:var(--muted);background:var(--bgm)">你:fix-age</span><span class="k">已删除</span><span class="btn" style="margin-left:auto;padding:6px 16px;font-size:24px">Restore branch</span>`);
   css(delRow2, { position: 'absolute', left: 0, top: 0, right: 0, height: '72px', gap: '14px', padding: '12px 20px', fontSize: '26px', boxSizing: 'border-box', background: '#ffffff' });
   vanish(delRow2, 0);
-  const tDelIn = Q(T('b13', '主线')) + 0.3, tDel = Q(T('b14', '删掉')) + 0.1;
+  // 策划者看 r2：「fix-age 可以删掉」台词出来，删分支的条子再同时出来（原来在 b13 末尾就先进场）
+  // 「可以删掉了」不再写在条子上（字幕已经说了）；点 Delete branch 落在「删掉」说完时，按钮留够读的时间（F04）
+  const tDelIn = Q(T('b14')), tDel = Q(T('b14', '，P')) + 0.15;   // 「删掉」说完、逗号处
   slide(delBar, tDelIn, { y: 60, d: 0.45, ease: 'power3.out' }); sfx('pop', tDelIn, { g: 0.5, p: 0.6 });
   const dbb = box(db, world);
   clickAt(ptr2, tDel, db);
@@ -246,8 +252,8 @@ scene('how', ({ root, s, c0 }) => {
   const tKeep = Q(T('b14', 'PR')) - 0.15;
   const numEl = title.querySelector('.num');
   if (numEl) markOn(world, box(numEl, world), tKeep, s.end - 0.2, 4);
-  const gKeep = gloss(world, '<b>#13</b> 和提交记录一直留着', tb.r + 30, 136, 'left');
-  const tKeepG = Q(T('b14')) + 0.3;
+  const gKeep = gloss(world, '提交记录也留着', tb.r + 30, 136, 'left');
+  const tKeepG = tKeep;   // 跟「PR 一直留着」一起出来
   fadeIn(gKeep, tKeepG, { x: -14, y: 0 }); sfx('tick', tKeepG, { g: 0.6 });
   pointerPath(ptr2, [[tNo - 0.2, ob.x + ob.w * 0.8, ob.y + ob.h * 0.7], [tMg - 0.6, mgb.x + mgb.w * 0.8, mgb.y + mgb.h * 0.7, 0.5], [tDel - 0.6, dbb.x + dbb.w * 0.8, dbb.y + dbb.h * 0.7, 0.5]], s.end - 0.3);
   clickAt(ptr2, tNo + 0.4);

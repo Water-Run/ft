@@ -77,13 +77,13 @@
       ],
     },
     {
-      // 边界或比较：有写权限就不必 Fork；换个平台叫法会变（GitLab 的 Merge Request：英文原名就不同，不是中文翻译的差别）→ 收回 Git 与 GitHub 的分界
+      // 边界或比较：有写权限就不必 Fork；换个平台叫法会变（GitLab 的 Merge Request），做的事一样 → 收回 Git 与 GitHub 的分界
       id: 'boundary', chap: null, lead: 0.6, tail: 0.6,
       cues: [
         ['d1', '本来就有写权限的人，不用 Fork：', { gap: 0.25 }],
         ['d2', '直接在原仓库开分支、提 PR。', { gap: 0.6 }],
         ['d3', '换个平台，叫法也变：GitLab 管它叫 Merge Request。', { gap: 0.3 }],
-        ['d4', '英文原名就不一样，不是翻译的差别。', { gap: 0.5 }],
+        ['d4', '做的事一样：请原仓库把改动合进去。', { gap: 0.5 }],
         ['d5', '底下记录修改的，始终是 Git。', { gap: 0.3 }],
       ],
     },
