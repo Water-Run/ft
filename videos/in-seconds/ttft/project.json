@@ -1,0 +1,102 @@
+{
+  "slug": "ttft",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "96秒了解TTFT(首Token延迟)"
+  },
+  "stage": "review",
+  "next": "等待 Opus 修改草案；文案经校对者确认后再配音和实现",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "未记录",
+        "roles": [
+          "取证",
+          "文案",
+          "审片页设计"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "Microsoft neural TTS",
+        "roles": ["音色试听 · zh-CN-XiaoyiNeural 等五个候选"]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-XiaoyiNeural"
+  },
+  "rates": {
+    "zh": "+6%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -12,
+    "duck_db": 7,
+    "sfx_db": -9,
+    "score": {
+      "lift_cue": "a2"
+    }
+  },
+  "check": {
+    "duration": [
+      95.9,
+      96.1
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": [
+        "0C0D0F",
+        "F2EFE8",
+        "FF4A1C",
+        "8A8782",
+        "6B6964"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Inter",
+        "Mono"
+      ]
+    },
+    "pace": {
+      "en": {
+        "fast": 4.0
+      }
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    }
+  }
+}
