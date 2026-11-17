@@ -91,8 +91,8 @@
   },
   "layout": 2,
   "license": "GPL-3.0-or-later",
-  "stage": "accept",
-  "next": "策划者投稿后回告平台与链接，登记交付与发布（project.json 的 delivery、release），同步片单",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 2026-11-17）。等 WaterRun 的评分与反馈，记进 README「评价与复盘」与 docs/log/feedback.md。",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -137,5 +137,20 @@
     "speed": {
       "zh": 1.2
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-17",
+    "duration": {
+      "zh": 150.0
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV19dsz6eEtP",
+      "date": "2026-11-17",
+      "title": "150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR",
+      "lang": "zh"
+    }
+  ]
 }

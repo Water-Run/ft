@@ -74,7 +74,7 @@
 | 22 | 128秒认识冯·诺伊曼架构 | zh | 已成片 | [`von-neumann`](von-neumann/) |
 | 23 | 100 秒速通 IPv4 | zh | 已成片 | [`ipv4`](ipv4/) |
 | 24 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
-| 25 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 制作中 | [`github-collaboration`](github-collaboration/) |
+| 25 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 已成片 | [`github-collaboration`](github-collaboration/) |
 | 26 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
 | 27 | 96秒了解TTFT(首Token延迟) | zh | 计划中 | `ttft` |
 | 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |
