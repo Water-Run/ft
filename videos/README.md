@@ -46,7 +46,7 @@
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 审稿 | 视觉按策划者要求重做：参考 MongoDB 官方的浅色主题，以 B（文件地图）为主、结合 A（三棵树）与 C（真实字节与回显），出融合方向的关键帧；同时等 WaterRun 审定第 1 稿文案与 5 个待定问题。确认后用 Gentle_Senior（1.15）全片配音，配乐按 C「档案」写 tools/music.py | 最新 | Claude Opus 5.5 |
-| [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/) | [XX 秒速通](in-seconds/README.md) | 预览迭代 | 等策划者看预览 r2（out/zh/preview-r2.mp4）的意见，并补看 r2 新句 b14、d3–d5、e1；之后按意见改，再出下一轮或正式片 | 最新 | Qwen 4 Max Preview、Claude Opus 5.5 |
+| [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/) | [XX 秒速通](in-seconds/README.md) | 验收 | 策划者投稿后回告平台与链接，登记交付与发布（project.json 的 delivery、release），同步片单 | 最新 | Qwen 4 Max Preview、Claude Opus 5.5 |
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用 Harness 一期的音色 Crisp_Girl（语速 1.15，2026-11-16 策划者改定）合成全片，实测响度，做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
