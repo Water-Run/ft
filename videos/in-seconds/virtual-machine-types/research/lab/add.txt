@@ -1,0 +1,33 @@
+> javac -version
+javac 27
+
+> javac --release 21 -d research/_src/java research/lab/Add.java
+
+> javap -classpath research/_src/java -c Add
+Compiled from "Add.java"
+public final class Add {
+  public Add();
+    Code:
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+
+  static int add(int, int);
+    Code:
+         0: iload_0
+         1: iload_1
+         2: iadd
+         3: ireturn
+
+  public static void main(java.lang.String[]);
+    Code:
+         0: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: iconst_2
+         4: iconst_3
+         5: invokestatic  #13                 // Method add:(II)I
+         8: invokevirtual #19                 // Method java/io/PrintStream.println:(I)V
+        11: return
+}
+
+> java -classpath research/_src/java Add
+5

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}} · 审片页</title>
+  <link rel="stylesheet" href="audition.css">
+  <script src="review-ui.js" defer></script>
+</head>
+<body data-draft="{{DRAFT}}">
+<a class="skip" href="#text">跳到旁白全文</a>
+<header class="bar"><div class="wrap">
+  <a class="wordmark" href="#top">虚拟机 / 审片</a>
+  <nav aria-label="审片内容"><a href="#text">文案</a><a href="#visual">关键帧</a><a href="#voice">配音</a><a href="#music">配乐</a><a href="#feedback">反馈</a></nav>
+</div></header>
+<main id="top">
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">XX 秒速通 <span></span> 中文初审</p>
+        <h1>192 秒了解虚拟机</h1>
+        <p class="deck">第一类、第二类与进程虚拟机</p>
+        <p class="intro">从一台电脑如何启动两套系统讲起，再沿一段真实字节码看 Java 虚拟机怎样把 2 和 3 加成 5。</p>
+        <a class="button" href="#text">阅读完整旁白 <span aria-hidden="true">↓</span></a>
+      </div>
+      <figure class="hero-image">
+        <button class="zoom" type="button" data-image="frames/a-compare.png" aria-label="放大监控器分层图"><img src="frames/a-compare.png" width="1920" height="1080" alt="Xen 直接运行在硬件上，VirtualBox 位于 Windows 宿主上方。"></button>
+        <figcaption><span>机柜剖面 · 架构对照</span><a href="#visual">查看两套方案 →</a></figcaption>
+      </figure>
+    </div>
+  </div>
+  <form id="review" class="wrap body">
+    <section id="text" aria-labelledby="text-title">
+      <div class="section-head"><div><h2 id="text-title">中文旁白</h2><p>首轮全文 · 约时 · 片尾 7.5 秒</p></div><a href="{{SCRIPT_LINK}}">校对稿 ↗</a></div>
+      <div class="chapters">{{STORY}}</div>
+      <p class="under"><a href="../../research/FACTS.md">事实与出处 ↗</a><a href="../../research/lab/add.txt">Java 实验回显 ↗</a>
+      <span>稿本 {{DRAFT}} · 待校对确认</span></p>
+    </section>
+    <section id="visual" aria-labelledby="visual-title">
+      <div class="section-head"><div><h2 id="visual-title">关键帧</h2><p>两个方向各三张。点图可放大。</p></div></div>
+      {{VISUALS}}
+    </section>
+    <section id="voice" aria-labelledby="voice-title">
+      <div class="section-head"><div><h2 id="voice-title">配音试听</h2><p>五个普通话音色，同一组代表句，语速 +6%。</p></div></div>
+      <details class="voice-text"><summary>查看试听台词</summary><p class="reading">{{SAMPLE}}</p></details>
+      <div class="audio-grid">{{VOICES}}</div>
+    </section>
+    <section id="music" aria-labelledby="music-title">
+      <div class="section-head"><div><h2 id="music-title">配乐小样</h2><p>三个原创合成方向，各约 60 秒。</p></div></div>
+      <div class="audio-grid">{{MUSIC}}</div>
+    </section>
+    <section id="feedback" aria-labelledby="feedback-title">
+      <div class="section-head"><div><h2 id="feedback-title">审片反馈</h2><p>可按句号提修改意见，并把选中的方案一起复制到对话。</p></div></div>
+      <label for="notes">文案或制作意见</label>
+      <textarea id="notes" name="notes" rows="4" placeholder="例如 v5 加一句说明镜像文件存在哪里"></textarea>
+      <p id="choices" class="under" aria-live="polite">尚未选取方向</p>
+      <button class="button" id="copy" type="button">复制审片反馈</button>
+      <span id="copy-status" role="status"></span>
+      <textarea id="copy-fallback" aria-label="手动复制审片反馈" rows="6" readonly hidden></textarea>
+    </section>
+  </form>
+</main>
+<footer class="wrap footer"><span>{{TITLE}}</span><a href="#top">回到顶部 ↑</a></footer>
+<dialog id="lightbox" aria-label="关键帧原图">
+  <div class="lightbox-bar"><span id="image-label"></span><button id="close-image" type="button">关闭 ×</button></div>
+  <img width="1920" height="1080" alt="">
+</dialog>
+</body>
+</html>

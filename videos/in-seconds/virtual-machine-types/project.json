@@ -1,0 +1,107 @@
+{
+  "slug": "virtual-machine-types",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "192 秒了解虚拟机：第一类、第二类与进程虚拟机"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+6%",
+    "en": "+8%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的技术解说。"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pad",
+    "music_db": -12,
+    "duck_db": 7,
+    "sfx_db": -9,
+    "score": {
+      "lift_cue": "c5"
+    }
+  },
+  "check": {
+    "duration": [
+      191.9,
+      192.1
+    ],
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 24,
+    "margin": 60,
+    "still_seconds": 2.5,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_radius": true,
+      "no_emoji": true,
+      "palette": [
+        "0C0D0F",
+        "F2EFE8",
+        "FF4A1C",
+        "8A8782",
+        "6B6964"
+      ],
+      "fonts": [
+        "Sans SC",
+        "Inter",
+        "Mono"
+      ]
+    },
+    "pace": {
+      "en": {
+        "fast": 4
+      }
+    },
+    "sfx": {
+      "per_seconds": 2.5,
+      "kinds": 6,
+      "scene_per_seconds": 4,
+      "max_gap": 6
+    }
+  },
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "stage": "review",
+  "next": "确认中文旁白，选定视觉、音色与配乐方向",
+  "credits": {
+    "planner": "WaterRun",
+    "repository": "https://github.com/Water-Run/ft",
+    "models": [
+      {
+        "name": "GPT-6.2-Sol",
+        "roles": [
+          "取证",
+          "文案",
+          "视觉设计",
+          "配乐小样",
+          "审片页"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "Microsoft neural TTS",
+        "roles": [
+          "音色试听 · zh-CN-XiaoxiaoNeural、zh-CN-YunxiNeural、zh-CN-XiaoyiNeural、zh-CN-YunjianNeural、zh-CN-YunyangNeural"
+        ]
+      }
+    ]
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  }
+}
