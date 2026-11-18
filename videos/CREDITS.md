@@ -2,17 +2,18 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-已登记制作项目 35 部，已登记发布 29 部，其余 6 部；另有 174 个计划选题（可仅保留简报），见[片单](README.md)。
+已登记制作项目 38 部，已登记发布 29 部，其余 9 部；另有 171 个计划选题（可仅保留简报），见[片单](README.md)。
 
 此处核对结构化署名记录，未逐部观看成片；字段齐全不代表最终验收通过。模型名按原记录列出，不合并简称或猜测版本；一片可有多个模型，参与片数不能相加当成总片数。服务另列。
 
 ## 交付前署名缺口
 
-共 6 部。已发布片保留原名单，后补身份与依据见本片 README；在制片须在交付前解决。规则见[署名](../docs/roles.md#5-署名)。
+共 7 部。已发布片保留原名单，后补身份与依据见本片 README；在制片须在交付前解决。规则见[署名](../docs/roles.md#5-署名)。
 
 | 片 | 状态 | 缺口 |
 |---|---|---|
 | [200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](in-seconds/lean4/README.md) | 已发布（冻结） | 「GPT-6（型号未记录）」的真实型号未完整登记：交付前核实，不用占位名或简称 |
+| [96秒了解TTFT(首Token延迟)](in-seconds/ttft/README.md) | 审稿 | 「未记录」的真实型号未完整登记：交付前核实，不用占位名或简称 |
 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/README.md) | 已发布（冻结） | 「Claude（型号未记录）」的真实型号未完整登记：交付前核实，不用占位名或简称<br>「DeepSeek（型号未记录）」的真实型号未完整登记：交付前核实，不用占位名或简称 |
 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md) | 已发布（冻结） | 「GPT-6（型号未记录）」的真实型号未完整登记：交付前核实，不用占位名或简称 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | 「型号未记录（经 Codex 客户端）」的真实型号未完整登记：交付前核实，不用占位名或简称 |
@@ -25,7 +26,7 @@
 |---|---|---|---|
 | Claude Opus 5.5 | 28 | 4 | [一个数据库引擎是如何实现的？——从 MyISAM 说起](database-engines/myisam/README.md)、[一个数据库引擎是如何实现的？——事务性与现代化：InnoDB](database-engines/innodb/README.md)、[一个数据库引擎是如何实现的？——学院派的正统：PostgreSQL](database-engines/postgresql/README.md)、[一个数据库引擎是如何实现的？——小而强大：SQLite](database-engines/sqlite/README.md)、[一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/README.md)、[一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/README.md)、[120 秒关于什么是 2FA，以及它是怎么工作的](in-seconds/two-factor-auth/README.md)、[200 秒了解 Lean 4：什么是形式化证明，以及它为什么可靠](in-seconds/lean4/README.md)、[150 秒了解 LLM 的 Dense 和 MoE：稠密模型与混合专家模型](in-seconds/dense-vs-moe/README.md)、[256 秒搞懂 SSH](in-seconds/ssh/README.md)、[128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[150 秒了解 Agent 的手：Harness](in-seconds/harness/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md)、[128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md)、[100 秒速通 IPv4](in-seconds/ipv4/README.md)、[192秒了解RDP: Windows远程的优雅实现](in-seconds/rdp/README.md)、[150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/README.md)、[120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md)、[luainstaller：把 Lua 脚本交给没有 Lua 的人](open-source-projects/luainstaller/README.md)、[隐藏 14 年的致命 RCE：PHP2Shell 漏洞是什么和影响](hot-topics/php2shell/README.md)、[Lua源码全解析](source-code/lua-source/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md)、[10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[OpenClaw 和 OpenCode 的 v2 大改：我们从过去一年的 Agent 工程化学习到了什么](standalone/openclaw-opencode-v2/README.md)、[从 WSL 1 到 WSL 2，再到「WSL 3」](standalone/wsl/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md)、[CoT：先思考，再回答](standalone/chain-of-thought/README.md)、[既能做服务又能嵌入式，数据库小众的第三选择：Firebird](standalone/firebird/README.md)、[OpenAI 发布 Pando：为什么 AI 巨头都在重造 Git？](hot-topics/pando/README.md) |
 | Gemini 4 Argon | 5 | 2 | [256 秒搞懂 SSH](in-seconds/ssh/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[150秒认识五大主流配置文件](in-seconds/config-file-formats/README.md)、[128秒认识冯·诺伊曼架构](in-seconds/von-neumann/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md)、[CoT：先思考，再回答](standalone/chain-of-thought/README.md) |
-| Claude Sonnet 5.5 | 3 | 0 | [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/README.md)、[120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md) |
+| Claude Sonnet 5.5 | 3 | 1 | [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/README.md)、[一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/README.md)、[120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md)、[OpenClaw, Hermes 和实现](standalone/openclaw-hermes/README.md) |
 | DeepSeek V4.1 Flash 1017 | 3 | 0 | [128 秒关于 Tmux：是什么，怎么用，如何实现的](in-seconds/tmux/README.md)、[200 秒了解 Web 登录机制：怎么验证你是你](in-seconds/web-login/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
 | MiniMax M3.1 Flash | 2 | 1 | [256 秒搞懂 SSH](in-seconds/ssh/README.md)、[96 秒了解 HTTP 状态码](in-seconds/http-status-codes/README.md)、[垃圾回收的艺术](standalone/garbage-collection/README.md) |
 | GPT-6 Astra | 1 | 1 | [10 年代的电商网站管理后台是什么样的？OpenCart 1.5 时代典型网页管理后端](standalone/opencart-1-5-admin/README.md)、[道交法中的路权](standalone/traffic-law-right-of-way/README.md) |
@@ -37,18 +38,24 @@
 | Claude Haiku 5.5 | 1 | 0 | [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md) |
 | Claude（型号未记录） | 1 | 0 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/README.md) |
 | DeepSeek（型号未记录） | 1 | 0 | [古代来的 Shell：Windows 批处理（.bat）](standalone/windows-batch/README.md) |
+| GPT-6.2 Astra | 0 | 1 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/README.md) |
+| GPT-6.2-Sol | 0 | 1 | [192 秒了解虚拟机：第一类、第二类与进程虚拟机](in-seconds/virtual-machine-types/README.md) |
 | Kimi K2.8 | 0 | 1 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) |
 | Kimi K3.1 Pro | 1 | 0 | [100 秒速通 IPv4](in-seconds/ipv4/README.md) |
 | Qwen 4 Max Preview | 1 | 0 | [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/README.md) |
 | Qwen-4-Max-Preview | 1 | 0 | [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/README.md) |
 | 型号未记录（经 Codex 客户端） | 0 | 1 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) |
+| 未记录 | 0 | 1 | [96秒了解TTFT(首Token延迟)](in-seconds/ttft/README.md) |
 
 ## 未发布视频
 
 | 片 | 阶段 | 策划 | 模型与分工 | 服务与分工 |
 |---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/README.md) | 审稿 | WaterRun | Claude Opus 5.5：取证、实验、文案、配音试听、配乐小样、视觉设计 | MiniMax speech-2.8-hd：配音试听<br>Whisper small：读音回听 |
+| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/README.md) | 预览迭代 | WaterRun | Claude Opus 5.5：取证、实验、文案、配音试听、配乐小样、视觉设计、对抗审读、场景实现、预览迭代、配乐<br>Claude Sonnet 5.5：场景实现、预览草稿 | MiniMax speech-2.8-hd：配音、配音试听<br>Whisper small：读音回听 |
 | [256 秒搞懂 SSH](in-seconds/ssh/README.md) | 已放弃 | WaterRun | MiniMax M3.1 Flash：事实测绘、实验、中文文案、视觉与配乐方向<br>Grok 4.7：视觉系统、配乐初稿、文案对抗审稿、英文翻译<br>Gemini 4 Argon：中文稿<br>Claude Opus 5.5：分镜、场景实现、配乐、音效与混音、封面、渲染与验收 | 网页抓取服务（模型未披露）：网页检索<br>MiniMax speech-2.8-hd：zh 配音 · Chinese (Mandarin)_Radio_Host |
+| [192 秒了解虚拟机：第一类、第二类与进程虚拟机](in-seconds/virtual-machine-types/README.md) | 审稿 | WaterRun | GPT-6.2-Sol：取证、文案、视觉设计、配乐小样、审片页 | Microsoft neural TTS：音色试听 · zh-CN-XiaoxiaoNeural、zh-CN-YunxiNeural、zh-CN-XiaoyiNeural、zh-CN-YunjianNeural、zh-CN-YunyangNeural |
+| [96秒了解TTFT(首Token延迟)](in-seconds/ttft/README.md) | 审稿 | WaterRun | 未记录：取证、文案、审片页设计 | Microsoft neural TTS：音色试听 · zh-CN-XiaoyiNeural 等五个候选 |
+| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/README.md) | 审稿 | WaterRun | GPT-6.2 Astra：取证、中文工作稿、视觉设计与关键帧、原创配乐小样、审片页实现与自查 | MiniMax speech-2.8-hd：中文旁白候选试读（o2–o4）<br>Whisper small：五段试读的语音转写核对 |
 | [Lua源码全解析](source-code/lua-source/README.md) | 审稿 | WaterRun | GPT-6.1 Sol：源码测绘、取证<br>Claude Opus 5.5：分集拟定、补充取证、文案、视觉设计、配乐 | 未登记 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 | [怎么打手枪？](standalone/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |

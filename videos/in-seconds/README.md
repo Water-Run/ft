@@ -62,7 +62,7 @@
 | 10 | 128 秒关于 Tmux：是什么，怎么用，如何实现的 | zh + en | 已成片 | [`tmux`](tmux/) |
 | 11 | 150 秒学会 GPS 的工作原理 | zh | 计划中 | `gps` |
 | 12 | 96 秒速通模型的各个参数 | zh | 计划中 | [`model-parameters`](model-parameters/) |
-| 13 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 计划中 | `virtual-machine-types` |
+| 13 | 192 秒了解虚拟机：第一类、第二类与进程虚拟机 | zh | 制作中 | [`virtual-machine-types`](virtual-machine-types/) |
 | 14 | 150 秒了解 Agent 的手：Harness | zh | 已成片 | [`harness`](harness/) |
 | 15 | 200 秒了解 Web 登录机制：怎么验证你是你 | zh + en | 已成片 | [`web-login`](web-login/) |
 | 16 | 96 秒了解 HTTP 状态码 | zh + en | 已成片 | [`http-status-codes`](http-status-codes/) |
@@ -76,7 +76,7 @@
 | 24 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
 | 25 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 已成片 | [`github-collaboration`](github-collaboration/) |
 | 26 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
-| 27 | 96秒了解TTFT(首Token延迟) | zh | 计划中 | `ttft` |
+| 27 | 96秒了解TTFT(首Token延迟) | zh | 制作中 | [`ttft`](ttft/) |
 | 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |
 | 29 | 192秒速通现代密码学 | zh | 计划中 | `modern-crypto` |
 | 30 | 100秒搞明白SVN: 中心化的代码管理 | zh | 计划中 | `svn` |

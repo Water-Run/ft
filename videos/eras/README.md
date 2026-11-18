@@ -31,7 +31,7 @@
 <!-- catalog:begin 由 node kit/tools/catalog.js 生成，不要手改 -->
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
-| 1 | PowerPC 时代的麦金塔 | zh | 计划中 | [`powerpc-macintosh`](powerpc-macintosh/) |
+| 1 | PowerPC 时代的麦金塔 | zh | 制作中 | [`powerpc-macintosh`](powerpc-macintosh/) |
 | 2 | 恐龙年代的 AMD | zh | 计划中 | `amd-early` |
 | 3 | AMD 的农机时代 | zh | 计划中 | `amd-bulldozer-era` |
 | 4 | DOS 时代的 Windows | zh | 计划中 | `dos-windows` |
