@@ -1,36 +1,41 @@
-/* TODO: 起点自带的占位样式（首集的「计时盘」）。按本集的讲解对象重做视觉系统（经验规则 F16、F21），做完删掉这一行。 */
-/* 本片的视觉系统「计时盘」：墨色与纸色两种底，一种强调色（朱红）。平涂，不用阴影、渐变、圆角。
-   - 墨色底 = 手机一侧；纸色底 = 服务器一侧。两侧并排时就是一张左右对开的画面。
-   - 朱红只给「此刻」：表盘的指针、已经走过的刻度、时间轴上的现在、被选中的字节与最终的验证码。
-   - 圆只表示时间（30 秒表盘）；方块表示数据（字节、比特、二维码的模块）；斜线表示不可信的一方（泄露的副本、假网站）。
-   - 字：数字与数据用 Mono，拉丁文字用 Inter，中文用 Sans SC。
-   对比度：朱红压在墨色上 5.8:1，可作字色；压在纸色上 2.9:1，只作色块与线。朱红色块上的字一律用墨色（5.8:1）。 */
+/* 本片的视觉系统「光标与轨迹」。取自讲解对象：流式对话里的光标、一小段一小段送来的 Token、一次请求走过的时间轨迹。平涂，不用阴影、渐变、模糊、圆角。
+   颜色：墨绿黑一种底（ink），其上的面板 ink2，纸色 paper 作正文与实心块，琥珀 ac 只给「TTFT 相关」：光标、计时读数、首段、TTFT 括号。dim 作次要文字，line 只作网格线（不放字）。
+   图形语言（全片不破例）：
+   - 实心方块 = 一小段文字（Token）；琥珀方块 = 客户端收到的第一段。
+   - 横条 = 一段耗时，长度与时间成比例（示意）：网络 = dim 实心；排队 = 斜线；处理输入 = paper 实心；生成首段 = ac 实心；生成余下的回答 = ink2 底 + dim 字。
+   - 竖线 = 一个时刻（发出、到达、写完）；括号 = 一段被计入某个指标的时间；琥珀括号 = TTFT，paper 括号 = 完整回答。
+   - ▌光标块 = 还没有输出的等待。
+   - 字：数字与读数 Mono，中文 Sans SC，拉丁 Inter。
+   对比度（实测）：paper/ink 15.5，ac/ink 10.3，dim/ink 6.5，dim/ink2 5.7，ink/ac 10.3，ink/dim 6.5。琥珀块上的字一律用 ink；琥珀不压在 paper 上。 */
 :root {
-  --ink: #0c0d0f;
-  --paper: #f2efe8;
-  --ac: #ff4a1c;
-  --dim: #8a8782;             /* 墨色底上的次要文字（5.6:1） */
-  --dimp: #6b6964;            /* 纸色底上的次要文字（4.9:1） */
+  --ink: #0b1210;
+  --ink2: #16211d;
+  --paper: #ece8dc;
+  --ac: #ffb000;
+  --dim: #8e9a94;
+  --line: #2b3a34;
 }
 body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 #bg { background: var(--ink); }
 .scene { overflow: hidden; }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到画面之外。画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
+/* world 是镜头拍摄的那块画布，画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; }
-.ink { color: var(--ink); }
 .paper { color: var(--paper); }
+.ink { color: var(--ink); }
 .ac { color: var(--ac); }
 .dim { color: var(--dim); }
-.dimp { color: var(--dimp); }
 .blk { position: absolute; }
-.bg-ink { background: var(--ink); }
-.bg-paper { background: var(--paper); }
-.bg-ac { background: var(--ac); }
+.bg-ink2 { background: var(--ink2); }
+.bg-paper { background: var(--paper); color: var(--ink); }
+.bg-ac { background: var(--ac); color: var(--ink); }
+.bg-dim { background: var(--dim); color: var(--ink); }
+/* 斜线块：排队。底 ink2，纸色斜线用 parts.js 的 hatch() 以 SVG 线条画，不用渐变（check.style.flat） */
+.hatch { background: var(--ink2); color: var(--paper); }
 
-/* 字号阶梯（1080p）：对比要强。注解不小于 28px */
-.t-0 { font-weight: 900; font-size: 400px; line-height: 1; letter-spacing: -.045em; }
-.t-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
+/* 字号阶梯（1080p）。注解不小于 28px */
+.t-0 { font-weight: 900; font-size: 520px; line-height: .9; letter-spacing: -.02em; font-family: "Inter", "Sans SC"; }
+.t-1 { font-weight: 800; font-size: 168px; line-height: 1; letter-spacing: -.03em; font-family: "Mono"; }
 .t-2 { font-weight: 900; font-size: 96px; line-height: 1.05; letter-spacing: -.02em; }
 .t-3 { font-weight: 700; font-size: 60px; line-height: 1.1; }
 .t-4 { font-weight: 700; font-size: 44px; line-height: 1.15; }
@@ -38,28 +43,45 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 .t-n { font-weight: 500; font-size: 30px; line-height: 1.3; }
 .num { font-family: "Mono"; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
 
-/* 验证码：六个等宽的数字格，换码时逐位滚动 */
-.code { position: absolute; display: flex; font-family: "Mono"; font-weight: 800; line-height: 1; }
-.code .cd { position: relative; width: .6em; height: 1em; overflow: hidden; }
-.code .cd span { position: absolute; left: 0; top: 0; width: .6em; text-align: center; }
+/* 部件 */
+.caret { position: absolute; background: var(--ac); }                       /* ▌光标块，闪烁由 F() 按拍子算：floor(t / 0.6) % 2 */
+.tok { position: absolute; display: flex; align-items: center; justify-content: center; font: 700 56px "Sans SC"; background: var(--paper); color: var(--ink); height: 96px; }
+.tok.first { background: var(--ac); }
+.tok.rest { background: var(--ink2); color: var(--dim); }
+.stage { position: absolute; display: flex; align-items: center; justify-content: center; font: 700 38px "Sans SC"; height: 104px; white-space: nowrap; }
+.stage.net { background: var(--dim); color: var(--ink); }
+.stage.que { background: var(--ink2); color: var(--paper); overflow: hidden; }   /* 里面叠一层 hatch() 的 SVG 斜线 */
+.stage.pre { background: var(--paper); color: var(--ink); }
+.stage.gen { background: var(--ac); color: var(--ink); }
+.stage.more { background: var(--ink2); color: var(--dim); }
+.stage .lab { background: var(--ink2); color: var(--paper); padding: 4px 14px; }   /* 斜线块上的字压一块底，保证可读 */
+.node { position: absolute; background: var(--ink2); }
+.node .nm { position: absolute; left: 32px; top: 24px; font: 800 44px "Sans SC"; color: var(--paper); }
+.node .sub { position: absolute; left: 32px; font: 500 30px "Sans SC"; color: var(--dim); }
+.brace { position: absolute; height: 18px; }                              /* 括号：横线 + 两端竖线，由子元素组成 */
+.brace i { position: absolute; background: currentColor; }
+.brace.ac { color: var(--ac); }
+.brace.pp { color: var(--paper); }
+.mark { position: absolute; width: 6px; background: var(--paper); }       /* 竖线：一个时刻 */
+.tag { position: absolute; font: 700 30px "Sans SC"; color: var(--dim); }
+.tag.ac { color: var(--ac); }
+.tag.pp { color: var(--paper); }
+.eg { position: absolute; font: 700 30px "Sans SC"; color: var(--ink); background: var(--dim); padding: 2px 12px; }  /* 「示例」标记 */
+.gloss { position: absolute; font: 500 30px/1.35 "Sans SC"; color: var(--dim); white-space: normal; }
+.gloss b { color: var(--paper); font-weight: 700; }
 
-/* 字节格 */
-.byte { position: absolute; font-family: "Mono"; font-weight: 700; text-align: center; }
-.byte.sel { background: var(--ac); color: var(--ink); }
-.idx { position: absolute; font-family: "Mono"; font-weight: 500; text-align: center; color: var(--dim); }
-.idx.on { color: var(--paper); font-weight: 800; }
-.hot { --c: var(--ac) !important; }
-
-/* 常驻层：字幕带、秒尺、剩余秒数、角上的验证码与表盘 */
+/* 常驻层：字幕带、秒尺、剩余秒数、右上角的等待计时器 */
 .band { position: absolute; left: 0; top: 968px; width: 1920px; height: 112px; background: var(--ink); }
 .band svg { position: absolute; left: 0; top: 0; }
 .hud-l { position: absolute; left: 64px; top: 40px; display: flex; align-items: baseline; }
 .hud-l .n { font: 800 46px "Mono"; letter-spacing: -.02em; }
 .hud-l .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; }
-.hud-r { position: absolute; left: 1560px; top: 40px; width: 300px; height: 72px; }
+.hud-r { position: absolute; left: 1500px; top: 40px; width: 360px; height: 72px; display: flex; align-items: center; justify-content: flex-end; }
+.hud-r .cur { width: 26px; height: 46px; background: var(--ac); margin-right: 18px; }
+.hud-r .v { font: 800 46px "Mono"; letter-spacing: -.02em; color: var(--ac); }
+.hud-r .u { font: 700 30px "Inter", "Sans SC"; margin-left: 10px; color: var(--dim); }
 
 /* 字幕：压在字幕带上 */
 #caption { bottom: 30px; height: 60px; z-index: 50; }
 #caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
-.en #caption span { font-size: 36px; }
 #caption em { font-style: normal; font-weight: 800; color: var(--ac); }

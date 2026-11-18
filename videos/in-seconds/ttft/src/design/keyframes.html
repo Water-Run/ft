@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>首 Token 延迟 关键帧</title>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* 关键帧页：?f=<帧名> 画出一帧 1920×1080 静帧；?f=all 纵向列出全部。几何、颜色、字号都按 src/design/scenes.md 的规格，场景实现时直接取这里的坐标。 */
+  .tm { font: 800 330px "Mono"; letter-spacing: -.04em; line-height: 1; color: var(--ac); position: absolute; }
+  .ax { position: absolute; height: 4px; background: var(--line); }
+  .tk { position: absolute; width: 3px; height: 16px; background: var(--dim); }
+  .al { white-space: nowrap; position: absolute; font: 500 30px "Mono"; color: var(--dim); transform: translateX(-50%); }
+  .mono { font-family: "Mono", "Sans SC"; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="bg"></div><div id="scenes"></div><div id="hud"></div></div>
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+const q = new URLSearchParams(location.search), which = q.get('f') || 'all';
+const el = (cls, parent, html, st) => { const e = document.createElement('div'); e.className = cls; if (html != null) e.innerHTML = html; if (st) Object.assign(e.style, st); parent.appendChild(e); return e; };
+const at = (e, x, y, w, h) => { e.style.left = x + 'px'; e.style.top = y + 'px'; if (w != null) e.style.width = w + 'px'; if (h != null) e.style.height = h + 'px'; return e; };
+const C = { ink: '#0b1210', ink2: '#16211d', paper: '#ece8dc', ac: '#ffb000', dim: '#8e9a94', line: '#2b3a34' };
+
+// ── 常驻层：字幕带与秒尺、剩余秒数、右上角的等待读数 ──
+function chrome(stage, o) {
+  const { t, cap, meter, onAc } = o;
+  const band = el('band', stage); at(band, 0, 968, 1920, 112);
+  const s = document.createElementNS(NS, 'svg'); s.setAttribute('width', 1920); s.setAttribute('height', 40); band.appendChild(s);
+  for (let i = 0; i <= 96; i++) { const big = i % 30 === 0, mid = i % 10 === 0, w = big ? 4 : 2, x = 8 + i * (1904 / 96); const r = document.createElementNS(NS, 'rect'); r.setAttribute('x', x - w / 2); r.setAttribute('y', 0); r.setAttribute('width', w); r.setAttribute('height', big ? 24 : mid ? 15 : 8); r.setAttribute('fill', i <= Math.floor(t) ? C.ac : C.dim); s.appendChild(r); }
+  const hd = document.createElementNS(NS, 'path'); hd.setAttribute('d', 'M-7,34 L0,24 L7,34 Z'); hd.setAttribute('fill', C.ac); hd.setAttribute('transform', `translate(${8 + t * 1904 / 96},0)`); s.appendChild(hd);
+  const l = el('hud-l', stage, `<span class="n">${String(Math.ceil(96 - t)).padStart(3, '0')}</span><span class="u">秒</span>`); if (onAc) l.style.color = C.ink;
+  const r = el('hud-r', stage, `<span class="cur"></span><span class="v">${meter}</span><span class="u">秒</span>`); if (onAc) { r.querySelector('.cur').style.background = C.ink; r.querySelector('.v').style.color = C.ink; r.querySelector('.u').style.color = C.ink; }
+  const c = el('', stage); c.id = 'caption'; c.style.cssText = 'position:absolute;left:0;right:0;bottom:46px;height:64px;display:flex;align-items:center;justify-content:center;z-index:50'; c.innerHTML = `<span style="font-size:40px;font-weight:500;color:${C.paper}">${cap.replace(/\*(.+?)\*/g, '<em style="font-style:normal;font-weight:800;color:' + C.ac + '">$1</em>')}</span>`;
+}
+// ── 部件 ──
+function brace(p, cls, x1, x2, y, dir = 1) {                // dir=1：括号在对象上方，竖线向下；-1：在下方，竖线向上
+  const b = el('brace ' + cls, p); at(b, x1, y, x2 - x1, 6);
+  const i0 = el('', b); i0.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:6px;background:currentColor';
+  for (const x of [0, x2 - x1 - 6]) { const t = el('', b); t.style.cssText = `position:absolute;left:${x}px;top:${dir === 1 ? 0 : -16}px;width:6px;height:22px;background:currentColor`; }
+  return b;
+}
+function axis(p, y, maxS, step, scale) {                    // 时间轴：0 在 x=240
+  const a = el('ax', p); at(a, 240, y, maxS * scale, 4);
+  for (let s = 0; s <= maxS + 1e-6; s += step) { const x = 240 + s * scale; const t = el('tk', p); at(t, x - 1.5, y + 4); const l = el('al', p, String(s)); at(l, x, y + 26); }
+}
+const tagAt = (p, cls, text, x, y, st) => { const e = el('tag ' + cls, p, text); at(e, x, y); if (st) Object.assign(e.style, st); return e; };
+const big = (p, text, x, y, size, color = C.ac) => el('', p, text, { position: 'absolute', left: x + 'px', top: y + 'px', font: `900 ${size}px "Inter","Sans SC"`, color, lineHeight: 1, whiteSpace: 'nowrap' });
+
+// ── TTFT 四个字母展开成全称：k=0 四个字母并排，k=1 展开成 Time To First Token（同一个纯函数 k(t) 驱动动画）──
+function ttftLine(p, k, x0, y, size = 96) {
+  const cw = size * 0.6, words = [['T', 'ime'], ['T', 'o'], ['F', 'irst'], ['T', 'oken']];
+  const box = el('', p); box.dataset.gloss = 'TTFT'; box.style.cssText = `position:absolute;left:${x0}px;top:${y}px;height:${size}px;width:${22 * cw}px`;
+  let x = 0;
+  words.forEach(([a, r]) => {
+    const i = el('', box, a, { position: 'absolute', left: x + 'px', top: 0, font: `800 ${size}px "Mono"`, color: C.ac, lineHeight: 1 });
+    const w = r.length * cw * k; const rs = el('', box, r, { position: 'absolute', left: (x + cw) + 'px', top: 0, width: w + 'px', overflow: 'hidden', font: `700 ${size}px "Mono"`, color: C.paper, lineHeight: 1, whiteSpace: 'nowrap' }); rs.dataset.overlapOk = '1';
+    x += cw + w + cw * k;
+  });
+  return box;
+}
+
+// ── 一排 Token 列：输入 6 列，输出从第 7 列起；列距 156，块宽 140 高 104（write / prefill / reuse / close 共用这套几何）──
+const COL = (i) => 240 + i * 156, ROWY = 400;
+const IN = ['写一个', '判断', '质数', '的', 'Python', '函数'], OUT = ['def', 'is_', 'prime', '(n'];
+function tk(p, text, x, y, kind, mono) {   // kind: in（dim 实心）/ out（paper）/ first（琥珀）/ rest（ink2 底 dim 字）；mono：代码 Token 用等宽字
+  const e = el('tok ' + (kind === 'first' ? 'first' : kind === 'rest' ? 'rest' : ''), p, text); at(e, x, y, 140, 104); e.style.fontSize = '40px'; e.style.height = '104px';
+  if (mono) e.style.fontFamily = '"Mono"';
+  if (kind === 'in') { e.style.background = C.dim; e.style.color = C.ink; }
+  return e;
+}
+function cell(p, x, y, kind) { const e = el('', p); e.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:140px;height:52px;background:${kind === 'ac' ? C.ac : kind === 'pp' ? C.paper : C.dim}`; return e; }
+function arrowUp(p, x, y1, y2) { const l = el('', p); l.style.cssText = `position:absolute;left:${x - 3}px;top:${y1}px;width:6px;height:${y2 - y1}px;background:${C.paper}`; const h = el('', p); h.style.cssText = `position:absolute;left:${x - 14}px;top:${y1 - 16}px;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:18px solid ${C.paper}`; }
+const codeTok = (p, text, x, y, h, kind) => { const w = Math.round(33.6 * text.length + 56); const e = el('tok ' + (kind === 'first' ? 'first' : kind === 'rest' ? 'rest' : ''), p, text); at(e, x, y, w); e.style.fontFamily = '"Mono"'; e.style.fontSize = '56px'; e.style.height = h + 'px'; return [e, w]; };
+
+const FR = {
+  wait(S) {   // 开场：按下回车之后，光标在等
+    chrome(S, { t: 5.6, meter: '1.20', cap: '向 LLM 提问之后，光标闪一会儿，第一个字才出现' });
+    const panel = el('node', S); at(panel, 120, 160, 900, 770);
+    const q1 = el('bg-paper', panel, '写一个判断质数的 Python 函数'); at(q1, 100, 40, 760, 120); q1.style.cssText += ';display:flex;align-items:center;justify-content:center;font:700 44px "Sans SC";position:absolute';
+    tagAt(panel, '', '回答', 40, 250);
+    const cr = el('caret', panel); at(cr, 40, 310, 40, 84);
+    const inp = el('', panel); inp.style.cssText = `position:absolute;left:40px;top:630px;width:820px;height:96px;background:${C.ink};color:${C.dim};font:500 38px/96px "Sans SC";padding-left:30px`; inp.textContent = '输入消息';
+    const tm = el('tm', S, '1.20'); at(tm, 1040, 330);
+    tagAt(S, '', '秒', 1050, 660, { fontSize: '60px', fontWeight: 700 });
+    el('eg', S, '示例').style.cssText += ';left:1040px;top:230px';
+  },
+  title(S) {  // 片名卡：琥珀满铺，墨色字
+    { const bg = document.getElementById('bg'); if (bg) bg.style.background = C.ac; }
+    chrome(S, { t: 12.6, meter: '2.00', cap: '这段等待，是对话里体感延迟的主要来源', onAc: true });
+    el('t-2', S, '96 秒了解', { position: 'absolute', left: '120px', top: '150px', color: C.ink });
+    el('t-0', S, 'TTFT', { position: 'absolute', left: '96px', top: '250px', color: C.ink });
+    el('t-2', S, '首 Token 延迟', { position: 'absolute', left: '120px', top: '770px', color: C.ink });
+    const g = el('t-b', S, 'Time To First Token：回答开始出现之前的等待时长', { position: 'absolute', left: '120px', top: '886px', color: C.ink }); g.dataset.gloss = 'TTFT';
+  },
+  tokens(S) { // 定义 a：回答是一小段一小段写出来的（代码），排成两行
+    chrome(S, { t: 19.5, meter: '2.00', cap: '回答是一小段一小段写出来的，每一小段叫一个 *Token*' });
+    tagAt(S, '', '提问', 120, 190); el('t-4', S, '写一个判断质数的 Python 函数', { position: 'absolute', left: '230px', top: '186px' });
+    const rows = [['def', 'is_', 'prime', '(', 'n', '):'], ['for', 'i', 'in', 'range', '(2,', 'n', '):']];
+    let tkx = null;
+    rows.forEach((r, ri) => { let x = 120; r.forEach((t, i) => { const [e, w] = codeTok(S, t, x, 420 + ri * 150, 112); if (ri === 0 && i === 2) { e.dataset.name = 'token'; tkx = [x, w]; } x += w + 10; }); });
+    const [bx, bw] = tkx; brace(S, 'pp', bx, bx + bw, 380, 1);
+    const g = el('gloss', S, '<b>Token</b>：模型输出文字时的一小段'); g.style.fontSize = '44px'; at(g, bx - 40, 300); g.dataset.gloss = 'Token'; g.style.whiteSpace = 'nowrap';
+    el('eg', S, '示意切分').style.cssText += ';left:120px;top:760px';
+  },
+  bracket(S, k = 1) { // 定义 b：首 Token 延迟括起「发出请求」到「第一段」；上方 TTFT 展开成全称
+    chrome(S, { t: 26.5, meter: '2.00', cap: '这段时间就是 *首 Token 延迟*，缩写 *TTFT*' });
+    ttftLine(S, k, 240, 170);
+    big(S, '首 Token 延迟', 240, 300, 110).dataset.gloss = '首 Token 延迟';
+    brace(S, 'ac', 240, 880, 490, 1);
+    const m = el('mark', S); at(m, 237, 480, 6, 190); tagAt(S, 'pp', '发出请求', 190, 680);
+    const cr = el('caret', S); at(cr, 290, 535, 40, 84);
+    let x = 880; ['def', 'is_', 'prime', '(', 'n', '):'].forEach((tx, i) => { const [e, w] = codeTok(S, tx, x, 529, 104, i === 0 ? 'first' : 'rest'); x += w + 10; });
+    tagAt(S, 'ac', '第一段', 880, 645); tagAt(S, '', '一次送来的数据块，可含不止一个 Token', 880, 688);
+  },
+  ttft(S) { FR.bracket(S, 0.45); },   // 展开到一半：字母 T T F T 刚被拉开
+  write(S) {  // 机制 a：每次只写一个 Token，写每一个都要参考前面所有的 Token
+    chrome(S, { t: 33.5, meter: '2.00', cap: '写每一个新 Token，都要参考前面所有的 Token' });
+    tagAt(S, '', '提问', COL(0), 350); tagAt(S, '', '回答', COL(6), 350);
+    IN.forEach((t, i) => tk(S, t, COL(i), ROWY, 'in'));
+    OUT.slice(0, 3).forEach((t, i) => tk(S, t, COL(6 + i), ROWY, 'out', true));
+    const nw = tk(S, OUT[3], COL(9), ROWY, 'out', true); nw.dataset.name = 'new-token'; tagAt(S, 'pp', '正在写', COL(9), 350);
+    brace(S, 'pp', COL(0), COL(9) - 20, 560, -1); tagAt(S, 'pp', '前面所有的 Token', 560, 590, { fontSize: '44px' });
+    const h = el('', S); h.style.cssText = `position:absolute;left:${COL(9) - 26}px;top:557px;width:96px;height:6px;background:${C.paper}`;
+    arrowUp(S, COL(9) + 67, 524, 560);
+    el('eg', S, '示意切分').style.cssText += ';left:240px;top:700px';
+  },
+  prefill(S) { // 机制 b：先读完整个输入，同时处理，中间结果存进缓存；之后每个新 Token 只多一格
+    chrome(S, { t: 47.0, meter: '2.00', cap: '之后每个新 Token，只在缓存上续一小步' });
+    big(S, '首 Token 延迟', 240, 262, 56);
+    brace(S, 'ac', COL(0), COL(6), 350, 1);
+    IN.forEach((t2, i) => { tk(S, t2, COL(i), ROWY, 'out'); cell(S, COL(i), 540, 'pp'); });
+    tk(S, OUT[0], COL(6), ROWY, 'first', true); tk(S, OUT[1], COL(7), ROWY, 'out', true); tk(S, OUT[2], COL(8), ROWY, 'out', true);
+    [6, 7, 8].forEach((c, i) => cell(S, COL(c), 540, i === 0 ? 'ac' : 'pp'));
+    const g = el('gloss', S, '<b>缓存</b>：每个 Token 的中间结果。输入的 Token 同时处理，一次存满'); g.style.fontSize = '34px'; at(g, COL(0), 618); g.style.whiteSpace = 'nowrap'; g.dataset.gloss = '缓存';
+    const g2 = el('gloss', S, '之后每个新 Token 只多一格'); g2.style.fontSize = '34px'; at(g2, COL(6), 668); g2.style.whiteSpace = 'nowrap';
+    el('', S, '相邻 Token 的间隔：交互场景的目标 10–50 毫秒', { position: 'absolute', left: '240px', top: '760px', font: '700 44px "Sans SC"', color: C.paper, whiteSpace: 'nowrap' });
+    tagAt(S, '', '数据：ClickHouse 指南（2026-07）', 240, 830);
+  },
+  reuse(S) {  // 重复提问：第二次提问时，开头相同的部分（上次已读过的代码文件）命中缓存，只读新增的那一小段
+    chrome(S, { t: 57.5, meter: '2.00', cap: '不用重新读，首 Token 延迟通常更短' });
+    const FILE = ['def', 'if', 'for', 'try'];
+    // 第一次提问：整段输入都要读，括号长
+    tagAt(S, 'pp', '第一次提问', COL(0), 200, { fontSize: '38px' }); big(S, '首 Token 延迟', COL(3), 192, 48);
+    brace(S, 'ac', COL(0), COL(6), 262, 1);
+    FILE.forEach((t, i) => { tk(S, t, COL(i), 290, 'out', true); cell(S, COL(i), 410, 'pp'); });
+    tk(S, '怎么', COL(4), 290, 'out'); tk(S, '改', COL(5), 290, 'out'); cell(S, COL(4), 410, 'pp'); cell(S, COL(5), 410, 'pp');
+    tk(S, 'def', COL(6), 290, 'first', true); cell(S, COL(6), 410, 'ac');
+    // 再次提问：前面一段命中缓存（缓存格已在），只读新增的部分，括号短
+    tagAt(S, 'pp', '再次提问：命中缓存', COL(0), 510, { fontSize: '38px' }); big(S, '首 Token 延迟', COL(4), 502, 48);
+    brace(S, 'ac', COL(4), COL(6), 572, 1);
+    FILE.forEach((t, i) => { tk(S, t, COL(i), 600, 'in', true); cell(S, COL(i), 720, 'pp'); });
+    tk(S, '怎么', COL(4), 600, 'out'); tk(S, '测', COL(5), 600, 'out'); cell(S, COL(4), 720, 'pp'); cell(S, COL(5), 720, 'pp');
+    tk(S, 'def', COL(6), 600, 'first', true); cell(S, COL(6), 720, 'ac');
+    const g = el('gloss', S, '<b>已缓存</b>：这一段不必重新读，只读新增的部分'); g.style.fontSize = '34px'; at(g, COL(0), 790); g.style.whiteSpace = 'nowrap';
+    tagAt(S, '', '命中要求开头完全一致；官方文档称首 Token 延迟通常改善，不保证（Anthropic、OpenAI）', COL(0), 850, { fontSize: '28px' });
+  },
+  length(S) { // 同样的问题，附上整个代码文件：读完输入的时间变长，第一个 Token 来得更晚
+    chrome(S, { t: 62.5, meter: '2.00', cap: '要先读的内容多了，第一个 Token 就更晚' });
+    const row = (y, w, label) => {
+      const b = el('stage pre', S, label); at(b, 240, y, w, 104); b.dataset.name = 'read-input';
+      tk(S, 'def', 240 + w, y, 'first', true); tk(S, 'is_', 240 + w + 156, y, 'out', true); if (240 + w + 312 + 140 <= 1860) tk(S, 'prime', 240 + w + 312, y, 'out', true);
+      brace(S, 'ac', 240, 240 + w, y - 36, 1);
+      big(S, '首 Token 延迟', 240, y - 108, 56);
+    };
+    row(340, 360, '一句话');
+    row(660, 1200, '一整个代码文件');
+    tagAt(S, '', '读完输入', 240, 806, { fontSize: '30px' });
+    el('eg', S, '示例 · 长度与时间为示意').style.cssText += ';left:1180px;top:180px';
+  },
+  scale(S) {  // 尺度（对数刻度）：一秒以内算快；长输入几秒（只在画面上）；深度思考几十秒以上
+    chrome(S, { t: 72.0, meter: '0.50', cap: '开着深度思考的模型，要等几十秒以上' });
+    const X = (t) => 240 + 380 * (Math.log10(t) + 1);
+    el('t-4', S, '首 Token 延迟的尺度', { position: 'absolute', left: '240px', top: '170px' }); el('eg', S, '对数刻度').style.cssText += ';left:790px;top:176px';
+    brace(S, 'pp', X(0.1), X(1), 330, 1); tagAt(S, 'pp', '聊天：一秒以内算快', 240, 270, { fontSize: '38px' });
+    const blk = (x1, x2, cls) => { const e = el('stage ' + cls, S); at(e, x1, 380, x2 - x1, 80); return e; };
+    blk(X(0.2), X(0.5), 'gen'); blk(X(2), X(10), 'net'); blk(X(40), X(360), 'net');
+    tagAt(S, 'ac', '调得好的部署：0.2–0.5 秒', X(0.2), 476, { fontSize: '34px' });
+    tagAt(S, 'pp', '输入很长：几秒', X(2), 536, { fontSize: '34px' });
+    tagAt(S, 'pp', '深度思考（最高档）：40–360 秒', X(40) - 120, 476, { fontSize: '34px' });
+    axis(S, 640, 4, 1, 380);
+    [0.1, 1, 10, 100, 1000].forEach((v, i) => { const l = S.querySelectorAll('.al')[i]; if (l) l.textContent = v + (i === 4 ? ' 秒' : ''); });
+    tagAt(S, '', '数据：ClickHouse 指南（2026-07）；Artificial Analysis 榜单快照（2026-11-18，首个答案 Token，含思考时间）', 240, 780, { fontSize: '28px' });
+  },
+  close(S) {  // 结尾：第一个 Token 慢，是因为要先读完输入；之后才一个接一个地写
+    chrome(S, { t: 85.0, meter: '2.00', cap: '之后才一个接一个地写' });
+    big(S, '首 Token 延迟', 240, 200, 150);
+    brace(S, 'ac', COL(0), COL(6), 380, 1);
+    IN.forEach((t2, i) => tk(S, t2, COL(i), 440, 'out'));
+    const cr = el('caret', S); at(cr, COL(6) + 20, 440, 40, 104);
+    ['is_', 'prime', '(n'].forEach((t2, i) => tk(S, t2, COL(7 + i), 440, 'rest', true));
+    brace(S, 'pp', COL(0), COL(5) + 140, 600, -1); tagAt(S, 'pp', '先读完整个输入', 240, 630, { fontSize: '44px' });
+  },
+};
+const order = ['wait', 'title', 'tokens', 'bracket', 'ttft', 'write', 'prefill', 'reuse', 'length', 'scale', 'close'];
+if (which === 'all') {
+  document.documentElement.style.cssText = 'width:1920px;height:auto;overflow:visible'; document.body.style.cssText = 'width:1920px;height:auto;overflow:visible;background:#000';
+  document.getElementById('stage').remove();
+  order.forEach((n) => { const wrap = document.createElement('div'); wrap.style.cssText = 'position:relative;width:1920px;height:1080px;overflow:hidden;margin-bottom:20px'; const bg = el('', wrap); bg.style.cssText = `position:absolute;inset:0;background:${n === 'title' ? C.ac : C.ink}`; document.body.appendChild(wrap); FR[n](wrap); });
+} else { FR[which](document.getElementById('hud')); }
+document.fonts.load('900 40px "Sans SC"', '字').then(() => Promise.all([document.fonts.load('700 40px "Sans SC"', '字'), document.fonts.load('800 40px "Mono"', '0'), document.fonts.load('900 40px "Inter"', 'A')])).then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>
