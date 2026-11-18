@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "1cacd73553507bf524414eed911a551d298f779b21f61f3552a356b12678b2d0",
+      "content_sha256": "68cf69727edcca4f0b615fd58cc59d5bdf11ca3a097087940f143f83df71c438",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-18T00:30:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-18：会话原话「完成文稿后, 制作Preview」（授权制作预览；策划者未逐句通读该稿）"
+      "confirmed_at": "2026-11-18T15:05:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」与「定稿后的调整」2026-11-18 第 3 稿：逐句改动清单「确认，按这一稿配音」；缩短 5 句字幕「可以，按这 5 处改了配音」；拆 d13b「可以，拆成两句」"
     }
   }
 }

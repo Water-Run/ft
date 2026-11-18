@@ -27,7 +27,7 @@ scene('five', ({ root, s, c0 }) => {
     glow(at, Math.max(T(t1) + 1.2, mw - 0.6), nxt - 0.2, { bg: '#00ED64', bd: '#00ED64', rb: i % 2 ? '#FFFFFF' : '#E3FCF7', rd: i % 2 ? '#C1C7C6' : '#00684A' });
     sfx('pop', T(t1)); q.push(qt, at);
   });
-  const how = chip(world, 1100, 100, 'MongoDB 这样答', 'dk xl'); show(how, T('i0', '这样答') - 0.2, { y: 10 });
+  const how = chip(world, 1100, 100, 'MongoDB 这样答', 'dk xl'); show(how, T('i0', '答案') - 0.3, { y: 10 });
   fadeOut([hd, how, ...q], T('j1') - 0.2);
 
   // ── 第二站：不要表，换来了什么 ──
@@ -37,16 +37,16 @@ scene('five', ({ root, s, c0 }) => {
   };
   const a1 = doc(160, 220, 440, '一份文档', ['<span class="k">name</span>: <span class="s">"Alice"</span>,', '<span class="k">age</span>: <span class="n">42</span>']);
   show(a1.c, T('j1'), { y: 16 });
-  const noTbl = chip(world, X2 + 160, 520, '没有建表', 'dk xl'); show(noTbl, T('j1', '没建表') - 0.3, { y: 0, s: 1.2 }); fadeOut(noTbl, T('j2') - 0.2);
+  const noTbl = chip(world, X2 + 160, 520, '没有建表', 'dk xl'); show(noTbl, T('j1', '没建表') - 0.3, { y: 0, s: 1.2 }); fadeOut(noTbl, T('j2b') - 0.2);
   const nq = h('div', 'abs h2', world, '不要表，换来了什么？'); px(nq, X2 + 700, 280); show(nq, T('j1b'), { x: -20, y: 0 });
-  fadeOut([a1.c, nq], T('j2') - 0.2);
-  const cp = h('div', 'panel', world); px(cp, X2 + 120, 130, 1680, 400); show(cp, T('j2'), { y: 14 });
+  fadeOut([a1.c, nq], T('j2b') - 0.2);
+  const cp = h('div', 'panel', world); px(cp, X2 + 120, 130, 1680, 400); show(cp, T('j2b'), { y: 14 });
   const cpt = h('div', 'abs', cp, 'people 集合：不规定文档的样子'); css(cpt, { left: '28px', top: '16px', font: '700 32px "Serif SC"', color: '#061621' });
   const cA = codeCard(cp, 30, 80, 500, 'Alice', 270), cE = codeCard(cp, 590, 80, 500, 'Erin', 270), cF = codeCard(cp, 1150, 80, 500, 'Frank', 270);
   cA.line('{ <span class="k">name</span>: <span class="s">"Alice"</span>,'); cA.line('  <span class="k">age</span>: <span class="n">42</span> }');
   cE.line('{ <span class="k">name</span>: <span class="s">"Erin"</span>,'); cE.line('  <span class="k">email</span>: <span class="s">"…"</span>,'); cE.line('  <span class="k">tags</span>: <span class="s">[…]</span> }');
   cF.line('{ <span class="k">name</span>: <span class="s">"Frank"</span>,'); cF.line('  <span class="k">address</span>: { … } }');
-  show(cA.c, T('j2') + 0.3, { y: 12 }); show(cE.c, T('j3'), { y: 12 }); show(cF.c, T('j3') + 0.4, { y: 12 }); sfx('pop', T('j3'));
+  show(cA.c, T('j2b') + 0.3, { y: 12 }); show(cE.c, T('j3'), { y: 12 }); show(cF.c, T('j3') + 0.4, { y: 12 }); sfx('pop', T('j3'));
   const free = note(world, X2 + 160, 560, '除了 _id，每份文档想有哪些字段，就有哪些', 'dn g'); show(free, T('j2b') + 0.2, { y: 8 }); fadeOut(free, T('j5') - 0.5);
   // 代价：字段名跟着每份文档存一遍
   const cost = note(world, X2 + 160, 560, '代价：字段名跟着每份文档存一遍', 'dn r'); show(cost, T('j5', '代价'), { y: 8 });
@@ -55,12 +55,9 @@ scene('five', ({ root, s, c0 }) => {
   const times = h('div', 'abs', world); px(times, X2 + 700, 650); css(times, { font: '800 84px "Inter"', color: '#00684A' });
   times.textContent = '× 0 遍'; show(times, T('j6') + 0.9, { y: 8 });
   stepTo(times, [[T('j6') + 1.2, 1.6, 0, 4096]], (v) => '× ' + Math.round(v).toLocaleString('en-US') + ' 遍');
-  fadeOut([cp, cost, ...names, times], T('j6c') - 0.2);
+  const tot = chip(world, X2 + 700, 770, '每份 13 字节 × 4096 = 53,248 字节', 'dk xl'); show(tot, T('j6b') + 0.4, { y: 10 });
+  fadeOut([cp, cost, ...names, times, tot], T('j7') - 0.6);
   // 分到很多台机器上：这一集不讲
-  const sv = [0, 1, 2, 3, 4].map((i) => tile(world, X2 + 120 + i * 340, 400, 290, 130, 'mongod', '', 'dk')); show(sv, T('j6c'), { y: 12, stagger: 0.1 });
-  const dist = note(world, X2 + 520, 270, '数据分到很多台机器上：这一集没有讲', 'dn'); show(dist, T('j6c'), { y: 8 });
-  to(sv.slice(1), T('j6d'), { autoAlpha: 0.25, duration: 0.5 }); glow(sv[0], T('j6d'), null, { bg: '#00684A', bd: '#00ED64' });
-  const one = note(world, X2 + 460, 600, '只看一台机器里的存储引擎', 'dn g'); show(one, T('j6d'), { y: 8 });
 
   // ── 第三站：键值，内存与磁盘，Redis ──
   const kv = [['2050', '47 字节的文档'], ['"Alice" + 2050', '（空）'], ['ObjectId(…)', '2050']];
@@ -74,7 +71,6 @@ scene('five', ({ root, s, c0 }) => {
   const kt = tile(world, X3 + 1040, 150, 760, 260, '键值数据库', 'NoSQL 的一类', 'sp'); show(kt, T('j8', '键值数据库') - 0.4, { y: 12 });
   const mini = [0, 1, 2].map((i) => { const c = chip(kt, 26 + i * 240, 160, ['k1 → v1', 'k2 → v2', 'k3 → v3'][i], 'dk xl'); css(c, { fontFamily: '"Mono"', fontSize: '28px' }); return c; });
   show(mini, T('j9', '一个键') - 0.3, { y: 10, stagger: 0.3 });
-  const inMem = chip(world, X3 + 1040, 440, '常放在内存里：读写都快', 'on xl'); show(inMem, T('j9b', '内存') - 0.3, { y: 10 }); fadeOut(inMem, T('j10') - 0.1);
   keyed(kt._s).at(T('j9'), { html: '一个键，一个值：更简单的一类' });
   const dk = tile(world, X3 + 160, 450, 720, 280, 'MongoDB', ''); show(dk, T('j10'), { y: 12 });
   const dkd = h('div', 'abs', dk, '磁盘 · 数据住在树里'); px(dkd, 30, 90, 660, 90); css(dkd, { background: '#E3FCF7', border: '2px solid #00684A', borderRadius: '8px', font: '600 30px/90px "Sans SC"', textAlign: 'center' });
@@ -92,6 +88,13 @@ scene('five', ({ root, s, c0 }) => {
   show(plate, T('j13', '更简单') - 0.3, { y: 0, s: 0.97 });
   const rd = h('div', 'abs big', world, 'Redis'); px(rd, X3 + 160, 480, 1600); css(rd, { textAlign: 'center', color: '#00ED64' });
   slam(rd, T('j14'), { from: 1.3 }); sfx('thud', T('j14'));
+  // 下一集预告：集数标识与片头的 PART 6 同一种样式；一句注解与两个下集会讲的词（S02）
+  const p7 = h('div', 'abs eyebrow', world, 'PART 7 · REDIS'); px(p7, X3 + 200, 482); css(p7, { color: '#71F6BA', borderLeftColor: '#00ED64' });
+  wipe(p7, T('j14') - 0.3, { dir: 'l', d: 0.35 }); sfx('tick', T('j14') - 0.3, { g: 0.4 });
+  const rg = gloss(note(world, X3 + 160, 712, '<b>Redis</b>：键值数据库，数据从内存提供，磁盘用来保存', 'g'), 'Redis'); css(rg, { fontSize: '30px' });
+  show(rg, T('j14') + 0.5, { y: 10 });
+  const rdb = chip(world, X3 + 160, 800, 'RDB：某一刻的快照', 'dk xl'), aof = chip(world, X3 + 560, 800, 'AOF：记下每个写操作，启动时重放', 'dk xl');
+  show(rdb, T('j14') + 0.9, { y: 10 }); show(aof, T('j14') + 1.2, { y: 10 });
 
   // 镜头：三站
   const m1 = T('j1') - 0.9, m2 = T('j7') - 0.9;

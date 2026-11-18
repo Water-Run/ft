@@ -71,10 +71,13 @@ scene('insert', ({ root, s, c0 }) => {
   fromTo(rbar, T('b13', '1'), { scaleX: 0 }, { scaleX: 1, duration: 2.2, ease: 'none' });
   to(kBox, T('b14', '2050'), { backgroundColor: '#00ED64', borderStyle: 'solid', borderColor: '#00ED64', color: '#023430', fontSize: '96px', duration: 0.4 });
   // b15：它和 _id 是两个编号；查出来的文档里看不到 RecordId
-  const shown = codeCard(world, X2 + 1120, 440, 640, '查出来的文档', 300);
-  shown.line('{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>),'); shown.line('  <span class="k">name</span>: <span class="s">\'Alice\'</span>,'); shown.line('  <span class="k">age</span>: <span class="n">42</span> }');
-  const noRid = xl(world, X2 + 1300, 760, '里面没有 RecordId', 'dk');
-  show(shown.c, T('b15', '_id'), { x: 30, y: 0 }); show(noRid, T('b15', '看不到'), { y: 0, s: 1.2 });
+  const sh = term(world, X2 + 1100, 440, 700, 330, 'mongosh · lab', { fs: 24 });
+  sh.cmd(T('b15') + 0.1, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> })');
+  sh.out(T('b15', '_id') + 0.2, "[ { <span class=\"k\">_id</span>: ObjectId(<span class=\"s\">'6afa…'</span>),\n    <span class=\"k\">name</span>: <span class=\"s\">'Alice'</span>, <span class=\"k\">age</span>: <span class=\"n\">42</span> } ]");
+  sh.out(T('b15', '看不到') + 0.4, "<span class=\"c\">// 加上 .showRecordId() 才看得到：</span>\n<span class=\"k\">'$recordId'</span>: Long(<span class=\"s\">'2050'</span>)");
+  const shown = { c: sh.c };
+  const noRid = xl(world, X2 + 1300, 790, '里面没有 RecordId', 'dk');
+  show(sh.c, T('b15') - 0.2, { x: 30, y: 0 }); show(noRid, T('b15', '看不到') - 0.2, { y: 0, s: 1.2 });
   fadeOut([kvT, kBox, arr, vBox, shown.c, noRid], T('b16') - 0.2);
   to(rid, T('b16') - 0.2, { y: -320, duration: 0.8, ease: 'power2.inOut' });
   to(rbar, T('b16') - 0.2, { autoAlpha: 0, duration: 0.3 });
@@ -89,6 +92,9 @@ scene('insert', ({ root, s, c0 }) => {
     const vb = pg(world, X2 + 1170, y, 560, 100, v); css(vb, { fontSize: '28px' });
     return { n, kb, ar, vb };
   });
+  const DUMP = ['文件里：键 c7 c2　值 2f 00 00 00 07 5f 69 64 00 6a fa …（47 字节）', '文件里：键 64 6a fa … 04　值 20 40 11（编号打包）', '文件里：键 3c <b>41 6c 69 63 65</b> 00 04 20 40 11（Alice 的字节 + 编号）　值 （空）'];
+  const dumps = DUMP.map((t, i) => { const e = h('div', 'abs mono', world, t); px(e, X2 + 520, 400 + i * 140 + 106); css(e, { font: '500 22px "Mono"', color: '#3D4F58' }); return e; });
+  [['b17', '47'], ['b18', '2050'], ['b19', '空的']].forEach(([id, w], i) => show(dumps[i], T(id, w) - 0.2, { y: 6 }));
   const kl = label(world, X2 + 520, 362, '键', 'lab'), vl = label(world, X2 + 1170, 362, '值', 'lab');
   R.forEach((r, i) => show(r.n, T('b16') + 0.4 + i * 0.6, { y: 10 }));
   show([kl, vl], T('b16') + 0.4, { y: 6 });
@@ -97,16 +103,14 @@ scene('insert', ({ root, s, c0 }) => {
   glow(R[0].kb, T('b17', '2050') - 0.2, T('b18'), SPR); glow(R[0].vb, T('b17', '47') - 0.3, T('b18'), SPR); glow(R[1].vb, T('b18', '值是') - 0.2, T('b19'), SPR); glow(R[2].kb, T('b19', 'Alice') - 0.2, T('b20'), SPR); glow(R[2].vb, T('b19', '值是空的') - 0.3, T('b20'), SPR);
   glow(R[1].vb, T('b20') + 0.3, T('b21'), SPR);
   glow(R[2].kb, T('b21') + 0.3, T('b22') - 0.4, SPR);
-  const dup = label(world, X2 + 520, 830, '同名的人，键里接着不同的编号，也能分开', 't-body'); show(dup, T('b21b'), { y: 8 }); fadeOut(dup, T('b22') - 0.1);
+  const dup = label(world, X2 + 520, 830, '同名的人，键里接着不同的编号，也能分开', 't-body'); show(dup, T('b21', '同名') - 0.3, { y: 8 }); fadeOut(dup, T('b22') - 0.1);
   // b22：两个索引最后都指回 2050：三处 2050 一起亮起
-  glow([R[0].kb, R[1].vb, R[2].kb], T('b22', '2050') - 0.2, T('b23') + 0.5, { bg: '#00ED64', bd: '#00ED64', c: '#023430' });
+  glow([R[0].kb, R[1].vb, R[2].kb], T('b22', '2050') - 0.2, T('b24') - 0.2, { bg: '#00ED64', bd: '#00ED64', c: '#023430' });
   const ab1 = link(ov2, [[X2 + 1450, 540], [X2 + 1450, 520], [X2 + 800, 520], [X2 + 800, 506]], 'accent', { arrow: true, w: 4 });
   const ab2 = link(ov2, [[X2 + 520, 730], [X2 + 490, 730], [X2 + 490, 450], [X2 + 514, 450]], 'accent', { arrow: true, w: 4 });
-  arrowIn(ab1, T('b22', '指回') - 0.2, 0.7); arrowIn(ab2, T('b22', '指回'), 0.7); fadeOut([ab1, ab2], T('b23') + 0.5);
-  const back = xl(world, X2 + 1170, 820, '三处都是 2050', 'on'); show(back, T('b22', '2050') - 0.2, { y: 10 }); fadeOut(back, T('b23') - 0.2);
-  const late = note(world, X2 + 160, 820, '姓名索引是 4096 人都写完后才建的：Alice 这一项，建索引时补上', ''); css(late, { fontSize: '30px' });
-  show(late, T('b23', '后来才建'), { y: 10 }); hide(late, T('b24') - 0.2, { y: 0 });
-  const dave = xl(world, X2 + 160, 820, '之后注册的 Dave：三棵树各写一项'); show(dave, T('b24', 'Dave'), { y: 10 });
+  arrowIn(ab1, T('b22', '指回') - 0.2, 0.7); arrowIn(ab2, T('b22', '指回'), 0.7); fadeOut([ab1, ab2], T('b24') - 0.2);
+  const back = xl(world, X2 + 1170, 820, '三处都是 2050', 'on'); show(back, T('b22', '2050') - 0.2, { y: 10 }); fadeOut(back, T('b24') - 0.2);
+  const dave = xl(world, X2 + 160, 820, '姓名索引建好后注册的 Dave：三棵树各写一项'); show(dave, T('b24', 'Dave'), { y: 10 });
   const plus = R.map((r, i) => { const p = xl(world, X2 + 1760, 400 + i * 140 + 18, '+1', 'on'); css(p, { padding: '8px 14px' }); return p; });
   plus.forEach((p, i) => show(p, T('b24', '各写一项') + i * 0.2, { x: -20, y: 0 }));
   fadeOut([dave, ...plus], T('b25') - 0.2);

@@ -24,7 +24,7 @@ scene('whole', ({ root, s, c0 }) => {
   // a4b–a6：三份文档，字段各不相同
   const docs = [
     ['Alice', [['name', '"Alice"'], ['age', '42']], ['a4b', 'Alice']],
-    ['Erin', [['name', '"Erin"'], ['email', '"erin@example.com"'], ['tags', '["db", "go"]']], ['a5', 'Erin']],
+    ['Erin', [['name', '"Erin"'], ['email', '"erin@example.com"'], ['tags', '["db", "go"]']], ['a4b', 'Erin']],
     ['Frank', [['name', '"Frank"'], ['address', '{ city: "Lisbon" }']], ['a6', 'Frank']],
   ];
   const keyEls = [];
@@ -56,12 +56,11 @@ scene('whole', ({ root, s, c0 }) => {
   const lot = h('div', 'abs', lo, '下层：存储引擎 · 管数据在内存和磁盘上怎样存放'); css(lot, { left: '30px', top: '22px', font: '600 34px "Sans SC"', color: '#023430' });
   const wt = h('div', 'abs', lo, 'WiredTiger'); css(wt, { left: '30px', top: '76px', font: '800 72px "Inter"', color: '#00684A' });
   show(lo, T('a12', '下层'), { y: 12 }); show(wt, T('a13', 'WiredTiger'), { x: -20, y: 0 });
-  const hist = [['原本', '一家同名公司的产品', ['a13b', '公司']], ['2014 年底', '被 MongoDB 收购', ['a14', '收购']], ['2015 年初', '3.0 版带上了它', ['a14b', '3.0']], ['如今 9.0', '默认就用它', ['a15', '默认']]];
-  const hs = hist.map(([y, t, at], i) => {
-    const r = h('div', 'abs', lo); px(r, 700, 84 + i * 50);
-    r.innerHTML = `<span style="display:inline-block;min-width:150px;padding:2px 12px;border-radius:999px;background:#023430;color:#fff;font:600 24px 'Mono';text-align:center">${y}</span>　<span style="font:500 28px 'Sans SC'">${t}</span>`;
-    show(r, T(at[0], at[1]) - 0.2, { x: -16, y: 0 }); return r;
-  });
+  const ver = term(lo, 860, 84, 640, 140, 'shell', { fs: 24 });
+  ver.cmd(T('a15') - 0.2, 'mongod --version', '$ '); ver.out(T('a15', '9.0') - 0.2, 'db version <span class="n">v9.0.8</span>');
+  const verC = xl(lo, 1180, 244, '默认的存储引擎', 'on'); show(verC, T('a15', '默认') - 0.3, { y: 10 });
+  const hs = [ver.c, verC];
+  show(ver.c, T('a15') - 0.4, { x: 20, y: 0 });
   // a16：它不认识文档
   const dcard = codeCard(lo, 900, 30, 520, 'Alice 的文档', 180); dcard.line('{ name: "Alice", age: 42 }');
   const noDoc = xl(lo, 1180, 160, '不认识文档', 'dk');
@@ -82,34 +81,36 @@ scene('whole', ({ root, s, c0 }) => {
   fadeOut([kvL, vN], T('a19', '排好序'));
   const sorted = xl(lo, 900, 110, '按键排好序 → 存进数据目录里的文件'); show(sorted, T('a19', '排好序') + 0.4, { y: 10 });
 
-  // ── 第三站：数据目录里 users 的三个文件，各是一棵树（A06 I06 B05–B07）──
+  // ── 第三站：数据目录里 users 的三个文件，各是一棵树（A06 I06 B05–B07）；文件名与对应关系取自 out_02 的 db.users.stats() ──
   const X3 = 3840;
-  const dir = h('div', 'abs mono', world, 'db/'); px(dir, X3 + 160, 110); css(dir, { font: '700 40px "Mono"' });
-  const files = [['collection-….wt', '集合树', '放文档本身（键是一个编号，下一章讲）'], ['index-….wt', '_id 索引', '按 _id 排好序'], ['index-….wt', '姓名索引', '按名字排好序']];
+  const st = term(world, X3 + 140, 96, 1640, 210, 'mongosh · lab', { fs: 24 });
+  st.cmd(T('a21') - 0.1, 'db.users.stats({ indexDetails: true })');
+  st.out(T('a21', 'users') + 0.2, "  collection: <span class=\"s\">'table:collection-ccaa694c-…'</span>");
+  st.out(T('a21b') + 0.1, "  _id_: <span class=\"s\">'table:index-2f328dfc-…'</span>　　name_1: <span class=\"s\">'table:index-adff13f3-…'</span>");
+  show(st.c, T('a21') - 0.3, { y: 12 });
+  const files = [['collection-ccaa694c-….wt', '集合树', '放文档本身（键是一个编号，下一章讲）'], ['index-2f328dfc-….wt', '_id 索引', '按 _id 排好序'], ['index-adff13f3-….wt', '姓名索引', '按名字排好序']];
   const fx = files.map(([fn, nm, sub], i) => {
-    const f = h('div', 'panel', world); px(f, X3 + 140 + i * 556, 180, 520, 600);
-    const a = h('div', 'abs mono', f, fn); css(a, { left: '26px', top: '20px', font: '500 26px "Mono"', color: '#5C6C75' });
-    const b = h('div', 'abs', f, nm); css(b, { left: '26px', top: '62px', font: '700 44px "Serif SC"', color: '#061621' });
-    const c = h('div', 'abs t-note', f, sub); css(c, { left: '26px', top: '126px' });
+    const f = h('div', 'panel', world); px(f, X3 + 140 + i * 556, 340, 520, 460);
+    const a = h('div', 'abs mono', f, fn); css(a, { left: '26px', top: '18px', font: '500 24px "Mono"', color: '#3D4F58' });
+    const b = h('div', 'abs', f, nm); css(b, { left: '26px', top: '54px', font: '700 44px "Serif SC"', color: '#061621' });
+    const c = h('div', 'abs t-note', f, sub); css(c, { left: '26px', top: '116px', color: '#1C2D38' });
     // 一棵小树：根 + 一排叶页（叶页数按实测：4、3、15）
     const nLeaf = [4, 3, 15][i];
-    pg(f, 200, 200, 120, 60, '', 'root');
+    pg(f, 200, 170, 120, 54, '', 'root');
     const lw = Math.min(96, (460 - (nLeaf - 1) * 6) / nLeaf);
     const leaves = [];
-    for (let k = 0; k < nLeaf; k++) leaves.push(pg(f, 30 + k * (lw + 6) + (460 - nLeaf * (lw + 6)) / 2, 350, lw, 80));
-    const tov = svg('svg', { class: 'ov', viewBox: '0 0 520 600', width: 520, height: 600 }, f); css(tov, { width: '520px', height: '600px' });
-    leaves.forEach((l) => svg('path', { d: `M260,260 L${parseFloat(l.style.left) + lw / 2},350`, stroke: '#889397', 'stroke-width': 2, fill: 'none' }, tov));
-    const item = h('div', 'abs', f); css(item, { left: '26px', top: '470px', width: '468px', height: '90px', borderRadius: '8px', background: '#E3FCF7', border: '2px solid #00684A', font: '600 26px/86px "Mono"', paddingLeft: '18px', boxSizing: 'border-box', color: '#023430' });
+    for (let k = 0; k < nLeaf; k++) leaves.push(pg(f, 30 + k * (lw + 6) + (460 - nLeaf * (lw + 6)) / 2, 280, lw, 70));
+    const tov = svg('svg', { class: 'ov', viewBox: '0 0 520 460', width: 520, height: 460 }, f); css(tov, { width: '520px', height: '460px' });
+    leaves.forEach((l) => svg('path', { d: `M260,224 L${parseFloat(l.style.left) + lw / 2},280`, stroke: '#889397', 'stroke-width': 2, fill: 'none' }, tov));
+    const item = h('div', 'abs', f); css(item, { left: '26px', top: '372px', width: '468px', height: '64px', borderRadius: '8px', background: '#E3FCF7', border: '2px solid #00684A', font: '600 24px/60px "Mono"', paddingLeft: '16px', boxSizing: 'border-box', color: '#023430' });
     item.textContent = ['编号 → { Alice 的整份文档 }', 'ObjectId(…) → 编号', '"Alice" + 编号 → （空）'][i];
     return { f, item };
   });
-  show(dir, T('a20') - 0.3, { y: 10 });
   fx.forEach((x, i) => show(x.f, T('a20') + 0.2 + i * 0.3, { y: 20 }));
-  const tq = label(world, X3 + 700, 110, '找起来不用从头翻', 't-body'); show(tq, T('a20', '不用从头翻') - 0.2, { x: -10, y: 0 });
-  const usr = xl(world, X3 + 1300, 96, 'users 集合 + 两个索引'); show(usr, T('a21', 'users'), { y: 10 });
-  fadeOut(tq, T('a21') - 0.1);
+  const tq = xl(world, X3 + 140, 200, '每个文件里一棵树：找起来不用从头翻', 'dk'); show(tq, T('a20', '不用从头翻') - 0.4, { x: -10, y: 0 });
+  fadeOut(tq, T('a21') - 0.3);
   glow(fx[0].f, T('a22') + 0.2, T('a23') - 0.1, { bg: '#C0FAE6' });
-  const idxNote = gloss(note(world, X3 + 140, 800, '<b>索引</b>：按某个字段排好序的另一棵树，查的时候不用把集合从头翻', 'g'), '索引'); css(idxNote, { fontSize: '30px' });
+  const idxNote = gloss(note(world, X3 + 140, 820, '<b>索引</b>：按某个字段排好序的另一棵树，查的时候不用把集合从头翻', 'g'), '索引'); css(idxNote, { fontSize: '30px' });
   show(idxNote, T('a23', '索引'), { y: 10 }); glow(fx[1].f, T('a23', '索引'), T('a24') - 0.1, { bg: '#C0FAE6' });
   glow(fx[2].f, T('a24') + 0.3, T('a25') - 0.1, { bg: '#C0FAE6' });
   fadeOut(idxNote, T('a25') - 0.2);

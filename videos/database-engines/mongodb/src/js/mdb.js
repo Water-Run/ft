@@ -139,3 +139,25 @@ function clipBand(band, t, d, from, to_, first = false) {
     return _show(e, t, o);
   };
 }
+
+// 实物回显：深色的 mongosh／终端卡（官网 mongosh 卡的样式）。内容全部抄自 research/lab/out_*.txt 的真实输出。
+// cmd(t, html, prompt) 逐字打出一行命令；out(t, html) 整块出现一段回显；clear(t) 收起已有的行，给后面的让位。
+function term(parent, x, y, w, hh, title, o = {}) {
+  const c = h('div', 'card', parent); px(c, x, y, w, hh);
+  h('div', 'bar', c, title);
+  const fs = o.fs || 26, lh = o.lh || Math.round(fs * 1.46);
+  const body = h('div', 'abs', c); css(body, { left: '26px', top: '70px', right: '26px', font: `400 ${fs}px/${lh}px "Mono", "Sans SC"`, whiteSpace: 'pre', color: '#E8EDEB' });
+  const lines = [];
+  const api = {
+    c, body,
+    cmd(t, html, prompt = 'lab&gt; ') {
+      const e = h('div', '', body, ''); css(e, { minHeight: lh + 'px' });
+      const plain = html.replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, '_');
+      typeText(e, `<span class="c">${prompt}</span>${html}`, t, 38, { cursorUntil: t + 0.25 + plain.length / 38, sfxGain: 0.4 });
+      appear(e, t); lines.push(e); return e;
+    },
+    out(t, html, cls = '') { const e = h('div', cls, body, html); show(e, t, { y: 6, d: 0.35 }); lines.push(e); return e; },
+    clear(t) { const ls = lines.splice(0); if (ls.length) to(ls, t, { autoAlpha: 0, duration: 0.3 }); ls.forEach((e) => set(e, t + 0.32, { display: 'none' })); },
+  };
+  return api;
+}

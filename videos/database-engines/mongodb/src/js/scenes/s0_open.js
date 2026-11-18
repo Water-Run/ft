@@ -11,6 +11,7 @@ scene('open', ({ root, s }) => {
   const strike = h('div', 'abs', world); px(strike, 1072, 170, 0, 4); css(strike, { background: '#DB3030', transformOrigin: '0 50%' });
   const sh = codeCard(world, 120, 120, 900, 'mongosh · users', 760);
   const L1 = sh.line(''), L2 = sh.line(''), L3 = sh.line(''), L4 = sh.line(''), L5 = sh.line('');
+  show(sh.c, s.start, { y: 14 });
   const doc = h('div', '', sh.body, '{\n  <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>),\n  <span class="k">name</span>: <span class="s">\'Alice\'</span>,\n  <span class="k">age</span>: <span class="n">42</span>\n}');
   typeText(L1, '<span class="c">&gt;</span> db.users.insertOne({', T('o1'), 34, { cursorUntil: T('o1') + 0.9 });
   typeText(L2, '    <span class="k">name</span>: <span class="s">"Alice"</span>, <span class="k">age</span>: <span class="n">42</span> })', T('o1') + 0.9, 34, { cursorUntil: T('o2') });
@@ -20,14 +21,14 @@ scene('open', ({ root, s }) => {
   show(ghost, T('o3'), { y: 0 }); fromTo(strike, T('o3') + 0.6, { width: 0 }, { width: 560, duration: 0.5, ease: 'power2.inOut' }); sfx('blip', T('o3') + 0.6);
   typeText(L4, '<span class="c">&gt;</span> db.users.findOne({ <span class="k">name</span>: <span class="s">"Alice"</span> })', T('o4'), 40, { cursorUntil: T('o4') + 1.6 });
   appear(L4, T('o4'));
-  show(doc, T('o4') + 1.6, { y: 10 });
+  show(doc, T('o5'), { y: 10 });
   // 多出来的 _id；查询条件本身是一小份文档
   const idBox = h('div', 'abs', world); px(idBox, 146, 428, 600, 48); css(idBox, { border: '3px solid #00ED64', borderRadius: '8px' });
-  show(idBox, T('o4', '_id'), { y: 0, s: 1.04 }); hide(idBox, Tend('o4') + 0.4, { y: 0 });
+  show(idBox, T('o5', '_id') - 0.2, { y: 0, s: 1.04 }); hide(idBox, Tend('o5') + 0.4, { y: 0 });
   const fBox = h('div', 'abs', world); px(fBox, 478, 336, 330, 50); css(fBox, { border: '3px solid #00ED64', borderRadius: '8px' });
-  show(fBox, T('o5'), { y: 0, s: 1.04 });
+  show(fBox, T('o4', 'name') - 0.2, { y: 0, s: 1.04 });
   const fNote = note(world, 1080, 560, '查询条件 <b>{ name: "Alice" }</b> 也是一小份文档', 'g'); css(fNote, { fontSize: '30px' });
-  show(fNote, T('o5') + 0.4);
+  show(fNote, T('o4', '文档的样子') - 0.2);
   const sqlGhost = label(world, 1080, 400, "SELECT * FROM users WHERE name = 'Alice';", 'mono');
   css(sqlGhost, { font: '500 28px "Mono"', color: '#889397' });
   const strike2 = h('div', 'abs', world); px(strike2, 1072, 420, 690, 4); css(strike2, { background: '#DB3030', transformOrigin: '0 50%' });
