@@ -1,0 +1,85 @@
+{
+  "slug": "powerpc-macintosh",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "PowerPC 时代的麦金塔"
+  },
+  "stage": "review",
+  "next": "WaterRun 审阅本地审片页，明确中文稿本并选择画面、音色与配乐",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "GPT-6.2 Astra",
+        "roles": [
+          "取证",
+          "中文工作稿",
+          "视觉设计",
+          "配乐",
+          "审片页实现"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "五款音色的审片试读"
+        ]
+      },
+      {
+        "name": "Whisper small",
+        "roles": [
+          "试读文本核对"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 4
+  },
+  "audio": {
+    "music": "pulse",
+    "music_db": -21,
+    "duck_db": 9,
+    "sfx_db": -8
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    },
+    "duration": [
+      240,
+      360
+    ]
+  }
+}
