@@ -1,38 +1,103 @@
-/* 本片的视觉系统：颜色、字号阶梯、部件。结构性样式在 base.css。
-   TODO: 模板只给出一套中性的起点（纸色底、墨色字、一个强调色、平涂）。每部片子从头建立自己的视觉系统，做完删掉这一行。 */
+/* 本片的视觉系统（融合方向，见 src/design/keyframes2.html 与 research/MATERIALS.md）。
+   底：官网首页的暖白 #FDFFF5；字：近黑 #061621；细线 #E4E8E0；标题衬线、森林绿 #00684A；
+   亮绿 #00ED64 只给正在讲的那一样东西；代码块用文档页的浅灰细边；深色代码卡 #001E2B 只在看实物时出现。 */
 :root {
-  --paper: #f1efe9;
-  --ink: #16181d;
-  --accent: #d9480f;
-  --dim: #8c8f96;
-  --M: 120px;                 /* 版心边距 */
+  --paper: #FDFFF5; --ink: #061621; --hair: #E4E8E0; --slate: #001E2B; --forest: #00684A; --spring: #00ED64; --ever: #023430;
+  --mint: #71F6BA; --mint2: #C0FAE6; --mint3: #E3FCF7; --g1: #00A35C; --code: #F9FBFA; --codeb: #C1C7C6;
+  --gd3: #1C2D38; --gd2: #3D4F58; --gd1: #5C6C75; --gb: #889397; --purple: #B45AF2; --blue: #016BF8; --red: #DB3030;
+  --M: 120px;
 }
 body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 #bg { background: var(--paper); }
-/* world 是镜头拍摄的那块「大画布」，内容可以排到 1920×1080 之外。里面的文字默认不自动换行：
-   放在画布右侧的块可用宽度为负，会被挤成一字一行；要换行就显式写 <br>，或给块定宽并设 white-space: normal */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; white-space: nowrap; }
-.rule { position: absolute; height: 4px; background: var(--ink); transform-origin: 0 50%; }
 
-/* 字号阶梯：对比要强。1080p 下正文 38px 起，注解不小于 28px */
-.d-1 { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -.03em; }
-.d-2 { font-weight: 800; font-size: 96px; line-height: 1.06; letter-spacing: -.02em; }
-.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
-.t-note { font-weight: 500; font-size: 28px; line-height: 1.35; color: var(--dim); }
+/* 字号阶梯：正文 34px 起，注解不小于 24px */
+.eyebrow { font: 600 26px "Mono"; letter-spacing: .14em; color: var(--forest); padding-left: 16px; border-left: 4px solid var(--spring); }
+.h1 { font: 700 76px/1.1 "Serif SC"; color: var(--forest); }
+.h2 { font: 700 52px/1.15 "Serif SC"; color: var(--forest); }
+.big { font: 900 150px/1.05 "Sans SC"; color: var(--ink); letter-spacing: -.01em; }
+.t-body { font: 500 34px/1.4 "Sans SC"; color: var(--ink); }
+.t-note { font: 500 26px/1.4 "Sans SC"; color: var(--gd1); }
+.t-small { font: 500 24px/1.35 "Sans SC"; color: var(--gd1); }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
-.accent { color: var(--accent); }
+.lab { font: 500 24px "Mono"; color: var(--gd2); white-space: nowrap; }
+.num { font: 800 64px "Inter"; color: var(--ink); }
+.hot { color: var(--forest); }
+.dim { opacity: .35; }
 
-/* 章节卡：整屏色块 */
-.chapter { position: absolute; inset: 0; background: var(--ink); color: var(--paper); padding: 300px var(--M) 0; }
-.chapter .no { font: 500 64px "Mono"; color: var(--accent); }      /* 强调色压在墨色上的对比度约 4:1：只用于 56px 以上的大字 */
-.chapter .ti { font-weight: 900; font-size: 150px; line-height: 1.05; margin-top: 18px; letter-spacing: -.02em; }
+/* 深色代码卡（官网首页的 mongosh 卡） */
+.card { position: absolute; background: var(--slate); border-radius: 20px; color: #E8EDEB; overflow: hidden; }
+.card .bar { height: 58px; padding: 0 28px; display: flex; align-items: center; font: 400 24px "Mono"; color: #B8C4C2; border-bottom: 1px solid #1C2D38; }
+.card .body { padding: 22px 28px; font: 400 30px/46px "Mono"; white-space: pre; }
+.k { color: var(--mint); } .s { color: var(--spring); } .n { color: #D69CFF; } .c { color: var(--gb); } .r { color: #FF8A80; }
 
-/* 字幕 */
-#caption { bottom: 52px; height: 60px; z-index: 50; }
-#caption span { font-size: 40px; font-weight: 500; color: var(--ink); }
-.en #caption span { font-size: 36px; }
-#caption em { font-style: normal; font-weight: 800; color: var(--accent); }
+/* 浅色面板（文档页的代码块样式） */
+.panel { position: absolute; background: var(--code); border: 1.5px solid var(--codeb); border-radius: 8px; }
+.note { position: absolute; background: #fff; border: 1px solid var(--hair); border-left: 5px solid var(--blue); padding: 12px 20px; font: 500 26px/1.5 "Sans SC"; color: var(--ink); border-radius: 3px; white-space: nowrap; }
+.note.g { border-left-color: var(--spring); }
+.note.r { border-left-color: var(--red); }
+.chip { position: absolute; padding: 8px 18px; border-radius: 999px; font: 600 26px "Sans SC"; background: #fff; border: 1.5px solid var(--codeb); color: var(--gd2); white-space: nowrap; }
+.chip.on { background: var(--spring); border-color: var(--spring); color: var(--ever); }
+.chip.dk { background: var(--ever); border-color: var(--ever); color: #fff; }
 
-/* 片尾名单 */
-.credits { white-space: normal; width: 1500px; columns: 2; column-gap: 120px; }
-.credit-row { break-inside: avoid; margin-bottom: 30px; }
+/* 页、块、树 */
+.pg { position: absolute; background: #fff; border: 2px solid var(--codeb); border-radius: 6px; font: 500 22px "Mono"; color: var(--gd2); display: flex; align-items: center; justify-content: center; }
+.pg.root { background: var(--ever); border-color: var(--ever); color: #fff; }
+.pg.hot { background: var(--mint3); border-color: var(--forest); color: var(--forest); font-weight: 700; }
+.pg.on { background: var(--spring); border-color: var(--spring); color: var(--ever); font-weight: 700; }
+.blk { position: absolute; border-radius: 3px; }
+.bar-wrap { position: absolute; background: var(--code); border: 1.5px solid var(--codeb); border-radius: 5px; }
+
+/* 字节格 */
+.byte { position: absolute; width: 33px; height: 52px; border-radius: 3px; background: #fff; border: 1.5px solid var(--codeb); font: 500 22px/52px "Mono"; letter-spacing: -.04em; color: var(--gd2); text-align: center; }
+.byte.nm { background: var(--spring); border-color: var(--spring); color: var(--ever); }
+.byte.ty { background: var(--ever); border-color: var(--ever); color: #fff; }
+.byte.vl { background: var(--mint3); }
+
+/* 章节卡（文档页式：左侧近黑竖栏放衬线大章号，右侧衬线章名、绿条与问题） */
+.chapter { position: absolute; inset: 0; background: var(--paper); display: flex; z-index: 40; }
+.chapter .col { width: 520px; background: var(--slate); display: flex; align-items: center; justify-content: center; }
+.chapter .no { font: 700 260px "Serif SC"; color: var(--spring); line-height: 1; }
+.chapter .main { padding: 300px 0 0 110px; }
+.chapter .kick { font: 600 26px "Mono"; letter-spacing: .16em; color: var(--forest); }
+.chapter .ti { font: 700 120px/1.1 "Serif SC"; color: var(--ink); margin-top: 26px; }
+.chapter .q { margin-top: 40px; font: 500 46px/1.4 "Sans SC"; color: var(--forest); padding-left: 26px; border-left: 8px solid var(--spring); white-space: nowrap; }
+
+/* 字幕：官网式，底部渐变托底 */
+#caption { bottom: 0; height: 112px; z-index: 50; background: #FDFFF5E8; }
+#caption span { font: 500 40px "Sans SC"; color: var(--ink); }
+#caption em { font-style: normal; font-weight: 800; color: var(--forest); }
+
+/* 片尾 */
+.credits-term { white-space: pre; }
+
+/* 说明牌：标题加一行小字（第 06 章起） */
+.tile { position: absolute; background: #fff; border: 2px solid var(--codeb); border-radius: 10px; padding: 14px 22px; box-sizing: border-box; white-space: nowrap; color: var(--ink); }
+.tile .tt { font: 700 32px/1.25 "Sans SC"; }
+.tile .ts { font: 500 25px/1.35 "Sans SC"; color: var(--gd2); margin-top: 6px; }
+.tile.on { background: var(--mint2); border-color: var(--forest); }
+.tile.g { background: var(--mint3); border-color: var(--forest); }
+.tile.r { border-color: var(--red); }
+.tile.r .tt { color: var(--red); }
+.tile.dash { border-style: dashed; background: transparent; }
+
+/* 章节卡的进度格与章数 */
+.chapter .csq { position: absolute; bottom: 170px; width: 36px; height: 12px; background: var(--codeb); }
+.chapter .csq.done { background: var(--forest); }
+.chapter .ccnt { position: absolute; bottom: 130px; right: 120px; font: 700 40px "Mono"; color: #fff; background: var(--ever); padding: 10px 26px; border-radius: 999px; }
+
+/* 大号药丸：深色给事件与要点，红色给出错 */
+.chip.xl { font: 700 34px/1.2 "Sans SC"; padding: 12px 26px; }
+.chip.red { background: #C62828; border-color: #C62828; color: #fff; }
+
+/* 深色旁注与深色说明牌：正在讲的那一句话（深底白字，绿边） */
+.note.dn { background: var(--ever); color: #fff; border: none; border-left: 6px solid var(--spring); font-size: 30px; border-radius: 6px; }
+.note.dn b { color: var(--mint); }
+.note.dn.g { background: var(--forest); }
+.note.dn.r { background: #C62828; border-left-color: #FFD5D5; }
+.tile.dk { background: var(--ever); border-color: var(--ever); color: #fff; }
+.tile.dk .ts { color: var(--mint2); }
+.tile.sp { background: var(--spring); border-color: var(--spring); color: var(--ever); }
+.tile.sp .ts { color: var(--ever); }
+.tile.rd { background: #C62828; border-color: #C62828; color: #fff; }
+.tile.rd .ts { color: #FFFFFF; }

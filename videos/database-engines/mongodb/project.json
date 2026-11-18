@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"
   },
-  "stage": "review",
-  "next": "视觉按策划者要求重做：参考 MongoDB 官方的浅色主题，以 B（文件地图）为主、结合 A（三棵树）与 C（真实字节与回显），出融合方向的关键帧；同时等 WaterRun 审定第 1 稿文案与 5 个待定问题。确认后用 Gentle_Senior（1.15）全片配音，配乐按 C「档案」写 tools/music.py",
+  "stage": "preview",
+  "next": "等 WaterRun 看预览 r1（out/zh/preview-r1.mp4）的意见；之后选封面并改成不用阴影与渐变的 3D 做法，再出正式片",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -21,7 +21,18 @@
           "文案",
           "配音试听",
           "配乐小样",
-          "视觉设计"
+          "视觉设计",
+          "对抗审读",
+          "场景实现",
+          "预览迭代",
+          "配乐"
+        ]
+      },
+      {
+        "name": "Claude Sonnet 5.5",
+        "roles": [
+          "场景实现",
+          "预览草稿"
         ]
       }
     ],
@@ -29,6 +40,7 @@
       {
         "name": "MiniMax speech-2.8-hd",
         "roles": [
+          "配音",
           "配音试听"
         ]
       },
@@ -59,8 +71,8 @@
     "mb": 1
   },
   "audio": {
-    "music": "none",
-    "music_db": -21,
+    "music": "tools/music.py",
+    "music_db": -18,
     "duck_db": 9,
     "sfx_db": -8
   },
@@ -80,8 +92,8 @@
     },
     "duration": {
       "zh": [
-        600,
-        840
+        780,
+        1260
       ]
     }
   },
