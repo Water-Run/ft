@@ -23,10 +23,9 @@ const frames = {
     {title:'再双击一次',date:'2006',desc:'把同一台 Intel iMac 的两种情况并排。通用版选取 Intel 代码，许多旧 PowerPC 应用则经过 Rosetta。对应 e3–e8。'}
   ]
 };
-const voices = [
-  ['v1','温和青年','Gentle_Youth'], ['v2','成熟女声','Mature_Woman'], ['v3','温和长者','Gentle_Senior'],
-  ['v4','亲切女声','Warm_Bestie'], ['v5','诚恳成人','Sincere_Adult']
-];
+const credits = project.credits;
+const voiceService = credits.services.find(service => service.audition_voices);
+const voices = voiceService.audition_voices.map(v => [v.id, v.label, v.voice_id]);
 const music = [
   ['m1','桌边的琴键','84 BPM · 四拍','电钢琴把短句留给旁白，两声高音像手指轻落在键帽上。'],
   ['m2','透光的三拍','96 BPM · 三拍','玻璃音色弹出跳跃的三拍，走到五色机身时加入短小的切分。'],
@@ -46,6 +45,14 @@ const chaptersHtml = chapters.map((s,i)=>{
 const player = (id,name) => '<audio controls preload="metadata" aria-label="'+esc(name)+'试听" src="sound/'+id+'.mp3"></audio>';
 const choice = (key,val) => '<label class="sound-select"><input type="radio" name="'+key+'" value="'+esc(val)+'"> 选择</label>';
 const values = {
+  PRODUCTION_CREDITS: [
+    '<li>策划 · '+esc(credits.planner)+'</li>',
+    ...[...credits.models,...credits.services].map(c =>
+      '<li>'+esc(c.name)+' · '+esc(c.roles.join('、'))+'</li>')
+  ].join(''),
+  PHOTO_CREDITS: credits.photography.map(p =>
+    '<li>'+esc(p.subject)+' · <a href="'+esc(p.source)+'">'+esc(p.name)+'</a> · <a href="'+
+    esc(p.license_url)+'">'+esc(p.license)+'</a></li>').join(''),
   DATA: JSON.stringify({hash,frames}).replaceAll('<','\\u003c'),
   HASH8: hash.slice(0,8), DURATION:duration(estimate.total), SCRIPT:chaptersHtml,
   SAMPLE:chapters[0].cues.filter(c=>['o2','o3','o4'].includes(c.id)).map(c=>esc(c.text)).join(''),

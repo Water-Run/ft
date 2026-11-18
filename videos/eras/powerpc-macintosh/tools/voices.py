@@ -12,17 +12,12 @@ REPO = VIDEO.parents[2]
 sys.path.insert(0, str(REPO / "kit" / "tools"))
 from minimax_tts import synth
 
-CANDIDATES = [
-    ("v1", "Chinese (Mandarin)_Gentle_Youth"),
-    ("v2", "Chinese (Mandarin)_Mature_Woman"),
-    ("v3", "Chinese (Mandarin)_Gentle_Senior"),
-    ("v4", "Chinese (Mandarin)_Warm_Bestie"),
-    ("v5", "Chinese (Mandarin)_Sincere_Adult"),
-]
 MODEL = "speech-2.8-hd"
 
 
 def build(force=False):
+    credits = json.loads((VIDEO / "project.json").read_text(encoding="utf8"))["credits"]
+    service = next(s for s in credits["services"] if s["name"] == "MiniMax " + MODEL)
     script = """const {SCRIPT,ttsText}=require('./src/js/script');
     const selected=['o2','o3','o4'];
     process.stdout.write(JSON.stringify(selected.map(id=>ttsText(SCRIPT[0].cues.find(c=>c[0]===id))).join('')));"""
@@ -35,7 +30,7 @@ def build(force=False):
                                      cwd=REPO, encoding="utf8").strip()
 
     def sample(entry):
-        slug, voice = entry
+        slug, voice = entry["id"], entry["voice_id"]
         key = hashlib.sha256((MODEL + voice + line).encode()).hexdigest()
         dest = root / (slug + ".mp3")
         original = cache / (slug + "-" + key + ".mp3")
@@ -52,7 +47,7 @@ def build(force=False):
         print(slug, voice, dest.stat().st_size, flush=True)
 
     with ThreadPoolExecutor(max_workers=2) as workers:
-        list(workers.map(sample, CANDIDATES))
+        list(workers.map(sample, service["audition_voices"]))
 
 
 if __name__ == "__main__":

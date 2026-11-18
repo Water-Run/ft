@@ -18,9 +18,9 @@
         "roles": [
           "取证",
           "中文工作稿",
-          "视觉设计",
-          "配乐",
-          "审片页实现"
+          "视觉设计与关键帧",
+          "原创配乐小样",
+          "审片页实现与自查"
         ]
       }
     ],
@@ -28,14 +28,37 @@
       {
         "name": "MiniMax speech-2.8-hd",
         "roles": [
-          "五款音色的审片试读"
+          "中文旁白候选试读（o2–o4）"
+        ],
+        "audition_voices": [
+          { "id": "v1", "label": "温和青年", "voice_id": "Chinese (Mandarin)_Gentle_Youth" },
+          { "id": "v2", "label": "成熟女声", "voice_id": "Chinese (Mandarin)_Mature_Woman" },
+          { "id": "v3", "label": "温和长者", "voice_id": "Chinese (Mandarin)_Gentle_Senior" },
+          { "id": "v4", "label": "亲切女声", "voice_id": "Chinese (Mandarin)_Warm_Bestie" },
+          { "id": "v5", "label": "诚恳成人", "voice_id": "Chinese (Mandarin)_Sincere_Adult" }
         ]
       },
       {
         "name": "Whisper small",
         "roles": [
-          "试读文本核对"
+          "五段试读的语音转写核对"
         ]
+      }
+    ],
+    "photography": [
+      {
+        "name": "Stephen Hackett",
+        "subject": "邦迪蓝与五色 iMac 实物摄影",
+        "source": "https://512pixels.net/projects/imacg3/",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      {
+        "name": "William J Sisti",
+        "subject": "Power Mac G5 前面板摄影",
+        "source": "https://www.flickr.com/photos/92455828@N00/9039212657/",
+        "license": "CC BY-SA 2.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/"
       }
     ],
     "repository": "https://github.com/Water-Run/ft"

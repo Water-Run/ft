@@ -11,6 +11,6 @@
 | 旧式 Apple 菜单标志 | [Simple Icons 15.0.0 的 Apple 轮廓](https://github.com/simple-icons/simple-icons/blob/15.0.0/icons/apple.svg)；[许可说明](https://github.com/simple-icons/simple-icons/blob/15.0.0/LICENSE.md) | 保留矢量轮廓，CSS 按时代着色。图标库自有贡献以 CC0 提供，Apple 商标属于 Apple。仅用于片中历史识别 |
 | System 7、Aqua、Tiger 示意界面 | Apple 的[首代 Power Macintosh 开发说明](https://www.macdat.net/files/pdf/apple/developer_notes/power_macintosh_6100_7100_8100.pdf)、[Aqua 发布](https://www.apple.com/newsroom/2000/01/05Apple-Unveils-Mac-OS-X/)，并参考 [System 7.5.3 的画面](https://guidebookgallery.org/screenshots/macos753) 与 [Mac OS X 10.0.4](https://guidebookgallery.org/screenshots/macosx100) 的界面档案 | 自绘教学窗口、图标、背景与布局。窗口内为讲解文字，非系统原始对话框 |
 | 字体 | 仓库固定版本 Noto Sans SC、Noto Serif SC、Inter，见 `kit/assets.json`。页面内嵌两种 Noto 的文字子集，保留 OFL 全文 | SIL OFL 1.1，字体许可随单文件审片页提供。西文印刷标题使用本机 Georgia / Times 系列 |
-| 音乐与试读 | 三首配乐为本片原创程序合成，源码 `tools/music.py`，全程无外部采样。五款 MiniMax speech-2.8-hd 同文试读，型号与音色见 `tools/voices.py` | 试听仅在本轮审片页使用，正式旁白仍待确定。配乐源码 GPL-3.0-or-later。第三方语音的发布条件沿用仓库第三方材料约定 |
+| 音乐与试读 | 三首配乐为本片原创程序合成，源码 `tools/music.py`，全程无外部采样。五款 MiniMax speech-2.8-hd 同文试读，型号与完整音色 ID 见 `project.json` 的 `credits.services`，生成程序为 `tools/voices.py` | 试听仅在本轮审片页使用，正式旁白仍待确定。配乐源码 GPL-3.0-or-later。第三方语音的发布条件沿用仓库第三方材料约定 |
 
 页面标出摄影者与许可证。各照片及其经处理的图像部分沿用各自许可。
