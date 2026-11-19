@@ -4,7 +4,7 @@
 
 ## 状态
 
-2026-11-18：文案第三稿（含本日多轮修订）完成并交审，**停在文案确认之前**。角色：制作方，兼文案（Claude Sonnet 5.5；首版取证与文案出自 GPT-6.1-Terra，型号取自策划者在会话中的说法，尚待核实）。文案尚未获得校对者确认（`approval.json` 为 `pending`，已指向当前稿本的哈希），未配全片音，未写场景，未出预览。下一步依赖：校对者确认文案 → 按 `src/design/scenes.md` 配音、实现、出预览 r1。
+2026-11-19：文案已由校对者确认（见 review/NOTES.md「文案确认」）。Claude Haiku 5.5 按 `src/design/HAIKU.md` 实现了全部场景、配音与混音，出预览 r1：`out/zh/preview-r1.mp4`（见 review/NOTES.md「预览 r1」一节）。角色：制作方，兼文案（Claude Sonnet 5.5；首版取证与文案出自 GPT-6.1-Terra，型号取自策划者在会话中的说法，尚待核实）。基建（已做，见 NOTES「基建」一节）：引擎配置与常驻元素、部件库、场景骨架、片尾名单、配乐脚本、预检工具、逐句对应表、给 Haiku 的交接文档。下一步：策划者看预览 r1，给修改意见；之后出 r2。交付前的事项见 review/NOTES.md「预览 r1」。
 
 ## 简报
 
@@ -58,6 +58,7 @@
 ## 接续
 
 1. 校对者确认当前稿本（`review/script.zh.c4f55bb1….md`，内容 SHA-256 以 `approval.json` 为准），记进 `review/NOTES.md` 并改 `approval.json`。人未明确确认前，不配音、不铺场景。
-2. 接手实现的会话（含 Haiku）读 `src/design/scenes.md`：配音 → `config.js`/`parts.js` → 各场景 → 配乐与音效 → 预览 r1；每步的自查与降级方案都在里面。不要改文案、画面方向、配色。
-3. 重建审片页：`python -I videos/in-seconds/ttft/tools/voice_sample.py`（需要网络、edge-tts；ffmpeg 路径用环境变量 `FFMPEG`、`FFPROBE` 指向 `assets/ffmpeg/bin/`）、`python videos/in-seconds/ttft/tools/audition_audio.py`（配乐小样，需要 NumPy）、`look.js --url` 截关键帧与封面到 `out/audition/frames/`，再 `node videos/in-seconds/ttft/tools/audition.js`。生成物不入库。
-4. 交付前 `project.json` 的 `credits.models` 要核实 GPT-6.1-Terra 的型号写法；署名要与实际分工一致。
+2. **切到 Haiku 实现预览**：在 Claude Code 里 `/model` 选 Haiku，把 `src/design/HAIKU.md` 第 0 节的开工提示词粘贴给它。它按 `HAIKU.md` 与 `src/design/scenes.md` 配音 → 实现各场景 → 音效与混音 → 预览 r1；每步的检查命令、不能越过的线、停下来问的情形都在里面。它不改文案、画面方向、配色。
+3. 随时可跑的预检：`node videos/in-seconds/ttft/tools/preflight.js`（文案确认状态、时间线、语法、场景号、`T()` 的句号与词、禁用写法、颜色、骨架进度）。
+4. 重建审片页：`python -I videos/in-seconds/ttft/tools/voice_sample.py`（需要网络、edge-tts；ffmpeg 路径用环境变量 `FFMPEG`、`FFPROBE` 指向 `assets/ffmpeg/bin/`）、`python videos/in-seconds/ttft/tools/audition_audio.py`（配乐小样，需要 NumPy）、`look.js --url` 截关键帧与封面到 `out/audition/frames/`，再 `node videos/in-seconds/ttft/tools/audition.js`。生成物不入库。
+5. 交付前 `project.json` 的 `credits.models` 要核实 GPT-6.1-Terra 的型号写法，并加上实现预览的会话（Haiku）的准确型号与分工；署名要与实际分工一致，字数要短（片尾只有约 3 秒）。

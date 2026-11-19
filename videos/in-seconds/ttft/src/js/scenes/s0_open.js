@@ -1,28 +1,58 @@
-// 开场。TODO: 系列起点的示例场景，整个文件换成本集的内容。结构：现象或问题 → 片名卡（朱红整屏）→ 它是什么。
+// 开场（0–14.4 秒）：对话面板里的光标与示例读数 → 第一个 Token 出现 → 琥珀满铺的片名卡（停留时整张卡极慢地推近一次）。规格：src/design/scenes.md 第 3.1 节。
 scene('open', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world, 1920, VH);
-  // 第一帧就要有东西：一道横线先画出来，主体随第一句落下
-  const rule = blk(world, 'bg-paper', 120, 300, 900, 8);
-  fromTo(rule, s.start + 0.05, { scaleX: 0 }, { scaleX: 1, transformOrigin: '0 50%', duration: 0.6, ease: 'power3.inOut' }); sfx('whoosh', s.start + 0.05, { g: 0.5 });
-  const what = txt(world, 't-1', tr('现象', 'The hook'), 112, 330);
-  slam(what, Q(T('o1')), { from: 1.25, d: 0.35 }); sfx('thud', Q(T('o1')) + 0.1);
-  // 片名卡：朱红整屏，墨色字
-  const tCard = Qf(T('o2')), tOut = Q(Tend('o2') + 0.35);
-  const card = h('div', 'abs bg-ac ink', root); px(card, 0, 0, 1920, VH);
-  const big = txt(card, 't-0 ink', tr('主题', 'Topic'), 96, 150);
-  const n = txt(card, 'num ink', String(TOTAL), 1196, 170); n.style.fontSize = '290px';
-  const u = txt(card, 't-2 ink', tr('秒', 's'), 1196 + String(TOTAL).length * 174 + 16, 342);
-  [big, n, u].forEach((e) => { e.dataset.overlapOk = '1'; });
-  wipe(card, tCard, { dir: 'l', d: 0.4 }); sfx('whoosh', tCard - 0.1, { g: 0.8 });
-  slam(big, tCard + 0.35, { from: 1.3, d: 0.4 }); sfx('thud', tCard + 0.35);
-  slide(n, tCard + 0.2, { x: 120, d: 0.45 }); slide(u, tCard + 0.28, { x: 120, d: 0.45 }); sfx('pop', tCard + 0.2, { g: 0.6, p: 0.4 });
-  wipeOut(card, tOut, { dir: 'r', d: 0.4 }); sfx('whoosh', tOut, { g: 0.7 });
-  hudGround('L', tCard + 0.2, tOut + 0.3, 'ac'); hudGround('R', tCard + 0.3, tOut + 0.1, 'ac');
-  wipeOut(what, tCard + 0.4, { dir: 'l', d: 0.2 });
-  const is = txt(world, 't-2', tr('它是什么', 'What it is'), 116, 360);
-  wipe(is, Q(T('o3')), { dir: 'l', d: 0.4 }); sfx('pop', Q(T('o3')), { g: 0.7 });
-  // 停留：不缩放、不推近，只朝一个方向极慢横移（一屏合计不超过 48 像素、每秒不超过 2 像素；docs/guides/scenes.md 第 3 节）
-  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
-  cam.track(s.start, { x: 960 - dx / 2, y: 484, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
+  cam.cut(s.start, { x: 960, y: 484, z: 1 });
+  const k = CLK();                                    // k.ts：读数开始走；k.tf：第一个 Token（def）到达
+  const tPrompt = T('o1', '提问');                     // 提问块从右滑入
+  const tCard = T('o3', '等待') - 0.2;                // 片名卡从左刷入
+
+  // 对话面板（左）。子元素用面板内坐标，随面板一起刷入
+  const panel = h('div', 'node', world); px(panel, 120, 160, 900, 770);
+  wipe(panel, c0, { dir: 'l', d: 0.6 });
+  const q1 = h('div', 'bg-paper', panel, '写一个判断质数的 Python 函数');
+  px(q1, 100, 40, 760, 120);
+  css(q1, { display: 'flex', alignItems: 'center', justifyContent: 'center', font: '700 44px "Sans SC"' });
+  slide(q1, tPrompt, { x: 120, d: 0.45 }); sfx('pop', tPrompt, { g: 0.7 });
+  appear(txt(panel, 'tag', '回答', 40, 250), c0 + 0.2);
+  blinkCaret(blk(panel, 'caret', 40, 310, 40, 84), c0 + 0.3, k.tf);
+  const inp = blk(panel, '', 40, 630, 820, 96);
+  css(inp, { background: PALETTE.ink, color: PALETTE.dim, font: '500 38px/96px "Sans SC"', paddingLeft: '30px' });
+  inp.textContent = '输入消息';
+
+  // 示例读数（与右上角读数同一时钟 METER(t)）；第一个 Token 到达时反白 0.3 秒
+  const tm = txt(world, 'tm', '0.00', 1040, 330);
+  appear(tm, c0 + 0.2);
+  F((t) => { if (t >= c0) tm.textContent = METER(t).toFixed(2); });
+  classWindow(tm, 'inv', k.tf, k.tf + 0.3);
+  appear(txt(world, 'eg', '示例', 1040, 230), c0 + 0.2);
+  const unit = txt(world, 'tag', '秒', 1050, 660); css(unit, { font: '700 60px "Sans SC"' }); appear(unit, c0 + 0.2);
+
+  // 第一个 Token（def，琥珀）出现在光标的位置；其后每 0.3 秒一个，新块先是「未完成」的 ink2，0.15 秒后变纸色
+  const toks = [['def', 40, 310, 'first'], ['is_', 207, 310, 'out'], ['prime', 374, 310, 'out'], ['(', 608, 310, 'out'], ['n', 40, 420, 'out'], ['):', 140, 420, 'out']];
+  toks.forEach(([text, x, y, kind], i) => {
+    const tb = k.tf + i * 0.3;
+    const [e] = codeTok(panel, text, x, y, 104, kind);
+    appear(e, tb); sfx('tick', tb, { g: 0.6 });
+    if (i > 0) classWindow(e, 'rest', tb, tb + 0.15);
+  });
+  sfx('chime', k.tf, { g: 0.6 });
+
+  // 片名卡：琥珀满铺。刷入后 TTFT 砸入，「首 Token 延迟」滑入，注解刷入；之后整张卡极慢地推近 3%，直到下一场刷入
+  const card = blk(root, 'bg-ac', 0, 0, 1920, VH);
+  css(card, { transformOrigin: '50% 50%' });
+  wipe(card, tCard, { dir: 'l', d: 0.6 }); sfx('whoosh', tCard, { g: 0.7 });
+  set(world, tCard + 0.6, { autoAlpha: 0 });   // 卡片已完全盖住之后，底层的对话与读数隐藏
+  txt(card, 't-2 ink', '96 秒了解', 120, 150);
+  const big = txt(card, 't-0 ink', 'TTFT', 110, 250);   // 与「96 秒了解」「首 Token 延迟」的字形左缘对齐（大字的左侧留白约 14 像素）
+  const zh = txt(card, 't-2 ink', '首 Token 延迟', 120, 770);
+  const gl = txt(card, 't-b ink', 'Time To First Token：回答开始出现之前的等待时长', 120, 886);
+  gl.dataset.gloss = 'TTFT';
+  slam(big, tCard + 0.5, { from: 1.2, d: 0.4 }); sfx('thud', tCard + 0.5, { g: 0.9 });
+  slide(zh, tCard + 0.9, { y: 40, d: 0.5 });
+  wipe(gl, tCard + 1.3, { dir: 'l', d: 0.5 });
+  const zs = tCard + 1.8;
+  fromTo(card, zs, { scale: 1 }, { scale: 1.03, duration: s.end - zs - 0.2, ease: 'none' });
+  // 常驻元素（左上秒数、右上读数）压在琥珀上时改墨色；右侧晚于左侧退出琥珀
+  hudGround('L', tCard, s.end + 0.2, 'ac'); hudGround('R', tCard, s.end + 0.45, 'ac');
 });

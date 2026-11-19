@@ -27,7 +27,7 @@ const ease = {
 };
 
 // 某句旁白的起点；带 word 时取该词在语音里被读到的时刻（来自 TTS 的词边界）
-function T(id, word, shift = 0) {
+function Tword(id, word, shift = 0) {
   const c = L.cues[id];
   if (!c) { console.warn('no cue', id); return 0; }
   if (typeof pick === 'function') word = pick(word);        // 双语脚本：T('c5', { zh: '读', en: 'reads' })
@@ -46,6 +46,8 @@ function T(id, word, shift = 0) {
   }
   return c.end + shift;
 }
+// 画面上的时刻吸附到八分音符（0.3 秒）格点，与配乐同拍（Q 见 config.js）；shift 在吸附之后加，如 T('r3', '之后') - 0.2
+function T(id, word, shift = 0) { return Q(Tword(id, word)) + shift; }
 const Tend = (id, shift = 0) => L.cues[id].end + shift;
 
 // ── DOM 小工具 ──

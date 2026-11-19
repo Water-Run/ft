@@ -28,13 +28,13 @@
 
 数字都是示例或有出处：光标等待的 2.00 秒、长度与时间是人为设定（画面标「示例」「示意」）；尺度一场的数字来自 FACTS（ClickHouse 指南 2026-07；Artificial Analysis 榜单快照 2026-11-18），画面上带出处一行。`TTFT` 出现在片名卡、封面，以及 define 一场的展开动画里；其余标签都用「首 Token 延迟」。
 
-## 2. 全片配置（`src/js/config.js`、`index.html`、`parts.js`）
+## 2. 全片配置（**已就绪**：`src/js/config.js`、`index.html`、`parts.js`、`style.css`、`tools/music.py`、`tools/preflight.js`、`expect.zh.json`）
 
 - `PALETTE = { ink:'#0b1210', ink2:'#16211d', paper:'#ece8dc', ac:'#ffb000', dim:'#8e9a94', line:'#2b3a34' }`，`project.json` 的 `check.style.palette` 已同步。
 - **拍子：100 BPM**。`BEAT = 0.6`，`Q` 的格点改为 `0.3`（八分音符）。一小节 2.4 秒，全片 40 小节；各场的 `at` 都在小节线上。`WIPE = 0.6`。
 - 常驻元素沿用起点的字幕带 + 秒尺 + 左上剩余秒数。右上角 `HUD.right` 放「等待读数」：`▌` 琥珀光标（按 `floor(t/0.6)%2` 闪）+ 读数（Mono，琥珀），结构见 `style.css` 的 `.hud-r`；读数是 `METER(t)` 的纯函数，表见第 4 节。琥珀满铺的片名卡上，左右两个常驻元素改墨色（`hudGround('L'|'R', t0, t1, 'ac')`）。
-- `parts.js` 加部件，写法照 `keyframes.html`：`tokenCol(parent, text, x, y, kind, mono)`（`kind`：in / out / first / rest）、`codeTok(...)`（定义一场的代码 Token，宽 = 33.6×字数+56）、`cacheCell(parent, x, y, kind)`、`brace(parent, cls, x1, x2, y, dir)`、`arrowUp(...)`、`ttftLine(parent, x0, y)`（返回可由 `k` 驱动的元素组，见 3.2）。斜线（若用）用已有的 `hatch()`，**不用渐变**。
-- 场景文件：`s0_open.js`、`s1_define.js`、`s2_write.js`、`s3_prefill.js`、`s4_length.js`、`s5_scale.js`、`s6_close.js`、`s9_credits.js`（起点已有，只核对名单）。删掉 `s1_demo.js`、`s2_outro.js`，按此顺序改 `index.html`。
+- `parts.js` 的部件（已写好，几何与 `keyframes.html` 一致；常量 `COLX(i)` = 第 i 列的 x，`ROWY`、`IN_TOKENS`、`OUT_TOKENS`、`CODE_FILE`）：`tokenCol(parent, text, x, y, kind, mono)`（`kind`：in / out / first / rest）、`codeTok(...)`（定义一场的代码 Token，宽 = 33.6×字数+56）、`cacheCell(parent, x, y, kind)`、`brace(parent, cls, x1, x2, y, dir)`、`arrowUp(...)`、`ttftLine(parent, x0, y)`（返回可由 `k` 驱动的元素组，见 3.2）。斜线（若用）用已有的 `hatch()`，**不用渐变**。
+- 场景文件（**骨架已建、`index.html` 已按顺序加载**）：`s0_open.js`、`s1_define.js`、`s2_write.js`、`s3_prefill.js`、`s4_length.js`、`s5_scale.js`、`s6_close.js`；每个只有容器与静止镜头，带 `root.dataset.skeleton = '1'`，实现完删掉这一行。`s9_credits.js` 已实现（注册的场景号是 `outro`），只核对名单。
 - 术语注解：`*Token*`（d1）、`*首 Token 延迟*`、`*TTFT*`（d3）第一次出现的那句说完时画面上要有 `data-gloss="Token"`、`data-gloss="首 Token 延迟"`、`data-gloss="TTFT"` 的元素（keyframes 的 `tokens`、`bracket` 帧已带）。「缓存」只在画面上，带 `data-gloss="缓存"`（prefill 帧）。
 - `T()` 找词：词在合成文本里找。Token 读成「托肯」，所以用 `T('d1','托肯')`；TTFT 读成「T T F T」，不当词找，用旁边的汉字词（`T('d3','缩写')`）。
 
@@ -50,8 +50,8 @@
 |---|---|
 | 场景开头 | 面板（`.node`，x120 y160 w900 h770）`wipe` 从左刷入；光标（x160 y470 w40 h84）在位并按拍闪 |
 | `T('o1','提问')` | 提问块（paper 底，x220 y200 w760 h120，「写一个判断质数的 Python 函数」，44px）从面板右侧 `slide` 进来；`sfx('pop')` |
-| 读数起点 `t_s = T('o2','之后') − 2.0` | 大读数（`.tm` 330px，x1040 y330）与右上读数同步从 0.00 **实时**走；「示例」标记（x1040 y230）。如 `t_s` 早于 o1 结束，推迟到 `Tend('o1')`，终点相应取 `t_s + 2.0` |
-| `t_f = t_s + 2.0` | 读数停在 2.00；琥珀第一段「def」取代光标，其后几个 Token（`is_`、`prime`、`(`、`n`、`):`，ink2 → paper）每 0.3 秒一个依次出现（输出像水一样流出来，对应 o2）；读数块反白 0.3 秒；`sfx('chime', g:0.6)` |
+| 读数起点 `CLK().ts`（config.js 已写好：`tf = T('o2')`，`ts = tf − 2.0` 且不早于 `Tend('o1') − 1.6`） | 大读数（`.tm` 330px，x1040 y330）与右上读数同步从 0.00 **实时**走；「示例」标记（x1040 y230）。右上读数同一时钟，已由 `METER(t)` 驱动，场景里不用管 |
+| `CLK().tf` | 读数停在 2.00；琥珀第一段「def」取代光标，其后几个 Token（`is_`、`prime`、`(`、`n`、`):`，ink2 → paper）每 0.3 秒一个依次出现（输出像水一样流出来，对应 o2）；读数块反白 0.3 秒；`sfx('chime', g:0.6)` |
 | `T('o3','等待') − 0.2` | 琥珀满铺块从左刷过整屏（0.6 秒）进入片名卡；`sfx('thud')`。片名卡（帧 `title`）：`96 秒了解`（t-2，x120 y150）、`TTFT`（t-0，x96 y250，墨色）、`首 Token 延迟`（t-2，x120 y770）、注解行（x120 y886，`data-gloss="TTFT"`）；常驻元素此段为墨色 |
 | 片名卡停留 | 整张卡极慢地匀速推近一次（不超过 3%）；`oT`（1.8 秒）内不再有别的动作 |
 
@@ -130,25 +130,25 @@
 | `c0` | 「首 Token 延迟」（150px 琥珀，x240 y200）`slam` + `sfx('thud')`；6 个输入块（paper，y440）与琥珀括号（x240→1176，y380）在位 |
 | `T('e1','慢')` | paper 括号（x240→1004，y600，向上竖线）与「先读完整个输入」（44px，x240 y630）`wipe` 入；光标（x1196 y440 w40 h104）出现并闪（与开场呼应） |
 | `T('e2','之后')` | 光标让位给琥珀第一块，后面 `is_`、`prime`、`(n` 每 0.3 秒变亮落下（ink2 → paper）；`sfx('chime', g:0.6)` |
-| `Tend('e2')` 起 | 静停到场景末（至少 1.0 秒），配乐收束 |
+| `Tend('e2')` 起 | 到场景末（93.0 秒）约 2.7 秒：**不要整段静停**（`scan.js` 的 `STILL` 要求任意 2.5 秒内有变化）。让输出继续一个接一个落下：`T('e2','之后')` 起每 0.6 秒再落一个新 Token（`is_ prime (n` 之后接 `):` `return` …，沿用 `rest` → `out`），一直落到 92.4 秒；配乐收束 |
 
 ### 3.8 `outro`（93.0–96.0，约 3 秒）
 
-策划者 2026-11-18 明确要求片尾名单压到 2–3 秒（高于系列缺省的约 7.5 秒）。起点的 `s9_credits.js`：名单来自 `project.json` 的 `credits`，不配旁白，`GPL-3.0-or-later` 与仓库地址可见；底色 ink。因为只有约 3 秒，名单**一次性整屏出现**（`lead` 0.3 秒后即全部在场，不逐行入场、不做动画），字号不小于 36px，只放必需的几行：策划、模型与分工（每个模型一行）、「开源视频」、仓库地址、`GPL-3.0-or-later`。`check.js` 若对名单停留时间报错，如实报告，不放宽阈值。**交付前 `credits.models` 要写成实际参与的模型准确型号与分工**（`docs/roles.md` 第 5 节）。
+策划者 2026-11-18 明确要求片尾名单压到 2–3 秒（高于系列缺省的约 7.5 秒）。起点的 `s9_credits.js`：名单来自 `project.json` 的 `credits`，不配旁白，`GPL-3.0-or-later` 与仓库地址可见；底色 ink。因为只有约 3 秒，名单**分两组整组出现**（`s9_credits.js` 已实现：策划与分工在 0.2 秒、开源视频与许可在 1.4 秒；不逐行入场、不做动画），这样任意 2.5 秒内都有变化（`scan.js` 的 `STILL`）；字号不小于 36px，只放必需的几行：策划、模型与分工（每个模型一行）、「开源视频」、仓库地址、`GPL-3.0-or-later`。`check.js` 若对名单停留时间报错，如实报告，不放宽阈值。**交付前 `credits.models` 要写成实际参与的模型准确型号与分工**（`docs/roles.md` 第 5 节）。
 
-## 4. 读数表 `METER(t)`（`config.js`，纯函数，区间外保持上一个值）
+## 4. 读数表 `METER(t)`（**已在 `config.js` 实现，不要改**；纯函数，区间外保持上一个值）
 
 | 区间 | 值 |
 |---|---|
-| 开头到 `t_s` | 0.00 |
-| `[t_s, t_f]` | 0.00 → 2.00 线性（open 的实时 2 秒） |
-| `[t_f, T('s1','聊天')]` | 2.00 |
+| 开头到 `CLK().ts` | 0.00 |
+| `[ts, tf]` | 0.00 → 2.00 线性（open 的实时 2 秒） |
+| `[tf, T('s1','聊天')]` | 2.00 |
 | `T('s1','聊天')` 起 | 0.50（尺度一场的示例读数），到 close 开始前保持 |
 | close | 2.00 |
 
 ## 5. 声音
 
-**音效**（`sfx(名, 时刻, {g})`，名称见 `docs/guides/sound.md`；覆盖要求写在 `project.json` 的 `check.sfx`）：`tick`（Token 块逐个落下、缓存升起、TTFT 字母逐个出现）、`pop`（标签贴上、缓存升起）、`thud`（片名、「首 Token 延迟」大字、深度思考块）、`chime`（第一段落下：open 的 `t_f`、prefill 的 `T('r3','之后')` 与 `T('r5','更短')`、close 的 `T('e2','之后')`，每场至多两次）、`whoosh`（换场、输入块同时亮起、TTFT 展开，`g: 0.4–0.5`）。起点自带的剩余 5 秒 `tick` 保留。
+**音效**（`sfx(名, 时刻, {g})`，名称见 `docs/guides/sound.md`；覆盖要求写在 `project.json` 的 `check.sfx`）：`tick`（Token 块逐个落下、缓存升起、TTFT 字母逐个出现）、`pop`（标签贴上、缓存升起）、`thud`（片名、「首 Token 延迟」大字、深度思考块）、`chime`（第一段落下：open 的 `CLK().tf`、prefill 的 `T('r3','之后')` 与 `T('r5','更短')`、close 的 `T('e2','之后')`，每场至多两次）、`whoosh`（换场、输入块同时亮起、TTFT 展开，`g: 0.4–0.5`）。起点自带的剩余 5 秒 `tick` 保留。
 
 **配乐**（`tools/music.py` 重写；已选方向 01「脉冲 · 清晰节拍」，100 BPM，小样音符环 `[60,67,64,67,62,69,65,69]`，见 `tools/audition_audio.py`）。程序合成，`compose(ctx)` 返回 (2, N)。不用起点的 D 小调与 120 拍的「秒针」（F21）；每小节 2.4 秒，`audio.score.lift_cue` 为 `"o3"`（`project.json` 已改）：
 

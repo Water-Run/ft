@@ -85,3 +85,23 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 #caption { bottom: 30px; height: 60px; z-index: 50; }
 #caption span { font-size: 40px; font-weight: 500; color: var(--paper); font-family: "Inter", "Sans SC"; }
 #caption em { font-style: normal; font-weight: 800; color: var(--ac); }
+
+/* 常驻元素压在琥珀满铺的片名卡上时，字色改墨色（config.js 的 hudGround 切换） */
+.hud-l.onac { color: var(--ink); }
+.hud-r.onac .cur { background: var(--ink); }
+.hud-r.onac .v, .hud-r.onac .u { color: var(--ink); }
+
+/* 片尾名单：3 秒内要读完，一次性整屏出现；字号不小于 36px */
+.credits { position: absolute; left: 120px; top: 150px; white-space: nowrap; }
+.credit-row { margin-bottom: 12px; }
+.credit-row .k { display: block; font: 500 28px "Sans SC"; color: var(--dim); }
+.credit-row .v { display: block; font: 700 42px "Inter", "Sans SC"; color: var(--paper); }
+.credit-row .v.ac { color: var(--ac); }
+
+/* 场景共用：示例读数（与右上角读数同一时钟）、刻度尺、指针 */
+.tm { position: absolute; font: 800 330px "Mono"; letter-spacing: -.04em; line-height: 1; color: var(--ac); }
+.tm.inv { background: var(--ac); color: var(--ink); padding: 0 .06em; }
+.ax { position: absolute; height: 4px; background: var(--line); }
+.tk { position: absolute; width: 3px; height: 16px; background: var(--dim); }
+.al { position: absolute; white-space: nowrap; font: 500 30px "Mono"; color: var(--dim); transform: translateX(-50%); }
+.ptr { position: absolute; width: 6px; height: 48px; background: var(--ac); }

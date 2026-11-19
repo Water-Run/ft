@@ -63,7 +63,7 @@ function ttftLine(p, k, x0, y, size = 96) {
 
 // ── 一排 Token 列：输入 6 列，输出从第 7 列起；列距 156，块宽 140 高 104（write / prefill / reuse / close 共用这套几何）──
 const COL = (i) => 240 + i * 156, ROWY = 400;
-const IN = ['写一个', '判断', '质数', '的', 'Python', '函数'], OUT = ['def', 'is_', 'prime', '(n'];
+const IN = ['写一个', '判断', '质数', '的', 'Python', '函数'], OUT = ['def', 'is_', 'prime', '('];
 function tk(p, text, x, y, kind, mono) {   // kind: in（dim 实心）/ out（paper）/ first（琥珀）/ rest（ink2 底 dim 字）；mono：代码 Token 用等宽字
   const e = el('tok ' + (kind === 'first' ? 'first' : kind === 'rest' ? 'rest' : ''), p, text); at(e, x, y, 140, 104); e.style.fontSize = '40px'; e.style.height = '104px';
   if (mono) e.style.fontFamily = '"Mono"';
@@ -111,7 +111,7 @@ const FR = {
     brace(S, 'ac', 240, 880, 490, 1);
     const m = el('mark', S); at(m, 237, 480, 6, 190); tagAt(S, 'pp', '发出请求', 190, 680);
     const cr = el('caret', S); at(cr, 290, 535, 40, 84);
-    let x = 880; ['def', 'is_', 'prime', '(', 'n', '):'].forEach((tx, i) => { const [e, w] = codeTok(S, tx, x, 529, 104, i === 0 ? 'first' : 'rest'); x += w + 10; });
+    let x = 880; ['def', 'is_', 'prime', '(', 'n', '):'].forEach((tx, i) => { const [e, w] = codeTok(S, tx, x, 529, 112, i === 0 ? 'first' : 'rest'); x += w + 10; });
     tagAt(S, 'ac', '第一段', 880, 645); tagAt(S, '', '一次送来的数据块，可含不止一个 Token', 880, 688);
   },
   ttft(S) { FR.bracket(S, 0.45); },   // 展开到一半：字母 T T F T 刚被拉开
@@ -142,7 +142,7 @@ const FR = {
     chrome(S, { t: 57.5, meter: '2.00', cap: '不用重新读，首 Token 延迟通常更短' });
     const FILE = ['def', 'if', 'for', 'try'];
     // 第一次提问：整段输入都要读，括号长
-    tagAt(S, 'pp', '第一次提问', COL(0), 200, { fontSize: '38px' }); big(S, '首 Token 延迟', COL(3), 192, 48);
+    tagAt(S, 'pp', '第一次提问', COL(0), 200, { fontSize: '38px' }); const lb = big(S, '首 Token 延迟', 708, 192, 48); lb.style.transform = 'translateX(-50%)';
     brace(S, 'ac', COL(0), COL(6), 262, 1);
     FILE.forEach((t, i) => { tk(S, t, COL(i), 290, 'out', true); cell(S, COL(i), 410, 'pp'); });
     tk(S, '怎么', COL(4), 290, 'out'); tk(S, '改', COL(5), 290, 'out'); cell(S, COL(4), 410, 'pp'); cell(S, COL(5), 410, 'pp');
@@ -162,26 +162,30 @@ const FR = {
       const b = el('stage pre', S, label); at(b, 240, y, w, 104); b.dataset.name = 'read-input';
       tk(S, 'def', 240 + w, y, 'first', true); tk(S, 'is_', 240 + w + 156, y, 'out', true); if (240 + w + 312 + 140 <= 1860) tk(S, 'prime', 240 + w + 312, y, 'out', true);
       brace(S, 'ac', 240, 240 + w, y - 36, 1);
-      big(S, '首 Token 延迟', 240, y - 108, 56);
+      big(S, '首 Token 延迟', 240, y - 124, 56);
     };
-    row(340, 360, '一句话');
-    row(660, 1200, '一整个代码文件');
+    row(340, 360, '');
+    row(660, 1200, '');
+    tagAt(S, '', '一句话', 240, 452, { fontSize: '30px' }); tagAt(S, '', '整个代码文件', 240, 776, { fontSize: '30px' });
     tagAt(S, '', '读完输入', 240, 806, { fontSize: '30px' });
     el('eg', S, '示例 · 长度与时间为示意').style.cssText += ';left:1180px;top:180px';
   },
-  scale(S) {  // 尺度（对数刻度）：一秒以内算快；长输入几秒（只在画面上）；深度思考几十秒以上
+  scale(S) {  // 尺度（对数刻度）：一秒以内算快；长输入几秒（只在画面上）；深度思考几十秒以上。布局与 s5_scale.js 一致
     chrome(S, { t: 72.0, meter: '0.50', cap: '开着深度思考的模型，要等几十秒以上' });
     const X = (t) => 240 + 380 * (Math.log10(t) + 1);
     el('t-4', S, '首 Token 延迟的尺度', { position: 'absolute', left: '240px', top: '170px' }); el('eg', S, '对数刻度').style.cssText += ';left:790px;top:176px';
-    brace(S, 'pp', X(0.1), X(1), 330, 1); tagAt(S, 'pp', '聊天：一秒以内算快', 240, 270, { fontSize: '38px' });
-    const blk = (x1, x2, cls) => { const e = el('stage ' + cls, S); at(e, x1, 380, x2 - x1, 80); return e; };
-    blk(X(0.2), X(0.5), 'gen'); blk(X(2), X(10), 'net'); blk(X(40), X(360), 'net');
-    tagAt(S, 'ac', '调得好的部署：0.2–0.5 秒', X(0.2), 476, { fontSize: '34px' });
-    tagAt(S, 'pp', '输入很长：几秒', X(2), 536, { fontSize: '34px' });
-    tagAt(S, 'pp', '深度思考（最高档）：40–360 秒', X(40) - 120, 476, { fontSize: '34px' });
-    axis(S, 640, 4, 1, 380);
+    const band = el('', S); at(band, X(0.1), 326, X(1) - X(0.1), 36); band.style.background = C.paper; tagAt(S, 'pp', '聊天：一秒以内算快', 240, 270, { fontSize: '38px' });
+    const blk = (x1, x2, y, h, cls) => { const e = el('stage ' + cls, S); at(e, x1, y, x2 - x1, h); return e; };
+    blk(X(0.2), X(0.5), 380, 70, 'gen'); blk(X(0.5), 1760, 380, 70, 'net');
+    blk(X(2), X(10), 530, 60, 'pre'); blk(X(40), X(360), 530, 60, 'pre');
+    tagAt(S, 'ac', '调得好的部署：0.2–0.5 秒', X(0.2), 462, { fontSize: '34px' });
+    tagAt(S, 'pp', '输入很长：几秒', X(2), 602, { fontSize: '34px' });
+    tagAt(S, 'pp', '深度思考（最高档）：40–360 秒', X(40) - 120, 602, { fontSize: '34px' });
+    tagAt(S, 'dim', '继续生成', X(0.5) + 28, 396, { fontSize: '38px' });
+    const ptr = el('ptr', S); at(ptr, X(0.35) - 3, 652, 6, 48);
+    axis(S, 700, 4, 1, 380);
     [0.1, 1, 10, 100, 1000].forEach((v, i) => { const l = S.querySelectorAll('.al')[i]; if (l) l.textContent = v + (i === 4 ? ' 秒' : ''); });
-    tagAt(S, '', '数据：ClickHouse 指南（2026-07）；Artificial Analysis 榜单快照（2026-11-18，首个答案 Token，含思考时间）', 240, 780, { fontSize: '28px' });
+    ['数据：ClickHouse 指南（2026-07）', '数据：Artificial Analysis 榜单快照（2026-11-18）', '“首个答案 Token”含思考时间（方法说明）'].forEach((t, i) => tagAt(S, '', t, 240, 800 + i * 38, { fontSize: '28px' }));
   },
   close(S) {  // 结尾：第一个 Token 慢，是因为要先读完输入；之后才一个接一个地写
     chrome(S, { t: 85.0, meter: '2.00', cap: '之后才一个接一个地写' });
@@ -189,7 +193,7 @@ const FR = {
     brace(S, 'ac', COL(0), COL(6), 380, 1);
     IN.forEach((t2, i) => tk(S, t2, COL(i), 440, 'out'));
     const cr = el('caret', S); at(cr, COL(6) + 20, 440, 40, 104);
-    ['is_', 'prime', '(n'].forEach((t2, i) => tk(S, t2, COL(7 + i), 440, 'rest', true));
+    ['is_', 'prime', '('].forEach((t2, i) => tk(S, t2, COL(7 + i), 440, 'rest', true));
     brace(S, 'pp', COL(0), COL(5) + 140, 600, -1); tagAt(S, 'pp', '先读完整个输入', 240, 630, { fontSize: '44px' });
   },
 };

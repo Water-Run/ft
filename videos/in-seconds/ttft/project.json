@@ -8,8 +8,8 @@
   "titles": {
     "zh": "96秒了解TTFT(首Token延迟)"
   },
-  "stage": "review",
-  "next": "第二版审片页（out/audition/index.html）交策划者；文案经校对者明确确认后，按 src/design/scenes.md 配音、实现并出预览 r1",
+  "stage": "preview",
+  "next": "策划者看 out/zh/preview-r1.mp4 并给修改意见；修改后出 r2。交付前：ASR 回听读音、听感确认配乐与音效、确认 GPT-6.1-Terra 的型号（见 review/NOTES.md「预览 r1」）",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -18,16 +18,25 @@
         "roles": [
           "取证",
           "首版文案",
-          "首版审片页"
+          "配乐方向"
         ]
       },
       {
         "name": "Claude Sonnet 5.5",
         "roles": [
-          "文案第二稿",
-          "叙事与画面方案",
-          "关键帧、封面与审片页第二版",
-          "实现规格"
+          "文案",
+          "画面",
+          "基建",
+          "配乐脚本"
+        ]
+      },
+      {
+        "name": "Claude Haiku 5.5",
+        "roles": [
+          "场景实现",
+          "配音执行",
+          "音效",
+          "预览"
         ]
       }
     ],
@@ -35,7 +44,7 @@
       {
         "name": "Microsoft neural TTS",
         "roles": [
-          "音色试听 · zh-CN-XiaoyiNeural"
+          "配音"
         ]
       }
     ],
@@ -64,7 +73,7 @@
     "duck_db": 7,
     "sfx_db": -9,
     "score": {
-      "lift_cue": "o3"
+      "lift_cue": "oT"
     }
   },
   "check": {
