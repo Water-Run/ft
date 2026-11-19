@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "c4f55bb15db3a2b3852f95400180b3a8a5c39d8637f9594063d205acccf5f6ff",
+      "content_sha256": "8fce08a9dbbb8a3aad5e43e1bf7c81a72c9bd7182c5ebf94ae56394b27d8ef3f",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-19T09:18:39+08:00",
-      "evidence": "review/NOTES.md 的「2026-11-19 文案确认」一节"
+      "confirmed_at": "2026-11-19T13:56:30+08:00",
+      "evidence": "review/NOTES.md 的「2026-11-19 预览 r1 修改：念出全称」一节"
     }
   }
 }

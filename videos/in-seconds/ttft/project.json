@@ -8,8 +8,23 @@
   "titles": {
     "zh": "96秒了解TTFT(首Token延迟)"
   },
-  "stage": "preview",
-  "next": "策划者看 out/zh/preview-r1.mp4 并给修改意见；修改后出 r2。交付前：ASR 回听读音、听感确认配乐与音效、确认 GPT-6.1-Terra 的型号（见 review/NOTES.md「预览 r1」）",
+  "stage": "released",
+  "next": "已发布（哔哩哔哩 BV174sb6yECY，2026-11-19 15:57）；交付与发布一起登记（策划者给出链接并要求推送，没有另写意见）。YouTube 未告知、未核。按发布后冻结，只收集反馈",
+  "delivery": {
+    "date": "2026-11-19",
+    "duration": {
+      "zh": 96.0
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV174sb6yECY",
+      "date": "2026-11-19",
+      "title": "96秒了解TTFT(首Token延迟)",
+      "lang": "zh"
+    }
+  ],
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -27,7 +42,8 @@
           "文案",
           "画面",
           "基建",
-          "配乐脚本"
+          "配乐脚本",
+          "动画修订"
         ]
       },
       {
@@ -44,7 +60,13 @@
       {
         "name": "Microsoft neural TTS",
         "roles": [
-          "配音"
+          "配音 · zh-CN-XiaoyiNeural"
+        ]
+      },
+      {
+        "name": "Whisper small",
+        "roles": [
+          "读音回听"
         ]
       }
     ],

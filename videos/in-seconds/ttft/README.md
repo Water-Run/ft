@@ -4,7 +4,9 @@
 
 ## 状态
 
-2026-11-19：文案已由校对者确认（见 review/NOTES.md「文案确认」）。Claude Haiku 5.5 按 `src/design/HAIKU.md` 实现了全部场景、配音与混音，出预览 r1：`out/zh/preview-r1.mp4`（见 review/NOTES.md「预览 r1」一节）。角色：制作方，兼文案（Claude Sonnet 5.5；首版取证与文案出自 GPT-6.1-Terra，型号取自策划者在会话中的说法，尚待核实）。基建（已做，见 NOTES「基建」一节）：引擎配置与常驻元素、部件库、场景骨架、片尾名单、配乐脚本、预检工具、逐句对应表、给 Haiku 的交接文档。下一步：策划者看预览 r1，给修改意见；之后出 r2。交付前的事项见 review/NOTES.md「预览 r1」。
+2026-11-19：**已发布**（哔哩哔哩 <https://www.bilibili.com/video/BV174sb6yECY>，2026-11-19 15:57，标题「96秒了解TTFT(首Token延迟)」，时长 96 秒；页面信息取自平台公开接口）。策划者在会话中给出该链接并要求推送，没有另写意见，按 `docs/guides/release.md`，交付与发布一起登记。**按发布后冻结：成片与制作源码不再改动，只收集反馈。** 平台上的视频与 `out/ttft-zh-1080p60.mp4` 是否为同一文件，未核；YouTube 未告知，未核。
+
+文案由校对者确认（`review/NOTES.md`「文案确认」「预览 r1 修改：念出全称」，稿本哈希 `8fce08a9…ef3f`）。制作经过：Claude Haiku 5.5 实现全部场景并出预览 r1；策划者的六条意见由 Claude Sonnet 5.5 处理，出预览 r2 并渲染成片。12 条经验规则记为 `open`（见「交付」），声音没有人听过。
 
 ## 简报
 
@@ -24,6 +26,7 @@
 - 核心问题：为什么第一个 Token 来得慢，之后却一个接一个？
 - 不讲缓存命中率、有效期、价格与各家 API 用法，推理架构（算力瓶颈、批处理），具体厂商与模型的性能，服务端与客户端起点的差别。
 - 中文，系列目标时长恰为 96 秒（含约 3 秒无旁白片尾名单）。
+- 2026-11-19 策划者对预览 r1 的意见（读音「偷啃」、首 Token 延迟的停顿、TTFT 念全称、两处标签与缓存命中的动画、整体动画）：原话与逐条待办见 review/NOTES.md「2026-11-19 预览 r1 策划者意见」；策划者要求等切换为 Sonnet 后再处理。
 
 ## 叙事（第三稿）
 
@@ -50,15 +53,61 @@
 - **关键帧**：`src/design/keyframes.html?f=<帧名>`（wait、title、tokens、bracket、ttft、write、prefill、reuse、length、scale、close），真实页面，用 `look.js --url` 看。
 - **封面**：`src/cover.html`（`?r=169`、`?r=43`），纸色大字 TTFT 后跟琥珀光标，底部一条请求轨迹，琥珀括号括起首 Token 延迟；4:3 重新排布。
 - **常驻元素**：沿用系列约定的秒尺与左上剩余秒数；右上角是「等待读数」（光标 + 读数，纯函数 `METER(t)`）。
-- **配乐**：已选 01「脉冲 · 清晰节拍」，100 BPM；按小节编排，写在 `scenes.md` 第 5 节；`tools/music.py` 仍是起点占位，待实现。
-- **配音**：已选 `zh-CN-XiaoyiNeural`，+6%；`SAY` 表把 TTFT 读为「T T F T」、Token 读为「托肯」，未经人耳核对；`LLM` 读作「L L M」；带显式 `tts` 的句子不走 `SAY` 表（d2、r4、e1），e1 里已手写「托肯」。
-- **片尾**：约 3 秒（策划者要求），名单整屏一次出现，字号不小于 36px；`check.js` 若对名单停留时间报错，如实报告，不放宽阈值。
+- **配乐**：已选 01「脉冲 · 清晰节拍」，100 BPM，`tools/music.py` 程序合成（C 大调脉冲琶音、每拍一声滴答、片名与第一块落下处抬起，按小节编排见 `scenes.md` 第 5 节）；音效由引擎事件合成（99 个，7 种）。没有人听过。
+- **配音**：`zh-CN-XiaoyiNeural`，+6%（Microsoft neural TTS）。`SAY` 表把 TTFT 读为「T T F T」、LLM 读为「L L M」、Token 读为「偷啃」（策划者 2026-11-19 的要求，两侧的空格一并去掉，否则「首 / Token / 延迟」之间各停一下）；d4「全称 Time To First Token」与 e1 等带显式 `tts` 的句子不走 `SAY`。ASR 回听过，没有人耳核对。
+- **片尾**：约 3 秒（策划者要求），名单整屏一次出现（8 行，分两组 0.2 秒与 1.4 秒出现）；字号：分工 26px、名字 38px。`check.js` 对名单停留时间没有报错。
 - 示例数字（光标等待的 2.00 秒、块与横条的长短）是人为设定，画面标「示例」「示意」；尺度一场的数字来自 FACTS 的出处，画面标出处，不是实测，不点名模型或厂商。Token 切分是示意。
+
+## 交付
+
+**成片文件**（`out/`，在最终编码的文件上测，F08）
+
+| 文件 | 说明 | 大小（字节） | SHA-256 |
+|---|---|---|---|
+| `ttft-zh-1080p60.mp4` | 主成片 | 10851366 | `b30d3845b9624dcd09f78816d08671292ef2dbece38a7cca3e0be5203356b84a` |
+| `ttft-zh-1080p60-voice-only.mp4` | 仅旁白版 | 9981565 | `e1652c749b90d2f285becd599d97b2af2185d65117ec87d8fea371659966adf6` |
+| `ttft-zh-1080p60-no-music.mp4` | 无配乐版 | 10221864 | `99da78e653401e289540abbfec3edfb7bda4cbc417df244bc0ae4c4ed6ae0059` |
+| `ttft-zh.srt` | 字幕（21 句） | 1760 | `d8c4fca7d10426ac63685d86f40ebf8c9a617c124d3909a2986bdf1e1cf3edfc` |
+| `cover-zh-16x9.jpg`（及 3840×2160 PNG） | 16:9 封面 | 140538 | `91e63959adcfdbb58ca1f1da218e5f479583b135fe7cf73b1366978892f32ec6` |
+| `cover-zh-4x3.jpg`（及 3200×2400 PNG） | 4:3 封面 | 122685 | `186d2a86e2352dae843b487f129a16cf95a4ecbc15b4f41c625edfe0201a4c77` |
+
+规格：H.264 + AAC，1920×1080，60 fps，96.000 秒（5760 帧，渲染日志 `verified frames=5760`，运动模糊 4 个子帧）；响度 I=-15.6 LUFS、真峰值 -1.5 dBFS（目标 -16±1.5 / ≤ -1）；没有 3 秒以上的静止段，没有空画面（占比最小 1.95%）。语言：仅中文。
+
+**成片审查中发现并改掉的**
+- r1 → r2：Token 读音与「首 Token 延迟」前的停顿（`SAY` 与空格）；新增 d4 念出全称；length 与 prefill 两场动画重做；新场景换场时透明、旧画面透出；若干处静止 2.0 秒以上；scale 一场音效缺口（`check.js` 查出）。
+- r2 → 成片：`readable.js` 量出 10 段文字的稳定时长不够（Token 注解 1.7 秒需 3.9 秒等），改显示时长，现 0 段不够（共 107 段）；策划者要求移除「数据：ClickHouse 指南（2026-07）」一行（prefill 与 scale 两处）；移除后 scale 的两行出处错开出现，避免 2.5 秒静止；开场 0–0.3 秒是空画面（`finish.js` 查出，占比 0.53%），改为第 0 秒起面板刷入、读数在场；片尾署名补「配音 · zh-CN-XiaoyiNeural」与「Whisper small · 读音回听」，名单收紧到 8 行。
+
+**移除出处行的后果**：画面上「10–50 毫秒」「聊天一秒以内算快」「0.2–0.5 秒」「输入很长：几秒」这几个数字不再带 ClickHouse 指南的出处；依据仍在 `research/FACTS.md`。
+
+**`check.js --final` 的结论**：2026-11-19 通过：署名登记、文案校对、经验规则复核（12 条记为 `open`）、源码规则、场景齐全、时长与节奏、全片扫描、片尾名单、音效覆盖（99 个事件、7 种）、交付物。提示（不计入通过与否）只有 DENSE：72.5 秒是换场的 0.6 秒，新旧两场同时在页面里；93.5 秒是片尾名单（8 行、30 段文字，策划者要求名单整屏一次出现、约 3 秒）。两处都不是同屏拥挤，保留。
+
+**记为 `open` 的经验规则**（结论与原因见 `review/lessons.json`，由策划者决定是否接受）
+- F02 例子是否增加理解负担、F04「看懂」所需时间、F05 运动解释关系、F18 每章主画面是否被理解、F23 关掉声音能否看出过程、F25 关掉声音与字幕连续看：都要连续观看，制作方没有连续观看。
+- F06 声音、F12 读音与断句、F17 配音语气：没有听过。
+- F19 中间帧：只在三处复杂动画与一次换场做了 0.1 秒步长抽样。
+- F21 并排看关键帧、并排听开头没做。
+- F30 过渡：「同时亮起」「命中」那一帧是有意的硬切。
+
+**Credit 核对**：名单据 `project.json` 的 `credits`：策划 WaterRun；GPT-6.1-Terra（取证、首版文案、配乐方向）；Claude Sonnet 5.5（文案、画面、基建、配乐脚本、动画修订）；Claude Haiku 5.5（场景实现、配音执行、音效、预览）；Microsoft neural TTS（配音 · zh-CN-XiaoyiNeural）；Whisper small（读音回听，`asr.js` 的 `fw-small`）。**GPT-6.1-Terra 的型号取自策划者在会话中的说法，未核**。2026-11-19 在主成片 95.3 秒取帧核对片尾：名单全部完整可读；仅旁白版、无配乐版与主成片共用同一画面流、只有音轨不同，片尾没有逐个取帧（未核）。
+
+**开源交付**
+- 许可：GPL-3.0-or-later（`project.json` 的 `license`，片尾可见）。
+- 源码：<https://github.com/Water-Run/ft>，本片目录 `videos/in-seconds/ttft/`；**提交号**：成片对应的源码与登记记录一起提交推送，提交号见 `git log -- videos/in-seconds/ttft/` 中标题以「TTFT：成片」开头的那一条（提交号本身写进同一提交会自相矛盾，所以不在这里写死）。
+- 外置材料：字体 Inter、JetBrains Mono、Noto Sans SC 取自仓库 `assets/fonts/`；GSAP 3.13.0（`npm ci`，GreenSock 免费许可，非开源许可）；其余依赖见 `docs/reference/third-party.md` 的运行时依赖表。图形全部是 CSS 与 SVG 原创，配乐由 `tools/music.py` 程序合成，音效由引擎事件合成，没有引入表外的第三方素材。
+- 原配音与时序：旁白由 edge-tts 合成（在线服务），逐句音频在本机 `audio/zh/`（生成物，不入库）、时序在 `src/js/timing.zh.js`（入库）；归档与清理按 `docs/guides/release.md` 第 6 节，发布后执行。
+- 校对稿：`review/script.zh.8fce08a9….md`；确认记录 `review/approval.json`。
+
+**实际看过、听过的范围**：用 `look.js` 在约 100 个时刻出帧逐一看过；`sheets.js every 3` 的 4 张总览图（0:00–1:33）通看过（在成片前一版画面上，之后改动处另行核对）；最终 MP4 取帧看过 27.9、50.5、71.0、95.3 秒；0.1 秒步长抽样 27.3–28.4、54.9–55.6、71.9–72.6、0.0–0.3 秒。**没有连续观看视频，没有听过任何声音**（配乐、音效、配音、三个版本的听感）；没有在其他播放器上检查。总览图在 `shots/sheets/zh-every_01.jpg` 至 `04.jpg`（生成物，不入库）。
+
+**制作中的取舍**
+- 读音：Token 读「偷啃」，策划者要求；停顿的根因是空格，不是音色。
+- 新增 d4 念出全称：策划者要求，字幕与旁白都加，措辞经其确认。
+- 片尾约 3 秒：策划者要求，名单整屏出现，读不完的风险在 `review/NOTES.md`。
+- 重复提问一幕：第一次与再次的括号按同一速度画，一长一短，旁白说完后的静默尾段做「对照赛跑」：为让「命中缓存更快」看得见，不写命中率与秒数。
+- 推翻准备方（GPT-6.1-Terra）的建议：其草案画面叙事与文案被策划者判为太简陋，整体重做，见 `review/NOTES.md`。
+
+**未做或未通过**：声音的人耳核对；GPT-6.1-Terra 型号核实；上述 12 条 `open`（策划者发布时没有另写意见）。
 
 ## 接续
 
-1. 校对者确认当前稿本（`review/script.zh.c4f55bb1….md`，内容 SHA-256 以 `approval.json` 为准），记进 `review/NOTES.md` 并改 `approval.json`。人未明确确认前，不配音、不铺场景。
-2. **切到 Haiku 实现预览**：在 Claude Code 里 `/model` 选 Haiku，把 `src/design/HAIKU.md` 第 0 节的开工提示词粘贴给它。它按 `HAIKU.md` 与 `src/design/scenes.md` 配音 → 实现各场景 → 音效与混音 → 预览 r1；每步的检查命令、不能越过的线、停下来问的情形都在里面。它不改文案、画面方向、配色。
-3. 随时可跑的预检：`node videos/in-seconds/ttft/tools/preflight.js`（文案确认状态、时间线、语法、场景号、`T()` 的句号与词、禁用写法、颜色、骨架进度）。
-4. 重建审片页：`python -I videos/in-seconds/ttft/tools/voice_sample.py`（需要网络、edge-tts；ffmpeg 路径用环境变量 `FFMPEG`、`FFPROBE` 指向 `assets/ffmpeg/bin/`）、`python videos/in-seconds/ttft/tools/audition_audio.py`（配乐小样，需要 NumPy）、`look.js --url` 截关键帧与封面到 `out/audition/frames/`，再 `node videos/in-seconds/ttft/tools/audition.js`。生成物不入库。
-5. 交付前 `project.json` 的 `credits.models` 要核实 GPT-6.1-Terra 的型号写法，并加上实现预览的会话（Haiku）的准确型号与分工；署名要与实际分工一致，字数要短（片尾只有约 3 秒）。
+已发布并冻结。之后只做：收集评价与评论、记入「评价与复盘」；补登记确已发生的发布（YouTube 等，以平台实际链接为准）；漏署名时在「评价与复盘」补记。重做需要策划者明确要求（见 `docs/guides/release.md`「发布后冻结」）。待补：GPT-6.1-Terra 的型号核实（未核）；源码提交号见下方「交付」。

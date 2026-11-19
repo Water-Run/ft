@@ -76,7 +76,7 @@
 | 24 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](rdp/) |
 | 25 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 已成片 | [`github-collaboration`](github-collaboration/) |
 | 26 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](quantization/) |
-| 27 | 96秒了解TTFT(首Token延迟) | zh | 制作中 | [`ttft`](ttft/) |
+| 27 | 96秒了解TTFT(首Token延迟) | zh | 已成片 | [`ttft`](ttft/) |
 | 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |
 | 29 | 192秒速通现代密码学 | zh | 计划中 | `modern-crypto` |
 | 30 | 100秒搞明白SVN: 中心化的代码管理 | zh | 计划中 | `svn` |

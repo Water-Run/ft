@@ -4,182 +4,182 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 通读 script.js（2026-11-19）：o1–o3（0:00–0:11）提出现象与问题（光标闪一会儿第一个字才出现），w1–r3（0:31–0:52）讲为什么第一个慢、之后快，r4–r5 讲缓存命中，e1–e2（1:24–1:29）回答（要先读完输入，之后才一个接一个地写）；README「简报」与「叙事」记了取舍（不讲命中率、价格、厂商）。方法：读稿加时间线核对，没有连续观看成片。"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "例子从头到尾是同一个提问（写一个判断质数的 Python 函数）；r4 起为讲缓存复用换成「代码文件 + 新问题」并在画面标出，length 一场用「一句话 + 整个代码文件」。这是否增加理解负担，要正常速度连续观看才能判断，制作方没有连续观看，交策划者判断。",
       "evidence": ""
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 的 GLOSS 检查通过：*Token*（d1，0:18）、*首 Token 延迟*（d3，0:24）、*TTFT*（d3–d4，0:26–0:28）第一次出现的那句说完时画面上都有注解；缓存在 r2（0:47）随旁白带出带 data-gloss 的注解；读稿核对名称先解释再起名。未单独解释的：LLM（o1，策划者原话含此词）、深度思考（s3），按入门观众已知处理。"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js（0.1 秒步长）量到 107 段文字，0 段不够下限；修改前量出 10 段不够（Token 注解 1.7 秒需 3.9 秒等），已改：Token 注解留到大字砸入前、prefill 旧注解多留约 1 秒、出处行随命中出现、数据行提前。没有以正常速度连续观看全片，「看懂」一步机制所需的时间没有判断；片尾名单约 3 秒（策划者要求）的读时没有量。",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "全片镜头不动（scan.js 的 ZOOM 0 项）；用 look.js 与 0.1 秒步长抽样（27.3–28.4、54.9–55.6、71.9–72.6 秒）核对了 TTFT 逐词展开、缓存命中、两条输入赛跑的前因后果。没有连续观看，也没有与近期两部片子并排比较，交策划者判断。",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "没有听过任何声音。只有数值自检：audio.js 峰值 0.609、无削波、旁白 -21.0 dB；finish.js 最终 MP4 响度 I=-15.6 LUFS、TP=-1.5 dBFS；音效 99 个事件、7 种，各场数量与最长无声间隔 check.js 通过。主混音、无配乐版、仅旁白版的听感待人听。",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "grep src、project.json、README、review/NOTES.md、tools：没有本机路径、用户名、内网地址、密钥；字幕 out/ttft-zh.srt 21 句只有旁白文字；最终 MP4 的 95.3 秒取帧与封面（out/cover-zh-16x9.jpg、4x3.jpg）看过：只有片名、示例代码、出处名、片尾名单与公开仓库地址。"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "finish.js 在最终编码的 out/ttft-zh-1080p60.mp4 上测：1920×1080、60 fps、96.000 秒，音画 96.00 秒，I=-15.6 LUFS、TP=-1.5 dBFS；渲染日志 verified frames=5760；数值写进 README「交付」。"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "review/NOTES.md 逐条记了策划者对 r1 的意见（原话、日期、本片对应的做法）；涉及事实的说法（缓存命中是否更快）画面写明「官方文档称通常改善，不保证」。没有收到技术异议。"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "读 script.js 全部 21 句字幕与旁白：没有对其他集的引用，没看过其他集的人能跟完（方法：读稿，没有找人试看）。"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面上的外文只有：Time To First Token（片名卡带中文释义「回答开始出现之前的等待时长」，d4 念出）、代码 Token（示意切分）、出处名 Artificial Analysis、Anthropic、OpenAI（专有名词）；readable.js 量过停留；scan.js 逐句对应通过。"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "没有人耳回听。asr.js（Whisper small）回听 21 句：Token 被听成 token 或「偷肯」（读 tōu kěn，符合策划者「偷啃」的要求），「首偷啃延迟」连成一个词、没有顿号（r1 的「手、脱肯、延迟」停顿已消失），d4 读出 Time to First Token。多音字清单没有逐条听。读音与断句是否自然待人听。",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "本片讲一个概念与它的机制，不涉及陌生的历史对象或年代。",
       "evidence": ""
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "z1 是无旁白 cue（script.js：pause 2.4，credits:true）；audio.js 自检 outro 段旁白 -99 dB；最终 MP4 95.3 秒取帧：策划、三个模型与分工、配音与 Whisper small、开源视频 github.com/Water-Run/ft、GPL-3.0-or-later 完整可读；校对稿 review/script.zh.8fce08a9….md 里没有制作指令。"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐屏列出说明性小字：示意切分、示例 · 长度与时间为示意、对数刻度、对照：同时开始计时、多等的这一段、继续生成、一小步、命中要求开头完全一致；官方文档称…不保证、数据：Artificial Analysis 榜单快照。都是正常解说视频会写的标注（示意与出处是事实纪律要求），没有制作者口吻的自我说明。"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "讲解对象是一个抽象概念（首 Token 延迟），没有官方视觉材料可取；视觉系统是光标、Token 块、缓存格、时间括号，取自它自己的工作过程（scenes.md 第 1 节图形表）。",
       "evidence": ""
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "没有听过配音。音色是策划者在审片页选定的（配音 02，zh-CN-XiaoyiNeural，+6%）；响度、语速数值与 ASR 都不检查语气，开头、难点段与章间的听感待人听。",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "逐章主画面：define = Token 行 → 时间带 → TTFT 逐词展开；write = Token 列 + 括号扫过；prefill = Token 列 + 缓存格 + 重复提问两行；length = 两条输入赛跑；scale = 对数尺度；close = Token 列。已逐帧核对每章主画面在场；观众是否因此理解，要连续观看，交策划者判断。",
       "evidence": ""
     },
     "F19": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "做过：scan.js 每 0.5 秒与每句说完时取帧，重叠、空屏、静止 0 错误；0.1 秒步长抽样三处最复杂的动画与一次换场（27.3–28.4、54.9–55.6、71.9–72.6 秒）；通看发现并修了换场时新场景透明、旧画面透出的问题。没做：对全部动作逐 0.1 秒取帧。「同时亮起」「命中」那一帧同时变色是有意的硬切（表达「同时」）。",
       "evidence": ""
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scenes.md 第 1 节图形表逐项写明对应关系：琥珀 = 首 Token 延迟相关（括号、时间带、读头、第一块、光标）、纸色 = 已处理或已写出、dim 与 ink2 底 = 未读或未写出、缓存格 = 中间结果、括号 = 一段计入某指标的时间；逐帧核对（look.js 约 80 个时刻）同一形状与颜色没有中途换义。"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "check.js 没有提示样式表或配乐脚本与起点模板、其他片子同源（music.py 为本片重写，100 BPM 脉冲）。没有并排看关键帧、并排听开头，交策划者判断。",
       "evidence": ""
     },
     "F22": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js GLOSS 3 个术语通过；缓存在 r2 带注解；每章一组并列对象整组在场、只推进其中几个（Token 行 6+4 块、两条输入、对数尺度上的几段），旁白没有被切成逐句碎片（look.js 抽查 0:31–0:40、0:41–1:02、1:02–1:12 各帧）。"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "讲机制的段落（TTFT 逐词展开、括号扫过前面所有的块、缓存涟漪与连线命中、两条输入读头赛跑）都做成随时间推进的过程，已用逐帧与 0.1 秒抽样确认过程在推进；没有关掉声音连续观看，是否能从动画本身看出发生了什么交策划者判断。",
       "evidence": ""
     },
     "F24": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片镜头不动（各场只有 cam.cut）；scan.js 的 ZOOM、CUT、CAPZONE 0 项；逐句对应表 22 句每句说完时要求的文字都在画内（EXPECT 通过），look.js 各帧正在讲的内容不压字幕条；片尾名单最底一行 y=870。"
     },
     "F25": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "sheets.js every 3 通看过：每一段都有讲解对象的实物在场（Token 块、缓存格、两条输入），没有空框等旁白。但有几处画面文字复述字幕（前面所有的 Token、先读完整个输入、之后每个新 Token 只多一格）是有意的标注，没有关掉声音和字幕连续观看，交策划者判断。",
       "evidence": ""
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "新增 d4 后通读 define 全章（d1–d4）并核对画面；读音停顿的根因（Token 两侧与汉字之间的空格）是制作方回听 r1 时主动用 tts_probe.js 查出，不是等人指出；策划者的意见逐条记进 review/NOTES.md。"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "sheets.js every 3 通看全片 32 帧（4 张总览图，0:00–1:33，2026-11-19，在最终画面前一版上看；之后改动处另用 look.js 逐帧核对：19.7、21.5、23.0、51.5、53.0–53.9、80.5 秒）；没有连续观看视频（模型看不了视频）。发现并改掉：换场透出旧画面、10 处读时不够、两处静止 2.0 秒以上、scale 音效缺口、一处出处行移除后的 2.5 秒静止。scan.js 唯一提示 DENSE（72.5 秒，换场 0.6 秒新旧两场同时在页面里）不是同屏拥挤，保留。"
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "读稿核对每个名词：Token（d1 先说「回答是一小段一小段写出来的」，再起名）、首 Token 延迟（d2 先说「从发出请求，到收到第一段有内容的输出」，d3 再起名）、TTFT 与全称（d3、d4 在名字之后）、缓存（r2 先说「中间结果存进缓存」）；开场 o1–o3 没有用到这些名字。"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "sheets.js 总览按章看：define 的 Token 行原地换排法并带着第一块进入括号（0:19）；write 的 Token 列常驻、括号扫过；prefill 的 Token 列与缓存格常驻，换到重复提问时缓存格带过去（0:52）；length 的两条输入常驻；scale 的对数尺常驻；close 的 Token 列常驻。章与章之间是换场（新场景从左向右刷过），不带对象。"
     },
     "F30": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "入场统一为 0.12 秒淡入、擦除或自下而上的短入场；退场为 0.4 秒淡出；唯一的瞬间隐藏在 open 一场（0:11，琥珀卡完全盖住之后）。有意的硬切：输入块 dim 变纸色、命中缓存那一帧同时变色（表达「同一帧」）。是否算「闪」交策划者判断；没有对全部过渡逐 0.1 秒取帧。",
       "evidence": ""
     }
   },

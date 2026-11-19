@@ -26,28 +26,33 @@ scene('scale', ({ root, s, c0 }) => {
   move(ptr, tS1 - 0.2, X(0.1) - 3, 652, X(0.35) - 3, 652, 1.5, 'power2.inOut');
   move(ptr, tS3 - 0.3, X(0.35) - 3, 652, X(120) - 3, 652, 1.6, 'power2.inOut');
   move(ptr, c4, X(120) - 3, 652, X(0.35) - 3, 652, 1.0, 'power2.inOut');
+  sfx('whoosh', tS1 - 0.2, { g: 0.3 }); sfx('whoosh', tS3 - 0.3, { g: 0.3 }); sfx('whoosh', c4, { g: 0.3 });   // 指针每移到下一个例子，一声轻的 whoosh
 
   // 第一排（y380–450）：0.2–0.5 秒的琥珀块（调得好的部署）；其后的「继续生成」长条（ink2，dim 字）
   const bBand = h('div', 'abs', world); px(bBand, X(0.1), 326, 0, 36); css(bBand, { background: PALETTE.paper });
   fromTo(bBand, tS1 - 0.1, { width: 0 }, { width: X(1) - X(0.1), duration: 1.1, ease: 'none' });
   wipe(lab('tag pp', '聊天：一秒以内算快', 240, 270, 38), tS1, { dir: 'l', d: 0.4 });
+  sfx('pop', tS1, { g: 0.6 });
   const bAmb = h('div', 'stage gen', world); px(bAmb, X(0.2), 380, X(0.5) - X(0.2), 70);
   fromTo(bAmb, tS1 + 1.4, { width: 0 }, { width: X(0.5) - X(0.2), duration: 0.5, ease: 'power2.out' });
+  sfx('blip', tS1 + 1.4, { g: 0.6 });
   wipe(lab('tag ac', '调得好的部署：0.2–0.5 秒', X(0.2), 462, 34), tS1 + 1.6, { dir: 'l', d: 0.4 });
   const tEnd4 = Tend('s4');
   const bMore = h('div', 'stage net', world); px(bMore, X(0.5), 380, 1760 - X(0.5), 70);
-  fromTo(bMore, c4 + 0.1, { width: 0 }, { width: 1760 - X(0.5), duration: tEnd4 - c4 - 0.2, ease: 'none' });
-  const lbMore = txt(world, 'tag', '继续生成', X(0.5) + 28, 396); css(lbMore, { font: '700 38px "Sans SC"', color: PALETTE.ink }); appear(lbMore, tEnd4 - 1.2);
+  fromTo(bMore, c4 + 0.1, { width: 0 }, { width: 1760 - X(0.5), duration: (s.end - 0.4) - (c4 + 0.1), ease: 'none' });
+  sfx('riser', c4 + 0.1, { g: 0.3 });                                  // 长条一直长：整段回答还在继续写   // 一直长到场景快结束：整段回答还在继续写，旁白说完后画面不停
+  const lbMore = txt(world, 'tag', '继续生成', X(0.5) + 28, 396); css(lbMore, { font: '700 38px "Sans SC"', color: PALETTE.ink }); appear(lbMore, tEnd4 - 1.2); sfx('pop', tEnd4 - 1.2, { g: 0.5 });
 
   // 第二排（y530–590）：长输入（2–10 秒）与深度思考（40–360 秒）；标签在下方（y602）
-  const bLong = h('div', 'stage pre', world); px(bLong, X(2), 530, X(10) - X(2), 60); fromTo(bLong, tS1 + 2.4, { width: 0 }, { width: X(10) - X(2), duration: 0.5, ease: 'power2.out' });
+  const bLong = h('div', 'stage pre', world); px(bLong, X(2), 530, X(10) - X(2), 60); fromTo(bLong, tS1 + 2.4, { width: 0 }, { width: X(10) - X(2), duration: 0.5, ease: 'power2.out' }); sfx('blip', tS1 + 2.4, { g: 0.5 });
   wipe(lab('tag pp', '输入很长：几秒', X(2), 602, 34), tS1 + 2.6, { dir: 'l', d: 0.4 });
   const bDeep = h('div', 'stage pre', world); px(bDeep, X(40), 530, X(360) - X(40), 60); fromTo(bDeep, tS3, { width: 0 }, { width: X(360) - X(40), duration: 0.5, ease: 'power2.out' });
   wipe(lab('tag pp', '深度思考（最高档）：40–360 秒', X(40) - 120, 602, 34), tS3 + 0.4, { dir: 'l', d: 0.4 });
   sfx('thud', tS3, { g: 0.6 });
 
   // 出处（三行，28px）：与「深度思考」同时带出，第二行是 Artificial Analysis 的快照
-  ['数据：ClickHouse 指南（2026-07）', '数据：Artificial Analysis 榜单快照（2026-11-18）', '“首个答案 Token”含思考时间（方法说明）'].forEach((t, i) => {
-    wipe(lab('tag pp', t, 240, 800 + i * 38, 28), tS3 + 0.8 + i * 0.25, { dir: 'l', d: 0.4 });
+  ['数据：Artificial Analysis 榜单快照（2026-11-18）', '“首个答案 Token”含思考时间（方法说明）'].forEach((t, i) => {
+    wipe(lab('tag pp', t, 240, 800 + i * 38, 28), tS3 + 0.8 + i * 1.2, { dir: 'l', d: 0.4 });
+    sfx('tick', tS3 + 0.8 + i * 1.2, { g: 0.4 });
   });
 });

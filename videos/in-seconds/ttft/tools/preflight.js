@@ -71,15 +71,34 @@ for (const f of files.filter((x) => x.includes('scenes'))) {
     if (!c) { no(`${path.basename(f)}：${m[0]} 的句号不存在`); continue; }
     if (word) {
       const tts = c.tts || '';
-      if (!tts.includes(S.ttsNorm(word))) no(`${path.basename(f)}：${m[0]}') 的词不在 ${id} 的合成文本里（合成文本：${tts}）`);
+      if (!tts.includes(word.startsWith('=') ? word.slice(1) : S.ttsNorm(word))) no(`${path.basename(f)}：${m[0]}') 的词不在 ${id} 的合成文本里（合成文本：${tts}）`);
     }
   }
 }
 if (!nT) console.log('  （场景里还没有 T() 调用）'); else if (!bad) ok(`${nT} 处时刻引用都找得到`);
-// 旁白里的 Token 读成「托肯」、TTFT 读成「T T F T」：提醒常见错写
+// Tr('句号','词')：不吸附的原始词时刻（词的规则同 T()，「=词」不经 SAY）；Tnth('句号','词边界',n)：词边界恰好等于该串的第 n 个（从 0 起）——两者找不到时会悄悄退回句首，所以也要查
+let nR = 0;
 for (const f of files.filter((x) => x.includes('scenes'))) {
   const src = fs.readFileSync(f, 'utf8');
-  if (/T\(\s*'[a-z]\d+'\s*,\s*'(Token|TTFT)'/.test(src)) no(`${path.basename(f)}：T() 不能用 'Token' 或 'TTFT' 当词（读成「托肯」「T T F T」），用旁边的汉字词`);
+  for (const m of src.matchAll(/\bTr\(\s*'([A-Za-z0-9_]+)'\s*,\s*'([^']*)'/g)) {
+    nR++;
+    const c = L.cues[m[1]], word = m[2];
+    if (!c) { no(`${path.basename(f)}：${m[0]}') 的句号不存在`); continue; }
+    if (!(c.tts || '').includes(word.startsWith('=') ? word.slice(1) : S.ttsNorm(word))) no(`${path.basename(f)}：${m[0]}') 的词不在 ${m[1]} 的合成文本里（合成文本：${c.tts}）`);
+  }
+  for (const m of src.matchAll(/\bTnth\(\s*'([A-Za-z0-9_]+)'\s*,\s*'([^']*)'(?:\s*,\s*(\d+))?\s*\)/g)) {
+    nR++;
+    const c = L.cues[m[1]], n = +(m[3] || 0);
+    if (!c) { no(`${path.basename(f)}：${m[0]} 的句号不存在`); continue; }
+    if (!c.words) { warn(`${path.basename(f)}：${m[0]} 没有实测词边界，无法核对`); continue; }
+    if (c.words.filter((w) => w[2] === m[2]).length <= n) no(`${path.basename(f)}：${m[0]} 在 ${m[1]} 的词边界里找不到第 ${n + 1} 个「${m[2]}」（词边界：${c.words.map((w) => w[2]).join('|')}）`);
+  }
+}
+if (nR && !bad) ok(`${nR} 处 Tr() / Tnth() 引用都找得到`);
+// 旁白里的 Token 读成「偷啃」、TTFT 读成「T T F T」：提醒常见错写
+for (const f of files.filter((x) => x.includes('scenes'))) {
+  const src = fs.readFileSync(f, 'utf8');
+  if (/T\(\s*'[a-z]\d+'\s*,\s*'(Token|TTFT)'/.test(src)) no(`${path.basename(f)}：T() 不能用 'Token' 或 'TTFT' 当词（读成「偷啃」「T T F T」），用旁边的汉字词；d4 里的英文 Token 写 '=Token'`);
 }
 
 // ── ⑥ 禁用写法 与 ⑦ 颜色 ──

@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 210 部：已成片 27，制作中 7，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 210 部：已成片 28，制作中 6，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -12,6 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
+| [96秒了解TTFT(首Token延迟)](in-seconds/ttft/) | [XX 秒速通](in-seconds/README.md) | zh 1:36 | 2026-11-19 | [哔哩哔哩](https://www.bilibili.com/video/BV174sb6yECY) | — | GPT-6.1-Terra、Claude Sonnet 5.5、Claude Haiku 5.5 |
 | [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/) | [XX 秒速通](in-seconds/README.md) | zh 2:30 | 2026-11-17 | [哔哩哔哩](https://www.bilibili.com/video/BV19dsz6eEtP) | — | Qwen 4 Max Preview、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | zh 17:56 | 2026-11-16 | [哔哩哔哩](https://www.bilibili.com/video/BV1iwsW6xEvx) | — | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [120 秒了解量化：让模型变小的方式和代价](in-seconds/quantization/) | [XX 秒速通](in-seconds/README.md) | zh 2:00 | 2026-11-14 | [哔哩哔哩](https://www.bilibili.com/video/BV1zvsG6PEfx) | — | Claude Sonnet 5.5、Claude Opus 5.5、Claude Fable 5.2、Claude Haiku 5.5、Qwen-4-Max-Preview |
@@ -48,7 +49,6 @@
 |---|---|---|---|---|---|
 | [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 看预览 r2（out/zh/preview-r2.mp4）的意见；之后选封面并改成不用阴影与渐变的 3D 做法，再出正式片 | 最新 | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [192 秒了解虚拟机：第一类、第二类与进程虚拟机](in-seconds/virtual-machine-types/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 确认中文旁白，选定视觉、音色与配乐方向 | 未接入 | GPT-6.2-Sol |
-| [96秒了解TTFT(首Token延迟)](in-seconds/ttft/) | [XX 秒速通](in-seconds/README.md) | 预览迭代 | 策划者看 out/zh/preview-r1.mp4 并给修改意见；修改后出 r2。交付前：ASR 回听读音、听感确认配乐与音效、确认 GPT-6.1-Terra 的型号（见 review/NOTES.md「预览 r1」） | 最新 | GPT-6.1-Terra、Claude Sonnet 5.5、Claude Haiku 5.5 |
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [一个电子时代](eras/README.md) | 审稿 | WaterRun 审阅本地审片页，明确中文稿本并选择画面、音色与配乐 | 最新 | GPT-6.2 Astra |
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用 Harness 一期的音色 Crisp_Girl（语速 1.15，2026-11-16 策划者改定）合成全片，实测响度，做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
@@ -301,7 +301,7 @@
 | 24 | 192秒了解RDP: Windows远程的优雅实现 | zh | 已成片 | [`rdp`](in-seconds/rdp/) | 2026-11-05 由独立视频移入「XX 秒速通」，定长 192 秒；2026-11-07 策划者改题为「192秒了解RDP」。 |
 | 25 | 150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR | zh | 已成片 | [`github-collaboration`](in-seconds/github-collaboration/) | 2026-11-07 策划者新增（原话「新增一个速通视频来让观众了解」，内容取自同日对 GitHub 协作的讲解）；定长 150 秒（2026-11-07 策划者定：「定为150s吧」）。与《150 秒速通 Git》分工：Git 讲本机上的版本管理，本集讲 GitHub 平台上的协作（Fork、分支、PR、Issue 与编号）。 |
 | 26 | 120 秒了解量化：让模型变小的方式和代价 | zh | 已成片 | [`quantization`](in-seconds/quantization/) | 2026-10-26 曾由速通改为独立视频；2026-11-09 策划者要求迁回「XX 秒速通」（原话「量化的视频迁移至速通. 标题: 120秒了解量化: 让模型变小的方式和代价」），定长 120 秒。 |
-| 27 | 96秒了解TTFT(首Token延迟) | zh | 制作中 | [`ttft`](in-seconds/ttft/) |  |
+| 27 | 96秒了解TTFT(首Token延迟) | zh | 已成片 | [`ttft`](in-seconds/ttft/) | 2026-11-19 发布（哔哩哔哩 BV174sb6yECY）；交付与发布一起登记。 |
 | 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |  |
 | 29 | 192秒速通现代密码学 | zh | 计划中 | `modern-crypto` |  |
 | 30 | 100秒搞明白SVN: 中心化的代码管理 | zh | 计划中 | `svn` | 2026-11-17 策划者新增（原话「100秒搞明白SVN: 中心化的代码管理」）；定长 100 秒。 |

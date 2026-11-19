@@ -22,7 +22,7 @@
   // 之后每个新 Token 只在缓存上续一小步（间隔目标几十毫秒，只在画面上标出处）；重复提问时，开头相同的部分会命中缓存、不用重新读，首 Token 延迟通常更短（命中缓存与它的影响，各一句）。
   // 再给出尺度：聊天里一秒以内算快、长输入几秒（只在画面上）、开着深度思考的要几十秒以上；最后点明它不说明整段回答多久。
   // 例子用程序员的场景：让模型写一个判断质数的 Python 函数，输出的 Token 是 def、is_、prime……；长输入是「整个代码文件」。
-  // 首 Token 延迟这个名字本身只需要一句话（后面带上缩写 TTFT，画面上 TTFT 四个字母展开成 Time To First Token），定义压在 define 一场里，其余时间讲机制与尺度。
+  // 首 Token 延迟这个名字本身只需要一句话（后面带上缩写 TTFT，再念出全称 Time To First Token；画面上 TTFT 四个字母随旁白逐词展开），定义压在 define 一场里，其余时间讲机制与尺度。
   const RAW = [
     { id: "open", at: 0, chap: null, lead: 0.2, tail: 0.1, cues: [
       ["o1", "向 LLM 提问之后，光标闪一会儿，第一个字才出现", { gap: 0.25 }],
@@ -33,7 +33,9 @@
     { id: "define", at: 14.4, chap: null, lead: 0.3, tail: 0.2, cues: [
       ["d1", "回答是一小段一小段写出来的，每一小段叫一个 *Token*", { gap: 0.3 }],
       ["d2", "从发出请求，到收到第一段有内容的输出", { tts: "从发出请求，到收到第一段有内容的输出，", gap: 0.15 }],
-      ["d3", "这段时间就是 *首 Token 延迟*，缩写 *TTFT*", { gap: 0.3 }],
+      ["d3", "这段时间就是 *首 Token 延迟*，缩写 *TTFT*", { tts: "这段时间就是首偷啃延迟，缩写 T T F T，", gap: 0.1 }],
+      // 2026-11-19 策划者要求念出全称（预览 r1 意见）并确认字幕与旁白都加；显式 tts 绕过 SAY，保留英文 Token
+      ["d4", "全称 Time To First Token", { tts: "全称 Time To First Token。", gap: 0.3 }],
     ] },
     { id: "write", at: 31.2, chap: null, lead: 0.3, tail: 0.2, cues: [
       ["w1", "模型写回答，每次只能写一个 Token", { gap: 0.3 }],
@@ -56,7 +58,7 @@
       ["s4", "首 Token 延迟短，不代表整段写完快", { gap: 0.3 }],
     ] },
     { id: "close", at: 84.0, chap: null, lead: 0.3, tail: 0.2, cues: [
-      ["e1", "第一个 Token 慢，是因为要先读完输入", { tts: "第一个 托肯 慢，是因为要先读完输入，", gap: 0.15 }],
+      ["e1", "第一个 Token 慢，是因为要先读完输入", { tts: "第一个偷啃慢，是因为要先读完输入，", gap: 0.15 }],
       ["e2", "之后才一个接一个地写", { gap: 0.3 }],
     ] },
     { id: 'outro', at: 93.0, chap: null, lead: 0.3, tail: 0, cues: [['z1', null, { pause: 2.4, credits: true }]] },
@@ -65,13 +67,15 @@
   // 字幕 → 送去合成的读法。长词写在前面，避免被短词的规则截断。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
   const SAY = {
     zh: [
-      [/TTFT/g, 'T T F T'], [/LLM/g, 'L L M'], [/Token/g, '托肯']
+      // Token 读「偷啃」（策划者 2026-11-19）；两侧的空格一并吃掉，否则合成时在「首 / Token / 延迟」之间各停一下
+      [/TTFT/g, 'T T F T'], [/LLM/g, 'L L M'], [/\s*Token\s*/g, '偷啃']
     ],
     en: [
     ],
   };
   const strip = (s) => s.replace(/\*/g, '');
-  const ttsNorm = (s) => { for (const [re, to] of SAY[LANG] || []) s = s.replace(re, to); return s; };
+  // 汉字与汉字之间的空格会让合成多停一下（字幕里的「就是 首 Token」「写 Python」这类写法）：换成读法之后一并去掉
+  const ttsNorm = (s) => { for (const [re, to] of SAY[LANG] || []) s = s.replace(re, to); return LANG === 'zh' ? s.replace(/([一-鿿，。])\s+(?=[一-鿿])/g, '$1') : s; };
   const SCRIPT = RAW.map((sc) => ({
     ...sc, chap: sc.chap ? [sc.chap[0], pick(sc.chap[1])] : null,
     cues: sc.cues.map(([id, cap, o = {}]) => [id, pick(cap), { ...o, tts: pick(o.tts), gap: pick(o.gap), pause: pick(o.pause) }]),

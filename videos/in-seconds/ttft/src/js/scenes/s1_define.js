@@ -8,8 +8,12 @@ scene('define', ({ root, s, c0 }) => {
   const tA = T('d2') + 0.3;   // 排法切换推迟到第一段开始后，注解读满约 1.9 秒
   const tSend = T('d2', '发出');
   const tFirst = T('d2', '第一段');
-  const tBig = T('d3', '时间');
+  const tBig = T('d3', '首偷') - 0.1;      // 「首 Token 延迟」在旁白说出它时砸入
   const tS = T('d3', '缩写');
+  // TTFT 四个字母：旁白逐个读出 T、T、F、T 的时刻（不吸附到格点，字母只隔 0.2–0.3 秒）
+  const tLet = [Tnth('d3', 'T', 0), Tnth('d3', 'T', 1), Tnth('d3', 'F', 0), Tnth('d3', 'T', 2)];
+  // 全称：d4 逐词读出 Time / To / First / Token，画面上的字母各自在被读到时展开（不吸附，词与词只隔 0.1–0.3 秒）
+  const tWord = [Tr('d4', 'Time'), Tr('d4', 'To'), Tr('d4', 'First'), Tr('d4', '=Token')];
   const lab = (cls, text, x, y, size) => { const e = txt(world, cls, text, x, y); if (size) css(e, { fontSize: size + 'px' }); return e; };
 
   // 提问（上方）：排法切换时淡出
@@ -25,13 +29,13 @@ scene('define', ({ root, s, c0 }) => {
   ROW1.forEach(([text, x], i) => {
     const tb = d1 + 0.2 + i * 0.3;
     const [e, w] = codeTok(world, text, x, 420, 112, 'out');
-    appear(e, tb); sfx('tick', tb, { g: 0.5 });
+    rise(e, tb); sfx('tick', tb, { g: 0.5 });
     r1.push({ e, w, x });
   });
   ROW2.forEach(([text, x], j) => {
     const tb = d1 + 0.2 + (ROW1.length + j) * 0.3;
     const [e, w] = codeTok(world, text, x, 570, 112, 'out');
-    appear(e, tb); sfx('tick', tb, { g: 0.5 });
+    rise(e, tb); sfx('tick', tb, { g: 0.5 });
     r2.push({ e, w, x });
   });
 
@@ -44,7 +48,8 @@ scene('define', ({ root, s, c0 }) => {
   const eg = lab('eg', '示意切分', 120, 760);
   appear(eg, tTok);
   r1.forEach((o, i) => { if (i !== 2) fromToLate(o.e, tTok, { opacity: 1 }, { opacity: 0.55, duration: 0.4 }); });
-  fadeOut(bTok, tA); fadeOut(gl, tA); fadeOut(eg, tA);
+  // Token 注解与「示意切分」留到「首 Token 延迟」大字砸入之前才退场（F04：注解的字多，需要读得完；原来换排法时就收走，只剩不到 2 秒）
+  fadeOut(bTok, tA); fadeOut(gl, tBig - 0.5); fadeOut(eg, tBig - 0.5);
   r2.forEach((o) => fadeOut(o.e, tA));
 
   // 排法切换：第一排滑到 x880、y529；def 变琥珀，其余变 rest（还没写出的样子）；不透明度恢复
@@ -66,7 +71,7 @@ scene('define', ({ root, s, c0 }) => {
   wipe(lab('tag ac', '第一段', 880, 645), tFirst, { dir: 'l', d: 0.4 });
   wipe(lab('tag', '一次送来的数据块，可含不止一个 Token', 880, 688), tFirst + 0.4, { dir: 'l', d: 0.4 });
 
-  // 「首 Token 延迟」砸入（配 thud）；TTFT 四个字母逐个出现，0.9 秒后展开成全称
+  // 「首 Token 延迟」砸入（配 thud）；TTFT 四个字母随旁白逐个弹出，d4 读出全称时逐词展开
   // 时间带（琥珀）：这段时间从发出请求起逐步填满，直到「缩写」之前；它也让静止段里有可见的变化
   const band = h('div', 'abs', world); px(band, 240, 446, 0, 34); css(band, { background: PALETTE.ac });
   fromTo(band, tBig, { width: 0 }, { width: 640, duration: (tS - 0.2) - tBig, ease: 'none' });
@@ -75,9 +80,16 @@ scene('define', ({ root, s, c0 }) => {
   big.dataset.gloss = '首 Token 延迟';
   slam(big, tBig, { from: 1.25, d: 0.4 }); sfx('thud', tBig, { g: 0.9 });
   const tt = ttftLine(world, 240, 170, 96);
-  appear(tt.box, tS - 0.05);
-  tt.letters.forEach((e, i) => { appear(e, tS + i * 0.15); sfx('tick', tS + i * 0.15, { g: 0.6 }); });
-  const t1 = tS + 1.6;
-  F((t) => tt.setK(ease.out3(clamp((t - t1) / 2.0))));
-  sfx('whoosh', t1, { g: 0.4 });
+  appear(tt.box, tLet[0] - 0.1);
+  tt.letters.forEach((e, i) => { slam(e, tLet[i] - 0.05, { from: 1.5, d: 0.28 }); sfx('tick', tLet[i], { g: 0.6 }); });
+  // 每个词各自在被读到时展开（k 由 t 算，不累加状态）；展开的同时与画面对应：Time ↔ 时间带，First Token ↔ 第一块
+  F((t) => tt.setK(tWord.map((t0) => ease.out3(clamp((t - (t0 - 0.05)) / 0.5)))));
+  tWord.forEach((t0, i) => sfx(i === 3 ? 'chime' : 'tick', t0 - 0.05, { g: i === 3 ? 0.5 : 0.6 }));
+  pulse(band, tWord[0] - 0.05, { prop: 'scaleY', k: 1.9, origin: '0% 50%' });
+  pulse(r1[0].e, tWord[2] - 0.05, { k: 1.14 });
+  // 展开之后：用琥珀下划线把全称对回画面（全称与图的对应）：Time ↔ 时间带，First Token ↔ 第一块；字宽 57.6（96px Mono），展开后「Time」x240–470、「First Token」x701–1334
+  const tU1 = tWord[3] + 0.9, tU2 = tU1 + 0.8;
+  const u1 = blk(world, 'bg-ac', 240, 274, 230, 8), u2 = blk(world, 'bg-ac', 701, 274, 633, 8);
+  wipe(u1, tU1, { dir: 'l', d: 0.35 }); pulse(band, tU1, { prop: 'scaleY', k: 1.9, origin: '0% 50%' }); sfx('tick', tU1, { g: 0.6 });
+  wipe(u2, tU2, { dir: 'l', d: 0.45 }); pulse(r1[0].e, tU2, { k: 1.14 }); sfx('tick', tU2, { g: 0.6 });
 });

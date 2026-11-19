@@ -17,7 +17,7 @@
 }
 body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 #bg { background: var(--ink); }
-.scene { overflow: hidden; }
+.scene { overflow: hidden; background: var(--ink); }   /* 不透明：换场时新场景一路刷过，旧画面不透出来（F19） */
 /* world 是镜头拍摄的那块画布，画幅是字幕带以上的 1920×968。里面的文字默认不换行 */
 .world { position: absolute; left: 0; top: 0; width: 1920px; height: 968px; white-space: nowrap; }
 .mono { font-family: "Mono", "Sans SC"; }
@@ -93,9 +93,9 @@ body { font-family: "Inter", "Sans SC"; color: var(--paper); }
 
 /* 片尾名单：3 秒内要读完，一次性整屏出现；字号不小于 36px */
 .credits { position: absolute; left: 120px; top: 150px; white-space: nowrap; }
-.credit-row { margin-bottom: 12px; }
-.credit-row .k { display: block; font: 500 28px "Sans SC"; color: var(--dim); }
-.credit-row .v { display: block; font: 700 42px "Inter", "Sans SC"; color: var(--paper); }
+.credit-row { margin-bottom: 8px; }
+.credit-row .k { display: block; font: 500 26px "Sans SC"; color: var(--dim); }
+.credit-row .v { display: block; font: 700 38px "Inter", "Sans SC"; color: var(--paper); }
 .credit-row .v.ac { color: var(--ac); }
 
 /* 场景共用：示例读数（与右上角读数同一时钟）、刻度尺、指针 */

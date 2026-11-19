@@ -33,7 +33,7 @@ function Tword(id, word, shift = 0) {
   if (typeof pick === 'function') word = pick(word);        // 双语脚本：T('c5', { zh: '读', en: 'reads' })
   if (!word) return c.start + shift;
   const txt = c.tts || '';
-  word = ttsNorm(word);
+  word = word[0] === '=' ? word.slice(1) : ttsNorm(word);        // 「=词」：按字面在合成文本里找，不经 SAY（d4 里的英文 Token）
   const idx = txt.indexOf(word);
   if (idx < 0) { console.warn('word not in cue', id, word); return c.start + shift; }
   if (!c.words) return c.start + c.d * (idx / Math.max(1, txt.length)) + shift;
@@ -47,7 +47,17 @@ function Tword(id, word, shift = 0) {
   return c.end + shift;
 }
 // 画面上的时刻吸附到八分音符（0.3 秒）格点，与配乐同拍（Q 见 config.js）；shift 在吸附之后加，如 T('r3', '之后') - 0.2
+// Tr 是不吸附的原始词时刻：只用于逐词对齐的动画（d4 里 Time / To / First / Token 只相隔 0.1–0.3 秒，吸附会让它们撞在同一格）
 function T(id, word, shift = 0) { return Q(Tword(id, word)) + shift; }
+const Tr = (id, word, shift = 0) => Tword(id, word, shift);
+// 词边界恰好等于 wt 的第 n 个（从 0 起）被读到的时刻：「T T F T」这类重复的字母逐个对齐（Tnth('d3', 'T', 1) 是第二个 T）
+function Tnth(id, wt, n = 0) {
+  const c = L.cues[id];
+  if (!c || !c.words) { console.warn('no words', id); return c ? c.start : 0; }
+  let k = 0;
+  for (const [off, , w] of c.words) { if (w === wt) { if (k === n) return c.start + off; k++; } }
+  console.warn('no word', id, wt, n); return c.start;
+}
 const Tend = (id, shift = 0) => L.cues[id].end + shift;
 
 // ── DOM 小工具 ──

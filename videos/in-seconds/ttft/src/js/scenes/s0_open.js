@@ -9,12 +9,12 @@ scene('open', ({ root, s, c0 }) => {
 
   // 对话面板（左）。子元素用面板内坐标，随面板一起刷入
   const panel = h('div', 'node', world); px(panel, 120, 160, 900, 770);
-  wipe(panel, c0, { dir: 'l', d: 0.6 });
+  wipe(panel, s.start, { dir: 'l', d: 0.5 });          // 从第 0 秒起就开始刷入：成片 0–0.3 秒不能是空画面（finish.js 的空画面检查，占比低于 0.6% 持续 0.3 秒报错）
   const q1 = h('div', 'bg-paper', panel, '写一个判断质数的 Python 函数');
   px(q1, 100, 40, 760, 120);
   css(q1, { display: 'flex', alignItems: 'center', justifyContent: 'center', font: '700 44px "Sans SC"' });
   slide(q1, tPrompt, { x: 120, d: 0.45 }); sfx('pop', tPrompt, { g: 0.7 });
-  appear(txt(panel, 'tag', '回答', 40, 250), c0 + 0.2);
+  appear(txt(panel, 'tag', '回答', 40, 250), s.start + 0.1);
   blinkCaret(blk(panel, 'caret', 40, 310, 40, 84), c0 + 0.3, k.tf);
   const inp = blk(panel, '', 40, 630, 820, 96);
   css(inp, { background: PALETTE.ink, color: PALETTE.dim, font: '500 38px/96px "Sans SC"', paddingLeft: '30px' });
@@ -22,11 +22,11 @@ scene('open', ({ root, s, c0 }) => {
 
   // 示例读数（与右上角读数同一时钟 METER(t)）；第一个 Token 到达时反白 0.3 秒
   const tm = txt(world, 'tm', '0.00', 1040, 330);
-  appear(tm, c0 + 0.2);
+  appear(tm, s.start);                                  // 大读数第 0 秒就在场
   F((t) => { if (t >= c0) tm.textContent = METER(t).toFixed(2); });
   classWindow(tm, 'inv', k.tf, k.tf + 0.3);
-  appear(txt(world, 'eg', '示例', 1040, 230), c0 + 0.2);
-  const unit = txt(world, 'tag', '秒', 1050, 660); css(unit, { font: '700 60px "Sans SC"' }); appear(unit, c0 + 0.2);
+  appear(txt(world, 'eg', '示例', 1040, 230), s.start);
+  const unit = txt(world, 'tag', '秒', 1050, 660); css(unit, { font: '700 60px "Sans SC"' }); appear(unit, s.start);
 
   // 第一个 Token（def，琥珀）出现在光标的位置；其后每 0.3 秒一个，新块先是「未完成」的 ink2，0.15 秒后变纸色
   const toks = [['def', 40, 310, 'first'], ['is_', 207, 310, 'out'], ['prime', 374, 310, 'out'], ['(', 608, 310, 'out'], ['n', 40, 420, 'out'], ['):', 140, 420, 'out']];

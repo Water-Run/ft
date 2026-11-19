@@ -89,7 +89,8 @@ function exit(e, t, o = {}) {
   tl.to(e, { autoAlpha: 0, x: o.x || 0, y: o.y || 0, duration: o.d || 0.4, ease: o.ease || 'power2.in', overwrite: 'auto' }, t);
 }
 // 瞬间出现 / 消失（终端里新输出的一行、换内容）
-const appear = (e, t) => tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: true }, t);
+// 出现：0.12 秒的短淡入（原来是一帧跳出，观感生硬）；需要「同一帧」的事件（同时亮起）仍然落在同一个 t 上
+const appear = (e, t) => tl.fromTo(e, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, ease: 'power1.out', immediateRender: true }, t);
 const vanish = (e, t) => tl.set(e, { autoAlpha: 0 }, t);
 
 // ── 把画好的 canvas 换成 <img> ──
