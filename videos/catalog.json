@@ -154,6 +154,7 @@
     {"slug": "llm-cache-hits", "series": "in-seconds", "title": {"zh": "128秒有关大模型的缓存命中"}},
     {"slug": "modern-crypto", "series": "in-seconds", "title": {"zh": "192秒速通现代密码学"}},
     {"slug": "svn", "series": "in-seconds", "title": {"zh": "100秒搞明白SVN: 中心化的代码管理"}, "note": "2026-11-17 策划者新增（原话「100秒搞明白SVN: 中心化的代码管理」）；定长 100 秒。"},
+    {"slug": "windows-sandbox", "series": "in-seconds", "title": {"zh": "128秒了解Windows沙盒"}, "note": "2026-11-19 策划者新增（原话「片单加一个 128秒了解Windows沙盒」）；定长 128 秒。"},
     {"slug": "linux-permissions", "series": "permission-design", "title": {"zh": "Linux 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "windows-permissions", "series": "permission-design", "title": {"zh": "Windows 权限机制的设计"}, "note": "2026-11-04 从「XX 秒速通」拆入本系列；改为几分钟的完整介绍，覆盖设计思想、历史沿革、机制与边界。"},
     {"slug": "macos-permissions", "series": "permission-design", "title": {"zh": "macOS 权限机制的设计"}},

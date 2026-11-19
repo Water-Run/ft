@@ -80,4 +80,5 @@
 | 28 | 128秒有关大模型的缓存命中 | zh | 计划中 | `llm-cache-hits` |
 | 29 | 192秒速通现代密码学 | zh | 计划中 | `modern-crypto` |
 | 30 | 100秒搞明白SVN: 中心化的代码管理 | zh | 计划中 | `svn` |
+| 31 | 128秒了解Windows沙盒 | zh | 计划中 | `windows-sandbox` |
 <!-- catalog:end -->
