@@ -20,7 +20,7 @@ from pathlib import Path
 VIDEO = Path(__file__).resolve().parent.parent
 REPO = VIDEO.parent.parent.parent
 OUT = VIDEO / 'out' / 'audition'
-ROUND = 5
+ROUND = 6
 # 只试听已选定的音色：Harness 一期的 Crisp_Girl，语速 1.15（2026-11-16 策划者点名沿用）。
 # 第 2 版的 5 男 5 女候选见 git 历史。
 # (引擎, 音色 id, 名称, 性别, 听感, 以前用在哪里)
@@ -29,26 +29,31 @@ VOICES = [
 ]
 SPEED = 1.15                      # MiniMax 语速；微软在线语音用 +0%
 MODEL = 'speech-2.8-hd'
-# 代表句（第 6 稿原句）：倒叙的开场、第 01 章的标志、读入一章的「还没有名字」、调用一章的三种结局、成环的结尾
+# 代表句（第 7 稿原句）：开场、第 01 章、调用一章、第 17 章的开头与结语的升华
 SAMPLE_TEXTS = [
-    '后来，这 28 行在五个版本的 Lua 上都跑过',
+    'Lua 是一门小巧的脚本语言',
+    '换上五个不同版本的 Lua 再跑',
     '每一次，打印出来的都是同样的四行',
     '连那圈虚线也有名字，叫 orbit',
-    '这时，许多东西还没有名字',
     '到第 499990 层，也还好好的',
     '换一种写法，每一层都经过 pcall 调用自己',
     '这一回，不到 200 层就倒下了',
     '报的是 C stack overflow',
     '它走了一千万层，什么事也没有发生',
-    '下一次运行，那 28 行还会从 lua_load 出发',
-    '把这条路从头再走一遍',
-    '打印出同样的四行',
+    '漫长的视频，也到了收尾的时候',
+    '我们最后再把那 28 行，从头到尾走一遍',
+    '这里的简洁，是让每一样东西都多做几件事',
+    '下一次运行，还会打印出同样的四行',
 ]
 # 上一版审片页交审的稿本：审片页把这一稿里新增或改写的字幕标出来
 PREV_EXPORT = 'review/script.zh.c3f684811656e51d566a8ffa78845ca11adc595159384653b51ae36a3ed49d08.md'
 PREV_NAME = '第 4 稿'
 # 第 4 版审片页之后的意见与处理（原话见 review/NOTES.md「意见与处理」）
 FEEDBACK = [
+    ('「开场白你确定是后来?不介绍一句Lua是啥?」「01 lua不是有解释器吗 跑Lua脚本」「事实是不是出大问题了」（2026-11-21）',
+     '开场先一句话交代 Lua；第 01 章更正：先讲 lua 怎样跑脚本、实现是 C 库、宿主常常就是 lua，再引手册；独立代理逐句核查全稿，改正 5 处错误、约二十处说过头的话'),
+    ('「结尾缺乏总结升华. 而且, 倒二章应该再总结一遍Lua的工作原理…」「开场别再用回头看了. 你可以说 漫长的视频也到了收尾的时候…」「最后升华主要到哲学部分, 简洁, 生产解释器」（2026-11-21）',
+     '新增第 17 章「再走一遍」，以策划者给的句子开头；结语改为第 18 章，落到简洁与生产级解释器的哲学'),
     ('「我准备使用Gemini 4 Neon进行对抗式迭代. 给出txt的Prompt, 让他给出建议」「直到对话迭代到你觉得满意为止」（2026-11-21）',
      '提示 review/GEMINI-PROMPT-R1.txt（含续问）与 R2；Gemini 的事实意见回到 5.5.1／5.4.9 源码与本片构建核实，成立的补为 FACTS Q17–Q29 并改稿；署名 Gemini 4 Neon（文案审读）'),
     ('「主要文案, 以观众的视角, 优化文案和叙事, 减少很多语句浓烈的Claude味.」（2026-11-21）',
@@ -59,6 +64,9 @@ FEEDBACK = [
 ]
 # 这几稿的写法与审查（详见 review/NOTES.md「交审说明」第 5、6 稿）
 ROUNDS = [
+    ('第 7 稿', '开场与第 01 章重写；新增「再走一遍」；结语改写；独立代理逐句核查，制作方回源码复核',
+     '确定错误 5 处（变量与值说反、5.1 环境、local global 不经 load、「每一代」超出实测、宿主一句丢前提）；说过头约二十处',
+     '逐条改正；补 Q31–Q34；902 条字幕都有依据'),
     ('Gemini 第 1 轮', 'Gemini 4 Neon 审读第 4 稿（四项打分 6、6.5、5.5、7）；它提出的事实问题逐条回到源码与本片构建核实',
      '"10" + 1 实际编出 ADDI；rex:speak() 漏了 Animal 的 __index；MULK 的目标格其实后填；表长度 4 与 2 只提出没解释；flags 只有低 6 位；__gc 对象下一轮才释放没给原因；「称为」22 处',
      '补 FACTS Q17–Q29；第 07 章换程序；表长度做探针 15_table_length；不采纳的几条写明理由（GEMINI-PROMPT-R2.txt 第六节）'),
@@ -214,7 +222,7 @@ def page():
     n_new = sum(1 for c in caps if prev is not None and c not in prev)
     body = []
     body.append(f'<h1><img src="lua-logo.svg" alt="Lua">Lua源码全解析 · 审片页 · 第 {ROUND} 版</h1>')
-    body.append(f'<p class="lead">文案第 6 稿，{len(caps)} 条字幕，按估算语速约 {data["total"] / 60:.0f} 分钟（配音后以实测为准）。'
+    body.append(f'<p class="lead">文案第 7 稿，{len(caps)} 条字幕，按估算语速约 {data["total"] / 60:.0f} 分钟（配音后以实测为准）。'
                 '视觉融合方案与配乐「月下」已采用，音色已定；这一版要审定的是文案。淡紫框是需要回复的事项。</p>')
     body.append('<h2>0. 第 4 版之后的意见与处理</h2><table class="v">')
     for said, done in FEEDBACK:
@@ -227,9 +235,9 @@ def page():
     body.append('</table><div class="frames2">')
     for i, f in enumerate(frames):
         body.append(f'<figure><a href="{f}"><img src="{f}"></a><figcaption>{esc(meta["frames"][i])}</figcaption></figure>')
-    body.append('</div><p class="done">2026-11-21 策划者：「两样都采用」。场景按这一套实现。关键帧画的还是第 3 稿的例子（整数 40、next_value 的调用帧）；形式不变，正式场景换成第 6 稿各章的程序。</p>')
+    body.append('</div><p class="done">2026-11-21 策划者：「两样都采用」。场景按这一套实现。关键帧画的还是第 3 稿的例子（整数 40、next_value 的调用帧）；形式不变，正式场景换成第 7 稿各章的程序。</p>')
     body.append('<h2>2. 配音（已选定）</h2>')
-    body.append(f'<p>MiniMax {esc(vj.get("model", ""))}，语速 {vj.get("speed", "")}。读下面这组第 6 稿原句（取自开场、第 01 章、读入、调用两章与结语），'
+    body.append(f'<p>MiniMax {esc(vj.get("model", ""))}，语速 {vj.get("speed", "")}。读下面这组第 7 稿原句（取自开场、第 01 章、调用、第 17 章与结语），'
                 '按本片的读法表与停顿逐句合成，切分方式与正式配音相同。这只是试听；全片等文案确认后再合成。</p>')
     body.append('<ol class="sample">' + ''.join(f'<li>{cap(t)}</li>' for t in vj.get('texts', [])) + '</ol><table class="v">')
     for v in vj['voices']:
@@ -249,7 +257,7 @@ def page():
     body.append(f'<table class="v"><tr><td><b>{esc(MUSIC[1])}</b><br>{esc(MUSIC[2])}</td><td><audio controls preload="none" src="music-{MUSIC[0]}.mp3"></audio>'
                 '<br>约 84 秒：引子、推进、最高处、收束</td></tr></table>')
     body.append('<p class="done">2026-11-21 策划者：「两样都采用」。正式配乐按章节排段落：讲机制的段落只留铺底与拨弦，章节之间与结语让钟片动机出现；旁白出现时自动压低。</p>')
-    body.append('<h2>4. 文案第 6 稿</h2>')
+    body.append('<h2>4. 文案第 7 稿</h2>')
     body.append('<p>第 4 稿之后经过 Gemini 4 Neon 一轮审读和两次改写。各章仍是先摆出一段程序和它的结果，再到源码里找原因；这两稿改的是叙述的口吻：</p>')
     body.append('<table class="v map"><tr><th>轮次</th><th>方式</th><th>发现</th><th>处理</th></tr>')
     for r in ROUNDS:
