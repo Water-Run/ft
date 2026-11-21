@@ -9,7 +9,7 @@
     "zh": "Lua源码全解析"
   },
   "stage": "review",
-  "next": "等 WaterRun 审定文案第 4 稿（review/script.zh.c3f68481….md，各章换用自己的程序）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，按融合方案做有声代表段，再铺开场景，用 covers.js 出封面",
+  "next": "与 Gemini 4 Neon 对抗迭代第 5 稿（review/GEMINI-PROMPT-R2.txt），收敛后重建术语表与事实对照、出审片页，等 WaterRun 审定并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，做有声代表段，再铺开场景，用 covers.js 出封面",
   "credits": {
     "planner": "WaterRun",
     "models": [
