@@ -20,39 +20,58 @@ from pathlib import Path
 VIDEO = Path(__file__).resolve().parent.parent
 REPO = VIDEO.parent.parent.parent
 OUT = VIDEO / 'out' / 'audition'
-ROUND = 2
+ROUND = 3
+# 第 3 版只试听已选定的音色：Harness 一期的 Crisp_Girl，语速 1.15（2026-11-16 策划者点名沿用）。
+# 第 2 版的 5 男 5 女候选见 git 历史；策划者据第 2 版审片页选定音色。
 # (引擎, 音色 id, 名称, 性别, 听感, 以前用在哪里)
 VOICES = [
-    ('minimax', 'Chinese (Mandarin)_Male_Announcer', '播报男声', '男', '中年男声，清晰、有分量', 'PostgreSQL 中文（2026-10）'),
-    ('minimax', 'lengdan_xiongzhang', '冷淡学长', '男', '平静克制的青年男声', 'Pando'),
-    ('minimax', 'male-qn-jingying-jingpin', '精英青年', '男', '利落的青年男声', '量化（in-seconds）'),
-    ('minimax', 'Chinese (Mandarin)_Sincere_Adult', '真诚青年', '男', '平实的青年男声', '思维链'),
-    ('edge', 'zh-CN-YunyangNeural', 'Yunyang', '男', '微软新闻播音男声', '早期几部的缺省音色'),
-    ('minimax', 'Chinese (Mandarin)_News_Anchor', '新闻女声', '女', '标准播音腔的中年女声', 'HTTP 状态码、php2shell'),
-    ('minimax', 'female-chengshu-jingpin', '成熟女性', '女', '沉稳的成年女声', 'InnoDB'),
-    ('minimax', 'Chinese (Mandarin)_Wise_Women', '阅历姐姐', '女', '知性的中年女声', 'MyISAM 新版试听（未选）'),
-    ('minimax', 'Chinese (Mandarin)_Warm_Bestie', '温暖闺蜜', '女', '清晰友好的青年女声', '未用过'),
-    ('edge', 'zh-CN-XiaoxiaoNeural', 'Xiaoxiao', '女', '微软通用女声', '未用过'),
+    ('minimax', 'Chinese (Mandarin)_Crisp_Girl', '清脆女声', '女', '2026-11-16 策划者点名沿用', '《150 秒了解 Agent 的手：Harness》（语速 1.15）'),
 ]
-SPEED = 1.0                       # MiniMax 语速；微软在线语音用 +0%
+SPEED = 1.15                      # MiniMax 语速；微软在线语音用 +0%
 MODEL = 'speech-2.8-hd'
-# 代表句：协程的语言层面说明、编译一行源码、C 调用层数、结尾的总结
+# 代表句（第 3 稿原句）：协程的语言层面说明、编译一行源码、C 调用层数、结尾的归纳与最后一句
 SAMPLE_TEXTS = [
-    '普通的函数调用有严格的先后',
-    '调用方停下来，被调用的函数一直运行到返回',
+    '普通的函数调用，要等被调用的函数运行到返回',
     '控制才回到调用方',
-    '协程打破了这一点',
-    '它可以在中途暂停，把控制交还给调用方',
-    '之后再从暂停的地方继续',
+    '协程可以在中途暂停，把控制交还给调用方',
     '读到加号时，加法要求左边的操作数已经在寄存器里',
     '编译器这才生成第一条指令 GETTABUP',
     '从上值所指的表里取出字段',
     '放进下一个空闲的寄存器，也就是 1 号',
     '一个函数通过 pcall 调用自己，到第 198 层就会报错',
     '错误信息是 C stack overflow',
-    '其一，同一种机制往往用在好几处',
+    '一种机制，往往用在好几处',
     '字符串驻留让比较变成比较指针',
     '也让识别保留字只需要看一个字节',
+    '这四行输出',
+    '就是这 28 行从 lua_load 走到 lua_close 的结果',
+]
+# 上一轮交审的稿本：审片页把第 3 稿里新增或改写的字幕标出来
+PREV_EXPORT = 'review/script.zh.eda2be08369b838a0213d29010444c66780dade5f100179d52136113c7a3f957.md'
+# 第 2 版审片页之后的意见与处理（原话见 review/NOTES.md「意见与处理」）
+FEEDBACK = [
+    ('「温暖闺蜜 注意音量偏小」（2026-11-16）', '先定为 Warm_Bestie；同日策划者改为 Harness 一期的 Crisp_Girl，见下一条'),
+    ('「Lua源码全解析的配音改用Harness那期的」（2026-11-16）', '音色改为 <code>Chinese (Mandarin)_Crisp_Girl</code>，语速 1.15，记入 project.json；试听见第 2 节'),
+    ('「对了, 顺便实现封面.」（2026-11-16）', '<code>src/cover.html</code> 两个版式；<code>covers.js</code> 出图等文案确认后运行'),
+    ('融合视觉方案与配乐「月下」：「两样都采用」（2026-11-21）', '定为采用，见第 1、3 节'),
+    ('第 2 稿：「自我对抗优化几个版本」（2026-11-21）', '在第 2 稿上连做三轮审查与修改，得到第 3 稿，见第 4 节'),
+]
+# 三轮自对抗审查（详见 review/NOTES.md「交审说明」第 3 稿）
+ROUNDS = [
+    ('1 · 事实与语体',
+     '一个代理逐句对照 FACTS、实验回显与 5.5.1 源码核事实，手推指令解码与 8 节点表；一个代理查口语与套路；制作方从零基础观众的角度通读',
+     '16 处措辞超出依据或不准。较重的三处：调用一章的栈格号出自最简单的宿主，不是 lua.c；分代回收在 5.2 是实验特性、5.3 删去、5.4 重新加入；布尔和 nil 只靠标签区分。'
+     '「称为」下定义 18 次，9 章用预告收尾，文件清单讲了三遍，结尾「其一……其四」模板感重',
+     '按依据改写，补 H07、H08、P59–P61，更正 P26、P47；删去多数章尾预告与重复定义；源码地图改为沿脚本的路径叙述；global 不是保留字一事移到讲清 global 声明之后'),
+    ('2 · 听一遍能否跟上',
+     '另一个代理通读第 1 轮之后的全文',
+     '两个同名的 state 没分开；「第二行」与源码行号的叫法冲突；寄存器与上值的编号、主函数各寄存器放什么没有来历；8 节点表漏了一步；'
+     'GETFIELD 与 GETTABUP 的区别没讲；「计数器」指三样东西；同一概念两种说法；回收一章没有回到贯穿例子',
+     '全部补上；寄存器分配取自 luac 列表，向量与协程传值取自实验原文；「计数器」只指 next_value；统一为「跳转点」「字符串表」；删去一句带过的弱表'),
+    ('3 · 通读',
+     '制作方从头读连贯视图',
+     '协程一章两次说「不是操作系统的线程」；版本一章与回收一章说法矛盾；「挂上」「记下」两种说法；lua_newstate 首次出现没有交代',
+     '逐处改正；重建术语表与事实对照，每条字幕都有依据，每个术语先有问题再起名'),
 ]
 MUSIC = ('moon', '月下', '按优先级：月、简洁、巴西。72 拍/分，D 大调的 maj9 与 m11 和弦，长而暗的混响留出夜里的空间；'
          '一把尼龙弦式的拨弦按波萨诺瓦的切分轻轻扫弦，低音只在每小节的第一、三拍落下；钟片式的高音动机由四个下行的音组成，'
@@ -165,49 +184,84 @@ def shots(pages):
     return frames
 
 
+def loudness(path):
+    """整合响度（EBU R128），读不到时返回 None。"""
+    if not path.exists():
+        return None
+    r = subprocess.run([ffmpeg(), '-hide_banner', '-nostats', '-i', str(path), '-af', 'ebur128', '-f', 'null', '-'],
+                       capture_output=True, text=True, encoding='utf-8', errors='replace')
+    found = re.findall(r'I:\s+(-?[\d.]+) LUFS', r.stderr)
+    return float(found[-1]) if found else None
+
+
+def prev_captions():
+    path = VIDEO / PREV_EXPORT
+    if not path.exists():
+        return None
+    caps = set()
+    for line in path.read_text(encoding='utf-8').splitlines():
+        m = re.match(r'^\| ([a-z]+\d+) \| (.*?) \|$', line)
+        if m:
+            caps.add(m.group(2))
+    return caps
+
+
 def page():
     data = script_data()
     meta = json.loads((VIDEO / 'src' / 'design' / 'fusion.json').read_text(encoding='utf-8'))
     frames = shots([('fusion.html', len(meta['frames']))])
     vj = json.loads((OUT / 'voices.json').read_text(encoding='utf-8')) if (OUT / 'voices.json').exists() else {'voices': [], 'texts': []}
+    chosen = {x[1] for x in VOICES}
+    vj['voices'] = [v for v in vj.get('voices', []) if v['voice'] in chosen]
+    prev = prev_captions()
     esc = html.escape
     cap = lambda s: re.sub(r'\*(.+?)\*', r'<b>\1</b>', esc(s))
-    n_cues = sum(1 for sc in data['scenes'] for c in sc['cues'] if c['cap'])
+    caps = [c['cap'] for sc in data['scenes'] for c in sc['cues'] if c['cap']]
+    n_new = sum(1 for c in caps if prev is not None and c not in prev)
     body = []
     body.append(f'<h1><img src="lua-logo.svg" alt="Lua">Lua源码全解析 · 审片页 · 第 {ROUND} 版</h1>')
-    body.append(f'<p class="lead">文案第 2 稿 {n_cues} 句旁白，按估算语速约 {data["total"] / 60:.0f} 分钟（配音后以实测为准）；'
-                '视觉为融合方案；配音 5 男 5 女；配乐一首。每节末尾的淡紫框是需要选定的事项。</p>')
-    body.append('<h2>0. 第 1 版意见与处理</h2><table class="v">')
-    for said, done in meta['feedback']:
+    body.append(f'<p class="lead">文案第 3 稿，{len(caps)} 条字幕，按估算语速约 {data["total"] / 60:.0f} 分钟（配音后以实测为准）。'
+                '视觉融合方案与配乐「月下」已采用，音色已定；这一版要审定的是文案。淡紫框是需要回复的事项。</p>')
+    body.append('<h2>0. 第 2 版之后的意见与处理</h2><table class="v">')
+    for said, done in FEEDBACK:
         body.append(f'<tr><td class="q">{esc(said)}</td><td>{done}</td></tr>')
     body.append('</table>')
-    body.append('<h2>1. 视觉：按内容选形式</h2>')
+    body.append('<h2>1. 视觉：按内容选形式（已采用）</h2>')
     body.append(f'<p>{esc(meta["principle"])}</p><table class="v map"><tr><th>内容</th><th>形式</th><th>理由</th></tr>')
     for c, form, why in meta['mapping']:
         body.append(f'<tr><td>{esc(c)}</td><td>{esc(form)}</td><td>{esc(why)}</td></tr>')
     body.append('</table><div class="frames2">')
     for i, f in enumerate(frames):
         body.append(f'<figure><a href="{f}"><img src="{f}"></a><figcaption>{esc(meta["frames"][i])}</figcaption></figure>')
-    body.append('</div><p class="ask">这一套是否可以作为全片的视觉方案；哪一帧、哪种内容的形式要换。</p>')
-    body.append('<h2>2. 配音候选（5 男 5 女）</h2>')
-    body.append(f'<p>MiniMax {esc(vj.get("model", ""))} 语速 {vj.get("speed", "")}，微软在线语音 +0%。都读下面这组句子（取自第 14、6、9 章与结语），'
-                '按本片的读法表与停顿逐句合成，切分方式与正式配音相同。可用的中文音色有限，按「尽量不同」挑选，以前的用处写在旁边。</p>')
-    body.append('<ol class="sample">' + ''.join(f'<li>{cap(t)}</li>' for t in vj.get('texts', [])) + '</ol>')
-    for sex in ('男', '女'):
-        body.append(f'<h3>{sex}声</h3><table class="v">')
-        for v in [x for x in vj.get('voices', []) if x['sex'] == sex]:
-            film = v.get('film_minutes')
-            body.append(f'<tr><td><b>{esc(v["name"])}</b><br><code>{esc(v["voice"])}</code><br>{esc(v["desc"])}<br><span class="dim">以前：{esc(v["prior"])}</span></td>'
-                        f'<td><audio controls preload="none" src="{v["file"]}"></audio><br>{v["seconds"]} 秒' +
-                        (f' · 按此语速全片约 {film:.0f} 分钟' if film else '') + '</td></tr>')
-        body.append('</table>')
-    body.append('<p class="ask">请选一个音色（可同时给语速）。都不合适，也请说明想要的方向：年龄、语速、播音腔或讲课腔。</p>')
-    body.append('<h2>3. 配乐</h2>')
+    body.append('</div><p class="done">2026-11-21 策划者：「两样都采用」。场景按这一套实现。</p>')
+    body.append('<h2>2. 配音（已选定）</h2>')
+    body.append(f'<p>MiniMax {esc(vj.get("model", ""))}，语速 {vj.get("speed", "")}。读下面这组第 3 稿原句（取自第 14、6、9 章与结语），'
+                '按本片的读法表与停顿逐句合成，切分方式与正式配音相同。这只是试听；全片等文案确认后再合成。</p>')
+    body.append('<ol class="sample">' + ''.join(f'<li>{cap(t)}</li>' for t in vj.get('texts', [])) + '</ol><table class="v">')
+    for v in vj['voices']:
+        film = v.get('film_minutes')
+        lufs = loudness(OUT / v['file'])
+        body.append(f'<tr><td><b>{esc(v["name"])}</b><br><code>{esc(v["voice"])}</code><br>{esc(v["desc"])}<br><span class="dim">以前：{esc(v["prior"])}</span></td>'
+                    f'<td><audio controls preload="none" src="{v["file"]}"></audio><br>{v["seconds"]} 秒' +
+                    (f' · 按此语速全片约 {film:.0f} 分钟' if film else '') +
+                    (f'<br><span class="dim">试听段整合响度 {lufs:.1f} LUFS，是合成的原始电平；混音把旁白按 rms 对齐，成片按 -16 LUFS 交付，'
+                     '所以正式片的音量不取决于这里</span>' if lufs is not None else '') + '</td></tr>')
+    if not vj['voices']:
+        body.append('<tr><td colspan="2">（试听尚未合成：先运行 <code>audition.py voices</code>）</td></tr>')
+    body.append('</table><p class="ask">这个音色在长片里的语速与精神是否合适（经验规则 F17）；pcall 读作「P call」是否清楚。制作方没有听过这段音频。</p>')
+    body.append('<h2>3. 配乐（已采用）</h2>')
     body.append(f'<table class="v"><tr><td><b>{esc(MUSIC[1])}</b><br>{esc(MUSIC[2])}</td><td><audio controls preload="none" src="music-{MUSIC[0]}.mp3"></audio>'
                 '<br>约 84 秒：引子、推进、最高处、收束</td></tr></table>')
-    body.append('<p class="ask">是否采用。正式配乐按章节排段落：讲机制的段落只留铺底与拨弦，章节之间与结语让钟片动机出现；旁白出现时自动压低。</p>')
-    body.append('<h2>4. 文案第 2 稿</h2>')
-    body.append('<p>结构分四部分；每个机制章先在语言层面讲清这个特性是什么，再看实现。鼠标停在句子上可看到句号；<b>粗体</b>是术语第一次出现处。</p>')
+    body.append('<p class="done">2026-11-21 策划者：「两样都采用」。正式配乐按章节排段落：讲机制的段落只留铺底与拨弦，章节之间与结语让钟片动机出现；旁白出现时自动压低。</p>')
+    body.append('<h2>4. 文案第 3 稿</h2>')
+    body.append('<p>第 2 稿之后连做了三轮自对抗审查。每一轮查什么、发现什么、怎样改：</p>')
+    body.append('<table class="v map"><tr><th>轮次</th><th>方式</th><th>发现</th><th>处理</th></tr>')
+    for r in ROUNDS:
+        body.append('<tr>' + ''.join(f'<td>{esc(x)}</td>' for x in r) + '</tr>')
+    body.append('</table>')
+    body.append('<p>结尾改为按四行输出逐行回放它们经过的地方，归纳反复出现的做法，再给继续阅读的路线，最后一句回到开头的 28 行。'
+                '章节结构、主问题与贯穿例子不变。请特别看：第 6 章的密度；回收一章由寄存器分配推出的一句「state 一直活着」；'
+                '结尾两句概括性的说法。详见 <code>review/NOTES.md</code>「交审说明」第 3 稿。</p>')
     body.append('<table class="v map"><tr><th>部分</th><th>章</th><th>估算</th><th>这一章回答</th></tr>')
     secs = {sc['id']: sc['seconds'] for sc in data['scenes']}
     for part, sid, q in meta['outline']:
@@ -216,6 +270,10 @@ def page():
         m, s = divmod(round(secs[sid]), 60)
         body.append(f'<tr><td>{esc(part)}</td><td>{esc(title)}</td><td>{m}:{s:02d}</td><td>{esc(q)}</td></tr>')
     body.append('</table>')
+    note = '鼠标停在句子上可看到句号；<b>粗体</b>是术语第一次出现处'
+    if prev is not None:
+        note += f'；<span class="new">带下划线的</span>是第 3 稿新增或改写的字幕（{n_new} / {len(caps)} 条），其余与第 2 稿逐字相同'
+    body.append(f'<p>全文如下。{note}。</p>')
     for sc in data['scenes']:
         if sc['id'] == 'credits':
             continue
@@ -224,7 +282,8 @@ def page():
         for c in sc['cues']:
             if not c['cap']:
                 continue
-            cur += f'<span title="{c["id"]}">{cap(c["cap"])}{"，" if c["cont"] else "。"}</span>'
+            cls = ' class="new"' if prev is not None and c['cap'] not in prev else ''
+            cur += f'<span title="{c["id"]}"{cls}>{cap(c["cap"])}</span>{"，" if c["cont"] else "。"}'
             if not c['cont'] and (c.get('gap') or 0) >= 0.8:
                 paras.append(cur)
                 cur = ''
@@ -239,9 +298,14 @@ def page():
            'figure{margin:0}figure img{width:100%;border:1px solid #ccc}figcaption{font-size:14px;color:#555}'
            'table.v{border-collapse:collapse;width:100%}table.v td,table.v th{border-top:1px solid #ccc;padding:9px 10px;vertical-align:top;text-align:left}'
            'table.map th{color:#000080;font-weight:normal}td.q{width:34%;color:#333}.dim{color:#666;font-size:14px}'
-           'audio{width:400px}.ask{background:#D0D0FF;padding:8px 12px}.lead{color:#333}.text span:hover{background:#D0D0FF}'
-           'ol.sample{color:#333;font-size:15px;columns:2}code{font-family:"JetBrains Mono",monospace;font-size:14px}')
-    doc = f'<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Lua源码全解析 · 审片页 v{ROUND}</title><style>{css}</style><body>{"".join(body)}</body></html>'
+           'audio{width:400px;max-width:100%}.ask{background:#D0D0FF;padding:8px 12px}'
+           '.done{background:#F8F8F8;border-left:3px solid #000080;padding:8px 12px}.lead{color:#333}'
+           '.text span:hover{background:#D0D0FF}.new{text-decoration:underline;text-decoration-color:#000080;text-underline-offset:4px}'
+           'ol.sample{color:#333;font-size:15px;columns:2}code{font-family:"JetBrains Mono",monospace;font-size:14px}'
+           '@media (max-width:700px){.frames2{grid-template-columns:1fr}ol.sample{columns:1}body{overflow-wrap:anywhere}'
+           'table.v td,table.v th{padding:6px 4px}td.q{width:40%}}')
+    doc = (f'<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+           f'<title>Lua源码全解析 · 审片页 v{ROUND}</title><style>{css}</style><body>{"".join(body)}</body></html>')
     shutil.copyfile(VIDEO / 'src' / 'img' / 'lua-logo.svg', OUT / 'lua-logo.svg')
     (OUT / 'index.html').write_text(doc, encoding='utf-8')
     print('wrote', (OUT / 'index.html').relative_to(REPO))

@@ -277,7 +277,7 @@ F28–F30 的实测数值（来源：out_07 两次 `06_c_api.c` 运行）：
 | P23 | RETURN1 把结果放到 base−1，即原来函数所在的格，再把当前帧换回上一层；只有标记为 CIST_FRESH 的帧（由 C 进入的那一层）才从 luaV_execute 返回 | `lvm.c:1808-1835`、`ldo.c:759-770` | 交叉核对 |
 | P24 | 第一次调用 next_value(2) 时：主函数帧 base 在第 3 格；被调函数在第 8 格（主函数的 5 号寄存器），其 0 号寄存器在第 9 格放着参数 2，帧末端第 11 格；执行 RETURN1 前 1 号寄存器（第 10 格）为整数 42；CallInfo 链共 3 层：内层函数、主函数、宿主层 base_ci | 探针 `[stack]` 两次快照 | 实验观察；格号依赖本次加载与 lua_pcall 的方式，不推广为固定布局 |
 | P25 | Lua 调 Lua 不嵌套 C 调用：非尾递归 100000 层正常结束；经 pcall（C 函数）递归时，嵌套 C 调用受 LUAI_MAXCCALLS=200 限制，实测到第 198 层得到 "C stack overflow" | `ldo.h:63`、`ldo.c:759-770 ccall`；12_probes `lua-recursion 100000`、`recursion-through-pcall deepest 198` | 实验观察；198 依赖调用方式 |
-| P26 | CLOSURE 执行 pushclosure：上值描述 instack 为真时，用 luaF_findupval 在开放上值链表（按栈位置排序）中找该格，有则复用，无则新建只含指针的 UpVal；否则直接取外层闭包的上值 | `lvm.c:840-855`、`lfunc.c:87-98` | 交叉核对 |
+| P26 | CLOSURE 执行 pushclosure：上值描述 instack 为真时，用 luaF_findupval 在开放上值链表（按栈位置排序）中找该格，有则复用，无则新建一个 UpVal，其指针指向该栈格（UpVal 另有对象头、开放链表指针与关闭后存值的 TValue，`lobject.h:679-692`）；否则直接取外层闭包的上值 | `lvm.c:840-855`、`lfunc.c:87-98` | 交叉核对 |
 | P27 | 关闭上值：把栈格中的 TValue 复制到 UpVal 内部的 value 字段，并把指针改指这份复制。make_counter 的 RETURN 带 k 标志，表示可能有开放上值需要关闭。探针在内层函数开始执行时看到其上值已关闭、开放上值链表为空；两次调用 make_counter 得到的计数器互不影响（42 与 40） | `lfunc.c:197-210`、`lvm.c:1769-1790`；探针 `word=0x00038146 RETURN k=1`、`closed=1 open-list-empty=1`；12_probes `independent-counters 42 40 42` | 交叉核对 |
 
 ### 14.6 表与元表
@@ -317,7 +317,7 @@ F28–F30 的实测数值（来源：out_07 两次 `06_c_api.c` 运行）：
 | 编号 | 陈述 | 依据与定位 | 核查状态／边界 |
 |---|---|---|---|
 | P46 | 短字符串在创建时用全局种子算出哈希值存入 TString 的 hash 字段；查表时字符串键的主位置直接由这个值取模得到（hashstr）；种子由 luaL_newstate 用局部变量地址与当前时间生成，所以字符串键所在的节点在两次运行间可能不同 | `lstring.c:214-247 internshrstr`（第 218 行算哈希）、`:171 createstrobj`、`ltable.c:115 hashstr`、`lauxlib.c:1168-1199` | 源码交叉核对；P30 用整数键演示正是为了避开这一点 |
-| P47 | 记号（Token）由一个整数 token 与语义信息 SemInfo 组成；SemInfo 是联合体：浮点数、整数，或指向字符串（名字与字符串字面量，经驻留）的指针 | `llex.h:49-59`、`llex.c` 中 `seminfo->ts = …` | 源码交叉核对 |
+| P47 | 记号（Token）由一个整数 token 与语义信息 SemInfo 组成；SemInfo 是联合体：浮点数、整数，或指向字符串对象（名字与字符串字面量）的指针；不超过 40 字节的是驻留的短串，更长的字面量是不驻留的长串（P08） | `llex.h:49-59`、`llex.c` 中 `seminfo->ts = …` | 源码交叉核对 |
 | P48 | 二元运算符的优先级表：`+ -` 为 10，`* % / //` 为 11，`^` 左 14 右 13（右结合），`..` 左 9 右 8，比较为 3，and 为 2，or 为 1；subexpr 只在运算符优先级高于当前界限时继续向右读 | `lparser.c:1355-1405` | 源码交叉核对 |
 | P49 | 手册：Lua 的所有值都是一等值，可以存进变量、作为参数传递、作为结果返回；函数可以返回多个值 | [手册 §2.1](https://www.lua.org/manual/5.5/manual.html#2.1)、§3.3.4；13_language `function-as-value 7` | 官方原文＋实验 |
 | P50 | 手册：函数定义是在运行时求值的表达式；预编译时函数体也被编译，但尚未创建；每执行一次函数定义就实例化一次，这个实例称为闭包。局部变量可被其作用域内定义的函数自由访问，被内层函数使用的局部变量称为上值；每执行一次 local 语句就定义新的局部变量 | [手册 §3.4.11](https://www.lua.org/manual/5.5/manual.html#3.4.11)、[§3.5](https://www.lua.org/manual/5.5/manual.html#3.5) | 官方原文 |
@@ -331,3 +331,17 @@ F28–F30 的实测数值（来源：out_07 两次 `06_c_api.c` 运行）：
 | P58 | 生产级实现在可移植与效率之间留出编译期选择：分派用标签地址表或 switch（`LUA_USE_JUMPTABLE` 随 `__GNUC__`）；错误处理用 C++ 异常、POSIX `_longjmp` 或 ISO C `longjmp`（`LUAI_THROW`/`LUAI_TRY`） | `lvm.c:39-45`、`ldo.c:60-108`；F18、F37 | 源码交叉核对 |
 
 - 2026-11-16 制作方（Claude Opus 5.5）：第 2 稿补 P46–P58，新增实验 13_language.lua（接入 12_producer_runs.py）。
+
+### 14.9 第 3 稿补证与更正（2026-11-21）
+
+自对抗审查中的事实核对发现几处措辞超出依据，已改文案；以下两条补足版本归属，两处更正见 P26、P47。
+
+| 编号 | 陈述 | 依据与定位 | 核查状态／边界 |
+|---|---|---|---|
+| H07 | 版本史：Lua 5.0 的主要新特性是基于协程的协作式多线程、取代旧式上值的完整词法作用域、取代 tag 的元表；5.0 还引入了布尔、真正的尾调用与弱表 | [版本史 5.0 段](https://www.lua.org/versions.html#5.0)（`_src/pages/versions.html`） | 官方记录；与 H01 的源码对照一致 |
+| H08 | 分代回收在 5.2 是可选的实验特性（5.2 手册 §2.5：假定多数对象「死得早」，只遍历新近创建的对象，并不时做一次完整回收；5.2.4 `lua.h:291 LUA_GCGEN`）；5.3 移除了它（5.3 手册 §8.1）；版本史称 5.4 的主要新特性之一是「新的分代回收模式」 | `_src/lua-5.2.4/doc/manual.html` §2.5、`_src/lua-5.3.6/doc/manual.html` §8.1、版本史 5.4 段 | 官方原文＋源码；补足 H05「不要扩写成 5.4 首次尝试分代」的边界 |
+| P59 | 文案「调用」一章的栈格号与三层调用帧来自 11_internals.c 的最小宿主（luaL_loadfile 后直接 lua_pcall）；官方 lua.c 先用 lua_pcall 调 pmain，docall 还会压入消息处理函数，帧数与格号都不同 | P24；`lua.c:788` 调 pmain、`:158-168 docall` 压入 msghandler | 源码交叉核对；文案说明这是最简单的宿主 |
+| P60 | 解释循环用标签地址表的条件是定义了 `__GNUC__`（源码注释：gcc 及兼容的编译器），不只限 GCC | `lvm.c:36-45` | 源码交叉核对；更正 P18、P58 的口径 |
+| P61 | 布尔与 nil 的区分只靠标签（`LUA_VFALSE`、`LUA_VTRUE`、`LUA_VNIL` 等变体），不使用 Value 的 8 字节 | `lobject.h:183`、`:251-252` | 源码交叉核对 |
+
+- 2026-11-21 制作方（Claude Opus 5.5）：第 3 稿补 H07、H08、P59–P61，更正 P26、P47 的措辞。
