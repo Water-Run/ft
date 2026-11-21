@@ -345,3 +345,26 @@ F28–F30 的实测数值（来源：out_07 两次 `06_c_api.c` 运行）：
 | P61 | 布尔与 nil 的区分只靠标签（`LUA_VFALSE`、`LUA_VTRUE`、`LUA_VNIL` 等变体），不使用 Value 的 8 字节 | `lobject.h:183`、`:251-252` | 源码交叉核对 |
 
 - 2026-11-21 制作方（Claude Opus 5.5）：第 3 稿补 H07、H08、P59–P61，更正 P26、P47 的措辞。
+
+### 14.10 第 4 稿：各章的程序（2026-11-21）
+
+策划者要求不再用一段程序贯穿全片，各章换用合适的程序（README「简报」）。程序在 [chapters/](lab/chapters/)，由 [14_chapter_runs.py](lab/14_chapter_runs.py) 在 07 的同一批构建上运行，回显在 [out_14_chapter_runs.txt](lab/out_14_chapter_runs.txt)；只代表本环境。
+
+| 编号 | 陈述 | 依据与定位 | 核查状态／边界 |
+|---|---|---|---|
+| Q01 | 同一个变量先后存 1、"one"、{}，type 依次为 number、string、table；math.type(3) 为 integer、math.type(3.0) 为 float，而 3 == 3.0 为真；math.maxinteger + 1 == math.mininteger 为真（整数运算按二进制补码回绕）；2^53 + 1 == 2^53 为真（`^` 总得浮点数，超出 53 位精度） | c04_value.lua 回显；手册 §2.1、§3.4.1 | 实验观察＋手册 |
+| Q02 | `load("local while = 1")` 返回 nil 与「<name> expected near 'while'」；默认构建里 `local global = 5` 可以运行；`1--[[ 注释 ]]+2` 得 3（`--` 后紧跟 `[` 时按长注释整段跳过，`llex.c:484-488`）；`0x10`、`1e2`、`7 // 2` 分别是 16、100.0、3 | c05_lex.lua 回显；P05、P10 | 实验观察 |
+| Q03 | `local a, b, c = 1, 2, 3; a = b + c * 2; local d = 2 * 3` 在 5.5.1 编译为：三条 LOADI；`MULK 3 2 0` 把 c 乘常量 2 放进临时的 3 号寄存器，后跟 MMBINK；`ADD 0 1 3` 后跟 MMBIN；`2 * 3` 折叠成 `LOADI 3 6`；共 10 条指令 | c06_compile.lua 的 luac 列表；P13、P15、P48 | 实验观察 |
+| Q04 | `"10" + 1`：5.3.6 得 11.0（float），5.4.9 与 5.5.1 得 11（integer）。5.3.6 的 OP_ADD 自己用 tonumber 把字符串转成浮点数再相加（`lua-5.3.6/src/lvm.c:889-901`）；5.5.1 的 ADD 只对数字走快路（`tonumberns`，不转换字符串，`lvm.c:971`；5.4.9 相同，`lua-5.4.9/src/lvm.c:934`，字符串库的 __add 在 `lstrlib.c:331`），字符串落到 MMBIN，由字符串库给字符串设的元表里的 __add 处理（`lstrlib.c:259-300`、`:333`），它把 "10" 转成整数 10 再相加。`getmetatable("").__add` 在 5.3.6 为 nil、5.4.9 起存在；`{} + 1` 在三个版本都报「attempt to perform arithmetic on a table value」 | c08_vm.lua 在三个版本的回显；手册 5.5 §3.4.3「the string library sets metamethods that try to coerce」 | 交叉核对 |
+| Q05 | 非尾递归 `return 1 + deep(n - 1)`：100000 层正常；二分查找得最深 499990 层，再深一层报「stack overflow」（Lua 栈的上限 LUAI_MAXSTACK = 1000000 格，`ldo.c:186-194`）。经 pcall 递归自身，在第 197 层得到「C stack overflow」（与 P25 的 198 层是不同写法，层数随调用方式变化）。尾递归 `return loop(n - 1)` 走 10000000 层正常结束 | c09_call.lua 回显 | 实验观察；层数只代表本环境与这几种写法 |
+| Q06 | for 循环里每轮建一个返回 i 的函数，三个函数得 1、2、3；while 循环里同样建三个返回 j 的函数，得 3、3、3。luac 列表：for 循环体末尾、FORLOOP 之前有一条 CLOSE（关闭这一轮 i 所在的寄存器），每轮结束关闭这一轮的 i；while 循环体里没有 CLOSE，三个闭包共用同一个仍开放的 j 上值 | c10_closure.lua 回显与 luac 列表；手册 §3.3.5（循环变量是循环体的局部变量）、§3.5（每执行一次 local 语句就定义新的局部变量，手册的例子正是循环里各建一个闭包）、P26、P27 | 实验观察＋手册 |
+| Q07 | `{10, 20, 30, name = "lua"}`：t[1] 为 10，t.name 与 t["name"] 都是 "lua"，#t 为 3；`t[1.0] = 11` 后 t[1] 为 11。u[1]、u[2]、u[4] 有值时 #u 在 5.4.9 为 4、在 5.5.1 为 2；`{1, 2, nil, 4}` 的长度同样是 4 与 2。手册只保证 # 返回一个「边界」，两种结果都合规 | c11_table.lua 在 5.4.9 与 5.5.1 的回显；手册 §3.4.7「border」、F26、F27 | 实验观察＋手册；不解释两版选边界的内部差异 |
+| Q08 | Animal、Dog 两张元表用 __index 串成链：rex:fetch() 得「Rex fetches」，rex:speak() 得「Rex makes a sound」；speak 不在 rex 也不在 Dog 里（rawget 为 nil），只在 Animal 里 | c12_meta.lua 回显；P33；手册 §3.4.10：`v:name(args)` 是 `v.name(v, args)` 的语法糖 | 实验观察 |
+| Q09 | error 抛出一张表，pcall 接到的是同一张表（code 为 7）；`<close>` 变量所在函数出错时，先调用 __close（收到错误对象 "fail"），pcall 再返回 false 与 "fail" | c13_error.lua 回显；F36、F48 | 实验观察 |
+| Q10 | coroutine.wrap 包装的生产者依次交出 "lua"、"is"、"small"，泛型 for 逐个取出并转大写，得「LUA IS SMALL」；在 table.sort 的比较函数里 yield，resume 返回 false 与「attempt to yield across a C-call boundary」；在 pcall 里 yield 则可以，交出 "inside pcall"，再次 resume 后 pcall 正常返回 true 与 "resumed" | c14_coro.lua 回显；P37、F38 | 实验观察 |
+| Q11 | 两张互相引用的表（其中一张存 100000 个整数），函数返回后仍占约 1152 KB；一次完整回收后增量为 0，指向它的弱引用被清除 | c15_gc.lua 回显；F43 | 实验观察；KB 数只代表本环境 |
+| Q12 | Q03 里的 `ADD 0 1 3` 编码为 0x03010022：操作码 34 在第 0–6 位，A=0 在第 7–14 位，k=0 在第 15 位，B=1 在第 16–23 位，C=3 在第 24–31 位 | `lopcodes.h:42-66` 的 SIZE_／POS_ 定义，ADD 在操作码枚举中序号 34；同一算式算出内层函数的 `ADD 1 1 0` 为 0x000100A2，与探针实测（P16）一致 | 由已核实的编码规则计算 |
+| Q13 | 主函数总是可变参数函数：mainfunc 调用 setvararg，于是 Q03 列表的第 1 条是 VARARGPREP | `lparser.c:2153-2157`（注释「main function is always vararg」）；手册 §3.3.2：主块被当作一个参数个数可变的匿名函数 | 源码＋手册 |
+| Q14 | `3 == 3.0` 为真：luaV_equalobj 遇到一个整数一个浮点数时，只有浮点数恰好是那个整数值才相等 | `lvm.c:588-602` | 源码交叉核对；配合 Q01 |
+| Q15 | 浮点数键若恰好是整数值，查表前先转成整数键（luaH_get 对 LUA_VNUMFLT 调 luaV_flttointeger，再走 luaH_getint），所以 t[1.0] 与 t[1] 是同一个位置 | `ltable.c:1030-1033`；F26 | 源码交叉核对；配合 Q07 |
+| Q16 | 二元元方法先查第一个操作数，第一个没有才查第二个（callbinTM）；所以 `"10" + 1` 在第一个操作数 "10" 上就找到了字符串的 __add | `ltm.c:138-142`；P51 | 源码交叉核对；更正第 4 稿初稿「先看 1」的说法 |

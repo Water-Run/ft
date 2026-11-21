@@ -9,7 +9,7 @@
     "zh": "Lua源码全解析"
   },
   "stage": "review",
-  "next": "等 WaterRun 审定文案第 3 稿（review/script.zh.57452d1d….md）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，按融合方案做有声代表段，再铺开场景，用 covers.js 出封面",
+  "next": "等 WaterRun 审定文案第 4 稿（review/script.zh.c3f68481….md，各章换用自己的程序）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，按融合方案做有声代表段，再铺开场景，用 covers.js 出封面",
   "credits": {
     "planner": "WaterRun",
     "models": [
