@@ -1,11 +1,16 @@
-/* 本片的视觉系统（融合方向，见 src/design/keyframes2.html 与 research/MATERIALS.md）。
-   底：官网首页的暖白 #FDFFF5；字：近黑 #061621；细线 #E4E8E0；标题衬线、森林绿 #00684A；
-   亮绿 #00ED64 只给正在讲的那一样东西；代码块用文档页的浅灰细边；深色代码卡 #001E2B 只在看实物时出现。 */
+/* 本片的视觉系统：MongoDB 文档页（mongodb.com/docs，浅色主题）的做法，见 research/MATERIALS.md 与 out/ref/docs-*.png。
+   白底；正文近黑 #001E2B；H1 衬线、森林绿 #00684A；细线 #E8EDEB；面包屑与版本选择框在页顶；
+   代码块是文档页的浅灰细边样式（语言标签 + 复制按钮）；行内代码浅灰底细边；提示框按「注意 / 提示 / 重要 / 警告」四色；
+   每幅主图下面一行图注（图号、说明、出处）。亮绿 #00ED64 只给正在讲的那一样东西；红色只给出错与丢失。
+   字体：MongoDB Value Serif 与 Euclid Circular A 不能再分发，以 Noto Serif SC、Inter + Noto Sans SC 代替。 */
 :root {
-  --paper: #FDFFF5; --ink: #061621; --hair: #E4E8E0; --slate: #001E2B; --forest: #00684A; --spring: #00ED64; --ever: #023430;
+  --paper: #FFFFFF; --ink: #001E2B; --hair: #E8EDEB; --slate: #001E2B; --forest: #00684A; --spring: #00ED64; --ever: #023430;
   --mint: #71F6BA; --mint2: #C0FAE6; --mint3: #E3FCF7; --g1: #00A35C; --code: #F9FBFA; --codeb: #C1C7C6;
-  --gd3: #1C2D38; --gd2: #3D4F58; --gd1: #5C6C75; --gb: #889397; --purple: #B45AF2; --blue: #016BF8; --red: #DB3030;
-  --M: 120px;
+  --gd4: #112733; --gd3: #1C2D38; --gd2: #3D4F58; --gd1: #5C6C75; --gb: #889397; --gl1: #C1C7C6; --gl2: #E8EDEB; --gl3: #F9FBFA;
+  --blue: #016BF8; --blued: #1254B7; --bluel: #E1F7FF; --bluem: #C3E7FE;
+  --red: #DB3030; --redd: #970606; --redl: #FFEAE5; --redm: #FFCDC7;
+  --yel: #FFC010; --yeld: #944F01; --yell: #FEF7DB; --yelm: #FFEC9E;
+  --purple: #B45AF2;
 }
 body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 #bg { background: var(--paper); }
@@ -13,91 +18,142 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 
 /* 字号阶梯：正文 34px 起，注解不小于 24px */
 .eyebrow { font: 600 26px "Mono"; letter-spacing: .14em; color: var(--forest); padding-left: 16px; border-left: 4px solid var(--spring); }
-.h1 { font: 700 76px/1.1 "Serif SC"; color: var(--forest); }
-.h2 { font: 700 52px/1.15 "Serif SC"; color: var(--forest); }
+.h1 { font: 500 76px/1.15 "Serif SC"; color: var(--forest); }
+.h2 { font: 700 46px/1.2 "Inter", "Sans SC"; color: var(--ink); }
 .big { font: 900 150px/1.05 "Sans SC"; color: var(--ink); letter-spacing: -.01em; }
-.t-body { font: 500 34px/1.4 "Sans SC"; color: var(--ink); }
-.t-note { font: 500 26px/1.4 "Sans SC"; color: var(--gd1); }
-.t-small { font: 500 24px/1.35 "Sans SC"; color: var(--gd1); }
+.t-body { font: 500 34px/1.45 "Inter", "Sans SC"; color: var(--ink); }
+.t-note { font: 500 26px/1.45 "Inter", "Sans SC"; color: var(--gd1); }
+.t-small { font: 500 24px/1.4 "Inter", "Sans SC"; color: var(--gd1); }
 .mono { font-family: "Mono", "Sans SC"; font-weight: 500; white-space: pre; }
 .lab { font: 500 24px "Mono"; color: var(--gd2); white-space: nowrap; }
-.num { font: 800 64px "Inter"; color: var(--ink); }
+.num { font: 700 64px "Inter"; color: var(--ink); }
 .hot { color: var(--forest); }
 .dim { opacity: .35; }
 
-/* 深色代码卡（官网首页的 mongosh 卡） */
-.card { position: absolute; background: var(--slate); border-radius: 20px; color: #E8EDEB; overflow: hidden; }
-.card .bar { height: 58px; padding: 0 28px; display: flex; align-items: center; font: 400 24px "Mono"; color: #B8C4C2; border-bottom: 1px solid #1C2D38; }
+/* ── 文档页的页顶：面包屑、版本选择框、细线（每章常驻，不随镜头动） ── */
+.chrome { position: absolute; left: 0; top: 0; width: 1920px; height: 98px; background: #fff; z-index: 30; }
+.chrome .hr { position: absolute; left: 0; right: 0; top: 96px; height: 2px; background: var(--hair); }
+.crumb { position: absolute; left: 120px; top: 30px; font: 500 26px "Inter", "Sans SC"; color: var(--blued); white-space: nowrap; display: flex; gap: 14px; align-items: center; }
+.crumb i { font-style: normal; color: var(--gd1); }
+.crumb b { font-weight: 600; color: var(--ink); }
+.ver { position: absolute; right: 120px; top: 22px; height: 52px; padding: 0 54px 0 20px; border: 1.5px solid var(--gb); border-radius: 8px; font: 500 25px/49px "Inter", "Sans SC"; color: var(--ink); white-space: nowrap; background: #fff; }
+.ver::after { content: ''; position: absolute; right: 20px; top: 20px; border: 7px solid transparent; border-top: 9px solid var(--gd2); }
+.ver .k2 { color: var(--gd1); }
+
+/* ── 图注：图号、说明、出处（文档页主图下面一行） ── */
+.fig { position: absolute; font: 500 24px/1.4 "Inter", "Sans SC"; color: var(--gd2); white-space: nowrap; padding-top: 12px; border-top: 1.5px solid var(--hair); }
+.fig b { font-weight: 700; color: var(--ink); margin-right: 14px; }
+.fig .src { font: 500 22px "Mono", "Sans SC"; color: var(--gd1); margin-left: 18px; }
+
+/* ── 提示框：注意（蓝）、提示（绿）、重要（黄）、警告（红） ── */
+.callout { position: absolute; padding: 18px 26px 18px 28px; border-radius: 12px; border: 1.5px solid; white-space: nowrap; font: 500 28px/1.45 "Inter", "Sans SC"; color: var(--ink); }
+.callout::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; border-radius: 12px 0 0 12px; }
+.callout .ct { display: flex; align-items: center; gap: 12px; font: 700 26px "Inter", "Sans SC"; margin-bottom: 6px; }
+.callout .ct svg { width: 28px; height: 28px; }
+.callout.note { background: var(--bluel); border-color: var(--bluem); } .callout.note::before { background: var(--blue); } .callout.note .ct { color: var(--blued); }
+.callout.tip { background: var(--mint3); border-color: var(--mint2); } .callout.tip::before { background: var(--g1); } .callout.tip .ct { color: var(--forest); }
+.callout.imp { background: var(--yell); border-color: var(--yelm); } .callout.imp::before { background: var(--yel); } .callout.imp .ct { color: var(--yeld); }
+.callout.warn { background: var(--redl); border-color: var(--redm); } .callout.warn::before { background: var(--red); } .callout.warn .ct { color: var(--redd); }
+.callout code, .tile code, .fig code, .lede code { font: 500 .9em "Mono"; background: var(--gl3); border: 1.5px solid var(--gl2); border-radius: 5px; padding: 0 6px; }
+
+/* ── 行内代码与徽标（LeafyGreen Badge） ── */
+.code { position: absolute; font: 500 28px "Mono"; color: var(--ink); background: var(--gl3); border: 1.5px solid var(--gl2); border-radius: 6px; padding: 2px 10px; white-space: nowrap; }
+.chip { position: absolute; padding: 6px 18px; border-radius: 999px; font: 600 25px "Inter", "Sans SC"; background: var(--gl3); border: 1.5px solid var(--gl2); color: var(--gd3); white-space: nowrap; }
+.chip.on { background: var(--mint3); border-color: var(--mint2); color: var(--forest); }
+.chip.sp { background: var(--spring); border-color: var(--spring); color: var(--ever); }
+.chip.dk { background: var(--gd2); border-color: var(--gd2); color: #fff; }
+.chip.blue { background: var(--bluel); border-color: var(--bluem); color: var(--blued); }
+.chip.red { background: var(--redl); border-color: var(--redm); color: var(--redd); }
+.chip.yel { background: var(--yell); border-color: var(--yelm); color: var(--yeld); }
+.chip.xl { font: 700 32px/1.2 "Inter", "Sans SC"; padding: 10px 24px; }
+
+/* ── 代码块（文档页样式：浅灰底、细边、语言标签与复制按钮） ── */
+.card { position: absolute; background: var(--gl3); border: 1.5px solid var(--gl2); border-radius: 14px; color: var(--ink); overflow: hidden; }
+.card .bar { height: 58px; padding: 0 26px; display: flex; align-items: center; font: 600 23px "Inter", "Sans SC"; color: var(--gd1); border-bottom: 1.5px solid var(--gl2); background: #fff; }
+.card .bar .lang { color: var(--gd3); }
+.card .bar .copy { position: absolute; right: 22px; top: 15px; width: 26px; height: 28px; }
+.card .bar .copy::before, .card .bar .copy::after { content: ''; position: absolute; width: 16px; height: 19px; border: 2.4px solid var(--gd1); border-radius: 4px; }
+.card .bar .copy::before { left: 0; top: 0; } .card .bar .copy::after { left: 7px; top: 7px; background: #fff; }
 .card .body { padding: 22px 28px; font: 400 30px/46px "Mono"; white-space: pre; }
-.k { color: var(--mint); } .s { color: var(--spring); } .n { color: #D69CFF; } .c { color: var(--gb); } .r { color: #FF8A80; }
+.k { color: var(--blued); } .s { color: #12824D; } .n { color: #CC3887; } .c { color: var(--gd1); } .r { color: var(--red); } .p { color: var(--gd1); }
+.hl { background: var(--mint2); border-radius: 4px; }
 
-/* 浅色面板（文档页的代码块样式） */
-.panel { position: absolute; background: var(--code); border: 1.5px solid var(--codeb); border-radius: 8px; }
-.note { position: absolute; background: #fff; border: 1px solid var(--hair); border-left: 5px solid var(--blue); padding: 12px 20px; font: 500 26px/1.5 "Sans SC"; color: var(--ink); border-radius: 3px; white-space: nowrap; }
-.note.g { border-left-color: var(--spring); }
+/* ── 浅色面板与卡片（LeafyGreen Card：白底、细边、大圆角，不用阴影） ── */
+.panel { position: absolute; background: #fff; border: 1.5px solid var(--gl2); border-radius: 16px; }
+.panel.gray { background: var(--gl3); }
+.note { position: absolute; background: #fff; border: 1.5px solid var(--gl2); border-left: 6px solid var(--blue); padding: 12px 22px; font: 500 26px/1.5 "Inter", "Sans SC"; color: var(--ink); border-radius: 8px; white-space: nowrap; }
+.note.g { border-left-color: var(--g1); }
 .note.r { border-left-color: var(--red); }
-.chip { position: absolute; padding: 8px 18px; border-radius: 999px; font: 600 26px "Sans SC"; background: #fff; border: 1.5px solid var(--codeb); color: var(--gd2); white-space: nowrap; }
-.chip.on { background: var(--spring); border-color: var(--spring); color: var(--ever); }
-.chip.dk { background: var(--ever); border-color: var(--ever); color: #fff; }
 
-/* 页、块、树 */
-.pg { position: absolute; background: #fff; border: 2px solid var(--codeb); border-radius: 6px; font: 500 22px "Mono"; color: var(--gd2); display: flex; align-items: center; justify-content: center; }
-.pg.root { background: var(--ever); border-color: var(--ever); color: #fff; }
-.pg.hot { background: var(--mint3); border-color: var(--forest); color: var(--forest); font-weight: 700; }
+/* ── 页、块、树 ── */
+.pg { position: absolute; background: #fff; border: 2px solid var(--gl1); border-radius: 10px; font: 500 24px "Mono"; color: var(--gd2); display: flex; align-items: center; justify-content: center; }
+.pg.root { background: var(--slate); border-color: var(--slate); color: #fff; }
+.pg.hot { background: var(--mint3); border-color: var(--g1); color: var(--forest); font-weight: 700; }
 .pg.on { background: var(--spring); border-color: var(--spring); color: var(--ever); font-weight: 700; }
-.blk { position: absolute; border-radius: 3px; }
-.bar-wrap { position: absolute; background: var(--code); border: 1.5px solid var(--codeb); border-radius: 5px; }
+.blk { position: absolute; border-radius: 4px; }
+.bar-wrap { position: absolute; background: var(--gl3); border: 1.5px solid var(--gl1); border-radius: 8px; }
 
 /* 字节格 */
-.byte { position: absolute; width: 33px; height: 52px; border-radius: 3px; background: #fff; border: 1.5px solid var(--codeb); font: 500 22px/52px "Mono"; letter-spacing: -.04em; color: var(--gd2); text-align: center; }
+.byte { position: absolute; width: 33px; height: 52px; border-radius: 4px; background: #fff; border: 1.5px solid var(--gl1); font: 500 22px/50px "Mono"; letter-spacing: -.04em; color: var(--gd2); text-align: center; }
 .byte.nm { background: var(--spring); border-color: var(--spring); color: var(--ever); }
-.byte.ty { background: var(--ever); border-color: var(--ever); color: #fff; }
+.byte.ty { background: var(--slate); border-color: var(--slate); color: #fff; }
 .byte.vl { background: var(--mint3); }
 
-/* 章节卡（文档页式：左侧近黑竖栏放衬线大章号，右侧衬线章名、绿条与问题） */
-.chapter { position: absolute; inset: 0; background: var(--paper); display: flex; z-index: 40; }
-.chapter .col { width: 520px; background: var(--slate); display: flex; align-items: center; justify-content: center; }
-.chapter .no { font: 700 260px "Serif SC"; color: var(--spring); line-height: 1; }
-.chapter .main { padding: 300px 0 0 110px; }
-.chapter .kick { font: 600 26px "Mono"; letter-spacing: .16em; color: var(--forest); }
-.chapter .ti { font: 700 120px/1.1 "Serif SC"; color: var(--ink); margin-top: 26px; }
-.chapter .q { margin-top: 40px; font: 500 46px/1.4 "Sans SC"; color: var(--forest); padding-left: 26px; border-left: 8px solid var(--spring); white-space: nowrap; }
+/* ── 章节卡：文档页的样子。左栏是全片目录（当前章像文档左栏的选中项），右边面包屑、衬线 H1 与问题 ── */
+.chapter { position: absolute; inset: 0; background: #fff; z-index: 40; }
+.chapter .nav { position: absolute; left: 0; top: 0; bottom: 0; width: 600px; background: var(--gl3); border-right: 2px solid var(--hair); }
+.chapter .nav .nk { position: absolute; left: 70px; top: 96px; font: 600 24px "Mono"; letter-spacing: .14em; color: var(--forest); }
+.chapter .nav .it { position: absolute; left: 0; width: 600px; height: 66px; padding-left: 70px; font: 500 30px/66px "Inter", "Sans SC"; color: var(--gd1); white-space: nowrap; }
+.chapter .nav .it span { display: inline-block; width: 64px; font: 600 26px "Mono"; color: var(--gb); }
+.chapter .nav .it.done { color: var(--gd2); }
+.chapter .nav .sel { position: absolute; left: 0; width: 600px; height: 66px; background: var(--mint3); border-left: 8px solid var(--g1); }
+.chapter .nav .it.now { color: var(--forest); font-weight: 700; }
+.chapter .nav .it.now span { color: var(--forest); }
+.chapter .main { position: absolute; left: 700px; top: 0; right: 0; bottom: 0; }
+.chapter .crumb2 { position: absolute; left: 0; top: 250px; font: 500 30px "Inter", "Sans SC"; color: var(--blued); white-space: nowrap; }
+.chapter .crumb2 i { font-style: normal; color: var(--gd1); margin: 0 14px; }
+.chapter .no { position: absolute; left: 0; top: 330px; font: 500 64px "Mono"; color: var(--g1); }
+.chapter .ti { position: absolute; left: 0; top: 410px; font: 500 128px/1.12 "Serif SC"; color: var(--forest); white-space: nowrap; }
+.chapter .q { position: absolute; left: 0; top: 650px; font: 500 50px/1.4 "Inter", "Sans SC"; color: var(--ink); white-space: nowrap; }
+.chapter .rule { position: absolute; left: 0; top: 618px; width: 1000px; height: 3px; background: var(--hair); }
+.chapter .onp { position: absolute; left: 0; top: 760px; padding-left: 24px; border-left: 4px solid var(--hair); white-space: nowrap; }
+.chapter .onp .ok { font: 700 26px "Inter", "Sans SC"; color: var(--gd2); }
+.chapter .onp .oi { margin-top: 14px; display: flex; gap: 14px; }
+.chapter .onp .oi span { display: inline-block; font: 600 30px/1.2 "Inter", "Sans SC"; color: var(--forest); background: var(--mint2); border: 1.5px solid var(--g1); border-radius: 999px; padding: 8px 24px; }
+.chapter .ccnt { position: absolute; right: 120px; bottom: 130px; font: 600 30px "Mono"; color: var(--gd1); }
 
-/* 字幕：官网式，底部渐变托底 */
-#caption { bottom: 0; height: 112px; z-index: 50; background: #FDFFF5E8; }
-#caption span { font: 500 40px "Sans SC"; color: var(--ink); }
+/* 字幕：白底细线托底 */
+#caption { bottom: 0; height: 112px; z-index: 50; background: #FFFFFFEE; border-top: 2px solid var(--hair); }
+#caption span { font: 500 40px "Inter", "Sans SC"; color: var(--ink); }
 #caption em { font-style: normal; font-weight: 800; color: var(--forest); }
 
 /* 片尾 */
 .credits-term { white-space: pre; }
 
-/* 说明牌：标题加一行小字（第 06 章起） */
-.tile { position: absolute; background: #fff; border: 2px solid var(--codeb); border-radius: 10px; padding: 14px 22px; box-sizing: border-box; white-space: nowrap; color: var(--ink); }
-.tile .tt { font: 700 32px/1.25 "Sans SC"; }
-.tile .ts { font: 500 25px/1.35 "Sans SC"; color: var(--gd2); margin-top: 6px; }
-.tile.on { background: var(--mint2); border-color: var(--forest); }
-.tile.g { background: var(--mint3); border-color: var(--forest); }
-.tile.r { border-color: var(--red); }
-.tile.r .tt { color: var(--red); }
-.tile.dash { border-style: dashed; background: transparent; }
-
-/* 章节卡的进度格与章数 */
-.chapter .csq { position: absolute; bottom: 170px; width: 36px; height: 12px; background: var(--codeb); }
-.chapter .csq.done { background: var(--forest); }
-.chapter .ccnt { position: absolute; bottom: 130px; right: 120px; font: 700 40px "Mono"; color: #fff; background: var(--ever); padding: 10px 26px; border-radius: 999px; }
-
-/* 大号药丸：深色给事件与要点，红色给出错 */
-.chip.xl { font: 700 34px/1.2 "Sans SC"; padding: 12px 26px; }
-.chip.red { background: #C62828; border-color: #C62828; color: #fff; }
-
-/* 深色旁注与深色说明牌：正在讲的那一句话（深底白字，绿边） */
-.note.dn { background: var(--ever); color: #fff; border: none; border-left: 6px solid var(--spring); font-size: 30px; border-radius: 6px; }
-.note.dn b { color: var(--mint); }
-.note.dn.g { background: var(--forest); }
-.note.dn.r { background: #C62828; border-left-color: #FFD5D5; }
-.tile.dk { background: var(--ever); border-color: var(--ever); color: #fff; }
-.tile.dk .ts { color: var(--mint2); }
+/* 说明牌：标题加一行小字 */
+.tile { position: absolute; background: #fff; border: 2px solid var(--gl2); border-radius: 14px; padding: 16px 24px; box-sizing: border-box; white-space: nowrap; color: var(--ink); }
+.tile .tt { font: 700 32px/1.25 "Inter", "Sans SC"; }
+.tile .ts { font: 500 25px/1.4 "Inter", "Sans SC"; color: var(--gd1); margin-top: 6px; }
+.tile.on, .tile.g { background: var(--mint3); border-color: var(--g1); }
+.tile.on .tt, .tile.g .tt { color: var(--forest); }
+.tile.r { border-color: var(--red); background: var(--redl); }
+.tile.r .tt { color: var(--redd); }
+.tile.dash { border-style: dashed; border-color: var(--gb); background: transparent; }
+.tile.dk { background: var(--gl3); border-color: var(--gl1); }
 .tile.sp { background: var(--spring); border-color: var(--spring); color: var(--ever); }
 .tile.sp .ts { color: var(--ever); }
-.tile.rd { background: #C62828; border-color: #C62828; color: #fff; }
-.tile.rd .ts { color: #FFFFFF; }
+.tile.rd { background: var(--redl); border-color: var(--red); }
+.tile.rd .tt { color: var(--redd); } .tile.rd .ts { color: var(--redd); }
+.tile.bl { background: var(--bluel); border-color: var(--blue); }
+.tile.bl .tt { color: var(--blued); }
+
+/* 文档页的表格 */
+.dtab { position: absolute; border-collapse: collapse; font: 500 30px/1.4 "Inter", "Sans SC"; color: var(--ink); }
+.dtab th { text-align: left; font-weight: 700; padding: 12px 24px; background: var(--gl3); border-bottom: 2px solid var(--gl1); white-space: nowrap; }
+.dtab td { padding: 12px 24px; border-bottom: 1.5px solid var(--hair); white-space: nowrap; vertical-align: top; }
+.dtab td.q { font-weight: 700; }
+.dtab a { color: var(--blue); text-decoration: underline; text-underline-offset: 5px; font: 500 26px "Inter", "Sans SC"; }
+
+/* 文档页的正文段落（导语） */
+.lede { position: absolute; font: 500 34px/1.5 "Inter", "Sans SC"; color: var(--ink); white-space: nowrap; }
+.lede a { color: var(--blue); text-decoration: underline; text-underline-offset: 6px; }

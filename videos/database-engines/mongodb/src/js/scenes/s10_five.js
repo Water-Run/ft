@@ -1,109 +1,144 @@
-// 第 10 章 五个问题：第一站五行问答；第二站「不要表，换来什么」——文档各有各的字段，代价是字段名跟着每份文档存 4096 遍，
-// 分布到多台机器这一集不讲；第三站从 WiredTiger 的键值、键值数据库、内存与磁盘的倒置，引到 Redis。
-// 事实：A04 A12 B01 A07 H06 H08 N01 S02 V03。
+// 第 10 章 五个问题：文档页式的表格（问题、MongoDB 的答案、讲在哪一章），念到哪一行，浅绿的选中底色滑到哪一行。
+// 第 11 章 不是 SQL：一、不要表换来了什么（people 的三份文档各有各的字段；代价是字段名跟着每份文档存一遍：13 字节 × 4096）；
+// 二、WiredTiger 只认键和值 → 键值数据库 → 磁盘与内存倒过来 → 进程一死靠什么回来；三、PART 7：与片名同款的整屏卡，Redis 是系列最终集。
+// 事实：A03 A04 A12 B01 A07 H02 H06 H08 N01 S02。
 scene('five', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
   const cam = makeCamera(world);
-  const X2 = 1920, X3 = 3840;
-
-  // ── 第一站：五个问题 ──
-  const hd = label(world, 120, 120, '一个数据库引擎要回答的五个问题', 'eyebrow'); show(hd, c0, { x: -10, y: 0 });
+  const ch = chrome(root, s, '10 五个问题');
+  const X = 140, Y = 150, W = 1640, CW = [300, 1060, 280];
+  const head = h('div', 'abs', world); px(head, X, Y, W, 64); css(head, { background: '#F9FBFA', borderBottom: '2px solid #C1C7C6', borderRadius: '12px 12px 0 0', font: '700 30px/62px "Inter", "Sans SC"', color: '#001E2B' });
+  head.innerHTML = `<span style="position:absolute;left:26px">问题</span><span style="position:absolute;left:${CW[0] + 26}px">MongoDB 的答案</span><span style="position:absolute;left:${CW[0] + CW[1] + 26}px">讲在</span>`;
+  show(head, c0, { y: 10 });
   const R = [
-    ['数据怎么放', 190, 130, '文档编成 BSON，按 RecordId 放进集合树', '每个索引另是一棵树，最后都指回 RecordId', 'i1', 'i2'],
-    ['怎么找', 335, 104, '在索引里拿到 RecordId，再回集合树取文档', '', 'i3', null],
-    ['改和删', 454, 130, '内存里挂新版本、挂删除标记', '检查点时整页写到新地方，旧页不覆盖', 'i4', 'i5'],
-    ['怎么并发', 599, 104, '读的人看快照；改同一份文档撞上了，一方重来', '', 'i6', null],
-    ['出错怎么办', 718, 130, '回到最后一个检查点，重放日志', '单机上不带 j，进程被杀时，最后一小段可能会丢', 'i8', 'i9'],
+    ['数据怎么放', '文档编成 BSON，按 RecordId 放进集合树', '每个索引另是一棵树，最后都指回 RecordId', 'i1', 'i2', ['第 03 章 增', '第 04 章 落盘']],
+    ['怎么找', '在索引里拿到 RecordId，再回集合树取文档', '', 'i3', null, ['第 05 章 查']],
+    ['改和删', '内存里挂新版本、挂删除标记', '检查点时整页写到新地方，旧页不覆盖', 'i4', 'i5', ['第 06 章 改', '第 07 章 删']],
+    ['怎么并发', '读的人看快照；改同一份文档撞上了，一方重来', '', 'i6', null, ['第 08 章']],
+    ['出错怎么办', '回到最后一个检查点，重放日志', '单机上不带 j，进程被杀时，最后一小段可能会丢', 'i8', 'i9', ['第 09 章']],
   ];
-  const q = [];
-  R.forEach(([qs, y, hh, a, a2, t1, t2], i) => {
-    const qt = tile(world, 120, y, 360, hh, qs, '', 'dk'); css(qt, { padding: hh > 110 ? '40px 24px' : '26px 24px' }); qt.querySelector('.tt').style.cssText = 'font: 700 38px "Serif SC"';
-    const at = tile(world, 520, y, 1280, hh, a, a2, i % 2 ? '' : 'g');
-    if (hh < 110) css(at, { padding: '26px 24px' });
-    if (a2) set(at._s, s.start, { autoAlpha: 0 });
-    show(qt, T('i0') + 0.3 + i * 0.4, { x: -20, y: 0 });
-    show(at, T(t1), { y: 10 }); if (a2) show(at._s, T(t2), { y: 6 });
-    const nxt = R[i + 1] ? T(R[i + 1][5]) : T('j1') - 0.4, mw = (T(t1) + (a2 ? Tend(t2) : Tend(t1))) / 2;
-    glow(at, Math.max(T(t1) + 1.2, mw - 0.6), nxt - 0.2, { bg: '#00ED64', bd: '#00ED64', rb: i % 2 ? '#FFFFFF' : '#E3FCF7', rd: i % 2 ? '#C1C7C6' : '#00684A' });
-    sfx('pop', T(t1)); q.push(qt, at);
+  const RH = 132, rows = [];
+  const sel = h('div', 'abs', world); px(sel, X, Y + 66, W, RH - 4); css(sel, { background: '#E3FCF7', borderLeft: '8px solid #00A35C' });
+  R.forEach(([q, a, a2, t1, t2, links], i) => {
+    const y = Y + 66 + i * RH;
+    const line = h('div', 'abs', world); px(line, X, y + RH - 2, W, 2); css(line, { background: '#E8EDEB' });
+    const qe = h('div', 'abs', world, q); px(qe, X + 26, y + 40); css(qe, { font: '500 40px "Serif SC"', color: '#001E2B' });
+    const ae = h('div', 'abs', world, a); px(ae, X + CW[0] + 26, y + (a2 ? 26 : 46)); css(ae, { font: '600 32px "Inter", "Sans SC"', color: '#001E2B' });
+    const ae2 = a2 ? h('div', 'abs', world, a2) : null; if (ae2) { px(ae2, X + CW[0] + 26, y + 78); css(ae2, { font: '500 27px "Inter", "Sans SC"', color: '#3D4F58' }); }
+    const le = h('div', 'abs', world, links.map((l) => `<div>${l}</div>`).join('')); px(le, X + CW[0] + CW[1] + 26, y + (links.length > 1 ? 30 : 48)); css(le, { font: '500 26px/1.6 "Inter", "Sans SC"', color: '#1254B7', textDecoration: 'underline', textUnderlineOffset: '5px' });
+    show([qe, line], T('i0') + 0.3 + i * 0.3, { x: -16, y: 0 });
+    show(ae, T(t1) - 0.1, { y: 10 }); if (ae2) show(ae2, T(t2) - 0.1, { y: 8 }); show(le, T(t1) + 0.6, { y: 8 });
+    sfx('pop', T(t1));
+    rows.push(y);
   });
-  const how = chip(world, 1100, 100, 'MongoDB 这样答', 'dk xl'); show(how, T('i0', '答案') - 0.3, { y: 10 });
-  fadeOut([hd, how, ...q], T('j1') - 0.2);
+  // 选中底色：念到哪一行，滑到哪一行（一个框在一组里挑一个）
+  fromTo(sel, T('i1') - 0.2, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 });
+  ['i3', 'i4', 'i6', 'i8'].forEach((id, k) => to(sel, T(id) - 0.3, { y: (k + 1) * RH, duration: 0.5, ease: 'power3.inOut' }));
+  figs(world, X, Y + 66 + 5 * RH + 18, W, [[T('i0') + 0.6, '表 10-1', '一个数据库引擎要回答的五个问题，MongoDB 的答案', '本系列各集同一组问题']], null);
+  const ans = chip(world, 1500, Y - 50, 'MongoDB 9.0 · WiredTiger', 'on'); show(ans, T('i0', '答案') - 0.3, { y: 8 });
 
-  // ── 第二站：不要表，换来了什么 ──
-  const doc = (x, y, w, name, lines, extra) => {
-    const c = codeCard(world, X2 + x, y, w, name, 60 + 46 * (lines.length + 2) + 20);
-    c.line('{'); lines.forEach((l, i) => { const e = c.line('  ' + l); if (extra === i) e.dataset.x = '1'; }); c.line('}'); return c;
-  };
-  const a1 = doc(160, 220, 440, '一份文档', ['<span class="k">name</span>: <span class="s">"Alice"</span>,', '<span class="k">age</span>: <span class="n">42</span>']);
-  show(a1.c, T('j1'), { y: 16 });
-  const noTbl = chip(world, X2 + 160, 520, '没有建表', 'dk xl'); show(noTbl, T('j1', '没建表') - 0.3, { y: 0, s: 1.2 }); fadeOut(noTbl, T('j2b') - 0.2);
-  const nq = h('div', 'abs h2', world, '不要表，换来了什么？'); px(nq, X2 + 700, 280); show(nq, T('j1b'), { x: -20, y: 0 });
-  fadeOut([a1.c, nq], T('j2b') - 0.2);
-  const cp = h('div', 'panel', world); px(cp, X2 + 120, 130, 1680, 400); show(cp, T('j2b'), { y: 14 });
-  const cpt = h('div', 'abs', cp, 'people 集合：不规定文档的样子'); css(cpt, { left: '28px', top: '16px', font: '700 32px "Serif SC"', color: '#061621' });
-  const cA = codeCard(cp, 30, 80, 500, 'Alice', 270), cE = codeCard(cp, 590, 80, 500, 'Erin', 270), cF = codeCard(cp, 1150, 80, 500, 'Frank', 270);
-  cA.line('{ <span class="k">name</span>: <span class="s">"Alice"</span>,'); cA.line('  <span class="k">age</span>: <span class="n">42</span> }');
-  cE.line('{ <span class="k">name</span>: <span class="s">"Erin"</span>,'); cE.line('  <span class="k">email</span>: <span class="s">"…"</span>,'); cE.line('  <span class="k">tags</span>: <span class="s">[…]</span> }');
-  cF.line('{ <span class="k">name</span>: <span class="s">"Frank"</span>,'); cF.line('  <span class="k">address</span>: { … } }');
-  show(cA.c, T('j2b') + 0.3, { y: 12 }); show(cE.c, T('j3'), { y: 12 }); show(cF.c, T('j3') + 0.4, { y: 12 }); sfx('pop', T('j3'));
-  const free = note(world, X2 + 160, 560, '除了 _id，每份文档想有哪些字段，就有哪些', 'dn g'); show(free, T('j2b') + 0.2, { y: 8 }); fadeOut(free, T('j5') - 0.5);
-  // 代价：字段名跟着每份文档存一遍
-  const cost = note(world, X2 + 160, 560, '代价：字段名跟着每份文档存一遍', 'dn r'); show(cost, T('j5', '代价'), { y: 8 });
-  const names = ['_id', 'name', 'age'].map((n, i) => { const c = chip(world, X2 + 160 + i * 150, 680, n, 'on'); css(c, { font: '700 28px "Mono"' }); return c; });
-  show(names, T('j6'), { y: 10, stagger: 0.12 });
-  const times = h('div', 'abs', world); px(times, X2 + 700, 650); css(times, { font: '800 84px "Inter"', color: '#00684A' });
-  times.textContent = '× 0 遍'; show(times, T('j6') + 0.9, { y: 8 });
-  stepTo(times, [[T('j6') + 1.2, 1.6, 0, 4096]], (v) => '× ' + Math.round(v).toLocaleString('en-US') + ' 遍');
-  const tot = chip(world, X2 + 700, 770, '每份 13 字节 × 4096 = 53,248 字节', 'dk xl'); show(tot, T('j6b') + 0.4, { y: 10 });
-  fadeOut([cp, cost, ...names, times, tot], T('j7') - 0.6);
-  // 分到很多台机器上：这一集不讲
+  const a = drift(s.start, s.end, 960, 1);
+  cam.track(s.start, { x: a.from, y: 540, z: 1 }, [[s.start + 0.1, { x: a.to }, a.d, { ease: 'none', sfx: false }]]);
+});
 
-  // ── 第三站：键值，内存与磁盘，Redis ──
-  const kv = [['2050', '47 字节的文档'], ['"Alice" + 2050', '（空）'], ['ObjectId(…)', '2050']];
-  const kvl = label(world, X3 + 160, 130, 'WiredTiger 只认：键 → 值', 'eyebrow'); show(kvl, T('j7'), { x: -10, y: 0 });
-  const kvs = kv.map(([k, v], i) => {
-    const a = pg(world, X3 + 160, 200 + i * 80, 300, 64, k, 'root'), b = pg(world, X3 + 520, 200 + i * 80, 300, 64, v);
-    css(a, { fontSize: '24px' }); css(b, { fontSize: '24px' }); return [a, b];
-  });
-  show(kvs.flat(), T('j7') + 0.3, { y: 10, stagger: 0.08 });
-  glow(kvs.map((p) => p[1]), T('j7', '键和值') - 0.3, T('j8'), { bg: '#00ED64', bd: '#00ED64' });
-  const kt = tile(world, X3 + 1040, 150, 760, 260, '键值数据库', 'NoSQL 的一类', 'sp'); show(kt, T('j8', '键值数据库') - 0.4, { y: 12 });
-  const mini = [0, 1, 2].map((i) => { const c = chip(kt, 26 + i * 240, 160, ['k1 → v1', 'k2 → v2', 'k3 → v3'][i], 'dk xl'); css(c, { fontFamily: '"Mono"', fontSize: '28px' }); return c; });
-  show(mini, T('j9', '一个键') - 0.3, { y: 10, stagger: 0.3 });
-  keyed(kt._s).at(T('j9'), { html: '一个键，一个值：更简单的一类' });
-  const dk = tile(world, X3 + 160, 450, 720, 280, 'MongoDB', ''); show(dk, T('j10'), { y: 12 });
-  const dkd = h('div', 'abs', dk, '磁盘 · 数据住在树里'); px(dkd, 30, 90, 660, 90); css(dkd, { background: '#E3FCF7', border: '2px solid #00684A', borderRadius: '8px', font: '600 30px/90px "Sans SC"', textAlign: 'center' });
-  const dkm = h('div', 'abs', dk, '内存 · 缓存'); px(dkm, 130, 200, 460, 60); css(dkm, { border: '2px dashed #889397', borderRadius: '8px', font: '500 26px/60px "Sans SC"', textAlign: 'center', color: '#5C6C75' });
-  const rv = tile(world, X3 + 1040, 450, 760, 280, '倒过来', ''); show(rv, T('j11'), { y: 12 });
-  const rvm = h('div', 'abs', rv, '内存 · 数据全住在这里'); px(rvm, 30, 90, 700, 90); css(rvm, { background: '#C0FAE6', border: '2px solid #00684A', borderRadius: '8px', font: '600 30px/90px "Sans SC"', textAlign: 'center' });
-  const rvd = h('div', 'abs', rv, '磁盘 · 只用来保存'); px(rvd, 130, 200, 500, 60); css(rvd, { border: '2px dashed #889397', borderRadius: '8px', font: '500 26px/60px "Sans SC"', textAlign: 'center', color: '#5C6C75' });
-  glow(dkd, T('j10', '磁盘上的树') - 0.3, T('j11'), { bg: '#00ED64', bd: '#00ED64' });
-  glow(rvm, T('j11', '全住在内存里') - 0.3, null, { bg: '#00ED64', bd: '#00ED64' });
-  const dq = slotNote(world, X3 + 520, 780, '进程一死，内存里的数据又靠什么回来？', T('j12'), T('j13') - 0.3, 'r');
-  fadeOut([kvl, ...kvs.flat(), kt, dk, rv], T('j13') - 0.3);
-  const last = h('div', 'abs h2', world, '这个系列的最后一站：一个更简单的数据库'); px(last, X3 + 160, 330, 1600); css(last, { textAlign: 'center' });
-  show(last, T('j13'), { y: 14 });
-  const plate = h('div', 'abs', world); px(plate, X3 + 160, 450, 1600, 230); css(plate, { background: '#001E2B', borderRadius: '18px' });
-  show(plate, T('j13', '更简单') - 0.3, { y: 0, s: 0.97 });
-  const rd = h('div', 'abs big', world, 'Redis'); px(rd, X3 + 160, 480, 1600); css(rd, { textAlign: 'center', color: '#00ED64' });
-  slam(rd, T('j14'), { from: 1.3 }); sfx('thud', T('j14'));
-  // 下一集预告：集数标识与片头的 PART 6 同一种样式；一句注解与两个下集会讲的词（S02）
-  const p7 = h('div', 'abs eyebrow', world, 'PART 7 · REDIS'); px(p7, X3 + 200, 482); css(p7, { color: '#71F6BA', borderLeftColor: '#00ED64' });
-  wipe(p7, T('j14') - 0.3, { dir: 'l', d: 0.35 }); sfx('tick', T('j14') - 0.3, { g: 0.4 });
-  const rg = gloss(note(world, X3 + 160, 712, '<b>Redis</b>：键值数据库，数据从内存提供，磁盘用来保存', 'g'), 'Redis'); css(rg, { fontSize: '30px' });
-  show(rg, T('j14') + 0.5, { y: 10 });
-  const rdb = chip(world, X3 + 160, 800, 'RDB：某一刻的快照', 'dk xl'), aof = chip(world, X3 + 560, 800, 'AOF：记下每个写操作，启动时重放', 'dk xl');
-  show(rdb, T('j14') + 0.9, { y: 10 }); show(aof, T('j14') + 1.2, { y: 10 });
+scene('trade', ({ root, s, c0 }) => {
+  const world = h('div', 'world', root);
+  const cam = makeCamera(world);
+  const ov = overlay(world);
+  const ch = chrome(root, s, '11 不是 SQL');
+  ch.sec(c0, '换来了什么');
+  const X2 = 1920;
 
-  // 镜头：三站
-  const m1 = T('j1') - 0.9, m2 = T('j7') - 0.9;
-  const a = drift(s.start, m1, 960, 1), b = drift(m1 + 1.3, m2, X2 + 960, -1), c = drift(m2 + 1.3, s.end, X3 + 960, 1);
+  // ── 一、不要表，换来了什么（A12 A04 A03） ──
+  const coll = h('div', 'panel', world); px(coll, 140, 140, 1640, 400);
+  const ct = h('div', 'abs', coll, '集合 <span style="font:700 34px Mono;color:#001E2B">people</span>'); css(ct, { left: '30px', top: '20px', font: '500 40px "Serif SC"', color: '#00684A' });
+  const docs = [['Alice', '{\n  <span class="fk">name</span>: "Alice",\n  <span class="fk">age</span>: 42\n}'], ['Erin', '{\n  <span class="fk">name</span>: "Erin",\n  <span class="fk">email</span>: "erin@…",\n  <span class="fk ex">tags</span>: ["db", "go"]\n}'], ['Frank', '{\n  <span class="fk">name</span>: "Frank",\n  <span class="fk ex">address</span>: { city: … }\n}']];
+  const dE = docs.map(([n, html], i) => { const d = h('div', 'abs', coll); px(d, 30 + i * 534, 90, 510, 286); css(d, { background: '#fff', border: '2px solid #C1C7C6', borderRadius: '12px', padding: '50px 24px 0', font: '500 26px/40px "Mono"', whiteSpace: 'pre', color: '#001E2B' }); d.innerHTML = html; const tg = chip(d, 18, 10, n, 'dk'); return d; });
+  show(coll, c0, { y: 14 }); dE.forEach((d, i) => show(d, T('j1') + 0.2 + i * 0.2, { y: 14 }));
+  const noTable = callout(world, 140, 570, 'note', '没有 <code>CREATE TABLE</code>，<code>insertOne</code> 一句', '没建表');
+  show(noTable, T('j1') + 0.2, { y: 10 }); fadeOut(noTable, T('j2b') - 0.1);
+  const fks = [...coll.querySelectorAll('.fk')], exs = [...coll.querySelectorAll('.ex')];
+  fks.forEach((e) => css(e, { color: '#1254B7', borderRadius: '4px', padding: '0 3px' }));
+  to(fks, T('j2b', '字段') - 0.2, { backgroundColor: '#E3FCF7', duration: 0.4, stagger: 0.05 });
+  to(exs, T('j3', '标签') - 0.3, { backgroundColor: '#00ED64', color: '#023430', duration: 0.4, stagger: 0.4 });
+  const gain = callout(world, 140, 570, 'tip', 'Erin 的 <code>tags</code>、Frank 的 <code>address</code>：直接写进去，事先不用声明', '换来的');
+  show(gain, T('j3') + 0.1, { y: 10 }); fadeOut(gain, T('j5') - 0.1);
+  // 代价：字段名跟着每份文档存一遍 —— 13 字节 × 4096
+  to(fks, T('j5', '字段名') - 0.2, { backgroundColor: '#FFEAE5', color: '#970606', duration: 0.4 });
+  const cost = h('div', 'panel', world); px(cost, 140, 570, 1640, 330); css(cost, { borderColor: '#FFC010', borderWidth: '2px', background: '#FEF7DB' });
+  const cT = h('div', 'abs', cost, '付出的：字段名跟着每份文档存一遍'); css(cT, { left: '30px', top: '22px', font: '700 32px "Inter", "Sans SC"', color: '#944F01' });
+  show(cost, T('j5') - 0.1, { y: 12 });
+  const nm = h('div', 'abs', cost); px(nm, 30, 96, 900, 60); css(nm, { font: '600 34px "Mono"', color: '#001E2B' });
+  nm.innerHTML = '<span style="background:#00ED64;padding:2px 10px;border-radius:5px">_id\\0</span>  <span style="background:#00ED64;padding:2px 10px;border-radius:5px">name\\0</span>  <span style="background:#00ED64;padding:2px 10px;border-radius:5px">age\\0</span>  = 13 字节 / 份';
+  show(nm, T('j6', '_id') - 0.3, { y: 8 });
+  const times = h('div', 'abs', cost, '× 4,096'); px(times, 30, 176); css(times, { font: '700 80px "Inter"', color: '#944F01' });
+  show(times, T('j6b', '4096') - 0.3, { x: -20, y: 0, s: 1.2 });
+  const total = h('div', 'abs', cost, '= 53,248 字节，只是在重复写名字'); px(total, 360, 206); css(total, { font: '600 34px "Inter", "Sans SC"', color: '#001E2B' });
+  show(total, T('j6b', '4096') + 0.4, { y: 8 });
+  const ref = h('div', 'abs', cost, '每份 92 字节的普通文档里，13 字节是字段名'); px(ref, 30, 280); css(ref, { font: '500 24px "Inter", "Sans SC"', color: '#5C6C75' });
+  show(ref, T('j6b') + 0.6, { y: 6 });
+  hide([coll, cost], T('j7') + 0.8, { y: -12, d: 0.45 });
+
+  // ── 二、WiredTiger 只认键和值 → 键值数据库 → 磁盘与内存倒过来（B01 N01 A07 S02） ──
+  ch.sec(T('j7') - 0.3, '更简单一点');
+  const kvP = h('div', 'panel', world); px(kvP, X2 + 140, 140, 780, 380);
+  const kvT = h('div', 'abs', kvP, 'WiredTiger 只认：键 → 值'); css(kvT, { left: '28px', top: '20px', font: '700 32px "Inter", "Sans SC"', color: '#001E2B' });
+  const KV = [['2050', '47 字节的文档'], ['"Alice" + 2050', '（空）'], ["ObjectId('6afa…')", '2050']];
+  const kvR = KV.map(([k, v], i) => { const kk = pg(kvP, 28, 90 + i * 92, 360, 72, k, 'on'); css(kk, { fontSize: '25px' }); const vv = pg(kvP, 420, 90 + i * 92, 330, 72, v); css(vv, { fontSize: '25px' }); return [kk, vv]; });
+  show(kvP, T('j7') + 1.8, { y: 14 }); kvR.forEach((r, i) => show(r, T('j7', '键和值') - 0.3 + i * 0.2, { y: 10, stagger: 0.1 }));
+  const kdb = h('div', 'panel', world); px(kdb, X2 + 980, 140, 800, 380); css(kdb, { borderColor: '#016BF8', borderWidth: '2px' });
+  const kdT = h('div', 'abs', kdb, '键值数据库'); css(kdT, { left: '28px', top: '20px', font: '500 44px "Serif SC"', color: '#001E2B' });
+  const kdC = chip(kdb, 300, 28, '第 01 章：NoSQL 的四类之一', 'blue');
+  const kdR = ['k1 → v1', 'k2 → v2', 'k3 → v3'].map((t, i) => { const e = code(kdb, 28, 110 + i * 76, t); css(e, { fontSize: '30px' }); return e; });
+  show(kdb, T('j8', '键值数据库') - 0.4, { x: 30, y: 0 }); show(kdC, T('j8', '第一章') - 0.1, { y: 8 }); kdR.forEach((e, i) => show(e, T('j9', '一个键') - 0.2 + i * 0.2, { y: 8 }));
+  const simp = chip(kdb, 28, 330, '一项 = 一个键 + 一个值：更简单的一类', 'blue'); show(simp, T('j9', '更简单') - 0.3, { y: 8 });
+  // j10–j12：磁盘与内存
+  const LY = 580;
+  const mk = (x, title, sub, solid) => { const e = h('div', 'abs', world); px(e, x, 0, 760, 140); css(e, { background: solid ? '#E3FCF7' : '#fff', border: `3px ${solid ? 'solid' : 'dashed'} ${solid ? '#00A35C' : '#889397'}`, borderRadius: '14px' }); e.innerHTML = `<div style="position:absolute;left:26px;top:22px;font:700 34px Inter,'Sans SC';color:#001E2B">${title}</div><div style="position:absolute;left:26px;top:78px;font:500 26px Inter,'Sans SC';color:#3D4F58">${sub}</div>`; return e; };
+  const mL = label(world, X2 + 140, LY - 46, 'MongoDB', 'lab'); css(mL, { font: '700 28px "Inter"', color: '#00684A' });
+  const mDisk = mk(X2 + 140, '磁盘：数据住在这里', '集合树、索引树，在 .wt 文件里', true), mMem = mk(X2 + 140, '内存：缓存', '用到的页读进来，改完等检查点写回', false);
+  css(mDisk, { top: LY + 170 + 'px' }); css(mMem, { top: LY + 'px' });
+  show(mL, T('j10') - 0.2, { y: 8 }); show(mDisk, T('j10', '磁盘') - 0.3, { y: 12 }); show(mMem, T('j10', '缓存') - 0.3, { y: 12 });
+  const rL = label(world, X2 + 1020, LY - 46, '倒过来呢？', 'lab'); css(rL, { font: '700 28px "Inter", "Sans SC"', color: '#1254B7' });
+  const rMem = mk(X2 + 1020, '内存：数据全住在这里', '读写都在内存里', true), rDisk = mk(X2 + 1020, '磁盘：只用来保存', '留一份，以备重启', false);
+  css(rMem, { top: LY + 'px' }); css(rDisk, { top: LY + 170 + 'px' });
+  show(rL, T('j11') - 0.2, { y: 8 }); show(rMem, T('j11', '内存里') - 0.3, { y: -20 }); show(rDisk, T('j11', '保存') - 0.3, { y: 20 });
+  // j12：进程一死，内存里的数据没了
+  to(rMem, T('j12', '一死') - 0.1, { backgroundColor: '#FFEAE5', borderColor: '#DB3030', duration: 0.3 });
+  const gone = h('div', 'abs', world, '进程一死，这里就空了'); px(gone, X2 + 1046, LY + 78); css(gone, { font: '600 26px "Inter", "Sans SC"', color: '#970606', background: '#FFEAE5' });
+  hide(rMem.children[1], T('j12', '一死') - 0.1, { y: 0, d: 0.25 });
+  show(gone, T('j12', '一死') + 0.15, { y: 0, d: 0.3 });
+  const qm = h('div', 'abs', world, '?'); px(qm, X2 + 1700, LY + 160); css(qm, { font: '700 110px "Inter"', color: '#1254B7' });
+  show(qm, T('j12', '靠什么') - 0.2, { y: 0, s: 1.4 });
+  const back = link(ov, [[X2 + 1640, LY + 240], [X2 + 1640, LY + 146]], 'blue', { arrow: true, w: 4, dashed: '8 8' }); arrowIn(back, T('j12', '回来') - 0.3, 0.5);
+
+  // ── 三、PART 7：系列的最后一站（与片名同款的整屏卡） ──
+  const t13 = T('j13') - 0.2;
+  const P = partCard(root, 7, t13, { from: 6 });
+  const cr = h('div', 'crumb2', P.main, '文档<i>/</i>数据库引擎<i>/</i>PART 7'); css(cr, { top: '170px' });
+  const badge = h('div', 'abs', P.main, 'PART 7'); px(badge, 0, 250); css(badge, { font: '700 52px "Mono"', color: '#00ED64', background: '#001E2B', padding: '10px 30px', borderRadius: '12px', letterSpacing: '.06em' });
+  const fin = chip(P.main, 300, 266, '下一集 · 系列最终集', 'blue'); css(fin, { font: '700 30px "Inter", "Sans SC"' });
+  const q = h('div', 'abs', P.main, '一个数据库引擎是如何实现的？'); px(q, 0, 380); css(q, { font: '500 46px "Inter", "Sans SC"', color: '#3D4F58' });
+  const lead = h('div', 'abs', P.main, '一个更简单的数据库'); px(lead, 0, 460); css(lead, { font: '500 64px "Serif SC"', color: '#00684A' });
+  const rd = h('div', 'abs', P.main, 'Redis'); px(rd, -8, 540); css(rd, { font: '900 200px/1.1 "Inter"', color: '#001E2B', letterSpacing: '-.02em' });
+  const rule = h('div', 'abs', P.main); px(rule, 0, 790, 1000, 5); css(rule, { background: '#00ED64', transformOrigin: '0 50%' });
+  const sub = h('div', 'abs', P.main, '键值数据库 · 数据从内存提供'); px(sub, 0, 818); css(sub, { font: '500 34px "Inter", "Sans SC"', color: '#3D4F58' });
+  wipe(cr, t13 + 0.1, { dir: 'l' }); slam(badge, t13 + 0.3, { from: 1.2 }); show(fin, t13 + 0.9, { x: -16, y: 0 });
+  show(q, t13 + 0.5, { y: 12 }); show(lead, T('j13', '更简单') - 0.3, { y: 14 });
+  slam(rd, T('j14') - 0.15, { from: 1.15 }); sfx('thud', T('j14'));
+  fromTo(rule, T('j14') + 0.4, { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: 'power2.inOut' });
+  show(sub, T('j14') + 0.2, { y: 10 });
+  // 前六集在目录里依次打上勾，留下最后一集
+  P.items.slice(0, 6).forEach((it, k) => { const ck = svg('svg', { viewBox: '0 0 24 24', width: 26, height: 26 }, it); css(ck, { marginLeft: '14px', verticalAlign: '-4px' }); svg('path', { d: 'M4 12.5l5 5L20 6.5', fill: 'none', stroke: '#00A35C', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, ck); show(ck, T('j14') + 1.3 + k * 0.15, { x: -8, y: 0, d: 0.35 }); });
+  tl.set([world, ch.c], { autoAlpha: 0 }, t13 + 0.05);
+  to(P.sel, T('j14') + 2.0, { backgroundColor: '#71F6BA', duration: 0.5 });
+
+  // 镜头：两站
+  const m1 = T('j7') + 0.9;
+  const a = drift(s.start, m1, 960, -1), b = drift(m1 + 1.3, t13, X2 + 960, -1);
   cam.track(s.start, { x: a.from, y: 540, z: 1 }, [
-    [s.start + 0.1, { x: a.to }, a.d, { ease: 'none', sfx: false }],
+    [s.start + 0.1, { x: a.to }, a.d - 0.2, { ease: 'none', sfx: false }],
     [m1, { x: b.from }, 1.3],
-    [null, { x: b.to }, b.d, { ease: 'none', sfx: false }],
-    [m2, { x: c.from }, 1.3],
-    [null, { x: c.to }, c.d, { ease: 'none', sfx: false }],
+    [null, { x: b.to }, Math.max(0.5, b.d - 0.2), { ease: 'none', sfx: false }],
   ]);
 });

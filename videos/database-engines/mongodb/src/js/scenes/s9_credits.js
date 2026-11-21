@@ -13,10 +13,10 @@ scene('credits', ({ root, s }) => {
   items.push([tr('开源视频', 'Open-source video'), String(C.repository || '').replace(/^https:\/\//, '').replace(/\/$/, '')]);
 
   const card = h('div', 'card', world); px(card, 120, 90, 1680, 860);
-  h('div', 'bar', card, 'mongosh · test');
-  const body = h('div', 'abs', card); css(body, { left: '34px', top: '78px', right: '34px', font: '400 26px/40px "Mono", "Sans SC"', whiteSpace: 'pre', color: '#E8EDEB' });
+  h('div', 'bar', card, '<span class="lang">mongosh · test</span><span class="copy"></span>');
+  const body = h('div', 'abs', card); css(body, { left: '34px', top: '78px', right: '34px', font: '400 26px/40px "Mono", "Sans SC"', whiteSpace: 'pre', color: '#001E2B' });
   const q1 = h('div', '', body, ''); css(q1, { minHeight: '40px' });
-  const tq = typeText(q1, '<span class="c">test&gt;</span> db.<span class="k">credits</span>.find()', s.start + 0.3, 30, { cursorUntil: s.start + 1.6 });
+  const tq = typeText(q1, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.find()', s.start + 0.3, 30, { cursorUntil: s.start + 1.6 });
   const s_ = (v) => `<span class="s">'${esc(v)}'</span>`;
   const out = [];
   out.push('[');
@@ -31,7 +31,7 @@ scene('credits', ({ root, s }) => {
   const tOut = Math.max(tq + 0.3, s.start + 1.8);
   show(res, tOut, { y: 8, d: 0.4 }); sfx('tick', tOut, { g: 0.5 });
   const q2 = h('div', '', body, ''); css(q2, { marginTop: '10px', minHeight: '40px' });
-  const tq2 = typeText(q2, '<span class="c">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tOut + 1.2, 30, { cursorUntil: tOut + 2.8 });
+  const tq2 = typeText(q2, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tOut + 1.2, 30, { cursorUntil: tOut + 2.8 });
   const cnt = h('div', '', body, `<span class="n">${items.length}</span>`);
   show(cnt, tq2 + 0.3, { y: 0, d: 0.3 }); sfx('pop', tq2 + 0.3, { g: 0.5 });
   appear(q2, tOut + 1.2);

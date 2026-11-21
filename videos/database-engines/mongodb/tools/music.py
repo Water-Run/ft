@@ -147,7 +147,7 @@ def compose(ctx):
     cue = {c["id"]: c for c in ctx.get("cues", [])}
     out = np.zeros((2, N), dtype=np.float32)
     plan = {"open": "intro", "nosql": "story", "whole": "calmA", "insert": "calmB", "flush": "calmA", "find": "calmB",
-            "update": "calmA", "delete": "calmB", "concur": "tension", "crash": "dark", "five": "resolve", "credits": "resolve"}
+            "update": "calmA", "delete": "calmB", "concur": "tension", "crash": "dark", "five": "resolve", "trade": "resolve", "credits": "resolve"}
     segs = []
     for i, s in enumerate(scenes):
         a, b = s["start"], (scenes[i + 1]["start"] if i + 1 < len(scenes) else s["end"])
