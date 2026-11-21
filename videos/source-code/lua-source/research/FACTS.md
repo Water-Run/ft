@@ -368,3 +368,17 @@ F28–F30 的实测数值（来源：out_07 两次 `06_c_api.c` 运行）：
 | Q14 | `3 == 3.0` 为真：luaV_equalobj 遇到一个整数一个浮点数时，只有浮点数恰好是那个整数值才相等 | `lvm.c:588-602` | 源码交叉核对；配合 Q01 |
 | Q15 | 浮点数键若恰好是整数值，查表前先转成整数键（luaH_get 对 LUA_VNUMFLT 调 luaV_flttointeger，再走 luaH_getint），所以 t[1.0] 与 t[1] 是同一个位置 | `ltable.c:1030-1033`；F26 | 源码交叉核对；配合 Q07 |
 | Q16 | 二元元方法先查第一个操作数，第一个没有才查第二个（callbinTM）；所以 `"10" + 1` 在第一个操作数 "10" 上就找到了字符串的 __add | `ltm.c:138-142`；P51 | 源码交叉核对；更正第 4 稿初稿「先看 1」的说法 |
+
+### 14.11 第 5 稿：核实 Gemini 4 Neon 审读提出的问题（2026-11-21）
+
+第 4 稿交 Gemini 4 Neon 审读（提示见 `review/GEMINI-PROMPT-R1.txt`）。它提出的事实问题逐条回到 5.5.1（必要时 5.4.9）源码与本片构建核实，成立的记在下面；第 07 章程序改为局部变量后重跑 14，表的长度另用 [15_table_length.c](lab/15_table_length.c) 探针（[15_table_length.py](lab/15_table_length.py) 编译运行，回显 [out_15_table_length.txt](lab/out_15_table_length.txt)）。
+
+| 编号 | 陈述 | 依据与定位 | 核查状态／边界 |
+|---|---|---|---|
+| Q17 | 内部的基本类型编号有 9 个：nil 0、布尔 1、轻量 userdata 2、数字 3、字符串 4、表 5、函数 6、完整 userdata 7、线程 8（LUA_NUMTYPES 9）；type 把两种 userdata 都报成 "userdata"，所以语言层面是 8 种。Value 联合体里除 gc 指针、整数、浮点数外，还有轻量 userdata 的指针 p 与轻量 C 函数的函数指针 f：它们直接存在这 8 个字节里，不在堆上分配（轻量 C 函数是函数类型的变体 LUA_VLCF） | `lua.h:64-74`；`lobject.h:49-57`、`lobject.h:641-643`；手册 §2.1 | 源码交叉核对；更正第 4 稿「函数只能在堆上分配」的笼统说法 |
+| Q18 | 算术指令生成时目标寄存器先写 0，表达式记为 VRELOC（可重定位）；等这个值要落到某个寄存器时才回填 A。所以 Q03 里 MULK 的 3 号，是 ADD 需要它在寄存器里时（codebinexpval 对右操作数调 luaK_exp2anyreg）才填上的；ADD 的 0 号，是赋值给 a 时填上的 | `lcode.c:1489-1499`（finishbinexpval：`luaK_codeABCk(fs, op, 0, …)`、`e1->k = VRELOC`）、`lcode.c:1507-1510`、`lcode.c:912-916`（discharge2reg 的 VRELOC 分支 SETARG_A） | 源码交叉核对；更正第 4 稿「积放进 3 号」先于回填的说法 |
+| Q19 | 字面量写法 `"10" + 1` 在 5.5.1 编译为 LOADK、`ADDI`、`MMBINI`（右操作数是小整数常量）；第 07 章程序改为 `local s, n = "10", 1; local r = s + n`，编译为 `ADD 2 0 1` 后跟 `MMBIN 0 1 6`（6 即 __add）。结果与 Q04 相同：5.3.6 得 11.0（float），5.4.9、5.5.1 得 11（integer）；"3.0" + n 都得 4.0；空表加 n 都报错 | `out_14_chapter_runs.txt` 的 c08 段（含 luac 列表）；字面量写法另用 luac 5.5.1 列表核对 | 实验观察；第 07 章画面删去 getmetatable 一行 |
+| Q20 | Q05 的 deep 每深一层，Lua 栈多占 2 格：deep 把自己取到 1 号寄存器（GETUPVAL 1 0）、参数 n - 1 放 2 号，`CALL 1 2 2`；新一层从被调函数后面一格、即上一层的 2 号开始。上限 1000000 格除以 2，与实测最深 499990 层相合 | luac 5.5.1 列表（c09_call.lua 的 deep）；Q05 | 实验观察＋推导 |
+| Q21 | 5.5.1 的数组部分，值与标签之间夹着一个 4 字节的 unsigned，作 `#t` 的长度提示（lenhint）；1024 格占 1024 × 9 + 4 = 9220 字节，多出的 4 字节就是它。扩容时提示设为新数组大小的一半；luaH_getn 从提示处开始，前后各看至多 4 格找边界，找不到再二分。5.4.9 的 luaH_getn 从 alimit（数组末尾）开始。u[1]、u[2]、u[4] 逐个赋值后，两版的数组部分都是 4 格：5.4.9 第 4 格有值，答 4；5.5.1 提示为 2，第 2 格有值、第 3 格空，答 2 | `lua-5.5.1/src/ltable.h:100-124`（注释「The unsigned between the two arrays is used as a hint for #t」）、`ltable.c:742`、`ltable.c:1301-1335`；`lua-5.4.9/src/ltable.c:938-…`；探针回显 `5.4.9 realasize=4 alimit_before=4 len=4`、`5.5.1 asize=4 lenhint_before=2 len=2` | 实验观察＋源码交叉核对；补足第 4 稿只说「两个答案都对」 |
+| Q22 | lua_State 的 nCcalls 低 16 位数 C 调用层数，高 16 位数「不能让出」的调用；lua_callk 不给续接函数时走 luaD_callnoyield，计数加一；lua_yieldk 先查这个计数，不为 0 就报「attempt to yield across a C-call boundary」。table.sort 用 lua_call 调比较函数，没有续接函数 | `lstate.h:94-104`；`lapi.c:1037-1053`；`ldo.c:1015-1017`；`ltablib.c:282` | 源码交叉核对；配合 Q10 |
+| Q23 | Makefile 的 LIB_O 共 12 个：lauxlib（辅助库）、linit 与 10 个标准库文件；lua.c 运行脚本时，用 pushargs 把命令行参数压栈、再以这些参数调用主函数（handle_script），脚本里用 `...` 取到——主函数总是可变参数函数（Q13）就是为此 | `Makefile:36-37`；`lua.c:251-274` | 源码交叉核对；更正「12 个标准库文件」 |

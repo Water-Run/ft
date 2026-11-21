@@ -1,0 +1,3 @@
+Table length probe, 2026-11-21; same Windows x64 / MinGW GCC builds as 07.
+Lua 5.4.9 realasize=4 alimit_before=4 len=4 alimit_after=4
+Lua 5.5.1 asize=4 lenhint_before=2 len=2 lenhint_after=2

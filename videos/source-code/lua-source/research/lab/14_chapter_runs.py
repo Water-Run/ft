@@ -23,7 +23,7 @@ PROGRAMS = [
     ("c04_value.lua", ["5.5.1"], False),
     ("c05_lex.lua", ["5.5.1"], False),
     ("c06_compile.lua", [], True),
-    ("c08_vm.lua", ["5.3.6", "5.4.9", "5.5.1"], False),
+    ("c08_vm.lua", ["5.3.6", "5.4.9", "5.5.1"], True),
     ("c09_call.lua", ["5.5.1"], False),
     ("c10_closure.lua", ["5.5.1"], True),
     ("c11_table.lua", ["5.4.9", "5.5.1"], False),
