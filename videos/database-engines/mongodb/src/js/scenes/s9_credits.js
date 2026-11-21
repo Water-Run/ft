@@ -6,7 +6,7 @@ scene('credits', ({ root, s }) => {
   const C = (window.PROJECT && window.PROJECT.credits) || {};
   const label = (x) => (x && typeof x === 'object' ? x[LANG] || x.zh : x);
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  makeCamera(world);                       // 镜头不动
   const items = [[tr('策划', 'Planning'), C.planner || '']];
   for (const m of [...(C.models || []), ...(C.services || [])]) items.push([(m.roles || []).map(label).join(' · '), m.name]);
   items.push([tr('许可', 'License'), (window.PROJECT && window.PROJECT.license) || 'GPL-3.0-or-later']);
@@ -14,8 +14,8 @@ scene('credits', ({ root, s }) => {
 
   const card = h('div', 'card', world); px(card, 120, 90, 1680, 860);
   h('div', 'bar', card, '<span class="lang">mongosh · test</span><span class="copy"></span>');
-  const body = h('div', 'abs', card); css(body, { left: '34px', top: '78px', right: '34px', font: '400 26px/40px "Mono", "Sans SC"', whiteSpace: 'pre', color: '#001E2B' });
-  const q1 = h('div', '', body, ''); css(q1, { minHeight: '40px' });
+  const body = h('div', 'abs', card); css(body, { left: '34px', top: '78px', right: '34px', font: '400 27px/42px "Mono", "Sans SC"', whiteSpace: 'pre', color: '#001E2B' });
+  const q1 = h('div', '', body, ''); css(q1, { minHeight: '42px' });
   const tq = typeText(q1, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.find()', s.start + 0.3, 30, { cursorUntil: s.start + 1.6 });
   const s_ = (v) => `<span class="s">'${esc(v)}'</span>`;
   const out = [];
@@ -30,7 +30,7 @@ scene('credits', ({ root, s }) => {
   const res = h('div', '', body, out.join('\n'));
   const tOut = Math.max(tq + 0.3, s.start + 1.8);
   show(res, tOut, { y: 8, d: 0.4 }); sfx('tick', tOut, { g: 0.5 });
-  const q2 = h('div', '', body, ''); css(q2, { marginTop: '10px', minHeight: '40px' });
+  const q2 = h('div', '', body, ''); css(q2, { marginTop: '10px', minHeight: '42px' });
   const tq2 = typeText(q2, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tOut + 1.2, 30, { cursorUntil: tOut + 2.8 });
   const cnt = h('div', '', body, `<span class="n">${items.length}</span>`);
   show(cnt, tq2 + 0.3, { y: 0, d: 0.3 }); sfx('pop', tq2 + 0.3, { g: 0.5 });
@@ -38,8 +38,10 @@ scene('credits', ({ root, s }) => {
   // 卡片按内容收紧，在字幕条之上竖直居中
   const H = 78 + body.offsetHeight + 40;
   css(card, { height: H + 'px', top: Math.max(60, Math.round((960 - H) / 2)) + 'px' });
-  show(card, s.start + 0.05, { y: 16, d: 0.4 });
-  // 停留：只朝一个方向极慢横移，不缩放
-  const hold = s.end - s.start - 0.2, dx = Math.min(48, 2 * hold);
-  cam.track(s.start, { x: 960 - dx / 2, y: 540, z: 1 }, [[s.start + 0.1, { x: 960 + dx / 2 }, hold, { ease: 'none', sfx: false }]]);
+  show(card, s.start + 0.45, { y: 10, d: 0.35 });
+  const nL = out.join('\n').split('\n').length;
+  beat(card, tOut + 0.8, 24, 78 + 42 - 4, 1620, 42 * (nL - 2) + 8, 1.4, K.gb);
+  beat(card, tq2 + 0.6, 24, 78 + 42 * (nL + 1) + 6, 360, 92, 1.2);
+  pt(card, 24, 78 + 42 * (nL - 1) - 4, 1200, 48, s.end - 3.6, s.end - 1.7);
+  beat(card, s.end - 1.5, 24, 78 + 42 * nL + 6, 760, 46, 1.2, K.gb);
 });

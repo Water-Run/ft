@@ -1,171 +1,195 @@
-// 第 08 章 事务与并发：一、内部事务与应用自己开的事务（4.0 加入），单机 mongod 的真实报错，实验用单节点副本集；
-// 二、Bob 的快照读：时间轴上三条泳道（Bob、Alice、事务外），播放头逐事件推进，Bob 的事务条随时间生长；快照那一刻竖线，读时顺着更新链跳过 43；
-// 三、两人改同一份文档：Alice、Carol 两条泳道，Carol 立刻收到写冲突（不排队），Alice 提交后 Carol 整个事务重来。
-// 回显抄自 research/lab/out_08_concurrency.txt。事实：G00 G00b G01 G04 G06 G07 G08 D01 H04 V02。
+// 第 08 章 事务与并发（第 4 轮重做）。
+// 一、两种事务：第 03 章那个由 MongoDB 替一次写入开；应用也能自己开（4.0 起）。单机 mongod 拒绝（真实报错），要用副本集；本章只用一台。
+// 二、快照读：三条泳道（Bob、Alice、事务外），一条时间轴；Bob 的事务一开始就拍下快照，读的时候顺着更新链跳过快照之后才提交的 43，读到 42；Alice 不用等。
+// 三、写冲突：Alice 的事务改了还没提交，Carol 也改同一份 → 不排队，直接 WriteConflict（TransientTransactionError）→ Alice 提交后 Carol 整个重来，成功（乐观并发）。
+// 事实：H04（第 03 章的内部事务）、I07 V02（应用的事务、4.0、2018）、G00 G00b（单机拒绝、副本集）、G01 G07 D01（快照读 42/43、更新链）、
+//       G04 G08 G06（WriteConflict、TransientTransactionError、44 与 45、乐观并发）；08 回显。
 scene('concur', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  makeCamera(world);
   const ov = overlay(world);
-  const ch = chrome(root, s, '08 事务与并发');
-  ch.sec(c0, '事务');
+  chrome(root, s, '08 事务与并发');
 
-  // ── 一、同一份文档，有人读有人改；事务；副本集 ──
-  const doc = tile(world, 760, 150, 400, 140, 'Alice 的资料', 'age 42', 'dk'); show(doc, c0, { y: 14 });
-  const bobC = chip(world, 380, 196, 'Bob 在读', 'blue'), alC = chip(world, 1340, 196, 'Alice 在改', 'on');
-  [bobC, alC].forEach((e) => css(e, { font: '700 30px "Inter", "Sans SC"' }));
-  show(bobC, T('g1', '有人在读') - 0.2, { x: -20, y: 0 }); show(alC, T('g1', '有人在改') - 0.2, { x: 20, y: 0 });
-  const a1 = link(ov, [[580, 220], [750, 220]], 'blue', { arrow: true, w: 3 }), a2 = link(ov, [[1330, 220], [1170, 220]], 'accent', { arrow: true, w: 3 });
-  arrowIn(a1, T('g1', '有人在读'), 0.5); arrowIn(a2, T('g1', '有人在改'), 0.5);
-  glow(doc, T('g1', '有人在改') + 0.1, T('g2') + 0.2, { bg: '#00ED64', bd: '#00ED64', rb: '#F9FBFA', rd: '#C1C7C6' });
-  const ta = h('div', 'abs', world); px(ta, 140, 340, 760, 180); css(ta, { border: '4px dashed #00A35C', borderRadius: '16px', background: '#C0FAE6' });
-  ta.innerHTML = '<div style="position:absolute;left:26px;top:20px;font:700 30px Inter,\'Sans SC\';color:#00684A">MongoDB 替一次写入开的事务</div><div style="position:absolute;left:26px;top:72px;font:500 26px/1.5 Inter,\'Sans SC\';color:#3D4F58">第 03 章 Dave 注册：集合树、两个索引，三处一起提交</div>';
-  show(ta, T('g2') + 0.3, { y: 12 });
-  ['集合树', '_id 索引', '姓名索引'].forEach((t, k) => { const c = chip(ta, 26 + k * 200, 120, t, 'sp'); css(c, { fontSize: '26px' }); show(c, T('g2', '一次写入') - 0.2 + k * 0.25, { y: 8 }); });
-  const tx = term(world, 960, 340, 820, 250, 'mongosh · 应用自己开事务', { fs: 24 });
-  show(tx.c, T('g3') + 0.1, { x: 20, y: 0 });
-  tx.out(T('g3', '自己开事务'), 'const s = db.getMongo().startSession();\ns.startTransaction();');
-  tx.out(T('g3', '包在一起') - 0.2, '<span class="c">//   …几份文档的读写…</span>\ns.commitTransaction();');
-  const txb = h('div', 'abs'); px(txb, 14, 68, 790, 168); css(txb, { background: '#C0FAE6', borderRadius: '10px' }); tx.c.insertBefore(txb, tx.body);
-  fromTo(txb, T('g3', '包在一起') - 0.1, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 });
-  const v4 = chip(world, 1440, 352, 'MongoDB 4.0 · 2018', 'blue'); show(v4, T('g4', '2018') - 0.3, { y: 8 }); sfx('pop', T('g4', '2018') - 0.3);
-  to(ta, T('g4') + 0.2, { autoAlpha: 0.35, duration: 0.5 });
-  const err = term(world, 140, 640, 1640, 170, 'mongosh · 单机的 mongod', { fs: 22 });
-  show(err.c, T('g5') - 0.1, { y: 12 });
-  err.cmd(T('g5') + 0.1, 'db.runCommand({ insert: "users", …, startTransaction: true, autocommit: false })');
-  err.out(T('g5', '不接受') - 0.3, '<span class="r">MongoServerError: Transaction numbers are only allowed on a replica set member or mongos</span>');
-  hide([doc, bobC, alC, a1, a2, ta, tx.c, v4], T('g5', '副本集') - 0.2, { y: -10, d: 0.4 });
-  // 副本集：几台 mongod 维护同一份数据；这里只有一台
-  const rsL = gloss(label(world, 140, 150, '副本集：几台 mongod，维护同一份数据', 'h2'), '副本集');
-  show(rsL, T('g5', '副本集') - 0.2, { y: 8 });
-  const sv = [0, 1, 2].map((i) => tile(world, 140 + i * 420, 240, 380, 140, 'mongod', i === 0 ? '实验用的这一台' : '另一台', i === 0 ? 'on' : 'dk'));
-  show(sv, T('g5a', '几台') - 0.2, { y: 14, stagger: 0.15 });
-  const rsl = [link(ov, [[520, 310], [560, 310]], 'dim', { w: 2, dashed: '6 6' }), link(ov, [[940, 310], [980, 310]], 'dim', { w: 2, dashed: '6 6' })];
-  rsl.forEach((p) => arrowIn(p, T('g5a', '几台') + 0.3, 0.4));
-  to([sv[1], sv[2], ...rsl], T('g5a', '只用了一台') - 0.3, { autoAlpha: 0.2, duration: 0.5 });
-  const only = callout(world, 1420, 240, 'note', '只有一台，也能开事务', '单节点副本集');
-  show(only, T('g5a') + 0.3, { x: 20, y: 0 });
-  figs(world, 140, 830, 1640, [[T('g5') + 0.3, '图 8-1', '应用自己开的事务，单机的 mongod 不接受', '实测：out_08（MongoDB 9.0.8）']], T('g6') - 0.2);
-  hide([...sv, ...rsl, rsL, only, err.c], T('g6') - 0.2, { y: -10, d: 0.4 });
+  // ══ 一、两种事务；单机不接受，要用副本集 ══
+  const P1 = [];
+  const doc = docCard(world, 720, 400, [['name', JS('Alice')], ['age', JN(42)]], { w: 480, fs: 40 }); P1.push(doc.c);
+  const pr = person(world, 380, 410, '读', K.blued, 110), pw = person(world, 1380, 410, '改', K.forest, 110); P1.push(pr, pw);
+  show(doc.c, c0, { y: 12, d: 0.5 }); show(pr, T('g1', '读') - 0.3, { x: -20, y: 0, d: 0.45 }); show(pw, T('g1', '改') - 0.3, { x: 20, y: 0, d: 0.45 });
+  const ar = link(ov, [[560, 470], [710, 470]], 'blue', { w: 4, arrow: true }), aw = link(ov, [[1380, 470], [1210, 470]], 'accent', { w: 4, arrow: true }); P1.push(ar, aw);
+  arrowIn(ar, T('g1', '读') - 0.1, 0.4); arrowIn(aw, T('g1', '改') - 0.1, 0.4);
+  const tA = T('g2') - 0.2;
+  fadeOut([pr, pw, ar, aw], tA, 0.4);
+  tl.to(doc.c, { autoAlpha: 0, duration: 0.4 }, tA);
+  // 左：MongoDB 替一次写入开的事务（第 03 章：三棵树各写一项）
+  const inT = h('div', 'panel', world); px(inT, 150, 230, 760, 330); P1.push(inT);
+  inT.innerHTML = `<div style="position:absolute;left:26px;top:20px;font:700 32px 'Sans SC';color:${K.ink}">MongoDB 替一次写入开的</div><div style="position:absolute;left:26px;top:70px;font:500 26px 'Sans SC';color:${K.gd1}">第 03 章：Dave 注册，三棵树各写一项</div>` +
+    `<div style="position:absolute;left:26px;top:130px;width:700px;height:150px;border:3px dashed ${K.blue};border-radius:12px"></div>` +
+    ['集合树', '_id 索引', '姓名索引'].map((n, i) => `<div style="position:absolute;left:${50 + i * 226}px;top:170px;width:200px;height:70px;background:${K.mint};border:2px solid ${K.g1};border-radius:10px;font:700 26px/66px 'Sans SC';text-align:center;color:${K.forest}">${n}</div>`).join('');
+  show(inT, T('g2', '第三章') - 0.3, { y: 14, d: 0.5 });
+  const inB = [...inT.children].slice(-3); inB.forEach((e, i) => to(e, T('g2', '替') - 0.2 + i * 0.15, { color: K.ink, backgroundColor: K.spring, duration: 0.35 }));
+  // 右：应用自己开的事务，把几份文档的读写包在一起（4.0 · 2018）
+  const apT = h('div', 'panel', world); px(apT, 980, 230, 800, 330); css(apT, { borderColor: K.g1, borderWidth: '3px' }); P1.push(apT);
+  apT.innerHTML = `<div style="position:absolute;left:26px;top:20px;font:700 32px 'Sans SC';color:${K.forest}">应用自己开的</div>` +
+    `<div style="position:absolute;left:26px;top:78px;font:500 27px/1.6 Mono;color:${K.ink};white-space:pre">session.<span style="color:#1254B7">startTransaction</span>()\n  users.findOne(…)   <span style="color:#5C6C75">// 读</span>\n  users.updateOne(…) <span style="color:#5C6C75">// 改</span>\nsession.<span style="color:#1254B7">commitTransaction</span>()</div>`;
+  show(apT, T('g3', '应用') - 0.3, { y: 14, d: 0.5 });
+  pt(world, 996, 300, 760, 196, T('g3', '几份') - 0.2, T('g4') - 0.1);
+  pt(world, 988, 238, 784, 60, T('g4', '加上') - 0.3, T('g5') + 0.2);
+  const v4 = chip(world, 1500, 248, 'MongoDB 4.0 · 2018', 'blue'); P1.push(v4); show(v4, T('g4', '2018') - 0.3, { y: 8, d: 0.45 });
+  // 单机的 mongod 不接受（G00 的真实报错）
+  const err = term(world, 150, 600, 1630, 150, 'mongosh · 单机的 mongod', { fs: 28, lh: 42 }); P1.push(err.c);
+  show(err.c, T('g5', '单机') - 0.4, { y: 14, d: 0.5 });
+  err.out(T('g5', '不接受') - 0.3, '<span style="color:#970606">MongoServerError: Transaction numbers are only allowed on a replica set member or mongos</span>');
+  // 副本集：几台 mongod 维护同一份数据；这里只用一台
+  const RS = [0, 1, 2].map((i) => { const e = h('div', 'abs', world); px(e, 560 + i * 300, 790, 260, 120); css(e, { background: '#fff', border: (i === 0 ? '3px solid ' + K.g1 : '3px dashed ' + K.gb), borderRadius: '12px' });
+    e.innerHTML = `<div style="position:absolute;left:18px;top:14px;font:700 28px Mono;color:${i === 0 ? K.forest : K.gb}">mongod</div><div style="position:absolute;left:18px;top:62px;font:500 24px 'Sans SC';color:${K.gd1}">同一份数据</div>`; P1.push(e); return e; });
+  RS.forEach((e, i) => show(e, T('g5a', '几台') - 0.3 + i * 0.15, { y: 12, d: 0.45 }));
+  const glR = gl(world, 150, 800, '副本集', '几台 mongod<br>维护同一份数据'); P1.push(glR);
+  show(glR, T('g5', '副本集') - 0.2, { x: 14, y: 0, d: 0.45 });
+  fadeOut([RS[1], RS[2]], T('g5a', '一台') - 0.3, 0.45);
+  const rs0 = tg(world, 1150, 830, '本章：单节点副本集 <span style="font-family:Mono">rs0</span>', 'g'); css(rs0, { fontSize: '30px' }); P1.push(rs0);
+  show(rs0, T('g5a', '一台') - 0.1, { x: 14, y: 0, d: 0.45 });
+  pt(world, 552, 782, 276, 136, Tend('g5a') + 0.1, T('g6') - 0.45);
+  const tB = T('g6') - 0.4;
+  fadeOut(P1, tB, 0.5);
 
-  // ── 二、快照：时间轴上的五件事；右上是实验的原样输出 ──
-  ch.sec(T('g6') - 0.1, '快照');
-  const fresh = chip(world, 140, 130, '又一份新装的 4096 人 · Alice 过生日', 'dk');
-  show(fresh, T('g6') + 0.2, { y: 8 }); fadeOut(fresh, T('g7') - 0.1);
-  // 更新链（第 06 章）：42 → 43
-  const chT = label(world, 140, 190, 'Alice 这一项的更新链', 'lab'); css(chT, { font: '700 26px "Inter", "Sans SC"', color: '#001E2B' });
-  const b42 = tile(world, 140, 236, 260, 130, 'age 42', '旧版本', 'g'), b43 = tile(world, 520, 236, 260, 130, 'age 43', '新版本', 'g');
-  const cl = link(ov, [[406, 300], [514, 300]], 'accent', { arrow: true, w: 3 });
-  show([chT, b42], T('g6') + 1.4, { y: 12 }); show(b43, T('g8', '43') - 0.2, { x: -30, y: 0 }); arrowIn(cl, T('g8', '43'), 0.5);
-  const G = { bg: '#00ED64', bd: '#00ED64', rb: '#E3FCF7', rd: '#00A35C' };
-  [b42, b43].forEach((b) => { css(b._t, { color: '#023430' }); css(b._s, { color: '#1C2D38' }); });
-  glow(b42, T('g6') + 1.5, T('g7') - 0.2, G); glow(b42, T('g7', '42 岁') - 0.3, T('g8') + 0.1, G); glow(b43, T('g8', '43') - 0.1, T('g9') - 0.1, G);
-  glow(b42, T('g9', '还是 42') - 0.3, T('g10') - 0.1, G); glow(b43, T('g10', '43') - 0.3, T('g11') - 0.1, G); glow(b43, T('g11', '才是 43') - 0.3, T('g12'), G);
-  const out = term(world, 900, 130, 880, 290, 'mongosh · 实验输出', { fs: 23 });
-  show(out.c, T('g7') - 0.2, { x: 20, y: 0 });
-  // 时间轴：泳道与播放头
-  const X0 = 360, X1 = 1760, LANES = [['Bob', 520], ['Alice', 630], ['事务外', 740]];
-  const lanes = LANES.map(([n, y]) => { const l = label(world, 140, y - 20, n, 'lab'); css(l, { font: '700 28px "Inter", "Sans SC"', color: '#001E2B' }); const ln = h('div', 'abs', world); px(ln, X0, y, X1 - X0, 2); css(ln, { background: '#E8EDEB' }); return [l, ln]; });
-  const tAx = T('g7') - 0.3;
-  lanes.forEach(([l, ln], i) => { show(l, tAx + i * 0.1, { x: -10, y: 0 }); fromTo(ln, tAx + i * 0.1, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.7, ease: 'power2.out' }); });
-  const AX = [470, 730, 990, 1250, 1560];
-  const head = h('div', 'abs', world); px(head, AX[0], 470, 3, 320); css(head, { background: '#00ED64' });
-  show(head, tAx + 0.3, { y: 0 });
-  const EV = [['g7', 0, 0, '读 42', 'Bob 第一次读： <span class="n">42</span>', '42 岁'], ['g8', 1, 1, '写 43 · 提交', 'Alice 改年龄： <span class="n">1</span> 份', '提交了'],
-    ['g9', 2, 0, '还是 42', 'Bob 在同一个事务里再读： <span class="n">42</span>', '还是 42'], ['g10', 3, 2, '读 43', '事务外此刻读： <span class="n">43</span>', '43'], ['g11', 4, 0, '读 43', 'Bob 结束事务后再读： <span class="n">43</span>', '才是 43']];
-  let px0 = AX[0];
-  const evEls = [];
-  EV.forEach(([id, k, lane, txt, line, w]) => {
-    const x = AX[k], y = LANES[lane][1];
-    if (k > 0) { tl.fromTo(head, { left: px0 + 'px' }, { left: x + 'px', duration: 0.6, ease: 'power2.inOut', immediateRender: false }, T(id) - 0.3); px0 = x; }
-    const dot = h('div', 'abs', world); px(dot, x - 13, y - 12, 26, 26); css(dot, { borderRadius: '50%', background: lane === 1 ? '#00ED64' : '#016BF8', border: '3px solid #fff' });
-    const tag = chip(world, x - 70, y - 64, txt, lane === 1 ? 'on' : 'blue'); css(tag, { width: '150px', textAlign: 'center', padding: '4px 0', fontSize: '24px' });
-    show(dot, T(id), { y: 0, s: 0.4, d: 0.35 }); show(tag, T(id) + 0.2, { y: 8 }); sfx('pop', T(id));
-    out.out(T(id, w) - 0.2, line);
-    evEls.push(dot, tag);
+  // ══ 二、快照读：三条泳道 + 时间轴（G01 G07） ══
+  const LX0 = 360, LX1 = 1330, LANES = [['Bob', K.blued, 290], ['Alice', K.forest, 450], ['事务外', K.gd2, 610]];
+  const lanes = LANES.map(([n, c, y]) => {
+    const l = h('div', 'abs', world); px(l, LX0, y + 30, LX1 - LX0, 3); css(l, { background: K.gl1, transformOrigin: '0 50%' });
+    const t = tg(world, 150, y + 10, n, 'b'); css(t, { fontSize: '34px', color: c });
+    return { l, t, y };
   });
-  // Bob 的事务条：从第一次读开始，随播放头生长，在第三次读之前结束
-  const bar = h('div', 'abs', world); px(bar, AX[0] - 40, LANES[0][1] + 18, (AX[3] + AX[4]) / 2 - AX[0] + 40, 26); css(bar, { background: '#E1F7FF', border: '2px solid #016BF8', borderRadius: '8px', transformOrigin: '0 50%' });
-  const barL = label(world, AX[0] - 30, LANES[0][1] + 50, 'Bob 的事务', 't-small'); css(barL, { color: '#1254B7' });
-  fromTo(bar, T('g7'), { scaleX: 0 }, { scaleX: 1, duration: T('g11') - T('g7') - 0.6, ease: 'none' }); show(barL, T('g7') + 0.4, { y: 6 });
-  // g12–g14b：快照那一刻，读的时候顺着更新链往回找，跳过快照之后才提交的 43（G07）
-  const snap = h('div', 'abs', world); px(snap, AX[0] - 2, 470, 0, 330); css(snap, { borderLeft: '4px dashed #016BF8' });
-  const snapL = gloss(chip(world, AX[0] - 80, 800, '快照：这一刻', 'blue'), '快照');
-  show(snap, T('g12', '快照') - 0.3, { y: 0, d: 0.4 }); show(snapL, T('g12', '快照') - 0.1, { y: 8 });
-  const snapN = callout(world, 900, 800, 'note', '记下那一刻：哪些修改已经提交，哪些还没有', '快照');
-  css(snapN, { zIndex: 3 });
-  show(snapN, T('g13') - 0.1, { x: 20, y: 0 }); fadeOut(snapN, T('g15') - 0.1);
-  const skip = chip(world, 520, 376, '快照之后才提交 · 跳过', 'red');
-  show(skip, T('g14', '跳过去') - 0.5, { y: 8 }); to(b43, T('g14', '跳过去') - 0.4, { autoAlpha: 0.35, duration: 0.4 });
-  const back = link(ov, [[514, 342], [406, 342]], 'blue', { arrow: true, w: 4 }); arrowIn(back, T('g14', '往回找') - 0.3, 0.6);
-  glow(b42, T('g14b') - 0.2, null, { bg: '#C0FAE6', bd: '#00684A' });
-  // g15：Alice 的修改没等 Bob
-  const noWait = callout(world, 900, 800, 'tip', '读的人不挡写的人', '不用等');
-  css(noWait, { zIndex: 3 });
-  show(noWait, T('g15') + 0.4, { x: 20, y: 0 });
-  glow(evEls[2], T('g15', '不用等') - 0.3, T('g19a') - 0.2, { bg: '#00ED64', bd: '#00ED64' });
-  figs(world, 140, 880, 700, [[T('g7') + 0.4, '图 8-2', 'Bob 的快照读：五件事的先后', '实测：out_08（单节点副本集）']], T('g19a') - 0.3);
-  const sec2 = [chT, b42, b43, cl, out.c, head, ...lanes.flat(), ...evEls, bar, barL, snap, snapL, skip, back, noWait];
-  hide(sec2, T('g19a') - 0.35, { y: 0, d: 0.45 });
+  lanes.forEach((o, i) => { fromTo(o.l, tB + 0.3 + i * 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power2.inOut' }); show(o.t, tB + 0.3 + i * 0.1, { x: -14, y: 0, d: 0.45 }); });
+  pt(world, 140, 436, 1210, 72, T('g6', '过生日') - 0.3, T('g7') - 0.1);
+  // 事件：在泳道上一个个出现（x 是时间先后）
+  const ev = (lane, x, html, t, cls = '') => {
+    const d = h('div', 'abs', world); px(d, x - 9, lanes[lane].y + 22, 18, 18); css(d, { borderRadius: '50%', background: LANES[lane][1] });
+    const b = h('div', 'abs', world, html); px(b, x + 12, lanes[lane].y - 34); css(b, { font: '700 26px "Sans SC"', color: LANES[lane][1], whiteSpace: 'nowrap' });
+    show(d, t, { y: 0, s: 0.3, d: 0.35 }); show(b, t + 0.05, { y: 8, d: 0.4 });
+    return [d, b];
+  };
+  // Bob 的事务（一段底色）
+  const span = h('div', 'abs', world); px(span, 420, 300 + 12, 660, 54); css(span, { background: K.bluel, border: '2px solid ' + K.blue, borderRadius: '10px', transformOrigin: '0 50%' });
+  fromTo(span, T('g7', '开了') - 0.2, { scaleX: 0, autoAlpha: 1 }, { scaleX: 1, duration: Math.max(1, T('g11', '结束') - T('g7', '开了')), ease: 'none' });
+  const E = [];
+  E.push(...ev(0, 440, '开始事务 · 读：42', T('g7', '开了') - 0.2));
+  E.push(...ev(1, 640, '改成 43 · 提交', T('g8', '改成') - 0.3));
+  E.push(...ev(0, 820, '再读：<span style="font-family:Inter">42</span>', T('g9', '再读') - 0.3));
+  E.push(...ev(2, 940, '读：43', T('g10', '读') - 0.3));
+  E.push(...ev(0, 1080, '结束事务', T('g11', '结束') - 0.3));
+  E.push(...ev(0, 1250, '读：43', T('g11', '才是') - 0.3));
+  pt(world, 1180, 262, 220, 90, T('g11', '才是') + 0.2, T('g12', '开始') - 0.3, K.blue);
+  // 快照：在 Bob 开始的那一刻，一道竖线穿过三条泳道
+  const snap = h('div', 'abs', world); px(snap, 438, 250, 4, 410); css(snap, { background: K.blue, transformOrigin: '50% 0' });
+  fromTo(snap, T('g12', '快照') - 0.3, { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: 'power2.out' });
+  const snapT = tg(world, 380, 676, '快照', 'b'); css(snapT, { color: K.blued, fontSize: '30px' }); show(snapT, T('g12', '快照') - 0.1, { y: 8, d: 0.4 });
+  pt(world, 412, 262, 300, 110, T('g12', '开始') - 0.2, T('g12', '快照') - 0.2, K.blue);
+  pt(world, 424, 242, 32, 426, T('g13', '那一刻') - 0.2, T('g13', '还没有') - 0.3, K.blue);
+  pt(world, 600, 404, 300, 80, T('g13', '还没有') - 0.2, T('g14') - 0.1, K.red);
+  const glS = gl(world, 150, 770, '快照', '事务开始那一刻：哪些修改已经提交，哪些还没有');
+  show(glS, T('g12', '快照') - 0.25, { y: 10, d: 0.45 });
+  // 右边：Alice 那一项的更新链；Bob 顺着往回找，43 在快照之后提交，跳过；读到 42
+  const chT = tg(world, 1440, 250, 'Alice 那一项', 'b'); css(chT, { fontSize: '30px' });
+  const c43 = h('div', 'abs', world, '43'); px(c43, 1470, 310, 280, 80); css(c43, { background: K.spring, border: '2px solid ' + K.forest, borderRadius: '12px', font: '800 40px/76px "Mono"', textAlign: 'center' });
+  const c42 = h('div', 'abs', world, '42'); px(c42, 1470, 470, 280, 80); css(c42, { background: '#fff', border: '2px solid ' + K.gb, borderRadius: '12px', font: '800 40px/76px "Mono"', textAlign: 'center', color: K.gd2 });
+  const c43t = tg(world, 1470, 396, '快照之后才提交', 'm'); css(c43t, { fontSize: '23px' });
+  const chA = link(ov, [[1730, 392], [1730, 466]], 'ink', { w: 3, arrow: true });
+  show([chT, c43, c42], T('g14', '更新链') - 0.5, { y: 12, d: 0.45 }); arrowIn(chA, T('g14', '更新链') - 0.3, 0.4);
+  show(c43t, T('g14', '之后') - 0.3, { y: 6, d: 0.4 });
+  to(c43, T('g14', '跳过') - 0.2, { opacity: 0.3, duration: 0.4 });
+  to(c42, T('g14b', '42') - 0.4, { backgroundColor: K.bluel, borderColor: K.blue, color: K.blued, duration: 0.4 });
+  const bob = h('div', 'abs', world, ico('person', 44, K.blued, 2.8)); px(bob, 1380, 486, 44, 44);
+  show(bob, T('g14', '读') - 0.2, { x: -14, y: 0, d: 0.4 });
+  // Alice 不用等 Bob：她的提交落在 Bob 的事务中间
+  pt(world, 412, 304, 676, 70, T('g15', '开着') - 0.2, T('g15', '不用') - 0.4, K.blue);
+  const noWait = tg(world, 560, 506, '不用等 Bob', 'g'); css(noWait, { fontSize: '30px' });
+  show(noWait, T('g15', '不用') - 0.3, { y: 8, d: 0.4 });
+  const tC = T('g19a') - 0.3;
+  fadeOut([...E, span, snap, snapT, glS, chT, c43, c42, c43t, chA, bob, noWait, ...lanes.map((o) => o.l), ...lanes.map((o) => o.t)], tC, 0.5);
 
-  // ── 三、两人改同一份文档：写冲突，整个事务重来（G04 G06 G08） ──
-  ch.sec(T('g19a') - 0.2, '写冲突');
-  const doc2 = tile(world, 140, 150, 400, 130, 'Alice 的资料', 'age 42', 'dk'); show(doc2, T('g19a'), { y: 12 });
-  glow(doc2, T('g19a') + 0.6, T('g21') + 0.2, { bg: '#00ED64', bd: '#00ED64', rb: '#F9FBFA', rd: '#C1C7C6' });
-  const out2 = term(world, 900, 130, 880, 290, 'mongosh · 实验输出', { fs: 23 });
-  show(out2.c, T('g21') - 0.2, { x: 20, y: 0 });
-  const L2 = [['Alice', 560], ['Carol', 720]];
-  const lanes2 = L2.map(([n, y]) => { const l = label(world, 140, y - 20, n, 'lab'); css(l, { font: '700 28px "Inter", "Sans SC"', color: '#001E2B' }); const ln = h('div', 'abs', world); px(ln, X0, y, X1 - X0, 2); css(ln, { background: '#E8EDEB' }); return [l, ln]; });
-  show(lanes2.flat(), T('g19a') + 0.5, { y: 0, stagger: 0.12 });
-  const txBar = (lane, x0, x1, t0, d, cls) => { const e = h('div', 'abs', world); px(e, x0, L2[lane][1] + 18, x1 - x0, 26); css(e, { background: cls === 'g' ? '#E3FCF7' : '#FFF', border: `2px solid ${cls === 'g' ? '#00A35C' : '#889397'}`, borderRadius: '8px', transformOrigin: '0 50%' }); fromTo(e, t0, { scaleX: 0 }, { scaleX: 1, duration: d, ease: 'power2.out' }); return e; };
-  const dot2 = (lane, x, t, color, txt, cls) => { const d = h('div', 'abs', world); px(d, x - 13, L2[lane][1] - 12, 26, 26); css(d, { borderRadius: '50%', background: color, border: '3px solid #fff' }); show(d, t, { y: 0, s: 0.4, d: 0.35 }); const c = chip(world, x - 90, L2[lane][1] - 64, txt, cls); css(c, { fontSize: '24px', padding: '4px 14px' }); show(c, t + 0.2, { y: 8 }); return [d, c]; };
-  // g21：Alice 在事务里改了，还没提交
-  const aBar = txBar(0, 420, 1180, T('g21'), 0.9, 'g');
-  const aMod = dot2(0, 560, T('g21', '改了') - 0.1, '#00ED64', '改成 44 · 未提交', 'on');
-  keyed(doc2._s).at(T('g21', '改了'), { html: 'age 44 · Alice 还没提交' }).at(T('g27', '提交'), { html: 'age 44' });
-  [doc, doc2].forEach((d) => css(d._s, { color: '#1C2D38' }));
-  glow(doc2, T('g21', '改了') - 0.1, null, { bg: '#FEF7DB', bd: '#FFC010' });
-  const pend = h('div', 'abs', world); px(pend, 560, 490, 620, 280); css(pend, { background: '#FEF7DB', borderLeft: '3px dashed #FFC010', borderRight: '3px dashed #FFC010', zIndex: -1 });
-  const pendL = label(world, 760, 500, 'Alice 改了、还没提交的这一段', 't-small'); css(pendL, { color: '#944F01' });
-  fromTo(pend, T('g22') - 0.1, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }); show(pendL, T('g22') + 0.1, { y: 6 });
-  out2.out(T('g21', '改了'), '<span class="c">// Alice：事务里 updateOne → 44，还没提交</span>');
-  // g22：Carol 在另一个事务里也要改
-  const cBar = txBar(1, 700, 960, T('g22'), 0.6, '');
-  const cMod = dot2(1, 900, T('g22', '也要改') - 0.1, '#889397', '也要改', 'dk');
-  out2.out(T('g22', '也要改') + 0.1, ['c.startTransaction();  <span class="c">// Carol</span>', 'c.…users.updateOne({ <span class="k">name</span>: <span class="s">"Alice"</span> },', '  { <span class="k">$set</span>: { <span class="k">age</span>: <span class="n">45</span> } })'].join('\n'));
-  // g23：可以让 Carol 排队等 Alice 提交 —— MongoDB 没这么做
-  const queue = h('div', 'abs', world); px(queue, 920, L2[1][1] - 30, 380, 60); css(queue, { background: '#FFC010', borderRadius: '10px' });
-  const qL = label(world, 944, L2[1][1] - 16, '排队，等 Alice 提交？', 'lab'); css(qL, { font: '700 26px "Inter", "Sans SC"', color: '#3D2900' });
-  show([queue, qL], T('g23', '排队') - 0.2, { y: 0 });
-  const qx = h('div', 'abs', world); px(qx, 920, L2[1][1] - 2, 380, 5); css(qx, { background: '#DB3030', transformOrigin: '0 50%' });
-  fromTo(qx, T('g23', '没这么做') - 0.2, { scaleX: 0 }, { scaleX: 1, duration: 0.4 });
-  to([queue, qL], T('g23', '没这么做') + 0.4, { autoAlpha: 0.25, duration: 0.4 });
-  // g24–g26：一发现是同一份文档，Carol 直接收到写冲突；错误上带着标签
-  glow(cMod[1], T('g25', '错误') - 0.3, null, { bg: '#FFEAE5', bd: '#DB3030', c: '#970606' });
-  glow(doc2, T('g24', '同一份') - 0.3, T('g27') - 0.2, { bg: '#FFCDC7', bd: '#DB3030', rb: '#FEF7DB', rd: '#FFC010' });
-  to(cMod[0], T('g25', '错误') - 0.3, { backgroundColor: '#DB3030', duration: 0.2 });
-  const wc = gloss(chip(world, 820, L2[1][1] + 40, 'WriteConflict', 'red'), '写冲突'); css(wc, { font: '700 28px "Mono"' });
-  show(wc, T('g25', '写冲突') - 0.3, { y: 0, s: 1.2 }); sfx('error', T('g25', '写冲突') - 0.2, { g: 0.5 });
-  to(cBar, T('g25', '写冲突'), { borderColor: '#DB3030', backgroundColor: '#FFEAE5', duration: 0.3 });
-  out2.out(T('g25', '写冲突') - 0.1, "{ <span class=\"k\">'Carol 的错误'</span>: <span class=\"r\">'WriteConflict'</span>,");
-  out2.out(T('g26', '标签') - 0.2, "  <span class=\"k\">'错误标签'</span>: [ <span class=\"s\">'TransientTransactionError'</span> ] }");
-  const lab = callout(world, 140, 820, 'note', '<code>TransientTransactionError</code>：这一类错误，整个事务重做一遍就行', '错误标签');
-  show(lab, T('g26', '标签') - 0.1, { y: 10 }); fadeOut(lab, T('g28') - 0.1);
-  // g27：Alice 提交以后，Carol 重做一遍事务，成功了
-  const aCom = dot2(0, 1180, T('g27', '提交') - 0.2, '#00684A', '提交 · 44', 'on');
-  out2.clear(T('g27', '提交') - 0.2); out2.out(T('g27', '提交') - 0.1, 'Alice 提交之后： <span class="n">44</span>');
-  glow(doc2, T('g27', '提交') - 0.1, null, { bg: '#C0FAE6', bd: '#00A35C' }); to([pend, pendL], T('g27', '提交'), { autoAlpha: 0, duration: 0.5 });
-  const cBar2 = txBar(1, 1300, 1660, T('g27', '重做') - 0.2, 0.7, 'g');
-  const cOk = dot2(1, 1560, T('g27', '成功了') - 0.3, '#00684A', '重做 · 45 提交', 'on');
-  out2.out(T('g27', '成功了') - 0.2, 'Carol 重做一遍事务： <span class="n">45</span>');
-  // g28：乐观并发
-  const opt = callout(world, 140, 820, 'tip', '先不排队，撞上了再让一方整个事务重来', '乐观并发');
-  show(opt, T('g28') - 0.1, { y: 10 });
-  figs(world, 900, 440, 880, [[T('g21') + 0.4, '图 8-3', '两个事务改同一份文档', '实测：out_08']], null);
-  // g36：可要是 mongod 突然被杀了呢？
-  glow(cBar2, T('g28') + 0.2, null, { bg: '#00ED64', bd: '#00ED64' });
-  to([doc2, out2.c, ...lanes2.flat(), aBar, cBar, cBar2, ...aMod, ...cMod, ...aCom, ...cOk, queue, qL, qx, wc, opt], Tend('g36') - 0.3, { autoAlpha: 0.3, duration: 0.6 });
-  nextPage(world, 1260, 820, '09', '出错怎么办', T('g36') - 0.1);
-
-  const a = drift(s.start, s.end, 960, -1);
-  cam.track(s.start, { x: a.from, y: 540, z: 1 }, [[s.start + 0.1, { x: a.to }, a.d, { ease: 'none', sfx: false }]]);
+  // ══ 三、写冲突：两个事务改同一份（G04 G08 G06） ══
+  const L2 = [['Alice', K.forest, 330], ['Carol', K.gd2, 520]];
+  const lanes2 = L2.map(([n, c, y]) => {
+    const l = h('div', 'abs', world); px(l, LX0, y + 30, 1060, 3); css(l, { background: K.gl1, transformOrigin: '0 50%' });
+    const t = tg(world, 150, y + 10, n, 'b'); css(t, { fontSize: '34px', color: c });
+    return { l, t, y };
+  });
+  lanes2.forEach((o, i) => { fromTo(o.l, tC + 0.4 + i * 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power2.inOut' }); show(o.t, tC + 0.4 + i * 0.1, { x: -14, y: 0, d: 0.45 }); });
+  const same = h('div', 'abs', world, '同一份文档：<span style="font-family:Mono">{ name: "Alice" }</span>'); px(same, 660, 250); css(same, { font: '700 30px "Sans SC"', color: K.ink });
+  show(same, T('g19a', '同一份') - 0.2, { y: 10, d: 0.45 }); fadeOut(same, T('g24') - 0.2, 0.4);
+  const carolSub = tg(world, 150, 568, '管理员', ''); css(carolSub, { fontSize: '24px' }); show(carolSub, T('g22', '管理员') - 0.2, { y: 6, d: 0.4 });
+  // Alice：事务里改了，还没提交（一段虚线底色）
+  const aSpan = h('div', 'abs', world); px(aSpan, 420, 342, 520, 54); css(aSpan, { border: '3px dashed ' + K.g1, background: K.mint, borderRadius: '10px', transformOrigin: '0 50%' });
+  fromTo(aSpan, T('g21', '改了') - 0.3, { scaleX: 0, autoAlpha: 1 }, { scaleX: 1, duration: 0.8, ease: 'power2.out' });
+  const aT1 = tg(world, 436, 352, '改 age · 还没提交', 'g'); css(aT1, { fontSize: '26px' }); show(aT1, T('g21', '没提交') - 0.4, { y: 6, d: 0.4 });
+  // Carol：也要改这份
+  const cSpan = h('div', 'abs', world); px(cSpan, 640, 532, 140, 54); css(cSpan, { border: '3px solid ' + K.gd2, background: K.gl3, borderRadius: '10px' });
+  show(cSpan, T('g22', '也要') - 0.3, { x: -20, y: 0, d: 0.4 });
+  const cT1 = tg(world, 654, 542, '改 age', 'b'); css(cT1, { fontSize: '26px' }); show(cT1, T('g22', '也要') - 0.1, { y: 6, d: 0.4 });
+  // 可以排队等 Alice 提交（虚的一段）——MongoDB 没这么做
+  const queue = h('div', 'abs', world); px(queue, 790, 528, 200, 62); css(queue, { border: '3px dashed ' + K.gb, borderRadius: '10px', font: '700 28px/56px "Sans SC"', color: K.gd1, textAlign: 'center' }); queue.textContent = '排队等…';
+  show(queue, T('g23', '排队') - 0.2, { x: -14, y: 0, d: 0.4 });
+  const qx = h('div', 'abs', world, ico('x', 64, K.gd2, 4)); px(qx, 858, 527, 64, 64); show(qx, T('g23', '没这么做') - 0.3, { y: 0, s: 1.4, d: 0.35 });
+  fadeOut([queue, qx], T('g24') - 0.1, 0.35);
+  // 一发现是同一份：Carol 立刻收到写冲突（真实回显）
+  const bolt = h('div', 'abs', world, ico('bolt', 64, K.red, 3)); px(bolt, 740, 450, 64, 64);
+  show(bolt, T('g24', '同一份') - 0.3, { y: -10, s: 0.6, d: 0.35 }); sfx('error', T('g24', '同一份') - 0.1, { g: 0.6 });
+  to(cSpan, T('g25', '错误') - 0.3, { borderColor: K.red, backgroundColor: K.redl, duration: 0.35 });
+  const ce = term(world, 150, 650, 1270, 150, 'mongosh · Carol', { fs: 26, lh: 40 });
+  show(ce.c, T('g25', '收到') - 0.4, { y: 12, d: 0.45 });
+  ce.out(T('g25', '错误') - 0.2, '{ <span class="k">\'Carol 的错误\'</span>: <span class="s" style="color:#970606">\'WriteConflict\'</span>, <span class="k">\'错误标签\'</span>: [ <span class="s tl">\'TransientTransactionError\'</span> ] }');
+  const glW = gl(world, 1460, 330, '写冲突', '两个事务改同一份文档，<br>后来的那个立刻出错', { cls: 'r' });
+  show(glW, T('g25', '写冲突') - 0.3, { x: 14, y: 0, d: 0.45 });
+  to(ce.c.querySelector('.tl') || ce.body, T('g26', '标签') - 0.2, { backgroundColor: K.yell, duration: 0.35 });
+  const lab = tg(world, 174, 812, '这个标签：整个事务可以重来', 'b'); css(lab, { fontSize: '28px', color: K.yeld }); show(lab, T('g26', '整个') - 0.3, { y: 8, d: 0.4 });
+  // Alice 提交（44）；Carol 把整个事务重做一遍（45），成功（G04）
+  const aC = h('div', 'abs', world); px(aC, 950, 342, 200, 54); css(aC, { background: K.spring, border: '2px solid ' + K.forest, borderRadius: '10px', font: '700 26px/50px "Sans SC"', textAlign: 'center', color: K.ink }); aC.textContent = '提交';
+  show(aC, T('g27', '提交') - 0.3, { x: -14, y: 0, d: 0.4 });
+  to(aSpan, T('g27', '提交') - 0.2, { borderStyle: 'solid', duration: 0.3 });
+  const cR = h('div', 'abs', world); px(cR, 1170, 532, 250, 54); css(cR, { background: K.spring, border: '2px solid ' + K.forest, borderRadius: '10px', font: '700 26px/50px "Sans SC"', textAlign: 'center', color: K.ink }); cR.textContent = '重做事务 · 成功';
+  show(cR, T('g27', '重做') - 0.2, { x: -14, y: 0, d: 0.4 });
+  const ok = h('div', 'abs', world, ico('check', 50, K.forest, 4)); px(ok, 1430, 534, 50, 50); show(ok, T('g27', '成功') - 0.2, { y: 0, s: 1.3, d: 0.35 });
+  pt(world, 632, 524, 156, 70, T('g28', '排队') - 0.2, T('g28', '重来') - 0.3, K.red);
+  pt(world, 1162, 524, 266, 70, T('g28', '重来') - 0.2, T('g36') - 0.2);
+  // 乐观并发：先不排队，撞上了再让一方重来
+  fadeOut([ce.c, lab], T('g28') - 0.3, 0.4);
+  const opt = h('div', 'abs', world); px(opt, 150, 700, 1650); css(opt, { font: '700 44px "Sans SC"', color: K.ink });
+  opt.innerHTML = '乐观并发<span style="font-weight:500;font-size:34px;color:#3D4F58;margin-left:28px">先不排队，撞上了再让一方重来</span>';
+  show(opt, T('g28', '乐观') - 0.4, { y: 12, d: 0.5 });
+  // 章末：mongod 突然被杀
+  const tK = T('g36', '被杀') - 0.3;
+  const kill = h('div', 'abs', world); px(kill, 760, 800, 400, 110); css(kill, { background: '#fff', border: '3px solid ' + K.ink, borderRadius: '12px' });
+  kill.innerHTML = `<div style="position:absolute;left:24px;top:28px;font:700 40px Mono;color:${K.ink}">mongod</div>`;
+  show(kill, T('g36') - 0.1, { y: 12, d: 0.45 });
+  const kb = h('div', 'abs', kill, ico('bolt', 60, K.red, 3)); css(kb, { right: '24px', top: '24px' });
+  show(kb, tK, { y: -10, s: 0.6, d: 0.35 });
+  beat(world, T('g1', '同时') - 0.1, 712, 392, 496, 260, 1.2);
+  beat(world, T('g5', '不接受') + 0.2, 166, 670, 1600, 46, 1.0, K.red);
+  beat(world, T('g22', 'Carol') - 0.1, 140, 520, 1300, 80, 1.0, K.gb);
+  beat(world, T('g27', '提交') - 0.1, 140, 320, 1300, 80, 1.0);
+  beat(world, T('g8', '提交') + 0.3, 140, 430, 1210, 80, 1.0);
+  beat(world, T('g9', '同一个') - 0.1, 412, 304, 676, 70, 1.0, K.blue);
+  beat(world, T('g13', '哪些') - 0.1, 140, 250, 600, 420, 1.0, K.blue);
+  beat(world, T('g14', '之后') - 0.1, 1430, 240, 360, 330, 1.0, K.gb);
+  beat(world, Tend('g21') + 0.1, 140, 320, 1300, 80, 1.0);
+  beat(world, T('g5a', '维护') - 0.1, 552, 782, 876, 136, 1.2);
+  beat(world, T('g6', '4096') - 0.1, 140, 270, 1210, 380, 1.2, K.gb);
+  beat(world, T('g7', '看') - 0.1, 412, 250, 330, 110, 1.2, K.blue);
+  beat(world, T('g8', 'Alice') - 0.1, 612, 410, 300, 100, 1.0);
+  beat(world, T('g8', '提交') - 0.1, 612, 410, 300, 100, 1.2);
+  beat(world, T('g10', '事务外') - 0.1, 140, 600, 1210, 70, 1.0, K.gb);
+  beat(world, T('g10', '43') - 0.1, 900, 570, 300, 100, 1.2);
+  beat(world, T('g14', '跳过') - 0.1, 1462, 302, 296, 96, 1.0, K.gb);
+  beat(world, T('g14b', '读到') - 0.1, 1462, 462, 296, 96, 1.2, K.blue);
+  beat(world, Tend('g19a') + 0.1, 650, 242, 700, 56, 1.2);
+  beat(world, T('g21', '改了') + 0.3, 412, 334, 536, 70, 1.2);
+  beat(world, T('g22', '也要') - 0.1, 140, 520, 1300, 80, 1.2, K.gb);
+  beat(world, T('g23', 'Alice') - 0.1, 412, 334, 536, 70, 1.0);
+  beat(world, T('g23', '没这么做') + 0.2, 782, 520, 216, 78, 1.0, K.red);
+  beat(world, T('g24', '同一份') - 0.3, 140, 320, 1300, 290, 1.0, K.red);
+  beat(world, Tend('g25') + 0.1, 142, 642, 1286, 166, 1.2, K.red);
+  beat(world, T('g26', '整个') - 0.1, 166, 712, 1200, 44, 1.0, K.yeld);
+  beat(world, T('g27', '一遍') - 0.1, 140, 520, 1300, 80, 1.0);
+  beat(world, Tend('g28') + 0.1, 142, 692, 1300, 70, 1.2);
+  to(kill, tK + 0.2, { backgroundColor: K.gl2, borderColor: K.gb, duration: 0.4 });
 });

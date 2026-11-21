@@ -9,7 +9,7 @@
     "zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"
   },
   "stage": "preview",
-  "next": "等 WaterRun 看预览 r3（out/zh/preview-r3.mp4）的意见；之后选封面并按文档页风格重做（不用阴影与渐变），再出正式片",
+  "next": "等 WaterRun 看预览 r4（out/zh/preview-r4.mp4）的意见；意见不多就直接出正式片与封面",
   "credits": {
     "planner": "WaterRun",
     "models": [

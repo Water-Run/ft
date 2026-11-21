@@ -5,177 +5,123 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?v=A|B|C 选方向（审片预选，选定后只留一个）。kit/tools/covers.js 按 2 倍像素出图。
-     立体：图形是等轴测的方块（顶面、正面、侧面三种明度），在 SVG 里按坐标逐面画出；大标题在后面叠 8 层错开 1 像素的同色系字做出厚度。全部平涂，不用阴影与渐变（flat: true）；文字不做变形，保证缩略图可读。底色与字色取 MongoDB 文档页（白底、#001E2B）。
-     结构与数字全部取自 research/FACTS.md：A03 A04（47 / 13 字节）、B03 B04（集合 4 个叶页、偏移与大小）、B06（姓名索引 15 个叶页）、B07（_id 索引 3 个叶页）、
-     C01 C02（4096 → 1）、D04 D07（第 2 个叶页写到 98304，文件 96 KB → 132 KB）。底部约 15% 不放文字。 */
-  :root { --paper: #FFFFFF; --ink: #001E2B; --hair: #E8EDEB; --slate: #001E2B; --forest: #00684A; --spring: #00ED64; --ever: #023430; --mint: #71F6BA; --gd1: #5C6C75; }
+  /* 投稿封面（第 4 轮重做）：?r=169 → 1920×1080，?r=43 → 1600×1200。kit/tools/covers.js 按 2 倍像素出图。
+     做法同本系列前几集：强色底、产品名做特大字、一句点题、右边一个大的立体实物。底色取 MongoDB 的深常青 #001E2B，
+     底纹是 Alice 那 47 个字节（A04）的十六进制，压得很淡；立体是三棵等轴测的树，立在三块文件板上，叶页数照实测（B03 B06 B07：4、3、15），
+     Alice 所在的叶页亮绿，姓名索引第 1 页到集合树第 2 页一条发光的查找路径（C02）。全部平涂，不用阴影与渐变（flat: true）；文字不变形，缩略图可读。不放产品标志。 */
+  :root { --bg: #001E2B; --bg2: #023430; --spring: #00ED64; --mint: #71F6BA; --white: #FFFFFF; --mist: #C1C7C6; }
   html, body, #stage { width: var(--W); height: var(--H); margin: 0; }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
-  #stage { position: relative; background: var(--paper); color: var(--ink); overflow: hidden; }
+  #stage { position: relative; background: var(--bg); color: var(--white); overflow: hidden; }
   svg { position: absolute; left: 0; top: 0; }
-  .txt { position: absolute; }
-  .part { font: 700 34px "Mono"; letter-spacing: .14em; color: var(--forest); }
-  .part b { display: inline-block; width: 46px; height: 6px; background: var(--spring); vertical-align: middle; margin-right: 18px; }
-  .ask { font: 600 52px/1.2 "Sans SC"; color: var(--ink); }
-  .big { font: 900 200px/1 "Sans SC"; letter-spacing: -.02em; color: var(--ink); white-space: nowrap; }
-  .big .no { color: var(--forest); }
-  /* 标题的立体：同一行字在后面叠 8 层、逐层错开 1 像素，颜色由浅到深（平涂，不用阴影） */
-  .big.ext { color: #C9D3CC; } .big.ext.deep { color: #AEB9B2; }
-  .big.ext::before { content: attr(data-t); }
-  .sub { font: 700 72px/1.05 "Serif SC"; color: var(--forest); white-space: nowrap; }
-  .chip { font: 600 34px/1.3 "Sans SC"; color: var(--ink); background: #fff; border: 2px solid var(--hair); border-left: 10px solid var(--spring); padding: 14px 22px; border-radius: 6px; white-space: nowrap; }
-  .chip em { font-style: normal; color: var(--forest); font-family: "Inter", "Sans SC"; font-weight: 800; }
-  .lab { font-family: "Sans SC"; font-weight: 600; fill: var(--ink); }
-  .labm { font-family: "Mono"; font-weight: 700; fill: var(--forest); }
+  .txt { position: absolute; white-space: nowrap; }
+  .tex { position: absolute; left: -40px; top: -20px; font: 600 30px/52px "Mono"; color: #0A3340; white-space: pre; letter-spacing: .08em; }
+  .part { font: 800 40px "Mono"; letter-spacing: .1em; color: var(--bg); background: var(--spring); padding: 6px 22px; border-radius: 8px; }
+  .ask { font: 600 54px/1.2 "Sans SC"; color: var(--white); }
+  .no { font: 900 150px/1 "Sans SC"; color: var(--white); letter-spacing: -.01em; }
+  .no i { font-style: normal; font-family: "Inter"; font-weight: 900; }
+  .mdb { font: 900 192px/1 "Inter"; color: var(--spring); letter-spacing: -.035em; }
+  .sub { font: 700 64px/1.1 "Serif SC"; color: var(--mint); }
+  .fact { font: 600 34px/1.4 "Mono"; color: var(--mist); }
+  .fact b { color: var(--spring); font-weight: 800; }
+  .lab { font-family: "Sans SC"; font-weight: 700; fill: #FFFFFF; }
+  .labm { font-family: "Mono"; font-weight: 700; fill: #71F6BA; }
 </style>
 </head>
 <body>
 <div id="stage"></div>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', V = (q.get('v') || 'A').toUpperCase(), R43 = q.get('r') === '43';
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', R43 = q.get('r') === '43';
   document.documentElement.className = (R43 ? 'r43' : 'r169') + ' ' + lang;
   const W = R43 ? 1600 : 1920, H = R43 ? 1200 : 1080, stage = document.getElementById('stage');
   const NS = 'http://www.w3.org/2000/svg';
+  const html = (cls, x, y, inner) => { const d = document.createElement('div'); d.className = 'txt ' + cls; d.style.left = x + 'px'; d.style.top = y + 'px'; d.innerHTML = inner; stage.appendChild(d); return d; };
+
+  // 底纹：Alice 的 47 个字节（A04），一行行铺满，压得很淡
+  const HEX = '2f 00 00 00 07 5f 69 64 00 6a fa 6c a2 6f 27 50 6c fb 0a 4e 81 02 6e 61 6d 65 00 06 00 00 00 41 6c 69 63 65 00 10 61 67 65 00 2a 00 00 00 00 ';
+  const tex = document.createElement('div'); tex.className = 'tex'; tex.setAttribute('data-bleed', ''); tex.setAttribute('data-overlap-ok', '');
+  tex.textContent = Array.from({ length: 26 }, (_, i) => (HEX + HEX).slice((i * 9) % 141, (i * 9) % 141 + 150)).join('\n');
+  stage.appendChild(tex);
+
   const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('width', W); svg.setAttribute('height', H); stage.appendChild(svg);
   const el = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
-  const html = (cls, x, y, inner, style = '') => { const d = document.createElement('div'); d.className = 'txt ' + cls; d.style.cssText = `left:${x}px;top:${y}px;` + style; d.innerHTML = inner; stage.appendChild(d); return d; };
 
-  // 二等角投影：x 轴向右略下，y 轴向左下（朝向观众），z 向上。先在模型坐标里摆好全部方块，再按投影后的包围盒缩放、平移进安全区（fit）
-  let O = [0, 0], K = 1; const AX = 0.94, AY = 0.26, BX = 0.52, BY = 0.40;
+  // 二等角投影：x 向右略下，y 向左下（朝向观众），z 向上
+  let O = [0, 0], K = 1; const AX = 0.94, AY = 0.30, BX = 0.56, BY = 0.42;
   const P = (x, y, z) => [O[0] + K * (x * AX - y * BX), O[1] + K * (x * AY + y * BY - z)];
   const pts = (a) => a.map((p) => P(...p).map((v) => v.toFixed(1)).join(',')).join(' ');
-  // 色组：顶面、正面（y+d）、侧面（x+w）、描边
+  // 色组：顶面、正面、侧面、描边
   const C = {
-    white: ['#FFFFFF', '#E9EEEA', '#D6DDD8', '#AEB9B2'],
-    pale:  ['#F1F5F1', '#DDE4DE', '#C9D2CB', '#AEB9B2'],
-    mint:  ['#E3FCF7', '#C0FAE6', '#A6EFD3', '#71C9A6'],
-    green: ['#00ED64', '#00B84D', '#00A35C', '#00684A'],
-    dark:  ['#0B3B3A', '#023430', '#001E2B', '#001E2B'],
-    ghost: ['rgba(227,252,247,.55)', 'rgba(227,252,247,.35)', 'rgba(227,252,247,.25)', '#4FA07F'],
+    slab:  ['#0B4A45', '#063A36', '#032B2A', '#0F5F57'],
+    white: ['#FFFFFF', '#D9E3DF', '#B9C8C2', '#E8EDEB'],
+    green: ['#00ED64', '#00B84D', '#00964A', '#71F6BA'],
+    root:  ['#71F6BA', '#3CCB8A', '#20A86D', '#C0FAE6'],
   };
   const boxes = [];
-  const box = (x, y, z, w, d, h, col, layer = 1) => boxes.push({ x, y, z, w, d, h, col, layer });
-  function fit(rect, extra = []) {
+  const box = (x, y, z, w, d, h, col, layer) => boxes.push({ x, y, z, w, d, h, col, layer });
+  function fit(rect) {
     O = [0, 0]; K = 1; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-    const add = (p) => { const [u, v] = P(...p); x0 = Math.min(x0, u); x1 = Math.max(x1, u); y0 = Math.min(y0, v); y1 = Math.max(y1, v); };
-    for (const b of boxes) for (const dx of [0, b.w]) for (const dy of [0, b.d]) for (const dz of [0, b.h]) add([b.x + dx, b.y + dy, b.z + dz]);
-    extra.forEach(add);
+    for (const b of boxes) for (const dx of [0, b.w]) for (const dy of [0, b.d]) for (const dz of [0, b.h]) { const [u, v] = P(b.x + dx, b.y + dy, b.z + dz); x0 = Math.min(x0, u); x1 = Math.max(x1, u); y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
     const [rx, ry, rw, rh] = rect; K = Math.min(rw / (x1 - x0), rh / (y1 - y0));
     O = [rx + (rw - K * (x1 - x0)) / 2 - K * x0, ry + (rh - K * (y1 - y0)) / 2 - K * y0];
   }
-  function drawBoxes() {
-    boxes.sort((a, b) => a.layer - b.layer || (a.y + a.d) - (b.y + b.d) || a.x - b.x || a.z - b.z);
-    for (const b of boxes) {
-      const [t, f, s, k] = C[b.col], { x, y, z, w, d, h } = b, dash = b.col === 'ghost' ? '5 4' : '';
-      const face = (a, fill) => el('polygon', { points: pts(a), fill, stroke: k, 'stroke-width': 1.6, 'stroke-dasharray': dash, 'stroke-linejoin': 'round' });
+  function drawBoxes(filter) {
+    const list = boxes.filter(filter).sort((a, b) => a.layer - b.layer || (a.y + a.d) - (b.y + b.d) || a.x - b.x || a.z - b.z);
+    for (const b of list) {
+      const [t, f, s, k] = C[b.col], { x, y, z, w, d, h } = b;
+      const face = (a, fill) => el('polygon', { points: pts(a), fill, stroke: k, 'stroke-width': 1.4, 'stroke-linejoin': 'round' });
       face([[x + w, y, z], [x + w, y + d, z], [x + w, y + d, z + h], [x + w, y, z + h]], s);
       face([[x, y + d, z], [x + w, y + d, z], [x + w, y + d, z + h], [x, y + d, z + h]], f);
       face([[x, y, z + h], [x + w, y, z + h], [x + w, y + d, z + h], [x, y + d, z + h]], t);
     }
-    boxes.length = 0;
   }
   const line = (a, b, attrs) => { const [x1, y1] = P(...a), [x2, y2] = P(...b); return el('line', { x1, y1, x2, y2, ...attrs }); };
   const text = (xy, s, cls, size, anchor = 'start') => { const t = el('text', { x: xy[0], y: xy[1], class: cls, 'font-size': size, 'text-anchor': anchor }); t.textContent = s; return t; };
 
-  // 共同的文字栏：集数、问句、大标题、副题
-  function head(x, y, big) {
-    html('part', x, y, '<b></b>PART 6');
-    html('ask', x, y + 70, '一个数据库引擎<br>是如何实现的？');
-    const plain = big.replace(/<[^>]+>/g, '');
-    for (let k = 8; k >= 1; k--) { const d = html('big ext' + (k > 4 ? ' deep' : ''), x - 6 + k, y + 220 + k, ''); d.dataset.t = plain; }
-    html('big', x - 6, y + 220, big);
-    html('sub', x, y + 452, 'MongoDB 的 WiredTiger');
+  // 三块文件板，每块上立一棵树：集合（4 个叶页，第 2 个是 Alice）、_id 索引（3 个）、姓名索引（15 个，第 1 个是 Alice）
+  const L = 600, D = 120, GAP = 330, ZR = 210, LH = 120;
+  function tree(g, y, leaves) {
+    box(0, y, 0, L, D, 22, 'slab', g * 10);
+    const gap = 10, total = leaves.reduce((a, l) => a + l.w, 0) + gap * (leaves.length - 1);
+    let x = (L - total) / 2; const tops = [];
+    for (const l of leaves) { box(x, y + 18, 22, l.w, 84, l.h, l.hi ? 'green' : 'white', g * 10 + 1); tops.push([x + l.w / 2, y + 60, 22 + l.h]); x += l.w + gap; }
+    box(L / 2 - 46, y + 28, 22 + ZR, 92, 64, 30, 'root', g * 10 + 2);
+    return { tops, root: [L / 2, y + 60, 22 + ZR], y, g };
+  }
+  const coll = tree(1, 0, [{ w: 150, h: LH }, { w: 150, h: LH, hi: true }, { w: 80, h: LH * 0.62 }, { w: 120, h: LH * 0.85 }]);
+  const idx = tree(2, GAP, [{ w: 170, h: LH * 0.7 }, { w: 110, h: LH * 0.7 }, { w: 150, h: LH * 0.7 }]);
+  const name = tree(3, 2 * GAP, Array.from({ length: 15 }, (_, i) => ({ w: 30, h: LH * 0.6, hi: i === 0 })));
+  fit(R43 ? [560, 720, 820, 430] : [1100, 230, 590, 720]);
+  // 由后往前：每一组先画板与连线，再画方块（连线在方块后面）
+  const wire = { stroke: '#4F8A7D', 'stroke-width': 2 };
+  for (const t of [coll, idx, name]) {
+    drawBoxes((b) => b.layer === t.g * 10);
+    for (const p of t.tops) line(t.root, p, wire);
+    drawBoxes((b) => b.layer > t.g * 10 && b.layer < t.g * 10 + 10);
+  }
+  // Alice 的路径：姓名索引根页 → 第 1 页 →（2050）→ 集合树根页 → 第 2 页
+  const g = { stroke: '#00ED64', 'stroke-width': 9, 'stroke-linecap': 'round', fill: 'none' };
+  line(name.root, name.tops[0], g); line(coll.root, coll.tops[1], g);
+  const [ax, ay] = P(...name.tops[0]), [bx, by] = P(...coll.root);
+  el('path', { d: `M${ax},${ay - 6} C${ax - 120},${ay - 260} ${bx - 260},${by + 40} ${bx - 4},${by + 6}`, ...g, 'stroke-dasharray': '2 18' });
+  text([ax - 14, ay - 22], 'Alice', 'labm', 38, 'end');
+  const [cx, cy] = P(...coll.tops[1]); text([cx + 34, cy - 26], '2050', 'labm', 44);
+  for (const [t, s, n] of [[coll, '集合 users', '4 个叶页'], [idx, '_id 索引', '3 个叶页'], [name, '姓名索引', '15 个叶页']]) {
+    const [x0, y0] = P(L, t.y + D / 2, 11); text([x0 + 22, y0 + 4], s, 'lab', 34); text([x0 + 22, y0 + 42], n, 'labm', 28);
   }
 
-  // ── A：三份文件，三棵树；Alice 的路径从姓名索引第 1 页到集合第 2 页 ──
-  function coverA() {
-    head(110, 96, '不是 SQL');
-    const L = 560, D = 110, GAP = 300, ZR = 150;
-    // 一份文件 = 一块板；叶页立在板上，根页悬在上方。group 决定前后：后面的整组先画
-    function tree(g, y, leaves) {
-      box(0, y, 0, L, D, 18, 'pale', g * 10);
-      const gap = 8, total = leaves.reduce((a, l) => a + l.w, 0) + gap * (leaves.length - 1);
-      let x = (L - total) / 2; const tops = [];
-      for (const l of leaves) { box(x, y + 15, 18, l.w, 80, l.h, l.hi ? 'green' : 'white', g * 10 + 1); tops.push([x + l.w / 2, y + 55, 18 + l.h]); x += l.w + gap; }
-      box(L / 2 - 40, y + 25, 18 + ZR, 80, 60, 26, 'dark', g * 10 + 2);
-      return { tops, root: [L / 2, y + 55, 18 + ZR], y };
-    }
-    const coll = tree(1, 0, [{ w: 150, h: 62 }, { w: 150, h: 62, hi: true }, { w: 76, h: 34 }, { w: 120, h: 48 }]);
-    const idx = tree(2, GAP, [{ w: 170, h: 44 }, { w: 110, h: 44 }, { w: 150, h: 44 }]);
-    const name = tree(3, 2 * GAP, Array.from({ length: 15 }, (_, i) => ({ w: 28, h: 40, hi: i === 0 })));
-    fit([1080, 70, 560, 800], [[0, 2 * GAP + D, 0]]);
-    // 连线先画：根到叶
-    const wire = { stroke: '#9AA7A0', 'stroke-width': 1.8 };
-    for (const t of [coll, idx, name]) for (const p of t.tops) line(t.root, p, wire);
-    drawBoxes();
-    // Alice 的路径
-    const g = { stroke: '#00ED64', 'stroke-width': 8, 'stroke-linecap': 'round', fill: 'none' };
-    line(name.root, name.tops[0], g); line(coll.root, coll.tops[1], g);
-    const [ax, ay] = P(...name.tops[0]), [bx, by] = P(...coll.tops[1]);
-    el('path', { d: `M${ax},${ay} C${ax - 60},${ay - 300} ${bx - 160},${by - 140} ${bx},${by}`, ...g, 'stroke-dasharray': '1 16' });
-    text([ax - 6, ay - 22], 'Alice', 'labm', 34, 'end');
-    text([bx + 46, by - 30], '2050', 'labm', 40);
-    for (const [t, s, n] of [[coll, '集合 users', '4 个叶页'], [idx, '_id 索引', '3 个叶页'], [name, '姓名索引', '15 个叶页']]) {
-      const [x0, y0] = P(L, t.y + D / 2, 9); text([x0 + 20, y0 - 2], s, 'lab', 32); text([x0 + 20, y0 + 34], n, 'labm', 26);
-    }
-    html('chip', 110, 676, '按名字找 Alice：看 <em>1</em> 个索引键、<em>1</em> 份文档<br>不建索引，要看 <em>4096</em> 份');
-  }
+  // 文字：集数、系列问句、点题、产品名、副题、一行实测
+  const X = R43 ? 90 : 100, Y = R43 ? 70 : 92;
+  html('part', X, Y, 'PART 6');
+  html('ask', X, Y + 92, '一个数据库引擎是如何实现的？');
+  html('no', X - 4, Y + 186, '不是 <i>SQL</i>');
+  html('mdb', X - 12, Y + 344, 'MongoDB');
+  html('sub', X, Y + 566, '存储引擎 WiredTiger');
+  if (!R43) html('fact', X, Y + 690, '按名字找 Alice：看 <b>1</b> 个索引键、<b>1</b> 份文档<br>不建索引：要看 <b>4096</b> 份');
 
-  // ── B：No SQL；Alice 的 47 个字节按顺序排成三行，13 个字段名字节凸起 ──
-  function coverB() {
-    head(110, 96, '<span class="no">No</span> SQL');
-    // 47 字节的含义（A04）：0 长度 / 1 类型 / 2 字段名 / 3 值 / 4 结尾。每行 16 字节，三个字段名各自连成一段
-    const seg = [[0, 4], [1, 1], [2, 4], [3, 12], [1, 1], [2, 5], [3, 4], [3, 6], [1, 1], [2, 4], [3, 4], [4, 1]];
-    const kinds = []; for (const [k, n] of seg) for (let i = 0; i < n; i++) kinds.push(k);
-    const COLS = 16, S = 52, G = 8, ROWS = 3, RG = 240;
-    box(-26, -26, -20, COLS * (S + G) + 44, (ROWS - 1) * RG + S + 52, 20, 'pale', 0);
-    const cell = (i) => [(i % COLS) * (S + G), Math.floor(i / COLS) * RG];
-    kinds.forEach((k, i) => { const [cx, cy] = cell(i); box(cx, cy, 0, S, S, k === 2 ? 110 : 22, k === 2 ? 'green' : k === 1 ? 'dark' : k === 0 || k === 4 ? 'mint' : 'white', 1); });
-    fit([1060, 150, 720, 640]);
-    drawBoxes();
-    for (const [i, n, s] of [[5, 4, '_id'], [22, 5, 'name'], [38, 4, 'age']]) {
-      const [cx, cy] = cell(i), [x, y] = P(cx, cy + S / 2, 110);
-      text([x - 14, y + 6], s, 'labm', 34, 'end');
-    }
-    const [lx, ly] = P(COLS * (S + G), (ROWS - 1) * RG + S + 26, -20);
-    text([lx - 10, ly + 46], 'Alice 的一份文档 · BSON 47 字节', 'lab', 30, 'end');
-    html('chip', 110, 676, '47 个字节里，<em>13</em> 个是字段名<br>_id、name、age 跟着每份文档存一遍');
-  }
-
-  // ── C：集合文件按真实偏移画成 4 KB 一格；改年龄后第 2 个叶页整页写到文件末尾，旧位置不覆盖 ──
-  function coverC() {
-    head(110, 96, '不是 SQL');
-    const B = 30, D = 110, ZL = 250;
-    // 33 个 4 KB 块（D04：检查点之后 135,168 字节）：1–6 叶页 1；7–12 叶页 2 的旧位置；13–15 叶页 3；16–20 叶页 4；21 旧根页；24–29 叶页 2 的新位置；30 新根页
-    const kind = (i) => i === 0 ? 'pale' : i <= 6 ? 'white' : i <= 12 ? 'ghost' : i <= 20 ? 'white' : i === 21 ? 'ghost' : i <= 23 ? 'pale' : i <= 29 ? 'green' : i === 30 ? 'dark' : 'pale';
-    for (let i = 0; i < 33; i++) box(i * B, 0, 0, B - 4, D, 22, kind(i), 2);
-    // 树按键的顺序排在上方：叶页 1、2、3、4（宽度按在文件里占几块），根页在最上
-    const leaves = [[1, 6, 'white'], [24, 29, 'green'], [13, 15, 'white'], [16, 20, 'white']];
-    let x = 120; const tops = [];
-    for (const [a, b, c] of leaves) { const w = (b - a + 1) * B * 0.9; box(x, 15, ZL, w, 80, 36, c, 1); tops.push({ top: [x + w / 2, 55, ZL + 36], bot: [x + w / 2, 55, ZL], file: [((a + b + 1) / 2) * B - 2, 55, 22] }); x += w + 26; }
-    const rootX = 120 + (x - 26 - 120) / 2;
-    box(rootX - 45, 20, ZL + 150, 90, 70, 26, 'dark', 1);
-    fit([1040, 130, 760, 640]);
-    const wire = { stroke: '#9AA7A0', 'stroke-width': 1.8 };
-    for (const t of tops) line([rootX, 55, ZL + 150], t.top, wire);
-    for (const t of tops) line(t.bot, t.file, { ...wire, 'stroke-dasharray': '5 6' });
-    line([rootX, 55, ZL + 150], [30.5 * B - 2, 55, 22], { ...wire, 'stroke-dasharray': '5 6' });
-    drawBoxes();
-    // 旧位置 → 新位置
-    const [ax, ay] = P(9.8 * B, D, 0), [bx, by] = P(26.8 * B, D, 0);
-    el('path', { d: `M${ax},${ay + 8} C${ax + 60},${ay + 120} ${bx - 120},${by + 110} ${bx - 10},${by + 14}`, fill: 'none', stroke: '#00ED64', 'stroke-width': 8, 'stroke-linecap': 'round' });
-    el('polygon', { points: `${bx - 34},${by + 26} ${bx - 4},${by + 6} ${bx - 6},${by + 40}`, fill: '#00ED64' });
-    text([ax - 6, ay + 62], '旧页不覆盖', 'lab', 30, 'end');
-    text([bx - 20, by + 76], '整页写到文件末尾', 'lab', 30, 'middle');
-    const [fx, fy] = P(0, 0, 22); text([fx, fy - 18], '集合文件 · 4 KB 一格', 'labm', 24);
-    html('chip', 110, 676, 'Alice 过生日：42 → 43，只变 <em>1</em> 个字节<br>检查点整页重写 <em>24 KB</em>，文件 96 → 132 KB');
-  }
-
-  ({ A: coverA, B: coverB, C: coverC }[V] || coverA)();
   const sample = stage.textContent + '0123456789';
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Serif SC"', sample), document.fonts.load('700 40px "Mono"', sample), document.fonts.load('800 40px "Inter"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('700 40px "Serif SC"', sample), document.fonts.load('700 40px "Mono"', sample), document.fonts.load('900 40px "Inter"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

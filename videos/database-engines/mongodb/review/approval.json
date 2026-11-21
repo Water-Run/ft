@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "52c54b6937371e1cab8c5299e7b120cd0faf5ffc72ca2de8a283a314d3bd3933",
+      "content_sha256": "a197b3ddd39dd6f92bed0313bcfff77cb909a7168d1c08729495f5f3cd8b9dc8",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-21T09:05:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-21 第 3 稿 r3 修订：o4、o11 两句、第 10 章拆出 11「不是 SQL」与问题文字、PART 7 卡，策划者选择「确认，按这一稿配音」；读法另按会话原话「SQL的读法我更喜欢念成sequel」「SQL前面加一个No NoSequel」"
+      "confirmed_at": "2026-11-21T15:40:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-21 第 4 稿开场：o8、o12 用策划者原话，读法挪到开场，新增 o15–o17，策划者选择「确认，按这一稿配音」；其后策划者授权「文案自主修改, 优化, 可以不用我确认」"
     }
   }
 }

@@ -130,6 +130,41 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 /* 片尾 */
 .credits-term { white-space: pre; }
 
+/* ── 第 4 轮：本章的问题（页顶下方一行，整章不变）、术语注解、贴着实物的标签、文档卡、页、根页 ── */
+.chrome .qt { position: absolute; left: 120px; top: 116px; font: 500 44px/1.2 "Serif SC"; color: var(--forest); white-space: nowrap; }
+.gl { position: absolute; border-left: 5px solid var(--g1); padding: 2px 0 4px 18px; white-space: nowrap; }
+.gl b { display: block; font: 700 30px/1.35 "Inter", "Sans SC"; color: var(--forest); }
+.gl span { display: block; font: 500 26px/1.45 "Inter", "Sans SC"; color: var(--gd2); }
+.gl.r { border-left-color: var(--red); } .gl.r b { color: var(--redd); }
+.tg { position: absolute; font: 500 25px/1.3 "Inter", "Sans SC"; color: var(--gd2); white-space: nowrap; }
+.tg.m { font: 500 24px/1.3 "Mono", "Sans SC"; }
+.tg.b { font-weight: 700; color: var(--ink); }
+.tg.g { color: var(--forest); font-weight: 700; }
+.tg.r { color: var(--redd); font-weight: 700; }
+.tg.big { font: 700 40px/1.2 "Inter", "Sans SC"; color: var(--ink); }
+.tg.tick { font: 500 22px "Mono"; color: var(--gd1); }
+.doc { position: absolute; background: #fff; border: 2px solid var(--gl1); border-radius: 12px; padding: 14px 26px 16px; font: 500 30px/1.5 "Mono", "Sans SC"; color: var(--ink); white-space: pre; }
+.doc .dt { font: 600 22px "Inter", "Sans SC"; color: var(--gd1); margin-bottom: 4px; }
+.doc .dl { padding-left: 1.2em; border-radius: 6px; }
+.doc.on { border-color: var(--g1); background: var(--mint); }
+.doc.ghost { border-style: dashed; color: var(--gb); }
+.pgx { position: absolute; background: #fff; border: 2px solid var(--gl1); border-radius: 8px; overflow: hidden; }
+.pgx .ph { position: absolute; left: 0; right: 0; top: 0; height: 40px; padding-left: 14px; background: var(--gl3); border-bottom: 1.5px solid var(--gl2); font: 600 22px/38px "Mono", "Sans SC"; color: var(--gd2); white-space: nowrap; }
+.pgx .pb { position: absolute; left: 12px; right: 12px; top: 40px; bottom: 0; }
+.pgx .pr { position: absolute; left: 0; right: 0; background: var(--gl2); border-radius: 3px; }
+.pgx.on { border-color: var(--g1); }
+.pgx.on .ph { background: var(--mint); color: var(--forest); }
+.rootpg { position: absolute; background: var(--ink); color: #fff; border-radius: 8px; font: 600 24px/1 "Mono", "Sans SC"; display: flex; align-items: center; justify-content: center; white-space: nowrap; }
+.row { position: absolute; font: 500 24px/1 "Mono", "Sans SC"; color: var(--ink); white-space: nowrap; }
+
+/* PART 卡：左上是系列名 */
+.chapter.part .nav { width: 640px; }
+.chapter.part .nav .it, .chapter.part .nav .sel { width: 640px; }
+.chapter.part .nav .it { font-size: 34px; }
+.chapter.part .nav .it span { font-size: 28px; }
+.chapter .nav .nk2 { position: absolute; left: 70px; top: 92px; font: 700 40px/1.35 "Sans SC"; color: var(--forest); white-space: nowrap; }
+.chapter.part .main { left: 760px; }
+
 /* 说明牌：标题加一行小字 */
 .tile { position: absolute; background: #fff; border: 2px solid var(--gl2); border-radius: 14px; padding: 16px 24px; box-sizing: border-box; white-space: nowrap; color: var(--ink); }
 .tile .tt { font: 700 32px/1.25 "Inter", "Sans SC"; }
@@ -157,3 +192,11 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 /* 文档页的正文段落（导语） */
 .lede { position: absolute; font: 500 34px/1.5 "Inter", "Sans SC"; color: var(--ink); white-space: nowrap; }
 .lede a { color: var(--blue); text-decoration: underline; text-underline-offset: 6px; }
+/* 开场的小表（前五集每张卡里同一张 users 表） */
+.mt { position: absolute; border: 1.5px solid var(--gl1); margin: 0 -1.5px -1.5px 0; padding-left: 10px; font: 500 20px/37px "Mono"; color: var(--gd2); background: #fff; white-space: nowrap; }
+.mt.h { background: var(--gl3); font-weight: 700; color: var(--ink); }
+.mt.al { color: var(--ink); font-weight: 700; }
+.ag { display: inline-block; }
+.gl.lg { border-left-width: 6px; padding-left: 22px; }
+.gl.lg b { font-size: 38px; }
+.gl.lg span { font-size: 30px; }

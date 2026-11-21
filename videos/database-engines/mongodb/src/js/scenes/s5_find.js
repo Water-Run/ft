@@ -1,109 +1,151 @@
-// 第 05 章 查：右边集合树（根 + 4 个叶页），右下是真实的 mongosh 回显（out_04）。左边先是集合树里按 RecordId 的顺序：
-// 没有姓名索引时一行行比对 4096 份（COLLSCAN）；建姓名索引（name_1）后，左边原地换成索引树：Alice 是第一项 → 2050 → 集合树根页的分界 → 第二个叶页 → 47 个字节（FETCH ← IXSCAN，1 / 1）。
-// 事实：C01 C02 C05 C06 B03 B05 B06；分界取自检查点写出的树（B03），回显抄自 research/lab/out_04_find.txt；其他人的名字是 UserNNNNN-abc… 的演示串（环境与版本）。
+// 第 05 章 查（第 4 轮重做）：左边姓名索引（15 个叶页），右边集合树（4 个叶页），下面是 explain 的两行实测。
+// 没有索引：一条扫描线把集合树的叶页从头扫到尾，看过的文档数涨到 4096（COLLSCAN）→ 有了索引：索引里的键按字节排序，
+// Alice 的 41 排在别人的 55 前面，是第一项；从根页走到第一个叶页，键里接着 2050 → 拿着 2050 回到集合树：根页的分界一个个比过，
+// 落在第二个叶页，取出 47 个字节（FETCH ← IXSCAN：1 个键、1 份文档）。
+// 事实：C01（COLLSCAN 4096 → 1）、B05（集合树按 RecordId）、C06（键按字节比较：3c 41… / 3c 55…）、B06（姓名索引 15 个叶页，Alice 第一项，键末尾 2050）、
+//       B03（分界 1225 2449 3124）、C02（FETCH ← IXSCAN，1、1）、C05（从根页往下找）。
 scene('find', ({ root, s, c0 }) => {
   const world = h('div', 'world', root);
-  const cam = makeCamera(world);
+  makeCamera(world);
   const ov = overlay(world);
-  const ch = chrome(root, s, '05 查');
-  ch.sec(c0, '没有索引');
+  chrome(root, s, '05 查');
 
-  // ── 右：集合树 ──
-  const cp = h('div', 'panel', world); px(cp, 1000, 130, 780, 460);
-  const ct = h('div', 'abs', cp, '集合树 · 键是 RecordId'); css(ct, { left: '26px', top: '18px', font: '500 34px "Serif SC"', color: '#001E2B' });
-  const croot = pg(cp, 210, 92, 360, 70, '1 · 1225 · 2449 · 3124', 'root'); css(croot, { fontSize: '23px' });
-  const RNG = ['1–1224', '1225–2448', '2449–3123', '3124–4096'];
-  const cl = RNG.map((r, i) => pg(cp, 22 + i * 188, 250, 172, 96, r));
-  const csv = svg('svg', { class: 'ov', viewBox: '0 0 780 460' }, cp); css(csv, { width: '780px', height: '460px' });
-  cl.forEach((l, i) => svg('path', { d: `M390,162 L${22 + i * 188 + 86},250`, stroke: '#889397', 'stroke-width': 2, fill: 'none' }, csv));
-  show(cp, c0, { y: 16 });
-  figs(world, 1000, 604, 780, [[c0 + 0.5, '图 5-2', '集合树：根页记着三个分界', '实测：wt verify']], null);
+  // ── 右：集合树（B03） ──
+  const CR = { x: 1010, w: 790 };
+  const cTitle = tg(world, CR.x, 214, '集合树 · 按 RecordId 排', 'b'); css(cTitle, { fontSize: '32px' });
+  const cRoot = h('div', 'abs', world); px(cRoot, 1130, 270, 560, 84); css(cRoot, { background: K.ink, borderRadius: '10px' });
+  const SEP = ['1', '1225', '2449', '3124'];
+  const sepEls = SEP.map((k, i) => { const e = h('div', 'abs', cRoot, k); css(e, { left: 18 + i * 136 + 'px', top: '18px', width: '124px', height: '48px', borderRadius: '6px', font: '700 30px/48px "Mono"', color: '#fff', textAlign: 'center' }); return e; });
+  const LV = ['1–1224', '1225–2448', '2449–3123', '3124–4096'];
+  const CLX = (i) => CR.x + i * 200, CLW = 186, CLY = 450, CLH = 200;
+  const cLeaves = LV.map((r, i) => pageBox(world, CLX(i), CLY, CLW, CLH, r, { n: 6, rh: 14, gap: 12 }));
+  const cLinks = cLeaves.map((p, i) => link(ov, [[1130 + 18 + i * 136 + 62, 354], [CLX(i) + CLW / 2, CLY]], 'ink', { w: 2 }));
+  show(cTitle, c0, { y: 8, d: 0.45 }); show(cRoot, c0 + 0.1, { y: 10, d: 0.45 });
+  cLeaves.forEach((p, i) => show(p.c, c0 + 0.3 + i * 0.08, { y: 12, d: 0.45 })); cLinks.forEach((p, i) => draw(p, c0 + 0.4 + i * 0.06, 0.5));
+  to(cLeaves.map((p) => p.head), T('d2', 'RecordId') - 0.2, { backgroundColor: K.mint, color: K.forest, duration: 0.35 });
+  to(cLeaves.map((p) => p.head), T('d3') - 0.1, { backgroundColor: K.gl3, color: K.gd2, duration: 0.35 });
 
-  // ── 左：集合树里的顺序（按 RecordId），名字不在顺序里 ──
-  const lp = h('div', 'panel', world); px(lp, 140, 130, 820, 460);
-  const lt = h('div', 'abs', lp, '集合树里的顺序'); css(lt, { left: '26px', top: '18px', font: '500 34px "Serif SC"', color: '#001E2B' });
-  const ROWS = [['1', 'User00001-abc…'], ['2', 'User00002-abc…'], ['3', 'User00003-abc…'], ['⋮', ''], ['2050', 'Alice'], ['⋮', ''], ['4096', 'User04096-abc…']];
-  const head = h('div', 'abs', lp); px(head, 26, 80, 768, 46); css(head, { background: '#F9FBFA', borderBottom: '2px solid #C1C7C6', font: '700 26px/44px "Inter", "Sans SC"', color: '#001E2B' });
-  head.innerHTML = '<span style="position:absolute;left:18px">RecordId</span><span style="position:absolute;left:220px">name</span>';
-  const rowE = ROWS.map(([k, n], i) => { const e = h('div', 'abs', lp); px(e, 26, 128 + i * 46, 768, 46); css(e, { borderBottom: '1.5px solid #E8EDEB', font: '500 26px/44px "Mono"', color: '#001E2B' }); e.innerHTML = `<span style="position:absolute;left:18px">${k}</span><span style="position:absolute;left:220px">${n}</span>`; return e; });
-  show(lp, c0, { y: 16 }); show(head, c0 + 0.2, { y: 8 }); rowE.forEach((e, i) => show(e, c0 + 0.3 + i * 0.06, { y: 8, d: 0.35 }));
-  const keyN = callout(world, 140, 676, 'note', '集合树的键是 1, 2, 3 … 4096；名字不在键里，排序帮不上忙', '按 RecordId 排序');
-  show(keyN, T('d2', 'RecordId') - 0.2, { y: 10 }); fadeOut(keyN, T('d5') - 0.2);
-  // d3：一份份比对：扫描框一行行往下，计数到 4096；右边叶页依次被翻
-  const t3 = T('d3');
-  const scan = h('div', 'abs', lp); px(scan, 24, 126, 772, 50); css(scan, { border: '4px solid #DB3030', borderRadius: '6px' });
-  set(scan, s.start, { autoAlpha: 0 }); appear(scan, t3);
-  const ys = [0, 1, 2, 3, 4, 5, 6].map((i) => i * 46);
-  ys.slice(1).forEach((y, i) => to(scan, t3 + (i + 1) * 0.4, { y, duration: 0.35, ease: 'power1.inOut' }));
-  const cnt = h('div', 'abs', lp, ''); px(cnt, 480, 26); css(cnt, { font: '700 28px "Mono", "Sans SC"', color: '#DB3030' });
-  set(cnt, s.start, { autoAlpha: 0 }); appear(cnt, t3);
-  stepTo(cnt, [[t3, 2.6, 0, 4096]], (v) => `比对了 ${Math.round(v)} 份`);
-  cl.forEach((l, i) => glow(l, t3 + i * 0.65, t3 + i * 0.65 + 0.6, { bg: '#FFEAE5', bd: '#DB3030', c: '#970606', rb: '#FFEAE5', rd: '#DB3030', rc: '#970606' }));
-  glow(rowE[4], t3 + 1.6, null, { bg: '#E3FCF7', bd: '#E8EDEB' });
-  vanish(scan, Tend('d4') + 0.4);
-  figs(world, 140, 604, 820, [[T('d1') + 0.3, '图 5-1', '没有姓名索引：从头到尾一份份比对', '实测：explain()']], T('d5') - 0.3);
+  // ── 左：姓名索引（先是「没有」） ──
+  const IR = { x: 140, w: 780 };
+  const iTitle = tg(world, IR.x, 214, '姓名索引', 'b'); css(iTitle, { fontSize: '32px' });
+  const none = h('div', 'abs', world); px(none, IR.x, 270, IR.w, 380); css(none, { border: '3px dashed ' + K.gb, borderRadius: '14px' });
+  const noneT = h('div', 'abs', none, '还没有建'); css(noneT, { left: 0, top: '160px', width: IR.w + 'px', textAlign: 'center', font: '700 40px "Sans SC"', color: K.gd1 });
+  show([iTitle, none], T('d1', '没有') - 0.2, { y: 10, d: 0.45 });
 
-  // 真实回显（out_04）：右下的 mongosh
-  const sh = term(world, 1000, 670, 780, 270, 'mongosh', { fs: 22 });
-  show(sh.c, T('d3') - 0.3, { y: 12 });
-  sh.cmd(T('d3') - 0.1, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).explain(…)');
-  sh.out(T('d4', 'MongoDB') - 0.45, "{ <span class=\"k\">'计划'</span>: <span class=\"s\">'COLLSCAN'</span>, <span class=\"k\">'返回'</span>: <span class=\"n\">1</span>,\n  <span class=\"k\">'看过的索引键'</span>: <span class=\"n\">0</span>, <span class=\"k\">'看过的文档'</span>: <span class=\"n\">4096</span> }");
-  const r4096 = ring(world, 1012, 780, 756, 68, T('d4', '4096') - 0.2, T('d5') - 0.1, '#DB3030');
-  to(cl, T('d5') - 0.2, { backgroundColor: '#FFFFFF', borderColor: '#C1C7C6', color: '#3D4F58', duration: 0.4 });
-  sh.clear(T('d5') - 0.1);
-  sh.cmd(T('d5') + 0.1, 'db.users.createIndex({ <span class="k">name</span>: <span class="n">1</span> })');
-  sh.out(T('d5') + 1.3, "<span class=\"s\">'name_1'</span>");
+  pt(world, 1000, 258, 808, 404, T('d1', '集合树') - 0.2, T('d2') + 0.3);
+  to(noneT, T('d2', '无关') - 0.2, { color: K.gd2, duration: 0.35 });
+  // ══ 没有索引：一份份翻（C01） ══
+  const tS0 = T('d3', '从头') - 0.2, tS1 = T('d3', '名字') + 0.3;
+  const scan = h('div', 'abs', world); px(scan, CLX(0) - 6, CLY + 46, CLW + 12, 22); css(scan, { border: '3px solid ' + K.blue, borderRadius: '6px', background: K.bluel, opacity: 0 });
+  F((t) => {
+    if (t < tS0 - 0.2 || t > tS1 + 0.5) { scan.style.opacity = 0; return; }
+    const p = clamp((t - tS0) / (tS1 - tS0)), step = Math.min(23, Math.floor(p * 24)), li = Math.floor(step / 6), ri = step % 6;
+    scan.style.opacity = t > tS1 ? String(Math.max(0, 1 - (t - tS1) / 0.5)) : '1';
+    scan.style.transform = `translate(${li * 200}px, ${ri * 26}px)`;
+  });
+  const exN = h('div', 'abs', world, '0'); px(exN, CR.x, 690); css(exN, { font: '800 80px "Inter"', color: K.blued });
+  const exT = tg(world, CR.x + 250, 716, '份文档看过', 'b'); css(exT, { fontSize: '32px', color: K.blued });
+  show([exN, exT], tS0 - 0.3, { y: 10, d: 0.4 });
+  stepTo(exN, [[tS0, tS1 - tS0, 0, 4096]], (v) => Math.round(v).toLocaleString('en-US'));
+  // 找到：她在第二个叶页里
+  const hit1 = h('div', 'abs', cLeaves[1].c); css(hit1, { left: '10px', right: '10px', top: 40 + 10 + 2 * 26 - 4 + 'px', height: '22px', borderRadius: '5px', background: K.spring });
+  show(hit1, T('d4', '找到') - 0.2, { y: 0, d: 0.35 });
+  // explain 的两行实测（下面）
+  const ex = term(world, 140, 790, 1660, 160, 'mongosh · explain("executionStats")', { fs: 26, lh: 40 });
+  show(ex.c, T('d4') - 0.2, { y: 14, d: 0.5 });
+  ex.out(T('d4', '看了') - 0.1, '没有索引：{ <span class="k">计划</span>: <span class="s">\'COLLSCAN\'</span>, <span class="k">返回</span>: <span class="n">1</span>, <span class="k">看过的索引键</span>: <span class="n">0</span>, <span class="k">看过的文档</span>: <span class="n">4096</span> }');
+  const tB = T('d5') - 0.2;
+  fadeOut([exN, exT, hit1], tB, 0.4);
 
-  // ── 建了姓名索引：左边原地换成索引树（B06），按字节排序，Alice 是第一项（C06） ──
-  ch.sec(T('d5') - 0.1, '走姓名索引');
-  hide([lt, head, ...rowE, cnt], T('d5') - 0.2, { y: -8, d: 0.4 });
-  const it = h('div', 'abs', lp, '姓名索引 name_1 · 键按字节排序'); css(it, { left: '26px', top: '18px', font: '500 34px "Serif SC"', color: '#001E2B' });
-  const iroot = pg(lp, 310, 84, 200, 64, '根页', 'root');
-  const il = []; for (let i = 0; i < 15; i++) il.push(pg(lp, 26 + i * 51, 200, 44, 84, ''));
-  const isv = svg('svg', { class: 'ov', viewBox: '0 0 820 460' }, lp); css(isv, { width: '820px', height: '460px' });
-  const iln = il.map((l, i) => svg('path', { d: `M410,148 L${26 + i * 51 + 22},200`, stroke: '#889397', 'stroke-width': 1.6, fill: 'none' }, isv));
-  show([it, iroot], T('d5') + 0.2, { y: 10 }); il.forEach((l, i) => show(l, T('d5') + 0.4 + i * 0.03, { y: 10, d: 0.35 }));
-  iln.forEach((p, i) => draw(p, T('d5') + 0.6 + i * 0.02, 0.4));
-  const lc = label(lp, 26, 294, '1 个根页 · 15 个叶页', 't-small'); show(lc, T('d5') + 1.0, { y: 6 });
-  il.forEach((l, i) => glow(l, T('d6', '字节') - 0.4 + i * 0.05, T('d7') + i * 0.03, { bg: '#E3FCF7', bd: '#00A35C' }));
-  // 第一个叶页的头几项（03 姓名索引的前几项）
-  const zoom = h('div', 'abs', lp); px(zoom, 26, 330, 768, 112); css(zoom, { background: '#F9FBFA', border: '1.5px solid #E8EDEB', borderRadius: '10px' });
-  const ents = [['"Alice" + 2050', '3c 41 6c 69 …'], ['"User00001-abc…" + 1', '3c 55 73 65 …']].map(([k, b], i) => { const e = h('div', 'abs', zoom); px(e, 16, 10 + i * 48, 736, 44); css(e, { font: '500 25px/44px "Mono"', color: '#001E2B', borderRadius: '6px', paddingLeft: '10px' }); e.innerHTML = `${k}<span style="position:absolute;left:470px;color:#5C6C75">${b}</span>`; return e; });
-  const zl = link(isv, [[48, 284], [48, 330]], 'dim', { w: 2 });
-  show(zoom, T('d7', 'User') - 0.3, { y: 10 }); show(ents[1], T('d7', 'User') - 0.1, { y: 8 }); show(ents[0], T('d7b', '第一项') - 0.4, { y: -8 });
-  arrowIn(zl, T('d7', 'User') - 0.3, 0.3);
-  const byt = callout(world, 140, 676, 'tip', '键按字节比较：<code>A</code> 是 0x41，<code>U</code> 是 0x55，A 在前', 'Alice 排第一');
-  show(byt, T('d7b') - 0.1, { y: 10 }); fadeOut(byt, T('d10') - 0.1);
-  hl(il[0], T('d7b', '第一项') - 0.3, Infinity, 'on'); sfx('pop', T('d7b', '第一项') - 0.3);
-  const ip1 = svg('path', { d: 'M410,148 L48,200', stroke: '#00ED64', 'stroke-width': 6, fill: 'none' }, isv); draw(ip1, T('d9'), 0.7);
-  glow(iroot, T('d9') + 0.1, T('d10'), { bg: '#00684A', bd: '#00ED64', rb: '#001E2B', rd: '#001E2B' });
-  glow(ents[0], T('d9', '找到她') - 0.3, null, { bg: '#00ED64', bd: '#00ED64' });
-  const ridN = callout(world, 140, 676, 'note', '键的末尾 3 个字节 <code>20 40 11</code> 就是 RecordId 2050', '名字后面接着编号');
-  show(ridN, T('d10', 'RecordId') - 0.4, { y: 10 }); fadeOut(ridN, T('d15') - 0.1);
-  figs(world, 140, 604, 820, [[T('d5') + 0.6, '图 5-1', '姓名索引：第一项是 Alice', '实测：dump_pages']], null);
+  // ══ 有了姓名索引（B06）：根页 + 15 个叶页；第一个叶页里 Alice 排第一（C06） ══
+  fadeOut(none, tB, 0.4);
+  const iRoot = h('div', 'rootpg', world, '根页'); px(iRoot, IR.x + IR.w / 2 - 90, 270, 180, 64); css(iRoot, { fontSize: '26px' });
+  const ILW = (IR.w - 14 * 6) / 15, ILY = 450;
+  const iLeaves = [], iLinks = [];
+  for (let k = 0; k < 15; k++) {
+    const lx = IR.x + k * (ILW + 6);
+    const l = h('div', 'abs', world); px(l, lx, ILY, ILW, 200); css(l, { background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '6px' });
+    for (let j = 0; j < 7; j++) { const ln = h('div', 'abs', l); css(ln, { left: '6px', right: '6px', top: 14 + j * 25 + 'px', height: '9px', background: K.gl2, borderRadius: '3px' }); }
+    iLeaves.push(l); iLinks.push(link(ov, [[IR.x + IR.w / 2, 334], [lx + ILW / 2, ILY]], 'ink', { w: 1.6 }));
+  }
+  show(iRoot, tB + 0.2, { y: 10, d: 0.45 });
+  iLeaves.forEach((l, k) => show(l, tB + 0.35 + k * 0.03, { y: 12, d: 0.4 })); iLinks.forEach((p, k) => draw(p, tB + 0.4 + k * 0.02, 0.5));
+  // 第一个叶页放大：键按字节排；Alice 的第一个字节是 41（A），别人是 55（U）
+  const KEYS = [['41', 'Alice', '2050', 1], ['55', 'User00001-…', '1', 0], ['55', 'User00002-…', '2', 0]];
+  // 放大的那一页叠在集合树上方（集合树这时还不用）
+  const zP = h('div', 'panel', world); px(zP, 140, 214, 780, 214); css(zP, { borderColor: K.g1, borderWidth: '3px' });
+  const zT = h('div', 'abs', zP, '第 1 个叶页 · 键按字节排'); css(zT, { left: '22px', top: '14px', font: '700 26px "Sans SC"', color: K.forest });
+  const zRows = KEYS.map(([b, n, r, a], i) => {
+    const e = h('div', 'abs', zP); css(e, { left: '22px', top: 58 + i * 50 + 'px', font: '600 28px/44px "Mono"', color: K.ink, whiteSpace: 'nowrap', padding: '0 10px', borderRadius: '6px' });
+    e.innerHTML = `<span style="color:${K.gb}">3c</span> <span class="b1" style="padding:0 6px;border-radius:4px">${b}</span>…  "${n}"  <span class="rid" style="padding:0 6px;border-radius:4px">${r}</span>`;
+    return e;
+  });
+  css(zP, { transformOrigin: '50% 100%' });
+  tl.fromTo(zP, { autoAlpha: 0, scaleY: 0.2, y: 236 }, { autoAlpha: 1, scaleY: 1, y: 0, duration: 0.6, ease: 'power3.out', immediateRender: true }, T('d6', '字节') - 0.5);
+  fadeOut([iTitle, iRoot], T('d6', '字节') - 0.5, 0.3);
+  to(iLeaves[0], T('d6', '字节') - 0.4, { borderColor: K.g1, duration: 0.3 });
+  const zl = lead(ov, [[160, 428], [IR.x + ILW / 2, ILY]], { color: 'accent', w: 2.5 }); draw(zl, T('d6', '字节') - 0.2, 0.4);
+  // 别人：User…，大写 U，55
+  to([zRows[1], zRows[2]].map((e) => e.querySelector('.b1')), T('d7', 'U') - 0.2, { backgroundColor: K.bluel, color: K.blued, duration: 0.35 });
+  to(zRows[0].querySelector('.b1'), T('d7b', 'A') - 0.2, { backgroundColor: K.mint2, color: K.forest, duration: 0.35 });
+  const cmp = tg(world, 700, 236, '<span style="font-family:Mono">41 &lt; 55</span><br>A 排在 U 前面', 'b'); css(cmp, { fontSize: '30px', lineHeight: '1.4' });
+  show(cmp, T('d7b', '前面') - 0.3, { x: 14, y: 0, d: 0.45 });
+  to(zRows[0], T('d7b', '第一项') - 0.2, { backgroundColor: K.mint, color: K.forest, duration: 0.35 });
+  pt(world, 152, 316, 620, 104, T('d7', 'User') - 0.2, T('d7b') - 0.1, K.blue);
+  pt(world, 152, 266, 620, 52, T('d7b', 'A') - 0.2, T('d9') - 0.3);
+  // 从根页走到第一个叶页
+  const ipath = link(ov, [[IR.x + IR.w / 2, 334], [IR.x + ILW / 2, ILY]], 'spring', { w: 7 });
+  fadeOut([zP, cmp, zl], T('d9') - 0.2, 0.4);
+  tl.to([iTitle, iRoot], { autoAlpha: 1, duration: 0.4 }, T('d9') - 0.1);
+  draw(ipath, T('d9', '根页') - 0.1, 0.6);
+  to(iLeaves[0], T('d9', '第一个') - 0.1, { backgroundColor: K.mint, duration: 0.35 });
+  // 这一项：键是 Alice 接 2050
+  const ent = h('div', 'abs', world); px(ent, 140, 690); css(ent, { font: '700 40px "Mono"', color: K.ink, background: '#fff', border: '3px solid ' + K.g1, borderRadius: '10px', padding: '10px 24px' });
+  ent.innerHTML = '键：<span style="color:#1254B7">"Alice"</span> <span class="rid" style="padding:0 8px;margin-left:8px;border-radius:6px">2050</span>';
+  show(ent, T('d10', '键') - 0.3, { y: 12, d: 0.5 });
+  const entL = lead(ov, [[IR.x + ILW / 2, ILY + 200], [IR.x + ILW / 2, 690]], { color: 'accent', w: 2.5 }); draw(entL, T('d10', '键') - 0.4, 0.4);
+  to(ent.querySelector('.rid'), T('d10', 'RecordId') - 0.2, { backgroundColor: K.spring, duration: 0.4 });
+  fadeOut(ex.c, T('d10') - 0.2, 0.4);
+  pt(world, 236, 694, 200, 66, T('d10', 'Alice') - 0.2, T('d10', 'RecordId') - 0.3, K.blue);
+  pt(world, 428, 694, 120, 66, T('d10', 'RecordId') - 0.2, T('d12') + 0.3);
+  pt(world, 1122, 262, 576, 100, T('d12', '集合树') - 0.2, T('d13', '开始') - 0.3);
+  pt(world, 1000, 444, 800, 50, T('d13', '每个') - 0.2, T('d13b') - 0.1);
 
-  // 拿着 2050 回到集合树（d12）
-  ch.sec(T('d12') - 0.1, '回集合树');
-  const hop = link(ov, [[956, 497], [978, 497], [978, 257], [1210, 257]], 'spring', { w: 5, arrow: true });
-  arrowIn(hop, T('d12', '2050') - 0.1, 1.0); hide(hop, T('d17') - 0.1);
-  glow(croot, T('d13', '根页') - 0.2, T('d13b'), { bg: '#00684A', bd: '#00ED64', rb: '#001E2B', rd: '#001E2B' });
-  glow(cl[1], T('d13b', '1225') - 0.3, T('d13b', '2449') - 0.4, { bg: '#E3FCF7', bd: '#00A35C' });
-  glow(cl[2], T('d13b', '2449') - 0.3, T('d13c') - 0.1, { bg: '#E3FCF7', bd: '#00A35C' });
-  glow(cl[3], T('d13c', '3124') - 0.3, T('d15') - 0.1, { bg: '#E3FCF7', bd: '#00A35C' });
-  const cmpE = h('div', 'abs mono', cp, '1225 ≤ 2050 < 2449'); css(cmpE, { left: '200px', top: '356px', font: '600 28px "Mono"', color: '#00684A' });
-  show(cmpE, T('d15') - 0.2, { y: 8 });
-  const cp1 = svg('path', { d: 'M390,162 L296,250', stroke: '#00ED64', 'stroke-width': 6, fill: 'none' }, csv);
-  draw(cp1, T('d15'), 0.7); glow(cl[1], T('d15'), null, { bg: '#00ED64', bd: '#00ED64', c: '#023430' });
-  const got = chip(world, 1220, 534, '2050 → 47 字节的文档', 'sp'); css(got, { fontFamily: '"Mono", "Sans SC"' });
-  show(got, T('d15', '47') - 0.3, { y: 10 }); sfx('pop', T('d15', '47') - 0.3);
-  sh.clear(T('d15') + 0.6);
-  sh.cmd(T('d15') + 0.7, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).explain(…)');
-  sh.out(T('d17') + 0.1, "{ <span class=\"k\">'计划'</span>: <span class=\"s\">'FETCH ← IXSCAN'</span>, <span class=\"k\">'返回'</span>: <span class=\"n\">1</span>,\n  <span class=\"k\">'看过的索引键'</span>: <span class=\"n\">1</span>, <span class=\"k\">'看过的文档'</span>: <span class=\"n\">1</span> }");
-  ring(world, 1012, 780, 756, 68, T('d17') + 0.5, null, '#00A35C');
-  const cmpT = callout(world, 140, 676, 'tip', '没有索引：4096 份<br>走姓名索引：1 键、1 份', '两次查找');
-  show(cmpT, T('d17') + 0.2, { y: 10 });
-  sfx('blip', T('d12')); sfx('pop', T('d17'));
-
-  const a = drift(s.start, s.end, 960, -1);
-  cam.track(s.start, { x: a.from, y: 540, z: 1 }, [[s.start + 0.1, { x: a.to }, a.d, { ease: 'none', sfx: false }]]);
+  // ══ 拿着 2050 回到集合树（B03）：分界一个个比过，落在第二个叶页 ══
+  const tok = h('div', 'abs', world, '2050'); px(tok, 390, 700); css(tok, { font: '800 44px "Mono"', color: K.forest, background: K.mint2, border: '3px solid ' + K.g1, borderRadius: '10px', padding: '2px 16px' });
+  tl.fromTo(tok, { autoAlpha: 0, x: 0, y: 0 }, { autoAlpha: 1, duration: 0.2, immediateRender: true }, T('d12', '2050') - 0.3);
+  tl.to(tok, { x: 990 - 390, y: 290 - 700, duration: 0.9, ease: 'power2.inOut' }, T('d12', '回到') - 0.1);
+  const sepT = [T('d13', '开始') - 0.3, T('d13b', '1225') - 0.2, T('d13b', '2449') - 0.2, T('d13c', '3124') - 0.2];
+  sepEls.forEach((e, i) => to(e, sepT[i], { backgroundColor: i === 1 ? K.forest : '#3D4F58', color: i === 1 ? '#FFFFFF' : K.spring, duration: 0.3 }));
+  sepEls.forEach((e, i) => { if (i !== 1) to(e, T('d15') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', color: '#FFFFFF', duration: 0.35 }); });   // lint-ok: 取消高亮
+  const rule = tg(world, 1420, 368, '1225 ≤ 2050 &lt; 2449', 'g'); css(rule, { fontSize: '30px', fontFamily: 'Mono' });
+  show(rule, T('d15', '落在') - 0.3, { y: 8, d: 0.4 });
+  const cpath = link(ov, [[1130 + 18 + 136 + 62, 354], [CLX(1) + CLW / 2, CLY]], 'spring', { w: 7 }); draw(cpath, T('d15', '落在'), 0.5);
+  tl.to(tok, { x: CLX(1) + 20 - 390, y: CLY + 60 - 700, scale: 0.8, duration: 0.6, ease: 'power2.inOut' }, T('d15', '第二个') - 0.1);
+  to(cLeaves[1].c, T('d15', '第二个') + 0.3, { borderColor: K.g1, backgroundColor: K.mint, duration: 0.35 });
+  // 取出 47 个字节：变回她的文档
+  const out = docCard(world, 1010, 680, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 620, fs: 28, cls: 'on' });
+  show(out.c, T('d15', '47') - 0.3, { y: -30, d: 0.55 });
+  const o47 = tg(world, 1660, 720, '47 字节', 'big'); css(o47, { fontSize: '40px' }); show(o47, T('d15', '47') - 0.1, { y: 8, d: 0.4 });
+  // 第二行实测：FETCH ← IXSCAN，1 个键、1 份文档；与上一次并排
+  const tE = T('d17') - 0.3;
+  fadeOut([out.c, o47, ent, entL], tE - 0.1, 0.4);
+  const ex2 = term(world, 140, 750, 1660, 200, 'mongosh · explain("executionStats")', { fs: 26, lh: 44 });
+  show(ex2.c, tE, { y: 14, d: 0.5 });
+  ex2.out(tE + 0.1, '<span style="color:#5C6C75">没有索引：{ 计划: \'COLLSCAN\', 返回: 1, 看过的索引键: 0, 看过的文档: 4096 }</span>');
+  pt(world, 156, 860, 1420, 50, T('d17', '文档') - 0.2, Tend('d17') + 0.2);
+  pt(world, 156, 860, 1420, 50, T('d17', '索引键') - 0.2, T('d17', '文档') - 0.3);
+  pt(world, 156, 818, 1420, 50, Tend('d17') + 0.3, Tend('d17') + 1.8, K.blue);
+  pt(world, 156, 860, 1420, 50, Tend('d17') + 2.0, s.end - 0.3);
+  beat(world, T('d3', '从头') - 0.1, 1000, 444, 800, 212, 1.5, K.blue);
+  beat(world, T('d2', 'RecordId') - 0.1, 1000, 444, 800, 50, 1.0);
+  beat(world, T('d7b', '第一项') - 0.1, 140, 214, 780, 214, 1.0);
+  [[1, T('d13b', '1225')], [2, T('d13b', '2449')], [3, T('d13c', '3124') + 0.2]].forEach(([i, t]) => beat(world, t - 0.1, CLX(i) - 6, CLY - 6, CLW + 12, CLH + 12, 0.9));
+  beat(world, T('d4', '看了') - 0.1, 1000, 682, 600, 100, 1.3, K.blue);
+  beat(world, T('d4', '找到') + 0.2, 156, 856, 1600, 50, 1.2);
+  beat(world, T('d9', '根页') - 0.1, 130, 262, 800, 400, 1.2);
+  beat(world, T('d10', '键') + 0.05, 132, 682, 520, 80, 1.2);
+  beat(world, Tend('d10') + 0.2, 1000, 258, 808, 404, 1.2, K.gb);
+  beat(world, T('d13c', '3124') - 0.1, 1122, 262, 576, 100, 1.2);
+  ex2.out(T('d17') + 0.2, '有了索引：{ <span class="k">计划</span>: <span class="s">\'FETCH ← IXSCAN\'</span>, <span class="k">返回</span>: <span class="n">1</span>, <span class="k">看过的索引键</span>: <span class="n">1</span>, <span class="k">看过的文档</span>: <span class="n">1</span> }');
 });
