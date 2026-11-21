@@ -388,3 +388,4 @@ F28–F30 的实测数值（来源：out_07 两次 `06_c_api.c` 运行）：
 | Q27 | C API 的栈下标：正数是从栈底数起的绝对位置，1 是最先压入的元素；负数从栈顶倒数，-1 是栈顶元素 | 手册 §4.1；`lapi.c` index2value | 手册 |
 | Q28 | 整数键的主位置是除以 `(节点数 - 1) | 1` 的余数，节点数是 2 的幂时就是节点数减 1，是个奇数；源码注释说明，除了哈希值本身就好的类型，别的类型最好避免用 2 的幂取模，因为它们可能含有很多因子 2 | `ltable.c:103-112`（hashmod 与注释）、`ltable.c:145-151`（hashint） | 源码交叉核对 |
 | Q29 | 开放上值的链表 openupval 挂在每个 lua_State 上（每个协程一条），由 lfunc.c 查找与关闭；编译时名字在各层函数都找不到，就定为全局名，若正处在 global 声明的作用域里而它没被声明，报「variable 'x' not declared」，检查之后才改写成 `_ENV` 的字段；指令里的 k 位含义随指令而定（如 MMBINI／MMBINK 里表示操作数换过位置，RETURN／TAILCALL 里表示要关闭上值） | `lstate.h:294`；`lparser.c:520-535`（buildvar）；`lopcodes.h:395-405` | 源码交叉核对 |
+| Q30 | 手册 §1：作为扩展语言，Lua 没有「主程序」的概念，它总是嵌在一个宿主程序里运行（「Lua has no notion of a "main" program: it works embedded in a host client, called the embedding program or simply the host」），宿主常常就是独立的 lua 程序 | `lua-5.5.1/doc/manual.html` §1；P02 | 手册原文；第 6 稿开场与第 01 章引用 |
