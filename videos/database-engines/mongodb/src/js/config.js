@@ -25,7 +25,7 @@ window.ENGINE = {
       const ti = h('div', 'ti', main, s.chap[1]);
       const rule = h('div', 'rule', main);
       const q = h('div', 'q', main, s.chap[2] || '');
-      const SECS = { nosql: ['2000 年代末', '10gen', '那场聚会', '两种读法', '四类'], whole: ['集合', 'mongod 与存储引擎', '三个文件'], insert: ['BSON', 'RecordId', '三棵树各一项', '事务'], flush: ['缓存', '检查点', 'B 树'], find: ['没有索引', '走姓名索引', '回集合树'], update: ['更新链', '检查点', '不覆盖写'], delete: ['删除标记', '检查点之后', 'Dave'], concur: ['事务', '副本集', '快照', '写冲突'], crash: ['日志', '写关注 j', '强制结束', '什么时候会丢'], five: ['放', '找', '改和删', '并发', '出错'], trade: ['换来了什么', '付出了什么', '更简单一点', '下一集'] };
+      const SECS = { nosql: ['年代', '10gen', '聚会', '读法', '四类'], whole: ['集合', 'mongod', '三个文件'], insert: ['BSON', 'RecordId', '三棵树', '事务'], flush: ['缓存', '检查点', '整理与压缩', 'B 树'], find: ['没有索引', '走索引', '回集合树'], update: ['更新链', '检查点', '不覆盖'], delete: ['删除标记', '检查点', 'Dave'], concur: ['事务', '副本集', '快照', '写冲突'], crash: ['日志', '写关注', '强制结束', '会丢吗'], five: ['放', '找', '改和删', '并发', '出错'], trade: ['换来的', '付出的', '更简单', '下一集'] };
       const onp = h('div', 'onp', main, `<div class="ok">在此页面上</div><div class="oi">${(SECS[s.id] || []).map((x) => `<span>${x}</span>`).join('')}</div>`);
       const cnt = h('div', 'ccnt', card, `${s.chap[0]} / ${String(chaps.length).padStart(2, '0')}`);
       const t0 = s.start + 0.05, t1 = s.start + s.lead - 0.45;
@@ -38,10 +38,12 @@ window.ENGINE = {
       fromTo(no, t0 + 0.3, { x: odd ? -40 : 40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out' });
       fromTo(ti, t0 + 0.4, { x: odd ? -60 : 60, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.65, ease: 'power3.out' });
       fromTo(rule, t0 + 0.4, { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.8, ease: 'power2.inOut' });
-      fromTo(q, t0 + 0.5, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'power3.out' });
+      fromTo(q, t0 + 0.4, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'power3.out' });
       fromTo(cnt, t0 + 1.6, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 });
-      fromTo(onp, t0 + 1.9, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 });
-      [...onp.querySelectorAll('.oi span')].forEach((sp, k) => fromTo(sp, t0 + 2.0 + k * 0.22, { x: 24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }));
+      fromTo(onp, t0 + 1.25, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 });
+      [...onp.querySelectorAll('.oi span')].forEach((sp, k) => fromTo(sp, t0 + 1.3 + k * 0.16, { x: 24, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: 'power3.out' }));
+      // 停留中段：第一个小节标成「当前」（本章从这里讲起）
+      const firstSec = onp.querySelector('.oi span'); if (firstSec) to(firstSec, t0 + 2.7, { backgroundColor: '#00684A', borderColor: '#00684A', color: '#FFFFFF', duration: 0.25 });
       wipeOut(card, t1, { dir: odd ? 'r' : 'l', d: 0.45 });
       sfx('whoosh', t0 - 0.05, { g: 0.7 }); sfx('thud', t0 + 0.4, { g: 0.45 });
     }

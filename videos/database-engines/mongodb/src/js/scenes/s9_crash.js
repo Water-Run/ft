@@ -37,7 +37,7 @@ scene('crash', ({ root, s, c0 }) => {
   const JY = 600;
   const J1 = gloss(h('div', 'panel gray', world), '日志'); px(J1, 160, JY, 1600, 190);
   const jt = h('div', 'abs', J1, 'journal/WiredTigerLog.0000000001'); css(jt, { left: '26px', top: '16px', font: '600 26px "Mono"', color: '#001E2B' });
-  const jt2 = h('div', 'abs', J1, '每次修改都记一笔，新的接在后面'); css(jt2, { left: '600px', top: '18px', font: '500 24px "Inter", "Sans SC"', color: '#5C6C75' });
+  const jt2 = h('div', 'abs', J1, '每次修改都记一笔，新的接在后面'); css(jt2, { left: '1220px', top: '86px', font: '500 24px "Inter", "Sans SC"', color: '#5C6C75' });
   show(J1, T('h4', '日志') - 0.4, { y: 14 });
   const recs = [560, 800, 1040, 1280].map((x, i) => {
     const r = h('div', 'abs', world); px(r, x, JY + 80, 64, 64); css(r, { background: '#fff', border: '2px dashed #889397', borderRadius: '8px' });
@@ -47,7 +47,7 @@ scene('crash', ({ root, s, c0 }) => {
   // 100 毫秒的刻度：每到一格，缓冲里的记录落盘（实线、变绿）
   const ticks = [0, 1, 2, 3, 4, 5].map((k) => { const t = h('div', 'abs', world); px(t, 480 + k * 220, JY + 158, 2, 18); css(t, { background: '#889397' }); return t; });
   const tickL = label(world, 480, JY + 196, '每一格 100 毫秒', 't-small');
-  show([...ticks, tickL], T('h5', '100 毫秒') - 0.4, { y: 6, stagger: 0.04 });
+  show([...ticks, tickL], T('h5', '100 毫秒') - 0.7, { y: 6, stagger: 0.04 });
   recs.forEach((r, i) => to(r, T('h5', '同步到磁盘') - 0.2 + i * 0.25, { backgroundColor: '#00ED64', borderColor: '#00ED64', borderStyle: 'solid', duration: 0.3 }));
   figs(world, 160, 860, 1600, [[T('h4') + 0.5, '图 9-1', '日志每 100 毫秒落盘一次', 'getParameter · ls -l']], T('h6') - 1.0);
 
@@ -76,7 +76,7 @@ scene('crash', ({ root, s, c0 }) => {
   const flow = [[r1, 220], [r2, 510]].flatMap(([row, y]) => [0, 1, 2].map((i) => link(ov, [[X2 + 300 + i * 380 + 344, y + 65], [X2 + 300 + (i + 1) * 380 - 4, y + 65]], 'dim', { arrow: true, w: 2.5 })));
   flow.slice(0, 3).forEach((p, i) => arrowIn(p, T('h6', '写好了') - 0.3 + i * 0.4, 0.3)); flow.slice(3).forEach((p, i) => arrowIn(p, T('h7b', '写进磁盘') - 0.3 + i * 0.4, 0.3));
   const single = callout(world, X2 + 120, 700, 'note', '单机不带 <code>j</code>：写进内存就回复', '本片测的情形');
-  show(single, T('h8') - 0.7, { y: 10 });
+  show(single, T('h7b') + 0.3, { y: 10 });
   glow(r1[0], T('h8', '内存') - 0.3, null, { bg: '#E3FCF7', bd: '#00A35C' });
 
   // ── 第三站：崩溃实验 ──
@@ -101,8 +101,8 @@ scene('crash', ({ root, s, c0 }) => {
   J3.out(T('h14', 'Alice') - 0.2, '<span class="c">// Alice：整份新文档，47 字节，age 43</span>\n<span class="k">lsn</span> [<span class="n">1</span>, <span class="n">139904</span>]  row_put  文件号 <span class="n">88</span>  键 <span class="s">c7c2</span>');
   J3.out(T('h15', 'Dave') - 0.2, '\n<span class="c">// Dave：一个事务，三次写入</span>\n事务 <span class="n">64</span>  row_put × <span class="n">3</span>  文件号 <span class="n">88</span> · <span class="n">96</span> · <span class="n">104</span>');
   sfx('pop', T('h15', 'Dave'));
-  const hl1 = ring(world, X3 + 834, 230, 952, 90, T('h14', 'Alice') + 0.1, T('h15') - 0.1);
-  const hl2 = ring(world, X3 + 834, 352, 952, 90, T('h15', 'Dave') + 0.1, T('h17') - 0.1);
+  const hl1 = ring(world, X3 + 834, 221, 952, 76, T('h14', 'Alice') + 0.1, T('h15') - 0.1);
+  const hl2 = ring(world, X3 + 834, 320, 952, 76, T('h15', 'Dave') + 0.1, T('h17') - 0.1);
   const daveIn = callout(world, X3 + 820, 560, 'tip', 'Dave 也赶在结束前进了日志', '两笔都在');
   show(daveIn, T('h16') - 0.1, { y: 10 }); fadeOut(daveIn, T('h17') - 0.1);
   // h17–h19：重启：回到检查点，再重放日志
@@ -155,7 +155,7 @@ scene('crash', ({ root, s, c0 }) => {
   // 边界：进程被杀与断电
   const PL = h('div', 'panel', world); px(PL, X4 + 140, 160, 800, 520); css(PL, { borderColor: '#016BF8', borderWidth: '2px' });
   PL.innerHTML = '<div style="position:absolute;left:30px;top:26px;font:500 46px \'Serif SC\';color:#001E2B">进程被强制结束</div><div style="position:absolute;left:32px;top:100px"><span class="chip blue" style="position:static">本片实测的就是这一种</span></div>';
-  show(PL, T('h27') - 0.1, { y: 14 });
+  show(PL, T('h27') + 0.25, { y: 14 });
   const kc = code(PL, 30, 170, 'kill -9 &lt;mongod 的进程号&gt;'); css(kc, { fontSize: '26px' }); show(kc, T('h27', '强制结束') - 0.3, { y: 8 });
   const pl1 = h('div', 'abs', PL, '可能丢的，只有最后一小段：'); css(pl1, { left: '30px', top: '250px', font: '700 34px "Inter", "Sans SC"', color: '#001E2B' });
   const pl2 = h('div', 'abs', PL, '已经回复了成功、<br>还没写进日志文件的写入'); css(pl2, { left: '30px', top: '310px', font: '500 34px/1.5 "Inter", "Sans SC"', color: '#970606' });

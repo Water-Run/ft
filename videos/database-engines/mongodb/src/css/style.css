@@ -119,7 +119,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .chapter .onp { position: absolute; left: 0; top: 760px; padding-left: 24px; border-left: 4px solid var(--hair); white-space: nowrap; }
 .chapter .onp .ok { font: 700 26px "Inter", "Sans SC"; color: var(--gd2); }
 .chapter .onp .oi { margin-top: 14px; display: flex; gap: 14px; }
-.chapter .onp .oi span { display: inline-block; font: 600 30px/1.2 "Inter", "Sans SC"; color: var(--forest); background: var(--mint2); border: 1.5px solid var(--g1); border-radius: 999px; padding: 8px 24px; }
+.chapter .onp .oi span { display: inline-block; font: 600 32px/1.2 "Inter", "Sans SC"; color: var(--forest); background: var(--mint2); border: 1.5px solid var(--g1); border-radius: 999px; padding: 10px 34px; }
 .chapter .ccnt { position: absolute; right: 120px; bottom: 130px; font: 600 30px "Mono"; color: var(--gd1); }
 
 /* 字幕：白底细线托底 */

@@ -101,7 +101,7 @@ scene('concur', ({ root, s, c0 }) => {
   // g15：Alice 的修改没等 Bob
   const noWait = callout(world, 900, 800, 'tip', '读的人不挡写的人', '不用等');
   css(noWait, { zIndex: 3 });
-  show(noWait, T('g15') - 0.1, { x: 20, y: 0 });
+  show(noWait, T('g15') + 0.4, { x: 20, y: 0 });
   glow(evEls[2], T('g15', '不用等') - 0.3, T('g19a') - 0.2, { bg: '#00ED64', bd: '#00ED64' });
   figs(world, 140, 880, 700, [[T('g7') + 0.4, '图 8-2', 'Bob 的快照读：五件事的先后', '实测：out_08（单节点副本集）']], T('g19a') - 0.3);
   const sec2 = [chT, b42, b43, cl, out.c, head, ...lanes.flat(), ...evEls, bar, barL, snap, snapL, skip, back, noWait];
@@ -115,7 +115,7 @@ scene('concur', ({ root, s, c0 }) => {
   show(out2.c, T('g21') - 0.2, { x: 20, y: 0 });
   const L2 = [['Alice', 560], ['Carol', 720]];
   const lanes2 = L2.map(([n, y]) => { const l = label(world, 140, y - 20, n, 'lab'); css(l, { font: '700 28px "Inter", "Sans SC"', color: '#001E2B' }); const ln = h('div', 'abs', world); px(ln, X0, y, X1 - X0, 2); css(ln, { background: '#E8EDEB' }); return [l, ln]; });
-  show(lanes2.flat(), T('g21') - 0.3, { y: 0, stagger: 0.08 });
+  show(lanes2.flat(), T('g19a') + 0.5, { y: 0, stagger: 0.12 });
   const txBar = (lane, x0, x1, t0, d, cls) => { const e = h('div', 'abs', world); px(e, x0, L2[lane][1] + 18, x1 - x0, 26); css(e, { background: cls === 'g' ? '#E3FCF7' : '#FFF', border: `2px solid ${cls === 'g' ? '#00A35C' : '#889397'}`, borderRadius: '8px', transformOrigin: '0 50%' }); fromTo(e, t0, { scaleX: 0 }, { scaleX: 1, duration: d, ease: 'power2.out' }); return e; };
   const dot2 = (lane, x, t, color, txt, cls) => { const d = h('div', 'abs', world); px(d, x - 13, L2[lane][1] - 12, 26, 26); css(d, { borderRadius: '50%', background: color, border: '3px solid #fff' }); show(d, t, { y: 0, s: 0.4, d: 0.35 }); const c = chip(world, x - 90, L2[lane][1] - 64, txt, cls); css(c, { fontSize: '24px', padding: '4px 14px' }); show(c, t + 0.2, { y: 8 }); return [d, c]; };
   // g21：Alice 在事务里改了，还没提交
@@ -152,7 +152,7 @@ scene('concur', ({ root, s, c0 }) => {
   show(lab, T('g26', '标签') - 0.1, { y: 10 }); fadeOut(lab, T('g28') - 0.1);
   // g27：Alice 提交以后，Carol 重做一遍事务，成功了
   const aCom = dot2(0, 1180, T('g27', '提交') - 0.2, '#00684A', '提交 · 44', 'on');
-  out2.clear(T('g27', '提交') - 0.4); out2.out(T('g27', '提交') - 0.1, 'Alice 提交之后： <span class="n">44</span>');
+  out2.clear(T('g27', '提交') - 0.2); out2.out(T('g27', '提交') - 0.1, 'Alice 提交之后： <span class="n">44</span>');
   glow(doc2, T('g27', '提交') - 0.1, null, { bg: '#C0FAE6', bd: '#00A35C' }); to([pend, pendL], T('g27', '提交'), { autoAlpha: 0, duration: 0.5 });
   const cBar2 = txBar(1, 1300, 1660, T('g27', '重做') - 0.2, 0.7, 'g');
   const cOk = dot2(1, 1560, T('g27', '成功了') - 0.3, '#00684A', '重做 · 45 提交', 'on');

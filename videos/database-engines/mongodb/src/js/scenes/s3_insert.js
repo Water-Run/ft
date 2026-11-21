@@ -57,7 +57,7 @@ scene('insert', ({ root, s, c0 }) => {
   [['#001E2B', '长度 / 结尾'], ['#016BF8', '类型'], ['#00ED64', '字段名'], ['#FFFFFF', '值']].forEach(([c, t]) => { const it = h('span', '', legend, `<i style="display:inline-block;width:26px;height:26px;border-radius:4px;background:${c};border:1.5px solid #C1C7C6;vertical-align:-6px;margin-right:10px"></i>${t}`); });
   show(legend, T('b8', '名字') + 0.4, { y: 8 });
   const nameN = callout(world, 900, 490, 'tip', '三个名字 + 三个 0 = 13 字节，占 28%', '字段名');
-  show(nameN, T('b10') - 0.2, { y: 10 }); sfx('pop', T('b10', '13'));
+  show(nameN, T('b10') - 0.45, { y: 10 }); sfx('pop', T('b10', '13'));
   figs(world, bx, by + 210, 1700, [[T('b7') + 0.3, '图 3-2', 'Alice 这份文档的 BSON，逐字节', '实测：bsonsize() = 47 · wt 读出的值']], T('b11') - 0.7);
 
   // ── 第二站：还缺一个键 → RecordId（A05 B05）──

@@ -75,9 +75,9 @@ scene('trade', ({ root, s, c0 }) => {
   show(times, T('j6b', '4096') - 0.3, { x: -20, y: 0, s: 1.2 });
   const total = h('div', 'abs', cost, '= 53,248 字节，只是在重复写名字'); px(total, 360, 206); css(total, { font: '600 34px "Inter", "Sans SC"', color: '#001E2B' });
   show(total, T('j6b', '4096') + 0.4, { y: 8 });
-  const ref = h('div', 'abs', cost, '每份 92 字节的普通文档里，13 字节是字段名'); px(ref, 30, 280); css(ref, { font: '500 24px "Inter", "Sans SC"', color: '#5C6C75' });
+  const ref = h('div', 'abs', cost, '普通文档 92 字节，13 字节是字段名'); px(ref, 30, 280); css(ref, { font: '500 24px "Inter", "Sans SC"', color: '#5C6C75' });
   show(ref, T('j6b') + 0.6, { y: 6 });
-  hide([coll, cost], T('j7') + 0.8, { y: -12, d: 0.45 });
+  hide([coll, cost], T('j7') + 2.0, { y: -12, d: 0.45 });
 
   // ── 二、WiredTiger 只认键和值 → 键值数据库 → 磁盘与内存倒过来（B01 N01 A07 S02） ──
   ch.sec(T('j7') - 0.3, '更简单一点');
@@ -85,7 +85,7 @@ scene('trade', ({ root, s, c0 }) => {
   const kvT = h('div', 'abs', kvP, 'WiredTiger 只认：键 → 值'); css(kvT, { left: '28px', top: '20px', font: '700 32px "Inter", "Sans SC"', color: '#001E2B' });
   const KV = [['2050', '47 字节的文档'], ['"Alice" + 2050', '（空）'], ["ObjectId('6afa…')", '2050']];
   const kvR = KV.map(([k, v], i) => { const kk = pg(kvP, 28, 90 + i * 92, 360, 72, k, 'on'); css(kk, { fontSize: '25px' }); const vv = pg(kvP, 420, 90 + i * 92, 330, 72, v); css(vv, { fontSize: '25px' }); return [kk, vv]; });
-  show(kvP, T('j7') + 1.8, { y: 14 }); kvR.forEach((r, i) => show(r, T('j7', '键和值') - 0.3 + i * 0.2, { y: 10, stagger: 0.1 }));
+  show(kvP, T('j7') + 2.9, { y: 14 }); kvR.forEach((r, i) => show(r, T('j7', '键和值') - 0.3 + i * 0.2, { y: 10, stagger: 0.1 }));
   const kdb = h('div', 'panel', world); px(kdb, X2 + 980, 140, 800, 380); css(kdb, { borderColor: '#016BF8', borderWidth: '2px' });
   const kdT = h('div', 'abs', kdb, '键值数据库'); css(kdT, { left: '28px', top: '20px', font: '500 44px "Serif SC"', color: '#001E2B' });
   const kdC = chip(kdb, 300, 28, '第 01 章：NoSQL 的四类之一', 'blue');
@@ -107,9 +107,9 @@ scene('trade', ({ root, s, c0 }) => {
   to(rMem, T('j12', '一死') - 0.1, { backgroundColor: '#FFEAE5', borderColor: '#DB3030', duration: 0.3 });
   const gone = h('div', 'abs', world, '进程一死，这里就空了'); px(gone, X2 + 1046, LY + 78); css(gone, { font: '600 26px "Inter", "Sans SC"', color: '#970606', background: '#FFEAE5' });
   hide(rMem.children[1], T('j12', '一死') - 0.1, { y: 0, d: 0.25 });
-  show(gone, T('j12', '一死') + 0.15, { y: 0, d: 0.3 });
+  show(gone, T('j12', '一死') - 0.05, { y: 0, d: 0.3 });
   const qm = h('div', 'abs', world, '?'); px(qm, X2 + 1700, LY + 160); css(qm, { font: '700 110px "Inter"', color: '#1254B7' });
-  show(qm, T('j12', '靠什么') - 0.2, { y: 0, s: 1.4 });
+  set(qm, s.start, { autoAlpha: 0 });
   const back = link(ov, [[X2 + 1640, LY + 240], [X2 + 1640, LY + 146]], 'blue', { arrow: true, w: 4, dashed: '8 8' }); arrowIn(back, T('j12', '回来') - 0.3, 0.5);
 
   // ── 三、PART 7：系列的最后一站（与片名同款的整屏卡） ──
@@ -127,14 +127,14 @@ scene('trade', ({ root, s, c0 }) => {
   show(q, t13 + 0.5, { y: 12 }); show(lead, T('j13', '更简单') - 0.3, { y: 14 });
   slam(rd, T('j14') - 0.15, { from: 1.15 }); sfx('thud', T('j14'));
   fromTo(rule, T('j14') + 0.4, { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: 'power2.inOut' });
-  show(sub, T('j14') + 0.2, { y: 10 });
+  show(sub, T('j14') + 0.05, { y: 10 });
   // 前六集在目录里依次打上勾，留下最后一集
   P.items.slice(0, 6).forEach((it, k) => { const ck = svg('svg', { viewBox: '0 0 24 24', width: 26, height: 26 }, it); css(ck, { marginLeft: '14px', verticalAlign: '-4px' }); svg('path', { d: 'M4 12.5l5 5L20 6.5', fill: 'none', stroke: '#00A35C', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, ck); show(ck, T('j14') + 1.3 + k * 0.15, { x: -8, y: 0, d: 0.35 }); });
   tl.set([world, ch.c], { autoAlpha: 0 }, t13 + 0.05);
   to(P.sel, T('j14') + 2.0, { backgroundColor: '#71F6BA', duration: 0.5 });
 
   // 镜头：两站
-  const m1 = T('j7') + 0.9;
+  const m1 = T('j7') + 2.1;
   const a = drift(s.start, m1, 960, -1), b = drift(m1 + 1.3, t13, X2 + 960, -1);
   cam.track(s.start, { x: a.from, y: 540, z: 1 }, [
     [s.start + 0.1, { x: a.to }, a.d - 0.2, { ease: 'none', sfx: false }],

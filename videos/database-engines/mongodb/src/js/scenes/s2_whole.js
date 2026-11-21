@@ -54,23 +54,23 @@ scene('whole', ({ root, s, c0 }) => {
   css(strip, { font: '600 28px/116px "Mono"', color: '#3D4F58', paddingLeft: '28px' }); strip.textContent = 'db/';
   const qs = [0, 1, 2].map((i) => { const f = h('div', 'abs', strip, '?.wt'); css(f, { left: 140 + i * 200 + 'px', top: '22px', width: '160px', height: '72px', background: '#fff', border: '2px solid #C1C7C6', borderRadius: '10px', font: '600 30px/68px "Mono"', color: '#5C6C75', textAlign: 'center' }); return f; });
   show(strip, T('a8', '写进文件') - 0.3, { y: 16 });
-  const dn = link(ov, [[690, 722], [690, 776]], 'accent', { arrow: true, w: 3 }); arrowIn(dn, T('a8', '写进文件'), 0.5);
+  const dn = link(ov, [[1150, 722], [1150, 776]], 'accent', { arrow: true, w: 3 }); arrowIn(dn, T('a8', '写进文件'), 0.5);
   const fq = code(world, 860, 810, 'find({ name: "Alice" })'); css(fq, { fontSize: '28px' }); show(fq, T('a8b') - 0.5, { x: 20, y: 0 });
   hide([coll, map, opt.c, strip, fq, dn, kn], T('a9') - 0.55, { y: -14, d: 0.45 });
 
   // ── 第二站：mongod 的两层（G00b C02 I01），下层 WiredTiger 只认键和值（I02 A13 B01） ──
   const X2 = 1920;
   ch.sec(T('a9') - 0.4, 'mongod 与存储引擎');
-  const md = h('div', 'panel', world); px(md, X2 + 140, 150, 1640, 740); css(md, { border: '3px solid #001E2B' });
-  const mdt = code(world, X2 + 170, 128, 'mongod'); css(mdt, { font: '700 30px "Mono"', background: '#001E2B', color: '#fff', borderColor: '#001E2B' });
-  const mds = label(world, X2 + 340, 136, 'MongoDB 的服务端进程', 't-note'); css(mds, { background: '#fff', padding: '0 12px' });
+  const md = h('div', 'panel', world); px(md, X2 + 140, 190, 1640, 700); css(md, { border: '3px solid #001E2B' });
+  const mdt = code(world, X2 + 140, 120, 'mongod'); css(mdt, { font: '700 30px "Mono"', background: '#001E2B', color: '#fff', borderColor: '#001E2B' });
+  const mds = label(world, X2 + 316, 130, 'MongoDB 的服务端进程', 't-note');
   show(md, T('a9') - 0.3, { y: 20 }); show(mdt, T('a9', 'mongod'), { y: 0, s: 1.2 }); show(mds, T('a9', 'mongod') + 0.4, { y: 6 });
-  const up = h('div', 'abs', md); px(up, 30, 50, 1574, 160); css(up, { background: '#F9FBFA', border: '1.5px solid #E8EDEB', borderRadius: '12px' });
+  const up = h('div', 'abs', md); px(up, 30, 36, 1574, 152); css(up, { background: '#F9FBFA', border: '1.5px solid #E8EDEB', borderRadius: '12px' });
   const upt = h('div', 'abs', up, '上层 · 查询'); css(upt, { left: '30px', top: '22px', font: '700 32px "Inter", "Sans SC"', color: '#001E2B' });
   const upq = h('div', 'abs mono', up, 'find({ name: "Alice" })'); css(upq, { left: '30px', top: '90px', font: '500 30px "Mono"', color: '#001E2B' });
   const upa = h('div', 'abs mono', up, '→  计划：用姓名索引 name_1'); css(upa, { left: '470px', top: '90px', font: '600 30px "Mono", "Sans SC"', color: '#00684A' });
   show(up, T('a9', '两层'), { y: 12 }); show(upq, T('a11', '查询') - 0.2, { x: -16, y: 0 }); show(upa, T('a11', '决定'), { x: -16, y: 0 });
-  const lo = gloss(h('div', 'abs', md), '存储引擎'); px(lo, 30, 236, 1574, 474); css(lo, { background: '#E3FCF7', border: '2px solid #00A35C', borderRadius: '12px' });
+  const lo = gloss(h('div', 'abs', md), '存储引擎'); px(lo, 30, 212, 1574, 462); css(lo, { background: '#E3FCF7', border: '2px solid #00A35C', borderRadius: '12px' });
   const lot = h('div', 'abs', lo, '下层 · 存储引擎：管数据在内存和磁盘上怎样存放'); css(lot, { left: '30px', top: '22px', font: '700 32px "Inter", "Sans SC"', color: '#00684A' });
   const wt = h('div', 'abs', lo, 'WiredTiger'); css(wt, { left: '30px', top: '74px', font: '700 68px "Inter"', color: '#001E2B' });
   show(lo, T('a12', '下层'), { y: 12 }); show(wt, T('a13', 'WiredTiger'), { x: -20, y: 0 });
@@ -92,12 +92,12 @@ scene('whole', ({ root, s, c0 }) => {
   });
   const hk = label(lo, 30, RY - 44, '键', 'lab'), hv = label(lo, 200, RY - 44, '值', 'lab');
   // 文档落成第 3 行的值：先出那一行，文档淡出
-  to(dIn, T('a16', '不认识') + 0.7, { y: 170, x: -660, autoAlpha: 0, duration: 0.8, ease: 'power2.in' });
-  show(rows[2][1], T('a16', '不认识') + 1.3, { y: 0, d: 0.4 });
+  to(dIn, T('a16', '不认识') + 0.9, { y: 170, x: -660, autoAlpha: 0, duration: 0.8, ease: 'power2.in' });
+  show(rows[2][1], T('a16', '不认识') + 1.5, { y: 0, d: 0.4 });
   show([rows[2][0], hk, hv], T('a17', '键和值') - 0.3, { y: 8 });
   glow(rows[2][1], T('a18', '一串字节'), null, { bg: '#00ED64', bd: '#00ED64', c: '#023430' });
   const fmt = callout(lo, 900, 70, 'note', '集合表 <code>value_format=u</code>：不解释的字节串', '值只是字节');
-  show(fmt, T('a18') - 0.1, { x: 20, y: 0 });
+  show(fmt, T('a18') - 0.35, { x: 20, y: 0 });
   show([...rows[0], ...rows[1], ...rows[3]], T('a19') - 0.1, { y: 14, stagger: 0.06 });
   // 按键排好序：k3、k1、k、k2 → k1、k2、k3（Alice 那一项在最后）
   const order = [2, 0, 3, 1];   // 第 i 行排到 order[i]
@@ -106,7 +106,7 @@ scene('whole', ({ root, s, c0 }) => {
   hide(fmt, T('a19') - 0.1, { y: 0, d: 0.3 });
   const into = code(lo, 900, 96, '→ 数据目录里的 .wt 文件'); css(into, { fontSize: '28px', color: '#00684A' });
   show(into, T('a19') + 0.2, { x: 20, y: 0 });
-  figs(world, X2 + 140, 910, 1640, [[T('a12') + 0.4, '图 2-2', 'mongod 的两层：上层管查询，下层的存储引擎管存放', '出处：MongoDB 9.0 文档 Storage Engines']], T('a20') - 0.6);
+  figs(world, X2 + 140, 906, 1640, [[T('a12') + 0.4, '图 2-2', 'mongod 的两层：上层管查询，下层的存储引擎管存放', '出处：MongoDB 9.0 文档 Storage Engines']], T('a20') - 0.6);
 
   // ── 第三站：开场的三个 ?.wt 揭晓：users 的三个文件，各是一棵树（A06 I06 B03 B06 B07） ──
   const X3 = 3840;

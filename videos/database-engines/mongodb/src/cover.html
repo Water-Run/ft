@@ -6,25 +6,26 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?v=A|B|C 选方向（审片预选，选定后只留一个）。kit/tools/covers.js 按 2 倍像素出图。
-     立体：图形是等轴测的方块（顶面、正面、侧面三种明度），在 SVG 里按坐标逐面画出，不用 CSS 3D；文字不做变形，保证缩略图可读。
+     立体：图形是等轴测的方块（顶面、正面、侧面三种明度），在 SVG 里按坐标逐面画出；大标题在后面叠 8 层错开 1 像素的同色系字做出厚度。全部平涂，不用阴影与渐变（flat: true）；文字不做变形，保证缩略图可读。底色与字色取 MongoDB 文档页（白底、#001E2B）。
      结构与数字全部取自 research/FACTS.md：A03 A04（47 / 13 字节）、B03 B04（集合 4 个叶页、偏移与大小）、B06（姓名索引 15 个叶页）、B07（_id 索引 3 个叶页）、
      C01 C02（4096 → 1）、D04 D07（第 2 个叶页写到 98304，文件 96 KB → 132 KB）。底部约 15% 不放文字。 */
-  :root { --paper: #FDFFF5; --ink: #061621; --hair: #E4E8E0; --slate: #001E2B; --forest: #00684A; --spring: #00ED64; --ever: #023430; --mint: #71F6BA; --gd1: #5C6C75; }
+  :root { --paper: #FFFFFF; --ink: #001E2B; --hair: #E8EDEB; --slate: #001E2B; --forest: #00684A; --spring: #00ED64; --ever: #023430; --mint: #71F6BA; --gd1: #5C6C75; }
   html, body, #stage { width: var(--W); height: var(--H); margin: 0; }
   .r169 { --W: 1920px; --H: 1080px; }
   .r43 { --W: 1600px; --H: 1200px; }
   #stage { position: relative; background: var(--paper); color: var(--ink); overflow: hidden; }
-  #stage::before { content: ""; position: absolute; inset: 0; background: radial-gradient(1100px 700px at 72% 40%, #EEF7EC 0%, rgba(238,247,236,0) 70%); }
   svg { position: absolute; left: 0; top: 0; }
   .txt { position: absolute; }
   .part { font: 700 34px "Mono"; letter-spacing: .14em; color: var(--forest); }
   .part b { display: inline-block; width: 46px; height: 6px; background: var(--spring); vertical-align: middle; margin-right: 18px; }
   .ask { font: 600 52px/1.2 "Sans SC"; color: var(--ink); }
-  .big { font: 900 200px/1 "Sans SC"; letter-spacing: -.02em; color: var(--ink); white-space: nowrap;
-         text-shadow: 1px 1px 0 #C9D3CC, 2px 2px 0 #C9D3CC, 3px 3px 0 #C9D3CC, 4px 4px 0 #BFCAC2, 5px 5px 0 #BFCAC2, 6px 6px 0 #B4C0B7, 7px 7px 0 #B4C0B7, 10px 14px 24px rgba(0,30,43,.18); }
-  .big .no { color: var(--forest); text-shadow: 1px 1px 0 #00A35C, 2px 2px 0 #00A35C, 3px 3px 0 #008C4F, 4px 4px 0 #008C4F, 5px 5px 0 #007A45, 6px 6px 0 #007A45, 7px 7px 0 #006B3D, 10px 14px 24px rgba(0,104,74,.25); }
+  .big { font: 900 200px/1 "Sans SC"; letter-spacing: -.02em; color: var(--ink); white-space: nowrap; }
+  .big .no { color: var(--forest); }
+  /* 标题的立体：同一行字在后面叠 8 层、逐层错开 1 像素，颜色由浅到深（平涂，不用阴影） */
+  .big.ext { color: #C9D3CC; } .big.ext.deep { color: #AEB9B2; }
+  .big.ext::before { content: attr(data-t); }
   .sub { font: 700 72px/1.05 "Serif SC"; color: var(--forest); white-space: nowrap; }
-  .chip { font: 600 34px/1.3 "Sans SC"; color: var(--ink); background: #fff; border: 2px solid var(--hair); border-left: 10px solid var(--spring); padding: 14px 22px; border-radius: 6px; box-shadow: 0 10px 24px rgba(0,30,43,.08); white-space: nowrap; }
+  .chip { font: 600 34px/1.3 "Sans SC"; color: var(--ink); background: #fff; border: 2px solid var(--hair); border-left: 10px solid var(--spring); padding: 14px 22px; border-radius: 6px; white-space: nowrap; }
   .chip em { font-style: normal; color: var(--forest); font-family: "Inter", "Sans SC"; font-weight: 800; }
   .lab { font-family: "Sans SC"; font-weight: 600; fill: var(--ink); }
   .labm { font-family: "Mono"; font-weight: 700; fill: var(--forest); }
@@ -82,6 +83,8 @@
   function head(x, y, big) {
     html('part', x, y, '<b></b>PART 6');
     html('ask', x, y + 70, '一个数据库引擎<br>是如何实现的？');
+    const plain = big.replace(/<[^>]+>/g, '');
+    for (let k = 8; k >= 1; k--) { const d = html('big ext' + (k > 4 ? ' deep' : ''), x - 6 + k, y + 220 + k, ''); d.dataset.t = plain; }
     html('big', x - 6, y + 220, big);
     html('sub', x, y + 452, 'MongoDB 的 WiredTiger');
   }

@@ -47,8 +47,8 @@ scene('find', ({ root, s, c0 }) => {
   const sh = term(world, 1000, 670, 780, 270, 'mongosh', { fs: 22 });
   show(sh.c, T('d3') - 0.3, { y: 12 });
   sh.cmd(T('d3') - 0.1, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).explain(…)');
-  sh.out(T('d4', 'MongoDB') - 0.2, "{ <span class=\"k\">'计划'</span>: <span class=\"s\">'COLLSCAN'</span>, <span class=\"k\">'返回'</span>: <span class=\"n\">1</span>,\n  <span class=\"k\">'看过的索引键'</span>: <span class=\"n\">0</span>, <span class=\"k\">'看过的文档'</span>: <span class=\"n\">4096</span> }");
-  const r4096 = ring(world, 1012, 774, 756, 70, T('d4', '4096') - 0.2, T('d5') - 0.1, '#DB3030');
+  sh.out(T('d4', 'MongoDB') - 0.45, "{ <span class=\"k\">'计划'</span>: <span class=\"s\">'COLLSCAN'</span>, <span class=\"k\">'返回'</span>: <span class=\"n\">1</span>,\n  <span class=\"k\">'看过的索引键'</span>: <span class=\"n\">0</span>, <span class=\"k\">'看过的文档'</span>: <span class=\"n\">4096</span> }");
+  const r4096 = ring(world, 1012, 780, 756, 68, T('d4', '4096') - 0.2, T('d5') - 0.1, '#DB3030');
   to(cl, T('d5') - 0.2, { backgroundColor: '#FFFFFF', borderColor: '#C1C7C6', color: '#3D4F58', duration: 0.4 });
   sh.clear(T('d5') - 0.1);
   sh.cmd(T('d5') + 0.1, 'db.users.createIndex({ <span class="k">name</span>: <span class="n">1</span> })');
@@ -96,10 +96,10 @@ scene('find', ({ root, s, c0 }) => {
   draw(cp1, T('d15'), 0.7); glow(cl[1], T('d15'), null, { bg: '#00ED64', bd: '#00ED64', c: '#023430' });
   const got = chip(world, 1220, 534, '2050 → 47 字节的文档', 'sp'); css(got, { fontFamily: '"Mono", "Sans SC"' });
   show(got, T('d15', '47') - 0.3, { y: 10 }); sfx('pop', T('d15', '47') - 0.3);
-  sh.clear(T('d17') - 0.4);
-  sh.cmd(T('d17') - 0.3, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).explain(…)');
-  sh.out(T('d17', '1 个索引键') - 0.3, "{ <span class=\"k\">'计划'</span>: <span class=\"s\">'FETCH ← IXSCAN'</span>, <span class=\"k\">'返回'</span>: <span class=\"n\">1</span>,\n  <span class=\"k\">'看过的索引键'</span>: <span class=\"n\">1</span>, <span class=\"k\">'看过的文档'</span>: <span class=\"n\">1</span> }");
-  ring(world, 1012, 774, 756, 70, T('d17', '1 个索引键') + 0.2, null, '#00A35C');
+  sh.clear(T('d15') + 0.6);
+  sh.cmd(T('d15') + 0.7, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).explain(…)');
+  sh.out(T('d17') + 0.1, "{ <span class=\"k\">'计划'</span>: <span class=\"s\">'FETCH ← IXSCAN'</span>, <span class=\"k\">'返回'</span>: <span class=\"n\">1</span>,\n  <span class=\"k\">'看过的索引键'</span>: <span class=\"n\">1</span>, <span class=\"k\">'看过的文档'</span>: <span class=\"n\">1</span> }");
+  ring(world, 1012, 780, 756, 68, T('d17') + 0.5, null, '#00A35C');
   const cmpT = callout(world, 140, 676, 'tip', '没有索引：4096 份<br>走姓名索引：1 键、1 份', '两次查找');
   show(cmpT, T('d17') + 0.2, { y: 10 });
   sfx('blip', T('d12')); sfx('pop', T('d17'));

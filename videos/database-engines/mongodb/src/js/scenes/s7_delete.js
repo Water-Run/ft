@@ -12,7 +12,7 @@ scene('delete', ({ root, s, c0 }) => {
   const WY = 640;
   figs(world, 140, CV.BY + 90, 1640, [[c0 + 0.6, '图 7-1', '集合树与集合文件，删除与 Dave 写入前后', '实测：wt verify -d dump_address · ls -l']], null);
   const fresh = callout(world, 140, WY, 'note', '新装的 4096 人 · 96 KB', '起点');
-  show(fresh, T('f1') + 0.1, { y: 10 }); fadeOut(fresh, T('f1a') + 0.2);
+  show(fresh, T('f1') + 0.1, { y: 10 }); fadeOut(fresh, T('f1a') - 0.45);
   glow(V.leaf[1], T('f1'), null, { bg: '#E3FCF7', bd: '#00A35C', c: '#00684A' }); glow(b.l2, T('f1'), null, { bg: '#00ED64', rb: '#FFFFFF' });
 
   // Alice 注销：三棵树各动一处；右边是这次删除的操作记录
@@ -36,12 +36,12 @@ scene('delete', ({ root, s, c0 }) => {
   const C2 = tile(world, 520, WY + 40, 520, 140, '新版本：删除', '不带内容，只说这一项删了', 'rd');
   show(C1, T('f3') - 0.05, { y: 10 });
   const memL = label(world, 140, WY - 20, '在内存里：删除也是挂一个版本', 'h2'); css(memL, { fontSize: '32px' });
-  show(memL, T('f3', '更新链') - 0.3, { y: 8 }); fadeOut(memL, T('f5') - 0.1);
+  show(memL, T('f3', '更新链') - 0.3, { y: 8 }); fadeOut(memL, T('f5') - 0.5);
   show(C2, T('f4', '不带内容') - 0.3, { x: -30, y: 0 }); sfx('pop', T('f4', '不带内容') - 0.3);
   const l12 = link(ov, [[446, WY + 110], [514, WY + 110]], 'accent', { arrow: true, w: 3 }); arrowIn(l12, T('f4', '不带内容'), 0.4);
-  const tomb = gloss(label(world, 140, WY - 20, '删除标记（tombstone）：不带内容的版本', 'h2'), '删除标记'); css(tomb, { fontSize: '32px', color: '#970606' });
-  show(tomb, T('f5') + 0.15, { y: 8 });
-  fadeOut([C1, C2, l12], T('f6') + 0.3); fadeOut(tomb, T('f6') + 0.8);
+  const tomb = gloss(label(world, 140, WY - 20, '删除标记：不带内容的版本', 'h2'), '删除标记'); css(tomb, { fontSize: '32px', color: '#970606' });
+  show(tomb, T('f5') - 0.25, { y: 8 });
+  fadeOut([C1, C2, l12], T('f6') + 0.3); fadeOut(tomb, T('f6') + 1.5);
 
   // 检查点：第二个叶页写到文件末尾，文件 132 KB（F03 F06）
   ch.sec(T('f6') - 0.2, '检查点之后');
@@ -61,10 +61,10 @@ scene('delete', ({ root, s, c0 }) => {
   keys.innerHTML = '<div style="position:absolute;left:24px;top:14px;font:600 24px Inter,\'Sans SC\';color:#5C6C75">检查点之后，第二个叶页里的键</div>'
     + '<div style="position:absolute;left:24px;top:56px;font:500 32px Mono;color:#001E2B">… 2048　2049　<span style="color:#DB3030;text-decoration:line-through">2050</span>　2051　2052 …</div>';
   show(keys, T('f7') - 0.2, { y: 10 });
-  sh.out(T('f7', '2051') - 0.2, '<span class="c">键 … c7c1 · c7c3 …（没有 c7c2）</span>');
+  sh.out(T('f7') + 0.1, '<span class="c">键 … c7c1 · c7c3 …（没有 c7c2）</span>');
   // f8：少了一份文档，文件却没有变小
-  sh.clear(T('f8') - 0.1);
-  sh.cmd(T('f8'), 'ls -l db/collection-….wt', '$ '); sh.out(T('f8', '132 KB') - 0.4, '<span class="n">135168</span>  <span class="c"># 132 KB</span>');
+  sh.clear(T('f8') + 0.8);
+  sh.cmd(T('f8') + 0.9, 'ls -l db/collection-….wt', '$ '); sh.out(T('f8', '132 KB') + 0.2, '<span class="n">135168</span>  <span class="c"># 132 KB</span>');
   const notSmall = callout(world, 140, WY, 'warn', '4095 份文档，文件却从 96 KB 长到 132 KB', '没有变小');
   fadeOut(keys, T('f8') - 0.1); show(notSmall, T('f8') + 0.1, { y: 10 }); fadeOut(notSmall, T('f9') - 0.1);
   // f9：旧页的地方空出来
@@ -110,7 +110,7 @@ scene('delete', ({ root, s, c0 }) => {
   const t15 = T('f15');
   const nr2 = band.blk(65536, 69632, 'r'); show(nr2, t15, { y: -260, d: 0.7, ease: 'power2.in' }); sfx('pop', t15 + 0.7);
   hide([nr, dr], t15 + 0.3, { y: 0, d: 0.6 });
-  const d4 = band.blk(69632, 90112, 'f'); show(d4, t15 + 0.3, { y: 0, d: 0.6 }); hide(b.l4, t15 + 0.3, { y: 0, d: 0.6 });
+  const d4 = band.blk(69632, 90112, 'f'); hide(b.l4, t15 + 0.1, { y: 0, d: 0.35 }); show(d4, t15 + 0.5, { y: 0, d: 0.5 });
   clipBand(band, t15 + 0.3, 1.2, CV.CLIP1, 'inset(0 9.09% 0 0)', false);
   sh.out(t15 + 0.4, '<span class="n">[0: 65536-69632, 4096]</span> <span class="c"># 根页</span>');
   sh.clear(T('f15b') - 0.1);

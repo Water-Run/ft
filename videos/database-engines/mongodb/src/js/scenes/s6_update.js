@@ -31,9 +31,9 @@ scene('update', ({ root, s, c0 }) => {
   const A1 = tile(world, 140, WY + 40, 310, 140, '姓名索引', '用它找到 Alice', 'dk');
   const A2 = tile(world, 470, WY + 40, 310, 140, '_id 索引', 'RecordId 没变', 'dk');
   const A3 = tile(world, 800, WY + 40, 330, 140, '集合树', '只有 2050 要改', 'sp');
-  show(A1, T('e2', '姓名索引') - 0.2, { y: 10 }); swapAt(A1._s, '用它找到 Alice', '名字没变 · 不用改', T('e3'));
-  show(A2, T('e3', 'RecordId') - 0.1, { y: 10 }); to([A1, A2], T('e3', '不用动'), { autoAlpha: 0.45, duration: 0.5 });
-  show(A3, T('e4', '2050'), { y: 10 }); sfx('pop', T('e4', '2050'));
+  show(A1, T('e2', '姓名索引') - 0.2, { y: 10 }); swapAt(A1._s, '用它找到 Alice', '名字没变 · 不用改', T('e3') + 0.7);
+  show(A2, T('e3', 'RecordId') - 0.1, { y: 10 }); to([A1, A2], T('e4') - 0.1, { autoAlpha: 0.45, duration: 0.5 });
+  show(A3, T('e4', '2050') - 0.25, { y: 10 }); sfx('pop', T('e4', '2050'));
   glow(V.leaf[1], T('e4', '2050') - 0.1, T('e5'), { bg: '#00ED64', bd: '#00ED64', c: '#023430', rb: '#E3FCF7', rd: '#00A35C', rc: '#00684A' });
   fadeOut([title, A1, A2, A3], T('e5') - 0.15);
 
@@ -107,7 +107,7 @@ scene('update', ({ root, s, c0 }) => {
   show(idxN, T('e16') + 0.2, { y: 10 }); fadeOut(idxN, T('e17') + 0.2);
   // e17：另外三个叶页留在原地
   glow([b.l1, b.l3, b.l4], T('e17', '留在原地') - 0.4, T('e18'), { bg: '#E3FCF7', bd: '#00A35C', rb: '#FFFFFF', rd: '#889397' });
-  const stay = chip(world, 140, WY + 10, '另外三个叶页：位置不变', 'on'); show(stay, T('e17') + 0.4, { y: 8 }); fadeOut(stay, T('e18') + 0.6);
+  const stay = chip(world, 760, WY + 20, '另外三个叶页：位置不变', 'on'); show(stay, T('e17') - 0.1, { y: 8 }); fadeOut(stay, T('e18') + 0.6);
 
   // e18–e20：旧页原样留着，新检查点写完才算数（D06）
   [b.l2, b.r].forEach((e) => css(e, { outline: '0px solid #00684A' }));

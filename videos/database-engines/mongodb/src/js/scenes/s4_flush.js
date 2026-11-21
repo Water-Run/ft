@@ -11,7 +11,7 @@ scene('flush', ({ root, s, c0 }) => {
   const TOTAL = 98304, BX = 140, BY = 790, BW = 1640;
 
   // 文件带（下层）：先只有 4 KB 的文件头
-  const fileL = label(world, BX, BY - 46, 'collection-ccaa694c-….wt', 'lab');
+  const fileL = label(world, BX, BY - 46, 'collection-….wt', 'lab');
   const sizeL = h('div', 'abs', world, '4 KB'); px(sizeL, BX + BW - 220, BY - 58); css(sizeL, { width: '220px', textAlign: 'right', font: '700 40px "Inter"', color: '#001E2B' });
   const band = fileBand(world, BX, BY, BW, TOTAL);
   const hdr = band.blk(0, 4096, 'h');
@@ -75,8 +75,8 @@ scene('flush', ({ root, s, c0 }) => {
   show(zk[0], T('c9b') - 0.2, { y: 10 }); show(zk[1], T('c9b', '整理') - 0.2, { x: -20, y: 0 }); show(zk[2], T('c9b', '压缩') - 0.1, { x: -20, y: 0 });
   const za1 = link(ov, [[446, 575], [474, 575]], 'accent', { arrow: true, w: 3 }), za2 = link(ov, [[786, 575], [814, 575]], 'accent', { arrow: true, w: 3 });
   arrowIn(za1, T('c9b', '整理') - 0.3, 0.3); arrowIn(za2, T('c9b', '压缩') - 0.2, 0.3);
-  const zF = figs(world, 140, 670, 1000, [[T('c9b') + 0.3, '图 4-1', '一页写进文件之前', 'arch-cache.dox · dump_pages']], T('c10') - 0.2);
-  hide([...zk, za1, za2, ls2.c], T('c10') + 0.4, { y: 0, d: 0.35 });
+  const zF = figs(world, 140, 670, 1000, [[T('c9b') + 0.3, '图 4-1', '写进文件之前', 'dump_pages']], T('c10') + 0.7);
+  hide([...zk, za1, za2, ls2.c], T('c10') + 0.7, { y: 0, d: 0.35 });
   to(band.wrap, tc, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power2.inOut' });
   const blocks = LEAF.map(([k, a, b]) => band.blk(a, b, 'l', k));
   const rootB = band.blk(86016, 90112, 'r');
@@ -85,17 +85,16 @@ scene('flush', ({ root, s, c0 }) => {
   show(rootB, tc + 1.4, { y: -520, d: 0.7, ease: 'power2.in' });
   sfx('thud', tc + 1.0, { g: 0.5 });
   countTo(sizeL, 4, 96, T('c9'), 1.2, (v) => Math.round(v) + ' KB');
-  to(cache, T('c9'), { borderColor: '#E8EDEB', backgroundColor: '#FFFFFF', duration: 0.6 });
-  to(cl, T('c9'), { autoAlpha: 0, duration: 0.4 });
+  to([cache, cl], T('c9'), { autoAlpha: 0, duration: 0.6 });
   to(timer, T('c9'), { autoAlpha: 0, duration: 0.4 });
   leaves.forEach((l) => to(l, T('c9'), { backgroundColor: '#fff', borderColor: '#C1C7C6', color: '#3D4F58', duration: 0.6 }));
 
   // 树的形状：叶页连到文件里的块，根页连到它的块（B03 B01）
   ch.sec(T('c10') - 0.2, 'B 树');
   const tree = [];
-  LEAF.forEach(([k, a, b], i) => { const lx = 260 + i * 390 + 170, bx = band.xOf((a + b) / 2); tree.push(link(ov, [[lx, 430], [bx, BY]], 'dim', { dashed: '6 6' })); });
+  LEAF.forEach(([k, a, b], i) => { const lx = 260 + i * 390 + 170, bx = band.xOf((a + b) / 2); tree.push(link(ov, [[lx, 476], [bx, BY]], 'dim', { dashed: '6 6' })); });
   const rootLink = link(ov, [[1100, 270], [1100, 296], [1830, 296], [1830, BY + 37], [band.xOf(90112), BY + 37]], 'dim', { dashed: '6 6' });
-  tree.forEach((p, i) => draw(p, T('c10') + 0.7 + i * 0.08, 0.6, { dash: '6 6' }));
+  tree.forEach((p, i) => draw(p, T('c10') + 1.0 + i * 0.08, 0.6, { dash: '6 6' }));
   glow(blocks, T('c10') + 0.2, T('c11') - 0.1, { bg: '#E3FCF7', bd: '#00A35C', rb: '#FFFFFF', rd: '#889397' });
   glow(leaves, T('c11', '叶页'), T('c12') - 0.2, { bg: '#00ED64', bd: '#00ED64', c: '#023430' });
   leaves.forEach((l, i) => glow(l, T('c12', '连续') - 0.6 + i * 0.5, T('c12', '连续') + i * 0.5 + 0.6, { bg: '#00ED64', bd: '#00ED64', c: '#023430' }));

@@ -238,3 +238,11 @@ function nextPage(parent, x, y, chapNo, chapName, t) {
   e.innerHTML = `<div style="font:500 22px Inter,'Sans SC';color:#5C6C75">下一页</div><div style="font:600 30px Inter,'Sans SC';color:#1254B7">${chapNo} ${chapName}  →</div>`;
   show(e, t, { x: 30, y: 0 }); return e;
 }
+
+// 描线：开始描之前整条隐藏（引擎的 draw() 用虚线偏移藏线，圆头线帽会在起点留下一个点）
+draw = function (path, t, d = 0.9, o = {}) {
+  const len = path.getTotalLength();
+  path.style.strokeDasharray = o.dash ? o.dash : len;
+  if (o.dash) { tl.fromTo(path, { autoAlpha: 0 }, { autoAlpha: 1, duration: d * 0.6, immediateRender: true }, t); return; }
+  tl.fromTo(path, { strokeDashoffset: len, autoAlpha: 0 }, { strokeDashoffset: 0, autoAlpha: 1, duration: d, ease: o.ease || 'power2.inOut', immediateRender: true }, t);
+};
