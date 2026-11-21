@@ -20,7 +20,7 @@ from pathlib import Path
 VIDEO = Path(__file__).resolve().parent.parent
 REPO = VIDEO.parent.parent.parent
 OUT = VIDEO / 'out' / 'audition'
-ROUND = 4
+ROUND = 5
 # 只试听已选定的音色：Harness 一期的 Crisp_Girl，语速 1.15（2026-11-16 策划者点名沿用）。
 # 第 2 版的 5 男 5 女候选见 git 历史。
 # (引擎, 音色 id, 名称, 性别, 听感, 以前用在哪里)
@@ -29,43 +29,43 @@ VOICES = [
 ]
 SPEED = 1.15                      # MiniMax 语速；微软在线语音用 +0%
 MODEL = 'speech-2.8-hd'
-# 代表句（第 4 稿原句）：解释循环一章开头的现象与原因、调用一章的三种结果、结语
+# 代表句（第 6 稿原句）：倒叙的开场、第 01 章的标志、读入一章的「还没有名字」、调用一章的三种结局、成环的结尾
 SAMPLE_TEXTS = [
-    '字符串 "10" 加 1 呢',
-    '在 Lua 5.5.1 里，结果是整数 11',
-    '在 Lua 5.3 里，结果却是浮点数 11.0',
-    '"10" 是字符串，快路不成立，执行落到 MMBIN',
-    '一个函数递归调用自己十万层，每层都等下一层返回',
-    '程序正常结束',
-    '换一种写法，经过 pcall 调用自己',
-    '不到 200 层就报错，这次是 C stack overflow',
-    '走了一千万层，什么事也没有',
-    '三种写法，三种结果',
-    '一种机制，往往用在好几处',
-    '字符串驻留让比较变成比较指针',
-    '也让识别保留字只需要看一个字节',
+    '后来，这 28 行在五个版本的 Lua 上都跑过',
+    '每一次，打印出来的都是同样的四行',
+    '连那圈虚线也有名字，叫 orbit',
+    '这时，许多东西还没有名字',
+    '到第 499990 层，也还好好的',
+    '换一种写法，每一层都经过 pcall 调用自己',
+    '这一回，不到 200 层就倒下了',
+    '报的是 C stack overflow',
+    '它走了一千万层，什么事也没有发生',
+    '下一次运行，那 28 行还会从 lua_load 出发',
+    '把这条路从头再走一遍',
+    '打印出同样的四行',
 ]
-# 上一轮交审的稿本：审片页把这一稿里新增或改写的字幕标出来
-PREV_EXPORT = 'review/script.zh.57452d1da2d15af9ad594dfe81d638c3312ff7bc7928696351777651315009b4.md'
-PREV_NAME = '第 3 稿'
-# 第 3 版审片页之后的意见与处理（原话见 review/NOTES.md「意见与处理」）
+# 上一版审片页交审的稿本：审片页把这一稿里新增或改写的字幕标出来
+PREV_EXPORT = 'review/script.zh.c3f684811656e51d566a8ffa78845ca11adc595159384653b51ae36a3ed49d08.md'
+PREV_NAME = '第 4 稿'
+# 第 4 版审片页之后的意见与处理（原话见 review/NOTES.md「意见与处理」）
 FEEDBACK = [
-    ('「整片的叙事很多问题, 不应该只有一个例子, 这个就很Claude了抓着一个例子一直说. 不同的地方给出合适的程序, 动态一点的文稿」（2026-11-21）',
-     '各章换用自己的程序，开头先给现象再进源码；28 行计数器只留在开场与源码地图（追问后策划者选定）。见第 4 节'),
-    ('「本片以 5.5.1 为准，更早的版本，只在说明某处为什么这样实现时才提到。像这种, 人写的只会画面体现, 老版本的时候说老版本」（2026-11-21）',
-     '删去讲片子自身安排的句子，交给画面；旧版本处直接说「Lua 5.3」「5.4」'),
-    ('「另外还有变更记得推送」（2026-11-21）', '第 3 稿与审片页第 3 版已提交推送（1546dba）；第 4 稿随本版提交推送'),
+    ('「我准备使用Gemini 4 Neon进行对抗式迭代. 给出txt的Prompt, 让他给出建议」「直到对话迭代到你觉得满意为止」（2026-11-21）',
+     '提示 review/GEMINI-PROMPT-R1.txt（含续问）与 R2；Gemini 的事实意见回到 5.5.1／5.4.9 源码与本片构建核实，成立的补为 FACTS Q17–Q29 并改稿；署名 Gemini 4 Neon（文案审读）'),
+    ('「主要文案, 以观众的视角, 优化文案和叙事, 减少很多语句浓烈的Claude味.」（2026-11-21）',
+     '第 5 稿整稿重写口语：「……，称为 X」22 处减到 0；第 07 章换成局部变量相加（编出 ADD 与 MMBIN）；表一章用长度提示回答 5.4 与 5.5 的长度之差（探针实测）'),
+    ('「我发现你回头看之类的口癖还是不少. Lua要体现拉丁文学感, 比如百年孤独」「像回头看 这个 你就非常喜欢用, 太Claude了. 还有很多克劳德的口癖, 不够文学」（2026-11-21）',
+     '第 6 稿：去掉引导口癖；倒叙开场与成环结尾、1993 年里约的 Tecgraf、标志里的 planet／moon／orbit、「许多东西还没有名字」、版本编年；事实都在 FACTS。见第 4 节'),
+    ('「Neon的额度应该到了, 你先自己改改提交吧」「开发记得推送github避免丢失」（2026-11-21）', '第 6 稿由制作方自行改写；每一步都已提交推送'),
 ]
-# 这一稿的写法与审查（详见 review/NOTES.md「交审说明」第 4 稿）
+# 这几稿的写法与审查（详见 review/NOTES.md「交审说明」第 5、6 稿）
 ROUNDS = [
-    ('写', '每章先写一段能直接运行的程序，在 5.5.1 上跑出结果；涉及版本差异的另在 5.3.6、5.4.9 上跑；回显与源码写成 FACTS Q01–Q16',
-     '两处结果和预想不同：互相引用的表加上 __gc 以后，终结器的时机受分代回收影响、不稳定，改成只演示回收；带空洞的表在 5.4 和 5.5 长度不同，正好放进表一章',
-     '只把稳定、可复现的结果写进稿子'),
-    ('审', '一个独立代理对照 FACTS、各章回显与源码核事实并查叙事',
-     '查元方法的顺序说反了；「一共 10 条」漏讲第一条 VARARGPREP；3 == 3.0、t[1.0] 只提出没解释；pcall、「协程」抢先出现；残留讲片子安排的话；画面输出没有旁白对应；两段程序不在章节文件里；章间缺过渡',
-     '补 Q13–Q16 并逐条改正；补两段程序并重跑'),
-    ('读', '制作方通读；按字幕原文重建术语表与事实对照',
-     '每条字幕都有依据，每个术语先有问题再起名', '—'),
+    ('Gemini 第 1 轮', 'Gemini 4 Neon 审读第 4 稿（四项打分 6、6.5、5.5、7）；它提出的事实问题逐条回到源码与本片构建核实',
+     '"10" + 1 实际编出 ADDI；rex:speak() 漏了 Animal 的 __index；MULK 的目标格其实后填；表长度 4 与 2 只提出没解释；flags 只有低 6 位；__gc 对象下一轮才释放没给原因；「称为」22 处',
+     '补 FACTS Q17–Q29；第 07 章换程序；表长度做探针 15_table_length；不采纳的几条写明理由（GEMINI-PROMPT-R2.txt 第六节）'),
+    ('第 5 稿', '按观众视角整稿重写口语', '排比开头、口号句、章尾预告与总结腔；第 02 章逐个念文件名；第 16 章报流水账', '逐条改掉；估算 53:42'),
+    ('第 6 稿', '去口癖；借《百年孤独》的叙事笔法；制作方以观众身份连读全片',
+     '引导口癖（回头看、先看、再看、回到……、其实、也就是说、正是）；「前三条 LOADI」「第二行」易误听；闭包一章缺因果',
+     '改掉；新增 Q30（手册 §1：Lua 没有主程序）；按字幕原文重建术语表与事实对照，831 条字幕都有依据'),
 ]
 MUSIC = ('moon', '月下', '按优先级：月、简洁、巴西。72 拍/分，D 大调的 maj9 与 m11 和弦，长而暗的混响留出夜里的空间；'
          '一把尼龙弦式的拨弦按波萨诺瓦的切分轻轻扫弦，低音只在每小节的第一、三拍落下；钟片式的高音动机由四个下行的音组成，'
@@ -214,9 +214,9 @@ def page():
     n_new = sum(1 for c in caps if prev is not None and c not in prev)
     body = []
     body.append(f'<h1><img src="lua-logo.svg" alt="Lua">Lua源码全解析 · 审片页 · 第 {ROUND} 版</h1>')
-    body.append(f'<p class="lead">文案第 4 稿，{len(caps)} 条字幕，按估算语速约 {data["total"] / 60:.0f} 分钟（配音后以实测为准）。'
+    body.append(f'<p class="lead">文案第 6 稿，{len(caps)} 条字幕，按估算语速约 {data["total"] / 60:.0f} 分钟（配音后以实测为准）。'
                 '视觉融合方案与配乐「月下」已采用，音色已定；这一版要审定的是文案。淡紫框是需要回复的事项。</p>')
-    body.append('<h2>0. 第 3 版之后的意见与处理</h2><table class="v">')
+    body.append('<h2>0. 第 4 版之后的意见与处理</h2><table class="v">')
     for said, done in FEEDBACK:
         body.append(f'<tr><td class="q">{esc(said)}</td><td>{done}</td></tr>')
     body.append('</table>')
@@ -227,9 +227,9 @@ def page():
     body.append('</table><div class="frames2">')
     for i, f in enumerate(frames):
         body.append(f'<figure><a href="{f}"><img src="{f}"></a><figcaption>{esc(meta["frames"][i])}</figcaption></figure>')
-    body.append('</div><p class="done">2026-11-21 策划者：「两样都采用」。场景按这一套实现。关键帧画的还是第 3 稿的例子（整数 40、next_value 的调用帧）；形式不变，正式场景换成第 4 稿各章的程序。</p>')
+    body.append('</div><p class="done">2026-11-21 策划者：「两样都采用」。场景按这一套实现。关键帧画的还是第 3 稿的例子（整数 40、next_value 的调用帧）；形式不变，正式场景换成第 6 稿各章的程序。</p>')
     body.append('<h2>2. 配音（已选定）</h2>')
-    body.append(f'<p>MiniMax {esc(vj.get("model", ""))}，语速 {vj.get("speed", "")}。读下面这组第 4 稿原句（取自解释循环、调用两章与结语），'
+    body.append(f'<p>MiniMax {esc(vj.get("model", ""))}，语速 {vj.get("speed", "")}。读下面这组第 6 稿原句（取自开场、第 01 章、读入、调用两章与结语），'
                 '按本片的读法表与停顿逐句合成，切分方式与正式配音相同。这只是试听；全片等文案确认后再合成。</p>')
     body.append('<ol class="sample">' + ''.join(f'<li>{cap(t)}</li>' for t in vj.get('texts', [])) + '</ol><table class="v">')
     for v in vj['voices']:
@@ -242,22 +242,21 @@ def page():
                      '所以正式片的音量不取决于这里</span>' if lufs is not None else '') + '</td></tr>')
     if not vj['voices']:
         body.append('<tr><td colspan="2">（试听尚未合成：先运行 <code>audition.py voices</code>）</td></tr>')
-    body.append('</table><p class="ask">这个音色在长片里的语速与精神是否合适（经验规则 F17）；第 7 句的 pcall 按「P call」合成，是否清楚。'
-                '制作方没有听过这段音频，只用 Whisper 不带提示转写核对过：没有漏读；MMBIN 听成「MM 冰」，即读作 M M bin；'
-                'pcall 被转写成「pico」，可能连读得太紧，请以人耳为准。</p>')
+    body.append('</table><p class="ask">这个音色在长片里的语速与精神是否合适（经验规则 F17）；第 6 句的 pcall 按「P call」合成，是否清楚。'
+                '制作方没有听过这段音频，只用 Whisper 不带提示转写核对过：没有漏读；pcall 被转写成「批扣」（上一版是「pico」），'
+                '499990 读作四十九万九千九百九十；请以人耳为准。</p>')
     body.append('<h2>3. 配乐（已采用）</h2>')
     body.append(f'<table class="v"><tr><td><b>{esc(MUSIC[1])}</b><br>{esc(MUSIC[2])}</td><td><audio controls preload="none" src="music-{MUSIC[0]}.mp3"></audio>'
                 '<br>约 84 秒：引子、推进、最高处、收束</td></tr></table>')
     body.append('<p class="done">2026-11-21 策划者：「两样都采用」。正式配乐按章节排段落：讲机制的段落只留铺底与拨弦，章节之间与结语让钟片动机出现；旁白出现时自动压低。</p>')
-    body.append('<h2>4. 文案第 4 稿</h2>')
-    body.append('<p>这一稿不再用一段程序贯穿全片：各章先摆出一段程序和它的结果，再到源码里找原因。写、审、读三步：</p>')
+    body.append('<h2>4. 文案第 6 稿</h2>')
+    body.append('<p>第 4 稿之后经过 Gemini 4 Neon 一轮审读和两次改写。各章仍是先摆出一段程序和它的结果，再到源码里找原因；这两稿改的是叙述的口吻：</p>')
     body.append('<table class="v map"><tr><th>轮次</th><th>方式</th><th>发现</th><th>处理</th></tr>')
     for r in ROUNDS:
         body.append('<tr>' + ''.join(f'<td>{esc(x)}</td>' for x in r) + '</tr>')
     body.append('</table>')
-    body.append('<p>28 行计数器只在开场与源码地图里出现；原来逐段讲这段程序的第 2 章删去，结尾不再逐行回放。'
-                '各章用到的程序在 <code>research/lab/chapters/</code>，回显在 <code>out_14_chapter_runs.txt</code>。'
-                '请特别看：各章程序是否合适；第 5 章的密度；结尾两句概括性的说法。详见 <code>review/NOTES.md</code>「交审说明」第 4 稿。</p>')
+    body.append('<p>文学笔法只放在叙事层：开场倒叙「后来……每一次」，结尾回到下一次运行，与开场成环；版本一章写成一代代的编年；讲机制的段落仍以讲清为先，技术含义没有改动。'
+                '请特别看：文学感的分寸是否合适；还有哪些句子像机器写的；第 05 章的密度。详见 <code>review/NOTES.md</code>「交审说明」第 6 稿。</p>')
     body.append('<table class="v map"><tr><th>部分</th><th>章</th><th>估算</th><th>这一章回答</th></tr>')
     secs = {sc['id']: sc['seconds'] for sc in data['scenes']}
     for part, sid, q in meta['outline']:
