@@ -175,3 +175,11 @@ mongod 是服务端进程，收到的查询本身也是一份文档（`{ name: "
 ## 复核
 
 未做（尚未成片）。
+
+## 补充取证（2026-11-21，第 4 稿）
+
+策划者看预览 r4 时要求交代 BSON 与 JSON 的关系（「还有和JSON的关系」）。取证者：Claude Opus 5.5。
+
+| 编号 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、截至日期 | 核查 |
+|---|---|---|---|---|---|
+| A14 | BSON 是 Binary JSON 的缩写：一种二进制编码的、类似 JSON 的文档序列化格式；和 JSON 一样可以嵌套文档与数组，另有 JSON 没有的类型（如 Date、BinData） | BSON 规范首页 https://bsonspec.org/ ：“BSON, short for Binary JSON, is a binary-encoded serialization of JSON-like documents. Like JSON, BSON supports the embedding of documents and arrays within other documents and arrays. BSON also contains extensions that allow representation of data types that are not part of the JSON spec.” | A04：Alice 那 47 个字节里，每个字段先写一个类型字节，字符串前面写长度，整份文档开头写总长 | 2026-11-21 读取 | 已核；旁白 b6b–b6d 的依据（「每个值是什么类型、有多长，也一起记在里面」：类型字节见 A04，长度见 A04 的总长与字符串长度） |

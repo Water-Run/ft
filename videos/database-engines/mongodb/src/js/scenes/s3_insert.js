@@ -27,8 +27,9 @@ scene('insert', ({ root, s, c0 }) => {
   const ar = Math.floor(2049 / N), ac = 2049 % N;
   const aCell = h('div', 'abs', world); px(aCell, GX + 2 + ac * CELL - 6, GY + 2 + ar * CELL - 6, CELL + 12, CELL + 12); css(aCell, { background: K.spring, border: '3px solid ' + K.forest, borderRadius: '3px' }); P1.push(aCell);
   show(aCell, T('b2', 'Alice') - 0.2, { y: 0, s: 2.5, d: 0.5 });
-  const aL = lead(ov, [[GX + ac * CELL + 20, GY + ar * CELL + 8], [930, GY + ar * CELL + 8]], { color: 'accent', w: 2.5 }); P1.push(aL);
-  const aT = tg(world, 940, GY + ar * CELL - 26, 'Alice · 第 2050 个', 'g'); css(aT, { fontSize: '44px' }); P1.push(aT);
+  const ovG = overlay(world);
+  const aL = lead(ovG, [[GX + ac * CELL + 20, GY + ar * CELL + 8], [930, GY + ar * CELL + 8]], { color: 'accent', w: 2.5 }); P1.push(aL);
+  const aT = tg(world, 940, GY + ar * CELL - 26, 'Alice · 第 2050 个', 'g'); css(aT, { fontSize: '40px', lineHeight: '64px', color: '#FFFFFF', background: K.forest, borderRadius: '12px', padding: '0 20px' }); P1.push(aT);
   draw(aL, T('b2', 'Alice'), 0.5); show(aT, T('b2', '第') - 0.3, { x: 16, y: 0, d: 0.5 });
   const tP1 = T('b3') - 0.4;
   fadeOut(P1, tP1, 0.5);
@@ -39,17 +40,17 @@ scene('insert', ({ root, s, c0 }) => {
   icon(app, 26, 24, 'doc', 48, K.gd2, 2.4);
   const appT = h('div', 'abs', app, '应用'); css(appT, { left: '88px', top: '28px', font: '700 38px "Sans SC"', color: K.ink });
   const drv = h('div', 'abs', app, '驱动程序'); css(drv, { left: '480px', top: '20px', padding: '8px 20px', font: '700 30px "Sans SC"', color: K.forest, background: K.mint, border: '2px solid ' + K.g1, borderRadius: '10px' });
-  show(app, T('b3') - 0.2, { y: 16, d: 0.55 });
-  set(drv, s.start, { autoAlpha: 0 }); show(drv, T('b4', '_id') - 0.2, { y: 10, d: 0.45 });
-  pt(world, 618, 250, 210, 62, T('b5', '驱动') - 0.2, T('b5', '生成') + 0.3);
+  show(app, T('b3') - 0.2, { y: 16, d: 0.55 }); to(app, T('b5') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 });
+  set(drv, s.start, { autoAlpha: 0, backgroundColor: K.ink, borderColor: K.ink, color: '#FFFFFF' }); show(drv, T('b4', '_id') - 0.2, { y: 10, d: 0.45 });
+  to(drv, T('b5', '驱动') - 0.2, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.4 });
   const D = docCard(world, 180, 340, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 680, fs: 32 });
   const idr = D.r._id; css(idr, { overflow: 'hidden' }); P2.push(D.c);
   show(D.c, T('b3', '名字') - 0.4, { y: 12, d: 0.5 });
-  to([D.r.name, D.r.age], T('b3', '名字') - 0.1, { backgroundColor: K.mint2, duration: 0.35 });
-  to(D.c, T('b4', '这时候') - 0.2, { backgroundColor: K.bluel, duration: 0.35 }); to(D.c, T('b5', '生成') + 0.4, { backgroundColor: '#FFFFFF', duration: 0.35 });
+  solid(D.r.name, T('b3', '名字') - 0.1, 'new', [T('b4', '这时候') - 0.3, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]); to([...D.r.name.querySelectorAll('span')], T('b3', '名字') - 0.1, { color: '#FFFFFF', duration: 0.35 }); to([...D.r.name.querySelectorAll('span')], T('b4', '这时候') - 0.3, { clearProps: 'color', duration: 0.01 });
+  solid(D.r.age, T('b3', '年龄') - 0.1, 'new', [T('b4', '这时候') - 0.3, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]); to([...D.r.age.querySelectorAll('span')], T('b3', '年龄') - 0.1, { color: '#FFFFFF', duration: 0.35 }); to([...D.r.age.querySelectorAll('span')], T('b4', '这时候') - 0.3, { clearProps: 'color', duration: 0.01 });
+  to(D.c, T('b4', '那项') - 0.2, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 }); to(D.c, T('b5', '生成') + 0.4, { backgroundColor: '#FFFFFF', duration: 0.35 });
   tl.fromTo(idr, { height: 0, autoAlpha: 0 }, { height: 48, autoAlpha: 1, duration: 0.6, ease: 'power2.out', immediateRender: true }, T('b5', '生成') - 0.1);
-  to(idr, T('b5', 'Object') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.4 });
-  to([D.r.name, D.r.age], T('b4') - 0.1, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.35 });   // lint-ok: 取消高亮
+  to(idr, T('b5', 'Object') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.4 }); classAt(idr, 'inv', T('b5', 'Object') - 0.2, T('b6') - 0.35);
   // 右边：ObjectId 的 12 个字节（A04 里的那一份）
   const oidB = h('div', 'abs', world); px(oidB, 960, 330, 860); P2.push(oidB);
   oidB.innerHTML = `<div style="font:700 34px 'Inter';color:${K.ink};margin-bottom:18px">ObjectId · 12 个字节</div><div style="display:flex;gap:8px">${'6a fa 6c a2 6f 27 50 6c fb 0a 4e 81'.split(' ').map((b) => `<span style="width:62px;height:66px;border-radius:8px;background:${K.mint};border:2px solid ${K.g1};font:600 30px/62px Mono;text-align:center;color:${K.ink}">${b}</span>`).join('')}</div>`;
@@ -65,36 +66,64 @@ scene('insert', ({ root, s, c0 }) => {
   by.all.forEach((e, i) => { css(e, { height: '72px', lineHeight: '70px', fontSize: '22px' }); show(e, T('b6', '编码') - 0.1 + i * 0.025, { y: -40, d: 0.35 }); });
   const xB = (i) => BX + i * (BW2 + BG);
   const bsonT = h('div', 'abs', world, 'BSON'); px(bsonT, BX, 470); css(bsonT, { font: '800 56px "Inter"', color: K.forest });
-  show(bsonT, T('b6', 'B') - 0.2, { y: 10, d: 0.45 });
+  show(bsonT, T('b6', 'B') - 0.2, { y: 10, d: 0.45 }); css(bsonT, { borderRadius: '12px', padding: '0 18px', marginLeft: '-18px' }); to(bsonT, T('b6b', '缩写') - 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 });   // 「缩写」：BSON 这个词成为实心块
   const glB = gl(world, BX, 712, 'BSON', '文档编成的二进制格式');
   show(glB, T('b6', 'B') + 0.1, { x: 14, y: 0, d: 0.45 });
-  const n47 = tg(world, BX + 210, 462, '47 字节', 'big'); css(n47, { fontSize: '56px' });
+  // b6b：BSON = Binary JSON（A14）
+  const bj = h('div', 'abs', world); px(bj, BX + 200, 474); css(bj, { font: '700 42px/68px "Inter"', color: '#FFFFFF', background: K.ink, borderRadius: '12px', padding: '0 24px', whiteSpace: 'nowrap' });
+  bj.innerHTML = '= <b style="color:#FFFFFF">B</b>inary <b style="color:#FFFFFF">JSON</b>'; to([...bj.querySelectorAll('b')], T('b6b', 'Binary') - 0.2, { color: K.spring, duration: 0.35 });
+  show(bj, T('b6b') - 0.1, { x: 16, y: 0, d: 0.45 });
+  const bjZh = tg(world, BX + 690, 474, '二进制的 JSON', 'b'); css(bjZh, { fontSize: '38px', lineHeight: '68px', color: '#FFFFFF', background: K.forest, borderRadius: '12px', padding: '0 24px' });
+  show(bjZh, T('b6b', '二进制') - 0.2, { x: 12, y: 0, d: 0.4 });
+  // b6c：上面那份像 JSON 的写法，存下来是下面这一排字节
+  const likeJ = tg(world, 1250, 236, '像 JSON 的写法', 'g'); css(likeJ, { fontSize: '34px', lineHeight: '62px', color: '#FFFFFF', background: K.forest, borderRadius: '12px', padding: '0 22px' });
+  show(likeJ, T('b6c', 'JSON') - 0.25, { x: 12, y: 0, d: 0.4 });
+  to(D.c, T('b6c', 'JSON') - 0.25, { borderColor: K.g1, duration: 0.35 });
+  const toB = link(ov, [[1150, 456], [1150, 548]], 'ink', { w: 3, arrow: true });
+  arrowIn(toB, T('b6c', '存下来') - 0.2, 0.45); to(D.c, T('b6c', '存下来') - 0.2, { backgroundColor: K.mint2, duration: 0.4 });
+  to(by.all, T('b6c', '一个个') - 0.2, { color: K.ink, backgroundColor: K.gl1, duration: 0.4 });
+  // b6d：每个值的类型（一个字节）和长度也记在里面（A04：07 ObjectId、02 字符串、10 int32；总长 4 字节、字符串长度 4 字节）
+  const TYP = [4, 21, 37], LEN = [0, 1, 2, 3, 27, 28, 29, 30];
+  const tTy = T('b6d', '类型') - 0.25, tLe = T('b6d', '多长') - 0.25;
+  TYP.forEach((i, k) => to(by.all[i], tTy + k * 0.12, { backgroundColor: K.ink, borderColor: K.ink, color: '#FFFFFF', duration: 0.35 }));
+  LEN.forEach((i, k) => to(by.all[i], tLe + (i > 4 ? 0.2 : 0) + (k % 4) * 0.04, { backgroundColor: K.gd2, borderColor: K.gd2, color: '#FFFFFF', duration: 0.35 }));
+  const tyTags = TYP.map((i) => { const e = tg(world, xB(i) - 10, BY + 84, '类型', 'm'); css(e, { fontSize: '24px', fontWeight: 700, color: K.ink }); show(e, tTy + 0.1, { y: 8, d: 0.35 }); return e; });
+  const leTags = [0, 27].map((i) => { const e = tg(world, xB(i), BY + 84, '长度', 'm'); css(e, { fontSize: '24px', fontWeight: 700, color: K.gd2 }); show(e, tLe + 0.1 + (i ? 0.2 : 0), { y: 8, d: 0.35 }); return e; });
+  const tB7 = T('b7') - 0.3;
+  fadeOut([bj, bjZh, likeJ, toB, ...tyTags, ...leTags], tB7, 0.4);
+  to(D.c, tB7, { borderColor: K.gl1, backgroundColor: '#FFFFFF', duration: 0.35 });
+  [...TYP, ...LEN].forEach((i) => to(by.all[i], T('b8', '里面') - 0.3, { backgroundColor: K.gl1, borderColor: K.gl1, color: K.ink, duration: 0.4 }));
+  const n47 = tg(world, 1620, 462, '47 字节', 'big'); css(n47, { fontSize: '56px' });
   show(n47, T('b7', '47') - 0.2, { y: 10, d: 0.45 });
   fadeOut(D.c, T('b10') - 0.3, 0.4);
-  const segC = [[12.5, 0], [29, 1], [41.5, 2]].map(([c, r]) => { const p = link(ov, [[1240, 300 + r * 41], [1330, 300 + r * 41], [xB(c) + 16, 470], [xB(c) + 16, BY - 6]], 'accent', { w: 2.5 }); return p; });
-  segC.forEach((p, k) => { draw(p, T('b8', '字段') - 0.1 + k * 0.45, 0.6); fadeOut(p, T('b10') - 0.3, 0.4); });
+  [D.r._id, D.r.name, D.r.age].forEach((r, k) => { to(r, T('b8', '字段') - 0.2 + k * 0.45, { color: K.forest, duration: 0.3 }); });
   // 逐段：总长 | _id | name | age | 结尾（字节下方一道括号一个名字）
   const SEG = [[0, 4, '总长'], [4, 21, '_id'], [21, 37, 'name'], [37, 46, 'age'], [46, 47, '0']];
   const segEls = SEG.map(([a, b, n], k) => {
     const br = h('div', 'abs', world); px(br, xB(a) + 2, BY + 82, xB(b) - xB(a) - BG - 4, 14); css(br, { borderLeft: '3px solid ' + K.gd2, borderRight: '3px solid ' + K.gd2, borderBottom: '3px solid ' + K.gd2 });
-    const t = tg(world, xB(a), BY + 106, n, 'm'); css(t, { width: xB(b) - xB(a) + 'px', textAlign: 'center', fontSize: '26px', fontWeight: 700, color: K.ink });
+    const t = tg(world, xB(a), BY + 106, n, 'm'); css(t, { width: xB(b) - xB(a) - 4 + 'px', textAlign: 'center', fontSize: '26px', fontWeight: 700, color: '#FFFFFF', background: K.ink, borderRadius: '6px', lineHeight: '40px' });
     return [br, t];
   });
-  segEls.forEach(([br, t], k) => { const tt = k === 0 ? T('b8', '里面') - 0.2 : T('b8', '字段') - 0.2 + (k - 1) * 0.45; show([br, t], tt, { y: 8, d: 0.4 }); });
+  segEls.forEach(([br, t], k) => { const tt = k === 0 ? T('b8', '里面') - 0.2 : T('b8', '字段') - 0.2 + (k - 1) * 0.45; show([br, t], tt, { y: 8, d: 0.4 });
+    const [a, b] = SEG[k]; to(by.all.slice(a, b), tt, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 }); to(by.all.slice(a, b), T('b9') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.35 }); });
   // 字段名：_id\0、name\0、age\0 三段变绿（13 个字节）
   const tName = T('b9', 'name') - 0.6;
+  [D.r._id, D.r.name, D.r.age].forEach((r, k) => { solid(r, T('b9', '名字') - 0.2 + k * 0.12, 'new'); to([...r.querySelectorAll('span')], T('b9', '名字') - 0.2 + k * 0.12, { color: '#FFFFFF', duration: 0.35 }); });
   by.name.forEach((e, i) => to(e, tName + i * 0.03, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.35 }));
   to(by.name, T('b8', '名字') - 0.2, { color: K.forest, duration: 0.35 });
-  const nameTags = [[5, '_id\\0'], [22, 'name\\0'], [38, 'age\\0']].map(([i, t]) => { const e = tg(world, xB(i) - 6, BY - 46, t, 'm'); css(e, { color: K.forest, fontWeight: 700, fontSize: '26px' }); return e; });
+  const nameTags = [[5, '_id\\0'], [22, 'name\\0'], [38, 'age\\0']].map(([i, t]) => { const e = tg(world, xB(i) - 6, BY - 46, t, 'm'); css(e, { color: '#FFFFFF', background: K.forest, borderRadius: '6px', padding: '0 8px', fontWeight: 700, fontSize: '26px' }); return e; });
   nameTags.forEach((e, k) => show(e, tName + 0.2 + k * 0.35, { y: 8, d: 0.4 }));
-  [7, 26, 40].forEach((i, k) => to(by.all[i], T('b9', '结尾') - 0.3 + k * 0.12, { color: K.redd, borderColor: K.red, duration: 0.35 }));
+  [7, 26, 40].forEach((i, k) => to(by.all[i], T('b9', '结尾') - 0.3 + k * 0.12, { color: '#FFFFFF', backgroundColor: K.red, borderColor: K.red, duration: 0.35 }));
   // 13 / 47：一根比例条
   const bar = h('div', 'abs', world); px(bar, BX, 800, 1692, 44); css(bar, { background: K.gl2, borderRadius: '6px' });
   const barF = h('div', 'abs', bar); css(barF, { left: 0, top: 0, bottom: 0, width: (13 / 47 * 100) + '%', background: K.spring, borderRadius: '6px 0 0 6px', transformOrigin: '0 50%' });
   const barT = tg(world, BX + 1692 * 13 / 47 + 20, 802, '字段名 13 字节 / 共 47 字节', 'b'); css(barT, { fontSize: '32px' });
   show(bar, T('b10', '13') - 0.4, { y: 8, d: 0.4 }); fromTo(barF, T('b10', '13') - 0.2, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power2.out' });
   show(barT, T('b10', '13') + 0.2, { x: 14, y: 0, d: 0.45 });
-  pt(world, BX - 6, 794, 1692 * 13 / 47 + 12, 56, Tend('b10') + 0.1, T('b11') - 0.45);
+  const q4 = h('div', 'abs', world); px(q4, BX + 1692 / 4 - 2, 786, 0, 72); css(q4, { borderLeft: '8px solid ' + K.ink }); q4.dataset.name = '四分之一';
+  const q4T = tg(world, BX + 1692 / 4 - 30, 744, '1/4', 'm'); css(q4T, { fontSize: '28px', fontWeight: 700, color: '#FFFFFF', background: K.ink, borderRadius: '8px', lineHeight: '42px', width: '72px', textAlign: 'center' });
+  show([q4, q4T], T('b10', '四分之一') - 0.2, { y: -6, d: 0.4 }); to(barF, T('b10', '还多') - 0.2, { backgroundColor: K.forest, duration: 0.35 });
+  fadeOut([q4, q4T], T('b11') - 0.4, 0.5);
   const tP3 = T('b11') - 0.4;
   fadeOut(glB, T('b10', '13') - 0.6, 0.4);
   fadeOut([bsonT, n47, ...segEls.flat(), ...nameTags, bar, barT], tP3, 0.5);
@@ -110,20 +139,22 @@ scene('insert', ({ root, s, c0 }) => {
   const keyV = h('div', 'abs', keyB, '?'); css(keyV, { left: '28px', top: '48px', font: '800 48px "Mono"', color: K.gd1 });
   show(valB, tP3 + 0.6, { y: 0, d: 0.5 });
   fadeOut(by.all, tP3 + 0.65, 0.35);
-  show(keyB, T('b11', '缺') - 0.2, { x: -30, y: 0, d: 0.5 });
+  show(keyB, T('b11', '缺') - 0.2, { x: -30, y: 0, d: 0.5 }); to(keyB, T('b14', 'Re') - 0.2, { backgroundColor: K.spring, borderColor: K.forest, duration: 0.35 }); to([keyL, keyV], T('b14', 'Re') - 0.2, { color: K.ink, duration: 0.35 });
   // 发号器：从 1 往上数，数到 2050 落进键
-  const disp = h('div', 'panel', world); px(disp, 300, 236, 560, 200); P4.push(disp);
-  const dispT = h('div', 'abs', disp, 'RecordId'); css(dispT, { left: '28px', top: '22px', font: '700 36px "Mono"', color: K.forest });
-  const dispS = h('div', 'abs', disp, '按写入的先后发'); css(dispS, { left: '28px', top: '78px', font: '500 26px "Sans SC"', color: K.gd1 });
-  const dispN = h('div', 'abs', disp, '1'); css(dispN, { right: '32px', top: '60px', font: '800 96px "Mono"', color: K.ink });
+  const disp = h('div', 'panel', world); px(disp, 300, 236, 560, 200); css(disp, { background: K.ink, borderColor: K.ink }); P4.push(disp);
+  const dispT = h('div', 'abs', disp, 'RecordId'); css(dispT, { left: '28px', top: '22px', font: '700 36px "Mono"', color: K.spring });
+  const dispS = h('div', 'abs', disp, '按写入的先后发'); css(dispS, { left: '28px', top: '78px', font: '500 26px "Sans SC"', color: K.gl1 });
+  const dispN = h('div', 'abs', disp, '1'); css(dispN, { right: '32px', top: '60px', font: '800 96px "Mono"', color: '#FFFFFF' });
   show(disp, T('b12', '另发') - 0.3, { y: 14, d: 0.5 });
+  to(disp, T('b12', '编号') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.4 }); to(dispT, T('b12', '编号') - 0.2, { color: '#FFFFFF', duration: 0.4 }); to(dispS, T('b12', '编号') - 0.2, { color: K.mint2, duration: 0.4 });
   stepTo(dispN, [[T('b13', '1') - 0.2, 0.01, 1, 1], [T('b13', '先后') - 0.2, 3.6, 1, 2050]], (v) => String(Math.round(v)));
+  const seqC = res(world, 920, 360, '1 → 2 → 3 → … → 2050', 'new', T('b13', '先后') - 0.1, { out: T('b15') - 0.4 }); P4.push(seqC);
   const glR = gl(world, 920, 250, 'RecordId', '存储引擎里的内部编号<br>按写入顺序，从 1 往上加', { cls: 'lg' }); P4.push(glR);
-  show(glR, T('b12', 'Re') - 0.2, { x: 16, y: 0, d: 0.5 });
+  show(glR, T('b12', 'Re') - 0.2, { x: 16, y: 0, d: 0.5 }); fadeOut(glR, T('b14') - 0.1, 0.4);
   const fly = h('div', 'abs', world, '2050'); px(fly, 690, 296); css(fly, { font: '800 56px "Mono"', color: K.forest }); P4.push(fly);
   tl.fromTo(fly, { autoAlpha: 0, x: 0, y: 0 }, { autoAlpha: 1, duration: 0.25, immediateRender: true }, T('b14', '是') - 0.3);
   tl.to(fly, { x: 330 - 690, y: 566 - 296, duration: 0.7, ease: 'power2.inOut' }, T('b14', '是') - 0.05);
-  to(keyB, T('b14', '是') + 0.6, { borderStyle: 'solid', borderColor: K.g1, backgroundColor: K.mint, duration: 0.4 });
+  to(keyB, T('b14', '是') + 0.6, { borderStyle: 'solid', borderColor: K.forest, backgroundColor: K.forest, duration: 0.4 }); to(keyL, T('b14', '是') + 0.6, { color: '#FFFFFF', duration: 0.4 }); to(fly, T('b14', '是') + 0.65, { color: K.spring, duration: 0.3 });
   fadeOut(keyV, T('b14', '是') + 0.4, 0.2);
   // 两个编号：_id 在文档里，RecordId 不在（showRecordId 才看得到，02 回显）
   const tCmp = T('b15') - 0.2;
@@ -131,11 +162,14 @@ scene('insert', ({ root, s, c0 }) => {
   const c1 = term(world, 300, 690, 1520, 250, 'mongosh', { fs: 26, lh: 40 }); P4.push(c1.c);
   show(c1.c, tCmp, { y: 14, d: 0.5 });
   c1.cmd(tCmp + 0.3, 'db.users.findOne({ <span class="k">name</span>: <span class="s">"Alice"</span> })', 'lab&gt; ', 60);
-  c1.out(tCmp + 1.2, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span> }   <span style="color:#5C6C75">// 没有 RecordId</span>');
-  c1.cmd(T('b15', '看不到') - 0.6, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).<span class="k">showRecordId</span>()', 'lab&gt; ', 70);
-  c1.out(T('b15', '看不到') + 0.3, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span>, <span class="k" style="background:#C0FAE6">\'$recordId\'</span>: Long(<span class="s">\'2050\'</span>) }');
-  pt(world, 1160, 880, 196, 44, T('b15', '看不到') + 0.4, T('b16') - 0.3);
+  const o1 = c1.out(tCmp + 1.2, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span> }   <span style="color:#5C6C75">// 没有 RecordId</span>');
+  c1.cmd(T('b15', '平时') - 0.3, 'db.users.find({ <span class="k">name</span>: <span class="s">"Alice"</span> }).<span class="k">showRecordId</span>()', 'lab&gt; ', 70);
+  const o2b = c1.out(T('b15', '看不到') - 0.2, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span>, <span class="k" style="background:#C0FAE6">\'$recordId\'</span>: Long(<span class="s">\'2050\'</span>) }');
+  to(o1, Tend('b15') + 0.2, { opacity: 0.45, duration: 0.45 }); to(o2b.querySelector('span[style]'), Tend('b15') + 0.3, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });   // 上一条回显（没有 RecordId）退淡，留下带 $recordId 的这一条
+  const nums = [res(world, 300, 280, '_id · 在文档里', 'ink', T('b15', '两个') - 0.2), res(world, 760, 280, 'RecordId · 不在文档里', 'new', T('b15', '编号') - 0.1)];
+  const hid = res(world, 1300, 280, '平时看不到', 'del', T('b15', '看不到') - 0.1);
   const tP4 = T('b16') - 0.4;
+  fadeOut([...nums, hid], tP4, 0.5);
   fadeOut([valB, keyB, fly, c1.c], tP4, 0.5);
 
   // ══ 五、三棵树里各一项（B05 B06 B07） ══
@@ -143,37 +177,53 @@ scene('insert', ({ root, s, c0 }) => {
   const NAMES = ['集合树', '_id 索引', '姓名索引'];
   const ent = TX3.map((x, i) => {
     const g = h('div', 'abs', world); px(g, x, 236, TW3, 580);
-    const hd = h('div', 'abs', g, NAMES[i]); css(hd, { left: 0, top: 0, font: '700 40px "Sans SC"', color: K.ink });
-    const box = h('div', 'abs', g); css(box, { left: 0, top: '80px', width: TW3 + 'px', height: '230px', background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '12px' });
-    const kL = h('div', 'abs', box, '键'); css(kL, { left: '24px', top: '18px', font: '600 26px "Sans SC"', color: K.gd1 });
-    const vL = h('div', 'abs', box, '值'); css(vL, { left: '24px', top: '124px', font: '600 26px "Sans SC"', color: K.gd1 });
-    const kV = h('div', 'abs', box, ''); css(kV, { left: '24px', top: '54px', font: '700 36px "Mono"', color: K.ink, whiteSpace: 'nowrap' });
-    const vV = h('div', 'abs', box, ''); css(vV, { left: '24px', top: '160px', font: '600 32px "Mono"', color: K.ink, whiteSpace: 'nowrap' });
-    return { g, hd, box, kV, vV };
+    const hd = h('div', 'abs', g, NAMES[i]); css(hd, { left: 0, top: 4, font: '700 36px/62px "Sans SC"', color: '#FFFFFF', background: i ? K.ink : K.forest, borderRadius: '12px', padding: '0 22px' });
+    const box = h('div', 'abs', g); css(box, { left: 0, top: '80px', width: TW3 + 'px', height: '300px', background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '12px' });
+    const kL = h('div', 'abs', box, '键'); css(kL, { left: '24px', top: '20px', font: '600 28px "Sans SC"', color: K.gd2 });
+    const vL = h('div', 'abs', box, '值'); css(vL, { left: '24px', top: '156px', font: '600 28px "Sans SC"', color: K.gd2 });
+    const kV = h('div', 'abs', box, ''); css(kV, { left: '24px', top: '62px', font: '700 38px "Mono"', color: K.ink, whiteSpace: 'nowrap' });
+    const vV = h('div', 'abs', box, ''); css(vV, { left: '24px', top: '198px', font: '600 36px "Mono"', color: K.ink, whiteSpace: 'nowrap' });
+    return { g, hd, box, kV, vV, kL, vL };
   });
-  ent.forEach((e, i) => show(e.g, T('b16', '三棵') - 0.2 + i * 0.15, { y: 16, d: 0.5 }));
+  ent.forEach((e, i) => show(e.g, T('b16', '三棵') - 0.2 + i * 0.45, { y: 16, d: 0.5 }));
   // 集合树：键 2050，值整份 47 字节
-  ent[0].kV.innerHTML = '<span style="background:#C0FAE6;padding:0 6px">2050</span>'; ent[0].vV.innerHTML = 'BSON · 47 字节';
-  ent[1].kV.innerHTML = "ObjectId('6afa…4e81')"; ent[1].vV.innerHTML = '<span style="background:#C0FAE6;padding:0 6px">2050</span>';
-  ent[2].kV.innerHTML = '"Alice" <span style="background:#C0FAE6;padding:0 6px">2050</span>'; ent[2].vV.innerHTML = '<span style="color:#5C6C75">（空）</span>';
-  const t2050 = TX3.map((x, i) => { const e = tg(world, x + 250, 246, '用上 2050', 'g'); css(e, { fontSize: '34px', fontFamily: 'Mono' }); show(e, T('b16', '用上') - 0.3 + i * 0.2, { y: 8, d: 0.4 }); fadeOut(e, T('b24') - 0.4, 0.4); return e; });
+  ent[0].kV.innerHTML = '2050'; ent[0].vV.innerHTML = 'BSON · <span class="n47">47 字节</span>';
+  ent[1].kV.innerHTML = "ObjectId('6afa…4e81')"; ent[1].vV.innerHTML = '2050';
+  ent[2].kV.innerHTML = '"Alice" <span class="r50">2050</span>'; ent[2].vV.innerHTML = '（空）';
+  const r50 = [ent[0].kV, ent[1].vV, ent[2].kV.querySelector('.r50')];
   const fillT = [T('b17', '键'), T('b18', '键'), T('b19', '键')];
-  ent.forEach((e, i) => { set([e.kV, e.vV], s.start, { autoAlpha: 0 }); show(e.kV, fillT[i] - 0.1, { y: 8, d: 0.4 }); show(e.vV, (i === 0 ? T('b17', '值') : i === 1 ? T('b18', '值') : T('b19', '值')) - 0.1, { y: 8, d: 0.4 }); to(e.box, fillT[i] - 0.1, { borderColor: K.g1, duration: 0.4 }); });
-  pt(world, 166, 470, 290, 50, T('b17', '47') - 0.2, T('b18') - 0.2);
-  pt(world, 716, 364, 440, 52, T('b20', '索引') - 0.2, T('b20', '值里') - 0.3);
-  pt(world, 716, 470, 130, 50, T('b20', '值里') - 0.2, T('b21') - 0.2);
-  pt(world, 1440, 364, 112, 52, T('b21', '接在') - 0.2, T('b21', '分开') - 0.2);
-  pt(world, 1244, 644, 520, 60, T('b21', '分开') - 0.2, T('b22') - 0.2);
+  const tU = T('b16', '用上');
+  const kT = [tU, T('b18', '键'), tU + 0.3], vT = [T('b17', '值'), tU + 0.15, T('b19', '值')];
+  ent.forEach((e, i) => { set([e.kV, e.vV], s.start, { autoAlpha: 0 }); show(e.kV, kT[i] - 0.1, { y: 8, d: 0.4 }); show(e.vV, vT[i] - 0.1, { y: 8, d: 0.4 }); to(e.box, fillT[i] - 0.1, { borderColor: K.g1, duration: 0.4 });
+    to(e.kL, fillT[i] - 0.15, { color: K.forest, duration: 0.3 }); to(e.vL, [T('b17', '值'), T('b18', '值'), T('b19', '值')][i] - 0.15, { color: K.forest, duration: 0.3 }); });
+  ent.forEach((e) => to([e.kL, e.vL], T('b20') - 0.2, { color: K.gd2, duration: 0.3 }));
+  const boxOn = [[0, T('b17')], [1, T('b18')], [2, T('b19')], [1, T('b20')], [2, T('b21')]];
+  boxOn.forEach(([i, t], k) => { to(ent[i].box, t - 0.1, { backgroundColor: '#A6F4C9', duration: 0.35 }); to(ent[i].box, (k + 1 < boxOn.length ? boxOn[k + 1][1] : T('b22')) - 0.15, { backgroundColor: '#FFFFFF', duration: 0.35 }); });
+  const cellS = (e, t, kind) => { css(e, { borderRadius: '8px', padding: '0 12px', marginLeft: '-12px' }); solid(e, t, kind); };
+  cellS(ent[0].kV, T('b17', '键') - 0.1, 'new'); cellS(ent[0].vV, T('b17', '值') - 0.1, 'ink');
+  cellS(ent[1].kV, T('b18', '键') - 0.1, 'ink'); cellS(ent[1].vV, T('b18', '值') - 0.1, 'new');
+  cellS(ent[2].kV, T('b19', '键') - 0.1, 'ink'); to(ent[2].kV.querySelector('.r50'), T('b19', '键') - 0.1, { color: K.spring, duration: 0.35 }); cellS(ent[2].vV, T('b19', '值') - 0.1, K.gd2); css(ent[2].kV.querySelector('.r50'), { borderRadius: '6px', padding: '0 6px' }); to(ent[2].kV.querySelector('.r50'), T('b19', '二零') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
+  to(ent[0].vV, T('b17', '47') - 0.15, { color: K.spring, duration: 0.35 }); to(ent[0].box, T('b17', '整份') - 0.2, { backgroundColor: '#7DEBB0', duration: 0.35 });
+  to(ent[2].hd, T('b19', 'Alice') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(ent[2].box, T('b19', '二零') - 0.2, { backgroundColor: '#7DEBB0', duration: 0.35 });
   // 为什么不一样：_id 不会重复 → 放在值里；名字会重名 → 接在键后面
-  const uq = chip(world, TX3[1], 570, 'unique · 不会重复', 'on'); show(uq, T('b20', '重复') - 0.2, { y: 8, d: 0.4 });
-  const dup = h('div', 'abs', world); px(dup, TX3[2], 570, TW3, 130); css(dup, { font: '600 30px/1.6 "Mono"', color: K.gd2 });
-  dup.innerHTML = `<div style="padding:4px 14px;border:2px solid ${K.g1};border-radius:8px;background:${K.mint};display:inline-block">"Alice" 2050</div><br><div style="padding:4px 14px;border:2px dashed ${K.gb};border-radius:8px;display:inline-block;margin-top:10px">"Alice" ……（另一个同名的）</div>`;
+  r50.forEach((e, i) => to(e, T('b16', '用上') - 0.2 + i * 0.15, { color: K.forest, duration: 0.35 }));
+  const vR = res(world, TX3[1], 646, '值 = RecordId 2050', 'new', T('b18', '值') - 0.1, { fs: 30, lh: 56 });
+  to(vR, T('b20', '值里') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
+  const uq = res(world, TX3[1], 716, 'unique · 不会重复', 'ink', T('b20', '重复') - 0.2, { fs: 30, lh: 56 });
+  const dup = h('div', 'abs', world); px(dup, TX3[2], 650, TW3, 130); css(dup, { font: '600 30px/1.6 "Mono"', color: K.gd2 });
+  dup.innerHTML = `<div style="padding:4px 14px;border:2px solid ${K.forest};border-radius:8px;background:${K.forest};color:#FFFFFF;display:inline-block">"Alice" 2050</div><br><div style="padding:4px 14px;border:2px solid ${K.gd1};border-radius:8px;background:${K.gd1};color:#FFFFFF;display:inline-block;margin-top:10px">"Alice" ……（另一个同名的）</div>`;
   show(dup, T('b21', '重名') - 0.2, { y: 10, d: 0.5 });
+  const dup2 = dup.children[2]; set(dup2, s.start, { autoAlpha: 0 }); show(dup2, T('b21', '同名') - 0.25, { y: 8, d: 0.4 });
+  to(ent[1].hd, T('b20', '_id 索引') - 0.2, { color: K.spring, duration: 0.35 }); to(ent[1].kV, T('b20', '_id 索引') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 });
+  to(ent[1].vL, T('b20', '值里') - 0.2, { color: K.forest, duration: 0.35 });
+  to(ent[1].vV, T('b20', '2050') - 0.2, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.35 });
+  to(ent[2].kL, T('b21', '接在') - 0.2, { color: K.forest, duration: 0.35 });
   // 两个索引都指回 2050：从下面绕回集合树
-  const back1 = link(ov, [[TX3[1] + 60, 546], [TX3[1] + 60, 760], [TX3[0] + 140, 760], [TX3[0] + 140, 546]], 'accent', { w: 4, arrow: true });
-  const back2 = link(ov, [[TX3[2] + 260, 546], [TX3[2] + 260, 800], [TX3[0] + 100, 800], [TX3[0] + 100, 546]], 'accent', { w: 4, arrow: true });
-  fadeOut([uq, dup], T('b22') - 0.3, 0.4);
+  const back1 = link(ov, [[TX3[1] + 60, 618], [TX3[1] + 60, 770], [TX3[0] + 160, 770], [TX3[0] + 160, 620]], 'accent', { w: 4, arrow: true });
+  const back2 = link(ov, [[TX3[2] + 260, 618], [TX3[2] + 260, 820], [TX3[0] + 100, 820], [TX3[0] + 100, 620]], 'accent', { w: 4, arrow: true });
+  fadeOut([uq, dup, vR], T('b22') - 0.3, 0.4);
   arrowIn(back1, T('b22', '指回') - 0.4, 0.7); arrowIn(back2, T('b22', '指回') - 0.2, 0.8);
+  to(ent[0].box, T('b22', '2050') - 0.2, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(ent[0].box, T('b24') - 0.4, { backgroundColor: '#FFFFFF', duration: 0.4 });
   const tP5 = T('b24') - 0.4;
   fadeOut([back1, back2], tP5, 0.4);
   ent.forEach((e) => { to(e.box, tP5, { borderColor: K.gl1, duration: 0.4 }); fadeOut([e.kV, e.vV], tP5, 0.4); });
@@ -182,8 +232,8 @@ scene('insert', ({ root, s, c0 }) => {
   const dave = chip(world, 840, 880, 'Dave 注册 · RecordId 4097', 'dk'); css(dave, { fontSize: '30px' });
   show(dave, T('b24', 'D') - 0.3, { y: 10, d: 0.45 });
   const W3 = [['4097', 'BSON'], ["ObjectId('…')", '4097'], ['"Dave" 4097', '']];
-  const tok = ent.map((e, i) => { const t = h('div', 'abs', world, `<b style="font-family:Mono">${W3[i][0]}</b>`); px(t, 960 - 140, 700, 280); css(t, { textAlign: 'center', font: '600 30px "Mono"', color: K.ink, background: K.mint2, border: '2px solid ' + K.g1, borderRadius: '10px', padding: '8px 0' }); return t; });
-  const tgt = (i) => ({ x: TX3[i] + 20 - (960 - 140), y: 236 + 80 + 60 - 700 });
+  const tok = ent.map((e, i) => { const t = h('div', 'abs', world, `<b style="font-family:Mono">${W3[i][0]}</b>`); px(t, 960 - 140, 700, 280); css(t, { textAlign: 'center', font: '600 30px "Mono"', color: '#FFFFFF', background: K.forest, border: '2px solid ' + K.forest, borderRadius: '10px', padding: '8px 0' }); return t; });
+  const tgt = (i) => ({ x: TX3[i] + 20 - (960 - 140), y: 236 + 80 + 70 - 700 });
   // 第一遍：一处一处写，写完两处进程停了
   const tW = T('b24', '各写') - 0.3;
   tok.forEach((t, i) => { tl.fromTo(t, { autoAlpha: 0, x: 0, y: 0 }, { autoAlpha: 1, duration: 0.2, immediateRender: true }, tW + i * 0.45); tl.to(t, { ...tgt(i), duration: 0.55, ease: 'power2.inOut' }, tW + 0.1 + i * 0.45); });
@@ -194,57 +244,35 @@ scene('insert', ({ root, s, c0 }) => {
   tok2.forEach((t, i) => { if (i < 2) { tl.fromTo(t, { autoAlpha: 0, x: 0, y: 0 }, { autoAlpha: 1, duration: 0.2, immediateRender: true }, tR + 0.2 + i * 0.5); tl.to(t, { ...tgt(i), duration: 0.5, ease: 'power2.inOut' }, tR + 0.3 + i * 0.5); } else set(t, s.start, { autoAlpha: 0 }); });
   const stop = h('div', 'abs', world, ico('bolt', 72, K.red, 3)); px(stop, 1440, 860, 72, 72);
   show(stop, T('b25', '停') - 0.25, { y: -12, s: 0.6, d: 0.4 }); sfx('error', T('b25', '停'), { g: 0.6 });
-  const gap = h('div', 'abs', world); px(gap, TX3[2], 316, TW3, 230); css(gap, { border: '4px dashed ' + K.red, borderRadius: '12px', background: K.redl });
-  const gapT = h('div', 'abs', gap, '这里没有 Dave'); css(gapT, { left: '24px', top: '84px', font: '700 36px "Sans SC"', color: K.redd });
+  const gap = h('div', 'abs', world); px(gap, TX3[2], 316, TW3, 300); css(gap, { border: '4px dashed ' + K.red, borderRadius: '12px', background: K.redl });
+  const gapT = h('div', 'abs', gap, '这里没有 Dave'); css(gapT, { left: '24px', top: '120px', font: '700 36px "Sans SC"', color: K.redd });
   show(gap, T('b25', '停') - 0.05, { y: 0, d: 0.4 });
+  to(tok2.slice(0, 2), T('b26') + 0.1, { opacity: 0.5, duration: 0.45 });   // 已经写进去的两处也说不准了
   // 放进同一个事务：三处一起生效或一起撤回
   const tTx = T('b26', '同一个') - 0.4;
   fadeOut([gap, stop, ...tok2], tTx - 0.1, 0.4);
-  const txBox = h('div', 'abs', world); px(txBox, 760 - 260, 860, 920, 96); css(txBox, { border: '4px dashed ' + K.blue, borderRadius: '14px' });
-  const txT = tg(world, 520, 812, '事务', 'b'); css(txT, { color: K.blued, fontSize: '34px' });
-  show([txBox, txT], tTx, { y: 0, s: 1.03, d: 0.5 });
-  const glTx = gl(world, 150, 836, '事务', '一组修改：要么全部生效<br>要么全部撤回'); css(glTx, { width: '330px' });
+  const txBox = h('div', 'abs', world); px(txBox, 760 - 260, 744, 920, 96); css(txBox, { border: '4px dashed ' + K.blue, borderRadius: '14px', background: K.bluel });
+  show(txBox, tTx, { y: 0, s: 1.03, d: 0.5 });   // 名字由左边的注解给出，框上不再重复写「事务」
+  const glTx = gl(world, 150, 740, '事务', '一组修改：要么全部生效<br>要么全部撤回'); css(glTx, { width: '330px' });
   show(glTx, T('b26', '事务') - 0.2, { x: 14, y: 0, d: 0.45 });
   fadeOut(dave, tTx, 0.3);
-  const tok3 = W3.map((w, i) => { const t = h('div', 'abs', world, `<b style="font-family:Mono">${w[0]}</b>`); px(t, 540 + i * 300, 876, 280); css(t, { textAlign: 'center', font: '600 28px "Mono"', color: K.ink, background: K.mint2, border: '2px solid ' + K.g1, borderRadius: '10px', padding: '8px 0' }); return t; });
+  const tok3 = W3.map((w, i) => { const t = h('div', 'abs', world, `<b style="font-family:Mono">${w[0]}</b>`); px(t, 540 + i * 300, 760, 280); css(t, { textAlign: 'center', font: '600 28px "Mono"', color: '#FFFFFF', background: K.forest, border: '2px solid ' + K.forest, borderRadius: '10px', padding: '8px 0' }); return t; });
   tok3.forEach((t, i) => show(t, tTx + 0.3 + i * 0.12, { y: 10, d: 0.4 }));
-  to(tok3, T('b27', '生效') - 0.2, { color: K.forest, duration: 0.35 });
+  to(txBox, T('b27', '生效') - 0.2, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 }); to(tok3, T('b27', '生效') - 0.2, { backgroundColor: K.spring, borderColor: K.forest, color: K.ink, duration: 0.35 }); to(txBox, T('b27', '撤回') - 0.3, { backgroundColor: K.gl2, borderColor: K.gb, duration: 0.35 }); to(txBox, T('b28') - 0.1, { backgroundColor: K.bluel, borderColor: K.blue, duration: 0.35 });
   // 一起撤回（演示）：三块一起退回变灰；再一起生效：三块一起飞进三棵树
   const tBack = T('b27', '撤回') - 0.3;
   to(tok3, tBack, { opacity: 0.35, y: 10, duration: 0.4 });
   to(tok3, tBack + 0.9, { opacity: 1, y: 0, duration: 0.3 });
   const tC = T('b28', '提交') - 0.5;
-  tok3.forEach((t, i) => tl.to(t, { x: TX3[i] + 20 - (540 + i * 300), y: 236 + 80 + 60 - 876, duration: 0.6, ease: 'power2.inOut' }, tC));
+  tok3.forEach((t, i) => tl.to(t, { x: TX3[i] + 20 - (540 + i * 300), y: 236 + 80 + 70 - 760, duration: 0.6, ease: 'power2.inOut' }, tC));
   ent.forEach((e) => to(e.box, tC + 0.55, { borderColor: K.g1, backgroundColor: K.mint, duration: 0.35 }));
-  const cm = chip(world, 1260, 880, '提交', 'sp'); css(cm, { fontSize: '34px', padding: '8px 30px' });
+  const cm = chip(world, 1450, 768, '提交', 'sp'); css(cm, { fontSize: '34px', padding: '8px 30px' });
   show(cm, T('b28', '提交') - 0.1, { y: 0, s: 1.3, d: 0.4 }); sfx('chime', T('b28', '提交'), { g: 0.5 });
   // 不会出现：文档进去了、索引里找不到
-  const never = h('div', 'abs', world); px(never, TX3[2], 590, TW3, 110); css(never, { border: '3px dashed ' + K.red, borderRadius: '12px', background: K.redl });
-  const neverT = h('div', 'abs', never, '文档进去了、索引里却没有'); css(neverT, { left: '22px', top: '34px', font: '700 30px "Sans SC"', color: K.redd });
-  const nx = h('div', 'abs', never, ico('x', 80, K.red, 4)); css(nx, { right: '18px', top: '14px' });
+  const never = h('div', 'abs', world); px(never, TX3[2], 624, TW3, 110); css(never, { border: '3px solid ' + K.red, borderRadius: '12px', background: K.red });
+  const neverT = h('div', 'abs', never, '文档进去了、索引里却没有'); css(neverT, { left: '22px', top: '34px', font: '700 30px "Sans SC"', color: '#FFFFFF' });
+  const nx = h('div', 'abs', never, ico('x', 80, '#FFFFFF', 4)); css(nx, { right: '18px', top: '14px' });
   show(never, T('b29', '找不到') - 0.3, { y: 10, d: 0.45 });
   show(nx, T('b29', '不会') - 0.2, { y: 0, s: 1.4, d: 0.4 });
-  TX3.forEach((x, i) => pt(world, x - 8, 308, TW3 + 16, 246, T('b29', '发生') - 0.2 + i * 0.15, s.end - 0.2));
-  beat(world, T('b4', '开头') - 0.1, 170, 330, 700, 300);
-  beat(world, T('b12', 'Re') - 0.1, 292, 228, 576, 216, 1.2);
-  beat(world, Tend('b17') + 0.1, 142, 308, 536, 246, 1.0, K.gb);
-  beat(world, T('b4', '加上') - 0.2, 150, 240, 740, 80, 1.2, K.gb);
-  beat(world, T('b7', '47') - 0.2, BX - 6, BY - 6, 1700, 84, 1.4);
-  beat(world, T('b7', '字节') + 0.3, BX - 8, 456, 470, 80, 1.2, K.gb);
-  [[5, 4], [22, 5], [38, 4]].forEach(([i, n]) => beat(world, T('b8', '名字') - 0.2, xB(i) - 4, BY - 6, n * 36 + 4, 84, 1.4));
-  beat(world, T('b9', '名字') - 0.1, BX - 6, BY - 6, 1700, 84, 1.2, K.gb);
-  beat(world, Tend('b10') + 1.6, BX + 1692 * 13 / 47 + 10, 794, 520, 56, 1.0);
-  beat(world, Tend('b11') + 0.1, 292, 512, 416, 136, 1.3, K.gb);
-  beat(world, T('b14', 'Alice') - 0.1, 292, 228, 576, 216);
-  beat(world, T('b15', '两个') - 0.2, 292, 512, 1376, 136, 1.3);
-  beat(world, T('b17', '键') - 0.1, 142, 308, 536, 246, 1.3);
-  beat(world, T('b18', '键') - 0.1, 700, 356, 520, 64, 1.2);
-  beat(world, T('b18', '值') - 0.1, 692, 308, 536, 246, 1.2, K.gb);
-  beat(world, T('b19', '键') - 0.1, 1242, 308, 536, 246, 1.4);
-  beat(world, T('b20') + 0.05, 692, 308, 536, 246, 1.2, K.gb);
-  beat(world, T('b21', '把') - 0.1, 1250, 356, 520, 64, 1.2);
-  beat(world, T('b26', '三处') - 0.1, 530, 866, 900, 70, 1.3);
-  beat(world, T('b27', '全部生效') - 0.1, 500, 860, 920, 96, 1.0);
-  beat(world, T('b27', '撤回') + 0.2, 500, 860, 920, 96, 1.0, K.gb);
-  beat(world, T('b29', '索引') - 0.1, 1242, 308, 536, 246, 1.2, K.red);
+  ent.forEach((e, i) => to(e.box, Tend('b29') + 0.2 + i * 0.1, { backgroundColor: K.mint2, duration: 0.4 }));
 });

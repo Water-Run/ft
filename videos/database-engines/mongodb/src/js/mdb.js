@@ -6,11 +6,11 @@
 const MDB = {
   // Alice 的 47 字节（A04）：[十六进制, 含义] 含义：len 长度、t 类型、name 字段名、val 值、end 结尾
   BSON: [['2f000000', 'len'], ['07', 't'], ['5f696400', 'name'], ['6afa6ca26f27506cfb0a4e81', 'val'], ['02', 't'], ['6e616d6500', 'name'], ['06000000', 'val'], ['416c69636500', 'val'], ['10', 't'], ['61676500', 'name'], ['2a000000', 'val'], ['00', 'end']],
-  CHAPS: [['01', 'NoSQL'], ['02', '一个集合，三棵树'], ['03', '增'], ['04', '落盘'], ['05', '查'], ['06', '改'], ['07', '删'], ['08', '事务与并发'], ['09', '出错怎么办'], ['10', '五个问题'], ['11', '不是 SQL']],
+  CHAPS: [['01', 'NoSQL'], ['02', '一个集合，三棵树'], ['03', '增'], ['04', '落盘'], ['05', '查'], ['06', '改'], ['07', '事务与并发'], ['08', '出错怎么办'], ['09', '删'], ['10', '五个问题'], ['11', '不是 SQL']],
   // 同一批 4096 个用户（环境与版本）：年龄 18 + i % 63
   age: (i) => 18 + (i % 63),
 };
-const K = { ink: '#001E2B', forest: '#00684A', spring: '#00ED64', mint: '#E3FCF7', mint2: '#C0FAE6', g1: '#00A35C', gl1: '#C1C7C6', gl2: '#E8EDEB', gl3: '#F9FBFA', gd1: '#5C6C75', gd2: '#3D4F58', gb: '#889397', blue: '#016BF8', blued: '#1254B7', bluel: '#E1F7FF', red: '#DB3030', redd: '#970606', redl: '#FFEAE5', mag: '#CC3887', str: '#12824D', yel: '#FFC010', yell: '#FEF7DB' };
+const K = { ink: '#001E2B', forest: '#00684A', spring: '#00ED64', mint: '#E3FCF7', mint2: '#C0FAE6', g1: '#00A35C', gl1: '#C1C7C6', gl2: '#E8EDEB', gl3: '#F9FBFA', gd1: '#5C6C75', gd2: '#3D4F58', gb: '#889397', blue: '#016BF8', blued: '#1254B7', bluel: '#E1F7FF', red: '#DB3030', redd: '#970606', redl: '#FFEAE5', mag: '#CC3887', str: '#12824D', yel: '#FFC010', yeld: '#944F01', yell: '#FEF7DB' };
 
 // ── 小工具 ──
 function gloss(e, term) { e.dataset.gloss = term; return e; }
@@ -87,8 +87,8 @@ function treeView(parent, ov, cfg) {
 }
 // 一页往下写时的「影子」：同样大小的空页（几道格线），不带字
 function ghostPage(world, x, y, w, hh, color = K.g1) {
-  const e = h('div', 'abs', world); px(e, x, y, w, hh); css(e, { background: K.mint, border: '3px solid ' + color, borderRadius: '8px', opacity: 0 });
-  for (let k = 0; k < 5; k++) { const l = h('div', 'abs', e); css(l, { left: '12px', right: '12px', top: 18 + k * Math.max(14, (hh - 30) / 5) + 'px', height: '10px', borderRadius: '4px', background: K.mint2 }); }
+  const e = h('div', 'abs', world); px(e, x, y, w, hh); css(e, { background: K.mint2, border: '3px solid ' + color, borderRadius: '8px', opacity: 0 });
+  for (let k = 0; k < 5; k++) { const l = h('div', 'abs', e); css(l, { left: '12px', right: '12px', top: 18 + k * Math.max(14, (hh - 30) / 5) + 'px', height: '10px', borderRadius: '4px', background: color }); }
   return e;
 }
 // 树整体淡入：根页、叶页依次出现，连线随后描出
@@ -165,17 +165,23 @@ function ring(parent, x, y, w, hh, t0, t1, color = K.g1) {
   show(e, t0, { y: 0, s: 1.03, d: 0.4 }); if (t1 != null) fadeOut(e, t1, 0.4);
   return e;
 }
-// 指认：一个框淡入、停住、淡出（带 data-name，扫描工具看得见它）
-// 框内铺一层正片叠底的颜色，像荧光笔：深色字照样清楚，白底染上颜色（白底的画面里，细框在像素上几乎不算变化）；框小的用更亮的颜色
-const PT_TINT = { [K.g1]: ['#71F6BA', '#00ED64'], [K.blue]: ['#A8D4FF', '#6CB4FF'], [K.red]: ['#FFC2B8', '#FF9A8A'], [K.yeld]: ['#FFE08A', '#FFC010'] };
-function pt(parent, x, y, w, hh, t0, t1, color = K.g1) {
-  const e = ring(parent, x, y, w, hh, t0, t1, color); e.setAttribute('data-name', 'pt');
-  const tint = PT_TINT[color] || ['#D6DCDB', '#B8C1C0'];
-  css(e, { background: tint[w * hh < 56000 ? 1 : 0], mixBlendMode: 'multiply' });
+// 实心结果块（第 4 轮 b）：一步的结果画成实心的块，贴在对象上，跟着旁白出现、停住，随这一段一起退。
+// 颜色只按含义：new 新写入（深绿）、ink 结构（深色）、del 删除与丢失（红）、read 读者与日志（蓝）、warn 提醒（深黄）
+const SOLID = { new: K.forest, ink: K.ink, del: K.red, read: K.blue, warn: K.yeld };
+function res(parent, x, y, txt, kind, t, o = {}) {
+  const e = h('div', 'abs', parent, txt); px(e, x, y);
+  css(e, { background: SOLID[kind] || kind, color: '#FFFFFF', font: `700 ${o.fs || 30}px/${o.lh || 54}px "Inter", "Sans SC"`, padding: `0 ${o.pad || 20}px`, borderRadius: '10px', whiteSpace: 'nowrap' });
+  e.dataset.name = 'res';
+  if (t != null) show(e, t, { y: o.dy != null ? o.dy : 10, x: o.dx || 0, d: 0.4 });
+  if (o.out != null) fadeOut(e, o.out, 0.4);
   return e;
 }
-// 一次短的指认：在 t 框住一块，d 秒后收起（白底画面里每 3 秒要有一次看得见的变化，这是正在讲的那一样）
-function beat(parent, t, x, y, w, hh, d = 1.2, color = K.g1) { return pt(parent, x, y, w, hh, t, t + d, color); }
+// 对象本身换成实心状态色（字变白）；back = [时刻, 底色, 边色, 字色] 时退回
+function solid(e, t, kind, back) {
+  const c = SOLID[kind] || kind;
+  to(e, t, { backgroundColor: c, borderColor: c, color: '#FFFFFF', duration: 0.35 });
+  if (back) to(e, back[0], { backgroundColor: back[1], borderColor: back[2] || back[1], color: back[3] || K.ink, duration: 0.35 });
+}
 // 在 t 把一个元素的文字换掉：先淡出，换字，再淡入（不闪）
 function swapFade(e, t, html, d = 0.25) {
   const prev = e.innerHTML;
@@ -298,10 +304,10 @@ function collStage(world, ov, t0) {
   // 第二个叶页：三项写出来
   V.rows = [['2049', 'User02049…'], ['2050', 'Alice · 42'], ['2051', 'User02051…']].map(([k, v], j) => {
     const e = h('div', 'abs', V.leaves[1].c); css(e, { left: '12px', right: '12px', top: 52 + j * 46 + 'px', height: '40px', borderRadius: '6px', font: '600 25px/40px "Mono"', color: K.gd2, paddingLeft: '10px', background: K.gl3 });
-    e.innerHTML = `<b style="color:${K.ink}">${k}</b>  ${v}`; return e;
+    e.innerHTML = `<b style="color:inherit">${k}</b>  ${v}`; return e;
   });
   // 两个索引（右上角的小框）
-  V.ix = ['_id 索引', '姓名索引'].map((n, i) => { const e = h('div', 'abs', world); px(e, 1440 + i * 0, 228 + i * 56, 330, 48); css(e, { background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '8px', font: '700 24px/44px "Sans SC"', color: K.gd2, paddingLeft: '16px' }); e.innerHTML = n + '<span class="ok" style="margin-left:14px;color:#00684A"></span>'; return e; });
+  V.ix = ['_id 索引', '姓名索引'].map((n, i) => { const e = h('div', 'abs', world); px(e, 1440 + i * 0, 228 + i * 56, 330, 48); css(e, { background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '8px', font: '700 24px/44px "Sans SC"', color: K.gd2, paddingLeft: '16px' }); e.innerHTML = n + '<span class="ok" style="margin-left:14px;color:inherit"></span>'; return e; });
   // 文件带
   V.TOTAL = 135168;
   V.band = fileBand(world, 170, 760, 1580, V.TOTAL, 92);

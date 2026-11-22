@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "a197b3ddd39dd6f92bed0313bcfff77cb909a7168d1c08729495f5f3cd8b9dc8",
+      "content_sha256": "93c2178c65dc9e24a51097bbe424805ad8cb2e0aade3e2b009754c9a51fb38d5",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-21T15:40:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-21 第 4 稿开场：o8、o12 用策划者原话，读法挪到开场，新增 o15–o17，策划者选择「确认，按这一稿配音」；其后策划者授权「文案自主修改, 优化, 可以不用我确认」"
+      "confirmed_at": "2026-11-21T23:30:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-21 第 4 稿 c：按策划者授权「文案自主修改, 优化, 可以不用我确认」自改（BSON 与 JSON、章节按主角一生重排、第 11 章过渡），不是逐句审读；预览交出时复核"
     }
   }
 }

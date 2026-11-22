@@ -52,6 +52,8 @@ function path(svgEl, d, color = 'ink', o = {}) {
 // 显示一条箭头：先描线，箭头随之出现
 function arrowIn(p, t, d = 0.8) {
   const len = p.getTotalLength();
+  const mk = p.getAttribute('marker-end');
+  if (mk && !p.getAttribute('stroke-dasharray')) { const tOn = t + d * 0.9; let last = null; F((tt) => { const v = tt >= tOn ? mk : 'none'; if (v !== last) { p.setAttribute('marker-end', v); last = v; } }); }
   if (p.getAttribute('stroke-dasharray')) { tl.fromTo(p, { autoAlpha: 0 }, { autoAlpha: 1, duration: d * 0.6, immediateRender: true }, t); return p; }
   p.style.strokeDasharray = len + ' ' + len;
   tl.fromTo(p, { strokeDashoffset: len, autoAlpha: 0 }, { strokeDashoffset: 0, autoAlpha: 1, duration: d, ease: 'power2.inOut', immediateRender: true }, t);

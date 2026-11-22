@@ -17,8 +17,10 @@ scene('open', ({ root, s }) => {
   sh.cmd(T('o1') - 0.05, 'db.users.insertOne({ <span class="k">name</span>: <span class="s">"Alice"</span>, <span class="k">age</span>: <span class="n">42</span> })', 'lab&gt; ', 34);
   const ack = sh.out(T('o2', '存') + 0.15, '{ <span class="k">acknowledged</span>: <span class="n">true</span>, <span class="k">insertedId</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>) }');
   css(ack, { color: K.gd2, marginBottom: '22px' });
+  res(world, 990, 186, '↵ 发送', 'ink', T('o1', '年龄') + 0.1, { fs: 26, lh: 44, out: T('o4') - 0.3 });
+  res(world, 1290, 516, '已存入 users', 'new', T('o2', '存') + 0.45, { out: T('o4') - 0.3 });
   sh.cmd(T('o4') - 0.05, 'db.users.findOne({ <span class="k">name</span>: <span class="s">"Alice"</span> })', 'lab&gt; ', 34);
-  const res = sh.out(T('o5', '回来') - 0.1, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span> }');
+  const resL = sh.out(T('o5', '回来') - 0.1, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span> }');
 
   // 右边：MongoDB 里的那一份
   const box = h('div', 'panel', world); px(box, 1250, 136, 560, 444);
@@ -29,9 +31,15 @@ scene('open', ({ root, s }) => {
   // 存进去：一份 { name, age } 从命令里升起，飞进 MongoDB；落下后多出 _id 一行（驱动生成，A01）
   const D0 = docCard(world, 1290, 236, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 480, fs: 27 });
   const idRow = D0.r._id;
-  css(idRow, { overflow: 'hidden', color: K.gd1 });
+  css(idRow, { overflow: 'hidden', color: K.gd1, fontSize: '24px' });
   const tFly = T('o2', '交给');
-  tl.fromTo(D0.c, { autoAlpha: 0, x: -880, y: -40, scale: 0.8 }, { autoAlpha: 1, x: -880, y: -40, scale: 0.8, duration: 0.3, immediateRender: true }, tFly - 0.35);
+  tl.fromTo(D0.c, { autoAlpha: 0, x: -880, y: 90, scale: 1 }, { autoAlpha: 1, x: -880, y: 70, scale: 1, duration: 0.45, immediateRender: true }, T('o1', '名字') - 0.1);
+  set(D0.c, s.start, { backgroundColor: K.mint2, borderColor: K.g1 });
+  to(D0.c, T('o2', '存') + 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, color: K.ink, duration: 0.45 });
+  const braces = [...D0.c.querySelectorAll('.br')];
+  to(braces, T('o2', 'JSON') - 0.25, { color: K.forest, duration: 0.35 });
+  to(D0.c, T('o2', 'JSON') - 0.25, { backgroundColor: K.forest, borderColor: K.forest, color: '#FFFFFF', duration: 0.35 }); classAt(D0.c, 'inv', T('o2', 'JSON') - 0.25, T('o2', '存') + 0.2);
+  to(braces, T('o2', '存') + 0.6, { color: K.ink, duration: 0.4 });
   tl.to(D0.c, { x: 0, y: 0, scale: 1, duration: 1.0, ease: 'power2.inOut' }, tFly);
   tl.fromTo(idRow, { height: 0, autoAlpha: 0 }, { height: 40, autoAlpha: 1, duration: 0.5, ease: 'power2.out', immediateRender: true }, T('o2', '存') + 0.15);
   sfx('pop', tFly + 1.0);
@@ -53,12 +61,13 @@ scene('open', ({ root, s }) => {
   to(kw0, T('o3', '建表'), { backgroundColor: K.mint2, duration: 0.35 });
   to(cols0, T('o3', '哪几列') - 0.1, { backgroundColor: K.mint2, duration: 0.35 });
   fromTo(strike[0], T('o3', '哪几列') + 0.95, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }); sfx('blip', T('o3', '哪几列') + 0.6);
+  res(sq, 900, 66, '用不上', 'del', T('o3', '哪几列') + 1.1, { fs: 26, lh: 46, pad: 16 });
   to([kw0, cols0], T('o3', '哪几列') + 1.1, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.4 });   // lint-ok: 透明底（取消高亮）
   to(sqL[0], T('o3', '哪几列') + 1.1, { opacity: 0.4, duration: 0.5 });
   // 写入那一句：和 insertOne 并排看，也用不上
   show(sqL[1], T('o3', '也没有') - 0.1, { y: 10, d: 0.5 });
-  fromTo(strike[1], T('o4') + 0.7, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' });
-  to(sqL[1], T('o4') + 1.2, { opacity: 0.4, duration: 0.5 });
+  fromTo(strike[1], T('o6', 'SQL') - 0.35, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' });
+  to(sqL[1], T('o6', 'SQL') + 0.2, { opacity: 0.4, duration: 0.5 });
 
   // o4：查询条件也是一份 { name: "Alice" }，落在那份资料下面；「同样的格式」把两处 name 并排指出来
   const qd = code(world, 1290, 492, '{ <span class="k">name</span>: <span class="s">"Alice"</span> }'); css(qd, { fontSize: '27px', padding: '6px 16px' });
@@ -66,24 +75,34 @@ scene('open', ({ root, s }) => {
   tl.fromTo(qd, { autoAlpha: 0, x: -930, y: -170 }, { autoAlpha: 1, x: -930, y: -170, duration: 0.3, immediateRender: true }, tQ - 0.35);
   tl.to(qd, { x: 0, y: 0, duration: 0.95, ease: 'power2.inOut' }, tQ);
   show(sqL[2], T('o4', '找'), { y: 10, d: 0.5 });
+  res(world, 830, 296, '↵ 发送', 'ink', T('o4', '条件') - 0.3, { fs: 26, lh: 44, out: T('o6') + 0.6 });
   const tSame = T('o4', '同样的格式');
-  to(D0.r.name, tSame - 0.1, { backgroundColor: K.mint2, duration: 0.35 });
-  to(qd, tSame + 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 });
+  solid(qd, tSame, 'new'); classAt(qd, 'inv', tSame);
+  solid(D0.r.name, tSame + 0.1, 'new'); classAt(D0.r.name, 'inv', tSame + 0.1, T('o5') - 0.2);
+  to(D0.r.name, T('o5') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', color: K.ink, duration: 0.4 });    // lint-ok: 取消
+  const nk = [D0.r.name.querySelector('.k'), qd.querySelector('.k')];
+  const yName = 236 + D0.r.name.offsetTop + D0.r.name.offsetHeight / 2, yQ = 492 + (qd.offsetHeight || 46) / 2;
+  const same = link(ov, [[1284, yQ], [1266, yQ], [1266, yName], [1284, yName]], 'accent', { w: 3 });
+  draw(same, tSame - 0.05, 0.5);
+  fadeOut(same, T('o5') - 0.2, 0.4);
   const wh = sqL[2].querySelector('.wh');
   // o5：她的资料回到 mongosh；多出来的 _id 两处一起指出来
   to(qd, T('o5') - 0.2, { autoAlpha: 0, y: 12, duration: 0.45 });
-  to(D0.r.name, T('o5') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.4 });   // lint-ok: 取消高亮
   const ghost = docCard(world, 1290, 236, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 480, fs: 27, cls: 'on' });
   const tBack = T('o5', '回来') - 0.6;
   tl.fromTo(ghost.c, { autoAlpha: 0, x: 0, y: 0, scale: 1 }, { autoAlpha: 0.9, duration: 0.25, immediateRender: true }, tBack);
   tl.to(ghost.c, { x: -1000, y: 110, scale: 0.6, autoAlpha: 0, duration: 0.85, ease: 'power2.inOut' }, tBack + 0.05);
-  const rId = ring(world, 156, 364, 444, 52, T('o5', '_id') - 0.15, T('o6') + 0.9, K.g1);
+  const resId = resL.querySelector('.k');
+  to(idRow, T('o5', '多出') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 }); classAt(idRow, 'inv', T('o5', '多出') - 0.2);
+  res(world, 1290, 516, '多出一项 _id', 'new', T('o5', '_id') - 0.1, { out: tA1 });
+  res(world, 1540, 700, '0 句 SQL', 'del', T('o6', '没有') - 0.1, { out: tA1 });
+  to(resId, T('o5', '_id') - 0.15, { color: K.forest, duration: 0.35 });
   to(idRow, T('o5', '_id') - 0.1, { backgroundColor: K.mint2, color: K.ink, duration: 0.4 });
   // o6：一句 SQL 也没写——SQL 卡里剩下的查询也划掉
   fromTo(strike[2], T('o6', 'SQL') - 0.15, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }); sfx('blip', T('o6', 'SQL'));
   to(sqL[2], T('o6', 'SQL') + 0.35, { opacity: 0.4, duration: 0.5 });
   to(sh.c, T('o6') - 0.1, { borderColor: K.g1, duration: 0.5 });
-  fadeOut([sh.c, box, D0.c, sq, rId], tA1, 0.55);
+  fadeOut([sh.c, box, D0.c, sq], tA1, 0.55);
 
   // ══ B：前五集（S04），每张卡一张同样的 users 小表 + 一句 SQL ══
   const EP = [['MySQL', 'PART 1 · 2'], ['PostgreSQL', 'PART 3'], ['SQLite', 'PART 4'], ['ClickHouse', 'PART 5']];
@@ -111,27 +130,30 @@ scene('open', ({ root, s }) => {
   cards.forEach((cd, i) => show(cd.c, T('o7') - 0.35 + i * 0.14, { y: 26, d: 0.6 }));
   sfx('pop', T('o7') + 0.15);
   // o8：念到哪一个，绿框滑到哪一张
-  const frame = h('div', 'abs', world); px(frame, CX0 - 8, CY - 8, CW + 16, CH + 16); css(frame, { border: '4px solid ' + K.g1, borderRadius: '20px', background: '#71F6BA', mixBlendMode: 'multiply' }); frame.dataset.name = 'focus';
+  const frame = h('div', 'abs', world); px(frame, CX0 - 8, CY - 8, CW + 16, CH + 16); css(frame, { border: '4px solid ' + K.g1, borderRadius: '20px' }); frame.dataset.name = 'focus';
   const nameT = [T('o8', 'MySQL'), T('o8', 'PostgreSQL'), T('o8', 'SQLite'), T('o8', 'ClickHouse')];
   fromTo(frame, nameT[0] - 0.2, { autoAlpha: 0, x: 0 }, { autoAlpha: 1, duration: 0.35 });
   for (let i = 1; i < 4; i++) tl.fromTo(frame, { x: (i - 1) * (CW + CG) }, { x: i * (CW + CG), duration: 0.4, ease: 'power2.inOut', immediateRender: false }, nameT[i] - 0.25);
   fadeOut(frame, Tend('o8') + 0.15, 0.45);
+  cards.forEach((cd, i) => cd.tb.head.forEach((hc) => solid(hc, nameT[i] - 0.05, 'ink')));
   // o9：念到 SQL，三个名字里的 SQL 加粗变绿，四句 SQL 一起亮；念到「关系数据库」，下面一道括号把四张卡括起来
   const tSQL = T('o9', 'SQL');
   cards.forEach((cd) => { if (cd.sqb) to(cd.sqb, tSQL - 0.1, { fontWeight: 850, color: K.forest, duration: 0.4 }); });
-  cards.forEach((cd) => to(cd.q.querySelector('.kw'), tSQL - 0.05, { color: K.forest, duration: 0.4 }));
-  cards.forEach((cd) => to(cd.tb.head, T('o9', '关系') - 0.1, { backgroundColor: K.mint2, duration: 0.4 }));
+  cards.forEach((cd) => { solid(cd.q, tSQL - 0.05, 'new'); to(cd.q.querySelector('.kw'), tSQL - 0.05, { color: '#FFFFFF', duration: 0.35 }); });
   const BW = 4 * CW + 3 * CG;
   const brace = h('div', 'abs', world); px(brace, CX0, CY + CH + 26, BW, 18); css(brace, { borderLeft: '3px solid ' + K.forest, borderRight: '3px solid ' + K.forest, borderBottom: '3px solid ' + K.forest });
-  const rel = h('div', 'abs', world, '关系数据库'); px(rel, CX0, CY + CH + 64, BW); css(rel, { font: '500 46px "Serif SC"', color: K.forest, textAlign: 'center' });
+  const rel = h('div', 'abs', world, '关系数据库 · 表 + SQL'); px(rel, CX0 + BW / 2 - 230, CY + CH + 58, 460); css(rel, { font: '700 38px/70px "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '12px', textAlign: 'center' });
   show(brace, T('o9', '关系') - 0.25, { y: -8, d: 0.45 }); show(rel, T('o9', '关系') - 0.05, { y: 12, d: 0.55 });
+  to(cards.slice(0, 3).map((c) => c.c), T('o10', 'ClickHouse') - 0.1, { opacity: 0.4, duration: 0.45 });
   // o10：ClickHouse 那一张，表拆成一列一列（S01），两列之间拉开；随后一道虚线把两列围回一张表
   const chT = cards[3].tb;
   const tSplit = T('o10', '一列一列');
   to(chT.cols[0], tSplit - 0.15, { x: -14, duration: 0.6, ease: 'power2.out' });
   to(chT.cols[1], tSplit - 0.15, { x: 20, duration: 0.6, ease: 'power2.out' });
   const chOut = h('div', 'abs', cards[3].c); px(chOut, 10, 128, 300, RH * 4 + 24); css(chOut, { border: '3px dashed ' + K.forest, borderRadius: '10px' });
-  show(chOut, T('o10', '还是表') - 0.1, { y: 0, s: 1.04, d: 0.45 });
+  show(chOut, T('o10', '还是表') - 0.1, { y: 0, s: 1.04, d: 0.45 }); to(cards[3].c, T('o10', '还是表') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 });
+  const chC = res(cards[3].c, 168, 14, '按列存', 'ink', T('o10', '把表') - 0.1, { fs: 24, lh: 40, pad: 14 });
+  textAt(chC, [[0, '按列存'], [T('o10', '还是表') - 0.05, '仍是表']]); to(chC, T('o10', '还是表') - 0.05, { backgroundColor: K.forest, duration: 0.35 });
   // o11：MongoDB：一张卡里是一份文档，查询也是一份文档；四张 SQL 卡退到后面
   const mc = h('div', 'panel', world); px(mc, CX0 + 4 * (CW + CG), CY, CW, CH); css(mc, { borderColor: K.g1, borderWidth: '3px' });
   label(mc, 24, 22, 'PART 6 · 本集', 'lab');
@@ -172,21 +194,27 @@ scene('open', ({ root, s }) => {
   // o12b：停顿之后念出 NoSQL，下面一道绿线描出来
   const ulW = noW + sqlW + 40; const ul = h('div', 'abs', world); px(ul, 960 - ulW / 2, WY + 250, ulW, 6); css(ul, { background: K.spring, transformOrigin: '50% 50%' });
   fromTo(ul, T('o12b') - 0.05, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: 'power2.out' });
+  to(wSQL, T('o12b') - 0.05, { color: K.forest, duration: 0.45 });
+  tl.to(word, { scale: 1.08, duration: 0.6, ease: 'power2.out' }, T('o12b') - 0.1);
   // o12c：No 有两种读法——从 No 分出两条线
   const RY = 600;
   const brL = link(ov, [[960, WY + 268], [960, RY - 60], [470, RY - 60], [470, RY - 14]], 'accent', { w: 3 });
   const brR = link(ov, [[960, WY + 268], [960, RY - 60], [1450, RY - 60], [1450, RY - 14]], 'accent', { w: 3 });
   draw(brL, T('o12c', '两种') - 0.1, 0.7); draw(brR, T('o12c', '两种') + 0.05, 0.75);
+  const rn = [res(world, 386, 516, '1', 'ink', T('o12c', '两种') + 0.3, { pad: 18 }), res(world, 1478, 516, '2', 'ink', T('o12c', '两种') + 0.45, { pad: 18 })];
+  fadeOut(rn, T('o13') - 0.45, 0.55);
   const rd = [['No', '不用 SQL', T('o12d', '不用')], ['Not only', '不只用 SQL', T('o12e', '不只')]].map(([en, zh, t], i) => {
     const g = h('div', 'abs', world); px(g, i === 0 ? 170 : 1150, RY, 600, 260); css(g, { textAlign: 'center' });
     const a = h('div', 'abs', g, en); css(a, { left: 0, top: '10px', width: '600px', font: '700 52px "Mono"', color: K.forest });
-    const b = h('div', 'abs', g, zh.replace('SQL', '<span style="font-family:Inter">SQL</span>')); css(b, { left: 0, top: '100px', width: '600px', font: '700 76px "Sans SC"', color: K.ink });
-    show(a, (i === 0 ? T('o12d', 'No') : T('o12e', 'Not')) - 0.2, { y: 12, d: 0.5 });
+    const b = h('div', 'abs', g, `<span style="display:inline-block;padding:0 26px;border-radius:14px;color:#FFFFFF;background:${i ? K.forest : K.ink}">${zh.replace('SQL', '<span style="font-family:Inter">SQL</span>')}</span>`); css(b, { left: 0, top: '100px', width: '600px', font: '700 76px "Sans SC"', color: K.ink });
+    show(a, T('o12c', '两种') + 0.35 + i * 0.2, { y: 12, d: 0.5 });
     show(b, t - 0.15, { y: 16, d: 0.55 });
     return g;
   });
   // o12e：No 展开成 Not only
   const tOnly = T('o12e', 'Not') - 0.1;
+  css(wNo, { borderRadius: '24px' }); to(wNo, T('o12c', 'No') - 0.1, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
+  to(wNo, tOnly, { backgroundColor: 'rgba(0,0,0,0)', color: K.forest, duration: 0.35 });   // lint-ok: 取消高亮
   to(rd[0], tOnly, { opacity: 0.35, duration: 0.5 });
   fromTo(wMid, tOnly, { width: 0 }, { width: midW, duration: 0.85, ease: 'power3.inOut' });
   to(ul, tOnly, { scaleX: (ulW + midW) / ulW, duration: 0.85, ease: 'power3.inOut' });
@@ -224,16 +252,16 @@ scene('open', ({ root, s }) => {
   const up = docCard(world, LX + 210, 186, [['name', JS('Alice')], ['age', JN(42)]], { w: 360, fs: 30, cls: 'on' });
   tl.fromTo(up.c, { autoAlpha: 0, y: 537, x: -204, scale: 0.35 }, { autoAlpha: 1, y: 230, x: 0, scale: 0.85, duration: 0.6, ease: 'power2.out', immediateRender: true }, tFind + 0.85);
   tl.to(up.c, { y: 0, scale: 1, autoAlpha: 0, duration: 0.6, ease: 'power2.inOut' }, tFind + 1.45);
-  // o15：改了年龄，又注销了——磁盘上那个文件打上问号
+  // o15：改了年龄——磁盘上那个文件打上问号
   const tAge = T('o15', '改了');
   tl.to(ag, { autoAlpha: 0, y: -10, duration: 0.2 }, tAge);
   tl.fromTo(ag, { y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, tAge + 0.22);
-  to(dd.c, T('o15', '注销') - 0.05, { borderStyle: 'dashed', borderColor: K.red, color: K.gd1, duration: 0.5 });
-  const qm = h('div', 'abs', world, '?'); px(qm, LX + 760, 640, 70); css(qm, { font: '800 90px "Inter"', color: K.forest, textAlign: 'center' });
+  const qm = h('div', 'abs', world, '?'); px(qm, LX + 740, 610, 110); css(qm, { font: '800 130px "Inter"', color: K.forest, textAlign: 'center' });
+  solid(dd.r.age, tAge, 'new', [T('o16') - 0.3, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]); classAt(dd.r.age, 'inv', tAge, T('o16') - 0.3);   // 实心时行里的字跟着行变白（class 切换，倒着 seek 也一样）
   show(qm, T('o15', '磁盘') - 0.1, { y: 14, s: 0.8, d: 0.5 });
+  res(world, 790, 250, '42 → 43', 'new', T('o15', '改了') + 0.2, { out: T('o16') - 0.3 });
   to(files[0], T('o15', '磁盘') - 0.1, { borderStyle: 'dashed', duration: 0.4 });
   fadeOut(qm, T('o16') - 0.2, 0.4);
-  to(dd.c, T('o16') - 0.3, { borderStyle: 'solid', borderColor: K.gl1, color: K.ink, duration: 0.5 });
   to(files[0], T('o16') - 0.3, { borderStyle: 'solid', duration: 0.4 });
   // o16：一个人在读、一个人在改，同一份资料——谁等谁
   const pr = person(world, LX - 130, 176, '读', K.blued, 60);
@@ -241,8 +269,10 @@ scene('open', ({ root, s }) => {
   show(pr, T('o16', '读') - 0.2, { x: -20, y: 0, d: 0.5 }); show(pw, T('o16', '改') - 0.2, { x: 20, y: 0, d: 0.5 });
   const a1 = link(ov, [[LX + 30, 216], [LX + 200, 216]], 'blue', { w: 3, arrow: true }), a2 = link(ov, [[LX + 640, 216], [LX + 584, 216]], 'accent', { w: 3, arrow: true });
   arrowIn(a1, T('o16', '读'), 0.45); arrowIn(a2, T('o16', '改'), 0.45);
-  const ww = h('div', 'abs', world, '?'); px(ww, LX + 390 - 35, 104, 70); css(ww, { font: '800 60px "Inter"', color: K.ink, textAlign: 'center' });
+  const ww = h('div', 'abs', world, '?'); px(ww, LX + 390 - 35, 104, 70); css(ww, { font: '800 60px/84px "Inter"', color: '#FFFFFF', background: K.yeld, borderRadius: '14px', textAlign: 'center' });
   show(ww, T('o16', '谁等谁') - 0.1, { y: 10, d: 0.45 });
+  to(dd.c, T('o16', '谁等谁') - 0.1, { backgroundColor: '#FCE9B0', borderColor: K.yeld, duration: 0.4 }); to(dd.c, T('o16b') - 0.15, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 });
+  res(world, LX - 150, 290, '在读', 'read', T('o16', '读') - 0.1, { out: T('o16b') - 0.15 }); res(world, LX + 626, 290, '在改', 'new', T('o16', '改') - 0.1, { out: T('o16b') - 0.15 });
   fadeOut([pr, pw, ww], T('o16b') - 0.15, 0.45); [a1, a2].forEach((p) => fadeOut(p, T('o16b') - 0.15, 0.45));
   // o16b：进程被杀——MongoDB 那一层熄掉；正往下写的一份变成红色虚线（可能丢了）
   const tKill = T('o16b', '杀') - 0.05;
@@ -253,18 +283,31 @@ scene('open', ({ root, s }) => {
   const lostQ = h('div', 'abs', world, '?'); px(lostQ, LX + 760, 700, 80); css(lostQ, { font: '800 96px "Inter"', color: K.red, textAlign: 'center' });
   show(lostQ, T('o16b', '丢掉') - 0.2, { y: 12, s: 0.8, d: 0.45 });
   to(files, T('o16b', '丢掉') - 0.1, { borderColor: K.red, borderStyle: 'dashed', duration: 0.4 });
+  // o16c：进程起来了；Alice 注销——她这一份变成红色虚线、淡下去，磁盘上那个文件打上问号
+  const tUp = T('o16c') - 0.2;
+  fadeOut([bolt, lostQ], tUp, 0.45);
+  to(files, tUp, { borderStyle: 'solid', borderColor: K.gl1, duration: 0.4 });
+  to(pBox, tUp, { backgroundColor: '#FFFFFF', borderColor: K.gl2, duration: 0.5 });
+  to(pT, tUp, { color: K.forest, duration: 0.5 });
+  const tDel = T('o16c', '注销') - 0.05;
+  to(dd.c, tDel, { borderStyle: 'dashed', borderColor: K.red, color: K.gd1, opacity: 0.45, duration: 0.6 }); to(dd.c, T('o16c', '资料') - 0.3, { backgroundColor: '#FFC7BC', duration: 0.4 });
+  const qDel = h('div', 'abs', world, '?'); px(qDel, LX + 760, 640, 84); css(qDel, { font: '800 80px/104px "Inter"', color: '#FFFFFF', background: K.yeld, borderRadius: '14px', textAlign: 'center' });
+  show(qDel, T('o16c', '资料') - 0.1, { y: 14, s: 0.8, d: 0.5 });
+  res(world, 790, 250, '注销', 'del', T('o16c', '账号') - 0.1, { out: T('o17') - 0.1 });
+  to(files[0], T('o16c', '哪里') - 0.15, { borderStyle: 'dashed', backgroundColor: '#FCE9B0', borderColor: K.yeld, duration: 0.4 });
   // o17：重来一遍，沿着 Alice 这一份往下走的路线
   const tGo = T('o17') - 0.1;
-  fadeOut([bolt, lostQ], tGo, 0.45);
-  to(files, tGo, { borderStyle: 'solid', borderColor: K.gl1, duration: 0.4 });
-  to(pBox, tGo, { backgroundColor: '#FFFFFF', borderColor: K.gl2, duration: 0.5 });
-  to(pT, tGo, { color: K.forest, duration: 0.5 });
-  to(dd.c, tGo, { borderColor: K.g1, backgroundColor: K.mint, duration: 0.5 });
+  fadeOut(qDel, tGo, 0.4);
+  to(files[0], tGo, { borderStyle: 'solid', backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 });
+  to(dd.c, tGo, { borderStyle: 'solid', borderColor: K.g1, backgroundColor: K.mint, color: K.ink, opacity: 1, duration: 0.5 });
+  to(dd.c, T('o17') + 0.45, { backgroundColor: K.forest, borderColor: K.forest, color: '#FFFFFF', duration: 0.4 }); classAt(dd.c, 'inv', T('o17') + 0.45);
   { let last = null; const t1 = tAge + 0.2, t2 = tGo + 0.25; F((t) => { const v = t >= t1 && t < t2 ? '43' : '42'; if (v !== last) { ag.textContent = v; last = v; } }); }
   tl.to(ag, { autoAlpha: 0, duration: 0.2 }, tGo + 0.05); tl.to(ag, { autoAlpha: 1, duration: 0.3 }, tGo + 0.27);
   const path0 = link(ov, [[LX + 390, 400], [LX + 390, 446]], 'spring', { w: 6 }), path1 = link(ov, [[LX + 390, 582], [LX + 390, 680]], 'spring', { w: 6 });
   draw(path0, T('o17', '往下走') - 0.35, 0.45); draw(path1, T('o17', '往下走') + 0.05, 0.45);
   to(files, T('o17', '往下走') + 0.4, { borderColor: K.g1, duration: 0.4 });
+  to(pBox, T('o17', '往下走') - 0.3, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 });
+  files.forEach((f, i) => solid(f, T('o17', '往下走') + 0.45 + i * 0.12, 'new'));
 
   // 右边：五个问题（系列约定），问到哪一条，哪一条出现并亮起
   const QX = 1180, QY = 236, QD = 128;
@@ -278,6 +321,7 @@ scene('open', ({ root, s }) => {
   });
   fromTo(qbar, QS[0][2] - 0.3, { autoAlpha: 0, y: 0 }, { autoAlpha: 1, duration: 0.4 });
   for (let i = 1; i < 5; i++) tl.fromTo(qbar, { y: (i - 1) * QD }, { y: i * QD, duration: 0.45, ease: 'power2.inOut', immediateRender: false }, QS[i][2] - 0.35);
+  tl.fromTo(qbar, { y: 4 * QD }, { y: 2 * QD, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, T('o16c', '注销') - 0.35);
   fadeOut(qbar, T('o17') + 0.2, 0.5);
 
   // ══ 片名（oT）：系列目录一项项递出，选中条落到 PART 6 ══
@@ -294,18 +338,4 @@ scene('open', ({ root, s }) => {
   show(vv, tOT + 2.8, { y: 10 });
   sfx('thud', tOT + 0.85);
   tl.set([world, ch.c], { autoAlpha: 0 }, tOT + 0.45);   // 片名整屏盖住后，下面的内容不再算画面
-  // 指认：同样的格式（o4）
-  pt(world, 1282, 486, 316, 58, T('o4', '同样的格式') - 0.1, T('o5') - 0.2);
-  pt(world, 1300, 326, 460, 48, T('o4', 'name') - 0.1, T('o5') - 0.2);
-  // 每段停留里的指认（荧光笔）
-  beat(world, T('o2') + 0.4, 126, 204, 900, 50);
-  beat(P.main, tOT + 2.8, -16, 404, 640, 216, 1.2);
-  beat(world, T('o10', '拆成') - 0.1, CX0 + 3 * (CW + CG) + 6, CY + 124, 308, RH * 4 + 32, 1.0);
-  beat(world, Tend('o3') + 0.1, 118, 692, 880, 58, 1.2, K.gb);
-  beat(world, T('o6') + 0.05, 110, 620, 1700, 300, 1.8, K.gb);
-  beat(world, T('o10', '还是表') - 0.1, CX0 + 3 * (CW + CG) + 6, CY + 124, 308, RH * 4 + 32);
-  beat(world, Tend('o12b') + 0.1, 960 - ulW / 2, WY + 20, ulW, 220, 1.4);
-  beat(world, T('o12d', '不用') - 0.15, 170, RY, 600, 240);
-  beat(world, Tend('o15') + 0.05, LX, 680, 780, 230, 1.2, K.gb);
-  beat(world, T('o17', '资料') - 0.2, LX + 202, 178, 376, 226);
 });

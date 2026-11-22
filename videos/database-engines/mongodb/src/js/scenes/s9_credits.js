@@ -22,26 +22,25 @@ scene('credits', ({ root, s }) => {
   out.push('[');
   items.forEach(([role, name], i) => {
     const tail = i === items.length - 1 ? '' : ',';
-    const one = `  { <span class="k">_id</span>: <span class="n">${i + 1}</span>, <span class="k">role</span>: ${s_(role)}, <span class="k">name</span>: ${s_(name)} }${tail}`;
+    const one = `  { <span class="k">_id</span>: <span class="n">${i + 1}</span>, <span class="k">role</span>: ${s_(role)}, <span class="k">name</span>: <span class="s nm">'${esc(name)}'</span> }${tail}`;
     if ([...role].length + [...name].length < 34) out.push(one);
-    else out.push(`  {\n    <span class="k">_id</span>: <span class="n">${i + 1}</span>,\n    <span class="k">role</span>: ${s_(role)},\n    <span class="k">name</span>: ${s_(name)}\n  }${tail}`);
+    else out.push(`  {\n    <span class="k">_id</span>: <span class="n">${i + 1}</span>,\n    <span class="k">role</span>: ${s_(role)},\n    <span class="k">name</span>: <span class="s nm">'${esc(name)}'</span>\n  }${tail}`);
   });
   out.push(']');
   const res = h('div', '', body, out.join('\n'));
   const tOut = Math.max(tq + 0.3, s.start + 1.8);
   show(res, tOut, { y: 8, d: 0.4 }); sfx('tick', tOut, { g: 0.5 });
+  const nms = [...res.querySelectorAll('.nm')]; nms.forEach((e) => css(e, { borderRadius: '6px', padding: '0 6px' })); to(nms, tOut + 1.2, { backgroundColor: K.mint2, color: K.forest, duration: 0.4 });
   const q2 = h('div', '', body, ''); css(q2, { marginTop: '10px', minHeight: '42px' });
-  const tq2 = typeText(q2, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tOut + 1.2, 30, { cursorUntil: tOut + 2.8 });
-  const cnt = h('div', '', body, `<span class="n">${items.length}</span>`);
+  const tq2 = typeText(q2, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tOut + 1.0, 30, { cursorUntil: tOut + 2.6 });
+  const cnt = h('div', '', body, `<span style="display:inline-block;background:#00684A;color:#FFFFFF;border-radius:10px;padding:0 22px;font-weight:700;font-size:40px;line-height:56px">${items.length}</span>`);
   show(cnt, tq2 + 0.3, { y: 0, d: 0.3 }); sfx('pop', tq2 + 0.3, { g: 0.5 });
-  appear(q2, tOut + 1.2);
+  appear(q2, tOut + 1.0);
+  const q3 = h('div', '', body, ''); css(q3, { marginTop: '10px', minHeight: '42px' });
+  typeText(q3, '<span class="p">test&gt;</span> exit', tq2 + 1.0, 20, { cursorUntil: tq2 + 1.6 }); appear(q3, tq2 + 1.0);
   // 卡片按内容收紧，在字幕条之上竖直居中
   const H = 78 + body.offsetHeight + 40;
   css(card, { height: H + 'px', top: Math.max(60, Math.round((960 - H) / 2)) + 'px' });
-  show(card, s.start + 0.45, { y: 10, d: 0.35 });
+  show(card, s.start + 0.45, { y: 10, d: 0.35 }); to(card, tq2 + 1.9, { backgroundColor: K.gl2, opacity: 0.6, duration: 0.9 });
   const nL = out.join('\n').split('\n').length;
-  beat(card, tOut + 0.8, 24, 78 + 42 - 4, 1620, 42 * (nL - 2) + 8, 1.4, K.gb);
-  beat(card, tq2 + 0.6, 24, 78 + 42 * (nL + 1) + 6, 360, 92, 1.2);
-  pt(card, 24, 78 + 42 * (nL - 1) - 4, 1200, 48, s.end - 3.6, s.end - 1.7);
-  beat(card, s.end - 1.5, 24, 78 + 42 * nL + 6, 760, 46, 1.2, K.gb);
 });

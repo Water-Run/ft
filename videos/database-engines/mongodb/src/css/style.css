@@ -194,9 +194,12 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .lede a { color: var(--blue); text-decoration: underline; text-underline-offset: 6px; }
 /* 开场的小表（前五集每张卡里同一张 users 表） */
 .mt { position: absolute; border: 1.5px solid var(--gl1); margin: 0 -1.5px -1.5px 0; padding-left: 10px; font: 500 20px/37px "Mono"; color: var(--gd2); background: #fff; white-space: nowrap; }
-.mt.h { background: var(--gl3); font-weight: 700; color: var(--ink); }
+.mt.h { background: var(--gl3); font-weight: 700; color: var(--ink); font-size: 22px; }
 .mt.al { color: var(--ink); font-weight: 700; }
 .ag { display: inline-block; }
 .gl.lg { border-left-width: 6px; padding-left: 22px; }
 .gl.lg b { font-size: 38px; }
 .gl.lg span { font-size: 30px; }
+
+/* 实心化以后，里面的字统一跟着外框的字色（class 切换，倒着 seek 也确定） */
+.inv * { color: inherit !important; }
