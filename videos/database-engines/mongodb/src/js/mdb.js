@@ -42,6 +42,25 @@ function gl(parent, x, y, term, def, o = {}) {
 function tg(parent, x, y, txt, cls = '') { const e = h('div', 'tg ' + cls, parent, txt); px(e, x, y); return e; }
 function lead(ov, pts, o = {}) { return link(ov, pts, o.color || 'dim', { w: o.w || 2, dashed: o.dashed }); }
 
+// 等宽字的字宽（按实际字体量）：给代码下面的分段注解定位
+function monoW(fs, weight = 400) {
+  const e = h('span', '', document.body, 'M'.repeat(40)); css(e, { position: 'absolute', left: '-9999px', top: 0, font: `${weight} ${fs}px "Mono"`, whiteSpace: 'pre', visibility: 'hidden' });
+  const w = e.offsetWidth / 40; e.remove(); return w || fs * 0.6;
+}
+// 代码下面的分段注解：一道细括号托住一段代码，下面一行字说它是什么（例：findOne → 找出一份）。
+// x、w 是括号的左端与宽度；o.anchor = 'left' 时字从括号左端起，否则居中
+function brace(parent, x, y, w, txt, t, o = {}) {
+  const col = o.color || K.forest;
+  const g = h('div', 'abs', parent); px(g, x, y, w, 12 + (o.lh || 30));
+  const b = h('div', 'abs', g); css(b, { left: 0, top: 0, width: w + 'px', height: '9px', borderLeft: `2.5px solid ${col}`, borderRight: `2.5px solid ${col}`, borderBottom: `2.5px solid ${col}`, borderRadius: '0 0 4px 4px', boxSizing: 'border-box' });
+  const l = h('div', 'abs', g, txt); css(l, { top: '13px', font: `700 ${o.fs || 22}px/${o.lh || 30}px "Inter", "Sans SC"`, color: col, whiteSpace: 'nowrap' });
+  if (o.anchor === 'left') css(l, { left: '0px' }); else css(l, { left: w / 2 + 'px', transform: 'translateX(-50%)' });
+  g.dataset.name = 'brace';
+  if (t != null) show(g, t, { y: -6, d: 0.4 });
+  if (o.out != null) fadeOut(g, o.out, 0.4);
+  return g;
+}
+
 // ── 文档卡：mongosh 的写法。rows = [[字段, 值的 HTML], …]；返回 { c, r: {字段: 行}, v: {字段: 值} } ──
 function docCard(parent, x, y, rows, o = {}) {
   const c = h('div', 'doc' + (o.cls ? ' ' + o.cls : ''), parent); px(c, x, y, o.w);

@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "93c2178c65dc9e24a51097bbe424805ad8cb2e0aade3e2b009754c9a51fb38d5",
+      "content_sha256": "06ca2af8467026ebb546ccd8e7b55d15a20d70fba728b076a5abc9e277ef3629",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-21T23:30:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-21 第 4 稿 c：按策划者授权「文案自主修改, 优化, 可以不用我确认」自改（BSON 与 JSON、章节按主角一生重排、第 11 章过渡），不是逐句审读；预览交出时复核"
+      "confirmed_at": "2026-11-22T14:00:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-22 第 4 稿 d：a12b 用策划者原话「叫存储引擎 之后加一句台词 就和MySQL一样」；b2 读法；其余只改停顿；依据同一授权「文案自主修改, 优化, 可以不用我确认」"
     }
   }
 }

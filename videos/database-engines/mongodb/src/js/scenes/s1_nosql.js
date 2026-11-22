@@ -21,9 +21,11 @@ scene('nosql', ({ root, s, c0 }) => {
   fromTo(axis, c0, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'power2.inOut' });
   nodes.forEach((n, i) => { show(n.d, c0 + 0.2 + i * 0.12, { y: 0, s: 0.5, d: 0.4 }); show(n.l, c0 + 0.3 + i * 0.12, { y: 8, d: 0.4 }); });
   show(head, T('n3', '2000') - 0.2, { y: 0, s: 0.4, d: 0.45 });
-  const srcC = h('div', 'panel', world); px(srcC, 160, 380, 1000, 150);
+  const srcC = h('div', 'panel', world); px(srcC, 160, 380, 1000, 226);
   srcC.innerHTML = `<div style="position:absolute;left:28px;top:30px">${ico('server', 56, K.forest, 2.4)}</div><div style="position:absolute;left:110px;top:26px;font:700 38px 'Inter', 'Sans SC';color:${K.forest}">MongoDB 官网 · What is NoSQL?</div><div style="position:absolute;left:110px;top:88px;font:500 24px Mono;color:${K.gd1}">mongodb.com/resources/basics/databases/nosql-explained</div>`;
-  show(srcC, T('n3', 'MongoDB') - 0.25, { y: 14, d: 0.5 }); fadeOut(srcC, T('n4') - 0.35, 0.4);   // V03
+  show(srcC, T('n3', 'MongoDB') - 0.25, { y: 14, d: 0.5 });
+  res(srcC, 110, 144, '“NoSQL databases emerged in the late 2000s”', 'ink', T('n3', '2000') - 0.35, { fs: 28, lh: 52 });   // V03 原文
+  fadeOut(srcC, T('n4') - 0.35, 0.4);   // V03
   const moveHead = (i, t) => { tl.fromTo(head, { x: NODES[i - 1][0] - NODES[0][0] }, { x: NODES[i][0] - NODES[0][0], duration: 0.9, ease: 'power2.inOut', immediateRender: false }, t); to(nodes[i].d, t + 0.7, { borderColor: K.forest, duration: 0.3 }); to(nodes[i].l, t + 0.7, { color: K.forest, duration: 0.3 }); };
   to(nodes[0].d, T('n3', '2000'), { borderColor: K.forest, duration: 0.3 }); to(nodes[0].l, T('n3', '2000'), { color: K.forest, duration: 0.3 });
 
@@ -131,12 +133,14 @@ scene('nosql', ({ root, s, c0 }) => {
   const P3 = [];
   const dc = h('div', 'panel', world); px(dc, 160, 220, 600, 470); P3.push(dc);
   const dcT = h('div', 'abs', dc, 'DoubleClick'); css(dcT, { left: '30px', top: '24px', font: '700 48px "Inter"', color: K.ink });
-  const dcS = h('div', 'abs', dc, '广告公司'); css(dcS, { left: '30px', top: '92px', font: '500 32px "Sans SC"', color: K.gd1 });
+  const dcS = h('div', 'abs', dc, '网络广告公司'); css(dcS, { left: '30px', top: '92px', font: '500 32px "Sans SC"', color: K.gd1 });
   const BR = [0, 1, 2].map((i) => { const b = h('div', 'abs', dc); px(b, 36 + i * 180, 200, 160, 200); css(b, { border: '2px solid ' + K.gb, borderRadius: '8px', background: '#fff' });
     const bar = h('div', 'abs', b); css(bar, { left: 0, right: 0, top: 0, height: '18px', background: K.gl2, borderRadius: '6px 6px 0 0' });
     const ad = h('div', 'abs', b); css(ad, { left: '18px', top: '36px', width: '120px', height: '66px', background: K.mint, border: '1.5px solid ' + K.g1, borderRadius: '4px' });
     for (let k = 0; k < 3; k++) { const ln = h('div', 'abs', b); css(ln, { left: '18px', top: 120 + k * 22 + 'px', width: 120 - k * 24 + 'px', height: '8px', background: K.gl2, borderRadius: '3px' }); } return b; });
   show(dc, T('n9', '广告') - 0.3, { y: 16, d: 0.6 });
+  const glDC = gl(world, 160, 712, 'DoubleClick', '一家网络广告公司；MongoDB 的三位创始人<br>Dwight Merriman、Eliot Horowitz、Kevin Ryan 都在这里干过', { key: 'DoubleClick' }); P3.push(glDC);   // V01
+  show(glDC, T('n9', 'Double') + 0.35, { x: 16, y: 0, d: 0.5 }); fadeOut(glDC, T('n13') - 0.3, 0.45);
   BR.forEach((b, i) => to(b.children[1], T('n9', 'Double') - 0.1 + i * 0.12, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 }));
   // 一台关系数据库，右边一根负载条
   const db1 = icon(world, 1150, 300, 'server', 190, K.ink, 2.0); P3.push(db1);
@@ -195,18 +199,20 @@ scene('nosql', ({ root, s, c0 }) => {
   show(date, T('n15', '旧金山') - 0.4, { y: 12, d: 0.5 }); show(dateS, T('n15', '聚会') - 0.2, { y: 8, d: 0.45 });
   const stage = h('div', 'abs', world); px(stage, 160, 690, 1600, 4); css(stage, { background: K.gb, transformOrigin: '0 50%' }); P4.push(stage);
   fromTo(stage, T('n15', '旧金山') - 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power2.inOut' });
-  const slots = [0, 1, 2, 3].map((i) => { const e = h('div', 'abs', world); px(e, 210 + i * 390, 450, 350, 210); css(e, { border: '3px dashed ' + K.gl1, borderRadius: '16px' }); e.dataset.name = 'slot'; show(e, T('n15', '聚会') - 0.1 + i * 0.1, { y: 10, d: 0.4 }); fadeOut(e, T('n16') + 3.2, 0.4); return e; });
-  const PR = [['Cassandra', 'n16', 'Cassandra'], ['HBase', 'n16', 'HBase'], ['CouchDB', 'n16', 'CouchDB'], ['MongoDB', 'n16', 'MongoDB']];
-  const pres = PR.map(([n, id, w], i) => {
-    const c = h('div', 'panel', world); px(c, 210 + i * 390, 450, 350, 210); css(c, { background: K.gl2 }); P4.push(c);
-    icon(c, 24, 24, 'server', 64, i === 3 ? K.forest : K.gd2, 2.4);
-    const t = h('div', 'abs', c, n); css(t, { left: '24px', top: '110px', font: '700 48px "Inter"', color: i === 3 ? K.forest : K.ink });
+  const slots = [0, 1, 2, 3].map((i) => { const e = h('div', 'abs', world); px(e, 210 + i * 390, 420, 350, 250); css(e, { border: '3px dashed ' + K.gl1, borderRadius: '16px' }); e.dataset.name = 'slot'; show(e, T('n15', '聚会') - 0.1 + i * 0.1, { y: 10, d: 0.4 }); fadeOut(e, T('n16') + 3.2, 0.4); return e; });
+  const PR = [['Cassandra', 'n16', 'Cassandra', '开源的分布式数据库，<br>为扩展和高可用而设计'], ['HBase', 'n16', 'HBase', '仿照 Google Bigtable<br>的大数据存储'], ['CouchDB', 'n16', 'CouchDB', '原生用 JSON，<br>存放一份份文档'], ['MongoDB', 'n16', 'MongoDB', '存放一份份文档<br>（本集）']];
+  const presD = [];
+  const pres = PR.map(([n, id, w, ds], i) => {
+    const c = h('div', 'panel', world); px(c, 210 + i * 390, 420, 350, 250); css(c, { background: K.gl2 }); P4.push(c);
+    icon(c, 24, 20, 'server', 60, i === 3 ? K.forest : K.gd2, 2.4);
+    const t = h('div', 'abs', c, n); css(t, { left: '24px', top: '92px', font: '700 48px "Inter"', color: i === 3 ? K.forest : K.ink });
+    const d = h('div', 'abs', c, ds); css(d, { left: '24px', top: '160px', font: '500 25px/34px "Inter", "Sans SC"', color: K.gd2, whiteSpace: 'nowrap' }); presD.push(d);
     show(c, T(id, w) - 0.25, { y: 40, d: 0.55 });
     return c;
   });
   // NoSQL 这个名字：一道括号罩住上台的几家
-  const nsB = h('div', 'abs', world); px(nsB, 210, 410, 1520, 18); css(nsB, { borderLeft: '3px solid ' + K.forest, borderRight: '3px solid ' + K.forest, borderTop: '3px solid ' + K.forest }); P4.push(nsB);
-  const nsT = h('div', 'abs', world, 'NoSQL'); px(nsT, 210, 310, 1520); css(nsT, { font: '800 80px "Inter"', color: K.forest, textAlign: 'center' }); P4.push(nsT);
+  const nsB = h('div', 'abs', world); px(nsB, 210, 382, 1520, 18); css(nsB, { borderLeft: '3px solid ' + K.forest, borderRight: '3px solid ' + K.forest, borderTop: '3px solid ' + K.forest }); P4.push(nsB);
+  const nsT = h('div', 'abs', world, 'NoSQL'); px(nsT, 210, 282, 1520); css(nsT, { font: '800 80px "Inter"', color: K.forest, textAlign: 'center' }); P4.push(nsT);
   show(nsB, T('n18', 'No') - 0.3, { y: 10, d: 0.45 }); show(nsT, T('n18', 'No') - 0.15, { y: 18, s: 0.9, d: 0.55 });
   fadeOut([date, dateS], T('n18', 'No') - 0.4, 0.4);
   pres.forEach((c, i) => glow(c, T('n18', '传开') - 0.3 + i * 0.12, T('n19') + 0.2, { bg: K.mint, bd: K.g1 }));
@@ -214,15 +220,15 @@ scene('nosql', ({ root, s, c0 }) => {
   moveHead(3, T('n19', '两个') - 0.3);
   fadeOut(stage, T('n19', 'MongoDB') - 0.5, 0.4);
   tl.to(pres[3], { x: 1600 - 175 - (210 + 3 * 390), y: 150, scale: 0.8, duration: 0.9, ease: 'power2.inOut' }, T('n19', 'MongoDB') - 0.3);
-  solid(pres[3], T('n19', '发布') - 0.1, 'new'); to(pres[3].children[1], T('n19', '发布') - 0.1, { color: '#FFFFFF', duration: 0.35 }); to(pres[3].querySelector('svg'), T('n19', '发布') - 0.1, { attr: { stroke: '#FFFFFF' }, duration: 0.35 });
-  const v1 = tg(world, 1250, 600, '第一个版本', 'g'); css(v1, { width: '300px', textAlign: 'right', fontSize: '30px' }); P4.push(v1);
+  solid(pres[3], T('n19', '发布') - 0.1, 'new'); to(pres[3].children[1], T('n19', '发布') - 0.1, { color: '#FFFFFF', duration: 0.35 }); fadeOut(presD[3], T('n19', 'MongoDB') - 0.45, 0.3);   // 卡缩小后简述的字会小于 22px，先收起 to(pres[3].querySelector('svg'), T('n19', '发布') - 0.1, { attr: { stroke: '#FFFFFF' }, duration: 0.35 });
+  const v1 = tg(world, 1110, 676, '第一个版本', 'g'); css(v1, { width: '300px', textAlign: 'right', fontSize: '30px' }); P4.push(v1);
   show(v1, T('n19', '第一') - 0.2, { x: 16, y: 0, d: 0.45 });
 
   // ══ 五、这一类的共同点（V04、N01）：时间轴收起，NoSQL 和几家留在上面 ══
   const tP5 = T('n24') - 0.4;
   fadeOut([axis, head, ...nodes.map((n) => n.d), ...nodes.map((n) => n.l), stage, v1], tP5, 0.5);
   fadeOut([...pres, nsB], tP5, 0.5);
-  tl.to(nsT, { y: 206 - 310, duration: 0.8, ease: 'power2.inOut' }, tP5 + 0.1);
+  tl.to(nsT, { y: 206 - 282, duration: 0.8, ease: 'power2.inOut' }, tP5 + 0.1);
   const TRX = [180, 740, 1300], TRY = 520;
   const trait = (i, ic, txt) => {
     const g = h('div', 'abs', world); px(g, TRX[i], TRY, 460, 300);
@@ -236,7 +242,7 @@ scene('nosql', ({ root, s, c0 }) => {
   set(t1.tt, s.start, { autoAlpha: 0 }); show(t1.tt, T('n24', '关系表') - 0.2, { y: 10, d: 0.45 });
   show(t1.g, T('n24', '没有') - 0.1, { y: 16, d: 0.55 }); show(tx, T('n24', '不用') - 0.1, { y: 0, s: 1.3, d: 0.4 });
   css(tx, { color: K.red }); tx.innerHTML = ico('x', 130, K.red, 3.6);
-  res(world, 180, 400, '没有统一的定义', 'ink', T('n24', '统一') - 0.15, { out: T('n28') - 0.45 });
+  res(world, 180, 400, '没有统一的定义', 'ink', T('n24', '统一') - 0.15, { out: T('n27') - 0.3 });
   show(t2.g, T('n25', '记录') - 0.1, { y: 16, d: 0.55 });
   const plus = h('div', 'abs', t2.g, '+ email'); css(plus, { left: '150px', top: '40px', font: '700 34px "Mono"', color: '#FFFFFF', background: K.forest, borderRadius: '8px', padding: '4px 14px' });
   show(plus, T('n25', '加字段') - 0.15, { x: -30, y: 0, d: 0.5 }); sfx('pop', T('n25', '加字段'));
@@ -246,27 +252,31 @@ scene('nosql', ({ root, s, c0 }) => {
     const e = h('div', 'abs', t3.g, ico('server', 56, K.gd2, 2.4)); css(e, { left: 150 + (i % 3) * 64 + 'px', top: 6 + Math.floor(i / 3) * 64 + 'px' }); mini.push(e); show(e, T('n25', '机器') - 0.2 + i * 0.07, { y: 10, d: 0.35 }); }
   css(t1.tt, { padding: '0 16px', borderRadius: '10px', marginLeft: '-16px' }); solid(t1.tt, T('n27', '不按') - 0.1, 'new');
   // 非关系型数据库：贴在 NoSQL 那个名字下面
-  const glN = gl(world, 1150, 222, '非关系型数据库', '不按关系表存数据的这一类', { cls: 'lg' });
-  show(glN, T('n27', '非关系') - 0.3, { x: 16, y: 0, d: 0.55 });
+  const glN = h('div', 'abs', world, '<span style="font:600 36px/1 \'Sans SC\';color:#5C6C75;margin-right:22px">也叫</span><b>非关系型数据库</b>'); px(glN, 0, 314, 1920);
+  css(glN, { font: '800 66px/1.25 "Sans SC"', color: K.forest, textAlign: 'center' }); glN.dataset.gloss = '非关系型数据库';
+  const glN2 = h('div', 'abs', world, 'NoSQL 通常就指这一类：<b style="color:#001E2B">不按关系表的格式存数据</b>的数据库'); px(glN2, 0, 412, 1920); css(glN2, { font: '500 30px "Sans SC"', color: K.gd2, textAlign: 'center' });   // N01
+  show(glN, T('n27', '非关系') - 0.35, { y: 16, s: 0.92, d: 0.6 }); show(glN2, T('n27', '数据库') + 0.05, { y: 10, d: 0.5 });
   to(t3.g, T('n27', '不按') - 0.1, { opacity: 0.35, duration: 0.5 }); to(t2.g, T('n27', '不按') - 0.1, { opacity: 0.35, duration: 0.5 });
-  css(glN.querySelector('b'), { borderRadius: '8px', padding: '0 12px', marginLeft: '-12px' }); to(glN.querySelector('b'), T('n27', '数据库') - 0.1, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.4 });
+  css(glN.querySelector('b'), { borderRadius: '12px', padding: '0 20px' }); to(glN.querySelector('b'), T('n27', '数据库') - 0.1, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.4 });
   const tP6 = T('n28') - 0.4;
-  fadeOut([t1.g, t2.g, t3.g, glN], tP6, 0.5);
+  fadeOut([t1.g, t2.g, t3.g, glN, glN2], tP6, 0.5);
 
   // ══ 六、四类（N01）：文档、键值、宽列、图；MongoDB 属于文档；Alice 那份资料就是一份文档（I04） ══
-  const CAT = [['文档', 'doc'], ['键值', 'kv'], ['宽列', 'wide'], ['图', 'graph']];
-  const KX = 170, KW = 375, KG = 40, KY = 390, KH = 440;
-  const cats = CAT.map(([n, ic], i) => {
+  const CAT = [['文档', 'doc', '数据存成一份份<br>像 JSON 的文档', 'MongoDB · Couchbase'], ['键值', 'kv', '每一项一个键，<br>对应一个值', 'Redis · Amazon DynamoDB'], ['宽列', 'wide', '表和行，加上<br>可以随时增减的列', 'Cassandra · HBase'], ['图', 'graph', '数据存成节点，<br>和节点之间的连线', 'Neo4j · Amazon Neptune']];
+  const KX = 170, KW = 375, KG = 40, KY = 380, KH = 480;
+  const cats = CAT.map(([n, ic, df, rp], i) => {
     const c = h('div', 'panel', world); px(c, KX + i * (KW + KG), KY, KW, KH);
-    const t = h('div', 'abs', c, n); css(t, { left: '28px', top: '22px', font: '700 50px "Sans SC"', color: K.ink });
-    const b = h('div', 'abs', c); css(b, { left: '28px', top: '116px', right: '24px', bottom: '24px' });
-    return { c, t, b };
+    const t = h('div', 'abs', c, n); css(t, { left: '28px', top: '18px', font: '700 50px "Sans SC"', color: K.ink });
+    const dfE = h('div', 'abs', c, df); css(dfE, { left: '28px', top: '90px', font: '500 25px/34px "Sans SC", "Inter"', color: K.gd2 });
+    const b = h('div', 'abs', c); css(b, { left: '28px', top: '176px', right: '24px', height: '200px' });
+    const rpE = h('div', 'abs', c, `<div style="font:500 22px 'Sans SC';color:#5C6C75;margin-bottom:4px">代表</div>${rp}`); css(rpE, { left: '28px', top: '392px', font: '700 24px/1.3 "Inter"', color: K.ink, whiteSpace: 'nowrap' });
+    return { c, t, b, dfE, rpE };
   });
   // 每一类里一幅小图
-  cats[0].b.innerHTML = `<div style="font:500 28px/1.6 Mono;color:${K.ink};white-space:pre">{\n  <span class="k">name</span>: <span class="s">"Erin"</span>,\n  <span class="k">tags</span>: [ <span class="s">"db"</span>, <span class="s">"go"</span> ]\n}</div>`;
-  cats[1].b.innerHTML = [0, 1, 2].map((k) => `<div style="display:flex;gap:12px;align-items:center;margin-bottom:28px"><span style="font:600 30px Mono;padding:8px 16px;border:2px solid ${K.gb};border-radius:6px">k${k + 1}</span><span style="font:600 26px Inter;color:${K.gd1}">→</span><span style="font:500 30px Mono;padding:8px 16px;background:${K.gl3};border:2px solid ${K.gl2};border-radius:6px">v${k + 1}</span></div>`).join('');
-  cats[2].b.innerHTML = [3, 5, 2, 4].map((n, r) => `<div style="display:flex;gap:7px;margin-bottom:18px"><span style="width:50px;height:46px;background:${K.ink};border-radius:4px"></span>${Array.from({ length: n }, () => `<span style="width:38px;height:46px;background:${K.gl2};border:1.5px solid ${K.gl1};border-radius:4px"></span>`).join('')}</div>`).join('');
-  cats[3].b.innerHTML = `<svg width="320" height="270" viewBox="0 0 300 240" fill="none" stroke="${K.gd2}" stroke-width="3"><path d="M50 60 L150 30 L250 80 L190 190 L80 170 Z M150 30 L190 190 M50 60 L190 190"/>${[[50, 60], [150, 30], [250, 80], [190, 190], [80, 170]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="16" fill="#fff"/>`).join('')}</svg>`;
+  cats[0].b.innerHTML = `<div style="font:500 22px/1.6 Mono;color:${K.ink};white-space:pre">{\n  <span class="k">name</span>: <span class="s">"Erin"</span>,\n  <span class="k">tags</span>: [ <span class="s">"db"</span>, <span class="s">"go"</span> ]\n}</div>`;
+  cats[1].b.innerHTML = [0, 1, 2].map((k) => `<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px"><span style="font:600 30px Mono;padding:8px 16px;border:2px solid ${K.gb};border-radius:6px">k${k + 1}</span><span style="font:600 26px Inter;color:${K.gd1}">→</span><span style="font:500 30px Mono;padding:8px 16px;background:${K.gl3};border:2px solid ${K.gl2};border-radius:6px">v${k + 1}</span></div>`).join('');
+  cats[2].b.innerHTML = [3, 5, 2, 4].map((n, r) => `<div style="display:flex;gap:7px;margin-bottom:12px"><span style="width:50px;height:36px;background:${K.ink};border-radius:4px"></span>${Array.from({ length: n }, () => `<span style="width:38px;height:36px;background:${K.gl2};border:1.5px solid ${K.gl1};border-radius:4px"></span>`).join('')}</div>`).join('');
+  cats[3].b.innerHTML = `<svg width="250" height="200" viewBox="0 0 300 240" fill="none" stroke="${K.gd2}" stroke-width="3"><path d="M50 60 L150 30 L250 80 L190 190 L80 170 Z M150 30 L190 190 M50 60 L190 190"/>${[[50, 60], [150, 30], [250, 80], [190, 190], [80, 170]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="16" fill="#fff"/>`).join('')}</svg>`;
   const catT = [T('n28', '文档'), T('n28', '键值'), T('n28', '宽列'), T('n28', '图')];
   cats.forEach((c, i) => show(c.c, catT[i] - 0.25, { y: 24, d: 0.5 }));
   const nsB2 = h('div', 'abs', world); px(nsB2, KX, 334, 4 * KW + 3 * KG, 18); css(nsB2, { borderLeft: '3px solid ' + K.forest, borderRight: '3px solid ' + K.forest, borderTop: '3px solid ' + K.forest });
@@ -281,7 +291,7 @@ scene('nosql', ({ root, s, c0 }) => {
   // 开头 Alice 那份资料：其余三类退下，「文档」那一格里换成她的文档，字段与值各指一下
   const tAl = T('n31') - 0.1;
   fadeOut([cats[1].c, cats[2].c, cats[3].c, p7, nsB2], tAl, 0.5);
-  fadeOut(cats[0].b, tAl, 0.4);
+  fadeOut([cats[0].b, cats[0].dfE, cats[0].rpE], tAl, 0.4);
   tl.to(cats[0].c, { width: 960, height: 440, duration: 0.7, ease: 'power2.inOut' }, tAl + 0.2);
   const ad = docCard(world, KX + 40, KY + 120, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 640, fs: 33 });
   css(ad.c, { borderColor: K.g1 });

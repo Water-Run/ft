@@ -55,8 +55,17 @@ scene('insert', ({ root, s, c0 }) => {
   const oidB = h('div', 'abs', world); px(oidB, 960, 330, 860); P2.push(oidB);
   oidB.innerHTML = `<div style="font:700 34px 'Inter';color:${K.ink};margin-bottom:18px">ObjectId · 12 个字节</div><div style="display:flex;gap:8px">${'6a fa 6c a2 6f 27 50 6c fb 0a 4e 81'.split(' ').map((b) => `<span style="width:62px;height:66px;border-radius:8px;background:${K.mint};border:2px solid ${K.g1};font:600 30px/62px Mono;text-align:center;color:${K.ink}">${b}</span>`).join('')}</div>`;
   show(oidB, T('b5', 'Object') - 0.2, { x: 20, y: 0, d: 0.5 });
+  // 12 个字节分三段：时间戳 4、随机值 5、计数器 3（策划者 r5：「ObjectID要有图注」）
+  const OSEG = [[0, 4, '时间戳 · 4 字节', '生成的那一秒'], [4, 9, '随机值 · 5 字节', '每个客户端进程一个'], [9, 12, '计数器 · 3 字节', '同一进程里逐个加 1']];
+  const oSegs = OSEG.map(([a, b, t1, t2], k) => {
+    const g = h('div', 'abs', world); px(g, 960 + a * 70, 330 + 136, (b - a) * 70 - 8);
+    g.innerHTML = `<div style="height:10px;border:2.5px solid ${K.forest};border-top:none;border-radius:0 0 4px 4px"></div><div style="margin-top:6px;font:700 24px/32px Inter,'Sans SC';color:${K.forest}">${t1}</div><div style="font:500 22px/30px 'Sans SC';color:${K.gd2}">${t2}</div>`;
+    show(g, T('b5', 'Object') + 0.4 + k * 0.4, { y: 8, d: 0.4 }); P2.push(g); return g;
+  });
+  const glO = gl(world, 960, 590, 'ObjectId', '驱动替文档生成的编号，存进 _id<br>在应用这边就生成好了，不用等数据库', { key: 'ObjectId' }); P2.push(glO);   // A15 A01
+  show(glO, Tend('b5') + 0.1, { x: 14, y: 0, d: 0.45 });
   const tP2 = T('b6') - 0.35;
-  fadeOut([app, oidB], tP2, 0.5);
+  fadeOut([app, oidB, ...oSegs, glO], tP2, 0.5);
   tl.to(D.c, { x: 640 - 180, y: 222 - 340, scale: 0.85, transformOrigin: '0 0', duration: 0.8, ease: 'power2.inOut' }, tP2);
   to(idr, tP2, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.4 });   // lint-ok: 取消高亮
 
@@ -67,7 +76,7 @@ scene('insert', ({ root, s, c0 }) => {
   const xB = (i) => BX + i * (BW2 + BG);
   const bsonT = h('div', 'abs', world, 'BSON'); px(bsonT, BX, 470); css(bsonT, { font: '800 56px "Inter"', color: K.forest });
   show(bsonT, T('b6', 'B') - 0.2, { y: 10, d: 0.45 }); css(bsonT, { borderRadius: '12px', padding: '0 18px', marginLeft: '-18px' }); to(bsonT, T('b6b', '缩写') - 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 });   // 「缩写」：BSON 这个词成为实心块
-  const glB = gl(world, BX, 712, 'BSON', '文档编成的二进制格式');
+  const glB = gl(world, BX, 712, 'BSON', '文档编成的二进制格式：开头 4 字节记整份多长；<br>每个字段 = 1 字节类型 + 字段名 + 0 + 值；最后一个 0 收尾');   // A04 A16
   show(glB, T('b6', 'B') + 0.1, { x: 14, y: 0, d: 0.45 });
   // b6b：BSON = Binary JSON（A14）
   const bj = h('div', 'abs', world); px(bj, BX + 200, 474); css(bj, { font: '700 42px/68px "Inter"', color: '#FFFFFF', background: K.ink, borderRadius: '12px', padding: '0 24px', whiteSpace: 'nowrap' });
@@ -114,6 +123,13 @@ scene('insert', ({ root, s, c0 }) => {
   const nameTags = [[5, '_id\\0'], [22, 'name\\0'], [38, 'age\\0']].map(([i, t]) => { const e = tg(world, xB(i) - 6, BY - 46, t, 'm'); css(e, { color: '#FFFFFF', background: K.forest, borderRadius: '6px', padding: '0 8px', fontWeight: 700, fontSize: '26px' }); return e; });
   nameTags.forEach((e, k) => show(e, tName + 0.2 + k * 0.35, { y: 8, d: 0.4 }));
   [7, 26, 40].forEach((i, k) => to(by.all[i], T('b9', '结尾') - 0.3 + k * 0.12, { color: '#FFFFFF', backgroundColor: K.red, borderColor: K.red, duration: 0.35 }));
+  // 这些 0 是干什么的（策划者 r5：「结尾的0的作用和最后的0都没有简单图注」）
+  const z1 = h('div', 'abs', world, '<b style="color:#DB3030">字段名后面的 0</b>：名字到这里为止——字段名不记长度，靠这个 0 断开'); px(z1, 960, 712);
+  const z2 = h('div', 'abs', world, '<b style="color:#001E2B">最后一个 0</b>：整份文档的字段到这里为止'); px(z2, 960, 752);
+  [z1, z2].forEach((e) => css(e, { font: '500 25px/36px "Inter", "Sans SC"', color: K.gd2, whiteSpace: 'nowrap' }));
+  show(z1, T('b9', '结尾') + 0.1, { y: 8, d: 0.45 }); show(z2, Tend('b9') + 0.2, { y: 8, d: 0.45 });
+  to(by.all[46], Tend('b9') + 0.1, { color: '#FFFFFF', backgroundColor: K.ink, borderColor: K.ink, duration: 0.35 });
+  to(segEls[4][1], Tend('b9') + 0.1, { backgroundColor: K.forest, duration: 0.35 });
   // 13 / 47：一根比例条
   const bar = h('div', 'abs', world); px(bar, BX, 800, 1692, 44); css(bar, { background: K.gl2, borderRadius: '6px' });
   const barF = h('div', 'abs', bar); css(barF, { left: 0, top: 0, bottom: 0, width: (13 / 47 * 100) + '%', background: K.spring, borderRadius: '6px 0 0 6px', transformOrigin: '0 50%' });
@@ -126,7 +142,7 @@ scene('insert', ({ root, s, c0 }) => {
   fadeOut([q4, q4T], T('b11') - 0.4, 0.5);
   const tP3 = T('b11') - 0.4;
   fadeOut(glB, T('b10', '13') - 0.6, 0.4);
-  fadeOut([bsonT, n47, ...segEls.flat(), ...nameTags, bar, barT], tP3, 0.5);
+  fadeOut([bsonT, n47, ...segEls.flat(), ...nameTags, bar, barT, z1, z2], tP3, 0.5);
   // 47 个字节收拢成一个「值」块
   by.all.forEach((e, i) => tl.to(e, { x: (i - 23) * -BW2 * 0.82 + 0, duration: 0.7, ease: 'power2.inOut' }, tP3 + 0.1));
 
@@ -186,6 +202,8 @@ scene('insert', ({ root, s, c0 }) => {
     return { g, hd, box, kV, vV, kL, vL };
   });
   ent.forEach((e, i) => show(e.g, T('b16', '三棵') - 0.2 + i * 0.45, { y: 16, d: 0.5 }));
+  const USE = ['拿 RecordId → 取出整份文档', '拿 ObjectId → 查到 RecordId', '拿名字 → 查到 RecordId'];
+  const uses = ent.map((e, i) => { const u = h('div', 'abs', e.box, '用途：' + USE[i]); css(u, { left: '24px', top: '254px', font: '600 24px "Inter", "Sans SC"', color: K.ink, whiteSpace: 'nowrap' }); show(u, Tend(['b17', 'b18', 'b19'][i]) - 0.2, { y: 6, d: 0.4 }); return u; });
   // 集合树：键 2050，值整份 47 字节
   ent[0].kV.innerHTML = '2050'; ent[0].vV.innerHTML = 'BSON · <span class="n47">47 字节</span>';
   ent[1].kV.innerHTML = "ObjectId('6afa…4e81')"; ent[1].vV.innerHTML = '2050';
@@ -210,6 +228,7 @@ scene('insert', ({ root, s, c0 }) => {
   const vR = res(world, TX3[1], 646, '值 = RecordId 2050', 'new', T('b18', '值') - 0.1, { fs: 30, lh: 56 });
   to(vR, T('b20', '值里') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
   const uq = res(world, TX3[1], 716, 'unique · 不会重复', 'ink', T('b20', '重复') - 0.2, { fs: 30, lh: 56 });
+  const one = res(world, TX3[1], 786, '一个 ObjectId 只对应一份文档', 'new', T('b20', '值里') - 0.15, { fs: 30, lh: 56 });
   const dup = h('div', 'abs', world); px(dup, TX3[2], 650, TW3, 130); css(dup, { font: '600 30px/1.6 "Mono"', color: K.gd2 });
   dup.innerHTML = `<div style="padding:4px 14px;border:2px solid ${K.forest};border-radius:8px;background:${K.forest};color:#FFFFFF;display:inline-block">"Alice" 2050</div><br><div style="padding:4px 14px;border:2px solid ${K.gd1};border-radius:8px;background:${K.gd1};color:#FFFFFF;display:inline-block;margin-top:10px">"Alice" ……（另一个同名的）</div>`;
   show(dup, T('b21', '重名') - 0.2, { y: 10, d: 0.5 });
@@ -221,12 +240,13 @@ scene('insert', ({ root, s, c0 }) => {
   // 两个索引都指回 2050：从下面绕回集合树
   const back1 = link(ov, [[TX3[1] + 60, 618], [TX3[1] + 60, 770], [TX3[0] + 160, 770], [TX3[0] + 160, 620]], 'accent', { w: 4, arrow: true });
   const back2 = link(ov, [[TX3[2] + 260, 618], [TX3[2] + 260, 820], [TX3[0] + 100, 820], [TX3[0] + 100, 620]], 'accent', { w: 4, arrow: true });
-  fadeOut([uq, dup, vR], T('b22') - 0.3, 0.4);
+  fadeOut([uq, dup, vR, one], T('b22') - 0.3, 0.4);
   arrowIn(back1, T('b22', '指回') - 0.4, 0.7); arrowIn(back2, T('b22', '指回') - 0.2, 0.8);
   to(ent[0].box, T('b22', '2050') - 0.2, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(ent[0].box, T('b24') - 0.4, { backgroundColor: '#FFFFFF', duration: 0.4 });
   const tP5 = T('b24') - 0.4;
   fadeOut([back1, back2], tP5, 0.4);
   ent.forEach((e) => { to(e.box, tP5, { borderColor: K.gl1, duration: 0.4 }); fadeOut([e.kV, e.vV], tP5, 0.4); });
+  fadeOut(uses, tP5, 0.4);
 
   // ══ 六、Dave：三处写入；中途停掉留下缺口；放进一个事务（B09 H04 I07） ══
   const dave = chip(world, 840, 880, 'Dave 注册 · RecordId 4097', 'dk'); css(dave, { fontSize: '30px' });

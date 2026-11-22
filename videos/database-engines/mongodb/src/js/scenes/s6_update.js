@@ -49,8 +49,8 @@ scene('update', ({ root, s, c0 }) => {
   const glU = gl(world, 990, 516, '更新链', '一项上挂着的新旧版本');
   const chainB = h('div', 'abs', world); px(chainB, 976, RY - 22, 500, 84); css(chainB, { border: '3px solid ' + K.g1, background: '#7DEBB0', borderRadius: '14px' }); world.insertBefore(chainB, v43);
   show(chainB, T('e6', '挂') - 0.2, { y: 0, s: 1.02, d: 0.4 });
-  res(world, 1490, 448, '更新链', 'new', T('e7', '一串') - 0.2, { out: T('e10', '检查点') - 0.3 }); fadeOut(chainB, T('e10', '检查点') - 0.3, 0.45);
-  show(glU, T('e7', '更新') - 0.3, { y: 10, d: 0.5 }); to(chainB, T('e7', '更新') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 });
+  res(world, 1490, 448, '更新链', 'new', T('e7', '更新') - 0.2, { out: T('e10', '检查点') - 0.3 }); fadeOut(chainB, T('e10', '检查点') - 0.3, 0.45);
+  show(glU, T('e7', '更新') - 0.3, { y: 10, d: 0.5 }); to(chainB, T('e7', '一串') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 });
   // 旧的 42 还留着：有人同时在读
   rowOn(T('e8', '42') - 0.2, 'read');
   const reader = h('div', 'abs', world, ico('person', 44, '#FFFFFF', 2.8) + '<span style="font:700 26px Sans SC;color:#FFFFFF;vertical-align:12px;margin-left:8px">正在读的人看 42</span>'); px(reader, 990, 382);
@@ -79,6 +79,7 @@ scene('update', ({ root, s, c0 }) => {
   show(noX, T('e11', '原来') - 0.2, { y: 0, s: 1.4, d: 0.35 }); fadeOut(noX, T('e12', '写到') - 0.1, 0.35);
   to(V.leaves[1].c, T('e12', '整个') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 });
   res(world, X(40960) - 150, 630, '不写回原处', 'del', T('e11', '原来') - 0.3, { fs: 36, lh: 64, pad: 26, out: T('e12', '写到') - 0.1 });
+  res(world, 170, 698, '整页重新整理，写成新的一块', 'new', T('e12', '整个') - 0.1, { fs: 30, lh: 52, out: T('e13') - 0.3 });   // D03 B02
   tl.to(gh, { x: X(110592) - (gx0 + V.LW / 2), y: 640 - gy0, scale: 0.4, duration: 0.9, ease: 'power2.inOut' }, T('e12', '写到') - 0.3);
   tl.to(gh, { y: 700 - gy0, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, T('e12', '新的') - 0.1);
   revealBand(V, T('e12', '末尾') - 0.3, 98304, 126976, 0.8);
@@ -90,15 +91,16 @@ scene('update', ({ root, s, c0 }) => {
   fadeOut(drop2, T('e17', '原地') - 0.4, 0.3); [0, 2, 3].forEach((i) => tl.to(V.drop[i], { autoAlpha: 1, duration: 0.4 }, T('e17', '原地') - 0.3));
   // 47 个字节里只变了 1 个：2a → 2b（D07）
   const tB = T('e13') - 0.2;
-  const bz = h('div', 'abs', world); px(bz, 990, 392, 780, 130); css(bz, { background: K.ink, border: '2px solid ' + K.ink, borderRadius: '10px' });
+  const bz = h('div', 'abs', world); px(bz, 990, 392, 780, 168); css(bz, { background: K.ink, border: '2px solid ' + K.ink, borderRadius: '10px' });
   const BB = ['10', '61', '67', '65', '00', '2a', '00', '00', '00', '00'];
   bz.innerHTML = `<div style="position:absolute;left:18px;top:10px;font:600 22px 'Sans SC';color:${K.spring}">Alice 那一项的最后 10 个字节</div>` + BB.map((b, i) => `<span class="bb" style="position:absolute;left:${18 + i * 76}px;top:48px;width:68px;height:56px;border-radius:6px;border:2px solid #3D4F58;background:#1C2D38;font:600 28px/52px Mono;text-align:center;color:#C1C7C6">${b}</span>`).join('');
+  [[0, 1, 'int 类型'], [1, 5, '字段名 age 和 0'], [5, 9, '值：4 字节整数'], [9, 10, '结尾']].forEach(([a, b, t]) => { const e = h('div', 'abs', bz, t); css(e, { left: 18 + a * 76 + 'px', top: '112px', width: (b - a) * 76 - 8 + 'px', textAlign: 'center', font: '600 22px/40px "Inter", "Sans SC"', color: '#E8EDEB', borderTop: '2px solid #889397', whiteSpace: 'nowrap' }); });   // A04 A16
   to([V.leaves[2].c, V.leaves[3].c], tB - 0.2, { opacity: 0, duration: 0.4 });
   show(bz, tB, { y: 10, d: 0.45 });
   const b5 = bz.querySelectorAll('.bb')[5];
   to(b5, T('e13', '42') - 0.1, { backgroundColor: K.spring, borderColor: K.forest, color: K.ink, duration: 0.35 });
   swapAt(b5, '2a', '2b', T('e13', '43') - 0.2);
-  res(world, 990, 534, '47 个字节里只变了 1 个', 'new', T('e13', '一个') - 0.2, { out: T('e14', '整页') - 0.2 });
+  res(world, 990, 572, '47 个字节里只变了 1 个', 'new', T('e13', '一个') - 0.2, { out: T('e14', '整页') - 0.2 });
   to(bz, T('e13', '43') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.4 }); to(bz.firstChild, T('e13', '43') - 0.2, { color: '#FFFFFF', duration: 0.4 });
   res(world, X(98304) - 30, 636, '整页重写 24 KB', 'new', T('e14', '整页') - 0.2, { out: T('e15', '根页') - 0.4 });
   // 却写了整页 24 KB
@@ -112,6 +114,7 @@ scene('update', ({ root, s, c0 }) => {
   to([V.leaves[2].c, V.leaves[3].c], tR - 0.2, { opacity: 1, duration: 0.4 });
   const r2 = V.band.blk(122880, 126976, 'r'); show(r2, tR + 0.4, { y: 0, s: 0.7, d: 0.4 });
   res(world, X(122880) - 40, 590, '新根页', 'ink', T('e15', '根页') + 0.2, { fs: 26, lh: 46, out: T('e16') + 0.3 });
+  res(world, 170, 600, '叶页的位置记在根页里', 'ink', Tend('e15') - 0.6, { fs: 30, lh: 56, out: T('e17') - 0.3 });   // B03
   to(V.root, tR, { backgroundColor: K.forest, duration: 0.35 }); to(V.root, tR + 1.2, { backgroundColor: K.ink, duration: 0.35 });
   textAt(V.root, [[0, '根页 · 1 · 1225 · 2449 · 3124'], [tR + 0.2, '根页 · 1225 那一项 → 新位置'], [T('e16') + 0.2, '根页 · 1 · 1225 · 2449 · 3124']]);
   to(V.root, T('e15', '新位置') - 0.2, { backgroundColor: K.forest, color: K.mint2, duration: 0.35 }); to(V.root, T('e16') + 0.1, { backgroundColor: K.ink, color: '#FFFFFF', duration: 0.35 });

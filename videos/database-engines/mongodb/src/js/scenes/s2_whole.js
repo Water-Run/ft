@@ -33,6 +33,7 @@ scene('whole', ({ root, s, c0 }) => {
     [['表', '集合'], ['行', '文档']].map(([a, b]) => `<div style="font:700 36px/1.6 'Sans SC';color:#FFFFFF">${a}<span style="color:${K.gb};margin:0 18px;font-weight:500">→</span><span style="color:${K.spring}">${b}</span></div>`).join('');
   set(map.children[2], s.start, { autoAlpha: 0 }); show(map.children[2], T('a2', '一张表') - 0.3, { y: 8, d: 0.4 });
   show(map, T('a2', '关系') - 0.2, { y: 12, d: 0.5 });
+  res(col, 150, 12, '≈ 关系数据库的一张表', 'ink', T('a2', '一张表') - 0.15, { fs: 32, lh: 60, out: T('a4') - 0.4 });
   // 三份文档（A12 的回显，原样）：Alice 名字与年龄；Erin 邮箱与标签；Frank 名字与地址
   const dA = docCard(world, 150, 340, [['name', JS('Alice')], ['age', JN(42)]], { w: 310, fs: 28 });
   const dE = docCard(world, 480, 340, [['name', JS('Erin')], ['email', JS('erin@example.com')], ['tags', `[ ${JS('db')}, ${JS('go')} ]`]], { w: 520, fs: 28 });
@@ -104,6 +105,17 @@ scene('whole', ({ root, s, c0 }) => {
   const downA = link(ovM, [[1500, 532], [1500, 558]], 'accent', { w: 4, arrow: true }); P2.push(downA); arrowIn(downA, T('a12', '下层') - 0.1, 0.45);
   fadeOut([q, planA], T('a13') - 0.2, 0.4);
   const glS = gl(world, 1620, 560, '存储引擎', '管数据在内存和<br>磁盘上怎样存放', { cls: 'lg' }); P2.push(glS);
+  // a12b 就和 MySQL 一样：InnoDB、MyISAM 都是 MySQL 的存储引擎（本系列 PART 1、2）
+  const my = h('div', 'panel', world); px(my, 62, 540, 250, 290); P2.push(my);
+  my.innerHTML = `<div style="position:absolute;left:22px;top:16px;font:700 36px Inter;color:${K.ink}">MySQL</div>` +
+    `<div style="position:absolute;left:22px;top:66px;font:600 24px 'Sans SC';color:${K.gd1}">它的存储引擎</div>`;
+  const myE = ['InnoDB', 'MyISAM'].map((n, i) => { const e = h('div', 'abs', my, n); css(e, { left: '22px', top: 108 + i * 62 + 'px', font: '700 30px/50px "Inter"', color: '#FFFFFF', background: K.ink, borderRadius: '8px', padding: '0 16px' }); return e; });
+  const myP = h('div', 'abs', my, 'PART 1 · PART 2'); css(myP, { left: '22px', top: '238px', font: '500 22px "Mono"', color: K.gd1 });
+  const myL = link(ovM, [[314, 690], [358, 690]], 'dim', { w: 2.5, dashed: '6 6' }); P2.push(myL);
+  show(my, T('a12b', 'My') - 0.35, { x: -24, y: 0, d: 0.5 });
+  myE.forEach((e, i) => show(e, T('a12b', 'My') + 0.1 + i * 0.25, { x: -12, y: 0, d: 0.4 }));
+  show(myP, T('a12b', '一样') - 0.1, { y: 6, d: 0.4 }); arrowIn(myL, T('a12b', '一样') - 0.2, 0.4);
+  to(dnT, T('a12b', '一样') - 0.1, { color: K.forest, duration: 0.35 });
   show(glS, T('a12', '存储') - 0.2, { x: 16, y: 0, d: 0.5 });
   // 名字：WiredTiger；9.0 默认用它
   res(dn, 190, 6, 'WiredTiger', 'new', T('a13', 'W') - 0.15, { fs: 38, lh: 62 });
@@ -112,7 +124,7 @@ scene('whole', ({ root, s, c0 }) => {
   const v9 = res(dn, 800, 8, 'MongoDB 9.0 默认', 'ink', T('a15', '9.0') - 0.2, { fs: 32, lh: 58 });
   to([mem, dsk], T('a15', '默认') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(v9, T('a15', '默认') - 0.1, { backgroundColor: K.forest, duration: 0.35 });
   const tP2 = T('a16') - 0.4;
-  fadeOut([md, glS, planA, downA], tP2, 0.5);
+  fadeOut([md, glS, planA, downA, my, myL], tP2, 0.5);
 
   // ══ 三、WiredTiger 只认「键 → 一串字节」（A13 A03 B01） ══
   const P3 = [];
@@ -191,7 +203,7 @@ scene('whole', ({ root, s, c0 }) => {
   show(fileEls[1].e, T('a21b', '两个') - 0.1, { y: 12, d: 0.5 }); show(fileEls[2].e, T('a21b', '两个') + 0.15, { y: 12, d: 0.5 });
   // 三棵树：叶页数照实测（集合 4、_id 3、姓名 15）
   function mini(i, n, lab) {
-    const x0 = 160 + i * 560, W = 520, y0 = 520;
+    const x0 = 160 + i * 560, W = 520, y0 = 466;
     const r = h('div', 'rootpg', world, '根页'); px(r, x0 + W / 2 - 70, y0, 140, 48); css(r, { fontSize: '22px' });
     const lw = n > 8 ? (W - (n - 1) * 6) / n : (W - (n - 1) * 18) / n, gap = n > 8 ? 6 : 18;
     const lvs = [], lks = [];
@@ -202,7 +214,7 @@ scene('whole', ({ root, s, c0 }) => {
       lvs.push(l);
       const p = link(ov4, [[x0 + W / 2, y0 + 48], [lx + lw / 2, y0 + 140]], 'ink', { w: n > 8 ? 1.5 : 2 }); lks.push(p);
     }
-    const t = tg(world, x0, y0 + 306, lab, 'b'); css(t, { fontSize: '28px', lineHeight: '48px', color: '#FFFFFF', background: i ? K.ink : K.forest, borderRadius: '8px', padding: '0 14px' });
+    const t = tg(world, x0, y0 + 302, lab, 'b'); css(t, { fontSize: '28px', lineHeight: '48px', color: '#FFFFFF', background: i ? K.ink : K.forest, borderRadius: '8px', padding: '0 14px' });
     return { r, lvs, lks, t, x0, W, y0, lw, gap };
   }
   const TR3 = [mini(0, 4, '集合树 · 4 个叶页'), mini(1, 3, '_id 索引 · 3 个叶页'), mini(2, 15, '姓名索引 · 15 个叶页')];
@@ -213,15 +225,27 @@ scene('whole', ({ root, s, c0 }) => {
     m.lvs.forEach((l, k) => show(l, tTree[i] + 0.2 + k * (m.lvs.length > 8 ? 0.03 : 0.08), { y: 12, d: 0.4 }));
     m.lks.forEach((p, k) => draw(p, tTree[i] + 0.25 + k * 0.02, 0.5));
     show(m.t, tTree[i] + 0.4, { y: 8, d: 0.4 });
-    const lnk = link(ov4, [[m.x0 + m.W / 2, 416], [m.x0 + m.W / 2, 520]], 'dim', { w: 2, dashed: '6 6' }); arrowIn(lnk, tTree[i] - 0.2, 0.4);
+    const lnk = link(ov4, [[m.x0 + m.W / 2, 416], [m.x0 + m.W / 2, m.y0]], 'dim', { w: 2, dashed: '6 6' }); arrowIn(lnk, tTree[i] - 0.2, 0.4);
     to(fileEls[i].e, [T('a21', 'users') - 0.2, T('a21b', '各占') - 0.2, T('a21b', '各占')][i], { borderColor: K.g1, backgroundColor: '#A6F4C9', duration: 0.4 });
     to(fileEls[i].b, [tTree[0] + 0.1, T('a23', '一建好') - 0.1, T('a24', '名字') - 0.1][i], { backgroundColor: K.spring, color: K.ink, duration: 0.4 });
   });
   // 索引：注解贴在 _id 那棵树下面
-  const glIdx = gl(world, 720, 880, '索引', '按某个字段排好序的另一棵树');
+  // 树下注解：第一行键和值，第二行为什么叶页数不一样（策划者 r5：「_id索引的独特 和姓名索引长的不一样, 在图注要解释」）
+  const CAP = [
+    ['键：RecordId　值：整份文档（BSON）', '文档大，一页装 675 到 1224 份：4 页'],
+    ['键：ObjectId，不会重复　值：RecordId', '键只有 12 字节，一页装得多：3 页'],
+    ['键：名字 + RecordId　值：空', '名字长（约 50 字节），一页约 290 项：15 页'],
+  ];
+  const capT = [[tTree[0] + 0.7, T('a24', '索引') + 0.3], [tTree[1] + 0.7, T('a24', '索引') + 0.6], [T('a24', '名字') + 0.5, T('a24', '索引') + 0.9]];
+  const caps = TR3.map((m, i) => CAP[i].map((txt, j) => {
+    const e = h('div', 'abs', world, txt); px(e, m.x0, m.y0 + 360 + j * 34);
+    css(e, { font: (j ? '700' : '500') + ' 24px/32px "Inter", "Sans SC"', color: j ? K.forest : K.gd2, whiteSpace: 'nowrap' });
+    show(e, capT[i][j], { y: 8, d: 0.45 }); return e;
+  }));
+  const glIdx = gl(world, 720, 914, '索引', '按某个字段排好序的另一棵树');
   css(glIdx, { padding: '0 0 0 16px' }); css(glIdx.querySelector('b'), { display: 'inline', fontSize: '28px', marginRight: '14px' }); css(glIdx.querySelector('span'), { display: 'inline', fontSize: '26px' });
   show(glIdx, T('a23', '索引') - 0.1, { y: 8, d: 0.45 });
-  const ci = code(world, 1280, 880, 'db.users.createIndex({ <span class="k">name</span>: <span class="n">1</span> })'); css(ci, { fontSize: '24px' });
+  const ci = code(world, 1270, 910, 'db.users.createIndex({ <span class="k">name</span>: <span class="n">1</span> })<span style="font:600 22px \'Sans SC\';color:#5C6C75;margin-left:12px">1：升序</span>'); css(ci, { fontSize: '24px' });   // C08
   show(ci, T('a24', '建了') - 0.2, { y: 8, d: 0.45 });
   TR3[2].lvs.forEach((l, k) => to(l, T('a24', '索引') - 0.3 + k * 0.02, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 }));
   // Alice 在三棵树里各占一项：集合树第 2 个叶页、_id 索引某一页、姓名索引第 1 页（B05 B06）

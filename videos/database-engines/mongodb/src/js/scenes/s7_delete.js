@@ -24,11 +24,16 @@ scene('delete', ({ root, s, c0 }) => {
   V.ix.forEach((e, i) => { textAt(e.querySelector('.ok'), [[0, ''], [T('f2b', '删掉') - 0.2 + i * 0.1, '删掉一项'], [T('f6', '检查点') - 0.3, '']]); to(e, T('f2b', '删掉') - 0.2 + i * 0.1, { borderColor: K.red, backgroundColor: K.red, color: '#FFFFFF', duration: 0.3 }); });
   const kd = tg(world, 400, 296, 'ndeleted: 1', 'm'); css(kd, { fontSize: '30px', lineHeight: '54px', color: '#FFFFFF', background: K.red, borderRadius: '10px', padding: '0 16px' });
   show(kd, T('f2', '文档') - 0.2, { y: 6, d: 0.4 });
+  res(world, 170, 616, '要删 3 项：集合树 1 项 + 两个索引各 1 项', 'del', T('f2', '三棵') + 0.3, { fs: 30, lh: 56, out: T('f3') - 0.2 });   // F01
+  res(world, 170, 616, '原来那一项还在页上，只是挂了删除标记', 'ink', Tend('f5') + 0.2, { fs: 30, lh: 56, out: T('f6', '检查点') - 0.3 });   // F02
+  to(V.mem, Tend('f10') + 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }); to(V.mem, T('f13') - 0.2, { backgroundColor: K.gl3, borderColor: K.gl2, duration: 0.4 });
   textAt(kd, [[0, 'ndeleted: 1'], [T('f2b', '各') - 0.2, 'ndeleted: 1 · keysDeleted: 2']]);
+  const kdZ = tg(world, 972, 308, '删掉的文档 1 份 · 删掉的索引键 2 个', 'b'); css(kdZ, { fontSize: '24px', color: K.redd });   // F01
+  show(kdZ, T('f2b', '各') + 0.1, { y: 6, d: 0.4 }); fadeOut(kdZ, T('f3', '内存') - 0.3, 0.4);
   // 删除也是挂一个版本：不带内容，只说「删了」（F02）
   const memTi = V.mem.children[1];
   to(memTi, T('f3', '内存') - 0.2, { color: K.forest, duration: 0.35 });
-  to(V.mem, T('f3', '内存') - 0.2, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }); to(V.mem, Tend('f5') + 0.6, { backgroundColor: K.gl3, borderColor: K.gl2, duration: 0.4 });
+  to(V.mem, T('f3', '内存') - 0.2, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }); to(V.mem, T('f5') + 0.15, { backgroundColor: K.gl3, borderColor: K.gl2, duration: 0.4 });
   const tT = T('f3', '挂') - 0.4;
   fadeOut(cmd, tT - 0.3, 0.35);
   to([V.leaves[2].c, V.leaves[3].c], tT - 0.3, { opacity: 0, duration: 0.45 });
@@ -115,6 +120,7 @@ scene('delete', ({ root, s, c0 }) => {
   to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f15', '文件') - 0.2, { opacity: 0.35, duration: 0.45 }); to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f16') - 0.2, { opacity: 1, duration: 0.45 });
   const ghR = ghostPage(world, 880, 236, 520, 70); css(ghR, { background: K.forest, borderColor: K.forest, overflow: 'hidden' });
   tl.fromTo(ghR, { autoAlpha: 0.95, x: 0, y: 0, scale: 1 }, { x: X(67584) - 1140, y: 760 - 271, scale: 0.15, autoAlpha: 0, duration: 1.0, ease: 'power2.inOut', immediateRender: false }, T('f15', '挪进') - 0.6);
+  res(world, 170, 616, '空出来的块，又用上了', 'new', T('f15', '空位') - 0.1, { fs: 30, lh: 56, out: T('f16') - 0.3 });   // F06
   const r3 = V.band.blk(65536, 69632, 'r'); show(r3, T('f15', '挪进') - 0.2, { y: 0, s: 0.7, d: 0.4 });
   to(V.root, T('f15', '根页') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(V.root, T('f15b') - 0.2, { backgroundColor: K.ink, duration: 0.35 });
   to(r2, T('f15', '挪进') - 0.1, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.4 });   // lint-ok: 空出的块

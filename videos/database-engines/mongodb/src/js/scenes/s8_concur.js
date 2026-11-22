@@ -38,12 +38,15 @@ scene('concur', ({ root, s, c0 }) => {
   to(apT, T('g3', '应用') - 0.2, { backgroundColor: K.mint2, duration: 0.4 }); to(apT, T('g4', '加上') - 0.2, { backgroundColor: '#FFFFFF', duration: 0.4 });
   [cls[0], cls[3]].forEach((e, k) => { css(e, { borderRadius: '8px', padding: '0 10px', marginLeft: '-10px' }); solid(e, (k ? T('g3', '包在') : T('g3', '开事务')) + 0.1, 'new'); to([...e.querySelectorAll('span')], (k ? T('g3', '包在') : T('g3', '开事务')) + 0.1, { color: K.spring, duration: 0.35 }); });
   [T('g3', '开事务'), T('g3', '读写'), T('g3', '读写') + 0.3, T('g3', '包在')].forEach((t, i) => show(cls[i], t - 0.25, { x: -12, y: 0, d: 0.35 }));
+  const txN = [[0, 480, '← 开始一个事务'], [3, 500, '← 提交：一起生效']].map(([i, x, t]) => { const e = h('div', 'abs', apT, t); css(e, { left: x + 'px', top: 78 + i * 43 + 'px', font: '700 24px/36px "Inter", "Sans SC"', color: K.forest, whiteSpace: 'nowrap' }); return e; });   // I07
+  show(txN[0], T('g3', '开事务') + 0.2, { x: -10, y: 0, d: 0.4 }); show(txN[1], T('g3', '包在') + 0.2, { x: -10, y: 0, d: 0.4 });
   const v4 = res(world, 1400, 244, '2018 年', 'ink', T('g4', '2018') - 0.3, { fs: 34, lh: 60 }); P1.push(v4); to(v4, T('g4', '4.0') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); textAt(v4, [[0, '2018 年'], [T('g4', '4.0') - 0.2, '2018 年 · 4.0 版']]);
   textAt(v4, [[0, '2018'], [T('g4', '4.0') - 0.2, 'MongoDB 4.0 · 2018']]);
   // 单机的 mongod 不接受（G00 的真实报错）
-  const err = term(world, 150, 600, 1630, 150, 'mongosh · 单机的 mongod', { fs: 28, lh: 42 }); P1.push(err.c);
+  const err = term(world, 150, 600, 1630, 180, 'mongosh · 单机的 mongod', { fs: 28, lh: 42 }); P1.push(err.c);
   show(err.c, T('g5', '单机') - 0.4, { y: 14, d: 0.5 });
   const errL = err.out(T('g5', '不接受') - 0.3, '<span style="color:#FFFFFF">MongoServerError: Transaction numbers are only allowed on a replica set member or mongos</span>'); css(errL, { background: K.red, borderRadius: '6px', padding: '0 10px' });
+  err.out(T('g5', '不接受') + 0.4, '<span style="color:#5C6C75;font-family:Inter,\'Sans SC\'">意思是：事务只能用在副本集的成员（或 mongos）上，单机的 mongod 不接受</span>');
   // 副本集：几台 mongod 维护同一份数据；这里只用一台
   const RS = [0, 1, 2].map((i) => { const e = h('div', 'abs', world); px(e, 560 + i * 300, 790, 260, 120); css(e, { background: i === 0 ? K.ink : K.gd1, border: '3px solid ' + (i === 0 ? K.ink : K.gd1), borderRadius: '12px' });
     e.innerHTML = `<div style="position:absolute;left:18px;top:14px;font:700 28px Mono;color:#FFFFFF">mongod</div><div style="position:absolute;left:18px;top:62px;font:500 24px 'Sans SC';color:#E8EDEB">同一份数据</div>`; P1.push(e); return e; });
@@ -145,11 +148,13 @@ scene('concur', ({ root, s, c0 }) => {
   res(world, 980, 614, '两个事务，同一份文档', 'ink', T('g22', '这份') - 0.1, { fs: 28, lh: 54, out: T('g24') - 0.2 });
   // 可以排队等 Alice 提交（虚的一段）——MongoDB 没这么做
   const queue = h('div', 'abs', world); px(queue, 790, 524, 300, 70); css(queue, { border: '3px solid ' + K.yeld, background: K.yeld, borderRadius: '10px', font: '700 30px/64px "Sans SC"', color: '#FFFFFF', textAlign: 'center' });
-  to(queue, T('g23', '没这么做') - 0.3, { backgroundColor: K.red, borderColor: K.red, duration: 0.35 });
-  res(world, 1060, 526, 'MongoDB 没这么做', 'del', T('g23', 'MongoDB') - 0.2, { fs: 34, lh: 62, pad: 24, out: T('g24') - 0.1 }); queue.textContent = '排队等 Alice';
+  to(queue, T('g23', '没这么做') - 0.3, { backgroundColor: K.gd1, borderColor: K.gd1, duration: 0.35 });
+  res(world, 1116, 528, 'MongoDB 没这么做', 'ink', T('g23', 'MongoDB') - 0.2, { fs: 34, lh: 62, pad: 24, out: T('g24') - 0.1 }); queue.textContent = '排队等 Alice';
   show(queue, T('g23', 'Carol') - 0.2, { x: -14, y: 0, d: 0.4 });
-  const qx = h('div', 'abs', world, ico('x', 64, K.gd2, 4)); px(qx, 858, 527, 64, 64); show(qx, T('g23', '没这么做') - 0.3, { y: 0, s: 1.4, d: 0.35 });
+  const qx = h('div', 'abs', world); px(qx, 806, 557, 268, 4); css(qx, { background: '#FFFFFF', transformOrigin: '0 50%' }); qx.dataset.name = 'strike';
+  fromTo(qx, T('g23', '没这么做') - 0.2, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.inOut' });
   fadeOut([queue, qx], T('g24') - 0.1, 0.35);
+  res(world, 1300, 470, 'Carol 的事务重做：成功', 'new', T('g27', '成功') - 0.15, { fs: 30, lh: 56, out: T('g36') - 0.3 });
   // 一发现是同一份：Carol 立刻收到写冲突（真实回显）
   const bolt = h('div', 'abs', world, ico('bolt', 64, K.red, 3)); px(bolt, 740, 450, 64, 64);
   show(bolt, T('g24', '同一份') - 0.3, { y: -10, s: 0.6, d: 0.35 }); sfx('error', T('g24', '同一份') - 0.1, { g: 0.6 });

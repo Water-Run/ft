@@ -79,6 +79,7 @@ scene('flush', ({ root, s, c0 }) => {
   show(glCk, T('c8', '检查') - 0.2, { y: 8, d: 0.45 });
   // 文件长到 96 KB（A08：98,304 字节）
   stepTo(sz, [[T('c9', '长到') - 0.4, 1.1, 4, 96]], (v) => Math.round(v) + ' KB');
+  res(world, 170, 590, '缓存里改过的页，都写进了文件', 'new', Tend('c9') - 1.0, { fs: 30, lh: 56, out: T('c9b') - 0.3 });
   solid(sz, T('c9', '4') - 0.2, 'ink'); to(sz, T('c9', '九十') - 0.1, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.35 });
   to(sz, T('c9b') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', color: K.forest, duration: 0.35 });   // lint-ok: 退回文字
 
@@ -119,10 +120,12 @@ scene('flush', ({ root, s, c0 }) => {
   const rootB = h('div', 'abs', world); px(rootB, 660, 222, 600, 140); css(rootB, { background: K.ink, borderRadius: '10px', color: '#fff' });
   rootB.innerHTML = `<div style="position:absolute;left:20px;top:12px;font:700 26px 'Sans SC'">根页</div>` + [['1', '4096'], ['1225', '28672'], ['2449', '53248'], ['3124', '65536']].map(([k, o], i) => `<div class="re" style="position:absolute;left:${20 + i * 146}px;top:56px;width:132px;font:600 24px/1.45 Mono;text-align:left">≥ ${k}<br><span style="color:#71F6BA">@${o}</span></div>`).join('');
   const rl = LV.map((r, i) => link(ov, [[660 + 20 + i * 146 + 60, 362], [LX(i) + LW / 2, LY]], 'ink', { w: 2 }));
-  const tLf = T('c11', '叶页') - 0.6;
+  const tLf = T('c10', '样子') - 0.5;
   leaves.forEach((p, i) => { tl.fromTo(p.c, { autoAlpha: 0, y: 760 - LY, scale: 0.4 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out', immediateRender: true }, tLf + i * 0.12); });
   blks.slice(0, 4).forEach((e, i) => { to(e, T('c10', '样子') - 0.2 + i * 0.1, { backgroundColor: K.ink, borderColor: K.ink, duration: 0.35 }); to(e._t || e, T('c10', '样子') - 0.2 + i * 0.1, { color: K.spring, duration: 0.35 }); });
   show(rootB, T('c13', '根页') - 0.4, { y: -14, d: 0.5 });
+  const glRt = gl(world, 1290, 226, '根页里的一格', '≥ 1225：这个叶页从键 1225 开始<br>@28672：它在文件里从第 28672 字节起');   // B03
+  show(glRt, T('c13', '哪个') - 0.2, { x: 14, y: 0, d: 0.45 }); fadeOut(glRt, T('c15') - 0.4, 0.4);
   const ctT = tg(world, 170, 360, '集合树（文件里的样子）', 'g'); css(ctT, { fontSize: '30px', lineHeight: '52px', color: '#FFFFFF', background: K.forest, borderRadius: '10px', padding: '0 18px' }); show(ctT, T('c10', '集合树') - 0.3, { y: 8, d: 0.4 }); fadeOut(ctT, T('c13', '根页') - 0.5, 0.3);
   rl.forEach((p, i) => draw(p, T('c13', '根页') - 0.1 + i * 0.08, 0.5));
   // 叶页 ↔ 文件里的块：一条虚线
@@ -163,7 +166,7 @@ scene('flush', ({ root, s, c0 }) => {
       `<div style="position:absolute;left:20px;top:${54 + j * 90}px;font:500 22px 'Sans SC';color:${K.gd1}">${n} 个叶页</div></div>`;
   }).join('');
   show(ixBox, tIx, { x: 30, y: 0, d: 0.5 });
-  to([...leaves.map((p) => p.c), rootB, ...rl, ...lb], T('c15', '索引') - 0.2, { opacity: 0.35, duration: 0.45 }); to([...leaves.map((p) => p.c), rootB, ...rl, ...lb], T('c22', '几棵') - 0.3, { opacity: 1, duration: 0.45 });
+  to([...leaves.map((p) => p.c), rootB, ...rl, ...lb], T('c15', '索引') - 0.2, { opacity: 0.35, duration: 0.45 }); to([...leaves.map((p) => p.c), rootB, ...rl, ...lb], T('c22') - 0.1, { opacity: 1, duration: 0.45 });
   to(ixBox, tIx + 0.2, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 });
   const ixr = [...ixBox.querySelectorAll('.ixr')];
   set(ixr, s.start, { autoAlpha: 0 }); show(ixr[0], tIx + 0.25, { y: 8, d: 0.4 }); show(ixr[1], T('c15', '一排') - 0.3, { y: 8, d: 0.4 });

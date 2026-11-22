@@ -85,14 +85,21 @@ scene('crash', ({ root, s, c0 }) => {
   fadeOut(jF, tP2, 0.45);
 
   // ══ 三、实验：Alice（j: true）、Dave（不带 j），然后强制结束（H04 H05） ══
-  const ex = term(world, 140, 222, 1660, 300, 'mongosh · 单机的 mongod · 刚写完 4096 人', { fs: 26, lh: 42 });
+  const ex = term(world, 140, 222, 1660, 340, 'mongosh · 单机的 mongod · 刚写完 4096 人', { fs: 26, lh: 42 });
   show(ex.c, tP2 + 0.3, { y: 12, d: 0.5 });
   const exL0 = ex.out(T('h9', '4096') - 0.2, '');
   textAt(exL0, [[0, '<span style="color:#5C6C75">// 先写好 4096 人，建好姓名索引</span>'], [T('h10', '检查点') - 0.2, '<span style="color:#5C6C75">// 先写好 4096 人，建好姓名索引；检查点刚做完</span>']]);
   const exA = ex.cmd(T('h10', 'Alice') - 0.2, 'db.users.updateOne({ <span class="k">name</span>: <span class="s">"Alice"</span> }, { <span class="k">$set</span>: { <span class="k">age</span>: <span class="n">43</span> } }, { <span class="k" style="background:#E1F7FF">writeConcern: { j: true }</span> })', 'lab&gt; ', 70);
   to(exA, T('h10', 'J') - 0.1, { color: K.blued, backgroundColor: '#CFE5FF', duration: 0.35 });
-  ex.cmd(T('h11', 'D') - 0.2, 'db.users.insertOne({ <span class="k">name</span>: <span class="s">"Dave"</span>, <span class="k">age</span>: <span class="n">19</span> })   <span style="color:#5C6C75">// 不带 j</span>', 'lab&gt; ', 60);
-  const solo = h('div', 'abs', world); px(solo, 140, 560, 1660, 150); css(solo, { background: '#FFFFFF', border: '3px solid ' + K.ink, borderRadius: '14px' });
+  // updateOne 这一行的分段注解：改哪一份、怎么改、写关注 j（H09）
+  const ECW = monoW(26), EX0 = 166, EY = 222 + 74 + 42 * 2 + 2, ex_ = (i) => EX0 + i * ECW;
+  brace(world, ex_(14), EY, 9 * ECW, 'updateOne：改一份', T('h10', 'Alice') + 0.5, { out: T('h13', '日志') - 0.6 });
+  brace(world, ex_(24), EY, 17 * ECW, '哪一份：name 是 Alice', T('h10', 'Alice') + 0.9, { out: T('h13', '日志') - 0.6 });
+  brace(world, ex_(43), EY, 21 * ECW, '怎么改：age 设成 43', T('h10', '年龄'), { out: T('h13', '日志') - 0.6 });
+  brace(world, ex_(66), EY, 29 * ECW, '写关注 j: true：等日志落盘再回复', T('h10', 'J') + 0.1, { color: K.blued, out: T('h13', '日志') - 0.6 });
+  const exD = ex.cmd(T('h11', 'D') - 0.2, 'db.users.insertOne({ <span class="k">name</span>: <span class="s">"Dave"</span>, <span class="k">age</span>: <span class="n">19</span> })   <span style="color:#5C6C75">// 不带 j</span>', 'lab&gt; ', 60);
+  css(exD, { marginTop: '40px' });
+  const solo = h('div', 'abs', world); px(solo, 140, 590, 1660, 150); css(solo, { background: '#FFFFFF', border: '3px solid ' + K.ink, borderRadius: '14px' });
   solo.innerHTML = `<div style="position:absolute;left:28px;top:44px">${ico('server', 60, K.forest, 2.4)}</div><div style="position:absolute;left:112px;top:30px;font:700 40px Mono;color:${K.ink}">mongod</div><div style="position:absolute;left:112px;top:88px;font:500 28px 'Sans SC';color:${K.gd1}">单机，不带副本集 · users 里 4096 份</div>`;
   show(solo, T('h9', 'mongo') - 0.2, { y: 14, d: 0.5 }); fadeOut(solo, T('h13', '日志') - 0.6, 0.4);
   const ok2 = ex.out(T('h12', '回复') - 0.2, '<span style="color:#FFFFFF">两笔都回复了成功</span>'); css(ok2, { background: K.forest, borderRadius: '6px', padding: '0 10px', display: 'inline-block' });
@@ -104,28 +111,33 @@ scene('crash', ({ root, s, c0 }) => {
   textAt(ckC, [[0, '检查点刚做完'], [T('h12', '回复') - 0.2, '两笔都回复成功']]); to(ckC, T('h12', '回复') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
   const aC2 = res(solo, 760, 44, 'Alice · 改年龄', 'new', T('h10', 'Alice') - 0.2, { fs: 30, lh: 60 }); textAt(aC2, [[0, 'Alice · 改年龄'], [T('h10', '加了') - 0.2, 'Alice · j: true']]); to(aC2, T('h10', '加了') - 0.2, { backgroundColor: K.blue, duration: 0.35 });
   const dC2 = res(solo, 1090, 44, 'Dave · 注册', 'new', T('h11', 'D') - 0.2, { fs: 30, lh: 60 }); textAt(dC2, [[0, 'Dave · 注册'], [T('h11', 'j') - 0.2, 'Dave · 不带 j']]); to(dC2, T('h11', 'j') - 0.2, { backgroundColor: K.gd1, duration: 0.35 });
-  const kb = h('div', 'abs', world, ico('bolt', 48, K.red, 3)); px(kb, 440, 462, 48, 48);
+  const kill9 = tg(world, EX0 + 17 * ECW + 40, 504, 'kill -9：直接强制结束进程', 'r'); css(kill9, { fontSize: '26px', lineHeight: '40px' });
+  show(kill9, T('h12', '强制') + 0.1, { x: -10, y: 0, d: 0.4 }); fadeOut(kill9, T('h13', '日志') - 0.6, 0.4);
+  const kb = h('div', 'abs', world, ico('bolt', 48, K.red, 3)); px(kb, 880, 498, 48, 48);
   show(kb, T('h12', '强制') - 0.1, { y: -12, s: 0.6, d: 0.35 }); sfx('error', T('h12', '强制'), { g: 0.6 });
   // 日志文件里，检查点之后的两笔（07 回显第 38–41 行）
-  const jl = term(world, 140, 560, 1660, 290, '磁盘上的日志 · 检查点之后', { fs: 28, lh: 46 });
+  const jl = term(world, 140, 590, 1660, 290, '磁盘上的日志 · 检查点之后', { fs: 28, lh: 46 });
   show(jl.c, T('h13', '日志') - 0.4, { y: 12, d: 0.5 });
   to(ex.c, T('h13', '两笔') - 0.2, { opacity: 0.45, duration: 0.45 });
   const L1 = jl.out(T('h14', '一笔') - 0.3, '事务 63  row_put  文件号 88   键 c7c2  name=Alice, age=43（整份文档 47 字节）');
   const L2 = jl.out(T('h15', '一笔') - 0.3, '事务 64  row_put  文件号 88   键 cfc1  name=Dave, age=19（整份文档 46 字节）'); set(L2, s.start, { backgroundColor: K.gd1, color: '#FFFFFF' });
   const L3 = jl.out(T('h15', '三次') - 0.2, '事务 64  row_put  文件号 96   <span style="opacity:.75">（_id 索引）</span>');
   const L4 = jl.out(T('h15', '三次') + 0.1, '事务 64  row_put  文件号 104  <span style="opacity:.75">（姓名索引）</span>');
+  const glLg = h('div', 'abs', world, '每条记录：<b>事务号</b> · <b>row_put</b> 写入一项 · <b>文件号</b> 写进哪个文件 · <b>键</b>（c7c2 是 RecordId 2050 打包后的写法）· 值'); px(glLg, 140, 892);   // H04 B05
+  css(glLg, { font: '500 24px "Inter", "Sans SC"', color: K.gd2, borderLeft: '5px solid ' + K.blue, paddingLeft: '16px', whiteSpace: 'nowrap' });
+  show(glLg, T('h14', '一笔') + 0.6, { x: 12, y: 0, d: 0.45 }); fadeOut(glLg, T('h17') - 0.3, 0.4);
   to(L1, T('h14', '43') - 0.3, { backgroundColor: K.bluel, color: K.ink, duration: 0.35 });
   to(L1, T('h14', '整份') - 0.2, { color: '#FFFFFF', backgroundColor: K.blue, duration: 0.35 });
   to([L2, L3, L4], T('h15', '三次') - 0.1, { color: '#FFFFFF', backgroundColor: K.gd1, duration: 0.35 });
   to([L2, L3, L4], T('h16', 'Dave') - 0.2, { color: '#FFFFFF', backgroundColor: K.forest, duration: 0.35 });
   fadeOut(kb, Tend('h16') + 0.1, 0.4);
   to([L2, L3, L4], T('h16', '赶在') - 0.3, { backgroundColor: K.mint2, color: K.ink, duration: 0.35 });
-  const caught = tg(world, 1290, 590, '不带 j，也已经写进日志文件', 'g'); css(caught, { fontSize: '26px', lineHeight: '48px', color: '#FFFFFF', background: K.forest, borderRadius: '8px', padding: '0 14px' });
+  const caught = tg(world, 1290, 620, '不带 j，也已经写进日志文件', 'g'); css(caught, { fontSize: '26px', lineHeight: '48px', color: '#FFFFFF', background: K.forest, borderRadius: '8px', padding: '0 14px' });
   show(caught, T('h16', '写进') - 0.3, { x: 14, y: 0, d: 0.4 });
   // 重启：回到最后一个检查点，再一条条重放（H02 H05）
   const tR = T('h17') - 0.3;
   fadeOut(ex.c, Tend('h16') + 0.3, 0.45); fadeOut(caught, tR, 0.45);
-  tl.to(jl.c, { y: 222 - 560, duration: 0.8, ease: 'power2.inOut' }, tR + 0.1);
+  tl.to(jl.c, { y: 222 - 590, duration: 0.8, ease: 'power2.inOut' }, tR + 0.1);
   const st = h('div', 'abs', world); px(st, 140, 530, 1660, 300); css(st, { background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '14px' });
   st.innerHTML = `<div style="position:absolute;left:24px;top:18px;font:700 30px 'Sans SC';color:${K.ink}">重启</div>` +
     [['回到最后一个检查点', '数据文件里的那一版：Alice 42，没有 Dave'], ['重放之后的日志', '事务 63、事务 64，一条条重做'], ['完成', 'Alice 43 · Dave 在 · 4097 份']].map(([a, b], i) =>

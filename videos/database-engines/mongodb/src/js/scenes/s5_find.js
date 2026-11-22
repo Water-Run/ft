@@ -60,6 +60,10 @@ scene('find', ({ root, s, c0 }) => {
   const f1 = res(world, 1450, 694, '找到 1 份', 'new', T('d4', '找到') - 0.1, { out: T('d5') - 0.2 });
   ex.out(T('d4', '看了') - 0.1, '没有索引：{ <span class="k">计划</span>: <span class="s">\'COLLSCAN\'</span>, <span class="k">返回</span>: <span class="n">1</span>, <span class="k">看过的索引键</span>: <span class="n">0</span>, <span class="k">看过的文档</span>: <span class="n">4096</span> }');
   const tB = T('d5') - 0.2;
+  res(world, 160, 664, '翻完 4096 份，只为找到 1 份', 'ink', Tend('d4') - 0.7, { fs: 30, lh: 56, out: tB });
+  const glCS = h('div', 'abs', world, '<b style="color:#00684A;font-family:Mono;margin-right:14px">COLLSCAN</b>集合扫描：把集合里的文档从头到尾一份份看过去'); px(glCS, 140, 736);   // C09
+  css(glCS, { font: '500 26px "Inter", "Sans SC"', color: K.gd2, borderLeft: '5px solid ' + K.g1, paddingLeft: '16px', whiteSpace: 'nowrap' });
+  show(glCS, T('d4', '看了') + 0.3, { x: 12, y: 0, d: 0.45 }); fadeOut(glCS, tB, 0.4);
   fadeOut([exN, exT, hit1], tB, 0.4);
 
   // ══ 有了姓名索引（B06）：根页 + 15 个叶页；第一个叶页里 Alice 排第一（C06） ══
@@ -79,7 +83,7 @@ scene('find', ({ root, s, c0 }) => {
   const KEYS = [['41', 'Alice', '2050', 1], ['55', 'User00001-…', '1', 0], ['55', 'User00002-…', '2', 0]];
   // 放大的那一页叠在集合树上方（集合树这时还不用）
   const zP = h('div', 'panel', world); px(zP, 140, 214, 780, 214); css(zP, { borderColor: K.g1, borderWidth: '3px' });
-  const zT = h('div', 'abs', zP, '第 1 个叶页 · 键按字节排'); css(zT, { left: '22px', top: '14px', font: '700 26px "Sans SC"', color: K.forest });
+  const zT = h('div', 'abs', zP, '第 1 个叶页 · 键按字节排<span style="font:500 23px \'Sans SC\';color:#5C6C75;margin-left:14px">（开头的 3c 都一样）</span>'); css(zT, { left: '22px', top: '14px', font: '700 26px "Sans SC"', color: K.forest });
   const zRows = KEYS.map(([b, n, r, a], i) => {
     const e = h('div', 'abs', zP); css(e, { left: '22px', top: 58 + i * 50 + 'px', font: '600 28px/44px "Mono"', color: K.ink, whiteSpace: 'nowrap', padding: '0 10px', borderRadius: '6px' });
     e.innerHTML = `<span style="color:${K.gb}">3c</span> <span class="b1" style="padding:0 6px;border-radius:4px">${b}</span>…  "${n}"  <span class="rid" style="padding:0 6px;border-radius:4px">${r}</span>`;
@@ -153,6 +157,9 @@ scene('find', ({ root, s, c0 }) => {
   const exB = ex2.out(T('d17') + 0.2, '有了索引：{ <span class="k">计划</span>: <span class="s">\'FETCH ← IXSCAN\'</span>, <span class="k">返回</span>: <span class="n">1</span>, <span class="k">看过的索引键</span>: <span class="n">1</span>, <span class="k">看过的文档</span>: <span class="n">1</span> }');
   to(exB, T('d17', '索引键') - 0.2, { color: K.forest, duration: 0.35 });
   res(world, 1440, 856, '1 个索引键 · 1 份文档', 'new', T('d17', '索引键') - 0.1, { fs: 28, lh: 52 });
+  const glIX = h('div', 'abs', world, '<b style="color:#00684A;font-family:Mono;margin-right:12px">IXSCAN</b>扫描索引键　<b style="color:#00684A;font-family:Mono;margin:0 12px 0 10px">FETCH</b>按 RecordId 取出文档'); px(glIX, 860, 680);   // C09
+  css(glIX, { font: '500 26px "Inter", "Sans SC"', color: K.gd2, borderLeft: '5px solid ' + K.g1, paddingLeft: '16px', whiteSpace: 'nowrap' });
+  show(glIX, T('d17') + 0.5, { x: 12, y: 0, d: 0.45 });
   const d41 = h('div', 'abs', world); px(d41, 140, 664); css(d41, { font: '800 44px/70px "Inter", "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '12px', padding: '0 24px' }); d41.innerHTML = '看过的文档 <span style="color:#C1C7C6">4096</span> → 1';
   show(d41, T('d17', '文档') - 0.1, { y: 10, d: 0.45 }); to(d41, Tend('d17') + 0.2, { backgroundColor: K.forest, duration: 0.4 }); to(d41.firstElementChild, Tend('d17') + 0.2, { color: K.mint2, duration: 0.4 });
 });

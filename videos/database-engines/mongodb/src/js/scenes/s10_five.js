@@ -84,6 +84,9 @@ scene('trade', ({ root, s, c0 }) => {
   const noDecl = tg(world, 760, 690, '事先不用声明', 'g'); css(noDecl, { fontSize: '34px', lineHeight: '62px', color: '#FFFFFF', background: K.forest, borderRadius: '12px', padding: '0 24px' });
   [dA, dE, dF].forEach((d, i) => to(d.c, T('j3', '直接') - 0.2 + i * 0.1, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 })); show(noDecl, T('j3', '声明') - 0.3, { x: 10, y: 0, d: 0.4 });
   // 付出的：字段名跟着每份文档存一遍；13 字节 × 4096 份（A04）
+  res(world, 1000, 430, '新字段直接写进文档', 'new', T('j3', '写进去') - 0.25, { fs: 30, lh: 56, out: T('j4') - 0.2 });
+  res(world, 1000, 392, '三份文档，字段名各存一份', 'warn', T('j5', '每份') - 0.25, { fs: 30, lh: 56, out: T('j6c') - 0.3 });
+  to([dA.c, dE.c, dF.c, noDecl, hl_], T('j6', '名字') - 0.3, { opacity: 0.15, duration: 0.45 });
   show(hr_, T('j4', '付出') - 0.3, { y: 10, d: 0.45 }); to([dA.c, dE.c, dF.c, noDecl, hl_], T('j4') - 0.1, { opacity: 0.4, duration: 0.45 });
   const strip = (y, o) => { const e = h('div', 'abs', world); px(e, 1000, y, 760, 50); css(e, { opacity: o });
     e.innerHTML = MDB.BSON.map(([hex, k]) => `<span style="display:inline-block;height:44px;margin-right:2px;border-radius:4px;vertical-align:top;width:${hex.length / 2 * 15}px;background:${k === 'name' ? K.spring : '#fff'};border:1.5px solid ${k === 'name' ? K.forest : K.gl1}"></span>`).join(''); return e; };
@@ -93,7 +96,7 @@ scene('trade', ({ root, s, c0 }) => {
   show(sLab, T('j5', '每份') - 0.3, { y: 8, d: 0.4 });
   css(sLab, { borderRadius: '10px', padding: '4px 12px', marginLeft: '-12px' }); to(sLab, T('j6', 'name') - 0.2, { backgroundColor: K.ink, color: '#FFFFFF', duration: 0.35 });
   const stack = [1, 2, 3, 4, 5, 6].map((k) => { const e = strip(520 + k * 16, 0.9 - k * 0.12); return e; });
-  stack.forEach((e, k) => tl.fromTo(e, { autoAlpha: 0, y: -20 }, { autoAlpha: 0.9 - k * 0.12, y: 0, duration: 0.35, immediateRender: true }, k ? T('j6', '四千') - 0.2 + k * 0.1 : T('j5', '存') - 0.2));
+  stack.forEach((e, k) => tl.fromTo(e, { autoAlpha: 0, y: -20 }, { autoAlpha: 0.9 - k * 0.12, y: 0, duration: 0.35, immediateRender: true }, k ? T('j6', '四千') - 0.2 + k * 0.6 : T('j5', '存') - 0.2));   // 一份份叠上去，跟着数到 4096
   const mul = h('div', 'abs', world); px(mul, 1000, 680, 800); css(mul, { font: '800 60px/88px "Inter", "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '14px', padding: '0 24px', width: 'auto' });
   mul.innerHTML = '13 字节 × <span class="n4">0</span> 份';
   show(mul, T('j6', '四千') - 0.3, { y: 10, d: 0.45 });
