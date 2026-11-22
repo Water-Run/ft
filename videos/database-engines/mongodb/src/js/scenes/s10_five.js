@@ -34,7 +34,7 @@ scene('five', ({ root, s, c0 }) => {
     g.innerHTML = `<div style="position:absolute;left:10px;top:28px;width:52px;height:52px;border-radius:50%;background:${K.ink};color:#fff;font:700 28px/52px Inter;text-align:center">${i + 1}</div>` +
       `<div style="position:absolute;left:86px;top:26px;font:800 44px 'Sans SC';color:${K.ink}">${k}</div>` +
       `<div class="mw" style="position:absolute;left:290px;top:-6px;transform:scale(1.35);transform-origin:0 0;border-radius:8px">${mini[i]}</div>` +
-      a.map((p, j) => `<div class="ans" style="position:absolute;left:640px;border-radius:8px;padding:0 14px;top:${a.length > 1 ? 10 + j * 48 : 34}px;width:1060px;font:500 32px/1.45 'Sans SC';color:${K.gd2};white-space:nowrap">${p}</div>`).join('');
+      a.map((p, j) => `<div class="ans" style="position:absolute;left:640px;border-radius:8px;padding:0 14px;top:${a.length > 1 ? 10 + j * 48 : 34}px;width:1000px;box-sizing:border-box;font:500 32px/1.45 'Sans SC';color:${K.gd2};white-space:nowrap">${p}</div>`).join('');
     return g;
   });
   rows.forEach((g, i) => show(g, T('i0') + 0.2 + i * 0.18, { y: 16, d: 0.5 }));
@@ -62,121 +62,173 @@ scene('trade', ({ root, s, c0 }) => {
   const ch = chrome(root, s, '11 不是 SQL');
 
   // 开头那一句：没建表就存进去
-  const ins = h('div', 'abs mono', world, 'db.users.insertOne({ <span class="k">name</span>: <span class="s">"Alice"</span>, <span class="k">age</span>: <span class="n">42</span> })'); px(ins, 140, 228); css(ins, { font: '500 30px "Mono"', color: K.ink, background: K.gl3, border: '2px solid ' + K.gl2, borderRadius: '10px', padding: '10px 20px' });
-  const noCT = h('div', 'abs mono', world, 'CREATE TABLE …'); px(noCT, 1100, 236); css(noCT, { font: '600 30px/54px "Mono"', color: '#FFFFFF', background: K.red, borderRadius: '8px', padding: '0 16px', top: '226px' });
-  const st = h('div', 'abs', world); px(st, 1092, 254, 260, 4); css(st, { background: K.red, transformOrigin: '0 50%' });
-  show(ins, T('j1') - 0.1, { y: 10, d: 0.45 }); to(ins, T('j1b') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); show(noCT, T('j1', '没建表') - 0.3, { y: 8, d: 0.4 }); fromTo(st, T('j1', '没建表') + 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.4 });
-  // 两栏：换来的 ↔ 付出的
-  const colL = h('div', 'abs', world); px(colL, 140, 320, 800, 600); const colR = h('div', 'abs', world); px(colR, 1000, 320, 800, 600);
-  const hl_ = tg(world, 140, 320, '换来的', 'big'); css(hl_, { fontSize: '40px', lineHeight: '64px', color: '#FFFFFF', background: K.forest, borderRadius: '12px', padding: '0 20px' });
-  const hr_ = tg(world, 1000, 320, '付出的', 'big'); css(hr_, { fontSize: '40px', lineHeight: '64px', color: '#FFFFFF', background: K.ink, borderRadius: '12px', padding: '0 20px' });
-  show(hl_, T('j1b', '换来') - 0.3, { y: 10, d: 0.45 });
-  // 换来的：字段想有哪些就有哪些（A12）
-  const dA = docCard(world, 140, 400, [['_id', '…'], ['name', JS('Alice')], ['age', JN(42)]], { w: 330, fs: 26 });
-  const dE = docCard(world, 490, 400, [['_id', '…'], ['name', JS('Erin')], ['tags', `[ ${JS('db')}, ${JS('go')} ]`]], { w: 430, fs: 26 });
-  const dF = docCard(world, 140, 640, [['_id', '…'], ['name', JS('Frank')], ['address', `{ <span class="k">city</span>: ${JS('Lisbon')} }`]], { w: 600, fs: 26 });
-  [dA, dE, dF].forEach((d, i) => show(d.c, T('j2b') - 0.45 + i * 0.12, { y: 14, d: 0.45 }));
-  to([dA.r._id, dE.r._id, dF.r._id], T('j2b', '除了') - 0.1, { backgroundColor: K.gd1, color: '#FFFFFF', duration: 0.35 }); to([dA.r._id, dE.r._id, dF.r._id].flatMap((r) => [...r.querySelectorAll('span')]), T('j2b', '除了') - 0.1, { color: '#FFFFFF', duration: 0.35 });
-  [dA, dE, dF].forEach((d, i) => to(d.c, T('j2b', '哪些') - 0.2 + i * 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }));
-  solid(dA.r.age, T('j2b', '想有') - 0.2, 'new'); to([...dA.r.age.querySelectorAll('span')], T('j2b', '想有') - 0.2, { color: '#FFFFFF', duration: 0.35 });
-  solid(dE.r.tags, T('j3', '标签') - 0.2, 'new'); to([...dE.r.tags.querySelectorAll('span')], T('j3', '标签') - 0.2, { color: '#FFFFFF', duration: 0.35 });
-  solid(dF.r.address, T('j3', '地址') - 0.2, 'new'); to([...dF.r.address.querySelectorAll('span')], T('j3', '地址') - 0.2, { color: '#FFFFFF', duration: 0.35 });
-  const noDecl = tg(world, 760, 690, '事先不用声明', 'g'); css(noDecl, { fontSize: '34px', lineHeight: '62px', color: '#FFFFFF', background: K.forest, borderRadius: '12px', padding: '0 24px' });
-  [dA, dE, dF].forEach((d, i) => to(d.c, T('j3', '直接') - 0.2 + i * 0.1, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 })); show(noDecl, T('j3', '声明') - 0.3, { x: 10, y: 0, d: 0.4 });
-  // 付出的：字段名跟着每份文档存一遍；13 字节 × 4096 份（A04）
-  res(world, 1000, 430, '新字段直接写进文档', 'new', T('j3', '写进去') - 0.25, { fs: 30, lh: 56, out: T('j4') - 0.2 });
-  res(world, 1000, 392, '三份文档，字段名各存一份', 'warn', T('j5', '每份') - 0.25, { fs: 30, lh: 56, out: T('j6c') - 0.3 });
-  to([dA.c, dE.c, dF.c, noDecl, hl_], T('j6', '名字') - 0.3, { opacity: 0.15, duration: 0.45 });
-  show(hr_, T('j4', '付出') - 0.3, { y: 10, d: 0.45 }); to([dA.c, dE.c, dF.c, noDecl, hl_], T('j4') - 0.1, { opacity: 0.4, duration: 0.45 });
+  const ins = h('div', 'abs mono', world, 'db.users.insertOne({ <span class="k">name</span>: <span class="s">"Alice"</span>, <span class="k">age</span>: <span class="n">42</span> })'); px(ins, 140, 228); css(ins, { font: '500 30px "Mono"', color: K.ink, background: K.gl3, border: '1.5px solid ' + K.gl2, borderRadius: '8px', padding: '6px 16px' });
+  const noCT = h('div', 'abs mono', world, 'CREATE TABLE …'); px(noCT, 1100, 226); css(noCT, { font: '600 30px/54px "Mono"', color: K.gd2, background: K.gl2, borderRadius: '8px', padding: '0 16px' });
+  const st = h('div', 'abs', world); px(st, 1092, 252, 270, 4); css(st, { background: K.gd2, transformOrigin: '0 50%' });
+  show(ins, T('j1') - 0.1, { y: 10, d: 0.45 }); show(noCT, T('j1', '没建表') - 0.3, { y: 8, d: 0.4 }); fromTo(st, T('j1', '没建表') + 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' });
+  // ══ 换来的：同一批人，左边是集合里的文档，右边是关系数据库的一张表 ══
+  const dA = docCard(world, 140, 340, [['name', JS('Alice')], ['age', JN(42)]], { w: 500, fs: 26 });
+  const dE = docCard(world, 140, 530, [['name', JS('Erin')]], { w: 500, fs: 26 });
+  const dF = docCard(world, 140, 680, [['name', JS('Frank')]], { w: 540, fs: 26 });
+  show(dA.c, T('j1', '存了') - 0.3, { y: 14, d: 0.45 }); css(ins, { borderRadius: '8px', padding: '0 14px', marginLeft: '-14px' }); to(ins, T('j1', '存了') - 0.3, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 }); to([...ins.querySelectorAll('span')], T('j1', '存了') - 0.3, { color: '#FFFFFF', duration: 0.35 }); to(ins, T('j1b', '换来') - 0.2, { backgroundColor: K.gl3, color: K.ink, duration: 0.35 }); to([...ins.querySelectorAll('span')], T('j1b', '换来') - 0.2, { color: K.ink, duration: 0.35 }); [dE, dF].forEach((d, i) => show(d.c, T('j1b', '换来') - 0.2 + i * 0.12, { y: 14, d: 0.45 }));
+  // 关系表：name、age 两列；Erin、Frank 没有年龄也得留一格
+  const TBX = 1000, TBY = 340, TCW = [200, 120], TRH = 56;
+  const tbl = h('div', 'abs', world); px(tbl, TBX, TBY, 560, TRH * 4);
+  const tcell = (x, y, w, txt, hd, extra) => { const e = h('div', 'mt' + (hd ? ' h' : ''), tbl, txt); px(e, x, y, w, TRH); css(e, { font: (hd ? '700' : '500') + ' 26px/53px "Mono"', paddingLeft: '14px', ...(extra || {}) }); return e; };
+  tcell(0, 0, TCW[0], 'name', 1); tcell(TCW[0], 0, TCW[1], 'age', 1);
+  [['Alice', '42'], ['Erin', 'NULL'], ['Frank', 'NULL']].forEach(([n, a], r) => { tcell(0, TRH * (r + 1), TCW[0], n); tcell(TCW[0], TRH * (r + 1), TCW[1], a, 0, a === 'NULL' ? { color: K.gb } : {}); });
+  const tblT = tg(world, TBX, TBY - 44, 'users 表 · 列事先定好', 'm'); css(tblT, { fontSize: '24px', color: K.gd1 });
+  show([tblT, tbl], T('j1b', '换来') + 0.2, { y: 14, d: 0.5 });
+  // j2b：除了 _id，想有哪些字段就有哪些——每份文档按自己的需要长出字段
+  const addRow = (d, k, v, t) => { const r = h('div', 'dl', d.c, `<span class="k">${k}</span>: <span class="dv">${v}</span>`); d.c.insertBefore(r, d.c.lastChild); tl.fromTo(r, { height: 0, autoAlpha: 0 }, { height: 39, autoAlpha: 1, duration: 0.45, ease: 'power2.out', immediateRender: true }, t); css(r, { overflow: 'hidden' }); return r; };
+  [dA, dE, dF].forEach((d, i) => { const r = h('div', 'dl', d.c, `<span class="k" style="color:#889397">_id</span>: <span style="color:#889397">ObjectId(…)</span>`); d.c.insertBefore(r, d.c.children[1]); tl.fromTo(r, { height: 0, autoAlpha: 0 }, { height: 39, autoAlpha: 1, duration: 0.4, ease: 'power2.out', immediateRender: true }, T('j2b', '除了') - 0.2 + i * 0.12); css(r, { overflow: 'hidden', borderRadius: '6px' }); to(r, T('j2b', '除了') - 0.1 + i * 0.12, { backgroundColor: K.gd1, duration: 0.3 }); to([...r.querySelectorAll('span')], T('j2b', '除了') - 0.1 + i * 0.12, { color: '#FFFFFF', duration: 0.3 }); to(r, T('j2b', '每份') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.3 }); to([...r.querySelectorAll('span')], T('j2b', '每份') - 0.2, { color: K.gb, duration: 0.3 }); });   // lint-ok: 取消高亮   // 「除了 _id」：每份文档都有 _id
+  const rE = addRow(dE, 'tags', `[ ${JS('db')}, ${JS('go')} ]`, T('j3', '标签') - 0.25);
+  const rF = addRow(dF, 'address', `{ <span class="k">city</span>: ${JS('Lisbon')} }`, T('j3', '地址') - 0.25);
+  [[rE, T('j3', '标签')], [rF, T('j3', '地址')]].forEach(([r, t]) => { solid(r, t, 'new'); to([...r.querySelectorAll('span')], t, { color: '#FFFFFF', duration: 0.3 }); });
+  to(dA.c, T('j2b', '想有') - 0.2, { borderColor: K.g1, backgroundColor: K.mint, duration: 0.4 });
+  [dA, dE, dF].forEach((d, i) => { const ks = [...d.c.querySelectorAll('.k')]; ks.forEach((k) => css(k, { borderRadius: '4px', padding: '0 4px' })); to(ks, T('j2b', '字段') - 0.2 + i * 0.15, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.3 }); to(ks, T('j4') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', color: K.blued, duration: 0.3 }); });   // lint-ok: 取消高亮
+  // j3b：关系表要装下 tags、address，得先改表：整列加出来，没有的人一格格填 NULL
+  const alter = h('div', 'abs mono', world, 'ALTER TABLE users ADD tags …, ADD address …'); px(alter, TBX, TBY + TRH * 4 + 24); css(alter, { font: '500 24px "Mono"', color: K.gd2, background: K.gl3, border: '1.5px solid ' + K.gl2, borderRadius: '8px', padding: '4px 12px' });
+  show(alter, T('j3b', '传统') - 0.3, { y: 8, d: 0.4 }); css(alter, { background: K.ink, color: '#FFFFFF', borderColor: K.ink });
+  to([...tbl.querySelectorAll('.mt.h')], T('j3', '声明') - 0.2, { color: '#FFFFFF', backgroundColor: K.ink, duration: 0.3 });   // 表的列是事先声明好的
+  const newCols = [['tags', 220, ['NULL', '[…]', 'NULL']], ['address', 220, ['NULL', 'NULL', '{…}']]].map(([hd, w, vals], j) => {
+    const x0 = TCW[0] + TCW[1] + j * 220;
+    const col = h('div', 'abs', tbl); px(col, x0, 0, w, TRH * 4); css(col, { transformOrigin: '0 50%' });
+    const hc = h('div', 'mt h', col, hd); px(hc, 0, 0, w, TRH); css(hc, { font: '700 26px/53px "Mono"', paddingLeft: '14px', background: K.yeld, color: '#FFFFFF' });
+    vals.forEach((v, r) => { const c = h('div', 'mt', col, v); px(c, 0, TRH * (r + 1), w, TRH); css(c, { font: '500 26px/53px "Mono"', paddingLeft: '14px', color: v === 'NULL' ? K.gb : K.ink }); });
+    fromTo(col, T('j3b', '灵活') - 0.4 + j * 0.25, { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power2.out' });
+    return col;
+  });
+  css(tbl, { width: TCW[0] + TCW[1] + 440 + 'px' });
+  // ══ 付出的：三条，一条一个画面 ══
+  const tP = T('j4') - 0.3;
+  fadeOut([ins, noCT, st, tbl, tblT, alter], tP, 0.45);
+  tl.to([dA.c, dE.c, dF.c], { opacity: 0.35, duration: 0.45 }, tP);
+  const num = (n, x, y, t, tOut) => { const e = h('div', 'abs', world, String(n)); px(e, x, y, 56, 56); css(e, { borderRadius: '50%', background: K.ink, color: '#FFFFFF', font: '800 32px/56px "Inter"', textAlign: 'center' }); show(e, t, { y: 0, s: 0.5, d: 0.35 }); if (tOut != null) fadeOut(e, tOut, 0.35); return e; };
+  // 1：字段名跟着每份文档存一遍（13 字节 × 4096）
   const strip = (y, o) => { const e = h('div', 'abs', world); px(e, 1000, y, 760, 50); css(e, { opacity: o });
     e.innerHTML = MDB.BSON.map(([hex, k]) => `<span style="display:inline-block;height:44px;margin-right:2px;border-radius:4px;vertical-align:top;width:${hex.length / 2 * 15}px;background:${k === 'name' ? K.spring : '#fff'};border:1.5px solid ${k === 'name' ? K.forest : K.gl1}"></span>`).join(''); return e; };
-  const S0 = strip(400, 1);
-  show(S0, T('j5', '字段名') - 0.3, { y: 10, d: 0.45 });
-  const sLab = tg(world, 1000, 458, '<span style="background:#00ED64;color:#001E2B;padding:0 8px">_id</span> <span style="background:#00ED64;color:#001E2B;padding:0 8px">name</span> <span style="background:#00ED64;color:#001E2B;padding:0 8px">age</span>　字段名 13 字节', 'b'); css(sLab, { fontSize: '28px' });
+  const n1 = num(1, 920, 336, T('j5', '第一') - 0.2, T('j6e') - 0.3);
+  const S0 = strip(340, 1); show(S0, T('j5', '字段名') - 0.3, { y: 10, d: 0.45 });
+  const sLab = tg(world, 1000, 398, '<span style="background:#00ED64;color:#001E2B;padding:0 8px">_id</span> <span style="background:#00ED64;color:#001E2B;padding:0 8px">name</span> <span style="background:#00ED64;color:#001E2B;padding:0 8px">age</span>　字段名 13 字节', 'm'); css(sLab, { fontSize: '24px', lineHeight: '40px' });
   show(sLab, T('j5', '每份') - 0.3, { y: 8, d: 0.4 });
-  css(sLab, { borderRadius: '10px', padding: '4px 12px', marginLeft: '-12px' }); to(sLab, T('j6', 'name') - 0.2, { backgroundColor: K.ink, color: '#FFFFFF', duration: 0.35 });
-  const stack = [1, 2, 3, 4, 5, 6].map((k) => { const e = strip(520 + k * 16, 0.9 - k * 0.12); return e; });
-  stack.forEach((e, k) => tl.fromTo(e, { autoAlpha: 0, y: -20 }, { autoAlpha: 0.9 - k * 0.12, y: 0, duration: 0.35, immediateRender: true }, k ? T('j6', '四千') - 0.2 + k * 0.6 : T('j5', '存') - 0.2));   // 一份份叠上去，跟着数到 4096
-  const mul = h('div', 'abs', world); px(mul, 1000, 680, 800); css(mul, { font: '800 60px/88px "Inter", "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '14px', padding: '0 24px', width: 'auto' });
+  const dKeys = [dA, dE, dF].flatMap((d) => [...d.c.querySelectorAll('.k')]); dKeys.forEach((k) => css(k, { borderRadius: '4px', padding: '0 4px' }));
+  tl.to([dA.c, dE.c, dF.c], { opacity: 1, duration: 0.4 }, T('j5', '字段名') - 0.3); to(dKeys, T('j5', '字段名') - 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 });
+  tl.to([dA.c, dE.c, dF.c], { opacity: 0.35, duration: 0.45 }, T('j6', '这几个') - 0.2);   // 再看右边的字节 to(sLab, T('j6', '名字') - 0.2, { color: K.forest, duration: 0.3 });
+  const stack = [1, 2, 3, 4, 5, 6].map((k) => { const e = strip(450 + k * 16, 0.9 - k * 0.12); e.dataset.name = 'strip'; return e; });
+  stack.forEach((e, k) => tl.fromTo(e, { autoAlpha: 0, y: -20 }, { autoAlpha: 0.9 - k * 0.12, y: 0, duration: 0.35, immediateRender: true }, T('j6', '四千') - 0.2 + k * 0.45));   // 一份份叠上去，跟着数到 4096
+  const mul = h('div', 'abs', world); px(mul, 1000, 590); css(mul, { font: '800 56px/84px "Inter", "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '14px', padding: '0 24px' });
   mul.innerHTML = '13 字节 × <span class="n4">0</span> 份';
   show(mul, T('j6', '四千') - 0.3, { y: 10, d: 0.45 });
-  to(mul, T('j6', '_id') - 0.2, { backgroundColor: K.forest, duration: 0.35 });
-  stepTo(mul.querySelector('.n4'), [[T('j6', '四千') - 0.2, 1.4, 0, 4096]], (v) => Math.round(v).toLocaleString('en-US'));
-  const tot = tg(world, 1000, 780, '= 53,248 字节，全是重复的字段名', 'b'); css(tot, { fontSize: '32px', lineHeight: '58px', color: '#FFFFFF', background: K.ink, borderRadius: '12px', padding: '0 18px', top: '792px' });
-  show(tot, T('j6b', '存了') - 0.2, { y: 10, d: 0.45 });
-  to(tot, Tend('j6b') + 0.3, { backgroundColor: K.spring, color: K.ink, duration: 0.4 });
-  // 没有表的，只是上面这一层；往下走，照样是 B 树、检查点和日志（j6c j6d，回扣第 02 章 mongod 的两层）
+  stepTo(mul.querySelector('.n4'), [[T('j6', '四千') - 0.2, 2.4, 0, 4096]], (v) => Math.round(v).toLocaleString('en-US'));
+  const tot = tg(world, 1000, 694, '= 53,248 字节', 'b'); css(tot, { fontSize: '34px', lineHeight: '60px', color: K.ink });   // A04
+  show(tot, T('j6b', '存了') - 0.2, { y: 10, d: 0.45 }); to(mul, T('j6b', '存了') - 0.2, { backgroundColor: K.forest, duration: 0.35 });
+  css(tot, { borderRadius: '10px', padding: '0 16px' }); to(tot, Tend('j6b') + 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 }); to([S0, sLab, ...stack], Tend('j6b') + 0.2, { opacity: 0.25, duration: 0.4 });
+  const tP2 = T('j6e') - 0.3;
+  fadeOut([S0, sLab, ...stack, mul, tot], tP2, 0.4);
+  // 2：没有表替你把关——三份文档都被收下；加上校验规则以后，两份不合格的被挡回去（A17）
+  const n2 = num(2, 920, 336, T('j6e', '第二') - 0.2, T('j6h') - 0.3);
+  const colB = h('div', 'panel', world); px(colB, 1000, 330, 800, 470); css(colB, { background: K.gl3 });
+  colB.innerHTML = `<div style="position:absolute;left:24px;top:18px;font:600 26px Mono;color:${K.gd2}">users 集合</div>`;
+  show(colB, T('j6e') - 0.1, { y: 12, d: 0.45 });
+  const IN = [[[['name', JS('Dave')], ['age', JN(19)]], 0, null], [[['Name', JS('Erin')], ['age', JN(30)]], 1, 'Name'], [[['name', JS('Frank')], ['age', JS('四十二')]], 2, 'age']];
+  const inDocs = IN.map(([rows, i, bad]) => {
+    const d = docCard(world, 1040 + i * 250, 410, rows, { w: 245, fs: 20 });
+    if (bad) { const r = d.r[bad]; css(r, { background: K.red, borderRadius: '6px' }); [...r.querySelectorAll('span')].forEach((sp) => css(sp, { color: '#FFFFFF' })); }
+    tl.fromTo(d.c, { autoAlpha: 0, y: -120 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: 'power2.out', immediateRender: true }, [T('j6e') - 0.1, T('j6f', '拼错') - 0.3, T('j6f', '文字') - 0.3][i]);
+    return d;
+  });
+  to(colB, T('j6f', '拼错') - 0.2, { backgroundColor: '#FFF1C2', borderColor: K.yeld, duration: 0.4 }); to(colB, T('j6f', '收下') - 0.3, { backgroundColor: '#C9F2E2', borderColor: K.g1, duration: 0.4 }); to(colB, T('j6g', '规则') - 0.1, { backgroundColor: K.gl3, borderColor: K.gl2, duration: 0.4 });   // 三份都进了集合
+  const ticks = inDocs.map((d, i) => { const e = h('div', 'abs', world, ico('check', 40, K.forest, 4)); px(e, 1040 + i * 250 + 95, 620, 40, 40); show(e, T('j6f', '收下') - 0.2 + i * 0.12, { y: 0, s: 1.3, d: 0.3 }); return e; });
+  // j6g：入口加一道校验规则；后两份被挡回去
+  const gate = h('div', 'abs', world); px(gate, 1000, 262, 800, 60); css(gate, { background: K.ink, borderRadius: '12px', font: '700 26px/60px "Sans SC"', color: '#FFFFFF', paddingLeft: '24px', boxSizing: 'border-box' });
+  gate.textContent = '校验规则';
+  show(gate, T('j6g', '校验') - 0.3, { y: -10, d: 0.4 });
+  [1, 2].forEach((i) => { tl.to(inDocs[i].c, { y: -160, autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, T('j6g', '规则') + i * 0.15); fadeOut(ticks[i], T('j6g', '规则'), 0.25);
+    const x = h('div', 'abs', world, ico('x', 40, K.red, 4)); px(x, 1040 + i * 250 + 95, 620, 40, 40); show(x, T('j6g', '规则') + 0.1 + i * 0.15, { y: 0, s: 1.3, d: 0.3 }); fadeOut(x, T('j6h') - 0.3, 0.3); });
+  const tP3 = T('j6h') - 0.3;
+  fadeOut([colB, gate, ...inDocs.map((d) => d.c), ...ticks], tP3, 0.4);
+  // 3：一份文档之内的修改天生是原子的；跨两份要事务、要副本集（A18 G00b）
+  const n3 = num(3, 920, 336, T('j6h', '第三') - 0.2, T('j6c') - 0.3);
+  const one = docCard(world, 1000, 360, [['name', JS('Alice')], ['age', `${JN(42)} → ${JN(43)}`], ['email', JS('a@…')]], { w: 360, fs: 24 });
+  const oneF = h('div', 'abs', world); px(oneF, 990, 350, 380, 196); css(oneF, { border: '4px solid ' + K.forest, borderRadius: '16px' }); oneF.dataset.name = 'atom';
+  show(one.c, T('j6h', '一份') - 0.3, { y: 12, d: 0.45 }); show(oneF, T('j6h', '原子') - 0.3, { y: 0, s: 1.04, d: 0.4 }); to(one.c, T('j6h', '原子') - 0.3, { backgroundColor: '#A6F4C9', borderColor: K.g1, duration: 0.35 });
+  [one.r.age, one.r.email].forEach((r) => solid(r, T('j6h', '修改') - 0.2, 'new'));
+  [one.r.age, one.r.email].forEach((r) => to([...r.querySelectorAll('span')], T('j6h', '修改') - 0.2, { color: '#FFFFFF', duration: 0.3 }));
+  const okO = h('div', 'abs', world, ico('check', 40, K.forest, 4)); px(okO, 1384, 430, 40, 40); show(okO, T('j6h', '原子') - 0.1, { y: 0, s: 1.3, d: 0.3 });
+  const two = [['Alice', 'age 42 → 43'], ['Dave', 'age 19 → 20']].map(([n, c], i) => { const d = docCard(world, 1000 + i * 400, 600, [['name', JS(n)], ['age', JN(i ? 19 : 42)]], { w: 340, fs: 24 }); show(d.c, T('j6i', '几份') - 0.3 + i * 0.15, { y: 12, d: 0.45 }); return d; });
+  const span2 = link(ov, [[1170, 590], [1170, 570], [1570, 570], [1570, 590]], 'ink', { w: 3 }); arrowIn(span2, T('j6i', '一起') - 0.3, 0.4);
+  solid(two[0].r.age, T('j6i', '生效') - 0.2, 'new'); to([...two[0].r.age.querySelectorAll('span')], T('j6i', '生效') - 0.2, { color: '#FFFFFF', duration: 0.3 });
+  const bolt2 = h('div', 'abs', world, ico('bolt', 48, K.red, 3)); px(bolt2, 1350, 650, 48, 48); show(bolt2, T('j6i', '生效') + 0.1, { y: -8, s: 0.6, d: 0.3 });
+  const txF = h('div', 'abs', world); px(txF, 986, 586, 768, 160); css(txF, { border: '3px dashed ' + K.blue, borderRadius: '16px' });
+  show(txF, T('j6i', '事务') - 0.3, { y: 0, s: 1.03, d: 0.4 }); fadeOut(bolt2, T('j6i', '事务') - 0.1, 0.3);
+  solid(two[1].r.age, T('j6i', '事务') + 0.1, 'new'); to([...two[1].r.age.querySelectorAll('span')], T('j6i', '事务') + 0.1, { color: '#FFFFFF', duration: 0.3 });
+  const rsI = h('div', 'abs', world); px(rsI, 1600, 760, 150, 60); rsI.innerHTML = [0, 1, 2].map((i) => `<div style="position:absolute;left:${i * 50}px;top:0">${ico('server', 44, i ? K.gb : K.forest, 2.4)}</div>`).join('');
+  show(rsI, T('j6i', '副本集') - 0.3, { y: 8, d: 0.4 });
   const tL = T('j6c') - 0.35;
-  fadeOut([ins, noCT, st, hl_, hr_, dA.c, dE.c, dF.c, noDecl, S0, sLab, ...stack, mul, tot], tL, 0.5);
+  fadeOut([one.c, oneF, okO, ...two.map((d) => d.c), span2, txF, rsI, dA.c, dE.c, dF.c], tL, 0.45);
+  // 没有表的，只是上面这一层；往下走，照样是 B 树、检查点和日志（回扣第 02 章 mongod 的两层）
   const up = h('div', 'panel', world); px(up, 360, 236, 1200, 200);
-  up.innerHTML = `<div style="position:absolute;left:28px;top:22px;font:700 34px 'Sans SC';color:${K.forest}">上层 · 收下查询</div>` +
-    [['name age', 2], ['name email tags', 3], ['name address', 2]].map(([n, k], i) => `<div style="position:absolute;left:${28 + i * 190}px;top:84px;width:170px;height:${22 + k * 28}px;background:#fff;border:2px solid ${K.gb};border-radius:8px;font:600 22px/28px Mono;color:${K.blued};padding:8px 12px;box-sizing:border-box;white-space:pre">${n.split(' ').join('\n')}</div>`).join('');
-  const noT = h('div', 'abs', up, '没有表'); css(noT, { left: '724px', top: '84px', font: '800 60px "Sans SC"', color: K.ink });
-  const noTs = h('div', 'abs', up); css(noTs, { left: '640px', top: '60px', width: '64px', height: '64px' }); noTs.innerHTML = ico('table', 64, K.gb, 2.4);
+  up.innerHTML = `<div style="position:absolute;left:28px;top:22px;font:700 34px 'Sans SC';color:${K.forest}">上层</div>` +
+    [['name age', 2], ['name email tags', 3], ['name address', 2]].map(([n, k], i) => `<div style="position:absolute;left:${28 + i * 190}px;top:84px;width:170px;height:${22 + k * 28}px;background:#fff;border:2px solid ${K.gb};border-radius:8px;font:600 22px/28px Mono;color:${K.blued};padding:10px 12px;box-sizing:border-box;white-space:pre-line">${n.split(' ').join('\n')}</div>`).join('');
+  const noTs = h('div', 'abs', up); css(noTs, { left: '700px', top: '50px', width: '100px', height: '100px' }); noTs.innerHTML = ico('table', 100, K.gb, 2.4);
+  const noTx = h('div', 'abs', up); css(noTx, { left: '690px', top: '96px', width: '120px', height: '6px', background: K.gd2, transformOrigin: '0 50%', transform: 'rotate(-30deg)' });
   const dn = h('div', 'panel', world); px(dn, 360, 540, 1200, 300); css(dn, { borderColor: K.g1, borderWidth: '3px', background: K.mint });
   dn.innerHTML = `<div style="position:absolute;left:28px;top:22px;font:700 34px 'Sans SC';color:${K.forest}">下层 · WiredTiger</div>`;
-  const TREE = `<svg width="150" height="96" viewBox="0 0 150 96" fill="none"><rect x="50" y="4" width="50" height="18" rx="4" fill="${K.ink}"/>${[0, 1, 2, 3].map((i) => `<path d="M75 22L${17 + i * 38} 58" stroke="${K.ink}" stroke-width="2"/><rect x="${4 + i * 38}" y="58" width="28" height="34" rx="4" fill="#fff" stroke="${K.g1}" stroke-width="2"/>`).join('')}</svg>`;
+  const TREE = `<svg width="150" height="96" viewBox="0 0 150 96" fill="none"><rect x="50" y="4" width="50" height="18" rx="4" fill="${K.ink}"/>${[0, 1, 2, 3].map((i) => `<path d="M75 22L${17 + i * 38} 58" stroke="${K.ink}" stroke-width="2"/><rect x="${4 + i * 38}" y="58" width="26" height="32" rx="3" fill="#fff" stroke="${K.ink}" stroke-width="2"/>`).join('')}</svg>`;
   const CKPT = `<svg width="150" height="96" viewBox="0 0 150 96" fill="none"><path d="M6 48h138" stroke="${K.gb}" stroke-width="3"/>${[30, 100].map((x) => `<rect x="${x}" y="22" width="8" height="52" rx="2" fill="${K.forest}"/>`).join('')}</svg>`;
   const LOG = `<svg width="150" height="96" viewBox="0 0 150 96" fill="none">${[0, 1, 2, 3].map((i) => `<rect x="${6 + i * 36}" y="34" width="30" height="28" rx="4" fill="${K.blue}"/>`).join('')}</svg>`;
-  const parts = [[TREE, 'B 树', 'B 树'], [CKPT, '检查点', '检查点'], [LOG, '日志', '日志']].map(([svg, lab, w], i) => {
-    const e = h('div', 'abs', dn); css(e, { left: 30 + i * 390 + 'px', top: '82px', width: '360px', height: '196px', background: K.mint2, border: '2px solid ' + K.g1, borderRadius: '12px', padding: '10px 14px', boxSizing: 'border-box' });
-    e.innerHTML = `<div style="position:absolute;left:0;top:0">${svg}</div><div style="position:absolute;left:0;top:112px;font:700 36px 'Sans SC';color:${K.ink}">${lab}</div>`;
+  [[TREE, 'B 树', 'B 树'], [CKPT, '检查点', '检查点'], [LOG, '日志', '日志']].forEach(([svg, lab, w], i) => {
+    const e = h('div', 'abs', dn); css(e, { left: 30 + i * 390 + 'px', top: '82px', width: '360px', height: '196px', background: K.mint2, border: '2px solid ' + K.g1, borderRadius: '12px' });
+    e.innerHTML = `<div style="position:absolute;left:20px;top:16px">${svg}</div><div style="position:absolute;left:24px;top:124px;font:700 36px 'Sans SC';color:${K.ink}">${lab}</div>`;
     show(e, T('j6d', w) - 0.25, { y: 12, d: 0.45 });
-    return e;
   });
-  show(up, tL + 0.35, { y: -12, d: 0.5 });
-  show(noT, T('j6c', '没有表') - 0.15, { x: 14, y: 0, d: 0.45 }); to(up, T('j6c', '上面') - 0.2, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }); show(noTs, T('j6c', '没有表') - 0.15, { y: 0, s: 0.8, d: 0.4 });
+  show(up, tL + 0.35, { y: -12, d: 0.5 }); show(noTs, T('j6c', '没有表') - 0.2, { y: 0, s: 0.8, d: 0.4 }); fromTo(noTx, T('j6c', '没有表') + 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: 'power2.inOut' });
+  to(up, T('j6c', '上面') - 0.2, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 });
   const dnA = link(ov, [[960, 436], [960, 536]], 'spring', { w: 6, arrow: true });
   arrowIn(dnA, T('j6d', '往下走') - 0.25, 0.45);
   show(dn, T('j6d', '往下走') - 0.05, { y: 14, d: 0.5 });
-  // 键和值：下层这几棵树里，存的都是一项项键和值（A13）
+  // 键和值：下层这几棵树里，存的都是一项项键和值（A13）；NoSQL 里键值数据库那一类就是这个样子（N01 N02）
   const tK = T('j7') - 0.35;
   fadeOut([up, dn, dnA], tK, 0.5);
   const kv = h('div', 'panel', world); px(kv, 140, 240, 820, 420); css(kv, { borderColor: K.g1, borderWidth: '3px' });
-  kv.innerHTML = `<div style="position:absolute;left:28px;top:20px;font:700 36px Inter;color:${K.forest}">WiredTiger</div>` + [['2049', '5c000000 07 5f69…'], ['2050', '2f000000 07 5f69…'], ['2051', '5c000000 07 5f69…']].map(([k, v], i) => `<div class="kvr" style="position:absolute;left:28px;top:${100 + i * 92}px;width:760px;height:72px;border:2px solid ${K.gl1};border-radius:8px;background:#fff"><span class="kk" style="position:absolute;left:20px;top:14px;font:700 34px Mono;color:${K.ink}">${k}</span><span style="position:absolute;left:140px;top:16px;font:600 30px Inter;color:${K.gd1}">→</span><span class="kvv" style="position:absolute;left:200px;top:16px;font:500 30px Mono;color:${K.gd2}">${v}</span></div>`).join('');
+  const KVR = [['2049', '5c000000 07 5f69…'], ['2050', '2f000000 07 5f69…'], ['2051', '5c000000 07 5f69…']];
+  kv.innerHTML = `<div style="position:absolute;left:28px;top:20px;font:700 36px Inter;color:${K.forest}">WiredTiger</div>` + KVR.map(([k, v], i) => `<div class="kvr" style="position:absolute;left:28px;top:${100 + i * 96}px;width:764px;height:76px;border-radius:10px;background:${K.gl3}"><span class="kk" style="position:absolute;left:16px;top:12px;font:700 36px/52px Mono;color:${K.ink};padding:0 10px;border-radius:6px">${k}</span><span style="position:absolute;left:170px;top:12px;font:600 30px/52px Inter;color:${K.gd1}">→</span><span class="kvv" style="position:absolute;left:230px;top:12px;font:500 30px/52px Mono;color:${K.gd1}">${v}</span></div>`).join('');
   show(kv, tK + 0.3, { y: 14, d: 0.5 });
   const kvr = [...kv.querySelectorAll('.kvr')]; set(kvr, s.start, { autoAlpha: 0 });
   kvr.forEach((e, i) => show(e, T('j7', '一项') - 0.3 + i * 0.25, { x: -14, y: 0, d: 0.4 }));
-  kv.querySelectorAll('.kk').forEach((e) => css(e, { borderRadius: '6px', padding: '0 10px', marginLeft: '-10px' })); to([...kv.querySelectorAll('.kk')], T('j7', '键和值') - 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 }); to(kvr, T('j7', '键和值') + 0.1, { backgroundColor: K.gl2, duration: 0.35 });
-  to([...kv.querySelectorAll('.kk')], T('j9', '键') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
-  to([...kv.querySelectorAll('.kvv')], T('j9', '值') - 0.2, { color: K.ink, duration: 0.35 });
-  // 键值数据库：NoSQL 四类里的一类，更简单（N01）
+  to([...kv.querySelectorAll('.kk')], T('j7', '键和值') - 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 });
   const cats = ['文档', '键值', '宽列', '图'].map((n, i) => { const e = h('div', 'abs', world, n); px(e, 1040 + (i % 2) * 380, 250 + Math.floor(i / 2) * 200, 340, 170); css(e, { background: '#fff', border: '2px solid ' + K.gl1, borderRadius: '14px', font: '700 46px/166px "Sans SC"', textAlign: 'center', color: K.gd2 }); return e; });
   cats.forEach((e, i) => show(e, T('j8') + 0.1 + i * 0.12, { y: 14, d: 0.45 }));
+  cats.forEach((e) => css(e, { background: K.gl2 }));
   to(cats[1], T('j8', '一类') - 0.2, { borderColor: K.forest, backgroundColor: K.forest, color: '#FFFFFF', duration: 0.4 });
-  const simple = tg(world, 1040, 670, '每一项：一个键、一个值', 'g'); css(simple, { fontSize: '30px', lineHeight: '54px', color: '#FFFFFF', background: K.ink, borderRadius: '10px', padding: '0 16px' });
-  show(simple, T('j9', '每一项') - 0.3, { y: 10, d: 0.45 });
-  const simple2 = tg(world, 1420, 670, '更简单的一类', 'g'); css(simple2, { fontSize: '34px', lineHeight: '62px', color: '#FFFFFF', background: K.forest, padding: '0 24px', borderRadius: '10px', padding: '0 16px' });
-  show(simple2, T('j9', '更简单') - 0.3, { x: 10, y: 0, d: 0.45 });
-  const inMemI = h('div', 'abs', world, ico('mem', 40, K.forest, 2.4)); px(inMemI, 1040, 732, 40, 40);
-  const inMem = h('div', 'abs', world, '常把数据放在内存里，读写很快'); px(inMem, 1094, 734); css(inMem, { font: '700 30px/54px "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '10px', padding: '0 16px', top: '730px' });
-  show(inMemI, T('j9b', '这一类') - 0.2, { y: 0, s: 0.7, d: 0.4 }); show(inMem, T('j9b', '这一类') - 0.1, { y: 10, d: 0.45 });   // N01
-  to(inMem, T('j9b', '很快') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
-  to(cats[1], T('j9', '数据库') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
-  to([kv, cats[0], cats[2], cats[3]], Tend('j9b') + 0.5, { opacity: 0.35, duration: 0.45 });
-  // 数据住在哪里：MongoDB 住在磁盘的树里，内存是缓存 → 倒过来
+  // j9：WiredTiger 的这三项，原样飞进「键值」那一格：每一项就是一个键、一个值
+  const flyKV = KVR.map(([k], i) => { const e = h('div', 'abs', world, `<b>${k}</b> → …`); px(e, 168, 340 + i * 96); css(e, { font: '700 36px/52px "Mono"', color: '#FFFFFF', background: K.forest, borderRadius: '8px', padding: '0 14px', opacity: 0 }); return e; });
+  flyKV.forEach((e, i) => { tl.fromTo(e, { autoAlpha: 0, x: 0, y: 0, scale: 1 }, { autoAlpha: 1, duration: 0.2, immediateRender: true }, T('j9', '每一项') - 0.3 + i * 0.12); tl.to(e, { x: 1460 - 168, y: 316 + i * 34 - (340 + i * 96), scale: 0.62, transformOrigin: '0 0', duration: 0.8, ease: 'power2.inOut' }, T('j9', '每一项') - 0.1 + i * 0.12); });
+  to(cats[1], T('j9', '每一项') - 0.3, { lineHeight: '72px', duration: 0.4, ease: 'power2.inOut' });   // 「键值」两个字让到格子上沿，下面放飞进来的三项
+  // 「更简单的一类」：另外三类退下，键值那一格留在原处
+  to([cats[0], cats[2], cats[3], kv], T('j9', '更简单') - 0.2, { opacity: 0.2, duration: 0.45 });
+  to(cats[1], T('j9', '更简单') - 0.2, { borderColor: K.forest, borderWidth: '4px', duration: 0.3 });
+  // 数据住在哪里：MongoDB 住在磁盘的树里，内存里只是几页缓存 → 倒过来：内存装下全部，磁盘只留一份存档
   const tH = T('j10') - 0.3;
-  fadeOut([kv, ...cats, simple, simple2, inMem, inMemI], tH, 0.5);
-  const mem = h('div', 'abs', world); px(mem, 360, 260, 1200, 150); css(mem, { background: K.gl3, border: '3px solid ' + K.gb, borderRadius: '14px', transformOrigin: '50% 0' });
-  mem.innerHTML = `<div style="position:absolute;left:24px;top:20px">${ico('mem', 48, K.gd2, 2.4)}</div><div class="mt_" style="position:absolute;left:92px;top:26px;font:700 36px 'Sans SC';color:${K.ink}">内存 · 只是缓存</div>`;
-  const dsk = h('div', 'abs', world); px(dsk, 360, 470, 1200, 330); css(dsk, { background: '#fff', border: '3px solid ' + K.forest, borderRadius: '14px', transformOrigin: '50% 100%' });
-  dsk.innerHTML = `<div style="position:absolute;left:24px;top:20px">${ico('disk', 48, K.forest, 2.4)}</div><div class="dt_" style="position:absolute;left:92px;top:26px;font:700 36px 'Sans SC';color:${K.forest}">磁盘 · 数据住在这里的树里</div>` +
-    `<div class="tr_" style="position:absolute;left:420px;top:110px"><div style="width:120px;height:30px;margin-left:150px;background:${K.ink};border-radius:5px"></div><div style="display:flex;gap:16px;margin-top:60px">${[0, 1, 2, 3].map(() => `<div style="width:90px;height:90px;background:#fff;border:2px solid ${K.gl1};border-radius:6px"></div>`).join('')}</div></div>`;
+  fadeOut([kv, ...cats, ...flyKV], tH, 0.5);
+  const mem = h('div', 'abs', world); px(mem, 360, 250, 1200, 160); css(mem, { background: K.gl3, border: '3px solid ' + K.gb, borderRadius: '14px' });
+  mem.innerHTML = `<div style="position:absolute;left:24px;top:20px">${ico('mem', 48, K.gd2, 2.4)}</div><div style="position:absolute;left:92px;top:26px;font:700 36px 'Sans SC';color:${K.ink}">内存</div>`;
+  const cache = h('div', 'abs', mem); css(cache, { left: '92px', top: '86px', display: 'flex', gap: '12px' }); cache.innerHTML = Array.from({ length: 7 }, () => `<span style="width:64px;height:48px;background:${K.forest};border:2px solid ${K.forest};border-radius:5px"></span>`).join('');
+  const dsk = h('div', 'abs', world); px(dsk, 360, 470, 1200, 330); css(dsk, { background: '#fff', border: '3px solid ' + K.forest, borderRadius: '14px' });
+  dsk.innerHTML = `<div style="position:absolute;left:24px;top:20px">${ico('disk', 48, K.forest, 2.4)}</div><div style="position:absolute;left:92px;top:26px;font:700 36px 'Sans SC';color:${K.forest}">磁盘</div>` +
+    `<div class="tr_" style="position:absolute;left:420px;top:100px"><div style="width:120px;height:30px;margin-left:150px;background:${K.ink};border-radius:5px"></div><div style="display:flex;gap:16px;margin-top:60px">${[0, 1, 2, 3].map(() => `<div style="width:90px;height:90px;background:${K.forest};border:2px solid ${K.forest};border-radius:6px"></div>`).join('')}</div></div>`;
   show(mem, tH + 0.3, { y: -14, d: 0.5 }); show(dsk, tH + 0.45, { y: 14, d: 0.5 });
-  to(dsk, T('j10', '树') - 0.2, { backgroundColor: K.mint, duration: 0.35 });
-  to(mem.querySelector('.mt_'), T('j10', '缓存') - 0.2, { color: K.gd1, duration: 0.35 });
-  to(mem.querySelector('.mt_'), T('j11', '倒过来') + 0.0, { color: K.ink, duration: 0.35 });
-  // 倒过来：内存变大装下全部数据，磁盘缩成「保存一份」
+  show(cache, T('j10', '缓存') - 0.3, { y: 8, d: 0.4 }); to(mem, T('j10', '缓存') - 0.3, { borderColor: K.forest, duration: 0.3 }); to(dsk, T('j10', '磁盘') - 0.2, { backgroundColor: '#C9F2E2', duration: 0.4 });
   const tF = T('j11', '倒过来') - 0.3;
   to(mem, tF, { height: 380, borderColor: K.forest, backgroundColor: K.mint, duration: 0.9, ease: 'power2.inOut' });
   to(dsk, tF, { y: 240, height: 120, backgroundColor: '#FFFFFF', borderColor: K.gb, duration: 0.9, ease: 'power2.inOut' });
-  textAt(mem.querySelector('.mt_'), [[0, '内存 · 只是缓存'], [tF + 0.3, '内存 · 数据全住在这里']]);
-  textAt(dsk.querySelector('.dt_'), [[0, '磁盘 · 数据住在这里的树里'], [tF + 0.3, '磁盘 · 只用来保存一份']]);
-  fadeOut(dsk.querySelector('.tr_'), tF, 0.3);
+  fadeOut([dsk.querySelector('.tr_'), cache], tF, 0.3);
+  const arch = h('div', 'abs', dsk); css(arch, { left: '420px', top: '24px', display: 'flex', gap: '8px' }); arch.innerHTML = `<span style="width:200px;height:56px;background:${K.gl2};border:2px solid ${K.gb};border-radius:6px"></span>`;
+  show(arch, T('j11', '保存') - 0.2, { y: 8, d: 0.4 });
   const allD = h('div', 'abs', mem); css(allD, { left: '92px', top: '100px', display: 'flex', gap: '12px', flexWrap: 'wrap', width: '1000px' });
   allD.innerHTML = Array.from({ length: 30 }, () => `<span style="width:52px;height:40px;background:${K.forest};border:2px solid ${K.forest};border-radius:5px"></span>`).join('');
   show(allD, T('j11', '内存') - 0.2, { y: 10, d: 0.5 });
-  to(mem, T('j11', '内存') - 0.2, { color: K.forest, duration: 0.3 });
   // 进程一死：内存熄掉，靠什么回来？
   const tD = T('j12', '一死') - 0.3;
   const kb = h('div', 'abs', world, ico('bolt', 80, K.red, 3)); px(kb, 1460, 236, 80, 80);
@@ -190,7 +242,7 @@ scene('trade', ({ root, s, c0 }) => {
   const P = partCard(root, 7, t13, { from: 6, cascade: false });
   const cr = h('div', 'crumb2', P.main, '文档<i>/</i>数据库引擎<i>/</i>PART 7'); css(cr, { top: '190px' });
   const badge = h('div', 'abs', P.main, 'PART 7'); px(badge, 0, 268); css(badge, { font: '700 52px "Mono"', color: K.spring, background: K.ink, padding: '10px 30px', borderRadius: '12px', letterSpacing: '.06em' });
-  const nx = h('div', 'abs', P.main, '下一集 · 系列最终集'); px(nx, 0, 400); css(nx, { font: '500 46px "Inter", "Sans SC"', color: K.gd2 });
+  const nx = h('div', 'abs', P.main, '系列最终集'); px(nx, 0, 400); css(nx, { font: '500 46px "Inter", "Sans SC"', color: K.gd2 });
   const tt = h('div', 'abs', P.main, 'Redis'); px(tt, -8, 470); css(tt, { font: '900 220px/1.1 "Inter"', color: K.ink });
   const rule = h('div', 'abs', P.main); px(rule, 0, 740, 760, 5); css(rule, { background: K.spring, transformOrigin: '0 50%' });
   const sub = h('div', 'abs', P.main, '一个更简单的数据库'); px(sub, 0, 772); css(sub, { font: '500 60px "Serif SC"', color: K.forest });
@@ -200,7 +252,7 @@ scene('trade', ({ root, s, c0 }) => {
   fromTo(rule, T('j14') + 0.2, { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: 'power2.inOut' });
   tl.set([world, ch.c], { autoAlpha: 0 }, t13 + 0.45);
   // PART 7 那一项换深绿：叠一个深绿的副本淡入（不补间原元素的字色，倒着 seek 也确定）
-  const it7 = P.items[6].cloneNode(true); P.items[6].parentNode.appendChild(it7); css(it7, { color: K.forest, opacity: 0 }); fromTo(it7, Tend('j14') + 0.8, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 });
+  // PART 7 那一项由 partCard 的 now 类标出，不再另外改色（另改会和类名打架）
   // 片尾名单之前，卡片淡出（不硬切）
   fadeOut(P.el, s.end + 0.12, 0.3);
 });

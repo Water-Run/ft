@@ -36,6 +36,13 @@ scene('flush', ({ root, s, c0 }) => {
   show(memZ, T('c3', '内存') - 0.4, { y: -16, d: 0.5 });
   const memN = tg(world, 1180, 240, '集合在缓存里 <b style="font-family:Inter">835,550</b> 字节', 'b'); css(memN, { fontSize: '30px', width: '580px', textAlign: 'right' });
   show(memN, T('c3', '缓存') - 0.2, { y: 8, d: 0.45 });
+  // 新名词的注解：缓存、文件头、区段表（A11 A20 B13）
+  const glCa = gl(world, 170, 566, '缓存', 'mongod 进程里划出的一块内存，本机给了 9414 MB；<br>页在这里是不压缩的样子，和文件里的格式不一样', { key: '缓存' });
+  show(glCa, T('c3', '缓存') + 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glCa, T('c7') - 0.3, 0.4);
+  const glHd = gl(world, 700, 870, '头', '文件头。这时候，4 KB 的文件里只有它', { key: '文件头' }); css(glHd, { padding: '0 0 0 16px' }); css(glHd.querySelector('b'), { display: 'inline', marginRight: '16px' }); css(glHd.querySelector('span'), { display: 'inline' });
+  show(glHd, T('c2', '4') - 0.1, { y: 8, d: 0.4 }); fadeOut(glHd, T('c8') - 0.5, 0.35);
+  const glEx = gl(world, 170, 566, '区段表', '文件末尾那一块：记下哪些块在用、哪些空着，<br>每做一次检查点写一份', { key: '区段表' });
+  show(glEx, T('c9', '九十') + 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glEx, T('c10') - 0.4, 0.4);
   // 缓存里的页：一页一批排好序的键值（内存里怎样分页本片不细讲，只画成几页）
   const MP = [0, 1, 2, 3, 4].map((i) => pageBox(world, 170 + i * 326, 314, 300, 196, '', { n: 7, rh: 14, gap: 9 }));
   MP.forEach((p) => css(p.head, { display: 'none' })); MP.forEach((p) => css(p.body, { top: '10px' }));
@@ -49,8 +56,8 @@ scene('flush', ({ root, s, c0 }) => {
   // 写入：一笔改动落到缓存里的一页上，这一页标成「改过」；文件不动
   const tW = T('c5') - 0.2;
   const dirty = MP.map((p, i) => { const d = h('div', 'abs', p.c); css(d, { right: '10px', top: '10px', width: '20px', height: '20px', borderRadius: '50%', background: K.yel, border: '2px solid ' + K.yeld }); return d; });
-  dirty.forEach((d, i) => show(d, tW + 0.3 + i * 0.12, { y: 0, s: 0.3, d: 0.35 }));
-  MP.forEach((p, i) => to(p.c, tW + 0.3 + i * 0.12, { borderColor: K.yeld, backgroundColor: '#FCE9B0', duration: 0.35 }));
+  dirty.forEach((d, i) => show(d, tW + 0.3 + i * 0.4, { y: 0, s: 0.3, d: 0.35 }));
+  MP.forEach((p, i) => { to(p.c, tW + 0.3 + i * 0.4, { borderColor: K.yeld, backgroundColor: '#FCE9B0', duration: 0.35 }); to(p.rows, tW + 0.3 + i * 0.4, { backgroundColor: '#F2CF6B', duration: 0.35 }); });
   const dirtyT = tg(world, 600, 242, '<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:#FFC010;border:2px solid #944F01;vertical-align:-2px;margin-right:10px"></span>改过、还没写进文件', ''); css(dirtyT, { fontSize: '28px', lineHeight: '52px', color: '#FFFFFF', background: K.yeld, borderRadius: '10px', padding: '0 18px' }); show(dirtyT, T('c5', '文件') - 0.2, { y: 8, d: 0.45 }); fadeOut(dirtyT, T('c9', '做完') - 0.1, 0.4);
   // 60 秒：一圈走完，改过的页写下去（检查点）
   const clock = h('div', 'abs', world); px(clock, 1690, 540, 76, 76);
@@ -75,11 +82,11 @@ scene('flush', ({ root, s, c0 }) => {
     to(p.c, tCk + 0.1 + i * 0.25, { borderColor: K.gl1, backgroundColor: '#FFFFFF', duration: 0.3 });
   });
   sfx('thud', tCk + 0.9, { g: 0.5 });
-  const glCk = gl(world, 700, 870, '检查点', '把缓存里改过的页写进文件，默认每 60 秒一次'); css(glCk, { padding: '0 0 0 16px' }); css(glCk.querySelector('b'), { display: 'inline', marginRight: '16px' }); css(glCk.querySelector('span'), { display: 'inline' });
+  const glCk = gl(world, 700, 870, '检查点', '做完时文件里就有一份完整的数据；<br>进程被杀后，从最近的一个检查点接着恢复'); css(glCk, { padding: '0 0 0 16px' }); css(glCk.querySelector('b'), { display: 'inline', marginRight: '16px' }); css(glCk.querySelector('span'), { display: 'inline' });   // H02
   show(glCk, T('c8', '检查') - 0.2, { y: 8, d: 0.45 });
   // 文件长到 96 KB（A08：98,304 字节）
   stepTo(sz, [[T('c9', '长到') - 0.4, 1.1, 4, 96]], (v) => Math.round(v) + ' KB');
-  res(world, 170, 590, '缓存里改过的页，都写进了文件', 'new', Tend('c9') - 1.0, { fs: 30, lh: 56, out: T('c9b') - 0.3 });
+
   solid(sz, T('c9', '4') - 0.2, 'ink'); to(sz, T('c9', '九十') - 0.1, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.35 });
   to(sz, T('c9b') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', color: K.forest, duration: 0.35 });   // lint-ok: 退回文字
 
@@ -148,17 +155,21 @@ scene('flush', ({ root, s, c0 }) => {
   show(key, T('c14', '找') - 0.2, { x: -20, y: 0, d: 0.45 });
   const kA = link(ov, [[560, 296], [652, 296]], 'accent', { w: 3, arrow: true }); arrowIn(kA, T('c14', '根页') - 0.2, 0.35);
   to(reEls[1], T('c14', '落在') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 }); to([...reEls[1].querySelectorAll('*')], T('c14', '落在') - 0.2, { color: K.ink, duration: 0.35 });
-  to(rootB, T('c14', '根页') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(rootB, T('c14b', 'B') - 0.4, { backgroundColor: K.ink, duration: 0.35 });
+  to(rootB, T('c14', '根页') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(rootB, T('c14b', '树') - 0.4, { backgroundColor: K.ink, duration: 0.35 });
   const path = link(ov, [[660 + 20 + 146 + 60, 362], [LX(1) + LW / 2, LY]], 'spring', { w: 7 }); draw(path, T('c14', '往下') - 0.2, 0.5);
   to(leaves[1].c, T('c14', '往下') + 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 });
-  const glBt = gl(world, 170, 230, 'B 树', '根页只记分界与位置<br>键和值都在叶页里', { cls: 'lg' });
-  fadeOut([key, kA, path], T('c14b', 'B') - 0.5, 0.35);
-  show(glBt, T('c14b', 'B') - 0.3, { x: 16, y: 0, d: 0.5 }); [0, 2, 3].forEach((i) => to(leaves[i].c, Tend('c14b') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }));
+  leaves.forEach((p) => { p.c.dataset.name = 'leaf'; });
+  to(reEls, T('c14b', '一样') - 0.2, { color: K.spring, duration: 0.3 }); to(reEls, Tend('c14b') + 0.2, { color: '#FFFFFF', duration: 0.3 });   // 和 InnoDB、SQLite 一样：根页的分界亮一下
+  to([band.wrap, sz], T('c14b', '一样') - 0.2, { opacity: 0.3, duration: 0.45 }); to([band.wrap, sz], T('c15') - 0.3, { opacity: 1, duration: 0.45 });   // 讲这棵树时文件条退后
+  leaves.forEach((p, i) => to(p.c, T('c14b', 'Inno') - 0.2 + i * 0.08, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.3 }));
+  const glBt = gl(world, 170, 230, 'B 树', '4096 份文档只有两层：<br>根页下面直接就是叶页', { cls: 'lg' });   // B03
+  fadeOut([key, kA, path], T('c14b', '树') - 0.5, 0.35);
+  show(glBt, T('c14b', '树') - 0.3, { x: 16, y: 0, d: 0.5 }); [0, 2, 3].forEach((i) => to(leaves[i].c, Tend('c14b') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }));
   // 两个索引：也是根页带一排叶页（_id 3 个叶页、姓名 15 个）
   const tIx = T('c15') - 0.2;
   const ixBox = h('div', 'panel', world); px(ixBox, 1290, 206, 520, 196);
   ixBox.innerHTML = [['_id 索引', 3], ['姓名索引', 15]].map(([lab, n], j) => {
-    const lw = n > 8 ? 22 : 100, g = n > 8 ? 4 : 18, W = n * (lw + g) - g, x0 = 132;
+    const lw = n > 8 ? 21 : 100, g = n > 8 ? 4 : 18, W = n * (lw + g) - g, x0 = 120;
     const lines = `<svg style="position:absolute;left:0;top:0" width="520" height="196">${Array.from({ length: n }, (_, k) => `<path d="M${x0 + W / 2} ${10 + j * 90 + 14}L${x0 + k * (lw + g) + lw / 2} ${46 + j * 90}" stroke="${K.ink}" stroke-width="1.4"/>`).join('')}</svg>`;
     const pre = `<div class="ixr" style="position:absolute;left:0;top:0;right:0;bottom:0">` + lines;
     return pre + `<div class="ixl" style="position:absolute;left:20px;top:${22 + j * 90}px;font:700 24px 'Sans SC';color:${K.ink}">${lab}</div><div style="position:absolute;left:${x0 + W / 2 - 34}px;top:${10 + j * 90}px;width:68px;height:14px;background:${K.ink};border-radius:3px"></div>` +

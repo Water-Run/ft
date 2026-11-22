@@ -50,17 +50,20 @@ scene('find', ({ root, s, c0 }) => {
   cLeaves.forEach((p, i) => to(p.c, T('d4', '四千') - 0.2 + i * 0.08, { backgroundColor: '#9CCBFF', borderColor: K.blue, duration: 0.35 }));
   const exT = tg(world, CR.x + 250, 716, '份文档看过', 'b'); css(exT, { fontSize: '32px', color: K.blued });
   show([exN, exT], tS0 - 0.3, { y: 10, d: 0.4 });
-  stepTo(exN, [[tS0, tS1 - tS0, 0, 4096]], (v) => Math.round(v).toLocaleString('en-US'));
+  const CN = [1224, 1224, 675, 973];
+  let lastN = -1;
+  F((t) => { let n = 0; if (t >= tS0) { const p = clamp((t - tS0) / (tS1 - tS0)), step = Math.min(23, Math.floor(p * 24)), li = Math.floor(step / 6), ri = step % 6; n = p >= 1 ? 4096 : CN.slice(0, li).reduce((a, b) => a + b, 0) + Math.round(CN[li] * (ri + 1) / 6); } if (n !== lastN) { exN.textContent = n.toLocaleString('en-US'); lastN = n; } });   // 跟扫描线同一个 step
   // 找到：她在第二个叶页里
   const hit1 = h('div', 'abs', cLeaves[1].c); css(hit1, { left: '10px', right: '10px', top: 40 + 10 + 2 * 26 - 4 + 'px', height: '22px', borderRadius: '5px', background: K.spring });
   show(hit1, T('d4', '找到') - 0.2, { y: 0, d: 0.35 });
+  [0, 2, 3].forEach((i) => { to(cLeaves[i].c, T('d4', '找到') + 0.1, { opacity: 0.3, duration: 0.4 }); to(cLeaves[i].c, T('d5') - 0.2, { opacity: 1, duration: 0.4 }); });   // 只有这一页里有她
   // explain 的两行实测（下面）
   const ex = term(world, 140, 790, 1660, 160, 'mongosh · explain("executionStats") 摘录 · 键名译成中文', { fs: 26, lh: 40 });
   show(ex.c, T('d4') - 0.2, { y: 14, d: 0.5 });
-  const f1 = res(world, 1450, 694, '找到 1 份', 'new', T('d4', '找到') - 0.1, { out: T('d5') - 0.2 });
+  const f1 = h('div', 'abs', world, '');
   ex.out(T('d4', '看了') - 0.1, '没有索引：{ <span class="k">计划</span>: <span class="s">\'COLLSCAN\'</span>, <span class="k">返回</span>: <span class="n">1</span>, <span class="k">看过的索引键</span>: <span class="n">0</span>, <span class="k">看过的文档</span>: <span class="n">4096</span> }');
   const tB = T('d5') - 0.2;
-  res(world, 160, 664, '翻完 4096 份，只为找到 1 份', 'ink', Tend('d4') - 0.7, { fs: 30, lh: 56, out: tB });
+
   const glCS = h('div', 'abs', world, '<b style="color:#00684A;font-family:Mono;margin-right:14px">COLLSCAN</b>集合扫描：把集合里的文档从头到尾一份份看过去'); px(glCS, 140, 736);   // C09
   css(glCS, { font: '500 26px "Inter", "Sans SC"', color: K.gd2, borderLeft: '5px solid ' + K.g1, paddingLeft: '16px', whiteSpace: 'nowrap' });
   show(glCS, T('d4', '看了') + 0.3, { x: 12, y: 0, d: 0.45 }); fadeOut(glCS, tB, 0.4);
@@ -79,11 +82,15 @@ scene('find', ({ root, s, c0 }) => {
   }
   show(iRoot, tB + 0.2, { y: 10, d: 0.45 });
   iLeaves.forEach((l, k) => show(l, tB + 0.35 + k * 0.03, { y: 12, d: 0.4 })); iLinks.forEach((p, k) => draw(p, tB + 0.4 + k * 0.02, 0.5));
+  const sTok = h('div', 'abs', world, '"Alice"'); px(sTok, 700, 272); css(sTok, { font: '700 34px/60px "Mono"', color: '#FFFFFF', background: K.blue, borderRadius: '10px', padding: '0 20px' }); sTok.dataset.name = 'stok';
+  tl.fromTo(sTok, { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: 'power2.out', immediateRender: true }, T('d5', '再找') - 0.3);
+  tl.to(sTok, { x: -170, scale: 0.8, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, T('d5', '一次') + 0.1);
+  to(iRoot, T('d5', '一次') + 0.45, { backgroundColor: K.blue, duration: 0.3 });   // 要找的键进了根页
   // 第一个叶页放大：键按字节排；Alice 的第一个字节是 41（A），别人是 55（U）
   const KEYS = [['41', 'Alice', '2050', 1], ['55', 'User00001-…', '1', 0], ['55', 'User00002-…', '2', 0]];
   // 放大的那一页叠在集合树上方（集合树这时还不用）
   const zP = h('div', 'panel', world); px(zP, 140, 214, 780, 214); css(zP, { borderColor: K.g1, borderWidth: '3px' });
-  const zT = h('div', 'abs', zP, '第 1 个叶页 · 键按字节排<span style="font:500 23px \'Sans SC\';color:#5C6C75;margin-left:14px">（开头的 3c 都一样）</span>'); css(zT, { left: '22px', top: '14px', font: '700 26px "Sans SC"', color: K.forest });
+  const zT = h('div', 'abs', zP, '第 1 个叶页 · 键按字节排<span style="font:500 23px \'Sans SC\';color:#5C6C75;margin-left:14px">（3c 都一样）</span>'); css(zT, { left: '22px', top: '14px', font: '700 26px "Sans SC"', color: K.forest });
   const zRows = KEYS.map(([b, n, r, a], i) => {
     const e = h('div', 'abs', zP); css(e, { left: '22px', top: 58 + i * 50 + 'px', font: '600 28px/44px "Mono"', color: K.ink, whiteSpace: 'nowrap', padding: '0 10px', borderRadius: '6px' });
     e.innerHTML = `<span style="color:${K.gb}">3c</span> <span class="b1" style="padding:0 6px;border-radius:4px">${b}</span>…  "${n}"  <span class="rid" style="padding:0 6px;border-radius:4px">${r}</span>`;
@@ -98,6 +105,7 @@ scene('find', ({ root, s, c0 }) => {
   const zl = lead(ov, [[160, 428], [IR.x + ILW / 2, ILY]], { color: 'accent', w: 2.5 }); draw(zl, T('d6', '字节') - 0.2, 0.4);
   // 别人：User…，大写 U，55
   to([zRows[1], zRows[2]], T('d7', '别人') - 0.2, { color: '#FFFFFF', backgroundColor: K.gd1, duration: 0.35 }); to([zRows[1], zRows[2]].map((e) => e.firstChild), T('d7', '别人') - 0.2, { color: K.gl2, duration: 0.35 });
+  iLeaves.slice(1).forEach((l) => { to(l, T('d7', 'User') - 0.2, { backgroundColor: '#9CCBFF', borderColor: K.blue, duration: 0.35 }); to(l, T('d7b', '第一项') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.35 }); });   // 后面这些叶页里全是 User…
   to([zRows[1], zRows[2]].map((e) => e.querySelector('.b1')), T('d7', 'U') - 0.2, { backgroundColor: K.bluel, color: K.blued, duration: 0.35 });
   const u55 = tg(world, 700, 340, '<span style="font-family:Mono">55</span> 就是 U', 'b'); css(u55, { fontSize: '36px', lineHeight: '62px', color: '#FFFFFF', background: K.blue, borderRadius: '10px', padding: '0 16px' });
   show(u55, T('d7', '大写') - 0.1, { x: 12, y: 0, d: 0.4 }); to([zRows[1], zRows[2]].map((e) => e.querySelector('.b1')), T('d7', '大写') - 0.2, { backgroundColor: K.blue, color: '#FFFFFF', duration: 0.35 });
@@ -123,7 +131,14 @@ scene('find', ({ root, s, c0 }) => {
   const ridX = 140 + 3 + 24 + (ent.querySelector('.rid').offsetLeft || 300);
   const ridT = tg(world, ridX - 20, 768, '↑ RecordId', 'm'); css(ridT, { fontSize: '28px', fontWeight: 700, color: '#FFFFFF', background: K.forest, borderRadius: '8px', padding: '0 12px', lineHeight: '44px' });
   show(ridT, T('d10', 'RecordId') - 0.15, { y: -6, d: 0.4 });
-  const ridC = res(world, 790, 696, 'RecordId 2050', 'new', T('d10', '键里') - 0.2, { out: T('d12', '回到') - 0.1 });
+  // d11：这条路和 InnoDB、SQLite 一样（S12）：三家各自的「索引 → 编号 → 存数据的树」并排
+  const same = h('div', 'panel', world); px(same, 1000, 690, 820, 176);
+  same.innerHTML = [['InnoDB · PART 2', '姓名索引 → 主键 → 聚簇索引'], ['SQLite · PART 4', '姓名索引 → 行号 → 表的 B 树'], ['MongoDB', '姓名索引 → RecordId → 集合树']].map(([a, b], k) => `<div class="sm" style="position:absolute;left:22px;top:${16 + k * 52}px;font:600 26px/44px 'Sans SC';color:${k === 2 ? K.forest : K.gd2};white-space:nowrap"><b style="display:inline-block;width:250px;font-family:Inter">${a}</b>${b}</div>`).join('');
+  const sms = [...same.querySelectorAll('.sm')]; set(sms, s.start, { autoAlpha: 0 });
+  css(same, { background: K.ink, borderColor: K.ink }); sms.forEach((e, k) => { css(e, { color: k === 2 ? K.spring : '#C1C7C6', borderRadius: '8px', padding: '0 12px', marginLeft: '-12px' }); [...e.querySelectorAll('b')].forEach((b) => css(b, { color: '#FFFFFF' })); });
+  to(sms[2], T('d11', '回去') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 }); to([...sms[2].querySelectorAll('b')], T('d11', '回去') - 0.2, { color: K.ink, duration: 0.35 });
+  show(same, T('d11') - 0.2, { y: 10, d: 0.4 }); show(sms[0], T('d11', 'Inno') - 0.2, { x: -10, y: 0, d: 0.35 }); show(sms[1], T('d11', 'S') - 0.1, { x: -10, y: 0, d: 0.35 }); show(sms[2], T('d11', '先查') - 0.2, { x: -10, y: 0, d: 0.35 });
+  fadeOut(same, T('d13') - 0.2, 0.4);
   fadeOut(ex.c, T('d10') - 0.2, 0.4);
 
   // ══ 拿着 2050 回到集合树（B03）：分界一个个比过，落在第二个叶页 ══
@@ -133,7 +148,7 @@ scene('find', ({ root, s, c0 }) => {
   tl.to(tok, { x: 990 - 390, y: 290 - 624, duration: 0.9, ease: 'power2.inOut' }, T('d12', '回到') - 0.1);
   to(cLeaves.map((p) => p.head), T('d13', '每个') - 0.2, { color: '#FFFFFF', backgroundColor: K.forest, duration: 0.35 });
   to(cRoot, T('d13', '开始') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(cRoot, T('d15') - 0.2, { backgroundColor: K.ink, duration: 0.35 });
-  [[1, T('d13b', '1225')], [2, T('d13b', '2449')], [3, T('d13c', '3124')]].forEach(([i, t]) => { to(cLeaves[i].c, t - 0.1, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 }); if (i !== 1) to(cLeaves[i].c, T('d15') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.35 }); });
+  [[0, T('d13', '开始')], [1, T('d13b', '1225')], [2, T('d13b', '2449')], [3, T('d13c', '3124')]].forEach(([i, t]) => { to(cLeaves[i].c, t - 0.1, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 }); to(cLeaves[i].rows, t - 0.1, { backgroundColor: K.g1, duration: 0.35 }); to(cLeaves[i].rows, i !== 1 ? T('d15') - 0.2 : T('d15', '第二个') + 0.3, { backgroundColor: K.gl2, duration: 0.35 }); if (i !== 1) to(cLeaves[i].c, T('d15') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.35 }); });
   cLeaves.forEach((p, i) => { if (i !== 1) to(p.head, T('d15') - 0.2, { color: K.gd2, backgroundColor: K.gl3, duration: 0.35 }); });
   const sepT = [T('d13', '开始') - 0.3, T('d13b', '1225') - 0.2, T('d13b', '2449') - 0.2, T('d13c', '3124') - 0.2];
   sepEls.forEach((e, i) => to(e, sepT[i], { backgroundColor: i === 1 ? K.forest : '#3D4F58', color: i === 1 ? K.mint : K.spring, duration: 0.3 }));
@@ -156,7 +171,7 @@ scene('find', ({ root, s, c0 }) => {
   const exA = ex2.body.children[0];
   const exB = ex2.out(T('d17') + 0.2, '有了索引：{ <span class="k">计划</span>: <span class="s">\'FETCH ← IXSCAN\'</span>, <span class="k">返回</span>: <span class="n">1</span>, <span class="k">看过的索引键</span>: <span class="n">1</span>, <span class="k">看过的文档</span>: <span class="n">1</span> }');
   to(exB, T('d17', '索引键') - 0.2, { color: K.forest, duration: 0.35 });
-  res(world, 1440, 856, '1 个索引键 · 1 份文档', 'new', T('d17', '索引键') - 0.1, { fs: 28, lh: 52 });
+
   const glIX = h('div', 'abs', world, '<b style="color:#00684A;font-family:Mono;margin-right:12px">IXSCAN</b>扫描索引键　<b style="color:#00684A;font-family:Mono;margin:0 12px 0 10px">FETCH</b>按 RecordId 取出文档'); px(glIX, 860, 680);   // C09
   css(glIX, { font: '500 26px "Inter", "Sans SC"', color: K.gd2, borderLeft: '5px solid ' + K.g1, paddingLeft: '16px', whiteSpace: 'nowrap' });
   show(glIX, T('d17') + 0.5, { x: 12, y: 0, d: 0.45 });

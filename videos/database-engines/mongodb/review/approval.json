@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "06ca2af8467026ebb546ccd8e7b55d15a20d70fba728b076a5abc9e277ef3629",
+      "content_sha256": "bb629b04f5b76c15dee04032d15aaee1fd64ca584a1aeb998f2d74e00ae55ffa",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-22T14:00:00+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-22 第 4 稿 d：a12b 用策划者原话「叫存储引擎 之后加一句台词 就和MySQL一样」；b2 读法；其余只改停顿；依据同一授权「文案自主修改, 优化, 可以不用我确认」"
+      "confirmed_at": "2026-11-22T23:59:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-22 第 4 稿 f：按策划者看 r6 时的原话改写 07 章（讲清单机与副本集）、08 章点明 WAL、11 章加「比传统的关系数据库灵活得多」并把代价写成三条、删 j9b 与 g4 等；措辞按授权自改"
     }
   }
 }

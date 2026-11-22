@@ -23,9 +23,9 @@ scene('open', ({ root, s }) => {
   const bIns = brace(world, segX(14), LY0 + 2, 9 * MCW, 'insertOne：存进一份', T('o1') + 0.75, { out: tA1 });
   const bArg = brace(world, segX(24), LY0 + 2, 26 * MCW, '要存的资料：名字和年龄', T('o1', '年龄') + 0.1, { out: tA1 });
   res(world, 990, 172, '↵ 发送', 'ink', T('o1', '年龄') + 0.1, { fs: 26, lh: 44, out: T('o4') - 0.3 });
-  const stored = res(world, 1290, 516, '已存入 users', 'new', T('o2', '存') + 0.45, { out: T('o4') - 0.3 });
-  textAt(stored, [[0, '已存入 users'], [T('o3', '建表') - 0.15, '直接存入，没有先建表']]);
-  css(stored, { zIndex: 5 });   // 右边的 MongoDB 面板后建，不抬高会被它盖住（r5 起一直看不见）
+
+
+
   sh.cmd(T('o4') - 0.05, 'db.users.findOne({ <span class="k">name</span>: <span class="s">"Alice"</span> })', 'lab&gt; ', 34);
   const bFind = brace(world, segX(14), LY1 + 2, 7 * MCW, 'findOne：找出一份', T('o4', '找') + 0.05, { out: tA1 });
   const bCond = brace(world, segX(22), LY1 + 2, 17 * MCW, '条件：name 是 Alice', T('o4', '条件') - 0.1, { out: tA1 });
@@ -39,7 +39,7 @@ scene('open', ({ root, s }) => {
   const bhr = h('div', 'abs', box); css(bhr, { left: 0, right: 0, top: '86px', height: '1.5px', background: K.gl2 });
   fadeIn(box, s.start + 0.35, 0.6);
   // 存进去：一份 { name, age } 从命令里升起，飞进 MongoDB；落下后多出 _id 一行（驱动生成，A01）
-  const D0 = docCard(world, 1290, 236, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 480, fs: 27 });
+  const D0 = docCard(world, 1290, 236, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 500, fs: 27 });
   const idRow = D0.r._id;
   css(idRow, { overflow: 'hidden', color: K.gd1, fontSize: '24px' });
   const tFly = T('o2', '交给');
@@ -86,8 +86,8 @@ scene('open', ({ root, s }) => {
   to([kw0, cols0], tSkip, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.4 });   // lint-ok: 透明底（取消高亮）
   to(sqL[0], tSkip, { opacity: 0.4, duration: 0.5 });
   to([et, etT, etL], tSkip, { opacity: 0.3, duration: 0.5 });
-  const skipR = res(sq, ETX + 110, ETY + 44, 'MongoDB：这一步不用做', 'new', tSkip + 0.25, { fs: 30, lh: 56 });
-  fadeOut([et, etT, etL, skipR], T('o4') - 0.25, 0.45);
+
+  fadeOut([et, etT, etL], T('o4') - 0.25, 0.45);
   // 写入那一句：和 insertOne 并排看，也用不上
   show(sqL[1], tSkip + 0.5, { y: 10, d: 0.5 });
   fromTo(strike[1], T('o6', 'SQL') - 0.35, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' });
@@ -111,7 +111,6 @@ scene('open', ({ root, s }) => {
   draw(same, tSame - 0.05, 0.5);
   fadeOut(same, T('o5') - 0.2, 0.4);
   to(D0.c, Tend('o4') - 0.4, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(D0.c, T('o5', '回来') - 0.6, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 });
-  res(world, 1606, 492, '找到这一份', 'new', Tend('o4') - 0.3, { fs: 28, lh: 50, out: T('o5') - 0.1 });
   const wh = sqL[2].querySelector('.wh');
   // o5：她的资料回到 mongosh；多出来的 _id 两处一起指出来
   to(qd, T('o5') - 0.2, { autoAlpha: 0, y: 12, duration: 0.45 });
@@ -121,14 +120,13 @@ scene('open', ({ root, s }) => {
   tl.to(ghost.c, { x: -1000, y: 170, scale: 0.6, autoAlpha: 0, duration: 0.85, ease: 'power2.inOut' }, tBack + 0.05);
   const resId = resL.querySelector('.k');
   to(idRow, T('o5', '多出') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 }); classAt(idRow, 'inv', T('o5', '多出') - 0.2);
-  res(world, 1290, 516, '多出一项 _id', 'new', T('o5', '_id') - 0.1, { out: tA1 });
-  res(world, 1540, 700, '0 句 SQL', 'del', T('o6', '没有') - 0.1, { out: tA1 });
   to(resId, T('o5', '_id') - 0.15, { color: K.forest, duration: 0.35 });
   to(idRow, T('o5', '_id') - 0.1, { backgroundColor: K.mint2, color: K.ink, duration: 0.4 });
   // o6：一句 SQL 也没写——SQL 卡里剩下的查询也划掉
   fromTo(strike[2], T('o6', 'SQL') - 0.15, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' }); sfx('blip', T('o6', 'SQL'));
   to(sqL[2], T('o6', 'SQL') + 0.35, { opacity: 0.4, duration: 0.5 });
   to(sh.c, T('o6') - 0.1, { borderColor: K.g1, duration: 0.5 });
+  const runHL = [210, 364].map((y) => { const e = h('div', 'abs', world); px(e, 124, y - 2, 1012, 50); css(e, { background: 'rgba(0,237,100,0.16)', borderRadius: '8px' }); e.dataset.name = 'run'; show(e, T('o6', '过程') - 0.2 + (y > 300 ? 0.2 : 0), { y: 0, d: 0.35 }); fadeOut(e, tA1, 0.4); return e; });   // 这一趟只用了这两条命令
   fadeOut([sh.c, box, D0.c, sq], tA1, 0.55);
 
   // ══ B：前五集（S04），每张卡一张同样的 users 小表 + 一句 SQL ══
@@ -150,7 +148,7 @@ scene('open', ({ root, s }) => {
     const c = h('div', 'panel', world); px(c, CX0 + i * (CW + CG), CY, CW, CH);
     label(c, 24, 22, p, 'lab');
     const nm = h('div', 'abs', c, n.replace('SQL', '<span class="sqb">SQL</span>')); css(nm, { left: '24px', top: '60px', font: '500 40px "Inter"', color: K.ink });
-    const tb = miniTable(c, 24, 140);
+    const tb = miniTable(c, 34, 140);
     const q = h('div', 'abs mono', c, '<span class="kw">SELECT</span> * FROM users'); css(q, { left: '24px', top: '400px', font: '500 22px "Mono"', color: K.gd2, padding: '6px 10px', background: K.gl3, border: '1.5px solid ' + K.gl2, borderRadius: '6px' });
     return { c, nm, tb, q, sqb: nm.querySelector('.sqb') };
   });
@@ -175,12 +173,12 @@ scene('open', ({ root, s }) => {
   // o10：ClickHouse 那一张，表拆成一列一列（S01），两列之间拉开；随后一道虚线把两列围回一张表
   const chT = cards[3].tb;
   const tSplit = T('o10', '一列一列');
-  to(chT.cols[0], tSplit - 0.15, { x: -12, duration: 0.6, ease: 'power2.out' });
-  to(chT.cols[1], tSplit - 0.15, { x: 14, duration: 0.6, ease: 'power2.out' });
-  const chOut = h('div', 'abs', cards[3].c); px(chOut, 6, 128, 308, RH * 4 + 24); css(chOut, { border: '3px dashed ' + K.forest, borderRadius: '10px' });
+  to(chT.cols[0], tSplit - 0.15, { x: -13, duration: 0.6, ease: 'power2.out' });
+  to(chT.cols[1], tSplit - 0.15, { x: 13, duration: 0.6, ease: 'power2.out' });
+  const chOut = h('div', 'abs', cards[3].c); px(chOut, 11, 128, 298, RH * 4 + 24); css(chOut, { border: '3px dashed ' + K.forest, borderRadius: '10px' });
   show(chOut, T('o10', '还是表') - 0.1, { y: 0, s: 1.04, d: 0.45 }); to(cards[3].c, T('o10', '还是表') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 });
-  const chC = res(cards[3].c, 168, 14, '按列存', 'ink', T('o10', '把表') - 0.1, { fs: 24, lh: 40, pad: 14 });
-  textAt(chC, [[0, '按列存'], [T('o10', '还是表') - 0.05, '仍是表']]); to(chC, T('o10', '还是表') - 0.05, { backgroundColor: K.forest, duration: 0.35 });
+
+
   // o11：MongoDB：一张卡里是一份文档，查询也是一份文档；四张 SQL 卡退到后面
   const mc = h('div', 'panel', world); px(mc, CX0 + 4 * (CW + CG), CY, CW, CH); css(mc, { borderColor: K.g1, borderWidth: '3px' });
   label(mc, 24, 22, 'PART 6 · 本集', 'lab');

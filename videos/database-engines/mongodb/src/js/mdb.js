@@ -130,7 +130,7 @@ function fileBand(parent, x, y, w, total, hh = 74) {
     wrap, sc, x, y, hh,
     blk(a, b, kind, txt) {
       const e = h('div', 'blk', wrap); css(e, { left: a * sc + 3 + 'px', top: '7px', width: (b - a) * sc - 6 + 'px', height: hh - 14 + 'px', ...BLK[kind] });
-      if (txt) { const t = h('div', 'abs', e, txt); css(t, { left: '12px', top: '50%', transform: 'translateY(-50%)', font: '600 22px "Mono"', color: kind === 'r' ? '#fff' : K.ink }); e._t = t; }
+      if (txt) { const t = h('div', 'abs', e, txt); css(t, { left: 0, right: 0, textAlign: 'center', top: '50%', transform: 'translateY(-50%)', font: '600 22px "Mono"', color: kind === 'r' ? '#fff' : K.ink, whiteSpace: 'nowrap' }); e._t = t; }
       return e;
     },
     xOf(off) { return x + off * sc; },

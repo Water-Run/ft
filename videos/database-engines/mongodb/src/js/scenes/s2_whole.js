@@ -25,19 +25,19 @@ scene('whole', ({ root, s, c0 }) => {
   show(opt, T('a3', '不规定') - 0.2, { y: 8, d: 0.45 }); to(col, T('a3', '默认') - 0.2, { backgroundColor: K.mint, duration: 0.45 });
   const noVal = tg(col, 1094, 84, '没有校验规则', 'b'); css(noVal, { fontSize: '38px', color: '#FFFFFF', background: K.yeld, padding: '0 40px', borderRadius: '12px', lineHeight: '70px', left: '640px', top: '10px' });
   show(noVal, T('a3', '长什么样') - 0.25, { y: 8, d: 0.4 });
-  const glC = gl(world, 1560, 236, '集合', '一份份文档<br>放在一起', { cls: 'lg' }); P1.push(glC);
+  const glC = gl(world, 1560, 236, '集合', '不用事先创建：<br>第一次往里存文档，<br>集合就自动建出来', { cls: 'lg' }); P1.push(glC);   // I05
   show(glC, T('a1', '集合') - 0.2, { x: 16, y: 0, d: 0.5 });
   // 对照：表 ↔ 集合，行 ↔ 文档
   const map = h('div', 'abs', world); px(map, 1560, 420, 300); css(map, { background: K.ink, borderRadius: '14px', padding: '18px 22px' }); P1.push(map);
   map.innerHTML = `<div style="font:500 24px 'Sans SC';color:#C1C7C6;margin-bottom:10px">关系数据库 → MongoDB</div>` +
     [['表', '集合'], ['行', '文档']].map(([a, b]) => `<div style="font:700 36px/1.6 'Sans SC';color:#FFFFFF">${a}<span style="color:${K.gb};margin:0 18px;font-weight:500">→</span><span style="color:${K.spring}">${b}</span></div>`).join('');
   set(map.children[2], s.start, { autoAlpha: 0 }); show(map.children[2], T('a2', '一张表') - 0.3, { y: 8, d: 0.4 });
-  show(map, T('a2', '关系') - 0.2, { y: 12, d: 0.5 });
-  res(col, 150, 12, '≈ 关系数据库的一张表', 'ink', T('a2', '一张表') - 0.15, { fs: 32, lh: 60, out: T('a4') - 0.4 });
+  show(map, T('a2', '一张表') - 0.5, { y: 12, d: 0.5 });
+
   // 三份文档（A12 的回显，原样）：Alice 名字与年龄；Erin 邮箱与标签；Frank 名字与地址
-  const dA = docCard(world, 150, 340, [['name', JS('Alice')], ['age', JN(42)]], { w: 310, fs: 28 });
-  const dE = docCard(world, 480, 340, [['name', JS('Erin')], ['email', JS('erin@example.com')], ['tags', `[ ${JS('db')}, ${JS('go')} ]`]], { w: 520, fs: 28 });
-  const dF = docCard(world, 1025, 340, [['name', JS('Frank')], ['address', `{ <span class="k">city</span>: ${JS('Lisbon')} }`]], { w: 490, fs: 25 });
+  const dA = docCard(world, 150, 340, [['name', JS('Alice')], ['age', JN(42)]], { w: 330, fs: 26 });
+  const dE = docCard(world, 496, 340, [['name', JS('Erin')], ['email', JS('erin@example.com')], ['tags', `[ ${JS('db')}, ${JS('go')} ]`]], { w: 500, fs: 24 });
+  const dF = docCard(world, 1010, 340, [['name', JS('Frank')], ['address', `{ <span class="k">city</span>: ${JS('Lisbon')} }`]], { w: 496, fs: 23 });
   P1.push(dA.c, dE.c, dF.c);
   [dA, dE, dF].forEach((d, i) => show(d.c, T('a1', '文档') - 0.2 + i * 0.18, { y: -40, d: 0.6 }));
   glow(dA.c, T('a4b', 'Alice') - 0.2, T('a4b', 'Erin') - 0.2, { bg: K.mint2, bd: K.g1, rb: '#FFFFFF', rd: K.gl1 });
@@ -52,8 +52,8 @@ scene('whole', ({ root, s, c0 }) => {
   [dA, dE, dF].forEach((d, i) => { const t = T('a4', 'people') - 0.2 + i * 0.2; solid(d.r.name, t, 'new', [T('a4b') - 0.1, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]); to([...d.r.name.querySelectorAll('span')], t, { color: '#FFFFFF', duration: 0.35 }); to([...d.r.name.querySelectorAll('span')], T('a4b') - 0.1, { clearProps: 'color', duration: 0.01 }); });
   // 字段名：每一份里的键一齐亮起
   const keys = [dA, dE, dF].flatMap((d) => [...d.c.querySelectorAll('.k')]);
-  [dA, dE, dF].forEach((d, i) => to([...d.c.querySelectorAll('.k')], [T('a7', '字段名'), T('a7', '每份'), T('a7', '各带')][i] - 0.15, { backgroundColor: K.mint2, color: K.forest, duration: 0.4 }));
-  const STR = [[150, 552, [['name', 5], ['age', 4]]], [480, 594, [['name', 5], ['email', 16], ['tags', 9]]], [1000, 552, [['name', 5], ['address', 10]]]].map((r, i) => (i === 2 ? [1020, r[1], r[2]] : r));
+  [dA, dE, dF].forEach((d, i) => to([...d.c.querySelectorAll('.k')], [T('a7', '字段名'), T('a7', '每份'), T('a7', '各带')][i] - 0.15, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.4 }));
+  const STR = [[150, 552, [['name', 5], ['age', 4]]], [496, 594, [['name', 5], ['email', 16], ['tags', 9]]], [1000, 552, [['name', 5], ['address', 10]]]].map((r, i) => (i === 2 ? [1010, r[1], r[2]] : r));
   const vSegs = [];
   const strips = STR.map(([x, y, fl], i) => { const g = h('div', 'abs', world); px(g, x, y, 480, 44); let cx = 0;
     fl.forEach(([k, n]) => { const a = h('div', 'abs', g); px(a, cx, 0, k.length * 9 + 8, 44); css(a, { background: K.forest, borderRadius: '4px' }); cx += k.length * 9 + 11; const b = h('div', 'abs', g); vSegs.push(b); px(b, cx, 0, n * 7, 44); css(b, { background: K.gl2, borderRadius: '4px' }); cx += n * 7 + 6; });
@@ -66,7 +66,7 @@ scene('whole', ({ root, s, c0 }) => {
   const fileA = h('div', 'abs', world); px(fileA, 820, 820, 280, 96); css(fileA, { background: '#fff', border: '2px solid ' + K.gb, borderRadius: '10px', font: '600 30px/92px "Mono"', color: K.gd2, textAlign: 'center' });
   fileA.textContent = '文件'; P1.push(fileA);
   show(fileA, T('a8', '写进') - 0.6, { y: 12, d: 0.5 });
-  [dA, dE, dF].forEach((d, i) => tl.to(d.c, { y: 820 - 340 + 10, x: 820 + 60 - [150, 480, 1020][i], scale: 0.3, autoAlpha: 0, duration: 0.7, ease: 'power2.in' }, T('a8', '写进') - 0.4 + i * 0.1));
+  [dA, dE, dF].forEach((d, i) => tl.to(d.c, { y: 820 - 340 + 10, x: 820 + 60 - [150, 496, 1010][i], scale: 0.3, autoAlpha: 0, duration: 0.7, ease: 'power2.in' }, T('a8', '写进') - 0.4 + i * 0.1));
   to(fileA, T('a8', '文件') - 0.1, { borderColor: K.g1, backgroundColor: K.mint, color: K.forest, duration: 0.4 });
   const upq = code(world, 880, 700, '{ <span class="k">name</span>: <span class="s">"Alice"</span> }'); css(upq, { fontSize: '28px' }); P1.push(upq);
   tl.fromTo(upq, { autoAlpha: 0, y: 100 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out', immediateRender: true }, T('a8b', '找') - 0.4);
@@ -77,7 +77,7 @@ scene('whole', ({ root, s, c0 }) => {
   const P2 = [];
   const md = h('div', 'panel', world); px(md, 330, 230, 1260, 600); css(md, { borderWidth: '3px', borderColor: K.ink }); P2.push(md);
   const mdT = h('div', 'abs', md, '<span style="font-family:Mono">mongod</span>'); css(mdT, { left: '24px', top: '16px', font: '700 40px/60px "Inter"', color: '#FFFFFF', background: K.ink, borderRadius: '10px', padding: '0 16px' });
-  const mdS = h('div', 'abs', md, 'MongoDB 的服务端进程'); css(mdS, { left: '220px', top: '30px', font: '500 28px "Sans SC"', color: K.gd1 });
+  const mdS = h('div', 'abs', md, 'mongo + d：d 是 daemon，一直在后台跑、处理数据请求的进程'); css(mdS, { left: '220px', top: '30px', font: '500 28px "Sans SC"', color: K.gd1 });   // C10
   show(md, T('a9', '服务端') - 0.3, { y: 16, d: 0.6 }); set(mdT, s.start, { autoAlpha: 0 }); show(mdT, T('a9', 'mongod') - 0.2, { y: 8, d: 0.4 }); show(mdS, T('a9', '服务端') - 0.1, { y: 8, d: 0.4 });
   const ovM = overlay(world);          // 连线层：在 mongod 框之上
   const up = h('div', 'abs', md); css(up, { left: '30px', top: '100px', width: '1194px', height: '200px', background: K.gl3, border: '2px solid ' + K.gl1, borderRadius: '12px' });
@@ -104,7 +104,7 @@ scene('whole', ({ root, s, c0 }) => {
   show(mem, T('a12', '内存') - 0.2, { y: 10, d: 0.45 }); show(dsk, T('a12', '磁盘') - 0.2, { y: 10, d: 0.45 });
   const downA = link(ovM, [[1500, 532], [1500, 558]], 'accent', { w: 4, arrow: true }); P2.push(downA); arrowIn(downA, T('a12', '下层') - 0.1, 0.45);
   fadeOut([q, planA], T('a13') - 0.2, 0.4);
-  const glS = gl(world, 1620, 560, '存储引擎', '管数据在内存和<br>磁盘上怎样存放', { cls: 'lg' }); P2.push(glS);
+  const glS = gl(world, 1592, 560, '存储引擎', '这一集后面的文件、<br>缓存、检查点、日志、<br>谁等谁，都归它管'); P2.push(glS); css(glS.querySelector('span'), { fontSize: '24px' });
   // a12b 就和 MySQL 一样：InnoDB、MyISAM 都是 MySQL 的存储引擎（本系列 PART 1、2）
   const my = h('div', 'panel', world); px(my, 62, 540, 250, 290); P2.push(my);
   my.innerHTML = `<div style="position:absolute;left:22px;top:16px;font:700 36px Inter;color:${K.ink}">MySQL</div>` +
@@ -117,12 +117,14 @@ scene('whole', ({ root, s, c0 }) => {
   show(myP, T('a12b', '一样') - 0.1, { y: 6, d: 0.4 }); arrowIn(myL, T('a12b', '一样') - 0.2, 0.4);
   to(dnT, T('a12b', '一样') - 0.1, { color: K.forest, duration: 0.35 });
   show(glS, T('a12', '存储') - 0.2, { x: 16, y: 0, d: 0.5 });
+  // a13 WiredTiger：同一条注解换成它的来历（I03）
+  textAt(glS, [[0, glS.innerHTML], [T('a13', 'W') - 0.2, '<b>WiredTiger</b><span style="font-size:24px">原是另一家公司的<br>引擎；2014 年<br>MongoDB 把这家<br>公司收购了</span>']]);
   // 名字：WiredTiger；9.0 默认用它
   res(dn, 190, 6, 'WiredTiger', 'new', T('a13', 'W') - 0.15, { fs: 38, lh: 62 });
   to(up, T('a12', '存储') - 0.2, { opacity: 0.5, duration: 0.45 });
   to(dn, T('a13', '存储') - 0.2, { borderColor: K.g1, backgroundColor: '#A6F4C9', duration: 0.45 });
-  const v9 = res(dn, 800, 8, 'MongoDB 9.0 默认', 'ink', T('a15', '9.0') - 0.2, { fs: 32, lh: 58 });
-  to([mem, dsk], T('a15', '默认') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(v9, T('a15', '默认') - 0.1, { backgroundColor: K.forest, duration: 0.35 });
+  const v9 = h('div', 'abs', dn, '');
+  to([mem, dsk], T('a15', '默认') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 });
   const tP2 = T('a16') - 0.4;
   fadeOut([md, glS, planA, downA, my, myL], tP2, 0.5);
 
@@ -133,7 +135,7 @@ scene('whole', ({ root, s, c0 }) => {
   show(wt, T('a16') - 0.15, { y: 0, d: 0.5 });
   const ovW = overlay(world);          // 连线层：在 WiredTiger 框之上
   // 一份文档进来，变成一串字节（不认识文档）
-  const dIn = docCard(world, 200, 320, [['name', JS('Alice')], ['age', JN(42)]], { w: 360, fs: 34 }); P3.push(dIn);
+  const dIn = docCard(world, 200, 320, [['name', JS('Alice')], ['age', JN(42)]], { w: 400, fs: 34 }); P3.push(dIn);
   show(dIn.c, T('a16') + 0.1, { x: -40, y: 0, d: 0.5 });
   const bytes = h('div', 'abs mono', world, '2f000000 07 5f696400 6afa… 02 …'); px(bytes, 200, 370); css(bytes, { font: '500 38px "Mono"', color: K.spring, background: K.ink, border: '2px solid ' + K.ink, borderRadius: '8px', padding: '14px 20px' }); P3.push(bytes);
   tl.to(dIn.c, { autoAlpha: 0, scaleX: 1.4, scaleY: 0.4, duration: 0.45, ease: 'power2.in' }, T('a16', '不认识') - 0.1);
@@ -169,6 +171,8 @@ scene('whole', ({ root, s, c0 }) => {
   // 存进数据目录里的文件；文件里排成一棵树（B01），找的时候从根往下走
   const dir = h('div', 'panel gray', world); px(dir, 130, 680, 1700, 250); P3.push(dir);
   const dirT = h('div', 'abs', dir, 'db/'); css(dirT, { left: '30px', top: '22px', font: '600 32px "Mono"', color: K.gd2 });
+  const dirG = tg(dir, 110, 28, '数据目录：mongod 存放数据文件的地方，由 dbPath 指定', 'm'); css(dirG, { fontSize: '24px', color: K.gd1 });   // A19
+  set(dirG, s.start, { autoAlpha: 0 }); show(dirG, T('a19', '数据目录') - 0.1, { x: 10, y: 0, d: 0.4 }); fadeOut(dirG, T('a21') - 0.5, 0.3);
   show(dir, T('a19', '数据目录') - 0.4, { y: 16, d: 0.5 });
   const f1 = h('div', 'abs', dir, 'collection-ccaa…41d.wt'); css(f1, { left: '30px', top: '84px', padding: '12px 22px', background: '#fff', border: '2px solid ' + K.gb, borderRadius: '10px', font: '600 30px "Mono"', color: K.ink });
   show(f1, T('a19', '文件') - 0.3, { y: 10, d: 0.45 });
@@ -218,7 +222,7 @@ scene('whole', ({ root, s, c0 }) => {
     return { r, lvs, lks, t, x0, W, y0, lw, gap };
   }
   const TR3 = [mini(0, 4, '集合树 · 4 个叶页'), mini(1, 3, '_id 索引 · 3 个叶页'), mini(2, 15, '姓名索引 · 15 个叶页')];
-  res(world, 730, 236, '集合一建好就有', 'ink', T('a23', '一建好') - 0.2, { fs: 30, lh: 54, out: T('a25') - 0.3 });
+
   const tTree = [T('a22') + 0.2, T('a23') + 0.2, T('a24', '名字') - 0.3];
   TR3.forEach((m, i) => {
     show(m.r, tTree[i], { y: 10, d: 0.45 });
@@ -242,7 +246,7 @@ scene('whole', ({ root, s, c0 }) => {
     css(e, { font: (j ? '700' : '500') + ' 24px/32px "Inter", "Sans SC"', color: j ? K.forest : K.gd2, whiteSpace: 'nowrap' });
     show(e, capT[i][j], { y: 8, d: 0.45 }); return e;
   }));
-  const glIdx = gl(world, 720, 914, '索引', '按某个字段排好序的另一棵树');
+  const glIdx = gl(world, 160, 914, '索引', '每个索引单独占一个文件，自己就是一棵树；_id 索引是建集合时自带的');   // A06 I06
   css(glIdx, { padding: '0 0 0 16px' }); css(glIdx.querySelector('b'), { display: 'inline', fontSize: '28px', marginRight: '14px' }); css(glIdx.querySelector('span'), { display: 'inline', fontSize: '26px' });
   show(glIdx, T('a23', '索引') - 0.1, { y: 8, d: 0.45 });
   const ci = code(world, 1270, 910, 'db.users.createIndex({ <span class="k">name</span>: <span class="n">1</span> })<span style="font:600 22px \'Sans SC\';color:#5C6C75;margin-left:12px">1：升序</span>'); css(ci, { fontSize: '24px' });   // C08
@@ -259,5 +263,6 @@ scene('whole', ({ root, s, c0 }) => {
   // 从她注册的那一刻看起：别的叶页淡下去，只留 Alice 那三页
   TR3.forEach((m, i) => m.lvs.forEach((l, k) => { if (!((i === 0 && k === 1) || (i === 1 && k === 1) || (i === 2 && k === 0))) to(l, T('a26', '注册') - 0.2, { opacity: 0.15, duration: 0.5 }); }));
   TR3.forEach((m) => to(m.r, Tend('a25') + 0.3, { opacity: 0.3, duration: 0.5 }));
+  fileEls.forEach((o, i) => { to(o.e, T('a25', '三棵') - 0.2 + i * 0.3, { backgroundColor: K.spring, borderColor: K.forest, duration: 0.35 }); to(o.e, T('a26') - 0.3, { backgroundColor: '#A6F4C9', borderColor: K.g1, duration: 0.4 }); });   // 三棵树＝三个文件，依次亮起
   to(dots, T('a26', '看起') - 0.2, { scale: 1.35, duration: 0.45, ease: 'back.out(2)' });
 });

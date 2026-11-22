@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "version": "2026-11-16.1",
+  "version": "2026-11-22.2",
   "items": {
     "F01": {
       "rev": 2,
@@ -147,7 +147,7 @@
       "evidence": ""
     },
     "F25": {
-      "rev": 1,
+      "rev": 2,
       "result": "pending",
       "note": "",
       "evidence": ""
@@ -181,7 +181,42 @@
       "result": "pending",
       "note": "",
       "evidence": ""
+    },
+    "F31": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F32": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F33": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F34": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
     }
   },
-  "history": []
+  "history": [
+    {
+      "version": "2026-11-16.1",
+      "id": "F25",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    }
+  ]
 }
