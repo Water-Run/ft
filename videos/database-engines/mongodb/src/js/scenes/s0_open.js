@@ -16,13 +16,13 @@ scene('open', ({ root, s }) => {
   fadeIn(sh.c, s.start + 0.15, 0.6);
   sh.cmd(T('o1') - 0.05, 'db.users.insertOne({ <span class="k">name</span>: <span class="s">"Alice"</span>, <span class="k">age</span>: <span class="n">42</span> })', 'lab&gt; ', 34);
   const ack = sh.out(T('o2', '存') + 0.15, '{ <span class="k">acknowledged</span>: <span class="n">true</span>, <span class="k">insertedId</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>) }');
-  css(ack, { color: K.gd2, marginTop: '40px', marginBottom: '22px' });
+  css(ack, { color: K.gd2, marginTop: '54px', marginBottom: '22px' });   // 命令下面的分段注解与回显之间留出空
   // 命令下面的分段注解（策划者 r5：一上来就抛方法调用，观众反应不过来）：insertOne 是什么、括号里是什么
-  const MCW = monoW(27), BX = 136, LY0 = 136 + 74 + 46, LY1 = LY0 + 40 + 46 + 22 + 46;   // 两行命令各自的下沿
+  const MCW = monoW(27), BX = 136, LY0 = 136 + 74 + 46, LY1 = LY0 + 54 + 46 + 22 + 46;   // 两行命令各自的下沿
   const segX = (i) => BX + i * MCW;
   const bIns = brace(world, segX(14), LY0 + 2, 9 * MCW, 'insertOne：存进一份', T('o1') + 0.75, { out: tA1 });
   const bArg = brace(world, segX(24), LY0 + 2, 26 * MCW, '要存的资料：名字和年龄', T('o1', '年龄') + 0.1, { out: tA1 });
-  res(world, 990, 172, '↵ 发送', 'ink', T('o1', '年龄') + 0.1, { fs: 26, lh: 44, out: T('o4') - 0.3 });
+  res(world, segX(52) + 18, LY0 - 45, '↵ 发送', 'ink', T('o1', '年龄') + 0.1, { fs: 26, lh: 44, out: T('o1', '年龄') + 1.9 });   // 贴在命令行尾，只亮一下
 
 
 
@@ -30,6 +30,7 @@ scene('open', ({ root, s }) => {
   const bFind = brace(world, segX(14), LY1 + 2, 7 * MCW, 'findOne：找出一份', T('o4', '找') + 0.05, { out: tA1 });
   const bCond = brace(world, segX(22), LY1 + 2, 17 * MCW, '条件：name 是 Alice', T('o4', '条件') - 0.1, { out: tA1 });
   const resL = sh.out(T('o5', '回来') - 0.1, '{ <span class="k">_id</span>: ObjectId(<span class="s">\'6afa…4e81\'</span>), <span class="k">name</span>: <span class="s">\'Alice\'</span>, <span class="k">age</span>: <span class="n">42</span> }');
+  css(resL, { marginTop: '14px' });   // 与上面的分段注解之间留空
 
   css(resL, { marginTop: '40px' });
   // 右边：MongoDB 里的那一份
@@ -77,17 +78,15 @@ scene('open', ({ root, s }) => {
   ecell(0, 0, EW[0], EHH); ecell(EW[0], 0, EW[1], EHH);
   for (let r = 0; r < 2; r++) { ecell(0, EHH + r * ERH, EW[0], ERH); ecell(EW[0], EHH + r * ERH, EW[1], ERH); }
   const ehd = [['name', 'VARCHAR(50)'], ['age', 'INT']].map(([n, ty], i) => { const e = h('div', 'abs', et, `<b>${n}</b><span style="opacity:.75;margin-left:14px;font-weight:500">${ty}</span>`); px(e, i ? EW[0] : 0, 0, EW[i], EHH); css(e, { background: K.ink, color: '#FFFFFF', font: '700 26px/52px "Mono"', paddingLeft: '16px', boxSizing: 'border-box', border: '2px solid #FFFFFF' }); return e; });
-  const etL = h('div', 'abs', sq, '先建表：定好有哪几列、每列是什么类型，数据才能放进来'); css(etL, { left: ETX + 'px', top: ETY + EHH + 2 * ERH + 12 + 'px', font: '500 24px "Inter", "Sans SC"', color: K.gd2 });
   show([etT, et], T('o3', '建表') - 0.3, { y: 10, d: 0.5 });
   show(ehd[0], T('o3', '哪几列') - 0.3, { x: -16, y: 0, d: 0.4 }); show(ehd[1], T('o3', '哪几列') + 0.05, { x: -16, y: 0, d: 0.4 });
-  show(etL, T('o3', '哪几列') + 0.35, { y: 8, d: 0.45 });
   const tSkip = Tend('o3') + 0.1;
   fromTo(strike[0], tSkip, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }); sfx('blip', tSkip + 0.3);
   to([kw0, cols0], tSkip, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.4 });   // lint-ok: 透明底（取消高亮）
   to(sqL[0], tSkip, { opacity: 0.4, duration: 0.5 });
-  to([et, etT, etL], tSkip, { opacity: 0.3, duration: 0.5 });
+  to([et, etT], tSkip, { opacity: 0.3, duration: 0.5 });
 
-  fadeOut([et, etT, etL], T('o4') - 0.25, 0.45);
+  fadeOut([et, etT], T('o4') - 0.25, 0.45);
   // 写入那一句：和 insertOne 并排看，也用不上
   show(sqL[1], tSkip + 0.5, { y: 10, d: 0.5 });
   fromTo(strike[1], T('o6', 'SQL') - 0.35, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut' });
@@ -266,7 +265,7 @@ scene('open', ({ root, s }) => {
   const tIn = T('o13', '存进') - 0.35;
   to(dd.c, tIn, { opacity: 0.2, duration: 0.25 }); to(dd.c, T('o14', '找') + 1.6, { opacity: 1, duration: 0.4 });
   tl.fromTo(drop.c, { autoAlpha: 0, y: 0, scale: 1 }, { autoAlpha: 1, duration: 0.2, immediateRender: true }, tIn);
-  tl.to(drop.c, { y: 230, scale: 0.85, duration: 0.7, ease: 'power2.in' }, tIn + 0.15);
+  tl.to(drop.c, { y: 230, x: 70, scale: 0.85, duration: 0.7, ease: 'power2.in' }, tIn + 0.15);   // 停的那一下偏右，不压「MongoDB」
   tl.to(drop.c, { y: 537, x: -204, scale: 0.35, autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, tIn + 0.85);
   to(files[0], tIn + 1.3, { borderColor: K.g1, backgroundColor: K.mint, color: K.forest, duration: 0.4 }); sfx('thud', tIn + 1.35, { g: 0.6 });
   // o14：找回来——一条查询下去，她的资料升上来
@@ -275,13 +274,13 @@ scene('open', ({ root, s }) => {
   tl.fromTo(qq, { autoAlpha: 0, y: -200 }, { autoAlpha: 1, y: -200, duration: 0.25, immediateRender: true }, tFind - 0.1);
   tl.to(qq, { y: 110, autoAlpha: 0, duration: 0.8, ease: 'power2.in' }, tFind + 0.1);
   const up = docCard(world, LX + 210, 186, [['name', JS('Alice')], ['age', JN(42)]], { w: 360, fs: 30, cls: 'on' });
-  tl.fromTo(up.c, { autoAlpha: 0, y: 537, x: -204, scale: 0.35 }, { autoAlpha: 1, y: 230, x: 0, scale: 0.85, duration: 0.6, ease: 'power2.out', immediateRender: true }, tFind + 0.85);
-  tl.to(up.c, { y: 0, scale: 1, autoAlpha: 0, duration: 0.6, ease: 'power2.inOut' }, tFind + 1.45);
+  tl.fromTo(up.c, { autoAlpha: 0, y: 537, x: -204, scale: 0.35 }, { autoAlpha: 1, y: 230, x: 70, scale: 0.85, duration: 0.6, ease: 'power2.out', immediateRender: true }, tFind + 0.85);
+  tl.to(up.c, { y: 0, x: 0, scale: 1, autoAlpha: 0, duration: 0.6, ease: 'power2.inOut' }, tFind + 1.45);
   // o15：改了年龄——磁盘上那个文件打上问号
   const tAge = T('o15', '改了');
   tl.to(ag, { autoAlpha: 0, y: -10, duration: 0.2 }, tAge);
   tl.fromTo(ag, { y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, tAge + 0.22);
-  const qm = h('div', 'abs', world, '?'); px(qm, LX + 740, 610, 110); css(qm, { font: '800 130px "Inter"', color: K.forest, textAlign: 'center' });
+  const qm = h('div', 'abs', world, '?'); px(qm, LX + 800, 600, 110); css(qm, { font: '800 130px "Inter"', color: K.forest, textAlign: 'center' });   // 问号整个放在磁盘框右边，不压框线
   solid(dd.r.age, tAge, 'new', [T('o16') - 0.3, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]); classAt(dd.r.age, 'inv', tAge, T('o16') - 0.3);   // 实心时行里的字跟着行变白（class 切换，倒着 seek 也一样）
   show(qm, T('o15', '磁盘') - 0.1, { y: 14, s: 0.8, d: 0.5 });
   res(world, 790, 250, '42 → 43', 'new', T('o15', '改了') + 0.2, { out: T('o16') - 0.3 });
@@ -305,7 +304,7 @@ scene('open', ({ root, s }) => {
   to(pBox, tKill + 0.25, { backgroundColor: K.gl2, borderColor: K.gb, duration: 0.45 });
   to(pT, tKill + 0.25, { color: K.gd1, duration: 0.45 });
   const bolt = icon(pBox, 660, 20, 'bolt', 96, K.red, 3); show(bolt, tKill, { y: -10, s: 0.7, d: 0.35 }); sfx('error', tKill + 0.05, { g: 0.7 });
-  const lostQ = h('div', 'abs', world, '?'); px(lostQ, LX + 760, 700, 80); css(lostQ, { font: '800 96px "Inter"', color: K.red, textAlign: 'center' });
+  const lostQ = h('div', 'abs', world, '?'); px(lostQ, LX + 810, 700, 80); css(lostQ, { font: '800 96px "Inter"', color: K.red, textAlign: 'center' });
   show(lostQ, T('o16b', '丢掉') - 0.2, { y: 12, s: 0.8, d: 0.45 });
   to(files, T('o16b', '丢掉') - 0.1, { borderColor: K.red, borderStyle: 'dashed', duration: 0.4 });
   // o16c：进程起来了；Alice 注销——她这一份变成红色虚线、淡下去，磁盘上那个文件打上问号
@@ -316,7 +315,7 @@ scene('open', ({ root, s }) => {
   to(pT, tUp, { color: K.forest, duration: 0.5 });
   const tDel = T('o16c', '注销') - 0.05;
   to(dd.c, tDel, { borderStyle: 'dashed', borderColor: K.red, color: K.gd1, opacity: 0.45, duration: 0.6 }); to(dd.c, T('o16c', '资料') - 0.3, { backgroundColor: '#FFC7BC', duration: 0.4 });
-  const qDel = h('div', 'abs', world, '?'); px(qDel, LX + 760, 640, 84); css(qDel, { font: '800 80px/104px "Inter"', color: '#FFFFFF', background: K.yeld, borderRadius: '14px', textAlign: 'center' });
+  const qDel = h('div', 'abs', world, '?'); px(qDel, LX + 810, 640, 84); css(qDel, { font: '800 80px/104px "Inter"', color: '#FFFFFF', background: K.yeld, borderRadius: '14px', textAlign: 'center' });
   show(qDel, T('o16c', '资料') - 0.1, { y: 14, s: 0.8, d: 0.5 });
   res(world, 790, 250, '注销', 'del', T('o16c', '账号') - 0.1, { out: T('o17') - 0.1 });
   to(files[0], T('o16c', '哪里') - 0.15, { borderStyle: 'dashed', backgroundColor: '#FCE9B0', borderColor: K.yeld, duration: 0.4 });

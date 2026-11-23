@@ -203,3 +203,9 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 
 /* 实心化以后，里面的字统一跟着外框的字色（class 切换，倒着 seek 也确定） */
 .inv * { color: inherit !important; }
+/* 注解里与实物对应的词：底色在场景里随实物一起亮起 */
+.gl i.hk, .gl i.hv { font-style: normal; border-radius: 4px; padding: 0 4px; }
+/* 注解里的小标题（定义、来历、特性）与条目 */
+.gl span .gr { display: flex; margin-top: 4px; }
+.gl span .gr em { font-style: normal; font-weight: 700; color: var(--forest); margin-right: 12px; flex: none; }
+.gl span .gr i { font-style: normal; }

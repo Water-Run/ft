@@ -38,7 +38,7 @@ scene('update', ({ root, s, c0 }) => {
   to(V.root, T('e5') - 0.1, { opacity: 0.35, duration: 0.45 }); to(V.root, T('e10', '检查点') - 0.3, { opacity: 1, duration: 0.45 });
   // 更新链：叶页三、四先让开，链挂在 2050 这一项右边
   const tCh = T('e5', '擦掉') - 0.3;
-  to([V.leaves[2].c, V.leaves[3].c], tCh, { opacity: 0, duration: 0.45 });
+  to([V.leaves[2].c, V.leaves[3].c, V.links[2], V.links[3], V.drop[2], V.drop[3]], tCh, { opacity: 0, duration: 0.45 });
   const RY = V.LY + 52 + 46;             // 2050 那一行的上沿
   const vbox = (txt, x, cls) => { const e = h('div', 'abs', world, txt); px(e, x, RY - 8, 200, 56); css(e, { borderRadius: '10px', font: '800 34px/52px "Mono"', textAlign: 'center', ...(cls === 'new' ? { background: K.forest, color: '#FFFFFF', border: '2px solid ' + K.forest } : { background: K.gd1, color: '#FFFFFF', border: '2px solid ' + K.gd1 }) }); return e; };
   const erase = h('div', 'abs', world); px(erase, V.LX(1) + 150, RY + 18, 110, 5); css(erase, { background: K.red, transformOrigin: '0 50%' }); erase.dataset.name = 'erase';
@@ -50,24 +50,27 @@ scene('update', ({ root, s, c0 }) => {
   show(v43, T('e6', '挂') - 0.1, { x: -24, y: 0, d: 0.45 }); to(v43, T('e6', '43') - 0.2, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.35 }); arrowIn(a43, T('e6', '挂') - 0.1, 0.35);
   const vN = vbox('再改…', 1250, 'old');
   const aN = link(ov, [[1192, RY + 20], [1246, RY + 20]], 'dim', { w: 3, arrow: true });
-  show(vN, T('e7', '再改') - 0.2, { x: 140, y: 0, d: 0.6 }); rowOff(T('e7', '再改') - 0.2);   // 再挂一个：链往右长；页上那一行退回原样 arrowIn(aN, T('e7', '再挂') - 0.25, 0.3);
-  const glU = gl(world, 1500, 392, '更新链', '只在内存里；<br>检查点时才合进页里；<br>读的人顺着它往回找', { w: 300 });   // D01 A10 G07
+  show(vN, T('e7', '再改') - 0.2, { x: 140, y: 0, d: 0.6 }); rowOff(T('e7', '再改') - 0.2); arrowIn(aN, T('e7', '再挂') - 0.25, 0.3);   // 再挂一个：链往右长；页上那一行退回原样
+  const glU = gl(world, 1500, 392, '更新链', 'WiredTiger 在内存里<br>挂在一项上的一串版本：<br>每改一次加一个，<br>旧的先留给正在读的人');   // D01 G07
+  css(glU.querySelector('span'), { fontSize: '24px' });
   const chainB = h('div', 'abs', world); px(chainB, 976, RY - 22, 500, 84); css(chainB, { border: '3px solid ' + K.g1, background: '#7DEBB0', borderRadius: '14px' }); world.insertBefore(chainB, v43);
   show(chainB, T('e6', '挂') - 0.2, { y: 0, s: 1.02, d: 0.4 });
   show(glU, T('e7', '更新') - 0.3, { y: 10, d: 0.5 }); fadeOut(glU, T('e8b') - 0.3, 0.35); to(chainB, T('e7', '一串') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 });
   // 旧的 42 还留着：有人同时在读（读的人只画成一个人和一根指向 42 的箭头，不写字）
   rowOn(T('e8', '42') - 0.2, 'read');
-  const reader = h('div', 'abs', world, ico('person', 46, '#FFFFFF', 2.8)); px(reader, 990, 378, 64, 64);
+  const reader = h('div', 'abs', world, ico('person', 46, '#FFFFFF', 2.8)); px(reader, 990, 364, 64, 64);
   css(reader, { background: K.blue, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' });
   show(reader, T('e8', '有人') - 0.2, { y: -10, d: 0.45 });
   to(v43, T('e8') - 0.1, { opacity: 0.25, duration: 0.4 }); to(chainB, T('e8', '有人') - 0.2, { opacity: 0.3, duration: 0.4 }); to([chainB, v43], T('e9', '还在') - 0.3, { opacity: 1, duration: 0.4 });   // 读的人用的是页上的 42；「改动还在缓存里」时链再亮
   to(V.leaves[1].c, T('e8', '42') - 0.2, { backgroundColor: '#B9DAFF', borderColor: K.blue, duration: 0.35 });
-  const rdA = link(ov, [[986, 412], [916, 452]], 'blue', { w: 3, arrow: true }); arrowIn(rdA, T('e8', '用到') - 0.2, 0.4);
+  const rdA = link(ov, [[986, 400], [916, 448]], 'blue', { w: 3, arrow: true }); arrowIn(rdA, T('e8', '用到') - 0.2, 0.4);
+  to([V.dsk, V.band.wrap, V.size, V.drop[0], V.drop[1]], T('e8', '用到') - 0.2, { opacity: 0.35, duration: 0.45 }); to([V.dsk, V.band.wrap, V.size, V.drop[0], V.drop[1]], T('e9', '大小') - 0.3, { opacity: 1, duration: 0.45 });   // 讲的是内存里的版本：磁盘先退后
+  to([V.leaves[0].c, V.leaves[1].c, chainB, v43, vN, a43, aN, reader, rdA], T('e8b', 'Po') - 0.35, { opacity: 0.35, duration: 0.45 }); to([V.leaves[0].c, V.leaves[1].c, chainB, v43, vN, a43, aN, reader, rdA], T('e9', '缓存') - 0.4, { opacity: 1, duration: 0.45 });   // 对照 PostgreSQL 时，这边退后
   // e8b 和 PostgreSQL 一样：PostgreSQL 的旧版本也留在原处（只作对照，画一个小的堆页示意）
-  const pgC = h('div', 'panel', world); px(pgC, 1474, 380, 300, 170);
+  const pgC = h('div', 'panel', world); px(pgC, 1500, 380, 284, 170);
   pgC.innerHTML = `<div style="position:absolute;left:18px;top:12px;font:700 24px Inter;color:${K.blued}">PostgreSQL · PART 3</div>` +
-    `<div style="position:absolute;left:18px;top:56px;width:264px;height:40px;border-radius:6px;background:${K.gl2};font:600 22px/40px Mono;color:${K.gd1};padding-left:12px;box-sizing:border-box">Alice · 42 <span style="font-family:'Sans SC'">旧</span></div>` +
-    `<div style="position:absolute;left:18px;top:106px;width:264px;height:40px;border-radius:6px;background:${K.blue};font:600 22px/40px Mono;color:#fff;padding-left:12px;box-sizing:border-box">Alice · 43 <span style="font-family:'Sans SC'">新</span></div>`;   // S11
+    `<div style="position:absolute;left:18px;top:56px;width:248px;height:40px;border-radius:6px;background:${K.gl2};font:600 22px/40px Mono;color:${K.gd1};padding-left:12px;box-sizing:border-box">Alice · 42 <span style="font-family:'Sans SC'">旧</span></div>` +
+    `<div style="position:absolute;left:18px;top:106px;width:248px;height:40px;border-radius:6px;background:${K.blue};font:600 22px/40px Mono;color:#fff;padding-left:12px;box-sizing:border-box">Alice · 43 <span style="font-family:'Sans SC'">新</span></div>`;   // S11
   show(pgC, T('e8b', 'Postgre') - 0.3, { x: 16, y: 0, d: 0.45 }); fadeOut(pgC, T('e9') - 0.2, 0.4);
   const pgR = [...pgC.children].slice(1); set(pgR[1], s.start, { autoAlpha: 0 }); show(pgR[1], T('e8b', '改了') - 0.2, { y: 8, d: 0.35 });
   to(pgR[0], T('e8b', '不覆盖') - 0.2, { color: '#FFFFFF', backgroundColor: K.ink, duration: 0.3 });
@@ -84,7 +87,7 @@ scene('update', ({ root, s, c0 }) => {
   fadeOut([a43, vN, aN, chainB, glU, reader, rdA, age], tK, 0.4);
   to(V.rows[1], tK, { color: K.ink, backgroundColor: K.gl3, duration: 0.35 });
   textAt(V.rows[1], [[0, V.rows[1].innerHTML], [tK + 0.35, `<b style="color:inherit">2050</b>  Alice · 43`]]);
-  to([V.leaves[2].c, V.leaves[3].c], tK + 0.2, { opacity: 1, duration: 0.45 });
+  to([V.leaves[2].c, V.leaves[3].c, V.links[2], V.links[3], V.drop[2], V.drop[3]], tK + 0.45, { opacity: 1, duration: 0.45 });   // 等更新链的注解退完
   to(V.root, tK, { opacity: 1, duration: 0.45 });
   // 页的影子往下：先去原来那块（e10「写回」）
   const gh = ghostPage(world, V.LX(1), V.LY, V.LW, V.LH);
@@ -98,6 +101,7 @@ scene('update', ({ root, s, c0 }) => {
   tl.to(gh, { y: 610 - gy0, duration: 0.25, ease: 'power2.out' }, T('e11', '位置') - 0.2);
   // e12 文件末尾长出一块，影子滑过去落进去
   revealBand(V, T('e12', '末尾') - 0.35, 98304, 126976, 0.8);
+  to(V.size, T('e12', '末尾') - 0.45, { autoAlpha: 0, duration: 0.3 }); to(V.size, T('e22', '所以') - 0.3, { autoAlpha: 1, duration: 0.35 });   // 文件条在长、数字还没讲到：先收起，免得两者对不上
   to([V.root, V.leaves[0].c, V.leaves[2].c, V.leaves[3].c], T('e12', '整个') - 0.2, { opacity: 0.35, duration: 0.4 });   // 只看要重写的这一页
   tl.to(gh, { x: toX(X(110592)), y: 640 - gy0, scale: 0.4, duration: 0.9, ease: 'power2.inOut' }, T('e12', '写到') - 0.35);
   tl.to(gh, { y: 700 - gy0, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, T('e12', '新的') - 0.1);
@@ -137,8 +141,9 @@ scene('update', ({ root, s, c0 }) => {
   V.root.innerHTML = '根页 · 1 · <span class="k1225" style="border-radius:6px;padding:0 6px">1225</span> · 2449 · 3124';
   const k1225 = V.root.querySelector('.k1225');
   const RX = 880 + k1225.offsetLeft + k1225.offsetWidth / 2, RYb = 306;     // 根页里「1225」那一格的下沿
-  const pOld = link(ov, [[RX, RYb], [RX, 660], [X(40960), 660], [X(40960), BY - 4]], 'ink', { w: 3, arrow: true });
-  const pNew = link(ov, [[RX, RYb], [RX, 660], [X(110592), 660], [X(110592), BY - 4]], 'accent', { w: 3.5, arrow: true });
+  const GAPL = V.LX(2) - 25, GAPR = V.LX(3) - 25;   // 第二、三个叶页之间，第三、四个叶页之间的空隙
+  const pOld = link(ov, [[RX, RYb], [RX, 324], [GAPL, 324], [GAPL, 660], [X(40960), 660], [X(40960), BY - 4]], 'ink', { w: 3, arrow: true });
+  const pNew = link(ov, [[RX, RYb], [RX, 324], [GAPR, 324], [GAPR, 660], [X(110592), 660], [X(110592), BY - 4]], 'accent', { w: 3.5, arrow: true });
   to(k1225, T('e15', '根页') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.3 });
   arrowIn(pOld, T('e15', '根页') - 0.1, 0.5);
   fadeOut(pOld, T('e15', '新位置') - 0.25, 0.3); arrowIn(pNew, T('e15', '新位置') - 0.2, 0.55);
@@ -149,11 +154,10 @@ scene('update', ({ root, s, c0 }) => {
   tl.to(rg, { autoAlpha: 0, duration: 0.15 }, T('e15', '重写') + 0.72);
   show(r2, T('e15', '重写') + 0.6, { y: 0, d: 0.2 });
   // e16 两个索引记的是 2050：从索引框连到页里 2050 那一行，索引框原样不动
-  const ixL = V.ix.map((e, i) => link(ov, [[1440, 252 + i * 56], [1420 - i * 10, 252 + i * 56], [1420 - i * 10, 336 + i * 10], [V.LX(1) + V.LW - 24 - i * 14, 336 + i * 10], [V.LX(1) + V.LW - 24 - i * 14, RY + 2]], 'blue', { w: 2.5, dashed: '6 6', arrow: true }));
-  ixL.forEach((p, i) => { arrowIn(p, T('e16', '2050') - 0.3 + i * 0.15, 0.5); fadeOut(p, T('e17') + 0.3, 0.35); });
   rowOn(T('e16', '2050') - 0.2, 'new'); rowOff(T('e17') + 0.2);
   V.ix.forEach((e, i) => solid(e, T('e16', '不用改') - 0.2 + i * 0.1, K.gd1, [T('e17') + 0.2, '#FFFFFF', K.gl1, K.gd2]));
-  const glPG = gl(world, 170, 636, '对照 PostgreSQL', '改一行，新版本落在另一个位置，<br>表上的每个索引都要多出一项指向它', { key: 'PG 对照' });   // S11
+  const glPG = gl(world, 170, 625, '对照 PostgreSQL', '改一行，新版本落在另一个位置，<br>表上的每个索引都要多出一项指向它', { key: 'PG 对照' });   // S11
+  css(glPG.querySelector('b'), { fontSize: '26px' }); css(glPG.querySelector('span'), { fontSize: '23px' });
   show(glPG, T('e16', '不是') - 0.2, { x: 14, y: 0, d: 0.45 }); fadeOut(glPG, T('e18') - 0.3, 0.4);
   // e17 另外三个叶页留在原地
   [V.b.l1, V.b.l3, V.b.l4].forEach((e) => { to(e, T('e17', '原地') - 0.3, { borderColor: K.forest, backgroundColor: K.forest, duration: 0.3 }); if (e._t) { to(e._t, T('e17', '原地') - 0.3, { color: '#FFFFFF', duration: 0.3 }); to(e._t, T('e18', '上一个') - 0.2, { color: K.ink, duration: 0.3 }); } to(e, T('e18', '上一个') - 0.2, { borderColor: K.gb, backgroundColor: '#FFFFFF', duration: 0.3 }); });
@@ -162,7 +166,7 @@ scene('update', ({ root, s, c0 }) => {
   const memAll = [V.root, V.leaves[0].c, V.leaves[1].c];
   to(memAll, T('e18', '原样') - 0.2, { opacity: 0.3, duration: 0.4 }); to(memAll, T('e21', '空出') - 0.2, { opacity: 1, duration: 0.4 });   // 看磁盘上留下的块；出事时内存里的东西本来也没了
   to(memAll, T('e22', '所以') - 0.2, { opacity: 0.3, duration: 0.4 }); to(memAll, T('e24') - 0.3, { opacity: 1, duration: 0.4 });   // 讲文件长了多少：内存退后
-  const pOld2 = link(ov, [[RX, RYb], [RX, 640], [X(40960), 640], [X(40960), BY - 4]], 'dim', { w: 2.5, dashed: '6 6' });
+  const pOld2 = link(ov, [[RX, RYb], [RX, 324], [GAPL, 324], [GAPL, 640], [X(40960), 640], [X(40960), BY - 4]], 'dim', { w: 2.5, dashed: '6 6' });
   arrowIn(pOld2, T('e18', '原样') - 0.2, 0.5);
   // e19 新的写到一半出事：新块重新从左往右写，写到一半变红，闪电
   to(pNew, T('e19') - 0.1, { autoAlpha: 0.25, duration: 0.3 });
@@ -174,7 +178,7 @@ scene('update', ({ root, s, c0 }) => {
   const bang = h('div', 'abs', world, ico('bolt', 56, K.red, 3)); px(bang, X(110592) - 28, BY + 100, 56, 56);
   show(bang, T('e19', '出了事') - 0.2, { y: -8, s: 0.6, d: 0.35 }); sfx('error', T('e19', '出了事'), { g: 0.5 });
   // e20 重启时回到上一个：旧的那根指针亮成实线，两块旧块变绿；新块整块作废（退淡）
-  const pBack = link(ov, [[RX, RYb], [RX, 640], [X(40960), 640], [X(40960), BY - 4]], 'accent', { w: 4, arrow: true }); arrowIn(pBack, T('e20', '回到') - 0.2, 0.5); fadeOut(pOld2, T('e20', '回到') - 0.2, 0.3); fadeOut(pBack, T('e21', '写完') + 0.2, 0.3);
+  const pBack = link(ov, [[RX, RYb], [RX, 324], [GAPL, 324], [GAPL, 640], [X(40960), 640], [X(40960), BY - 4]], 'accent', { w: 4, arrow: true }); arrowIn(pBack, T('e20', '回到') - 0.2, 0.5); fadeOut(pOld2, T('e20', '回到') - 0.2, 0.3); fadeOut(pBack, T('e21', '写完') + 0.2, 0.3);
   to([V.b.l2, V.b.r], T('e20', '回到') - 0.2, { backgroundColor: K.spring, borderColor: K.forest, duration: 0.35 }); to(lock, T('e20', '回到') - 0.2, { autoAlpha: 0, duration: 0.25 });
   to([n2, r2], T('e20', '完好') - 0.1, { opacity: 0.3, duration: 0.4 });
   to([V.b.l1, V.b.l3, V.b.l4], T('e20', '完好') - 0.2, { backgroundColor: K.spring, borderColor: K.forest, duration: 0.35 }); to([V.b.l1, V.b.l3, V.b.l4], T('e21') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gb, duration: 0.35 });   // 上一个检查点的整棵树都还在
@@ -186,6 +190,7 @@ scene('update', ({ root, s, c0 }) => {
   to(fill, tN + 0.65, { backgroundColor: K.forest, duration: 0.3 }); to(r2, tN, { backgroundColor: K.ink, duration: 0.3 });
   if (n2._t) to(n2._t, tN + 0.65, { color: '#FFFFFF', duration: 0.3 });
   to(pNew, tN + 0.5, { autoAlpha: 1, duration: 0.3 });
+  revealBand(V, tN + 0.4, 126976, 135168, 0.5); const ex2 = V.band.blk(126976, 135168, 'h', '区段表'); set(ex2, s.start, { autoAlpha: 0 }); show(ex2, tN + 0.7, { y: 0, s: 0.7, d: 0.35 });   // 这次检查点的区段表
   to([V.b.l2, V.b.r], T('e21', '空出') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.45 });   // lint-ok: 空出的块是透明底
   fadeOut(pNew, T('e22') - 0.1, 0.35); to(k1225, T('e22') - 0.1, { backgroundColor: 'rgba(0,0,0,0)', color: '#FFFFFF', duration: 0.3 });   // lint-ok: 取消高亮
   // e22 文件 96 KB → 132 KB：文件条已经长出来，右边的大小跟着数上去

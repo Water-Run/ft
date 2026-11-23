@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "version": "2026-11-22.2",
+  "version": "2026-11-23.2",
   "items": {
     "F01": {
       "rev": 2,
@@ -111,7 +111,7 @@
       "evidence": ""
     },
     "F19": {
-      "rev": 3,
+      "rev": 4,
       "result": "pending",
       "note": "",
       "evidence": ""
@@ -183,7 +183,7 @@
       "evidence": ""
     },
     "F31": {
-      "rev": 1,
+      "rev": 2,
       "result": "pending",
       "note": "",
       "evidence": ""
@@ -205,12 +205,44 @@
       "result": "pending",
       "note": "",
       "evidence": ""
+    },
+    "F35": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
+    },
+    "F36": {
+      "rev": 1,
+      "result": "pending",
+      "note": "",
+      "evidence": ""
     }
   },
   "history": [
     {
       "version": "2026-11-16.1",
       "id": "F25",
+      "item": {
+        "rev": 1,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-11-22.2",
+      "id": "F19",
+      "item": {
+        "rev": 3,
+        "result": "pending",
+        "note": "",
+        "evidence": ""
+      }
+    },
+    {
+      "version": "2026-11-22.2",
+      "id": "F31",
       "item": {
         "rev": 1,
         "result": "pending",

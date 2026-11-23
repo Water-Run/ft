@@ -139,7 +139,7 @@ scene('nosql', ({ root, s, c0 }) => {
     const ad = h('div', 'abs', b); css(ad, { left: '18px', top: '36px', width: '120px', height: '66px', background: K.mint, border: '1.5px solid ' + K.g1, borderRadius: '4px' });
     for (let k = 0; k < 3; k++) { const ln = h('div', 'abs', b); css(ln, { left: '18px', top: 120 + k * 22 + 'px', width: 120 - k * 24 + 'px', height: '8px', background: K.gl2, borderRadius: '3px' }); } return b; });
   show(dc, T('n9', '广告') - 0.3, { y: 16, d: 0.6 });
-  const glDC = gl(world, 160, 712, 'DoubleClick', '替网站投放广告的公司：网页每打开一次，由它决定放哪条广告，<br>并统计有没有人看、有没有人点。1996 年成立', { key: 'DoubleClick' }); P3.push(glDC);   // V08（策划者选第 1 种写法，到「1996 年成立」为止）
+  const glDC = gl(world, 160, 716, 'DoubleClick', '替网站投放广告的公司：网页每打开一次，由它决定放哪条广告，<br>并统计有没有人看、有没有人点。1996 年成立', { key: 'DoubleClick' }); css(glDC.querySelector('span'), { fontSize: '24px' }); P3.push(glDC);   // V08（策划者选第 1 种写法，到「1996 年成立」为止）
   show(glDC, T('n9', 'Double') + 0.35, { x: 16, y: 0, d: 0.5 }); fadeOut(glDC, T('n13') - 0.3, 0.45);
   BR.forEach((b, i) => to(b.children[1], T('n9', 'Double') - 0.1 + i * 0.12, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 }));
   // 一台关系数据库，右边一根负载条
@@ -202,7 +202,7 @@ scene('nosql', ({ root, s, c0 }) => {
   moveHead(2, T('n15', '二零零九') - 0.3);
   const date = h('div', 'abs', world, '2009 年 6 月 11 日 · 旧金山'); px(date, 160, 222); css(date, { font: '700 40px/66px "Inter", "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '12px', padding: '0 22px' }); P4.push(date);
   const dateS = tg(world, 160, 304, '一场新数据库的聚会', ''); css(dateS, { font: '700 32px/56px "Sans SC"', color: '#FFFFFF', background: K.forest, borderRadius: '10px', padding: '0 18px' }); P4.push(dateS);
-  show(date, T('n15', '旧金山') - 0.4, { y: 12, d: 0.5 }); show(dateS, T('n15', '聚会') - 0.2, { y: 8, d: 0.45 });
+  show(date, T('n15', '二零零九') - 0.2, { y: 12, d: 0.5 }); show(dateS, T('n15', '聚会') - 0.2, { y: 8, d: 0.45 });   // 「2009 年 6 月」一出口就有日期，不留几秒空屏
   const stage = h('div', 'abs', world); px(stage, 160, 690, 1600, 4); css(stage, { background: K.gb, transformOrigin: '0 50%' }); P4.push(stage);
   fromTo(stage, T('n15', '旧金山') - 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power2.inOut' });
   const slots = [0, 1, 2, 3].map((i) => { const e = h('div', 'abs', world); px(e, 210 + i * 390, 420, 350, 250); css(e, { border: '3px dashed ' + K.gl1, borderRadius: '16px' }); e.dataset.name = 'slot'; show(e, T('n15', '聚会') - 0.1 + i * 0.1, { y: 10, d: 0.4 }); fadeOut(e, T('n16') + 3.2, 0.4); return e; });
@@ -226,8 +226,8 @@ scene('nosql', ({ root, s, c0 }) => {
   moveHead(3, T('n19', '两个') - 0.3);
   fadeOut(stage, T('n19', 'MongoDB') - 0.5, 0.4);
   tl.to(pres[3], { x: 1600 - 175 - (210 + 3 * 390), y: 150, scale: 0.8, duration: 0.9, ease: 'power2.inOut' }, T('n19', 'MongoDB') - 0.3);
-  solid(pres[3], T('n19', '发布') - 0.1, 'new'); to(pres[3].children[1], T('n19', '发布') - 0.1, { color: '#FFFFFF', duration: 0.35 }); fadeOut(presD[3], T('n19', 'MongoDB') - 0.45, 0.3);   // 卡缩小后简述的字会小于 22px，先收起 to(pres[3].querySelector('svg'), T('n19', '发布') - 0.1, { attr: { stroke: '#FFFFFF' }, duration: 0.35 });
-  const v1 = tg(world, 1110, 676, '第一个版本', 'g'); css(v1, { width: '300px', textAlign: 'right', fontSize: '30px' }); P4.push(v1);
+  solid(pres[3], T('n19', '发布') - 0.1, 'new'); to(pres[3].children[1], T('n19', '发布') - 0.1, { color: '#FFFFFF', duration: 0.35 }); fadeOut(presD[3], T('n19', 'MongoDB') - 0.45, 0.3); to(pres[3].querySelector('svg'), T('n19', '发布') - 0.1, { attr: { stroke: '#FFFFFF' }, duration: 0.35 });   // 卡缩小后简述的字会小于 22px，先收起
+  const v1 = tg(world, 1450, 806, '第一个版本', 'g'); css(v1, { width: '300px', textAlign: 'center', fontSize: '30px' });   // 放在 MongoDB 那张卡正下方（原先在 CouchDB 下面） P4.push(v1);
   show(v1, T('n19', '第一') - 0.2, { x: 16, y: 0, d: 0.45 });
 
   // ══ 五、这一类的共同点（V04、N01）：时间轴收起，NoSQL 和几家留在上面 ══
@@ -259,7 +259,7 @@ scene('nosql', ({ root, s, c0 }) => {
   // 非关系型数据库：贴在 NoSQL 那个名字下面
   const glN = h('div', 'abs', world, '<span style="font:600 36px/1 \'Sans SC\';color:#5C6C75;margin-right:22px">也叫</span><b>非关系型数据库</b>'); px(glN, 0, 314, 1920);
   css(glN, { font: '800 66px/1.25 "Sans SC"', color: K.forest, textAlign: 'center' }); glN.dataset.gloss = '非关系型数据库';
-  const glN2 = h('div', 'abs', world, 'NoSQL 通常就指这一类：<b style="color:#001E2B">不按关系表的格式存数据</b>的数据库'); px(glN2, 0, 412, 1920); css(glN2, { font: '500 30px "Sans SC"', color: K.gd2, textAlign: 'center' });   // N01
+  const glN2 = h('div', 'abs', world, 'NoSQL 通常就指这一类：<b style="color:#001E2B">不按关系表的格式存数据</b>的数据库'); px(glN2, 0, 424, 1920); css(glN2, { font: '500 30px "Sans SC"', color: K.gd2, textAlign: 'center' });   // N01
   show(glN, T('n27', '非关系') - 0.35, { y: 16, s: 0.92, d: 0.6 }); show(glN2, T('n27', '数据库') + 0.05, { y: 10, d: 0.5 });
   to(t3.g, T('n27', '不按') - 0.1, { opacity: 0.35, duration: 0.5 }); to(t2.g, T('n27', '不按') - 0.1, { opacity: 0.35, duration: 0.5 });
   css(glN.querySelector('b'), { borderRadius: '12px', padding: '0 20px' }); to(glN.querySelector('b'), T('n27', '数据库') - 0.1, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.4 });
@@ -298,15 +298,17 @@ scene('nosql', ({ root, s, c0 }) => {
   const tAl = T('n31') - 0.1;
   fadeOut([cats[1].c, cats[2].c, cats[3].c, p7, nsB2], tAl, 0.5);
   fadeOut([cats[0].b, cats[0].dfE, cats[0].rpE], tAl, 0.4);
-  tl.to(cats[0].c, { width: 960, height: 440, duration: 0.7, ease: 'power2.inOut' }, tAl + 0.2);
-  const ad = docCard(world, KX + 40, KY + 120, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 640, fs: 33 });
+  tl.to(cats[0].c, { width: 760, height: 440, duration: 0.7, ease: 'power2.inOut' }, tAl + 0.2);   // 文档卡在里面左右留白相当
+  const ad = docCard(world, KX + 60, KY + 120, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 640, fs: 33 });
   css(ad.c, { borderColor: K.g1 });
-  show(ad.c, T('n31', 'Alice') - 0.2, { y: 14, d: 0.55 }); to(ad.c, T('n31', 'Mongo') - 0.2, { backgroundColor: K.mint, duration: 0.4 });
+  show(ad.c, Math.max(T('n31', 'Alice') - 0.2, tAl + 0.95), { y: 14, d: 0.55 }); to(ad.c, T('n31', 'Mongo') - 0.2, { backgroundColor: K.mint, duration: 0.4 });   // 外框长到位再出文档
   const keys = [...ad.c.querySelectorAll('.k')], vals = [...ad.c.querySelectorAll('.dv')];
   to(keys, T('n31', '文档') + 0.2, { backgroundColor: K.bluel, duration: 0.4 });
   to(vals, T('n31', '文档') + 0.7, { backgroundColor: K.mint2, duration: 0.4 });
-  const fk = res(world, KX + 1010, KY + 190, '字段', 'ink', Tend('n31') + 0.5), fv = res(world, KX + 1150, KY + 190, '值', 'new', Tend('n31') + 0.9);
-  const glD = gl(world, KX + 1010, KY + 40, '文档', '一组「字段: 值」；值也可以是<br>数组，或者另一份文档；<br>_id 是存进去时自动补上的', { cls: 'lg' });   // I04 A12 A01
+  // 文档的定义（T01 T02）：「字段」「值」两个词用和卡片里同样的底色，读注解就能对上卡片里的哪一块
+  const glD = gl(world, KX + 820, KY + 40, '文档', `MongoDB 存数据的基本单位，<br>一份文档就是一条记录。<br>由一组「<i class="hk">字段</i>: <i class="hv">值</i>」组成；<br>值可以是数字、文字，<br>也可以是数组或另一份文档`, { cls: 'lg' });   // T01 T02 I04
   show(glD, T('n31', '文档') - 0.3, { x: 16, y: 0, d: 0.5 });
-  ['_id', 'name', 'age'].forEach((k, i) => to(ad.r[k], Tend('n31') + 0.2 + i * 0.4, { color: K.forest, duration: 0.35 }));
+  const hk = glD.querySelector('.hk'), hv = glD.querySelector('.hv');
+  to(hk, T('n31', '文档') + 0.2, { backgroundColor: K.bluel, duration: 0.4 }); to(hv, T('n31', '文档') + 0.7, { backgroundColor: K.mint2, duration: 0.4 });
+  ['_id', 'name', 'age'].forEach((k, i) => { const t = Tend('n31') + 0.3 + i * 0.5; solid(ad.r[k], t, 'new'); to([...ad.r[k].querySelectorAll('span')], t, { color: '#FFFFFF', backgroundColor: 'rgba(0,0,0,0)', duration: 0.35 }); });   // 一组「字段: 值」：三个字段一行行亮起
 });

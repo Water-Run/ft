@@ -38,6 +38,10 @@ function gl(parent, x, y, term, def, o = {}) {
   px(e, x, y); if (o.w) css(e, { width: o.w + 'px', whiteSpace: 'normal' });
   e.dataset.gloss = o.key || term; return e;
 }
+// 横排的注解：名词在左，定义在右（可多行），用在画面底部一条窄带里
+function glInline(e) { css(e, { padding: '0 0 0 16px', display: 'flex', alignItems: 'flex-start' }); css(e.querySelector('b'), { fontSize: '28px', marginRight: '14px', flex: 'none' }); css(e.querySelector('span'), { fontSize: '24px', lineHeight: '35px', paddingTop: '1px' }); return e; }
+// 注解里分条的定义：[[小标题, 内容 HTML], …] → 每条一行，续行与内容对齐
+function glRows(rows) { return rows.map(([k, v]) => `<span class="gr"><em>${k}</em><i>${v}</i></span>`).join(''); }
 // 贴着实物的小标签；pts 给出时另画一条细引线（引线从标签指向实物）
 function tg(parent, x, y, txt, cls = '') { const e = h('div', 'tg ' + cls, parent, txt); px(e, x, y); return e; }
 function lead(ov, pts, o = {}) { return link(ov, pts, o.color || 'dim', { w: o.w || 2, dashed: o.dashed }); }
@@ -330,7 +334,7 @@ function collStage(world, ov, t0) {
   // 文件带
   V.TOTAL = 135168;
   V.band = fileBand(world, 170, 760, 1580, V.TOTAL, 92);
-  V.size = h('div', 'abs', world, '96 KB'); px(V.size, 1450, 682, 300); css(V.size, { font: '800 52px "Inter"', color: K.ink, textAlign: 'right' });
+  V.size = h('div', 'abs', world, '96 KB'); px(V.size, 1450, 682, 300); css(V.size, { font: '800 52px "Inter"', color: K.ink, textAlign: 'right', left: 'auto', right: '170px', width: 'auto' });   // 贴右，底色只包住字
   V.ticks = V.band.ticks(32768, 131072);
   V.b = {
     h: V.band.blk(0, 4096, 'h', '头'), l1: V.band.blk(4096, 28672, 'l', '1–1224'), l2: V.band.blk(28672, 53248, 'l', '1225–2448'),
