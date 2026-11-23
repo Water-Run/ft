@@ -33,5 +33,5 @@ luainstaller 已成片并发布（哔哩哔哩与 YouTube，2026-10-01/02），2
 | # | 标题 | 语言 | 状态 | 目录 |
 |---|---|---|---|---|
 | 1 | luainstaller：把 Lua 脚本交给没有 Lua 的人 | zh + en | 已成片 | [`luainstaller`](luainstaller/) |
-| 2 | DeepSeek Harness Uncensored：更自由的探索未至之境 | zh | 制作中 | [`deepseek-harness-uncensored`](deepseek-harness-uncensored/) |
+| 2 | DeepSeek Harness Uncensored：更自由的探索未至之境 | zh | 已成片 | [`deepseek-harness-uncensored`](deepseek-harness-uncensored/) |
 <!-- catalog:end -->

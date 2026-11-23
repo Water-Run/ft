@@ -187,10 +187,12 @@ scene('security', ({ root, s }) => {
   // s2：七类现场手册，在窗口前排成一列 3D 的书，沿「目标梳理 → 验证 → 修复 → 报告」依次抽出
   const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(238,241,247,.62)' });
   const shelf = h('div', 'abs', world); px(shelf, 250, 240, 1420, 520);
+  // 七类现场手册的类别（DSHU README「七类现场手册：交战流程、侦察、Web 攻击、网络利用、载荷实验、云与容器、报告」，策划者 2026-11-23 要求标出类别）
+  const KINDS = ['交战流程', '侦察', 'Web 攻击', '网络利用', '载荷实验', '云与容器', '报告'];
   const books = Array.from({ length: 7 }, (_, i) => {
     const b = h('div', 'card3d', shelf); px(b, 40 + i * 190, 60, 150, 300);
     css(b, { background: `linear-gradient(160deg, #ef4444, #991b1b)`, color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', padding: '26px 0', borderRadius: '14px' });
-    b.innerHTML = `${icon('book', 'style="width:46px;height:46px"')}<span style="font:800 44px Inter;opacity:.9">${i + 1}</span><span style="font-size:22px;opacity:.85">现场手册</span>`;
+    b.innerHTML = `${icon('book', 'style="width:46px;height:46px"')}<span style="font:800 44px Inter;opacity:.9">${i + 1}</span><span style="font-size:23px;font-weight:600;white-space:nowrap">${KINDS[i]}</span>`;
     b.dataset.name = `现场手册 ${i + 1}`;
     return b;
   });
@@ -247,6 +249,7 @@ scene('security', ({ root, s }) => {
   const node = (x, label, sub, ic) => { const n = h('div', 'card3d', flow); px(n, x, 100, 360, 200); css(n, { padding: '26px 30px', '--mc': MC.sec }); n.innerHTML = `<div style="display:flex;gap:12px;align-items:center;font-size:32px;font-weight:700"><span style="color:var(--mc)">${icon(ic, 'style="width:36px;height:36px"')}</span>${label}</div><div style="color:#5d626b;margin-top:10px;font-size:24px">${sub}</div>`; n.dataset.name = label; return n; };
   const nA = node(0, 'DSHU', '网安会话', 'shield'), nP = node(640, '独立代理', '你指定的上游代理', 'globe'), nT = node(1280, '目标', '授权范围内的系统', 'term');
   const wire = h('div', 'abs', flow); px(wire, 360, 196, 920, 8); css(wire, { background: 'linear-gradient(90deg, rgba(220,38,38,.2), rgba(220,38,38,.8), rgba(220,38,38,.2))', borderRadius: '4px', transformOrigin: '0 50%' });
+  flow.insertBefore(wire, nA);   // 连线垫在三张卡片下面，不压卡片上的字
   const pkt = h('div', 'abs', flow); px(pkt, 380, 20); css(pkt, { padding: '8px 16px', borderRadius: '12px', background: '#fff', color: 'var(--ink)', fontSize: '22px', boxShadow: '0 10px 30px rgba(0,0,0,.45)', '--mc': MC.sec, whiteSpace: 'nowrap' });
   pkt.innerHTML = '请求 · 来源：本机';
   [nA, nP, nT].forEach((n, i) => rise3d(n, tS4 + 0.2 + i * 0.12, { rx: 24, z: 400, d: 0.7 }));
@@ -276,8 +279,9 @@ scene('security', ({ root, s }) => {
 
   // s6：流量图收走，回到应用：一个空白的新会话。确认框只在第一次进入新的网安对话时弹出（SecurityEntryDialog），
   // 内容照 security-entry 截图与 ui-agent-preset 的文案；打开即开始 8 秒阅读倒计时，灰字与按钮一起数
-  const tS6 = T('s6') - 0.15;
-  [nA, nP, nT, sw].forEach((n, i) => sink3d(n, tS6 + i * 0.04, { d: 0.45 })); fadeOut(wire, tS6, { d: 0.3 }); fadeOut(pkt, tS6, { d: 0.3 }); fadeOut(by, tS6, { d: 0.3 });
+  // 换场分三步，不叠在一起：流量图先沉下去（s5b 说完），首页再淡入，确认框最后弹出
+  const tOut = Tend('s5b') + 0.05, tS6 = tOut + 0.3;
+  [nA, nP, nT, sw].forEach((n, i) => sink3d(n, tOut + i * 0.04, { d: 0.35 })); fadeOut(wire, tOut, { d: 0.25 }); fadeOut(pkt, tOut, { d: 0.25 }); fadeOut(by, tOut, { d: 0.25 });
   const app2 = makeApp(wrap, { mode: 'def', home: true, sessions: HOME_SESS.slice(0, 3), more: ['router-fw', '雾港'] });
   homePage(app2, { mode: 'def' });
   fromTo(app2.el, tS6 + 0.1, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power2.out' });
@@ -295,7 +299,7 @@ scene('security', ({ root, s }) => {
     <div style="${G};font-size:22px;margin-top:8px">请按提示完整输入声明，全角与半角视为相同。</div>
     <div style="display:flex;justify-content:flex-end;gap:14px;margin-top:26px"><span class="btn">取消</span><span class="btn dark cdb" style="opacity:.4">阅读并确认（8 秒）</span></div>`;
   dl.d.style.top = Math.max(20, (900 - dl.d.offsetHeight) / 2) + 'px';
-  const tDl = tS6 + 0.45, tX = s.end - 0.6;
+  const tDl = Math.max(tS6 + 0.55, T('s6') - 0.1), tX = s.end - 0.6;
   maskIn(scr, tDl); modalIn(dl.d, tDl); sfx('pop', tDl, { g: 0.4 });
   const cdl = dl.body.querySelector('.cdl'), cdb = dl.body.querySelector('.cdb');
   let lastN = null;

@@ -30,9 +30,9 @@ scene('box', ({ root, s, c0 }) => {
   h('div', '', card, '更自由的探索未至之境').style.cssText = 'font-size:24px;color:rgba(255,255,255,.75);margin-top:-8px';
   h('div', '', card, `<span style="color:${LBL}">作者</span>　WaterRun`).style.cssText = 'font-size:22px';
   const build = h('div', '', card); css(build, { width: '100%', display: 'grid', gap: '18px', fontSize: '22px', marginTop: '6px' });
-  h('div', '', build, `<span style="color:${LBL}">Uncensored 版本</span><span style="font:500 46px/1 Inter;letter-spacing:-.8px;font-variant-numeric:tabular-nums">2026.11.14.1</span>`)
+  h('div', '', build, `<span style="color:${LBL}">Uncensored 版本</span><span style="font:500 46px/1 Inter;letter-spacing:-.8px;font-variant-numeric:tabular-nums">2026.11.23.0</span>`)
     .style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.15)';
-  h('div', '', build, `<div style="color:${LBL}">编译于</div><div style="margin-top:8px">2026-11-21 06:22 UTC</div>`);
+  h('div', '', build, `<div style="color:${LBL}">编译于</div><div style="margin-top:8px">2026-11-23 07:08 UTC</div>`);
   h('div', '', card, `${icon('github')} GitHub 仓库`).style.cssText = 'display:inline-flex;align-items:center;gap:12px;font-size:22px';
   const upd = h('div', '', card); css(upd, { marginTop: 'auto', width: '100%', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,.15)', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '14px', fontSize: '22px' });
   h('div', '', upd, '<span style="width:10px;height:10px;border-radius:50%;background:rgb(34,197,94);box-shadow:0 0 0 5px rgba(34,197,94,.16);flex:none"></span>当前已是最新版本').style.cssText = 'display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.8)';
@@ -43,7 +43,7 @@ scene('box', ({ root, s, c0 }) => {
   const grp = (html) => { const g = h('div', 'sec', right, html); css(g, { padding: '18px 30px', borderRadius: '26px', display: 'grid', gap: '12px', flex: 'none' }); return g; };
   const kv = (rows) => `<div class="kv" style="grid-template-columns:270px 1fr;row-gap:12px;margin-top:0">${rows.map(([k, v]) => `<span style="${MU}">${k}</span><span class="v" style="font-variant-numeric:tabular-nums">${v}</span>`).join('')}</div>`;
   const sBase = grp(`<div class="k">基础与许可</div><div class="big" style="justify-self:start;color:var(--blue);font:500 29px Inter">基于 DeepSeek Harness 0.2.2-rc.5</div><div style="${MU};font-size:22px">GPL-3.0-or-later</div><div style="${MU};font-size:22px">第三方组件与许可</div>`);
-  grp(`<div class="k">源码</div>${kv([['源码节点', `faa2737d73d6<div style="${MU};font-size:22px;margin-top:4px">含本地修改</div>`], ['提交时间', '2026-11-21 06:15 UTC']])}`);
+  grp(`<div class="k">源码</div>${kv([['源码节点', '7efe20159de3'], ['提交时间', '2026-11-23 07:08 UTC']])}`);
   const sPurge = grp(`<div class="k">dsh-purge 集成</div>${kv([['dsh-purge fork 节点', '19082c2b9788'], ['dsh-purge 提交时间', '2026-10-22 07:22 UTC']])}`);
   const sRea = grp(`<div class="k">内置 REA · MIT</div><div style="display:flex;align-items:center;gap:12px;font:500 27px Inter">REA 6.9.0 <span style="color:var(--mu);display:inline-flex">${icon('github')}</span></div>${kv([['源码节点', 'd74549e495c5'], ['提交时间', '2026-11-12 08:58 UTC']])}<div style="${MU};font-size:22px">REA 与 Node 随应用提供；Ghidra/Java、IDA 或 Hopper 按需另行配置。</div>`);
   // 右栏只露到 dsh-purge 一节为止，下面空出来给注解

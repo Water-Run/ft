@@ -24,7 +24,9 @@ window.ENGINE = {
       const a = i === 0 ? -1 : (s.chap ? s.start + s.lead - 0.5 : s.start - 0.25);
       const b = nx ? (nx.chap ? nx.start + 0.5 : nx.start + 0.3) : Infinity;
       F((t) => { root.style.display = (t >= a && t < b) ? '' : 'none'; });
-      if (i > 0 && !s.chap) tl.fromTo(root, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.inOut', immediateRender: true }, s.start - 0.25);
+      // 四种模式之间是立方体转场（cubeIn / cubeOut）：转进来的那一面不透明，只在最开头 0.12 秒淡入，免得转到一半是半透明的虚影
+      const cube = ['default', 'security', 'reverse', 'writing'].includes(s.id);
+      if (i > 0 && !s.chap) tl.fromTo(root, { opacity: 0 }, { opacity: 1, duration: cube ? 0.12 : 0.5, ease: 'power1.inOut', immediateRender: true }, s.start - 0.25);
     });
   },
 };

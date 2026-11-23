@@ -26,7 +26,7 @@ scene('asides', ({ root, s, c0 }) => {
       c.style.transform = `perspective(${P3}px) translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg) scale(${(1 - 0.5 * ease.io3(gather)).toFixed(3)})`;
       c.style.opacity = (Math.min(enter * 1.5, 1) * (1 - gather) * (1 - 0.45 * Math.abs(u))).toFixed(3);
       c.style.visibility = t < tA || gather >= 1 ? 'hidden' : 'visible';
-      c.style.zIndex = String(Math.round(1000 - Math.abs(x0)));
+      c.style.zIndex = String(Math.max(1, Math.round(3000 - Math.abs(x0))));
     });
   });
   sfx('whoosh', tA, { g: 0.6 }); sfx('chime', T('x1b', '通用') , { g: 0.4 });
@@ -57,7 +57,7 @@ scene('asides', ({ root, s, c0 }) => {
   const tDone = T('x5') - 0.6;
   // 侧栏的峰谷倒计时每秒走一格；spend 场用同一个起点（窗口出现的时刻）接着走，换场时不回跳
   const CD0 = 39 * 3600 + 22 * 60 + 15;
-  F((t) => { const v = Math.max(0, CD0 - Math.max(0, Math.floor(t - tW))); const str = `${String(Math.floor(v / 3600)).padStart(2, '0')}:${String(Math.floor(v / 60) % 60).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`; if (app.cd.textContent !== str) app.cd.textContent = str; });
+  if (false) F((t) => { const v = Math.max(0, CD0 - Math.max(0, Math.floor(t - tW))); const str = `${String(Math.floor(v / 3600)).padStart(2, '0')}:${String(Math.floor(v / 60) % 60).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`; if (app.cd.textContent !== str) app.cd.textContent = str; });
   rise3d(wrap, tW, { rx: 14, z: 700, y: 50, d: 1.0 }); sfx('whoosh', tW, { g: 0.5 });
   [...L, run].forEach((e) => appear(e, tW));
   // 主线一直在动：转圈、计时
@@ -84,7 +84,7 @@ scene('asides', ({ root, s, c0 }) => {
   F((t) => { const sp = bc.querySelector('.bspin'); if (sp) sp.style.transform = `rotate(${(((t % 0.8) / 0.8) * 360).toFixed(1)}deg)`; });
   // x3b：Claude Code 的 /btw 是什么
   const nCC = note(world, 1110, 392, `<div class="k" style="display:flex;align-items:center;gap:12px;letter-spacing:1px">${LOGO.claude()}<span style="font-size:26px;color:#fff">Claude Code</span><span class="mono" style="font-size:24px">/btw</span></div>问一句当前会话的事，答案不进对话记录`, 560);
-  fadeIn(nCC, T('x3b', 'Claude') - 0.1, { x: 20 }); fadeOut(nCC, T('x3c') + 0.6, { d: 0.3 });
+  fadeIn(nCC, T('x3b', 'Claude') - 0.1, { x: 20 }); fadeOut(nCC, T('x4') - 0.45, { d: 0.3 });
   // x3c：再问一句，卡片原地不动，内容先换成加载圈，再换成新的问答
   const q2 = '/btw 这个报错什么意思';
   const tT2 = T('x3c', '简单') - 0.4;

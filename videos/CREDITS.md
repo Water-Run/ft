@@ -59,7 +59,7 @@
 | [道交法中的路权](standalone/traffic-law-right-of-way/README.md) | 审稿 | WaterRun | Kimi K2.8：第 5–6 稿润色<br>型号未记录（经 Codex 客户端）：取证、立项、第 7 稿<br>Claude Opus 5.5：补充取证、中文文案<br>GPT-6 Astra：提示组织、源稿核对、反馈整合<br>Gemini 4 Argon：第 1–2 轮文案讨论 | 未登记 |
 | [怎么打手枪？](standalone/pistol-shooting/README.md) | 取证 | WaterRun | 未登记 | 未登记 |
 | [两行代码，十年漏洞：Linux 内核 TCP 的致命缺陷](hot-topics/cve-2026-98432/README.md) | 已放弃 | WaterRun | 未登记 | 未登记 |
-| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/README.md) | 预览迭代 | WaterRun | Claude Opus 5.5：取证、文案初稿、事实核对、视觉设计、场景实现、配乐 | MiniMax speech-2.8-hd：配音 · Chinese (Mandarin)_Warm_Bestie<br>Whisper small：读音回听 |
+| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/README.md) | 已交付 | WaterRun | Claude Opus 5.5：取证、文案初稿、事实核对、视觉设计、场景实现、配乐 | MiniMax speech-2.8-hd：配音 · Chinese (Mandarin)_Warm_Bestie<br>Whisper small：读音回听 |
 
 ## 已发布视频
 

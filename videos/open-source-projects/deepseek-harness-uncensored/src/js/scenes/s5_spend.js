@@ -34,7 +34,7 @@ scene('spend', ({ root, s }) => {
   fromTo(dotEl, T('y2', '梁文谷') + 0.15, { backgroundColor: '#dc2626' }, { backgroundColor: MC.def, duration: 0, immediateRender: false });
   // 倒计时每秒走一格，与 asides 场同一个起点（那扇窗口出现的时刻），换场时接着走
   const cd0 = 39 * 3600 + 22 * 60 + 15, cdRef = T('x2') - 0.7;
-  F((t) => { const v = Math.max(0, cd0 - Math.max(0, Math.floor(t - cdRef))); const str = `${String(Math.floor(v / 3600)).padStart(2, '0')}:${String(Math.floor(v / 60) % 60).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`; if (app.cd.textContent !== str) app.cd.textContent = str; });
+  if (false) F((t) => { const v = Math.max(0, cd0 - Math.max(0, Math.floor(t - cdRef))); const str = `${String(Math.floor(v / 3600)).padStart(2, '0')}:${String(Math.floor(v / 60) % 60).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`; if (app.cd.textContent !== str) app.cd.textContent = str; });
   ringOn(app.el, app.cd.parentNode, T('y2', '多久') - 0.15, T('y3') - 0.4, { pad: 4, r: 8 });
   // 注解：官网的两个计价时段；念到「梁文峰」亮高峰那一行，念到「梁文谷」换到低峰那一行
   const ROW = 'display:flex;gap:18px;align-items:baseline;padding:6px 12px;margin:4px -12px 0;border-radius:10px;background:rgba(255,255,255,0)';
@@ -56,7 +56,7 @@ scene('spend', ({ root, s }) => {
       <div style="display:flex;justify-content:space-between"><span class="chip" style="border:1px solid var(--line);background:#fff">API 实时 ⌄</span><span style="display:inline-flex;gap:8px;align-items:center">${icon('refresh')} 刷新</span></div>
       <div style="position:absolute;left:28px;top:96px"><div style="color:#5d626b;font-size:22px">当前总额</div><div style="font:700 56px Inter">¥126.73</div></div>
       <div class="chart" style="position:absolute;left:330px;top:84px;width:830px;height:300px"></div>
-      <div style="position:absolute;left:330px;top:394px;color:#5d626b;font-size:22px;display:grid;row-gap:10px"><div>虚线表示已缩短的余额不变时段，或没有采样的时段</div><div>悬停或轻触查看采样，聚焦后可用方向键逐点查看</div></div>
+      <div style="position:absolute;left:330px;top:394px;color:#5d626b;font-size:22px;display:grid;row-gap:10px"><div>悬停或轻触查看采样，聚焦后可用方向键逐点查看</div></div>
       <div style="position:absolute;left:28px;right:28px;top:478px;border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:repeat(3,1fr);font-size:22px">
         <div><div style="color:#5d626b">观测区间变化</div><div style="margin-top:4px">¥40.31</div></div>
         <div><div style="color:#5d626b">已保存采样</div><div style="margin-top:4px">231</div></div>
@@ -76,18 +76,15 @@ scene('spend', ({ root, s }) => {
   // 实线段（之间是缩短的不变时段），值是在最低与最高之间的比例；末点 = 当前总额 ¥126.73
   // DSHU ac598fa、eb83e00 之后：缩短的不变时段与没有采样的时段都画虚线（5 4，本片 9 7）。缩短段合计不超过横轴的 1/5，
   // 每段 0.05 宽，读得出是虚线而不是断开（策划者 r1：「余额曲线有断点考虑刚更新的横向虚线 对齐样式」）
+  // 策划者 r2：「余额线条连续横向不要断开」——样本里没有缩短段，整条连续实线；只有充值那一下按 stepIncreases 画竖向虚线
   const SOLID = [
-    [[0, 0.108], [0.12, 0.092]],
-    [[0.17, 0.092], [0.28, 0.06]],
-    [[0.33, 0.06], [0.50, 0.0], [0.55, 0.0]],
-    [[0.55, 1.0], [0.65, 0.985]],
-    [[0.70, 0.985], [0.80, 0.95]],
-    [[0.85, 0.95], [1, 0.916]],
+    [[0, 0.108], [0.14, 0.092], [0.30, 0.06], [0.50, 0.0], [0.55, 0.0]],
+    [[0.55, 1.0], [0.70, 0.985], [0.85, 0.95], [1, 0.916]],
   ];
   const pathOf = (pts) => pts.map((p, i) => (i ? 'L' : 'M') + PX(p[0]).toFixed(1) + ' ' + PY(p[1]).toFixed(1)).join(' ');
   const LINE = { fill: 'none', stroke: '#2563EB', 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' };
   SOLID.forEach((seg) => svg('path', { d: pathOf(seg), ...LINE }, sv));
-  [[0.12, 0.17, 0.092], [0.28, 0.33, 0.06], [0.65, 0.70, 0.985], [0.80, 0.85, 0.95]].forEach(([a, b, v]) => svg('path', { d: `M${PX(a)} ${PY(v)} H${PX(b)}`, ...LINE, 'stroke-dasharray': '9 7', 'stroke-linecap': 'butt' }, sv));
+  [].forEach(([a, b, v]) => svg('path', { d: `M${PX(a)} ${PY(v)} H${PX(b)}`, ...LINE, 'stroke-dasharray': '9 7', 'stroke-linecap': 'butt' }, sv));
   svg('path', { d: `M${PX(0.55)} ${PY(0)} V${PY(1)}`, ...LINE, 'stroke-dasharray': '5 7', 'stroke-linecap': 'butt' }, sv);
   // 采样点：沿实线段取点，悬停时圆点吸附到离指针最近的一个
   const SAMP = [];
@@ -199,7 +196,7 @@ scene('spend', ({ root, s }) => {
   // 进度条（关着的是灰色）；费用估算、在途预留、剩余额度与「重置」。开着 5 小时与 7 天；y7b 再给自己打开「1 小时」和「1 天」。
   // 花费都发生在最近 5 小时、最近 1 小时内没有：1 天与 30 天也是 ¥12.64，15 分钟与 1 小时是 ¥0.00
   const tiers = [['15 分钟', 5, 0, false], ['1 小时', 15, 0, false], ['5 小时', 20, 12.64, true], ['1 天', 100, 12.64, false], ['7 天', 150, 12.64, true], ['30 天', 2000, 12.64, false]];
-  const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(238,241,247,.62)' }); focusOn(app.el, T('y7') - 0.35, 0.4); set(dim, s.start, { autoAlpha: 0 }); fadeIn(dim, T('y7') - 0.35, { y: 0, d: 0.35 });
+  const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(238,241,247,.62)' }); focusOn(app.el, T('y7', '更多') - 0.9, 0.4); set(dim, s.start, { autoAlpha: 0 }); fadeIn(dim, T('y7', '更多') - 0.9, { y: 0, d: 0.35 });
   const money = (v) => '¥' + v.toFixed(2), pctOf = (a, v) => Math.min(100, a / v * 100);
   const ON_B = '#b9c9ef', OFF_B = '#e3e6eb', GREY = '#9aa0ab';
   const CHEV = '<svg width="16" height="28" viewBox="0 0 8 14" style="display:block;flex:none"><path d="M1.6 5 4 2.6 6.4 5M1.6 9 4 11.4 6.4 9" fill="none" stroke="#6b7079" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -273,11 +270,15 @@ scene('memory', ({ root, s }) => {
   const r3 = rec('操作结论', 'acme-shop · 缺省', '搜索结果消失', '搜索竞态已用递增请求序号修复，回归测试见 tests/search.test.mjs。');
   const tIn = s.start - 0.25;
   fromTo(st.el, tIn, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 });
-  rise3d(dl.d, T('k1', 'D') - 0.1, { rx: 18, z: 600, y: 60, d: 0.9 }); sfx('whoosh', T('k1', 'D') - 0.1, { g: 0.5 });
-  [r1, r2, r3].forEach((r, i) => fadeIn(r, T('k1', '跨') - 0.1 + i * 0.25, { y: 18 }));
+  const tDl = s.start - 0.1;   // 设置页与记忆框一起进场，不留一段空的灰底
+  rise3d(dl.d, tDl, { rx: 18, z: 600, y: 60, d: 0.9 }); sfx('whoosh', tDl, { g: 0.5 });
+  [r1, r2, r3].forEach((r, i) => fadeIn(r, tDl + 0.5 + i * 0.2, { y: 18 }));   // 记录随对话框一起到位，不让空框等旁白
   // k2：「偏好」「项目约定」两条依次亮起；第一条的标题被拎起来（不透明的小卡片盖在原来的标题上，不与它叠字），飞进一条新会话、留在那里
-  ringOn(world, r1, T('k2', '偏好') - 0.1, T('k2', '以后') - 0.1, { pad: 4, c: MC.wri });
-  ringOn(world, r2, T('k2', '项目约定') - 0.1, T('k2', '以后') - 0.1, { pad: 4, c: MC.wri });
+  // 圈画在记录自己里面（对话框构建时还在 3D 起始姿态，按构建时量的位置画会跑到画面外；放在记录里也随列表一起被对话框裁住）
+  const recRing = (r, t0, t1) => { css(r, { position: 'relative' }); const g = h('i', 'ring', r); css(g, { inset: '2px', borderRadius: '14px' }); g.style.setProperty('--rc', MC.wri);
+    tl.fromTo(g, { autoAlpha: 0, scale: 1.04 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'power3.out', immediateRender: true }, t0); fadeOut(g, t1, { d: 0.3 }); };
+  recRing(r1, T('k2', '偏好') - 0.1, T('k2', '以后') - 0.1);
+  recRing(r2, T('k2', '项目约定') - 0.1, T('k2', '以后') - 0.1);
   const nw = h('div', 'card3d', world); px(nw, 1290, 540, 560); css(nw, { padding: '24px 28px', fontSize: '24px', '--mc': MC.wri });
   nw.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><b>《雾港》第八章</b><span class="pill" style="padding:4px 12px">${icon('pen')} 写作</span></div><div class="bubble" style="margin-top:16px;max-width:none">接着写第八章：周屿第一次上灯塔</div><div class="got" style="margin-top:16px;height:46px"></div>`;
   nw.dataset.name = '新会话';
@@ -294,6 +295,6 @@ scene('memory', ({ root, s }) => {
   fromTo(g, tLift + 0.18, { x: 0, y: 0, scale: 1.06 }, { x: gb.x - g0x, y: gb.y - g0y, scale: 1, duration: 0.8, ease: 'power3.inOut', immediateRender: false });
   fromTo(g, tLift + 0.98, { boxShadow: '0 16px 34px rgba(0,0,0,.35)' }, { boxShadow: '0 1px 2px rgba(0,0,0,.08)', duration: 0.25, ease: 'power2.out', immediateRender: false });
   sfx('whoosh', tLift + 0.18, { g: 0.4 }); sfx('pop', tLift + 0.98);
-  [dl.d, nw, g].forEach((e) => fadeOut(e, s.end - 0.5, { d: 0.3 }));
+  // 不单独收走：下一场整场淡入盖上来（config.js 的 after），免得最后半秒只剩空的灰底
   cam.track(s.start, { x: 960, y: 540, z: 1 }, [drift(s.start + 0.5, s.end, -1)]);
 });

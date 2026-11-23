@@ -1,222 +1,222 @@
 {
   "schema": 2,
-  "version": "2026-11-23.1",
+  "version": "2026-11-23.2",
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:00–4:45：核心问题「DSHU 比官方版多了什么、值不值得装」贯穿开场黑化 → 01 开箱即用 → 02 四种模式 → 03 通用增强 → 结尾安装包；按第 7 稿逐句与 zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：同一扇 DSHU 窗口贯穿（关于页、模式菜单、四种模式会话、旁问随问、余额额度、记忆）；zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:01–0:35：DSH、DSHU、Uncensored（右上角注解「去审查版」）、dsh-purge 与 DeepSeek Harness（关于页注解）第一次出现即交代；2:56、3:05 Claude Code / Codex 类比带注解；逐帧（look.js）"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js 实测：注解里 b1 dsh-purge 差 0.3 秒、b1b 破甲提示词差 0.8 秒、b6 差 0.6 秒、m9 会话牌差 1.9 秒、开场「非 DeepSeek 官方项目」小字差 2.0 秒；模拟界面里的计时、流式回复、对话框说明不要求读完。没有以正常速度连续观看全片（本会话不能播放视频），由策划者看成片判断",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 全片：镜头只在站与站之间移动、停留时只朝一个方向极慢横移；scan.js ZOOM 无报错（check.js 通过）；zh 全片 sheets.js every 3（96 帧）通看，转场处逐 0.1 秒取帧；未连续观看"
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "check.js 音效覆盖通过（140 个事件、7 种）；配乐「流明」各层随场景起落（tools/music.py）；成片混音见「交付」。制作方没有试听（本会话不能播放音频），音效的存在感与含义由策划者听成片判断",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面里的界面按代码重画，演示对话取自 DSHU 自己截图里的演示数据，不含个人信息；片尾头像是策划者本人要求使用的 GitHub 公开头像（MATERIALS）；逐帧（look.js）"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 正式片在最终文件上实测：285.93 秒、1920×1080、60fps，I = -15.6 LUFS、TP = -1.5 dBFS（finish.js、ffprobe），与 README「交付」、project.json delivery 一致；源码在成片之后未改（build/finish.zh.json 与当前文件逐一比对）"
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "策划者原话照录在 README「简报」与 review/NOTES.md「意见与处理」，事实出处在 research/FACTS.md，二者分列；本片未发布，没有观众反馈"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "独立成片：不依赖系列其他集，开场交代 DSH 与 DSHU 是什么；按第 7 稿通读"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "外文名词给中文：Uncensored「去审查版」、Claude Code /btw「问一句当前会话的事，答案不进对话记录」、Codex /side「不打断主对话的临时旁聊」、REA 注解；逐帧（look.js）"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "asr.js 回听全片，并对改读法的 b1、b6、x11、f1、f4 单句转写：DSHU 连读、ARM 读「阿姆」、GPL 一句改读「或更高版本」（避开「更新」的「更」读 gēng）。Whisper 判断不了声调；o6、f6 的「未至之境」转写为「位置之径 / 未知之境」，判为识别误差，未经人耳确认",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "zh 0:19–0:35：dsh-purge（作者、许可变化）与 DeepSeek Harness（深度求索开源的桌面智能体工作台）有注解交代来历；逐帧（look.js）"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾名单 credits 为无旁白停顿（4 秒），名单只上画面；script.js 与 timeline.js 核对"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文案为策划者亲自改写的第 7 稿，无制作者自我说明；通读"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "视觉取自 DSHU 截图（research/_src/dshu/docs/assets/dshu/*.webp）与客户端源码，舞台背景照 README 截图取色（MATERIALS、FACTS F44–F47）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "音色 Chinese (Mandarin)_Warm_Bestie 由策划者在 2026-11-21 试听候选后选定（README「简报」）；配音按第 7 稿合成"
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "01 关于页（dsh-purge 与基础许可）→ 并存的两枚图标；02 四张模式卡立在同一块「内置破甲提示词」底座上；03 同一条会话窗口里依次演示旁问、随问、余额、额度、记忆；zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F19": {
-      "rev": 3,
-      "result": "pending",
+      "rev": 4,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "overlap.js 全片每 0.25 秒（--min 0.4），282 处逐条看过：全部是有意的层次——关于页、网安确认框、删除对话框、跨对话记忆框等模态框与其遮罩盖住窗口，模式菜单、会话菜单、费用与额度浮层盖住输入框，运行中那一行的流光复本与原行重叠，飞起的小卡片（主线已完成、《雾港》视角约定），侧栏窄输入框里模型名按真实界面省略号截断，以及 0.25 秒的转场中间帧；没有 TIGHT（注解贴边）。另有转场逐 0.1 秒取帧、scan.js OVERLAP 无报错"
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "图形都承载内容：标志、模式卡与底座、流量图、余额曲线、额度卡片、记忆框；无装饰性元素；zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "设计只取自 DSHU 自身（截图、源码、标志），未参照别的片子"
     },
     "F22": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js GLOSS 无报错；注解成组进场、讲完留到下一段；逐帧（look.js）"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "界面操作随时间推进：打字与命令片、发送、侧栏状态环、分屏、余额曲线悬停读数、额度开关拨动、记忆条目飞进新会话；zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F24": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js CUT 提示逐条看过，都是特写时画面边缘不讲的文字（侧栏、气泡）；CAPZONE 无报错；逐帧（look.js）"
     },
     "F25": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "删去复述台词的字块（关于页注解里划掉的「到处找提示词 / 自己改配置」等）；结论由界面自己的状态变化做出；zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方核对第 4 稿改写的事实并改了 9 处（NOTES），本轮主动改读法（DSHU、或更高版本）"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "只能看图：zh 全片 sheets.js every 3 通看（96 帧），可疑处 look.js 看原图，转场逐 0.1 秒；scan.js 提示逐条处理（见 NOTES r2、交付）。没有以正常速度看视频"
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "x2 先说需求「想搞明白进度如何」，x3 再给 /btw 并起名「随问」；y5 先说习惯 Coding Plan，再引出额度百分比；按第 7 稿通读"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "全片同一扇窗口常驻，四种模式之间整扇窗口立方体转过去，旁问、余额、额度都在同一条会话里；zh 全片 sheets.js every 3（96 帧）通看"
     },
     "F30": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "出现与消失都带过渡；修掉了额度场开头闪一帧推近机位、s5b→s6 叠在一起的换场、立方体转场半透明虚影；转场逐 0.1 秒取帧"
     },
     "F31": {
-      "rev": 1,
-      "result": "pending",
+      "rev": 2,
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "术语注解第一句先给定义：Uncensored「去审查版」、DSH-PURGE「给 DSH 提供破甲提示词的开源项目」（按 F31 第 2 版补上定义，FACTS F34）、DEEPSEEK HARNESS「深度求索开源的桌面智能体工作台」、Claude Code /btw、Codex /side、计价时段；「破甲提示词」「可设置临时允许」两条按策划者原话；与同刻台词并排核对，无复述"
     },
     "F32": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "台词讲 DSHU 的功能（普遍），画面里的修复搜索、审计上传接口、固件头、《雾港》是例子；按第 7 稿通读"
     },
     "F33": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "开源项目系列各集讲不同项目，本片没有依赖前集讲过的概念",
       "evidence": ""
     },
     "F34": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "逐帧看主要的框：关于页右栏、额度卡片、设置卡、记忆框、仓库卡片，内容左右留白相当、无溢出（look.js 原图）；无工具全量检查"
     },
     "F35": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文案为策划者改写，讲能做什么、什么时候用，删去说明书式的保证与默认值（NOTES 第 5 稿对照）"
     },
     "F36": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "用 Claude Code / Codex 类比、「梁文峰还是梁文谷」「再套一层马甲」等策划者的口吻（NOTES 第 5 稿对照）"
     }
   },
   "history": [
@@ -228,6 +228,26 @@
         "result": "pending",
         "note": "",
         "evidence": ""
+      }
+    },
+    {
+      "version": "2026-11-23.1",
+      "id": "F19",
+      "item": {
+        "rev": 3,
+        "result": "pass",
+        "note": "",
+        "evidence": "转场与动作前后逐 0.1 秒取帧（开场黑化、各场衔接、额度场开头、s5b→s6、记忆场进出）；scan.js OVERLAP、CONTRAST 无报错；改掉了浅色背景下注解发灰、额度卡段窗口文字透出、记忆框空框等中间帧问题"
+      }
+    },
+    {
+      "version": "2026-11-23.1",
+      "id": "F31",
+      "item": {
+        "rev": 1,
+        "result": "pass",
+        "note": "",
+        "evidence": "新名词注解写用途：Uncensored、dsh-purge、DeepSeek Harness、可设置临时允许、这条会话上下文包含、计价时段、输入预测设置、旁问自动清理设置；与同刻台词并排核对，无复述"
       }
     }
   ]

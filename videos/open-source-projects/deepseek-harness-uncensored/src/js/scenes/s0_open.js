@@ -16,16 +16,17 @@ scene('open', ({ root, s }) => {
   stageBg(dark, 'def');
   const L1 = h('div', 'abs', dark); px(L1, CX - SZ / 2, TOP); L1.dataset.name = 'DSHU 黑化标志';
   shadowPlate(L1, SZ, 1, '0 40px 90px rgba(0,0,0,.65), 0 0 120px rgba(37,99,235,.25)'); logoDark(SZ, L1);
-  const tDark = h('div', 'title', dark, '<div class="n" style="color:var(--ink)">DeepSeek Harness <span class="u">UNCENSORED</span></div><div class="ab" style="color:#4a4f58"><span class="a1">DSH</span><span class="a2">U</span></div>'); tDark.style.top = '600px';
+  const tDark = h('div', 'title', dark, '<div class="n" style="color:var(--ink)"><span class="t1">DeepSeek Harness</span> <span class="u">UNCENSORED</span></div><div class="ab" style="color:#4a4f58"><span class="a1">DSH</span><span class="a2">U</span></div>'); tDark.style.top = '600px';
   const tagU = tDark.querySelector('.u'), abU = tDark.querySelector('.a2');
   // 策划者 2026-11-23：「不要在画面中写 黑化版」「画面底下中部增加注解: Uncensored: 去审查版」
-  const gl = h('div', 'abs', dark); css(gl, { left: '0', right: '0', top: '770px', textAlign: 'center' });
-  gl.innerHTML = '<span style="display:inline-block;background:rgba(20,23,30,.95);color:#fff;font-size:26px;padding:10px 24px;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.14),0 0 0 1px rgba(255,255,255,.08)"><b style="color:#a9c1ff;font-weight:700">Uncensored</b>：去审查版</span>';
+  // r2：「去审查版小图注就行, 不要那么突出 淡化的一个小图注 放在右上角吧」
+  const gl = h('div', 'abs', dark); css(gl, { right: '64px', top: '44px', textAlign: 'right' });
+  gl.innerHTML = '<span style="font-size:24px;color:#4a4f58;letter-spacing:1px"><b style="font-weight:600;color:#3b3f46">Uncensored</b>：去审查版</span>';
   gl.dataset.gloss = 'Uncensored'; gl.dataset.name = 'Uncensored 注解';
-  const fine = h('div', 'fine', dark, '非 DeepSeek 官方项目 · 源码基于 DeepSeek Harness 0.2.2-rc.5'); fine.style.top = '840px';
+  const fine = h('div', 'fine', dark, '非 DeepSeek 官方项目 · 源码基于 DeepSeek Harness 0.2.2-rc.5'); fine.style.top = '805px';
   // 说明（策划者 2026-11-23）：画面里的界面是示意动画。放在最上层，从 o3 说完一直留到开场结束；深色胶囊在深色舞台和白色窗口上都看得清。
   // 高度取在窗口下沿（936）之内：窗口立起后胶囊整个落在输入框下面的空白里，不骑在窗口边上
-  const disc = h('div', 'abs', world); css(disc, { left: '0', right: '0', top: '882px', textAlign: 'center', zIndex: 20 });
+  const disc = h('div', 'abs', world); css(disc, { left: '0', right: '0', top: '852px', textAlign: 'center', zIndex: 20 });
   disc.innerHTML = '<span style="display:inline-block;background:rgba(12,14,20,.86);color:#e3e6ec;font-size:24px;padding:8px 22px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.12)">动画页面 UI 按代码模拟渲染，真实页面截图参照 README</span>';
   const line = h('div', 'abs', world); css(line, { left: '0', width: '1920px', height: '3px', background: 'linear-gradient(90deg,transparent,#5b8cff 25%,#5b8cff 75%,transparent)', boxShadow: '0 0 24px #5b8cff' });
 
@@ -38,25 +39,46 @@ scene('open', ({ root, s }) => {
   const band = h('div', 'abs', shine); px(band, -SZ, -SZ / 2, SZ * 0.35, SZ * 2); css(band, { background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent)', transform: 'rotate(20deg)' });
   fromTo(band, 2.6, { x: 0 }, { x: SZ * 2.4, duration: 1.1, ease: 'power2.inOut' });
   // o2「黑化」：分界线从标志上沿扫到画面底部
-  const w0 = T('o2', '黑化') - 0.1, wd = 1.5;
-  const y0 = TOP - 40, y1 = 1100;
-  fromTo(dark, w0, { clipPath: `inset(0px 0px ${1080 - y0}px 0px)` }, { clipPath: 'inset(0px 0px 0px 0px)', duration: wd, ease: 'power2.inOut' });
-  fromTo(line, w0, { top: y0, autoAlpha: 1 }, { top: y1, duration: wd, ease: 'power2.inOut' });
-  vanish(line, w0 + wd);
-  sfx('riser', w0 - 1.2, { g: 0.35 }); sfx('thud', w0 + wd * 0.55, { g: 0.7 });
+  // r2：「黑化的变化更有冲击力的力量感」——亮线从画面顶上外面压下来，先慢后快（之前画面顶上不露蓝边）；
+  // 扫过标志下沿的一刻：标志被砸一下回弹，冲出两圈冲击波，画面四周一暗再回来
+  const w0 = T('o2', '黑化') - 0.3, wd = 0.85, y0 = -40, y1 = 1120;
+  const tHit = w0 + Math.cbrt((TOP + SZ + 40) / (y1 - y0)) * wd;   // power3.in：亮线到达标志下沿的时刻
+  F((t) => {
+    const p = Math.min(1, Math.max(0, (t - w0) / wd)), e = p * p * p;
+    dark.style.clipPath = t < w0 ? 'inset(0px 0px 1080px 0px)' : `inset(0px 0px ${(1080 * (1 - e)).toFixed(1)}px 0px)`;
+    line.style.visibility = t >= w0 && t < w0 + wd ? 'visible' : 'hidden'; line.style.opacity = '1'; line.style.top = (y0 + (y1 - y0) * e).toFixed(1) + 'px';
+  });
+  css(line, { height: '5px', boxShadow: '0 0 30px 6px #5b8cff, 0 -60px 80px rgba(91,140,255,.35)' });
+  const KS0 = SZ / 1024;
+  const waves = [0, 1].map(() => { const w = h('div', 'abs', dark); px(w, CX - SZ / 2 + 32 * KS0, TOP + 32 * KS0, 960 * KS0, 960 * KS0); css(w, { borderRadius: (224 * KS0) + 'px', border: '6px solid rgba(37,99,235,.8)', boxShadow: '0 0 40px rgba(37,99,235,.5)', boxSizing: 'border-box', pointerEvents: 'none', visibility: 'hidden' }); return w; });
+  const ink = h('div', 'abs', world); css(ink, { inset: '0', background: 'radial-gradient(1200px 800px at 50% 35%, transparent 35%, rgba(8,12,28,.75) 100%)', pointerEvents: 'none', opacity: '0' });
+  F((t) => {
+    waves.forEach((w, i) => { const k = (t - tHit - i * 0.09) / 0.8; const on = k >= 0 && k < 1; w.style.visibility = on ? 'visible' : 'hidden'; if (on) { const e = 1 - Math.pow(1 - k, 3); w.style.transform = `scale(${(1 + (1.2 + i * 0.5) * e).toFixed(3)})`; w.style.opacity = (0.9 * (1 - k)).toFixed(3); } });
+    const k = (t - tHit) / 0.7; ink.style.opacity = k < 0 || k >= 1 ? '0' : (k < 0.12 ? k / 0.12 : 1 - (k - 0.12) / 0.88).toFixed(3) * 0.55;
+  });
+  fromTo(L1, tHit, { scale: 1 }, { scale: 1.09, duration: 0.08, ease: 'power2.out', immediateRender: false });
+  fromTo(L1, tHit + 0.08, { scale: 1.09 }, { scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.45)', immediateRender: false });
+  sfx('riser', w0 - 1.0, { g: 0.4 }); sfx('whoosh', w0 + 0.2, { g: 0.5 }); sfx('thud', tHit, { g: 0.95 });
   vanish(light, w0 + wd + 0.05);
   // 深色层里的名字：先只有 DeepSeek Harness 与 DSH，o3 读到 Uncensored 时长出标签，句末 DSH 后面长出 U
   set(tagU, s.start, { autoAlpha: 0 }); set(abU, s.start, { autoAlpha: 0 });
   const tu = T('o3', 'Uncensored');
+  // r2：UNCENSORED 出来之前「DeepSeek Harness」居中，出来时才往左让；DSH 与 U 同理
+  const nEl = tDark.querySelector('.n'), t1 = tDark.querySelector('.t1'), abEl = tDark.querySelector('.ab');
+  const shN = (tagU.offsetLeft + tagU.offsetWidth - (t1.offsetLeft + t1.offsetWidth)) / 2, shAb = abU.offsetWidth / 2;
+  gsap.set(nEl, { x: shN }); gsap.set(abEl, { x: shAb });
+  fromTo(nEl, tu - 0.05, { x: shN }, { x: 0, duration: 0.5, ease: 'power3.out', immediateRender: false });
   fromTo(tagU, tu - 0.05, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }); sfx('thud', tu, { g: 0.6 });
   const tU = Tend('o3') - 0.2;
   fromTo(abU, tU, { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'back.out(2)' }); sfx('pop', tU);
+  fromTo(abEl, tU, { x: shAb }, { x: 0, duration: 0.4, ease: 'power3.out', immediateRender: false });
   fadeIn(gl, T('o3', 'Uncensored') + 0.15, { y: 10, d: 0.4 });
   fadeIn(fine, Tend('o3') + 0.1, { y: 10, d: 0.6 }); fadeIn(disc, Tend('o3') + 0.3, { y: 10, d: 0.6 });
   // o4「多了一个 Uncensored」：标签自己动一下（两段首尾相接）
   const tb = T('o4', 'Uncensored');
-  fromTo(tagU, tb, { scale: 1 }, { scale: 1.12, duration: 0.25, ease: 'power2.out', immediateRender: false });
-  fromTo(tagU, tb + 0.25, { scale: 1.12 }, { scale: 1, duration: 0.35, ease: 'power2.inOut', immediateRender: false });
+  tagU.style.transformOrigin = '0 50%';   // 往右长，不压左边的 Harness
+  fromTo(tagU, tb, { scale: 1 }, { scale: 1.08, duration: 0.25, ease: 'power2.out', immediateRender: false });
+  fromTo(tagU, tb + 0.25, { scale: 1.08 }, { scale: 1, duration: 0.35, ease: 'power2.inOut', immediateRender: false });
   // 标志在 o4 里极慢地转一点（3D），让黑底的质感露出来
   fromTo(L1, T('o4'), { rotationY: 0, transformPerspective: P3 }, { rotationY: -10, duration: Tend('o4') - T('o4') + 0.6, ease: 'sine.inOut', immediateRender: false });
 

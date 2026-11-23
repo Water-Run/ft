@@ -6,40 +6,77 @@
 <link rel="stylesheet" href="css/base.css">
 <style>
   /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     与片中同一套视觉：深色舞台带蓝色光晕，右边是黑底白鲸的 DSHU 标志（微微转向观众），左边是片名与标语。底部约 15% 不放文字。 */
+     画面是「黑化」的那一刻（策划者 2026-11-23：封面要有质感、力量感、冲击力）：左上一角还是 README 同款的浅色，放着原版的白色标志；
+     一道发光的斜刃把它切开，其余整片已经黑下来，中间偏右是黑底白鲸的 DSHU 标志，带两圈冲击波；片名压在下方，UNCENSORED 是最大的一块。
+     底部约 15% 不放文字。 */
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 120px; --logo: 520px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 112px; --logo: 440px; }
-  #stage { color: #fff; font-family: "Inter", "Sans SC"; overflow: hidden;
-    background: radial-gradient(1100px 800px at 72% 30%, rgba(37,99,235,.55), transparent 70%), radial-gradient(900px 700px at 0% 100%, rgba(37,99,235,.18), transparent 70%), linear-gradient(160deg, #11141c, #05060a); }
-  .kicker { position: absolute; left: var(--M); top: 13%; font: 600 40px "Sans SC"; color: #9cc0ff; letter-spacing: 4px; }
-  .title { position: absolute; left: var(--M); top: 22%; width: 62%; font-weight: 900; font-size: var(--fs); line-height: 1.02; letter-spacing: -.02em; }
-  .title .u { display: inline-block; margin-top: 18px; background: #2563EB; padding: 2px 22px 8px; border-radius: 12px; letter-spacing: 4px; font-size: .78em; }
-  .sl { position: absolute; left: var(--M); top: 66%; font-size: 52px; font-weight: 600; letter-spacing: 10px; color: #e3e6ec; }
-  .logo { position: absolute; right: var(--M); top: 15%; width: var(--logo); height: var(--logo); transform: perspective(2600px) rotateY(-16deg); border-radius: 22%;
-    box-shadow: 0 50px 120px rgba(0,0,0,.7), 0 0 160px rgba(37,99,235,.45); }
-  .r43 .title { width: 92%; top: 46%; } .r43 .sl { top: 74%; } .r43 .logo { top: 8%; right: auto; left: var(--M); }
-  .r43 .kicker { top: 40%; }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; overflow: hidden; font-family: "Inter", "Sans SC"; color: #fff;
+    background: radial-gradient(900px 760px at var(--gx) var(--gy), rgba(37,99,235,.55), transparent 70%), radial-gradient(1400px 900px at 50% 120%, rgba(37,99,235,.20), transparent 70%), linear-gradient(160deg, #0d111b, #04050a 70%); }
+  .r169 #stage { --gx: 1510px; --gy: 360px; }
+  .r43 #stage { --gx: 1260px; --gy: 330px; }
+  .grain { position: absolute; inset: 0; opacity: .10; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>"); }
+  .vig { position: absolute; inset: 0; background: radial-gradient(1500px 1000px at 55% 45%, transparent 55%, rgba(0,0,0,.55) 100%); pointer-events: none; }
+  /* 左上角：还没黑化的浅色（照 README 截图的取色），斜边是一道发光的刃 */
+  .light { position: absolute; inset: 0; clip-path: polygon(0 0, var(--bx) 0, 0 var(--by)); background: radial-gradient(900px 700px at 0 0, #b9cbf6, transparent 75%), #e4e9f3; }
+  .r169 { --bx: 820px; --by: 500px; } .r43 { --bx: 760px; --by: 520px; }
+  .blade { position: absolute; left: 0; top: 0; height: 8px; transform-origin: 0 50%; border-radius: 4px;
+    background: linear-gradient(90deg, rgba(255,255,255,.2), #ffffff 18%, #cfe0ff 60%, rgba(143,176,255,0));
+    box-shadow: 0 0 18px 4px rgba(143,176,255,.95), 0 0 70px 18px rgba(37,99,235,.65); }
+  .tile { position: absolute; }
+  .tile svg { display: block; width: 100%; height: 100%; }
+  .old { filter: drop-shadow(0 24px 40px rgba(20,24,40,.25)); }
+  .new { transform: perspective(2600px) rotateY(-14deg) rotateX(4deg); }
+  .new .plate { position: absolute; inset: 3.1%; border-radius: 22.6%; box-shadow: 0 60px 140px rgba(0,0,0,.75), 0 0 0 2px rgba(91,140,255,.35), 0 0 180px rgba(37,99,235,.55); }
+  .wave { position: absolute; inset: 3.1%; border-radius: 22.6%; border: 6px solid rgba(91,140,255,.75); box-shadow: 0 0 40px rgba(37,99,235,.55); }
+  .w1 { transform: scale(1.2); opacity: .75; } .w2 { transform: scale(1.42); opacity: .35; border-width: 4px; }
+  .sl { position: absolute; font: 600 44px "Sans SC"; letter-spacing: 12px; color: #c9d6f5; white-space: nowrap; }
+  .t1 { position: absolute; font: 900 108px/1 "Inter"; letter-spacing: -2px; white-space: nowrap; }
+  .t2 { position: absolute; font: 900 172px/1 "Inter"; letter-spacing: 6px; white-space: nowrap; background: #2563EB; padding: 14px 34px 22px; border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(37,99,235,.55), inset 0 2px 0 rgba(255,255,255,.35); }
+  .r169 .old { left: 96px; top: 64px; width: 230px; height: 230px; }
+  .r169 .new { left: 1210px; top: 70px; width: 580px; height: 580px; }
+  .r169 .sl { left: 112px; top: 488px; }
+  .r169 .t1 { left: 106px; top: 572px; }
+  .r169 .t2 { left: 100px; top: 700px; }
+  .r43 .old { left: 80px; top: 60px; width: 220px; height: 220px; }
+  .r43 .new { left: 960px; top: 80px; width: 500px; height: 500px; }
+  .r43 .sl { left: 98px; top: 560px; font-size: 42px; }
+  .r43 .t1 { left: 92px; top: 640px; font-size: 100px; }
+  .r43 .t2 { left: 86px; top: 766px; font-size: 150px; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <svg class="logo" viewBox="32 32 960 960"><rect x="32" y="32" width="960" height="960" rx="224" fill="#10131a" stroke="#303644" stroke-width="2"/><path id="fish" transform="translate(157 261) scale(32.5)" fill="#fff"/></svg>
-  <div class="kicker"></div>
-  <div class="title"></div>
+  <div class="light"></div>
+  <div class="tile old"><svg viewBox="32 32 960 960"><rect x="32" y="32" width="960" height="960" rx="224" fill="#FBFBFB" stroke="#e2e4e9" stroke-width="2"/><path class="fish" transform="translate(157 261) scale(32.5)" fill="#1C2434"/></svg></div>
+  <div class="blade"></div>
+  <div class="tile new"><div class="wave w2"></div><div class="wave w1"></div><div class="plate"></div><svg viewBox="32 32 960 960" style="position:relative"><rect x="32" y="32" width="960" height="960" rx="224" fill="#10131a" stroke="#303644" stroke-width="2"/><path class="fish" transform="translate(157 261) scale(32.5)" fill="#fff"/></svg></div>
   <div class="sl"></div>
+  <div class="t1"></div>
+  <div class="t2"></div>
+  <div class="vig"></div>
+  <div class="grain"></div>
 </div>
 <script src="js/whale.js"></script>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  document.getElementById('fish').setAttribute('d', window.WHALE_PATH);
-  const TEXT = { zh: { kicker: '开源项目', title: 'DeepSeek Harness<br><span class="u">UNCENSORED</span>', sl: '更自由的探索未至之境' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', r43 = q.get('r') === '43';
+  document.documentElement.className = (r43 ? 'r43' : 'r169') + ' ' + lang;
+  document.querySelectorAll('.fish').forEach((p) => p.setAttribute('d', window.WHALE_PATH));
+  // 斜刃沿着浅色一角的斜边：从 (bx, 0) 到 (0, by)，两头各伸出去一截
+  const bx = r43 ? 760 : 820, by = r43 ? 520 : 500, ext = 140, len = Math.hypot(bx, by) + 2 * ext, ang = Math.atan2(by, -bx);
+  const bl = document.querySelector('.blade');
+  bl.style.width = len + 'px';
+  const sx = bx - ext * Math.cos(ang), sy = -ext * Math.sin(ang) - 4;   // 起点：从 (bx, 0) 往反方向退 ext
+  bl.style.transform = `translate(${sx}px, ${sy}px) rotate(${ang}rad)`;
+  const TEXT = { zh: { sl: '更自由的探索未至之境', t1: 'DeepSeek Harness', t2: 'UNCENSORED' } }[lang];
   document.querySelector('.sl').textContent = TEXT.sl;
+  document.querySelector('.t1').textContent = TEXT.t1;
+  document.querySelector('.t2').textContent = TEXT.t2;
   const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample)])
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('600 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample)])
     .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
 </script>
 </body>

@@ -104,6 +104,7 @@ function whale(size, color = 'currentColor') {
 
 // ── 应用窗口 ──
 // o: { mode, home, title, sessions: [[标题, 模式, 选中?, 运行中?]], ws, wsSessions 放在哪个工作区下, more: 其余工作区, cost, x, y, w, h }
+const CD_FILM0 = 39 * 3600 + 24 * 60 + 59;   // 片头那一刻的倒计时
 function makeApp(parent, o = {}) {
   const m = o.mode || 'def';
   const el = h('div', 'app', parent); el.style.setProperty('--mc', MC[m]); el.style.setProperty('--mk', MK[m]); el.style.setProperty('--mki', MKI[m]);
@@ -135,7 +136,10 @@ function makeApp(parent, o = {}) {
     h('span', 'hic', hdr, icon('side') + icon('dots') + icon('panelR'));
   }
   const body = h('div', 'body', main);
-  return { el, side, brand, mark, tagU, wsEl, sess, bal, phase: bal.querySelector('.ph'), cd: bal.querySelector('.cd'), amt: bal.querySelector('.amt'), main, hdr, titleEl, pill, body };
+  // 峰谷倒计时真的在走：全片共用一个时钟，按片子时间一秒一格（策划者 2026-11-23「真的在走而不是静止 就按一秒一秒倒计时」）
+  const cdEl = bal.querySelector('.cd'); let cdLast = '';
+  F((t) => { const v = Math.max(0, CD_FILM0 - Math.floor(Math.max(0, t))); const str = `${String(Math.floor(v / 3600)).padStart(2, '0')}:${String(Math.floor(v / 60) % 60).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`; if (str !== cdLast) { cdEl.textContent = str; cdLast = str; } });
+  return { el, side, brand, mark, tagU, wsEl, sess, bal, phase: bal.querySelector('.ph'), cd: cdEl, amt: bal.querySelector('.amt'), main, hdr, titleEl, pill, body };
 }
 function composer(parent, o = {}) {
   const c = h('div', 'composer', parent);

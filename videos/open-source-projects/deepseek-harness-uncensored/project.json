@@ -8,8 +8,8 @@
   "titles": {
     "zh": "DeepSeek Harness Uncensored：更自由的探索未至之境"
   },
-  "stage": "preview",
-  "next": "预览 r2 已出（out/zh/preview-r2.mp4，2026-11-23）：等策划者意见，按意见迭代；之后正式片、封面、check.js --final 与验收",
+  "stage": "delivered",
+  "next": "WaterRun 投稿后回填 release（平台、地址、日期、标题），stage 改为 released；补记外置材料的公开地址",
   "credits": {
     "planner": "WaterRun",
     "people": [
@@ -101,6 +101,12 @@
     },
     "speed": {
       "zh": 1.1
+    }
+  },
+  "delivery": {
+    "date": "2026-11-23",
+    "duration": {
+      "zh": 285.933
     }
   }
 }

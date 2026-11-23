@@ -77,10 +77,11 @@ scene('modes', ({ root, s, c0 }) => {
     const t = tFlow + i * 0.22;
     const lit = h('div', 'abs', st3); px(lit, X0 + i * (CW + GAP) + CW / 2 - 4, CY + CH, 8, 640 - CY - CH);
     css(lit, { borderRadius: '4px', background: 'linear-gradient(0deg, #1d4ed8, #6f95f5)', boxShadow: '0 0 24px 6px rgba(37,99,235,.55)', transformOrigin: '50% 100%' });
+    lit.dataset.name = '破甲光柱 ' + (i + 1);
     fromTo(lit, t, { scaleY: 0, autoAlpha: 1 }, { scaleY: 1, duration: 0.45, ease: 'power2.in' });
     fadeOut(lit, t + 0.45, { d: 0.5 });
     const glow = h('div', 'abs', cards[i]); css(glow, { inset: '0', borderRadius: 'inherit', boxShadow: '0 0 0 4px rgba(37,99,235,.9), 0 0 70px 14px rgba(37,99,235,.38)', pointerEvents: 'none' });
-    set(glow, s.start, { autoAlpha: 0 });
+    glow.dataset.name = '卡片接住 ' + (i + 1); set(glow, s.start, { autoAlpha: 0 });
     fromTo(glow, t + 0.4, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: 'power2.out', immediateRender: false });
     fromTo(glow, t + 0.6, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.9, ease: 'power2.inOut', immediateRender: false });
   });
@@ -177,10 +178,15 @@ scene('modes', ({ root, s, c0 }) => {
 
   // ── m8b：模式固定。头部的模式胶囊不带锁、也不弹菜单；点它只在下面浮出一条提示（AgentPresetLabel locked + Tooltip：深灰底白字，150ms 只淡入）──
   const pb = box(app2.pill, app2.el), tTip = T('m8b', '不能') - 0.15;
-  ringOn(app2.el, app2.pill, T('m8b', '固定') - 0.15, tTip - 0.3, { pad: 6, r: 16 });
+  // 圈挂在胶囊自己身上（标题换成「审计上传接口」后胶囊会右移，按构建时量的位置画会错开）
+  css(app2.pill, { position: 'relative' });
+  const pRing = h('i', 'ring', app2.pill); css(pRing, { inset: '-9px', borderRadius: '16px' });
+  tl.fromTo(pRing, { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'power3.out', immediateRender: true }, T('m8b', '固定') - 0.15);
+  fadeOut(pRing, tTip - 0.3, { d: 0.3 });
   const tip = tooltip(app2.el, 0, 0, '已有对话默认不能切换模式，可在“设置 → 模式”中临时允许。');
   tip.dataset.overlapOk = ''; css(tip, { zIndex: 6 });
-  px(tip, Math.max(12, pb.cx - tip.offsetWidth / 2), pb.b + 8);
+  const sideR = box(app2.side, app2.el).r;   // 不压侧栏顶上的 UNCENSORED 标签：左缘至少在侧栏右边 12px
+  px(tip, Math.max(sideR + 12, pb.cx - tip.offsetWidth / 2), pb.b + 8);
   tl.fromTo(tip, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15, ease: 'power1.inOut', immediateRender: true }, tTip); sfx('tick', tTip, { g: 0.5 });
   fadeOut(tip, s.end - 0.6, { d: 0.12 });
   const n8 = note(world, 1210, 440, '<div class="k">可设置临时允许</div>这个开关在应用重启后自动关闭', 560);

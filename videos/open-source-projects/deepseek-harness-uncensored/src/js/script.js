@@ -27,7 +27,7 @@
         ['b1', 'DSHU 沿用 dsh-purge 早期的 MIT 版本', { gap: 0.2 }],
         ['b1b', '直接内置了破甲提示词，开箱即用', { gap: 0.3 }],
         ['b3', '不用再到处找提示词，也不用自己改配置', { gap: 0.8 }],
-        ['b6', '现在 DSHU 的源码，基于官方的 DSH 0.2.2-rc.5', { gap: 0.3, tts: '现在 D S H U 的源码基于官方的 D S H 零点二点二 R C 五。' }],
+        ['b6', '现在 DSHU 的源码，基于官方的 DSH 0.2.2-rc.5', { gap: 0.3, tts: '现在 DSHU 的源码基于官方的 D S H 零点二点二 R C 五。' }],
         ['b7', '但它跟官方版是分开的', { gap: 0.3 }],
         ['b8', '程序目录、配置、会话、更新渠道，都各管各的', { gap: 0.3 }],
         ['b9', '可以独立并存', { gap: 0.9 }],
@@ -152,10 +152,10 @@
   // 字幕 → 送去合成的读法。长词写在前面。先用 kit/tools/tts_probe.js 试，再用 asr.js 回听。
   const SAY = {
     zh: [
-      [/GPL-3\.0-or-later/g, 'G P L 三点零或更新版本'],
+      [/GPL-3\.0-or-later/g, 'G P L 三点零或更高版本'],
       [/0\.2\.2-rc\.5/g, '零点二点二 R C 五'],
       [/REA 6\.9\.0/g, 'R E A 六点九点零'],
-      [/DSHU/g, 'D S H U'],
+      [/DSHU/g, 'DSHU'],   // r2：「DSHU读的不通顺」，字母之间不再隔空格
       [/\bDSH\b/g, 'D S H'],
       [/dsh-purge/g, 'D S H purge'],
       [/Windows x64/g, 'Windows x 六十四'],

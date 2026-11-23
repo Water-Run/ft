@@ -93,6 +93,8 @@ DSHU 是基于 DeepSeek Harness（DSH）的桌面智能体工作台（F1、F2）
 | F45 | y3（余额曲线） | 余额曲线：缩短的不变时段与没有采样的时段都画虚线（5 4），说明文字「虚线表示已缩短的余额不变时段，或没有采样的时段」；会话费用曲线不带说明、保持实线；提示框先显示两位小数 | DSHU 提交 ac598fa、eb83e00；`ui-settings-account/src/client/balance-chart.ts`、`BalanceHistory.tsx`、`balance-locales.ts` | 同上 | 已核 |
 | F46 | b1（关于页入场） | 关于页对话框不再缩放，只淡入 160ms；左卡与右栏同时只改不透明度 220ms | DSHU 提交 3e312e1「修复关于页打开时的抖动」；`Modal.module.css`、`AboutDialog.module.css` | 同上 | 已核 |
 | F47 | x3（命令输入） | 斜杠命令被认领后在输入框里显示为命令片：模式色文字，左右 4px 内边距，无底色 | `ui-conversation/src/client/input/editor/CommandChip.tsx`、`composer-editor.module.css`（`.reference`）、`ReferenceChip.module.css` | 同上 | 已核 |
+| F48 | b1–b6（关于页） | 关于页显示 Uncensored 版本 2026.11.23.0；源码节点 7efe20159de3、提交时间 2026-11-23 07:08 UTC；「编译于」按同一时刻填 2026-11-23 07:08 UTC | 版本号取策划者（DSHU 作者）2026-11-23 原话「Uncensored的版本显示为2026.11.23.0」；仓库 `product.json` 在 7efe201 写的是 `2026.1123.1`、提交 70fb8ad 说明写「统一 2026.11.23.1 发布版本」，与原话不同，按策划者原话。编译时间来自打包时的 `DSH_CLIENT_BUILD_TIME`，仓库里查不到，按最新提交时间推定，**待策划者按实际打包时间确认** | 本地 clone 7efe201 | 部分推定 |
+| F49 | s2（手册卡片） | 网安七类现场手册：交战流程、侦察、Web 攻击、网络利用、载荷实验、云与容器、报告 | DSHU README 第 68 行「七类现场手册」 | 同上 | 已核 |
 
 ## 取证中发现、没有进入成片的事实
 
