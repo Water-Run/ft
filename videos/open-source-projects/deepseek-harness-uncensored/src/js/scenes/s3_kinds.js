@@ -185,7 +185,7 @@ scene('security', ({ root, s }) => {
   k3Turn(col, comp, [...L.slice(0, 2).map((e) => [e, s.start - 0.3]), ...L.slice(2).map((e, i) => [e, tL[i]]), [fd, T('s3', '报告')]], s.start - 2, s.start - 0.3, T('s3', '报告') + 0.4);
 
   // s2：七类现场手册，在窗口前排成一列 3D 的书，沿「目标梳理 → 验证 → 修复 → 报告」依次抽出
-  const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(6,7,10,.35)' });
+  const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(238,241,247,.62)' });
   const shelf = h('div', 'abs', world); px(shelf, 250, 240, 1420, 520);
   const books = Array.from({ length: 7 }, (_, i) => {
     const b = h('div', 'card3d', shelf); px(b, 40 + i * 190, 60, 150, 300);
@@ -195,7 +195,7 @@ scene('security', ({ root, s }) => {
     return b;
   });
   const axis = h('div', 'abs', shelf); px(axis, 40, 420, 1330);
-  css(axis, { display: 'flex', justifyContent: 'space-between', color: '#fff', fontSize: '30px', borderTop: '3px solid rgba(255,255,255,.35)', paddingTop: '16px' });
+  css(axis, { display: 'flex', justifyContent: 'space-between', color: 'var(--ink)', fontSize: '30px', borderTop: '3px solid rgba(20,26,40,.30)', paddingTop: '16px' });
   axis.innerHTML = ['目标梳理', '验证', '修复', '报告'].map((x) => `<span>${x}</span>`).join('<span style="opacity:.5">→</span>');
   const tS2 = T('s2') - 0.3;
   set(dim, s.start, { autoAlpha: 0 }); fadeIn(dim, tS2, { y: 0, d: 0.4 }); focusOn(app.el, tS2, 0.5);
@@ -271,7 +271,7 @@ scene('security', ({ root, s }) => {
   const exp = h('span', 'chip', nP, '实验功能'); css(exp, { position: 'absolute', right: '-20px', top: '-22px', background: '#fde68a', color: '#78350f', fontSize: '22px', fontWeight: '700', boxShadow: '0 8px 20px rgba(0,0,0,.3)' });
   slam(exp, T('s5b', '实验') - 0.05, { from: 1.6 }); sfx('pop', T('s5b', '实验'));
   const by = h('div', 'abs', flow); px(by, 360, 470, 920, 60);
-  by.innerHTML = '<div style="position:absolute;left:0;right:0;top:30px;border-top:3px dashed rgba(255,255,255,.45)"></div><div style="position:absolute;left:50%;transform:translateX(-50%);top:-14px;color:#d6d9df;font-size:24px;white-space:nowrap">其他协议、入站隔离还没覆盖</div>';
+  by.innerHTML = '<div style="position:absolute;left:0;right:0;top:30px;border-top:3px dashed rgba(20,26,40,.40)"></div><div style="position:absolute;left:50%;transform:translateX(-50%);top:-14px;color:#2f333a;font-size:24px;white-space:nowrap">其他协议、入站隔离还没覆盖</div>';
   set(by, s.start, { autoAlpha: 0 }); wipe(by, T('s5b', '实验'), { dir: 'l', d: 0.6 });
 
   // s6：流量图收走，回到应用：一个空白的新会话。确认框只在第一次进入新的网安对话时弹出（SecurityEntryDialog），
@@ -348,7 +348,9 @@ scene('reverse', ({ root, s }) => {
   kinds.forEach((k, i) => { rise3d(kc[i], T('r1b', k) - 0.12, { rx: 40, z: 160, y: 12, d: 0.4 }); sfx('tick', T('r1b', k), { g: 0.6 }); });
   // r5：Ghidra、IDA、Hopper 三块插进 REA 旁边
   const eng = ['Ghidra', 'IDA', 'Hopper'];
-  const eb = eng.map((e, i) => { const c = h('div', 'card3d', world); px(c, 1290 + i * 180, 540, 165, 110); css(c, { display: 'grid', placeItems: 'center', font: '700 30px Inter', borderRadius: '18px' }); c.innerHTML = `<div style="text-align:center">${icon('plug', 'style="width:30px;height:30px;color:#15803D"')}<div>${e}</div></div>`; c.dataset.name = e; return c; });
+  // 三家的标志（出处见 MATERIALS）：Ghidra 取官方仓库的图标，Hopper 取官网的应用图标；IDA 官网没有单列图标，用发行商 Hex-Rays 的方形标志
+  const ENG_LOGO = { Ghidra: 'design/assets/ghidra.png', IDA: 'design/assets/hexrays-mark.svg', Hopper: 'design/assets/hopper.png' };
+  const eb = eng.map((e, i) => { const c = h('div', 'card3d', world); px(c, 1290 + i * 180, 530, 165, 130); css(c, { display: 'grid', placeItems: 'center', font: '700 28px Inter', borderRadius: '18px' }); c.innerHTML = `<div style="display:grid;justify-items:center;gap:8px"><span class="lg"></span><div>${e}</div></div>`; rasterImg(c.querySelector('.lg'), ENG_LOGO[e], 50, { borderRadius: e === 'Ghidra' ? '50%' : '0' }); c.dataset.name = e; return c; });
   eng.forEach((e, i) => { tl.fromTo(eb[i], { autoAlpha: 0, y: 160, rotationX: -50, z: -200, transformPerspective: P3 }, { autoAlpha: 1, y: 0, rotationX: 0, z: 0, duration: 0.55, ease: 'back.out(1.5)', immediateRender: true }, T('r5', e) - 0.15); sfx('pop', T('r5', e), { g: 0.6 }); });
   const n5 = note(world, 1290, 680, '外部引擎按需另行配置；每个逆向会话独占一个分析进程', 520); css(n5, { '--mc': MC.rev, fontSize: '24px' });
   fadeIn(n5, T('r5', '接进来') - 0.2, { y: 14 });

@@ -3,10 +3,10 @@
   "languages": {
     "zh": {
       "status": "approved",
-      "content_sha256": "fd5b661461a2e5ccd6ac4349ad06ac47f51c8e7a6fc1f90645775db98ebae2bc",
+      "content_sha256": "9d516820fa50afab5be7bbdb066e1065511ddfc6d7c9926e7d73b1209df897fb",
       "reviewer": "WaterRun",
-      "confirmed_at": "2026-11-23T14:52+08:00",
-      "evidence": "review/NOTES.md「明确确认」2026-11-23 第 6 稿"
+      "confirmed_at": "2026-11-23T17:34+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-23 第 7 稿"
     }
   }
 }

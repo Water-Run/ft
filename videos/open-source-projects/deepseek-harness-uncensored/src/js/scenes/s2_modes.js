@@ -50,11 +50,11 @@ scene('modes', ({ root, s, c0 }) => {
     c.innerHTML = `<div style="display:flex;gap:16px;align-items:center"><span class="sq" style="width:58px;height:58px;border-radius:14px;display:grid;place-items:center;color:#fff;background:var(--c)">${icon(MODE[k].ic)}</span><b style="font-size:38px">${MODE[k].zh}</b><span style="color:#6b7079;font-size:24px">${MODE[k].en}</span></div>
       <div style="margin-top:14px;color:#3b3f46;font-size:26px">${MODE[k].d}</div>
       <div class="li" style="margin-top:16px;display:flex;flex-direction:column;gap:8px;font-size:25px;color:#4a4f58">${MODE[k].li.map((x) => `<div class="it"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:12px;vertical-align:3px"></span>${x}</div>`).join('')}</div>
-      <div class="edge" style="position:absolute;left:0;right:0;top:0;height:6px;border-radius:24px 24px 0 0;background:var(--c)"></div>`;
+      <div class="edge" style="position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 6px 0 var(--c);pointer-events:none"></div>`;
     c.dataset.name = MODE[k].zh + '卡片';
     return c;
   });
-  const beams = MODES.map((k, i) => { const b = h('div', 'beam', st3); px(b, X0 + i * (CW + GAP) + CW / 2 - 1, CY + CH, null, 640 - CY - CH); b.style.setProperty('--c', '#8fb0ff'); css(b, { transformOrigin: '50% 0%' }); return b; });
+  const beams = MODES.map((k, i) => { const b = h('div', 'beam', st3); px(b, X0 + i * (CW + GAP) + CW / 2 - 1, CY + CH, null, 640 - CY - CH); b.style.setProperty('--c', '#6f8fd8'); css(b, { transformOrigin: '50% 0%' }); return b; });
   cards.forEach((c, i) => {
     tl.fromTo(c, { autoAlpha: 0, rotationX: 30, rotationY: (i - 1.5) * -14, z: -700, y: 160, transformPerspective: P3 },
       { autoAlpha: 1, rotationX: 8, rotationY: (i - 1.5) * -5, z: 0, y: 0, duration: 0.9, ease: 'power3.out', immediateRender: true }, t3 + 0.15 + i * 0.08);
@@ -72,26 +72,34 @@ scene('modes', ({ root, s, c0 }) => {
     sfx('tick', t + 0.05, { g: 0.6 });
   });
   // m4 说完：破甲从同一块底座沿光柱依次升进四张卡（共用的那一层），卡片接住时亮一下再退回
-  const tFlow = T('m4', '资料') + 0.45;
+  const tFlow = T('m4', '资料') + 0.25;   // 浅色舞台上光柱用深一些的蓝，看得出破甲从底座升进卡片
   beams.forEach((b, i) => {
     const t = tFlow + i * 0.22;
     const lit = h('div', 'abs', st3); px(lit, X0 + i * (CW + GAP) + CW / 2 - 4, CY + CH, 8, 640 - CY - CH);
-    css(lit, { borderRadius: '4px', background: 'linear-gradient(0deg, #ffffff, #8fb0ff)', boxShadow: '0 0 24px 6px rgba(143,176,255,.75)', transformOrigin: '50% 100%' });
+    css(lit, { borderRadius: '4px', background: 'linear-gradient(0deg, #1d4ed8, #6f95f5)', boxShadow: '0 0 24px 6px rgba(37,99,235,.55)', transformOrigin: '50% 100%' });
     fromTo(lit, t, { scaleY: 0, autoAlpha: 1 }, { scaleY: 1, duration: 0.45, ease: 'power2.in' });
     fadeOut(lit, t + 0.45, { d: 0.5 });
-    const glow = h('div', 'abs', cards[i]); css(glow, { inset: '0', borderRadius: 'inherit', boxShadow: '0 0 0 4px rgba(143,176,255,.95), 0 0 70px 14px rgba(143,176,255,.55)', pointerEvents: 'none' });
+    const glow = h('div', 'abs', cards[i]); css(glow, { inset: '0', borderRadius: 'inherit', boxShadow: '0 0 0 4px rgba(37,99,235,.9), 0 0 70px 14px rgba(37,99,235,.38)', pointerEvents: 'none' });
     set(glow, s.start, { autoAlpha: 0 });
     fromTo(glow, t + 0.4, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: 'power2.out', immediateRender: false });
     fromTo(glow, t + 0.6, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.9, ease: 'power2.inOut', immediateRender: false });
   });
   sfx('riser', tFlow - 0.2, { g: 0.3 });
   // 卡片在 m4 里转正一点，字好读
-  cards.forEach((c, i) => fromTo(c, T('m4') - 0.2, { rotationX: 8, rotationY: (i - 1.5) * -5 }, { rotationX: 0, rotationY: (i - 1.5) * -3, duration: 1.2, ease: 'power2.inOut', immediateRender: false }));
+  const tFlip = T('m4', '工具') - 0.45;
+  cards.forEach((c, i) => fromTo(c, T('m4') - 0.2, { rotationX: 8, rotationY: (i - 1.5) * -5 }, { rotationX: 0, rotationY: (i - 1.5) * -3, duration: Math.max(0.4, tFlip - T('m4') + 0.15), ease: 'power2.inOut', immediateRender: false }));
+  // 念到「工具」：四张卡依次翻一下，翻过来开始列出各自带的东西（「不一样的是」）
+  cards.forEach((c, i) => {
+    const r0 = (i - 1.5) * -3, t = tFlip + i * 0.07;
+    fromTo(c, t, { rotationY: r0 }, { rotationY: r0 + 90, duration: 0.17, ease: 'power2.in', immediateRender: false });
+    fromTo(c, t + 0.17, { rotationY: r0 - 90 }, { rotationY: r0, duration: 0.3, ease: 'power2.out', immediateRender: false });
+  });
+  sfx('whoosh', tFlip, { g: 0.35 });
   // m6：蓝、红、绿、黄，逐张亮起自己的颜色，光柱也跟着变色
   ['蓝', '红', '绿', '黄'].forEach((w, i) => {
     const t = T('m6', w) - 0.08;
     fromTo(cards[i], t, { '--c': '#5b616d' }, { '--c': MC[MODES[i]], duration: 0.35, ease: 'power2.out', immediateRender: false });
-    fromTo(beams[i], t, { '--c': '#8fb0ff' }, { '--c': MC[MODES[i]], duration: 0.35, immediateRender: false });
+    fromTo(beams[i], t, { '--c': '#6f8fd8' }, { '--c': MC[MODES[i]], duration: 0.35, immediateRender: false });
     fromTo(cards[i], t, { y: 0 }, { y: -18, duration: 0.25, ease: 'power2.out', immediateRender: false });
     fromTo(cards[i], t + 0.25, { y: -18 }, { y: 0, duration: 0.35, ease: 'power2.inOut', immediateRender: false });
     sfx('pop', t + 0.05, { g: 0.6 });
@@ -119,7 +127,10 @@ scene('modes', ({ root, s, c0 }) => {
   ringOn(app.el, app.tagU, T('m7', '标题') - 0.1, T('m7', '侧栏') - 0.1, { pad: 6, r: 8 });
   ringOn(app.el, fold, T('m7', '侧栏') - 0.1, T('m7', '按钮') - 0.1, { pad: 7, r: 10 });
   ringOn(app.el, app.bal.querySelector('.dot'), T('m7', '侧栏') - 0.1, T('m7', '按钮') - 0.1, { pad: 9, r: 14 });
-  ringOn(app.el, snd, T('m7', '按钮') - 0.1, Tend('m7') + 0.2, { pad: 6, r: 32 });
+  // 发送按钮的高亮圈挂在按钮自己身上（同心圆），不按构建时量的位置画
+  const sndRing = h('i', 'ring', snd); css(sndRing, { inset: '-8px', borderRadius: '50%' });
+  tl.fromTo(sndRing, { autoAlpha: 0, scale: 1.08 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'power3.out', immediateRender: true }, T('m7', '按钮') - 0.1);
+  fadeOut(sndRing, Tend('m7') + 0.2, { d: 0.3 });
 
   // ── m8：在网安模式下发出第一条消息 → 会话建好 ──
   const msg = '审计上传接口的文件名处理，确认有没有路径穿越';
@@ -172,12 +183,12 @@ scene('modes', ({ root, s, c0 }) => {
   px(tip, Math.max(12, pb.cx - tip.offsetWidth / 2), pb.b + 8);
   tl.fromTo(tip, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15, ease: 'power1.inOut', immediateRender: true }, tTip); sfx('tick', tTip, { g: 0.5 });
   fadeOut(tip, s.end - 0.6, { d: 0.12 });
-  const n8 = note(world, 1210, 440, '<div class="k">临时允许</div>这个开关在应用重启后自动关闭', 560);
+  const n8 = note(world, 1210, 440, '<div class="k">可设置临时允许</div>这个开关在应用重启后自动关闭', 560);
   css(n8, { '--mc': MC.sec });
   fadeIn(n8, tTip + 0.35, { x: 20 });
   fadeOut(n8, s.end - 0.6, { d: 0.25 });
   // m9：这一轮带着的工具与手册，挂一张上锁的牌子
-  const n9 = note(world, 1300, 600, `<div class="k" style="display:flex;gap:8px;align-items:center">${icon('lock')} 这条会话带着</div>七类现场手册 · 案件与报告 · 独立代理`, 520);
+  const n9 = note(world, 1300, 600, `<div class="k" style="display:flex;gap:8px;align-items:center">${icon('lock')} 这条会话上下文包含</div>七类现场手册 · 案件与报告 · 独立代理`, 520);
   css(n9, { '--mc': MC.sec });
   fadeIn(n9, T('m9') - 0.1, { x: 20 });
   // 换场：整扇窗口立方体式转走，下一场（缺省模式）从右边转进来

@@ -169,7 +169,8 @@ function makeCamera(world, W = 1920, H = 1080) {
     // 缓慢的漂移写 { sfx: false }，其余每段登记一声 whoosh。
     track(startT, start, keys) {
       let cur = { ...st, ...start }, prevEnd = startT;
-      tl.set(st, { ...cur }, startT);
+      // 本片的场景在开始前 0.25 秒就淡入（config.js 的 after）：提前把镜头放回起点，免得这段时间露出后面某一站补间的起始机位
+      tl.set(st, { ...cur }, Math.max(0, startT - 0.5));
       for (const [t, v, d = 1.4, o = {}] of keys) {
         const tt = t == null ? prevEnd + 0.15 : t, next = { ...cur, ...v };
         tl.fromTo(st, { ...cur }, { ...next, duration: d, ease: o.ease || 'power3.inOut', immediateRender: true }, tt);

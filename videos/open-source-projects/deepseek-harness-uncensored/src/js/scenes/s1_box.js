@@ -49,11 +49,12 @@ scene('box', ({ root, s, c0 }) => {
   // 右栏只露到 dsh-purge 一节为止，下面空出来给注解
   css(right, { height: (sPurge.offsetTop + sPurge.offsetHeight) + 'px' }); sRea.style.visibility = 'hidden';
 
-  // 打开：遮罩淡入、对话框升起（Modal），左卡 420ms、右栏 440ms 晚 80ms 各自上浮淡入（AboutDialog reveal）；窗口内容留在遮罩底下
+  // 打开（DSHU 3e312e1 修过关于页的抖动）：遮罩淡入；这么宽的对话框不再缩放，只淡入 160ms（Modal data-enter="fade"）；
+  // 左卡与右栏同时只改不透明度 220ms（AboutDialog reveal）；窗口内容留在遮罩底下
   const tAb = c0 + 0.05;
-  maskIn(scrim, tAb); modalIn(ab, tAb); sfx('whoosh', tAb, { g: 0.4 });
-  fromTo(card, tAb, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power1.out' });
-  fromTo(right, tAb + 0.08, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.44, ease: 'power1.out' });
+  maskIn(scrim, tAb); tl.fromTo(ab, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.16, ease: 'power1.out', immediateRender: true }, tAb); sfx('whoosh', tAb, { g: 0.4 });
+  fromTo(card, tAb, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, ease: 'power1.out' });
+  fromTo(right, tAb, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, ease: 'power1.out' });
 
   // 注解挂在 dsh-purge 一节下方（让开高亮环），越过对话框与窗口的下沿（读作片子的注解，而不是界面）；舞台坐标 = 窗口坐标 + (70, 36)
   const nx = 70 + 110 + 768 - 6, ny = 36 + 22 + 92 + sPurge.offsetTop + sPurge.offsetHeight + 22, nw = 764;
@@ -67,7 +68,7 @@ scene('box', ({ root, s, c0 }) => {
   // b1b、b3：同一处换成「装好之后还要做的一件事」（「已内置」由 dsh-purge 标题上的标签说；不用再做的两件事台词已经说了，不再写一遍）
   const tN2 = Tend('b1b') - 1.0;
   fadeOut(n1, tN2 - 0.3, { d: 0.3 });
-  const n2 = note(world, nx, ny, '<div class="k">破甲提示词</div>装好后在 设置 → 模型 填上凭据就能用', nw);
+  const n2 = note(world, nx, ny, '<div class="k">破甲提示词</div>装好 DSHU 后正常登录或配置凭据即可使用', nw);
   fadeIn(n2, tN2, { y: 16 });
   const built = h('span', 'chip', sPurge.querySelector('.k'), '已内置'); css(built, { marginLeft: '10px', fontSize: '22px', background: 'var(--mc)', color: '#fff' });
   slam(built, T('b1b', '内置') - 0.05, { from: 1.4 }); sfx('pop', T('b1b', '内置'));
@@ -92,16 +93,16 @@ scene('box', ({ root, s, c0 }) => {
   fromTo(icU, tSplit + 0.7, { autoAlpha: 0, scale: 0.6, rotationY: 0, transformPerspective: P3 }, { autoAlpha: 1, scale: 1, rotationY: -16, duration: 0.8, ease: 'back.out(1.4)' });
   fromTo(icO, tSplit + 0.95, { autoAlpha: 0, x: -80, rotationY: 50, transformPerspective: P3 }, { autoAlpha: 1, x: 0, rotationY: 16, duration: 0.8, ease: 'power3.out' }); sfx('pop', tSplit + 1.0);
   set(floor, s.start, { autoAlpha: 0 }); fadeIn(floor, tSplit + 0.9, { y: 0, d: 0.6 });
-  const capO = h('div', 'abs', stage3); px(capO, ixO + IC / 2 - 430, iy + IC + 66, 860); css(capO, { color: '#fff', textAlign: 'center' }); capO.innerHTML = '<div style="font:700 40px Inter">DeepSeek Harness</div><div style="color:#aab0bb;margin-top:8px;font-size:26px">官方版</div>';
-  const capU = h('div', 'abs', stage3); px(capU, ixU + IC / 2 - 430, iy + IC + 66, 860); css(capU, { color: '#fff', textAlign: 'center' }); capU.innerHTML = '<div style="font:700 40px Inter">DeepSeek Harness <span style="background:var(--blue);padding:0 8px;border-radius:5px;font-size:30px;vertical-align:4px">UNCENSORED</span></div><div style="color:#aab0bb;margin-top:8px;font-size:26px">数据目录 <span class="mono">~/.dsh-uncensored</span></div>';
+  const capO = h('div', 'abs', stage3); px(capO, ixO + IC / 2 - 430, iy + IC + 66, 860); css(capO, { color: 'var(--ink)', textAlign: 'center' }); capO.innerHTML = '<div style="font:700 40px Inter">DeepSeek Harness</div><div style="color:#4a4f58;margin-top:8px;font-size:26px">官方版</div>';
+  const capU = h('div', 'abs', stage3); px(capU, ixU + IC / 2 - 430, iy + IC + 66, 860); css(capU, { color: 'var(--ink)', textAlign: 'center' }); capU.innerHTML = '<div style="font:700 40px Inter">DeepSeek Harness <span style="background:var(--blue);padding:0 8px;border-radius:5px;font-size:30px;vertical-align:4px">UNCENSORED</span></div><div style="color:#4a4f58;margin-top:8px;font-size:26px">数据目录 <span class="mono">~/.dsh-uncensored</span></div>';
   fadeIn(capU, tSplit + 1.1, { y: 14 }); fadeIn(capO, tSplit + 1.25, { y: 14 });
   // b8：四样东西各一份，左右对照，逐词点亮
   const items = ['程序目录', '配置', '会话', '更新渠道'];
   const mkRow = (cx) => { const r = h('div', 'abs', stage3); px(r, cx - 430, iy + IC + 196, 860); css(r, { display: 'flex', gap: '14px', justifyContent: 'center' }); return r; };
   const rowO = mkRow(ixO + IC / 2), rowU = mkRow(ixU + IC / 2);
   const chipsO = items.map((t) => h('span', 'chip', rowO, t)), chipsU = items.map((t) => h('span', 'chip', rowU, t));
-  [...chipsO, ...chipsU].forEach((c) => css(c, { background: 'rgba(255,255,255,.10)', color: '#fff', fontSize: '28px', padding: '8px 20px', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.12)' }));
-  chipsU.forEach((c) => css(c, { background: 'rgba(37,99,235,.35)' }));
+  [...chipsO, ...chipsU].forEach((c) => css(c, { background: 'rgba(255,255,255,.85)', color: 'var(--ink)', fontSize: '28px', padding: '8px 20px', boxShadow: 'inset 0 0 0 1px rgba(20,26,40,.10), 0 6px 16px rgba(28,36,60,.12)' }));
+  chipsU.forEach((c) => css(c, { background: '#2563EB', color: '#fff' }));
   items.forEach((k, i) => { const t = T('b8', k) - 0.1; rise3d(chipsU[i], t, { rx: 50, z: 120, y: 16, d: 0.45 }); rise3d(chipsO[i], t + 0.08, { rx: 50, z: 120, y: 16, d: 0.45 }); sfx('tick', t + 0.05, { g: 0.6 }); });
   // b9：中间一道分隔；两枚图标同时转正
   const wall = h('div', 'abs', stage3); px(wall, 958, 110, 4, 700); css(wall, { background: 'linear-gradient(180deg,transparent,#5b8cff,transparent)', transformOrigin: '50% 0', boxShadow: '0 0 30px #5b8cff' });

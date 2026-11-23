@@ -47,10 +47,14 @@ scene('asides', ({ root, s, c0 }) => {
   const rt = run.querySelector('.rt');
   F((t) => { const n = Math.max(1, Math.floor(t - (T('x2') - 3))); const v = `深度求索中，用时 ${n} 秒 …`; if (rt.textContent !== v) rt.textContent = v; });
   const comp = composer(app.body, { busy: true }); comp.send.classList.add('ready');
+  const doneStep = step(col, 'tasks', '更新任务清单', '3/3 已完成 更新 3'), doneActs = msgActions(col, '17:33');
+  [doneStep, doneActs].forEach((e) => set(e, s.start, { autoAlpha: 0 }));
   const taskbar = h('div', 'abs', app.body); css(taskbar, { left: '174px', bottom: '196px', width: '1040px', display: 'flex', gap: '14px', alignItems: 'center', color: '#5d626c', fontSize: '22px', border: '1px solid var(--line)', borderRadius: '12px', padding: '8px 18px', background: '#fff' });
   taskbar.innerHTML = `${icon('tasks')}<b style="color:var(--ink);font-weight:500">任务</b> 1 已完成 · 1 进行中 · 1 待处理`;
   const foot = footbar(app.body, { turns: '1 轮 2 步 · 449 tok/s', tok: '43.3K tok · 缓存命中 0%', cost: '¥0.09' });
   const tW = T('x2') - 0.7;
+  // 主线这一轮在提旁问之前跑完（第 3 项也做完了）：运行行收起，补上任务清单与消息操作行，停止键回到发送键（空输入框时是浅色）
+  const tDone = T('x5') - 0.6;
   // 侧栏的峰谷倒计时每秒走一格；spend 场用同一个起点（窗口出现的时刻）接着走，换场时不回跳
   const CD0 = 39 * 3600 + 22 * 60 + 15;
   F((t) => { const v = Math.max(0, CD0 - Math.max(0, Math.floor(t - tW))); const str = `${String(Math.floor(v / 3600)).padStart(2, '0')}:${String(Math.floor(v / 60) % 60).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`; if (app.cd.textContent !== str) app.cd.textContent = str; });
@@ -101,6 +105,8 @@ scene('asides', ({ root, s, c0 }) => {
     <div class="sc" style="padding:16px 24px;display:flex;flex-direction:column;gap:12px;font-size:23px;line-height:1.55"></div>`;
   const sc = side.querySelector('.sc'), sync = side.querySelector('.sync');
   const sq = h('div', 'bubble', sc, '已完成的那一项里，有没有改了导出名的依赖？'); css(sq, { maxWidth: '520px' });
+  // 旁问作答时，问题下面是同一种运行行（深度求索中 + 计时），回答到了就收起（不占位）
+  const srun = h('div', 'step run', sc, `<span class="si">${icon('send')}</span><span class="rt">深度求索中，用时 1 秒 …</span>`); css(srun, { height: '36px', overflow: 'hidden' });
   const sa = [step(sc, 'inject', '上下文注入', 'runtime-context'), h('div', 'say', sc, '有两个：一个改了默认导出，一个改成只提供 ESM。主线后面修测试时会碰到。')];
   const scomp = composer(side, { ph: '旁问：在这里输入你的问题', pw: 660, w: 600 });
   // 旁问自己的底栏（side-question 截图里两栏各有一条）：有了问答才出现，/clear 后随记录一起清掉
@@ -125,6 +131,11 @@ scene('asides', ({ root, s, c0 }) => {
   keyed(hic).at(tSide, { html: icon('side') + icon('dots') });
   // x4b：Codex 的 /side 是什么
   const nCX = note(world, 1290, 430, `<div class="k" style="display:flex;align-items:center;gap:12px;letter-spacing:1px">${LOGO.codex()}<span style="font-size:26px;color:#fff">Codex</span><span class="mono" style="font-size:24px">/side</span></div>不打断主对话的临时旁聊`, 500);
+  // 主线跑完：运行行淡出，任务清单 3/3 与消息操作行出现，任务条换成「3 已完成」，停止键换回浅色的发送键
+  css(run, { height: '36px', overflow: 'hidden' });
+  fromTo(run, tDone, { height: 36, marginBottom: 0, autoAlpha: 1 }, { height: 0, marginBottom: -12, autoAlpha: 0, duration: 0.2, ease: 'power1.out', immediateRender: false }); appear(doneStep, tDone + 0.15); fadeIn(doneActs, tDone + 0.35, { y: 0, d: 0.25 });
+  keyed(taskbar).at(tDone + 0.15, { html: `${icon('tasks')}<b style="color:var(--ink);font-weight:500">任务</b> 3 已完成` });
+  keyed(comp.send).at(tDone, { html: icon('up'), cls: 'send' });
   fadeIn(nCX, T('x4b', 'Codex') - 0.1, { y: 14 }); fadeOut(nCX, T('x5b') - 0.3, { d: 0.3 });
   // x5、x5b：同步主线已完成的进展——一张不透明的小卡片从主线那一行上抬起来（盖住而不是叠在字上），飞到旁问的同步说明上并入
   ringOn(app.el, sync, T('x5b', '自动') - 0.2, T('x6') - 0.1, { pad: 4 });
@@ -138,6 +149,21 @@ scene('asides', ({ root, s, c0 }) => {
   vanish(ghost, tGh + 1.02);
   sfx('whoosh', tGh + 0.18, { g: 0.4 }); sfx('tick', tGh + 1.0, { g: 0.5 });
   slide(sq, T('x5') + 0.1, { y: 20, d: 0.4 }); sa.forEach((e, i) => appear(e, T('x5', '对话') + 0.2 + i * 0.5));
+  // ── 主线在提旁问之前跑完；旁问作答期间，侧栏这条会话行首的状态环变成 8 段虚线（DSHU 8aba03f：主线停、旁问在跑时用虚线环），答完回到空闲 ──
+  const tSq = T('x5') + 0.1, tAns = T('x5', '对话') + 0.7;
+  set(srun, s.start, { autoAlpha: 0 }); appear(srun, tSq + 0.35);
+  const srt = srun.querySelector('.rt');
+  F((t) => { const n = Math.max(1, Math.floor(t - tSq) + 1); const v = `深度求索中，用时 ${n} 秒 …`; if (srt.textContent !== v) srt.textContent = v; });
+  fromTo(srun, tAns - 0.5, { height: 36, marginBottom: 0, autoAlpha: 1 }, { height: 0, marginBottom: -12, autoAlpha: 0, duration: 0.2, ease: 'power1.out', immediateRender: false });
+  const sdot = app.sess[0].querySelector('.sdot'), sTrack = sdot.querySelector('circle'), sArc = sdot.querySelectorAll('circle')[1];
+  let sdLast = null;
+  F((t) => {
+    const ph = t < tDone ? 'run' : t < tSq ? 'idle' : t < tAns ? 'dash' : 'idle';
+    sdot.style.visibility = ph === 'idle' ? 'hidden' : 'visible';
+    if (ph === 'dash') { sArc.setAttribute('stroke-dasharray', '3.73 3.73'); sArc.setAttribute('stroke-dashoffset', '0'); sArc.setAttribute('stroke-linecap', 'butt'); }
+    else sArc.setAttribute('stroke-linecap', 'round');
+    if (ph !== sdLast) { sTrack.setAttribute('opacity', ph === 'dash' ? '0' : '.25'); sdLast = ph; }
+  });
   appear(sfoot.f, T('x5', '对话') + 0.7);
   // x6：/clear 清掉旁问自己的记录
   const tT4 = T('x6', 'clear') - 0.6;
@@ -166,8 +192,7 @@ scene('asides', ({ root, s, c0 }) => {
   F((t) => { const on = t >= tSide && t < tClose + PANEL_D; const v = on ? 'wrap' : 'nowrap'; if (foot.f.style.flexWrap !== v) css(foot.f, on ? { ...FOOT2, padding: '0 50px' } : { flexWrap: 'nowrap', padding: '0' }); });
   fromTo(app.hdr, tClose, { paddingRight: 690 }, { paddingRight: 30, ...PANEL });
   keyed(hic).at(tClose + PANEL_D, { html: icon('side') + icon('dots') + icon('panelR') });
-  // 任务跑完了：转圈停、按钮回到发送
-  keyed(comp.send).at(tClose, { html: icon('up') }); fadeOut(run, tClose, { d: 0.2 }); fadeOut(taskbar, tClose + 0.4, { d: 0.3 });
+  fadeOut(taskbar, tClose + 0.4, { d: 0.3 });
   // x11「可选的」：设置 → 通用 里的那一项（ui-conversation 的 settings.prediction.title / description），缺省是开着的；灰字冒出来之前收走
   const pcd = h('div', 'card3d', world); px(pcd, 1260, 360, 540); css(pcd, { padding: '26px 30px', fontSize: '25px', '--mc': MC.def });
   pcd.innerHTML = '<div style="color:#5d626b;font-size:22px">设置 → 通用</div><div style="display:flex;align-items:flex-start;gap:24px;margin-top:12px"><div style="flex:1"><div>输入预测</div><div style="color:#5d626b;font-size:22px;line-height:1.6;margin-top:6px">使用草稿和上下文预测后续输入，Tab 填入但不发送。预测使用当前模型并计费。</div></div></div>';
@@ -178,6 +203,7 @@ scene('asides', ({ root, s, c0 }) => {
   const typed = '把第 3 条写得更具体一些', ghostT = '，补充打开方式和一个使用示例';
   const tT5 = T('x11b', '打字') - 0.2;
   const tE5 = typeEnd(tT5, typed, 9);
+  keyed(comp.send).at(tT5 + 0.1, { cls: 'send ready' });   // 打进第一个字，发送键变实色
   const tG = Math.max(tE5 + 0.8, T('x11b', '灰色') - 0.1);
   sfx('blip', tG, { g: 0.4 });
   // x12：按下 Tab，灰字变成正文

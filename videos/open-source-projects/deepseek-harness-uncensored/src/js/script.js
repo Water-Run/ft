@@ -18,11 +18,11 @@
         ['o3', '成了 DeepSeek Harness Uncensored', { gap: 0.5 }],
         ['o4', '多了一个 Uncensored', { gap: 0.7 }],
         ['o6', '更自由的探索未至之境', { gap: 0.4 }],
-        ['oT', null, { pause: 2.4 }],
+        ['oT', null, { pause: 0.9 }],
       ],
     },
     {
-      id: 'box', chap: ['01', '开箱即用'], lead: 3.0, tail: 0.6,
+      id: 'box', chap: ['01', '开箱即用的破甲体验'], lead: 3.0, tail: 0.6,
       cues: [
         ['b1', 'DSHU 沿用 dsh-purge 早期的 MIT 版本', { gap: 0.2 }],
         ['b1b', '直接内置了破甲提示词，开箱即用', { gap: 0.3 }],
@@ -144,7 +144,7 @@
     {
       id: 'credits', chap: null, lead: 0.4, tail: 0.6,
       cues: [
-        ['credits', null, { pause: 6, credits: true }],
+        ['credits', null, { pause: 4, credits: true }],
       ],
     },
   ];
@@ -160,7 +160,7 @@
       [/dsh-purge/g, 'D S H purge'],
       [/Windows x64/g, 'Windows x 六十四'],
       [/Linux x64/g, 'Linux x 六十四'],
-      [/ARM64/g, 'ARM 六十四'],
+      [/ARM64/g, '阿姆六十四'],   // 策划者 2026-11-23：「ARM的读法连读, 大概类似于阿姆」
       [/macOS/g, 'mac O S'],
       [/MIT/g, 'M I T'],
       [/\/side/g, '斜杠 side'],

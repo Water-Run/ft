@@ -5,7 +5,7 @@
 | 材料 | 值或文件 | 出处 | 取得方式与日期 |
 |---|---|---|---|
 | 标志（DSHU） | 黑底 `#1c202b → #080a0f`、圆角 rx 224/960、白色鲸鱼；鲸鱼路径另存为 `src/design/assets/whale.js`；原文件 `src/design/assets/dshu-icon.svg` | DSHU 仓库 `apps/desktop/resources/icon.svg`（提交 d04e0da），项目许可 GPL-3.0-or-later；鲸鱼图形为深度求索的商标图形 | sparse clone，2026-11-21 |
-| 标志（DSH 原版） | 白底 `#FBFBFB`、方角、深色渐变鲸鱼（`#0F1115`、`#1C2434`）；`src/design/assets/dsh-icon.svg` | `deepseek-ai/deepseek-harness` 标签 dsh-v0.2.2-rc.5 的 `apps/desktop/resources/icon.svg`，仓库许可 MIT；商标归深度求索，品牌规范见 `BRAND_GUIDELINES.zh.md` | gh api，2026-11-21 |
+| 标志（DSH 原版） | 白底 `#FBFBFB`、方角（片中按策划者 2026-11-23「原版的DSH和DSHU应该都是圆角矩形」画成与 DSHU 同样的圆角）、深色渐变鲸鱼（`#0F1115`、`#1C2434`）；`src/design/assets/dsh-icon.svg` | `deepseek-ai/deepseek-harness` 标签 dsh-v0.2.2-rc.5 的 `apps/desktop/resources/icon.svg`，仓库许可 MIT；商标归深度求索，品牌规范见 `BRAND_GUIDELINES.zh.md` | gh api，2026-11-21 |
 | 主色、辅色 | 缺省 `#2563EB`、网安 `#DC2626`、逆向 `#15803D`、写作 `#A16207` | README 模式表与 `docs/assets/dshu/swatch-*.svg` | 同上 |
 | 字体 | 截图中界面字体为系统无衬线中文字体；本仓库可用 Inter、Noto Sans SC、JetBrains Mono | 截图目测，未从源码核对 | — |
 | 官方部件 | 侧栏（标志 + HARNESS/UNCENSORED 标签，UNCENSORED 标签取当前模式色）、新会话按钮、工作区与会话列表（左侧模式色条）、余额卡（高低峰、倒计时、充值余额）、标题栏模式胶囊、工具步骤行、输入框（权限、模型、发送键取模式色）、底栏状态、旁问右侧面板、随问卡片、额度卡片、模式卡与模式菜单 | `research/_src/dshu/docs/assets/dshu/*.webp` | 同上 |
@@ -13,6 +13,11 @@
 | 标志（Codex，类比注解） | OpenAI blossom（白）；`src/design/assets/codex-blossom.svg` | VS Code 扩展「Codex – OpenAI's coding agent」（`openai.chatgpt`）`extension/resources/blossom-white.svg`，扩展 `package.json` 的图标即 blossom；商标归 OpenAI | Marketplace 下载 VSIX 后只取该文件，2026-11-23 |
 | 标志（Linux、Apple，安装包卡片） | Tux、Apple；`src/design/assets/linux.svg`、`apple.svg`，单色、随卡片着色 | simple-icons 13.21.0（商标分别归 Linus Torvalds / Apple） | jsDelivr 下载，2026-11-23 |
 | 标志（Windows，安装包卡片） | Windows 11 标志：四个等大方块，按形状画 | simple-icons 已撤下微软标志；形状取自微软 Windows 11 标志（商标归 Microsoft） | — |
+| 标志（Ghidra，逆向场） | 红色龙头圆标；`src/design/assets/ghidra.png`（由 256px 原图缩到 128px） | `NationalSecurityAgency/ghidra` 仓库 `Ghidra/Framework/Gui/src/main/resources/images/GhidraIcon256.png`（Apache-2.0 仓库；标志归 NSA） | raw.githubusercontent.com 下载，2026-11-23；策划者要求「这三出现真实Logo」 |
+| 标志（IDA，逆向场） | Hex-Rays 方形标志（深色圆角方块、两枚三角）；`src/design/assets/hexrays-mark.svg`，只取 `hex-rays.com/hubfs/logo.svg` 的方形部分、去掉字标 | Hex-Rays 官网；官网的 IDA Pro 页面没有单列 IDA 图标，用发行商标志（策划者 2026-11-23「都按照你的最佳推荐来」）；商标归 Hex-Rays | 下载，2026-11-23 |
+| 标志（Hopper，逆向场） | 蓝色应用图标（放大镜）；`src/design/assets/hopper.png`（由 512px 缩到 128px） | Hopper 官网首页 `Hopper_v6.webp`（alt「Hopper logo」）；商标归 Cryptic Apps | 官网拒绝命令行下载，经取页代理获取，2026-11-23 |
+| 标志（GitHub，片尾仓库卡片） | GitHub 标志；`src/design/assets/github.svg`，内联进 `parts.js` 的 `LOGO.github` | simple-icons 13.21.0 `icons/github.svg`（商标归 GitHub） | jsDelivr 下载，2026-11-23；策划者要求「出现GitHub的真实Logo」 |
+| 头像（Water-Run，片尾仓库卡片） | 160px 头像；`src/design/assets/water-run-avatar.jpg` | GitHub 公开头像 `github.com/Water-Run.png`；策划者本人要求「Water-Run用Water-Run的头像」，与其会话里给的头像一致 | 下载，2026-11-23 |
 | 真实界面截图 | `hero-*`、`mode-*`、`side-question`、`btw-progress`、`spend-*`、`balance`、`memory` 等 34 张；截图背景为随模式色变化的渐变 | 同上 | 同上；截图里是演示数据，未含个人信息 |
 
 ## 策划者对视觉与声音的明确要求

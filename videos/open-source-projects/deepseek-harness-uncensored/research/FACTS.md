@@ -87,6 +87,12 @@ DSHU 是基于 DeepSeek Harness（DSH）的桌面智能体工作台（F1、F2）
 | F39 | x6、x6b | 旁问里发 `/clear` 从头开始；设置 → 通用 可打开「旁问关闭后自动清除上下文」，关掉标签就清空（策划者原稿写「每次开启时自动清理」，按 README 改为关掉时） | README「旁问 /side」第 174 行；手册「旁问里的 /clear」 | 同上 | 2026-11-23 已核 |
 | F40 | x3b、x4b | 类比：Claude Code 的 `/btw`「Ask a side question about the current session without adding to the conversation」；Codex 的 `/side`「Start a temporary side chat without interrupting the main chat」。只说「类似」，不比较细节（Codex 旁聊是临时的，DSHU 旁问关掉再开还在，F21） | https://code.claude.com/docs/en/commands 的命令表；https://learn.chatgpt.com/codex/reference/slash-commands | 2026-11-23 查阅 | 2026-11-23 已核 |
 | F41 | f4a | DSH 与 DSHU 的代码主要是 TypeScript；DSHU 有本地打包指南，可自己生成安装包 | `gh api repos/deepseek-ai/deepseek-harness/languages`、`…/Water-Run/deepseek-harness-uncensored/languages`（TypeScript 均占绝大部分）；DSHU `apps/desktop/packaging/README.zh.md`「在本地生成 DSHU Desktop 安装包」 | DSHU 提交 d04e0da；2026-11-23 查询 | 2026-11-23 已核 |
+| F42 | o3（画面注解） | Uncensored 在片中注作「去审查版」 | 策划者（DSHU 作者）2026-11-23 看 r1 后的要求：「画面底下中部增加注解: Uncensored: 去审查版」 | 会话原话 | 2026-11-23 |
+| F43 | b1b–b3（画面注解） | 装好 DSHU 后正常登录或配置凭据即可使用（破甲提示词已内置，不需另配） | 策划者（DSHU 作者）2026-11-23：「改为 装好DSHU后正常登录或配置凭据即可使用」；与 F37（设置 → 模型 填写提供方与凭据）、F12（独立代理不改登录的网络路径，说明存在登录）相容 | 会话原话 | 2026-11-23 |
+| F44 | x5、x5b（侧栏状态环） | 主线停止、旁问仍在运行时，侧栏会话行首的状态环改为 8 段虚线、不画底环、沿用同一旋转；主线自己在跑时为实线环；随问 /btw 不标记行 | DSHU 提交 8aba03f「侧栏在旁问运行时显示虚线加载环」与 `ui-primitives/src/StateDot.module.css`（`.spinnerDashed`） | 本地 clone 快进到 7efe201，2026-11-23 | 已核 |
+| F45 | y3（余额曲线） | 余额曲线：缩短的不变时段与没有采样的时段都画虚线（5 4），说明文字「虚线表示已缩短的余额不变时段，或没有采样的时段」；会话费用曲线不带说明、保持实线；提示框先显示两位小数 | DSHU 提交 ac598fa、eb83e00；`ui-settings-account/src/client/balance-chart.ts`、`BalanceHistory.tsx`、`balance-locales.ts` | 同上 | 已核 |
+| F46 | b1（关于页入场） | 关于页对话框不再缩放，只淡入 160ms；左卡与右栏同时只改不透明度 220ms | DSHU 提交 3e312e1「修复关于页打开时的抖动」；`Modal.module.css`、`AboutDialog.module.css` | 同上 | 已核 |
+| F47 | x3（命令输入） | 斜杠命令被认领后在输入框里显示为命令片：模式色文字，左右 4px 内边距，无底色 | `ui-conversation/src/client/input/editor/CommandChip.tsx`、`composer-editor.module.css`（`.reference`）、`ReferenceChip.module.css` | 同上 | 已核 |
 
 ## 取证中发现、没有进入成片的事实
 

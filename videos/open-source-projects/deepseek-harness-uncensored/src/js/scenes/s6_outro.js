@@ -9,9 +9,11 @@ scene('outro', ({ root, s }) => {
 
   // f1：仓库卡片
   const repo = h('div', 'card3d', world); px(repo, 360, 180, 1200, 420); css(repo, { padding: '44px 54px', fontSize: '28px' });
-  repo.innerHTML = `<div style="display:flex;gap:18px;align-items:center;font-size:40px">${icon('github', 'style="width:52px;height:52px"')}<span style="color:#5d626b">Water-Run /</span><b>deepseek-harness-uncensored</b></div>
+  // 仓库卡片：GitHub 标志、Water-Run 的头像（GitHub 公开头像，策划者 2026-11-23 要求），后面是仓库名
+  repo.innerHTML = `<div style="display:flex;gap:18px;align-items:center;font-size:40px">${LOGO.github(56)}<span class="av" style="margin-left:6px"></span><span style="color:#5d626b">Water-Run /</span><b>deepseek-harness-uncensored</b></div>
     <div style="margin-top:22px;color:#3b3f46;font-size:32px">更自由的探索未至之境.</div>
     <div style="display:flex;gap:16px;margin-top:40px"><span class="chip lic" style="font-size:28px;padding:10px 22px;background:#e9efff;color:#1d4ed8">${icon('book')} GPL-3.0-or-later</span></div>`;
+  rasterImg(repo.querySelector('.av'), 'design/assets/water-run-avatar.jpg', 52, { borderRadius: '50%', boxShadow: '0 0 0 1px rgba(31,35,41,.15)' });
   repo.dataset.name = 'GitHub 仓库卡片';
   rise3d(repo, s.start + 0.1, { rx: 26, ry: -14, z: 700, y: 80, d: 1.1 }); sfx('whoosh', s.start + 0.1, { g: 0.6 });
   const lic = repo.querySelector('.lic');
@@ -21,8 +23,8 @@ scene('outro', ({ root, s }) => {
   // f2：仓库卡片翻到一边，Release 的四个安装包立成一排
   const tR = T('f2') - 0.3;
   tl.fromTo(repo, { rotationY: 8, x: 0, z: 0, autoAlpha: 1 }, { rotationY: 70, x: -700, z: -600, autoAlpha: 0, duration: 0.8, ease: 'power3.in', immediateRender: false }, tR);
-  const head = h('div', 'abs', world); px(head, 0, 150, 1920); css(head, { textAlign: 'center', color: '#fff', fontSize: '40px', fontWeight: '700' });
-  head.innerHTML = `<span style="color:#aab0bb;font-weight:400">GitHub Release · </span>安装包`;
+  const head = h('div', 'abs', world); px(head, 0, 150, 1920); css(head, { textAlign: 'center', color: 'var(--ink)', fontSize: '40px', fontWeight: '700' });
+  head.innerHTML = `<span style="color:#4a4f58;font-weight:400">GitHub Release · </span>安装包`;
   fadeIn(head, tR + 0.35, { y: 16 });
   // 包格式只画有出处的：Linux x64 出 .deb 与 .rpm（策划者 2026-11-23，FACTS F32）
   const plats = [['windows', 'Windows', 'x64'], ['linux', 'Linux', 'x64', ['.deb', '.rpm']], ['linux', 'Linux', 'ARM64'], ['apple', 'macOS', 'ARM64']];
@@ -63,9 +65,9 @@ scene('outro', ({ root, s }) => {
   sink3d(lang, T('f6') - 0.25, { d: 0.6 });
   const L = h('div', 'abs', world); px(L, 960 - 170, 210); shadowPlate(L, 340, 1, '0 40px 90px rgba(0,0,0,.65), 0 0 140px rgba(37,99,235,.3)'); logoDark(340, L); L.dataset.name = 'DSHU 标志';
   rise3d(L, tE + 0.3, { rx: 0, ry: -30, z: 500, y: 0, d: 1.1 });
-  const ttl = h('div', 'title', world, '<div class="n" style="color:#fff;font-size:64px">DeepSeek Harness <span class="u" style="font-size:52px">UNCENSORED</span></div>'); ttl.style.top = '600px';
+  const ttl = h('div', 'title', world, '<div class="n" style="color:var(--ink);font-size:64px">DeepSeek Harness <span class="u" style="font-size:52px">UNCENSORED</span></div>'); ttl.style.top = '600px';
   fadeIn(ttl, T('f6', 'De') - 0.15, { y: 16, d: 0.6 });   // f6 先念全名，名字跟着出现
-  const sl = h('div', 'title', world, '<div style="color:#e3e6ec;font-size:40px;letter-spacing:10px">更自由的探索未至之境</div>'); sl.style.top = '700px';
+  const sl = h('div', 'title', world, '<div style="color:#2f333a;font-size:40px;letter-spacing:10px">更自由的探索未至之境</div>'); sl.style.top = '700px';
   set(sl, s.start, { autoAlpha: 0 }); wipe(sl, T('f6', '更') - 0.1, { dir: 'l', d: 1.2 }); sfx('chime', T('f6', '更') + 0.2, { g: 0.5 });
   // fT：标志极慢地转回正面
   fromTo(L, T('fT'), { rotationY: 0 }, { rotationY: 6, duration: s.end - T('fT'), ease: 'sine.inOut', immediateRender: false });

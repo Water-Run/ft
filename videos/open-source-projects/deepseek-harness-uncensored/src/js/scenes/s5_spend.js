@@ -56,7 +56,7 @@ scene('spend', ({ root, s }) => {
       <div style="display:flex;justify-content:space-between"><span class="chip" style="border:1px solid var(--line);background:#fff">API 实时 ⌄</span><span style="display:inline-flex;gap:8px;align-items:center">${icon('refresh')} 刷新</span></div>
       <div style="position:absolute;left:28px;top:96px"><div style="color:#5d626b;font-size:22px">当前总额</div><div style="font:700 56px Inter">¥126.73</div></div>
       <div class="chart" style="position:absolute;left:330px;top:84px;width:830px;height:300px"></div>
-      <div style="position:absolute;left:330px;top:394px;color:#5d626b;font-size:22px;display:grid;row-gap:10px"><div>横向虚线表示已缩短的余额不变时段</div><div>悬停或轻触查看采样，聚焦后可用方向键逐点查看</div></div>
+      <div style="position:absolute;left:330px;top:394px;color:#5d626b;font-size:22px;display:grid;row-gap:10px"><div>虚线表示已缩短的余额不变时段，或没有采样的时段</div><div>悬停或轻触查看采样，聚焦后可用方向键逐点查看</div></div>
       <div style="position:absolute;left:28px;right:28px;top:478px;border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:repeat(3,1fr);font-size:22px">
         <div><div style="color:#5d626b">观测区间变化</div><div style="margin-top:4px">¥40.31</div></div>
         <div><div style="color:#5d626b">已保存采样</div><div style="margin-top:4px">231</div></div>
@@ -74,19 +74,21 @@ scene('spend', ({ root, s }) => {
   const lab = (x, y, t, a = 'start') => { const e = svg('text', { x, y, fill: '#6b7079', 'font-size': 22, 'text-anchor': a, 'font-family': 'Inter' }, sv); e.textContent = t; };
   lab(0, Y0 + 8, '¥130.92'); lab(0, Y1 + 8, '¥81.05'); lab(X0, Y1 + 50, '19:33'); lab(W, Y1 + 50, '17:33', 'end');
   // 实线段（之间是缩短的不变时段），值是在最低与最高之间的比例；末点 = 当前总额 ¥126.73
+  // DSHU ac598fa、eb83e00 之后：缩短的不变时段与没有采样的时段都画虚线（5 4，本片 9 7）。缩短段合计不超过横轴的 1/5，
+  // 每段 0.05 宽，读得出是虚线而不是断开（策划者 r1：「余额曲线有断点考虑刚更新的横向虚线 对齐样式」）
   const SOLID = [
-    [[0, 0.108], [0.14, 0.092]],
-    [[0.16, 0.092], [0.29, 0.06]],
-    [[0.31, 0.06], [0.51, 0.0], [0.56, 0.0]],
-    [[0.56, 1.0], [0.68, 0.985]],
-    [[0.70, 0.985], [0.83, 0.95]],
+    [[0, 0.108], [0.12, 0.092]],
+    [[0.17, 0.092], [0.28, 0.06]],
+    [[0.33, 0.06], [0.50, 0.0], [0.55, 0.0]],
+    [[0.55, 1.0], [0.65, 0.985]],
+    [[0.70, 0.985], [0.80, 0.95]],
     [[0.85, 0.95], [1, 0.916]],
   ];
   const pathOf = (pts) => pts.map((p, i) => (i ? 'L' : 'M') + PX(p[0]).toFixed(1) + ' ' + PY(p[1]).toFixed(1)).join(' ');
   const LINE = { fill: 'none', stroke: '#2563EB', 'stroke-width': 3.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' };
   SOLID.forEach((seg) => svg('path', { d: pathOf(seg), ...LINE }, sv));
-  [[0.14, 0.16, 0.092], [0.29, 0.31, 0.06], [0.68, 0.70, 0.985], [0.83, 0.85, 0.95]].forEach(([a, b, v]) => svg('path', { d: `M${PX(a)} ${PY(v)} H${PX(b)}`, ...LINE, 'stroke-dasharray': '9 7', 'stroke-linecap': 'butt' }, sv));
-  svg('path', { d: `M${PX(0.56)} ${PY(0)} V${PY(1)}`, ...LINE, 'stroke-dasharray': '5 7', 'stroke-linecap': 'butt' }, sv);
+  [[0.12, 0.17, 0.092], [0.28, 0.33, 0.06], [0.65, 0.70, 0.985], [0.80, 0.85, 0.95]].forEach(([a, b, v]) => svg('path', { d: `M${PX(a)} ${PY(v)} H${PX(b)}`, ...LINE, 'stroke-dasharray': '9 7', 'stroke-linecap': 'butt' }, sv));
+  svg('path', { d: `M${PX(0.55)} ${PY(0)} V${PY(1)}`, ...LINE, 'stroke-dasharray': '5 7', 'stroke-linecap': 'butt' }, sv);
   // 采样点：沿实线段取点，悬停时圆点吸附到离指针最近的一个
   const SAMP = [];
   SOLID.forEach((seg) => { for (let i = 1; i < seg.length; i++) { const [a, b] = [seg[i - 1], seg[i]]; const n = Math.max(1, Math.round((b[0] - a[0]) * 60)); for (let j = 0; j <= n; j++) SAMP.push([lerp(a[0], b[0], j / n), lerp(a[1], b[1], j / n)]); } });
@@ -197,7 +199,7 @@ scene('spend', ({ root, s }) => {
   // 进度条（关着的是灰色）；费用估算、在途预留、剩余额度与「重置」。开着 5 小时与 7 天；y7b 再给自己打开「1 小时」和「1 天」。
   // 花费都发生在最近 5 小时、最近 1 小时内没有：1 天与 30 天也是 ¥12.64，15 分钟与 1 小时是 ¥0.00
   const tiers = [['15 分钟', 5, 0, false], ['1 小时', 15, 0, false], ['5 小时', 20, 12.64, true], ['1 天', 100, 12.64, false], ['7 天', 150, 12.64, true], ['30 天', 2000, 12.64, false]];
-  const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(6,7,10,.35)' }); focusOn(app.el, T('y7') - 0.35, 0.4); set(dim, s.start, { autoAlpha: 0 }); fadeIn(dim, T('y7') - 0.35, { y: 0, d: 0.35 });
+  const dim = h('div', 'scrim', world); css(dim, { background: 'rgba(238,241,247,.62)' }); focusOn(app.el, T('y7') - 0.35, 0.4); set(dim, s.start, { autoAlpha: 0 }); fadeIn(dim, T('y7') - 0.35, { y: 0, d: 0.35 });
   const money = (v) => '¥' + v.toFixed(2), pctOf = (a, v) => Math.min(100, a / v * 100);
   const ON_B = '#b9c9ef', OFF_B = '#e3e6eb', GREY = '#9aa0ab';
   const CHEV = '<svg width="16" height="28" viewBox="0 0 8 14" style="display:block;flex:none"><path d="M1.6 5 4 2.6 6.4 5M1.6 9 4 11.4 6.4 9" fill="none" stroke="#6b7079" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
