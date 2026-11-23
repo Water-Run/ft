@@ -43,7 +43,7 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-23.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-23.2），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
@@ -53,7 +53,7 @@
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 等 WaterRun 审读文案第 7 稿（review/script.zh.346de924….md）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，做有声代表段，再铺开场景，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5、Gemini 4 Neon |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
-| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/) | [开源项目](open-source-projects/README.md) | 预览迭代 | 预览 r1 没有出成（渲染中断，之后开场加的模拟说明还没渲染过）：先问清界面还原有没有没做完的，跑 check.js 并看开场，再 preview.js --round r1 并做有声自查，交策划者；之后按意见迭代，出正式片与封面 | 最新 | Claude Opus 5.5 |
+| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/) | [开源项目](open-source-projects/README.md) | 预览迭代 | 预览 r2 已出（out/zh/preview-r2.mp4，2026-11-23）：等策划者意见，按意见迭代；之后正式片、封面、check.js --final 与验收 | 待同步 | Claude Opus 5.5 |
 
 ## 已放弃
 
