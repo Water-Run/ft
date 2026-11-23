@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 210 部：已成片 28，制作中 6，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 211 部：已成片 28，制作中 7，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -43,16 +43,17 @@
 
 ## 制作中
 
-阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-16.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
+阶段与下一步取自各片 `project.json` 的 `stage`、`next`；「规则」一栏是本片复核记录对应的经验规则版本（当前 2026-11-23.1），落后时运行 `node kit/tools/lessons.js <片> sync`。
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 看预览 r2（out/zh/preview-r2.mp4）的意见；之后选封面并改成不用阴影与渐变的 3D 做法，再出正式片 | 最新 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 看预览 r7（out/zh/preview-r7.mp4）的意见；意见不多就直接出正式片与封面 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [192 秒了解虚拟机：第一类、第二类与进程虚拟机](in-seconds/virtual-machine-types/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 确认中文旁白，选定视觉、音色与配乐方向 | 未接入 | GPT-6.2-Sol |
-| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [一个电子时代](eras/README.md) | 审稿 | WaterRun 审阅本地审片页，明确中文稿本并选择画面、音色与配乐 | 最新 | GPT-6.2 Astra |
-| [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 暂停中。等 WaterRun 逐句审定第 2 稿文案（review/script.zh.eda2be08….md），并对视觉融合方案与配乐「月下」给出意见；确认后用 Harness 一期的音色 Crisp_Girl（语速 1.15，2026-11-16 策划者改定）合成全片，实测响度，做有声代表段，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5 |
+| [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [一个电子时代](eras/README.md) | 审稿 | WaterRun 审阅本地审片页，明确中文稿本并选择画面、音色与配乐 | 待同步 | GPT-6.2 Astra |
+| [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 等 WaterRun 审读文案第 7 稿（review/script.zh.346de924….md）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，做有声代表段，再铺开场景，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5、Gemini 4 Neon |
 | [道交法中的路权](standalone/traffic-law-right-of-way/) | — | 审稿 | 等 WaterRun 介入大改第 8 稿（第 2 轮 6 项问题待定） | 待同步 | Kimi K2.8、型号未记录（经 Codex 客户端）、Claude Opus 5.5、GPT-6 Astra、Gemini 4 Argon |
 | [怎么打手枪？](standalone/pistol-shooting/) | — | 取证 | 按独立片重新取证并写稿：完整介绍手枪射击；确定几分钟的成片长度与 3D 实现方案 | 待同步 | 未记录 |
+| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/) | [开源项目](open-source-projects/README.md) | 预览迭代 | 预览 r1 没有出成（渲染中断，之后开场加的模拟说明还没渲染过）：先问清界面还原有没有没做完的，跑 check.js 并看开场，再 preview.js --round r1 并做有声自查，交策划者；之后按意见迭代，出正式片与封面 | 最新 | Claude Opus 5.5 |
 
 ## 已放弃
 
@@ -359,6 +360,7 @@
 | # | 标题 | 语言 | 状态 | 目录 | 备注 |
 |---|---|---|---|---|---|
 | 1 | luainstaller：把 Lua 脚本交给没有 Lua 的人<br>luainstaller: Handing Lua Scripts to People Without Lua | zh + en | 已成片 | [`luainstaller`](open-source-projects/luainstaller/) |  |
+| 2 | DeepSeek Harness Uncensored：更自由的探索未至之境 | zh | 制作中 | [`deepseek-harness-uncensored`](open-source-projects/deepseek-harness-uncensored/) |  |
 
 ### Windows工作机制深入
 
