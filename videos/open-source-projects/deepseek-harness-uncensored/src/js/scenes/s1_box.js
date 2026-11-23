@@ -1,4 +1,4 @@
-// 01 开箱即用。主画面是「关于」面板（照 about 截图）：b1 圈出 dsh-purge 集成、打上 MIT；b1b、b3 在左边深色卡片的空处写明破甲提示词已内置，
+// 01 开箱即用。主画面是「关于」面板（照 about 截图）：b1 圈出 dsh-purge 集成、打上 MIT；b1b、b3 在右栏下方的注解里写明破甲提示词已内置，
 // 两件不用再做的事被划掉；b6 圈出「基于 DeepSeek Harness 0.2.2-rc.5」。b7 起面板沉下去，窗口收进右边那枚 DSHU 图标，
 // 左边立起官方 DSH 的图标：两枚图标在 3D 里相对而立，各自带着程序目录、配置、会话、更新渠道，中间一道分隔。
 scene('box', ({ root, s, c0 }) => {
@@ -9,51 +9,73 @@ scene('box', ({ root, s, c0 }) => {
   const app = makeApp(wrapU, { home: true, sessions: HOME_SESS });
   const hp = homePage(app);
 
-  // ── 关于面板 ──
+  // ── 关于面板（照 about 截图与 AboutDialog.tsx / .module.css；尺寸约为原界面的 1.66 倍）──
+  // 本片的窗口比截图里的矮：真实对话框在矮窗口里是整体可滚动的，这里停在顶部；右栏最下面的 REA 一节在折线以下，不露出来（露出一截会和注解叠字）
+  hp.mic.style.color = 'var(--ink)';   // 首页模式按钮的 # 图标是正文色，不随模式变色（AgentPresetSeat .seatIcon）
   const scrim = h('div', 'scrim', app.el);
-  const ab = h('div', 'panel', app.el); px(ab, 110, 34, 1560, 832); css(ab, { padding: '30px 40px', whiteSpace: 'normal' });
+  const ab = h('div', 'panel', app.el); px(ab, 110, 22, 1560, 856); css(ab, { padding: '30px 40px', whiteSpace: 'normal', overflow: 'hidden' });
+  ab.dataset.overlapOk = '';   // 模态框：底下的窗口内容被它盖住（真实界面就是这样）
   h('div', '', ab, `<span style="font-size:30px">关于</span><span style="float:right;color:#646973">${icon('x')}</span>`);
-  const card = h('div', 'abs', ab); px(card, 40, 96, 620, 700);
-  css(card, { borderRadius: '24px', background: 'radial-gradient(700px 600px at 110% 40%, #1d2a4a, transparent 60%), linear-gradient(165deg,#1a2030,#0b0d12 70%)', color: '#fff', padding: '36px 40px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.12)' });
-  const cl = h('div', '', card); css(cl, { position: 'relative', width: '104px', height: '104px' }); logoDark(104, cl);
-  h('div', 'abs', card, 'DSHU').style.cssText += 'right:40px;top:60px;font:600 22px Inter;letter-spacing:4px;color:#aab0bb';
-  h('div', '', card, '<div style="font:700 46px/1.15 Inter;margin-top:26px">DeepSeek Harness<br>Uncensored</div><div style="color:#c6cbd6;margin-top:12px;font-size:28px">更自由的探索未至之境</div><div style="color:#aab0bb;margin-top:22px;font-size:24px">作者　<span style="color:#fff">WaterRun</span></div>');
-  const right = h('div', 'abs', ab); px(right, 700, 96, 780, 700); css(right, { display: 'flex', flexDirection: 'column', gap: '18px' });
-  const sBase = h('div', 'sec', right, '<div class="k">基础与许可</div><div class="big" style="color:var(--mc);font:600 34px Inter;margin-top:10px">基于 DeepSeek Harness 0.2.2-rc.5</div><div style="color:var(--mu);margin-top:6px">GPL-3.0-or-later · 第三方组件与许可</div>');
-  const sPurge = h('div', 'sec', right, '<div class="k">dsh-purge 集成</div><div class="kv"><span style="color:var(--mu)">dsh-purge fork 节点</span><span class="v">19082c2b9788</span><span style="color:var(--mu)">dsh-purge 提交时间</span><span class="v">2026-10-22 07:22 UTC</span></div>');
-  const sRea = h('div', 'sec', right, '<div class="k">内置 REA · MIT</div><div style="font:600 32px Inter;margin-top:8px">REA 6.9.0</div><div style="color:var(--mu);margin-top:4px">REA 与 Node 随应用提供；Ghidra、IDA 或 Hopper 按需另行配置</div>');
+  const LBL = 'rgba(255,255,255,.66)';
+  const card = h('div', 'abs', ab); px(card, 40, 92, 680, 740);
+  css(card, { boxSizing: 'border-box', borderRadius: '32px', border: '1px solid rgb(53,54,56)', overflow: 'hidden', isolation: 'isolate', color: '#fff', padding: '34px 44px',
+    display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '16px',
+    background: 'radial-gradient(ellipse at 95% 0%, color-mix(in srgb, var(--mc) 36%, transparent), transparent 64%), linear-gradient(155deg, rgb(27,27,28), rgb(15,17,21))' });
+  // 卡片右侧的同心圆（.identity::after：280px 圆、外扩 42 与 84px，2% 白）
+  const rings = h('div', 'abs', card); css(rings, { width: '465px', height: '465px', right: '-282px', top: '150px', zIndex: '-1', borderRadius: '50%', border: '1px solid rgba(255,255,255,.08)', boxShadow: '0 0 0 70px rgba(255,255,255,.02), 0 0 0 140px rgba(255,255,255,.02)' });
+  const brandRow = h('div', '', card); css(brandRow, { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' });
+  const cl = h('div', '', brandRow); css(cl, { position: 'relative', width: '96px', height: '96px' }); logoDark(96, cl);
+  h('span', '', brandRow, 'DSHU').style.cssText = 'font:500 22px Inter;letter-spacing:.18em;color:rgba(255,255,255,.65)';
+  h('div', '', card, 'DeepSeek Harness<br>Uncensored').style.cssText = 'font:600 44px/1.12 Inter;letter-spacing:-1px;margin-top:6px';
+  h('div', '', card, '更自由的探索未至之境').style.cssText = 'font-size:24px;color:rgba(255,255,255,.75);margin-top:-8px';
+  h('div', '', card, `<span style="color:${LBL}">作者</span>　WaterRun`).style.cssText = 'font-size:22px';
+  const build = h('div', '', card); css(build, { width: '100%', display: 'grid', gap: '18px', fontSize: '22px', marginTop: '6px' });
+  h('div', '', build, `<span style="color:${LBL}">Uncensored 版本</span><span style="font:500 46px/1 Inter;letter-spacing:-.8px;font-variant-numeric:tabular-nums">2026.11.14.1</span>`)
+    .style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.15)';
+  h('div', '', build, `<div style="color:${LBL}">编译于</div><div style="margin-top:8px">2026-11-21 06:22 UTC</div>`);
+  h('div', '', card, `${icon('github')} GitHub 仓库`).style.cssText = 'display:inline-flex;align-items:center;gap:12px;font-size:22px';
+  const upd = h('div', '', card); css(upd, { marginTop: 'auto', width: '100%', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,.15)', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '14px', fontSize: '22px' });
+  h('div', '', upd, '<span style="width:10px;height:10px;border-radius:50%;background:rgb(34,197,94);box-shadow:0 0 0 5px rgba(34,197,94,.16);flex:none"></span>当前已是最新版本').style.cssText = 'display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.8)';
+  h('span', '', upd, '检查更新').style.cssText = 'padding:6px 18px;border-radius:10px;background:rgba(255,255,255,.06)';
+  // 右栏：基础与许可、源码、dsh-purge 集成、内置 REA（.group：白底细边、圆角，标题前一道模式色短竖线）
+  const right = h('div', 'abs', ab); px(right, 768, 92, 752, 740); css(right, { display: 'flex', flexDirection: 'column', gap: '14px', overflow: 'hidden' });
+  const MU = 'color:var(--mu)';
+  const grp = (html) => { const g = h('div', 'sec', right, html); css(g, { padding: '18px 30px', borderRadius: '26px', display: 'grid', gap: '12px', flex: 'none' }); return g; };
+  const kv = (rows) => `<div class="kv" style="grid-template-columns:270px 1fr;row-gap:12px;margin-top:0">${rows.map(([k, v]) => `<span style="${MU}">${k}</span><span class="v" style="font-variant-numeric:tabular-nums">${v}</span>`).join('')}</div>`;
+  const sBase = grp(`<div class="k">基础与许可</div><div class="big" style="justify-self:start;color:var(--blue);font:500 29px Inter">基于 DeepSeek Harness 0.2.2-rc.5</div><div style="${MU};font-size:22px">GPL-3.0-or-later</div><div style="${MU};font-size:22px">第三方组件与许可</div>`);
+  grp(`<div class="k">源码</div>${kv([['源码节点', `faa2737d73d6<div style="${MU};font-size:22px;margin-top:4px">含本地修改</div>`], ['提交时间', '2026-11-21 06:15 UTC']])}`);
+  const sPurge = grp(`<div class="k">dsh-purge 集成</div>${kv([['dsh-purge fork 节点', '19082c2b9788'], ['dsh-purge 提交时间', '2026-10-22 07:22 UTC']])}`);
+  const sRea = grp(`<div class="k">内置 REA · MIT</div><div style="display:flex;align-items:center;gap:12px;font:500 27px Inter">REA 6.9.0 <span style="color:var(--mu);display:inline-flex">${icon('github')}</span></div>${kv([['源码节点', 'd74549e495c5'], ['提交时间', '2026-11-12 08:58 UTC']])}<div style="${MU};font-size:22px">REA 与 Node 随应用提供；Ghidra/Java、IDA 或 Hopper 按需另行配置。</div>`);
+  // 右栏只露到 dsh-purge 一节为止，下面空出来给注解
+  css(right, { height: (sPurge.offsetTop + sPurge.offsetHeight) + 'px' }); sRea.style.visibility = 'hidden';
 
+  // 打开：遮罩淡入、对话框升起（Modal），左卡 420ms、右栏 440ms 晚 80ms 各自上浮淡入（AboutDialog reveal）；窗口内容留在遮罩底下
   const tAb = c0 + 0.05;
-  set(scrim, s.start, { autoAlpha: 0 }); fadeIn(scrim, tAb, { y: 0, d: 0.5 });
-  rise3d(ab, tAb, { rx: 14, z: 360, y: 60, d: 1.0 }); sfx('whoosh', tAb, { g: 0.5 });
-  [sBase, sPurge, sRea].forEach((e, i) => fadeIn(e, tAb + 0.35 + i * 0.12, { y: 18 }));
-  // 面板底下的窗口内容收起（只留下压暗的窗口外形），不让被盖住的字从边上透出来
-  [app.side, hp.head, hp.ctx, hp.comp.c].forEach((e) => fromTo(e, tAb, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: 'power1.out' }));
+  maskIn(scrim, tAb); modalIn(ab, tAb); sfx('whoosh', tAb, { g: 0.4 });
+  fromTo(card, tAb, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power1.out' });
+  fromTo(right, tAb + 0.08, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.44, ease: 'power1.out' });
 
-  // b1：dsh-purge 那一栏；MIT 标签砸上去；左边卡片的空处挂注解（来源与许可）
-  ringOn(app.el, sPurge, T('b1', 'dsh-purge') - 0.15, Tend('b3') + 0.3, { pad: 6 }); sfx('tick', T('b1', 'dsh-purge'));
+  // 注解挂在 dsh-purge 一节下方（让开高亮环），越过对话框与窗口的下沿（读作片子的注解，而不是界面）；舞台坐标 = 窗口坐标 + (70, 36)
+  const nx = 70 + 110 + 768 - 6, ny = 36 + 22 + 92 + sPurge.offsetTop + sPurge.offsetHeight + 22, nw = 764;
+  // b1：dsh-purge 那一栏；MIT 标签砸上去；下面挂注解（来源与许可）
+  ringOn(app.el, sPurge, T('b1', 'dsh-purge') - 0.15, Tend('b3') + 0.3, { pad: 6, r: 30 }); sfx('tick', T('b1', 'dsh-purge'));
   const mit = h('span', 'chip', sPurge.querySelector('.k'), '<b style="color:var(--mc)">MIT</b> · e1d8e59'); css(mit, { marginLeft: '14px', fontSize: '22px' });
   slam(mit, T('b1', 'MIT') - 0.05, { from: 1.5 }); sfx('pop', T('b1', 'MIT'));
-  const nx = 110 + 40 + 36, ny = 34 + 96 + 440;
-  const n1 = note(app.el, nx, ny, '<div class="k">DSH-PURGE</div>作者 小杨（YuJunZhiXue）。DSHU 用的是它提交 <b>e1d8e59</b> 那一版，当时的许可是 <b>MIT</b>；它现在的主分支已改为商业许可', 548);
+  const n1 = note(world, nx, ny, '<div class="k">DSH-PURGE</div>小杨（YuJunZhiXue）的项目；现在主分支已改为商业许可', nw);
   n1.dataset.name = 'dsh-purge 注解';
-  fadeIn(n1, T('b1', 'dsh-purge') + 0.3, { x: -20 });
-  // b1b、b3：同一处换成「破甲提示词已内置」，两件不用再做的事被划掉
-  const tN2 = T('b1b') - 0.2;
+  fadeIn(n1, T('b1', 'dsh-purge') - 0.1, { y: 16 });
+  // b1b、b3：同一处换成「装好之后还要做的一件事」（「已内置」由 dsh-purge 标题上的标签说；不用再做的两件事台词已经说了，不再写一遍）
+  const tN2 = Tend('b1b') - 1.0;
   fadeOut(n1, tN2 - 0.3, { d: 0.3 });
-  const n2 = note(app.el, nx, ny, '<div class="k">破甲提示词</div>已内置，四种模式共用；装好，在 设置 → 模型 填上凭据就能用<div style="margin-top:12px;color:#c9ced8;font-size:26px"><div><s class="s1">到处找提示词</s></div><div><s class="s2">自己改配置</s></div></div>', 548);
-  n2.querySelectorAll('s').forEach((e) => css(e, { textDecoration: 'none', backgroundImage: 'linear-gradient(#ff8a8a,#ff8a8a)', backgroundRepeat: 'no-repeat', backgroundPosition: '0 55%', backgroundSize: '0% 3px' }));
-  fadeIn(n2, tN2, { x: -20 });
+  const n2 = note(world, nx, ny, '<div class="k">破甲提示词</div>装好后在 设置 → 模型 填上凭据就能用', nw);
+  fadeIn(n2, tN2, { y: 16 });
   const built = h('span', 'chip', sPurge.querySelector('.k'), '已内置'); css(built, { marginLeft: '10px', fontSize: '22px', background: 'var(--mc)', color: '#fff' });
   slam(built, T('b1b', '内置') - 0.05, { from: 1.4 }); sfx('pop', T('b1b', '内置'));
-  fromTo(n2.querySelector('.s1'), T('b3', '找'), { backgroundSize: '0% 3px' }, { backgroundSize: '100% 3px', duration: 0.35, ease: 'power2.out' });
-  fromTo(n2.querySelector('.s2'), T('b3', '改配置'), { backgroundSize: '0% 3px' }, { backgroundSize: '100% 3px', duration: 0.35, ease: 'power2.out' });
-  sfx('tick', T('b3', '找')); sfx('tick', T('b3', '改配置'));
   // b6：基础与许可；注解换成 DSH 是什么
   fadeOut(n2, T('b6') - 0.3, { d: 0.3 });
   ringOn(app.el, sBase.querySelector('.big'), T('b6', '源码') - 0.1, Tend('b6') + 0.2, { pad: 10 }); sfx('tick', T('b6', '源码'));
-  const n3 = note(app.el, nx, ny, '<div class="k">DEEPSEEK HARNESS</div>深度求索开源的桌面智能体工作台（MIT 许可）。DSHU 在它 <b>0.2.2-rc.5</b> 的源码上改出来，以 <b>GPL-3.0-or-later</b> 发布', 548);
-  fadeIn(n3, T('b6') - 0.05, { x: -20 });
+  const n3 = note(world, nx, ny, '<div class="k">DEEPSEEK HARNESS</div>深度求索开源的桌面智能体工作台，<b>MIT</b> 许可', nw);
+  fadeIn(n3, T('b6'), { y: 16 });
 
   // ── b7–b9：同一台电脑上的两枚应用图标，在 3D 里相对而立 ──
   const tSplit = T('b7') - 0.3;

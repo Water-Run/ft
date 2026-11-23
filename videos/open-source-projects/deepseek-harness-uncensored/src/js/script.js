@@ -118,7 +118,8 @@
         ['y5b', '感觉没有额度百分比很不舒服', { gap: 0.3 }],
         ['y6', '对于有这种癖好的用户', { gap: 0.2 }],
         ['y6b', 'DSHU 也带来了经典的 5 小时和周限额', { gap: 0.3 }],
-        ['y7', '还不满足的话，还有更多限额可选', { gap: 1.0 }],
+        ['y7', '还不满足的话，还有更多限额可选', { gap: 0.3 }],
+        ['y7b', '给自己上一些防沉迷控制', { gap: 1.0 }],
       ],
     },
     {
@@ -136,14 +137,14 @@
         ['f3', 'Windows x64、Linux x64', { gap: 0.3 }],
         ['f4', 'Linux ARM64 和 macOS ARM64', { gap: 0.6 }],
         ['f4a', 'DSH 是 TypeScript 写的，你当然也可以自己打包一个', { gap: 0.6 }],
-        ['f6', '更自由地，去探索未至之境', { gap: 0.4 }],
-        ['fT', null, { pause: 3.0 }],
+        ['f6', 'DeepSeek Harness Uncensored，更自由的探索未至之境', { gap: 0.4 }],
+        ['fT', null, { pause: 1.0 }],
       ],
     },
     {
       id: 'credits', chap: null, lead: 0.4, tail: 0.6,
       cues: [
-        ['credits', null, { pause: 8, credits: true }],
+        ['credits', null, { pause: 6, credits: true }],
       ],
     },
   ];

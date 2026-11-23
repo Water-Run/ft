@@ -32,10 +32,10 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .brand .mark { color: var(--ink); }
 .brand .wm { font: 700 33px/1 "Inter"; letter-spacing: -.6px; }
 .brand .tags { display: flex; gap: 3px; margin-top: 4px; }
-.brand .sideicon { margin-left: auto; color: #646973; }
+.brand .sideicon { position: absolute; right: 16px; top: 34px; color: #646973; }
 .tag { font: 800 22px/1 "Inter"; letter-spacing: .4px; padding: 3px 5px 2px; border-radius: 3px; }
 .tag.h { background: var(--ink); color: #fff; }
-.tag.u { background: var(--mc); color: #fff; }
+.tag.u { background: var(--mk, var(--mc)); color: var(--mki, #fff); }
 .newbtn { border: 1px solid var(--line); background: #fff; border-radius: 12px; height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
 .nav { padding: 9px 12px; display: flex; gap: 12px; align-items: center; }
 .grp { color: var(--mu); padding: 18px 12px 8px; display: flex; justify-content: space-between; align-items: center; }
@@ -58,7 +58,7 @@ body { font-family: "Inter", "Sans SC"; color: var(--ink); }
 .main { flex: 1; display: flex; flex-direction: column; position: relative; min-width: 0; background: #fff; }
 .hdr { height: 80px; flex: none; border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 30px; gap: 18px; }
 .hdr .hic { margin-left: auto; display: inline-flex; gap: 24px; color: #646973; }
-.pill { color: #fff; background: var(--mc); border-radius: 10px; padding: 6px 16px; display: inline-flex; gap: 8px; align-items: center; box-shadow: 0 2px 8px color-mix(in srgb, var(--mc) 35%, transparent); }
+.pill { color: #fff; background: var(--mc); border-radius: 10px; padding: 6px 16px; display: inline-flex; gap: 8px; align-items: center; border: 1px solid color-mix(in srgb, var(--mc) 72%, #fff); }
 .pill svg { width: 22px; height: 22px; }
 .body { flex: 1; position: relative; overflow: hidden; }
 .col { position: absolute; left: 174px; top: 26px; width: 1040px; display: flex; flex-direction: column; gap: 12px; line-height: 1.55; white-space: normal; }
@@ -87,9 +87,9 @@ code, .code { font: 22px "Mono"; background: var(--chip); padding: 2px 8px; bord
 .composer .ph .ghost { color: #737881; }
 .composer .bar { display: flex; align-items: center; gap: 22px; color: #5d626c; font-size: 22px; }
 .composer .plusb { width: 44px; height: 44px; border-radius: 50%; background: #f1f2f4; display: grid; place-items: center; }
-.composer .perm { display: inline-flex; gap: 8px; align-items: center; }
+.composer .perm { display: inline-flex; gap: 8px; align-items: center; white-space: nowrap; flex: none; }
 .composer .car { color: #5d626b; }
-.composer .model { margin-left: auto; }
+.composer .model { margin-left: auto; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .composer .send { margin-left: 6px; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: color-mix(in srgb, var(--mc) 45%, #fff); }
 .composer .send.ready { background: var(--mc); }
 .ctxrow { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 26px; align-items: center; color: #3b3f46; }
@@ -105,7 +105,10 @@ svg.i { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-widt
 
 /* 面板、设置页、对话框、卡片 */
 .panel { position: absolute; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 30px 80px rgba(10,14,30,.28); }
-.scrim { position: absolute; inset: 0; background: rgba(12,14,20,.40); }
+.scrim { position: absolute; inset: 0; background: rgba(0,0,0,.24); }
+.tip { position: absolute; background: rgb(44,44,46); color: #fff; border-radius: 11px; padding: 5px 11px; font-size: 22px; white-space: nowrap; }
+.blink-off:not(.typing) .cur { opacity: 0; }
+.sess.blank::before { transform: scaleY(.5); opacity: .7; }
 .sec { border: 1px solid var(--line); border-radius: 18px; padding: 18px 24px; background: #fff; }
 .sec .k { color: var(--mu); display: flex; gap: 10px; align-items: center; }
 .sec .k::before { content: ''; width: 4px; height: 22px; background: var(--mc); border-radius: 2px; }

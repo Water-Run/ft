@@ -9,6 +9,10 @@
 | 主色、辅色 | 缺省 `#2563EB`、网安 `#DC2626`、逆向 `#15803D`、写作 `#A16207` | README 模式表与 `docs/assets/dshu/swatch-*.svg` | 同上 |
 | 字体 | 截图中界面字体为系统无衬线中文字体；本仓库可用 Inter、Noto Sans SC、JetBrains Mono | 截图目测，未从源码核对 | — |
 | 官方部件 | 侧栏（标志 + HARNESS/UNCENSORED 标签，UNCENSORED 标签取当前模式色）、新会话按钮、工作区与会话列表（左侧模式色条）、余额卡（高低峰、倒计时、充值余额）、标题栏模式胶囊、工具步骤行、输入框（权限、模型、发送键取模式色）、底栏状态、旁问右侧面板、随问卡片、额度卡片、模式卡与模式菜单 | `research/_src/dshu/docs/assets/dshu/*.webp` | 同上 |
+| 标志（Claude Code，类比注解） | Claude 星芒，品牌色 `#D97757`；`src/design/assets/claude.svg` | simple-icons 13.21.0 `icons/claude.svg`（CC0 收录；商标归 Anthropic） | jsDelivr 下载，2026-11-23；策划者要求「claude code和codex出现真实logo」 |
+| 标志（Codex，类比注解） | OpenAI blossom（白）；`src/design/assets/codex-blossom.svg` | VS Code 扩展「Codex – OpenAI's coding agent」（`openai.chatgpt`）`extension/resources/blossom-white.svg`，扩展 `package.json` 的图标即 blossom；商标归 OpenAI | Marketplace 下载 VSIX 后只取该文件，2026-11-23 |
+| 标志（Linux、Apple，安装包卡片） | Tux、Apple；`src/design/assets/linux.svg`、`apple.svg`，单色、随卡片着色 | simple-icons 13.21.0（商标分别归 Linus Torvalds / Apple） | jsDelivr 下载，2026-11-23 |
+| 标志（Windows，安装包卡片） | Windows 11 标志：四个等大方块，按形状画 | simple-icons 已撤下微软标志；形状取自微软 Windows 11 标志（商标归 Microsoft） | — |
 | 真实界面截图 | `hero-*`、`mode-*`、`side-question`、`btw-progress`、`spend-*`、`balance`、`memory` 等 34 张；截图背景为随模式色变化的渐变 | 同上 | 同上；截图里是演示数据，未含个人信息 |
 
 ## 策划者对视觉与声音的明确要求

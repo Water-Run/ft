@@ -19,9 +19,10 @@ scene('open', ({ root, s }) => {
   const tDark = h('div', 'title', dark, '<div class="n" style="color:#fff">DeepSeek Harness <span class="u">UNCENSORED</span></div><div class="ab" style="color:#aab0bb"><span class="a1">DSH</span><span class="a2">U</span></div>'); tDark.style.top = '600px';
   const tagU = tDark.querySelector('.u'), abU = tDark.querySelector('.a2');
   const sticker = h('div', 'sticker', dark, '黑化版'); px(sticker, CX + SZ / 2 - 50, TOP - 26); css(sticker, { transform: 'rotate(5deg)' });
-  const fine = h('div', 'fine', dark, '非 DeepSeek 官方项目 · 源码基于 DeepSeek Harness 0.2.2-rc.5'); fine.style.top = '846px';
-  // 说明（策划者 2026-11-23）：画面里的界面是示意动画。放在最上层，从 o3 说完一直留到开场结束；深色胶囊在深色舞台和白色窗口上都看得清
-  const disc = h('div', 'abs', world); css(disc, { left: '0', right: '0', top: '894px', textAlign: 'center', zIndex: 20 });
+  const fine = h('div', 'fine', dark, '非 DeepSeek 官方项目 · 源码基于 DeepSeek Harness 0.2.2-rc.5'); fine.style.top = '800px';
+  // 说明（策划者 2026-11-23）：画面里的界面是示意动画。放在最上层，从 o3 说完一直留到开场结束；深色胶囊在深色舞台和白色窗口上都看得清。
+  // 高度取在窗口下沿（936）之内：窗口立起后胶囊整个落在输入框下面的空白里，不骑在窗口边上
+  const disc = h('div', 'abs', world); css(disc, { left: '0', right: '0', top: '852px', textAlign: 'center', zIndex: 20 });
   disc.innerHTML = '<span style="display:inline-block;background:rgba(12,14,20,.86);color:#e3e6ec;font-size:24px;padding:8px 22px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.12)">动画页面 UI 按代码模拟渲染，真实页面截图参照 README</span>';
   const line = h('div', 'abs', world); css(line, { left: '0', width: '1920px', height: '3px', background: 'linear-gradient(90deg,transparent,#5b8cff 25%,#5b8cff 75%,transparent)', boxShadow: '0 0 24px #5b8cff' });
 
@@ -62,6 +63,7 @@ scene('open', ({ root, s }) => {
   const appWrap = h('div', 'abs', world); css(appWrap, { inset: '0' });
   const app = makeApp(appWrap, { home: true, sessions: HOME_SESS });
   const hp = homePage(app);
+  hp.mic.style.color = 'var(--ink)';   // 首页模式按钮的 # 图标是正文色，不随模式变色（AgentPresetSeat .seatIcon）
   const lx = CX - SZ / 2;
   set(appWrap, s.start, { autoAlpha: 0 }); set(appWrap, tOpen, { autoAlpha: 1 });
   fromTo(appWrap, tOpen, { clipPath: `inset(${TOP}px ${1920 - lx - SZ}px ${1080 - TOP - SZ}px ${lx}px round 90px)` },
@@ -71,6 +73,8 @@ scene('open', ({ root, s }) => {
   const fly = h('div', 'abs', world); px(fly, lx, TOP); logoDark(SZ, fly); fly.dataset.name = 'DSHU 标志';
   const bx = 70 + 16 + 6 + 23, by = 36 + 24 + 23;
   set(fly, s.start, { autoAlpha: 0 }); set(fly, tOpen, { autoAlpha: 1 }); vanish(L1, tOpen);
+  // 全片第 0 帧时间线不会重算（开机时本来就在 0），s.start 上的 set 不生效：窗口与飞行标志在 tOpen 之前由 t 直接藏起来（pitfalls：第 0 帧）
+  F((t) => { if (t < tOpen) [appWrap, fly].forEach((e) => { e.style.visibility = 'hidden'; e.style.opacity = '0'; }); });
   fromTo(fly, tOpen, { x: 0, y: 0, scale: 1 }, { x: bx - CX, y: by - (TOP + SZ / 2), scale: 52 / SZ, duration: 1.1, ease: 'power3.inOut', immediateRender: false });
   fadeOut(fly, tOpen + 0.95, { d: 0.25 });
   set(app.mark, s.start, { autoAlpha: 0 }); fadeIn(app.mark, tOpen + 0.95, { y: 0, d: 0.25 });
@@ -79,8 +83,9 @@ scene('open', ({ root, s }) => {
   set(hp.head, s.start, { autoAlpha: 0 });
   wipe(hp.head, T('o6') + 0.45, { dir: 'l', d: 0.9 }); sfx('chime', T('o6') + 0.6, { g: 0.5 });
   fadeIn(hp.ctx, tOpen + 0.8, { y: 10 }); fadeIn(hp.comp.c, tOpen + 0.9, { y: 16 });
-  // oT：输入框里出现光标，等你开口
+  // oT：输入框里出现闪烁的光标，等你开口
   keyed(hp.comp.ph).at(T('oT'), { html: '<span class="cur" style="height:1em;width:3px;vertical-align:-.15em;background:var(--mc)"></span> 描述你想要构建的内容，/ 调用指令，@ 文件或对话' });
+  blinkCursors(hp.comp.ph);   // 输入框里的光标按 530ms 明暗交替（原生文本框的闪烁）
 
   // 镜头基本不动：窗口立起后朝右极慢横移
   cam.track(s.start, { x: 960, y: 540, z: 1 }, [drift(tOpen + 1.3, s.end, 1)]);

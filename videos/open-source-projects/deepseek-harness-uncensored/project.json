@@ -9,7 +9,7 @@
     "zh": "DeepSeek Harness Uncensored：更自由的探索未至之境"
   },
   "stage": "preview",
-  "next": "预览 r1 没有出成（渲染中断，之后开场加的模拟说明还没渲染过）：先问清界面还原有没有没做完的，跑 check.js 并看开场，再 preview.js --round r1 并做有声自查，交策划者；之后按意见迭代，出正式片与封面",
+  "next": "预览 r1 已出（out/zh/preview-r1.mp4，2026-11-23）：等策划者意见，按意见迭代预览；之后正式片、封面、check.js --final 与验收",
   "credits": {
     "planner": "WaterRun",
     "people": [

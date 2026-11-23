@@ -81,7 +81,7 @@ DSHU 是基于 DeepSeek Harness（DSH）的桌面智能体工作台（F1、F2）
 | F35 | w7 | 彻底删除：删除对话会先停下任务，再连同旁问、随问和子会话一起删掉，工作区文件不动 | README「其它小改进」表「彻底删除」 | 同上 | 已核 |
 | F37 | （第 5 稿删去 b2，未进旁白） | 首次配置：设置 → 模型中填写提供方与凭据 | README「安装与数据」表；手册「第一个任务」第 1 步 | 同上 | 已核 |
 | F31 | f1 | 许可 GPL-3.0-or-later | `product.json`；README 徽章 | 同上 | 已核 |
-| F32 | f2–f4 | 安装包覆盖 Windows x64、Linux x64、Linux ARM64、macOS ARM64 | 策划者原话（2026-11-21）：「我后面会发Release. 包括Windows X64, Linux X64, Linux ARM64和MacOS ARM64」。README（d04e0da）写的是「Windows x64 为首发平台，Linux x64 提供检查包」 | **发布时核对** Release 附件的平台 | 待核 |
+| F32 | f2–f4 | 安装包覆盖 Windows x64、Linux x64、Linux ARM64、macOS ARM64 | 策划者原话（2026-11-21）：「我后面会发Release. 包括Windows X64, Linux X64, Linux ARM64和MacOS ARM64」。2026-11-23 补充：「安装包部分, 其中Linux X64包括.deb和.rpm」（只上画面）。README（d04e0da）写的是「Windows x64 为首发平台，Linux x64 提供检查包」 | **发布时核对** Release 附件的平台 | 待核 |
 | F33 | f2 | 安装包在 GitHub 的 Release 页面 | 2026-11-21 Release 均为 Draft。策划者原话（2026-11-21）：「片中是对应等会Release包发出来的, 宣发视频」 | **发布时核对**：本片发布前确认 Release 已公开，否则改这一句 | 待核 |
 | F38 | s5、s5b | 独立代理的覆盖范围有限：只在网安模式生效，覆盖受控网页抓取、遵守代理变量的命令与终端、桌面侧栏浏览器和几种以 `launch` 启动的浏览器 MCP；其他协议、入站隔离等「尚未覆盖」。「再套一层马甲」是策划者对「流量从你指定的代理出去」的口语说法。「这只是一个实验功能」：README 没有单独这样标注独立代理（`SAFETY.zh.md` 说整个软件是实验性预览）；策划者即 DSHU 作者（仓库 Water-Run），2026-11-23 明确要求「s5 保留 实验功能的说法」，按作者的说法写 | README「独立代理与目标保护的覆盖范围」；`SAFETY.zh.md`「实验性状态」；作者原话 | DSHU 提交 d04e0da | 2026-11-23 已核 |
 | F39 | x6、x6b | 旁问里发 `/clear` 从头开始；设置 → 通用 可打开「旁问关闭后自动清除上下文」，关掉标签就清空（策划者原稿写「每次开启时自动清理」，按 README 改为关掉时） | README「旁问 /side」第 174 行；手册「旁问里的 /clear」 | 同上 | 2026-11-23 已核 |

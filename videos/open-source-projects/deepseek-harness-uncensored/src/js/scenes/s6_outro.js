@@ -24,11 +24,12 @@ scene('outro', ({ root, s }) => {
   const head = h('div', 'abs', world); px(head, 0, 150, 1920); css(head, { textAlign: 'center', color: '#fff', fontSize: '40px', fontWeight: '700' });
   head.innerHTML = `<span style="color:#aab0bb;font-weight:400">GitHub Release · </span>安装包`;
   fadeIn(head, tR + 0.35, { y: 16 });
-  const plats = [['windows', 'Windows', 'x64'], ['linux', 'Linux', 'x64'], ['linux', 'Linux', 'ARM64'], ['apple', 'macOS', 'ARM64']];
+  // 包格式只画有出处的：Linux x64 出 .deb 与 .rpm（策划者 2026-11-23，FACTS F32）
+  const plats = [['windows', 'Windows', 'x64'], ['linux', 'Linux', 'x64', ['.deb', '.rpm']], ['linux', 'Linux', 'ARM64'], ['apple', 'macOS', 'ARM64']];
   const PW = 330, PG = 40, PX0 = 960 - (4 * PW + 3 * PG) / 2;
-  const tiles = plats.map(([ic, os, arch], i) => {
+  const tiles = plats.map(([ic, os, arch, fmts], i) => {
     const c = h('div', 'card3d', world); px(c, PX0 + i * (PW + PG), 300, PW, 420); css(c, { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '18px', '--c': '#5b616d' });
-    c.innerHTML = `<div style="color:var(--c)">${icon(ic, 'style="width:110px;height:110px;stroke-width:1.4"')}</div><div style="font:700 44px Inter">${os}</div><div style="font:600 34px Inter;color:#5d626b">${arch}</div>`;
+    c.innerHTML = `<div style="color:var(--c);height:110px">${LOGO[ic](ic === 'windows' ? 96 : 110)}</div><div style="font:700 44px Inter">${os}</div><div style="font:600 34px Inter;color:#5d626b">${arch}</div>${fmts ? `<div class="fmts" style="display:flex;gap:12px">${fmts.map((f) => `<span class="mono" style="font-size:24px;padding:4px 14px;border-radius:10px;border:1px solid var(--line);color:#3b3f46;background:#f4f5f7">${f}</span>`).join('')}</div>` : ''}`;
     c.dataset.name = `${os} ${arch}`;
     tl.fromTo(c, { autoAlpha: 0, rotationX: 60, z: -500, y: 120, transformPerspective: P3 }, { autoAlpha: 1, rotationX: 10, rotationY: (i - 1.5) * -8, z: 0, y: 0, duration: 0.8, ease: 'power3.out', immediateRender: true }, tR + 0.5 + i * 0.1);
     return c;
@@ -40,6 +41,7 @@ scene('outro', ({ root, s }) => {
     fromTo(tiles[i], t, { '--c': '#5b616d', rotationX: 10, rotationY: (i - 1.5) * -8, z: 0 }, { '--c': MC.def, rotationX: 0, rotationY: 0, z: 60, duration: 0.45, ease: 'back.out(1.6)', immediateRender: false });
     sfx('pop', t + 0.05, { g: 0.6 });
   });
+  const fm = tiles[1].querySelector('.fmts'); set(fm, s.start, { autoAlpha: 0 }); fadeIn(fm, T('f3', 'Linux x64') + 0.2, { y: 10, d: 0.35 });
   // f4a：安装包退下，换成语言占比与一条打包命令
   const tL = T('f4a') - 0.35;
   tiles.forEach((c, i) => sink3d(c, tL + i * 0.05, { d: 0.5 })); fadeOut(head, tL, { d: 0.3 });
@@ -54,17 +56,17 @@ scene('outro', ({ root, s }) => {
   fromTo(ts, T('f4a', 'TypeScript') - 0.2, { width: '0%' }, { width: '95.2%', duration: 0.8, ease: 'power3.out' });
   const term = lang.querySelector('.term');
   const cmd = 'pnpm --dir apps/desktop run package:win:x64:unsigned';
-  const tC = T('f4a', '打包') - 0.9;
+  const tC = T('f4a', 'TypeScript') + 0.7;
   inputTrack(term, '<span style="color:#7dd3a0">$</span> ', [[tC, 'type', cmd, { cps: 34, pre: '<span style="color:#7dd3a0">$</span> ', cursorUntil: tC + 1.9 }]]);
   // f6：一切退到景深里，标志与标语回到中央
   const tE = T('f6') - 0.5;
-  sink3d(lang, tE, { d: 0.6 });
+  sink3d(lang, T('f6') - 0.25, { d: 0.6 });
   const L = h('div', 'abs', world); px(L, 960 - 170, 210); shadowPlate(L, 340, 1, '0 40px 90px rgba(0,0,0,.65), 0 0 140px rgba(37,99,235,.3)'); logoDark(340, L); L.dataset.name = 'DSHU 标志';
   rise3d(L, tE + 0.3, { rx: 0, ry: -30, z: 500, y: 0, d: 1.1 });
   const ttl = h('div', 'title', world, '<div class="n" style="color:#fff;font-size:64px">DeepSeek Harness <span class="u" style="font-size:52px">UNCENSORED</span></div>'); ttl.style.top = '600px';
-  fadeIn(ttl, tE + 0.6, { y: 16, d: 0.6 });
+  fadeIn(ttl, T('f6', 'De') - 0.15, { y: 16, d: 0.6 });   // f6 先念全名，名字跟着出现
   const sl = h('div', 'title', world, '<div style="color:#e3e6ec;font-size:40px;letter-spacing:10px">更自由的探索未至之境</div>'); sl.style.top = '700px';
-  set(sl, s.start, { autoAlpha: 0 }); wipe(sl, T('f6', '探索') - 0.4, { dir: 'l', d: 1.0 }); sfx('chime', T('f6', '探索'), { g: 0.5 });
+  set(sl, s.start, { autoAlpha: 0 }); wipe(sl, T('f6', '更') - 0.1, { dir: 'l', d: 1.2 }); sfx('chime', T('f6', '更') + 0.2, { g: 0.5 });
   // fT：标志极慢地转回正面
   fromTo(L, T('fT'), { rotationY: 0 }, { rotationY: 6, duration: s.end - T('fT'), ease: 'sine.inOut', immediateRender: false });
   cam.track(s.start, { x: 960, y: 540, z: 1 }, [drift(s.start + 0.5, tR - 0.1, 1), [tR, { x: 960 }, 0.6, { sfx: false }], drift(tR + 0.8, s.end, 1)]);
