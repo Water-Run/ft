@@ -12,7 +12,7 @@
 
 | 片 | 系列 | 语言 · 时长 | 交付 | 发布 | 评分 | 参与模型 |
 |---|---|---|---|---|---|---|
-| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/) | [开源项目](open-source-projects/README.md) | zh 4:46 | 2026-11-23 | 未登记 | — | Claude Opus 5.5 |
+| [DeepSeek Harness Uncensored：更自由的探索未至之境](open-source-projects/deepseek-harness-uncensored/) | [开源项目](open-source-projects/README.md) | zh 4:46 | 2026-11-23 | [哔哩哔哩](https://www.bilibili.com/video/BV1orySzYEvw) | — | Claude Opus 5.5 |
 | [96秒了解TTFT(首Token延迟)](in-seconds/ttft/) | [XX 秒速通](in-seconds/README.md) | zh 1:36 | 2026-11-19 | [哔哩哔哩](https://www.bilibili.com/video/BV174sb6yECY) | — | GPT-6.1-Terra、Claude Sonnet 5.5、Claude Haiku 5.5 |
 | [150 秒速通 GitHub 协作：为什么要 Fork、开分支、再提 PR](in-seconds/github-collaboration/) | [XX 秒速通](in-seconds/README.md) | zh 2:30 | 2026-11-17 | [哔哩哔哩](https://www.bilibili.com/video/BV19dsz6eEtP) | — | Qwen 4 Max Preview、Claude Opus 5.5 |
 | [一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse](database-engines/clickhouse/) | [数据库引擎](database-engines/README.md) | zh 17:56 | 2026-11-16 | [哔哩哔哩](https://www.bilibili.com/video/BV1iwsW6xEvx) | — | Claude Opus 5.5、Claude Sonnet 5.5 |

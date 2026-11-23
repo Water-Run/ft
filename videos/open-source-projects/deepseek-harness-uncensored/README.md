@@ -10,9 +10,9 @@ DSHU（DeepSeek Harness Uncensored）的宣发片：随 Release 包发布，介�
 
 | 项 | 记录 |
 |---|---|
-| 当前停在哪里 | **已交付**（2026-11-23）：正式片 `out/deepseek-harness-uncensored-zh-1080p60.mp4`（4:45.9），WaterRun 看过后决定投稿（见「交付」） |
-| 下一步，依赖什么 | WaterRun 投稿后回填 `project.json` 的 `release`（平台、地址、日期、标题，取自公开页面），`stage` 改为 `released`；补记外置材料的公开地址；之后冻结 |
-| 等待策划者的事 | 投稿后的平台地址 |
+| 当前停在哪里 | **已发布**（2026-11-23 21:19:54，哔哩哔哩 [BV1orySzYEvw](https://www.bilibili.com/video/BV1orySzYEvw)），按 docs/guides/release.md 冻结 |
+| 下一步，依赖什么 | 只追加发布与反馈记录；外置材料的公开地址确定后补记于「交付」 |
+| 等待策划者的事 | 暂无 |
 | 本次会话的角色 | 制作方（接盘会话，Claude Opus 5.5） |
 
 **中断记录（2026-11-23，时间均为 +08:00）。** 之后的恢复会话也在约 15:38 因 429 停下（三组子代理改完界面、未看画面）；接盘会话据其会话记录接着做完自查并出 r1，见 `review/NOTES.md`。以下为第一次中断的还原： 本节由另一个会话据文件时间与残存记录还原，不是原会话自己写的。
@@ -199,6 +199,13 @@ DSHU（DeepSeek Harness Uncensored）的宣发片：随 Release 包发布，介�
 - **未做或未通过**：以正常速度通看与试听（交策划者）；外置材料的公开地址。
 
 
+
+**发布（2026-11-23）。** WaterRun 投到哔哩哔哩：<https://www.bilibili.com/video/BV1orySzYEvw>，2026-11-23 21:19:54 发布，归入「开源项目」合集（sid=9258122），页面标有「含AI生成内容」。以下取自公开页面：
+
+- 平台标题「DeepSeek Harness Uncensored: 更自由的探索未至之境」，冒号是半角加空格；片中与片单的标题是全角「：」。
+- 简介：「DeepSeek Harness Uncensored(DSHU), 开箱即用的破甲版DSH, 预制了四种模式和一系列定制功能. GitHub: https://github.com/Water-Run/deepseek-harness-uncensored/ 以GPL协议开源. 破甲提示词基于dsh-purge(早期MIT实现版本), 并内置REA.」简介讲的是 DSHU 项目本身的许可与地址，没有写本片的许可（GPL-3.0-or-later）、本片源码地址 `github.com/Water-Run/ft` 与版本，也没有外置材料地址（docs/guides/release.md 第 2 节的要求），如实记在这里，由策划者决定是否补。
+- 片尾「开源视频」指向的 `https://github.com/Water-Run/ft` 可以公开访问（2026-11-23 检查返回 200）。
+- 只发了哔哩哔哩，YouTube 未发。
 
 ## 评价与复盘
 

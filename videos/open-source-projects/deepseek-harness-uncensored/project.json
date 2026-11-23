@@ -8,8 +8,8 @@
   "titles": {
     "zh": "DeepSeek Harness Uncensored：更自由的探索未至之境"
   },
-  "stage": "delivered",
-  "next": "WaterRun 投稿后回填 release（平台、地址、日期、标题），stage 改为 released；补记外置材料的公开地址",
+  "stage": "released",
+  "next": "已发布并冻结；只追加发布与反馈记录",
   "credits": {
     "planner": "WaterRun",
     "people": [
@@ -108,5 +108,14 @@
     "duration": {
       "zh": 285.933
     }
-  }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1orySzYEvw",
+      "date": "2026-11-23",
+      "title": "DeepSeek Harness Uncensored: 更自由的探索未至之境",
+      "lang": "zh"
+    }
+  ]
 }
