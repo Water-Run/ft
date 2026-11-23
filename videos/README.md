@@ -48,7 +48,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
-| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 看预览 r7（out/zh/preview-r7.mp4）的意见；意见不多就直接出正式片与封面 | 待同步 | Claude Opus 5.5、Claude Sonnet 5.5 |
+| [一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger](database-engines/mongodb/) | [数据库引擎](database-engines/README.md) | 预览迭代 | 等 WaterRun 看预览 r8（out/zh/preview-r8.mp4）的意见；意见不多就直接出正式片与封面 | 最新 | Claude Opus 5.5、Claude Sonnet 5.5 |
 | [192 秒了解虚拟机：第一类、第二类与进程虚拟机](in-seconds/virtual-machine-types/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 确认中文旁白，选定视觉、音色与配乐方向 | 未接入 | GPT-6.2-Sol |
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [一个电子时代](eras/README.md) | 审稿 | WaterRun 审阅本地审片页，明确中文稿本并选择画面、音色与配乐 | 待同步 | GPT-6.2 Astra |
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 等 WaterRun 审读文案第 7 稿（review/script.zh.346de924….md）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，做有声代表段，再铺开场景，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5、Gemini 4 Neon |
