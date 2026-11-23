@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>DSHU 关键帧</title>
+<!-- 审片用的关键帧：?d=A|B|C&k=1|2|3。三个方向都是「虚拟页面」，区别在讲解方法。界面照 DSHU 的截图重画（research/_src/dshu/docs/assets/dshu/），不贴截图。 -->
+<style>
+@font-face { font-family: 'Inter'; src: url('/fonts/Inter.ttf'); }
+@font-face { font-family: 'Noto Sans SC'; src: url('/fonts/NotoSansSC.ttf'); }
+@font-face { font-family: 'JetBrains Mono'; src: url('/fonts/JetBrainsMono.ttf'); }
+:root {
+  --blue: #2563EB; --red: #DC2626; --green: #15803D; --amber: #A16207;
+  --ui: 'Inter', 'Noto Sans SC', sans-serif; --mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0b0c10; }
+#stage { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; font-family: var(--ui); color: #1f2329; }
+.bg { position: absolute; inset: 0; }
+
+/* ── 窗口 ── */
+.win { position: absolute; border-radius: 22px; overflow: hidden; display: flex; box-shadow: 0 30px 80px rgba(10, 14, 30, .28), 0 0 0 1px rgba(0,0,0,.06); }
+.win.light { background: #fff; --side: #f7f8fa; --line: #e7e8ec; --tx: #1f2329; --mu: #8b9099; --chip: #f1f2f5; --card: #fff; --bubble: #eef3fe; }
+.win.dark  { background: #18191c; --side: #1e1f23; --line: #2c2d32; --tx: #e9e9ec; --mu: #9b9ca3; --chip: #2a2b30; --card: #232428; --bubble: #232a3a; color: #e9e9ec; }
+.side { width: 300px; background: var(--side); border-right: 1px solid var(--line); padding: 22px 16px; display: flex; flex-direction: column; gap: 6px; color: var(--tx); position: relative; }
+.brand { display: flex; align-items: center; gap: 10px; margin: 0 6px 14px; }
+.brand img { width: 40px; height: 40px; }
+.brand .wm { font: 700 23px/1 var(--ui); letter-spacing: -.3px; }
+.brand .tags { display: flex; gap: 3px; margin-top: 4px; }
+.tag { font: 700 10.5px/1 var(--ui); letter-spacing: 1px; padding: 3px 5px 2px; border-radius: 2px; }
+.tag.h { background: var(--tx); color: var(--side); }
+.tag.u { color: #fff; }
+.newbtn { border: 1px solid var(--line); background: var(--card); border-radius: 10px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 16px; gap: 6px; margin-bottom: 12px; }
+.nav { font-size: 16px; padding: 8px 10px; display: flex; gap: 10px; align-items: center; }
+.grp { font-size: 15px; color: var(--mu); padding: 18px 10px 6px; }
+.ws { font-size: 15.5px; padding: 7px 10px; display: flex; gap: 8px; align-items: center; }
+.sess { font-size: 15.5px; padding: 8px 10px 8px 30px; border-radius: 8px; position: relative; display: flex; justify-content: space-between; }
+.sess.on { background: var(--chip); }
+.sess::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: var(--c, transparent); }
+.sess small { color: var(--mu); font-size: 12px; }
+.bal { margin-top: auto; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 12px 14px; font-size: 13px; color: var(--mu); }
+.bal .r { display: flex; justify-content: space-between; align-items: center; }
+.bal b { font: 600 24px/1.2 var(--ui); color: var(--tx); }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+.main { flex: 1; display: flex; flex-direction: column; position: relative; color: var(--tx); min-width: 0; }
+.hdr { height: 64px; border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 28px; gap: 14px; font-size: 17px; }
+.pill { color: #fff; border-radius: 9px; padding: 6px 13px; font-size: 15px; display: inline-flex; gap: 6px; align-items: center; }
+.body { flex: 1; padding: 26px 0 0; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+.col { width: 860px; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 1.6; }
+.bubble { align-self: flex-end; background: var(--bubble); border-radius: 16px; padding: 12px 18px; max-width: 620px; }
+.step { color: var(--mu); font-size: 15px; display: flex; gap: 10px; align-items: center; }
+.step i { font-style: normal; width: 18px; text-align: center; opacity: .8; }
+.step u { text-decoration: none; border-bottom: 1px dashed var(--mu); }
+h3 { font-size: 24px; margin-top: 6px; }
+.tbl { border-top: 1px solid var(--line); }
+.tbl div { display: grid; grid-template-columns: 220px 1fr; border-bottom: 1px solid var(--line); padding: 10px 0; font-size: 15px; }
+code { font: 13.5px var(--mono); background: var(--chip); padding: 2px 6px; border-radius: 5px; }
+.composer { width: 900px; margin: 14px auto 0; border: 1px solid var(--line); border-radius: 18px; background: var(--card); padding: 14px 18px 12px; box-shadow: 0 6px 24px rgba(0,0,0,.05); }
+.composer .ph { color: var(--mu); font-size: 16px; height: 40px; }
+.composer .ph em { font-style: normal; color: var(--mu); opacity: .55; }
+.composer .bar { display: flex; align-items: center; gap: 16px; font-size: 14.5px; color: var(--tx); }
+.composer .send { margin-left: auto; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 20px; }
+.foot { display: flex; gap: 28px; justify-content: center; color: var(--mu); font-size: 13.5px; padding: 10px 0 14px; }
+.ctx { display: flex; gap: 12px; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 15px; }
+.ctx span { display: inline-flex; gap: 6px; align-items: center; }
+
+/* ── 模式菜单与模式卡 ── */
+.menu { position: absolute; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 50px rgba(0,0,0,.16); padding: 8px; width: 340px; }
+.mi { display: flex; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 10px; font-size: 16px; }
+.mi.on { background: var(--chip); }
+.mi .ic { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: #fff; }
+.mi small { display: block; color: var(--mu); font-size: 13px; }
+.card4 { position: absolute; border-radius: 20px; background: #fff; border: 1px solid #e6e7eb; padding: 30px 34px; width: 620px; }
+.card4 .t { display: flex; align-items: center; gap: 16px; }
+.card4 .ic { width: 66px; height: 66px; border-radius: 16px; display: grid; place-items: center; color: #fff; }
+.card4 b { font-size: 40px; } .card4 .en { font-size: 22px; color: #8b9099; }
+.card4 p { font-size: 25px; margin: 18px 0 12px; }
+.card4 li { display: inline-block; font-size: 20px; color: #4a4f58; margin-right: 26px; list-style: none; }
+.card4 li::before { content: '●'; color: var(--c); margin-right: 8px; font-size: 13px; vertical-align: 3px; }
+
+/* ── 标注 ── */
+.focus { position: absolute; border: 3px solid var(--c, #2563EB); border-radius: 14px; box-shadow: 0 0 0 9999px rgba(8, 10, 16, .38); }
+.note { position: absolute; font-family: var(--ui); }
+.note .k { font-size: 22px; letter-spacing: 3px; color: var(--c); font-weight: 700; }
+.note .h { font-size: 52px; font-weight: 700; line-height: 1.2; margin: 8px 0 12px; color: #fff; }
+.note .p { font-size: 24px; line-height: 1.6; color: rgba(255,255,255,.78); }
+.note.ink .h { color: #1f2329; } .note.ink .p { color: #4a4f58; }
+.cap { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 34px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+.chap { position: absolute; left: 120px; top: 84px; display: flex; gap: 18px; align-items: baseline; color: #fff; }
+.chap .n { font: 700 22px var(--mono); color: var(--c); }
+.chap .t { font-size: 30px; font-weight: 700; }
+svg.i { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="assets/whale.js"></script>
+<script>
+const Q = new URLSearchParams(location.search), D = Q.get('d') || 'A', K = +(Q.get('k') || 1);
+const MODE = {
+  def: { c: '#2563EB', zh: '缺省', en: 'Default', d: '日常使用和通用开发', li: ['读写与检索工作区', '执行命令与测试', '任务清单与委派'], ic: '#' },
+  sec: { c: '#DC2626', zh: '网安', en: 'Security', d: '安全审计和渗透测试', li: ['七类现场手册', '案件记录与报告', '独立代理'], ic: 'shield' },
+  rev: { c: '#15803D', zh: '逆向', en: 'Reverse', d: '逆向你要逆向的程序', li: ['八类分析手册', '内置 REA 6.9.0', '样本清点'], ic: 'code' },
+  wri: { c: '#A16207', zh: '写作', en: 'Writing', d: '写你想写的东西', li: ['七类写作手册', '六轴文风卡', '设定集'], ic: 'pen' },
+};
+const ICON = {
+  '#': '<svg class="i" viewBox="0 0 24 24"><path d="M5 9h14M5 15h14M10 3 8 21M16 3l-2 18"/></svg>',
+  shield: '<svg class="i" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/></svg>',
+  code: '<svg class="i" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>',
+  pen: '<svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/></svg>',
+  clock: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  grid: '<svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M17 14v6M14 17h6"/></svg>',
+  folder: '<svg class="i" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"/></svg>',
+  plus: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>',
+  think: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>',
+  list: '<svg class="i" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/></svg>',
+  search: '<svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg>',
+  doc: '<svg class="i" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/></svg>',
+  edit: '<svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+  lock: '<svg class="i" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+};
+// 图标：同一条鲸鱼路径，t=0 为原版（白底深鲸、方角），t=1 为 DSHU（黑底白鲸、圆角）
+const mix = (a, b, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(a.slice(1 + i, 3 + i), 16) * (1 - t) + parseInt(b.slice(1 + i, 3 + i), 16) * t).toString(16).padStart(2, '0')).join('');
+const logo = (size, t, extra = '') => `<svg width="${size}" height="${size}" viewBox="0 0 1024 1024" style="display:block;${extra}"><rect x="32" y="32" width="960" height="960" rx="${224 * t}" fill="${mix('#FBFBFB', '#10131a', t)}" stroke="${mix('#e2e4e9', '#303644', t)}" stroke-width="2"/><path transform="translate(157 261) scale(32.5)" d="${WHALE[0]}" fill="${mix('#1C2434', '#ffffff', t)}"/></svg>`;
+const ic = (k) => (k === '#' ? ICON['#'] : ICON[k]);
+const $ = (h) => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstChild; };
+const stage = document.getElementById('stage');
+const add = (h) => stage.appendChild($(h));
+
+function sidebar(m, theme, sessions, ws = 'acme-shop') {
+  const M = MODE[m];
+  return `<div class="side">
+    <div class="brand">${logo(42, 1)}<div><div class="wm">DeepSeek</div><div class="tags"><span class="tag h">HARNESS</span><span class="tag u" style="background:${M.c}">UNCENSORED</span></div></div></div>
+    <div class="newbtn">${ic('plus')} 新会话</div>
+    <div class="nav">${ic('clock')} 自动化任务</div><div class="nav">${ic('grid')} 更多</div>
+    <div class="grp">工作区</div>
+    <div class="ws" style="color:${M.c}">${ic('folder')} <span style="color:var(--tx)">${ws}</span></div>
+    ${sessions.map(([t, c, on]) => `<div class="sess${on ? ' on' : ''}" style="--c:${c}">${t}<small>刚刚</small></div>`).join('')}
+    <div class="ws">${ic('folder')} router-fw</div><div class="ws">${ic('folder')} 雾港</div>
+    <div class="bal"><div class="r"><span><span class="dot" style="background:${M.c}"></span>低峰时段</span><span>39:21:59</span></div><div class="r" style="margin-top:6px"><span>充值余额</span><b>¥126.45</b></div></div>
+  </div>`;
+}
+function composer(m, ph = '发消息或创建任务，/ 调用指令，@ 文件或对话', send = '↑') {
+  const M = MODE[m];
+  return `<div class="composer"><div class="ph">${ph}</div><div class="bar"><span>${ic('plus')}</span><span>${ic('shield')} 完全权限 ▾</span><span style="margin-left:auto;color:var(--mu)">DeepSeek-V4.1-Flash <span style="opacity:.6">Max</span> ▾</span><span class="send" style="background:${M.c};margin-left:12px">${send}</span></div></div>`;
+}
+const foot = `<div class="foot"><span>1 轮 4 步 · 242 tok/s</span><span>86.9K tok · 缓存命中 0%</span><span>¥0.18</span><span>未启用</span></div>`;
+function window_(m, theme, { x, y, w, h, s = 1.3, title, content, sessions, extra = '', ws } = {}) {
+  const M = MODE[m];
+  return `<div class="win ${theme}" style="left:${x}px;top:${y}px;width:${w / s}px;height:${h / s}px;transform:scale(${s});transform-origin:0 0">
+    ${sidebar(m, theme, sessions || [[title || '新会话', M.c, true]], ws)}
+    <div class="main">${title ? `<div class="hdr">${title}<span class="pill" style="background:${M.c}">${ic(M.ic)} ${M.zh}</span><span style="margin-left:auto;color:var(--mu)">⋯</span></div>` : ''}
+      ${content}${extra}
+    </div></div>`;
+}
+const defaultSession = `<div class="body"><div class="col">
+  <div class="bubble">搜索框连续输入时，结果偶尔会消失。找到原因并修复，补一个回归测试。</div>
+  <div class="step"><i>${ic('think')}</i>思考 · 先看搜索状态是怎么保存结果的。</div>
+  <div class="step"><i>${ic('list')}</i>更新任务清单 · 0/3 已完成 · 定位保存搜索结果的代码</div>
+  <div class="step"><i>${ic('search')}</i>搜索文件内容 · results =</div>
+  <div class="step"><i>${ic('doc')}</i>读取 · <u>src\\search.mjs</u></div>
+  <div class="step"><i>${ic('edit')}</i>编辑 · <u>src\\search.mjs</u> 1KB +3 −1</div>
+  <h3>修复完成</h3>
+  <div><b>原因：</b><code>submit()</code> 没有区分请求的先后，慢请求后返回，覆盖了新结果。</div>
+  <div class="tbl"><div><span>修改文件</span><span><code>src/search.mjs</code></span></div><div><span>回归测试</span><span><code>tests/search.test.mjs</code> 覆盖“慢请求后返回”</span></div><div><span>测试命令</span><span><code>npm test</code> 已运行</span></div></div>
+</div></div>`;
+const home = (m) => `<div class="body" style="justify-content:center;padding-bottom:120px">
+  <div style="display:flex;align-items:center;gap:16px;font-size:34px;margin-bottom:28px">${logo(52, 1)}更自由的探索未至之境</div>
+  <div class="ctx"><span>${ic('folder')} acme-shop ▾</span><span style="color:${MODE[m].c}">${ic(MODE[m].ic)} <b style="color:var(--tx)">${MODE[m].zh}</b> ▾</span></div>
+  ${composer(m, '描述你想要构建的内容，/ 调用指令，@ 文件或对话')}</div>`;
+const modeMenu = (x, y, on = 'def') => `<div class="menu" style="left:${x}px;top:${y}px">${Object.entries(MODE).map(([k, M]) => `<div class="mi${k === on ? ' on' : ''}"><span class="ic" style="background:${M.c}">${ic(M.ic)}</span><div>${M.zh} <span style="color:var(--mu);font-size:13px">${M.en}</span><small>${M.d}</small></div></div>`).join('')}</div>`;
+const tint = (c, a = '#e9ecf4') => `<div class="bg" style="background:radial-gradient(1200px 700px at 30% 0%, ${c}55, transparent 70%), linear-gradient(160deg, ${a}, #c9cfdb)"></div>`;
+const darkBg = `<div class="bg" style="background:radial-gradient(1000px 600px at 50% 40%, #1c2030, #07080b 75%)"></div>`;
+const logos = (white, black, extra = '') => `<div style="position:absolute;inset:0">${extra}</div>`;
+
+// ── 方向 A：整机巡览。全屏窗口，镜头推近，聚焦框 + 一句短注 ──
+const A = {
+  1: () => {  // 开场：标志原位「黑化」。?t=0 原版 DSH；?t=0.5 黑色从上往下漫过（分界线穿过标志）；?t=1 DSHU
+    const t = +(Q.get("t") ?? 1), cx = 960, top = 140, sz = 400, edge = (top - 40) + (1120 - top) * t;   // 分界线 y：t=0 在标志上沿，t=1 出画面底部
+    const lightTxt = `<div style="position:absolute;left:0;right:0;top:620px;text-align:center;color:#1f2329"><div style="font:700 64px var(--ui);letter-spacing:-.5px">DeepSeek Harness</div><div style="font:600 30px var(--ui);color:#4a4f58;margin-top:18px;letter-spacing:8px">DSH</div></div>`;
+    const darkTxt = `<div style="position:absolute;left:0;right:0;top:620px;text-align:center;color:#fff"><div style="font:700 64px var(--ui);letter-spacing:-.5px">DeepSeek Harness <span style="background:#2563EB;padding:0 14px;border-radius:6px;letter-spacing:4px;font-size:52px">UNCENSORED</span></div><div style="font:600 30px var(--ui);color:#a7abb6;margin-top:18px;letter-spacing:8px">DSHU</div><div style="font-size:30px;color:#d5d8df;margin-top:26px;letter-spacing:6px">更自由的探索未至之境</div></div>`;
+    // 底层：原版（浅底）；上层：DSHU（深底），按分界线裁切，两层的标志在同一位置
+    add(`<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f7f8fa,#e4e7ed)">${''}</div>`);
+    add(`<div style="position:absolute;left:${cx - sz / 2}px;top:${top}px">${logo(sz, 0, 'filter:drop-shadow(0 24px 40px rgba(20,24,40,.16))')}</div>`);
+    if (t < 1) add(lightTxt);
+    if (t > 0) {
+      add(`<div id="dark" style="position:absolute;inset:0;clip-path:inset(0 0 ${Math.max(0, 1080 - edge)}px 0)"><div style="position:absolute;inset:0;background:radial-gradient(1000px 640px at 50% 38%, #1c2030, #07080b 75%)"></div><div style="position:absolute;left:${cx - sz / 2}px;top:${top}px">${logo(sz, 1, 'filter:drop-shadow(0 30px 60px rgba(0,0,0,.6))')}</div>${t >= 1 ? darkTxt : ''}</div>`);
+      if (t < 1) add(`<div style="position:absolute;left:0;right:0;top:${edge - 1}px;height:2px;background:linear-gradient(90deg,transparent,#2563EB 30%,#2563EB 70%,transparent)"></div>`);
+    }
+    if (t >= 1) {
+      add(`<div style="position:absolute;left:${cx + sz / 2 - 40}px;top:${top - 18}px;background:#fff;color:#07080b;font:700 26px var(--ui);padding:8px 16px;border-radius:8px;transform:rotate(4deg)">黑化版</div>`);
+      add(`<div style="position:absolute;left:0;right:0;top:900px;text-align:center;color:#8c919c;font-size:22px;letter-spacing:2px">非 DeepSeek 官方项目 · 源码基于 DeepSeek Harness 0.2.2-rc.5</div>`);
+    }
+  },
+  2: () => {  // 信息最密：缺省模式会话，镜头推近到工具步骤，聚焦框
+    add(tint('#2563EB'));
+    add(`<div style="position:absolute;left:0;top:0;width:1920px;height:1080px;transform:scale(1.32);transform-origin:1150px 300px">${window_('def', 'light', { x: 90, y: 60, w: 1740, h: 960, s: 1, title: '修复搜索结果消失', content: defaultSession.replace('<div class="step">', '<div id="steps" style="display:flex;flex-direction:column;gap:12px"><div class="step">').replace('<h3>', '</div><h3>') + composer('def') + foot })}</div>`);
+    focusOn('#steps', '#2563EB', 14, .74);
+    add(`<div class="note" style="--c:#bcd0ff;left:120px;top:330px;width:560px"><div class="k">缺省 · DEFAULT</div><div class="h">自己定位、<br>修改、验证</div><div class="p">每一步工具调用都留在会话里</div></div>`);
+    add(`<div class="cap">交给它一个需求，它自己定位、修改、验证</div>`);
+  },
+  3: () => {  // 图解：模式菜单展开，四种主题色
+    add(tint('#2563EB'));
+    add(window_('def', 'light', { x: 90, y: 60, w: 1740, h: 960, content: home('def'), extra: modeMenu(500, 400) }));
+    focusOn('.menu', '#2563EB', 12, .3);
+    add(`<div class="cap" style="color:#fff">缺省、网安、逆向、写作，一共四种</div>`);
+  },
+};
+
+// ── 方向 B：拆件讲解。窗口在 3D 透视里退到一侧，讲到的部件被抽出放大，配大号注解 ──
+const B = {
+  1: () => {
+    add(`<div class="bg" style="background:linear-gradient(180deg,#f4f5f8,#dfe3ea)"></div>`);
+    add(`<div style="position:absolute;left:0;top:0;width:1920px;height:1080px;perspective:1800px"><div style="position:absolute;left:360px;top:230px;width:460px;height:460px;transform:rotateY(28deg) translateZ(-120px);transform-style:preserve-3d">${logo(460, 0, 'filter:drop-shadow(0 30px 40px rgba(0,0,0,.18))')}</div>
+      <div style="position:absolute;left:1060px;top:200px;width:520px;height:520px;transform:rotateY(-16deg)">${logo(520, 1, 'filter:drop-shadow(0 40px 60px rgba(0,0,0,.45))')}</div></div>`);
+    add(`<div class="note ink" style="left:120px;top:780px"><div class="h" style="font-size:60px">DeepSeek Harness <span style="color:#fff;background:#111;padding:0 12px;border-radius:6px;font-size:48px;letter-spacing:4px">UNCENSORED</span></div><div class="p" style="font-size:28px;letter-spacing:5px">更自由的探索未至之境</div></div>`);
+  },
+  2: () => {  // 旁问被抽出
+    add(`<div class="bg" style="background:linear-gradient(180deg,#eef1f7,#d7dce6)"></div>`);
+    add(`<div style="position:absolute;inset:0;perspective:2000px"><div style="position:absolute;left:-160px;top:120px;width:1500px;height:860px;transform:rotateY(24deg) scale(.86);transform-origin:left center;filter:saturate(.9) brightness(.98)">${window_('def', 'light', { x: 0, y: 0, w: 1500, h: 860, s: 1.15, title: '升级依赖并修复测试', sessions: [['升级依赖并修复测试', '#2563EB', true]], content: `<div class="body"><div class="col" style="width:780px"><div class="bubble">把项目依赖升级到最新的小版本，修复升级后失败的测试，最后整理一份变更说明。</div><div class="step"><i>${ic('think')}</i>思考 · 先列出计划。</div><div class="step"><i>${ic('list')}</i>更新任务清单 · 1/3 已完成</div><div class="step"><i>${ic('doc')}</i>读取 · <u>tests\\search.test.mjs</u></div><div class="step" style="color:#2563EB">深度求索中，用时 4 秒 …</div></div></div>` + composer('def', '发消息或创建任务，/ 调用指令，@ 文件或对话', '■') })}</div></div>`);
+    add(`<div class="win light" style="left:1060px;top:130px;width:576px;height:528px;transform:scale(1.25);transform-origin:0 0;flex-direction:column;box-shadow:0 40px 90px rgba(10,14,30,.35)"><div class="main"><div class="hdr" style="font-size:18px"><span style="background:#f1f2f5;padding:6px 12px;border-radius:8px">旁问 ✕</span><span style="color:#8b9099;font-size:14px">每次提问同步主线已完成的新进展</span></div>
+      <div class="body"><div class="col" style="width:520px"><div class="bubble">升级会不会动到接口？我想先确认一下范围</div><div style="color:#8b9099;font-size:14px">已完成，用时 1 秒</div><div>目前只读了测试文件，计划里的三项都不改接口。升级清单出来后，可以在这里逐条看影响面。</div></div></div>
+      ${composer('def', '旁问：在这里输入你的问题')}</div></div>`);
+    add(`<div class="note ink" style="left:1100px;top:830px;width:700px;--c:#1e3a8a"><div class="k">/side · 旁问</div><div class="p" style="font-size:26px;color:#1f2329">接着主线已完成的进展聊，不打断主线</div></div>`);
+    add(`<div class="cap" style="color:#1f2329;text-shadow:none">输入 /side，右侧打开一个旁问</div>`);
+  },
+  3: () => {  // 额度：六档时间轴被抽出
+    add(`<div class="bg" style="background:linear-gradient(180deg,#eef1f7,#d7dce6)"></div>`);
+    const tiers = [['15 分钟', 5], ['1 小时', 15], ['5 小时', 50], ['1 天', 100], ['7 天', 500], ['30 天', 2000]];
+    add(`<div style="position:absolute;left:120px;top:120px" class="note ink"><div class="k" style="--c:#1d4ed8">设置 → 额度</div><div class="h">经典的 5 小时与周限额，<br>以及另外四档</div></div>`);
+    add(`<div style="position:absolute;left:120px;top:420px;width:1680px;display:grid;grid-template-columns:repeat(6,1fr);gap:20px">${tiers.map(([t, v], i) => {
+      const on = i === 2 || i === 4, used = i === 2 ? 63.2 : i === 4 ? 8.4 : 0;
+      return `<div style="background:#fff;border:${on ? '2px solid #2563EB' : '1px solid #e2e4e9'};border-radius:18px;padding:24px 22px;transform:translateY(${on ? -24 : 0}px);box-shadow:${on ? '0 24px 50px rgba(37,99,235,.18)' : 'none'}">
+        <div style="display:flex;align-items:center;gap:12px"><span style="width:48px;height:28px;border-radius:14px;background:${on ? '#2563EB' : '#d5d8de'};position:relative"><span style="position:absolute;top:3px;${on ? 'right' : 'left'}:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span><b style="font-size:24px">${t}</b></div>
+        <div style="font-size:22px;color:#5b606a;margin:18px 0 10px">${on ? `¥${(used * v / 100).toFixed(2)} / ¥${v}` : `初始 ¥${v}`}</div>
+        <div style="height:8px;background:#eceef2;border-radius:4px"><div style="height:8px;width:${used}%;background:#2563EB;border-radius:4px"></div></div>
+        <div style="font-size:22px;color:#5b606a;margin-top:10px">${on ? used + '%' : '关闭'}</div></div>`;
+    }).join('')}</div>`);
+    add(`<div style="position:absolute;left:120px;top:700px;width:1680px;background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:22px 28px;font-size:22px;color:#7c2d12">额度用完，对话暂停 · 预计 02:14 后恢复 <span style="float:right;color:#2563EB">自动恢复 ●</span></div>`);
+    add(`<div class="cap" style="color:#1f2329;text-shadow:none">一共六档，从十五分钟到三十天</div>`);
+  },
+};
+
+// ── 方向 C：模式换肤。主题色驱动整个画面；同一个窗口在四种模式之间换色 ──
+const C = {
+  1: () => {
+    add(`<div class="bg" style="background:#07080b"></div>`);
+    add(`<div style="position:absolute;left:0;top:0;width:1920px;height:340px;background:#FBFBFB"></div>`);
+    add(`<div style="position:absolute;left:760px;top:140px;clip-path:inset(0 0 50% 0)">${logo(400, 0)}</div>`);
+    add(`<div style="position:absolute;left:760px;top:140px;clip-path:inset(50% 0 0 0)">${logo(400, 1)}</div>`);
+    add(`<div style="position:absolute;left:0;right:0;top:660px;text-align:center;color:#fff"><div style="font:700 60px var(--ui)">DeepSeek Harness Uncensored</div><div style="display:flex;gap:14px;justify-content:center;margin-top:30px">${Object.values(MODE).map((M) => `<span style="width:90px;height:8px;border-radius:4px;background:${M.c}"></span>`).join('')}</div><div style="font-size:28px;color:#9ea3ae;margin-top:30px;letter-spacing:6px">更自由的探索未至之境</div></div>`);
+  },
+  2: () => {  // 四个窗口，各自的主题色
+    add(`<div class="bg" style="background:#101116"></div>`);
+    const rows = [['def', '修复搜索结果消失'], ['sec', '审计上传接口'], ['rev', '固件头布局'], ['wri', '《雾港》第七章']];
+    rows.forEach(([m, t], i) => {
+      const x = 60 + (i % 2) * 920, y = 40 + Math.floor(i / 2) * 500, M = MODE[m];
+      add(`<div style="position:absolute;left:${x}px;top:${y}px;width:880px;height:470px;border-radius:26px;background:linear-gradient(150deg, ${M.c}66, ${M.c}11 60%)"></div>`);
+      add(`<div style="position:absolute;left:${x + 30}px;top:${y + 26}px;width:1640px;height:820px;transform:scale(.5);transform-origin:0 0">${window_(m, 'light', { x: 0, y: 0, w: 1640, h: 720, s: 1, title: t, sessions: [[t, M.c, true]], content: `<div class="body"><div class="col" style="width:900px"><div class="step"><i>${ic('think')}</i>思考 · ……</div><div class="step"><i>${ic('doc')}</i>读取 · <u>${{ def: 'src\\search.mjs', sec: 'routes\\upload.js', rev: 'fw\\header.bin', wri: 'story\\bible\\人物.md' }[m]}</u></div><h3>${t}</h3><div style="height:14px;width:80%;background:#eceef2;border-radius:7px"></div><div style="height:14px;width:62%;background:#eceef2;border-radius:7px"></div><div style="height:14px;width:70%;background:#eceef2;border-radius:7px"></div></div></div>` + composer(m) })}</div>`);
+      add(`<div style="position:absolute;left:${x + 32}px;top:${y + 404}px;color:#fff;font-size:30px;font-weight:700">${M.zh} <span style="font-size:20px;opacity:.7">${M.en}</span></div>`);
+    });
+    add(`<div class="cap">每种模式有自己的主题色：蓝、红、绿、黄</div>`);
+  },
+  3: () => {  // 图解：主线 / 旁问 / 随问 能看到的上下文
+    add(`<div class="bg" style="background:linear-gradient(160deg,#0f1320,#07080b)"></div>`);
+    add(`<div class="chap" style="--c:#8fb0ff"><span class="n">03</span><span class="t">通用增强</span></div>`);
+    const steps = ['读取测试', '列出依赖', '升级 2/5', '修复失败', '写变更说明'];
+    add(`<div style="position:absolute;left:200px;top:300px;width:1520px">
+      <div style="color:#9ea3ae;font-size:22px;margin-bottom:14px">主线</div>
+      <div style="display:flex;gap:14px">${steps.map((s, i) => `<div style="flex:1;height:84px;border-radius:14px;display:grid;place-items:center;font-size:24px;color:#fff;background:${i < 2 ? '#2563EB' : i === 2 ? 'repeating-linear-gradient(135deg,#2563EB,#2563EB 10px,#3b74f0 10px,#3b74f0 20px)' : '#262a36'};${i === 2 ? 'outline:2px solid #93b4ff;outline-offset:4px' : ''}">${s}</div>`).join('')}</div>
+      <div style="position:relative;height:300px;margin-top:40px">
+        <div style="position:absolute;left:0;width:${(2 * 1520 - 28) / 5 + 14}px;top:0;height:120px;border:2px solid #93b4ff;border-radius:16px;padding:20px 26px;color:#fff"><div style="font-size:26px;font-weight:700">/side 旁问</div><div style="font-size:23px;color:#c7cfe3;margin-top:8px">看到已完成的进展 · 权限同主线</div></div>
+        <div style="position:absolute;left:0;width:${(3 * 1520 - 28) / 5 + 6}px;top:150px;height:120px;border:2px dashed #e5e7eb;border-radius:16px;padding:20px 26px;color:#fff"><div style="font-size:26px;font-weight:700">/btw 随问</div><div style="font-size:23px;color:#d3d6dd;margin-top:8px">连正在跑的那一步也算 · 只读</div></div>
+      </div></div>`);
+    add(`<div class="cap">旁问和随问，都不打断主线</div>`);
+  },
+};
+function focusOn(sel, c, pad = 14, dim = .45) {
+  const r = document.querySelector(sel).getBoundingClientRect();
+  add(`<div class="focus" style="--c:${c};left:${r.left - pad}px;top:${r.top - pad}px;width:${r.width + 2 * pad}px;height:${r.height + 2 * pad}px;box-shadow:0 0 0 9999px rgba(8,10,16,${dim})"></div>`);
+}
+({ A, B, C }[D][K] || A[1])();
+Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

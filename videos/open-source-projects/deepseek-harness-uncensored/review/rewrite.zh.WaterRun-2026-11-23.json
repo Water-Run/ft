@@ -1,0 +1,811 @@
+{
+ "schema": "dshu-rewrite/1",
+ "base_sha256": "fce328a7571af17f7582f67395547d599b87375e403559a594c0d146adca559e",
+ "author": "WaterRun",
+ "exported_at": "2026-11-23T01:34:05.444Z",
+ "estimate_seconds": 275.2,
+ "scenes": [
+  {
+   "id": "open",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "o1",
+     "status": "chg",
+     "text": "这，是一个 DeepSeek Harness",
+     "orig": "这，是一个 DeepSeek Harness，DSH",
+     "gap": 0.8,
+     "pause": null
+    },
+    {
+     "id": "o2",
+     "status": "same",
+     "text": "现在它黑化了",
+     "orig": "现在它黑化了",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "o3",
+     "status": "same",
+     "text": "成了 DeepSeek Harness Uncensored",
+     "orig": "成了 DeepSeek Harness Uncensored",
+     "gap": 0.2,
+     "pause": null
+    },
+    {
+     "id": "o3b",
+     "status": "del",
+     "text": "",
+     "orig": "DSHU",
+     "gap": 0.5,
+     "pause": null
+    },
+    {
+     "id": "o4",
+     "status": "same",
+     "text": "多了一个 Uncensored",
+     "orig": "多了一个 Uncensored",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "o5",
+     "status": "del",
+     "text": "",
+     "orig": "多了开箱即用的破甲体验",
+     "gap": 0.7,
+     "pause": null
+    },
+    {
+     "id": "o6",
+     "status": "same",
+     "text": "更自由的探索未至之境",
+     "orig": "更自由的探索未至之境",
+     "gap": 0.4,
+     "pause": null
+    },
+    {
+     "id": "oT",
+     "status": "same",
+     "text": null,
+     "orig": null,
+     "gap": 0.3,
+     "pause": 2.4
+    }
+   ]
+  },
+  {
+   "id": "box",
+   "chap": [
+    "01",
+    "开箱即用"
+   ],
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "b1",
+     "status": "chg",
+     "text": "DSHU参考MIT协议早期版本的DSH Purge, 直接内置了完整的破甲链路, 开箱即用",
+     "orig": "先说最要紧的：破甲提示词直接内置了",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "b2",
+     "status": "del",
+     "text": "装好，填上模型的凭据，就能用",
+     "orig": "装好，填上模型的凭据，就能用",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "b3",
+     "status": "same",
+     "text": "不用再到处找提示词，也不用自己改配置",
+     "orig": "不用再到处找提示词，也不用自己改配置",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "b4",
+     "status": "del",
+     "text": "破甲这部分，用的是 dsh-purge 的成果",
+     "orig": "破甲这部分，用的是 dsh-purge 的成果",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "b5",
+     "status": "del",
+     "text": "具体是它还在用 MIT 许可时的那一版",
+     "orig": "具体是它还在用 MIT 许可时的那一版",
+     "gap": 0.8,
+     "pause": null
+    },
+    {
+     "id": "b6",
+     "status": "chg",
+     "text": "现在的DSHU 的源码，基于官方的 DSH 0.2.2-rc.5",
+     "orig": "DSHU 的源码，基于官方的 DeepSeek Harness 0.2.2-rc.5",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "b7",
+     "status": "same",
+     "text": "但它跟官方版是分开的",
+     "orig": "但它跟官方版是分开的",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "b8",
+     "status": "same",
+     "text": "程序目录、配置、会话、更新渠道，都各管各的",
+     "orig": "程序目录、配置、会话、更新渠道，都各管各的",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "b9",
+     "status": "chg",
+     "text": "可以独立并存",
+     "orig": "两个装在同一台电脑上，谁也不碍着谁",
+     "gap": 0.9,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "modes",
+   "chap": [
+    "02",
+    "四种模式"
+   ],
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "m1",
+     "status": "same",
+     "text": "新建会话的时候，输入框上面能选模式",
+     "orig": "新建会话的时候，输入框上面能选模式",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "m2",
+     "status": "same",
+     "text": "一共四种：缺省、网安、逆向、写作",
+     "orig": "一共四种：缺省、网安、逆向、写作",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "m3",
+     "status": "same",
+     "text": "破甲是四种模式共用的",
+     "orig": "破甲是四种模式共用的",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "m4",
+     "status": "same",
+     "text": "不一样的是，每种模式带的工具、手册和资料",
+     "orig": "不一样的是，每种模式带的工具、手册和资料",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "m5",
+     "status": "del",
+     "text": "手册也是用到哪本读哪本，不会一上来就把上下文塞满",
+     "orig": "手册也是用到哪本读哪本，不会一上来就把上下文塞满",
+     "gap": 0.7,
+     "pause": null
+    },
+    {
+     "id": "m6",
+     "status": "chg",
+     "text": "每种模式有自己的颜色，蓝、红、绿、黄",
+     "orig": "每种模式还有自己的颜色，蓝、红、绿、黄",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "m7",
+     "status": "same",
+     "text": "选了哪种，标题、侧栏和按钮就跟着换色",
+     "orig": "选了哪种，标题、侧栏和按钮就跟着换色",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "m8",
+     "status": "chg",
+     "text": "默认情况下第一条消息发出去对话创建后，模式就固定下来了, 不能改变",
+     "orig": "不过第一条消息发出去，模式就定下来了",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "m9",
+     "status": "same",
+     "text": "这样聊到一半，工具和手册不会突然全变",
+     "orig": "这样聊到一半，工具和手册不会突然全变",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "default",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "d1",
+     "status": "chg",
+     "text": "缺省就是默认, 缺省模式就是平时日常开发, 调试之类的模式 ",
+     "orig": "缺省模式就是平时用的，写代码、修 bug 都在这",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "d2",
+     "status": "chg",
+     "text": "其实啥都能干, 作为通用模式, 你不知道选什么的时候选这个就行",
+     "orig": "你把需求丢给它，它自己找位置、改代码、跑验证",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "d3",
+     "status": "del",
+     "text": "做完会告诉你改了哪些文件、跑了哪些检查",
+     "orig": "做完会告诉你改了哪些文件、跑了哪些检查",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "d4",
+     "status": "del",
+     "text": "哪些没跑，也给你标出来",
+     "orig": "哪些没跑，也给你标出来",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "security",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "s1",
+     "status": "chg",
+     "text": "网安模式，做网络安全安全审计和渗透测试",
+     "orig": "网安模式，做安全审计和渗透测试",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "s2",
+     "status": "same",
+     "text": "里面有七类现场手册，按调查的阶段来用",
+     "orig": "里面有七类现场手册，按调查的阶段来用",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "s3",
+     "status": "chg",
+     "text": "目标、证据、发现都记进案件，最后能整理成报告",
+     "orig": "目标、证据、发现都记进*案件*，最后能整理成报告",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "s4",
+     "status": "chg",
+     "text": "还可以开独立代理，让访问目标的流量走你指定的代理",
+     "orig": "还可以开*独立代理*，让访问目标的流量走你指定的代理",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "s5",
+     "status": "chg",
+     "text": "再套一层马甲, 当然这只是一个实验功能不要过于依赖",
+     "orig": "模型请求和登录这些，还是走原来的网络",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "s6",
+     "status": "same",
+     "text": "第一次进网安，要先读一遍责任说明",
+     "orig": "第一次进网安，要先读一遍责任说明",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "s7",
+     "status": "chg",
+     "text": "你自己要确保目标是有授权的, 否则后果自负",
+     "orig": "软件不会帮你判断目标有没有授权",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "s8",
+     "status": "del",
+     "text": "所以，只在授权范围内用",
+     "orig": "所以，只在授权范围内用",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "reverse",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "r1",
+     "status": "chg",
+     "text": "逆向模式，内置REA, 用来拆程序、二进制、文件格式和协议",
+     "orig": "逆向模式，用来拆程序、二进制、文件格式和协议",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "r2",
+     "status": "del",
+     "text": "结论要落到地址、偏移，或者实际跑出来的现象上",
+     "orig": "结论要落到地址、偏移，或者实际跑出来的现象上",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "r3",
+     "status": "del",
+     "text": "猜的和验证过的，分开写",
+     "orig": "猜的和验证过的，分开写",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "r4",
+     "status": "del",
+     "text": "REA 6.9.0 是内置",
+     "orig": "REA 6.9.0 是内置的，不用另外装",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "r5",
+     "status": "chg",
+     "text": "如果你想用 Ghidra、IDA、Hopper 这些，你也能接进来",
+     "orig": "想用 Ghidra、IDA、Hopper 这些，也能接进来",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "r6",
+     "status": "del",
+     "text": "清点样本的时候只读字节，不会去运行它",
+     "orig": "清点样本的时候只读字节，不会去运行它",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "writing",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "w1",
+     "status": "chg",
+     "text": "写作模式，写你想写的东西",
+     "orig": "写作模式，写你想写的东西，小说、剧本、长文都行",
+     "gap": 0.4,
+     "pause": null
+    },
+    {
+     "id": "w2",
+     "status": "chg",
+     "text": "你可以把人物、设定和文风卡放在 story 目录里",
+     "orig": "人物、设定和文风卡放在 story 目录里",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "w3",
+     "status": "chg",
+     "text": "并勾上你这次想要用到的",
+     "orig": "勾上哪些，哪些才会发给模型",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "w4",
+     "status": "del",
+     "text": "一张*文风卡*，从六个方面描述一种文风",
+     "orig": "一张*文风卡*，从六个方面描述一种文风",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "w5",
+     "status": "del",
+     "text": "措辞、句法、节奏、意象、对白、结构",
+     "orig": "措辞、句法、节奏、意象、对白、结构",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "w6",
+     "status": "same",
+     "text": "这个模式里没有终端，也不跑代码，就专心写",
+     "orig": "这个模式里没有终端，也不跑代码，就专心写",
+     "gap": 1,
+     "pause": null
+    },
+    {
+     "id": "w7",
+     "status": "same",
+     "text": "哦对了，现在对话也能删掉了",
+     "orig": "哦对了，现在对话也能删掉了",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "w8",
+     "status": "del",
+     "text": "会先停下任务，再把旁问、随问和子会话一起删干净",
+     "orig": "会先停下任务，再把旁问、随问和子会话一起删干净",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "w9",
+     "status": "del",
+     "text": "工作区里的文件不会动",
+     "orig": "工作区里的文件不会动",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "asides",
+   "chap": [
+    "03",
+    "通用增强"
+   ],
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "x1",
+     "status": "chg",
+     "text": "Deepseek Harness Uncensored还提供了一系列便于使用的通用增强",
+     "orig": "下面这些，哪种模式都能用",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "x2",
+     "status": "chg",
+     "text": "主线正在跑一个长任务，你想搞明白进度如何",
+     "orig": "主线正在跑一个长任务，你突然想问点什么",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "x3",
+     "status": "chg",
+     "text": "直接/btw, 称为随问, 和CC的类似, 主要用来问各种简单的一次性小问题",
+     "orig": "不用等它停",
+     "gap": 0.4,
+     "pause": null
+    },
+    {
+     "id": "x4",
+     "status": "chg",
+     "text": "输入 /side，右边会开一个旁问, 这个则类似与CodeX",
+     "orig": "输入 /side，右边会开一个*旁问*",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "x5",
+     "status": "chg",
+     "text": "在旁边打开一个同步的对话, 自动跟进主线已经完成的进度情况",
+     "orig": "它知道主线已经做完了哪些",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "x6",
+     "status": "chg",
+     "text": "你可以用/clear清理对话, 也可以打开每次开启时自动清理",
+     "orig": "你可以接着聊方案、追问细节，也能发图",
+     "gap": 0.7,
+     "pause": null
+    },
+    {
+     "id": "x7",
+     "status": "del",
+     "text": "只想问一句进度，就用 /btw，这个叫*随问*",
+     "orig": "只想问一句进度，就用 /btw，这个叫*随问*",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "x8",
+     "status": "del",
+     "text": "主线正在跑的那一步，它也看得到",
+     "orig": "主线正在跑的那一步，它也看得到",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "x9",
+     "status": "del",
+     "text": "但它只读，不改文件也不跑命令，答完就收",
+     "orig": "但它只读，不改文件也不跑命令，答完就收",
+     "gap": 0.5,
+     "pause": null
+    },
+    {
+     "id": "x10",
+     "status": "del",
+     "text": "不管是旁问还是随问，主线都不会停",
+     "orig": "不管是旁问还是随问，主线都不会停",
+     "gap": 0.9,
+     "pause": null
+    },
+    {
+     "id": "x11",
+     "status": "chg",
+     "text": "DSHU另外引入了可选的输入预测功能, 打字停一下，输入框里会冒出灰色的后半句",
+     "orig": "打字停一下，输入框里会冒出灰色的后半句",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "x12",
+     "status": "chg",
+     "text": "按 Tab 就能收下",
+     "orig": "按 Tab 就收下",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "spend",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "y1",
+     "status": "chg",
+     "text": "进入页面, 你会发现左下角一直挂着账户余额",
+     "orig": "左下角一直挂着账户余额",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "y2",
+     "status": "chg",
+     "text": "现在是梁文峰还是梁文谷、还有多久",
+     "orig": "现在是高峰还是低峰、多久以后切换，也写在这",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "y3",
+     "status": "chg",
+     "text": "点一下金额，还能看这个费用的变化曲线",
+     "orig": "每个对话花了多少，输入框下面就有",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "y4",
+     "status": "chg",
+     "text": "具体到每个对话花了多少，你可以在会话的底部查看",
+     "orig": "点一下金额，还能看这个对话的费用曲线",
+     "gap": 0.8,
+     "pause": null
+    },
+    {
+     "id": "y5",
+     "status": "chg",
+     "text": "要是你用惯了各种 Coding Plan，感觉没有额度百分比很不舒服",
+     "orig": "要是你用惯了各种 Coding Plan，喜欢盯着额度百分比",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "y6",
+     "status": "chg",
+     "text": "对于有这种癖好的用户, DSHU 也带来了经典的 5 小时和周限额",
+     "orig": "DSHU 也给你准备了经典的 5 小时和周限额",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "y7",
+     "status": "chg",
+     "text": "还不满足的话, 还有更多限额可选",
+     "orig": "一共六档，从十五分钟到三十天",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "y8",
+     "status": "del",
+     "text": "每档单独开关、单独设金额，默认都关着",
+     "orig": "每档单独开关、单独设金额，默认都关着",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "y9",
+     "status": "del",
+     "text": "额度用完，对话会暂停，还会告诉你大概什么时候恢复",
+     "orig": "额度用完，对话会暂停，还会告诉你大概什么时候恢复",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "y10",
+     "status": "del",
+     "text": "开了自动恢复，额度一回来就接着跑",
+     "orig": "开了自动恢复，额度一回来就接着跑",
+     "gap": 0.4,
+     "pause": null
+    },
+    {
+     "id": "y11",
+     "status": "del",
+     "text": "这些都是本地估算，不是账单",
+     "orig": "这些都是本地估算，不是账单",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "memory",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "k1",
+     "status": "chg",
+     "text": "对了, DSHU还有跨对话记忆",
+     "orig": "另外还有跨对话记忆",
+     "gap": 0.2,
+     "pause": null
+    },
+    {
+     "id": "k2",
+     "status": "same",
+     "text": "偏好和项目约定存一次，以后的对话自己会去找",
+     "orig": "偏好和项目约定存一次，以后的对话自己会去找",
+     "gap": 1,
+     "pause": null
+    }
+   ]
+  },
+  {
+   "id": "outro",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "f1",
+     "status": "same",
+     "text": "DSHU 以 GPL-3.0-or-later 开源在 GitHub",
+     "orig": "DSHU 以 GPL-3.0-or-later 开源在 GitHub",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "f2",
+     "status": "chg",
+     "text": "GitHub Release安装包准备了四个平台",
+     "orig": "安装包有四个平台",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "f3",
+     "status": "same",
+     "text": "Windows x64、Linux x64",
+     "orig": "Windows x64、Linux x64",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "f4",
+     "status": "same",
+     "text": "Linux ARM64 和 macOS ARM64",
+     "orig": "Linux ARM64 和 macOS ARM64",
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "f4a",
+     "status": "new",
+     "text": "DSH是Ts写的, 你当然也可以自己打包一个",
+     "orig": null,
+     "gap": 0.3,
+     "pause": null
+    },
+    {
+     "id": "f5",
+     "status": "del",
+     "text": "都在 GitHub 的 Release 页面",
+     "orig": "都在 GitHub 的 Release 页面",
+     "gap": 0.6,
+     "pause": null
+    },
+    {
+     "id": "f6",
+     "status": "same",
+     "text": "更自由地，去探索未至之境",
+     "orig": "更自由地，去探索未至之境",
+     "gap": 0.4,
+     "pause": null
+    },
+    {
+     "id": "fT",
+     "status": "same",
+     "text": null,
+     "orig": null,
+     "gap": 0.3,
+     "pause": 3
+    }
+   ]
+  },
+  {
+   "id": "credits",
+   "chap": null,
+   "chap_changed": false,
+   "note": "",
+   "cues": [
+    {
+     "id": "credits",
+     "status": "same",
+     "text": null,
+     "orig": null,
+     "gap": 0.3,
+     "pause": 8,
+     "credits": true
+    }
+   ]
+  }
+ ]
+}

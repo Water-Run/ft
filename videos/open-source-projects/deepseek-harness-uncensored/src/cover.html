@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>封面</title>
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
+     与片中同一套视觉：深色舞台带蓝色光晕，右边是黑底白鲸的 DSHU 标志（微微转向观众），左边是片名与标语。底部约 15% 不放文字。 */
+  html, body, #stage { width: var(--W); height: var(--H); }
+  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 120px; --logo: 520px; }
+  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 112px; --logo: 440px; }
+  #stage { color: #fff; font-family: "Inter", "Sans SC"; overflow: hidden;
+    background: radial-gradient(1100px 800px at 72% 30%, rgba(37,99,235,.55), transparent 70%), radial-gradient(900px 700px at 0% 100%, rgba(37,99,235,.18), transparent 70%), linear-gradient(160deg, #11141c, #05060a); }
+  .kicker { position: absolute; left: var(--M); top: 13%; font: 600 40px "Sans SC"; color: #9cc0ff; letter-spacing: 4px; }
+  .title { position: absolute; left: var(--M); top: 22%; width: 62%; font-weight: 900; font-size: var(--fs); line-height: 1.02; letter-spacing: -.02em; }
+  .title .u { display: inline-block; margin-top: 18px; background: #2563EB; padding: 2px 22px 8px; border-radius: 12px; letter-spacing: 4px; font-size: .78em; }
+  .sl { position: absolute; left: var(--M); top: 66%; font-size: 52px; font-weight: 600; letter-spacing: 10px; color: #e3e6ec; }
+  .logo { position: absolute; right: var(--M); top: 15%; width: var(--logo); height: var(--logo); transform: perspective(2600px) rotateY(-16deg); border-radius: 22%;
+    box-shadow: 0 50px 120px rgba(0,0,0,.7), 0 0 160px rgba(37,99,235,.45); }
+  .r43 .title { width: 92%; top: 46%; } .r43 .sl { top: 74%; } .r43 .logo { top: 8%; right: auto; left: var(--M); }
+  .r43 .kicker { top: 40%; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg class="logo" viewBox="32 32 960 960"><rect x="32" y="32" width="960" height="960" rx="224" fill="#10131a" stroke="#303644" stroke-width="2"/><path id="fish" transform="translate(157 261) scale(32.5)" fill="#fff"/></svg>
+  <div class="kicker"></div>
+  <div class="title"></div>
+  <div class="sl"></div>
+</div>
+<script src="js/whale.js"></script>
+<script>
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
+  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
+  document.getElementById('fish').setAttribute('d', window.WHALE_PATH);
+  const TEXT = { zh: { kicker: '开源项目', title: 'DeepSeek Harness<br><span class="u">UNCENSORED</span>', sl: '更自由的探索未至之境' } }[lang];
+  document.querySelector('.kicker').textContent = TEXT.kicker;
+  document.querySelector('.title').innerHTML = TEXT.title;
+  document.querySelector('.sl').textContent = TEXT.sl;
+  const sample = document.getElementById('stage').textContent;
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample)])
+    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

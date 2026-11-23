@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "languages": {
+    "zh": {
+      "status": "approved",
+      "content_sha256": "c49d20f2bba54065c3d1a0d84a7bbc8f8eb8bd9b46818a8da2aa43140ce4cc02",
+      "reviewer": "WaterRun",
+      "confirmed_at": "2026-11-23T09:52:00+08:00",
+      "evidence": "review/NOTES.md「明确确认」2026-11-23 第 5 稿修订"
+    }
+  }
+}
