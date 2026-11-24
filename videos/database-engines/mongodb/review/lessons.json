@@ -4,219 +4,219 @@
   "items": {
     "F01": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文案通读：开场 o13–o16c 提出五个问题，第 10 章 i0–i9 逐条回答（timeline.js 对照）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F02": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文案通读：Alice 一份资料从注册（第 03 章）、落盘、被找到、改年龄到注销（第 09 章）走完，第 09 章末 f16 一步步排出（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F03": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js「术语注解」通过；r7–r9 逐条把新名词的注解改成第一次出现就给定义（NOTES「意见与处理」）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F04": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "readable.js 全片测过，约二十条注解已改到读得完；仍有几处动画里的代码、字节、计数一闪而过，以及几条差 1 秒左右的旧注解（DoubleClick 那条字是策划者定的，只留长了 1 秒）；未以正常速度连续观看全片（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F05": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "本轮只逐帧看了改动处与总览图，未连续观看全片的机制段（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F06": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "音效覆盖检查通过（339 个事件，7 种）；本轮没有试听成片（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F07": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "画面里的终端回显取自实验，路径是相对实验目录的 db/、wtcopy/，没有个人目录（FACTS 开头说明）；repo-check 通过（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F08": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "待成片封装后按 build/finish.zh.json 核对（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F09": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "策划者原话逐条照录在 review/NOTES.md 与 README「简报」；事实与出处在 FACTS.md，推算的条目在「核查」一栏注明（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F10": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "提到前几集的地方（MySQL、PostgreSQL、SQLite、InnoDB 对照）都配了注解或说明，不靠看过前几集（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F11": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "外文报错配中文译文（第 07 章）；英文引语由旁白转述（第 01 章）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F12": {
       "rev": 3,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "配音沿用 r7（文案未改），本轮没有回听（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F13": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "NoSQL 的来由、MongoDB 公司（第 01 章）、WiredTiger 的定义与来历（第 02 章注解）都先交代（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F14": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "片尾 credits 段无旁白（timeline.js：credits 为「无旁白停顿」）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F15": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "本轮逐条读过画面上的注解文字，没有制作方口吻的自我说明（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F16": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "版面取自 MongoDB 文档站的样式与 mongosh 终端，数据来自本片实验（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F17": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "配音沿用 r7，本轮没有试听（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F18": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 06、09 章同一个舞台（collStage：上内存、下文件），第 07 章泳道 + 版本链；本轮逐帧看改动处（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F19": {
       "rev": 4,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "overlap.js 全片每 0.25 秒一帧：与 r8 相比没有新增（余下 477 处都是换场一两帧的叠影与开场两处删除线）；本轮改动处逐帧看过（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F20": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文件条按真实偏移排块（U02），每个状态与回显、源码核对过（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F21": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "只按本片 FACTS 与 kit/docs 做，没有照搬别的片子（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F22": {
       "rev": 3,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "注解补充旁白没说的（定义、出处、为什么），不逐句复述；r9 去掉一条复述旁白的字幕（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F23": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "文件条两次检查点逐步演示、五个问题的小图随旁白动、4096 格随数字填满（本轮逐帧看过）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F24": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 镜头检查通过；正在讲的对象在画内（本轮改动处逐帧看过）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F25": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "为讲清单机与事务、区段表，加了画面上的问答与说明，没有改旁白（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F26": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "制作方主动查出第 09 章旁白「再做一次检查点」实为两次、第 07 章旁白没讲原因，提请策划者决定是否改词（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F27": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "open",
+      "note": "未以观众身份连续看完全片；只看了本轮改动处、总览图与工具报告（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F28": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "单机与事务一段按「问 → 副本集是什么 → 为什么」的顺序逐条出现（第 07 章）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F29": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "第 06、09 章舞台常驻，第 07 章泳道常驻，换段时对象留在画面上（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F30": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "出现、退场、高亮都有过渡；修掉五个小图先在终点露出再跳回的闪烁（本轮逐帧看改动处）；scan.js 确定性检查通过（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F31": {
       "rev": 2,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "r8、r9 全片注解改成先给定义（问答式的「为什么单机开不了事务」按策划者确认的写法）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F32": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "台词与画面分清本片实验（如「本章实验，用的是只有一台 mongod 的副本集」）与一般规律（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F33": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "策划者 r7 要求「基本上都要改成定义」，系列讲过的 B 树、WAL 等也给了短定义，按策划者要求（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F34": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "scan.js 版面检查通过；r8 起逐条修过贴边、偏一边的框（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F35": {
       "rev": 1,
-      "result": "pending",
-      "note": "",
+      "result": "n/a",
+      "note": "本片讲 MongoDB 存储引擎的内部机制，不是产品介绍（制作方 Claude Opus 5.5，2026-11-24）",
       "evidence": ""
     },
     "F36": {
       "rev": 1,
-      "result": "pending",
+      "result": "pass",
       "note": "",
-      "evidence": ""
+      "evidence": "用前几集的 PostgreSQL、InnoDB、SQLite 作参照；单机一段改成大白话问答（制作方 Claude Opus 5.5，2026-11-24）"
     }
   },
   "history": [
