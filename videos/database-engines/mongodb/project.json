@@ -8,8 +8,8 @@
   "titles": {
     "zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"
   },
-  "stage": "preview",
-  "next": "等 WaterRun 看预览 r9（out/zh/preview-r9.mp4）的意见；两处旁白要不要改词由策划者定；意见不多就出正式片与封面",
+  "stage": "released",
+  "next": "已发布，冻结；只追加发布与反馈记录",
   "credits": {
     "planner": "WaterRun",
     "models": [
@@ -108,5 +108,20 @@
     "speed": {
       "zh": 1.15
     }
-  }
+  },
+  "delivery": {
+    "date": "2026-11-24",
+    "duration": {
+      "zh": 1130.113
+    }
+  },
+  "release": [
+    {
+      "platform": "哔哩哔哩",
+      "url": "https://www.bilibili.com/video/BV1mn1cz2ETk",
+      "date": "2026-11-24",
+      "title": "一个数据库引擎是如何实现的？(6)——不是SQL：MongoDB的WiredTiger",
+      "lang": "zh"
+    }
+  ]
 }
