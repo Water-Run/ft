@@ -94,7 +94,7 @@ scene('concur', ({ root, s, c0 }) => {
     ['事务提交时，也是整笔记进这本同步日志，几台一起照着改', 1],
     ['单机不用和谁同步，就没有这本日志；事务没处记，所以直接拒绝', 1],
     ['一台机器也想用事务：把它设成「只有一台的副本集」，有了这本日志就行（本章实验就这么做的）', 1]];
-  const glTx = gl(world, 140, 440, '问：单机好好的，为什么开不了事务？', QA.map(([t, b], k) => `<i class="qa${k}" style="display:block;font-style:normal;${b ? 'padding-left:22px;text-indent:-22px' : ''}">${b ? '· ' : '答：'}${t}</i>`).join(''), { key: '为什么单机开不了事务', w: 820 });
+  const glTx = gl(world, 140, 456, '问：单机好好的，为什么开不了事务？', QA.map(([t, b], k) => `<i class="qa${k}" style="display:block;font-style:normal;${b ? 'padding-left:22px;text-indent:-22px' : ''}">${b ? '· ' : '答：'}${t}</i>`).join(''), { key: '为什么单机开不了事务', w: 820 });
   css(glTx.querySelector('span'), { fontSize: '24px', lineHeight: '34px' });
   css(glTx, { borderLeft: 'none', paddingLeft: '0' });   // 竖条跟着已经出来的行走，不先画出整条
   const qaB = glTx.querySelector('b'); css(qaB, { borderLeft: '5px solid ' + K.g1, paddingLeft: '18px' });
