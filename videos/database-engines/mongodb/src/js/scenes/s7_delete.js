@@ -83,8 +83,6 @@ scene('delete', ({ root, s, c0 }) => {
   to([V.b.l2, V.b.r, V.b.x], T('f9', '空') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.45 });   // lint-ok: 空出的块是透明底；上一份区段表也一起空出来（U02）
   fadeOut([V.b.l2._t, V.b.x._t], T('f9', '空') - 0.3, 0.3);
   // 对照前几集：删掉的数据占的地方，文件不会自己还回去（U04）
-  const glCmp = gl(world, 200, 646, '对照前几集', glRows([['SQLite', '删掉的内容不擦，空间标成可再用；VACUUM 重建才缩小文件'], ['InnoDB', '删掉的行由 purge 清走，空页留在表空间；OPTIMIZE TABLE 重建才还给系统']]), { key: '对照 SQLite、InnoDB' }); glInline(glCmp); glCmp.querySelectorAll('.gr').forEach((e) => css(e, { fontSize: '24px', lineHeight: '35px' }));
-  show(glCmp, T('f8', '没有') - 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glCmp, T('f11', '空') - 0.3, 0.4);
   // Dave 注册：RecordId 4097，2050 不再发（F04）
   const tD = T('f10', 'D') - 0.3;
 

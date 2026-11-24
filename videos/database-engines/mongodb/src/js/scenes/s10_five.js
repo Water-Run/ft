@@ -75,8 +75,8 @@ scene('five', ({ root, s, c0 }) => {
   tl.fromTo(G('m3d'), { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.45, ease: 'back.out(3)', immediateRender: false }, T('i6', '撞上') - 0.2);
   tl.to(G('m3c'), { x: -50, duration: 0.35, ease: 'power2.out' }, T('i6', '重来') - 0.3); tl.to(G('m3c'), { x: 0, duration: 0.5, ease: 'power2.inOut' }, T('i6', '重来') + 0.15);
   // 出错：日志一条条从检查点往后重放；闪电之后，最后一小段丢掉
-  [...G('m4b').querySelectorAll('circle')].forEach((c, k) => tl.fromTo(c, { x: 26 - +c.getAttribute('cx') }, { x: 0, duration: 0.4, ease: 'power2.out', immediateRender: false }, T('i8', '重放') - 0.2 + k * 0.18));
-  [...G('m4c').querySelectorAll('rect')].forEach((r, k) => tl.fromTo(r, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, T('i8', '重放') + 0.3 + k * 0.18));
+  [...G('m4b').querySelectorAll('circle')].forEach((c, k) => tl.fromTo(c, { x: 26 - +c.getAttribute('cx') }, { x: 0, duration: 0.4, ease: 'power2.out', immediateRender: true }, T('i8', '重放') - 0.2 + k * 0.18));   // 轮到之前停在起点
+  [...G('m4c').querySelectorAll('rect')].forEach((r, k) => tl.fromTo(r, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.3, ease: 'power2.out', immediateRender: true }, T('i8', '重放') + 0.3 + k * 0.18));   // 轮到之前是空的
   tl.fromTo(G('m4d'), { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.45, ease: 'back.out(3)', immediateRender: false }, T('i9', '被杀') - 0.2);
   to(G('m4e'), T('i9', '丢') - 0.1, { opacity: 0.2, duration: 0.4 });
   fadeOut(bar, Tend('i9') + 0.1, 0.45);
@@ -153,7 +153,7 @@ scene('trade', ({ root, s, c0 }) => {
   const tot = tg(world, 1000, 694, '= 53,248 字节', 'b'); css(tot, { fontSize: '34px', lineHeight: '60px', color: K.ink });   // A04
   show(tot, T('j6b', '存了') - 0.2, { y: 10, d: 0.45 }); to(mul, T('j6b', '存了') - 0.2, { backgroundColor: K.forest, duration: 0.35 });
   css(tot, { borderRadius: '10px', padding: '0 16px' }); to(tot, Tend('j6b') + 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 }); to([S0, sLab, ...stack], Tend('j6b') + 0.2, { opacity: 0.25, duration: 0.4 });
-  const glFN = gl(world, 1000, 782, '字段名会压缩吗', glRows([['文档里', '每份都存全部字段名；文档很小时，官方建议起短一点的名字'], ['落盘时', '集合默认用 snappy 整页压缩，字段名也一起压；专存时间序列的集合按列存放，更省']]), { key: '字段名压缩', w: 800 }); [glFN.querySelector('span'), ...glFN.querySelectorAll('.gr')].forEach((e) => css(e, { fontSize: '24px', lineHeight: '35px' }));   // U09 标题在上，三行装下，不伸进字幕条
+  const glFN = gl(world, 1000, 782, '小贴士：字段名会压缩吗？', '会，但不是专门压：落盘时整页用 snappy 压缩，<br>字段名跟着一起压。文档很小时，<br>官方建议把字段名起短一点', { key: '字段名压缩', w: 800 }); [glFN.querySelector('span'), ...glFN.querySelectorAll('.gr')].forEach((e) => css(e, { fontSize: '24px', lineHeight: '35px' }));   // U09 标题在上，三行装下，不伸进字幕条
   show(glFN, T('j5', '每份') - 0.1, { x: 12, y: 0, d: 0.45 }); fadeOut(glFN, T('j6e') - 0.4, 0.4);
   const tP2 = T('j6e') - 0.3;
   fadeOut([S0, sLab, ...stack, mul, tot], tP2, 0.4);

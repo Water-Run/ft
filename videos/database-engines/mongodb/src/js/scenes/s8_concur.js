@@ -86,12 +86,24 @@ scene('concur', ({ root, s, c0 }) => {
   // 报错移到左边，留到讲副本集复制（U07 U10）
   const errC = h('div', 'abs', world); errC.dataset.name = 'errcard'; px(errC, 140, 452, 760); css(errC, { background: '#FFFFFF', border: '2px solid ' + K.red, borderRadius: '10px', padding: '10px 18px', boxSizing: 'border-box', whiteSpace: 'normal', overflowWrap: 'anywhere' });
   errC.innerHTML = `<div style="font:600 22px/30px Mono;color:${K.redd}">单机 mongod：Transaction numbers are only allowed on a replica set member or mongos</div>`
-    + `<div style="font:600 24px/34px 'Inter','Sans SC';color:${K.ink};margin-top:6px">事务号只能用在副本集成员或 mongos（分片集群的入口）上</div>`
-    + `<div style="font:500 24px/34px 'Inter','Sans SC';color:${K.gd2}">官方文档：单机部署不支持事务，要用副本集；没有写原因</div>`;
-  show(errC, tSA - 0.1, { x: 160, y: 0, d: 0.55 }); fadeOut(errC, T('g5e') - 0.3, 0.4);   // 从右边的代码框挪过来
-  const glTx = gl(world, 140, 452, '事务和副本集', 'oplog 是副本集复制用的操作日志：事务提交时写进 oplog；<br>事务的状态记在 config.transactions，文档写明它为副本集与分片集群服务', { key: '事务和副本集', w: 760 });   // U07
-  css(glTx.querySelector('span'), { fontSize: '24px', lineHeight: '35px' });
-  show(glTx, T('g5e') + 0.1, { x: 12, y: 0, d: 0.45 }); fadeOut(glTx, tClr, 0.4);
+    + `<div style="font:600 24px/34px 'Inter','Sans SC';color:${K.ink};margin-top:6px">事务号只能用在副本集成员或 mongos（分片集群的入口）上</div>`;
+  show(errC, tSA - 0.1, { x: 160, y: 0, d: 0.55 }); fadeOut(errC, T('g5d') - 0.3, 0.4);   // 从右边的代码框挪过来
+  // 为什么单机开不了事务：问答，逐条随旁白出（U07 G00 G00c）；这一段里左下的「Alice 那一项」先收起，讲到 Bob 再拿回来
+  const QA = [['MongoDB 的事务，是在副本集这种跑法上做出来的。', 0],
+    ['副本集里，一台收下修改，记进一本「同步日志」，其余几台照着日志改，几台的数据才一样', 1],
+    ['事务提交时，也是整笔记进这本同步日志，几台一起照着改', 1],
+    ['单机不用和谁同步，就没有这本日志；事务没处记，所以直接拒绝', 1],
+    ['一台机器也想用事务：把它设成「只有一台的副本集」，有了这本日志就行（本章实验就这么做的）', 1]];
+  const glTx = gl(world, 140, 440, '问：单机好好的，为什么开不了事务？', QA.map(([t, b], k) => `<i class="qa${k}" style="display:block;font-style:normal;${b ? 'padding-left:22px;text-indent:-22px' : ''}">${b ? '· ' : '答：'}${t}</i>`).join(''), { key: '为什么单机开不了事务', w: 820 });
+  css(glTx.querySelector('span'), { fontSize: '24px', lineHeight: '34px' });
+  css(glTx, { borderLeft: 'none', paddingLeft: '0' });   // 竖条跟着已经出来的行走，不先画出整条
+  const qaB = glTx.querySelector('b'); css(qaB, { borderLeft: '5px solid ' + K.g1, paddingLeft: '18px' });
+  glTx.querySelectorAll('span i').forEach((e, k) => css(e, k ? { borderLeft: '5px solid ' + K.g1, paddingLeft: '40px' } : { borderLeft: '5px solid ' + K.g1, paddingLeft: '18px' }));
+  const qaT = [T('g5d') + 0.2, T('g5e') - 0.2, T('g5e', '复制') - 0.2, T('g5f') - 0.2, T('g5f', '副本集') - 0.2];
+  const qaL = QA.map((_, k) => glTx.querySelector('.qa' + k)); set(qaL.slice(1), s.start, { autoAlpha: 0 });
+  show(glTx, qaT[0], { x: 12, y: 0, d: 0.45 }); qaL.slice(1).forEach((e, k) => show(e, qaT[k + 1], { y: 6, d: 0.4 }));
+  fadeOut(glTx, tClr - 0.2, 0.4);   // 下一段的时间线进来之前收完
+  tl.to([chainHd, P42], { autoAlpha: 0, duration: 0.35 }, T('g5d') - 0.2); tl.to([chainHd, P42], { autoAlpha: 1, duration: 0.4 }, tClr + 0.95);
   // g5b：前几集的数据库——每一个都是一个程序管着一份数据
   const EPS = ['MySQL', 'PostgreSQL', 'SQLite', 'ClickHouse'];
   const eps = EPS.map((n, i) => {
@@ -115,7 +127,7 @@ scene('concur', ({ root, s, c0 }) => {
   fadeOut(glSolo, T('g5f', '应用') - 0.6, 0.3);
   [1, 2].forEach((i) => tl.fromTo(N[i], { autoAlpha: 0, x: -240 * i }, { autoAlpha: 1, x: 0, duration: 0.7, ease: 'power2.out', immediateRender: true }, T('g5d') - 0.1 + i * 0.1));
   to(N, T('g5d', '同一') - 0.2, { backgroundColor: '#C9F2E2', borderColor: K.ink, duration: 0.35 });   // 存的是同一份数据
-  const glRS = gl(world, BX, BYp + 284, '副本集', '一组存同一份数据的 mongod：主节点收下全部写入，<br>从节点照着它的操作日志复制；用来做冗余和高可用', { key: '副本集' }); glInline(glRS);   // T14 G00b G00c
+  const glRS = gl(world, BX, BYp + 284, '副本集', '几台 mongod 存同一份数据，一台坏了，还有别的顶上', { key: '副本集' }); glInline(glRS);   // T14 G00b G00c
   show(glRS, T('g5d', '副本集') - 0.2, { x: 12, y: 0, d: 0.4 });
   // g5e：一台收写入（实心），其余两台照着它复制（箭头上有点在流）
   to(N[0], T('g5e', '收写入') - 0.3, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 }); to(N[0].firstChild, T('g5e', '收写入') - 0.3, { color: '#FFFFFF', duration: 0.35 });

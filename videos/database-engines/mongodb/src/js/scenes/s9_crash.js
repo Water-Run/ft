@@ -116,7 +116,8 @@ scene('crash', ({ root, s, c0 }) => {
   to(laneEls[0].g, T('h8', '内存') - 0.2, { borderColor: K.yeld, backgroundColor: '#FFF6DA', duration: 0.35 });
   const tP2 = T('h9') - 0.4;
   fadeOut([...laneEls.map((o) => o.g), t0, t1, ok0, ok1, lag0, glJ, ...recs, rec6, jF], tP2, 0.45);
-  const glSA = gl(world, 140, 806, '为什么这里用单机', '第 07 章的副本集上，缺省写法（w: majority）就要等日志写进磁盘才回复，<br>带不带 j 都一样；单机缺省在内存里写完就回复，才看得出差别', { key: '为什么用单机' }); glInline(glSA);   // U08 H08
+  const glSA = gl(world, 140, 786, '为什么这里换回单机', glRows([['本章要看', '已经回复「写好了」、日志还没落盘的时候进程被杀，会丢什么'], ['副本集不行', '它默认的写法（w: majority）要等日志真正写进磁盘才回复；回复过的都已经在磁盘上，杀进程也丢不了，看不出区别'], ['单机可以', '默认写进内存就回复，日志稍后才落盘，中间这一小段正是要看的']]), { key: '为什么用单机', w: 1640 });
+  [glSA.querySelector('span'), ...glSA.querySelectorAll('.gr')].forEach((e) => css(e, { fontSize: '24px', lineHeight: '34px' }));   // U08 H08
   show(glSA, T('h9') + 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glSA, T('h13') - 0.9, 0.4);   // 日志框上来之前收完
 
   // ══ 三、实验：Alice（j: true）、Dave（不带 j），然后强制结束（H04 H05） ══
@@ -170,7 +171,7 @@ scene('crash', ({ root, s, c0 }) => {
   to([L2, L3, L4], T('h16', '赶在') - 0.3, { backgroundColor: K.mint2, color: K.ink, duration: 0.35 });
   // 重启（H02 H05）：数据文件停在最后一个检查点（Alice 42、没有 Dave）；日志里的四条记录一条条飞回去重做
   const tR = T('h17') - 0.3;
-  const glSq = gl(world, 1190, 548, '对照 SQLite', glRows([['回滚日志', '默认。改页之前先把原内容抄进 -journal 文件，崩溃后把原内容写回去'], ['WAL 模式', '原内容不动，改动追加进 -wal 文件，检查点时搬回数据库'], ['WiredTiger', '日志记的是改动，重启时从检查点往后重放，和 WAL 一路']]), { key: '对照 SQLite', w: 610 });   // U03 H02
+  const glSq = gl(world, 1190, 548, '和 SQLite 的日志很像', '改动先记进日志文件，<br>进程出事后靠它把数据恢复回来', { key: '和 SQLite 的日志很像', w: 610 });   // U03 H02
   [glSq.querySelector('span'), ...glSq.querySelectorAll('.gr')].forEach((e) => css(e, { fontSize: '24px', lineHeight: '34px' }));
   show(glSq, T('h17', '检查点') - 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glSq, Tend('h19') + 0.4, 0.4);
   fadeOut(ex.c, Tend('h16') + 0.3, 0.45);

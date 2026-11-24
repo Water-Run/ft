@@ -71,8 +71,8 @@ scene('insert', ({ root, s, c0 }) => {
     g.innerHTML = `<div style="height:10px;border:2.5px solid ${K.forest};border-top:none;border-radius:0 0 4px 4px"></div><div style="margin-top:6px;font:700 24px/32px Inter,'Sans SC';color:${K.forest}">${t1}</div><div style="font:500 22px/30px 'Sans SC';color:${K.gd2}">${t2}</div>`;
     show(g, T('b5', 'Object') + 0.4 + k * 0.4, { y: 8, d: 0.4 }); P2.push(g); return g;
   });
-  const glO = gl(world, 960, 598, 'ObjectId', '12 字节的 BSON 类型：集合里唯一，<br>默认用作 _id', { key: 'ObjectId' });   // T10 A15 A15b
-  show(glO, T('b5', 'Object') - 0.1, { x: 14, y: 0, d: 0.45 }); fadeOut(glO, T('b6', '编码') - 0.1, 0.35);   // 右边那排字节排到这里之前收掉
+  const glO = gl(world, 960, 598, 'ObjectId', '12 字节的 BSON 类型，<br>默认用作 _id', { key: 'ObjectId' });   // T10 A15 A15b
+  show(glO, T('b5', 'Object') - 0.2, { x: 14, y: 0, d: 0.45 }); fadeOut(glO, T('b6') - 0.35, 0.5);   // 跟旁边的 12 字节图一起退场
   const tP2 = T('b6') - 0.35;
   fadeOut([app, oidB, ...oSegs, glDrv], tP2, 0.5);
   tl.to(D.c, { x: 640 - 180, y: 222 - 340, scale: 0.85, transformOrigin: '0 0', duration: 0.8, ease: 'power2.inOut' }, tP2);

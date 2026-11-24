@@ -113,7 +113,7 @@ scene('find', ({ root, s, c0 }) => {
   to(zRows[0], T('d7b', 'A') - 0.2, { color: '#FFFFFF', backgroundColor: K.forest, duration: 0.35 }); to(zRows[0].firstChild, T('d7b', 'A') - 0.2, { color: K.gl2, duration: 0.35 });
   const cmp = tg(world, 660, 236, '<span style="font-family:Mono">41 &lt; 55</span><br>A 排在 U 前面', 'b'); css(cmp, { fontSize: '30px', lineHeight: '1.4', color: '#FFFFFF', background: K.ink, borderRadius: '10px', padding: '8px 16px' });
   show(cmp, T('d7b', '前面') - 0.3, { x: 14, y: 0, d: 0.45 });
-  const glA = gl(world, 140, 676, '41、55 是什么', 'A、U 的 ASCII 码（十六进制）。名字按 UTF-8 存：英文字母 1 字节，即 ASCII 码；<br>汉字 3 字节，每字节都不小于十六进制 80，排在英文名后面', { key: 'ASCII 与 UTF-8' }); glInline(glA);   // U05 C06
+  const glA = gl(world, 140, 676, '41、55', 'A、U 的 ASCII 码', { key: 'ASCII' }); glInline(glA);   // U05 C06
   show(glA, T('d6', '字节') - 0.3, { x: 12, y: 0, d: 0.4 }); fadeOut(glA, T('d9', '找到') - 0.6, 0.35);   // 下面那一项出来之前收掉
   to(zRows[0], T('d7b', '第一项') - 0.2, { backgroundColor: K.mint, color: K.forest, duration: 0.35 }); to(zRows[0].firstChild, T('d7b', '第一项') - 0.2, { color: K.gd1, duration: 0.35 });
   to(iLeaves[0], T('d7b', '第一项') - 0.2, { backgroundColor: K.mint, duration: 0.35 });
