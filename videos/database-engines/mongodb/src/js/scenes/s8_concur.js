@@ -79,10 +79,19 @@ scene('concur', ({ root, s, c0 }) => {
   // g5：在单机的 mongod 上执行，报错（G00 的真实报错）
   const errL = code.out(T('g5', '这种') - 0.1, '<span style="color:#FFFFFF">MongoServerError: Transaction numbers are only allowed on a replica set member or mongos</span>');
   css(errL, { background: K.red, borderRadius: '6px', padding: '2px 10px', fontSize: '22px', lineHeight: '30px', whiteSpace: 'normal' });
-  const errZ = code.out(T('g5', '开不了') + 0.3, '<span style="color:#5C6C75;font-family:Inter,\'Sans SC\'">事务号只允许用在副本集的成员上</span>');
+  const errZ = code.out(T('g5', '这种') + 0.5, '<span style="color:#5C6C75;font-family:Inter,\'Sans SC\'">事务号只能用在副本集成员或 mongos 上</span>');
   textAt(code.c.querySelector('.lang'), [[0, 'mongosh · 应用自己开的事务'], [T('g5', '这种') - 0.3, 'mongosh · 单机的 mongod']]);
   const tSA = T('g5b') - 0.3;
   fadeOut([code.c, brk, v4], tSA, 0.4);
+  // 报错移到左边，留到讲副本集复制（U07 U10）
+  const errC = h('div', 'abs', world); errC.dataset.name = 'errcard'; px(errC, 140, 452, 760); css(errC, { background: '#FFFFFF', border: '2px solid ' + K.red, borderRadius: '10px', padding: '10px 18px', boxSizing: 'border-box', whiteSpace: 'normal', overflowWrap: 'anywhere' });
+  errC.innerHTML = `<div style="font:600 22px/30px Mono;color:${K.redd}">单机 mongod：Transaction numbers are only allowed on a replica set member or mongos</div>`
+    + `<div style="font:600 24px/34px 'Inter','Sans SC';color:${K.ink};margin-top:6px">事务号只能用在副本集成员或 mongos（分片集群的入口）上</div>`
+    + `<div style="font:500 24px/34px 'Inter','Sans SC';color:${K.gd2}">官方文档：单机部署不支持事务，要用副本集；没有写原因</div>`;
+  show(errC, tSA - 0.1, { x: 160, y: 0, d: 0.55 }); fadeOut(errC, T('g5e') - 0.3, 0.4);   // 从右边的代码框挪过来
+  const glTx = gl(world, 140, 452, '事务和副本集', 'oplog 是副本集复制用的操作日志：事务提交时写进 oplog；<br>事务的状态记在 config.transactions，文档写明它为副本集与分片集群服务', { key: '事务和副本集', w: 760 });   // U07
+  css(glTx.querySelector('span'), { fontSize: '24px', lineHeight: '35px' });
+  show(glTx, T('g5e') + 0.1, { x: 12, y: 0, d: 0.45 }); fadeOut(glTx, tClr, 0.4);
   // g5b：前几集的数据库——每一个都是一个程序管着一份数据
   const EPS = ['MySQL', 'PostgreSQL', 'SQLite', 'ClickHouse'];
   const eps = EPS.map((n, i) => {
@@ -101,9 +110,9 @@ scene('concur', ({ root, s, c0 }) => {
   show(N[0], tSolo + 0.2, { y: 12, d: 0.45 });
   to(N[0], T('g5c', '单机') - 0.2, { backgroundColor: K.ink, borderColor: K.ink, duration: 0.35 }); to(N[0].firstChild, T('g5c', '单机') - 0.2, { color: '#FFFFFF', duration: 0.35 }); to(N[0].firstChild, T('g5d', '同一') - 0.2, { color: K.ink, duration: 0.35 });
   const n0ic = [...N[0].querySelectorAll('svg')]; to(n0ic, T('g5c', '单机') - 0.2, { attr: { stroke: '#FFFFFF' }, duration: 0.35 }); to(n0ic[0], T('g5d', '同一') - 0.2, { attr: { stroke: K.gd2 }, duration: 0.35 }); to(n0ic[1], T('g5d', '同一') - 0.2, { attr: { stroke: K.forest }, duration: 0.35 }); to(n0ic, T('g5e', '收写入') - 0.3, { attr: { stroke: '#FFFFFF' }, duration: 0.35 });   // 深底上的图标改成白色
-  const glSolo = gl(world, BX, BYp + 284, '单机', '作为单独一台服务器运行、不属于副本集的 mongod；<br>数据只在它手上这一份。只有一台的副本集也不算单机', { key: '单机' }); glInline(glSolo); show(glSolo, T('g5c', '单机') - 0.3, { x: 12, y: 0, d: 0.4 });   // T13
+  const glSolo = gl(world, 140, 836, '单机', '作为单独一台服务器运行、不属于副本集的 mongod；<br>数据只在它手上这一份。只有一台的副本集也不算单机', { key: '单机' }); glInline(glSolo); show(glSolo, T('g5c', '只开') + 0.3, { x: 12, y: 0, d: 0.4 });   // T13 放在左下，留到副本集的代码出来之前
   // g5d：副本集——几台 mongod，各存一份同样的数据
-  fadeOut(glSolo, T('g5d') - 0.2, 0.3);
+  fadeOut(glSolo, T('g5f', '应用') - 0.6, 0.3);
   [1, 2].forEach((i) => tl.fromTo(N[i], { autoAlpha: 0, x: -240 * i }, { autoAlpha: 1, x: 0, duration: 0.7, ease: 'power2.out', immediateRender: true }, T('g5d') - 0.1 + i * 0.1));
   to(N, T('g5d', '同一') - 0.2, { backgroundColor: '#C9F2E2', borderColor: K.ink, duration: 0.35 });   // 存的是同一份数据
   const glRS = gl(world, BX, BYp + 284, '副本集', '一组存同一份数据的 mongod：主节点收下全部写入，<br>从节点照着它的操作日志复制；用来做冗余和高可用', { key: '副本集' }); glInline(glRS);   // T14 G00b G00c
@@ -237,7 +246,7 @@ scene('concur', ({ root, s, c0 }) => {
   show(ce.c, T('g25', '收到') - 0.4, { y: 10, d: 0.4 });
   const ceL = ce.out(T('g25', '错误') - 0.2, `{'错误':'WriteConflict','标签':[<span class="tl" style="color:#FFFFFF;border-radius:4px;padding:0 4px">'TransientTransactionError'</span>]}`);
   css(ceL, { background: K.red, color: '#FFFFFF', borderRadius: '6px', padding: '0 10px', display: 'inline-block' });
-  const glW = gl(world, LX0, 826, '写冲突', '两个同时进行的操作要改同一份数据时，WiredTiger 让其中一方收到的错误，名字叫 WriteConflict；<br><i class="l2" style="font-style:normal">在事务里出现时带着 TransientTransactionError 标签，表示整个事务可以重来</i>', { cls: 'r', key: '写冲突' }); glInline(glW);   // T15 G04 G08
+  const glW = gl(world, LX0, 826, '写冲突', '两个操作同时改同一份数据，一方收到的错误：WriteConflict；<br><i class="l2" style="font-style:normal">还带 TransientTransactionError 标签：整个事务重来</i>', { cls: 'r', key: '写冲突' }); glInline(glW);   // T15 G04 G08
   show(glW, T('g25', '写冲突') - 0.3, { x: 12, y: 0, d: 0.45 });
   const glW2 = glW.querySelector('.l2'); set(glW2, s.start, { autoAlpha: 0 }); show(glW2, T('g26', '标签') - 0.3, { y: 6, d: 0.4 });   // 第二行等说到标签再出
   to([P42, C43, a43, C44, a44, chainHd], T('g26', '整个') - 0.2, { opacity: 0.3, duration: 0.45 }); to([P42, C43, a43, C44, a44, chainHd], T('g27', '提交') - 0.3, { opacity: 1, duration: 0.4 });   // 讲 Carol 整个事务重来：版本链先退后
@@ -262,11 +271,12 @@ scene('concur', ({ root, s, c0 }) => {
   to(cl, T('g28', '先不') - 0.2, { opacity: 0.9, backgroundColor: K.forest, duration: 0.4 });
   to([chainHd, P42, C43, a43, C44, a44, C45, a45, aSpan, dA2, wA2, dA3, wC, lanes.alice.l, lanes.alice.t], T('g28', '撞上') - 0.2, { opacity: 0.25, duration: 0.45 });
   to(cSpan, T('g28', '重来') - 0.3, { opacity: 0.35, duration: 0.4 });
-  const glO = gl(world, LX0, 826, '乐观并发', '一种并发控制的做法：不事先加锁排队，等冲突可能已经发生之后才检查，<br>撞上了就结束并重试其中一个操作。WiredTiger 对多数读写都这样做', { key: '乐观并发' }); glInline(glO);   // T15 G06
-  show(glO, T('g28', '乐观') - 0.3, { x: 12, y: 0, d: 0.45 });
+  to([chainHd, P42, C43, a43, C44, a44, C45, a45, aSpan, dA2, wA2, dA3, wC, lanes.alice.l, lanes.alice.t, cSpan], T('g28', '乐观') - 0.2, { opacity: 1, duration: 0.45 });   // 起名字时，整个过程一起看
+  const glO = gl(world, LX0, 826, '乐观并发', '不先加锁排队，等冲突发生了才检查，<br>撞上就让一方重来；WiredTiger 多数读写都这样', { key: '乐观并发' }); glInline(glO);   // T15 G06
+  show(glO, T('g28') + 0.1, { x: 12, y: 0, d: 0.45 }); fadeOut(glO, Tend('g36') + 0.5, 0.4);   // 留到章末
   // 章末：mongod 突然被杀——整个舞台熄掉，只剩一个 mongod
   const tEnd = T('g36') - 0.3;
-  fadeOut([chainHd, P42, C43, a43, C44, a44, C45, a45, aSpan, cSpan, cSpan2, loop, ok, dA2, wA2, dA3, dC, dC2, wC, cl, ct, ctSub, glO, lanes.alice.l, lanes.alice.t], tEnd, 0.45);
+  fadeOut([chainHd, P42, C43, a43, C44, a44, C45, a45, aSpan, cSpan, cSpan2, loop, ok, dA2, wA2, dA3, dC, dC2, wC, cl, ct, ctSub, lanes.alice.l, lanes.alice.t], tEnd, 0.45);
   const kill = h('div', 'abs', world); px(kill, 760, 560, 400, 120); css(kill, { background: K.ink, border: '3px solid ' + K.ink, borderRadius: '14px' });
   kill.innerHTML = `<div style="position:absolute;left:28px;top:30px;font:700 44px Mono;color:#FFFFFF">mongod</div>`;
   show(kill, T('g36') - 0.1, { y: 12, d: 0.45 });

@@ -1,7 +1,7 @@
 // 第 09 章 删（第 4 轮重做；第 4 轮 b 移到最后：主角的一生只往前走）：同一个舞台（collStage）。Alice 注销：三棵树各删一项；内存里在 2050 上挂一个删除标记 →
 // 检查点：第二个叶页又写到文件末尾，页里 2049 后面就是 2051；文件没变小（132 KB），旧位置空出来 →
 // Dave 注册拿到 4097（2050 不再发）→ 落进最后一个叶页 → 检查点时这一页写进空出来的位置，根页也挪进空位 →
-// 文件末尾那一块用不着，文件缩回 120 KB，还有两段合计 24 KB 空着。
+// 这次检查点写完，它不再用的块才空出来；关闭 mongod 时又一次检查点：末尾空着的那段截掉，文件 120 KB，还有两段合计 24 KB 空着（U01 U02）。
 // 事实：F01（ndeleted 1、keysDeleted 2）、F02（删除标记）、F03（2049、2051 在，2050 没有；叶页写到新位置）、F06（135,168 → 122,880，24,576 可复用）、
 //       F04（4097，不回收）、B03（分界 3124）、F05（Dave 那一页 28672–49152）、F07（根页 122880 → 65536，文件截短）；06 回显的 deleteOne、insertOne。
 scene('delete', ({ root, s, c0 }) => {
@@ -42,9 +42,9 @@ scene('delete', ({ root, s, c0 }) => {
   textAt(tomb, [[0, ''], [T('f5', '删除') - 0.2, '删除标记']]);
   const tA = link(ov, [[912, RY + 20], [986, RY + 20]], 'ink', { w: 3, arrow: true });
   show(tomb, tT + 0.2, { x: -24, y: 0, d: 0.45 }); arrowIn(tA, tT, 0.35);
-  const glT = gl(world, 1290, RY - 80, '删除标记', '挂在更新链上的一个特殊版本：<br>不带内容，只表示这一项已经删了；<br>下一次检查点整理这一页时，<br>这一项不再写出', { key: '删除标记' });   // F02 F03
+  const glT = gl(world, 1290, RY - 80, '删除标记', '更新链上不带内容的版本：<br>只表示这一项删了', { key: '删除标记' });   // F02 F03
   css(glT.querySelector('span'), { fontSize: '24px' });
-  show(glT, T('f5', '删除') - 0.3, { y: 10, d: 0.45 });
+  show(glT, T('f4') - 0.1, { y: 10, d: 0.45 });
   // 检查点：第二个叶页又写到文件末尾；页里 2049 后面就是 2051（F03）
   to(tomb, T('f4', '不带') - 0.2, { backgroundColor: K.gl2, duration: 0.3 });
   to([V.root, V.leaves[0].c], T('f4', '不带') - 0.2, { opacity: 0.35, duration: 0.4 });   // 只看这一项和挂上的版本
@@ -61,8 +61,9 @@ scene('delete', ({ root, s, c0 }) => {
   const gh = ghostPage(world, V.LX(1), V.LY, V.LW, V.LH);
   tl.fromTo(gh, { autoAlpha: 0.95, x: 0, y: 0, scale: 1 }, { x: X(110592) - (V.LX(1) + V.LW / 2), y: 700 - V.LY, scale: 0.4, autoAlpha: 0, duration: 1.1, ease: 'power2.inOut', immediateRender: false }, T('f6', '写到') - 0.4);
   revealBand(V, T('f6', '末尾') - 0.5, 98304, 135168, 0.8);
-  const n2 = V.band.blk(98304, 122880, 'n', '1225–2448'), r2 = V.band.blk(122880, 126976, 'r'), tail = V.band.blk(126976, 135168, 'h');
-  show([n2, r2, tail], T('f6', '末尾') - 0.1, { y: 0, s: 0.7, d: 0.4 }); sfx('thud', T('f6', '末尾'), { g: 0.5 });
+  to(V.size, T('f6', '末尾') - 0.6, { autoAlpha: 0, duration: 0.3 }); to(V.size, T('f8', '长到') - 0.5, { autoAlpha: 1, duration: 0.3 });   // 文件条在长、大小还没讲到：先收起，免得两者对不上（同第 06 章）
+  const n2 = V.band.blk(98304, 122880, 'n', '1225–2448'), r2 = V.band.blk(122880, 126976, 'r'), tail = V.band.blk(126976, 135168, 'h', '区段表');
+  show(n2, T('f6', '末尾') - 0.1, { y: 0, s: 0.7, d: 0.4 }); show(r2, T('f6', '末尾') + 0.2, { y: 0, s: 0.7, d: 0.35 }); show(tail, T('f6', '末尾') + 0.45, { y: 0, s: 0.7, d: 0.35 }); sfx('thud', T('f6', '末尾'), { g: 0.5 });   // 叶页、根页、区段表依次接在末尾（U02）
   fadeOut(V.drop[1], T('f6', '末尾') - 0.1, 0.3);
   [0, 2, 3].forEach((i) => tl.to(V.drop[i], { autoAlpha: 0, duration: 0.3 }, T('f6', '末尾') - 0.1));
   const drop2 = link(ov, [[V.LX(1) + V.LW / 2, V.LY + V.LH], [V.LX(1) + V.LW / 2, 604], [X(110592), 604], [X(110592), 756]], 'accent', { w: 2.5, dashed: '6 6' }); arrowIn(drop2, T('f6', '末尾') + 0.2, 0.5);
@@ -79,8 +80,11 @@ scene('delete', ({ root, s, c0 }) => {
   solid(V.size, T('f8', '没有') - 0.2, 'new', [T('f9') - 0.1, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]);
   to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f9', '原来') - 0.2, { opacity: 0.35, duration: 0.45 }); to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f10') - 0.1, { opacity: 1, duration: 0.45 });
   to(V.b.l2, T('f9', '原来') - 0.2, { backgroundColor: '#FCE9B0', borderColor: K.yeld, duration: 0.35 });
-  to([V.b.l2, V.b.r], T('f9', '空') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.45 });   // lint-ok: 空出的块是透明底
-  fadeOut(V.b.l2._t, T('f9', '空') - 0.3, 0.3);
+  to([V.b.l2, V.b.r, V.b.x], T('f9', '空') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.45 });   // lint-ok: 空出的块是透明底；上一份区段表也一起空出来（U02）
+  fadeOut([V.b.l2._t, V.b.x._t], T('f9', '空') - 0.3, 0.3);
+  // 对照前几集：删掉的数据占的地方，文件不会自己还回去（U04）
+  const glCmp = gl(world, 200, 646, '对照前几集', glRows([['SQLite', '删掉的内容不擦，空间标成可再用；VACUUM 重建才缩小文件'], ['InnoDB', '删掉的行由 purge 清走，空页留在表空间；OPTIMIZE TABLE 重建才还给系统']]), { key: '对照 SQLite、InnoDB' }); glInline(glCmp); glCmp.querySelectorAll('.gr').forEach((e) => css(e, { fontSize: '24px', lineHeight: '35px' }));
+  show(glCmp, T('f8', '没有') - 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glCmp, T('f11', '空') - 0.3, 0.4);
   // Dave 注册：RecordId 4097，2050 不再发（F04）
   const tD = T('f10', 'D') - 0.3;
 
@@ -93,7 +97,6 @@ scene('delete', ({ root, s, c0 }) => {
   const noS = rid.querySelector('.no'); const noLine = h('div', 'abs', world); px(noLine, 400 + noS.offsetLeft - 4, 246 + 24, noS.offsetWidth + 8, 4); css(noLine, { background: K.red, transformOrigin: '0 50%' }); noLine.dataset.name = 'no2050';
   fromTo(noLine, T('f11', '不再') - 0.1, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.out' }); fadeOut(noLine, T('f13') - 0.3, 0.3);
   to(rid.querySelector('.no'), T('f11', '不再') - 0.2, { backgroundColor: K.red, color: '#FFFFFF', duration: 0.35 });
-  to(V.b.l2, T('f11', '空出来') - 0.2, { backgroundColor: K.gd1, borderColor: K.gd1, borderStyle: 'solid', duration: 0.35 });
   const treeAll = [V.root, ...V.leaves.map((p) => p.c), ...V.links];
   to(treeAll, T('f11', '不再') - 0.3, { opacity: 0.35, duration: 0.4 }); to(treeAll, T('f13') - 0.2, { opacity: 1, duration: 0.4 });
   to([0, 1, 2].map((i) => V.leaves[i].c), T('f13', '三') - 0.2, { opacity: 0.35, duration: 0.4 }); to([0, 1, 2].map((i) => V.leaves[i].c), T('f14') - 0.1, { opacity: 1, duration: 0.4 });   // 4097 比 3124 大，不在前三个叶页
@@ -112,34 +115,49 @@ scene('delete', ({ root, s, c0 }) => {
   to(V.leaves[3].c, T('f13', '落') + 0.4, { borderColor: K.g1, duration: 0.3 });
   textAt(V.leaves[3].head, [[0, '叶页 · 3124–4096'], [T('f13', '叶页') + 0.1, '叶页 · 3124–4097']]);
   to(V.leaves[3].head, T('f13', '叶页') + 0.1, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.3 }); to(V.leaves[3].c, T('f13', '叶页') + 0.1, { backgroundColor: K.mint2, duration: 0.3 });
-  // 检查点：这一页写进第二个叶页空出来的地方（28672–49152）
+  // Dave 之后的检查点（U02 的 .3）：新页按最佳适配写进第二个叶页空出来的地方（28672–49152）
   const tK2 = T('f14', '检查点') - 0.3;
   fadeOut(rid, tK2, 0.35);
+  // 文件条上方一行：这一步在做什么（U01）。放在 Dave 那条下落线的右边
+  const chip = (t) => `<span style="background:${K.ink};color:#FFFFFF;border-radius:8px;padding:2px 12px;margin-right:14px">${t}</span>`;
+  const C3 = chip('Dave 之后的检查点'), C4 = chip('关闭 mongod 时的检查点');
+  const stg = h('div', 'abs', world); stg.dataset.name = 'stage'; px(stg, 660, 652); css(stg, { font: '600 24px/40px "Inter", "Sans SC"', color: K.ink, whiteSpace: 'nowrap' });
+  textAt(stg, [[0, ''], [tK2, C3 + '新页挑合适的空位，根页、区段表从头找空位'], [T('f15b') - 0.3, C4 + '末尾截掉，根页、区段表挪前']]);
+  show(stg, tK2, { y: 6, d: 0.35 }); fadeOut(stg, T('f16') - 0.55, 0.35);
   const gh4 = ghostPage(world, V.LX(3), V.LY, V.LW, V.LH);
-  tl.fromTo(gh4, { autoAlpha: 0.95, x: 0, y: 0, scale: 1 }, { x: X(38912) - (V.LX(3) + V.LW / 2), y: 700 - V.LY, scale: 0.4, autoAlpha: 0, duration: 1.1, ease: 'power2.inOut', immediateRender: false }, T('f14', '用上') - 0.6);
+  tl.fromTo(gh4, { autoAlpha: 0.95, x: 0, y: 0, scale: 1 }, { x: X(38912) - (V.LX(3) + V.LW / 2), y: 540 - V.LY, scale: 0.4, autoAlpha: 0, duration: 1.1, ease: 'power2.inOut', immediateRender: false }, T('f14', '用上') - 0.6);   // 停在上方那行字之上
   const d4 = V.band.blk(28672, 49152, 'd', '3124–4097'); show(d4, T('f14', '用上') + 0.4, { y: 0, s: 0.7, d: 0.4 }); sfx('thud', T('f14', '用上') + 0.5, { g: 0.5 });
+  const fr0 = V.band.blk(49152, 53248, 'f'); set(fr0, s.start, { autoAlpha: 0 }); show(fr0, T('f14', '用上') + 0.4, { y: 0, d: 0.3 });   // 这块空位还剩 4 KB
   fadeOut(V.drop[3], T('f14', '用上') + 0.3, 0.3);
   fadeOut(V.b.l2, T('f14', '用上') + 0.4, 0.3);
   const drop4 = link(ov, [[V.LX(3) + V.LW / 2, V.LY + V.LH], [V.LX(3) + V.LW / 2, 604], [X(38912), 604], [X(38912), 756]], 'accent', { w: 2.5, dashed: '6 6' }); arrowIn(drop4, T('f14', '用上') + 0.5, 0.6);
-  to(V.b.l4, T('f14', '用上') + 0.4, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.4 });   // lint-ok: 空出的块
-  fadeOut(V.b.l4._t, T('f14', '用上') + 0.4, 0.3);
-  // 根页也挪进空位（65536）；文件末尾那一块用不着了
-  to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f15', '文件') - 0.2, { opacity: 0.35, duration: 0.45 }); to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f15b', '二十') - 0.4, { opacity: 1, duration: 0.45 });
+  // 根页按首次适配写进剩下的 4 KB（49152），区段表写进旧根页与上一份区段表空出的地方（86016–94208）
+  to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f15', '文件') - 0.2, { opacity: 0.35, duration: 0.45 });   // 之后一直看磁盘
   const ghR = ghostPage(world, 880, 236, 520, 70); css(ghR, { background: K.forest, borderColor: K.forest, overflow: 'hidden' });
-  tl.fromTo(ghR, { autoAlpha: 0.95, x: 0, y: 0, scale: 1 }, { x: X(67584) - 1140, y: 760 - 271, scale: 0.15, autoAlpha: 0, duration: 1.0, ease: 'power2.inOut', immediateRender: false }, T('f15', '挪进') - 0.6);
-  const r3 = V.band.blk(65536, 69632, 'r'); show(r3, T('f15', '挪进') - 0.2, { y: 0, s: 0.7, d: 0.4 });
+  tl.fromTo(ghR, { autoAlpha: 0.95, x: 0, y: 0, scale: 1 }, { x: X(51200) - 1140, y: 600 - 271, scale: 0.15, autoAlpha: 0, duration: 0.9, ease: 'power2.inOut', immediateRender: false }, T('f15', '挪进') - 0.6);   // 停在文件条上方的那行字之上
+  const r3 = V.band.blk(49152, 53248, 'r'); show(r3, T('f15', '挪进') - 0.2, { y: 0, s: 0.7, d: 0.4 }); fadeOut(fr0, T('f15', '挪进') - 0.2, 0.2);
   to(V.root, T('f15', '根页') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(V.root, T('f15b') - 0.2, { backgroundColor: K.ink, duration: 0.35 });
-  to(r2, T('f15', '挪进') - 0.1, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.4 });   // lint-ok: 空出的块
-  to([r2, tail], T('f15', '末尾') - 0.3, { backgroundColor: K.red, borderColor: K.red, borderStyle: 'solid', duration: 0.35 }); solid(V.size, T('f15', '末尾') - 0.3, K.red);
-  // 文件缩回 120 KB（122,880 字节）：末尾那一段截掉；空着的两段合计 24 KB（49152–53248、69632–90112）
-  revealBand(V, T('f15b', '缩回') - 0.3, 135168, 122880, 0.9);
-  const fr1 = V.band.blk(49152, 53248, 'f'), fr2 = V.band.blk(69632, 90112, 'f'); fr1.dataset.name = 'free'; fr2.dataset.name = 'free';
+  const ex3 = V.band.blk(86016, 94208, 'h', '区段表'), fr3 = V.band.blk(94208, 98304, 'f'); set([ex3, fr3], s.start, { autoAlpha: 0 });
+  show(ex3, T('f15', '空位') - 0.1, { y: 0, s: 0.7, d: 0.35 }); show(fr3, T('f15', '空位') - 0.1, { y: 0, d: 0.3 }); fadeOut([V.b.r, V.b.x], T('f15', '空位') - 0.1, 0.25);
+  // 这次检查点写完：它不再用的块空出来——旧的最后一个叶页、文件末尾的旧根页与区段表（36 KB）
+  to(V.b.l4, T('f15', '末尾') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.4 });   // lint-ok: 空出的块
+  fadeOut(V.b.l4._t, T('f15', '末尾') - 0.3, 0.3);
+  to([r2, tail], T('f15', '末尾') - 0.3, { backgroundColor: K.red, borderColor: K.red, duration: 0.35 }); if (tail._t) to(tail._t, T('f15', '末尾') - 0.3, { color: '#FFFFFF', duration: 0.3 }); solid(V.size, T('f15', '末尾') - 0.3, K.red);
+  // 关闭 mongod 时的检查点（.4）：根页写进 65536；末尾空着的那段截掉，文件 120 KB；区段表写进 69632–77824
+  const r4 = V.band.blk(65536, 69632, 'r'), frA = V.band.blk(69632, 86016, 'f'); set([r4, frA], s.start, { autoAlpha: 0 });
+  show(r4, T('f15b') - 0.2, { y: 0, s: 0.7, d: 0.35 }); show(frA, T('f15b') - 0.2, { y: 0, d: 0.25 }); fadeOut(V.b.l4, T('f15b') - 0.2, 0.25);
+  revealBand(V, T('f15b', '缩回') - 0.3, 135168, 122880, 0.9); fadeOut([r2, tail], T('f15b', '缩回') + 0.7, 0.2);   // 截掉的那一段
+  const ex4 = V.band.blk(69632, 77824, 'h', '区段表'), frB = V.band.blk(77824, 86016, 'f'); set([ex4, frB], s.start, { autoAlpha: 0 });
+  show(ex4, T('f15b', '120') - 0.1, { y: 0, s: 0.7, d: 0.35 }); show(frB, T('f15b', '120') - 0.1, { y: 0, d: 0.25 }); fadeOut(frA, T('f15b', '120') - 0.1, 0.25);
+  // 写完：上一次的根页（49152）与区段表（86016）空出来；空位合成两段：49152–53248、77824–98304，共 24 KB
+  to([r3, ex3], T('f15b', '二十') - 0.4, { backgroundColor: 'rgba(0,0,0,0)', borderColor: K.gd1, borderStyle: 'dashed', duration: 0.35 });   // lint-ok: 空出的块
+  if (ex3._t) fadeOut(ex3._t, T('f15b', '二十') - 0.4, 0.3);
+  const fr1 = V.band.blk(49152, 53248, 'f'), fr2 = V.band.blk(77824, 98304, 'f'); fr1.dataset.name = 'free'; fr2.dataset.name = 'free';
   set([fr1, fr2], s.start, { autoAlpha: 0 });
-  show([fr1, fr2], T('f15b', '二十') - 0.4, { y: 0, d: 0.4 });
-  fadeOut([V.b.l4, V.b.r], T('f15b', '二十') - 0.4, 0.3);
+  show([fr1, fr2], T('f15b', '二十') + 0.05, { y: 0, d: 0.3 }); fadeOut([r3, ex3, frB, fr3], T('f15b', '二十') + 0.05, 0.25);
   to([fr1, fr2], T('f15b', '后来') - 0.2, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.35 });   // 还空着、留给以后：虚线浅绿，不涂成实心
   solid(V.size, T('f15b', '缩回') + 0.6, 'new');
-  to([V.root, ...V.leaves.map((p) => p.c), ...V.links], T('f15b', '空着') - 0.2, { opacity: 0.3, duration: 0.45 });   // 只看磁盘上空着的地方
+  to([V.root, ...V.leaves.map((p) => p.c), ...V.links, drop4], T('f15b', '空着') - 0.2, { autoAlpha: 0, duration: 0.45 }); to(V.size, T('f15b', '空着') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', color: K.ink, duration: 0.35 });   // lint-ok: 只看磁盘上空着的地方（用 autoAlpha，和后面的退场一致，倒着跳也复原得了）
   // f16：Alice 这一份资料的一生，一步步排出来：注册 → 进文件 → 被找到 → 42 改成 43 → 注销
   const tL = T('f16') - 0.2;
   to(V.size, tL, { color: K.ink, backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)', duration: 0.3 });   // lint-ok: 视线离开，退回文字

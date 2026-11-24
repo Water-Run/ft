@@ -17,12 +17,19 @@ scene('insert', ({ root, s, c0 }) => {
   for (let r = 0; r < N; r++) { const b = h('div', 'abs', grid); css(b, { left: 0, top: r * CELL + 'px', height: CELL + 'px', width: '0px', background: K.gb }); rows.push(b); }
   grid.insertAdjacentHTML('beforeend', `<svg class="abs" style="left:0;top:0" width="${GW}" height="${GW}"><defs><pattern id="gp" width="${CELL}" height="${CELL}" patternUnits="userSpaceOnUse"><path d="M${CELL} 0V${CELL}H0" fill="none" stroke="#F9FBFA" stroke-width="1.6"/></pattern></defs><rect width="${GW}" height="${GW}" fill="url(#gp)"/></svg>`);
   show(grid, T('b1') - 0.1, { y: 12, d: 0.5 });
-  const tF0 = T('b1', '按') - 0.2, tF1 = T('b1', '写进') + 0.5;
+  const tF0 = T('b1', '一共') - 0.1, tF1 = T('b1', '个') + 0.1;   // 数字念到哪，格子就填到哪
   rows.forEach((b, r) => fromTo(b, tF0 + (tF1 - tF0) * r / N, { width: 0 }, { width: GW, duration: (tF1 - tF0) / N + 0.02, ease: 'none' }));
   const cnt = h('div', 'abs', world, '0'); px(cnt, 930, 300); css(cnt, { font: '800 120px "Inter"', color: K.ink }); P1.push(cnt);
   const cntT = tg(world, 936, 450, '个用户 · users', 'b'); css(cntT, { fontSize: '34px' }); P1.push(cntT);
   show([cnt, cntT], T('b1', '一共') - 0.3, { y: 12, d: 0.5 });
   stepTo(cnt, [[tF0, tF1 - tF0, 0, 4096]], (v) => String(Math.round(v)));
+  // 按注册的先后：第 1 个在左上，第 4096 个在右下；一道亮条按顺序扫过
+  const oA = tg(world, GX + GW + 16, GY - 6, '← 第 1 个', 'b'), oZ = tg(world, GX + GW + 16, GY + GW - 38, '← 第 4096 个', 'b'); P1.push(oA, oZ);
+  [oA, oZ].forEach((e) => css(e, { fontSize: '26px', color: K.forest }));
+  show(oA, T('b1', '按') - 0.2, { x: 10, y: 0, d: 0.35 }); show(oZ, T('b1', '先后') - 0.2, { x: 10, y: 0, d: 0.35 });
+  const sweep = h('div', 'abs', grid); css(sweep, { left: 0, top: 0, width: GW + 'px', height: CELL + 'px', background: K.spring, opacity: 0 });
+  const sw0 = T('b1', '注') - 0.1, sw1 = T('b1', '来') + 0.1;   // 位置与透明度只由 t 算出
+  F((t) => { if (t < sw0 || t > sw1 + 0.3) { sweep.style.opacity = '0'; return; } const ph = Math.min(1, (t - sw0) / (sw1 - sw0)); sweep.style.opacity = String(t > sw1 ? 0.85 * (1 - (t - sw1) / 0.3) : 0.85); sweep.style.transform = `translateY(${ph * (GW - CELL)}px)`; });
   // Alice：第 2050 个 → 第 33 行第 2 格（从 0 数是第 2049 格）
   const ar = Math.floor(2049 / N), ac = 2049 % N;
   const aCell = h('div', 'abs', world); px(aCell, GX + 2 + ac * CELL - 6, GY + 2 + ar * CELL - 6, CELL + 12, CELL + 12); css(aCell, { background: K.spring, border: '3px solid ' + K.forest, borderRadius: '3px' }); P1.push(aCell);
@@ -42,7 +49,7 @@ scene('insert', ({ root, s, c0 }) => {
   const drv = h('div', 'abs', app, '驱动程序'); css(drv, { left: '480px', top: '20px', padding: '8px 20px', font: '700 30px "Sans SC"', color: K.forest, background: K.mint, border: '2px solid ' + K.g1, borderRadius: '10px' });
   show(app, T('b3') - 0.2, { y: 16, d: 0.55 }); to(app, T('b5') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 });
   set(drv, s.start, { autoAlpha: 0, backgroundColor: K.ink, borderColor: K.ink, color: '#FFFFFF' }); show(drv, T('b4', '_id') - 0.2, { y: 10, d: 0.45 });
-  const glDrv = gl(world, 150, 744, '驱动程序', '某一种编程语言里和 MongoDB 交互用的客户端库；<br>应用通过它连上数据库、发出读写，每种语言各有一套', { key: '驱动程序' }); P2.push(glDrv);   // I08
+  const glDrv = gl(world, 150, 744, '驱动程序', '某一种编程语言里和 MongoDB 交互用的客户端库', { key: '驱动程序' }); P2.push(glDrv);   // I08
   show(glDrv, T('b5', '驱动') - 0.1, { x: 12, y: 0, d: 0.4 });
   to(drv, T('b5', '驱动') - 0.2, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.4 });
   const D = docCard(world, 180, 340, [['_id', OID()], ['name', JS('Alice')], ['age', JN(42)]], { w: 680, fs: 32 });
@@ -64,10 +71,10 @@ scene('insert', ({ root, s, c0 }) => {
     g.innerHTML = `<div style="height:10px;border:2.5px solid ${K.forest};border-top:none;border-radius:0 0 4px 4px"></div><div style="margin-top:6px;font:700 24px/32px Inter,'Sans SC';color:${K.forest}">${t1}</div><div style="font:500 22px/30px 'Sans SC';color:${K.gd2}">${t2}</div>`;
     show(g, T('b5', 'Object') + 0.4 + k * 0.4, { y: 8, d: 0.4 }); P2.push(g); return g;
   });
-  const glO = gl(world, 960, 598, 'ObjectId', 'MongoDB 默认拿来当 _id 的一种 12 字节编号：<br>由应用这边的驱动生成，不用问数据库；时间戳、随机值、<br>计数器拼在一起，各个程序同时生成也几乎不会重复', { key: 'ObjectId' }); P2.push(glO);   // T10 A15 A15b
-  show(glO, Tend('b5') + 0.1, { x: 14, y: 0, d: 0.45 });
+  const glO = gl(world, 960, 598, 'ObjectId', '12 字节的 BSON 类型：集合里唯一，<br>默认用作 _id', { key: 'ObjectId' });   // T10 A15 A15b
+  show(glO, T('b5', 'Object') - 0.1, { x: 14, y: 0, d: 0.45 }); fadeOut(glO, T('b6', '编码') - 0.1, 0.35);   // 右边那排字节排到这里之前收掉
   const tP2 = T('b6') - 0.35;
-  fadeOut([app, oidB, ...oSegs, glO, glDrv], tP2, 0.5);
+  fadeOut([app, oidB, ...oSegs, glDrv], tP2, 0.5);
   tl.to(D.c, { x: 640 - 180, y: 222 - 340, scale: 0.85, transformOrigin: '0 0', duration: 0.8, ease: 'power2.inOut' }, tP2);
   to(idr, tP2, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.4 });   // lint-ok: 取消高亮
 
@@ -126,7 +133,7 @@ scene('insert', ({ root, s, c0 }) => {
   nameTags.forEach((e, k) => show(e, tName + 0.2 + k * 0.35, { y: 8, d: 0.4 }));
   [8, 26, 41].forEach((i, k) => to(by.all[i], T('b9', '结尾') - 0.3 + k * 0.12, { color: '#FFFFFF', backgroundColor: K.red, borderColor: K.red, duration: 0.35 }));
   // 这些 0 是干什么的（策划者 r5：「结尾的0的作用和最后的0都没有简单图注」）
-  const z1 = h('div', 'abs', world, '<b style="color:#DB3030">字段名后面的 0</b>：名字到这里为止——字段名不记长度，靠这个 0 断开'); px(z1, 960, 712);
+  const z1 = h('div', 'abs', world, '<b style="color:#DB3030">字段名后面的 0</b>：名字到此为止，字段名不另记长度'); px(z1, 960, 712);
   const z2 = h('div', 'abs', world, '<b style="color:#001E2B">最后一个 0</b>：整份文档的字段到这里为止'); px(z2, 960, 752);
   [z1, z2].forEach((e) => css(e, { font: '500 25px/36px "Inter", "Sans SC"', color: K.gd2, whiteSpace: 'nowrap' }));
   show(z1, T('b9', '结尾') + 0.1, { y: 8, d: 0.45 }); show(z2, Tend('b9') + 0.2, { y: 8, d: 0.45 });
@@ -171,10 +178,13 @@ scene('insert', ({ root, s, c0 }) => {
   const dispN = h('div', 'abs', disp, '1'); css(dispN, { right: '32px', top: '60px', font: '800 96px "Mono"', color: '#FFFFFF' });
   show(disp, T('b12', '另发') - 0.3, { y: 14, d: 0.5 });
   to(disp, T('b12', '编号') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.4 }); to(dispT, T('b12', '编号') - 0.2, { color: '#FFFFFF', duration: 0.4 }); to(dispS, T('b12', '编号') - 0.2, { color: K.mint2, duration: 0.4 });
-  stepTo(dispN, [[T('b13', '从') - 0.1, 2.4, 1, 2050]], (v) => String(Math.round(v)));   // 从 1 开始往上数到 2050
+  stepTo(dispN, [[T('b13', '从') - 0.1, 2.4, 1, 2050]], (v) => String(Math.round(v)));
+  const dKids = [...disp.querySelectorAll('div')], dCol = dKids.map((e) => e.style.color || '#FFFFFF');
+  to(disp, T('b13', '从') - 0.25, { backgroundColor: K.spring, borderColor: K.forest, duration: 0.35 }); to(dKids, T('b13', '从') - 0.25, { color: K.ink, duration: 0.35 });   // 往上数的这一段，编号那块亮起来
+  to(disp, T('b14') - 0.3, { backgroundColor: K.ink, borderColor: K.ink, duration: 0.35 }); dKids.forEach((e, i) => to(e, T('b14') - 0.3, { color: dCol[i], duration: 0.35 }));   // 从 1 开始往上数到 2050
   to(keyB, T('b13', '按') - 0.1, { backgroundColor: '#A6F4C9', borderColor: K.g1, duration: 0.4 }); to([keyL, keyV], T('b13', '按') - 0.1, { color: K.ink, duration: 0.4 });   // 这个编号要填进键位
   const seqC = h('div', 'abs', world, ''); P4.push(seqC);
-  const glR = gl(world, 920, 244, 'RecordId', 'MongoDB 给集合里每份文档的内部编号：<br>一个 64 位整数，按写入先后从 1 往上加；<br>集合树按它排序，索引靠它指回文档', { cls: 'lg' }); P4.push(glR);   // A05 A13 B06 B07
+  const glR = gl(world, 920, 244, 'RecordId', 'MongoDB 给每份文档的内部编号：<br>64 位整数，按写入先后从 1 往上加', { cls: 'lg' }); P4.push(glR);   // A05 A13 B06 B07
   css(glR.querySelector('span'), { fontSize: '28px' });
   show(glR, T('b12', 'Re') - 0.2, { x: 16, y: 0, d: 0.5 });
   const fly = h('div', 'abs', world, '2050'); px(fly, 690, 296); css(fly, { font: '800 56px "Mono"', color: K.forest }); P4.push(fly);
@@ -219,7 +229,7 @@ scene('insert', ({ root, s, c0 }) => {
   ent[0].kV.innerHTML = '2050'; ent[0].vV.innerHTML = 'BSON · <span class="n47">47 字节</span>';
   ent[1].kV.innerHTML = "ObjectId('6afa…4e81')"; ent[1].vV.innerHTML = '2050';
   css(ent[1].kV, { fontSize: '32px' });   // 框里留出右边的空
-  ent[2].kV.innerHTML = '"Alice" <span class="r50">2050</span>'; ent[2].vV.innerHTML = '（空）';
+  ent[2].kV.innerHTML = '<span class="nm">"Alice"</span> <span class="r50">2050</span>'; ent[2].vV.innerHTML = '（空）';
   css(ent[2].kV.querySelector('.r50'), { marginLeft: '14px' });   // 名字与 RecordId 是键的两段，中间留空
   const r50 = [ent[0].kV, ent[1].vV, ent[2].kV.querySelector('.r50')];
   const fillT = [T('b17', '键'), T('b18', '键'), T('b19', '键')];
@@ -235,6 +245,12 @@ scene('insert', ({ root, s, c0 }) => {
   cellS(ent[1].kV, T('b18', '键') - 0.1, 'ink'); cellS(ent[1].vV, T('b18', '值') - 0.1, 'new'); to(ent[1].kV, T('b18', '值') - 0.2, { opacity: 0.35, duration: 0.35 }); to(ent[1].kV, T('b19') - 0.2, { opacity: 1, duration: 0.35 });   // 说到值时，键那一块退后
   to([ent[0].g, ent[2].g], T('b18', '她') - 0.1, { opacity: 0.4, duration: 0.4 }); to([ent[0].g, ent[2].g], T('b19') - 0.25, { opacity: 1, duration: 0.4 });   // 讲 _id 索引这一项：另外两棵退后
   cellS(ent[2].kV, T('b19', '键') - 0.1, 'ink'); to(ent[2].kV.querySelector('.r50'), T('b19', '再接') - 0.25, { color: K.spring, duration: 0.3 }); to(ent[2].kV.querySelector('.r50'), T('b19', '键') - 0.1, { color: K.spring, duration: 0.35 }); cellS(ent[2].vV, T('b19', '值') - 0.1, K.gd2); css(ent[2].kV.querySelector('.r50'), { borderRadius: '6px', padding: '0 6px' }); to(ent[2].kV.querySelector('.r50'), T('b19', '二零') - 0.2, { backgroundColor: K.spring, color: K.ink, duration: 0.35 });
+  // 键的两段：名字、RecordId；值是空的，因为要找的 2050 已经在键里
+  const kPart = (el, txt) => { const e = h('div', 'abs', ent[2].box, txt); css(e, { left: 12 + el.offsetLeft + el.offsetWidth / 2 + 'px', top: '116px', transform: 'translateX(-50%)', font: '600 22px "Inter", "Sans SC"', color: K.forest, whiteSpace: 'nowrap' }); return e; };
+  const kpN = kPart(ent[2].kV.querySelector('.nm'), '名字'), kpR = kPart(ent[2].kV.querySelector('.r50'), 'RecordId');
+  show(kpN, T('b19', 'Alice') - 0.1, { y: -6, d: 0.35 }); show(kpR, T('b19', '再接') + 0.2, { y: -6, d: 0.35 });
+  const vWhy = h('div', 'abs', ent[2].box, '← 要找的 2050 已经在键里'); css(vWhy, { left: 12 + ent[2].vV.offsetWidth + 18 + 'px', top: '204px', font: '600 22px/36px "Inter", "Sans SC"', color: K.forest, whiteSpace: 'nowrap' });
+  show(vWhy, T('b19', '空') - 0.1, { x: -8, y: 0, d: 0.35 });
   to(ent[0].vV, T('b17', '47') - 0.15, { color: K.spring, duration: 0.35 }); to(ent[0].box, T('b17', '整份') - 0.2, { backgroundColor: '#7DEBB0', duration: 0.35 });
   to(ent[2].hd, T('b19', 'Alice') - 0.2, { backgroundColor: K.forest, duration: 0.35 }); to(ent[2].box, T('b19', '二零') - 0.2, { backgroundColor: '#7DEBB0', duration: 0.35 });
   // 为什么不一样：_id 不会重复 → 放在值里；名字会重名 → 接在键后面
@@ -243,10 +259,11 @@ scene('insert', ({ root, s, c0 }) => {
 
   const uq = h('div', 'abs', world, '');
   const one = h('div', 'abs', world, '');
-  const dup = h('div', 'abs', world); px(dup, TX3[2], 650, TW3, 130); css(dup, { font: '600 30px/1.6 "Mono"', color: K.gd2 });
-  dup.innerHTML = `<div style="padding:4px 14px;border:2px solid ${K.forest};border-radius:8px;background:${K.forest};color:#FFFFFF;display:inline-block">"Alice" 2050</div><br><div style="padding:4px 14px;border:2px solid ${K.gd1};border-radius:8px;background:${K.gd1};color:#FFFFFF;display:inline-block;margin-top:10px">"Alice" ……（另一个同名的）</div>`;
+  const dup = h('div', 'abs', world); px(dup, TX3[2], 650, TW3, 200); css(dup, { font: '600 30px/1.6 "Mono"', color: K.gd2 });
+  dup.innerHTML = `<div style="padding:4px 14px;border:2px solid ${K.forest};border-radius:8px;background:${K.forest};color:#FFFFFF;display:inline-block">"Alice" 2050</div><br><div style="padding:4px 14px;border:2px solid ${K.gd1};border-radius:8px;background:${K.gd1};color:#FFFFFF;display:inline-block;margin-top:10px">"Alice" 3001</div><span style="font:500 22px 'Sans SC';color:${K.gd1};margin-left:14px">假如另有一个 Alice</span>`
+    + `<div style="font:600 24px/1.45 'Inter','Sans SC';color:${K.ink};margin-top:10px;white-space:normal">同一个键只能有一项，接上编号就分开</div>`;   // U06
   show(dup, T('b21', '重名') - 0.2, { y: 10, d: 0.5 });
-  const dup2 = dup.children[2]; set(dup2, s.start, { autoAlpha: 0 }); show(dup2, T('b21', '同名') - 0.25, { y: 8, d: 0.4 });
+  const dup2 = dup.children[2], dupH = dup.children[3], dupN = dup.children[4]; set([dup2, dupH, dupN], s.start, { autoAlpha: 0 }); show([dup2, dupH], T('b21', '同名') - 0.25, { y: 8, d: 0.4 }); show(dupN, T('b21', '重名') - 0.2, { y: 8, d: 0.4 });
   to(ent[1].hd, T('b20', '_id 索引') - 0.2, { color: K.spring, duration: 0.35 }); to(ent[1].kV, T('b20', '_id 索引') - 0.2, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 });
   to(ent[1].vL, T('b20', '值里') - 0.2, { color: K.forest, duration: 0.35 });
   to(ent[1].vV, T('b20', '2050') - 0.2, { backgroundColor: K.spring, borderColor: K.spring, color: K.ink, duration: 0.35 });
@@ -255,11 +272,11 @@ scene('insert', ({ root, s, c0 }) => {
   // 两个索引都指回 2050：从下面绕回集合树
   const back1 = link(ov, [[TX3[1] + 60, 618], [TX3[1] + 60, 770], [TX3[0] + 160, 770], [TX3[0] + 160, 620]], 'accent', { w: 4, arrow: true });
   const back2 = link(ov, [[TX3[2] + 260, 618], [TX3[2] + 260, 820], [TX3[0] + 100, 820], [TX3[0] + 100, 620]], 'accent', { w: 4, arrow: true });
-  fadeOut([uq, dup, vR, one], T('b22') - 0.3, 0.4);
+  fadeOut([uq, vR, one], T('b22') - 0.3, 0.4); fadeOut(dup, T('b22', '指回') - 0.65, 0.3);   // 同名的例子多留一会儿，绕回来的箭头出来之前收掉
   arrowIn(back1, T('b22', '指回') - 0.4, 0.7); arrowIn(back2, T('b22', '指回') - 0.2, 0.8);
   to(ent[0].box, T('b22', '2050') - 0.2, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(ent[0].box, T('b24') - 0.4, { backgroundColor: '#FFFFFF', duration: 0.4 });
   const tP5 = T('b24') - 0.4;
-  fadeOut([back1, back2], tP5, 0.4);
+  fadeOut([back1, back2], tP5, 0.4); fadeOut([kpN, kpR, vWhy], tP5, 0.4);
   ent.forEach((e) => { to(e.box, tP5, { borderColor: K.gl1, duration: 0.4 }); fadeOut([e.kV, e.vV], tP5, 0.4); });
   fadeOut(uses, tP5, 0.4);
 

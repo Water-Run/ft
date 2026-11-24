@@ -192,9 +192,9 @@ scene('whole', ({ root, s, c0 }) => {
   showTree(tr, T('a20', '一棵树') - 0.4);
   const tLin = link(ovW, [[478, 762], [478, 620]], 'dim', { w: 2, dashed: '6 6' }); P3.push(tLin);
   arrowIn(tLin, T('a20', '一棵树') - 0.3, 0.5);
-  const path = link(ovW, [[tr.cx, 300 + 56], [tr.lx(1) + tr.lw / 2, tr.ly]], 'spring', { w: 7 }); P3.push(path);
+  const path = link(ovW, [[tr.cx, 300 + 56], [tr.lx(0) + tr.lw / 2, tr.ly]], 'spring', { w: 7 }); P3.push(path);
   draw(path, T('a20', '不用') - 0.3, 0.5);
-  to(tr.leaves[1].c, T('a20', '不用'), { borderColor: K.g1, duration: 0.3 }); to(tr.leaves[1].head, T('a20', '不用'), { backgroundColor: K.mint, color: K.forest, duration: 0.3 });
+  to(tr.leaves[0].c, T('a20', '不用'), { borderColor: K.g1, duration: 0.3 }); to(tr.leaves[0].head, T('a20', '不用'), { backgroundColor: K.mint, color: K.forest, duration: 0.3 });
   const tP3 = T('a21') - 0.4;
   fadeOut([wt, ...tr.all, tLin, path, ...tr.links, glW], tP3, 0.5);
   tl.to(dir, { y: 222 - 680, height: 220, width: 1700, duration: 0.8, ease: 'power2.inOut' }, tP3 + 0.1);

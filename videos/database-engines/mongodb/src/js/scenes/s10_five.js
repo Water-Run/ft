@@ -13,9 +13,9 @@ scene('five', ({ root, s, c0 }) => {
   // 小图：用 SVG 画，颜色同各章
   const mini = [
     // 放：47 字节 → 集合树（键 RecordId）
-    `<svg width="240" height="96" viewBox="0 0 240 96" fill="none"><g class="m0a">${Array.from({ length: 10 }, (_, i) => `<rect x="${4 + i * 11}" y="38" width="9" height="20" rx="2" fill="${[1, 2, 5, 6].includes(i) ? K.spring : '#fff'}" stroke="${K.gb}"/>`).join('')}</g><g class="m0b"><path d="M120 48h22" stroke="${K.ink}" stroke-width="2.5"/><rect x="170" y="6" width="44" height="16" rx="3" fill="${K.ink}"/>${[0, 1, 2, 3].map((i) => `<rect class="${i === 1 ? 'm0c' : ''}" x="${150 + i * 22}" y="56" width="18" height="34" rx="3" fill="#fff" stroke="${i === 1 ? K.g1 : K.gl1}" stroke-width="2"/><path d="M192 22L${159 + i * 22} 56" stroke="${K.ink}" stroke-width="1.5"/>`).join('')}</g></svg>`,
+    `<svg width="240" height="96" viewBox="0 0 240 96" fill="none"><g class="m0a">${Array.from({ length: 10 }, (_, i) => `<rect x="${4 + i * 11}" y="38" width="9" height="20" rx="2" fill="${[1, 2, 5, 6].includes(i) ? K.spring : '#fff'}" stroke="${K.gb}"/>`).join('')}</g><rect class="m0p" x="52" y="42" width="16" height="12" rx="2" fill="${K.forest}"/><g class="m0b"><path d="M120 48h22" stroke="${K.ink}" stroke-width="2.5"/><rect x="170" y="6" width="44" height="16" rx="3" fill="${K.ink}"/>${[0, 1, 2, 3].map((i) => `<rect class="${i === 1 ? 'm0c' : ''}" x="${150 + i * 22}" y="56" width="18" height="34" rx="3" fill="#fff" stroke="${i === 1 ? K.g1 : K.gl1}" stroke-width="2"/><path d="M192 22L${159 + i * 22} 56" stroke="${K.ink}" stroke-width="1.5"/>`).join('')}</g></svg>`,
     // 找：索引 → RecordId → 集合树
-    `<svg width="240" height="96" viewBox="0 0 240 96" fill="none"><g class="m1a"><rect x="30" y="6" width="40" height="14" rx="3" fill="${K.ink}"/>${Array.from({ length: 8 }, (_, i) => `<rect x="${4 + i * 12}" y="50" width="10" height="34" rx="2" fill="#fff" stroke="${i === 0 ? K.g1 : K.gl1}" stroke-width="2"/>`).join('')}<path d="M50 20L9 50" stroke="${K.spring}" stroke-width="4"/></g><g class="m1b"><path d="M104 66h40" stroke="${K.g1}" stroke-width="3"/><path d="M138 60l8 6-8 6" stroke="${K.g1}" stroke-width="3"/></g><g class="m1c"><rect x="176" y="6" width="44" height="14" rx="3" fill="${K.ink}"/>${[0, 1, 2, 3].map((i) => `<rect x="${154 + i * 22}" y="50" width="18" height="34" rx="3" fill="${i === 1 ? K.mint : '#fff'}" stroke="${i === 1 ? K.g1 : K.gl1}" stroke-width="2"/>`).join('')}<path d="M198 20L185 50" stroke="${K.spring}" stroke-width="4"/></g></svg>`,
+    `<svg width="240" height="96" viewBox="0 0 240 96" fill="none"><g class="m1a"><rect x="30" y="6" width="40" height="14" rx="3" fill="${K.ink}"/>${Array.from({ length: 8 }, (_, i) => `<rect x="${4 + i * 12}" y="50" width="10" height="34" rx="2" fill="#fff" stroke="${i === 0 ? K.g1 : K.gl1}" stroke-width="2"/>`).join('')}<path d="M50 20L9 50" stroke="${K.spring}" stroke-width="4"/></g><g class="m1b"><path d="M104 66h40" stroke="${K.g1}" stroke-width="3"/><path d="M138 60l8 6-8 6" stroke="${K.g1}" stroke-width="3"/></g><g class="m1c"><rect x="176" y="6" width="44" height="14" rx="3" fill="${K.ink}"/>${[0, 1, 2, 3].map((i) => `<rect x="${154 + i * 22}" y="50" width="18" height="34" rx="3" fill="${i === 1 ? K.mint : '#fff'}" stroke="${i === 1 ? K.g1 : K.gl1}" stroke-width="2"/>`).join('')}<path d="M198 20L185 50" stroke="${K.spring}" stroke-width="4"/></g><circle class="m1d" cx="50" cy="13" r="6" fill="${K.spring}" stroke="${K.forest}" stroke-width="2"/></svg>`,
     // 改和删：挂新版本、删除标记；文件末尾一块新的
     `<svg width="240" height="96" viewBox="0 0 240 96" fill="none"><g class="m2a"><rect x="4" y="8" width="44" height="26" rx="5" fill="#fff" stroke="${K.gb}" stroke-width="2"/><path d="M50 21h12" stroke="${K.ink}" stroke-width="2"/></g><g class="m2b"><rect x="64" y="8" width="44" height="26" rx="5" fill="${K.spring}"/></g><g class="m2c"><rect x="120" y="8" width="64" height="26" rx="5" fill="${K.ink}"/></g><g class="m2d"><rect x="4" y="58" width="232" height="30" rx="4" fill="${K.gl3}" stroke="${K.gl1}" stroke-width="2"/>${[[8, 40], [96, 30], [130, 36]].map(([x, w]) => `<rect x="${x}" y="62" width="${w}" height="22" rx="3" fill="#fff" stroke="${K.gb}" stroke-width="2"/>`).join('')}</g><g class="m2f"><rect x="52" y="62" width="40" height="22" rx="3" fill="none" stroke="${K.gb}" stroke-width="2" stroke-dasharray="4 3"/></g><g class="m2e"><rect x="190" y="62" width="42" height="22" rx="3" fill="${K.mint2}" stroke="${K.g1}" stroke-width="2"/></g></svg>`,
     // 并发：三条泳道，快照竖线，写冲突
@@ -52,6 +52,33 @@ scene('five', ({ root, s, c0 }) => {
   PARTS.forEach(([c, t]) => { const e = G(c); set(e, s.start, { opacity: 0 }); to(e, t - 0.2, { opacity: 1, duration: 0.4 }); });
   to(G('m0c'), T('i2', '指回') - 0.2, { fill: K.spring, duration: 0.35 });
   to(G('m4e'), T('i9', '一小段') - 0.2, { fill: K.red, duration: 0.35 });
+  // 放：47 个字节打成一包，顺着树落进第二个叶页
+  const m0p = G('m0p'); set(m0p, s.start, { opacity: 0 });
+  to(m0p, T('i1', 'RecordId') - 0.2, { opacity: 1, duration: 0.3 });
+  tl.fromTo(m0p, { x: 0, y: 0 }, { x: 128, y: -36, duration: 0.5, ease: 'power2.inOut', immediateRender: false }, T('i1', '集合树') - 0.1);
+  tl.to(m0p, { x: 122, y: 24, duration: 0.4, ease: 'power2.in' }, T('i1', '集合树') + 0.4);
+  to(m0p, T('i1', '集合树') + 0.8, { opacity: 0, duration: 0.2 }); to(G('m0c'), T('i1', '集合树') + 0.8, { fill: K.mint, duration: 0.3 });
+  // 找：一个点从索引的根走到叶页，顺着箭头过去，再从集合树的根走到第二个叶页
+  const m1d = G('m1d'); set(m1d, s.start, { opacity: 0 });
+  to(m1d, T('i3', '索引') - 0.1, { opacity: 1, duration: 0.25 });
+  tl.fromTo(m1d, { x: 0, y: 0 }, { x: -41, y: 54, duration: 0.45, ease: 'power2.inOut', immediateRender: false }, T('i3', '索引') + 0.15);
+  tl.to(m1d, { x: 96, y: 53, duration: 0.6, ease: 'power2.inOut' }, T('i3', 'RecordId') - 0.1);
+  tl.to(m1d, { x: 148, y: 0, duration: 0.4, ease: 'power2.inOut' }, T('i3', '集合树') - 0.3);
+  tl.to(m1d, { x: 135, y: 54, duration: 0.4, ease: 'power2.in' }, T('i3', '集合树') + 0.15);
+  to(m1d, T('i3', '文档') + 0.3, { opacity: 0, duration: 0.3 });
+  // 改和删：新版本、删除标记一个个挂上去；整页从旧位置飞到文件末尾
+  tl.fromTo(G('m2b'), { x: -40 }, { x: 0, duration: 0.45, ease: 'power2.out', immediateRender: false }, T('i4', '新版本') - 0.2);
+  tl.fromTo(G('m2c'), { x: -50 }, { x: 0, duration: 0.45, ease: 'power2.out', immediateRender: false }, T('i4', '删除标记') - 0.2);
+  tl.fromTo(G('m2e'), { x: -138 }, { x: 0, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, T('i5', '新地方') - 0.2);
+  // 并发：读的人沿着自己那条线走；撞上时闪电弹出，一方退回去重来
+  tl.fromTo(G('m3c'), { x: -60 }, { x: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, T('i6', '同一份') - 0.2);
+  tl.fromTo(G('m3d'), { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.45, ease: 'back.out(3)', immediateRender: false }, T('i6', '撞上') - 0.2);
+  tl.to(G('m3c'), { x: -50, duration: 0.35, ease: 'power2.out' }, T('i6', '重来') - 0.3); tl.to(G('m3c'), { x: 0, duration: 0.5, ease: 'power2.inOut' }, T('i6', '重来') + 0.15);
+  // 出错：日志一条条从检查点往后重放；闪电之后，最后一小段丢掉
+  [...G('m4b').querySelectorAll('circle')].forEach((c, k) => tl.fromTo(c, { x: 26 - +c.getAttribute('cx') }, { x: 0, duration: 0.4, ease: 'power2.out', immediateRender: false }, T('i8', '重放') - 0.2 + k * 0.18));
+  [...G('m4c').querySelectorAll('rect')].forEach((r, k) => tl.fromTo(r, { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, T('i8', '重放') + 0.3 + k * 0.18));
+  tl.fromTo(G('m4d'), { scale: 0.3, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.45, ease: 'back.out(3)', immediateRender: false }, T('i9', '被杀') - 0.2);
+  to(G('m4e'), T('i9', '丢') - 0.1, { opacity: 0.2, duration: 0.4 });
   fadeOut(bar, Tend('i9') + 0.1, 0.45);
 });
 
@@ -83,12 +110,12 @@ scene('trade', ({ root, s, c0 }) => {
   show([tblT, tbl], T('j1b', '换来') + 0.2, { y: 14, d: 0.5 });
   // j2b：除了 _id，想有哪些字段就有哪些——每份文档按自己的需要长出字段
   const addRow = (d, k, v, t) => { const close = d.c.lastChild; const r = h('div', 'dl', d.c, `<span class="k">${k}</span>: <span class="dv">${v}</span>`); d.c.insertBefore(r, close); tl.fromTo(r, { height: 0, autoAlpha: 0 }, { height: DLH, autoAlpha: 1, duration: 0.45, ease: 'power2.out', immediateRender: true }, t); css(r, { overflow: 'hidden' }); return r; };
-  [dA, dE, dF].forEach((d, i) => { const r = h('div', 'dl', d.c, `<span class="k" style="color:#889397">_id</span>: <span style="color:#889397">ObjectId(…)</span>`); d.c.insertBefore(r, d.c.children[1]); tl.fromTo(r, { height: 0, autoAlpha: 0 }, { height: DLH, autoAlpha: 1, duration: 0.4, ease: 'power2.out', immediateRender: true }, T('j2b', '除了') - 0.2 + i * 0.12); css(r, { overflow: 'hidden', borderRadius: '6px' }); to(r, T('j2b', '除了') - 0.1 + i * 0.12, { backgroundColor: K.gd1, duration: 0.3 }); to([...r.querySelectorAll('span')], T('j2b', '除了') - 0.1 + i * 0.12, { color: '#FFFFFF', duration: 0.3 }); to(r, T('j2b', '每份') - 0.2, { backgroundColor: 'rgba(0,0,0,0)', duration: 0.3 }); to([...r.querySelectorAll('span')], T('j2b', '每份') - 0.2, { color: K.gb, duration: 0.3 }); });   // lint-ok: 取消高亮   // 「除了 _id」：每份文档都有 _id
+  [dA, dE, dF].forEach((d, i) => { const r = h('div', 'dl', d.c, `<span class="k" style="color:#889397">_id</span>: <span style="color:#889397">ObjectId(…)</span>`); d.c.insertBefore(r, d.c.children[1]); tl.fromTo(r, { height: 0, autoAlpha: 0 }, { height: DLH, autoAlpha: 1, duration: 0.4, ease: 'power2.out', immediateRender: true }, T('j2b', '除了') - 0.2 + i * 0.12); css(r, { overflow: 'hidden', borderRadius: '6px' }); r.classList.add('idr'); to(r, T('j2b', '每份') - 0.2, { opacity: 0.3, duration: 0.4 }); to(r, T('j4') - 0.3, { opacity: 1, duration: 0.4 }); });   // 「除了 _id」：每份文档都有 _id，它不在「想有哪些就有哪些」里，所以退淡
   const rE = addRow(dE, 'tags', `[ ${JS('db')}, ${JS('go')} ]`, T('j3', '标签') - 0.25);
   const rF = addRow(dF, 'address', `{ <span class="k">city</span>: ${JS('Lisbon')} }`, T('j3', '地址') - 0.25);
   [[rE, T('j3', '标签')], [rF, T('j3', '地址')]].forEach(([r, t]) => { solid(r, t, 'new', [T('j4') - 0.3, 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', K.ink]); to([...r.querySelectorAll('span')], t, { color: '#FFFFFF', duration: 0.3 }); to([...r.querySelectorAll('.dv, .dv span')], T('j4') - 0.3, { clearProps: 'color', duration: 0.01 }); });   // 讲完「换来什么」，新字段退回普通的一行
-  to(dA.c, T('j2b', '想有') - 0.2, { borderColor: K.g1, backgroundColor: K.mint, duration: 0.4 });
-  [dA, dE, dF].forEach((d, i) => { const ks = [...d.c.querySelectorAll('.k')]; ks.forEach((k) => css(k, { borderRadius: '4px', padding: '0 4px' })); to(ks, T('j2b', '字段') - 0.2 + i * 0.15, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.3 }); to(ks, T('j4') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', color: K.blued, duration: 0.3 }); });   // lint-ok: 取消高亮
+  to(dA.c, T('j2b', '每份') - 0.2, { borderColor: K.g1, backgroundColor: K.mint, duration: 0.4 }); to([dE.c, dF.c], T('j2b', '每份') - 0.1, { borderColor: K.g1, duration: 0.4 }); to([dE.c, dF.c], T('j2b', '字段') - 0.3, { backgroundColor: K.mint, duration: 0.4 });   // 「每份文档」：三份一起框出来；说到「字段」，另两份也亮起
+  [dA, dE, dF].forEach((d, i) => { const ks = [...d.c.querySelectorAll('.k')].filter((k) => !k.closest('.idr')); ks.forEach((k) => css(k, { borderRadius: '4px', padding: '0 4px' })); to(ks, T('j2b', '字段') - 0.2 + i * 0.15, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.3 }); to(ks, T('j4') - 0.3, { backgroundColor: 'rgba(0,0,0,0)', color: K.blued, duration: 0.3 }); });   // lint-ok: 取消高亮
   // j3b：关系表要装下 tags、address，得先改表：整列加出来，没有的人一格格填 NULL
   const alter = h('div', 'abs mono', world, 'ALTER TABLE users ADD tags …, ADD address …'); px(alter, TBX, TBY + TRH * 4 + 24); css(alter, { font: '500 24px "Mono"', color: K.gd2, background: K.gl3, border: '1.5px solid ' + K.gl2, borderRadius: '8px', padding: '4px 12px' });
   show(alter, T('j3b', '传统') - 0.3, { y: 8, d: 0.4 }); css(alter, { background: K.ink, color: '#FFFFFF', borderColor: K.ink });
@@ -116,7 +143,7 @@ scene('trade', ({ root, s, c0 }) => {
   show(sLab, T('j5', '每份') - 0.3, { y: 8, d: 0.4 });
   const dKeys = [dA, dE, dF].flatMap((d) => [...d.c.querySelectorAll('.k')]); dKeys.forEach((k) => css(k, { borderRadius: '4px', padding: '0 4px' }));
   tl.to([dA.c, dE.c, dF.c], { opacity: 1, duration: 0.4 }, T('j5', '字段名') - 0.3); to(dKeys, T('j5', '字段名') - 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 });
-  tl.to([dA.c, dE.c, dF.c], { opacity: 0.35, duration: 0.45 }, T('j6', '这几个') - 0.2); to(sLab, T('j6', '名字') - 0.2, { color: K.forest, duration: 0.3 });   // 再看右边的字节
+  tl.to([dA.c, dE.c, dF.c], { opacity: 0.35, duration: 0.45 }, T('j6', 'name') - 0.2); to(sLab, T('j6', '名字') - 0.2, { color: K.forest, duration: 0.3 });   // 再看右边的字节
   const stack = [1, 2, 3, 4, 5, 6].map((k) => { const e = strip(450 + k * 16, 0.9 - k * 0.12); e.dataset.name = 'strip'; return e; });
   stack.forEach((e, k) => tl.fromTo(e, { autoAlpha: 0, y: -20 }, { autoAlpha: 0.9 - k * 0.12, y: 0, duration: 0.35, immediateRender: true }, T('j6', '四千') - 0.2 + k * 0.45));   // 一份份叠上去，跟着数到 4096
   const mul = h('div', 'abs', world); px(mul, 1000, 590); css(mul, { font: '800 56px/84px "Inter", "Sans SC"', color: '#FFFFFF', background: K.ink, borderRadius: '14px', padding: '0 24px' });
@@ -126,6 +153,8 @@ scene('trade', ({ root, s, c0 }) => {
   const tot = tg(world, 1000, 694, '= 53,248 字节', 'b'); css(tot, { fontSize: '34px', lineHeight: '60px', color: K.ink });   // A04
   show(tot, T('j6b', '存了') - 0.2, { y: 10, d: 0.45 }); to(mul, T('j6b', '存了') - 0.2, { backgroundColor: K.forest, duration: 0.35 });
   css(tot, { borderRadius: '10px', padding: '0 16px' }); to(tot, Tend('j6b') + 0.2, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.35 }); to([S0, sLab, ...stack], Tend('j6b') + 0.2, { opacity: 0.25, duration: 0.4 });
+  const glFN = gl(world, 1000, 782, '字段名会压缩吗', glRows([['文档里', '每份都存全部字段名；文档很小时，官方建议起短一点的名字'], ['落盘时', '集合默认用 snappy 整页压缩，字段名也一起压；专存时间序列的集合按列存放，更省']]), { key: '字段名压缩', w: 800 }); [glFN.querySelector('span'), ...glFN.querySelectorAll('.gr')].forEach((e) => css(e, { fontSize: '24px', lineHeight: '35px' }));   // U09 标题在上，三行装下，不伸进字幕条
+  show(glFN, T('j5', '每份') - 0.1, { x: 12, y: 0, d: 0.45 }); fadeOut(glFN, T('j6e') - 0.4, 0.4);
   const tP2 = T('j6e') - 0.3;
   fadeOut([S0, sLab, ...stack, mul, tot], tP2, 0.4);
   // 2：没有表替你把关——三份文档都被收下；加上校验规则以后，两份不合格的被挡回去（A17）

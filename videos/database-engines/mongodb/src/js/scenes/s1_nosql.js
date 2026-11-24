@@ -140,7 +140,7 @@ scene('nosql', ({ root, s, c0 }) => {
     for (let k = 0; k < 3; k++) { const ln = h('div', 'abs', b); css(ln, { left: '18px', top: 120 + k * 22 + 'px', width: 120 - k * 24 + 'px', height: '8px', background: K.gl2, borderRadius: '3px' }); } return b; });
   show(dc, T('n9', '广告') - 0.3, { y: 16, d: 0.6 });
   const glDC = gl(world, 160, 716, 'DoubleClick', '替网站投放广告的公司：网页每打开一次，由它决定放哪条广告，<br>并统计有没有人看、有没有人点。1996 年成立', { key: 'DoubleClick' }); css(glDC.querySelector('span'), { fontSize: '24px' }); P3.push(glDC);   // V08（策划者选第 1 种写法，到「1996 年成立」为止）
-  show(glDC, T('n9', 'Double') + 0.35, { x: 16, y: 0, d: 0.5 }); fadeOut(glDC, T('n13') - 0.3, 0.45);
+  show(glDC, T('n9', 'Double') - 0.15, { x: 16, y: 0, d: 0.5 }); fadeOut(glDC, T('n13') + 0.2, 0.45);   // 读得完
   BR.forEach((b, i) => to(b.children[1], T('n9', 'Double') - 0.1 + i * 0.12, { backgroundColor: K.forest, borderColor: K.forest, duration: 0.35 }));
   // 一台关系数据库，右边一根负载条
   const db1 = icon(world, 1150, 300, 'server', 190, K.ink, 2.0); P3.push(db1);
@@ -259,12 +259,11 @@ scene('nosql', ({ root, s, c0 }) => {
   // 非关系型数据库：贴在 NoSQL 那个名字下面
   const glN = h('div', 'abs', world, '<span style="font:600 36px/1 \'Sans SC\';color:#5C6C75;margin-right:22px">也叫</span><b>非关系型数据库</b>'); px(glN, 0, 314, 1920);
   css(glN, { font: '800 66px/1.25 "Sans SC"', color: K.forest, textAlign: 'center' }); glN.dataset.gloss = '非关系型数据库';
-  const glN2 = h('div', 'abs', world, 'NoSQL 通常就指这一类：<b style="color:#001E2B">不按关系表的格式存数据</b>的数据库'); px(glN2, 0, 424, 1920); css(glN2, { font: '500 30px "Sans SC"', color: K.gd2, textAlign: 'center' });   // N01
-  show(glN, T('n27', '非关系') - 0.35, { y: 16, s: 0.92, d: 0.6 }); show(glN2, T('n27', '数据库') + 0.05, { y: 10, d: 0.5 });
+  show(glN, T('n27', '非关系') - 0.35, { y: 16, s: 0.92, d: 0.6 });
   to(t3.g, T('n27', '不按') - 0.1, { opacity: 0.35, duration: 0.5 }); to(t2.g, T('n27', '不按') - 0.1, { opacity: 0.35, duration: 0.5 });
   css(glN.querySelector('b'), { borderRadius: '12px', padding: '0 20px' }); to(glN.querySelector('b'), T('n27', '数据库') - 0.1, { backgroundColor: K.forest, color: '#FFFFFF', duration: 0.4 });
   const tP6 = T('n28') - 0.4;
-  fadeOut([t1.g, t2.g, t3.g, glN, glN2], tP6, 0.5);
+  fadeOut([t1.g, t2.g, t3.g, glN], tP6, 0.5);
 
   // ══ 六、四类（N01）：文档、键值、宽列、图；MongoDB 属于文档；Alice 那份资料就是一份文档（I04） ══
   const CAT = [['文档', 'doc', '数据存成一份份<br>像 JSON 的文档', 'MongoDB · Couchbase'], ['键值', 'kv', '每一项一个键，<br>对应一个值', 'Redis · Amazon DynamoDB'], ['宽列', 'wide', '表和行，加上<br>可以随时增减的列', 'Cassandra · HBase'], ['图', 'graph', '数据存成节点，<br>和节点之间的连线', 'Neo4j · Amazon Neptune']];
@@ -288,7 +287,6 @@ scene('nosql', ({ root, s, c0 }) => {
   show(nsB2, T('n28', '四类') - 0.2, { y: 10, d: 0.45 });
   // 键值：这个系列的最后一集还会遇到
   to(cats[1].c, T('n29', '键值') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(cats[1].c, T('n30') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 });
-  [0, 2, 3].forEach((k) => { to(cats[k].c, T('n29', '这个') - 0.2, { opacity: 0.3, duration: 0.4 }); to(cats[k].c, T('n30') - 0.2, { opacity: 1, duration: 0.4 }); });   // 只看键值这一格
   const p7 = res(world, KX + (KW + KG) + 28, KY + KH + 20, 'PART 7', 'ink', T('n29', '最后') - 0.2, { fs: 28, lh: 50 });
   // MongoDB 属于文档：名字落进「文档」那一格
   const mg = chip(world, KX + 160, KY + 30, 'MongoDB', 'sp'); css(mg, { fontSize: '30px' });
@@ -306,8 +304,8 @@ scene('nosql', ({ root, s, c0 }) => {
   to(keys, T('n31', '文档') + 0.2, { backgroundColor: K.bluel, duration: 0.4 });
   to(vals, T('n31', '文档') + 0.7, { backgroundColor: K.mint2, duration: 0.4 });
   // 文档的定义（T01 T02）：「字段」「值」两个词用和卡片里同样的底色，读注解就能对上卡片里的哪一块
-  const glD = gl(world, KX + 820, KY + 40, '文档', `MongoDB 存数据的基本单位，<br>一份文档就是一条记录。<br>由一组「<i class="hk">字段</i>: <i class="hv">值</i>」组成；<br>值可以是数字、文字，<br>也可以是数组或另一份文档`, { cls: 'lg' });   // T01 T02 I04
-  show(glD, T('n31', '文档') - 0.3, { x: 16, y: 0, d: 0.5 });
+  const glD = gl(world, KX + 820, KY + 40, '文档', `集合里的一条记录：<br>由一组「<i class="hk">字段</i>: <i class="hv">值</i>」组成`, { cls: 'lg' });   // T01 T02 I04
+  show(glD, tAl + 0.95, { x: 16, y: 0, d: 0.5 });   // 随文档卡一起出，章末之前读得完
   const hk = glD.querySelector('.hk'), hv = glD.querySelector('.hv');
   to(hk, T('n31', '文档') + 0.2, { backgroundColor: K.bluel, duration: 0.4 }); to(hv, T('n31', '文档') + 0.7, { backgroundColor: K.mint2, duration: 0.4 });
   ['_id', 'name', 'age'].forEach((k, i) => { const t = Tend('n31') + 0.3 + i * 0.5; solid(ad.r[k], t, 'new'); to([...ad.r[k].querySelectorAll('span')], t, { color: '#FFFFFF', backgroundColor: 'rgba(0,0,0,0)', duration: 0.35 }); });   // 一组「字段: 值」：三个字段一行行亮起

@@ -116,6 +116,8 @@ scene('crash', ({ root, s, c0 }) => {
   to(laneEls[0].g, T('h8', '内存') - 0.2, { borderColor: K.yeld, backgroundColor: '#FFF6DA', duration: 0.35 });
   const tP2 = T('h9') - 0.4;
   fadeOut([...laneEls.map((o) => o.g), t0, t1, ok0, ok1, lag0, glJ, ...recs, rec6, jF], tP2, 0.45);
+  const glSA = gl(world, 140, 806, '为什么这里用单机', '第 07 章的副本集上，缺省写法（w: majority）就要等日志写进磁盘才回复，<br>带不带 j 都一样；单机缺省在内存里写完就回复，才看得出差别', { key: '为什么用单机' }); glInline(glSA);   // U08 H08
+  show(glSA, T('h9') + 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glSA, T('h13') - 0.9, 0.4);   // 日志框上来之前收完
 
   // ══ 三、实验：Alice（j: true）、Dave（不带 j），然后强制结束（H04 H05） ══
   const ex = term(world, 140, 222, 1660, 340, 'mongosh · 单机的 mongod · 刚写完 4096 人', { fs: 26, lh: 42 });
@@ -145,7 +147,7 @@ scene('crash', ({ root, s, c0 }) => {
   to(solo, T('h10', '年龄') - 0.2, { borderColor: K.forest, duration: 0.4 }); to(soloF, T('h12', '强制') - 0.1, { backgroundColor: K.red, duration: 0.4 });
   to(solo, T('h12', '强制') - 0.1, { backgroundColor: K.red, borderColor: K.red, duration: 0.4 }); to([solo.children[2], solo.children[3]], T('h12', '强制') - 0.1, { color: '#FFFFFF', duration: 0.4 }); to(solo.querySelector('svg'), T('h12', '强制') - 0.1, { attr: { stroke: '#FFFFFF' }, duration: 0.4 });
   const kill9 = tg(world, EX0 + 17 * ECW + 40, 516, 'kill -9：直接强制结束进程', 'r'); css(kill9, { fontSize: '26px', lineHeight: '40px' });
-  show(kill9, T('h12', '强制') + 0.1, { x: -10, y: 0, d: 0.4 }); fadeOut(kill9, T('h13', '日志') - 0.6, 0.4);
+  show(kill9, T('h12', '强制') + 0.1, { x: -10, y: 0, d: 0.4 }); fadeOut(kill9, T('h13', '记着') - 0.2, 0.4);
   const kb = h('div', 'abs', world, ico('bolt', 48, K.red, 3)); px(kb, 880, 498, 48, 48);
   show(kb, T('h12', '强制') - 0.1, { y: -12, s: 0.6, d: 0.35 }); sfx('error', T('h12', '强制'), { g: 0.6 });
   // 日志文件里，检查点之后的两笔（07 回显第 38–41 行）
@@ -168,6 +170,9 @@ scene('crash', ({ root, s, c0 }) => {
   to([L2, L3, L4], T('h16', '赶在') - 0.3, { backgroundColor: K.mint2, color: K.ink, duration: 0.35 });
   // 重启（H02 H05）：数据文件停在最后一个检查点（Alice 42、没有 Dave）；日志里的四条记录一条条飞回去重做
   const tR = T('h17') - 0.3;
+  const glSq = gl(world, 1190, 548, '对照 SQLite', glRows([['回滚日志', '默认。改页之前先把原内容抄进 -journal 文件，崩溃后把原内容写回去'], ['WAL 模式', '原内容不动，改动追加进 -wal 文件，检查点时搬回数据库'], ['WiredTiger', '日志记的是改动，重启时从检查点往后重放，和 WAL 一路']]), { key: '对照 SQLite', w: 610 });   // U03 H02
+  [glSq.querySelector('span'), ...glSq.querySelectorAll('.gr')].forEach((e) => css(e, { fontSize: '24px', lineHeight: '34px' }));
+  show(glSq, T('h17', '检查点') - 0.2, { x: 12, y: 0, d: 0.45 }); fadeOut(glSq, Tend('h19') + 0.4, 0.4);
   fadeOut(ex.c, Tend('h16') + 0.3, 0.45);
   tl.to(jl.c, { y: 222 - 590, duration: 0.8, ease: 'power2.inOut' }, tR + 0.1);
   const df = h('div', 'panel', world); px(df, 140, 530, 1000, 300);

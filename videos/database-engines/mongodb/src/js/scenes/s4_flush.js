@@ -45,8 +45,8 @@ scene('flush', ({ root, s, c0 }) => {
   const glHd = gl(world, 600, 874, '文件头', '每个 WiredTiger 文件的第一块：记着版本号、校验和，和一个固定的「魔数」，<br>用来认出这是 WiredTiger 的文件、而且没有损坏；此时文件里只有这一块', { key: '文件头' }); glInline(glHd);
   show(glHd, T('c2', '4') - 0.1, { y: 8, d: 0.4 }); fadeOut(glHd, T('c8') - 0.5, 0.35);
   // 区段表（B13）：文件条上方的空处；文件末尾那一块同时亮起
-  const glEx = gl(world, 600, 600, '区段表', 'WiredTiger 记账用的几张表：文件里哪些范围在用、哪些空着<br>可以再用；每个检查点写一份，放在文件末尾那一块', { key: '区段表' }); glInline(glEx);
-  show(glEx, T('c9', '九十') + 0.2, { y: 8, d: 0.45 }); fadeOut(glEx, T('c10') - 0.4, 0.4);
+  const glEx = gl(world, 600, 600, '区段表', '记下哪些地方在用、哪些空着；<br>每个检查点一份，这次在末尾', { key: '区段表' }); glInline(glEx);
+  show(glEx, T('c9', '九十') - 0.3, { y: 8, d: 0.45 }); fadeOut(glEx, T('c10') - 0.4, 0.4);
   // 缓存里的页：一页一批排好序的键值（内存里怎样分页本片不细讲，只画成几页）
   const PGX = (i) => 170 + i * 240, PGW = 220;
   const MP = [0, 1, 2, 3, 4].map((i) => pageBox(world, PGX(i), 314, PGW, 196, '', { n: 7, rh: 14, gap: 9 }));
@@ -170,7 +170,7 @@ scene('flush', ({ root, s, c0 }) => {
   to(reEls[1], T('c14b', '一样') - 0.35, { backgroundColor: K.forest, duration: 0.3 }); to([...reEls[1].querySelectorAll('*')], T('c14b', '一样') - 0.35, { color: K.mint, duration: 0.3 }); to(reEls, T('c14b', '一样') - 0.2, { color: K.spring, duration: 0.3 }); to(reEls, Tend('c14b') + 0.2, { color: '#FFFFFF', duration: 0.3 });   // 和 InnoDB、SQLite 一样：根页的分界亮一下
   to([band.wrap, sz], T('c14b', '一样') - 0.2, { opacity: 0.3, duration: 0.45 }); to([band.wrap, sz], T('c15') - 0.3, { opacity: 1, duration: 0.45 });   // 讲这棵树时文件条退后
   leaves.forEach((p, i) => to(p.c, T('c14b', 'Inno') - 0.2 + i * 0.08, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.3 }));
-  const glBt = gl(world, 170, 228, 'B 树', '按键排好序、一层层往下找的树：<br>上层只记分界键和下一层的位置，<br>键和值都在叶页；页满了就分裂');   // B01 T16
+  const glBt = gl(world, 170, 228, 'B 树', '按键排好序、一层层往下找的树：<br>上层只记分界和下层的位置，<br>键和值在叶页');   // B01 T16
   css(glBt.querySelector('span'), { fontSize: '24px' });
   fadeOut([key, kA, path], T('c14b', '树') - 0.5, 0.35);
   show(glBt, T('c14b', '树') - 0.3, { x: 16, y: 0, d: 0.5 }); [0, 2, 3].forEach((i) => to(leaves[i].c, Tend('c14b') - 0.1, { backgroundColor: K.mint, borderColor: K.g1, duration: 0.4 }));
