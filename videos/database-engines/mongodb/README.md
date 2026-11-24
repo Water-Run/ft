@@ -105,7 +105,12 @@
 
 ## 交付
 
-（尚未成片）
+- 成片：`out/mongodb-zh-1080p60.mp4`（中文，1920×1080，60 帧，18 分 50.11 秒，67,807 帧逐帧核对），另有 `-voice-only`、`-no-music` 两版与字幕 `out/mongodb-zh.srt`、四张封面（`out/cover-zh-*`）。在最终编码的文件上测：响度 −15.6 LUFS，真峰值 −1.5 dBFS（三版都在 −1 dBFS 以下）。2026-11-24 渲染，对应源码 `9d2bc1b`（文案稿本 bb629b04，配音沿用 r7）。
+- `check.js --final`：「交付物」一项不通过，报 166.4 s 起 3.1 秒画面不动、1121.7–1123.1 s 两段近乎空画面（片尾名单出现之前，白卡片在白底上）。其余各项通过。制作方改过一版（讲键值时另三格轻退、名单提早出来）并开始重渲，策划者 2026-11-24 叫停：「不用重新渲染 我是说自动检查误报差点浪费很久」，以这一版为准；改动已退回，源码与成片一致。
+- 记为 `open` 的经验规则（详见 `review/lessons.json`）：F04（几处动画里的代码、字节、计数一闪而过，几条旧注解差 1 秒左右）、F05、F27（未以正常速度连续看完全片）、F06、F12、F17（本轮没有试听；配音与 r7 相同）。
+- 成片审查：只看了本轮改动处（逐帧）、总览图与工具报告（overlap.js 全片每 0.25 秒一帧、readable.js、scan.js）；没有连续看完全片，没有试听成片。r8→r9→成片之间改掉的问题见 `review/NOTES.md`「意见与处理」「预览与自查」。
+- Credit 核对：从最终文件 1126 s 取帧，片尾为 mongosh 查询列出 7 项：策划 WaterRun；Claude Opus 5.5、Claude Sonnet 5.5、MiniMax speech-2.8-hd、Whisper small 及各自分工；许可 GPL-3.0-or-later；开源视频 github.com/Water-Run/ft。与 `project.json` 的 credits 一致；片尾无旁白。仅旁白版、无配乐版的片尾未单独取帧（同一画面）。
+- 开源交付：GPL-3.0-or-later；源码在 github.com/Water-Run/ft 的 `videos/database-engines/mongodb/`，成片对应提交 `9d2bc1b`（之后的提交只改记录，不动 `src/`）。外置材料：配音与配乐由 `tts.js`、`tools/music.py` 重新生成，实验脚本与回显在 `research/lab/`。
 
 ## 评价与复盘
 

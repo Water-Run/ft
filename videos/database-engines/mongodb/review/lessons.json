@@ -46,9 +46,9 @@
     },
     "F08": {
       "rev": 1,
-      "result": "open",
-      "note": "待成片封装后按 build/finish.zh.json 核对（制作方 Claude Opus 5.5，2026-11-24）",
-      "evidence": ""
+      "result": "pass",
+      "note": "",
+      "evidence": "README「交付」的时长、规格、响度取自最终编码文件的测量（build/finish.zh.json：1130.113 s、1080p60、−15.6 LUFS、TP −1.5）（制作方 Claude Opus 5.5，2026-11-24）"
     },
     "F09": {
       "rev": 1,

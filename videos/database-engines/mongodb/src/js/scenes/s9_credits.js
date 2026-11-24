@@ -16,7 +16,7 @@ scene('credits', ({ root, s }) => {
   h('div', 'bar', card, '<span class="lang">mongosh · test</span><span class="copy"></span>');
   const body = h('div', 'abs', card); css(body, { left: '34px', top: '78px', right: '34px', font: '400 27px/42px "Mono", "Sans SC"', whiteSpace: 'pre', color: '#001E2B' });
   const q1 = h('div', '', body, ''); css(q1, { minHeight: '42px' });
-  const tq = typeText(q1, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.find()', s.start, 80, { cursorUntil: s.start + 0.6 });   // 打字快一点，名单早一点出来（白卡片在白底上，名单出来之前近乎空画面）
+  const tq = typeText(q1, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.find()', s.start + 0.3, 30, { cursorUntil: s.start + 1.6 });
   const s_ = (v) => `<span class="s">'${esc(v)}'</span>`;
   const out = [];
   out.push('[');
@@ -28,14 +28,14 @@ scene('credits', ({ root, s }) => {
   });
   out.push(']');
   const res = h('div', '', body, out.join('\n'));
-  const tOut = Math.max(tq + 0.05, s.start + 0.35), tQ2 = s.start + 2.8;   // 后面几步仍按原来的时刻
+  const tOut = Math.max(tq + 0.3, s.start + 1.8);
   show(res, tOut, { y: 8, d: 0.4 }); sfx('tick', tOut, { g: 0.5 });
-  const nms = [...res.querySelectorAll('.nm')]; nms.forEach((e) => css(e, { borderRadius: '6px', padding: '0 6px' })); to(nms, tQ2 + 0.2, { backgroundColor: K.mint2, color: K.forest, duration: 0.4 });
+  const nms = [...res.querySelectorAll('.nm')]; nms.forEach((e) => css(e, { borderRadius: '6px', padding: '0 6px' })); to(nms, tOut + 1.2, { backgroundColor: K.mint2, color: K.forest, duration: 0.4 });
   const q2 = h('div', '', body, ''); css(q2, { marginTop: '10px', minHeight: '42px' });
-  const tq2 = typeText(q2, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tQ2, 30, { cursorUntil: tQ2 + 1.6 });
+  const tq2 = typeText(q2, '<span class="p">test&gt;</span> db.<span class="k">credits</span>.countDocuments()', tOut + 1.0, 30, { cursorUntil: tOut + 2.6 });
   const cnt = h('div', '', body, `<span style="display:inline-block;background:#00684A;color:#FFFFFF;border-radius:10px;padding:0 22px;font-weight:700;font-size:40px;line-height:56px">${items.length}</span>`);
   show(cnt, tq2 + 0.3, { y: 0, d: 0.3 }); sfx('pop', tq2 + 0.3, { g: 0.5 });
-  appear(q2, tQ2);
+  appear(q2, tOut + 1.0);
   const q3 = h('div', '', body, ''); css(q3, { marginTop: '10px', minHeight: '42px' });
   typeText(q3, '<span class="p">test&gt;</span> exit', tq2 + 1.0, 20, { cursorUntil: tq2 + 1.6 }); appear(q3, tq2 + 1.0);
   // 卡片按内容收紧，在字幕条之上竖直居中

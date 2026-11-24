@@ -287,7 +287,6 @@ scene('nosql', ({ root, s, c0 }) => {
   show(nsB2, T('n28', '四类') - 0.2, { y: 10, d: 0.45 });
   // 键值：这个系列的最后一集还会遇到
   to(cats[1].c, T('n29', '键值') - 0.1, { backgroundColor: K.mint2, borderColor: K.g1, duration: 0.4 }); to(cats[1].c, T('n30') - 0.2, { backgroundColor: '#FFFFFF', borderColor: K.gl1, duration: 0.4 });
-  [0, 2, 3].forEach((k) => { to(cats[k].c, T('n29', '这个') - 0.2, { opacity: 0.6, duration: 0.4 }); to(cats[k].c, T('n30') - 0.2, { opacity: 1, duration: 0.4 }); });   // 讲键值：另三格轻轻退后（仍读得清）
   const p7 = res(world, KX + (KW + KG) + 28, KY + KH + 20, 'PART 7', 'ink', T('n29', '最后') - 0.2, { fs: 28, lh: 50 });
   // MongoDB 属于文档：名字落进「文档」那一格
   const mg = chip(world, KX + 160, KY + 30, 'MongoDB', 'sp'); css(mg, { fontSize: '30px' });
