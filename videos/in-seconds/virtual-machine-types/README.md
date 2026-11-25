@@ -6,7 +6,7 @@
 
 首轮审稿。本会话担任准备方与制作方，交付范围为本地审片页。阶段与下一步见 [project.json](project.json)。中文稿本待 WaterRun 确认。
 
-[打开本地审片页](out/audition/index.html) · [事实表](research/FACTS.md) · [校对记录](review/NOTES.md)
+按[交接步骤](#交接)生成审片页后，打开本片目录下的 `out/audition/index.html`。审稿材料见[事实表](research/FACTS.md)和[校对记录](review/NOTES.md)。
 
 ## 简报
 
