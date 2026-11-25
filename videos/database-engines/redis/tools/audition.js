@@ -18,11 +18,10 @@ const voices = JSON.parse(fs.readFileSync(path.join(OUT, 'voices', 'voices.json'
 const music = JSON.parse(fs.readFileSync(path.join(OUT, 'music-demo.json'), 'utf8'));
 
 const PENDING = [
-  ['时长', '工具估算 ' + fmt(tl.total) + '，按前两集的实测语速折算约 12 分钟，比预期的 10 分钟长约 2 分钟。要再压的话，依次可删：02 的渐进式 rehash（b21–b27）、06 的 AOF 重写与两种同时开（f33–f37）、07 的内存上限（g9–g11）。'],
-  ['开场点名前六集', 'o7–o9 一句话带过前六集「数据都在磁盘上」，接住 MongoDB 一集结尾的问题；终章 z4–z14 逐集一句。观众没看过前几集也能懂，只是少了回味。'],
-  ['终章的分寸', 'z15–z21 写成归纳（磁盘与内存、锁与版本与单线程、记一笔再恢复），不喊口号；z22–z24 回到第一集开场的原话；最后两句用系列片名作问、再作答。史诗感交给配乐与画面。'],
-  ['片尾名单', '拟在 redis-cli 里执行一条读取 credits 的命令，逐行列出分工；具体命令随视觉方向定。'],
-  ['商标', 'Redis 的商标政策要求不模仿它的视觉识别（官网与文档的外观），并建议在出现商标处附「Redis is a registered trademark of Redis Ltd.」。三个方向都只借官方色值，版式与图形是本片自己的；是否在片尾加这句声明，请定。'],
+  ['这一稿改了什么', '第 3 稿按「宏观的主线、收尾升华、消除 AI 味」重写：全片只有一根线，内存快但会忘、也装不下太多，磁盘慢但记得住；Redis 把数据放进内存，各章都是这个选择的后果，出错与删两章是它欠下的两笔账；终章回到第一集的那一瞬间，落在 Alice 年龄那一个字节上。逐章对照见 review/NOTES.md「交审说明 · 第 3 稿」。'],
+  ['时长', '工具估算 ' + fmt(tl.total) + '，按前两集的实测语速折算约 11 分钟，比预期的 10 分钟长约 1 分钟。'],
+  ['片尾名单', '拟在 redis-cli 里执行一条读取 credits 的命令，逐行列出分工。'],
+  ['商标', 'Redis 的商标政策要求不模仿它的视觉识别，并建议在出现商标处附「Redis is a registered trademark of Redis Ltd.」。画面只借官方色值；片尾是否加这句声明，请定。'],
 ];
 const TREAT = {
   A: { name: 'A 桶阵', how: '哈希表是全片常驻的主画面：8192 个桶按真实桶号排成 128 × 64 的格阵（4096 个键各落在哪个桶，是用 gdb 读出进程的哈希种子、按 SipHash-1-2 算出、再与 Redis 自己的统计逐项对上的），Alice 在第 3271 号桶。增、查、改、删都从这一格拉出对象与字节；出错一章分成上面内存、下面磁盘。', look: '深色：午夜蓝 #091a23、暮蓝 #163341，品牌红 #ff4438 只给正在讲的那一样（Alice、这一次的命令）。', plus: '一张图从头到尾不换，结构一直在（F02、F29）；「内存里的一张表」最直观。', risk: '格阵很密，近看要靠放大与局部高亮；并发一章需要另画时间线。' },
@@ -30,7 +29,7 @@ const TREAT = {
   C: { name: 'C 终端与字节', how: '证据优先：redis-cli 的真实回显与 27 个原样字节在前，图形只做注解；每一步先看实物再解释。', look: '暮蓝底 #163341、深色终端，黄绿 #dcff1e 标关键值。', plus: '「原样」的可信感最强：27 字节、REDIS0017、33287 = 33287。', risk: '容易变成一屏屏终端与文字，结构画面不足；适合当特写，不适合当主画面。' },
 };
 const scenes = S.SCRIPT.filter((sc) => sc.cues.some((c) => c[1]));
-let html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>审片页 · Redis（第 1 稿）</title>
+let html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>审片页 · Redis（第 3 稿）</title>
 <style>
 body{margin:0;background:#f6f7f8;color:#091a23;font:16px/1.7 "Inter","Noto Sans SC","Microsoft YaHei",sans-serif}
 main{max-width:1180px;margin:0 auto;padding:32px 24px 80px} h1{font-size:28px;margin:0 0 4px} h2{font-size:22px;margin:48px 0 12px;padding-top:12px;border-top:2px solid #091a23}
@@ -42,7 +41,7 @@ audio{width:100%;margin-top:6px} .pick{display:inline-block;background:#091a23;c
 code{font-family:"JetBrains Mono",monospace;font-size:14px;background:#f3f3f3;padding:1px 5px;border-radius:4px}
 </style></head><body><main>
 <h1>一个数据库引擎是如何实现的？——内存里的键值对：Redis</h1>
-<div class="meta">数据库引擎系列 PART 7（最终集）· 第 1 稿 · 稿本 <code>${hash.slice(0, 12)}</code> · 估算 ${fmt(tl.total)}（实测语速折算约 12 分钟）· 2026-11-24</div>
+<div class="meta">数据库引擎系列 PART 7（最终集）· 第 3 稿 · 稿本 <code>${hash.slice(0, 12)}</code> · 估算 ${fmt(tl.total)}（实测语速折算约 11 分钟）· 2026-11-25</div>
 <div class="card"><b>这一页要定的四件事</b><ol style="margin:6px 0 0">
 <li>文案：通读「连贯全文」，按「句号 + 问题 + 建议」给意见；明确确认之后才配全片（全片配音只用确认后的稿本）。</li>
 <li>配音：5 个男声里选 1 个（本系列一集男声、一集女声，Redis 一集是男声）。</li><li>配乐：3 个电子乐方向里选 1 个。</li><li>视觉：A、B、C 三个方向里选 1 个（或指定组合）。</li></ol></div>
@@ -54,7 +53,7 @@ code{font-family:"JetBrains Mono",monospace;font-size:14px;background:#f3f3f3;pa
 
 <h2>待定问题</h2><table><tr><th style="width:140px">问题</th><th>说明</th></tr>${PENDING.map(([a, b]) => `<tr><td>${a}</td><td>${esc(b)}</td></tr>`).join('')}</table>
 
-<h2>连贯全文（第 1 稿，全部是新句）</h2><div class="meta">灰色小字是句号，红字是第一次出现、画面会给注解的术语。片尾名单只上画面，不配旁白。</div>
+<h2>连贯全文（第 3 稿）</h2><div class="meta">灰色小字是句号，红字是第一次出现、画面会给注解的术语。片尾名单只上画面，不配旁白。</div>
 <div class="card">${scenes.map((sc) => {
     const t = tl.scenes.find((x) => x.id === sc.id);
     const head = sc.chap ? `${sc.chap[0]} ${esc(sc.chap[1])}<small>${esc(sc.chap[2] || '')} · 约 ${fmt(t.end - t.start)}</small>` : `开场<small>约 ${fmt(t.end - t.start)}</small>`;
@@ -62,7 +61,7 @@ code{font-family:"JetBrains Mono",monospace;font-size:14px;background:#f3f3f3;pa
   }).join('')}</div>
 
 <h2>配音：5 个男声候选</h2>
-<div class="meta">MiniMax ${esc(voices.model)}，语速 ${voices.speed}；同一组代表句（${voices.lines.map((l) => l[0]).join('、')}）。只是试听，全片配音等文案确认。本系列已用过的男声（Gentleman、Reliable_Executive、Gentle_Youth）没有放进来。Whisper 回听：5 段都没有漏词，MULTI、EXEC 都按单词读；播报男声那段的转写里有一段重复，像是识别器的误差，请以耳朵为准；多音字（重启、重放、重来）只有人耳能听出来。</div>
+<div class="meta">MiniMax ${esc(voices.model)}，语速 ${voices.speed}；第 1 稿的同一组代表句（音色已选定为真诚青年，试听没有按新稿重做）。只是试听，全片配音等文案确认。本系列已用过的男声（Gentleman、Reliable_Executive、Gentle_Youth）没有放进来。Whisper 回听：5 段都没有漏词，MULTI、EXEC 都按单词读；播报男声那段的转写里有一段重复，像是识别器的误差，请以耳朵为准；多音字（重启、重放、重来）只有人耳能听出来。</div>
 ${voices.voices.map((v, i) => `<div class="card"><span class="pick">${i + 1}</span><b>${esc(v.name)}</b> <code>${esc(v.id)}</code> <span class="meta">· ${v.seconds} 秒</span><audio controls preload="none" src="${v.file}"></audio></div>`).join('')}
 
 <h2>配乐：3 个电子乐方向</h2>
