@@ -1,0 +1,44 @@
+
+==== 版本与系统 ====
+Redis server v=8.12.0 sha=00000000:1 malloc=jemalloc-5.3.0 bits=64 build=88f001e980069ff8
+Linux 6.12.118+deb13-amd64 x86_64
+model name	: 13th Gen Intel(R) Core(TM) i5-13400
+CPU 核数：16
+b0100a879b2d45dc97d8fda941127609d648f8913008db1b65a2f72a8ae36c8b  redis-8.12.0.tar.gz
+redis_version:8.12.0
+redis_mode:standalone
+os:Linux 6.12.118+deb13-amd64 x86_64
+arch_bits:64
+multiplexing_api:epoll
+gcc_version:14.2.0
+process_id:PID
+
+==== 不带配置文件启动时的缺省值 ====
+save 3600 1 300 100 60 10000
+appendonly no
+appendfsync everysec
+appenddirname appendonlydir
+dbfilename dump.rdb
+aof-use-rdb-preamble yes
+hash-max-listpack-entries 512
+hash-max-listpack-value 64
+hash-min-template-entries 0
+io-threads 1
+maxmemory 0
+maxmemory-policy noeviction
+hz 10
+activerehashing yes
+lazyfree-lazy-user-del no
+aof-load-truncated yes
+
+==== 一个空的 Redis 进程里的线程（ps -T） ====
+      1 bio_aof
+      1 bio_close_file
+      1 bio_lazy_free
+      2 jemalloc_bg_thd
+      1 redis-server
+used_memory:919544
+used_memory_human:897.99K
+mem_allocator:jemalloc-5.3.0
+io_thread_0:clients=1,reads=39,writes=19
+io_threads_active:0

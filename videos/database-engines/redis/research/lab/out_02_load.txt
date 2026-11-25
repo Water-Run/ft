@@ -1,0 +1,139 @@
+
+==== 写入之前 ====
+used_memory:870160
+127.0.0.1:7379> DBSIZE
+0
+
+==== 写入 4096 个用户（逐条 HSET，示例前 2 条与 Alice） ====
+HSET user:1 name User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN age 19
+HSET user:2 name User00002-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN age 20
+HSET user:2050 name Alice age 42
+127.0.0.1:7379> DBSIZE
+4096
+used_memory:1460384
+db0:keys=4096,expires=0,avg_ttl=0,subexpiry=0
+
+==== Alice ====
+127.0.0.1:7379> HGETALL user:2050
+name
+Alice
+age
+42
+127.0.0.1:7379> TYPE user:2050
+hash
+127.0.0.1:7379> OBJECT ENCODING user:2050
+listpack
+127.0.0.1:7379> MEMORY USAGE user:2050
+55
+127.0.0.1:7379> HLEN user:2050
+2
+127.0.0.1:7379> DEBUG OBJECT user:2050
+Value at:0x7fa8d1a3a580 refcount:1 encoding:listpack serializedlength:28 lru:371015 lru_seconds_idle:0
+
+==== 另一个用户（姓名 50 字节） ====
+127.0.0.1:7379> HGETALL user:2049
+name
+User02049-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN
+age
+51
+127.0.0.1:7379> OBJECT ENCODING user:2049
+listpack
+127.0.0.1:7379> MEMORY USAGE user:2049
+100
+
+==== Alice 的 listpack（DEBUG LISTPACK 打印在服务端的 stdout，停机后读出） ====
+127.0.0.1:7379> DEBUG LISTPACK user:2050
+Listpack structure printed on stdout
+
+==== 键空间的哈希表（DEBUG HTSTATS 0 FULL），写完 1 秒后 ====
+127.0.0.1:7379> DEBUG HTSTATS 0 FULL
+[Dictionary HT]
+Hash table 0 stats (main hash table):
+ table size: 8192
+ number of elements: 4096
+ different slots: 3215
+ max chain length: 5
+ avg chain length (counted): 1.27
+ avg chain length (computed): 1.27
+ Chain length distribution:
+   0: 4977 (60.75%)
+   1: 2476 (30.22%)
+   2: 612 (7.47%)
+   3: 114 (1.39%)
+   4: 11 (0.13%)
+   5: 2 (0.02%)
+[Expires HT]
+
+==== 字符串的三种编码 ====
+127.0.0.1:7379> SET n 42
+OK
+127.0.0.1:7379> OBJECT ENCODING n
+int
+127.0.0.1:7379> SET s Alice
+OK
+127.0.0.1:7379> OBJECT ENCODING s
+embstr
+127.0.0.1:7379> SET long abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+OK
+127.0.0.1:7379> OBJECT ENCODING long
+raw
+127.0.0.1:7379> DEL n s long
+3
+
+==== 一个哈希键超过 512 个字段时改用哈希表 ====
+127.0.0.1:7379> DEBUG OBJECT user:2050
+Value at:0x7fa8d1a3a580 refcount:1 encoding:listpack serializedlength:28 lru:371015 lru_seconds_idle:1
+127.0.0.1:7379> HLEN big
+513
+127.0.0.1:7379> OBJECT ENCODING big
+hashtable
+127.0.0.1:7379> DEL big
+1
+--- 服务端 stdout（DEBUG LISTPACK user:2050）---
+{total bytes 27} {num entries 4}
+{
+	addr: 0x7fa8d1a3a5a6,
+	index:  0,
+	offset: 6,
+	hdr+entrylen+backlen:  6,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 4
+	bytes: 84|6e|61|6d|65|05|
+	[str]name
+}
+{
+	addr: 0x7fa8d1a3a5ac,
+	index:  1,
+	offset: 12,
+	hdr+entrylen+backlen:  7,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 5
+	bytes: 85|41|6c|69|63|65|06|
+	[str]Alice
+}
+{
+	addr: 0x7fa8d1a3a5b3,
+	index:  2,
+	offset: 19,
+	hdr+entrylen+backlen:  5,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 3
+	bytes: 83|61|67|65|04|
+	[str]age
+}
+{
+	addr: 0x7fa8d1a3a5b8,
+	index:  3,
+	offset: 24,
+	hdr+entrylen+backlen:  2,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 0
+	bytes: 2a|01|
+	[str]42
+}
+{end}
+

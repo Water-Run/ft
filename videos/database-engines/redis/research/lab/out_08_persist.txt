@@ -1,0 +1,123 @@
+
+==== RDB：BGSAVE 叫一个子进程（fork）把此刻的数据写成 dump.rdb ====
+127.0.0.1:7379> BGSAVE
+Background saving started
+rdb_last_save_time:（时间戳）
+rdb_last_bgsave_status:ok
+rdb_last_bgsave_time_sec:0
+rdb_saves:1
+rdb_last_cow_size:733184
+latest_fork_usec:275
+M * Background saving started by pid 3432140
+C * DB saved on disk
+C * Fork CoW for RDB: current 0 MB, peak 0 MB, average 0 MB
+M * Background saving terminated with success
+347102 data/dump.rdb
+
+==== dump.rdb 的开头（魔数与版本号） ====
+REDIS0017
+00000000: 5245 4449 5330 3031 37fa 0972 6564 6973  REDIS0017..redis
+00000010: 2d76 6572 0638 2e31 322e 30fa 0a72 6564  -ver.8.12.0..red
+00000020: 6973 2d62 6974 73c0 40fa 0563 7469 6d65  is-bits.@..ctime
+00000030: c298 a405 6bfa 0875 7365 642d 6d65 6dc2  ....k..used-mem.
+
+==== dump.rdb 里 Alice 那一项 ====
+键名 user:2050 在文件里的偏移：205566
+000322fc: 1009 7573 6572 3a32 3035 301b 1b00 0000  ..user:2050.....
+0003230c: 0400 846e 616d 6505 8541 6c69 6365 0683  ...name..Alice..
+0003231c: 6167 6504 2a01 ff10                      age.*...
+1009757365723a323035301b1b0000000400846e616d650585416c6963650683616765042a01ff
+另一个用户 user:2049：
+00013eb5: 1009 7573 6572 3a32 3034 3940 4848 0000  ..user:2049@HH..
+00013ec5: 0004 0084 6e61 6d65 05b2 5573 6572 3032  ....name..User02
+00013ed5: 3034 392d 6162 6364 6566 6768 696a 6b6c  049-abcdefghijkl
+00013ee5: 6d6e 6f70 7172 7374 7576 7778 797a 4142  mnopqrstuvwxyzAB
+00013ef5: 4344 4546 4748 494a 4b4c 4d4e 3383 6167  CDEFGHIJKLMN3.ag
+00013f05: 6504 3301 ff10 0975 7365 723a 3333 3035  e.3....user:3305
+
+==== AOF：打开 appendonly（CONFIG SET appendonly yes 会先把现有数据整份写成 base 文件） ====
+127.0.0.1:7379> CONFIG SET appendonly yes
+OK
+347102 appendonly.aof.1.base.rdb
+0 appendonly.aof.1.incr.aof
+102 appendonly.aof.manifest
+--- manifest ---
+file appendonly.aof.1.base.rdb seq 1 type b
+file appendonly.aof.1.incr.aof seq 1 type i startoffset 0
+
+==== Alice 过生日：HSET user:2050 age 43。incr 文件里多出来的就是这条命令本身 ====
+127.0.0.1:7379> HSET user:2050 age 43
+0
+347102 appendonly.aof.1.base.rdb
+69 appendonly.aof.1.incr.aof
+102 appendonly.aof.manifest
+--- appendonly.aof.1.incr.aof（cat -A：^M$ 是 \r\n）---
+*2^M$
+$6^M$
+SELECT^M$
+$1^M$
+0^M$
+*4^M$
+$4^M$
+HSET^M$
+$9^M$
+user:2050^M$
+$3^M$
+age^M$
+$2^M$
+43^M$
+00000000: 2a32 0d0a 2436 0d0a 5345 4c45 4354 0d0a  *2..$6..SELECT..
+00000010: 2431 0d0a 300d 0a2a 340d 0a24 340d 0a48  $1..0..*4..$4..H
+00000020: 5345 540d 0a24 390d 0a75 7365 723a 3230  SET..$9..user:20
+00000030: 3530 0d0a 2433 0d0a 6167 650d 0a24 320d  50..$3..age..$2.
+00000040: 0a34 330d 0a                             .43..
+--- base 文件的开头：RDB 格式 ---
+00000000: 5245 4449 5330 3031 37fa 0972 6564 6973  REDIS0017..redis
+
+==== Dave 注册、Alice 注销，也一条条追加进去 ====
+127.0.0.1:7379> HSET user:4097 name Dave age 19
+2
+127.0.0.1:7379> DEL user:2050
+1
+*2^M$
+$6^M$
+SELECT^M$
+$1^M$
+0^M$
+*4^M$
+$4^M$
+HSET^M$
+$9^M$
+user:2050^M$
+$3^M$
+age^M$
+$2^M$
+43^M$
+*6^M$
+$4^M$
+HSET^M$
+$9^M$
+user:4097^M$
+$4^M$
+name^M$
+$4^M$
+Dave^M$
+$3^M$
+age^M$
+$2^M$
+19^M$
+*2^M$
+$3^M$
+DEL^M$
+$9^M$
+user:2050^M$
+
+==== BGREWRITEAOF：把现在的数据重新写成一个新的 base，incr 从空开始 ====
+127.0.0.1:7379> BGREWRITEAOF
+Background append only file rewriting started
+347101 appendonly.aof.2.base.rdb
+0 appendonly.aof.2.incr.aof
+102 appendonly.aof.manifest
+--- manifest ---
+file appendonly.aof.2.base.rdb seq 2 type b
+file appendonly.aof.2.incr.aof seq 2 type i startoffset 3

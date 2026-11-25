@@ -1,0 +1,95 @@
+{
+  "slug": "redis",
+  "layout": 2,
+  "license": "GPL-3.0-or-later",
+  "languages": [
+    "zh"
+  ],
+  "titles": {
+    "zh": "一个数据库引擎是如何实现的？——内存里的键值对：Redis"
+  },
+  "stage": "review",
+  "next": "等文案意见与确认；确认后用 Sincere_Adult 配全片（混音后核对旁白电平），做 A 桶阵 + C「终章」的有声代表段",
+  "credits": {
+    "planner": "WaterRun",
+    "models": [
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "取证",
+          "实验",
+          "文案",
+          "配音试听",
+          "配乐小样",
+          "视觉设计"
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "MiniMax speech-2.8-hd",
+        "roles": [
+          "配音试听"
+        ]
+      }
+    ],
+    "repository": "https://github.com/Water-Run/ft"
+  },
+  "voices": {
+    "zh": "zh-CN-YunyangNeural"
+  },
+  "rates": {
+    "zh": "+0%"
+  },
+  "asr_prompts": {
+    "zh": "以下是普通话的讲解，介绍内存数据库 Redis：键、值、哈希表、桶、listpack、rehash、单线程、MULTI、EXEC、WATCH、RDB 快照、AOF、fork、过期、淘汰。"
+  },
+  "review": {
+    "required": true,
+    "reviewer": "WaterRun"
+  },
+  "render": {
+    "fps": 60,
+    "mb": 1
+  },
+  "audio": {
+    "music": "tools/music.py",
+    "music_db": -18,
+    "duck_db": 9,
+    "sfx_db": -8,
+    "voice_norm": "rms"
+  },
+  "check": {
+    "caption_width": {
+      "zh": 26,
+      "en": 44
+    },
+    "max_cue_seconds": 6,
+    "min_font": 22,
+    "margin": 60,
+    "still_seconds": 3,
+    "camera": true,
+    "style": {
+      "flat": true,
+      "no_emoji": true
+    },
+    "duration": {
+      "zh": [
+        480,
+        900
+      ]
+    }
+  },
+  "tts": {
+    "engine": {
+      "zh": "minimax"
+    },
+    "model": "speech-2.8-hd",
+    "voice": {
+      "zh": "Chinese (Mandarin)_Sincere_Adult"
+    },
+    "speed": {
+      "zh": 1.15
+    }
+  }
+}

@@ -1,0 +1,90 @@
+
+==== DEL user:2050 ====
+127.0.0.1:7379> MEMORY USAGE user:2050
+55
+127.0.0.1:7379> DBSIZE
+4096
+127.0.0.1:7379> DEL user:2050
+1
+127.0.0.1:7379> EXISTS user:2050
+0
+127.0.0.1:7379> HGETALL user:2050
+
+127.0.0.1:7379> DBSIZE
+4095
+ table size: 4096
+ number of elements: 4095
+
+==== Dave 注册：键名由应用自己起 ====
+127.0.0.1:7379> HSET user:4097 name Dave age 19
+2
+127.0.0.1:7379> HGETALL user:4097
+name
+Dave
+age
+19
+127.0.0.1:7379> DBSIZE
+4096
+
+==== 换一种注销：EXPIRE，2 秒后到期 ====
+127.0.0.1:7379> HSET user:2050 name Alice age 43
+2
+127.0.0.1:7379> EXPIRE user:2050 2
+1
+127.0.0.1:7379> TTL user:2050
+2
+db0:keys=4097,expires=1,avg_ttl=0,subexpiry=0
+
+==== 先关掉定时抽查（DEBUG SET-ACTIVE-EXPIRE 0），只剩「访问时检查」 ====
+127.0.0.1:7379> DEBUG SET-ACTIVE-EXPIRE 0
+OK
+expired_keys:0
+127.0.0.1:7379> DBSIZE
+4097
+（已经过期，但还没人碰它，仍占着一个键）
+127.0.0.1:7379> EXISTS user:2050
+0
+expired_keys:1
+127.0.0.1:7379> DBSIZE
+4096
+
+==== 再试一次，打开定时抽查：没人访问也会被删掉 ====
+127.0.0.1:7379> DEBUG SET-ACTIVE-EXPIRE 1
+OK
+127.0.0.1:7379> HSET user:2050 name Alice age 43
+2
+127.0.0.1:7379> EXPIRE user:2050 2
+1
+expired_keys:2
+127.0.0.1:7379> DBSIZE
+4096
+
+==== 内存有上限时：缺省 noeviction，写不进去就报错 ====
+127.0.0.1:7379> DEL user:2050
+0
+127.0.0.1:7379> CONFIG SET maxmemory 1651120
+OK
+127.0.0.1:7379> HSET user:2050 name Alice age 42
+OOM command not allowed when used memory > 'maxmemory'.
+
+127.0.0.1:7379> HGET user:1 name
+User00001-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN
+127.0.0.1:7379> CONFIG SET maxmemory-policy allkeys-lru
+OK
+127.0.0.1:7379> HSET user:2050 name Alice age 42
+2
+evicted_keys:464
+127.0.0.1:7379> DBSIZE
+3633
+127.0.0.1:7379> CONFIG SET maxmemory 0
+OK
+127.0.0.1:7379> CONFIG SET maxmemory-policy noeviction
+OK
+
+==== 源码：过期的两条路（db.c 访问时、expire.c 定时） ====
+96:#define ACTIVE_EXPIRE_CYCLE_KEYS_PER_LOOP 20 /* Keys for each DB loop. */
+309:    config_keys_per_loop = ACTIVE_EXPIRE_CYCLE_KEYS_PER_LOOP +
+310:                           ACTIVE_EXPIRE_CYCLE_KEYS_PER_LOOP/4*effort,
+98:#define ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC 25 /* Max % of CPU to use. */
+99:#define ACTIVE_EXPIRE_CYCLE_ACCEPTABLE_STALE 10 /* % of stale keys after which
+3137:keyStatus expireIfNeeded(redisDb *db, robj *key, kvobj *kv, int flags) {

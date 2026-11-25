@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>关键帧 · Redis</title>
+<link rel="stylesheet" href="../css/base.css">
+<style>
+/* 审片用的关键帧：?d=A|B|C &f=1..4。颜色取自 research/MATERIALS.md（redis.io 的 CSS 色值），版式与图形是本片自己的。 */
+:root {
+  --midnight: #091a23; --dusk: #163341; --dusk9: #0d212c; --dusk90: #2d4754; --dusk70: #5c707a; --dusk50: #8a99a0; --dusk30: #b9c2c6; --dusk10: #d9d9d9;
+  --red: #ff4438; --red9: #8a221c; --yellow: #dcff1e; --sky: #80dbff; --white: #fff; --ink: #091a23; --line: #d9d9d9; --subtle: #f3f3f3;
+}
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+#stage { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", "Sans SC"; }
+.abs { position: absolute; }
+.mono { font-family: "Mono", "Sans SC"; white-space: pre; }
+.k-dark { background: var(--midnight); color: var(--white); }
+.k-light { background: var(--white); color: var(--ink); }
+.k-dusk { background: var(--dusk); color: var(--white); }
+.series { font-size: 34px; font-weight: 500; letter-spacing: .02em; }
+.part { font: 600 30px "Mono"; letter-spacing: .12em; }
+.ver { font: 500 28px "Mono"; }
+.h-title { font-weight: 800; letter-spacing: -.02em; line-height: 1.02; }
+.note { font-size: 28px; line-height: 1.35; }
+.cap { font-size: 30px; font-weight: 500; }
+.tag { font: 600 26px "Mono"; padding: 4px 12px; border-radius: 6px; }
+.byte { display: inline-block; width: 52px; text-align: center; font: 600 34px "Mono"; }
+.sub { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 500; }
+.k-dark .sub, .k-dusk .sub { color: var(--white); background: rgba(9,26,35,.72); }
+.k-light .sub { color: var(--ink); background: rgba(255,255,255,.86); }
+.cell-legend { display: inline-block; width: 18px; height: 18px; vertical-align: -2px; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="../js/data.js"></script>
+<script>
+const q = new URLSearchParams(location.search), D = q.get('d') || 'A', F = +(q.get('f') || 1);
+const S = document.getElementById('stage'), B = DATA.buckets;
+const h = (html) => { S.insertAdjacentHTML('beforeend', html); };
+const box = (x, y, w, hh, css = '', inner = '') => h(`<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${hh}px;${css}">${inner}</div>`);
+const txt = (x, y, s, css = '', cls = '') => h(`<div class="abs ${cls}" style="left:${x}px;top:${y}px;${css}">${s}</div>`);
+const sub = (s) => h(`<div class="sub">${s}</div>`);
+// 8192 个桶，按真实桶号排成 128 列 × 64 行；颜色深浅 = 桶里的键数（research/lab/buckets.json，FACTS K07）
+function bucketGrid(x, y, cell, gap, colors, mark = {}) {
+  const cols = 128, rows = B.size / cols, w = cols * (cell + gap) - gap, hh = rows * (cell + gap) - gap;
+  h(`<canvas id="g${x}_${y}" class="abs" width="${w}" height="${hh}" style="left:${x}px;top:${y}px"></canvas>`);
+  const c = document.getElementById(`g${x}_${y}`).getContext('2d');
+  for (let i = 0; i < B.size; i++) {
+    const n = +B.counts[i], cx = (i % cols) * (cell + gap), cy = Math.floor(i / cols) * (cell + gap);
+    c.fillStyle = mark[i] || colors[Math.min(n, colors.length - 1)];
+    c.fillRect(cx, cy, cell, cell);
+  }
+  return { w, hh, at: (i) => [x + (i % cols) * (cell + gap) + cell / 2, y + Math.floor(i / cols) * (cell + gap) + cell / 2] };
+}
+const LP = DATA.listpack.hex.match(/../g);
+function lpRow(x, y, colors, labels = true, sz = 52) {
+  const seg = DATA.listpack.parts;
+  let html = '';
+  LP.forEach((b, i) => {
+    const p = seg.find((s) => i >= s.from && i < s.from + s.len), k = seg.indexOf(p);
+    html += `<span class="byte" style="width:${sz}px;background:${colors[k % colors.length]};margin-right:${i === p.from + p.len - 1 ? 8 : 2}px">${b}</span>`;
+  });
+  txt(x, y, html, 'line-height:56px');
+  if (labels) {
+    let cx = x;
+    seg.forEach((p, k) => { const w = p.len * (sz + 2) + 6; txt(cx, y + 64, p.what, `width:${w}px;font-size:26px;color:inherit;opacity:.8`); cx += w; });
+  }
+}
+const CHAPTER = (no, ti, qq, dark) => {};
+
+/* ───────────── A 桶阵：哈希表是全片常驻的主画面 ───────────── */
+function A() {
+  S.className = 'k-dark';
+  const shade = ['#0f2530', '#2d4754', '#5c707a', '#8a99a0', '#b9c2c6', '#d9d9d9', '#ffffff'];
+  if (F === 1) {
+    txt(120, 96, '一个数据库引擎是如何实现的？', 'color:var(--dusk30)', 'series');
+    txt(120, 150, 'PART 7', 'color:var(--red)', 'part');
+    txt(120, 330, '内存里的<br>键值对', 'font-size:132px', 'h-title');
+    txt(120, 640, 'Redis', 'font-size:200px;color:var(--red)', 'h-title');
+    const g = bucketGrid(900, 230, 6, 1.5, shade, { [B.alice]: '#ff4438' });
+    const [ax, ay] = g.at(B.alice);
+    box(ax - 14, ay - 14, 28, 28, 'border:3px solid var(--red);border-radius:2px');
+    txt(900, 230 + g.hh + 24, `8192 个桶 · 4096 个键 · user:2050 在第 ${B.alice} 号桶`, 'color:var(--dusk30)', 'note');
+    txt(1800 - 260, 1080 - 150 - 40, 'Redis 8.12.0', 'color:var(--dusk50);width:260px;text-align:right', 'ver');
+  } else if (F === 2) {
+    // 02 增：上面桶阵与对象，下面 27 字节的 listpack 横跨全宽
+    txt(120, 80, '02 增 · Alice 注册时，写下了什么？', 'color:var(--dusk30)', 'series');
+    const g = bucketGrid(120, 160, 4, 1, shade, { [B.alice]: '#ff4438' });
+    const [ax, ay] = g.at(B.alice);
+    box(ax - 9, ay - 9, 18, 18, 'border:2px solid var(--red)');
+    txt(120, 160 + g.hh + 12, `第 ${B.alice} 号桶`, 'color:var(--red)', 'note');
+    h(`<svg class="abs" style="left:0;top:0" width="1920" height="1080"><path d="M${ax + 9} ${ay} C 820 ${ay}, 800 230, 860 230" stroke="#ff4438" stroke-width="3" fill="none"/></svg>`);
+    box(860, 186, 940, 88, 'border:2px solid var(--dusk70);border-radius:8px');
+    const fld = [['type', 'hash'], ['encoding', 'listpack'], ['refcount', '1'], ['lru', '24 位']];
+    let cx = 880; fld.forEach(([k, v], i) => { const w = [120, 180, 150, 120][i]; txt(cx, 198, `<div style="font:500 22px Mono;color:var(--dusk50)">${k}</div><div style="font:600 30px Mono">${v}</div>`, `width:${w}px`); cx += w + 10; });
+    box(1500, 194, 1, 72, 'background:var(--dusk70)');
+    txt(1520, 198, `<div style="font:500 22px Mono;color:var(--dusk50)">键名</div><div style="font:600 30px Mono">user:2050</div>`);
+    txt(860, 290, '对象头 16 字节 · 1 字节标志 · 键名紧跟其后', 'color:var(--dusk30)', 'note');
+    txt(120, 540, 'listpack · 27 字节', 'font-size:36px;font-weight:700');
+    lpRow(120, 600, ['#2d4754', '#2d4754', '#163341', '#8a221c', '#163341', '#8a221c', '#2d4754'], true, 52);
+    txt(120, 722, '84 = 长度 4 的短字符串 · 05 = 这一项 5 字节 · 2a = 42 · ff = 结束', 'color:var(--dusk30)', 'note');
+    box(120, 786, 1680, 1, 'background:var(--dusk90)');
+    txt(120, 806, `<b style="font-size:64px;color:var(--white)">55</b><span class="cap" style="color:var(--dusk30)"> 字节　Alice 这个键</span>`);
+    txt(620, 806, `<b style="font-size:64px;color:var(--white)">100</b><span class="cap" style="color:var(--dusk30)"> 字节　名字长的用户</span>`);
+    txt(1160, 818, '字段名 name、age 每个用户都存一遍', 'color:var(--dusk50)', 'note');
+    sub('值是一段连续的字节，叫 listpack');
+  } else if (F === 3) {
+    // 06 出错：上面内存（桶阵），下面磁盘（RDB 与 AOF）
+    txt(120, 80, '06 出错怎么办 · 进程没了，数据还在吗？', 'color:var(--dusk30)', 'series');
+    txt(120, 150, '内存', 'font-size:34px;font-weight:700');
+    const g = bucketGrid(120, 210, 3, 1, shade, { [B.alice]: '#ff4438' });
+    box(120, 210 + g.hh + 26, 1680, 2, 'background:var(--dusk70)');
+    txt(1680 - 300, 150, '<span style="color:var(--red)">kill -9</span>　进程已结束', 'width:420px;text-align:right;font:600 30px Mono');
+    txt(120, 210 + g.hh + 50, '磁盘', 'font-size:34px;font-weight:700');
+    const y0 = 210 + g.hh + 110;
+    // RDB
+    box(120, y0, 760, 300, 'background:var(--dusk9);border:2px solid var(--dusk90);border-radius:8px');
+    txt(150, y0 + 22, 'dump.rdb · 347,102 字节', 'font:600 30px Mono');
+    txt(150, y0 + 76, `REDIS0017  …  <span style="color:var(--red)">10 09 user:2050 1b</span>`, 'font:500 28px Mono;color:var(--dusk30)');
+    txt(150, y0 + 120, LP.slice(0, 14).join(' ') + '<br>' + LP.slice(14).join(' '), 'font:500 28px Mono;color:var(--white);line-height:1.4');
+    txt(150, y0 + 226, '某一刻的整份数据 · 子进程写', 'color:var(--dusk50)', 'note');
+    // AOF
+    box(940, y0, 860, 300, 'background:var(--dusk9);border:2px solid var(--dusk90);border-radius:8px');
+    txt(970, y0 + 22, 'appendonly.aof.1.incr.aof', 'font:600 30px Mono');
+    txt(970, y0 + 76, DATA.aof.replace(/\r\n/g, '␍␊ ').replace('*4␍␊', '<span style="color:var(--red)">*4␍␊').replace(/43␍␊ $/, '43␍␊</span>'), 'font:500 25px Mono;color:var(--dusk30);white-space:normal;width:800px;line-height:1.5');
+    txt(970, y0 + 226, '每条写命令，原样追加', 'color:var(--dusk50)', 'note');
+    sub('重启时，把这些命令从头再执行一遍');
+  } else {
+    // 09 终章：七个引擎
+    txt(120, 80, '09 同一段经历 · 七个引擎，七种答案', 'color:var(--dusk30)', 'series');
+    const E = [['MyISAM', '数据文件 + B 树', '表锁', '检查、修复'], ['InnoDB', '主键 B+ 树', '行锁 + undo', 'redo 重做'], ['PostgreSQL', '堆 + 新版本', '快照', 'WAL 重放'],
+      ['SQLite', '一个文件', '锁文件 / WAL', '日志恢复'], ['ClickHouse', '按列的片段', '片段快照', '临时目录改名'], ['MongoDB', 'BSON + B 树', '快照 + 写冲突', '检查点 + 日志'], ['Redis', '内存里的哈希表', '一个线程', 'RDB + AOF']];
+    const hd = ['', '怎么放', '怎么并发', '出错怎么办'];
+    hd.forEach((t, j) => txt(120 + [0, 420, 900, 1340][j], 190, t, 'color:var(--dusk50);font-size:28px'));
+    E.forEach((r, i) => {
+      const y = 250 + i * 92, last = i === 6;
+      box(120, y - 14, 1680, 1, 'background:var(--dusk90)');
+      txt(120, y, `<span class="part" style="color:${last ? 'var(--red)' : 'var(--dusk50)'};font-size:24px">PART ${i + 1}</span>`, '');
+      txt(250, y - 6, r[0], `font-size:40px;font-weight:700;color:${last ? 'var(--red)' : 'var(--white)'}`);
+      [r[1], r[2], r[3]].forEach((t, j) => txt(120 + [420, 900, 1340][j], y - 2, t, `font-size:34px;color:${last ? 'var(--white)' : 'var(--dusk30)'}`));
+    });
+    sub('七种做法，没有哪一种是最好的');
+  }
+}
+
+/* ───────────── B 一条线程：命令在唯一的主线程上排队走过 ───────────── */
+function Bd() {
+  S.className = 'k-light'; S.style.setProperty('--red', '#d1281e');
+  const lane = (y, label, color = 'var(--ink)') => { txt(120, y - 20, label, `font-size:30px;font-weight:600;color:${color}`); box(380, y, 1420, 3, `background:${color}`); };
+  const cmd = (x, y, w, t, bg, fg = '#fff') => box(x, y - 26, w, 52, `background:${bg};color:${fg};border-radius:6px;display:flex;align-items:center;justify-content:center;font:600 24px Mono`, t);
+  if (F === 1) {
+    txt(120, 96, '一个数据库引擎是如何实现的？', 'color:var(--dusk70)', 'series');
+    txt(120, 150, 'PART 7', 'color:var(--red)', 'part');
+    txt(120, 300, '内存里的键值对', 'font-size:140px', 'h-title');
+    txt(120, 460, 'Redis', 'font-size:220px;color:var(--red)', 'h-title');
+    // 一条线程：命令一个挨一个，刻度是微秒
+    const y = 820;
+    box(120, y, 1680, 3, 'background:var(--ink)');
+    const cs = ['HSET', 'HGETALL', 'HSET', 'GET', 'HGETALL', 'DEL', 'HSET', 'EXEC', 'HGETALL', 'SET', 'HINCRBY'];
+    let x = 120; cs.forEach((c, i) => { const w = 70 + c.length * 14; cmd(x, y, w, c, i === 1 ? 'var(--red)' : 'var(--dusk)'); x += w + 10; });
+    txt(120, y + 50, '一条线程，命令一条接一条执行', 'font-size:28px;color:var(--dusk70)');
+    txt(1800 - 260, 120, 'Redis 8.12.0', 'color:var(--dusk70);width:260px;text-align:right', 'ver');
+  } else if (F === 2) {
+    // 05 并发：三个客户端 → 一个队列 → 一条主线程
+    txt(120, 80, '05 事务与并发 · 有人在读，有人在写，谁等谁？', 'color:var(--dusk70)', 'series');
+    const who = [['Alice', 'var(--red)'], ['Bob', '#0477a5'], ['Carol', '#592479']];
+    who.forEach(([n, c], i) => { const y = 230 + i * 110; txt(120, y - 20, n, `font-size:34px;font-weight:700;color:${c}`); box(300, y, 360, 2, `background:${c}`);
+      h(`<svg class="abs" style="left:0;top:0" width="1920" height="1080"><path d="M660 ${y} C 740 ${y}, 740 560, 820 560" stroke="${c}" stroke-width="2" fill="none"/></svg>`); });
+    cmd(320, 230, 150, 'MULTI', 'var(--red)'); cmd(480, 230, 170, 'HSET 43', '#fd736a', '#091a23');
+    cmd(320, 340, 200, 'HGET age', '#0477a5');
+    cmd(320, 450, 230, 'DEBUG SLEEP', '#592479');
+    lane(560, '');
+    txt(120, 540, '主线程', 'font-size:30px;font-weight:700');
+    txt(840, 470, '一次执行一条', 'font-size:30px;font-weight:700');
+    cmd(840, 560, 300, 'DEBUG SLEEP 0.5', '#592479'); box(1150, 534, 260, 52, 'background:repeating-linear-gradient(90deg,#e9e1ef 0 10px,#fff 10px 20px);border-radius:6px');
+    txt(1170, 546, 'Bob 在排队', 'font:600 24px Mono;color:#0477a5');
+    cmd(1420, 560, 150, 'HGET', '#0477a5'); cmd(1580, 560, 210, 'MULTI…EXEC', 'var(--red)');
+    txt(1420, 620, 'Bob 等了 0.40 秒', 'font-size:28px;color:#0477a5');
+    box(120, 720, 1680, 1, 'background:var(--line)');
+    txt(120, 760, `<b style="font-size:72px">20000</b><span class="cap" style="color:var(--dusk70)">　两人同时各加一万次</span>`);
+    txt(980, 760, `<b style="font-size:72px;color:var(--red)">(nil)</b><span class="cap" style="color:var(--dusk70)">　WATCH 的键被改过，EXEC 不执行</span>`);
+    sub('所有客户端的命令排成一队，一次执行一条');
+  } else if (F === 3) {
+    // 06 出错：主线程上的写命令 → AOF 逐条追加；fork 出来的子进程写 RDB
+    txt(120, 80, '06 出错怎么办 · 进程没了，数据还在吗？', 'color:var(--dusk70)', 'series');
+    lane(260, '主线程');
+    cmd(400, 260, 130, 'HSET', 'var(--dusk)'); cmd(540, 260, 130, 'HSET', 'var(--dusk)'); cmd(680, 260, 210, 'HSET 43', 'var(--red)'); cmd(900, 260, 130, 'INCR', 'var(--dusk)'); cmd(1040, 260, 130, 'INCR', 'var(--dusk)');
+    txt(1300, 170, 'kill -9', 'font:700 40px Mono;color:var(--red)'); box(1290, 200, 3, 120, 'background:var(--red)');
+    // fork：子进程一栏紧挨主线程下方，虚线不跨文字
+    txt(120, 380, '子进程', 'font-size:34px;font-weight:700'); box(600, 400, 1200, 3, 'background:var(--dusk50)');
+    h(`<svg class="abs" style="left:0;top:0" width="1920" height="1080"><path d="M560 286 C 560 360, 580 400, 600 401" stroke="#5c707a" stroke-width="2" stroke-dasharray="6 6" fill="none"/></svg>`);
+    txt(620, 420, 'fork 0.275 毫秒 → 照着那一刻的内存写 dump.rdb（347,102 字节）', 'font-size:28px;color:var(--dusk70)');
+    // AOF
+    txt(120, 560, 'AOF', 'font-size:34px;font-weight:700'); box(380, 530, 1420, 130, 'background:var(--subtle);border:2px solid var(--line);border-radius:8px');
+    txt(400, 552, DATA.aof.replace(/\r\n/g, '␍␊').slice(0, 64), 'font:500 26px Mono;color:var(--dusk70)');
+    txt(400, 600, '每条写命令 → write() 交给内核 → 才回复客户端；每秒 fsync 一次', 'font-size:28px');
+    box(120, 760, 1680, 1, 'background:var(--line)');
+    txt(120, 800, `<span class="cap" style="color:var(--dusk70)">只有快照，写完 4096 个用户就杀：</span><b style="font-size:64px;color:var(--red)"> 0 </b><span class="cap" style="color:var(--dusk70)">个键</span>`);
+    txt(1000, 800, `<span class="cap" style="color:var(--dusk70)">开了 AOF：</span><b style="font-size:64px"> 33287 = 33287</b>`);
+    sub('Redis 在回复之前，已经把命令交给了操作系统');
+  } else {
+    txt(120, 80, '09 同一段经历 · 七个引擎，七种答案', 'color:var(--dusk70)', 'series');
+    const E = ['MyISAM', 'InnoDB', 'PostgreSQL', 'SQLite', 'ClickHouse', 'MongoDB', 'Redis'];
+    const W = ['表锁', '行锁 + undo', '多版本', '锁文件', '片段快照', '快照 + 重来', '一个一个来'];
+    E.forEach((e, i) => { const x = 120 + i * 245; box(x, 300, 225, 330, `border:2px solid ${i === 6 ? 'var(--red)' : 'var(--line)'};border-radius:10px;background:${i === 6 ? 'var(--red)' : 'var(--white)'}`);
+      txt(x + 20, 320, `PART ${i + 1}`, `font:600 22px Mono;color:${i === 6 ? '#fff' : 'var(--dusk70)'}`);
+      txt(x + 20, 370, e, `font-size:${e.length > 8 ? 34 : 40}px;font-weight:800;color:${i === 6 ? '#fff' : 'var(--ink)'}`);
+      txt(x + 20, 560, W[i], `font-size:28px;color:${i === 6 ? '#fff' : 'var(--dusk70)'}`); });
+    txt(120, 700, '很多人同时来：要么加锁，要么留住旧版本，要么干脆一个一个来', 'font-size:40px;font-weight:600');
+    sub('每一种都在回答同一件事：为了这些好处，愿意付出什么');
+  }
+}
+
+/* ───────────── C 终端与字节：真实回显在前，图形作注解 ───────────── */
+function C() {
+  S.className = 'k-dusk';
+  const term = (x, y, w, hh, lines) => { box(x, y, w, hh, 'background:var(--midnight);border-radius:12px'); txt(x + 40, y + 36, lines, `font:500 32px Mono;line-height:1.5;color:var(--dusk10);white-space:pre;width:${w - 80}px;overflow:hidden`); };
+  const P = '<span style="color:var(--dusk50)">127.0.0.1:7379&gt;</span> ';
+  if (F === 1) {
+    txt(120, 96, '一个数据库引擎是如何实现的？', 'color:var(--dusk30)', 'series');
+    txt(120, 150, 'PART 7', 'color:var(--yellow)', 'part');
+    txt(120, 260, '内存里的键值对：<span style="color:var(--red)">Redis</span>', 'font-size:110px', 'h-title');
+    term(120, 470, 1680, 380, `${P}<span style="color:#fff">HGETALL user:2050</span>\n1) "name"\n2) "<span style="color:var(--yellow)">Alice</span>"\n3) "age"\n4) "<span style="color:var(--yellow)">42</span>"`);
+    txt(1240, 600, '<div style="font:800 120px Inter;color:var(--red)">5 µs</div><div class="note" style="color:var(--dusk30)">服务端执行这一条命令</div>');
+    txt(1800 - 260, 120, 'Redis 8.12.0', 'color:var(--dusk50);width:260px;text-align:right', 'ver');
+  } else if (F === 2) {
+    txt(120, 80, '02 增 · Alice 注册时，写下了什么？', 'color:var(--dusk30)', 'series');
+    term(120, 150, 1680, 170, `${P}<span style="color:#fff">HSET user:2050 name Alice age 42</span>\n(integer) 2`);
+    txt(120, 370, '内存里的值：listpack，27 字节', 'font-size:36px;font-weight:700');
+    lpRow(120, 440, ['#2d4754', '#2d4754', '#0d212c', '#8a221c', '#0d212c', '#8a221c', '#2d4754'], true, 52);
+    const ann = [['1b 00 00 00', '总长 27（小端）'], ['04 00', '4 项'], ['84 …… 05', '84：长度 4 的短字符串；05：这一项 5 字节，倒着走用'], ['2a 01', '2a 就是 42：7 位小整数，编码字节即数值'], ['ff', '到此为止']];
+    ann.forEach(([a, b], i) => txt(120, 600 + i * 58, `<span style="color:var(--yellow);display:inline-block;width:270px">${a}</span>${b}`, 'font:500 30px Mono;color:var(--dusk10)'));
+    sub('42 是个小整数，一个字节就存下了');
+  } else {
+    txt(120, 80, '06 出错怎么办 · 进程没了，数据还在吗？', 'color:var(--dusk30)', 'series');
+    term(120, 150, 1080, 560, `$ <span style="color:#fff">kill -9 PID</span>\n（进程已结束）\n$ <span style="color:#fff">redis-server --appendonly yes</span>\n<span style="color:var(--dusk50)">DB loaded from base file appendonly.aof.1.base.rdb\nDB loaded from incr file appendonly.aof.1.incr.aof</span>\n${P}<span style="color:#fff">GET counter</span>\n"<span style="color:var(--yellow)">33287</span>"`);
+    box(1260, 150, 540, 560, 'border:2px solid var(--dusk90);border-radius:12px');
+    txt(1300, 190, '<div class="note" style="color:var(--dusk30)">崩溃前最后收到</div><div style="font:800 96px Inter">33287</div><div class="note" style="color:var(--dusk30);margin-top:30px">重启之后</div><div style="font:800 96px Inter;color:var(--yellow)">33287</div><div class="note" style="color:var(--dusk50);margin-top:30px">appendfsync everysec · kill -9</div>');
+    txt(120, 760, '只是进程被杀：回复之前命令已交给内核，一条不丢。断电不在这次实验里。', 'color:var(--dusk30)', 'note');
+    sub('所以只是进程被杀，交出去的都还在');
+  }
+}
+({ A, B: Bd, C })[D]();
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+
+==== 一、缺省配置（只有 RDB，保存点 3600 1 300 100 60 10000）：写完 4096 个用户后立刻崩溃 ====
+127.0.0.1:7379> DBSIZE
+4096
+rdb_changes_since_last_save:8192
+rdb_saves:0
+（kill -9 PID：进程已结束）
+127.0.0.1:7379> DBSIZE
+0
+M * Ready to accept connections tcp
+M * Server initialized
+M * Ready to accept connections tcp
+
+==== 二、缺省配置：保存过一次快照（Alice 42），之后改成 43，再崩溃 ====
+127.0.0.1:7379> SAVE
+OK
+127.0.0.1:7379> HSET user:2050 age 43
+0
+127.0.0.1:7379> HGET user:2050 age
+43
+（kill -9 PID：进程已结束）
+127.0.0.1:7379> DBSIZE
+4096
+127.0.0.1:7379> HGET user:2050 age
+42
+M * DB loaded from disk: 0.002 seconds
+
+==== 三、打开 AOF（appendfsync everysec）：改成 43 之后立刻崩溃 ====
+127.0.0.1:7379> HSET user:2050 age 43
+0
+（kill -9 PID：进程已结束）
+127.0.0.1:7379> DBSIZE
+4096
+127.0.0.1:7379> HGET user:2050 age
+43
+M * Done loading RDB, keys loaded: 0, keys expired: 0.
+M * DB loaded from base file appendonly.aof.1.base.rdb: 0.001 seconds
+M * DB loaded from incr file appendonly.aof.1.incr.aof: 0.018 seconds
+M * DB loaded from append only file: 0.019 seconds
+
+==== 四、AOF everysec：一个客户端不停地加一，0.5 秒后 kill -9；对比最后一次收到的回复与重启后的值 ====
+崩溃前客户端最后收到的回复： 33287
+重启后 counter：33287
+
+==== 五、AOF 的最后一条只写了一半：把 incr 文件截掉末尾 5 个字节，模拟写到一半中断 ====
+127.0.0.1:7379> HSET user:2050 age 43
+0
+（kill -9 PID：进程已结束）
+incr 文件 461764 → 461759 字节；末尾现在是：
+4^M$
+$4^M$
+HSET^M$
+$9^M$
+user:2050^M$
+$3^M$
+age^M$
+$2^M
+127.0.0.1:7379> DBSIZE
+4096
+127.0.0.1:7379> HGET user:2050 age
+42
+M # !!! Truncating the AOF appendonly.aof.1.incr.aof at offset 461718 !!!
+M # AOF appendonlydir/appendonly.aof.1.incr.aof loaded anyway because aof-load-truncated is enabled
+
+==== 六、appendfsync always：每条写命令先 fsync 再回复 ====
+127.0.0.1:7379> HSET user:2050 age 43
+0
+（kill -9 PID：进程已结束）
+127.0.0.1:7379> HGET user:2050 age
+43

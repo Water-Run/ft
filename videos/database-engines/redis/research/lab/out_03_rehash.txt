@@ -1,0 +1,80 @@
+
+==== 写入 4095 个用户 ====
+127.0.0.1:7379> DBSIZE
+4095
+Hash table 0 stats (main hash table):
+ table size: 4096
+ number of elements: 4095
+
+==== 关掉主动 rehash，再写第 4096 个：键数等于桶数 ====
+127.0.0.1:7379> CONFIG SET activerehashing no
+OK
+127.0.0.1:7379> DBSIZE
+4096
+Hash table 0 stats (main hash table):
+ table size: 4096
+ number of elements: 4096
+Hash table 1 stats (rehashing target):
+
+==== 再做 100 次读（每次查找顺手搬一格） ====
+Hash table 0 stats (main hash table):
+ table size: 4096
+ number of elements: 3895
+Hash table 1 stats (rehashing target):
+ table size: 8192
+ number of elements: 201
+
+==== 再做 4000 次读 ====
+Hash table 0 stats (main hash table):
+ table size: 8192
+ number of elements: 4096
+
+==== 打开主动 rehash：serverCron 每次最多用 1 毫秒继续搬 ====
+127.0.0.1:7379> CONFIG SET activerehashing yes
+OK
+Hash table 0 stats (main hash table):
+ table size: 8192
+ number of elements: 4096
+127.0.0.1:7379> DEBUG HTSTATS 0 FULL
+[Dictionary HT]
+Hash table 0 stats (main hash table):
+ table size: 8192
+ number of elements: 4096
+ different slots: 3236
+ max chain length: 5
+ avg chain length (counted): 1.27
+ avg chain length (computed): 1.27
+ Chain length distribution:
+   0: 4956 (60.50%)
+   1: 2509 (30.63%)
+   2: 616 (7.52%)
+   3: 92 (1.12%)
+   4: 16 (0.20%)
+   5: 3 (0.04%)
+[Expires HT]
+
+==== 源码：扩容与每一步搬多少（dict.c） ====
+1714:    /* If we reached the 1:1 ratio, and we are allowed to resize the hash
+1715-     * table (global setting) or we should avoid it but the ratio between
+1716-     * elements/buckets is over the "safe" threshold, we resize doubling
+1717-     * the number of buckets. */
+1718-    dictResizeEnable can_resize;
+1719-    atomicGet(dict_can_resize, can_resize);
+1720-    if ((can_resize == DICT_RESIZE_ENABLE &&
+1721-         d->ht_used[0] >= DICTHT_SIZE(d->ht_size_exp[0])) ||
+1722-        (can_resize != DICT_RESIZE_FORBID &&
+1723-         d->ht_used[0] >= dict_force_resize_ratio * DICTHT_SIZE(d->ht_size_exp[0])))
+1724-    {
+1725-        if (dictTypeResizeAllowed(d, d->ht_used[0] + 1))
+1726-            dictExpand(d, d->ht_used[0] + 1);
+396-
+397-/* Performs N steps of incremental rehashing. Returns 1 if there are still
+398- * keys to move from the old to the new hash table, otherwise 0 is returned.
+399- *
+400- * Note that a rehashing step consists in moving a bucket (that may have more
+401- * than one key as we use chaining) from the old to the new hash table, however
+402- * since part of the hash table may be composed of empty spaces, it is not
+403- * guaranteed that this function will rehash even a single bucket, since it
+404- * will visit at max N*10 empty buckets in total, otherwise the amount of
+405- * work it does would be unbound and the function may block for a long time. */
+406:int dictRehash(dict *d, int n) {

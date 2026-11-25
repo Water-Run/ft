@@ -1,0 +1,136 @@
+
+==== 改之前 ====
+127.0.0.1:7379> HGETALL user:2050
+name
+Alice
+age
+42
+127.0.0.1:7379> MEMORY USAGE user:2050
+55
+127.0.0.1:7379> DEBUG OBJECT user:2050
+Value at:0x7f3751a12580 refcount:1 encoding:listpack serializedlength:28 lru:369808 lru_seconds_idle:0
+127.0.0.1:7379> DEBUG LISTPACK user:2050
+Listpack structure printed on stdout
+
+==== HSET user:2050 age 43（回复 0：没有新增字段，只改了已有的） ====
+127.0.0.1:7379> CONFIG SET slowlog-log-slower-than 0
+OK
+127.0.0.1:7379> HSET user:2050 age 43
+0
+服务端用时（微秒）：4
+
+==== 改之后 ====
+127.0.0.1:7379> HGETALL user:2050
+name
+Alice
+age
+43
+127.0.0.1:7379> MEMORY USAGE user:2050
+55
+127.0.0.1:7379> DEBUG OBJECT user:2050
+Value at:0x7f3751a12580 refcount:1 encoding:listpack serializedlength:28 lru:369808 lru_seconds_idle:0
+127.0.0.1:7379> DEBUG LISTPACK user:2050
+Listpack structure printed on stdout
+
+==== 也可以让服务端自己加一：HINCRBY ====
+127.0.0.1:7379> HINCRBY user:2050 age 1
+44
+127.0.0.1:7379> HINCRBY user:2050 age -1
+43
+127.0.0.1:7379> HGET user:2050 age
+43
+--- 服务端 stdout（改之前、改之后各一次 DEBUG LISTPACK）---
+{total bytes 27} {num entries 4}
+{
+	addr: 0x7f3751a125a6,
+	index:  0,
+	offset: 6,
+	hdr+entrylen+backlen:  6,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 4
+	bytes: 84|6e|61|6d|65|05|
+	[str]name
+}
+{
+	addr: 0x7f3751a125ac,
+	index:  1,
+	offset: 12,
+	hdr+entrylen+backlen:  7,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 5
+	bytes: 85|41|6c|69|63|65|06|
+	[str]Alice
+}
+{
+	addr: 0x7f3751a125b3,
+	index:  2,
+	offset: 19,
+	hdr+entrylen+backlen:  5,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 3
+	bytes: 83|61|67|65|04|
+	[str]age
+}
+{
+	addr: 0x7f3751a125b8,
+	index:  3,
+	offset: 24,
+	hdr+entrylen+backlen:  2,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 0
+	bytes: 2a|01|
+	[str]42
+}
+{end}
+
+{total bytes 27} {num entries 4}
+{
+	addr: 0x7f3751a125a6,
+	index:  0,
+	offset: 6,
+	hdr+entrylen+backlen:  6,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 4
+	bytes: 84|6e|61|6d|65|05|
+	[str]name
+}
+{
+	addr: 0x7f3751a125ac,
+	index:  1,
+	offset: 12,
+	hdr+entrylen+backlen:  7,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 5
+	bytes: 85|41|6c|69|63|65|06|
+	[str]Alice
+}
+{
+	addr: 0x7f3751a125b3,
+	index:  2,
+	offset: 19,
+	hdr+entrylen+backlen:  5,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 3
+	bytes: 83|61|67|65|04|
+	[str]age
+}
+{
+	addr: 0x7f3751a125b8,
+	index:  3,
+	offset: 24,
+	hdr+entrylen+backlen:  2,
+	hdrlen:   1,
+	backlen:  1,
+	payload: 0
+	bytes: 2b|01|
+	[str]43
+}
+{end}
+

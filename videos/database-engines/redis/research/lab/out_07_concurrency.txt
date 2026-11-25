@@ -1,0 +1,109 @@
+
+==== 一条慢命令挡住所有人：Carol 让服务端睡 0.5 秒（DEBUG SLEEP），0.1 秒后 Bob 来读 ====
+Bob   > HGET user:2050 age
+        '42'
+Bob 发出请求在第 0.10 秒，拿到回复在第 0.50 秒：等了 0.40 秒
+
+==== 每条命令单独执行、不会被打断：Alice 与 Carol 各用一个线程，同时各做 10000 次 HINCRBY 加一 ====
+Alice > HSET user:2050 visits 0
+        1
+Bob   > HGET user:2050 visits
+        '20000'
+
+==== 先读后写分成两条命令，中间被别人插进来：两次加一只剩一次 ====
+Alice > HGET user:2050 age
+        '42'
+Carol > HGET user:2050 age
+        '42'
+Alice > HSET user:2050 age 43
+        0
+Carol > HSET user:2050 age 43
+        0
+Bob   > HGET user:2050 age
+        '43'
+
+==== MULTI：命令先排队，EXEC 时一口气执行；排队期间 Bob 读到的仍是旧值 ====
+Alice > MULTI
+        'OK'
+Alice > HSET user:2050 age 43
+        'QUEUED'
+Alice > HGET user:2050 age
+        'QUEUED'
+Bob   > HGET user:2050 age
+        '42'
+Alice > EXEC
+        [0, '43']
+Bob   > HGET user:2050 age
+        '43'
+
+==== WATCH：Alice 盯住这个键；她 EXEC 之前 Carol 改了它，于是 Alice 的 EXEC 什么也不做，回复空 ====
+Alice > WATCH user:2050
+        'OK'
+Alice > HGET user:2050 age
+        '42'
+Carol > HSET user:2050 age 43
+        0
+Alice > MULTI
+        'OK'
+Alice > HSET user:2050 age 43
+        'QUEUED'
+Alice > EXEC
+        None
+Bob   > HGET user:2050 age
+        '43'
+Alice 重新读一遍再做：
+Alice > WATCH user:2050
+        'OK'
+Alice > HGET user:2050 age
+        '43'
+Alice > MULTI
+        'OK'
+Alice > HSET user:2050 age 44
+        'QUEUED'
+Alice > EXEC
+        [0]
+Bob   > HGET user:2050 age
+        '44'
+
+==== 没有回滚：EXEC 里有一条执行时出错，前面那条照样生效 ====
+Alice > MULTI
+        'OK'
+Alice > HSET user:2050 age 43
+        'QUEUED'
+Alice > HINCRBY user:2050 name 1
+        'QUEUED'
+Alice > EXEC
+        [0, 'ERR:ERR hash value is not an integer']
+Bob   > HGETALL user:2050
+        ['name', 'Alice', 'age', '43']
+
+==== 命令写错（排队时就发现）：整个事务被丢弃 ====
+Alice > MULTI
+        'OK'
+Alice > HSET user:2050 age 43
+        'QUEUED'
+Alice > HSET user:2050
+        "ERR:ERR wrong number of arguments for 'hset' command"
+Alice > EXEC
+        'ERR:EXECABORT Transaction discarded because of previous errors.'
+Bob   > HGET user:2050 age
+        '42'
+
+==== 进程里的线程：执行命令的只有主线程 ====
+      1 bio_aof
+      1 bio_close_file
+      1 bio_lazy_free
+      2 jemalloc_bg_thd
+      1 redis-server
+
+==== 源码：EXEC 里排队的命令逐条执行，出错也不回滚（multi.c） ====
+166:    /* Exec all the queued commands */
+167-    unwatchAllKeys(c); /* Unwatch ASAP otherwise we'll waste CPU cycles */
+168-
+169-    server.in_exec = 1;
+40:    if (c->flags & (CLIENT_DIRTY_CAS|CLIENT_DIRTY_EXEC))
+80:    c->flags &= ~(CLIENT_MULTI|CLIENT_DIRTY_CAS|CLIENT_DIRTY_EXEC);
+139:    /* EXEC with expired watched key is disallowed*/
+140:    if (isWatchedKeyExpired(c)) {
+141:        c->flags |= (CLIENT_DIRTY_CAS);
+150:    if (c->flags & (CLIENT_DIRTY_CAS | CLIENT_DIRTY_EXEC)) {

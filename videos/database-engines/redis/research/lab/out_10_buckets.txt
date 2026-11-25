@@ -1,0 +1,32 @@
+
+==== DEBUG HTSTATS 0 FULL（写完 1 秒后） ====
+127.0.0.1:7379> DEBUG HTSTATS 0 FULL
+[Dictionary HT]
+Hash table 0 stats (main hash table):
+ table size: 8192
+ number of elements: 4096
+ different slots: 3192
+ max chain length: 6
+ avg chain length (counted): 1.28
+ avg chain length (computed): 1.28
+ Chain length distribution:
+   0: 5000 (61.04%)
+   1: 2448 (29.88%)
+   2: 600 (7.32%)
+   3: 130 (1.59%)
+   4: 13 (0.16%)
+   6: 1 (0.01%)
+[Expires HT]
+
+==== 本次进程的哈希种子（gdb 读 dict_hash_function_seed，16 字节） ====
+084b042c1f17cfbaf953f3b4ca36beed
+
+==== 按 SipHash-1-2 自己算一遍：链长分布应与上面完全相同 ====
+桶数 8192 键数 4096 有键的桶 3192 最长链 6
+   0: 5000 (61.04%)
+   1: 2448 (29.88%)
+   2: 600 (7.32%)
+   3: 130 (1.59%)
+   4: 13 (0.16%)
+   6: 1 (0.01%)
+user:2050 在第 3271 号桶；同一个桶里的键： ['user:2050']
