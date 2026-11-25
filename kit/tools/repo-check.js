@@ -66,6 +66,19 @@ function markdownStyleProblems(markdown) {
   return problems;
 }
 
+// Git 不单独登记目录。文档可以链接仓库根、文件及其父目录。
+function linkTargets(files) {
+  const targets = new Set(['.']);
+  for (const file of files) {
+    let name = file;
+    while (!targets.has(name)) {
+      targets.add(name);
+      name = path.posix.dirname(name);
+    }
+  }
+  return targets;
+}
+
 function checkRepository(root = path.resolve(__dirname, '../..')) {
   const errors = [];
   const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
@@ -108,6 +121,7 @@ function checkRepository(root = path.resolve(__dirname, '../..')) {
   for (const file of listed.filter((file) => /^docs\/.*\.md$/.test(file) && !file.startsWith('docs/log/') && file !== 'docs/README.md')) if (!mapped.has(file)) errors.push(file + ' 没有登记在 docs/README.md 的「全部文档」里');
 
   // 6. 本地文件链接：根目录、docs/、kit/ 下的说明，片单索引、系列说明与各片 README
+  const targets = linkTargets(listed);
   const docs = listed.filter((file) => /^[^/]+\.md$/.test(file) || /^docs\/.*\.md$/.test(file) || /^kit\/.*\.md$/.test(file) || /^videos\/[^/]+(\/README)?\.md$/.test(file) || /^videos\/[^/]+\/[^/]+\/README\.md$/.test(file));
   for (const file of docs) {
     const content = read(file).replace(/```[\s\S]*?```/g, '').replace(/`[^`\n]*`/g, '');
@@ -116,7 +130,8 @@ function checkRepository(root = path.resolve(__dirname, '../..')) {
       if (/^[a-z][a-z0-9+.-]*:|^\/\//i.test(href) || href.includes('{{')) continue;
       const target = decodeURIComponent(href.split('#')[0].split('?')[0]);
       const absolute = target ? path.resolve(root, path.dirname(file), target) : path.join(root, file);
-      if (!fs.existsSync(absolute)) { errors.push(file + '：文件链接不存在 ' + href); continue; }
+      const relative = path.relative(root, absolute).split(path.sep).join('/') || '.';
+      if (!targets.has(relative)) { errors.push(file + '：仓库中没有链接目标 ' + href); continue; }
       // 共享的现行文档同时查章节锚点；历史与单片记录保留其原有版本。
       const active = /^[^/]+\.md$/.test(file) || /^docs\/(?!log\/)/.test(file) || /^kit\//.test(file) || /^videos\/[^/]+\/README\.md$/.test(file);
       const fragment = href.includes('#') ? decodeURIComponent(href.slice(href.indexOf('#') + 1)) : '';
@@ -146,7 +161,7 @@ function checkRepository(root = path.resolve(__dirname, '../..')) {
   return errors;
 }
 
-module.exports = { commandProblems, markdownAnchors, markdownStyleProblems, checkRepository };
+module.exports = { commandProblems, linkTargets, markdownAnchors, markdownStyleProblems, checkRepository };
 if (require.main === module) {
   const errors = checkRepository();
   if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }

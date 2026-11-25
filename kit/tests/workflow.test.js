@@ -452,6 +452,18 @@ test('仓库检查拦截失效 npm 入口，包括 node --test 后的测试文�
   assert.match(errors[1], /missing.test.js/);
 });
 
+test('文档链接可以指向仓库文件及其父目录，本机生成的审片页不算链接目标', t => {
+  const { root, video } = fixture(t);
+  write(video, 'out/audition/index.html');
+  const files = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
+  const targets = require('../tools/repo-check').linkTargets(files);
+  assert.ok(targets.has('.'));
+  assert.ok(targets.has('videos/standalone/example'));
+  assert.ok(targets.has('videos/standalone/example/README.md'));
+  assert.ok(!targets.has('videos/standalone/example/out'));
+  assert.ok(!targets.has('videos/standalone/example/out/audition/index.html'));
+});
+
 test('共享文档章节检查支持中文、重复标题和显式锚点，忽略代码中的假标题', () => {
   const { markdownAnchors } = require('../tools/repo-check');
   const anchors = markdownAnchors('# 文档\n## 6.2 事实\n## 重复\n## 重复\n```md\n## 代码里的假标题\n```\n<a id="manual"></a>\n');
