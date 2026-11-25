@@ -12,7 +12,7 @@ const run = (tool, args, expect) => {
   if (result.status !== 0) process.exit(result.status || 1);
   if (expect && !expect.test(result.stdout)) throw new Error('模板片尾没有可见的 GPL 标识：' + args.join(' '));
 };
-run('new', [slug, '--scratch', '--title', '环境验证', '--title-en', 'Environment check']);
+run('new', [slug, '--scratch', '--title', '环境验证', '--title-en', 'Environment check', '--langs', 'zh,en']);
 run('timeline', [video]);
 run('script-review', [video, 'export', '--lang', 'all']);
 run('look', [video, 'o1', '--lang', 'zh']);

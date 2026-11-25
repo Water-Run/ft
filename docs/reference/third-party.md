@@ -38,7 +38,7 @@ GPL 可用于软件以外的作品；本项目明确许可自己的文案与视�
 | 组件 | 版本 | 取得方式 | 许可 | 用途 |
 |---|---|---|---|---|
 | GSAP | 3.13.0 | `npm ci` | GreenSock Standard License（免费使用，不是开源许可）：<https://gsap.com/standard-license> | 页面里的补间与时间线 |
-| puppeteer-core | 25.12.0 | `npm ci` | Apache-2.0 | 驱动无头浏览器 |
+| puppeteer-core | 25.18.1 | `npm ci` | Apache-2.0 | 驱动无头浏览器 |
 | Chrome / Chromium | 近期版本 | 自行安装 | Chrome 为专有软件；Chromium 为 BSD 等 | 出帧 |
 | FFmpeg | 带 libx264 的构建 | 自行安装 | 视构建而定；启用 GPL 组件的构建为 GPL | 编码、封装、检测 |
 | edge-tts | 7.x | `pip install` | LGPL-3.0 | 调用在线语音服务合成旁白 |
