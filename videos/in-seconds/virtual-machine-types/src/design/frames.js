@@ -1,15 +1,14 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 const frame = document.querySelector('#frame');
-const projectFrames = {
-  'a-title': [187, '整机 / 程序'],
-  'a-compare': [36, '监控器位置'],
-  'a-storage': [105, '磁盘写入'],
-  'b-title': [187, '整机 / 程序'],
-  'b-boot': [36, '启动顺序'],
-  'b-jvm': [67, '栈状态'],
+const instruments = {
+  'a-title': '整机 / 程序', 'a-compare': '监控器位置', 'a-storage': '磁盘写入',
+  'b-title': '整机 / 程序', 'b-boot': '启动顺序', 'b-jvm': '栈状态',
 };
-const id = new URLSearchParams(location.search).get('id') || 'a-title';
-const [remaining, instrument] = projectFrames[id];
+const params = new URLSearchParams(location.search);
+const id = params.get('id') || 'a-title';
+// 剩余秒数由审片页构建脚本按该帧对应的句子算出后传入。
+const remaining = Number(params.get('left') || 192);
+const instrument = instruments[id];
 const layer = (name, detail, kind = '') => `
   <div class="layer ${kind}"><strong>${name}</strong><span>${detail}</span></div>`;
 const guest = (suffix = '') => layer('Linux' + suffix, '客体系统', 'guest');
@@ -22,7 +21,7 @@ function cabinetTitle() {
     <div class="exploded-rack">
       <div class="rack-pair">${guest(' A')}${guest(' B')}</div>${path}
       ${layer('虚拟硬件', 'vCPU　/　内存　/　设备', 'virtual')}${path}
-      ${layer('虚拟机监控器', '协调真实资源', 'monitor')}${path}${hardware}
+      ${layer('虚拟机监控器', 'Hypervisor', 'monitor')}${path}${hardware}
     </div>
   </div>`;
 }
@@ -32,9 +31,9 @@ function compareCabinets() {
   <div class="pair">
     <section class="rack"><h2>第一类 <span>裸机型</span></h2>
     <div class="rack-pair">${layer('Dom0', '管理域', 'management')}${guest()}</div>
-    ${path}${layer('Xen', '监控器', 'monitor')}${path}${hardware}</section>
+    ${path}${layer('Xen', '监控器 · Hypervisor', 'monitor')}${path}${hardware}</section>
     <section class="rack"><h2>第二类 <span>宿主型</span></h2>
-    ${guest()}${path}${layer('VirtualBox', '监控器', 'monitor')}${path}
+    ${guest()}${path}${layer('VirtualBox', '监控器 · Hypervisor', 'monitor')}${path}
     ${layer('Windows', '宿主系统', 'host')}${path}${hardware}</section>
   </div>`;
 }

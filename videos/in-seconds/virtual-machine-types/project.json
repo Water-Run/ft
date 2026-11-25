@@ -75,7 +75,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "确认中文旁白，选定视觉、音色与配乐方向",
+  "next": "第 2 稿待确认：读「诘问」一节与中文旁白，选定视觉、音色与配乐方向",
   "credits": {
     "planner": "WaterRun",
     "repository": "https://github.com/Water-Run/ft",
@@ -88,6 +88,14 @@
           "视觉设计",
           "配乐小样",
           "审片页"
+        ]
+      },
+      {
+        "name": "Claude Opus 5.5",
+        "roles": [
+          "文案诘问与第 2 稿",
+          "取证复核",
+          "审片页第 2 版"
         ]
       }
     ],

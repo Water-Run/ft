@@ -11,16 +11,16 @@
 <a class="skip" href="#text">跳到旁白全文</a>
 <header class="bar"><div class="wrap">
   <a class="wordmark" href="#top">虚拟机 / 审片</a>
-  <nav aria-label="审片内容"><a href="#text">文案</a><a href="#visual">关键帧</a><a href="#voice">配音</a><a href="#music">配乐</a><a href="#feedback">反馈</a></nav>
+  <nav aria-label="审片内容"><a href="#questions">诘问</a><a href="#text">文案</a><a href="#visual">关键帧</a><a href="#voice">配音</a><a href="#music">配乐</a><a href="#feedback">反馈</a></nav>
 </div></header>
 <main id="top">
   <div class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">XX 秒速通 <span></span> 中文初审</p>
+        <p class="eyebrow">XX 秒速通 <span></span> 中文第 2 稿</p>
         <h1>192 秒了解虚拟机</h1>
         <p class="deck">第一类、第二类与进程虚拟机</p>
-        <p class="intro">从一台电脑如何启动两套系统讲起，再沿一段真实字节码看 Java 虚拟机怎样把 2 和 3 加成 5。</p>
+        <p class="intro">Windows 里开的 Linux 叫虚拟机，JVM 也叫虚拟机，它们是一回事吗？本稿把第 1 稿逐句当作观众来诘问，围绕这一个问题重写了旁白。</p>
         <a class="button" href="#text">阅读完整旁白 <span aria-hidden="true">↓</span></a>
       </div>
       <figure class="hero-image">
@@ -30,9 +30,16 @@
     </div>
   </div>
   <form id="review" class="wrap body">
+    <section id="questions" aria-labelledby="questions-title">
+      <div class="section-head"><div><h2 id="questions-title">对第 1 稿的诘问</h2><p>以没学过这个题目的观众的眼光逐句发问，每条写明问题与本稿的改法。对照稿本 {{PREVIOUS}}。</p></div></div>
+      {{QUESTIONS}}
+      <h3 class="subhead">仍待策划者决定</h3>
+      <ul class="pending">{{PENDING}}</ul>
+    </section>
     <section id="text" aria-labelledby="text-title">
-      <div class="section-head"><div><h2 id="text-title">中文旁白</h2><p>首轮全文 · 约时 · 片尾 7.5 秒</p></div><a href="{{SCRIPT_LINK}}">校对稿 ↗</a></div>
+      <div class="section-head"><div><h2 id="text-title">中文旁白</h2><p>第 2 稿全文 · 按字数估时 · 片尾 7.5 秒 · {{REVISION}} · 旁白里教的新名词 {{TERMS}} 个</p></div><a href="{{SCRIPT_LINK}}">校对稿 ↗</a></div>
       <div class="chapters">{{STORY}}</div>
+      {{REMOVED}}
       <p class="under"><a href="../../research/FACTS.md">事实与出处 ↗</a><a href="../../research/lab/add.txt">Java 实验回显 ↗</a>
       <span>稿本 {{DRAFT}} · 待校对确认</span></p>
     </section>

@@ -54,6 +54,20 @@ figcaption{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .chapter-detail{font-size:14px;color:var(--muted);margin-top:3px}
 .reading{max-width:65em;line-height:1.95;margin-top:8px}
 .cue-id{color:var(--green);background:#e5ebd9;padding:1px 4px;white-space:nowrap}
+.cue.revised{background:linear-gradient(transparent 62%,#f1dca3 62%)}
+mark.revised-key{background:linear-gradient(transparent 55%,#f1dca3 55%);color:inherit}
+.removed{margin-top:16px;color:var(--muted);font-size:14px}
+.removed .reading{text-decoration:line-through;text-decoration-color:#a3998a}
+.removed .cue-id{text-decoration:none}
+.questions{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;counter-reset:q}
+.questions li{counter-increment:q;border:1px solid var(--rule);background:var(--surface);padding:14px 16px 15px}
+.where{font:600 13px Mono,monospace;color:var(--green)}
+.where::before{content:"Q" counter(q) "　";color:var(--muted)}
+.ask{font-weight:680;margin-top:6px;line-height:1.6}
+.answer{color:var(--muted);font-size:15px;margin-top:8px;padding-left:12px;border-left:3px solid var(--light)}
+.subhead{font-size:19px;font-weight:780;margin:26px 0 8px}
+.pending{margin:0;padding-left:1.3em;color:var(--ink)}
+.pending li+li{margin-top:6px}
 .under{display:flex;flex-wrap:wrap;gap:9px 20px;margin-top:12px}
 .under span:last-child{margin-left:auto}
 .visual-option{padding:18px 21px 21px;border:1px solid var(--rule);background:var(--surface);margin-bottom:15px}
@@ -88,6 +102,7 @@ dialog img{width:100%;max-height:82vh;object-fit:contain}
   .hero{padding:40px 0 25px}
   .hero-image{max-width:700px}
   .audio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .questions{grid-template-columns:1fr}
 }
 @media(max-width:580px){
   .wrap{width:calc(100% - 32px)}
@@ -95,7 +110,7 @@ dialog img{width:100%;max-height:82vh;object-fit:contain}
   .bar nav{gap:17px;max-width:100%;overflow:auto}
   .chapter{grid-template-columns:1fr;gap:4px}
   .chapter>.time{padding-top:0}
-  .screens,.audio-grid{grid-template-columns:1fr}
+  .screens,.audio-grid,.questions{grid-template-columns:1fr}
   .under span:last-child{margin-left:0}
   .visual-option{padding:14px}
 }

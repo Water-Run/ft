@@ -8,7 +8,7 @@ const { CHROME } = require('../../../../kit/tools/lib');
 const { snapshot } = require('../../../../kit/tools/script-review');
 const project = require('../project.json');
 const { layoutScript, strip, TOTAL } = require('../src/js/script');
-const { directions, music, sample, sections, voices } = require('../src/design/audition');
+const { directions, music, pending, previous, questions, sample, sections, voices } = require('../src/design/audition');
 
 const film = path.resolve(__dirname, '..');
 const design = path.join(film, 'src/design');
@@ -25,7 +25,20 @@ const time = (s) => {
 };
 const radio = (group, id, title) => `
   <label class="select"><input type="radio" name="${group}" value="${id.toUpperCase()} · ${html(title)}">选 ${id.toUpperCase()}</label>`;
-const line = (id) => `<span class="cue"><span class="cue-id">${id}</span> ${html(strip(layout.cues[id].cap))}</span>`;
+const shotTime = (shot) => Math.floor(layout.cues[shot.cue].start);
+
+// 上一稿的逐句表来自工具导出的校对稿；按字幕原文比对，标出本稿新写或改写的句子。
+async function previousDraft() {
+  const text = await fs.readFile(path.join(film, 'review', `script.zh.${previous}.md`), 'utf8');
+  const table = text.split('## 逐句校对')[1].split('## 多音字清单')[0];
+  return [...table.matchAll(/^\| ([a-z]+\d*) \| (.+) \|$/gm)]
+    .filter(([, id]) => id !== 'title' && !/^（无旁白/.test(id))
+    .map(([, id, cap]) => ({ id, cap })).filter(({ cap }) => !cap.startsWith('（无旁白'));
+}
+let before = new Set();
+let highlight = false;
+const isNew = (id) => !before.has(layout.cues[id].cap);
+const line = (id, mark = true) => `<span class="cue${mark && highlight && isNew(id) ? ' revised' : ''}"><span class="cue-id">${id}</span> ${html(strip(layout.cues[id].cap))}</span>`;
 
 function story() {
   return layout.scenes.map(({ id, start, end }) => {
@@ -34,9 +47,21 @@ function story() {
     return `<article class="chapter" id="chapter-${id}">
       <p class="time">${time(start)}<span>—</span>${time(end)}</p>
       <div><h3>${html(title)}</h3><p class="chapter-detail">${html(detail)}</p>
-      ${cues.length ? `<p class="reading">${cues.map(line).join(' ')}</p>` : ''}</div>
+      ${cues.length ? `<p class="reading">${cues.map(id => line(id)).join(' ')}</p>` : ''}</div>
     </article>`;
   }).join('');
+}
+
+function interrogation() {
+  return `<ol class="questions">${questions.map(({ cues, q, a }) => `<li>
+    <p class="where">${html(cues)}</p><p class="ask">${html(q)}</p><p class="answer">${html(a)}</p></li>`).join('')}</ol>`;
+}
+
+function removed(old) {
+  const now = new Set(layout.order.map(id => layout.cues[id].cap));
+  const gone = old.filter(({ cap }) => !now.has(cap));
+  return `<details class="removed"><summary>第 1 稿中已删去或改写的 ${gone.length} 句</summary>
+    <p class="reading">${gone.map(({ id, cap }) => `<span class="cue"><span class="cue-id">${id}</span> ${html(cap.replace(/\*/g, ''))}</span>`).join(' ')}</p></details>`;
 }
 
 function pictures() {
@@ -46,7 +71,7 @@ function pictures() {
     <div class="screens">${option.shots.map(shot => `<figure>
       <button class="zoom" type="button" data-image="frames/${shot.id}.png" aria-label="放大${html(shot.name)}">
         <img src="frames/${shot.id}.png" width="1920" height="1080" alt="${html(shot.alt)}" loading="lazy">
-      </button><figcaption><span>${html(shot.name)}</span><span class="time">${html(shot.time)}</span></figcaption>
+      </button><figcaption><span>${html(shot.name)}</span><span class="time">${time(shotTime(shot))} · ${shot.cue}</span></figcaption>
     </figure>`).join('')}</div>
   </article>`).join('');
 }
@@ -68,6 +93,7 @@ async function captureFrames() {
     for (const shot of directions.flatMap(option => option.shots)) {
       const url = pathToFileURL(path.join(design, 'frame.html'));
       url.searchParams.set('id', shot.id);
+      url.searchParams.set('left', TOTAL - shotTime(shot));
       await page.goto(url.href, { waitUntil: 'load' });
       await page.evaluate(() => document.fonts.ready);
       const clipped = await page.evaluate(() =>
@@ -95,11 +121,22 @@ async function main() {
   for (const [group, options] of [['voice', voices], ['music', music]]) {
     for (const { id } of options) assert((await fs.stat(path.join(out, 'audio', `${group}-${id}.mp3`))).size > 1024);
   }
+  const old = await previousDraft();
+  before = new Set(old.map(({ cap }) => cap));
   await captureFrames();
+  const spoken = layout.order.filter(id => !layout.cues[id].silent);
+  const revised = spoken.filter(isNew).length;
+  // 全部重写时逐句高亮没有信息量，改为一句说明。
+  highlight = revised < spoken.length;
   const values = {
     TITLE: html(project.titles.zh), DRAFT: draft.slice(0, 12),
     SCRIPT_LINK: `../../review/script.zh.${draft}.md`,
-    STORY: story(), VISUALS: pictures(), SAMPLE: sample.map(line).join(' '),
+    STORY: story(), VISUALS: pictures(), SAMPLE: sample.map(id => line(id, false)).join(' '),
+    PREVIOUS: previous.slice(0, 12), QUESTIONS: interrogation(), REMOVED: removed(old),
+    PENDING: pending.map(item => `<li>${html(item)}</li>`).join(''),
+    REVISION: highlight
+      ? `${spoken.length} 句中 <mark class="revised-key">${revised} 句为新写或改写</mark>`
+      : `${spoken.length} 句全部重写，第 1 稿原句无一照搬`, TERMS: new Set(spoken.flatMap(id => [...layout.cues[id].cap.matchAll(/\*([^*]+)\*/g)].map(m => m[1]))).size,
     VOICES: audioOptions(voices, 'voice'), MUSIC: audioOptions(music, 'music'),
   };
   const template = await fs.readFile(path.join(design, 'audition.html'), 'utf8');
