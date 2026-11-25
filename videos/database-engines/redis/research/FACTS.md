@@ -35,7 +35,7 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
 | o1–o3、c3 | 向 Redis 要 2050 号用户，回来名字 Alice、年龄 42；服务端执行这一条 `HGETALL user:2050` 用了 4–6 微秒（5 次：5、4、6、6、5），旁白说「大约五微秒」 | `out_04_find.txt`「按键找」：每次 `HGETALL` 的回复 `name Alice age 42` 与 `SLOWLOG GET 1` 的用时 | 源码 `server.c:4222` `call()` 里 `c->cmd->proc(c)`（`:4321`）前后计时，同一个数既进 SLOWLOG 也进 commandstats | 8.12.0，本实验 | 2026-11-24 已核 |
-| o5、o9–o11 | Redis 把数据主要放在内存里；磁盘上的文件用于持久化（重启后找回） | H01 | H02（持久化页）、P01、P05 | 8.12.0 README；文档 2026-11-24 | 已核；「一个原因」：README 把快归因于内存与高效的数据结构两点 |
+| o5、o9–o11 | Redis 把数据主要放在内存里；磁盘上的文件用于持久化（重启后找回） | H01 | H02（持久化页）、P01、P05 | 8.12.0 README；文档 2026-11-24 | 已核；「一个原因」：README 把快归因于内存与高效的数据结构两点。第 2 稿 o5 由「数据根本不在磁盘上」改为「它不用去磁盘上找」：RDB、AOF 文件就在磁盘上（o11），原说法与之矛盾 |
 | o7、o9 | 本系列前六集的引擎（MyISAM、InnoDB、PostgreSQL、SQLite、ClickHouse、MongoDB）数据都在磁盘上 | S01 | — | 前六集 | 已核（转录） |
 | o12–o14 | 名字是 REmote DIctionary Server 的缩写 | H03 | H04（第一个提交的 README：「a dictionary where keys are associated with values」） | 文档 2026-11-24 | 已核 |
 | o15b–o15c | 2009 年由 Salvatore Sanfilippo 写成，最初是为了扩展他的实时日志分析工具 LLOOGG | H05 | H06（antirez 本人「Redis itself was a side project of LLOOGG」）；H07（GitHub 最早的提交 2009-03-22） | — | 已核 |
@@ -63,16 +63,16 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | b15–b17 | `MEMORY USAGE user:2050` 55 字节；名字长的用户 100 字节；写入 4096 个用户使 `used_memory` 从 870,160 增到 1,460,384（多 590,224 字节，不到 600 KB） | `out_02_load.txt` | — | 本实验 | 已核；含哈希表本身 |
 | b18 | 字段超过 512 个或值超过 64 字节，哈希改用真正的哈希表编码 | K07 | 桶的真实位置：用 gdb 读出该进程的哈希种子 `084b042c1f17cfbaf953f3b4ca36beed`，按 SipHash-1-2（`siphash.c`，`dict.c:116` `dictGenHashFunction`；`server.c` `dbDictType` 用 `dictSdsHash`）算出 4096 个键的桶号（`hash & 8191`），链长分布与同一进程的 `DEBUG HTSTATS`（空桶 5000、1 个 2448、2 个 600、3 个 130、4 个 13、6 个 1，有键的桶 3192）逐项相同；`user:2050` 在第 3271 号桶，桶里只有它 | `out_10_buckets.txt`；`research/lab/buckets.py`；每个键的桶号在 `research/lab/buckets.json` | 已核；种子每次启动随机，这些位置只属于这一次运行 |
 | K06 | `out_02_load.txt`：513 个字段时 `OBJECT ENCODING` → `hashtable` | 8.12.0 缺省 | 已核 |
-| b21 | 键数一到桶数，表翻倍（4096 → 8192） | R01 | R02 | 8.12.0 | 已核 |
+| b20–b21b | 键数一到桶数，表翻倍；这一次 4096 个键时 4096 桶翻成 8192 桶（第一章 a14 的 8192 由此而来） | R01 | R02、R05（扩容可能由插入触发，也可能由定期检查触发，旁白不说是哪一下） | 8.12.0，本实验 | 已核 |
 | b24–b26 | 翻倍后新旧两张表并存，每次读写这张表时顺手搬一个桶；叫渐进式 rehash | R03 | R02（读 100 次后 201 个键在新表，读到 4100 次后全部搬完） | 8.12.0 | 已核；「渐进式 rehash」是 redis.conf 的说法 incremental/lazy rehashing 的中文 |
-| b27 | 每一步都很小，没有哪条命令要等一次大搬家 | R03（每步搬一个桶，最多看 10 个空桶就返回）；R04 | — | 8.12.0 | 已核（由源码推出） |
+| b27 | 每一步都很小，没有哪条命令要等一次大搬家 | R03（每步搬一个桶，最多看 10 个空桶就返回）；R04 | `dict.c:397–405` 注释：限制空桶数，「otherwise the amount of work it does would be unbound and the function may block for a long time」 | 8.12.0 | 已核（由源码推出） |
 
 ### 03 查（find）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
 | c2–c3 | 按键读：算哈希、找桶、比对键名，取出对象，读 listpack | K04 | Q01 | 8.12.0 | 已核 |
-| c5–c6 | 50 个客户端共 20 万次 `HGETALL user:2050`：每秒 162,733.94 次，客户端看到的延迟中位数 0.151 毫秒；服务端平均每次 0.24 微秒 | Q02 | — | 本实验 | 已核；单次的 4–6 微秒与压测平均的 0.24 微秒是两次不同的测量，画面分开标 |
+| c5–c6 | 50 个客户端共 20 万次 `HGETALL user:2050`：每秒 162,733.94 次，客户端看到的延迟中位数 0.151 毫秒；服务端平均每次 0.24 微秒 | Q02 | — | 本实验 | 已核；第 2 稿删去旁白（单次 4–6 微秒与压测平均 0.24 微秒并列会让人疑惑哪个对），只作画面注解 |
 | c7–c9 | 没有按名字的索引；按名字找只能把 4096 个键都扫一遍 | Q03 | — | 8.12.0 核心（不含 Redis 附带的查询引擎模块，N04） | 已核 |
 | c10 | 扫一遍用了 3,590–4,155 微秒（3 次），比按键找的 4–6 微秒慢几百倍（约 600–1000 倍） | Q03、Q01 | — | 本实验，同一口径（SLOWLOG） | 已核 |
 | c11–c12 | 要按名字找，就另存一个从名字到编号的键 | `out_04_find.txt`「自己维护」：`SET name:Alice 2050`、`GET` → 2050 | — | 本实验 | 已核 |
@@ -83,20 +83,22 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 |---|---|---|---|---|---|
 | d2 | `HSET user:2050 age 43` 回复 0（没有新字段） | `out_05_update.txt` | — | 本实验 | 已核 |
 | d3–d4 | 改前改后 listpack 的地址、总长都不变（`addr: 0x…25b8` 那一项），变的只有 `2a` → `2b` | U01 | `DEBUG OBJECT` 的 `Value at` 前后相同 | 本实验 | 已核 |
-| d5–d6 | 旧值被覆盖，不留旧版本，不记撤销用的日志 | U01；C08（没有回滚） | — | 8.12.0 | 已核 |
+| d5、d6 | 旧值被覆盖，不留旧版本，不记撤销用的日志 | U01；C08（没有回滚） | — | 8.12.0 | 已核 |
+| d5b–d5c | InnoDB 改之前把旧值记进 undo，别人来读读 undo 里的旧版本；PostgreSQL 不覆盖、另写新版本，快照决定读哪个版本 | S07（InnoDB e6–e7、k10；PostgreSQL u2–u3、z8） | S01 | 前几集 | 已核（转录）；undo 也用于回滚，旁白在 d6 另说「撤销」 |
 
 ### 05 事务与并发（concur）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| e3–e4 | 执行命令的只有主线程；另有 `bio_close_file`、`bio_aof`、`bio_lazy_free` 等后台线程（关文件、AOF 刷盘、释放内存） | C01 | H08（文档：单线程处理全部请求，后台线程做慢的磁盘 I/O） | 8.12.0 缺省（io-threads 1） | 已核 |
+| e3–e4 | 执行命令的只有主线程；另有 `bio_close_file`、`bio_aof`、`bio_lazy_free` 等后台线程（关文件、AOF 刷盘、释放内存）。第 2 稿 e4 只举关文件、释放内存：AOF 到第 06 章才讲 | C01 | H08（文档：单线程处理全部请求，后台线程做慢的磁盘 I/O） | 8.12.0 缺省（io-threads 1） | 已核 |
 | e6–e7 | 命令排成一队，一次执行一条，执行中不被打断 | H08 | C02 | 文档 | 已核 |
-| e8 | Alice 与 Carol 两个连接同时各做 10000 次 `HINCRBY`，结果 20000 | C02 | — | 本实验（字段 visits） | 已核 |
+| e8 | 两个连接同时各做 10000 次 `HINCRBY`（同一个字段 visits，旁白说「一个计数」），结果 20000 | C02 | — | 本实验（字段 visits） | 已核 |
 | e9–e11 | 不用行锁、不用旧版本：同一时刻只有一条命令在动数据 | H08、C01 | — | — | 已核（由单线程推出）；「行锁」「旧版本」是前几集讲过的做法（S01） |
+| e14 | 桶一个一个地搬也是为此：一口气搬完，所有命令都得等 | R03 与 b27 行所引 `dict.c:397–405` 注释（一次做的工作不设上限就可能阻塞很久）；C01（只有一个线程执行命令）；C03（慢命令让别人等） | — | 8.12.0 | 已核（由源码注释与实验推出） |
 | e12–e13 | 一条慢命令让所有人等：Carol 的 `DEBUG SLEEP 0.5` 期间，0.1 秒后发出的 Bob 的读又等了 0.40 秒 | C03 | H08（「a request that is slow to serve will make all other clients wait」一类说法，见 H08 原文） | 本实验 | 已核 |
-| e15–e17 | 先读后写分两条命令：两边都读到 42、都写回 43，两次加一只多了一 | C04 | — | 本实验 | 已核 |
-| e18–e20 | MULTI 后命令回 QUEUED，EXEC 时一起执行；排队期间 Bob 读到 42，EXEC 后 43 | C05 | H09（「A request sent by another client will never be served in the middle」） | 本实验；文档 | 已核 |
-| e21–e24 | WATCH 后键被 Carol 改过，Alice 的 EXEC 回空；重读再做得到 44 | C06 | H09（WATCH、乐观锁、EXEC 返回空） | 本实验；文档 | 已核 |
+| e15–e17b | 回到 04 章那次过生日（实验各自从 42 开始）；先读后写分两条命令：两边都读到 42、都写回 43，两次加一只多了一；两条命令之间插进了别人的命令 | C04 | — | 本实验 | 已核 |
+| e18–e20c | MULTI 后命令回 QUEUED，EXEC 时一起执行；排队期间 Bob 读到 42，EXEC 后 43。排进队的命令到 EXEC 才执行，排队时只回 QUEUED，读出的值拿不到，所以「先读再算」放不进队里（第 2 稿补上这一步，引出 WATCH） | C05 | H09（「A request sent by another client will never be served in the middle」） | 本实验；文档 | 已核 |
+| e21–e24 | WATCH 后键被 Carol 改过，盯着它的那次 EXEC（实验里是 Alice 的连接）回空；重读再做得到 44 | C06 | H09（WATCH、乐观锁、EXEC 返回空） | 本实验；文档 | 已核 |
 | e26–e27 | 没有回滚：EXEC 里第二条报错，第一条照样生效 | C07 | H09（「even when a command fails, all the other commands in the queue are processed」） | 本实验；文档 | 已核 |
 | e28–e29 | 官方的理由：支持回滚会显著影响 Redis 的简单与性能 | H09（「Redis does not support rollbacks of transactions since supporting rollbacks would have a significant impact on the simplicity and performance of Redis.」） | — | 文档 2026-11-24 | 已核 |
 
@@ -107,26 +109,27 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | f4–f5 | RDB 是某一刻整份数据的快照 | H02 | P02 | 文档 | 已核 |
 | f6–f7 | 写快照时 fork 一个子进程，子进程写，主进程继续处理命令（写时复制） | H02（「Redis forks. We now have a child and a parent process.」「copy-on-write」）；`rdb.c:2352` `rdbSaveBackground`、`:2361` `redisFork` | P01（日志「Background saving started by pid …」「DB saved on disk」） | 8.12.0 | 已核 |
 | f10 | dump.rdb 里原样有 Alice 的 27 字节 listpack | L04 | — | 本实验 | 已核 |
-| f11–f12 | 不带配置文件时缺省保存点：3600 秒内至少 1 次修改、300 秒内至少 100 次、60 秒内至少 10000 次 | P03 | `out_01_environment.txt`：`save 3600 1 300 100 60 10000` | 8.12.0 | 已核 |
+| f11–f12 | 不带配置文件时缺省保存点：3600 秒内至少 1 次修改、300 秒内至少 100 次、60 秒内至少 10000 次。旁白归纳为「改得越多，隔得越短；最短也要隔一分钟」，三条规则只上画面 | P03 | `out_01_environment.txt`：`save 3600 1 300 100 60 10000` | 8.12.0 | 已核 |
 | f15–f16 | 缺省配置下写完 4096 个用户立刻 `kill -9`，重启后 0 个键 | X01 | — | 本实验 | 已核 |
 | f17–f18 | `SAVE` 之后改成 43 再 `kill -9`，重启后是 42 | X02 | — | 本实验 | 已核 |
+| f18b | 上一次快照之后的修改，进程被杀时全丢 | X01、X02 | — | 8.12.0，本实验 | 已核（由两次实验归纳） |
 | f19–f20 | AOF 缺省不开；开了以后每条写命令按协议格式追加到文件末尾 | P05、P06 | `out_01_environment.txt`：`appendonly no` | 8.12.0 | 已核 |
 | f21 | Alice 改成 43 后，incr 文件多出 `*4 $4 HSET $9 user:2050 $3 age $2 43` 这一段（前面有一次 `SELECT 0`） | P06 | — | 本实验 | 已核 |
 | f22–f23 | 重启时重放这些命令；和 InnoDB 的 redo 一样靠重放 | H02（「These operations can then be replayed again at server startup」）；X03 日志「DB loaded from incr file」 | S04（InnoDB 一集 redo 重放） | — | 已核；redo 记的是页的物理改动，AOF 记的是命令，相同的只是「重放」 |
 | f24–f25 | 开了 AOF，缺省每秒 fsync 一次 | P07 | `out_01_environment.txt`：`appendfsync everysec` | 8.12.0 | 已核 |
 | f26–f27 | 回复客户端之前，命令已写进内核（write），进程被杀不丢 | P08 | X03、X04 | 8.12.0 | 已核；例外：fsync 慢时 everysec 最多推迟写入 2 秒（P08），本片不讲 |
-| f28–f29 | 一边 `INCR` 一边 `kill -9`：客户端最后收到 33287，重启后 33287 | X04 | — | 本实验 | 已核 |
+| f28–f29 | 一边 `INCR` 一边 `kill -9`：客户端最后收到 33287，重启后 33287（第 2 稿先讲实验、再讲 f26–f27 的原因、最后讲 f24–f25、f30 的边界） | X04 | — | 本实验 | 已核 |
 | f30–f30b | 断电（灾难）时 everysec 可能丢约 1 秒的数据 | X06 | — | 文档 2026-11-24 | 已核（单一来源，官方文档；本片没有做断电实验） |
 | f31 | `appendfsync always` 每条写都先 fsync 再回复，慢 | P07（「always: fsync after every write to the append only log. Slow, Safest.」）；P08（beforeSleep 注释） | X05（always 下 kill -9 后为 43） | 8.12.0 | 已核 |
-| f33–f34 | AOF 会重写：当前数据写成一个新的 base（RDB 格式），之后的命令进新的 incr | P09 | — | 本实验 | 已核；4096 个用户的 incr 461,764 字节、RDB 347,102 字节（P02、X07），只作画面注解 |
+| f33–f34 | AOF 会重写：当前数据写成一个新的 base（RDB 格式），之后的命令进新的 incr | P09 | — | 本实验 | 已核；第 2 稿为控制时长删去旁白，可作画面注解；4096 个用户的 incr 461,764 字节、RDB 347,102 字节（P02、X07），只作画面注解 |
 | f36–f37 | RDB 恢复快、丢得多；AOF 丢得少、文件通常更大；两种可以同时开 | H02（RDB advantages / AOF disadvantages；「you should use both persistence methods」） | X07 | 文档 | 已核 |
 
 ### 07 删（delete）
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| g1–g2 | `DEL user:2050` 回 1，之后 `EXISTS` 0，`DBSIZE` 4095；缺省（`lazyfree-lazy-user-del no`）在主线程里同步释放 | D01 | `db.c:1488` `delGenericCommand(c, server.lazyfree_lazy_user_del)` | 8.12.0 | 已核 |
-| g3 | Dave 的键 `user:4097` 是应用起的名字 | `out_06_delete.txt` | — | 本实验 | 已核 |
+| g1–g2 | `DEL user:2050` 回 1，之后 `EXISTS` 0，`DBSIZE` 4095；缺省（`lazyfree-lazy-user-del no`）在主线程里同步释放（旁白「占的内存当场释放」） | D01 | `db.c:1488` `delGenericCommand(c, server.lazyfree_lazy_user_del)` | 8.12.0 | 已核 |
+| g3 | Dave 的键 `user:4097` 是应用起的名字 | `out_06_delete.txt` | — | 本实验 | 已核；第 2 稿删去这一句（只说键名由应用起，与 a3 重复，没有推进） |
 | g4–g6 | 过期两条路：访问时发现过期就删（被动）；定时随机抽查带过期时间的键，过期的删掉（主动） | H10 | D02（`expire.c:96` 每轮 20 个） | 文档；8.12.0 | 已核；不讲具体百分比（文档写 25%，源码常量是 10%，N05） |
 | g7–g8 | 关掉主动过期（`DEBUG SET-ACTIVE-EXPIRE 0`），过期 2.5 秒后 `expired_keys` 仍为 0、`DBSIZE` 4097；`EXISTS` 一碰，`expired_keys` 变 1、`DBSIZE` 4096；打开后不访问也被删掉 | D03 | — | 本实验 | 已核 |
 | g9 | 设了内存上限又满了，缺省 noeviction 拒绝写入（`OOM command not allowed …`） | D04 | H12（文档：noeviction 返回错误；`maxmemory` 缺省 0 不限） | 8.12.0 | 已核 |
@@ -140,10 +143,20 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 
 | 句号或位置 | 陈述 | 原始出处与定位 | 独立印证 | 适用版本、环境与截至日期 | 核查日期与状态 |
 |---|---|---|---|---|---|
-| z4–z13 | 前六集各自的做法（一句话） | S01 | — | 前六集 | 已核（转录） |
-| z14 | Redis：放在内存里，一张哈希表直接找到 | K03、Q01 | — | — | 已核 |
-| z17–z21 | 归纳：磁盘上的引擎设法少读页；内存里的设法不丢；并发靠锁、旧版本或单线程；大多数引擎先记一笔、出事照着记录恢复 | S01（各集的锁、多版本、日志）；C01 | — | — | 已核（归纳）；「大多」：InnoDB、PostgreSQL、SQLite、MongoDB、Redis（开了 AOF）有日志，MyISAM、ClickHouse 没有预写日志 |
+| z1–z3 | 同一群人、同一段经历：注册、被找到、过生日、注销 | 系列说明「一句话」；S01 | — | 前六集与本集 | 已核；MyISAM 一集的人是小写 alice、8 行小表（S05），所以不说「每一集都是 2050 号」 |
+| z3b–z3c | 七集都演过 Alice 过生日；年龄加一，数据里只差一个字节 | S07 | 本集 U01（`2a` → `2b`） | 前六集与本集 | 已核（转录） |
+| z4 | MyISAM 把它写回原处，没有退路（没有事务，ROLLBACK 只回警告） | S07 MyISAM c13–c14、m10b–m10d | S01 | MyISAM 一集 | 已核（转录） |
+| z6 | InnoDB 也写回原处，但先把旧值记进 undo | S07 InnoDB e6–e7 | S01 | InnoDB 一集 | 已核（转录） |
+| z8 | PostgreSQL 不覆盖原来那一行，另写一个新版本 | S07 PostgreSQL u2–u3 | S01 | PostgreSQL 一集 | 已核（转录） |
+| z10 | SQLite 改主文件之前，先把要改的页原样抄进回滚日志（缺省模式） | S07 SQLite j5–j6 | S01 | SQLite 一集 | 已核（转录） |
+| z11–z12 | ClickHouse 片段里的文件从来不改；改一个人的年龄，新版本把年龄这一列（一亿个）整个重写 | S07 ClickHouse u2、u4–u4b；S06 | S01 | ClickHouse 一集 | 已核（转录） |
+| z13 | MongoDB 在内存里挂新版本；检查点时整个叶页写到文件里新的地方 | S07 MongoDB e5–e6、e10–e12 | S01 | MongoDB 一集 | 已核（转录） |
+| z14 | Redis 在原地把 `2a` 改成 `2b`，不留旧版本 | U01 | d5–d6 | 8.12.0，本实验 | 已核 |
+| z15–z17 | 改的那一刻有人在读：MyISAM 锁整张表，读写轮流；InnoDB、PostgreSQL、MongoDB 让读的人读旧版本；Redis 一条一条执行，不会读到一半 | S07 InnoDB k10、PostgreSQL z8、MongoDB i6；S01（MyISAM 表锁）；C01、e9–e11 | — | 前六集与本集 | 已核（转录与归纳） |
+| z18–z19c | 改到一半出了事：SQLite 回滚日志存着原样的页；InnoDB 用 redo 重做、undo 撤销；Redis 有快照和命令日志；ClickHouse 留着旧片段；MyISAM 没有日志，只能事后检查修复 | S07 SQLite z7、InnoDB k11–k11z、ClickHouse f6–f6b；S01；本集 P01、P05 | — | 前六集与本集 | 已核（转录）；PostgreSQL（WAL）、MongoDB（日志）没有点名，「只有 MyISAM 什么也没留」对七个都成立 |
+| z20–z21d | 没有哪一种是最好的；每一种都是拿一样东西换另一样 | 归纳 z4–z19c | — | — | 判断，不是事实陈述 |
 | z22–z24 | 第一集开头：「一条查询，一行结果，零点零零七秒」「这一瞬间，数据库在磁盘上做了什么」 | S05 | — | MyISAM 一集 | 已核（转录原文） |
+| z25–z29 | 一个引擎回答五个问题；系列片名的问句与回答；结尾句仿 MyISAM 一集结尾 n10「而要读懂那些答案，可以从这三个文件开始」 | 系列说明「五个问题」；S05 | — | — | 归纳 |
 
 ## 编号的事实
 
@@ -263,6 +276,7 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | S03 | MongoDB 一集：Alice 的 BSON 47 字节，13 字节是字段名 | MongoDB FACTS A03、A04 | 已核 |
 | S04 | InnoDB 一集：崩溃后从检查点重放 redo | InnoDB FACTS M12、R3 | 已核 |
 | S05 | MyISAM 一集开场 h1「一条查询，一行结果，零点零零七秒」、h2「这一瞬间，数据库在磁盘上做了什么」（在 MySQL 9.7.4 上实测 `1 row in set (0.007 sec)`） | MyISAM `script.js` h1、h2；MyISAM FACTS「开场」 | 已核；MyISAM 一集用的是 8 行小表（alice 30 岁）与十万行表，不是 2050 号 Alice，终章不说「每一集都是 2050 号」 |
+| S07 | 前六集里 Alice 过生日的那一段（转录各集 `src/js/script.js`）：MyISAM c13「改一行也不用挪地方：新的一行，写回原来的位置」、c14「alice 过生日，文件里只有年龄那一个字节变了」、m10b–m10d（没有事务，ROLLBACK 只回警告）；InnoDB e6「UPDATE 一开始，旧值 42 先记进 undo 日志」、e7「43 直接写进这一行原来的位置」、k10「这期间别人来读，读的是 undo 里的旧版本」、k11–k11z（redo 重做、undo 撤掉没提交的）；PostgreSQL u2「PostgreSQL 不覆盖原来那一行」、u3「它要另写一个新版本，年龄是 43」、z8「怎么并发：快照决定读哪个版本」；SQLite j6「改主文件之前，先把要改的页原样抄进旁边一个文件」、j5「这个文件叫回滚日志：SQLite 默认就用它」、z7「回滚日志存着原样，出事就抄回去」；ClickHouse u2「片段里的文件从来不改」、u4–u4b「新版本里，年龄这一列整个重写了一遍：为了改一个字节，重写一亿个」、f6–f6b（临时文件夹改名、留着旧片段）；MongoDB e5–e6「WiredTiger 不在页上把 42 擦掉 / 它在这一项上挂一个新版本：43」、e10–e12（检查点时整页写到文件末尾新的地方）、e13「只有一个字节变了：42 变成 43」、i6（读的人看快照） | 各集 `src/js/script.js` 与对应 FACTS（MyISAM「03」「09」；InnoDB X1、M9、M12；PostgreSQL U1、X2；SQLite J05、E05；ClickHouse U01–U03；MongoDB D01、D04、D07、G07） | 已核（转录，2026-11-25） |
 | S06 | ClickHouse 一集：一亿个用户，平均年龄只读 `age.bin`；改 Alice 一个字节要重写这个片段的整列 | ClickHouse FACTS O01、O02、U01 | 已核 |
 
 ## 取证中发现、没有进入成片的事实
@@ -278,4 +292,4 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 
 ## 复核
 
-未做（文案未定稿）。
+未做（文案未定稿）。第 2 稿（2026-11-25）改动的句子都已在上面逐行对过出处。
