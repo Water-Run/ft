@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}} · 定稿陈列</title>
+  <link rel="stylesheet" href="audition.css">
+  <link rel="stylesheet" href="showcase.css">
+  <script src="showcase.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#script">跳到旁白全文</a>
+<header class="bar"><div class="wrap">
+  <a class="wordmark" href="#top">虚拟机 / 定稿陈列</a>
+  <nav aria-label="陈列内容"><a href="#plan">方案</a><a href="#script">文案与画面</a><a href="#rounds">对抗记录</a><a href="#sources">依据</a></nav>
+</div></header>
+<main id="top">
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">XX 秒速通 <span></span> 定稿陈列</p>
+        <h1>192 秒了解虚拟机</h1>
+        <p class="deck">第一类、第二类与进程虚拟机</p>
+        <p class="intro">Windows 里开的 Linux 叫虚拟机，JVM 也叫虚拟机，它们是一回事吗？全片回答这一个问题：先看谁在用这台虚拟机，再看监控器装在裸金属上还是宿主系统上。VMware 的两款产品各属一类，Docker 容器两样都不是。</p>
+        <dl class="facts">
+          <div><dt>时长</dt><dd>192 秒</dd></div>
+          <div><dt>旁白</dt><dd>{{SPOKEN}} 句 · 约 {{NARRATION}} 秒</dd></div>
+          <div><dt>新名词</dt><dd>{{TERMS}} 个</dd></div>
+          <div><dt>稿本</dt><dd>{{DRAFT}}</dd></div>
+        </dl>
+        <p class="status">文案为第 7 稿，经 6 轮对抗修改；尚待校对者 WaterRun 明确确认后才配全片。</p>
+      </div>
+      <figure class="hero-image">
+        <button class="zoom" type="button" data-image="frames/a-compare.png" aria-label="放大两种系统架构"><img src="frames/a-compare.png" width="1920" height="1080" alt="Xen 直接装在裸金属上，VirtualBox 装在 Windows 宿主上，两侧各注明 VMware 的同类产品。"></button>
+        <figcaption><span>机柜剖面 · 两种系统架构</span><span class="time">{{HERO_TIME}}</span></figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="wrap body">
+    <section id="plan" aria-labelledby="plan-title">
+      <div class="section-head"><div><h2 id="plan-title">选定方案</h2><p>策划者 2026-11-25：「直接按你的推荐进行选择」。以下为选定结果与理由。</p></div></div>
+      <div class="plan">{{PLAN}}</div>
+    </section>
+    <section id="script" aria-labelledby="script-title">
+      <div class="section-head"><div><h2 id="script-title">文案与画面</h2><p>第 7 稿全文，按场排列，每场附对应的关键帧。时间按字数估算，配音后实测校准。</p></div><a href="{{SCRIPT_LINK}}">校对稿 ↗</a></div>
+      <div class="chapters">{{STORY}}</div>
+    </section>
+    <section id="rounds" aria-labelledby="rounds-title">
+      <div class="section-head"><div><h2 id="rounds-title">文案对抗记录</h2><p>从第 1 稿到第 7 稿，每一轮以观众和找茬者的眼光发问，写明问题与改法。</p></div></div>
+      {{ROUNDS}}
+    </section>
+    <section id="sources" aria-labelledby="sources-title">
+      <div class="section-head"><div><h2 id="sources-title">依据</h2><p>旁白里的每一句都能在事实表里按句号找到出处。</p></div></div>
+      <ul class="sources">
+        <li><a href="../../research/FACTS.md">事实与出处</a>：Smith 与 Nair、Xen 项目手册与管理指南、VirtualBox 手册、JVMS 21、VMware 与 Docker 官方文档。</li>
+        <li><a href="../../research/lab/add.txt">Java 实验回显</a>：javac 编译、javap 反汇编与运行结果，画面上的四条指令和数字均取自这里。</li>
+        <li><a href="../../review/NOTES.md">校对记录</a>：每一轮的自查范围、待定问题与确认状态。</li>
+        <li><a href="{{SCRIPT_LINK}}">第 7 稿校对稿</a>：逐句表与多音字清单。</li>
+      </ul>
+    </section>
+  </div>
+</main>
+<footer class="wrap footer"><span>{{TITLE}} · GPL-3.0-or-later</span><a href="#top">回到顶部 ↑</a></footer>
+<dialog id="lightbox" aria-label="关键帧原图">
+  <div class="lightbox-bar"><span id="image-label"></span><button id="close-image" type="button">关闭 ×</button></div>
+  <img width="1920" height="1080" alt="">
+</dialog>
+</body>
+</html>

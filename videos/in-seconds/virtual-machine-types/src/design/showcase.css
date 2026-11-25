@@ -1,0 +1,38 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* 定稿陈列页：在审片页样式之上，只陈列结果，不设选项。 */
+.facts{display:grid;grid-template-columns:repeat(4,auto);gap:8px 26px;margin:26px 0 0;justify-content:start}
+.facts dt{font-size:12px;letter-spacing:.12em;color:#9fb09c}
+.facts dd{margin:2px 0 0;font:600 15px Mono,monospace;color:#eaf0e7;white-space:nowrap}
+.status{margin-top:18px;font-size:14px;color:#c4d0c2;border-left:3px solid var(--light);padding-left:12px}
+.plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.plan article{border:1px solid var(--rule);background:var(--surface);padding:18px 20px 20px;display:flex;flex-direction:column}
+.plan .kind{font:600 13px Mono,monospace;color:var(--green);letter-spacing:.08em}
+.plan h3{font-size:22px;font-weight:800;margin:6px 0 4px}
+.plan .spec{font-size:13px;color:var(--muted);font-family:Mono,monospace}
+.plan .why{font-size:15px;margin:12px 0 14px;flex:1}
+.plan audio{margin-top:auto}
+.plan details{font-size:13px;color:var(--muted);margin-top:10px}
+.chapter .frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.chapter .frames.one{grid-template-columns:minmax(0,1fr);max-width:640px}
+.round{border-top:1px solid var(--rule);padding:4px 0}
+.round>summary{display:flex;gap:14px;align-items:baseline;padding:12px 0;width:100%;list-style:none}
+.round>summary::-webkit-details-marker{display:none}
+.round>summary::before{content:"+";font:700 16px Mono,monospace;color:var(--green);width:14px}
+.round[open]>summary::before{content:"−"}
+.round .draft{font-weight:800;font-size:18px;white-space:nowrap}
+.round .focus{color:var(--muted);font-size:14px}
+.round .count{margin-left:auto;font:600 13px Mono,monospace;color:var(--green);white-space:nowrap}
+.round .questions{margin:4px 0 16px}
+.sources{margin:0;padding-left:1.2em}
+.sources li+li{margin-top:8px}
+@media(max-width:880px){
+  .plan{grid-template-columns:1fr}
+  .facts{grid-template-columns:repeat(2,auto)}
+}
+@media(max-width:580px){
+  .chapter .frames{grid-template-columns:1fr}
+  .round>summary{flex-wrap:wrap;gap:4px 10px}
+  .round .count{margin-left:24px}
+  .round .focus{flex-basis:100%;padding-left:24px}
+}
+.hero figcaption .time{color:var(--light)}

@@ -102,8 +102,84 @@ def single_step(mix):
                 strike(mix, start + offset, .56, root + interval, .12, pan=-.17)
 
 
+# 金属机架：120 BPM，一小节 2 秒。金属感来自非谐波泛音：钢板的敲击模态、
+# 808 式六个方波叠成的金属镲，以及 1:1.4 的调频钟声；底下是低频铺底。
+PLATE = (1, 2.756, 5.404, 8.933, 13.34)
+CYMBAL = (205.3, 304.4, 369.6, 522.7, 540.0, 800.0)
+
+
+def place(mix, start, signal, gain, pan=0):
+    begin = round(start * SR)
+    signal = signal[:max(0, len(mix) - begin)]
+    mix[begin:begin + len(signal)] += gain * signal[:, None] * np.array([1 - pan, 1 + pan])
+
+
+def plate(freq, dur):
+    t = np.arange(round(dur * SR)) / SR
+    hit = sum(np.sin(2 * np.pi * freq * ratio * t) * np.exp(-t * (2.2 + 3.1 * k)) / (1 + .55 * k)
+              for k, ratio in enumerate(PLATE))
+    return hit * np.minimum(t / .002, 1)
+
+
+def cymbal(dur, bright=1.0):
+    t = np.arange(round(dur * SR)) / SR
+    tone = sum(np.sign(np.sin(2 * np.pi * f * 1.6 * bright * t)) for f in CYMBAL) / 6
+    edge = np.diff(tone, prepend=0)          # 一阶差分代替高通，只留下刺耳的边沿
+    return edge * np.exp(-t / .045) * 6
+
+
+def bell(freq, dur, index=3.2, ratio=1.4):
+    t = np.arange(round(dur * SR)) / SR
+    depth = index * np.exp(-t * 2.4)
+    tone = np.sin(2 * np.pi * freq * t + depth * np.sin(2 * np.pi * freq * ratio * t))
+    return tone * np.exp(-t * 1.5) * np.minimum(t / .004, 1)
+
+
+def thump(dur=.42):
+    t = np.arange(round(dur * SR)) / SR
+    sweep = 2 * np.pi * np.cumsum(45 + 85 * np.exp(-t * 28)) / SR
+    return np.sin(sweep) * np.exp(-t * 9)
+
+
+def bowed(freq, dur):
+    t = np.arange(round(dur * SR)) / SR
+    swell = np.sin(np.pi * t / dur) ** 2
+    tone = np.sin(2 * np.pi * freq * t + (1.1 + .6 * np.sin(2 * np.pi * .23 * t)) * np.sin(2 * np.pi * freq * 2.01 * t))
+    return tone * swell
+
+
+def metal_rack(mix):
+    bars = 30
+    roots = [50, 50, 48, 46, 50, 50, 53, 48]          # D、C、B♭、F 的循环
+    motif = [(0, 74), (.75, 77), (1.25, 81), (1.5, 72)]
+    for bar in range(bars):
+        start, root = bar * 2, roots[bar % len(roots)]
+        if bar % 4 == 0:
+            strike(mix, start, 8.6, root - 24, .2, shape="pad")
+            strike(mix, start + .5, 7.6, root - 5, .05, pan=-.3, shape="pad")
+        if 2 <= bar < 27:
+            place(mix, start, plate(note_hz(root - 12), 1.8), .16 if bar % 2 == 0 else .1, pan=-.12)
+        if 2 <= bar < 6:
+            place(mix, start + 1, plate(note_hz(root + 12), 1.2), .05, pan=.22)
+        if 6 <= bar < 26:
+            for beat in (0, 1):
+                place(mix, start + beat, thump(), .34)
+            for eighth in range(4):
+                place(mix, start + eighth * .5 + .25, cymbal(.16, 1.0 + .05 * (eighth % 2)), .03, pan=.3)
+            place(mix, start + 1.5, plate(note_hz(root + 19), .5), .06, pan=.28)
+        if 8 <= bar < 24 and bar % 2 == 0:
+            shift = 0 if bar < 16 else (-2 if bar % 4 else 3)
+            for offset, pitch in motif:
+                place(mix, start + offset, bell(note_hz(pitch + shift), 1.6), .07, pan=-.2 + .13 * offset)
+        if bar in (14, 18):
+            place(mix, start, bowed(note_hz(root + 7), 7.5), .055, pan=.18)
+    for offset, pitch in ((52, 74), (54, 69), (56, 62)):
+        place(mix, offset, bell(note_hz(pitch), 3.6, index=2.4), .08)
+    place(mix, 52, plate(note_hz(38), 6.0), .14)
+
+
 def music(ffmpeg, temp):
-    for key, score in zip("abc", (backplane, control_room, single_step)):
+    for key, score in zip("abcd", (backplane, control_room, single_step, metal_rack)):
         mix = np.zeros((SR * SECONDS, 2))
         score(mix)
         fade = np.linspace(1, 0, SR * 3)[:, None]

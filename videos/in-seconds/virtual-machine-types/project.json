@@ -7,7 +7,7 @@
     "zh": "192 秒了解虚拟机：第一类、第二类与进程虚拟机"
   },
   "voices": {
-    "zh": "zh-CN-YunyangNeural"
+    "zh": "zh-CN-YunxiNeural"
   },
   "rates": {
     "zh": "+6%",
@@ -75,7 +75,7 @@
   "layout": 2,
   "license": "GPL-3.0-or-later",
   "stage": "review",
-  "next": "第 2 稿待确认：读「诘问」一节与中文旁白，选定视觉、音色与配乐方向",
+  "next": "第 7 稿待 WaterRun 确认；确认后用 zh-CN-YunxiNeural 配全片，做机柜剖面（A）的有声代表段，配乐「金属机架」移植进 tools/music.py",
   "credits": {
     "planner": "WaterRun",
     "repository": "https://github.com/Water-Run/ft",
@@ -93,9 +93,12 @@
       {
         "name": "Claude Opus 5.5",
         "roles": [
-          "文案诘问与第 2 稿",
+          "文案诘问与第 2–7 稿",
           "取证复核",
-          "审片页第 2 版"
+          "关键帧补画",
+          "配乐「金属机架」",
+          "审片页第 2 版",
+          "定稿陈列页"
         ]
       }
     ],
