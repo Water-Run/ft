@@ -34,7 +34,7 @@
     {"slug": "sqlite", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——小而强大：SQLite"}, "status": "delivered", "note": "2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ）"},
     {"slug": "clickhouse", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse"}, "status": "delivered"},
     {"slug": "mongodb", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger"}, "status": "delivered"},
-    {"slug": "redis", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——内存里的键值对：Redis"}, "note": "2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。"},
+    {"slug": "redis", "series": "database-engines", "title": {"zh": "一个数据库引擎是如何实现的？——内存里的键值对：Redis"}, "note": "2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。", "status": "in-progress"},
     {"slug": "lua-philosophy", "series": "language-philosophy", "title": {"zh": "Lua 语言的设计哲学：一切皆表", "en": "The Design Philosophy of Lua: Everything Is a Table"}, "status": "planned"},
     {"slug": "python", "series": "language-philosophy", "title": {"zh": "Python 语言的设计哲学：一切皆对象"}},
     {"slug": "miniscript-philosophy", "series": "language-philosophy", "title": {"zh": "MiniScript 语言的设计哲学：小而可嵌入"}},

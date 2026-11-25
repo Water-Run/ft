@@ -2,7 +2,7 @@
 
 <!-- 由 node kit/tools/catalog.js 从 videos/catalog.json 与各片 project.json 生成，不要手改。 -->
 
-共 211 部：已成片 30，制作中 5，计划中 172，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
+共 211 部：已成片 30，制作中 6，计划中 171，已放弃 4。系列里的一集在 `videos/<系列>/<片>/`，独立视频在 `videos/standalone/<片>/`；系列说明是各系列目录下的 README。计划中的标题是工作标题；除另有说明外只做中文，需要英文版的在片单写明。
 
 [Credit 盘点](CREDITS.md)：按模型汇总参与片目，列出各片分工、服务与交付前署名缺口。
 
@@ -49,6 +49,7 @@
 
 | 片 | 系列 | 阶段 | 下一步 | 规则 | 参与模型 |
 |---|---|---|---|---|---|
+| [一个数据库引擎是如何实现的？——内存里的键值对：Redis](database-engines/redis/) | [数据库引擎](database-engines/README.md) | 审稿 | 等文案意见与确认；确认后用 Sincere_Adult 配全片（混音后核对旁白电平），做 A 桶阵 + C「终章」的有声代表段 | 最新 | Claude Opus 5.5 |
 | [192 秒了解虚拟机：第一类、第二类与进程虚拟机](in-seconds/virtual-machine-types/) | [XX 秒速通](in-seconds/README.md) | 审稿 | 确认中文旁白，选定视觉、音色与配乐方向 | 未接入 | GPT-6.2-Sol |
 | [PowerPC 时代的麦金塔](eras/powerpc-macintosh/) | [一个电子时代](eras/README.md) | 审稿 | WaterRun 审阅本地审片页，明确中文稿本并选择画面、音色与配乐 | 待同步 | GPT-6.2 Astra |
 | [Lua源码全解析](source-code/lua-source/) | [源码全解析](source-code/README.md) | 审稿 | 等 WaterRun 审读文案第 7 稿（review/script.zh.346de924….md）并明确确认；确认后用 Crisp_Girl（语速 1.15）合成全片，实测响度，做有声代表段，再铺开场景，用 covers.js 出封面 | 待同步 | GPT-6.1 Sol、Claude Opus 5.5、Gemini 4 Neon |
@@ -82,7 +83,7 @@
 | 4 | 一个数据库引擎是如何实现的？——小而强大：SQLite | zh | 已成片 | [`sqlite`](database-engines/sqlite/) | 2026-11-06 发布（哔哩哔哩 BV1RG4h6UEqQ） |
 | 5 | 一个数据库引擎是如何实现的？——OLAP的MergeTree和列式存储：ClickHouse | zh | 已成片 | [`clickhouse`](database-engines/clickhouse/) |  |
 | 6 | 一个数据库引擎是如何实现的？——不是SQL：MongoDB的WiredTiger | zh | 已成片 | [`mongodb`](database-engines/mongodb/) |  |
-| 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 计划中 | `redis` | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
+| 7 | 一个数据库引擎是如何实现的？——内存里的键值对：Redis | zh | 制作中 | [`redis`](database-engines/redis/) | 2026-10-26 本集只讲 Redis；KeyDB 与 Valkey 另列独立片。 |
 
 ### 编程语言哲学
 
