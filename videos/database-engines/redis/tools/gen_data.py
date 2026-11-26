@@ -77,6 +77,21 @@ def main():
     r = read('out_03_rehash.txt')
     nums = [int(n) for n in re.findall(r'number of elements: (\d+)', section(r, '再做 100 次读（每次查找顺手搬一格）'))]
     out['rehash100'] = nums; assert nums == [3895, 201]                                                   # R02
+    # 更多画面数字（分镜用），各自对照回显断言
+    m = re.search(r'写入 4095 个用户 ====\n.*?table size: (\d+)\n number of elements: (\d+)', r, re.S)
+    out['rehashBefore'] = [int(m.group(1)), int(m.group(2))]; assert out['rehashBefore'] == [4096, 4095]      # R02
+    out['fork'] = {'usec': int(re.search(r'latest_fork_usec:(\d+)', t).group(1))}; assert out['fork']['usec'] == 275  # P01
+    d = read('out_06_delete.txt')
+    ek = [int(x) for x in re.findall(r'expired_keys:(\d+)', d)]; ds = [int(x) for x in re.findall(r'DBSIZE\n(\d+)', d)]
+    out['expire'] = {'expiredKeys': ek, 'dbsize': ds}; assert ek == [0, 1, 2] and ds[:6] == [4096, 4095, 4096, 4097, 4096, 4096]   # D01 D03
+    out['oom'] = re.search(r"(OOM command not allowed[^\n]*)", d).group(1)                                            # D04
+    out['evicted'] = int(re.search(r'evicted_keys:(\d+)', d).group(1)); assert out['evicted'] == 464
+    c = read('out_07_concurrency.txt')
+    out['conc'] = {'wait': float(re.search(r'等了 ([\d.]+) 秒', c).group(1)), 'sum': 20000, 'retryAge': 44}
+    assert out['conc']['wait'] == 0.40 and "'20000'" in c and "'44'" in c and 'None' in c and 'EXECABORT' in c       # C02 C03 C06 C08
+    out['crash'] = {'rdbOnlyKeys': int(re.findall(r'DBSIZE\n(\d+)', x)[1]), 'snapshotAge': 42}
+    assert out['crash']['rdbOnlyKeys'] == 0 and re.search(r'HGET user:2050 age\n42', x)                                # X01 X02
+    out['aofSize'] = int(re.search(r'incr 文件 (\d+) →', x).group(1)); assert out['aofSize'] == 461764                  # X07
     js = '// 由 tools/gen_data.py 从 research/lab/ 生成，不要手改。\nwindow.DATA = ' + json.dumps(out, ensure_ascii=False) + ';\n'
     open(os.path.join(VIDEO, 'src', 'js', 'data.js'), 'w', encoding='utf-8', newline='\n').write(js)
     print('src/js/data.js', len(js), '字节；Alice 在第', alice, '号桶；最长链', out['buckets']['longest'])

@@ -1,0 +1,42 @@
+/* 分镜的视觉系统：方向 A「桶阵」（2026-11-25 选定）。颜色取自 research/MATERIALS.md（redis.io 的色值），版式与图形是本片自己的。
+   1920×1080；字幕条在 y ≥ 968（这里画成示意）；左右版心 120px；正文不小于 28px。 */
+:root {
+  --midnight: #091a23; --dusk: #163341; --dusk9: #0d212c; --dusk90: #2d4754; --dusk70: #5c707a; --dusk50: #8a99a0; --dusk30: #b9c2c6; --dusk10: #d9d9d9;
+  --red: #ff4438; --red-deep: #8a221c; --red-soft: #fd736a; --white: #fff;
+  --sky: #80dbff; --yellow: #dcff1e; --violet: #c795e3;
+}
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--midnight); }
+#stage { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", "Sans SC"; color: var(--white); background: var(--midnight); }
+.abs { position: absolute; }
+.mono { font-family: "Mono", "Sans SC"; white-space: pre; }
+.nw { white-space: nowrap; }
+/* 字号阶梯 */
+.t-hero { font-weight: 800; font-size: 132px; line-height: 1.02; letter-spacing: -.02em; }
+.t-big { font-weight: 800; font-size: 88px; line-height: 1.05; letter-spacing: -.01em; }
+.t-h { font-weight: 700; font-size: 48px; line-height: 1.2; }
+.t-body { font-weight: 500; font-size: 38px; line-height: 1.4; }
+.t-note { font-weight: 500; font-size: 28px; line-height: 1.4; color: var(--dusk30); }
+.t-small { font-weight: 500; font-size: 28px; color: var(--dusk50); }
+.num { font-weight: 800; font-family: "Inter"; letter-spacing: -.02em; }
+/* 页顶：章号 · 章名 · 小节 */
+.crumb { position: absolute; left: 120px; top: 64px; font-size: 30px; font-weight: 500; color: var(--dusk50); white-space: nowrap; }
+.crumb b { color: var(--dusk10); font-weight: 600; }
+/* 注解：左侧红竖线 + 定义 */
+.gloss { position: absolute; border-left: 4px solid var(--red); padding: 6px 0 6px 18px; font-size: 28px; line-height: 1.45; color: var(--dusk10); white-space: normal; }
+.gloss b { color: var(--white); font-weight: 700; margin-right: 10px; }
+/* 终端（redis-cli） */
+.term { position: absolute; background: var(--dusk9); border: 2px solid var(--dusk90); border-radius: 10px; padding: 26px 34px; font: 500 32px/1.5 "Mono", "Sans SC"; color: var(--dusk10); white-space: pre; overflow: hidden; }
+.term .p { color: var(--dusk50); } .term .c { color: var(--white); } .term .v { color: var(--yellow); } .term .r { color: var(--red); }
+/* 标签、实心结果块 */
+.tag { position: absolute; font: 600 26px "Mono", "Sans SC"; padding: 6px 14px; border-radius: 6px; white-space: nowrap; }
+.res { position: absolute; padding: 10px 22px; border-radius: 8px; font-weight: 700; font-size: 34px; white-space: nowrap; }
+.res.red { background: var(--red); color: var(--midnight); } .res.dark { background: var(--dusk); color: var(--white); border: 2px solid var(--dusk70); }
+/* 字节格 */
+.byte { display: inline-block; text-align: center; font: 600 34px/56px "Mono"; color: var(--white); }
+/* 字幕条（示意） */
+.sub { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 500; color: var(--white); background: rgba(9, 26, 35, .82); }
+/* 章节卡：整屏 */
+.chap { position: absolute; inset: 0; background: var(--dusk); }
+.chap .no { position: absolute; left: 120px; top: 250px; font: 600 180px/1 "Mono"; color: var(--red); }
+.chap .ti { position: absolute; left: 120px; top: 470px; font-weight: 800; font-size: 140px; line-height: 1.05; }
+.chap .q { position: absolute; left: 124px; top: 660px; font-size: 44px; color: var(--dusk30); }

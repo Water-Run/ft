@@ -5,31 +5,213 @@
 <title>封面</title>
 <link rel="stylesheet" href="css/base.css">
 <style>
-  /* 投稿封面：?r=169 → 1920×1080，?r=43 → 1600×1200；?lang= 切换语言。kit/tools/covers.js 按 2 倍像素出图。
-     TODO: 模板占位。封面单独设计，不用视频截帧：缩到 360 像素宽仍要读得清主标题；底部约 15% 不放文字（投稿平台会在那里叠时长与标题）。 */
-  :root { --paper: #f1efe9; --ink: #16181d; --accent: #d9480f; }
+  /* 投稿封面：?v=1|2|3 三个预选方案；?r=169 → 1920×1080，?r=43 → 1600×1200（重新排布，不是裁切）；?lang=zh。kit/tools/covers.js 按 2 倍像素出图。
+     视觉取自本片选定的方向 A「桶阵」：午夜蓝 #091a23、暮蓝 #163341，红 #ff4438 只给 Alice 那一处。立体用平涂的三个面表现（不用阴影、渐变）；
+     图形画在 canvas 上，文字都在 DOM 里、压在图形之上的空白处；底部约 15% 不放文字（投稿平台在那里叠时长与标题）。不放产品标志。
+     桶的数据是真的：window.DATA.buckets（tools/gen_data.py 由 research/lab/ 的实测生成，FACTS K07）。 */
+  :root { --bg: #091a23; --dusk: #163341; --dusk9: #0d212c; --dusk90: #2d4754; --dusk70: #5c707a; --dusk50: #8a99a0; --dusk30: #b9c2c6; --dusk10: #d9d9d9; --red: #ff4438; --white: #fff; }
   html, body, #stage { width: var(--W); height: var(--H); }
-  .r169 { --W: 1920px; --H: 1080px; --M: 120px; --fs: 190px; }
-  .r43 { --W: 1600px; --H: 1200px; --M: 100px; --fs: 170px; }
-  #stage { background: var(--paper); color: var(--ink); font-family: "Inter", "Sans SC"; overflow: hidden; }
-  .title { position: absolute; left: var(--M); top: 22%; right: var(--M); font-weight: 900; font-size: var(--fs); line-height: 1.08; letter-spacing: -.02em; }
-  .kicker { position: absolute; left: var(--M); top: 12%; font: 500 46px "Mono"; color: var(--accent); }
+  .r169 { --W: 1920px; --H: 1080px; }
+  .r43 { --W: 1600px; --H: 1200px; }
+  #stage { position: relative; background: var(--bg); color: var(--white); font-family: "Inter", "Sans SC"; overflow: hidden; }
+  canvas { position: absolute; left: 0; top: 0; }
+  .t { position: absolute; white-space: nowrap; }
+  .part { font: 800 40px "Mono"; letter-spacing: .1em; color: var(--bg); background: var(--red); padding: 6px 22px; border-radius: 8px; }
+  .fin { font: 700 40px "Sans SC"; color: var(--dusk10); }
+  .ask { font: 700 58px/1.2 "Sans SC"; color: var(--white); }
+  .ti { font: 900 140px/1 "Sans SC"; color: var(--white); letter-spacing: -.01em; }
+  .rd { font: 900 220px/1 "Inter"; color: var(--red); letter-spacing: -.04em; }
+  .num { font: 800 92px/1 "Inter"; color: var(--white); letter-spacing: -.02em; }
+  .cap { font: 600 34px/1.35 "Sans SC"; color: var(--dusk30); }
+  .lab { font: 600 32px "Mono", "Sans SC"; color: var(--dusk10); }
+  .lab.red { color: var(--red); }
+  .ver { font: 500 30px "Mono"; color: var(--dusk50); }
 </style>
 </head>
 <body>
-<div id="stage">
-  <div class="kicker"></div>
-  <div class="title"></div>
-</div>
+<div id="stage"><canvas id="cv"></canvas></div>
+<script src="js/data.js"></script>
 <script>
-  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh';
-  document.documentElement.className = (q.get('r') === '43' ? 'r43' : 'r169') + ' ' + lang;
-  const TEXT = { zh: { kicker: '系列或栏目名', title: '封面标题<br>分两行' }, en: { kicker: 'Series', title: 'Cover title<br>in two lines' } }[lang];
-  document.querySelector('.kicker').textContent = TEXT.kicker;
-  document.querySelector('.title').innerHTML = TEXT.title;
-  const sample = document.getElementById('stage').textContent;
-  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('500 40px "Mono"', sample)])
-    .then(() => document.fonts.ready).then(() => { document.body.dataset.ready = '1'; });
+  const q = new URLSearchParams(location.search), lang = q.get('lang') || 'zh', V = q.get('v') || '1', R43 = q.get('r') === '43';
+  document.documentElement.className = (R43 ? 'r43' : 'r169') + ' ' + lang;
+  const W = R43 ? 1600 : 1920, H = R43 ? 1200 : 1080, B = DATA.buckets;
+  const stage = document.getElementById('stage'), cv = document.getElementById('cv');
+  cv.width = W; cv.height = H; const c = cv.getContext('2d');
+  const t = (x, y, s, cls, extra = '') => stage.insertAdjacentHTML('beforeend', `<div class="t ${cls}" style="left:${x}px;top:${y}px;${extra}">${s}</div>`);
+  const right = (x, y, s, cls) => t(x, y, s, cls, 'transform:translateX(-100%)');
+
+  // ── 平涂的等轴测：三个面各一种颜色 ──
+  const SHADE = ['#0f2530', '#2d4754', '#5c707a', '#8a99a0', '#b9c2c6', '#d9d9d9', '#ffffff'];
+  const mix = (hex, k) => { const n = parseInt(hex.slice(1), 16); const f = (v) => Math.round(v * k); return `rgb(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)})`; };
+  const iso = (ox, oy, s, hz) => (x, y, z = 0) => [ox + (x - y) * 0.866 * s, oy + (x + y) * 0.5 * s - z * hz];
+  function poly(pts, fill) { c.beginPath(); c.moveTo(...pts[0]); for (const p of pts.slice(1)) c.lineTo(...p); c.closePath(); c.fillStyle = fill; c.fill(); }
+  // 一个长方体：底面 (x,y)–(x+w,y+d)，从 z0 高到 z1；朝前的两个侧面与顶面
+  function prism(P, x, y, w, d, z0, z1, top, sideL, sideR) {
+    if (z1 - z0 > 0.001) {
+      poly([P(x, y + d, z1), P(x + w, y + d, z1), P(x + w, y + d, z0), P(x, y + d, z0)], sideL);
+      poly([P(x + w, y, z1), P(x + w, y + d, z1), P(x + w, y + d, z0), P(x + w, y, z0)], sideR);
+    }
+    poly([P(x, y, z1), P(x + w, y, z1), P(x + w, y + d, z1), P(x, y + d, z1)], top);
+  }
+  const faces = (hex) => [hex, mix(hex, 0.72), mix(hex, 0.5)];
+
+  // 很淡的底纹：Alice 那 27 个字节，一行行铺满（画在 canvas 里，是纹理不是文字）
+  function texture() {
+    c.save(); c.font = '600 28px Mono'; c.fillStyle = '#0c1e28';
+    const hex = DATA.listpack.hex.match(/../g).join(' ') + '   ';
+    for (let y = 40, i = 0; y < H + 40; y += 50, i++) c.fillText((hex + hex + hex).slice((i * 7) % 30), -10, y);
+    c.restore();
+  }
+  // 整张表：8192 个桶按真实桶号排 128 × 64，柱高 = 桶里的键数；Alice 的桶红色，竖起一根红线
+  function table(ox, oy, s, hz, opt = {}) {
+    const P = iso(ox, oy, s, hz), cols = 128, g = 0.16, cells = [];
+    for (let i = 0; i < B.size; i++) cells.push([i % cols, Math.floor(i / cols), +B.counts[i], i]);
+    cells.sort((a, b) => (a[0] + a[1]) - (b[0] + b[1]) || a[0] - b[0]);
+    if (opt.slab) {   // 内存条一样的底座
+      const [tp, l, r] = faces('#163341');
+      prism(P, -1.2, -1.2, cols + 2.4, 64 + 2.4, -opt.slab, 0, tp, l, r);
+    }
+    for (const [x, y, k, i] of cells) {
+      const red = i === B.alice;
+      const [tp, l, r] = red ? ['#ff4438', '#c9352b', '#8a221c'] : faces(SHADE[Math.min(k, 6)]);
+      prism(P, x + g, y + g, 1 - 2 * g, 1 - 2 * g, 0, opt.flat ? 0 : (k ? k : 0.15), tp, l, r);
+    }
+    const ax = B.alice % cols, ay = Math.floor(B.alice / cols);
+    return { P, alice: P(ax + 0.5, ay + 0.5, opt.flat ? 0 : 1) };
+  }
+
+  // Alice 那一格：红色菱形框，再竖起一根红线到标签
+  function mark(ax, ay, len) {
+    c.strokeStyle = '#ff4438'; c.lineWidth = 3; c.beginPath(); c.moveTo(ax, ay - 13); c.lineTo(ax + 22, ay); c.lineTo(ax, ay + 13); c.lineTo(ax - 22, ay); c.closePath(); c.stroke();
+    c.fillStyle = '#ff4438'; c.fillRect(ax - 2, ay - len, 4, len - 13);
+  }
+  // ── 文字：每个方案同一套分量（集数、问句、片名、实测数字） ──
+  function titles(L) {
+    t(L.x, L.y, 'PART 7', 'part'); t(L.x + 230, L.y + 6, '最终集', 'fin');
+    t(L.x, L.y + 96, '一个数据库引擎是如何实现的？', 'ask');
+    t(L.x, L.y + 196, '内存里的键值对', 'ti');
+    t(L.x - 8, L.y + 340, 'Redis', 'rd');
+  }
+
+  function v1() {   // 整张表的浮雕：8192 个桶，柱高就是键数
+    texture();
+    if (!R43) {
+      const T = table(1170, 380, 4.3, 9);
+      const [ax, ay] = T.alice;
+      mark(ax, ay, 190); t(ax - 80, ay - 246, 'user:2050', 'lab red');
+      titles({ x: 100, y: 88 });
+      t(100, 690, '8192', 'num'); t(355, 712, '个桶，4096 个键<br>按键找一个值：约 5 微秒', 'cap');
+      right(1840, 64, 'Redis 8.12.0 · 实测', 'ver');
+    } else {
+      const T = table(720, 660, 4.2, 9);
+      const [ax, ay] = T.alice;
+      mark(ax, ay, 170); t(ax - 80, ay - 226, 'user:2050', 'lab red');
+      titles({ x: 90, y: 70 });
+      t(90, 640, '8192', 'num'); t(90, 750, '个桶，4096 个键<br>按键找一个值：约 5 微秒', 'cap');
+      right(1520, 76, 'Redis 8.12.0 · 实测', 'ver');
+    }
+  }
+
+  function v2() {   // 一个桶拉出来：第 3271 号桶里竖起 user:2050 的 27 个字节
+    texture();
+    const seg = DATA.listpack.parts, lp = DATA.listpack.hex.match(/../g);
+    const segCol = ['#2d4754', '#2d4754', '#5c707a', '#c9352b', '#5c707a', '#ff4438', '#2d4754'];
+    const segName = ['总长', '项数', 'name', 'Alice', 'age', '42', '结束'];
+    const draw = (ox, oy, s, n) => {
+      const P = iso(ox, oy, s, s), half = (n - 1) / 2, from = B.alice - half;
+      for (let j = 0; j < n; j++) {
+        const k = +B.counts[from + j], red = from + j === B.alice;
+        const [tp, l, r] = red ? ['#ff4438', '#c9352b', '#8a221c'] : faces(k ? SHADE[Math.min(k, 6)] : '#1d3a48');
+        prism(P, j * 1.3, 0, 1, 1, 0, red ? 1 : (k ? k * 0.9 : 0.12), tp, l, r);
+      }
+      // 27 个字节一层层竖起（自下而上：总长 → ff），每段一种颜色，42 那一层最红
+      const ax = half * 1.3, th = 0.25, gap = 0.04;
+      const levels = [];
+      for (let i = 0; i < 27; i++) {
+        const k = seg.findIndex((p) => i >= p.from && i < p.from + p.len);
+        const z0 = 1.25 + i * (th + gap), [tp, l, r] = faces(segCol[k]);
+        prism(P, ax + 0.06, 0.06, 0.88, 0.88, z0, z0 + th, tp, l, r);
+        levels.push([k, z0]);
+      }
+      // 各段的标签：画在塔的右侧，取这一段中间那一层的高度
+      const labs = [];
+      seg.forEach((p, k) => {
+        if (k === 0 || k === 1 || k === 6) return;
+        const zm = 1.25 + (p.from + p.len / 2) * (th + gap);
+        const [x, y] = P(ax + 1, 0, zm);
+        labs.push([x, y, segName[k], k]);
+      });
+      const top = P(ax + 0.5, 0.5, 1.25 + 27 * (th + gap));
+      const base = P(ax + 1, 1, 0);
+      return { labs, top, base };
+    };
+    const place = (L) => {
+      for (const [x, y, s, k] of L.labs) {
+        c.strokeStyle = k === 5 ? '#ff4438' : '#5c707a'; c.lineWidth = 2; c.beginPath(); c.moveTo(x + 6, y); c.lineTo(x + 40, y); c.stroke();
+        t(x + 50, y - 20, s, k === 5 || k === 3 ? 'lab red' : 'lab');
+      }
+    };
+    if (!R43) {
+      const L = draw(1180, 620, 58, 9);
+      place(L);
+      t(L.top[0] - 150, L.top[1] - 84, 'user:2050 · 27 字节', 'lab');
+      right(L.base[0] - 150, L.base[1] + 10, `第 ${B.alice} 号桶`, 'lab red');
+      titles({ x: 100, y: 88 });
+      t(100, 690, '27', 'num'); t(235, 712, '个字节，就是 Alice<br>名字、年龄挨在一起', 'cap');
+      right(1840, 64, 'Redis 8.12.0 · 实测', 'ver');
+    } else {
+      const L = draw(880, 760, 52, 9);
+      place(L);
+      t(L.top[0] + 70, L.top[1] - 100, 'user:2050<br>27 字节', 'lab', 'line-height:1.3');
+      right(L.base[0] - 140, L.base[1] + 10, `第 ${B.alice} 号桶`, 'lab red');
+      titles({ x: 90, y: 70 });
+      t(90, 640, '27', 'num'); t(90, 750, '个字节，就是 Alice<br>名字、年龄挨在一起', 'cap');
+      right(1520, 76, 'Redis 8.12.0 · 实测', 'ver');
+    }
+  }
+
+  function v3() {   // 内存在上、磁盘在下：快的会忘，慢的记得住
+    texture();
+    const disk = (cx, cy, rx, ry, th) => {
+      // 平涂的圆盘：侧面一块、顶面一块，几道盘片纹
+      c.fillStyle = '#0d212c'; c.beginPath(); c.ellipse(cx, cy + th, rx, ry, 0, 0, Math.PI); c.lineTo(cx - rx, cy); c.ellipse(cx, cy, rx, ry, 0, Math.PI, 0, true); c.closePath(); c.fill();
+      c.fillStyle = '#2d4754'; c.beginPath(); c.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); c.fill();
+      c.strokeStyle = '#163341'; c.lineWidth = 3; for (const k of [0.78, 0.56]) { c.beginPath(); c.ellipse(cx, cy, rx * k, ry * k, 0, 0, Math.PI * 2); c.stroke(); }
+      c.fillStyle = '#091a23'; c.beginPath(); c.ellipse(cx, cy, rx * 0.16, ry * 0.16, 0, 0, Math.PI * 2); c.fill();
+    };
+    const arrows = (x, yTop, yBot) => {
+      c.lineWidth = 4;
+      c.strokeStyle = '#ff4438'; c.setLineDash([12, 9]); c.beginPath(); c.moveTo(x - 34, yTop); c.lineTo(x - 34, yBot - 18); c.stroke(); c.setLineDash([]);
+      c.fillStyle = '#ff4438'; c.beginPath(); c.moveTo(x - 46, yBot - 20); c.lineTo(x - 22, yBot - 20); c.lineTo(x - 34, yBot); c.fill();
+      c.strokeStyle = '#b9c2c6'; c.beginPath(); c.moveTo(x + 34, yBot); c.lineTo(x + 34, yTop + 18); c.stroke();
+      c.fillStyle = '#b9c2c6'; c.beginPath(); c.moveTo(x + 22, yTop + 20); c.lineTo(x + 46, yTop + 20); c.lineTo(x + 34, yTop); c.fill();
+    };
+    if (!R43) {
+      const T = table(1260, 150, 3.2, 5, { slab: 7 }); mark(T.alice[0], T.alice[1], 14);
+      t(1700, 220, '内存', 'lab');
+      arrows(1490, 520, 690);
+      t(1540, 570, '重启后找回', 'lab'); right(1435, 570, '写一份', 'lab red');
+      disk(1490, 770, 300, 92, 46);
+      right(1170, 752, '磁盘', 'lab');
+      titles({ x: 100, y: 88 });
+      t(100, 690, '33287', 'num'); t(100, 800, 'kill -9 之后重启，还是 33287', 'cap');
+      right(1840, 64, 'Redis 8.12.0 · 实测', 'ver');
+    } else {
+      const T = table(1110, 450, 2.9, 5, { slab: 7 }); mark(T.alice[0], T.alice[1], 14);
+      t(1420, 470, '内存', 'lab');
+      arrows(1180, 780, 870);
+      t(1230, 800, '重启后找回', 'lab'); right(1126, 800, '写一份', 'lab red');
+      disk(1180, 925, 250, 68, 36);
+      right(910, 905, '磁盘', 'lab');
+      titles({ x: 90, y: 70 });
+      t(90, 640, '33287', 'num'); t(90, 750, 'kill -9 之后重启<br>还是 33287', 'cap');
+      right(1520, 76, 'Redis 8.12.0 · 实测', 'ver');
+    }
+  }
+
+  const sample = '一个数据库引擎是如何实现的？内存里的键值对 Redis PART 7 最终集 0123456789 个桶键按找值约微秒字节就是名字年龄挨在一起磁盘写份重启后找回实测 user:2050 → kill';
+  Promise.all([document.fonts.load('900 40px "Sans SC"', sample), document.fonts.load('900 40px "Inter"', sample), document.fonts.load('600 40px "Mono"', sample)])
+    .then(() => document.fonts.ready).then(() => { ({ 1: v1, 2: v2, 3: v3 })[V](); document.body.dataset.ready = '1'; });
 </script>
 </body>
 </html>
