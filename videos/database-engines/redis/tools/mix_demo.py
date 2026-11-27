@@ -21,9 +21,9 @@ OUT = os.path.join(VIDEO, 'out', 'audition', 'demo'); CUES = os.path.join(OUT, '
 
 # 三段：scene、从哪句到哪句；peak = (最高处从哪句开始, 落到 C 大调的那一句)，None 表示这一段不要高潮
 DEMOS = [
-    {'id': 'open', 'title': '开场', 'scene': 'open', 'from': 'o1', 'to': 'o18', 'peak': None},
+    {'id': 'open', 'title': '开场', 'scene': 'open', 'from': 'o1', 'to': 'o19', 'peak': None},
     {'id': 'concur', 'title': '05 事务与并发（信息最密的一段）', 'scene': 'concur', 'from': 'e1', 'to': 'e17', 'peak': None},
-    {'id': 'finale', 'title': '09 一瞬间（终章）', 'scene': 'finale', 'from': 'z1', 'to': 'zT', 'peak': ('z17', 'z23')},
+    {'id': 'finale', 'title': '09 旧的 42（终章）', 'scene': 'finale', 'from': 'z1', 'to': 'zT', 'peak': ('z15', 'z23')},   # 第 4 稿：最高处从「undo、旧版本……」起，最后一句落到 C 大调
 ]
 
 def script():

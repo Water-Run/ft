@@ -58,6 +58,18 @@ def main():
     aofhex = ''.join(l[10:49].replace(' ', '') for l in rows)      # xxd：偏移 + 8 组十六进制 + 文本
     aof = bytes.fromhex(aofhex); assert len(aof) == 69 and b'HSET\r\n$9\r\nuser:2050\r\n$3\r\nage\r\n$2\r\n43\r\n' in aof
     out['aof'] = aof.decode()
+    # 打开 AOF 时写下的 base 与之后整段 incr：她过生日、Dave 注册、她注销（P10；终章 z19–z23）
+    a = section(t, 'AOF：打开 appendonly')
+    base = int(re.search(r'(\d+) appendonly\.aof\.1\.base\.rdb', a).group(1)); assert base == out['rdbSize'] == 347102
+    resp = [l[:-3] for l in section(t, 'Dave 注册、Alice 注销，也一条条追加进去').splitlines() if l.endswith('^M$')]   # cat -A：^M$ 是 \r\n
+    cmds, i = [], 0
+    while i < len(resp):
+        n = int(resp[i][1:]); i += 1
+        args = []
+        for _ in range(n): args.append(resp[i + 1]); i += 2
+        cmds.append(args)
+    assert cmds == [['SELECT', '0'], ['HSET', 'user:2050', 'age', '43'], ['HSET', 'user:4097', 'name', 'Dave', 'age', '19'], ['DEL', 'user:2050']], cmds
+    out['aofLog'] = {'base': base, 'cmds': cmds[1:]}
     # 实测数
     f = read('out_04_find.txt')
     out['hgetallUs'] = [int(x) for x in re.findall(r'服务端用时（微秒）与命令：(\d+) HGETALL', f)]              # Q01

@@ -1,4 +1,4 @@
-/* 分镜第 3 段：片名卡、07 删、08 五个问题、09 一瞬间、片尾名单（第 3 稿）。方向 A「桶阵」。
+/* 分镜第 3 段：片名卡、07 删、08 五个问题、09 旧的 42、片尾名单（09 章按第 4 稿重画）。方向 A「桶阵」。
    画面上的实测数字一律取自 window.DATA（tools/gen_data.py 由 research/lab/ 的回显生成）；
    前几集的说法只取 research/FACTS.md 的 S01、S05、S07、S08（转录各集文案）。 */
 (function () {
@@ -34,8 +34,8 @@
 
   /* ───────── 07 删 ───────── */
   frame({ id: 'g-0', ch: '07 删', cues: '章节卡', title: '章节卡',
-    note: '第 07 章：内存满了，谁让出位置。', motion: '整屏卡从右刷入，停留，向左收走；背后是 06 章留下的桶阵。' }, () => {
-    SB.chapter('07', '删', '内存满了，谁让出位置？');
+    note: '第 07 章：Redis 什么时候忘掉一个键。', motion: '整屏卡从右刷入，停留，向左收走；背后是 06 章留下的桶阵。' }, () => {
+    SB.chapter('07', '删', 'Redis 什么时候忘掉一个键？');
   });
 
   frame({ id: 'g-1', ch: '07 删', cues: 'g1–g3', title: '一个键当场摘掉',
@@ -115,7 +115,7 @@
     SB.sub('实验里关掉抽查，过期的键就一直占着位置');
   });
 
-  frame({ id: 'g-4', ch: '07 删', cues: 'g9–g10', title: '满了：拒绝，或让位',
+  frame({ id: 'g-4', ch: '07 删', cues: 'g8b–g10', title: '满了：拒绝，或让位',
     note: '内存设了上限又满了：缺省拒绝再写（OOM 报错）；改成 LRU 就挑最久没用的键删掉腾地方。',
     motion: '桶阵上方一条内存用量条涨到上限线；左侧一条写命令撞上上限变红、弹回 OOM；切到右侧，最久没用的一批桶逐个熄灭，写入落进去。桶阵常驻到 08 章。' }, () => {
     SB.crumb('07 删', '内存上限');
@@ -176,133 +176,121 @@
     SB.sub('出错怎么办：快照加命令日志，丢多少，看多久落一次盘');
   });
 
-  /* ───────── 09 一瞬间 ───────── */
-  frame({ id: 'z-0', ch: '09 一瞬间', cues: '章节卡', title: '章节卡',
-    note: '最后一章：那一瞬间，数据库做了什么。', motion: '整屏卡刷入、停留时间比前几章长半拍，收走后画面先空一拍。' }, () => {
-    SB.chapter('09', '一瞬间', '那一瞬间，数据库做了什么？');
+  /* ───────── 09 旧的 42 ───────── */
+  // 前几集的说法只取 FACTS 的 S07、S09–S13；Redis 磁盘上的两个文件取 DATA.aofLog（P06、P10）
+  frame({ id: 'z-0', ch: '09 旧的 42', cues: '章节卡', title: '章节卡',
+    note: '最后一章：改掉的 42，去了哪里。', motion: '整屏卡刷入、停留比前几章长半拍；收走后画面先空一拍，再出第一集的终端。' }, () => {
+    SB.chapter('09', '旧的 42', '改掉的 42，去了哪里？');
   });
 
-  frame({ id: 'z-1', ch: '09 一瞬间', cues: 'z1–z3', title: '第一集的那一瞬间',
-    note: '系列从第一集的一条查询开始：一行结果，零点零零七秒，这一瞬间数据库在磁盘上做了什么。',
-    motion: '全屏空，只有一行终端逐字打出第一集那条查询的回显（MySQL 的样子，不是 redis-cli）；「0.007 sec」停住、放大到中央；左上角标 PART 1。' }, () => {
-    SB.txt(120, 120, 'PART 1 · MyISAM', `font:600 28px Mono;color:${C.dusk50};white-space:nowrap`);
-    SB.txt(120, 300, '<span style="color:#5c707a">mysql&gt;</span> SELECT * FROM users WHERE name = &#39;alice&#39;;', 'font:500 40px Mono;color:#d9d9d9;white-space:nowrap');
-    SB.txt(120, 370, '1 row in set (<span style="color:#ff4438">0.007 sec</span>)', 'font:500 40px Mono;color:#d9d9d9;white-space:nowrap');
-    SB.txt(120, 540, '一条查询，一行结果', 'font-size:88px;font-weight:800;white-space:nowrap');
-    SB.txt(120, 660, '<span class="num" style="color:#ff4438">零点零零七秒</span>', 'font-size:88px;font-weight:800;white-space:nowrap');
-    note(124, 800, '第一集开头的那一句');
-    SB.sub('这一瞬间，数据库在磁盘上做了什么');
+  frame({ id: 'z-1', ch: '09 旧的 42', cues: 'z1–z3', title: '第一集的那一行',
+    note: '全系列第一句话原样回来：一条查询，一行结果，零点零零七秒；那一行就是 alice。',
+    motion: '全屏空，一行 MySQL 终端逐字打出第一集那条查询（不是 redis-cli 的样子），结果表与「0.007 sec」随 z1 出现；z2 时画面不动、只留问句；z3 时结果表里 alice 那一行亮起，其余压暗。左上角标 PART 1。' }, () => {
+    SB.txt(120, 110, 'PART 1 · MyISAM', `font:600 28px Mono;color:${C.dusk50};white-space:nowrap`);
+    const tbl = [
+      '+----+-------+-----+',
+      '| id | name  | age |',
+      '+----+-------+-----+',
+      `| <span style="color:${C.red}"> 1 | alice | 30 </span>|`,
+      '+----+-------+-----+',
+    ].join('\n');
+    SB.txt(120, 200, `<span style="color:#5c707a">mysql&gt;</span> SELECT * FROM users WHERE name = &#39;alice&#39;;\n${tbl}\n1 row in set (<span style="color:${C.red}">0.007 sec</span>)`, 'font:500 38px/1.45 Mono;color:#d9d9d9;white-space:pre');
+    SB.txt(1180, 300, '一条查询<br>一行结果<br><span class="num" style="color:#ff4438">零点零零七秒</span>', 'font-size:80px;font-weight:800;line-height:1.25;white-space:nowrap');
+    note(124, 840, '第一集开头：8 行的小表里，alice 30 岁');
+    SB.sub('那一次查的，就是 alice');
   });
 
-  const SEVEN = [
-    ['MyISAM', '把数据一行行排在文件里，用 B 树记下每一行的位置'],
-    ['InnoDB', '整张表是一棵树，改之前先记下旧值'],
-    ['PostgreSQL', '从不覆盖，每改一次，写一个新版本'],
-    ['SQLite', '整个数据库装进一个文件，嵌进程序里'],
-    ['ClickHouse', '拆成一列一列，只读用得到的那一列'],
-    ['MongoDB', '不要表，整份文档存进 B 树'],
-    ['Redis', '绕开磁盘，把一切放进内存'],
+  frame({ id: 'z-2', ch: '09 旧的 42', cues: 'z4–z6', title: '在 Redis 里，原地改掉一个字节',
+    note: '七集里她都过了一次生日；在 Redis 里，那一下是第 3271 号桶里那 27 个字节中的一个：2a 盖成 2b，内存里不留 42。',
+    motion: '从 PART 1 的终端横移到 PART 7：桶阵淡入，第 3271 号桶亮红、拉出 27 个字节；z5 时 age 那一格由 2a 翻成 2b；z6 时被盖掉的「2a · 42」从格子上方飘起、散成灰点消失，不留残影。' }, () => {
+    SB.crumb('09 旧的 42', 'PART 7 · Redis');
+    const g = SB.buckets(120, 150, 6, 1.5, { cols: 128, upto: 128 * 30, mark: red, dim: 0.3 });
+    const [ax, ay] = g.at(B.alice);
+    SB.box(ax - 12, ay - 12, 24, 24, `border:3px solid ${C.red}`);
+    SB.path(`M${ax} ${ay + 14} L ${ax} 560`, C.red, 2);
+    const bytes = SB.LP().slice(); bytes[24] = '2b';
+    SB.lpRow(120, 600, { size: 46, bytes, hi: [24] });
+    SB.txt(120 + 24 * 48 + 30, 510, '<span style="text-decoration:line-through">2a</span> · 42', `font:600 40px Mono;color:${C.dusk50};white-space:nowrap`);
+    label(120, 800, '内存里的 42，就这样没了', `color:${C.red}`);
+    SB.sub('内存里的 42，就这样没了');
+  });
+
+  // 七个引擎，旧的 42 各在哪里（S07、S10–S12；Redis U01）
+  const WHERE = [
+    ['MyISAM', '原地盖掉', 'ROLLBACK 只回一句警告', 'gone'],
+    ['InnoDB', 'undo 里', '撤得回来；Bob 读到的也是它', 'keep'],
+    ['PostgreSQL', '旧的那一行', '另写一行 43；Bob 读旧的', 'keep'],
+    ['SQLite', '回滚日志里，原样的整页', '进程被杀，抄回去，还是 42', 'keep'],
+    ['ClickHouse', '旧片段：一亿个年龄', '整列重写；旧的至少留 8 分钟', 'keep'],
+    ['MongoDB', '更新链上，43 后面', 'Bob 的快照读到 42', 'keep'],
+    ['Redis', '内存里：没有', '原地 2a → 2b', 'gone'],
   ];
-  frame({ id: 'z-2', ch: '09 一瞬间', cues: 'z4–z11', title: '七种回答',
-    note: '七个引擎各用一句话说出自己的做法，从 PART 1 一路亮到 PART 7。',
-    motion: '七行自上而下随旁白逐行亮起：每行亮时为白，下一行亮起后退成灰；Redis 一行最后亮红并留住，其右端一格桶阵小图淡入，带进下一帧。' }, () => {
-    SB.crumb('09 一瞬间', '七集，七种回答');
-    SEVEN.forEach(([e, s], i) => {
-      const y = 150 + i * 106, cur = i === 6;
-      SB.line(120, y - 18, 1800, y - 18, C.dusk90, 1);
+  frame({ id: 'z-3', ch: '09 旧的 42', cues: 'z7–z14', title: '旧的 42，各在哪里',
+    note: '七个引擎按 PART 排成七行，每行一个「42」放在它被留下的地方；只有 MyISAM 与 Redis 那一格是空的。',
+    motion: '七行常驻、先全暗；随旁白逐行亮起（顺序是 Redis、MyISAM、InnoDB、PostgreSQL 与 MongoDB、ClickHouse、SQLite，不按行序），亮起时那一行的「42」滑进右边的去处；z9 时 InnoDB 一行旁边浮出 Bob 的读箭头，z10 同一支箭头再指向 PostgreSQL、MongoDB 两行；z11 ClickHouse 的格子里铺开一整列细格表示一亿个。MyISAM、Redis 的「42」滑到一半就散掉。' }, () => {
+    SB.crumb('09 旧的 42', '七集，七个去处');
+    SB.txt(560, 112, '旧的 42 在哪里', 'font-size:28px;color:#8a99a0;white-space:nowrap');
+    SB.txt(1240, 112, '留着做什么', 'font-size:28px;color:#8a99a0;white-space:nowrap');
+    WHERE.forEach(([e, where, why, kind], i) => {
+      const y = 170 + i * 104, gone = kind === 'gone', cur = e === 'Redis';
+      SB.line(120, y - 14, 1800, y - 14, C.dusk90, 1);
       SB.txt(120, y + 8, `PART ${i + 1}`, `font:600 24px Mono;color:${cur ? C.red : C.dusk50};white-space:nowrap`);
-      SB.txt(280, y, e, `font-size:40px;font-weight:800;color:${cur ? C.red : C.dusk30};white-space:nowrap`);
-      SB.txt(620, y + 4, s, `font-size:34px;color:${cur ? C.white : C.dusk50};white-space:nowrap`);
+      SB.txt(270, y, e, `font-size:38px;font-weight:800;color:${cur ? C.red : C.dusk10};white-space:nowrap`);
+      SB.txt(560, y - 2, `<span class="byte" style="width:78px;font-size:34px;line-height:54px;background:${gone ? 'transparent' : C.red};color:${gone ? C.dusk50 : C.midnight};border:2px ${gone ? 'dashed ' + C.dusk50 : 'solid ' + C.red}">42</span>`, '');
+      SB.txt(670, y + 6, where, `font-size:32px;font-weight:600;color:${gone ? C.dusk50 : C.white};white-space:nowrap`);
+      SB.txt(1240, y + 8, why, 'font-size:28px;color:#b9c2c6;white-space:nowrap');
     });
-    SB.sub('Redis 绕开磁盘，把一切放进内存');
+    SB.sub('PostgreSQL 和 MongoDB，也都给他留着 42');
   });
 
-  frame({ id: 'z-3', ch: '09 一瞬间', cues: 'z12–z16', title: '同一对难处',
-    note: '页、树、缓存和日志大多在对付同一对难处：磁盘记得住但慢，内存快可是会忘。',
-    motion: '画面一分为二：左「磁盘 · 记得住，但是慢」，右「内存 · 快，可是会忘」；中间一条横轴。z15 时「页、树、缓存」三个标签从左向右推，标「少读几次磁盘」；z16 时「日志」从右向左推，标「先记一笔，断电后回到对的样子」。' }, () => {
-    SB.crumb('09 一瞬间', '页、树、缓存、日志');
-    SB.box(120, 160, 800, 300, `background:${C.dusk};border-radius:10px`);
-    SB.txt(160, 190, '磁盘', 'font-size:72px;font-weight:800;white-space:nowrap');
-    SB.txt(160, 300, '记得住，但是慢', 'font-size:44px;color:#d9d9d9;white-space:nowrap');
-    SB.box(1000, 160, 800, 300, `border:2px solid ${C.red};border-radius:10px`);
-    SB.txt(1040, 190, '内存', `font-size:72px;font-weight:800;color:${C.red};white-space:nowrap`);
-    SB.txt(1040, 300, '快，可是会忘', 'font-size:44px;color:#d9d9d9;white-space:nowrap');
-    // 两种办法
-    SB.line(120, 620, 1800, 620, C.dusk70, 3);
-    ['页', '树', '缓存'].forEach((t, i) => SB.tag(140 + i * 130, 560, t, C.dusk90, C.white));
-    SB.path('M560 584 L 860 584', C.sky, 3); SB.path('M846 574 L 862 584 L 846 594', C.sky, 3);
-    SB.txt(140, 650, '少读几次磁盘，就快一点', `font-size:34px;color:${C.sky};white-space:nowrap`);
-    SB.tag(1640, 560, '日志', C.dusk90, C.white);
-    SB.path('M1620 584 L 1320 584', C.yellow, 3); SB.path('M1334 574 L 1318 584 L 1334 594', C.yellow, 3);
-    SB.txt(1000, 650, '改之前先记一笔，断电之后回到对的样子', `font-size:34px;color:${C.yellow};white-space:nowrap`);
-    note(140, 760, '前几集的做法，大多在对付这一对难处');
-    SB.sub('磁盘记得住，但是慢；内存快，可是会忘');
-  });
-
-  frame({ id: 'z-4', ch: '09 一瞬间', cues: 'z17–z19', title: '各自停在不同的地方',
-    note: '七个引擎在「快」与「记得住」之间各取一处：六个以磁盘为家、用缓存求快；Redis 以内存为家、用快照和日志求记得住。',
-    motion: '横轴两端是「数据住在磁盘」与「数据住在内存」，没有刻度；七个引擎的名牌依次落下，各带一行自己的手段。前六个落在磁盘一侧（按出场顺序排，不表示快慢），Redis 落在内存一侧，随后从它身上拉回一条虚线指向磁盘端，标「快照 + 日志」。' }, () => {
-    SB.crumb('09 一瞬间', '快，和记得住');
-    SB.line(120, 520, 1800, 520, C.dusk70, 3);
-    SB.txt(120, 548, '数据住在磁盘上', 'font-size:32px;font-weight:700;color:#d9d9d9;white-space:nowrap');
-    SB.txt(1800 - 300, 548, '数据住在内存里', `font-size:32px;font-weight:700;color:${C.red};white-space:nowrap;width:300px;text-align:right`);
-    const DEV = [['MyISAM', '键缓存'], ['InnoDB', '缓冲池 + redo'], ['PostgreSQL', '新版本 + WAL'], ['SQLite', '回滚日志'], ['ClickHouse', '只读要的列'], ['MongoDB', '缓存 + 检查点']];
-    DEV.forEach(([e, d], i) => {
-      const x = 120 + i * 175, y = i % 2 ? 330 : 190;
-      SB.box(x, y, 165, 120, `background:${C.dusk};border-radius:8px`);
-      SB.txt(x + 14, y + 14, e, `font-size:${e.length > 7 ? 26 : 30}px;font-weight:800;white-space:nowrap`);
-      SB.txt(x + 14, y + 66, d, 'font-size:26px;color:#b9c2c6;white-space:nowrap');
-      SB.line(x + 80, y + 120, x + 80, 510, C.dusk70, 1);
+  frame({ id: 'z-4', ch: '09 旧的 42', cues: 'z15–z17', title: '存的都是改之前的样子',
+    note: 'undo、旧版本、回滚日志、旧片段：前几集讲过的这些东西，存的都是改之前的样子；留到没人用得着，才清掉。',
+    motion: '上一帧右侧的五个「42」向中央聚拢，四个名牌（undo、旧版本、回滚日志、旧片段）落在四周，中间一行字「改之前的样子」；z17 时四个名牌下各亮出它的清理方式，随后中央的「42」熄灭，画面只剩名牌的线稿。' }, () => {
+    SB.crumb('09 旧的 42', '改之前的样子');
+    const P = [['undo', 'InnoDB', 'purge：没有事务需要了', 240, 170], ['旧版本', 'PostgreSQL · MongoDB', 'PostgreSQL 靠 VACUUM 收走', 1160, 170], ['回滚日志', 'SQLite', '提交时，日志删掉', 240, 640], ['旧片段', 'ClickHouse', '没有查询在用，过了 8 分钟', 1160, 640]];
+    P.forEach(([t, who, clean, x, y]) => {
+      SB.box(x, y, 520, 210, `border:2px solid ${C.dusk70};border-radius:10px`);
+      SB.txt(x + 28, y + 22, t, 'font-size:48px;font-weight:800;white-space:nowrap');
+      SB.txt(x + 28, y + 94, who, 'font-size:28px;color:#8a99a0;white-space:nowrap');
+      SB.txt(x + 28, y + 146, clean, `font-size:28px;color:${C.sky};white-space:nowrap`);
+      SB.line(x + 260, y < 500 ? y + 210 : y, 960, y < 500 ? 450 : 590, C.dusk70, 1, '6 6');
     });
-    SB.box(1530, 190, 270, 150, `background:${C.red};border-radius:8px`);
-    SB.txt(1554, 206, 'Redis', `font-size:40px;font-weight:800;color:${C.midnight};white-space:nowrap`);
-    SB.txt(1554, 270, '哈希表在内存', `font-size:28px;color:${C.midnight};white-space:nowrap`);
-    SB.line(1665, 340, 1665, 510, C.red, 2);
-    SB.path('M1640 600 C 1200 760, 500 760, 260 600', C.red, 2, '8 8');
-    SB.txt(820, 710, '为了记得住，回到磁盘：快照 + 日志', `font-size:32px;color:${C.red};white-space:nowrap`);
-    note(120, 840, '前六个按出场顺序排在左边，位置不表示快慢');
-    SB.sub('七个引擎，在快和记得住之间，各自停在了不同的地方');
+    SB.txt(0, 470, `<div style="text-align:center;width:1920px;font-size:64px;font-weight:800">改之前的样子 <span class="byte" style="width:96px;font-size:48px;line-height:72px;background:${C.red};color:${C.midnight};vertical-align:8px">42</span></div>`, '');
+    SB.sub('存的都是改之前的样子');
   });
 
-  frame({ id: 'z-5', ch: '09 一瞬间', cues: 'z20–z22', title: '一个字节，七个地方',
-    note: 'Alice 的年龄只是一个字节：七集里它在文件里、在树的叶子上、在一列数字里，这一次在内存的一个桶里。',
-    motion: '中央一个字节「2b」常驻；它依次被放进四种容器的剪影：一排定长行（MyISAM、SQLite 的文件）、一棵树的叶子（InnoDB、MongoDB）、一列数字（ClickHouse）、最后一个桶；每换一种，上一种退成线稿留在左边。末了只剩桶，桶阵从这一格向外淡出整张表。' }, () => {
-    SB.crumb('09 一瞬间', 'Alice 的年龄');
-    const slots = [
-      ['在文件里', 'MyISAM · SQLite', (x, y) => { for (let i = 0; i < 4; i++) SB.box(x, y + i * 34, 300, 26, `background:${i === 2 ? C.dusk70 : C.dusk90}`); }],
-      ['在树的叶子上', 'InnoDB · MongoDB', (x, y) => { SB.box(x + 120, y, 60, 26, `background:${C.dusk90}`); [0, 1, 2, 3].forEach((i) => { SB.box(x + i * 80, y + 100, 60, 26, `background:${i === 2 ? C.dusk70 : C.dusk90}`); SB.line(x + 150, y + 26, x + i * 80 + 30, y + 100, C.dusk70, 1); }); }],
-      ['在一列数字里', 'ClickHouse', (x, y) => { for (let i = 0; i < 5; i++) SB.box(x + 110, y + i * 26, 80, 20, `background:${i === 3 ? C.dusk70 : C.dusk90}`); }],
-      ['在内存的一个桶里', 'Redis', (x, y) => { SB.buckets(x, y, 6, 2, { cols: 38, upto: 38 * 16, mark: { [B.alice % (38 * 16)]: C.red } }); }],
-    ];
-    slots.forEach(([t, who, draw], i) => {
-      const x = 120 + i * 430, y = 220, cur = i === 3;
-      SB.box(x - 10, y - 30, 400, 420, `border:2px solid ${cur ? C.red : C.dusk90};border-radius:10px`);
-      draw(x + 40, y + 20);
-      SB.txt(x + 10, y + 260, t, `font-size:34px;font-weight:700;color:${cur ? C.red : C.dusk10};white-space:nowrap`);
-      SB.txt(x + 10, y + 316, who, 'font-size:28px;color:#8a99a0;white-space:nowrap');
-    });
-    SB.txt(120, 700, '<span style="font-size:72px;font-weight:800">Alice 的年龄，只是一个字节</span>', 'white-space:nowrap');
-    SB.txt(1450, 694, '<span class="byte" style="width:120px;font-size:64px;line-height:100px;background:#ff4438;color:#091a23">2b</span>', '');
-    note(120, 820, '第一集的例子是 alice 30 岁（8 行的小表）；之后各集是 2050 号 Alice，42 岁', 'color:#8a99a0');
-    SB.sub('这一次，在内存的一个桶里');
+  const LOG = D.aofLog.cmds.map((c) => c.join(' '));
+  const kb = (n) => n.toLocaleString('en-US');
+  frame({ id: 'z-5', ch: '09 旧的 42', cues: 'z18–z21', title: '内存里没有了，磁盘上还有',
+    note: '她注销以后，第 3271 号桶空了；开着 AOF 的磁盘上，一份快照存在她过生日之前，后面的日志一条条记着她过生日、Dave 注册、她注销。',
+    motion: '上半屏是内存：第 3271 号桶的红色熄灭成空格，旁边 EXISTS user:2050 回 0；下半屏淡入 appendonlydir 的两个文件：先是快照（标「她过生日之前存的」），再是日志，三条命令随 z20、z21 逐条打出，最后一条 DEL 停在红色。' }, () => {
+    SB.crumb('09 旧的 42', 'PART 7 · Redis 的内存与磁盘');
+    label(120, 140, '内存');
+    const g = SB.buckets(260, 140, 4, 1.5, { cols: 96, upto: 96 * 36, mark: { [B.alice]: '#0f2530' }, dim: 0.25 });   // 第 3271 号桶在前 3456 个之内
+    const [ax, ay] = g.at(B.alice);
+    SB.box(ax - 12, ay - 12, 24, 24, `border:3px dashed ${C.red}`);
+    SB.term(1060, 140, 740, 150, `${SB.prompt}<span class="c">EXISTS user:2050</span>\n<span class="p">(integer) 0</span>`);
+    SB.line(120, 360, 1800, 360, C.dusk90, 2);
+    label(120, 390, '磁盘 · appendonlydir/');
+    SB.box(120, 450, 700, 400, `background:${C.dusk9};border:2px solid ${C.dusk70};border-radius:10px`);
+    SB.txt(150, 472, 'appendonly.aof.1.base.rdb', 'font:600 30px Mono;white-space:nowrap');
+    SB.txt(150, 520, `快照 · ${kb(D.aofLog.base)} 字节`, 'font-size:28px;color:#b9c2c6;white-space:nowrap');
+    SB.txt(150, 570, '她过生日之前存的', `font-size:30px;color:${C.sky};white-space:nowrap`);
+    SB.txt(150, 680, `user:2050 · Alice · <span class="byte" style="width:78px;font-size:34px;line-height:54px;background:${C.red};color:${C.midnight}">42</span>`, 'font:500 34px Mono;white-space:nowrap');
+    SB.box(880, 450, 920, 400, `background:${C.dusk9};border:2px solid ${C.dusk70};border-radius:10px`);
+    SB.txt(910, 472, 'appendonly.aof.1.incr.aof', 'font:600 30px Mono;white-space:nowrap');
+    SB.txt(910, 520, '日志 · 之后的写命令，一条一条', 'font-size:28px;color:#b9c2c6;white-space:nowrap');
+    LOG.forEach((l, i) => SB.txt(910, 600 + i * 70, l, `font:500 34px Mono;color:${i === LOG.length - 1 ? C.red : '#d9d9d9'};white-space:nowrap`));
+    SB.sub('最后一条，是她注销');
   });
 
-  frame({ id: 'z-6', ch: '09 一瞬间', cues: 'z23–z25', title: '一个数据库引擎是如何实现的？',
-    note: '系列的问题落到这一个字节上：放在哪里、怎样找到、怎样改、很多人同时要它怎么办、断电后怎样找回。',
-    motion: '中央只剩那个红色字节；系列片名的问句在它上方淡入；五个短语围着字节依次亮起（放、找、改、同时、找回），每亮一个，从字节拉出一根细线；配乐此处到最高处。' }, () => {
-    SB.txt(0, 170, '<div style="text-align:center;width:1920px;font-size:84px;font-weight:800">一个数据库引擎是如何实现的？</div>', '');
-    SB.txt(900, 500, '<span class="byte" style="width:120px;font-size:64px;line-height:100px;background:#ff4438;color:#091a23">2b</span>', '');
-    const W = [['放在哪里', 480, 380], ['怎样找到它', 1180, 380], ['怎样改它', 420, 640], ['很多人同时要它', 1180, 640], ['断了电，怎样找回来', 760, 800]];
-    W.forEach(([t, x, y]) => { SB.line(960, 550, x + 120, y + 24, C.dusk70, 1); SB.txt(x, y, t, `font-size:40px;font-weight:600;color:#d9d9d9;white-space:nowrap;background:${C.midnight};padding:0 12px`); });
-    SB.sub('就是决定这一个字节放在哪里，怎样找到它，怎样改它');
-  });
-
-  frame({ id: 'z-7', ch: '09 一瞬间', cues: 'z26–z27', title: '眨眼之间',
-    note: '下一次一条查询在眨眼间返回，这些事都已经在那一瞬间里发生过了。',
-    motion: '镜头不动：那个字节缩回第 3271 号桶，桶阵从这一格向四周亮开成整张 8192 格的表，再整体压暗到只剩极淡的纹理；中央留大片空白，一行字慢慢淡入、停住，配乐收在大三和弦上，之后切片尾。' }, () => {
-    SB.buckets(120, 140, 13, 2, { dim: 0.82, mark: red });
-    SB.txt(0, 420, '<div style="text-align:center;width:1920px;font-size:60px;font-weight:700;line-height:1.6">下一次，一条查询在眨眼间返回<br><span style="color:#b9c2c6">这些事，都已经在那一瞬间里发生过了</span></div>', '');
-    SB.sub('这些事，都已经在那一瞬间里发生过了');
+  frame({ id: 'z-6', ch: '09 旧的 42', cues: 'z22–z23', title: '那份快照里，她还是 42 岁',
+    note: '重启时从快照开始，把日志一条条再做一遍；画面最后停在快照里的她：42 岁。',
+    motion: 'z22：一个读头从快照出发，依次扫过三条日志，上半屏的内存随之变化（2050 号变 43、4097 号 Dave 出现、2050 号消失），一遍做完；z23：镜头退回快照文件，其余全部压暗，只剩「Alice · 42」那一格亮着；配乐在这里收住，停两拍后接片尾。' }, () => {
+    SB.buckets(128, 100, 11, 2, { dim: 0.85 });   // 128 × 13 = 1664 宽，左右各留 128
+    SB.txt(0, 360, `<div style="text-align:center;width:1920px;font:500 40px Mono;color:#8a99a0">appendonly.aof.1.base.rdb</div>`, '');
+    SB.txt(0, 450, `<div style="text-align:center;width:1920px;font:500 64px Mono">user:2050 · Alice · <span class="byte" style="width:120px;font-size:64px;line-height:100px;background:${C.red};color:${C.midnight}">42</span></div>`, '');
+    SB.sub('那份快照里，她还是 42 岁');
   });
 
   /* ───────── 片尾名单（无旁白） ───────── */

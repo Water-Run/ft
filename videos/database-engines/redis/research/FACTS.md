@@ -181,6 +181,35 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | z20–z22 | Alice 的年龄是一个字节；七集里它在文件里（MyISAM、SQLite）、在树的叶子上（InnoDB、MongoDB）、在一列数字里（ClickHouse）；这一次在内存的一个桶里 | S07；U01、K07 | 已核（转录）；MyISAM 一集的年龄是 alice 的 30 → 31（S05），「它」指各集那个人的年龄 |
 | z23–z27 | 引擎做的事就是这一个字节的五个问题；回到第一集那一瞬间 | S05；系列「五个问题」约定 | 结语 |
 
+### 第 4 稿新出现或改了说法的句子（2026-11-26）
+
+句号指第 4 稿；没列出的句子与第 3 稿同一出处。第 3 稿的 o5–o6、f1、f25–f27、终章 z1–z27 已删去。
+
+| 句号 | 陈述 | 依据 | 状态 |
+|---|---|---|---|
+| o5–o6 | 第 3 稿原句恢复（策划者 2026-11-26「张力要有」） | 见第 3 稿一节 o5–o6 | 已核 |
+| o16–o17 | Redis 把数据交给内存（断电即失）；进程一停她还在吗（06 章、终章回答）；内存满了谁被请出去（07 章：缺省拒绝写入，或按 LRU 淘汰最久没用的键） | H01；X01；D04、H12 | 已核；问句，不是陈述 |
+| o18–o19 | 这一集跟着 Alice 这一个键，看 Redis 怎样记住她（06 章）、又怎样忘掉她（07 章） | 本片结构 | 路线句，不是事实陈述 |
+| a15 | 找一个键，通常比对一两次就找到了 | K07（有键的桶 3192 个里 2448 个只有 1 个键，平均链长 1.28） | 已核（第 3 稿漏「对」字） |
+| e29 | 一条出错，其余的照样生效 | C07；H09「even when a command fails, all the other commands in the queue are processed」 | 已核（第 3 稿「前面的」只对应实验里出错的是第二条） |
+| f15–f16 | AOF 一打开，先把此刻的数据存成一份快照，之后每条写命令原样追加到日志末尾；重启时先读快照，再执行日志里的命令 | N02、P05、P10；X03 日志「DB loaded from base file …」「DB loaded from incr file …」 | 已核；缺省 `aof-use-rdb-preamble yes`，快照是 RDB 格式（`out_01_environment.txt`） |
+| g1–g2 | 最后 Alice 注销，应用发来 `DEL user:2050` | D01 | 已核 |
+| z1–z2 | 第一集开场两句原文 | S05 | 已核（转录原文） |
+| z3 | 那一次查的就是 alice | S09 | 已核；第一集是 8 行小表里 30 岁的 alice，画面注明，旁白不说年龄 |
+| z4 | 七集里她都过了一次生日 | S07（六集）；本集 d1 | 已核；MyISAM 一集是 alice 30 → 31，其余是 42 → 43 |
+| z5–z6 | 在 Redis 里是原地改掉一个字节，内存里的 42 没有留下 | U01；d5 | 已核 |
+| z7 | MyISAM 也是原地改；改完想撤回，只得到一句警告 | S07 MyISAM c13–c14、m10b–m10d；InnoDB FACTS X2（MyISAM 副本 ROLLBACK 后停在 43，警告 1196） | 已核（转录） |
+| z8 | InnoDB 改之前先把 42 记进 undo，所以撤得回来 | S07 InnoDB e6；InnoDB e10–e10z、X2 | 已核（转录） |
+| z9–z10 | Bob 这时来读，InnoDB 给他 undo 里的 42；PostgreSQL、MongoDB 也给他留着 42 | S10 | 已核（转录）；PostgreSQL 读已提交的 Bob 只在 Alice 提交前读到 42，可重复读的 Bob2 提交后仍读到 42，旁白不分级别，说「这时」 |
+| z11–z12 | ClickHouse 为这一岁重写了一亿个年龄；旧的那一亿个至少还留八分钟 | S11 | 已核（转录）；「一亿个」是 ClickHouse 一集放大后的数据量，那一集的说法「为了改一个字节，重写一亿个」 |
+| z13–z14 | SQLite 改之前先把整页原样抄进回滚日志；进程被杀，再打开时抄回去，Alice 还是 42 | S12 | 已核（转录）；那一集的实验是「给每个人的年龄加一，改到一半强行终止」，不是单改 Alice 一人 |
+| z15–z17 | undo、旧版本、回滚日志、旧片段存的都是改之前的样子；留到没人用得着才清掉 | S10–S13；SQLite I03（提交即删日志） | 归纳；MongoDB 一集没有讲旧版本怎样清掉（只有 G03 的机制），画面不标它的清理方式 |
+| z18 | Alice 注销以后，Redis 内存里一个字节也不剩 | D01；`lazyfree-lazy-user-del no` 时主线程当场释放（g1–g2 行） | 已核 |
+| z19 | 开着 AOF，磁盘上还有一份快照，是她过生日之前存的 | P10 | 已核；由写入顺序推出（base 写于改 43 之前） |
+| z20–z21 | 后面的日志一条条记着：她过了生日、Dave 注册，最后一条是她注销 | P06、P10（incr 依次为 `HSET user:2050 age 43`、`HSET user:4097 name Dave age 19`、`DEL user:2050`） | 已核 |
+| z22 | 重启时 Redis 从这份快照开始，把日志一条条再做一遍 | X03 的加载顺序；H02「replayed again at server startup」 | 已核（机制）；out_08 那一次之后没有重启，旁白不说重启后的结果 |
+| z23 | 那份快照里，她还是 42 岁 | P10 | 已核；base 文件的字节没有单独 dump，画面只写「user:2050 · Alice · 42」，不放字节（要放字节，先在 `08_persist.sh` 里补一次 xxd） |
+
 ### 分镜与封面上的画面事实（2026-11-26）
 
 | 位置 | 陈述 | 依据 | 状态 |
@@ -190,6 +219,9 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | f-4 | dump.rdb 里键名 `user:2050` 的偏移 205,566 | `out_08_persist.txt`（最后一次完整重跑；早先一次运行是 165,569，偏移随写入顺序与哈希表遍历顺序变化） | 已核 |
 | cr-1 片尾 | `LRANGE credits 0 -1` 逐行列出 `project.json` 的 credits；末行「(5 项)」是本片仿系列「末尾给出行数」加的，redis-cli 本身不打印条数 | 系列「共同约定 · 片尾名单」；`project.json` | 设计，不是回显；交付前按实际参与者更新名单 |
 | 封面 | 8192 个桶 / 4096 个键（K07）、约 5 微秒（Q01）、27 字节（L03）、33287（X04）；桶的高度为桶里的键数 | DATA（`tools/gen_data.py`） | 已核 |
+| z-1（第 4 稿） | 第一集的结果表：一行 `1 \| alice \| 30` | S09 | 已核 |
+| z-3、z-4（第 4 稿） | 七行「旧的 42 在哪里」与四种清理方式（purge、VACUUM、提交时删日志、旧片段没有查询在用并过了 8 分钟） | S07、S10–S13；SQLite I03 | 已核（转录）；MongoDB 的清理不标 |
+| z-5（第 4 稿） | `EXISTS user:2050` 回 0；base 347,102 字节；incr 里的三条命令 | D01；DATA.aofLog（`gen_data.py` 从 `out_08_persist.txt` 解析并断言，P10） | 已核；画面用 redis-cli 交互时的 `(integer) 0` 样式，回显是非交互的 `0` |
 
 ## 编号的事实
 
@@ -258,6 +290,7 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | P07 | `appendfsync` 缺省 everysec；三种：no（交给系统）、always（每次写都 fsync，慢、最安全）、everysec（每秒一次，折中） | `redis.conf:1592–1596`、`:1610`；`config.c:4295` | 已核 |
 | P08 | 事件循环每轮睡下之前先写 AOF 缓冲（write），再给客户端发回复；everysec 下若上一次后台 fsync 还没完成，写入最多推迟 2 秒 | `server.c:2096–2100`（注释「must be done before handleClientsWithPendingWrites … in case of appendfsync=always」）；`aof.c:1482–1500`、`:1643–1650` | 已核 |
 | P09 | `BGREWRITEAOF` 之后：`appendonly.aof.2.base.rdb` 347,101 字节、`appendonly.aof.2.incr.aof` 0 字节，manifest 指向 seq 2 | `out_08_persist.txt` | 已核 |
+| P10 | 同一次实验的顺序：`CONFIG SET appendonly yes` 先把当时的数据整份写成 `appendonly.aof.1.base.rdb`（347,102 字节，与此前 Alice 为 42 时的 dump.rdb 同样大小），incr 为 0 字节；之后 `HSET user:2050 age 43`、Dave 的 `HSET user:4097 name Dave age 19`、`DEL user:2050` 依次追加进 incr。所以 base 里的 Alice 是 42，incr 里依次是她过生日、Dave 注册、她注销。重启时先读 base，再执行 incr（X03 日志「DB loaded from base file appendonly.aof.1.base.rdb」「DB loaded from incr file appendonly.aof.1.incr.aof」） | `out_08_persist.txt`「AOF：打开 appendonly」「Alice 过生日」「Dave 注册、Alice 注销」三段；`out_09_crash.txt` 三 | 已核；base 里的 42 由写入顺序推出（base 写于改 43 之前，没有单独 dump base 的字节）。out_08 这一次之后没有重启，「重启时从 42 开始再做一遍」是 X03 所示的加载顺序 |
 
 ### 崩溃
 
@@ -312,6 +345,11 @@ Redis 是一个进程，数据主要放在内存里（H01）。整个数据库�
 | S07 | 前六集里 Alice 过生日的那一段（转录各集 `src/js/script.js`）：MyISAM c13「改一行也不用挪地方：新的一行，写回原来的位置」、c14「alice 过生日，文件里只有年龄那一个字节变了」、m10b–m10d（没有事务，ROLLBACK 只回警告）；InnoDB e6「UPDATE 一开始，旧值 42 先记进 undo 日志」、e7「43 直接写进这一行原来的位置」、k10「这期间别人来读，读的是 undo 里的旧版本」、k11–k11z（redo 重做、undo 撤掉没提交的）；PostgreSQL u2「PostgreSQL 不覆盖原来那一行」、u3「它要另写一个新版本，年龄是 43」、z8「怎么并发：快照决定读哪个版本」；SQLite j6「改主文件之前，先把要改的页原样抄进旁边一个文件」、j5「这个文件叫回滚日志：SQLite 默认就用它」、z7「回滚日志存着原样，出事就抄回去」；ClickHouse u2「片段里的文件从来不改」、u4–u4b「新版本里，年龄这一列整个重写了一遍：为了改一个字节，重写一亿个」、f6–f6b（临时文件夹改名、留着旧片段）；MongoDB e5–e6「WiredTiger 不在页上把 42 擦掉 / 它在这一项上挂一个新版本：43」、e10–e12（检查点时整页写到文件末尾新的地方）、e13「只有一个字节变了：42 变成 43」、i6（读的人看快照） | 各集 `src/js/script.js` 与对应 FACTS（MyISAM「03」「09」；InnoDB X1、M9、M12；PostgreSQL U1、X2；SQLite J05、E05；ClickHouse U01–U03；MongoDB D01、D04、D07、G07） | 已核（转录，2026-11-25） |
 | S08 | 前几集里内存用作缓存、以少读磁盘：MyISAM 一集 s7「读过的索引页，会留在内存的键缓存里」「再查一次，这三页就不必再从磁盘读」「数据文件则交给操作系统去缓存」，s6「每往下一层，要找的范围就缩小几十倍」；InnoDB FACTS M27「The buffer pool is an area in main memory where InnoDB caches table and index data as it is accessed.」与 L1（再查一次没有页从磁盘读入）；MongoDB FACTS A07（写入先在缓存里，检查点才写文件）；SQLite、PostgreSQL 也有各自的页缓存，但那两集没有展开 | 各集 `src/js/script.js` 与 FACTS | 已核（转录，2026-11-25） |
 | S06 | ClickHouse 一集：一亿个用户，平均年龄只读 `age.bin`；改 Alice 一个字节要重写这个片段的整列 | ClickHouse FACTS O01、O02、U01 | 已核 |
+| S09 | 第一集开场的那一行就是 alice：`SELECT * FROM users WHERE name = 'alice'`，结果一行 `1 \| alice \| 30`，`1 row in set (0.007 sec)` | MyISAM `src/js/scenes/s00_intro.js` 第 11、13 行；MyISAM FACTS「开场」 | 已核（转录，2026-11-26）；第一集的 alice 是 8 行小表里的 30 岁，终章不说她「42 岁」 |
+| S10 | 改年龄时给正在读的 Bob 留着 42：InnoDB 可重复读下 Alice 改成 43（未提交与已提交）时 Bob 仍读到 42，旧值取自 undo（InnoDB X3、f10、f13）；PostgreSQL Alice 未提交时 Bob 读到 42，可重复读的 Bob2 提交后仍读到 42（PostgreSQL X2、X7，m10「Bob 读到旧版本：42」）；MongoDB Bob 在快照事务里，Alice 提交 43 后仍读到 42（MongoDB G01，g7–g9、g14b）；ClickHouse 变更重写了年龄这一列，被替换的旧片段在 Bob 读的时候仍在（ClickHouse B03，b5–b5b「他读的仍是快照里的旧片段」） | 各集 `src/js/script.js` 与对应 FACTS | 已核（转录，2026-11-26） |
+| S11 | ClickHouse 一集：改 Alice 的年龄，「年龄这一列整个重写了一遍：为了改一个字节，重写一亿个」（u4–u4b）；含她的旧片段「标成不活动，默认至少留八分钟才删」「旧片段先留着，因为可能还有人在读」（d6–d7）；实测约 8 分多钟后删除，只在没有查询使用时才删 | ClickHouse `script.js` u4–u4b、d6–d7；ClickHouse FACTS U01、D05、D06 | 已核（转录，2026-11-26） |
+| S12 | SQLite 一集：改主文件之前先把要改的页原样抄进回滚日志（j6）；给每个人的年龄加一、改到一半强行终止进程，重新打开时把原样的页抄回主文件，文件和改之前一字节不差，Alice 仍是 42（o7–o8、j24–j25）；回滚日志模式下删除日志文件的那一刻即提交 | SQLite `script.js` j6、o7–o8、j24–j25；SQLite FACTS E05、K03、I03 | 已核（转录，2026-11-26） |
+| S13 | 旧版本等到没人需要才清掉：InnoDB「旧版本要一直留着，直到没有事务需要它」「删掉的行先打标记，没人需要了再清除」（k13、k8cz，purge）；PostgreSQL「旧版本留到没人需要时，再清理回收」「只要还有快照可能用到，就不能收」（z7、d7，VACUUM；FACTS D3–D4）；ClickHouse 旧片段没有查询使用才删（D06） | 各集 `src/js/script.js` 与对应 FACTS | 已核（转录，2026-11-26） |
 
 ## 取证中发现、没有进入成片的事实
 

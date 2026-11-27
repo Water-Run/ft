@@ -215,11 +215,11 @@ ${SB.prompt}<span class="c">EXEC</span>
   });
 
   /* ───────── 06 出错怎么办 ───────── */
-  frame({ id: 'f-1', ch: '06 出错怎么办', cues: '章节卡', title: '章节卡', note: '第 06 章要回答：断了电，还剩什么。', motion: '章节卡刷入，收走时露出满格的桶阵。' }, () => {
-    SB.chapter('06', '出错怎么办', '断了电，还剩什么？');
+  frame({ id: 'f-1', ch: '06 出错怎么办', cues: '章节卡', title: '章节卡', note: '第 06 章要回答：进程没了，还记得 Alice 吗。', motion: '章节卡刷入，收走时露出满格的桶阵。' }, () => {
+    SB.chapter('06', '出错怎么办', '进程没了，还记得 Alice 吗？');
   });
 
-  frame({ id: 'f-2', ch: '06 出错怎么办', cues: 'f1–f4', title: '进程一死，内存就空了', note: '数据只在内存里时，进程一结束，4096 个键全部没了；要在重启后找回来，只能往磁盘写一份。', motion: '左边满格的桶阵被一道红线切过（kill -9），整片在一拍里熄灭成右边的空格阵；下方「磁盘」一栏这时才出现，空着，等下一帧。' }, () => {
+  frame({ id: 'f-2', ch: '06 出错怎么办', cues: 'f2–f4', title: '进程一死，内存就空了', note: '数据只在内存里时，进程一结束，4096 个键全部没了；要在重启后找回来，只能往磁盘写一份。', motion: '左边满格的桶阵被一道红线切过（kill -9），整片在一拍里熄灭成右边的空格阵；下方「磁盘」一栏这时才出现，空着，等下一帧。' }, () => {
     SB.crumb('06 出错怎么办', '进程没了');
     SB.txt(120, 150, '内存 · kill -9 之前', 'font-size:34px;font-weight:700;white-space:nowrap');
     const g = SB.buckets(120, 210, 5, 1, { cols: 128 });
@@ -281,7 +281,7 @@ ${SB.prompt}<span class="c">EXEC</span>
     SB.sub('存过一次快照，再把 Alice 改成 43，杀掉');
   });
 
-  frame({ id: 'f-6', ch: '06 出错怎么办', cues: 'f14–f17', title: 'AOF：把命令追加到文件末尾', note: 'AOF 缺省不开；开了以后每条写命令原样追加到文件末尾，重启时从头再执行一遍，和 InnoDB 重放 redo 一个道理。', motion: '主线程上执行完的 HSET 块向下复制一份，落进 AOF 文件的最后一行；重启时整份文件从上到下逐行亮起，又落回上方的桶阵。' }, () => {
+  frame({ id: 'f-6', ch: '06 出错怎么办', cues: 'f14–f17', title: 'AOF：先存一份快照，再把命令追加进日志', note: 'AOF 缺省不开；一打开先把此刻的数据存成一份快照（base），之后每条写命令原样追加到日志（incr）末尾；重启时先读快照，再执行日志，和 InnoDB 重放 redo 一个道理。', motion: 'f15 时桶阵整份复制一份落进左下的快照文件；f15b 时主线程上执行完的 HSET 块向下复制一份，落进日志的最后一行；f16 时先是快照、再是日志从上到下逐行亮起，又落回上方的桶阵。' }, () => {
     SB.crumb('06 出错怎么办', 'AOF');
     SB.txt(120, 176, '主线程', 'font-size:34px;font-weight:700');
     SB.box(360, 199, 1440, 3, 'background:#fff');
@@ -290,13 +290,13 @@ ${SB.prompt}<span class="c">EXEC</span>
     const parts = D.aof.split('\r\n').filter(Boolean);
     const sel = parts.slice(0, 5).join(' '), cmd = parts.slice(5).join(' ');
     SB.box(120, 300, 1680, 250, `border:2px solid ${C.dusk70};border-radius:10px;background:${C.dusk9}`);
-    SB.txt(150, 320, 'appendonly.aof.1.incr.aof', 'font:600 30px Mono;color:#fff');
+    SB.txt(150, 320, 'appendonly.aof.1.incr.aof <span style="font-weight:400;color:#8a99a0">· 前面还有一份 appendonly.aof.1.base.rdb，是打开时存下的快照</span>', 'font:600 30px Mono;color:#fff;white-space:nowrap');
     SB.txt(150, 380, `<span style="color:${C.dusk50}">${sel}</span>`, 'font:500 30px Mono;white-space:nowrap');
     SB.txt(150, 440, `<span style="color:${C.red}">${cmd}</span>`, 'font:600 30px Mono;white-space:nowrap');
     SB.txt(150, 494, '每段之间是 \\r\\n；这就是那条命令本身，原样写进去', '', 't-small nw');
-    SB.gloss(120, 610, 1680, 'AOF', '只追加的命令日志：每执行一条写命令，就把它原样追加到文件末尾；重启时把文件里的命令从头再执行一遍。缺省不开。');
+    SB.gloss(120, 610, 1680, 'AOF', '只追加的命令日志：打开时先存一份快照，之后每执行一条写命令，就把它原样追加到日志末尾；重启时先读快照，再把日志里的命令执行一遍。缺省不开。');
     SB.txt(120, 800, '和 InnoDB 重放 redo 一样，靠重放回到崩溃之前；不同的是，这里记的是命令', '', 't-note nw');
-    SB.sub('就把这条命令原样追加到文件末尾');
+    SB.sub('之后每执行一条写命令，就原样追加到日志末尾');
   });
 
   frame({ id: 'f-7', ch: '06 出错怎么办', cues: 'f18–f21', title: '33287 = 33287', note: '开着 AOF 一边加一一边杀掉进程：最后收到的回复和重启后的值一样，因为回复之前命令已经交给了操作系统。', motion: '加一的细块飞快地排过主线程，计数跟着滚；红线切断时数字定住，右边重启后的数字从 0 滚到同一个值；下方三步依次点亮。' }, () => {
@@ -336,18 +336,5 @@ ${SB.prompt}<span class="c">EXEC</span>
     for (let i = 0; i <= 2; i++) SB.txt(tx(i) - 16, 296, `${i} 秒`, 'font:500 26px Mono;color:#8a99a0;white-space:nowrap');
     SB.txt(120, 800, '「可能丢掉约 1 秒的数据」是官方文档的说法；本片实验只测了进程被杀，没有测断电', '', 't-small nw');
     SB.sub('可能丢掉最后一秒左右的数据');
-  });
-
-  frame({ id: 'f-9', ch: '06 出错怎么办', cues: 'f25–f27', title: '还是回到了磁盘上', note: '内存里的桶阵之下，磁盘上是两份文件：隔一阵子存的全量（RDB），和中间改动的日志（AOF）；前几集的引擎也是这样。', motion: '上方桶阵常驻，下方两份文件从左右滑入，各自用一根线连到桶阵；右下角前几集的两行小字最后淡入。' }, () => {
-    SB.crumb('06 出错怎么办', '回到磁盘');
-    SB.txt(120, 150, '内存', 'font-size:34px;font-weight:700');
-    SB.buckets(120, 200, 6, 2, { cols: 210, upto: 8190, mark: { [D.buckets.alice]: C.red } });
-    SB.box(120, 540, 1680, 2, `background:${C.dusk70}`);
-    SB.txt(120, 566, '磁盘', 'font-size:34px;font-weight:700');
-    SB.box(120, 630, 800, 160, `border:2px solid ${C.dusk70};border-radius:10px;background:${C.dusk9};padding:24px 30px`, `<div style="font:600 34px Mono">dump.rdb</div><div style="font-size:30px;color:${C.dusk30};margin-top:12px">隔一阵子，存一份全量</div>`);
-    SB.box(1000, 630, 800, 160, `border:2px solid ${C.dusk70};border-radius:10px;background:${C.dusk9};padding:24px 30px`, `<div style="font:600 34px Mono">appendonly …incr.aof</div><div style="font-size:30px;color:${C.dusk30};margin-top:12px">中间的改动，一条条记进日志</div>`);
-    SB.path('M520 520 L 520 630 M1400 520 L 1400 630', C.dusk50, 2, '6 6');
-    SB.txt(120, 830, '前几集：InnoDB 用检查点加 redo，MongoDB 用检查点加日志，办法差不多', '', 't-note nw');
-    SB.sub('办法也和前几集差不多：隔一阵子存一份全量');
   });
 })();

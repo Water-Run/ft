@@ -1,4 +1,4 @@
-/* 分镜第 1 段：开场、01 一张哈希表、02 增、03 查（第 3 稿）。方向 A「桶阵」。
+/* 分镜第 1 段：开场、01 一张哈希表、02 增、03 查（开场按第 4 稿改）。方向 A「桶阵」。
    画面上的实测数字一律取自 window.DATA（tools/gen_data.py 由 research/lab/ 的回显生成）。 */
 (function () {
   const C = SB.C, D = DATA, B = D.buckets;
@@ -32,29 +32,6 @@
     label(1250, 540, '磁盘', `color:${C.dusk50}`);
     note(1250, 700, '这一条命令，没有读它', `color:${C.dusk50}`);
     SB.sub('这五微秒里，它一次也没有碰磁盘');
-  });
-
-  frame({ id: 'o-2', ch: '开场', cues: 'o5–o6', title: '快而会忘，慢而记得',
-    note: '同一份数据：放在内存里，断电后整片清空；写在磁盘上，断电后一个字节不少。',
-    motion: '上一帧的内存块缩到左半边，右边亮起磁盘上的一段真实字节（dump.rdb 里 Alice 那一项）；o5 时左下一行在「断电」处整片熄灭；o6 时右下一行原样复制下来。' }, () => {
-    label(120, 120, '内存');
-    SB.tag(240, 116, '快', C.red, C.midnight);
-    label(1020, 120, '磁盘');
-    SB.tag(1140, 116, '慢', C.dusk90, '#fff');
-    SB.line(960, 120, 960, 900, C.dusk90, 2);
-    SB.txt(120, 200, '通电时', 'width:200px', 't-small');
-    SB.txt(120, 560, '断电之后', 'width:200px', 't-small');
-    SB.txt(1020, 200, '通电时', 'width:200px', 't-small');
-    SB.txt(1020, 560, '断电之后', 'width:200px', 't-small');
-    SB.buckets(120, 260, 3, 1, { mark: red });
-    SB.buckets(120, 620, 3, 1, { empty: true });
-    SB.txt(680, 720, '没了', `font-size:48px;font-weight:800;color:${C.red}`);
-    const hex = D.rdbEntry.hex.match(/../g);
-    const rows = (y) => { for (let r = 0; r < 3; r++) SB.txt(1020, y + r * 50, hex.slice(r * 13, r * 13 + 13).join(' '), 'font:500 30px Mono;color:#d9d9d9;white-space:pre'); };
-    rows(260); rows(620);
-    note(1020, 420, 'dump.rdb 里 Alice 那一项（真实字节）', `color:${C.dusk50}`);
-    SB.txt(1020, 800, '还在', 'font-size:48px;font-weight:800;color:#fff');
-    SB.sub('内存很快，可是一断电，里面的东西就没了');
   });
 
   frame({ id: 'o-3', ch: '开场', cues: 'o7–o10', title: '前六集与 Redis：数据住在哪一层',
@@ -100,23 +77,22 @@
     SB.sub('Redis 是一个键值数据库');
   });
 
-  frame({ id: 'o-5', ch: '开场', cues: 'o16–o18', title: '换来了快，欠下两笔账',
-    note: '数据放进内存换来了快，也带来两个问题：会忘、装不下；全片从 Alice 这一个键讲起。',
-    motion: '桶阵回到画面中央；o16 时 Alice 那一格亮红；o17 两侧依次挂出「会忘」「装不下」两块，标出后面在哪一章还账；o18 镜头推向第 3271 号桶，直接接 01 章节卡。' }, () => {
+  frame({ id: 'o-5', ch: '开场', cues: 'o16–o19', title: '记住她，又忘掉她',
+    note: '数据放进内存换来了快；可进程一停内存就清空，内存也装不下太多。这一集跟着 Alice 这一个键，看 Redis 怎样记住她（06 章），又怎样忘掉她（07 章）。',
+    motion: '桶阵回到画面中央；o16 时 Alice 那一格亮红；o17 时整张桶阵闪暗一下又亮回（进程一停就清空），右下角标出内存上限的一道线；o18 镜头推向第 3271 号桶；o19 两侧挂出「记住」「忘掉」两块，标出在哪一章讲，随后直接接 01 章节卡。' }, () => {
     const g = SB.buckets(480, 200, 6, 1.5, { mark: red });
     const [ax, ay] = g.at(B.alice);
     SB.box(ax - 12, ay - 12, 24, 24, `border:3px solid ${C.red}`);
     SB.path(`M${ax} ${ay - 14} L ${ax} 150`, C.red, 2);
     tagAt(ax - 75, 104, 'user:2050');
     label(120, 104, '内存里的 4096 个键');
-    // 两笔账
     SB.box(120, 760, 760, 150, `border:2px solid ${C.dusk70};border-radius:10px`);
-    SB.txt(150, 780, '会忘', 'font-size:44px;font-weight:800');
-    note(150, 845, '断电、进程结束，内存就清空 → 06 出错怎么办');
+    SB.txt(150, 780, '记住她', 'font-size:44px;font-weight:800');
+    note(150, 845, '进程没了，靠什么把她找回来 → 06 出错怎么办');
     SB.box(1040, 760, 760, 150, `border:2px solid ${C.dusk70};border-radius:10px`);
-    SB.txt(1070, 780, '装不下', 'font-size:44px;font-weight:800');
-    note(1070, 845, '内存有上限，满了总要有人让位 → 07 删');
-    SB.sub('Redis 怎样应付这些，要从 Alice 这一个键说起');
+    SB.txt(1070, 780, '忘掉她', 'font-size:44px;font-weight:800');
+    note(1070, 845, '注销、到期、内存满了 → 07 删');
+    SB.sub('看 Redis 怎样记住她，又怎样忘掉她');
   });
 
   /* ───────── 01 一张哈希表 ───────── */
